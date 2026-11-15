@@ -1,0 +1,10 @@
+#include <nitro/types.h>
+
+#pragma thumb on
+
+typedef struct { u32 unk0; u32 unk4; } UnkStruct_020763e8;
+extern UnkStruct_020763e8 data_020763e8[];
+extern s16 data_022c4678;
+u32 func_02057014(void) { s32 i = data_022c4678; if (i < 0 || i >= 44) return 0; return data_020763e8[i].unk0; }
+
+#pragma thumb reset

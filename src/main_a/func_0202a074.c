@@ -1,0 +1,5 @@
+#include <nitro/types.h>
+
+s32 func_0202a074(void) {
+    return 0;
+}

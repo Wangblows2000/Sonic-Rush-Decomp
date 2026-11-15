@@ -177,3 +177,4 @@ GetRegionOfMBlock: {confidence: strong, evidence: "main 0x02020f84 (44 B) byte-i
 NNSi_SndFaderIsFinished: {confidence: tentative, evidence: "main 0x02020534 (24 B) byte-identical (relocs masked) to lib/NitroSystem/src/snd/fader.c from RushRE/SonicRushAdventure-Decomp lib/NitroSystem C (identification only) compiled with CW 1.2/sp3"}
 NNSi_SndFaderUpdate: {confidence: tentative, evidence: "main 0x0202054c (24 B) byte-identical (relocs masked) to lib/NitroSystem/src/snd/fader.c from RushRE/SonicRushAdventure-Decomp lib/NitroSystem C (identification only) compiled with CW 1.2/sp3"}
 NNSi_SndFaderInit: {confidence: strong, evidence: "main 0x020205d0 (32 B) byte-identical (relocs masked) to lib/NitroSystem/src/snd/fader.c from RushRE/SonicRushAdventure-Decomp lib/NitroSystem C (identification only) compiled with CW 1.2/sp3"}
+_s32_div_f: {confidence: confirmed, evidence: "compiler-generated call from matched func_02020564 resolves to 0x0202f8d8 in the ROM"}

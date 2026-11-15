@@ -1,0 +1,5 @@
+#include <nitro/types.h>
+
+void func_0200df58(void *q, void *p);
+extern u8 data_0207f090[];
+void func_0200de7c(void *p) { func_0200df58(data_0207f090, p); }

@@ -1,0 +1,15 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_0233b610 {
+    u8 pad[0xc8];
+    u32 unkC8;
+} UnkStruct_0233b610;
+
+extern UnkStruct_0233b610 data_ov000_0236aad8;
+extern u8 data_ov000_0236ab3c;
+
+void *func_ov000_0233b610(void) {
+    if ((data_ov000_0236aad8.unkC8 & 2) == 0)
+        return &data_ov000_0236ab3c;
+    return &data_ov000_0236aad8;
+}
