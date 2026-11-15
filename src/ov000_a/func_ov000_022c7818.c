@@ -1,0 +1,68 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_022c7818 UnkStruct_022c7818;
+struct UnkStruct_022c7818 {
+    u8 pad[0x68];
+    void (*func)(UnkStruct_022c7818 *s);
+    u8 pad1[0x20c - 0x6c];
+    u16 unk20C;
+    u8 pad2[2];
+    u16 unk210;
+};
+
+typedef struct UnkStruct_022c7818_2 {
+    u8 pad[0x21c];
+    s16 unk21C;
+    s16 unk21E;
+    u8 pad1[0x22a - 0x220];
+    u16 unk22A;
+} UnkStruct_022c7818_2;
+
+typedef struct UnkStruct_022c7818_3 {
+    u8 pad[0x10];
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
+} UnkStruct_022c7818_3;
+
+extern UnkStruct_022c7818_2 *data_ov000_02369acc;
+extern UnkStruct_022c7818_3 *data_ov000_0236ac60;
+extern u16 data_ov000_02362b8c[];
+
+s32 func_ov000_022cc4cc(s32 x, s32 y, s32 z, s32 a);
+void func_ov000_022c767c(UnkStruct_022c7818 *s);
+
+void func_ov000_022c7818(UnkStruct_022c7818 *s) {
+    UnkStruct_022c7818_2 *g = data_ov000_02369acc;
+    s16 t;
+    u16 lim;
+    t = func_ov000_022cc4cc(data_ov000_0236ac60->unk10, data_ov000_0236ac60->unk14, data_ov000_0236ac60->unk18, 1);
+    if (g->unk21C < t) {
+        if (t - g->unk21C > 0x100)
+            g->unk21C += 0x100;
+        else
+            g->unk21C = t;
+    } else if (g->unk21C > t) {
+        if (g->unk21C - t > 0x100)
+            g->unk21C -= 0x100;
+        else
+            g->unk21C = t;
+    }
+    t = func_ov000_022cc4cc(data_ov000_0236ac60->unk10, data_ov000_0236ac60->unk14, data_ov000_0236ac60->unk18, 0);
+    if (g->unk21E < t) {
+        if (t - g->unk21E > 0x100)
+            g->unk21E += 0x100;
+        else
+            g->unk21E = t;
+    } else if (g->unk21E > t) {
+        if (g->unk21E - t > 0x100)
+            g->unk21E -= 0x100;
+        else
+            g->unk21E = t;
+    }
+    lim = data_ov000_02362b8c[data_ov000_02369acc->unk22A];
+    if (data_ov000_02369acc->unk22A == 3 && (s->unk20C & 7) == 0)
+        lim += 0x32;
+    if (lim < s->unk210++)
+        s->func = func_ov000_022c767c;
+}

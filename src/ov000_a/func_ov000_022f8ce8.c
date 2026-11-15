@@ -1,0 +1,28 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_022f8ce8 {
+    s32 m[9];
+} UnkStruct_022f8ce8;
+
+extern u32 data_0208fe70;
+extern s16 data_0206e470[];
+
+u8 *func_ov000_02328710(s32 a, s32 b, s32 c, s32 d);
+void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotY33_(void *m, s32 s, s32 c);
+void func_02000f34(void *a, void *b, void *c);
+
+static inline u16 Rand(void) {
+    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
+    return (u16)(data_0208fe70 >> 16);
+}
+
+void func_ov000_022f8ce8(s32 a, s32 b, s32 c) {
+    UnkStruct_022f8ce8 mtx;
+    u8 *obj = func_ov000_02328710(1, a, b, c);
+    u16 ang = (Rand() & 0xfff) + 0xaaa;
+    func_02000e60(obj + 0x158, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
+    ang = Rand();
+    MTX_RotY33_(&mtx, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
+    func_02000f34(obj + 0x158, &mtx, obj + 0x158);
+}

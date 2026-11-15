@@ -40,6 +40,44 @@ def main() -> int:
             ok += 1
         else:
             bad.append((p.relative_to(ROOT).as_posix(), (r.stdout.splitlines() or ["?"])[0]))
+    # dsd may reject a TU (e.g. it is the target of a branch to a local label in
+    # a neighbour). Eject such TUs until delink succeeds.
+    import re, shutil
+    rejected = ROOT / "build" / "agents" / "rejected"
+    rejected.mkdir(parents=True, exist_ok=True)
+    for _ in range(50):
+        r = subprocess.run(["dsd", "delink", "--config-path", "config/eur/arm9/config.yaml"],
+                           cwd=ROOT, capture_output=True, text=True)
+        out = r.stdout + r.stderr
+        m = re.search(r"Failed to delink '([^']+)'", out)
+        if r.returncode == 0 or not m:
+            break
+        f = m.group(1)
+        if not f.startswith("src/"):
+            # failure inside a gap object: find the TU holding the referenced local label
+            la = re.search(r"Imported symbol \S+ at 0x([0-9a-f]+)", out)
+            if not la:
+                print(out[-2000:])
+                break
+            addr = int(la.group(1), 16)
+            f = None
+            for dl in (ROOT / "config").rglob("delinks.txt"):
+                for tu, a, b in re.findall(r"^(src/\S+\.c):\n    complete\n    \.text\s+start:0x([0-9a-f]+) end:0x([0-9a-f]+)",
+                                           dl.read_text(), re.M):
+                    if int(a, 16) <= addr < int(b, 16):
+                        f = tu
+            if f is None:
+                print(out[-2000:])
+                break
+        for dl in (ROOT / "config").rglob("delinks.txt"):
+            t = dl.read_text()
+            new = re.sub(rf"\n*^{re.escape(f)}:\n(?:    .*\n?)*", "\n", t, flags=re.M)
+            if new != t:
+                dl.write_text(new.rstrip("\n") + "\n")
+        if (ROOT / f).exists():
+            shutil.move(str(ROOT / f), str(rejected / Path(f).name))
+        bad.append((f, "rejected by dsd delink"))
+        ok -= 1
     print(f"integrated {ok} new files; {len(bad)} not integrated")
     for f, why in bad:
         print(f"  skip {f}: {why}")

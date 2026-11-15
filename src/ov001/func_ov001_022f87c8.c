@@ -1,0 +1,23 @@
+#include <nitro/types.h>
+
+typedef struct { u8 pad[4]; s16 x; s16 y; u8 pad2[0x3c]; u16 h44; u16 pad3; } UnkStruct_022f8330;
+extern u8 *data_ov001_0231f084;
+extern u16 data_ov001_02316abc[];
+extern u16 data_ov001_02316aa0[];
+void func_02032d2c(void *p);
+
+void func_ov001_022f87c8(void) {
+    s32 i;
+    s16 x;
+    for (i = 0, x = 0x3d; i < 0xd; i++) {
+        u16 c = data_ov001_02316aa0[i];
+        UnkStruct_022f8330 *o = &((UnkStruct_022f8330 *)(data_ov001_0231f084 + 0x18))[c + 0x18];
+        if (c != 0xe) {
+            o->x = x;
+            o->y = 0x1e;
+            o->h44 = 0;
+            func_02032d2c(o);
+        }
+        x += data_ov001_02316abc[c];
+    }
+}

@@ -1,0 +1,7 @@
+#include <nitro/types.h>
+
+typedef struct { u16 unk0; u16 unk2; u8 unk4; } UnkWork;
+typedef struct { u8 unk0[0x10]; UnkWork *unk10; } UnkTask;
+extern UnkTask *data_022c4478;
+void func_0204463c(void);
+void func_020446b0(u8 v) { UnkWork *w; if (data_022c4478 == NULL) return; w = data_022c4478->unk10; if (v == 0) { func_0204463c(); return; } if (w->unk4 <= v) { w->unk4 = v; w->unk0 = 1; w->unk2 = 0; } }

@@ -1,0 +1,32 @@
+#include <nitro/types.h>
+
+extern u32 data_0208fe70;
+void func_ov001_022f2580(void);
+void func_ov001_022f2ca4(void);
+void func_ov001_022eecdc(void *p);
+static inline u16 Rand(void) {
+    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
+    return data_0208fe70 >> 16;
+}
+
+void func_ov001_022f2780(u8 *p) {
+    u8 *q = *(u8 **)(*(u8 **)(p + 0x1dc) + 0x18);
+    s32 r;
+    *(void (**)(void))(p + 0x74) = func_ov001_022f2580;
+    *(void (**)(void))(q + 0x74) = func_ov001_022f2ca4;
+    *(u32 *)(p + 0xb8) &= ~0x200;
+    *(u32 *)(p + 0xf0) &= ~0x200;
+    *(u32 *)(p + 0x128) |= 0x200;
+    *(u32 *)(p + 0x160) |= 0x200;
+    *(u32 *)(q + 0xf0) |= 0x200;
+    *(u32 *)(q + 0x128) |= 0x200;
+    r = Rand() & 0xff;
+    if (r < 0x4d) {
+        *(s32 *)(p + 0x1c8) = 0x1e;
+    } else if (r < 0xcd) {
+        *(s32 *)(p + 0x1c8) = 0xb4;
+    } else {
+        *(s32 *)(p + 0x1c8) = 0x12c;
+    }
+    func_ov001_022eecdc(p);
+}

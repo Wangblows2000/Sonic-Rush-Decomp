@@ -1,4 +1,3 @@
-// cc: 1.2/sp2p3 (thumb pop {r3}; bx r3 epilogue: matches 1.2/base..sp2p3, not sp3)
 #include <nitro/types.h>
 
 #pragma thumb on

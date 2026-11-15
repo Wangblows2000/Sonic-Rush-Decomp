@@ -1,0 +1,17 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_0230ccd4 {
+    u8 pad[0xc];
+    s32 unkC;
+    u8 pad1[0x68 - 0x10];
+    void (*func)(void);
+} UnkStruct_0230ccd4;
+
+void func_02069818(UnkStruct_0230ccd4 *s, s32 a);
+void func_ov000_0230cc84(void);
+
+void func_ov000_0230ccd4(UnkStruct_0230ccd4 *s) {
+    func_02069818(s, 1);
+    s->func = func_ov000_0230cc84;
+    s->unkC = 0;
+}

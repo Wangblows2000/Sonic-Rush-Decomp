@@ -125,6 +125,12 @@ def main() -> int:
                 continue
             lo = min(x[1]["addr"] for x in matched if x[0]["name"] == m["name"])
             hi = max(x[1]["addr"] + x[1]["size"] for x in matched if x[0]["name"] == m["name"])
+            if m["name"] == "main" and lo < 0x02000800:
+                print("secure area (0x02000000-0x02000800) is kept as original bytes")
+                return 4
+            if lo % 4:
+                print(f"unaligned: TU would start at 0x{lo:08x}; ALIGNALL(4) in the LCF would move it")
+                return 4
             hi = (hi + 3) & ~3  # LCF uses ALIGNALL(4): TU must end on a word boundary (Thumb padding)
             import re as _re
             taken = [(int(a, 16), int(b, 16)) for a, b in

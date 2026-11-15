@@ -1,0 +1,18 @@
+#include <nitro/types.h>
+#include <main_sdk2/b1dc.h>
+
+s32 func_02009900(void *p, u32 a, u32 b);
+
+static inline UnkBuf_02081080 *func_0201b1dc_GetBuf(void)
+{
+    return data_02081040 < 0 ? NULL : &data_02081080[data_02081040];
+}
+
+s32 func_0201b1dc(u32 a, u32 b)
+{
+    UnkBuf_02081080 *p = func_0201b1dc_GetBuf();
+    if (p == NULL) {
+        return 0;
+    }
+    return func_02009900(p, a, b);
+}

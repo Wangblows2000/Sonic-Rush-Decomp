@@ -84,8 +84,10 @@ def extract_symbol(obj: Path, name: str) -> tuple[bytes, bytearray] | None:
                 t = r["r_info_type"]
                 if t in (1, 28, 29):            # ARM BL/B: imm24
                     mask[o:o + 3] = b"\0\0\0"
-                elif t == 10:                   # Thumb BL pair: imm11 x2
-                    mask[o] = 0; mask[o + 1] &= 0xF8; mask[o + 2] = 0; mask[o + 3] &= 0xF8
+                    if t in (1, 28):            # linker may turn BL into BLX imm (cond/H bits)
+                        mask[o + 3] &= 0xEE
+                elif t == 10:                   # Thumb BL pair: imm11 x2; linker may turn BL into BLX
+                    mask[o] = 0; mask[o + 1] &= 0xF8; mask[o + 2] = 0; mask[o + 3] &= 0xE8
                 else:
                     mask[o:o + 4] = b"\0\0\0\0"
         return bytes(data), mask
