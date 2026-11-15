@@ -117,10 +117,14 @@ def main() -> int:
 
         n.build(f"{ex}/config.yaml", "extract", v["baserom"])
         n.build("extract", "phony", f"{ex}/config.yaml")
+        cfg_files = sorted(p.relative_to(ROOT).as_posix()
+                           for p in (ROOT / f"config/{ver}/arm9").rglob("*")
+                           if p.suffix in (".txt", ".yaml"))
         n.build(f"{b}/delinks.stamp", "delink", [f"{ex}/config.yaml"],
-                variables={"config": cfg})
+                implicit=cfg_files, variables={"config": cfg})
         n.build("delink", "phony", f"{b}/delinks.stamp")
-        n.build(f"{b}/reports/gnu_relink.json", "relink_check", f"{b}/delinks.stamp")
+        n.build(f"{b}/reports/gnu_relink.json", "relink_check", f"{b}/delinks.stamp",
+                implicit=["tools/matching/gnu_relink.py"])
         n.build("verify", "phony", f"{b}/reports/gnu_relink.json")
         n.build("objdiff.json", "objdiff_cfg", f"{b}/delinks.stamp", variables={"config": cfg})
         n.build("objdiff", "phony", "objdiff.json")
