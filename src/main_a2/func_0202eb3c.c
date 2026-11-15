@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202eb3c(void)
+asm void _dgr(void)
 {
     mov r12, #0x200000
     cmn r12, r1, lsl #1

@@ -1,0 +1,12 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+s32 func_ov000_022f4ce4();
+s32 func_020366f4();
+void func_ov000_022f18cc();
+
+void func_ov000_022f18f4(u8 *p0) {
+    func_ov000_022f4ce4(p0, 0x26, 0x1000, 0);
+    func_020366f4(0, 0, 0xd0);
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022f18cc;
+}

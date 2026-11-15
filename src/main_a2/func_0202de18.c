@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202de18(void)
+asm void _ddiv(void)
 {
     stmfd sp!, {r4, lr}
     eors r12, r1, r3

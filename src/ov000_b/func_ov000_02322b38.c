@@ -1,0 +1,57 @@
+#include <ov000_b/stageobj.h>
+
+typedef struct {
+    u8 pad0[0x58];
+    u32 unk58;
+    u8 pad5C[0x94 - 0x5C];
+    UnkStruct_Spr spr0;
+    UnkStruct_Spr spr1;
+    u8 pad124[0x134 - 0x124];
+    UnkStruct_Coll coll0;
+    u8 pad160[0x19C - 0x160];
+} UnkStruct_02322b38;
+
+extern void *data_ov000_02369ba0;
+extern u8 data_ov000_0236739c[], data_ov000_0236a6f8[], data_ov000_0236a840[], data_ov000_0236a850[];
+
+void func_ov000_023265d8(void);
+void func_ov000_02322acc(void);
+void func_ov000_02326638(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
+
+UnkStruct_02322b38 *func_ov000_02322b38(UnkStruct_ObjParam *p, s32 a, s32 b) {
+    UnkStruct_Task *task;
+    UnkStruct_02322b38 *w;
+    vu16 zero;
+
+    task = func_020372d0(func_0206c3d0, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_02322b38));
+    if (task == func_02006abc(0))
+        return NULL;
+    w = task->work;
+    zero = 0;
+    MIi_CpuClear16(zero, w, sizeof(UnkStruct_02322b38));
+    func_ov000_02326638(w, p, a, b);
+    func_0206e3c0(&w->coll0, -8, -0x60, 8, -0x20);
+    func_0206e2b4(&w->coll0, 0, -0x10);
+    w->coll0.unkA |= 0xc0;
+    w->coll0.unk1C = func_ov000_02322acc;
+    w->coll0.unk18 = w;
+    func_02069f1c(w, data_ov000_0236739c, 0, data_ov000_0236a6f8, data_ov000_02369ba0);
+    if (p->unk2 < 0x33) {
+        func_0206a054(w, 0, 5);
+        func_02069eb0(w, 9, data_ov000_0236a840);
+        func_02069818(w, 6);
+        func_020698f0(w, 3);
+    } else {
+        func_0206a054(w, 7, 0x16);
+        func_02069eb0(w, 0x10, data_ov000_0236a850);
+        func_02069818(w, 7);
+        func_020698f0(w, 2);
+    }
+    if (!(p->unk2 & 1)) {
+        func_02069918(w, 6);
+        w->spr0.unk2C -= 0x40000;
+        w->spr1.unk2C -= 0x40000;
+    }
+    w->unk58 |= 0x2100;
+    return w;
+}

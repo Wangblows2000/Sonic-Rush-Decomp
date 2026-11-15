@@ -1,0 +1,57 @@
+#include <nitro/types.h>
+
+typedef struct { u32 off; u32 size; } UnkEnt_02060fd8;
+typedef struct { u8 data[0x48]; } UnkFile_02060fd8;
+typedef struct { u8 pad0[4]; u32 flags; u8 pad8[0x68]; s32 unk70; } UnkWork_02060fd8;
+typedef struct { u16 base; s16 cur; } UnkCtr_02060fd8;
+
+extern const char *data_0207cbdc[];
+extern void *data_0208fe80;
+
+void func_0200be70(UnkFile_02060fd8 *f);
+BOOL func_0200bb20(UnkFile_02060fd8 *f, const char *path);
+BOOL func_0200b930(UnkFile_02060fd8 *f, s32 ofs, s32 whence);
+s32 func_0200b99c(UnkFile_02060fd8 *f, void *dst, s32 len);
+BOOL func_0200bad8(UnkFile_02060fd8 *f);
+void DC_StoreRange(void *p, u32 size);
+u8 *func_02034a40(void *heap, u32 size, s32 align);
+u32 func_02006abc(s32 i);
+void MIi_CpuClear32(u32 data, void *dest, u32 size);
+
+#pragma thumb on
+static inline u8 *Alloc_02060fd8(u32 size) {
+    u8 *p = func_02034a40(data_0208fe80, size, -0x20);
+    if ((u8 *)func_02006abc(0) != p) {
+        vu32 fill = 0xcccccccc;
+        MIi_CpuClear32(fill, p, size);
+        *(u32 *)p = size;
+        *(u32 *)(p + size - 4) = 0x02467531;
+        DC_StoreRange(p, size);
+        p += 0x20;
+    }
+    return p;
+}
+
+u8 *func_02060fd8(UnkWork_02060fd8 *w, UnkCtr_02060fd8 *c) {
+    UnkEnt_02060fd8 ent = {0, 0};
+    const char *path = data_0207cbdc[w->unk70];
+    s32 n;
+    u8 *p;
+    UnkFile_02060fd8 f;
+
+    if (w->flags & 0x20)
+        return NULL;
+    n = c->base + c->cur++;
+    func_0200be70(&f);
+    func_0200bb20(&f, path);
+    func_0200b930(&f, n * 8 + 8, 0);
+    func_0200b99c(&f, &ent, 8);
+    DC_StoreRange(&ent, 8);
+    p = Alloc_02060fd8((ent.size + 0x43) & ~0x1f);
+    func_0200b930(&f, ent.off, 0);
+    func_0200b99c(&f, p, ent.size);
+    DC_StoreRange(p, ent.size);
+    func_0200bad8(&f);
+    return p;
+}
+#pragma thumb reset

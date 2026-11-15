@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202da5c(void)
+asm void _dflt(void)
 {
     ands r2, r0, #0x80000000
     rsbmi r0, r0, #0

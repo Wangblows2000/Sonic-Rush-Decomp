@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202f6bc(void)
+asm void _ull_mod(void)
 {
     stmfd sp!, {r4, r5, r6, r7, r11, r12, lr}
     mov r4, #1
