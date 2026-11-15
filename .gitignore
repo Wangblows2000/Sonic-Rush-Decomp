@@ -1,0 +1,56 @@
+# --- Proprietary game data: NEVER commit ---------------------------------
+*.nds
+*.srl
+*.NDS
+*.bin
+!tools/**/*.bin
+/extract/*
+!/extract/README.md
+/baserom*
+
+# BIOS / firmware dumps (user-supplied, copyrighted)
+arm7_bios.bin
+arm9_bios.bin
+bios7.bin
+bios9.bin
+firmware.bin
+
+# --- Build output and generated analysis ---------------------------------
+/build/
+/reports/
+build.ninja
+.ninja_*
+objdiff.json
+compile_commands.json
+ctx.c
+*.o
+*.elf
+*.map
+
+# Ghidra projects and exports (contain disassembled game code)
+/ghidra/
+*.gpr
+*.rep/
+*.lock
+*.lock~
+
+# --- Third-party tools downloaded or built locally -----------------------
+/tools/bin/
+/tools/src/
+/tools/mwccarm/
+/tools/wibo
+/tools/dsd
+/tools/objdiff-cli
+/dsd
+/wibo
+/objdiff-cli
+
+# --- Python / editors ----------------------------------------------------
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.vscode/
+.idea/
+*.swp
+.DS_Store

@@ -1,0 +1,66 @@
+# Sonic Rush (Nintendo DS) decompilation
+
+Work-in-progress **matching decompilation** of *Sonic Rush* (Sonic Team / Dimps,
+2005) for the Nintendo DS. The goal is C/C++ source (plus assembly where
+unavoidable) that compiles back to the original game code byte for byte.
+
+The repository contains **no game code, assets or ROM data**. You need your own
+legally dumped ROM; the tooling extracts everything it needs from it.
+
+## Target
+
+| Version | Game code | ROM ver. | SHA-1 |
+| ------- | --------- | -------- | ----- |
+| `eur` — Sonic Rush (Europe) (En,Ja,Fr,De,Es,It) | `ASCP` | 0 | `52e5024efcf7617a820fa23789b37e5168c3c4fc` |
+
+USA (`ASCE`) and Japan (`ASCJ`) are not configured yet.
+
+## Current state (see [STATUS.md](STATUS.md))
+
+- ROM extract → rebuild is **byte-identical** to the base ROM.
+- Code is split by [dsd](https://github.com/AetiasHax/ds-decomp) into relocatable
+  ELF objects for ARM9 main, ITCM, DTCM and both overlays: **7,391 functions**,
+  ~1.42 MB of ARM9 function code. An independent GNU-ld relink of those objects
+  reproduces **every section byte for byte**.
+- **0 functions decompiled/matched so far.** The Metrowerks compiler could not
+  be run in the environment that set this project up; see
+  [STATUS.md](STATUS.md#blockers).
+
+## Layout
+
+```
+config/            versions.yaml, per-version dsd configs, compiler map, symbol evidence
+  eur/arm9/        dsd symbols.txt / relocs.txt / delinks.txt per module
+src/, libs/        decompiled game code and SDK/middleware (empty for now)
+include/           shared headers
+tools/             project CLI, configure.py, analysis/matching/extraction tools, Ghidra scripts
+docs/research/     research log and technical notes (the knowledge base)
+docs/architecture/ memory map and project architecture
+docs/progress/     dated progress reports
+extract/           your ROM + extracted files (gitignored)
+build/             all build output and reports (gitignored)
+```
+
+## Quick start
+
+```sh
+python -m pip install -r tools/requirements.txt
+bash tools/setup_tools.sh                 # builds dsd, objdiff-cli, wibo from source
+cp /path/to/your/rom.nds extract/baserom_rush_eur.nds
+python tools/project.py doctor
+python tools/project.py extract eur
+python tools/configure.py eur && ninja verify
+python tools/project.py progress
+```
+
+Full instructions: [INSTALL.md](INSTALL.md). How to contribute:
+[CONTRIBUTING.md](CONTRIBUTING.md). Roadmap: [PLAN.md](PLAN.md).
+
+## Acknowledgements
+
+Architecture informed by [zeldaret/ph](https://github.com/zeldaret/ph),
+[pret/pokediamond](https://github.com/pret/pokediamond),
+[XorTroll/mkds-re](https://github.com/XorTroll/mkds-re),
+[mariopartyrd/mariopartyDS](https://github.com/mariopartyrd/mariopartyDS) and
+[RushRE/SonicRushAdventure-Decomp](https://github.com/RushRE/SonicRushAdventure-Decomp).
+Hardware reference: [GBATEK](https://problemkaputt.de/gbatek.htm).
