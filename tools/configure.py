@@ -88,8 +88,14 @@ def main() -> int:
     except (OSError, subprocess.CalledProcessError, json.JSONDecodeError):
         dj = None
 
-    sources = sorted(p.relative_to(ROOT).as_posix() for d in ("src", "libs")
-                     for p in (ROOT / d).rglob("*") if p.suffix in (".c", ".cpp", ".s"))
+    # Only translation units registered in a delinks.txt are built; other files
+    # under src/ are work in progress and must not affect the ROM.
+    registered = set()
+    for dl in (ROOT / f"config/{ver}").rglob("delinks.txt"):
+        for line in dl.read_text().splitlines():
+            if line and not line[0].isspace() and line.endswith(":"):
+                registered.add(line[:-1])
+    sources = sorted(p for p in registered if (ROOT / p).suffix in (".c", ".cpp", ".s"))
 
     headers = sorted(p.relative_to(ROOT).as_posix() for d in ("include", "libs")
                      for p in (ROOT / d).rglob("*.h"))
@@ -142,6 +148,8 @@ def main() -> int:
                     flags = line[len("// flags:"):].strip()
             if "-nolink" not in flags:
                 flags += " -nolink"
+            if "-Cpp_exceptions" not in flags:  # .exceptix tables do not exist in the original ROM
+                flags += " -Cpp_exceptions off"
             o = f"{b}/{Path(src).with_suffix('.o').as_posix()}"
             objs.append(o)
             n.build(o, "mwcc", src, implicit=headers, variables={

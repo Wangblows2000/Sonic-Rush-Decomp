@@ -61,6 +61,8 @@ def main() -> int:
         for line in args.source.read_text(errors="replace").splitlines()[:3]:
             if line.startswith("// flags:"):
                 flags = line[len("// flags:"):].strip()
+    if "-Cpp_exceptions" not in flags:  # .exceptix tables do not exist in the original ROM
+        flags += " -Cpp_exceptions off"
     exe = ROOT / "tools" / "mwccarm" / cc / "mwccarm.exe"
     wibo = shutil.which("wibo") or str(ROOT / "tools/bin/wibo")
 
@@ -123,6 +125,13 @@ def main() -> int:
                 continue
             lo = min(x[1]["addr"] for x in matched if x[0]["name"] == m["name"])
             hi = max(x[1]["addr"] + x[1]["size"] for x in matched if x[0]["name"] == m["name"])
+            hi = (hi + 3) & ~3  # LCF uses ALIGNALL(4): TU must end on a word boundary (Thumb padding)
+            import re as _re
+            taken = [(int(a, 16), int(b, 16)) for a, b in
+                     _re.findall(r"^    \.text\s+start:0x([0-9a-f]+) end:0x([0-9a-f]+)\s*$", t, _re.M)]
+            if any(a < hi and lo < b for a, b in taken):
+                print(f"duplicate: 0x{lo:08x}-0x{hi:08x} already covered by another TU")
+                return 3
             p.write_text(t.rstrip("\n") + f"\n\n{rel}:\n    complete\n"
                          f"    .text       start:0x{lo:08x} end:0x{hi:08x}\n")
             print(f"promoted to {p.relative_to(ROOT)}")

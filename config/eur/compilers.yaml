@@ -21,7 +21,7 @@ default:
   flags: >-
     -O4,p -proc arm946e -enum int -char signed -gccext,on
     -fp soft -interworking -sym on -gccinc -nolink
-    -msgstyle gcc -w off -lang c99
+    -msgstyle gcc -w off -lang c99 -Cpp_exceptions off
   evidence: >-
     Flags taken from Sonic Rush Adventure decomp (same Dimps engine lineage)
     and zeldaret/ph; not yet tested against Sonic Rush code.
