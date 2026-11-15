@@ -28,10 +28,11 @@
 - [x] Fix dsd Thumb jump-table analysis (0008)
 - [x] Function export (CSV), coverage and symbol reports
 - [x] Ghidra import/export scripts (untested)
-- [ ] ITCM: analyse 0x701C-byte gap (14 functions found)
+- [x] ITCM: 0x701C-byte gap is a zero buffer, code fully covered
 - [ ] main secure-area/crt0 gaps (19 small gaps)
-- [ ] Cross-reference tooling (call graph from relocs.txt)
-- [ ] SDK identification by signature (dsd sigs + SRA asm-derived patterns)
+- [x] Cross-reference tooling (tools/analysis/callgraph.py)
+- [x] First SDK primitives identified by instruction comparison (0010)
+- [ ] Automated SDK signature search (pokediamond/pokeplatinum asm)
 
 ## Milestone 5 — Matching infrastructure
 - [x] ninja build (configure.py): extract/delink/verify/objdiff targets work

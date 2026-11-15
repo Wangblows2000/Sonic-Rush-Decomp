@@ -5,7 +5,7 @@ Derived from the ROM header, overlay table and NitroSDK build info
 
 | Range | Size | Contents |
 | ----- | ---- | -------- |
-| 0x01FF8000–0x01FFF82C | 0x782C | ITCM autoload: code (14 known functions, 0x701C unanalysed) |
+| 0x01FF8000–0x01FFF82C | 0x782C | ITCM autoload: 14 functions + 0x701C zero-filled buffer at 0x01FF8744 |
 | 0x02000000–0x02000800 | 0x800 | secure area: BIOS SWI wrappers + data |
 | 0x02000800 | | `Entry` (crt0) |
 | 0x02000B00 | 0x20 | `BuildInfo` (NitroSDK module params) |

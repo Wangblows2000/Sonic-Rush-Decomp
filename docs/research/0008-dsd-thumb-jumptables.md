@@ -60,4 +60,6 @@ GNU relink of all sections still byte-identical with the new relocations.
 ## Follow-up
 
 - Upstream the patch to AetiasHax/ds-decomp.
-- ITCM: 14 functions cover 6.7 %; a 0x701C-byte gap remains (next task).
+- ITCM: 14 functions cover 6.7 % of `.text`; the remaining 0x701C bytes
+  (0x01FF8744–0x01FFF760) are **all zero** — a zero-initialised buffer placed
+  in ITCM, not missing code. ITCM code is fully covered.

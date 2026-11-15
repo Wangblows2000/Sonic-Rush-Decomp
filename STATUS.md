@@ -13,8 +13,9 @@ the compiler.
 | ROM extract → rebuild | **SHA-1 identical** | `project.py verify eur` |
 | Delinked objects → GNU ld relink | **11/11 sections byte-identical** | `ninja verify` |
 | Functions identified | 7,391 (main 2,855 · itcm 14 · ov000 2,799 · ov001 1,723) | `project.py functions` |
-| `.text` covered by functions | main 99.5 % · ov000 100 % · ov001 100 % · itcm 6.7 % | `project.py coverage` |
-| Named functions | 27 (2 confirmed, 25 strong); 7,364 unknown | `project.py symbols` |
+| `.text` covered by functions | main 99.5 % · ov000 100 % · ov001 100 % · itcm 100 % of code (rest is a 0x701C zero buffer) | `project.py coverage` |
+| Named functions | 32 (2 confirmed, 30 strong); 7,359 unknown | `project.py symbols` |
+| Call graph | 27,575 call edges; 2,344 leaf functions; 1,970 small first-match candidates | `tools/analysis/callgraph.py` |
 | Matched functions / bytes | **0 / 0 of 1,422,472 B** (nothing compiled) | `project.py progress` |
 
 ## Completed
@@ -26,6 +27,8 @@ the compiler.
   (+1,848 functions, all main→overlay calls resolved).
 - GNU-ld relink verifier with four object normalisations.
 - Project CLI, ninja configure, Ghidra scripts, docs.
+- Call-graph ranking; 5 NitroSDK primitives identified (0010).
+- ITCM gap explained (zero buffer).
 
 ## Blockers
 
@@ -56,8 +59,8 @@ the compiler.
 
 ## Next concrete tasks
 
-1. ITCM gap analysis (0x01FF8744–0x01FFF760).
-2. Call-graph tool from relocs.txt; rank small leaf functions for first matches.
-3. SDK signature pass (OS/MI/FX/GX) to name library code.
+1. Automated SDK signature search from pokediamond/pokeplatinum asm (0010).
+2. Place NitroSDK translation-unit boundaries in delinks.txt.
+3. Main secure-area / crt0 gap annotation.
 4. With compiler: run the 0004 version sweep; first matched function.
 5. ARM7 identification.

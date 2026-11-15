@@ -13,4 +13,5 @@ log. Confidence: H/M/L. Status: done / open.
 | [0006](0006-gnu-relink.md) | Are dsd relocations right? | dsd objects, AAELF | all 11 sections relink identically after 4 normalisations | H | byte compare | upstream dsd ELF fixes | done |
 | [0007](0007-ghidra.md) | Ghidra workflow | Ghidra API docs | scripts written | L | **not run** | run with Ghidra | open |
 | [0008](0008-dsd-thumb-jumptables.md) | Why does ov001 analysis fail? | dsd source, ARM ARM | unsigned Thumb jump tables unsupported; patched → +1,848 functions | H | coverage 100 %, relink OK | upstream; ITCM gap | done |
+| [0010](0010-sdk-identification.md) | Which functions are NitroSDK? | pokediamond SDK asm, call graph | 5 SDK asm primitives named (instruction-identical) | H | instruction compare | automate signature search | open |
 | [0009](0009-sonic-rush-prior-work.md) | Prior Rush RE? | web | no public Rush code decomp; SRA decomp exists; asset formats partly known | M | — | asset tools licence | done |
