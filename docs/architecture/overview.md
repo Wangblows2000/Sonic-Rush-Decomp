@@ -1,0 +1,54 @@
+# Architecture
+
+## Principles
+
+1. **Byte-perfect at every commit.** Unfinished code is linked from dsd's
+   delinked objects (original bytes + relocations), never from committed asm.
+2. **Analysis lives in config, not in source.** `config/<ver>/arm9/**`
+   (`symbols.txt`, `relocs.txt`, `delinks.txt`) holds addresses, names and
+   translation-unit boundaries. No game bytes are committed.
+3. **Evidence over appearance.** Names carry confidence
+   (`symbol_evidence.yaml`); compilers carry verification status
+   (`compilers.yaml`); progress counts matched bytes only.
+4. **Independent checks.** GNU-ld relink (0006) guards analysis without
+   proprietary tools.
+
+## Pipeline
+
+```
+baserom.nds ─dsd rom extract─▶ extract/eur/  (+fix_path_order)
+                                   │
+config/eur/arm9 ─dsd delink──▶ build/eur/delinks/*.o ─┬─▶ gnu_relink (verify)
+src/**, libs/** ─mwccarm────▶ build/eur/src/**.o      │
+                  dsd lcf ──▶ arm9.lcf, objects.txt ──┴─▶ mwldarm ─▶ arm9.o
+                  dsd rom config/build ─▶ rush_eur.nds ─fix_header─▶ SHA-1 check
+objdiff.json (dsd objdiff) ─▶ objdiff-cli report ─▶ project.py progress
+```
+
+## Directories
+
+| Path | Contents |
+| ---- | -------- |
+| `config/versions.yaml` | ROM identities, header fix-ups |
+| `config/eur/arm9/` | dsd module configs (main, itcm, dtcm, overlays/ov000, ov001) |
+| `config/eur/compilers.yaml` | per-path compiler version/flags + status |
+| `config/eur/symbol_evidence.yaml` | naming evidence |
+| `src/` | game code by subsystem (to be created as TUs are identified) |
+| `libs/NitroSDK`, `libs/NitroSystem` | SDK/middleware TUs |
+| `include/` | shared headers (`nitro/`, `sonic/`) |
+| `tools/` | `project.py`, `configure.py`, `ndslib/`, `extraction/`, `matching/`, `ghidra/`, `patches/` |
+| `docs/research/` | numbered notes + `README.md` research log |
+| `docs/architecture/` | this file, memory map |
+| `docs/progress/` | dated reports |
+
+## ARM7
+
+dsd currently handles ARM9 only. The ARM7 binary (0x02380000, 0x26F24 bytes)
+is kept as extracted and rebuilt verbatim. Plan: identify whether it is a stock
+NitroSDK ARM7 component; if so, document the SDK version and treat it as a
+library target later.
+
+## Download Play children
+
+`/mb/contest.srl` and `/mb/preview.srl` are full DS programs. They are kept as
+files and are separate future targets.
