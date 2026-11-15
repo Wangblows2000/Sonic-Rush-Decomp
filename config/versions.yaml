@@ -1,0 +1,24 @@
+# Known Sonic Rush ROMs. A version is supported only once its SHA-1 is listed
+# here and a matching config/<version>/ directory exists.
+eur:
+  name: "Sonic Rush (Europe) (En,Ja,Fr,De,Es,It)"
+  baserom: extract/baserom_rush_eur.nds
+  game_code: ASCP
+  rom_version: 0
+  sha1: 52e5024efcf7617a820fa23789b37e5168c3c4fc
+  sha256: 2606a10ead1656e201d8127ffae5614a970201fc37627688e5bccb48abf705c2
+  size: 67108864
+  # Values the rebuilt ROM cannot derive without the console's ARM7 BIOS.
+  # The secure-area CRC is computed over the KEY1-encrypted secure area; the
+  # ROM is a decrypted dump, so dsd writes 0 unless given --arm7-bios.
+  # This is a 16-bit checksum, recorded from the user's ROM header (0x6C).
+  header_fixups:
+    secure_area_crc: 0x190B
+  # Zero-length files whose FAT offset ds-rom's extraction orders wrongly.
+  # See docs/research/0005-rom-rebuild.md. Handled generically by
+  # tools/extraction/fix_path_order.py; listed here for documentation only.
+  zero_length_files:
+    - /bg/dummy.dmy
+    - /dat/dummy.dmy
+    - /mb/dummy.dmy
+    - /mod/dummy.nsbmd
