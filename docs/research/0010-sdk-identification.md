@@ -36,6 +36,30 @@ These cluster at 0x020067C0–0x0200831C next to `FS_*` (0x0200C1EC–), consist
 with the SDK library block sitting early in main `.text` (OS, MI, FS ordering
 as in other NitroSDK games).
 
+## Automated identification (session 2)
+
+`tools/analysis/sdk_ident.py` compiles a reference decomp's library C
+**out of tree** with our verified compiler (CW 1.2/sp3) and compares every
+resulting function, with relocated fields masked, against all Rush functions of
+the same size. `tools/analysis/apply_names.py` applies a name only if the match
+is unique and either ≥ 32 bytes or backed by a neighbouring match from the same
+source file (≤ 0x200 B away). Under 32 bytes the evidence is `tentative`.
+
+| Reference | Files compiled | Ref. functions | Unique hits | Named |
+| --------- | -------------- | -------------- | ----------- | ----- |
+| pret/pokediamond NitroSDK | 92/99 | 631 | 110 | 94 (+4 agreeing with manual names) |
+| pret/pokediamond libnns (NitroSystem) | 4/4 | 29 | 8 | 8 |
+| pret/pokediamond MSL_C | 2/2 | 3 | 1 | 0 (too small, isolated) |
+| SRA NitroSDK / NitroSystem | 5/120, 1/50 | 27, 5 | 1, 3 | 0 (all agreed with existing names) |
+
+The 4 hand-made names (0010 first pass) were independently re-derived.
+SRA's library sources mostly fail to compile out of their build system (MSL
+include ordering); fixing that is deferred, since its SDK is 3.x.
+
+**Licensing.** pret/pokediamond has no licence file, so its code is all
+rights reserved: it is used only to derive names. Our `src/` C is written
+independently. zeldaret/ph is CC0.
+
 ## Next
 
 - Automate: parse pokediamond/pokeplatinum NitroSDK `asm` bodies and `.s`

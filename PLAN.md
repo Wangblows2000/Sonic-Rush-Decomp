@@ -12,7 +12,7 @@
 - [x] ARM binutils installed
 - [x] dsd, objdiff-cli, wibo built from pinned sources (tools/setup_tools.sh)
 - [x] `project.py doctor`
-- [ ] Metrowerks compiler runnable (**blocked here**, user machine)
+- [x] Metrowerks compiler runnable (CW 1.2 via wibo)
 - [ ] Ghidra installed and scripts executed
 
 ## Milestone 3 — ROM infrastructure
@@ -32,19 +32,20 @@
 - [ ] main secure-area/crt0 gaps (19 small gaps)
 - [x] Cross-reference tooling (tools/analysis/callgraph.py)
 - [x] First SDK primitives identified by instruction comparison (0010)
-- [ ] Automated SDK signature search (pokediamond/pokeplatinum asm)
+- [x] Automated SDK identification (sdk_ident.py: 102 names from pokediamond)
+- [ ] SRA library sources compiling out-of-tree
 
 ## Milestone 5 — Matching infrastructure
 - [x] ninja build (configure.py): extract/delink/verify/objdiff targets work
 - [x] Independent GNU relink check (0006)
 - [x] Progress report counting matched bytes only
-- [ ] Establish compiler version/flags (0004) — needs mwccarm
-- [ ] Full ROM build via mwldarm + SHA-1 (first time with zero TUs)
-- [ ] objdiff report wired into progress
+- [x] Establish compiler version (CW 1.2 family; SP open)
+- [x] Full ROM build via mwldarm + SHA-1 (0 and 8 TUs)
+- [x] objdiff report wired into progress
 - [ ] CI workflow (verify target)
 
 ## Milestone 6 — Decompilation
-- [ ] First matched function (small leaf, SDK)
+- [x] First matched functions (8, ARM + Thumb)
 - [ ] NitroSDK OS/MI/FX basics
 - [ ] Startup: Entry → main → game loop
 - [ ] Shared engine utilities

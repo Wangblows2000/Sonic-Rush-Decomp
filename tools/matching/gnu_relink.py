@@ -98,43 +98,40 @@ def load_modules(cfg_path: Path) -> list[Module]:
     return mods
 
 
-def module_objects(delinks_dir: Path, mod: Module) -> list[Path]:
-    objs = sorted(delinks_dir.glob(f"_dsd_gap@{mod.name}_*.o"))
-    for f in mod.files:
-        p = delinks_dir / (Path(f).with_suffix(".o"))
-        if p.exists():
-            objs.append(p)
-    return objs
+def link_order(cfg_path: Path) -> list[str]:
+    """Delinked object paths (relative to repo root) in dsd's link order."""
+    dsd = shutil.which("dsd") or str(ROOT / "tools/bin/dsd")
+    out = subprocess.run([dsd, "json", "delinks", "-c", str(cfg_path)], cwd=ROOT,
+                         capture_output=True, text=True, check=True).stdout
+    return [str((ROOT / f["delink_file"]).resolve()) for f in json.loads(out)["files"]]
 
 
-def write_script(mods: list[Module], delinks_dir: Path, out: Path) -> dict[str, list[Path]]:
-    """One output section per module section; inputs ordered by address.
+def write_script(mods: list[Module], order: list[str], delinks_root: Path, norm: Path,
+                 out: Path) -> dict[str, list[Path]]:
+    """One output section per module section; inputs in dsd link order.
 
-    Gap objects carry one section per module section; TU objects carry their
-    own. Address order of the pieces is recovered from the delinks files.
+    Gap objects are named `_dsd_gap@<module>_<n>`; translation units belong to
+    the module whose delinks.txt lists them. We always link the *delinked*
+    TU object (original bytes), so this check is independent of src/.
     """
     lines = ["ENTRY(_start_dummy)", "SECTIONS", "{"]
-    used: dict[str, list[Path]] = {}
+    used: dict[str, list[Path]] = {m.name: [] for m in mods}
+    tu_owner = {Path(f).with_suffix(".o").as_posix(): m.name for m in mods for f in m.files}
+    for rel in order:
+        p = Path(rel)
+        local = norm / p.relative_to(delinks_root)
+        name = p.name
+        if name.startswith("_dsd_gap@"):
+            mod = name[len("_dsd_gap@"):].rsplit("_", 1)[0]
+        else:
+            mod = tu_owner.get(p.relative_to(delinks_root).as_posix())
+        if mod in used:
+            used[mod].append(local)
     for mod in mods:
-        objs = module_objects(delinks_dir, mod)
-        used[mod.name] = objs
-        # Map each object to the start addresses of its sections.
-        pieces: dict[str, list[tuple[int, Path]]] = {}
-        for obj in objs:
-            stem = obj.stem
-            if stem.startswith("_dsd_gap@"):
-                # gap objects: ask the object itself which sections it holds
-                for s in mod.sections:
-                    pieces.setdefault(s.name, []).append((-1, obj))
-            else:
-                for f, secs in mod.files.items():
-                    if Path(f).with_suffix(".o").name == obj.name:
-                        for s in secs:
-                            pieces.setdefault(s.name, []).append((s.start, obj))
         for s in mod.sections:
             kind = "(NOLOAD)" if s.kind == "bss" else ""
             lines.append(f"  {mod.name}{s.name} 0x{s.start:08x} {kind} : {{")
-            for _, obj in sorted(pieces.get(s.name, []), key=lambda t: t[0]):
+            for obj in used[mod.name]:
                 lines.append(f"    \"{obj.as_posix()}\"({s.name})")
             lines.append("  }")
     lines += ["  /DISCARD/ : { *(*) }", "}", "_start_dummy = 0;"]
@@ -277,9 +274,9 @@ def main() -> int:
             subprocess.run([objcopy, str(src), str(dst)], check=True)
             mark_thumb_functions(dst)
             modernize_arm_branch_relocs(dst)
-    delinks_dir = norm
     script = work / "relink.ld"
-    used = write_script(mods, delinks_dir, script)
+    order = link_order(cfg_path)
+    used = write_script(mods, order, delinks_dir.resolve(), norm, script)
     objs = sorted({o for v in used.values() for o in v})
     elf = work / "relink.elf"
     cmd = [args.ld, "--no-check-sections", "--use-blx", "-T", str(script), "-o", str(elf),
