@@ -135,11 +135,18 @@ def main() -> int:
         objs = []
         for src in sources:
             c = compiler_for(src, cc_cfg)
+            flags = " ".join(c["flags"].split())
+            head = (ROOT / src).read_text(errors="replace").splitlines()[:3]
+            for line in head:  # per-file override: `// flags: ...` (must still be verified by match.py)
+                if line.startswith("// flags:"):
+                    flags = line[len("// flags:"):].strip()
+            if "-nolink" not in flags:
+                flags += " -nolink"
             o = f"{b}/{Path(src).with_suffix('.o').as_posix()}"
             objs.append(o)
             n.build(o, "mwcc", src, implicit=headers, variables={
                 "cc": f"{args.compiler.as_posix()}/{c['version']}/mwccarm.exe",
-                "cflags": " ".join(c["flags"].split()) + " -i include -i libs/include"})
+                "cflags": flags + " -i include -i libs/include"})
         lcf = dj["arm9_lcf_file"] if dj else f"{b}/arm9.lcf"
         objects_txt = dj["arm9_objects_file"] if dj else f"{b}/objects.txt"
         n.build([lcf, objects_txt], "lcf", [f"{b}/delinks.stamp"], variables={"config": cfg})

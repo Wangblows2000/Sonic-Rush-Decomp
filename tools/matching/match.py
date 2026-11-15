@@ -57,6 +57,10 @@ def main() -> int:
     cc_cfg = yaml.safe_load((ROOT / f"config/{args.version}/compilers.yaml").read_text())
     cc = args.cc or cc_cfg["default"]["version"]
     flags = args.flags or " ".join(cc_cfg["default"]["flags"].split())
+    if not args.flags:
+        for line in args.source.read_text(errors="replace").splitlines()[:3]:
+            if line.startswith("// flags:"):
+                flags = line[len("// flags:"):].strip()
     exe = ROOT / "tools" / "mwccarm" / cc / "mwccarm.exe"
     wibo = shutil.which("wibo") or str(ROOT / "tools/bin/wibo")
 
