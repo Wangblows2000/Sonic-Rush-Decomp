@@ -31,6 +31,45 @@ built Sonic Rush's ARM9 code, SDK and middleware?
 4. Record per-region results in `config/eur/compilers.yaml` with the matched
    functions as evidence and set `status: verified`.
 
+## Findings 2026-11-15 (session 2)
+
+### Availability
+- CodeWarrior for NINTENDO DS was distributed by Nintendo to licensed DS
+  developers (Metrowerks/Nintendo agreement, Aug 2004). NXP, the current
+  CodeWarrior owner, publishes only embedded-target editions; no DS edition is
+  offered publicly. **No legitimate public source was found.**
+- The community bundle (`mwccarm.zip`, used by zeldaret/ph's configure) is an
+  unlicensed redistribution. Running it was blocked in the setup environment.
+- decomp.me hosts 24 `nds_arm9` compilers server-side. Using its API from a
+  script was also blocked (Cloudflare bot check; scripted use of another
+  user's scratch). Not pursued further.
+
+### decomp.me compiler ids ↔ CodeWarrior versions
+| id | version | | id | version |
+| -- | ------- | - | -- | ------- |
+| mwcc_20_56 | 2.0 b56 | | mwcc_30_133 | 2.0sp1p6 |
+| mwcc_20_72 | 1.2base | | mwcc_30_134 | 2.0sp1p7 |
+| mwcc_20_79 | 1.2sp2 | | mwcc_30_136 | 2.0sp2 |
+| mwcc_20_82 | 1.2sp2p3 | | mwcc_30_137 | 2.0sp2p2 |
+| mwcc_20_84 | 1.2sp3 | | mwcc_30_138 | 2.0sp2p3 |
+| mwcc_20_87 | 1.2sp4 | | mwcc_30_139 | 2.0sp2p4 |
+| mwcc_30_114 | 2.0base | | mwcc_40_1018..1051 | DSi 1.1 … 1.6sp1 |
+| mwcc_30_123 | 2.0sp1 | | | |
+| mwcc_30_126 | 2.0sp1p2 | | | |
+| mwcc_30_131 | 2.0sp1p5 | | | |
+
+### What other DS projects use (decomp.me presets)
+| Game | Year | Compiler |
+| ---- | ---- | -------- |
+| New Super Mario Bros. (A2DE) | 2006 | **1.2sp3** (mwcc_20_84) |
+| Pokémon Diamond/Pearl | 2006 | 2.0sp1 |
+| Phantom Hourglass, Sonic Rush Adventure | 2007 | 2.0sp1p5 |
+| Pokémon HGSS, PMD Sky, FE Shadow Dragon, Ranger SoA | 2008–09 | 2.0sp2p2 |
+| Inazuma Eleven 3 | 2011 | DSi 1.2p1 |
+
+NSMB (May 2006) on 1.2sp3 strengthens the hypothesis that Sonic Rush (Nov
+2005) uses a CW 1.2 service pack (1.2base/sp2/sp2p3/sp3).
+
 ## Why not done
 
 Running the proprietary `mwccarm.exe` was blocked in the environment that set

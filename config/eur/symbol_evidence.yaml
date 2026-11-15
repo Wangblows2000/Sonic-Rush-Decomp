@@ -65,3 +65,4 @@ OS_RestoreInterrupts: {confidence: strong, evidence: "0x02007650 == pokediamond 
 MIi_CpuClear16: {confidence: strong, evidence: "0x020082e8 == pokediamond MI_memory.c MIi_CpuClear16 (6 insns)"}
 MIi_CpuClear32: {confidence: strong, evidence: "0x0200831c == pokediamond MI_memory.c MIi_CpuClear32 (5 insns)"}
 DC_StoreRange: {confidence: strong, evidence: "0x020067c0 == pokediamond OS_cache.c DC_StoreRange (7 insns)"}
+MTX_RotY33_: {confidence: strong, evidence: "0x02000e7c (Thumb) == pokediamond FX_mtx33.c MTX_RotY33_ asm body (14 insns)"}

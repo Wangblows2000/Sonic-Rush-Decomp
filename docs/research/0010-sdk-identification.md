@@ -26,6 +26,7 @@ capstone disassembly of the Rush binary.
 | 0x020082E8 | 24 | 386 | MIi_CpuClear16 | MI_memory.c |
 | 0x0200831C | 20 | 310 | MIi_CpuClear32 | MI_memory.c |
 | 0x020067C0 | 28 | 245 | DC_StoreRange | OS_cache.c |
+| 0x02000E7C | 28 | 71 | MTX_RotY33_ (Thumb) | FX_mtx33.c |
 
 Not named yet: 0x02006ABC (451 callers; loads word `[0x027FFDA0 + 4*r0]`,
 i.e. a table in the shared main-RAM work area at the top of main memory —
