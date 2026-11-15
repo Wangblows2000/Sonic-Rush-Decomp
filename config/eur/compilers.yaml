@@ -1,0 +1,47 @@
+# Compiler configuration for Sonic Rush (EUR).
+#
+# STATUS: UNVERIFIED HYPOTHESIS. No function has been compiled and matched
+# yet, so none of these values is established. Every entry records where the
+# guess comes from. Update `status` to `verified` only with a matched function
+# as evidence (docs/research/0004-compiler.md).
+#
+# Path globs are matched in order; first match wins.
+
+default:
+  # Sonic Rush shipped Nov 2005 with NitroSDK 2.1 (build-info version
+  # 0x02017532). CodeWarrior for NINTENDO DS 2.0 is the toolchain the sister
+  # game Sonic Rush Adventure (2007, NitroSDK 3.x) matches with; Rush
+  # predates it, so CW 1.2 service packs are the first candidates.
+  version: "1.2/sp3"
+  status: unverified
+  candidates: ["1.2/sp2", "1.2/sp2p3", "1.2/sp3", "1.2/sp4", "2.0/base", "2.0/sp1"]
+  flags: >-
+    -O4,p -proc arm946e -enum int -char signed -str noreuse -gccext,on
+    -fp soft -inline on,noauto -interworking -sym on -gccinc -nolink
+    -msgstyle gcc -w off -lang c99
+  evidence: >-
+    Flags taken from Sonic Rush Adventure decomp (same Dimps engine lineage)
+    and zeldaret/ph; not yet tested against Sonic Rush code.
+
+rules:
+  - glob: "libs/NitroSDK/**"
+    version: "1.2/sp2p3"
+    status: unverified
+    evidence: "SRA builds NitroSDK with 1.2/sp2p3; SDK release used by Rush differs."
+    flags: >-
+      -O4,p -proc arm946e -enum int -char signed -gccext,on -fp soft
+      -inline on,noauto -interworking -sym on -gccinc -nolink -msgstyle gcc
+      -w off -lang c99
+  - glob: "libs/NitroSystem/**"
+    version: "1.2/sp4"
+    status: unverified
+    evidence: "SRA builds NitroSystem with 1.2/sp4."
+    flags: >-
+      -O4,p -proc arm946e -enum int -char signed -gccext,on -fp soft
+      -inline on,noauto -interworking -sym on -gccinc -nolink -msgstyle gcc
+      -w off -lang c99
+
+linker:
+  version: "1.2/sp3"
+  status: unverified
+  flags: "-proc arm946e -nostdlib -interworking -nodead -map closure,unused -msgstyle gcc"

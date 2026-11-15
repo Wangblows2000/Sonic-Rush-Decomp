@@ -1,0 +1,91 @@
+diff --git a/lib/src/analysis/jump_table.rs b/lib/src/analysis/jump_table.rs
+index b2ca220..5579973 100644
+--- a/lib/src/analysis/jump_table.rs
++++ b/lib/src/analysis/jump_table.rs
+@@ -276,7 +276,13 @@ pub enum JumpTableStateThumb {
+     LoadOffset { offset: Register, limit: u32, pc_base: u32 },
+ 
+     /// `lsl jump, jump, #0x10`         sign extend
+-    SignExtendLsl { jump: Register, table_address: u32, limit: u32, kind: ThumbJumpTableKind },
++    SignExtendLsl {
++        jump: Register,
++        table_address: u32,
++        limit: u32,
++        kind: ThumbJumpTableKind,
++        exact_table_address: u32,
++    },
+ 
+     /// `asr jump, jump, #0x10`         sign extend
+     SignExtendAsr { jump: Register, table_address: u32, limit: u32, kind: ThumbJumpTableKind },
+@@ -288,6 +294,12 @@ pub enum JumpTableStateThumb {
+     /// `bx jump`                       jump to the destination
+     BxJump { jump: Register, table_address: u32, limit: u32, kind: ThumbJumpTableKind },
+ 
++    /// Unsigned variant without `lsl/asr #0x10` (older MWCC, e.g. Sonic Rush):
++    /// `ldrh jump, [offset, #imm]` `add jump, pc` `bx jump`
++    /// `table_address` is exact: address of `add offset, pc` + 4 + imm. A hi-register
++    /// `add Rd, pc` reads PC unaligned (ARM ARM A7.1.6), unlike `adr`/literal `ldr`.
++    BxJumpExact { jump: Register, table_address: u32, limit: u32, kind: ThumbJumpTableKind },
++
+     /// valid table detected, starts from `table_address` with a size of `limit`
+     ValidJumpTable {
+         table_address: u32,
+@@ -471,6 +483,7 @@ impl JumpTableStateThumb {
+                             table_address: table_start,
+                             limit,
+                             kind: ThumbJumpTableKind::Halfword,
++                            exact_table_address: (pc_base + 4).wrapping_add(value as u32),
+                         }
+                     }
+                     (
+@@ -486,13 +499,27 @@ impl JumpTableStateThumb {
+                             table_address: table_start,
+                             limit,
+                             kind: ThumbJumpTableKind::Byte,
++                            exact_table_address: (pc_base + 4).wrapping_add(value as u32),
+                         }
+                     }
+                     _ => Self::default(),
+                 }
+             }
+-            Self::SignExtendLsl { jump, table_address, limit, kind } => {
++            Self::SignExtendLsl { jump, table_address, limit, kind, exact_table_address } => {
+                 match (parsed_ins.mnemonic, args[0], args[1], args[2], args[3]) {
++                    // Unsigned offsets, no sign extension: `add jump, pc` then `bx jump`
++                    (
++                        "add",
++                        Argument::Reg(Reg { reg, .. }),
++                        Argument::Reg(Reg { reg: Register::Pc, .. }),
++                        Argument::None,
++                        Argument::None,
++                    ) if reg == jump => Self::BxJumpExact {
++                        jump,
++                        table_address: exact_table_address,
++                        limit,
++                        kind,
++                    },
+                     (
+                         "lsl",
+                         Argument::Reg(Reg { reg: dest_reg, .. }),
+@@ -561,6 +588,21 @@ impl JumpTableStateThumb {
+                     _ => Self::default(),
+                 }
+             }
++            Self::BxJumpExact { jump, table_address, limit, kind } => {
++                match (parsed_ins.mnemonic, args[0], args[1]) {
++                    ("bx", Argument::Reg(Reg { reg, .. }), Argument::None) if reg == jump => {
++                        let size = (limit + 1) * kind.item_size();
++                        let jump = ThumbJumpTableJump::Bx;
++                        jump_tables.insert(table_address, JumpTable {
++                            address: table_address,
++                            size,
++                            kind: JumpTableKind::Thumb { kind, jump },
++                        });
++                        Self::ValidJumpTable { table_address, limit, kind, jump }
++                    }
++                    _ => Self::default(),
++                }
++            }
+             Self::ValidJumpTable { table_address, limit, kind, jump: _ } => {
+                 let end = table_address + (limit + 1) * kind.item_size();
+                 if address >= end { Self::default() } else { self }

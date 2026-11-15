@@ -1,0 +1,40 @@
+rom_config: ../../../extract/eur/config.yaml
+build_path: ../../../build/eur
+delinks_path: ../../../build/eur/delinks
+main_module:
+  name: main
+  object: ../../../build/eur/build/arm9.bin
+  hash: a9a7a5b434ca213b
+  delinks: delinks.txt
+  symbols: symbols.txt
+  relocations: relocs.txt
+autoloads:
+  - kind: Itcm
+    name: itcm
+    object: ../../../build/eur/build/itcm.bin
+    hash: e179b5b3c4aeff0a
+    delinks: itcm/delinks.txt
+    symbols: itcm/symbols.txt
+    relocations: itcm/relocs.txt
+  - kind: Dtcm
+    name: dtcm
+    object: ../../../build/eur/build/dtcm.bin
+    hash: 50caa7608b419c69
+    delinks: dtcm/delinks.txt
+    symbols: dtcm/symbols.txt
+    relocations: dtcm/relocs.txt
+overlays:
+  - id: 0
+    name: ov000
+    object: ../../../build/eur/build/arm9_ov000.bin
+    hash: 8e18e71c8c972d79
+    delinks: overlays/ov000/delinks.txt
+    symbols: overlays/ov000/symbols.txt
+    relocations: overlays/ov000/relocs.txt
+  - id: 1
+    name: ov001
+    object: ../../../build/eur/build/arm9_ov001.bin
+    hash: 18e4c42b0f582e64
+    delinks: overlays/ov001/delinks.txt
+    symbols: overlays/ov001/symbols.txt
+    relocations: overlays/ov001/relocs.txt

@@ -1,0 +1,57 @@
+# Evidence for every non-default symbol name in config/eur/arm9/**/symbols.txt.
+#
+# confidence:
+#   confirmed  - fixed by ROM metadata or a byte-exact match against code whose
+#                name is known (e.g. a matched SDK function).
+#   strong     - multiple independent indicators, or a published signature.
+#   tentative  - plausible guess from one indicator. Must be revisited.
+# Default dsd names (func_XXXXXXXX, data_..., bss_...) mean "unknown" and need
+# no entry. `tools/project.py symbols` reports names without an entry as
+# tentative.
+
+# --- ROM / module metadata ----------------------------------------------------
+Entry:
+  confidence: confirmed
+  evidence: "ARM9 entry address in ROM header (0x024) = 0x02000800."
+AutoloadCallback:
+  confidence: confirmed
+  evidence: "ARM9 autoload-done callback in ROM header (0x070) = 0x02000a10."
+BuildInfo:
+  confidence: confirmed
+  evidence: >-
+    NitroSDK module parameters at ARM9+0xB00: autoload list 0x02086880-0x02086898,
+    BSS 0x0207cfe0-0x022c5c80, SDK version 0x02017532, magic 0xdec00621.
+main:
+  confidence: strong
+  evidence: "dsd entry-point analysis: function reached from Entry's crt0 tail."
+
+# --- BIOS SWI wrappers in the ARM9 secure area (0x02000000-0x02000800) --------
+# Identified by dsd's secure-area analysis, which recognises the per-SWI Thumb
+# stub (`swi #N; bx lr`) and names it after the BIOS function N (GBATEK
+# "BIOS Function Summary"). Not cross-checked by this project yet.
+WaitByLoop: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+IsDebugger: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+CpuFastSet: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+LZ77UnCompReadNormalWrite8bit: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+VBlankIntrWait: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+CpuSet: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+BitUnPack: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+HuffUnCompReadByCallback: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+Mod: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+Halt: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+IntrWait: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+Sqrt: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+SoftReset: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+LZ77UnCompReadByCallbackWrite16bit: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+Div: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+RLUnCompReadNormalWrite8bit: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+RLUnCompReadByCallbackWrite16bit: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+GetCRC16: {confidence: strong, evidence: "dsd secure-area SWI stub analysis"}
+
+# --- NitroSDK FS overlay loader (dsd built-in signatures) ---------------------
+FS_UnloadOverlay: {confidence: strong, evidence: "dsd sig apply FS_UnloadOverlay (masked byte signature)"}
+FS_StopOverlay: {confidence: strong, evidence: "callee renamed by dsd signature FS_UnloadOverlay"}
+FS_LoadOverlay: {confidence: strong, evidence: "dsd sig apply FS_LoadOverlay (masked byte signature)"}
+FS_StartOverlay: {confidence: strong, evidence: "callee renamed by dsd signature FS_LoadOverlay"}
+FS_LoadOverlayFile: {confidence: strong, evidence: "callee renamed by dsd signature FS_LoadOverlay"}
+FS_LoadOverlayInfo: {confidence: strong, evidence: "callee renamed by dsd signature FS_LoadOverlay"}
