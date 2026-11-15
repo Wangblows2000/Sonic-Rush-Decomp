@@ -55,3 +55,13 @@ FS_LoadOverlay: {confidence: strong, evidence: "dsd sig apply FS_LoadOverlay (ma
 FS_StartOverlay: {confidence: strong, evidence: "callee renamed by dsd signature FS_LoadOverlay"}
 FS_LoadOverlayFile: {confidence: strong, evidence: "callee renamed by dsd signature FS_LoadOverlay"}
 FS_LoadOverlayInfo: {confidence: strong, evidence: "callee renamed by dsd signature FS_LoadOverlay"}
+
+# --- NitroSDK asm primitives (instruction-identical to pret/pokediamond) -------
+# Each sequence equals the hand-written `asm` body in pokediamond's NitroSDK
+# (arm9/lib/NitroSDK/src/OS_system.c, MI_memory.c, OS_cache.c), compared
+# instruction by instruction with capstone (docs/research/0010-sdk-identification.md).
+OS_DisableInterrupts: {confidence: strong, evidence: "0x0200763c == pokediamond OS_system.c OS_DisableInterrupts (5 insns)"}
+OS_RestoreInterrupts: {confidence: strong, evidence: "0x02007650 == pokediamond OS_system.c OS_RestoreInterrupts (6 insns)"}
+MIi_CpuClear16: {confidence: strong, evidence: "0x020082e8 == pokediamond MI_memory.c MIi_CpuClear16 (6 insns)"}
+MIi_CpuClear32: {confidence: strong, evidence: "0x0200831c == pokediamond MI_memory.c MIi_CpuClear32 (5 insns)"}
+DC_StoreRange: {confidence: strong, evidence: "0x020067c0 == pokediamond OS_cache.c DC_StoreRange (7 insns)"}
