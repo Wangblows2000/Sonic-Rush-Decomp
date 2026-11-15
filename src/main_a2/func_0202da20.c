@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202da20(void)
+asm void _dfltu(void)
 {
     cmp r0, #0
     mov r1, #0

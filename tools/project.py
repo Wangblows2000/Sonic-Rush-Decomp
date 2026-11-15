@@ -10,6 +10,7 @@
     python tools/project.py symbols  [ver]       symbol naming statistics
     python tools/project.py coverage [ver]       code not covered by functions
     python tools/project.py progress [ver]       matched bytes/functions report
+    python tools/project.py dashboard [ver]      docs/progress/dashboard.md + README block + history
     python tools/project.py ghidra   [ver]       headless Ghidra import (needs Ghidra)
 
 All commands are deterministic and read-only with respect to the base ROM.
@@ -391,6 +392,11 @@ def cmd_progress(args) -> int:
     return 0
 
 
+def cmd_dashboard(args) -> int:
+    import dashboard  # tools/dashboard.py
+    return dashboard.run(args.version)
+
+
 def cmd_ghidra(args) -> int:
     gh = os.environ.get("GHIDRA_INSTALL_DIR")
     if not gh:
@@ -403,7 +409,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Sonic Rush decomp project tool")
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("doctor", "analyze", "extract", "delink", "verify", "functions",
-                 "symbols", "coverage", "progress", "ghidra"):
+                 "symbols", "coverage", "progress", "dashboard", "ghidra"):
         p = sub.add_parser(name)
         if name != "doctor":
             p.add_argument("version", nargs="?", default="eur")

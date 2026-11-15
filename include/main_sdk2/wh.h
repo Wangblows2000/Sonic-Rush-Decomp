@@ -139,7 +139,7 @@ typedef struct {
     u16 unk1536;                /* 0x1536 */
     u8 unk1538[0x1754 - 0x1538]; /* 0x1538 */
     u16 unk1754[15];            /* 0x1754 */
-    u8 pad1772[0x1788 - 0x1772];
+    UnkInitParam_wh unk1772;    /* 0x1772 */
     UnkEntry1788_wh unk1788[16]; /* 0x1788 */
     u32 unk74c8;                /* 0x74c8 */
 } UnkStruct_02080f1c;

@@ -180,3 +180,5 @@ NNSi_SndFaderInit: {confidence: strong, evidence: "main 0x020205d0 (32 B) byte-i
 _s32_div_f: {confidence: confirmed, evidence: "compiler-generated call from matched func_02020564 resolves to 0x0202f8d8 in the ROM"}
 _ll_mul: {confidence: confirmed, evidence: "compiler-generated call from matched func_02046a54 resolves to 0x0202f8b8 in the ROM"}
 _u32_div_f: {confidence: confirmed, evidence: "compiler-generated call from matched func_02046738 resolves to 0x0202fae4 in the ROM"}
+_dfltu: {confidence: confirmed, evidence: "compiler-generated call from matched func_ov000_022cf92c resolves to 0x0202da20 in the ROM"}
+_dleq: {confidence: confirmed, evidence: "compiler-generated call from matched func_ov000_022cf92c resolves to 0x0202ea1c in the ROM"}

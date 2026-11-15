@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202ea1c(void)
+asm void _dleq(void)
 {
     mov r12, #0x200000
     cmn r12, r1, lsl #1
