@@ -1,8 +1,8 @@
-# 0004 — Compiler identification (OPEN)
+# 0004 — Compiler identification
 
 **Question.** Which Metrowerks CodeWarrior for NINTENDO DS version and flags
 built Sonic Rush's ARM9 code, SDK and middleware?
-**Status.** Not established. **No function has been compiled yet.**
+**Status.** CodeWarrior for NINTENDO DS **1.2** (compiler 2.0 build 72–87) verified for ARM9 main; exact service pack open. Linker 1.2/sp3 reproduces the ROM.
 
 ## Evidence so far
 
@@ -70,7 +70,38 @@ built Sonic Rush's ARM9 code, SDK and middleware?
 NSMB (May 2006) on 1.2sp3 strengthens the hypothesis that Sonic Rush (Nov
 2005) uses a CW 1.2 service pack (1.2base/sp2/sp2p3/sp3).
 
-## Why not done
+## Result (session 2, compiler run with the user's explicit authorisation)
+
+Compiler bundle: the one zeldaret/ph's `tools/download_tool.py` fetches
+(`https://decomp.aetias.com/files/mwccarm.zip`,
+SHA-256 `6f7b16098d2b1bc9b45b278f6e6e24327c4da9b3ebf7924be1afd4a721d83976`).
+Licensing: proprietary Metrowerks/Freescale software, redistributed without a
+licence; never committed (`/tools/mwccarm` is gitignored). The user directed
+its use.
+
+`tools/matching/compiler_sweep.py` over 8 probes reconstructed from ROM
+disassembly (`tools/matching/probes/`), flags `-O4,p` and `-O4,s`:
+
+| Version | Probes matched |
+| ------- | -------------- |
+| 1.2/base, 1.2/sp2, 1.2/sp2p3, 1.2/sp3, 1.2/sp4 | **8/8** (both flag sets) |
+| 1.2/b56 | 5/8 |
+| 2.0/base, sp1, sp1p5, sp2p2 | 5/8 (`-O4,p`), 6/8 (`-O4,s`) |
+
+Discriminating probes: p02 (conditional `addlo`/`ldrlo` scheduling), p03
+(branch layout), p08 (Thumb: 2.0 emits 44 bytes vs 48), p05/p06 (b56 only).
+
+Full pipeline: `ninja` with dsd LCF + mwldarm 1.2/sp3 rebuilds the ROM with
+SHA-1 `52e5024e…`, first with zero C files and then with the 8 functions
+compiled from `src/main/*.c` (objdiff: 8/8 functions 100 %).
+
+## Open
+- Find probes that separate 1.2 base/sp2/sp2p3/sp3/sp4.
+- Check overlays and ITCM code against the same compiler.
+- NitroSDK/NitroSystem library code may use a different 1.2 SP; test once
+  SDK functions are reconstructed.
+
+## Earlier blocker (resolved)
 
 Running the proprietary `mwccarm.exe` was blocked in the environment that set
 up this project. This is the main external dependency (STATUS.md).

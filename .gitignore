@@ -37,6 +37,7 @@ ctx.c
 # --- Third-party tools downloaded or built locally -----------------------
 /tools/bin/
 /tools/src/
+/tools/mwccarm
 /tools/mwccarm/
 /tools/wibo
 /tools/dsd

@@ -358,16 +358,20 @@ def cmd_progress(args) -> int:
         b["functions"] += 1
         b["code_bytes"] += r["size"]
     objdiff = ROOT / "build" / args.version / "report.json"
-    source = "none (no objdiff report: nothing compiled yet)"
+    source = "none (no objdiff report: run `ninja report`)"
     if objdiff.exists():
         rep = json.loads(objdiff.read_text())
         source = str(objdiff.relative_to(ROOT))
+        # map function name -> module via symbol tables; count only 100 % matches
+        owner = {r["name"]: r["module"] for r in rows}
         for unit in rep.get("units", []):
-            mod = unit.get("name", "").split("/")[0]
-            meas = unit.get("measures", {})
-            if mod in by_mod:
-                by_mod[mod]["matched_bytes"] += int(meas.get("matched_code", 0))
-                by_mod[mod]["matched_functions"] += int(meas.get("matched_functions", 0))
+            if unit.get("metadata", {}).get("auto_generated"):
+                continue  # dsd gap objects: original bytes, not decompiled code
+            for fn in unit.get("functions", []):
+                mod = owner.get(fn["name"])
+                if mod and fn.get("fuzzy_match_percent", 0) >= 100.0:
+                    by_mod[mod]["matched_functions"] += 1
+                    by_mod[mod]["matched_bytes"] += int(fn.get("size", 0))
     ev = load_evidence(args.version)
     named = sum(1 for r in rows if r["name_status"] != "unknown")
     tot = {k: sum(b[k] for b in by_mod.values()) for k in

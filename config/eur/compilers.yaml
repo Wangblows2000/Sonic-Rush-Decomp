@@ -1,9 +1,11 @@
 # Compiler configuration for Sonic Rush (EUR).
 #
-# STATUS: UNVERIFIED HYPOTHESIS. No function has been compiled and matched
-# yet, so none of these values is established. Every entry records where the
-# guess comes from. Update `status` to `verified` only with a matched function
-# as evidence (docs/research/0004-compiler.md).
+# STATUS (2026-11-15): CodeWarrior for NINTENDO DS **1.2** family verified for
+# main-module game/SDK code: 8 reconstructed functions (ARM and Thumb) match
+# byte-for-byte on 1.2/base, sp2, sp2p3, sp3 and sp4, and 3 of them fail on
+# 1.2/b56 and every 2.0 release (tools/matching/compiler_sweep.py,
+# docs/research/0004-compiler.md). The exact service pack is not yet
+# distinguished; sp3 is used as the working default.
 #
 # Path globs are matched in order; first match wins.
 
@@ -13,11 +15,12 @@ default:
   # game Sonic Rush Adventure (2007, NitroSDK 3.x) matches with; Rush
   # predates it, so CW 1.2 service packs are the first candidates.
   version: "1.2/sp3"
-  status: unverified
-  candidates: ["1.2/sp2", "1.2/sp2p3", "1.2/sp3", "1.2/sp4", "2.0/base", "2.0/sp1"]
+  status: verified-family   # 1.2 base..sp4 all match; SP undetermined
+  candidates: ["1.2/base", "1.2/sp2", "1.2/sp2p3", "1.2/sp3", "1.2/sp4"]
+  ruled_out: ["1.2/b56", "2.0/base", "2.0/sp1", "2.0/sp1p5", "2.0/sp2p2"]
   flags: >-
-    -O4,p -proc arm946e -enum int -char signed -str noreuse -gccext,on
-    -fp soft -inline on,noauto -interworking -sym on -gccinc -nolink
+    -O4,p -proc arm946e -enum int -char signed -gccext,on
+    -fp soft -interworking -sym on -gccinc -nolink
     -msgstyle gcc -w off -lang c99
   evidence: >-
     Flags taken from Sonic Rush Adventure decomp (same Dimps engine lineage)
@@ -43,5 +46,5 @@ rules:
 
 linker:
   version: "1.2/sp3"
-  status: unverified
+  status: verified          # full ROM link reproduces SHA-1 52e5024e...
   flags: "-proc arm946e -nostdlib -interworking -nodead -map closure,unused -msgstyle gcc"
