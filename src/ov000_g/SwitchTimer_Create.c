@@ -19,7 +19,7 @@ extern UnkStruct_02318ba0_P *gPlayers;
 void SwitchTimer_Main(void);
 void SwitchTimer_Destructor(void);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_ov000_0233e48c(s32 a);
+void ZoneFx_Zone4_StartBldyFlash(s32 a);
 
 void SwitchTimer_Create(s16 a, u16 b) {
     UnkStruct_Task *task;
@@ -43,6 +43,6 @@ void SwitchTimer_Create(s16 a, u16 b) {
         return;
     if (!(gPlayers->unk330 & 0x8000))
         return;
-    func_ov000_0233e48c(3);
+    ZoneFx_Zone4_StartBldyFlash(3);
     gPlayers->unk330 |= 0x4000;
 }

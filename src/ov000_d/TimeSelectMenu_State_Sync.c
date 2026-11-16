@@ -9,10 +9,10 @@ typedef struct {
 UnkStruct_02362124_Sync *WirelessSession_GetSendBuffer(void);
 UnkStruct_02362124_Sync *WirelessSession_GetPartnerRecvBuffer(void);
 u16 TimeSelectMenu_GetUnlockedStageMask(void);
-void func_ov000_0236110c(UnkStruct_MenuO *w);
-void func_ov000_02361020(UnkStruct_MenuO *w);
-void func_ov000_02361068(UnkStruct_MenuO *w);
-void func_ov000_02360f54(UnkStruct_MenuO *w);
+void TimeSelectMenu_SetSprite78Anim2(UnkStruct_MenuO *w);
+void TimeSelectMenu_SetSpriteC0Anim2(UnkStruct_MenuO *w);
+void TimeSelectMenu_SetSprite78Anim4(UnkStruct_MenuO *w);
+void TimeSelectMenu_SetSpriteC0Anim4(UnkStruct_MenuO *w);
 void TimeSelectMenu_StartBrightnessFade(s32 x, s32 y, s32 a, s32 b);
 void SysSound_Init(void);
 void SysSound_PlayBGM(s32 a);
@@ -70,15 +70,15 @@ void TimeSelectMenu_State_Sync(void) {
     }
     if (w->unk4 != 0) {
         if (w->unk8 > 1) {
-            func_ov000_0236110c(w);
-            func_ov000_02361020(w);
+            TimeSelectMenu_SetSprite78Anim2(w);
+            TimeSelectMenu_SetSpriteC0Anim2(w);
         } else {
-            func_ov000_02361068(w);
-            func_ov000_02360f54(w);
+            TimeSelectMenu_SetSprite78Anim4(w);
+            TimeSelectMenu_SetSpriteC0Anim4(w);
         }
     } else {
-        func_ov000_02361068(w);
-        func_ov000_02360f54(w);
+        TimeSelectMenu_SetSprite78Anim4(w);
+        TimeSelectMenu_SetSpriteC0Anim4(w);
     }
     TimeSelectMenu_StartBrightnessFade(0x10, 0, 0x10, 0);
     SysSound_Init();

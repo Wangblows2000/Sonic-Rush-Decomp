@@ -8,25 +8,25 @@ typedef struct {
 UnkStruct_02361e28_Sync *WirelessSession_GetSendBuffer(void);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 BOOL KeyframeAnim_IsFinished(UnkStruct_MenuOPos *p);
-void func_ov000_02360a28(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_02360ad4(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_02360ab4(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_02360a94(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_02360a4c(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
-void func_ov000_02360a04(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_0236076c(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_02360974(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_02360950(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_02360870(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
-void func_ov000_02360790(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
+void TimeSelectMenu_DrawSprite150(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSprite30(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSprite78(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSpriteC0(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSprite0Scaled(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
+void TimeSelectMenu_DrawSprite198(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSprite588(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSprite2B8(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSprite300(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSpriteGroupB(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
+void TimeSelectMenu_DrawSpriteGroupA(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
 void TimeSelectMenu_DrawPlayerName(UnkStruct_MenuO *w, s32 x, s32 y, s32 row);
-void func_ov000_02360748(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_02360724(UnkStruct_MenuO *w, s32 x, s32 y);
-void func_ov000_023606c4(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
-void func_ov000_02360268(UnkStruct_MenuO *w);
-void func_ov000_0236011c(UnkStruct_MenuO *w, s32 x, s32 y, BOOL flip);
-void func_ov000_0235ffd0(UnkStruct_MenuO *w, s32 x, s32 y, BOOL flip);
-void func_ov000_02360264(UnkStruct_MenuO *w);
+void TimeSelectMenu_DrawSprite5D0(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSprite618(UnkStruct_MenuO *w, s32 x, s32 y);
+void TimeSelectMenu_DrawSpriteScaled(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
+void TimeSelectMenu_SetupOrthoCamera(UnkStruct_MenuO *w);
+void TimeSelectMenu_DrawModelB(UnkStruct_MenuO *w, s32 x, s32 y, BOOL flip);
+void TimeSelectMenu_DrawModelA(UnkStruct_MenuO *w, s32 x, s32 y, BOOL flip);
+void TimeSelectMenu_Unk_ov000_02360264(UnkStruct_MenuO *w);
 void TimeSelectMenu_State_Select(void);
 void TimeSelectMenu_State_FollowChooser(void);
 
@@ -55,67 +55,67 @@ void TimeSelectMenu_Main(void) {
         }
     }
     p = &w->pos[1];
-    func_ov000_02360a28(w, p->x, p->y);
+    TimeSelectMenu_DrawSprite150(w, p->x, p->y);
     if (w->unk4) {
         p = &w->pos[2];
-        func_ov000_02360ad4(w, p->x, p->y);
+        TimeSelectMenu_DrawSprite30(w, p->x, p->y);
     }
     p = &w->pos[3];
-    func_ov000_02360ab4(w, p->x, p->y);
+    TimeSelectMenu_DrawSprite78(w, p->x, p->y);
     p = &w->pos[4];
-    func_ov000_02360a94(w, p->x, p->y);
+    TimeSelectMenu_DrawSpriteC0(w, p->x, p->y);
     p = &w->pos[0];
-    func_ov000_02360a4c(w, p->x, p->y, p->unk4);
+    TimeSelectMenu_DrawSprite0Scaled(w, p->x, p->y, p->unk4);
     if (w->unk4) {
         p = &w->pos[5];
-        func_ov000_02360a04(w, p->x, p->y);
+        TimeSelectMenu_DrawSprite198(w, p->x, p->y);
     }
     p = &w->pos[8];
-    func_ov000_0236076c(w, p->x, p->y);
+    TimeSelectMenu_DrawSprite588(w, p->x, p->y);
     p = &w->pos[9];
-    func_ov000_0236076c(w, p->x, p->y);
+    TimeSelectMenu_DrawSprite588(w, p->x, p->y);
     if (w->unk28 == 0) {
         p = &w->pos[10];
-        func_ov000_02360974(w, p->x, p->y);
+        TimeSelectMenu_DrawSprite2B8(w, p->x, p->y);
         p = &w->pos[11];
-        func_ov000_02360950(w, p->x, p->y);
+        TimeSelectMenu_DrawSprite300(w, p->x, p->y);
         p = &w->pos[16];
-        func_ov000_02360870(w, p->x, p->y, p->unk4);
+        TimeSelectMenu_DrawSpriteGroupB(w, p->x, p->y, p->unk4);
         p = &w->pos[17];
-        func_ov000_02360790(w, p->x, p->y, p->unk4);
+        TimeSelectMenu_DrawSpriteGroupA(w, p->x, p->y, p->unk4);
     } else {
         p = &w->pos[10];
-        func_ov000_02360950(w, p->x, p->y);
+        TimeSelectMenu_DrawSprite300(w, p->x, p->y);
         p = &w->pos[11];
-        func_ov000_02360974(w, p->x, p->y);
+        TimeSelectMenu_DrawSprite2B8(w, p->x, p->y);
         p = &w->pos[16];
-        func_ov000_02360790(w, p->x, p->y, p->unk4);
+        TimeSelectMenu_DrawSpriteGroupA(w, p->x, p->y, p->unk4);
         p = &w->pos[17];
-        func_ov000_02360870(w, p->x, p->y, p->unk4);
+        TimeSelectMenu_DrawSpriteGroupB(w, p->x, p->y, p->unk4);
     }
     p = &w->pos[12];
     TimeSelectMenu_DrawPlayerName(w, p->x, p->y, 0);
-    func_ov000_02360748(w, p->x, p->y);
+    TimeSelectMenu_DrawSprite5D0(w, p->x, p->y);
     p = &w->pos[13];
     TimeSelectMenu_DrawPlayerName(w, p->x, p->y, 1);
-    func_ov000_02360748(w, p->x, p->y);
+    TimeSelectMenu_DrawSprite5D0(w, p->x, p->y);
     p = &w->pos[14];
-    func_ov000_02360724(w, p->x, p->y);
+    TimeSelectMenu_DrawSprite618(w, p->x, p->y);
     p = &w->pos[15];
-    func_ov000_023606c4(w, p->x, p->y, p->unk4);
-    func_ov000_02360268(w);
+    TimeSelectMenu_DrawSpriteScaled(w, p->x, p->y, p->unk4);
+    TimeSelectMenu_SetupOrthoCamera(w);
     if (w->unk28 == 0) {
         p = &w->pos[6];
-        func_ov000_0236011c(w, p->x, p->y, TRUE);
+        TimeSelectMenu_DrawModelB(w, p->x, p->y, TRUE);
         p = &w->pos[7];
-        func_ov000_0235ffd0(w, p->x, p->y, FALSE);
+        TimeSelectMenu_DrawModelA(w, p->x, p->y, FALSE);
     } else {
         p = &w->pos[6];
-        func_ov000_0235ffd0(w, p->x, p->y, TRUE);
+        TimeSelectMenu_DrawModelA(w, p->x, p->y, TRUE);
         p = &w->pos[7];
-        func_ov000_0236011c(w, p->x, p->y, FALSE);
+        TimeSelectMenu_DrawModelB(w, p->x, p->y, FALSE);
     }
-    func_ov000_02360264(w);
+    TimeSelectMenu_Unk_ov000_02360264(w);
     w->unk0++;
     if (done) {
         WirelessSession_GetSendBuffer()->unk4 = 0;

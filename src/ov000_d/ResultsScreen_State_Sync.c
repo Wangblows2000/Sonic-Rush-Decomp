@@ -17,7 +17,7 @@ extern u32 gSystemFlags;
 UnkStruct_0235eab8_Sync *WirelessSession_GetSendBuffer(void);
 UnkStruct_0235eab8_Sync *WirelessSession_GetPartnerRecvBuffer(void);
 UnkStruct_0235eab8_Sync *WirelessSession_GetOwnRecvBuffer(void);
-BOOL func_ov000_0235cbd8(void);
+BOOL ResultsScreen_Unk_ov000_0235cbd8(void);
 BOOL WirelessSession_Unk_020513a8(void);
 void *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void ResultsScreen_ScrollBg_Main(void);
@@ -35,7 +35,7 @@ void ResultsScreen_State_Sync(void) {
     UnkStruct_0235eab8_Sync *b = WirelessSession_GetPartnerRecvBuffer();
     UnkStruct_0235eab8_Sync *c = WirelessSession_GetOwnRecvBuffer();
 
-    if (func_ov000_0235cbd8()) {
+    if (ResultsScreen_Unk_ov000_0235cbd8()) {
         if (a->unk3 == 0 && b->unk3 == 0) {
             a->unk3 = 1;
         } else if (a->unk3 == 1) {

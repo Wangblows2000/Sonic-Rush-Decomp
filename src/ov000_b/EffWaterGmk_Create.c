@@ -3,7 +3,7 @@
 extern void *gZoneActArchive;
 extern u8 data_ov000_02367ea8[], data_ov000_0236aa28[];
 
-void func_ov000_0232e90c(UnkStruct_EffObj *w);
+void Effect_SetFollowParentState(UnkStruct_EffObj *w);
 
 void EffWaterGmk_Create(UnkStruct_StageObj *arg, s16 x, s16 y) {
     UnkStruct_Task *task;
@@ -32,5 +32,5 @@ void EffWaterGmk_Create(UnkStruct_StageObj *arg, s16 x, s16 y) {
     w->unk30 = y;
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
-    func_ov000_0232e90c(w);
+    Effect_SetFollowParentState(w);
 }

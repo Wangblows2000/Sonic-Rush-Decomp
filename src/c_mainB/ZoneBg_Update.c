@@ -23,8 +23,8 @@ typedef void (*ZoneBgFunc_02341ebc)(void *arg);
 
 extern u16 data_ov000_0236aab0;
 extern UnkState_02341ebc gGameState;
-extern ZoneBgFunc_02341ebc data_ov000_02368b08[][3];
-extern void *data_ov000_0236ac1c;
+extern ZoneBgFunc_02341ebc gZoneBgUpdateTable[][3];
+extern void *gZoneBgWork;
 extern UnkCam_02341ebc gCamera[];
 extern UnkDisp_02341ebc *gDisplayTable[];
 
@@ -36,9 +36,9 @@ void ZoneBg_Update(void)
 
     if (!(data_ov000_0236aab0 & 1))
         return;
-    func = data_ov000_02368b08[gGameState.zone][gGameState.act];
+    func = gZoneBgUpdateTable[gGameState.zone][gGameState.act];
     if (func != NULL)
-        func(data_ov000_0236ac1c);
+        func(gZoneBgWork);
     cam = gCamera;
     for (i = 0; i <= 1; i++) {
         gDisplayTable[i]->x = (cam[i].x >> 8) & 0x1ff;

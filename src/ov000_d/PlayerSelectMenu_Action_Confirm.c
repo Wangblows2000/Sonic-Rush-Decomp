@@ -15,10 +15,10 @@ void PlayerSelectMenu_Action_Confirm(UnkStruct_SceneTask *t) {
     w->unk0 = 0;
     w->unk4 = 0;
     PlayerSelectMenu_SetModelSelection(&w->mdl, 1);
-    func_ov000_02357b9c(w);
-    func_ov000_02357d20(w);
-    func_ov000_02357c8c(w);
-    func_ov000_02357a30(w, w->unk14);
+    PlayerSelectMenu_SetSprite9B4ConfirmAnim(w);
+    PlayerSelectMenu_SetSprite60CAnim3(w);
+    PlayerSelectMenu_SetSprite654Anim3(w);
+    PlayerSelectMenu_SetSprite804ConfirmAnim(w, w->unk14);
     if (!(w->unkC != 1 && w->unkC != 2)) {
         PlayerSelectMenu_SetLocalChoice(w, w->unk14);
     }

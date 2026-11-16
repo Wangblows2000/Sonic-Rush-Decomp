@@ -21060,3 +21060,1680 @@ StageObj_DrawSpriteAlt:
 StageObj_DrawSpriteRotScaleAlt:
   confidence: strong
   evidence: "strong E6: StageObj_Draw2DEx calls it instead of AnimatorSprite_DrawRotScale when the extra param is non-NULL and scale != 1.0; affine OAM via Oam_GetAffineIndex/MTX_ScaleApply22 (was func_0206aa38, main, 2026-11-16)"
+Rope_State_Attached:
+  confidence: strong
+  evidence: "strong E6+E7: only state (installed by Rope_Action_Init); copies the attached player's +0xC from +0x204 and detaches (clears +0x204) when the player's +0x3E8 no longer points back (was func_ov000_02314758, ov000, 2026-11-16)"
+RopeCSpring_State_Unk_ov000_02314acc:
+  confidence: tentative
+  evidence: "tentative E6+E7: state installed by func_ov000_02314b34 (from RopeCSpring_State_Idle); returns via RopeCSpring_Action_Idle (was func_ov000_02314acc, ov000, 2026-11-16)"
+RopeCSpring_Action_Unk_ov000_02314b34:
+  confidence: tentative
+  evidence: "tentative E6+E7: called from RopeCSpring_State_Idle; sets animation 0 and installs func_ov000_02314acc as the +0x68 state (was func_ov000_02314b34, ov000, 2026-11-16)"
+RopeC_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by RopeC_Action_Init; rotates the model by the attached player's angles and detaches when the player's +0x3E8 no longer points back (was func_ov000_02314e60, ov000, 2026-11-16)"
+Saucer_State_Ridden:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by Saucer_Action_Ridden; steers from the rider's input bits +0x420 (0x10/0x20), plays the engine SE, Saucer_Explode on hit, reverts to Saucer_Action_Idle when the rider leaves (was func_ov000_023156e0, ov000, 2026-11-16)"
+Saucer_Action_Ridden:
+  confidence: strong
+  evidence: "strong E6+E7: called after Player_Action_Saucer; sets animation 1 and installs Saucer_State_Ridden (was func_ov000_023158c0, ov000, 2026-11-16)"
+Saucer_State_Idle:
+  confidence: strong
+  evidence: "strong E6+E7: decelerates and waits for player contact (+0x1BC) then calls Player_Action_Saucer and Saucer_Action_Ridden; explodes on hit (was func_ov000_02315928, ov000, 2026-11-16)"
+Saucer_Action_Idle:
+  confidence: strong
+  evidence: "strong E6+E7: called from Saucer_Create and Saucer_State_Ridden; installs Saucer_State_Idle (was func_ov000_02315a48, ov000, 2026-11-16)"
+Valve_SpawnSteamPuff:
+  confidence: strong
+  evidence: "strong E6+E7: only body is MapObject_Spawn(0xf1 at x/y); called only from the Valve puff states (was func_ov000_0231a7e4, ov000, 2026-11-16)"
+Valve_DrawSprites:
+  confidence: strong
+  evidence: "strong E7: positions and draws the 2 per-screen AnimatorSprites relative to gCamera; returns the animation-finished bit; only Valve callers (was func_ov000_0231a824, ov000, 2026-11-16)"
+Valve_SetSpriteAnimEnd:
+  confidence: strong
+  evidence: "strong E7: sets both screen sprites to animation data_ov000_02364494[type][1]; called by Valve_Action_End (was func_ov000_0231a8e8, ov000, 2026-11-16)"
+Valve_SetSpriteAnimActive:
+  confidence: strong
+  evidence: "strong E7: sets both screen sprites to animation data_ov000_02364494[type][0]; called by Valve_Action_Active (was func_ov000_0231a94c, ov000, 2026-11-16)"
+Valve_State_End:
+  confidence: strong
+  evidence: "strong E6+E7: draws the sprites until the animation ends then Valve_Action_Wait (loop) (was func_ov000_0231abe8, ov000, 2026-11-16)"
+Valve_Action_End:
+  confidence: strong
+  evidence: "strong E6+E7: sets the end sprite animation and installs Valve_State_End (was func_ov000_0231ac10, ov000, 2026-11-16)"
+Valve_State_Active:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by Valve_Action_Active; draws sprites and spawns puffs until the timer then Valve_Action_End (was func_ov000_0231ac3c, ov000, 2026-11-16)"
+Valve_Action_Active:
+  confidence: strong
+  evidence: "strong E6+E7: active sprite anim, timer = map param[8]*100+param[9], installs Valve_State_Active (was func_ov000_0231ad60, ov000, 2026-11-16)"
+Valve_State_Puff:
+  confidence: strong
+  evidence: "strong E6+E7: randomly spawns steam puffs (Valve_SpawnSteamPuff) for 60 frames then Valve_Action_Active (was func_ov000_0231adac, ov000, 2026-11-16)"
+Valve_Action_Puff:
+  confidence: strong
+  evidence: "strong E6+E7: timer 0x3c and installs Valve_State_Puff (was func_ov000_0231aec0, ov000, 2026-11-16)"
+Valve_State_Wait:
+  confidence: strong
+  evidence: "strong E6+E7: counts the +0xC timer down then Valve_Action_Puff (was func_ov000_0231aed8, ov000, 2026-11-16)"
+Valve_Action_Wait:
+  confidence: strong
+  evidence: "strong E6+E7: called from Valve_Create; animation 0, timer = map param[6]*100+param[7], installs Valve_State_Wait (was func_ov000_0231af10, ov000, 2026-11-16)"
+EffSpecial_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffSpecial_Create (+0x68); scales the effect in/out (ObjShift on +0x44/+0x46) following the owning player (was func_ov000_02315e84, ov000, 2026-11-16)"
+GmkSpecial_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by GmkSpecial_Action_Init; follows the attached player +0x204 and switches animation 0/2 by player flag +0x32C&0x80; detaches when the player leaves (was func_ov000_0231636c, ov000, 2026-11-16)"
+ShooterPart1_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by Shooter_CreatePart1; steps animations 3/8 from the parent's (+0x88) counters (was func_ov000_02316db0, ov000, 2026-11-16)"
+Shooter_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by Shooter_Action_Init; charges while the player holds input 0x80 (SE 0x73) and launches with Player_Action_SpringLaunch (was func_ov000_023171b4, ov000, 2026-11-16)"
+Swing_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by Swing_Action_Init; follows the attached player's angle/speed and releases when the player's flag +0x58&0x2000 clears (was func_ov000_023177e8, ov000, 2026-11-16)"
+SwingSky_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by SwingSky_Action_Init; pumps the swing from the rider's left/right input bits +0x420&0x30 (was func_ov000_02317e50, ov000, 2026-11-16)"
+Switch_State_Horizontal:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by Switch_Action_Init for non-0xbe switches (offset on x +0x10); on press starts gSwitchTimers[param6] via SwitchTimer_Create (was func_ov000_02318e68, ov000, 2026-11-16)"
+Switch_State_Vertical:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by Switch_Action_Init for map type 0xbe (offset on y +0x14); on press starts gSwitchTimers[param6] via SwitchTimer_Create (was func_ov000_0231907c, ov000, 2026-11-16)"
+EffShadow_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffShadow_Create; follows the owner +0x80 / ground +0x88 and destroys itself when the owner is gone (was func_ov000_0231960c, ov000, 2026-11-16)"
+GmkTable_State_Released:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by GmkTable_Action_Release; bobs (GmkTable_UpdateBob) and re-grabs a touching player via func_ov000_023524d8 (was func_ov000_02319920, ov000, 2026-11-16)"
+GmkTable_UpdateBob:
+  confidence: strong
+  evidence: "strong E7: oscillates +0x428/+0x42A and +0x8/+0x424 with ObjSpd_UpSet; only called from GmkTable_State_Released (was func_ov000_02319af8, ov000, 2026-11-16)"
+GmkTable_Action_Release:
+  confidence: strong
+  evidence: "strong E6+E7: called from GmkTable state func_ov000_02319c34; stops the SE, sets y to gCamera+0x62, installs GmkTable_State_Released (was func_ov000_02319bb4, ov000, 2026-11-16)"
+GmkTable_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: first state installed by GmkTable_Action_Init; carries the touching player (func_ov000_0235258c/0235283c) and ends via GmkTable_Action_Release (was func_ov000_02319c34, ov000, 2026-11-16)"
+ZoneFx_ZoneFBoss_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Update hook table data_ov000_02368934[zone][act] at slots [7][2] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233d8e8, ov000, 2026-11-16)"
+ZoneFx_Zone7_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Update hook table data_ov000_02368934[zone][act] at slots [6][0] [6][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233dc00, ov000, 2026-11-16)"
+ZoneFx_Zone6_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Update hook table data_ov000_02368934[zone][act] at slots [5][0] [5][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233dd20, ov000, 2026-11-16)"
+ZoneFx_Zone5_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Update hook table data_ov000_02368934[zone][act] at slots [4][0] [4][1] [8][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233ddd8, ov000, 2026-11-16)"
+ZoneFx_Zone4_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Update hook table data_ov000_02368934[zone][act] at slots [3][0] [3][1] [8][0] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233deec, ov000, 2026-11-16)"
+ZoneFx_Zone3Boss_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Update hook table data_ov000_02368934[zone][act] at slots [2][2] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233dfdc, ov000, 2026-11-16)"
+ZoneFx_Zone2_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Update hook table data_ov000_02368934[zone][act] at slots [1][0] [1][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e0b8, ov000, 2026-11-16)"
+ZoneFx_Zone7_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Release hook table data_ov000_023688c8[zone][act] at slots [6][0] [6][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e0c4, ov000, 2026-11-16)"
+ZoneFx_Zone6_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Release hook table data_ov000_023688c8[zone][act] at slots [5][0] [5][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e0c8, ov000, 2026-11-16)"
+ZoneFx_Zone5_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Release hook table data_ov000_023688c8[zone][act] at slots [4][0] [4][1] [8][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e0cc, ov000, 2026-11-16)"
+ZoneFx_Zone4_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Release hook table data_ov000_023688c8[zone][act] at slots [3][0] [3][1] [7][0] [8][0] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e0fc, ov000, 2026-11-16)"
+ZoneFx_Zone3Boss_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Release hook table data_ov000_023688c8[zone][act] at slots [2][2] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e11c, ov000, 2026-11-16)"
+ZoneFx_Zone2_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Release hook table data_ov000_023688c8[zone][act] at slots [1][0] [1][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e120, ov000, 2026-11-16)"
+ZoneFx_ZoneFBoss_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Init hook table data_ov000_0236885c[zone][act] at slots [7][2] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e12c, ov000, 2026-11-16)"
+ZoneFx_Zone7_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Init hook table data_ov000_0236885c[zone][act] at slots [6][0] [6][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e138, ov000, 2026-11-16)"
+ZoneFx_Zone6_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Init hook table data_ov000_0236885c[zone][act] at slots [5][0] [5][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e1c0, ov000, 2026-11-16)"
+ZoneFx_Zone5_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Init hook table data_ov000_0236885c[zone][act] at slots [4][0] [4][1] [8][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e1c4, ov000, 2026-11-16)"
+ZoneFx_Zone4_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Init hook table data_ov000_0236885c[zone][act] at slots [3][0] [3][1] [8][0] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e290, ov000, 2026-11-16)"
+ZoneFx_Zone3Boss_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Init hook table data_ov000_0236885c[zone][act] at slots [2][2] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e32c, ov000, 2026-11-16)"
+ZoneFx_Zone2_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneFx_Init hook table data_ov000_0236885c[zone][act] at slots [1][0] [1][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0233e338, ov000, 2026-11-16)"
+ZoneBg_Zone7_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Update hook table data_ov000_02368b08[zone][act] at slots [6][0] [6][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_023409fc, ov000, 2026-11-16)"
+ZoneBg_Zone6_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Update hook table data_ov000_02368b08[zone][act] at slots [5][0] [5][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02340a4c, ov000, 2026-11-16)"
+ZoneBg_Zone5_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Update hook table data_ov000_02368b08[zone][act] at slots [4][0] [4][1] [8][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02340b94, ov000, 2026-11-16)"
+ZoneBg_Zone4_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Update hook table data_ov000_02368b08[zone][act] at slots [3][0] [3][1] [8][0] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02340be4, ov000, 2026-11-16)"
+ZoneBg_Zone3_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Update hook table data_ov000_02368b08[zone][act] at slots [2][0] [2][1] [7][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02340d8c, ov000, 2026-11-16)"
+ZoneBg_Zone2_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Update hook table data_ov000_02368b08[zone][act] at slots [1][0] [1][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02340de8, ov000, 2026-11-16)"
+ZoneBg_Zone1_Update:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Update hook table data_ov000_02368b08[zone][act] at slots [0][0] [0][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02340e44, ov000, 2026-11-16)"
+ZoneBg_Zone7_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Release hook table data_ov000_023689c4[zone][act] at slots [6][0] [6][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341014, ov000, 2026-11-16)"
+ZoneBg_Zone5_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Release hook table data_ov000_023689c4[zone][act] at slots [4][0] [4][1] [8][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341020, ov000, 2026-11-16)"
+ZoneBg_Zone3_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Release hook table data_ov000_023689c4[zone][act] at slots [2][0] [2][1] [7][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_0234102c, ov000, 2026-11-16)"
+ZoneBg_Zone2_Release:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Release hook table data_ov000_023689c4[zone][act] at slots [1][0] [1][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341038, ov000, 2026-11-16)"
+ZoneBg_Zone7_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Init hook table data_ov000_02368a9c[zone][act] at slots [6][0] [6][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341044, ov000, 2026-11-16)"
+ZoneBg_Zone6_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Init hook table data_ov000_02368a9c[zone][act] at slots [5][0] [5][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_023410dc, ov000, 2026-11-16)"
+ZoneBg_Zone5_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Init hook table data_ov000_02368a9c[zone][act] at slots [4][0] [4][1] [8][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341158, ov000, 2026-11-16)"
+ZoneBg_Zone4_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Init hook table data_ov000_02368a9c[zone][act] at slots [3][0] [3][1] [8][0] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_023411f0, ov000, 2026-11-16)"
+ZoneBg_Zone3_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Init hook table data_ov000_02368a9c[zone][act] at slots [2][0] [2][1] [7][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341264, ov000, 2026-11-16)"
+ZoneBg_Zone2_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Init hook table data_ov000_02368a9c[zone][act] at slots [1][0] [1][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_023412a4, ov000, 2026-11-16)"
+ZoneBg_Zone1_Init:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Init hook table data_ov000_02368a9c[zone][act] at slots [0][0] [0][1] [7][0] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_023412e4, ov000, 2026-11-16)"
+ZoneBg_Zone7_Load:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Load hook table data_ov000_02368a30[zone][act] at slots [6][0] [6][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341cb8, ov000, 2026-11-16)"
+ZoneBg_Zone6_Load:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Load hook table data_ov000_02368a30[zone][act] at slots [5][0] [5][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341cc4, ov000, 2026-11-16)"
+ZoneBg_Zone5_Load:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Load hook table data_ov000_02368a30[zone][act] at slots [4][0] [4][1] [8][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341cd0, ov000, 2026-11-16)"
+ZoneBg_Zone4_Load:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Load hook table data_ov000_02368a30[zone][act] at slots [3][0] [3][1] [8][0] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341cdc, ov000, 2026-11-16)"
+ZoneBg_Zone3_Load:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Load hook table data_ov000_02368a30[zone][act] at slots [2][0] [2][1] [7][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341ce8, ov000, 2026-11-16)"
+ZoneBg_Zone2_Load:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Load hook table data_ov000_02368a30[zone][act] at slots [1][0] [1][1] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341cf4, ov000, 2026-11-16)"
+ZoneBg_Zone1Boss_Load:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Load hook table data_ov000_02368a30[zone][act] at slots [0][2] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341d00, ov000, 2026-11-16)"
+ZoneBg_Zone1_Load:
+  confidence: strong
+  evidence: "strong E1,E8: only referenced from the ZoneBg_Load hook table data_ov000_02368a30[zone][act] at slots [0][0] [0][1] [7][0] (zone index z = zone file z<z+1> per the z81/z91 act-file reuse in main 0x02073d04; act 2 = boss act) (was func_ov000_02341eb0, ov000, 2026-11-16)"
+ZoneFx_Zone4_BldyNone:
+  confidence: strong
+  evidence: "strong E8,E7: entry [0] of the per-screen BLDY effect table data_ov000_0236880c used only by ZoneFx_Zone4_Update; returns 0 (no effect) (was func_ov000_0233c538, ov000, 2026-11-16)"
+ZoneFx_Zone4_BldyRampUp:
+  confidence: strong
+  evidence: "strong E8,E5: entry [1] of data_ov000_0236880c (ZoneFx_Zone4_Update); writes gDisplayTable[screen]+0x24 (shadow of BLDY 0x04000054) = 10*t/duration, returns done (was func_ov000_0233c4d8, ov000, 2026-11-16)"
+ZoneFx_Zone4_BldyRampDown:
+  confidence: strong
+  evidence: "strong E8,E5: entry [2] of data_ov000_0236880c (ZoneFx_Zone4_Update); writes BLDY shadow +0x24 = 10*(duration-t)/duration, returns done (was func_ov000_0233c474, ov000, 2026-11-16)"
+ZoneFx_Zone4_BldyFromTable:
+  confidence: strong
+  evidence: "strong E8,E5: entry [3] of data_ov000_0236880c (ZoneFx_Zone4_Update); writes BLDY shadow +0x24 from the byte table data_ov000_0236881c per frame, returns done (was func_ov000_0233c418, ov000, 2026-11-16)"
+ZoneFx_Zone4_ResetBldyTimer:
+  confidence: strong
+  evidence: "strong E7: clears the per-screen frame counter (u16[screen]) of the zone-4 fx work; only called by the three ZoneFx_Zone4_StartBldy* functions (was func_ov000_0233c540, ov000, 2026-11-16)"
+ZoneFx_Zone4_StartBldyRampUp:
+  confidence: strong
+  evidence: "strong E7: if zone-4 fx active (gCamera[2] flag 0x100000 set by ZoneFx_Zone4_Init), for each screen in mask sets duration=n and mode 1 (ZoneFx_Zone4_BldyRampUp) (was func_ov000_0233e5c8, ov000, 2026-11-16)"
+ZoneFx_Zone4_StartBldyRampDown:
+  confidence: strong
+  evidence: "strong E7: if zone-4 fx active, for each screen in mask sets duration=n and mode 2 (ZoneFx_Zone4_BldyRampDown) (was func_ov000_0233e524, ov000, 2026-11-16)"
+ZoneFx_Zone4_StartBldyFlash:
+  confidence: strong
+  evidence: "strong E7: called from SwitchTimer_Create; if zone-4 fx active, for each screen in mask sets duration 0x3c and mode 3 (ZoneFx_Zone4_BldyFromTable) (was func_ov000_0233e48c, ov000, 2026-11-16)"
+ZoneFx_SetBrightnessBlend:
+  confidence: strong
+  evidence: "strong E5,E7: for both engines sets the BLDCNT shadow gDisplayTable[i]+0x20 to targets BG1-BG3 with effect bits 0xC0 (brightness decrease); called by ZoneFx_Zone4_Init and ZoneFx_InitBrightnessBlend (was func_ov000_0233c550, ov000, 2026-11-16)"
+ZoneFx_InitBrightnessBlend:
+  confidence: strong
+  evidence: "strong E6: only body is ZoneFx_SetBrightnessBlend(0); called from Stage_InitBlend (was func_ov000_0233e658, ov000, 2026-11-16)"
+ZoneFx_QueueStdBgPalettes:
+  confidence: strong
+  evidence: "strong E7: PaletteTransfer_QueueCopy of 0xF0 entries to standard BG palette RAM 0x05000000 and 0x05000400; called by the zone 4/5/7 fx updates (was func_ov000_0233c840, ov000, 2026-11-16)"
+ZoneFx_QueueExtBgPalettes:
+  confidence: strong
+  evidence: "strong E7: PaletteTransfer_QueueCopy of 0xF0 entries to ext BG palette slots 0x4000/0x6000 of both engines; called by the zone 4/5/7 fx updates (was func_ov000_0233c878, ov000, 2026-11-16)"
+ZoneFx_StepPaletteAnim:
+  confidence: strong
+  evidence: "strong E7: reloads the wait timer, advances frame modulo frames and copies count colours from src[frame*16+base] into the palette buffer; called by zone 4/5/7 fx updates (was func_ov000_0233c8d4, ov000, 2026-11-16)"
+ZoneFx_InitPaletteAnim:
+  confidence: strong
+  evidence: "strong E7: mounts the zone archive data_ov000_0236aa8c (sub-archive data_ov000_023689a0), fetches the palette-animation file by index and fills the anim entry; called by zone 4/5/7 fx inits (was func_ov000_0233c934, ov000, 2026-11-16)"
+ZoneFx_RotatePaletteRange:
+  confidence: strong
+  evidence: "strong E7: rotates count colours of a palette buffer left or right by the descriptor direction; called by the zone 5/7 fx updates (was func_ov000_0233c9a4, ov000, 2026-11-16)"
+ZoneFx_Zone2_CyclePalette:
+  confidence: strong
+  evidence: "strong E7: callback stored at +0x8B4 by ZoneFx_Zone2_Init; every 3 frames rotates 5 colours in both palette copies (+0xEE/+0x2EE) and returns TRUE (force upload) (was func_ov000_0233c794, ov000, 2026-11-16)"
+ZoneFx_Zone2_DrawSprites:
+  confidence: strong
+  evidence: "strong E6+E7: only body of ZoneFx_Zone2_Update; animates and draws the two AnimatorSprites at +0x8BC per active screen (was func_ov000_0233ca50, ov000, 2026-11-16)"
+ZoneFx_Zone2_ReleaseSprites:
+  confidence: strong
+  evidence: "strong E7: frees the sprite palette and both ObjVram allocations of the +0x8BC sprites (and the resource if flag 0x100); called by ZoneFx_Zone2_Shutdown (was func_ov000_0233cb5c, ov000, 2026-11-16)"
+ZoneFx_Zone2_LoadSprites:
+  confidence: strong
+  evidence: "strong E7: called by ZoneFx_Zone2_Init; loads the sprite file data_ov000_023689a8 from gZoneActArchive and inits the two per-engine AnimatorSprites at +0x8BC (was func_ov000_0233cc34, ov000, 2026-11-16)"
+ZoneFx_Zone2_QueueNormalPalettes:
+  confidence: strong
+  evidence: "strong E7: queues the untinted palette copies (+0x4AC std / +0xAC ext / gObjDrawPalette) for one screen; called from ZoneFx_Zone2_TaskMain (was func_ov000_0233cfd8, ov000, 2026-11-16)"
+ZoneFx_Zone2_QueueTintedPalettes:
+  confidence: strong
+  evidence: "strong E7: queues the tinted palette copies (+0x6AC std / +0x2AC ext / gObjDrawTintPalette) for one screen; called from ZoneFx_Zone2_TaskMain (was func_ov000_0233cd54, ov000, 2026-11-16)"
+ZoneFx_Zone2_DmaNormalPalettes:
+  confidence: strong
+  evidence: "strong E7: DMA-copies the untinted palette copies to palette RAM for one engine; V-alarm callback target (func_01fff760) and called from ZoneFx_Zone2_Shutdown (was func_ov000_0233d0fc, ov000, 2026-11-16)"
+ZoneFx_Zone2_DmaTintedPalettes:
+  confidence: strong
+  evidence: "strong E7: DMA-copies the tinted palette copies to palette RAM for one engine; V-alarm callback target (func_01fff7c4) (was func_ov000_0233ce78, ov000, 2026-11-16)"
+ZoneFx_Zone2_TintPalette:
+  confidence: strong
+  evidence: "strong E7: subtracts per-channel constants (R-10, G-1, ...) clamped to 0..31 from 256 colours; applied by ZoneFx_Zone2_BuildPalettes to the tinted copies (was func_ov000_0233d25c, ov000, 2026-11-16)"
+ZoneFx_Zone2_BuildPalettes:
+  confidence: strong
+  evidence: "strong E7: called by ZoneFx_Zone2_Init; copies ext/std BG palettes into normal (+0xAC/+0x4AC) and tinted (+0x2AC/+0x6AC) buffers, tints the latter with ZoneFx_Zone2_TintPalette (was func_ov000_0233d82c, ov000, 2026-11-16)"
+ZoneFx_Zone2_InitVAlarms:
+  confidence: strong
+  evidence: "strong E4: OS_InitVAlarm then OS_CreateVAlarm on the four V-alarm structs at +0xC/+0x34/+0x5C/+0x84 (was func_ov000_0233d554, ov000, 2026-11-16)"
+ZoneFx_Zone2_StartVAlarms:
+  confidence: strong
+  evidence: "strong E7: called by ZoneFx_Zone2_Init; creates task ZoneFx_Zone2_VAlarmTaskMain and ZoneFx_Zone2_InitVAlarms (was func_ov000_0233d3b4, ov000, 2026-11-16)"
+ZoneFx_Zone2_VAlarmTaskMain:
+  confidence: strong
+  evidence: "strong E7: task main created by ZoneFx_Zone2_StartVAlarms; per screen (re)arms or cancels the palette-split V-alarms by the state +0x4 (was func_ov000_0233d324, ov000, 2026-11-16)"
+ZoneFx_Zone2_CancelVAlarms:
+  confidence: strong
+  evidence: "strong E4: OS_CancelVAlarm on both per-screen alarms; called by ZoneFx_Zone2_VAlarmTaskMain (was func_ov000_0233d404, ov000, 2026-11-16)"
+ZoneFx_Zone2_SetVAlarms:
+  confidence: strong
+  evidence: "strong E4: cancels then OS_SetVAlarm at the split line (+0xA[screen]) with the tinted-DMA callback and at line 0xC8 with the normal-DMA callback (was func_ov000_0233d43c, ov000, 2026-11-16)"
+ZoneFx_Zone2_StopVAlarms:
+  confidence: strong
+  evidence: "strong E4: OS_CancelAllVAlarms then func_02007584; called by ZoneFx_Zone2_Shutdown and the pause check (was func_ov000_0233d538, ov000, 2026-11-16)"
+ZoneFx_Zone2_Unk_ov000_0233d4bc:
+  confidence: tentative
+  evidence: "tentative E6: called from ZoneFx_Zone2_TaskMain; on gCamera flag 0x2000000 sets work flag 0x1000 and stops the V-alarms (was func_ov000_0233d4bc, ov000, 2026-11-16)"
+ZoneFx_Zone2_UpdateScreenStates:
+  confidence: strong
+  evidence: "strong E7: per screen picks state 0/1/2/3 by comparing the camera y (+0x8) with the split line gCamera+0x62; called by ZoneFx_Zone2_TaskMain (was func_ov000_0233d588, ov000, 2026-11-16)"
+ZoneFx_Zone2_TaskMain:
+  confidence: strong
+  evidence: "strong E7: task main created by ZoneFx_Zone2_Init; runs the +0x8B4 callback and queues normal/tinted palettes on screen-state changes (was func_ov000_0233d65c, ov000, 2026-11-16)"
+ZoneFx_Zone2_TaskDestructor:
+  confidence: strong
+  evidence: "strong E7: empty destructor passed with ZoneFx_Zone2_TaskMain to Task_Create in ZoneFx_Zone2_Init (was func_ov000_0233d7e8, ov000, 2026-11-16)"
+ZoneFx_Zone2_Shutdown:
+  confidence: strong
+  evidence: "strong E6+E7: only body of ZoneFx_Zone2_Release; stops V-alarms, restores normal palettes on both engines, releases sprites, sets flag 0x80000000 (was func_ov000_0233d7ec, ov000, 2026-11-16)"
+ZoneFx_Zone5_UpdatePalettes:
+  confidence: strong
+  evidence: "strong E7: called by ZoneFx_Zone5_TaskMain; per screen with gCamera flag 0x10000 steps a 30-frame counter and applies ZoneFx_Zone5_ApplyPaletteAdd (was func_ov000_0233c6ac, ov000, 2026-11-16)"
+ZoneFx_Zone5_ApplyPaletteAdd:
+  confidence: strong
+  evidence: "strong E7: writes palette RAM 0x05000000/0x05000400 colours with a per-channel add from table data_ov000_02364db0; called by ZoneFx_Zone5_UpdatePalettes (was func_ov000_0233c5d0, ov000, 2026-11-16)"
+ZoneFx_Zone5_Unk_ov000_0233c5cc:
+  confidence: tentative
+  evidence: "tentative E6: empty function called by ZoneFx_Zone5_UpdatePalettes when the effect is inactive (was func_ov000_0233c5cc, ov000, 2026-11-16)"
+ZoneFx_Zone5_TaskMain:
+  confidence: strong
+  evidence: "strong E7: task main created by ZoneFx_Zone5_Init; calls ZoneFx_Zone5_UpdatePalettes on the fx work data_ov000_0236ac18 (was func_ov000_0233c778, ov000, 2026-11-16)"
+ZoneFx_Zone5_TaskDestructor:
+  confidence: strong
+  evidence: "strong E7: empty destructor passed with ZoneFx_Zone5_TaskMain to Task_Create in ZoneFx_Zone5_Init (was func_ov000_0233c790, ov000, 2026-11-16)"
+ZoneFx_Zone6_ApplyCameraWave:
+  confidence: strong
+  evidence: "strong E7: called from Player_UpdateCamera; only for zone index 5 non-boss acts with fx work and camera flag 0x80, adds a sine wave of the fx frame counter to the camera +0x8 (was func_ov000_0233e39c, ov000, 2026-11-16)"
+ZoneFx_Zone6_Unk_ov000_0233e434:
+  confidence: tentative
+  evidence: "tentative E7: called from Player_UpdateCamera; only for zone index 5 non-boss acts, stores x into camera +0x4 when flag 0x40 (was func_ov000_0233e434, ov000, 2026-11-16)"
+ZoneBg_Zone7_TaskMain:
+  confidence: strong
+  evidence: "strong E7: task main created by ZoneBg_Zone7_Init (Task_Create prio 0x3f10); builds the per-line scroll tables and enables the line-scroll copy (gSystemFlags 0x3000) (was func_ov000_0233efb0, ov000, 2026-11-16)"
+ZoneBg_Zone7_TaskDestructor:
+  confidence: strong
+  evidence: "strong E7: empty destructor passed with ZoneBg_Zone7_TaskMain to Task_Create in ZoneBg_Zone7_Init (was func_ov000_0233f028, ov000, 2026-11-16)"
+ZoneBg_Zone7_EnableLineScroll:
+  confidence: strong
+  evidence: "strong E5,E7: called by ZoneBg_Zone7_TaskMain; per active screen points the VBlank line-copy slot data_02087cdc[i] at BG1HOFS 0x04000014/0x04001014 and sets gSystemFlags 0x400<<i (was func_ov000_0233eed8, ov000, 2026-11-16)"
+ZoneBg_Zone7_BuildLineScroll:
+  confidence: strong
+  evidence: "strong E7: called by ZoneBg_Zone7_TaskMain per screen; fills the 192-line x/y scroll table (data_02087ce0/data_02087cf4) for the zone background (was func_ov000_0233ed3c, ov000, 2026-11-16)"
+ZoneBg_Zone7_Unk_ov000_0233ec68:
+  confidence: tentative
+  evidence: "tentative E6: called by ZoneBg_Zone7_TaskMain in single-screen camera mode; writes the 192-line scroll table (was func_ov000_0233ec68, ov000, 2026-11-16)"
+ZoneBg_Zone7_UpdateParallax:
+  confidence: strong
+  evidence: "strong E6+E7: called by ZoneBg_Zone7_Update; sets the camera BG offsets +0x2C/+0x30 (and the work copies) from the camera position divided by a parallax factor (was func_ov000_0233e960, ov000, 2026-11-16)"
+ZoneBg_Zone7_Unk_ov000_0233ea38:
+  confidence: tentative
+  evidence: "tentative E6: called per screen by ZoneBg_Zone7_Update (zone background scroll update) (was func_ov000_0233ea38, ov000, 2026-11-16)"
+ZoneBg_Zone5_TaskMain:
+  confidence: strong
+  evidence: "strong E7: task main created by ZoneBg_Zone5_Init (Task_Create prio 0x3f10); builds the per-line scroll tables and enables the line-scroll copy (gSystemFlags 0x3000) (was func_ov000_0233f67c, ov000, 2026-11-16)"
+ZoneBg_Zone5_TaskDestructor:
+  confidence: strong
+  evidence: "strong E7: empty destructor passed with ZoneBg_Zone5_TaskMain to Task_Create in ZoneBg_Zone5_Init (was func_ov000_0233f6f4, ov000, 2026-11-16)"
+ZoneBg_Zone5_EnableLineScroll:
+  confidence: strong
+  evidence: "strong E5,E7: called by ZoneBg_Zone5_TaskMain; per active screen points the VBlank line-copy slot data_02087cdc[i] at BG1HOFS 0x04000014/0x04001014 and sets gSystemFlags 0x400<<i (was func_ov000_0233f5a4, ov000, 2026-11-16)"
+ZoneBg_Zone5_BuildLineScroll:
+  confidence: strong
+  evidence: "strong E7: called by ZoneBg_Zone5_TaskMain per screen; fills the 192-line x/y scroll table (data_02087ce0/data_02087cf4) for the zone background (was func_ov000_0233f408, ov000, 2026-11-16)"
+ZoneBg_Zone5_Unk_ov000_0233f334:
+  confidence: tentative
+  evidence: "tentative E6: called by ZoneBg_Zone5_TaskMain in single-screen camera mode; writes the 192-line scroll table (was func_ov000_0233f334, ov000, 2026-11-16)"
+ZoneBg_Zone5_UpdateParallax:
+  confidence: strong
+  evidence: "strong E6+E7: called by ZoneBg_Zone5_Update; sets the camera BG offsets +0x2C/+0x30 (and the work copies) from the camera position divided by a parallax factor (was func_ov000_0233f02c, ov000, 2026-11-16)"
+ZoneBg_Zone5_Unk_ov000_0233f104:
+  confidence: tentative
+  evidence: "tentative E6: called per screen by ZoneBg_Zone5_Update (zone background scroll update) (was func_ov000_0233f104, ov000, 2026-11-16)"
+ZoneBg_Zone3_TaskMain:
+  confidence: strong
+  evidence: "strong E7: task main created by ZoneBg_Zone3_Init (Task_Create prio 0x3f10); builds the per-line scroll tables and enables the line-scroll copy (gSystemFlags 0x3000) (was func_ov000_02340034, ov000, 2026-11-16)"
+ZoneBg_Zone3_TaskDestructor:
+  confidence: strong
+  evidence: "strong E7: empty destructor passed with ZoneBg_Zone3_TaskMain to Task_Create in ZoneBg_Zone3_Init (was func_ov000_023400ac, ov000, 2026-11-16)"
+ZoneBg_Zone3_EnableLineScroll:
+  confidence: strong
+  evidence: "strong E5,E7: called by ZoneBg_Zone3_TaskMain; per active screen points the VBlank line-copy slot data_02087cdc[i] at BG1HOFS 0x04000014/0x04001014 and sets gSystemFlags 0x400<<i (was func_ov000_0233ff54, ov000, 2026-11-16)"
+ZoneBg_Zone3_BuildLineScroll:
+  confidence: strong
+  evidence: "strong E7: called by ZoneBg_Zone3_TaskMain per screen; fills the 192-line x/y scroll table (data_02087ce0/data_02087cf4) for the zone background (was func_ov000_0233fd18, ov000, 2026-11-16)"
+ZoneBg_Zone3_Unk_ov000_0233fc44:
+  confidence: tentative
+  evidence: "tentative E6: called by ZoneBg_Zone3_TaskMain in single-screen camera mode; writes the 192-line scroll table (was func_ov000_0233fc44, ov000, 2026-11-16)"
+ZoneBg_Zone3_UpdateParallax:
+  confidence: strong
+  evidence: "strong E6+E7: called by ZoneBg_Zone3_Update; sets the camera BG offsets +0x2C/+0x30 (and the work copies) from the camera position divided by a parallax factor (was func_ov000_0233f6f8, ov000, 2026-11-16)"
+ZoneBg_Zone3_Unk_ov000_0233f8a0:
+  confidence: tentative
+  evidence: "tentative E6: called per screen by ZoneBg_Zone3_Update (zone background scroll update) (was func_ov000_0233f8a0, ov000, 2026-11-16)"
+ZoneBg_Zone2_TaskMain:
+  confidence: strong
+  evidence: "strong E7: task main created by ZoneBg_Zone2_Init (Task_Create prio 0x3f10); builds the per-line scroll tables and enables the line-scroll copy (gSystemFlags 0x3000) (was func_ov000_02340980, ov000, 2026-11-16)"
+ZoneBg_Zone2_TaskDestructor:
+  confidence: strong
+  evidence: "strong E7: empty destructor passed with ZoneBg_Zone2_TaskMain to Task_Create in ZoneBg_Zone2_Init (was func_ov000_023409f8, ov000, 2026-11-16)"
+ZoneBg_Zone2_EnableLineScroll:
+  confidence: strong
+  evidence: "strong E5,E7: called by ZoneBg_Zone2_TaskMain; per active screen points the VBlank line-copy slot data_02087cdc[i] at BG1HOFS 0x04000014/0x04001014 and sets gSystemFlags 0x400<<i (was func_ov000_023408a0, ov000, 2026-11-16)"
+ZoneBg_Zone2_BuildLineScroll:
+  confidence: strong
+  evidence: "strong E7: called by ZoneBg_Zone2_TaskMain per screen; fills the 192-line x/y scroll table (data_02087ce0/data_02087cf4) for the zone background (was func_ov000_023405cc, ov000, 2026-11-16)"
+ZoneBg_Zone2_Unk_ov000_02340388:
+  confidence: tentative
+  evidence: "tentative E6: called by ZoneBg_Zone2_TaskMain in single-screen camera mode; writes the 192-line scroll table (was func_ov000_02340388, ov000, 2026-11-16)"
+ZoneBg_Zone2_UpdateParallax:
+  confidence: strong
+  evidence: "strong E6+E7: called by ZoneBg_Zone2_Update; sets the camera BG offsets +0x2C/+0x30 (and the work copies) from the camera position divided by a parallax factor (was func_ov000_023400b0, ov000, 2026-11-16)"
+ZoneBg_Zone2_Unk_ov000_02340154:
+  confidence: tentative
+  evidence: "tentative E6: called per screen by ZoneBg_Zone2_Update (zone background scroll update) (was func_ov000_02340154, ov000, 2026-11-16)"
+ZoneBg_Zone2_Unk_ov000_0233e8ac:
+  confidence: tentative
+  evidence: "tentative E6: only called by ZoneBg_Zone2_Unk_ov000_02340388 and ZoneBg_Zone2_BuildLineScroll; clears and fills a wave offset table (was func_ov000_0233e8ac, ov000, 2026-11-16)"
+ZoneBg_DisableLineScroll:
+  confidence: strong
+  evidence: "strong E7: clears gSystemFlags 0xC00 (the VBlank line-copy enables tested in Display_VBlankUpdate); called by the ZoneBg zone 2/3/5/7 release hooks (was func_ov000_02340ffc, ov000, 2026-11-16)"
+ZoneBg_LoadBgResourceTall:
+  confidence: strong
+  evidence: "strong E7: called by the zone 2/5/6/7 ZoneBg load hooks; decompresses chr to 0x06008000/0x06208000, loads std or ext palette by type, and writes the sub-screen map in two 32-row halves (was func_ov000_02341400, ov000, 2026-11-16)"
+ZoneBg_LoadBgResource:
+  confidence: strong
+  evidence: "strong E7: called by the zone 1/3/4 ZoneBg load hooks; decompresses chr to 0x06008000/0x06208000, loads std or ext palette by type and writes the screen maps (was func_ov000_023418c4, ov000, 2026-11-16)"
+ZoneBg_GetUncompressedSize:
+  confidence: strong
+  evidence: "strong E4,E7: returns *hdr>>8 (NitroSDK compression header size field); used by the ZoneBg resource loaders next to ZoneBg_GetCompressionType (was func_ov000_023418ac, ov000, 2026-11-16)"
+ZoneBg_GetCompressionType:
+  confidence: strong
+  evidence: "strong E4,E7: returns *hdr&0xF0 (NitroSDK compression type); the loaders switch on 0x10/0x20/0x30 to MI_UncompressLZ16/Huffman/RL16 (was func_ov000_023418b8, ov000, 2026-11-16)"
+StageLoader_GetUncompressedSize:
+  confidence: strong
+  evidence: "strong E4,E7: returns *hdr>>8 (NitroSDK compression header size); used as the copy/DC_StoreRange size by the stage map loaders (was func_ov000_0233ac78, ov000, 2026-11-16)"
+StageLoader_GetCompressionType:
+  confidence: strong
+  evidence: "strong E4,E7: returns *hdr&0xF0; callers switch on 0x10/0x20/0x30 to MI_UncompressLZ16/MI_UncompressHuffman/MI_UncompressRL16 (was func_ov000_0233ac84, ov000, 2026-11-16)"
+StageLoader_UnpackMapArchive:
+  confidence: strong
+  evidence: "strong E7: allocates and decompresses the map archive files (index 4, 0, ...) into the buffers data_ov000_0236aabc[]; called by both stage map-graphics loaders (was func_ov000_0233a4c8, ov000, 2026-11-16)"
+StageLoader_LoadBossMapGraphics:
+  confidence: strong
+  evidence: "strong E8,E7: entry [0] of the boss-act loader table data_ov000_02364d90 and target of all its wrappers; decompresses OBJ chr file 3 of data_ov000_0236aab8 to 0x06010000 and loads palette 6 (was func_ov000_0233ace4, ov000, 2026-11-16)"
+StageLoader_LoadActMapGraphics:
+  confidence: strong
+  evidence: "strong E7: called by StageLoader_LoadZoneMapGraphics for zones 0-8 acts 0-1; clears and fills OBJ VRAM 0x06010000/0x06210000 from the map archive and loads the palettes (was func_ov000_0233ae0c, ov000, 2026-11-16)"
+StageLoader_LoadZoneMapGraphics:
+  confidence: strong
+  evidence: "strong E7: called from StageLoader_OnMapArchiveLoaded; normal acts use StageLoader_LoadActMapGraphics, boss acts dispatch through data_ov000_02364d90[zone] (was func_ov000_0233bf8c, ov000, 2026-11-16)"
+StageLoader_Zone2Boss_LoadMapGraphics:
+  confidence: strong
+  evidence: "strong E8: entry [1] (zone 2 boss) of the boss-act loader table data_ov000_02364d90; calls StageLoader_LoadBossMapGraphics (was func_ov000_0233acd8, ov000, 2026-11-16)"
+StageLoader_Zone3Boss_LoadMapGraphics:
+  confidence: strong
+  evidence: "strong E8: entry [2] (zone 3 boss) of data_ov000_02364d90; calls StageLoader_LoadBossMapGraphics (was func_ov000_0233accc, ov000, 2026-11-16)"
+StageLoader_Zone4Boss_LoadMapGraphics:
+  confidence: strong
+  evidence: "strong E8: entry [3] (zone 4 boss) of data_ov000_02364d90; calls StageLoader_LoadBossMapGraphics (was func_ov000_0233acc0, ov000, 2026-11-16)"
+StageLoader_Zone5Boss_LoadMapGraphics:
+  confidence: strong
+  evidence: "strong E8: entry [4] (zone 5 boss) of data_ov000_02364d90; calls StageLoader_LoadBossMapGraphics (was func_ov000_0233acb4, ov000, 2026-11-16)"
+StageLoader_Zone6Boss_LoadMapGraphics:
+  confidence: strong
+  evidence: "strong E8: entry [5] (zone 6 boss) of data_ov000_02364d90; calls StageLoader_LoadBossMapGraphics (was func_ov000_0233aca8, ov000, 2026-11-16)"
+StageLoader_Zone7Boss_LoadMapGraphics:
+  confidence: strong
+  evidence: "strong E8: entry [6] (zone 7 boss) of data_ov000_02364d90; calls StageLoader_LoadBossMapGraphics (was func_ov000_0233ac9c, ov000, 2026-11-16)"
+StageLoader_ZoneFBoss_LoadMapGraphics:
+  confidence: strong
+  evidence: "strong E8: entry [7] (final boss act [7][2]) of data_ov000_02364d90; calls StageLoader_LoadBossMapGraphics (was func_ov000_0233ac90, ov000, 2026-11-16)"
+Camera_SetLeadTarget:
+  confidence: strong
+  evidence: "strong E7: stores the camera lead target (data_ov000_0236ab1c/20[idx]) and, unless camera flags 0x3000, the current lead (data_ov000_0236ab14/18) (was func_ov000_0233b1d8, ov000, 2026-11-16)"
+Camera_SetLeadTargetPrimary:
+  confidence: strong
+  evidence: "strong E6: only body is Camera_SetLeadTarget(0; a; b); called from Player_UpdateCameraLead (was func_ov000_0233b2c8, ov000, 2026-11-16)"
+Camera_Unk_ov000_0233b250:
+  confidence: tentative
+  evidence: "tentative E7: computes (player pos - camera pos) of the camera's tracked player (gCamera[i]+0x3A) scaled by FX_Div into two outputs (was func_ov000_0233b250, ov000, 2026-11-16)"
+Stage_Unk_ov000_0233bc3c:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from Stage_ReleaseZoneResources (was func_ov000_0233bc3c, ov000, 2026-11-16)"
+Stage_Unk_ov000_0233bc40:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from Stage_SetupZoneResources (was func_ov000_0233bc40, ov000, 2026-11-16)"
+Camera_ResetOnRespawn:
+  confidence: strong
+  evidence: "strong E6+E7: called from Player_Respawn; clears gCamera lock/area flags, copies the bounds from gCamera[2] and clears zone 3 split line / zone 4 BLDY (was func_ov000_0233c00c, ov000, 2026-11-16)"
+WaterJet_Action_Wait:
+  confidence: strong
+  evidence: "strong E6+E7: called from WaterJet_Create and WaterJet_State_Spout; animation 0, timer = map param[8]*100+param[9], installs WaterJet_State_Wait (was func_ov000_0231bfa0, ov000, 2026-11-16)"
+WaterJet_State_Wait:
+  confidence: strong
+  evidence: "strong E6+E7: counts the +0xC timer down then WaterJet_Action_Prepare (was func_ov000_0231bf68, ov000, 2026-11-16)"
+WaterJet_Action_Prepare:
+  confidence: strong
+  evidence: "strong E6+E7: shows the object, plays SE 0x56 positionally, timer 0x50, installs WaterJet_State_Prepare (was func_ov000_0231bef8, ov000, 2026-11-16)"
+WaterJet_State_Prepare:
+  confidence: strong
+  evidence: "strong E6+E7: counts the +0xC timer down then WaterJet_Action_Spout (was func_ov000_0231bec0, ov000, 2026-11-16)"
+WaterJet_Action_Spout:
+  confidence: strong
+  evidence: "strong E6+E7: animation 1, SE 0x57, timer 0x28, sets the active bit +0x20C&1, installs WaterJet_State_Spout (was func_ov000_0231be44, ov000, 2026-11-16)"
+WaterJet_State_Spout:
+  confidence: strong
+  evidence: "strong E6+E7: clears the active bit +0x20C&1 when the timer expires and returns to WaterJet_Action_Wait when the animation ends (+0x5C&8) (was func_ov000_0231bdf8, ov000, 2026-11-16)"
+Mine_State_Drop:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by Mine_Action_Drop; falls (ObjSpd_UpSet on +0x30) and updates the 16 chain points; explodes via Mine_Explode (was func_ov000_0231c444, ov000, 2026-11-16)"
+Mine_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: first state installed by Mine_Action_Init; animates the chain points and probes the map (MapCollision_ProbeDistance) (was func_ov000_0231c834, ov000, 2026-11-16)"
+Wheel2D_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by Wheel2D_Action_Init; spins the wheel from the attached player's angle and detaches when the player's +0x3E8 no longer points back (was func_ov000_0231d3b8, ov000, 2026-11-16)"
+DecAnimal_Action_Leave:
+  confidence: strong
+  evidence: "strong E6+E7: installs DecAnimal_State_Leave (animation 2), faces away from the player +0x190, type 0xB spawns EffBrakeSmoke_Create (was func_ov000_0231d81c, ov000, 2026-11-16)"
+DecAnimal_State_Leave:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by DecAnimal_Action_Leave; type 5 destroys itself when off-screen, types 6/12 fly up (+0x30), then DecAnimal_UpdateMove (was func_ov000_0231d79c, ov000, 2026-11-16)"
+DecAnimal_CheckTouch:
+  confidence: strong
+  evidence: "strong E7: on StageObj_IsTouched either DecAnimal_Action_Leave or a random hop (vy -0x200) by animal type; called by the idle/move states (was func_ov000_0231d904, ov000, 2026-11-16)"
+DecAnimal_UpdateLeaveTimer:
+  confidence: strong
+  evidence: "strong E7: decrements the +0x8 timer and calls DecAnimal_Action_Leave at 0; called by the idle/move states (was func_ov000_0231db90, ov000, 2026-11-16)"
+DecAnimal_UpdateMove:
+  confidence: strong
+  evidence: "strong E7: per-animal-type (+0x184 type) acceleration/max speed table and ground movement; called by DecAnimal_State_Move and DecAnimal_State_Leave (was func_ov000_0231dbc4, ov000, 2026-11-16)"
+DecAnimal_State_Move:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by DecAnimal_Action_Move; DecAnimal_UpdateMove then DecAnimal_ChooseNextAction when the timer ends on ground (was func_ov000_0231de44, ov000, 2026-11-16)"
+DecAnimal_Action_Move:
+  confidence: strong
+  evidence: "strong E6+E7: animation 2 and installs DecAnimal_State_Move (was func_ov000_0231dea0, ov000, 2026-11-16)"
+DecAnimal_State_Idle:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by DecAnimal_Action_Idle; decelerates on ground and calls DecAnimal_ChooseNextAction after the random timer (was func_ov000_0231dee0, ov000, 2026-11-16)"
+DecAnimal_Action_Idle:
+  confidence: strong
+  evidence: "strong E6+E7: called from DecAnimal_Create; animation 0 and installs DecAnimal_State_Idle with a random 0-31 timer (was func_ov000_0231df98, ov000, 2026-11-16)"
+DecAnimal_ChooseNextAction:
+  confidence: strong
+  evidence: "strong E7: picks a random direction/speed by Rand and the distance to the player then calls DecAnimal_Action_Move or DecAnimal_Action_Idle (was func_ov000_0231e06c, ov000, 2026-11-16)"
+BossCamera_UpdateFixed:
+  confidence: strong
+  evidence: "strong E8,E7: entry [0] of the BossCamera mode table data_ov000_023644d4 called from BossCamera_Main; sets the perspective and a fixed eye/target (0x80000,-0x60000) LookAt (was func_ov000_0231f230, ov000, 2026-11-16)"
+BossCamera_UpdateTrack0:
+  confidence: strong
+  evidence: "strong E8,E7: entry [1] of data_ov000_023644d4 (BossCamera_Main); perspective then eases the eye/target towards track 0 (data_ov000_0236a48c +0x18/+0x24) and LookAt (was func_ov000_0231ee28, ov000, 2026-11-16)"
+BossCamera_UpdateTrack1:
+  confidence: strong
+  evidence: "strong E8,E7: entry [2] of data_ov000_023644d4 (BossCamera_Main); perspective then eases the eye/target towards track 1 (data_ov000_0236a48c +0x54/+0x60) and LookAt (was func_ov000_0231e850, ov000, 2026-11-16)"
+StageZoneScript_None:
+  confidence: strong
+  evidence: "strong E8: empty function filling every unused slot of the StageZoneScript table data_ov000_023644e0[zone][act] (was func_ov000_0231f6dc, ov000, 2026-11-16)"
+StageZoneScript_Zone3Boss:
+  confidence: strong
+  evidence: "strong E8,E7: StageZoneScript table data_ov000_023644e0 slot [2][2] (zone 3 boss act); drives the BossCamera tracks from gBoss3 (+0x214/+0x218) (was func_ov000_0231fad4, ov000, 2026-11-16)"
+StageZoneScript_Zone7Boss:
+  confidence: strong
+  evidence: "strong E8,E7: StageZoneScript table data_ov000_023644e0 slot [6][2] (zone 7 boss act); sets BossCamera tracks from gPlayers and gBoss7 (+0x210 phase) (was func_ov000_0231f794, ov000, 2026-11-16)"
+StageZoneScript_ZoneFBoss:
+  confidence: strong
+  evidence: "strong E8,E7: StageZoneScript table data_ov000_023644e0 slot [7][2] (final boss act, gBossF); adds the ScreenShake offset to the BossCamera eye data_ov000_0236a480 (was func_ov000_0231f6e0, ov000, 2026-11-16)"
+EffHahenZako_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffHahenZako_Create; clears the hidden flag 0x20 when gGameState[6]&1 (was func_ov000_0231fdec, ov000, 2026-11-16)"
+DecGroup0F_Create:
+  confidence: strong
+  evidence: "strong E8,E6: gDecorationCreateTable entry for decoration types 0x0F-0x30 and 0x3A-0x40; Task_Create(StageObj_Main, Decoration_Destructor) + Decoration_InitFromMap (was func_ov000_02325e60, ov000, 2026-11-16)"
+DecGroup35_Create:
+  confidence: strong
+  evidence: "strong E8,E6: gDecorationCreateTable entry for decoration types 0x35-0x36 and 0x51-0x52; Task_Create(StageObj_Main, Decoration_Destructor) (was func_ov000_02322970, ov000, 2026-11-16)"
+DecGroup41_Create:
+  confidence: strong
+  evidence: "strong E8,E6: gDecorationCreateTable entry for decoration types 0x41-0x44, 0x4F-0x50, 0x90, 0x9D-0xAE; calls Decoration_InitFromMap (was func_ov000_023254dc, ov000, 2026-11-16)"
+DecGroup45_Create:
+  confidence: strong
+  evidence: "strong E8,E6: gDecorationCreateTable entry for decoration types 0x45-0x4C and 0x53-0x66 (was func_ov000_02324b9c, ov000, 2026-11-16)"
+DecGroup4D_Create:
+  confidence: strong
+  evidence: "strong E8,E6: gDecorationCreateTable entry for decoration types 0x4D-0x4E and 0xCF; Task_Create(StageObj_Main, Decoration_Destructor) (was func_ov000_02323074, ov000, 2026-11-16)"
+DecGroup67_Create:
+  confidence: strong
+  evidence: "strong E8,E6: gDecorationCreateTable entry for decoration types 0x67-0x86 and 0x91-0x94 (was func_ov000_023240f8, ov000, 2026-11-16)"
+DecGroup95_Create:
+  confidence: strong
+  evidence: "strong E8,E6: gDecorationCreateTable entry for decoration types 0x95-0x9C, 0xC5-0xCE, 0xD0-0xD7, 0xDC-0xE1, 0xE5-0xE7 (was func_ov000_023236c0, ov000, 2026-11-16)"
+DecGroupAF_Create:
+  confidence: strong
+  evidence: "strong E8,E6: gDecorationCreateTable entry for decoration types 0xAF-0xC4, 0xD8-0xDB, 0xE2-0xE4, 0xE8-0xEF; Task_Create(StageObj_Main, Decoration_Destructor) + Decoration_InitFromMap (was func_ov000_02324400, ov000, 2026-11-16)"
+Decoration_Spawn:
+  confidence: strong
+  evidence: "strong E7: allocates a slot (Decoration_AllocSlot) and calls gDecorationCreateTable[type](entry, x, y); called by func_ov000_022fb738 (was func_ov000_023263c0, ov000, 2026-11-16)"
+Decoration_AllocSlot:
+  confidence: strong
+  evidence: "strong E7: finds and sets the first clear bit of the 32-slot mask data_ov000_0236a65c; only caller Decoration_Spawn (was func_ov000_02326498, ov000, 2026-11-16)"
+Decoration_FreeSlot:
+  confidence: strong
+  evidence: "strong E7: clears the slot bit in data_ov000_0236a65c for an entry of data_ov000_0236a670; called by Decoration_Destructor and Decoration_Spawn (was func_ov000_0232644c, ov000, 2026-11-16)"
+DecShared_Create:
+  confidence: strong
+  evidence: "strong E7: returns the existing shared object data_ov000_0236a660[i] or creates it (Task_Create StageObj_Main/DecShared_Destructor); called by DecGroup41/45/95 creators (was func_ov000_02322d7c, ov000, 2026-11-16)"
+DecShared_Destructor:
+  confidence: strong
+  evidence: "strong E7: task destructor given by DecShared_Create; clears its data_ov000_0236a660 slot then StageObj_Destructor (was func_ov000_02322d14, ov000, 2026-11-16)"
+DecShared_State_Main:
+  confidence: strong
+  evidence: "strong E7: state of the shared object; destroys itself (and clears the slot) when no child pinged the +0xC counter this frame (was func_ov000_02322d44, ov000, 2026-11-16)"
+DecShared_State_PingParent:
+  confidence: strong
+  evidence: "strong E7: state installed on DecGroup41/45/95 children; increments the shared parent's (+0x88) +0xC keep-alive counter (was func_ov000_02322f68, ov000, 2026-11-16)"
+DecGroupAF_State_SwitchVisible:
+  confidence: strong
+  evidence: "strong E7: state installed by DecGroupAF_Create; shows the decoration only while gSwitchTimers is non-zero (was func_ov000_02322f3c, ov000, 2026-11-16)"
+DecGroup41_State_FollowParentPriority:
+  confidence: strong
+  evidence: "strong E7: state installed by DecGroup41_Create; sets OAM priority 1 or 2 from the parent's (+0x88) +0x18 depth (was func_ov000_02322f80, ov000, 2026-11-16)"
+DecSonicNeon_State_Unk_ov000_02320014:
+  confidence: tentative
+  evidence: "tentative E7: state installed by DecGroupAF_Create; on first frame spawns DecSonicNeonPart_Create parts 0-11 (type 0xEC) or 13-24 (was func_ov000_02320014, ov000, 2026-11-16)"
+DecSonicNeon_State_Unk_ov000_02320168:
+  confidence: tentative
+  evidence: "tentative E7: state installed by DecGroupAF_Create; on first frame spawns DecSonicNeonPart_Create parts 0-11 and 13-24 (was func_ov000_02320168, ov000, 2026-11-16)"
+DecGroupAF_Unk_ov000_023205bc:
+  confidence: tentative
+  evidence: "tentative E7: called by DecGroupAF_Create; creates a child StageObj task with its own BAC and installs the follow-parent state func_ov000_0232053c (was func_ov000_023205bc, ov000, 2026-11-16)"
+DecGroupAF_Unk_ov000_02320744:
+  confidence: tentative
+  evidence: "tentative E7: called by DecGroupAF_Create; creates a child StageObj task with the mirrored draw func_ov000_023206f0 and the follow-parent state (was func_ov000_02320744, ov000, 2026-11-16)"
+DecGroupAFChild_State_FollowParent:
+  confidence: strong
+  evidence: "strong E7: state of the DecGroupAF child objects; copies the parent's (+0x88) position and blinks with the frame parity while the parent's +0xC is set (was func_ov000_0232053c, ov000, 2026-11-16)"
+DecGroupAFChild_Draw:
+  confidence: strong
+  evidence: "strong E7: stored at StageObj+0x70 (draw slot) by DecGroupAF_Unk_ov000_02320744; draws the sprite twice, normal and x-flipped (was func_ov000_023206f0, ov000, 2026-11-16)"
+DecGroupAF_OnHit:
+  confidence: strong
+  evidence: "strong E7: stored to hitbox0 callback (coll0+0x1C) by DecGroupAF_Create; sets the owner's touched flag +0xC = 1 (was func_ov000_02320894, ov000, 2026-11-16)"
+DecGroupAF_State_ClearTouched:
+  confidence: strong
+  evidence: "strong E7: state installed by DecGroupAF_Create; clears the touched flag +0xC each frame (was func_ov000_023208a4, ov000, 2026-11-16)"
+DecCloudW_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by DecCloudW_Create; scrolls x by +0x2E with wrap at -0x4000, picks the sprite by camera y (was func_ov000_023208b0, ov000, 2026-11-16)"
+DecFishPart_Action_Flee:
+  confidence: strong
+  evidence: "strong E6+E7: called from DecFishPart_State_Swim; sets velocity away from the other object (FX_Atan2) and installs DecFishPart_State_Flee (was func_ov000_02320be8, ov000, 2026-11-16)"
+DecFishPart_State_Flee:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by DecFishPart_Action_Flee; decelerates and clamps y below gCamera+0x62 then DecFishPart_Action_Swim (was func_ov000_02320b48, ov000, 2026-11-16)"
+DecFishPart_State_Swim:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by DecFishPart_Action_Swim; random wander of the swim angles +0x2/+0x3 every 16 frames (was func_ov000_02320ce0, ov000, 2026-11-16)"
+DecFishPart_Action_Swim:
+  confidence: strong
+  evidence: "strong E6+E7: called from DecFishPart_Create and DecFishPart_State_Flee; installs DecFishPart_State_Swim with a seeded random phase (was func_ov000_02320f40, ov000, 2026-11-16)"
+DecGroup41_OnHit:
+  confidence: strong
+  evidence: "strong E7: stored to hitbox0 callback by DecGroup41_Create; when the other object is slow enough calls DecGroup41_Action_Flee (was func_ov000_0232112c, ov000, 2026-11-16)"
+DecGroup41_Action_Flee:
+  confidence: strong
+  evidence: "strong E7: called from DecGroup41_OnHit; sets velocity away from the other object (FX_Atan2) and installs DecGroup41_State_Flee (was func_ov000_02321244, ov000, 2026-11-16)"
+DecGroup41_State_Flee:
+  confidence: strong
+  evidence: "strong E7: state installed by DecGroup41_Action_Flee; decelerates after the timer and clamps y below gCamera+0x62 then DecGroup41_ChooseNextAction (was func_ov000_02321188, ov000, 2026-11-16)"
+DecGroup41_State_Unk_ov000_02321378:
+  confidence: tentative
+  evidence: "tentative E7: state installed by DecGroup41_Action_Unk_ov000_02321430; clamps y below gCamera+0x62 and randomly changes course every 32 frames (was func_ov000_02321378, ov000, 2026-11-16)"
+DecGroup41_Action_Unk_ov000_02321430:
+  confidence: tentative
+  evidence: "tentative E7: called from DecGroup41_Create; installs DecGroup41_State_Unk_ov000_02321378 with x speed 0x2A0 facing the camera (was func_ov000_02321430, ov000, 2026-11-16)"
+DecGroup41_State_Unk_ov000_02321514:
+  confidence: tentative
+  evidence: "tentative E7: state installed by DecGroup41_Action_Unk_ov000_023216a4; decelerates and on animation end turns around or calls DecGroup41_Action_Unk_ov000_02321824 (was func_ov000_02321514, ov000, 2026-11-16)"
+DecGroup41_Action_Unk_ov000_023216a4:
+  confidence: tentative
+  evidence: "tentative E7: called from DecGroup41_ChooseNextAction; installs DecGroup41_State_Unk_ov000_02321514 with animation +1 (was func_ov000_023216a4, ov000, 2026-11-16)"
+DecGroup41_State_Unk_ov000_023216cc:
+  confidence: tentative
+  evidence: "tentative E7: state installed by DecGroup41_Action_Unk_ov000_02321744; decelerates and calls DecGroup41_ChooseNextAction when slow (was func_ov000_023216cc, ov000, 2026-11-16)"
+DecGroup41_Action_Unk_ov000_02321744:
+  confidence: tentative
+  evidence: "tentative E7: called from DecGroup41_ChooseNextAction; installs DecGroup41_State_Unk_ov000_023216cc with the given velocity and timer (was func_ov000_02321744, ov000, 2026-11-16)"
+DecGroup41_State_Unk_ov000_0232179c:
+  confidence: tentative
+  evidence: "tentative E7: state installed by DecGroup41_Action_Unk_ov000_02321824; decelerates and calls DecGroup41_ChooseNextAction on timeout or height (was func_ov000_0232179c, ov000, 2026-11-16)"
+DecGroup41_Action_Unk_ov000_02321824:
+  confidence: tentative
+  evidence: "tentative E7: called from DecGroup41_Create and the DecGroup41 states; installs DecGroup41_State_Unk_ov000_0232179c (was func_ov000_02321824, ov000, 2026-11-16)"
+DecGroup41_ChooseNextAction:
+  confidence: strong
+  evidence: "strong E7: random choice (Rand) by the height above +0x18C between the three DecGroup41 actions; called by the DecGroup41 states (was func_ov000_023218d0, ov000, 2026-11-16)"
+DecBird_State_FlyAway:
+  confidence: strong
+  evidence: "strong E6+E7: state installed by DecBird_Action_FlyAway; accelerates up (+0x30) and away by facing (+0x2E) (was func_ov000_02321c5c, ov000, 2026-11-16)"
+DecGroup35_OnHit:
+  confidence: strong
+  evidence: "strong E7: stored to hitbox0 callback by DecGroup35_Create; per decoration type (0x35...) reacts to the touching object and spawns pieces (was func_ov000_02322638, ov000, 2026-11-16)"
+DecGroup35_State_Main:
+  confidence: strong
+  evidence: "strong E7: state installed by DecGroup35_Create; while hidden (+0x54&2) counts +0xC up to +0x8 then shows the decoration again (was func_ov000_02322934, ov000, 2026-11-16)"
+DecGroup35_Unk_ov000_02321f18:
+  confidence: tentative
+  evidence: "tentative E7: creates a StageObj effect task at (x;y) with velocity; called from DecGroup35_OnHit (was func_ov000_02321f18, ov000, 2026-11-16)"
+DecGroup35_SpawnPieceBurst:
+  confidence: strong
+  evidence: "strong E7: spawns 4 DecGroup35Piece_Create pieces around (x;y) with random offsets and velocities; called from DecGroup35_OnHit (was func_ov000_0232233c, ov000, 2026-11-16)"
+DecGroup35Piece_Create:
+  confidence: strong
+  evidence: "strong E7: Task_Create(StageObj_Main; StageObj_Destructor) piece at (x;y) with velocity and frame n; installs DecGroup35Piece_State_Flutter (was func_ov000_02322180, ov000, 2026-11-16)"
+DecGroup35Piece_State_Flutter:
+  confidence: strong
+  evidence: "strong E7: state installed by DecGroup35Piece_Create; randomly reverses x speed / flips and stops vertical speed (was func_ov000_023220d0, ov000, 2026-11-16)"
+DecGroup4D_State_Main:
+  confidence: strong
+  evidence: "strong E7: state installed by DecGroup4D_Create (3 sites); checks the object against the camera view window (was func_ov000_02322fd0, ov000, 2026-11-16)"
+EffTrail_Create:
+  confidence: strong
+  evidence: "strong E7: creates a StageObj owning an 11-node ring of segment endpoints (+0x29C) following the owner (+0x134, length a<<8, colours c/d); called from Player_StartBoost (0x7CA5) and Boss7PartD5 (was func_ov000_02326f48, ov000, 2026-11-16)"
+EffTrail_Draw:
+  confidence: strong
+  evidence: "strong E7: draw callback of EffTrail (stored at +0x70); emits the ring of segments as G3 polygons (REG_POLYGON_ATTR alpha) with NNS_G3dGlb base scale/trans (was func_ov000_02326744, ov000, 2026-11-16)"
+EffTrail_SetNodeFromOwner:
+  confidence: strong
+  evidence: "strong E7: computes a node's two endpoints (+-len/2) rotated by the owner's angles; called by EffTrail_Create and every EffTrail state (was func_ov000_02326b2c, ov000, 2026-11-16)"
+EffTrail_ApplyWrapShift:
+  confidence: strong
+  evidence: "strong E7: when data_ov000_0236a970 is set adds the shift data_ov000_0236a974 to all 11 nodes' x and clears the flag; called by EffTrail_Create and the EffTrail states (was func_ov000_02326ac8, ov000, 2026-11-16)"
+EffTrail_SetWrapShift:
+  confidence: strong
+  evidence: "strong E6+E7: called from Player_WrapLoopingArena; stores the x shift data_ov000_0236a974 and sets data_ov000_0236a970 for EffTrail_ApplyWrapShift (was func_ov000_02326f00, ov000, 2026-11-16)"
+EffTrail_State_Init:
+  confidence: strong
+  evidence: "strong E7: first state installed by EffTrail_Create; advances the ring and switches to EffTrail_State_Follow once the owner player's flag +0x32C&0x80 is clear (was func_ov000_02326e4c, ov000, 2026-11-16)"
+EffTrail_State_Follow:
+  confidence: strong
+  evidence: "strong E7: advances the ring node each frame from the owner; stops drawing and destroys itself when the owner player's flag +0x32C&0x80 is set (was func_ov000_02326d18, ov000, 2026-11-16)"
+EffTrail_State_Wait:
+  confidence: strong
+  evidence: "strong E7: advances the ring and returns to EffTrail_State_Follow when the owner player's flag +0x32C&0x80 clears (was func_ov000_02326dd8, ov000, 2026-11-16)"
+EffTrail_Unk_ov000_02326f20:
+  confidence: tentative
+  evidence: "tentative E7: if the task's trail is not owned by a player and not being destroyed sets its state to EffTrail_State_Follow; called from Boss7PartD5 move states (was func_ov000_02326f20, ov000, 2026-11-16)"
+Player_IsPlayer2:
+  confidence: strong
+  evidence: "strong E7: returns obj->kind (+0x0)==1 (player) && +0x325 != 0; +0x325 is the player index set from gPlayerCount in Player_Create; called by the player effect creators (was func_ov000_023270d8, ov000, 2026-11-16)"
+EffFire01_3D_CreateFollowing:
+  confidence: strong
+  evidence: "strong E7: creates EffFire01_3D_Create at a jittered offset and installs the follow-parent state func_ov000_02327104; called from Boss7PartD5 move state (was func_ov000_0232727c, ov000, 2026-11-16)"
+EffFire01_3D_State_FollowOffset:
+  confidence: strong
+  evidence: "strong E7: state installed by EffFire01_3D_CreateFollowing; keeps the effect at the parent (+0x88) plus its offsets and fades it out (was func_ov000_02327104, ov000, 2026-11-16)"
+EffKemuriSpin3D_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffKemuriSpin3D_Create; on animation end advances to the next animation or destroys itself (anims 1/3) (was func_ov000_02327398, ov000, 2026-11-16)"
+BossEffect_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: default state installed by BossEffect_Create; runs the +0x2A4 callback and destroys the effect when all 5 model animations finished (was func_ov000_02327f24, ov000, 2026-11-16)"
+EffEnemyRoomFix_Create:
+  confidence: strong
+  evidence: "strong E3: loads /act/ac_eff_enemyroom_fix.bac; creates two StageObj tasks with EffEnemyRoomFix_Draw and EffEnemyRoomFix_State_Main (was func_ov000_0232895c, ov000, 2026-11-16)"
+EffEnemyRoomFix_State_Main:
+  confidence: strong
+  evidence: "strong E7: state installed by EffEnemyRoomFix_Create; destroys the object when the +0xC timer runs out (was func_ov000_02328908, ov000, 2026-11-16)"
+EffEnemyRoomFix_Draw:
+  confidence: strong
+  evidence: "strong E7: stored at +0x70 (draw) by EffEnemyRoomFix_Create; animates and draws the +0x94 sprite (was func_ov000_02328928, ov000, 2026-11-16)"
+EffWaterGmk_CreateSplash:
+  confidence: strong
+  evidence: "strong E3,E6: loads /act/ac_eff_water_gmk.bac animation 6 at (x;y); called from DecGroup35_OnHit (was func_ov000_02328fb8, ov000, 2026-11-16)"
+EffRipple3D_Spawn:
+  confidence: strong
+  evidence: "strong E3,E8: BossEffect_Create with model name data_ov000_02367b40[k] = eff_ripple_s/m/b at the water level and mapped onto the boss arena circle; installs EffRipple3D_State_Main (was func_ov000_023293f4, ov000, 2026-11-16)"
+EffRipple3D_State_Main:
+  confidence: strong
+  evidence: "strong E7: state installed by EffRipple3D_Spawn; keeps y at the water line gCamera+0x62 then BossEffect_State_Main (was func_ov000_023293d0, ov000, 2026-11-16)"
+EffRipple3D_SpawnForPlayer:
+  confidence: strong
+  evidence: "strong E7: for player 1 in boss arenas (zone index >= 9 or act 2) spawns EffRipple3D_Spawn at the water level; called by Player_UpdateUnderwater and Boss2Water_Main (was func_ov000_023294c8, ov000, 2026-11-16)"
+EffSplash3D_Spawn:
+  confidence: strong
+  evidence: "strong E3,E8: BossEffect_Create with model name data_ov000_02367b38[k] = eff_splash_s/b mapped onto the boss arena circle; installs EffSplash3D_State_Main; called by EffWaterSplash_Spawn (was func_ov000_023295a4, ov000, 2026-11-16)"
+EffSplash3D_State_Main:
+  confidence: strong
+  evidence: "strong E7: state installed by EffSplash3D_Spawn; keeps y at the water line gCamera+0x62 then BossEffect_State_Main (was func_ov000_0232957c, ov000, 2026-11-16)"
+EffGmkBubble_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffGmkBubble_Create; rises with a cosine wobble and pops at the water surface or on map collision (was func_ov000_02329888, ov000, 2026-11-16)"
+EffDrownCount_Spawn3D:
+  confidence: strong
+  evidence: "strong E7: FixMoji3D_Create with the 3D follow state EffDrownCount3D_State_FollowPlayer; called from EffDrownCount_Spawn (was func_ov000_0232a780, ov000, 2026-11-16)"
+EffDrownCount3D_State_FollowPlayer:
+  confidence: strong
+  evidence: "strong E7: state installed by EffDrownCount_Spawn3D; follows the player (+0x88) mapped onto the boss arena circle (BossArena_ArcToCirclePos) (was func_ov000_0232a534, ov000, 2026-11-16)"
+MineDigit_Create:
+  confidence: strong
+  evidence: "strong E3,E6: loads /ac_fix_moji.bac for digit idx < 10; called from Mine_State_Drop; installs MineDigit_State_FollowParent and destructor MineDigit_Destructor (was func_ov000_0232ab9c, ov000, 2026-11-16)"
+MineDigit_State_FollowParent:
+  confidence: strong
+  evidence: "strong E7: state installed by MineDigit_Create; follows the parent (+0x88) with offset and destroys itself after 0x20 frames (was func_ov000_0232a710, ov000, 2026-11-16)"
+MineDigit_Destructor:
+  confidence: strong
+  evidence: "strong E7: task destructor passed by MineDigit_Create; clears the sprite VRAM fields then StageObj_Destructor (was func_ov000_0232a764, ov000, 2026-11-16)"
+MarkerTimeList_Create:
+  confidence: strong
+  evidence: "strong E7: created by Marker_Action_InitPassCheck (singleton data_ov000_0236a97c); fixed-position sprite object with draw MarkerTimeList_Draw (was func_ov000_0232b020, ov000, 2026-11-16)"
+MarkerTimeList_Draw:
+  confidence: strong
+  evidence: "strong E7: stored at +0x70 by MarkerTimeList_Create; draws 5 rows with MarkerTimeList_DrawRow (was func_ov000_0232af54, ov000, 2026-11-16)"
+MarkerTimeList_DrawRow:
+  confidence: strong
+  evidence: "strong E7: draws one row: index digit k+1, 5 BCD time digits with separators after digits 1 and 3, and 2 separator glyphs (was func_ov000_0232ad98, ov000, 2026-11-16)"
+MarkerTimeList_State_Idle:
+  confidence: strong
+  evidence: "strong E7: empty state installed by MarkerTimeList_Create (was func_ov000_0232aff4, ov000, 2026-11-16)"
+MarkerTimeList_Destructor:
+  confidence: strong
+  evidence: "strong E7: task destructor passed by MarkerTimeList_Create; clears the singleton data_ov000_0236a97c then StageObj_Destructor (was func_ov000_0232aff8, ov000, 2026-11-16)"
+CheckpointTimePopup_Draw:
+  confidence: strong
+  evidence: "strong E7: stored at +0x70 by CheckpointTimePopup_Create; draws the 5 BCD time digits with separators (was func_ov000_0232b1cc, ov000, 2026-11-16)"
+CheckpointTimePopup_State_Main:
+  confidence: strong
+  evidence: "strong E7: state installed by CheckpointTimePopup_Create; destroys the popup when replaced (data_ov000_0236a978) or when data_ov000_0236a988 is set (was func_ov000_0232b348, ov000, 2026-11-16)"
+ScorePopup_Draw:
+  confidence: strong
+  evidence: "strong E7: stored at +0x70 by ScorePopup_Create; draws the score digits (was func_ov000_0232b598, ov000, 2026-11-16)"
+ScorePopup_State_Main:
+  confidence: strong
+  evidence: "strong E7: state installed by ScorePopup_Create; follows the parent and counts the shown value +0x144 towards +0x148 (was func_ov000_0232b740, ov000, 2026-11-16)"
+EffTrickCombo_Spawn:
+  confidence: strong
+  evidence: "strong E6+E7: called from Player_Action_TrickCombo; picks one of 8 random patterns and spawns 3+ EffTrickComboPart_Create parts with offsets and up velocity (was func_ov000_0232be64, ov000, 2026-11-16)"
+EffTrickComboPart_Create:
+  confidence: strong
+  evidence: "strong E3,E7: loads /act/ac_eff_trick.bac part type at (x;y) with velocity; installs EffTrickComboPart_Action_Main; called by EffTrickCombo_Spawn (was func_ov000_0232bc4c, ov000, 2026-11-16)"
+EffTrickComboPart_Action_Main:
+  confidence: strong
+  evidence: "strong E7: installs EffTrickComboPart_State_Main (flag 0x2000 while the delay +0xC runs) (was func_ov000_0232bc28, ov000, 2026-11-16)"
+EffTrickComboPart_State_Main:
+  confidence: strong
+  evidence: "strong E7: state installed by EffTrickComboPart_Action_Main; counts the start delay and moves/fades the part (was func_ov000_0232bb3c, ov000, 2026-11-16)"
+EffTrickSparkle_Create:
+  confidence: strong
+  evidence: "strong E3,E6: loads /act/ac_eff_trick.bac; particle system of 32 entries (singleton data_ov000_0236a98c); called from Player_Action_GrindTrick, Player_Action_TrickCombo and Stage_Create (was func_ov000_0232c7b0, ov000, 2026-11-16)"
+EffTrickSparkle_Draw:
+  confidence: strong
+  evidence: "strong E7: draw callback of EffTrickSparkle_Create; draws every active particle of the 32 entries (was func_ov000_0232c4cc, ov000, 2026-11-16)"
+EffTrickSparkle_State_Main:
+  confidence: strong
+  evidence: "strong E7: state of EffTrickSparkle_Create; applies gravity (+0x30/+0x18) to the 32 particles and expires them (was func_ov000_0232c658, ov000, 2026-11-16)"
+EffTrickSparkle_Destructor:
+  confidence: strong
+  evidence: "strong E7: destructor of EffTrickSparkle_Create; clears the singleton data_ov000_0236a98c then StageObj_Destructor (was func_ov000_0232c794, ov000, 2026-11-16)"
+EnemyRoomHud_Create:
+  confidence: strong
+  evidence: "strong E3,E6: loads /act/ac_eff_enemyroom_fix.bac (singleton data_ov000_0236a988, replaces an existing one); called by func_ov000_0230963c (was func_ov000_0232d620, ov000, 2026-11-16)"
+EnemyRoomHud_Destructor:
+  confidence: strong
+  evidence: "strong E7: destructor of EnemyRoomHud_Create; clears data_ov000_0236a988 and releases the ObjData then StageObj_Destructor (was func_ov000_0232d5e4, ov000, 2026-11-16)"
+EnemyRoomHud_Draw:
+  confidence: strong
+  evidence: "strong E7: draw callback of EnemyRoomHud_Create; draws the +0x94 sprite and the scaled digits (was func_ov000_0232d4c8, ov000, 2026-11-16)"
+EnemyRoomHud_Action_Appear:
+  confidence: strong
+  evidence: "strong E7: called by EnemyRoomHud_Create; plays SE 0xE7 and installs EnemyRoomHud_State_Appear (was func_ov000_0232d2dc, ov000, 2026-11-16)"
+EnemyRoomHud_State_Appear:
+  confidence: strong
+  evidence: "strong E7: state installed by EnemyRoomHud_Action_Appear; scales the panel in (ObjShift on +0x46) then EnemyRoomHud_Action_Count (was func_ov000_0232d084, ov000, 2026-11-16)"
+EnemyRoomHud_Action_Count:
+  confidence: strong
+  evidence: "strong E7: installs EnemyRoomHud_State_Count (was func_ov000_0232d05c, ov000, 2026-11-16)"
+EnemyRoomHud_State_Count:
+  confidence: strong
+  evidence: "strong E7: state installed by EnemyRoomHud_Action_Count; shows the remaining count +0x212-+0x213 of the object from func_ov000_02342358(1) and continues with func_ov000_0232ce4c (was func_ov000_0232ce78, ov000, 2026-11-16)"
+EnemyRoomHud_UpdateDigitScale:
+  confidence: strong
+  evidence: "strong E7: per digit i pulses the scale +0x254[i] (ObjShift 0x100..0x180); called by the EnemyRoomHud appear/count states (was func_ov000_0232d30c, ov000, 2026-11-16)"
+EnemyRoomHud_Action_Unk_ov000_0232ce4c:
+  confidence: tentative
+  evidence: "tentative E7: called from EnemyRoomHud_State_Count; installs EnemyRoomHud_State_Unk_ov000_0232cd18 (was func_ov000_0232ce4c, ov000, 2026-11-16)"
+EnemyRoomHud_State_Unk_ov000_0232cd18:
+  confidence: tentative
+  evidence: "tentative E7: scales the panel and digits (ObjShift) and then calls EnemyRoomHud_Action_Unk_ov000_0232cc2c (was func_ov000_0232cd18, ov000, 2026-11-16)"
+EnemyRoomHud_Action_Unk_ov000_0232cc2c:
+  confidence: tentative
+  evidence: "tentative E7: installs EnemyRoomHud_State_Unk_ov000_0232cbf4 and the draw EnemyRoomHud_Unk_ov000_0232d3dc (was func_ov000_0232cc2c, ov000, 2026-11-16)"
+EnemyRoomHud_State_Unk_ov000_0232cbf4:
+  confidence: tentative
+  evidence: "tentative E7: last EnemyRoomHud state; destroys the HUD after 0x80 frames (was func_ov000_0232cbf4, ov000, 2026-11-16)"
+EnemyRoomHud_Unk_ov000_0232d3dc:
+  confidence: tentative
+  evidence: "tentative E7: draw callback set by EnemyRoomHud_Action_Unk_ov000_0232cc2c; draws the +0x134 sprite at (0x8000;0x3000) and the flag-selected parts (was func_ov000_0232d3dc, ov000, 2026-11-16)"
+EffZakoDebris_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffZakoDebris_Action_Init; bounces once on ground (halved speeds) then fades (was func_ov000_0232ddd4, ov000, 2026-11-16)"
+Effect_State_FollowParent:
+  confidence: strong
+  evidence: "strong E7: copies the parent (+0x88) position plus the facing-dependent offset +0x2E/+0x30; installed by Effect_SetFollowParentState (was func_ov000_0232e854, ov000, 2026-11-16)"
+Effect_SetFollowParentState:
+  confidence: strong
+  evidence: "strong E7: only body installs Effect_State_FollowParent; called by EffBoostJet_Create, EffBoostJet3D_Create, EffFound_Create, EffSandSlide_Create, EffSand_Create, EffVitality_Create, EffWaterGmk_Create (was func_ov000_0232e90c, ov000, 2026-11-16)"
+Effect_State_FollowParentArena:
+  confidence: strong
+  evidence: "strong E7: Effect_State_FollowParent then maps the position onto the boss arena circle (BossArena_ArcToCirclePos) (was func_ov000_0232e7e0, ov000, 2026-11-16)"
+Effect_SetFollowParentArenaState:
+  confidence: strong
+  evidence: "strong E7: only body installs Effect_State_FollowParentArena; called from EffBoostJet_Spawn3D (was func_ov000_0232e844, ov000, 2026-11-16)"
+EffVsTensionDrain_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffVsTensionDrain_Create; scales the effect (+0x44/+0x46) while following the player (was func_ov000_0232ed48, ov000, 2026-11-16)"
+EffVsTensionMax_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffVsTensionMax_Create; scales the effect (+0x44/+0x46) while following the player (was func_ov000_0232ef74, ov000, 2026-11-16)"
+FixInformation_CreateSwingSky:
+  confidence: strong
+  evidence: "strong E3,E6: loads /act/ac_fix_information.bac icon above the player; only caller Player_Action_SwingSky; installs FixInformation_State_SwingSky (was func_ov000_0232f5a8, ov000, 2026-11-16)"
+FixInformation_State_SwingSky:
+  confidence: strong
+  evidence: "strong E7: state installed by FixInformation_CreateSwingSky; follows the player (+0x88) 0x20 px above and times out on the +0xC counter (was func_ov000_0232f53c, ov000, 2026-11-16)"
+FixInformation_Unk_ov000_0232f81c:
+  confidence: tentative
+  evidence: "tentative E3,E6: loads /act/ac_fix_information.bac icon on the player; only caller func_ov000_02351300; installs FixInformation_State_Unk_ov000_0232f6f4 (was func_ov000_0232f81c, ov000, 2026-11-16)"
+FixInformation_State_Unk_ov000_0232f6f4:
+  confidence: tentative
+  evidence: "tentative E7: state installed by FixInformation_Unk_ov000_0232f81c; follows the player (+0x88) with the gravity-flip offset (was func_ov000_0232f6f4, ov000, 2026-11-16)"
+FixVs_Unk_ov000_0232fa4c:
+  confidence: tentative
+  evidence: "tentative E3,E6: loads /act/ac_fix_vs.bac icon above the player; only caller func_ov000_023524d8; installs FixVs_State_Unk_ov000_0232fa00 (was func_ov000_0232fa4c, ov000, 2026-11-16)"
+FixVs_State_Unk_ov000_0232fa00:
+  confidence: tentative
+  evidence: "tentative E7: state installed by FixVs_Unk_ov000_0232fa4c; follows the player (+0x88) 0x20 px above and times out on the +0xC counter (was func_ov000_0232fa00, ov000, 2026-11-16)"
+FixVsPushIcon_Create:
+  confidence: strong
+  evidence: "strong E3,E6: loads /act/ac_fix_vs.bac; only caller Player_OnPushRival; singleton data_ov000_0236a984 with destructor FixVsPushIcon_Destructor (was func_ov000_0232fc10, ov000, 2026-11-16)"
+FixVsPushIcon_State_FollowPlayer:
+  confidence: strong
+  evidence: "strong E7: state installed by FixVsPushIcon_Create; follows the player 0x20 px above and counts down while player flag +0x32C&0x10000 is clear (was func_ov000_0232fb98, ov000, 2026-11-16)"
+FixVsPushIcon_Destructor:
+  confidence: strong
+  evidence: "strong E7: destructor passed by FixVsPushIcon_Create; clears the singleton data_ov000_0236a984 then StageObj_Destructor (was func_ov000_0232fbf4, ov000, 2026-11-16)"
+EffTrick_Unk_ov000_02330098:
+  confidence: tentative
+  evidence: "tentative E3,E6: loads /act/ac_eff_trick.bac at (x;y) for player 1 only (skips Player_IsPlayer2); called from Player_State_GmkSpecial, Player_State_GmkSpecialEnter and Player_State_InAir (was func_ov000_02330098, ov000, 2026-11-16)"
+Magnet_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by Magnet_Create; follows the owning player (+0x88) and updates the shield model (was func_ov000_02330848, ov000, 2026-11-16)"
+Barrier_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by Barrier_Create; follows the owning player (+0x88) and rotates the barrier model (was func_ov000_02330e60, ov000, 2026-11-16)"
+EffTrickForwardBoost_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffTrickForwardBoost_Create; follows the player and its facing (was func_ov000_023312f0, ov000, 2026-11-16)"
+EffBoost_Create:
+  confidence: strong
+  evidence: "strong E3,E6: loads /act/ac_eff_boost.bac at the player offset (x;y); skipped for player 2 and when gObjManagerFlags&0x100; only caller Player_UpdateBoost (was func_ov000_02331ae8, ov000, 2026-11-16)"
+EffBlazeSpinFlame_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffBlazeSpinFlame_Create; orbits the flame around the parent with a cosine and switches OAM priority by side (was func_ov000_023329ec, ov000, 2026-11-16)"
+EffSpinSmoke2_State_Main:
+  confidence: strong
+  evidence: "strong E6+E7: only state installed by EffSpinSmoke2_Action_Init; follows the player and picks animation 1/3 by the player state +0x328 (was func_ov000_02333a1c, ov000, 2026-11-16)"
+Effect_State_MoveUntilAnimEnd:
+  confidence: strong
+  evidence: "strong E7: adds the +0xC acceleration to the velocity and destroys the effect (releasing sprite VRAM) on animation end; installed by Effect_SetMoveUntilAnimEndState (was func_ov000_023341d8, ov000, 2026-11-16)"
+Effect_SetMoveUntilAnimEndState:
+  confidence: strong
+  evidence: "strong E7: only body installs Effect_State_MoveUntilAnimEnd; called by EffBlazeBoostFlame_Create, EffBlazeRunFlame_Create, EffBoostBurst_Create, EffBrakeSmoke_Create, EffVs_Create, ... (was func_ov000_02334264, ov000, 2026-11-16)"
+StageEvent_CreateManager:
+  confidence: strong
+  evidence: "strong E7: called by Stage_Create; creates the singleton task data_ov000_0236aa90 (main StageEvent_Main, dtor StageEvent_Destructor) that spawns the zone's placed objects (was func_ov000_02335db0, ov000, 2026-11-16)"
+StageEvent_Main:
+  confidence: strong
+  evidence: "strong E7: task main of StageEvent_CreateManager; runs the work's spawn callback then records both camera positions (gCamera +0x4/+0x8/+0x68/+0x6C) (was func_ov000_02335554, ov000, 2026-11-16)"
+StageEvent_Destructor:
+  confidence: strong
+  evidence: "strong E7: destructor of StageEvent_CreateManager; clears the singleton data_ov000_0236aa90 (was func_ov000_023355ac, ov000, 2026-11-16)"
+StageEvent_InitialSpawn:
+  confidence: strong
+  evidence: "strong E7: first spawn callback: boss acts spawn everything (StageEvent_SpawnAll), single-screen uses StageEvent_SpawnInViewSingleScreen, else StageEvent_SpawnInView; then installs the matching update callback (was func_ov000_023354ac, ov000, 2026-11-16)"
+StageEvent_SpawnAll:
+  confidence: strong
+  evidence: "strong E7: for the 3 event categories (spawner table data_ov000_023687d4) spawns every entry of the whole map rectangle (was func_ov000_023352c8, ov000, 2026-11-16)"
+StageEvent_UpdateBoss:
+  confidence: strong
+  evidence: "strong E7: spawn callback for boss acts installed by StageEvent_InitialSpawn; calls StageEvent_SpawnInView(screen 0 mode 5) (was func_ov000_023353c8, ov000, 2026-11-16)"
+StageEvent_UpdateDualScreen:
+  confidence: strong
+  evidence: "strong E7: spawn callback installed by StageEvent_InitialSpawn; calls StageEvent_SpawnInView for each screen whose camera moved since last frame (was func_ov000_023353dc, ov000, 2026-11-16)"
+StageEvent_UpdateSingleScreen:
+  confidence: strong
+  evidence: "strong E7: spawn callback installed by StageEvent_InitialSpawn in single-screen mode; calls StageEvent_SpawnInViewSingleScreen when the camera moved (was func_ov000_0233545c, ov000, 2026-11-16)"
+StageEvent_SpawnInView:
+  confidence: strong
+  evidence: "strong E7: computes the camera's (gCamera[screen]) newly visible map blocks and calls the per-category spawners data_ov000_023687d4 on them (was func_ov000_023350bc, ov000, 2026-11-16)"
+StageEvent_SpawnInViewSingleScreen:
+  confidence: strong
+  evidence: "strong E7: like StageEvent_SpawnInView for the swapped single-screen camera (Camera_GetBySwapState) (was func_ov000_02334eb4, ov000, 2026-11-16)"
+StageEvent_SpawnMapObjectsInBlock:
+  confidence: strong
+  evidence: "strong E8,E7: entry [0] of the category spawner table data_ov000_023687d4; walks the map-object list of a 256-px block and calls gMapObjectCreateTable[type] (was func_ov000_02334c18, ov000, 2026-11-16)"
+StageEvent_SpawnRingsInBlock:
+  confidence: strong
+  evidence: "strong E8,E7: entry [1] of data_ov000_023687d4; walks the (x,y) byte pairs of a 256-px block (0xFF = taken) and places rings via func_ov000_0235b0c8 (was func_ov000_02334b34, ov000, 2026-11-16)"
+StageEvent_SpawnDecorationsInBlock:
+  confidence: strong
+  evidence: "strong E8,E7: entry [2] of data_ov000_023687d4; walks the decoration list of a block and calls gDecorationCreateTable[type] (was func_ov000_023348f0, ov000, 2026-11-16)"
+StageEvent_SpawnAllMapObjects:
+  confidence: strong
+  evidence: "strong E7: stored by Stage_Create; calls StageEvent_SpawnMapObjectsInBlock for every block of the map (was func_ov000_02335704, ov000, 2026-11-16)"
+StageEvent_Unk_ov000_023355e0:
+  confidence: tentative
+  evidence: "tentative E7: spawns events around the camera via the spawner table data_ov000_023687d4; called from MapObjC2_Create, Player_In, Player_Last, Player_WrapLoopingArena (was func_ov000_023355e0, ov000, 2026-11-16)"
+StageEvent_GetMapObjectList:
+  confidence: strong
+  evidence: "strong E7: returns data_ov000_0236aa9c[0] (event file 0 loaded by Stage_LoadEventResources); used by Stage_SaveEventState/Stage_RestoreEventState (was func_ov000_023355d0, ov000, 2026-11-16)"
+StageEvent_GetRingList:
+  confidence: strong
+  evidence: "strong E7: returns data_ov000_0236aa9c[1] (event file 1 loaded by Stage_LoadEventResources); used by Stage_SaveEventState/Stage_RestoreEventState (was func_ov000_023355c0, ov000, 2026-11-16)"
+StageEvent_Reset:
+  confidence: strong
+  evidence: "strong E7: clears data_ov000_0236aa9c, the zone file pointer data_ov000_0236aa8c and the manager singleton; called by Stage_ResetProgress and StageEntry_StartFromSpecialStage (was func_ov000_02335e70, ov000, 2026-11-16)"
+Stage_GetUncompressedSize:
+  confidence: strong
+  evidence: "strong E4: returns *hdr>>8 (NitroSDK compression header size); used by Stage_LoadEventResources (was func_ov000_02335cf4, ov000, 2026-11-16)"
+Stage_GetCompressionType:
+  confidence: strong
+  evidence: "strong E4: returns *hdr&0xF0 (NitroSDK compression type); used by Stage_LoadEventResources (was func_ov000_02335d00, ov000, 2026-11-16)"
+Stage_FreeZoneFile:
+  confidence: strong
+  evidence: "strong E7: guarded free of the zone file data_ov000_0236aa8c (fills 0xCCCCCCCC if the 0x02467531 trailer is intact) and clears it; called by Stage_FreeZoneFiles (was func_ov000_02335d0c, ov000, 2026-11-16)"
+Hud_Unk_ov000_02335ee0:
+  confidence: tentative
+  evidence: "tentative E6: called from Hud_Main; positions and draws the HUD sprite of the sub-struct at y+0xAA (was func_ov000_02335ee0, ov000, 2026-11-16)"
+Hud_Unk_ov000_023367ac:
+  confidence: tentative
+  evidence: "tentative E6: called from Hud_Main; counts down +0x290 and applies a random shake offset (+0x292/+0x294) to HUD elements (was func_ov000_023367ac, ov000, 2026-11-16)"
+Hud_SetOamPriority3:
+  confidence: strong
+  evidence: "strong E6: only body Hud_SetOamPriority(3); called from StageTitleCard_Create (was func_ov000_023375c8, ov000, 2026-11-16)"
+Hud_SetOamPriority2:
+  confidence: strong
+  evidence: "strong E6: only body Hud_SetOamPriority(2); called from StageTitleCard_State_BeginRestoreColors (was func_ov000_023375d8, ov000, 2026-11-16)"
+Hud_SetOamPriority0:
+  confidence: strong
+  evidence: "strong E6: only body Hud_SetOamPriority(0); called from Hud_Create and StageTitleCard_State_RestoreDisplay (was func_ov000_023375e8, ov000, 2026-11-16)"
+Hud_Unk_ov000_023375f8:
+  confidence: tentative
+  evidence: "tentative E7: stores v into the gHudTask work +0x928 if the HUD exists; called from Stage_Main (was func_ov000_023375f8, ov000, 2026-11-16)"
+Hud_Unk_ov000_02337650:
+  confidence: tentative
+  evidence: "tentative E7: returns gHudTask work +0x14[engine] (sprite VRAM base used for the digit glyphs of the time/score popups) (was func_ov000_02337650, ov000, 2026-11-16)"
+Hud_Unk_ov000_0233766c:
+  confidence: tentative
+  evidence: "tentative E7: returns gHudTask work +0xC[engine] (sprite VRAM base used by the popups and MineDigit) (was func_ov000_0233766c, ov000, 2026-11-16)"
+Camera_Unk_ov000_02338778:
+  confidence: tentative
+  evidence: "tentative E6: empty function referenced by Camera_Create (was func_ov000_02338778, ov000, 2026-11-16)"
+Camera_Unk_ov000_0233905c:
+  confidence: tentative
+  evidence: "tentative E7: called from Camera_UpdateFollow; sets camera[i] field 0x0236aae0 = gCamera+0xD8 + other camera's value (was func_ov000_0233905c, ov000, 2026-11-16)"
+Camera_Unk_ov000_02339094:
+  confidence: tentative
+  evidence: "tentative E7: called from Camera_UpdateFollow; sets camera[i] field 0x0236aadc = gCamera+0xD4 + other camera's value (was func_ov000_02339094, ov000, 2026-11-16)"
+EnemyRoom_Register:
+  confidence: strong
+  evidence: "strong E7: stores object v into slot i of the room registry data_ov000_0236abc4; called by MapObj8C_Create and func_ov000_0230963c (was func_ov000_023423a4, ov000, 2026-11-16)"
+EnemyRoom_Unregister:
+  confidence: strong
+  evidence: "strong E7: clears slot i of data_ov000_0236abc4; called by MapObj8C_Destructor (was func_ov000_0234238c, ov000, 2026-11-16)"
+EnemyRoom_Get:
+  confidence: strong
+  evidence: "strong E7: returns data_ov000_0236abc4[i]; called by GmkWall states and MapObj8C (was func_ov000_0234237c, ov000, 2026-11-16)"
+EnemyRoom_SetActive:
+  confidence: strong
+  evidence: "strong E7: stores the active room index into gCamera+0x10C; called by func_ov000_0230963c (which also creates EnemyRoomHud) (was func_ov000_02342348, ov000, 2026-11-16)"
+EnemyRoom_ClearActive:
+  confidence: strong
+  evidence: "strong E7: resets gCamera+0x10C to 0xFF if it equals v; called by MapObj8C states (was func_ov000_0234232c, ov000, 2026-11-16)"
+EnemyRoom_GetActive:
+  confidence: strong
+  evidence: "strong E7: returns data_ov000_0236abc4[gCamera+0x10C] unless 0xFF; read by EnemyRoomHud_Create and EnemyRoomHud_State_Count (/act/ac_eff_enemyroom_fix.bac) (was func_ov000_02342358, ov000, 2026-11-16)"
+Camera_CheckPosInView:
+  confidence: strong
+  evidence: "strong E7: returns the mask of screens whose camera view (+0x100 px margin) contains (x,y) and sets gCamera[i] flag 0x4000000; used by MapObj73/74/75 states (was func_ov000_023425f4, ov000, 2026-11-16)"
+Camera_ClearPosInViewFlags:
+  confidence: strong
+  evidence: "strong E7: clears flag 0x4000000 on both cameras each frame; called from Camera_Main (was func_ov000_023425d0, ov000, 2026-11-16)"
+Camera_CheckPosInViewLatched:
+  confidence: strong
+  evidence: "strong E7: like Camera_CheckPosInView but marks gCamera[i]+0x34 bit 0x20 (latched by Camera_UpdateInViewLatch); used by MapObj70 state (was func_ov000_02342480, ov000, 2026-11-16)"
+Camera_UpdateInViewLatch:
+  confidence: strong
+  evidence: "strong E7: per camera latches +0x34 bit 0x20 into bit 0x40 and clears 0x20; called from Camera_Main (was func_ov000_023423b8, ov000, 2026-11-16)"
+Camera_GetSplitLineScreenY:
+  confidence: strong
+  evidence: "strong E7: for camera idx with flag 0x1000000 returns ((split line gCamera+0x62<<8) - y)/scale clamped to 0..0xC0; used by the zone 3 ZoneBg helpers (was func_ov000_023427bc, ov000, 2026-11-16)"
+Camera_Unk_ov000_02342834:
+  confidence: tentative
+  evidence: "tentative E7: in wireless VS (gGameState+0x18&0x20) reads the partner's camera data from the net packet (NetPacket_FindNextData); called from Camera_UpdateFollow (was func_ov000_02342834, ov000, 2026-11-16)"
+Player_Unk_ov000_02343000:
+  confidence: tentative
+  evidence: "tentative E6: called from MapObject_OnHit_Default; updates the player's combo counters +0x3B8/+0x3BA and clamps to 0x12BF (was func_ov000_02343000, ov000, 2026-11-16)"
+Player_Unk_ov000_023460ec:
+  confidence: tentative
+  evidence: "tentative E7: called from Player_In; sets +0x48 from the per-character table data_ov000_02368baa[+0x324] (halved +0x368 when flag +0x32C&0x80) and flag 0x2000000 (was func_ov000_023460ec, ov000, 2026-11-16)"
+Player_Unk_ov000_023497a4:
+  confidence: tentative
+  evidence: "tentative E7: sets the angle from the velocity (FX_Atan2), animation 0x38, SE 0xE and Player_AddTrickScore 0x190; called from DashC_OnHit and Player_State_Grind (was func_ov000_023497a4, ov000, 2026-11-16)"
+Stage_Unk_ov000_0234ded8:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from Stage_ReleaseCommonResources (was func_ov000_0234ded8, ov000, 2026-11-16)"
+Stage_Unk_ov000_0234dedc:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from Stage_SetupCommonResources (was func_ov000_0234dedc, ov000, 2026-11-16)"
+Player_Unk_ov000_02350adc:
+  confidence: tentative
+  evidence: "tentative E6: called from MapObj9C_OnHit; sets player flags +0x330 0x1000 and the launch speeds from input +0x420 (was func_ov000_02350adc, ov000, 2026-11-16)"
+Player_Unk_ov000_02351300:
+  confidence: tentative
+  evidence: "tentative E6: called from Player_State_Swing; integrates the swing distance +0x3F4 and spawns FixInformation_Unk_ov000_0232f81c on release (was func_ov000_02351300, ov000, 2026-11-16)"
+Player_Unk_ov000_023524d8:
+  confidence: tentative
+  evidence: "tentative E7: attaches the player to gimmick p1 (+0x3E8) and sets carry flags (+0x32C 0x3000; +0x330 0x40138); called from GmkTable_State_Released (was func_ov000_023524d8, ov000, 2026-11-16)"
+Player_Unk_ov000_0235258c:
+  confidence: tentative
+  evidence: "tentative E7: attaches the player to gimmick p1 (+0x3E8) with flags +0x32C 0x203000 and clears input +0x420..; called from the GmkTable states (was func_ov000_0235258c, ov000, 2026-11-16)"
+Player_Unk_ov000_0235283c:
+  confidence: tentative
+  evidence: "tentative E7: attaches the player to gimmick p1 (+0x3E8) with flags +0x32C 0x3800 and timer +0x3EE=0x28; called from GmkTable_State_Main (was func_ov000_0235283c, ov000, 2026-11-16)"
+Player_DetachGimmick:
+  confidence: strong
+  evidence: "strong E7: if +0x3E8 == p1 clears it and the carry flags set by the attach functions (+0x32C 0x3800; +0x330 0x108); called from GmkTable_State_Main (was func_ov000_0235264c, ov000, 2026-11-16)"
+Player_Unk_ov000_023526cc:
+  confidence: tentative
+  evidence: "tentative E6: called from Player_Last; pushes the player out of the other object's box (x clamp at o->x-0x6000) and zeroes the inward speed (was func_ov000_023526cc, ov000, 2026-11-16)"
+Player_Action_MapObj40:
+  confidence: strong
+  evidence: "strong E6+E7: only caller MapObj40_OnHit; when grounded resets gimmick state, animation 0x26 and installs Player_State_MapObj40 (was func_ov000_02354098, ov000, 2026-11-16)"
+Player_State_MapObj40:
+  confidence: strong
+  evidence: "strong E7: state installed by Player_Action_MapObj40; slides with facing by angle, spawns EffWaterGmk_Create on ground, ends with Player_Action_LandOnGround (was func_ov000_02353f08, ov000, 2026-11-16)"
+Player_Action_MapObj80:
+  confidence: strong
+  evidence: "strong E6+E7: only caller MapObj80_OnHit; resets gimmick state, animation 0x27 and installs Player_State_MapObj80 (was func_ov000_02353820, ov000, 2026-11-16)"
+Player_State_MapObj80:
+  confidence: strong
+  evidence: "strong E7: state installed by Player_Action_MapObj80; on timer end/landing stops the SE and restores physics (Player_LoadPhysicsParams) (was func_ov000_02353568, ov000, 2026-11-16)"
+Player_Unk_ov000_02354de4:
+  confidence: tentative
+  evidence: "tentative E6: called from Player_State_CorkscrewPath; advances the path distance +0xC by |speed| and moves along the corkscrew offsets (was func_ov000_02354de4, ov000, 2026-11-16)"
+RingManager_Unk_ov000_0235b08c:
+  confidence: tentative
+  evidence: "tentative E7: stores v into the first word of the gRingManagerTask work; called from the Boss*_Action_Defeat functions (was func_ov000_0235b08c, ov000, 2026-11-16)"
+RingManager_Unk_ov000_0235b0a8:
+  confidence: tentative
+  evidence: "tentative E7: returns the first word of the gRingManagerTask work (0 without manager); called from the Boss*_Action_Defeat functions (was func_ov000_0235b0a8, ov000, 2026-11-16)"
+RingManager_PlaceRing:
+  confidence: strong
+  evidence: "strong E7: called by StageEvent_SpawnRingsInBlock; takes a free entry of the 64 rings of gRingManagerTask and places a map ring linked to its event byte (was func_ov000_0235b0c8, ov000, 2026-11-16)"
+RingManager_Unk_ov000_0235b2c4:
+  confidence: tentative
+  evidence: "tentative E7: ring entry collision against ObjCollisionMap_ProbeDistance (bounce on landing); referenced from RingManager_Main (was func_ov000_0235b2c4, ov000, 2026-11-16)"
+RingManager_Unk_ov000_0235b484:
+  confidence: tentative
+  evidence: "tentative E7: ring entry collision against MapCollision_ProbeDistanceAll (bounce on landing); referenced from RingManager_Create (was func_ov000_0235b484, ov000, 2026-11-16)"
+RingManager_Unk_ov000_0235b804:
+  confidence: tentative
+  evidence: "tentative E7: box-checks the rings of gRingManagerTask against the object and pulls them in (FX_Atan2 + ObjSpd_UpSet); called from Duct_State_CheckPlayer (was func_ov000_0235b804, ov000, 2026-11-16)"
+RingManager_Unk_ov000_0235bafc:
+  confidence: tentative
+  evidence: "tentative E7: sets work flag 4 and box-checks the rings against the source rectangle; called from Player_Last (was func_ov000_0235bafc, ov000, 2026-11-16)"
+PlayerSelectMenu_UpdateCharLayerFlags:
+  confidence: strong
+  evidence: "strong E7: clears and sets the per-character sprite flag bits 0x20000/0x40000 of the three layers (+0x758/+0x7A0/+0x7E8) by the selected character +0x14; called from the Intro/ScrollIn actions (was func_ov000_02356810, ov000, 2026-11-16)"
+PlayerSelectMenu_SetupModelLighting:
+  confidence: strong
+  evidence: "strong E4,E7: NNS_G3dGlbPolygonAttr, normalised light vector 0, white light, NNS_G3dGlbMaterialColorDiffAmb and NNSi_G3dModify* on the model; used by the two model draw helpers (was func_ov000_023568ac, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawCharModel:
+  confidence: strong
+  evidence: "strong E7: sets translation/scale/rotation of model slot 0 (MTX_Rot*), Model_SetAnimation when flagged and Model_Draw; called from PlayerSelectMenu_DrawModels (was func_ov000_02356be8, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawPartnerModel:
+  confidence: strong
+  evidence: "strong E7: like PlayerSelectMenu_DrawCharModel for model slot 1 with mirrored scale (-0xF00); called from PlayerSelectMenu_DrawModels (was func_ov000_02356a48, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawModelPair:
+  confidence: strong
+  evidence: "strong E7: temporarily offsets the shared position by +-(ox,oy,oz) and draws PlayerSelectMenu_DrawCharModel and PlayerSelectMenu_DrawPartnerModel; called from PlayerSelectMenu_DrawModels (was func_ov000_023569d8, ov000, 2026-11-16)"
+PlayerSelectMenu_SetCameraOrbit:
+  confidence: strong
+  evidence: "strong E7: places the 3D camera eye/target on a circle (SIN/COS of angle * -0x16000) and stores the angle; called by the Intro/ScrollIn/ScrollOut states (was func_ov000_02356e7c, ov000, 2026-11-16)"
+PlayerSelectMenu_SetModelSlotSelection:
+  confidence: strong
+  evidence: "strong E7: changes a model slot selection +0x28 (keeps the previous in +0x2C, blend timer 3, resets the unused slots); called by the Intro/ScrollIn/ScrollOut states (was func_ov000_02357090, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSpriteA44:
+  confidence: strong
+  evidence: "strong E7: sets position (x,y) of the AnimatorSprite at +0xA44, animates and draws it; called by the ScrollIn/ScrollOut/Select states (was func_ov000_02357810, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSprite804:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x804, animates and draws it; called by PlayerSelectMenu_State_Confirmed (was func_ov000_02357844, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSprite804Scaled:
+  confidence: strong
+  evidence: "strong E7: sets position of the +0x804 sprite and draws it with AnimatorSprite_DrawRotScale unless scale is 0x1000 (was func_ov000_02357878, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSpriteA8C:
+  confidence: strong
+  evidence: "strong E7: unless mode +0xC is 2 sets position of the +0xA8C sprite, animates and draws it (was func_ov000_023578d0, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSprite6E4:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x6E4, animates and draws it (was func_ov000_02357908, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSprite69C:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x69C, animates and draws it (was func_ov000_0235793c, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSprite9FC:
+  confidence: strong
+  evidence: "strong E7: animates and draws the AnimatorSprite at +0x9FC (was func_ov000_02357970, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSprite9B4:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x9B4, animates and draws it (was func_ov000_02357994, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSprite654:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x654, animates and draws it (was func_ov000_023579c8, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSprite60C:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x60C, animates and draws it (was func_ov000_023579fc, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite804ConfirmAnim:
+  confidence: strong
+  evidence: "strong E7: sets the +0x804 sprite to animation 3*char+10 and hides flag 4; only caller PlayerSelectMenu_Action_Confirm (was func_ov000_02357a30, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite804SelectAnim:
+  confidence: strong
+  evidence: "strong E7: sets the +0x804 sprite to animation 3*char+9 and hides flag 4; only caller PlayerSelectMenu_Action_Select (was func_ov000_02357a6c, ov000, 2026-11-16)"
+PlayerSelectMenu_Unk_ov000_02357aa8:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from PlayerSelectMenu_Action_ScrollOut and PlayerSelectMenu_Action_Select (was func_ov000_02357aa8, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSpriteA8CAnim1:
+  confidence: strong
+  evidence: "strong E7: sets the +0xA8C sprite to animation 1 (cached in +0xB60) and shows it; called by the FadeOutBack/OpenQuitPrompt actions (was func_ov000_02357aac, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSpriteA8CAnim0:
+  confidence: strong
+  evidence: "strong E7: sets the +0xA8C sprite to animation 0 (cached in +0xB60) and shows it (was func_ov000_02357ae8, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite6E4Anim7:
+  confidence: strong
+  evidence: "strong E7: sets the +0x6E4 sprite to animation 7 and shows it (was func_ov000_02357b24, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite69CAnim6:
+  confidence: strong
+  evidence: "strong E7: sets the +0x69C sprite to animation 6 and shows it (was func_ov000_02357b4c, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite9FCAnim1D:
+  confidence: strong
+  evidence: "strong E7: sets the +0x9FC sprite to animation 0x1D and hides it (flag 4); only caller PlayerSelectMenu_Action_Select (was func_ov000_02357b74, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite9B4ConfirmAnim:
+  confidence: strong
+  evidence: "strong E7: sets the +0x9B4 sprite to animation 2*char+3 (cached in +0xB54) and hides it; only caller PlayerSelectMenu_Action_Confirm (was func_ov000_02357b9c, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite9B4Anim:
+  confidence: strong
+  evidence: "strong E7: sets the +0x9B4 sprite to animation 2*char+2 (cached in +0xB54) and shows it (was func_ov000_02357be4, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite654Anim4:
+  confidence: strong
+  evidence: "strong E7: sets the +0x654 sprite to animation 4, shown, flag 0x80 (was func_ov000_02357c2c, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite654Anim3Hidden:
+  confidence: strong
+  evidence: "strong E7: sets the +0x654 sprite to animation 3, hidden (flag 4), flag 0x80; only caller PlayerSelectMenu_State_Select (was func_ov000_02357c5c, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite654Anim3:
+  confidence: strong
+  evidence: "strong E7: sets and processes the +0x654 sprite animation 3, shown, flags 1/0x80 (was func_ov000_02357c8c, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite60CAnim4:
+  confidence: strong
+  evidence: "strong E7: sets the +0x60C sprite to animation 4 and shows it (was func_ov000_02357cd0, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite60CAnim3Hidden:
+  confidence: strong
+  evidence: "strong E7: sets the +0x60C sprite to animation 3 and hides it; only caller PlayerSelectMenu_State_Select (was func_ov000_02357cf8, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite60CAnim3:
+  confidence: strong
+  evidence: "strong E7: sets and processes the +0x60C sprite animation 3, shown, flag 1 (was func_ov000_02357d20, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSelectionCursor:
+  confidence: strong
+  evidence: "strong E7: by selection 0-3 picks animations 0x11-0x14... and draws the cursor sprites scaled; called by most PlayerSelectMenu states (was func_ov000_02357ec8, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSubTitleSprite:
+  confidence: strong
+  evidence: "strong E7: draws the sub-screen sprite at (0,0x10) and sets gDisplaySub[2].y to -8 or 0x20; called by PlayerSelectMenu_State_ScrollOut (was func_ov000_02358070, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSubTitleSprite2:
+  confidence: strong
+  evidence: "strong E7: draws another sub-screen sprite at (0,0x10) and sets gDisplaySub[2].y to -8 or 0x20; called by the Confirmed/FadeOutBack/PartnerLeft states (was func_ov000_023580bc, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawSubSpriteAtX:
+  confidence: strong
+  evidence: "strong E7: draws the sub-screen sprite at (x,0x10) and sets gDisplaySub[2].y = 0x20; called by PlayerSelectMenu_Main and the Intro/Scroll states (was func_ov000_02358108, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite5C4Anim2:
+  confidence: strong
+  evidence: "strong E7: sets the +0x5C4 sprite to animation 2 (cached +0xB1C), shows it and sets the sub BG y offset -8; only caller PlayerSelectMenu_Action_ScrollOut (was func_ov000_02358138, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite5C4Anim1:
+  confidence: strong
+  evidence: "strong E7: sets the +0x5C4 sprite to animation 1 (cached +0xB1C), redraws the character background (Background_Draw) and sub BG offsets; only caller PlayerSelectMenu_Action_Select (was func_ov000_02358180, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite5C4Anim0:
+  confidence: strong
+  evidence: "strong E7: sets the +0x5C4 sprite to animation 0 (cached +0xB1C), shows it and sets the sub BG y offset -8 (was func_ov000_023581dc, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawBottomSpriteScaled:
+  confidence: strong
+  evidence: "strong E7: draws the sprite at (x+0x80,0xA8) normally or with DrawRotScale y scale; called by PlayerSelectMenu_Main and most states (was func_ov000_02358224, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite96CAnim1:
+  confidence: strong
+  evidence: "strong E7: sets and processes the +0x96C sprite animation 1 (cached in +0xB50) (was func_ov000_02358278, ov000, 2026-11-16)"
+PlayerSelectMenu_SetSprite96CAnim0:
+  confidence: strong
+  evidence: "strong E7: sets and processes the +0x96C sprite animation 0 (cached in +0xB50) (was func_ov000_023582b0, ov000, 2026-11-16)"
+PlayerSelectMenu_SetBackgroundSelection:
+  confidence: strong
+  evidence: "strong E7: on selection change picks one of 3 background sub-structs and redraws it with Background_Draw; called by Opening and most states (was func_ov000_023582e8, ov000, 2026-11-16)"
+PlayerSelectMenu_DrawOrbitSprite:
+  confidence: strong
+  evidence: "strong E7: draws sprite n+5 of the +0x5C4 array on a circle (radius 0x41 around 0x80,0x58) at the given angle (was func_ov000_02358384, ov000, 2026-11-16)"
+PlayerSelectMenu_Unk_ov000_02359cd4:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from PlayerSelectMenu_Destructor (was func_ov000_02359cd4, ov000, 2026-11-16)"
+ResultsScreen_EaseValue:
+  confidence: strong
+  evidence: "strong E7: returns from + (to-from)*t for step i of n with t blended between linear and quadratic by ease (FX_Div/FX_Mul); used to slide the results window (was func_ov000_0235c9f8, ov000, 2026-11-16)"
+ResultsScreen_Unk_ov000_0235cbd8:
+  confidence: tentative
+  evidence: "tentative E7: returns TRUE when gGameState bytes [0] and [1] are equal; used by ResultsScreen_Create/Exit/RematchSync and the save helper (was func_ov000_0235cbd8, ov000, 2026-11-16)"
+ResultsScreen_GetResultKind:
+  confidence: strong
+  evidence: "strong E7: maps data_022c4590+0x40 (1/2/other) to result 0/1/2, swapped by ResultsScreen_Unk_ov000_0235cbd8; called from ResultsScreen_Create (was func_ov000_0235cbf0, ov000, 2026-11-16)"
+ResultsScreen_Unk_ov000_0235cc4c:
+  confidence: tentative
+  evidence: "tentative E7: returns gGameState+0x8 != 0; called from ResultsScreen_Create (was func_ov000_0235cc4c, ov000, 2026-11-16)"
+ResultsScreen_Unk_ov000_0235cc60:
+  confidence: tentative
+  evidence: "tentative E7: returns gGameState+0x4 != 0; called from ResultsScreen_Create (was func_ov000_0235cc60, ov000, 2026-11-16)"
+ResultsScreen_SaveVsResult:
+  confidence: strong
+  evidence: "strong E6+E7: called from ResultsScreen_State_FadeOutExit; reads the partner name (func_02051300) and records win/lose via SaveData_RecordVsResult (was func_ov000_0235cb84, ov000, 2026-11-16)"
+ResultsScreen_SetWindowLineScroll:
+  confidence: strong
+  evidence: "strong E5,E7: fills the line-scroll buffer for the window opening v and toggles DISPCNT_B (0x04001000) BG enables 0x1C00/0x1800 (was func_ov000_0235ce3c, ov000, 2026-11-16)"
+ResultsScreen_EnableLineScroll:
+  confidence: strong
+  evidence: "strong E5,E7: points the VBlank line-copy slot at BG2VOFS_B 0x0400101A with zeroed buffers and sets gSystemFlags 0x400 (was func_ov000_0235cf04, ov000, 2026-11-16)"
+ResultsScreen_EnableLineScrollSplit:
+  confidence: strong
+  evidence: "strong E5,E7: like ResultsScreen_EnableLineScroll with buffers -0x44 for lines 0-0x53 and +0x44 below (window split) (was func_ov000_0235cfc4, ov000, 2026-11-16)"
+ResultsScreen_DisableLineScrollHidden:
+  confidence: strong
+  evidence: "strong E5: clears gSystemFlags 0x400; sub BG2 offset (0;0xC0); DISPCNT_B BG mask 0x1800 (was func_ov000_0235cec8, ov000, 2026-11-16)"
+ResultsScreen_DisableLineScroll:
+  confidence: strong
+  evidence: "strong E5: clears gSystemFlags 0x400; sub BG2 offset (0;0); DISPCNT_B BG mask 0x1C00 (was func_ov000_0235cf88, ov000, 2026-11-16)"
+ResultsScreen_SetupOrthoCamera:
+  confidence: strong
+  evidence: "strong E4: G3i_OrthoW_ projection and G3i_LookAt_ camera for the result models; called from ResultsScreen_DrawModels (was func_ov000_0235d6f8, ov000, 2026-11-16)"
+ResultsScreen_Unk_ov000_0235d6f4:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from ResultsScreen_DrawModels (was func_ov000_0235d6f4, ov000, 2026-11-16)"
+ResultsScreen_DrawModelA:
+  confidence: strong
+  evidence: "strong E7: animates and draws a character model at screen (x,y) (trans/rot/flip, NNS lights); used by ResultsScreen_DrawModels when +0x18/+0x1C is set (was func_ov000_0235d448, ov000, 2026-11-16)"
+ResultsScreen_DrawModelB:
+  confidence: strong
+  evidence: "strong E7: animates and draws the other character model variant at screen (x;y); used by ResultsScreen_DrawModels when +0x18/+0x1C is 0 (was func_ov000_0235d5a0, ov000, 2026-11-16)"
+ResultsScreen_DrawModels:
+  confidence: strong
+  evidence: "strong E7: sets the ortho camera and draws the two players' models at (0x38,0x90) and (0xC8,0x90); called by every ResultsScreen state (was func_ov000_0235dfc4, ov000, 2026-11-16)"
+ResultsScreen_SetModelAnimB:
+  confidence: strong
+  evidence: "strong E7: selects the animation pair for the second model by result sel and calls Model_SetAnimation; called from ResultsScreen_Create/State_ShowResult (was func_ov000_0235d7b4, ov000, 2026-11-16)"
+ResultsScreen_SetModelAnimA:
+  confidence: strong
+  evidence: "strong E7: selects the animation pair for the first model by result sel and calls Model_SetAnimation; called from ResultsScreen_Create/State_ShowResult (was func_ov000_0235d888, ov000, 2026-11-16)"
+ResultsScreen_DrawSprite16:
+  confidence: strong
+  evidence: "strong E7: sets sprite 16 to animation 12 (cached) and draws it (was func_ov000_0235ddac, ov000, 2026-11-16)"
+ResultsScreen_DrawChoiceSprites:
+  confidence: strong
+  evidence: "strong E7: draws the 3 choice sprites (sprite 12 for the cursor +0x8) with blinking/highlight animation (was func_ov000_0235ddec, ov000, 2026-11-16)"
+ResultsScreen_DrawWinLoseSprites:
+  confidence: strong
+  evidence: "strong E7: picks animations 9/10 by result sel and draws the two player result sprites with scale (was func_ov000_0235def0, ov000, 2026-11-16)"
+ResultsScreen_DrawSprite1Pair:
+  confidence: strong
+  evidence: "strong E7: sets sprite 1 to animation 4 and draws it at (8;0x88) and (0x98;0x88) (was func_ov000_0235e018, ov000, 2026-11-16)"
+ResultsScreen_DrawSprite2:
+  confidence: strong
+  evidence: "strong E7: picks sprite 2 animation 6 or 10 by +0x18 and draws it (was func_ov000_0235e068, ov000, 2026-11-16)"
+ResultsScreen_DrawHeader:
+  confidence: strong
+  evidence: "strong E7: draws both player names (ResultsScreen_DrawPlayerName at x 0x1C/0xAC) and header sprite 0 (animation 3) (was func_ov000_0235e124, ov000, 2026-11-16)"
+ResultsScreen_Main_OpenWindow:
+  confidence: strong
+  evidence: "strong E7: task main set by ResultsScreen_Main_Unk_ov000_0235e5b4/0235e738; draws everything and slides the window 0->0x44 over 10 frames (ResultsScreen_EaseValue) (was func_ov000_0235e4c0, ov000, 2026-11-16)"
+ResultsScreen_Main_CloseWindow:
+  confidence: strong
+  evidence: "strong E7: task main set by the QuitPrompt/ShowResult/WaitPartner states; draws everything and slides the window 0x44->0 over 10 frames (was func_ov000_0235e8ac, ov000, 2026-11-16)"
+ResultsScreen_Main_WaitPartnerChoice:
+  confidence: strong
+  evidence: "strong E7: task main; reads ResultsScreen_GetPartnerChoice/HasPartnerDecided each frame, draws, plays SE on decision then ResultsScreen_Main_CloseWindow (was func_ov000_0235e61c, ov000, 2026-11-16)"
+ResultsScreen_Main_Unk_ov000_0235e5b4:
+  confidence: tentative
+  evidence: "tentative E7: task main; draws the menu with choices and after 16 frames continues with ResultsScreen_Main_OpenWindow (was func_ov000_0235e5b4, ov000, 2026-11-16)"
+ResultsScreen_Main_Unk_ov000_0235e738:
+  confidence: tentative
+  evidence: "tentative E7: task main set by ResultsScreen_State_Choose; draws with choices and after 16 frames enables line scroll and continues with ResultsScreen_Main_OpenWindow (was func_ov000_0235e738, ov000, 2026-11-16)"
+ResultsScreen_Unk_ov000_0235ec64:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from ResultsScreen_Destructor (was func_ov000_0235ec64, ov000, 2026-11-16)"
+TimeSelectMenu_IsMode1Flag:
+  confidence: strong
+  evidence: "strong E7: returns gGameState word [2] != 0; only caller TimeSelectMenu_StartMode1 (was func_ov000_0235f9b0, ov000, 2026-11-16)"
+TimeSelectMenu_IsMode0Flag:
+  confidence: strong
+  evidence: "strong E7: returns gGameState word [1] == 1; only caller TimeSelectMenu_StartMode0 (was func_ov000_0235f9d0, ov000, 2026-11-16)"
+TimeSelectMenu_Unk_ov000_0235faf0:
+  confidence: tentative
+  evidence: "tentative E6: only body WirelessSession_Unk_020513a8(); called by TimeSelectMenu_LoadArchives/ReleaseArchives and several TimeSelectMenu states (was func_ov000_0235faf0, ov000, 2026-11-16)"
+TimeSelectMenu_DrawModelA:
+  confidence: strong
+  evidence: "strong E7: animates and draws a character model at screen (x,y) with optional flip (NNS lights, MTX_RotY33_); called from TimeSelectMenu_DrawLayoutA (was func_ov000_0235ffd0, ov000, 2026-11-16)"
+TimeSelectMenu_DrawModelB:
+  confidence: strong
+  evidence: "strong E7: animates and draws the other character model at screen (x,y), z -0x64000, flip scale -0xD000; called from TimeSelectMenu_DrawLayoutA (was func_ov000_0236011c, ov000, 2026-11-16)"
+TimeSelectMenu_Unk_ov000_02360264:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from TimeSelectMenu_DrawLayoutA (was func_ov000_02360264, ov000, 2026-11-16)"
+TimeSelectMenu_SetupOrthoCamera:
+  confidence: strong
+  evidence: "strong E4: G3i_OrthoW_ projection and G3i_LookAt_ camera for the menu models; called from TimeSelectMenu_DrawLayoutA (was func_ov000_02360268, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSpriteScaled:
+  confidence: strong
+  evidence: "strong E7: positions a sprite and draws it normally or with AnimatorSprite_DrawRotScale (flag 0x200) by scale (was func_ov000_023606c4, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite618:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x618, animates and draws it (was func_ov000_02360724, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite5D0:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x5D0, animates and draws it (was func_ov000_02360748, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite588:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x588, animates and draws it (was func_ov000_0236076c, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSpriteGroupA:
+  confidence: strong
+  evidence: "strong E7: draws the 4-sprite group spr[0..3] at (x,y) with optional rot-scale; called from TimeSelectMenu_DrawLayoutA (was func_ov000_02360790, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSpriteGroupB:
+  confidence: strong
+  evidence: "strong E7: draws the other 4-sprite group spr[0..3] at (x,y) with optional rot-scale; called from TimeSelectMenu_DrawLayoutA (was func_ov000_02360870, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite300:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x300, animates and draws it (was func_ov000_02360950, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite2B8:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x2B8, animates and draws it (was func_ov000_02360974, ov000, 2026-11-16)"
+TimeSelectMenu_DrawTransferSprites:
+  confidence: strong
+  evidence: "strong E7: draws sprites 4 (0x50,8), 5 (0x98,0xC) and 3; called from the Chooser/Follower WaitTransfer states (was func_ov000_02360998, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite198:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x198, animates and draws it (was func_ov000_02360a04, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite150:
+  confidence: strong
+  evidence: "strong E7: sets position of the AnimatorSprite at +0x150, animates and draws it (was func_ov000_02360a28, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite0Scaled:
+  confidence: strong
+  evidence: "strong E7: positions sprite 0 and draws it normally or with AnimatorSprite_DrawRotScale by scale (was func_ov000_02360a4c, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSpriteC0:
+  confidence: strong
+  evidence: "strong E7: positions the sprite at +0xC0, animates and draws it (was func_ov000_02360a94, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite78:
+  confidence: strong
+  evidence: "strong E7: positions the sprite at +0x78, animates and draws it (was func_ov000_02360ab4, ov000, 2026-11-16)"
+TimeSelectMenu_DrawSprite30:
+  confidence: strong
+  evidence: "strong E7: positions the sprite at +0x30, animates and draws it (was func_ov000_02360ad4, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite19Anim0:
+  confidence: strong
+  evidence: "strong E7: sets sprite 19 to animation 0 (cached) and shows it; called from TimeSelectMenu_Create (was func_ov000_02360af4, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite17Anim3:
+  confidence: strong
+  evidence: "strong E7: sets sprite 17 to animation 3 (cached) and shows it; called from TimeSelectMenu_Create (was func_ov000_02360b2c, ov000, 2026-11-16)"
+TimeSelectMenu_Unk_ov000_02360b64:
+  confidence: tentative
+  evidence: "tentative E7: same body as TimeSelectMenu_SetSprite17Anim3 (sprite 17 animation 3, shown); called from TimeSelectMenu_Create (was func_ov000_02360b64, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite16Anim4:
+  confidence: strong
+  evidence: "strong E7: sets sprite 16 to animation 4 (cached) and shows it; called from TimeSelectMenu_Create (was func_ov000_02360b9c, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprites12To15:
+  confidence: strong
+  evidence: "strong E7: sets sprites 12-15 to animations 10-13 (cached) and shows them; called from TimeSelectMenu_Create (was func_ov000_02360bd4, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprites8To11:
+  confidence: strong
+  evidence: "strong E7: sets sprites 8-11 to animations 6-9 (cached) and shows them; called from TimeSelectMenu_Create (was func_ov000_02360c88, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite7Anim1:
+  confidence: strong
+  evidence: "strong E7: sets sprite 7 to animation 1 (cached) and shows it; called from TimeSelectMenu_Create (was func_ov000_02360d3c, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite6Anim0:
+  confidence: strong
+  evidence: "strong E7: sets sprite 6 to animation 0 (cached) and shows it; called from TimeSelectMenu_Create (was func_ov000_02360d74, ov000, 2026-11-16)"
+TimeSelectMenu_SetTransferSprites:
+  confidence: strong
+  evidence: "strong E7: sets sprites 3/4/5 to animations 5/1/2 (cached) and shows them; called from the Chooser/Follower TransferSync states (was func_ov000_02360dac, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite2Anim1:
+  confidence: strong
+  evidence: "strong E7: sets sprite 2 to animation 1 (cached) and shows it; called from TimeSelectMenu_State_Select (was func_ov000_02360e34, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite2Anim0:
+  confidence: strong
+  evidence: "strong E7: sets sprite 2 to animation 0 (cached) and shows it; called from TimeSelectMenu_Create (was func_ov000_02360e6c, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite1SelectAnim:
+  confidence: strong
+  evidence: "strong E7: sets sprite 1 to animation (2a+b)*2+1 (cached) and shows it; called from TimeSelectMenu_State_Select (was func_ov000_02360ea4, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite1Anim:
+  confidence: strong
+  evidence: "strong E7: sets sprite 1 to animation (2a+b)*2 (cached) and shows it (was func_ov000_02360ee0, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite0Anim:
+  confidence: strong
+  evidence: "strong E7: sets sprite 0 to animation a+5 (cached), shows it and clears flag 1 (was func_ov000_02360f18, ov000, 2026-11-16)"
+TimeSelectMenu_SetSpriteC0Anim4:
+  confidence: strong
+  evidence: "strong E7: sets the +0xC0 sprite to animation 4 (cached +0x6F8) and shows it (was func_ov000_02360f54, ov000, 2026-11-16)"
+TimeSelectMenu_SetSpriteC0Anim3Hidden:
+  confidence: strong
+  evidence: "strong E7: sets the +0xC0 sprite to animation 3 (cached +0x6F8), hidden (flag 4), flag 0x80; called from TimeSelectMenu_State_Select (was func_ov000_02360f98, ov000, 2026-11-16)"
+TimeSelectMenu_SetSpriteC0Anim2Hidden:
+  confidence: strong
+  evidence: "strong E7: sets the +0xC0 sprite to animation 2 (cached +0x6F8), hidden, flag 0x80; called from TimeSelectMenu_State_Select (was func_ov000_02360fdc, ov000, 2026-11-16)"
+TimeSelectMenu_SetSpriteC0Anim2:
+  confidence: strong
+  evidence: "strong E7: sets and processes the +0xC0 sprite animation 2, hidden with flags 1/0x80; called from TimeSelectMenu_State_Sync (was func_ov000_02361020, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite78Anim4:
+  confidence: strong
+  evidence: "strong E7: sets the +0x78 sprite to animation 4 (cached +0x6F4) and shows it (was func_ov000_02361068, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite78Anim3Hidden:
+  confidence: strong
+  evidence: "strong E7: sets the +0x78 sprite to animation 3 (+0x6F4), hidden, clears flag 1; called from TimeSelectMenu_State_Select (was func_ov000_023610a4, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite78Anim2Hidden:
+  confidence: strong
+  evidence: "strong E7: sets the +0x78 sprite to animation 2 (+0x6F4), hidden, clears flag 1; called from TimeSelectMenu_State_Select (was func_ov000_023610d8, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite78Anim2:
+  confidence: strong
+  evidence: "strong E7: sets and processes the +0x78 sprite animation 2, hidden with flag 1; called from TimeSelectMenu_State_Sync (was func_ov000_0236110c, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite30Anim1:
+  confidence: strong
+  evidence: "strong E7: sets the +0x30 sprite to animation 1; called from TimeSelectMenu_State_Select (was func_ov000_0236114c, ov000, 2026-11-16)"
+TimeSelectMenu_SetSprite30Anim0:
+  confidence: strong
+  evidence: "strong E7: sets the +0x30 sprite to animation 0; called from TimeSelectMenu_Create and TimeSelectMenu_State_ChooserConfirmed (was func_ov000_02361174, ov000, 2026-11-16)"
+TimeSelectMenu_DrawLayoutB:
+  confidence: strong
+  evidence: "strong E7: draws the +0x150/+0x30/+0x78/+0xC0/sprite-0 elements (and +0x198) of the second menu object; called by TimeSelectMenu_Main and the Chooser/Follower states (was func_ov000_0236119c, ov000, 2026-11-16)"
+TimeSelectMenu_DrawLayoutA:
+  confidence: strong
+  evidence: "strong E7: draws both players (models via TimeSelectMenu_DrawModelA/B, sprite groups, names) mirrored by +0x28; called by TimeSelectMenu_Main and the Chooser/Follower states (was func_ov000_023611f8, ov000, 2026-11-16)"
+TimeSelectMenu_Unk_ov000_023622ec:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from TimeSelectMenu_Destructor (was func_ov000_023622ec, ov000, 2026-11-16)"
+TimeSelectMenu_Unk_ov000_023622f0:
+  confidence: tentative
+  evidence: "tentative E6: empty function called from TimeSelectMenu_Destructor (was func_ov000_023622f0, ov000, 2026-11-16)"
+gZoneFxInitTable:
+  confidence: strong
+  evidence: "strong E8,E7: [9][3] (zone x act) function-pointer table indexed by gGameState+0x1C/+0x1D in ZoneFx_Init; entries are the ZoneFx_Zone*_Init hooks (was data_ov000_0236885c, ov000, 2026-11-16)"
+gZoneFxReleaseTable:
+  confidence: strong
+  evidence: "strong E8,E7: [9][3] zone/act hook table read by ZoneFx_Release; entries are the ZoneFx_Zone*_Release hooks (was data_ov000_023688c8, ov000, 2026-11-16)"
+gZoneFxUpdateTable:
+  confidence: strong
+  evidence: "strong E8,E7: [9][3] zone/act hook table read by ZoneFx_Update; entries are the ZoneFx_Zone*_Update hooks (was data_ov000_02368934, ov000, 2026-11-16)"
+gZoneBgReleaseTable:
+  confidence: strong
+  evidence: "strong E8,E7: [9][3] zone/act hook table read by ZoneBg_Release; entries are the ZoneBg_Zone*_Release hooks (was data_ov000_023689c4, ov000, 2026-11-16)"
+gZoneBgLoadTable:
+  confidence: strong
+  evidence: "strong E8,E7: [9][3] zone/act hook table read by ZoneBg_Load; entries are the ZoneBg_Zone*_Load hooks (was data_ov000_02368a30, ov000, 2026-11-16)"
+gZoneBgInitTable:
+  confidence: strong
+  evidence: "strong E8,E7: [9][3] zone/act hook table read by ZoneBg_Init; entries are the ZoneBg_Zone*_Init hooks (was data_ov000_02368a9c, ov000, 2026-11-16)"
+gZoneBgUpdateTable:
+  confidence: strong
+  evidence: "strong E8,E7: [9][3] zone/act hook table read by ZoneBg_Update; entries are the ZoneBg_Zone*_Update hooks (was data_ov000_02368b08, ov000, 2026-11-16)"
+gZoneFxZone4BldyEffectTable:
+  confidence: strong
+  evidence: "strong E8,E7: 4 function pointers {ZoneFx_Zone4_BldyNone, _BldyRampUp, _BldyRampDown, _BldyFromTable} indexed by the per-screen mode in ZoneFx_Zone4_Update (was data_ov000_0236880c, ov000, 2026-11-16)"
+gZoneFxZone4BldyFlashTable:
+  confidence: strong
+  evidence: "strong E7: byte table of BLDY levels read frame by frame by ZoneFx_Zone4_BldyFromTable (was data_ov000_0236881c, ov000, 2026-11-16)"
+gStageZoneScriptTable:
+  confidence: strong
+  evidence: "strong E8,E7: [9][3] zone/act function table read by StageZoneScript_Create; entries StageZoneScript_None and the Zone3Boss/Zone7Boss/ZoneFBoss scripts (was data_ov000_023644e0, ov000, 2026-11-16)"
+gBossCameraModeTable:
+  confidence: strong
+  evidence: "strong E8,E7: 3 function pointers {BossCamera_UpdateFixed, BossCamera_UpdateTrack0, BossCamera_UpdateTrack1} indexed by the camera mode +0xDC in BossCamera_Main (was data_ov000_023644d4, ov000, 2026-11-16)"
+gStageBossMapLoaderTable:
+  confidence: strong
+  evidence: "strong E8,E7: 8 per-zone boss-act map-graphics loaders (StageLoader_LoadBossMapGraphics and the StageLoader_Zone*Boss_LoadMapGraphics wrappers) indexed by zone in StageLoader_LoadZoneMapGraphics (was data_ov000_02364d90, ov000, 2026-11-16)"
+gStageEventSpawnerTable:
+  confidence: strong
+  evidence: "strong E8,E7: 3 function pointers {StageEvent_SpawnMapObjectsInBlock, StageEvent_SpawnRingsInBlock, StageEvent_SpawnDecorationsInBlock} used by the StageEvent spawners (was data_ov000_023687d4, ov000, 2026-11-16)"
+gStageEventManagerTask:
+  confidence: strong
+  evidence: "strong E7: singleton task pointer set by StageEvent_CreateManager and cleared by StageEvent_Destructor/StageEvent_Reset (was data_ov000_0236aa90, ov000, 2026-11-16)"
+gStageEventFiles:
+  confidence: strong
+  evidence: "strong E7: the event files loaded by Stage_LoadEventResources ([0] map objects, [1] rings, ...); returned by StageEvent_GetMapObjectList/StageEvent_GetRingList, cleared by StageEvent_Reset (was data_ov000_0236aa9c, ov000, 2026-11-16)"
+gZoneFxWork:
+  confidence: strong
+  evidence: "strong E7: work buffer allocated by ZoneFx_Init (0x980 bytes) and passed to every ZoneFx zone hook; freed and cleared by ZoneFx_Release (was data_ov000_0236ac18, ov000, 2026-11-16)"
+gZoneBgWork:
+  confidence: strong
+  evidence: "strong E7: work buffer allocated by ZoneBg_Init (0xC54 bytes) and passed to every ZoneBg zone hook; freed and cleared by ZoneBg_Release (was data_ov000_0236ac1c, ov000, 2026-11-16)"
+gDecorationSlotMask:
+  confidence: strong
+  evidence: "strong E7: 32-bit slot-in-use mask set by Decoration_AllocSlot and cleared by Decoration_FreeSlot (was data_ov000_0236a65c, ov000, 2026-11-16)"
+gDecorationSlots:
+  confidence: strong
+  evidence: "strong E7: 32 decoration spawn entries indexed by the gDecorationSlotMask bit; filled by Decoration_Spawn and searched by Decoration_FreeSlot (was data_ov000_0236a670, ov000, 2026-11-16)"
+gDecSharedObjects:
+  confidence: strong
+  evidence: "strong E7: per-index shared decoration objects created by DecShared_Create and cleared by DecShared_Destructor/DecShared_State_Main (was data_ov000_0236a660, ov000, 2026-11-16)"
+gEnemyRoomTable:
+  confidence: strong
+  evidence: "strong E7: room object registry written by EnemyRoom_Register/EnemyRoom_Unregister and read by EnemyRoom_Get/EnemyRoom_GetActive (was data_ov000_0236abc4, ov000, 2026-11-16)"
+gEffTrickSparkleTask:
+  confidence: strong
+  evidence: "strong E7: singleton set by EffTrickSparkle_Create and cleared by EffTrickSparkle_Destructor (was data_ov000_0236a98c, ov000, 2026-11-16)"
+gEnemyRoomHudTask:
+  confidence: strong
+  evidence: "strong E7: singleton set by EnemyRoomHud_Create (destroys the old one) and cleared by EnemyRoomHud_Destructor (was data_ov000_0236a988, ov000, 2026-11-16)"
+gFixVsPushIconTask:
+  confidence: strong
+  evidence: "strong E7: singleton checked/set by FixVsPushIcon_Create and cleared by FixVsPushIcon_Destructor (was data_ov000_0236a984, ov000, 2026-11-16)"
+gMarkerTimeListTask:
+  confidence: strong
+  evidence: "strong E7: singleton set by MarkerTimeList_Create and cleared by MarkerTimeList_Destructor (was data_ov000_0236a97c, ov000, 2026-11-16)"
+gEffTrailWrapShift:
+  confidence: strong
+  evidence: "strong E7: x shift stored by EffTrail_SetWrapShift and applied to all trail nodes by EffTrail_ApplyWrapShift (was data_ov000_0236a974, ov000, 2026-11-16)"
+gEffTrailWrapPending:
+  confidence: strong
+  evidence: "strong E7: flag set by EffTrail_SetWrapShift and cleared by EffTrail_ApplyWrapShift/EffTrail_Create (was data_ov000_0236a970, ov000, 2026-11-16)"
+gEffSplash3DModelNames:
+  confidence: strong
+  evidence: "strong E3,E8: pointers to the strings eff_splash_s/eff_splash_b used by EffSplash3D_Spawn (was data_ov000_02367b38, ov000, 2026-11-16)"
+gEffRipple3DModelNames:
+  confidence: strong
+  evidence: "strong E3,E8: pointers to the strings eff_ripple_s/eff_ripple_m/eff_ripple_b used by EffRipple3D_Spawn (was data_ov000_02367b40, ov000, 2026-11-16)"

@@ -6,7 +6,7 @@
 s32 Touch_Disable();
 s32 ResultsScreen_ReleaseNameGlyphs();
 s32 ResultsScreen_ReleaseArchives();
-s32 func_ov000_0235ec64();
+s32 ResultsScreen_Unk_ov000_0235ec64();
 s32 ResultsScreen_ReleaseSprites();
 s32 ResultsScreen_FreeBuffers();
 s32 ResultsScreen_ResetBgOffsets();
@@ -16,7 +16,7 @@ void ResultsScreen_Destructor(u8 *p0) {
     Touch_Disable();
     ResultsScreen_ReleaseNameGlyphs(t0);
     ResultsScreen_ReleaseArchives(t0);
-    func_ov000_0235ec64(t0);
+    ResultsScreen_Unk_ov000_0235ec64(t0);
     ResultsScreen_ReleaseSprites(t0);
     ResultsScreen_FreeBuffers(t0);
     ResultsScreen_ResetBgOffsets();

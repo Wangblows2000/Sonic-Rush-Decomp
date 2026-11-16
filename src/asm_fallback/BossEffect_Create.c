@@ -20,7 +20,7 @@ extern void Asset3D_CreateSetupTask(void);
 extern void StageObj_LoadModel(void);
 extern void StageObj_Main(void);
 extern void BossEffect_Destructor(void);
-extern void func_ov000_02327f24(void);
+extern void BossEffect_State_Main(void);
 
 asm void BossEffect_Create(void)
 {
@@ -175,5 +175,5 @@ _1bc:
     dcd data_ov000_02367c54
     dcd data_ov000_02367b9c
     dcd 0x000034cc
-    dcd func_ov000_02327f24
+    dcd BossEffect_State_Main
 }

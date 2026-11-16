@@ -8,14 +8,14 @@ extern u8 data_ov000_023683ec[];
 extern u8 data_ov000_02368404[];
 extern u8 data_ov000_0236841c[];
 
-void func_ov000_02330e60(void);
+void Barrier_State_Main(void);
 
 UnkStruct_BlkObj *Barrier_Create(UnkStruct_BlkObjArg *arg) {
     UnkStruct_Task *task;
     UnkStruct_BlkObj *w;
     vu16 zero;
 
-    if (func_ov000_023270d8(arg))
+    if (Player_IsPlayer2(arg))
         return NULL;
     if (arg->unk0 != 1)
         return NULL;
@@ -40,6 +40,6 @@ UnkStruct_BlkObj *Barrier_Create(UnkStruct_BlkObjArg *arg) {
     w->unk88 = arg;
     w->unk58 |= 0x2100;
     w->unk54 |= 0x12;
-    w->unk68 = func_ov000_02330e60;
+    w->unk68 = Barrier_State_Main;
     return w;
 }

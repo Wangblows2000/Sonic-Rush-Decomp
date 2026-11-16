@@ -1,0 +1,83 @@
+#include <nitro/types.h>
+
+extern void *data_ov000_0236aab8;
+extern u8 data_ov000_02368808[];
+extern u32 gPaletteTransferHead;
+extern u32 gPaletteTransferTail;
+
+void NNS_FndMountArchive(void *buf, void *a, void *b);
+void *NNS_FndGetArchiveFileByIndex(void *buf, s32 a);
+void NNS_FndUnmountArchive(void *buf);
+void MIi_CpuClear32(u32 data, void *dest, u32 size);
+void DC_StoreRange(void *p, u32 size);
+u32 StageLoader_GetCompressionType(void *res);
+u32 StageLoader_GetUncompressedSize(void *res);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
+void *Compress_GetData(void *res);
+void Mem_Copy(void *src, void *dst, u32 size);
+void VBlankIntrWait(void);
+void PaletteTransfer_QueueLoad(void *res, s32 a, s32 b);
+void PaletteTransfer_Flush(void);
+void StageLoader_UnpackMapArchive(void *arc);
+
+static inline void UnkDecomp_0233ae0c(void *res, void *dst) {
+    switch (StageLoader_GetCompressionType(res)) {
+    case 0x10:
+        MI_UncompressLZ16(res, dst);
+        break;
+    case 0x20:
+        MI_UncompressHuffman(res, dst);
+        break;
+    case 0x30:
+        MI_UncompressRL16(res, dst);
+        break;
+    default:
+        Mem_Copy(Compress_GetData(res), dst, StageLoader_GetUncompressedSize(res));
+        break;
+    }
+    DC_StoreRange(dst, StageLoader_GetUncompressedSize(res));
+}
+
+void StageLoader_LoadActMapGraphics(void) {
+    vu32 z0;
+    vu32 z1;
+    u8 buf[0x60];
+    void *res;
+    u32 sa;
+    u32 sb;
+
+    NNS_FndMountArchive(buf, data_ov000_02368808, data_ov000_0236aab8);
+    z0 = 0;
+    MIi_CpuClear32(z0, (void *)0x6010000, 0x10000);
+    z1 = 0;
+    MIi_CpuClear32(z1, (void *)0x6210000, 0x10000);
+    res = NNS_FndGetArchiveFileByIndex(buf, 3);
+    UnkDecomp_0233ae0c(res, (void *)0x6010000);
+    UnkDecomp_0233ae0c(res, (void *)0x6210000);
+    VBlankIntrWait();
+    res = NNS_FndGetArchiveFileByIndex(buf, 6);
+    sa = gPaletteTransferHead;
+    sb = gPaletteTransferTail;
+    gPaletteTransferHead = 0;
+    gPaletteTransferTail = 0;
+    PaletteTransfer_QueueLoad(res, 1, 0x4000);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = 0;
+    gPaletteTransferTail = 0;
+    PaletteTransfer_QueueLoad(res, 1, 0x6000);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = 0;
+    gPaletteTransferTail = 0;
+    PaletteTransfer_QueueLoad(res, 3, 0x4000);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = 0;
+    gPaletteTransferTail = 0;
+    PaletteTransfer_QueueLoad(res, 3, 0x6000);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = sa;
+    gPaletteTransferTail = sb;
+    StageLoader_UnpackMapArchive(buf);
+    NNS_FndUnmountArchive(buf);
+}

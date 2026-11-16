@@ -29,7 +29,7 @@ extern UnkStruct_022c4534 gStageMapCollision;
 
 void BossFPartD8_Unk_ov000_022f4cbc(UnkStruct_022f2444 *s);
 void ObjRect_SetBox3D(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e, s16 f, s16 g);
-void func_ov000_0232895c(s32 x, s16 y, s32 flip, s32 c);
+void EffEnemyRoomFix_Create(s32 x, s16 y, s32 flip, s32 c);
 void BossFPartD8_State_Unk_ov000_022f238c(void);
 
 void BossFPartD8_Unk_ov000_022f2444(UnkStruct_022f2444 *s) {
@@ -44,7 +44,7 @@ void BossFPartD8_Unk_ov000_022f2444(UnkStruct_022f2444 *s) {
     s->unk436 = 0;
     gStageMapCollision.unk1C = 0;
     gStageMapCollision.unk24 = gStageMapCollision.unk18 << 6;
-    func_ov000_0232895c(0xb4, 0x30, 0, 0xb4);
+    EffEnemyRoomFix_Create(0xb4, 0x30, 0, 0xb4);
     s->unk440 = 0;
     gBossStatus.unk4 = 0x33;
     s->base.unk68 = BossFPartD8_State_Unk_ov000_022f238c;

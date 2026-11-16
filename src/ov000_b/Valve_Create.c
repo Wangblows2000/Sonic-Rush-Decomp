@@ -22,7 +22,7 @@ extern UnkStruct_02364454 data_ov000_02364454[];
 
 void Valve_Destructor(void);
 void Valve_InitSteamSprites(UnkStruct_0231af74 *w);
-void func_ov000_0231af10(UnkStruct_0231af74 *w);
+void Valve_Action_Wait(UnkStruct_0231af74 *w);
 
 UnkStruct_0231af74 *Valve_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -77,6 +77,6 @@ UnkStruct_0231af74 *Valve_Create(s32 a, s32 b, s32 c) {
     w->base.coll1.unk18 = w;
     w->base.unk54 |= 2;
     Valve_InitSteamSprites(w);
-    func_ov000_0231af10(w);
+    Valve_Action_Wait(w);
     return w;
 }

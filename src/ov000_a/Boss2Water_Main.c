@@ -83,10 +83,10 @@ extern UnkStruct_022cf3e0_v data_020748bc[][3];
 
 void NNS_G3dGlbLightColor(s32 i, u16 a);
 void NNS_G3dGlbLightVector(s32 i, s32 x, s32 y, s32 z);
-UnkStruct_022cf3e0_o *func_ov000_023293f4(UnkStruct_022cf3e0_s *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-UnkStruct_022cf3e0_o *func_ov000_023295a4(UnkStruct_022cf3e0_s *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+UnkStruct_022cf3e0_o *EffRipple3D_Spawn(UnkStruct_022cf3e0_s *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+UnkStruct_022cf3e0_o *EffSplash3D_Spawn(UnkStruct_022cf3e0_s *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void EffWater3D_Create(UnkStruct_022cf3e0_pl *p, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_ov000_023294c8(UnkStruct_022cf3e0_pl *p);
+void EffRipple3D_SpawnForPlayer(UnkStruct_022cf3e0_pl *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 void Boss2Water_Main(void) {
@@ -122,7 +122,7 @@ void Boss2Water_Main(void) {
         s32 k = (-s->unk134C >> 12) + 0x34;
         if (h < k && h > k / 128.7) {
             if (t->unk16 == 0x18) {
-                UnkStruct_022cf3e0_o *o = func_ov000_023293f4(s, 0, 1, 2, h, gCamera.unkE0, gCamera.unkE4);
+                UnkStruct_022cf3e0_o *o = EffRipple3D_Spawn(s, 0, 1, 2, h, gCamera.unkE0, gCamera.unkE4);
                 if (s->unk20C & 2) {
                     o->unk10 = s->unk1348 >> 4;
                     o->unk18 = s->unk1350 >> 4;
@@ -135,13 +135,13 @@ void Boss2Water_Main(void) {
     if (s->unk20C & 8) {
         if (gCamera.unk62 > (-s->unk134C >> 12) + 0x34) {
             s->unk20C &= ~8;
-            func_ov000_023295a4(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
+            EffSplash3D_Spawn(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
             Sound_PlaySeqArc(0, 0, 0xa1);
         }
     } else {
         if (gCamera.unk62 <= (-s->unk134C >> 12) + 0x34) {
             s->unk20C |= 8;
-            func_ov000_023295a4(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
+            EffSplash3D_Spawn(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
             Sound_PlaySeqArc(0, 0, 0xa1);
         }
     }
@@ -184,6 +184,6 @@ void Boss2Water_Main(void) {
     if (pl->unk58 & 0x10)
         return;
     if ((t->unk14 & 7) == 0)
-        func_ov000_023294c8(pl);
+        EffRipple3D_SpawnForPlayer(pl);
     t->unk14++;
 }

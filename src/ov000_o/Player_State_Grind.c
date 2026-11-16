@@ -46,7 +46,7 @@ void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Player_Action_GimmickLaunch(UnkStruct_02348350 *w, s32 a, s32 b);
 BOOL Player_CheckFallOffGround(UnkStruct_02348350 *w);
 void Player_Action_Fall(UnkStruct_02348350 *w);
-void func_ov000_023497a4(UnkStruct_02348350 *w);
+void Player_Unk_ov000_023497a4(UnkStruct_02348350 *w);
 void Player_SetAnimation(UnkStruct_02348350 *w, s32 state);
 void Player_Action_GrindTrick(UnkStruct_02348350 *w);
 
@@ -96,7 +96,7 @@ void Player_State_Grind(UnkStruct_02348350 *w) {
             w->unk54 |= 1;
             w->unk410 = 0;
             Player_Action_GimmickLaunch(w, w->unk34, -0x700);
-            func_ov000_023497a4(w);
+            Player_Unk_ov000_023497a4(w);
             return;
         }
         if (w->unk340 != NULL) {

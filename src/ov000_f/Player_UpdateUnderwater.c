@@ -58,7 +58,7 @@ extern UnkStruct_023461f0_Tbl2 data_ov000_02368ba6[];
 void Stage_SelectBGMLayer(s32 a);
 void EffAirBubble_Spawn(UnkStruct_023461f0 *w, s32 a, s32 b, u16 c);
 void EffWaterSplash_Spawn(UnkStruct_023461f0 *w);
-void func_ov000_023294c8(UnkStruct_023461f0 *w);
+void EffRipple3D_SpawnForPlayer(UnkStruct_023461f0 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void EffDrownCount_Spawn(UnkStruct_023461f0 *w, s32 a, s32 b, s32 c);
 void StageJingle_Create(UnkStruct_023461f0 *w, s32 a);
@@ -94,7 +94,7 @@ void Player_UpdateUnderwater(UnkStruct_023461f0 *w) {
                 w->unk30 = 0;
                 if (data_022c4590.unk18 + 1 < gGameState.unk20) {
                     EffWaterSplash_Spawn(w);
-                    func_ov000_023294c8(w);
+                    EffRipple3D_SpawnForPlayer(w);
                     Sound_PlaySeqArcEx(w->unk384, 0, 0x51);
                 }
             }
@@ -109,7 +109,7 @@ void Player_UpdateUnderwater(UnkStruct_023461f0 *w) {
                 }
                 if (data_022c4590.unk18 + 1 < gGameState.unk20) {
                     EffWaterSplash_Spawn(w);
-                    func_ov000_023294c8(w);
+                    EffRipple3D_SpawnForPlayer(w);
                     Sound_PlaySeqArcEx(w->unk384, 0, 0x51);
                 }
                 w->unk40 = data_ov000_02368ba4[w->unk324].v;

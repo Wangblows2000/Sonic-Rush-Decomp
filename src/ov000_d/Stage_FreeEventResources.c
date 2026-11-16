@@ -7,7 +7,7 @@ typedef struct {
 } UnkStruct_023357e0;
 
 extern void *gMainHeap;
-extern UnkStruct_023357e0 data_ov000_0236aa9c;
+extern UnkStruct_023357e0 gStageEventFiles;
 
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -34,7 +34,7 @@ static inline void UnkFree_023357e0(void **pp) {
 }
 
 void Stage_FreeEventResources(void) {
-    UnkStruct_023357e0 *d = &data_ov000_0236aa9c;
+    UnkStruct_023357e0 *d = &gStageEventFiles;
 
     UnkFree_023357e0(&d->unk0);
     UnkFree_023357e0(&d->unk4);

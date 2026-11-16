@@ -1,7 +1,7 @@
 #include <ov000_d/player.h>
 
 BOOL ScorePopup_IsActive(void);
-void func_ov000_0232be64(s32 a);
+void EffTrickCombo_Spawn(s32 a);
 
 void Player_Action_TrickCombo(UnkStruct_Player *w) {
     if (!ScorePopup_IsActive()) {
@@ -18,7 +18,7 @@ void Player_Action_TrickCombo(UnkStruct_Player *w) {
         Player_SetAnimation(w, 0x3b);
         w->unk32C |= 4;
         if (w->unk3D0 == 0) {
-            func_ov000_0232be64(0);
+            EffTrickCombo_Spawn(0);
         }
         Player_AddTension(w, 0x280 >> w->unk3D0);
         if (w->unk324 != 1) {
@@ -74,7 +74,7 @@ void Player_Action_TrickCombo(UnkStruct_Player *w) {
     }
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;
-    func_ov000_0232c7b0(w->unk3D0);
+    EffTrickSparkle_Create(w->unk3D0);
     Player_AddTrickScore(w, 200);
     w->unk8 = 0;
     w->unk32A = 0;

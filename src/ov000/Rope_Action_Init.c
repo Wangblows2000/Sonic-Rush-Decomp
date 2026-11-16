@@ -5,8 +5,8 @@ typedef struct UnkStruct_0231478c {
     void (*func)(void);
 } UnkStruct_0231478c;
 
-void func_ov000_02314758(void);
+void Rope_State_Attached(void);
 
 void Rope_Action_Init(UnkStruct_0231478c *s) {
-    s->func = func_ov000_02314758;
+    s->func = Rope_State_Attached;
 }

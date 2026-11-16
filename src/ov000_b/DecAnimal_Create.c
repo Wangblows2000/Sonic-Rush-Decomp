@@ -44,7 +44,7 @@ void DecAnimal_Destructor(void);
 void Decoration_InitFromMap(void *w, void *p, s32 a, s32 b);
 void sprintf(char *buf, const char *fmt, ...);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void func_ov000_0231df98(UnkStruct_0231e324 *w);
+void DecAnimal_Action_Idle(UnkStruct_0231e324 *w);
 
 UnkStruct_0231e324 *DecAnimal_Create(void *p, s32 a, s32 b) {
     UnkStruct_Task *task;
@@ -137,6 +137,6 @@ UnkStruct_0231e324 *DecAnimal_Create(void *p, s32 a, s32 b) {
         w->unk8 >>= 1;
     if (gDecAnimalCount > 7)
         w->unk8 = 1;
-    func_ov000_0231df98(w);
+    DecAnimal_Action_Idle(w);
     return w;
 }

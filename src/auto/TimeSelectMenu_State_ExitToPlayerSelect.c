@@ -8,8 +8,8 @@ s32 MsgBox_Destroy();
 s32 Task_DestroyByTag();
 s32 SceneChange_ToPlayerSelectMenuMode1();
 s32 SceneChange_ToPlayerSelectMenuMode2();
-s32 func_ov000_023611f8();
-s32 func_ov000_0236119c();
+s32 TimeSelectMenu_DrawLayoutA();
+s32 TimeSelectMenu_DrawLayoutB();
 
 void TimeSelectMenu_State_ExitToPlayerSelect(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
@@ -25,8 +25,8 @@ void TimeSelectMenu_State_ExitToPlayerSelect(void) {
         SceneChange_ToPlayerSelectMenuMode2();
         return;
     }
-    func_ov000_023611f8(t0);
-    func_ov000_0236119c(t0, 0x1000, 1);
+    TimeSelectMenu_DrawLayoutA(t0);
+    TimeSelectMenu_DrawLayoutB(t0, 0x1000, 1);
     *(u32 *)t0 = (*(u32 *)t0 + 0x1);
 }
 

@@ -13,8 +13,8 @@ void PlayerSelectMenu_Action_PartnerLeft(UnkStruct_SceneTask *t) {
     }
     w = t->work;
     w->unk0 = 0;
-    func_ov000_02357d20(w);
-    func_ov000_02357c8c(w);
+    PlayerSelectMenu_SetSprite60CAnim3(w);
+    PlayerSelectMenu_SetSprite654Anim3(w);
     Task_DestroyRange(0x4000, 0x4000);
     WirelessSession_Stop();
     w->unk334 = 0;

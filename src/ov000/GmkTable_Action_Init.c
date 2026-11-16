@@ -7,9 +7,9 @@ typedef struct UnkStruct_0231a0a0 {
     void (*func)(void);
 } UnkStruct_0231a0a0;
 
-void func_ov000_02319c34(void);
+void GmkTable_State_Main(void);
 
 void GmkTable_Action_Init(UnkStruct_0231a0a0 *s) {
-    s->func = func_ov000_02319c34;
+    s->func = GmkTable_State_Main;
     s->unk34 = 0x100;
 }

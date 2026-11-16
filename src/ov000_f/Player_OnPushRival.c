@@ -34,7 +34,7 @@ typedef struct {
 
 extern UnkStruct_02342b78_4560 gGameState;
 
-void func_ov000_0232fc10(UnkStruct_02342b78_P *p);
+void FixVsPushIcon_Create(UnkStruct_02342b78_P *p);
 
 #define ABS_02342b78(x) ((x) < 0 ? -(x) : (x))
 
@@ -113,7 +113,7 @@ void Player_OnPushRival(UnkStruct_02342b78 *a, UnkStruct_02342b78 *b) {
         return;
     }
     if (!(me->unk32C & 0x10000)) {
-        func_ov000_0232fc10(me);
+        FixVsPushIcon_Create(me);
     }
     me->unk32C |= 0x10000;
 }

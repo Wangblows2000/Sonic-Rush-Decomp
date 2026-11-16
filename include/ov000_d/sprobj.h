@@ -39,15 +39,15 @@ typedef struct {
 
 extern UnkStruct_SprObjTask *gTaskCurrent;
 
-void func_ov000_0235e124(UnkStruct_SprObj *w);
-void func_ov000_0235e068(UnkStruct_SprObj *w);
-void func_ov000_0235e018(UnkStruct_SprObj *w);
-void func_ov000_0235dfc4(UnkStruct_SprObj *w);
-void func_ov000_0235def0(UnkStruct_SprObj *w, s32 sel, s32 scale);
-void func_ov000_0235ddec(UnkStruct_SprObj *w, BOOL flag);
-void func_ov000_0235cfc4(UnkStruct_SprObj *w);
-void func_ov000_0235d888(UnkStruct_SprObj *w, s32 sel);
-void func_ov000_0235d7b4(UnkStruct_SprObj *w, s32 sel);
+void ResultsScreen_DrawHeader(UnkStruct_SprObj *w);
+void ResultsScreen_DrawSprite2(UnkStruct_SprObj *w);
+void ResultsScreen_DrawSprite1Pair(UnkStruct_SprObj *w);
+void ResultsScreen_DrawModels(UnkStruct_SprObj *w);
+void ResultsScreen_DrawWinLoseSprites(UnkStruct_SprObj *w, s32 sel, s32 scale);
+void ResultsScreen_DrawChoiceSprites(UnkStruct_SprObj *w, BOOL flag);
+void ResultsScreen_EnableLineScrollSplit(UnkStruct_SprObj *w);
+void ResultsScreen_SetModelAnimA(UnkStruct_SprObj *w, s32 sel);
+void ResultsScreen_SetModelAnimB(UnkStruct_SprObj *w, s32 sel);
 
 void AnimatorSprite_SetAnimation(UnkStruct_SprObjSpr *spr, u16 anim);
 void AnimatorSprite_ProcessAnimation(UnkStruct_SprObjSpr *spr, s32 a, s32 b);

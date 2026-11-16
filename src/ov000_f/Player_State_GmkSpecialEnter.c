@@ -40,7 +40,7 @@ extern u32 gRandSeed;
 
 s32 ObjShift_SetFromRef(s32 cur, s32 target, s32 c, s32 d, s32 e, s32 f);
 u8 ObjAngle_MoveToward8(u8 cur, s32 target, s32 step);
-void func_ov000_02330098(UnkStruct_0235020c *w, s16 a, s16 b);
+void EffTrick_Unk_ov000_02330098(UnkStruct_0235020c *w, s16 a, s16 b);
 void Player_StopHighSpeed(UnkStruct_0235020c *w);
 void Player_StopBoost(UnkStruct_0235020c *w);
 void BrightnessFade_Create(s32 a, s32 b);
@@ -64,7 +64,7 @@ void Player_State_GmkSpecialEnter(UnkStruct_0235020c *w) {
     w->unk330 &= ~0xc0;
     w->unk3EE = ObjShift_SetFromRef(w->unk3EE, t, 0, 4, 0xf00, 0x80);
     if (!(gGameState.unk20 & 1)) {
-        func_ov000_02330098(w, 0xf - (Rand_0235020c() & 0x1e), 0xf - (Rand_0235020c() & 0x1e));
+        EffTrick_Unk_ov000_02330098(w, 0xf - (Rand_0235020c() & 0x1e), 0xf - (Rand_0235020c() & 0x1e));
     }
     py = w->unk3E8->y;
     if (((w->y < py - 0x3000 && w->unk5 == 0) || (w->y > py + 0x3000 && w->unk5 != 0)) && !(w->unk5C & 0x20)) {

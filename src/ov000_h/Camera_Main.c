@@ -34,8 +34,8 @@ extern UnkStruct_02339dd4 gCamera;
 
 void Camera_HandleSwapScreenInput(void);
 void Camera_UpdateFollow(void *w);
-void func_ov000_023425d0(void);
-void func_ov000_023423b8(void);
+void Camera_ClearPosInViewFlags(void);
+void Camera_UpdateInViewLatch(void);
 void ZoneBg_Update(void);
 void ZoneFx_Update(void);
 void Camera_DrawMapBg(void);
@@ -58,8 +58,8 @@ void Camera_Main(void) {
     }
     Camera_HandleSwapScreenInput();
     Camera_UpdateFollow(work);
-    func_ov000_023425d0();
-    func_ov000_023423b8();
+    Camera_ClearPosInViewFlags();
+    Camera_UpdateInViewLatch();
     ZoneBg_Update();
     ZoneFx_Update();
     p = gCamera.p;

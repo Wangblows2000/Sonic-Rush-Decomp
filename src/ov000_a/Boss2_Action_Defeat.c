@@ -140,8 +140,8 @@ void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Player_Action_Blank(UnkStruct_022cff50_pl *p);
 void Player_SetAnimation(UnkStruct_022cff50_pl *p, s32 a);
 void ScreenShake_Start(s32 a);
-u32 func_ov000_0235b0a8(void);
-void func_ov000_0235b08c(u32 a);
+u32 RingManager_Unk_ov000_0235b0a8(void);
+void RingManager_Unk_ov000_0235b08c(u32 a);
 void Boss2_DrawDefeatBackground(s32 a, s32 b);
 void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -218,7 +218,7 @@ void Boss2_Action_Defeat(void) {
     }
     gBossStatus.unk4 = 0xc;
     ScreenShake_Start(0);
-    func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
+    RingManager_Unk_ov000_0235b08c(RingManager_Unk_ov000_0235b0a8() | 1);
     s->unk12F4 = 0x1e;
     s->unk145C = 0;
     gDisplayMain.unk48 = 0x10;

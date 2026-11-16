@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-extern s32 data_ov000_0236ac18;
+extern s32 gZoneFxWork;
 
 void ZoneFx_Reset(void) {
-    data_ov000_0236ac18 = 0;
+    gZoneFxWork = 0;
 }

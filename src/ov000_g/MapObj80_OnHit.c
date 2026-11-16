@@ -20,7 +20,7 @@ typedef struct {
     void *unk18;
 } UnkStruct_0231cda4_C;
 
-void func_ov000_02353820(UnkStruct_0231cda4_P *p, UnkStruct_0231cda4_O *o);
+void Player_Action_MapObj80(UnkStruct_0231cda4_P *p, UnkStruct_0231cda4_O *o);
 
 void MapObj80_OnHit(UnkStruct_0231cda4_C *a, UnkStruct_0231cda4_C *b) {
     UnkStruct_0231cda4_O *o = a->unk18;
@@ -34,10 +34,10 @@ void MapObj80_OnHit(UnkStruct_0231cda4_C *a, UnkStruct_0231cda4_C *b) {
         if (!(p->unk58 & 1))
             return;
         if ((p->unk34 >= 0 && !(o->unk1E0->unk4 & 1)) || (p->unk34 < 0 && (o->unk1E0->unk4 & 1)))
-            func_ov000_02353820(p, o);
+            Player_Action_MapObj80(p, o);
     } else {
         if (!(o->unk1E0->unk4 & 2))
             return;
-        func_ov000_02353820(p, o);
+        Player_Action_MapObj80(p, o);
     }
 }

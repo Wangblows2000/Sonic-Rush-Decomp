@@ -50,9 +50,9 @@ extern u8 data_ov000_0236835c[];
 extern u8 data_ov000_02368374[];
 extern u8 data_ov000_0236838c[];
 
-BOOL func_ov000_023270d8(UnkStruct_02330aec_Arg *a);
+BOOL Player_IsPlayer2(UnkStruct_02330aec_Arg *a);
 void StageObj_Destructor(void);
-void func_ov000_02330848(void);
+void Magnet_State_Main(void);
 
 static inline void SetVec(UnkStruct_02330aec_Vec *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -65,7 +65,7 @@ UnkStruct_02330aec *Magnet_Create(UnkStruct_02330aec_Arg *arg) {
     UnkStruct_02330aec *w;
     vu16 zero;
 
-    if (func_ov000_023270d8(arg))
+    if (Player_IsPlayer2(arg))
         return NULL;
     if (arg->unk0 != 1)
         return NULL;
@@ -94,6 +94,6 @@ UnkStruct_02330aec *Magnet_Create(UnkStruct_02330aec_Arg *arg) {
     w->unk88 = arg;
     w->unk58 |= 0x2100;
     w->unk54 |= 0x12;
-    w->unk68 = func_ov000_02330848;
+    w->unk68 = Magnet_State_Main;
     return w;
 }

@@ -39,13 +39,13 @@ extern s16 gSwitchTimers;
 extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4590 data_022c4590;
 
-void func_ov000_02354098(UnkStruct_Player *pl);
+void Player_Action_MapObj40(UnkStruct_Player *pl);
 void EffSand_Create(UnkStruct_Player *pl, s32 a, s32 b);
 void Player_Action_Die(UnkStruct_Player *pl);
 void Player_Action_GliderSequenceStart(UnkStruct_Player *pl, UnkStruct_StageObj *w);
 void Player_Action_GliderSequenceEnd(UnkStruct_Player *pl, UnkStruct_StageObj *w);
-void func_ov000_0233e5c8(s32 a, s32 b);
-void func_ov000_0233e524(s32 a, s32 b);
+void ZoneFx_Zone4_StartBldyRampUp(s32 a, s32 b);
+void ZoneFx_Zone4_StartBldyRampDown(s32 a, s32 b);
 
 void MapObj40_OnHit(UnkStruct_0230a04c_Coll *a, UnkStruct_0230a04c_Coll *b) {
     UnkStruct_StageObj *w = a->unk18;
@@ -115,7 +115,7 @@ void MapObj40_OnHit(UnkStruct_0230a04c_Coll *a, UnkStruct_0230a04c_Coll *b) {
     case 0x7e:
         if (pl->unk0 != 1)
             return;
-        func_ov000_02354098(pl);
+        Player_Action_MapObj40(pl);
         return;
     case 0xa9:
         if (pl->unk0 != 1)
@@ -166,7 +166,7 @@ void MapObj40_OnHit(UnkStruct_0230a04c_Coll *a, UnkStruct_0230a04c_Coll *b) {
             return;
         if (pl->unk330 & 0x8000)
             return;
-        func_ov000_0233e5c8(3, 8);
+        ZoneFx_Zone4_StartBldyRampUp(3, 8);
         pl->unk330 |= 0x8000;
         return;
     case 0xc4:
@@ -178,7 +178,7 @@ void MapObj40_OnHit(UnkStruct_0230a04c_Coll *a, UnkStruct_0230a04c_Coll *b) {
             pl->unk330 &= ~0x8000;
             return;
         }
-        func_ov000_0233e524(3, 8);
+        ZoneFx_Zone4_StartBldyRampDown(3, 8);
         pl->unk330 &= ~0x8000;
         pl->unk330 &= ~0x4000;
         return;

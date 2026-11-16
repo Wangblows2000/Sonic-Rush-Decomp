@@ -43,21 +43,21 @@ void PlayerSelectMenu_State_Intro(void) {
             ang = 0;
         }
     }
-    func_ov000_02357090(&w->mdl, w->unk14);
+    PlayerSelectMenu_SetModelSlotSelection(&w->mdl, w->unk14);
     PlayerSelectMenu_SetModelSelection(&w->mdl, 0);
-    func_ov000_02356e7c(&w->mdl, ang);
+    PlayerSelectMenu_SetCameraOrbit(&w->mdl, ang);
     PlayerSelectMenu_AnimateModels(&w->mdl);
     PlayerSelectMenu_DrawModels(&w->mdl);
     done = FALSE;
     if (w->unk0 >= 6) {
         KeyframeAnim_Update(&w->pos[6]);
-        func_ov000_02357ec8(w, w->unk14, w->pos[6].unk4);
+        PlayerSelectMenu_DrawSelectionCursor(w, w->unk14, w->pos[6].unk4);
         KeyframeAnim_Update(&w->pos[7]);
         x = w->pos[7].x;
         if (!w->unk20) {
             x = -x;
         }
-        func_ov000_023582e8(w, w->unk14, x);
+        PlayerSelectMenu_SetBackgroundSelection(w, w->unk14, x);
         KeyframeAnim_Update(&w->pos[0]);
         KeyframeAnim_Update(&w->pos[1]);
         KeyframeAnim_Update(&w->pos[2]);
@@ -66,47 +66,47 @@ void PlayerSelectMenu_State_Intro(void) {
         KeyframeAnim_Update(&w->pos[5]);
         done = TRUE;
         p = &w->pos[0];
-        func_ov000_023579fc(w, p->x, p->y);
+        PlayerSelectMenu_DrawSprite60C(w, p->x, p->y);
         if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[1];
-        func_ov000_023579c8(w, p->x, p->y);
+        PlayerSelectMenu_DrawSprite654(w, p->x, p->y);
         if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[2];
-        func_ov000_0235793c(w, p->x, p->y);
+        PlayerSelectMenu_DrawSprite69C(w, p->x, p->y);
         if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[3];
-        func_ov000_02357908(w, p->x, p->y);
+        PlayerSelectMenu_DrawSprite6E4(w, p->x, p->y);
         if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[4];
-        func_ov000_02357994(w, p->x, p->y);
+        PlayerSelectMenu_DrawSprite9B4(w, p->x, p->y);
         if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[5];
-        func_ov000_023578d0(w, p->x, p->y);
+        PlayerSelectMenu_DrawSpriteA8C(w, p->x, p->y);
         if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
     }
-    func_ov000_02358224(w, 0, 0x1000);
+    PlayerSelectMenu_DrawBottomSpriteScaled(w, 0, 0x1000);
     w->unk330 += 0x20;
     if (w->unk330 > 0) {
         w->unk330 = 0;
     }
-    func_ov000_02358108(w, w->unk330);
+    PlayerSelectMenu_DrawSubSpriteAtX(w, w->unk330);
     w->unk0++;
     if (done && w->unk0 >= 0x10) {
-        func_ov000_02356e7c(&w->mdl, 0);
-        func_ov000_02357ec8(w, w->unk14, 0x1000);
-        func_ov000_023582e8(w, w->unk14, 0);
+        PlayerSelectMenu_SetCameraOrbit(&w->mdl, 0);
+        PlayerSelectMenu_DrawSelectionCursor(w, w->unk14, 0x1000);
+        PlayerSelectMenu_SetBackgroundSelection(w, w->unk14, 0);
         w->unk340 = 0;
         PlayerSelectMenu_Action_Select(0);
     }

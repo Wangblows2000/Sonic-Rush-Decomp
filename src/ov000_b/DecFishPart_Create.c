@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_0236733c[], data_ov000_0236a728[];
 
-void func_ov000_02320f40(UnkStruct_EffObj *w);
+void DecFishPart_Action_Swim(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *DecFishPart_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
     UnkStruct_Task *task;
@@ -29,6 +29,6 @@ UnkStruct_EffObj *DecFishPart_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
     w->unk2 = x;
     w->unk3 = y;
     w->unk5C |= arg->unk5C & 1;
-    func_ov000_02320f40(w);
+    DecFishPart_Action_Swim(w);
     return w;
 }

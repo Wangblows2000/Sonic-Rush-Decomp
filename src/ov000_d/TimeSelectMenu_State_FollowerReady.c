@@ -34,8 +34,8 @@ extern UnkStruct_0236157c_Task *gTaskCurrent;
 extern UnkStruct_0236157c_Pad gPad;
 extern UnkStruct_0236157c_Touch gTouchState;
 
-void func_ov000_023611f8(UnkStruct_0236157c *w);
-void func_ov000_0236119c(UnkStruct_0236157c *w, s32 a, s32 b);
+void TimeSelectMenu_DrawLayoutA(UnkStruct_0236157c *w);
+void TimeSelectMenu_DrawLayoutB(UnkStruct_0236157c *w, s32 a, s32 b);
 UnkStruct_0236157c_Sync *WirelessSession_GetSendBuffer(void);
 BOOL TimeSelectMenu_IsPartnerReadyAsFollower(UnkStruct_0236157c *w);
 void Wireless_EnableErrorCallback(s32 a);
@@ -47,8 +47,8 @@ void TimeSelectMenu_State_StartStage(void);
 void TimeSelectMenu_State_FollowerReady(void) {
     UnkStruct_0236157c *w = gTaskCurrent->work;
 
-    func_ov000_023611f8(w);
-    func_ov000_0236119c(w, 0x1000, 0);
+    TimeSelectMenu_DrawLayoutA(w);
+    TimeSelectMenu_DrawLayoutB(w, 0x1000, 0);
     w->unk0++;
     if ((gPad.trg & 1) || (gTouchState.flags & 0x40)) {
         w->unk1C = 1;

@@ -3,7 +3,7 @@
 extern void *gMainHeap;
 extern void *data_ov000_0236aa8c;
 extern u8 data_ov000_023687e0[];
-extern void *data_ov000_0236aa9c[];
+extern void *gStageEventFiles[];
 
 void NNS_FndMountArchive(void *buf, void *a, void *b);
 void *NNS_FndGetArchiveFileByIndex(void *buf, s32 a);
@@ -12,8 +12,8 @@ void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-u32 func_ov000_02335d00(void *res);
-u32 func_ov000_02335cf4(void *res);
+u32 Stage_GetCompressionType(void *res);
+u32 Stage_GetUncompressedSize(void *res);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
@@ -40,7 +40,7 @@ static inline void UnkLoad_02335954(void *arc, s32 idx, void **slot) {
     void *dst;
     *slot = UnkAlloc_02335954(*(u32 *)res >> 8, 0x20);
     dst = *slot;
-    switch (func_ov000_02335d00(res)) {
+    switch (Stage_GetCompressionType(res)) {
     case 0x10:
         MI_UncompressLZ16(res, dst);
         break;
@@ -51,15 +51,15 @@ static inline void UnkLoad_02335954(void *arc, s32 idx, void **slot) {
         MI_UncompressRL16(res, dst);
         break;
     default:
-        Mem_Copy(Compress_GetData(res), dst, func_ov000_02335cf4(res));
+        Mem_Copy(Compress_GetData(res), dst, Stage_GetUncompressedSize(res));
         break;
     }
-    DC_StoreRange(dst, func_ov000_02335cf4(res));
+    DC_StoreRange(dst, Stage_GetUncompressedSize(res));
 }
 
 void Stage_LoadEventResources(void) {
     u8 buf[0x60];
-    void **tbl = data_ov000_0236aa9c;
+    void **tbl = gStageEventFiles;
 
     NNS_FndMountArchive(buf, data_ov000_023687e0, data_ov000_0236aa8c);
     UnkLoad_02335954(buf, 1, &tbl[0]);

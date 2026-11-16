@@ -13,7 +13,7 @@ typedef struct {
     UnkWork_023265d8 *work;
 } UnkTask_023265d8;
 
-void func_ov000_0232644c(u8 *e);
+void Decoration_FreeSlot(u8 *e);
 void StageObj_Destructor(UnkTask_023265d8 *t);
 
 void Decoration_Destructor(UnkTask_023265d8 *t) {
@@ -21,7 +21,7 @@ void Decoration_Destructor(UnkTask_023265d8 *t) {
     u8 *e = w->unk184;
 
     if (e != NULL && e[0] == 0xff && e[1] == 0xff)
-        func_ov000_0232644c(e);
+        Decoration_FreeSlot(e);
     else if (!(w->unk194 & 0x10) && e != NULL)
         e[0] = w->unk188;
     StageObj_Destructor(t);

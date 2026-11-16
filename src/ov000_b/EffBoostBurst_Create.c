@@ -11,8 +11,8 @@ extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023684c0[];
 extern u8 data_ov000_0236a9f8[];
 
-BOOL func_ov000_023270d8(UnkStruct_StageObj *a);
-void func_ov000_02334264(UnkStruct_EffObj *w);
+BOOL Player_IsPlayer2(UnkStruct_StageObj *a);
+void Effect_SetMoveUntilAnimEndState(UnkStruct_EffObj *w);
 void EffBoostBurst_Draw(void);
 
 void EffBoostBurst_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
@@ -20,7 +20,7 @@ void EffBoostBurst_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    if (func_ov000_023270d8(arg))
+    if (Player_IsPlayer2(arg))
         return;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))
@@ -63,5 +63,5 @@ void EffBoostBurst_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
     w->unk58 |= 0x100;
     w->unk5C |= 0x100;
     w->unk54 |= 2;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
 }

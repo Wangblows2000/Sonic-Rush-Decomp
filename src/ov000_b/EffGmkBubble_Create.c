@@ -35,7 +35,7 @@ extern void *gZoneActArchive;
 extern u8 data_ov000_02367f2c[];
 extern u8 data_ov000_0236aa08[];
 
-void func_ov000_02329888(void);
+void EffGmkBubble_State_Main(void);
 
 
 void EffGmkBubble_Create(UnkStruct_02329984_Arg *arg, s32 x, s32 y, s32 dx, s32 unused, s32 t) {
@@ -67,7 +67,7 @@ void EffGmkBubble_Create(UnkStruct_02329984_Arg *arg, s32 x, s32 y, s32 dx, s32 
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
     w->unk1C = (x - 0x5400) + (0xfff - (Rand() & 0x1ffe));
-    w->unk68 = func_ov000_02329888;
+    w->unk68 = EffGmkBubble_State_Main;
     p = w->unk88;
     w->unk30 = p->unk34 << 2;
     if (!(p->unk32C & 1))

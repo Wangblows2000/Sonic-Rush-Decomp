@@ -27,8 +27,8 @@ extern UnkStruct_02343ac0_4560 gGameState;
 extern UnkStruct_02343ac0_Cam gCamera;
 extern s32 data_ov000_0236ac2c;
 
-void func_ov000_02326f00(s32 d);
-void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
+void EffTrail_SetWrapShift(s32 d);
+void StageEvent_Unk_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
 
 void Player_WrapLoopingArena(UnkStruct_02343ac0 *w) {
     BOOL ok;
@@ -77,7 +77,7 @@ void Player_WrapLoopingArena(UnkStruct_02343ac0 *w) {
             data_ov000_0236ac2c -= d >> 8;
             gCamera.x -= d;
             gCamera.unk68 -= d;
-            func_ov000_02326f00(-d);
+            EffTrail_SetWrapShift(-d);
             left = (w->x >> 8) - 0x100;
             top = (w->y >> 8) - 0x120;
             right = (w->x >> 8) + 0x100;
@@ -102,7 +102,7 @@ void Player_WrapLoopingArena(UnkStruct_02343ac0 *w) {
             } else if (bottom > 0xffff) {
                 bottom = 0xffff;
             }
-            func_ov000_023355e0(left, top, right, bottom);
+            StageEvent_Unk_ov000_023355e0(left, top, right, bottom);
         }
     }
     if (w->x >= lo) {
@@ -117,7 +117,7 @@ void Player_WrapLoopingArena(UnkStruct_02343ac0 *w) {
     data_ov000_0236ac2c += d >> 8;
     gCamera.x += d;
     gCamera.unk68 += d;
-    func_ov000_02326f00(d);
+    EffTrail_SetWrapShift(d);
     l2 = (w->x >> 8) - 0x100;
     t2 = (w->y >> 8) - 0x120;
     r2 = (w->x >> 8) + 0x100;
@@ -142,5 +142,5 @@ void Player_WrapLoopingArena(UnkStruct_02343ac0 *w) {
     } else if (b2 > 0xffff) {
         b2 = 0xffff;
     }
-    func_ov000_023355e0(l2, t2, r2, b2);
+    StageEvent_Unk_ov000_023355e0(l2, t2, r2, b2);
 }

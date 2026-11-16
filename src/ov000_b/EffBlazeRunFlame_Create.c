@@ -11,7 +11,7 @@ extern u8 data_ov000_02368520[];
 extern u8 data_ov000_0236a9f8[];
 
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_02334264(UnkStruct_EffObj *w);
+void Effect_SetMoveUntilAnimEndState(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *EffBlazeRunFlame_Create(UnkStruct_EffObj *arg, s16 x, s16 y, s32 unused) {
     UnkStruct_Task *task;
@@ -52,6 +52,6 @@ UnkStruct_EffObj *EffBlazeRunFlame_Create(UnkStruct_EffObj *arg, s16 x, s16 y, s
     w->unk14 += y << 8;
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
     return w;
 }

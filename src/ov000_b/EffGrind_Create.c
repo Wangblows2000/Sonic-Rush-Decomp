@@ -10,7 +10,7 @@ extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_0236829c[];
 extern u8 data_ov000_0236a9e0[];
 
-BOOL func_ov000_023270d8(UnkStruct_StageObj *a);
+BOOL Player_IsPlayer2(UnkStruct_StageObj *a);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 void EffGrind_State_FollowParent(void);
 
@@ -19,7 +19,7 @@ UnkStruct_EffObj *EffGrind_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unu
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    if (func_ov000_023270d8(arg))
+    if (Player_IsPlayer2(arg))
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))

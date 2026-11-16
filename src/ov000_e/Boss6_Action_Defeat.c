@@ -131,8 +131,8 @@ void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Player_Action_Blank(UnkStruct_022e2470_pl *p);
 void Player_SetAnimation(UnkStruct_022e2470_pl *p, s32 a);
 void ScreenShake_Start(s32 a);
-u32 func_ov000_0235b0a8(void);
-void func_ov000_0235b08c(u32 a);
+u32 RingManager_Unk_ov000_0235b0a8(void);
+void RingManager_Unk_ov000_0235b08c(u32 a);
 void Boss6_Unk_ov000_022e237c(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss_LoadModelPalettes(s32 a, u32 *p1, s32 p2, u16 *p3, u16 n);
@@ -182,7 +182,7 @@ void Boss6_Action_Defeat(void) {
     }
     s->unkD5E = 0;
     ScreenShake_Start(0);
-    func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
+    RingManager_Unk_ov000_0235b08c(RingManager_Unk_ov000_0235b0a8() | 1);
     gBossStatus.unk4 = 0x23;
     s->unkF50 = 0x1e;
     s->unk1118 = 0;

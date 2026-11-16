@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 int func_ov000_02307e84();
-int func_ov000_0234237c();
+int EnemyRoom_Get();
 int MapObj8F_Action_Unk_ov000_02308650();
 
 void MapObj8F_State_Unk_ov000_023086a8(int param_1)
@@ -30,7 +30,7 @@ void MapObj8F_State_Unk_ov000_023086a8(int param_1)
   int iVar2;
   
   uVar1 = func_ov000_02307e84();
-  iVar2 = func_ov000_0234237c(1,uVar1);
+  iVar2 = EnemyRoom_Get(1,uVar1);
   if (iVar2 != 0) {
     if ((*(ushort *)(*(int *)(param_1 + 0x1e0) + 4) & 2) == 0) {
       *(undefined4 *)(iVar2 + 0x220) = *(undefined4 *)(param_1 + 0x20c);

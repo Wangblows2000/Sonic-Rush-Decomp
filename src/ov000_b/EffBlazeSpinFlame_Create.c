@@ -44,7 +44,7 @@ extern u8 data_ov000_0236a9f8[];
 
 void StageObj_SetAnimation(void *w, s32 a);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_023329ec(void);
+void EffBlazeSpinFlame_State_Main(void);
 
 
 UnkStruct_02332b3c *EffBlazeSpinFlame_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unused) {
@@ -92,6 +92,6 @@ UnkStruct_02332b3c *EffBlazeSpinFlame_Create(UnkStruct_StageObj *arg, s16 x, s16
     w->unk8 = 0x200;
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
-    w->unk68 = func_ov000_023329ec;
+    w->unk68 = EffBlazeSpinFlame_State_Main;
     return w;
 }

@@ -24,8 +24,8 @@ void Wireless_EnableErrorCallback(s32 a);
 void StageStart_Create(s32 a);
 void SysSound_Release(void);
 void Game_StartVsStage(u8 a, u8 b);
-void func_ov000_023611f8(UnkStruct_02361478 *w);
-void func_ov000_0236119c(UnkStruct_02361478 *w, s32 a, s32 b);
+void TimeSelectMenu_DrawLayoutA(UnkStruct_02361478 *w);
+void TimeSelectMenu_DrawLayoutB(UnkStruct_02361478 *w, s32 a, s32 b);
 
 #pragma thumb on
 
@@ -56,8 +56,8 @@ void TimeSelectMenu_State_StartStage(void) {
         Game_StartVsStage(a, b);
         return;
     }
-    func_ov000_023611f8(w);
-    func_ov000_0236119c(w, 0x1000, 0);
+    TimeSelectMenu_DrawLayoutA(w);
+    TimeSelectMenu_DrawLayoutB(w, 0x1000, 0);
     w->unk0++;
 }
 

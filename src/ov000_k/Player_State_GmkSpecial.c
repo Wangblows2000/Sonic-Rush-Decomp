@@ -65,7 +65,7 @@ void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void EffSpecial_Create(UnkStruct_023504e8 *w);
-void func_ov000_02330098(UnkStruct_023504e8 *w, s16 a, s16 b);
+void EffTrick_Unk_ov000_02330098(UnkStruct_023504e8 *w, s16 a, s16 b);
 void Player_Action_GmkSpecialEnter(UnkStruct_023504e8 *w);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 s16 ObjSpd_DownSet(s32 v, s32 a);
@@ -93,7 +93,7 @@ void Player_State_GmkSpecial(UnkStruct_023504e8 *w) {
             }
             if (w->unk3F4 > 0x60) {
                 if (!(gGameState.unk20 & 3)) {
-                    func_ov000_02330098(w, 0xf - (Rand_023504e8() & 0x1e), 0xf - (Rand_023504e8() & 0x1e));
+                    EffTrick_Unk_ov000_02330098(w, 0xf - (Rand_023504e8() & 0x1e), 0xf - (Rand_023504e8() & 0x1e));
                 }
                 if (w->unkC == 1) {
                     NNS_SndPlayerStopSeq(w->unk388, 0x10);

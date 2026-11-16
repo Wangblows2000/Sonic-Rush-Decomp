@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 Player_SwingAroundPivot();
-s32 func_ov000_02351300();
+s32 Player_Unk_ov000_02351300();
 s32 Sound_PlaySeqArcEx();
 
 void Player_State_Swing(u8 *p0) {
@@ -15,7 +15,7 @@ void Player_State_Swing(u8 *p0) {
                 *(u32 *)((u8 *)p0 + 0x3e8) = 0;
             }
         } else {
-            func_ov000_02351300(p0, t0);
+            Player_Unk_ov000_02351300(p0, t0);
             s32 t2 = *(u32 *)((u8 *)p0 + 0x3f0);
             if (*(u32 *)((u8 *)p0 + 0x3f4) == t2) {
                 *(u32 *)((u8 *)p0 + 0x3e8) = 0;

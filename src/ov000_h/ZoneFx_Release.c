@@ -9,8 +9,8 @@ typedef struct {
 typedef void (*UnkFunc_0233e6c0)(void *w);
 
 extern UnkStruct_0233e6c0_4560 gGameState;
-extern UnkFunc_0233e6c0 data_ov000_023688c8[][3];
-extern void *data_ov000_0236ac18;
+extern UnkFunc_0233e6c0 gZoneFxReleaseTable[][3];
+extern void *gZoneFxWork;
 extern void *gMainHeap;
 
 void *OS_GetArenaLo(u32 arg);
@@ -23,11 +23,11 @@ void ZoneFx_Release(void) {
     void *p;
     u32 size;
 
-    f = data_ov000_023688c8[gGameState.unk1C][gGameState.unk1D];
+    f = gZoneFxReleaseTable[gGameState.unk1C][gGameState.unk1D];
     if (f != NULL) {
-        f(data_ov000_0236ac18);
+        f(gZoneFxWork);
     }
-    p = data_ov000_0236ac18;
+    p = gZoneFxWork;
     if (p == NULL) {
         return;
     }
@@ -41,5 +41,5 @@ void ZoneFx_Release(void) {
         }
     }
     Heap_Free(gMainHeap, p);
-    data_ov000_0236ac18 = NULL;
+    gZoneFxWork = NULL;
 }

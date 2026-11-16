@@ -7,7 +7,7 @@ typedef struct {
 
 UnkStruct_02361670_Sync *WirelessSession_GetSendBuffer(void);
 UnkStruct_02361670_Sync *WirelessSession_GetPartnerRecvBuffer(void);
-void func_ov000_02360dac(UnkStruct_MenuO *w);
+void TimeSelectMenu_SetTransferSprites(UnkStruct_MenuO *w);
 void TimeSelectMenu_StartStageTransfer(UnkStruct_MenuO *w);
 void TimeSelectMenu_State_FollowerWaitTransfer(void);
 void SysSound_StopBGM(s32 a);
@@ -21,7 +21,7 @@ void TimeSelectMenu_State_FollowerTransferSync(void) {
 
     MenuO_Update(w, 0);
     if (b->unk4 >= 3) {
-        func_ov000_02360dac(w);
+        TimeSelectMenu_SetTransferSprites(w);
         TimeSelectMenu_StartStageTransfer(w);
         gTaskCurrent->unk8 = TimeSelectMenu_State_FollowerWaitTransfer;
         return;

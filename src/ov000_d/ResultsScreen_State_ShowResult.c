@@ -6,8 +6,8 @@ typedef struct {
 } UnkStruct_0235e94c_Sync;
 
 UnkStruct_0235e94c_Sync *WirelessSession_GetSendBuffer(void);
-s32 func_ov000_0235c9f8(s32 from, s32 to, s32 total, s32 cur, s32 bias);
-void func_ov000_0235e8ac(void);
+s32 ResultsScreen_EaseValue(s32 from, s32 to, s32 total, s32 cur, s32 bias);
+void ResultsScreen_Main_CloseWindow(void);
 
 #pragma thumb on
 
@@ -15,47 +15,47 @@ void ResultsScreen_State_ShowResult(void) {
     UnkStruct_SprObj *w = gTaskCurrent->work;
     s32 t;
 
-    func_ov000_0235e124(w);
-    func_ov000_0235e068(w);
-    func_ov000_0235e018(w);
+    ResultsScreen_DrawHeader(w);
+    ResultsScreen_DrawSprite2(w);
+    ResultsScreen_DrawSprite1Pair(w);
     if (w->unk0 == 0) {
         switch (w->unk20) {
         case 0:
             if (w->unk18 == 0) {
-                func_ov000_0235d888(w, 1);
-                func_ov000_0235d7b4(w, 2);
+                ResultsScreen_SetModelAnimA(w, 1);
+                ResultsScreen_SetModelAnimB(w, 2);
             } else {
-                func_ov000_0235d888(w, 2);
-                func_ov000_0235d7b4(w, 1);
+                ResultsScreen_SetModelAnimA(w, 2);
+                ResultsScreen_SetModelAnimB(w, 1);
             }
             break;
         case 1:
             if (w->unk18 == 0) {
-                func_ov000_0235d888(w, 2);
-                func_ov000_0235d7b4(w, 1);
+                ResultsScreen_SetModelAnimA(w, 2);
+                ResultsScreen_SetModelAnimB(w, 1);
             } else {
-                func_ov000_0235d888(w, 1);
-                func_ov000_0235d7b4(w, 2);
+                ResultsScreen_SetModelAnimA(w, 1);
+                ResultsScreen_SetModelAnimB(w, 2);
             }
             break;
         case 2:
-            func_ov000_0235d888(w, 2);
-            func_ov000_0235d7b4(w, 2);
+            ResultsScreen_SetModelAnimA(w, 2);
+            ResultsScreen_SetModelAnimB(w, 2);
             break;
         }
     }
-    func_ov000_0235dfc4(w);
+    ResultsScreen_DrawModels(w);
     t = w->unk0 - 0x38;
     if (t >= 0) {
-        func_ov000_0235def0(w, w->unk20, func_ov000_0235c9f8(0, 0x1000, 8, t, 0x1000));
+        ResultsScreen_DrawWinLoseSprites(w, w->unk20, ResultsScreen_EaseValue(0, 0x1000, 8, t, 0x1000));
     }
     w->unk0++;
     if (w->unk0 >= 0x40) {
         UnkStruct_0235e94c_Sync *s = WirelessSession_GetSendBuffer();
         w->unk0 = 0;
         s->unk3 = 0;
-        func_ov000_0235cfc4(w);
-        gTaskCurrent->unk8 = func_ov000_0235e8ac;
+        ResultsScreen_EnableLineScrollSplit(w);
+        gTaskCurrent->unk8 = ResultsScreen_Main_CloseWindow;
     }
 }
 

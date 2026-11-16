@@ -18,7 +18,7 @@ extern void *gTaskCurrent;
 UnkStruct_0235e23c_Sync *WirelessSession_GetSendBuffer(void);
 UnkStruct_0235e23c_Sync *WirelessSession_GetPartnerRecvBuffer(void);
 UnkStruct_0235e23c_Sync *WirelessSession_GetOwnRecvBuffer(void);
-BOOL func_ov000_0235cbd8(void);
+BOOL ResultsScreen_Unk_ov000_0235cbd8(void);
 BOOL WirelessSession_Unk_020513a8(void);
 void StageLoader_LoadZoneSoundData(s32 a, u8 b, u8 c);
 void Task_Destroy(void *t);
@@ -31,7 +31,7 @@ void ResultsScreen_RematchSync_Main(void) {
     UnkStruct_0235e23c_Sync *b = WirelessSession_GetPartnerRecvBuffer();
     UnkStruct_0235e23c_Sync *c = WirelessSession_GetOwnRecvBuffer();
 
-    if (func_ov000_0235cbd8()) {
+    if (ResultsScreen_Unk_ov000_0235cbd8()) {
         if (a->unk3 == 0 && b->unk3 == 0) {
             if (WirelessSession_Unk_020513a8()) {
                 StageLoader_LoadZoneSoundData(gGameState.unk0, gGameState.unk1C, gGameState.unk1D);

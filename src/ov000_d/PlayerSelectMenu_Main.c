@@ -29,7 +29,7 @@ void PlayerSelectMenu_Main(void) {
     if (w->unk0 >= 0x26) {
         w->unk330 += 0x20;
     }
-    func_ov000_02358108(w, w->unk330);
+    PlayerSelectMenu_DrawSubSpriteAtX(w, w->unk330);
     x = (s32)(w->unk0 << 9) / 0x1e - 0x200;
     if (x > 0) {
         x = 0;
@@ -37,7 +37,7 @@ void PlayerSelectMenu_Main(void) {
     if (x < -0x100) {
         x = -0x100;
     }
-    func_ov000_02358224(w, x, 0x1000);
+    PlayerSelectMenu_DrawBottomSpriteScaled(w, x, 0x1000);
     w->unk0++;
     if (KeyframeAnim_IsFinished(q)) {
         PlayerSelectMenu_SetBgScale(w, 0x1000);

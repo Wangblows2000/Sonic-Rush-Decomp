@@ -7,9 +7,9 @@ typedef struct UnkStruct_0232dec0 {
     void (*func)(void);
 } UnkStruct_0232dec0;
 
-void func_ov000_0232ddd4(void);
+void EffZakoDebris_State_Main(void);
 
 void EffZakoDebris_Action_Init(UnkStruct_0232dec0 *s) {
     s->unk58 |= 0x10;
-    s->func = func_ov000_0232ddd4;
+    s->func = EffZakoDebris_State_Main;
 }

@@ -23,7 +23,7 @@ extern UnkStruct_0235f17c_Bright data_02087d44;
 
 void ResultsScreen_State_Sync(void);
 void ResultsScreen_Destructor(void);
-BOOL func_ov000_0235cbd8(void);
+BOOL ResultsScreen_Unk_ov000_0235cbd8(void);
 u8 *ResultsScreen_GetLocalRecord(UnkStruct_0235f17c *w);
 void OS_GetMacAddress(void *p);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
@@ -48,7 +48,7 @@ UnkStruct_0235f17c *ResultsScreen_CreateTask(s32 a, s32 b, s32 c) {
     w->unk1C = b;
     w->unk20 = c;
     w->unkC = 0;
-    w->unk10 = func_ov000_0235cbd8();
+    w->unk10 = ResultsScreen_Unk_ov000_0235cbd8();
     w->unk14 = data_0208926c.unk8;
     if (w->unk14 == 0)
         w->unk14 = -0x10;

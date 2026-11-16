@@ -21,7 +21,7 @@ typedef int code();
 
 int Marker_State_WaitPlayerPass();
 int StageObj_SetAnimation();
-int func_ov000_0232b020();
+int MarkerTimeList_Create();
 
 void Marker_Action_InitPassCheck(int param_1)
 
@@ -39,7 +39,7 @@ void Marker_Action_InitPassCheck(int param_1)
   *(undefined4 *)(param_1 + 0xc) = 0;
   *(undefined2 *)(param_1 + 0x2e) = 0;
   if (*(int *)(param_1 + 0x10) < 0x20000) {
-    func_ov000_0232b020();
+    MarkerTimeList_Create();
     return;
   }
   return;

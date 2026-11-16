@@ -109,7 +109,7 @@ void Player_RecordReplayFrame(UnkStruct_0234419c *w);
 void Player_ApplyNetState(UnkStruct_0234419c *w);
 void Player_PlayReplayFrame(UnkStruct_0234419c *w);
 s32 Stage_GetSplitLineY(s32 x);
-void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
+void StageEvent_Unk_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
 void Player_UpdateGimmickStageBounds(UnkStruct_0234419c *w);
 void Player_UpdateGravityFlip(UnkStruct_0234419c *w);
 void Player_ReadInput(void);
@@ -125,7 +125,7 @@ void Player_HandleSurfaceLanding(UnkStruct_0234419c *w);
 void Player_UpdateBoost(UnkStruct_0234419c *w);
 void Player_CheckStartGrind(UnkStruct_0234419c *w);
 void Player_DrainBoostTension(UnkStruct_0234419c *w);
-void func_ov000_023460ec(UnkStruct_0234419c *w);
+void Player_Unk_ov000_023460ec(UnkStruct_0234419c *w);
 void Player_CheckCrushed(UnkStruct_0234419c *w);
 void Player_CheckTimeOver(UnkStruct_0234419c *w);
 
@@ -179,7 +179,7 @@ void Player_In(void) {
         } else if (bottom > 0xffff) {
             bottom = 0xffff;
         }
-        func_ov000_023355e0(left, top, right, bottom);
+        StageEvent_Unk_ov000_023355e0(left, top, right, bottom);
     }
     Player_UpdateGimmickStageBounds(w);
     Player_UpdateGravityFlip(w);
@@ -318,7 +318,7 @@ void Player_In(void) {
     Player_UpdateBoost(w);
     Player_CheckStartGrind(w);
     Player_DrainBoostTension(w);
-    func_ov000_023460ec(w);
+    Player_Unk_ov000_023460ec(w);
     Player_CheckCrushed(w);
     Player_CheckTimeOver(w);
 }

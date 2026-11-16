@@ -4,7 +4,7 @@
 extern u8 gDisplayTable[];
 extern u8 gGameState[];
 extern u8 gCamera[];
-s32 func_ov000_0233e658();
+s32 ZoneFx_InitBrightnessBlend();
 
 void Stage_InitBlend(void) {
     s32 t0 = *(u32 *)gDisplayTable;
@@ -32,5 +32,5 @@ void Stage_InitBlend(void) {
     if (t5 == 0) {
         return;
     }
-    func_ov000_0233e658(t5, v3, t1);
+    ZoneFx_InitBrightnessBlend(t5, v3, t1);
 }

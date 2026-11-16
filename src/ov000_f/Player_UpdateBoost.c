@@ -67,7 +67,7 @@ void Player_State_InAir(UnkStruct_023466e8 *w);
 void Player_StartBoost(UnkStruct_023466e8 *w);
 void Player_StopHighSpeed(UnkStruct_023466e8 *w);
 void Player_StopBoost(UnkStruct_023466e8 *w);
-void func_ov000_02331ae8(UnkStruct_023466e8 *w, s32 a, s32 b);
+void EffBoost_Create(UnkStruct_023466e8 *w, s32 a, s32 b);
 void EffBlazeBoostFlame_Create(UnkStruct_023466e8 *w);
 
 static inline void Boost_023466e8(UnkStruct_023466e8 *w, s16 *p) {
@@ -149,9 +149,9 @@ void Player_UpdateBoost(UnkStruct_023466e8 *w) {
             }
             if (d + c > 0x200 && !(w->unk32C & 0x80) && (w->unk32C & 0x100) && (w->unk58 & 1)) {
                 if (!(w->unk330 & 0x1000)) {
-                    func_ov000_02331ae8(w, -0xd, 0xd);
+                    EffBoost_Create(w, -0xd, 0xd);
                 } else {
-                    func_ov000_02331ae8(w, -0xd, 0);
+                    EffBoost_Create(w, -0xd, 0);
                 }
             }
         }

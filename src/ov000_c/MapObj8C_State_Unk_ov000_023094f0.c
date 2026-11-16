@@ -19,7 +19,7 @@ typedef struct {
 extern UnkStruct_Plr gCamera[];
 
 BOOL func_ov000_02307dfc(UnkStruct_023094f0 *w, s32 a);
-void func_ov000_0234232c(s32 a);
+void EnemyRoom_ClearActive(s32 a);
 void MapObj8C_Action_Unk_ov000_02309430(UnkStruct_023094f0 *w);
 
 void MapObj8C_State_Unk_ov000_023094f0(UnkStruct_023094f0 *w) {
@@ -37,7 +37,7 @@ void MapObj8C_State_Unk_ov000_023094f0(UnkStruct_023094f0 *w) {
             if (w->unk20C & 4)
                 gCamera[1].unk34 &= ~0x10000;
         }
-        func_ov000_0234232c(w->unk214);
+        EnemyRoom_ClearActive(w->unk214);
         w->base.unk1F4 &= ~0x10;
         w->base.unk54 |= 4;
         return;

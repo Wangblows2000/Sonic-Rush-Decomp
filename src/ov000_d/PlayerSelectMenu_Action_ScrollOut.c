@@ -17,20 +17,20 @@ void PlayerSelectMenu_Action_ScrollOut(UnkStruct_SceneTask *t) {
     KeyframeAnim_SetAnim(&w->pos[6], 0xa);
     KeyframeAnim_SetAnim(&w->pos[7], 0xc);
     if (w->unk20) {
-        func_ov000_02357d20(w);
-        func_ov000_02357c2c(w);
+        PlayerSelectMenu_SetSprite60CAnim3(w);
+        PlayerSelectMenu_SetSprite654Anim4(w);
     } else {
-        func_ov000_02357cd0(w);
-        func_ov000_02357c8c(w);
+        PlayerSelectMenu_SetSprite60CAnim4(w);
+        PlayerSelectMenu_SetSprite654Anim3(w);
     }
-    func_ov000_02357b4c(w);
-    func_ov000_02357b24(w);
-    func_ov000_02357be4(w);
-    func_ov000_02357ae8(w);
-    func_ov000_02357aa8(w, 0);
-    func_ov000_02357aa8(w, 1);
-    func_ov000_02357aa8(w, 2);
-    func_ov000_02358138(w);
+    PlayerSelectMenu_SetSprite69CAnim6(w);
+    PlayerSelectMenu_SetSprite6E4Anim7(w);
+    PlayerSelectMenu_SetSprite9B4Anim(w);
+    PlayerSelectMenu_SetSpriteA8CAnim0(w);
+    PlayerSelectMenu_Unk_ov000_02357aa8(w, 0);
+    PlayerSelectMenu_Unk_ov000_02357aa8(w, 1);
+    PlayerSelectMenu_Unk_ov000_02357aa8(w, 2);
+    PlayerSelectMenu_SetSprite5C4Anim2(w);
     w->unk334 = 0;
     if (w->unkC == 0 || (u32)(w->unkC - 3) <= 1) {
         SysSound_PlaySE(5);

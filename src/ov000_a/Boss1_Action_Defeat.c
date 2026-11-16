@@ -63,8 +63,8 @@ void StageObj_SetPause(void);
 void Boss1_Unk_ov000_022cc35c(s32 a, s32 b);
 void Player_Action_Blank(UnkStruct_022cac48_pl *p);
 void Player_SetAnimation(UnkStruct_022cac48_pl *p, s32 a);
-u32 func_ov000_0235b0a8(void);
-void func_ov000_0235b08c(u32 a);
+u32 RingManager_Unk_ov000_0235b0a8(void);
+void RingManager_Unk_ov000_0235b08c(u32 a);
 void NNS_SndPlayerStopSeqAll(s32 a);
 void Boss1_State_Defeat(UnkStruct_022cac48 *s);
 
@@ -90,7 +90,7 @@ void Boss1_Action_Defeat(UnkStruct_022cac48 *s) {
     gPlayers->unk3B2 = 0;
     gPlayers->unk10 = 0xe100;
     gPlayers->unk14 = 0x1a800;
-    func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
+    RingManager_Unk_ov000_0235b08c(RingManager_Unk_ov000_0235b0a8() | 1);
     NNS_SndPlayerStopSeqAll(0);
     s->func = Boss1_State_Defeat;
 }

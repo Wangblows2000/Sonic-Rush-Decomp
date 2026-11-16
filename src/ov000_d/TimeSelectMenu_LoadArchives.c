@@ -32,7 +32,7 @@ extern void *data_ov000_0236ac48;
 extern u8 data_ov000_02364ee8[];
 extern u16 data_ov000_02364ee0[];
 
-BOOL func_ov000_0235faf0(void);
+BOOL TimeSelectMenu_Unk_ov000_0235faf0(void);
 void *File_Load(const char *path, void *dst);
 void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *OS_GetArenaLo(s32 i);
@@ -92,7 +92,7 @@ void TimeSelectMenu_LoadArchives(UnkStruct_02360408 *w) {
     void *dst;
     u8 buf[0x5c];
 
-    if (func_ov000_0235faf0()) {
+    if (TimeSelectMenu_Unk_ov000_0235faf0()) {
         zero = 0;
         MIi_CpuClear32(zero, w->slot, sizeof(w->slot));
         w->slot[0].mdl = data_ov000_0236ac50.unk0;

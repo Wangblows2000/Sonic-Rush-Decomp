@@ -16,7 +16,7 @@ typedef struct {
 } UnkStruct_022fb3d8_Coll;
 
 void ObjRect_FuncNoHit(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
-void func_ov000_02343000(UnkStruct_022fb3d8_Pl *pl, s32 a);
+void Player_Unk_ov000_02343000(UnkStruct_022fb3d8_Pl *pl, s32 a);
 void MapObject_Action_Unk_ov000_022fafc8(UnkStruct_StageObj *w, UnkStruct_022fb3d8_Pl *pl);
 void MapObject_Unk_ov000_022fa9e8(UnkStruct_StageObj *w, UnkStruct_022fb3d8_Pl *pl, s32 a);
 void MapObject_Unk_ov000_022fb898(UnkStruct_StageObj *w);
@@ -63,11 +63,11 @@ void MapObject_OnHit_Default(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll
         }
         if (pl != NULL) {
             if (pl->unk0 == 1) {
-                func_ov000_02343000(pl, 400);
+                Player_Unk_ov000_02343000(pl, 400);
             } else if (pl->unk88 != NULL) {
                 pl = pl->unk88;
                 if (pl->unk0 == 1) {
-                    func_ov000_02343000(pl, 400);
+                    Player_Unk_ov000_02343000(pl, 400);
                     MapObject_Action_Unk_ov000_022fafc8(w, pl);
                     if (pl->unk32C & 0x80) {
                         pl->unk62 = 0x44;

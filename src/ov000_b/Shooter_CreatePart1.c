@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366f90[], data_ov000_0236a25c[];
 
-void func_ov000_02316db0(void);
+void ShooterPart1_State_Main(void);
 
 UnkStruct_EffObj *Shooter_CreatePart1(UnkStruct_StageObj *arg, s32 n) {
     UnkStruct_Task *task;
@@ -35,6 +35,6 @@ UnkStruct_EffObj *Shooter_CreatePart1(UnkStruct_StageObj *arg, s32 n) {
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
     w->unk54 |= 0x10;
-    w->unk68 = func_ov000_02316db0;
+    w->unk68 = ShooterPart1_State_Main;
     return w;
 }

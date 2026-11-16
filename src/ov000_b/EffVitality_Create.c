@@ -4,7 +4,7 @@ extern void *gActComArchive;
 extern u8 data_ov000_02368170[], data_ov000_0236a9e8[];
 
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_0232e90c(UnkStruct_EffObj *w);
+void Effect_SetFollowParentState(UnkStruct_EffObj *w);
 
 void EffVitality_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
     UnkStruct_Task *task;
@@ -38,5 +38,5 @@ void EffVitality_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
     w->unk5C |= 0x100;
-    func_ov000_0232e90c(w);
+    Effect_SetFollowParentState(w);
 }

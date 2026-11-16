@@ -2,14 +2,14 @@
 #include <nitro/types.h>
 
 s32 func_ov000_02307e84();
-s32 func_ov000_0234237c();
+s32 EnemyRoom_Get();
 s32 func_ov000_02307dfc();
 s32 MapObj8D_Action_Unk_ov000_023090d8();
 
 void MapObj8D_State_Unk_ov000_023090e8(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x8);
     s32 t1 = func_ov000_02307e84();
-    s32 t2 = func_ov000_0234237c(1, t1);
+    s32 t2 = EnemyRoom_Get(1, t1);
     if (t2 == 0) {
         s32 t3 = (*(u32 *)((u8 *)p0 + 0x54) | 4);
         *(u32 *)((u8 *)p0 + 0x54) = t3;

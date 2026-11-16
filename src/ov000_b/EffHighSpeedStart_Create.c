@@ -11,7 +11,7 @@ extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023684a8[];
 extern u8 data_ov000_0236a9f8[];
 
-BOOL func_ov000_023270d8(UnkStruct_StageObj *a);
+BOOL Player_IsPlayer2(UnkStruct_StageObj *a);
 void EffBoost_SetFollowState(UnkStruct_EffObj *w);
 
 void EffHighSpeedStart_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
@@ -19,7 +19,7 @@ void EffHighSpeedStart_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    if (func_ov000_023270d8(arg))
+    if (Player_IsPlayer2(arg))
         return;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))

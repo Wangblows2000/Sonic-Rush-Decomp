@@ -17,9 +17,9 @@ typedef struct {
 
 void PlayerSelectMenu_SetOrthoProjection(UnkFrustum_02356d88 *p);
 void PlayerSelectMenu_SetCamera(UnkCam_02356d88 *cam);
-void func_ov000_02356be8(UnkStruct_Mdl *w);
-void func_ov000_02356a48(UnkStruct_Mdl *w);
-void func_ov000_023569d8(UnkStruct_Mdl *w);
+void PlayerSelectMenu_DrawCharModel(UnkStruct_Mdl *w);
+void PlayerSelectMenu_DrawPartnerModel(UnkStruct_Mdl *w);
+void PlayerSelectMenu_DrawModelPair(UnkStruct_Mdl *w);
 
 #pragma thumb on
 
@@ -46,13 +46,13 @@ void PlayerSelectMenu_DrawModels(UnkStruct_Mdl *w) {
     PlayerSelectMenu_SetCamera(&cam);
     switch (w->mode) {
     case 0:
-        func_ov000_02356be8(w);
+        PlayerSelectMenu_DrawCharModel(w);
         break;
     case 1:
-        func_ov000_02356a48(w);
+        PlayerSelectMenu_DrawPartnerModel(w);
         break;
     case 2:
-        func_ov000_023569d8(w);
+        PlayerSelectMenu_DrawModelPair(w);
         break;
     }
 }

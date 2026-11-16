@@ -4,9 +4,9 @@
 #pragma thumb on
 
 extern u8 gTaskCurrent[];
-s32 func_ov000_023611f8();
-s32 func_ov000_0236119c();
-s32 func_ov000_02360998();
+s32 TimeSelectMenu_DrawLayoutA();
+s32 TimeSelectMenu_DrawLayoutB();
+s32 TimeSelectMenu_DrawTransferSprites();
 s32 TimeSelectMenu_IsTransferDone();
 s32 Wireless_EnableErrorCallback();
 s32 TimeSelectMenu_StartBrightnessFade();
@@ -14,9 +14,9 @@ void TimeSelectMenu_State_StartStage();
 
 void TimeSelectMenu_State_ChooserWaitTransfer(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
-    func_ov000_023611f8(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
-    func_ov000_0236119c(t0, 0x1000, 0);
-    func_ov000_02360998(t0);
+    TimeSelectMenu_DrawLayoutA(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
+    TimeSelectMenu_DrawLayoutB(t0, 0x1000, 0);
+    TimeSelectMenu_DrawTransferSprites(t0);
     *(u32 *)t0 = (*(u32 *)t0 + 0x1);
     s32 t1 = TimeSelectMenu_IsTransferDone(t0);
     if (t1 != 0) {

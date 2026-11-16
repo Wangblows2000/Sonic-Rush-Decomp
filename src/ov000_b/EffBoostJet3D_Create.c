@@ -18,7 +18,7 @@ extern u8 data_ov000_0236a9f8[];
 
 s32 FX_Atan2(s32 y, s32 x);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_0232e90c(UnkStruct_02331670 *w);
+void Effect_SetFollowParentState(UnkStruct_02331670 *w);
 void StageObj_Load3dBAC(void *w, UnkStruct_02331670_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 
 UnkStruct_02331670 *EffBoostJet3D_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unused) {
@@ -50,6 +50,6 @@ UnkStruct_02331670 *EffBoostJet3D_Create(UnkStruct_StageObj *arg, s16 x, s16 y, 
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x100;
     w->base.unk54 |= 2;
-    func_ov000_0232e90c(w);
+    Effect_SetFollowParentState(w);
     return w;
 }

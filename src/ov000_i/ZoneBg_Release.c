@@ -10,8 +10,8 @@ typedef void (*UnkFunc_02341f78)(void *p);
 
 extern UnkCfg_02341f78 gGameState;
 extern u32 gSystemFlags;
-extern UnkFunc_02341f78 data_ov000_023689c4[][3];
-extern void *data_ov000_0236ac1c;
+extern UnkFunc_02341f78 gZoneBgReleaseTable[][3];
+extern void *gZoneBgWork;
 extern void *gMainHeap;
 
 void *OS_GetArenaLo(u32 arg);
@@ -39,12 +39,12 @@ void ZoneBg_Release(void) {
     void *p;
 
     gSystemFlags &= ~0xc00;
-    f = data_ov000_023689c4[gGameState.unk1C][gGameState.unk1D];
+    f = gZoneBgReleaseTable[gGameState.unk1C][gGameState.unk1D];
     if (f != NULL)
-        f(data_ov000_0236ac1c);
-    p = data_ov000_0236ac1c;
+        f(gZoneBgWork);
+    p = gZoneBgWork;
     if (p == NULL)
         return;
     UnkDbgFree(p);
-    data_ov000_0236ac1c = NULL;
+    gZoneBgWork = NULL;
 }

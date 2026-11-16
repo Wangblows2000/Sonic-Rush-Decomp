@@ -36,7 +36,7 @@ extern u32 gObjManagerFlags;
 extern UnkGfx_0204b95c gCamera;
 extern u16 gPad[];
 
-void func_ov000_023375f8(u8 a);
+void Hud_Unk_ov000_023375f8(u8 a);
 void Hud_SetRingCount(s32 a);
 void Hud_SetTime(s32 a);
 void Hud_SetTensionGauge(u16 a, s32 b);
@@ -49,7 +49,7 @@ void PauseMenu_Create(s32 mode);
 void NetPacket_BuildSendBuffer(void);
 
 void Stage_Main(void) {
-    func_ov000_023375f8(data_022c4590.unk14);
+    Hud_Unk_ov000_023375f8(data_022c4590.unk14);
     Hud_SetRingCount(gPlayers[0]->unk3ae);
     Hud_SetTime(gGameState.unk20);
     if (gGameState.flags & 1)

@@ -18,7 +18,7 @@ extern void *gZoneActArchive;
 extern u8 data_ov000_02367bb0[];
 
 void StageObj_Load3dBAC(void *w, UnkStruct_023273f8_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_ov000_02327398(void);
+void EffKemuriSpin3D_State_Main(void);
 
 UnkStruct_023273f8 *EffKemuriSpin3D_Create(UnkStruct_StageObj *arg, s32 type, s32 x, s32 y, s16 z) {
     UnkStruct_Task *task;
@@ -56,6 +56,6 @@ UnkStruct_023273f8 *EffKemuriSpin3D_Create(UnkStruct_StageObj *arg, s32 type, s3
     w->base.unk18 += z << 8;
     w->base.unk58 |= 0x100;
     w->base.unk54 |= 2;
-    w->base.unk68 = func_ov000_02327398;
+    w->base.unk68 = EffKemuriSpin3D_State_Main;
     return w;
 }

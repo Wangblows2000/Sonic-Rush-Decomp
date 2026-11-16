@@ -12,8 +12,8 @@ extern s16 data_0206e470[];
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 
-BOOL func_ov000_023270d8(void);
-void func_ov000_02334264(UnkStruct_EffObj *w);
+BOOL Player_IsPlayer2(void);
+void Effect_SetMoveUntilAnimEndState(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *EffBlazeTrickFlame_Create(UnkStruct_StageObj *arg, u32 f) {
     UnkStruct_Task *task;
@@ -21,7 +21,7 @@ UnkStruct_EffObj *EffBlazeTrickFlame_Create(UnkStruct_StageObj *arg, u32 f) {
     s32 d;
     vu16 zero;
 
-    if (func_ov000_023270d8())
+    if (Player_IsPlayer2())
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))
@@ -51,6 +51,6 @@ UnkStruct_EffObj *EffBlazeTrickFlame_Create(UnkStruct_StageObj *arg, u32 f) {
     w->unk10 += d << 8;
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
     return w;
 }

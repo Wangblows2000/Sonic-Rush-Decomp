@@ -17,7 +17,7 @@ extern u8 *gPlayers[];
 
 void NetPacket_ResetRead(void);
 UnkStruct_Ev *NetPacket_FindNextData(s32 a, s32 b);
-u8 *func_ov000_023355d0(void);
+u8 *StageEvent_GetMapObjectList(void);
 void MapObject_OnHit_Default(UnkStruct_Coll *a, void *b);
 
 void MapObject_Unk_ov000_022faa74(UnkStruct_StageObj *s) {
@@ -39,7 +39,7 @@ void MapObject_Unk_ov000_022faa74(UnkStruct_StageObj *s) {
             o = NetPacket_FindNextData(2, i);
             if (o == NULL)
                 break;
-            b = (u32)o->unk2 + (u32)func_ov000_023355d0();
+            b = (u32)o->unk2 + (u32)StageEvent_GetMapObjectList();
             if ((u32)s->unk1E0 != b)
                 continue;
             switch (o->unk0) {

@@ -18,7 +18,7 @@ extern void *data_ov000_02369ba0;
 extern UnkStruct_StageObj *data_ov000_0236a2fc;
 extern u8 data_ov000_0236a300[], data_ov000_02367110[], data_ov000_0236a310[];
 
-void func_ov000_0231960c(void);
+void EffShadow_State_Main(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_0231979c_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 void StageObj_AcquireSharedTexture(UnkStruct_0231979c_Sub *s, void *a, s32 b, s32 c);
 
@@ -52,5 +52,5 @@ void EffShadow_Create(UnkStruct_StageObj *arg, void *n) {
     w->base.unk54 |= 2;
     w->base.unk54 |= 0x10;
     w->base.unk5C |= 0x100;
-    w->base.unk68 = func_ov000_0231960c;
+    w->base.unk68 = EffShadow_State_Main;
 }

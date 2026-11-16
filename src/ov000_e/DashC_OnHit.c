@@ -15,7 +15,7 @@ typedef struct {
 extern s16 data_0206e470[];
 
 void Player_Action_DashRing(UnkStruct_StageObj *p, s32 x, s32 y, s16 vx, s16 vy);
-void func_ov000_023497a4(UnkStruct_StageObj *p);
+void Player_Unk_ov000_023497a4(UnkStruct_StageObj *p);
 void Player_SetSourceMapObject(UnkStruct_StageObj *p, UnkStruct_02306d88 *w);
 
 void DashC_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
@@ -29,7 +29,7 @@ void DashC_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
         return;
     if (w->unk2A0 & 1) {
         Player_Action_DashRing(b->unk18, w->base.unk10, w->base.unk14, vx, vy);
-        func_ov000_023497a4(b->unk18);
+        Player_Unk_ov000_023497a4(b->unk18);
     } else {
         Player_Action_DashRing(b->unk18, w->base.unk10, w->base.unk14, vx, vy);
     }

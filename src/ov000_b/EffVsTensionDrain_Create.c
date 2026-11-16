@@ -8,7 +8,7 @@ typedef struct {
 extern void *gActComArchive;
 extern u8 data_ov000_023681a4[], data_ov000_0236a9b8[];
 
-void func_ov000_0232ed48(void);
+void EffVsTensionDrain_State_Main(void);
 
 void EffVsTensionDrain_Create(UnkStruct_0232ee24 *arg) {
     UnkStruct_Task *task;
@@ -36,5 +36,5 @@ void EffVsTensionDrain_Create(UnkStruct_0232ee24 *arg) {
     w->unk54 |= 0x10;
     w->unk44 = 0x100;
     w->unk46 = 0x100;
-    w->unk68 = func_ov000_0232ed48;
+    w->unk68 = EffVsTensionDrain_State_Main;
 }

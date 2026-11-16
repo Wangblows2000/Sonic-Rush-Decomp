@@ -12,7 +12,7 @@ typedef struct {
 extern void *gMainHeap;
 extern u8 data_ov000_02369a84[];
 
-BOOL func_ov000_0235faf0(void);
+BOOL TimeSelectMenu_Unk_ov000_0235faf0(void);
 void Model_Release(UnkStruct_MdlRender *r);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -45,7 +45,7 @@ void TimeSelectMenu_ReleaseArchives(UnkStruct_02360324 *w) {
     vu32 zero;
     u8 buf[0x60];
 
-    if (func_ov000_0235faf0()) {
+    if (TimeSelectMenu_Unk_ov000_0235faf0()) {
         Model_Release(&w->rA);
         Model_Release(&w->rB);
         zero = 0;

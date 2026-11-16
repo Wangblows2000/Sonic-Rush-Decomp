@@ -11,10 +11,10 @@ typedef struct UnkStruct_0231c808 {
     void (*func)(void);
 } UnkStruct_0231c808;
 
-void func_ov000_0231c444(void);
+void Mine_State_Drop(void);
 
 void Mine_Action_Drop(UnkStruct_0231c808 *s) {
-    s->func = func_ov000_0231c444;
+    s->func = Mine_State_Drop;
     s->unk30 = 0x60;
     s->unk58 &= ~0x2000;
     s->unkC = 0;

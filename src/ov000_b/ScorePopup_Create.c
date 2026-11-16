@@ -14,9 +14,9 @@ extern UnkStruct_Task *data_ov000_0236a980;
 extern u8 data_ov000_02367fe4[];
 
 void ScorePopup_Destructor(void);
-void func_ov000_0232b598(void);
-void func_ov000_0232b740(void);
-s32 func_ov000_0233766c(s32 a);
+void ScorePopup_Draw(void);
+void ScorePopup_State_Main(void);
+s32 Hud_Unk_ov000_0233766c(s32 a);
 void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
 void Hud_ToDecimalDigits(u32 *out, s32 a, s32 b);
 
@@ -37,8 +37,8 @@ void ScorePopup_Create(UnkStruct_StageObj *arg, s32 n) {
         zero = 0;
         MIi_CpuClear16(zero, w, sizeof(UnkStruct_0232b898));
         StageObj_Load2dBAC(w, data_ov000_02367fe4, 0, NULL, gActComArchive);
-        w->base.spr0.unk34 = func_ov000_0233766c(0);
-        w->base.spr1.unk34 = func_ov000_0233766c(1);
+        w->base.spr0.unk34 = Hud_Unk_ov000_0233766c(0);
+        w->base.spr1.unk34 = Hud_Unk_ov000_0233766c(1);
         w->base.spr0.unk44 = 1;
         w->base.spr1.unk44 = 1;
         w->base.spr0.unk2C |= 0x10;
@@ -66,11 +66,11 @@ void ScorePopup_Create(UnkStruct_StageObj *arg, s32 n) {
     }
     for (i = 0; i < 5; i++)
         w->unk134[i] = i * 2 + 8;
-    w->base.unk70 = func_ov000_0232b598;
+    w->base.unk70 = ScorePopup_Draw;
     w->base.unk10 = arg->unk10;
     w->base.unk14 = arg->unk14;
     w->base.unk88 = arg;
-    w->base.unk68 = func_ov000_0232b740;
+    w->base.unk68 = ScorePopup_State_Main;
     w->base.unkC = 0;
     w->base.unk8 = 0;
     w->base.unk44 = 0;

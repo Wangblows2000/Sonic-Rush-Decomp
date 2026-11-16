@@ -83,33 +83,33 @@ void PlayerSelectMenu_State_Confirmed(void) {
     }
     PlayerSelectMenu_AnimateModels(&w->mdl);
     PlayerSelectMenu_DrawModels(&w->mdl);
-    func_ov000_02357ec8(w, w->unk14, 0x1000);
-    func_ov000_023582e8(w, w->unk14, 0);
+    PlayerSelectMenu_DrawSelectionCursor(w, w->unk14, 0x1000);
+    PlayerSelectMenu_SetBackgroundSelection(w, w->unk14, 0);
     p = &w->pos[0];
-    func_ov000_023579fc(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite60C(w, p->x, p->y);
     p = &w->pos[1];
-    func_ov000_023579c8(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite654(w, p->x, p->y);
     p = &w->pos[2];
-    func_ov000_0235793c(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite69C(w, p->x, p->y);
     p = &w->pos[3];
-    func_ov000_02357908(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite6E4(w, p->x, p->y);
     p = &w->pos[4];
-    func_ov000_02357994(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite9B4(w, p->x, p->y);
     p = &w->pos[5];
-    func_ov000_023578d0(w, p->x, p->y);
-    func_ov000_02357970(w);
+    PlayerSelectMenu_DrawSpriteA8C(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite9FC(w);
     if (w->unk10 == 2) {
         step = 0x8000;
     } else {
         step = 0x5555;
     }
     for (i = 1; i < w->unk10; i++) {
-        func_ov000_02358384(w, (w->unk14 + i) % w->unk10, step * i);
+        PlayerSelectMenu_DrawOrbitSprite(w, (w->unk14 + i) % w->unk10, step * i);
     }
-    func_ov000_02357844(w, 0x80, 0x98);
-    func_ov000_02358224(w, 0, 0x1000);
+    PlayerSelectMenu_DrawSprite804(w, 0x80, 0x98);
+    PlayerSelectMenu_DrawBottomSpriteScaled(w, 0, 0x1000);
     gDisplaySub[2].x++;
-    func_ov000_023580bc(w, TRUE);
+    PlayerSelectMenu_DrawSubTitleSprite2(w, TRUE);
     if (w->unk0 == 8 && (u32)(w->unkC - 1) <= 1) {
         switch (w->unk14) {
         case 0:

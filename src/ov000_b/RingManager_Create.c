@@ -55,7 +55,7 @@ void RingManager_BoxCheck(void);
 void RingManager_BoxCheckArena1(void);
 void RingManager_BoxCheckArena2(void);
 void RingManager_BoxCheckArena3(void);
-void func_ov000_0235b484(void);
+void RingManager_Unk_ov000_0235b484(void);
 void RingManager_CollideMap(void);
 void RingManager_DrawRingArena3(void);
 void RingManager_SpawnEffectArena3(void);
@@ -117,7 +117,7 @@ UnkStruct_0235c238 *RingManager_Create(void) {
             w->unkC = RingManager_BoxCheckArena3;
     }
     if (!func_ov000_0235c238_IsNormal() && gGameState.unk1C == 7)
-        w->unk10 = func_ov000_0235b484;
+        w->unk10 = RingManager_Unk_ov000_0235b484;
     else
         w->unk10 = RingManager_CollideMap;
     if (!func_ov000_0235c238_IsNormal()) {

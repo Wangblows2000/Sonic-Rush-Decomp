@@ -13,11 +13,11 @@ typedef struct {
 } UnkStruct_02308c20;
 
 s32 func_ov000_02307e84(UnkStruct_02308c20 *p);
-UnkStruct_02308c20_o *func_ov000_0234237c(s32 a, s32 b);
+UnkStruct_02308c20_o *EnemyRoom_Get(s32 a, s32 b);
 void GmkWall_State_Unk_ov000_02308b88(UnkStruct_02308c20 *p);
 
 void GmkWall_Action_Unk_ov000_02308c20(UnkStruct_02308c20 *p) {
-    UnkStruct_02308c20_o *o = func_ov000_0234237c(1, func_ov000_02307e84(p));
+    UnkStruct_02308c20_o *o = EnemyRoom_Get(1, func_ov000_02307e84(p));
 
     if (o == NULL) {
         p->unk54 |= 4;

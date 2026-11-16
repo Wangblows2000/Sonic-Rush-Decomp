@@ -3,9 +3,9 @@
 
 #pragma thumb on
 
-s32 func_ov000_0235cc60();
-s32 func_ov000_0235cc4c();
-s32 func_ov000_0235cbf0();
+s32 ResultsScreen_Unk_ov000_0235cc60();
+s32 ResultsScreen_Unk_ov000_0235cc4c();
+s32 ResultsScreen_GetResultKind();
 s32 ResultsScreen_CreateTask();
 s32 ResultsScreen_InitDisplay();
 s32 WirelessSession_Unk_020513a8();
@@ -15,16 +15,16 @@ s32 ResultsScreen_LoadSprites();
 s32 ResultsScreen_InitSprites();
 s32 ResultsScreen_InitBackgrounds();
 s32 ResultsScreen_LoadArchives();
-s32 func_ov000_0235d888();
-s32 func_ov000_0235d7b4();
+s32 ResultsScreen_SetModelAnimA();
+s32 ResultsScreen_SetModelAnimB();
 s32 ResultsScreen_LoadPlayerNames();
 s32 ResultsScreen_CreateLinkIcon();
 s32 Touch_Enable();
 
 void ResultsScreen_Create(void) {
-    s32 t0 = func_ov000_0235cc60();
-    s32 t1 = func_ov000_0235cc4c();
-    s32 t2 = func_ov000_0235cbf0();
+    s32 t0 = ResultsScreen_Unk_ov000_0235cc60();
+    s32 t1 = ResultsScreen_Unk_ov000_0235cc4c();
+    s32 t2 = ResultsScreen_GetResultKind();
     s32 t3 = ResultsScreen_CreateTask(t0, t1, t2);
     ResultsScreen_InitDisplay();
     s32 t4 = WirelessSession_Unk_020513a8();
@@ -36,8 +36,8 @@ void ResultsScreen_Create(void) {
     ResultsScreen_InitSprites(t3);
     ResultsScreen_InitBackgrounds(t3);
     ResultsScreen_LoadArchives(t3);
-    func_ov000_0235d888(t3, 0);
-    func_ov000_0235d7b4(t3, 0);
+    ResultsScreen_SetModelAnimA(t3, 0);
+    ResultsScreen_SetModelAnimB(t3, 0);
     ResultsScreen_LoadPlayerNames(t3);
     ResultsScreen_CreateLinkIcon((t3 + 0x4ec));
     Touch_Enable();

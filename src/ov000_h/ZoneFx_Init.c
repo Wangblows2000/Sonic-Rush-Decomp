@@ -9,8 +9,8 @@ typedef struct {
 typedef void (*UnkFunc_0233e79c)(void *w);
 
 extern UnkStruct_0233e79c_4560 gGameState;
-extern UnkFunc_0233e79c data_ov000_0236885c[][3];
-extern void *data_ov000_0236ac18;
+extern UnkFunc_0233e79c gZoneFxInitTable[][3];
+extern void *gZoneFxWork;
 extern void *gMainHeap;
 
 void *Heap_Alloc(void *heap, u32 size, s32 align);
@@ -36,12 +36,12 @@ void ZoneFx_Init(void) {
     void *p;
     vu16 zero;
 
-    if (data_ov000_0236885c[gGameState.unk1C][gGameState.unk1D] == NULL) {
+    if (gZoneFxInitTable[gGameState.unk1C][gGameState.unk1D] == NULL) {
         return;
     }
     p = UnkAlloc_0233e79c(0x980, 0x20);
     zero = 0;
-    data_ov000_0236ac18 = p;
+    gZoneFxWork = p;
     MIi_CpuClear16(zero, p, 0x950);
-    data_ov000_0236885c[gGameState.unk1C][gGameState.unk1D](data_ov000_0236ac18);
+    gZoneFxInitTable[gGameState.unk1C][gGameState.unk1D](gZoneFxWork);
 }

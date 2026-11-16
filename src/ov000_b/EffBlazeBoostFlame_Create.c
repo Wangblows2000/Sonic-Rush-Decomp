@@ -10,10 +10,10 @@ extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023684d8[];
 extern u8 data_ov000_0236a9f8[];
 
-BOOL func_ov000_023270d8(UnkStruct_EffObj *a);
+BOOL Player_IsPlayer2(UnkStruct_EffObj *a);
 s32 FX_Atan2(s32 y, s32 x);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_02334264(UnkStruct_EffObj *w);
+void Effect_SetMoveUntilAnimEndState(UnkStruct_EffObj *w);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -26,7 +26,7 @@ UnkStruct_EffObj *EffBlazeBoostFlame_Create(UnkStruct_EffObj *arg) {
     s16 vE;
     vu16 zero;
 
-    if (func_ov000_023270d8(arg))
+    if (Player_IsPlayer2(arg))
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))
@@ -66,6 +66,6 @@ UnkStruct_EffObj *EffBlazeBoostFlame_Create(UnkStruct_EffObj *arg) {
     w->unk14 += vA;
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
     return w;
 }

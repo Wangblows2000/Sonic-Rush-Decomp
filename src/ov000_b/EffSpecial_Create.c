@@ -20,7 +20,7 @@ extern void *gActComArchive;
 extern u8 data_ov000_02366f30[], data_ov000_0236a24c[];
 
 void EffSpecial_Destructor(void);
-void func_ov000_02315e84(void);
+void EffSpecial_State_Main(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 
 void EffSpecial_Create(UnkStruct_02316170_Arg *arg) {
@@ -58,5 +58,5 @@ void EffSpecial_Create(UnkStruct_02316170_Arg *arg) {
     w->unk5C |= 0x20;
     w->unk44 = 8;
     w->unk46 = 0x180;
-    w->unk68 = func_ov000_02315e84;
+    w->unk68 = EffSpecial_State_Main;
 }

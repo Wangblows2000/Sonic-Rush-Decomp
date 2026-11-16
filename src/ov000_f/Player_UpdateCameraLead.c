@@ -33,7 +33,7 @@ typedef struct {
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
 BOOL Display_IsMainScreenOnBottom(void);
-void func_ov000_0233b2c8(s32 x, s32 y);
+void Camera_SetLeadTargetPrimary(s32 x, s32 y);
 
 void Player_UpdateCameraLead(UnkStruct_023458cc *w) {
     s32 shift = 4;
@@ -107,5 +107,5 @@ void Player_UpdateCameraLead(UnkStruct_023458cc *w) {
         w->unk3D2 += (w->unk3D6 - w->unk3D2) >> shift;
         w->unk3D4 += (w->unk3D8 - w->unk3D4) >> shift;
     }
-    func_ov000_0233b2c8(w->unk3D2 + (cx << 8), w->unk3D4 + (cy << 8));
+    Camera_SetLeadTargetPrimary(w->unk3D2 + (cx << 8), w->unk3D4 + (cy << 8));
 }

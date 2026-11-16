@@ -21,7 +21,7 @@ typedef struct {
 } UnkStruct_02321cb8;
 
 void StageObj_SetAnimation(void *w, s32 a);
-void func_ov000_02321c5c(void);
+void DecBird_State_FlyAway(void);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -30,7 +30,7 @@ void DecBird_Action_FlyAway(UnkStruct_02321cb8 *w, UnkStruct_02321cb8_P *p) {
 
     StageObj_SetAnimation(w, 1);
     w->unk5C |= 4;
-    w->unk68 = func_ov000_02321c5c;
+    w->unk68 = DecBird_State_FlyAway;
     w->unk58 &= ~0x2000;
     w->unk54 |= 2;
     w->unk2E = 0xa0;

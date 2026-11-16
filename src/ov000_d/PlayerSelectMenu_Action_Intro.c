@@ -29,17 +29,17 @@ void PlayerSelectMenu_Action_Intro(UnkStruct_SceneTask *t) {
     KeyframeAnim_SetAnim(&w->pos[3], 4);
     KeyframeAnim_SetAnim(&w->pos[4], 5);
     KeyframeAnim_SetAnim(&w->pos[5], 7);
-    func_ov000_02357d20(w);
-    func_ov000_02357c8c(w);
-    func_ov000_02357b4c(w);
-    func_ov000_02357b24(w);
-    func_ov000_02357be4(w);
-    func_ov000_02357ae8(w);
-    func_ov000_02356810(w);
+    PlayerSelectMenu_SetSprite60CAnim3(w);
+    PlayerSelectMenu_SetSprite654Anim3(w);
+    PlayerSelectMenu_SetSprite69CAnim6(w);
+    PlayerSelectMenu_SetSprite6E4Anim7(w);
+    PlayerSelectMenu_SetSprite9B4Anim(w);
+    PlayerSelectMenu_SetSpriteA8CAnim0(w);
+    PlayerSelectMenu_UpdateCharLayerFlags(w);
     if (w->unk14 != 2) {
-        func_ov000_023582b0(w);
+        PlayerSelectMenu_SetSprite96CAnim0(w);
     } else {
-        func_ov000_02358278(w);
+        PlayerSelectMenu_SetSprite96CAnim1(w);
     }
     GX_SetGraphicsMode(1, 0, 1);
     *(vu16 *)0x400000e = (*(vu16 *)0x400000e & 0x43) | 0x69c;

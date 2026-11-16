@@ -10,10 +10,10 @@ typedef struct UnkStruct_023174e4 {
     void (*func)(void);
 } UnkStruct_023174e4;
 
-void func_ov000_023171b4(void);
+void Shooter_State_Main(void);
 
 void Shooter_Action_Init(UnkStruct_023174e4 *s) {
-    s->func = func_ov000_023171b4;
+    s->func = Shooter_State_Main;
     s->unkC = 0;
     s->unk8 = 0;
     s->unk5C |= 4;

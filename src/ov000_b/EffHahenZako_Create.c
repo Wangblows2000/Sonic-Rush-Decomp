@@ -17,7 +17,7 @@ extern UnkStruct_0236aad8 gCamera;
 extern u8 data_ov000_023672bc[];
 extern u8 data_ov000_0236a6f8[];
 
-void func_ov000_0231fdec(void);
+void EffHahenZako_State_Main(void);
 
 UnkStruct_EffObj *EffHahenZako_Create(void) {
     UnkStruct_Task *task;
@@ -45,6 +45,6 @@ UnkStruct_EffObj *EffHahenZako_Create(void) {
     w->unk5C |= 1;
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    w->unk68 = func_ov000_0231fdec;
+    w->unk68 = EffHahenZako_State_Main;
     return w;
 }

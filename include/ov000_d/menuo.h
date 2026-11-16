@@ -57,16 +57,16 @@ extern UnkStruct_MenuOTask *gTaskCurrent;
 
 void KeyframeAnim_Update(UnkStruct_MenuOPos *p);
 void KeyframeAnim_SetAnim(UnkStruct_MenuOPos *p, s32 n);
-void func_ov000_023611f8(UnkStruct_MenuO *w);
-void func_ov000_0236119c(UnkStruct_MenuO *w, s32 a, s32 b);
+void TimeSelectMenu_DrawLayoutA(UnkStruct_MenuO *w);
+void TimeSelectMenu_DrawLayoutB(UnkStruct_MenuO *w, s32 a, s32 b);
 
 static inline void MenuO_Update(UnkStruct_MenuO *w, s32 b) {
     KeyframeAnim_Update(&w->pos[0]);
-    func_ov000_023611f8(w);
+    TimeSelectMenu_DrawLayoutA(w);
     if (w->unkC / 2 != w->unk10 / 2) {
-        func_ov000_0236119c(w, w->pos[0].unk4, b);
+        TimeSelectMenu_DrawLayoutB(w, w->pos[0].unk4, b);
     } else {
-        func_ov000_0236119c(w, 0x1000, b);
+        TimeSelectMenu_DrawLayoutB(w, 0x1000, b);
     }
     w->unk0++;
 }

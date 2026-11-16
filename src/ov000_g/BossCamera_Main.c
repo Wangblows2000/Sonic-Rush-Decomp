@@ -51,7 +51,7 @@ typedef struct {
 
 extern UnkStruct_0231f3ec_T data_ov000_0236a48c[];
 extern UnkStruct_0231f3ec data_ov000_0236a444;
-extern void (*data_ov000_023644d4[])(void);
+extern void (*gBossCameraModeTable[])(void);
 
 void Model_Animate(void *a);
 void Model_Draw(void *a);
@@ -82,7 +82,7 @@ void BossCamera_Main(void) {
     UnkStruct_0231f3ec_T *t = data_ov000_0236a48c;
     Track(c, &t[0], 2);
     Track(c, &t[1], 4);
-    data_ov000_023644d4[c->unkDC]();
+    gBossCameraModeTable[c->unkDC]();
     if (c->unk0 & 1) {
         c->unk128 = c->unk18;
         Model_Animate(c->unkE0);

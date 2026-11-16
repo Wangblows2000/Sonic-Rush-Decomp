@@ -82,7 +82,7 @@ extern UnkStruct_0234d0bc_L gCamera[];
 extern u32 gObjManagerFlags;
 extern u16 data_022c4ef8;
 
-void func_ov000_0233c00c(void);
+void Camera_ResetOnRespawn(void);
 void StageRestart_Create(void);
 void ModelPalette_ShiftColor(UnkStruct_0234d0bc_Pal *p, s32 a, s32 b, s32 c);
 void Camera_UnlockX(u8 a);
@@ -101,7 +101,7 @@ void Player_Respawn(UnkStruct_0234d0bc *w) {
         }
         StageRestart_Create();
     } else {
-        func_ov000_0233c00c();
+        Camera_ResetOnRespawn();
         w->unk330 |= 0x200000;
     }
     gCamera[w->unk327].v |= 1;

@@ -43,7 +43,7 @@ typedef struct {
 
 extern void *gActComArchive;
 
-BOOL func_ov000_023270d8(UnkStruct_BlkObjArg *a);
+BOOL Player_IsPlayer2(UnkStruct_BlkObjArg *a);
 void StageObj_Destructor(void);
 
 static inline void BlkObj_SetVec(UnkStruct_BlkVec *v, s32 x, s32 y, s32 z) {

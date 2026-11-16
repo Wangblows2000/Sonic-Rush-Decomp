@@ -34,7 +34,7 @@ extern UnkStruct_02346b10 *gPlayers[];
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
-void func_ov000_02326f48(UnkStruct_02346b10 *w, s32 a, s32 b, s32 c, s32 d);
+void EffTrail_Create(UnkStruct_02346b10 *w, s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void ScreenShake_Start(s32 a);
@@ -52,7 +52,7 @@ void Player_StartBoost(UnkStruct_02346b10 *w) {
             w->unk58 |= 0x4000;
         }
         if (w->unk324 == 0 && !(w->unk330 & 0x100)) {
-            func_ov000_02326f48(w, 0x18, 0xa, 0x7ca5, 0x7ca5);
+            EffTrail_Create(w, 0x18, 0xa, 0x7ca5, 0x7ca5);
         }
         if (w->unk324 != 1) {
             Sound_PlaySeqArcEx(w->unk384, 0, 0xa);

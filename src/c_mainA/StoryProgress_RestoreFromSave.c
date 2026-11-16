@@ -35,9 +35,10 @@ extern UnkStruct_022c4590 data_022c4590;
 extern UnkStruct_022c4680 gSaveData;
 extern u8 data_02074bb4[];
 
-u16 StoryProgress_Unk_0204e614(u16 v);
+/* enum-typed ternary keeps CW from canonicalising to !x (movne 0 before moveq 1) */
+typedef enum { E_ZERO, E_ONE } UnkEnum_0204ec40;
 
-static inline BOOL Inl_0204ec40(void) { return (gSaveData.unk8 & 1) ? TRUE : FALSE; }
+u16 StoryProgress_Unk_0204e614(u16 v);
 
 void StoryProgress_RestoreFromSave(void)
 {
@@ -64,5 +65,5 @@ void StoryProgress_RestoreFromSave(void)
                 gGameState.unk28 |= 1 << i;
         }
     }
-    gGameState.unk14 = (gSaveData.unk8 & 1) == 0;
+    gGameState.unk14 = (gSaveData.unk8 & 1) ? E_ZERO : E_ONE;
 }

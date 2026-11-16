@@ -68,6 +68,6 @@ void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndPlayerSetVolume(void *p, s32 vol);
 void Player_AddTrickScore(UnkStruct_Player *w, s32 a);
-void func_ov000_0232c7b0(u8 a);
+void EffTrickSparkle_Create(u8 a);
 
 #endif

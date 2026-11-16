@@ -77,8 +77,8 @@ void Boss7PartD5_Unk_ov000_022eb574(UnkStruct_022eb5fc *w, UnkStruct_022eb5fc_Pl
 void Boss7PartD5_CreateClashEffect(s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Player_OnHurt(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b);
-s32 func_ov000_0235b0a8(void);
-void func_ov000_0235b08c(s32 a);
+s32 RingManager_Unk_ov000_0235b0a8(void);
+void RingManager_Unk_ov000_0235b08c(s32 a);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
 void Boss7PartD5_InputState_Unk_ov000_022e9de8(void);
@@ -136,7 +136,7 @@ void Boss7PartD5_OnHit_Unk_ov000_022eb5fc(UnkStruct_022eb5fc_Coll *a, UnkStruct_
             gPlayers->unk420 = 0;
             gPlayers->unk422 = 0;
             gPlayers->unk424 = 0;
-            func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
+            RingManager_Unk_ov000_0235b08c(RingManager_Unk_ov000_0235b0a8() | 1);
             NaviMsg_SetFaceAnim(0xb);
             NaviMsg_ShowMessage(0x12, 0xf0);
             w->unk43C = Boss7PartD5_InputState_Unk_ov000_022e9de8;

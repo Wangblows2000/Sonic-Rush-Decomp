@@ -30,11 +30,11 @@ extern UnkStruct_Plr gCamera[];
 extern UnkStruct_Map data_ov000_0236abd8;
 extern UnkStruct_StageObj *gPlayers[];
 
-void func_ov000_02342348(s32 a);
-void func_ov000_023355e0(u16 x0, u16 y0, u16 x1, u16 y1);
+void EnemyRoom_SetActive(s32 a);
+void StageEvent_Unk_ov000_023355e0(u16 x0, u16 y0, u16 x1, u16 y1);
 u8 func_ov000_02307e84(UnkStruct_0230963c *w);
-void func_ov000_023423a4(s32 a, UnkStruct_0230963c *w, s32 b);
-void func_ov000_0232d620(void);
+void EnemyRoom_Register(s32 a, UnkStruct_0230963c *w, s32 b);
+void EnemyRoomHud_Create(void);
 void MapObj8C_State_Unk_ov000_023094f0(void);
 
 #define CLAMP(x, lo, hi) ((x) < (lo) ? (lo) : ((x) > (hi) ? (hi) : (x)))
@@ -44,7 +44,7 @@ void MapObj8C_Action_Unk_ov000_0230963c(UnkStruct_0230963c *w) {
     UnkStruct_StageObj *p;
     s32 px, py;
 
-    func_ov000_02342348(w->unk214);
+    EnemyRoom_SetActive(w->unk214);
     w->unk20C |= 8;
     if (!(gCamera[2].unk0 & 1)) {
         u16 x = w->base.unk10 >> 8;
@@ -56,9 +56,9 @@ void MapObj8C_Action_Unk_ov000_0230963c(UnkStruct_0230963c *w) {
         y0 = CLAMP(y - 0x300, 0, mh - 1);
         x1 = CLAMP(x + 0x300, 0, mw - 1);
         y1 = CLAMP(y + 0x300, 0, mh - 1);
-        func_ov000_023355e0(x0, y0, x1, y1);
+        StageEvent_Unk_ov000_023355e0(x0, y0, x1, y1);
         w->unk214 = func_ov000_02307e84(w);
-        func_ov000_023423a4(1, w, w->unk214);
+        EnemyRoom_Register(1, w, w->unk214);
     }
     w->unk20C |= 0x1000;
     w->unk20C |= 0x10;
@@ -74,7 +74,7 @@ void MapObj8C_Action_Unk_ov000_0230963c(UnkStruct_0230963c *w) {
         }
     }
     if (w->unk20C & 2)
-        func_ov000_0232d620();
+        EnemyRoomHud_Create();
     if (gCamera[2].unk0 & 1) {
         gCamera[0].unk34 |= 0x10000;
         gCamera[1].unk34 |= 0x10000;

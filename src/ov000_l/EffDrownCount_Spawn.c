@@ -16,7 +16,7 @@ extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_0236aad8 gCamera;
 
 void EffDrownCount_Create(s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0232a780(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void EffDrownCount_Spawn3D(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
 void EffDrownCount_Spawn(s32 a, s32 b, s32 c, s32 d) {
     BOOL on;
@@ -27,7 +27,7 @@ void EffDrownCount_Spawn(s32 a, s32 b, s32 c, s32 d) {
         else
             on = FALSE;
         if (on)
-            func_ov000_0232a780(a, b, c, d, gCamera.unkE0, gCamera.unkE4);
+            EffDrownCount_Spawn3D(a, b, c, d, gCamera.unkE0, gCamera.unkE4);
         return;
     }
     EffDrownCount_Create(a, b, c, d);

@@ -18,7 +18,7 @@ u8 *WirelessSession_GetPartnerRecvBuffer(void);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void SysSound_PlaySE(s32 a);
 void ResultsScreen_SetLocalDecided(UnkStruct_SprObj *w);
-void func_ov000_0235e738(void);
+void ResultsScreen_Main_Unk_ov000_0235e738(void);
 
 #pragma thumb on
 
@@ -26,12 +26,12 @@ void ResultsScreen_State_Choose(void) {
     UnkStruct_SprObj *w = gTaskCurrent->work;
     BOOL done;
 
-    func_ov000_0235e124(w);
-    func_ov000_0235e068(w);
-    func_ov000_0235e018(w);
-    func_ov000_0235dfc4(w);
-    func_ov000_0235def0(w, w->unk20, 0x1000);
-    func_ov000_0235ddec(w, FALSE);
+    ResultsScreen_DrawHeader(w);
+    ResultsScreen_DrawSprite2(w);
+    ResultsScreen_DrawSprite1Pair(w);
+    ResultsScreen_DrawModels(w);
+    ResultsScreen_DrawWinLoseSprites(w, w->unk20, 0x1000);
+    ResultsScreen_DrawChoiceSprites(w, FALSE);
     done = FALSE;
     if (ResultsScreen_IsTopButtonTouched()) {
         w->unk8 = done;
@@ -65,7 +65,7 @@ void ResultsScreen_State_Choose(void) {
         SysSound_PlaySE(7);
         w->unk0 = 0;
         ResultsScreen_SetLocalDecided(w);
-        gTaskCurrent->unk8 = func_ov000_0235e738;
+        gTaskCurrent->unk8 = ResultsScreen_Main_Unk_ov000_0235e738;
     }
 }
 

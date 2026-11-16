@@ -66,7 +66,7 @@ void Model_Animate(void *p);
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
 s32 StageObj_ViewOutCheck(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d, s32 e);
 void Player_AddRings(void *p, s32 a);
-void func_ov000_0235b2c4(UnkStruct_0235bd10_P *p);
+void RingManager_Unk_ov000_0235b2c4(UnkStruct_0235bd10_P *p);
 void RingManager_CollideMap(UnkStruct_0235bd10_P *p);
 
 void RingManager_Main(void) {
@@ -87,7 +87,7 @@ void RingManager_Main(void) {
     if (gGameState.unk1C == 2) {
         if (gPlayers[0]->flags330 & 0x40000) {
             SpritePair_SetOAMPriority(w->spr0, w->spr1, ok);
-            w->cb10 = func_ov000_0235b2c4;
+            w->cb10 = RingManager_Unk_ov000_0235b2c4;
         } else {
             SpritePair_SetOAMPriority(w->spr0, w->spr1, 2);
             w->cb10 = RingManager_CollideMap;

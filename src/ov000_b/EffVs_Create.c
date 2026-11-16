@@ -3,7 +3,7 @@
 extern void *gActComArchive;
 extern u8 data_ov000_02368270[], data_ov000_0236a9b8[];
 
-void func_ov000_02334264(UnkStruct_EffObj *w);
+void Effect_SetMoveUntilAnimEndState(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *EffVs_Create(s32 x, s32 y) {
     UnkStruct_Task *task;
@@ -27,6 +27,6 @@ UnkStruct_EffObj *EffVs_Create(s32 x, s32 y) {
     w->unk58 |= 0x100;
     w->unk58 |= 0x2000;
     w->unk54 |= 2;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
     return w;
 }

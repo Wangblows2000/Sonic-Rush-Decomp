@@ -42,8 +42,8 @@ extern UnkStruct_022cf92c_7 gCamera;
 
 void Stage_OnBossCleared(void);
 void StageShutdown_Create(void (*f)(void));
-UnkStruct_022cf92c_o *func_ov000_023293f4(UnkStruct_022cf92c *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-UnkStruct_022cf92c_o *func_ov000_023295a4(UnkStruct_022cf92c *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+UnkStruct_022cf92c_o *EffRipple3D_Spawn(UnkStruct_022cf92c *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+UnkStruct_022cf92c_o *EffSplash3D_Spawn(UnkStruct_022cf92c *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
 void Boss2_State_DefeatFinish(UnkStruct_022cf92c *s) {
     UnkStruct_022cf92c_o *a;
@@ -64,16 +64,16 @@ void Boss2_State_DefeatFinish(UnkStruct_022cf92c *s) {
     h = gCamera.unk62;
     if (!(h <= 502.1))
         return;
-    a = func_ov000_023293f4(s, 0, 1, 1, h, gCamera.unkE0, gCamera.unkE4);
-    b = func_ov000_023295a4(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
+    a = EffRipple3D_Spawn(s, 0, 1, 1, h, gCamera.unkE0, gCamera.unkE4);
+    b = EffSplash3D_Spawn(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
     a->unk10 = b->unk10 = -0x6400;
     a->unk18 = b->unk18 = 0;
-    a = func_ov000_023293f4(s, 0, 1, 1, gCamera.unk62, gCamera.unkE0, gCamera.unkE4);
-    b = func_ov000_023295a4(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
+    a = EffRipple3D_Spawn(s, 0, 1, 1, gCamera.unk62, gCamera.unkE0, gCamera.unkE4);
+    b = EffSplash3D_Spawn(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
     a->unk10 = b->unk10 = 0x6400;
     a->unk18 = b->unk18 = 0;
-    a = func_ov000_023293f4(s, 0, 1, 2, gCamera.unk62, gCamera.unkE0, gCamera.unkE4);
-    b = func_ov000_023295a4(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
+    a = EffRipple3D_Spawn(s, 0, 1, 2, gCamera.unk62, gCamera.unkE0, gCamera.unkE4);
+    b = EffSplash3D_Spawn(s, 0, 0, gCamera.unk62, 1, gCamera.unkE0, gCamera.unkE4);
     a->unk10 = b->unk10 = 0x6400;
     a->unk18 = b->unk18 = 0x6400;
 }

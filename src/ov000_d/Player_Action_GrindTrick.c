@@ -34,7 +34,7 @@ void Player_AddTension(UnkStruct_0234801c *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Player_AddTrickScore(UnkStruct_0234801c *w, s32 a);
-void func_ov000_0232c7b0(u8 a);
+void EffTrickSparkle_Create(u8 a);
 
 void Player_Action_GrindTrick(UnkStruct_0234801c *w) {
     s16 v;
@@ -106,7 +106,7 @@ void Player_Action_GrindTrick(UnkStruct_0234801c *w) {
         v = 0x12c0;
     }
     w->unk350 = v;
-    func_ov000_0232c7b0(w->unk3D0);
+    EffTrickSparkle_Create(w->unk3D0);
     Player_AddTrickScore(w, 100);
     w->unkC = 0;
     w->unk32A = 0;

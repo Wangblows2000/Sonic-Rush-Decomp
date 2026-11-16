@@ -165,7 +165,7 @@ void Player_InitState(UnkStruct_0234d62c *w);
 void Barrier_Create(UnkStruct_0234d62c *w);
 void Magnet_Create(UnkStruct_0234d62c *w);
 void PlayerIcon_Create(UnkStruct_0234d62c *w);
-void func_ov000_0233e5c8(s32 a, s32 b);
+void ZoneFx_Zone4_StartBldyRampUp(s32 a, s32 b);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -332,7 +332,7 @@ UnkStruct_0234d62c *Player_Create(s32 type, u8 id) {
         w->unk3B2 = w->unk376;
         w->unk2C4 |= 5;
         if (data_022c4590.unk3A != 0) {
-            func_ov000_0233e5c8(3, 8);
+            ZoneFx_Zone4_StartBldyRampUp(3, 8);
             w->unk330 |= 0x8000;
         }
     } else {

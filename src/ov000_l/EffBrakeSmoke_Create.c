@@ -32,7 +32,7 @@ extern s16 data_0206e470[];
 
 void StageObj_Destructor(void);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_02334264(UnkWork_02333694 *w);
+void Effect_SetMoveUntilAnimEndState(UnkWork_02333694 *w);
 
 UnkWork_02333694 *EffBrakeSmoke_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unused) {
     UnkStruct_Task *task;
@@ -80,6 +80,6 @@ UnkWork_02333694 *EffBrakeSmoke_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s3
     w->unk14 += y << 8;
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
     return w;
 }

@@ -4,7 +4,7 @@ extern void *gActComArchive;
 extern u8 data_ov000_02368138[], data_ov000_0236aa10[];
 
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_02334264(UnkStruct_EffObj *w);
+void Effect_SetMoveUntilAnimEndState(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *EffZakoBombPuff_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unused) {
     UnkStruct_Task *task;
@@ -38,6 +38,6 @@ UnkStruct_EffObj *EffZakoBombPuff_Create(UnkStruct_StageObj *arg, s16 x, s16 y, 
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
     w->unk5C |= 0x100;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
     return w;
 }

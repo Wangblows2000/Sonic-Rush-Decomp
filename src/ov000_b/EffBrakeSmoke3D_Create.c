@@ -17,7 +17,7 @@ extern u8 data_ov000_02368538[];
 extern u8 data_ov000_0236aa30[];
 
 void StageObj_Load3dBAC(void *w, UnkStruct_02333520_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_ov000_02334264(UnkStruct_02333520 *w);
+void Effect_SetMoveUntilAnimEndState(UnkStruct_02333520 *w);
 
 UnkStruct_02333520 *EffBrakeSmoke3D_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
     UnkStruct_Task *task;
@@ -49,6 +49,6 @@ UnkStruct_02333520 *EffBrakeSmoke3D_Create(UnkStruct_StageObj *arg, s32 x, s32 y
     w->base.unk14 += y << 8;
     w->base.unk58 |= 0x100;
     w->base.unk54 |= 2;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
     return w;
 }

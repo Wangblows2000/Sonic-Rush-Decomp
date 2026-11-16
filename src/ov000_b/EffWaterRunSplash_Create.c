@@ -3,7 +3,7 @@
 extern void *gZoneActArchive;
 extern u8 data_ov000_02367efc[], data_ov000_0236aa20[];
 
-void func_ov000_02334264(UnkStruct_EffObj *w);
+void Effect_SetMoveUntilAnimEndState(UnkStruct_EffObj *w);
 
 void EffWaterRunSplash_Create(UnkStruct_EffObj *arg, s32 x, s32 y, s32 base) {
     UnkStruct_Task *task;
@@ -27,5 +27,5 @@ void EffWaterRunSplash_Create(UnkStruct_EffObj *arg, s32 x, s32 y, s32 base) {
     w->unk14 = (base << 8) + y * 256;
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
-    func_ov000_02334264(w);
+    Effect_SetMoveUntilAnimEndState(w);
 }

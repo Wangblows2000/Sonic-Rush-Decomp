@@ -6,7 +6,7 @@ BOOL WirelessSession_Unk_020513a8(void);
 void ResultsScreen_CreateRematchSync(void);
 void SceneChange_ToVsStage(void);
 void Stage_FreeZoneFiles(void);
-BOOL func_ov000_0235cbd8(void);
+BOOL ResultsScreen_Unk_ov000_0235cbd8(void);
 void SceneChange_ToPlayerSelectMenuMode1(void);
 void SceneChange_ToPlayerSelectMenuMode2(void);
 void Stage_FreeCommonFiles(void);
@@ -31,7 +31,7 @@ void ResultsScreen_Exit(s32 mode) {
             Stage_FreeZoneFiles();
         }
         SysSound_Release();
-        if (func_ov000_0235cbd8()) {
+        if (ResultsScreen_Unk_ov000_0235cbd8()) {
             SceneChange_ToPlayerSelectMenuMode1();
         } else {
             SceneChange_ToPlayerSelectMenuMode2();

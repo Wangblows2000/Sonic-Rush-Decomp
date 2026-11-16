@@ -41,7 +41,7 @@ typedef struct {
 
 extern UnkStruct_0234e2ac_4590 data_022c4590;
 
-void func_ov000_0232f5a8(UnkStruct_0234e2ac *w);
+void FixInformation_CreateSwingSky(UnkStruct_0234e2ac *w);
 void Player_State_SwingSky(UnkStruct_0234e2ac *w);
 void Player_ResetGimmickState(UnkStruct_0234e2ac *w);
 void Player_SetAnimation(UnkStruct_0234e2ac *w, s32 a);
@@ -51,7 +51,7 @@ void Player_Action_SwingSky(UnkStruct_0234e2ac *w, UnkStruct_0234e2ac *other, BO
     if (w->other == other)
         return;
     if (data_022c4590.unk45 == 0) {
-        func_ov000_0232f5a8(w);
+        FixInformation_CreateSwingSky(w);
         data_022c4590.unk45 = 1;
     }
     Player_ResetGimmickState(w);

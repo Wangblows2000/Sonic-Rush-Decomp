@@ -41,7 +41,7 @@ void Player_SetAnimSpeedFromVelocity(UnkStruct_02355414 *w, s16 spd);
 void Player_UpdateRunAnimation(UnkStruct_02355414 *w);
 void Player_ApplyGroundInput(UnkStruct_02355414 *w);
 void Player_MoveAlongCorkscrew(UnkStruct_02355414 *w, s32 a, s32 b, s32 c);
-void func_ov000_02354de4(UnkStruct_02355414 *w, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void Player_Unk_ov000_02354de4(UnkStruct_02355414 *w, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
 void Player_State_CorkscrewPath(UnkStruct_02355414 *w) {
     if (w->unk3F8 != 2 && ABS(w->unk34) < w->unk37A && Player_CheckFallOffGround(w)) {
@@ -99,7 +99,7 @@ void Player_State_CorkscrewPath(UnkStruct_02355414 *w) {
         Player_MoveAlongCorkscrew(w, 0x1759d, 0x120, 0x26);
         break;
     case 1:
-        func_ov000_02354de4(w, 0x21e52, 0x54, 0x80, 0x83f0, 0x80, 0x20);
+        Player_Unk_ov000_02354de4(w, 0x21e52, 0x54, 0x80, 0x83f0, 0x80, 0x20);
         break;
     case 2:
         Player_MoveAlongCorkscrew(w, 0x13d9d, 0x100, 0x1e);

@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 ObjRect_PointCheck();
-s32 func_ov000_02350adc();
+s32 Player_Unk_ov000_02350adc();
 
 void MapObj9C_OnHit(u8 *p0, u8 *p1) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x18);
@@ -20,5 +20,5 @@ void MapObj9C_OnHit(u8 *p0, u8 *p1) {
     if (t2 == 0) {
         return;
     }
-    func_ov000_02350adc(t1, t0);
+    Player_Unk_ov000_02350adc(t1, t0);
 }

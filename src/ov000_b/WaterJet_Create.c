@@ -10,7 +10,7 @@ extern u8 data_ov000_02367208[], data_ov000_0236a380[];
 
 void MapObject_Destructor(void);
 void WaterJet_OnHit(void);
-void func_ov000_0231bfa0(UnkStruct_0231bffc *w);
+void WaterJet_Action_Wait(UnkStruct_0231bffc *w);
 
 UnkStruct_0231bffc *WaterJet_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -55,6 +55,6 @@ UnkStruct_0231bffc *WaterJet_Create(s32 a, s32 b, s32 c) {
     w->base.coll1.unk1C = WaterJet_OnHit;
     w->base.coll1.unk18 = w;
     w->base.unk1DC = Sound_AllocHandle();
-    func_ov000_0231bfa0(w);
+    WaterJet_Action_Wait(w);
     return w;
 }

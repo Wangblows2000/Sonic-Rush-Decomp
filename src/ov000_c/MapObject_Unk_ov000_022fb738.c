@@ -9,7 +9,7 @@ extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023661a8[][3];
 
 void Math_RotateVec2S16(s32 a, s16 *b, s32 c);
-UnkStruct_StageObj *func_ov000_023263c0(s32 kind, s32 x, s32 y);
+UnkStruct_StageObj *Decoration_Spawn(s32 kind, s32 x, s32 y);
 
 void MapObject_Unk_ov000_022fb738(UnkStruct_StageObj *w) {
     s16 dy = 0;
@@ -24,7 +24,7 @@ void MapObject_Unk_ov000_022fb738(UnkStruct_StageObj *w) {
         kind = Rand() & 0xf;
     dy = 0x800;
     Math_RotateVec2S16(0, &dy, w->unk5);
-    o = func_ov000_023263c0(kind, w->unk10, w->unk14 - dy);
+    o = Decoration_Spawn(kind, w->unk10, w->unk14 - dy);
     if (o == NULL)
         return;
     o->unk5 = w->unk5;

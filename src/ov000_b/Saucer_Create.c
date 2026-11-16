@@ -4,7 +4,7 @@ extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366f18[], data_ov000_0236a23c[], data_ov000_023661c0[], data_ov000_023661a4[];
 
 void Saucer_Destructor(void);
-void func_ov000_02315a48(UnkStruct_StageObj *w);
+void Saucer_Action_Idle(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Saucer_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -39,6 +39,6 @@ UnkStruct_StageObj *Saucer_Create(s32 a, s32 b, s32 c) {
     w->unk54 |= 2;
     w->unk5C |= 0x100;
     w->unk1DC = Sound_AllocHandle();
-    func_ov000_02315a48(w);
+    Saucer_Action_Idle(w);
     return w;
 }

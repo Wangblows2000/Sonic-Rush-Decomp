@@ -9,8 +9,8 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 
 s32 TimeSelectMenu_GetChooserChoice(UnkStruct_MenuO *w);
-void func_ov000_02360ee0(UnkStruct_MenuO *w, s32 a, s32 b);
-void func_ov000_02360f18(UnkStruct_MenuO *w, s32 a);
+void TimeSelectMenu_SetSprite1Anim(UnkStruct_MenuO *w, s32 a, s32 b);
+void TimeSelectMenu_SetSprite0Anim(UnkStruct_MenuO *w, s32 a);
 BOOL TimeSelectMenu_HasChooserQuit(UnkStruct_MenuO *w);
 void TimeSelectMenu_StartBrightnessFade(s32 x, s32 y, s32 a, s32 b);
 void TimeSelectMenu_State_ExitToPlayerSelect(void);
@@ -31,8 +31,8 @@ void TimeSelectMenu_State_FollowChooser(void) {
         w->unk10 = w->unkC;
         w->unkC = n;
         q = n / 2;
-        func_ov000_02360ee0(w, q, n % 2);
-        func_ov000_02360f18(w, q);
+        TimeSelectMenu_SetSprite1Anim(w, q, n % 2);
+        TimeSelectMenu_SetSprite0Anim(w, q);
         if (q != w->unk10 / 2) {
             KeyframeAnim_SetAnim(&w->pos[0], 6);
         }

@@ -48,11 +48,11 @@ extern void ObjDraw_InitRows(void);
 extern void ObjRect_CheckInit(void);
 extern void BossCamera_Create(void);
 extern void StageZoneScript_Create(void);
-extern void func_ov000_0232c7b0(void);
+extern void EffTrickSparkle_Create(void);
 extern void WirelessIcon_Create(void);
 extern void FixVsHud_Create(void);
-extern void func_ov000_02335704(void);
-extern void func_ov000_02335db0(void);
+extern void StageEvent_SpawnAllMapObjects(void);
+extern void StageEvent_CreateManager(void);
 extern void Hud_SetFlags(void);
 extern void Hud_GetFlags(void);
 extern void Hud_Create(void);
@@ -202,8 +202,8 @@ _1d4:
     mov r0, r4
     mov r1, #0x10
     bl ObjDraw_SetManagedRows
-    bl func_ov000_02335db0
-    bl func_ov000_02335704
+    bl StageEvent_CreateManager
+    bl StageEvent_SpawnAllMapObjects
     bl Camera_Create
     bl Stage_InitMapCollision
     ldr r1, [pc, #0x364]
@@ -234,7 +234,7 @@ _280:
     str r1, [r0]
     b _2a0
 _29c:
-    bl func_ov000_0232c7b0
+    bl EffTrickSparkle_Create
 _2a0:
     ldr r0, [pc, #0x2f8]
     ldr r2, [r0, #0x18]

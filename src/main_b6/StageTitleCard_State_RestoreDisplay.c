@@ -44,13 +44,13 @@ typedef struct {
 extern UnkState_0205a654 gGameState;
 extern UnkDisp_0205a654 *gDisplayTable[];
 
-void func_ov000_023375e8(void);
+void Hud_SetOamPriority0(void);
 void Stage_InitBlend(void);
 void StageTitleCard_State_FinalDelay(void);
 
 void StageTitleCard_State_RestoreDisplay(UnkWork_0205a654 *w) {
     if (gGameState.zone != 8 || gGameState.act != 2) {
-        func_ov000_023375e8();
+        Hud_SetOamPriority0();
         Stage_InitBlend();
     } else {
         UnkDisp_0205a654 *d = gDisplayTable[0];

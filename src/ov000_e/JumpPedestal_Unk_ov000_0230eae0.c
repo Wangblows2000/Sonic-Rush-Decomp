@@ -28,7 +28,7 @@ extern UnkStruct_Tbl data_ov000_02364400[];
 
 void Player_Action_PedestalLaunch(UnkStruct_Player *p, s16 a, s16 b);
 void Player_SetSourceMapObject(UnkStruct_Player *p, UnkStruct_StageObj *s);
-void func_ov000_023497a4(UnkStruct_Player *p);
+void Player_Unk_ov000_023497a4(UnkStruct_Player *p);
 
 void JumpPedestal_Unk_ov000_0230eae0(UnkStruct_StageObj *s, UnkStruct_Player *p) {
     u8 k;
@@ -56,7 +56,7 @@ void JumpPedestal_Unk_ov000_0230eae0(UnkStruct_StageObj *s, UnkStruct_Player *p)
                 if (p->unk422 & 3) {
                     Player_Action_PedestalLaunch(p, p->base.unk34 + data_ov000_02364400[k].c, data_ov000_02364400[k].d - p->unk370);
                     Player_SetSourceMapObject(p, s);
-                    func_ov000_023497a4(p);
+                    Player_Unk_ov000_023497a4(p);
                 }
             }
         }

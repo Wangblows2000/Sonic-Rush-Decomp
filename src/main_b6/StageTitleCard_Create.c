@@ -137,7 +137,7 @@ extern UnkGfx_0205f25c gCamera;
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void StageTitleCard_InitBg(UnkWork_0205f25c *w);
-void func_ov000_023375c8(void);
+void Hud_SetOamPriority3(void);
 void StageTitleCard_Unk_0205d604(void);
 void StageTitleCard_HoldPlayerX(void);
 void StageTitleCard_HoldPlayerY(void);
@@ -297,5 +297,5 @@ void StageTitleCard_Create(void) {
         u16 edge[8] = {0, 0, 0, 0, 0, 0, 0, 0};
         G3X_SetEdgeColorTable(edge);
     }
-    func_ov000_023375c8();
+    Hud_SetOamPriority3();
 }

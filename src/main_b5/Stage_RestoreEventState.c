@@ -15,8 +15,8 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4520 data_022c4520;
 
-void *func_ov000_023355d0(void);
-void *func_ov000_023355c0(void);
+void *StageEvent_GetMapObjectList(void);
+void *StageEvent_GetRingList(void);
 void MIi_CpuCopy32(const void *src, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 
@@ -35,11 +35,11 @@ void Stage_RestoreEventState(void) {
         return;
     s = &data_022c4520;
     if ((s->size0 & 3) == 0)
-        MI_CpuCopy32(s->buf0, func_ov000_023355d0(), s->size0);
+        MI_CpuCopy32(s->buf0, StageEvent_GetMapObjectList(), s->size0);
     else
-        MI_CpuCopy16(s->buf0, func_ov000_023355d0(), s->size0);
+        MI_CpuCopy16(s->buf0, StageEvent_GetMapObjectList(), s->size0);
     if ((s->size1 & 3) == 0)
-        MI_CpuCopy32(s->buf1, func_ov000_023355c0(), s->size1);
+        MI_CpuCopy32(s->buf1, StageEvent_GetRingList(), s->size1);
     else
-        MI_CpuCopy16(s->buf1, func_ov000_023355c0(), s->size1);
+        MI_CpuCopy16(s->buf1, StageEvent_GetRingList(), s->size1);
 }

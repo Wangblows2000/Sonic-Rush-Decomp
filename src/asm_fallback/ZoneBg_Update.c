@@ -3,10 +3,10 @@
 
 extern u32 gDisplayTable;
 extern u32 gGameState;
-extern u32 data_ov000_02368b08;
+extern u32 gZoneBgUpdateTable;
 extern u32 data_ov000_0236aab0;
 extern u32 gCamera;
-extern u32 data_ov000_0236ac1c;
+extern u32 gZoneBgWork;
 
 asm void ZoneBg_Update(void)
 {
@@ -54,8 +54,8 @@ _64:
     bx lr
     dcd data_ov000_0236aab0
     dcd gGameState
-    dcd data_ov000_02368b08
-    dcd data_ov000_0236ac1c
+    dcd gZoneBgUpdateTable
+    dcd gZoneBgWork
     dcd gCamera
     dcd gDisplayTable
     dcd 0x000001ff

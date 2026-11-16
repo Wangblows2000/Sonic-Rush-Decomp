@@ -28,7 +28,7 @@ extern UnkStruct_Player *gPlayers;
 
 void NetPacket_ResetRead(void);
 UnkStruct_Ev *NetPacket_FindNextData(s32 a, s32 b);
-u8 *func_ov000_023355d0(void);
+u8 *StageEvent_GetMapObjectList(void);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void Player_ApplySlowdown(UnkStruct_Player *p);
 void Player_ApplyConfusion(UnkStruct_Player *p);
@@ -52,7 +52,7 @@ void func_ov000_022fabbc(void) {
             o = NetPacket_FindNextData(2, i);
             if (o == NULL)
                 break;
-            base = func_ov000_023355d0();
+            base = StageEvent_GetMapObjectList();
             off = o->unk2;
             e = (UnkStruct_Ent *)((u32)off + (u32)base);
             e->unk4 |= 0x2000;

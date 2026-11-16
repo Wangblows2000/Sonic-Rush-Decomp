@@ -30,7 +30,7 @@ typedef struct {
 } UnkStruct_0232dad8_Task;
 
 extern UnkStruct_0232dad8_Task *gTaskCurrent;
-extern s32 data_ov000_0236a988;
+extern s32 gEnemyRoomHudTask;
 extern UnkStruct_0232dad8_P *gPlayers[];
 
 void StageObj_SetAnimation(void *w, s32 a);
@@ -42,7 +42,7 @@ void FixVsHud_Draw(void) {
     s8 a;
     s8 b;
 
-    if (data_ov000_0236a988 != 0)
+    if (gEnemyRoomHudTask != 0)
         return;
     if (gPlayers[0]->unk10 > gPlayers[1]->unk10) {
         if (w->unk9C != 0) {

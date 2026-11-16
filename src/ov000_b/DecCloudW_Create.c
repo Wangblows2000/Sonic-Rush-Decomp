@@ -16,7 +16,7 @@ extern UnkStruct_Res *data_ov000_0236a6f0[];
 extern UnkStruct_0236a790 data_ov000_0236a790[];
 extern u8 data_ov000_02367324[], data_ov000_0236a718[];
 
-void func_ov000_023208b0(void);
+void DecCloudW_State_Main(void);
 
 UnkStruct_EffObj *DecCloudW_Create(u32 a) {
     UnkStruct_Task *task;
@@ -58,6 +58,6 @@ UnkStruct_EffObj *DecCloudW_Create(u32 a) {
     w->unk5C |= 0x80;
     w->unk58 |= 0x2100;
     w->unk54 |= 0x12;
-    w->unk68 = func_ov000_023208b0;
+    w->unk68 = DecCloudW_State_Main;
     return w;
 }

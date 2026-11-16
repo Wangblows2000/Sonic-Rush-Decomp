@@ -8,7 +8,7 @@ typedef struct {
 extern void *gActComArchive;
 extern u8 data_ov000_023681b8[], data_ov000_0236a9b8[];
 
-void func_ov000_0232ef74(void);
+void EffVsTensionMax_State_Main(void);
 
 void EffVsTensionMax_Create(UnkStruct_0232f064 *arg) {
     UnkStruct_Task *task;
@@ -38,5 +38,5 @@ void EffVsTensionMax_Create(UnkStruct_0232f064 *arg) {
     w->unk54 |= 0x10;
     w->unk44 = 0x100;
     w->unk46 = 0x100;
-    w->unk68 = func_ov000_0232ef74;
+    w->unk68 = EffVsTensionMax_State_Main;
 }

@@ -7,9 +7,9 @@ typedef struct UnkStruct_02333bd0 {
     void (*func)(void);
 } UnkStruct_02333bd0;
 
-void func_ov000_02333a1c(void);
+void EffSpinSmoke2_State_Main(void);
 
 void EffSpinSmoke2_Action_Init(UnkStruct_02333bd0 *s) {
     s->unk5C |= 4;
-    s->func = func_ov000_02333a1c;
+    s->func = EffSpinSmoke2_State_Main;
 }

@@ -18,7 +18,7 @@ extern UnkStruct_022c4560 gGameState;
 extern void (*gStageZoneFreeFuncTable[][3])(void);
 
 void Stage_FreeMapInfo(void);
-void func_ov000_02335d0c(void);
+void Stage_FreeZoneFile(void);
 void Stage_FreeZoneSoundData(void);
 void NaviMsg_CloseFiles(void);
 void NaviB_Release(void);
@@ -40,7 +40,7 @@ static inline void Free_0204b528(u8 *p) {
 void Stage_FreeZoneFiles(void) {
     gStageZoneFreeFuncTable[gGameState.stage][gGameState.act]();
     Stage_FreeMapInfo();
-    func_ov000_02335d0c();
+    Stage_FreeZoneFile();
     if (gZoneActArchive != NULL) {
         Free_0204b528(gZoneActArchive);
         gZoneActArchive = NULL;

@@ -12,16 +12,16 @@ extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02368434[];
 extern u8 data_ov000_0236a9f8[];
 
-BOOL func_ov000_023270d8(UnkStruct_StageObj *a);
+BOOL Player_IsPlayer2(UnkStruct_StageObj *a);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_023312f0(void);
+void EffTrickForwardBoost_State_Main(void);
 
 UnkStruct_EffObj *EffTrickForwardBoost_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unused) {
     UnkStruct_Task *task;
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    if (func_ov000_023270d8(arg))
+    if (Player_IsPlayer2(arg))
         return NULL;
     if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2)
         return NULL;
@@ -59,6 +59,6 @@ UnkStruct_EffObj *EffTrickForwardBoost_Create(UnkStruct_StageObj *arg, s16 x, s1
     w->unk5C |= 0x100;
     w->unk5C |= 4;
     w->unk54 |= 2;
-    w->unk68 = func_ov000_023312f0;
+    w->unk68 = EffTrickForwardBoost_State_Main;
     return w;
 }

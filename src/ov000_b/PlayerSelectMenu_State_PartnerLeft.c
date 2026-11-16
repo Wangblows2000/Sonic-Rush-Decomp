@@ -42,17 +42,17 @@ extern UnkStruct_02358548_Bright data_0208926c;
 
 void PlayerSelectMenu_AnimateModels(void *p);
 void PlayerSelectMenu_DrawModels(void *p);
-void func_ov000_02357ec8(UnkStruct_02358548 *w, s32 a, s32 b);
-void func_ov000_023582e8(UnkStruct_02358548 *w, s32 a, s32 b);
-void func_ov000_023579fc(UnkStruct_02358548 *w, s32 x, s32 y);
-void func_ov000_023579c8(UnkStruct_02358548 *w, s32 x, s32 y);
-void func_ov000_0235793c(UnkStruct_02358548 *w, s32 x, s32 y);
-void func_ov000_02357908(UnkStruct_02358548 *w, s32 x, s32 y);
-void func_ov000_02357994(UnkStruct_02358548 *w, s32 x, s32 y);
-void func_ov000_02358384(UnkStruct_02358548 *w, s32 a, s32 b);
-void func_ov000_02357878(UnkStruct_02358548 *w, s32 a, s32 b, s32 c);
-void func_ov000_02358224(UnkStruct_02358548 *w, s32 a, s32 b);
-void func_ov000_023580bc(UnkStruct_02358548 *w, s32 a);
+void PlayerSelectMenu_DrawSelectionCursor(UnkStruct_02358548 *w, s32 a, s32 b);
+void PlayerSelectMenu_SetBackgroundSelection(UnkStruct_02358548 *w, s32 a, s32 b);
+void PlayerSelectMenu_DrawSprite60C(UnkStruct_02358548 *w, s32 x, s32 y);
+void PlayerSelectMenu_DrawSprite654(UnkStruct_02358548 *w, s32 x, s32 y);
+void PlayerSelectMenu_DrawSprite69C(UnkStruct_02358548 *w, s32 x, s32 y);
+void PlayerSelectMenu_DrawSprite6E4(UnkStruct_02358548 *w, s32 x, s32 y);
+void PlayerSelectMenu_DrawSprite9B4(UnkStruct_02358548 *w, s32 x, s32 y);
+void PlayerSelectMenu_DrawOrbitSprite(UnkStruct_02358548 *w, s32 a, s32 b);
+void PlayerSelectMenu_DrawSprite804Scaled(UnkStruct_02358548 *w, s32 a, s32 b, s32 c);
+void PlayerSelectMenu_DrawBottomSpriteScaled(UnkStruct_02358548 *w, s32 a, s32 b);
+void PlayerSelectMenu_DrawSubTitleSprite2(UnkStruct_02358548 *w, s32 a);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void PlayerSelectMenu_State_WaitPartnerLeftMsg(void);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -71,28 +71,28 @@ void PlayerSelectMenu_State_PartnerLeft(void) {
 
     PlayerSelectMenu_AnimateModels(w->unk28);
     PlayerSelectMenu_DrawModels(w->unk28);
-    func_ov000_02357ec8(w, w->unk14, 0x1000);
-    func_ov000_023582e8(w, w->unk14, 0);
+    PlayerSelectMenu_DrawSelectionCursor(w, w->unk14, 0x1000);
+    PlayerSelectMenu_SetBackgroundSelection(w, w->unk14, 0);
     p = &w->pt[0];
-    func_ov000_023579fc(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite60C(w, p->x, p->y);
     p = &w->pt[1];
-    func_ov000_023579c8(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite654(w, p->x, p->y);
     p = &w->pt[2];
-    func_ov000_0235793c(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite69C(w, p->x, p->y);
     p = &w->pt[3];
-    func_ov000_02357908(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite6E4(w, p->x, p->y);
     p = &w->pt[4];
-    func_ov000_02357994(w, p->x, p->y);
+    PlayerSelectMenu_DrawSprite9B4(w, p->x, p->y);
     if (w->unk10 == 2)
         step = 0x8000;
     else
         step = 0x5555;
     for (i = 1; i < w->unk10; i++)
-        func_ov000_02358384(w, (w->unk14 + i) % w->unk10, step * i);
-    func_ov000_02357878(w, 0x80, 0x98, 0x1000);
-    func_ov000_02358224(w, 0, 0x1000);
+        PlayerSelectMenu_DrawOrbitSprite(w, (w->unk14 + i) % w->unk10, step * i);
+    PlayerSelectMenu_DrawSprite804Scaled(w, 0x80, 0x98, 0x1000);
+    PlayerSelectMenu_DrawBottomSpriteScaled(w, 0, 0x1000);
     gDisplaySub.unk8++;
-    func_ov000_023580bc(w, 1);
+    PlayerSelectMenu_DrawSubTitleSprite2(w, 1);
     w->unk0++;
     data_02087d44.unk8 = -w->unk0;
     data_0208926c.unk8 = data_02087d44.unk8;

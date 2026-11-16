@@ -23,7 +23,7 @@ extern u16 gSwitchTimers[];
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
 void Sound_FreeHandle(void *p);
-void func_ov000_0233e5c8(s32 a, s32 b);
+void ZoneFx_Zone4_StartBldyRampUp(s32 a, s32 b);
 
 void SwitchTimer_Destructor(UnkStruct_02318b08 *s) {
     UnkStruct_02318b08_2 *p = s->unk10;
@@ -34,7 +34,7 @@ void SwitchTimer_Destructor(UnkStruct_02318b08 *s) {
         Sound_FreeHandle(p->unk8);
     if (p->unk2 != 0) {
         if (gPlayers->unk330 & 0x8000)
-            func_ov000_0233e5c8(3, 8);
+            ZoneFx_Zone4_StartBldyRampUp(3, 8);
         gPlayers->unk330 &= ~0x4000;
     }
     gSwitchTimers[p->unk0] = 0;

@@ -1,7 +1,7 @@
 #include <ov000_b/stageobj.h>
 
 void MapObject_Destructor(void);
-void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
+void StageEvent_Unk_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
 
 UnkStruct_StageObj *MapObjC2_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -18,7 +18,7 @@ UnkStruct_StageObj *MapObjC2_Create(s32 a, s32 b, s32 c) {
     w->unk58 |= 0x2100;
     w->unk58 |= 0x100;
     w->unk54 |= 0x20;
-    func_ov000_023355e0(w->unk1E8 - 0x80 + (w->unk1E0->unk6 << 8), w->unk1EC - 0x120 + w->unk1E0->unk7 * 0xc0,
+    StageEvent_Unk_ov000_023355e0(w->unk1E8 - 0x80 + (w->unk1E0->unk6 << 8), w->unk1EC - 0x120 + w->unk1E0->unk7 * 0xc0,
                         w->unk1E8 + 0x80 + (w->unk1E0->unk6 << 8), w->unk1EC + 0x120 + w->unk1E0->unk7 * 0xc0);
     return w;
 }

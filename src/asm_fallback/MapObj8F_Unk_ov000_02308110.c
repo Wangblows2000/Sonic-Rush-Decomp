@@ -4,8 +4,8 @@
 extern u32 gCamera;
 extern void func_ov000_02307e84(void);
 extern void MapObj8F_State_Unk_ov000_02307e9c(void);
-extern void func_ov000_0233b250(void);
-extern void func_ov000_0234237c(void);
+extern void Camera_Unk_ov000_0233b250(void);
+extern void EnemyRoom_Get(void);
 
 asm void MapObj8F_Unk_ov000_02308110(void)
 {
@@ -15,7 +15,7 @@ asm void MapObj8F_Unk_ov000_02308110(void)
     bl func_ov000_02307e84
     mov r1, r0
     mov r0, #1
-    bl func_ov000_0234237c
+    bl EnemyRoom_Get
     movs r9, r0
     ldr r1, [r10, #0x1f4]
     addeq sp, sp, #0xc
@@ -91,7 +91,7 @@ _120:
     str r3, [r8]
     add r1, r1, r7, lsl #3
     add r2, r2, r7, lsl #3
-    bl func_ov000_0233b250
+    bl Camera_Unk_ov000_0233b250
     add r1, r10, r7, lsl #3
     ldr r0, [r1, #0x214]
     str r0, [r8, #0x3c]

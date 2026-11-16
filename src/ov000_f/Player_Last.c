@@ -72,7 +72,7 @@ extern UnkStruct_02343d80_Tbl data_ov000_02368ba4[];
 extern UnkStruct_02343d80_Tbl data_ov000_02368ba6[];
 
 void Player_AddTension(UnkStruct_02343d80 *w, s16 v);
-void func_ov000_0235bafc(UnkStruct_02343d80 *w);
+void RingManager_Unk_ov000_0235bafc(UnkStruct_02343d80 *w);
 void Player_UpdateCamera(UnkStruct_02343d80 *w);
 void Player_UpdateCameraLead(UnkStruct_02343d80 *w);
 BOOL BrightnessFade_IsDone(void);
@@ -82,8 +82,8 @@ void Stage_ExitAfterFail(void);
 void Player_ExitToSpecialStage(void);
 void NNS_G3dGlbLightColor(s32 a, u16 b);
 s32 ObjSpd_DownSet(s32 v, s32 a);
-void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
-void func_ov000_023526cc(UnkStruct_02343d80 *w, UnkStruct_02343d80_Obj *o);
+void StageEvent_Unk_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
+void Player_Unk_ov000_023526cc(UnkStruct_02343d80 *w, UnkStruct_02343d80_Obj *o);
 void Player_SendNetState(UnkStruct_02343d80 *w);
 void Player_WrapLoopingArena(UnkStruct_02343d80 *w);
 
@@ -101,7 +101,7 @@ void Player_Last(void) {
         w->unk32C &= ~0x40000;
     }
     if (w->unk32C & 0x20000000) {
-        func_ov000_0235bafc(w);
+        RingManager_Unk_ov000_0235bafc(w);
     }
     Player_UpdateCamera(w);
     Player_UpdateCameraLead(w);
@@ -186,9 +186,9 @@ void Player_Last(void) {
             } else if (bottom > 0xffff) {
                 bottom = 0xffff;
             }
-            func_ov000_023355e0(left, top, right, bottom);
+            StageEvent_Unk_ov000_023355e0(left, top, right, bottom);
         }
-        func_ov000_023526cc(w, w->unk3E8);
+        Player_Unk_ov000_023526cc(w, w->unk3E8);
     }
     Player_SendNetState(w);
     w->unk32C &= ~0x20000;

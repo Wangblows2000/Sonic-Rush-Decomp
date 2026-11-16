@@ -20,21 +20,21 @@ void PlayerSelectMenu_Action_ScrollIn(UnkStruct_SceneTask *t) {
     KeyframeAnim_SetAnim(&w->pos[6], 9);
     KeyframeAnim_SetAnim(&w->pos[7], 0xb);
     if (w->unk20) {
-        func_ov000_02357d20(w);
-        func_ov000_02357c2c(w);
+        PlayerSelectMenu_SetSprite60CAnim3(w);
+        PlayerSelectMenu_SetSprite654Anim4(w);
     } else {
-        func_ov000_02357cd0(w);
-        func_ov000_02357c8c(w);
+        PlayerSelectMenu_SetSprite60CAnim4(w);
+        PlayerSelectMenu_SetSprite654Anim3(w);
     }
-    func_ov000_02357b4c(w);
-    func_ov000_02357b24(w);
-    func_ov000_02357be4(w);
-    func_ov000_02357ae8(w);
-    func_ov000_02356810(w);
+    PlayerSelectMenu_SetSprite69CAnim6(w);
+    PlayerSelectMenu_SetSprite6E4Anim7(w);
+    PlayerSelectMenu_SetSprite9B4Anim(w);
+    PlayerSelectMenu_SetSpriteA8CAnim0(w);
+    PlayerSelectMenu_UpdateCharLayerFlags(w);
     if (w->unk14 != 2) {
-        func_ov000_023582b0(w);
+        PlayerSelectMenu_SetSprite96CAnim0(w);
     } else {
-        func_ov000_02358278(w);
+        PlayerSelectMenu_SetSprite96CAnim1(w);
     }
     w->unk334 = 1;
     t->unk8 = PlayerSelectMenu_State_ScrollIn;

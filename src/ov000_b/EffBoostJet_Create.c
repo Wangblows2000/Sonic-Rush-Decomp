@@ -14,7 +14,7 @@ extern u8 data_ov000_0236a9f8[];
 
 s32 FX_Atan2(s32 y, s32 x);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_0232e90c(UnkStruct_EffObj *w);
+void Effect_SetFollowParentState(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *EffBoostJet_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unused) {
     UnkStruct_Task *task;
@@ -50,6 +50,6 @@ UnkStruct_EffObj *EffBoostJet_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 
     w->unk58 |= 0x2100;
     w->unk5C |= 0x100;
     w->unk54 |= 2;
-    func_ov000_0232e90c(w);
+    Effect_SetFollowParentState(w);
     return w;
 }

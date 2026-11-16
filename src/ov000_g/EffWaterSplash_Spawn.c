@@ -22,7 +22,7 @@ typedef struct {
 extern UnkStruct_023297c0_Sys gGameState;
 extern UnkStruct_023297c0_Stage gCamera;
 
-void *func_ov000_023295a4(void *p, s32 dx, s32 b, s32 c, u16 k, s32 d, s32 e);
+void *EffSplash3D_Spawn(void *p, s32 dx, s32 b, s32 c, u16 k, s32 d, s32 e);
 void *EffWaterSplash_Create(void *p, s32 dx, s32 b, s32 c);
 
 static inline BOOL Stage_Busy(void) {
@@ -36,7 +36,7 @@ void EffWaterSplash_Spawn(UnkStruct_023297c0 *p) {
         return;
     if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
         if (Stage_Busy())
-            func_ov000_023295a4(p, 0, 0, gCamera.unk62, 0, gCamera.unkE0, gCamera.unkE4);
+            EffSplash3D_Spawn(p, 0, 0, gCamera.unk62, 0, gCamera.unkE0, gCamera.unkE4);
     } else {
         EffWaterSplash_Create(p, 0, 0, gCamera.unk62);
     }

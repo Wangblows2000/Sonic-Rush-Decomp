@@ -2,11 +2,11 @@
 #include <nitro/types.h>
 
 s32 StageObj_SetAnimation();
-void func_ov000_0231636c();
+void GmkSpecial_State_Main();
 
 void GmkSpecial_Action_Init(u8 *p0) {
     StageObj_SetAnimation(p0, 0);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 0x10);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 4);
-    *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_0231636c;
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)GmkSpecial_State_Main;
 }

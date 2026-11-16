@@ -79,7 +79,7 @@ void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
 void ObjDraw_LoadPaletteRow(void *res, u16 id, u8 a, s32 b);
 void Hud_Main(void);
 void Hud_Destructor(void);
-void func_ov000_023375e8(void);
+void Hud_SetOamPriority0(void);
 
 #define IS_MAIN() (gGameState.unk1c < 9 && gGameState.unk1d < 2)
 
@@ -268,5 +268,5 @@ void Hud_Create(void) {
 
     ObjDraw_LoadPaletteRow(work->res, 0x21, 1, 0);
     ObjDraw_LoadPaletteRow(work->res, 0x21, 1, 1);
-    func_ov000_023375e8();
+    Hud_SetOamPriority0();
 }

@@ -20,16 +20,16 @@ void PlayerSelectMenu_Action_Select(UnkStruct_SceneTask *t) {
     }
     w = t->work;
     w->unk0 = 0;
-    func_ov000_02357b4c(w);
-    func_ov000_02357b24(w);
-    func_ov000_02357be4(w);
-    func_ov000_02357b74(w);
-    func_ov000_02357ae8(w);
-    func_ov000_02357aa8(w, 0);
-    func_ov000_02357aa8(w, 1);
-    func_ov000_02357aa8(w, 2);
-    func_ov000_02357a6c(w, w->unk14);
-    func_ov000_02358180(w);
+    PlayerSelectMenu_SetSprite69CAnim6(w);
+    PlayerSelectMenu_SetSprite6E4Anim7(w);
+    PlayerSelectMenu_SetSprite9B4Anim(w);
+    PlayerSelectMenu_SetSprite9FCAnim1D(w);
+    PlayerSelectMenu_SetSpriteA8CAnim0(w);
+    PlayerSelectMenu_Unk_ov000_02357aa8(w, 0);
+    PlayerSelectMenu_Unk_ov000_02357aa8(w, 1);
+    PlayerSelectMenu_Unk_ov000_02357aa8(w, 2);
+    PlayerSelectMenu_SetSprite804SelectAnim(w, w->unk14);
+    PlayerSelectMenu_SetSprite5C4Anim1(w);
     s = WirelessSession_GetSendBuffer();
     s->unk0 = w->unk14;
     s->unk2 = 0;
