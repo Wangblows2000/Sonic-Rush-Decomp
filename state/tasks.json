@@ -68,9 +68,9 @@
       "start": "0x0201c000",
       "end": "0x02038000",
       "status": "claimed",
-      "agent": "main_c2",
+      "agent": "main_d3",
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": "2026-11-16 06:55:53Z",
+      "claimed_at": "2026-11-16 08:09:34Z",
       "done_at": null,
       "notes": [
         {
@@ -120,6 +120,14 @@
         {
           "time": "2026-11-16 07:51:58Z",
           "text": "main_c2: matched 02035b5c(252, d0=dst assigned inside if-condition + else), 02015924(696, ENTRY macro + swap if-arms + return per arm), 020125d8(964, opt_common_subs off + decl perm), 02013814(160, unk2 at off 2 + decl perm). Near: 0200330c switch-tree root (CW clusters span<=3; target clusters [0..4]), 020254d4 72, 02026f88 21 (lifetimes off), 9654 11, f6e0 13, ff18 12, 7fc8 22, 9900 28, e098 45. Scratch /home/claude/w_main_c2."
+        },
+        {
+          "time": "2026-11-16 08:09:34Z",
+          "text": "claimed by main_d3"
+        },
+        {
+          "time": "2026-11-16 08:09:37Z",
+          "text": "main_d2 doing 0201ed04, 02032480, 0204bf88, 02032d2c, 0203cc68, 02067670"
         }
       ]
     },
@@ -183,6 +191,10 @@
         {
           "time": "2026-11-16 07:42:00Z",
           "text": "released by main_b10: main_b10: 3 big matched; near-misses /home/claude/w_main_b10/"
+        },
+        {
+          "time": "2026-11-16 08:09:35Z",
+          "text": "main_d1 doing 020648c4, 0206aa38, 0205e378, 0206b244"
         }
       ]
     },
@@ -242,6 +254,10 @@
         {
           "time": "2026-11-16 07:18:42Z",
           "text": "released by ov000_q: ov000_q done: +1 (022c8f24, 452 B)"
+        },
+        {
+          "time": "2026-11-16 08:09:33Z",
+          "text": "ov000_t working remaining ov000 todo (final push)"
         }
       ]
     },
@@ -253,9 +269,9 @@
       "start": "0x02310000",
       "end": "0x02362b58",
       "status": "claimed",
-      "agent": "ov000_r",
+      "agent": "ov000_t",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 07:05:11Z",
+      "claimed_at": "2026-11-16 08:09:33Z",
       "done_at": null,
       "notes": [
         {
@@ -353,6 +369,10 @@
         {
           "time": "2026-11-16 07:42:00Z",
           "text": "ov000_s matched 7 (2892 B); u32-cast lever for ab3c; left 0234739c, 02341ebc"
+        },
+        {
+          "time": "2026-11-16 08:09:33Z",
+          "text": "claimed by ov000_t"
         }
       ]
     },
@@ -436,6 +456,10 @@
         {
           "time": "2026-11-16 06:27:32Z",
           "text": "ov001_h (claimed via ov001-arm) covers ov001 Thumb functions too"
+        },
+        {
+          "time": "2026-11-16 08:09:34Z",
+          "text": "ov001_j working remaining ov001 todo (arm list)"
         }
       ]
     },
@@ -446,10 +470,10 @@
       "module": "ov001",
       "start": "0x022ed000",
       "end": "0x02315eb4",
-      "status": "open",
-      "agent": null,
+      "status": "claimed",
+      "agent": "ov001_j",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": null,
+      "claimed_at": "2026-11-16 08:09:34Z",
       "done_at": null,
       "notes": [
         {
@@ -519,6 +543,10 @@
         {
           "time": "2026-11-16 07:42:00Z",
           "text": "released by ov001_i: ov001_i stopped (classifier); best lead 022e4b5c draft /home/claude/w_ov001i/e4/"
+        },
+        {
+          "time": "2026-11-16 08:09:34Z",
+          "text": "claimed by ov001_j"
         }
       ]
     },

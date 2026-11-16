@@ -1,6 +1,6 @@
 # Progress dashboard
 
-Last updated: **2026-11-16 08:08:26Z** · version `eur` · regenerate with `python tools/project.py dashboard`
+Last updated: **2026-11-16 08:25:06Z** · version `eur` · regenerate with `python tools/project.py dashboard`
 
 Numbers come only from the objdiff report (100 % matched functions in non-generated units) and `symbols.txt` sizes. Nothing estimated, nothing unverified.
 
@@ -16,22 +16,23 @@ Numbers come only from the objdiff report (100 % matched functions in non-genera
 
 Next milestone: **100%** matched code — 64,234 more bytes (currently 95.48%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 08:07:36Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 08:08:25Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 08:08:26Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 08:22:27Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 08:25:02Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 08:25:05Z
 
 ## Task board
 
-- 2 claimed · 11 open · 1 done (`python tools/tasks.py list`)
+- 3 claimed · 10 open · 1 done (`python tools/tasks.py list`)
 
 | Task | Agent | Scope | Verified in scope |
 | ---- | ----- | ----- | ----------------- |
-| main-mid | main_c2 | main 0x0201c000-0x02038000 | 100,000/114,664 B (87.2%), 592/613 fn |
-| ov000-hi | ov000_r | ov000 0x02310000-0x02362b58 | 330,512/338,448 B (97.7%), 1348/1366 fn |
+| main-mid | main_d3 | main 0x0201c000-0x02038000 | 100,000/114,664 B (87.2%), 592/613 fn |
+| ov000-hi | ov000_t | ov000 0x02310000-0x02362b58 | 330,512/338,448 B (97.7%), 1348/1366 fn |
+| ov001-arm | ov001_j | ov001 0x022ed000-0x02315eb4 | 159,382/167,454 B (95.2%), 677/691 fn |
 
 ## History
 
-Matched bytes trend: ▁▁▅▆▆▆▇▇▇▇▇█  (12 changes, 12 runs)
+Matched bytes trend: ▁▁▅▆▆▆▇▇▇▇▇█  (12 changes, 13 runs)
 
 | UTC | Matched bytes | % code | Functions |
 | --- | ------------- | ------ | --------- |

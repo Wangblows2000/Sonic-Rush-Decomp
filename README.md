@@ -27,7 +27,7 @@ USA (`ASCE`) and Japan (`ASCJ`) are not configured yet.
 
 <!-- dashboard:start -->
 
-_Verified progress, updated 2026-11-16 08:08:26Z ([full dashboard](docs/progress/dashboard.md))._
+_Verified progress, updated 2026-11-16 08:25:06Z ([full dashboard](docs/progress/dashboard.md))._
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
@@ -39,9 +39,9 @@ _Verified progress, updated 2026-11-16 08:08:26Z ([full dashboard](docs/progress
 
 Next milestone: **100%** matched code — 64,234 more bytes (currently 95.48%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 08:07:36Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 08:08:25Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 08:08:26Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 08:22:27Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 08:25:02Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 08:25:05Z
 
 <!-- dashboard:end -->
 
