@@ -11079,3 +11079,7 @@ src/ov000_t/func_ov000_0231adac.c:
 src/ov000_t/func_ov000_02335704.c:
     complete
     .text       start:0x02335704 end:0x023357e0
+
+src/ov000_t/func_ov000_02334b34.c:
+    complete
+    .text       start:0x02334b34 end:0x02334c18

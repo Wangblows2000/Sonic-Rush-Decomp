@@ -6779,3 +6779,119 @@ src/ov001_j/func_ov001_022cdfdc.c:
 src/ov001_j/func_ov001_022fd268.c:
     complete
     .text       start:0x022fd268 end:0x022fd2dc
+
+src/asm_fallback/func_ov001_022c8480.c:
+    complete
+    .text       start:0x022c8480 end:0x022c8640
+
+src/asm_fallback/func_ov001_022c8f30.c:
+    complete
+    .text       start:0x022c8f30 end:0x022c90a8
+
+src/asm_fallback/func_ov001_022c9a2c.c:
+    complete
+    .text       start:0x022c9a2c end:0x022c9b78
+
+src/asm_fallback/func_ov001_022cb5ac.c:
+    complete
+    .text       start:0x022cb5ac end:0x022cb6d8
+
+src/asm_fallback/func_ov001_022d3fc8.c:
+    complete
+    .text       start:0x022d3fc8 end:0x022d4048
+
+src/asm_fallback/func_ov001_022df490.c:
+    complete
+    .text       start:0x022df490 end:0x022df530
+
+src/asm_fallback/func_ov001_022dfc54.c:
+    complete
+    .text       start:0x022dfc54 end:0x022dfe20
+
+src/asm_fallback/func_ov001_022e1aac.c:
+    complete
+    .text       start:0x022e1aac end:0x022e1b4c
+
+src/asm_fallback/func_ov001_022e2df0.c:
+    complete
+    .text       start:0x022e2df0 end:0x022e2e40
+
+src/asm_fallback/func_ov001_022e519c.c:
+    complete
+    .text       start:0x022e519c end:0x022e54b4
+
+src/asm_fallback/func_ov001_022e612c.c:
+    complete
+    .text       start:0x022e612c end:0x022e61f4
+
+src/asm_fallback/func_ov001_022e794c.c:
+    complete
+    .text       start:0x022e794c end:0x022e7c50
+
+src/asm_fallback/func_ov001_022fbbc8.c:
+    complete
+    .text       start:0x022fbbc8 end:0x022fbfcc
+
+src/asm_fallback/func_ov001_022fdbc0.c:
+    complete
+    .text       start:0x022fdbc0 end:0x022fde54
+
+src/asm_fallback/func_ov001_022fde54.c:
+    complete
+    .text       start:0x022fde54 end:0x022fe550
+
+src/asm_fallback/func_ov001_022fe550.c:
+    complete
+    .text       start:0x022fe550 end:0x022fe6b8
+
+src/asm_fallback/func_ov001_02303494.c:
+    complete
+    .text       start:0x02303494 end:0x02303554
+
+src/asm_fallback/func_ov001_02304834.c:
+    complete
+    .text       start:0x02304834 end:0x02304948
+
+src/asm_fallback/func_ov001_02304fb4.c:
+    complete
+    .text       start:0x02304fb4 end:0x02305344
+
+src/asm_fallback/func_ov001_023099ec.c:
+    complete
+    .text       start:0x023099ec end:0x02309c14
+
+src/asm_fallback/func_ov001_0230e78c.c:
+    complete
+    .text       start:0x0230e78c end:0x0230e8fc
+
+src/asm_fallback/func_ov001_0230e94c.c:
+    complete
+    .text       start:0x0230e94c end:0x0230ea24
+
+src/asm_fallback/func_ov001_023157d8.c:
+    complete
+    .text       start:0x023157d8 end:0x02315900
+
+src/ov001_j/func_ov001_022c8bc0.c:
+    complete
+    .text       start:0x022c8bc0 end:0x022c8cc0
+
+src/ov001_j/func_ov001_022dfa3c.c:
+    complete
+    .text       start:0x022dfa3c end:0x022dfb48
+
+src/ov001_j/func_ov001_022dfb48.c:
+    complete
+    .text       start:0x022dfb48 end:0x022dfc54
+
+src/ov001_j/func_ov001_022e4b5c.c:
+    complete
+    .text       start:0x022e4b5c end:0x022e4e64
+
+src/ov001_j/func_ov001_02307398.c:
+    complete
+    .text       start:0x02307398 end:0x02307760
+
+src/ov001_j/func_ov001_02314214.c:
+    complete
+    .text       start:0x02314214 end:0x02314368
