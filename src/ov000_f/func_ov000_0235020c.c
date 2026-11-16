@@ -1,0 +1,88 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x10];
+    s32 x;
+    s32 y;
+} UnkStruct_0235020c_Obj;
+
+typedef struct {
+    u8 pad0;
+    u8 unk1;
+    u8 pad2[5 - 2];
+    u8 unk5;
+    u8 pad6[0xC - 6];
+    s32 unkC;
+    s32 x;
+    s32 y;
+    u8 pad18[0x2E - 0x18];
+    s16 unk2E;
+    s16 unk30;
+    u8 pad32[0x5C - 0x32];
+    u16 unk5C;
+    u8 pad5E[0x32C - 0x5E];
+    u32 unk32C;
+    u32 unk330;
+    u8 pad334[0x3E8 - 0x334];
+    UnkStruct_0235020c_Obj *unk3E8;
+    u8 pad3EC[0x3EE - 0x3EC];
+    s16 unk3EE;
+    s32 unk3F0;
+} UnkStruct_0235020c;
+
+typedef struct {
+    u8 pad0[0x20];
+    u32 unk20;
+} UnkStruct_0235020c_4560;
+
+extern UnkStruct_0235020c_4560 data_022c4560;
+extern u32 data_0208fe70;
+
+s32 func_02068bd8(s32 cur, s32 target, s32 c, s32 d, s32 e, s32 f);
+u8 func_02068b04(u8 cur, s32 target, s32 step);
+void func_ov000_02330098(UnkStruct_0235020c *w, s16 a, s16 b);
+void func_ov000_02346d10(UnkStruct_0235020c *w);
+void func_ov000_02346aa8(UnkStruct_0235020c *w);
+void func_02043c7c(s32 a, s32 b);
+
+static inline u16 Rand_0235020c(void) {
+    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
+    return (u16)(data_0208fe70 >> 16);
+}
+
+void func_ov000_0235020c(UnkStruct_0235020c *w) {
+    s32 t = 0x50;
+    s32 py;
+    s32 p2;
+
+    w->unk2E = func_02068bd8(w->x, w->unk3E8->x, w->unk3F0, 1, 0xf00, 0x400) - w->x;
+    w->unk1 = func_02068b04(w->unk1, 0xc0, 0x10);
+    if (w->unk5 != 0) {
+        t = -0x50;
+        w->unk2E = -w->unk2E;
+    }
+    w->unk330 &= ~0xc0;
+    w->unk3EE = func_02068bd8(w->unk3EE, t, 0, 4, 0xf00, 0x80);
+    if (!(data_022c4560.unk20 & 1)) {
+        func_ov000_02330098(w, 0xf - (Rand_0235020c() & 0x1e), 0xf - (Rand_0235020c() & 0x1e));
+    }
+    py = w->unk3E8->y;
+    if (((w->y < py - 0x3000 && w->unk5 == 0) || (w->y > py + 0x3000 && w->unk5 != 0)) && !(w->unk5C & 0x20)) {
+        func_ov000_02346d10(w);
+        func_ov000_02346aa8(w);
+        w->unk5C |= 0x20;
+        w->unk32C |= 0x200000;
+    }
+    p2 = w->unk3E8->y;
+    if ((w->y < p2 - 0xe800 && w->unk5 == 0) || (w->y > p2 + 0xe800 && w->unk5 != 0)) {
+        w->unk30 = 0;
+    }
+    if (w->unkC == 0) {
+        w->unk32C |= 0x40000000;
+        return;
+    }
+    w->unkC--;
+    if (w->unkC == 0x10) {
+        func_02043c7c(5, 0x100);
+    }
+}

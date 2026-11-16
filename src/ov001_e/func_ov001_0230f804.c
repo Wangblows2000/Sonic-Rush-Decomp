@@ -1,0 +1,43 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_0230f804_n {
+    u8 pad0[0x1dc];
+    void *unk1DC;
+} UnkStruct_0230f804_n;
+
+typedef struct UnkStruct_0230f804 {
+    UnkStruct_0230f804_n *node;
+} UnkStruct_0230f804;
+
+extern void *data_0208fe80;
+
+u8 *func_02034a40(void *heap, u32 size, s32 align);
+u32 func_02006abc(s32 i);
+void MIi_CpuClear32(u32 data, void *dest, u32 size);
+void DC_StoreRange(void *p, u32 size);
+void MI_CpuFill8(void *dest, u8 data, u32 size);
+UnkStruct_0230f804_n *func_ov001_02310d5c(s32 a);
+void func_ov001_0230f0f4(void);
+
+static inline u8 *Alloc(u32 sz) {
+    u32 size = sz;
+    u8 *p = func_02034a40(data_0208fe80, size, 0x20);
+    if ((u8 *)func_02006abc(0) != p) {
+        vu32 fill = 0xcccccccc;
+        MIi_CpuClear32(fill, p, size);
+        *(u32 *)p = size;
+        *(u32 *)(p + size - 4) = 0x02467531;
+        DC_StoreRange(p, size);
+        p += 0x20;
+    }
+    return p;
+}
+
+UnkStruct_0230f804 *func_ov001_0230f804(s32 a) {
+    UnkStruct_0230f804 *w = (UnkStruct_0230f804 *)Alloc(0x40);
+
+    MI_CpuFill8(w, 0, sizeof(UnkStruct_0230f804));
+    w->node = func_ov001_02310d5c(a);
+    w->node->unk1DC = func_ov001_0230f0f4;
+    return w;
+}

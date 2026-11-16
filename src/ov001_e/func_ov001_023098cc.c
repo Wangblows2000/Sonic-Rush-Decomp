@@ -1,0 +1,40 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_023098cc_o {
+    u8 pad0[0x48];
+} UnkStruct_023098cc_o;
+
+typedef struct UnkStruct_023098cc {
+    u8 pad0[0x780];
+    UnkStruct_023098cc_o objA;
+    UnkStruct_023098cc_o objB;
+    u8 pad810[0xaf0 - 0x810];
+    s32 unkAF0;
+} UnkStruct_023098cc;
+
+extern UnkStruct_023098cc *data_ov001_0231f5bc;
+
+void func_02033550(UnkStruct_023098cc_o *s, u16 index);
+
+void func_ov001_023098cc(s32 n) {
+    UnkStruct_023098cc *g = data_ov001_0231f5bc;
+
+    g->unkAF0 = 0x3c;
+    switch (n) {
+    case 3:
+        func_02033550(&g->objB, 0xb);
+        break;
+    case 0:
+        func_02033550(&g->objB, 4);
+        break;
+    case 1:
+        func_02033550(&g->objB, 6);
+        break;
+    case 2:
+        func_02033550(&g->objB, 8);
+        break;
+    default:
+        func_02033550(&g->objB, 10);
+        break;
+    }
+}

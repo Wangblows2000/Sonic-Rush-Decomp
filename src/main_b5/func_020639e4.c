@@ -1,0 +1,56 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 *res;
+    u8 pad4[4];
+    s16 t;
+} UnkWork_020639e4;
+
+typedef struct {
+    u8 pad0[8];
+    void (*fn)(void);
+    u8 padc[4];
+    UnkWork_020639e4 *work;
+} UnkTask_020639e4;
+
+extern UnkTask_020639e4 *data_022b4574;
+
+void func_02032480(void *spr, s32 sx, s32 sy, s32 a);
+void func_02063890(UnkWork_020639e4 *w);
+void func_02033550(void *p, u16 a);
+void func_02063950(void);
+
+#define CLAMP(x, lo, hi) ((x) < (lo) ? (lo) : ((x) > (hi) ? (hi) : (x)))
+
+static inline s32 FX_Mul(s32 a, s32 b) {
+    return (s32)(((s64)a * b + 0x800) >> 12);
+}
+
+static inline s32 Ease_020639e4(s32 from, s32 to, s16 t) {
+    s32 i = 3;
+    do {
+        from += FX_Mul(to - from, t);
+    } while (i-- != 0);
+    return from;
+}
+
+void func_020639e4(void) {
+    u8 *res;
+    UnkWork_020639e4 *w;
+    void *spr;
+    s32 sx;
+    s32 sy;
+
+    w = data_022b4574->work;
+    res = w->res;
+    w->t += 0x400;
+    spr = res + 0x640;
+    sx = Ease_020639e4(0xf33, 0x1400, CLAMP(w->t, 0, 0x1000));
+    sy = Ease_020639e4(0xf33, 0x1400, CLAMP(w->t, 0, 0x1000));
+    func_02032480(spr, sx, sy, 0);
+    func_02063890(w);
+    if (w->t < 0x1000)
+        return;
+    data_022b4574->fn = func_02063950;
+    func_02033550(res + 0x688, *(u16 *)(res + 0x690));
+}

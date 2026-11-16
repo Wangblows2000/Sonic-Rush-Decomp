@@ -184,9 +184,9 @@
       "start": "0x022c5c80",
       "end": "0x022ed000",
       "status": "claimed",
-      "agent": "ov001_t3",
+      "agent": "ov001_t4",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 01:43:40Z",
+      "claimed_at": "2026-11-16 03:35:16Z",
       "done_at": null,
       "notes": [
         {
@@ -204,6 +204,14 @@
         {
           "time": "2026-11-16 01:43:40Z",
           "text": "claimed by ov001_t3"
+        },
+        {
+          "time": "2026-11-16 03:25:21Z",
+          "text": "ov001_t3: 106 OK (26930 B) in src/ov001_t3; near-misses in /home/claude/w_ov001t3/near; findings in build/agents/ov001_t3.txt"
+        },
+        {
+          "time": "2026-11-16 03:35:16Z",
+          "text": "claimed by ov001_t4"
         }
       ]
     },
@@ -214,10 +222,10 @@
       "module": "ov001",
       "start": "0x022ed000",
       "end": "0x02315eb4",
-      "status": "open",
-      "agent": null,
+      "status": "claimed",
+      "agent": "ov001_f",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": null,
+      "claimed_at": "2026-11-16 03:05:37Z",
       "done_at": null,
       "notes": [
         {
@@ -251,6 +259,10 @@
         {
           "time": "2026-11-16 03:01:50Z",
           "text": "released by ov001_e: ov001_e session end"
+        },
+        {
+          "time": "2026-11-16 03:05:37Z",
+          "text": "claimed by ov001_f"
         }
       ]
     },
