@@ -23,14 +23,14 @@ typedef struct {
     u16 unk1af2;
 } UnkWork_020417ac;
 
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
-u32 func_0203e934(void);
+u32 WH_GetSystemState(void);
 void func_0203e970(u16 a);
-void func_02035018(u16 a);
+void Wireless_SetupRecvBuffers(u16 a);
 void func_0203e954(u16 a, u16 b);
-void func_0203de90(void (*fn)(void));
-void func_0203f9a4(void (*fn)(void), s32 a, void *p, u16 b);
+void WH_SetReceiver(void (*fn)(void));
+void WH_ChildConnectAuto(void (*fn)(void), s32 a, void *p, u16 b);
 void func_02042340(void);
 void func_02042388(void);
 void func_02041698(void);
@@ -39,7 +39,7 @@ void func_020417ac(UnkWork_020417ac *w) {
     UnkEntry_020417ac *e;
     s32 state;
 
-    if (func_0203e934() != 1)
+    if (WH_GetSystemState() != 1)
         return;
     w->unk1a = 0;
     if (w->cnt >= 10) {
@@ -47,18 +47,18 @@ void func_020417ac(UnkWork_020417ac *w) {
         switch (w->mode) {
         case 1:
             state = 5;
-            data_02087cb8 |= 0x100;
-            data_02087cb8 &= ~0x200;
+            gSystemFlags |= 0x100;
+            gSystemFlags &= ~0x200;
             func_0203e970(w->unk1aee);
-            func_02035018(w->unk1aee);
+            Wireless_SetupRecvBuffers(w->unk1aee);
             break;
         case 2:
             state = 7;
             func_0203e954(w->unk1af0, w->unk1af2);
-            func_0203de90(func_02042340);
+            WH_SetReceiver(func_02042340);
             break;
         }
-        func_0203f9a4(func_02042388, state, e->unk4, e->unk36);
+        WH_ChildConnectAuto(func_02042388, state, e->unk4, e->unk36);
         w->fn = func_02041698;
     } else {
         w->cnt++;

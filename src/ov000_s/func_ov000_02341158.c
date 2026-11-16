@@ -20,7 +20,7 @@ UnkPlayer_02341158 *func_ov000_0233b62c(void);
 UnkPlayer_02341158 *func_ov000_0233b610(void);
 void func_ov000_0233f67c(void);
 void func_ov000_0233f6f4(void);
-void func_020372d0(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
+void Task_Create(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
 #define PLAYER2 ((UnkPlayer_02341158 *)(u32)&data_ov000_0236ab3c)
 
 void func_ov000_02341158(void) {
@@ -39,5 +39,5 @@ void func_ov000_02341158(void) {
         PLAYER2->x = 0;
         PLAYER2->y = 0;
     }
-    func_020372d0(func_ov000_0233f67c, func_ov000_0233f6f4, 0, 0x3f10, 3, 0);
+    Task_Create(func_ov000_0233f67c, func_ov000_0233f6f4, 0, 0x3f10, 3, 0);
 }

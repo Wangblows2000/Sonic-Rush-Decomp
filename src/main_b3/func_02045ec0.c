@@ -28,8 +28,8 @@ typedef struct {
 
 extern u16 data_02078b3c[];
 
-void func_02032d2c(UnkSpr_W50 *s);
-void func_02032480(UnkSpr_W50 *s, s32 sx, s32 sy, s32 r);
+void AnimatorSprite_Draw(UnkSpr_W50 *s);
+void AnimatorSprite_DrawRotScale(UnkSpr_W50 *s, s32 sx, s32 sy, s32 r);
 
 #pragma thumb on
 void func_02045ec0(UnkWork_02045ec0 *w) {
@@ -48,9 +48,9 @@ void func_02045ec0(UnkWork_02045ec0 *w) {
         spr->x = o->unkA4 >> 12;
         spr->y = o->unkA8 >> 12;
         if (o->unkA0 == 0x1000)
-            func_02032d2c(spr);
+            AnimatorSprite_Draw(spr);
         else
-            func_02032480(spr, o->unkA0, o->unkA0, 0);
+            AnimatorSprite_DrawRotScale(spr, o->unkA0, o->unkA0, 0);
     }
     for (i = 0; i < 4; i++) {
         if (o->unk38[i] != 0) {
@@ -59,7 +59,7 @@ void func_02045ec0(UnkWork_02045ec0 *w) {
                 spr = &w->spr[idx];
                 spr->x = o->pos[i].x >> 12;
                 spr->y = o->pos[i].y >> 12;
-                func_02032d2c(spr);
+                AnimatorSprite_Draw(spr);
                 bx = spr->x + 10;
                 by = spr->y;
                 for (j = 0; j < 6; j++) {
@@ -68,7 +68,7 @@ void func_02045ec0(UnkWork_02045ec0 *w) {
                         spr = &w->spr[d + 0x13];
                         spr->x = bx + ((j * 0xa000) >> 12);
                         spr->y = by;
-                        func_02032d2c(spr);
+                        AnimatorSprite_Draw(spr);
                     }
                 }
             }
@@ -78,13 +78,13 @@ void func_02045ec0(UnkWork_02045ec0 *w) {
         spr = &w->spr[data_02078b3c[4]];
         spr->x = (o->pos[4].x + 0x40000) >> 12;
         spr->y = o->pos[4].y >> 12;
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     }
     if (w->flags & 0x4000) {
         spr = &w->spr[33];
         spr->x = 0x56;
         spr->y = o->pos[5].y >> 12;
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
         yy = o->pos[5].y >> 12;
         for (j = 0; j < 6; j++) {
             d = o->digits[4][j];
@@ -92,7 +92,7 @@ void func_02045ec0(UnkWork_02045ec0 *w) {
                 spr = &w->spr[d + 0x28];
                 spr->x = ((j * 0xa000) >> 12) + 0x60;
                 spr->y = yy;
-                func_02032d2c(spr);
+                AnimatorSprite_Draw(spr);
             }
         }
     }

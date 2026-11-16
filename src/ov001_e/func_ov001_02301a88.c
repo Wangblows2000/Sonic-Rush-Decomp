@@ -33,7 +33,7 @@ typedef struct UnkStruct_02301a88_c {
 UnkStruct_02301a88_c *func_ov001_022ffce8(void);
 void func_ov001_02303e60(s32 x, s32 y, s32 n);
 void func_ov001_023024d0(UnkStruct_02301a88_o *o, s32 state);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_020366f4(s32 a, s32 b, s32 c);
 
 void func_ov001_02301a88(UnkStruct_02301a88_h *self, UnkStruct_02301a88_h *other) {
@@ -42,7 +42,7 @@ void func_ov001_02301a88(UnkStruct_02301a88_h *self, UnkStruct_02301a88_h *other
 
     if (self->flags & 0x10) {
         func_ov001_02303e60(o->x, o->y, func_ov001_022ffce8()->unk40 <= 2 ? 5 : 10);
-        func_02036754(0, 0, 5);
+        Sound_PlaySeqArc(0, 0, 5);
     }
     if (self->flags & 0x20) {
         func_ov001_023024d0(o, 0xc);

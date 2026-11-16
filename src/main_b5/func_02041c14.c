@@ -16,15 +16,15 @@ typedef struct {
     u32 unk1c;
 } UnkWork_02041c14;
 
-extern UnkStruct_0224ffa0 data_0224ffa0;
+extern UnkStruct_0224ffa0 gWirelessSendBuffer;
 
-u16 func_0203e944(void);
+u16 WH_GetBitmap(void);
 u32 func_0203c300(void);
 u32 func_02042904(u16 v);
 s32 func_0203c340(void);
-void func_0203de84(void *p, u32 size, void (*fn)(void));
-void func_0203de90(void (*fn)(void));
-void func_0203c254(u16 v);
+void WH_SendData(void *p, u32 size, void (*fn)(void));
+void WH_SetReceiver(void (*fn)(void));
+void WFS_EnableSync(u16 v);
 void DC_StoreRange(void *p, u32 size);
 void func_02042364(void);
 void func_02042384(void);
@@ -39,7 +39,7 @@ void func_02041c14(UnkWork_02041c14 *w) {
     flag = FALSE;
     switch (w->mode) {
     case 1:
-        v = func_0203e944();
+        v = WH_GetBitmap();
         break;
     case 2:
         v = func_0203c300();
@@ -52,7 +52,7 @@ void func_02041c14(UnkWork_02041c14 *w) {
     if (!flag)
         return;
     w->unk14 = v;
-    p = &data_0224ffa0;
+    p = &gWirelessSendBuffer;
     switch (w->mode) {
     case 1:
         p->val = v;
@@ -64,12 +64,12 @@ void func_02041c14(UnkWork_02041c14 *w) {
     case 2:
         if (func_0203c340() != 2)
             return;
-        func_0203de90(func_02042364);
+        WH_SetReceiver(func_02042364);
         p->val = v;
         p->flags |= 1;
         DC_StoreRange(p, 4);
-        func_0203de84(p, 4, func_02042384);
-        func_0203c254(v);
+        WH_SendData(p, 4, func_02042384);
+        WFS_EnableSync(v);
         w->unk1a = 0;
         w->fn = func_02041bcc;
         break;

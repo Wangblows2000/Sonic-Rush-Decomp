@@ -19,8 +19,8 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_02087ccc[];
-extern unsigned char data_02087cb8[];
+extern unsigned char gSaveDataBusy[];
+extern unsigned char gSystemFlags[];
 int func_ov001_022d6cf4();
 int func_ov001_022d5114();
 int func_ov001_022d6c98();
@@ -28,7 +28,7 @@ int func_ov001_022d6bf0();
 int func_ov001_022d6b5c();
 int func_ov001_022d68d4();
 int func_ov001_022d5888();
-int func_02037d60();
+int Touch_Enable();
 int func_ov001_022d6630();
 int func_ov001_022d587c();
 
@@ -46,11 +46,11 @@ void func_ov001_022d6d4c(void)
   func_ov001_022d6b5c(iVar1);
   func_ov001_022d68d4(iVar1);
   func_ov001_022d5888(iVar1);
-  func_02037d60();
+  Touch_Enable();
   func_ov001_022d6630(*(undefined4 *)(iVar1 + 0x48c));
   func_ov001_022d587c(iVar1);
-  *((int *)data_02087ccc) = 0;
-  *((int *)data_02087cb8) = *((int *)data_02087cb8) & 0xffffffef;
+  *((int *)gSaveDataBusy) = 0;
+  *((int *)gSystemFlags) = *((int *)gSystemFlags) & 0xffffffef;
   return;
 }
 

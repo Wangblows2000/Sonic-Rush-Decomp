@@ -21,8 +21,8 @@ typedef struct {
 typedef struct { s32 m[4]; } UnkMtx22_0205d4f4;
 
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkDisp_0205d4f4 data_0208922c;
-extern UnkDisp_0205d4f4 data_02087d04;
+extern UnkDisp_0205d4f4 gDisplayMain;
+extern UnkDisp_0205d4f4 gDisplaySub;
 extern u8 data_02089254[];
 extern u8 data_02087d2c[];
 
@@ -38,10 +38,10 @@ void func_0205d4f4(u8 *w) {
     if (data_022c4560.stage == 8 && data_022c4560.act == 2)
         special = TRUE;
     if (special || data_022c4560.stage >= 9 || data_022c4560.act >= 2) {
-        data_0208922c.scrollX = cam->x >> 12;
-        data_0208922c.scrollY = cam->y >> 12;
-        data_02087d04.scrollX = cam->x >> 12;
-        data_02087d04.scrollY = cam->y >> 12;
+        gDisplayMain.scrollX = cam->x >> 12;
+        gDisplayMain.scrollY = cam->y >> 12;
+        gDisplaySub.scrollX = cam->x >> 12;
+        gDisplaySub.scrollY = cam->y >> 12;
     } else {
         func_02000cb4(&m);
         func_02003d94(data_02089254, &m, 0x80, 0x60, cam->x >> 12, cam->y >> 12);

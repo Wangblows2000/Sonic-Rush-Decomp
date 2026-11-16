@@ -16,9 +16,9 @@ typedef struct {
     UnkWork_02063b3c *work;
 } UnkTask_02063b3c;
 
-extern UnkTask_02063b3c *data_022b4574;
+extern UnkTask_02063b3c *gTaskCurrent;
 
-void func_02032480(void *spr, s32 sx, s32 sy, s32 a);
+void AnimatorSprite_DrawRotScale(void *spr, s32 sx, s32 sy, s32 a);
 void func_02063890(UnkWork_02063b3c *w);
 void func_020639e4(void);
 
@@ -46,7 +46,7 @@ void func_02063b3c(void) {
     s32 sx;
     s32 sy;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     res = w->res;
     w->t += 0x100;
     spr = res + 0x640;
@@ -54,10 +54,10 @@ void func_02063b3c(void) {
     sy = Ease_02063b3c(0x1400, 0xf33, CLAMP(w->t, 0, 0x1000));
     if (sx <= 0x1000)
         w->unkc = w->unk10;
-    func_02032480(spr, sx, sy, 0);
+    AnimatorSprite_DrawRotScale(spr, sx, sy, 0);
     func_02063890(w);
     if (w->t < 0x1000)
         return;
-    data_022b4574->fn = func_020639e4;
+    gTaskCurrent->fn = func_020639e4;
     w->t = 0;
 }

@@ -2,9 +2,9 @@
 
 extern u8 data_ov001_02316840[];
 extern void *data_ov001_0231f074;
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov001_022fa908(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov001_022f1660(void);
 void func_ov001_022f0e4c(void);
 
@@ -30,11 +30,11 @@ void func_ov001_022eed64(u8 **pa, u8 **pb) {
     *(u16 *)(d + 0x16) = 1;
     *(void (**)(void))(c + 0x74) = func_ov001_022f1660;
     *(void (**)(void))(a + 0x74) = func_ov001_022f0e4c;
-    func_02031a68(e, 4, data_ov001_0231f074, *(u16 *)(data_ov001_02316840 + 0x76), 0);
+    Model_SetAnimation(e, 4, data_ov001_0231f074, *(u16 *)(data_ov001_02316840 + 0x76), 0);
     e[0x110] &= ~4;
     *(s32 *)(e + 0x114) = 0x1000;
     *(s32 *)(e + 0x118) = 0;
     *(u32 *)(a + 0x128) |= 0x200;
     func_ov001_022fa908(0, *(s32 *)(d + 0x190), -*(s32 *)(d + 0x194), 0);
-    func_02036754(0, 0, 0xb5);
+    Sound_PlaySeqArc(0, 0, 0xb5);
 }

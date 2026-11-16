@@ -11,13 +11,13 @@ typedef struct UnkStruct_02306244 {
 extern UnkStruct_02306244 *data_ov001_0231f5a8;
 extern vu8 data_02087d14[];
 
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_023061b0(void);
 
 void func_ov001_02306244(void) {
     vu8 *w = data_02087d14;
 
-    data_ov001_0231f5a8->task = func_020372d0(func_ov001_023061b0, 0, 0, 0x3100, 2, 0);
+    data_ov001_0231f5a8->task = Task_Create(func_ov001_023061b0, 0, 0, 0x3100, 2, 0);
     data_ov001_0231f5a8->unk5E0 = 0x10;
     w[1] = 0;
     w[5] = 0x5a;

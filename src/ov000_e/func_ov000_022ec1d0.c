@@ -24,7 +24,7 @@ typedef struct {
 
 extern s16 data_ov000_02363b64[];
 
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void *func_02025e8c(void *p);
 void func_0201c070(s32 a, s32 b);
 void func_ov000_022ec1b8(void);
@@ -32,8 +32,8 @@ void func_ov000_022ec1b8(void);
 void func_ov000_022ec1d0(UnkStruct_022ec1d0 *w) {
     UnkStruct_Mdl *m = &w->mdl;
 
-    func_02031a68(m, 1, w->unk394, 0, 0);
-    func_02031a68(m, 2, w->unk3A0, 0, (s32)func_02025e8c(w->unk388));
+    Model_SetAnimation(m, 1, w->unk394, 0, 0);
+    Model_SetAnimation(m, 2, w->unk3A0, 0, (s32)func_02025e8c(w->unk388));
     w->base.coll1.unkA &= ~4;
     w->base.unk5C &= ~4;
     if (w->unk378 == 0) {

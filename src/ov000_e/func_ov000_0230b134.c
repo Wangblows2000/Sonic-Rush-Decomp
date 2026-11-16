@@ -1,6 +1,6 @@
 #include <ov000_c/stageobj.h>
 
-void func_02069818(void *w, s32 a);
+void StageObj_SetAnimation(void *w, s32 a);
 void func_ov000_0230ab48(UnkStruct_StageObj *w);
 void func_ov000_0230aed8(void);
 
@@ -12,9 +12,9 @@ void func_ov000_0230b134(UnkStruct_StageObj *w, s32 v) {
     if (a >= 0xc0)
         a = 0xc0;
     if (v > 0)
-        func_02069818(w, 1);
+        StageObj_SetAnimation(w, 1);
     else
-        func_02069818(w, 4);
+        StageObj_SetAnimation(w, 4);
     w->unk5C |= 4;
     w->unkC = a;
     w->spr0.unk2A = a;

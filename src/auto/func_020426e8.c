@@ -1,14 +1,14 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_0224ff44[];
-extern u8 data_022b4574[];
+extern u8 gWirelessRecvBuffers[];
+extern u8 gTaskCurrent[];
 void func_0204138c();
 
 void func_020426e8(void) {
-    s32 t0 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t1 = *(u32 *)data_022b4574;
-    *(u16 *)((u8 *)t0 + 0x14) = *(u16 *)*(u32 *)data_0224ff44;
+    s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t1 = *(u32 *)gTaskCurrent;
+    *(u16 *)((u8 *)t0 + 0x14) = *(u16 *)*(u32 *)gWirelessRecvBuffers;
     s32 t2 = *(u16 *)((u8 *)t0 + 0x1a);
     s32 v3 = t1;
     if (t2 == 0xf0) {

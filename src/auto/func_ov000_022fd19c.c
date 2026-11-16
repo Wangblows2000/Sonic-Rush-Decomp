@@ -3,7 +3,7 @@
 
 s32 func_ov000_022faf48();
 void func_ov000_022fd0d0();
-extern u8 data_022c4680[];
+extern u8 gSaveData[];
 extern u8 data_022c4560[];
 
 void func_ov000_022fd19c(u8 *p0) {
@@ -14,7 +14,7 @@ void func_ov000_022fd19c(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0xc) = 0x18;
     *(u32 *)((u8 *)p0 + 0x8) = 0x3c;
     *(u32 *)((u8 *)p0 + 0x1f4) = (*(u32 *)((u8 *)p0 + 0x1f4) & ~5);
-    if ((*(u32 *)((u8 *)data_022c4680 + 0x8) & 1) == 0) {
+    if ((*(u32 *)((u8 *)gSaveData + 0x8) & 1) == 0) {
         return;
     }
     if (*(u32 *)((u8 *)data_022c4560 + 0x10) == 2) {

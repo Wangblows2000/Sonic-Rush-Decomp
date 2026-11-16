@@ -24,7 +24,7 @@ typedef struct {
 } UnkStruct_Boss;
 
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e5f58(void);
 void func_ov000_022e40a8(void);
 
@@ -36,7 +36,7 @@ void func_ov000_022e41d0(UnkStruct_Boss *w) {
         return;
     func_02021c38(m->unk90, func_ov000_022e5f58, 0, 6, 3);
     w->base.unk68 = func_ov000_022e40a8;
-    func_02031a68(m, 0, w->unkD08, 8, 0);
+    Model_SetAnimation(m, 0, w->unkD08, 8, 0);
     m->unk114 = 0x1000;
     w->unkE72 |= 4;
     w->unkE72 &= ~0x1000;

@@ -4,7 +4,7 @@ typedef struct UnkStruct_022f8ce8 {
     s32 m[9];
 } UnkStruct_022f8ce8;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
 u8 *func_ov000_02328710(s32 a, s32 b, s32 c, s32 d);
@@ -13,8 +13,8 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022f8ce8(s32 a, s32 b, s32 c) {

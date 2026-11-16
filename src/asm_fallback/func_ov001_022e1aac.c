@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_022c4da0;
+extern u32 gTalkDemoId;
 
 #pragma thumb on
 asm void func_ov001_022e1aac(void)
@@ -93,6 +93,6 @@ _94:
     strh r1, [r0]
 _9a:
     bx lr
-    dcd data_022c4da0
+    dcd gTalkDemoId
 }
 #pragma thumb reset

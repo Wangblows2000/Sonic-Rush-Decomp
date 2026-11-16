@@ -25,8 +25,8 @@ typedef struct {
     u16 unk46;
 } UnkSpr_02359d5c;
 
-s32 func_02039c18(s32 a, u16 b);
-void func_0203363c(UnkSpr_02359d5c *spr, UnkRes_02359d5c *res, s32 idx, s32 a, s32 b, s32 c, s32 pal, s32 d, void *dst);
+s32 ObjVram_Alloc(s32 a, u16 b);
+void AnimatorSprite_Init(UnkSpr_02359d5c *spr, UnkRes_02359d5c *res, s32 idx, s32 a, s32 b, s32 c, s32 pal, s32 d, void *dst);
 
 static inline u16 UnkGet_02359d5c(UnkRes_02359d5c *res, s32 idx) {
     UnkEntry_02359d5c *e = ((UnkHdr_02359d5c *)((u8 *)res + res->unk18))->entries;
@@ -36,9 +36,9 @@ static inline u16 UnkGet_02359d5c(UnkRes_02359d5c *res, s32 idx) {
 #pragma thumb on
 
 void func_ov000_02359d5c(UnkSpr_02359d5c *spr, UnkRes_02359d5c *res, s32 idx, s32 prio, u16 x, u16 y) {
-    s32 pal = func_02039c18(1, UnkGet_02359d5c(res, idx));
+    s32 pal = ObjVram_Alloc(1, UnkGet_02359d5c(res, idx));
 
-    func_0203363c(spr, res, idx, 0, 1, 0, pal, 0, (void *)0x5000600);
+    AnimatorSprite_Init(spr, res, idx, 0, 1, 0, pal, 0, (void *)0x5000600);
     spr->unk2C &= ~0x60000;
     spr->unk2C |= prio << 17;
     spr->unk44 = x;

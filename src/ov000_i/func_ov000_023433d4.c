@@ -19,7 +19,7 @@ struct UnkObj_023433d4 {
     u16 unk16A;
 };
 
-void func_02069090(UnkObj_023433d4 *o, void *p);
+void StageObj_HandleCollider(UnkObj_023433d4 *o, void *p);
 
 void func_ov000_023433d4(UnkObj_023433d4 *o) {
     if (o->unkC != 0) {
@@ -28,7 +28,7 @@ void func_ov000_023433d4(UnkObj_023433d4 *o) {
             o->unk54 |= 4;
             return;
         }
-        func_02069090(o, o->unk160);
+        StageObj_HandleCollider(o, o->unk160);
         return;
     }
     if (o->parent != NULL) {
@@ -37,7 +37,7 @@ void func_ov000_023433d4(UnkObj_023433d4 *o) {
         o->unk5C &= ~1;
         if (o->parent->unk5C & 1)
             o->unk5C |= 1;
-        func_02069090(o, o->unk160);
+        StageObj_HandleCollider(o, o->unk160);
         return;
     }
     o->unk54 |= 4;

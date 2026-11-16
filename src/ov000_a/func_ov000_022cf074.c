@@ -43,7 +43,7 @@ typedef struct UnkStruct_022cf074_cam {
 extern UnkStruct_022cf074_cam data_ov000_0236a444;
 
 s32 func_02002094(s32 a, s32 b);
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 
 typedef struct UnkStruct_022cf074_task {
     u8 pad[0x10];
@@ -56,17 +56,17 @@ typedef struct UnkStruct_022cf074_b {
 } UnkStruct_022cf074_b;
 
 void func_ov000_022cefa0(UnkStruct_022cf074 *t);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 void func_ov000_022cf074(UnkStruct_022cf074_s *s) {
     UnkStruct_022cf074_a *b;
     ((UnkStruct_022cf074_b *)s)->unk210->unk10->func = func_ov000_022cefa0;
     b = &s->unk6F4;
-    func_02031a68(b, 0, s->unkF7C, 1, 0);
+    Model_SetAnimation(b, 0, s->unkF7C, 1, 0);
     b->unk10C[0] &= ~4;
-    func_02031a68(b, 3, s->unkF80, 1, 0);
+    Model_SetAnimation(b, 3, s->unkF80, 1, 0);
     b->unk10C[3] &= ~4;
     b->unk114 = 0x1000;
     s->unk1420 = b;
-    func_02036754(s->unk1454, 0, 0x9f);
+    Sound_PlaySeqArc(s->unk1454, 0, 0x9f);
 }

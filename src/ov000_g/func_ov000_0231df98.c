@@ -17,7 +17,7 @@ void func_ov000_0231dee0(void);
 
 void func_ov000_0231df98(UnkStruct_0231df98 *w) {
     if (w->unk68 != func_ov000_0231dee0 || (Rand() & 1))
-        func_02069818(w, 0);
+        StageObj_SetAnimation(w, 0);
     w->unk5C |= 4;
     w->unk68 = func_ov000_0231dee0;
     w->unkC = Rand() & 0x1f;

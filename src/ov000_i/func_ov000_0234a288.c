@@ -45,8 +45,8 @@ typedef struct {
 } UnkStruct_0234a288_4560;
 
 extern UnkStruct_0234a288_4560 data_022c4560;
-extern u32 data_022c4ef0;
-extern u32 data_0208fe70;
+extern u32 gObjManagerFlags;
+extern u32 gRandSeed;
 
 void func_ov000_023475fc(UnkStruct_0234a288 *w);
 void func_ov000_0234739c(UnkStruct_0234a288 *w);
@@ -60,8 +60,8 @@ void func_ov000_02349b84(UnkStruct_0234a288 *w);
 void func_ov000_023497f4(UnkStruct_0234a288 *w);
 
 static inline u16 Rand_0234a288(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0234a288(UnkStruct_0234a288 *w) {
@@ -93,7 +93,7 @@ void func_ov000_0234a288(UnkStruct_0234a288 *w) {
     }
     switch (w->unk328) {
     case 0x30:
-        if (!(data_022c4ef0 & 0x100) && w->unk324 == 1 && (data_022c4560.unk18 & 1) && !(data_022c4560.unk20 & 7)) {
+        if (!(gObjManagerFlags & 0x100) && w->unk324 == 1 && (data_022c4560.unk18 & 1) && !(data_022c4560.unk20 & 7)) {
             func_ov000_02332db8(w);
         }
         break;

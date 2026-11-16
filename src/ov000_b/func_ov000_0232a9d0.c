@@ -12,12 +12,12 @@ typedef struct {
     UnkStruct_0232a9d0_Sub unk134;
 } UnkStruct_0232a9d0;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02367f90[];
 
 void func_ov000_0232a660(void);
-void func_02069934(void *w, UnkStruct_0232a9d0_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_020316f4(UnkStruct_0232a9d0_Sub *s);
+void StageObj_Load3dBAC(void *w, UnkStruct_0232a9d0_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
+void Model_Animate(UnkStruct_0232a9d0_Sub *s);
 void func_ov000_022c5e80(s32 a, s32 b, s32 c, s32 *d, s32 *e, s16 *f);
 
 UnkStruct_0232a9d0 *func_ov000_0232a9d0(UnkStruct_StageObj *arg, s32 x, s32 y, u32 idx, s32 a, s32 b) {
@@ -30,20 +30,20 @@ UnkStruct_0232a9d0 *func_ov000_0232a9d0(UnkStruct_StageObj *arg, s32 x, s32 y, u
 
     if (idx >= 10)
         return NULL;
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_0232a9d0));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_0232a9d0));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0232a9d0));
-    func_02069934(w, &w->unk134, data_ov000_02367f90, 0x80, 0x10, NULL, data_022c4488);
-    func_02069818(w, (u16)idx);
+    StageObj_Load3dBAC(w, &w->unk134, data_ov000_02367f90, 0x80, 0x10, NULL, gZoneActArchive);
+    StageObj_SetAnimation(w, (u16)idx);
     w->unk134.unkA = 0x14;
     w->unk134.unkB = 7;
     w->base.unk54 |= 0x10;
     w->base.unk5C |= 0x1000;
     w->base.unk5C |= 1;
-    func_020316f4(&w->unk134);
+    Model_Animate(&w->unk134);
     w->base.unk2E = x << 8;
     w->base.unk30 = y << 8;
     w->base.unk10 = arg->unk10 + w->base.unk2E;

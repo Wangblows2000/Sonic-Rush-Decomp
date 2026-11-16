@@ -65,9 +65,9 @@ extern UnkStruct_023102b4_4590 data_022c4590;
 extern UnkStruct_023102b4_4560 data_022c4560;
 extern UnkStruct_023102b4_Cam data_ov000_0236ab3a[];
 
-void func_02069818(void *w, s32 a);
+void StageObj_SetAnimation(void *w, s32 a);
 void func_ov000_0234307c(UnkStruct_023102b4_Ply *w, s16 a);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0232b3e0(UnkStruct_023102b4_Ply *w, u32 a);
 
 void func_ov000_023102b4(UnkStruct_023102b4 *a, UnkStruct_023102b4 *b) {
@@ -82,7 +82,7 @@ void func_ov000_023102b4(UnkStruct_023102b4 *a, UnkStruct_023102b4 *b) {
 
     if (p != NULL) {
         h = p->unk67 + 1;
-        func_02069818(o, 1);
+        StageObj_SetAnimation(o, 1);
         g->unk1C = o->unk10 >> 8;
         g->unk20 = (o->unk14 >> 8) - h;
         if (o->unk5C & 2) {
@@ -106,7 +106,7 @@ void func_ov000_023102b4(UnkStruct_023102b4 *a, UnkStruct_023102b4 *b) {
             }
         }
         data_022c4590.unkC++;
-        func_0204b7ec(NULL, 0, 0x44);
+        Sound_PlaySeqArcEx(NULL, 0, 0x44);
         if (data_022c4560.unk10 == 2) {
             func_ov000_0232b3e0(p, data_022c4560.unk20);
         }

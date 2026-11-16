@@ -18,7 +18,7 @@ typedef struct {
 } UnkObj_0204efec;
 
 extern UnkEntry_0204efec data_02087cdc[];
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
 #pragma thumb on
 void func_0204efec(UnkObj_0204efec *o) {
@@ -29,6 +29,6 @@ void func_0204efec(UnkObj_0204efec *o) {
     e->unk8 = o->unk1d4;
     e->unkc = 2;
     e->unk10 = 0;
-    data_02087cb8 |= 0x400 << idx;
+    gSystemFlags |= 0x400 << idx;
 }
 #pragma thumb reset

@@ -15,16 +15,16 @@ typedef struct {
     void *unk18;
 } UnkStruct_022fb3d8_Coll;
 
-void func_0206d8bc(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
+void ObjRect_FuncNoHit(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
 void func_ov000_02343000(UnkStruct_022fb3d8_Pl *pl, s32 a);
 void func_ov000_022fafc8(UnkStruct_StageObj *w, UnkStruct_022fb3d8_Pl *pl);
 void func_ov000_022fa9e8(UnkStruct_StageObj *w, UnkStruct_022fb3d8_Pl *pl, s32 a);
 void func_ov000_022fb898(UnkStruct_StageObj *w);
 void func_ov000_022fb738(UnkStruct_StageObj *w);
-s32 func_0206d5d0(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
-s32 func_0206d4c8(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
+s32 ObjRect_HitCenterX(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
+s32 ObjRect_HitCenterY(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
 void func_ov000_0232ff6c(s32 x, s32 y);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void func_ov000_0232e91c(UnkStruct_StageObj *w, s32 a, s32 b, s32 c);
 void func_ov000_0234a984(UnkStruct_022fb3d8_Pl *pl);
 void func_ov000_0234aa80(UnkStruct_022fb3d8_Pl *pl);
@@ -50,7 +50,7 @@ void func_ov000_022fb3d8(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b)
                 w->coll1.unkA |= 0x1000;
                 w->coll2.unkA |= 0x1000;
             } else {
-                func_0206d8bc(a, b);
+                ObjRect_FuncNoHit(a, b);
                 return;
             }
         } else {
@@ -83,14 +83,14 @@ void func_ov000_022fb3d8(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b)
         w->unk54 |= 8;
         func_ov000_022fa9e8(w, pl, 2);
     } else {
-        func_ov000_0232ff6c(func_0206d5d0(a, b), func_0206d4c8(a, b));
+        func_ov000_0232ff6c(ObjRect_HitCenterX(a, b), ObjRect_HitCenterY(a, b));
         r1 = Rand();
         r2 = Rand();
-        func_ov000_0232ff6c(func_0206d5d0(a, b) + RND(r2), func_0206d4c8(a, b) + RND(r1));
+        func_ov000_0232ff6c(ObjRect_HitCenterX(a, b) + RND(r2), ObjRect_HitCenterY(a, b) + RND(r1));
         r1 = Rand();
         r2 = Rand();
-        func_ov000_0232ff6c(func_0206d5d0(a, b) + RND(r2), func_0206d4c8(a, b) + RND(r1));
-        func_0204b7ec(0, 0, 0x7a);
+        func_ov000_0232ff6c(ObjRect_HitCenterX(a, b) + RND(r2), ObjRect_HitCenterY(a, b) + RND(r1));
+        Sound_PlaySeqArcEx(0, 0, 0x7a);
         func_ov000_0232e91c(w, 0, -0x50, w->unk1E5);
         w->unk1E5--;
         w->unk1E0->unkB++;

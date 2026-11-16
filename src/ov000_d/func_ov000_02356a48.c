@@ -31,11 +31,11 @@ void func_ov000_02356a48(UnkStruct_Mdl *w) {
     func_02000f34(&a, &b, &r->rot);
     if (m->cur != m->prev) {
         if (m->flag) {
-            func_02031a68(&m->r, 0, m->anm158, m->cur, NULL);
-            func_02031a68(&m->r, 4, m->anm15C, m->frame, NULL);
+            Model_SetAnimation(&m->r, 0, m->anm158, m->cur, NULL);
+            Model_SetAnimation(&m->r, 4, m->anm15C, m->frame, NULL);
         } else {
-            func_02031a68(&m->r, 0, m->anm150, m->cur, NULL);
-            func_02031a68(&m->r, 4, m->anm154, m->frame, NULL);
+            Model_SetAnimation(&m->r, 0, m->anm150, m->cur, NULL);
+            Model_SetAnimation(&m->r, 4, m->anm154, m->frame, NULL);
         }
         m->prev = m->cur;
     }
@@ -51,7 +51,7 @@ void func_ov000_02356a48(UnkStruct_Mdl *w) {
         func_ov000_023568ac(m->r.unk94, 1, v);
     }
     func_02025268(0x11, NULL, 0);
-    func_020315e0(r);
+    Model_Draw(r);
     one = 1;
     func_02025268(0x12, &one, 1);
 }

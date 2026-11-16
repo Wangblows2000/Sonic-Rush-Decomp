@@ -1,8 +1,8 @@
 #include <nitro/types.h>
 
 extern u8 *data_ov001_0231f5a8;
-extern void *data_022b4574;
-void func_020371c8(void *p);
+extern void *gTaskCurrent;
+void Task_Destroy(void *p);
 void func_ov001_02305aec(void);
 
 void func_ov001_02305cd8(void) {
@@ -10,7 +10,7 @@ void func_ov001_02305cd8(void) {
     if (*(s32 *)(data_ov001_0231f5a8 + 0x5d8) > 0) {
         return;
     }
-    func_020371c8(data_022b4574);
+    Task_Destroy(gTaskCurrent);
     *(s32 *)(data_ov001_0231f5a8 + 0x10) = 0;
     func_ov001_02305aec();
 }

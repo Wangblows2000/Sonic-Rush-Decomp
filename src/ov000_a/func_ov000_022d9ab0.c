@@ -83,8 +83,8 @@ extern UnkStruct_022d9ab0_7 data_ov000_02369ac0;
 extern UnkStruct_022d9ab0_4 data_022c4560;
 extern UnkStruct_022d9ab0_p *data_ov000_0236ac60;
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
-void func_0206c7d8(void);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
+void StageObj_SetPause(void);
 void func_ov000_02347c44(UnkStruct_022d9ab0_p *p);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
@@ -106,9 +106,9 @@ void func_ov000_022d9ab0(UnkStruct_022d9ab0 *s) {
     a->unk2C4.unk114 = 0;
     b->unk3A4 = 0;
     b->unk518 = 0;
-    func_0206c7d8();
+    StageObj_SetPause();
     data_022c4560.unk18 &= ~1;
-    func_02031a68(&a->unk2C4, 0, a->unk434, 1, 0);
+    Model_SetAnimation(&a->unk2C4, 0, a->unk434, 1, 0);
     a->unk2C4.unk10C |= 4;
     a->unk10 = 0;
     a->unk5C |= 1;

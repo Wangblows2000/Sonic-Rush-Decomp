@@ -44,14 +44,14 @@ typedef struct {
 
 extern void *data_ov000_0236aaa8;
 
-void func_02039bb0(s32 a, void *p);
+void ObjVram_Free(s32 a, void *p);
 
 static inline void UnkRelease_02337338(UnkPair_02337338 *p) {
     if (p->p0 != NULL) {
-        func_02039bb0(0, p->p0);
+        ObjVram_Free(0, p->p0);
     }
     if (p->p1 != NULL) {
-        func_02039bb0(1, p->p1);
+        ObjVram_Free(1, p->p1);
     }
 }
 

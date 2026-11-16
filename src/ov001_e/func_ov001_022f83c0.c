@@ -17,10 +17,10 @@ typedef struct UnkStruct_022b4574 {
 } UnkStruct_022b4574;
 
 extern UnkStruct_022f83c0 *data_ov001_0231f084;
-extern UnkStruct_022b4574 *data_022b4574;
+extern UnkStruct_022b4574 *gTaskCurrent;
 extern u16 data_ov001_02316abc[];
 extern u16 data_ov001_02316adc[];
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 void func_ov001_022f8330(void);
 
 void func_ov001_022f83c0(void) {
@@ -28,7 +28,7 @@ void func_ov001_022f83c0(void) {
     s16 x;
 
     if (data_ov001_0231f084->flags & 3) {
-        data_022b4574->func = func_ov001_022f8330;
+        gTaskCurrent->func = func_ov001_022f8330;
         func_ov001_022f8330();
         data_ov001_0231f084->flags &= ~0x1000;
         data_ov001_0231f084->flags |= 0x2000;
@@ -45,12 +45,12 @@ void func_ov001_022f83c0(void) {
             o->x = v;
             o->y = 0xb4;
             o->h44 = 1;
-            func_02032d2c(o);
+            AnimatorSprite_Draw(o);
         }
         x += data_ov001_02316abc[c];
     }
     if (x < data_ov001_0231f084->unkE54 >> 12) {
-        data_022b4574->func = func_ov001_022f8330;
+        gTaskCurrent->func = func_ov001_022f8330;
         data_ov001_0231f084->flags |= 0x1000;
     }
 }

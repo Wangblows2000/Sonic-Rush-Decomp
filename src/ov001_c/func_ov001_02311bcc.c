@@ -31,7 +31,7 @@ typedef struct UnkStruct_02311bcc_k {
     u16 trig;
 } UnkStruct_02311bcc_k;
 
-extern UnkStruct_02311bcc_k data_022b65b4;
+extern UnkStruct_02311bcc_k gTouchState;
 extern u32 data_ov001_023178d8[];
 
 BOOL func_ov001_023121f0(u16 a, u16 b);
@@ -56,7 +56,7 @@ void func_ov001_02311bcc(UnkStruct_02311bcc *p) {
     else
         p->unk1F0 = 0;
     if (p->unk114 != 0) {
-        if (p->unk144 <= 0 && !func_ov001_023121f0(data_022b65b4.held, data_022b65b4.trig))
+        if (p->unk144 <= 0 && !func_ov001_023121f0(gTouchState.held, gTouchState.trig))
             func_ov001_02312b30(p);
     } else {
         p->unk134 = 0;

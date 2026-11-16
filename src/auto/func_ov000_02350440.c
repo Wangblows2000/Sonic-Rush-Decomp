@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 void func_ov000_0235020c();
-s32 func_0204b7ec();
+s32 Sound_PlaySeqArcEx();
 
 void func_ov000_02350440(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_0235020c;
@@ -32,5 +32,5 @@ void func_ov000_02350440(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x3ee) = 0;
     *(u32 *)((u8 *)p0 + 0xc) = 0x40;
     *(u16 *)((u8 *)p0 + 0x3ca) = 0;
-    func_0204b7ec(((u8 *)p0 + 0x384), 0, 0x40, ((u8 *)p0 + 0x300));
+    Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0x40, ((u8 *)p0 + 0x300));
 }

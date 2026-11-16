@@ -20,21 +20,21 @@ typedef struct {
     UnkWork_022e9200 *work;
 } UnkTask2_022e9200;
 
-extern UnkTask2_022e9200 *data_022b4574;
-extern u16 data_0208922c[];
+extern UnkTask2_022e9200 *gTaskCurrent;
+extern u16 gDisplayMain[];
 
 void func_ov001_022e8d88(void);
 
 #pragma thumb on
 void func_ov001_022e9200(UnkWork_022e9200 *w) {
     if (w == NULL) {
-        w = data_022b4574->work;
+        w = gTaskCurrent->work;
     }
     w->state = 3;
     w->unk4 = 0;
 
-    data_0208922c[4] = 0;
-    data_0208922c[5] = 0;
+    gDisplayMain[4] = 0;
+    gDisplayMain[5] = 0;
     w->unkc = 0;
     w->task->func = func_ov001_022e8d88;
 }

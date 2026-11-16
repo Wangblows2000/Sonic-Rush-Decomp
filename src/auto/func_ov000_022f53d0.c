@@ -1,14 +1,14 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_02069090();
+s32 StageObj_HandleCollider();
 
 void func_ov000_022f53d0(s32 p0, u8 *p1, u8 *p2) {
     s32 t0 = *(u32 *)((u8 *)p1 + 0x18);
     if (t0 == 0) {
         return;
     }
-    func_02069090(p0, p1, p2, t0);
+    StageObj_HandleCollider(p0, p1, p2, t0);
     if ((s32)p2 == 0) {
         return;
     }

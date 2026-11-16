@@ -34,13 +34,13 @@ typedef struct {
     s32 vals[3];
 } UnkList_022d83fc;
 
-extern UnkTask_022d83fc *data_022b4574;
+extern UnkTask_022d83fc *gTaskCurrent;
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_02040d14(UnkAnim_022d83fc *a);
 BOOL func_02040cf4(UnkAnim_022d83fc *a);
 void func_ov001_022d77a8(UnkList_022d83fc *l, UnkStruct_022d83fc *p);
-void func_020371c8(UnkTask_022d83fc *t);
+void Task_Destroy(UnkTask_022d83fc *t);
 
 #pragma thumb on
 void func_ov001_022d83fc(void) {
@@ -54,7 +54,7 @@ void func_ov001_022d83fc(void) {
     UnkList_022d83fc l;
 
     done = TRUE;
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     zero = 0;
     MIi_CpuClear16(zero, &l, sizeof(l));
     n = 0;
@@ -79,7 +79,7 @@ void func_ov001_022d83fc(void) {
     func_ov001_022d77a8(&l, w->parent);
     if (done) {
         w->parent->unk258 = 1;
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
     }
 }
 #pragma thumb reset

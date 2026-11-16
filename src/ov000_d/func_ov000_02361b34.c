@@ -13,7 +13,7 @@ void func_ov000_023619a4(void);
 #pragma thumb on
 
 void func_ov000_02361b34(void) {
-    UnkStruct_MenuO *w = data_022b4574->work;
+    UnkStruct_MenuO *w = gTaskCurrent->work;
 
     func_ov000_023611f8(w);
     func_ov000_0236119c(w, 0x1000, 1);
@@ -29,12 +29,12 @@ void func_ov000_02361b34(void) {
         func_02050078(0xe, 3, 5, 1, 0, 0, 0xe, 0x200010);
         w->unk14 = 1;
         if (func_ov000_0235faf0(w)) {
-            data_022b4574->unk8 = func_ov000_02361a98;
+            gTaskCurrent->unk8 = func_ov000_02361a98;
             return;
         }
         w->unk18 = 0;
         w->unk1C = 0;
-        data_022b4574->unk8 = func_ov000_023619a4;
+        gTaskCurrent->unk8 = func_ov000_023619a4;
     }
 }
 

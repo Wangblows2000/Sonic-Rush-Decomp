@@ -27,7 +27,7 @@ extern u8 data_022b8a14[];
 extern u8 data_022b89f8[];
 extern u8 *data_022b89e4;
 extern u8 *data_022b89e0;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
@@ -44,7 +44,7 @@ void func_0203b75c(u32 n);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void Free_0203b0ac(u8 *p) {
     if ((u8 *)func_02006abc(0) != p) {
@@ -57,7 +57,7 @@ static inline void Free_0203b0ac(u8 *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_0203b0ac(u32 n, u32 type, UnkArg_0203b0ac *arg) {

@@ -1,7 +1,7 @@
 #include <ov000_c/stageobj.h>
 
 UnkStruct_StageObj *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void func_020693f0(s16 *a, s16 *b, s32 c);
+void Math_RotateVec2S16(s16 *a, s16 *b, s32 c);
 
 void func_ov000_022ffa58(UnkStruct_StageObj *w, s16 dx, s16 dy) {
     u16 f = 0;
@@ -26,7 +26,7 @@ void func_ov000_022ffa58(UnkStruct_StageObj *w, s16 dx, s16 dy) {
     if (o == NULL)
         return;
     o->unk5 = w->unk5;
-    func_020693f0(&dx, &dy, w->unk5);
+    Math_RotateVec2S16(&dx, &dy, w->unk5);
     if (o->unk5C & 1)
         o->unk10 -= dx << 8;
     else

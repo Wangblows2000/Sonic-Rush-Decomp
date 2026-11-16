@@ -21,7 +21,7 @@ typedef struct {
 } UnkStruct_022d1110;
 
 void func_ov001_022cffdc(float *a, float *b, float c, float d);
-void func_02033550(void *s, u16 id);
+void AnimatorSprite_SetAnimation(void *s, u16 id);
 void func_ov001_022d1404(UnkStruct_022d1110 *p, void (*fn)(UnkStruct_022d1110 *));
 void func_ov001_022d10d8(UnkStruct_022d1110 *p);
 
@@ -49,7 +49,7 @@ void func_ov001_022d1110(UnkStruct_022d1110 *p) {
     p->unkcd4 = FX_F32_TO_FX32_022d1110(t);
     t = b;
     p->unkcec = FX_F32_TO_FX32_022d1110(t);
-    func_02033550(p->spr, 0x13);
+    AnimatorSprite_SetAnimation(p->spr, 0x13);
     func_ov001_022d1404(p, func_ov001_022d10d8);
 }
 #pragma thumb reset

@@ -14,7 +14,7 @@ typedef struct {
     UnkWork_022cdf20 *work;
 } UnkTask_022cdf20;
 
-extern UnkTask_022cdf20 *data_022b4574;
+extern UnkTask_022cdf20 *gTaskCurrent;
 
 void func_ov001_022cc044(UnkWork_022cdf20 *w);
 void func_ov001_022cbac0(UnkWork_022cdf20 *w, s32 a, s32 b);
@@ -24,12 +24,12 @@ void func_ov001_022cdc5c(void *p);
 void func_ov001_022cdc28(void *p);
 void func_ov001_022cdc10(void *p);
 void func_ov001_022cdbf8(void *p);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_ov001_022cda20(void);
 
 #pragma thumb on
 void func_ov001_022cdf20(s32 sel, s32 b) {
-    UnkWork_022cdf20 *w = data_022b4574->work;
+    UnkWork_022cdf20 *w = gTaskCurrent->work;
 
     func_ov001_022cc044(w);
     func_ov001_022cbac0(w, sel, b);
@@ -54,7 +54,7 @@ void func_ov001_022cdf20(s32 sel, s32 b) {
         func_ov001_022cdbf8(w->next);
         break;
     }
-    func_02052104(0);
-    data_022b4574->fn = func_ov001_022cda20;
+    SysSound_PlaySE(0);
+    gTaskCurrent->fn = func_ov001_022cda20;
 }
 #pragma thumb reset

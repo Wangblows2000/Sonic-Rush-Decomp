@@ -19,8 +19,8 @@ typedef struct { u8 pad0[0x18]; s32 unk18; } UnkStruct_02076e58;
 extern UnkEnt_02077770 data_02077770[];
 extern UnkStruct_02076e58 data_02076e58;
 
-UnkRet_02060384 *func_02060384(void);
-void func_02036754(void *a, void *b, s32 c);
+UnkRet_02060384 *TalkDemo_GetEntry(void);
+void Sound_PlaySeqArc(void *a, void *b, s32 c);
 void func_02061ee4(void);
 void func_02061a08(UnkParam_02061b94 *p);
 
@@ -50,9 +50,9 @@ BOOL func_02061b94(UnkParam_02061b94 *p, s32 id) {
     case 12: {
         UnkRet_02060384 *r;
         p->unk34 |= 0x20;
-        r = func_02060384();
+        r = TalkDemo_GetEntry();
         if (r->snd != NULL)
-            func_02036754(NULL, r->snd->unk4, data_02076e58.unk18);
+            Sound_PlaySeqArc(NULL, r->snd->unk4, data_02076e58.unk18);
         break;
     }
     case 13:

@@ -12,14 +12,14 @@ typedef struct {
     s16 bright;
 } UnkBright_022e901c;
 
-extern UnkBright_022e901c data_0208922c;
+extern UnkBright_022e901c gDisplayMain;
 
 typedef struct {
     u8 pad0[0x10];
     UnkWork_022e901c *work;
 } UnkTask_022e901c;
 
-extern UnkTask_022e901c *data_022b4574;
+extern UnkTask_022e901c *gTaskCurrent;
 
 void func_ov001_022e8b5c(UnkWork_022e901c *w);
 void func_ov001_022e8be0(UnkWork_022e901c *w, s32 i);
@@ -28,7 +28,7 @@ void func_ov001_022e915c(void *t);
 
 #pragma thumb on
 void func_ov001_022e901c(void) {
-    UnkWork_022e901c *w = data_022b4574->work;
+    UnkWork_022e901c *w = gTaskCurrent->work;
     s32 b = 0x48;
 
     b -= (s32)w->timer * 6;
@@ -36,7 +36,7 @@ void func_ov001_022e901c(void) {
         b = 0;
     }
     w->bright = b;
-    data_0208922c.bright = b;
+    gDisplayMain.bright = b;
     func_ov001_022e8b5c(w);
     switch (w->mode) {
     case 1:

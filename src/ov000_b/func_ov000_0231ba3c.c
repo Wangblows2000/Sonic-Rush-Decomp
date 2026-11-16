@@ -33,7 +33,7 @@ UnkStruct_0231ba3c *func_ov000_0231ba3c(UnkStruct_ObjParam *p, s32 b, s32 c) {
         p->unk0 = 0xff;
         return NULL;
     }
-    task = func_020372d0(func_0206c3d0, func_ov000_0231ba30, 0, 0x500, 2, sizeof(UnkStruct_0231ba3c));
+    task = Task_Create(StageObj_Main, func_ov000_0231ba30, 0, 0x500, 2, sizeof(UnkStruct_0231ba3c));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;

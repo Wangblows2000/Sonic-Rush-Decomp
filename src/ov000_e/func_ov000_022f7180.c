@@ -36,7 +36,7 @@ typedef struct {
     s32 unk254;
 } UnkStruct_022f7180;
 
-extern volatile UnkStruct_0208922c data_0208922c;
+extern volatile UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Bits5 data_02089250;
 extern UnkStruct_022c4560 data_022c4560;
 extern u16 data_ov000_02365c54[];
@@ -110,12 +110,12 @@ void func_ov000_022f7180(UnkStruct_022f7180 *w) {
         w->unk216 += 0x88;
         if (w->unk216 >= 0x1000) {
             w->unk216 = 0x1000;
-            if (data_0208922c.unk24.b0 == 0)
+            if (gDisplayMain.unk24.b0 == 0)
                 w->base.unk54 |= 4;
         }
         w->base.unk2E = w->unk214 + FX_MUL(-w->unk214, w->unk216);
         w->unk254 = FX_MUL(w->unk216, -0x3333) + 0x34cc;
-        if (data_0208922c.unk24.b0 != 0 && !(w->unk210 & 1))
+        if (gDisplayMain.unk24.b0 != 0 && !(w->unk210 & 1))
             data_02089250.b0 -= 1;
     } else if (!(w->unk210 & 1)) {
         vec.x = w->unk220 << 4;
@@ -135,7 +135,7 @@ void func_ov000_022f7180(UnkStruct_022f7180 *w) {
         } else {
             n = 2;
         }
-        cur = data_0208922c.unk24.b0;
+        cur = gDisplayMain.unk24.b0;
         if (cur < n)
             data_02089250.b0 += 1;
         else if (cur > n)

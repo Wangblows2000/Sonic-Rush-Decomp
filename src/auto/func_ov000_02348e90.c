@@ -6,7 +6,7 @@ s32 func_ov000_0234c4a4();
 s32 func_ov000_02346d10();
 s32 func_ov000_02346aa8();
 void func_ov000_02348dc0();
-s32 func_020446b0();
+s32 ScreenShake_Start();
 
 void func_ov000_02348e90(u8 *p0) {
     if ((*(u32 *)((u8 *)p0 + 0x32c) & 0x400) != 0) {
@@ -34,5 +34,5 @@ void func_ov000_02348e90(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x46) = 0x100;
     s32 t1 = (*(u32 *)((u8 *)p0 + 0x32c) | 0x400);
     *(u32 *)((u8 *)p0 + 0x32c) = t1;
-    func_020446b0(4, t1);
+    ScreenShake_Start(4, t1);
 }

@@ -1,25 +1,25 @@
 #include <nitro/types.h>
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 typedef struct {
     u8 *buf;
 } UnkObj_02068478;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-u8 *func_020687b8(UnkObj_02068478 *s, s32 a, s32 b);
+u8 *ObjData_Load(UnkObj_02068478 *s, s32 a, s32 b);
 void func_020257f8(void *p);
 u32 func_020380d8(void *p);
 void func_020380a0(void *p, void *buf);
 
 static inline u8 *Alloc_02068478(u32 sz) {
     u32 size = sz;
-    u8 *p = func_02034a40(data_0208fe80, size, 0x20);
+    u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -42,7 +42,7 @@ static inline void Free_02068478(u8 *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_02068478(UnkObj_02068478 *s, s32 a) {
@@ -50,7 +50,7 @@ void func_02068478(UnkObj_02068478 *s, s32 a) {
 
     res = s->buf;
     if (res == NULL)
-        res = func_020687b8(s, a, 0);
+        res = ObjData_Load(s, a, 0);
     func_020257f8(res);
     s->buf = Alloc_02068478((func_020380d8(res) + 0x43) & ~0x1f);
     func_020380a0(res, s->buf);

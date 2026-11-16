@@ -22,7 +22,7 @@ UnkStruct_0231a0f0 *func_ov000_0231a0f0(s32 a, s32 b, s32 c) {
     UnkStruct_0231a0f0 *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_0231a0b8, 0, 0x500, 2, sizeof(UnkStruct_0231a0f0));
+    task = Task_Create(StageObj_Main, func_ov000_0231a0b8, 0, 0x500, 2, sizeof(UnkStruct_0231a0f0));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -30,9 +30,9 @@ UnkStruct_0231a0f0 *func_ov000_0231a0f0(s32 a, s32 b, s32 c) {
     data_ov000_0236a2fc = w;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0231a0f0));
     func_ov000_022fba50(w, a, b, c);
-    func_02069a34(w, &w->blk[0], data_ov000_02367128, 0, 0, 0, data_ov000_0236a308, data_ov000_02369ba0);
-    func_02069a34(w, &w->blk[1], data_ov000_0236713c, 0, 1, 2, data_ov000_0236a308, data_ov000_02369ba0);
-    func_02069a34(w, &w->blk[2], data_ov000_02367150, 0, 2, 1, data_ov000_0236a308, data_ov000_02369ba0);
+    StageObj_LoadModelSimple(w, &w->blk[0], data_ov000_02367128, 0, 0, 0, data_ov000_0236a308, data_ov000_02369ba0);
+    StageObj_LoadModelSimple(w, &w->blk[1], data_ov000_0236713c, 0, 1, 2, data_ov000_0236a308, data_ov000_02369ba0);
+    StageObj_LoadModelSimple(w, &w->blk[2], data_ov000_02367150, 0, 2, 1, data_ov000_0236a308, data_ov000_02369ba0);
     w->blk[1].unkA8 |= 0x40;
     w->base.unk5C |= 0x200;
     Obj_SetVec(&w->base.unk128->unk18, 0x34cc, 0x34cc, 0x34cc);
@@ -55,7 +55,7 @@ UnkStruct_0231a0f0 *func_ov000_0231a0f0(s32 a, s32 b, s32 c) {
     w->base.unk3C = 0x40;
     w->base.unk3E = 0x300;
     w->base.unk204 = 0;
-    w->base.unk1DC = func_0203663c();
+    w->base.unk1DC = Sound_AllocHandle();
     func_ov000_0231a0a0(w);
     return w;
 }

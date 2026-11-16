@@ -16,11 +16,11 @@ typedef struct UnkStruct_022d6e70 {
     s32 unk434;
 } UnkStruct_022d6e70;
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022d6de4(void);
 
 void func_ov000_022d6e70(UnkStruct_022d6e70 *s) {
-    func_02031a68(s->unk2C4, 0, s->unk434, 0xc, 0);
+    Model_SetAnimation(s->unk2C4, 0, s->unk434, 0xc, 0);
     s->unk3D0 &= ~4;
     s->unk3D8 = 0x1000;
     s->unk264 = 0x20;

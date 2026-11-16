@@ -1,25 +1,25 @@
 #include <nitro/types.h>
 
-extern u16 data_0208922c[];
-extern u16 data_02087d04[];
+extern u16 gDisplayMain[];
+extern u16 gDisplaySub[];
 
 #pragma thumb on
 void func_ov000_0235c6a8(void) {
-    data_0208922c[0] = 0;
-    data_0208922c[1] = 0;
-    data_0208922c[2] = 0;
-    data_0208922c[3] = 0;
-    data_0208922c[4] = 0;
-    data_0208922c[5] = 0;
-    data_0208922c[6] = 0;
-    data_0208922c[7] = 0;
-    data_02087d04[0] = 0;
-    data_02087d04[1] = 0;
-    data_02087d04[2] = 0;
-    data_02087d04[3] = 0;
-    data_02087d04[4] = 0;
-    data_02087d04[5] = 0;
-    data_02087d04[6] = 0;
-    data_02087d04[7] = 0;
+    gDisplayMain[0] = 0;
+    gDisplayMain[1] = 0;
+    gDisplayMain[2] = 0;
+    gDisplayMain[3] = 0;
+    gDisplayMain[4] = 0;
+    gDisplayMain[5] = 0;
+    gDisplayMain[6] = 0;
+    gDisplayMain[7] = 0;
+    gDisplaySub[0] = 0;
+    gDisplaySub[1] = 0;
+    gDisplaySub[2] = 0;
+    gDisplaySub[3] = 0;
+    gDisplaySub[4] = 0;
+    gDisplaySub[5] = 0;
+    gDisplaySub[6] = 0;
+    gDisplaySub[7] = 0;
 }
 #pragma thumb reset

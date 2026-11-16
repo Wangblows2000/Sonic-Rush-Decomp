@@ -10,20 +10,20 @@ typedef struct {
     void (*unk8)(void);
 } UnkStruct_0235eab8_Task;
 
-extern UnkStruct_0235eab8_Task *data_022b4574;
-extern s32 data_02087ccc;
-extern u32 data_02087cb8;
+extern UnkStruct_0235eab8_Task *gTaskCurrent;
+extern s32 gSaveDataBusy;
+extern u32 gSystemFlags;
 
 UnkStruct_0235eab8_Sync *func_020514e4(void);
 UnkStruct_0235eab8_Sync *func_02051474(void);
 UnkStruct_0235eab8_Sync *func_02051404(void);
 BOOL func_ov000_0235cbd8(void);
 BOOL func_020513a8(void);
-void *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+void *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_ov000_0235cadc(void);
-void func_020521b4(void);
+void SysSound_Release(void);
 void func_0204b2ec(void);
-void func_020522f4(void);
+void SysSound_Init(void);
 void func_02052168(s32 a);
 void func_ov000_0235ea40(void);
 
@@ -68,16 +68,16 @@ void func_ov000_0235eab8(void) {
         }
     }
     if (go) {
-        func_020372d0(func_ov000_0235cadc, NULL, 0, 0x2000, 0x1000, 0);
+        Task_Create(func_ov000_0235cadc, NULL, 0, 0x2000, 0x1000, 0);
         if (func_020513a8()) {
-            func_020521b4();
+            SysSound_Release();
             func_0204b2ec();
         }
-        func_020522f4();
+        SysSound_Init();
         func_02052168(3);
-        data_02087ccc = 1;
-        data_02087cb8 |= 0x10;
-        data_022b4574->unk8 = func_ov000_0235ea40;
+        gSaveDataBusy = 1;
+        gSystemFlags |= 0x10;
+        gTaskCurrent->unk8 = func_ov000_0235ea40;
     }
 }
 

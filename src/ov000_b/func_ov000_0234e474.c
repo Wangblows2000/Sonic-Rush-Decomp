@@ -39,7 +39,7 @@ typedef struct {
 
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 
-s32 func_02068bd8(s32 cur, s32 target, s32 start, s32 a, s32 b, s32 c);
+s32 ObjShift_SetFromRef(s32 cur, s32 target, s32 start, s32 a, s32 b, s32 c);
 void func_ov000_0234e3c4(UnkStruct_0234e474 *s);
 
 void func_ov000_0234e474(UnkStruct_0234e474 *s) {
@@ -48,9 +48,9 @@ void func_ov000_0234e474(UnkStruct_0234e474 *s) {
     s->unk24 = s->unk18;
     switch (s->unk8) {
     case 0:
-        s->unk10 = func_02068bd8(s->unk10, s->unk3E8->unk10, s->unk3F0, 4, 0x800, 0x80);
-        s->unk14 = func_02068bd8(s->unk14, s->unk3E8->unk14, s->unk3F4, 4, 0x800, 0x80);
-        s->unk18 = func_02068bd8(s->unk18, -0x6000, s->unk3F8, 4, 0x800, 0x80);
+        s->unk10 = ObjShift_SetFromRef(s->unk10, s->unk3E8->unk10, s->unk3F0, 4, 0x800, 0x80);
+        s->unk14 = ObjShift_SetFromRef(s->unk14, s->unk3E8->unk14, s->unk3F4, 4, 0x800, 0x80);
+        s->unk18 = ObjShift_SetFromRef(s->unk18, -0x6000, s->unk3F8, 4, 0x800, 0x80);
         if (s->unk10 != s->unk3E8->unk10)
             return;
         if (s->unk14 != s->unk3E8->unk14)
@@ -67,8 +67,8 @@ void func_ov000_0234e474(UnkStruct_0234e474 *s) {
         data_ov000_0236aad8.unk98 &= ~1;
         break;
     case 1:
-        s->unk10 = func_02068bd8(s->unk10, s->unk3F0 + 0x5000, s->unk3F0, 4, 0x200, 0x80);
-        s->unk18 = func_02068bd8(s->unk18, 0x6000, s->unk3F8, 2, 0x800, 0x80);
+        s->unk10 = ObjShift_SetFromRef(s->unk10, s->unk3F0 + 0x5000, s->unk3F0, 4, 0x200, 0x80);
+        s->unk18 = ObjShift_SetFromRef(s->unk18, 0x6000, s->unk3F8, 2, 0x800, 0x80);
         if (s->unk3 != 0)
             s->unk3++;
         if (s->unk10 != s->unk3F0 + 0x5000)
@@ -82,7 +82,7 @@ void func_ov000_0234e474(UnkStruct_0234e474 *s) {
         s->unk2--;
         break;
     case 2:
-        s->unk10 = func_02068bd8(s->unk10, s->unk3F0 + 0xe600, s->unk3F0, 4, 0x800, 0x200);
+        s->unk10 = ObjShift_SetFromRef(s->unk10, s->unk3F0 + 0xe600, s->unk3F0, 4, 0x800, 0x200);
         if (s->unk2 > 0xc0)
             s->unk2--;
         if (s->unk10 != s->unk3F0 + 0xe600)
@@ -92,8 +92,8 @@ void func_ov000_0234e474(UnkStruct_0234e474 *s) {
         s->unk2 = 0;
         break;
     case 3:
-        s->unk10 = func_02068bd8(s->unk10, s->unk3F0 - 0xb600, s->unk3F0, 4, 0x300, 0x80);
-        s->unk18 = func_02068bd8(s->unk18, 0, s->unk3F8, 4, 0x200, 0x80);
+        s->unk10 = ObjShift_SetFromRef(s->unk10, s->unk3F0 - 0xb600, s->unk3F0, 4, 0x300, 0x80);
+        s->unk18 = ObjShift_SetFromRef(s->unk18, 0, s->unk3F8, 4, 0x200, 0x80);
         if (s->unk10 != s->unk3F0 - 0xb600)
             return;
         s->unk3E8 = NULL;

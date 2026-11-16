@@ -23,9 +23,9 @@ extern UnkStruct_022c4560 data_022c4560;
 void func_ov000_022fe304(UnkStruct_022fe350 *w);
 void func_ov000_022fe204(UnkStruct_022fe350 *w);
 void func_ov000_022fdfd4(UnkStruct_022fe350 *w);
-s16 func_02068db4(s32 a, s32 b);
-s16 func_02068df8(s32 a, s32 b, s32 c);
-void func_02069090(void *w, void *a);
+s16 ObjSpd_DownSet(s32 a, s32 b);
+s16 ObjSpd_UpSet(s32 a, s32 b, s32 c);
+void StageObj_HandleCollider(void *w, void *a);
 
 static inline u16 FrameRand(void) {
     return (u16)(((data_022c4560.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16);
@@ -107,14 +107,14 @@ void func_ov000_022fe350(UnkStruct_022fe350 *w) {
     if (w->base.unk1E0->unk4 & 3)
         spd = spd + (((w->base.unk1E0->unk4 & 0xc) >> 2) << 7);
     if (w->base.unk1F4 & 5) {
-        w->base.unk34 = func_02068db4(w->base.unk34, (spd << 6) >> 8);
-        func_02069090(w, w->unk20C);
+        w->base.unk34 = ObjSpd_DownSet(w->base.unk34, (spd << 6) >> 8);
+        StageObj_HandleCollider(w, w->unk20C);
         return;
     }
     if (w->base.unk5C & 1)
-        w->base.unk34 = func_02068df8(w->base.unk34, -((spd * 10) >> 8), (spd * 0xc0) >> 8);
+        w->base.unk34 = ObjSpd_UpSet(w->base.unk34, -((spd * 10) >> 8), (spd * 0xc0) >> 8);
     else
-        w->base.unk34 = func_02068df8(w->base.unk34, (spd * 10) >> 8, (spd * 0xc0) >> 8);
+        w->base.unk34 = ObjSpd_UpSet(w->base.unk34, (spd * 10) >> 8, (spd * 0xc0) >> 8);
     if (w->unk23C <= 200 || !(w->base.unk5C & 1)) {
         d = w->base.unk28 - w->base.unk36;
         if (d > 0 && w->base.unk10 > (w->base.unk1E0->unk8 + (y + w->base.unk1E0->unk6)) << 8) {
@@ -134,7 +134,7 @@ void func_ov000_022fe350(UnkStruct_022fe350 *w) {
         if (w->base.unk8 != 0)
             w->base.unk8--;
         else
-            func_02069090(w, w->unk20C);
+            StageObj_HandleCollider(w, w->unk20C);
     }
     if (w->base.unk1E0->unk2 == 0xf && (w->base.spr0.unkE >> 4) > 0x13)
         w->base.unk34 = 0;

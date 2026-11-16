@@ -34,7 +34,7 @@ extern UnkStruct_Mgr *data_ov000_02369b84;
 extern u16 data_ov000_02364344[][8];
 
 void func_ov000_022f4cbc(UnkStruct_022f28b4 *s);
-void func_0206e2d8(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e, s16 f, s16 g);
+void ObjRect_SetBox3D(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e, s16 f, s16 g);
 void func_ov000_022f2724(UnkStruct_022f28b4 *s);
 
 static inline s32 GetIdxB(void) {
@@ -51,7 +51,7 @@ void func_ov000_022f28b4(UnkStruct_022f28b4 *s) {
 
     func_ov000_022f4cbc(s);
     s->coll314.unkA |= 4;
-    func_0206e2d8(&s->coll314, 0x10, -0x80, 0x70, 0x38, -0x7d00, 0x7d00);
+    ObjRect_SetBox3D(&s->coll314, 0x10, -0x80, 0x70, 0x38, -0x7d00, 0x7d00);
     s->unk438 = data_ov000_02364344[GetIdxB()][data_ov000_02369ac0.unk8 - 1];
     s->unk43A = 0;
     s->unk430 = 0;

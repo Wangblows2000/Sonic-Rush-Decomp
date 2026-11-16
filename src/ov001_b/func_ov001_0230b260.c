@@ -29,7 +29,7 @@ typedef struct UnkStruct_0230b260_br {
     u16 p13b : 3;
 } UnkStruct_0230b260_br;
 
-extern UnkStruct_0230b260_br data_0208922c;
+extern UnkStruct_0230b260_br gDisplayMain;
 
 void func_ov001_02315900(void *a, void *b, void *c);
 void func_020044f4(void *a, void *b, void *c, s32 d, void *e);
@@ -57,13 +57,13 @@ void func_ov001_0230b260(void *w) {
     u32 tr[3];
     u32 sc[3];
 
-    data_0208922c.b0 = 1;
-    data_0208922c.b9 = 1;
-    data_0208922c.e0 = 0xf;
-    data_0208922c.b10 = 1;
-    data_0208922c.b12 = 1;
-    data_0208922c.b6 = 1;
-    data_0208922c.e8 = 8;
+    gDisplayMain.b0 = 1;
+    gDisplayMain.b9 = 1;
+    gDisplayMain.e0 = 0xf;
+    gDisplayMain.b10 = 1;
+    gDisplayMain.b12 = 1;
+    gDisplayMain.b6 = 1;
+    gDisplayMain.e8 = 8;
     func_ov001_02315900(&a, &b, &c);
     func_020044f4(&a, &c, &b, 1, &m43);
     func_02038328(&m43, &m33);

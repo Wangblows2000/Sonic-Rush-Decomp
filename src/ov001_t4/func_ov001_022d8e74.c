@@ -44,13 +44,13 @@ typedef struct {
     s32 unk4;
 } UnkCfg_022d8e74;
 
-extern UnkCfg_022d8e74 data_022c4680;
-extern u32 data_0208fe70;
+extern UnkCfg_022d8e74 gSaveData;
+extern u32 gRandSeed;
 
-void func_0203473c(void *bg, UnkRes_022d8e74 *res, s32 a, s32 b, s32 c, u16 w, u16 h);
-void func_0203438c(void *bg);
-void func_02034644(void *obj, UnkRes_022d8e74 *res, s32 a, u8 b, u8 c, u16 w, u16 h);
-void func_020342b0(void *obj);
+void Background_Init(void *bg, UnkRes_022d8e74 *res, s32 a, s32 b, s32 c, u16 w, u16 h);
+void Background_Draw(void *bg);
+void BackgroundDS_Init(void *obj, UnkRes_022d8e74 *res, s32 a, u8 b, u8 c, u16 w, u16 h);
+void BackgroundDS_Draw(void *obj);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov001_022d8248(UnkSprite_022d8e74 *s, UnkRes_022d8e74 *res, s32 id);
 void func_ov001_022d8294(UnkSprite_022d8e74 *s, UnkRes_022d8e74 *res, s32 id);
@@ -64,32 +64,32 @@ void func_ov001_022d8e74(UnkWork_022d8e74 *w) {
 
     REG16(0x400000e) = (REG16(0x400000e) & 0x43) | 0x390;
     res = w->res818;
-    func_0203473c(&w->bg4c, res, 0x38, 0, 3, res->w, res->h);
-    func_0203438c(&w->bg4c);
+    Background_Init(&w->bg4c, res, 0x38, 0, 3, res->w, res->h);
+    Background_Draw(&w->bg4c);
     REG16(0x400000e) = (REG16(0x400000e) & 0x43) | 0x288;
-    if (data_022c4680.unk4 == 0) {
+    if (gSaveData.unk4 == 0) {
         res = w->res810;
     } else {
-        data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-        if ((u16)(data_0208fe70 >> 16) % 2 == 0) {
+        gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+        if ((u16)(gRandSeed >> 16) % 2 == 0) {
             res = w->res810;
         } else {
             res = w->res81c;
         }
     }
-    func_0203473c(&w->bgc, res, 0x38, 0, 3, res->w, res->h);
-    func_0203438c(&w->bgc);
+    Background_Init(&w->bgc, res, 0x38, 0, 3, res->w, res->h);
+    Background_Draw(&w->bgc);
     res = w->res814;
-    func_0203473c(&w->bg8c, res, 0x38, 1, 3, res->w, res->h);
-    func_0203438c(&w->bg8c);
+    Background_Init(&w->bg8c, res, 0x38, 1, 3, res->w, res->h);
+    Background_Draw(&w->bg8c);
     z0 = 0;
     MIi_CpuClear32(z0, (void *)0x6000800, 0x800);
     z1 = 0;
     MIi_CpuClear32(z1, (void *)0x6200800, 0x800);
     res = w->res820;
     for (i = 0; i < 3; i++) {
-        func_02034644(&w->objs[i], res, 0x38, i, i, res->w, res->h);
-        func_020342b0(&w->objs[i]);
+        BackgroundDS_Init(&w->objs[i], res, 0x38, i, i, res->w, res->h);
+        BackgroundDS_Draw(&w->objs[i]);
     }
     res = w->res808;
     func_ov001_022d8248(&w->sprites[0], res, 0);

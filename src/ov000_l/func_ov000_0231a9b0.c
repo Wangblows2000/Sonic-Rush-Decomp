@@ -15,13 +15,13 @@ typedef struct {
     u32 unk2A0;
 } UnkWork_0231a9b0;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02039bb0(s32 a, void *p);
+void Heap_Free(void *heap, void *p);
+void ObjVram_Free(s32 a, void *p);
 
 void func_ov000_0231a9b0(UnkWork_0231a9b0 *w) {
     void *p;
@@ -30,9 +30,9 @@ void func_ov000_0231a9b0(UnkWork_0231a9b0 *w) {
 
     s = &w->sub;
     if (s->unk34 != NULL)
-        func_02039bb0(0, s->unk34);
+        ObjVram_Free(0, s->unk34);
     if (s->unk7C != NULL)
-        func_02039bb0(1, s->unk7C);
+        ObjVram_Free(1, s->unk7C);
     if (!(w->unk2A0 & 1))
         return;
     p = w->unk29C;
@@ -45,5 +45,5 @@ void func_ov000_0231a9b0(UnkWork_0231a9b0 *w) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }

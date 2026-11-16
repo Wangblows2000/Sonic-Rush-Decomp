@@ -26,8 +26,8 @@ typedef struct {
 
 extern u16 data_020733dc[];
 
-void func_02032d2c(UnkSpr_02047664 *s);
-void func_02032480(UnkSpr_02047664 *s, s32 sx, s32 sy, s32 r);
+void AnimatorSprite_Draw(UnkSpr_02047664 *s);
+void AnimatorSprite_DrawRotScale(UnkSpr_02047664 *s, s32 sx, s32 sy, s32 r);
 
 #pragma thumb on
 void func_02047664(UnkWork_02047664 *w) {
@@ -47,9 +47,9 @@ void func_02047664(UnkWork_02047664 *w) {
                 spr->unk2C &= ~0x60000;
                 spr->unk2C |= 0x40000;
                 if (t->scale[i] == 0x1000)
-                    func_02032d2c(spr);
+                    AnimatorSprite_Draw(spr);
                 else
-                    func_02032480(spr, 0x1000, t->scale[i], 0);
+                    AnimatorSprite_DrawRotScale(spr, 0x1000, t->scale[i], 0);
                 spr->unk2C &= ~0x60000;
             }
         }

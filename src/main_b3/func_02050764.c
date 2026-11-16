@@ -14,19 +14,19 @@ typedef struct {
 } UnkWork_02050764;
 typedef struct { u8 pad0[0x10]; UnkWork_02050764 *work; } UnkTask_02050764;
 extern UnkTask_02050764 *data_022c4638;
-extern UnkTask_02050764 *data_022b4574;
+extern UnkTask_02050764 *gTaskCurrent;
 extern u16 data_022c1950;
 extern u16 data_022c4644[];
 extern s32 data_022c4640;
 
 s32 func_02042958(void);
-void func_020371c8(UnkTask_02050764 *t);
+void Task_Destroy(UnkTask_02050764 *t);
 void func_02050b58(u16 a);
 BOOL func_020502e4(UnkWork_02050764 *w);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void func_02042810(u16 *buf, s32 size, s32 a);
 void func_020429d0(void);
-u16 func_0203dba4(void);
+u16 WH_GetCurrentAid(void);
 void func_020516b4(void);
 
 #pragma thumb on
@@ -43,7 +43,7 @@ void func_02050764(void) {
     if (st < 6) {
         r = func_02042958();
         if (w->unk18) {
-            func_020371c8(data_022b4574);
+            Task_Destroy(gTaskCurrent);
             return;
         }
         if (r == 7 || st == 0 || w->unk14) {
@@ -72,7 +72,7 @@ void func_02050764(void) {
                 func_02050b58(data_022c1950);
             } else if (w->unk10) {
                 func_020429d0();
-                w->unk1C = func_0203dba4();
+                w->unk1C = WH_GetCurrentAid();
                 w->unkC = 4;
                 w->unk8 = 0;
             }

@@ -3,12 +3,12 @@
 
 s32 func_ov000_0234c4a4();
 s32 func_ov000_0234bc30();
-s32 func_0204b7ec();
+s32 Sound_PlaySeqArcEx();
 s32 func_0201c070();
-s32 func_02068df8();
+s32 ObjSpd_UpSet();
 s32 func_ov000_023340f0();
 s32 func_ov000_023470a0();
-s32 func_02068db4();
+s32 ObjSpd_DownSet();
 s32 func_ov000_02334808();
 
 void func_ov000_0234b810(u8 *p0) {
@@ -31,21 +31,21 @@ void func_ov000_0234b810(u8 *p0) {
         *(u32 *)((u8 *)p0 + 0x58) = t2;
         func_ov000_0234bc30(p0, t2, t0);
         if (*(u8 *)((u8 *)p0 + 0x324) != 1) {
-            func_0204b7ec(((u8 *)p0 + 0x384), 0, 1);
+            Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 1);
             return;
         }
-        func_0204b7ec(((u8 *)p0 + 0x384), 0, 0x12);
+        Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0x12);
         return;
     }
     if ((*(u16 *)((u8 *)p0 + 0x422) & 3) != 0) {
         func_0201c070(((u8 *)p0 + 0x384), 0);
         if (*(u8 *)((u8 *)p0 + 0x324) != 1) {
-            func_0204b7ec(((u8 *)p0 + 0x384), 0, 0);
+            Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0);
         } else {
-            func_0204b7ec(((u8 *)p0 + 0x384), 0, 0x11);
+            Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0x11);
         }
         func_ov000_0234c4a4(p0, 0x33);
-        s32 t3 = func_02068df8(*(s16 *)((u8 *)p0 + 0x32a), *(s16 *)((u8 *)p0 + 0x35e), *(s16 *)((u8 *)p0 + 0x360));
+        s32 t3 = ObjSpd_UpSet(*(s16 *)((u8 *)p0 + 0x32a), *(s16 *)((u8 *)p0 + 0x35e), *(s16 *)((u8 *)p0 + 0x360));
         *(u16 *)((u8 *)p0 + 0x32a) = t3;
         if ((*(u32 *)((u8 *)p0 + 0x330) & 0x1000) == 0) {
             if ((*(u32 *)((u8 *)p0 + 0x32c) & 1) == 0) {
@@ -67,7 +67,7 @@ void func_ov000_0234b810(u8 *p0) {
             *(u32 *)((u8 *)p0 + 0x32c) = (*(u32 *)((u8 *)p0 + 0x32c) & ~1);
         }
     }
-    s32 t5 = func_02068db4(*(s16 *)((u8 *)p0 + 0x32a), ((s32)*(s16 *)((u8 *)p0 + 0x32a) >> 5));
+    s32 t5 = ObjSpd_DownSet(*(s16 *)((u8 *)p0 + 0x32a), ((s32)*(s16 *)((u8 *)p0 + 0x32a) >> 5));
     *(u16 *)((u8 *)p0 + 0x32a) = t5;
     if ((*(u32 *)((u8 *)p0 + 0x32c) & 1) != 0) {
         return;

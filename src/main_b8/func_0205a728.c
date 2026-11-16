@@ -23,8 +23,8 @@ typedef struct {
 } UnkWork_0205a728;
 
 extern UnkState_0205a728 data_022c4560;
-extern UnkGfx_0205a728 data_0208922c;
-extern UnkGfx_0205a728 data_02087d04;
+extern UnkGfx_0205a728 gDisplayMain;
+extern UnkGfx_0205a728 gDisplaySub;
 extern u16 data_02074960[][3][3];
 extern u16 data_02074962[][3][3];
 extern u16 data_02074964[][3][3];
@@ -45,20 +45,20 @@ void func_0205a728(UnkWork_0205a728 *w) {
     w->unk8ce += 0xa3;
     if (w->unk8ce >= 0x1000) {
         w->unk8ce = 0x1000;
-        data_0208922c.unk20 &= ~0xc0;
+        gDisplayMain.unk20 &= ~0xc0;
         w->state = (void (*)(void *))func_0205a654;
     }
     flag = FALSE;
     if (data_022c4560.zone == 8 && data_022c4560.act == 2)
         flag = TRUE;
     if (flag) {
-        data_02087d04.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
+        gDisplaySub.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
         w->unk4d8 = (FX_MUL(w->unk8ce, -0x1f000) + 0x1f000) >> 12;
     } else if (data_022c4560.zone >= 9 || data_022c4560.act >= 2) {
-        data_02087d04.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
-        data_0208922c.unk48 = data_02087d04.unk48;
+        gDisplaySub.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
+        gDisplayMain.unk48 = gDisplaySub.unk48;
     } else {
-        data_02087d04.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
+        gDisplaySub.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
         w->unk4d8 = (FX_MUL(w->unk8ce, -0x1f000) + 0x1f000) >> 12;
     }
     func_02022270(0, func_0205de50(0, data_02074960[data_022c4560.zone][data_022c4560.act][0], w->unk8ce));

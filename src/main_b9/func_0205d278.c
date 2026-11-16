@@ -30,7 +30,7 @@ typedef struct {
     UnkSub_0205d278 sub;
 } UnkWork_0205d278;
 
-void func_02032480(UnkSpr_0205d278 *s, s32 sx, s32 sy, u16 r);
+void AnimatorSprite_DrawRotScale(UnkSpr_0205d278 *s, s32 sx, s32 sy, u16 r);
 
 static inline s32 FX_Mul_0205d278(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -43,6 +43,6 @@ void func_0205d278(UnkWork_0205d278 *w) {
     for (i = 0; i < 2; i++) {
         s->spr[i].x = (s->ox + (s->cx + FX_Mul_0205d278(s->pt[i].x, s->sx)) - FX_Mul_0205d278(s->ox, s->sx)) >> 12;
         s->spr[i].y = (s->oy + (s->cy + FX_Mul_0205d278(s->pt[i].y, s->sy)) - FX_Mul_0205d278(s->oy, s->sy)) >> 12;
-        func_02032480(&s->spr[i], s->sx, s->sy, 0);
+        AnimatorSprite_DrawRotScale(&s->spr[i], s->sx, s->sy, 0);
     }
 }

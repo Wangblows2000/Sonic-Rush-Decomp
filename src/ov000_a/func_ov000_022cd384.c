@@ -24,13 +24,13 @@ extern UnkStruct_022cd384_c data_ov000_0236a48c;
 extern UnkStruct_022cd384_2 data_ov000_0236aad8;
 extern UnkStruct_022cd384_t data_ov000_02365244[];
 extern void *data_ov000_02369ae8[];
-extern void *data_022b4574;
+extern void *gTaskCurrent;
 
 u8 *func_02025ecc(void *p);
 void func_02025c44(u8 *p, u16 a);
 void func_02025bfc(u8 *p, u16 a);
 void func_02025bb4(u8 *p, u16 a);
-void func_020371c8(void *p);
+void Task_Destroy(void *p);
 
 void func_ov000_022cd384(void) {
     UnkStruct_022cd384_c *c = &data_ov000_0236a48c;
@@ -50,5 +50,5 @@ void func_ov000_022cd384(void) {
     }
     c->unk80 = 0x200;
     c->unk8C = 0x80;
-    func_020371c8(data_022b4574);
+    Task_Destroy(gTaskCurrent);
 }

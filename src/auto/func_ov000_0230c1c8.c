@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_02068ce4();
+s32 ObjShift_Set();
 extern u8 data_022c4ef8[];
 
 s32 func_ov000_0230c1c8(u8 *p0) {
@@ -9,7 +9,7 @@ s32 func_ov000_0230c1c8(u8 *p0) {
     if (t0 != 0) {
         *(u32 *)((u8 *)t0 + 0xc) = (*(u32 *)((u8 *)t0 + 0xc) + 0x1);
     }
-    s32 t1 = func_02068ce4(*(u32 *)((u8 *)p0 + 0x8), 0, 4, 0, 0);
+    s32 t1 = ObjShift_Set(*(u32 *)((u8 *)p0 + 0x8), 0, 4, 0, 0);
     *(u16 *)((u8 *)p0 + 0x36) = (*(u32 *)((u8 *)p0 + 0x8) - t1);
     *(u32 *)((u8 *)p0 + 0x8) = t1;
     s32 t2 = *(u32 *)((u8 *)p0 + 0x18);

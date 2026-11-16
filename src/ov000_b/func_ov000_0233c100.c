@@ -66,14 +66,14 @@ void func_ov000_0233c100(void) {
     }
     if (!(data_ov000_0236aab0 & 4)) {
         vu16 zero1;
-        data_ov000_0236aab4 = func_020372d0(func_ov000_02339dd4, func_ov000_02339eec, 0, 0x80, 3, sizeof(UnkStruct_0233c100_Work));
+        data_ov000_0236aab4 = Task_Create(func_ov000_02339dd4, func_ov000_02339eec, 0, 0x80, 3, sizeof(UnkStruct_0233c100_Work));
         w = data_ov000_0236aab4->work;
         zero1 = 0;
         MIi_CpuClear16(zero1, w, sizeof(UnkStruct_0233c100_Work));
         w->unkC = func_ov000_02338b54;
     } else {
         vu16 zero2;
-        data_ov000_0236aab4 = func_020372d0(func_ov000_02339db8, func_ov000_02339eec, 0, 0x80, 3, sizeof(UnkStruct_0233c100_Work));
+        data_ov000_0236aab4 = Task_Create(func_ov000_02339db8, func_ov000_02339eec, 0, 0x80, 3, sizeof(UnkStruct_0233c100_Work));
         w = data_ov000_0236aab4->work;
         zero2 = 0;
         MIi_CpuClear16(zero2, w, sizeof(UnkStruct_0233c100_Work));
@@ -81,5 +81,5 @@ void func_ov000_0233c100(void) {
     }
     func_ov000_0233e79c();
     func_ov000_02342068();
-    func_020372d0(func_ov000_02338728, func_ov000_02338778, 0, 0xf00a, 3, 0);
+    Task_Create(func_ov000_02338728, func_ov000_02338778, 0, 0xf00a, 3, 0);
 }

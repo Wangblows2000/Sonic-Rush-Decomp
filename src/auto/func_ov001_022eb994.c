@@ -3,19 +3,19 @@
 
 #pragma thumb on
 
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 s32 func_ov001_022e9ba8();
 s32 func_ov001_022ea3e0();
 s32 func_ov001_022ea41c();
 s32 func_ov001_022ea7c4();
 s32 func_ov001_022ea6e4();
-s32 func_02052104();
+s32 SysSound_PlaySE();
 void func_ov001_022ea894();
 
 void func_ov001_022eb994(s32 p0) {
     s32 v0 = (s32)p0;
     if ((s32)p0 == 0) {
-        v0 = *(u32 *)data_022b4574;
+        v0 = *(u32 *)gTaskCurrent;
     }
     s32 t1 = *(u32 *)((u8 *)v0 + 0x10);
     *(u32 *)t1 = 0;
@@ -34,7 +34,7 @@ void func_ov001_022eb994(s32 p0) {
     }
     func_ov001_022ea7c4(t1);
     func_ov001_022ea6e4(t1);
-    func_02052104(1);
+    SysSound_PlaySE(1);
     *(u32 *)((u8 *)v0 + 0x8) = (u32)func_ov001_022ea894;
 }
 

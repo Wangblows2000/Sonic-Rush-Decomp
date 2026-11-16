@@ -13,13 +13,13 @@ typedef struct {
     u32 flags;
 } UnkWork_0204625c;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 void func_0204622c(void);
 
 #pragma thumb on
 static inline u16 Rand_0204625c(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_0204625c(UnkWork_0204625c *w, UnkObj_0204625c *o) {

@@ -45,7 +45,7 @@ typedef struct {
 
 void func_ov000_02351a8c(void);
 u16 func_020027a4(s32 y, s32 x);
-void func_0206c35c(void *w);
+void StageObj_ReleaseSpriteVram(void *w);
 
 void func_ov000_02331d44(UnkStruct_02331d44 *w) {
     UnkStruct_02331d44_P *p = w->unk88;
@@ -86,11 +86,11 @@ void func_ov000_02331d44(UnkStruct_02331d44 *w) {
         if ((p->unk32C & 0x100) && w->unkC != 0)
             return;
         w->unk54 |= 4;
-        func_0206c35c(w);
+        StageObj_ReleaseSpriteVram(w);
     } else {
         if (p->unk32C & 0x80)
             return;
         w->unk54 |= 4;
-        func_0206c35c(w);
+        StageObj_ReleaseSpriteVram(w);
     }
 }

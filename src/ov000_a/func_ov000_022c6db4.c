@@ -20,23 +20,23 @@ typedef struct UnkStruct_022c6db4_2 {
     UnkStruct_022c6db4 *unk10;
 } UnkStruct_022c6db4_2;
 
-extern UnkStruct_022c6db4_2 *data_022b4574;
+extern UnkStruct_022c6db4_2 *gTaskCurrent;
 
-void func_02069090(UnkStruct_022c6db4 *o, UnkStruct_022c6db4_3 *c);
+void StageObj_HandleCollider(UnkStruct_022c6db4 *o, UnkStruct_022c6db4_3 *c);
 void func_02067d58(void *p);
 
 void func_ov000_022c6db4(void) {
-    UnkStruct_022c6db4 *o = data_022b4574->unk10;
+    UnkStruct_022c6db4 *o = gTaskCurrent->unk10;
     if (o->unk54 & 0xc)
         return;
     if (o->unk20C[0].unk18 != NULL)
-        func_02069090(o, &o->unk20C[0]);
+        StageObj_HandleCollider(o, &o->unk20C[0]);
     if (o->unk20C[1].unk18 != NULL)
-        func_02069090(o, &o->unk20C[1]);
+        StageObj_HandleCollider(o, &o->unk20C[1]);
     if (o->unk20C[2].unk18 != NULL)
-        func_02069090(o, &o->unk20C[2]);
+        StageObj_HandleCollider(o, &o->unk20C[2]);
     if (o->unk20C[3].unk18 != NULL)
-        func_02069090(o, &o->unk20C[3]);
+        StageObj_HandleCollider(o, &o->unk20C[3]);
     if (o->unk1B8 != NULL)
         func_02067d58(&o->unk1B8);
 }

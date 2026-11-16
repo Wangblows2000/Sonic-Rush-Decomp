@@ -16,7 +16,7 @@ typedef struct {
     UnkStruct_Mdl unk228;
 } UnkStruct_022f80b4;
 
-extern UnkStruct_Task *data_022b4574;
+extern UnkStruct_Task *gTaskCurrent;
 extern s16 data_0206e470[];
 
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
@@ -25,11 +25,11 @@ extern s16 data_0206e470[];
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000e98(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
-void func_020316f4(void *m);
-void func_020315e0(void *m);
+void Model_Animate(void *m);
+void Model_Draw(void *m);
 
 void func_ov000_022f80b4(void) {
-    UnkStruct_022f80b4 *w = data_022b4574->work;
+    UnkStruct_022f80b4 *w = gTaskCurrent->work;
     UnkStruct_Mdl *m = &w->unk228;
     u32 mtx[9];
     s32 idx;
@@ -49,6 +49,6 @@ void func_ov000_022f80b4(void) {
     idx = (s32)(w->unk20E & 0xffff) >> 4;
     MTX_RotY33_(mtx, SIN_IDX(idx), COS_IDX(idx));
     func_02000f34(m->unk24, mtx, m->unk24);
-    func_020316f4(m);
-    func_020315e0(m);
+    Model_Animate(m);
+    Model_Draw(m);
 }

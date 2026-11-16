@@ -3,14 +3,14 @@
 
 #pragma thumb on
 
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 s32 func_ov001_022e21b8();
 s32 func_ov001_022e5a48();
 
 void func_ov001_022e5de0(s32 p0, s32 p1) {
-    s32 t0 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t1 = (*(u32 *)(*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0xa4) + 0x674);
-    s32 t2 = ((*(u32 *)(*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0xa4) + 0x674) + ((s32)p0 << 4));
+    s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t1 = (*(u32 *)(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0xa4) + 0x674);
+    s32 t2 = ((*(u32 *)(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0xa4) + 0x674) + ((s32)p0 << 4));
     s32 v3 = (s32)p1;
     if ((s32)p1 == 0x12) {
         v3 = 0;

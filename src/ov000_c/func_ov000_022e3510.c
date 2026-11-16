@@ -33,7 +33,7 @@ typedef struct {
     s32 unk1118;
 } UnkStruct_Boss;
 
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e015c(UnkStruct_Boss *w, s32 a);
 void func_ov000_022e342c(void);
 
@@ -43,7 +43,7 @@ void func_ov000_022e3510(UnkStruct_Boss *w) {
     if (!(m->unk10C & 2))
         return;
     w->base.unk68 = func_ov000_022e342c;
-    func_02031a68(m, 0, w->unkD08, 0xe, 0);
+    Model_SetAnimation(m, 0, w->unkD08, 0xe, 0);
     m->unk10C &= ~4;
     m->unk114 = 0x1000;
     w->unkF50 = 0;

@@ -62,7 +62,7 @@ typedef struct UnkStruct_022ccc38_6 {
     s32 unk8;
 } UnkStruct_022ccc38_6;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_0236505c[];
 extern UnkStruct_022ccc38_6 data_ov000_02369ad0;
 
@@ -75,8 +75,8 @@ typedef struct UnkStruct_022ccc38_g {
 
 extern UnkStruct_022ccc38_g *data_ov000_02369acc;
 
-UnkTask_022ccc38 *func_020372d0(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
-void func_0206c3d0(void);
+UnkTask_022ccc38 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
+void StageObj_Main(void);
 void func_ov000_022ca184(void);
 void func_ov000_022c9db8(void);
 void func_ov000_022ca11c(void);
@@ -93,10 +93,10 @@ void *func_02021264(void *ctx, u32 id);
 void func_020212e0(void *ctx);
 BOOL func_ov000_022cc6d4(void);
 void func_ov000_022fba50(UnkStruct_022ccc38 *s, s32 a, s32 x, s32 y);
-void func_0206e2d8(UnkStruct_022ccc38_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_0206e2b4(UnkStruct_022ccc38_h *h, s32 a, s32 b);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
+void ObjRect_SetBox3D(UnkStruct_022ccc38_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void ObjRect_SetAtkDefFlags(UnkStruct_022ccc38_h *h, s32 a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
@@ -108,10 +108,10 @@ UnkStruct_022ccc38 *func_ov000_022ccc38(s32 a, s32 x, s32 y) {
     UnkStruct_022ccc38 *s;
     UnkStruct_022ccc38_g *g = data_ov000_02369acc;
     UnkStruct_022ccc38_a *p;
-    s = func_020372d0(func_0206c3d0, func_ov000_022ca184, 0, 0x501, 2, 0x360)->unk10;
+    s = Task_Create(StageObj_Main, func_ov000_022ca184, 0, 0x501, 2, 0x360)->unk10;
     MI_CpuFill16(s, 0, 0x360);
     s->unk68 = func_ov000_022c9db8;
-    func_02021310(ctx, data_ov000_0236505c, data_022c4488);
+    func_02021310(ctx, data_ov000_0236505c, gZoneActArchive);
     if (func_ov000_022cc6d4()) {
         s->unk220 = func_02021264(ctx, 8);
         s->unk224 = func_02021264(ctx, 9);
@@ -129,8 +129,8 @@ UnkStruct_022ccc38 *func_ov000_022ccc38(s32 a, s32 x, s32 y) {
     s->unk14 = g->unk14;
     s->unk18 = g->unk18 - 0x8e00;
     p = &s->unk228;
-    func_02031c1c(p, 0);
-    func_02031bd0(p, s->unk21C, 0);
+    Model_Init(p, 0);
+    Model_SetResource(p, s->unk21C, 0);
     func_02021c38(p->unk90, func_ov000_022ca0a8, 0, 6, 3);
     p->unk48 = g->unk10 << 4;
     p->unk4C = -(g->unk14 << 4);

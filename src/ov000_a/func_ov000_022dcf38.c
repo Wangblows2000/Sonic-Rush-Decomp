@@ -29,24 +29,24 @@ typedef struct UnkTask_022dcf38 {
     UnkStruct_022dcf38_s *unk10;
 } UnkTask_022dcf38;
 
-extern UnkTask_022dcf38 *data_022b4574;
+extern UnkTask_022dcf38 *gTaskCurrent;
 extern UnkStruct_022dcf38 *data_ov000_02369b2c;
 extern s16 data_0206e470[];
 
 void func_02000e98(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
-void func_020316f4(void *a);
-void func_020315e0(void *a);
+void Model_Animate(void *a);
+void Model_Draw(void *a);
 
 void func_ov000_022dcf38(void) {
     u8 mtx[0x24];
     UnkStruct_022dcf38 *w = data_ov000_02369b2c;
-    UnkStruct_022dcf38_a *a = data_022b4574->unk10->unk20C;
+    UnkStruct_022dcf38_a *a = gTaskCurrent->unk10->unk20C;
     u16 ang;
     a->unk24 = w->unkB28;
     ang = -w->unkBBC;
     func_02000e98(mtx, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
     func_02000f34(mtx, &a->unk24, &a->unk24);
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
 }

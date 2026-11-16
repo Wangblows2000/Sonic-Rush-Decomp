@@ -45,7 +45,7 @@ void func_ov000_02350d3c(UnkStruct_02351018 *w);
 void func_ov000_0234c9e8(UnkStruct_02351018 *w);
 s32 func_020021f0(s32 v);
 s32 func_020027a4(s32 y, s32 x);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 #define ABS_02351018(x) ((x) < 0 ? -(x) : (x))
 
@@ -101,9 +101,9 @@ void func_ov000_02351018(UnkStruct_02351018 *w, UnkStruct_02351018_Obj *o) {
     w->unk1 = (w->unk3F8 & 0xffff) >> 8;
     w->unk8 = 0;
     if (w->unk324 != 1) {
-        func_0204b7ec(w->unk384, 0, 0);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0);
     } else {
-        func_0204b7ec(w->unk384, 0, 0x11);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x11);
     }
-    func_0204b7ec(w->unk388, 0, 0x60);
+    Sound_PlaySeqArcEx(w->unk388, 0, 0x60);
 }

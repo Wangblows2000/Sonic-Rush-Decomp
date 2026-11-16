@@ -19,7 +19,7 @@ UnkStruct_StageObj *func_ov000_02313320(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_StageObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
+    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -27,17 +27,17 @@ UnkStruct_StageObj *func_ov000_02313320(UnkStruct_ObjParam *p, s32 b, s32 c) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_StageObj));
     func_ov000_022fba50(w, (s32)p, b, c);
     if (data_022c4560.unk1C == 5) {
-        func_02069f1c(w, data_ov000_02366d94, 5, data_ov000_0236a1ac, data_ov000_02369ba0);
-        func_02069818(w, 4);
+        StageObj_Load2dBAC(w, data_ov000_02366d94, 5, data_ov000_0236a1ac, data_ov000_02369ba0);
+        StageObj_SetAnimation(w, 4);
     } else {
-        func_02069f1c(w, data_ov000_02366dac, 5, data_ov000_0236a1ac, data_ov000_02369ba0);
-        func_02069818(w, 1);
+        StageObj_Load2dBAC(w, data_ov000_02366dac, 5, data_ov000_0236a1ac, data_ov000_02369ba0);
+        StageObj_SetAnimation(w, 1);
     }
-    func_0206a054(w, 0, 0x11);
+    StageObj_AllocSpritePalette(w, 0, 0x11);
     w->spr0.unk46 = 0x14;
     w->spr1.unk46 = 0x14;
-    func_0206e3c0(&w->coll0, 4, -8, 0x10, 0);
-    func_0206e2b4(&w->coll0, 0, -0x10);
+    ObjRect_SetBox2D(&w->coll0, 4, -8, 0x10, 0);
+    ObjRect_SetAtkDefFlags(&w->coll0, 0, -0x10);
     w->coll0.unk1C = func_ov000_02312eb0;
     w->coll0.unkA |= 0x800;
     w->coll0.unk18 = w;

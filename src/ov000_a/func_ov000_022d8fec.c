@@ -69,7 +69,7 @@ struct UnkStruct_022d8fec {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 typedef struct UnkStruct_022d8fec_v {
     s32 x;
@@ -87,19 +87,19 @@ typedef struct UnkTask_022d8fec {
     UnkStruct_022d8fec *unk10;
 } UnkTask_022d8fec;
 
-extern UnkTask_022d8fec *data_022b4574;
+extern UnkTask_022d8fec *gTaskCurrent;
 extern UnkStruct_022d8fec_b *data_ov000_02369b14;
 extern s16 data_0206e470[];
 
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_020316f4(UnkStruct_022d8fec_a *a);
-void func_020315e0(UnkStruct_022d8fec_a *a);
+void Model_Animate(UnkStruct_022d8fec_a *a);
+void Model_Draw(UnkStruct_022d8fec_a *a);
 void func_02025268(s32 a, s32 *b, s32 c);
 void func_02025a94(void *p, s32 a);
 
 void func_ov000_022d8fec(void) {
-    UnkStruct_022d8fec *s = data_022b4574->unk10;
+    UnkStruct_022d8fec *s = gTaskCurrent->unk10;
     UnkStruct_022d8fec_a *a = &s->unk2C4;
     u16 ang;
     s32 k;
@@ -128,8 +128,8 @@ void func_ov000_022d8fec(void) {
     a->unk48 += s->unk20C;
     a->unk4C += s->unk210;
     a->unk50 += s->unk214;
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
     s->unk214 = 0;
     s->unk210 = s->unk214;
     s->unk20C = s->unk210;

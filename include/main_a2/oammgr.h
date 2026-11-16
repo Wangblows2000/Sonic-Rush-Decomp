@@ -47,6 +47,6 @@ typedef struct UnkOamMgr {
     u16 tails[32];
 } UnkOamMgr;
 
-extern UnkOamMgr *data_02072c78[];
+extern UnkOamMgr *gDisplayTable[];
 
 #endif

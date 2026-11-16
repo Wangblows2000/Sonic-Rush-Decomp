@@ -3,8 +3,8 @@
 
 #pragma thumb on
 
-s32 func_02037d40();
-extern u8 data_02087cb8[];
+s32 Touch_Disable();
+extern u8 gSystemFlags[];
 s32 func_ov001_022d3e10();
 s32 func_ov001_022d3dd8();
 s32 func_ov001_022d3d64();
@@ -12,10 +12,10 @@ s32 func_ov001_022d3044();
 
 void func_ov001_022d3e14(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x10);
-    func_02037d40();
-    s32 t1 = (*(u32 *)data_02087cb8 & -1025);
-    *(u32 *)data_02087cb8 = t1;
-    func_ov001_022d3e10(t0, data_02087cb8, t1);
+    Touch_Disable();
+    s32 t1 = (*(u32 *)gSystemFlags & -1025);
+    *(u32 *)gSystemFlags = t1;
+    func_ov001_022d3e10(t0, gSystemFlags, t1);
     func_ov001_022d3dd8(t0);
     func_ov001_022d3d64(t0);
     func_ov001_022d3044();

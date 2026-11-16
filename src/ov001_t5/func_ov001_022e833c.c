@@ -9,7 +9,7 @@ typedef struct {
 } UnkHdma_022e833c;
 
 extern UnkHdma_022e833c data_02087cdc;
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
 typedef struct {
     u8 pad0[0x70];
@@ -26,6 +26,6 @@ void func_ov001_022e833c(UnkStruct_022e833c *p) {
     h->b = p->b;
     h->mode = 4;
     h->unk10 = 0;
-    data_02087cb8 |= 0x400;
+    gSystemFlags |= 0x400;
 }
 #pragma thumb reset

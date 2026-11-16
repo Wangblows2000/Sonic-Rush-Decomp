@@ -53,7 +53,7 @@ struct UnkStruct_022d0c30 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 void func_ov000_022d0864(UnkStruct_022d0c30 *s);
@@ -70,11 +70,11 @@ void func_ov000_022d0c30(UnkStruct_022d0c30 *s) {
     y = &s->unkBD4;
     z = &s->unkD0C;
     if (s->unk145C) {
-        func_02031a68(x, 0, s->unkF7C, 0x19, 0);
-        func_02031a68(z, 0, s->unkF7C, 0x55, 0);
+        Model_SetAnimation(x, 0, s->unkF7C, 0x19, 0);
+        Model_SetAnimation(z, 0, s->unkF7C, 0x55, 0);
     } else {
-        func_02031a68(x, 0, s->unkF7C, 0x13, 0);
-        func_02031a68(z, 0, s->unkF7C, 0x4f, 0);
+        Model_SetAnimation(x, 0, s->unkF7C, 0x13, 0);
+        Model_SetAnimation(z, 0, s->unkF7C, 0x4f, 0);
     }
     x->unk10C &= ~4;
     z->unk10C &= ~4;

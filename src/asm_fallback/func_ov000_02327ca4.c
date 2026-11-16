@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern void MIi_CpuClear16(void);
-extern u32 data_022c4488;
+extern u32 gZoneActArchive;
 extern u32 data_ov000_02367b9c;
 extern u32 data_ov000_02367c40;
 extern u32 data_ov000_02367c48;
@@ -14,11 +14,11 @@ extern void func_020212e0(void);
 extern void func_02021310(void);
 extern void func_0202c474(void);
 extern void func_0202c518(void);
-extern void func_02031a68(void);
-extern void func_020372d0(void);
+extern void Model_SetAnimation(void);
+extern void Task_Create(void);
 extern void func_02038050(void);
-extern void func_02069c74(void);
-extern void func_0206c3d0(void);
+extern void StageObj_LoadModel(void);
+extern void StageObj_Main(void);
 extern void func_ov000_02327ef4(void);
 extern void func_ov000_02327f24(void);
 
@@ -38,7 +38,7 @@ asm void func_ov000_02327ca4(void)
     mov r2, #0
     mov r3, #0xa00
     str r5, [sp, #4]
-    bl func_020372d0
+    bl Task_Create
     mov r5, r0
     mov r0, #0
     bl func_02006abc
@@ -74,7 +74,7 @@ asm void func_ov000_02327ca4(void)
     str r2, [sp, #4]
     add r1, r8, #0x134
     add r2, sp, #0xe
-    bl func_02069c74
+    bl StageObj_LoadModel
     ldr r5, [pc, #0x164]
     add r6, sp, #0xe
     ldrb r4, [r5]
@@ -132,7 +132,7 @@ _15c:
     add r0, r8, #0x134
     mov r1, r7
     mov r3, r4
-    bl func_02031a68
+    bl Model_SetAnimation
     b _1bc
 _1b0:
     mov r0, r11
@@ -166,10 +166,10 @@ _1bc:
     add sp, sp, #0x8c
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    dcd func_0206c3d0
+    dcd StageObj_Main
     dcd func_ov000_02327ef4
     dcd data_ov000_02367c40
-    dcd data_022c4488
+    dcd gZoneActArchive
     dcd data_ov000_02367c48
     dcd data_ov000_02367c50
     dcd data_ov000_02367c54

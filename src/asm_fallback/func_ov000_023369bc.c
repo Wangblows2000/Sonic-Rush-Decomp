@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 extern u32 data_022c4560;
-extern void func_02032c8c(void);
-extern void func_020332c4(void);
+extern void AnimatorSpriteDS_Draw(void);
+extern void AnimatorSpriteDS_ProcessAnimation(void);
 extern void func_02033544(void);
 
 asm void func_ov000_023369bc(void)
@@ -70,7 +70,7 @@ _88:
     str r0, [r10, #0x60]
     mov r0, r10
     mov r2, r1
-    bl func_020332c4
+    bl AnimatorSpriteDS_ProcessAnimation
     strh r8, [r10, #0x48]
     strh r4, [r10, #0x4a]
     ldrsh r1, [r10, #0x48]
@@ -79,7 +79,7 @@ _88:
     ldrsh r1, [r10, #0x4a]
     sub r1, r1, #0xc0
     strh r1, [r10, #0x4e]
-    bl func_02032c8c
+    bl AnimatorSpriteDS_Draw
     add r0, r9, #1
     mov r0, r0, lsl #0x10
     mov r9, r0, lsr #0x10
@@ -97,7 +97,7 @@ _88:
     ldrsh r1, [r0, #0x4a]
     sub r1, r1, #0xc0
     strh r1, [r0, #0x4e]
-    bl func_02032c8c
+    bl AnimatorSpriteDS_Draw
     sub r0, r5, #6
     mov r1, r0, lsl #0x10
     ldr r0, [sp]
@@ -133,7 +133,7 @@ _17c:
     str r0, [r7, #0x60]
     mov r0, r7
     mov r2, r1
-    bl func_020332c4
+    bl AnimatorSpriteDS_ProcessAnimation
     strh r10, [r7, #0x48]
     strh r4, [r7, #0x4a]
     ldrsh r1, [r7, #0x48]
@@ -142,7 +142,7 @@ _17c:
     ldrsh r1, [r7, #0x4a]
     sub r1, r1, #0xc0
     strh r1, [r7, #0x4e]
-    bl func_02032c8c
+    bl AnimatorSpriteDS_Draw
     add r0, r8, #1
     mov r0, r0, lsl #0x10
     mov r8, r0, lsr #0x10
@@ -160,7 +160,7 @@ _17c:
     ldrsh r1, [r0, #0x4a]
     sub r1, r1, #0xc0
     strh r1, [r0, #0x4e]
-    bl func_02032c8c
+    bl AnimatorSpriteDS_Draw
     ldr r0, [r6, #0x3e8]
     sub r1, r5, #6
     mov r0, r0, lsr #0x10
@@ -183,7 +183,7 @@ _17c:
     str r0, [r7, #0x60]
     mov r0, r7
     mov r2, r1
-    bl func_020332c4
+    bl AnimatorSpriteDS_ProcessAnimation
     sub r0, r9, #0xa
     strh r0, [r7, #0x48]
     strh r4, [r7, #0x4a]
@@ -193,7 +193,7 @@ _17c:
     ldrsh r1, [r7, #0x4a]
     sub r1, r1, #0xc0
     strh r1, [r7, #0x4e]
-    bl func_02032c8c
+    bl AnimatorSpriteDS_Draw
     sub r0, r5, #0x10
     mov r0, r0, lsl #0x10
     mov r0, r0, asr #0x10
@@ -209,7 +209,7 @@ _17c:
     ldrsh r1, [r0, #0x4a]
     sub r1, r1, #0xc0
     strh r1, [r0, #0x4e]
-    bl func_02032c8c
+    bl AnimatorSpriteDS_Draw
     add sp, sp, #0x14
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr

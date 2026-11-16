@@ -29,8 +29,8 @@ extern s16 data_0206e470[];
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
-s16 func_02068db4(s16 a, s32 b);
-s16 func_02068df8(s16 a, s32 b, s32 c);
+s16 ObjSpd_DownSet(s16 a, s32 b);
+s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
 
 void func_ov000_0231301c(UnkStruct_0231301c *w) {
     s32 xmin;
@@ -53,7 +53,7 @@ void func_ov000_0231301c(UnkStruct_0231301c *w) {
         return;
     }
     if (!(w->unk1E0->unk4 & 1) && !(w->unk1F4 & 1)) {
-        w->unk34 = func_02068db4(w->unk34, 10);
+        w->unk34 = ObjSpd_DownSet(w->unk34, 10);
     }
     w->unk2E = (w->unk34 * COS((u16)(w->unkC >> 8))) >> 12;
     w->unk30 = (w->unk34 * SIN((u16)(w->unkC >> 8))) >> 12;
@@ -77,16 +77,16 @@ void func_ov000_0231301c(UnkStruct_0231301c *w) {
     if (p->unk4 & 1) {
         if (w->unk30 < 0) {
             old = w->unk34;
-            w->unk34 = func_02068db4(old, 0x10);
+            w->unk34 = ObjSpd_DownSet(old, 0x10);
             v = w->unk34;
             if (v < 0)
                 v = -v;
             if (v < 0x40)
                 w->unk34 = -old;
         } else if (w->unk34 > 0) {
-            w->unk34 = func_02068df8(w->unk34, 0x10, 0xf00);
+            w->unk34 = ObjSpd_UpSet(w->unk34, 0x10, 0xf00);
         } else {
-            w->unk34 = func_02068df8(w->unk34, -0x10, 0xf00);
+            w->unk34 = ObjSpd_UpSet(w->unk34, -0x10, 0xf00);
         }
     }
     if ((w->unk2E > 0 && w->unk10 + w->unk2E > xmax) || (w->unk2E < 0 && w->unk10 + w->unk2E < xmin)) {

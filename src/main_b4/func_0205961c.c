@@ -16,7 +16,7 @@ typedef struct {
 } UnkSave_0205961c;
 
 extern UnkEntry_0205961c data_022c4854[10];
-extern UnkSave_0205961c data_022c4680;
+extern UnkSave_0205961c gSaveData;
 
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
@@ -64,22 +64,22 @@ void func_0205961c(s32 kind, u16 *name, u8 len, u8 *mac) {
     MIi_CpuCopy16(&e, &data_022c4854[0], sizeof(e));
     switch (kind) {
     case 0:
-        if (data_022c4680.cnt1d0[0] < 99)
-            data_022c4680.cnt1d0[0]++;
-        if (data_022c4680.cnt1f1[0] < 99)
-            data_022c4680.cnt1f1[0]++;
+        if (gSaveData.cnt1d0[0] < 99)
+            gSaveData.cnt1d0[0]++;
+        if (gSaveData.cnt1f1[0] < 99)
+            gSaveData.cnt1f1[0]++;
         break;
     case 1:
-        if (data_022c4680.cnt1d0[1] < 99)
-            data_022c4680.cnt1d0[1]++;
-        if (data_022c4680.cnt1f1[1] < 99)
-            data_022c4680.cnt1f1[1]++;
+        if (gSaveData.cnt1d0[1] < 99)
+            gSaveData.cnt1d0[1]++;
+        if (gSaveData.cnt1f1[1] < 99)
+            gSaveData.cnt1f1[1]++;
         break;
     case 2:
-        if (data_022c4680.cnt1d0[2] < 99)
-            data_022c4680.cnt1d0[2]++;
-        if (data_022c4680.cnt1f1[2] < 99)
-            data_022c4680.cnt1f1[2]++;
+        if (gSaveData.cnt1d0[2] < 99)
+            gSaveData.cnt1d0[2]++;
+        if (gSaveData.cnt1f1[2] < 99)
+            gSaveData.cnt1f1[2]++;
         break;
     }
 }

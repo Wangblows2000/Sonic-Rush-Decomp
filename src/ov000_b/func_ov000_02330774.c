@@ -17,7 +17,7 @@ void func_ov000_02330774(UnkStruct_02330774 *arg) {
 
     if (arg->unk325 != 0)
         return;
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return;
     w = task->work;

@@ -12,7 +12,7 @@ typedef struct UnkStruct_022ed924 {
     UnkEnt_022ed924 ents[21];
 } UnkStruct_022ed924;
 
-void func_02039bb0(void *p, s32 a);
+void ObjVram_Free(void *p, s32 a);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 
 #pragma thumb on
@@ -23,7 +23,7 @@ void func_ov001_022ed924(UnkStruct_022ed924 *p) {
         e = &p->ents[i];
         vu16 zero;
         if (e != NULL && e->unk34 != 0)
-            func_02039bb0(e->unk0, e->unk34);
+            ObjVram_Free(e->unk0, e->unk34);
         zero = 0;
         MIi_CpuClear16(zero, e, sizeof(UnkEnt_022ed924));
     }

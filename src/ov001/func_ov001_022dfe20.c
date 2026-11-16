@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-extern u8 data_02087d04[];
+extern u8 gDisplaySub[];
 void func_020030bc(void);
 void func_02003290(s32 a);
 void GX_SetBankForLCDC(s32 a);
@@ -10,9 +10,9 @@ void GXS_SetGraphicsMode(s32 a);
 void func_ov001_022dfe20(void) {
     *(vu16 *)0x04000304 &= ~0x8000;
     func_020030bc();
-    *(u16 *)(data_02087d04 + 0x94) = 2;
-    *(u16 *)(data_02087d04 + 0x92) = 0x80;
-    *(u32 *)(data_02087d04 + 0x68) = 0x06860000;
+    *(u16 *)(gDisplaySub + 0x94) = 2;
+    *(u16 *)(gDisplaySub + 0x92) = 0x80;
+    *(u32 *)(gDisplaySub + 0x68) = 0x06860000;
     func_02003290(8);
     GX_SetBankForLCDC(4);
     *(vu32 *)0x04000064 = 0x81320010;

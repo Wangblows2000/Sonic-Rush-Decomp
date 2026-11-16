@@ -11,7 +11,7 @@ typedef struct {
 } UnkPad_0233877c;
 
 extern UnkPlayer_0233877c data_ov000_0236aad8[];
-extern UnkPad_0233877c data_022503e0;
+extern UnkPad_0233877c gPad;
 
 void func_ov000_0233877c(void) {
     UnkPlayer_0233877c *p = data_ov000_0236aad8;
@@ -23,7 +23,7 @@ void func_ov000_0233877c(void) {
     g = p[2].flags;
     if (g & 0x800)
         return;
-    if (!(data_022503e0.unk4 & 4))
+    if (!(gPad.unk4 & 4))
         return;
     if (f & 2) {
         p[2].flags = g | 0x200;

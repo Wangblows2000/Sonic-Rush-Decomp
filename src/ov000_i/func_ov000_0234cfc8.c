@@ -24,10 +24,10 @@ typedef struct {
 
 extern UnkCfg_0234cfc8 data_022c4560;
 extern UnkCfg2_0234cfc8 data_022c4590;
-extern UnkCfg3_0234cfc8 data_022c4680;
+extern UnkCfg3_0234cfc8 gSaveData;
 
 void func_ov000_0235f254(void);
-void func_02054df8(void);
+void SceneChange_Unk_02054df8(void);
 void func_02059884(u8 a, u8 b, s32 c);
 u16 func_02059874(void);
 void func_0205a4ec(s32 a);
@@ -42,13 +42,13 @@ void func_ov000_0234cfc8(void) {
         func_ov000_0235f254();
         return;
     case 2:
-        func_02054df8();
+        SceneChange_Unk_02054df8();
         return;
     case 0:
         func_02059884(data_022c4560.unk0, data_022c4590.unk14, 1);
         data_022c4560.unk28 = func_02059874();
         func_0205a4ec(0);
-        if (!(data_022c4680.unk8 & 2) && data_022c4560.unk20 > 0x8c9f) {
+        if (!(gSaveData.unk8 & 2) && data_022c4560.unk20 > 0x8c9f) {
             func_0204dce8();
             return;
         }

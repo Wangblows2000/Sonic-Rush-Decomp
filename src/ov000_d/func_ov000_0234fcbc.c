@@ -23,7 +23,7 @@ typedef struct UnkStruct_0234fcbc {
 } UnkStruct_0234fcbc;
 
 void func_ov000_0234fe20(void);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_0234fcbc(UnkStruct_0234fcbc *w, s16 spd) {
     u8 dir;
@@ -52,7 +52,7 @@ void func_ov000_0234fcbc(UnkStruct_0234fcbc *w, s16 spd) {
     w->unk58 &= ~0x100;
     w->unk58 &= ~0x4000;
     w->unk32C &= ~0x100000;
-    func_0204b7ec(w->unk384, 0, 0x40);
+    Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
     w->unk34 = 0;
     w->unk340(w);
     switch (dir) {

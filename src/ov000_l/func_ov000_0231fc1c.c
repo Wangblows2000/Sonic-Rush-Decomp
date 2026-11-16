@@ -21,7 +21,7 @@ void func_ov000_0231fc1c(void) {
     UnkWork_0231fc1c *w;
     vu16 zero;
 
-    task = func_020372d0(func_ov000_0231fbf0, NULL, 0, 0x3eff, 3, sizeof(UnkWork_0231fc1c));
+    task = Task_Create(func_ov000_0231fbf0, NULL, 0, 0x3eff, 3, sizeof(UnkWork_0231fc1c));
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_0231fc1c));

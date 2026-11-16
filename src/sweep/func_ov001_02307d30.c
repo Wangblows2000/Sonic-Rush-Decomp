@@ -40,21 +40,21 @@ typedef struct UnkDisp_02307d30 {
 } UnkDisp_02307d30;
 
 extern UnkWork_02307d30 *data_ov001_0231f5bc;
-extern UnkDisp_02307d30 data_02087d04;
-extern UnkDisp_02307d30 data_0208922c;
+extern UnkDisp_02307d30 gDisplaySub;
+extern UnkDisp_02307d30 gDisplayMain;
 extern u8 data_ov001_0231708c[];
 extern u16 data_ov001_02317114[];
 extern u8 data_ov001_0231f5c8[];
 extern u8 data_022504e8[];
 
 s32 func_ov001_0230c0cc(void);
-void func_0203344c(UnkSpr_02307d30 *s, s32 a, s32 b);
-void func_02033550(UnkSpr_02307d30 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_02307d30 *s, s32 a, s32 b);
+void AnimatorSprite_SetAnimation(UnkSpr_02307d30 *s, u16 anim);
 void func_ov001_02307890(s32 i, s32 t);
 void func_ov001_02307778(s32 a, f32 f, s16 *x, s16 *y);
 BOOL func_0202e5e4(f32 a, f32 b);
 void func_0201d568(void *p);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov001_02307990(s32 i);
 void func_ov001_0230c0e0(s32 a);
 
@@ -79,28 +79,28 @@ void func_ov001_02307d30(void) {
             b = 0x10;
         else if (b < 0)
             b = 0;
-        data_02087d04.bright = b;
+        gDisplaySub.bright = b;
     }
     if (w->unkBD4 >= 0x2e4) {
         b = w->unkBD4 - 0x2e4;
         if (b > 0x10)
             b = 0x10;
-        data_0208922c.bright = b;
-        data_02087d04.bright = b;
+        gDisplayMain.bright = b;
+        gDisplaySub.bright = b;
     }
     if (w->unkBD4 >= 0x28 && w->unkBD4 <= 0x32) {
         s21->x = (w->unkBD4 << 8) / 10 - 0x100;
         s21->y = 0x20;
-        func_0203344c(s21, 0, 0);
+        AnimatorSprite_ProcessAnimation(s21, 0, 0);
     } else if (w->unkBD4 < 0x3c) {
-        func_0203344c(s21, 0, 0);
+        AnimatorSprite_ProcessAnimation(s21, 0, 0);
     } else if (w->unkBD4 >= 0x3c) {
         s22->x = 0;
         s22->y = 0x20;
-        func_0203344c(s22, 0, 0);
+        AnimatorSprite_ProcessAnimation(s22, 0, 0);
         idx = data_ov001_0231708c[3];
-        data_02087d04.bg[idx].x = w->unkBD4 - 0x32;
-        data_02087d04.bg[idx].y = 0xffe8;
+        gDisplaySub.bg[idx].x = w->unkBD4 - 0x32;
+        gDisplaySub.bg[idx].y = 0xffe8;
     }
     if (w->unkBD4 >= 0x46) {
         t = w->unkBD4 - 0x46;
@@ -114,17 +114,17 @@ void func_ov001_02307d30(void) {
         }
     }
     if (w->unkBD4 == 0xfc) {
-        func_02033550(sp, data_ov001_02317114[k] + 1);
+        AnimatorSprite_SetAnimation(sp, data_ov001_02317114[k] + 1);
         sp->unk46 = 3;
         func_0201d568(data_ov001_0231f5c8);
-        func_02036754(0, 0xe, 3);
+        Sound_PlaySeqArc(0, 0xe, 3);
         func_0201d568(data_022504e8);
     } else if (w->unkBD4 > 0xfc && (sp->flags & 2)) {
-        func_02033550(sp, data_ov001_02317114[k]);
+        AnimatorSprite_SetAnimation(sp, data_ov001_02317114[k]);
     }
-    func_0203344c(sp, 0, 0);
+    AnimatorSprite_ProcessAnimation(sp, 0, 0);
     for (i = 0; i < 3; i++) {
-        func_0203344c(&w->spr2[i], 0, 0);
+        AnimatorSprite_ProcessAnimation(&w->spr2[i], 0, 0);
         if (w->timer[i] > 0) {
             w->pos[i].y++;
             w->spr2[i].x = w->pos[i].x;

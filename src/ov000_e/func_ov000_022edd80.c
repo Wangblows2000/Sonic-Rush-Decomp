@@ -61,13 +61,13 @@ extern UnkStruct_022edd80_c data_ov000_0236a48c;
 extern UnkStruct_022edd80_pl *data_ov000_0236ac60;
 extern void *data_ov000_02369b84;
 
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
 void func_ov000_022ee380(void);
 void func_ov000_022ee17c(void);
 void func_ov000_022edcd8(UnkStruct_022edd80 *s);
-void func_02031a68(void *s, s32 a, s32 b, s32 c, s32 d);
-void func_020446b0(s32 a);
+void Model_SetAnimation(void *s, s32 a, s32 b, s32 c, s32 d);
+void ScreenShake_Start(s32 a);
 void func_ov000_022f898c(void);
 void func_ov000_022f8310(void *p);
 void func_020537b4(s32 a);
@@ -84,8 +84,8 @@ void func_ov000_022edd80(UnkStruct_022edd80 *s) {
     s->unk5C &= ~0x20;
     p1->unk5C &= ~0x20;
     data_ov000_0236a444.unk0 |= 1;
-    func_02031c1c(a, 0);
-    func_02031bd0(a, s->unk248, 0);
+    Model_Init(a, 0);
+    Model_SetResource(a, s->unk248, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x1355b50;
     c = (UnkStruct_022edd80_c *)(u32)&data_ov000_0236a48c;
     func_ov000_022ee380();

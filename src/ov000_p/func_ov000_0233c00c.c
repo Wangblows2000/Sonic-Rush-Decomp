@@ -40,7 +40,7 @@ typedef struct {
 extern UnkPlayer_0233c00c data_ov000_0236aad8[];
 extern UnkPlayer_0233c00c data_ov000_0236ab3c;
 extern UnkCfg_0233c00c data_022c4560;
-extern UnkObj_0233c00c *data_02072c78[2];
+extern UnkObj_0233c00c *gDisplayTable[2];
 
 void func_ov000_0233c00c(void) {
     u8 cfg;
@@ -65,7 +65,7 @@ void func_ov000_0233c00c(void) {
         q->unk62 = 0xffff;
     }
     if (data_022c4560.unk1C == 3) {
-        data_02072c78[0]->unk24 = 0;
-        data_02072c78[1]->unk24 = 0;
+        gDisplayTable[0]->unk24 = 0;
+        gDisplayTable[1]->unk24 = 0;
     }
 }

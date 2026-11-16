@@ -37,21 +37,21 @@ typedef struct UnkStruct_022df5f0 {
     UnkTex_022df5f0 unk454;
 } UnkStruct_022df5f0;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
-UnkTask_022df5f0 *func_020372d0(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
+UnkTask_022df5f0 *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
 UnkTask_022df5f0 *func_02006abc(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022df530(void);
-void func_02031c1c(UnkObj_022df5f0 *o, s32 a);
-void func_02031bd0(UnkObj_022df5f0 *o, void *res, s32 a);
+void Model_Init(UnkObj_022df5f0 *o, s32 a);
+void Model_SetResource(UnkObj_022df5f0 *o, void *res, s32 a);
 void *func_02025e8c(void *res);
-void func_02031a68(UnkObj_022df5f0 *o, u32 slot, void *res, u32 idx, void *tex);
+void Model_SetAnimation(UnkObj_022df5f0 *o, u32 slot, void *res, u32 idx, void *tex);
 
 void func_ov001_022df5f0(UnkStruct_022df5f0 *w) {
     UnkTask_022df5f0 *task;
@@ -62,7 +62,7 @@ void func_ov001_022df5f0(UnkStruct_022df5f0 *w) {
     u8 j;
     u8 k;
 
-    task = func_020372d0(func_ov001_022df530, 0, 0, 0x4000, 3, sizeof(UnkStruct_022df5f0_o));
+    task = Task_Create(func_ov001_022df530, 0, 0, 0x4000, 3, sizeof(UnkStruct_022df5f0_o));
     if (task == func_02006abc(0))
         return;
     o = task->work;
@@ -86,17 +86,17 @@ void func_ov001_022df5f0(UnkStruct_022df5f0 *w) {
     t = &w->unk454;
     k = o->unk13C + 2;
     obj = &o->obj;
-    func_02031c1c(obj, 0);
-    func_02031bd0(obj, t->res[k], 0);
+    Model_Init(obj, 0);
+    Model_SetResource(obj, t->res[k], 0);
     tex = func_02025e8c(t->res[k]);
     for (j = 0; j < 5; j++) {
         if (j == 2 || j == 3) {
             if (tex != NULL) {
-                func_02031a68(obj, j, t->tex[j], k, tex);
+                Model_SetAnimation(obj, j, t->tex[j], k, tex);
                 obj->flags[j] |= 4;
             }
         } else {
-            func_02031a68(obj, j, t->tex[j], k, 0);
+            Model_SetAnimation(obj, j, t->tex[j], k, 0);
             obj->flags[j] |= 4;
         }
     }

@@ -10,9 +10,9 @@ typedef struct {
     UnkWork_022ce29c *work;
 } UnkTask_022ce29c;
 
-extern UnkTask_022ce29c *data_022b4574;
+extern UnkTask_022ce29c *gTaskCurrent;
 
-void func_02036fdc(u16 id);
+void Task_DestroyByTag(u16 id);
 void func_ov001_022c88c8(void);
 void func_ov001_022c88b8(void);
 void func_ov001_022c88a8(void);
@@ -21,12 +21,12 @@ void func_ov001_022c8880(void);
 
 #pragma thumb on
 void func_ov001_022ce29c(void) {
-    UnkWork_022ce29c *w = data_022b4574->work;
+    UnkWork_022ce29c *w = gTaskCurrent->work;
     s32 sel;
 
     if (w->state == 10) {
         sel = w->sel;
-        func_02036fdc(0x1000);
+        Task_DestroyByTag(0x1000);
         switch (sel) {
         case 0:
             func_ov001_022c88c8();

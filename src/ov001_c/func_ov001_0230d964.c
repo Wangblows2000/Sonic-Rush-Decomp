@@ -42,7 +42,7 @@ BOOL func_ov001_0230d150(void);
 void func_ov001_0230d17c(UnkStruct_0230d964_e *e);
 void func_ov001_02314398(void);
 void func_0200148c(UnkStruct_0230d964_m *m);
-void func_020316f4(void *o);
+void Model_Animate(void *o);
 
 void func_ov001_0230d964(void) {
     UnkStruct_0230d964 *g = data_ov001_0231f654;
@@ -83,5 +83,5 @@ void func_ov001_0230d964(void) {
         data_ov001_02317224[e3->type].fnC(&m);
         data_ov001_02317224[e3->type].fn10(&m);
     }
-    func_020316f4(g->obj8C4);
+    Model_Animate(g->obj8C4);
 }

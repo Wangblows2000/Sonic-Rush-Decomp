@@ -34,7 +34,7 @@ struct UnkStruct_022d6a84 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_ov000_022d69b4(UnkStruct_022d6a84 *s);
 
@@ -46,7 +46,7 @@ void func_ov000_022d6a84(UnkStruct_022d6a84 *s) {
     }
     if (!(s->unk2C4.unk10C & 2))
         return;
-    func_02031a68(&s->unk2C4, 0, s->unk434, 9, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 9, 0);
     s->unk2C4.unk10C |= 4;
     s->unk2C4.unk114 = 0x1000;
     s->func = func_ov000_022d69b4;

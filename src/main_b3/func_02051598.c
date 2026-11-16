@@ -5,7 +5,7 @@ typedef struct { u8 pad0[0x18]; u16 unk18; } UnkStruct_02072cb8;
 typedef struct { u16 name[10]; u16 len; u16 unk16; } UnkName_02051598;
 extern UnkStruct_0207ad9c data_0207ad9c;
 extern u16 data_02072cbc[];
-extern UnkStruct_02072cb8 data_02072cb8;
+extern UnkStruct_02072cb8 gGameLanguage;
 extern u8 data_022c44f8[];
 extern u8 data_022c4500[];
 
@@ -22,7 +22,7 @@ void func_02051598(void) {
     data_0207ad9c.unk0 = 0;
     nm.unk16 = 1;
     MIi_CpuCopy16(data_02072cbc, nm.name, 0x14);
-    n = data_02072cb8.unk18;
+    n = gGameLanguage.unk18;
     for (i = n; i < 10; i++)
         nm.name[i] = 0x20;
     nm.len = n;

@@ -50,11 +50,11 @@ typedef struct UnkTask_022cc6f0 {
     UnkStruct_022cc6f0 *unk10;
 } UnkTask_022cc6f0;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02365054[];
 
-UnkTask_022cc6f0 *func_020372d0(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
-void func_0206c3d0(void);
+UnkTask_022cc6f0 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
+void StageObj_Main(void);
 void func_ov000_022ca550(void);
 void func_ov000_022ca4e8(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
@@ -62,9 +62,9 @@ void func_02021310(void *ctx, void *a, void *b);
 void *func_02021264(void *ctx, u32 id);
 void func_020212e0(void *ctx);
 void func_ov000_022fba50(UnkStruct_022cc6f0 *s, s32 a, s32 x, s32 y);
-void func_0206e3c0(UnkStruct_022cc6f0_h *h, s32 a, s32 b, s32 c, s32 d);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, void *a, s32 b);
+void ObjRect_SetBox2D(UnkStruct_022cc6f0_h *h, s32 a, s32 b, s32 c, s32 d);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, void *a, s32 b);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
     MIi_CpuClear16(*(volatile u16 *)&data, dest, size);
@@ -75,9 +75,9 @@ UnkStruct_022cc6f0 *func_ov000_022cc6f0(s32 a, s32 x, s32 y) {
     UnkStruct_022cc6f0 *s;
     UnkStruct_022cc6f0_a *p;
     UnkStruct_022cc6f0_h *h;
-    s = func_020372d0(func_0206c3d0, func_ov000_022ca550, 0, 0x502, 2, 0x3ac)->unk10;
+    s = Task_Create(StageObj_Main, func_ov000_022ca550, 0, 0x502, 2, 0x3ac)->unk10;
     MI_CpuFill16(s, 0, 0x3ac);
-    func_02021310(ctx, data_ov000_02365054, data_022c4488);
+    func_02021310(ctx, data_ov000_02365054, gZoneActArchive);
     s->unk394 = func_02021264(ctx, 0x3d);
     s->unk398 = func_02021264(ctx, 0x41);
     s->unk39C = func_02021264(ctx, 0x42);
@@ -95,12 +95,12 @@ UnkStruct_022cc6f0 *func_ov000_022cc6f0(s32 a, s32 x, s32 y) {
     h = &s->unk134;
     h->unkA &= ~4;
     h = &s->unk160;
-    func_0206e3c0(h, -0x10, -0x20, 0x10, 0);
+    ObjRect_SetBox2D(h, -0x10, -0x20, 0x10, 0);
     h->unk18 = s;
     h->unkA &= ~4;
     p = &s->unk20C;
-    func_02031c1c(p, 0);
-    func_02031bd0(p, s->unk394, 0);
+    Model_Init(p, 0);
+    Model_SetResource(p, s->unk394, 0);
     p->unk48 = s->unk10 << 4;
     p->unk4C = -(s->unk14 << 4);
     p->unk50 = s->unk18 << 4;

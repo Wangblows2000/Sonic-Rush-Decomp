@@ -28,7 +28,7 @@ struct UnkStruct_022c6618 {
 
 extern UnkStruct_022c6618_2 *data_ov000_02369acc;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c6548(UnkStruct_022c6618 *s);
 
 void func_ov000_022c6618(UnkStruct_022c6618 *s) {
@@ -40,7 +40,7 @@ void func_ov000_022c6618(UnkStruct_022c6618 *s) {
         s->unk2E = -v;
     else
         s->unk2E = v;
-    func_02036754(0, 0, 0x82);
+    Sound_PlaySeqArc(0, 0, 0x82);
     s->func = func_ov000_022c6548;
     s->func(s);
 }

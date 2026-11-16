@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u32 data_0206e470;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u32 data_022c4560;
 extern u32 data_ov001_0231d5d8;
 extern u32 data_ov001_0231f094;
@@ -13,7 +13,7 @@ extern void func_02025bb4(void);
 extern void func_02025bfc(void);
 extern void func_02025c44(void);
 extern void func_02025ecc(void);
-extern void func_02036754(void);
+extern void Sound_PlaySeqArc(void);
 extern void func_ov001_022fbb5c(void);
 extern void func_ov001_022fc934(void);
 extern void func_ov001_022ffce8(void);
@@ -85,7 +85,7 @@ _d0:
     mov r0, #0
     mov r1, r0
     mov r2, #0xac
-    bl func_02036754
+    bl Sound_PlaySeqArc
     add sp, sp, #8
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr
@@ -279,7 +279,7 @@ _37c:
     bx lr
     dcd data_ov001_0231f094
     dcd func_ov001_022fbb5c
-    dcd data_0208fe70
+    dcd gRandSeed
     dcd 0x00196225
     dcd 0x3c6ef35f
     dcd data_022c4560

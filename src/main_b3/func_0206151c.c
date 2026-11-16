@@ -6,7 +6,7 @@ typedef struct { s16 v[6]; u8 b; u8 pad; } UnkEnt_02077654;
 extern UnkEnt_02077654 data_02077654[];
 extern u8 data_0207cc60[];
 extern u8 data_0207cc78[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 typedef struct {
     u8 pad0[0x10];
@@ -20,15 +20,15 @@ typedef struct {
 } UnkWork_0206151c;
 
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
-void *func_02033fbc(void *a, u32 b);
-void *func_02039c18(u32 a, u32 b);
-void func_0203363c(UnkSpr_W50 *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
-void func_0203344c(UnkSpr_W50 *s, u32 a, u32 b);
+void *File_Load(void *a, u32 b);
+void *ObjVram_Alloc(u32 a, u32 b);
+void AnimatorSprite_Init(UnkSpr_W50 *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
+void AnimatorSprite_ProcessAnimation(UnkSpr_W50 *s, u32 a, u32 b);
 
 #pragma thumb on
 static inline u16 Rand_0206151c(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_0206151c(UnkWork_0206151c *w) {
@@ -37,14 +37,14 @@ void func_0206151c(UnkWork_0206151c *w) {
     UnkEnt_02077654 *e;
 
     MIi_CpuCopy16((void *)0x050003e0, w->pal, sizeof(w->pal));
-    w->res[0] = func_02033fbc(data_0207cc60, 0);
-    w->res[1] = func_02033fbc(data_0207cc78, 0);
+    w->res[0] = File_Load(data_0207cc60, 0);
+    w->res[1] = File_Load(data_0207cc78, 0);
     for (i = 0; i < 2; i++) {
         spr = &w->spr[i];
-        func_0203363c(spr, w->res[i], 0, 0x4404, 0, 0, func_02039c18(0, 8), 0, 0x05000200);
+        AnimatorSprite_Init(spr, w->res[i], 0, 0x4404, 0, 0, ObjVram_Alloc(0, 8), 0, 0x05000200);
         spr->unk44 = 0xf;
         spr->unk46 = 0;
-        func_0203344c(spr, 0, 0);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
         spr->unk2C |= 0x10;
     }
     for (i = 0; i < 6; i++) {

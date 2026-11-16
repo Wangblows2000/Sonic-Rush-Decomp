@@ -23,11 +23,11 @@ typedef struct {
     UnkRes_022ebfd4 *res107c;
 } UnkStruct_022ebfd4;
 
-extern u16 data_0208922c[];
-extern u16 data_02087d04[];
+extern u16 gDisplayMain[];
+extern u16 gDisplaySub[];
 
-void func_0203473c(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203438c(void *buf);
+void Background_Init(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
+void Background_Draw(void *buf);
 void func_ov001_022ea1b8(void *buf, s32 a, s32 b, s32 c);
 
 #pragma thumb on
@@ -44,13 +44,13 @@ void func_ov001_022ebfd4(UnkStruct_022ebfd4 *p) {
         res = p->res1078;
         break;
     }
-    func_0203473c(&p->bg[4], res, 0x38, 1, 2, res->unk18, res->unk1a);
-    func_0203438c(&p->bg[4]);
+    Background_Init(&p->bg[4], res, 0x38, 1, 2, res->unk18, res->unk1a);
+    Background_Draw(&p->bg[4]);
     res = p->res106c;
-    func_0203473c(&p->bg[0], res, 0x31, 0, 3, res->unk18, res->unk1a);
-    func_0203473c(&p->bg[1], res, 0x31, 1, 3, res->unk18, res->unk1a);
-    func_0203438c(&p->bg[0]);
-    func_0203438c(&p->bg[1]);
+    Background_Init(&p->bg[0], res, 0x31, 0, 3, res->unk18, res->unk1a);
+    Background_Init(&p->bg[1], res, 0x31, 1, 3, res->unk18, res->unk1a);
+    Background_Draw(&p->bg[0]);
+    Background_Draw(&p->bg[1]);
     if (p->state <= 1) {
         func_ov001_022ea1b8(&p->bg[0], 0, 0xf, 0);
         func_ov001_022ea1b8(&p->bg[1], 0, 0xf, 0);
@@ -59,19 +59,19 @@ void func_ov001_022ebfd4(UnkStruct_022ebfd4 *p) {
         func_ov001_022ea1b8(&p->bg[1], 0x10, 0x1f, 0);
     }
     res = p->res1070;
-    func_0203473c(&p->bg[2], res, 0, 0, 1, res->unk18, res->unk1a);
-    func_0203438c(&p->bg[2]);
+    Background_Init(&p->bg[2], res, 0, 0, 1, res->unk18, res->unk1a);
+    Background_Draw(&p->bg[2]);
     res = p->res1074;
-    func_0203473c(&p->bg[3], res, 0, 0, 2, res->unk18, res->unk1a);
-    func_0203438c(&p->bg[3]);
-    data_0208922c[2] = 0x100;
-    data_0208922c[3] = 0;
-    data_0208922c[4] = 0;
-    data_0208922c[5] = 0;
-    data_0208922c[6] = 0;
-    data_0208922c[7] = 0;
-    data_02087d04[6] = 0;
-    data_02087d04[7] = 0;
+    Background_Init(&p->bg[3], res, 0, 0, 2, res->unk18, res->unk1a);
+    Background_Draw(&p->bg[3]);
+    gDisplayMain[2] = 0x100;
+    gDisplayMain[3] = 0;
+    gDisplayMain[4] = 0;
+    gDisplayMain[5] = 0;
+    gDisplayMain[6] = 0;
+    gDisplayMain[7] = 0;
+    gDisplaySub[6] = 0;
+    gDisplaySub[7] = 0;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1e00;
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1c00;
 }

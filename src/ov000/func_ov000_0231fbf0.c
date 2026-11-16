@@ -9,9 +9,9 @@ typedef struct UnkStruct_0231fbf0 {
     UnkStruct_0231fbf0_2 *unk10;
 } UnkStruct_0231fbf0;
 
-extern UnkStruct_0231fbf0 *data_022b4574;
+extern UnkStruct_0231fbf0 *gTaskCurrent;
 
 void func_ov000_0231fbf0(void) {
-    UnkStruct_0231fbf0_2 *p = data_022b4574->unk10;
+    UnkStruct_0231fbf0_2 *p = gTaskCurrent->unk10;
     p->func(p);
 }

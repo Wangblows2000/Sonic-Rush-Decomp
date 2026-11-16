@@ -17,7 +17,7 @@ typedef struct {
     u32 flags;
 } UnkWork_0205d46c;
 
-void func_02032d2c(void *s);
+void AnimatorSprite_Draw(void *s);
 
 void func_0205d46c(UnkWork_0205d46c *w) {
     UnkSpr_0205d46c *s = &w->spr;
@@ -26,9 +26,9 @@ void func_0205d46c(UnkWork_0205d46c *w) {
         s->x4c += 0x100000;
     s->h8 = s->x4c >> 12;
     s->ha = s->x50 >> 12;
-    func_02032d2c(s->x4);
+    AnimatorSprite_Draw(s->x4);
     if ((w->flags & 0x10) == 0)
         return;
     s->h8 += 0x100;
-    func_02032d2c(s->x4);
+    AnimatorSprite_Draw(s->x4);
 }

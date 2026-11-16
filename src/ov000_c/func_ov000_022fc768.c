@@ -8,7 +8,7 @@ typedef struct {
     s16 unk3B4;
 } UnkStruct_Player;
 
-void func_0206d8bc(UnkStruct_Coll *a, UnkStruct_Coll *b);
+void ObjRect_FuncNoHit(UnkStruct_Coll *a, UnkStruct_Coll *b);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -23,7 +23,7 @@ void func_ov000_022fc768(UnkStruct_Coll *a, UnkStruct_Coll *b) {
     if (p->base.unk0 != 1)
         return;
     if (p->unk3B4 != 0) {
-        func_0206d8bc(a, b);
+        ObjRect_FuncNoHit(a, b);
         return;
     }
     p->base.unk34 = ABS(p->base.unk34);

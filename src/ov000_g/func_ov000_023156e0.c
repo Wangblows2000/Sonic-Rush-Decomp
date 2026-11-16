@@ -42,9 +42,9 @@ extern s16 data_0206e470[];
 
 void func_0201c070(void *p, s32 a);
 void func_ov000_023155cc(UnkStruct_023156e0 *w);
-s32 func_02068df8(s32 a, s32 b, s32 c);
-s32 func_02068db4(s32 a, s32 b);
-void func_0204b7ec(void *p, s32 a, s32 b);
+s32 ObjSpd_UpSet(s32 a, s32 b, s32 c);
+s32 ObjSpd_DownSet(s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_02315a48(UnkStruct_023156e0 *w);
 
 void func_ov000_023156e0(UnkStruct_023156e0 *w) {
@@ -65,13 +65,13 @@ void func_ov000_023156e0(UnkStruct_023156e0 *w) {
     p = w->unk204;
     if (p != NULL) {
         if (p->unk420 & 0x20)
-            w->unkC = func_02068df8(w->unkC, -0x100, 0x1800);
+            w->unkC = ObjSpd_UpSet(w->unkC, -0x100, 0x1800);
         else if (p->unk420 & 0x10)
-            w->unkC = func_02068df8(w->unkC, 0x100, 0x1800);
+            w->unkC = ObjSpd_UpSet(w->unkC, 0x100, 0x1800);
         else
-            w->unkC = func_02068db4(w->unkC, 0x300);
+            w->unkC = ObjSpd_DownSet(w->unkC, 0x300);
         if (!(data_022c4560.unk20 & 7))
-            func_0204b7ec(w->unk1DC, 0, 0x6c);
+            Sound_PlaySeqArcEx(w->unk1DC, 0, 0x6c);
         if (p->unk3E8 != w) {
             w->unk204 = NULL;
             w->unk30 = 0x200;
@@ -79,12 +79,12 @@ void func_ov000_023156e0(UnkStruct_023156e0 *w) {
             return;
         }
     }
-    w->unk34 = func_02068df8(w->unk34, acc, max);
+    w->unk34 = ObjSpd_UpSet(w->unk34, acc, max);
     idx = (s32)((u16)((u8)(w->unk1 - 0x40) << 8) & 0xffff) >> 4;
     w->unk2E = ((w->unk34 * data_0206e470[(u32)((idx << 1) + 1)]) >> 12) << 1;
     w->unk30 = (w->unk34 * data_0206e470[(u32)(idx << 1)]) >> 12;
     w->unk30 += w->unk8;
-    w->unk8 = func_02068db4(w->unk8, 4);
+    w->unk8 = ObjSpd_DownSet(w->unk8, 4);
     if (w->unk204 != NULL && (w->unk204->unk58 & 2))
         w->unk30 = 0;
     w->unk1 = w->unkC >> 8;

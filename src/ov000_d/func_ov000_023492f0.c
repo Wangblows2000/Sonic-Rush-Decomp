@@ -55,7 +55,7 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 void func_ov000_0234307c(UnkStruct_023492f0_Player *w, s32 a);
@@ -64,7 +64,7 @@ void func_ov000_0235aea8(UnkStruct_023492f0_Player *w);
 void func_ov000_02349038(UnkStruct_023492f0_Player *w);
 void func_ov000_0234cb70(UnkStruct_023492f0_Player *w);
 void func_ov000_0234c4a4(UnkStruct_023492f0_Player *w, s32 a);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 void func_ov000_02349294(void);
 
 #define ABS_023492f0(x) ((x) < 0 ? -(x) : (x))
@@ -82,7 +82,7 @@ void func_ov000_023492f0(UnkStruct_023492f0 *o, UnkStruct_023492f0_Arg *arg) {
     }
     v = (w->unk58 & 0x8000) ? w->unk2E : w->unk34;
     if (arg->unk20 & 0x40) {
-        func_0204b7ec(w->unk384, 0, 0x43);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x43);
     }
     if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2) {
         func_020537b4(0xc);
@@ -94,7 +94,7 @@ void func_ov000_023492f0(UnkStruct_023492f0 *o, UnkStruct_023492f0_Arg *arg) {
     }
     if (arg->unk20 & 0x20) {
         if (w->unk3AE != 0) {
-            func_0204b7ec(w->unk384, 0, 5);
+            Sound_PlaySeqArcEx(w->unk384, 0, 5);
             func_ov000_0235aea8(w);
         }
         func_ov000_02349038(w);
@@ -113,11 +113,11 @@ void func_ov000_023492f0(UnkStruct_023492f0 *o, UnkStruct_023492f0_Arg *arg) {
         func_ov000_0234c4a4(w, 0xf);
     }
     if (!(w->unk32C & 0x10000000)) {
-        func_0204b7ec(w->unk384, 0, 5);
+        Sound_PlaySeqArcEx(w->unk384, 0, 5);
         func_ov000_0235aea8(w);
     }
     w->unk32C &= ~0x30000000;
-    func_020446b0(3);
+    ScreenShake_Start(3);
     w->unk3B2 = w->unk376;
     w->unk2C4 |= 5;
     if (ABS_023492f0(v) < 0x180) {
@@ -141,8 +141,8 @@ void func_ov000_023492f0(UnkStruct_023492f0 *o, UnkStruct_023492f0_Arg *arg) {
     w->unk58 &= ~1;
     w->unk68 = func_ov000_02349294;
     if (w->unk324 != 1) {
-        func_0204b7ec(w->unk384, 0, 0x21);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x21);
     } else {
-        func_0204b7ec(w->unk384, 0, 0x2a);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x2a);
     }
 }

@@ -102,11 +102,11 @@ typedef struct UnkStruct_022d4e54_r {
     s16 unk6;
 } UnkStruct_022d4e54_r;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern s32 data_022c4560;
 extern UnkStruct_022d4e54 *data_ov000_02369ae0;
 extern UnkStruct_022d4e54_7 data_ov000_02369ac0;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s32 data_ov000_02362f30[];
 extern UnkStruct_022d4e54_r data_ov000_0236301c[];
 extern void (*data_ov000_0236521c[])(void);
@@ -139,37 +139,37 @@ extern u16 data_ov000_02362e0c[];
 extern u16 data_ov000_02362dc8[];
 extern u16 data_ov000_02362dc4[];
 
-UnkTask_022d4e54 *func_020372d0(void (*fn)(void), void (*fn2)(void *), s32 b, s32 c, s32 d, s32 e);
-void func_0206c3d0(void);
+UnkTask_022d4e54 *Task_Create(void (*fn)(void), void (*fn2)(void *), s32 b, s32 c, s32 d, s32 e);
+void StageObj_Main(void);
 void func_ov000_022d4d28(void *t);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 u16 func_ov000_022c5f28(void);
 void func_ov000_022fba50(UnkStruct_022d4e54 *s, u8 *a, s32 x, s32 y);
 void func_ov000_022ce614(void);
 void func_ov000_022d49e4(void);
-void func_0206e2d8(UnkStruct_022d4e54_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_0206e2b4(UnkStruct_022d4e54_h *h, s32 a, s32 b);
+void ObjRect_SetBox3D(UnkStruct_022d4e54_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void ObjRect_SetAtkDefFlags(UnkStruct_022d4e54_h *h, s32 a, s32 b);
 void func_02021310(void *ctx, void *a, void *b);
 void *func_02021264(void *ctx, u32 id);
 void func_020212e0(void *ctx);
 void *func_0202128c(const char *path);
 void func_020257f8(void *p);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov000_022d4c30(void);
 void func_ov000_022d4bfc(void);
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
-u32 *func_0203663c(void);
+u32 *Sound_AllocHandle(void);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
     MIi_CpuClear16(*(volatile u16 *)&data, dest, size);
 }
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 UnkStruct_022d4e54 *func_ov000_022d4e54(u8 *a, s32 x, s32 y) {
@@ -182,7 +182,7 @@ UnkStruct_022d4e54 *func_ov000_022d4e54(u8 *a, s32 x, s32 y) {
     u32 k;
     if (a[0] == 0xff && a[1] == 0xff)
         return NULL;
-    s = func_020372d0(func_0206c3d0, func_ov000_022d4d28, 0, 0x500, 2, 0x1478)->unk10;
+    s = Task_Create(StageObj_Main, func_ov000_022d4d28, 0, 0x500, 2, 0x1478)->unk10;
     MI_CpuFill16(s, 0, 0x1478);
     data_ov000_02369ae0 = s;
     s->unk20C |= 9;
@@ -215,12 +215,12 @@ UnkStruct_022d4e54 *func_ov000_022d4e54(u8 *a, s32 x, s32 y) {
             *h = s->unk134;
             break;
         case 3:
-            func_0206e2b4(h, 0, -0x10);
+            ObjRect_SetAtkDefFlags(h, 0, -0x10);
             h->unkA |= 0xc0;
             h->unk28 = 0x12;
             break;
         }
-        func_0206e2d8(h, data_ov000_0236301c[i].unk0, data_ov000_0236301c[i].unk2, data_ov000_0236301c[i].unk4, data_ov000_0236301c[i].unk6, -0x7d00, 0x7d00);
+        ObjRect_SetBox3D(h, data_ov000_0236301c[i].unk0, data_ov000_0236301c[i].unk2, data_ov000_0236301c[i].unk4, data_ov000_0236301c[i].unk6, -0x7d00, 0x7d00);
         h->unk18 = s;
         h->unkA &= ~4;
         h->unk1C = data_ov000_0236521c[i];
@@ -231,7 +231,7 @@ UnkStruct_022d4e54 *func_ov000_022d4e54(u8 *a, s32 x, s32 y) {
     s->unk113C[1].unk16 = 0x23;
     s->unkF84[1].unk16 = s->unk113C[1].unk16;
     s->unk78 = 0;
-    func_02021310(ctx, data_ov000_02365350, data_022c4488);
+    func_02021310(ctx, data_ov000_02365350, gZoneActArchive);
     s->unkF7C = func_02021264(ctx, 8);
     s->unkF80 = func_02021264(ctx, 9);
     func_020257f8(func_0202128c(data_ov000_02365354));
@@ -245,8 +245,8 @@ UnkStruct_022d4e54 *func_ov000_022d4e54(u8 *a, s32 x, s32 y) {
     func_020212e0(ctx);
     p = s->unk214;
     for (i = 0; i < 11; i++) {
-        func_02031c1c(p, 0);
-        func_02031bd0(p, data_ov000_02369ae8[i], 0);
+        Model_Init(p, 0);
+        Model_SetResource(p, data_ov000_02369ae8[i], 0);
         p->unk20 = 0x34cc;
         p->unk1C = p->unk20;
         p->unk18 = p->unk1C;
@@ -286,33 +286,33 @@ UnkStruct_022d4e54 *func_ov000_022d4e54(u8 *a, s32 x, s32 y) {
     p->unkB = 2;
     p->unkC = 0xb;
     p = &s->unk214[1];
-    func_02031a68(p, 0, data_ov000_02369ae0->unkF7C, 0, 0);
+    Model_SetAnimation(p, 0, data_ov000_02369ae0->unkF7C, 0, 0);
     p->unk10C |= 4;
     p->unk48 = 0;
     p->unk4C = 0xffe66000;
     p->unk50 = 0x32000;
     p = &s->unk214[2];
-    func_02031a68(p, 3, data_ov000_02369ae0->unkF80, 3, 0);
+    Model_SetAnimation(p, 3, data_ov000_02369ae0->unkF80, 3, 0);
     p->unk10F |= 4;
     p->unk48 = 0;
     p->unk4C = 0xffe66000;
     p->unk50 = 0;
     p = &s->unk214[4];
-    func_02031a68(p, 3, data_ov000_02369ae0->unkF80, 1, 0);
-    func_02031a68(p, 0, data_ov000_02369ae0->unkF7C, 1, 0);
+    Model_SetAnimation(p, 3, data_ov000_02369ae0->unkF80, 1, 0);
+    Model_SetAnimation(p, 0, data_ov000_02369ae0->unkF7C, 1, 0);
     p->unk10F |= 4;
     p->unk48 = 0;
     p->unk4C = -0x200000;
     p->unk50 = 0;
     p = &s->unk214[3];
-    func_02031a68(p, 3, data_ov000_02369ae0->unkF80, 0, 0);
+    Model_SetAnimation(p, 3, data_ov000_02369ae0->unkF80, 0, 0);
     p->unk10F |= 4;
     p->unk48 = 0;
     p->unk4C = -0x200000;
     p->unk50 = 0;
     p = &s->unk214[5];
-    func_02031a68(p, 3, data_ov000_02369ae0->unkF80, 2, 0);
-    func_02031a68(p, 0, data_ov000_02369ae0->unkF7C, 2, 0);
+    Model_SetAnimation(p, 3, data_ov000_02369ae0->unkF80, 2, 0);
+    Model_SetAnimation(p, 0, data_ov000_02369ae0->unkF7C, 2, 0);
     p->unk10F |= 4;
     p->unk48 = 0;
     p->unk4C = -0x200000;
@@ -334,8 +334,8 @@ UnkStruct_022d4e54 *func_ov000_022d4e54(u8 *a, s32 x, s32 y) {
     func_ov000_022c5d4c(data_ov000_02369ae8[9], data_ov000_023651c8, data_ov000_02369ae0->unk142C, data_ov000_02362e0c, 4);
     func_ov000_022c5d4c(data_ov000_02369ae8[8], data_ov000_023650fc, data_ov000_02369ae0->unk1434, data_ov000_02362dc8, 1);
     func_ov000_022c5d4c(data_ov000_02369ae8[10], data_ov000_02365108, data_ov000_02369ae0->unk143C, data_ov000_02362dc4, 1);
-    s->unk1450 = func_0203663c();
-    s->unk1454 = func_0203663c();
-    s->unk1458 = func_0203663c();
+    s->unk1450 = Sound_AllocHandle();
+    s->unk1454 = Sound_AllocHandle();
+    s->unk1458 = Sound_AllocHandle();
     return s;
 }

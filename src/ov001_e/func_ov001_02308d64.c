@@ -8,8 +8,8 @@ typedef struct UnkStruct_02308d64 {
 } UnkStruct_02308d64;
 
 extern UnkStruct_02308d64 *data_ov001_0231f5bc;
-extern s16 data_0208922c[];
-extern s16 data_02087d04[];
+extern s16 gDisplayMain[];
+extern s16 gDisplaySub[];
 
 void func_ov001_0230d6f4(s32 v);
 void *func_ov001_0230c0a4(void);
@@ -25,8 +25,8 @@ void func_ov001_02308d64(void) {
         b = g->timer - 0xb4;
         if (b > 0x10)
             b = 0x10;
-        data_0208922c[0x24] = b;
-        data_02087d04[0x24] = b;
+        gDisplayMain[0x24] = b;
+        gDisplaySub[0x24] = b;
     }
     if (g->timer <= 0x3c)
         func_ov001_0230d6f4(12288.0f * (1.0f - g->timer / 60.0f));

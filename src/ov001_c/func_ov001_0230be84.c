@@ -12,20 +12,20 @@ typedef struct UnkStruct_0230be84 {
     u8 *mem;
 } UnkStruct_0230be84;
 
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 extern UnkStruct_0230be84 *data_ov001_0231f5c0;
 extern char **data_ov001_0231e650[];
 extern char **data_ov001_0231e670[];
 extern void *data_ov001_0231df98;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern u8 data_ov001_0231f5c8[];
 extern char data_ov001_0231e6b4[];
 extern u8 data_ov001_0231e6cc[];
-extern void *data_02250458;
+extern void *gSoundHeap;
 
-void *func_02033fbc(void *p, s32 v);
+void *File_Load(void *p, s32 v);
 void *func_ov001_0230b154(void *p);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -39,14 +39,14 @@ void func_02036854(void *a);
 void func_0201e7cc(s32 a, void *b);
 
 static inline u32 GetLang(void) {
-    switch (data_02072cb8) {
+    switch (gGameLanguage) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        return data_02072cb8;
+        return gGameLanguage;
     default:
         return 1;
     }
@@ -60,11 +60,11 @@ void func_ov001_0230be84(UnkStruct_0230be84_o *o) {
     u8 *blk;
 
     for (i = 0; i < 7; i++)
-        o->res[i] = func_02033fbc(a[i], -1);
+        o->res[i] = File_Load(a[i], -1);
     for (i = 0; i < 4; i++)
-        o->res2[i] = func_02033fbc(b[i], -1);
+        o->res2[i] = File_Load(b[i], -1);
     o->unk2C = func_ov001_0230b154(data_ov001_0231df98);
-    blk = func_02034a40(data_0208fe80, 0x69040, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x69040, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0x69040);
@@ -83,5 +83,5 @@ void func_ov001_0230be84(UnkStruct_0230be84_o *o) {
     func_0201e794(9, g->heap);
     func_0201e75c(0x11, g->heap);
     func_02036854(data_ov001_0231e6cc);
-    func_0201e7cc(0x14, data_02250458);
+    func_0201e7cc(0x14, gSoundHeap);
 }

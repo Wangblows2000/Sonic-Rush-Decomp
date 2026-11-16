@@ -17,7 +17,7 @@ typedef struct {
     UnkWork_02063d34 *work;
 } UnkTask_02063d34;
 
-extern UnkTask_02063d34 *data_022b4574;
+extern UnkTask_02063d34 *gTaskCurrent;
 extern u16 data_022c4db8;
 
 s32 func_02002094(s32 a, s32 b);
@@ -26,7 +26,7 @@ void func_02063cb4(UnkWork_02063d34 *w);
 void func_02063df4(void);
 
 void func_02063d34(void) {
-    UnkWork_02063d34 *w = data_022b4574->work;
+    UnkWork_02063d34 *w = gTaskCurrent->work;
 
     w->cnt++;
     if (w->cnt >= 2) {
@@ -34,7 +34,7 @@ void func_02063d34(void) {
         w->cnt = 0;
     }
     if (w->cur == w->target) {
-        data_022b4574->fn = func_02063df4;
+        gTaskCurrent->fn = func_02063df4;
         w->cur = w->target;
         data_022c4db8 = 0;
     }

@@ -6,7 +6,7 @@ s32 func_ov000_02312634();
 s32 func_0201bea8();
 s32 func_0204b774();
 extern u8 data_ov000_0236ac60[];
-s32 func_02068204();
+s32 Sound_SetPositional();
 
 void func_ov000_023128c4(u8 *p0) {
     func_ov000_023126e8();
@@ -15,5 +15,5 @@ void func_ov000_023128c4(u8 *p0) {
     if (t0 == 0) {
         func_0204b774(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x67, 0x20, -1);
     }
-    func_02068204(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
+    Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
 }

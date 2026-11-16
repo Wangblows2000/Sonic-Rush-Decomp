@@ -10,24 +10,24 @@ typedef struct {
     u8 *unk8B0;
 } UnkStruct_0233cfd8;
 
-void func_02035704(void *src, s32 a, s32 b, u32 dst);
+void PaletteTransfer_QueueCopy(void *src, s32 a, s32 b, u32 dst);
 
 void func_ov000_0233cfd8(UnkStruct_0233cfd8 *w, s32 i) {
     u8 *p;
 
     if (i == 0) {
-        func_02035704(w->unk4AC, 0xF0, 0, 0x5000000);
+        PaletteTransfer_QueueCopy(w->unk4AC, 0xF0, 0, 0x5000000);
         p = w->unkAC;
-        func_02035704(p, 0xF0, 1, 0x4000);
-        func_02035704(p, 0xF0, 1, 0x6000);
-        func_02035704(w->unk8AC, 0, 0, 0x5000200);
-        func_02035704(w->unk8AC + 0x40, 0xE0, 0, 0x5000240);
+        PaletteTransfer_QueueCopy(p, 0xF0, 1, 0x4000);
+        PaletteTransfer_QueueCopy(p, 0xF0, 1, 0x6000);
+        PaletteTransfer_QueueCopy(w->unk8AC, 0, 0, 0x5000200);
+        PaletteTransfer_QueueCopy(w->unk8AC + 0x40, 0xE0, 0, 0x5000240);
     } else {
-        func_02035704(w->unk4AC, 0xF0, 0, 0x5000400);
+        PaletteTransfer_QueueCopy(w->unk4AC, 0xF0, 0, 0x5000400);
         p = w->unkAC;
-        func_02035704(p, 0xF0, 3, 0x4000);
-        func_02035704(p, 0xF0, 3, 0x6000);
-        func_02035704(w->unk8AC, 0, 0, 0x5000600);
-        func_02035704(w->unk8AC + 0x40, 0xE0, 0, 0x5000640);
+        PaletteTransfer_QueueCopy(p, 0xF0, 3, 0x4000);
+        PaletteTransfer_QueueCopy(p, 0xF0, 3, 0x6000);
+        PaletteTransfer_QueueCopy(w->unk8AC, 0, 0, 0x5000600);
+        PaletteTransfer_QueueCopy(w->unk8AC + 0x40, 0xE0, 0, 0x5000640);
     }
 }

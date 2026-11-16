@@ -10,20 +10,20 @@ void func_ov000_023136ec(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0x500, 2, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0x500, 2, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_02366ddc, 0, data_ov000_0236a1bc, data_ov000_02369ba0);
-    func_0206a054(w, 0, 6);
+    StageObj_Load2dBAC(w, data_ov000_02366ddc, 0, data_ov000_0236a1bc, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 0, 6);
     if (type != 0) {
-        func_02069eb0(w, 1, data_ov000_0236a1d4);
-        func_02069818(w, 2);
+        StageObj_SetSharedSpriteVram(w, 1, data_ov000_0236a1d4);
+        StageObj_SetAnimation(w, 2);
     } else {
-        func_02069eb0(w, 2, data_ov000_0236a1c4);
-        func_02069818(w, 1);
+        StageObj_SetSharedSpriteVram(w, 2, data_ov000_0236a1c4);
+        StageObj_SetAnimation(w, 1);
     }
     w->spr0.unk46 = 0x14;
     w->spr1.unk46 = 0x14;

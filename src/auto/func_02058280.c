@@ -3,16 +3,16 @@
 
 #pragma thumb on
 
-extern u8 data_022b4574[];
-s32 func_020371c8();
+extern u8 gTaskCurrent[];
+s32 Task_Destroy();
 s32 func_02057458();
 
 void func_02058280(void) {
-    s32 t0 = *(u32 *)data_022b4574;
-    s32 t1 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t2 = (*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x4) & 0x80000000);
+    s32 t0 = *(u32 *)gTaskCurrent;
+    s32 t1 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t2 = (*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x4) & 0x80000000);
     if (t2 != 0) {
-        func_020371c8(t0, 0x80000000, t2);
+        Task_Destroy(t0, 0x80000000, t2);
         return;
     }
     *(u32 *)((u8 *)t1 + 0x8) = (*(u32 *)((u8 *)t1 + 0x8) + 0x1);
@@ -27,7 +27,7 @@ void func_02058280(void) {
     }
     s32 t5 = (*(u32 *)((u8 *)t1 + 0x4) & 0x80000000);
     if (t5 != 0) {
-        func_020371c8(*(u32 *)data_022b4574, t5);
+        Task_Destroy(*(u32 *)gTaskCurrent, t5);
     }
 }
 

@@ -7,8 +7,8 @@ s32 func_0206cdf4();
 s32 func_ov000_02346d10();
 s32 func_ov000_02346aa8();
 void func_ov000_02348f58();
-s32 func_020446b0();
-s32 func_0204b7ec();
+s32 ScreenShake_Start();
+s32 Sound_PlaySeqArcEx();
 
 void func_ov000_02349038(u8 *p0) {
     if ((*(u32 *)((u8 *)p0 + 0x32c) & 0x400) != 0) {
@@ -36,10 +36,10 @@ void func_ov000_02349038(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x3ca) = 0;
     s32 t2 = (*(u32 *)((u8 *)p0 + 0x32c) | 0x400);
     *(u32 *)((u8 *)p0 + 0x32c) = t2;
-    func_020446b0(4, t2);
+    ScreenShake_Start(4, t2);
     if ((*(u32 *)((u8 *)p0 + 0x32c) & 0x4000000) != 0) {
-        func_0204b7ec(((u8 *)p0 + 0x384), 0, 0x52);
+        Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0x52);
         return;
     }
-    func_0204b7ec(((u8 *)p0 + 0x384), 0, 6);
+    Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 6);
 }

@@ -17,7 +17,7 @@ typedef struct {
     s16 bright;
 } UnkBright_022cf688;
 
-extern UnkTask_022cf688 *data_022b4574;
+extern UnkTask_022cf688 *gTaskCurrent;
 extern UnkBright_022cf688 data_0208926c;
 extern UnkBright_022cf688 data_02087d44;
 
@@ -26,7 +26,7 @@ void func_ov001_022cf660(void);
 
 #pragma thumb on
 void func_ov001_022cf688(void) {
-    UnkWork_022cf688 *w = data_022b4574->work;
+    UnkWork_022cf688 *w = gTaskCurrent->work;
     s16 v = func_ov001_022cf4f0(w->unk4, 0, 0x20, w->t, 0x1000);
 
     data_0208926c.bright = v;
@@ -36,7 +36,7 @@ void func_ov001_022cf688(void) {
         w->t = 0;
         data_0208926c.bright = 0;
         data_02087d44.bright = 0;
-        data_022b4574->func = func_ov001_022cf660;
+        gTaskCurrent->func = func_ov001_022cf660;
     }
 }
 #pragma thumb reset

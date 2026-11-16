@@ -6,7 +6,7 @@ typedef struct {
 } UnkView_02313e54;
 
 void func_ov000_02313cfc(void);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 
 void func_ov000_02313e54(UnkStruct_StageObj *w, s32 a) {
     w->unk68 = func_ov000_02313cfc;
@@ -17,5 +17,5 @@ void func_ov000_02313e54(UnkStruct_StageObj *w, s32 a) {
     if (w->unk5C & 1)
         ((UnkView_02313e54 *)w)->unk34 = 0x800;
     w->unk204 = a;
-    func_0204b7ec(w->unk1DC, 0, 99);
+    Sound_PlaySeqArcEx(w->unk1DC, 0, 99);
 }

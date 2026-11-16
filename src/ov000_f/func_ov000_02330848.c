@@ -56,7 +56,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 extern s16 data_02072070[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern UnkStruct_02330848_4560 data_022c4560;
 
 #define IDX_02330848(a) ((s32)((a) & 0xffff) >> 4)
@@ -70,8 +70,8 @@ void MTX_RotY33_(UnkMtx33_02330848 *m, fx32 sin, fx32 cos);
 void func_02000f34(const UnkMtx33_02330848 *a, const UnkMtx33_02330848 *b, UnkMtx33_02330848 *ab);
 
 static inline u16 Rand_02330848(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_02330848(UnkStruct_02330848 *w) {

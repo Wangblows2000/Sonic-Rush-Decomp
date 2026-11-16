@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_0208fe70[];
+extern unsigned char gRandSeed[];
 int func_ov000_022f1df0();
 int func_ov000_022f4ce4();
 
@@ -30,8 +30,8 @@ void func_ov000_022f1ef8(int param_1)
   int iVar2;
   
   func_ov000_022f4ce4(param_1,0x1b,0x1000,1);
-  iVar2 = *((int *)data_0208fe70) * 0x196225 + 0x3c6ef35f;
-  *((int *)data_0208fe70) = iVar2;
+  iVar2 = *((int *)gRandSeed) * 0x196225 + 0x3c6ef35f;
+  *((int *)gRandSeed) = iVar2;
   uVar1 = ((int)func_ov000_022f1df0);
   *(ushort *)(param_1 + 0x434) = ((ushort)((uint)iVar2 >> 0x10) & 0x3f) + 0x3c;
   *(undefined4 *)(param_1 + 0x68) = uVar1;

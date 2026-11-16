@@ -22,14 +22,14 @@ typedef struct UnkStruct_02308e90_t {
 } UnkStruct_02308e90_t;
 
 extern UnkStruct_02308e90 *data_ov001_0231f5bc;
-extern s16 data_02087d04[];
+extern s16 gDisplaySub[];
 extern u8 data_02250464[];
 
 void func_ov001_023085f4(s32 t);
 void func_ov001_02308630(void);
 s32 func_ov001_02314368(void);
 UnkStruct_02308e90_t *func_ov001_0230c0a4(void);
-void func_02033550(UnkStruct_02308e90_o *s, u16 index);
+void AnimatorSprite_SetAnimation(UnkStruct_02308e90_o *s, u16 index);
 void func_ov001_02312e04(void *p);
 void func_0201c070(void *p, s32 v);
 void func_ov001_0230808c(void);
@@ -43,7 +43,7 @@ void func_ov001_02308e90(void) {
         b = g->timer - 500;
         if (b > 0x10)
             b = 0x10;
-        data_02087d04[0x24] = b;
+        gDisplaySub[0x24] = b;
     }
     func_ov001_023085f4(g->timer - 1);
     func_ov001_02308630();
@@ -52,11 +52,11 @@ void func_ov001_02308e90(void) {
         g->objB.x = 0x80;
         g->objB.y = 0x2a;
         if (func_ov001_02314368() <= func_ov001_0230c0a4()->unk148) {
-            func_02033550(&g->objB, 3);
+            AnimatorSprite_SetAnimation(&g->objB, 3);
             func_ov001_02312e04(func_ov001_0230c0a4());
             return;
         }
-        func_02033550(&g->objB, 10);
+        AnimatorSprite_SetAnimation(&g->objB, 10);
         g->timer = -1;
         g->unkBD0 = 0;
         return;

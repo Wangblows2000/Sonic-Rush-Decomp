@@ -55,7 +55,7 @@ typedef struct {
 } UnkStruct_023504e8_4560;
 
 extern UnkStruct_023504e8_4560 data_022c4560;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
 #define SIN_023504e8(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
@@ -63,17 +63,17 @@ extern s16 data_0206e470[];
 
 void func_0201c070(void *p, s32 a);
 void func_0201bf1c(void *p);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_02316170(UnkStruct_023504e8 *w);
 void func_ov000_02330098(UnkStruct_023504e8 *w, s16 a, s16 b);
 void func_ov000_02350440(UnkStruct_023504e8 *w);
-s16 func_02068df8(s32 v, s32 a, s32 max);
-s16 func_02068db4(s32 v, s32 a);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 max);
+s16 ObjSpd_DownSet(s32 v, s32 a);
 void func_ov000_0234a064(UnkStruct_023504e8 *w, s32 a);
 
 static inline u16 Rand_023504e8(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_023504e8(UnkStruct_023504e8 *w) {
@@ -87,7 +87,7 @@ void func_ov000_023504e8(UnkStruct_023504e8 *w) {
             if (w->unkC == 0) {
                 func_0201c070(w->unk388, 0x10);
                 func_0201bf1c(w->unk388);
-                func_0204b7ec(w->unk388, 0, 0x47);
+                Sound_PlaySeqArcEx(w->unk388, 0, 0x47);
                 w->unkC++;
                 func_ov000_02316170(w);
             }
@@ -98,7 +98,7 @@ void func_ov000_023504e8(UnkStruct_023504e8 *w) {
                 if (w->unkC == 1) {
                     func_0201c070(w->unk388, 0x10);
                     func_0201bf1c(w->unk388);
-                    func_0204b7ec(w->unk388, 0, 0x48);
+                    Sound_PlaySeqArcEx(w->unk388, 0, 0x48);
                     w->unkC++;
                 }
             }
@@ -106,16 +106,16 @@ void func_ov000_023504e8(UnkStruct_023504e8 *w) {
                 if (w->unkC == 2) {
                     func_0201c070(w->unk388, 0x10);
                     func_0201bf1c(w->unk388);
-                    func_0204b7ec(w->unk388, 0, 0x49);
+                    Sound_PlaySeqArcEx(w->unk388, 0, 0x49);
                     w->unkC++;
                 }
                 func_ov000_02350440(w);
                 return;
             }
             if (w->unk34 > 0) {
-                w->unk34 = func_02068df8(w->unk34, w->unk366, w->unk368 << 1);
+                w->unk34 = ObjSpd_UpSet(w->unk34, w->unk366, w->unk368 << 1);
             } else {
-                w->unk34 = func_02068df8(w->unk34, -w->unk366, w->unk368 << 1);
+                w->unk34 = ObjSpd_UpSet(w->unk34, -w->unk366, w->unk368 << 1);
             }
         } else {
             w->unkC = 0;
@@ -128,14 +128,14 @@ void func_ov000_023504e8(UnkStruct_023504e8 *w) {
             }
             if (w->unk3F8 < 0xc000) {
                 if (w->unk34 > 0) {
-                    w->unk34 = func_02068db4(w->unk34, 0x20);
+                    w->unk34 = ObjSpd_DownSet(w->unk34, 0x20);
                 }
-                w->unk34 = func_02068df8(w->unk34, -0x20, 0xf00);
+                w->unk34 = ObjSpd_UpSet(w->unk34, -0x20, 0xf00);
             } else {
                 if (w->unk34 < 0) {
-                    w->unk34 = func_02068db4(w->unk34, 0x20);
+                    w->unk34 = ObjSpd_DownSet(w->unk34, 0x20);
                 }
-                w->unk34 = func_02068df8(w->unk34, 0x20, 0xf00);
+                w->unk34 = ObjSpd_UpSet(w->unk34, 0x20, 0xf00);
             }
             a = 0xc000 - w->unk3F8;
             if (a < 0) {

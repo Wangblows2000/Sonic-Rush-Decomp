@@ -19,15 +19,15 @@ typedef struct {
     u16 unk46;
 } UnkSpr_0236232c;
 
-s32 func_02039c18(s32 a, u16 b);
-void func_0203363c(UnkSpr_0236232c *spr, UnkRes_0236232c *res, s32 idx, s32 a, s32 b, s32 c, s32 pal, s32 d, void *dst);
+s32 ObjVram_Alloc(s32 a, u16 b);
+void AnimatorSprite_Init(UnkSpr_0236232c *spr, UnkRes_0236232c *res, s32 idx, s32 a, s32 b, s32 c, s32 pal, s32 d, void *dst);
 
 #pragma thumb on
 
 void func_ov000_0236232c(UnkSpr_0236232c *spr, UnkRes_0236232c *res, s32 idx, s32 prio, u16 y) {
-    s32 pal = func_02039c18(1, ((UnkHdr_0236232c *)((u8 *)res + res->unk18))->unkA);
+    s32 pal = ObjVram_Alloc(1, ((UnkHdr_0236232c *)((u8 *)res + res->unk18))->unkA);
 
-    func_0203363c(spr, res, idx, 0, 1, 0, pal, 0, (void *)0x5000600);
+    AnimatorSprite_Init(spr, res, idx, 0, 1, 0, pal, 0, (void *)0x5000600);
     spr->unk2C &= ~0x60000;
     spr->unk2C |= prio << 17;
     spr->unk46 = y;

@@ -18,11 +18,11 @@ typedef struct {
     UnkWork_022dc1e8 *work;
 } UnkTask_022dc1e8;
 
-extern UnkTask_022dc1e8 *data_022b4574;
+extern UnkTask_022dc1e8 *gTaskCurrent;
 
 void func_02040d14(UnkAnim_022dc1e8 *a);
 BOOL func_02040cf4(UnkAnim_022dc1e8 *a);
-void func_020371c8(UnkTask_022dc1e8 *t);
+void Task_Destroy(UnkTask_022dc1e8 *t);
 void func_ov001_022d9e50(UnkWork_022dc1e8 *w, s16 x, s16 y);
 void func_ov001_022d9e2c(UnkWork_022dc1e8 *w, s16 x, s16 y);
 void func_ov001_022d9d98(UnkWork_022dc1e8 *w, s32 i, s16 x, s16 y);
@@ -30,7 +30,7 @@ void func_ov001_022d9d64(UnkWork_022dc1e8 *w, s32 i, s16 x, s16 y);
 
 #pragma thumb on
 void func_ov001_022daea0(void) {
-    UnkWork_022dc1e8 *w = data_022b4574->work;
+    UnkWork_022dc1e8 *w = gTaskCurrent->work;
     BOOL done;
     UnkAnim_022dc1e8 *a;
 
@@ -50,7 +50,7 @@ void func_ov001_022daea0(void) {
     if (done) {
         w->step = 0;
         w->unk4 = 0;
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         return;
     }
     a = &w->anim[0];

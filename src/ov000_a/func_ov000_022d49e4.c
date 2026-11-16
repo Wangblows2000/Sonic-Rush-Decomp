@@ -93,7 +93,7 @@ struct UnkStruct_022d49e4 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 typedef struct UnkStruct_022d49e4_7 {
@@ -137,8 +137,8 @@ extern UnkStruct_022d49e4_t data_ov000_02362fd8[];
 extern UnkStruct_022d49e4_p *data_ov000_0236ac60;
 extern UnkStruct_022d49e4_9 data_ov000_0236aad8;
 
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, void *a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, void *a, s32 b);
 void func_ov000_022cd5e4(void);
 u8 *func_02025ecc(void *p);
 void func_02025c44(void *s, u32 v);
@@ -162,8 +162,8 @@ void func_ov000_022d49e4(UnkStruct_022d49e4 *s) {
     s->unk20C &= ~1;
     *(vu16 *)0x4000304 |= 0x8000;
     data_ov000_0236a444.unk0 |= 1;
-    func_02031c1c(m, 0);
-    func_02031bd0(m, data_ov000_02369ae8[6], 0);
+    Model_Init(m, 0);
+    Model_SetResource(m, data_ov000_02369ae8[6], 0);
     m->unk20 = 0x1355b50;
     m->unk1C = m->unk20;
     m->unk18 = m->unk1C;

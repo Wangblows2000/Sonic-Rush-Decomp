@@ -42,12 +42,12 @@ typedef struct UnkStruct_0230c104_4560 {
 
 extern UnkStruct_0230c104 *data_ov001_0231f5c0;
 extern void *data_ov001_0231f5c4;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_0230c104_4560 data_022c4560;
-extern UnkStruct_0230c104_br data_0208922c;
-extern UnkStruct_0230c104_p data_02087d04[];
+extern UnkStruct_0230c104_br gDisplayMain;
+extern UnkStruct_0230c104_p gDisplaySub[];
 
-void func_020371c8(void *t);
+void Task_Destroy(void *t);
 void func_ov001_0230f77c(u8 *blk);
 void func_ov001_02313900(u8 *blk);
 void func_ov001_0230b094(void);
@@ -63,7 +63,7 @@ void func_ov001_0230bcc4(void *p);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 void func_0200412c(BOOL enable, u32 fogMode, u32 fogSlope, s32 fogOffset);
 
 static inline void Free_0230c104(void *p) {
@@ -77,7 +77,7 @@ static inline void Free_0230c104(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov001_0230c104(void) {
@@ -85,11 +85,11 @@ void func_ov001_0230c104(void) {
     s32 i;
 
     if (g->taskC != NULL)
-        func_020371c8(g->taskC);
+        Task_Destroy(g->taskC);
     if (g->task10 != NULL)
-        func_020371c8(g->task10);
+        Task_Destroy(g->task10);
     if (g->task14 != NULL)
-        func_020371c8(g->task14);
+        Task_Destroy(g->task14);
     func_ov001_0230f77c(g->unk1C);
     if (g->unk18 != NULL) {
         func_ov001_02313900(g->unk18);
@@ -111,18 +111,18 @@ void func_ov001_0230c104(void) {
         data_022c4560.unk28 |= 1 << g->unk4;
     Free_0230c104(data_ov001_0231f5c0);
     data_ov001_0231f5c0 = NULL;
-    data_0208922c.b0 = 0;
-    data_0208922c.b9 = 0;
-    data_0208922c.e0 = 0;
-    data_0208922c.b10 = 0;
-    data_0208922c.b12 = 0;
-    data_0208922c.b6 = 0;
-    data_0208922c.e8 = 0;
+    gDisplayMain.b0 = 0;
+    gDisplayMain.b9 = 0;
+    gDisplayMain.e0 = 0;
+    gDisplayMain.b10 = 0;
+    gDisplayMain.b12 = 0;
+    gDisplayMain.b6 = 0;
+    gDisplayMain.e8 = 0;
     func_0200412c(0, 0, 4, 0);
     for (i = 0; i < 4; i++) {
-        ((UnkStruct_0230c104_p *)&data_0208922c)[i].x = 0;
-        ((UnkStruct_0230c104_p *)&data_0208922c)[i].y = 0;
-        data_02087d04[i].x = 0;
-        data_02087d04[i].y = 0;
+        ((UnkStruct_0230c104_p *)&gDisplayMain)[i].x = 0;
+        ((UnkStruct_0230c104_p *)&gDisplayMain)[i].y = 0;
+        gDisplaySub[i].x = 0;
+        gDisplaySub[i].y = 0;
     }
 }

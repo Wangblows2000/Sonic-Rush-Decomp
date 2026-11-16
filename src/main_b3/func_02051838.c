@@ -3,10 +3,10 @@
 typedef struct { u16 unk0; u16 unk2; } UnkStruct_0207ad9c;
 extern void *data_022c4638;
 extern void *data_022c4634;
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 extern UnkStruct_0207ad9c data_0207ad9c;
 
-void func_020371c8(void *t);
+void Task_Destroy(void *t);
 void func_0204331c(s32 a);
 void func_02042d34(s32 a);
 void func_02042ab8(void);
@@ -14,14 +14,14 @@ void func_02042ab8(void);
 #pragma thumb on
 void func_02051838(void) {
     if (data_022c4638 != NULL) {
-        func_020371c8(data_022c4638);
+        Task_Destroy(data_022c4638);
         data_022c4638 = NULL;
     }
     if (data_022c4634 != NULL) {
-        func_020371c8(data_022c4634);
+        Task_Destroy(data_022c4634);
         data_022c4634 = NULL;
     }
-    data_02087cb8 &= ~0x200;
+    gSystemFlags &= ~0x200;
     switch (data_0207ad9c.unk0) {
     case 0:
         func_0204331c(0);

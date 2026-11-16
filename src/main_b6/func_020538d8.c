@@ -18,8 +18,8 @@ typedef struct {
     u16 blendAlpha;
 } UnkDisp_020538d8;
 
-extern UnkTask_020538d8 *data_022c4660;
-extern UnkDisp_020538d8 *data_02072c78[];
+extern UnkTask_020538d8 *gNaviMsgTask;
+extern UnkDisp_020538d8 *gDisplayTable[];
 
 void func_02052e1c(UnkWork_020538d8 *w);
 void func_02003d78(vu32 *p, u32 a, u32 b, u32 c, u32 d);
@@ -32,14 +32,14 @@ void func_020538d8(void) {
     UnkWork_020538d8 *w;
     u32 plane;
 
-    if (data_022c4660 == NULL)
+    if (gNaviMsgTask == NULL)
         return;
-    w = data_022c4660->work;
+    w = gNaviMsgTask->work;
     func_02052e1c(w);
     w->fndc = func_02052e7c;
     func_02003d78((vu32 *)0x04001050, 2, 4, 0, 0x1f);
-    data_02072c78[1]->blendCnt = 0x442;
-    data_02072c78[1]->blendAlpha = 0x1f00;
+    gDisplayTable[1]->blendCnt = 0x442;
+    gDisplayTable[1]->blendAlpha = 0x1f00;
     w->unkfc = 0;
     func_02053b04(1);
     plane = (REG_DB_DISPCNT & 0x1f00) >> 8;

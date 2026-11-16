@@ -14,7 +14,7 @@ extern s32 data_ov000_02369ac0[];
 
 void func_ov000_022de0d0(void);
 void func_ov000_022db900(UnkStruct_022de224 *s, s32 a);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 void func_ov000_022de224(UnkStruct_022de224 *s) {
     data_ov000_02369ac0[1] = 0x15;
@@ -24,5 +24,5 @@ void func_ov000_022de224(UnkStruct_022de224 *s) {
     s->unkBC4 = 0x180;
     s->unkBC8 = 0xd80;
     s->unkBCC = 0x900;
-    func_02036754(0, 0, 0x8d);
+    Sound_PlaySeqArc(0, 0, 0x8d);
 }

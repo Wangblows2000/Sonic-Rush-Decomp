@@ -17,7 +17,7 @@ typedef struct {
 } UnkProg_0204e4dc;
 
 extern UnkState_0204e4dc data_022c4560;
-extern UnkProg_0204e4dc data_022c4680;
+extern UnkProg_0204e4dc gSaveData;
 extern u16 data_022c45f8;
 extern u8 data_02074bbc[];
 extern u8 data_02074bb4[];
@@ -48,7 +48,7 @@ void func_0204e4dc(void) {
             func_02059bcc(a != 2 ? data_02074bb4[z] - 1 : data_02074bb4[z]);
     }
     if (data_022c4560.unk0 != 1)
-        data_022c4560.unke = func_0204e614(data_022c4680.unkc);
+        data_022c4560.unke = func_0204e614(gSaveData.unkc);
     else
-        data_022c4560.unke = func_0204e614(data_022c4680.unk64);
+        data_022c4560.unke = func_0204e614(gSaveData.unk64);
 }

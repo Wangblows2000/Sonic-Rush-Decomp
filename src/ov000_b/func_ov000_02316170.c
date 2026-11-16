@@ -16,7 +16,7 @@ typedef struct {
     UnkStruct_02316170_Tgt *unk3E8;
 } UnkStruct_02316170_Arg;
 
-extern void *data_022c448c;
+extern void *gActComArchive;
 extern u8 data_ov000_02366f30[], data_ov000_0236a24c[];
 
 void func_ov000_02316148(void);
@@ -28,15 +28,15 @@ void func_ov000_02316170(UnkStruct_02316170_Arg *arg) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_02316148, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, func_ov000_02316148, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_02366f30, 0xffff, data_ov000_0236a24c, data_022c448c);
-    func_0206a054(w, 0, 0x4a);
-    func_02069918(w, 0xa);
+    StageObj_Load2dBAC(w, data_ov000_02366f30, 0xffff, data_ov000_0236a24c, gActComArchive);
+    StageObj_AllocSpritePalette(w, 0, 0x4a);
+    StageObj_SetOAMOrder(w, 0xa);
     if (func_ov000_02345758(arg->unk10, arg->unk14))
         w->unk5C |= 2;
     w->unk88 = arg;

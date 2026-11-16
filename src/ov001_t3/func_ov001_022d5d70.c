@@ -13,7 +13,7 @@ typedef struct {
     UnkWork_022d5d70 *work;
 } UnkTask_022d5d70;
 
-extern UnkTask_022d5d70 *data_022b4574;
+extern UnkTask_022d5d70 *gTaskCurrent;
 
 void func_ov001_022d5be4(UnkWork_022d5d70 *w);
 s32 func_ov001_022d5550(s32 from, s32 to, s32 n, s32 i, s32 ease);
@@ -21,7 +21,7 @@ void func_ov001_022d5664(UnkWork_022d5d70 *w, s32 v);
 void func_ov001_022d5634(UnkWork_022d5d70 *w, s32 v);
 BOOL func_ov001_022d5808(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
-void func_02037134(void);
+void Task_DestroyAll(void);
 void func_ov001_022d5834(void);
 void func_ov001_022d6470(s32 a);
 void func_ov001_022d5b44(UnkWork_022d5d70 *w, s32 a);
@@ -37,7 +37,7 @@ void func_ov001_022d58ac(UnkWork_022d5d70 *w, s32 a, s32 b);
 void func_ov001_022d5d70(void) {
     UnkWork_022d5d70 *w;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_ov001_022d5be4(w);
     func_ov001_022d5b44(w, 0);
     func_ov001_022d5b94(w, 0);
@@ -65,7 +65,7 @@ void func_ov001_022d5d70(void) {
             func_ov001_022d5634(w, 0x10);
             GXx_SetMasterBrightness_((vu16 *)0x400006c, 0x10);
             GXx_SetMasterBrightness_((vu16 *)0x400106c, 0x10);
-            func_02037134();
+            Task_DestroyAll();
             func_ov001_022d5834();
             return;
         }

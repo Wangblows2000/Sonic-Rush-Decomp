@@ -11,14 +11,14 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 
-void func_020521b4(void);
-void func_02054fd4(void);
+void SysSound_Release(void);
+void SceneChange_Unk_02054fd4(void);
 void func_0205240c(void);
 void func_ov000_02362b40(void);
 void func_ov000_02362b28(void);
 u8 func_0204e6b0(s32 a);
-void func_02054f9c(void);
-void func_02054f80(void);
+void SceneChange_Unk_02054f9c(void);
+void SceneChange_Unk_02054f80(void);
 
 #pragma thumb on
 
@@ -39,11 +39,11 @@ void func_ov000_02355e14(s32 mode, s32 sub) {
         switch (sub) {
         case 0:
         case 1:
-            func_020521b4();
-            func_02054fd4();
+            SysSound_Release();
+            SceneChange_Unk_02054fd4();
             break;
         case 2:
-            func_020521b4();
+            SysSound_Release();
             func_0205240c();
             break;
         }
@@ -77,12 +77,12 @@ void func_ov000_02355e14(s32 mode, s32 sub) {
     case 3:
         data_022c4560.unk1C = func_0204e6b0(0);
         data_022c4560.unk1D = 0;
-        func_02054f9c();
+        SceneChange_Unk_02054f9c();
         break;
     case 4:
         data_022c4560.unk1C = func_0204e6b0(0);
         data_022c4560.unk1D = 0;
-        func_02054f80();
+        SceneChange_Unk_02054f80();
         break;
     }
 }

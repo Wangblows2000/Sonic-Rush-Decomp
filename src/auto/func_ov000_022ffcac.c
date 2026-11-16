@@ -1,9 +1,9 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_0204b7ec();
+s32 Sound_PlaySeqArcEx();
 extern u8 data_ov000_0236ac60[];
-s32 func_02068204();
+s32 Sound_SetPositional();
 s32 func_ov000_022ffa58();
 s32 func_ov000_023008a0();
 s32 func_ov000_02300808();
@@ -11,8 +11,8 @@ s32 func_ov000_02300808();
 void func_ov000_022ffcac(u8 *p0) {
     if (((s32)*(s16 *)((u8 *)p0 + 0xa2) >> 4) == 0xf) {
         if ((*(u32 *)((u8 *)p0 + 0x1f4) & 1) == 0) {
-            func_0204b7ec(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x78);
-            func_02068204(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
+            Sound_PlaySeqArcEx(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x78);
+            Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
             func_ov000_022ffa58(p0, 0, 0xa);
         }
         *(u32 *)((u8 *)p0 + 0x1f4) = (*(u32 *)((u8 *)p0 + 0x1f4) | 1);

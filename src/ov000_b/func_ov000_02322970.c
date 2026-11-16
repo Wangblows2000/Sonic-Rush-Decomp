@@ -22,7 +22,7 @@ UnkStruct_02322970 *func_ov000_02322970(UnkStruct_ObjParam *p, s32 a, s32 b) {
     UnkStruct_02322970 *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_02322970));
+    task = Task_Create(StageObj_Main, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_02322970));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -30,10 +30,10 @@ UnkStruct_02322970 *func_ov000_02322970(UnkStruct_ObjParam *p, s32 a, s32 b) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02322970));
     func_ov000_02326638(w, p, a, b);
     if (p->unk2 == 0x36)
-        func_0206e3c0(&w->coll0, -0x20, -0x30, 0x20, 0);
+        ObjRect_SetBox2D(&w->coll0, -0x20, -0x30, 0x20, 0);
     else
-        func_0206e3c0(&w->coll0, -0x20, -0x18, 0x20, 0);
-    func_0206e2b4(&w->coll0, 0, -0x10);
+        ObjRect_SetBox2D(&w->coll0, -0x20, -0x18, 0x20, 0);
+    ObjRect_SetAtkDefFlags(&w->coll0, 0, -0x10);
     w->coll0.unkA |= 0xc0;
     w->coll0.unk1C = func_ov000_02322638;
     w->coll0.unk18 = w;

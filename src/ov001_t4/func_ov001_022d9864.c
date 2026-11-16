@@ -15,11 +15,11 @@ typedef struct {
     u16 shift;
 } UnkCfg_022d9864;
 
-extern UnkVram_022d9864 data_02072c70;
+extern UnkVram_022d9864 gObjVramBaseTable;
 extern UnkCfg_022d9864 data_02087d84;
 
-void func_020337ec(void *src, s32 size, s32 a, s32 dst);
-u16 *func_02036bfc(s32 a, s32 b);
+void VRAMTransfer_QueueCopy(void *src, s32 size, s32 a, s32 dst);
+u16 *Oam_AllocObj(s32 a, s32 b);
 
 #pragma thumb on
 void func_ov001_022d9864(UnkWork_022d9864 *w, s32 *tiles, s32 *addrs, s32 x, s32 y, s32 pal) {
@@ -50,13 +50,13 @@ void func_ov001_022d9864(UnkWork_022d9864 *w, s32 *tiles, s32 *addrs, s32 x, s32
         t++;
         d++;
     }
-    func_020337ec(w->buf + idx[0] * 0x20, 0x20, 0, addrs[0]);
-    func_020337ec(w->buf + idx[1] * 0x20, 0x20, 0, addrs[0] + 0x20);
-    func_020337ec(w->buf + idx[2] * 0x20, 0x20, 0, addrs[0] + 0x40);
-    func_020337ec(w->buf + idx[3] * 0x20, 0x20, 0, addrs[0] + 0x60);
-    base = data_02072c70.base;
+    VRAMTransfer_QueueCopy(w->buf + idx[0] * 0x20, 0x20, 0, addrs[0]);
+    VRAMTransfer_QueueCopy(w->buf + idx[1] * 0x20, 0x20, 0, addrs[0] + 0x20);
+    VRAMTransfer_QueueCopy(w->buf + idx[2] * 0x20, 0x20, 0, addrs[0] + 0x40);
+    VRAMTransfer_QueueCopy(w->buf + idx[3] * 0x20, 0x20, 0, addrs[0] + 0x60);
+    base = gObjVramBaseTable.base;
     ofs = (u32)(addrs[0] - base) >> (data_02087d84.shift + 5);
-    oam = func_02036bfc(1, 0);
+    oam = Oam_AllocObj(1, 0);
     yb = (u8)y;
     oam[0] = yb;
     oam[1] = (u8)x;
@@ -84,12 +84,12 @@ void func_ov001_022d9864(UnkWork_022d9864 *w, s32 *tiles, s32 *addrs, s32 x, s32
             d2++;
         }
     }
-    func_020337ec(w->buf + idx[0] * 0x20, 0x20, 0, addrs[1]);
-    func_020337ec(w->buf + idx[1] * 0x20, 0x20, 0, addrs[1] + 0x20);
-    func_020337ec(w->buf + idx[2] * 0x20, 0x20, 0, addrs[1] + 0x40);
-    func_020337ec(w->buf, 0x20, 0, addrs[1] + 0x60);
+    VRAMTransfer_QueueCopy(w->buf + idx[0] * 0x20, 0x20, 0, addrs[1]);
+    VRAMTransfer_QueueCopy(w->buf + idx[1] * 0x20, 0x20, 0, addrs[1] + 0x20);
+    VRAMTransfer_QueueCopy(w->buf + idx[2] * 0x20, 0x20, 0, addrs[1] + 0x40);
+    VRAMTransfer_QueueCopy(w->buf, 0x20, 0, addrs[1] + 0x60);
     ofs = (u32)(addrs[1] - base) >> (data_02087d84.shift + 5);
-    oam = func_02036bfc(1, 0);
+    oam = Oam_AllocObj(1, 0);
     oam[0] = yb;
     x += 0x20;
     oam[1] = (u8)x;

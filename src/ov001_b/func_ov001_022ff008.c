@@ -26,18 +26,18 @@ typedef struct UnkStruct_022ff008_4680 {
     u32 unk8;
 } UnkStruct_022ff008_4680;
 
-extern u32 data_02087cb8;
-extern u16 data_022503e0[];
+extern u32 gSystemFlags;
+extern u16 gPad[];
 extern UnkStruct_022ff008 *data_ov001_0231f52c;
-extern UnkStruct_022ff008_4680 data_022c4680;
+extern UnkStruct_022ff008_4680 gSaveData;
 
-void func_02055918(s32 a);
+void PauseMenu_Create(s32 a);
 u16 func_ov001_022fee88(u16 k);
 void func_ov001_022fea98(void);
 s32 func_0200203c(s32 n, s32 d);
 s32 func_02002094(s32 n, s32 d);
 void func_ov001_02301d14(void);
-void func_02036754(u32 a, u32 b, u32 c);
+void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 void func_ov001_02304e80(void);
 void func_ov001_022f7224(s32 a);
 void func_ov001_02300db4(void);
@@ -52,7 +52,7 @@ void func_ov001_02300fe8(void);
 void func_ov001_02303c54(void);
 void func_ov001_02302be8(s32 idx);
 void func_ov001_022fecb0(void);
-void func_02048fdc(s32 a, s32 b, s32 c, s32 d, void *e);
+void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
 void func_ov001_022f9e58(s32 a, s32 b);
 void func_02048864(void);
 
@@ -62,17 +62,17 @@ void func_ov001_022ff008(void) {
     u32 f;
     s32 t;
 
-    if (data_02087cb8 & 0x80000000)
+    if (gSystemFlags & 0x80000000)
         return;
-    if ((data_022503e0[2] & 8) && !(G->unk0 & 8)) {
-        func_02055918(0);
+    if ((gPad[2] & 8) && !(G->unk0 & 8)) {
+        PauseMenu_Create(0);
         return;
     }
-    G->unk18 = func_ov001_022fee88(data_022503e0[0]);
-    G->unk1A = func_ov001_022fee88(data_022503e0[1]);
-    G->unk1C = func_ov001_022fee88(data_022503e0[2]);
-    G->unk1E = func_ov001_022fee88(data_022503e0[3]);
-    G->unk20 = func_ov001_022fee88(data_022503e0[4]);
+    G->unk18 = func_ov001_022fee88(gPad[0]);
+    G->unk1A = func_ov001_022fee88(gPad[1]);
+    G->unk1C = func_ov001_022fee88(gPad[2]);
+    G->unk1E = func_ov001_022fee88(gPad[3]);
+    G->unk20 = func_ov001_022fee88(gPad[4]);
     func_ov001_022fea98();
     if (!(G->unk0 & 2)) {
         G->unk44++;
@@ -82,15 +82,15 @@ void func_ov001_022ff008(void) {
                 func_ov001_02301d14();
                 G->unk0 |= 0x10;
                 G->unk314 = 0x3c;
-                func_02036754(0, 0, 6);
+                Sound_PlaySeqArc(0, 0, 6);
             }
         }
-        if (!(G->unk0 & 0x10) && !(data_022c4680.unk8 & 2) && G->unk44 >= 0x8c9f) {
+        if (!(G->unk0 & 0x10) && !(gSaveData.unk8 & 2) && G->unk44 >= 0x8c9f) {
             func_ov001_02301d14();
             G->unk0 |= 0x210;
             G->unk314 = 0x3c;
             G->unk48 = 0;
-            func_02036754(0, 0, 6);
+            Sound_PlaySeqArc(0, 0, 6);
         }
     }
     func_ov001_02304e80();
@@ -125,7 +125,7 @@ void func_ov001_022ff008(void) {
         }
         G->unk0 = f | 0x20;
         G->unk316 = 0;
-        func_02048fdc(0x10, 0, -0x10, 3, &G->unk316);
+        BrightnessLerp_Create(0x10, 0, -0x10, 3, &G->unk316);
     } else if (f & 0x100) {
         t = G->unk44;
         if (f & 0x200)

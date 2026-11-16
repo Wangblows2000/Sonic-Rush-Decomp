@@ -30,13 +30,13 @@ typedef struct {
     void *work;
 } UnkStruct_02358548_Task;
 
-extern UnkStruct_02358548_Task *data_022b4574;
+extern UnkStruct_02358548_Task *gTaskCurrent;
 typedef struct {
     u8 pad0[8];
     u16 unk8;
 } UnkStruct_02358548_Cnt;
 
-extern UnkStruct_02358548_Cnt data_02087d04;
+extern UnkStruct_02358548_Cnt gDisplaySub;
 extern UnkStruct_02358548_Bright data_02087d44;
 extern UnkStruct_02358548_Bright data_0208926c;
 
@@ -60,7 +60,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 #pragma thumb on
 
 void func_ov000_02358548(void) {
-    UnkStruct_02358548 *w = data_022b4574->work;
+    UnkStruct_02358548 *w = gTaskCurrent->work;
     UnkStruct_02358548_Pt *p;
     u32 step;
     s32 i;
@@ -91,7 +91,7 @@ void func_ov000_02358548(void) {
         func_ov000_02358384(w, (w->unk14 + i) % w->unk10, step * i);
     func_ov000_02357878(w, 0x80, 0x98, 0x1000);
     func_ov000_02358224(w, 0, 0x1000);
-    data_02087d04.unk8++;
+    gDisplaySub.unk8++;
     func_ov000_023580bc(w, 1);
     w->unk0++;
     data_02087d44.unk8 = -w->unk0;
@@ -109,7 +109,7 @@ void func_ov000_02358548(void) {
         REG32(0x4000000) = (REG32(0x4000000) & ~0x1f00) | 0x1000;
         REG32(0x4001000) = REG32(0x4001000) & ~0x1f00;
         func_02050078(2, 3, 2, 0, 1, 0, 0xc, 0x100010);
-        data_022b4574->unk8 = func_ov000_02358710;
+        gTaskCurrent->unk8 = func_ov000_02358710;
     }
 }
 

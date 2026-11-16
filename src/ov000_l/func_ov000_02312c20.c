@@ -11,11 +11,11 @@ typedef struct {
     u32 unk58;
 } UnkWork_02312c20;
 
-s16 func_02068db4(s32 v, s32 d);
+s16 ObjSpd_DownSet(s32 v, s32 d);
 
 void func_ov000_02312c20(UnkWork_02312c20 *w) {
-    w->unk34 = func_02068db4(w->unk34, 0x80);
-    w->unk2E = func_02068db4(w->unk2E, 0x80);
+    w->unk34 = ObjSpd_DownSet(w->unk34, 0x80);
+    w->unk2E = ObjSpd_DownSet(w->unk2E, 0x80);
     if (w->unk1 != 0)
         w->unk58 &= ~0x4000000;
     else

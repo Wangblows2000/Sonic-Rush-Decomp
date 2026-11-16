@@ -26,8 +26,8 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-s16 func_02068df8(s32 a, s32 b, s32 c);
-void func_0204b7ec(void *a, s32 b, s32 c);
+s16 ObjSpd_UpSet(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArcEx(void *a, s32 b, s32 c);
 void func_02000dfc(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *out);
@@ -45,9 +45,9 @@ void func_ov000_02305ea0(UnkStruct_02305ea0 *p) {
     lim = 0x8000;
     if (p->unk54 & 0x1000) {
         if (p->unk1E0->unk4 & 2)
-            p->unk34 = func_02068df8(p->unk34, 0x12, 0xd00);
+            p->unk34 = ObjSpd_UpSet(p->unk34, 0x12, 0xd00);
         else
-            p->unk34 = func_02068df8(p->unk34, -0x12, 0xd00);
+            p->unk34 = ObjSpd_UpSet(p->unk34, -0x12, 0xd00);
         if (p->unk1E0->unk4 & 2) {
             if (p->unkC > p->unk8) {
                 p->unkC = p->unk8;
@@ -66,9 +66,9 @@ void func_ov000_02305ea0(UnkStruct_02305ea0 *p) {
         if (p->unk1E0->unk4 & 4)
             lim += 0x10000;
         if (p->unk1E0->unk4 & 2)
-            p->unk34 = func_02068df8(p->unk34, -0x12, 0xd00);
+            p->unk34 = ObjSpd_UpSet(p->unk34, -0x12, 0xd00);
         else
-            p->unk34 = func_02068df8(p->unk34, 0x12, 0xd00);
+            p->unk34 = ObjSpd_UpSet(p->unk34, 0x12, 0xd00);
         if (p->unk1E0->unk4 & 2) {
             if (p->unkC < p->unk8 - lim) {
                 p->unkC = p->unk8 - 0x8000;
@@ -77,7 +77,7 @@ void func_ov000_02305ea0(UnkStruct_02305ea0 *p) {
                 p->unk1F4 &= ~1;
                 p->unk34 = 0;
                 if (p->unk1E0->unk4 & 4)
-                    func_0204b7ec(p->unk1DC, 0, 0x40);
+                    Sound_PlaySeqArcEx(p->unk1DC, 0, 0x40);
             }
         } else {
             if ((u32)p->unkC > (u32)(p->unk8 + lim)) {
@@ -87,7 +87,7 @@ void func_ov000_02305ea0(UnkStruct_02305ea0 *p) {
                 p->unk1F4 &= ~1;
                 p->unk34 = 0;
                 if (p->unk1E0->unk4 & 4)
-                    func_0204b7ec(p->unk1DC, 0, 0x40);
+                    Sound_PlaySeqArcEx(p->unk1DC, 0, 0x40);
             }
         }
     }

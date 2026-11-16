@@ -1,15 +1,15 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_022b4574[];
-s32 func_0206bd24();
-s32 func_0206b768();
+extern u8 gTaskCurrent[];
+s32 StageObj_Draw2D();
+s32 StageObj_Draw2DEx();
 extern u8 data_ov000_0236ac60[];
 
 void func_ov000_0232d4c8(void) {
-    u32 t0 = *(u32 *)data_022b4574;
+    u32 t0 = *(u32 *)gTaskCurrent;
     u32 t1 = *(u32 *)((u8 *)t0 + 0x10);
-    func_0206bd24(t1, (t1 + 0x94), 0);
+    StageObj_Draw2D(t1, (t1 + 0x94), 0);
     u32 t2 = *(u32 *)((u8 *)t1 + 0x54);
     s16 t3 = *(s16 *)((u8 *)t1 + 0x44);
     s16 t4 = *(s16 *)((u8 *)t1 + 0x46);
@@ -22,7 +22,7 @@ void func_ov000_0232d4c8(void) {
         u32 t8 = *(u32 *)((u8 *)t1 + 0x14);
         s16 t9 = *(s16 *)((u8 *)(t1 + 0x200) + 0x5c);
         s16 t10 = *(s16 *)((u8 *)(t1 + 0x200) + 0x60);
-        func_0206b768(((t7 - 0xb00) + (t9 << 8)), ((t8 + 0xe00) + (t10 << 8)), 0, t1, (t1 + 0x134), 0, 0);
+        StageObj_Draw2DEx(((t7 - 0xb00) + (t9 << 8)), ((t8 + 0xe00) + (t10 << 8)), 0, t1, (t1 + 0x134), 0, 0);
     }
     u32 t11 = *(u32 *)((u8 *)t1 + 0x54);
     if ((t11 & 0x2000) != 0) {
@@ -34,7 +34,7 @@ void func_ov000_0232d4c8(void) {
         u32 t15 = *(u32 *)((u8 *)t1 + 0x14);
         s16 t16 = *(s16 *)((u8 *)(t1 + 0x200) + 0x5e);
         s16 t17 = *(s16 *)((u8 *)(t1 + 0x200) + 0x62);
-        func_0206b768(((t14 + 0xb00) + (t16 << 8)), ((t15 + 0xe00) + (t17 << 8)), 0, t1, (t1 + 0x1c4), 0, 0);
+        StageObj_Draw2DEx(((t14 + 0xb00) + (t16 << 8)), ((t15 + 0xe00) + (t17 << 8)), 0, t1, (t1 + 0x1c4), 0, 0);
     }
     *(u16 *)((u8 *)t1 + 0x44) = t3;
     *(u16 *)((u8 *)t1 + 0x46) = t4;

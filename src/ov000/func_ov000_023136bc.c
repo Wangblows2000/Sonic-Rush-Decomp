@@ -5,8 +5,8 @@ typedef struct UnkStruct_023136bc {
     s16 unk2E;
 } UnkStruct_023136bc;
 
-s32 func_02068db4(s32 a, s32 b);
+s32 ObjSpd_DownSet(s32 a, s32 b);
 
 void func_ov000_023136bc(UnkStruct_023136bc *s) {
-    s->unk2E = func_02068db4(s->unk2E, 10);
+    s->unk2E = ObjSpd_DownSet(s->unk2E, 10);
 }

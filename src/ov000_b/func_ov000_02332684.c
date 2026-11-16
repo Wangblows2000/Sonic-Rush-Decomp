@@ -5,14 +5,14 @@ typedef struct {
     u32 unk18;
 } UnkStruct_022c4560;
 
-extern void *data_022c448c;
+extern void *gActComArchive;
 extern UnkStruct_022c4560 data_022c4560;
 extern u8 data_ov000_023684d8[];
 extern u8 data_ov000_0236a9f8[];
 
 BOOL func_ov000_023270d8(UnkStruct_EffObj *a);
 s32 func_020027a4(s32 y, s32 x);
-void func_020693f0(s16 *x, s16 *y, u8 a);
+void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 void func_ov000_02334264(UnkStruct_EffObj *w);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
@@ -28,22 +28,22 @@ UnkStruct_EffObj *func_ov000_02332684(UnkStruct_EffObj *arg) {
 
     if (func_ov000_023270d8(arg))
         return NULL;
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_023684d8, 6, data_ov000_0236a9f8, data_022c448c);
-    func_0206a054(w, 2, 0x6e);
-    func_02069818(w, 2);
-    func_02069918(w, 9);
+    StageObj_Load2dBAC(w, data_ov000_023684d8, 6, data_ov000_0236a9f8, gActComArchive);
+    StageObj_AllocSpritePalette(w, 2, 0x6e);
+    StageObj_SetAnimation(w, 2);
+    StageObj_SetOAMOrder(w, 9);
     if (data_022c4560.unk18 & 0x20)
         w->spr1.unk2C |= 0x80008;
     w->spr0.unk2C |= 0x400;
     w->spr1.unk2C |= 0x400;
     if (Rand() & 1)
-        func_020698f0(w, 1);
+        StageObj_SetOAMPriority(w, 1);
     if (arg->unk5C & 1)
         w->unk5C |= 1;
     w->unk10 = arg->unk10;
@@ -54,14 +54,14 @@ UnkStruct_EffObj *func_ov000_02332684(UnkStruct_EffObj *arg) {
     else
         w->unk2E = (0x7f - (Rand() & 0xfe)) + ABS(arg->unk2A >> 1);
     w->unk30 = 0;
-    func_020693f0(&w->unk2E, &w->unk30, w->unk1);
+    Math_RotateVec2S16(&w->unk2E, &w->unk30, w->unk1);
     v8 = -0x1100 - (Rand() & 0xe00);
     vA = 0xf00 - (Rand() & 0x1e00);
     vC = 0x3f - (Rand() & 0x7e);
     vE = -vA >> 9;
-    func_020693f0(&vC, &vE, w->unk1);
+    Math_RotateVec2S16(&vC, &vE, w->unk1);
     w->unkC = (vC << 16) | (vE & 0xffff);
-    func_020693f0(&v8, &vA, w->unk1);
+    Math_RotateVec2S16(&v8, &vA, w->unk1);
     w->unk10 += v8;
     w->unk14 += vA;
     w->unk58 |= 0x100;

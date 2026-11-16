@@ -8,20 +8,20 @@ typedef struct {
 
 void func_ov000_0232ec1c(void);
 void func_ov000_0232ec74(void);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 
 void func_ov000_0232ecac(s32 a, u16 b) {
     UnkStruct_Task *task;
     UnkWork_0232ecac *w;
     vu16 zero;
 
-    task = func_020372d0(func_ov000_0232ec1c, func_ov000_0232ec74, 0, 0xa00, 4, sizeof(UnkWork_0232ecac));
+    task = Task_Create(func_ov000_0232ec1c, func_ov000_0232ec74, 0, 0xa00, 4, sizeof(UnkWork_0232ecac));
     if (task == func_02006abc(0))
         return;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_0232ecac));
-    w->unk0 = func_0203663c();
-    func_0204b7ec(w->unk0, 0, a);
+    w->unk0 = Sound_AllocHandle();
+    Sound_PlaySeqArcEx(w->unk0, 0, a);
     w->unk4 = b;
 }

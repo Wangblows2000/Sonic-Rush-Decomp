@@ -168,26 +168,26 @@ typedef struct {
     void *work;
 } UnkStruct_Task;
 
-void func_0206c3d0(void);
-UnkStruct_Task *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+void StageObj_Main(void);
+UnkStruct_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 UnkStruct_Task *func_02006abc(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov000_022fba50(void *w, s32 a, s32 b, s32 c);
-void func_02069f1c(void *w, void *a, s32 b, void *c, void *d);
-void func_0206a054(void *w, s32 a, s32 b);
-void func_02069918(void *w, s32 a);
-void func_020698f0(void *w, s32 a);
-void func_02069d38(UnkStruct_Spr *a, UnkStruct_Spr *b, void *c, s32 d, void *e, void *f);
-void func_02033550(UnkStruct_Spr *a, s32 b);
-void func_0206990c(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c);
+void StageObj_Load2dBAC(void *w, void *a, s32 b, void *c, void *d);
+void StageObj_AllocSpritePalette(void *w, s32 a, s32 b);
+void StageObj_SetOAMOrder(void *w, s32 a);
+void StageObj_SetOAMPriority(void *w, s32 a);
+void ObjAction_Load2dBAC(UnkStruct_Spr *a, UnkStruct_Spr *b, void *c, s32 d, void *e, void *f);
+void AnimatorSprite_SetAnimation(UnkStruct_Spr *a, s32 b);
+void SpritePair_SetOAMOrder(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c);
 void func_02069e68(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c, void *d);
-void func_020698bc(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c);
-void func_0206e3c0(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e);
-void func_0206e2b4(UnkStruct_Coll *c, s32 a, s32 b);
-void func_02069818(void *w, s32 a);
+void SpritePair_SetOAMPriority(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c);
+void ObjRect_SetBox2D(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e);
+void ObjRect_SetAtkDefFlags(UnkStruct_Coll *c, s32 a, s32 b);
+void StageObj_SetAnimation(void *w, s32 a);
 void func_02068e40(void *w, s32 a, s32 b, s32 c, s32 d);
-void func_02069eb0(void *w, s32 a, void *b);
-s32 func_0203663c(void);
+void StageObj_SetSharedSpriteVram(void *w, s32 a, void *b);
+s32 Sound_AllocHandle(void);
 
 /* 0xB0-byte block */
 typedef struct {
@@ -196,7 +196,7 @@ typedef struct {
     u8 padAC[4];
 } UnkStruct_Blk;
 
-void func_02069a34(void *w, UnkStruct_Blk *blk, void *tbl, s32 a, s32 b, s32 c, void *d, void *e);
+void StageObj_LoadModelSimple(void *w, UnkStruct_Blk *blk, void *tbl, s32 a, s32 b, s32 c, void *d, void *e);
 
 /* generic 0x134-byte effect object */
 typedef struct {
@@ -246,13 +246,13 @@ typedef struct {
     u8 pad124[0x134 - 0x124];
 } UnkStruct_EffObj;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
-void func_0206bef4(void);
+void StageObj_Destructor(void);
 
 #endif

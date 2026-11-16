@@ -31,20 +31,20 @@ typedef struct UnkStruct_02304624_h {
 typedef struct { u8 pad[0x12]; u16 unk12; } E14_02304624;
 typedef struct { u8 hdr[0xc]; E14_02304624 e[1]; } T14_02304624;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_02304624 *data_ov001_0231f548;
 extern UnkStruct_02304624_h *data_ov001_0231f544;
 extern u8 data_ov001_02316cac[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void func_ov001_02303934(void);
-u32 func_02039c18(u32 a, u32 b);
-void func_0203363c(void *s, void *h, u16 idx, u32 d, u32 e, u32 f, u32 g, u32 hh, u32 i);
-void func_0203344c(void *c, u32 a, u32 b);
+u32 ObjVram_Alloc(u32 a, u32 b);
+void AnimatorSprite_Init(void *s, void *h, u16 idx, u32 d, u32 e, u32 f, u32 g, u32 hh, u32 i);
+void AnimatorSprite_ProcessAnimation(void *c, u32 a, u32 b);
 
 static inline u16 GetEnt(UnkStruct_02304624_h *h, u16 idx) {
     T14_02304624 *t = (T14_02304624 *)((u8 *)h + h->unk18);
@@ -57,7 +57,7 @@ void func_ov001_02304624(void) {
     UnkStruct_02304624_e *e;
     u32 r;
 
-    blk = func_02034a40(data_0208fe80, 0x13c0, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x13c0, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0x13c0);
@@ -74,15 +74,15 @@ void func_ov001_02304624(void) {
     for (i = 0, e = data_ov001_0231f548->ents; i < 100; i++, e++)
         data_ov001_0231f548->ptrs[i] = e;
     data_ov001_0231f548->unk90 = func_ov001_02303934;
-    r = func_02039c18(0, GetEnt(data_ov001_0231f544, 0));
-    func_0203363c(&data_ov001_0231f548->obj0, data_ov001_0231f544, 0, 0x4060, 0, 0, r, 0, 0x5000200);
+    r = ObjVram_Alloc(0, GetEnt(data_ov001_0231f544, 0));
+    AnimatorSprite_Init(&data_ov001_0231f548->obj0, data_ov001_0231f544, 0, 0x4060, 0, 0, r, 0, 0x5000200);
     data_ov001_0231f548->obj0.unk44 = 0;
     data_ov001_0231f548->obj0.flags |= 4;
-    func_0203344c(&data_ov001_0231f548->obj0, 0, 0);
-    r = func_02039c18(0, GetEnt(data_ov001_0231f544, 1));
-    func_0203363c(&data_ov001_0231f548->obj1, data_ov001_0231f544, 1, 0x4030, 0, 0, r, 0, 0x5000200);
+    AnimatorSprite_ProcessAnimation(&data_ov001_0231f548->obj0, 0, 0);
+    r = ObjVram_Alloc(0, GetEnt(data_ov001_0231f544, 1));
+    AnimatorSprite_Init(&data_ov001_0231f548->obj1, data_ov001_0231f544, 1, 0x4030, 0, 0, r, 0, 0x5000200);
     data_ov001_0231f548->obj1.unk44 = 0;
     data_ov001_0231f548->obj1.flags |= 4;
-    func_0203344c(&data_ov001_0231f548->obj1, 0, 0);
+    AnimatorSprite_ProcessAnimation(&data_ov001_0231f548->obj1, 0, 0);
     data_ov001_0231f548->unk1384 = data_ov001_02316cac;
 }

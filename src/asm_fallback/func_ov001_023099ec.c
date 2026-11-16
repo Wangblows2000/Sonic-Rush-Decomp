@@ -4,10 +4,10 @@
 extern u32 data_ov001_023170b8;
 extern u32 data_ov001_0231f5bc;
 extern u32 data_ov001_0231f5c4;
-extern void func_0203344c(void);
-extern void func_0203363c(void);
-extern void func_0203438c(void);
-extern void func_02039c18(void);
+extern void AnimatorSprite_ProcessAnimation(void);
+extern void AnimatorSprite_Init(void);
+extern void Background_Draw(void);
+extern void ObjVram_Alloc(void);
 extern void func_ov001_02314380(void);
 
 asm void func_ov001_023099ec(void)
@@ -25,7 +25,7 @@ asm void func_ov001_023099ec(void)
     ldr r1, [r2, #0x18]
     add r1, r2, r1
     ldrh r1, [r1, #0x30]
-    bl func_02039c18
+    bl ObjVram_Alloc
     mov r3, #0
     str r3, [sp]
     str r3, [sp, #4]
@@ -38,11 +38,11 @@ asm void func_ov001_023099ec(void)
     add r0, r6, #0x780
     ldr r1, [r1, #0x20]
     mov r2, #1
-    bl func_0203363c
+    bl AnimatorSprite_Init
     mov r1, #0
     mov r2, r1
     add r0, r6, #0x780
-    bl func_0203344c
+    bl AnimatorSprite_ProcessAnimation
     ldr r0, [r6, #0x7ac]
     mov r1, #1
     orr r0, r0, #0x10
@@ -56,7 +56,7 @@ asm void func_ov001_023099ec(void)
     ldr r1, [r2, #0x18]
     add r1, r2, r1
     ldrh r1, [r1, #6]
-    bl func_02039c18
+    bl ObjVram_Alloc
     mov r2, #0
     str r2, [sp]
     str r2, [sp, #4]
@@ -70,12 +70,12 @@ asm void func_ov001_023099ec(void)
     mov r3, r2
     ldr r1, [r1]
     ldr r1, [r1, #0x24]
-    bl func_0203363c
+    bl AnimatorSprite_Init
     ldr r0, [pc, #0x12c]
     mov r1, #0
     add r0, r6, r0
     mov r2, r1
-    bl func_0203344c
+    bl AnimatorSprite_ProcessAnimation
     mov r1, #1
     add r0, r6, #0x800
     strh r1, [r0, #0xe]
@@ -101,7 +101,7 @@ _130:
     mov r1, #0x14
     mla r1, r7, r1, r2
     ldrh r1, [r1, #0x1c]
-    bl func_02039c18
+    bl ObjVram_Alloc
     str r5, [sp]
     str r5, [sp, #4]
     str r0, [sp, #8]
@@ -114,11 +114,11 @@ _130:
     mov r0, r9
     ldr r1, [r1, #0x1c]
     mov r3, r5
-    bl func_0203363c
+    bl AnimatorSprite_Init
     ldr r1, [sp, #0x14]
     mov r0, r9
     mov r2, r1
-    bl func_0203344c
+    bl AnimatorSprite_ProcessAnimation
     ldr r1, [r8, #0x83c]
     add r10, r10, #1
     orr r1, r1, #0x10
@@ -138,9 +138,9 @@ _130:
     add r0, r6, #8
     orr r1, r1, #4
     str r1, [r6, #0xac4]
-    bl func_0203438c
+    bl Background_Draw
     add r0, r6, #0x48
-    bl func_0203438c
+    bl Background_Draw
     bl func_ov001_02314380
     str r0, [r6, #0xae4]
     add sp, sp, #0x1c

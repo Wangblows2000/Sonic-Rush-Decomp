@@ -30,7 +30,7 @@ typedef struct {
     UnkMap_022e6c90 *map;
 } UnkStruct_022e6c90;
 
-extern UnkTouch_022e6c90 data_022b65b4;
+extern UnkTouch_022e6c90 gTouchState;
 extern s32 data_ov001_0231649c[][17][4];
 
 BOOL func_ov001_022e690c(UnkStruct_022e6c90 *p, s32 node, s32 x, s32 y);
@@ -47,11 +47,11 @@ s32 func_ov001_022e6c90(UnkStruct_022e6c90 *p, s32 node, s32 prev) {
         p->count--;
         return p->stack[p->count];
     }
-    if (!(data_022b65b4.flags & 0x40)) {
+    if (!(gTouchState.flags & 0x40)) {
         return 0x12;
     }
-    x = data_022b65b4.x;
-    y = data_022b65b4.y;
+    x = gTouchState.x;
+    y = gTouchState.y;
     if (x < 0 || x >= 0x100 || y < 0 || y >= 0xc0) {
         return 0x12;
     }

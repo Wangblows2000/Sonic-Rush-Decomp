@@ -30,15 +30,15 @@ typedef struct {
     u32 unk20;
 } UnkStruct_0232b598_Sys;
 
-extern UnkStruct_0232b598_Task *data_022b4574;
+extern UnkStruct_0232b598_Task *gTaskCurrent;
 extern UnkStruct_0232b598_Sys data_022c4560;
 
-void func_0206b768(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
+void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
 s32 func_ov000_02337650(s32 a);
 
 void func_ov000_0232b598(void) {
     s16 i;
-    UnkStruct_0232b598 *w = data_022b4574->work;
+    UnkStruct_0232b598 *w = gTaskCurrent->work;
     BOOL on = FALSE;
     s32 s0;
     s32 s1;
@@ -66,7 +66,7 @@ void func_ov000_0232b598(void) {
             d = (w->unk140 & (0xf << sh)) >> sh;
             w->spr0.unk34 += d << 7;
             w->spr1.unk34 += d << 7;
-            func_0206b768(w->unk10 + (w->unk134[i] << 8) - off + 0x1800,
+            StageObj_Draw2DEx(w->unk10 + (w->unk134[i] << 8) - off + 0x1800,
                           w->unk13E + (w->unk14 - (w->unk134[i] << 9)) - 0x1400, 0, w, &w->spr0, &w->spr1, 0);
         }
     }

@@ -93,17 +93,17 @@ typedef struct UnkStruct_022ca63c_5 {
 extern UnkStruct_022ca63c_cam data_ov000_0236a444;
 extern UnkStruct_022ca63c_c data_ov000_0236a48c;
 extern UnkStruct_022ca63c_pl *data_ov000_0236ac60;
-extern UnkStruct_022ca63c_5 data_0208922c;
+extern UnkStruct_022ca63c_5 gDisplayMain;
 
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_02000dfc(void *m);
-void func_0206c7c0(void);
+void StageObj_ClearPause(void);
 BOOL func_ov000_022cc6d4(void);
 void func_ov000_02328780(s32 a, s32 x, s32 y, s32 z);
 u8 *func_ov000_02328828(s32 a, s32 x, s32 y, s32 z);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022ca574(UnkStruct_022ca63c *s);
 
 void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
@@ -136,7 +136,7 @@ void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
     s->unk350 = 0x1000;
     s->unk210->unk33C = 0x1000;
     s->unk214->unk420 = 0x1000;
-    func_0206c7c0();
+    StageObj_ClearPause();
     data_ov000_0236ac60->unk5C |= 0x20;
     data_ov000_0236ac60->unk32C |= 0x200000;
     data_ov000_0236ac60->unk420 = data_ov000_0236ac60->unk422 = data_ov000_0236ac60->unk424 = 0;
@@ -148,8 +148,8 @@ void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
     }
     func_020537b4(0xd);
     func_020533e0(0x13, 0xf0);
-    data_0208922c.unk48 = 0x10;
-    func_02036754(0, 0, 0x7d);
+    gDisplayMain.unk48 = 0x10;
+    Sound_PlaySeqArc(0, 0, 0x7d);
     s->unk220 = 0;
     s->func = func_ov000_022ca574;
 }

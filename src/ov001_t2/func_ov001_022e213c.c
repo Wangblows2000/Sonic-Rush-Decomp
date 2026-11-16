@@ -15,7 +15,7 @@ typedef struct {
     UnkWork_022e213c *work;
 } UnkTask_022e213c;
 
-UnkTask_022e213c *func_020372d0(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
+UnkTask_022e213c *Task_Create(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov001_022e2054(void);
 
@@ -27,7 +27,7 @@ void func_ov001_022e213c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
     if (a > 16) a = 16;
     if (b < -16) b = -16;
     if (b > 16) b = 16;
-    w = func_020372d0(func_ov001_022e2054, 0, 0, 0x4000, 0x1000, sizeof(UnkWork_022e213c))->work;
+    w = Task_Create(func_ov001_022e2054, 0, 0, 0x4000, 0x1000, sizeof(UnkWork_022e213c))->work;
     {
         vu32 z = 0;
         MIi_CpuClear32(z, w, sizeof(UnkWork_022e213c));

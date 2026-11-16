@@ -12,13 +12,13 @@ typedef struct {
     UnkEntry_022d4d30 e[2];
 } UnkStruct_022d4d30;
 
-void func_02039bb0(void *res, s32 b);
+void ObjVram_Free(void *res, s32 b);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 
 #pragma thumb on
 static inline void Free_022d4d30(UnkEntry_022d4d30 *e) {
     if (e != NULL && e->active != 0) {
-        func_02039bb0(e->res, e->active);
+        ObjVram_Free(e->res, e->active);
         {
             vu16 z = 0;
             MIi_CpuClear16(z, e, sizeof(UnkEntry_022d4d30));

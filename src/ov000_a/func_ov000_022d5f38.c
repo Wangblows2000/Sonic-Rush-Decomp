@@ -32,22 +32,22 @@ typedef struct UnkTask_022d5f38 {
     UnkStruct_022d5f38 *unk10;
 } UnkTask_022d5f38;
 
-extern UnkTask_022d5f38 *data_022b4574;
+extern UnkTask_022d5f38 *gTaskCurrent;
 
-void func_02069090(UnkStruct_022d5f38 *o, UnkStruct_022d5f38_h *h);
+void StageObj_HandleCollider(UnkStruct_022d5f38 *o, UnkStruct_022d5f38_h *h);
 void func_02067d58(s32 *p);
 
 void func_ov000_022d5f38(void) {
-    UnkStruct_022d5f38 *o = data_022b4574->unk10;
+    UnkStruct_022d5f38 *o = gTaskCurrent->unk10;
     UnkStruct_022d5f38_w *w = (UnkStruct_022d5f38_w *)o;
     s32 i;
     if (o->unk54 & 0xc)
         return;
     for (i = 0; i < 2; i++) {
         if (o->unk134[i].unk18 != NULL) {
-            func_02069090(o, &o->unk134[i]);
+            StageObj_HandleCollider(o, &o->unk134[i]);
             w->unk238[i] = o->unk134[i];
-            func_02069090(o, &w->unk238[i]);
+            StageObj_HandleCollider(o, &w->unk238[i]);
             if (w->unk238[i].unk0 + 0x40 < 0x2ff)
                 w->unk238[i].unk0 += 0x5fe;
             else

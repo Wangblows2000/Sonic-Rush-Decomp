@@ -11,7 +11,7 @@ typedef struct UnkStruct_022f7790 {
 
 extern UnkStruct_022f7790 *data_ov001_0231f084;
 extern s32 data_ov001_02316a80[];
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 
 void func_ov001_022f7790(void) {
     s32 k;
@@ -24,19 +24,19 @@ void func_ov001_022f7790(void) {
         o = &data_ov001_0231f084->objs[data_ov001_02316a80[k]];
         o->x = 0x56;
         o->y = y;
-        func_02032d2c(o);
+        AnimatorSprite_Draw(o);
         for (i = 0, x = 0x60; i < 6; i++, x += 10) {
             s32 d = data_ov001_0231f084->dig[k][i];
             if (d != -1) {
                 o = &data_ov001_0231f084->objs[d];
                 o->x = x;
                 o->y = y;
-                func_02032d2c(o);
+                AnimatorSprite_Draw(o);
             }
         }
     }
     o = &data_ov001_0231f084->objs[23];
     o->x = 0x96;
     o->y = 0x6c;
-    func_02032d2c(o);
+    AnimatorSprite_Draw(o);
 }

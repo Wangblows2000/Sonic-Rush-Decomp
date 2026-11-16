@@ -24,18 +24,18 @@ typedef struct UnkStruct_02301118 {
 } UnkStruct_02301118;
 
 extern u8 *data_ov001_0231f530;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void func_ov001_02302ac8(UnkStruct_02301118 *w);
 void func_ov001_022fd4f4(UnkStruct_02301118 *w);
 u8 *func_ov001_022ffce8(void);
-void func_02039bb0(s32 i, u32 addr);
+void ObjVram_Free(s32 i, u32 addr);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02031768(void *p);
-void func_020371c8(void *p);
+void Heap_Free(void *heap, void *p);
+void Model_Release(void *p);
+void Task_Destroy(void *p);
 
 #define ARR(off, i) (((u32 *)(data_ov001_0231f530 + (off)))[i])
 
@@ -70,7 +70,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
     ARR(0xbc, w->unk8) = 0;
     if (w->unk90 != NULL) {
         if (!(w->unk14 & 0x10000000))
-            func_02039bb0(w->unk90->unk0, w->unk90->unk34);
+            ObjVram_Free(w->unk90->unk0, w->unk90->unk34);
         if (!(w->unk14 & 0x20000000)) {
             p = (u8 *)w->unk90;
             if ((u8 *)func_02006abc(0) != p) {
@@ -82,12 +82,12 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
                     DC_StoreRange(p, size);
                 }
             }
-            func_020349b8(data_0208fe80, p);
+            Heap_Free(gMainHeap, p);
         }
     }
     if (w->unk94 != NULL) {
         if (!(w->unk14 & 0x10000000))
-            func_02031768(w->unk94);
+            Model_Release(w->unk94);
         if (!(w->unk14 & 0x20000000)) {
             p = (u8 *)w->unk94;
             if ((u8 *)func_02006abc(0) != p) {
@@ -99,13 +99,13 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
                     DC_StoreRange(p, size);
                 }
             }
-            func_020349b8(data_0208fe80, p);
+            Heap_Free(gMainHeap, p);
         }
     }
     if (w->unk84 != NULL) {
         if (w->unk88 != NULL) {
-            func_02031768(w->unk88);
-            func_02031768(w->unk8C);
+            Model_Release(w->unk88);
+            Model_Release(w->unk8C);
             if (!(w->unk14 & 0x20000000)) {
                 p = (u8 *)w->unk88;
                 if ((u8 *)func_02006abc(0) != p) {
@@ -117,7 +117,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
                         DC_StoreRange(p, size);
                     }
                 }
-                func_020349b8(data_0208fe80, p);
+                Heap_Free(gMainHeap, p);
                 p = (u8 *)w->unk8C;
                 if ((u8 *)func_02006abc(0) != p) {
                     p -= 0x20;
@@ -128,10 +128,10 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
                         DC_StoreRange(p, size);
                     }
                 }
-                func_020349b8(data_0208fe80, p);
+                Heap_Free(gMainHeap, p);
             }
         } else {
-            func_02031768(w->unk84);
+            Model_Release(w->unk84);
             if (!(w->unk14 & 0x20000000)) {
                 p = (u8 *)w->unk84;
                 if ((u8 *)func_02006abc(0) != p) {
@@ -143,7 +143,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
                         DC_StoreRange(p, size);
                     }
                 }
-                func_020349b8(data_0208fe80, p);
+                Heap_Free(gMainHeap, p);
             }
         }
     }
@@ -158,7 +158,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
                 DC_StoreRange(p, size);
             }
         }
-        func_020349b8(data_0208fe80, p);
+        Heap_Free(gMainHeap, p);
     }
-    func_020371c8(task);
+    Task_Destroy(task);
 }

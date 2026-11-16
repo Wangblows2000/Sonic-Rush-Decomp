@@ -1,20 +1,20 @@
 #include <nitro/types.h>
 
-extern s32 data_02250438;
-extern s32 data_02250434;
+extern s32 gPaletteTransferHead;
+extern s32 gPaletteTransferTail;
 
-void func_02035704(u16 *src, s32 n, s32 a, u32 dst);
-void func_02035754(void);
+void PaletteTransfer_QueueCopy(u16 *src, s32 n, s32 a, u32 dst);
+void PaletteTransfer_Flush(void);
 
 #pragma thumb on
 void func_ov001_022d9a14(void *p, u16 col) {
-    s32 s0 = data_02250438;
-    s32 s1 = data_02250434;
-    data_02250438 = 0;
-    data_02250434 = 0;
-    func_02035704(&col, 1, 0, 0x500079e);
-    func_02035754();
-    data_02250438 = s0;
-    data_02250434 = s1;
+    s32 s0 = gPaletteTransferHead;
+    s32 s1 = gPaletteTransferTail;
+    gPaletteTransferHead = 0;
+    gPaletteTransferTail = 0;
+    PaletteTransfer_QueueCopy(&col, 1, 0, 0x500079e);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = s0;
+    gPaletteTransferTail = s1;
 }
 #pragma thumb reset

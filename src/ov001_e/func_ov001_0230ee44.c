@@ -18,14 +18,14 @@ typedef struct UnkStruct_0230ee44 {
     s32 unk78;
 } UnkStruct_0230ee44;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 float func_0202f1bc(u32 v);
 UnkStruct_0230ee44_r *func_ov001_02307148(s32 a, s32 b, u16 ang, s32 c, s32 speed);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return data_0208fe70 >> 16;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return gRandSeed >> 16;
 }
 
 void func_ov001_0230ee44(UnkStruct_0230ee44 *p) {
@@ -36,7 +36,7 @@ void func_ov001_0230ee44(UnkStruct_0230ee44 *p) {
     v = Rand();
     Rand();
     f = p->unk1C;
-    r = func_ov001_02307148(p->unk78, 2, p->rot + (u16)(data_0208fe70 >> 16) % 0x2000 - 0x1000, 0,
+    r = func_ov001_02307148(p->unk78, 2, p->rot + (u16)(gRandSeed >> 16) % 0x2000 - 0x1000, 0,
                             f + 143360.0f * (func_0202f1bc(v) / 65535.0f) - 69632.0f);
     if (r == NULL)
         return;

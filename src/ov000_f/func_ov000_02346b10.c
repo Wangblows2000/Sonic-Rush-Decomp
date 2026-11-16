@@ -29,15 +29,15 @@ struct UnkStruct_02346b10 {
     u16 unk420;
 };
 
-extern u32 data_022c4ef0;
+extern u32 gObjManagerFlags;
 extern UnkStruct_02346b10 *data_ov000_0236ac60[];
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
 void func_ov000_02326f48(UnkStruct_02346b10 *w, s32 a, s32 b, s32 c, s32 d);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_0201c070(void *p, s32 a);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 void func_ov000_02332448(UnkStruct_02346b10 *w, s32 a, s32 b);
 void func_ov000_02331f5c(UnkStruct_02346b10 *w, s32 a, s32 b);
 void func_ov000_02343498(UnkStruct_02346b10 *w, s32 l, s32 t, s32 r, s32 b, s32 c);
@@ -48,21 +48,21 @@ void func_ov000_02346d30(UnkStruct_02346b10 *w);
 
 void func_ov000_02346b10(UnkStruct_02346b10 *w) {
     if (!(w->unk32C & 0x80)) {
-        if (!(data_022c4ef0 & 0x100)) {
+        if (!(gObjManagerFlags & 0x100)) {
             w->unk58 |= 0x4000;
         }
         if (w->unk324 == 0 && !(w->unk330 & 0x100)) {
             func_ov000_02326f48(w, 0x18, 0xa, 0x7ca5, 0x7ca5);
         }
         if (w->unk324 != 1) {
-            func_0204b7ec(w->unk384, 0, 0xa);
+            Sound_PlaySeqArcEx(w->unk384, 0, 0xa);
         } else {
-            func_0204b7ec(w->unk384, 0, 0x17);
+            Sound_PlaySeqArcEx(w->unk384, 0, 0x17);
         }
         func_0201c070(w->unk38C, 0);
         w->unk3D1 = 0xc;
         w->unk32C |= 0x80;
-        func_020446b0(4);
+        ScreenShake_Start(4);
         if (w->unk420 & 0x20) {
             w->unk5C |= 1;
         } else if (w->unk420 & 0x10) {

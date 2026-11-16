@@ -26,16 +26,16 @@ typedef struct UnkStruct_02309228 {
 } UnkStruct_02309228;
 
 extern UnkStruct_02309228 *data_ov001_0231f5bc;
-extern s16 data_02087d04[];
+extern s16 gDisplaySub[];
 extern s16 data_ov001_02317098[];
 extern u16 data_ov001_02317114[];
 
 void func_ov001_0230d6f4(s32 v);
 BOOL func_0202e564(float a, float b);
-void func_02033550(UnkStruct_02309228_o *s, u16 index);
+void AnimatorSprite_SetAnimation(UnkStruct_02309228_o *s, u16 index);
 s32 func_ov001_0230c0cc(void);
 s32 func_ov001_0230c0a4(void);
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_0230956c(void);
 void func_ov001_023095e0(void);
 void func_ov001_0231599c(s32 v);
@@ -54,7 +54,7 @@ void func_ov001_02309228(void) {
     if (g->timer < 0x118)
         func_ov001_0230d6f4(9216.0f * g->timer / 280.0f);
     if (g->timer <= 0x10)
-        data_02087d04[0x24] = 0x10 - g->timer;
+        gDisplaySub[0x24] = 0x10 - g->timer;
     if (g->timer >= 0x96 && g->timer < 0x136) {
         t = g->timer - 0x96;
         for (i = 0; i < 7; i++) {
@@ -75,9 +75,9 @@ void func_ov001_02309228(void) {
                 }
             }
             if (g->timer == i + 0x10e) {
-                func_02033550(o, (u8)(data_ov001_02317114[i + 0xb] + 1));
+                AnimatorSprite_SetAnimation(o, (u8)(data_ov001_02317114[i + 0xb] + 1));
             } else if (g->timer > i + 0x10e && (o->unk2C & 2)) {
-                func_02033550(o, (u8)data_ov001_02317114[i + 0xb]);
+                AnimatorSprite_SetAnimation(o, (u8)data_ov001_02317114[i + 0xb]);
             }
         }
     }
@@ -89,15 +89,15 @@ void func_ov001_02309228(void) {
     g->objs[0x18].y = 0x2a;
     switch (g->timer) {
     case 0x96:
-        func_02033550(&g->objs[0x17], func_ov001_0230c0cc() * 2 + 1);
-        g->unk0 = func_020372d0(func_ov001_0230956c, 0, 0, 0xf300, 0, 0);
+        AnimatorSprite_SetAnimation(&g->objs[0x17], func_ov001_0230c0cc() * 2 + 1);
+        g->unk0 = Task_Create(func_ov001_0230956c, 0, 0, 0xf300, 0, 0);
         g->unkBB0 = 1;
         break;
     case 0x118:
-        func_02033550(&g->objs[0x18], 2);
+        AnimatorSprite_SetAnimation(&g->objs[0x18], 2);
         g->unkBC0 = 0;
         func_ov001_0231599c(7);
-        g->unk4 = func_020372d0(func_ov001_023095e0, 0, 0, 0xf200, 0, 0);
+        g->unk4 = Task_Create(func_ov001_023095e0, 0, 0, 0xf200, 0, 0);
         func_ov001_0230d6f4(0x3000);
         func_ov001_02312dd0(func_ov001_0230c0a4(), 0x50);
         break;

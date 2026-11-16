@@ -1,15 +1,15 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 u32 func_02006abc(s32 i);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 extern u8 *data_ov001_0231f528;
-extern s32 data_022c4484;
+extern s32 gZoneSoundData;
 void func_ov001_023029b4(void);
 void func_ov001_022ee9f8(void);
 void func_ov001_02305344(void);
@@ -18,7 +18,7 @@ void func_ov001_022fdaa0(void);
 void func_ov001_022fd500(void);
 void func_ov001_023065d4(void);
 void func_0201b348(void);
-void func_02036894(void);
+void Sound_ResetHeap(void);
 
 void func_ov001_022ff8ac(void) {
     u8 *blk;
@@ -30,8 +30,8 @@ void func_ov001_022ff8ac(void) {
     func_ov001_022fd500();
     func_ov001_023065d4();
     func_0201b348();
-    func_02036894();
-    data_022c4484 = 0;
+    Sound_ResetHeap();
+    gZoneSoundData = 0;
     blk = data_ov001_0231f528;
     if ((u8 *)func_02006abc(0) != blk) {
         u32 size;
@@ -43,6 +43,6 @@ void func_ov001_022ff8ac(void) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
     data_ov001_0231f528 = NULL;
 }

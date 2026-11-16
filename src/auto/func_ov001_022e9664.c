@@ -19,8 +19,8 @@ typedef int code();
 #define true 1
 #define false 0
 
-int func_02055044();
-int func_02055028();
+int SceneChange_Unk_02055044();
+int SceneChange_Unk_02055028();
 int func_ov001_022cee04();
 int func_ov001_022cedc0();
 
@@ -31,10 +31,10 @@ void func_ov001_022e9664(undefined4 param_1)
 {
   switch(param_1) {
   case 0:
-    func_02055044();
+    SceneChange_Unk_02055044();
     return;
   case 1:
-    func_02055028();
+    SceneChange_Unk_02055028();
     return;
   case 2:
     func_ov001_022cee04();

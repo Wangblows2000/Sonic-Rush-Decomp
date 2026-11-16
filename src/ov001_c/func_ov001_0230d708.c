@@ -41,7 +41,7 @@ extern UnkStruct_0230d708_t data_ov001_02317238[];
 
 BOOL func_ov001_0230d150(void);
 void func_02025268(u32 op, const u32 *args, u32 n);
-void func_020315e0(void *o);
+void Model_Draw(void *o);
 
 void func_ov001_0230d708(void) {
     UnkStruct_0230d708 *g = data_ov001_0231f654;
@@ -80,5 +80,5 @@ void func_ov001_0230d708(void) {
         one2 = 1;
         func_02025268(0x12, &one2, 1);
     }
-    func_020315e0(g->obj8C4);
+    Model_Draw(g->obj8C4);
 }

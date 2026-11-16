@@ -28,7 +28,7 @@ struct UnkStruct_0230fe50 {
     s32 unk1EC;
 };
 
-u8 func_02068b04(u8 a, u8 b, s32 c);
+u8 ObjAngle_MoveToward8(u8 a, u8 b, s32 c);
 void func_ov000_023457c8(UnkStruct_0230fe50_o *o, UnkStruct_0230fe50 *s);
 
 void func_ov000_0230fe50(UnkStruct_0230fe50 *s) {
@@ -41,7 +41,7 @@ void func_ov000_0230fe50(UnkStruct_0230fe50 *s) {
         if (s->unk1BC->unk80 == s) {
             s->unk30 = 0x100;
             s->unk3 = (s->unk1BC->unk10 - s->unk10) >> 8;
-            s->unk1 = func_02068b04(s->unk1, s->unk3, 2);
+            s->unk1 = ObjAngle_MoveToward8(s->unk1, s->unk3, 2);
             func_ov000_023457c8(s->unk1BC, s);
             if (s->unk1 != 0) {
                 if (s->unk1 > 0x80)

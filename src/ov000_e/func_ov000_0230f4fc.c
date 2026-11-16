@@ -1,6 +1,6 @@
 #include <ov000_c/stageobj.h>
 
-void func_020694b0(UnkStruct_StageObj *w);
+void StageObj_Move(UnkStruct_StageObj *w);
 void func_ov000_0230f4c8(void);
 
 void func_ov000_0230f4fc(UnkStruct_StageObj *w) {
@@ -12,7 +12,7 @@ void func_ov000_0230f4fc(UnkStruct_StageObj *w) {
     w->unk58 |= 0x80;
     if (w->unk1E0->unk8 != 0) {
         for (i = 0; i < w->unk1E0->unk8; i++)
-            func_020694b0(w);
+            StageObj_Move(w);
     }
     w->unk68 = func_ov000_0230f4c8;
 }

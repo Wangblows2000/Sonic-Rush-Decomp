@@ -10,7 +10,7 @@ void func_ov000_023599b0(s32 a);
 #pragma thumb on
 
 void func_ov000_0235878c(void) {
-    UnkStruct_Scene *w = data_022b4574->work;
+    UnkStruct_Scene *w = gTaskCurrent->work;
     UnkStruct_ScenePos *p;
     u32 step;
     s32 i;
@@ -41,7 +41,7 @@ void func_ov000_0235878c(void) {
     }
     func_ov000_02357878(w, 0x80, 0x98, 0x1000);
     func_ov000_02358224(w, 0, 0x1000);
-    data_02087d04[2].x++;
+    gDisplaySub[2].x++;
     func_ov000_023580bc(w, TRUE);
     w->unk0++;
     if (func_02050018()) {

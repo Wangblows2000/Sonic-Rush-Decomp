@@ -2,12 +2,12 @@
 
 extern void *data_022c4364;
 
-u32 func_0203e934(void);
-void func_0203dbb4(void);
-void func_0203dda4(void);
+u32 WH_GetSystemState(void);
+void WH_End(void);
+void WH_Reset(void);
 s32 func_0203b08c(void);
 void func_0203b52c(void);
-void func_020371c8(void *p);
+void Task_Destroy(void *p);
 
 void func_02042ab8(void) {
     BOOL loop;
@@ -16,14 +16,14 @@ void func_02042ab8(void) {
     BOOL f2;
 
     loop = TRUE;
-    if (func_0203e934() != 0) {
+    if (WH_GetSystemState() != 0) {
         cnt = 0;
         f1 = FALSE;
         f2 = FALSE;
         do {
-            switch (func_0203e934()) {
+            switch (WH_GetSystemState()) {
             case 1:
-                func_0203dbb4();
+                WH_End();
                 break;
             case 0:
                 loop = f2;
@@ -35,7 +35,7 @@ void func_02042ab8(void) {
                 if (++cnt > 3)
                     loop = f1;
                 else
-                    func_0203dda4();
+                    WH_Reset();
                 break;
             case 2:
             case 4:
@@ -44,7 +44,7 @@ void func_02042ab8(void) {
             case 7:
             case 8:
             default:
-                func_0203dda4();
+                WH_Reset();
                 break;
             }
         } while (loop);
@@ -65,6 +65,6 @@ void func_02042ab8(void) {
     }
     if (data_022c4364 == NULL)
         return;
-    func_020371c8(data_022c4364);
+    Task_Destroy(data_022c4364);
     data_022c4364 = NULL;
 }

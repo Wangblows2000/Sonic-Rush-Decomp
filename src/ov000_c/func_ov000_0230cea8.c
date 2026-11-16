@@ -15,12 +15,12 @@ extern UnkStruct_0230cea8_Pl *data_ov000_0236ac60;
 extern s32 data_ov000_0236a00c;
 
 s32 func_02002094(s32 a, s32 b);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 BOOL func_0201bea8(s32 a, s32 b);
 void func_0201bf1c(s32 a);
 void func_0204b774(s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_0201c070(s32 a, s32 b);
-s32 func_020681e0(s32 a, s32 b);
+s32 Sound_CalcPan(s32 a, s32 b);
 void func_0201bdb0(s32 a, s32 b, s32 c);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
@@ -61,7 +61,7 @@ void func_ov000_0230cea8(UnkStruct_StageObj *w) {
     if (!(w->unk1F4 & 1)) {
         f = w->unk58;
         if ((f & 0x10) && (f & 1)) {
-            func_020446b0(4);
+            ScreenShake_Start(4);
             w->unk58 |= 0x10;
             w->unk30 = -0x280;
             w->unk8 = (w->unk8 & 0xffff) | (w->unk34 << 16);
@@ -84,7 +84,7 @@ void func_ov000_0230cea8(UnkStruct_StageObj *w) {
             w->unk58 &= ~0x10;
             if (w->unk1F4 & 1) {
                 w->unk62 = 4;
-                func_020446b0(4);
+                ScreenShake_Start(4);
                 w->unk34 = (u32)w->unk8 >> 16;
                 w->unkC = 0;
             }
@@ -101,6 +101,6 @@ void func_ov000_0230cea8(UnkStruct_StageObj *w) {
     } else {
         func_0201c070(w->unk1DC, 0);
     }
-    func_0201bdb0(w->unk1DC, 0xffff, func_020681e0(w->unk10, data_ov000_0236ac60->unk10));
+    func_0201bdb0(w->unk1DC, 0xffff, Sound_CalcPan(w->unk10, data_ov000_0236ac60->unk10));
     w->unk8 = (w->unk8 & 0xffff0000) | w->unk1;
 }

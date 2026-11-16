@@ -6,8 +6,8 @@ void func_02000900(void);
 void func_02000914(void);
 void func_020009b8(void);
 void func_02000afc(void);
-void func_0202fcc8(void);
-void func_0202fcdc(void);
+void _fp_init(void);
+void __call_static_initializers(void);
 void init_cp15(void);
 void main(void);
 
@@ -63,9 +63,9 @@ asm void Entry(void)
     add r1, r1, #0x3c
     ldr r0, =OS_IrqHandler
     str r0, [r1]
-    bl func_0202fcc8
+    bl _fp_init
     bl func_02000afc
-    bl func_0202fcdc
+    bl __call_static_initializers
     ldr r1, =main
     ldr lr, =0xffff0000
     bx r1

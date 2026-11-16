@@ -19,9 +19,9 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_0208fe70[];
+extern unsigned char gRandSeed[];
 int func_ov000_0231a5a0();
-int func_02069818();
+int StageObj_SetAnimation();
 
 void func_ov000_0231a608(int param_1)
 
@@ -29,9 +29,9 @@ void func_ov000_0231a608(int param_1)
   undefined4 uVar1;
   int iVar2;
   
-  func_02069818(param_1,4);
-  iVar2 = *((int *)data_0208fe70) * 0x196225 + 0x3c6ef35f;
-  *((int *)data_0208fe70) = iVar2;
+  StageObj_SetAnimation(param_1,4);
+  iVar2 = *((int *)gRandSeed) * 0x196225 + 0x3c6ef35f;
+  *((int *)gRandSeed) = iVar2;
   uVar1 = ((int)func_ov000_0231a5a0);
   *(ushort *)(param_1 + 0x30) = -0x61 - ((ushort)((uint)iVar2 >> 0x10) & 0x7e);
   *(undefined4 *)(param_1 + 0x68) = uVar1;

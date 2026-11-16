@@ -30,7 +30,7 @@ extern s16 data_0206e470[];
 
 u16 func_020027a4(s32 y, s32 x);
 void func_ov001_022fba78(UnkStruct_022fb974 *p);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -54,5 +54,5 @@ void func_ov001_022fb974(UnkStruct_022fb974_s **self, UnkStruct_022fb974 **other
     p->vx = FX_Mul(COS(a), 0x8000);
     p->vy = FX_Mul(SIN(a), 0x8000);
     p->state = func_ov001_022fba78;
-    func_02036754(0, 0, 0xa9);
+    Sound_PlaySeqArc(0, 0, 0xa9);
 }

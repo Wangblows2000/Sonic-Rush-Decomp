@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 typedef struct {
     u16 *dst;
@@ -12,7 +12,7 @@ typedef struct {
     void *res;
 } UnkPal_0206cf8c;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern u32 data_0208a764[];
 
 u32 func_020030d0(void);
@@ -24,7 +24,7 @@ void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 
 static inline u8 *Alloc_0206cf8c(u32 sz) {
     u32 size = sz;
-    u8 *p = func_02034a40(data_0208fe80, size, 0x20);
+    u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);

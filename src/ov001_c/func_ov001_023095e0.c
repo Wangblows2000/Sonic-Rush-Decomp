@@ -23,7 +23,7 @@ typedef struct UnkStruct_023095e0 {
 } UnkStruct_023095e0;
 
 extern UnkStruct_023095e0 *data_ov001_0231f5bc;
-extern UnkStruct_023095e0_br data_0208922c;
+extern UnkStruct_023095e0_br gDisplayMain;
 
 BOOL func_0202e5e4(float a, float b);
 BOOL func_0202e528(float a, float b);
@@ -50,25 +50,25 @@ void func_ov001_023095e0(void) {
         u32 v = (REG_DISPCNT & 0x1f00) >> 8;
         REG_DISPCNT = (REG_DISPCNT & ~0x1f00) | ((v | 2) << 8);
     }
-    data_0208922c.b1 = 1;
-    data_0208922c.b8 = 1;
-    data_0208922c.b9 = 1;
-    data_0208922c.e0 = 4;
-    data_0208922c.b10 = 1;
-    data_0208922c.b11 = 1;
-    data_0208922c.b6 = 1;
-    data_0208922c.e8 = 0xf - data_0208922c.e0;
+    gDisplayMain.b1 = 1;
+    gDisplayMain.b8 = 1;
+    gDisplayMain.b9 = 1;
+    gDisplayMain.e0 = 4;
+    gDisplayMain.b10 = 1;
+    gDisplayMain.b11 = 1;
+    gDisplayMain.b6 = 1;
+    gDisplayMain.e8 = 0xf - gDisplayMain.e0;
     if (g->timer >= 0x168 && g->timer < 0x172) {
         f = (g->timer - 0x168) / 10.0f;
         if (func_0202e5e4(f, 1.0f))
             f = 1.0f;
-        data_0208922c.e0 = (u16)(func_0202f17c(4.0f * f) & 0xf);
-        data_0208922c.e8 = (u16)((0xf - data_0208922c.e0) & 0xf);
+        gDisplayMain.e0 = (u16)(func_0202f17c(4.0f * f) & 0xf);
+        gDisplayMain.e8 = (u16)((0xf - gDisplayMain.e0) & 0xf);
     } else if (g->timer >= 0x258) {
         f = 1.0f - (g->timer - 0x258) / 10.0f;
         if (func_0202e528(f, 0.0f))
             f = 0.0f;
-        data_0208922c.e0 = (u16)(func_0202f17c(4.0f * f) & 0xf);
-        data_0208922c.e8 = (u16)((0xf - data_0208922c.e0) & 0xf);
+        gDisplayMain.e0 = (u16)(func_0202f17c(4.0f * f) & 0xf);
+        gDisplayMain.e8 = (u16)((0xf - gDisplayMain.e0) & 0xf);
     }
 }

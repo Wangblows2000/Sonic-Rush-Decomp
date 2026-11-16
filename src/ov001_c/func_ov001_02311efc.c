@@ -28,7 +28,7 @@ typedef struct UnkStruct_02311efc {
 
 void func_02022270(u32 index, u32 value);
 void func_02025268(u32 op, const u32 *args, u32 n);
-void func_020315e0(void *o);
+void Model_Draw(void *o);
 
 static inline void VecSet(UnkStruct_02311efc_v *d, s32 x, s32 y, s32 z) {
     d->x = x;
@@ -51,7 +51,7 @@ void func_ov001_02311efc(UnkStruct_02311efc *p) {
                 p->unkAC->rot = p->rot[i];
                 VecSet(&p->unkAC->pos, p->pos[i].x, p->pos[i].y, p->pos[i].z);
                 func_02025268(0x11, 0, 0);
-                func_020315e0(p->unkAC);
+                Model_Draw(p->unkAC);
                 one = 1;
                 func_02025268(0x12, &one, 1);
             }
@@ -66,7 +66,7 @@ void func_ov001_02311efc(UnkStruct_02311efc *p) {
         p->unkAC->rot = p->rot[k];
         VecSet(&p->unkAC->pos, p->pos[k].x, p->pos[k].y, p->pos[k].z);
         func_02025268(0x11, 0, 0);
-        func_020315e0(p->unkAC);
+        Model_Draw(p->unkAC);
         one2 = 1;
         func_02025268(0x12, &one2, 1);
     }

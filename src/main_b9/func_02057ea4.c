@@ -16,9 +16,9 @@ typedef struct {
 
 extern UnkEnt_02057ea4 data_02076afc[];
 extern UnkState_02057ea4 data_022c4678;
-extern u16 data_022c4da0;
+extern u16 gTalkDemoId;
 
-void func_02060f40(void);
+void TalkDemo_Create(void);
 
 #pragma thumb on
 void func_02057ea4(UnkObj_02057ea4 *o, s32 v) {
@@ -31,13 +31,13 @@ void func_02057ea4(UnkObj_02057ea4 *o, s32 v) {
         t = (void *)data_02076afc;
         for (i = 0;; i++) {
             if (data_022c4678.idx == t[i].id) {
-                data_022c4da0 = t[i].val;
+                gTalkDemoId = t[i].val;
                 break;
             }
         }
     } else {
-        data_022c4da0 = v;
+        gTalkDemoId = v;
     }
-    func_02060f40();
+    TalkDemo_Create();
 }
 #pragma thumb reset

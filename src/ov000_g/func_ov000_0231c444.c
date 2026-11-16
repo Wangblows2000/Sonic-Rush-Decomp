@@ -35,7 +35,7 @@ typedef struct {
     s16 cnt[16];
 } UnkStruct_0231c444;
 
-s16 func_02068df8(s16 a, s32 b, s32 c);
+s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
 s32 func_02066a9c(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0232ab9c(void *w, s32 a, s32 b, s32 c);
 void func_ov000_0231c21c(void *w);
@@ -54,7 +54,7 @@ void func_ov000_0231c444(UnkStruct_0231c444 *w) {
             w->unkC = 0;
         }
     }
-    w->unk30 = func_02068df8(w->unk30, -6, 0x100);
+    w->unk30 = ObjSpd_UpSet(w->unk30, -6, 0x100);
     w->unk32C += 4;
     for (i = 0; i < 16; i++) {
         if (i == 3) {

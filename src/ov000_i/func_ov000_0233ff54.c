@@ -22,7 +22,7 @@ typedef struct {
 } UnkStruct_0233ff54_Pl;
 
 extern UnkStruct_0233ff54_Dma data_02087cdc[];
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 extern UnkStruct_0233ff54_Pl data_ov000_0236aad8[];
 
 void func_ov000_0233ff54(UnkStruct_0233ff54 *w) {
@@ -37,7 +37,7 @@ void func_ov000_0233ff54(UnkStruct_0233ff54 *w) {
             d->src1 = w->buf1[i];
             d->unkC = 4;
             d->unk10 = 0;
-            data_02087cb8 |= 0x400 << i;
+            gSystemFlags |= 0x400 << i;
             w->flags[i] |= 1;
         }
     }

@@ -15,7 +15,7 @@ typedef struct {
     UnkStruct_02358444 *work;
 } UnkStruct_02358444_Task;
 
-extern UnkStruct_02358444_Task *data_022b4574;
+extern UnkStruct_02358444_Task *gTaskCurrent;
 
 UnkStruct_02358444_Sync *func_020514e4(void);
 UnkStruct_02358444_Sync *func_02051474(void);
@@ -27,7 +27,7 @@ void func_ov000_02359c0c(UnkStruct_02358444_Task *t);
 #pragma thumb on
 
 void func_ov000_02358444(void) {
-    UnkStruct_02358444 *w = data_022b4574->work;
+    UnkStruct_02358444 *w = gTaskCurrent->work;
     UnkStruct_02358444_Sync *a = func_020514e4();
     UnkStruct_02358444_Sync *b = func_02051474();
     UnkStruct_02358444_Sync *c = func_02051404();
@@ -46,7 +46,7 @@ void func_ov000_02358444(void) {
         } else if (c->unk3 >= 3) {
             func_ov000_02356694(0x10, 0, 0x10, 0);
             func_02052168(2);
-            func_ov000_02359c0c(data_022b4574);
+            func_ov000_02359c0c(gTaskCurrent);
         }
     } else {
         if (b->unk3 == 0) {
@@ -62,7 +62,7 @@ void func_ov000_02358444(void) {
         } else if (a->unk3 == 2 && b->unk3 == 3) {
             func_ov000_02356694(0x10, 0, 0x10, 0);
             func_02052168(2);
-            func_ov000_02359c0c(data_022b4574);
+            func_ov000_02359c0c(gTaskCurrent);
         }
     }
 }

@@ -15,7 +15,7 @@ typedef struct {
     s32 cnt;
 } UnkWork_02052f4c;
 
-extern UnkDisp_02052f4c *data_02072c78[];
+extern UnkDisp_02052f4c *gDisplayTable[];
 
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
 
@@ -25,14 +25,14 @@ void func_02052f4c(UnkWork_02052f4c *w) {
 
     w->cnt++;
     if (w->cnt >= 30) {
-        data_02072c78[1]->blendCnt = 0x40;
-        data_02072c78[1]->blendAlpha = 0;
+        gDisplayTable[1]->blendCnt = 0x40;
+        gDisplayTable[1]->blendAlpha = 0;
         plane = (REG_DB_DISPCNT & 0x1f00) >> 8;
         REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | ((plane & ~2) << 8);
         w->flags &= ~1;
         w->unkdc = 0;
     } else {
         v = (w->cnt * 31 / 30) & 0x1f;
-        data_02072c78[1]->blendAlpha = (31 - v) | (v << 8);
+        gDisplayTable[1]->blendAlpha = (31 - v) | (v << 8);
     }
 }

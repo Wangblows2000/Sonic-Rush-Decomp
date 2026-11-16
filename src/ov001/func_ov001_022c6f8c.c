@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-extern u16 data_0208922c[];
+extern u16 gDisplayMain[];
 void func_ov001_022c6ac4(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL func_ov001_022c69ac(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022c7a34(void *p, void (*f)(void));
-void func_020372d0(void (*f)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
+void Task_Create(void (*f)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov001_022c6ef4(void);
 void func_ov001_022c6bd4(void);
 
@@ -19,7 +19,7 @@ void func_ov001_022c6f8c(u8 *p) {
     if (*(s32 *)(p + 0x698) == *(s32 *)(p + 0x69c)) {
         return;
     }
-    data_0208922c[4] = 0;
-    data_0208922c[5] = 0;
-    func_020372d0(func_ov001_022c6bd4, 0, 0, 0xf400, 0x1173, 0);
+    gDisplayMain[4] = 0;
+    gDisplayMain[5] = 0;
+    Task_Create(func_ov001_022c6bd4, 0, 0, 0xf400, 0x1173, 0);
 }

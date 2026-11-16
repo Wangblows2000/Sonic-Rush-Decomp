@@ -13,16 +13,16 @@ typedef struct UnkTask_022f84bc {
     UnkStruct_022f84bc *unk10;
 } UnkTask_022f84bc;
 
-extern UnkTask_022f84bc *data_022b4574;
+extern UnkTask_022f84bc *gTaskCurrent;
 
-void func_020316f4(void *a);
-void func_020315e0(void *a);
+void Model_Animate(void *a);
+void Model_Draw(void *a);
 
 void func_ov000_022f84bc(void) {
-    UnkStruct_022f84bc *s = data_022b4574->unk10;
+    UnkStruct_022f84bc *s = gTaskCurrent->unk10;
     void *a = s->unk20C;
     if (s->unk5C & 0x20)
         return;
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
 }

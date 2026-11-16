@@ -8,7 +8,7 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 extern u8 data_ov000_023661a8[][3];
 
-void func_020693f0(s32 a, s16 *b, s32 c);
+void Math_RotateVec2S16(s32 a, s16 *b, s32 c);
 UnkStruct_StageObj *func_ov000_023263c0(s32 kind, s32 x, s32 y);
 
 void func_ov000_022fb738(UnkStruct_StageObj *w) {
@@ -23,7 +23,7 @@ void func_ov000_022fb738(UnkStruct_StageObj *w) {
     else
         kind = Rand() & 0xf;
     dy = 0x800;
-    func_020693f0(0, &dy, w->unk5);
+    Math_RotateVec2S16(0, &dy, w->unk5);
     o = func_ov000_023263c0(kind, w->unk10, w->unk14 - dy);
     if (o == NULL)
         return;

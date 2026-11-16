@@ -32,22 +32,22 @@ typedef struct UnkStruct_022ca11c_4 {
     u32 unk20C;
 } UnkStruct_022ca11c_4;
 
-extern UnkStruct_022ca11c_2 *data_022b4574;
+extern UnkStruct_022ca11c_2 *gTaskCurrent;
 extern UnkStruct_022ca11c_4 *data_ov000_02369acc;
 
-void func_020316f4(UnkStruct_022ca11c_3 *p);
-void func_020315e0(UnkStruct_022ca11c_3 *p);
+void Model_Animate(UnkStruct_022ca11c_3 *p);
+void Model_Draw(UnkStruct_022ca11c_3 *p);
 void func_02025268(s32 a, void *p, s32 n);
 void func_02025a94(void *p, s32 a);
 
 void func_ov000_022ca11c(void) {
-    UnkStruct_022ca11c *o = data_022b4574->unk10;
+    UnkStruct_022ca11c *o = gTaskCurrent->unk10;
     UnkStruct_022ca11c_3 *p = &o->unk228;
     if (o->unk5C & 0x20)
         return;
     p->unk48 = o->unk10 << 4;
     p->unk4C = -(o->unk14 << 4);
     p->unk50 = o->unk18 << 4;
-    func_020316f4(p);
-    func_020315e0(p);
+    Model_Animate(p);
+    Model_Draw(p);
 }

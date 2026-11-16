@@ -27,7 +27,7 @@ struct UnkStruct_022d66cc {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 typedef struct UnkStruct_022d66cc_r {
     u8 pad[0x2e];
@@ -59,7 +59,7 @@ typedef struct UnkStruct_022d66cc_p {
 
 extern UnkStruct_022d66cc_b *data_ov000_02369b14;
 extern UnkStruct_022d66cc_p *data_ov000_0236ac60;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
 UnkStruct_022d66cc_q *func_ov000_02328548(s32 a, s32 b, s32 c, s32 d);
@@ -68,12 +68,12 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
 void func_0201c070(s32 a, s32 b);
 void func_0201bf1c(s32 a);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d6688(UnkStruct_022d66cc *s);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022d66cc(UnkStruct_022d66cc *s) {
@@ -81,7 +81,7 @@ void func_ov000_022d66cc(UnkStruct_022d66cc *s) {
     UnkStruct_022d66cc_q *q;
     u8 mtx[0x24];
     u16 ang;
-    func_02031a68(&s->unk2C4, 0, s->unk434, 2, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 2, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
     r->unk20C &= ~1;
@@ -97,6 +97,6 @@ void func_ov000_022d66cc(UnkStruct_022d66cc *s) {
     data_ov000_02369b14->unk20C &= ~4;
     func_0201c070(s->unk2C0, 0x20);
     func_0201bf1c(s->unk2C0);
-    func_02036754(0, 0, 0xcc);
+    Sound_PlaySeqArc(0, 0, 0xcc);
     s->func = func_ov000_022d6688;
 }

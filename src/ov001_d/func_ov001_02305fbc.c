@@ -19,9 +19,9 @@ typedef struct UnkStruct_02305fbc {
 
 extern UnkStruct_02305fbc *data_ov001_0231f5a8;
 extern UnkStruct_02305fbc_w data_02087d14;
-extern void *data_022b4574;
+extern void *gTaskCurrent;
 
-void func_020371c8(void *t);
+void Task_Destroy(void *t);
 void func_ov001_02305ee8(void);
 void func_ov001_02305c84(void);
 
@@ -62,7 +62,7 @@ void func_ov001_02305fbc(void) {
         w->unk4 = w->unk6;
         return;
     }
-    func_020371c8(data_022b4574);
+    Task_Destroy(gTaskCurrent);
     data_ov001_0231f5a8->unk8 = NULL;
     w->unkC = 0;
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | ((GetPlanes() & ~1) << 8);

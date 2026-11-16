@@ -16,10 +16,10 @@ extern u8 data_ov000_0236a18c[];
 extern u8 data_ov000_023661c0[];
 
 void func_ov000_02312954(void);
-void func_02069eb0(void *w, s32 a, void *b);
-s32 func_02068434(void *a, s32 b, s32 c);
-void func_0203363c(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
-s32 func_0203663c(void);
+void StageObj_SetSharedSpriteVram(void *w, s32 a, void *b);
+s32 ObjVramRef_Acquire(void *a, s32 b, s32 c);
+void AnimatorSprite_Init(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+s32 Sound_AllocHandle(void);
 void func_ov000_023127e8(UnkStruct_023129a0 *w);
 void func_ov000_02312930(UnkStruct_023129a0 *w);
 
@@ -28,23 +28,23 @@ UnkStruct_023129a0 *func_ov000_023129a0(s32 a, s32 b, s32 c) {
     UnkStruct_023129a0 *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_02312954, 0, 0xf6, 2, sizeof(UnkStruct_023129a0));
+    task = Task_Create(StageObj_Main, func_ov000_02312954, 0, 0xf6, 2, sizeof(UnkStruct_023129a0));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_023129a0));
     func_ov000_022fba50(w, a, b, c);
-    func_02069f1c(w, data_ov000_02366d64, 0, data_ov000_0236a16c, data_ov000_02369ba0);
-    func_0206a054(w, 0, 0x31);
-    func_02069eb0(w, 0x20, data_ov000_0236a174);
+    StageObj_Load2dBAC(w, data_ov000_02366d64, 0, data_ov000_0236a16c, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 0, 0x31);
+    StageObj_SetSharedSpriteVram(w, 0x20, data_ov000_0236a174);
     w->base.spr0.unk46 = 0x14;
     w->base.spr1.unk46 = 0x14;
     w->unk29C = data_ov000_0236a184;
-    func_0203363c(&w->s0, *w->base.unk8C, 0, 0, 0, 0, func_02068434(data_ov000_0236a184, 0, 8), 0, 0x5000200);
-    func_0203363c(&w->s1, *w->base.unk8C, 0, 0, 1, 0, func_02068434(data_ov000_0236a18c, 1, 8), 0, 0x5000600);
-    func_02033550(&w->s0, 1);
-    func_02033550(&w->s1, 1);
+    AnimatorSprite_Init(&w->s0, *w->base.unk8C, 0, 0, 0, 0, ObjVramRef_Acquire(data_ov000_0236a184, 0, 8), 0, 0x5000200);
+    AnimatorSprite_Init(&w->s1, *w->base.unk8C, 0, 0, 1, 0, ObjVramRef_Acquire(data_ov000_0236a18c, 1, 8), 0, 0x5000600);
+    AnimatorSprite_SetAnimation(&w->s0, 1);
+    AnimatorSprite_SetAnimation(&w->s1, 1);
     w->s0.unk46 = w->s1.unk46 = 0x14;
     w->s0.unk2C &= ~0x60000;
     w->s0.unk2C |= 0x40000;
@@ -62,7 +62,7 @@ UnkStruct_023129a0 *func_ov000_023129a0(s32 a, s32 b, s32 c) {
     w->base.unk1D6 = -0x1c;
     w->base.unk58 |= 0x2100;
     w->base.unk54 |= 2;
-    w->base.unk1DC = func_0203663c();
+    w->base.unk1DC = Sound_AllocHandle();
     func_ov000_023127e8(w);
     func_ov000_02312930(w);
     return w;

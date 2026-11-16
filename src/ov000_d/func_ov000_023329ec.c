@@ -31,7 +31,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-void func_020698f0(void *w, s32 a);
+void StageObj_SetOAMPriority(void *w, s32 a);
 
 static inline s16 UnkCos_023329ec(u16 a) {
     s32 i = (s32)(a & 0xffff) >> 4;
@@ -59,9 +59,9 @@ void func_ov000_023329ec(UnkStruct_023329ec *w) {
         w->unk1C += w->unk2E;
         w->unk20 += w->unk30;
         if (w->unk2E < 0) {
-            func_020698f0(w, 2);
+            StageObj_SetOAMPriority(w, 2);
         } else {
-            func_020698f0(w, 1);
+            StageObj_SetOAMPriority(w, 1);
         }
     }
     if (w->unk5C & 8) {

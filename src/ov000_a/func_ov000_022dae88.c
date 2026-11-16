@@ -66,12 +66,12 @@ typedef struct UnkStruct_022dae88_b {
 } UnkStruct_022dae88_b;
 
 extern UnkStruct_022dae88_b *data_ov000_02369b14;
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02365544[];
 extern s32 data_ov000_02369b18[];
 
-UnkTask_022dae88 *func_020372d0(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
-void func_0206c3d0(void);
+UnkTask_022dae88 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
+void StageObj_Main(void);
 void func_ov000_022d6380(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov000_022d5d10(void);
@@ -81,11 +81,11 @@ void func_020212e0(void *ctx);
 void func_ov000_022fba50(UnkStruct_022dae88 *s, void *a, s32 x, s32 y);
 void func_ov000_022d602c(void);
 void func_ov000_022d5f38(void);
-void func_0206e3c0(UnkStruct_022dae88_h *h, s32 a, s32 b, s32 c, s32 d);
-void func_0206e2b4(UnkStruct_022dae88_h *h, s32 a, s32 b);
+void ObjRect_SetBox2D(UnkStruct_022dae88_h *h, s32 a, s32 b, s32 c, s32 d);
+void ObjRect_SetAtkDefFlags(UnkStruct_022dae88_h *h, s32 a, s32 b);
 void func_ov000_022d5d78(void);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
     MIi_CpuClear16(*(volatile u16 *)&data, dest, size);
@@ -97,11 +97,11 @@ UnkStruct_022dae88 *func_ov000_022dae88(void *a, s32 x, s32 y) {
     UnkStruct_022dae88_b *b = data_ov000_02369b14;
     UnkStruct_022dae88_h *h;
     UnkStruct_022dae88_a *p;
-    s = func_020372d0(func_0206c3d0, func_ov000_022d6380, 0, 0x502, 2, 0x578)->unk10;
+    s = Task_Create(StageObj_Main, func_ov000_022d6380, 0, 0x502, 2, 0x578)->unk10;
     MI_CpuFill16(s, 0, 0x578);
     s->unk68 = func_ov000_022d5d10;
     s->unk212 = 0x1000;
-    func_02021310(ctx, data_ov000_02365544, data_022c4488);
+    func_02021310(ctx, data_ov000_02365544, gZoneActArchive);
     s->unk290.unk170 = func_02021264(ctx, 8);
     s->unk404.unk170 = func_02021264(ctx, 8);
     func_020212e0(ctx);
@@ -118,19 +118,19 @@ UnkStruct_022dae88 *func_ov000_022dae88(void *a, s32 x, s32 y) {
     s->unk14 = b->unk14 - 0x2000;
     s->unk18 = b->unk18;
     h = &s->unk134;
-    func_0206e3c0(h, -0x20, -0x20, 0x20, 0x20);
-    func_0206e2b4(h, 0x11, 0);
+    ObjRect_SetBox2D(h, -0x20, -0x20, 0x20, 0x20);
+    ObjRect_SetAtkDefFlags(h, 0x11, 0);
     h->unk18 = s;
     h->unk1C = func_ov000_022d5d78;
     h->unkA &= ~4;
     h->unkA |= 0x80;
     h = &s->unk160;
-    func_0206e3c0(h, -0x20, -0x20, 0x20, 0x20);
+    ObjRect_SetBox2D(h, -0x20, -0x20, 0x20, 0x20);
     h->unk18 = s;
     h->unkA &= ~4;
     p = &s->unk290;
-    func_02031c1c(p, 0);
-    func_02031bd0(p, s->unk290.unk16C, 0);
+    Model_Init(p, 0);
+    Model_SetResource(p, s->unk290.unk16C, 0);
     p->unk48 = b->unk10 << 4;
     p->unk4C = -(b->unk14 << 4);
     p->unk50 = b->unk18 << 4;
@@ -139,8 +139,8 @@ UnkStruct_022dae88 *func_ov000_022dae88(void *a, s32 x, s32 y) {
     p->unk18 = p->unk1C;
     p->unkA = 4;
     p = &s->unk404;
-    func_02031c1c(p, 0);
-    func_02031bd0(p, s->unk404.unk16C, 0);
+    Model_Init(p, 0);
+    Model_SetResource(p, s->unk404.unk16C, 0);
     p->unk48 = b->unk10 << 4;
     p->unk4C = -(b->unk14 << 4);
     p->unk50 = b->unk18 << 4;

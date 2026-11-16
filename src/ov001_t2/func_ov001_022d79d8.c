@@ -21,8 +21,8 @@ typedef struct {
 extern UnkBright_022d79d8 data_02087d44;
 extern UnkBright_022d79d8 data_0208926c;
 
-void func_02037038(u16 lo, u16 hi);
-UnkTask_022d79d8 *func_020372d0(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
+void Task_DestroyRange(u16 lo, u16 hi);
+UnkTask_022d79d8 *Task_Create(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022d84f8(void);
 
@@ -30,13 +30,13 @@ void func_ov001_022d84f8(void);
 void func_ov001_022d79d8(s32 a, s32 b) {
     UnkWork_022d79d8 *w;
 
-    func_02037038(0x4000, 0x4000);
+    Task_DestroyRange(0x4000, 0x4000);
     if (a != 0) {
         if (data_0208926c.bright != 16 && data_0208926c.bright != -16) {
             data_0208926c.bright = 16;
         }
         data_02087d44.bright = data_0208926c.bright;
-        w = func_020372d0(func_ov001_022d84f8, 0, 0, 0x4000, 0x1000, 0x10)->work;
+        w = Task_Create(func_ov001_022d84f8, 0, 0, 0x4000, 0x1000, 0x10)->work;
         {
             vu16 z = 0;
             MIi_CpuClear16(z, w, 0x10);

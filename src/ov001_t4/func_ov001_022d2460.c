@@ -54,15 +54,15 @@ typedef struct {
     s16 brightness;
 } UnkBr_022d2460;
 
-extern UnkTask_022d2460 *data_022b4574;
-extern UnkTouch_022d2460 data_022b65b4;
-extern UnkPad_022d2460 data_022503e0;
+extern UnkTask_022d2460 *gTaskCurrent;
+extern UnkTouch_022d2460 gTouchState;
+extern UnkPad_022d2460 gPad;
 extern UnkBr_022d2460 data_0208926c;
 extern UnkBr_022d2460 data_02087d44;
 
-void func_0203344c(UnkSpr_022d2460 *s, s32 a, s32 b);
-void func_02032d2c(UnkSpr_022d2460 *s);
-void func_02033550(UnkSpr_022d2460 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022d2460 *s, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_022d2460 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022d2460 *s, u16 anim);
 s32 func_ov001_022cfb44(UnkSpr_022d2460 *s, u16 x, u16 y);
 void func_02020204(void *p, s32 a);
 void func_ov001_022d019c(UnkWork_022d2460 *w);
@@ -72,7 +72,7 @@ void func_ov001_022d1c20(void);
 
 #pragma thumb on
 void func_ov001_022d2460(void) {
-    UnkWork_022d2460 *w = data_022b4574->work;
+    UnkWork_022d2460 *w = gTaskCurrent->work;
     s32 hit;
     s32 i;
 
@@ -80,22 +80,22 @@ void func_ov001_022d2460(void) {
     w->unk14++;
     if (w->unkbb0 == 1) {
         if (w->unkbb4 != 0 || (w->unk4 & 0x30)) {
-            func_0203344c(&w->spr930, 0, 0);
-            func_02032d2c(&w->spr930);
+            AnimatorSprite_ProcessAnimation(&w->spr930, 0, 0);
+            AnimatorSprite_Draw(&w->spr930);
         }
-        func_0203344c(&w->spr978, 0, 0);
-        func_02032d2c(&w->spr978);
+        AnimatorSprite_ProcessAnimation(&w->spr978, 0, 0);
+        AnimatorSprite_Draw(&w->spr978);
     }
     if (w->unk4 > 0x1e && w->unkbb0 == 1 && w->unkbb4 == 0) {
         hit = 0;
-        if (data_022b65b4.flags & 0x40) {
-            hit = func_ov001_022cfb44(&w->spr978, data_022b65b4.x, data_022b65b4.y);
+        if (gTouchState.flags & 0x40) {
+            hit = func_ov001_022cfb44(&w->spr978, gTouchState.x, gTouchState.y);
         }
-        if (hit == 1 || (data_022503e0.trg & 8)) {
+        if (hit == 1 || (gPad.trg & 8)) {
             w->unkbb4 = 1;
             w->unkbb8 = 0x3c;
-            func_02033550(&w->spr930, 1);
-            func_02033550(&w->spr978, 0x25);
+            AnimatorSprite_SetAnimation(&w->spr930, 1);
+            AnimatorSprite_SetAnimation(&w->spr978, 0x25);
             func_02020204(w->unkc, 0x12c);
         }
     }

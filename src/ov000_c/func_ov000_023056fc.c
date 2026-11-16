@@ -16,10 +16,10 @@ extern s16 data_0206e470[];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-s16 func_02068df8(s32 v, s32 a, s32 m);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void func_0201c070(s32 a, s32 b);
 void func_ov000_02305e28(void *p);
-s32 func_02068ce4(s32 v, s32 t, s32 a, s32 b, s32 c);
+s32 ObjShift_Set(s32 v, s32 t, s32 a, s32 b, s32 c);
 void func_02000dfc(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
@@ -44,7 +44,7 @@ void func_ov000_023056fc(UnkStruct_StageObj *w) {
     o = w->unk204;
     if (o != NULL) {
         if (w->unk14 > w->unk1EC << 8) {
-            w->unk30 = func_02068df8(w->unk30, -0x18, 0x800);
+            w->unk30 = ObjSpd_UpSet(w->unk30, -0x18, 0x800);
         } else {
             if (w->unk30 != 0) {
                 w->unk62 = 0x80;
@@ -68,7 +68,7 @@ void func_ov000_023056fc(UnkStruct_StageObj *w) {
         w->unk30 = 0;
         w->unk20 = w->unk14;
         if (!(w->unk54 & 2))
-            w->unk14 = func_02068ce4(w->unk14, (w->unk1EC + w->unk1E0->unk7 + w->unk1E0->unk8 + w->unk1E0->unk9) << 8, 4, 0x400, 0x20);
+            w->unk14 = ObjShift_Set(w->unk14, (w->unk1EC + w->unk1E0->unk7 + w->unk1E0->unk8 + w->unk1E0->unk9) << 8, 4, 0x400, 0x20);
     }
     func_02000dfc(mdl->unk24);
     idx = (s32)((u16)w->unk8 & 0xffff) >> 4;

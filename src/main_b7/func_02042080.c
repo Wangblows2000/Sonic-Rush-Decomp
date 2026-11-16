@@ -6,21 +6,21 @@ typedef struct {
     u16 unk1a;
 } UnkObj_02042080;
 
-extern u32 data_02087cb8;
-extern u8 data_0224ffa0[];
-u32 func_0203e944(void);
-void func_0203dc28(void);
+extern u32 gSystemFlags;
+extern u8 gWirelessSendBuffer[];
+u32 WH_GetBitmap(void);
+void WH_Finalize(void);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void func_02041fac(void *);
 
 void func_02042080(UnkObj_02042080 *o) {
-    if ((func_0203e944() & ~1) == 0) {
-        data_02087cb8 &= ~0x100;
-        data_02087cb8 |= 0x200;
-        func_0203dc28();
+    if ((WH_GetBitmap() & ~1) == 0) {
+        gSystemFlags &= ~0x100;
+        gSystemFlags |= 0x200;
+        WH_Finalize();
         {
             vu32 v = 0;
-            MIi_CpuClear32(v, data_0224ffa0, 4);
+            MIi_CpuClear32(v, gWirelessSendBuffer, 4);
         }
         o->unk1a = 0;
         o->func = func_02041fac;

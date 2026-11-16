@@ -32,9 +32,9 @@ typedef struct {
     UnkWork_022cadbc *work;
 } UnkStruct_022cadbc;
 
-void func_02033550(UnkSpr_022cadbc *s, u16 anim);
-void func_0203344c(UnkSpr_022cadbc *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022cadbc *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022cadbc *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022cadbc *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022cadbc *s);
 void func_ov001_022ca2d4(UnkStruct_022cadbc *p, s16 x, s16 y, s32 a);
 void func_ov001_022ca1cc(UnkStruct_022cadbc *p, s32 x, s32 y, s32 a);
 void func_ov001_022ca150(UnkStruct_022cadbc *p, s32 x, s32 y, s32 a);
@@ -52,13 +52,13 @@ void func_ov001_022cadbc(UnkStruct_022cadbc *p, s16 x, s16 y) {
         has = w->unk14;
         s = &w->sprites[0];
         if (w->ids[0] != 0x15) {
-            func_02033550(s, 0x15);
+            AnimatorSprite_SetAnimation(s, 0x15);
             w->ids[0] = 0x15;
         }
         s->x = x + 0x18;
         s->y = y + 0x18;
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
         if (p->unk1c >= 0) {
             func_ov001_022ca2d4(p, x, y, 1);
         } else {
@@ -87,12 +87,12 @@ void func_ov001_022cadbc(UnkStruct_022cadbc *p, s16 x, s16 y) {
             }
         }
         if (w->ids[3] != anim) {
-            func_02033550(s, anim);
+            AnimatorSprite_SetAnimation(s, anim);
             w->ids[3] = anim;
         }
         s->unk46 = 4;
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
         if (has) {
             s = &w->sprites[4];
             anim = 0x1f;
@@ -105,12 +105,12 @@ void func_ov001_022cadbc(UnkStruct_022cadbc *p, s16 x, s16 y) {
                 func_ov001_022ca1cc(p, s->x, s->y, 2);
             }
             if (w->ids[4] != anim) {
-                func_02033550(s, anim);
+                AnimatorSprite_SetAnimation(s, anim);
                 w->ids[4] = anim;
             }
             s->unk46 = 4;
-            func_0203344c(s, 0, 0);
-            func_02032d2c(s);
+            AnimatorSprite_ProcessAnimation(s, 0, 0);
+            AnimatorSprite_Draw(s);
         }
         if (p->unk2c == 1) {
             s = &w->sprites[5];
@@ -131,12 +131,12 @@ void func_ov001_022cadbc(UnkStruct_022cadbc *p, s16 x, s16 y) {
                 }
             }
             if (w->ids[5] != anim) {
-                func_02033550(s, anim);
+                AnimatorSprite_SetAnimation(s, anim);
                 w->ids[5] = anim;
             }
             s->unk46 = 4;
-            func_0203344c(s, 0, 0);
-            func_02032d2c(s);
+            AnimatorSprite_ProcessAnimation(s, 0, 0);
+            AnimatorSprite_Draw(s);
             s = &w->sprites[6];
             anim = 0x25;
             s->x = x + 0x80;
@@ -155,22 +155,22 @@ void func_ov001_022cadbc(UnkStruct_022cadbc *p, s16 x, s16 y) {
                 }
             }
             if (w->ids[6] != anim) {
-                func_02033550(s, anim);
+                AnimatorSprite_SetAnimation(s, anim);
                 w->ids[6] = anim;
             }
             s->unk46 = 4;
-            func_0203344c(s, 0, 0);
-            func_02032d2c(s);
+            AnimatorSprite_ProcessAnimation(s, 0, 0);
+            AnimatorSprite_Draw(s);
         }
         s = &w->sprites[7];
         if (w->ids[7] != 0x34) {
-            func_02033550(s, 0x34);
+            AnimatorSprite_SetAnimation(s, 0x34);
             w->ids[7] = 0x34;
         }
         s->x = x + 0x18;
         s->y = y + 0x98;
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
     }
 }
 #pragma thumb reset

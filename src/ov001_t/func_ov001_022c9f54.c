@@ -21,16 +21,16 @@ typedef struct {
     UnkWork_022c9d58 *work;
 } UnkStruct_022c9d58;
 
-void func_02033550(UnkSpr_022c9d58 *s, u16 anim);
-void func_0203344c(UnkSpr_022c9d58 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022c9d58 *s);
-void func_02032480(UnkSpr_022c9d58 *s, fx32 sx, fx32 sy, s32 a);
+void AnimatorSprite_SetAnimation(UnkSpr_022c9d58 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022c9d58 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022c9d58 *s);
+void AnimatorSprite_DrawRotScale(UnkSpr_022c9d58 *s, fx32 sx, fx32 sy, s32 a);
 
 #define DRAW(spr)                                              \
     if (scaled && (sx != 0x1000 || sy != 0x1000)) {            \
-        func_02032480(spr, sx, sy, 0);                         \
+        AnimatorSprite_DrawRotScale(spr, sx, sy, 0);                         \
     } else {                                                   \
-        func_02032d2c(spr);                                    \
+        AnimatorSprite_Draw(spr);                                    \
     }
 
 #pragma thumb on
@@ -53,19 +53,19 @@ void func_ov001_022c9f54(UnkStruct_022c9d58 *p, s32 x, s32 y, fx32 sx, fx32 sy) 
     spr = &w->spr[1];
     flags = &spr->flags;
     if (w->anim[1] != 7) {
-        func_02033550(spr, 7);
+        AnimatorSprite_SetAnimation(spr, 7);
         w->anim[1] = 7;
     }
     spr->x = x;
     spr->y = y;
     *flags |= 0x200;
-    func_0203344c(spr, 0, 0);
-    func_02032d2c(spr);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
+    AnimatorSprite_Draw(spr);
 
     spr = &w->spr[0];
     flags = &spr->flags;
     if (w->anim[0] != 6) {
-        func_02033550(spr, 6);
+        AnimatorSprite_SetAnimation(spr, 6);
         w->anim[0] = 6;
     }
     xp1 = x + 1;
@@ -75,7 +75,7 @@ void func_ov001_022c9f54(UnkStruct_022c9d58 *p, s32 x, s32 y, fx32 sx, fx32 sy) 
     *flags &= ~0x80;
     *flags &= ~0x100;
     *flags |= 0x200;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     DRAW(spr)
 
     spr->x = xp1;
@@ -84,7 +84,7 @@ void func_ov001_022c9f54(UnkStruct_022c9d58 *p, s32 x, s32 y, fx32 sx, fx32 sy) 
     *flags &= ~0x80;
     *flags |= 0x100;
     *flags |= 0x200;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     DRAW(spr)
 
     xm1 = x - 1;
@@ -93,7 +93,7 @@ void func_ov001_022c9f54(UnkStruct_022c9d58 *p, s32 x, s32 y, fx32 sx, fx32 sy) 
     *flags |= 0x80;
     *flags |= 0x100;
     *flags |= 0x200;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     DRAW(spr)
 
     spr->x = xm1;
@@ -101,7 +101,7 @@ void func_ov001_022c9f54(UnkStruct_022c9d58 *p, s32 x, s32 y, fx32 sx, fx32 sy) 
     *flags |= 0x80;
     *flags &= ~0x100;
     *flags |= 0x200;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     DRAW(spr)
 }
 #pragma thumb reset

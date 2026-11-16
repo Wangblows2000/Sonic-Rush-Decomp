@@ -33,8 +33,8 @@ typedef struct {
 
 extern UnkCfg_0235c168 data_022c4560;
 extern void *data_ov000_0236ac80;
-void func_02039bb0(s32 a, void *p);
-void func_02031768(void *p);
+void ObjVram_Free(s32 a, void *p);
+void Model_Release(void *p);
 
 void func_ov000_0235c168(UnkTask_0235c168 *t) {
     UnkWork_0235c168 *w = t->unk10;
@@ -48,14 +48,14 @@ void func_ov000_0235c168(UnkTask_0235c168 *t) {
         e++;
     }
     if (w->unk48 != NULL)
-        func_02039bb0(0, w->unk48);
+        ObjVram_Free(0, w->unk48);
     if (w->unk90 != NULL)
-        func_02039bb0(1, w->unk90);
+        ObjVram_Free(1, w->unk90);
     if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2)
-        func_02031768(w->unkA4);
+        Model_Release(w->unkA4);
     if (w->unk198 != NULL)
-        func_02039bb0(0, w->unk198);
+        ObjVram_Free(0, w->unk198);
     if (w->unk19C != NULL)
-        func_02039bb0(1, w->unk19C);
+        ObjVram_Free(1, w->unk19C);
     data_ov000_0236ac80 = NULL;
 }

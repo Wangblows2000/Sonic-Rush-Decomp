@@ -4,7 +4,7 @@
 extern u8 data_022c4560[];
 extern u8 data_02077944[];
 s32 func_ov000_0230e5dc();
-s32 func_02068df8();
+s32 ObjSpd_UpSet();
 
 void func_ov000_0230e6e8(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)data_022c4560 + 0x20);
@@ -22,7 +22,7 @@ void func_ov000_0230e6e8(u8 *p0) {
         func_ov000_0230e5dc(p0, v1);
         return;
     }
-    s32 t4 = func_02068df8(*(s16 *)((u8 *)p0 + 0x34), 0x18, 0xf00);
+    s32 t4 = ObjSpd_UpSet(*(s16 *)((u8 *)p0 + 0x34), 0x18, 0xf00);
     *(u16 *)((u8 *)p0 + 0x34) = t4;
     s32 t5 = (*(u32 *)((u8 *)p0 + 0x58) & 1);
     if (t5 != 0) {

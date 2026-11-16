@@ -11,7 +11,7 @@ typedef struct {
     UnkWork_022e8d88 *work;
 } UnkTask_022e8d88;
 
-extern UnkTask_022e8d88 *data_022b4574;
+extern UnkTask_022e8d88 *gTaskCurrent;
 
 void func_ov001_022e8b5c(UnkWork_022e8d88 *w);
 void func_ov001_022e8be0(UnkWork_022e8d88 *w, s32 i);
@@ -20,7 +20,7 @@ void func_ov001_022e90f4(void *t);
 
 #pragma thumb on
 void func_ov001_022e8d88(void) {
-    UnkWork_022e8d88 *w = data_022b4574->work;
+    UnkWork_022e8d88 *w = gTaskCurrent->work;
 
     func_ov001_022e8b5c(w);
     switch (w->mode) {

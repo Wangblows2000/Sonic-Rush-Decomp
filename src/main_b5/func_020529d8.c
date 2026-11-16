@@ -12,10 +12,10 @@ typedef struct {
     UnkWork_020529d8 *work;
 } UnkTask_020529d8;
 
-extern UnkTask_020529d8 *data_022c4660;
-extern UnkTask_020529d8 *data_022b4574;
+extern UnkTask_020529d8 *gNaviMsgTask;
+extern UnkTask_020529d8 *gTaskCurrent;
 
-void func_020371c8(UnkTask_020529d8 *t);
+void Task_Destroy(UnkTask_020529d8 *t);
 void func_020524d4(void *p);
 
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
@@ -27,9 +27,9 @@ void func_020529d8(void) {
     u32 cb;
     u32 plane;
 
-    if (data_022c4660 == NULL)
+    if (gNaviMsgTask == NULL)
         goto kill;
-    w = data_022c4660->work;
+    w = gNaviMsgTask->work;
     if (w->flags & 0x20000) {
         if (w->flags & 0x10000) {
             sb = 7;
@@ -54,5 +54,5 @@ void func_020529d8(void) {
     }
     return;
 kill:
-    func_020371c8(data_022b4574);
+    Task_Destroy(gTaskCurrent);
 }

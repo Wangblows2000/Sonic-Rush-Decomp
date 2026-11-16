@@ -1,12 +1,12 @@
 #include <ov000_d/scene.h>
 
-void func_02036fdc(s32 a);
+void Task_DestroyByTag(s32 a);
 void func_ov000_02355dac(s32 mode, s32 sub);
 
 #pragma thumb on
 
 void func_ov000_023588dc(void) {
-    UnkStruct_Scene *w = data_022b4574->work;
+    UnkStruct_Scene *w = gTaskCurrent->work;
     UnkStruct_ScenePos *p;
     u32 step;
     s32 i;
@@ -14,7 +14,7 @@ void func_ov000_023588dc(void) {
     if (w->unk0 >= 0x28) {
         s32 mode = w->unkC;
         s32 sel = w->unk14;
-        func_02036fdc(0x1000);
+        Task_DestroyByTag(0x1000);
         func_ov000_02355dac(mode, sel);
         return;
     }
@@ -46,7 +46,7 @@ void func_ov000_023588dc(void) {
     }
     func_ov000_02357878(w, 0x80, 0x98, 0x1000);
     func_ov000_02358224(w, 0, 0x1000);
-    data_02087d04[2].x++;
+    gDisplaySub[2].x++;
     func_ov000_023580bc(w, TRUE);
     w->unk0++;
 }

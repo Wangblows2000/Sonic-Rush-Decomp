@@ -1,15 +1,15 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_02068ce4();
+s32 ObjShift_Set();
 s32 func_ov000_0234a064();
 
 void func_ov000_02351e80(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0x3e8) != 0) {
         *(u32 *)((u8 *)p0 + 0x1c) = *(u32 *)((u8 *)p0 + 0x10);
-        s32 t0 = func_02068ce4(*(u32 *)((u8 *)p0 + 0x10), *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x3e8) + 0x10), 4, 0, 0x100);
+        s32 t0 = ObjShift_Set(*(u32 *)((u8 *)p0 + 0x10), *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x3e8) + 0x10), 4, 0, 0x100);
         *(u32 *)((u8 *)p0 + 0x10) = t0;
-        s32 t1 = func_02068ce4(*(u32 *)((u8 *)p0 + 0x18), 0, 1, 0, 0x100);
+        s32 t1 = ObjShift_Set(*(u32 *)((u8 *)p0 + 0x18), 0, 1, 0, 0x100);
         *(u32 *)((u8 *)p0 + 0x18) = t1;
     }
     if ((*(u32 *)((u8 *)p0 + 0x58) & 1) == 0) {

@@ -15,8 +15,8 @@ typedef struct {
     UnkWork_02051db0 *work;
 } UnkTask_02051db0;
 
-extern void *data_022c465c;
-UnkTask_02051db0 *func_020372d0(void (*fn)(void), void *dtor, s32 b, s32 c, s32 d, s32 e);
+extern void *gSysSound;
+UnkTask_02051db0 *Task_Create(void (*fn)(void), void *dtor, s32 b, s32 c, s32 d, s32 e);
 void func_020518dc(void);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 
@@ -25,9 +25,9 @@ UnkTask_02051db0 *func_02051db0(s32 arg, s32 duration, s32 c, s32 d) {
     UnkTask_02051db0 *t;
     UnkWork_02051db0 *w;
     vu16 z;
-    if (data_022c465c == NULL)
+    if (gSysSound == NULL)
         return NULL;
-    t = func_020372d0(func_020518dc, NULL, 0, c, d, 0x10);
+    t = Task_Create(func_020518dc, NULL, 0, c, d, 0x10);
     w = t->work;
     z = 0;
     MIi_CpuClear16(z, w, 0x10);

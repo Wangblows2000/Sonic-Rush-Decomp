@@ -48,7 +48,7 @@ struct UnkStruct_022d0690 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 extern s16 data_0206e470[];
@@ -71,13 +71,13 @@ void func_ov000_022d0690(UnkStruct_022d0690 *s) {
         z = &s->unkD0C;
         MTX_RotY33_(y->unk24, data_0206e470[0], data_0206e470[1]);
         if (s->unk145C) {
-            func_02031a68(x, 0, s->unkF7C, 0x1b, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x38, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x57, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 0x1b, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x38, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x57, 0);
         } else {
-            func_02031a68(x, 0, s->unkF7C, 0x15, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x34, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x51, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 0x15, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x34, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x51, 0);
         }
         x->unk10C &= ~4;
         y->unk10C &= ~4;

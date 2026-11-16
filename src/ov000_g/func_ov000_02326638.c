@@ -50,7 +50,7 @@ void func_ov000_02326638(UnkStruct_02326638 *w, UnkStruct_ObjParam *p, s32 x, s3
     func_02068e40(w, -2, -6, 2, 0);
     w->unk5C |= 1;
     w->unk134.unk28 = 0x12;
-    func_0206e2b4(&w->unk134, 0, 10);
+    ObjRect_SetAtkDefFlags(&w->unk134, 0, 10);
     w->unk134.unkA &= ~4;
     if (p != NULL) {
         w->unk184 = p;

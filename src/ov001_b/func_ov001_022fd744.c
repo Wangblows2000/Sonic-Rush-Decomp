@@ -22,8 +22,8 @@ extern s16 data_ov001_02316e84[];
 UnkStruct_022fd744_q *func_ov001_022ffce8(void);
 s32 func_02002094(s32 n, s32 d);
 s32 func_0200203c(s32 n, s32 d);
-void func_02032d2c(void *p);
-void func_02036754(u32 a, u32 b, u32 c);
+void AnimatorSprite_Draw(void *p);
+void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 
 #define G data_ov001_0231f324
 
@@ -55,12 +55,12 @@ void func_ov001_022fd744(void) {
         e = &G[off + func_02002094(n, div)];
         e->x = x;
         e->y = 0x12;
-        func_02032d2c(e);
+        AnimatorSprite_Draw(e);
         n = func_0200203c(n, div);
         x += 10;
     }
-    func_02032d2c((u8 *)G + 0x5a0);
-    func_02032d2c((u8 *)G + 0x5e8);
+    AnimatorSprite_Draw((u8 *)G + 0x5a0);
+    AnimatorSprite_Draw((u8 *)G + 0x5e8);
     t = func_ov001_022ffce8()->unk44;
     off = 0;
     if (t > 0x7e90) {
@@ -69,7 +69,7 @@ void func_ov001_022fd744(void) {
             off = 10;
     }
     if (t > 0x87b3 && t < 0x8c9f && func_0200203c(t, 0x78) == 0)
-        func_02036754(0, 0, 0x36);
+        Sound_PlaySeqArc(0, 0, 0x36);
     if (t < 0x8c9f) {
         d[0] = off + func_02002094(t, 0xe10);
         t = func_0200203c(t, 0xe10);
@@ -90,12 +90,12 @@ void func_ov001_022fd744(void) {
     }
     d[1] = 0x17;
     d[4] = 0x17;
-    func_02032d2c((u8 *)G + 0x630);
+    AnimatorSprite_Draw((u8 *)G + 0x630);
     for (i = 0; i < 7; i++) {
         e = &G[d[i]];
         e->x = data_ov001_02316e84[i];
         e->y = 0x12;
-        func_02032d2c(e);
+        AnimatorSprite_Draw(e);
     }
     q = func_ov001_022ffce8();
     lives = *(s8 *)((u8 *)q + func_ov001_022ffce8()->unk3C + 0x60);
@@ -103,10 +103,10 @@ void func_ov001_022fd744(void) {
         lives = 9;
     else if (lives < 0)
         lives = 0;
-    func_02032d2c(&G[func_ov001_022ffce8()->unk3C + 0x19]);
-    func_02032d2c((u8 *)G + 0x6c0);
+    AnimatorSprite_Draw(&G[func_ov001_022ffce8()->unk3C + 0x19]);
+    AnimatorSprite_Draw((u8 *)G + 0x6c0);
     e = &G[lives];
     e->x = 0x26;
     e->y = 0xbc;
-    func_02032d2c(e);
+    AnimatorSprite_Draw(e);
 }

@@ -43,14 +43,14 @@ typedef struct {
     u32 flags;
 } UnkTouch_022d3af0;
 
-extern UnkTask_022d3af0 *data_022b4574;
-extern UnkPad_022d3af0 data_022503e0;
-extern UnkTouch_022d3af0 data_022b65b4;
+extern UnkTask_022d3af0 *gTaskCurrent;
+extern UnkPad_022d3af0 gPad;
+extern UnkTouch_022d3af0 gTouchState;
 
-void func_02033550(UnkSpr_022d3af0 *s, s32 anim);
-void func_0203344c(UnkSpr_022d3af0 *s, s32 a, s32 b);
-void func_02032d2c(UnkSpr_022d3af0 *s);
-void func_02052104(s32 se);
+void AnimatorSprite_SetAnimation(UnkSpr_022d3af0 *s, s32 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022d3af0 *s, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_022d3af0 *s);
+void SysSound_PlaySE(s32 se);
 void func_ov001_022d39ac(void);
 
 #pragma thumb on
@@ -66,15 +66,15 @@ void func_ov001_022d3af0(void) {
     s32 ty;
     s32 bot;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     s = &w->spr[0];
     if (w->cur0 != 0) {
-        func_02033550(s, 0);
+        AnimatorSprite_SetAnimation(s, 0);
         w->cur0 = 0;
     }
     s->flags &= ~4;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
     i = 0;
     y = 0x24;
     for (; i < 4; i++) {
@@ -85,14 +85,14 @@ void func_ov001_022d3af0(void) {
                 f++;
             }
             if (w->cur1 != f) {
-                func_02033550(s, f);
+                AnimatorSprite_SetAnimation(s, f);
                 w->cur1 = f;
             }
             s->flags &= ~4;
             s->x = 0x40;
             s->y = y;
-            func_0203344c(s, 0, 0);
-            func_02032d2c(s);
+            AnimatorSprite_ProcessAnimation(s, 0, 0);
+            AnimatorSprite_Draw(s);
         }
         s = &w->spr[i + 2];
         f = w->base[i];
@@ -100,36 +100,36 @@ void func_ov001_022d3af0(void) {
             f++;
         }
         if (f != w->curs[i]) {
-            func_02033550(s, f);
+            AnimatorSprite_SetAnimation(s, f);
             w->curs[i] = f;
         }
         s->flags &= ~4;
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
         y += 0x20;
     }
     w->timer2++;
     w->timer++;
     done = FALSE;
-    if (data_022503e0.rep & 0x40) {
+    if (gPad.rep & 0x40) {
         w->sel--;
         if (w->sel < 0) {
             w->sel = 3;
         }
         w->timer = 0;
-        func_02052104(4);
-    } else if (data_022503e0.rep & 0x80) {
+        SysSound_PlaySE(4);
+    } else if (gPad.rep & 0x80) {
         w->sel++;
         if (w->sel >= 4) {
             w->sel = 0;
         }
         w->timer = 0;
-        func_02052104(4);
-    } else if (data_022503e0.trg & 1) {
+        SysSound_PlaySE(4);
+    } else if (gPad.trg & 1) {
         done = TRUE;
-    } else if (data_022b65b4.flags & 0x40) {
-        tx = data_022b65b4.x;
-        ty = data_022b65b4.y;
+    } else if (gTouchState.flags & 0x40) {
+        tx = gTouchState.x;
+        ty = gTouchState.y;
         for (i = 0, ry = 0x24; i < 4; ry += 0x20, i++) {
             bot = ry + 0x18;
             if (tx >= 0x40 && tx < 0xc0 && ty >= ry && ty < bot) {
@@ -140,9 +140,9 @@ void func_ov001_022d3af0(void) {
         }
     }
     if (done) {
-        func_02052104(0);
+        SysSound_PlaySE(0);
         w->timer2 = 0;
-        data_022b4574->func = func_ov001_022d39ac;
+        gTaskCurrent->func = func_ov001_022d39ac;
     }
 }
 #pragma thumb reset

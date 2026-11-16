@@ -6,7 +6,7 @@
 s32 func_0201c070();
 s32 func_0201b348();
 s32 func_0201bf1c();
-s32 func_02036894();
+s32 Sound_ResetHeap();
 
 void func_0205761c(u8 *p0) {
     if ((*(u32 *)((u8 *)p0 + 0x4) & 0x10000000) == 0) {
@@ -18,7 +18,7 @@ void func_0205761c(u8 *p0) {
             func_0201b348(2, t0);
             func_0201bf1c(((u8 *)p0 + 0x30));
             func_0201bf1c(((u8 *)p0 + 0x34));
-            func_02036894();
+            Sound_ResetHeap();
         }
     }
 }

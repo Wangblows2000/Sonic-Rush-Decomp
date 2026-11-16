@@ -5,7 +5,7 @@
 
 s32 func_02057098();
 s32 func_02057fb4();
-s32 func_02043a88();
+s32 BrightnessFade_Destroy();
 s32 func_020574d0();
 s32 func_0205761c();
 extern u8 data_022c467c[];
@@ -14,7 +14,7 @@ void func_020582e4(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x10);
     func_02057098(*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x10) + 0x14));
     func_02057fb4(t0);
-    func_02043a88();
+    BrightnessFade_Destroy();
     func_020574d0(t0);
     func_0205761c(t0);
     *(u32 *)data_022c467c = 0;

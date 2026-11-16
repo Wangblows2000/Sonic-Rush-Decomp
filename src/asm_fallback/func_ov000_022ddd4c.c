@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern void func_02031a68(void);
+extern void Model_SetAnimation(void);
 extern void func_020366f4(void);
 extern void func_ov000_022db954(void);
 extern void func_ov000_022ddd20(void);
@@ -48,7 +48,7 @@ _1c:
     ldr r2, [r4, #0xab0]
     mov r0, r5
     mov r3, #4
-    bl func_02031a68
+    bl Model_SetAnimation
     mov r2, #0x1000
     str r2, [r5, #0x118]
     ldr r1, [pc, #0x24]

@@ -38,11 +38,11 @@ void func_ov000_022dbe6c(void);
 void func_ov000_022dbfb4(void);
 void func_ov000_022dbd5c(void);
 void MI_CpuFill8(void *p, s32 v, u32 n);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022db758(s32 x, void *a, s32 b, s32 c);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022dbd04(UnkStruct_022dee94 *w);
 
 UnkStruct_022dee94 *func_ov000_022dee94(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -50,7 +50,7 @@ UnkStruct_022dee94 *func_ov000_022dee94(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_022dee94 *w;
     UnkStruct_022dee94_Sub *sub;
 
-    w = func_020372d0(func_0206c3d0, func_ov000_022dbe38, 0, 0x505, 2, sizeof(UnkStruct_022dee94))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022dbe38, 0, 0x505, 2, sizeof(UnkStruct_022dee94))->work;
     MI_CpuFill8(w, 0, sizeof(UnkStruct_022dee94));
     func_ov000_022fba50(w, (s32)p, b, c);
     w->base.unk70 = func_ov000_022dbe6c;
@@ -59,9 +59,9 @@ UnkStruct_022dee94 *func_ov000_022dee94(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk54 |= 0x10;
     w->base.unk58 |= 0xa300;
     sub = &w->unk20C;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, boss->unkAB0[12], 0);
-    func_02031a68(sub, 0, boss->unkAB0[13], 0, 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, boss->unkAB0[12], 0);
+    Model_SetAnimation(sub, 0, boss->unkAB0[13], 0, 0);
     sub->unk10C |= 4;
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     sub->unk48 = 0;
@@ -74,12 +74,12 @@ UnkStruct_022dee94 *func_ov000_022dee94(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk4E4 = w->base.unk10;
     func_ov000_022db758(0, w->unk4E8, w->unk4E0, 0);
     sub = &w->unk344;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, boss->unkAB0[14], 0);
-    func_02031a68(sub, 0, boss->unkAB0[15], 0, 0);
-    func_02031a68(sub, 1, boss->unkAB0[16], 0, 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, boss->unkAB0[14], 0);
+    Model_SetAnimation(sub, 0, boss->unkAB0[15], 0, 0);
+    Model_SetAnimation(sub, 1, boss->unkAB0[16], 0, 0);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
-    func_02036754(0, 0, 0x8c);
+    Sound_PlaySeqArc(0, 0, 0x8c);
     func_ov000_022dbd04(w);
     return w;
 }

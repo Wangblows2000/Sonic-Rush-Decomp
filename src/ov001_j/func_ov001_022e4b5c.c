@@ -49,8 +49,8 @@ typedef struct {
     s32 counter;
 } UnkStruct_022e4b5c;
 
-void func_0203344c(UnkSpr_022e4b5c *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022e4b5c *s);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022e4b5c *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022e4b5c *s);
 void func_ov001_022e4ac4(UnkStruct_022e4b5c *p);
 s32 func_ov001_022e4a10(s32 a, s32 b, s32 n, s32 m, s32 t);
 
@@ -69,8 +69,8 @@ void func_ov001_022e4b5c(UnkStruct_022e4b5c *p) {
     s32 sgn;
     s16 d;
 
-    func_0203344c(s0, 0, 0);
-    func_0203344c(s1, 0, 0);
+    AnimatorSprite_ProcessAnimation(s0, 0, 0);
+    AnimatorSprite_ProcessAnimation(s1, 0, 0);
     func_ov001_022e4ac4(p);
     for (i = 0, pt = p->pts; i < 17; pt++, i++) {
         if (pt->type == 7 || pt->type == 4 || pt->type == 5)
@@ -87,14 +87,14 @@ void func_ov001_022e4b5c(UnkStruct_022e4b5c *p) {
         s->x = pt->x - p->cam->x;
         s->y = pt->y - p->cam->y;
         if (s->x >= -0x20 && s->x < 0x120 && s->y >= -0x20 && s->y < 0xe0) {
-            func_0203344c(s, 0, 0);
-            func_02032d2c(s);
+            AnimatorSprite_ProcessAnimation(s, 0, 0);
+            AnimatorSprite_Draw(s);
             if (pt->type == 0 && (i == 4 || i == 5 || (u32)(i - 9) <= 2)) {
                 s = &p->spr[19];
                 s->x = pt->x - p->cam->x;
                 s->y = pt->y - p->cam->y;
-                func_0203344c(s, 0, 0);
-                func_02032d2c(s);
+                AnimatorSprite_ProcessAnimation(s, 0, 0);
+                AnimatorSprite_Draw(s);
             }
         }
     }
@@ -111,11 +111,11 @@ void func_ov001_022e4b5c(UnkStruct_022e4b5c *p) {
             s->x = g->pos[k].x - p->cam->x;
             s->y = g->pos[k].y - p->cam->y;
             if (s->x >= -8 && s->x < 0x108 && s->y >= -8 && s->y < 200)
-                func_02032d2c(s);
+                AnimatorSprite_Draw(s);
         }
     }
     for (i = 0; i < 3; i++)
-        func_0203344c(&p->spr2[i], 0, 0);
+        AnimatorSprite_ProcessAnimation(&p->spr2[i], 0, 0);
     for (i = 0, e = p->ent; i < 7; e++, i++) {
         s = &p->spr2[e->idx];
         s->x = e->x - p->cam->x;
@@ -150,7 +150,7 @@ void func_ov001_022e4b5c(UnkStruct_022e4b5c *p) {
             v = -v;
         s->x += (s16)v;
         if (s->x >= -e->w && s->x < 0x100 && s->y >= -e->h && s->y < 0xc0)
-            func_02032d2c(s);
+            AnimatorSprite_Draw(s);
     }
     p->counter++;
 }

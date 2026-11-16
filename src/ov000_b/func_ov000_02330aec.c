@@ -38,7 +38,7 @@ typedef struct {
     s32 unk14;
 } UnkStruct_02330aec_Arg;
 
-extern void *data_022c448c;
+extern void *gActComArchive;
 extern u8 data_ov000_0236a9a0[];
 extern u8 data_ov000_023682cc[];
 extern u8 data_ov000_023682e4[];
@@ -51,7 +51,7 @@ extern u8 data_ov000_02368374[];
 extern u8 data_ov000_0236838c[];
 
 BOOL func_ov000_023270d8(UnkStruct_02330aec_Arg *a);
-void func_0206bef4(void);
+void StageObj_Destructor(void);
 void func_ov000_02330848(void);
 
 static inline void SetVec(UnkStruct_02330aec_Vec *v, s32 x, s32 y, s32 z) {
@@ -69,21 +69,21 @@ UnkStruct_02330aec *func_ov000_02330aec(UnkStruct_02330aec_Arg *arg) {
         return NULL;
     if (arg->unk0 != 1)
         return NULL;
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_02330aec));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02330aec));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02330aec));
-    func_02069a34(w, &w->blk[0], data_ov000_023682cc, 0, 1, 4, data_ov000_0236a9a0, data_022c448c);
-    func_02069a34(w, &w->blk[1], data_ov000_023682e4, 0, 2, 5, data_ov000_0236a9a0, data_022c448c);
-    func_02069a34(w, &w->blk[2], data_ov000_023682fc, 0, 3, 6, data_ov000_0236a9a0, data_022c448c);
-    func_02069a34(w, &w->blk[3], data_ov000_02368314, 0, 4, 7, data_ov000_0236a9a0, data_022c448c);
-    func_02069a34(w, &w->blk[4], data_ov000_0236832c, 0, 5, 2, data_ov000_0236a9a0, data_022c448c);
-    func_02069a34(w, &w->blk[5], data_ov000_02368344, 0, 6, 1, data_ov000_0236a9a0, data_022c448c);
-    func_02069a34(w, &w->blk[6], data_ov000_0236835c, 0, 0, 3, data_ov000_0236a9a0, data_022c448c);
-    func_02069a34(w, &w->blk[7], data_ov000_02368374, 0, 7, 0, data_ov000_0236a9a0, data_022c448c);
-    func_02069a34(w, &w->blk[8], data_ov000_0236838c, 0, 8, 8, data_ov000_0236a9a0, data_022c448c);
+    StageObj_LoadModelSimple(w, &w->blk[0], data_ov000_023682cc, 0, 1, 4, data_ov000_0236a9a0, gActComArchive);
+    StageObj_LoadModelSimple(w, &w->blk[1], data_ov000_023682e4, 0, 2, 5, data_ov000_0236a9a0, gActComArchive);
+    StageObj_LoadModelSimple(w, &w->blk[2], data_ov000_023682fc, 0, 3, 6, data_ov000_0236a9a0, gActComArchive);
+    StageObj_LoadModelSimple(w, &w->blk[3], data_ov000_02368314, 0, 4, 7, data_ov000_0236a9a0, gActComArchive);
+    StageObj_LoadModelSimple(w, &w->blk[4], data_ov000_0236832c, 0, 5, 2, data_ov000_0236a9a0, gActComArchive);
+    StageObj_LoadModelSimple(w, &w->blk[5], data_ov000_02368344, 0, 6, 1, data_ov000_0236a9a0, gActComArchive);
+    StageObj_LoadModelSimple(w, &w->blk[6], data_ov000_0236835c, 0, 0, 3, data_ov000_0236a9a0, gActComArchive);
+    StageObj_LoadModelSimple(w, &w->blk[7], data_ov000_02368374, 0, 7, 0, data_ov000_0236a9a0, gActComArchive);
+    StageObj_LoadModelSimple(w, &w->blk[8], data_ov000_0236838c, 0, 8, 8, data_ov000_0236a9a0, gActComArchive);
     w->unk76A = 0x11;
     w->blk[6].unkA8 |= 0x40;
     w->blk[7].unkA8 |= 0x40;

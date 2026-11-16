@@ -32,16 +32,16 @@ typedef struct {
     UnkStruct_02335ee0_Sub sub;
 } UnkStruct_02335ee0;
 
-void func_02032c8c(UnkStruct_02335ee0_Spr *spr);
+void AnimatorSpriteDS_Draw(UnkStruct_02335ee0_Spr *spr);
 void func_02033544(UnkStruct_02335ee0_Spr *spr, u16 a);
-void func_020332c4(UnkStruct_02335ee0_Spr *spr, s32 a, s32 b);
+void AnimatorSpriteDS_ProcessAnimation(UnkStruct_02335ee0_Spr *spr, s32 a, s32 b);
 
 static inline void UnkSetPos_02335ee0(UnkStruct_02335ee0_Spr *spr, s16 x, s16 y) {
     spr->unk48 = x;
     spr->unk4A = y;
     spr->unk4C = spr->unk48;
     spr->unk4E = spr->unk4A - 0xc0;
-    func_02032c8c(spr);
+    AnimatorSpriteDS_Draw(spr);
 }
 
 void func_ov000_02335ee0(UnkStruct_02335ee0 *w) {
@@ -65,7 +65,7 @@ void func_ov000_02335ee0(UnkStruct_02335ee0 *w) {
         func_02033544(spr, c);
         spr->unk5C = w->unkC + c * 0x80;
         spr->unk60 = w->unk10 + c * 0x80;
-        func_020332c4(spr, 0, 0);
+        AnimatorSpriteDS_ProcessAnimation(spr, 0, 0);
     }
     UnkSetPos_02335ee0(spr, x + 0x22, y + 0x12);
 }

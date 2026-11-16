@@ -33,13 +33,13 @@ extern void *data_ov000_0236ac60;
 
 void func_0201c070(void *p, s32 a);
 void func_ov000_023155cc(UnkStruct_02315928 *w);
-s16 func_02068db4(s16 a, s32 b);
-s16 func_02068df8(s16 a, s32 b, s32 c);
-u8 func_02068b04(u8 a, s32 b, s32 c);
+s16 ObjSpd_DownSet(s16 a, s32 b);
+s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
+u8 ObjAngle_MoveToward8(u8 a, s32 b, s32 c);
 void func_ov000_0234f6a0(void *a, void *b);
 void func_ov000_023158c0(UnkStruct_02315928 *w);
-void func_0204b7ec(void *p, s32 a, s32 b);
-void func_02068204(void *a, void *b, void *c);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
+void Sound_SetPositional(void *a, void *b, void *c);
 
 void func_ov000_02315928(UnkStruct_02315928 *w) {
     UnkStruct_02315928_R *r;
@@ -55,9 +55,9 @@ void func_ov000_02315928(UnkStruct_02315928 *w) {
         acc <<= 1;
         max <<= 1;
     }
-    w->unk2E = func_02068db4(w->unk2E, 0x10);
-    w->unk30 = func_02068df8(w->unk30, acc, max);
-    w->unk1 = func_02068b04(w->unk1, 0, 1);
+    w->unk2E = ObjSpd_DownSet(w->unk2E, 0x10);
+    w->unk30 = ObjSpd_UpSet(w->unk30, acc, max);
+    w->unk1 = ObjAngle_MoveToward8(w->unk1, 0, 1);
     r = w->unk1BC;
     if (r != NULL && r->unk80 == w && r->unk0 == 1) {
         w->unk204 = r;
@@ -68,6 +68,6 @@ void func_ov000_02315928(UnkStruct_02315928 *w) {
     if (w->unk58 & 0x2000)
         return;
     if (!(data_022c4560.unk20 & 7))
-        func_0204b7ec(w->unk1DC, 0, 0x6c);
-    func_02068204(w->unk1DC, w, data_ov000_0236ac60);
+        Sound_PlaySeqArcEx(w->unk1DC, 0, 0x6c);
+    Sound_SetPositional(w->unk1DC, w, data_ov000_0236ac60);
 }

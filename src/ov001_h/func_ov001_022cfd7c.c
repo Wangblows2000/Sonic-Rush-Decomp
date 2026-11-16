@@ -10,7 +10,7 @@ typedef struct UnkStruct_022cfd7c {
     u16 unk76;
 } UnkStruct_022cfd7c;
 
-void func_02035704(u16 *src, u16 n, u32 a, u32 b);
+void PaletteTransfer_QueueCopy(u16 *src, u16 n, u32 a, u32 b);
 
 #pragma thumb on
 
@@ -26,8 +26,8 @@ void func_ov001_022cfd7c(UnkStruct_022cfd7c *p, s32 n, float scale, u16 *src, u1
         b = (s32)((float)b * scale);
         dst[i] = (r & 0x1f) | ((g & 0x1f) << 5) | ((b & 0x1f) << 10);
     }
-    func_02035704(dst, n, p->unk64, p->unk6C + n * (p->unk74 * 2));
-    func_02035704(dst, n, p->unk68, p->unk70 + n * (p->unk76 * 2));
+    PaletteTransfer_QueueCopy(dst, n, p->unk64, p->unk6C + n * (p->unk74 * 2));
+    PaletteTransfer_QueueCopy(dst, n, p->unk68, p->unk70 + n * (p->unk76 * 2));
 }
 
 #pragma thumb reset

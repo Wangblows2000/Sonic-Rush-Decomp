@@ -22,15 +22,15 @@ typedef struct UnkStruct_023071fc_arc {
     u8 pad[0x60];
 } UnkStruct_023071fc_arc;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_023071fc *data_ov001_0231f5b8;
 extern char data_ov001_0231df78[];
 
-void func_02031768(void *o);
+void Model_Release(void *o);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 BOOL func_02021310(void *arc, const char *name, void *narc);
 u32 func_02021264(void *arc, u32 idx);
 void func_0202566c(u32 p);
@@ -49,7 +49,7 @@ static inline void Free(void *ptr) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }
 
 void func_ov001_023071fc(void) {
@@ -58,9 +58,9 @@ void func_ov001_023071fc(void) {
     s32 i;
 
     for (i = 0; i < 0x20; i++)
-        func_02031768(&g->objs[i]);
+        Model_Release(&g->objs[i]);
     for (i = 0; i < 0x20; i++)
-        func_02031768(&g->anims[i]);
+        Model_Release(&g->anims[i]);
     func_02021310(&arc, data_ov001_0231df78, g->unk4680);
     func_0202566c(func_02021264(&arc, 0));
     func_0202566c(func_02021264(&arc, 3));

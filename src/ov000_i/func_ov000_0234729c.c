@@ -6,7 +6,7 @@ typedef struct {
 } UnkStruct_02368ba0;
 
 extern UnkStruct_02368ba0 data_ov000_02368ba0[];
-s16 func_02068db4(s32 a, s32 b);
+s16 ObjSpd_DownSet(s32 a, s32 b);
 
 void func_ov000_0234729c(u8 *w) {
     s32 v;
@@ -20,12 +20,12 @@ void func_ov000_0234729c(u8 *w) {
     }
     v = *(s16 *)(w + 0x34);
     if ((v > 0 && (*(u16 *)(w + 0x420) & 0x10)) || (v < 0 && (*(u16 *)(w + 0x420) & 0x20))) {
-        *(s16 *)(w + 0x34) = func_02068db4(v, *(s16 *)(w + 0x362) >> 1);
+        *(s16 *)(w + 0x34) = ObjSpd_DownSet(v, *(s16 *)(w + 0x362) >> 1);
         return;
     }
     if ((v <= 0 || !(*(u16 *)(w + 0x420) & 0x10)) && (v >= 0 || !(*(u16 *)(w + 0x420) & 0x20))) {
-        *(s16 *)(w + 0x34) = func_02068db4(v, *(s16 *)(w + 0x362) << 1);
+        *(s16 *)(w + 0x34) = ObjSpd_DownSet(v, *(s16 *)(w + 0x362) << 1);
         return;
     }
-    *(s16 *)(w + 0x34) = func_02068db4(v, *(s16 *)(w + 0x362));
+    *(s16 *)(w + 0x34) = ObjSpd_DownSet(v, *(s16 *)(w + 0x362));
 }

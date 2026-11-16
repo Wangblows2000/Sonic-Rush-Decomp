@@ -9,7 +9,7 @@ typedef struct {
     void *unk68;
 } UnkStruct_022c6850;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c6810(UnkStruct_022c6850 *p);
 
 void func_ov000_022c6850(UnkStruct_022c6850 *p) {
@@ -18,6 +18,6 @@ void func_ov000_022c6850(UnkStruct_022c6850 *p) {
         return;
     p->unk14 = 0x1dc00;
     p->unk30 = 0;
-    func_02036754(0, 0, 0x7b);
+    Sound_PlaySeqArc(0, 0, 0x7b);
     p->unk68 = func_ov000_022c6810;
 }

@@ -34,8 +34,8 @@ typedef struct {
 
 extern s16 data_02078b24[];
 
-void func_02032d2c(UnkSpr_0204528c *s);
-void func_02032480(UnkSpr_0204528c *s, s32 sx, s32 sy, s32 r);
+void AnimatorSprite_Draw(UnkSpr_0204528c *s);
+void AnimatorSprite_DrawRotScale(UnkSpr_0204528c *s, s32 sx, s32 sy, s32 r);
 
 #pragma thumb on
 void func_0204528c(UnkWork_0204528c *w) {
@@ -55,18 +55,18 @@ void func_0204528c(UnkWork_0204528c *w) {
         b->y = o->unkA8 >> 12;
         a->y = b->y;
         if (o->unkA0 == 0x1000 || o->unk9C == 10) {
-            func_02032d2c(a);
-            func_02032d2c(b);
+            AnimatorSprite_Draw(a);
+            AnimatorSprite_Draw(b);
         } else {
-            func_02032480(a, o->unkA0, o->unkA0, 0);
-            func_02032480(b, o->unkA0, o->unkA0, 0);
+            AnimatorSprite_DrawRotScale(a, o->unkA0, o->unkA0, 0);
+            AnimatorSprite_DrawRotScale(b, o->unkA0, o->unkA0, 0);
         }
     }
     if (o->unk38 != 0) {
         spr = &w->spr2[13];
         spr->x = o->pos[0].x >> 12;
         spr->y = o->pos[0].y >> 12;
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     }
     if (o->unk3A != 0) {
         x = (o->pos[1].x - 0x2a000) >> 12;
@@ -75,23 +75,23 @@ void func_0204528c(UnkWork_0204528c *w) {
             spr = &w->spr[o->unkB0[i]];
             spr->x = x + data_02078b24[i];
             spr->y = y;
-            func_02032d2c(spr);
+            AnimatorSprite_Draw(spr);
         }
         spr = &w->spr2[12];
         spr->x = x + 10;
         spr->y = y;
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
         spr = &w->spr2[12];
         x += 0x28;
         spr->x = x;
         spr->y = y;
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     }
     if (o->unk3C != 0) {
         spr = &w->spr2[14];
         spr->x = o->pos[2].x >> 12;
         spr->y = o->pos[2].y >> 12;
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     }
 }
 #pragma thumb reset

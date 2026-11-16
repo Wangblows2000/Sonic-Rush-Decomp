@@ -54,7 +54,7 @@ typedef struct UnkInfo_02309e3c {
 } UnkInfo_02309e3c;
 
 extern UnkWork_02309e3c *data_ov001_0231f5bc;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u16 data_ov001_023170b8[];
 
 UnkPlayer_02309e3c *func_ov001_0230c0a4(void);
@@ -64,9 +64,9 @@ void func_ov001_02307d30(void);
 void func_ov001_02308b74(void);
 s32 func_ov001_02314214(void);
 UnkInfo_02309e3c *func_ov001_02314664(s32 a);
-void func_02033550(UnkSpr_02309e3c *s, u16 anim);
-void func_02036754(s32 a, s32 b, s32 c);
-void func_0203344c(UnkSpr_02309e3c *s, s32 a, s32 b);
+void AnimatorSprite_SetAnimation(UnkSpr_02309e3c *s, u16 anim);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
+void AnimatorSprite_ProcessAnimation(UnkSpr_02309e3c *s, s32 a, s32 b);
 BOOL func_0202e5e4(f32 a, f32 b);
 void func_ov001_02309228(void);
 void func_ov001_0230903c(void);
@@ -77,8 +77,8 @@ void func_ov001_02308790(void);
 void func_ov001_02308630(void);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return data_0208fe70 >> 16;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return gRandSeed >> 16;
 }
 
 void func_ov001_02309e3c(void) {
@@ -115,31 +115,31 @@ void func_ov001_02309e3c(void) {
         info = func_ov001_02314664(p->unk150);
         if (p->unk14C == 0 && p->unk14C != w->unkAEC) {
             for (i = 0; i < info->count; i++)
-                func_02033550(&w->sprA[i], data_ov001_023170b8[i]);
+                AnimatorSprite_SetAnimation(&w->sprA[i], data_ov001_023170b8[i]);
         }
         if (p->unk14C != w->unkAEC) {
             for (i = 0; i < info->count; i++) {
                 if (i == p->unk14C) {
-                    func_02033550(&w->sprA[i], data_ov001_023170b8[i] + 1);
+                    AnimatorSprite_SetAnimation(&w->sprA[i], data_ov001_023170b8[i] + 1);
                     w->sprA[i].flags |= 4;
                 } else if (i == p->unk14C - 1) {
-                    func_02033550(&w->sprA[i], 0x3e);
+                    AnimatorSprite_SetAnimation(&w->sprA[i], 0x3e);
                     w->sprA[i].flags &= ~4;
-                    func_02036754(0, 0x10, 0);
+                    Sound_PlaySeqArc(0, 0x10, 0);
                 }
             }
             if (p->unk14C == 0x1234) {
-                func_02033550(&w->sprA[info->count - 1], 0x3e);
+                AnimatorSprite_SetAnimation(&w->sprA[info->count - 1], 0x3e);
                 w->sprA[info->count - 1].flags &= ~4;
-                func_02036754(0, 0x10, 0);
+                Sound_PlaySeqArc(0, 0x10, 0);
             }
         }
         for (i = 0; i < info->count; i++) {
             w->sprA[i].x = info->pos[i].x;
             w->sprA[i].y = info->pos[i].y;
-            func_0203344c(&w->sprA[i], 0, 0);
+            AnimatorSprite_ProcessAnimation(&w->sprA[i], 0, 0);
         }
-        func_0203344c(&w->sprB, 0, 0);
+        AnimatorSprite_ProcessAnimation(&w->sprB, 0, 0);
         w->unkAEC = p->unk14C;
     } else {
         w->unkAEC = -1;
@@ -165,7 +165,7 @@ void func_ov001_02309e3c(void) {
                 w->spr[24].x--;
             w->spr[24].y = 0x22;
             if (w->unkAF0 == 0x33 && w->spr[24].anim != 0xb)
-                func_02033550(&w->spr[24], w->spr[24].anim + 1);
+                AnimatorSprite_SetAnimation(&w->spr[24], w->spr[24].anim + 1);
         }
     }
     if (w->unkBC4 >= 0)
@@ -187,7 +187,7 @@ void func_ov001_02309e3c(void) {
     if (w->unkAE0 >= 0x17c && w->unkAE0 < 0x258) {
         w->sprC.x = 0x80;
         w->sprC.y = 0x6e;
-        func_0203344c(&w->sprC, 0, 0);
+        AnimatorSprite_ProcessAnimation(&w->sprC, 0, 0);
     }
     func_ov001_02308ccc();
 }

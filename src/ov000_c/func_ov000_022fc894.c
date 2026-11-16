@@ -2,8 +2,8 @@
 
 extern UnkStruct_StageObj *data_ov000_0236ac60;
 
-void func_0204b7ec(s32 a, s32 b, s32 c);
-void func_02068204(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
+void Sound_SetPositional(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
 void func_0201bde0(s32 a, s32 b, s32 c);
 void func_ov000_0232eaac(UnkStruct_StageObj *w, s32 a, s32 b);
 void func_ov000_022fdf28(UnkStruct_StageObj *w);
@@ -28,8 +28,8 @@ void func_ov000_022fc894(UnkStruct_Coll *a, UnkStruct_Coll *b) {
         return;
     if (o == NULL)
         return;
-    func_0204b7ec(w->unk1DC, 0, 0x79);
-    func_02068204(w->unk1DC, w, data_ov000_0236ac60);
+    Sound_PlaySeqArcEx(w->unk1DC, 0, 0x79);
+    Sound_SetPositional(w->unk1DC, w, data_ov000_0236ac60);
     func_0201bde0(w->unk1DC, 0xffff, 0x400);
     func_ov000_0232eaac(w, 0, -0x40);
     w->unk204 = o;

@@ -1,14 +1,14 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern u8 data_ov001_0231d9b0[];
 extern u8 data_ov001_0231d9cc[];
 extern u8 *data_ov001_0231f528;
-extern void *data_02250458;
-extern void *data_022c4484;
+extern void *gSoundHeap;
+extern void *gZoneSoundData;
 
-u8 *func_02033fbc(void *p, void *dst);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *File_Load(void *p, void *dst);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -17,9 +17,9 @@ u32 func_ov001_022ffb84(u32 *p);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-u32 *func_02033a54(void *s);
-void func_02033a68(void *a, void *b, u32 c);
-void func_020349b8(void *heap, void *p);
+u32 *Compress_GetData(void *s);
+void Mem_Copy(void *a, void *b, u32 c);
+void Heap_Free(void *heap, void *p);
 void func_ov001_023029d4(void);
 void func_ov001_022eeab0(void);
 void func_ov001_02305368(void);
@@ -38,9 +38,9 @@ void func_ov001_022ff970(void) {
     u32 size;
     u8 *blk;
 
-    res = func_02033fbc(data_ov001_0231d9b0, (void *)-1);
+    res = File_Load(data_ov001_0231d9b0, (void *)-1);
     size = ((*(u32 *)res >> 8) + 0x43) & ~0x1f;
-    blk = func_02034a40(data_0208fe80, size, 0x20);
+    blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, size);
@@ -61,7 +61,7 @@ void func_ov001_022ff970(void) {
         func_020087f8(res, blk);
         break;
     default:
-        func_02033a68(func_02033a54(res), blk, func_ov001_022ffb84((u32 *)res));
+        Mem_Copy(Compress_GetData(res), blk, func_ov001_022ffb84((u32 *)res));
         break;
     }
     DC_StoreRange(blk, func_ov001_022ffb84((u32 *)res));
@@ -74,7 +74,7 @@ void func_ov001_022ff970(void) {
             DC_StoreRange(res, size);
         }
     }
-    func_020349b8(data_0208fe80, res);
+    Heap_Free(gMainHeap, res);
     func_ov001_023029d4();
     func_ov001_022eeab0();
     func_ov001_02305368();
@@ -82,8 +82,8 @@ void func_ov001_022ff970(void) {
     func_ov001_022fdab4();
     func_ov001_022fd564();
     func_ov001_023065f8();
-    data_022c4484 = func_0201d9b4(data_02250458);
-    data_022c4484 = func_0201d9e4(data_02250458, 0x60400, 0, 0, 0);
-    func_02033fbc(data_ov001_0231d9cc, data_022c4484);
-    func_02036820(data_022c4484);
+    gZoneSoundData = func_0201d9b4(gSoundHeap);
+    gZoneSoundData = func_0201d9e4(gSoundHeap, 0x60400, 0, 0, 0);
+    File_Load(data_ov001_0231d9cc, gZoneSoundData);
+    func_02036820(gZoneSoundData);
 }

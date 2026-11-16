@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_022b4574[];
+extern unsigned char gTaskCurrent[];
 int func_ov001_022eb294();
 int func_ov001_022e9708();
 int func_ov001_022ea850();
@@ -38,7 +38,7 @@ void func_ov001_022ebc3c(int param_1)
   undefined4 local_14 [2];
   
   if (param_1 == 0) {
-    param_1 = *((int *)data_022b4574);
+    param_1 = *((int *)gTaskCurrent);
   }
   puVar1 = *(undefined4 **)(param_1 + 0x10);
   *puVar1 = 0;

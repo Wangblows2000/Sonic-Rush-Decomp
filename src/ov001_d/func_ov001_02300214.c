@@ -21,9 +21,9 @@ typedef struct UnkStruct_02300214_s {
 extern UnkStruct_02300214 *data_ov001_0231f52c;
 extern UnkStruct_02300214_s data_022c4590;
 extern s32 data_022c4560;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void func_02035368(void);
+void PaletteTransfer_Clear(void);
 void func_ov001_022f7274(void);
 void func_ov001_02301668(void);
 void func_ov001_023030dc(void);
@@ -33,21 +33,21 @@ void func_ov001_022fdb04(void);
 void func_ov001_022fd610(void);
 void func_ov001_02306674(void);
 void func_ov001_022ff8ac(void);
-void func_020371c8(void *t);
+void Task_Destroy(void *t);
 void func_0201bf1c(void *p);
 void func_02059838(s32 a, s32 b);
 s32 func_0205a4ec(s32 p0);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 void func_ov001_02300214(void) {
     vu32 fill;
     u8 *p;
     s32 size;
 
-    func_02035368();
+    PaletteTransfer_Clear();
     func_ov001_022f7274();
     func_ov001_02301668();
     func_ov001_023030dc();
@@ -57,11 +57,11 @@ void func_ov001_02300214(void) {
     func_ov001_022fd610();
     func_ov001_02306674();
     func_ov001_022ff8ac();
-    func_020371c8(data_ov001_0231f52c->task8);
-    func_020371c8(data_ov001_0231f52c->taskC);
-    func_020371c8(data_ov001_0231f52c->task10);
+    Task_Destroy(data_ov001_0231f52c->task8);
+    Task_Destroy(data_ov001_0231f52c->taskC);
+    Task_Destroy(data_ov001_0231f52c->task10);
     if (data_ov001_0231f52c->task14 != NULL)
-        func_020371c8(data_ov001_0231f52c->task14);
+        Task_Destroy(data_ov001_0231f52c->task14);
     func_0201bf1c(data_ov001_0231f52c->unk33C);
     func_02059838(data_ov001_0231f52c->unk60, data_ov001_0231f52c->unk61);
     func_0205a4ec(0);
@@ -82,6 +82,6 @@ void func_ov001_02300214(void) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
     data_ov001_0231f52c = NULL;
 }

@@ -3,7 +3,7 @@
 
 s32 func_ov000_0234cb70();
 void func_ov000_0234a288();
-s32 func_0206e2b4();
+s32 ObjRect_SetAtkDefFlags();
 
 void func_ov000_0234a9d4(u8 *p0, s32 p1) {
     s32 t0 = (*(u32 *)((u8 *)p0 + 0x58) & 0x10);
@@ -16,7 +16,7 @@ void func_ov000_0234a9d4(u8 *p0, s32 p1) {
         *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x10);
         *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x8000);
         *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_0234a288;
-        func_0206e2b4(((u8 *)p0 + 0x2cc), 0x13, 0, (u32)func_ov000_0234a288);
+        ObjRect_SetAtkDefFlags(((u8 *)p0 + 0x2cc), 0x13, 0, (u32)func_ov000_0234a288);
         *(u16 *)((u8 *)p0 + 0x30) = p1;
         *(u16 *)((u8 *)p0 + 0x2e) = t2;
         *(u16 *)((u8 *)p0 + 0x34) = t3;

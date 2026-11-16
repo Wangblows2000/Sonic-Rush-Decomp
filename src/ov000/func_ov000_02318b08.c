@@ -22,7 +22,7 @@ extern u16 data_ov000_0236a2bc[];
 
 void func_0201c070(void *p, s32 a);
 void func_0201bf1c(void *p);
-void func_020365bc(void *p);
+void Sound_FreeHandle(void *p);
 void func_ov000_0233e5c8(s32 a, s32 b);
 
 void func_ov000_02318b08(UnkStruct_02318b08 *s) {
@@ -31,7 +31,7 @@ void func_ov000_02318b08(UnkStruct_02318b08 *s) {
     if (p->unk8 != NULL)
         func_0201bf1c(p->unk8);
     if (p->unk8 != NULL)
-        func_020365bc(p->unk8);
+        Sound_FreeHandle(p->unk8);
     if (p->unk2 != 0) {
         if (data_ov000_0236ac60->unk330 & 0x8000)
             func_ov000_0233e5c8(3, 8);

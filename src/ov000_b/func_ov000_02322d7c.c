@@ -31,16 +31,16 @@ void *func_ov000_02322d7c(void *a, s32 b, s32 c, s32 d, u16 e) {
 
     if (data_ov000_0236a660[i] != NULL)
         return data_ov000_0236a660[i]->work;
-    task = func_020372d0(func_0206c3d0, func_ov000_02322d14, 0, 0x3000, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, func_ov000_02322d14, 0, 0x3000, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     data_ov000_0236a660[i] = task;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, a, 0, &data_ov000_0236a6f0[d], data_ov000_02369ba0);
-    func_02069eb0(w, b, &data_ov000_0236a790[e]);
-    func_02069818(w, c);
+    StageObj_Load2dBAC(w, a, 0, &data_ov000_0236a6f0[d], data_ov000_02369ba0);
+    StageObj_SetSharedSpriteVram(w, b, &data_ov000_0236a790[e]);
+    StageObj_SetAnimation(w, c);
     w->unk58 |= 0x2100;
     w->unk5C |= 0x20;
     w->unk5C |= 4;

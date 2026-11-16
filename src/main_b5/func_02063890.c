@@ -28,7 +28,7 @@ typedef struct {
 extern u16 data_022c4dbc;
 extern UnkPos_02063890 data_02077894[];
 
-void func_02032d2c(UnkSpr_02063890 *s);
+void AnimatorSprite_Draw(UnkSpr_02063890 *s);
 
 void func_02063890(UnkWork_02063890 *w) {
     u16 mask;
@@ -43,11 +43,11 @@ void func_02063890(UnkWork_02063890 *w) {
         if (mask & (1 << i)) {
             icon->x = data_02077894[i].x;
             icon->y = data_02077894[i].y;
-            func_02032d2c(icon);
+            AnimatorSprite_Draw(icon);
         } else if (i != w->sel) {
             cur->x = data_02077894[i].x;
             cur->y = data_02077894[i].y;
-            func_02032d2c(cur);
+            AnimatorSprite_Draw(cur);
         }
         icon++;
     }

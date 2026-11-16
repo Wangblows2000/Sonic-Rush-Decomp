@@ -7,7 +7,7 @@ void func_ov000_02360af4(UnkStruct_MenuO *w) {
     s32 *cur = &w->anim[19];
 
     if (*cur != 0) {
-        func_02033550(spr, 0);
+        AnimatorSprite_SetAnimation(spr, 0);
         *cur = 0;
     }
     spr->unk2C &= ~4;

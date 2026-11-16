@@ -26,28 +26,28 @@ struct UnkStruct_022d6568 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022d63f4(UnkStruct_022d6568 *s);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022d6568(UnkStruct_022d6568 *s) {
-    func_02031a68(&s->unk2C4, 0, s->unk434, 0x15, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0x15, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
     if (s->unk5C & 1)
         s->unk2E = 0x400;
     else
         s->unk2E = -0x400;
-    func_02036754(0, 0, 0x7b);
+    Sound_PlaySeqArc(0, 0, 0x7b);
     func_020366f4(0, 0, (Rand() & 1) ? 0xce : 0xcf);
     s->unk258 = 0;
     s->unk25A = 0;

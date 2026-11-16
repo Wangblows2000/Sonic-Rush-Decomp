@@ -44,7 +44,7 @@ extern UnkStruct_02352044_4560 data_022c4560;
 #define COS_02352044(a) data_0206e470[(u32)((IDX_02352044(a) << 1) + 1)]
 
 void func_ov000_02328bf0(UnkStruct_02352044 *w, s32 a, s32 b);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0234a064(UnkStruct_02352044 *w, u8 ang);
 
 void func_ov000_02352044(UnkStruct_02352044 *w) {
@@ -61,7 +61,7 @@ void func_ov000_02352044(UnkStruct_02352044 *w) {
         }
     }
     if (!(data_022c4560.unk20 & 0x3f)) {
-        func_0204b7ec(w->unk384, 0, 0x5c);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x5c);
     }
     if (w->unk58 & 0x10) {
         if (!(w->unk58 & 1)) {

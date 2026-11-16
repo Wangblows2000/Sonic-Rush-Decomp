@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-s32 func_02037d40();
+s32 Touch_Disable();
 s32 func_ov000_02360324();
 s32 func_ov000_0235fce0();
 s32 func_ov000_023622f0();
@@ -14,7 +14,7 @@ s32 func_ov000_0235f35c();
 
 void func_ov000_023622f4(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x10);
-    func_02037d40();
+    Touch_Disable();
     func_ov000_02360324(t0);
     func_ov000_0235fce0(t0);
     func_ov000_023622f0(t0);

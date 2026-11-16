@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 typedef struct { u8 pad[0x10]; void *work; } UnkStruct_022c66e8;
-UnkStruct_022c66e8 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkStruct_022c66e8 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
 void func_ov001_022c6180(void);
 void func_ov001_022c66a8(void);
@@ -15,7 +15,7 @@ void func_ov001_022c66e8(void) {
     void *w;
     *(vu32 *)0x04000000 &= ~0x1f00;
     *(vu32 *)0x04001000 &= ~0x1f00;
-    w = func_020372d0(func_ov001_022c6180, func_ov001_022c66a8, 0, 0x5000, 0x1173, 0xa0)->work;
+    w = Task_Create(func_ov001_022c6180, func_ov001_022c66a8, 0, 0x5000, 0x1173, 0xa0)->work;
     MI_CpuFill8(w, 0, 0xa0);
     func_ov001_022c6160(w, func_ov001_022c6110);
     func_ov001_022c634c(w);

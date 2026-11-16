@@ -28,8 +28,8 @@ typedef struct UnkTouch_022ed6c4 {
     u16 y;
 } UnkTouch_022ed6c4;
 
-extern UnkTask_022ed6c4 *data_022b4574;
-extern UnkTouch_022ed6c4 data_022b65b4;
+extern UnkTask_022ed6c4 *gTaskCurrent;
+extern UnkTouch_022ed6c4 gTouchState;
 
 void func_ov001_022ed490(UnkWork_022ed6c4 *w, s16 x, s16 y);
 void func_ov001_022ed3e0(UnkWork_022ed6c4 *w);
@@ -46,7 +46,7 @@ BOOL func_ov001_022ecf5c(UnkWork_022ed6c4 *w);
 BOOL func_ov001_022ecf04(UnkWork_022ed6c4 *w);
 s32 func_ov001_022ece04(UnkWork_022ed6c4 *w, s32 v);
 s32 func_ov001_022ecdcc(UnkWork_022ed6c4 *w, s32 v);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_ov001_022ec8e8(s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022ed4d8(void);
 void func_ov001_022ed548(void);
@@ -54,7 +54,7 @@ void func_ov001_022ed614(void);
 
 #pragma thumb on
 void func_ov001_022ed6c4(void) {
-    UnkWork_022ed6c4 *w = data_022b4574->work;
+    UnkWork_022ed6c4 *w = gTaskCurrent->work;
     BOOL f1, f2, f3;
 
     func_ov001_022ed490(w, 0, 0x90);
@@ -79,8 +79,8 @@ void func_ov001_022ed6c4(void) {
         w->unk4 = 4;
         w->unk8 = 4;
         w->unk14 = w->unk30;
-        w->unkC = data_022b65b4.x;
-        w->unk10 = data_022b65b4.y;
+        w->unkC = gTouchState.x;
+        w->unk10 = gTouchState.y;
         w->unk18 = 0;
     } else if (func_ov001_022ecf5c(w)) {
         f3 = TRUE;
@@ -100,18 +100,18 @@ void func_ov001_022ed6c4(void) {
     }
     w->timer++;
     if (f1) {
-        func_02052104(1);
+        SysSound_PlaySE(1);
         w->timer = 0;
         w->unk4 = 6;
         w->unk8 = 6;
         func_ov001_022ec8e8(0, -16, 16, 0);
-        data_022b4574->func = func_ov001_022ed4d8;
+        gTaskCurrent->func = func_ov001_022ed4d8;
     } else if (f2) {
         w->timer = 0;
-        data_022b4574->func = func_ov001_022ed548;
+        gTaskCurrent->func = func_ov001_022ed548;
     } else if (f3) {
         w->timer = 0;
-        data_022b4574->func = func_ov001_022ed614;
+        gTaskCurrent->func = func_ov001_022ed614;
     }
 }
 #pragma thumb reset

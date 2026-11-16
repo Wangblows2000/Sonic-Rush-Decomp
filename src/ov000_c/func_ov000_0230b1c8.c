@@ -14,7 +14,7 @@ extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_022c4590 data_022c4590;
 
 void func_ov000_0230a864(UnkStruct_StageObj *par, s16 dx, s16 dy, s16 vx, s16 vy);
-void func_02043c7c(s32 a, s32 b);
+void BrightnessFade_Create(s32 a, s32 b);
 void func_0204d5f8(void (*f)(void));
 void func_ov000_0235f254(void);
 void func_020480ec(void);
@@ -28,7 +28,7 @@ void func_ov000_0230b1c8(UnkStruct_StageObj *w) {
     if (!(w->unk8 & 0xf))
         func_ov000_0230a864(w, 0xf - (Rand() & 0x1f), 0xf - (Rand() & 0x1f), 0, 0);
     if (w->unkC == 8)
-        func_02043c7c(4, 0x200);
+        BrightnessFade_Create(4, 0x200);
     if (w->unkC == 0) {
         if (data_022c4560.unk10 == 1) {
             data_022c4590.unk24 &= ~1;

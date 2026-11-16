@@ -31,7 +31,7 @@ typedef struct {
 void func_ov000_02352ee0(void);
 s32 func_ov000_0234cb70();
 s32 func_ov000_0234c4a4();
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02352fc0(UnkStruct_02352fc0 *w, s32 x, s32 y) {
     u8 b3 = w->unk3;
@@ -59,5 +59,5 @@ void func_ov000_02352fc0(UnkStruct_02352fc0 *w, s32 x, s32 y) {
     w->unk2 = 0;
     w->unk3 = b3;
     w->unk18 = v18;
-    func_0204b7ec(w->unk388, 0, 0x58);
+    Sound_PlaySeqArcEx(w->unk388, 0, 0x58);
 }

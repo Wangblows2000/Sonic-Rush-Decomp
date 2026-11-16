@@ -73,18 +73,18 @@ struct UnkStruct_02306db0_n {
 
 extern UnkStruct_02306db0_g *data_ov001_0231f5b8;
 extern UnkStruct_02306db0_e data_ov001_02316fe4[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 UnkStruct_02306db0_n *func_ov001_023102fc(void *g);
-void func_02033550(void *s, u16 index);
-void func_020316f4(void *p);
-void func_02031bd0(void *s, void *res, u32 idx);
-void func_02031a68(void *p, s32 a, void *b, s32 c, u32 d);
+void AnimatorSprite_SetAnimation(void *s, u16 index);
+void Model_Animate(void *p);
+void Model_SetResource(void *s, void *res, u32 idx);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
 u32 func_02025e8c(void *h);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 UnkStruct_02306db0_n *func_ov001_02306db0(s32 arg, u32 type) {
@@ -124,9 +124,9 @@ UnkStruct_02306db0_n *func_ov001_02306db0(s32 arg, u32 type) {
     n->unk78 = arg;
     n->unkB0 = o;
     if (o != NULL) {
-        func_02033550(o->unk90, e->unk10);
+        AnimatorSprite_SetAnimation(o->unk90, e->unk10);
         o->unkBC &= ~0x10;
-        func_020316f4(o);
+        Model_Animate(o);
         o->unkBC |= 0x10;
         if (e->unk12 > 0)
             o->unkBC |= 4;
@@ -138,15 +138,15 @@ UnkStruct_02306db0_n *func_ov001_02306db0(s32 arg, u32 type) {
     n->unkD8 = n;
     switch (type) {
     case 0:
-        func_02031bd0(n->unkAC, g->unk4684, 0);
-        func_02031a68(n->unkAC, 0, g->unk468C, 0, 0);
-        func_02031a68(n->unkAC, 1, g->unk4688, 0, 0);
+        Model_SetResource(n->unkAC, g->unk4684, 0);
+        Model_SetAnimation(n->unkAC, 0, g->unk468C, 0, 0);
+        Model_SetAnimation(n->unkAC, 1, g->unk4688, 0, 0);
         break;
     case 1:
-        func_02031bd0(n->unkAC, g->unk4690, 0);
-        func_02031a68(n->unkAC, 0, g->unk4694, 0, 0);
-        func_02031a68(n->unkAC, 1, g->unk4698, 0, 0);
-        func_02031a68(n->unkAC, 2, g->unk469C, 0, func_02025e8c(g->unk4690));
+        Model_SetResource(n->unkAC, g->unk4690, 0);
+        Model_SetAnimation(n->unkAC, 0, g->unk4694, 0, 0);
+        Model_SetAnimation(n->unkAC, 1, g->unk4698, 0, 0);
+        Model_SetAnimation(n->unkAC, 2, g->unk469C, 0, func_02025e8c(g->unk4690));
         break;
     case 4:
         n->unk2C = Rand() % 0x2000;

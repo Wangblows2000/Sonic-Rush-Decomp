@@ -42,7 +42,7 @@ void func_ov000_022dd748(UnkStruct_Boss *b);
 void func_ov000_022de018(UnkStruct_Boss *b);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
-void func_020367b4(s32 a, s32 b);
+void Sound_PlaySeq(s32 a, s32 b);
 void func_ov000_02328710(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022de224(UnkStruct_Boss *b);
 UnkStruct_Fx *func_ov000_023285d0(s32 a, s32 x, s32 y, s32 z);
@@ -68,7 +68,7 @@ void func_ov000_022ded44(UnkStruct_Hit *a, UnkStruct_Hit *h) {
         if (data_ov000_02369ac0.unk8 == 2) {
             func_020537b4(0xb);
             func_020533e0(0x12, 0xf0);
-            func_020367b4(0, 0xf);
+            Sound_PlaySeq(0, 0xf);
         } else {
             func_020537b4(0xb);
             func_020533e0(0x10, 0xf0);

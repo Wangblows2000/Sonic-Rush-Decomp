@@ -75,9 +75,9 @@ void func_02000e60(void *m, s32 s, s32 c);
 void func_02000e98(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
 void *func_ov000_0232e2f0(void *a, s32 b, s32 c);
-void func_020698f0(void *a, s32 b);
-void func_0204b7ec(void *p, s32 a, s32 b);
-u8 func_02068db4(u8 a, s32 b);
+void StageObj_SetOAMPriority(void *a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
+u8 ObjSpd_DownSet(u8 a, s32 b);
 void func_ov000_02319bb4(UnkStruct_02319c34 *w);
 s32 func_0201bea8(s32 a, s32 b);
 void func_0204b774(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -141,22 +141,22 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
         if (!(w->unk364 & 0x80)) {
             eff = func_ov000_0232e2f0(w, 0, 0);
             if (eff != NULL) {
-                func_020698f0(eff, 1);
+                StageObj_SetOAMPriority(eff, 1);
             }
-            func_0204b7ec(NULL, 0, 100);
+            Sound_PlaySeqArcEx(NULL, 0, 100);
             w->unk364 |= 0x80;
             w->unk30 = -0x400;
             w->unk58 |= 0x10;
         } else if (!(data_022c4560.unk20 & 7)) {
             eff = func_ov000_0232e2f0(w, 0, 0);
             if (eff != NULL) {
-                func_020698f0(eff, 1);
+                StageObj_SetOAMPriority(eff, 1);
             }
-            func_0204b7ec(NULL, 0, 100);
+            Sound_PlaySeqArcEx(NULL, 0, 100);
         }
     }
     if (w->unk364 & 0x80) {
-        w->unk1 = func_02068db4(w->unk1, 1);
+        w->unk1 = ObjSpd_DownSet(w->unk1, 1);
         w->unk8 += 0x80;
         if (w->unk8 > 0x1880) {
             w->unk8 = 0x1880;

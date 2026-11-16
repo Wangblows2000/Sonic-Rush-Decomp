@@ -24,15 +24,15 @@ typedef struct UnkStruct_022dd004_5 {
     UnkStruct_022dd004_4 unkAF8;
 } UnkStruct_022dd004_5;
 
-extern UnkStruct_022dd004 *data_022b4574;
+extern UnkStruct_022dd004 *gTaskCurrent;
 extern UnkStruct_022dd004_5 *data_ov000_02369b2c;
 
-void func_020316f4(void *p);
-void func_020315e0(void *p);
+void Model_Animate(void *p);
+void Model_Draw(void *p);
 
 void func_ov000_022dd004(void) {
-    UnkStruct_022dd004_3 *p = data_022b4574->unk10->unk20C;
+    UnkStruct_022dd004_3 *p = gTaskCurrent->unk10->unk20C;
     p->unk24 = data_ov000_02369b2c->unkAF8;
-    func_020316f4(p);
-    func_020315e0(p);
+    Model_Animate(p);
+    Model_Draw(p);
 }

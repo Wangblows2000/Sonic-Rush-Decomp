@@ -26,7 +26,7 @@ typedef struct {
     UnkWork_022e6538 *work;
 } UnkTask_022e6538;
 
-extern UnkTask_022e6538 *data_022b4574;
+extern UnkTask_022e6538 *gTaskCurrent;
 
 void func_ov001_022e5a48(s32 v);
 void func_ov001_022e5f04(void);
@@ -39,7 +39,7 @@ void func_ov001_022e7f64(void);
 
 #pragma thumb on
 void func_ov001_022e6538(void) {
-    UnkWork_022e6538 *w = data_022b4574->work;
+    UnkWork_022e6538 *w = gTaskCurrent->work;
 
     switch (w->state) {
     case 0:
@@ -61,7 +61,7 @@ void func_ov001_022e6538(void) {
         break;
     case 5:
         w->unk90 = 1;
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 6:
         w->unk94 = 7;
@@ -85,7 +85,7 @@ void func_ov001_022e6538(void) {
         break;
     case 11:
         w->unk90 = 1;
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 12:
         w->unk94 = 0xd;
@@ -109,7 +109,7 @@ void func_ov001_022e6538(void) {
         break;
     case 17:
         w->unk90 = 1;
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 18:
         w->unk94 = 0x13;
@@ -117,7 +117,7 @@ void func_ov001_022e6538(void) {
         break;
     case 19:
         w->unk90 = 1;
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 20:
         w->child->unk6f0 = 2;
@@ -131,7 +131,7 @@ void func_ov001_022e6538(void) {
     case 22:
         w->unk90 = 1;
         func_ov001_022e3180(w->child->unk1cc4, 8);
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 23:
         w->unk94 = 0x18;
@@ -139,7 +139,7 @@ void func_ov001_022e6538(void) {
         break;
     case 24:
         w->unk90 = 1;
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 25:
         w->child->unk710 = 2;
@@ -153,7 +153,7 @@ void func_ov001_022e6538(void) {
     case 27:
         w->unk90 = 1;
         func_ov001_022e3180(w->child->unk1cc4, 9);
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 28:
         w->unk94 = 0x1d;
@@ -165,7 +165,7 @@ void func_ov001_022e6538(void) {
         break;
     case 30:
         w->unk90 = 1;
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 31:
         w->unk94 = 0x20;
@@ -177,11 +177,11 @@ void func_ov001_022e6538(void) {
         break;
     case 33:
         w->unk90 = 1;
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     case 34:
         w->unk90 = 1;
-        data_022b4574->func = func_ov001_022e7f64;
+        gTaskCurrent->func = func_ov001_022e7f64;
         break;
     }
 }

@@ -3,7 +3,7 @@
 
 s32 func_ov000_022faf48();
 void func_ov000_022fe00c();
-s32 func_0206e3c0();
+s32 ObjRect_SetBox2D();
 
 void func_ov000_022fe084(u8 *p0) {
     func_ov000_022faf48(p0, 2);
@@ -12,5 +12,5 @@ void func_ov000_022fe084(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x34) = 0;
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022fe00c;
     *(u16 *)((u8 *)p0 + 0x238) = 2;
-    func_0206e3c0(((u8 *)p0 + 0x20c), -120, -48, 0x50, -16);
+    ObjRect_SetBox2D(((u8 *)p0 + 0x20c), -120, -48, 0x50, -16);
 }

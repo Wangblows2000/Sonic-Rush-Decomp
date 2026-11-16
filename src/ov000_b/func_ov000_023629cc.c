@@ -28,10 +28,10 @@ typedef struct {
     void *work;
 } UnkStruct_023629cc_Task;
 
-extern s32 data_02087ccc;
-extern u32 data_02087cb8;
+extern s32 gSaveDataBusy;
+extern u32 gSystemFlags;
 
-UnkStruct_023629cc_Task *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkStruct_023629cc_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov000_02361e28(void);
 void func_ov000_023622f4(void);
@@ -59,7 +59,7 @@ void func_ov000_0235fd2c(UnkStruct_023629cc *w);
 UnkStruct_023629cc_Pad *func_020514e4(void);
 UnkStruct_023629cc_Pad *func_02051474(void);
 void func_ov000_0235f740(void *p);
-void func_02037d60(void);
+void Touch_Enable(void);
 
 #pragma thumb on
 
@@ -69,7 +69,7 @@ void func_ov000_023629cc(s32 a, s32 b) {
     UnkStruct_023629cc_Pad *p;
     vu32 zero;
 
-    task = func_020372d0(func_ov000_02361e28, func_ov000_023622f4, 0, 0x1000, 0x1000, sizeof(UnkStruct_023629cc));
+    task = Task_Create(func_ov000_02361e28, func_ov000_023622f4, 0, 0x1000, 0x1000, sizeof(UnkStruct_023629cc));
     w = task->work;
     zero = 0;
     MIi_CpuClear32(zero, w, sizeof(UnkStruct_023629cc));
@@ -127,11 +127,11 @@ void func_ov000_023629cc(s32 a, s32 b) {
     p->unk3 = 0;
     p->unk4 = 0;
     p->unk6 = 0;
-    func_020372d0(func_ov000_0235f8cc, NULL, 0, 0x3000, 0x1000, 0);
-    data_02087ccc = 1;
-    data_02087cb8 |= 0x10;
+    Task_Create(func_ov000_0235f8cc, NULL, 0, 0x3000, 0x1000, 0);
+    gSaveDataBusy = 1;
+    gSystemFlags |= 0x10;
     func_ov000_0235f740(w->unk6A8);
-    func_02037d60();
+    Touch_Enable();
     task->unk8 = func_ov000_02362124;
 }
 

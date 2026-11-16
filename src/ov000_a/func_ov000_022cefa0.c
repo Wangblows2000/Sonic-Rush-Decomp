@@ -33,7 +33,7 @@ struct UnkStruct_022cefa0 {
 };
 
 s32 func_02002094(s32 a, s32 b);
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_022cee68(UnkStruct_022cefa0 *t);
 
@@ -48,7 +48,7 @@ void func_ov000_022cefa0(UnkStruct_022cefa0 *t) {
         return;
     t->func = func_ov000_022cee68;
     b = &s->unk5BC;
-    func_02031a68(b, 3, s->unkF80, 0, 0);
+    Model_SetAnimation(b, 3, s->unkF80, 0, 0);
     b->unk10C[3] |= 4;
     b->unk114 = 0x1000;
     k = (t->unk8 >> 12) + 0xd3;

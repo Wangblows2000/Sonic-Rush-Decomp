@@ -7,14 +7,14 @@ typedef struct UnkStruct_022de240_b {
     void *res[6];
 } UnkStruct_022de240_b;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void func_02031768(void *o);
+void Model_Release(void *o);
 void func_0202566c(void *r);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void Free_022de240(void *p) {
     u32 size;
@@ -27,14 +27,14 @@ static inline void Free_022de240(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov001_022de240(void *w, UnkStruct_022de240_b *b) {
     u8 i;
 
     for (i = 0; i < 6; i++) {
-        func_02031768(b->objs[i]);
+        Model_Release(b->objs[i]);
         if (b->res[i] != NULL) {
             func_0202566c(b->res[i]);
             Free_022de240(b->res[i]);

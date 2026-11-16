@@ -20,7 +20,7 @@ typedef struct {
     u32 unk194;
 } UnkStruct_02321cb8;
 
-void func_02069818(void *w, s32 a);
+void StageObj_SetAnimation(void *w, s32 a);
 void func_ov000_02321c5c(void);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
@@ -28,7 +28,7 @@ void func_ov000_02321c5c(void);
 void func_ov000_02321cb8(UnkStruct_02321cb8 *w, UnkStruct_02321cb8_P *p) {
     s16 s;
 
-    func_02069818(w, 1);
+    StageObj_SetAnimation(w, 1);
     w->unk5C |= 4;
     w->unk68 = func_ov000_02321c5c;
     w->unk58 &= ~0x2000;

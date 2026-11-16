@@ -8,7 +8,7 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 
 void func_ov000_0232e48c(UnkStruct_StageObj *w, s16 x, s16 y);
-s16 func_02068df8(s32 v, s32 a, s32 b);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
 
 void func_ov000_0230e50c(UnkStruct_StageObj *w) {
     w->unk1 += 8;
@@ -18,5 +18,5 @@ void func_ov000_0230e50c(UnkStruct_StageObj *w) {
         w->unk34 = 0;
         return;
     }
-    w->unk34 = func_02068df8(w->unk34, 0x18, 0xf00);
+    w->unk34 = ObjSpd_UpSet(w->unk34, 0x18, 0xf00);
 }

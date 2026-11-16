@@ -87,7 +87,7 @@ struct UnkStruct_022d3070 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 typedef struct UnkStruct_022d3070_p {
@@ -112,9 +112,9 @@ void func_ov000_022d3070(UnkStruct_022d3070 *s) {
     if (!(x->unk10C & 2))
         return;
     s->func = func_ov000_022d2f4c;
-    func_02031a68(x, 0, s->unkF7C, 0x1f, 0);
-    func_02031a68(y, 0, s->unkF7C, 0x3b, 0);
-    func_02031a68(z, 0, s->unkF7C, 0x5b, 0);
+    Model_SetAnimation(x, 0, s->unkF7C, 0x1f, 0);
+    Model_SetAnimation(y, 0, s->unkF7C, 0x3b, 0);
+    Model_SetAnimation(z, 0, s->unkF7C, 0x5b, 0);
     d = data_ov000_0236ac60->unk10;
     if (d < s->unk10) {
         a = s->unk10 - d;

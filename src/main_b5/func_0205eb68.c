@@ -34,12 +34,12 @@ typedef struct {
 } UnkDisp_0205eb68;
 
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkDisp_0205eb68 data_0208922c;
-extern UnkDisp_0205eb68 data_02087d04;
+extern UnkDisp_0205eb68 gDisplayMain;
+extern UnkDisp_0205eb68 gDisplaySub;
 
 void func_0205e218(UnkWork_0205eb68 *w);
-void func_02039bb0(s32 a, s32 b);
-void func_0206d3fc(u8 idx);
+void ObjVram_Free(s32 a, s32 b);
+void ObjDraw_ReleaseSpritePalette(u8 idx);
 
 void func_0205eb68(UnkTask_0205eb68 *t) {
     UnkWork_0205eb68 *w = t->work;
@@ -48,17 +48,17 @@ void func_0205eb68(UnkTask_0205eb68 *t) {
 
     func_0205e218(w);
     for (i = 0; i < 14; i++)
-        func_02039bb0(0, w->spr[i].vram);
-    func_02039bb0(0, w->vram458);
+        ObjVram_Free(0, w->spr[i].vram);
+    ObjVram_Free(0, w->vram458);
     if (data_022c4560.stage != 8 || data_022c4560.act != 2) {
-        func_0206d3fc(w->palD0);
-        func_0206d3fc(w->pal468);
+        ObjDraw_ReleaseSpritePalette(w->palD0);
+        ObjDraw_ReleaseSpritePalette(w->pal468);
     }
     special = FALSE;
     if (data_022c4560.stage == 8 && data_022c4560.act == 2)
         special = TRUE;
     if (special || data_022c4560.stage >= 9 || data_022c4560.act >= 2) {
-        data_0208922c.unk1c = 0;
-        data_02087d04.unk1c = 0;
+        gDisplayMain.unk1c = 0;
+        gDisplaySub.unk1c = 0;
     }
 }

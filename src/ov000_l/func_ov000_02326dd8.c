@@ -33,7 +33,7 @@ typedef struct {
     UnkWork_02326d18 *work;
 } UnkTask_02326d18;
 
-extern UnkTask_02326d18 *data_022b4574;
+extern UnkTask_02326d18 *gTaskCurrent;
 
 void func_ov000_02326ac8(UnkWork_02326d18 *w);
 void func_ov000_02326b2c(UnkNode_02326d18 *n, UnkObj_02326d18 *o, void *a);
@@ -41,7 +41,7 @@ void func_ov000_02326b2c(UnkNode_02326d18 *n, UnkObj_02326d18 *o, void *a);
 void func_ov000_02326d18(void);
 
 void func_ov000_02326dd8(void) {
-    UnkWork_02326d18 *w = data_022b4574->work;
+    UnkWork_02326d18 *w = gTaskCurrent->work;
     UnkObj_02326d18 *o = w->unk134;
     UnkNode_02326d18 *n;
 

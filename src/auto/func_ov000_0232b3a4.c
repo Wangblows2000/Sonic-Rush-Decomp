@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u8 data_ov000_0236a978[];
-s32 func_0206bef4();
+s32 StageObj_Destructor();
 
 void func_ov000_0232b3a4(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x10);
@@ -11,5 +11,5 @@ void func_ov000_0232b3a4(u8 *p0) {
     if (*(u32 *)data_ov000_0236a978 == t0) {
         *(u32 *)data_ov000_0236a978 = 0;
     }
-    func_0206bef4(p0);
+    StageObj_Destructor(p0);
 }

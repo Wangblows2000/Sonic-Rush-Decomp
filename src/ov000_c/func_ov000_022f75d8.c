@@ -26,7 +26,7 @@ typedef struct {
     s32 unk254;
 } UnkStruct_022f75d8;
 
-extern volatile UnkStruct_0208922c data_0208922c;
+extern volatile UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Bits5 data_02089250;
 
 void func_ov000_022f7804(UnkStruct_022f75d8 *w);
@@ -39,9 +39,9 @@ void func_ov000_022f75d8(UnkStruct_022f75d8 *w) {
     u32 f;
     s32 v;
 
-    if (!(w->unk20C & 0x10) && data_0208922c.unk24.b0 != 0 && !(w->unk210 & 3)) {
+    if (!(w->unk20C & 0x10) && gDisplayMain.unk24.b0 != 0 && !(w->unk210 & 3)) {
         data_02089250.b0 -= 1;
-        if (data_0208922c.unk24.b0 == 0)
+        if (gDisplayMain.unk24.b0 == 0)
             w->unk20C |= 0x10;
     }
     func_ov000_022f7804(w);

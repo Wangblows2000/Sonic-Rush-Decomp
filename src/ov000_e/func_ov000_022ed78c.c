@@ -30,7 +30,7 @@ typedef struct {
     void *unk248;
 } UnkStruct_022ed78c;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 
 u8 *func_02025ecc(void *p);
 void func_02025e1c(void *m, s32 a, s32 b);
@@ -42,10 +42,10 @@ void func_ov000_022ed78c(UnkStruct_022ed78c *s) {
 
     s->unk230 = 0;
     s->unk232 = 0xc00;
-    data_0208922c.unk20.raw = 0;
-    data_0208922c.unk20.bits.b0 = 1;
-    data_0208922c.unk20.bits.b6 = 2;
-    data_0208922c.unk24.b0 = (u16)(s->unk232 >> 8);
+    gDisplayMain.unk20.raw = 0;
+    gDisplayMain.unk20.bits.b0 = 1;
+    gDisplayMain.unk20.bits.b6 = 2;
+    gDisplayMain.unk24.b0 = (u16)(s->unk232 >> 8);
     s->unk234 = 0x1f00;
     r = func_02025ecc(s->unk23C);
     func_02025e1c(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x40);

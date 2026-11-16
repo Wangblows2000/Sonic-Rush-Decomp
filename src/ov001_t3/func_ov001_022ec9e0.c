@@ -10,10 +10,10 @@ typedef struct {
     u16 unk14;
 } UnkStruct_020892ac;
 
-extern const u32 data_02072c70;
+extern const u32 gObjVramBaseTable;
 extern UnkStruct_020892ac data_020892ac;
 
-u16 *func_02036bfc(u32 idx, u32 prio);
+u16 *Oam_AllocObj(u32 idx, u32 prio);
 
 #pragma thumb on
 void func_ov001_022ec9e0(UnkStruct_022ec9e0 *p, s32 x, s32 y, s32 which) {
@@ -27,8 +27,8 @@ void func_ov001_022ec9e0(UnkStruct_022ec9e0 *p, s32 x, s32 y, s32 which) {
     prio = which == 0 ? 1 : 2;
     for (i = 0; i < 7; i++, x += 8) {
         if (x >= -8 && x < 0x100 && y >= -8 && y < 0xc0) {
-            val = (p->vals[which][i] - data_02072c70) >> (data_020892ac.unk14 + 5);
-            o = func_02036bfc(0, 0);
+            val = (p->vals[which][i] - gObjVramBaseTable) >> (data_020892ac.unk14 + 5);
+            o = Oam_AllocObj(0, 0);
             o[0] = (u8)y;
             o[1] = (u8)x;
             o[2] = (pal << 12) | (val & 0x3ff) | ((prio << 10) & 0xc00);

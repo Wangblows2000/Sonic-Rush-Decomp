@@ -12,7 +12,7 @@ typedef struct {
     s32 anim[31];
 } UnkStruct_022da244;
 
-void func_02033550(UnkSpr_022da244 *s, u16 anim);
+void AnimatorSprite_SetAnimation(UnkSpr_022da244 *s, u16 anim);
 
 #pragma thumb on
 void func_ov001_022da244(UnkStruct_022da244 *p, s32 i) {
@@ -24,7 +24,7 @@ void func_ov001_022da244(UnkStruct_022da244 *p, s32 i) {
     spr = &p->spr[k];
     cur = &p->anim[k];
     if (*cur != 2) {
-        func_02033550(spr, 2);
+        AnimatorSprite_SetAnimation(spr, 2);
         *cur = 2;
     }
     spr->flags &= ~4;

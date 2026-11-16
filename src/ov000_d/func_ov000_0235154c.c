@@ -37,7 +37,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-s16 func_02068df8(s16 v, s32 a, s32 b);
+s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 
 #define ABS_0235154c(x) ((x) < 0 ? -(x) : (x))
 
@@ -47,12 +47,12 @@ void func_ov000_0235154c(UnkStruct_0235154c *w) {
 
     w->unk3F4 -= w->unk34;
     if (w->unk34 > 0) {
-        w->unk34 = func_02068df8(w->unk34, 0x18, w->unk3E);
+        w->unk34 = ObjSpd_UpSet(w->unk34, 0x18, w->unk3E);
         if (w->unk3F4 < w->unk3F0) {
             w->unk3F4 = w->unk3F0;
         }
     } else {
-        w->unk34 = func_02068df8(w->unk34, -0x18, w->unk3E);
+        w->unk34 = ObjSpd_UpSet(w->unk34, -0x18, w->unk3E);
         if (w->unk3F4 > w->unk3F0) {
             w->unk3F4 = w->unk3F0;
         }

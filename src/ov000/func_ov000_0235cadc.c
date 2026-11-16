@@ -5,12 +5,12 @@ typedef struct UnkStruct_0235cadc {
     u16 unkc;
 } UnkStruct_0235cadc;
 
-extern UnkStruct_0235cadc data_0208922c;
-extern UnkStruct_0235cadc data_02087d04;
+extern UnkStruct_0235cadc gDisplayMain;
+extern UnkStruct_0235cadc gDisplaySub;
 
 #pragma thumb on
 void func_ov000_0235cadc(void) {
-    data_0208922c.unkc += 2;
-    data_02087d04.unkc += 2;
+    gDisplayMain.unkc += 2;
+    gDisplaySub.unkc += 2;
 }
 #pragma thumb reset

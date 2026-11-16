@@ -48,12 +48,12 @@ typedef struct UnkStruct_0231c350 {
 
 extern UnkStruct_0231c350 data_ov001_0231c350;
 
-void *func_02033fbc(void *p, s32 v);
-void func_02031c1c(UnkObj_022debf0 *o, s32 a);
+void *File_Load(void *p, s32 v);
+void Model_Init(UnkObj_022debf0 *o, s32 a);
 void func_020257f8(void *res);
-void func_02031bd0(UnkObj_022debf0 *o, void *res, s32 a);
+void Model_SetResource(UnkObj_022debf0 *o, void *res, s32 a);
 void *func_02025e8c(void *res);
-void func_02031a68(UnkObj_022debf0 *o, u32 slot, void *res, u32 idx, void *tex);
+void Model_SetAnimation(UnkObj_022debf0 *o, u32 slot, void *res, u32 idx, void *tex);
 
 void func_ov001_022debf0(UnkStruct_022debf0 *w, UnkStruct_022debf0_o *o) {
     u8 i;
@@ -65,26 +65,26 @@ void func_ov001_022debf0(UnkStruct_022debf0 *w, UnkStruct_022debf0_o *o) {
 
     t = &w->unk454;
 
-    o->res[0] = func_02033fbc(data_ov001_0231c350.unk34, -1);
-    o->res[1] = func_02033fbc(data_ov001_0231c350.unk38, -1);
+    o->res[0] = File_Load(data_ov001_0231c350.unk34, -1);
+    o->res[1] = File_Load(data_ov001_0231c350.unk38, -1);
     for (i = 0; i < 2; i++) {
         obj = &o->objs[i];
         if (i == 0)
             anim = 0xd;
         else
             anim = 0xe;
-        func_02031c1c(obj, 0);
+        Model_Init(obj, 0);
         func_020257f8(o->res[i]);
-        func_02031bd0(obj, o->res[i], 0);
+        Model_SetResource(obj, o->res[i], 0);
         tex = func_02025e8c(o->res[i]);
         for (j = 0; j < 5; j++) {
             if (j == 2 || j == 3) {
                 if (tex != NULL) {
-                    func_02031a68(obj, j, t->tex[j], anim, tex);
+                    Model_SetAnimation(obj, j, t->tex[j], anim, tex);
                     obj->flags[j] |= 4;
                 }
             } else {
-                func_02031a68(obj, j, t->tex[j], anim, 0);
+                Model_SetAnimation(obj, j, t->tex[j], anim, 0);
                 obj->flags[j] |= 4;
             }
         }

@@ -37,8 +37,8 @@ typedef struct UnkStruct_022dc6f4_w {
 extern UnkStruct_022dc6f4_w *data_ov000_02369b2c;
 
 void func_ov000_022dc6cc(void);
-void func_02031bd0(void *p, s32 a, s32 b);
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetResource(void *p, s32 a, s32 b);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_ov000_022dc6f4(UnkStruct_022dc6f4 *s) {
     UnkStruct_022dc6f4_w *w = data_ov000_02369b2c;
@@ -50,7 +50,7 @@ void func_ov000_022dc6f4(UnkStruct_022dc6f4 *s) {
     s->unk14 = 0x20000;
     a->unk48.y = -0x200000;
     a->unk1C = 0x34cc;
-    func_02031bd0(a, w->unkAC0, 0);
-    func_02031a68(a, 1, w->unkAD0, 0, 0);
+    Model_SetResource(a, w->unkAC0, 0);
+    Model_SetAnimation(a, 1, w->unkAD0, 0, 0);
     s->unk344.unk48 = s->unk20C.unk48;
 }

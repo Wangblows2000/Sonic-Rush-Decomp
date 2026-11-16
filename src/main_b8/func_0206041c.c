@@ -3,7 +3,7 @@
 extern s32 *data_0207ca28[];
 extern u8 data_0207cb58[];
 
-BOOL func_0203879c(void *p, u16 id, s32 c);
+BOOL File_LoadArchiveEntry(void *p, u16 id, s32 c);
 
 #pragma thumb on
 BOOL func_0206041c(s32 a, s32 b) {
@@ -14,6 +14,6 @@ BOOL func_0206041c(s32 a, s32 b) {
     v = data_0207ca28[a][b];
     if (v < 0)
         return FALSE;
-    return func_0203879c(data_0207cb58, v, -1);
+    return File_LoadArchiveEntry(data_0207cb58, v, -1);
 }
 #pragma thumb reset

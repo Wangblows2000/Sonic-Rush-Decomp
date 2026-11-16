@@ -13,24 +13,24 @@ typedef struct {
     UnkRes_02063228 *buf[4];  /* 0x1b0 */
 } UnkWork_02063228;
 
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 extern void **data_0207cf48[];
-extern void *data_0208fe78;
+extern void *gSystemHeap;
 
-s32 func_02033ddc(void *path);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+s32 File_GetSize(void *path);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void *func_02033fbc(void *a, void *b);
-void *func_02039c18(u32 a, u32 b);
-void func_0203363c(UnkSpr_W50 *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
-void func_0203473c(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203438c(void *buf);
+void *File_Load(void *a, void *b);
+void *ObjVram_Alloc(u32 a, u32 b);
+void AnimatorSprite_Init(UnkSpr_W50 *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
+void Background_Init(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
+void Background_Draw(void *buf);
 
 #pragma thumb on
 static inline u8 *Alloc_02063228(u32 size) {
-    u8 *p = func_02034a40(data_0208fe78, size, 0x20);
+    u8 *p = Heap_Alloc(gSystemHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -51,14 +51,14 @@ void func_02063228(UnkWork_02063228 *w) {
 
     w->unk0 = 1;
     w->unk8 = 0;
-    switch (data_02072cb8) {
+    switch (gGameLanguage) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        lang = data_02072cb8;
+        lang = gGameLanguage;
         break;
     default:
         lang = 1;
@@ -66,21 +66,21 @@ void func_02063228(UnkWork_02063228 *w) {
     }
     files = data_0207cf48[lang];
     for (i = 0; i < 4; i++) {
-        size = (func_02033ddc(files[i]) + 0x43) & ~0x1f;
+        size = (File_GetSize(files[i]) + 0x43) & ~0x1f;
         w->buf[i] = (UnkRes_02063228 *)Alloc_02063228(size);
-        func_02033fbc(files[i], w->buf[i]);
+        File_Load(files[i], w->buf[i]);
     }
     res = w->buf[1];
-    func_0203363c(&w->spr[0], res, 1, 0, 0, 0, func_02039c18(0, *(u16 *)((u8 *)res + *(u32 *)&res->unk18 + 8)), 0, 0x05000200);
-    func_0203363c(&w->spr[1], res, 2, 0, 0, 0, func_02039c18(0, *(u16 *)((u8 *)res + *(u32 *)&res->unk18 + 8)), 0, 0x05000200);
+    AnimatorSprite_Init(&w->spr[0], res, 1, 0, 0, 0, ObjVram_Alloc(0, *(u16 *)((u8 *)res + *(u32 *)&res->unk18 + 8)), 0, 0x05000200);
+    AnimatorSprite_Init(&w->spr[1], res, 2, 0, 0, 0, ObjVram_Alloc(0, *(u16 *)((u8 *)res + *(u32 *)&res->unk18 + 8)), 0, 0x05000200);
     res = w->buf[0];
-    func_0203363c(&w->spr[2], res, 5, 0, 0, 0, func_02039c18(0, *(u16 *)((u8 *)res + *(u32 *)&res->unk18 + 8)), 0, 0x05000200);
+    AnimatorSprite_Init(&w->spr[2], res, 5, 0, 0, 0, ObjVram_Alloc(0, *(u16 *)((u8 *)res + *(u32 *)&res->unk18 + 8)), 0, 0x05000200);
     res = w->buf[2];
-    func_0203363c(&w->spr[3], res, 1, 0, 0, 0, func_02039c18(0, *(u16 *)((u8 *)res + *(u32 *)&res->unk18 + 8)), 0, 0x05000200);
+    AnimatorSprite_Init(&w->spr[3], res, 1, 0, 0, 0, ObjVram_Alloc(0, *(u16 *)((u8 *)res + *(u32 *)&res->unk18 + 8)), 0, 0x05000200);
     res = w->buf[3];
-    func_0203473c(w->bg0, res, 0x38, 0, 3, res->unk18, res->unk1A);
-    func_0203438c(w->bg0);
-    func_0203473c(w->bg1, res, 0x38, 1, 3, res->unk18, res->unk1A);
-    func_0203438c(w->bg1);
+    Background_Init(w->bg0, res, 0x38, 0, 3, res->unk18, res->unk1A);
+    Background_Draw(w->bg0);
+    Background_Init(w->bg1, res, 0x38, 1, 3, res->unk18, res->unk1A);
+    Background_Draw(w->bg1);
 }
 #pragma thumb reset

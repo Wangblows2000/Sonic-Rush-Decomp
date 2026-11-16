@@ -5,22 +5,22 @@ typedef struct {
     void *res[5];
 } UnkStruct_022d6c98;
 
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 extern void **data_ov001_0231b7a0[];
 
-void *func_02033fbc(void *p, s32 a);
+void *File_Load(void *p, s32 a);
 
 #pragma thumb on
 static inline u32 GetLang_022d6c98(void) {
     u32 l;
-    switch (data_02072cb8) {
+    switch (gGameLanguage) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        l = data_02072cb8;
+        l = gGameLanguage;
         break;
     default:
         l = 1;
@@ -34,7 +34,7 @@ void func_ov001_022d6c98(UnkStruct_022d6c98 *p) {
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        p->res[i] = func_02033fbc(tbl[i], 0);
+        p->res[i] = File_Load(tbl[i], 0);
     }
 }
 #pragma thumb reset

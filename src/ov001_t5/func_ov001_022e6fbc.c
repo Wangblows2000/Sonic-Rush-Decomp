@@ -34,7 +34,7 @@ typedef struct {
     UnkWork_022e6fbc *work;
 } UnkTask_022e6fbc;
 
-extern UnkTask_022e6fbc *data_022b4574;
+extern UnkTask_022e6fbc *gTaskCurrent;
 
 fx32 func_020021f0(fx32 a);
 fx32 func_0200225c(fx32 a, fx32 b);
@@ -56,7 +56,7 @@ void func_ov001_022e6fbc(void) {
     fx32 len;
     BOOL done;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     x = w->tx;
     y = w->ty;
     dx = (x << 12) - w->x;

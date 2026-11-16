@@ -39,7 +39,7 @@ void func_ov000_0234c9e8(UnkStruct_02350968 *w);
 void func_ov000_0234c644(UnkStruct_02350968 *w);
 void func_ov000_0234c4a4(UnkStruct_02350968 *w, s32 a);
 u16 func_020027a4(s32 y, s32 x);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02350968(UnkStruct_02350968 *w, UnkStruct_02350968 *o) {
     func_ov000_0234c9e8(w);
@@ -73,5 +73,5 @@ void func_ov000_02350968(UnkStruct_02350968 *w, UnkStruct_02350968 *o) {
     w->unk3F0 = -0x2000;
     w->unk3F4 = 0;
     w->unk3EE = 0;
-    func_0204b7ec(w->unk384, 0, 0x6d);
+    Sound_PlaySeqArcEx(w->unk384, 0, 0x6d);
 }

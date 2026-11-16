@@ -20,10 +20,10 @@ typedef struct UnkStruct_02307b44 {
 
 extern UnkStruct_02307b44 *data_ov001_0231f5bc;
 
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 u32 func_ov001_0230c0b8(void);
 s32 func_ov001_0230c0cc(void);
-void func_02032480(void *o, s32 a, s32 b, s32 c);
+void AnimatorSprite_DrawRotScale(void *o, s32 a, s32 b, s32 c);
 
 void func_ov001_02307b44(void) {
     UnkStruct_02307b44 *g = data_ov001_0231f5bc;
@@ -38,17 +38,17 @@ void func_ov001_02307b44(void) {
     s16 sy;
 
     if (g->timer <= 0x3c)
-        func_02032d2c(a);
+        AnimatorSprite_Draw(a);
     else
-        func_02032d2c(b);
+        AnimatorSprite_Draw(b);
     for (i = 0; i < 7; i++) {
         u32 m = func_ov001_0230c0b8();
         if ((m & (1 << i)) && i != func_ov001_0230c0cc()) {
-            func_02032d2c(&g->objs[0xb + i]);
+            AnimatorSprite_Draw(&g->objs[0xb + i]);
         } else {
             g->objs[10].x = g->objs[0xb + i].x;
             g->objs[10].y = g->objs[0xb + i].y;
-            func_02032d2c(&g->objs[10]);
+            AnimatorSprite_Draw(&g->objs[10]);
         }
     }
     if (g->timer < 0xf0)
@@ -68,7 +68,7 @@ void func_ov001_02307b44(void) {
     if (s > 0) {
         o19->x = 0x80;
         o19->y = 0x78;
-        func_02032480(o19, s, s, 0);
+        AnimatorSprite_DrawRotScale(o19, s, s, 0);
     }
     if (g->timer < 0xf5)
         return;
@@ -76,9 +76,9 @@ void func_ov001_02307b44(void) {
     sy = o->y;
     o->x = g->unkBF8;
     o->y = g->unkBFA;
-    func_02032d2c(o);
+    AnimatorSprite_Draw(o);
     o->x = sx;
     o->y = sy;
     for (i = 0; i < 3; i++)
-        func_02032d2c(&g->objs2[i]);
+        AnimatorSprite_Draw(&g->objs2[i]);
 }

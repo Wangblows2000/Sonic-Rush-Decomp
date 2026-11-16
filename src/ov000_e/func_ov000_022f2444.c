@@ -28,7 +28,7 @@ extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_022c4534 data_022c4534;
 
 void func_ov000_022f4cbc(UnkStruct_022f2444 *s);
-void func_0206e2d8(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e, s16 f, s16 g);
+void ObjRect_SetBox3D(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e, s16 f, s16 g);
 void func_ov000_0232895c(s32 x, s16 y, s32 flip, s32 c);
 void func_ov000_022f238c(void);
 
@@ -39,7 +39,7 @@ void func_ov000_022f2444(UnkStruct_022f2444 *s) {
     func_ov000_022f4cbc(s);
     c = &s->coll20C;
     c->unkA |= 4;
-    func_0206e2d8(c, -0x60, -0x100, 0, 0, -0x7d00, 0x7d00);
+    ObjRect_SetBox3D(c, -0x60, -0x100, 0, 0, -0x7d00, 0x7d00);
     s->unk434 = 0;
     s->unk436 = 0;
     data_022c4534.unk1C = 0;

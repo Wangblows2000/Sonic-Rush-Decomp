@@ -16,7 +16,7 @@ typedef struct {
     s16 unk8;
 } UnkStruct_0235e340_Bright;
 
-extern UnkStruct_Task *data_022b4574;
+extern UnkStruct_Task *gTaskCurrent;
 extern UnkStruct_0235e340_Bright data_0208926c;
 extern UnkStruct_0235e340_Bright data_02087d44;
 
@@ -29,7 +29,7 @@ s32 func_ov000_0235c9f8(s32 a, s32 b, s32 c, s32 d, s32 e);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
 void func_ov000_0235cb84(s32 a, void *b);
 void func_0205a4ec(s32 a);
-void func_02037134(void);
+void Task_DestroyAll(void);
 BOOL func_ov000_0235cbd8(void);
 void func_ov000_0235caf8(s32 a);
 void func_020516b4(void);
@@ -38,7 +38,7 @@ void func_ov000_0235e1c4(void);
 #pragma thumb on
 
 void func_ov000_0235e340(void) {
-    UnkStruct_0235e340 *w = data_022b4574->work;
+    UnkStruct_0235e340 *w = gTaskCurrent->work;
     s32 t;
     s32 target;
     s32 next;
@@ -70,7 +70,7 @@ void func_ov000_0235e340(void) {
         GXx_SetMasterBrightness_((vu16 *)0x400106c, b);
         func_ov000_0235cb84(w->unk20, w->unkC14);
         func_0205a4ec(0);
-        func_02037134();
+        Task_DestroyAll();
         if (func_ov000_0235cbd8()) {
             func_ov000_0235caf8(next);
             return;

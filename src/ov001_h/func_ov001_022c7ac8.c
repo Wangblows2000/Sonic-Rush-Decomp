@@ -42,25 +42,25 @@ typedef struct UnkBright_022c7ac8 {
     s16 brightness;
 } UnkBright_022c7ac8;
 
-extern UnkTask_022c7ac8 *data_022b4574;
-extern UnkTouch_022c7ac8 data_022b65b4;
-extern UnkPad_022c7ac8 data_022503e0;
+extern UnkTask_022c7ac8 *gTaskCurrent;
+extern UnkTouch_022c7ac8 gTouchState;
+extern UnkPad_022c7ac8 gPad;
 extern u8 data_02250464[];
-extern UnkBright_022c7ac8 data_0208922c;
-extern UnkBright_022c7ac8 data_02087d04;
+extern UnkBright_022c7ac8 gDisplayMain;
+extern UnkBright_022c7ac8 gDisplaySub;
 
-void func_0203344c(void *s, s32 a, s32 b);
-void func_02032d2c(void *s);
+void AnimatorSprite_ProcessAnimation(void *s, s32 a, s32 b);
+void AnimatorSprite_Draw(void *s);
 s32 func_ov001_022c678c(void *s, u16 x, u16 y);
 void func_0201c070(void *p, s32 a);
-void func_02033550(void *s, s32 a);
+void AnimatorSprite_SetAnimation(void *s, s32 a);
 void func_ov001_022c7a44(UnkStruct_022c7ac8 *w);
 void func_ov001_022c6804(UnkStruct_022c7ac8 *w);
 void func_ov001_022c7a34(UnkStruct_022c7ac8 *w, s32 a);
 void func_ov001_022c8458(void);
 
 void func_ov001_022c7ac8(void) {
-    UnkStruct_022c7ac8 *w = data_022b4574->unk10;
+    UnkStruct_022c7ac8 *w = gTaskCurrent->unk10;
     void *s;
 
     w->unk4++;
@@ -68,23 +68,23 @@ void func_ov001_022c7ac8(void) {
     if (w->unk68C == 1) {
         if (w->unk690 != 0 || (w->unk4 & 0x30)) {
             s = w->spr644;
-            func_0203344c(s, 0, 0);
-            func_02032d2c(s);
+            AnimatorSprite_ProcessAnimation(s, 0, 0);
+            AnimatorSprite_Draw(s);
         }
         s = w->spr5B4;
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
     }
     if (w->unk4 > 0x3c && w->unk68C == 1 && w->unk690 == 0) {
         s32 r = 0;
-        if (data_022b65b4.flags & 0x40)
-            r = func_ov001_022c678c(w->spr5B4, data_022b65b4.x, data_022b65b4.y);
-        if (r == 1 || (data_022503e0.trg & 8)) {
+        if (gTouchState.flags & 0x40)
+            r = func_ov001_022c678c(w->spr5B4, gTouchState.x, gTouchState.y);
+        if (r == 1 || (gPad.trg & 8)) {
             w->unk690 = 1;
             w->unk694 = 0x3c;
             func_0201c070(data_02250464, 0x3c);
-            func_02033550(w->spr644, 2);
-            func_02033550(w->spr5B4, 3);
+            AnimatorSprite_SetAnimation(w->spr644, 2);
+            AnimatorSprite_SetAnimation(w->spr5B4, 3);
         }
     }
     func_ov001_022c7a44(w);
@@ -94,16 +94,16 @@ void func_ov001_022c7ac8(void) {
     if (w->unk690 != 0) {
         w->unk694--;
         if (w->unk694 % 3 == 0) {
-            data_0208922c.brightness++;
-            data_02087d04.brightness++;
+            gDisplayMain.brightness++;
+            gDisplaySub.brightness++;
         }
-        if (data_0208922c.brightness > 16)
-            data_0208922c.brightness = 16;
-        if (data_02087d04.brightness > 16)
-            data_02087d04.brightness = 16;
-        if (w->unk694 <= 0 && data_0208922c.brightness == 16 && data_02087d04.brightness == 16) {
+        if (gDisplayMain.brightness > 16)
+            gDisplayMain.brightness = 16;
+        if (gDisplaySub.brightness > 16)
+            gDisplaySub.brightness = 16;
+        if (w->unk694 <= 0 && gDisplayMain.brightness == 16 && gDisplaySub.brightness == 16) {
             func_ov001_022c7a34(w, 0);
-            data_022b4574->unk8 = func_ov001_022c8458;
+            gTaskCurrent->unk8 = func_ov001_022c8458;
             return;
         }
     }

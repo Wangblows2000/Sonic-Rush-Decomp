@@ -23,14 +23,14 @@ typedef struct {
     UnkSpr_022e9fe4 spr[20];
 } UnkStruct_022e9fe4;
 
-void func_0203344c(UnkSpr_022e9fe4 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022e9fe4 *s);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022e9fe4 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022e9fe4 *s);
 
 #define DRAW(dx, dy)                  \
     spr->x = e->x + (dx);             \
     spr->y = e->y + (dy);             \
-    func_0203344c(spr, 0, 0);         \
-    func_02032d2c(spr);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);         \
+    AnimatorSprite_Draw(spr);
 
 #pragma thumb on
 void func_ov001_022e9fe4(UnkStruct_022e9fe4 *p, s32 i) {

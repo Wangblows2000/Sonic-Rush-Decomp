@@ -17,14 +17,14 @@ typedef struct UnkStruct_02311700 {
     s32 unk15C;
 } UnkStruct_02311700;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 void func_ov001_02312a0c(UnkStruct_02311700 *p, s32 v);
 void func_ov001_023070fc(s32 type, s32 x, s32 y, s32 z);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return data_0208fe70 >> 16;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return gRandSeed >> 16;
 }
 
 void func_ov001_02311700(UnkStruct_02311700 *p) {

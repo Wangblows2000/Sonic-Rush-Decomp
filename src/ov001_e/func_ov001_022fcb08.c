@@ -19,18 +19,18 @@ typedef struct UnkStruct_022fcb08 {
     s32 unk1C8;
 } UnkStruct_022fcb08;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void func_ov001_02303d28(s32 x, s32 y, s32 count);
-void func_02031768(void *p);
+void Model_Release(void *p);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 void func_ov001_022fa574(UnkStruct_022fcb08 *p);
 void *func_ov001_022fd2dc(s32 a, s32 b);
 void func_ov001_022fd220(UnkStruct_022fcb08 *p);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 static inline void Free(void *p) {
     u8 *blk = p;
@@ -44,13 +44,13 @@ static inline void Free(void *p) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }
 
 void func_ov001_022fcb08(UnkStruct_022fcb08 *p, s32 n) {
     if (p->unk1C8 == n)
         return;
-    func_02031768(p->unk84);
+    Model_Release(p->unk84);
     if (!(p->flags & 0x20000000))
         Free(p->unk84);
     func_ov001_022fa574(p);

@@ -12,22 +12,22 @@ typedef struct {
     u32 flags;
 } UnkStruct_022d0220;
 
-void func_02033550(UnkSpr_022d0220 *s, u16 anim);
+void AnimatorSprite_SetAnimation(UnkSpr_022d0220 *s, u16 anim);
 
 #pragma thumb on
 void func_ov001_022d0220(UnkStruct_022d0220 *p) {
     if (p->flags & 2) {
         switch (p->spr.anim) {
         case 0x1a:
-            func_02033550(&p->spr, 0x1b);
+            AnimatorSprite_SetAnimation(&p->spr, 0x1b);
             p->flags &= ~4;
             break;
         case 0x1b:
-            func_02033550(&p->spr, 0x1c);
+            AnimatorSprite_SetAnimation(&p->spr, 0x1c);
             p->flags &= ~4;
             break;
         case 0x1c:
-            func_02033550(&p->spr, 0x1d);
+            AnimatorSprite_SetAnimation(&p->spr, 0x1d);
             p->flags |= 4;
             break;
         }

@@ -36,18 +36,18 @@ typedef struct {
 } UnkStruct_0235020c_4560;
 
 extern UnkStruct_0235020c_4560 data_022c4560;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
-s32 func_02068bd8(s32 cur, s32 target, s32 c, s32 d, s32 e, s32 f);
-u8 func_02068b04(u8 cur, s32 target, s32 step);
+s32 ObjShift_SetFromRef(s32 cur, s32 target, s32 c, s32 d, s32 e, s32 f);
+u8 ObjAngle_MoveToward8(u8 cur, s32 target, s32 step);
 void func_ov000_02330098(UnkStruct_0235020c *w, s16 a, s16 b);
 void func_ov000_02346d10(UnkStruct_0235020c *w);
 void func_ov000_02346aa8(UnkStruct_0235020c *w);
-void func_02043c7c(s32 a, s32 b);
+void BrightnessFade_Create(s32 a, s32 b);
 
 static inline u16 Rand_0235020c(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0235020c(UnkStruct_0235020c *w) {
@@ -55,14 +55,14 @@ void func_ov000_0235020c(UnkStruct_0235020c *w) {
     s32 py;
     s32 p2;
 
-    w->unk2E = func_02068bd8(w->x, w->unk3E8->x, w->unk3F0, 1, 0xf00, 0x400) - w->x;
-    w->unk1 = func_02068b04(w->unk1, 0xc0, 0x10);
+    w->unk2E = ObjShift_SetFromRef(w->x, w->unk3E8->x, w->unk3F0, 1, 0xf00, 0x400) - w->x;
+    w->unk1 = ObjAngle_MoveToward8(w->unk1, 0xc0, 0x10);
     if (w->unk5 != 0) {
         t = -0x50;
         w->unk2E = -w->unk2E;
     }
     w->unk330 &= ~0xc0;
-    w->unk3EE = func_02068bd8(w->unk3EE, t, 0, 4, 0xf00, 0x80);
+    w->unk3EE = ObjShift_SetFromRef(w->unk3EE, t, 0, 4, 0xf00, 0x80);
     if (!(data_022c4560.unk20 & 1)) {
         func_ov000_02330098(w, 0xf - (Rand_0235020c() & 0x1e), 0xf - (Rand_0235020c() & 0x1e));
     }
@@ -83,6 +83,6 @@ void func_ov000_0235020c(UnkStruct_0235020c *w) {
     }
     w->unkC--;
     if (w->unkC == 0x10) {
-        func_02043c7c(5, 0x100);
+        BrightnessFade_Create(5, 0x100);
     }
 }

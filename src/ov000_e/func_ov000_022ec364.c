@@ -22,26 +22,26 @@ typedef struct {
 
 extern s16 data_ov000_02363b64[];
 
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void *func_02025e8c(void *p);
 UnkStruct_StageObj *func_ov000_02328308(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022ec34c(void);
 
 void func_ov000_022ec364(UnkStruct_022ec364 *w) {
     UnkStruct_Mdl *m = &w->mdl;
 
-    func_02031a68(m, 1, w->unk38C, 0, 0);
-    func_02031a68(m, 2, w->unk398, 0, (s32)func_02025e8c(w->unk388));
+    Model_SetAnimation(m, 1, w->unk38C, 0, 0);
+    Model_SetAnimation(m, 2, w->unk398, 0, (s32)func_02025e8c(w->unk388));
     w->mdl.unk114 = 0x1000;
     if (w->unk378 == 0) {
         w->unk380 = func_ov000_02328308(1, w->base.unk10, w->base.unk14, w->base.unk18);
         w->unk380->unk5C |= 4;
         w->unk380->unkC = -1;
-        func_02036754(w->unk384, 0, 0x98);
+        Sound_PlaySeqArc(w->unk384, 0, 0x98);
     } else {
         w->mdl.unk114 = data_ov000_02363b64[w->unk37C];
-        func_02036754(w->unk384, 0, 0x99);
+        Sound_PlaySeqArc(w->unk384, 0, 0x99);
     }
     w->base.unk68 = func_ov000_022ec34c;
 }

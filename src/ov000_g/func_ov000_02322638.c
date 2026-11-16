@@ -73,8 +73,8 @@ void func_ov000_02322638(UnkStruct_02322638_C *a, UnkStruct_02322638_C *b) {
         e = func_ov000_02328fb8(o, 0, 0x10);
         w->unk54 |= 2;
         if (w->unk184->unk2 == 0x52) {
-            func_02069918(e, 9);
-            func_020698f0(e, 1);
+            StageObj_SetOAMOrder(e, 9);
+            StageObj_SetOAMPriority(e, 1);
         }
         break;
     }

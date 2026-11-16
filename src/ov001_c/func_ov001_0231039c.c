@@ -63,7 +63,7 @@ void MTX_RotY33_(UnkStruct_0231039c_m *m, s32 s, s32 c);
 void func_02000e60(UnkStruct_0231039c_m *m, s32 s, s32 c);
 void func_02000e98(UnkStruct_0231039c_m *m, s32 s, s32 c);
 void func_02000f34(UnkStruct_0231039c_m *a, UnkStruct_0231039c_m *b, UnkStruct_0231039c_m *c);
-void func_020315e0(UnkStruct_0231039c_r *o);
+void Model_Draw(UnkStruct_0231039c_r *o);
 
 void func_ov001_0231039c(UnkStruct_0231039c *p) {
     u32 one;
@@ -99,7 +99,7 @@ void func_ov001_0231039c(UnkStruct_0231039c *p) {
                 func_02000f34(&e->unkAC->rot, &c, &e->unkAC->rot);
             }
             VecSet(&e->unkAC->pos, e->pos.x, e->pos.y, e->pos.z);
-            func_020315e0(e->unkAC);
+            Model_Draw(e->unkAC);
         }
         if (e->unkB0) {
             if (e->unk64 & 0x4000) {
@@ -118,7 +118,7 @@ void func_ov001_0231039c(UnkStruct_0231039c *p) {
                 }
             }
             VecSet(&e->unkB0->pos, e->pos.x, e->pos.y, e->pos.z);
-            func_020315e0(e->unkB0);
+            Model_Draw(e->unkB0);
         }
     }
     one = 1;

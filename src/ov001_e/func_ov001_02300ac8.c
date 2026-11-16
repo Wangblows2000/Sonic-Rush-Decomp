@@ -15,14 +15,14 @@ typedef struct UnkStruct_02300ac8_t {
     UnkStruct_02300ac8 *work;
 } UnkStruct_02300ac8_t;
 
-extern UnkStruct_02300ac8_t *data_022b4574;
+extern UnkStruct_02300ac8_t *gTaskCurrent;
 
 BOOL func_ov001_02300be4(UnkStruct_02300ac8 *p);
 void func_ov001_02300a64(UnkStruct_02300ac8 *p);
 void func_ov001_022fe92c(void *c);
 
 void func_ov001_02300ac8(void) {
-    UnkStruct_02300ac8 *p = data_022b4574->work;
+    UnkStruct_02300ac8 *p = gTaskCurrent->work;
     s32 i;
 
     if (p->state != NULL) {

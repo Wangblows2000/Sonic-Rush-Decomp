@@ -48,7 +48,7 @@ typedef struct {
     UnkStruct_0235bd10 *work;
 } UnkStruct_0235bd10_T;
 
-extern UnkStruct_0235bd10_T *data_022b4574;
+extern UnkStruct_0235bd10_T *gTaskCurrent;
 extern UnkStruct_0235bd10_G data_022c4560;
 typedef struct {
     u8 pad[0x2A0];
@@ -61,10 +61,10 @@ typedef struct {
 extern UnkStruct_0235bd10_Pl *data_ov000_0236ac60[];
 extern s16 data_ov000_023690e4;
 
-void func_020698bc(void *a, void *b, s32 c);
-void func_020316f4(void *p);
-void func_0203344c(void *p, s32 a, s32 b);
-s32 func_02068e58(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d, s32 e);
+void SpritePair_SetOAMPriority(void *a, void *b, s32 c);
+void Model_Animate(void *p);
+void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
+s32 StageObj_ViewOutCheck(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_02343228(void *p, s32 a);
 void func_ov000_0235b2c4(UnkStruct_0235bd10_P *p);
 void func_ov000_0235b644(UnkStruct_0235bd10_P *p);
@@ -79,17 +79,17 @@ void func_ov000_0235bd10(void) {
     u16 save;
 
     ok = TRUE;
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
 
     if (w->count == 0)
         return;
 
     if (data_022c4560.unk1C == 2) {
         if (data_ov000_0236ac60[0]->flags330 & 0x40000) {
-            func_020698bc(w->spr0, w->spr1, ok);
+            SpritePair_SetOAMPriority(w->spr0, w->spr1, ok);
             w->cb10 = func_ov000_0235b2c4;
         } else {
-            func_020698bc(w->spr0, w->spr1, 2);
+            SpritePair_SetOAMPriority(w->spr0, w->spr1, 2);
             w->cb10 = func_ov000_0235b644;
         }
     }
@@ -102,10 +102,10 @@ void func_ov000_0235bd10(void) {
     w->spr1Flags &= ~1;
     w->mdlFlags &= ~1;
     if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2) {
-        func_020316f4(w->mdl);
+        Model_Animate(w->mdl);
     } else {
-        func_0203344c(w->spr0, 0, 0);
-        func_0203344c(w->spr1, 0, 0);
+        AnimatorSprite_ProcessAnimation(w->spr0, 0, 0);
+        AnimatorSprite_ProcessAnimation(w->spr1, 0, 0);
     }
     w->spr0Flags |= 1;
     w->spr1Flags |= 1;
@@ -118,7 +118,7 @@ void func_ov000_0235bd10(void) {
         if (p->timer == 0)
             continue;
         left--;
-        if (func_02068e58(p->x, p->y, (p->flags & 0x400) ? 0x10 : 0xC4, 0, 0, 0, 0)) {
+        if (StageObj_ViewOutCheck(p->x, p->y, (p->flags & 0x400) ? 0x10 : 0xC4, 0, 0, 0, 0)) {
             p->timer = 1;
             p->flags &= ~0x20;
             if (p->out != NULL)

@@ -22,7 +22,7 @@ typedef struct UnkStruct_022fe204 {
 void func_ov000_022fe084(UnkStruct_022fe204 *s);
 void func_ov000_022faf48(UnkStruct_022fe204 *s, s32 a);
 void func_ov000_022fe0f8(void);
-void func_0206e3c0(void *p, s32 a, s32 b, s32 c, s32 d);
+void ObjRect_SetBox2D(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_022fe204(UnkStruct_022fe204 *s) {
     if (s->unk1E0->unk2 == 0xd) {
@@ -35,5 +35,5 @@ void func_ov000_022fe204(UnkStruct_022fe204 *s) {
     s->unk54 &= ~0x1000;
     s->func = func_ov000_022fe0f8;
     s->unk238 = 3;
-    func_0206e3c0(s->unk20C, -0x78, -0x30, 0x50, -0x10);
+    ObjRect_SetBox2D(s->unk20C, -0x78, -0x30, 0x50, -0x10);
 }

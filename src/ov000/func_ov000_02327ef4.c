@@ -13,11 +13,11 @@ typedef struct UnkStruct_02327ef4 {
 } UnkStruct_02327ef4;
 
 void func_0202566c(void *p);
-void func_0206bef4(UnkStruct_02327ef4 *s);
+void StageObj_Destructor(UnkStruct_02327ef4 *s);
 
 void func_ov000_02327ef4(UnkStruct_02327ef4 *s) {
     UnkStruct_02327ef4_2 *p = s->unk10;
     if (!(p->unk2A0 & 1))
         func_0202566c(p->unk2A8);
-    func_0206bef4(s);
+    StageObj_Destructor(s);
 }

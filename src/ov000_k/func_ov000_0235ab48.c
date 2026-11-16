@@ -21,7 +21,7 @@ typedef struct {
     u16 unk8FC;
 } UnkStruct_0235ab48;
 
-void func_0206b768(s32 a, s32 b, s32 c, void *d, void *e, void *f, s32 g);
+void StageObj_Draw2DEx(s32 a, s32 b, s32 c, void *d, void *e, void *f, s32 g);
 
 void func_ov000_0235ab48(UnkStruct_0235ab48 *w, UnkStruct_0235ab48_A *a) {
     w->unk8E4 = a->unkC;
@@ -30,5 +30,5 @@ void func_ov000_0235ab48(UnkStruct_0235ab48 *w, UnkStruct_0235ab48_A *a) {
     if (a->unk12 & 0x8000) {
         w->unk8FC |= 2;
     }
-    func_0206b768(a->unk0, a->unk4, 0, w->unk8A0, w->unk14, w->unk5C, 0);
+    StageObj_Draw2DEx(a->unk0, a->unk4, 0, w->unk8A0, w->unk14, w->unk5C, 0);
 }

@@ -43,7 +43,7 @@ extern UnkStruct_022df55c *data_ov000_02369b2c;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern s16 data_ov000_02363580[];
 extern void *data_ov000_02369b30[];
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02365778[], data_ov000_0236577c[];
 extern u8 data_ov000_02365780[], data_ov000_02365794[], data_ov000_023657a8[], data_ov000_023657c4[];
 
@@ -60,10 +60,10 @@ void *func_02021264(void *f, s32 i);
 void func_020257f8(void *p);
 void *func_0202128c(void *a);
 void func_020212e0(void *f);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
 s32 func_02025e8c(void *p);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov000_022dbc4c(s32 a);
 void func_ov000_022dbb7c(s32 a);
@@ -81,7 +81,7 @@ UnkStruct_022df55c *func_ov000_022df55c(UnkStruct_ObjParam *p, s32 b, s32 c) {
 
     if (p->unk0 == 0xff && p->unk1 == 0xff)
         return NULL;
-    w = func_020372d0(func_0206c3d0, func_ov000_022dec70, 0, 0x500, 2, sizeof(UnkStruct_022df55c))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022dec70, 0, 0x500, 2, sizeof(UnkStruct_022df55c))->work;
     MI_CpuFill8(w, 0, sizeof(UnkStruct_022df55c));
     data_ov000_02369b2c = w;
     zero = 0;
@@ -100,15 +100,15 @@ UnkStruct_022df55c *func_ov000_022df55c(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk10 = 0;
     w->base.unk14 = 0x20000;
     w->base.unk18 = 0;
-    func_02021310(ctx, data_ov000_02365778, data_022c4488);
+    func_02021310(ctx, data_ov000_02365778, gZoneActArchive);
     w->unkAB0[0] = func_02021264(ctx, 8);
     w->unkAB0[1] = func_02021264(ctx, 9);
     w->unkAB0[2] = func_02021264(ctx, 10);
     func_020212e0(ctx);
     sub = w->unk228;
     for (i = 0; i < 7; i++) {
-        func_02031c1c(sub, 0);
-        func_02031bd0(sub, data_ov000_02369b30[i], 0);
+        Model_Init(sub, 0);
+        Model_SetResource(sub, data_ov000_02369b30[i], 0);
         sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
         sub->unk48 = w->base.unk10 << 4;
         sub->unk4C = -(w->base.unk14 << 4);
@@ -116,14 +116,14 @@ UnkStruct_022df55c *func_ov000_022df55c(UnkStruct_ObjParam *p, s32 b, s32 c) {
         sub->unkA = 4;
         sub++;
     }
-    func_02031a68(&w->unk228[0], 2, w->unkAB0[2], 0, func_02025e8c(data_ov000_02369b30[0]));
+    Model_SetAnimation(&w->unk228[0], 2, w->unkAB0[2], 0, func_02025e8c(data_ov000_02369b30[0]));
     w->unk228[0].unk10E |= 4;
     sub = (UnkStruct_022df55c_Sub *)(u32)&w->unk228[4];
     w->unk228[4].unk4C = 0xffec6b72;
     func_02021c38(sub->unk90, func_ov000_022de51c, 0, 6, 3);
     func_02021c38(w->unk228[2].unk90, func_ov000_022de49c, 0, 6, 3);
     func_02021c38(w->unk228[1].unk90, func_ov000_022de41c, 0, 6, 3);
-    func_02021310(ctx2, data_ov000_0236577c, data_022c4488);
+    func_02021310(ctx2, data_ov000_0236577c, gZoneActArchive);
     w->unkAB0[3] = func_02021264(ctx2, 0x51);
     w->unkAB0[4] = func_02021264(ctx2, 0x52);
     w->unkAB0[5] = func_02021264(ctx2, 0x53);

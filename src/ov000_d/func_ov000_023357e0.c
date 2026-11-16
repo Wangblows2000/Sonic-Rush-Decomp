@@ -6,13 +6,13 @@ typedef struct {
     void *unk8;
 } UnkStruct_023357e0;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_023357e0 data_ov000_0236aa9c;
 
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void UnkFree_023357e0(void **pp) {
     void *p;
@@ -28,7 +28,7 @@ static inline void UnkFree_023357e0(void **pp) {
                 DC_StoreRange(p, size);
             }
         }
-        func_020349b8(data_0208fe80, p);
+        Heap_Free(gMainHeap, p);
     }
     *pp = NULL;
 }

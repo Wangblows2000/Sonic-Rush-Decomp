@@ -56,14 +56,14 @@ typedef struct {
     u32 unk20;
 } UnkStruct_023180d8_Sys;
 
-extern UnkStruct_023180d8_Task *data_022b4574;
+extern UnkStruct_023180d8_Task *gTaskCurrent;
 extern UnkStruct_023180d8_Sys data_022c4560;
 extern s16 data_0206e470[];
 
-s16 func_02068db4(s16 a, s32 b);
-void func_0206bd24(void *w, void *a, void *b);
-void func_0206b768(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
-void func_02069090(void *w, void *a);
+s16 ObjSpd_DownSet(s16 a, s32 b);
+void StageObj_Draw2D(void *w, void *a, void *b);
+void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
+void StageObj_HandleCollider(void *w, void *a);
 
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
@@ -82,7 +82,7 @@ void func_ov000_023180d8(void) {
     s32 p;
 
     k = 0x60;
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     n = w->unk1E0->unk6;
     if (n > 10) {
         k += (n - 10) * 4;
@@ -104,24 +104,24 @@ void func_ov000_023180d8(void) {
         pos[i].y = by + ((len * COS_IDX(idx)) >> 12);
     }
     w->unk4A0 += w->unk4A2;
-    w->unk4A2 = func_02068db4(w->unk4A2, 2);
+    w->unk4A2 = ObjSpd_DownSet(w->unk4A2, 2);
     w->unk1 = w->unk4A0 >> 8;
     w->unk5C |= 0x100;
-    func_0206bd24(w, w->unk94, w->unkDC);
+    StageObj_Draw2D(w, w->unk94, w->unkDC);
     w->unk5C &= ~0x100;
     w->unk1 = 0;
     w->unk5C |= 4;
-    func_0206bd24(w, w->unk3BC, w->unk404);
+    StageObj_Draw2D(w, w->unk3BC, w->unk404);
     w->unk5C &= ~4;
     for (j = 0; j <= n; j++) {
         if (j == n) {
             w->unk5C |= 0x100;
             w->unk1 = -(w->unk478[j] >> 8);
-            func_0206b768(pos[j].x, pos[j].y, w->unk1, w, w->unk32C, w->unk374, 0);
+            StageObj_Draw2DEx(pos[j].x, pos[j].y, w->unk1, w, w->unk32C, w->unk374, 0);
         } else if (w->unk4A4 & (1 << j)) {
-            func_0206b768(pos[j].x, pos[j].y, 0, NULL, w->unk20C, w->unk254, 0);
+            StageObj_Draw2DEx(pos[j].x, pos[j].y, 0, NULL, w->unk20C, w->unk254, 0);
         } else {
-            func_0206b768(pos[j].x, pos[j].y, 0, NULL, w->unk29C, w->unk2E4, 0);
+            StageObj_Draw2DEx(pos[j].x, pos[j].y, 0, NULL, w->unk29C, w->unk2E4, 0);
         }
     }
     w->unk5C &= ~0x100;
@@ -130,7 +130,7 @@ void func_ov000_023180d8(void) {
     pos[n].x = pos[p].x + ((SIN_IDX(idx) * 0x1a00) >> 12);
     pos[n].y = pos[p].y + ((COS_IDX(idx) * 0x1a00) >> 12);
     if (!(w->unk54 & 2)) {
-        func_02069090(w, &w->unk44C);
+        StageObj_HandleCollider(w, &w->unk44C);
         w->unk44C = pos[n].x >> 8;
         w->unk450 = pos[n].y >> 8;
     }

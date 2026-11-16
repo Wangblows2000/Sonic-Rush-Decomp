@@ -20,8 +20,8 @@ typedef struct {
     UnkStruct_0231b37c_V vel[16];
 } UnkStruct_0231b37c;
 
-s16 func_02068db4(s16 a, s32 b);
-s16 func_02068df8(s16 a, s32 b, s32 c);
+s16 ObjSpd_DownSet(s16 a, s32 b);
+s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
 
 #define CLAMP(v, lo, hi) ((v) < (lo) ? (lo) : ((v) > (hi) ? (hi) : (v)))
 
@@ -45,8 +45,8 @@ void func_ov000_0231b37c(UnkStruct_0231b37c *w) {
             w->pos[k].x = CLAMP(v, -0xfff00, 0xfff00);
             v = w->pos[k].y;
             w->pos[k].y = CLAMP(v, -0xfff00, 0xfff00);
-            w->vel[k].x = func_02068db4(w->vel[k].x, 0x18);
-            w->vel[k].y = func_02068df8(w->vel[k].y, acc, 0x3000);
+            w->vel[k].x = ObjSpd_DownSet(w->vel[k].x, 0x18);
+            w->vel[k].y = ObjSpd_UpSet(w->vel[k].y, acc, 0x3000);
         }
     }
 }

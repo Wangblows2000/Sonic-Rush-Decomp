@@ -54,16 +54,16 @@ typedef struct {
 
 extern UnkStruct_0234d384_4560 data_022c4560;
 extern UnkStruct_0234d384_4590 data_022c4590;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern u8 data_ov000_0236ac20;
 
 void func_0201bf1c(void *p);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 void func_0206ce90(void *p);
-void func_0206bef4(UnkStruct_0234d384 *t);
+void StageObj_Destructor(UnkStruct_0234d384 *t);
 
 static inline void Free_0234d384(void *p) {
     u32 size;
@@ -76,7 +76,7 @@ static inline void Free_0234d384(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov000_0234d384(UnkStruct_0234d384 *t) {
@@ -118,5 +118,5 @@ void func_ov000_0234d384(UnkStruct_0234d384 *t) {
     }
     func_0206ce90(w->unk414);
     data_ov000_0236ac20--;
-    func_0206bef4(t);
+    StageObj_Destructor(t);
 }

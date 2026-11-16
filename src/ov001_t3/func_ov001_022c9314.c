@@ -28,8 +28,8 @@ BOOL func_ov001_022c9310(UnkStruct_022c9314 *p);
 void func_0201cf04(void);
 void func_0201b348(void);
 void func_02020230(void *a, u16 id, s32 b);
-void func_020367b4(s32 a, u16 id);
-void func_02036754(s32 a, u8 b, u16 id);
+void Sound_PlaySeq(s32 a, u16 id);
+void Sound_PlaySeqArc(s32 a, u8 b, u16 id);
 void func_020366f4(s32 a, u8 b, u16 id);
 void func_0201cf4c(s32 a, s32 b, s32 c, s32 d, s32 e, void (*fn)(void *), void *arg);
 void func_ov001_022c8f30(void *p);
@@ -48,12 +48,12 @@ void func_ov001_022c9314(UnkStruct_022c9314 *p) {
             func_02020230(p->unk1a4, e->id, 0);
             p->unk4 = 1;
         } else {
-            func_020367b4(0, e->id);
+            Sound_PlaySeq(0, e->id);
             p->unk4 = 0;
         }
         break;
     case 1:
-        func_02036754(0, e->unk2c, e->id);
+        Sound_PlaySeqArc(0, e->unk2c, e->id);
         p->unk4 = 0;
         break;
     case 2:

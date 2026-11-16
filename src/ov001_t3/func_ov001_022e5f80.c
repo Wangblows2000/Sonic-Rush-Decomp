@@ -28,7 +28,7 @@ typedef struct {
     UnkWork_022e5f80 *work;
 } UnkTask_022e5f80;
 
-extern UnkTask_022e5f80 *data_022b4574;
+extern UnkTask_022e5f80 *gTaskCurrent;
 
 void func_ov001_022e7114(void);
 void func_ov001_022e3180(s32 a, s32 b);
@@ -38,7 +38,7 @@ void func_ov001_022e5e98(void);
 void func_ov001_022e5f80(void) {
     UnkWork_022e5f80 *w;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     switch (w->state) {
     case 1:
     case 2:
@@ -49,7 +49,7 @@ void func_ov001_022e5f80(void) {
     case 13:
     case 14:
         w->unk74 = 0;
-        data_022b4574->func = func_ov001_022e7114;
+        gTaskCurrent->func = func_ov001_022e7114;
         return;
     case 16:
         func_ov001_022e3180(w->sub->unk1cc4, 0xf);

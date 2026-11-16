@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 typedef struct { s32 m[4]; } UnkStruct_022c6ef4;
-extern u16 data_0208922c[];
+extern u16 gDisplayMain[];
 extern u8 data_02089264[];
 void func_ov001_022c6944(void *p);
 void func_ov001_022c6878(void *p);
@@ -12,7 +12,7 @@ void func_02003d94(void *a, UnkStruct_022c6ef4 *m, s32 b, s32 c, s32 d, s32 e);
 
 void func_ov001_022c77e4(u8 *p) {
     UnkStruct_022c6ef4 m;
-    data_0208922c[0x24] = 0x10;
+    gDisplayMain[0x24] = 0x10;
     func_ov001_022c6944(p);
     func_ov001_022c6878(p);
     func_ov001_022c7a34(p, func_ov001_022c7678);

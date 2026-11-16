@@ -71,7 +71,7 @@ typedef struct UnkStruct_022cf3e0_4 {
     u8 unk1D;
 } UnkStruct_022cf3e0_4;
 
-extern UnkStruct_022cf3e0_2 *data_022b4574;
+extern UnkStruct_022cf3e0_2 *gTaskCurrent;
 extern UnkStruct_022cf3e0_pl *data_ov000_0236ac60;
 extern UnkStruct_022cf3e0_cam data_ov000_0236a444;
 extern UnkStruct_022cf3e0_7 data_ov000_0236aad8;
@@ -87,7 +87,7 @@ UnkStruct_022cf3e0_o *func_ov000_023293f4(UnkStruct_022cf3e0_s *s, s32 a, s32 b,
 UnkStruct_022cf3e0_o *func_ov000_023295a4(UnkStruct_022cf3e0_s *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_ov000_02329128(UnkStruct_022cf3e0_pl *p, s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_023294c8(UnkStruct_022cf3e0_pl *p);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 void func_ov000_022cf3e0(void) {
     UnkStruct_022cf3e0 *t;
@@ -96,7 +96,7 @@ void func_ov000_022cf3e0(void) {
     s32 i;
     u16 h;
     pl = data_ov000_0236ac60;
-    t = data_022b4574->unk10;
+    t = gTaskCurrent->unk10;
     s = t->unk0;
     if (t->func != NULL)
         t->func(t);
@@ -136,13 +136,13 @@ void func_ov000_022cf3e0(void) {
         if (data_ov000_0236aad8.unk62 > (-s->unk134C >> 12) + 0x34) {
             s->unk20C &= ~8;
             func_ov000_023295a4(s, 0, 0, data_ov000_0236aad8.unk62, 1, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
-            func_02036754(0, 0, 0xa1);
+            Sound_PlaySeqArc(0, 0, 0xa1);
         }
     } else {
         if (data_ov000_0236aad8.unk62 <= (-s->unk134C >> 12) + 0x34) {
             s->unk20C |= 8;
             func_ov000_023295a4(s, 0, 0, data_ov000_0236aad8.unk62, 1, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
-            func_02036754(0, 0, 0xa1);
+            Sound_PlaySeqArc(0, 0, 0xa1);
         }
     }
     if (s->unk20C & 0x10) {
@@ -157,7 +157,7 @@ void func_ov000_022cf3e0(void) {
             if (t->unk10 == 0 && vel != 0) {
                 func_ov000_02329128(pl, 0, 0, data_ov000_0236aad8.unk62, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
                 t->unk10 = 0xc;
-                func_02036754(0, 0, 0x51);
+                Sound_PlaySeqArc(0, 0, 0x51);
             }
             t->unk10--;
         }

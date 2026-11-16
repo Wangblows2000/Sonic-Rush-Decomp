@@ -41,10 +41,10 @@ typedef struct {
     s32 unk14;
 } UnkStruct_BlkObjArg;
 
-extern void *data_022c448c;
+extern void *gActComArchive;
 
 BOOL func_ov000_023270d8(UnkStruct_BlkObjArg *a);
-void func_0206bef4(void);
+void StageObj_Destructor(void);
 
 static inline void BlkObj_SetVec(UnkStruct_BlkVec *v, s32 x, s32 y, s32 z) {
     v->x = x;

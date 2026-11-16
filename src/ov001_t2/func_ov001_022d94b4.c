@@ -12,9 +12,9 @@ typedef struct {
     UnkWork_022d94b4 *work;
 } UnkTask_022d94b4;
 
-extern u8 data_022503e0[];
+extern u8 gPad[];
 
-UnkTask_022d94b4 *func_020372d0(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_022d94b4 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022d8c44(void);
 void func_ov001_022d8c30(void);
@@ -22,14 +22,14 @@ s32 func_ov001_022d8e58(void);
 void func_ov001_022d9458(UnkWork_022d94b4 *w);
 void func_ov001_022d91c4(void);
 void func_ov001_022d8e74(UnkWork_022d94b4 *w);
-void func_02037d60(void);
-void func_020351d8(void *p, s32 a, s32 b);
-void func_020522f4(void);
+void Touch_Enable(void);
+void Pad_Reset(void *p, s32 a, s32 b);
+void SysSound_Init(void);
 void func_02052168(s32 a);
 
 #pragma thumb on
 UnkWork_022d94b4 *func_ov001_022d94b4(void) {
-    UnkWork_022d94b4 *w = func_020372d0(func_ov001_022d8c44, func_ov001_022d8c30, 0, 0x1000, 0x1000, sizeof(UnkWork_022d94b4))->work;
+    UnkWork_022d94b4 *w = Task_Create(func_ov001_022d8c44, func_ov001_022d8c30, 0, 0x1000, 0x1000, sizeof(UnkWork_022d94b4))->work;
     {
         vu16 z = 0;
         MIi_CpuClear16(z, w, sizeof(UnkWork_022d94b4));
@@ -40,9 +40,9 @@ UnkWork_022d94b4 *func_ov001_022d94b4(void) {
     func_ov001_022d9458(w);
     func_ov001_022d91c4();
     func_ov001_022d8e74(w);
-    func_02037d60();
-    func_020351d8(data_022503e0, 0, 0);
-    func_020522f4();
+    Touch_Enable();
+    Pad_Reset(gPad, 0, 0);
+    SysSound_Init();
     func_02052168(0);
     return w;
 }

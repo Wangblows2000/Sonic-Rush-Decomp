@@ -32,7 +32,7 @@ typedef struct UnkStruct_022c7d54_2 {
 
 extern UnkStruct_022c7d54_2 *data_ov000_02369acc;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_02000dfc(void *m);
 void func_ov000_022c7d14(UnkStruct_022c7d54 *s);
 
@@ -40,7 +40,7 @@ void func_ov000_022c7d54(UnkStruct_022c7d54 *s) {
     UnkStruct_022c7d54_5 *q = s->unk30C;
     UnkStruct_022c7d54_2 *g = data_ov000_02369acc;
     if ((q->unk8->unk4 << 12) - q->unk0 < 0x14000 && s->unk20C == 0) {
-        func_02036754(0, 0, 0x9e);
+        Sound_PlaySeqArc(0, 0, 0x9e);
         s->unk20C = 1;
     }
     if (!(s->unk334 & 2))

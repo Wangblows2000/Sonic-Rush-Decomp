@@ -37,7 +37,7 @@ typedef struct {
     UnkStruct_SprObj *work;
 } UnkStruct_SprObjTask;
 
-extern UnkStruct_SprObjTask *data_022b4574;
+extern UnkStruct_SprObjTask *gTaskCurrent;
 
 void func_ov000_0235e124(UnkStruct_SprObj *w);
 void func_ov000_0235e068(UnkStruct_SprObj *w);
@@ -49,9 +49,9 @@ void func_ov000_0235cfc4(UnkStruct_SprObj *w);
 void func_ov000_0235d888(UnkStruct_SprObj *w, s32 sel);
 void func_ov000_0235d7b4(UnkStruct_SprObj *w, s32 sel);
 
-void func_02033550(UnkStruct_SprObjSpr *spr, u16 anim);
-void func_0203344c(UnkStruct_SprObjSpr *spr, s32 a, s32 b);
-void func_02032d2c(UnkStruct_SprObjSpr *spr);
-void func_02032480(UnkStruct_SprObjSpr *spr, s32 sx, s32 sy, s32 c);
+void AnimatorSprite_SetAnimation(UnkStruct_SprObjSpr *spr, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkStruct_SprObjSpr *spr, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkStruct_SprObjSpr *spr);
+void AnimatorSprite_DrawRotScale(UnkStruct_SprObjSpr *spr, s32 sx, s32 sy, s32 c);
 
 #endif

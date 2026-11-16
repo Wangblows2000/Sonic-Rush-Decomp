@@ -26,12 +26,12 @@ typedef struct {
 } UnkStruct_0235b1a4;
 
 extern UnkStruct_0235b1a4 *data_ov000_0236ac80;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 BOOL func_ov000_02345758(s32 x, s32 y);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0235b1a4(s32 a, s32 b, s16 c, s16 d, u16 f) {

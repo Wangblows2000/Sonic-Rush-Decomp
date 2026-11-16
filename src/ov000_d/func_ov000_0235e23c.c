@@ -13,7 +13,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern UnkStruct_022c4560 data_022c4560;
-extern void *data_022b4574;
+extern void *gTaskCurrent;
 
 UnkStruct_0235e23c_Sync *func_020514e4(void);
 UnkStruct_0235e23c_Sync *func_02051474(void);
@@ -21,7 +21,7 @@ UnkStruct_0235e23c_Sync *func_02051404(void);
 BOOL func_ov000_0235cbd8(void);
 BOOL func_020513a8(void);
 void func_0204b314(s32 a, u8 b, u8 c);
-void func_020371c8(void *t);
+void Task_Destroy(void *t);
 void func_0204d6d0(s32 a);
 
 #pragma thumb on
@@ -46,7 +46,7 @@ void func_ov000_0235e23c(void) {
                 a->unk3 = 3;
             }
         } else if (c->unk3 >= 3) {
-            func_020371c8(data_022b4574);
+            Task_Destroy(gTaskCurrent);
             func_0204d6d0(0);
         }
     } else {
@@ -61,7 +61,7 @@ void func_ov000_0235e23c(void) {
                 a->unk3 = 2;
             }
         } else if (a->unk3 == 2 && b->unk3 >= 3) {
-            func_020371c8(data_022b4574);
+            Task_Destroy(gTaskCurrent);
             func_0204d6d0(0);
         }
     }

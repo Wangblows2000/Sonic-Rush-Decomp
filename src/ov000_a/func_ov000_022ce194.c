@@ -44,7 +44,7 @@ extern u32 data_ov000_0236510c[];
 extern u16 data_ov000_02362dcc[];
 
 s32 func_020021f0(s32 a);
-void func_0206e080(UnkStruct_022ce194_h *h);
+void ObjRect_Register(UnkStruct_022ce194_h *h);
 void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 
 void func_ov000_022ce194(UnkStruct_022ce194 *s) {
@@ -88,8 +88,8 @@ void func_ov000_022ce194(UnkStruct_022ce194 *s) {
                 h1->unkA |= 1;
                 h2->unkA |= 1;
             }
-            func_0206e080(h1);
-            func_0206e080(h2);
+            ObjRect_Register(h1);
+            ObjRect_Register(h2);
         }
     }
     if (s->unk1034.unkA & 4) {

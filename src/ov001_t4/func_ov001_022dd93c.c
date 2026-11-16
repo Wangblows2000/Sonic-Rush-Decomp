@@ -35,24 +35,24 @@ typedef struct {
     u16 count;
 } UnkInfo_022dd93c;
 
-extern void *data_0208fe80;
-extern UnkInfo_022dd93c data_02072cb8;
+extern void *gMainHeap;
+extern UnkInfo_022dd93c gGameLanguage;
 extern u16 data_02072cbc[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 s32 func_ov001_022ddac0(void *p);
 u32 func_ov001_022ddab4(void *p);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *p);
-void func_02033a68(void *src, void *dst, u32 size);
-s32 func_02039c18(s32 a, s32 b);
+void *Compress_GetData(void *p);
+void Mem_Copy(void *src, void *dst, u32 size);
+s32 ObjVram_Alloc(s32 a, s32 b);
 void func_ov001_022d9a14(UnkWork_022dd93c *w, s32 a);
 void func_ov001_022d983c(UnkWork_022dd93c *w, s32 i);
 void func_ov001_022d9814(UnkWork_022dd93c *w, s32 i);
@@ -60,7 +60,7 @@ void func_ov001_022d9a54(void *p, u16 *tbl, u16 n);
 
 #pragma thumb on
 static inline u8 *Alloc_022dd93c(u32 size) {
-    u8 *p = func_02034a40(data_0208fe80, size, 0x20);
+    u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -92,14 +92,14 @@ void func_ov001_022dd93c(UnkWork_022dd93c *w) {
         func_020087f8(f, p);
         break;
     default:
-        func_02033a68(func_02033a54(f), p, func_ov001_022ddab4(f));
+        Mem_Copy(Compress_GetData(f), p, func_ov001_022ddab4(f));
         break;
     }
     DC_StoreRange(p, func_ov001_022ddab4(f));
     func_ov001_022d9a14(w, 0);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
-            w->a[i].h[j] = func_02039c18(1, 1);
+            w->a[i].h[j] = ObjVram_Alloc(1, 1);
         }
         func_ov001_022d983c(w, i);
     }
@@ -109,10 +109,10 @@ void func_ov001_022dd93c(UnkWork_022dd93c *w) {
         w->b[i].unk24 = 2;
         w->b[i].unk28 = 0;
         for (j = 0; j < 2; j++) {
-            w->b[i].h[j] = func_02039c18(1, 1);
+            w->b[i].h[j] = ObjVram_Alloc(1, 1);
         }
         func_ov001_022d9814(w, i);
     }
-    func_ov001_022d9a54((u8 *)w + 0x24, data_02072cbc, data_02072cb8.count);
+    func_ov001_022d9a54((u8 *)w + 0x24, data_02072cbc, gGameLanguage.count);
 }
 #pragma thumb reset

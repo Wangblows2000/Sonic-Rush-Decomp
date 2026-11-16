@@ -32,10 +32,10 @@ typedef struct {
     u16 blendAlpha;
 } UnkDisp_02053998;
 
-extern UnkTask_02053998 *data_022c4660;
+extern UnkTask_02053998 *gNaviMsgTask;
 extern UnkState_02053998 data_022c4560;
-extern UnkProg_02053998 data_022c4680;
-extern UnkDisp_02053998 *data_02072c78[];
+extern UnkProg_02053998 gSaveData;
+extern UnkDisp_02053998 *gDisplayTable[];
 
 void func_02052e1c(UnkWork_02053998 *w);
 void func_02003d78(vu32 *p, u32 a, u32 b, u32 c, u32 d);
@@ -48,13 +48,13 @@ void func_02053998(BOOL on) {
     u16 a;
     s16 b;
 
-    if (data_022c4660 == NULL)
+    if (gNaviMsgTask == NULL)
         return;
-    w = data_022c4660->work;
+    w = gNaviMsgTask->work;
     if (w->mode == 0) {
-        if (data_022c4560.unk0 == 0 && data_022c4680.unkc < 3)
+        if (data_022c4560.unk0 == 0 && gSaveData.unkc < 3)
             return;
-        if (data_022c4560.unk0 == 1 && (data_022c4680.unk64 < 4 || (data_022c4680.unk64 >= 0x1b && data_022c4680.unk64 < 0x1c)))
+        if (data_022c4560.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c)))
             return;
     }
     if ((w->flags & 1) && on)
@@ -73,8 +73,8 @@ void func_02053998(BOOL on) {
         b = 0;
     }
     func_02003d78((vu32 *)0x04001050, 2, 4, a, b);
-    data_02072c78[1]->blendCnt = 0x442;
-    data_02072c78[1]->blendAlpha = a | (b << 8);
+    gDisplayTable[1]->blendCnt = 0x442;
+    gDisplayTable[1]->blendAlpha = a | (b << 8);
     w->unkfc = 0;
     func_02053b04(1);
 }

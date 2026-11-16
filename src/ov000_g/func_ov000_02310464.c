@@ -15,7 +15,7 @@ typedef struct {
 extern UnkStruct_02310464_P *data_ov000_0236ac60;
 
 void func_ov000_02310418(void);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0230ad04(UnkStruct_02310464 *w, UnkStruct_02310464_P *p);
 
 void func_ov000_02310464(UnkStruct_02310464 *w) {
@@ -25,15 +25,15 @@ void func_ov000_02310464(UnkStruct_02310464 *w) {
     w->unkC = 0x78;
     if (p->unk324 != 1) {
         if (Rand() & 1)
-            func_0204b7ec(NULL, 0, 0x1f);
+            Sound_PlaySeqArcEx(NULL, 0, 0x1f);
         else
-            func_0204b7ec(NULL, 0, 0x20);
+            Sound_PlaySeqArcEx(NULL, 0, 0x20);
     } else {
         if (Rand() & 1)
-            func_0204b7ec(NULL, 0, 0x28);
+            Sound_PlaySeqArcEx(NULL, 0, 0x28);
         else
-            func_0204b7ec(NULL, 0, 0x29);
+            Sound_PlaySeqArcEx(NULL, 0, 0x29);
     }
-    func_0204b7ec(NULL, 0, 0x31);
+    Sound_PlaySeqArcEx(NULL, 0, 0x31);
     func_ov000_0230ad04(w, p);
 }

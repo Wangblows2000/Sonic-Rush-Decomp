@@ -30,7 +30,7 @@ typedef struct UnkStruct_022ca574_6 {
     s32 unk10;
 } UnkStruct_022ca574_6;
 
-extern UnkStruct_022ca574_4 data_0208922c;
+extern UnkStruct_022ca574_4 gDisplayMain;
 extern UnkStruct_022ca574_5 *data_ov000_0236ac60;
 extern UnkStruct_022ca574_6 data_022c4590;
 
@@ -41,8 +41,8 @@ void func_ov000_022ca574(UnkStruct_022ca574 *s) {
     UnkStruct_022ca574_3 *p;
     s->unk220++;
     if ((s->unk220 & 3) == 0) {
-        if (data_0208922c.unk48 > 0)
-            data_0208922c.unk48--;
+        if (gDisplayMain.unk48 > 0)
+            gDisplayMain.unk48--;
     }
     p = s->unk210;
     if (!(p->unk334 & 2))

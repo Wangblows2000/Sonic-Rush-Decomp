@@ -1,6 +1,6 @@
 #include <ov000_b/stageobj.h>
 
-void func_0206c35c(UnkStruct_EffObj *w);
+void StageObj_ReleaseSpriteVram(UnkStruct_EffObj *w);
 
 void func_ov000_023341d8(UnkStruct_EffObj *w) {
     if (w->unkC != 0) {
@@ -12,6 +12,6 @@ void func_ov000_023341d8(UnkStruct_EffObj *w) {
     }
     if (w->unk5C & 8) {
         w->unk54 |= 4;
-        func_0206c35c(w);
+        StageObj_ReleaseSpriteVram(w);
     }
 }

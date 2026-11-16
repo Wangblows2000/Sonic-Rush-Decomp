@@ -6,8 +6,8 @@
 s32 func_ov001_022e18ec();
 s32 func_ov001_022e18a4();
 s32 func_ov001_022c5fdc();
-extern u8 data_022b4574[];
-s32 func_020371c8();
+extern u8 gTaskCurrent[];
+s32 Task_Destroy();
 s32 func_ov001_022c5c94();
 s32 func_ov001_022c5c80();
 
@@ -16,7 +16,7 @@ void func_ov001_022c5fa0(void) {
     if (t0 != 0) {
         s32 t1 = func_ov001_022e18a4();
         func_ov001_022c5fdc();
-        func_020371c8(*(u32 *)data_022b4574);
+        Task_Destroy(*(u32 *)gTaskCurrent);
         if (t1 < 0) {
             func_ov001_022c5c94();
             return;

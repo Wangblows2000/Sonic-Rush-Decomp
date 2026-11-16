@@ -52,17 +52,17 @@ typedef struct {
     s32 unk111C;
 } UnkStruct_Boss;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Cam data_ov000_0236a48c;
 extern UnkStruct_Player *data_ov000_0236ac60;
 extern s32 data_ov000_023658cc[][3];
 extern s32 data_ov000_023658d0[][3];
 extern s32 data_ov000_023658d4[][3];
 
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e237c(s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
-void func_0206c7c0(void);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
+void StageObj_ClearPause(void);
 UnkStruct_Fx *func_ov000_02328860(s32 a, s32 x, s32 y, s32 z);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
@@ -82,8 +82,8 @@ void func_ov000_022e213c(UnkStruct_Boss *w) {
     UnkStruct_Fx *fx;
 
     w->unkF50--;
-    if (data_0208922c.unk48 > 0)
-        data_0208922c.unk48 -= 2;
+    if (gDisplayMain.unk48 > 0)
+        gDisplayMain.unk48 -= 2;
     if (w->unkF50 > 0)
         return;
     w->unk1118++;
@@ -91,14 +91,14 @@ void func_ov000_022e213c(UnkStruct_Boss *w) {
         w->base.unk68 = func_ov000_022e20b0;
         SetVisiblePlane(GetVisiblePlane() & ~4);
         cam = (UnkStruct_Cam *)(u32)&data_ov000_0236a48c;
-        func_02031a68(m, 0, w->unkD08, 0x19, 0);
+        Model_SetAnimation(m, 0, w->unkD08, 0x19, 0);
         m->unk10C &= ~4;
         m->unk114 = 0x1000;
-        func_0206c7c0();
+        StageObj_ClearPause();
         w->base.unk54 &= ~0x20;
         data_ov000_0236ac60->base.unk5C |= 0x20;
         data_ov000_0236ac60->unk32C |= 0x200000;
-        data_0208922c.unk48 = 0x10;
+        gDisplayMain.unk48 = 0x10;
         cam->unk54 = data_ov000_023658cc[w->unk111C][0] << 12;
         cam->unk58 = -data_ov000_023658d0[w->unk111C][0] << 12;
         cam->unk5C = data_ov000_023658d4[w->unk111C][0] << 12;
@@ -107,14 +107,14 @@ void func_ov000_022e213c(UnkStruct_Boss *w) {
         cam->unk8E = cam->unk90 = 0;
         fx = func_ov000_02328860(0, data_ov000_023658cc[w->unk111C][0] << 8, data_ov000_023658d0[w->unk111C][0] << 8, data_ov000_023658d4[w->unk111C][0] << 8);
         fx->unk248 = 0x800;
-        func_02036754(0, 0, 0x7d);
+        Sound_PlaySeqArc(0, 0, 0x7d);
         w->unkF50 = 300;
         func_020537b4(0xd);
         func_020533e0(0x13, 0xf0);
     } else {
         w->unkF50 = 0x1e;
         func_ov000_022e237c(w->unk111C, w->unk1118);
-        data_0208922c.unk48 = 0x10;
-        func_02036754(0, 0, 0x7c);
+        gDisplayMain.unk48 = 0x10;
+        Sound_PlaySeqArc(0, 0, 0x7c);
     }
 }

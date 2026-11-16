@@ -42,14 +42,14 @@ typedef struct {
     UnkStruct_022f6ddc *unk10;
 } UnkStruct_022f6ddc_mgr;
 
-extern UnkStruct_022f6ddc_mgr *data_022b4574;
+extern UnkStruct_022f6ddc_mgr *gTaskCurrent;
 extern s16 data_0206e470[];
 
 void func_02000e60(void *m, s32 s, s32 c);
 void func_02000e98(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *out);
-void func_020315e0(void *cam);
-void func_020316f4(void *cam);
+void Model_Draw(void *cam);
+void Model_Animate(void *cam);
 u8 *func_02025ecc(s32 a);
 void func_02025dac(void *p, s32 a, s32 b);
 s32 func_02002278(VecFx32_022f6ddc *a, VecFx32_022f6ddc *b);
@@ -69,7 +69,7 @@ void func_ov000_022f6ddc(void) {
     VecFx32_022f6ddc *d;
     UnkStruct_022f6ddc_cam *c;
 
-    obj = data_022b4574->unk10;
+    obj = gTaskCurrent->unk10;
     cam = (UnkStruct_022f6ddc_cam *)((u8 *)obj + 0x4d4);
     if (obj->unk5C & 0x20)
         return;
@@ -80,7 +80,7 @@ void func_ov000_022f6ddc(void) {
     func_02000e60(&cam->unk24, data_0206e470[((obj->unk210 & 0xffff) >> 4) * 2], data_0206e470[((obj->unk210 & 0xffff) >> 4) * 2 + 1]);
     func_02000e98(mtx, data_0206e470[((obj->unk212 & 0xffff) >> 4) * 2], data_0206e470[((obj->unk212 & 0xffff) >> 4) * 2 + 1]);
     func_02000f34(&cam->unk24, mtx, &cam->unk24);
-    func_020315e0(cam);
+    Model_Draw(cam);
     if (obj->unk4A0 == 0)
         return;
     if (obj->unk4A4 != 0) {
@@ -107,8 +107,8 @@ void func_ov000_022f6ddc(void) {
         u->z = 0x1000;
         func_0200265c(u, &c->unk3C, d);
         func_020024b4(d, d);
-        func_020316f4(c);
-        func_020315e0(c);
+        Model_Animate(c);
+        Model_Draw(c);
     }
     res = func_02025ecc(obj->unk4CC);
     func_02025dac(res + *(s32 *)(res + *(u16 *)(res + 0xe) + 0xc), 1, 0x1f0000);

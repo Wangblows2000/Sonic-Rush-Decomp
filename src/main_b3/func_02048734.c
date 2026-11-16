@@ -18,22 +18,22 @@ typedef struct { u8 pad0[0x10]; UnkWork_02048734 *work; } UnkTask_02048734;
 typedef struct { s32 unk0; u8 pad4[0x18]; u8 unk1C; } UnkStruct_022c4560;
 typedef struct { u8 pad0[8]; u32 unk8; } UnkStruct_022c4680;
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_022c4680 gSaveData;
 extern UnkEnt_020735d4 data_020735d4[];
-extern UnkTask_02048734 *data_022b4574;
+extern UnkTask_02048734 *gTaskCurrent;
 
-UnkTask_02048734 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_02048734 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_020486b8(void);
 void func_02048730(void);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 BOOL func_0204eb7c(void);
-void func_020371c8(UnkTask_02048734 *t);
+void Task_Destroy(UnkTask_02048734 *t);
 void func_020486a8(UnkWork_02048734 *w);
 
 #pragma thumb on
 void func_02048734(s32 mode) {
-    UnkTask_02048734 *t = func_020372d0(func_020486b8, func_02048730, 7, 0x100, 3, 0x20);
+    UnkTask_02048734 *t = Task_Create(func_020486b8, func_02048730, 7, 0x100, 3, 0x20);
     UnkWork_02048734 *w;
     u8 stage;
     u8 id;
@@ -60,7 +60,7 @@ void func_02048734(s32 mode) {
             break;
         case 3:
             id = 0x40;
-            if (data_022c4680.unk8 & 0x1000)
+            if (gSaveData.unk8 & 0x1000)
                 id++;
             break;
         case 4:
@@ -81,7 +81,7 @@ void func_02048734(s32 mode) {
         w->unk1C = e->unk10;
         if (w->unk19 == 0) {
             void (*fn)(void) = w->fn;
-            func_020371c8(data_022b4574);
+            Task_Destroy(gTaskCurrent);
             fn();
         } else {
             func_020486a8(w);

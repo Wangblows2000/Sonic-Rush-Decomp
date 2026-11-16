@@ -21,11 +21,11 @@ typedef struct {
     s8 unk213;
 } UnkStruct_0232d620_Ply;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern UnkStruct_Task *data_ov000_0236a988;
 extern u8 data_ov000_02368058[], data_ov000_0236a990[], data_ov000_02368078[], data_ov000_02368098[];
 
-void func_020371c8(UnkStruct_Task *t);
+void Task_Destroy(UnkStruct_Task *t);
 void func_ov000_0232d5e4(void);
 void func_ov000_0232d4c8(void);
 UnkStruct_0232d620_Ply *func_ov000_02342358(s32 a);
@@ -39,30 +39,30 @@ void func_ov000_0232d620(void) {
     vu16 zero;
 
     if (data_ov000_0236a988 != NULL)
-        func_020371c8(data_ov000_0236a988);
-    task = func_020372d0(func_0206c3d0, func_ov000_0232d5e4, 0, 0xa00, 4, sizeof(UnkStruct_0232d620));
+        Task_Destroy(data_ov000_0236a988);
+    task = Task_Create(StageObj_Main, func_ov000_0232d5e4, 0, 0xa00, 4, sizeof(UnkStruct_0232d620));
     if (task == func_02006abc(0))
         return;
     data_ov000_0236a988 = task;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0232d620));
-    func_02069f1c(w, data_ov000_02368058, 0x20, data_ov000_0236a990, data_022c4488);
-    func_0206a054(w, 0, 0xa);
-    func_02069918(w, 3);
-    func_020698f0(w, 0);
-    func_02069d38(&w->s0, &w->s1, data_ov000_02368078, 0, data_ov000_0236a990, data_022c4488);
-    func_0206990c(&w->s0, &w->s1, 3);
-    func_020698bc(&w->s0, &w->s1, 0);
+    StageObj_Load2dBAC(w, data_ov000_02368058, 0x20, data_ov000_0236a990, gZoneActArchive);
+    StageObj_AllocSpritePalette(w, 0, 0xa);
+    StageObj_SetOAMOrder(w, 3);
+    StageObj_SetOAMPriority(w, 0);
+    ObjAction_Load2dBAC(&w->s0, &w->s1, data_ov000_02368078, 0, data_ov000_0236a990, gZoneActArchive);
+    SpritePair_SetOAMOrder(&w->s0, &w->s1, 3);
+    SpritePair_SetOAMPriority(&w->s0, &w->s1, 0);
     w->s0.unk44 = w->base.spr0.unk44;
     w->s1.unk44 = w->base.spr0.unk44;
     w->s0.unk34 = w->base.spr0.unk34 + 0x280;
     w->s1.unk34 = w->base.spr1.unk34 + 0x280;
     w->s0.unk2C |= 0x200;
     w->s1.unk2C |= 0x200;
-    func_02069d38(&w->s2, &w->s3, data_ov000_02368098, 0, data_ov000_0236a990, data_022c4488);
-    func_0206990c(&w->s2, &w->s3, 3);
-    func_020698bc(&w->s2, &w->s3, 0);
+    ObjAction_Load2dBAC(&w->s2, &w->s3, data_ov000_02368098, 0, data_ov000_0236a990, gZoneActArchive);
+    SpritePair_SetOAMOrder(&w->s2, &w->s3, 3);
+    SpritePair_SetOAMPriority(&w->s2, &w->s3, 0);
     w->s2.unk44 = w->base.spr0.unk44;
     w->s3.unk44 = w->base.spr0.unk44;
     w->s2.unk34 = w->base.spr0.unk34 + 0x380;
@@ -85,9 +85,9 @@ void func_ov000_0232d620(void) {
         w->unk26C = w->unk268 = 0;
     }
     func_ov000_02336f28(&w->unk270, w->unk268, 100);
-    func_02033550(&w->s0, (u16)(((w->unk270 & 0xf0) >> 4) + 1));
-    func_02033550(&w->s1, (u16)(((w->unk270 & 0xf0) >> 4) + 1));
-    func_02033550(&w->s2, (u16)((w->unk270 & 0xf) + 1));
-    func_02033550(&w->s3, (u16)((w->unk270 & 0xf) + 1));
+    AnimatorSprite_SetAnimation(&w->s0, (u16)(((w->unk270 & 0xf0) >> 4) + 1));
+    AnimatorSprite_SetAnimation(&w->s1, (u16)(((w->unk270 & 0xf0) >> 4) + 1));
+    AnimatorSprite_SetAnimation(&w->s2, (u16)((w->unk270 & 0xf) + 1));
+    AnimatorSprite_SetAnimation(&w->s3, (u16)((w->unk270 & 0xf) + 1));
     func_ov000_0232d2dc(w);
 }

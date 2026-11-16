@@ -10,8 +10,8 @@ typedef struct UnkStruct_022c6ac4 {
     s32 unk690;
 } UnkStruct_022c6ac4;
 
-extern UnkStruct_022c6ac4_b data_0208922c;
-extern UnkStruct_022c6ac4_b data_02087d04;
+extern UnkStruct_022c6ac4_b gDisplayMain;
+extern UnkStruct_022c6ac4_b gDisplaySub;
 
 BOOL func_0202e5e4(float a, float b);
 BOOL func_0202e4b4(float a, float b);
@@ -26,14 +26,14 @@ BOOL func_ov001_022c6ac4(UnkStruct_022c6ac4 *w, s32 num, s32 den, BOOL main, BOO
         t = 1.0f;
     r = 1.0f - t * t;
     if (main) {
-        data_0208922c.brightness = 16.0f * r;
-        if (data_0208922c.brightness < 0)
-            data_0208922c.brightness = 0;
+        gDisplayMain.brightness = 16.0f * r;
+        if (gDisplayMain.brightness < 0)
+            gDisplayMain.brightness = 0;
     }
     if (sub) {
-        data_02087d04.brightness = 16.0f * r;
-        if (data_02087d04.brightness < 0)
-            data_02087d04.brightness = 0;
+        gDisplaySub.brightness = 16.0f * r;
+        if (gDisplaySub.brightness < 0)
+            gDisplaySub.brightness = 0;
     }
     return func_0202e4b4(0.0f, r) != 0;
 }

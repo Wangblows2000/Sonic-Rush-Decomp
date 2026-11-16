@@ -56,7 +56,7 @@ typedef struct UnkStruct_02302be8_t {
     u8 pad[0x18];
 } UnkStruct_02302be8_t;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern void *data_ov001_0231d9f0[];
 extern void *data_ov001_0231d9f8[];
 extern u8 *data_ov001_0231f540;
@@ -64,20 +64,20 @@ extern u8 *data_ov001_0231f538;
 extern UnkStruct_02302be8_t data_ov001_0231da50[];
 extern s32 data_ov001_0231d9e8[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-u8 *func_02033fbc(void *p, s32 v);
+u8 *File_Load(void *p, s32 v);
 void func_020257f8(void *p);
 u32 func_020380d8(void *p);
 void func_020380a0(void *src, void *dst);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 UnkStruct_02302be8_o *func_ov001_023014f4(s32 a, s32 b);
-void func_02031c1c(void *s, u32 a);
-void func_02031bd0(void *s, void *res, u32 idx);
+void Model_Init(void *s, u32 a);
+void Model_SetResource(void *s, void *res, u32 idx);
 void func_ov001_0230236c(void);
 void func_ov001_02301a88(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
@@ -101,10 +101,10 @@ void func_ov001_02302be8(s32 idx) {
     UnkStruct_02302be8_d *d;
     UnkStruct_02302be8_p *p;
 
-    res = func_02033fbc(data_ov001_0231d9f0[idx], -1);
+    res = File_Load(data_ov001_0231d9f0[idx], -1);
     func_020257f8(res);
     size = (func_020380d8(res) + 0x43) & ~0x1f;
-    blk = func_02034a40(data_0208fe80, size, 0x20);
+    blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, size);
@@ -124,12 +124,12 @@ void func_ov001_02302be8(s32 idx) {
             DC_StoreRange(res, size);
         }
     }
-    func_020349b8(data_0208fe80, res);
+    Heap_Free(gMainHeap, res);
 
-    res = func_02033fbc(data_ov001_0231d9f8[idx], -1);
+    res = File_Load(data_ov001_0231d9f8[idx], -1);
     func_020257f8(res);
     size = (func_020380d8(res) + 0x43) & ~0x1f;
-    blk = func_02034a40(data_0208fe80, size, 0x20);
+    blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill3 = 0xcccccccc;
         MIi_CpuClear32(fill3, blk, size);
@@ -149,10 +149,10 @@ void func_ov001_02302be8(s32 idx) {
             DC_StoreRange(res, size);
         }
     }
-    func_020349b8(data_0208fe80, res);
+    Heap_Free(gMainHeap, res);
 
     o = func_ov001_023014f4(0, 0x3000);
-    a = (UnkStruct_02302be8_a *)func_02034a40(data_0208fe80, 0x160, 0x20);
+    a = (UnkStruct_02302be8_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
     if ((void *)func_02006abc(0) != a) {
         fill5 = 0xcccccccc;
         MIi_CpuClear32(fill5, a, 0x160);
@@ -161,12 +161,12 @@ void func_ov001_02302be8(s32 idx) {
         DC_StoreRange(a, 0x160);
         a = (UnkStruct_02302be8_a *)((u8 *)a + 0x20);
     }
-    func_02031c1c(a, 0);
-    func_02031bd0(a, data_ov001_0231f540, 0);
+    Model_Init(a, 0);
+    Model_SetResource(a, data_ov001_0231f540, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x34cc;
     o->unk84 = a;
     o->unk88 = a;
-    a = (UnkStruct_02302be8_a *)func_02034a40(data_0208fe80, 0x160, 0x20);
+    a = (UnkStruct_02302be8_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
     if ((void *)func_02006abc(0) != a) {
         fill6 = 0xcccccccc;
         MIi_CpuClear32(fill6, a, 0x160);
@@ -175,13 +175,13 @@ void func_ov001_02302be8(s32 idx) {
         DC_StoreRange(a, 0x160);
         a = (UnkStruct_02302be8_a *)((u8 *)a + 0x20);
     }
-    func_02031c1c(a, 0);
-    func_02031bd0(a, data_ov001_0231f538, 0);
+    Model_Init(a, 0);
+    Model_SetResource(a, data_ov001_0231f538, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x34cc;
     o->unk8C = a;
     o->unk74 = func_ov001_0230236c;
     o->unk14 |= 0x1b0020;
-    d = (UnkStruct_02302be8_d *)func_02034a40(data_0208fe80, 0x40, 0x20);
+    d = (UnkStruct_02302be8_d *)Heap_Alloc(gMainHeap, 0x40, 0x20);
     if ((void *)func_02006abc(0) != d) {
         fill7 = 0xcccccccc;
         MIi_CpuClear32(fill7, d, 0x40);

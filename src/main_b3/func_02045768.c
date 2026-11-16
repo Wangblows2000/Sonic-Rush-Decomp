@@ -28,8 +28,8 @@ typedef struct {
 
 void func_0201c070(void *p, s32 a);
 void func_020456a8(void);
-void func_020367b4(void *a, s32 b);
-void func_02036754(void *a, void *b, s32 c);
+void Sound_PlaySeq(void *a, s32 b);
+void Sound_PlaySeqArc(void *a, void *b, s32 c);
 void func_020366f4(void *a, void *b, s32 c);
 
 #pragma thumb on

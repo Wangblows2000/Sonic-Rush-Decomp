@@ -1,25 +1,25 @@
 #include <nitro/types.h>
 #include <main_b3/w50.h>
 
-extern UnkTask_W50 *data_022b4574;
+extern UnkTask_W50 *gTaskCurrent;
 
-void func_0203344c(UnkSpr_W50 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_W50 *s);
-void func_02033550(UnkSpr_W50 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_W50 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_W50 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_W50 *s, u16 anim);
 BOOL func_0204f3dc(void);
 BOOL func_0204f40c(void);
 BOOL func_0204f3ac(void);
 BOOL func_0204f43c(void);
 void func_02051f90(void);
 void func_02051f20(void);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_02051ebc(void);
 void func_0204fdc8(void);
 void func_0204fd7c(void);
 
 #pragma thumb on
 void func_0204f754(void) {
-    UnkWork_W50 *w = data_022b4574->work;
+    UnkWork_W50 *w = gTaskCurrent->work;
     UnkSpr_W50 *spr;
     s32 i;
     s32 anim;
@@ -30,13 +30,13 @@ void func_0204f754(void) {
 
     if (w->unk20 != 3) {
         spr = &w->spr[0];
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
     }
     if (w->unk1C != 0x1c) {
         spr = &w->spr[1];
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
     }
     for (i = 0; i < w->unk8; i++) {
         spr = &w->spr[2 + i];
@@ -44,12 +44,12 @@ void func_0204f754(void) {
         if (i == w->unk4 && w->unk8 == 2)
             anim++;
         if (anim != w->anim[2 + i]) {
-            func_02033550(spr, anim);
+            AnimatorSprite_SetAnimation(spr, anim);
             w->anim[2 + i] = anim;
         }
         spr->unk2C &= ~4;
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
     }
     if (w->unk24 == 1) {
         spr = &w->spr[4];
@@ -61,7 +61,7 @@ void func_0204f754(void) {
             spr->unk2C &= ~4;
         }
         if (anim != w->anim[4]) {
-            func_02033550(spr, anim);
+            AnimatorSprite_SetAnimation(spr, anim);
             w->anim[2 + i] = anim;
         }
         if (w->unk8 == 1) {
@@ -75,14 +75,14 @@ void func_0204f754(void) {
             spr->y = 0x68;
         }
         if (w->unk8 > 1) {
-            func_0203344c(spr, 0, 0);
-            func_02032d2c(spr);
+            AnimatorSprite_ProcessAnimation(spr, 0, 0);
+            AnimatorSprite_Draw(spr);
         }
     }
     done = FALSE;
     a = FALSE;
     b = FALSE;
-    pad = data_022503e0.trg;
+    pad = gPad.trg;
     if (pad & 1)
         a = TRUE;
     if (pad & 2)
@@ -99,7 +99,7 @@ void func_0204f754(void) {
             w->unk4 = 0;
             done = TRUE;
             if (w->unk14 & 1)
-                func_02052104(0x12);
+                SysSound_PlaySE(0x12);
             else
                 func_02051f90();
         } else if (func_0204f3ac()) {
@@ -109,7 +109,7 @@ void func_0204f754(void) {
         } else if (a) {
             done = TRUE;
             if (w->unk4 == 0 && (w->unk14 & 1))
-                func_02052104(0x12);
+                SysSound_PlaySE(0x12);
             else
                 func_02051f90();
         } else if (b) {
@@ -135,7 +135,7 @@ void func_0204f754(void) {
         break;
     }
     if (!done) {
-        pad = data_022503e0.trg;
+        pad = gPad.trg;
         if (pad & 0x20) {
             if (w->unk4 > 0) {
                 w->unk4--;

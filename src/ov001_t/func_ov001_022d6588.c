@@ -11,14 +11,14 @@ typedef struct {
     UnkWork_022d6588 *work;
 } UnkTask_022d6588;
 
-extern UnkTask_022d6588 *data_022b4574;
+extern UnkTask_022d6588 *gTaskCurrent;
 
 void func_ov001_022d6000(void);
 
 #pragma thumb on
 void func_ov001_022d6588(UnkTask_022d6588 *t) {
     if (t == NULL) {
-        t = data_022b4574;
+        t = gTaskCurrent;
     }
     t->work->step = 0;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x200;

@@ -10,22 +10,22 @@ typedef struct {
     s16 unk32E;
 } UnkStruct_02304a1c;
 
-extern UnkStruct_Task *data_022b4574;
+extern UnkStruct_Task *gTaskCurrent;
 
-void func_0206bd24(void *w, UnkStruct_Spr *a, UnkStruct_Spr *b);
+void StageObj_Draw2D(void *w, UnkStruct_Spr *a, UnkStruct_Spr *b);
 s32 func_02002094(s32 a, s32 b);
-void func_0206b768(s32 x, s32 y, s32 z, void *w, void *a, void *b, s32 c);
+void StageObj_Draw2DEx(s32 x, s32 y, s32 z, void *w, void *a, void *b, s32 c);
 
 void func_ov000_02304a1c(void) {
     s16 pts[5][2] = {0};
-    UnkStruct_02304a1c *w = data_022b4574->work;
+    UnkStruct_02304a1c *w = gTaskCurrent->work;
     s16 dx;
     s16 dy;
     s16 i;
     s32 ax;
     s32 ay;
 
-    func_0206bd24(w, &w->base.spr0, &w->base.spr1);
+    StageObj_Draw2D(w, &w->base.spr0, &w->base.spr1);
     dx = func_02002094((w->unk32C << 8) - w->base.unk10, 5) >> 8;
     dy = func_02002094((w->unk32E << 8) - w->base.unk14, 5) >> 8;
     i = 0;
@@ -38,6 +38,6 @@ void func_ov000_02304a1c(void) {
         ay += dy;
     }
     for (i = 0; i < 5; i++)
-        func_0206b768(pts[i][0] << 8, pts[i][1] << 8, 0, 0, w->unk20C, w->unk254, 0);
-    func_0206b768(pts[0][0] << 8, pts[0][1] << 8, 0, w, w->unk29C, w->unk2E4, 0);
+        StageObj_Draw2DEx(pts[i][0] << 8, pts[i][1] << 8, 0, 0, w->unk20C, w->unk254, 0);
+    StageObj_Draw2DEx(pts[0][0] << 8, pts[0][1] << 8, 0, w, w->unk29C, w->unk2E4, 0);
 }

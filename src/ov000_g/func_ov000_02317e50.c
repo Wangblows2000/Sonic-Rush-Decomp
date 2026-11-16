@@ -30,7 +30,7 @@ typedef struct {
     s16 unk4A2;
 } UnkStruct_02317e50;
 
-s32 func_0206896c(void *w, s32 v, s32 a, s32 b, s32 c);
+s32 ObjSpd_AccelToward(void *w, s32 v, s32 a, s32 b, s32 c);
 
 void func_ov000_02317e50(UnkStruct_02317e50 *w) {
     UnkStruct_02317e50_P *p;
@@ -82,7 +82,7 @@ void func_ov000_02317e50(UnkStruct_02317e50 *w) {
             w->unk8 = 0;
         }
     }
-    w->unkC = func_0206896c(w, w->unkC, a, b, 0xf00);
+    w->unkC = ObjSpd_AccelToward(w, w->unkC, a, b, 0xf00);
     if ((old > 0 && w->unkC <= 0) || (old < 0 && w->unkC >= 0))
         w->unk2A = w->unk34;
     w->unk28 = w->unk34;

@@ -5,7 +5,7 @@
 void func_ov000_023610a4(UnkStruct_MenuO *w) {
     UnkStruct_MenuOSpr *spr = &w->spr78;
 
-    func_02033550(spr, 3);
+    AnimatorSprite_SetAnimation(spr, 3);
     w->anim6F4 = 3;
     spr->unk2C |= 4;
     spr->unk2C &= ~1;

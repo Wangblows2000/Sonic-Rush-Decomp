@@ -10,12 +10,12 @@ UnkStruct_02361a98_Sync *func_02051474(void);
 void func_ov000_02360dac(UnkStruct_MenuO *w);
 void func_ov000_0236143c(UnkStruct_MenuO *w);
 void func_ov000_02361a3c(void);
-void func_02051e7c(s32 a);
+void SysSound_StopBGM(s32 a);
 
 #pragma thumb on
 
 void func_ov000_02361a98(void) {
-    UnkStruct_MenuO *w = data_022b4574->work;
+    UnkStruct_MenuO *w = gTaskCurrent->work;
     UnkStruct_02361a98_Sync *a = func_020514e4();
     UnkStruct_02361a98_Sync *b = func_02051474();
 
@@ -25,7 +25,7 @@ void func_ov000_02361a98(void) {
     if (a->unk4 >= 3) {
         func_ov000_02360dac(w);
         func_ov000_0236143c(w);
-        data_022b4574->unk8 = func_ov000_02361a3c;
+        gTaskCurrent->unk8 = func_ov000_02361a3c;
         return;
     }
     if (a->unk4 == 0) {
@@ -33,7 +33,7 @@ void func_ov000_02361a98(void) {
             a->unk4 = 1;
         }
     } else if (a->unk4 == 1) {
-        func_02051e7c(0x10);
+        SysSound_StopBGM(0x10);
         w->unk0 = 0;
         a->unk4 = 2;
     } else if (a->unk4 == 2) {

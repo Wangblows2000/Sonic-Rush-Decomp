@@ -11,30 +11,30 @@ typedef struct {
 } UnkStruct_0208f754;
 
 extern u8 data_027e0000[];
-extern UnkPad_022503e0 data_022503e0;
-extern u32 data_02087cb8;
+extern UnkPad_022503e0 gPad;
+extern u32 gSystemFlags;
 extern u32 data_02087cc4;
 extern u32 data_02087cc0;
 extern UnkStruct_0208f754 data_0208f754;
 
-void func_02030598(void);
-void func_0204edc0(void);
+void System_Init(void);
+void Game_Init(void);
 BOOL func_020105d0(void);
 void func_0202ff74(void);
 void func_02010590(void);
-void func_02035134(UnkPad_022503e0 *pad, u16 keys);
-void func_02037c60(void);
-void func_02034d34(void);
-void func_02030538(u32 arg);
-void func_0202fd94(void);
-void func_0202ff80(void);
-void func_020302d8(void);
-void func_02036fb8(void);
-void func_02034114(void);
-void func_02036a0c(u32 screen);
+void Pad_Update(UnkPad_022503e0 *pad, u16 keys);
+void Touch_Update(void);
+void Mic_Update(void);
+void System_SoftReset(u32 arg);
+void System_HandleLidClose(void);
+void System_Update3DErrorFlags(void);
+void Overlay_Update(void);
+void Task_RunMain(void);
+void FileRequest_Update(void);
+void Oam_Flush(u32 screen);
 void VBlankIntrWait(void);
-void func_02034ec0(void);
-void func_0203005c(void);
+void Wireless_UpdateDataSharing(void);
+void Display_VBlankUpdate(void);
 
 #define REG_KEYINPUT   (*(vu16 *)0x04000130)
 #define HW_BUTTON_XY   (*(vu16 *)0x027fffa8)
@@ -49,43 +49,43 @@ static inline u32 GetPower(void)
 
 void main(void)
 {
-    func_02030598();
-    func_0204edc0();
+    System_Init();
+    Game_Init();
     for (;;) {
         if (func_020105d0()) {
             func_0202ff74();
             func_02010590();
         }
-        if (!(data_02087cb8 & 0x40)) {
+        if (!(gSystemFlags & 0x40)) {
             u16 keys = (u16)(((REG_KEYINPUT | HW_BUTTON_XY) ^ 0x2fff) & 0x2fff);
-            func_02035134(&data_022503e0, keys);
+            Pad_Update(&gPad, keys);
         }
-        func_02037c60();
-        func_02034d34();
-        if (!(data_02087cb8 & 0x10) && (data_022503e0.held & 0x30c) == 0x30c) {
-            func_02030538(data_02087cc0);
+        Touch_Update();
+        Mic_Update();
+        if (!(gSystemFlags & 0x10) && (gPad.held & 0x30c) == 0x30c) {
+            System_SoftReset(data_02087cc0);
         }
-        func_0202fd94();
-        func_0202ff80();
-        func_020302d8();
-        func_02036fb8();
-        func_02034114();
-        func_02036a0c(0);
-        func_02036a0c(1);
-        if ((GetPower() & 0xc) && !(data_02087cb8 & 0x8000000)) {
+        System_HandleLidClose();
+        System_Update3DErrorFlags();
+        Overlay_Update();
+        Task_RunMain();
+        FileRequest_Update();
+        Oam_Flush(0);
+        Oam_Flush(1);
+        if ((GetPower() & 0xc) && !(gSystemFlags & 0x8000000)) {
             REG_SWAP_BUFFERS = (data_0208f754.swapDepth << 1) | data_0208f754.swapMode;
         }
-        data_02087cc4 = data_02087cb8;
+        data_02087cc4 = gSystemFlags;
         HW_INTR_CHECK &= ~1;
         VBlankIntrWait();
-        data_02087cb8 = data_02087cc4;
-        if (data_02087cb8 & 0x100) {
-            func_02034ec0();
+        gSystemFlags = data_02087cc4;
+        if (gSystemFlags & 0x100) {
+            Wireless_UpdateDataSharing();
         }
-        func_0203005c();
-        data_02087cb8 &= ~0x80000000;
-        if (data_02087cb8 & 8) {
-            data_02087cb8 |= 0x80000000;
+        Display_VBlankUpdate();
+        gSystemFlags &= ~0x80000000;
+        if (gSystemFlags & 8) {
+            gSystemFlags |= 0x80000000;
         }
     }
 }

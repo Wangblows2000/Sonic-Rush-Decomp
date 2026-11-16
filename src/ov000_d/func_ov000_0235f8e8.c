@@ -10,14 +10,14 @@ typedef struct {
     u16 unk24;
 } UnkStruct_022c46c0;
 
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_022c4680 gSaveData;
 extern UnkStruct_022c46c0 data_022c46c0;
 
 #pragma thumb on
 
 u16 func_ov000_0235f8e8(void) {
     u16 m = 1;
-    u16 n = data_022c4680.unkC;
+    u16 n = gSaveData.unkC;
 
     if (n >= 1) {
         m |= 3;

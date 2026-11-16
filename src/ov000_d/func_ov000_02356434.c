@@ -10,17 +10,17 @@ typedef struct {
     UnkStruct_02356434 *work;
 } UnkStruct_02356434_Task;
 
-extern UnkStruct_02356434_Task *data_022b4574;
+extern UnkStruct_02356434_Task *gTaskCurrent;
 
 s32 func_020428d4(void);
-void func_02033550(void *spr, u16 anim);
-void func_0203344c(void *spr, s32 a, s32 b);
-void func_02032d2c(void *spr);
+void AnimatorSprite_SetAnimation(void *spr, u16 anim);
+void AnimatorSprite_ProcessAnimation(void *spr, s32 a, s32 b);
+void AnimatorSprite_Draw(void *spr);
 
 #pragma thumb on
 
 void func_ov000_02356434(void) {
-    UnkStruct_02356434 *w = data_022b4574->work;
+    UnkStruct_02356434 *w = gTaskCurrent->work;
     u32 anim;
 
     switch (func_020428d4()) {
@@ -40,10 +40,10 @@ void func_ov000_02356434(void) {
     }
     if (w->unk4 != anim) {
         w->unk4 = anim;
-        func_02033550(w->unk0, w->unk4);
+        AnimatorSprite_SetAnimation(w->unk0, w->unk4);
     }
-    func_0203344c(w->unk0, 0, 0);
-    func_02032d2c(w->unk0);
+    AnimatorSprite_ProcessAnimation(w->unk0, 0, 0);
+    AnimatorSprite_Draw(w->unk0);
 }
 
 #pragma thumb reset

@@ -57,7 +57,7 @@ typedef struct {
 
 extern UnkCfg_022e8090 data_022c4560;
 
-UnkTask_022e8090 *func_020372d0(void (*func)(void), s32 a, s32 b, s32 c, s32 d, s32 size);
+UnkTask_022e8090 *Task_Create(void (*func)(void), s32 a, s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov001_022e7428(void);
 void func_ov001_022e6e9c(void);
@@ -88,9 +88,9 @@ UnkWork_022e8090 *func_ov001_022e8090(UnkMap_022e8090 *map, s32 alt, s32 mode) {
     vu32 z;
 
     if (mode != 0) {
-        t = func_020372d0(func_ov001_022e7428, 0, 0, 0x2000, 0x1000, 0xa8);
+        t = Task_Create(func_ov001_022e7428, 0, 0, 0x2000, 0x1000, 0xa8);
     } else {
-        t = func_020372d0(func_ov001_022e6e9c, 0, 0, 0x2000, 0x1000, 0xa8);
+        t = Task_Create(func_ov001_022e6e9c, 0, 0, 0x2000, 0x1000, 0xa8);
     }
     w = t->work;
     z = 0;

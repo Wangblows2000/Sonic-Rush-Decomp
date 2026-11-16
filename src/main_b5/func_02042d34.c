@@ -1,17 +1,17 @@
 #include <nitro/types.h>
 
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 extern void *data_022c4364;
-extern u8 data_0224ffa0[];
+extern u8 gWirelessSendBuffer[];
 extern u8 data_022501a0[];
 
 BOOL func_02010b54(void);
-void func_0203de90(void (*fn)(void));
-u32 func_0203e934(void);
-void func_0203dbb4(void);
-void func_0203c350(void);
-void func_0203dda4(void);
-void func_020371c8(void *p);
+void WH_SetReceiver(void (*fn)(void));
+u32 WH_GetSystemState(void);
+void WH_End(void);
+void WFS_End(void);
+void WH_Reset(void);
+void Task_Destroy(void *p);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 
 static inline void Clear32_02042d34(void *dest, u32 size) {
@@ -27,14 +27,14 @@ void func_02042d34(s32 mode) {
     switch (mode) {
     case 0:
         cnt = 0;
-        data_02087cb8 &= ~0x100;
-        func_0203c350();
+        gSystemFlags &= ~0x100;
+        WFS_End();
         if (!func_02010b54())
-            func_0203de90(NULL);
+            WH_SetReceiver(NULL);
         do {
-            switch (func_0203e934()) {
+            switch (WH_GetSystemState()) {
             case 1:
-                func_0203dbb4();
+                WH_End();
                 break;
             case 0:
                 loop = FALSE;
@@ -46,7 +46,7 @@ void func_02042d34(s32 mode) {
                 if (++cnt > 3)
                     loop = FALSE;
                 else
-                    func_0203dda4();
+                    WH_Reset();
                 break;
             case 2:
             case 4:
@@ -55,22 +55,22 @@ void func_02042d34(s32 mode) {
             case 7:
             case 8:
             default:
-                func_0203dda4();
+                WH_Reset();
                 break;
             }
         } while (loop);
-        Clear32_02042d34(data_0224ffa0, 0x200);
+        Clear32_02042d34(gWirelessSendBuffer, 0x200);
         Clear32_02042d34(data_022501a0, 0x240);
-        data_02087cb8 |= 0x200;
-        data_02087cb8 &= ~0x100;
+        gSystemFlags |= 0x200;
+        gSystemFlags &= ~0x100;
         break;
     case 1:
         if (!func_02010b54())
-            func_0203de90(NULL);
+            WH_SetReceiver(NULL);
         break;
     }
     if (data_022c4364 == NULL)
         return;
-    func_020371c8(data_022c4364);
+    Task_Destroy(data_022c4364);
     data_022c4364 = NULL;
 }

@@ -47,14 +47,14 @@ typedef struct {
     u32 flags;
 } UnkTouch_022d8938;
 
-extern UnkTask_022d8798 *data_022b4574;
-extern UnkPad_022d8938 data_022503e0;
-extern UnkTouch_022d8938 data_022b65b4;
+extern UnkTask_022d8798 *gTaskCurrent;
+extern UnkPad_022d8938 gPad;
+extern UnkTouch_022d8938 gTouchState;
 
 void func_ov001_022d7b7c(s32 x, s32 y, s32 a, s32 b);
 void func_ov001_022d7ac4(s32 id, s32 x, s32 y);
 void func_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_ov001_022d7dbc(void *p, void *sw);
 void func_ov001_022d75dc(void *sw, void *a, void *b);
 s32 func_ov001_022d7a84(u32 x, u32 y, s32 y0);
@@ -76,7 +76,7 @@ void func_ov001_022d8938(void) {
     u32 ty;
     u16 key;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     y = w->y0;
 
     i = 0;
@@ -98,7 +98,7 @@ void func_ov001_022d8938(void) {
         }
         it++;
     }
-    key = data_022503e0.rep;
+    key = gPad.rep;
     if (key & 0x40) {
         do {
             w->sel--;
@@ -107,7 +107,7 @@ void func_ov001_022d8938(void) {
             }
         } while (w->items[w->sel].id == 0x14);
         w->timer = 0;
-        func_02052104(4);
+        SysSound_PlaySE(4);
     } else if (key & 0x80) {
         do {
             w->sel++;
@@ -116,43 +116,43 @@ void func_ov001_022d8938(void) {
             }
         } while (w->items[w->sel].id == 0x14);
         w->timer = 0;
-        func_02052104(4);
+        SysSound_PlaySE(4);
     }
-    key = data_022503e0.trg;
+    key = gPad.trg;
     if (key & 1) {
         w->timer = 0;
-        data_022b4574->func = func_ov001_022d8798;
-        func_02052104(0);
+        gTaskCurrent->func = func_ov001_022d8798;
+        SysSound_PlaySE(0);
     } else if (key & 2) {
         w->sel = 4;
         w->timer = 0;
         func_ov001_022d7dbc(w->obj10, w->sw);
         func_ov001_022d75dc(w->sw, w->res18c, w->res190);
-        func_02052104(1);
-        data_022b4574->func = func_ov001_022d85d0;
+        SysSound_PlaySE(1);
+        gTaskCurrent->func = func_ov001_022d85d0;
         if (w->items[4].flags & 1) {
             func_ov001_022d7968(8, 0x14);
         }
         if (w->items[4].flags & 2) {
             func_ov001_022d78f4(8, 0x14);
         }
-    } else if (data_022b65b4.flags & 0x40) {
-        tx = data_022b65b4.x;
-        ty = data_022b65b4.y;
+    } else if (gTouchState.flags & 0x40) {
+        tx = gTouchState.x;
+        ty = gTouchState.y;
         if (tx < 0x100 && ty < 0xc0) {
             i = func_ov001_022d7a84(tx, ty, w->y0);
             if (i >= 0) {
                 if (w->items[i].id != 0x14) {
                     w->sel = i;
                     w->timer = 0;
-                    data_022b4574->func = func_ov001_022d8798;
-                    func_02052104(0);
+                    gTaskCurrent->func = func_ov001_022d8798;
+                    SysSound_PlaySE(0);
                 }
             } else if (func_ov001_022d7a60(tx, ty)) {
                 w->sel = 4;
                 w->timer = 0;
-                data_022b4574->func = func_ov001_022d86b0;
-                func_02052104(1);
+                gTaskCurrent->func = func_ov001_022d86b0;
+                SysSound_PlaySE(1);
             }
         }
     }

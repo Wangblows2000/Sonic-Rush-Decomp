@@ -3,13 +3,13 @@
 
 #pragma thumb on
 
-s32 func_02033550();
-s32 func_0203344c();
+s32 AnimatorSprite_SetAnimation();
+s32 AnimatorSprite_ProcessAnimation();
 
 void func_ov000_02358278(s32 p0) {
     if (*(u32 *)((u8 *)p0 + 0xb50) != 1) {
-        func_02033550(((u8 *)p0 + 0x96c), 1);
-        func_0203344c(((u8 *)p0 + 0x96c), 0, 0);
+        AnimatorSprite_SetAnimation(((u8 *)p0 + 0x96c), 1);
+        AnimatorSprite_ProcessAnimation(((u8 *)p0 + 0x96c), 0, 0);
         *(u32 *)((u8 *)p0 + 0xb50) = 1;
     }
 }

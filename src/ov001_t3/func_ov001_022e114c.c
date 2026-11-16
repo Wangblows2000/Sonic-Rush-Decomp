@@ -18,12 +18,12 @@ typedef struct {
     s16 bright;
 } UnkBright_022e114c;
 
-extern UnkTask_022e114c *data_022b4574;
+extern UnkTask_022e114c *gTaskCurrent;
 extern UnkBright_022e114c data_0208926c;
 extern UnkBright_022e114c data_02087d44;
 extern s32 data_ov001_0231c3ec;
 extern s32 data_ov001_0231c3f0;
-void func_020371c8(UnkTask_022e114c *t);
+void Task_Destroy(UnkTask_022e114c *t);
 
 s32 func_0200225c(s32 n, s32 d);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
@@ -51,7 +51,7 @@ void func_ov001_022e114c(void) {
     fx32 b;
     s32 v;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     if (data_ov001_0231c3ec < 0 || data_ov001_0231c3f0 < 0) {
         target = 0x10;
     } else if (data_ov001_0231c3f0 == 2) {
@@ -94,7 +94,7 @@ void func_ov001_022e114c(void) {
             data_ov001_0231c3ec = -1;
             data_ov001_0231c3f0 = -1;
         }
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
     }
 }
 #pragma thumb reset

@@ -22,9 +22,9 @@ typedef struct {
     UnkWork_02053b04 *work;
 } UnkTask_02053b04;
 
-extern UnkTask_02053b04 *data_022c4660;
+extern UnkTask_02053b04 *gNaviMsgTask;
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_022c4680 gSaveData;
 
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
 
@@ -32,16 +32,16 @@ void func_02053b04(BOOL on) {
     UnkWork_02053b04 *w;
     u32 plane;
 
-    if (data_022c4660 == NULL)
+    if (gNaviMsgTask == NULL)
         return;
-    w = data_022c4660->work;
+    w = gNaviMsgTask->work;
     if (w->mode == 0) {
-        if (data_022c4560.mode == 0 && data_022c4680.unkc < 3)
+        if (data_022c4560.mode == 0 && gSaveData.unkc < 3)
             return;
         if (data_022c4560.mode == 1) {
-            if (data_022c4680.unk64 < 4)
+            if (gSaveData.unk64 < 4)
                 return;
-            if (data_022c4680.unk64 >= 0x1b && data_022c4680.unk64 < 0x1c)
+            if (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c)
                 return;
         }
     }

@@ -26,22 +26,22 @@ typedef struct {
     UnkStruct_0231c9ac *work;
 } UnkStruct_0231c9ac_Task;
 
-extern UnkStruct_0231c9ac_Task *data_022b4574;
+extern UnkStruct_0231c9ac_Task *gTaskCurrent;
 
-void func_0206bd24(void *w, void *a, void *b);
-void func_0206b768(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
+void StageObj_Draw2D(void *w, void *a, void *b);
+void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
 
 void func_ov000_0231c9ac(void) {
-    UnkStruct_0231c9ac *w = data_022b4574->work;
+    UnkStruct_0231c9ac *w = gTaskCurrent->work;
     s16 i;
 
-    func_0206bd24(w, w->unk94, w->unkDC);
+    StageObj_Draw2D(w, w->unk94, w->unkDC);
     for (i = 0; i < 16; i++) {
         if (i == 3) {
             if (!(w->unk5C & 0x20))
-                func_0206b768(w->pts[i].x, w->pts[i].y, 0, NULL, w->unk29C, w->unk2E4, 0);
+                StageObj_Draw2DEx(w->pts[i].x, w->pts[i].y, 0, NULL, w->unk29C, w->unk2E4, 0);
         } else if (w->pts[i].x != 0 && (i > 3 || !(w->unk5C & 0x20)) && (w->cnt[i] < 0x3c || (w->cnt[i] & 2))) {
-            func_0206b768(w->pts[i].x, w->pts[i].y, 0, NULL, w->unk20C, w->unk254, 0);
+            StageObj_Draw2DEx(w->pts[i].x, w->pts[i].y, 0, NULL, w->unk20C, w->unk254, 0);
         }
     }
 }

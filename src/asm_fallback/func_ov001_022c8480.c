@@ -3,12 +3,12 @@
 
 extern void MI_CpuFill8(void);
 extern u32 data_022c4560;
-extern u32 data_022c4680;
+extern u32 gSaveData;
 extern u32 data_ov001_02315ebc;
-extern void func_0203438c(void);
-extern void func_020367b4(void);
-extern void func_020372d0(void);
-extern void func_02037d60(void);
+extern void Background_Draw(void);
+extern void Sound_PlaySeq(void);
+extern void Task_Create(void);
+extern void Touch_Enable(void);
 extern void func_ov001_022c723c(void);
 extern void func_ov001_022c79f8(void);
 extern void func_ov001_022c7a34(void);
@@ -39,13 +39,13 @@ asm void func_ov001_022c8480(void)
     ldr r1, [pc, #0x158]
     mov r2, #0
     mov r3, #0x5000
-    bl func_020372d0
+    bl Task_Create
     ldr r4, [r0, #0x10]
     mov r1, #0
     mov r0, r4
     mov r2, #0x6b0
     bl MI_CpuFill8
-    bl func_02037d60
+    bl Touch_Enable
     ldr r0, [pc, #0x134]
     ldr r0, [r0]
     cmp r0, #0
@@ -97,18 +97,18 @@ _f4:
     mov r0, r4
     bl func_ov001_022c7d2c
     add r0, r4, #0x5c
-    bl func_0203438c
+    bl Background_Draw
     add r0, r4, #0x19c
-    bl func_0203438c
+    bl Background_Draw
     ldr r0, [pc, #0x84]
     add r0, r4, r0
-    bl func_0203438c
+    bl Background_Draw
     ldr r0, [pc, #0x7c]
     add r0, r4, r0
-    bl func_0203438c
+    bl Background_Draw
     ldr r0, [pc, #0x74]
     add r0, r4, r0
-    bl func_0203438c
+    bl Background_Draw
     mov r1, #0x4000000
     ldr r0, [r1]
     ldr r2, [pc, #0x38]
@@ -123,7 +123,7 @@ _f4:
     ldr r2, [r4]
     ldr r1, [pc, #0x3c]
     ldr r1, [r1, r2, lsl #2]
-    bl func_020367b4
+    bl Sound_PlaySeq
     add sp, sp, #8
     ldmia sp!, {r4, lr}
     bx lr
@@ -132,7 +132,7 @@ _f4:
     dcd func_ov001_022c7ac8
     dcd func_ov001_022c8404
     dcd data_022c4560
-    dcd data_022c4680
+    dcd gSaveData
     dcd func_ov001_022c79f8
     dcd func_ov001_022c723c
     dcd 0x0000041c

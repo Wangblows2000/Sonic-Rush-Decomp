@@ -12,7 +12,7 @@ typedef struct UnkStruct_022da3f4 {
 
 typedef struct { u8 data[0x5c]; } UnkArc_022da3f4;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern char data_ov000_023654ac[];
 extern char data_ov000_023654b0[];
 extern char data_ov000_023654c4[];
@@ -26,13 +26,13 @@ BOOL func_02021310(UnkArc_022da3f4 *arc, const char *name, void *narc);
 void *func_0202128c(const char *path);
 void func_0202566c(void *p);
 BOOL func_020212e0(UnkArc_022da3f4 *arc);
-void func_02031768(void *a);
+void Model_Release(void *a);
 void func_ov000_022fb9c8(UnkStruct_022da3f4 *t);
 
 void func_ov000_022da3f4(UnkStruct_022da3f4 *t) {
     UnkArc_022da3f4 arc;
     UnkStruct_022da3f4_b *s = t->unk10;
-    func_02021310(&arc, data_ov000_023654ac, data_022c4488);
+    func_02021310(&arc, data_ov000_023654ac, gZoneActArchive);
     func_0202566c(func_0202128c(data_ov000_023654b0));
     func_0202566c(func_0202128c(data_ov000_023654c4));
     func_0202566c(func_0202128c(data_ov000_023654d8));
@@ -41,6 +41,6 @@ void func_ov000_022da3f4(UnkStruct_022da3f4 *t) {
     func_0202566c(func_0202128c(data_ov000_02365514));
     func_0202566c(func_0202128c(data_ov000_02365528));
     func_020212e0(&arc);
-    func_02031768(s->unk23C);
+    Model_Release(s->unk23C);
     func_ov000_022fb9c8(t);
 }

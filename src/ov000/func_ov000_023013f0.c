@@ -19,7 +19,7 @@ typedef struct UnkStruct_023013f0 {
     s32 unk23C;
 } UnkStruct_023013f0;
 
-void func_02069818(UnkStruct_023013f0 *s, s32 a);
+void StageObj_SetAnimation(UnkStruct_023013f0 *s, s32 a);
 
 void func_ov000_023013f0(UnkStruct_023013f0 *s) {
     if (s->unk1E0->unk2 != 6)
@@ -29,11 +29,11 @@ void func_ov000_023013f0(UnkStruct_023013f0 *s) {
         return;
     if (s->unk238 & 0x1000) {
         s->unkC = 0xb4;
-        func_02069818(s, 0);
+        StageObj_SetAnimation(s, 0);
         s->unk150 = s->unk23C;
     } else {
         s->unkC = 0x5a;
-        func_02069818(s, 1);
+        StageObj_SetAnimation(s, 1);
         s->unk150 = 0;
     }
     s->unk238 ^= 0x1000;

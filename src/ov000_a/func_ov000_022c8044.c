@@ -19,7 +19,7 @@ extern UnkStruct_022c8044_2 data_022c4560;
 
 void func_ov000_022cc06c(void *p, s32 a, s32 b);
 void func_ov000_022cc35c(s32 a, s32 b);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 void func_ov000_022c7fcc(UnkStruct_022c8044 *s);
 
 void func_ov000_022c8044(UnkStruct_022c8044 *s) {
@@ -37,6 +37,6 @@ void func_ov000_022c8044(UnkStruct_022c8044 *s) {
         return;
     if (s->unk218 & 0x8000)
         return;
-    func_020446b0(0);
+    ScreenShake_Start(0);
     s->func = func_ov000_022c7fcc;
 }

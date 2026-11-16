@@ -5,7 +5,7 @@ void func_ov000_023599b0(s32 a);
 #pragma thumb on
 
 void func_ov000_023591b0(void) {
-    UnkStruct_Scene *w = data_022b4574->work;
+    UnkStruct_Scene *w = gTaskCurrent->work;
     UnkStruct_ScenePos *p;
     s32 ang;
     s32 x;

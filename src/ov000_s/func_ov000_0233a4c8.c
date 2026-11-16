@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern void *data_ov000_0236aabc[];
 
 void *func_02021264(void *arc, s32 idx);
-void *func_02034a40(void *heap, u32 size, s32 align);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -13,13 +13,13 @@ u32 func_ov000_0233ac78(void *res);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *res);
-void func_02033a68(void *src, void *dst, u32 size);
+void *Compress_GetData(void *res);
+void Mem_Copy(void *src, void *dst, u32 size);
 
 static inline void *UnkAlloc_0233a4c8(u32 size, s32 align) {
     u8 *p;
     size = (size + 0x43) & ~0x1f;
-    p = func_02034a40(data_0208fe80, size, align);
+    p = Heap_Alloc(gMainHeap, size, align);
     if (func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -55,7 +55,7 @@ void func_ov000_0233a4c8(void *arc) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_0233ac78(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_0233ac78(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
@@ -73,7 +73,7 @@ void func_ov000_0233a4c8(void *arc) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_0233ac78(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_0233ac78(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
@@ -91,7 +91,7 @@ void func_ov000_0233a4c8(void *arc) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_0233ac78(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_0233ac78(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
@@ -109,7 +109,7 @@ void func_ov000_0233a4c8(void *arc) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_0233ac78(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_0233ac78(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
@@ -127,7 +127,7 @@ void func_ov000_0233a4c8(void *arc) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_0233ac78(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_0233ac78(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
@@ -145,13 +145,13 @@ void func_ov000_0233a4c8(void *arc) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_0233ac78(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_0233ac78(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
     res = func_02021264(arc, 2);
     size = ((*(u32 *)res >> 8) + 0x43) & ~0x1f;
-    dst = func_02034a40(data_0208fe80, size, 0x20);
+    dst = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != dst) {
         Fill_0233a4c8(dst, size);
         *(u32 *)dst = size;
@@ -171,7 +171,7 @@ void func_ov000_0233a4c8(void *arc) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_0233ac78(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_0233ac78(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));

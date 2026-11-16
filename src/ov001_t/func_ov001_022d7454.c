@@ -11,7 +11,7 @@ typedef struct {
     UnkSpr_022d7454 spr[19];
 } UnkStruct_022d7454;
 
-extern u16 data_02087d04[];
+extern u16 gDisplaySub[];
 
 #pragma thumb on
 void func_ov001_022d7454(UnkStruct_022d7454 *p) {
@@ -25,8 +25,8 @@ void func_ov001_022d7454(UnkStruct_022d7454 *p) {
         p->spr[i].flags &= ~0x60000;
         p->spr[i].flags |= 0x20000;
     }
-    data_02087d04[4] = 0;
-    data_02087d04[5] = 0;
+    gDisplaySub[4] = 0;
+    gDisplaySub[5] = 0;
     *(vu16 *)0x400100c = (*(vu16 *)0x400100c & 0x43) | 0x4390;
 }
 #pragma thumb reset

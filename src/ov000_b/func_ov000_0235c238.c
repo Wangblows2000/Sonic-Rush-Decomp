@@ -45,8 +45,8 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_Task *data_ov000_0236ac80;
-extern void *data_022c4488;
-extern void *data_022c448c;
+extern void *gZoneActArchive;
+extern void *gActComArchive;
 extern u8 data_ov000_023690e8[], data_ov000_023690ec[], data_ov000_02369100[];
 
 void func_ov000_0235bd10(void);
@@ -71,14 +71,14 @@ void func_ov000_0235a9b4(void);
 void func_02021310(void *f, void *name, void *heap);
 void *func_02021264(void *f, s32 idx);
 void func_020212e0(void *f);
-s32 func_0203969c(u32 a, s32 b);
-s32 func_02039428(u16 a, s32 b);
-void func_02031878(void *s, void *res, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_020316f4(void *s);
-void *func_020687b8(s32 a, void *name, void *heap);
-void func_0206d190(void *a, s32 b, s32 c, s32 d);
-s32 func_02039c18(s32 a, s32 b);
-void func_0203363c(UnkStruct_Spr *s, void *res, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u32 g);
+s32 VramTex_Alloc(u32 a, s32 b);
+s32 VramPltt_Alloc(u16 a, s32 b);
+void Model_InitSprite3D(void *s, void *res, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void Model_Animate(void *s);
+void *ObjData_Load(s32 a, void *name, void *heap);
+void ObjDraw_LoadPaletteRow(void *a, s32 b, s32 c, s32 d);
+s32 ObjVram_Alloc(s32 a, s32 b);
+void AnimatorSprite_Init(UnkStruct_Spr *s, void *res, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u32 g);
 
 static inline BOOL func_ov000_0235c238_IsNormal(void) {
     BOOL r = FALSE;
@@ -97,7 +97,7 @@ UnkStruct_0235c238 *func_ov000_0235c238(void) {
     s32 a;
     void *mdl;
 
-    task = func_020372d0(func_ov000_0235bd10, func_ov000_0235c168, 0, 0x3000, 2, sizeof(UnkStruct_0235c238));
+    task = Task_Create(func_ov000_0235bd10, func_ov000_0235c168, 0, 0x3000, 2, sizeof(UnkStruct_0235c238));
     data_ov000_0236ac80 = task;
     if (task == func_02006abc(0))
         return NULL;
@@ -134,39 +134,39 @@ UnkStruct_0235c238 *func_ov000_0235c238(void) {
             w->unk4 = func_ov000_0235ab14;
             w->unk8 = func_ov000_0235a980;
         }
-        func_02021310(file, data_ov000_023690e8, data_022c4488);
+        func_02021310(file, data_ov000_023690e8, gZoneActArchive);
         res = func_02021264(file, 0);
         func_020212e0(file);
         hdr = (UnkStruct_0235c238_ResHdr *)((u8 *)res + res->unk18);
-        a = func_0203969c(hdr->unk2C, 0);
-        func_02031878(w->unkA4, res, 0, 0, a, func_02039428(hdr->unk2A, 0), 0, 0);
+        a = VramTex_Alloc(hdr->unk2C, 0);
+        Model_InitSprite3D(w->unkA4, res, 0, 0, a, VramPltt_Alloc(hdr->unk2A, 0), 0, 0);
         w->unkAE = 0x14;
         w->unkAF = 7;
         w->unkC4 = 0x800;
         w->unkC0 = w->unkC4;
         w->unkBC = w->unkC0;
-        func_020316f4(w->unkA4);
+        Model_Animate(w->unkA4);
         w->unk160 |= 0x10;
-        mdl = func_020687b8(0, data_ov000_023690ec, data_022c448c);
-        func_0206d190(mdl, 0, 2, 0);
-        func_0206d190(mdl, 0, 2, 1);
+        mdl = ObjData_Load(0, data_ov000_023690ec, gActComArchive);
+        ObjDraw_LoadPaletteRow(mdl, 0, 2, 0);
+        ObjDraw_LoadPaletteRow(mdl, 0, 2, 1);
     } else {
         w->unk4 = func_ov000_0235ab48;
         w->unk8 = func_ov000_0235a9b4;
-        mdl = func_020687b8(0, data_ov000_02369100, data_022c448c);
-        func_0203363c(&w->spr0, mdl, 0, 0, 0, 0, func_02039c18(0, 2), 0, 0x5000200);
-        func_0203363c(&w->spr1, mdl, 0, 0, 1, 0, func_02039c18(1, 2), 0, 0x5000600);
-        w->unk198 = func_02039c18(0, 2);
-        w->unk19C = func_02039c18(1, 2);
+        mdl = ObjData_Load(0, data_ov000_02369100, gActComArchive);
+        AnimatorSprite_Init(&w->spr0, mdl, 0, 0, 0, 0, ObjVram_Alloc(0, 2), 0, 0x5000200);
+        AnimatorSprite_Init(&w->spr1, mdl, 0, 0, 1, 0, ObjVram_Alloc(1, 2), 0, 0x5000600);
+        w->unk198 = ObjVram_Alloc(0, 2);
+        w->unk19C = ObjVram_Alloc(1, 2);
         w->spr0.unk44 = 2;
         w->spr1.unk44 = 2;
         w->spr0.unk2C |= 0x4010;
         w->spr1.unk2C |= 0x4010;
         w->spr0.unk46 = 8;
         w->spr1.unk46 = 8;
-        func_020698bc(&w->spr0, &w->spr1, 2);
-        func_0206d190(mdl, 0, 2, 0);
-        func_0206d190(mdl, 0, 2, 1);
+        SpritePair_SetOAMPriority(&w->spr0, &w->spr1, 2);
+        ObjDraw_LoadPaletteRow(mdl, 0, 2, 0);
+        ObjDraw_LoadPaletteRow(mdl, 0, 2, 1);
     }
     return w;
 }

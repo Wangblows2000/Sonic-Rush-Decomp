@@ -3,13 +3,13 @@
 
 #pragma thumb on
 
-extern u8 data_022c4680[];
+extern u8 gSaveData[];
 s32 func_ov001_022e2ad8();
 s32 func_ov001_022e2a44();
 s32 func_ov001_022e299c();
 
 s32 func_ov001_022e26d0(void) {
-    s32 t0 = (*(u32 *)((u8 *)data_022c4680 + 0x8) & 0x1000);
+    s32 t0 = (*(u32 *)((u8 *)gSaveData + 0x8) & 0x1000);
     if (t0 != 0) {
         return 0;
     }

@@ -49,7 +49,7 @@ extern u8 data_ov000_02363e9c[][8];
 void func_ov000_022f8fa0(u16 *p, s32 a, s32 b);
 s32 func_ov000_022fad3c(s32 a, s32 b, s32 c, u16 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_02328280(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022f3874(UnkStruct_022f39e0 *s);
 
 void func_ov000_022f39e0(UnkStruct_022f39e0 *s) {
@@ -88,6 +88,6 @@ void func_ov000_022f39e0(UnkStruct_022f39e0 *s) {
     }
     func_ov000_02328280(1, d + (p->unk24 >> 4), 0x30000, 0);
     s->unk43A = 0x40;
-    func_02036754(0, 0, 0xc0);
+    Sound_PlaySeqArc(0, 0, 0xc0);
     s->base.unk68 = func_ov000_022f3874;
 }

@@ -5,13 +5,13 @@ typedef struct {
     u16 n;
 } UnkStruct_022e23b0;
 
-extern UnkStruct_022e23b0 data_022c4680;
+extern UnkStruct_022e23b0 gSaveData;
 
 void func_02059bdc(s32 id);
 
 #pragma thumb on
 void func_ov001_022e23b0(u32 a) {
-    s32 n = data_022c4680.n;
+    s32 n = gSaveData.n;
     s32 id;
 
     if (n == 1 || n == 4 || n == 8 || n == 12 || n == 16 || n == 20 || n == 23) return;

@@ -8,9 +8,9 @@ struct UnkStruct_022eb364 {
     void (*func2)(UnkStruct_022eb364 *s);
 };
 
-void func_02035134(void *p, s32 a);
+void Pad_Update(void *p, s32 a);
 
 void func_ov000_022eb364(UnkStruct_022eb364 *s) {
-    func_02035134(s->unk3D8, s->func(s));
+    Pad_Update(s->unk3D8, s->func(s));
     s->func2(s);
 }

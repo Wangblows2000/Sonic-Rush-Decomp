@@ -65,12 +65,12 @@ typedef struct UnkStruct_022cc8cc_6 {
     s32 unk8;
 } UnkStruct_022cc8cc_6;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02365058[];
 extern UnkStruct_022cc8cc_6 data_ov000_02369ad0;
 
-UnkTask_022cc8cc *func_020372d0(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
-void func_0206c3d0(void);
+UnkTask_022cc8cc *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
+void StageObj_Main(void);
 void func_ov000_022c74ac(void);
 void func_ov000_022c697c(void);
 void func_ov000_022c736c(void);
@@ -84,10 +84,10 @@ void *func_02021264(void *ctx, u32 id);
 void func_020212e0(void *ctx);
 BOOL func_ov000_022cc6d4(void);
 void func_ov000_022fba50(UnkStruct_022cc8cc *s, s32 a, s32 x, s32 y);
-void func_0206e2d8(UnkStruct_022cc8cc_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_0206e2b4(UnkStruct_022cc8cc_h *h, s32 a, s32 b);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
+void ObjRect_SetBox3D(UnkStruct_022cc8cc_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void ObjRect_SetAtkDefFlags(UnkStruct_022cc8cc_h *h, s32 a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
@@ -99,10 +99,10 @@ UnkStruct_022cc8cc *func_ov000_022cc8cc(s32 a, s32 x, s32 y) {
     UnkStruct_022cc8cc *s;
     UnkStruct_022cc8cc_h *h;
     UnkStruct_022cc8cc_a *p;
-    s = func_020372d0(func_0206c3d0, func_ov000_022c74ac, 0, 0x502, 2, 0x444)->unk10;
+    s = Task_Create(StageObj_Main, func_ov000_022c74ac, 0, 0x502, 2, 0x444)->unk10;
     MI_CpuFill16(s, 0, 0x444);
     s->unk68 = func_ov000_022c697c;
-    func_02021310(ctx, data_ov000_02365058, data_022c4488);
+    func_02021310(ctx, data_ov000_02365058, gZoneActArchive);
     if (func_ov000_022cc6d4()) {
         s->unk304 = func_02021264(ctx, 8);
         s->unk308 = func_02021264(ctx, 9);
@@ -119,24 +119,24 @@ UnkStruct_022cc8cc *func_ov000_022cc8cc(s32 a, s32 x, s32 y) {
     s->unk78 = func_ov000_022c6db4;
     h = &s->unk20C;
     *h = s->unk134;
-    func_0206e2d8(h, -0x14, -0x30, 0x14, -0x20, -0x7d00, 0x7d00);
+    ObjRect_SetBox3D(h, -0x14, -0x30, 0x14, -0x20, -0x7d00, 0x7d00);
     h->unk18 = s;
     h->unk1C = func_ov000_022c6bc0;
     h->unkA &= ~4;
     h = &s->unk238;
     *h = s->unk160;
-    func_0206e2d8(h, -0x1c, -0x78, 0x1c, 0x20, -0x7d00, 0x7d00);
+    ObjRect_SetBox3D(h, -0x1c, -0x78, 0x1c, 0x20, -0x7d00, 0x7d00);
     h->unk18 = s;
     h->unkA &= ~4;
     h = &s->unk264;
     *h = s->unk160;
-    func_0206e2d8(h, -0x1c, -0x78, 0x1c, 0x20, -0x7d00, 0x7d00);
+    ObjRect_SetBox3D(h, -0x1c, -0x78, 0x1c, 0x20, -0x7d00, 0x7d00);
     h->unk20 |= 0x20;
     h->unk18 = s;
     h->unkA &= ~4;
     h = &s->unk290;
-    func_0206e2d8(h, -0x1c, -0x20, 0x1c, 0x20, -0x7d00, 0x7d00);
-    func_0206e2b4(h, 0, -0x10);
+    ObjRect_SetBox3D(h, -0x1c, -0x20, 0x1c, 0x20, -0x7d00, 0x7d00);
+    ObjRect_SetAtkDefFlags(h, 0, -0x10);
     h->unkA |= 0xc0;
     h->unk28 = 0x12;
     h->unk18 = s;
@@ -146,8 +146,8 @@ UnkStruct_022cc8cc *func_ov000_022cc8cc(s32 a, s32 x, s32 y) {
     s->unk14 = 0;
     s->unk18 = 0;
     p = &s->unk30C;
-    func_02031c1c(p, 0);
-    func_02031bd0(p, s->unk300, 0);
+    Model_Init(p, 0);
+    Model_SetResource(p, s->unk300, 0);
     func_02021c38(p->unk90, func_ov000_022c72f8, 0, 6, 3);
     p->unk18 = p->unk1C = p->unk20 = 0x34cc;
     p->unk8 = 0x1e;

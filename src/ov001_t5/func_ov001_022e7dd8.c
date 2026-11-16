@@ -32,7 +32,7 @@ typedef struct {
     UnkWork_022e7dd8 *work;
 } UnkTask_022e7dd8;
 
-extern UnkTask_022e7dd8 *data_022b4574;
+extern UnkTask_022e7dd8 *gTaskCurrent;
 
 void func_ov001_022e5164(void *a, s32 x, s32 y, s32 *ox, s32 *oy);
 fx32 func_020021f0(fx32 a);
@@ -57,7 +57,7 @@ void func_ov001_022e7dd8(void) {
     fx32 len;
     BOOL done;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     s = w->sub;
     p = &s->pos[w->target];
     x = p->x;
@@ -111,7 +111,7 @@ void func_ov001_022e7dd8(void) {
     w->timer++;
     if (done) {
         w->timer = 0;
-        data_022b4574->func = func_ov001_022e7c50;
+        gTaskCurrent->func = func_ov001_022e7c50;
     }
 }
 #pragma thumb reset

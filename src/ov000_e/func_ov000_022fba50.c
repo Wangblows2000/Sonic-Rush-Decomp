@@ -12,7 +12,7 @@ void func_ov000_022fb2f8(void);
 void func_ov000_022fb23c(void);
 void func_ov000_022fb170(void);
 void func_ov000_022fb3d8(void);
-void func_0206e2b4(UnkStruct_Coll *c, s32 a, s32 b);
+void ObjRect_SetAtkDefFlags(UnkStruct_Coll *c, s32 a, s32 b);
 
 void func_ov000_022fba50(void *w, s32 a, s32 x, s32 y) {
     UnkStruct_StageObj *s = w;
@@ -39,9 +39,9 @@ void func_ov000_022fba50(void *w, s32 a, s32 x, s32 y) {
     s->coll1.unk28 = 0x12;
     s->coll2.unk28 = 0x12;
     s->coll0.unk1C = func_ov000_022fb3d8;
-    func_0206e2b4(&s->coll0, 9, 0xa);
-    func_0206e2b4(&s->coll1, 0x13, 0x13);
-    func_0206e2b4(&s->coll2, 0x13, 0x13);
+    ObjRect_SetAtkDefFlags(&s->coll0, 9, 0xa);
+    ObjRect_SetAtkDefFlags(&s->coll1, 0x13, 0x13);
+    ObjRect_SetAtkDefFlags(&s->coll2, 0x13, 0x13);
     s->coll0.unkA &= ~4;
     s->coll1.unkA &= ~4;
     s->coll2.unkA &= ~4;

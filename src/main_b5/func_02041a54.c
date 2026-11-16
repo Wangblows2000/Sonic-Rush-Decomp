@@ -20,8 +20,8 @@ typedef struct {
     u16 idx;
 } UnkWork_02041a54;
 
-u32 func_0203e934(void);
-void func_0203df14(s32 a, UnkEntry_02041a54 *e);
+u32 WH_GetSystemState(void);
+void WH_ChildConnect(s32 a, UnkEntry_02041a54 *e);
 void func_02041a04(void);
 
 void func_02041a54(UnkWork_02041a54 *w) {
@@ -29,9 +29,9 @@ void func_02041a54(UnkWork_02041a54 *w) {
 
     for (i = 0; i < w->count; i++)
         w->entries[w->count].timer++;
-    if (func_0203e934() == 1 && w->idx != 0xffff) {
+    if (WH_GetSystemState() == 1 && w->idx != 0xffff) {
         w->unk12 = w->entries[w->idx].unk48;
-        func_0203df14(5, &w->entries[w->idx]);
+        WH_ChildConnect(5, &w->entries[w->idx]);
         w->fn = func_02041a04;
     }
     w->unk1a = 0;

@@ -16,7 +16,7 @@ typedef struct UnkStruct_022cd500_c {
 extern UnkStruct_022cd500_c data_ov000_0236a48c;
 extern void *data_ov000_02369ae4;
 
-void *func_020372d0(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
+void *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
 void func_ov000_022cd384(void);
 void func_ov000_022cd370(void);
 
@@ -27,5 +27,5 @@ void func_ov000_022cd500(void) {
     c->unk80 = 0x800;
     c->unk84 = 0x32000;
     c->unk8C = 0x800;
-    data_ov000_02369ae4 = func_020372d0(func_ov000_022cd384, func_ov000_022cd370, 0, 0x500, 2, 0);
+    data_ov000_02369ae4 = Task_Create(func_ov000_022cd384, func_ov000_022cd370, 0, 0x500, 2, 0);
 }

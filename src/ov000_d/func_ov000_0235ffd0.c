@@ -7,7 +7,7 @@ typedef struct {
     s32 ang;
 } UnkStruct_0235ffd0;
 
-void func_020316f4(UnkStruct_MdlRender *r);
+void Model_Animate(UnkStruct_MdlRender *r);
 void func_020221fc(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_02002360(s16 *a, s16 *b);
 void func_02022284(s32 idx, s32 x, s32 y, s32 z);
@@ -25,7 +25,7 @@ void func_ov000_0235ffd0(UnkStruct_0235ffd0 *w, s32 x, s32 y, BOOL flip) {
     void *m = w->r.unk94;
     s32 idx;
 
-    func_020316f4(r);
+    Model_Animate(r);
     x -= 0x80;
     r->trans.x = x << 12;
     y -= 0x60;
@@ -57,7 +57,7 @@ void func_ov000_0235ffd0(UnkStruct_0235ffd0 *w, s32 x, s32 y, BOOL flip) {
     idx = (s32)((u16)w->ang & 0xffff) >> 4;
     MTX_RotY33_(&r->rot, MDL_SIN_IDX(idx), MDL_COS_IDX(idx));
     func_02025268(0x11, NULL, 0);
-    func_020315e0(r);
+    Model_Draw(r);
     one = 1;
     func_02025268(0x12, &one, 1);
 }

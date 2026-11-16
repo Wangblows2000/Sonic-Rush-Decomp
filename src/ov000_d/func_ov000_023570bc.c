@@ -1,12 +1,12 @@
 #include <ov000_d/mdl.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void func_02031768(UnkStruct_MdlRender *r);
+void Model_Release(UnkStruct_MdlRender *r);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void UnkFree_023570bc(void **pp) {
     u32 size;
@@ -23,7 +23,7 @@ static inline void UnkFree_023570bc(void **pp) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
     *pp = NULL;
 }
 
@@ -32,8 +32,8 @@ static inline void UnkFree_023570bc(void **pp) {
 void func_ov000_023570bc(UnkStruct_Mdl *w) {
     vu32 zero;
 
-    func_02031768(&w->slot[0].r);
-    func_02031768(&w->slot[1].r);
+    Model_Release(&w->slot[0].r);
+    Model_Release(&w->slot[1].r);
     UnkFree_023570bc(&w->unk2FC);
     zero = 0;
     MIi_CpuClear32(zero, w, sizeof(UnkStruct_Mdl));

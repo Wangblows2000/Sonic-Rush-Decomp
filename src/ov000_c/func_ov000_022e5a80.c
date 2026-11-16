@@ -37,7 +37,7 @@ extern UnkStruct_StageObj *data_ov000_0236ac60;
 extern u32 data_ov000_023637ac[];
 
 void func_02021c38(void *a, void (*f)(void), s32 b, s32 c, s32 d);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e62fc(void);
 void func_ov000_022e5980(void);
 
@@ -47,7 +47,7 @@ void func_ov000_022e5a80(void) {
     s32 i;
 
     func_02021c38(m->unk90, func_ov000_022e62fc, 0, 6, 3);
-    func_02031a68(m, 0, w->unkD08, 0, 0);
+    Model_SetAnimation(m, 0, w->unkD08, 0, 0);
     m->unk10C |= 4;
     m->unk114 = 0x1000;
     for (i = 0; i < 11; i++) {

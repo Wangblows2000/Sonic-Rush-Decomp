@@ -21,39 +21,39 @@ typedef struct {
     u16 unk18;
 } UnkStruct_02072cb8;
 
-extern void *data_0208fe80;
-extern UnkStruct_02072cb8 data_02072cb8;
+extern void *gMainHeap;
+extern UnkStruct_02072cb8 gGameLanguage;
 extern u16 data_02072cbc[];
-extern u32 data_02250438;
-extern u32 data_02250434;
-extern void *data_0208f7e0;
-extern void *data_0208f7dc;
+extern u32 gPaletteTransferHead;
+extern u32 gPaletteTransferTail;
+extern void *gVRAMTransferHead;
+extern void *gVRAMTransferTail;
 
 void func_ov000_0235fbe8(u32 *out, u16 *src, s32 n);
 s32 func_02051300(u16 *buf, s32 n);
-void *func_02034a40(void *heap, u32 size, s32 align);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 u32 func_ov000_0235ffc4(void *res);
 u32 func_ov000_0235ffb8(void *res);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *res);
-void func_02033a68(void *src, void *dst, u32 size);
-void *func_02039c18(s32 a, s32 b);
-void func_02035704(void *src, s32 a, s32 b, u32 dst);
-void func_02035754(void);
-void func_020337ec(void *src, s32 size, s32 a, void *dst);
-void func_0203383c(void);
+void *Compress_GetData(void *res);
+void Mem_Copy(void *src, void *dst, u32 size);
+void *ObjVram_Alloc(s32 a, s32 b);
+void PaletteTransfer_QueueCopy(void *src, s32 a, s32 b, u32 dst);
+void PaletteTransfer_Flush(void);
+void VRAMTransfer_QueueCopy(void *src, s32 size, s32 a, void *dst);
+void VRAMTransfer_Flush(void);
 
 static inline void *UnkAlloc_0235fd2c(u32 size, s32 align) {
     u8 *p;
     size = (size + 0x43) & ~0x1f;
-    p = func_02034a40(data_0208fe80, size, align);
+    p = Heap_Alloc(gMainHeap, size, align);
     if (func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -76,18 +76,18 @@ static inline void UnkFree_0235fd2c(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 static inline void UnkLoad_0235fd2c(void *src, void *dst) {
-    void *pa = data_0208f7e0;
-    void *pb = data_0208f7dc;
-    data_0208f7e0 = NULL;
-    data_0208f7dc = NULL;
-    func_020337ec(src, 0x20, 0, dst);
-    func_0203383c();
-    data_0208f7e0 = pa;
-    data_0208f7dc = pb;
+    void *pa = gVRAMTransferHead;
+    void *pb = gVRAMTransferTail;
+    gVRAMTransferHead = NULL;
+    gVRAMTransferTail = NULL;
+    VRAMTransfer_QueueCopy(src, 0x20, 0, dst);
+    VRAMTransfer_Flush();
+    gVRAMTransferHead = pa;
+    gVRAMTransferTail = pb;
 }
 
 #pragma thumb on
@@ -104,16 +104,16 @@ void func_ov000_0235fd2c(UnkStruct_0235fd2c *w) {
     void *src;
 
     if (w->unk10) {
-        func_ov000_0235fbe8(idx[0], data_02072cbc, data_02072cb8.unk18);
+        func_ov000_0235fbe8(idx[0], data_02072cbc, gGameLanguage.unk18);
         func_ov000_0235fbe8(idx[1], name, (u16)func_02051300(name, 7));
     } else {
-        func_ov000_0235fbe8(idx[1], data_02072cbc, data_02072cb8.unk18);
+        func_ov000_0235fbe8(idx[1], data_02072cbc, gGameLanguage.unk18);
         func_ov000_0235fbe8(idx[0], name, (u16)func_02051300(name, 7));
     }
     src = (u8 *)w->unkE30 + w->unkE30->unk8;
     {
         u32 size = ((*(u32 *)src >> 8) + 0x43) & ~0x1f;
-        dst = func_02034a40(data_0208fe80, size, -0x20);
+        dst = Heap_Alloc(gMainHeap, size, -0x20);
         if (func_02006abc(0) != dst) {
             vu32 fill = 0xcccccccc;
             MIi_CpuClear32(fill, dst, size);
@@ -134,7 +134,7 @@ void func_ov000_0235fd2c(UnkStruct_0235fd2c *w) {
         func_020087f8(src, dst);
         break;
     default:
-        func_02033a68(func_02033a54(src), dst, func_ov000_0235ffb8(src));
+        Mem_Copy(Compress_GetData(src), dst, func_ov000_0235ffb8(src));
         break;
     }
     DC_StoreRange(dst, func_ov000_0235ffb8(src));
@@ -145,18 +145,18 @@ void func_ov000_0235fd2c(UnkStruct_0235fd2c *w) {
     }
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 7; i++) {
-            w->unkDDC[j][i] = func_02039c18(0, 1);
+            w->unkDDC[j][i] = ObjVram_Alloc(0, 1);
         }
     }
     zero = 0;
-    sa = data_02250438;
-    sb = data_02250434;
-    data_02250438 = 0;
-    data_02250434 = 0;
-    func_02035704((void *)&zero, 1, 0, 0x500039e);
-    func_02035754();
-    data_02250438 = sa;
-    data_02250434 = sb;
+    sa = gPaletteTransferHead;
+    sb = gPaletteTransferTail;
+    gPaletteTransferHead = 0;
+    gPaletteTransferTail = 0;
+    PaletteTransfer_QueueCopy((void *)&zero, 1, 0, 0x500039e);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = sa;
+    gPaletteTransferTail = sb;
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 7; i++) {
             UnkLoad_0235fd2c(w->tiles[j][i], w->unkDDC[j][i]);

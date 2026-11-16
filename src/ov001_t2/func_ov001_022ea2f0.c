@@ -10,7 +10,7 @@ typedef struct {
     UnkItem_022ea2f0 items[5];
 } UnkStruct_022ea2f0;
 
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
 u16 *func_ov001_022ea27c(UnkStruct_022ea2f0 *p);
 
@@ -34,7 +34,7 @@ void func_ov001_022ea2f0(UnkStruct_022ea2f0 *p) {
         for (; i < 0xc0; i++) {
             buf[i] = 0;
         }
-        data_02087cb8 |= 0x1000;
+        gSystemFlags |= 0x1000;
     }
 }
 #pragma thumb reset

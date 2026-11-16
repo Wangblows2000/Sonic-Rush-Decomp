@@ -12,13 +12,13 @@ typedef struct { u8 pad0[8]; s16 unk8; } UnkBlend_02063030;
 typedef struct { u8 pad0[0xc]; s16 unkC; } UnkMosaic_02063030;
 extern UnkBlend_02063030 data_0208926c;
 extern UnkBlend_02063030 data_02087d44;
-extern UnkMosaic_02063030 data_0208922c;
-extern UnkMosaic_02063030 data_02087d04;
+extern UnkMosaic_02063030 gDisplayMain;
+extern UnkMosaic_02063030 gDisplaySub;
 
 s32 func_020428d4(void);
-void func_0203344c(UnkSpr_W50 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_W50 *s);
-void func_02033550(UnkSpr_W50 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_W50 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_W50 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_W50 *s, u16 anim);
 
 #pragma thumb on
 void func_02063030(UnkWork_02063030 *w) {
@@ -46,29 +46,29 @@ void func_02063030(UnkWork_02063030 *w) {
             data_0208926c.unk8 = 0;
             data_02087d44.unk8 = 0;
         }
-        data_0208922c.unkC = w->unk8 << 1;
-        data_02087d04.unkC = w->unk8 << 1;
+        gDisplayMain.unkC = w->unk8 << 1;
+        gDisplaySub.unkC = w->unk8 << 1;
         spr = &w->spr[3];
         anim = func_020428d4() + 1;
         spr->x = 0xe0;
         spr->y = 8;
-        func_02033550(spr, anim);
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_SetAnimation(spr, anim);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
         spr = &w->spr[0];
         spr->x = 0x50;
         spr->y = 8;
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
         spr = &w->spr[1];
         spr->x = 0x98;
         spr->y = 0xc;
         spr->unk2C |= 4;
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
         spr = &w->spr[2];
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
         w->unk8++;
     }
 }

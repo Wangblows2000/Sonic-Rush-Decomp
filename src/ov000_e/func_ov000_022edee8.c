@@ -26,8 +26,8 @@ typedef struct {
     } unk20;
 } UnkStruct_02087d04;
 
-extern void *data_022c4488;
-extern UnkStruct_02087d04 data_02087d04;
+extern void *gZoneActArchive;
+extern UnkStruct_02087d04 gDisplaySub;
 extern char data_ov000_023659c4[];
 extern char data_ov000_023659c8[];
 extern char data_ov000_023659dc[];
@@ -46,14 +46,14 @@ BOOL func_02021310(UnkArc_022edee8 *arc, const char *name, void *narc);
 void *func_0202128c(const char *path);
 void func_0202566c(void *p);
 BOOL func_020212e0(UnkArc_022edee8 *arc);
-void func_020365bc(s32 a);
-void func_02031768(void *a);
+void Sound_FreeHandle(s32 a);
+void Model_Release(void *a);
 void func_ov000_022fb9c8(UnkStruct_022edee8 *t);
 
 void func_ov000_022edee8(UnkStruct_022edee8 *t) {
     UnkArc_022edee8 arc;
     UnkStruct_022edee8_b *s = t->unk10;
-    func_02021310(&arc, data_ov000_023659c4, data_022c4488);
+    func_02021310(&arc, data_ov000_023659c4, gZoneActArchive);
     func_0202566c(func_0202128c(data_ov000_023659c8));
     func_0202566c(func_0202128c(data_ov000_023659dc));
     func_0202566c(func_0202128c(data_ov000_023659f4));
@@ -67,8 +67,8 @@ void func_ov000_022edee8(UnkStruct_022edee8 *t) {
     func_0202566c(func_0202128c(data_ov000_02365ab8));
     func_0202566c(func_0202128c(data_ov000_02365acc));
     func_020212e0(&arc);
-    data_02087d04.unk20.bits.b6 = 0;
-    func_020365bc(s->unk388);
-    func_02031768(s->unk24C);
+    gDisplaySub.unk20.bits.b6 = 0;
+    Sound_FreeHandle(s->unk388);
+    Model_Release(s->unk24C);
     func_ov000_022fb9c8(t);
 }

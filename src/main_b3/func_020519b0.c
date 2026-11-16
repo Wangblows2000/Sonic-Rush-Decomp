@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 typedef struct { u8 pad0[0x14]; void *snd[5]; u8 pad28[4]; s32 unk2C; } UnkWork_020519b0;
-extern UnkWork_020519b0 *data_022c465c;
+extern UnkWork_020519b0 *gSysSound;
 
 void func_0201c070(void *p, s32 a);
 void func_0201bf1c(void *p);
@@ -48,18 +48,18 @@ void func_020519b0(s32 n) {
     default:
         return;
     }
-    if (data_022c465c->unk2C == 0) {
-        if (data_022c465c->snd[3] != NULL) {
-            func_0201c070(&data_022c465c->snd[3], 0);
-            func_0201bf1c(&data_022c465c->snd[3]);
+    if (gSysSound->unk2C == 0) {
+        if (gSysSound->snd[3] != NULL) {
+            func_0201c070(&gSysSound->snd[3], 0);
+            func_0201bf1c(&gSysSound->snd[3]);
         }
-        func_020366f4(&data_022c465c->snd[3], a, b);
+        func_020366f4(&gSysSound->snd[3], a, b);
     } else {
-        if (data_022c465c->snd[4] != NULL) {
-            func_0201c070(&data_022c465c->snd[4], 0);
-            func_0201bf1c(&data_022c465c->snd[4]);
+        if (gSysSound->snd[4] != NULL) {
+            func_0201c070(&gSysSound->snd[4], 0);
+            func_0201bf1c(&gSysSound->snd[4]);
         }
-        func_020366f4(&data_022c465c->snd[4], a, b);
+        func_020366f4(&gSysSound->snd[4], a, b);
     }
 }
 #pragma thumb reset

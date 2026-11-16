@@ -21,7 +21,7 @@ typedef int code();
 
 extern unsigned char data_ov001_0231f654[];
 int func_02025268();
-int func_020315e0();
+int Model_Draw();
 
 void func_ov001_0230cfc4(void)
 
@@ -31,7 +31,7 @@ void func_ov001_0230cfc4(void)
   
   iVar1 = *((int *)data_ov001_0231f654);
   func_02025268(0x11,0,0);
-  func_020315e0(iVar1 + 0x3c);
+  Model_Draw(iVar1 + 0x3c);
   local_10[0] = 1;
   func_02025268(0x12,local_10);
   return;

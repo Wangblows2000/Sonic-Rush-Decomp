@@ -42,34 +42,34 @@ typedef struct UnkTask_022dbe6c {
     UnkStruct_022dbe6c *unk10;
 } UnkTask_022dbe6c;
 
-extern UnkTask_022dbe6c *data_022b4574;
+extern UnkTask_022dbe6c *gTaskCurrent;
 
 extern s16 data_0206e470[];
 
-void func_020316f4(UnkStruct_022dbe6c_a *a);
-void func_020315e0(UnkStruct_022dbe6c_a *a);
+void Model_Animate(UnkStruct_022dbe6c_a *a);
+void Model_Draw(UnkStruct_022dbe6c_a *a);
 void func_ov000_022db758(s32 *v, u16 *ang, s32 x, s32 y);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 
 void func_ov000_022dbe6c(void) {
-    UnkStruct_022dbe6c *s = data_022b4574->unk10;
+    UnkStruct_022dbe6c *s = gTaskCurrent->unk10;
     UnkStruct_022dbe6c_a *a;
     if (s->unk5C & 0x20)
         return;
     if (s->unk4D8 != 0) {
         a = &s->unk344;
-        func_020316f4(a);
-        func_020315e0(a);
+        Model_Animate(a);
+        Model_Draw(a);
         return;
     }
     a = &s->unk20C;
-    func_020316f4(a);
+    Model_Animate(a);
     func_ov000_022db758(&a->unk48, &s->unk4EA, s->unk4E0, s->unk14);
     s->unk4EA += 0x4000;
     MTX_RotY33_(s->unk20C.unk24, data_0206e470[((s->unk4EA & 0xffff) >> 4) * 2], data_0206e470[((s->unk4EA & 0xffff) >> 4) * 2 + 1]);
-    func_020315e0(a);
+    Model_Draw(a);
     func_ov000_022db758(&a->unk48, &s->unk4EC, s->unk4E4, s->unk14);
     s->unk4EC -= 0x4000;
     MTX_RotY33_(s->unk20C.unk24, data_0206e470[((s->unk4EC & 0xffff) >> 4) * 2], data_0206e470[((s->unk4EC & 0xffff) >> 4) * 2 + 1]);
-    func_020315e0(a);
+    Model_Draw(a);
 }

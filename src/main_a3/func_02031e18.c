@@ -16,8 +16,8 @@ typedef struct {
 } UnkStruct_02031e18;
 
 typedef void (*UnkFn_02031e18)(u32 src, u32 mode, u32 dst);
-void func_02031ee0(u32 a, u32 b, u32 c);
-void func_020356bc(u32 a, u32 b, u32 c);
+void PaletteTransfer_LoadNow(u32 a, u32 b, u32 c);
+void PaletteTransfer_QueueLoad(u32 a, u32 b, u32 c);
 
 BOOL func_02031e18(UnkCmd_02031e18 *cmd, UnkStruct_02031e18 *s)
 {
@@ -25,9 +25,9 @@ BOOL func_02031e18(UnkCmd_02031e18 *cmd, UnkStruct_02031e18 *s)
         UnkFn_02031e18 fn;
         u32 dst;
         if (s->flags & 0x40)
-            fn = func_02031ee0;
+            fn = PaletteTransfer_LoadNow;
         else
-            fn = func_020356bc;
+            fn = PaletteTransfer_QueueLoad;
         switch (s->mode) {
         case 0:
             dst = s->base + ((cmd->unkA + s->unk44) << 5);

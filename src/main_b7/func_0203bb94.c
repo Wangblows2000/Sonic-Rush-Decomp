@@ -24,12 +24,12 @@ typedef struct {
 } UnkStruct_0203bb94;
 
 extern UnkStruct_022b89e8 data_022b89e8;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 typedef struct { void *work; } UnkStruct_022b89e0;
 extern UnkStruct_022b89e0 data_022b89e0;
 void func_02007828(UnkOwnerInfo_0203bb94 *info);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
-u32 *func_02034a40(void *heap, u32 size, s32 align);
+u32 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 *func_02006abc(u32 a);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -60,7 +60,7 @@ void func_0203bb94(u32 a, u32 b) {
     sub->f = 0;
     sub->g = 0;
     data_022b89e8 = *sub;
-    work = func_02034a40(data_0208fe80, 0xc040, -32);
+    work = Heap_Alloc(gMainHeap, 0xc040, -32);
     if (func_02006abc(0) != work) {
         vu32 v = 0xcccccccc;
         MIi_CpuClear32(v, work, 0xc040);

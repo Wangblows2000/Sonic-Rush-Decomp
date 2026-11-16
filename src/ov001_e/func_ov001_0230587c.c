@@ -18,16 +18,16 @@ typedef struct UnkStruct_0230587c {
 } UnkStruct_0230587c;
 
 extern UnkStruct_0230587c *data_ov001_0231f5a8;
-extern void *data_022b4574;
-extern u32 data_0208fe70;
+extern void *gTaskCurrent;
+extern u32 gRandSeed;
 
 s32 func_0200203c(s32 n, s32 d);
-void func_020371c8(void *task);
-void func_02032d2c(void *p);
+void Task_Destroy(void *task);
+void AnimatorSprite_Draw(void *p);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return data_0208fe70 >> 16;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return gRandSeed >> 16;
 }
 
 void func_ov001_0230587c(void) {
@@ -42,7 +42,7 @@ void func_ov001_0230587c(void) {
         x = ((func_0200203c(Rand(), r) - (r >> 1)) >> 12) + 0x80;
         y = ((func_0200203c(Rand(), r) - (r >> 1)) >> 12) + 0x5b;
     } else {
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         x = 0x80;
         data_ov001_0231f5a8->unk14 = 0;
         y = 0x5b;
@@ -52,6 +52,6 @@ void func_ov001_0230587c(void) {
         UnkStruct_0230587c_o *o = &data_ov001_0231f5a8->objs[i];
         o->x = x;
         o->y = y;
-        func_02032d2c(o);
+        AnimatorSprite_Draw(o);
     }
 }

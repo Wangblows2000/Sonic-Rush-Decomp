@@ -34,7 +34,7 @@ typedef struct {
 extern s16 data_ov000_0236a2bc[];
 
 void func_ov000_02318ba0(s32 a, u16 b);
-s32 func_02068ce4(s32 v, s32 a, s32 b, s32 c, s32 d);
+s32 ObjShift_Set(s32 v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02318e68(UnkStruct_02318e68 *w) {
     s32 flag = 0;
@@ -77,7 +77,7 @@ void func_ov000_02318e68(UnkStruct_02318e68 *w) {
     if (!flag && data_ov000_0236a2bc[w->unk1E0->unk6] == 0) {
         old = w->unkC;
         w->unk1F4 &= ~1;
-        w->unkC = func_02068ce4(w->unkC, 0, 2, 0x200, 0x80);
+        w->unkC = ObjShift_Set(w->unkC, 0, 2, 0x200, 0x80);
         w->unk2E = w->unkC - old;
         w->unk58 &= ~0x4000000;
         return;

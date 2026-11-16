@@ -55,8 +55,8 @@ extern s16 data_0206e470[];
 #define SIN_02351a8c(a) data_0206e470[(u32)(IDX_02351a8c(a) << 1)]
 #define COS_02351a8c(a) data_0206e470[(u32)((IDX_02351a8c(a) << 1) + 1)]
 
-s32 func_02068df8(s32 v, s32 a, s32 max);
-s32 func_02068db4(s32 v, s32 a);
+s32 ObjSpd_UpSet(s32 v, s32 a, s32 max);
+s32 ObjSpd_DownSet(s32 v, s32 a);
 void func_ov000_0234a064(UnkStruct_02351a8c *w, u8 a);
 
 void func_ov000_02351a8c(UnkStruct_02351a8c *w) {
@@ -84,14 +84,14 @@ void func_ov000_02351a8c(UnkStruct_02351a8c *w) {
             w->unk62 = 0x40;
         }
         if (w->unk420 & m1) {
-            w->unk3FC = (s16)func_02068df8(w->unk3FC, 0x10, 0x180);
+            w->unk3FC = (s16)ObjSpd_UpSet(w->unk3FC, 0x10, 0x180);
         } else if (w->unk3FC > 0) {
-            w->unk3FC = (s16)func_02068db4(w->unk3FC, 8);
+            w->unk3FC = (s16)ObjSpd_DownSet(w->unk3FC, 8);
         }
         if (w->unk420 & m2) {
-            w->unk3FC = (s16)func_02068df8(w->unk3FC, -0x10, 0x180);
+            w->unk3FC = (s16)ObjSpd_UpSet(w->unk3FC, -0x10, 0x180);
         } else if (w->unk3FC < 0) {
-            w->unk3FC = (s16)func_02068db4(w->unk3FC, 8);
+            w->unk3FC = (s16)ObjSpd_DownSet(w->unk3FC, 8);
         }
         if (w->unk5C & 1) {
             w->unk3F8 -= w->unk3FC;

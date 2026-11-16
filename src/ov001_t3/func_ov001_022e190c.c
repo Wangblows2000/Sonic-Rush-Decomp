@@ -25,7 +25,7 @@ extern s32 data_ov001_0231c3ec;
 extern s32 data_ov001_0231c3f0;
 
 void func_ov001_022e1900(void);
-UnkTask_022e190c *func_020372d0(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
+UnkTask_022e190c *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov001_022e129c(void);
 void func_ov001_022e0ee0(void);
@@ -43,7 +43,7 @@ void func_ov001_022e190c(s32 a, s32 b, s32 c) {
     UnkWork_022e190c *w;
 
     func_ov001_022e1900();
-    t = func_020372d0(func_ov001_022e129c, func_ov001_022e0ee0, 0, 0x8000, 0, sizeof(UnkWork_022e190c));
+    t = Task_Create(func_ov001_022e129c, func_ov001_022e0ee0, 0, 0x8000, 0, sizeof(UnkWork_022e190c));
     w = t->work;
     data_ov001_0231f05c = w;
     zero = 0;

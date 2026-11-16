@@ -5,7 +5,7 @@ typedef struct {
     UnkStruct_Spr spr[2];
 } UnkWork_02312634;
 
-void func_0206b768(s32 x, s32 y, u8 a, void *w, UnkStruct_Spr *s0, UnkStruct_Spr *s1, s32 b);
+void StageObj_Draw2DEx(s32 x, s32 y, u8 a, void *w, UnkStruct_Spr *s0, UnkStruct_Spr *s1, s32 b);
 
 void func_ov000_02312634(UnkWork_02312634 *w) {
     s32 c;
@@ -32,7 +32,7 @@ void func_ov000_02312634(UnkWork_02312634 *w) {
     }
     i = 0;
     for (; i < n; i++) {
-        func_0206b768(x, y, w->base.unk1, w, &w->spr[0], &w->spr[1], 0);
+        StageObj_Draw2DEx(x, y, w->base.unk1, w, &w->spr[0], &w->spr[1], 0);
         y += dy;
     }
 }

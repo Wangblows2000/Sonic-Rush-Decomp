@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 extern unsigned char data_ov001_0231c428[];
-int func_02033fbc();
+int File_Load();
 
 #pragma thumb on
 
@@ -34,7 +34,7 @@ void func_ov001_022e17c8(int param_1)
   iVar3 = 0;
   puVar2 = ((void *)data_ov001_0231c428);
   do {
-    uVar1 = func_02033fbc(*puVar2,0);
+    uVar1 = File_Load(*puVar2,0);
     *(undefined4 *)(param_1 + 0xeac) = uVar1;
     puVar2 = puVar2 + 1;
     param_1 = param_1 + 4;

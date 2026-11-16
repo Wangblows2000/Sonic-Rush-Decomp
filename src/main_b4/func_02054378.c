@@ -12,13 +12,13 @@ extern UnkElem_02054378 *data_022c466c;
 extern UnkElem_02054378 *data_022c4664;
 extern s32 data_022c4670;
 extern s32 data_022c4668;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void func_0200bad8(UnkElem_02054378 *e);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void Free_02054378(void *ptr) {
     u8 *p = ptr;
@@ -32,7 +32,7 @@ static inline void Free_02054378(void *ptr) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_02054378(void) {

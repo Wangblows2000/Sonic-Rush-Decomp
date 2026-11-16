@@ -59,7 +59,7 @@ typedef struct {
 
 extern UnkStruct_02369b78 *data_ov000_02369b78;
 extern UnkStruct_022c4560 data_022c4560;
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern void *data_ov000_0236ac28;
 extern u8 data_ov000_02365aec[], data_ov000_02365af0[], data_ov000_0236ac58[], data_ov000_02365afc[];
 extern u8 data_ov000_0236ac50[], data_ov000_02365b08[], data_ov000_0236ac40[], data_ov000_02365b14[];
@@ -75,13 +75,13 @@ void func_ov000_022e98d8(void);
 void func_ov000_022eb9f8(void);
 void func_ov000_022eb970(void);
 void func_ov000_022eb5fc(void);
-void func_020351d8(void *p, s32 a, s32 b);
+void Pad_Reset(void *p, s32 a, s32 b);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void func_020212e0(void *f);
-void func_02069c74(void *w, void *s, void *a, s32 b, void *c, void *d);
-void func_02069b34(void *w, void *s, void *a, void *b, void *c);
-void func_0203363c(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, u32 h);
+void StageObj_LoadModel(void *w, void *s, void *a, s32 b, void *c, void *d);
+void StageObj_LoadMotion(void *w, void *s, void *a, void *b, void *c);
+void AnimatorSprite_Init(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, u32 h);
 void func_ov000_022ee198(UnkStruct_022ee950 *w, s32 a);
 
 UnkStruct_022ee950 *func_ov000_022ee950(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -92,7 +92,7 @@ UnkStruct_022ee950 *func_ov000_022ee950(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_022ee950_Sub *sub;
     vu16 zero;
 
-    w = func_020372d0(func_0206c3d0, func_ov000_022ebda0, 0, 0x501, 2, sizeof(UnkStruct_022ee950))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022ebda0, 0, 0x501, 2, sizeof(UnkStruct_022ee950))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022ee950));
     mgr->unk214 = w;
@@ -100,24 +100,24 @@ UnkStruct_022ee950 *func_ov000_022ee950(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk43C = func_ov000_022ea8f8;
     w->unk440 = func_ov000_022e98d8;
     w->unk452 = Rand() & 3;
-    func_020351d8(w->unk3D8, 0, 0);
-    func_02021310(ctx, data_ov000_02365aec, data_022c4488);
+    Pad_Reset(w->unk3D8, 0, 0);
+    func_02021310(ctx, data_ov000_02365aec, gZoneActArchive);
     w->unk4CC = func_02021264(ctx, 8);
     w->unk4D0 = func_02021264(ctx, 9);
     func_020212e0(ctx);
     if (data_022c4560.unk0 == 0) {
         w->unk3D0 = 1;
-        func_02069c74(w, &w->unk20C, data_ov000_02365af0, 0, data_ov000_0236ac58, data_ov000_0236ac28);
+        StageObj_LoadModel(w, &w->unk20C, data_ov000_02365af0, 0, data_ov000_0236ac58, data_ov000_0236ac28);
     } else {
         w->unk3D0 = 0;
-        func_02069c74(w, &w->unk20C, data_ov000_02365afc, 0, data_ov000_0236ac50, data_ov000_0236ac28);
+        StageObj_LoadModel(w, &w->unk20C, data_ov000_02365afc, 0, data_ov000_0236ac50, data_ov000_0236ac28);
     }
     w->unk4C0 = w->unk344;
-    func_02069b34(w, &w->unk20C, data_ov000_02365b08, data_ov000_0236ac40, data_ov000_0236ac28);
+    StageObj_LoadMotion(w, &w->unk20C, data_ov000_02365b08, data_ov000_0236ac40, data_ov000_0236ac28);
     w->unk4C4 = w->unk348;
-    func_02069b34(w, &w->unk20C, data_ov000_02365b14, data_ov000_0236ac48, data_ov000_0236ac28);
+    StageObj_LoadMotion(w, &w->unk20C, data_ov000_02365b14, data_ov000_0236ac48, data_ov000_0236ac28);
     w->unk4C8 = w->unk358;
-    func_02069f1c(w, data_ov000_02365b20, 0, data_ov000_0236ac38, data_ov000_0236ac28);
+    StageObj_Load2dBAC(w, data_ov000_02365b20, 0, data_ov000_0236ac38, data_ov000_0236ac28);
     w->unk4D4 = w->base.spr0.unk10;
     func_ov000_022fba50(w, (s32)p, b, c);
     w->base.unk70 = func_ov000_022eb9f8;
@@ -142,7 +142,7 @@ UnkStruct_022ee950 *func_ov000_022ee950(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk67 = 13;
     coll = &w->unk378;
     *coll = w->base.coll0;
-    func_0206e2b4(coll, 0x11, 0);
+    ObjRect_SetAtkDefFlags(coll, 0x11, 0);
     coll->unkA |= 0x40;
     coll->unk1C = func_ov000_022eb5fc;
     coll->unk18 = w;
@@ -155,7 +155,7 @@ UnkStruct_022ee950 *func_ov000_022ee950(UnkStruct_ObjParam *p, s32 b, s32 c) {
     sub->unkA = 4;
     sub->unkB = 1;
     sub->unkC = 0xf;
-    func_0203363c(&w->base.spr0, w->unk4D4, 0, 0x18, 0, 0, 0, 0, 0);
+    AnimatorSprite_Init(&w->base.spr0, w->unk4D4, 0, 0x18, 0, 0, 0, 0, 0);
     func_ov000_022ee198(w, 0x3c);
     w->base.unk5C |= 4;
     return w;

@@ -34,13 +34,13 @@ typedef struct {
     u16 unk10;
 } UnkStruct_0236abd8;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_0236aabc data_ov000_0236aabc;
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 extern UnkStruct_0236ab3c data_ov000_0236ab3c;
 extern UnkStruct_0236abd8 data_ov000_0236abd8;
 
-void *func_02034a40(void *heap, u32 size, s32 align);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -48,7 +48,7 @@ void DC_StoreRange(void *p, u32 size);
 static inline void *UnkAlloc_0233a27c(u32 size, s32 align) {
     u8 *p;
     size = (size + 0x43) & ~0x1f;
-    p = func_02034a40(data_0208fe80, size, align);
+    p = Heap_Alloc(gMainHeap, size, align);
     if (func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);

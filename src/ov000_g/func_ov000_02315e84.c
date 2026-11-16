@@ -48,10 +48,10 @@ typedef struct {
     s16 unkE2;
 } UnkStruct_02315e84;
 
-extern UnkStruct_02315e84_B *data_02072c78[];
+extern UnkStruct_02315e84_B *gDisplayTable[];
 
-s16 func_02068bd8(s16 v, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_02069818(void *w, s32 a);
+s16 ObjShift_SetFromRef(s16 v, s32 a, s32 b, s32 c, s32 d, s32 e);
+void StageObj_SetAnimation(void *w, s32 a);
 void func_ov000_0235020c(void);
 
 void func_ov000_02315e84(UnkStruct_02315e84 *w) {
@@ -61,15 +61,15 @@ void func_ov000_02315e84(UnkStruct_02315e84 *w) {
 
     switch (w->unk8) {
     case 0:
-        w->unk44 = func_02068bd8(w->unk44, 0x100, 8, 2, 0, 8);
-        w->unk46 = func_02068bd8(w->unk46, 0x100, 0x180, 4, 0, 8);
+        w->unk44 = ObjShift_SetFromRef(w->unk44, 0x100, 8, 2, 0, 8);
+        w->unk46 = ObjShift_SetFromRef(w->unk46, 0x100, 0x180, 4, 0, 8);
         w->unk5C &= ~0x20;
         if (w->unk46 == 0x100 && w->unk44 == 0x100)
             w->unk8 = 1;
         break;
     case 2:
-        w->unk44 = func_02068bd8(w->unk44, 8, 0x100, 2, 0, 8);
-        w->unk46 = func_02068bd8(w->unk46, 0x180, 0x100, 4, 0, 8);
+        w->unk44 = ObjShift_SetFromRef(w->unk44, 8, 0x100, 2, 0, 8);
+        w->unk46 = ObjShift_SetFromRef(w->unk46, 0x180, 0x100, 4, 0, 8);
         if (w->unk46 == 0x180 && w->unk44 == 8) {
             w->unk5C |= 0x20;
             w->unk54 |= 4;
@@ -82,14 +82,14 @@ void func_ov000_02315e84(UnkStruct_02315e84 *w) {
         return;
     if ((p->unk32C & 0x80) && (p->unk58 & 0x2000) && w->unk8 == 1) {
         if (w->unk9C == 0) {
-            func_02069818(w, 1);
+            StageObj_SetAnimation(w, 1);
             w->unk5C |= 4;
         }
         w->unkC = 0;
         return;
     }
     if (w->unk9C != 0) {
-        func_02069818(w, 0);
+        StageObj_SetAnimation(w, 0);
         w->unk5C |= 4;
     }
     if (w->unk8 == 0)
@@ -97,7 +97,7 @@ void func_ov000_02315e84(UnkStruct_02315e84 *w) {
     if (p->unk68 == func_ov000_0235020c) {
         if (w->unkC == 0) {
             for (i = 0; i < 2; i++) {
-                s = &data_02072c78[i]->unk10;
+                s = &gDisplayTable[i]->unk10;
                 s->unk1 = 0;
                 s->unk0 = 0xff;
                 if (w->unk5C & 2) {

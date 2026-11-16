@@ -37,16 +37,16 @@ typedef struct UnkStruct_022c736c_4 {
     u32 unk20C;
 } UnkStruct_022c736c_4;
 
-extern UnkStruct_022c736c_2 *data_022b4574;
+extern UnkStruct_022c736c_2 *gTaskCurrent;
 extern UnkStruct_022c736c_4 *data_ov000_02369acc;
 
-void func_020316f4(UnkStruct_022c736c_3 *p);
-void func_020315e0(UnkStruct_022c736c_3 *p);
+void Model_Animate(UnkStruct_022c736c_3 *p);
+void Model_Draw(UnkStruct_022c736c_3 *p);
 void func_02025268(s32 a, void *p, s32 n);
 void func_02025a94(void *p, s32 a);
 
 void func_ov000_022c736c(void) {
-    UnkStruct_022c736c *o = data_022b4574->unk10;
+    UnkStruct_022c736c *o = gTaskCurrent->unk10;
     UnkStruct_022c736c_3 *p = &o->unk30C;
     if (o->unk5C & 0x20)
         return;
@@ -56,8 +56,8 @@ void func_ov000_022c736c(void) {
         p->unk48 = o->unk10 << 4;
         p->unk4C = -(o->unk14 << 4);
         p->unk50 = o->unk18 << 4;
-        func_020316f4(p);
-        func_020315e0(p);
+        Model_Animate(p);
+        Model_Draw(p);
         return;
     }
     p->unkA = 4;
@@ -66,8 +66,8 @@ void func_ov000_022c736c(void) {
     p->unk48 = 0;
     p->unk4C = 0;
     p->unk50 = 0;
-    func_020316f4(p);
-    func_020315e0(p);
+    Model_Animate(p);
+    Model_Draw(p);
     {
         u32 v = 2;
         func_02025268(0x10, &v, 1);

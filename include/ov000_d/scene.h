@@ -50,8 +50,8 @@ typedef struct {
     u16 y;
 } UnkStruct_SceneBgOfs;
 
-extern UnkStruct_SceneTask *data_022b4574;
-extern UnkStruct_SceneBgOfs data_02087d04[4];
+extern UnkStruct_SceneTask *gTaskCurrent;
+extern UnkStruct_SceneBgOfs gDisplaySub[4];
 
 void func_ov000_02356e2c(UnkStruct_Mdl *m);
 void func_ov000_02356d88(UnkStruct_Mdl *m);
@@ -84,7 +84,7 @@ void func_ov000_02357d20(UnkStruct_Scene *w);
 void func_ov000_02357c8c(UnkStruct_Scene *w);
 void func_ov000_02357aac(UnkStruct_Scene *w);
 void func_ov000_02357ae8(UnkStruct_Scene *w);
-void func_02037038(s32 a, s32 b);
+void Task_DestroyRange(s32 a, s32 b);
 void func_ov000_02356694(s32 x, s32 y, s32 a, s32 b);
 void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov000_02357b9c(UnkStruct_Scene *w);
@@ -102,7 +102,7 @@ void func_ov000_02358180(UnkStruct_Scene *w);
 void func_02040ec0(UnkStruct_ScenePos *p, s32 n);
 void func_020520e0(s32 a);
 void func_020520ac(s32 a);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_ov000_02356810(UnkStruct_Scene *w);
 void func_ov000_023582b0(UnkStruct_Scene *w);
 void func_ov000_02358278(UnkStruct_Scene *w);

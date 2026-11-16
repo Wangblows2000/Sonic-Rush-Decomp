@@ -7,20 +7,20 @@ typedef struct {
     u8 *unkcc;
 } UnkWork_020612c0;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02039bb0(s32 a, void *b);
+void Heap_Free(void *heap, void *p);
+void ObjVram_Free(s32 a, void *b);
 
 #pragma thumb on
 void func_020612c0(UnkWork_020612c0 *w) {
     u8 *p;
 
     if (w->unkb8 != NULL)
-        func_02039bb0(0, w->unkb8);
+        ObjVram_Free(0, w->unkb8);
     p = w->unkcc;
     if (p != NULL) {
         if ((u8 *)func_02006abc(0) != p) {
@@ -33,7 +33,7 @@ void func_020612c0(UnkWork_020612c0 *w) {
                 DC_StoreRange(p, size);
             }
         }
-        func_020349b8(data_0208fe80, p);
+        Heap_Free(gMainHeap, p);
     }
 }
 #pragma thumb reset

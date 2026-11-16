@@ -48,13 +48,13 @@ struct UnkStruct_022d71a4 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022d7168(UnkStruct_022d71a4 *s);
 
 void func_ov000_022d71a4(UnkStruct_022d71a4 *s) {
-    func_02031a68(&s->unk2C4, 0, s->unk434, 0xd, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0xd, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
     func_020366f4(0, 0, 0xd1);

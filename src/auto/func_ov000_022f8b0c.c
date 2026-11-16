@@ -19,10 +19,10 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_022b4574[];
+extern unsigned char gTaskCurrent[];
 extern unsigned char data_ov000_02369b84[];
 int func_ov000_022f8df8();
-int func_0206a0ac();
+int StageObj_Draw3DEx();
 
 void func_ov000_022f8b0c(void)
 
@@ -32,9 +32,9 @@ void func_ov000_022f8b0c(void)
   undefined4 local_14;
   undefined4 local_10 [2];
   
-  iVar1 = *(int *)(*((int *)data_022b4574) + 0x10);
+  iVar1 = *(int *)(*((int *)gTaskCurrent) + 0x10);
   func_ov000_022f8df8(*(undefined4 *)(*((int *)data_ov000_02369b84) + 0x218),&local_14,local_10,local_18);
-  func_0206a0ac(local_14,local_10[0],*(undefined4 *)(iVar1 + 0x18),local_18[0],iVar1,
+  StageObj_Draw3DEx(local_14,local_10[0],*(undefined4 *)(iVar1 + 0x18),local_18[0],iVar1,
                *(undefined4 *)(iVar1 + 0x124));
   return;
 }

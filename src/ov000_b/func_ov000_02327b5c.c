@@ -13,7 +13,7 @@ typedef struct {
     UnkStruct_02327b5c_Blk blk;
 } UnkStruct_02327b5c;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02367c2c[];
 
 void func_ov000_02327b3c(void);
@@ -23,13 +23,13 @@ UnkStruct_02327b5c *func_ov000_02327b5c(s32 x, s32 y, s32 z, s16 a, s16 b, s16 c
     UnkStruct_02327b5c *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_02327b5c));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02327b5c));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02327b5c));
-    func_02069a34(w, (UnkStruct_Blk *)&w->blk, data_ov000_02367c2c, 0, 0, 0, NULL, data_022c4488);
+    StageObj_LoadModelSimple(w, (UnkStruct_Blk *)&w->blk, data_ov000_02367c2c, 0, 0, 0, NULL, gZoneActArchive);
     w->base.unkC = d;
     w->base.unk10 = x;
     w->base.unk14 = y;

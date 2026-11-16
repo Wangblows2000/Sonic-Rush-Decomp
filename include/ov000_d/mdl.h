@@ -13,7 +13,7 @@ typedef struct {
     s32 m[9];
 } UnkMtx33_Mdl;
 
-/* render object (passed to func_02031a68 / func_020315e0) */
+/* render object (passed to Model_SetAnimation / Model_Draw) */
 typedef struct {
     u8 pad0[0x18];
     UnkVec_Mdl scale;
@@ -71,8 +71,8 @@ void MTX_RotY33_(UnkMtx33_Mdl *m, s32 s, s32 c);
 void func_02000e60(UnkMtx33_Mdl *m, s32 s, s32 c);
 void func_02000e98(UnkMtx33_Mdl *m, s32 s, s32 c);
 void func_02000f34(UnkMtx33_Mdl *a, UnkMtx33_Mdl *b, UnkMtx33_Mdl *out);
-void func_02031a68(UnkStruct_MdlRender *r, s32 idx, void *anm, s32 frame, void *e);
-void func_020315e0(UnkStruct_MdlRender *r);
+void Model_SetAnimation(UnkStruct_MdlRender *r, s32 idx, void *anm, s32 frame, void *e);
+void Model_Draw(UnkStruct_MdlRender *r);
 void func_02025268(s32 cmd, void *data, s32 n);
 
 #endif

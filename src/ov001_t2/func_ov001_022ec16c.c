@@ -7,10 +7,10 @@ typedef struct {
     void *files[14];
 } UnkStruct_022ec16c;
 
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 extern const char **data_ov001_0231d0d4[];
 
-void *func_02033fbc(const char *path, void *dst);
+void *File_Load(const char *path, void *dst);
 
 #pragma thumb on
 void func_ov001_022ec16c(UnkStruct_022ec16c *p) {
@@ -18,14 +18,14 @@ void func_ov001_022ec16c(UnkStruct_022ec16c *p) {
     const char **tbl;
     s32 i;
 
-    switch (data_02072cb8) {
+    switch (gGameLanguage) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        idx = data_02072cb8;
+        idx = gGameLanguage;
         break;
     default:
         idx = 1;
@@ -36,7 +36,7 @@ void func_ov001_022ec16c(UnkStruct_022ec16c *p) {
         if (((p->mode == 0 || p->mode == 2) && i == 9) || ((p->mode == 1 || p->mode == 3) && i == 8)) {
             continue;
         }
-        p->files[i] = func_02033fbc(tbl[i], NULL);
+        p->files[i] = File_Load(tbl[i], NULL);
     }
 }
 #pragma thumb reset

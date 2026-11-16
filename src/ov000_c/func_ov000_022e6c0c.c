@@ -62,7 +62,7 @@ typedef struct {
 extern UnkStruct_022e6c0c *data_ov000_02369b4c;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern void *data_ov000_02369b50[];
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern UnkStruct_022c4560 data_022c4560;
 extern u8 data_ov000_02365968[];
 extern s16 data_ov000_02363864[4][4];
@@ -83,8 +83,8 @@ void *func_02021264(void *f, s32 i);
 void func_020257f8(void *p);
 void *func_0202128c(void *a);
 void func_020212e0(void *f);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
 u8 *func_02025ecc(void *p);
 void func_02025b6c(void *p, s32 a);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
@@ -103,7 +103,7 @@ UnkStruct_022e6c0c *func_ov000_022e6c0c(UnkStruct_ObjParam *p, s32 b, s32 c) {
 
     if (p->unk0 == 0xff && p->unk1 == 0xff)
         return NULL;
-    w = func_020372d0(func_0206c3d0, func_ov000_022e6410, 0, 0x500, 2, sizeof(UnkStruct_022e6c0c))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022e6410, 0, 0x500, 2, sizeof(UnkStruct_022e6c0c))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022e6c0c));
     data_ov000_02369b4c = w;
@@ -120,7 +120,7 @@ UnkStruct_022e6c0c *func_ov000_022e6c0c(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk5C |= 0x20;
     w->base.unk54 |= 0x12;
     w->base.unk58 |= 0xa300;
-    func_02021310(ctx, data_ov000_02365968, data_022c4488);
+    func_02021310(ctx, data_ov000_02365968, gZoneActArchive);
     w->unkD08 = func_02021264(ctx, 8);
     for (i = 0; i < 4; i++) {
         if (data_ov000_02363864[i][0] != -1) {
@@ -141,8 +141,8 @@ UnkStruct_022e6c0c *func_ov000_022e6c0c(UnkStruct_ObjParam *p, s32 b, s32 c) {
     func_020212e0(ctx);
     sub = w->unk210;
     for (i = 0; i < 9; i++) {
-        func_02031c1c(sub, 0);
-        func_02031bd0(sub, data_ov000_02369b50[i], 0);
+        Model_Init(sub, 0);
+        Model_SetResource(sub, data_ov000_02369b50[i], 0);
         sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
         sub++;
     }

@@ -14,8 +14,8 @@ extern UnkStruct_022dec18 *data_ov000_02369b2c;
 
 void func_ov000_022dd068(void);
 void func_ov000_022dce70(void);
-void func_020316f4(void *cam);
-void func_020315e0(void *cam);
+void Model_Animate(void *cam);
+void Model_Draw(void *cam);
 
 void func_ov000_022dec18(void) {
     UnkStruct_022dec18 *o = data_ov000_02369b2c;
@@ -28,6 +28,6 @@ void func_ov000_022dec18(void) {
     if (o->unkBD0 != 0)
         func_ov000_022dce70();
     cam = o->unk228;
-    func_020316f4(cam);
-    func_020315e0(cam);
+    Model_Animate(cam);
+    Model_Draw(cam);
 }

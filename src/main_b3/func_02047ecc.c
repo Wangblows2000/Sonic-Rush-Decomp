@@ -21,7 +21,7 @@ typedef struct UnkWork_02047ecc {
 } UnkWork_02047ecc;
 
 typedef struct { u8 pad0[0x10]; UnkWork_02047ecc *work; } UnkTask_02047ecc;
-extern UnkTask_02047ecc *data_022b4574;
+extern UnkTask_02047ecc *gTaskCurrent;
 typedef struct { u8 pad0[0x10]; s32 unk10; } UnkStruct_022c4560;
 extern UnkStruct_022c4560 data_022c4560;
 
@@ -35,19 +35,19 @@ void func_020474f8(UnkWork_02047ecc *w);
 void func_0204749c(UnkWork_02047ecc *w);
 void func_02045d98(UnkWork_02047ecc *w);
 void func_02047458(UnkWork_02047ecc *w);
-void func_020371c8(UnkTask_02047ecc *t);
+void Task_Destroy(UnkTask_02047ecc *t);
 void func_0201b348(void);
 void func_02048098(void);
 
 #pragma thumb on
 void func_02047ecc(void) {
-    UnkWork_02047ecc *w = data_022b4574->work;
+    UnkWork_02047ecc *w = gTaskCurrent->work;
     u32 flags;
 
     w->state(w);
     flags = w->flags;
     if (!(flags & 0x80000000)) {
-        if ((data_022503e0.trg & 1) && w->state != func_02045d10) {
+        if ((gPad.trg & 1) && w->state != func_02045d10) {
             if (!(flags & 0x400000) && !(flags & 0x100000))
                 func_02047e68(w);
             else if (!(flags & 0x800000) && !(flags & 0x200000))
@@ -81,7 +81,7 @@ void func_02047ecc(void) {
             func_02045d98(w);
         func_02047458(w);
     } else {
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         func_0201b348();
         func_02048098();
     }

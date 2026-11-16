@@ -22,7 +22,7 @@ typedef struct {
     UnkWork_022dbe3c *work;
 } UnkTask_022dbe3c;
 
-extern UnkTask_022dbe3c *data_022b4574;
+extern UnkTask_022dbe3c *gTaskCurrent;
 
 void func_ov001_022d9e50(UnkWork_022dbe3c *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022dbe3c *w, s32 x, s32 y);
@@ -49,7 +49,7 @@ void func_ov001_022dbcd8(void);
 void func_ov001_022dbe3c(void) {
     UnkWork_022dbe3c *w;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_ov001_022d9e50(w, 0x38, 0x98);
     func_ov001_022d9e2c(w, 0x10, 0x48);
     func_ov001_022d9ab4(w, 0xb0, 8, 0, 0);
@@ -84,7 +84,7 @@ void func_ov001_022dbe3c(void) {
         func_02040ec0(&w->anims[1], 0x1f);
         func_ov001_022d6dc0();
         func_ov001_022d96b8();
-        data_022b4574->func = func_ov001_022dbcd8;
+        gTaskCurrent->func = func_ov001_022dbcd8;
     }
 }
 #pragma thumb reset

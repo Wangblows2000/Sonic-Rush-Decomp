@@ -55,8 +55,8 @@ extern UnkStruct_022da24c_m data_ov000_0236a524;
 extern UnkStruct_022da24c_c data_ov000_0236a48c;
 
 void func_ov000_022da4b4(void);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
 void func_ov000_022da6b4(void);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
@@ -80,8 +80,8 @@ void func_ov000_022da24c(UnkStruct_022da24c *s) {
     data_ov000_0236ac60->unk5C |= 0x2040;
     data_ov000_0236a444.unk0 |= 6;
     data_ov000_0236a444.unk0 |= 1;
-    func_02031c1c(m, 0);
-    func_02031bd0(m, s->unk238, 0);
+    Model_Init(m, 0);
+    Model_SetResource(m, s->unk238, 0);
     m->unk20 = 0x1355b50;
     m->unk1C = m->unk20;
     m->unk18 = m->unk1C;

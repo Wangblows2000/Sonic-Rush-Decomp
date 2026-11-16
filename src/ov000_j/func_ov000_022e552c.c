@@ -46,9 +46,9 @@ void func_02000f34(void *a, void *b, void *out);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 void func_020010d0(void *a, void *b);
 void func_02000eb0(VecFx32_022e552c *a, void *m, VecFx32_022e552c *out);
-void func_0206e2d8(void *b, s16 x1, s16 y1, s16 x2, s16 y2, s16 z1, s16 z2);
+void ObjRect_SetBox3D(void *b, s16 x1, s16 y1, s16 x2, s16 y2, s16 z1, s16 z2);
 u8 *func_ov000_022dfd80(s32 a, s32 x, s32 y, s32 z);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e1b48(s32 a);
 
 void func_ov000_022e552c(UnkStruct_022e552c *p) {
@@ -103,8 +103,8 @@ void func_ov000_022e552c(UnkStruct_022e552c *p) {
         func_02000eb0(&v2, mtx, &v2);
         v2.x >>= 12;
         v2.y >>= 12;
-        func_0206e2d8(e + 0x134, v1.x - 13, v1.y - 13, v1.x + 13, v1.y + 13, -32000, 32000);
-        func_0206e2d8(e + 0x160, v2.x - 13, v2.y - 13, v2.x + 13, v2.y + 13, -32000, 32000);
+        ObjRect_SetBox3D(e + 0x134, v1.x - 13, v1.y - 13, v1.x + 13, v1.y + 13, -32000, 32000);
+        ObjRect_SetBox3D(e + 0x160, v2.x - 13, v2.y - 13, v2.x + 13, v2.y + 13, -32000, 32000);
         e = func_ov000_022dfd80(2, ((UnkStruct_022e552c_obj *)e)->unk10, ((UnkStruct_022e552c_obj *)e)->unk14, ((UnkStruct_022e552c_obj *)e)->unk18);
         if (p->unkD5E != 0) {
             MTX_RotY33_(e + 0x158, data_02070470[0], data_02070470[1]);
@@ -115,7 +115,7 @@ void func_ov000_022e552c(UnkStruct_022e552c *p) {
         p->unkF98++;
         if (p->unkF98 >= 10)
             p->unkF98 = 0;
-        func_02036754(0, 0, 0x83);
+        Sound_PlaySeqArc(0, 0, 0x83);
     }
     p->unk1118++;
     if (p->unk1118 < 0x1c2)

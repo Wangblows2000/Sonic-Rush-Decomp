@@ -15,8 +15,8 @@ typedef struct {
     UnkSpr_022e19d0 sprC[8];
 } UnkStruct_022e19d0;
 
-void func_0203438c(void *bg);
-void func_02033550(UnkSpr_022e19d0 *s, u16 anim);
+void Background_Draw(void *bg);
+void AnimatorSprite_SetAnimation(UnkSpr_022e19d0 *s, u16 anim);
 
 #pragma thumb on
 void func_ov001_022e19d0(UnkStruct_022e19d0 *p) {
@@ -25,23 +25,23 @@ void func_ov001_022e19d0(UnkStruct_022e19d0 *p) {
     UnkSpr_022e19d0 *t;
     s32 j;
 
-    func_0203438c(p->bg);
+    Background_Draw(p->bg);
     i = 0;
     s = p->sprA;
     for (; i < 21; i++) {
-        func_02033550(s, s->anim);
+        AnimatorSprite_SetAnimation(s, s->anim);
         s++;
     }
     j = 0;
     t = p->sprB;
     for (; j < 3; j++) {
-        func_02033550(t, t->anim);
+        AnimatorSprite_SetAnimation(t, t->anim);
         t++;
     }
     j = 0;
     t = p->sprC;
     for (; j < 8; j++) {
-        func_02033550(t, t->anim);
+        AnimatorSprite_SetAnimation(t, t->anim);
         t++;
     }
 }

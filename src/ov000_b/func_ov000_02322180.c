@@ -15,17 +15,17 @@ void func_ov000_02322180(s32 x, s32 y, s16 vx, s16 vy, u16 n) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_02367384, 0, data_ov000_0236a700, data_ov000_02369ba0);
-    func_0206a054(w, 0, 5);
-    func_02069818(w, (u16)(n + 2));
-    func_02069eb0(w, 1, &data_ov000_0236a790[n + 0xd]);
-    func_02069918(w, 9);
+    StageObj_Load2dBAC(w, data_ov000_02367384, 0, data_ov000_0236a700, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 0, 5);
+    StageObj_SetAnimation(w, (u16)(n + 2));
+    StageObj_SetSharedSpriteVram(w, 1, &data_ov000_0236a790[n + 0xd]);
+    StageObj_SetOAMOrder(w, 9);
     if (Rand() & 1)
         w->unk5C |= 1;
     if (Rand() & 1)

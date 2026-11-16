@@ -30,9 +30,9 @@ typedef struct {
     UnkWork_022eba70 *work;
 } UnkTask_022eba70;
 
-extern UnkTask_022eba70 *data_022b4574;
+extern UnkTask_022eba70 *gTaskCurrent;
 
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_02040ec0(UnkAnim_022eba70 *a, s32 id);
 void func_ov001_022ea734(UnkWork_022eba70 *w);
 void func_ov001_022ea6e4(UnkWork_022eba70 *w);
@@ -55,7 +55,7 @@ void func_ov001_022eba70(UnkTask_022eba70 *t) {
     s32 i;
 
     if (t == NULL) {
-        t = data_022b4574;
+        t = gTaskCurrent;
     }
     w = t->work;
     w->unk0 = 0;
@@ -74,7 +74,7 @@ void func_ov001_022eba70(UnkTask_022eba70 *t) {
         t->func = func_ov001_022eb294;
         return;
     }
-    func_02052104(4);
+    SysSound_PlaySE(4);
     func_02040ec0(&w->anims[0], 0);
     func_02040ec0(&w->anims[1], 1);
     func_02040ec0(&w->anims[2], 2);

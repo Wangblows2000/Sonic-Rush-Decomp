@@ -3,11 +3,11 @@
 
 #pragma thumb on
 
-s32 func_02033550();
+s32 AnimatorSprite_SetAnimation();
 
 void func_ov000_02357ae8(s32 p0) {
     if (*(u32 *)((u8 *)p0 + 0xb60) != 0) {
-        func_02033550(((u8 *)p0 + 0xa8c), 0);
+        AnimatorSprite_SetAnimation(((u8 *)p0 + 0xa8c), 0);
         *(u32 *)((u8 *)p0 + 0xb60) = 0;
     }
     *(u32 *)((u8 *)p0 + 0xab8) = (*(u32 *)((u8 *)p0 + 0xab8) & ~4);

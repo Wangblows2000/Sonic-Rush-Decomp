@@ -12,7 +12,7 @@ typedef struct {
     s32 unkE4;
 } UnkStruct_0236aad8;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 
@@ -20,8 +20,8 @@ void func_ov000_02329d38(void *a, s16 x, s16 y, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_02329f50(void *a, s16 x, s16 y, s32 b, s32 c);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0232a11c(void *a, s32 x, s32 y, s32 c) {

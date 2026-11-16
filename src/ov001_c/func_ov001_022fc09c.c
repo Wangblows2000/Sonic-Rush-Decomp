@@ -22,7 +22,7 @@ void func_ov001_022fbfcc(void);
 void func_ov001_022fb974(void);
 void func_ov001_022fb918(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -70,5 +70,5 @@ void func_ov001_022fc09c(void *parent, s32 x, s32 y, s32 z, u16 ang) {
     *(void **)(t + 0xec) = func_ov001_022fb918;
     *(u32 *)(t + 0xf0) |= 0x2000;
     *(s32 *)(t + 0x1d8) = 0x78;
-    func_02036754(0, 0, 0xaa);
+    Sound_PlaySeqArc(0, 0, 0xaa);
 }

@@ -22,13 +22,13 @@ typedef struct UnkStruct_02306424_g {
 } UnkStruct_02306424_g;
 
 extern UnkStruct_02306424 *data_ov001_0231f5a8;
-extern s16 data_02087d04[];
+extern s16 gDisplaySub[];
 
 UnkStruct_02306424_g *func_ov001_022ffce8(void);
-void func_0203438c(void *a);
+void Background_Draw(void *a);
 void MIi_CpuClearFast(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_023062f0(void);
 void func_ov001_02306244(void);
 
@@ -36,7 +36,7 @@ void func_ov001_02306424(void) {
     s32 k = func_ov001_022ffce8()->unk3C;
 
     data_ov001_0231f5a8->unk0 = 0;
-    func_0203438c(data_ov001_0231f5a8->bg[k]);
+    Background_Draw(data_ov001_0231f5a8->bg[k]);
     {
         vu32 f = -1;
         MIi_CpuClearFast(f, (void *)0x6204000, 0x20);
@@ -46,11 +46,11 @@ void func_ov001_02306424(void) {
         MIi_CpuClearFast(f, (void *)0x6200000, 0x600);
     }
     *(vu32 *)0x4001010 = 0;
-    data_02087d04[0] = 0;
-    data_02087d04[1] = 0;
+    gDisplaySub[0] = 0;
+    gDisplaySub[1] = 0;
     *(vu32 *)0x4001014 = 0x80;
-    data_02087d04[3] = 0;
-    data_02087d04[2] = 0x80;
+    gDisplaySub[3] = 0;
+    gDisplaySub[2] = 0x80;
     {
         vu16 f = 0x80;
         MIi_CpuClear16(f, data_ov001_0231f5a8->blk, 0x300);
@@ -71,7 +71,7 @@ void func_ov001_02306424(void) {
         vu16 f = 0;
         MIi_CpuClear16(f, (u16 *)((u8 *)data_ov001_0231f5a8->blk[1] + 0xb8), 0x40);
     }
-    data_ov001_0231f5a8->task4 = func_020372d0(func_ov001_023062f0, 0, 0, 0x3000, 2, 0);
+    data_ov001_0231f5a8->task4 = Task_Create(func_ov001_023062f0, 0, 0, 0x3000, 2, 0);
     func_ov001_02306244();
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1300;
 }

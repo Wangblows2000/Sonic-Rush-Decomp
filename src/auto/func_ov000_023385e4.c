@@ -2,13 +2,13 @@
 #include <nitro/types.h>
 
 extern u8 data_ov000_0236aaac[];
-s32 func_020371c8();
+s32 Task_Destroy();
 
 void func_ov000_023385e4(void) {
     s32 t0 = *(u32 *)data_ov000_0236aaac;
     if (t0 == 0) {
         return;
     }
-    func_020371c8(t0);
+    Task_Destroy(t0);
     *(u32 *)data_ov000_0236aaac = 0;
 }

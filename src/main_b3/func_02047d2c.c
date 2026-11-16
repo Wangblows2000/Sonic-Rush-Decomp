@@ -17,22 +17,22 @@ typedef struct {
 typedef struct { u8 pad0[0x10]; UnkWork_02047d2c *work; } UnkTask_02047d2c;
 typedef struct { u8 pad0[0x10]; s32 unk10; u8 pad14[8]; u8 unk1C; u8 unk1D; } UnkStruct_022c4560;
 extern UnkStruct_022c4560 data_022c4560;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void func_02039bb0(s32 a, void *b);
+void ObjVram_Free(s32 a, void *b);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02031768(void *p);
+void Heap_Free(void *heap, void *p);
+void Model_Release(void *p);
 void func_0201bf1c(void *p);
 void func_02053bec(s32 a);
-void func_02053c24(void);
+void NaviMsg_Destroy(void);
 void func_02044cf0(void);
 void func_0205a3f0(void);
 void func_0205a4ec(s32 a);
 void func_0201b348(void);
-void func_02036894(void);
+void Sound_ResetHeap(void);
 
 #pragma thumb on
 static inline void Free_02047d2c(u8 *blk) {
@@ -46,7 +46,7 @@ static inline void Free_02047d2c(u8 *blk) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }
 
 void func_02047d2c(UnkTask_02047d2c *t) {
@@ -56,23 +56,23 @@ void func_02047d2c(UnkTask_02047d2c *t) {
     if (data_022c4560.unk10 == 2) {
         for (i = 0; i < 0xf; i++) {
             if (w->spr2[i].unk34 != NULL)
-                func_02039bb0(0, w->spr2[i].unk34);
+                ObjVram_Free(0, w->spr2[i].unk34);
         }
         Free_02047d2c(w->res398);
     }
     for (i = 0; i < 0x33; i++)
-        func_02039bb0(0, w->spr[i].unk34);
-    func_02031768(w->obj14);
+        ObjVram_Free(0, w->spr[i].unk34);
+    Model_Release(w->obj14);
     func_0201bf1c(w->unk1634);
     if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2) {
         func_02053bec(1);
-        func_02053c24();
+        NaviMsg_Destroy();
         func_02044cf0();
     }
     if (data_022c4560.unk10 != 2)
         func_0205a3f0();
     func_0205a4ec(0);
     func_0201b348();
-    func_02036894();
+    Sound_ResetHeap();
 }
 #pragma thumb reset

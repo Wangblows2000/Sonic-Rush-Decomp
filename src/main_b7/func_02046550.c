@@ -25,7 +25,7 @@ typedef struct {
     u8 unk1634[4];
 } UnkObj_02046550;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 void func_02046490(void *);
 
 #pragma thumb on
@@ -34,8 +34,8 @@ void func_02046550(UnkObj_02046550 *o, UnkSub_02046550 *s) {
     s->timer++;
     if (s->timer & 1) {
         for (i = 0; i < 6; i++) {
-            data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-            s->digits[i] = (u16)(data_0208fe70 >> 16) % 10;
+            gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+            s->digits[i] = (u16)(gRandSeed >> 16) % 10;
         }
     }
     if (s->timer >= 0x2d) {

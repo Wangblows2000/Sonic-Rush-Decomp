@@ -23,19 +23,19 @@ void func_ov000_023497f4(UnkStruct_Player *w) {
         func_ov000_0234307c(w, 0x280 >> w->unk3D0);
         if (w->unk324 != 1) {
             if (Player_Rand() & 1) {
-                func_0204b7ec(w->unk384, 0, 0x1f);
+                Sound_PlaySeqArcEx(w->unk384, 0, 0x1f);
             } else {
-                func_0204b7ec(w->unk384, 0, 0x20);
+                Sound_PlaySeqArcEx(w->unk384, 0, 0x20);
             }
         } else {
             if (Player_Rand() & 1) {
-                func_0204b7ec(w->unk384, 0, 0x28);
+                Sound_PlaySeqArcEx(w->unk384, 0, 0x28);
             } else {
-                func_0204b7ec(w->unk384, 0, 0x29);
+                Sound_PlaySeqArcEx(w->unk384, 0, 0x29);
             }
         }
         func_0201c070(w->unk390, 0);
-        func_0204b7ec(w->unk390, 0, 0x31);
+        Sound_PlaySeqArcEx(w->unk390, 0, 0x31);
         func_0201be98(w->unk390, 0x7f >> w->unk3D0);
         func_ov000_02345830(w, 200);
     } else if (w->unk8 & 2) {
@@ -45,28 +45,28 @@ void func_ov000_023497f4(UnkStruct_Player *w) {
             func_ov000_0234307c(w, 400 >> w->unk3D0);
             if (w->unk324 != 1) {
                 if (Player_Rand() & 1) {
-                    func_0204b7ec(w->unk384, 0, 0x1e);
+                    Sound_PlaySeqArcEx(w->unk384, 0, 0x1e);
                 } else {
-                    func_0204b7ec(w->unk384, 0, 0x25);
+                    Sound_PlaySeqArcEx(w->unk384, 0, 0x25);
                 }
             } else {
                 if (Player_Rand() & 1) {
-                    func_0204b7ec(w->unk384, 0, 0x27);
+                    Sound_PlaySeqArcEx(w->unk384, 0, 0x27);
                 } else {
-                    func_0204b7ec(w->unk384, 0, 0x2e);
+                    Sound_PlaySeqArcEx(w->unk384, 0, 0x2e);
                 }
             }
-            func_0204b7ec(w->unk384, 0, 0x2f);
+            Sound_PlaySeqArcEx(w->unk384, 0, 0x2f);
             func_0201be98(w->unk384, 0x7f >> w->unk3D0);
         } else {
             func_ov000_0234c4a4(w, 0x39);
             func_ov000_0234307c(w, 400 >> w->unk3D0);
             if (w->unk324 != 1) {
-                func_0204b7ec(w->unk384, 0, 0x1d);
+                Sound_PlaySeqArcEx(w->unk384, 0, 0x1d);
             } else {
-                func_0204b7ec(w->unk384, 0, 0x26);
+                Sound_PlaySeqArcEx(w->unk384, 0, 0x26);
             }
-            func_0204b7ec(w->unk384, 0, 0x30);
+            Sound_PlaySeqArcEx(w->unk384, 0, 0x30);
             func_0201be98(w->unk384, 0x7f >> w->unk3D0);
         }
     } else {

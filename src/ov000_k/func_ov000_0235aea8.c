@@ -30,7 +30,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 extern UnkTask_0235aea8 *data_ov000_0236ac80;
-extern UnkStruct_0235aea8_4680 data_022c4680;
+extern UnkStruct_0235aea8_4680 gSaveData;
 
 #define IDX_0235aea8(a) ((s32)((a) & 0xffff) >> 4)
 #define SIN_0235aea8(a) data_0206e470[(u32)(IDX_0235aea8(a) << 1)]
@@ -93,7 +93,7 @@ void func_ov000_0235aea8(UnkStruct_0235aea8 *w) {
         vx = -vx;
         cnt++;
         if (cnt >= n) {
-            if (data_022c4680.unk8 & 1) {
+            if (gSaveData.unk8 & 1) {
                 if (mgr->unk9D5 < 3) {
                     mgr->unk9D5++;
                 }

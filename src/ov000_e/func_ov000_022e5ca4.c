@@ -28,8 +28,8 @@ extern UnkStruct_Flags data_ov000_0236a444;
 extern UnkStruct_0236a524 data_ov000_0236a524;
 extern UnkStruct_02369b50 data_ov000_02369b50;
 
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
 void func_ov000_022e0700(void);
 void func_ov000_022e5a80(void);
 void func_020537b4(s32 a);
@@ -45,8 +45,8 @@ void func_ov000_022e5ca4(UnkStruct_Boss *w) {
     w->unk20C &= ~1;
     *(vu16 *)0x4000304 |= 0x8000;
     data_ov000_0236a444.unk0 |= 1;
-    func_02031c1c(a, 0);
-    func_02031bd0(a, data_ov000_02369b50.unk14, 0);
+    Model_Init(a, 0);
+    Model_SetResource(a, data_ov000_02369b50.unk14, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x1355b50;
     func_ov000_022e0700();
     func_ov000_022e5a80();

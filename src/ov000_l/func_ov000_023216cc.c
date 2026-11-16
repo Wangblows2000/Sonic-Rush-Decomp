@@ -7,7 +7,7 @@ typedef struct {
 
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 
-s16 func_02068db4(s32 v, s32 d);
+s16 ObjSpd_DownSet(s32 v, s32 d);
 void func_ov000_023218d0(UnkStruct_EffObj *w);
 
 void func_ov000_023216cc(UnkStruct_EffObj *w) {
@@ -16,7 +16,7 @@ void func_ov000_023216cc(UnkStruct_EffObj *w) {
     if (w->unkC != 0)
         w->unkC--;
     else
-        w->unk2E = func_02068db4(w->unk2E, 8);
+        w->unk2E = ObjSpd_DownSet(w->unk2E, 8);
     v = w->unk2E;
     if (v < 0)
         v = -v;

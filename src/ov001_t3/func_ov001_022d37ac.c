@@ -18,7 +18,7 @@ typedef struct {
 } UnkDma_022d37ac;
 
 extern UnkDma_022d37ac data_02087cdc;
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
 #pragma thumb on
 void func_ov001_022d37ac(UnkStruct_022d37ac *p) {
@@ -41,6 +41,6 @@ void func_ov001_022d37ac(UnkStruct_022d37ac *p) {
     data_02087cdc.bufB = p->bufB;
     data_02087cdc.unkc = 2;
     data_02087cdc.unk10 = 0;
-    data_02087cb8 |= 0x400;
+    gSystemFlags |= 0x400;
 }
 #pragma thumb reset

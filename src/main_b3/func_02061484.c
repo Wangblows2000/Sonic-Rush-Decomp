@@ -7,14 +7,14 @@ typedef struct {
     u8 *res[2];             /* 0xa0 */
     u16 pal[0x10];          /* 0xa8 */
 } UnkWork_02061484;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
-void func_02039bb0(s32 a, void *b);
+void ObjVram_Free(s32 a, void *b);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 static inline void Free_02061484(u8 *blk) {
@@ -28,7 +28,7 @@ static inline void Free_02061484(u8 *blk) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }
 
 void func_02061484(UnkWork_02061484 *w) {
@@ -38,7 +38,7 @@ void func_02061484(UnkWork_02061484 *w) {
     MIi_CpuCopy16(w->pal, (void *)0x050003e0, sizeof(w->pal));
     for (i = 0; i < 2; i++) {
         if (spr[i].unk34 != NULL)
-            func_02039bb0(0, spr[i].unk34);
+            ObjVram_Free(0, spr[i].unk34);
         if (w->res[i] != NULL)
             Free_02061484(w->res[i]);
     }

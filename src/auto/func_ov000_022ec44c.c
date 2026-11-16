@@ -1,15 +1,15 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_022b4574[];
-s32 func_020316f4();
-s32 func_020315e0();
+extern u8 gTaskCurrent[];
+s32 Model_Animate();
+s32 Model_Draw();
 
 s32 func_ov000_022ec44c(void) {
-    s32 t0 = *(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x5c);
-    s32 t1 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t2 = (*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x20c);
-    if ((*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x5c) & 0x20) != 0) {
+    s32 t0 = *(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x5c);
+    s32 t1 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t2 = (*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x20c);
+    if ((*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x5c) & 0x20) != 0) {
         return t0;
     }
     *(u16 *)((u8 *)t1 + 0x5c) = (t0 & ~8);
@@ -24,8 +24,8 @@ s32 func_ov000_022ec44c(void) {
     *(u32 *)((u8 *)t2 + 0x4c) = -(*(u32 *)((u8 *)t1 + 0x14) << 4);
     s32 t3 = (*(u32 *)((u8 *)t1 + 0x18) << 4);
     *(u32 *)((u8 *)t2 + 0x50) = t3;
-    func_020316f4(t2, t3);
-    func_020315e0(t2);
+    Model_Animate(t2, t3);
+    Model_Draw(t2);
     s32 t4 = (*(u8 *)((u8 *)t2 + 0x10d) & 2);
     if (t4 != 0) {
         *(u16 *)((u8 *)t1 + 0x5c) = (*(u16 *)((u8 *)t1 + 0x5c) | 8);

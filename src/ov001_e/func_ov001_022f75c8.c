@@ -22,12 +22,12 @@ typedef struct UnkStruct_022b4574 {
 } UnkStruct_022b4574;
 
 extern UnkStruct_022f75c8 *data_ov001_0231f084;
-extern UnkStruct_022b4574 *data_022b4574;
+extern UnkStruct_022b4574 *gTaskCurrent;
 
 void func_ov001_022f741c(void);
 void func_ov001_022f7448(void);
-void func_02036754(s32 a, s32 b, s32 c);
-void func_02032480(void *p, s32 x, s32 y, s32 z);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
+void AnimatorSprite_DrawRotScale(void *p, s32 x, s32 y, s32 z);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -40,7 +40,7 @@ void func_ov001_022f75c8(void) {
     s32 t;
 
     if (data_ov001_0231f084->flags & 2) {
-        data_022b4574->func = func_ov001_022f741c;
+        gTaskCurrent->func = func_ov001_022f741c;
         func_ov001_022f741c();
         data_ov001_0231f084->flags &= ~0x10000;
         data_ov001_0231f084->flags |= 0x20000;
@@ -48,9 +48,9 @@ void func_ov001_022f75c8(void) {
     }
     data_ov001_0231f084->t += 0x100;
     if (data_ov001_0231f084->t >= 0x1000) {
-        data_022b4574->func = func_ov001_022f7448;
+        gTaskCurrent->func = func_ov001_022f7448;
         data_ov001_0231f084->unkE9C = 0x10;
-        func_02036754(0, 8, 3);
+        Sound_PlaySeqArc(0, 8, 3);
     }
     g = data_ov001_0231f084;
     i = 5;
@@ -63,6 +63,6 @@ void func_ov001_022f75c8(void) {
         UnkStruct_022f75c8_o *o = &g->objB10;
         o->x = 0x50;
         o->y = 0x8a;
-        func_02032480(o, s, s, 0);
+        AnimatorSprite_DrawRotScale(o, s, s, 0);
     }
 }

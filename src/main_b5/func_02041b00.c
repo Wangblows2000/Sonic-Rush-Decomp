@@ -13,20 +13,20 @@ typedef struct {
 extern UnkMac_02041b00 data_02078b0c;
 extern u8 data_022c4380[];
 
-u32 func_0203e934(void);
-void func_0203e990(void *p, u32 size);
-void func_0203f900(void (*fn)(void), UnkMac_02041b00 *mac, s32 a);
+u32 WH_GetSystemState(void);
+void WH_SetSsid(void *p, u32 size);
+void WH_StartScan(void (*fn)(void), UnkMac_02041b00 *mac, s32 a);
 void func_02042404(void);
 void func_02041a54(void);
 
 void func_02041b00(UnkWork_02041b00 *w) {
     UnkMac_02041b00 mac;
 
-    if (func_0203e934() != 1)
+    if (WH_GetSystemState() != 1)
         return;
     mac = data_02078b0c;
-    func_0203e990(data_022c4380, 0x18);
-    func_0203f900(func_02042404, &mac, 0);
+    WH_SetSsid(data_022c4380, 0x18);
+    WH_StartScan(func_02042404, &mac, 0);
     w->unk1a = 0;
     w->fn = func_02041a54;
 }

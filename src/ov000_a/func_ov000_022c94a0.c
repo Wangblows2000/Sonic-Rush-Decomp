@@ -92,7 +92,7 @@ extern UnkStruct_022c94a0_cam data_ov000_0236a444;
 extern void *data_ov000_0236ac60;
 
 void func_ov000_022ca060(UnkStruct_022c94a0 *s);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022c9478(UnkStruct_022c94a0 *s);
 
@@ -104,7 +104,7 @@ void func_ov000_022c94a0(UnkStruct_022c94a0 *s) {
     func_ov000_022cc00c(s->unk228, s->unk220, 0x13, 0x1000, 0);
     func_ov000_022cc00c(p->unk30C, p->unk304, 6, 0x1000, 0);
     s->unk20E = 0;
-    func_02036754(0, 0, 0x7e);
+    Sound_PlaySeqArc(0, 0, 0x7e);
     func_020366f4(0, 0, 0xd2);
     data_ov000_0236a444.unk84 = p;
     data_ov000_0236a444.unk88 = p;

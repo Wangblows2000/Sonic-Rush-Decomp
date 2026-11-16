@@ -23,28 +23,28 @@ struct UnkState_0204b314 {
     u8 unk4d;
 };
 
-extern UnkSet_0204b314 data_020745a8[][3];
-extern UnkState_0204b314 data_022c4490;
-extern void *data_022c4484;
+extern UnkSet_0204b314 gStageZoneFileListTable[][3];
+extern UnkState_0204b314 gStageLoader;
+extern void *gZoneSoundData;
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 char *func_0202c518(char *dst, const char *src);
-void *func_02033fbc(const char *path, void *mem);
+void *File_Load(const char *path, void *mem);
 
 void func_0204b314(u32 arg, s32 a, s32 b) {
     UnkEntry_0204b314 *e;
-    UnkEntry_0204b314 *entries = data_020745a8[a][b].entries;
+    UnkEntry_0204b314 *entries = gStageZoneFileListTable[a][b].entries;
 
     e = &entries[3];
 
     {
         vu16 z = 0;
-        MIi_CpuClear16(z, &data_022c4490, 0x60);
+        MIi_CpuClear16(z, &gStageLoader, 0x60);
     }
-    data_022c4490.unk48 = arg;
-    data_022c4490.unk4c = a;
-    data_022c4490.unk4d = b;
-    func_0202c518(data_022c4490.path, entries[3].name);
-    e->init(&data_022c4490);
-    data_022c4484 = func_02033fbc(data_022c4490.path, e->getMem(data_022c4490.path));
+    gStageLoader.unk48 = arg;
+    gStageLoader.unk4c = a;
+    gStageLoader.unk4d = b;
+    func_0202c518(gStageLoader.path, entries[3].name);
+    e->init(&gStageLoader);
+    gZoneSoundData = File_Load(gStageLoader.path, e->getMem(gStageLoader.path));
 }

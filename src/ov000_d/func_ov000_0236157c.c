@@ -30,9 +30,9 @@ typedef struct {
     u8 unk3;
 } UnkStruct_0236157c_Sync;
 
-extern UnkStruct_0236157c_Task *data_022b4574;
-extern UnkStruct_0236157c_Pad data_022503e0;
-extern UnkStruct_0236157c_Touch data_022b65b4;
+extern UnkStruct_0236157c_Task *gTaskCurrent;
+extern UnkStruct_0236157c_Pad gPad;
+extern UnkStruct_0236157c_Touch gTouchState;
 
 void func_ov000_023611f8(UnkStruct_0236157c *w);
 void func_ov000_0236119c(UnkStruct_0236157c *w, s32 a, s32 b);
@@ -45,12 +45,12 @@ void func_ov000_02361478(void);
 #pragma thumb on
 
 void func_ov000_0236157c(void) {
-    UnkStruct_0236157c *w = data_022b4574->work;
+    UnkStruct_0236157c *w = gTaskCurrent->work;
 
     func_ov000_023611f8(w);
     func_ov000_0236119c(w, 0x1000, 0);
     w->unk0++;
-    if ((data_022503e0.trg & 1) || (data_022b65b4.flags & 0x40)) {
+    if ((gPad.trg & 1) || (gTouchState.flags & 0x40)) {
         w->unk1C = 1;
         func_020514e4()->unk3 = 1;
     }
@@ -61,7 +61,7 @@ void func_ov000_0236157c(void) {
         w->unk0 = 0;
         func_02051628(0);
         func_ov000_0235f850(0, 0x10, 0x10, 0);
-        data_022b4574->unk8 = func_ov000_02361478;
+        gTaskCurrent->unk8 = func_ov000_02361478;
     }
 }
 

@@ -58,12 +58,12 @@ struct UnkStruct_022d7778 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_ov000_022d7754(UnkStruct_022d7778 *s);
 
 void func_ov000_022d7778(UnkStruct_022d7778 *s) {
-    func_02031a68(&s->unk2C4, 0, s->unk434, 0x10, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0x10, 0);
     s->unk2C4.unk10C |= 4;
     s->unk2C4.unk114 = 0x1000;
     s->unk258 = 0;

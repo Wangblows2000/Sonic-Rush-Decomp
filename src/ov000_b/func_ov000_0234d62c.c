@@ -135,9 +135,9 @@ typedef struct UnkStruct_0234d62c {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_022c4590 data_022c4590;
-extern UnkStruct_022c4680 data_022c4680;
-extern void *data_0208fe7c;
-extern void *data_0208fe80;
+extern UnkStruct_022c4680 gSaveData;
+extern void *gITCMHeap;
+extern void *gMainHeap;
 extern u8 data_ov000_0236ac20;
 extern s32 data_ov000_0236ac24;
 extern void *data_ov000_0236ac28;
@@ -167,16 +167,16 @@ void func_ov000_02330aec(UnkStruct_0234d62c *w);
 void func_ov000_0232fde0(UnkStruct_0234d62c *w);
 void func_ov000_0233e5c8(s32 a, s32 b);
 BOOL func_ov000_02345758(s32 x, s32 y);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_02069c74(void *w, void *sub, void *tbl, s32 a, void *b, void *c);
-void func_02069b34(void *w, void *sub, void *tbl, void *a, void *b);
+void StageObj_LoadModel(void *w, void *sub, void *tbl, s32 a, void *b, void *c);
+void StageObj_LoadMotion(void *w, void *sub, void *tbl, void *a, void *b);
 void func_0206cf8c(void *a, void *b);
 
 #define ALLOC4_0234D62C(dst)                                  \
     do {                                                      \
-        u8 *p_ = func_02034a40(data_0208fe7c, 0x3140, 4);     \
+        u8 *p_ = Heap_Alloc(gITCMHeap, 0x3140, 4);     \
         if ((u8 *)func_02006abc(0) != p_) {                   \
             vu32 fill_ = 0xcccccccc;                          \
             MIi_CpuClear32(fill_, p_, 0x3140);                \
@@ -191,7 +191,7 @@ void func_0206cf8c(void *a, void *b);
 #define ALLOC32_0234D62C(dst, n)                                \
     do {                                                        \
         u32 size_ = ((n) + 0x43) & ~0x1f;                       \
-        u8 *p_ = func_02034a40(data_0208fe80, size_, 0x20);     \
+        u8 *p_ = Heap_Alloc(gMainHeap, size_, 0x20);     \
         if ((u8 *)func_02006abc(0) != p_) {                     \
             vu32 fill_ = 0xcccccccc;                            \
             MIi_CpuClear32(fill_, p_, size_);                   \
@@ -209,9 +209,9 @@ static inline void Init_0234d62c(UnkStruct_022c4590 *p, s32 type) {
             p->unk24 &= ~4;
             if (type != 0) {
                 if (type == 1)
-                    p->unk14 = data_022c4680.unk66;
+                    p->unk14 = gSaveData.unk66;
             } else {
-                p->unk14 = data_022c4680.unkE;
+                p->unk14 = gSaveData.unkE;
             }
         }
         data_022c4590.unk24 |= 1;
@@ -237,11 +237,11 @@ static inline void Init_0234d62c(UnkStruct_022c4590 *p, s32 type) {
 }
 
 static inline void InitBufs_0234d62c(UnkStruct_0234d62c *w) {
-    func_02069b34(w, w->unk134, data_ov000_02368d94, data_ov000_0236ac40, data_ov000_0236ac28);
-    func_02069b34(w, w->unk134, data_ov000_02368da0, data_ov000_0236ac48, data_ov000_0236ac28);
+    StageObj_LoadMotion(w, w->unk134, data_ov000_02368d94, data_ov000_0236ac40, data_ov000_0236ac28);
+    StageObj_LoadMotion(w, w->unk134, data_ov000_02368da0, data_ov000_0236ac48, data_ov000_0236ac28);
     ALLOC32_0234D62C(w->unk1F8, w->unk1C8->unk17 * 0x58);
     ALLOC32_0234D62C(w->unk1FC, w->unk1C8->unk18 * 0x38);
-    func_02069f1c(w, data_ov000_02368dac, 1, data_ov000_0236ac38, data_ov000_0236ac28);
+    StageObj_Load2dBAC(w, data_ov000_02368dac, 1, data_ov000_0236ac38, data_ov000_0236ac28);
     w->spr0.unk46 = 0xa;
     w->spr1.unk46 = 0xa;
     w->spr0.unk2C |= 0x80018;
@@ -255,7 +255,7 @@ UnkStruct_0234d62c *func_ov000_0234d62c(s32 type, u8 id) {
     vu16 zero;
     BOOL flag;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_0234d384, 0, 0x100, 1, sizeof(UnkStruct_0234d62c));
+    task = Task_Create(StageObj_Main, func_ov000_0234d384, 0, 0x100, 1, sizeof(UnkStruct_0234d62c));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -284,9 +284,9 @@ UnkStruct_0234d62c *func_ov000_0234d62c(s32 type, u8 id) {
     w->unk434 = 1;
     w->unk436 = 2;
     if (w->unk324 == 1)
-        func_02069c74(w, w->unk134, data_ov000_02368d7c, 0, &data_ov000_0236ac50[w->unk324], data_ov000_0236ac28);
+        StageObj_LoadModel(w, w->unk134, data_ov000_02368d7c, 0, &data_ov000_0236ac50[w->unk324], data_ov000_0236ac28);
     else
-        func_02069c74(w, w->unk134, data_ov000_02368d88, 0, &data_ov000_0236ac50[w->unk324], data_ov000_0236ac28);
+        StageObj_LoadModel(w, w->unk134, data_ov000_02368d88, 0, &data_ov000_0236ac50[w->unk324], data_ov000_0236ac28);
     w->unk5C |= 0x200;
     w->unk14C = 0x34cc;
     w->unk150 = 0x34cc;

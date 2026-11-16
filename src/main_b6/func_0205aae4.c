@@ -76,14 +76,14 @@ typedef struct {
 extern UnkState_0205aae4 data_022c4560;
 extern UnkGfx_0205aae4 data_ov000_0236aad8;
 extern UnkG_0205aae4 data_ov000_02369ac0;
-extern UnkDisp_0205aae4 data_0208922c;
-extern UnkDisp_0205aae4 data_02087d04;
+extern UnkDisp_0205aae4 gDisplayMain;
+extern UnkDisp_0205aae4 gDisplaySub;
 extern void *data_02072c80;
 
 void func_0205e218(UnkWork_0205aae4 *w);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
 void func_ov001_022ffeb0(void);
-void func_02053c58(s32 a, u32 b);
+void NaviMsg_Create(s32 a, u32 b);
 void func_02053b04(BOOL on);
 void func_02044d44(void);
 void func_020366f4(s32 a, s32 b, s32 c);
@@ -94,26 +94,26 @@ void func_0205aacc(void);
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
 
 static inline void SetBlend_0205aae4(void) {
-    data_0208922c.b0 = 1;
-    data_0208922c.b1 = 0;
-    data_0208922c.b2 = 0;
-    data_0208922c.b3 = 0;
-    data_0208922c.b4 = 0;
-    data_0208922c.b5 = 0;
-    data_0208922c.b6 = 1;
-    data_0208922c.b8 = 0;
-    data_0208922c.b9 = 1;
-    data_0208922c.b10 = 1;
-    data_0208922c.b11 = 1;
-    data_0208922c.b12 = 1;
-    data_0208922c.b13 = 1;
+    gDisplayMain.b0 = 1;
+    gDisplayMain.b1 = 0;
+    gDisplayMain.b2 = 0;
+    gDisplayMain.b3 = 0;
+    gDisplayMain.b4 = 0;
+    gDisplayMain.b5 = 0;
+    gDisplayMain.b6 = 1;
+    gDisplayMain.b8 = 0;
+    gDisplayMain.b9 = 1;
+    gDisplayMain.b10 = 1;
+    gDisplayMain.b11 = 1;
+    gDisplayMain.b12 = 1;
+    gDisplayMain.b13 = 1;
 }
 
 static inline void Bright_0205aae4(void) {
-    data_0208922c.bright = 0;
-    data_02087d04.bright = 0x10;
-    GXx_SetMasterBrightness_((vu16 *)0x0400006c, data_0208922c.bright);
-    GXx_SetMasterBrightness_((vu16 *)0x0400106c, data_02087d04.bright);
+    gDisplayMain.bright = 0;
+    gDisplaySub.bright = 0x10;
+    GXx_SetMasterBrightness_((vu16 *)0x0400006c, gDisplayMain.bright);
+    GXx_SetMasterBrightness_((vu16 *)0x0400106c, gDisplaySub.bright);
 }
 
 void func_0205aae4(UnkWork_0205aae4 *w) {
@@ -155,12 +155,12 @@ void func_0205aae4(UnkWork_0205aae4 *w) {
         SetBlend_0205aae4();
         func_ov001_022ffeb0();
     } else if (data_022c4560.zone >= 9 || data_022c4560.act >= 2) {
-        data_0208922c.bright = 0x10;
+        gDisplayMain.bright = 0x10;
         data_ov000_02369ac0.flags |= 1;
         REG_DISPCNT = (REG_DISPCNT & ~0x1f00) | 0x1100;
         REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | 0x1300;
         if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
-            func_02053c58(1, data_022c4560.unk0);
+            NaviMsg_Create(1, data_022c4560.unk0);
             func_02053b04(1);
             func_02044d44();
         }

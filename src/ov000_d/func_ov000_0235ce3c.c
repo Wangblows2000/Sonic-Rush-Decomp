@@ -7,7 +7,7 @@ typedef struct {
 
 extern UnkStruct_02087cdc data_02087cdc;
 extern u16 *data_02087ce0[];
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
 #pragma thumb on
 
@@ -31,7 +31,7 @@ void func_ov000_0235ce3c(void *w, s32 v) {
     for (; i < 0xC0; i++) {
         p[i] = pos;
     }
-    data_02087cb8 |= 0x1000;
+    gSystemFlags |= 0x1000;
 }
 
 #pragma thumb reset

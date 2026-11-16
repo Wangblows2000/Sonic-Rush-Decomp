@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 typedef struct {
     u8 pad0[0x18];
@@ -27,10 +27,10 @@ typedef struct {
     UnkWork_02048ad4 *work;
 } UnkTask_02048ad4;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_022c4560 data_022c4560;
 
-void func_02039bb0(s32 a, s32 b);
+void ObjVram_Free(s32 a, s32 b);
 
 static inline void Free_02048ad4(u8 *p) {
     if ((u8 *)func_02006abc(0) != p) {
@@ -43,16 +43,16 @@ static inline void Free_02048ad4(u8 *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_02048ad4(UnkTask_02048ad4 *t) {
     UnkWork_02048ad4 *w = t->work;
 
-    func_02039bb0(0, w->unk68);
-    func_02039bb0(1, w->unk6c);
-    func_02039bb0(0, w->unke4);
-    func_02039bb0(1, w->unke8);
+    ObjVram_Free(0, w->unk68);
+    ObjVram_Free(1, w->unk6c);
+    ObjVram_Free(0, w->unke4);
+    ObjVram_Free(1, w->unke8);
     Free_02048ad4(w->buf);
     data_022c4560.flags &= ~4;
     data_022c4560.flags &= ~8;

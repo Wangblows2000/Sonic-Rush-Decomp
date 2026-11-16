@@ -32,20 +32,20 @@ typedef struct {
     u32 flags;
 } UnkTouch_022cd558;
 
-extern UnkTask_022cd558 *data_022b4574;
-extern UnkPad_022cd558 data_022503e0;
-extern UnkTouch_022cd558 data_022b65b4;
+extern UnkTask_022cd558 *gTaskCurrent;
+extern UnkPad_022cd558 gPad;
+extern UnkTouch_022cd558 gTouchState;
 
 void func_ov001_022cc17c(UnkWork_022cd558 *w);
 void func_ov001_022cbf30(UnkWork_022cd558 *w);
 void func_ov001_022cdd28(void);
-void func_02052104(s32 se);
+void SysSound_PlaySE(s32 se);
 void func_ov001_022c8924(void *p, s32 a);
 BOOL func_ov001_022c8ba8(u32 x, u32 y);
 
 #pragma thumb on
 void func_ov001_022cd558(void) {
-    UnkWork_022cd558 *w = data_022b4574->work;
+    UnkWork_022cd558 *w = gTaskCurrent->work;
     u32 x, y;
 
     func_ov001_022cc17c(w);
@@ -65,20 +65,20 @@ void func_ov001_022cd558(void) {
         w->chosen = -1;
         return;
     }
-    if (data_022503e0.rep & 0x20) {
+    if (gPad.rep & 0x20) {
         if (w->sel != 0) {
             w->sel = 0;
             w->unk14 = 0;
-            func_02052104(4);
+            SysSound_PlaySE(4);
         }
-    } else if (data_022503e0.rep & 0x10) {
+    } else if (gPad.rep & 0x10) {
         if (w->sel != 1) {
             w->sel = 1;
             w->unk14 = 0;
-            func_02052104(4);
+            SysSound_PlaySE(4);
         }
     }
-    if (data_022503e0.trg & 1) {
+    if (gPad.trg & 1) {
         w->chosen = w->sel;
         w->unk18 = 0;
         switch (w->sel) {
@@ -89,20 +89,20 @@ void func_ov001_022cd558(void) {
             func_ov001_022c8924(w->unk3ac, 1);
             break;
         }
-        func_02052104(0);
+        SysSound_PlaySE(0);
         return;
     }
-    if (data_022503e0.trg & 2) {
-        func_02052104(1);
+    if (gPad.trg & 2) {
+        SysSound_PlaySE(1);
         func_ov001_022cdd28();
         return;
     }
-    if (data_022b65b4.flags & 0x40) {
-        x = data_022b65b4.x;
-        y = data_022b65b4.y;
+    if (gTouchState.flags & 0x40) {
+        x = gTouchState.x;
+        y = gTouchState.y;
         if (x < 0x100 && y < 0xc0) {
             if (func_ov001_022c8ba8(x, y)) {
-                func_02052104(1);
+                SysSound_PlaySE(1);
                 w->unk1c = 0;
             }
             if (x >= 0x20 && x < 0x7a && y >= 0x50 && y < 0x70) {
@@ -110,14 +110,14 @@ void func_ov001_022cd558(void) {
                 w->chosen = w->sel;
                 w->unk18 = 0;
                 func_ov001_022c8924(w->unk3ac, 0);
-                func_02052104(0);
+                SysSound_PlaySE(0);
             }
             if (x >= 0x88 && x < 0xe2 && y >= 0x50 && y < 0x70) {
                 w->sel = 1;
                 w->chosen = w->sel;
                 w->unk18 = 0;
                 func_ov001_022c8924(w->unk3ac, 1);
-                func_02052104(0);
+                SysSound_PlaySE(0);
             }
         }
     }

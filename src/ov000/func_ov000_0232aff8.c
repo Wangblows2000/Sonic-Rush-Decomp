@@ -14,12 +14,12 @@ typedef struct UnkStruct_0232aff8 {
 
 extern s32 data_ov000_0236a97c;
 
-void func_0206bef4(UnkStruct_0232aff8 *s);
+void StageObj_Destructor(UnkStruct_0232aff8 *s);
 
 void func_ov000_0232aff8(UnkStruct_0232aff8 *s) {
     UnkStruct_0232aff8_2 *p = s->unk10;
     p->unkC8 = 0;
     p->unk110 = 0;
     data_ov000_0236a97c = 0;
-    func_0206bef4(s);
+    StageObj_Destructor(s);
 }

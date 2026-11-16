@@ -6,9 +6,9 @@ typedef struct {
 } UnkObj_0204f4d4;
 
 extern void *data_022c4600[];
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 extern const char **data_0207a80c[];
-void *func_02033fbc(const char *path, void *dst);
+void *File_Load(const char *path, void *dst);
 
 #pragma thumb on
 void func_0204f4d4(UnkObj_0204f4d4 *o, s32 idx) {
@@ -17,20 +17,20 @@ void func_0204f4d4(UnkObj_0204f4d4 *o, s32 idx) {
         o->files[idx] = p;
     } else {
         u32 lang;
-        switch (data_02072cb8) {
+        switch (gGameLanguage) {
         case 0:
         case 1:
         case 2:
         case 3:
         case 4:
         case 5:
-            lang = data_02072cb8;
+            lang = gGameLanguage;
             break;
         default:
             lang = 1;
             break;
         }
-        o->files[idx] = func_02033fbc(data_0207a80c[lang][idx], NULL);
+        o->files[idx] = File_Load(data_0207a80c[lang][idx], NULL);
     }
 }
 #pragma thumb reset

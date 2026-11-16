@@ -22,20 +22,20 @@ typedef struct UnkStruct_022f9d20_b {
     s32 unk1C;
 } UnkStruct_022f9d20_b;
 
-extern UnkStruct_022f9d20_b data_0208922c;
+extern UnkStruct_022f9d20_b gDisplayMain;
 extern UnkStruct_022f9d20 *data_ov001_0231f084;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void func_0201b348(void);
-void func_020371c8(void *task);
-void func_02039bb0(u32 a, u32 b);
-void func_02031768(void *p);
+void Task_Destroy(void *task);
+void ObjVram_Free(u32 a, u32 b);
+void Model_Release(void *p);
 void func_0201bf1c(void *p);
 void func_ov001_022f99f8(void);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 void func_ov001_022f9d20(void) {
     s32 i;
@@ -43,16 +43,16 @@ void func_ov001_022f9d20(void) {
     u8 *blk;
 
     func_0201b348();
-    data_0208922c.unk1C = 0;
+    gDisplayMain.unk1C = 0;
     for (i = 0; i < 7; i++) {
         if (data_ov001_0231f084->tasks[i] != NULL)
-            func_020371c8(data_ov001_0231f084->tasks[i]);
+            Task_Destroy(data_ov001_0231f084->tasks[i]);
     }
     o = data_ov001_0231f084->objs;
     for (i = 0; i < 0x28; i++, o++)
-        func_02039bb0(o->unk0, o->unk34);
-    func_02031768(data_ov001_0231f084->unkC90);
-    func_02031768(&data_ov001_0231f084->objs[0x28]);
+        ObjVram_Free(o->unk0, o->unk34);
+    Model_Release(data_ov001_0231f084->unkC90);
+    Model_Release(&data_ov001_0231f084->objs[0x28]);
     func_0201bf1c(data_ov001_0231f084->unkEA0);
     func_ov001_022f99f8();
     blk = (u8 *)data_ov001_0231f084;
@@ -66,6 +66,6 @@ void func_ov001_022f9d20(void) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
     data_ov001_0231f084 = NULL;
 }

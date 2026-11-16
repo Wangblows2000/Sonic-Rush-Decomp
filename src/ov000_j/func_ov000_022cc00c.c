@@ -7,10 +7,10 @@ typedef struct {
     s32 unk114;
 } UnkStruct_022cc00c;
 
-void func_02031a68(UnkStruct_022cc00c *a, s32 b, s32 c, s32 d, s32 e);
+void Model_SetAnimation(UnkStruct_022cc00c *a, s32 b, s32 c, s32 d, s32 e);
 
 void func_ov000_022cc00c(UnkStruct_022cc00c *a, s32 b, s32 c, s32 d, s32 e) {
-    func_02031a68(a, 0, b, c, 0);
+    Model_SetAnimation(a, 0, b, c, 0);
     a->unk114 = d;
     a->unk10C &= ~4;
     if (e)

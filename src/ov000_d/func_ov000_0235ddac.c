@@ -7,10 +7,10 @@ void func_ov000_0235ddac(UnkStruct_SprObj *w) {
 
     if (w->anim[16] != 12) {
         w->anim[16] = 12;
-        func_02033550(spr, w->anim[16]);
+        AnimatorSprite_SetAnimation(spr, w->anim[16]);
     }
-    func_0203344c(spr, 0, 0);
-    func_02032d2c(spr);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
+    AnimatorSprite_Draw(spr);
 }
 
 #pragma thumb reset

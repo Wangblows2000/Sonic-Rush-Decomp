@@ -42,7 +42,7 @@ extern s16 data_0206e470[];
 
 void func_0201c070(void *p, s32 a);
 void func_0201bf1c(void *p);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_023558bc(UnkStruct_02348350 *w, s32 a, s32 b);
 BOOL func_ov000_023470ec(UnkStruct_02348350 *w);
 void func_ov000_0234ab34(UnkStruct_02348350 *w);
@@ -71,10 +71,10 @@ void func_ov000_02348350(UnkStruct_02348350 *w) {
         w->unk410 = 0;
         func_ov000_023558bc(w, w->unk34, -0x500);
         if (w->unk324 != 1) {
-            func_0204b7ec(w->unk384, 0, 2);
+            Sound_PlaySeqArcEx(w->unk384, 0, 2);
             return;
         }
-        func_0204b7ec(w->unk384, 0, 0x13);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x13);
         return;
     }
     w->unk1 = 0;

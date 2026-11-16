@@ -40,10 +40,10 @@ typedef struct {
     UnkWork_022e7c50 *work;
 } UnkTask_022e7c50;
 
-extern UnkTask_022e7c50 *data_022b4574;
+extern UnkTask_022e7c50 *gTaskCurrent;
 
 void func_ov001_022e5164(void *a, s32 x, s32 y, s32 *ox, s32 *oy);
-void func_02052104(s32 se);
+void SysSound_PlaySE(s32 se);
 void func_ov001_022e6dec(UnkWork_022e7c50 *w);
 void func_ov001_022e5d7c(s32 x, s32 y, s32 z);
 void func_ov001_022e21ec(UnkWork_022e7c50 *w);
@@ -64,7 +64,7 @@ void func_ov001_022e7c50(void) {
     s32 x;
     s32 y;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     s = w->sub;
     g = &s->group[w->grp];
     from = &s->pos[w->src];
@@ -73,7 +73,7 @@ void func_ov001_022e7c50(void) {
         if (w->timer >= (i + 1) * 12) {
             if (w->timer / 12 == i + 1) {
                 if (g->state[i] != 1) {
-                    func_02052104(0xe);
+                    SysSound_PlaySE(0xe);
                 }
                 g->state[i] = 1;
             } else {
@@ -85,7 +85,7 @@ void func_ov001_022e7c50(void) {
     }
     if (w->timer >= (g->count + 1) * 12) {
         if (to->state != 0) {
-            func_02052104(0xf);
+            SysSound_PlaySE(0xf);
         }
         to->state = 0;
     } else {

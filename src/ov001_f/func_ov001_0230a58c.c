@@ -62,7 +62,7 @@ typedef struct UnkResSet_0230a58c {
 
 #define ANIM_HDR(r) ((UnkAnimHdr_0230a58c *)((u8 *)(r) + (r)->hdrOfs))
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkWork_0230a58c *data_ov001_0231f5bc;
 extern UnkResSet_0230a58c *data_ov001_0231f5c4;
 extern s16 data_ov001_02317098[];
@@ -74,17 +74,17 @@ extern volatile u32 data_ov001_02317144[];
 extern u8 data_ov001_023170e4[];
 extern u8 data_ov001_023170fc[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
-void func_0203473c(void *buf, void *res, s32 a, u32 b, u8 c, u16 d, u16 e);
-u32 func_02039c18(u32 a, u16 b);
-void func_0203363c(UnkSpr_0230a58c *s, void *res, u16 idx, s32 a, u32 b, s32 c, u32 d, s32 e, u32 pal);
-void func_0203344c(UnkSpr_0230a58c *s, s32 a, s32 b);
-void func_02039bb0(s32 a, u32 b);
+void Background_Init(void *buf, void *res, s32 a, u32 b, u8 c, u16 d, u16 e);
+u32 ObjVram_Alloc(u32 a, u16 b);
+void AnimatorSprite_Init(UnkSpr_0230a58c *s, void *res, u16 idx, s32 a, u32 b, s32 c, u32 d, s32 e, u32 pal);
+void AnimatorSprite_ProcessAnimation(UnkSpr_0230a58c *s, s32 a, s32 b);
+void ObjVram_Free(s32 a, u32 b);
 s32 func_ov001_0230c0cc(void);
 
 void func_ov001_0230a58c(void) {
@@ -100,7 +100,7 @@ void func_ov001_0230a58c(void) {
     s32 i;
     s32 n;
 
-    p = func_02034a40(data_0208fe80, 0xd20, 0x20);
+    p = Heap_Alloc(gMainHeap, 0xd20, 0x20);
     if ((u8 *)func_02006abc(0) != p) {
         fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, 0xd20);
@@ -127,7 +127,7 @@ void func_ov001_0230a58c(void) {
     }
     for (i = 0; i < 4; i++) {
         u16 *r = data_ov001_0231f5c4->res[i];
-        func_0203473c(&w->obj[i], r, 0x38, data_ov001_023170a8[i], data_ov001_0231708c[i], r[0x18 / 2], r[0x1a / 2]);
+        Background_Init(&w->obj[i], r, 0x38, data_ov001_023170a8[i], data_ov001_0231708c[i], r[0x18 / 2], r[0x1a / 2]);
     }
     for (i = 0; i < 23; i++) {
         u16 v;
@@ -137,11 +137,11 @@ void func_ov001_0230a58c(void) {
             v = ANIM_HDR(data_ov001_0231f5c4->anim)->unk8;
         pal = data_ov001_02317144[i] == 0 ? 0x05000200 : 0x05000600;
         m = data_ov001_02317144[i];
-        func_0203363c(&w->spr[i], data_ov001_0231f5c4->anim, data_ov001_02317114[i], 0x40, m, 0, func_02039c18(m, v), 0, pal);
+        AnimatorSprite_Init(&w->spr[i], data_ov001_0231f5c4->anim, data_ov001_02317114[i], 0x40, m, 0, ObjVram_Alloc(m, v), 0, pal);
         w->spr[i].flags |= 0x20000;
     }
     for (i = 0; i < 23; i++) {
-        func_0203344c(&w->spr[i], 0, 0);
+        AnimatorSprite_ProcessAnimation(&w->spr[i], 0, 0);
         w->spr[i].flags |= 0x10;
         w->spr[i].flags &= ~0x40;
         if (data_ov001_023170e4[i] == 0)
@@ -151,7 +151,7 @@ void func_ov001_0230a58c(void) {
         w->spr[i].unk46 = 5;
     }
     for (i = 0; i < 3; i++) {
-        func_0203363c(&w->spr2[i], data_ov001_0231f5c4->anim, 0x40, 0, 1, 0, func_02039c18(1, ANIM_HDR(data_ov001_0231f5c4->anim)->e[0x40].unk12), 0, 0x05000600);
+        AnimatorSprite_Init(&w->spr2[i], data_ov001_0231f5c4->anim, 0x40, 0, 1, 0, ObjVram_Alloc(1, ANIM_HDR(data_ov001_0231f5c4->anim)->e[0x40].unk12), 0, 0x05000600);
         w->spr2[i].flags |= 4;
     }
     w->spr[2].x = 0x4a;
@@ -186,12 +186,12 @@ void func_ov001_0230a58c(void) {
     w->spr[18].unk46 = 8;
     w->spr[19].unk46 = 3;
     w->spr[19].flags |= 0x200;
-    func_0203363c(&spr, data_ov001_0231f5c4->anim, 0x12, 0x48, 1, 0, func_02039c18(1, ANIM_HDR(data_ov001_0231f5c4->anim)->e[0x12].unk12), 0, (u32)w->pal0);
-    func_0203344c(&spr, 0, 0);
-    func_02039bb0(1, spr.unk34);
+    AnimatorSprite_Init(&spr, data_ov001_0231f5c4->anim, 0x12, 0x48, 1, 0, ObjVram_Alloc(1, ANIM_HDR(data_ov001_0231f5c4->anim)->e[0x12].unk12), 0, (u32)w->pal0);
+    AnimatorSprite_ProcessAnimation(&spr, 0, 0);
+    ObjVram_Free(1, spr.unk34);
     idx = func_ov001_0230c0cc() + 0x13;
-    func_0203363c(&spr, data_ov001_0231f5c4->anim, idx, 0x48, 1, 0, func_02039c18(1, ANIM_HDR(data_ov001_0231f5c4->anim)->e[idx].unk12), 0, (u32)w->pal1);
-    func_0203344c(&spr, 0, 0);
-    func_02039bb0(1, spr.unk34);
+    AnimatorSprite_Init(&spr, data_ov001_0231f5c4->anim, idx, 0x48, 1, 0, ObjVram_Alloc(1, ANIM_HDR(data_ov001_0231f5c4->anim)->e[idx].unk12), 0, (u32)w->pal1);
+    AnimatorSprite_ProcessAnimation(&spr, 0, 0);
+    ObjVram_Free(1, spr.unk34);
     MI_CpuCopy8(w->pal0, w->pal2, 0x20);
 }

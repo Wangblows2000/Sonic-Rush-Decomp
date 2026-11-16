@@ -41,20 +41,20 @@ struct UnkStruct_022ed428 {
     u16 unk394;
 };
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_StageObj *data_ov000_0236ac60;
 extern UnkStruct_022c4560 data_022c4560;
 extern u8 data_02250464[];
 
 void func_ov000_023283e0(s32 a, s32 x, s32 y, s32 z);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_02347c44(UnkStruct_StageObj *p);
 void func_ov000_0234c4a4(UnkStruct_StageObj *p, s32 a);
 void func_ov000_022ee198(UnkStruct_StageObj *p, s32 a);
 void func_ov000_022e9b70(UnkStruct_StageObj *p, s32 a, s32 b);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 void func_ov000_02338624(s32 a);
-void func_020367b4(void *a, s32 b);
+void Sound_PlaySeq(void *a, s32 b);
 void func_ov000_022ed190(void);
 
 void func_ov000_022ed428(UnkStruct_022ed428 *s) {
@@ -63,13 +63,13 @@ void func_ov000_022ed428(UnkStruct_022ed428 *s) {
 
     func_ov000_023283e0(1, (o->unk10 + p->unk10) >> 1, (o->unk14 + p->unk14) >> 1,
                         ((o->unk18 + p->unk18) >> 1) + 0x1400);
-    func_02036754(s->unk388, 0, 0xbc);
-    func_02036754(0, 0, 0x9a);
+    Sound_PlaySeqArc(s->unk388, 0, 0xbc);
+    Sound_PlaySeqArc(0, 0, 0x9a);
     s->unk232 = 0xe00;
-    data_0208922c.unk20.raw = 0;
-    data_0208922c.unk20.bits.b0 = 1;
-    data_0208922c.unk20.bits.b6 = 2;
-    data_0208922c.unk24.b0 = (u16)(s->unk232 >> 8);
+    gDisplayMain.unk20.raw = 0;
+    gDisplayMain.unk20.bits.b0 = 1;
+    gDisplayMain.unk20.bits.b6 = 2;
+    gDisplayMain.unk24.b0 = (u16)(s->unk232 >> 8);
     func_ov000_02347c44(p);
     func_ov000_0234c4a4(p, 0x42);
     p->unk5C |= 4;
@@ -79,9 +79,9 @@ void func_ov000_022ed428(UnkStruct_022ed428 *s) {
     o->unk5C |= 4;
     ((UnkStruct_Mdl *)o->unk124)->unk114 = 0xc000;
     s->unk394 = 0;
-    func_020446b0(8);
+    ScreenShake_Start(8);
     func_ov000_02338624(0);
-    func_020367b4(data_02250464, 0x11);
+    Sound_PlaySeq(data_02250464, 0x11);
     data_022c4560.unk18 |= 1;
     s->base.unk68 = func_ov000_022ed190;
 }

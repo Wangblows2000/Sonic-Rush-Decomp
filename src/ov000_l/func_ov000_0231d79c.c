@@ -11,7 +11,7 @@ typedef struct {
     UnkStruct_0231d79c_A *unk184;
 } UnkWork_0231d79c;
 
-s16 func_02068df8(s32 v, s32 a, s32 b);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
 void func_ov000_0231dbc4(UnkWork_0231d79c *w);
 
 void func_ov000_0231d79c(UnkWork_0231d79c *w) {
@@ -24,7 +24,7 @@ void func_ov000_0231d79c(UnkWork_0231d79c *w) {
     case 12:
         w->base.unk58 &= ~0x80;
         w->base.unk58 |= 0x110;
-        w->base.unk30 = func_02068df8(w->base.unk30, -16, 0x200);
+        w->base.unk30 = ObjSpd_UpSet(w->base.unk30, -16, 0x200);
         break;
     }
     func_ov000_0231dbc4(w);

@@ -11,16 +11,16 @@ typedef struct UnkStruct_022f8e7c {
 extern UnkStruct_022f8e7c *data_ov001_0231f084;
 extern vu8 data_0208923c[];
 
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_022f8c78(void);
-void func_020367b4(s32 a, s32 b);
+void Sound_PlaySeq(s32 a, s32 b);
 
 void func_ov001_022f8e7c(void) {
     vu8 *w;
 
     data_ov001_0231f084->unkE48 = 0;
     w = data_0208923c;
-    data_ov001_0231f084->task = func_020372d0(func_ov001_022f8c78, 0, 0, 0x2000, 0, 0);
+    data_ov001_0231f084->task = Task_Create(func_ov001_022f8c78, 0, 0, 0x2000, 0, 0);
     w[1] = 0;
     w[5] = 0;
     w[0] = 0x80;
@@ -36,5 +36,5 @@ void func_ov001_022f8e7c(void) {
     w[10] = 2;
     w[10] |= 0x10;
     *(vu32 *)(w + 0xc) |= 3;
-    func_020367b4(0, 0x12);
+    Sound_PlaySeq(0, 0x12);
 }

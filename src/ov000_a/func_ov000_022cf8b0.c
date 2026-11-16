@@ -16,7 +16,7 @@ typedef struct UnkStruct_022cf8b0 {
     UnkTask_022cf8b0 *unk210;
 } UnkStruct_022cf8b0;
 
-UnkTask_022cf8b0 *func_020372d0(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_022cf8b0 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
 void func_ov000_022cf3e0(void);
 void func_ov000_022cf3dc(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
@@ -26,7 +26,7 @@ static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
 }
 
 void func_ov000_022cf8b0(UnkStruct_022cf8b0 *s) {
-    UnkTask_022cf8b0 *t = func_020372d0(func_ov000_022cf3e0, func_ov000_022cf3dc, 0, 0x4ff, 2, 0x18);
+    UnkTask_022cf8b0 *t = Task_Create(func_ov000_022cf3e0, func_ov000_022cf3dc, 0, 0x4ff, 2, 0x18);
     UnkStruct_022cf8b0_t *p = t->unk10;
     MI_CpuFill16(p, 0, 0x18);
     s->unk210 = t;

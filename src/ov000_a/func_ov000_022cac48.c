@@ -58,8 +58,8 @@ extern UnkStruct_022cac48_6 data_ov000_02369ac0;
 extern UnkStruct_022cac48_5 data_022c4560;
 extern UnkStruct_022cac48_pl *data_ov000_0236ac60;
 
-void func_020446b0(s32 a);
-void func_0206c7d8(void);
+void ScreenShake_Start(s32 a);
+void StageObj_SetPause(void);
 void func_ov000_022cc35c(s32 a, s32 b);
 void func_ov000_02347c44(UnkStruct_022cac48_pl *p);
 void func_ov000_0234c4a4(UnkStruct_022cac48_pl *p, s32 a);
@@ -74,14 +74,14 @@ void func_ov000_022cac48(UnkStruct_022cac48 *s) {
     s->unk214->unk216 &= ~4;
     s->unk214->unk29A &= ~4;
     s->unk214->unk242 &= ~4;
-    func_020446b0(0);
+    ScreenShake_Start(0);
     s->unk54 |= 0x20;
     s->unk210->unk54 |= 0x20;
     s->unk214->unk54 |= 0x20;
     s->unk350 = 0;
     s->unk210->unk33C = 0;
     s->unk214->unk420 = 0;
-    func_0206c7d8();
+    StageObj_SetPause();
     data_022c4560.unk18 &= ~1;
     p->unk10 = 0xe100;
     func_ov000_022cc35c(data_022c4560.unk0, 0);

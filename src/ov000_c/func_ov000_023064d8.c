@@ -25,10 +25,10 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 extern s16 data_0206e470[];
 
-s32 func_0206896c(void *w, s32 a, s32 b, s32 c, s32 d);
-s16 func_02068db4(s32 a, s32 b);
-void func_020446b0(s32 a);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+s32 ObjSpd_AccelToward(void *w, s32 a, s32 b, s32 c, s32 d);
+s16 ObjSpd_DownSet(s32 a, s32 b);
+void ScreenShake_Start(s32 a);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void func_02000dfc(void *m);
 void func_02000e60(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
@@ -47,10 +47,10 @@ void func_ov000_023064d8(UnkStruct_023064d8 *w) {
     mdl = (UnkStruct_023064d8_Mdl *)w->base.unk128;
     if (tgt != NULL) {
         if ((w->base.unk1F4 & 2) && !(w->base.unk1F4 & 1)) {
-            w->base.unkC = func_0206896c(w, w->base.unkC, 0x20, 0x20, 0x400);
+            w->base.unkC = ObjSpd_AccelToward(w, w->base.unkC, 0x20, 0x20, 0x400);
             w->base.unk2E = -w->base.unk34;
         } else {
-            w->base.unk34 = func_02068db4(w->base.unk34, 10);
+            w->base.unk34 = ObjSpd_DownSet(w->base.unk34, 10);
             v = w->base.unk34;
             if (v < -0x800)
                 v = -0x800;
@@ -90,7 +90,7 @@ void func_ov000_023064d8(UnkStruct_023064d8 *w) {
             w->base.unk8--;
         }
     } else {
-        w->base.unkC = func_0206896c(w, w->base.unkC, 0x20, 0x20, 0x400);
+        w->base.unkC = ObjSpd_AccelToward(w, w->base.unkC, 0x20, 0x20, 0x400);
         w->base.unk2E = -w->base.unk34;
     }
 
@@ -104,8 +104,8 @@ void func_ov000_023064d8(UnkStruct_023064d8 *w) {
             if (!(w->base.unk1F4 & 1)) {
                 w->base.unk1F4 |= 1;
                 w->base.unk62 = 0x44;
-                func_020446b0(2);
-                func_0204b7ec(0, 0, 0x6d);
+                ScreenShake_Start(2);
+                Sound_PlaySeqArcEx(0, 0, 0x6d);
             }
             w->base.unk10 = (w->base.unk1E8 + (w->base.unk1E0->unk6 << 6)) << 8;
             w->base.unk34 = 0;
@@ -122,8 +122,8 @@ void func_ov000_023064d8(UnkStruct_023064d8 *w) {
             if (!(w->base.unk1F4 & 1)) {
                 w->base.unk1F4 |= 1;
                 w->base.unk62 = 0x44;
-                func_020446b0(2);
-                func_0204b7ec(0, 0, 0x6d);
+                ScreenShake_Start(2);
+                Sound_PlaySeqArcEx(0, 0, 0x6d);
             }
             w->base.unk10 = (w->base.unk1E8 + (w->base.unk1E0->unk6 << 6)) << 8;
             w->base.unk34 = 0;

@@ -3,16 +3,16 @@
 
 #pragma thumb on
 
-extern u8 data_022b4574[];
-extern u8 data_0208922c[];
-extern u8 data_02087d04[];
+extern u8 gTaskCurrent[];
+extern u8 gDisplayMain[];
+extern u8 gDisplaySub[];
 
 void func_ov001_022c8958(void) {
-    s32 t0 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    *(u16 *)((u8 *)data_0208922c + 0xc) = ((s32)*(u32 *)*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) >> 0xc);
-    *(u16 *)((u8 *)data_0208922c + 0xe) = ((s32)*(u32 *)((u8 *)t0 + 0x4) >> 0xc);
-    *(u16 *)((u8 *)data_02087d04 + 0xc) = ((s32)*(u32 *)t0 >> 0xc);
-    *(u16 *)((u8 *)data_02087d04 + 0xe) = ((s32)*(u32 *)((u8 *)t0 + 0x4) >> 0xc);
+    s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    *(u16 *)((u8 *)gDisplayMain + 0xc) = ((s32)*(u32 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) >> 0xc);
+    *(u16 *)((u8 *)gDisplayMain + 0xe) = ((s32)*(u32 *)((u8 *)t0 + 0x4) >> 0xc);
+    *(u16 *)((u8 *)gDisplaySub + 0xc) = ((s32)*(u32 *)t0 >> 0xc);
+    *(u16 *)((u8 *)gDisplaySub + 0xe) = ((s32)*(u32 *)((u8 *)t0 + 0x4) >> 0xc);
     *(u32 *)t0 = (*(u32 *)t0 + 0x2000);
 }
 

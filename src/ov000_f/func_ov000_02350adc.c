@@ -28,9 +28,9 @@ typedef struct {
     u16 unk420;
 } UnkStruct_02350adc;
 
-s16 func_02068df8(s32 v, s32 a, s32 max);
-s16 func_02068db4(s32 v, s32 a);
-u8 func_02068b04(u8 cur, s32 target, s32 step);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 max);
+s16 ObjSpd_DownSet(s32 v, s32 a);
+u8 ObjAngle_MoveToward8(u8 cur, s32 target, s32 step);
 
 void func_ov000_02350adc(UnkStruct_02350adc *w, UnkStruct_02350adc_Obj *o) {
     s32 t;
@@ -53,15 +53,15 @@ void func_ov000_02350adc(UnkStruct_02350adc *w, UnkStruct_02350adc_Obj *o) {
                 if (w->unk420 & m1) {
                     t = -0x40;
                     if (w->unk30 > 0) {
-                        w->unk30 = func_02068db4(w->unk30, 0x20);
+                        w->unk30 = ObjSpd_DownSet(w->unk30, 0x20);
                     }
                 }
                 if ((w->unk420 & m2) && w->unk30 < 0) {
-                    w->unk30 = func_02068db4(w->unk30, 0x20);
+                    w->unk30 = ObjSpd_DownSet(w->unk30, 0x20);
                 }
-                w->unk30 = func_02068df8(w->unk30, t, 0x200);
+                w->unk30 = ObjSpd_UpSet(w->unk30, t, 0x200);
             } else {
-                w->unk30 = func_02068db4(w->unk30, 0x20);
+                w->unk30 = ObjSpd_DownSet(w->unk30, 0x20);
             }
         }
     } else if (!(w->unk58 & 1) && w->unk2 != 0x40 && w->unk2 != 0xc0) {
@@ -74,11 +74,11 @@ void func_ov000_02350adc(UnkStruct_02350adc *w, UnkStruct_02350adc_Obj *o) {
                 t = -0x40;
             }
         }
-        w->unk30 = func_02068df8(w->unk30, t, 0x200);
+        w->unk30 = ObjSpd_UpSet(w->unk30, t, 0x200);
     }
     if (o->z > 0) {
-        w->unk2 = func_02068b04(w->unk2, 0x40, 2);
-        w->unk32 = func_02068df8(w->unk32, w->unk40, w->unk42);
+        w->unk2 = ObjAngle_MoveToward8(w->unk2, 0x40, 2);
+        w->unk32 = ObjSpd_UpSet(w->unk32, w->unk40, w->unk42);
         if (w->z < o->z) {
             w->unk58 &= ~1;
             return;
@@ -89,8 +89,8 @@ void func_ov000_02350adc(UnkStruct_02350adc *w, UnkStruct_02350adc_Obj *o) {
         w->unk330 |= 0x100000;
         return;
     }
-    w->unk2 = func_02068b04(w->unk2, 0xc0, 2);
-    w->unk32 = func_02068df8(w->unk32, -w->unk40, w->unk42);
+    w->unk2 = ObjAngle_MoveToward8(w->unk2, 0xc0, 2);
+    w->unk32 = ObjSpd_UpSet(w->unk32, -w->unk40, w->unk42);
     if (w->z > o->z) {
         w->unk58 &= ~1;
         return;

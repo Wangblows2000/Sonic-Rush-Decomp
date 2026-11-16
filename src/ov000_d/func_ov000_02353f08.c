@@ -27,7 +27,7 @@ typedef struct {
 extern UnkStruct_02353f08_4560 data_022c4560;
 extern s16 data_0206e470[];
 
-s16 func_02068df8(s16 v, s32 a, s32 b);
+s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 void func_ov000_02328e6c(UnkStruct_02353f08 *w, s32 a, s32 b);
 void func_0201c070(void *p, s32 a);
 void func_0201bf1c(void *p);
@@ -53,7 +53,7 @@ void func_ov000_02353f08(UnkStruct_02353f08 *w) {
         w->unk5C &= ~1;
     }
     if (w->unk1 == 0 && ABS_02353f08(w->unk34) < 0x100) {
-        w->unk34 = func_02068df8(w->unk34, 0x10, 0x100);
+        w->unk34 = ObjSpd_UpSet(w->unk34, 0x10, 0x100);
     }
     if ((w->unk58 & 1) && !(data_022c4560.unk20 & 7)) {
         func_ov000_02328e6c(w, 0, 0xc);

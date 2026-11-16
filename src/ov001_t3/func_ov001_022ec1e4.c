@@ -28,11 +28,11 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkBright_022ec1e4 data_0208926c;
-extern s32 data_02087ccc;
-extern u32 data_02087cb8;
-extern u8 data_022503e0[];
+extern s32 gSaveDataBusy;
+extern u32 gSystemFlags;
+extern u8 gPad[];
 
-UnkTask_022ec1e4 *func_020372d0(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
+UnkTask_022ec1e4 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022eb5d0(void);
@@ -44,11 +44,11 @@ void func_ov001_022ebfd4(UnkWork_022ec1e4 *w);
 void func_ov001_022ebecc(UnkWork_022ec1e4 *w);
 void func_ov001_022e9dc8(void);
 void func_ov001_022e9ba8(s32 a, s32 b, s32 c, s32 d);
-void func_02037d60(void);
+void Touch_Enable(void);
 void func_ov001_022ebc98(UnkTask_022ec1e4 *t);
-void func_020522f4(void);
+void SysSound_Init(void);
 void func_02052168(s32 a);
-void func_020351d8(void *p, s32 a, void *b);
+void Pad_Reset(void *p, s32 a, void *b);
 
 #pragma thumb on
 void func_ov001_022ec1e4(s32 mode) {
@@ -58,7 +58,7 @@ void func_ov001_022ec1e4(s32 mode) {
     vu32 zero;
     u16 buf[12];
 
-    t = func_020372d0(func_ov001_022eb5d0, func_ov001_022ebe98, 0, 0x1000, 0x1000, sizeof(UnkWork_022ec1e4));
+    t = Task_Create(func_ov001_022eb5d0, func_ov001_022ebe98, 0, 0x1000, 0x1000, sizeof(UnkWork_022ec1e4));
     w = t->work;
     zero = 0;
     MIi_CpuClear32(zero, w, sizeof(UnkWork_022ec1e4));
@@ -98,14 +98,14 @@ void func_ov001_022ec1e4(s32 mode) {
         data_0208926c.bright = -0x10;
     }
     func_ov001_022e9ba8(data_0208926c.bright, 0, 8, 0);
-    func_02037d60();
+    Touch_Enable();
     func_ov001_022ebc98(t);
-    func_020522f4();
+    SysSound_Init();
     func_02052168(0);
-    data_02087ccc = 0;
-    data_02087cb8 &= ~0x10;
+    gSaveDataBusy = 0;
+    gSystemFlags &= ~0x10;
     fill = 4;
     MIi_CpuClear16(fill, buf, sizeof(buf));
-    func_020351d8(data_022503e0, 0, buf);
+    Pad_Reset(gPad, 0, buf);
 }
 #pragma thumb reset

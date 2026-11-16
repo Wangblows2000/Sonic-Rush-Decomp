@@ -14,7 +14,7 @@ typedef struct {
     UnkWork_022dcdbc *work;
 } UnkTask_022dcdbc;
 
-extern UnkTask_022dcdbc *data_022b4574;
+extern UnkTask_022dcdbc *gTaskCurrent;
 
 void func_ov001_022da70c(UnkWork_022dcdbc *w);
 BOOL func_02050d30(void);
@@ -42,7 +42,7 @@ void func_ov001_022dcdbc(void) {
     BOOL b;
     BOOL c;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_ov001_022da70c(w);
     a = FALSE;
     b = FALSE;
@@ -66,7 +66,7 @@ void func_ov001_022dcdbc(void) {
         w->unk4 = 0;
         func_ov001_022da450(w);
         func_02050078(8, 3, 1, 1, 2, 0, 0xe, 0x200010);
-        data_022b4574->func = func_ov001_022dcd24;
+        gTaskCurrent->func = func_ov001_022dcd24;
         return;
     }
     if (b) {
@@ -74,7 +74,7 @@ void func_ov001_022dcdbc(void) {
         w->unk4 = 0;
         func_ov001_022da064(w, 1);
         w->unk48 = 3;
-        data_022b4574->func = func_ov001_022dcc10;
+        gTaskCurrent->func = func_ov001_022dcc10;
         return;
     }
     if (c) {
@@ -84,7 +84,7 @@ void func_ov001_022dcdbc(void) {
         func_ov001_022da244(w, 1);
         func_ov001_022da1cc(w, 1);
         func_ov001_022d983c(w, 1);
-        data_022b4574->func = func_ov001_022dccc8;
+        gTaskCurrent->func = func_ov001_022dccc8;
     }
 }
 #pragma thumb reset

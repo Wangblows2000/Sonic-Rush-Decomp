@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_02069918();
+s32 StageObj_SetOAMOrder();
 s32 func_ov000_0232e48c();
 
 void func_ov000_022fc398(u8 *p0) {
@@ -9,7 +9,7 @@ void func_ov000_022fc398(u8 *p0) {
     if (t0 != 0) {
         *(u32 *)((u8 *)p0 + 0xc) = (t0 - 0x1);
         if (*(u32 *)((u8 *)p0 + 0xc) == 0) {
-            func_02069918(p0, 0xa);
+            StageObj_SetOAMOrder(p0, 0xa);
         }
     }
     if ((*(u32 *)((u8 *)p0 + 0x58) & 0x100) != 0) {

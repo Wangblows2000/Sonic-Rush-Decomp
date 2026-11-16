@@ -15,27 +15,27 @@ typedef struct {
     u16 blendAlpha;
 } UnkDisp_02052e7c;
 
-extern UnkDisp_02052e7c *data_02072c78[];
+extern UnkDisp_02052e7c *gDisplayTable[];
 extern s32 data_02075664[];
 extern u32 data_0207566c[];
 
 void func_02052d90(UnkWork_02052e7c *w, s32 n);
 void func_02052af8(UnkWork_02052e7c *w, s32 idx, s32 v);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 
 void func_02052e7c(UnkWork_02052e7c *w) {
     s32 v;
 
     w->cnt++;
     if (w->cnt >= 60) {
-        data_02072c78[1]->blendCnt = 0x40;
-        data_02072c78[1]->blendAlpha = 0x1f00;
+        gDisplayTable[1]->blendCnt = 0x40;
+        gDisplayTable[1]->blendAlpha = 0x1f00;
         w->fndc = NULL;
         func_02052d90(w, 2);
         func_02052af8(w, data_02075664[w->idx], 0xf0);
-        func_02036754(0, data_0207566c[w->idx], 9);
+        Sound_PlaySeqArc(0, data_0207566c[w->idx], 9);
     } else {
         v = (w->cnt * 31 / 60) & 0x1f;
-        data_02072c78[1]->blendAlpha = v | ((31 - v) << 8);
+        gDisplayTable[1]->blendAlpha = v | ((31 - v) << 8);
     }
 }

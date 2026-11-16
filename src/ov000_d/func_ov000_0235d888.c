@@ -42,8 +42,8 @@ void func_ov000_0235d888(UnkStruct_Mdl2 *w, s32 sel) {
         w->flagA |= 4;
         break;
     }
-    func_02031a68(&w->rA, 0, a0, f0, NULL);
-    func_02031a68(&w->rA, 4, a1, f1, NULL);
+    Model_SetAnimation(&w->rA, 0, a0, f0, NULL);
+    Model_SetAnimation(&w->rA, 4, a1, f1, NULL);
 }
 
 #pragma thumb reset

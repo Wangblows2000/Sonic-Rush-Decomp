@@ -42,8 +42,8 @@ extern UnkPhys_02347680 data_ov000_02368b90[];
 #define SIN_02347680(a) data_0206e470[(u32)(IDX_02347680(a) << 1)]
 
 void func_ov000_02347b4c(UnkStruct_02347680 *w);
-s16 func_02068db4(s16 v, s32 dec);
-s16 func_02068df8(s16 v, s32 acc, s32 top);
+s16 ObjSpd_DownSet(s16 v, s32 dec);
+s16 ObjSpd_UpSet(s16 v, s32 acc, s32 top);
 
 void func_ov000_02347680(UnkStruct_02347680 *w) {
     s32 acc;
@@ -90,13 +90,13 @@ void func_ov000_02347680(UnkStruct_02347680 *w) {
     }
     if (!(w->unk5C & 1)) {
         if (w->unk34 < 0) {
-            w->unk34 = func_02068db4(w->unk34, dec);
+            w->unk34 = ObjSpd_DownSet(w->unk34, dec);
         }
-        w->unk34 = func_02068df8(w->unk34, acc, top);
+        w->unk34 = ObjSpd_UpSet(w->unk34, acc, top);
     } else {
         if (w->unk34 > 0) {
-            w->unk34 = func_02068db4(w->unk34, dec);
+            w->unk34 = ObjSpd_DownSet(w->unk34, dec);
         }
-        w->unk34 = func_02068df8(w->unk34, -acc, top);
+        w->unk34 = ObjSpd_UpSet(w->unk34, -acc, top);
     }
 }

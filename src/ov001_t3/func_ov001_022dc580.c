@@ -17,7 +17,7 @@ typedef struct {
     UnkWork_022dc580 *work;
 } UnkTask_022dc580;
 
-extern UnkTask_022dc580 *data_022b4574;
+extern UnkTask_022dc580 *gTaskCurrent;
 
 void func_ov001_022da70c(UnkWork_022dc580 *w);
 BOOL func_02050d30(void);
@@ -57,7 +57,7 @@ void func_ov001_022dc580(void) {
     BOOL c;
     u8 buf[16];
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_ov001_022da694(w);
     func_ov001_022d9cd4(w, 0, 0);
     func_ov001_022d9a54(w->unk4c, buf, func_02051150(buf, 7));
@@ -92,7 +92,7 @@ void func_ov001_022dc580(void) {
         w->unk4 = 0;
         func_ov001_022da450(w);
         func_02050078(1, 3, 1, 1, 2, 0, 0xe, 0x200010);
-        data_022b4574->func = func_ov001_022dc4f0;
+        gTaskCurrent->func = func_ov001_022dc4f0;
         return;
     }
     if (w->unk1c != 0 && w->unk4 > 0x10) {
@@ -101,13 +101,13 @@ void func_ov001_022dc580(void) {
         w->unk1c = 0;
         func_ov001_022da450(w);
         func_02050078(6, 3, 1, 1, 2, 0, 0xe, 0x200010);
-        data_022b4574->func = func_ov001_022dc410;
+        gTaskCurrent->func = func_ov001_022dc410;
         return;
     }
     if (c) {
         w->timer = 0;
         w->unk4 = 0;
-        data_022b4574->func = func_ov001_022dc498;
+        gTaskCurrent->func = func_ov001_022dc498;
     }
 }
 #pragma thumb reset

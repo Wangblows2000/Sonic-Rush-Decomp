@@ -22,8 +22,8 @@ typedef struct {
     UnkStruct_023177e8_P *unk204;
 } UnkStruct_023177e8;
 
-s16 func_02068db4(s16 a, s32 b);
-s16 func_02068df8(s16 a, s32 b, s32 c);
+s16 ObjSpd_DownSet(s16 a, s32 b);
+s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
 
 void func_ov000_023177e8(UnkStruct_023177e8 *w) {
     UnkStruct_023177e8_P *p = w->unk204;
@@ -55,12 +55,12 @@ void func_ov000_023177e8(UnkStruct_023177e8 *w) {
         w->unk34 = 0;
     } else if (v < 0) {
         if (w->unk34 > 0)
-            w->unk34 = func_02068db4(w->unk34, 0x20);
-        w->unk34 = func_02068df8(w->unk34, -0x20, 0x300);
+            w->unk34 = ObjSpd_DownSet(w->unk34, 0x20);
+        w->unk34 = ObjSpd_UpSet(w->unk34, -0x20, 0x300);
     } else {
         if (w->unk34 < 0)
-            w->unk34 = func_02068db4(w->unk34, 0x20);
-        w->unk34 = func_02068df8(w->unk34, 0x20, 0x300);
+            w->unk34 = ObjSpd_DownSet(w->unk34, 0x20);
+        w->unk34 = ObjSpd_UpSet(w->unk34, 0x20, 0x300);
     }
     w->unkC -= w->unk34;
     w->unk1 = (w->unkC & 0xffff) >> 8;

@@ -18,7 +18,7 @@ typedef struct {
 
 extern UnkTask_02057244 *data_022c467c;
 
-UnkTask_02057244 *func_020372d0(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
+UnkTask_02057244 *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_02057174(void);
@@ -36,7 +36,7 @@ void func_02057244(void *p, u16 v) {
     m = data_022c467c->work;
     if (m->child != NULL)
         return;
-    t = func_020372d0(func_02057174, func_02057210, 0, 0x3efe, 3, 0x14);
+    t = Task_Create(func_02057174, func_02057210, 0, 0x3efe, 3, 0x14);
     if (t == (UnkTask_02057244 *)func_02006abc(0))
         return;
     w = t->work;

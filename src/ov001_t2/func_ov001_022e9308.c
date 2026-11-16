@@ -14,14 +14,14 @@ typedef struct {
     u8 *bufs[3];
 } UnkStruct_022e9308;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void func_02039bb0(void *p, s32 q);
+void ObjVram_Free(void *p, s32 q);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void *func_02006abc(s32 i);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 void func_ov001_022e9308(UnkStruct_022e9308 *p) {
@@ -31,7 +31,7 @@ void func_ov001_022e9308(UnkStruct_022e9308 *p) {
 
     for (i = 0; i < 4; i++) {
         if (p->spr[i].unk34) {
-            func_02039bb0(p->spr[i].unk0, p->spr[i].unk34);
+            ObjVram_Free(p->spr[i].unk0, p->spr[i].unk34);
         }
         {
             vu16 zero = 0;
@@ -50,7 +50,7 @@ void func_ov001_022e9308(UnkStruct_022e9308 *p) {
                     DC_StoreRange(buf, size);
                 }
             }
-            func_020349b8(data_0208fe80, buf);
+            Heap_Free(gMainHeap, buf);
             p->bufs[i] = NULL;
         }
     }

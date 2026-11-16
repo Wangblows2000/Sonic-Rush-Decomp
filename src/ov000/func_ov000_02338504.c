@@ -5,13 +5,13 @@ typedef struct UnkStruct_02338504 {
     u8 *unk10;
 } UnkStruct_02338504;
 
-extern UnkStruct_02338504 *data_022b4574;
+extern UnkStruct_02338504 *gTaskCurrent;
 
-void func_0203344c(void *p, s32 a, s32 b);
-void func_02032d2c(void *p);
+void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
+void AnimatorSprite_Draw(void *p);
 
 void func_ov000_02338504(void) {
-    u8 *p = data_022b4574->unk10;
-    func_0203344c(p + 0, 0, 0);
-    func_02032d2c(p + 0);
+    u8 *p = gTaskCurrent->unk10;
+    AnimatorSprite_ProcessAnimation(p + 0, 0, 0);
+    AnimatorSprite_Draw(p + 0);
 }

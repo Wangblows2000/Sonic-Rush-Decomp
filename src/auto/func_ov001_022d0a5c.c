@@ -4,7 +4,7 @@
 #pragma thumb on
 
 s32 func_ov001_022d0220();
-s32 func_02033550();
+s32 AnimatorSprite_SetAnimation();
 void func_ov001_022d0a00();
 s32 func_ov001_022d1404();
 
@@ -19,7 +19,7 @@ void func_ov001_022d0a5c(s32 p0) {
     *(u32 *)((u8 *)p0 + 0xcc8) = 0x78000;
     *(u32 *)((u8 *)p0 + 0xcd4) = 0;
     *(u32 *)((u8 *)p0 + 0xcec) = 0;
-    func_02033550(((u8 *)p0 + 0xc2c), 0x20, 0x80, ((u8 *)p0 + 0xca0));
+    AnimatorSprite_SetAnimation(((u8 *)p0 + 0xc2c), 0x20, 0x80, ((u8 *)p0 + 0xca0));
     func_ov001_022d1404(p0, (u32)func_ov001_022d0a00);
 }
 

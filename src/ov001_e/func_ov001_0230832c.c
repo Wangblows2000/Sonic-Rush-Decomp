@@ -14,7 +14,7 @@ typedef struct UnkStruct_0230832c {
 extern UnkStruct_0230832c *data_ov001_0231f5bc;
 
 s32 func_ov001_02314368(void);
-void func_02033550(UnkStruct_0230832c_o *s, u16 index);
+void AnimatorSprite_SetAnimation(UnkStruct_0230832c_o *s, u16 index);
 
 void func_ov001_0230832c(s32 t) {
     UnkStruct_0230832c *g = data_ov001_0231f5bc;
@@ -25,13 +25,13 @@ void func_ov001_0230832c(s32 t) {
 
     switch (t) {
     case 0:
-        func_02033550(&g->a, d100 + 0x1e);
+        AnimatorSprite_SetAnimation(&g->a, d100 + 0x1e);
         break;
     case 0x14:
-        func_02033550(&g->b, d10 + 0x1e);
+        AnimatorSprite_SetAnimation(&g->b, d10 + 0x1e);
         break;
     case 0x28:
-        func_02033550(&g->c, d1 + 0x1e);
+        AnimatorSprite_SetAnimation(&g->c, d1 + 0x1e);
         break;
     }
 }

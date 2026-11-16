@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
 void func_ov000_02340ffc(void) {
-    data_02087cb8 &= ~0xc00;
+    gSystemFlags &= ~0xc00;
 }

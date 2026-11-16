@@ -31,12 +31,12 @@ typedef struct {
     UnkStruct_0235ac1c *work;
 } UnkStruct_0235ac1c_Task;
 
-UnkStruct_0235ac1c_Task *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkStruct_0235ac1c_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void *func_02006abc(u32 arg);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
-s32 func_0203969c(u32 a, s32 b);
-s32 func_02039428(u16 a, s32 b);
-void func_02031878(void *s, void *res, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+s32 VramTex_Alloc(u32 a, s32 b);
+s32 VramPltt_Alloc(u16 a, s32 b);
+void Model_InitSprite3D(void *s, void *res, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_ov000_0235abd8(void);
 void func_ov000_0235abc8(void);
 
@@ -46,14 +46,14 @@ void func_ov000_0235ac1c(s32 a, s32 b, s32 c, UnkStruct_0235ac1c_Res *res) {
     UnkStruct_0235ac1c_Hdr *hdr;
     vu16 zero;
 
-    t = func_020372d0(func_ov000_0235abd8, func_ov000_0235abc8, 0, 0x3000, 2, sizeof(UnkStruct_0235ac1c));
+    t = Task_Create(func_ov000_0235abd8, func_ov000_0235abc8, 0, 0x3000, 2, sizeof(UnkStruct_0235ac1c));
     if (t == func_02006abc(0))
         return;
     w = t->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0235ac1c));
     hdr = (UnkStruct_0235ac1c_Hdr *)((u8 *)res + res->hdrOfs);
-    func_02031878(w, res, 1, 0, func_0203969c(hdr->unk40, 0), func_02039428(hdr->unk3E, 0), 0, 0);
+    Model_InitSprite3D(w, res, 1, 0, VramTex_Alloc(hdr->unk40, 0), VramPltt_Alloc(hdr->unk3E, 0), 0, 0);
     w->unk48 = a;
     w->unk4C = b;
     w->unk50 = c;

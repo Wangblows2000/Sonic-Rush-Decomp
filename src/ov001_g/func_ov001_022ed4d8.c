@@ -16,7 +16,7 @@ typedef struct UnkBright_022ed4d8 {
     s16 unk8;
 } UnkBright_022ed4d8;
 
-extern UnkTask_022ed4d8 *data_022b4574;
+extern UnkTask_022ed4d8 *gTaskCurrent;
 extern UnkBright_022ed4d8 data_0208926c;
 extern UnkBright_022ed4d8 data_02087d44;
 
@@ -28,12 +28,12 @@ void func_ov001_022ed188(UnkWork_022ed4d8 *w);
 void func_ov001_022ed14c(UnkWork_022ed4d8 *w);
 void func_ov001_022ed104(UnkWork_022ed4d8 *w);
 void func_ov001_022ed08c(UnkWork_022ed4d8 *w);
-void func_02037134(void);
+void Task_DestroyAll(void);
 void func_ov001_022cee48(void);
 
 #pragma thumb on
 void func_ov001_022ed4d8(void) {
-    UnkWork_022ed4d8 *w = data_022b4574->work;
+    UnkWork_022ed4d8 *w = gTaskCurrent->work;
     func_ov001_022ed490(w, 0, 0x90);
     func_ov001_022ed3e0(w);
     func_ov001_022ed390(w, w->unk24);
@@ -46,7 +46,7 @@ void func_ov001_022ed4d8(void) {
     if (w->timer >= 0x10) {
         data_0208926c.unk8 = -16;
         data_02087d44.unk8 = -16;
-        func_02037134();
+        Task_DestroyAll();
         func_ov001_022cee48();
     }
 }

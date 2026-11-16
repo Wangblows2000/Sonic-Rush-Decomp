@@ -15,22 +15,22 @@ typedef struct UnkTask_022dcaa4 {
     UnkStruct_022dcaa4 *unk10;
 } UnkTask_022dcaa4;
 
-extern UnkTask_022dcaa4 *data_022b4574;
+extern UnkTask_022dcaa4 *gTaskCurrent;
 
-void func_020316f4(void *a);
-void func_020315e0(void *a);
+void Model_Animate(void *a);
+void Model_Draw(void *a);
 
 void func_ov000_022dcaa4(void) {
-    UnkStruct_022dcaa4 *s = data_022b4574->unk10;
+    UnkStruct_022dcaa4 *s = gTaskCurrent->unk10;
     void *a;
     if (s->unk5C & 0x20)
         return;
     a = s->unk20C;
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
     if (s->unk480 == 0)
         return;
     a = s->unk344;
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
 }

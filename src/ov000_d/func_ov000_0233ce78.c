@@ -13,8 +13,8 @@ typedef struct {
     u8 *unk8B0;
 } UnkStruct_0233ce78;
 
-extern UnkStruct_0233ce78_Vram data_0208922c;
-extern UnkStruct_0233ce78_Vram data_02087d04;
+extern UnkStruct_0233ce78_Vram gDisplayMain;
+extern UnkStruct_0233ce78_Vram gDisplaySub;
 
 void DC_StoreRange(void *p, u32 size);
 void DC_WaitWriteBufferEmpty(void);
@@ -34,8 +34,8 @@ void func_ov000_0233ce78(UnkStruct_0233ce78 *w, s32 sub) {
         func_02007d2c(3, w->unk6AC, (void *)0x5000000, 0x1e0);
         st = func_0200311c();
         p = w->unk2AC;
-        func_02007d2c(3, p, data_0208922c.unk84, 0x1e0);
-        func_02007d2c(3, p, data_0208922c.unk88, 0x1e0);
+        func_02007d2c(3, p, gDisplayMain.unk84, 0x1e0);
+        func_02007d2c(3, p, gDisplayMain.unk88, 0x1e0);
         func_02003788(st);
         func_02007d2c(3, w->unk8B0, (void *)0x5000200, 0);
         func_02007d2c(3, w->unk8B0 + 0x40, (void *)0x5000240, 0x1c0);
@@ -43,8 +43,8 @@ void func_ov000_0233ce78(UnkStruct_0233ce78 *w, s32 sub) {
         func_02007d2c(3, w->unk6AC, (void *)0x5000400, 0x1e0);
         st = func_02003080();
         p = w->unk2AC;
-        func_02007d2c(3, p, data_02087d04.unk84, 0x1e0);
-        func_02007d2c(3, p, data_02087d04.unk88, 0x1e0);
+        func_02007d2c(3, p, gDisplaySub.unk84, 0x1e0);
+        func_02007d2c(3, p, gDisplaySub.unk88, 0x1e0);
         func_02003204(st);
         func_02007d2c(3, w->unk8B0, (void *)0x5000600, 0);
         func_02007d2c(3, w->unk8B0 + 0x40, (void *)0x5000640, 0x1c0);

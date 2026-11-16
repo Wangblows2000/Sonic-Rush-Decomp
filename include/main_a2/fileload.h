@@ -26,16 +26,16 @@ typedef struct UnkLoadNode {
     u32 size;
 } UnkLoadNode;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void *func_02034a40(void *heap, u32 size, s32 align);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(u32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void DC_StoreRange(const void *addr, u32 size);
 
 static inline void *UnkDbgAlloc(u32 size, s32 align) {
     u32 sz = (size + 0x43) & ~0x1f;
-    u8 *p = func_02034a40(data_0208fe80, sz, align);
+    u8 *p = Heap_Alloc(gMainHeap, sz, align);
     if (func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, sz);

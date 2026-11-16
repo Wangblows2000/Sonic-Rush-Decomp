@@ -28,7 +28,7 @@ typedef struct {
 
 extern UnkStruct_02369b4c *data_ov000_02369b4c;
 extern void *data_ov000_02369b50[];
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02365964[];
 
 void func_ov000_022e63ec(void);
@@ -38,8 +38,8 @@ void func_ov000_022e0860(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void func_020212e0(void *f);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
 
 UnkStruct_022e6500 *func_ov000_022e6500(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
@@ -47,7 +47,7 @@ UnkStruct_022e6500 *func_ov000_022e6500(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_022e6500_Sub *sub;
     vu16 zero;
 
-    w = func_020372d0(func_0206c3d0, func_ov000_022e63ec, 0, 0x502, 2, sizeof(UnkStruct_022e6500))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022e63ec, 0, 0x502, 2, sizeof(UnkStruct_022e6500))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022e6500));
     func_ov000_022fba50(w, (s32)p, b, c);
@@ -56,15 +56,15 @@ UnkStruct_022e6500 *func_ov000_022e6500(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk5C |= 0x20;
     w->base.unk54 |= 0x10;
     w->base.unk58 |= 0xa300;
-    func_02021310(ctx, data_ov000_02365964, data_022c4488);
+    func_02021310(ctx, data_ov000_02365964, gZoneActArchive);
     w->unk344 = func_02021264(ctx, 8);
     func_020212e0(ctx);
     sub = &w->unk20C;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, data_ov000_02369b50[9], 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, data_ov000_02369b50[9], 0);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     w->base.coll0.unk18 = w;
-    func_0206e2b4(&w->base.coll0, 0x13, -1);
+    ObjRect_SetAtkDefFlags(&w->base.coll0, 0x13, -1);
     w->base.coll0.unkA &= ~4;
     w->base.coll0.unkA |= 0x28;
     w->base.coll0.unk1C = func_ov000_022e0860;

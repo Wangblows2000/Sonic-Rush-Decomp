@@ -14,7 +14,7 @@ typedef struct {
     void (*fn)(void);
 } UnkTask_022da91c;
 
-extern UnkTask_022da91c *data_022b4574;
+extern UnkTask_022da91c *gTaskCurrent;
 
 void func_ov001_022da374(UnkWork_022da91c *w);
 void func_ov001_022da33c(UnkWork_022da91c *w);
@@ -43,6 +43,6 @@ void func_ov001_022da91c(UnkWork_022da91c *w) {
         func_02040e80(a);
     }
     func_ov001_022d6dac();
-    data_022b4574->fn = func_ov001_022db5f4;
+    gTaskCurrent->fn = func_ov001_022db5f4;
 }
 #pragma thumb reset

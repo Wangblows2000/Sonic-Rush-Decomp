@@ -13,17 +13,17 @@ typedef struct UnkStruct_0230bcc4 {
 } UnkStruct_0230bcc4;
 
 extern UnkStruct_0230bcc4 *data_ov001_0231f5c0;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 void func_ov001_0230b09c(u8 *blk);
 void func_0201b348(void);
 void func_0201da54(void *h);
 void func_0201db14(void *h);
-void func_02036894(void);
+void Sound_ResetHeap(void);
 
 static inline void Free_0230bcc4(void *p) {
     u32 size;
@@ -36,7 +36,7 @@ static inline void Free_0230bcc4(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov001_0230bcc4(UnkStruct_0230bcc4_o *o) {
@@ -57,5 +57,5 @@ void func_ov001_0230bcc4(UnkStruct_0230bcc4_o *o) {
     func_0201da54(g->heap);
     func_0201db14(g->heap);
     Free_0230bcc4(g->mem);
-    func_02036894();
+    Sound_ResetHeap();
 }

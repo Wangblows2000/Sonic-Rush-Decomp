@@ -49,7 +49,7 @@ typedef struct {
 
 extern UnkStruct_02369b84 *data_ov000_02369b84;
 extern void *data_ov000_02369b88[];
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern s16 data_ov000_02363fbc[][8];
@@ -62,9 +62,9 @@ void func_ov000_022f7fb4(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void func_020212e0(void *f);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 
 static inline BOOL IsMode23(void) {
     return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
@@ -83,7 +83,7 @@ UnkStruct_022f9e14 *func_ov000_022f9e14(UnkStruct_ObjParam *p, s32 b, s32 c) {
     vu16 zero;
     s16 v;
 
-    w = func_020372d0(func_0206c3d0, func_ov000_022f8200, 0, 0x501, 2, sizeof(UnkStruct_022f9e14))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022f8200, 0, 0x501, 2, sizeof(UnkStruct_022f9e14))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022f9e14));
     w->base.unk68 = func_ov000_022f7f80;
@@ -91,7 +91,7 @@ UnkStruct_022f9e14 *func_ov000_022f9e14(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk210 = r->unk24 - 0x30000;
     w->unk214 = r->unk28 + 0x18000;
     w->unk218 = r->unk2C + 0x38000;
-    func_02021310(ctx, data_ov000_0236605c, data_022c4488);
+    func_02021310(ctx, data_ov000_0236605c, gZoneActArchive);
     w->unk224 = func_02021264(ctx, 8);
     func_020212e0(ctx);
     w->unk220 = data_ov000_02369b88[2];
@@ -117,18 +117,18 @@ UnkStruct_022f9e14 *func_ov000_022f9e14(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk66 = 16;
     w->base.unk67 = 16;
     coll = &w->base.coll0;
-    func_0206e3c0(coll, -16, -16, 16, 16);
-    func_0206e2b4(coll, 0x11, 0);
+    ObjRect_SetBox2D(coll, -16, -16, 16, 16);
+    ObjRect_SetAtkDefFlags(coll, 0x11, 0);
     coll->unk18 = w;
     coll->unk1C = func_ov000_022f7fb4;
     coll->unkA |= 4;
     coll = &w->base.coll1;
-    func_0206e3c0(coll, -16, -16, 16, 16);
+    ObjRect_SetBox2D(coll, -16, -16, 16, 16);
     coll->unkA &= ~4;
     sub = &w->unk228;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, w->unk220, 0);
-    func_02031a68(sub, 0, w->unk224, 3, 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, w->unk220, 0);
+    Model_SetAnimation(sub, 0, w->unk224, 3, 0);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     ((void (*)(UnkStruct_022f9e14 *))w->base.unk68)(w);
     return w;

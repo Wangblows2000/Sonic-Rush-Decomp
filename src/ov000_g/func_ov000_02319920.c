@@ -68,7 +68,7 @@ typedef struct {
 
 extern UnkStruct_02319920_Stage data_ov000_0236abd8;
 extern UnkStruct_02319920_Plr *data_ov000_0236ac60;
-extern u32 data_022c4ef0;
+extern u32 gObjManagerFlags;
 extern s16 data_0206e470[];
 
 void func_ov000_02319af8(UnkStruct_02319920 *w);
@@ -97,7 +97,7 @@ void func_ov000_02319920(UnkStruct_02319920 *w) {
     }
     if (w->unk204 != NULL) {
         w->unk204->unk80 = w;
-        if (w->unk204->unk0 == 1 && (w->unk1BC == NULL || w->unk1BC->unk80 != w) && !(data_022c4ef0 & 0x100))
+        if (w->unk204->unk0 == 1 && (w->unk1BC == NULL || w->unk1BC->unk80 != w) && !(gObjManagerFlags & 0x100))
             func_ov000_0235258c(w->unk204, w);
     }
     func_02000dfc(mdl->mtx);

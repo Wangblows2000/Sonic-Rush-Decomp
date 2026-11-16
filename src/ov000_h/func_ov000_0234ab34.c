@@ -44,7 +44,7 @@ extern s16 data_0206e470[];
 
 void func_ov000_0234a288(UnkStruct_0234ab34 *w);
 void func_ov000_0234c4a4(UnkStruct_0234ab34 *w, s32 a);
-void func_0206e2b4(void *p, s32 a, s32 b);
+void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 
 void func_ov000_0234ab34(UnkStruct_0234ab34 *w) {
     func_ov000_0234c4a4(w, 2);
@@ -54,7 +54,7 @@ void func_ov000_0234ab34(UnkStruct_0234ab34 *w) {
     w->state = func_ov000_0234a288;
     w->unk2E = (w->unk34 * COS_0234ab34((u16)(w->unk1 << 8))) >> 12;
     w->unk30 = (w->unk34 * SIN_0234ab34((u16)(w->unk1 << 8))) >> 12;
-    func_0206e2b4(w->unk2CC, 0, 0);
+    ObjRect_SetAtkDefFlags(w->unk2CC, 0, 0);
     w->unk32C &= ~0xF;
     w->unk32C |= 1;
     if (((w->unk5E | w->unk60) & 1) && w->unk30 < -0x80)

@@ -38,7 +38,7 @@ void func_ov000_0234c644(UnkStruct_02353568 *w);
 void func_ov000_0234a064(UnkStruct_02353568 *w, u8 ang);
 void func_ov000_02328e6c(UnkStruct_02353568 *w, s32 a, s32 b);
 void func_ov000_02347680(UnkStruct_02353568 *w);
-void func_020694b0(UnkStruct_02353568 *w);
+void StageObj_Move(UnkStruct_02353568 *w);
 
 #define IDX_02353568(a) ((s32)((a) & 0xffff) >> 4)
 #define SIN_02353568(a) data_0206e470[(u32)(IDX_02353568(a) << 1)]
@@ -109,7 +109,7 @@ void func_ov000_02353568(UnkStruct_02353568 *w) {
         }
     }
     w->unk58 &= ~0x2000;
-    func_020694b0(w);
+    StageObj_Move(w);
     w->unk58 |= 0x2000;
     w->unk1 = 0;
     if (spd != 0) {

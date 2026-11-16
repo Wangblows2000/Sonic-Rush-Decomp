@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 BOOL func_02060480(u8 *p) {
@@ -20,7 +20,7 @@ BOOL func_02060480(u8 *p) {
                 DC_StoreRange(p, size);
             }
         }
-        func_020349b8(data_0208fe80, p);
+        Heap_Free(gMainHeap, p);
     }
     return TRUE;
 }

@@ -16,13 +16,13 @@ typedef struct {
 
 extern UnkTask_02050430 *data_022c4638;
 extern UnkTask_02050430 *data_022c4634;
-extern UnkTask_02050430 *data_022b4574;
-extern u32 data_02087cb8;
+extern UnkTask_02050430 *gTaskCurrent;
+extern u32 gSystemFlags;
 extern u16 data_0207ad9c;
 void func_0204331c(s32 a);
 void func_02042d34(s32 a);
 void func_02042ab8(void);
-void func_020371c8(UnkTask_02050430 *t);
+void Task_Destroy(UnkTask_02050430 *t);
 
 #pragma thumb on
 void func_02050430(void) {
@@ -33,7 +33,7 @@ void func_02050430(void) {
         u32 x;
         u32 y;
         UnkWork_02050430 *w;
-        w = data_022b4574->work;
+        w = gTaskCurrent->work;
         v = w->unk0;
         x = v & 0xff;
         y = v >> 8;
@@ -66,7 +66,7 @@ void func_02050430(void) {
         w->unk8 = x | (y << 8);
     }
     if (a == 1) {
-        data_02087cb8 &= ~0x200;
+        gSystemFlags &= ~0x200;
         switch (data_0207ad9c) {
         case 0:
             func_0204331c(0);
@@ -84,7 +84,7 @@ void func_02050430(void) {
         data_0207ad9c = 4;
     }
     if (a == 0 && b <= 1) {
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         data_022c4634 = NULL;
     }
 }

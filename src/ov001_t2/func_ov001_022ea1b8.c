@@ -8,30 +8,30 @@ typedef struct {
     void *src;
 } UnkStruct_022ea1b8;
 
-extern void *data_02250438;
-extern void *data_02250434;
+extern void *gPaletteTransferHead;
+extern void *gPaletteTransferTail;
 
 s32 func_ov001_022ea270(void *src);
 u32 func_ov001_022ea264(void *src);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *src);
-void func_02033a68(void *src, void *dst, u32 size);
+void *Compress_GetData(void *src);
+void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(const void *p, u32 size);
-void func_02035704(void *p, u16 a, s32 b, s32 c);
-void func_02035754(void);
+void PaletteTransfer_QueueCopy(void *p, u16 a, s32 b, s32 c);
+void PaletteTransfer_Flush(void);
 
 #pragma thumb on
 static inline void LoadPal_022ea1b8(void *src, u16 n, s32 a, s32 b) {
-    void *s0 = data_02250438;
-    void *s1 = data_02250434;
-    data_02250438 = NULL;
-    data_02250434 = NULL;
-    func_02035704(src, n, a, b);
-    func_02035754();
-    data_02250438 = s0;
-    data_02250434 = s1;
+    void *s0 = gPaletteTransferHead;
+    void *s1 = gPaletteTransferTail;
+    gPaletteTransferHead = NULL;
+    gPaletteTransferTail = NULL;
+    PaletteTransfer_QueueCopy(src, n, a, b);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = s0;
+    gPaletteTransferTail = s1;
 }
 
 void func_ov001_022ea1b8(UnkStruct_022ea1b8 *p, s32 start, s32 end) {
@@ -49,7 +49,7 @@ void func_ov001_022ea1b8(UnkStruct_022ea1b8 *p, s32 start, s32 end) {
         func_020087f8(src, buf);
         break;
     default:
-        func_02033a68(func_02033a54(src), buf, func_ov001_022ea264(src));
+        Mem_Copy(Compress_GetData(src), buf, func_ov001_022ea264(src));
         break;
     }
     DC_StoreRange(buf, func_ov001_022ea264(src));

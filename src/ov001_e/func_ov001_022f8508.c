@@ -18,10 +18,10 @@ typedef struct UnkStruct_022b4574 {
 } UnkStruct_022b4574;
 
 extern UnkStruct_022f8508 *data_ov001_0231f084;
-extern UnkStruct_022b4574 *data_022b4574;
+extern UnkStruct_022b4574 *gTaskCurrent;
 extern u16 data_ov001_02316abc[];
 extern u16 data_ov001_02316adc[];
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 void func_ov001_022f8330(void);
 void func_ov001_022f83c0(void);
 
@@ -29,7 +29,7 @@ void func_ov001_022f8508(void) {
     s32 i;
 
     if (data_ov001_0231f084->flags & 3) {
-        data_022b4574->func = func_ov001_022f8330;
+        gTaskCurrent->func = func_ov001_022f8330;
         func_ov001_022f8330();
         data_ov001_0231f084->flags &= ~0x1000;
         data_ov001_0231f084->flags |= 0x2000;
@@ -38,7 +38,7 @@ void func_ov001_022f8508(void) {
     data_ov001_0231f084->unkE58--;
     if (data_ov001_0231f084->unkE58 <= 0) {
         data_ov001_0231f084->unkE54 = 0x24000;
-        data_022b4574->func = func_ov001_022f83c0;
+        gTaskCurrent->func = func_ov001_022f83c0;
     }
     for (i = 0; i < 0x10; i++) {
         u16 c = data_ov001_02316adc[i];
@@ -47,7 +47,7 @@ void func_ov001_022f8508(void) {
             o->x = 0x24;
             o->y = 0xb4;
             o->h44 = 1;
-            func_02032d2c(o);
+            AnimatorSprite_Draw(o);
         }
     }
 }

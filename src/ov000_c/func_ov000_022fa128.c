@@ -26,7 +26,7 @@ typedef struct {
 
 extern UnkStruct_StageObj *data_ov000_02369b84;
 extern void *data_ov000_02369b88[];
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02366060[];
 
 void func_ov000_022f5678(void);
@@ -39,9 +39,9 @@ void func_ov000_022f4d40(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void func_020212e0(void *f);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov000_022f9044(UnkStruct_022fa128 *w);
 
@@ -53,11 +53,11 @@ UnkStruct_022fa128 *func_ov000_022fa128(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     UnkStruct_022fa128_Sub *sub;
     vu16 zero;
 
-    w = func_020372d0(func_0206c3d0, func_ov000_022f5678, 0, 0xf0, 2, sizeof(UnkStruct_022fa128))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022f5678, 0, 0xf0, 2, sizeof(UnkStruct_022fa128))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022fa128));
     w->base.unk68 = func_ov000_022f3f88;
-    func_02021310(ctx, data_ov000_02366060, data_022c4488);
+    func_02021310(ctx, data_ov000_02366060, gZoneActArchive);
     w->unk46C = func_02021264(ctx, 8);
     w->unk460 = func_02021264(ctx, 0xc);
     w->unk464 = func_02021264(ctx, 0xd);
@@ -74,7 +74,7 @@ UnkStruct_022fa128 *func_ov000_022fa128(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     w->base.unk18 = -0x1f400;
     c = &w->coll[0];
     *c = w->base.coll0;
-    func_0206e2b4(c, 0x11, 0);
+    ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
     c->unk1C = func_ov000_022f50b0;
@@ -90,7 +90,7 @@ UnkStruct_022fa128 *func_ov000_022fa128(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     c->unkA &= ~4;
     c = &w->coll[3];
     *c = w->base.coll0;
-    func_0206e2b4(c, 0x11, 0);
+    ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
     c->unk1C = func_ov000_022f4ec8;
@@ -106,7 +106,7 @@ UnkStruct_022fa128 *func_ov000_022fa128(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     c->unkA &= ~4;
     c = &w->coll[6];
     *c = w->base.coll0;
-    func_0206e2b4(c, 0x11, 0);
+    ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
     c->unk1C = func_ov000_022f4ec8;
@@ -120,9 +120,9 @@ UnkStruct_022fa128 *func_ov000_022fa128(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     w->base.unk1D4 = -0x2e4;
     w->base.unk1D6 = -0x144;
     sub = &w->unk470;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, w->unk468, 0);
-    func_02031a68(sub, 0, w->unk46C, 6, 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, w->unk468, 0);
+    Model_SetAnimation(sub, 0, w->unk46C, 6, 0);
     sub->unk10C |= 4;
     func_02021c38(sub->unk90, func_ov000_022f4d40, 0, 6, 3);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;

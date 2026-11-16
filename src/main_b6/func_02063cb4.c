@@ -19,23 +19,23 @@ typedef struct {
     s16 b;
 } UnkCur_02063cb4;
 
-void func_02032d2c(void *s);
+void AnimatorSprite_Draw(void *s);
 
 void func_02063cb4(UnkCur_02063cb4 *c) {
     u8 *w = c->w;
 
-    func_02032d2c(w + 0x370);
-    func_02032d2c(w + 0x328);
+    AnimatorSprite_Draw(w + 0x370);
+    AnimatorSprite_Draw(w + 0x328);
     if (c->a != -1) {
         UnkSpr_02063cb4 *s = &((UnkWork_02063cb4 *)w)->spr[c->a];
         s->x = 0x2f;
         s->y = 0x6f;
-        func_02032d2c(s);
+        AnimatorSprite_Draw(s);
     }
     {
         UnkSpr_02063cb4 *s = &((UnkWork_02063cb4 *)w)->spr[c->b];
         s->x = 0x39;
         s->y = 0x6f;
-        func_02032d2c(s);
+        AnimatorSprite_Draw(s);
     }
 }

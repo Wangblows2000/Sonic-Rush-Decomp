@@ -4,15 +4,15 @@
 extern void DC_StoreRange(void);
 extern void MIi_CpuClear16(void);
 extern void MIi_CpuClear32(void);
-extern u32 data_0208fe80;
+extern u32 gMainHeap;
 extern u32 data_ov001_02316e94;
 extern u32 data_ov001_0231f320;
 extern u32 data_ov001_0231f324;
 extern void func_02006abc(void);
-extern void func_0203344c(void);
-extern void func_0203363c(void);
-extern void func_02034a40(void);
-extern void func_02039c18(void);
+extern void AnimatorSprite_ProcessAnimation(void);
+extern void AnimatorSprite_Init(void);
+extern void Heap_Alloc(void);
+extern void ObjVram_Alloc(void);
 
 asm void func_ov001_022fdbc0(void)
 {
@@ -22,7 +22,7 @@ asm void func_ov001_022fdbc0(void)
     mov r1, #0x7e0
     ldr r0, [r0]
     mov r2, #0x20
-    bl func_02034a40
+    bl Heap_Alloc
     mov r4, r0
     mov r0, #0
     bl func_02006abc
@@ -70,7 +70,7 @@ _a8:
     mla r0, r8, r0, r1
     ldrh r1, [r0, #0x1e]
     mov r0, r7
-    bl func_02039c18
+    bl ObjVram_Alloc
     str r6, [sp]
     str r6, [sp, #4]
     str r0, [sp, #8]
@@ -81,12 +81,12 @@ _a8:
     mov r2, r8
     mov r0, r9
     mov r3, r5
-    bl func_0203363c
+    bl AnimatorSprite_Init
     ldr r1, [sp, #0x14]
     mov r0, r9
     mov r2, r1
     strh r4, [r9, #0x44]
-    bl func_0203344c
+    bl AnimatorSprite_ProcessAnimation
     add r10, r10, #1
     cmp r10, #0x18
     add r9, r9, #0x48
@@ -108,7 +108,7 @@ _140:
     mla r0, r8, r0, r1
     ldrh r1, [r0, #0x1e]
     mov r0, r7
-    bl func_02039c18
+    bl ObjVram_Alloc
     str r7, [sp]
     str r7, [sp, #4]
     str r0, [sp, #8]
@@ -119,12 +119,12 @@ _140:
     mov r2, r8
     mov r0, r9
     mov r3, r6
-    bl func_0203363c
+    bl AnimatorSprite_Init
     mov r0, r9
     mov r1, r7
     mov r2, r7
     strh r5, [r9, #0x44]
-    bl func_0203344c
+    bl AnimatorSprite_ProcessAnimation
     add r10, r10, #1
     cmp r10, #0x1b
     add r9, r9, #0x48
@@ -178,7 +178,7 @@ _1b8:
     add sp, sp, #0x24
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    dcd data_0208fe80
+    dcd gMainHeap
     dcd 0xcccccccc
     dcd 0x02467531
     dcd data_ov001_0231f324

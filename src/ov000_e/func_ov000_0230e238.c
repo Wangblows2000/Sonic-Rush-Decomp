@@ -9,8 +9,8 @@ typedef struct UnkStruct_0230e238 {
     struct UnkStruct_0230e238 *unk88;
 } UnkStruct_0230e238;
 
-void func_02069818(void *w, s32 a);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void StageObj_SetAnimation(void *w, s32 a);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0230e7ec(void);
 
 void func_ov000_0230e238(UnkStruct_0230e238 *s) {
@@ -22,20 +22,20 @@ void func_ov000_0230e238(UnkStruct_0230e238 *s) {
         return;
     }
     if (s->unkC > 0xb5 && p->unkC <= 0xb5) {
-        func_02069818(s, 2);
-        func_0204b7ec(0, 0, 0x6b);
+        StageObj_SetAnimation(s, 2);
+        Sound_PlaySeqArcEx(0, 0, 0x6b);
     }
     if (s->unkC > 0x79 && s->unk88->unkC <= 0x79) {
-        func_02069818(s, 3);
-        func_0204b7ec(0, 0, 0x6b);
+        StageObj_SetAnimation(s, 3);
+        Sound_PlaySeqArcEx(0, 0, 0x6b);
     }
     if (s->unkC > 0x3d && s->unk88->unkC <= 0x3d) {
-        func_02069818(s, 4);
-        func_0204b7ec(0, 0, 0x6b);
+        StageObj_SetAnimation(s, 4);
+        Sound_PlaySeqArcEx(0, 0, 0x6b);
     }
     if (s->unkC > 1 && s->unk88->unkC <= 1) {
-        func_02069818(s, 5);
-        func_0204b7ec(0, 0, 0xeb);
+        StageObj_SetAnimation(s, 5);
+        Sound_PlaySeqArcEx(0, 0, 0xeb);
     }
     s->unkC = s->unk88->unkC;
 }

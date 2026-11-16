@@ -52,7 +52,7 @@ typedef struct UnkStruct_0231066c_c {
 extern s16 data_0206e470[];
 
 void func_ov001_023102ec(UnkStruct_0231066c *w);
-void func_020316f4(void *p);
+void Model_Animate(void *p);
 s32 func_ov001_02310144(UnkStruct_0231066c *w);
 void func_ov001_0230d28c(void *a, void *b, s32 c, s32 d, u16 e, s32 f, s32 g);
 void func_0200160c(void *a, void *b, void *c);
@@ -126,9 +126,9 @@ void func_ov001_0231066c(UnkStruct_0231066c_c *c, UnkStruct_0231066c *w) {
     }
     if (!(w->unk60 & 0x10)) {
         if (w->unkAC != NULL)
-            func_020316f4(w->unkAC);
+            Model_Animate(w->unkAC);
         if (w->unkB0 != NULL)
-            func_020316f4(w->unkB0);
+            Model_Animate(w->unkB0);
     }
     if (c != NULL && c->unk1DC != NULL)
         c->unk1DC(w);

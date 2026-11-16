@@ -6,14 +6,14 @@ typedef struct {
 } UnkTask_02338538;
 
 extern void *data_ov000_0236aaac;
-void func_0206d3fc(u32 a);
-void func_02039bb0(s32 a, void *p);
-extern void *data_0208fe80;
+void ObjDraw_ReleaseSpritePalette(u32 a);
+void ObjVram_Free(s32 a, void *p);
+extern void *gMainHeap;
 
 void *func_02006abc(u32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void DC_StoreRange(const void *addr, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void UnkDbgFree(void *ptr) {
     u8 *p = ptr;
@@ -27,14 +27,14 @@ static inline void UnkDbgFree(void *ptr) {
             DC_StoreRange(p, sz);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov000_02338538(UnkTask_02338538 *t) {
     u8 *w = t->unk10;
 
-    func_0206d3fc(*(u16 *)(w + 0x44) & 0xff);
-    func_02039bb0(0, *(void **)(w + 0x34));
+    ObjDraw_ReleaseSpritePalette(*(u16 *)(w + 0x44) & 0xff);
+    ObjVram_Free(0, *(void **)(w + 0x34));
     UnkDbgFree(*(void **)(w + 0x48));
     data_ov000_0236aaac = NULL;
 }

@@ -202,3 +202,1731 @@ _ll_sdiv: {confidence: confirmed, evidence: "compiler-generated call from matche
 _dadd: {confidence: confirmed, evidence: "compiler-generated call from matched func_ov000_022e1684 resolves to 0x0202d5d8 in the ROM"}
 _dfixu: {confidence: confirmed, evidence: "compiler-generated call from matched func_ov000_022e1684 resolves to 0x0202d93c in the ROM"}
 _deq: {confidence: confirmed, evidence: "compiler-generated call from matched func_0202cac4 resolves to 0x0202e888 in the ROM"}
+_fp_init:
+  confidence: tentative
+  evidence: "strong E1,E4: first of the three hook calls in crt0 Entry (bl _fp_init; bl NitroStartUp; bl __call_static_initializers), empty body (was func_0202fcc8, main, 2026-11-16)"
+__call_static_initializers:
+  confidence: tentative
+  evidence: "strong E1,E4: third crt0 Entry hook; iterates ARM9_CTOR_START function-pointer table until NULL (was func_0202fcdc, main, 2026-11-16)"
+System_Init:
+  confidence: tentative
+  evidence: "strong E5,E6: first call in main(); OS/GX/FX init, IME/IE, LCDC VRAM clear, POWCNT 0x04000304 and DISP3DCNT setup, calls every subsystem init (Heap/Task/Pad/Touch/Sound/Vram) (was func_02030598, main, 2026-11-16)"
+System_InitState:
+  confidence: tentative
+  evidence: "strong E6,E7: called only from System_Init; zeroes gSystemFlags, both display shadow structs (0x1528 each), VRAM state, sets overlay ids to -1 and clears overlay callback (was func_0203039c, main, 2026-11-16)"
+System_HandleLidClose:
+  confidence: tentative
+  evidence: "strong E5,E6: called every frame from main(); reads PAD_DetectFold bit 0x8000 of 0x027FFFA8 and sleeps/turns off backlight or restores display on open (was func_0202fd94, main, 2026-11-16)"
+System_Update3DErrorFlags:
+  confidence: tentative
+  evidence: "strong E5,E6: called every frame from main(); sets gSystemFlags bits from DISP3DCNT 0x04000060 bits 12/13 and GXSTAT 0x04000600 bit 15 when 3D power on (was func_0202ff80, main, 2026-11-16)"
+System_SoftReset:
+  confidence: tentative
+  evidence: "strong E5,E6: main() calls it when held keys contain 0x30c (L+R+START+SELECT); master brightness 0x10 on both engines, unloads overlay 0, OS_ResetSystem(param|0x80000000) (was func_02030538, main, 2026-11-16)"
+Display_VBlankUpdate:
+  confidence: tentative
+  evidence: "strong E5,E6: runs after VBlankIntrWait in main(); DMA-copies shadow BGCNT/BGOFS/WIN/affine regs to 0x04000010../0x04001010.., MASTER_BRIGHT 0x6c/0x106c, BLDY 0x4c, then flushes transfer queues and VBlank task list (was func_0203005c, main, 2026-11-16)"
+Overlay_Update:
+  confidence: tentative
+  evidence: "strong E6,E7: every frame from main(); if requested id != loaded id FS_UnloadOverlay(0,old)/FS_LoadOverlay(0,new), then runs and clears the pending callback (was func_020302d8, main, 2026-11-16)"
+Overlay_Request:
+  confidence: tentative
+  evidence: "strong E7: stores requested overlay id (data_02087cbc) and one-shot callback (data_02087cb0), exactly the two fields Overlay_Update consumes (was func_0203051c, main, 2026-11-16)"
+Model_Draw:
+  confidence: tentative
+  evidence: "strong E6,E7: loads object trans/rot(MI_Copy36B)/scale into NNS_G3dGlb (data_02084d38, flag &= ~0xA4), runs per-object G3 callbacks, then draws by type (0 RenderObj, 2 sprite cell quads) (was func_020315e0, main, 2026-11-16)"
+Model_Animate:
+  confidence: tentative
+  evidence: "strong E6,E7: per-type dispatcher sharing Model_Draw's type field: type 0 advances NNS anim objects, type 2 calls AnimatorSprite_ProcessAnimation (was func_020316f4, main, 2026-11-16)"
+Model_AnimateMdl:
+  confidence: tentative
+  evidence: "strong E7: type-0 animation step: blends anm/anm2 ratios, advances frame by speed, loops or clamps at res numFrames<<12, frees finished blend AnmObj with gSystemHeapAllocator (was func_020313cc, main, 2026-11-16)"
+Model_Release:
+  confidence: tentative
+  evidence: "strong E7: per type frees all AnmObj slots (RemoveAnmObj + FreeAnmObj with gSystemHeapAllocator) or releases type-2 tex/pltt VRAM (VramTex_Free/VramPltt_Free) (was func_02031768, main, 2026-11-16)"
+Model_SetAnimation:
+  confidence: tentative
+  evidence: "strong E6,E7: anchor #30; per slot remove/free old AnmObj, alloc new with (gSystemHeapAllocator, anm, resMdl), init, add to RenderObj (was func_02031a68, main, 2026-11-16)"
+Model_Init:
+  confidence: tentative
+  evidence: "strong E7: zeroes object, type=0, scale 1.0, identity rot/mtx, all anim speeds and blend speeds 0x1000 (fields consumed by Model_AnimateMdl) (was func_02031c1c, main, 2026-11-16)"
+Model_SetResource:
+  confidence: tentative
+  evidence: "strong E7: type 0: picks model idx from resource dictionary and initialises the RenderObj at +0x90 with it (same RenderObj used by Model_SetAnimation) (was func_02031bd0, main, 2026-11-16)"
+Model_InitSprite3D:
+  confidence: tentative
+  evidence: "strong E6,E7: zeroes object, type=2, scale 1.0, then AnimatorSprite_Init on +0x90 and sets polygon/material attrs; type 2 is drawn by Model_DrawSprite3D (was func_02031878, main, 2026-11-16)"
+Model_DrawSprite3D:
+  confidence: tentative
+  evidence: "strong E7: type-2 draw: walks BAC cell OAM entries and emits each as a textured G3 quad (TexImageParam/PlttBase/Translate/Scale), handles H/V flip (was func_02030a84, main, 2026-11-16)"
+AnimatorSprite_Init:
+  confidence: tentative
+  evidence: "strong E3,E6: receives the loaded '/act/*.bac' resource from 02069d38 (e.g. /act/ac_fix_pause.bac in PauseMenu 0x02055918); zeroes animator, stores header, anim idx, VRAM/pltt params, first command pos (was func_0203363c, main, 2026-11-16)"
+AnimatorSprite_SetAnimation:
+  confidence: tentative
+  evidence: "strong E3,E6: anchor #31; applied to the same .bac animators (PauseMenu 0x02055918); sets anim index from BAC entry table and resets frame counters (was func_02033550, main, 2026-11-16)"
+AnimatorSprite_ProcessAnimation:
+  confidence: tentative
+  evidence: "strong E6,E7: called on the same animators after SetAnimation; counts down frame wait, then runs BAC commands from table data_02072e00 until a handler returns FALSE (was func_0203344c, main, 2026-11-16)"
+AnimatorSprite_Draw:
+  confidence: tentative
+  evidence: "strong E6,E7: builds OAM entries for the current BAC frame via Oam_AllocObj (0x02036bfc); fallback target of the rot/scale draw (was func_02032d2c, main, 2026-11-16)"
+AnimatorSprite_DrawRotScale:
+  confidence: tentative
+  evidence: "strong E6,E7: as AnimatorSprite_Draw but with scale/rotation using FX_SinCosTable_ and Oam_GetAffineIndex; falls back to AnimatorSprite_Draw when no affine needed (was func_02032480, main, 2026-11-16)"
+AnimatorSpriteDS_Init:
+  confidence: tentative
+  evidence: "strong E7: dual-screen variant of AnimatorSprite_Init: same header/pos setup plus per-engine (main/sub) VRAM and palette params and an engine mask (was func_02033590, main, 2026-11-16)"
+AnimatorSpriteDS_ProcessAnimation:
+  confidence: tentative
+  evidence: "strong E7: same frame-wait/BAC-command loop as AnimatorSprite_ProcessAnimation, executed once per enabled engine with per-engine params (was func_020332c4, main, 2026-11-16)"
+AnimatorSpriteDS_Draw:
+  confidence: tentative
+  evidence: "strong E7: runs AnimatorSprite_Draw once per engine not masked out, with per-engine params copied in (was func_02032c8c, main, 2026-11-16)"
+AnimatorSpriteDS_DrawRotScale:
+  confidence: tentative
+  evidence: "strong E7: runs AnimatorSprite_DrawRotScale once per engine not masked out (was func_020323c8, main, 2026-11-16)"
+VRAMTransfer_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; clears queue head/tail data_0208f7e0/data_0208f7dc (was func_02033b24, main, 2026-11-16)"
+VRAMTransfer_AllocJob:
+  confidence: tentative
+  evidence: "strong E7: takes a 0x20-byte node from TransferJob_Alloc and appends it to the data_0208f7e0/dc queue (was func_020336f8, main, 2026-11-16)"
+VRAMTransfer_Clear:
+  confidence: tentative
+  evidence: "strong E7: frees every queued job (TransferJob_Free) without executing it (was func_02033754, main, 2026-11-16)"
+VRAMTransfer_QueueLoad:
+  confidence: tentative
+  evidence: "strong E7: queues job type 1 (decompress LZ/Huffman/RL or raw-with-header) src -> (dstType,dst) (was func_020337a4, main, 2026-11-16)"
+VRAMTransfer_QueueCopy:
+  confidence: tentative
+  evidence: "strong E6,E7: queues job type 0 raw copy (src,size,dstType,dst) (was func_020337ec, main, 2026-11-16)"
+VRAMTransfer_Flush:
+  confidence: tentative
+  evidence: "strong E6,E7: called from Display_VBlankUpdate; executes all jobs (DMA/CPU copy or MI uncompress by header type 0x10/0x20/0x30), dstType 1 maps VRAM bank pages via data_0208a754 (was func_0203383c, main, 2026-11-16)"
+VRAMTransfer_LoadNow:
+  confidence: tentative
+  evidence: "strong E7: saves queue, queues one load, flushes immediately, restores queue (was func_020321e4, main, 2026-11-16)"
+VRAMTransfer_GetDataSize:
+  confidence: tentative
+  evidence: "strong E4: returns *p >> 8 (compressed-data header size field), used only by VRAMTransfer_Flush (was func_02033a48, main, 2026-11-16)"
+VRAMTransfer_GetCompressionType:
+  confidence: tentative
+  evidence: "strong E4: returns *p & 0xF0 (compression type 0x10/0x20/0x30), used only by VRAMTransfer_Flush (was func_02033a5c, main, 2026-11-16)"
+Compress_GetData:
+  confidence: tentative
+  evidence: "strong E4: returns p+4 (data after the 4-byte compression header); used by all three transfer flushes for uncompressed sources (was func_02033a54, main, 2026-11-16)"
+Mem_Copy:
+  confidence: tentative
+  evidence: "strong E4: copies with CpuCopyFast/CpuCopy32/CpuCopy16/CpuCopy8 chosen by alignment and remaining size (was func_02033a68, main, 2026-11-16)"
+PaletteTransfer_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; clears queue head/tail data_02250438/data_02250434 (was func_02035b3c, main, 2026-11-16)"
+PaletteTransfer_AllocJob:
+  confidence: tentative
+  evidence: "strong E7: takes a node from TransferJob_Alloc and appends it to the data_02250438/34 queue (was func_0203530c, main, 2026-11-16)"
+PaletteTransfer_Clear:
+  confidence: tentative
+  evidence: "strong E7: frees every queued palette job without executing it (was func_02035368, main, 2026-11-16)"
+PaletteTransfer_QueueLoad:
+  confidence: tentative
+  evidence: "strong E7: queues palette job type 1 (decompress or raw) src -> (dstType,dst) (was func_020356bc, main, 2026-11-16)"
+PaletteTransfer_QueueCopy:
+  confidence: tentative
+  evidence: "strong E7: queues palette job type 0 copy of len colours (src,len,dstType,dst) (was func_02035704, main, 2026-11-16)"
+PaletteTransfer_Flush:
+  confidence: tentative
+  evidence: "strong E6,E7: called from Display_VBlankUpdate; dstType 1-4 map BG/OBJ ext-palette banks of both engines, 5 tex palette; ops copy/load/invert/fade on 15-bit colours (was func_02035754, main, 2026-11-16)"
+PaletteTransfer_LoadNow:
+  confidence: tentative
+  evidence: "strong E7: saves palette queue, queues one load, flushes immediately, restores queue (was func_02031ee0, main, 2026-11-16)"
+PaletteTransfer_GetDataSize:
+  confidence: tentative
+  evidence: "strong E4: returns *p >> 8 (compression header size), used only by PaletteTransfer_Flush (was func_02035b24, main, 2026-11-16)"
+PaletteTransfer_GetCompressionType:
+  confidence: tentative
+  evidence: "strong E4: returns *p & 0xF0, used only by PaletteTransfer_Flush (was func_02035b30, main, 2026-11-16)"
+Palette_DarkenStep:
+  confidence: tentative
+  evidence: "strong E7: per colour decrements each nonzero 5-bit R/G/B channel by one (palette op 7) (was func_020353b8, main, 2026-11-16)"
+Palette_BrightenStep:
+  confidence: tentative
+  evidence: "strong E7: per colour adds 1 to each 5-bit R/G/B channel (palette op 5) (was func_020354b8, main, 2026-11-16)"
+Palette_StepUpToward:
+  confidence: tentative
+  evidence: "strong E7: per colour increments each R/G/B channel of dst that differs from src (palette op 6) (was func_02035418, main, 2026-11-16)"
+Palette_StepDownToward:
+  confidence: tentative
+  evidence: "strong E7: per colour decrements each R/G/B channel of dst that differs from src (palette op 4) (was func_02035508, main, 2026-11-16)"
+Palette_Invert:
+  confidence: tentative
+  evidence: "strong E7: per colour XOR 0x7FFF (palette op 2) (was func_02035660, main, 2026-11-16)"
+Palette_InvertGrayscale:
+  confidence: tentative
+  evidence: "strong E7,E8: per colour luminance from 3 weight tables at data_020730ac, replicated into R/G/B, then XOR 0x7FFF (palette op 3) (was func_020355a8, main, 2026-11-16)"
+ScreenTransfer_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; clears queue head/tail data_02250440/data_0225043c (was func_0203659c, main, 2026-11-16)"
+ScreenTransfer_AllocJob:
+  confidence: tentative
+  evidence: "strong E7: takes a node from TransferJob_Alloc and appends it to the data_02250440/3c queue (was func_02035c58, main, 2026-11-16)"
+ScreenTransfer_Clear:
+  confidence: tentative
+  evidence: "strong E7: frees every queued screen job without executing it (was func_02035cb4, main, 2026-11-16)"
+ScreenTransfer_QueueRect:
+  confidence: tentative
+  evidence: "strong E7,E8: queues a BG screen-map rectangle (x,y,w,h, screen/char base) to 0x06000000/0x06200000 (table data_0207803c); raw sources go to ScreenTransfer_QueueRectRaw (was func_02035d04, main, 2026-11-16)"
+ScreenTransfer_QueueRectRaw:
+  confidence: tentative
+  evidence: "strong E7: uncompressed screen rectangle; splits it into per-32x32-block jobs for 64-tile-wide/high screens (was func_02035e68, main, 2026-11-16)"
+ScreenTransfer_Flush:
+  confidence: tentative
+  evidence: "strong E6,E7: called from Display_VBlankUpdate; executes row copies (Mem_CopyRect) or decompress loads for queued screen jobs (was func_020363f0, main, 2026-11-16)"
+Mem_CopyRect:
+  confidence: tentative
+  evidence: "strong E7: copies rows of size bytes with src/dst strides; Mem_Copy in main RAM else DMA ch3 (was func_02035b5c, main, 2026-11-16)"
+ScreenTransfer_GetDataSize:
+  confidence: tentative
+  evidence: "strong E4: returns *p >> 8 (compression header size), used only by ScreenTransfer_Flush (was func_02036584, main, 2026-11-16)"
+ScreenTransfer_GetCompressionType:
+  confidence: tentative
+  evidence: "strong E4: returns *p & 0xF0, used only by ScreenTransfer_Flush (was func_02036590, main, 2026-11-16)"
+TransferJob_InitPool:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; builds free list of 256 0x20-byte nodes (data_022b69e0) used by the three transfer queues (was func_02037efc, main, 2026-11-16)"
+TransferJob_Alloc:
+  confidence: tentative
+  evidence: "strong E7: pops a node from the 256-entry free list (count data_022b65dc), else returns the null sentinel; only callers are the 3 *Transfer_AllocJob (was func_02037eb0, main, 2026-11-16)"
+TransferJob_Free:
+  confidence: tentative
+  evidence: "strong E7: pushes node back on the free list; called by the transfer Flush/Clear functions (was func_02037e68, main, 2026-11-16)"
+Background_Init:
+  confidence: tentative
+  evidence: "strong E5,E6: sets up a BG descriptor from a resource for (engine,bg): palette dest (Bg_GetPaletteDest), char base (Bg_GetCharBase), screen format (Bg_GetScreenFormat) (was func_0203473c, main, 2026-11-16)"
+Background_InitEx:
+  confidence: tentative
+  evidence: "strong E7: same descriptor setup as Background_Init with all VRAM destinations passed explicitly (was func_0203485c, main, 2026-11-16)"
+Background_Draw:
+  confidence: tentative
+  evidence: "strong E6,E7: uploads a BG descriptor: palette via PaletteTransfer, chars via VRAMTransfer, map via ScreenTransfer (immediate or queued per flag) (was func_0203438c, main, 2026-11-16)"
+BackgroundDS_Init:
+  confidence: tentative
+  evidence: "strong E7: Background_Init for engine 0 and engine 1, keeping per-engine copies (was func_02034644, main, 2026-11-16)"
+BackgroundDS_Draw:
+  confidence: tentative
+  evidence: "strong E7: restores per-engine copies and calls Background_Draw for engine 0 then 1 (was func_020342b0, main, 2026-11-16)"
+Bg_GetScreenFormat:
+  confidence: tentative
+  evidence: "strong E5: reads DISPCNT BG mode bits 0-2 and BGxCNT size bits 14-15 to return screen type (text/affine/ext x size), plus screen base and priority (was func_02038a4c, main, 2026-11-16)"
+Bg_GetCharBase:
+  confidence: tentative
+  evidence: "strong E5: returns DISPCNT char base (bits 24-26, main only) and BGxCNT char base block (bits 2-5) (was func_020391bc, main, 2026-11-16)"
+Bg_GetPaletteDest:
+  confidence: tentative
+  evidence: "strong E5: DISPCNT bit 30 (BG ext palette) selects ext-palette slot type/offset, else standard BG palette address from data_02072c88 (was func_02039200, main, 2026-11-16)"
+Oam_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; resets both engines' OAM managers (attr buffers 0x200-filled, priority lists 0xffff) (was func_02036cb8, main, 2026-11-16)"
+Oam_AllocObj:
+  confidence: tentative
+  evidence: "strong E7: appends one of 128 OBJ entries to priority bucket prio (<32) of engine idx (was func_02036bfc, main, 2026-11-16)"
+Oam_GetAffineIndex:
+  confidence: tentative
+  evidence: "strong E7: finds an affine slot with the same pa/pb/pc/pd (mtx>>4) or allocates a new one (<32) (was func_02036aec, main, 2026-11-16)"
+Oam_Flush:
+  confidence: tentative
+  evidence: "strong E6,E7: anchor #22; main() calls it for 0 and 1; copies 32 priority buckets of 6-byte entries into the OAM buffer and clears buckets (was func_02036a0c, main, 2026-11-16)"
+Oam_Upload:
+  confidence: tentative
+  evidence: "strong E5,E6: called from Display_VBlankUpdate per engine; DMA ch3 copies OAM buffer (+0x8a8) to 0x07000000/0x07000400 (table data_020731fc), then refills it from +0xca8 (was func_020369ac, main, 2026-11-16)"
+Oam_Freeze:
+  confidence: tentative
+  evidence: "strong E7: copies the current OAM priority lists into the retained back buffer (+0xca8) so they keep showing; used by the System_Freeze tasks (was func_02038694, main, 2026-11-16)"
+ObjVram_Alloc:
+  confidence: tentative
+  evidence: "strong E7,E8: allocates n blocks in the per-engine OBJ VRAM block table and returns an address based on 0x06400000/0x06600000 (data_02072c70) (was func_02039c18, main, 2026-11-16)"
+ObjVram_Free:
+  confidence: tentative
+  evidence: "strong E7,E8: clears the per-engine OBJ VRAM block entry for addr (relative to data_02072c70 base) (was func_02039bb0, main, 2026-11-16)"
+ObjVram_Reset:
+  confidence: tentative
+  evidence: "strong E7: zeroes the per-engine OBJ VRAM block table (+0x98, 0x800 bytes) (was func_02039d08, main, 2026-11-16)"
+VramTex_Alloc:
+  confidence: tentative
+  evidence: "strong E4,E7: 512-byte-block allocator over the tex VRAM bank tables, with 4x4-compressed pair mode; wrapped by VramTex_GfdAlloc (was func_0203969c, main, 2026-11-16)"
+VramTex_Free:
+  confidence: tentative
+  evidence: "strong E4,E7: frees a tex VRAM block entry (and its 4x4 palette-index half) (was func_02039624, main, 2026-11-16)"
+VramPltt_Alloc:
+  confidence: tentative
+  evidence: "strong E4,E7: allocates tex palette VRAM (4x4-pltt 16-byte units or 4-byte units) honouring configured bank count (was func_02039428, main, 2026-11-16)"
+VramPltt_Free:
+  confidence: tentative
+  evidence: "strong E4,E7: clears tex palette VRAM allocation entry for addr (was func_020393dc, main, 2026-11-16)"
+VramTex_GfdAlloc:
+  confidence: tentative
+  evidence: "strong E4: returns NNSGfdTexKey (addr>>3)|((size>>4)<<16)|(is4x4<<31) from VramTex_Alloc; installed into NNS_GfdDefaultFuncAllocTexVram by Vram_Init (was func_0203938c, main, 2026-11-16)"
+VramTex_GfdFree:
+  confidence: tentative
+  evidence: "strong E4: frees (key&0xffff)<<3 via VramTex_Free; installed into NNS_GfdDefaultFuncFreeTexVram (was func_02039360, main, 2026-11-16)"
+VramPltt_GfdAlloc:
+  confidence: tentative
+  evidence: "strong E4: returns NNSGfdPlttKey (addr>>3)|((size>>3)<<16) from VramPltt_Alloc; installed into NNS_GfdDefaultFuncAllocPlttVram (was func_0203931c, main, 2026-11-16)"
+VramPltt_GfdFree:
+  confidence: tentative
+  evidence: "strong E4: frees (key&0xffff)<<3 via VramPltt_Free; installed into NNS_GfdDefaultFuncFreePlttVram (was func_020392f0, main, 2026-11-16)"
+Vram_ResetTexAndPltt:
+  confidence: tentative
+  evidence: "strong E7: clears tex block tables, usage counters and pltt table (was func_02039b48, main, 2026-11-16)"
+VramPltt_Reset:
+  confidence: tentative
+  evidence: "strong E7: clears tex palette VRAM table data_0208af8a (0x4800) (was func_020395f4, main, 2026-11-16)"
+Vram_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; resets OBJ/tex/pltt managers, all banks to 0, installs the four NNS_GfdDefaultFunc* hooks (was func_0203ae78, main, 2026-11-16)"
+Vram_SetBankConfig:
+  confidence: tentative
+  evidence: "strong E5,E7: resets every bank then applies one of 3 preset VRAM bank layouts (A..I masks to BG/OBJ/ext-pltt/tex) (was func_0203ac70, main, 2026-11-16)"
+Vram_SetBankForBG:
+  confidence: tentative
+  evidence: "strong E5: takes a VRAM bank mask (presets pass A=0x1 or D=0x8) and calls GX bank setter 0x02003a08 (was func_0203a9d0, main, 2026-11-16)"
+Vram_SetBankForOBJ:
+  confidence: tentative
+  evidence: "strong E5: presets pass B or F|G (0x2/0x60), calls GX setter 0x0200389c (was func_0203a6bc, main, 2026-11-16)"
+Vram_SetBankForBGExtPltt:
+  confidence: tentative
+  evidence: "strong E5: bank E (0x10) in preset, calls GX setter 0x02003788, records ext-palette LCDC addrs used by PaletteTransfer_Flush dstType 1 (was func_0203a590, main, 2026-11-16)"
+Vram_SetBankForOBJExtPltt:
+  confidence: tentative
+  evidence: "strong E5: bank F (0x20) in preset, calls GX setter 0x020036d0, address used by PaletteTransfer_Flush dstType 2 (was func_0203a504, main, 2026-11-16)"
+Vram_SetBankForTex:
+  confidence: tentative
+  evidence: "strong E5: banks A-D (0x7/0xf) in presets, calls GX setter 0x020034cc (was func_02039ef8, main, 2026-11-16)"
+Vram_SetBankForTexPltt:
+  confidence: tentative
+  evidence: "strong E5: banks E/F/G (0x10..0x70) mapped to LCDC 0x06880000..0x06894000, calls GX setter 0x020033d8 (was func_02039d40, main, 2026-11-16)"
+Vram_SetBankForSubBG:
+  confidence: tentative
+  evidence: "strong E5: bank C (0x4) / H|I in presets, calls GX setter 0x0200330c (was func_0203a43c, main, 2026-11-16)"
+Vram_SetBankForSubOBJ:
+  confidence: tentative
+  evidence: "strong E5: bank D (0x8) / I in presets, calls GX setter 0x02003290 (was func_0203a288, main, 2026-11-16)"
+Vram_SetBankForSubBGExtPltt:
+  confidence: tentative
+  evidence: "strong E5: bank H (0x80), calls GX setter 0x02003204, address used by PaletteTransfer_Flush dstType 3 (was func_0203a1f8, main, 2026-11-16)"
+Vram_SetBankForSubOBJExtPltt:
+  confidence: tentative
+  evidence: "strong E5: bank I (0x100) -> LCDC 0x068a0000, calls GX setter 0x02003178, address used by PaletteTransfer_Flush dstType 4 (was func_0203a18c, main, 2026-11-16)"
+File_Load:
+  confidence: tentative
+  evidence: "strong E4,E7: FS init/open path/read whole file (FSFile top/bottom at +0x20/+0x24) into dst or a new main-heap block (NULL = head, -1 = tail), close, DC_StoreRange (was func_02033fbc, main, 2026-11-16)"
+File_GetSize:
+  confidence: tentative
+  evidence: "strong E4,E7: opens path and returns bottom-top, or -1 on open/close failure (was func_02033ddc, main, 2026-11-16)"
+File_LoadArchiveEntry:
+  confidence: tentative
+  evidence: "strong E4,E7: opens archive path, reads entry {ofs,size} via File_ReadArchiveEntryInfo, allocates in main heap if needed and reads that entry (was func_0203879c, main, 2026-11-16)"
+File_ReadArchiveEntryInfo:
+  confidence: tentative
+  evidence: "strong E4: seek to n*8+8 and read the 8-byte {ofs,size} entry of archive table (was func_020384b0, main, 2026-11-16)"
+FileRequest_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; builds 16-node pool and head/tail sentinels of the async load list (was func_02034174, main, 2026-11-16)"
+FileRequest_AllocNode:
+  confidence: tentative
+  evidence: "strong E7: pops one of 16 request nodes (count data_0208f7e8) (was func_02033db0, main, 2026-11-16)"
+FileRequest_Create:
+  confidence: tentative
+  evidence: "strong E7: appends a request node for path (FS path->file id) with status 1 and optional destination memory (was func_02033f44, main, 2026-11-16)"
+FileRequest_Destroy:
+  confidence: tentative
+  evidence: "strong E7: unlinks request, returns node, frees heap memory it allocated (flag 1) and closes file (flag 2) (was func_02033e3c, main, 2026-11-16)"
+FileRequest_FindPending:
+  confidence: tentative
+  evidence: "strong E7: returns first list node whose status is >=0 and not 5/6 (was func_02033d58, main, 2026-11-16)"
+FileRequest_StartRead:
+  confidence: tentative
+  evidence: "strong E7: opens by file id, allocates destination if needed, starts async read, status 3 or error -1/-2/-3 (was func_02033b98, main, 2026-11-16)"
+FileRequest_Finish:
+  confidence: tentative
+  evidence: "strong E7: when async read done closes file, clears flag 2, status 5, DC_StoreRange on data (was func_02033b44, main, 2026-11-16)"
+FileRequest_Update:
+  confidence: tentative
+  evidence: "strong E6,E7: called every frame from main(); pumps pending requests (status 1 start read, status 3 finish) (was func_02034114, main, 2026-11-16)"
+Heap_InitSystem:
+  confidence: tentative
+  evidence: "strong E7: anchor #8 (proposed Heap_Init); creates exp heap at 0x0208ff00 size 0x20000 -> data_0208fe78 and its NNS allocator data_0208fed4 (align 0x20) (was func_02034c68, main, 2026-11-16)"
+Heap_InitMain:
+  confidence: tentative
+  evidence: "strong E7: creates exp heap at 0x020aff00 size 0x1A0000 -> data_0208fe80 and allocator data_0208fec4 (align 0x20) (was func_02034bc0, main, 2026-11-16)"
+Heap_InitDTCM:
+  confidence: tentative
+  evidence: "strong E7: creates exp heap at DTCM 0x027e0060 size 0x2000 -> data_0208fe74 and allocator data_0208feb4 (was func_02034b18, main, 2026-11-16)"
+Heap_InitITCM:
+  confidence: tentative
+  evidence: "strong E7: creates exp heap at ITCM 0x01ff8760 size 0x7000 -> data_0208fe7c and allocator data_0208fea4 (was func_02034a70, main, 2026-11-16)"
+Heap_InitAll:
+  confidence: tentative
+  evidence: "strong E6: called from System_Init; calls Heap_InitSystem, Heap_InitMain, Heap_InitDTCM, Heap_InitITCM (was func_02034d10, main, 2026-11-16)"
+Heap_Alloc:
+  confidence: tentative
+  evidence: "strong E7: anchor #6; func_020209d0(heap,size,align), falls back to OS_GetArenaLo(0) sentinel (was func_02034a40, main, 2026-11-16)"
+Heap_Free:
+  confidence: tentative
+  evidence: "strong E7: anchor #7; frees only inside system, main or DTCM heap arenas (was func_020349b8, main, 2026-11-16)"
+Heap_AllocatorAlloc:
+  confidence: tentative
+  evidence: "strong E7: NNSFndAllocator pfAlloc slot of all four allocators: Heap_Alloc(*allocator->heap, size, allocator->align) (was func_020349a0, main, 2026-11-16)"
+Heap_AllocatorFree:
+  confidence: tentative
+  evidence: "strong E7: NNSFndAllocator pfFree slot of all four allocators: Heap_Free(*allocator->heap, p) (was func_0203498c, main, 2026-11-16)"
+Rand_SeedFromRTC:
+  confidence: tentative
+  evidence: "strong E6,E7: anchor #12; zeroes gRandSeed, reads RTC time, seeds s|m<<6|h<<12 mirrored to high half (was func_0203492c, main, 2026-11-16)"
+Pad_Update:
+  confidence: tentative
+  evidence: "strong E5,E6: anchor #19; main() passes masked KEYINPUT|EXTKEY; computes held/prev/press/release/repeat with 12 per-key repeat counters (was func_02035134, main, 2026-11-16)"
+Pad_Init:
+  confidence: tentative
+  evidence: "strong E5,E6: called only from System_Init; Pad_Reset then one Pad_Update with KEYINPUT 0x04000130 | ext keys 0x027FFFA8 (anchor #20 proposed Pad_ReadHardware) (was func_020352a8, main, 2026-11-16)"
+Pad_Reset:
+  confidence: tentative
+  evidence: "strong E7: zeroes pad state and sets 12 repeat delays (default 20) and intervals (default 2) consumed by Pad_Update (was func_020351d8, main, 2026-11-16)"
+Touch_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: called from System_Init; TP init, clears touch state, sets TP callback, loads calibration from user info (TP_GetUserInfo/SetCalibrateParam shape) (was func_02037de8, main, 2026-11-16)"
+Touch_Update:
+  confidence: tentative
+  evidence: "strong E6,E7: called every frame from main(); if touch enabled runs auto-sampling or single-sample update (was func_02037c60, main, 2026-11-16)"
+Touch_UpdateAuto:
+  confidence: tentative
+  evidence: "strong E4,E7: auto-sampling mode: latest index into 5-entry sample buffer, calibrates TPData{x,y,touch,validity}, tracks press start/end (was func_0203787c, main, 2026-11-16)"
+Touch_UpdateSingle:
+  confidence: tentative
+  evidence: "strong E4,E7: request/wait one TP sample, calibrate, update x/y/last/start/end and press/release flags (was func_02037a8c, main, 2026-11-16)"
+Touch_FilterAutoSamples:
+  confidence: tentative
+  evidence: "strong E7: calibrates the last count auto samples, picks the newest valid one and fills the position history (was func_02037650, main, 2026-11-16)"
+Touch_StopAuto:
+  confidence: tentative
+  evidence: "strong E7: in auto mode requests auto-sampling stop and waits; clears enable/auto flags and gSystemFlags 0x8000 (was func_02037cac, main, 2026-11-16)"
+Touch_Enable:
+  confidence: tentative
+  evidence: "strong E7: stops auto sampling if active, clears state and sample buffer, sets enable flag (was func_02037d60, main, 2026-11-16)"
+Touch_Disable:
+  confidence: tentative
+  evidence: "strong E7: clears touch enable flag and counter (was func_02037d40, main, 2026-11-16)"
+Touch_NullCallback:
+  confidence: tentative
+  evidence: "strong E6: empty function registered as TP callback by Touch_Init (was func_02037c5c, main, 2026-11-16)"
+Mic_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: called from System_Init; MIC init (PXI FIFO tag 9 = MIC) then clears mic state data_0224ff00 (was func_02034e8c, main, 2026-11-16)"
+Mic_Update:
+  confidence: tentative
+  evidence: "strong E6,E7: called every frame from main(); reads last sampling address, invalidates new sample range in ring buffer, computes sample count (was func_02034d34, main, 2026-11-16)"
+Sound_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; sound init, creates 0x64000-byte sound heap in data_02250574, inits handles, volumes 0x7F (was func_02036928, main, 2026-11-16)"
+Sound_ResetHeap:
+  confidence: tentative
+  evidence: "strong E7: destroys and recreates the 0x64000-byte sound heap, reinitialises the 3 default handles and volumes 0x7F (was func_02036894, main, 2026-11-16)"
+Sound_PlaySeqArc:
+  confidence: tentative
+  evidence: "strong E7: anchor #29; default handle data_02250454, stop if active, init, start seqarc (handle,arc,idx), set volume data_02250444 (was func_02036754, main, 2026-11-16)"
+Sound_PlaySeq:
+  confidence: tentative
+  evidence: "strong E7: default handle data_02250464; stops previous seq, starts sequence by number (2-arg StartSeq shape), applies volume data_0225044c (was func_020367b4, main, 2026-11-16)"
+Sound_AllocHandle:
+  confidence: tentative
+  evidence: "strong E7: takes a free slot from 32 handles (bitmask data_0225045c), else returns fallback handle data_02250460 (was func_0203663c, main, 2026-11-16)"
+Sound_FreeHandle:
+  confidence: tentative
+  evidence: "strong E7: releases handle and clears its bit in the 32-handle mask (was func_020365bc, main, 2026-11-16)"
+Sound_InitHandles:
+  confidence: tentative
+  evidence: "strong E7: initialises all 32 pooled handles plus fallback and clears the mask (was func_0203669c, main, 2026-11-16)"
+Task_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; builds 256-node pool and the 4 sentinels (ids 0, 0xefff, 0xf000, 0xffff) (was func_02037480, main, 2026-11-16)"
+Task_Create:
+  confidence: tentative
+  evidence: "strong E6,E7: anchor #2 (was func_020372d0, main, 2026-11-16)"
+Task_Destroy:
+  confidence: tentative
+  evidence: "strong E7: anchor #3 (was func_020371c8, main, 2026-11-16)"
+Task_AllocNode:
+  confidence: tentative
+  evidence: "strong E7: anchor #4 (was func_02036e9c, main, 2026-11-16)"
+Task_FreeNode:
+  confidence: tentative
+  evidence: "strong E7: unlinks node from its list and pushes it back on the task free list (was func_02036da8, main, 2026-11-16)"
+Task_RunList:
+  confidence: tentative
+  evidence: "strong E7: runs func of every non-destroyed task between two sentinels, honouring gSystemFlags pause level (0x80000000, prio&7, prio&0x10) (was func_02036e04, main, 2026-11-16)"
+Task_RunMain:
+  confidence: tentative
+  evidence: "strong E6: called every frame from main(); Task_RunList over sentinels 0 .. 0xefff (was func_02036fb8, main, 2026-11-16)"
+Task_RunVBlank:
+  confidence: tentative
+  evidence: "strong E6: called from Display_VBlankUpdate; Task_RunList over sentinels 0xf000 .. 0xffff (was func_02036f94, main, 2026-11-16)"
+Task_FreeDestroyed:
+  confidence: tentative
+  evidence: "strong E6,E7: called from Display_VBlankUpdate; frees nodes of both lists whose destroyed flag (1) is set (was func_02036ee8, main, 2026-11-16)"
+Task_DestroyAll:
+  confidence: tentative
+  evidence: "strong E7: Task_Destroy on every task of both lists (was func_02037134, main, 2026-11-16)"
+Task_DestroyRange:
+  confidence: tentative
+  evidence: "strong E7: Task_Destroy on all tasks with id in [lo,hi] in the matching list(s) (was func_02037038, main, 2026-11-16)"
+Task_DestroyByTag:
+  confidence: tentative
+  evidence: "strong E7: Task_Destroy on every task whose 0x1A field (5th Task_Create argument) equals the given value (was func_02036fdc, main, 2026-11-16)"
+System_Freeze:
+  confidence: tentative
+  evidence: "strong E6,E7: called by PauseMenu_Create 0x02055918 when not yet frozen; spawns OAM-freeze tasks for selected screens and the flag task, sets gSystemFlags bit 8 (was func_02038954, main, 2026-11-16)"
+System_Unfreeze:
+  confidence: tentative
+  evidence: "strong E6,E7: called from the pause task destructor 0x02055878; spawns OAM-unfreeze tasks for both screens, flag task, clears gSystemFlags bit 8 (was func_02038914, main, 2026-11-16)"
+Wireless_UpdateDataSharing:
+  confidence: tentative
+  evidence: "strong E6,E8: anchor #28; from main() after VBlank when gSystemFlags 0x100; only if WH_GetSystemState()==5 (DATASHARING); WH_StepDataSharing then copies WH_GetSharedDataAdr(aid) to per-aid buffers (was func_02034ec0, main, 2026-11-16)"
+Wireless_SetupRecvBuffers:
+  confidence: tentative
+  evidence: "strong E7: clears send/recv buffers and assigns 16 per-aid receive pointers (data_0224ff44) of the given rounded size, consumed by Wireless_UpdateDataSharing (was func_02035018, main, 2026-11-16)"
+Wireless_Init:
+  confidence: tentative
+  evidence: "strong E6,E7: called from System_Init; clears send buffer data_0224ffa0, recv buffers, per-aid pointers and callback data_0224ff40 (was func_020350bc, main, 2026-11-16)"
+WH_ChangeSysState:
+  confidence: tentative
+  evidence: "strong E3,E8: anchor #25; traces \"%s -> \" / \"%s\\n\" with names from data_020785c4 (WH_SYSSTATE_*), stores state data_022c1980 (was func_020405e0, main, 2026-11-16)"
+WH_SetError:
+  confidence: tentative
+  evidence: "strong E3,E8: anchor #26; stores error data_022c1984 unless state is 9 (ERROR) or 10 (was func_020405bc, main, 2026-11-16)"
+WH_CallbackForWFS:
+  confidence: tentative
+  evidence: "strong E3: string \"WH_CallbackForWFS : WFS_Start\" then calls WFS_Start (was func_0204045c, main, 2026-11-16)"
+WH_Alloc:
+  confidence: tentative
+  evidence: "strong E4: (arg,size,ptr): ptr==NULL -> guarded alloc from system heap, else guarded free; passed as allocator to WFS_InitParent/WFS_InitChild (was func_020404bc, main, 2026-11-16)"
+WH_Finalize:
+  confidence: tentative
+  evidence: "strong E3: strings \"WH_Finalize, state = %d\" and \"already WH_SYSSTATE_IDLE\"; calls WFS_End, WH_Reset and the four WH_StateInEnd* teardown functions (was func_0203dc28, main, 2026-11-16)"
+WH_StepDataSharing:
+  confidence: tentative
+  evidence: "strong E3: anchor #27; string \"WH_StepDataSharing - Warning No DataSet\" (was func_0203ddd8, main, 2026-11-16)"
+WH_SetReceiver:
+  confidence: tentative
+  evidence: "strong E3,E6: \"WM not Initialized\" guard; installs receiver and WH_PortReceiveCallback (0x0203ea08) port callback (wh.c order) (was func_0203de90, main, 2026-11-16)"
+WH_ChildConnect:
+  confidence: tentative
+  evidence: "strong E3: strings \"WFS_InitChild call\" and \"unknown connect mode %d\" (child connect path, calls WFS_InitChild, WH_StateInSetChildWEPKey, WH_StateInStartChild) (was func_0203df14, main, 2026-11-16)"
+WH_ParentConnect:
+  confidence: tentative
+  evidence: "strong E3: strings \"WFS_InitParent call\" and \"unknown connect mode %d\"; calls WFS_InitParent, WFS_SetDebugMode, WFS_EnableSync, WH_StateInSetParentParam (was func_0203e10c, main, 2026-11-16)"
+WH_ChildConnectAuto:
+  confidence: tentative
+  evidence: "strong E3: string \"WFS_InitChild call\" without connect-mode switch; calls WFS_InitChild then WH_StateInStartScan (was func_0203f9a4, main, 2026-11-16)"
+WH_GetMeasureChannel:
+  confidence: tentative
+  evidence: "strong E3: string \"decided channel = %d\"; calls SelectChannel 0x0203e510 (was func_0203e5f8, main, 2026-11-16)"
+WH_StateOutMeasureChannel:
+  confidence: tentative
+  evidence: "strong E3: string \"channel %d bratio = %x\"; callback referenced by WH_StateInMeasureChannel (was func_0203e6a0, main, 2026-11-16)"
+WH_StateInSetMPData:
+  confidence: tentative
+  evidence: "strong E3: string \"WH_StateInSetMPData failed - %s\"; references callback WH_StateOutSetMPData 0x0203eaa0 (was func_0203eb10, main, 2026-11-16)"
+WH_StateOutStartChildMP:
+  confidence: tentative
+  evidence: "strong E3: strings \"WH_StateOutStartChildMP : WM_StartDataSharing OK\", \"WH_StateInStartChildKeyShare failed\" (was func_0203ee8c, main, 2026-11-16)"
+WH_StateOutStartChild:
+  confidence: tentative
+  evidence: "strong E3: strings \"Connect to Parent\", \"Disconnected from Parent\", \"WH_StateInStartChildMP failed\"; callback of WH_StateInStartChild (was func_0203f108, main, 2026-11-16)"
+WH_StateInStartChild:
+  confidence: tentative
+  evidence: "strong E3: string \"WH_StateInStartChild : already connected?\"; references WH_StateOutStartChild 0x0203f108 (was func_0203f2ac, main, 2026-11-16)"
+WH_StateOutSetChildWEPKey:
+  confidence: tentative
+  evidence: "strong E3: string \"WH_StateOutSetChildWEPKey : startchild failed\" (was func_0203f370, main, 2026-11-16)"
+WH_StateOutEndScan:
+  confidence: tentative
+  evidence: "strong E3: string \"WH_StateOutEndScan : startchild failed\" (was func_0203f458, main, 2026-11-16)"
+WH_StateOutStartScan:
+  confidence: tentative
+  evidence: "strong E3: string \"WH_StateOutStartScan : MAC=%02x...\" plus \"parent find\", \"pictochat parent find\" (was func_0203f5a0, main, 2026-11-16)"
+WH_StateOutEndParentMP:
+  confidence: tentative
+  evidence: "strong E3: string \"WH_StateInEndParent failed\" after calling WH_StateInEndParent 0x0203fb9c; callback referenced by WH_StateInEndParentMP (was func_0203fbd8, main, 2026-11-16)"
+WH_StateOutStartParentMP:
+  confidence: tentative
+  evidence: "strong E3: string \"WH_StateInStartParentKeyShare failed\"; callback referenced by WH_StateInStartParentMP (was func_0203fdb0, main, 2026-11-16)"
+WH_StateOutStartParent:
+  confidence: tentative
+  evidence: "strong E3: strings \"StartParent - new child (aid %x) connected\", \"StartParent - child (aid %x) disconnected\" (was func_02040048, main, 2026-11-16)"
+WH_GetSystemState:
+  confidence: tentative
+  evidence: "strong E8: anchor #28; returns data_022c1980, the state written by WH_ChangeSysState (was func_0203e934, main, 2026-11-16)"
+WH_GetErrorCode:
+  confidence: tentative
+  evidence: "strong E7: returns data_022c1984, the value written by WH_SetError (was func_0203e924, main, 2026-11-16)"
+WH_GetBitmap:
+  confidence: tentative
+  evidence: "strong E7: returns u16 data_022c1944, the connected-child bitmap updated in WH_StateOutStartParent (was func_0203e944, main, 2026-11-16)"
+WH_GetCurrentAid:
+  confidence: tentative
+  evidence: "strong E6,E7: returns u16 data_022c195c; Wireless_UpdateDataSharing uses it (aid 0 = parent); wh.c order: last function before WH_End (was func_0203dba4, main, 2026-11-16)"
+WH_End:
+  confidence: tentative
+  evidence: "strong E6: asserts state IDLE/MEASURECHANNEL, WH_ChangeSysState(BUSY), WM_End with callback WH_StateOutEnd 0x0203e9cc (sets STOP), wh.c order next to WH_Finalize (was func_0203dbb4, main, 2026-11-16)"
+WH_StateOutEnd:
+  confidence: tentative
+  evidence: "strong E6: callback of WH_End; WH_ChangeSysState(0 STOP) on success else 10 (was func_0203e9cc, main, 2026-11-16)"
+WH_Reset:
+  confidence: tentative
+  evidence: "strong E6: called by WH_Finalize and failure paths; calls WH_StateInReset 0x0203ec20 (wh.c order between WH_StepDataSharing and WH_Finalize) (was func_0203dda4, main, 2026-11-16)"
+WH_StateInReset:
+  confidence: tentative
+  evidence: "strong E6: WM_Reset with callback WH_StateOutReset 0x0203ebc8; only caller WH_Reset (was func_0203ec20, main, 2026-11-16)"
+WH_StateOutReset:
+  confidence: tentative
+  evidence: "strong E6: callback of WH_StateInReset; on error WH_SetError, else WH_CallbackForWFS(cb) and WH_ChangeSysState(IDLE) (was func_0203ebc8, main, 2026-11-16)"
+WH_GetSharedDataAdr:
+  confidence: tentative
+  evidence: "strong E4,E6: tail-calls WM_GetSharedDataAddress(&keyset,&dataset,aid) (0x02011f88); Wireless_UpdateDataSharing uses it per aid (was func_0203de64, main, 2026-11-16)"
+WH_SendData:
+  confidence: tentative
+  evidence: "strong E6: 3-instruction thunk tail-calling WH_StateInSetMPData 0x0203eb10 (wh.c order between GetSharedDataAdr and SetReceiver) (was func_0203de84, main, 2026-11-16)"
+WH_SetJudgeAcceptFunc:
+  confidence: tentative
+  evidence: "strong E6,E7: stores data_022c1978, the accept-judge callback consulted in WH_StateOutStartParent (was func_0203df04, main, 2026-11-16)"
+WH_Initialize:
+  confidence: tentative
+  evidence: "strong E6: calls WH_StateInInitialize 0x0203e3f4 after resetting wh globals; called by game wireless init (was func_0203e480, main, 2026-11-16)"
+WH_StateInInitialize:
+  confidence: tentative
+  evidence: "strong E6: WM_Initialize with callback WH_StateOutInitialize 0x0203e388 (was func_0203e3f4, main, 2026-11-16)"
+WH_StateOutInitialize:
+  confidence: tentative
+  evidence: "strong E6: callback of WH_StateInInitialize; installs WH_IndicateHandler via WM_SetIndCallback (was func_0203e388, main, 2026-11-16)"
+WH_IndicateHandler:
+  confidence: tentative
+  evidence: "strong E6: indication callback installed by WH_StateOutInitialize; fatal path OS_Terminate/WH_ChangeSysState (was func_0203e44c, main, 2026-11-16)"
+SelectChannel:
+  confidence: tentative
+  evidence: "strong E6: only callee of WH_GetMeasureChannel (\"decided channel = %d\"); picks channel from measured busy ratios (wh.c static) (was func_0203e510, main, 2026-11-16)"
+MeasureChannel:
+  confidence: tentative
+  evidence: "strong E6: wraps WM_MeasureChannel (0x02012e48); only caller WH_StateInMeasureChannel (wh.c static) (was func_0203e674, main, 2026-11-16)"
+WH_StateInMeasureChannel:
+  confidence: tentative
+  evidence: "strong E6: references WH_StateOutMeasureChannel (\"channel %d bratio\") as callback via MeasureChannel (was func_0203e790, main, 2026-11-16)"
+WH_StartMeasureChannel:
+  confidence: tentative
+  evidence: "strong E6: game entry that calls WH_StateInMeasureChannel after resetting channel state (was func_0203e844, main, 2026-11-16)"
+WH_SetGgid:
+  confidence: tentative
+  evidence: "strong E4,E7: stores u32 at sParentParam+8 (WMParentParam.ggid) in data_022c1a00 (was func_0203e9bc, main, 2026-11-16)"
+WH_SetUserGameInfo:
+  confidence: tentative
+  evidence: "strong E4,E7: stores pointer and u16 length at sParentParam+0/+4 (WMParentParam.userGameInfo/userGameInfoLength) (was func_0203e9a8, main, 2026-11-16)"
+WH_SetSsid:
+  confidence: tentative
+  evidence: "strong E4: tail-calls MI_CpuCopy8(ssid, wh ssid buffer, length) (was func_0203e990, main, 2026-11-16)"
+WH_PortReceiveCallback:
+  confidence: tentative
+  evidence: "strong E6: port callback installed by WH_SetReceiver; forwards received data to the receiver (was func_0203ea08, main, 2026-11-16)"
+WH_StateOutSetMPData:
+  confidence: tentative
+  evidence: "strong E6: callback referenced by WH_StateInSetMPData (was func_0203eaa0, main, 2026-11-16)"
+WH_StateOutEndChild:
+  confidence: tentative
+  evidence: "strong E6: callback referenced by WH_StateInEndChild 0x0203ec9c (was func_0203ec64, main, 2026-11-16)"
+WH_StateInEndChild:
+  confidence: tentative
+  evidence: "strong E6: WH_ChangeSysState(BUSY), WM call 0x02011598 with callback 0x0203ec64, WH_Reset on failure; called from WH_StateOutEndChildMP (was func_0203ec9c, main, 2026-11-16)"
+WH_StateOutEndChildMP:
+  confidence: tentative
+  evidence: "strong E6: callback referenced by WH_StateInEndChildMP; on success calls WH_StateInEndChild (was func_0203ece8, main, 2026-11-16)"
+WH_StateInEndChildMP:
+  confidence: tentative
+  evidence: "strong E6: WH_ChangeSysState(BUSY), WM_EndMP (0x02011bb8) with callback WH_StateOutEndChildMP (was func_0203ed38, main, 2026-11-16)"
+WH_StateInEndChildKeyShare:
+  confidence: tentative
+  evidence: "strong E6: requires state 6 (KEYSHARING), WH_ChangeSysState(BUSY), end key sharing then tail-calls WH_StateInEndChildMP (was func_0203ed7c, main, 2026-11-16)"
+WH_StateInStartChildKeyShare:
+  confidence: tentative
+  evidence: "strong E3,E6: returns TRUE if state 6, requires state 4 (CONNECTED), sets KEYSHARING; the call whose failure WH_StateOutStartChildMP reports as \"WH_StateInStartChildKeyShare failed\" (was func_0203ee0c, main, 2026-11-16)"
+WH_StateInStartChildMP:
+  confidence: tentative
+  evidence: "strong E3,E6: WM_StartMP with callback WH_StateOutStartChildMP; failure reported by WH_StateOutStartChild as \"WH_StateInStartChildMP failed\" (was func_0203f070, main, 2026-11-16)"
+WH_StateInSetChildWEPKey:
+  confidence: tentative
+  evidence: "strong E6: WM_SetWEPKey (0x02013064) with callback WH_StateOutSetChildWEPKey 0x0203f370 (was func_0203f3e4, main, 2026-11-16)"
+WH_StateInEndScan:
+  confidence: tentative
+  evidence: "strong E6: WM_EndScan (0x02011770) with callback WH_StateOutEndScan 0x0203f458 (was func_0203f524, main, 2026-11-16)"
+WH_EndScan:
+  confidence: tentative
+  evidence: "strong E6: if state SCANNING(2) sets BUSY; scan end request used by game (was func_0203f560, main, 2026-11-16)"
+WH_StateInStartScan:
+  confidence: tentative
+  evidence: "strong E6: WM_StartScan with callback WH_StateOutStartScan 0x0203f5a0; called by WH_ChildConnectAuto and WH_StartScan (was func_0203f7f8, main, 2026-11-16)"
+WH_StartScan:
+  confidence: tentative
+  evidence: "strong E6: sets scan params then calls WH_StateInStartScan (was func_0203f900, main, 2026-11-16)"
+WH_StateOutEndParent:
+  confidence: tentative
+  evidence: "strong E6: callback referenced by WH_StateInEndParent 0x0203fb9c (was func_0203fb64, main, 2026-11-16)"
+WH_StateInEndParent:
+  confidence: tentative
+  evidence: "strong E3,E6: WM_EndParent (0x020118bc) with callback 0x0203fb64; failure reported as \"WH_StateInEndParent failed\" (was func_0203fb9c, main, 2026-11-16)"
+WH_StateInEndParentMP:
+  confidence: tentative
+  evidence: "strong E3,E6: WM_EndMP with callback WH_StateOutEndParentMP 0x0203fbd8; failure reported as \"WH_StateInEndParentMP failed\" (was func_0203fc44, main, 2026-11-16)"
+WH_StateInStartParentKeyShare:
+  confidence: tentative
+  evidence: "strong E3,E6: requires state 4, sets KEYSHARING; failure reported by WH_StateOutStartParentMP as \"WH_StateInStartParentKeyShare failed\" (was func_0203fd64, main, 2026-11-16)"
+WH_StateInStartParentMP:
+  confidence: tentative
+  evidence: "strong E6: WM_StartMP (0x02011dcc) with callback WH_StateOutStartParentMP 0x0203fdb0 (was func_0203ff68, main, 2026-11-16)"
+WH_StateInStartParent:
+  confidence: tentative
+  evidence: "strong E6: WM_StartParent (0x02011904) with callback WH_StateOutStartParent 0x02040048 (was func_02040230, main, 2026-11-16)"
+WH_StateOutSetParentWEPKey:
+  confidence: tentative
+  evidence: "strong E6: callback referenced by WH_StateInSetParentWEPKey; calls WH_StateInStartParent (was func_020402b0, main, 2026-11-16)"
+WH_StateInSetParentWEPKey:
+  confidence: tentative
+  evidence: "strong E6: WM_SetWEPKey (0x02013064) with callback 0x020402b0 (was func_02040304, main, 2026-11-16)"
+WH_StateOutSetParentParam:
+  confidence: tentative
+  evidence: "strong E6: callback of WH_StateInSetParentParam; calls WH_StateInSetParentWEPKey or WH_StateInStartParent (was func_02040378, main, 2026-11-16)"
+WH_StateInSetParentParam:
+  confidence: tentative
+  evidence: "strong E6: WM_SetParentParameter (0x020119c0) with callback 0x02040378 and sParentParam; called by WH_ParentConnect (was func_02040408, main, 2026-11-16)"
+WFS_InitChild:
+  confidence: tentative
+  evidence: "strong E3,E6: called immediately after the \"WFS_InitChild call\" trace in WH_ChildConnect and WH_ChildConnectAuto (was func_0203c4e8, main, 2026-11-16)"
+WFS_InitParent:
+  confidence: tentative
+  evidence: "strong E3,E6: called immediately after the \"WFS_InitParent call\" trace in WH_ParentConnect (was func_0203c5cc, main, 2026-11-16)"
+WFS_Start:
+  confidence: tentative
+  evidence: "strong E3,E6: called immediately after the \"WH_CallbackForWFS : WFS_Start\" trace (was func_0203c470, main, 2026-11-16)"
+WFS_SetDebugMode:
+  confidence: tentative
+  evidence: "strong E6: stores a BOOL to data_022b8bbc; called right after WFS_InitParent/WFS_InitChild as in wh.c (was func_0203c244, main, 2026-11-16)"
+WFS_EnableSync:
+  confidence: tentative
+  evidence: "strong E6: interrupt-guarded store; called after WFS_SetDebugMode in WH_ParentConnect only (parent path) (was func_0203c254, main, 2026-11-16)"
+WFS_End:
+  confidence: tentative
+  evidence: "strong E6: interrupt-guarded teardown called from WH_Finalize/WH_Reset paths and game code (was func_0203c350, main, 2026-11-16)"
+WH_StateInEndParentKeyShare:
+  confidence: tentative
+  evidence: "strong E6: called from WH_Finalize; end-key-sharing WM call 0x02012d20 with callback 0x0203fc88 which then runs WH_StateInEndParentMP (\"WH_StateInEndParentMP failed\") (was func_0203fcf4, main, 2026-11-16)"
+gSystemFlags:
+  confidence: tentative
+  evidence: "strong E6,E7: main() tests bits 0x10 (soft reset), 0x40 (pad), 0x100 (wireless); System_Update3DErrorFlags, System_Freeze (bit 8), Task_RunList (0x80000000) and Touch_StopAuto (0x8000) use it; zeroed by System_InitState (was data_02087cb8, main, 2026-11-16)"
+gOverlayLoadedId:
+  confidence: tentative
+  evidence: "strong E7: id passed to FS_UnloadOverlay(0,..) in Overlay_Update and System_SoftReset; set to requested id after FS_LoadOverlay (was data_02087cb4, main, 2026-11-16)"
+gOverlayRequestedId:
+  confidence: tentative
+  evidence: "strong E7: written by Overlay_Request, compared and passed to FS_LoadOverlay(0,..) in Overlay_Update (was data_02087cbc, main, 2026-11-16)"
+gOverlayIsLoaded:
+  confidence: tentative
+  evidence: "strong E7: set 1 after FS_LoadOverlay and 0 after FS_UnloadOverlay in Overlay_Update; guards unload in System_SoftReset (was data_02087cc8, main, 2026-11-16)"
+gOverlayCallback:
+  confidence: tentative
+  evidence: "strong E7: one-shot function pointer stored by Overlay_Request, called then cleared by Overlay_Update (was data_02087cb0, main, 2026-11-16)"
+gDisplayMain:
+  confidence: tentative
+  evidence: "strong E5,E7: shadow struct copied to engine A regs 0x04000010.. and MASTER_BRIGHT 0x0400006C in Display_VBlankUpdate; also holds engine A OAM manager (was data_0208922c, main, 2026-11-16)"
+gDisplaySub:
+  confidence: tentative
+  evidence: "strong E5,E7: shadow struct copied to engine B regs 0x04001010.. and MASTER_BRIGHT 0x0400106C in Display_VBlankUpdate; also holds engine B OAM manager (was data_02087d04, main, 2026-11-16)"
+gDisplayTable:
+  confidence: tentative
+  evidence: "strong E8: two pointers {0x0208922c gDisplayMain, 0x02087d04 gDisplaySub} indexed by engine in Oam_*, ObjVram_* and System_InitState (was data_02072c78, main, 2026-11-16)"
+gObjVramBaseTable:
+  confidence: tentative
+  evidence: "strong E8: {0x06400000, 0x06600000} main/sub OBJ VRAM bases used by ObjVram_Alloc/Free (was data_02072c70, main, 2026-11-16)"
+gOamAddrTable:
+  confidence: tentative
+  evidence: "strong E8: {0x07000000, 0x07000400} main/sub OAM, DMA destination in Oam_Upload (was data_020731fc, main, 2026-11-16)"
+gRandSeed:
+  confidence: tentative
+  evidence: "strong E7: anchor #11; LCG state x*0x196225+0x3c6ef35f in matched inlines, seeded by Rand_SeedFromRTC (was data_0208fe70, main, 2026-11-16)"
+gSystemHeap:
+  confidence: tentative
+  evidence: "strong E7: anchor #9; exp-heap handle created by Heap_InitSystem (0x0208ff00, 0x20000), used by Task_Create/Task_Destroy guarded alloc (was data_0208fe78, main, 2026-11-16)"
+gSystemHeapAllocator:
+  confidence: tentative
+  evidence: "strong E7: anchor #9; NNSFndAllocator set up by Heap_InitSystem, passed to NNS G3D AnmObj alloc/free in Model_* (was data_0208fed4, main, 2026-11-16)"
+gMainHeap:
+  confidence: tentative
+  evidence: "strong E7: exp-heap handle created by Heap_InitMain over 0x020aff00..0x0224ff00 (0x1A0000); used by File_Load and FileRequest_* (was data_0208fe80, main, 2026-11-16)"
+gMainHeapAllocator:
+  confidence: tentative
+  evidence: "strong E7: NNSFndAllocator for gMainHeap set up by Heap_InitMain (align 0x20) (was data_0208fec4, main, 2026-11-16)"
+gDTCMHeap:
+  confidence: tentative
+  evidence: "strong E7: exp-heap handle created by Heap_InitDTCM at DTCM 0x027e0060 size 0x2000 (was data_0208fe74, main, 2026-11-16)"
+gDTCMHeapAllocator:
+  confidence: tentative
+  evidence: "strong E7: NNSFndAllocator for gDTCMHeap set up by Heap_InitDTCM (was data_0208feb4, main, 2026-11-16)"
+gITCMHeap:
+  confidence: tentative
+  evidence: "strong E7: exp-heap handle created by Heap_InitITCM at ITCM 0x01ff8760 size 0x7000 (was data_0208fe7c, main, 2026-11-16)"
+gITCMHeapAllocator:
+  confidence: tentative
+  evidence: "strong E7: NNSFndAllocator for gITCMHeap set up by Heap_InitITCM (was data_0208fea4, main, 2026-11-16)"
+gPad:
+  confidence: tentative
+  evidence: "strong E6,E7: pad state passed to Pad_Reset/Pad_Update by Pad_Init (and by main() per frame) (was data_022503e0, main, 2026-11-16)"
+gTaskCurrent:
+  confidence: tentative
+  evidence: "strong E7: anchor #5; set to each task before its func runs in Task_RunList; checked by Task_Destroy for protected tasks (was data_022b4574, main, 2026-11-16)"
+gTaskListMainHead:
+  confidence: tentative
+  evidence: "strong E7: sentinel id 0 created by Task_Init; start of list run by Task_RunMain (was data_022b457c, main, 2026-11-16)"
+gTaskListMainTail:
+  confidence: tentative
+  evidence: "strong E7: sentinel id 0xefff created by Task_Init; end of list run by Task_RunMain (was data_022b4580, main, 2026-11-16)"
+gTaskListVBlankHead:
+  confidence: tentative
+  evidence: "strong E7: sentinel id 0xf000 created by Task_Init; start of list run by Task_RunVBlank (was data_022b4584, main, 2026-11-16)"
+gTaskListVBlankTail:
+  confidence: tentative
+  evidence: "strong E7: sentinel id 0xffff created by Task_Init; end of list run by Task_RunVBlank (was data_022b4588, main, 2026-11-16)"
+gTaskPoolUsed:
+  confidence: tentative
+  evidence: "strong E7: number of task nodes taken from the 256-entry free list (Task_AllocNode/Task_FreeNode) (was data_022b4578, main, 2026-11-16)"
+gTaskFreeList:
+  confidence: tentative
+  evidence: "strong E7: 256 node pointers filled by Task_Init, popped by Task_AllocNode, pushed by Task_FreeNode (was data_022b458c, main, 2026-11-16)"
+gTaskPool:
+  confidence: tentative
+  evidence: "strong E7: storage of the 256 task nodes cleared and linked into gTaskFreeList by Task_Init (was data_022b498c, main, 2026-11-16)"
+gVRAMTransferHead:
+  confidence: tentative
+  evidence: "strong E7: head of the job queue appended by VRAMTransfer_AllocJob and drained by VRAMTransfer_Flush (was data_0208f7e0, main, 2026-11-16)"
+gVRAMTransferTail:
+  confidence: tentative
+  evidence: "strong E7: tail of the VRAMTransfer job queue (was data_0208f7dc, main, 2026-11-16)"
+gPaletteTransferHead:
+  confidence: tentative
+  evidence: "strong E7: head of the job queue drained by PaletteTransfer_Flush (was data_02250438, main, 2026-11-16)"
+gPaletteTransferTail:
+  confidence: tentative
+  evidence: "strong E7: tail of the PaletteTransfer job queue (was data_02250434, main, 2026-11-16)"
+gScreenTransferHead:
+  confidence: tentative
+  evidence: "strong E7: head of the job queue drained by ScreenTransfer_Flush (was data_02250440, main, 2026-11-16)"
+gScreenTransferTail:
+  confidence: tentative
+  evidence: "strong E7: tail of the ScreenTransfer job queue (was data_0225043c, main, 2026-11-16)"
+gTransferJobUsed:
+  confidence: tentative
+  evidence: "strong E7: count of nodes taken from the 256-entry transfer job free list (TransferJob_Alloc/Free) (was data_022b65dc, main, 2026-11-16)"
+gTransferJobFreeList:
+  confidence: tentative
+  evidence: "strong E7: 256 node pointers built by TransferJob_InitPool (was data_022b65e0, main, 2026-11-16)"
+gTransferJobPool:
+  confidence: tentative
+  evidence: "strong E7: 256 x 0x20-byte job nodes cleared by TransferJob_InitPool (was data_022b69e0, main, 2026-11-16)"
+gFileRequestUsed:
+  confidence: tentative
+  evidence: "strong E7: count of request nodes taken by FileRequest_AllocNode, decremented by FileRequest_Destroy (was data_0208f7e8, main, 2026-11-16)"
+gFileRequestFreeList:
+  confidence: tentative
+  evidence: "strong E7: 16 request-node pointers built by FileRequest_Init (was data_0208f7f0, main, 2026-11-16)"
+gFileRequestPool:
+  confidence: tentative
+  evidence: "strong E7: 16 request nodes cleared by FileRequest_Init (was data_0208f830, main, 2026-11-16)"
+gFileRequestListHead:
+  confidence: tentative
+  evidence: "strong E7: head sentinel of async request list (FileRequest_Init, scanned by FileRequest_FindPending) (was data_0208f7ec, main, 2026-11-16)"
+gFileRequestListTail:
+  confidence: tentative
+  evidence: "strong E7: tail sentinel; FileRequest_Create inserts before it (was data_0208f7e4, main, 2026-11-16)"
+gTouchState:
+  confidence: tentative
+  evidence: "strong E7: touch state (x,y,last,start,end,flags,count) updated by Touch_Update* and reset by Touch_Init/Enable (was data_022b65b4, main, 2026-11-16)"
+gTouchSampleBuffer:
+  confidence: tentative
+  evidence: "strong E7: 5-entry TPData auto-sampling buffer indexed by the latest auto index in Touch_UpdateAuto (was data_022b658c, main, 2026-11-16)"
+gMic:
+  confidence: tentative
+  evidence: "strong E7: mic sampling state (buffer, size, prev/cur address, count, flags) used by Mic_Update, cleared by Mic_Init (was data_0224ff00, main, 2026-11-16)"
+gWirelessSendBuffer:
+  confidence: tentative
+  evidence: "strong E7: 0x200-byte buffer passed to WH_StepDataSharing by Wireless_UpdateDataSharing (was data_0224ffa0, main, 2026-11-16)"
+gWirelessRecvBuffers:
+  confidence: tentative
+  evidence: "strong E7: 16 per-aid receive pointers set by Wireless_SetupRecvBuffers, filled from WH_GetSharedDataAdr (was data_0224ff44, main, 2026-11-16)"
+gSoundHeap:
+  confidence: tentative
+  evidence: "strong E7: sound heap handle created from the 0x64000-byte buffer in Sound_Init/Sound_ResetHeap (was data_02250458, main, 2026-11-16)"
+gSoundHeapBuffer:
+  confidence: tentative
+  evidence: "strong E7: 0x64000-byte memory given to the sound heap create call in Sound_Init (was data_02250574, main, 2026-11-16)"
+NNS_GfdDefaultFuncAllocTexVram:
+  confidence: tentative
+  evidence: "strong E4,E8: initial value 0x0202a074 (NNS default), replaced by VramTex_GfdAlloc (returns NNSGfdTexKey) in Vram_Init (was data_02077d40, main, 2026-11-16)"
+NNS_GfdDefaultFuncFreeTexVram:
+  confidence: tentative
+  evidence: "strong E4,E8: replaced by VramTex_GfdFree in Vram_Init (was data_02077d44, main, 2026-11-16)"
+NNS_GfdDefaultFuncAllocPlttVram:
+  confidence: tentative
+  evidence: "strong E4,E8: replaced by VramPltt_GfdAlloc (returns NNSGfdPlttKey) in Vram_Init (was data_02077d48, main, 2026-11-16)"
+NNS_GfdDefaultFuncFreePlttVram:
+  confidence: tentative
+  evidence: "strong E4,E8: replaced by VramPltt_GfdFree in Vram_Init (was data_02077d4c, main, 2026-11-16)"
+sSysState:
+  confidence: tentative
+  evidence: "strong E7,E8: wh.c state written by WH_ChangeSysState (indexes WH_SYSSTATE name table), returned by WH_GetSystemState (was data_022c1980, main, 2026-11-16)"
+sErrCode:
+  confidence: tentative
+  evidence: "strong E7: wh.c error written by WH_SetError, returned by WH_GetErrorCode (was data_022c1984, main, 2026-11-16)"
+sConnectBitmap:
+  confidence: tentative
+  evidence: "strong E7: wh.c u16 child bitmap returned by WH_GetBitmap, updated on child connect/disconnect in WH_StateOutStartParent (was data_022c1944, main, 2026-11-16)"
+sMyAid:
+  confidence: tentative
+  evidence: "strong E7: wh.c u16 own aid returned by WH_GetCurrentAid (was data_022c195c, main, 2026-11-16)"
+sParentParam:
+  confidence: tentative
+  evidence: "strong E4,E7: wh.c WMParentParam: WH_SetUserGameInfo writes +0/+4, WH_SetGgid +8, passed to WM_SetParentParameter by WH_StateInSetParentParam (was data_022c1a00, main, 2026-11-16)"
+WH_GetWMStateCodeName:
+  confidence: tentative
+  evidence: "strong E3,E8: returns the WM_STATECODE_* name from the table data_02078648 for a state code, 'N/A' when out of range (wh.c) (was func_02040658, main, 2026-11-16)"
+WH_GetWMErrCodeName:
+  confidence: tentative
+  evidence: "strong E3,E8: returns the WM_ERRCODE_* name from the table data_020785ec for a result code, 'N/A' when out of range (wh.c) (was func_02040674, main, 2026-11-16)"
+BrightnessFade_IsDone:
+  confidence: tentative
+  evidence: "strong E7: TRUE when no fade task exists or its work flag 0x20 (finished, set by BrightnessFade_Main) is set (was func_02043a58, main, 2026-11-16)"
+BrightnessFade_Destroy:
+  confidence: tentative
+  evidence: "strong E7: Task_Destroy on the fade singleton data_022c4410 if present (was func_02043a88, main, 2026-11-16)"
+BrightnessFade_Apply:
+  confidence: tentative
+  evidence: "strong E5: converts fade level to -16..16 (sign by flag 1) for main/sub per flags 0x100/0x200 and writes MASTER_BRIGHT 0x0400006c/0x0400106c via GXx_SetMasterBrightness_ (was func_02043abc, main, 2026-11-16)"
+BrightnessFade_Main:
+  confidence: tentative
+  evidence: "strong E7,E5: task main passed by BrightnessFade_Create; steps brightness toward 0 or 0x1000, sets done flag 0x20 and destroys itself, applies via BrightnessFade_Apply (was func_02043b78, main, 2026-11-16)"
+BrightnessFade_Destructor:
+  confidence: tentative
+  evidence: "strong E7: task dtor passed by BrightnessFade_Create; clears the singleton pointer data_022c4410 (was func_02043c68, main, 2026-11-16)"
+BrightnessFade_Create:
+  confidence: tentative
+  evidence: "strong E5,E7: creates (or reuses) the singleton fade task data_022c4410 with BrightnessFade_Main/Destructor; start brightness 0x1100 or 0 by direction flag; 17 callers (was func_02043c7c, main, 2026-11-16)"
+ScreenFlash_Destructor:
+  confidence: tentative
+  evidence: "strong E5,E7: task dtor from ScreenFlash_Create: restores saved DISPCNT layer bits on both engines and clears data_022c4414 (was func_02043da0, main, 2026-11-16)"
+ScreenFlash_Main:
+  confidence: tentative
+  evidence: "strong E5,E7: task main from ScreenFlash_Create: per keyframe timer writes backdrop colour and toggles DISPCNT layers, destroys itself after the last keyframe (was func_02043dec, main, 2026-11-16)"
+ScreenFlash_Create:
+  confidence: tentative
+  evidence: "strong E5,E7: singleton task (data_022c4414) saving DISPCNT layer bits of 0x04000000/0x04001000, then shows OBJ only (0x1000) and writes keyframe colour to the BG backdrop 0x05000000/0x05000400 (was func_02043f0c, main, 2026-11-16)"
+PaletteAnim_Destructor:
+  confidence: tentative
+  evidence: "strong E7: task dtor from PaletteAnim_Create: clears refcount/task slot for its row and frees the owned resource (was func_02044040, main, 2026-11-16)"
+PaletteAnim_Release:
+  confidence: tentative
+  evidence: "strong E7,E6: decrements the per-row PaletteAnim refcount; called by StageObj_Destructor when object flag 0x800 (palette anim) set (was func_020440fc, main, 2026-11-16)"
+PaletteAnim_Main:
+  confidence: tentative
+  evidence: "strong E7: task main from PaletteAnim_Create: advances keyframes (loop flag 1), reloads the palette row on both engines, ends when refcount is 0 (was func_02044120, main, 2026-11-16)"
+PaletteAnim_Create:
+  confidence: tentative
+  evidence: "strong E7,E6: per palette-row task (Task_Create with PaletteAnim_Main/Destructor) stepping a {colour index, duration, flags} list, loading rows via ObjDraw_LoadPaletteRow; refcount data_022c4418[row] (was func_0204423c, main, 2026-11-16)"
+ScreenShake_Destructor:
+  confidence: tentative
+  evidence: "strong E7: task dtor from ScreenShake_Create: clears data_022c4478 (was func_020443f8, main, 2026-11-16)"
+ScreenShake_Main:
+  confidence: tentative
+  evidence: "strong E7: task main from ScreenShake_Create: per mode 1..12 reads nibble-packed signed x/y offsets from tables 0x0207323c/40/4c, one-shot modes stop via ScreenShake_Stop (was func_0204440c, main, 2026-11-16)"
+ScreenShake_Stop:
+  confidence: tentative
+  evidence: "strong E7: zeroes active flag, mode, timer and the x/y offsets of the shake task (was func_0204463c, main, 2026-11-16)"
+ScreenShake_GetOffsetY:
+  confidence: tentative
+  evidence: "strong E7,E6: returns shake y offset (work +7) or 0; negated into camera +0x1a by func_0204b95c (was func_02044670, main, 2026-11-16)"
+ScreenShake_GetOffsetX:
+  confidence: tentative
+  evidence: "strong E7,E6: returns shake x offset (work +6) or 0; negated into camera +0x18 by func_0204b95c (was func_02044690, main, 2026-11-16)"
+ScreenShake_Start:
+  confidence: tentative
+  evidence: "strong E7,E6: mode 0 stops; otherwise starts the mode if >= current one (priority); 59 overlay callers (hits, bosses) (was func_020446b0, main, 2026-11-16)"
+ScreenShake_Create:
+  confidence: tentative
+  evidence: "strong E7,E6: creates the singleton task data_022c4478 with ScreenShake_Main/Destructor; its x/y offsets are subtracted from the stage camera (data_ov000_0236aad8 +0x18/+0x1a) by func_0204b95c (was func_02044718, main, 2026-11-16)"
+NaviB_Release:
+  confidence: tentative
+  evidence: "strong E7: frees data_022c4480 (navi_b.bac loaded by NaviB_Load) from the 0x0208fe80 heap and clears it (was func_020451c8, main, 2026-11-16)"
+NaviB_Load:
+  confidence: tentative
+  evidence: "strong E3: loads '/act/navi_b.bac' into data_022c4480 (the sprite file used by the sub-screen navi task func_02044d44) (was func_0204525c, main, 2026-11-16)"
+BrightnessLerp_Main:
+  confidence: tentative
+  evidence: "strong E7,E5: task main of BrightnessLerp_Create: hardware divider (0x04000280) lerp of the brightness field +0x48 of the main/sub display states (later written to MASTER_BRIGHT), destroys itself at the end (was func_02048eb4, main, 2026-11-16)"
+BrightnessLerp_Create:
+  confidence: tentative
+  evidence: "strong E7: task (Task_Create with BrightnessLerp_Main, no dtor) interpolating a display brightness from->to over N frames for main/sub by flags 1/2, optional done flag (was func_02048fdc, main, 2026-11-16)"
+BossStageF_FreeModels:
+  confidence: tentative
+  evidence: "strong E8,E7: frees every model in data_ov000_02369b88[] (filled by BossStageF_OnModelLoaded); stored in the zone x act free table data_02074184 at the boss act of zone F (was func_02049c98, main, 2026-11-16)"
+BossStage7_FreeModels:
+  confidence: tentative
+  evidence: "strong E8,E7: frees every model in data_ov000_02369b7c[] (filled by BossStage7_OnModelLoaded); stored in the zone x act free table data_02074184 at the boss act of zone 7 (was func_02049d4c, main, 2026-11-16)"
+BossStage6_FreeModels:
+  confidence: tentative
+  evidence: "strong E8,E7: frees every model in data_ov000_02369b50[] (filled by BossStage6_OnModelLoaded); stored in the zone x act free table data_02074184 at the boss act of zone 6 (was func_02049e00, main, 2026-11-16)"
+BossStage5_FreeModels:
+  confidence: tentative
+  evidence: "strong E8,E7: frees every model in data_ov000_02369ad0[] (filled by BossStage5_OnModelLoaded); stored in the zone x act free table data_02074184 at the boss act of zone 5 (was func_02049eb4, main, 2026-11-16)"
+BossStage4_FreeModels:
+  confidence: tentative
+  evidence: "strong E8,E7: frees every model in data_ov000_02369b30[] (filled by BossStage4_OnModelLoaded); stored in the zone x act free table data_02074184 at the boss act of zone 4 (was func_02049f68, main, 2026-11-16)"
+BossStage3_FreeModels:
+  confidence: tentative
+  evidence: "strong E8,E7: frees every model in data_ov000_02369b18[] (filled by BossStage3_OnModelLoaded); stored in the zone x act free table data_02074184 at the boss act of zone 3 (was func_0204a01c, main, 2026-11-16)"
+BossStage2_FreeModels:
+  confidence: tentative
+  evidence: "strong E8,E7: frees every model in data_ov000_02369ae8[] (filled by BossStage2_OnModelLoaded); stored in the zone x act free table data_02074184 at the boss act of zone 2 (was func_0204a0d0, main, 2026-11-16)"
+BossStage1_FreeModels:
+  confidence: tentative
+  evidence: "strong E8,E7: frees every model in data_ov000_02369ad0[] (filled by BossStage1_OnModelLoaded); stored in the zone x act free table data_02074184 at the boss act of zone 1 (was func_0204a184, main, 2026-11-16)"
+BossStageF_OnModelLoaded:
+  confidence: tentative
+  evidence: "strong E3,E7: done callback of the /mod/bsf_*.nsbmd file-list entries: finds the file name in its model table, sets up the resource and copies it into slot data_ov000_02369b88[i] (was func_0204a238, main, 2026-11-16)"
+BossStage7_OnModelLoaded:
+  confidence: tentative
+  evidence: "strong E3,E7: done callback of the /mod/bs7_*.nsbmd file-list entries: finds the file name in its model table, sets up the resource and copies it into slot data_ov000_02369b7c[i] (was func_0204a344, main, 2026-11-16)"
+BossStage6_OnModelLoaded:
+  confidence: tentative
+  evidence: "strong E3,E7: done callback of the /mod/bs6_*.nsbmd file-list entries: finds the file name in its model table, sets up the resource and copies it into slot data_ov000_02369b50[i] (was func_0204a450, main, 2026-11-16)"
+BossStage5_OnModelLoaded:
+  confidence: tentative
+  evidence: "strong E3,E7: done callback of the /mod/bs5_*.nsbmd file-list entries: finds the file name in its model table, sets up the resource and copies it into slot data_ov000_02369ad0[i] (was func_0204a55c, main, 2026-11-16)"
+BossStage4_OnModelLoaded:
+  confidence: tentative
+  evidence: "strong E3,E7: done callback of the /mod/bs4_*.nsbmd file-list entries: finds the file name in its model table, sets up the resource and copies it into slot data_ov000_02369b30[i] (was func_0204a668, main, 2026-11-16)"
+BossStage3_OnModelLoaded:
+  confidence: tentative
+  evidence: "strong E3,E7: done callback of the /mod/bs3_*.nsbmd file-list entries: finds the file name in its model table, sets up the resource and copies it into slot data_ov000_02369b18[i] (was func_0204a774, main, 2026-11-16)"
+BossStage2_OnModelLoaded:
+  confidence: tentative
+  evidence: "strong E3,E7: done callback of the /mod/bs2_*.nsbmd file-list entries: finds the file name in its model table, sets up the resource and copies it into slot data_ov000_02369ae8[i] (was func_0204a880, main, 2026-11-16)"
+BossStage1_OnModelLoaded:
+  confidence: tentative
+  evidence: "strong E3,E7: done callback of the /mod/bs1_*.nsbmd file-list entries: finds the file name in its model table, sets up the resource and copies it into slot data_ov000_02369ad0[i] (was func_0204a98c, main, 2026-11-16)"
+StageLoader_OnSoundDataLoaded:
+  confidence: tentative
+  evidence: "strong E8,E7: done callback of the zone 'sound_data.sdat' entries: stores the loaded file to data_022c4484 (was func_0204aa98, main, 2026-11-16)"
+StageLoader_OnZoneActArchiveLoaded:
+  confidence: tentative
+  evidence: "strong E8,E7: done callback of the '/narc/zNN_act_lz7.narc' entries: decompresses into a new block stored at data_022c4488 (was func_0204aaac, main, 2026-11-16)"
+Compress_GetUncompressedSize:
+  confidence: tentative
+  evidence: "strong E4: returns header word >> 8 (NitroSDK MI_GetUncompressedSize semantics); used by the stage archive load callbacks before decompressing (was func_0204abe0, main, 2026-11-16)"
+Compress_GetType:
+  confidence: tentative
+  evidence: "strong E4: returns header word & 0xf0 (MI_GetCompressionType); callers switch 0x10/0x20/0x30 to the LZ/Huffman/RL decoders 0x02008648/0x02008720/0x020087f8 (was func_0204abec, main, 2026-11-16)"
+StageLoader_OnActComArchiveLoaded:
+  confidence: tentative
+  evidence: "strong E8,E7: done callback of '/narc/act_com_lz7.narc': decompresses into a new block stored at data_022c448c (was func_0204abf8, main, 2026-11-16)"
+StageLoader_OnPlayerArchiveLoaded:
+  confidence: tentative
+  evidence: "strong E8,E7: done callback of the '/narc/player_lz7.narc' entry: decompresses (LZ/Huffman/RL by header) into a new block stored at data_ov000_0236ac28, frees the file, notifies ov000 (was func_0204ad2c, main, 2026-11-16)"
+StageLoader_OnEventArchiveLoaded:
+  confidence: tentative
+  evidence: "strong E8,E7: done callback of the '/narc/zNN_eve.narc' entries: moves the loaded file to data_ov000_0236aa8c (was func_0204aecc, main, 2026-11-16)"
+StageLoader_OnMapArchiveLoaded:
+  confidence: tentative
+  evidence: "strong E8,E7: done callback of the '/narc/zNN_map.narc' entries: hands the file to ov000 (data_ov000_0236aab8, func_ov000_0233bf8c) and stores the map size <<6 (was func_0204aee8, main, 2026-11-16)"
+StageLoader_SetCharacterSoundPath:
+  confidence: tentative
+  evidence: "strong E8,E7: init callback of the sound_data.sdat entries: sets path char 7 ('/snd/z4s/' -> z4s or z4b) to 's' when character (+0x48) is 0 else 'b' (was func_0204af64, main, 2026-11-16)"
+StageLoader_AllocSoundDataMem:
+  confidence: tentative
+  evidence: "strong E8,E7: getMem callback of the sound_data.sdat entries: allocates 0x60400 bytes from the sound heap data_02250458 (func_0201d9e4) (was func_0204af80, main, 2026-11-16)"
+StageLoader_ProcessFileList:
+  confidence: tentative
+  evidence: "strong E7,E6: steps a {count, entries{path, getMem, init, done}} list: builds the path, runs init, starts a file job (func_02033f44), on completion calls done and advances; returns 1 when all loaded, 2 on comm failure (was func_0204afc8, main, 2026-11-16)"
+StageLoader_LoadZoneFiles:
+  confidence: tentative
+  evidence: "strong E3,E7: StageLoader_ProcessFileList on data_020745a8[zone][act] (lists of /narc/zNN_map, zNN_eve, zNN_act_lz7 and /snd/.../sound_data.sdat) (was func_0204b6cc, main, 2026-11-16)"
+StageLoader_LoadCommonFiles:
+  confidence: tentative
+  evidence: "strong E3,E7: StageLoader_ProcessFileList on list data_02073c7c = {'/narc/player_lz7.narc', '/narc/act_com_lz7.narc'} (was func_0204b700, main, 2026-11-16)"
+StageLoader_Init:
+  confidence: tentative
+  evidence: "strong E7: clears the loader state data_022c4490, stores the mode and copies character (+0), zone (+0x1c) and act (+0x1d) from data_022c4560 (was func_0204b718, main, 2026-11-16)"
+Sound_PlaySeqArcEx:
+  confidence: tentative
+  evidence: "strong E6,E7: anchor #29: default handle data_02250454, stops it if active, starts with (h,-1,-1,-1,arc,idx) (StartSeqArcEx shape) and sets volume data_02250444; 130 ov000 callers (was func_0204b7ec, main, 2026-11-16)"
+GameOver_Create:
+  confidence: tentative
+  evidence: "strong E3,E7: stage object (Task_Create with StageObj_Main/Destructor, work 0x134) loading '/act/ac_fix_gameover.bac' via StageObj_Load2dBAC (was func_0204da44, main, 2026-11-16)"
+Player_LoadArchive:
+  confidence: tentative
+  evidence: "strong E3,E8: synchronously loads 'narc/player_lz7.narc', decompresses it (LZ/Huffman/RL by header) into the ov000 player archive data_ov000_0236ac28, frees the file, reloads navi_b (was func_0204e934, main, 2026-11-16)"
+Player_GetArchiveUncompressedSize:
+  confidence: tentative
+  evidence: "strong E4: header word >> 8 (MI_GetUncompressedSize semantics); file-local helper of Player_LoadArchive (was func_0204eaec, main, 2026-11-16)"
+Player_GetArchiveCompressionType:
+  confidence: tentative
+  evidence: "strong E4: header word & 0xf0 (MI_GetCompressionType); file-local helper of Player_LoadArchive switching 0x10/0x20/0x30 (was func_0204eaf8, main, 2026-11-16)"
+Game_Init:
+  confidence: tentative
+  evidence: "strong E6,E5: second call of main() after the system init; sets POWCNT 0x04000304 2D engines on, GX_DispOn, sub DISPCNT, then starts the first scene func_02054e4c (was func_0204edc0, main, 2026-11-16)"
+DownloadPlay_GetBlazePreview:
+  confidence: tentative
+  evidence: "strong E3: returns the DS Download Play descriptor '/mb/preview.srl', 'SONIC RUSH (BLAZE)', '/banner/prev_blz.nbfc/.nbfp' (was func_020511ec, main, 2026-11-16)"
+DownloadPlay_GetSonicPreview:
+  confidence: tentative
+  evidence: "strong E3: returns the DS Download Play descriptor '/mb/preview.srl', 'SONIC RUSH (SONIC)', '/banner/prev_son.nbfc/.nbfp' (was func_02051248, main, 2026-11-16)"
+DownloadPlay_GetContest:
+  confidence: tentative
+  evidence: "strong E3: returns the DS Download Play descriptor '/mb/contest.srl', 'SONIC RUSH (BATTLE)', '/banner/contest.nbfc/.nbfp' (was func_020512a4, main, 2026-11-16)"
+SysSound_StartSE:
+  confidence: tentative
+  evidence: "strong E7: maps an SE id to (seqarc, index) (character-specific arc 2/3) and plays it on handle 2 via Sound_PlaySeqArc (func_02036754) after stopping it (was func_02051a74, main, 2026-11-16)"
+SysSound_LoadSEGroup:
+  confidence: tentative
+  evidence: "strong E7: maps an SE id to one of 4 groups (Sonic/Blaze variant by character data_022c4560+0) and loads it into the sound heap data_02250458 (func_0201e7cc) when it changes (was func_02051ca4, main, 2026-11-16)"
+SysSound_StopBGM:
+  confidence: tentative
+  evidence: "strong E7: stops the system sound handle 0 with the given fade frames (func_0201c070) (was func_02051e7c, main, 2026-11-16)"
+SysSound_SetBGMVolume:
+  confidence: tentative
+  evidence: "strong E7: sets the BGM volume data_0225044c and applies it to handle 0 (func_0201be98) when changed (was func_02051e90, main, 2026-11-16)"
+SysSound_PlaySE:
+  confidence: tentative
+  evidence: "strong E7: for id < 23 loads the needed sound group (SysSound_LoadSEGroup) and starts the seqarc entry on handle 2 (SysSound_StartSE); 37 callers (was func_02052104, main, 2026-11-16)"
+SysSound_IsInit:
+  confidence: tentative
+  evidence: "strong E7: TRUE when the system sound state data_022c465c exists (was func_020521a0, main, 2026-11-16)"
+SysSound_Release:
+  confidence: tentative
+  evidence: "strong E7: stops and releases the 5 handles of data_022c465c, destroys its two tasks, frees the state and resets the volumes to 0x7f (was func_020521b4, main, 2026-11-16)"
+SysSound_Init:
+  confidence: tentative
+  evidence: "strong E3,E7: allocates the 0x60-byte system sound state data_022c465c with 5 sound handles, opens 'snd/sys/sound_data.sdat' (func_02036854) and sets the three volumes to 0x7f (was func_020522f4, main, 2026-11-16)"
+NaviMsg_Main:
+  confidence: tentative
+  evidence: "strong E7: task main passed to Task_Create by NaviMsg_Create (was func_02053090, main, 2026-11-16)"
+NaviMsg_Destructor:
+  confidence: tentative
+  evidence: "strong E7: task dtor passed by NaviMsg_Create; frees the navi message buffers and resets the sub-screen brightness/mode (func_02052724) (was func_020532b0, main, 2026-11-16)"
+NaviMsg_Destroy:
+  confidence: tentative
+  evidence: "strong E7: Task_Destroy on the navi message singleton data_022c4660 if present (was func_02053c24, main, 2026-11-16)"
+NaviMsg_Create:
+  confidence: tentative
+  evidence: "strong E3,E7: loads the '/bg2/navi/*.bbg' frames and '/bg2/navi/msg_t|msg_c/' message data and creates the singleton task data_022c4660 (Task_Create with NaviMsg_Main/NaviMsg_Destructor, work 0x11c) (was func_02053c58, main, 2026-11-16)"
+NaviBg_Load:
+  confidence: tentative
+  evidence: "strong E3: (mode, idx) loads the navi frame/balloon backgrounds '/bg2/navi/t_m_b.bbg', 'c_m_b.bbg', 'm_bal.bbg', 'b_bal.bbg' (+ language '.bbg' variant) for the sub screen (was func_0205453c, main, 2026-11-16)"
+SceneChange_Unk_02054df8:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022d4174 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054df8, main, 2026-11-16)"
+SceneChange_Unk_02054e14:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_02063620 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054e14, main, 2026-11-16)"
+SceneChange_Unk_02054e30:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022cf4c8 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054e30, main, 2026-11-16)"
+SceneChange_Unk_02054e4c:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022cfb18 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054e4c, main, 2026-11-16)"
+SceneChange_Unk_02054e68:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022d4fa0 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054e68, main, 2026-11-16)"
+SceneChange_Unk_02054e84:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022f9eb4 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054e84, main, 2026-11-16)"
+SceneChange_Unk_02054ea0:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_02300378 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054ea0, main, 2026-11-16)"
+SceneChange_Unk_02054ebc:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022d3010 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054ebc, main, 2026-11-16)"
+SceneChange_Unk_02054ed8:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022d301c via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054ed8, main, 2026-11-16)"
+SceneChange_Unk_02054ef4:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022c66e8 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054ef4, main, 2026-11-16)"
+SceneChange_Unk_02054f10:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022c8480 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054f10, main, 2026-11-16)"
+SceneChange_Unk_02054f2c:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022e05f0 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054f2c, main, 2026-11-16)"
+SceneChange_Unk_02054f48:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022ec344 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054f48, main, 2026-11-16)"
+SceneChange_Unk_02054f64:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022ec35c via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054f64, main, 2026-11-16)"
+SceneChange_Unk_02054f80:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022ec374 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054f80, main, 2026-11-16)"
+SceneChange_Unk_02054f9c:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022ec380 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054f9c, main, 2026-11-16)"
+SceneChange_Unk_02054fb8:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022c6004 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054fb8, main, 2026-11-16)"
+SceneChange_Unk_02054fd4:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022e8b08 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054fd4, main, 2026-11-16)"
+SceneChange_Unk_02054ff0:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022e8b14 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02054ff0, main, 2026-11-16)"
+SceneChange_Unk_0205500c:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022e8b20 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_0205500c, main, 2026-11-16)"
+SceneChange_Unk_02055028:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_ov000_0235a530 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055028, main, 2026-11-16)"
+SceneChange_Unk_02055044:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_ov000_0235a558 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055044, main, 2026-11-16)"
+SceneChange_Unk_02055060:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_ov000_0235a580 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055060, main, 2026-11-16)"
+SceneChange_Unk_0205507c:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_ov000_0235a5a8 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_0205507c, main, 2026-11-16)"
+SceneChange_Unk_02055098:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_ov000_0235a5d0 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055098, main, 2026-11-16)"
+SceneChange_Unk_020550b4:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022d9530 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_020550b4, main, 2026-11-16)"
+SceneChange_Unk_020550d0:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022d9590 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_020550d0, main, 2026-11-16)"
+SceneChange_Unk_020550ec:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_022d9650 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_020550ec, main, 2026-11-16)"
+SceneChange_Unk_02055108:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov001 with entry func_ov001_0230c9f4 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055108, main, 2026-11-16)"
+SceneChange_Unk_02055124:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_02048e9c via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055124, main, 2026-11-16)"
+SceneChange_Unk_02055140:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_0204d7ac via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055140, main, 2026-11-16)"
+SceneChange_Unk_0205515c:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_0204d804 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_0205515c, main, 2026-11-16)"
+SceneChange_Unk_02055178:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_0204d834 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055178, main, 2026-11-16)"
+SceneChange_Unk_02055194:
+  confidence: tentative
+  evidence: "strong E7,E6: requests overlay ov000 with entry func_0204d7e0 via func_0203051c (pending overlay id + entry callback consumed by Overlay_Update func_020302d8) (was func_02055194, main, 2026-11-16)"
+PauseMenu_Main:
+  confidence: tentative
+  evidence: "strong E7: task main passed to Task_Create by PauseMenu_Create; plays menu SE (Sound_PlaySeqArcEx), starts BrightnessFade and destroys itself on exit (was func_020556a4, main, 2026-11-16)"
+PauseMenu_Destructor:
+  confidence: tentative
+  evidence: "strong E7: task dtor passed by PauseMenu_Create; releases the pause sprite data (ObjData_Release) and VRAM (was func_02055878, main, 2026-11-16)"
+PauseMenu_Create:
+  confidence: tentative
+  evidence: "strong E3,E7: loads '/act/ac_fix_pause.bac' and '/act/ac_fix_pause_frame.bac' and creates the pause task (Task_Create with PauseMenu_Main/PauseMenu_Destructor) (was func_02055918, main, 2026-11-16)"
+PolyDemo_BuildModelPath:
+  confidence: tentative
+  evidence: "strong E3: builds '/mod/' + model name (bs1_base, bs1_sky, ...) + '.nsbmd' into the caller buffer (was func_02057044, main, 2026-11-16)"
+PlayerDemo_LoadData:
+  confidence: tentative
+  evidence: "strong E3: builds '/pldm/' + name + '.bpd' from the id table (pdm_bsc_son, pdm_meet1, ...) and loads the file; NULL for id 0 or >= 0x2c (was func_020570f4, main, 2026-11-16)"
+PolyDemoUnder2_LoadSprites:
+  confidence: tentative
+  evidence: "strong E3,E5: loads '/act/poly_demo_under2.bac' and the language variant '/act/poly_demo_under2_<lang>.bac' and inits 7 sub-screen sprites (OBJ palette 0x05000600) (was func_0205788c, main, 2026-11-16)"
+PolyDemoUnder2_LoadBg:
+  confidence: tentative
+  evidence: "strong E3: loads '/bg2/poly_m.bb' (func_0203879c) and decompresses its data by header type for the under-screen demo (was func_02057af8, main, 2026-11-16)"
+PolyDemoUnder2_GetUncompressedSize:
+  confidence: tentative
+  evidence: "strong E4: header word >> 8 (MI_GetUncompressedSize semantics); file-local helper of PolyDemoUnder2_LoadBg (was func_02057c50, main, 2026-11-16)"
+PolyDemoUnder2_GetCompressionType:
+  confidence: tentative
+  evidence: "strong E4: header word & 0xf0 (MI_GetCompressionType); file-local helper of PolyDemoUnder2_LoadBg (was func_02057c5c, main, 2026-11-16)"
+PolyDemoUnder2_Main:
+  confidence: tentative
+  evidence: "strong E7: task main passed by PolyDemoUnder2_Create; draws the sprites (func_020576dc) and destroys itself when the demo ends (was func_02057c68, main, 2026-11-16)"
+PolyDemoUnder2_Destructor:
+  confidence: tentative
+  evidence: "strong E7: task dtor passed by PolyDemoUnder2_Create (was func_02057c9c, main, 2026-11-16)"
+PolyDemoUnder2_Create:
+  confidence: tentative
+  evidence: "strong E3,E7: creates the task (Task_Create with PolyDemoUnder2_Main/Destructor, work 0x218) and loads '/bg2/poly_m.bb' and '/act/poly_demo_under2*.bac' (was func_02057ca8, main, 2026-11-16)"
+SaveData_Compare:
+  confidence: tentative
+  evidence: "strong E7: compares two save blocks (checksum check + memcmp func_0202a1a0); used by SaveData_IsDirty (was func_020583f4, main, 2026-11-16)"
+SaveData_Validate:
+  confidence: tentative
+  evidence: "strong E7: fixes the checksum and clamps invalid fields of data_022c4680 (record times > 36000 frames reset to 0xffff) (was func_02058474, main, 2026-11-16)"
+SaveData_SetDefaults:
+  confidence: tentative
+  evidence: "strong E7: clears the 0x314-byte save block, sets default values (record tables to 0xffff) and stores SaveData_CalcChecksum (was func_020586d4, main, 2026-11-16)"
+SaveData_WriteSignature:
+  confidence: tentative
+  evidence: "strong E3,E6: locks the card backup (func_0200f24c with lock id), writes the 12-byte 'sonic_rush_' signature data_02076b3c at offset 0 (func_0200f9a0), unlocks (was func_02058774, main, 2026-11-16)"
+SaveData_CheckSignature:
+  confidence: tentative
+  evidence: "strong E3,E6: reads 12 bytes at backup offset 0 under the backup lock and compares them with the 'sonic_rush_' signature (was func_020587d4, main, 2026-11-16)"
+SaveData_VerifyChecksum:
+  confidence: tentative
+  evidence: "strong E7: TRUE when the save block's first word equals SaveData_CalcChecksum of the block (was func_02058898, main, 2026-11-16)"
+SaveData_CalcChecksum:
+  confidence: tentative
+  evidence: "strong E4,E7: CRC32 (func_0201b028 with gSaveCRCTable) of the 0x310 bytes after the save header word (was func_020588bc, main, 2026-11-16)"
+SaveData_InitCRCTable:
+  confidence: tentative
+  evidence: "strong E4,E8: builds the CRC32 table data_022c4998 with the reflected polynomial 0xedb88320 (func_0201b0a4) (was func_020588dc, main, 2026-11-16)"
+SaveData_AdvanceSlot:
+  confidence: tentative
+  evidence: "strong E7: rotates the current slot pair (mod 5), increments the save counter +4 and refreshes the checksum (was func_020588f8, main, 2026-11-16)"
+SaveData_Save:
+  confidence: tentative
+  evidence: "strong E7: SaveData_AdvanceSlot then writes data_022c4680 to both slots of the pair (SaveData_WriteSlot), retrying other pairs; 0 ok, 2 fail (was func_0205899c, main, 2026-11-16)"
+SaveData_WriteSlot:
+  confidence: tentative
+  evidence: "strong E6,E7: under the backup lock writes 0x314 bytes to backup offset slot*0x320+0xc (func_0200f9a0) (was func_02058a44, main, 2026-11-16)"
+SaveData_ReadSlotPair:
+  confidence: tentative
+  evidence: "strong E7: reads slot 2n then 2n+1 of the current pair and returns 0 when one passes SaveData_VerifyChecksum, 1 or 3 on read/CRC failure (was func_02058ab0, main, 2026-11-16)"
+SaveData_ReadSlot:
+  confidence: tentative
+  evidence: "strong E6,E7: under the backup lock reads 0x314 bytes from backup offset slot*0x320+0xc (func_0200fa70) (was func_02058b50, main, 2026-11-16)"
+SaveData_FormatSlot:
+  confidence: tentative
+  evidence: "strong E7: allocates a temp block, fills it with SaveData_SetDefaults and writes it to backup slot idx*0x320+0xc (was func_02058bbc, main, 2026-11-16)"
+SaveData_FormatAll:
+  confidence: tentative
+  evidence: "strong E7: SaveData_FormatSlot on all 10 slots (5 pairs) and resets the current pair (was func_02058d24, main, 2026-11-16)"
+SaveData_IdentifyBackup:
+  confidence: tentative
+  evidence: "strong E4: under the backup lock calls func_0200f8b8(0xd01) = CARD_IdentifyBackup with the 64 Kbit EEPROM type (was func_02058dac, main, 2026-11-16)"
+SaveData_Init:
+  confidence: tentative
+  evidence: "strong E4,E7: takes an OS lock id (OS_GetLockID, fails on -3) for backup access into data_022c4994 and builds the CRC32 table (was func_02058df0, main, 2026-11-16)"
+SaveData_IsDirty:
+  confidence: tentative
+  evidence: "strong E7: refreshes the gSaveData checksum, reads the stored slot pair into a temp block (SaveData_ReadSlotPair) and compares it with gSaveData (func_020583f4) (was func_02058e34, main, 2026-11-16)"
+SaveData_SelectLatestSlot:
+  confidence: tentative
+  evidence: "strong E7: reads both slots of all 5 pairs (SaveData_ReadSlot + SaveData_VerifyChecksum) and picks the valid pair with the highest save counter (was func_02059054, main, 2026-11-16)"
+SaveData_Format:
+  confidence: tentative
+  evidence: "strong E7: returns 6 without backup (gSaveState flag 0x80), else SaveData_SetDefaults on data_022c4680 and SaveData_FormatAll (was func_02059340, main, 2026-11-16)"
+SaveData_Load:
+  confidence: tentative
+  evidence: "strong E7: returns 6 without backup, else SaveData_ReadSlotPair into data_022c4680 then SaveData_Validate (was func_020593bc, main, 2026-11-16)"
+SaveData_Commit:
+  confidence: tentative
+  evidence: "strong E7: SaveData_Validate; without backup returns 6; if not loaded SaveData_Load; if SaveData_IsDirty then SaveData_Save (was func_0205943c, main, 2026-11-16)"
+SaveData_Startup:
+  confidence: tentative
+  evidence: "strong E7: SaveData_Init, SaveData_IdentifyBackup, then SaveData_CheckSignature: without signature formats (SaveData_Format) and writes it (SaveData_WriteSignature), else SaveData_SelectLatestSlot (was func_020594f8, main, 2026-11-16)"
+TalkDemo_GetEntry:
+  confidence: tentative
+  evidence: "strong E7: returns &data_0207747c[gTalkDemoId] (was func_02060384, main, 2026-11-16)"
+TalkDemo_GetLanguageSuffix:
+  confidence: tentative
+  evidence: "strong E3: returns the suffix string '_jpn','_eng','_fra','_deu','_ita','_spa' for a language index (was func_02060464, main, 2026-11-16)"
+TalkDemo_LoadScript:
+  confidence: tentative
+  evidence: "strong E3: builds '/talk/' + name (talk_demo_boss_son1, ...) + language suffix + '.btk' and loads it; NULL for id 0 or >= 0x3a (was func_020604dc, main, 2026-11-16)"
+TalkDemo_Main:
+  confidence: tentative
+  evidence: "strong E7: task main passed to Task_Create by TalkDemo_Create; runs the work state pointer (was func_02060da0, main, 2026-11-16)"
+TalkDemo_Destructor:
+  confidence: tentative
+  evidence: "strong E7: task dtor passed by TalkDemo_Create; frees the talk resources and restores display/sound (was func_02060dd8, main, 2026-11-16)"
+TalkDemo_ClearFlags:
+  confidence: tentative
+  evidence: "strong E7: clears bits v of flag word i of the talk task work (was func_02060e38, main, 2026-11-16)"
+TalkDemo_SetFlags:
+  confidence: tentative
+  evidence: "strong E7: ORs v into flag word i of the talk task work (was func_02060e54, main, 2026-11-16)"
+TalkDemo_GetFlags:
+  confidence: tentative
+  evidence: "strong E7: returns flag word i of the talk task work (0 without task) (was func_02060e70, main, 2026-11-16)"
+TalkDemo_IsActive:
+  confidence: tentative
+  evidence: "strong E7: TRUE while the talk task data_022c4da4 exists (was func_02060e8c, main, 2026-11-16)"
+TalkDemo_Create:
+  confidence: tentative
+  evidence: "strong E7,E3: creates the singleton talk task data_022c4da4 (Task_Create with TalkDemo_Main/TalkDemo_Destructor), stores the language and sets state func_02060d00 which loads the '/talk/*.btk' script (was func_02060f40, main, 2026-11-16)"
+TalkDemo_ReadMessage:
+  confidence: tentative
+  evidence: "strong E3,E4: opens the language '/bg2/talk/talk_m_<lang>.bb' with FS, reads the 8-byte {offset,size} entry n and the entry data into a new block (was func_02060fd8, main, 2026-11-16)"
+TalkDemo_LoadCommonSprites:
+  confidence: tentative
+  evidence: "strong E3,E5: sprintf '%s%s.bac' of '/act/talk_demo_com' + language suffix, loads it and inits a main-screen sprite (OBJ palette 0x05000200) (was func_0206132c, main, 2026-11-16)"
+NaviM_Release:
+  confidence: tentative
+  evidence: "strong E7: frees data_022c4dc0 ('/act/navi_m.bac' loaded by NaviM_Load) from the 0x0208fe80 heap and clears it (was func_020645b0, main, 2026-11-16)"
+NaviM_Load:
+  confidence: tentative
+  evidence: "strong E3: loads '/act/navi_m.bac' into data_022c4dc0 (was func_02064644, main, 2026-11-16)"
+DemoInput_Main:
+  confidence: tentative
+  evidence: "strong E7,E6: per mode data_022c4ee4 sets system flag 0x40 (main() then skips the hardware pad read) and feeds recorded {keys, frames} entries to Pad_Update func_02035134; mode 5/6 ends (was func_02067ddc, main, 2026-11-16)"
+DemoInput_Destructor:
+  confidence: tentative
+  evidence: "strong E7: task dtor of DemoInput_Create: frees the input file, clears system flag 0x40 and the mode (was func_02067fe4, main, 2026-11-16)"
+DemoInput_Create:
+  confidence: tentative
+  evidence: "strong E7,E6: task (Task_Create with DemoInput_Main/DemoInput_Destructor) that loads a recorded input file, seeds gRandSeed data_0208fe70 from its first word and enters playback mode 2 (was func_02068094, main, 2026-11-16)"
+Sound_CalcDistanceVolume:
+  confidence: tentative
+  evidence: "strong E7: volume = (0x200 - (|dx|+|dy|) in pixels) >> 2 (0 beyond 0x200) scaled by gSEVolume data_02250444 >> 7 (was func_02068194, main, 2026-11-16)"
+Sound_CalcPan:
+  confidence: tentative
+  evidence: "strong E7: pan = clamp(x0 - x1 in pixels, -128, 127) (was func_020681e0, main, 2026-11-16)"
+Sound_SetPositional:
+  confidence: tentative
+  evidence: "strong E7: sets a sound handle's volume (func_0201be98) from the distance between two objects and its track pan (func_0201bdb0 mask 0xffff) from their x delta; 23 callers (was func_02068204, main, 2026-11-16)"
+ObjVramRef_Release:
+  confidence: tentative
+  evidence: "strong E7: decrements ObjVramRef_Acquire count and frees the key via func_02039bb0(engine,key) at zero (was func_020683e4, main, 2026-11-16)"
+ObjVramRef_Acquire:
+  confidence: tentative
+  evidence: "strong E7: refcounted VRAM key holder: allocates via func_02039c18(engine,size) only when empty, increments count, returns key (was func_02068434, main, 2026-11-16)"
+ObjData_Release:
+  confidence: tentative
+  evidence: "strong E7: decrements the ObjData_Load refcount and frees the buffer from the 0x0208fe80 heap at zero (0x8000 = archive-owned) (was func_020686dc, main, 2026-11-16)"
+ObjData_Load:
+  confidence: tentative
+  evidence: "strong E7,E3: refcounted data handle (ptr,count): loads file by path (func_02033fbc) or from a NARC with the 'obj:' archive prefix, increments count; returns cached ptr (was func_020687b8, main, 2026-11-16)"
+ObjSpd_AccelToward:
+  confidence: tentative
+  evidence: "strong E7: below dead-zone clears speed; else decelerates with ObjSpd_DownSet when the input sign opposes the speed and accelerates with ObjSpd_UpSet toward +/-max (was func_0206896c, main, 2026-11-16)"
+ObjAngle_MoveToward16:
+  confidence: tentative
+  evidence: "strong E7: rotates a u16 angle toward a target by step along the shorter way around 0x10000, snapping when within step (was func_02068a34, main, 2026-11-16)"
+ObjAngle_MoveToward8:
+  confidence: tentative
+  evidence: "strong E7: rotates a u8 angle toward a target by step along the shorter way around 0x100, snapping when within step (was func_02068b04, main, 2026-11-16)"
+Math_LerpFx32:
+  confidence: tentative
+  evidence: "strong E7: returns b + ((a - b) * t >> 12) for fx32 t (b at t=0, a at t=0x1000) (was func_02068bb8, main, 2026-11-16)"
+ObjShift_SetFromRef:
+  confidence: tentative
+  evidence: "strong E7: like ObjShift_Set but the step is (cur-ref) >> shift, zeroed when moving away from target, clamped to [minStep, maxStep], no overshoot; 13 callers (was func_02068bd8, main, 2026-11-16)"
+ObjShift_Set:
+  confidence: tentative
+  evidence: "strong E7: moves cur toward target by (target-cur) >> shift clamped to [minStep, maxStep] without overshoot (eased approach); 16 callers (was func_02068ce4, main, 2026-11-16)"
+ObjSpd_DownSet:
+  confidence: tentative
+  evidence: "strong E7: moves a speed toward 0 by (dec * game speed data_0207cf7c) >> 8 without overshoot; 44 callers (was func_02068db4, main, 2026-11-16)"
+ObjSpd_UpSet:
+  confidence: tentative
+  evidence: "strong E7: adds (acc * game speed data_0207cf7c) to a speed and clamps it to +/-max when max != 0; 53 callers (was func_02068df8, main, 2026-11-16)"
+StageObj_ViewOutCheck:
+  confidence: tentative
+  evidence: "strong E7,E6: (x,y,offset,l,t,r,b) vs camera rect with 256x192 screen dims; StageObj_Main sets destroy flag 4 when it returns 1 unless flag54&0x10 (was func_02068e58, main, 2026-11-16)"
+StageObj_HandleCollider:
+  confidence: tentative
+  evidence: "strong E7,E6: copies owner pos (>>8) into the rect, sets owner, flip bits from display flags/angle, then ObjRect_Register; skipped when destroyed (flag54&0xc); 22 ppCollide callers (was func_02069090, main, 2026-11-16)"
+StageObj_HandleRide:
+  confidence: tentative
+  evidence: "strong E7,E6: called by StageObj_Main before ppIn; adds ride object (+0x80) / touch object (+0x84) per-frame movement delta to own offset +0x36, drops refs whose flag54&4 (destroyed) (was func_0206919c, main, 2026-11-16)"
+Math_RotateVec2S16:
+  confidence: tentative
+  evidence: "strong E7,E8: rotates an (s16 x, s16 y) pair by angle<<8 with a Z rotation matrix built from FX_SinCosTable_; used by StageObj_Move for velocity (was func_020693f0, main, 2026-11-16)"
+StageObj_Move:
+  confidence: tentative
+  evidence: "strong E7,E6: called by StageObj_Main unless moveFlag+0x58 bit 0x2000; saves prev pos, rotates velocity by object angle, applies gravity +0x40 capped by +0x42 when moveFlag 0x80, integrates position (was func_020694b0, main, 2026-11-16)"
+StageObj_SetAnimation:
+  confidence: tentative
+  evidence: "strong E7: clears display bits 4/8 and sets animation id on the model +0x124 (func_02031a68), child sprite +0x12c and both sprite animators +0x94/+0xdc (func_02033550); 181 callers (was func_02069818, main, 2026-11-16)"
+SpritePair_SetOAMPriority:
+  confidence: tentative
+  evidence: "strong E7,E5: writes value<<17 into bits 17-18 of +0x2c of both animators; func_02032480 moves these bits to OAM attr2 priority bits 10-11 (was func_020698bc, main, 2026-11-16)"
+StageObj_SetOAMPriority:
+  confidence: tentative
+  evidence: "strong E7: SpritePair_SetOAMPriority on the object's animators +0x94/+0xdc (67 callers) (was func_020698f0, main, 2026-11-16)"
+SpritePair_SetOAMOrder:
+  confidence: tentative
+  evidence: "strong E7,E5: stores the order to +0x46 of both animators; the sprite drawer func_02032480 passes +0x46 as the bucket (0..31) to the OAM entry allocator func_02036bfc (was func_0206990c, main, 2026-11-16)"
+StageObj_SetOAMOrder:
+  confidence: tentative
+  evidence: "strong E7: SpritePair_SetOAMOrder on the object's animators +0x94/+0xdc (116 callers) (was func_02069918, main, 2026-11-16)"
+StageObj_Load3dBAC:
+  confidence: tentative
+  evidence: "strong E7: loads a .bac via ObjData_Load, allocates texture and texture-palette VRAM (default 0x10) and inits a 3D sprite animator (was func_02069934, main, 2026-11-16)"
+StageObj_LoadModelSimple:
+  confidence: tentative
+  evidence: "strong E7: appends a model work to the object's model list, loads the model file via ObjData_Load (archive fallback) and inits it with mdl/shp/mat ids (was func_02069a34, main, 2026-11-16)"
+StageObj_LoadMotion:
+  confidence: tentative
+  evidence: "strong E8,E7: picks the anim slot from the file extension suffix ca/ma/tp/ta/va (nsbca/nsbma/nsbtp/nsbta/nsbva), loads via ObjData_Load into res[type] (was func_02069b34, main, 2026-11-16)"
+StageObj_LoadModel:
+  confidence: tentative
+  evidence: "strong E7: sets the object's model work, loads the file via ObjData_Load (archive fallback) and inits it with a model index (was func_02069c74, main, 2026-11-16)"
+ObjAction_Load2dBAC:
+  confidence: tentative
+  evidence: "strong E5,E7: same as StageObj_Load2dBAC for caller-given animators (either may be NULL): OBJ palettes 0x05000200/0x05000600 (was func_02069d38, main, 2026-11-16)"
+StageObj_SetSharedSpriteVram:
+  confidence: tentative
+  evidence: "strong E7: stores the shared ref at +0x90 and acquires engine A/B sprite VRAM keys into both animators (+0xc8/+0x110) via ObjVramRef_Acquire; size 0xffff = from loaded bac (was func_02069eb0, main, 2026-11-16)"
+StageObj_Load2dBAC:
+  confidence: tentative
+  evidence: "strong E5,E7: loads a .bac via ObjData_Load and inits the object's two animators +0x94/+0xdc for engine A/B with OBJ palettes 0x05000200/0x05000600; ctors pass '/act/*.bac' (was func_02069f1c, main, 2026-11-16)"
+StageObj_AllocSpritePalette:
+  confidence: tentative
+  evidence: "strong E7: ObjDraw_AllocSpritePalette with the object's bac (+0x8c) and stores the row into the palette row field +0x44 of both animators (+0xd8/+0x120) with flag 0x10; 143 callers (was func_0206a054, main, 2026-11-16)"
+StageObj_Draw3DEx:
+  confidence: tentative
+  evidence: "strong E6,E7: (x,y,z,rotZ,obj,model) builds the model matrix (MTX_RotY33_ etc.) and renders via NNS G3D; called from StageObj_Draw3D (was func_0206a0ac, main, 2026-11-16)"
+StageObj_Draw3D:
+  confidence: tentative
+  evidence: "strong E7,E6: forwards object x,y,z and angle to StageObj_Draw3DEx for one model; used by StageObj_Draw for +0x124/+0x128/+0x12c (was func_0206aa04, main, 2026-11-16)"
+StageObj_Draw2DEx:
+  confidence: tentative
+  evidence: "strong E6,E7: (x, y, rot, obj, sprA, sprB, p) sprite draw used by StageObj_Draw2D and 17 overlay draw callbacks; calls OAM/sprite animator routines (was func_0206b768, main, 2026-11-16)"
+StageObj_Draw2D:
+  confidence: tentative
+  evidence: "strong E7,E6: forwards object x,y (+0x10/+0x14) and angle +1 with the two sprite animators to StageObj_Draw2DEx; called by StageObj_Main when sprite +0xa4 loaded (was func_0206bd24, main, 2026-11-16)"
+StageObj_Collision:
+  confidence: tentative
+  evidence: "strong E7,E6: called by StageObj_Main when gObjManagerFlags&8 and moveFlag&0x100 clear; sub-steps movement in 0x800 steps calling func_02065f98 and accumulates hit flags +0x5e (was func_0206bd5c, main, 2026-11-16)"
+StageObj_Destructor:
+  confidence: tentative
+  evidence: "strong E7,E6: passed as dtor to Task_Create together with StageObj_Main (101 ctors); frees sprite +0xa4, model +0x124 resources and child models of the 0x20C object (was func_0206bef4, main, 2026-11-16)"
+StageObj_ReleaseSpriteVram:
+  confidence: tentative
+  evidence: "strong E7,E6: called by StageObj_Destructor: releases shared refs at +0x90 or frees the animators' VRAM keys +0xc8/+0x110 (was func_0206c35c, main, 2026-11-16)"
+StageObj_Main:
+  confidence: tentative
+  evidence: "strong E7,E6: passed as main to Task_Create by 200+ object ctors; destroys task on flag54&4, runs view-out check, state ptr +0x68 (o), ppIn +0x6c, draw +0x70, collide +0x78, last +0x7c each frame (was func_0206c3d0, main, 2026-11-16)"
+StageObj_Draw:
+  confidence: tentative
+  evidence: "strong E7,E6: default draw from StageObj_Main: draws models +0x124/+0x128/+0x12c via StageObj_Draw3D and the sprite pair +0x94/+0xdc via StageObj_Draw2D (was func_0206c708, main, 2026-11-16)"
+ObjDraw_SetGlobalOffset:
+  confidence: tentative
+  evidence: "strong E7,E6: stores s8 x,y draw offset data_022c4eec[0..1] read by StageObj_Draw2DEx/Draw3DEx; stage update passes the ScreenShake offsets (was func_0206c784, main, 2026-11-16)"
+StageObj_PauseCheck:
+  confidence: tentative
+  evidence: "strong E7,E6: returns TRUE when global object flags data_022c4ef0 bit0 (paused) set and object flag 0x20 (active during pause) clear; gates state/ppIn in StageObj_Main (was func_0206c798, main, 2026-11-16)"
+StageObj_ClearPause:
+  confidence: tentative
+  evidence: "strong E7: clears bit0 (pause) of the global object-manager flags data_022c4ef0 tested by StageObj_PauseCheck (was func_0206c7c0, main, 2026-11-16)"
+StageObj_SetPause:
+  confidence: tentative
+  evidence: "strong E7: sets bit0 (pause) of the global object-manager flags data_022c4ef0 tested by StageObj_PauseCheck (was func_0206c7d8, main, 2026-11-16)"
+ObjDraw_ShiftColor:
+  confidence: tentative
+  evidence: "strong E7: adds (dr,dg,db) to an RGB555 colour clamping each channel to 0..31 (was func_0206d100, main, 2026-11-16)"
+ObjDraw_LoadPaletteRow:
+  confidence: tentative
+  evidence: "strong E5,E7: decodes a BAC palette into OBJ palette 0x05000200 (engine A) or 0x05000600 (B) at a row, copies the row to data_022c5260 and a darkened copy (-10,-1,0) to data_022c5460 (was func_0206d190, main, 2026-11-16)"
+ObjDraw_AllocSpritePalette:
+  confidence: tentative
+  evidence: "strong E7: finds a palette row in the managed range with the same key (refcount++) or a free one, loads it on both engines via ObjDraw_LoadPaletteRow, returns the row (was func_0206d2d0, main, 2026-11-16)"
+ObjDraw_ReleaseSpritePalette:
+  confidence: tentative
+  evidence: "strong E7,E6: decrements a managed palette row refcount and clears its key at zero; called by StageObj_Destructor with the object's row (was func_0206d3fc, main, 2026-11-16)"
+ObjDraw_SetManagedRows:
+  confidence: tentative
+  evidence: "strong E7: sets first/last managed palette row (data_022c521c, data_0207cfc4) used by ObjDraw_AllocSpritePalette (was func_0206d468, main, 2026-11-16)"
+ObjDraw_InitRows:
+  confidence: tentative
+  evidence: "strong E7: clears the 16 palette-row {key, refcount} slots data_022c5220 (was func_0206d484, main, 2026-11-16)"
+ObjRect_HitCenterY:
+  confidence: tentative
+  evidence: "strong E7: of the 4 top/bottom edges of two rects drops min and max and returns the midpoint of the inner two << 8 (was func_0206d4c8, main, 2026-11-16)"
+ObjRect_HitCenterX:
+  confidence: tentative
+  evidence: "strong E7: of the 4 left/right edges of two rects drops min and max and returns the midpoint of the inner two << 8 (was func_0206d5d0, main, 2026-11-16)"
+ObjRect_CenterY:
+  confidence: tentative
+  evidence: "strong E7: returns (pos.y + (top+bottom)/2) << 8 of a rect (was func_0206d6dc, main, 2026-11-16)"
+ObjRect_CenterX:
+  confidence: tentative
+  evidence: "strong E7: returns (pos.x + (left+right)/2) << 8 of a rect (was func_0206d6f8, main, 2026-11-16)"
+ObjRect_PointCheck:
+  confidence: tentative
+  evidence: "strong E7: TRUE when (x,y) lies in the enabled (flag 4, not 0x1000) rect, honouring flip bits 1/2 (was func_0206d714, main, 2026-11-16)"
+ObjRect_BoxCheck:
+  confidence: tentative
+  evidence: "strong E7: TRUE when the enabled rect overlaps the box at (x+ox, y+oy, w, h), honouring flip bits 1/2 (was func_0206d7c8, main, 2026-11-16)"
+ObjRect_FuncNoHit:
+  confidence: tentative
+  evidence: "strong E7: restores the two rects' flags saved by ObjRect_CheckFuncCall and sets the called-no-hit latch data_022c5660 that aborts the hit (was func_0206d8bc, main, 2026-11-16)"
+ObjRect_CheckFuncCall:
+  confidence: tentative
+  evidence: "strong E7: (attacker, defender): saves both flags, ObjRect_FlagCheck(atk->+0x20, def->+0x24), sets hit bits 0x400/0x100 and calls each rect's hit callback +0x18 with the other rect (was func_0206d900, main, 2026-11-16)"
+ObjRect_FlagCheck:
+  confidence: tentative
+  evidence: "strong E7: attack flag bits & ~defence bits nonzero and attack power (low 3 bits) >= defence power; used by ObjRect_CheckFuncCall (was func_0206daf4, main, 2026-11-16)"
+ObjRect_CheckGroup:
+  confidence: tentative
+  evidence: "strong E6,E7: called only by ObjRect_CheckAllGroup with (atkList, defList, atkCount, defCount, group); overlap tests then ObjRect_CheckFuncCall (was func_0206db24, main, 2026-11-16)"
+ObjRect_RegistGet:
+  confidence: tentative
+  evidence: "strong E7: (groupMask, idx) walks the 4 current group lists by count and returns the idx-th registered rect in the masked groups (was func_0206de54, main, 2026-11-16)"
+ObjRect_CheckAllGroup:
+  confidence: tentative
+  evidence: "strong E7,E6: for each group pair whose group flags (0x10<<j) allow it calls ObjRect_CheckGroup(cur[i],cur[j],cnt[i],cnt[j],j), clears hit-latch bits, then ObjRect_CheckOut (was func_0206ded8, main, 2026-11-16)"
+ObjRect_Register:
+  confidence: tentative
+  evidence: "strong E7,E6: if rect flag 4 (enabled) adds rect to the first matching of 4 group lists (cap 0x30) and ORs its group flags; called from per-object collider update (was func_0206e080, main, 2026-11-16)"
+ObjRect_CheckOut:
+  confidence: tentative
+  evidence: "strong E7,E6: copies the 4 next-frame rect group lists/counts/flags into the current lists and clears next; tail-called by ObjRect_CheckAllGroup (was func_0206e130, main, 2026-11-16)"
+ObjRect_CheckInit:
+  confidence: tentative
+  evidence: "strong E7: clears both current and next rect group lists, counts and group flags (was func_0206e1f8, main, 2026-11-16)"
+ObjRect_SetAtkDefFlags:
+  confidence: tentative
+  evidence: "strong E7: stores attack word +0x20 and defence word +0x24 (the two words ObjRect_CheckFuncCall passes to ObjRect_FlagCheck) and clears hit latches 0x200/0x400 (was func_0206e2b4, main, 2026-11-16)"
+ObjRect_SetBox3D:
+  confidence: tentative
+  evidence: "strong E7,E6: sets enable flag 4 and box l,t,r,b,back,front (s16) sorting each min/max pair (was func_0206e2d8, main, 2026-11-16)"
+ObjRect_SetBox2D:
+  confidence: tentative
+  evidence: "strong E7,E6: sets enable flag 4 and box l,t,r,b with fixed depth -8..8, sorting min/max; called by 57 overlay ctors on the object collision boxes at +0x134/+0x160 (was func_0206e3c0, main, 2026-11-16)"
+gBgPaletteRamTable:
+  confidence: tentative
+  evidence: "confirmed E8: {0x05000000, 0x05000400}: main/sub BG palette RAM, entry 0 used as backdrop by ScreenFlash (was data_02072c88, main, 2026-11-16)"
+gGameLanguage:
+  confidence: tentative
+  evidence: "strong E8,E3: language index 0..5 selecting the _jpn/_eng/_fra/_deu/_ita/_spa asset variants (default 1 = English when out of range); OS_LANGUAGE order (was data_02072cb8, main, 2026-11-16)"
+gScreenFlashDefaultTable:
+  confidence: tentative
+  evidence: "strong E7,E8: default keyframe list {colour u16, enable u8, frames u8} used by ScreenFlash_Create when cfg is NULL; first key 0xffff (white) (was data_02073234, main, 2026-11-16)"
+gStageCommonFileList:
+  confidence: tentative
+  evidence: "strong E8: {entries, 2} file list: '/narc/player_lz7.narc', '/narc/act_com_lz7.narc' with their load callbacks (was data_02073c7c, main, 2026-11-16)"
+gStageZoneFreeFuncTable:
+  confidence: tentative
+  evidence: "strong E8: zone x 3 acts table of free callbacks; the act-3 slots hold the BossStageN_FreeModels functions, the others empty stubs (was data_02074184, main, 2026-11-16)"
+gStageZoneFileListTable:
+  confidence: tentative
+  evidence: "strong E8,E7: per zone x 3 acts {entries,count} file lists indexed by StageLoader_LoadZoneFiles; entries are zNN map/eve/act narcs and zone sound_data.sdat (was data_020745a8, main, 2026-11-16)"
+gSaveSignature:
+  confidence: tentative
+  evidence: "strong E3: the 12-byte 'sonic_rush_' backup signature written/compared at offset 0 (was data_02076b3c, main, 2026-11-16)"
+gSaveDataBusy:
+  confidence: tentative
+  evidence: "strong E7: set to 1 for the duration of SaveData_Startup/SaveData_Format/SaveData_Load/SaveData_Commit and cleared on every exit (was data_02087ccc, main, 2026-11-16)"
+gSEVolume:
+  confidence: tentative
+  evidence: "strong E7: volume applied to SE seqarc handles by Sound_PlaySeqArc/Sound_PlaySeqArcEx (handle data_02250454) (was data_02250444, main, 2026-11-16)"
+gBGMVolume:
+  confidence: tentative
+  evidence: "strong E7: volume applied to BGM sequence handles (func_0204b860 StartSeq on data_02250464, SysSound handle 0) (was data_0225044c, main, 2026-11-16)"
+gSESoundHandle:
+  confidence: tentative
+  evidence: "strong E7: default sound handle used by Sound_PlaySeqArc/Sound_PlaySeqArcEx when NULL is passed (was data_02250454, main, 2026-11-16)"
+gBrightnessFadeTask:
+  confidence: tentative
+  evidence: "strong E7: singleton fade task set by BrightnessFade_Create, cleared by BrightnessFade_Destructor (was data_022c4410, main, 2026-11-16)"
+gScreenFlashTask:
+  confidence: tentative
+  evidence: "strong E7: singleton task pointer of ScreenFlash_Create/Destructor (was data_022c4414, main, 2026-11-16)"
+gPaletteAnimRefCount:
+  confidence: tentative
+  evidence: "strong E7: per palette-row refcounts used by PaletteAnim_Create/Main/Release (was data_022c4418, main, 2026-11-16)"
+gPaletteAnimTasks:
+  confidence: tentative
+  evidence: "strong E7: per palette-row task pointers set by PaletteAnim_Create, cleared by PaletteAnim_Destructor (was data_022c4438, main, 2026-11-16)"
+gScreenShakeTask:
+  confidence: tentative
+  evidence: "strong E7: singleton task of ScreenShake_Create, read by the ScreenShake_* accessors (was data_022c4478, main, 2026-11-16)"
+gNaviBSprite:
+  confidence: tentative
+  evidence: "strong E3: holds '/act/navi_b.bac' loaded by NaviB_Load (was data_022c4480, main, 2026-11-16)"
+gZoneSoundData:
+  confidence: tentative
+  evidence: "strong E8,E7: zone sound_data.sdat buffer stored by StageLoader_OnSoundDataLoaded (was data_022c4484, main, 2026-11-16)"
+gZoneActArchive:
+  confidence: tentative
+  evidence: "strong E8,E7: decompressed zone '/narc/zNN_act_lz7.narc' set by StageLoader_OnZoneActArchiveLoaded; opened with archive name 'exc' (was data_022c4488, main, 2026-11-16)"
+gActComArchive:
+  confidence: tentative
+  evidence: "strong E8,E7: decompressed '/narc/act_com_lz7.narc' set by StageLoader_OnActComArchiveLoaded; opened with archive name 'com' (was data_022c448c, main, 2026-11-16)"
+gStageLoader:
+  confidence: tentative
+  evidence: "strong E7: file-list loader state (state, mode, path[0x46], step, job) used by StageLoader_ProcessFileList (was data_022c4490, main, 2026-11-16)"
+gSysSound:
+  confidence: tentative
+  evidence: "strong E3,E7: system sound state (group ids, 2 tasks, 5 sound handles) created by SysSound_Init for snd/sys/sound_data.sdat (was data_022c465c, main, 2026-11-16)"
+gNaviMsgTask:
+  confidence: tentative
+  evidence: "strong E7: singleton task created by NaviMsg_Create, read by the NaviMsg_* functions (was data_022c4660, main, 2026-11-16)"
+gSaveData:
+  confidence: tentative
+  evidence: "strong E7: 0x314-byte in-RAM save block {crc, counter, ...} read/written by SaveData_Load/SaveData_Save (was data_022c4680, main, 2026-11-16)"
+gSaveState:
+  confidence: tentative
+  evidence: "strong E7: save state {u16 backup lock id, u8 current slot pair (0..4), u8 flags (0x80 = no backup)} used by every SaveData_* backup access (was data_022c4994, main, 2026-11-16)"
+gSaveCRCTable:
+  confidence: tentative
+  evidence: "strong E8: 256-entry CRC32 table built with polynomial 0xedb88320 by SaveData_InitCRCTable (was data_022c4998, main, 2026-11-16)"
+gTalkDemoId:
+  confidence: tentative
+  evidence: "strong E7: current talk id indexing the talk entry table data_0207747c and the per-language table data_0207ca10 (was data_022c4da0, main, 2026-11-16)"
+gTalkDemoTask:
+  confidence: tentative
+  evidence: "strong E7: singleton task of TalkDemo_Create read by the TalkDemo_* flag accessors (was data_022c4da4, main, 2026-11-16)"
+gNaviMSprite:
+  confidence: tentative
+  evidence: "strong E3: holds '/act/navi_m.bac' loaded by NaviM_Load (was data_022c4dc0, main, 2026-11-16)"
+gDemoInputMode:
+  confidence: tentative
+  evidence: "strong E7: demo input mode (0/1 off, 2/4 playback, 3 record, 5/6 stop) read by DemoInput_Main (was data_022c4ee4, main, 2026-11-16)"
+gObjManagerFlags:
+  confidence: tentative
+  evidence: "strong E7: global object-manager flag word: bit0 pause (StageObj_PauseCheck/SetPause/ClearPause), bit3 run object collision, bit4 run ppCollide, read by StageObj_Main every frame (was data_022c4ef0, main, 2026-11-16)"
+gObjDrawPaletteRows:
+  confidence: tentative
+  evidence: "strong E7: 16 {key, refcount} palette-row slots managed by ObjDraw_AllocSpritePalette/ReleaseSpritePalette (was data_022c5220, main, 2026-11-16)"
+gObjDrawPalette:
+  confidence: tentative
+  evidence: "strong E7: 16x16 RGB555 copy of loaded OBJ palette rows written by ObjDraw_LoadPaletteRow (was data_022c5260, main, 2026-11-16)"
+gObjDrawTintPalette:
+  confidence: tentative
+  evidence: "strong E7: darkened copy of gObjDrawPalette written by ObjDraw_LoadPaletteRow (was data_022c5460, main, 2026-11-16)"
+gObjRectCalledNoHit:
+  confidence: tentative
+  evidence: "strong E7: latch set by ObjRect_FuncNoHit, checked and cleared by ObjRect_CheckFuncCall (was data_022c5660, main, 2026-11-16)"
+gObjRectPrevAtkFlag:
+  confidence: tentative
+  evidence: "strong E7: attacker flags saved by ObjRect_CheckFuncCall, restored by ObjRect_FuncNoHit (was data_022c5664, main, 2026-11-16)"
+gObjRectPrevDefFlag:
+  confidence: tentative
+  evidence: "strong E7: defender flags saved by ObjRect_CheckFuncCall, restored by ObjRect_FuncNoHit (was data_022c5668, main, 2026-11-16)"
+gObjRectNextGroupFlags:
+  confidence: tentative
+  evidence: "strong E7: per-group OR of registered rects' group flags, set by ObjRect_Register (was data_022c566c, main, 2026-11-16)"
+gObjRectCurGroupFlags:
+  confidence: tentative
+  evidence: "strong E7: current per-group flags tested (0x10<<j) by ObjRect_CheckAllGroup (was data_022c5670, main, 2026-11-16)"
+gObjRectNextCount:
+  confidence: tentative
+  evidence: "strong E7: per-group next-frame rect counts incremented by ObjRect_Register (cap 0x30) (was data_022c5674, main, 2026-11-16)"
+gObjRectCurCount:
+  confidence: tentative
+  evidence: "strong E7: per-group current rect counts copied from gObjRectNextCount by ObjRect_CheckOut (was data_022c5678, main, 2026-11-16)"
+gObjRectNextList:
+  confidence: tentative
+  evidence: "strong E7: [4][0x30] rect pointer lists filled by ObjRect_Register, moved to current list by ObjRect_CheckOut (was data_022c567c, main, 2026-11-16)"
+gObjRectCurList:
+  confidence: tentative
+  evidence: "strong E7: [4][0x30] current-frame rect lists read by ObjRect_CheckAllGroup/ObjRect_RegistGet (was data_022c597c, main, 2026-11-16)"

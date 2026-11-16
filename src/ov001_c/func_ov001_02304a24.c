@@ -26,21 +26,21 @@ typedef struct UnkStruct_02304a24_p {
 } UnkStruct_02304a24_p;
 
 extern UnkStruct_02304a24 *data_ov001_0231f54c;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s16 data_0206e470[];
 extern s32 data_ov001_02316ef4[];
 extern s32 data_ov001_02316f30[];
 extern s32 data_ov001_02316ecc[];
-extern u32 data_02087cb8;
-extern u16 data_0208922c[];
+extern u32 gSystemFlags;
+extern u16 gDisplayMain[];
 
 UnkStruct_02304a24_p *func_ov001_022ffce8(void);
 s32 func_02002094(s32 n, s32 d);
 s32 func_0200203c(s32 n, s32 d);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 static inline s16 Sin(u16 a) {
@@ -128,6 +128,6 @@ void func_ov001_02304a24(void) {
             dst++;
         }
     }
-    data_02087cb8 |= 0x2000;
-    data_0208922c[3] = y;
+    gSystemFlags |= 0x2000;
+    gDisplayMain[3] = y;
 }

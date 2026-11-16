@@ -29,9 +29,9 @@ typedef struct {
     u16 unk176;
 } UnkWork_020552bc;
 
-s16 func_02068bd8(s16 v, s32 a, s32 b, s32 c, s32 d, s32 e);
-s16 func_02068ce4(s16 v, s32 a, s32 b, s32 c, s32 d);
-void func_02032d2c(UnkSpr_020552bc *s);
+s16 ObjShift_SetFromRef(s16 v, s32 a, s32 b, s32 c, s32 d, s32 e);
+s16 ObjShift_Set(s16 v, s32 a, s32 b, s32 c, s32 d);
+void AnimatorSprite_Draw(UnkSpr_020552bc *s);
 
 void func_020552bc(UnkWork_020552bc *w) {
     u16 i;
@@ -43,14 +43,14 @@ void func_020552bc(UnkWork_020552bc *w) {
         w->state = 1;
         return;
     case 1:
-        w->val = func_02068bd8(w->val, 0xc00, 0, 1, 0x800, 0x200);
+        w->val = ObjShift_SetFromRef(w->val, 0xc00, 0, 1, 0x800, 0x200);
         if (w->val == 0xc00) {
             w->state = 2;
             w->flags &= ~0x18;
         }
         break;
     case 2:
-        w->val = func_02068ce4(w->val, 0x800, 1, 0x400, 0x200);
+        w->val = ObjShift_Set(w->val, 0x800, 1, 0x400, 0x200);
         break;
     case 3:
         break;
@@ -61,16 +61,16 @@ void func_020552bc(UnkWork_020552bc *w) {
     }
     if (!(w->flags & 4)) {
         w->spr[0].y -= w->val >> 8;
-        func_02032d2c(&w->spr[0]);
+        AnimatorSprite_Draw(&w->spr[0]);
         w->spr[0].y += (w->val >> 8) * 2;
         w->spr[0].flags ^= 0x100;
-        func_02032d2c(&w->spr[0]);
+        AnimatorSprite_Draw(&w->spr[0]);
         w->spr[0].flags ^= 0x100;
     }
     if (!(w->flags & 8)) {
         if (w->flags & 2)
             w->spr[1].y -= (w->val - 0x800) >> 8;
-        func_02032d2c(&w->spr[1]);
+        AnimatorSprite_Draw(&w->spr[1]);
     }
     if (w->flags & 0x10)
         return;
@@ -82,6 +82,6 @@ void func_020552bc(UnkWork_020552bc *w) {
         w->unk160--;
     if (w->unk162 > 0)
         w->unk162--;
-    func_02032d2c(&w->spr[2]);
-    func_02032d2c(&w->spr[3]);
+    AnimatorSprite_Draw(&w->spr[2]);
+    AnimatorSprite_Draw(&w->spr[3]);
 }

@@ -22,7 +22,7 @@ typedef int code();
 int func_ov000_0233b178();
 int func_ov000_0233b158();
 int func_ov000_023558bc();
-int func_0204b7ec();
+int Sound_PlaySeqArcEx();
 
 void func_ov000_023557c8(int param_1,int param_2,int param_3,int param_4,short param_5)
 
@@ -45,6 +45,6 @@ void func_ov000_023557c8(int param_1,int param_2,int param_3,int param_4,short p
   *(undefined2 *)(param_1 + 0x352) = 0x1e;
   *(undefined4 *)(param_1 + 0xc) = 0x1e;
   *(uint *)(param_1 + 0x58) = *(uint *)(param_1 + 0x58) & 0xffffff7f;
-  func_0204b7ec(param_1 + 900,0,0x41);
+  Sound_PlaySeqArcEx(param_1 + 900,0,0x41);
   return;
 }

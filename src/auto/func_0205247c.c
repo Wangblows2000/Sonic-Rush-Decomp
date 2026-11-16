@@ -8,7 +8,7 @@ s32 func_0204e6b0();
 s32 func_0204e6ac();
 s32 func_0204ec40();
 s32 func_02064870();
-s32 func_02055178();
+s32 SceneChange_Unk_02055178();
 s32 func_0204888c();
 
 void func_0205247c(s32 p0, s32 p1) {
@@ -24,7 +24,7 @@ void func_0205247c(s32 p0, s32 p1) {
     func_02064870();
     s32 t3 = *(u8 *)((u8 *)data_022c4560 + 0x1d);
     if ((u32)t3 < (u32)2) {
-        func_02055178(t3);
+        SceneChange_Unk_02055178(t3);
         return;
     }
     func_0204888c();

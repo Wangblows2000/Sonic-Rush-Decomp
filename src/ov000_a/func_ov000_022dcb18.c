@@ -36,14 +36,14 @@ typedef struct UnkStruct_022dcb18_7 {
     s32 unk4;
 } UnkStruct_022dcb18_7;
 
-extern UnkTask_022dcb18 *data_022b4574;
+extern UnkTask_022dcb18 *gTaskCurrent;
 extern UnkStruct_022dcb18_7 data_ov000_02369ac0;
 
 void func_ov000_022db6c8(s32 *p);
 void func_ov000_022db7d4(void *a, u16 *ang, UnkStruct_022dcb18 *s);
 
 void func_ov000_022dcb18(void) {
-    UnkStruct_022dcb18 *s = data_022b4574->unk10;
+    UnkStruct_022dcb18 *s = gTaskCurrent->unk10;
     u16 ang;
     if (data_ov000_02369ac0.unk4 == 0x1a) {
         s->unk54 |= 8;

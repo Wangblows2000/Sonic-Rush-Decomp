@@ -11,16 +11,16 @@ UnkStruct_StageObj *func_ov000_02315a8c(s32 a, s32 b, s32 c) {
     UnkStruct_StageObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_02315a64, 0, 0xf6, 2, sizeof(UnkStruct_StageObj));
+    task = Task_Create(StageObj_Main, func_ov000_02315a64, 0, 0xf6, 2, sizeof(UnkStruct_StageObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_StageObj));
     func_ov000_022fba50(w, a, b, c);
-    func_02069f1c(w, data_ov000_02366f18, 0xffff, data_ov000_0236a23c, data_ov000_02369ba0);
-    func_0206a054(w, 0, 0x3c);
-    func_02069918(w, 0x14);
+    StageObj_Load2dBAC(w, data_ov000_02366f18, 0xffff, data_ov000_0236a23c, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 0, 0x3c);
+    StageObj_SetOAMOrder(w, 0x14);
     w->spr0.unk2C |= 0x200;
     w->spr1.unk2C |= 0x200;
     w->unk1B8 = w;
@@ -38,7 +38,7 @@ UnkStruct_StageObj *func_ov000_02315a8c(s32 a, s32 b, s32 c) {
     w->unk58 |= 0x4000;
     w->unk54 |= 2;
     w->unk5C |= 0x100;
-    w->unk1DC = func_0203663c();
+    w->unk1DC = Sound_AllocHandle();
     func_ov000_02315a48(w);
     return w;
 }

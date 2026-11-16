@@ -35,7 +35,7 @@ typedef struct UnkStruct_022c6980 {
 } UnkStruct_022c6980;
 
 void func_ov000_023491f8(UnkStruct_022c6980_2 *p, s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 void func_ov000_022c6980(UnkStruct_022c6980 *a, UnkStruct_022c6980 *b) {
     UnkStruct_022c6980_2 *p = b->unk18;
@@ -63,7 +63,7 @@ void func_ov000_022c6980(UnkStruct_022c6980 *a, UnkStruct_022c6980 *b) {
             func_ov000_023491f8(p, 0x180, -0x600);
             return;
         }
-        func_02036754(0, 0, 0x7b);
+        Sound_PlaySeqArc(0, 0, 0x7b);
         p->unk36 = ((a->unk0 + a->unk10 - b->unkC) << 8) - p->unk10;
         if (p->unk58 & 0x8000)
             p->unk2E = 0xa00;
@@ -85,7 +85,7 @@ void func_ov000_022c6980(UnkStruct_022c6980 *a, UnkStruct_022c6980 *b) {
             func_ov000_023491f8(p, -0x180, -0x600);
             return;
         }
-        func_02036754(0, 0, 0x7b);
+        Sound_PlaySeqArc(0, 0, 0x7b);
         p->unk36 = ((a->unk0 + a->unkC - b->unk10) << 8) - p->unk10;
         if (p->unk58 & 0x8000)
             p->unk2E = -0xa00;

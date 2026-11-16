@@ -12,7 +12,7 @@ void func_ov000_0235e8ac(void);
 #pragma thumb on
 
 void func_ov000_0235e94c(void) {
-    UnkStruct_SprObj *w = data_022b4574->work;
+    UnkStruct_SprObj *w = gTaskCurrent->work;
     s32 t;
 
     func_ov000_0235e124(w);
@@ -55,7 +55,7 @@ void func_ov000_0235e94c(void) {
         w->unk0 = 0;
         s->unk3 = 0;
         func_ov000_0235cfc4(w);
-        data_022b4574->unk8 = func_ov000_0235e8ac;
+        gTaskCurrent->unk8 = func_ov000_0235e8ac;
     }
 }
 

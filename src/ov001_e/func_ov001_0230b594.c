@@ -26,10 +26,10 @@ typedef struct UnkStruct_0230b594_br {
 } UnkStruct_0230b594_br;
 
 extern UnkStruct_0230b594 *data_ov001_0231f5c0;
-extern UnkStruct_0230b594_br data_0208922c;
+extern UnkStruct_0230b594_br gDisplayMain;
 
 void func_ov001_023157d8(void);
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 void func_ov001_0231316c(void *p);
 void func_ov001_0230b260(s32 n);
 
@@ -41,16 +41,16 @@ void func_ov001_0230b594(void) {
 
     func_ov001_023157d8();
     if (g->timer <= 0x14) {
-        func_02032d2c(o1);
+        AnimatorSprite_Draw(o1);
     } else {
-        func_02032d2c(o2);
-        data_0208922c.x = g->unk30 - 10;
-        data_0208922c.y = 0xffe8;
+        AnimatorSprite_Draw(o2);
+        gDisplayMain.x = g->unk30 - 10;
+        gDisplayMain.y = 0xffe8;
     }
     if (g->unk34 > 0 && (g->unk34 & 0x20)) {
         g->o188.x = 0x12;
         g->o188.y = 0x4b;
-        func_02032d2c(&g->o188);
+        AnimatorSprite_Draw(&g->o188);
     }
     if (g->unk18 != NULL)
         func_ov001_0231316c(g->unk18);

@@ -14,15 +14,15 @@ typedef struct {
     u8 unk1634[4];         /* 0x1634 */
 } UnkWork_02046490;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 void func_020463bc(void);
 void func_0201c070(void *p, s32 a);
-void func_02036754(void *a, void *b, s32 c);
+void Sound_PlaySeqArc(void *a, void *b, s32 c);
 
 #pragma thumb on
 static inline u16 Rand_02046490(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_02046490(UnkWork_02046490 *w, UnkObj_02046490 *o) {
@@ -38,7 +38,7 @@ void func_02046490(UnkWork_02046490 *w, UnkObj_02046490 *o) {
         o->unk4 = 0;
         w->flags |= 0x400000;
         func_0201c070(w->unk1634, 0);
-        func_02036754(NULL, w->unk1630, 2);
+        Sound_PlaySeqArc(NULL, w->unk1630, 2);
     }
     k = 6 - n;
     for (i = 5; i >= 0 && n > 0; i--, n--)

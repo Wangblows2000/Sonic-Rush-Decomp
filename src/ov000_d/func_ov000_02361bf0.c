@@ -18,7 +18,7 @@ UnkStruct_02361bf0_Sync *func_020514e4(void);
 void func_ov000_023610d8(UnkStruct_MenuO *w);
 void func_ov000_02360fdc(UnkStruct_MenuO *w);
 BOOL func_ov000_0235fa34(UnkStruct_MenuO *w);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_0205004c(void);
 void func_ov000_0236114c(UnkStruct_MenuO *w);
 void func_ov000_02360ea4(UnkStruct_MenuO *w, s32 a, s32 b);
@@ -39,7 +39,7 @@ void func_ov000_02361914(void);
 #pragma thumb on
 
 void func_ov000_02361bf0(void) {
-    UnkStruct_MenuO *w = data_022b4574->work;
+    UnkStruct_MenuO *w = gTaskCurrent->work;
     s32 old;
     s32 n;
     u16 mask;
@@ -55,7 +55,7 @@ void func_ov000_02361bf0(void) {
     if (func_ov000_0235fa34(w) || w->unk18) {
         UnkStruct_02361bf0_Sync *s;
         w->unk0 = 0;
-        func_02052104(7);
+        SysSound_PlaySE(7);
         s = func_020514e4();
         s->unk0 = w->unkC;
         s->unk1 = 1;
@@ -66,18 +66,18 @@ void func_ov000_02361bf0(void) {
         func_ov000_02360ea4(w, n / 2, n % 2);
         data_022c4560.unk1C = w->unkC / 2;
         data_022c4560.unk1D = w->unkC % 2;
-        data_022b4574->unk8 = func_ov000_02361b34;
+        gTaskCurrent->unk8 = func_ov000_02361b34;
         return;
     }
     if (func_ov000_0235f9f0(w) || func_ov000_0235fa1c(w)) {
         w->unk0 = 0;
-        func_02052104(8);
+        SysSound_PlaySE(8);
         func_020514e4()->unk2 = 1;
         if (func_ov000_0235f9f0(w)) {
             func_ov000_02360e34(w);
         }
         func_ov000_0235f850(0, 0x10, 0x10, 0);
-        data_022b4574->unk8 = func_ov000_02361520;
+        gTaskCurrent->unk8 = func_ov000_02361520;
         return;
     }
     if (func_ov000_0235fab0(w)) {
@@ -101,7 +101,7 @@ void func_ov000_02361bf0(void) {
             if (w->unk10 / 2 != q) {
                 func_ov000_02360f18(w, q);
             }
-            data_022b4574->unk8 = func_ov000_02361914;
+            gTaskCurrent->unk8 = func_ov000_02361914;
         }
         return;
     }
@@ -126,7 +126,7 @@ void func_ov000_02361bf0(void) {
             if (w->unk10 / 2 != q) {
                 func_ov000_02360f18(w, q);
             }
-            data_022b4574->unk8 = func_ov000_02361914;
+            gTaskCurrent->unk8 = func_ov000_02361914;
         }
     }
 }

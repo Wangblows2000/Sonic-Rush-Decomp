@@ -1,12 +1,12 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_02072cb8;
+extern u32 gGameLanguage;
 extern u32 data_02075b6c;
 extern u32 data_020763e4;
 extern u32 data_0207c460;
 extern u32 data_022c4678;
-extern void func_0203879c(void);
+extern void File_LoadArchiveEntry(void);
 
 #pragma thumb on
 asm void func_02056fa4(void)
@@ -53,7 +53,7 @@ _38:
     lsr r1, r1, #0x10
     mov r2, #0
     mvn r2, r2
-    bl func_0203879c
+    bl File_LoadArchiveEntry
 _54:
     pop {r4}
     pop {r3}
@@ -61,7 +61,7 @@ _54:
     mov r8, r8
     dcd data_020763e4
     dcd data_022c4678
-    dcd data_02072cb8
+    dcd gGameLanguage
     dcd data_0207c460
     dcd data_02075b6c
 }

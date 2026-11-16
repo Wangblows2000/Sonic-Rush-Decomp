@@ -12,13 +12,13 @@ typedef struct {
     s32 anim[31];
 } UnkStruct_022d9f2c;
 
-void func_02033550(UnkSpr_022d9f2c *s, u16 anim);
+void AnimatorSprite_SetAnimation(UnkSpr_022d9f2c *s, u16 anim);
 
 #pragma thumb on
 static inline void SetAnimOff_022d9f2c(UnkStruct_022d9f2c *p, s32 k, s32 v) {
     UnkSpr_022d9f2c *spr = &p->spr[k];
     if (p->anim[k] != v) {
-        func_02033550(spr, v);
+        AnimatorSprite_SetAnimation(spr, v);
         p->anim[k] = v;
     }
     spr->flags &= ~4;

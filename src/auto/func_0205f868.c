@@ -3,17 +3,17 @@
 
 #pragma thumb on
 
-extern u8 data_0208922c[];
-s32 func_02060e38();
-s32 func_02060e54();
+extern u8 gDisplayMain[];
+s32 TalkDemo_ClearFlags();
+s32 TalkDemo_SetFlags();
 
 void func_0205f868(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x4) = (*(s16 *)((u8 *)p0 + 4) + 0x1);
-    *(u16 *)((u8 *)data_0208922c + 0x24) = (8 - ((*(s16 *)((u8 *)p0 + 4) << 3) / 0x1e));
+    *(u16 *)((u8 *)gDisplayMain + 0x24) = (8 - ((*(s16 *)((u8 *)p0 + 4) << 3) / 0x1e));
     if (*(s16 *)((u8 *)p0 + 4) >= 0x1e) {
         *(u32 *)p0 = 0;
-        func_02060e38(2, 0x20);
-        func_02060e54(2, 0x80000040);
+        TalkDemo_ClearFlags(2, 0x20);
+        TalkDemo_SetFlags(2, 0x80000040);
     }
 }
 

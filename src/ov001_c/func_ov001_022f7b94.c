@@ -27,20 +27,20 @@ typedef struct UnkStruct_022f7b94_t {
 } UnkStruct_022f7b94_t;
 
 extern UnkStruct_022f7b94 *data_ov001_0231f084;
-extern UnkStruct_022f7b94_t *data_022b4574;
-extern u32 data_0208fe70;
+extern UnkStruct_022f7b94_t *gTaskCurrent;
+extern u32 gRandSeed;
 
 void func_ov001_022f7880(void);
 void func_ov001_022f7790(void);
 void func_ov001_022f7924(void);
 void func_0201c070(void **pp, s32 a);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 s32 func_02002094(s32 n, s32 d);
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov001_022f7b94(void) {
@@ -49,11 +49,11 @@ void func_ov001_022f7b94(void) {
     UnkStruct_022f7b94_o *o;
 
     if (data_ov001_0231f084->unkE38 & 3) {
-        data_022b4574->fn = func_ov001_022f7880;
+        gTaskCurrent->fn = func_ov001_022f7880;
         func_ov001_022f7880();
         data_ov001_0231f084->unkE38 |= 0x4000;
         func_0201c070(&data_ov001_0231f084->unkEA0, 0);
-        func_02036754(0, 8, 2);
+        Sound_PlaySeqArc(0, 8, 2);
         return;
     }
     data_ov001_0231f084->unkE90--;
@@ -64,15 +64,15 @@ void func_ov001_022f7b94(void) {
     o = &data_ov001_0231f084->objs[0x16];
     o->x = 0x56;
     o->y = 0x7c;
-    func_02032d2c(o);
+    AnimatorSprite_Draw(o);
     for (i = 0, x = 0x60; i < 6; i++, x += 10) {
         o = &data_ov001_0231f084->objs[data_ov001_0231f084->digits[i] + 10];
         o->x = x;
         o->y = 0x7c;
-        func_02032d2c(o);
+        AnimatorSprite_Draw(o);
     }
     if (data_ov001_0231f084->unkE90 <= 0) {
-        data_022b4574->fn = func_ov001_022f7924;
+        gTaskCurrent->fn = func_ov001_022f7924;
         data_ov001_0231f084->unkE90 = 0;
     }
     func_ov001_022f7790();

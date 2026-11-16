@@ -66,28 +66,28 @@ typedef struct UnkStruct_022db148_b {
 } UnkStruct_022db148_b;
 
 extern UnkStruct_022db148_b *data_ov000_02369b14;
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02365548[];
 extern s32 data_ov000_02369b18[];
 
-UnkTask_022db148 *func_020372d0(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
-void func_0206c3d0(void);
+UnkTask_022db148 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
+void StageObj_Main(void);
 void func_ov000_022d9230(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov000_022d8c60(void);
-u32 *func_0203663c(void);
+u32 *Sound_AllocHandle(void);
 void func_02021310(void *ctx, void *a, void *b);
 void *func_02021264(void *ctx, u32 id);
 void func_020212e0(void *ctx);
 void func_ov000_022fba50(UnkStruct_022db148 *s, void *a, s32 x, s32 y);
 void func_ov000_022d8fec(void);
-void func_0206e3c0(UnkStruct_022db148_h *h, s32 a, s32 b, s32 c, s32 d);
-void func_0206e2b4(UnkStruct_022db148_h *h, s32 a, s32 b);
+void ObjRect_SetBox2D(UnkStruct_022db148_h *h, s32 a, s32 b, s32 c, s32 d);
+void ObjRect_SetAtkDefFlags(UnkStruct_022db148_h *h, s32 a, s32 b);
 void func_ov000_022d8db0(void);
 void func_ov000_022d91bc(void);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
     MIi_CpuClear16(*(volatile u16 *)&data, dest, size);
@@ -99,11 +99,11 @@ UnkStruct_022db148 *func_ov000_022db148(void *a, s32 x, s32 y) {
     UnkStruct_022db148_b *b = data_ov000_02369b14;
     UnkStruct_022db148_h *h;
     UnkStruct_022db148_a *p;
-    s = func_020372d0(func_0206c3d0, func_ov000_022d9230, 0, 0x501, 2, 0x438)->unk10;
+    s = Task_Create(StageObj_Main, func_ov000_022d9230, 0, 0x501, 2, 0x438)->unk10;
     MI_CpuFill16(s, 0, 0x438);
     s->unk68 = func_ov000_022d8c60;
-    s->unk2C0 = func_0203663c();
-    func_02021310(ctx, data_ov000_02365548, data_022c4488);
+    s->unk2C0 = Sound_AllocHandle();
+    func_02021310(ctx, data_ov000_02365548, gZoneActArchive);
     s->unk2C4.unk170 = func_02021264(ctx, 8);
     func_020212e0(ctx);
     s->unk2C4.unk16C = data_ov000_02369b18[1];
@@ -117,19 +117,19 @@ UnkStruct_022db148 *func_ov000_022db148(void *a, s32 x, s32 y) {
     s->unk14 = b->unk14;
     s->unk18 = b->unk18;
     h = &s->unk134;
-    func_0206e3c0(h, -0x18, -0x20, -0x20, 0);
-    func_0206e2b4(h, 0x13, 8);
+    ObjRect_SetBox2D(h, -0x18, -0x20, -0x20, 0);
+    ObjRect_SetAtkDefFlags(h, 0x13, 8);
     h->unk28 = 0x33;
     h->unk18 = s;
     h->unk1C = func_ov000_022d8db0;
     h->unkA |= 0xc4;
     h = &s->unk160;
-    func_0206e3c0(h, -0x18, -0x60, 0x20, 0);
+    ObjRect_SetBox2D(h, -0x18, -0x60, 0x20, 0);
     h->unk18 = s;
     h->unkA |= 4;
     p = &s->unk2C4;
-    func_02031c1c(p, 0);
-    func_02031bd0(p, s->unk2C4.unk16C, 0);
+    Model_Init(p, 0);
+    Model_SetResource(p, s->unk2C4.unk16C, 0);
     func_02021c38(p->unk90, func_ov000_022d91bc, 0, 6, 3);
     p->unk48 = b->unk10 << 4;
     p->unk4C = -(b->unk14 << 4);

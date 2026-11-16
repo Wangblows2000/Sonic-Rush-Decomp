@@ -31,7 +31,7 @@ UnkStruct_02311900 *func_ov000_02311900(s32 a, s32 b, s32 c) {
     UnkStruct_ObjParam *p;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_022fb9c8, 0, 0xf6, 2, sizeof(UnkStruct_02311900));
+    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0xf6, 2, sizeof(UnkStruct_02311900));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -43,26 +43,26 @@ UnkStruct_02311900 *func_ov000_02311900(s32 a, s32 b, s32 c) {
     if (w->base.unk1E0->unk8 == 0)
         w->base.unk1E0->unk8 = 0x10;
     w->base.unk4A += w->base.unk1E0->unk8 * 0xc;
-    func_02069f1c(w, data_ov000_02366cf8, 0, data_ov000_0236a114, data_ov000_02369ba0);
-    func_0206a054(w, 0, 0x49);
+    StageObj_Load2dBAC(w, data_ov000_02366cf8, 0, data_ov000_0236a114, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 0, 0x49);
     if (w->base.unk1E0->unk6 == 0) {
         if (w->base.unk1E0->unk2 == 0xc0) {
-            func_02069eb0(w, 0xffff, data_ov000_0236a12c);
-            func_02069818(w, 0);
+            StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_0236a12c);
+            StageObj_SetAnimation(w, 0);
         } else {
-            func_02069eb0(w, 0xffff, data_ov000_0236a13c);
-            func_02069818(w, 2);
+            StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_0236a13c);
+            StageObj_SetAnimation(w, 2);
         }
     } else {
         if (w->base.unk1E0->unk2 == 0xc0) {
-            func_02069eb0(w, 0xffff, data_ov000_0236a11c);
-            func_02069818(w, 1);
+            StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_0236a11c);
+            StageObj_SetAnimation(w, 1);
         } else {
-            func_02069eb0(w, 0xffff, data_ov000_0236a14c);
-            func_02069818(w, 3);
+            StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_0236a14c);
+            StageObj_SetAnimation(w, 3);
         }
     }
-    func_02069918(w, 0x16);
+    StageObj_SetOAMOrder(w, 0x16);
     w->base.unk70 = func_ov000_023116d0;
     w->base.unk1B8 = w;
     w->base.unk1C8 = data_ov000_023661c0;
@@ -108,7 +108,7 @@ UnkStruct_02311900 *func_ov000_02311900(s32 a, s32 b, s32 c) {
     }
     w->base.unk58 |= 0x100;
     w->base.unk54 |= 2;
-    w->base.unk1DC = func_0203663c();
+    w->base.unk1DC = Sound_AllocHandle();
     func_ov000_02311500(w);
     return w;
 }

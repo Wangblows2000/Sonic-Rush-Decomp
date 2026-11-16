@@ -12,14 +12,14 @@ struct UnkStruct_022c7be4 {
     s32 unk214;
 };
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 s32 func_ov000_022cc4cc(s32 x, s32 y, s32 z, s32 a);
 void func_ov000_022c7b20(UnkStruct_022c7be4 *s);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022c7be4(UnkStruct_022c7be4 *s) {

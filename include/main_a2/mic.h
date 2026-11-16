@@ -14,6 +14,6 @@ typedef struct UnkMic {
     u32 flags;
 } UnkMic;
 
-extern UnkMic data_0224ff00;
+extern UnkMic gMic;
 
 #endif

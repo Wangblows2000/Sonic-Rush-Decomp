@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-void func_02055108(void);
+void SceneChange_Unk_02055108(void);
 
 void func_ov000_0234cfbc(void) {
-    func_02055108();
+    SceneChange_Unk_02055108();
 }

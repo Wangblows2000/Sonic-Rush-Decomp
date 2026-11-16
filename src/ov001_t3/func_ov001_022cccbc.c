@@ -48,7 +48,7 @@ typedef struct {
     UnkStruct_022cccbc *work;
 } UnkTask_022cccbc;
 
-extern UnkTask_022cccbc *data_022b4574;
+extern UnkTask_022cccbc *gTaskCurrent;
 
 #pragma thumb on
 void func_ov001_022cccbc(void) {
@@ -57,7 +57,7 @@ void func_ov001_022cccbc(void) {
     s32 i;
     UnkItem_022cccbc *it;
 
-    p = data_022b4574->work;
+    p = gTaskCurrent->work;
     func_ov001_022cc17c(p);
     y = 0x18;
     for (i = 0, it = p->items; i < 6; it++, i++) {

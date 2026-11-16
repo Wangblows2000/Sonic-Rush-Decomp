@@ -64,12 +64,12 @@ extern u16 data_ov001_02315fbc[];
 extern void *data_ov001_0231f048;
 extern s32 data_ov001_0231f04c;
 
-void func_0203473c(void *bg, UnkRes_022ce6f8 *res, s32 a, s32 b, s32 c, u16 w, u16 h);
-void func_0203438c(void *bg);
+void Background_Init(void *bg, UnkRes_022ce6f8 *res, s32 a, s32 b, s32 c, u16 w, u16 h);
+void Background_Draw(void *bg);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov001_022ce670(UnkSpr_022ce6f8 *s, void *res, u16 anim);
 void func_ov001_022ce6b4(UnkSpr_022ce6f8 *s, void *res, u16 anim);
-s32 func_02039c18(s32 a, s32 b);
+s32 ObjVram_Alloc(s32 a, s32 b);
 
 #pragma thumb on
 void func_ov001_022ce6f8(UnkWork_022ce6f8 *p) {
@@ -82,24 +82,24 @@ void func_ov001_022ce6f8(UnkWork_022ce6f8 *p) {
     vu32 z1;
 
     res = p->res1e30;
-    func_0203473c(&p->bg1bc8, res, 0x38, 0, 3, res->w, res->h);
-    func_0203438c(&p->bg1bc8);
+    Background_Init(&p->bg1bc8, res, 0x38, 0, 3, res->w, res->h);
+    Background_Draw(&p->bg1bc8);
     res = p->res1e34;
-    func_0203473c(&p->bg1bc8, res, 0x38, 0, 2, res->w, res->h);
-    func_0203438c(&p->bg1bc8);
+    Background_Init(&p->bg1bc8, res, 0x38, 0, 2, res->w, res->h);
+    Background_Draw(&p->bg1bc8);
     res = p->res1e30;
-    func_0203473c(&p->bg1c08, res, 0x38, 1, 3, res->w, res->h);
-    func_0203438c(&p->bg1c08);
+    Background_Init(&p->bg1c08, res, 0x38, 1, 3, res->w, res->h);
+    Background_Draw(&p->bg1c08);
     z0 = 0;
     MIi_CpuClear32(z0, (void *)0x6200800, 0x800);
     res = p->res1e38;
-    func_0203473c(&p->bg1c88, res, 0x38, 1, 0, res->w, res->h);
-    func_0203438c(&p->bg1c88);
+    Background_Init(&p->bg1c88, res, 0x38, 1, 0, res->w, res->h);
+    Background_Draw(&p->bg1c88);
     z1 = 0;
     MIi_CpuClear32(z1, (void *)0x6200800, 0x800);
     res = p->res1e3c;
-    func_0203473c(&p->bg1cc8, res, 0x38, 1, 1, res->w, res->h);
-    func_0203438c(&p->bg1cc8);
+    Background_Init(&p->bg1cc8, res, 0x38, 1, 1, res->w, res->h);
+    Background_Draw(&p->bg1cc8);
     for (i = 0; i < 11; i++) {
         if (i == 0) {
             sres = p->res1e0c;
@@ -126,7 +126,7 @@ void func_ov001_022ce6f8(UnkWork_022ce6f8 *p) {
     }
     p->unk404 = -1;
     for (i = 0; i < 7; i++) {
-        p->unk1de8[i] = func_02039c18(1, 1);
+        p->unk1de8[i] = ObjVram_Alloc(1, 1);
     }
     spr = p->spr2;
     id = p->ids2;

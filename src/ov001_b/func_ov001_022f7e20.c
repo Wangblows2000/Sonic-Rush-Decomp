@@ -26,14 +26,14 @@ typedef struct UnkStruct_022f7e20_t {
 } UnkStruct_022f7e20_t;
 
 extern UnkStruct_022f7e20 *data_ov001_0231f084;
-extern UnkStruct_022f7e20_t *data_022b4574;
+extern UnkStruct_022f7e20_t *gTaskCurrent;
 extern s32 data_ov001_02316a80[];
 
 void func_ov001_022f7880(void);
 void func_ov001_022f7d64(void);
 s32 func_02002094(s32 n, s32 d);
-void func_02036754(u32 a, u32 b, u32 c);
-void func_02032d2c(void *p);
+void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
+void AnimatorSprite_Draw(void *p);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -62,7 +62,7 @@ void func_ov001_022f7e20(void) {
     UnkStruct_022f7e20 *g;
 
     if (E38 & 3) {
-        data_022b4574->unk8 = func_ov001_022f7880;
+        gTaskCurrent->unk8 = func_ov001_022f7880;
         func_ov001_022f7880();
         E38 |= 0x4000;
         return;
@@ -76,7 +76,7 @@ void func_ov001_022f7e20(void) {
             E94[i] += 0x100;
             if (E94[i] >= 0x1000) {
                 E94[i] = 0x1000;
-                func_02036754(0, 8, 0);
+                Sound_PlaySeqArc(0, 8, 0);
             }
         }
     }
@@ -92,7 +92,7 @@ void func_ov001_022f7e20(void) {
             s = &g->spr[data_ov001_02316a80[i]];
             s->x = acc + 0x56;
             s->y = yy;
-            func_02032d2c(s);
+            AnimatorSprite_Draw(s);
             acc = (s16)(acc + 0x60);
             for (j = 0; j < 6; j++, acc = (s16)(acc + 10)) {
                 t = G->unkE5E[i][j];
@@ -100,7 +100,7 @@ void func_ov001_022f7e20(void) {
                     s = SPR(t);
                     s->x = acc;
                     s->y = yy;
-                    func_02032d2c(s);
+                    AnimatorSprite_Draw(s);
                 }
             }
         }
@@ -115,10 +115,10 @@ void func_ov001_022f7e20(void) {
         s = (UnkStruct_022f7e20_s *)((u8 *)G + 0x690);
         s->x = acc2 + 0x96;
         s->y = 0x6c;
-        func_02032d2c(s);
+        AnimatorSprite_Draw(s);
     }
     if (E98 >= 0x1000) {
-        data_022b4574->unk8 = func_ov001_022f7d64;
+        gTaskCurrent->unk8 = func_ov001_022f7d64;
         E90 = 0x3c;
     }
 }

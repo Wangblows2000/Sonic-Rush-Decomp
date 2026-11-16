@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern void _s32_div_f(void);
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u32 data_ov000_02364474;
 extern u32 data_ov000_02364476;
 extern u32 data_ov000_02364478;
@@ -80,7 +80,7 @@ _d4:
     add sp, sp, #4
     ldmia sp!, {r4, r5, r6, r7, r8, r9, lr}
     bx lr
-    dcd data_0208fe70
+    dcd gRandSeed
     dcd 0x00196225
     dcd 0x3c6ef35f
     dcd data_ov000_02364478

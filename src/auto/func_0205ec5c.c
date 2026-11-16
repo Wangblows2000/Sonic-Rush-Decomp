@@ -1,9 +1,9 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 extern u8 data_022c4560[];
-extern u8 data_022503e0[];
+extern u8 gPad[];
 void func_0205aff8();
 s32 func_02004040();
 s32 func_0205d46c();
@@ -15,15 +15,15 @@ s32 func_0205d0b8();
 s32 func_0205d08c();
 s32 func_0205d060();
 s32 func_0205d4f4();
-s32 func_020371c8();
+s32 Task_Destroy();
 
 void func_0205ec5c(void) {
-    s32 t0 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t1 = *(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x488);
-    if ((*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x488) & 0x20000000) == 0) {
+    s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t1 = *(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x488);
+    if ((*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x488) & 0x20000000) == 0) {
         if ((t1 & 0x40000000) == 0) {
             if (*(u32 *)((u8 *)data_022c4560 + 0x10) != 1) {
-                s32 t2 = (*(u16 *)((u8 *)data_022503e0 + 0x4) & 3);
+                s32 t2 = (*(u16 *)((u8 *)gPad + 0x4) & 3);
                 if (t2 != 0) {
                     *(u32 *)((u8 *)t0 + 0x474) = (u32)func_0205aff8;
                     *(u32 *)((u8 *)t0 + 0x488) = (*(u32 *)((u8 *)t0 + 0x488) | 0x40000000);
@@ -100,5 +100,5 @@ void func_0205ec5c(void) {
         func_0205d4f4(t0);
         return;
     }
-    func_020371c8(*(u32 *)data_022b4574);
+    Task_Destroy(*(u32 *)gTaskCurrent);
 }

@@ -23,8 +23,8 @@ typedef struct {
     u16 unk420;
 } UnkStruct_02347190;
 
-s16 func_02068df8(s32 v, s32 a, s32 b);
-s16 func_02068db4(s32 v, s32 a);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
+s16 ObjSpd_DownSet(s32 v, s32 a);
 
 void func_ov000_02347190(UnkStruct_02347190 *w) {
     s32 acc;
@@ -54,14 +54,14 @@ void func_ov000_02347190(UnkStruct_02347190 *w) {
     if (w->unk420 & 0xC0) {
         if (w->unk420 & 0x80) {
             if (w->unk32 < 0)
-                w->unk32 = func_02068db4(w->unk32, dec);
-            w->unk32 = func_02068df8(w->unk32, acc, max);
+                w->unk32 = ObjSpd_DownSet(w->unk32, dec);
+            w->unk32 = ObjSpd_UpSet(w->unk32, acc, max);
         } else {
             if (w->unk32 > 0)
-                w->unk32 = func_02068db4(w->unk32, dec);
-            w->unk32 = func_02068df8(w->unk32, -acc, max);
+                w->unk32 = ObjSpd_DownSet(w->unk32, dec);
+            w->unk32 = ObjSpd_UpSet(w->unk32, -acc, max);
         }
     } else {
-        w->unk32 = func_02068db4(w->unk32, dec);
+        w->unk32 = ObjSpd_DownSet(w->unk32, dec);
     }
 }

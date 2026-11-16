@@ -3,12 +3,12 @@
 
 #pragma thumb on
 
-s32 func_0204b718();
-s32 func_0204b6cc();
+s32 StageLoader_Init();
+s32 StageLoader_LoadZoneFiles();
 
 void func_ov000_0235fb8c(void) {
-    func_0204b718(1);
-    func_0204b6cc();
+    StageLoader_Init(1);
+    StageLoader_LoadZoneFiles();
 }
 
 #pragma thumb reset

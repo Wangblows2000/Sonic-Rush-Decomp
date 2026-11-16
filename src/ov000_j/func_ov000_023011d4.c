@@ -12,14 +12,14 @@ typedef struct {
     UnkStruct_023011d4_o *unk88;
 } UnkStruct_023011d4;
 
-void func_02069818(UnkStruct_023011d4 *p, s32 a);
+void StageObj_SetAnimation(UnkStruct_023011d4 *p, s32 a);
 void func_ov000_0230119c(UnkStruct_023011d4 *p);
 void func_ov000_023010a4(UnkStruct_023011d4 *p);
 
 void func_ov000_023011d4(UnkStruct_023011d4 *p) {
     UnkStruct_023011d4_o *o = p->unk88;
 
-    func_02069818(p, 1);
+    StageObj_SetAnimation(p, 1);
     p->unk5C |= 4;
     if (o->unk238 & 0x80) {
         o->unk238 &= ~0x80;

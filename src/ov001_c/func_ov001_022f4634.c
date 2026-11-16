@@ -32,7 +32,7 @@ extern u16 data_ov001_02316924[];
 extern u16 data_ov001_02316930[];
 
 s32 func_ov001_022f71f4(void);
-void func_02048fdc(s32 a, s32 b, s32 c, s32 d, void *e);
+void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
 UnkStruct_022f4634_g *func_ov001_022ffce8(void);
 void func_ov001_022f41c4(UnkStruct_022f4634 *p);
 void func_ov001_022ffb9c(s32 a, void *b, s32 *c, u16 *d, u16 *e, s32 n);
@@ -46,7 +46,7 @@ void func_ov001_022f4634(UnkStruct_022f4634 *p) {
     if (p->unk1CC > 0x1000)
         p->unk1CC = 0x1000;
     if (p->unk1C8 == 0x77)
-        func_02048fdc(0x10, 0, 0x10, 3, 0);
+        BrightnessLerp_Create(0x10, 0, 0x10, 3, 0);
     if (o->unk10C & 2) {
         if (func_ov001_022ffce8()->unk40 == 4) {
             func_ov001_022ffce8()->flags |= 0x100;

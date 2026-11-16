@@ -29,7 +29,7 @@ void func_ov000_02301e54(UnkStruct_StageObj *w) {
             w->unk2A = 0;
         }
         if (w->unk5C & 8)
-            func_02069818(w, 0);
+            StageObj_SetAnimation(w, 0);
     } else {
         w->unk1D6 = 0;
         w->unk2A = 0;

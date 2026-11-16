@@ -11,7 +11,7 @@ typedef struct {
     s8 unk10;
 } UnkDisp_02047378;
 
-extern UnkDisp_02047378 data_0208922c;
+extern UnkDisp_02047378 gDisplayMain;
 void func_02047344(void *);
 
 #pragma thumb on
@@ -21,6 +21,6 @@ void func_02047378(void *o, UnkSub_02047378 *s) {
         s->v = 0x1000;
         s->func = func_02047344;
     }
-    data_0208922c.unk10 = ((fx32)(((s64)s->v * 0xfe000 + 0x800) >> 12) + 0x1000) >> 12;
+    gDisplayMain.unk10 = ((fx32)(((s64)s->v * 0xfe000 + 0x800) >> 12) + 0x1000) >> 12;
 }
 #pragma thumb reset

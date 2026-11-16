@@ -10,7 +10,7 @@ typedef struct {
 } UnkProg_0204e614;
 
 extern UnkState_0204e614 data_022c4560;
-extern UnkProg_0204e614 data_022c4680;
+extern UnkProg_0204e614 gSaveData;
 extern u8 data_02074bbc[];
 extern u8 data_02074bb4[];
 
@@ -33,7 +33,7 @@ u8 func_0204e614(u16 t) {
     }
     if (t < tbl[7])
         return r;
-    if (data_022c4680.unk8 & 0x1000)
+    if (gSaveData.unk8 & 0x1000)
         return r + 2;
     else
         return r + 1;

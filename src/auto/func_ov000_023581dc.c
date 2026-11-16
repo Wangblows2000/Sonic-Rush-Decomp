@@ -3,16 +3,16 @@
 
 #pragma thumb on
 
-s32 func_02033550();
-extern u8 data_02087d04[];
+s32 AnimatorSprite_SetAnimation();
+extern u8 gDisplaySub[];
 
 void func_ov000_023581dc(s32 p0) {
     if (*(u32 *)((u8 *)p0 + 0xb1c) != 0) {
-        func_02033550(((u8 *)p0 + 0x5c4), 0);
+        AnimatorSprite_SetAnimation(((u8 *)p0 + 0x5c4), 0);
         *(u32 *)((u8 *)p0 + 0xb1c) = 0;
     }
     *(u32 *)((u8 *)p0 + 0x5f0) = (*(u32 *)((u8 *)p0 + 0x5f0) & ~4);
-    *(u16 *)((u8 *)data_02087d04 + 0xa) = 0xfff8;
+    *(u16 *)((u8 *)gDisplaySub + 0xa) = 0xfff8;
 }
 
 #pragma thumb reset

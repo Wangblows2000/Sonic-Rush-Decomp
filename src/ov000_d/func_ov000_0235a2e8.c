@@ -15,7 +15,7 @@ typedef struct {
 extern UnkStruct_0235a2e8_Bright data_02087d44;
 extern UnkStruct_0235a2e8_Bright data_0208926c;
 
-UnkStruct_SceneTask *func_020372d0(void (*f)(void), void (*g)(UnkStruct_SceneTask *), s32 b, s32 c, s32 d, s32 e);
+UnkStruct_SceneTask *Task_Create(void (*f)(void), void (*g)(UnkStruct_SceneTask *), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov000_02359624(void);
 void func_ov000_02359d14(UnkStruct_SceneTask *t);
@@ -28,9 +28,9 @@ void func_ov000_02359e30(UnkStruct_Scene *w);
 void func_ov000_02357148(UnkStruct_Mdl *m);
 void func_ov000_02357458(UnkStruct_Mdl *m, BOOL flag);
 void func_ov000_02356494(void *p);
-void func_02037d60(void);
+void Touch_Enable(void);
 void func_ov000_02357dbc(void *a, void *b);
-void func_020522f4(void);
+void SysSound_Init(void);
 UnkStruct_0235a2e8_Sync *func_020514e4(void);
 void func_ov000_02358524(void);
 void func_02052168(s32 a);
@@ -50,7 +50,7 @@ void func_ov000_0235a2e8(s32 mode) {
     UnkStruct_0235a2e8_Sync *s;
     vu32 zero;
 
-    t = func_020372d0(func_ov000_02359624, func_ov000_02359d14, 0, 0x1000, 0x1000, sizeof(UnkStruct_Scene));
+    t = Task_Create(func_ov000_02359624, func_ov000_02359d14, 0, 0x1000, 0x1000, sizeof(UnkStruct_Scene));
     w = t->work;
     zero = 0;
     MIi_CpuClear32(zero, w, sizeof(UnkStruct_Scene));
@@ -111,9 +111,9 @@ void func_ov000_0235a2e8(s32 mode) {
     if (w->unkC == 1 || w->unkC == 2) {
         func_ov000_02356494(w->unkAD4);
     }
-    func_02037d60();
+    Touch_Enable();
     func_ov000_02357dbc(w->unk4C4, w->unk504);
-    func_020522f4();
+    SysSound_Init();
     if (w->unkC == 1) {
         s = func_020514e4();
         s->unk0 = 0;

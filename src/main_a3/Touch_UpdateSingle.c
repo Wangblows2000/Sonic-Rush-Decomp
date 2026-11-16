@@ -1,0 +1,80 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u16 x;
+    u16 y;
+    u16 touch;
+    u16 validity;
+} UnkTP_02037a8c;
+
+typedef struct {
+    u16 x;
+    u16 y;
+    u16 lastX;
+    u16 lastY;
+    u16 startX;
+    u16 startY;
+    u16 endX;
+    u16 endY;
+    u32 flags;
+} UnkTPState_02037a8c;
+
+extern UnkTPState_02037a8c gTouchState;
+
+void func_0200d650(void);
+BOOL func_0200d5f8(UnkTP_02037a8c *raw);
+void func_0200d1a4(UnkTP_02037a8c *out, const UnkTP_02037a8c *raw);
+
+void Touch_UpdateSingle(void) {
+    UnkTPState_02037a8c *st = &gTouchState;
+    UnkTP_02037a8c raw;
+    UnkTP_02037a8c cal;
+    st->lastX = st->x;
+    st->lastY = st->y;
+    st->flags = (st->flags & ~0x20) | (((st->flags & 0x10) >> 4) << 5);
+    do {
+        func_0200d650();
+    } while (func_0200d5f8(&raw));
+    if (raw.touch == 1) {
+        if (st->flags & 0x10) {
+            st->flags &= ~0x40;
+            func_0200d1a4(&cal, &raw);
+            if (raw.validity != 0) {
+                st->flags |= 0x100;
+                return;
+            }
+            st->x = cal.x;
+            st->y = cal.y;
+            st->flags &= ~0x100;
+            return;
+        }
+        st->flags &= ~0x80;
+        if (raw.validity != 0) {
+            return;
+        }
+        st->flags |= 0x10;
+        st->flags |= 0x40;
+        func_0200d1a4(&cal, &raw);
+        st->startX = cal.x;
+        st->x = st->startX;
+        st->startY = cal.y;
+        st->y = st->startY;
+        st->endX = 0xffff;
+        st->endY = 0xffff;
+    } else {
+        st->flags &= ~0x100;
+        if (st->flags & 0x10) {
+            st->flags &= ~0x10;
+            st->flags &= ~0x40;
+            st->flags |= 0x80;
+            st->endX = st->x;
+            st->endY = st->y;
+            st->x = 0xffff;
+            st->y = 0xffff;
+        } else {
+            st->flags &= ~0x80;
+            st->x = 0xffff;
+            st->y = 0xffff;
+        }
+    }
+}

@@ -10,16 +10,16 @@ typedef struct UnkStruct_022f9ab4 {
     u32 res[4];
 } UnkStruct_022f9ab4;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern u8 data_ov001_0231d5a0[];
 extern char data_ov001_0231d5bc[];
 extern u8 data_ov001_0231d5c0[];
 extern u8 *data_ov001_0231f088;
 extern UnkStruct_022f9ab4 *data_ov001_0231f084;
-extern void *data_02250458;
+extern void *gSoundHeap;
 
-u8 *func_02033fbc(void *p, s32 v);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *File_Load(void *p, s32 v);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -28,9 +28,9 @@ u32 func_ov001_022f9d08(u32 *p);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-u32 *func_02033a54(void *s);
-void func_02033a68(void *a, void *b, u32 c);
-void func_020349b8(void *heap, void *p);
+u32 *Compress_GetData(void *s);
+void Mem_Copy(void *a, void *b, u32 c);
+void Heap_Free(void *heap, void *p);
 BOOL func_02021310(void *arc, const char *name, void *narc);
 u32 func_02021264(void *arc, u32 idx);
 void func_020257f8(u32 p);
@@ -47,9 +47,9 @@ void func_ov001_022f9ab4(void) {
     u8 *blk;
     s32 i;
 
-    res = func_02033fbc(data_ov001_0231d5a0, -1);
+    res = File_Load(data_ov001_0231d5a0, -1);
     size = ((*(u32 *)res >> 8) + 0x43) & ~0x1f;
-    blk = func_02034a40(data_0208fe80, size, 0x20);
+    blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, size);
@@ -70,7 +70,7 @@ void func_ov001_022f9ab4(void) {
         func_020087f8(res, blk);
         break;
     default:
-        func_02033a68(func_02033a54(res), blk, func_ov001_022f9d08((u32 *)res));
+        Mem_Copy(Compress_GetData(res), blk, func_ov001_022f9d08((u32 *)res));
         break;
     }
     DC_StoreRange(blk, func_ov001_022f9d08((u32 *)res));
@@ -83,7 +83,7 @@ void func_ov001_022f9ab4(void) {
             DC_StoreRange(res, size);
         }
     }
-    func_020349b8(data_0208fe80, res);
+    Heap_Free(gMainHeap, res);
     func_02021310(&arc, data_ov001_0231d5bc, data_ov001_0231f088);
     data_ov001_0231f084->unk0 = func_02021264(&arc, 6);
     data_ov001_0231f084->unk4 = func_02021264(&arc, 5);
@@ -93,5 +93,5 @@ void func_ov001_022f9ab4(void) {
     func_020257f8(data_ov001_0231f084->res[0]);
     func_020212e0(&arc);
     func_02036854(data_ov001_0231d5c0);
-    func_0201e7cc(0xa, data_02250458);
+    func_0201e7cc(0xa, gSoundHeap);
 }

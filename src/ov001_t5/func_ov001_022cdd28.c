@@ -15,27 +15,27 @@ typedef struct {
     UnkWork_022cdd28 *work;
 } UnkTask_022cdd28;
 
-extern UnkTask_022cdd28 *data_022b4574;
-extern u8 data_022503e0[];
-extern s32 data_02087ccc;
-extern u32 data_02087cb8;
+extern UnkTask_022cdd28 *gTaskCurrent;
+extern u8 gPad[];
+extern s32 gSaveDataBusy;
+extern u32 gSystemFlags;
 
 void func_ov001_022cba1c(UnkWork_022cdd28 *w);
-void func_020351d8(void *a, s32 b, s32 c);
+void Pad_Reset(void *a, s32 b, s32 c);
 void func_ov001_022ccddc(void);
 
 #pragma thumb on
 void func_ov001_022cdd28(void) {
     UnkWork_022cdd28 *w;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     w->unk1c = -1;
     w->unk18 = 0;
     w->unk34 = -1;
     func_ov001_022cba1c(w);
-    func_020351d8(data_022503e0, 0, 0);
-    data_022b4574->func = func_ov001_022ccddc;
-    data_02087ccc = 0;
-    data_02087cb8 &= ~0x10;
+    Pad_Reset(gPad, 0, 0);
+    gTaskCurrent->func = func_ov001_022ccddc;
+    gSaveDataBusy = 0;
+    gSystemFlags &= ~0x10;
 }
 #pragma thumb reset

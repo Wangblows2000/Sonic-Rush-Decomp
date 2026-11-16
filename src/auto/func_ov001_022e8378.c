@@ -7,10 +7,10 @@ s32 func_ov001_022e3398();
 s32 func_ov001_022e8528();
 s32 func_ov001_022e8514();
 s32 func_ov001_022e849c();
-extern u8 data_022503e0[];
-s32 func_020351d8();
-s32 func_02037d40();
-s32 func_020521b4();
+extern u8 gPad[];
+s32 Pad_Reset();
+s32 Touch_Disable();
+s32 SysSound_Release();
 
 void func_ov001_022e8378(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x10);
@@ -19,9 +19,9 @@ void func_ov001_022e8378(u8 *p0) {
     func_ov001_022e8528(t0, 0);
     func_ov001_022e8514(t0);
     func_ov001_022e849c(t0);
-    func_020351d8(data_022503e0, 0, 0);
-    func_02037d40();
-    func_020521b4();
+    Pad_Reset(gPad, 0, 0);
+    Touch_Disable();
+    SysSound_Release();
 }
 
 #pragma thumb reset

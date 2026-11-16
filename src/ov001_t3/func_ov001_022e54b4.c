@@ -37,7 +37,7 @@ void func_ov001_022e2ba4(s32 a);
 void func_ov001_022e519c(s32 x, s32 y, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f, u16 g, u16 h, u16 i, s32 j);
 void func_02003d94(void *dst, UnkMtx22_022e54b4 *m, s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022e2bd8(u16 a, u16 b, u16 c, u16 d, u16 e);
-void func_02035e68(s32 a, u16 b, s32 c, u16 d, u32 e, s32 f, u16 g, u16 h, s32 i, s32 j, s32 k, u16 l);
+void ScreenTransfer_QueueRectRaw(s32 a, u16 b, s32 c, u16 d, u32 e, s32 f, u16 g, u16 h, s32 i, s32 j, s32 k, u16 l);
 
 #pragma thumb on
 void func_ov001_022e54b4(UnkStruct_022e54b4 *p) {
@@ -65,7 +65,7 @@ void func_ov001_022e54b4(UnkStruct_022e54b4 *p) {
     }
     cur = p->x / 8;
     if (cur != p->unk6c / 8 || p->unk68 == 1) {
-        func_02035e68(p->unk50, cur - 1, 0, p->unk8 / 8, p->unk10 & 0x1000, p->unk30, p->unk34, p->unk36, 0, 0, 0x23, p->unkc / 8);
+        ScreenTransfer_QueueRectRaw(p->unk50, cur - 1, 0, p->unk8 / 8, p->unk10 & 0x1000, p->unk30, p->unk34, p->unk36, 0, 0, 0x23, p->unkc / 8);
         p->unk68 = 0;
     }
     p->unk6c = p->x;

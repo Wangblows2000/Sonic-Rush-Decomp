@@ -60,14 +60,14 @@ extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern s32 data_ov000_02363a18[][8][4];
 
-s32 func_02044690(void);
-s32 func_02044670(void);
+s32 ScreenShake_GetOffsetX(void);
+s32 ScreenShake_GetOffsetY(void);
 s32 func_0200225c(s32 a, s32 b);
 void func_ov000_023284d8(s32 a, s32 b, s32 c, s32 d);
 void func_ov000_023284a0(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e47b8(void);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e04a8(UnkStruct_Boss *w);
 
 void func_ov000_022e4834(UnkStruct_Boss *w) {
@@ -78,10 +78,10 @@ void func_ov000_022e4834(UnkStruct_Boss *w) {
     if (w->unkF50 < 0)
         w->unkF50 = 0;
     k = w->unkF50 << 12;
-    data_ov000_0236a444.unk3C = func_0200225c(k * func_02044690(), 0x3c000);
+    data_ov000_0236a444.unk3C = func_0200225c(k * ScreenShake_GetOffsetX(), 0x3c000);
     data_ov000_0236a444.unk3C = data_ov000_0236a444.unk3C << 12;
     data_ov000_0236a444.unk3C = data_ov000_0236a444.unk3C >> 12;
-    data_ov000_0236a444.unk40 = func_0200225c(k * func_02044670(), 0x3c000);
+    data_ov000_0236a444.unk40 = func_0200225c(k * ScreenShake_GetOffsetY(), 0x3c000);
     data_ov000_0236a444.unk40 = data_ov000_0236a444.unk40 << 12;
     data_ov000_0236a444.unk40 = data_ov000_0236a444.unk3C >> 12;
     w->unk1120--;
@@ -91,14 +91,14 @@ void func_ov000_022e4834(UnkStruct_Boss *w) {
     if (!(m->unk10C & 2))
         return;
     w->base.unk68 = func_ov000_022e47b8;
-    func_02031a68(m, 0, w->unkD08, 5, 0);
+    Model_SetAnimation(m, 0, w->unkD08, 5, 0);
     m->unk114 = 0x1000;
-    func_020446b0(0);
+    ScreenShake_Start(0);
     data_ov000_0236ac60->unk434 = 1;
     data_ov000_0236ac60->unk436 = 2;
     data_ov000_0236ac60->unk430 = 0x40;
     data_ov000_0236ac60->unk432 = 0x80;
     func_ov000_022e04a8(w);
     w->unk111C = 8;
-    func_02036754(0, 0, 0x84);
+    Sound_PlaySeqArc(0, 0, 0x84);
 }

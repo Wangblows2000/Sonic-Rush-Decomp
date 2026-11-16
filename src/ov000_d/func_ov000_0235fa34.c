@@ -14,20 +14,20 @@ typedef struct {
     u16 trg;
 } UnkPad_0235fa34;
 
-extern UnkTouch_0235fa34 data_022b65b4;
-extern UnkPad_0235fa34 data_022503e0;
+extern UnkTouch_0235fa34 gTouchState;
+extern UnkPad_0235fa34 gPad;
 
 #pragma thumb on
 
 BOOL func_ov000_0235fa34(void) {
-    if (data_022b65b4.flags & 0x40) {
-        u16 x = data_022b65b4.x;
-        u16 y = data_022b65b4.y;
+    if (gTouchState.flags & 0x40) {
+        u16 x = gTouchState.x;
+        u16 y = gTouchState.y;
         if (x >= 0x78 && x < 0xe0 && y >= 0x90 && y < 0xb0) {
             return TRUE;
         }
     }
-    return (data_022503e0.trg & 1) != 0;
+    return (gPad.trg & 1) != 0;
 }
 
 #pragma thumb reset

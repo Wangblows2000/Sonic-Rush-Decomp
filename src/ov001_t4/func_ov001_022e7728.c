@@ -54,9 +54,9 @@ typedef struct {
     u16 cont;
 } UnkPad_022e7728;
 
-extern UnkTask_022e7728 *data_022b4574;
-extern UnkTouch_022e7728 data_022b65b4;
-extern UnkPad_022e7728 data_022503e0;
+extern UnkTask_022e7728 *gTaskCurrent;
+extern UnkTouch_022e7728 gTouchState;
+extern UnkPad_022e7728 gPad;
 
 void func_ov001_022e35d4(void *p, s32 a);
 void func_ov001_022e35c4(void *p, s32 a);
@@ -74,7 +74,7 @@ void func_ov001_022e5d7c(s32 x, s32 y, s32 a);
 
 #pragma thumb on
 void func_ov001_022e7728(void) {
-    UnkWork_022e7728 *w = data_022b4574->work;
+    UnkWork_022e7728 *w = gTaskCurrent->work;
     UnkSub_022e7728 *sub = &w->map->sub;
     BOOL done;
     s32 x;
@@ -92,15 +92,15 @@ void func_ov001_022e7728(void) {
     func_ov001_022e6dec(w);
     dir = 0;
     done = FALSE;
-    if (data_022b65b4.flags & 0x10) {
-        dir = func_ov001_022e3564(data_022b65b4.unk0, data_022b65b4.unk2);
+    if (gTouchState.flags & 0x10) {
+        dir = func_ov001_022e3564(gTouchState.unk0, gTouchState.unk2);
         if (dir < 4) {
             dir = 1 << dir;
         } else {
             dir = 0;
         }
     } else {
-        u16 k = data_022503e0.cont;
+        u16 k = gPad.cont;
         if (k & 0x20) {
             dir |= 1;
         } else if (k & 0x10) {
@@ -139,9 +139,9 @@ void func_ov001_022e7728(void) {
         }
     } else if (func_ov001_022e37bc()) {
         done = TRUE;
-    } else if (data_022b65b4.flags & 0x40) {
-        s32 tx = data_022b65b4.x;
-        s32 ty = data_022b65b4.y;
+    } else if (gTouchState.flags & 0x40) {
+        s32 tx = gTouchState.x;
+        s32 ty = gTouchState.y;
         tx += w->unk6c;
         ty += w->unk70;
         for (i = 0; i < 17; i++) {

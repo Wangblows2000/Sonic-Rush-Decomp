@@ -26,22 +26,22 @@ UnkStruct_0230614c *func_ov000_0230614c(UnkStruct_ObjParam *p, s32 b, s32 c) {
     vu16 zero;
     u16 i;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_022fb9c8, 0, 0xf6, 2, sizeof(UnkStruct_0230614c));
+    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0xf6, 2, sizeof(UnkStruct_0230614c));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0230614c));
     func_ov000_022fba50(w, (s32)p, b, c);
-    func_02069f1c(w, data_ov000_02366868, 0x36, data_ov000_02369e9c, data_ov000_02369ba0);
-    func_0206a054(w, 1, 0x4c);
-    func_02069918(w, 0x14);
-    func_02069818(w, 1);
+    StageObj_Load2dBAC(w, data_ov000_02366868, 0x36, data_ov000_02369e9c, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 1, 0x4c);
+    StageObj_SetOAMOrder(w, 0x14);
+    StageObj_SetAnimation(w, 1);
     w->base.spr0.unk2C |= 0x80000;
     for (i = 0; i < 11; i++) {
         if (i == 2)
             continue;
-        func_02069a34(w, &w->blk[i], data_ov000_02366880, 0, i, tbl.b[i], data_ov000_02369e94, data_ov000_02369ba0);
+        StageObj_LoadModelSimple(w, &w->blk[i], data_ov000_02366880, 0, i, tbl.b[i], data_ov000_02369e94, data_ov000_02369ba0);
     }
     w->base.unk5C |= 0x200;
     Obj_SetVec(&w->base.unk128->unk18, 0x34cc, 0x34cc, 0x34cc);
@@ -63,6 +63,6 @@ UnkStruct_0230614c *func_ov000_0230614c(UnkStruct_ObjParam *p, s32 b, s32 c) {
     o = func_ov000_022fad3c(0xee, w->base.unk10, w->base.unk14, 0, w->base.unk1E0->unk6, 0, 0, 0, 0);
     if (o != NULL)
         o->unk88 = w;
-    w->base.unk1DC = func_0203663c();
+    w->base.unk1DC = Sound_AllocHandle();
     return w;
 }

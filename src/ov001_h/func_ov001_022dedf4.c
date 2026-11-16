@@ -26,7 +26,7 @@ typedef struct UnkStruct_022dedf4 {
     u32 unk4;
 } UnkStruct_022dedf4;
 
-extern vu16 data_022503e0;
+extern vu16 gPad;
 extern s16 data_0206e470[];
 
 #define SIN(a) data_0206e470[(u32)((((a) & 0xffff) >> 4) << 1)]
@@ -41,21 +41,21 @@ void func_ov001_022dedf4(UnkStruct_022dedf4 *w, UnkStruct_022dedf4_o *o) {
         UnkMtx33_022dedf4 rx;
         UnkMtx33_022dedf4 ry;
         u16 k;
-        k = data_022503e0;
+        k = gPad;
         if (k & 0x40)
             o->unk24 += 0x1800;
         else if (k & 0x80)
             o->unk24 -= 0x1800;
         o->unkA8 = o->unk24;
-        k = data_022503e0;
+        k = gPad;
         if (k & 0x20)
             o->unk20 -= 0x400;
         else if (k & 0x10)
             o->unk20 += 0x400;
         o->unkA4 = o->unk20;
-        if (data_022503e0 & 0x200)
+        if (gPad & 0x200)
             o->unk52 -= 0x100;
-        if (data_022503e0 & 0x100)
+        if (gPad & 0x100)
             o->unk52 += 0x100;
         func_02000e60(&rx, SIN(o->unk50), COS(o->unk50));
         MTX_RotY33_(&ry, SIN(o->unk52), COS(o->unk52));

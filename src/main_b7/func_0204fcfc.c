@@ -18,13 +18,13 @@ typedef struct {
     UnkWork_0204fcfc *work;
 } UnkTask_0204fcfc;
 
-extern UnkTask_0204fcfc *data_022b4574;
+extern UnkTask_0204fcfc *gTaskCurrent;
 void func_0204f4d4(UnkWork_0204fcfc *w, s32 idx);
 void func_0204fe20(void);
 
 #pragma thumb on
 void func_0204fcfc(void) {
-    UnkWork_0204fcfc *w = data_022b4574->work;
+    UnkWork_0204fcfc *w = gTaskCurrent->work;
     s32 n;
     if (w->timer < 1) {
         w->timer++;

@@ -44,36 +44,36 @@ typedef struct UnkStruct_0230c364_4560 {
     u16 unk28;
 } UnkStruct_0230c364_4560;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_0230c364_c0 *data_ov001_0231f5c0;
 extern UnkStruct_0230c364_c4 *data_ov001_0231f5c4;
 extern UnkStruct_0230c364_4560 data_022c4560;
-extern UnkStruct_0230c364_br data_0208922c;
-extern UnkStruct_0230c364_br data_02087d04;
+extern UnkStruct_0230c364_br gDisplayMain;
+extern UnkStruct_0230c364_br gDisplaySub;
 extern UnkStruct_0230c364_f754 data_0208f754;
 extern u8 data_ov001_023171a0[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
-void func_0203a9d0(s32 a);
-void func_0203a6bc(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203a590(s32 a);
-void func_0203a504(s32 a);
-void func_02039ef8(s32 a);
-void func_02039d40(s32 a);
+void Vram_SetBankForBG(s32 a);
+void Vram_SetBankForOBJ(s32 a, s32 b, s32 c, s32 d, s32 e);
+void Vram_SetBankForBGExtPltt(s32 a);
+void Vram_SetBankForOBJExtPltt(s32 a);
+void Vram_SetBankForTex(s32 a);
+void Vram_SetBankForTexPltt(s32 a);
 void func_02002ec8(void);
-void func_0203a43c(s32 a);
-void func_0203a288(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203a1f8(s32 a);
-void func_0203a18c(s32 a);
+void Vram_SetBankForSubBG(s32 a);
+void Vram_SetBankForSubOBJ(s32 a, s32 b, s32 c, s32 d, s32 e);
+void Vram_SetBankForSubBGExtPltt(s32 a);
+void Vram_SetBankForSubOBJExtPltt(s32 a);
 void func_02002eb4(void);
 void func_02002ea0(void);
-void func_02039d08(s32 i);
-void func_02039b48(void);
-void func_020395f4(void);
+void ObjVram_Reset(s32 i);
+void Vram_ResetTexAndPltt(void);
+void VramPltt_Reset(void);
 void func_02002ab0(s32 a, s32 b, s32 c);
 void GXS_SetGraphicsMode(u32 mode);
 void GX_DispOn(void);
@@ -98,7 +98,7 @@ void func_ov001_023147c0(s32 a, s32 b);
 s32 func_ov001_0231398c(s32 a);
 s32 func_ov001_0230f804(s32 a);
 void func_0200412c(s32 a, s32 b, s32 c, s32 d);
-void func_020367b4(s32 a, s32 b);
+void Sound_PlaySeq(s32 a, s32 b);
 
 void func_ov001_0230c364(s32 arg) {
     vu32 z1;
@@ -108,7 +108,7 @@ void func_ov001_0230c364(s32 arg) {
     u8 *blk;
     s32 i;
 
-    blk = func_02034a40(data_0208fe80, 0x200, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x200, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, 0x200);
@@ -121,7 +121,7 @@ void func_ov001_0230c364(s32 arg) {
     MI_CpuFill8(blk, 0, 0x1d8);
     data_ov001_0231f5c0->unk4 = arg;
     data_ov001_0231f5c0->unk8 = data_022c4560.unk28;
-    blk = func_02034a40(data_0208fe80, 0x60, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x60, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill2 = 0xcccccccc;
         MIi_CpuClear32(fill2, blk, 0x60);
@@ -134,32 +134,32 @@ void func_ov001_0230c364(s32 arg) {
     MI_CpuFill8(blk, 0, 0x30);
     *(vu32 *)0x4000000 &= ~0x1f00;
     *(vu32 *)0x4001000 &= ~0x1f00;
-    func_0203a9d0(0);
-    func_0203a6bc(0, 0x10, 0x40, 0, 0);
-    func_0203a590(0);
-    func_0203a504(0);
-    func_02039ef8(0);
-    func_02039d40(0);
+    Vram_SetBankForBG(0);
+    Vram_SetBankForOBJ(0, 0x10, 0x40, 0, 0);
+    Vram_SetBankForBGExtPltt(0);
+    Vram_SetBankForOBJExtPltt(0);
+    Vram_SetBankForTex(0);
+    Vram_SetBankForTexPltt(0);
     func_02002ec8();
-    func_0203a43c(0);
-    func_0203a288(0, 0x10, 0x40, 0, 0);
-    func_0203a1f8(0);
-    func_0203a18c(0);
+    Vram_SetBankForSubBG(0);
+    Vram_SetBankForSubOBJ(0, 0x10, 0x40, 0, 0);
+    Vram_SetBankForSubBGExtPltt(0);
+    Vram_SetBankForSubOBJExtPltt(0);
     func_02002eb4();
     func_02002ea0();
-    func_0203a6bc(0x40, 0x10, 0x40, 0, 0x200);
-    func_02039d08(0);
-    func_0203a9d0(0x10);
-    func_02039ef8(7);
-    func_02039b48();
-    func_02039d40(0x20);
-    func_020395f4();
+    Vram_SetBankForOBJ(0x40, 0x10, 0x40, 0, 0x200);
+    ObjVram_Reset(0);
+    Vram_SetBankForBG(0x10);
+    Vram_SetBankForTex(7);
+    Vram_ResetTexAndPltt();
+    Vram_SetBankForTexPltt(0x20);
+    VramPltt_Reset();
     func_02002ab0(1, 0, 1);
     *(vu16 *)0x400000a = (*(vu16 *)0x400000a & 0x43) | 4;
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x108;
-    func_0203a288(8, 0x100010, 0x40, 0, 0x400);
-    func_02039d08(1);
-    func_0203a43c(0x180);
+    Vram_SetBankForSubOBJ(8, 0x100010, 0x40, 0, 0x400);
+    ObjVram_Reset(1);
+    Vram_SetBankForSubBG(0x180);
     GXS_SetGraphicsMode(0);
     *(vu16 *)0x400100a = (*(vu16 *)0x400100a & 0x43) | 4;
     *(vu16 *)0x400100c = (*(vu16 *)0x400100c & 0x43) | 0x108;
@@ -173,8 +173,8 @@ void func_ov001_0230c364(s32 arg) {
     *(vu16 *)0x4000304 = (*(vu16 *)0x4000304 & ~0x20e) | 0x20e;
     GX_DispOn();
     *(vu32 *)0x4001000 |= 0x10000;
-    data_0208922c.unk48 = 0x10;
-    data_02087d04.unk48 = 0x10;
+    gDisplayMain.unk48 = 0x10;
+    gDisplaySub.unk48 = 0x10;
     GXx_SetMasterBrightness_((vu16 *)0x400006c, 0x10);
     GXx_SetMasterBrightness_((vu16 *)0x400106c, 0x10);
     data_0208f754.unk80 = 0;
@@ -221,13 +221,13 @@ void func_ov001_0230c364(s32 arg) {
     func_0200412c(0, 0, 4, 0);
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1500;
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1400;
-    func_020367b4(0, 0x1f);
+    Sound_PlaySeq(0, 0x1f);
     for (i = 0; i < 4; i++) {
-        data_0208922c.unk0[i].a = 0;
-        data_02087d04.unk0[i].a = 0;
-        data_0208922c.unk0[i].b = 0;
-        data_02087d04.unk0[i].b = 0;
+        gDisplayMain.unk0[i].a = 0;
+        gDisplaySub.unk0[i].a = 0;
+        gDisplayMain.unk0[i].b = 0;
+        gDisplaySub.unk0[i].b = 0;
     }
-    data_0208922c.unk20 &= ~0xc0;
-    data_02087d04.unk20 &= ~0xc0;
+    gDisplayMain.unk20 &= ~0xc0;
+    gDisplaySub.unk20 &= ~0xc0;
 }

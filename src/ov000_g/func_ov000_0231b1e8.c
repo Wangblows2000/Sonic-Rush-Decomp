@@ -25,7 +25,7 @@ typedef struct {
 } UnkStruct_0231b1e8_C;
 
 void func_ov000_0231b4b0(UnkStruct_0231b1e8_O *o, s16 v);
-void func_0206d8bc(UnkStruct_0231b1e8_C *a, UnkStruct_0231b1e8_C *b);
+void ObjRect_FuncNoHit(UnkStruct_0231b1e8_C *a, UnkStruct_0231b1e8_C *b);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -62,6 +62,6 @@ void func_ov000_0231b1e8(UnkStruct_0231b1e8_C *a, UnkStruct_0231b1e8_C *b) {
         func_ov000_0231b4b0(o, v);
         p->unk62 = 4;
     } else {
-        func_0206d8bc(a, b);
+        ObjRect_FuncNoHit(a, b);
     }
 }

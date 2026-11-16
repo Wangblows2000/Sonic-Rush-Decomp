@@ -30,7 +30,7 @@ typedef struct {
 
 extern UnkStruct_StageObj *data_ov000_0236ac60;
 
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022dffbc(UnkStruct_Boss *w, s32 a);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022e2d0c(void);
@@ -43,7 +43,7 @@ void func_ov000_022e2fbc(UnkStruct_Boss *w) {
     w->base.unk14 += w->unk111C;
     if (w->unk111C >= 0) {
         w->base.unk68 = func_ov000_022e2d0c;
-        func_02031a68(m, 0, w->unkD08, 0x12, 0);
+        Model_SetAnimation(m, 0, w->unkD08, 0x12, 0);
         m->unk10C &= ~4;
         m->unk114 = 0x1000;
         if (data_ov000_0236ac60->unk10 - w->base.unk10 < 0) {

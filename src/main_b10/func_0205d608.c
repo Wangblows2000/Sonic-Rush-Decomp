@@ -94,7 +94,7 @@ typedef struct {
 } NNSG3dGlb_0205d608;
 
 extern UnkStage_0205d608 data_022c4560;
-extern UnkTaskB_0205d608 *data_022b4574;
+extern UnkTaskB_0205d608 *gTaskCurrent;
 extern UnkCam_0205d608 *data_022c4d98;
 extern s16 data_0206e470[];
 extern s16 data_02070470[];
@@ -114,8 +114,8 @@ void VEC_Add(VecFx32_0205d608 *a, VecFx32_0205d608 *b, VecFx32_0205d608 *ab);
 void func_02004988(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, MtxFx44_0205d608 *m);
 void func_02004b78(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 s, s32 g, MtxFx44_0205d608 *m);
 void func_020044f4(const VecFx32_0205d608 *pos, const VecFx32_0205d608 *up, const VecFx32_0205d608 *target, s32 a, void *out);
-void func_020316f4(UnkMdl_0205d608 *m);
-void func_020315e0(UnkMdl_0205d608 *m);
+void Model_Animate(UnkMdl_0205d608 *m);
+void Model_Draw(UnkMdl_0205d608 *m);
 
 #define SIN_0205d608(a) data_0206e470[(((a) & 0xffff) >> 4) << 1]
 #define COS_0205d608(a) data_0206e470[((((a) & 0xffff) >> 4) << 1) + 1]
@@ -155,7 +155,7 @@ void func_0205d608(void) {
 
     saved = data_02084d38.projMtx;
     if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
-        obj = data_022b4574->obj;
+        obj = gTaskCurrent->obj;
         mdl = *(UnkMdl_0205d608 **)((u8 *)obj + 0x124);
     } else {
         obj = ((UnkTaskA_0205d608 *)data_022c4d98)->obj;
@@ -241,8 +241,8 @@ void func_0205d608(void) {
     if (obj->flags & 0x20)
         mdl->flags |= 1;
     mdl->unk90 |= 1;
-    func_020316f4(mdl);
-    func_020315e0(mdl);
+    Model_Animate(mdl);
+    Model_Draw(mdl);
     data_02084d38.projMtx = saved;
     if (mdl->parts[0] & 0x80)
         obj->flags &= ~0x400;

@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 void func_ov001_0230b09c(u8 *blk) {
     if ((u8 *)func_02006abc(0) != blk) {
@@ -17,5 +17,5 @@ void func_ov001_0230b09c(u8 *blk) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }

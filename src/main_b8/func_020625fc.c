@@ -10,7 +10,7 @@ typedef struct {
     u16 period;
 } UnkWork_020625fc;
 
-void func_02060e54(s32 a, s32 b);
+void TalkDemo_SetFlags(s32 a, s32 b);
 void func_02062ae4(void *w);
 
 #pragma thumb on
@@ -20,7 +20,7 @@ void func_020625fc(UnkWork_020625fc *w) {
         return;
     w->count++;
     if (w->count >= w->limit) {
-        func_02060e54(3, 0x100);
+        TalkDemo_SetFlags(3, 0x100);
         w->state = NULL;
         return;
     }

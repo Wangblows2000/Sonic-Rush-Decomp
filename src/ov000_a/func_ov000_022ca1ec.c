@@ -29,28 +29,28 @@ struct UnkStruct_022ca1ec {
     s32 unk3A8;
 };
 
-void func_02031768(UnkStruct_022ca1ec_2 **p);
-void func_02031c1c(UnkStruct_022ca1ec_2 *p, s32 a);
-void func_02031bd0(UnkStruct_022ca1ec_2 *p, s32 a, s32 b);
-void func_02031a68(UnkStruct_022ca1ec_2 *p, s32 a, s32 b, s32 c, s32 d);
+void Model_Release(UnkStruct_022ca1ec_2 **p);
+void Model_Init(UnkStruct_022ca1ec_2 *p, s32 a);
+void Model_SetResource(UnkStruct_022ca1ec_2 *p, s32 a, s32 b);
+void Model_SetAnimation(UnkStruct_022ca1ec_2 *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_02025e8c(s32 a);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022ca1a8(UnkStruct_022ca1ec *s);
 
 void func_ov000_022ca1ec(UnkStruct_022ca1ec *s) {
     UnkStruct_022ca1ec_2 *a = &s->unk20C;
-    func_02031768(&a);
-    func_02031c1c(a, 0);
-    func_02031bd0(a, s->unk398, 0);
-    func_02031a68(a, 0, s->unk39C, 0, 0);
-    func_02031a68(a, 1, s->unk3A0, 0, 0);
-    func_02031a68(a, 3, s->unk3A4, 0, 0);
-    func_02031a68(a, 2, s->unk3A8, 0, func_02025e8c(s->unk398));
+    Model_Release(&a);
+    Model_Init(a, 0);
+    Model_SetResource(a, s->unk398, 0);
+    Model_SetAnimation(a, 0, s->unk39C, 0, 0);
+    Model_SetAnimation(a, 1, s->unk3A0, 0, 0);
+    Model_SetAnimation(a, 3, s->unk3A4, 0, 0);
+    Model_SetAnimation(a, 2, s->unk3A8, 0, func_02025e8c(s->unk398));
     a->unkA = 0x14;
     a->unkB = 3;
     a->unkC = 0;
     a->unk18 = a->unk1C = a->unk20 = 0x34cc;
-    func_02036754(0, 0, 0x9d);
+    Sound_PlaySeqArc(0, 0, 0x9d);
     s->unkC = 0;
     s->unk16A |= 4;
     s->func = func_ov000_022ca1a8;

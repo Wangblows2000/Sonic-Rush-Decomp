@@ -5,11 +5,11 @@ typedef struct {
     u16 unkc;
 } UnkStruct_022e2a44;
 
-extern UnkStruct_022e2a44 data_022c4680;
+extern UnkStruct_022e2a44 gSaveData;
 
 #pragma thumb on
 s32 func_ov001_022e2a44(void) {
-    switch (data_022c4680.unkc) {
+    switch (gSaveData.unkc) {
     case 2:
         return 0;
     case 3:

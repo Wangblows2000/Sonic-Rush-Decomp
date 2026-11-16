@@ -40,19 +40,19 @@ typedef struct UnkStruct_0230ea6c_o2 {
     UnkStruct_0230ea6c_m unk1F8;
 } UnkStruct_0230ea6c_o2;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u8 data_ov001_0231f5c8[];
 extern u8 data_022504e8[];
 
 UnkStruct_0230ea6c_o2 *func_ov001_0230c0a4(void);
 void func_02000dfc(void *m);
 void func_0201d568(void *p);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 s32 func_ov001_023070fc(s32 p0, s32 p1, s32 p2, s32 p3);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov001_0230ea6c(UnkStruct_0230ea6c *s) {
@@ -74,7 +74,7 @@ void func_ov001_0230ea6c(UnkStruct_0230ea6c *s) {
         s->unkAC->unk58 = -0x7fd;
         s->unkAC->unk5C = -0x5f1;
         func_0201d568(data_ov001_0231f5c8);
-        func_02036754(0, 9, 0);
+        Sound_PlaySeqArc(0, 9, 0);
         func_0201d568(data_022504e8);
     }
     if (s->unkD0 > 0x2a) {

@@ -28,7 +28,7 @@ struct UnkStruct_022c6e58 {
 
 extern UnkStruct_022c6e58_2 *data_ov000_02369acc;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
 u8 *func_ov000_02327b5c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
@@ -37,8 +37,8 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000e98(void *m, s32 s, s32 c);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022c6e58(UnkStruct_022c6e58 *s) {

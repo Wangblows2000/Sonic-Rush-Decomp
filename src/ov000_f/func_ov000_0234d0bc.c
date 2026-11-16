@@ -79,7 +79,7 @@ typedef struct {
 extern UnkStruct_0234d0bc_4560 data_022c4560;
 extern UnkStruct_0234d0bc_4590 data_022c4590;
 extern UnkStruct_0234d0bc_L data_ov000_0236aad8[];
-extern u32 data_022c4ef0;
+extern u32 gObjManagerFlags;
 extern u16 data_022c4ef8;
 
 void func_ov000_0233c00c(void);
@@ -137,7 +137,7 @@ void func_ov000_0234d0bc(UnkStruct_0234d0bc *w) {
         w->unk3B2 = w->unk376;
         w->unk3C8 = w->unk3B2;
     }
-    data_022c4ef0 &= ~0x100;
+    gObjManagerFlags &= ~0x100;
     data_022c4ef8 = 0;
     w->unk32C &= ~0x1800;
     w->unk32C &= ~0x180;

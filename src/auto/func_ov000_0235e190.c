@@ -6,8 +6,8 @@
 extern u8 data_0208926c[];
 extern u8 data_02087d44[];
 s32 func_02050018();
-s32 func_02037134();
-s32 func_02037d40();
+s32 Task_DestroyAll();
+s32 Touch_Disable();
 s32 func_ov000_0235caf8();
 
 void func_ov000_0235e190(void) {
@@ -15,8 +15,8 @@ void func_ov000_0235e190(void) {
     *(u16 *)((u8 *)data_02087d44 + 0x8) = 0;
     s32 t0 = func_02050018(data_02087d44, 0);
     if (t0 != 0) {
-        func_02037134();
-        func_02037d40();
+        Task_DestroyAll();
+        Touch_Disable();
         func_ov000_0235caf8(2);
     }
 }

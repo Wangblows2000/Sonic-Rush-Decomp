@@ -31,7 +31,7 @@ typedef struct {
 void func_ov000_023511ec(void);
 void func_ov000_0234c9e8(UnkStruct_023516b8 *w);
 void func_ov000_0234c4a4(UnkStruct_023516b8 *w, s32 a);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_023516b8(UnkStruct_023516b8 *w, void *o, s32 unused, s32 r) {
     if (w->unk68 == func_ov000_023511ec) {
@@ -76,5 +76,5 @@ void func_ov000_023516b8(UnkStruct_023516b8 *w, void *o, s32 unused, s32 r) {
     }
     w->unk3F4 = (w->unk1 << 8) + 0x10000;
     w->unk3FC = r << 8;
-    func_0204b7ec(w->unk384, 0, 0x62);
+    Sound_PlaySeqArcEx(w->unk384, 0, 0x62);
 }

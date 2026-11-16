@@ -21,7 +21,7 @@ typedef struct {
     UnkStruct_Mdl unk23C;
 } UnkStruct_022f78bc;
 
-extern UnkStruct_Task *data_022b4574;
+extern UnkStruct_Task *gTaskCurrent;
 extern UnkStruct_Vec data_ov000_0236a45c;
 
 s32 func_02002278(UnkStruct_Vec *a, UnkStruct_Vec *b);
@@ -30,14 +30,14 @@ void func_020024b4(UnkStruct_Vec *a, UnkStruct_Vec *b);
 void func_0200265c(UnkStruct_Vec *a, UnkStruct_Vec *b, UnkStruct_Vec *c);
 u8 *func_02025ecc(void *p);
 void func_02025dac(void *m, s32 a, s32 b);
-void func_020315e0(void *m);
+void Model_Draw(void *m);
 
 static inline s32 Mul64(s64 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
 void func_ov000_022f78bc(void) {
-    UnkStruct_022f78bc *w = data_022b4574->work;
+    UnkStruct_022f78bc *w = gTaskCurrent->work;
     UnkStruct_Mdl *m = &w->unk23C;
     UnkStruct_Vec v;
     u8 *r;
@@ -67,7 +67,7 @@ void func_ov000_022f78bc(void) {
         r = func_02025ecc(w->unk238);
         func_02025dac(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x1f0000);
     }
-    func_020315e0(m);
+    Model_Draw(m);
     r = func_02025ecc(w->unk238);
     func_02025dac(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 1, 0x1f0000);
 }

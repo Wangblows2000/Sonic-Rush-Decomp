@@ -2,10 +2,10 @@
 #include <nitro/types.h>
 
 extern void _s32_div_f(void);
-extern u32 data_02072c70;
-extern u32 data_02072c78;
+extern u32 gObjVramBaseTable;
+extern u32 gDisplayTable;
 extern u32 data_02072da0;
-extern void func_02036bfc(void);
+extern void Oam_AllocObj(void);
 
 asm void func_0206b244(void)
 {
@@ -281,7 +281,7 @@ _3f8:
 _408:
     ldrh r1, [r10, #0x46]
     ldr r0, [r10]
-    bl func_02036bfc
+    bl Oam_AllocObj
     and r1, r8, #0xff
     orr r1, r1, #0x4000
     strh r1, [r0]
@@ -348,8 +348,8 @@ _4e8:
     add sp, sp, #0x54
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    dcd data_02072c78
-    dcd data_02072c70
+    dcd gDisplayTable
+    dcd gObjVramBaseTable
     dcd 0x000003ff
     dcd data_02072da0
     dcd 0x000001ff

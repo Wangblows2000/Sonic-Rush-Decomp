@@ -19,14 +19,14 @@ struct UnkObj_02343310 {
     u16 unk16A;
 };
 
-void func_02069090(UnkObj_02343310 *o, void *p);
-void func_020446b0(s32 a);
+void StageObj_HandleCollider(UnkObj_02343310 *o, void *p);
+void ScreenShake_Start(s32 a);
 
 void func_ov000_02343310(UnkObj_02343310 *o) {
     UnkObj_02343310 *p;
 
     if (o->unk16A & 0x200) {
-        func_020446b0(4);
+        ScreenShake_Start(4);
         o->unk16A &= ~0x200;
     }
     p = o->parent;
@@ -38,7 +38,7 @@ void func_ov000_02343310(UnkObj_02343310 *o) {
             o->unk5C |= 1;
         if (!(*(u32 *)((u8 *)p + 0x32c) & 0x80))
             o->unk54 |= 4;
-        func_02069090(o, o->unk160);
+        StageObj_HandleCollider(o, o->unk160);
         return;
     }
     o->unk54 |= 4;

@@ -1,6 +1,6 @@
 #include <ov000_d/scene.h>
 
-void func_02037d40(UnkStruct_SceneTask *t);
+void Touch_Disable(UnkStruct_SceneTask *t);
 BOOL func_020513a8(void);
 void func_ov000_023570bc(UnkStruct_Mdl *m);
 void func_ov000_02357308(UnkStruct_Mdl *m);
@@ -14,7 +14,7 @@ void func_ov000_0235604c(void);
 void func_ov000_02359d14(UnkStruct_SceneTask *t) {
     UnkStruct_Scene *w = t->work;
 
-    func_02037d40(t);
+    Touch_Disable(t);
     if ((w->unkC == 1 || w->unkC == 2) && func_020513a8()) {
         func_ov000_023570bc(&w->mdl);
     } else {

@@ -32,7 +32,7 @@ UnkStruct_02343498 *func_ov000_02343498(UnkStruct_02343498_Parent *parent, s16 a
     UnkStruct_02343498 *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0x101, 1, sizeof(UnkStruct_02343498));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0x101, 1, sizeof(UnkStruct_02343498));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -53,8 +53,8 @@ UnkStruct_02343498 *func_ov000_02343498(UnkStruct_02343498_Parent *parent, s16 a
         w->coll.unk28 = 0x12;
     w->coll.unk1C = NULL;
     w->coll.unkA |= 0x20;
-    func_0206e2b4(&w->coll, 0x13, 0xffff);
-    func_0206e3c0(&w->coll, a, b, c, d);
+    ObjRect_SetAtkDefFlags(&w->coll, 0x13, 0xffff);
+    ObjRect_SetBox2D(&w->coll, a, b, c, d);
     if (w->unk88->unk5C & 1)
         w->unk5C |= 1;
     w->unk68 = func_ov000_023433d4;

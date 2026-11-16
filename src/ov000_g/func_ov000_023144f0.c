@@ -28,9 +28,9 @@ typedef struct {
     UnkStruct_023144f0 *work;
 } UnkStruct_023144f0_Task;
 
-extern UnkStruct_023144f0_Task *data_022b4574;
+extern UnkStruct_023144f0_Task *gTaskCurrent;
 
-void func_0206b768(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
+void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
 
 void func_ov000_023144f0(void) {
     UnkStruct_023144f0_P pts[8] = {0};
@@ -40,7 +40,7 @@ void func_ov000_023144f0(void) {
     s16 sx;
     s16 sy;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     if (w->unk204 != NULL) {
         sx = ((w->unk204->unk10 - w->unk10) / 8) >> 8;
         sy = ((w->unk204->unk14 - w->unk14) / 8) >> 8;
@@ -60,6 +60,6 @@ void func_ov000_023144f0(void) {
         pts[0].y = w->unk14 >> 8;
     }
     for (i = 0; i < n; i++) {
-        func_0206b768(pts[i].x << 8, pts[i].y << 8, 0, NULL, w->unk94, w->unkDC, 0);
+        StageObj_Draw2DEx(pts[i].x << 8, pts[i].y << 8, 0, NULL, w->unk94, w->unkDC, 0);
     }
 }

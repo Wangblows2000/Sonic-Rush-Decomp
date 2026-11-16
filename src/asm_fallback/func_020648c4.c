@@ -7,7 +7,7 @@ extern void func_02066010(void);
 extern void func_020660b0(void);
 extern void func_02066a9c(void);
 extern void func_02067670(void);
-extern void func_02068b04(void);
+extern void ObjAngle_MoveToward8(void);
 
 asm void func_020648c4(void)
 {
@@ -744,7 +744,7 @@ _a74:
     ldrb r0, [r9, #1]
     ldrb r1, [sp, #0x64]
     mov r2, #1
-    bl func_02068b04
+    bl ObjAngle_MoveToward8
     strb r0, [r9, #1]
 _ab0:
     ldr r1, [r9, #0x58]

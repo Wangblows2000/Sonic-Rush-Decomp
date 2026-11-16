@@ -12,14 +12,14 @@ typedef struct {
     void *res1;
 } UnkStruct_022d6738;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern char data_ov001_0231b7f8[];
 
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02031768(void *o);
+void Heap_Free(void *heap, void *p);
+void Model_Release(void *o);
 BOOL func_02021310(UnkArc_022d6738 *arc, const char *name, void *narc);
 void *func_02021264(UnkArc_022d6738 *arc, u32 idx);
 void func_0202566c(void *res);
@@ -37,15 +37,15 @@ static inline void Free_022d6738(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov001_022d6738(UnkStruct_022d6738 *p) {
     UnkArc_022d6738 arc;
 
     if (p->res0 == NULL) return;
-    func_02031768(p->obj14);
-    func_02031768(p->obj14c);
+    Model_Release(p->obj14);
+    Model_Release(p->obj14c);
     func_02021310(&arc, data_ov001_0231b7f8, p->res0);
     func_0202566c(func_02021264(&arc, 0));
     func_0202566c(func_02021264(&arc, 3));

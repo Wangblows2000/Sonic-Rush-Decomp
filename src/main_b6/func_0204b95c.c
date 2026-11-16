@@ -32,20 +32,20 @@ typedef struct {
 extern UnkState2_0204b95c data_022c4590;
 extern UnkState_0204b95c data_022c4560;
 extern UnkPlayer_0204b95c *data_ov000_0236ac60[];
-extern u32 data_022c4ef0;
+extern u32 gObjManagerFlags;
 extern UnkGfx_0204b95c data_ov000_0236aad8;
-extern u16 data_022503e0[];
+extern u16 gPad[];
 
 void func_ov000_023375f8(u8 a);
 void func_ov000_02337634(s32 a);
 void func_ov000_02337618(s32 a);
 void func_ov000_02336050(u16 a, s32 b);
-s32 func_02044690(void);
-s32 func_02044670(void);
-void func_0206c784(s32 a, s32 b);
-void func_0206ded8(void);
+s32 ScreenShake_GetOffsetX(void);
+s32 ScreenShake_GetOffsetY(void);
+void ObjDraw_SetGlobalOffset(s32 a, s32 b);
+void ObjRect_CheckAllGroup(void);
 void func_02067cc8(void);
-void func_02055918(s32 mode);
+void PauseMenu_Create(s32 mode);
 void func_0206c970(void);
 
 void func_0204b95c(void) {
@@ -56,17 +56,17 @@ void func_0204b95c(void) {
         data_022c4560.unk20++;
     data_022c4560.unk24++;
     func_ov000_02336050((u16)(data_ov000_0236ac60[0]->unk350 >> 4), 0);
-    if ((data_022c4ef0 & 0x80) == 0) {
-        func_0206c784(func_02044690(), func_02044670());
-        data_ov000_0236aad8.unk18 = -func_02044690();
-        data_ov000_0236aad8.unk1a = -func_02044670();
+    if ((gObjManagerFlags & 0x80) == 0) {
+        ObjDraw_SetGlobalOffset(ScreenShake_GetOffsetX(), ScreenShake_GetOffsetY());
+        data_ov000_0236aad8.unk18 = -ScreenShake_GetOffsetX();
+        data_ov000_0236aad8.unk1a = -ScreenShake_GetOffsetY();
         data_ov000_0236aad8.unk7c = data_ov000_0236aad8.unk18;
         data_ov000_0236aad8.unk7e = data_ov000_0236aad8.unk1a;
     }
-    func_0206ded8();
+    ObjRect_CheckAllGroup();
     func_02067cc8();
-    if (data_022503e0[2] & 8)
-        func_02055918(0);
+    if (gPad[2] & 8)
+        PauseMenu_Create(0);
     if (data_022c4560.flags & 0x20)
         func_0206c970();
 }

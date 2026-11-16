@@ -1,8 +1,8 @@
 #include <nitro/types.h>
 
 typedef struct { u16 v[8]; } UnkMosaic_02058034;
-extern UnkMosaic_02058034 data_0208922c;
-extern UnkMosaic_02058034 data_02087d04;
+extern UnkMosaic_02058034 gDisplayMain;
+extern UnkMosaic_02058034 gDisplaySub;
 
 void func_0204ce7c(s32 a);
 void func_02002ab0(s32 a, s32 b, s32 c);
@@ -36,10 +36,10 @@ void func_02058034(void) {
     *(vu16 *)0x0400000e = (*(vu16 *)0x0400000e & ~3) | 2;
     *(vu16 *)0x04000008 = (*(vu16 *)0x04000008 & ~3) | 3;
     SetPlane_02058034(GetPlane_02058034() | 8);
-    data_0208922c.v[6] = data_0208922c.v[7] = 0;
+    gDisplayMain.v[6] = gDisplayMain.v[7] = 0;
     *(vu16 *)0x04001008 = (*(vu16 *)0x04001008 & 0x43) | 0x2400;
     *(vu16 *)0x04001008 = (*(vu16 *)0x04001008 & ~3) | 0;
     *(vu32 *)0x04001000 = (*(vu32 *)0x04001000 & ~0x1f00) | 0x1100;
-    data_02087d04.v[0] = data_02087d04.v[1] = 0;
+    gDisplaySub.v[0] = gDisplaySub.v[1] = 0;
 }
 #pragma thumb reset

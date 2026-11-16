@@ -42,9 +42,9 @@ extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern s32 data_ov000_02363804[];
 
 void func_ov000_022e5c1c(UnkStruct_Boss *w);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e0644(UnkStruct_Boss *w);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e4f14(void);
 
 void func_ov000_022e5078(UnkStruct_Boss *w) {
@@ -58,7 +58,7 @@ void func_ov000_022e5078(UnkStruct_Boss *w) {
     if (w->unkF4A != 0)
         return;
     w->base.unk68 = func_ov000_022e4f14;
-    func_02031a68(m, 0, w->unkD08, 1, 0);
+    Model_SetAnimation(m, 0, w->unkD08, 1, 0);
     m->unk10C &= ~4;
     m->unk114 = 0x1000;
     func_ov000_022e0644(w);
@@ -77,5 +77,5 @@ void func_ov000_022e5078(UnkStruct_Boss *w) {
         x = 0x31000;
     w->unk1120 = x;
     w->unk1124 = data_ov000_02363804[data_ov000_02369ac0.unk8 - 1];
-    func_02036754(0, 0, 0x84);
+    Sound_PlaySeqArc(0, 0, 0x84);
 }

@@ -34,12 +34,12 @@ extern UnkStruct_0231aa74_Tbl data_ov000_02364494[];
 
 void func_02021310(UnkStruct_0231aa74_Ctx *ctx, void *a, void *b);
 void *func_0202128c(void *name);
-void *func_02033fbc(void *name, s32 a);
+void *File_Load(void *name, s32 a);
 void func_020212e0(UnkStruct_0231aa74_Ctx *ctx);
-void *func_02039c18(u8 i, s32 a);
-void func_0203363c(UnkStruct_0231aa74_Spr *spr, void *res, u16 idx, u32 fl, u8 i, s32 a, void *vram, s32 b, void *pal);
-u16 func_0206d2d0(void *res, u16 idx, s32 a);
-void func_0203344c(UnkStruct_0231aa74_Spr *spr, s32 a, s32 b);
+void *ObjVram_Alloc(u8 i, s32 a);
+void AnimatorSprite_Init(UnkStruct_0231aa74_Spr *spr, void *res, u16 idx, u32 fl, u8 i, s32 a, void *vram, s32 b, void *pal);
+u16 ObjDraw_AllocSpritePalette(void *res, u16 idx, s32 a);
+void AnimatorSprite_ProcessAnimation(UnkStruct_0231aa74_Spr *spr, s32 a, s32 b);
 
 void func_ov000_0231aa74(UnkStruct_0231aa74 *w) {
     UnkStruct_0231aa74_Ctx ctx;
@@ -50,7 +50,7 @@ void func_ov000_0231aa74(UnkStruct_0231aa74 *w) {
     func_02021310(&ctx, data_ov000_02367198, data_ov000_02369ba0);
     w->unk29C = func_0202128c(data_ov000_0236719c);
     if (w->unk29C == NULL) {
-        w->unk29C = func_02033fbc(data_ov000_023671b8, 0);
+        w->unk29C = File_Load(data_ov000_023671b8, 0);
         w->unk2A0 |= 1;
     }
     func_020212e0(&ctx);
@@ -64,10 +64,10 @@ void func_ov000_0231aa74(UnkStruct_0231aa74 *w) {
         } else {
             pal = (void *)0x5000600;
         }
-        func_0203363c(spr, w->unk29C, idx, fl, i, 0, func_02039c18(i, 0x14), 0, pal);
-        spr->unk44 = (i == 0) ? func_0206d2d0(w->unk29C, idx, 0xc) : w->spr[0].unk44;
+        AnimatorSprite_Init(spr, w->unk29C, idx, fl, i, 0, ObjVram_Alloc(i, 0x14), 0, pal);
+        spr->unk44 = (i == 0) ? ObjDraw_AllocSpritePalette(w->unk29C, idx, 0xc) : w->spr[0].unk44;
         spr->unk46 = 0x13;
-        func_0203344c(spr, 0, 0);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
         spr->unk2C |= 0x10;
     }
 }

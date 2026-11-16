@@ -1,6 +1,6 @@
 #include <ov000_b/stageobj.h>
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02368210[], data_ov000_0236a9c8[];
 
 BOOL func_ov000_02345758(s32 x, s32 y);
@@ -11,17 +11,17 @@ void func_ov000_0232f81c(UnkStruct_StageObj *arg) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xf6, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xf6, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_02368210, 0xffff, data_ov000_0236a9c8, data_022c4488);
+    StageObj_Load2dBAC(w, data_ov000_02368210, 0xffff, data_ov000_0236a9c8, gZoneActArchive);
     w->spr0.unk44 = 1;
     w->spr1.unk44 = 1;
-    func_02069918(w, 3);
-    func_020698f0(w, 0);
+    StageObj_SetOAMOrder(w, 3);
+    StageObj_SetOAMPriority(w, 0);
     w->spr0.unk2C |= 0x200;
     w->spr1.unk2C |= 0x200;
     w->unk5C |= 1;
@@ -32,14 +32,14 @@ void func_ov000_0232f81c(UnkStruct_StageObj *arg) {
         w->unk5C |= 2;
     if (w->unk5C & 2) {
         if (arg->unk5C & 1)
-            func_02069818(w, 5);
+            StageObj_SetAnimation(w, 5);
         else
-            func_02069818(w, 4);
+            StageObj_SetAnimation(w, 4);
     } else {
         if (arg->unk5C & 1)
-            func_02069818(w, 4);
+            StageObj_SetAnimation(w, 4);
         else
-            func_02069818(w, 5);
+            StageObj_SetAnimation(w, 5);
     }
     if (w->unk5C & 2)
         w->unk14 = arg->unk14 + 0x2000;

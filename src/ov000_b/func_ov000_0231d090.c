@@ -8,7 +8,7 @@ UnkStruct_StageObj *func_ov000_0231d090(s32 a, s32 b, s32 c) {
     UnkStruct_StageObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
+    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -16,10 +16,10 @@ UnkStruct_StageObj *func_ov000_0231d090(s32 a, s32 b, s32 c) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_StageObj));
     func_ov000_022fba50(w, a, b, c);
     if (w->unk1E0->unk4 & 1)
-        func_0206e3c0(&w->coll0, -0x10, -8, -4, 0);
+        ObjRect_SetBox2D(&w->coll0, -0x10, -8, -4, 0);
     else
-        func_0206e3c0(&w->coll0, 4, -8, 0x10, 0);
-    func_0206e2b4(&w->coll0, 0, -0x10);
+        ObjRect_SetBox2D(&w->coll0, 4, -8, 0x10, 0);
+    ObjRect_SetAtkDefFlags(&w->coll0, 0, -0x10);
     w->coll0.unkA |= 0x800;
     w->coll0.unk1C = func_ov000_0231cffc;
     w->coll0.unk18 = w;

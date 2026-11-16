@@ -1,11 +1,11 @@
 /* paramclone of func_ov001_022d3d64 (src/ov001/func_ov001_022d3d64.c); immediates and relocations remapped. */
 #include <nitro/types.h>
 
-extern void *data_0208fe78;
+extern void *gSystemHeap;
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 void func_ov000_0235ebb8(u8 *p) {
@@ -25,7 +25,7 @@ void func_ov000_0235ebb8(u8 *p) {
                     DC_StoreRange(blk, size);
                 }
             }
-            func_020349b8(data_0208fe78, blk);
+            Heap_Free(gSystemHeap, blk);
         }
         *(void **)(p + 0xe14) = vnull;
         p += 4;

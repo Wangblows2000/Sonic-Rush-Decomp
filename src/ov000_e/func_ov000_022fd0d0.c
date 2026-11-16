@@ -8,8 +8,8 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_StageObj *data_ov000_0236ac60;
 
-void func_0204b7ec(s32 p, s32 a, s32 b);
-void func_02068204(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
+void Sound_PlaySeqArcEx(s32 p, s32 a, s32 b);
+void Sound_SetPositional(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
 void func_ov000_022fc5b8(UnkStruct_StageObj *w, s32 type, s16 dx, s16 dy);
 void func_ov000_022fe7e8(UnkStruct_StageObj *w);
 
@@ -18,8 +18,8 @@ void func_ov000_022fd0d0(UnkStruct_StageObj *w) {
     case 0x2e:
     case 0x30:
     case 0x32:
-        func_0204b7ec(w->unk1DC, 0, 0x79);
-        func_02068204(w->unk1DC, w, data_ov000_0236ac60);
+        Sound_PlaySeqArcEx(w->unk1DC, 0, 0x79);
+        Sound_SetPositional(w->unk1DC, w, data_ov000_0236ac60);
         func_ov000_022fc5b8(w, 0xec, 0x28,
                             ((u16)(((data_022c4560.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16) & 3) - 0x20);
         break;

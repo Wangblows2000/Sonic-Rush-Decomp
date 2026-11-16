@@ -24,9 +24,9 @@ typedef struct UnkStruct_022f9188_k {
 } UnkStruct_022f9188_k;
 
 extern UnkStruct_022f9188 *data_ov001_0231f084;
-extern UnkStruct_022f9188_k data_022503e0;
+extern UnkStruct_022f9188_k gPad;
 
-void func_020315e0(void *p);
+void Model_Draw(void *p);
 void func_ov001_022f9134(void);
 void func_ov001_022f8e7c(void);
 void func_ov001_022f8a40(void);
@@ -34,14 +34,14 @@ void func_ov001_022f8774(void);
 void func_ov001_022f8110(void);
 void func_ov001_022f7740(void);
 void func_ov001_022f9d20(void);
-void func_02054ef4(void);
-void func_02048fdc(s32 a, s32 b, s32 c, s32 d, void *e);
+void SceneChange_Unk_02054ef4(void);
+void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
 
 #define G data_ov001_0231f084
 
 void func_ov001_022f9188(void) {
-    func_020315e0(G->unkB58);
-    if (data_022503e0.trig & 1) {
+    Model_Draw(G->unkB58);
+    if (gPad.trig & 1) {
         if (!(G->unkE38 & 1)) {
             G->unkE38 |= 1;
             if (!(G->unkE38 & 0x30) && G->unkE0C == 0) {
@@ -110,12 +110,12 @@ void func_ov001_022f9188(void) {
             G->unkE40++;
             if (G->unkE40 >= 0x3c) {
                 func_ov001_022f9d20();
-                func_02054ef4();
+                SceneChange_Unk_02054ef4();
             }
         } else {
             G->unkE34++;
             if (G->unkE34 == 0x78)
-                func_02048fdc(0x10, 0, 0x10, 3, (u8 *)G + 0xe3c);
+                BrightnessLerp_Create(0x10, 0, 0x10, 3, (u8 *)G + 0xe3c);
         }
     }
 }

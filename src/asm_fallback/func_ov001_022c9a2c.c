@@ -3,9 +3,9 @@
 
 extern void _s32_div_f(void);
 extern u32 data_ov001_02316028;
-extern void func_02032d2c(void);
-extern void func_0203344c(void);
-extern void func_02033550(void);
+extern void AnimatorSprite_Draw(void);
+extern void AnimatorSprite_ProcessAnimation(void);
+extern void AnimatorSprite_SetAnimation(void);
 
 #pragma thumb on
 asm void func_ov001_022c9a2c(void)
@@ -124,7 +124,7 @@ _b8:
     beq _e0
     add r0, r4, #0
     ldr r1, [sp, #0x18]
-    bl func_02033550
+    bl AnimatorSprite_SetAnimation
     ldr r1, [sp, #0x18]
     ldr r0, [pc, #0x68]
     str r1, [r7, r0]
@@ -135,9 +135,9 @@ _e0:
     add r0, r4, #0
     mov r1, #0
     lsl r2, r1, #0
-    bl func_0203344c
+    bl AnimatorSprite_ProcessAnimation
     add r0, r4, #0
-    bl func_02032d2c
+    bl AnimatorSprite_Draw
 _f6:
     ldr r0, [r6]
     lsl r1, r0, #2

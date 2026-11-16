@@ -16,10 +16,10 @@ typedef struct {
     u16 y;
 } UnkOfs_023580bc;
 
-extern UnkOfs_023580bc data_02087d04[4];
+extern UnkOfs_023580bc gDisplaySub[4];
 
-void func_0203344c(UnkSpr_023580bc *spr, s32 a, s32 b);
-void func_02032d2c(UnkSpr_023580bc *spr);
+void AnimatorSprite_ProcessAnimation(UnkSpr_023580bc *spr, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_023580bc *spr);
 
 #pragma thumb on
 
@@ -28,12 +28,12 @@ void func_ov000_023580bc(UnkStruct_023580bc *w, BOOL flag) {
 
     spr->unk4 = 0;
     spr->unk6 = 0x10;
-    func_0203344c(spr, 0, 0);
-    func_02032d2c(spr);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
+    AnimatorSprite_Draw(spr);
     if (flag) {
-        data_02087d04[2].y = -8;
+        gDisplaySub[2].y = -8;
     } else {
-        data_02087d04[2].y = 0x20;
+        gDisplaySub[2].y = 0x20;
     }
 }
 

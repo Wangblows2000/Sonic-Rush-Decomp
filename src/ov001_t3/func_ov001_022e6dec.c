@@ -51,8 +51,8 @@ void func_ov001_022e560c(UnkA_022e6dec *a);
 void func_ov001_022e4b5c(UnkB_022e6dec *b);
 void func_ov001_022e3b24(UnkC_022e6dec *c);
 void func_ov001_022e397c(UnkC_022e6dec *c);
-void func_0203344c(UnkSpr_022e6dec *s, s32 a, s32 b);
-void func_02032d2c(UnkSpr_022e6dec *s);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022e6dec *s, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_022e6dec *s);
 
 #pragma thumb on
 void func_ov001_022e6dec(UnkStruct_022e6dec *p) {
@@ -82,8 +82,8 @@ void func_ov001_022e6dec(UnkStruct_022e6dec *p) {
         s = &b->spr;
         s->x = c->x >> 12;
         s->y = c->y >> 12;
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
         return;
     }
     func_ov001_022e397c(c);

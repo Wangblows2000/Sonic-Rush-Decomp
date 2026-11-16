@@ -1,6 +1,6 @@
 #include <ov000_b/stageobj.h>
 
-void func_0206b768(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
+void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
 s32 func_ov000_02337650(s32 a);
 
 void func_ov000_0232ad98(UnkStruct_StageObj *w, s32 x, s32 y, u32 digits, u16 k) {
@@ -15,7 +15,7 @@ void func_ov000_0232ad98(UnkStruct_StageObj *w, s32 x, s32 y, u32 digits, u16 k)
     w->spr1.unk34 = s1;
     w->spr0.unk34 += (k + 1) << 7;
     w->spr1.unk34 += (k + 1) << 7;
-    func_0206b768(x, y, 0, w, &w->spr0, &w->spr1, 0);
+    StageObj_Draw2DEx(x, y, 0, w, &w->spr0, &w->spr1, 0);
     off -= 0x4600;
     for (i = 0, sh = 0; i < 5; i++, sh += 4) {
         w->spr0.unk34 = s0;
@@ -23,7 +23,7 @@ void func_ov000_0232ad98(UnkStruct_StageObj *w, s32 x, s32 y, u32 digits, u16 k)
         d = (digits & (0xf << sh)) >> sh;
         w->spr0.unk34 += d << 7;
         w->spr1.unk34 += d << 7;
-        func_0206b768(x - off, y, 0, w, &w->spr0, &w->spr1, 0);
+        StageObj_Draw2DEx(x - off, y, 0, w, &w->spr0, &w->spr1, 0);
         off += 0xa00;
         if (i == 1)
             off += 0x600;
@@ -35,7 +35,7 @@ void func_ov000_0232ad98(UnkStruct_StageObj *w, s32 x, s32 y, u32 digits, u16 k)
     w->spr0.unk34 += 0xba0;
     w->spr1.unk34 += 0xba0;
     for (i = 0, off = -0x3200; i < 2; i++, off += 0x1a00) {
-        func_0206b768(x - off, y, 0, w, &w->spr0, &w->spr1, 0);
+        StageObj_Draw2DEx(x - off, y, 0, w, &w->spr0, &w->spr1, 0);
     }
     w->spr0.unk34 = s0;
     w->spr1.unk34 = s1;

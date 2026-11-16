@@ -5,20 +5,20 @@ typedef struct {
     void (*func)(void);
 } UnkTask_022c86f4;
 
-extern UnkTask_022c86f4 *data_022b4574;
+extern UnkTask_022c86f4 *gTaskCurrent;
 extern s32 data_ov001_0231f044;
 
-s32 func_0204b700(void);
+s32 StageLoader_LoadCommonFiles(void);
 void func_ov001_022c86b8(void);
 void func_ov001_022c87f8(void);
 
 #pragma thumb on
 void func_ov001_022c86f4(void) {
-    switch (func_0204b700()) {
+    switch (StageLoader_LoadCommonFiles()) {
     case 0:
         break;
     case 1:
-        data_022b4574->func = func_ov001_022c86b8;
+        gTaskCurrent->func = func_ov001_022c86b8;
         break;
     case 2:
         func_ov001_022c87f8();

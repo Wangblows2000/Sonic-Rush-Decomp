@@ -15,14 +15,14 @@ typedef struct {
     s32 unk4;
 } UnkStruct_02369ac0;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 
 void func_ov000_022f18f4(UnkStruct_022f1930 *p);
 
 void func_ov000_022f1930(UnkStruct_022f1930 *p) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    p->unk43C = ((u16)(data_0208fe70 >> 16) & 1) ? 1 : 0;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    p->unk43C = ((u16)(gRandSeed >> 16) & 1) ? 1 : 0;
     p->unk440 = 0;
     p->unk434 = 0;
     data_ov000_02369ac0.unk4 = 0x36;

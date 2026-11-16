@@ -61,22 +61,22 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern UnkStruct_022c4560 data_022c4560;
-extern void *data_022c448c;
+extern void *gActComArchive;
 extern UnkTask_023376c4 *data_ov000_0236aaa8;
 extern u8 data_ov000_023687e4[];
 extern u8 data_ov000_02364d62[];
 
-void *func_020372d0(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 void func_02021310(void *f, void *name, void *arc);
 void *func_02021264(void *f, s32 idx);
 void func_020212e0(void *f);
-u32 func_02039c18(s32 a, u16 n);
-void func_02033590(UnkDual *d, void *res, u16 idx, u32 mask, u32 flags, u32 a0, u32 a1, u32 b0, u32 b1, u32 c0, u32 c1, u32 e0, u32 e1);
-void func_020332c4(UnkDual *d, s32 a, s32 b);
+u32 ObjVram_Alloc(s32 a, u16 n);
+void AnimatorSpriteDS_Init(UnkDual *d, void *res, u16 idx, u32 mask, u32 flags, u32 a0, u32 a1, u32 b0, u32 b1, u32 c0, u32 c1, u32 e0, u32 e1);
+void AnimatorSpriteDS_ProcessAnimation(UnkDual *d, s32 a, s32 b);
 void func_02033544(UnkDual *d, u16 idx);
-void func_02035704(void *p, s32 a, s32 b, u32 c);
-void func_0206d190(void *res, u16 id, u8 a, s32 b);
+void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
+void ObjDraw_LoadPaletteRow(void *res, u16 id, u8 a, s32 b);
 void func_ov000_02337278(void);
 void func_ov000_02337338(void);
 void func_ov000_023375e8(void);
@@ -90,11 +90,11 @@ static inline void InitDigits(UnkWork_023376c4 *work, UnkDual *d, u16 idx, u32 *
         m = 2;
     else
         m = 0;
-    func_02033590(d, work->res, idx, m, 0x30, 0, vram[0], 0, 0x5000200, 0, vram[1], 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, idx, m, 0x30, 0, vram[0], 0, 0x5000200, 0, vram[1], 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
     for (i = 0; i < 10; i++) {
-        func_020332c4(d, 0, 0);
+        AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
         func_02033544(d, d->sub.unk8 + 1);
         d->unk5c[0] += 0x80;
         d->unk5c[1] += 0x80;
@@ -119,7 +119,7 @@ void func_ov000_023376c4(void) {
     else
         mask = 0;
 
-    data_ov000_0236aaa8 = func_020372d0(func_ov000_02337278, func_ov000_02337338, 0, 0x3800, 3, sizeof(UnkWork_023376c4));
+    data_ov000_0236aaa8 = Task_Create(func_ov000_02337278, func_ov000_02337338, 0, 0x3800, 3, sizeof(UnkWork_023376c4));
     work = data_ov000_0236aaa8->work;
     zero = 0;
     MIi_CpuClear16(zero, work, sizeof(UnkWork_023376c4));
@@ -127,146 +127,146 @@ void func_ov000_023376c4(void) {
     work->unk680 = -1;
     work->unkaa0 = -1;
 
-    func_02021310(f, data_ov000_023687e4, data_022c448c);
+    func_02021310(f, data_ov000_023687e4, gActComArchive);
     work->res = func_02021264(f, 0);
     func_020212e0(f);
 
-    work->vram[0] = func_02039c18(0, 0x14);
+    work->vram[0] = ObjVram_Alloc(0, 0x14);
     if (IS_MAIN())
-        work->vram[1] = func_02039c18(1, 0x14);
+        work->vram[1] = ObjVram_Alloc(1, 0x14);
     d = &tmp;
     InitDigits(work, d, 0, &work->vram[0]);
 
-    work->vram[2] = func_02039c18(0, 0x14);
+    work->vram[2] = ObjVram_Alloc(0, 0x14);
     if (IS_MAIN())
-        work->vram[3] = func_02039c18(1, 0x14);
+        work->vram[3] = ObjVram_Alloc(1, 0x14);
     dd = &tmp;
     InitDigits(work, dd, 10, &work->vram[2]);
 
     d = &work->d20;
-    func_02033590(d, work->res, 0x21, mask, 0x4010, 0, func_02039c18(0, 8), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 8), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x21, mask, 0x4010, 0, ObjVram_Alloc(0, 8), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 8), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
     d->sub.flags |= 8;
 
     d = &work->d9c;
-    func_02033590(d, work->res, 0x22, mask, 0x4010, 0, func_02039c18(0, 0x10), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 0x10), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x22, mask, 0x4010, 0, ObjVram_Alloc(0, 0x10), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 0x10), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
     d->sub.flags |= 8;
 
     d3 = work->d118;
     for (i = 0; i < 3; i++) {
-        func_02033590(d3, work->res, 0x22, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
+        AnimatorSpriteDS_Init(d3, work->res, 0x22, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
         d3->unk74[0] = 1;
         d3->unk74[1] = 1;
         d3++;
     }
 
     d = &work->d29c;
-    func_02033590(d, work->res, 0x14, mask, 0x4010, 0, func_02039c18(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 2), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x14, mask, 0x4010, 0, ObjVram_Alloc(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 2), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
 
     d = &work->d318;
-    func_02033590(d, work->res, 0, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
 
     for (i = 0; i < 2; i++) {
         d = &work->d394[i];
-        func_02033590(d, work->res, 0, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
+        AnimatorSpriteDS_Init(d, work->res, 0, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
         d->unk74[0] = 1;
         d->unk74[1] = 1;
     }
     for (i = 0; i < 2; i++) {
         d = &work->d48c[i];
-        func_02033590(d, work->res, 0, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
+        AnimatorSpriteDS_Init(d, work->res, 0, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
         d->unk74[0] = 1;
         d->unk74[1] = 1;
     }
 
     d = &work->d584;
-    func_02033590(d, work->res, 0x15, mask, 0x4010, 0, func_02039c18(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 2), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x15, mask, 0x4010, 0, ObjVram_Alloc(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 2), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
 
     d = &work->d600;
-    func_02033590(d, work->res, 0x15, mask, 0x4010, 0, func_02039c18(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 2), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x15, mask, 0x4010, 0, ObjVram_Alloc(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 2), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
 
     sub = &work->s688;
     for (i = 0; i < 4; i++)
         sub->scale[i] = 0x1000;
 
     d = &sub->d[0];
-    func_02033590(d, work->res, 0x1d, mask, 0x4210, 0, func_02039c18(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 2), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x1d, mask, 0x4210, 0, ObjVram_Alloc(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 2), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
     d->sub.flags |= 8;
 
     d = &sub->d[1];
-    func_02033590(d, work->res, 0x1e, mask, 0x4210, 0, func_02039c18(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 2), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x1e, mask, 0x4210, 0, ObjVram_Alloc(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 2), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
     d->sub.flags |= 8;
 
     d = &sub->d[2];
-    func_02033590(d, work->res, 0x1b, mask, 0x4010, 0, func_02039c18(0, 8), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 8), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x1b, mask, 0x4010, 0, ObjVram_Alloc(0, 8), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 8), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
     d->sub.flags |= 8;
 
     d = &sub->d[3];
-    func_02033590(d, work->res, 0x1c, mask, 0x4010, 0, func_02039c18(0, 8), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 8), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x1c, mask, 0x4010, 0, ObjVram_Alloc(0, 8), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 8), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
     d->sub.flags |= 8;
 
     d = &sub->d[4];
-    func_02033590(d, work->res, 0x23, mask, 0x4010, 0, func_02039c18(0, 8), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 8), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x23, mask, 0x4010, 0, ObjVram_Alloc(0, 8), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 8), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
 
-    func_02035704(data_ov000_02364d62, 1, 0, 0x5000222);
-    func_02035704(data_ov000_02364d62, 1, 0, 0x5000622);
+    PaletteTransfer_QueueCopy(data_ov000_02364d62, 1, 0, 0x5000222);
+    PaletteTransfer_QueueCopy(data_ov000_02364d62, 1, 0, 0x5000622);
 
     if (data_022c4560.unk0 == 0)
         idx = 0x1f;
     else
         idx = 0x20;
     d = &work->d92c;
-    func_02033590(d, work->res, idx, mask, 0x4010, 0,
-                  func_02039c18(0, ((UnkEnt_023376c4 *)((u8 *)work->res + work->res->tblOfs + 0x14))[(u16)idx].vram), 0, 0x5000200, 0,
-                  !IS_MAIN() ? 0 : func_02039c18(1, ((UnkEnt_023376c4 *)((u8 *)work->res + work->res->tblOfs + 0x14))[(u16)idx].vram), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, idx, mask, 0x4010, 0,
+                  ObjVram_Alloc(0, ((UnkEnt_023376c4 *)((u8 *)work->res + work->res->tblOfs + 0x14))[(u16)idx].vram), 0, 0x5000200, 0,
+                  !IS_MAIN() ? 0 : ObjVram_Alloc(1, ((UnkEnt_023376c4 *)((u8 *)work->res + work->res->tblOfs + 0x14))[(u16)idx].vram), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
     d->sub.flags |= 8;
 
     d = &work->d9a8;
-    func_02033590(d, work->res, 0x19, mask, 0x4010, 0, func_02039c18(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : func_02039c18(1, 2), 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0x19, mask, 0x4010, 0, ObjVram_Alloc(0, 2), 0, 0x5000200, 0, !IS_MAIN() ? 0 : ObjVram_Alloc(1, 2), 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
-    func_020332c4(d, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
 
     d = &work->da24;
-    func_02033590(d, work->res, 0, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
+    AnimatorSpriteDS_Init(d, work->res, 0, mask, 0x4018, 0, 0, 0, 0x5000200, 0, 0, 0, 0x5000600);
     d->unk74[0] = 1;
     d->unk74[1] = 1;
 
-    func_0206d190(work->res, 0x21, 1, 0);
-    func_0206d190(work->res, 0x21, 1, 1);
+    ObjDraw_LoadPaletteRow(work->res, 0x21, 1, 0);
+    ObjDraw_LoadPaletteRow(work->res, 0x21, 1, 1);
     func_ov000_023375e8();
 }

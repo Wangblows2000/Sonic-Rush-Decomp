@@ -74,7 +74,7 @@ extern UnkStruct_022f9eb4_v data_02084f78;
 extern UnkStruct_022f9eb4_v data_02084f84;
 extern UnkStruct_022f9eb4_v data_02084f90;
 extern u8 data_02084d84[];
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_022f9eb4_b *data_ov001_0231f084;
 extern s32 data_ov001_0231f08c;
 extern s32 data_ov001_0231f090;
@@ -88,7 +88,7 @@ void func_02004988(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
 void func_020044f4(void *a, void *b, void *c, s32 d, void *e);
 void func_02022270(u32 index, u32 value);
 void func_02022284(u32 idx, s32 x, s32 y, s32 z);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
@@ -97,19 +97,19 @@ void DC_StoreRange(void *p, u32 size);
 s32 func_ov001_022f73cc(s32 a);
 void func_0201bf34(void *p);
 void func_ov001_022f9ab4(void);
-u32 func_02039c18(u32 a, u32 b);
-void func_0203363c(void *s, void *h, u16 idx, u32 d, u32 e, u32 f, u32 g, u32 hh, u32 i);
-void func_0203344c(void *s, u32 a, u32 b);
+u32 ObjVram_Alloc(u32 a, u32 b);
+void AnimatorSprite_Init(void *s, void *h, u16 idx, u32 d, u32 e, u32 f, u32 g, u32 hh, u32 i);
+void AnimatorSprite_ProcessAnimation(void *s, u32 a, u32 b);
 s32 func_020480a0(s32 a);
-void func_02031c1c(void *s, u32 a);
-void func_02031bd0(void *s, void *res, u32 idx);
+void Model_Init(void *s, u32 a);
+void Model_SetResource(void *s, void *res, u32 idx);
 u32 func_02025e8c(void *h);
-void func_02031a68(void *p, s32 a, void *b, s32 c, u32 d);
-void func_0203473c(void *a, void *b, s32 c, s32 d, s32 e, u32 f, u32 g);
-void func_0203438c(void *a);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
+void Background_Init(void *a, void *b, s32 c, s32 d, s32 e, u32 f, u32 g);
+void Background_Draw(void *a);
 void func_ov001_022f9188(void);
-void *func_020372d0(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_02048fdc(s32 a, s32 b, s32 c, s32 d, void *e);
+void *Task_Create(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
+void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -159,7 +159,7 @@ void func_ov001_022f9eb4(void) {
     func_02022284(0, 0x4a0, -0x4a0, 0);
     func_02022284(1, 0, -0x617, -0xecd);
     func_02022284(2, 0xec7, 0x620, 0);
-    blk = func_02034a40(data_0208fe80, 0xee0, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0xee0, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0xee0);
@@ -185,41 +185,41 @@ void func_ov001_022f9eb4(void) {
     o = data_ov001_0231f084->objs;
     for (i = 0; i < 0x27; i++, o++) {
         idx = data_ov001_02316afc[i];
-        r = func_02039c18(0, ENTRY1E(h, idx));
-        func_0203363c(o, h, idx, 0x30, 0, 0, r, 0, 0x5000200);
+        r = ObjVram_Alloc(0, ENTRY1E(h, idx));
+        AnimatorSprite_Init(o, h, idx, 0x30, 0, 0, r, 0, 0x5000200);
         o->unk44 = data_ov001_02316b4c[i];
-        func_0203344c(o, 0, 0);
+        AnimatorSprite_ProcessAnimation(o, 0, 0);
     }
     data_ov001_0231f084->unkE30 = func_020480a0(data_ov001_0231f084->unkE2C);
     o = (UnkStruct_022f9eb4_o *)((u8 *)data_ov001_0231f084 + 0xb10);
-    r = func_02039c18(0, ENTRY1E(h, (u16)(data_ov001_0231f084->unkE30 + 0x23)));
-    func_0203363c(o, h, (u16)(data_ov001_0231f084->unkE30 + 0x23), 0x60, 0, 0, r, 0, 0x5000200);
+    r = ObjVram_Alloc(0, ENTRY1E(h, (u16)(data_ov001_0231f084->unkE30 + 0x23)));
+    AnimatorSprite_Init(o, h, (u16)(data_ov001_0231f084->unkE30 + 0x23), 0x60, 0, 0, r, 0, 0x5000200);
     o->unk44 = 3;
-    func_0203344c(o, 0, 0);
+    AnimatorSprite_ProcessAnimation(o, 0, 0);
     for (i = 0; i < 5; i++) {
-        func_0203363c(&loc, h, data_ov001_02316a94[i], 0x48, 0, 0, 0, 0, 0x5000200);
+        AnimatorSprite_Init(&loc, h, data_ov001_02316a94[i], 0x48, 0, 0, 0, 0, 0x5000200);
         loc.unk44 = data_ov001_02316a88[i];
-        func_0203344c(&loc, 0, 0);
+        AnimatorSprite_ProcessAnimation(&loc, 0, 0);
     }
     data_ov001_0231f084->unkB3C |= 0x200;
 
     an = (UnkStruct_022f9eb4_a *)((u8 *)data_ov001_0231f084 + 0xc90);
-    func_02031c1c(an, 0);
-    func_02031bd0(an, data_ov001_0231f084->unkC, 0);
+    Model_Init(an, 0);
+    Model_SetResource(an, data_ov001_0231f084->unkC, 0);
     an->unk18 = an->unk1C = an->unk20 = 0x1000;
     r = func_02025e8c(data_ov001_0231f084->unkC);
-    func_02031a68(an, 0, data_ov001_0231f084->unk10, 0, r);
-    func_02031a68(an, 1, data_ov001_0231f084->unk14, 0, r);
+    Model_SetAnimation(an, 0, data_ov001_0231f084->unk10, 0, r);
+    Model_SetAnimation(an, 1, data_ov001_0231f084->unk14, 0, r);
     an->unk114 = 0x1000;
 
     an = (UnkStruct_022f9eb4_a *)((u8 *)data_ov001_0231f084 + 0xb58);
-    func_02031c1c(an, 0);
-    func_02031bd0(an, data_ov001_0231f084->unk8, 0);
+    Model_Init(an, 0);
+    Model_SetResource(an, data_ov001_0231f084->unk8, 0);
     an->unk18 = an->unk1C = an->unk20 = 0x1000;
 
-    func_0203473c((u8 *)data_ov001_0231f084 + 0xdc8, data_ov001_0231f084->unk4, 0xe, 0, 1,
+    Background_Init((u8 *)data_ov001_0231f084 + 0xdc8, data_ov001_0231f084->unk4, 0xe, 0, 1,
                   data_ov001_0231f084->unk4->unk18, data_ov001_0231f084->unk4->unk1A);
-    func_0203438c((u8 *)data_ov001_0231f084 + 0xdc8);
+    Background_Draw((u8 *)data_ov001_0231f084 + 0xdc8);
     {
         f1 = 0x02020202;
         MIi_CpuClearFast(f1, (void *)0x6004000, 0x40);
@@ -237,7 +237,7 @@ void func_ov001_022f9eb4(void) {
         MIi_CpuClearFast(f4, (void *)0x6000b00, 0x300);
     }
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1100;
-    data_ov001_0231f084->unkE08 = func_020372d0(func_ov001_022f9188, 0, 0, 0x1000, 0, 0);
-    func_02048fdc(0x10, 0x10, 0, 3, (u8 *)data_ov001_0231f084 + 0xe3c);
+    data_ov001_0231f084->unkE08 = Task_Create(func_ov001_022f9188, 0, 0, 0x1000, 0, 0);
+    BrightnessLerp_Create(0x10, 0x10, 0, 3, (u8 *)data_ov001_0231f084 + 0xe3c);
     }
 }

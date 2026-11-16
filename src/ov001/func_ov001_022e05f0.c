@@ -5,7 +5,7 @@ extern UnkStruct_022e05f0 *data_022c4db0;
 extern s16 data_022c4dac;
 extern u8 data_ov001_023161ec[];
 extern u8 data_ov001_023161ed[];
-UnkStruct_022e05f0 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkStruct_022e05f0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 BOOL func_0204eb7c(void);
@@ -16,7 +16,7 @@ void func_ov001_022de184(void *p, void *q);
 void func_ov001_022ddfc4(void *p, void *q);
 
 void func_ov001_022e05f0(void) {
-    UnkStruct_022e05f0 *task = func_020372d0(func_ov001_022e04bc, func_ov001_022e0588, 0, 0x4000, 3, 0xeb4);
+    UnkStruct_022e05f0 *task = Task_Create(func_ov001_022e04bc, func_ov001_022e0588, 0, 0x4000, 3, 0xeb4);
     u8 *w;
     vu16 zero;
     data_022c4db0 = task;

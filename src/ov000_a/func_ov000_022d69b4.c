@@ -34,10 +34,10 @@ struct UnkStruct_022d69b4 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_ov000_02328670(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d694c(UnkStruct_022d69b4 *s);
 
 void func_ov000_022d69b4(UnkStruct_022d69b4 *s) {
@@ -48,12 +48,12 @@ void func_ov000_022d69b4(UnkStruct_022d69b4 *s) {
     }
     if (s->unk14 < 0x20000)
         return;
-    func_02031a68(&s->unk2C4, 0, s->unk434, 0xa, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0xa, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
     s->unk30 = 0;
     func_ov000_02328670(1, s->unk2C4.unk48 >> 4, -s->unk2C4.unk4C >> 4, s->unk2C4.unk50 >> 4);
-    func_02036754(0, 0, 0x90);
+    Sound_PlaySeqArc(0, 0, 0x90);
     s->unk264 = 0x40;
     s->func = func_ov000_022d694c;
 }

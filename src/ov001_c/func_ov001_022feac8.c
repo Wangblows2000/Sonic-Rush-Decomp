@@ -21,11 +21,11 @@ extern UnkStruct_022feac8 *data_ov001_0231f52c;
 
 void func_020030bc(void);
 void func_020030a8(void);
-void func_0203a288(s32 bank, s32 mapping, s32 mode, u16 a, u16 b);
+void Vram_SetBankForSubOBJ(s32 bank, s32 mapping, s32 mode, u16 a, u16 b);
 void GX_SetBankForLCDC(u32 bank);
-void func_0203a43c(s32 bank);
+void Vram_SetBankForSubBG(s32 bank);
 UnkStruct_022feac8_g *func_ov001_022ffce8(void);
-UnkStruct_022feac8_oam *func_02036bfc(u32 idx, u32 prio);
+UnkStruct_022feac8_oam *Oam_AllocObj(u32 idx, u32 prio);
 s32 func_02002094(s32 n, s32 d);
 
 void func_ov001_022feac8(void) {
@@ -38,7 +38,7 @@ void func_ov001_022feac8(void) {
     if (data_ov001_0231f52c->unk338 != 0) {
         *(vu16 *)0x4000304 &= ~0x8000;
         func_020030bc();
-        func_0203a288(8, 0x100010, 0x20, 0, 0x100);
+        Vram_SetBankForSubOBJ(8, 0x100010, 0x20, 0, 0x100);
         GX_SetBankForLCDC(4);
         *(vu32 *)0x4000064 = 0x80320010;
         *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1000;
@@ -47,14 +47,14 @@ void func_ov001_022feac8(void) {
     } else {
         *(vu16 *)0x4000304 |= 0x8000;
         func_020030a8();
-        func_0203a43c(4);
+        Vram_SetBankForSubBG(4);
         GX_SetBankForLCDC(8);
         *(vu32 *)0x4000064 = 0x80330010;
         *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x400;
         *(vu16 *)0x400100c = (*(vu16 *)0x400100c & 0x43) | 0x4084;
         for (y = 0; y < 0xc0; y += 0x40) {
             for (x = 0; x < 0x100; x += 0x40) {
-                o = func_02036bfc(1, 0);
+                o = Oam_AllocObj(1, 0);
                 t = (func_02002094(x, 8) + (func_02002094(y, 8) << 5)) | 0xf000;
                 o->attr01 = ((y & 0xff) | 0xc0000c00) | ((x & 0x1ff) << 16);
                 o->attr2 = t;

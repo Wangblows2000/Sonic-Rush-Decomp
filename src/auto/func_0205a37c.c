@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 func_02059338();
-s32 func_020593bc();
+s32 SaveData_Load();
 s32 func_0205a304();
 s32 func_0205a27c();
 
@@ -11,7 +11,7 @@ s32 func_0205a37c(s32 p0) {
     if (t0 == 0) {
         return 1;
     }
-    s32 t1 = func_020593bc(t0);
+    s32 t1 = SaveData_Load(t0);
     if (t1 == 0) {
         return 1;
     }

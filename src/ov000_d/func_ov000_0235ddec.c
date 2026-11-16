@@ -21,12 +21,12 @@ void func_ov000_0235ddec(UnkStruct_SprObj *w, BOOL flag) {
             }
             if (*cur != a) {
                 *cur = a;
-                func_02033550(spr, *cur);
+                AnimatorSprite_SetAnimation(spr, *cur);
             }
             spr->x = 0x30;
             spr->y = 0x28 + i * 0x20;
-            func_0203344c(spr, 0, 0);
-            func_02032d2c(spr);
+            AnimatorSprite_ProcessAnimation(spr, 0, 0);
+            AnimatorSprite_Draw(spr);
         }
         spr = &w->spr[13 + i];
         cur = &w->anim[13 + i];
@@ -44,10 +44,10 @@ void func_ov000_0235ddec(UnkStruct_SprObj *w, BOOL flag) {
         }
         if (*cur != a) {
             *cur = a;
-            func_02033550(spr, *cur);
+            AnimatorSprite_SetAnimation(spr, *cur);
         }
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
     }
 }
 

@@ -15,10 +15,10 @@ typedef struct UnkStruct_023265a8 {
     UnkStruct_023265a8_2 *unk10;
 } UnkStruct_023265a8;
 
-extern UnkStruct_023265a8 *data_022b4574;
+extern UnkStruct_023265a8 *gTaskCurrent;
 
 void func_ov000_023265a8(void) {
-    UnkStruct_023265a8_2 *p = data_022b4574->unk10;
+    UnkStruct_023265a8_2 *p = gTaskCurrent->unk10;
     if (p->unk164 == NULL)
         return;
     if (p->unk164->unk54 & 4)

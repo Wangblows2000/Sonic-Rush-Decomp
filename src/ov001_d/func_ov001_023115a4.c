@@ -15,20 +15,20 @@ typedef struct UnkStruct_023115a4 {
 } UnkStruct_023115a4;
 
 extern s32 data_ov001_023178cc[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 s16 func_ov001_023146b4(s16 a, u16 b, s16 c);
 void func_ov001_0231599c(s32 v);
 void func_ov001_023122d8(UnkStruct_023115a4 *p, s32 n);
-void func_02036754(void *p, u32 a, u32 b);
+void Sound_PlaySeqArc(void *p, u32 a, u32 b);
 void func_ov001_0230d6f4(s32 v);
 void func_ov001_023098cc(s32 v);
 s32 func_ov001_02314614(s16 a, u16 b);
 s16 func_ov001_02314694(s16 a);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return data_0208fe70 >> 16;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return gRandSeed >> 16;
 }
 
 void func_ov001_023115a4(UnkStruct_023115a4 *p) {
@@ -41,8 +41,8 @@ void func_ov001_023115a4(UnkStruct_023115a4 *p) {
         func_ov001_0231599c(0);
         func_ov001_023122d8(p, 0xe);
         p->unk128 = 0;
-        func_02036754(0, 0x10, 0xb);
-        func_02036754(0, 0x10, 0x10);
+        Sound_PlaySeqArc(0, 0x10, 0xb);
+        Sound_PlaySeqArc(0, 0x10, 0x10);
         func_ov001_0230d6f4(0x800);
         func_ov001_023098cc(3);
         return;

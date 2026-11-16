@@ -31,15 +31,15 @@ typedef struct {
     u16 y;
 } UnkScroll_022d4538;
 
-extern UnkTask_022d4538 *data_022b4574;
-extern UnkScroll_022d4538 data_0208922c[];
-extern UnkScroll_022d4538 data_02087d04[];
+extern UnkTask_022d4538 *gTaskCurrent;
+extern UnkScroll_022d4538 gDisplayMain[];
+extern UnkScroll_022d4538 gDisplaySub[];
 
-void func_02035704(u16 *src, u16 count, void *dest, u16 *pal);
+void PaletteTransfer_QueueCopy(u16 *src, u16 count, void *dest, u16 *pal);
 
 #pragma thumb on
 void func_ov001_022d4538(void) {
-    UnkWork_022d4538 *w = data_022b4574->work;
+    UnkWork_022d4538 *w = gTaskCurrent->work;
     s32 i;
     s32 half, q, range, t, pos;
     BOOL dir, flag;
@@ -47,9 +47,9 @@ void func_ov001_022d4538(void) {
     u16 *src, *dst;
 
     if (w->sub->mode == 0) {
-        data_0208922c[w->sub->idx].x += 2;
+        gDisplayMain[w->sub->idx].x += 2;
     } else {
-        data_02087d04[w->sub->idx].x += 2;
+        gDisplaySub[w->sub->idx].x += 2;
     }
     half = w->duration / 2;
     q = half * 12 / 16;
@@ -105,7 +105,7 @@ void func_ov001_022d4538(void) {
         src++;
         dst++;
     }
-    func_02035704(w->out, w->count, w->sub->dest, w->sub->pal + w->offset);
+    PaletteTransfer_QueueCopy(w->out, w->count, w->sub->dest, w->sub->pal + w->offset);
     w->timer++;
     if (w->timer >= w->duration) {
         w->timer = 0;

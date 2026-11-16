@@ -70,14 +70,14 @@ typedef struct {
     UnkOamAff_0206aa38 oam[128];
 } UnkCtx_0206aa38;
 
-extern UnkCtx_0206aa38 *data_02072c78[];
-extern u32 data_02072c70[];
+extern UnkCtx_0206aa38 *gDisplayTable[];
+extern u32 gObjVramBaseTable[];
 extern UnkSize_0206aa38 data_02072da0[];
 extern const UnkAff4_0206aa38 data_0207cf84;
 
-u16 *func_02036bfc(s32 engine, u16 prio);
-u16 func_02036aec(u32 engine, UnkMtx22_0206aa38 *mtx);
-void func_02032d2c(UnkSpr_0206aa38 *spr);
+u16 *Oam_AllocObj(s32 engine, u16 prio);
+u16 Oam_GetAffineIndex(u32 engine, UnkMtx22_0206aa38 *mtx);
+void AnimatorSprite_Draw(UnkSpr_0206aa38 *spr);
 fx32 func_02002240(fx32 x);
 void func_02000cb4(UnkMtx22_0206aa38 *m);
 void func_02000d98(const UnkMtx22_0206aa38 *pSrc, UnkMtx22_0206aa38 *pDst, fx32 x, fx32 y);
@@ -124,7 +124,7 @@ void func_0206aa38(UnkSpr_0206aa38 *spr, UnkPos_0206aa38 *pos, fx32 sx, fx32 sy)
     UnkOamAff_0206aa38 *o;
 
     attr0x = 0;
-    ctx = data_02072c78[spr->engine];
+    ctx = gDisplayTable[spr->engine];
     base = (u32)spr->res + spr->res->frameOfs;
     frame = (UnkFrame_0206aa38 *)(spr->unk24 + base);
     count = frame->count;
@@ -138,7 +138,7 @@ void func_0206aa38(UnkSpr_0206aa38 *spr, UnkPos_0206aa38 *pos, fx32 sx, fx32 sy)
     if (count >= 4)
         count = 4;
     if ((s32)(count + (ctx->unk8a0 + ctx->unk89e)) >= 0x20) {
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
         return;
     }
     ix = func_02002240(sx);
@@ -154,7 +154,7 @@ void func_0206aa38(UnkSpr_0206aa38 *spr, UnkPos_0206aa38 *pos, fx32 sx, fx32 sy)
     func_02000d98(&mtx[0], &mtx[0], sx, sy);
     bx = spr->x;
     by = spr->y;
-    shift = data_02072c78[spr->engine]->shift;
+    shift = gDisplayTable[spr->engine]->shift;
     cols = (u8)((frame->unk8 - frame->unk4) / (8 << shift));
     if (cols == 0)
         cols = 1;
@@ -172,16 +172,16 @@ void func_0206aa38(UnkSpr_0206aa38 *spr, UnkPos_0206aa38 *pos, fx32 sx, fx32 sy)
     if (flags & 0x200)
         attr0x |= 0x200;
     if ((frame->cells[0] & 0xc00) == 0xc00)
-        tile = ((spr->vram - data_02072c70[spr->engine]) >> (ctx->shift2 + 7)) & 0x3ff;
+        tile = ((spr->vram - gObjVramBaseTable[spr->engine]) >> (ctx->shift2 + 7)) & 0x3ff;
     else
-        tile = ((spr->vram - data_02072c70[spr->engine]) >> (ctx->shift + 5)) & 0x3ff;
+        tile = ((spr->vram - gObjVramBaseTable[spr->engine]) >> (ctx->shift + 5)) & 0x3ff;
     cell = frame->cells;
     aff = data_0207cf84;
     if ((frame->cells[0] & 0xc00) == 0xc00)
-        shift = data_02072c78[spr->engine]->shift2;
+        shift = gDisplayTable[spr->engine]->shift2;
     for (i = 0; i < frame->count; i++, cell += 4) {
         sp_ = &data_02072da0[((cell[0] & 0xc000) >> 12) | ((cell[1] & 0xc000) >> 14)];
-        w = (u8)(sp_->w / (8 << data_02072c78[spr->engine]->shift));
+        w = (u8)(sp_->w / (8 << gDisplayTable[spr->engine]->shift));
         h = (u8)(sp_->h >> 3);
         if (w == 0)
             w = 1;
@@ -189,11 +189,11 @@ void func_0206aa38(UnkSpr_0206aa38 *spr, UnkPos_0206aa38 *pos, fx32 sx, fx32 sy)
             h = 1;
         t = 0;
         for (j = 0; j < h; j++) {
-            n = (u8)((((s32)(cell[1] << 23) >> 26) >> data_02072c78[spr->engine]->shift))
+            n = (u8)((((s32)(cell[1] << 23) >> 26) >> gDisplayTable[spr->engine]->shift))
               + (u8)(cols * (j + ((s32)(cell[0] << 23) >> 26)));
             flip = ((attr1x ^ cell[1]) & 0x3000) >> 12;
             for (k = 0; k < w; k++) {
-                tw = 8 << data_02072c78[spr->engine]->shift;
+                tw = 8 << gDisplayTable[spr->engine]->shift;
                 ty = ((((s32)(cell[0] << 24) >> 24) - frame->unkE + pos[n].y) + (s32)(j * 8) + 4) << 12;
                 tx = (k * tw + ((((s32)(cell[1] << 23) >> 23) - frame->unkC) + pos[n].x) + (tw >> 1)) << 12;
                 x = (bx - (tw >> 1)) + ((FX_Mul_0206aa38(mtx[flip]._00, tx) + FX_Mul_0206aa38(mtx[flip]._10, ty)) >> 12);
@@ -203,14 +203,14 @@ void func_0206aa38(UnkSpr_0206aa38 *spr, UnkPos_0206aa38 *pos, fx32 sx, fx32 sy)
                     y -= sp_->h << 11;
                     *(u32 *)sp_ <<= 1;
                 }
-                if ((spr->flags & 0x4000) && !(x + (8 << data_02072c78[spr->engine]->shift) > 0 && x < 0x100 && y + 8 > 0 && y < 0xc0)) {
+                if ((spr->flags & 0x4000) && !(x + (8 << gDisplayTable[spr->engine]->shift) > 0 && x < 0x100 && y + 8 > 0 && y < 0xc0)) {
                     t = (u8)(t + 1);
                     n++;
                     continue;
                 }
                 idx = aff.v[flip];
                 if ((s16)idx < 0) {
-                    aff.v[flip] = func_02036aec(spr->engine, &inv[flip]);
+                    aff.v[flip] = Oam_GetAffineIndex(spr->engine, &inv[flip]);
                     idx = aff.v[flip];
                     if ((s16)idx >= 0) {
                         o = &ctx->oam[idx * 4];
@@ -223,7 +223,7 @@ void func_0206aa38(UnkSpr_0206aa38 *spr, UnkPos_0206aa38 *pos, fx32 sx, fx32 sy)
                         continue;
                     }
                 }
-                oam = func_02036bfc(spr->engine, spr->prio);
+                oam = Oam_AllocObj(spr->engine, spr->prio);
                 oam[0] = (y & 0xff) | 0x4100;
                 oam[0] ^= attr0x;
                 oam[1] = x & 0x1ff;

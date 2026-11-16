@@ -43,10 +43,10 @@ typedef struct {
     s32 unk3FC;
 } UnkStruct_02351300;
 
-s16 func_02068df8(s32 v, s32 a, s32 max);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 void func_ov000_0232f81c(UnkStruct_02351300 *w);
-void func_0204b7ec(void *p, s32 a, s32 b);
-void func_020693f0(s16 *vx, s16 *vy, u8 a);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
+void Math_RotateVec2S16(s16 *vx, s16 *vy, u8 a);
 
 void func_ov000_02351300(UnkStruct_02351300 *w) {
     s16 vx;
@@ -54,7 +54,7 @@ void func_ov000_02351300(UnkStruct_02351300 *w) {
 
     w->unk3F4 -= w->unk34;
     if (w->unkC > 0) {
-        w->unk34 = func_02068df8(w->unk34, -0x18, w->unk3E);
+        w->unk34 = ObjSpd_UpSet(w->unk34, -0x18, w->unk3E);
         if (w->unk34 < 0x300 && !(w->unk32C & 2)) {
             w->unk32C |= 2;
             w->unk30 = -0x300;
@@ -64,7 +64,7 @@ void func_ov000_02351300(UnkStruct_02351300 *w) {
             w->unk3F4 = w->unk3F0;
         }
     } else {
-        w->unk34 = func_02068df8(w->unk34, 0x18, w->unk3E);
+        w->unk34 = ObjSpd_UpSet(w->unk34, 0x18, w->unk3E);
         if (w->unk34 > -0x300 && !(w->unk32C & 2)) {
             w->unk32C |= 2;
             w->unk30 = -0x300;
@@ -81,14 +81,14 @@ void func_ov000_02351300(UnkStruct_02351300 *w) {
         if (w->unk3 > 0x80) {
             w->unk3 = 0x80;
         }
-        w->unk30 = func_02068df8(w->unk30, 0x2a, w->unk3E);
+        w->unk30 = ObjSpd_UpSet(w->unk30, 0x2a, w->unk3E);
         if (w->unk3F8 < 0) {
             w->unk3F8 = 0;
             w->unk30 = 0;
             w->unk3 = 0;
             w->unk5C ^= 1;
             w->unk32C |= 4;
-            func_0204b7ec(w->unk384, 0, 0x62);
+            Sound_PlaySeqArcEx(w->unk384, 0, 0x62);
         }
     }
     w->unk1C = w->x;
@@ -98,7 +98,7 @@ void func_ov000_02351300(UnkStruct_02351300 *w) {
         vx = -vx;
     }
     vy = w->unk3FC >> 8;
-    func_020693f0(&vx, &vy, w->unk1 + w->unk5);
+    Math_RotateVec2S16(&vx, &vy, w->unk1 + w->unk5);
     w->x = w->unk3E8->x + (vx << 8);
     w->y = w->unk3E8->y + (vy << 8);
     w->unk28 = w->x - w->unk1C;

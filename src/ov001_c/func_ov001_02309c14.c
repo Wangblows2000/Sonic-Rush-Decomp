@@ -33,7 +33,7 @@ typedef struct UnkStruct_02309c14 {
 extern UnkStruct_02309c14 *data_ov001_0231f5bc;
 
 void func_ov001_02307b44(void);
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 u32 func_ov001_0230c0b8(void);
 void func_ov001_02308884(void);
 void func_ov001_023091a0(void);
@@ -51,26 +51,26 @@ void func_ov001_02309c14(void) {
         func_ov001_02307b44();
         return;
     }
-    func_02032d2c(&g->objs[0]);
-    func_02032d2c(&g->objs[1]);
+    AnimatorSprite_Draw(&g->objs[0]);
+    AnimatorSprite_Draw(&g->objs[1]);
     g->objs[8].flags |= 0x80;
-    func_02032d2c(&g->objs[8]);
+    AnimatorSprite_Draw(&g->objs[8]);
     g->objs[8].flags &= ~0x80;
-    func_02032d2c(&g->objs[8]);
+    AnimatorSprite_Draw(&g->objs[8]);
     if (g->unkBB8 > 0 && ((g->unkBB8 & 0x20) || g->unkBBC == 0))
-        func_02032d2c(&g->objs[9]);
+        AnimatorSprite_Draw(&g->objs[9]);
     for (i = 0; i < 7; i++) {
         u32 m = func_ov001_0230c0b8();
         if (m & (1 << i)) {
-            func_02032d2c(&g->objs[0xb + i]);
+            AnimatorSprite_Draw(&g->objs[0xb + i]);
         } else {
             g->objs[10].x = g->objs[0xb + i].x;
             g->objs[10].y = g->objs[0xb + i].y;
-            func_02032d2c(&g->objs[10]);
+            AnimatorSprite_Draw(&g->objs[10]);
         }
     }
     if (g->unkBA8 != 0)
-        func_02032d2c(&g->objs[18]);
+        AnimatorSprite_Draw(&g->objs[18]);
     if (g->unkBB0 != 0) {
         if (g->unkBB4 != 0) {
             g->objs[20].x = 0xe8;
@@ -79,11 +79,11 @@ void func_ov001_02309c14(void) {
             g->objs[20].x = 0x80;
             g->objs[20].y = 0xac;
         }
-        func_02032d2c(&g->objs[20]);
+        AnimatorSprite_Draw(&g->objs[20]);
     }
     func_ov001_02308884();
     if (g->unkAF0 > 0)
-        func_02032d2c(&g->objs[24]);
+        AnimatorSprite_Draw(&g->objs[24]);
     if (g->unkBC4 >= 0)
         func_ov001_023091a0();
     if (g->unkBC8 >= 0) {
@@ -99,5 +99,5 @@ void func_ov001_02309c14(void) {
     func_ov001_02308720();
     func_ov001_02308600();
     if (g->unkAE0 >= 0x17c && g->unkAE0 < 0x258)
-        func_02032d2c(&g->objs[34]);
+        AnimatorSprite_Draw(&g->objs[34]);
 }

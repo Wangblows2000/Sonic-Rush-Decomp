@@ -15,19 +15,19 @@ typedef struct {
     u16 rep;
 } UnkPad_022e37bc;
 
-extern UnkTouch_022e37bc data_022b65b4;
-extern UnkPad_022e37bc data_022503e0;
+extern UnkTouch_022e37bc gTouchState;
+extern UnkPad_022e37bc gPad;
 
 
 #pragma thumb on
 BOOL func_ov001_022e37bc(void) {
-    if (data_022b65b4.flags & 0x40) {
-        s32 x = data_022b65b4.x;
-        s32 y = data_022b65b4.y;
+    if (gTouchState.flags & 0x40) {
+        s32 x = gTouchState.x;
+        s32 y = gTouchState.y;
         if (x >= 8 && x < 0x28 && y >= 0x98 && y < 0xb8) {
             return TRUE;
         }
-    } else if (data_022503e0.trg & 2) {
+    } else if (gPad.trg & 2) {
         return TRUE;
     }
     return FALSE;

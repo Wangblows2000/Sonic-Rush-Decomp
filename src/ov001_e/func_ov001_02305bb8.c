@@ -20,22 +20,22 @@ typedef struct UnkStruct_02305bb8_c {
 } UnkStruct_02305bb8_c;
 
 extern UnkStruct_02305bb8 *data_ov001_0231f5a8;
-extern void *data_022b4574;
+extern void *gTaskCurrent;
 
 UnkStruct_02305bb8_c *func_ov001_022ffce8(void);
-void func_020371c8(void *task);
-void func_02032480(void *p, s32 x, s32 y, s32 z);
+void Task_Destroy(void *task);
+void AnimatorSprite_DrawRotScale(void *p, s32 x, s32 y, s32 z);
 
 void func_ov001_02305bb8(void) {
     s32 c = func_ov001_022ffce8()->unk3C;
 
     data_ov001_0231f5a8->t += 0x199;
     if (data_ov001_0231f5a8->t >= 0x1000) {
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         data_ov001_0231f5a8->unkC = 0;
         data_ov001_0231f5a8->flags |= 1;
         data_ov001_0231f5a8->t = 0x1000;
     }
-    func_02032480(&data_ov001_0231f5a8->objs[c], 0x1000, data_ov001_0231f5a8->t, 0);
-    func_02032480(&data_ov001_0231f5a8->objs[c + 2], 0x1000, data_ov001_0231f5a8->t, 0);
+    AnimatorSprite_DrawRotScale(&data_ov001_0231f5a8->objs[c], 0x1000, data_ov001_0231f5a8->t, 0);
+    AnimatorSprite_DrawRotScale(&data_ov001_0231f5a8->objs[c + 2], 0x1000, data_ov001_0231f5a8->t, 0);
 }

@@ -18,18 +18,18 @@ typedef struct {
     u16 keys;
 } UnkHdr_0206c970;
 
-extern u8 data_0224ffa0[];
+extern u8 gWirelessSendBuffer[];
 extern UnkStruct_022c4f1c data_022c4f1c;
 extern u8 data_0207cfb0;
 extern u8 data_0207cfb4[];
-extern u16 data_022503e0;
+extern u16 gPad;
 extern u16 data_022c1950;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void func_0206caf0(void);
-u8 func_0203dba4(void);
+u8 WH_GetCurrentAid(void);
 u32 func_0206c7f0(UnkNode_0206c970 *n);
 
 BOOL func_0206c970(void) {
@@ -42,7 +42,7 @@ BOOL func_0206c970(void) {
     UnkHdr_0206c970 h;
 
     pos = 0;
-    buf = data_0224ffa0;
+    buf = gWirelessSendBuffer;
     list = &data_022c4f1c;
     {
         vu32 zero = 0;
@@ -51,11 +51,11 @@ BOOL func_0206c970(void) {
     }
     func_0206caf0();
     if (data_0207cfb0 == 0xff)
-        data_0207cfb0 = func_0203dba4();
+        data_0207cfb0 = WH_GetCurrentAid();
     h.magic = 0x55;
     h.code = data_0207cfb4[data_0207cfb0];
-    h.keys = data_022503e0;
-    data_0207cfb0 = func_0203dba4();
+    h.keys = gPad;
+    data_0207cfb0 = WH_GetCurrentAid();
     MIi_CpuCopy16(&h, buf, 4);
     pos += 4;
     for (;;) {

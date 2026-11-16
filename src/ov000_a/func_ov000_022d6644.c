@@ -30,7 +30,7 @@ struct UnkStruct_022d6644 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_0201c070(s32 a, s32 b);
 void func_0201bf1c(s32 a);

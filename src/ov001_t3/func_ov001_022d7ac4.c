@@ -26,11 +26,11 @@ typedef struct {
     UnkWork_022d7ac4 *work;
 } UnkTask_022d7ac4;
 
-extern UnkTask_022d7ac4 *data_022b4574;
+extern UnkTask_022d7ac4 *gTaskCurrent;
 
-void func_02033550(UnkSpr_022d7ac4 *s, u16 id);
-void func_0203344c(UnkSpr_022d7ac4 *s, s32 a, s32 b);
-void func_02032d2c(UnkSpr_022d7ac4 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022d7ac4 *s, u16 id);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022d7ac4 *s, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_022d7ac4 *s);
 
 #pragma thumb on
 void func_ov001_022d7ac4(s32 idx, s16 x, s16 y) {
@@ -38,7 +38,7 @@ void func_ov001_022d7ac4(s32 idx, s16 x, s16 y) {
     UnkSpr_022d7ac4 *s;
     s32 anim;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     switch (idx) {
     case 2:
         anim = 0;
@@ -64,14 +64,14 @@ void func_ov001_022d7ac4(s32 idx, s16 x, s16 y) {
     }
     s = &w->obj->spr[idx];
     if (anim != w->obj->anim[idx]) {
-        func_02033550(s, anim);
+        AnimatorSprite_SetAnimation(s, anim);
         w->obj->anim[idx] = anim;
     }
     s->x = x;
     s->y = y;
     s->flags &= ~4;
     s->flags &= ~1;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 }
 #pragma thumb reset

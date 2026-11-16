@@ -32,7 +32,7 @@ typedef struct {
     s16 bright;
 } UnkBright_022e7114;
 
-extern UnkTask_022e7114 *data_022b4574;
+extern UnkTask_022e7114 *gTaskCurrent;
 extern UnkBright_022e7114 data_0208926c;
 extern UnkBright_022e7114 data_02087d44;
 
@@ -42,7 +42,7 @@ void func_ov001_022e3180(s32 a, s32 b);
 void func_ov001_022e3840(void *c, s32 a);
 void func_ov001_022e3844(void *c, s32 a);
 void func_ov001_022e6dec(UnkWork_022e7114 *w);
-void func_02051e7c(s32 a);
+void SysSound_StopBGM(s32 a);
 
 #pragma thumb on
 void func_ov001_022e7114(void) {
@@ -50,7 +50,7 @@ void func_ov001_022e7114(void) {
     s32 idx;
     BOOL ok;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     idx = 0;
     switch (w->state) {
     case 1:
@@ -108,7 +108,7 @@ void func_ov001_022e7114(void) {
         data_02087d44.bright = 0;
     }
     if (w->timer == 0x96) {
-        func_02051e7c(0x1f);
+        SysSound_StopBGM(0x1f);
     }
     if (w->timer >= 0xb6) {
         w->timer = 0;

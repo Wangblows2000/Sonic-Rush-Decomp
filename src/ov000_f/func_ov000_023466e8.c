@@ -59,10 +59,10 @@ typedef struct {
 extern UnkStruct_023466e8_4560 data_022c4560;
 extern UnkStruct_023466e8 *data_ov000_0236ac60[];
 
-s32 func_0206d5d0(void *a, void *b);
-s32 func_0206d4c8(void *a, void *b);
+s32 ObjRect_HitCenterX(void *a, void *b);
+s32 ObjRect_HitCenterY(void *a, void *b);
 void func_ov000_0232ff6c(s32 a, s32 b);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0234a288(UnkStruct_023466e8 *w);
 void func_ov000_02346b10(UnkStruct_023466e8 *w);
 void func_ov000_02346d10(UnkStruct_023466e8 *w);
@@ -94,9 +94,9 @@ void func_ov000_023466e8(UnkStruct_023466e8 *w) {
         return;
     }
     if ((w->unk32C & 0x10000) && (w->unk422 & 0x100)) {
-        func_ov000_0232ff6c(func_0206d5d0(data_ov000_0236ac60[0]->unk2A0, data_ov000_0236ac60[1]->unk2A0),
-                            func_0206d4c8(data_ov000_0236ac60[0]->unk2A0, data_ov000_0236ac60[1]->unk2A0));
-        func_0204b7ec(w->unk384, 0, 0x40);
+        func_ov000_0232ff6c(ObjRect_HitCenterX(data_ov000_0236ac60[0]->unk2A0, data_ov000_0236ac60[1]->unk2A0),
+                            ObjRect_HitCenterY(data_ov000_0236ac60[0]->unk2A0, data_ov000_0236ac60[1]->unk2A0));
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
         w->unk3BE = 0x10;
         if (w->unk58 & 0x10) {
             Boost_023466e8(w, &w->unk2E);

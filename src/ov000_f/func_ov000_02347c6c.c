@@ -49,8 +49,8 @@ extern UnkStruct_02347c6c_4590 data_022c4590;
 extern UnkStruct_02347c6c *data_ov000_0236ac60[];
 
 void func_ov000_0234c9e8(UnkStruct_02347c6c *w);
-BOOL func_02043a58(void);
-void func_02043c7c(s32 a, s32 b);
+BOOL BrightnessFade_IsDone(void);
+void BrightnessFade_Create(s32 a, s32 b);
 void func_0206cdf4(UnkStruct_02347c6c_Pal *p, s32 a, s32 b, s32 c);
 
 void func_ov000_02347c6c(UnkStruct_02347c6c *w, void *o) {
@@ -81,9 +81,9 @@ void func_ov000_02347c6c(UnkStruct_02347c6c *w, void *o) {
         w->unk420 = 0;
         w->unk422 = 0;
         w->unk424 = 0;
-        if (data_022c4560.unk10 == 1 && !func_02043a58() && data_022c4590.unk40 == 3) {
+        if (data_022c4560.unk10 == 1 && !BrightnessFade_IsDone() && data_022c4590.unk40 == 3) {
             data_022c4590.unk40 = 2;
-            func_02043c7c(4, 0);
+            BrightnessFade_Create(4, 0);
         }
     } else {
         w->unk58 &= ~0x80000;

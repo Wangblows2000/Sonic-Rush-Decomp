@@ -37,29 +37,29 @@ typedef struct {
     s32 unk0;
 } UnkCfg_022e7504;
 
-extern UnkTask_022e7504 *data_022b4574;
+extern UnkTask_022e7504 *gTaskCurrent;
 extern UnkCfg_022e7504 data_022c4560;
 
 void func_ov001_022e3840(void *p, s32 a);
 void func_ov001_022e3844(void *p, s32 a);
-void func_020521b4(void);
+void SysSound_Release(void);
 BOOL func_020538a8(void);
 void func_ov001_022e1aac(s32 a);
 void func_ov001_022e1a30(s32 a);
 void func_02060ea0(void);
 void func_ov001_022e6dec(UnkWork_022e7504 *w);
-BOOL func_02060e8c(void);
+BOOL TalkDemo_IsActive(void);
 void func_ov001_022e5618(void *p);
 BOOL func_ov001_022e2f00(s32 a);
 BOOL func_ov001_022e2ee8(s32 a);
 void func_ov001_022e3180(s32 a, s32 b);
-void func_020522f4(void);
+void SysSound_Init(void);
 void func_02052168(s32 a);
 void func_ov001_022e6870(void);
 
 #pragma thumb on
 void func_ov001_022e7504(void) {
-    UnkWork_022e7504 *w = data_022b4574->work;
+    UnkWork_022e7504 *w = gTaskCurrent->work;
     s32 d;
     BOOL ok;
 
@@ -73,7 +73,7 @@ void func_ov001_022e7504(void) {
     if (w->unk74 == 0xf) {
         w->map->unk1998 = 0;
         w->map->unk5c = 0;
-        func_020521b4();
+        SysSound_Release();
     }
     if (w->unk88 == 0 && (u32)w->unk74 >= 0x10 && !func_020538a8()) {
         w->unk84 = 1;
@@ -93,7 +93,7 @@ void func_ov001_022e7504(void) {
     }
     func_ov001_022e6dec(w);
     w->unk74++;
-    if (w->unk88 == 1 && !func_02060e8c()) {
+    if (w->unk88 == 1 && !TalkDemo_IsActive()) {
         if (w->unk78 == 0) {
             w->unk78 = w->unk74;
             w->unk8c = 1;
@@ -123,7 +123,7 @@ void func_ov001_022e7504(void) {
             w->unk74 = 0;
             w->unk78 = 0;
             w->map->unk19ac = 0x1f;
-            func_020522f4();
+            SysSound_Init();
             alt = FALSE;
             if (data_022c4560.unk0 == 0) {
                 if (w->unk4 >= 0x1f && w->unk4 <= 0x21) {

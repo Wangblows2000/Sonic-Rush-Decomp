@@ -26,13 +26,13 @@ typedef struct {
     u32 flags;
 } UnkTouch_022e8e04;
 
-extern UnkTask_022e8e04 *data_022b4574;
-extern UnkPad_022e8e04 data_022503e0;
-extern UnkTouch_022e8e04 data_022b65b4;
+extern UnkTask_022e8e04 *gTaskCurrent;
+extern UnkPad_022e8e04 gPad;
+extern UnkTouch_022e8e04 gTouchState;
 
 void func_ov001_022e8b5c(UnkWork_022e8e04 *w);
 void func_ov001_022e8be0(UnkWork_022e8e04 *w, s32 n);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 BOOL func_ov001_022e8b2c(u16 x, u16 y, s32 n);
 void func_ov001_022e91cc(s32 a);
 void func_ov001_022e90f4(s32 a);
@@ -47,7 +47,7 @@ void func_ov001_022e8e04(void) {
     u16 x;
     u16 y;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     ok = FALSE;
     cancel = FALSE;
     func_ov001_022e8b5c(w);
@@ -63,32 +63,32 @@ void func_ov001_022e8e04(void) {
     }
     w->timer++;
     w->timer2++;
-    if (data_022503e0.trg & 0x40) {
+    if (gPad.trg & 0x40) {
         if (w->sel != 0) {
             w->sel = 0;
             w->timer2 = 0;
-            func_02052104(0x13);
+            SysSound_PlaySE(0x13);
         }
-    } else if (data_022503e0.trg & 0x80) {
+    } else if (gPad.trg & 0x80) {
         if (w->sel != 1) {
             w->sel = 1;
             w->timer2 = 0;
-            func_02052104(0x13);
+            SysSound_PlaySE(0x13);
         }
     }
-    if (data_022503e0.trg & 1) {
+    if (gPad.trg & 1) {
         ok = TRUE;
-    } else if (data_022503e0.trg & 2) {
+    } else if (gPad.trg & 2) {
         w->sel = -1;
         cancel = TRUE;
-    } else if (data_022503e0.trg & 8) {
+    } else if (gPad.trg & 8) {
         if (w->mode == 2) {
             w->sel = -1;
             cancel = TRUE;
         }
-    } else if (data_022b65b4.flags & 0x40) {
-        x = data_022b65b4.x;
-        y = data_022b65b4.y;
+    } else if (gTouchState.flags & 0x40) {
+        x = gTouchState.x;
+        y = gTouchState.y;
         if (func_ov001_022e8b2c(x, y, 0)) {
             w->sel = 0;
             ok = TRUE;
@@ -106,7 +106,7 @@ void func_ov001_022e8e04(void) {
             func_ov001_022e90f4(0);
             break;
         }
-        func_02052104(0xc);
+        SysSound_PlaySE(0xc);
         return;
     }
     if (ok) {
@@ -118,7 +118,7 @@ void func_ov001_022e8e04(void) {
             func_ov001_022e9128(0);
             break;
         }
-        func_02052104(0xb);
+        SysSound_PlaySE(0xb);
     }
 }
 #pragma thumb reset

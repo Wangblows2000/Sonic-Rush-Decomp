@@ -3,17 +3,17 @@
 
 #pragma thumb on
 
-s32 func_02033550();
-s32 func_0203438c();
-extern u8 data_02087d04[];
+s32 AnimatorSprite_SetAnimation();
+s32 Background_Draw();
+extern u8 gDisplaySub[];
 
 void func_ov000_02358180(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0xb1c) != 1) {
-        func_02033550(((u8 *)p0 + 0x5c4), 1);
+        AnimatorSprite_SetAnimation(((u8 *)p0 + 0x5c4), 1);
         *(u32 *)((u8 *)p0 + 0xb1c) = 1;
-        func_0203438c(((s32)((u8 *)p0 + 0x344) + ((*(u32 *)((u8 *)p0 + 0x14) + 0x3) << 6)), ((u8 *)p0 + 0x344));
-        *(u16 *)((u8 *)data_02087d04 + 0x8) = 0;
-        *(u16 *)((u8 *)data_02087d04 + 0xa) = 0x20;
+        Background_Draw(((s32)((u8 *)p0 + 0x344) + ((*(u32 *)((u8 *)p0 + 0x14) + 0x3) << 6)), ((u8 *)p0 + 0x344));
+        *(u16 *)((u8 *)gDisplaySub + 0x8) = 0;
+        *(u16 *)((u8 *)gDisplaySub + 0xa) = 0x20;
     }
     *(u32 *)((u8 *)p0 + 0x5f0) = (*(u32 *)((u8 *)p0 + 0x5f0) & ~4);
 }

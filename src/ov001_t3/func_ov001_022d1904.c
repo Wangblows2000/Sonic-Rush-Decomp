@@ -43,7 +43,7 @@ typedef struct {
     u8 unkf0c[4];
 } UnkStruct_022d1904;
 
-extern UnkGfx_022d1904 data_0208922c;
+extern UnkGfx_022d1904 gDisplayMain;
 
 void func_ov001_022d0070(UnkStruct_022d1904 *p);
 void func_ov001_022cff74(UnkObj_022d1904 *o, s32 a, void *b, void *c);
@@ -62,17 +62,17 @@ static inline void SetPlane_022d1904(u32 plane) {
 void func_ov001_022d1904(UnkStruct_022d1904 *p) {
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1a00;
     func_ov001_022d0070(p);
-    data_0208922c.blend.bg0a = 0;
-    data_0208922c.blend.bg1a = 0;
-    data_0208922c.blend.bg2a = 0;
-    data_0208922c.blend.bg3a = 0;
-    data_0208922c.blend.bg0b = 1;
-    data_0208922c.blend.bg1b = 1;
-    data_0208922c.blend.bg2b = 1;
-    data_0208922c.blend.bg3b = 1;
-    data_0208922c.blend.mode = 0;
-    data_0208922c.alpha.eva = 0;
-    data_0208922c.alpha.evb = 15 - data_0208922c.alpha.eva;
+    gDisplayMain.blend.bg0a = 0;
+    gDisplayMain.blend.bg1a = 0;
+    gDisplayMain.blend.bg2a = 0;
+    gDisplayMain.blend.bg3a = 0;
+    gDisplayMain.blend.bg0b = 1;
+    gDisplayMain.blend.bg1b = 1;
+    gDisplayMain.blend.bg2b = 1;
+    gDisplayMain.blend.bg3b = 1;
+    gDisplayMain.blend.mode = 0;
+    gDisplayMain.alpha.eva = 0;
+    gDisplayMain.alpha.evb = 15 - gDisplayMain.alpha.eva;
     SetPlane_022d1904(GetPlane_022d1904() | 1);
     func_ov001_022cff74(&p->objs[p->unkd08 + 0xb], 0x100, p->unkf0c, p->unkd0c);
     func_ov001_022d2234(p, func_ov001_022d1888);

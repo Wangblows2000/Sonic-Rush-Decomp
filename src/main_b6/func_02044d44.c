@@ -54,17 +54,17 @@ typedef struct {
 } UnkG_02044d44;
 
 extern UnkTask_02044d44 *data_022c447c;
-extern UnkRes_02044d44 *data_022c4480;
+extern UnkRes_02044d44 *gNaviBSprite;
 extern UnkState_02044d44 data_022c4560;
 extern UnkG_02044d44 data_ov000_02369ac0;
 
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_0203363c(UnkSpr_02044d44 *spr, UnkRes_02044d44 *res, u16 anim, u32 flags, s32 d, s32 e, u32 pal, s32 g, u32 h);
-void func_0203344c(UnkSpr_02044d44 *spr, s32 a, s32 b);
-u32 func_02039c18(s32 a, u32 b);
+void AnimatorSprite_Init(UnkSpr_02044d44 *spr, UnkRes_02044d44 *res, u16 anim, u32 flags, s32 d, s32 e, u32 pal, s32 g, u32 h);
+void AnimatorSprite_ProcessAnimation(UnkSpr_02044d44 *spr, s32 a, s32 b);
+u32 ObjVram_Alloc(s32 a, u32 b);
 u32 func_0204e6e8(u8 zone);
-void func_020369ac(u32 engine);
+void Oam_Upload(u32 engine);
 void func_02044c78(void);
 void func_02044ca0(void);
 void func_02044c10(void);
@@ -96,17 +96,17 @@ void func_02044d44(void) {
 
     plane = (REG_DB_DISPCNT & 0x1f00) >> 8;
     REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | ((plane & ~0x10) << 8);
-    data_022c447c = func_020372d0(func_02044c78, func_02044ca0, 0, 0x3000, 2, 0x4d8);
+    data_022c447c = Task_Create(func_02044c78, func_02044ca0, 0, 0x3000, 2, 0x4d8);
     w = data_022c447c->work;
     MI_CpuClear16_(w, 0x4d8);
 
     spr = w->spr;
     for (i = 0; i <= 14; i++, spr++) {
-        func_0203363c(spr, data_022c4480, i, 0x4030, 1, 0, func_02039c18(1, AnimPal_02044d44(data_022c4480, i)), 0, 0x05000600);
+        AnimatorSprite_Init(spr, gNaviBSprite, i, 0x4030, 1, 0, ObjVram_Alloc(1, AnimPal_02044d44(gNaviBSprite, i)), 0, 0x05000600);
         spr->unk4 = spr->unk6 = 0;
         spr->prio = 6;
         spr->unk46 = 10;
-        func_0203344c(spr, 0, 0);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
     }
 
     spr = &w->spr[16];
@@ -118,44 +118,44 @@ void func_02044d44(void) {
     else
         v = data_022c4560.unk14;
     anim = v == 1 ? 0x1a : 0x19;
-    func_0203363c(spr, data_022c4480, anim, 0x4030, 1, 0, func_02039c18(1, AnimPal_02044d44(data_022c4480, anim)), 0, 0x05000600);
+    AnimatorSprite_Init(spr, gNaviBSprite, anim, 0x4030, 1, 0, ObjVram_Alloc(1, AnimPal_02044d44(gNaviBSprite, anim)), 0, 0x05000600);
     spr->unk4 = spr->unk6 = 0;
     spr->prio = 6;
     spr->unk46 = 10;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
 
     spr = &w->spr[15];
-    res = data_022c4480;
+    res = gNaviBSprite;
     r = func_0204e6e8(data_022c4560.zone);
-    func_0203363c(spr, data_022c4480, r + 0xf, 0x4060, 1, 0, func_02039c18(1, AnimPal_02044d44(res, data_022c4560.zone + 0xf)), 0, 0x05000600);
+    AnimatorSprite_Init(spr, gNaviBSprite, r + 0xf, 0x4060, 1, 0, ObjVram_Alloc(1, AnimPal_02044d44(res, data_022c4560.zone + 0xf)), 0, 0x05000600);
     spr->unk4 = spr->unk6 = 0;
     spr->prio = 6;
     spr->unk46 = 10;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
 
     w->spr[0].flags &= ~0x40;
     w->spr[0].flags |= 0x10;
 
-    func_0203363c(&tmp, data_022c4480, 0x18, 0x4048, 1, 0, 0, 0, 0x05000600);
+    AnimatorSprite_Init(&tmp, gNaviBSprite, 0x18, 0x4048, 1, 0, 0, 0, 0x05000600);
     tmp.prio = 7;
-    func_0203344c(&tmp, 0, 0);
-    func_0203363c(&tmp, data_022c4480, 0x17, 0x4048, 1, 0, 0, 0, 0x05000600);
+    AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
+    AnimatorSprite_Init(&tmp, gNaviBSprite, 0x17, 0x4048, 1, 0, 0, 0, 0x05000600);
     tmp.prio = 8;
-    func_0203344c(&tmp, 0, 0);
+    AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
 
-    w->task4 = func_020372d0(func_02044c10, 0, 0, 0x4000, 2, 0xc);
+    w->task4 = Task_Create(func_02044c10, 0, 0, 0x4000, 2, 0xc);
     sub = w->task4->work;
     MI_CpuClear16_(sub, 0xc);
     sub->owner = w;
     sub->unk8 = data_ov000_02369ac0.unk8;
 
-    w->task8 = func_020372d0(func_02044ad0, 0, 0, 0x4000, 2, 0x10);
+    w->task8 = Task_Create(func_02044ad0, 0, 0, 0x4000, 2, 0x10);
     sub = w->task8->work;
     MI_CpuClear16_(sub, 0x10);
     sub->owner = w;
     sub->unk8 = data_ov000_02369ac0.unk8;
 
-    func_020369ac(1);
+    Oam_Upload(1);
     plane = (REG_DB_DISPCNT & 0x1f00) >> 8;
     REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | ((plane | 0x10) << 8);
 }

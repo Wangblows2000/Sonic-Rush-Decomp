@@ -5,12 +5,12 @@ typedef struct {
     u16 n;
 } UnkStruct_022e2640;
 
-extern UnkStruct_022e2640 data_022c4680;
+extern UnkStruct_022e2640 gSaveData;
 
 #pragma thumb on
 BOOL func_ov001_022e2640(s32 unused, s32 b) {
     s32 limit = -1;
-    s32 n = data_022c4680.n;
+    s32 n = gSaveData.n;
 
     if (n >= 0x1a) {
         limit = 6;

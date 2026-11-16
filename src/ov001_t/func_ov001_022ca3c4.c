@@ -15,7 +15,7 @@ typedef struct {
     void *work;
 } UnkStruct_022ca3c4;
 
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 
 void func_ov001_022ca2d4(UnkStruct_022ca3c4 *p, s16 x, s16 y, s32 a);
 void func_ov001_022ca364(UnkStruct_022ca3c4 *p, s16 x, s16 y, s32 a, u16 b);
@@ -28,14 +28,14 @@ void func_ov001_022c9570(UnkStruct_022ca3c4 *p, s16 x, s16 y);
 #pragma thumb on
 static inline u32 GetLang_022ca3c4(void) {
     u32 l;
-    switch (data_02072cb8) {
+    switch (gGameLanguage) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        l = data_02072cb8;
+        l = gGameLanguage;
         break;
     default:
         l = 1;

@@ -61,8 +61,8 @@ void func_02000f34(void *a, void *b, void *c);
 UnkStruct_0230063c_c *func_ov001_022f71f4(void);
 s32 func_0200225c(s32 n, s32 d);
 void func_02004b78(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, void *m);
-void func_020316f4(void *p);
-void func_020315e0(void *p);
+void Model_Animate(void *p);
+void Model_Draw(void *p);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -117,8 +117,8 @@ void func_ov001_0230063c(UnkStruct_0230063c *w, UnkStruct_0230063c_a *a) {
         data_02084d38.unkFC &= ~0x50;
     }
     if (!(fl & 0x10000))
-        func_020316f4(a);
-    func_020315e0(a);
+        Model_Animate(a);
+    Model_Draw(a);
     if (cam)
         data_02084d40 = saved;
 }

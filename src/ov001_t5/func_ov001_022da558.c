@@ -8,7 +8,7 @@ typedef struct {
     u32 flags;
 } UnkTouch_022da558;
 
-extern UnkTouch_022da558 data_022b65b4;
+extern UnkTouch_022da558 gTouchState;
 
 #pragma thumb on
 s32 func_ov001_022da558(void) {
@@ -17,9 +17,9 @@ s32 func_ov001_022da558(void) {
     s32 i;
     s32 top;
 
-    if (data_022b65b4.flags & 0x40) {
-        x = data_022b65b4.x;
-        y = data_022b65b4.y;
+    if (gTouchState.flags & 0x40) {
+        x = gTouchState.x;
+        y = gTouchState.y;
         for (i = 0, top = 0x20; i < 8; top += 0x11, i++) {
             if (x >= 0x38 && x < 0xc0 && y >= top && y < top + 0x10) {
                 return i;

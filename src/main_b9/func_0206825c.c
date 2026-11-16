@@ -32,9 +32,9 @@ typedef struct {
 } UnkPos_0206825c;
 
 extern UnkCam_0206825c data_ov000_0236aad8;
-extern UnkPos_0206825c data_022b65b4;
+extern UnkPos_0206825c gTouchState;
 
-BOOL func_0206d714(UnkBox_0206825c *b, s32 px, s32 py);
+BOOL ObjRect_PointCheck(UnkBox_0206825c *b, s32 px, s32 py);
 
 BOOL func_0206825c(UnkObj_0206825c *o, UnkBox_0206825c *b) {
     s32 cx;
@@ -49,5 +49,5 @@ BOOL func_0206825c(UnkObj_0206825c *o, UnkBox_0206825c *b) {
         cx = (s16)(data_ov000_0236aad8.unk68 >> 8);
         cy = (s16)(data_ov000_0236aad8.unk6C >> 8);
     }
-    return func_0206d714(b, data_022b65b4.x + cx, data_022b65b4.y + cy);
+    return ObjRect_PointCheck(b, gTouchState.x + cx, gTouchState.y + cy);
 }

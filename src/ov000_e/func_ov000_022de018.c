@@ -19,7 +19,7 @@ extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern s32 data_ov000_02363538[];
 
 void func_ov000_022db900(UnkStruct_022de018 *s, s32 a);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022ddedc(void);
 
@@ -31,6 +31,6 @@ void func_ov000_022de018(UnkStruct_022de018 *s) {
     s->unkBC4 = 0x180;
     s->unkBC8 = -0x600;
     s->unkBCC = -0xa00;
-    func_02036754(0, 0, 0x7b);
+    Sound_PlaySeqArc(0, 0, 0x7b);
     func_020366f4(0, 0, data_ov000_02363538[Rand() & 1]);
 }

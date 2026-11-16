@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 int func_ov001_022d02f4();
-int func_02033550();
+int AnimatorSprite_SetAnimation();
 int func_ov001_022d1404();
 
 #pragma thumb on
@@ -49,8 +49,8 @@ void func_ov001_022d0344(int param_1)
   *(undefined4 *)(param_1 + 0xccc) = uVar1;
   *(undefined4 *)(param_1 + 0xcd8) = 0x1000;
   *(undefined4 *)(param_1 + 0xcf0) = 0;
-  func_02033550(param_1 + 0xbe4,0x1c);
-  func_02033550(param_1 + 0xc2c,0x1f);
+  AnimatorSprite_SetAnimation(param_1 + 0xbe4,0x1c);
+  AnimatorSprite_SetAnimation(param_1 + 0xc2c,0x1f);
   func_ov001_022d1404(param_1,((int)func_ov001_022d02f4));
   return;
 }

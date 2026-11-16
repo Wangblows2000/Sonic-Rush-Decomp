@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern void *data_ov000_0236ac28;
 extern u8 data_ov000_0236ac38[];
 extern u8 data_ov000_0236ac40[];
@@ -18,7 +18,7 @@ void func_02068478(void *obj, s32 a);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void UnkFree_0234dfb8(void **pp) {
     void *p = *pp;
@@ -33,7 +33,7 @@ static inline void UnkFree_0234dfb8(void **pp) {
                 DC_StoreRange(p, size);
             }
         }
-        func_020349b8(data_0208fe80, p);
+        Heap_Free(gMainHeap, p);
     }
     *pp = NULL;
 }

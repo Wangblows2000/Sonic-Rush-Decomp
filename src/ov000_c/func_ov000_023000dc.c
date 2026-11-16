@@ -12,7 +12,7 @@ typedef struct {
 } UnkStruct_022c4680;
 
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_022c4680 gSaveData;
 
 void func_ov000_022fff44(void);
 
@@ -20,9 +20,9 @@ void func_ov000_023000dc(UnkStruct_StageObj *w) {
     u16 *f;
 
     if (w->unk1E0->unk2 != 0x12)
-        func_02069818(w, 2);
+        StageObj_SetAnimation(w, 2);
     else
-        func_02069818(w, 0);
+        StageObj_SetAnimation(w, 0);
     w->unk5C |= 4;
     w->unk68 = func_ov000_022fff44;
     f = &w->unk5C;
@@ -49,7 +49,7 @@ void func_ov000_023000dc(UnkStruct_StageObj *w) {
         w->unk30 = 0x20;
         w->unk34 = 8;
     }
-    if (!(data_022c4680.unk8 & 1))
+    if (!(gSaveData.unk8 & 1))
         return;
     if (data_022c4560.unk10 == 2)
         return;

@@ -24,7 +24,7 @@ extern UnkStruct_Boss *data_ov000_02369b78;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 
 void func_ov000_022ee198(UnkStruct_022e72ec *s, s32 st);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_02326f20(void *p);
 void func_ov000_022e72cc(void);
 
@@ -32,7 +32,7 @@ void func_ov000_022e72ec(UnkStruct_022e72ec *w) {
     UnkStruct_Boss *b = data_ov000_02369b78;
 
     func_ov000_022ee198(w, 0xf);
-    func_02036754(0, 0, 0x7b);
+    Sound_PlaySeqArc(0, 0, 0x7b);
     w->base.unk1F0 = 0xb4;
     w->base.unk58 |= 0x90;
     w->base.unk30 = -0x300;

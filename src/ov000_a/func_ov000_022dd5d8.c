@@ -70,7 +70,7 @@ extern UnkStruct_022dd5d8_d data_ov000_0236a444;
 void func_ov000_02347c44(UnkStruct_022dd5d8_p *p);
 void func_ov000_0234c4a4(UnkStruct_022dd5d8_p *p, s32 a);
 void func_ov000_022de65c(void);
-void func_0206c7d8(void);
+void StageObj_SetPause(void);
 void func_ov000_022dd590(UnkStruct_022dd5d8 *t);
 
 void func_ov000_022dd5d8(UnkStruct_022dd5d8 *t) {
@@ -109,7 +109,7 @@ void func_ov000_022dd5d8(UnkStruct_022dd5d8 *t) {
     c->unk78 = 0x50000;
     c->unk84 = 0x20000;
     c->unk8E = 0x3000;
-    func_0206c7d8();
+    StageObj_SetPause();
     w->unk54 |= 0x20;
     t->func = func_ov000_022dd590;
     w->unk224 = 0;

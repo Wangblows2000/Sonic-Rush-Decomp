@@ -51,7 +51,7 @@ void func_ov000_0231f5d0(s32 mode) {
     UnkStruct_0231f5d0 *c = &data_ov000_0236a444;
     vu16 zero;
 
-    if (func_020372d0(func_ov000_0231f3ec, func_ov000_0231f3d8, 0, 0x3f00, 3, 0) == NULL)
+    if (Task_Create(func_ov000_0231f3ec, func_ov000_0231f3d8, 0, 0x3f00, 3, 0) == NULL)
         return;
     zero = 0;
     MIi_CpuClear16(zero, c, sizeof(UnkStruct_0231f5d0));

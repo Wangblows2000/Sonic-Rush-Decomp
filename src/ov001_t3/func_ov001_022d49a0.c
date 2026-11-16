@@ -37,17 +37,17 @@ typedef struct {
     u16 unk24;
 } UnkStruct_022c46c0;
 
-extern UnkTask_022d49a0 *data_022b4574;
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkTask_022d49a0 *gTaskCurrent;
+extern UnkStruct_022c4680 gSaveData;
 extern UnkStruct_022c46c0 data_022c46c0;
 extern UnkBright_022d49a0 data_0208926c;
 extern UnkBright_022d49a0 data_02087d44;
 
-void func_02033550(UnkSpr_022d49a0 *s, u16 id);
-void func_0203344c(UnkSpr_022d49a0 *s, s32 a, s32 b);
-void func_02032d2c(UnkSpr_022d49a0 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022d49a0 *s, u16 id);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022d49a0 *s, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_022d49a0 *s);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
-void func_02037134(void);
+void Task_DestroyAll(void);
 void func_ov001_022d48ec(s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022d41e4(void);
 void func_ov001_022d4204(void);
@@ -59,26 +59,26 @@ void func_ov001_022d49a0(void) {
     UnkSpr_022d49a0 *s;
     u32 *a;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     s = &w->sprB;
     a = &w->animB;
     if (*a != 1) {
         *a = 1;
-        func_02033550(s, *a);
+        AnimatorSprite_SetAnimation(s, *a);
     }
     s->flags |= 4;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
     s = &w->sprA;
     a = &w->animA;
     if (*a != 1) {
         *a = 1;
-        func_02033550(s, *a);
+        AnimatorSprite_SetAnimation(s, *a);
     }
     s->flags |= 4;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
-    if ((data_022c4680.unkc >= 0x1a || data_022c46c0.unk24 >= 0x1c) && (!(data_022c4680.flags & 0x100) || !(data_022c4680.flags & 0x200))) {
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
+    if ((gSaveData.unkc >= 0x1a || data_022c46c0.unk24 >= 0x1c) && (!(gSaveData.flags & 0x100) || !(gSaveData.flags & 0x200))) {
         flag = FALSE;
     } else {
         flag = TRUE;
@@ -102,7 +102,7 @@ void func_ov001_022d49a0(void) {
         }
         GXx_SetMasterBrightness_((vu16 *)0x400006c, data_0208926c.bright);
         GXx_SetMasterBrightness_((vu16 *)0x400106c, data_02087d44.bright);
-        func_02037134();
+        Task_DestroyAll();
         if (!flag) {
             func_ov001_022d41e4();
             return;

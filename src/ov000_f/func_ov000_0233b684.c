@@ -45,7 +45,7 @@ extern u8 data_02087d2c[];
 extern u8 data_02087d3c[];
 
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
-void func_02035e68(void *data, u16 x, u16 y, u16 a, u32 flip, s32 mode, u16 c, u16 d, u16 e, u16 f, u16 w, u16 h);
+void ScreenTransfer_QueueRectRaw(void *data, u16 x, u16 y, u16 a, u32 flip, s32 mode, u16 c, u16 d, u16 e, u16 f, u16 w, u16 h);
 void func_02000cd8(UnkMtx22_0233b684 *m, s32 sin, s32 cos);
 void func_02000d98(const UnkMtx22_0233b684 *src, UnkMtx22_0233b684 *dst, fx32 x, fx32 y);
 fx32 func_0200225c(fx32 a, fx32 b);
@@ -147,7 +147,7 @@ void func_ov000_0233b684(void) {
             if (cw > 0x40) {
                 cw = 0x40;
             }
-            func_02035e68(l->chr0, sx, sy, 0x40, 0, mode, 0, 0, 0, 0, cw, ch);
+            ScreenTransfer_QueueRectRaw(l->chr0, sx, sy, 0x40, 0, mode, 0, 0, 0, 0, cw, ch);
         }
         if (l->flags & 2) {
             ch = ((l->scaleY + 7) >> 3) + 1;
@@ -158,7 +158,7 @@ void func_ov000_0233b684(void) {
             if (cw > 0x40) {
                 cw = 0x40;
             }
-            func_02035e68(l->chr1, sx, sy, 0x40, 0, mode, 0, 4, 0, 0, cw, ch);
+            ScreenTransfer_QueueRectRaw(l->chr1, sx, sy, 0x40, 0, mode, 0, 4, 0, 0, cw, ch);
         }
     }
 

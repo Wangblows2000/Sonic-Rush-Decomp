@@ -12,8 +12,8 @@ typedef struct {
     s16 t;  /* 0x8ce */
 } UnkWork_0205b2d0;
 
-extern UnkDisp_0205b2d0 data_02087d04;
-extern UnkDisp_0205b2d0 data_0208922c;
+extern UnkDisp_0205b2d0 gDisplaySub;
+extern UnkDisp_0205b2d0 gDisplayMain;
 
 void func_0205b2b4(void);
 
@@ -27,6 +27,6 @@ void func_0205b2d0(UnkWork_0205b2d0 *w) {
         w->t = 0x1000;
         w->fn = func_0205b2b4;
     }
-    data_02087d04.brightness = (FX_Mul_0205b2d0(-0x10000, w->t) + 0x10000) >> 12;
-    data_0208922c.brightness = data_02087d04.brightness;
+    gDisplaySub.brightness = (FX_Mul_0205b2d0(-0x10000, w->t) + 0x10000) >> 12;
+    gDisplayMain.brightness = gDisplaySub.brightness;
 }

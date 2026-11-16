@@ -15,7 +15,7 @@ UnkStruct_0230429c *func_ov000_0230429c(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_0230429c *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_02304280, 0, 0x500, 2, sizeof(UnkStruct_0230429c));
+    task = Task_Create(StageObj_Main, func_ov000_02304280, 0, 0x500, 2, sizeof(UnkStruct_0230429c));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;

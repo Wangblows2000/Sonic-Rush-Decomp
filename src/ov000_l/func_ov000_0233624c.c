@@ -41,10 +41,10 @@ extern UnkStruct_022c4560 data_022c4560;
 extern u16 data_ov000_02364d60[];
 extern UnkPlayer_0233624c *data_ov000_0236ac60;
 
-void func_02035704(void *p, s32 a, s32 b, u32 c);
-void func_020323c8(UnkDual *d, s32 scale, s32 b, s32 c);
-void func_02032c8c(UnkDual *d);
-void func_020332c4(UnkDual *d, s32 a, s32 b);
+void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
+void AnimatorSpriteDS_DrawRotScale(UnkDual *d, s32 scale, s32 b, s32 c);
+void AnimatorSpriteDS_Draw(UnkDual *d);
+void AnimatorSpriteDS_ProcessAnimation(UnkDual *d, s32 a, s32 b);
 void func_02033544(UnkDual *d, u16 idx);
 
 static inline void CP_SetDiv32_32(u32 numer, u32 denom) {
@@ -103,11 +103,11 @@ void func_ov000_0233624c(UnkWork_0233624c *work) {
     }
 
     p = &data_ov000_02364d60[pal];
-    func_02035704(p, 1, 0, 0x5000222);
-    func_02035704(p, 1, 0, 0x5000622);
+    PaletteTransfer_QueueCopy(p, 1, 0, 0x5000222);
+    PaletteTransfer_QueueCopy(p, 1, 0, 0x5000622);
     p = &data_ov000_02364d60[pal + 1];
-    func_02035704(p, 1, 0, 0x5000224);
-    func_02035704(p, 1, 0, 0x5000624);
+    PaletteTransfer_QueueCopy(p, 1, 0, 0x5000224);
+    PaletteTransfer_QueueCopy(p, 1, 0, 0x5000624);
 
     d = &sub->d[1];
     d2 = &sub->d[3];
@@ -121,21 +121,21 @@ void func_ov000_0233624c(UnkWork_0233624c *work) {
         }
         d->ab[1].a = d->ab[0].a;
         d->ab[1].b = d->ab[0].b - 0xc0;
-        func_020323c8(d, sub->scale[i], 0x1000, 0);
+        AnimatorSpriteDS_DrawRotScale(d, sub->scale[i], 0x1000, 0);
     }
     for (; (n - i) & 3; i++) {
         d->ab[0].a = x;
         d->ab[0].b = y - (n - i - 1) * 6;
         d->ab[1].a = d->ab[0].a;
         d->ab[1].b = d->ab[0].b - 0xc0;
-        func_02032c8c(d);
+        AnimatorSpriteDS_Draw(d);
     }
     for (; i < n; i += 4) {
         d2->ab[0].a = x;
         d2->ab[0].b = y - (n - i - 4) * 6;
         d2->ab[1].a = d2->ab[0].a;
         d2->ab[1].b = d2->ab[0].b - 0xc0;
-        func_02032c8c(d2);
+        AnimatorSpriteDS_Draw(d2);
     }
 
     i = n;
@@ -146,14 +146,14 @@ void func_ov000_0233624c(UnkWork_0233624c *work) {
         d->ab[0].b = y - i * 6;
         d->ab[1].a = d->ab[0].a;
         d->ab[1].b = d->ab[0].b - 0xc0;
-        func_02032c8c(d);
+        AnimatorSpriteDS_Draw(d);
     }
     for (; i < 20; i += 4) {
         d2->ab[0].a = x;
         d2->ab[0].b = y - i * 6;
         d2->ab[1].a = d2->ab[0].a;
         d2->ab[1].b = d2->ab[0].b - 0xc0;
-        func_02032c8c(d2);
+        AnimatorSpriteDS_Draw(d2);
     }
 
     d = &sub->d[4];
@@ -190,6 +190,6 @@ void func_ov000_0233624c(UnkWork_0233624c *work) {
     d->ab[0].b = y - 0x78;
     d->ab[1].a = sub->d[4].ab[0].a;
     d->ab[1].b = sub->d[4].ab[0].b - 0xc0;
-    func_020332c4(d, 0, 0);
-    func_02032c8c(d);
+    AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
+    AnimatorSpriteDS_Draw(d);
 }

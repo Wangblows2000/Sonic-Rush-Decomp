@@ -3,13 +3,13 @@
 
 #pragma thumb on
 
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 void func_ov001_022d5d70();
 
 void func_ov001_022d64c4(s32 p0) {
     s32 v0 = (s32)p0;
     if ((s32)p0 == 0) {
-        v0 = *(u32 *)data_022b4574;
+        v0 = *(u32 *)gTaskCurrent;
     }
     s32 t1 = *(u32 *)((u8 *)v0 + 0x10);
     *(u32 *)t1 = 0;

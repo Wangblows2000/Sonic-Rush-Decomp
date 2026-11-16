@@ -49,12 +49,12 @@ extern UnkStruct_02355b44_aad8 data_ov000_0236aad8;
 
 void func_ov000_0234c9e8(UnkStruct_02355b44 *w);
 void func_ov000_0234a064(UnkStruct_02355b44 *w, u8 ang);
-void func_020693f0(s16 *a, s16 *b, u8 c);
+void Math_RotateVec2S16(s16 *a, s16 *b, u8 c);
 void func_ov000_0234a288(UnkStruct_02355b44 *w);
 void func_ov000_0234c4a4(UnkStruct_02355b44 *w, s32 state);
-void func_0206e2b4(void *p, s32 a, s32 b);
+void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 void func_ov000_0232a11c(UnkStruct_02355b44 *w, s32 a, s32 b, u16 c);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02355b44(UnkStruct_02355b44 *w, s16 vx, s16 vy) {
     if (w->unk32C & 0x400) {
@@ -65,7 +65,7 @@ void func_ov000_02355b44(UnkStruct_02355b44 *w, s16 vx, s16 vy) {
         w->unk2E = w->unk34;
     }
     func_ov000_0234a064(w, 0);
-    func_020693f0(&vx, &vy, w->unk5);
+    Math_RotateVec2S16(&vx, &vy, w->unk5);
     if (!(w->unk58 & 0x10)) {
         w->unk3DA = w->y >> 8;
     }
@@ -97,7 +97,7 @@ void func_ov000_02355b44(UnkStruct_02355b44 *w, s16 vx, s16 vy) {
     } else {
         w->unk30 = (w->unk34 * SIN_02355b44((u16)(w->unk1 << 8))) >> 12;
     }
-    func_0206e2b4(w->unk2CC, 0, 0);
+    ObjRect_SetAtkDefFlags(w->unk2CC, 0, 0);
     w->unk32C &= ~0xf;
     w->unk32C |= 1;
     w->unk32C |= 2;
@@ -113,5 +113,5 @@ void func_ov000_02355b44(UnkStruct_02355b44 *w, s16 vx, s16 vy) {
         w->unk30 = (w->unk30 >> 1) + (w->unk30 >> 2);
         func_ov000_0232a11c(w, 0, 0, data_ov000_0236aad8.unk62);
     }
-    func_0204b7ec(w->unk384, 0, 0x42);
+    Sound_PlaySeqArcEx(w->unk384, 0, 0x42);
 }

@@ -5,7 +5,7 @@
 
 void func_ov001_022d0588();
 s32 func_ov001_022d1404();
-s32 func_02033550();
+s32 AnimatorSprite_SetAnimation();
 void func_ov001_022d1a24();
 s32 func_ov001_022d2234();
 
@@ -23,9 +23,9 @@ void func_ov001_022d1acc(s32 p0) {
     *(u32 *)((u8 *)p0 + 0xccc) = 0x78000;
     *(u32 *)((u8 *)p0 + 0xcc4) = (*(u32 *)((u8 *)p0 + 0xcbc) + 0x14000);
     *(u32 *)((u8 *)p0 + 0xcd0) = 0x46000;
-    func_02033550(((u8 *)p0 + 0xbe4), 0x1d, 0x28000, 0x78000);
-    func_02033550(((u8 *)p0 + 0xc2c), 0x22);
-    func_02033550(((u8 *)p0 + 0xc74), 0x23);
+    AnimatorSprite_SetAnimation(((u8 *)p0 + 0xbe4), 0x1d, 0x28000, 0x78000);
+    AnimatorSprite_SetAnimation(((u8 *)p0 + 0xc2c), 0x22);
+    AnimatorSprite_SetAnimation(((u8 *)p0 + 0xc74), 0x23);
     *(u32 *)((u8 *)p0 + 0xcd4) = 0;
     *(u32 *)((u8 *)p0 + 0xcec) = 0;
     *(u32 *)((u8 *)p0 + 0xcd8) = 0;

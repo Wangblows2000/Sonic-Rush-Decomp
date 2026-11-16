@@ -10,8 +10,8 @@ typedef struct {
     s16 unk20C;                 /* 0x20c */
 } UnkWork_020576dc;
 
-void func_0203344c(UnkSpr_W50 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_W50 *s);
+void AnimatorSprite_ProcessAnimation(UnkSpr_W50 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_W50 *s);
 
 #pragma thumb on
 void func_020576dc(UnkWork_020576dc *w) {
@@ -19,32 +19,32 @@ void func_020576dc(UnkWork_020576dc *w) {
     u32 f;
 
     spr = &w->spr[0];
-    func_0203344c(spr, 0, 0);
-    func_02032d2c(spr);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
+    AnimatorSprite_Draw(spr);
     spr = &w->spr[1];
-    func_0203344c(spr, 0, 0);
-    func_02032d2c(spr);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
+    AnimatorSprite_Draw(spr);
     spr = &w->spr[4];
-    func_0203344c(spr, 0, 0);
-    func_02032d2c(spr);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
+    AnimatorSprite_Draw(spr);
     f = w->player->flags;
     if (f & 0x100000) {
         if (f & 0x800000) {
             spr = &w->spr[3];
-            func_0203344c(spr, 0, 0);
-            func_02032d2c(spr);
+            AnimatorSprite_ProcessAnimation(spr, 0, 0);
+            AnimatorSprite_Draw(spr);
             spr = &w->spr[6];
-            func_0203344c(spr, 0, 0);
-            func_02032d2c(spr);
+            AnimatorSprite_ProcessAnimation(spr, 0, 0);
+            AnimatorSprite_Draw(spr);
         } else {
             spr = &w->spr[2];
-            func_0203344c(spr, 0, 0);
-            func_02032d2c(spr);
+            AnimatorSprite_ProcessAnimation(spr, 0, 0);
+            AnimatorSprite_Draw(spr);
             spr = &w->spr[5];
-            func_0203344c(spr, 0, 0);
+            AnimatorSprite_ProcessAnimation(spr, 0, 0);
             w->unk20C = (w->unk20C + 1) % 60;
             if (w->unk20C < 0x28)
-                func_02032d2c(spr);
+                AnimatorSprite_Draw(spr);
         }
     }
 }

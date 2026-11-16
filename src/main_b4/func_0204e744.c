@@ -16,35 +16,35 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern u16 data_022c45f8;
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_022c4680 gSaveData;
 
 void func_0204d684(void (*f)(void), s32 a);
-void func_02054df8(void);
-void func_02054ef4(void);
-void func_02054f10(void);
+void SceneChange_Unk_02054df8(void);
+void SceneChange_Unk_02054ef4(void);
+void SceneChange_Unk_02054f10(void);
 void func_0204e4b8(void);
 void func_0204e498(void);
 void func_02054378(void);
-void func_020451c8(void);
+void NaviB_Release(void);
 void func_02048858(void);
-void func_0205500c(void);
-void func_02054fb8(void);
-void func_02054ff0(void);
+void SceneChange_Unk_0205500c(void);
+void SceneChange_Unk_02054fb8(void);
+void SceneChange_Unk_02054ff0(void);
 
 void func_0204e744(void) {
     u8 mode;
 
     if (data_022c4560.unk10 == 2) {
-        func_0204d684(func_02054df8, 3);
+        func_0204d684(SceneChange_Unk_02054df8, 3);
         return;
     }
     mode = data_022c4560.unk1c;
     if (mode == 8) {
-        func_02054ef4();
+        SceneChange_Unk_02054ef4();
         return;
     }
     if (mode == 7) {
-        func_0204d684(func_02054f10, 3);
+        func_0204d684(SceneChange_Unk_02054f10, 3);
         return;
     }
     if (data_022c45f8 & 1) {
@@ -59,29 +59,29 @@ void func_0204e744(void) {
         case 2:
             if (mode == 6) {
                 func_02054378();
-                func_020451c8();
+                NaviB_Release();
                 func_0204d684(func_02048858, 1);
                 return;
             }
             func_02054378();
-            func_020451c8();
-            func_0204d684(func_0205500c, 1);
+            NaviB_Release();
+            func_0204d684(SceneChange_Unk_0205500c, 1);
             return;
         }
     } else {
         switch (data_022c4560.unk1d) {
         case 0:
         case 1:
-            if (data_022c4560.unk0 != 1 && mode == 0 && data_022c4680.unkc < 2) {
-                func_0204d684(func_02054fb8, 3);
+            if (data_022c4560.unk0 != 1 && mode == 0 && gSaveData.unkc < 2) {
+                func_0204d684(SceneChange_Unk_02054fb8, 3);
                 return;
             }
-            func_0204d684(func_02054ff0, 3);
+            func_0204d684(SceneChange_Unk_02054ff0, 3);
             return;
         case 2:
             func_02054378();
-            func_020451c8();
-            func_0204d684(func_02054ff0, 1);
+            NaviB_Release();
+            func_0204d684(SceneChange_Unk_02054ff0, 1);
             return;
         }
     }

@@ -4,7 +4,7 @@
 extern u32 data_02074bb4;
 extern u32 data_022c4560;
 extern u32 data_022c4590;
-extern u32 data_022c4680;
+extern u32 gSaveData;
 extern u32 data_022c468c;
 extern void func_0204e614(void);
 
@@ -69,5 +69,5 @@ _ac:
     dcd data_022c468c
     dcd data_022c4590
     dcd data_02074bb4
-    dcd data_022c4680
+    dcd gSaveData
 }

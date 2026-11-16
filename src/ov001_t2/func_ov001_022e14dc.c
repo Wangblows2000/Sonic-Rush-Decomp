@@ -24,13 +24,13 @@ typedef struct {
     s32 offset;
 } UnkRes_022e14dc;
 
-void *func_02039c18(u32 a, u32 b);
-void func_0203363c(UnkSpr_022e14dc *s, UnkRes_022e14dc *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, void *h);
+void *ObjVram_Alloc(u32 a, u32 b);
+void AnimatorSprite_Init(UnkSpr_022e14dc *s, UnkRes_022e14dc *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, void *h);
 
 #pragma thumb on
 void func_ov001_022e14dc(UnkSpr_022e14dc *s, UnkRes_022e14dc *res, u32 idx, u16 v, s32 mode) {
     UnkTbl_022e14dc *t = (UnkTbl_022e14dc *)((u8 *)res + res->offset);
-    func_0203363c(s, res, idx, 0x40, 0, 0, func_02039c18(0, t->ent[idx].unk2), 0, (void *)0x5000200);
+    AnimatorSprite_Init(s, res, idx, 0x40, 0, 0, ObjVram_Alloc(0, t->ent[idx].unk2), 0, (void *)0x5000200);
     s->flags &= ~0x60000;
     s->flags |= mode << 17;
     s->unk44 = v;

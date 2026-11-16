@@ -25,17 +25,17 @@ typedef struct {
     u16 unk454;
 } UnkStruct_022f0e90;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern u8 data_02250464[];
 
 void func_0201c070(void *a, s32 b);
 void func_ov000_022f0e38(UnkStruct_022f0e90 *p);
 
 void func_ov000_022f0e90(UnkStruct_022f0e90 *p) {
-    data_0208922c.unk20.raw = 0;
-    data_0208922c.unk20.bits.a = 1;
-    data_0208922c.unk20.bits.b = 2;
-    data_0208922c.unk24.c = 0;
+    gDisplayMain.unk20.raw = 0;
+    gDisplayMain.unk20.bits.a = 1;
+    gDisplayMain.unk20.bits.b = 2;
+    gDisplayMain.unk24.c = 0;
     func_0201c070(data_02250464, 0x3c);
     p->unk454 = 0;
     p->unk68 = func_ov000_022f0e38;

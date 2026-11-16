@@ -74,16 +74,16 @@ typedef struct UnkStruct_022dd1e8_g {
 extern UnkStruct_022dd1e8_w *data_ov000_02369b2c;
 extern UnkStruct_022dd1e8_c data_ov000_0236a48c;
 extern UnkStruct_022dd1e8_p *data_ov000_0236ac60;
-extern UnkStruct_022dd1e8_g data_0208922c;
+extern UnkStruct_022dd1e8_g gDisplayMain;
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_02021c24(void *p);
 void func_02000dfc(void *m);
-void func_0206c7c0(void);
+void StageObj_ClearPause(void);
 UnkStruct_022dd1e8_q *func_ov000_023287b8(s32 a, s32 b, s32 c, s32 d);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022dd12c(UnkStruct_022dd1e8 *t);
 
 static inline u32 GX_GetVisiblePlane(void) {
@@ -108,13 +108,13 @@ void func_ov000_022dd1e8(UnkStruct_022dd1e8 *t) {
     w->unkBB8 = 0;
     w->unkBBC = 0;
     a = &w->unk228[2];
-    func_02031a68(a, 0, w->unkAB0, 1, 0);
+    Model_SetAnimation(a, 0, w->unkAB0, 1, 0);
     func_02021c24(a->unk90);
     a = &w->unk228[1];
-    func_02031a68(a, 0, w->unkAB0, 3, 0);
+    Model_SetAnimation(a, 0, w->unkAB0, 3, 0);
     func_02021c24(a->unk90);
     a = &w->unk228[4];
-    func_02031a68(a, 0, w->unkAB0, 2, 0);
+    Model_SetAnimation(a, 0, w->unkAB0, 2, 0);
     a->unk118 = 0x1000;
     func_02021c24(a->unk90);
     a->unk4C = -0x200000;
@@ -128,14 +128,14 @@ void func_ov000_022dd1e8(UnkStruct_022dd1e8 *t) {
     w->unkB28.z = 0;
     GX_SetVisiblePlane(GX_GetVisiblePlane() & ~4);
     w->unk54 &= ~0x20;
-    func_0206c7c0();
+    StageObj_ClearPause();
     data_ov000_0236ac60->unk5C |= 0x20;
     data_ov000_0236ac60->unk32C |= 0x200000;
     func_ov000_023287b8(0, 0, 0x1ce00, 0xfa00)->unk248 = 0x800;
-    data_0208922c.unk48 = 0x10;
+    gDisplayMain.unk48 = 0x10;
     func_020537b4(0xd);
     func_020533e0(0x13, 0xf0);
-    func_02036754(0, 0, 0x7d);
+    Sound_PlaySeqArc(0, 0, 0x7d);
     for (i = 0; i < 7; i++)
         w->unk228[i].unk4 &= ~2;
     t->func = func_ov000_022dd12c;

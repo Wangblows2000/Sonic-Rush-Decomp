@@ -67,7 +67,7 @@ typedef struct { u32 data[0x17]; } UnkArc_020480ec;
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkBright_020480ec data_0208926c;
 extern UnkBright_020480ec data_02087d44;
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern u32 data_ov000_0236ac50[][2];
 extern u32 data_ov000_0236ac40;
@@ -75,12 +75,12 @@ extern u32 data_ov000_0236ac48;
 extern char data_0207923c[];
 extern char data_02079240[];
 extern char data_02079258[];
-extern void *data_022c448c;
-extern void *data_02250458;
+extern void *gActComArchive;
+extern void *gSoundHeap;
 
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
 void func_0201b348(void);
-UnkTask_020480ec *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_020480ec *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void func_02047ecc(void);
 void func_02047d2c(void);
@@ -101,25 +101,25 @@ void func_0201bf34(void *p);
 void func_02022270(s32 i, u16 v);
 void func_02022284(s32 i, s32 x, s32 y, s32 z);
 void func_02002ab0(s32 a, s32 b, s32 c);
-void func_0203a590(s32 a);
-void func_0203a1f8(s32 a);
+void Vram_SetBankForBGExtPltt(s32 a);
+void Vram_SetBankForSubBGExtPltt(s32 a);
 void func_02004040(u32 a, u32 b, u16 c, u32 d, BOOL e);
 BOOL func_02021310(UnkArc_020480ec *arc, const char *name, void *narc);
 void *func_02021264(UnkArc_020480ec *arc, s32 idx);
 BOOL func_020212e0(UnkArc_020480ec *arc);
-void *func_02033fbc(void *a, s32 b);
+void *File_Load(void *a, s32 b);
 void func_02047b78(UnkWork_020480ec *w);
 void func_020479d8(UnkWork_020480ec *w);
 void func_020478f8(UnkWork_020480ec *w);
 void func_0204771c(UnkWork_020480ec *w);
 void func_020477f8(UnkWork_020480ec *w);
-void func_02053c58(void);
+void NaviMsg_Create(void);
 void func_02053b04(s32 a);
 void func_02044d44(void);
-void func_02036894(void);
+void Sound_ResetHeap(void);
 void func_02036854(void *p);
 void func_0201e7cc(s32 a, void *b);
-void func_020367b4(s32 a, s32 b);
+void Sound_PlaySeq(s32 a, s32 b);
 
 #pragma thumb on
 void func_020480ec(void) {
@@ -134,7 +134,7 @@ void func_020480ec(void) {
     GXx_SetMasterBrightness_((vu16 *)0x400106c, -16);
     data_02087d44.unk8 = -16;
     func_0201b348();
-    w = func_020372d0(func_02047ecc, func_02047d2c, 0, 0x3efe, 3, sizeof(UnkWork_020480ec))->work;
+    w = Task_Create(func_02047ecc, func_02047d2c, 0, 0x3efe, 3, sizeof(UnkWork_020480ec))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_020480ec));
     w->fn340 = func_02045d10;
@@ -175,8 +175,8 @@ void func_020480ec(void) {
     func_02022284(2, 0, 0x620, 0xec7);
     if (data_022c4560.unk1c >= 9 || data_022c4560.unk1d >= 2) {
         func_02002ab0(1, 5, 1);
-        func_0203a590(0);
-        func_0203a1f8(0);
+        Vram_SetBankForBGExtPltt(0);
+        Vram_SetBankForSubBGExtPltt(0);
         func_02004040(0, 0, 0x7fff, 0, 0);
         *(vu16 *)0x4000008 = (*(vu16 *)0x4000008 & ~3) | 1;
         *(vu16 *)0x400000a = (*(vu16 *)0x400000a & ~3) | 3;
@@ -186,20 +186,20 @@ void func_020480ec(void) {
         *(vu16 *)0x400100a = (*(vu16 *)0x400100a & 0x43) | 0xe808;
     }
     *(vu16 *)0x400000a = (*(vu16 *)0x400000a & 0x43) | 0x2888;
-    data_0208922c.unk4 = 0;
-    data_0208922c.unk6 = 0;
+    gDisplayMain.unk4 = 0;
+    gDisplayMain.unk6 = 0;
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x4000;
     *(vu16 *)0x400000e = (*(vu16 *)0x400000e & 0x43) | 0x4400;
     w->unk388 = data_ov000_0236ac50[data_022c4560.unk0][0];
     w->unk38c = data_ov000_0236ac40;
     w->unk390 = data_ov000_0236ac48;
-    func_02021310(&arc, data_0207923c, data_022c448c);
+    func_02021310(&arc, data_0207923c, gActComArchive);
     w->res348 = func_02021264(&arc, 0x1a);
     w->res34c = func_02021264(&arc, 0x1b);
     w->res394 = func_02021264(&arc, 0x19);
     func_020212e0(&arc);
     if (data_022c4560.unk10 == 2)
-        w->unk398 = func_02033fbc(data_02079240, 0);
+        w->unk398 = File_Load(data_02079240, 0);
     func_02047b78(w);
     if (data_022c4560.unk10 == 2)
         func_020479d8(w);
@@ -210,13 +210,13 @@ void func_020480ec(void) {
         func_020477f8(w);
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1f00;
     if (data_022c4560.unk1c >= 9 || data_022c4560.unk1d >= 2) {
-        func_02053c58();
+        NaviMsg_Create();
         func_02053b04(1);
         data_ov000_02369ac0.unk8 = 0;
         data_ov000_02369ac0.unka = 8;
         func_02044d44();
     }
-    func_02036894();
+    Sound_ResetHeap();
     func_02036854(data_02079258);
     if (data_022c4560.unk10 == 2) {
         if (data_022c4560.unk1c >= 9 || data_022c4560.unk1d >= 2) {
@@ -241,7 +241,7 @@ void func_020480ec(void) {
         w->unk1630 = 6;
         b = 0xf;
     }
-    func_0201e7cc(a, data_02250458);
-    func_020367b4(0, b);
+    func_0201e7cc(a, gSoundHeap);
+    Sound_PlaySeq(0, b);
 }
 #pragma thumb reset

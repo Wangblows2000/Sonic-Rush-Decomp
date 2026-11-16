@@ -23,8 +23,8 @@ typedef struct {
     UnkRes_022d4d94 *resB;
 } UnkStruct_022d4d94;
 
-u32 func_02039c18(s32 a, u16 b);
-void func_0203363c(UnkSpr_022d4d94 *s, UnkRes_022d4d94 *r, s32 a, s32 b, s32 c, s32 d, u32 e, s32 f, u32 g);
+u32 ObjVram_Alloc(s32 a, u16 b);
+void AnimatorSprite_Init(UnkSpr_022d4d94 *s, UnkRes_022d4d94 *r, s32 a, s32 b, s32 c, s32 d, u32 e, s32 f, u32 g);
 
 #pragma thumb on
 void func_ov001_022d4d94(UnkStruct_022d4d94 *p) {
@@ -33,13 +33,13 @@ void func_ov001_022d4d94(UnkStruct_022d4d94 *p) {
 
     r = p->resA;
     s = &p->sprA;
-    func_0203363c(s, r, 0, 0, 1, 0, func_02039c18(1, *(u16 *)((u8 *)r + r->offset + 0xa)), 0, 0x5000600);
+    AnimatorSprite_Init(s, r, 0, 0, 1, 0, ObjVram_Alloc(1, *(u16 *)((u8 *)r + r->offset + 0xa)), 0, 0x5000600);
     s->flags &= ~0x60000;
     s->flags |= 0x40000;
     s->unk46 = 8;
     r = p->resB;
     s = &p->sprB;
-    func_0203363c(s, r, 0, 0, 1, 0, func_02039c18(1, *(u16 *)((u8 *)r + r->offset + 0xa)), 0, 0x5000600);
+    AnimatorSprite_Init(s, r, 0, 0, 1, 0, ObjVram_Alloc(1, *(u16 *)((u8 *)r + r->offset + 0xa)), 0, 0x5000600);
     s->flags &= ~0x60000;
     s->flags |= 0x40000;
     s->unk46 = 4;

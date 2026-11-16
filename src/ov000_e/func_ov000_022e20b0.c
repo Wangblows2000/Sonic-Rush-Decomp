@@ -22,7 +22,7 @@ typedef struct {
     s32 unkF50;
 } UnkStruct_022e20b0;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_022c4590 data_022c4590;
 extern UnkStruct_Player *data_ov000_0236ac60;
 
@@ -32,8 +32,8 @@ void func_0204d5f8(void (*fn)(void));
 void func_ov000_022e20b0(UnkStruct_022e20b0 *w) {
     w->unkF50--;
     if ((w->unkF50 & 3) == 0) {
-        if (data_0208922c.unk48 > 0)
-            data_0208922c.unk48--;
+        if (gDisplayMain.unk48 > 0)
+            gDisplayMain.unk48--;
     }
     if (w->unkF50 > 0)
         return;

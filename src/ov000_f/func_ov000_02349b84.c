@@ -36,7 +36,7 @@ struct UnkStruct_02349b84 {
 };
 
 extern s16 data_0206e470[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 #define SIN_02349b84(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 
@@ -44,14 +44,14 @@ BOOL func_ov000_0232bb20(void);
 void func_ov000_0234c4a4(UnkStruct_02349b84 *w, s32 state);
 void func_ov000_0234a288(UnkStruct_02349b84 *w);
 void func_ov000_02331a24(UnkStruct_02349b84 *w);
-void func_0204b7ec(void *p, s32 a, s32 b);
-void func_0206e2b4(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
+void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 void func_ov000_02331398(UnkStruct_02349b84 *w, s32 a, s32 b);
 void func_ov000_02345830(UnkStruct_02349b84 *w, s32 a);
 
 static inline u16 Rand_02349b84(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_02349b84(UnkStruct_02349b84 *w) {
@@ -83,10 +83,10 @@ void func_ov000_02349b84(UnkStruct_02349b84 *w) {
             w->unk2E = 0;
         }
         w->unk2E += t;
-        func_0206e2b4(w->unk2CC, 0x13, 0);
+        ObjRect_SetAtkDefFlags(w->unk2CC, 0x13, 0);
         func_ov000_02331398(w, 0, 0);
-        func_0204b7ec(w->unk384, 0, 0x10);
-        func_0204b7ec(w->unk384, 0, (Rand_02349b84() & 3) + 0x1d);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x10);
+        Sound_PlaySeqArcEx(w->unk384, 0, (Rand_02349b84() & 3) + 0x1d);
         w->unk352 = 0xc;
     } else {
         w->unk3C6 = w->unk2E;
@@ -105,8 +105,8 @@ void func_ov000_02349b84(UnkStruct_02349b84 *w) {
         w->unk352 = 0xc;
         w->unk3C4 = 0xc;
         func_ov000_02331a24(w);
-        func_0204b7ec(w->unk384, 0, 0x1c);
-        func_0204b7ec(w->unk384, 0, (Rand_02349b84() & 3) + 0x26);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x1c);
+        Sound_PlaySeqArcEx(w->unk384, 0, (Rand_02349b84() & 3) + 0x26);
     }
     w->unk58 |= 0x4000;
     w->unk8 = 0;

@@ -18,19 +18,19 @@ typedef struct {
     s32 timer;
 } UnkWork_02053014;
 
-extern UnkCtx_02053014 data_02072c78;
+extern UnkCtx_02053014 gDisplayTable;
 
 void func_02053014(UnkWork_02053014 *w) {
     s32 v;
 
     w->timer++;
     if (w->timer >= 30) {
-        UnkGfx_02053014 *g = data_02072c78.gfx;
+        UnkGfx_02053014 *g = gDisplayTable.gfx;
         g->unk20 = 0x40;
         g->unk22 = 0;
         w->unkdc = 0;
         return;
     }
     v = (w->timer * 31) / 30;
-    data_02072c78.gfx->unk22 = (v & 0x1f) | ((31 - (v & 0x1f)) << 8);
+    gDisplayTable.gfx->unk22 = (v & 0x1f) | ((31 - (v & 0x1f)) << 8);
 }

@@ -43,8 +43,8 @@ extern s16 data_0206e470[];
 #define CLAMP_02347870(v, lo, hi) ((v) < (lo) ? (lo) : ((v) > (hi) ? (hi) : (v)))
 
 void func_ov000_02347b4c(UnkStruct_02347870 *w);
-s16 func_02068db4(s32 v, s32 a);
-s16 func_02068df8(s32 v, s32 a, s32 max);
+s16 ObjSpd_DownSet(s32 v, s32 a);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 void func_ov000_02347190(UnkStruct_02347870 *w);
 
 void func_ov000_02347870(UnkStruct_02347870 *w) {
@@ -107,17 +107,17 @@ void func_ov000_02347870(UnkStruct_02347870 *w) {
                 w->unk5C &= ~1;
             }
             if (w->unk34 < 0) {
-                w->unk34 = func_02068db4(w->unk34, dec);
+                w->unk34 = ObjSpd_DownSet(w->unk34, dec);
             }
-            w->unk34 = func_02068df8(w->unk34, acc, max);
+            w->unk34 = ObjSpd_UpSet(w->unk34, acc, max);
         } else {
             if (w->unk328 != 0 && (w->unk328 < 5 || w->unk328 > 10)) {
                 w->unk5C |= 1;
             }
             if (w->unk34 > 0) {
-                w->unk34 = func_02068db4(w->unk34, dec);
+                w->unk34 = ObjSpd_DownSet(w->unk34, dec);
             }
-            w->unk34 = func_02068df8(w->unk34, -acc, max);
+            w->unk34 = ObjSpd_UpSet(w->unk34, -acc, max);
         }
     } else {
         w->unk3AC = 0;
@@ -135,7 +135,7 @@ void func_ov000_02347870(UnkStruct_02347870 *w) {
                 w->unk32C &= ~0x8000000;
                 return;
             }
-            w->unk34 = func_02068db4(w->unk34, dec);
+            w->unk34 = ObjSpd_DownSet(w->unk34, dec);
         }
     }
     func_ov000_02347190(w);

@@ -18,7 +18,7 @@ typedef struct {
     UnkStruct_02316db0_88 *unk88;
 } UnkStruct_02316db0;
 
-void func_02069818(void *w, s32 a);
+void StageObj_SetAnimation(void *w, s32 a);
 
 void func_ov000_02316db0(UnkStruct_02316db0 *w) {
     UnkStruct_02316db0_88 *p = w->unk88;
@@ -32,9 +32,9 @@ void func_ov000_02316db0(UnkStruct_02316db0 *w) {
             return;
         }
         if (w->unk54 & 0x1000) {
-            func_02069818(w, 8);
+            StageObj_SetAnimation(w, 8);
         } else {
-            func_02069818(w, 3);
+            StageObj_SetAnimation(w, 3);
         }
         w->unkC++;
         w->unk5C |= 4;
@@ -44,9 +44,9 @@ void func_ov000_02316db0(UnkStruct_02316db0 *w) {
             return;
         }
         if (w->unk54 & 0x1000) {
-            func_02069818(w, 9);
+            StageObj_SetAnimation(w, 9);
         } else {
-            func_02069818(w, 4);
+            StageObj_SetAnimation(w, 4);
         }
         w->unkC++;
         w->unk5C |= 4;
@@ -57,9 +57,9 @@ void func_ov000_02316db0(UnkStruct_02316db0 *w) {
             return;
         }
         if (w->unk54 & 0x1000) {
-            func_02069818(w, 7);
+            StageObj_SetAnimation(w, 7);
         } else {
-            func_02069818(w, 2);
+            StageObj_SetAnimation(w, 2);
         }
         w->unk8 = 0;
         w->unkC = 0;

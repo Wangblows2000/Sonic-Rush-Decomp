@@ -34,7 +34,7 @@ typedef struct {
     u8 pad198[0x19C - 0x198];
 } UnkStruct_0231e324;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern void *data_ov000_0236ac60;
 extern u16 data_ov000_0236a3c0;
 extern UnkStruct_0236a3c4 data_ov000_0236a3c4[];
@@ -54,7 +54,7 @@ UnkStruct_0231e324 *func_ov000_0231e324(void *p, s32 a, s32 b) {
     s32 n;
     UnkStruct_0231e324_Param *q;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_0231e304, 0, 0x500, 4, sizeof(UnkStruct_0231e324));
+    task = Task_Create(StageObj_Main, func_ov000_0231e304, 0, 0x500, 4, sizeof(UnkStruct_0231e324));
     if (task == func_02006abc(0))
         return NULL;
     data_ov000_0236a3c0++;
@@ -66,11 +66,11 @@ UnkStruct_0231e324 *func_ov000_0231e324(void *p, s32 a, s32 b) {
     if (n == 0x87)
         n = 0xf;
     func_0202a2f0(buf, data_ov000_023672a0, n + 1);
-    func_02069f1c(w, buf, 0xffff, &data_ov000_0236a3c4[n], data_022c4488);
-    func_0206a054(w, 0, 0x12);
-    func_02069918(w, 0x12);
+    StageObj_Load2dBAC(w, buf, 0xffff, &data_ov000_0236a3c4[n], gZoneActArchive);
+    StageObj_AllocSpritePalette(w, 0, 0x12);
+    StageObj_SetOAMOrder(w, 0x12);
     func_02068e40(w, -4, -8, 4, -1);
-    func_0206e3c0(&w->coll0, -0xc, -0x14, 0xc, 6);
+    ObjRect_SetBox2D(&w->coll0, -0xc, -0x14, 0xc, 6);
     w->unk58 |= 0x80;
     w->unk54 |= 2;
     w->unk5C |= 0x100;

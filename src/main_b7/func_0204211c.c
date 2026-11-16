@@ -20,23 +20,23 @@ typedef struct {
     void (*func)(void);
 } UnkTask_022b4574;
 
-extern UnkStruct_0224ffa0 data_0224ffa0;
-extern UnkTask_022b4574 *data_022b4574;
-u16 func_0203e944(void);
+extern UnkStruct_0224ffa0 gWirelessSendBuffer;
+extern UnkTask_022b4574 *gTaskCurrent;
+u16 WH_GetBitmap(void);
 u32 func_02042998(void);
 void func_020420fc(void *);
 void func_02042684(void);
 
 void func_0204211c(UnkObj_0204211c *o) {
-    UnkStruct_0224ffa0 *s = (UnkStruct_0224ffa0 *)((u32)&data_0224ffa0 | 0);
-    s->unk0 = func_0203e944();
+    UnkStruct_0224ffa0 *s = (UnkStruct_0224ffa0 *)((u32)&gWirelessSendBuffer | 0);
+    s->unk0 = WH_GetBitmap();
     if (func_02042998() > 1) {
         o->state = 2;
         if (o->unk17 != 0) {
             s->unk2 |= 1;
             o->unk18 = 0;
             o->func = func_020420fc;
-            data_022b4574->func = func_02042684;
+            gTaskCurrent->func = func_02042684;
         }
     } else {
         o->state = 1;

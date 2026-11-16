@@ -33,7 +33,7 @@ typedef struct {
 
 extern UnkState_0205d178 data_022c4560;
 
-void func_02032480(void *p, s32 a, s32 b, s32 c);
+void AnimatorSprite_DrawRotScale(void *p, s32 a, s32 b, s32 c);
 
 static inline s32 FX_Mul_0205d178(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -52,7 +52,7 @@ void func_0205d178(u8 *w) {
     for (i = 0; i < 2; i++) {
         s->h8 = (g->xb4 + (g->xa4 + FX_Mul_0205d178(g->ofs[i].x, g->hbc)) - FX_Mul_0205d178(g->xb4, g->hbc)) >> 12;
         s->ha = (g->xb8 + (g->xa8 + FX_Mul_0205d178(g->ofs[i].y, g->hbe)) - FX_Mul_0205d178(g->xb8, g->hbe)) >> 12;
-        func_02032480(o, g->hbc, g->hbe, 0);
+        AnimatorSprite_DrawRotScale(o, g->hbc, g->hbe, 0);
         s++;
         o += sizeof(UnkSpr_0205d178);
     }

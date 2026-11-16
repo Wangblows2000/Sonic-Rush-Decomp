@@ -22,8 +22,8 @@ extern s16 data_ov000_02364444[];
 extern s16 data_ov000_02364446[];
 extern UnkEntry_0231a824 data_ov000_0236aad8[];
 
-void func_0203344c(UnkStruct_Spr *s, s32 a, s32 b);
-void func_02032d2c(UnkStruct_Spr *s);
+void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkStruct_Spr *s);
 
 BOOL func_ov000_0231a824(UnkWork_0231a824 *w) {
     UnkStruct_Spr *s;
@@ -44,8 +44,8 @@ BOOL func_ov000_0231a824(UnkWork_0231a824 *w) {
         s = &w->spr[i];
         s->unk4 = ox + (px - (p->x >> 8));
         s->unk6 = oy + (py - (p->y >> 8));
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
     }
     return (s->unk2C & 2) != 0;
 }

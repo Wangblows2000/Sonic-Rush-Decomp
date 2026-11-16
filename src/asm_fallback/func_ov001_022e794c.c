@@ -3,8 +3,8 @@
 
 extern void _s32_div_f(void);
 extern void _u32_div_f(void);
-extern u32 data_022b4574;
-extern void func_02052104(void);
+extern u32 gTaskCurrent;
+extern void SysSound_PlaySE(void);
 extern void func_02053874(void);
 extern void func_ov001_022e1b4c(void);
 extern void func_ov001_022e2f0c(void);
@@ -302,7 +302,7 @@ _1ea:
     cmp r1, #0
     bne _248
     mov r0, #0x10
-    bl func_02052104
+    bl SysSound_PlaySE
     b _248
 _236:
     ldr r0, [r5, #0x7c]
@@ -311,7 +311,7 @@ _236:
     cmp r1, #0
     bne _248
     mov r0, #0x11
-    bl func_02052104
+    bl SysSound_PlaySE
 _248:
     ldr r0, [r5, #0x74]
     add r0, r0, #1
@@ -392,7 +392,7 @@ _2e0:
     pop {r4, r5, r6, r7}
     pop {r3}
     bx r3
-    dcd data_022b4574
+    dcd gTaskCurrent
     dcd 0x00000784
     dcd 0x00001994
     dcd 0x00000674

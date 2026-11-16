@@ -15,21 +15,21 @@ typedef struct {
 
 extern UnkStr_0204e0c0 data_0207a0cc;
 extern UnkWidth_0204e0c0 data_0207a09c;
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 extern char data_0207a1f0[];
-extern void *data_02250458;
+extern void *gSoundHeap;
 
-UnkTask_0204e0c0 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_0204e0c0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_0204dbb8(void);
 void func_0204dccc(void);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
-void func_02043c7c(s32 a, s32 b);
-void func_0204da44(u16 c, s32 x, s32 a, s32 b, s32 i, s32 cur);
+void BrightnessFade_Create(s32 a, s32 b);
+void GameOver_Create(u16 c, s32 x, s32 a, s32 b, s32 i, s32 cur);
 void func_02036854(void *p);
 void func_0201e7cc(s32 a, void *b);
-void func_020367b4(s32 a, s32 b);
-void func_02044718(void);
+void Sound_PlaySeq(s32 a, s32 b);
+void ScreenShake_Create(void);
 
 static inline s32 LangIdx_0204e0c0(u8 lang) {
     s32 l;
@@ -62,7 +62,7 @@ void func_0204e0c0(void) {
     cur = 0;
     tbl = data_0207a0cc;
     wt = data_0207a09c;
-    t = func_020372d0(func_0204dbb8, func_0204dccc, 7, 0x6100, 3, 4);
+    t = Task_Create(func_0204dbb8, func_0204dccc, 7, 0x6100, 3, 4);
     if (t == (UnkTask_0204e0c0 *)func_02006abc(0))
         return;
     {
@@ -73,9 +73,9 @@ void func_0204e0c0(void) {
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1000;
     *(vu16 *)0x5000000 = 0;
     *(vu16 *)0x5000400 = 0;
-    func_02043c7c(0x42, 0x100);
+    BrightnessFade_Create(0x42, 0x100);
     total = 0;
-    lang = data_02072cb8;
+    lang = gGameLanguage;
     for (i = 0;; i++) {
         if (tbl.s[LangIdx_0204e0c0(lang)][i] == -2)
             break;
@@ -93,12 +93,12 @@ void func_0204e0c0(void) {
         if (tbl.s[LangIdx_0204e0c0(lang)][i] == -1) {
             cur += wt.w[0x17];
         } else {
-            func_0204da44(tbl.s[LangIdx_0204e0c0(lang)][i], x, 0x108, 0x68, i, cur);
+            GameOver_Create(tbl.s[LangIdx_0204e0c0(lang)][i], x, 0x108, 0x68, i, cur);
             cur += wt.w[tbl.s[LangIdx_0204e0c0(lang)][i]];
         }
     }
     func_02036854(data_0207a1f0);
-    func_0201e7cc(0xb, data_02250458);
-    func_020367b4(0, 0x14);
-    func_02044718();
+    func_0201e7cc(0xb, gSoundHeap);
+    Sound_PlaySeq(0, 0x14);
+    ScreenShake_Create();
 }

@@ -10,17 +10,17 @@ UnkStruct_EffObj *func_ov000_02320fec(UnkStruct_StageObj *arg, s32 x, s32 y) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_0236733c, 0xffff, data_ov000_0236a728, data_ov000_02369ba0);
-    func_020698f0(w, 3);
-    func_02069918(w, 0x16);
-    func_0206a054(w, 0, 0x54);
-    func_02069818(w, 4);
+    StageObj_Load2dBAC(w, data_ov000_0236733c, 0xffff, data_ov000_0236a728, data_ov000_02369ba0);
+    StageObj_SetOAMPriority(w, 3);
+    StageObj_SetOAMOrder(w, 0x16);
+    StageObj_AllocSpritePalette(w, 0, 0x54);
+    StageObj_SetAnimation(w, 4);
     w->unk10 = arg->unk10;
     w->unk14 = arg->unk14;
     w->unk88 = arg;

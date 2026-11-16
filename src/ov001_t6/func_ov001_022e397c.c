@@ -39,8 +39,8 @@ void func_ov001_022e2af8(s32 *p);
 void MTX_RotY33_(UnkMtx33_022e397c *m, s32 s, s32 c);
 void func_02000e60(UnkMtx33_022e397c *m, s32 s, s32 c);
 void func_02000f34(UnkMtx33_022e397c *a, UnkMtx33_022e397c *b, UnkMtx33_022e397c *ab);
-void func_02031a68(void *model, s32 idx, void *res, void *anim, s32 f);
-void func_020315e0(void *model);
+void Model_SetAnimation(void *model, s32 idx, void *res, void *anim, s32 f);
+void Model_Draw(void *model);
 void func_02025268(u32 op, const void *args, u32 n);
 
 #pragma thumb on
@@ -92,17 +92,17 @@ void func_ov001_022e397c(UnkStruct_022e397c *p) {
             r1 = p->res170;
         }
         if (p->mode == 0) {
-            func_02031a68(p->model, 0, r0, data_ov001_023162ac[p->cur], 0);
-            func_02031a68(p->model, 4, r1, data_ov001_023162c4[p->cur], 0);
+            Model_SetAnimation(p->model, 0, r0, data_ov001_023162ac[p->cur], 0);
+            Model_SetAnimation(p->model, 4, r1, data_ov001_023162c4[p->cur], 0);
         } else {
-            func_02031a68(p->model, 0, r0, data_ov001_023162b8[p->cur], 0);
-            func_02031a68(p->model, 4, r1, data_ov001_023162a0[p->cur], 0);
+            Model_SetAnimation(p->model, 0, r0, data_ov001_023162b8[p->cur], 0);
+            Model_SetAnimation(p->model, 4, r1, data_ov001_023162a0[p->cur], 0);
         }
         p->prev = p->cur;
     }
     if (p->draw != 0) {
         func_02025268(0x11, NULL, 0);
-        func_020315e0(p->model);
+        Model_Draw(p->model);
         one = 1;
         func_02025268(0x12, &one, 1);
     }

@@ -21,7 +21,7 @@ BOOL func_ov000_022f46f4(UnkStruct_022f1df0 *s);
 BOOL func_ov000_022f8f38(void);
 BOOL func_ov000_022f8f00(void);
 void func_ov000_022f8df8(UnkStruct_022f1df0 *s, s32 *x, s32 *y, s32 c);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022f1d88(UnkStruct_022f1df0 *s);
 
 void func_ov000_022f1df0(UnkStruct_022f1df0 *s) {
@@ -39,7 +39,7 @@ void func_ov000_022f1df0(UnkStruct_022f1df0 *s) {
         cam->unk4C = 0x32000 - ((y - data_ov000_0236ac60->unk14) << 4);
     }
     if ((s->unk434 & 0x3f) == 0)
-        func_02036754(0, 0, 0xbe);
+        Sound_PlaySeqArc(0, 0, 0xbe);
     if (!(s->unk57C & 2))
         return;
     if (s->unk434 != 0)

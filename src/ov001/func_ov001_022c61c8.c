@@ -1,15 +1,15 @@
 #include <nitro/types.h>
 
 typedef struct { u8 pad[0xc]; void *heap; u8 *mem; } UnkStruct_022c61c8;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 void func_0201b348(void);
 void func_0201da54(void *h);
 void func_0201db14(void *h);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02036894(void);
+void Heap_Free(void *heap, void *p);
+void Sound_ResetHeap(void);
 
 void func_ov001_022c61c8(UnkStruct_022c61c8 *p) {
     u8 *blk;
@@ -27,6 +27,6 @@ void func_ov001_022c61c8(UnkStruct_022c61c8 *p) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
-    func_02036894();
+    Heap_Free(gMainHeap, blk);
+    Sound_ResetHeap();
 }

@@ -8,7 +8,7 @@ void func_ov000_023597b8(UnkStruct_SceneTask *t) {
     UnkStruct_Scene *w;
 
     if (t == NULL) {
-        t = data_022b4574;
+        t = gTaskCurrent;
     }
     w = t->work;
     w->unk0 = 0;

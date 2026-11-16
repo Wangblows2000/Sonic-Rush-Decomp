@@ -22,9 +22,9 @@ typedef struct {
 
 extern s32 data_ov001_0231c3ec;
 
-void func_02033550(UnkSpr_022e0d30 *s, u16 id);
-void func_0203344c(UnkSpr_022e0d30 *s, s32 a, s32 b);
-void func_02032d2c(UnkSpr_022e0d30 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022e0d30 *s, u16 id);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022e0d30 *s, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_022e0d30 *s);
 
 #pragma thumb on
 void func_ov001_022e0d30(UnkStruct_022e0d30 *p) {
@@ -34,7 +34,7 @@ void func_ov001_022e0d30(UnkStruct_022e0d30 *p) {
     for (i = 0; i < p->count; i++) {
         s = &p->spr[i];
         if (i != p->anim[i]) {
-            func_02033550(s, i);
+            AnimatorSprite_SetAnimation(s, i);
             p->anim[i] = i;
         }
         if (i == data_ov001_0231c3ec && p->y[i] == -8) {
@@ -52,8 +52,8 @@ void func_ov001_022e0d30(UnkStruct_022e0d30 *p) {
         }
         s->x = i * 0x20 + 0x10;
         s->y = p->y[i];
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
     }
 }
 #pragma thumb reset

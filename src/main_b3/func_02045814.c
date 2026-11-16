@@ -16,7 +16,7 @@ typedef struct {
     u8 unk1634[4];          /* 0x1634 */
 } UnkWork_02045814;
 
-void func_02036754(void *a, void *b, s32 c);
+void Sound_PlaySeqArc(void *a, void *b, s32 c);
 void func_02045768(void);
 
 #pragma thumb on
@@ -44,7 +44,7 @@ void func_02045814(UnkWork_02045814 *w, UnkObj_02045814 *o) {
         if (o->unk38[i] > 0x1000) {
             o->unk38[i] = 0x1000;
             if (o->unk44[i] == 0) {
-                func_02036754(NULL, w->unk1630, 0);
+                Sound_PlaySeqArc(NULL, w->unk1630, 0);
                 o->unk44[i] = 1;
             }
         }
@@ -53,7 +53,7 @@ void func_02045814(UnkWork_02045814 *w, UnkObj_02045814 *o) {
     if (n == 3 && o->unk38[n - 1] == 0x1000) {
         o->fn = func_02045768;
         o->unk4 = 0x96;
-        func_02036754(w->unk1634, w->unk1630, 2);
+        Sound_PlaySeqArc(w->unk1634, w->unk1630, 2);
         w->flags |= 0x400000;
     }
 }

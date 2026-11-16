@@ -22,7 +22,7 @@ typedef struct {
     u16 unk454;
 } UnkStruct_022f0cb0;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_Boss *data_ov000_02369b84;
 extern UnkStruct_Mdl data_ov000_0236a524;
 extern u8 data_ov000_02365f20[];
@@ -30,13 +30,13 @@ extern u8 data_ov000_02365f20[];
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02031768(UnkStruct_Mdl *m);
+void Heap_Free(void *heap, void *p);
+void Model_Release(UnkStruct_Mdl *m);
 void func_0202566c(void *p);
-void *func_02033fbc(void *p);
+void *File_Load(void *p);
 void func_020257f8(void *p);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, void *a, s32 b);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, void *a, s32 b);
 void func_ov000_022f0c8c(void);
 
 static inline void UnkFree(void **pp) {
@@ -52,7 +52,7 @@ static inline void UnkFree(void **pp) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
     *pp = NULL;
 }
 
@@ -61,15 +61,15 @@ void func_ov000_022f0cb0(UnkStruct_022f0cb0 *s) {
     UnkStruct_Mdl *m = &data_ov000_0236a524;
 
     s->unk454 = 0;
-    func_02031768(m);
+    Model_Release(m);
     func_0202566c(b->unk238);
     UnkFree(&b->unk238);
     func_0202566c(b->unk240);
     UnkFree(&b->unk240);
-    b->unk23C = func_02033fbc(data_ov000_02365f20);
+    b->unk23C = File_Load(data_ov000_02365f20);
     func_020257f8(b->unk23C);
-    func_02031c1c(m, 0);
-    func_02031bd0(m, b->unk23C, 0);
+    Model_Init(m, 0);
+    Model_SetResource(m, b->unk23C, 0);
     m->unk18 = m->unk1C = m->unk20 = 0x1355b50;
     s->base.unk68 = func_ov000_022f0c8c;
 }

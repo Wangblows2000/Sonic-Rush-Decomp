@@ -16,7 +16,7 @@ void func_ov000_023599b0(UnkStruct_SceneTask *t) {
     UnkStruct_023599b0_Sync *s;
 
     if (t == NULL) {
-        t = data_022b4574;
+        t = gTaskCurrent;
     }
     w = t->work;
     w->unk0 = 0;

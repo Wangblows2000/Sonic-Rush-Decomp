@@ -122,21 +122,21 @@ void func_ov000_0234cb70(UnkStruct_0234cb70 *w) {
     w->coll2A0.unkA &= ~0x300;
     w->coll2A0.unkA |= 0x20;
     if (w->unk3B2 == 0)
-        func_0206e2b4(&w->coll2A0, 0xa, 2);
+        ObjRect_SetAtkDefFlags(&w->coll2A0, 0xa, 2);
     w->coll2CC.unk28 = 0x21;
     w->coll2CC.unk1C = NULL;
     w->coll2CC.unkA &= ~8;
     w->coll2CC.unkA &= ~0x300;
     w->coll2CC.unkA |= 0x20;
-    func_0206e2b4(&w->coll2CC, 0, 0);
+    ObjRect_SetAtkDefFlags(&w->coll2CC, 0, 0);
     if ((data_022c4560.unk18 & 0x20) && w->unk325 != 0) {
         w->coll2F8.unk1C = func_ov000_02342b78;
         w->coll2F8.unk28 = 2;
         w->coll2F8.unkA |= 0xc0;
         w->coll2F8.unkA |= 0x20;
         w->coll2F8.unk18 = w;
-        func_0206e2b4(&w->coll2F8, 0, -0x10);
-        func_0206e3c0(&w->coll2F8, -0x30, -0x20, 0x30, 0x20);
+        ObjRect_SetAtkDefFlags(&w->coll2F8, 0, -0x10);
+        ObjRect_SetBox2D(&w->coll2F8, -0x30, -0x20, 0x30, 0x20);
     }
     func_ov000_0234c644(w);
     w->unk1 = 0;

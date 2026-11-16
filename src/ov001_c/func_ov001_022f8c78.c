@@ -14,7 +14,7 @@ typedef struct UnkStruct_022f8c78_t {
 
 extern UnkStruct_022f8c78 *data_ov001_0231f084;
 extern vu8 data_0208923c[];
-extern UnkStruct_022f8c78_t *data_022b4574;
+extern UnkStruct_022f8c78_t *gTaskCurrent;
 
 void func_ov001_022f8a98(void);
 void func_ov001_022f8b04(void);
@@ -47,7 +47,7 @@ void func_ov001_022f8c78(void) {
         w[2] = 0;
         w[6] = 0xa1;
         SetVisible(2);
-        data_022b4574->fn = func_ov001_022f8a98;
+        gTaskCurrent->fn = func_ov001_022f8a98;
         data_ov001_0231f084->flags &= ~0x40;
         data_ov001_0231f084->flags |= 0x80;
         return;
@@ -76,7 +76,7 @@ void func_ov001_022f8c78(void) {
         w[7] = 0x20;
         w[2] = 0;
         w[6] = 0xa1;
-        data_022b4574->fn = func_ov001_022f8b04;
+        gTaskCurrent->fn = func_ov001_022f8b04;
         data_ov001_0231f084->unkE48 = 0;
         data_ov001_0231f084->flags |= 0x40;
     }

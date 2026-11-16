@@ -38,10 +38,10 @@ typedef struct {
 
 extern UnkStruct_Player *data_ov000_0236ac60;
 
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
-void func_020446b0(s32 a);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
+void ScreenShake_Start(s32 a);
 void func_ov000_023288d0(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e450c(UnkStruct_Boss *w);
 void func_ov000_022e49b0(void);
 
@@ -99,9 +99,9 @@ void func_ov000_022e4b80(UnkStruct_Boss *w) {
     if (!(m->unk10C & 2))
         return;
     w->base.unk68 = func_ov000_022e49b0;
-    func_02031a68(m, 0, w->unkD08, 4, 0);
+    Model_SetAnimation(m, 0, w->unkD08, 4, 0);
     m->unk114 = 0x1000;
-    func_020446b0(0xc);
+    ScreenShake_Start(0xc);
     w->unkF50 = 0x1e;
     *(s32 *)&w->unk1118 = 0x28;
     if (w->unkD5E != 0)
@@ -112,5 +112,5 @@ void func_ov000_022e4b80(UnkStruct_Boss *w) {
     p = data_ov000_0236ac60;
     if (!(p->unk32C & 0x400) && (p->base.unk58 & 1))
         func_ov000_022e450c(w);
-    func_02036754(0, 0, 0x86);
+    Sound_PlaySeqArc(0, 0, 0x86);
 }

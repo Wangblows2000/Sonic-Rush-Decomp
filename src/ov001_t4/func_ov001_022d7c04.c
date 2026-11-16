@@ -25,11 +25,11 @@ typedef struct {
     UnkWork_022d7c04 *work;
 } UnkTask_022d7c04;
 
-extern UnkTask_022d7c04 *data_022b4574;
+extern UnkTask_022d7c04 *gTaskCurrent;
 
-void func_02033550(UnkSpr_022d7c04 *s, u16 anim);
-void func_0203344c(UnkSpr_022d7c04 *s, s32 a, s32 b);
-void func_02032d2c(UnkSpr_022d7c04 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022d7c04 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022d7c04 *s, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_022d7c04 *s);
 
 #pragma thumb on
 void func_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t) {
@@ -40,7 +40,7 @@ void func_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t) {
 
     base = 0;
     anim = 0;
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     switch (mode) {
     case 0:
         base = 0;
@@ -90,30 +90,30 @@ void func_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t) {
         s = &sw->sprites[1];
         if (t < 7 && mode != 2) {
             if (sw->ids[1] != 4 || t == 0) {
-                func_02033550(s, 4);
+                AnimatorSprite_SetAnimation(s, 4);
                 w->sw->ids[1] = 4;
             }
         } else if (sw->ids[1] != 3) {
-            func_02033550(s, 3);
+            AnimatorSprite_SetAnimation(s, 3);
             w->sw->ids[1] = 3;
         }
         s->x = x;
         s->y = y;
-        func_0203344c(s, 0, 0);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
         if (t >= 7 && mode != 2) {
             if ((t - 7) % 60 < 40) {
-                func_02032d2c(s);
+                AnimatorSprite_Draw(s);
             }
         } else {
             s->x = x;
             s->y = y;
-            func_0203344c(s, 0, 0);
-            func_02032d2c(s);
+            AnimatorSprite_ProcessAnimation(s, 0, 0);
+            AnimatorSprite_Draw(s);
         }
     }
     s = &w->sw->sprites[idx];
     if (anim != w->sw->ids[idx]) {
-        func_02033550(s, anim);
+        AnimatorSprite_SetAnimation(s, anim);
         w->sw->ids[idx] = anim;
     }
     s->x = x;
@@ -122,7 +122,7 @@ void func_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t) {
     s->flags &= ~1;
     s->flags |= 0x40;
     s->flags |= 0x20;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 }
 #pragma thumb reset

@@ -23,15 +23,15 @@ typedef struct {
     UnkStruct_0235229c_3E8 *unk3E8;
 } UnkStruct_0235229c;
 
-s32 func_02068ce4(s32 a, s32 b, s32 c, s32 d, s32 e);
-s16 func_02068db4(s16 v, s32 a);
-s16 func_02068df8(s16 v, s32 a, s32 b);
+s32 ObjShift_Set(s32 a, s32 b, s32 c, s32 d, s32 e);
+s16 ObjSpd_DownSet(s16 v, s32 a);
+s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 void func_ov000_023521f0(UnkStruct_0235229c *w);
 
 void func_ov000_0235229c(UnkStruct_0235229c *w) {
     if (w->unk3E8 != NULL) {
         w->unk1C = w->unk10;
-        w->unk10 = func_02068ce4(w->unk10, w->unk3E8->unk10, 4, 0, 0x100);
+        w->unk10 = ObjShift_Set(w->unk10, w->unk3E8->unk10, 4, 0, 0x100);
         if (!(w->unk32C & 1)) {
             s32 y = w->unk3E8->unk14 + 0x1200;
             if (w->unk14 >= y) {
@@ -44,10 +44,10 @@ void func_ov000_0235229c(UnkStruct_0235229c *w) {
         if (w->unk32C & 1) {
             if (w->unk18 >= 0x2800) {
                 w->unk58 |= 0x80;
-                w->unk32 = func_02068db4(w->unk32, 0x50);
+                w->unk32 = ObjSpd_DownSet(w->unk32, 0x50);
             } else {
-                w->unk30 = func_02068df8(w->unk30, 8, 0x600);
-                w->unk32 = func_02068df8(w->unk32, 0x36, 0x600);
+                w->unk30 = ObjSpd_UpSet(w->unk30, 8, 0x600);
+                w->unk32 = ObjSpd_UpSet(w->unk32, 0x36, 0x600);
             }
         }
     }

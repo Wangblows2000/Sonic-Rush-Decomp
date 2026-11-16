@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 void func_ov000_02322180(s32 x, s32 y, s16 a, s16 b, s32 c);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0232233c(s32 x, s32 y) {

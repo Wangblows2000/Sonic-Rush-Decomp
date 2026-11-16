@@ -4,10 +4,10 @@
 #pragma thumb on
 
 void func_ov000_0235ccf8();
-s32 func_020372d0();
+s32 Task_Create();
 
 s32 func_ov000_0235cd58(s32 p0) {
-    s32 t0 = func_020372d0((u32)func_ov000_0235ccf8, 0, 0, 0x3000, 0x1000, 8);
+    s32 t0 = Task_Create((u32)func_ov000_0235ccf8, 0, 0, 0x3000, 0x1000, 8);
     s32 t1 = *(u32 *)((u8 *)t0 + 0x10);
     *(u32 *)t1 = p0;
     *(u32 *)((u8 *)t1 + 0x4) = -1;

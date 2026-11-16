@@ -16,7 +16,7 @@ typedef struct {
 
 UnkStruct_StageObj *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_023288d0(s32 a, s32 b, s32 c, s32 d);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 void func_ov000_022ddab8(void);
 
 void func_ov000_022ddb44(UnkStruct_022ddb44 *s) {
@@ -29,5 +29,5 @@ void func_ov000_022ddb44(UnkStruct_022ddb44 *s) {
     func_ov000_022fad3c(0xd2, 0, 0, 0, 0, 0, 0, 0, 0);
     func_ov000_023288d0(1, s->unkB7C >> 4, 0x20000, s->unkB84 >> 4);
     s->unkBF0 = 0;
-    func_020446b0(0xc);
+    ScreenShake_Start(0xc);
 }

@@ -61,7 +61,7 @@ struct UnkStruct_022d7fd4 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 typedef struct UnkStruct_022d7fd4_r {
     u8 pad[0x20c];
@@ -103,13 +103,13 @@ void func_ov000_022daa5c(void);
 void func_ov000_022da6b4(void);
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void func_ov000_023286c0(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d7f40(UnkStruct_022d7fd4 *s);
 
 void func_ov000_022d7fd4(UnkStruct_022d7fd4 *s) {
     UnkStruct_022d7fd4_r *r = data_ov000_02369b14->unk218;
     UnkStruct_022d7fd4_c *c;
-    func_02031a68(&s->unk2C4, 0, s->unk434, 0xf, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0xf, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
     data_ov000_02369b14->unk20C |= 2;
@@ -138,6 +138,6 @@ void func_ov000_022d7fd4(UnkStruct_022d7fd4 *s) {
     c->unk84 = c->unk88;
     c->unk8C = 0x100;
     func_ov000_023286c0(1, s->unk2C4.unk48 >> 4, -s->unk2C4.unk4C >> 4, s->unk2C4.unk50 >> 4);
-    func_02036754(0, 0, 0x91);
+    Sound_PlaySeqArc(0, 0, 0x91);
     s->func = func_ov000_022d7f40;
 }

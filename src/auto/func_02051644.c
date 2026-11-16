@@ -3,10 +3,10 @@
 
 #pragma thumb on
 
-s32 func_0203e944();
+s32 WH_GetBitmap();
 
 s32 func_02051644(void) {
-    s32 t0 = func_0203e944();
+    s32 t0 = WH_GetBitmap();
     s32 v1 = 1;
     if ((t0 & ~1) != 0) {
         v1 = 0;

@@ -51,7 +51,7 @@ extern UnkStruct_022f0cbc_t data_ov001_02316840;
 
 void func_ov001_022f0b70(void);
 void func_ov001_022f2ca4(void);
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_ov001_022f0cbc(UnkStruct_022f0cbc *p) {
     UnkStruct_022f0cbc_q *q = p->unk1DC->unk18;
@@ -60,12 +60,12 @@ void func_ov001_022f0cbc(UnkStruct_022f0cbc *p) {
     UnkStruct_022f0cbc_o *b = q->unk84;
 
     if ((d < 0 && *a->unkE4 + d <= 0xb4000) || (d > 0 && *a->unkE4 + d >= 0xb4000)) {
-        func_02031a68(a, 0, data_ov001_0231f068, data_ov001_02316840.unk78, 0);
-        func_02031a68(a, 4, data_ov001_0231f074, data_ov001_02316840.unk7A, 0);
+        Model_SetAnimation(a, 0, data_ov001_0231f068, data_ov001_02316840.unk78, 0);
+        Model_SetAnimation(a, 4, data_ov001_0231f074, data_ov001_02316840.unk7A, 0);
         a->unk10C &= ~4;
         a->unk110 &= ~4;
-        func_02031a68(b, 0, data_ov001_0231f068, data_ov001_02316840.unk7C, 0);
-        func_02031a68(b, 4, data_ov001_0231f074, data_ov001_02316840.unk7E, 0);
+        Model_SetAnimation(b, 0, data_ov001_0231f068, data_ov001_02316840.unk7C, 0);
+        Model_SetAnimation(b, 4, data_ov001_0231f074, data_ov001_02316840.unk7E, 0);
         b->unk10C &= ~4;
         b->unk110 &= ~4;
         b->unk118 = 0x1000;

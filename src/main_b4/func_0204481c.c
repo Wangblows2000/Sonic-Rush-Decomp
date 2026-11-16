@@ -43,8 +43,8 @@ typedef struct {
     u16 unk8;
 } UnkStruct_02369ac0;
 
-extern UnkTask_0204481c *data_022b4574;
-extern UnkDisp_0204481c *data_02072c78[];
+extern UnkTask_0204481c *gTaskCurrent;
+extern UnkDisp_0204481c *gDisplayTable[];
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern u16 data_02073264[];
 extern s16 data_02073274[];
@@ -52,7 +52,7 @@ extern s16 data_02073276[];
 
 void func_02044ad0(void);
 void func_02003d78(vu32 *p, u32 a, u32 b, u32 c, u32 d);
-void func_02032480(UnkSpr_0204481c *s, s32 sx, s32 sy, s32 r);
+void AnimatorSprite_DrawRotScale(UnkSpr_0204481c *s, s32 sx, s32 sy, s32 r);
 void func_02044798(UnkObj_0204481c *o, s32 idx, u16 c);
 
 static inline s32 FX_Mul_0204481c(s32 a, s32 b) {
@@ -77,20 +77,20 @@ void func_0204481c(void) {
     s32 sx;
     s32 sy;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     idx = w->unk8 - 1;
     obj = w->obj;
     w->unk0 += 0x100;
     if (w->unk0 >= 0x1000) {
-        data_022b4574->fn = func_02044ad0;
+        gTaskCurrent->fn = func_02044ad0;
         w->unk8 = data_ov000_02369ac0.unk8;
         func_02003d78((vu32 *)0x4001050, 0, 0, 0x1f, 0x1f);
-        data_02072c78[1]->unk20 = 0x40;
-        data_02072c78[1]->unk22 = 0x1f1f;
+        gDisplayTable[1]->unk20 = 0x40;
+        gDisplayTable[1]->unk22 = 0x1f1f;
     } else {
         v = Lerp_0204481c(0x1f, 0, CLAMP_0204481c(w->unk0), 3);
         if (v != 0) {
-            data_02072c78[1]->unk22 = v | ((0x1f - v) << 8);
+            gDisplayTable[1]->unk22 = v | ((0x1f - v) << 8);
             spr = &obj->spr[data_02073264[idx]];
             sx = Lerp_0204481c(0x1000, 0x1199, CLAMP_0204481c(w->unk0), 3);
             sy = Lerp_0204481c(0x1000, 0x2000, CLAMP_0204481c(w->unk0), 3);
@@ -98,7 +98,7 @@ void func_0204481c(void) {
             spr->unk2c |= 0x600;
             spr->unk4 = data_02073274[idx * 2];
             spr->unk6 = data_02073276[idx * 2];
-            func_02032480(spr, sx, sy, 0);
+            AnimatorSprite_DrawRotScale(spr, sx, sy, 0);
             spr->unk2c &= ~0x600;
             spr->unk44 = 6;
         }

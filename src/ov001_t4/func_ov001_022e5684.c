@@ -24,27 +24,27 @@ typedef struct {
     u8 pad70[0x670 - 0x70];
 } UnkWork_022e5684;
 
-extern void *data_0208fe80;
-u8 *func_02033fbc(void *path, s32 b);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+extern void *gMainHeap;
+u8 *File_Load(void *path, s32 b);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 s32 func_ov001_022e3ecc(void *p);
 u32 func_ov001_022e3ec0(void *p);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *p);
-void func_02033a68(void *src, void *dst, u32 size);
-void func_0203473c(void *bg, void *res, s32 a, s32 b, s32 c, u16 w, u16 h);
-void func_0203438c(void *bg);
+void *Compress_GetData(void *p);
+void Mem_Copy(void *src, void *dst, u32 size);
+void Background_Init(void *bg, void *res, s32 a, s32 b, s32 c, u16 w, u16 h);
+void Background_Draw(void *bg);
 void func_ov001_022e833c(UnkWork_022e5684 *w);
 
 #pragma thumb on
 static inline u8 *Alloc_022e5684(u32 size) {
-    u8 *p = func_02034a40(data_0208fe80, size, 0x20);
+    u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -68,8 +68,8 @@ void func_ov001_022e5684(UnkWork_022e5684 *w, UnkRes_022e5684 *res) {
     w->unk68 = 1;
     w->unk6c = 0xffff;
     w->unk58 = 1;
-    func_0203473c(w->bg, res, 0x1c, 0, 3, 0x40, res->h);
-    func_0203438c(w->bg);
+    Background_Init(w->bg, res, 0x1c, 0, 3, 0x40, res->h);
+    Background_Draw(w->bg);
     w->unk8 = res->w << 3;
     w->unkc = res->h << 3;
     w->buf = Alloc_022e5684(((*(u32 *)((u8 *)res + res->unkc) >> 8) + 0x43) & ~0x1f);
@@ -86,7 +86,7 @@ void func_ov001_022e5684(UnkWork_022e5684 *w, UnkRes_022e5684 *res) {
         func_020087f8(res, p);
         break;
     default:
-        func_02033a68(func_02033a54(res), p, func_ov001_022e3ec0(res));
+        Mem_Copy(Compress_GetData(res), p, func_ov001_022e3ec0(res));
         break;
     }
     DC_StoreRange(p, func_ov001_022e3ec0(res));

@@ -9,12 +9,12 @@ typedef struct {
 
 extern UnkPlayer_02339eec data_ov000_0236aad8[];
 extern u32 data_ov000_0236aab4;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void *func_02006abc(u32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void DC_StoreRange(const void *addr, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 void func_ov000_0233e6c0(void);
 void func_ov000_02341f78(void);
 
@@ -29,7 +29,7 @@ static inline void UnkFree_02339eec(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov000_02339eec(void) {

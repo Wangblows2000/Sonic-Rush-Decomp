@@ -47,11 +47,11 @@ typedef struct {
 
 extern UnkStruct_023171b4_S data_ov000_0236aad8;
 
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_02355b20(UnkStruct_023171b4_P *p, s16 a, s16 b);
 void func_ov000_02355da0(UnkStruct_023171b4_P *p, UnkStruct_023171b4 *w);
 void func_0201c070(void *p, s32 a);
-s32 func_02068ce4(s32 v, s32 a, s32 b, s32 c, s32 d);
+s32 ObjShift_Set(s32 v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_023171b4(UnkStruct_023171b4 *w) {
     s32 flag;
@@ -67,7 +67,7 @@ void func_ov000_023171b4(UnkStruct_023171b4 *w) {
             if (w->unk130->unk4 == p) {
                 if (p->unk420 & 0x80) {
                     if (w->unk8 == 0)
-                        func_0204b7ec(w->unk1DC, 0, 0x73);
+                        Sound_PlaySeqArcEx(w->unk1DC, 0, 0x73);
                     flag = 1;
                     w->unk8++;
                     if (w->unk8 > 0x40)
@@ -92,7 +92,7 @@ void func_ov000_023171b4(UnkStruct_023171b4 *w) {
             if ((p->unk58 & 0x2000000) &&
                 ((!(w->unk5C & 1) && !(p->unk5C & 1)) || ((w->unk5C & 1) && (p->unk5C & 1)))) {
                 if (w->unk8 == 0)
-                    func_0204b7ec(w->unk1DC, 0, 0x73);
+                    Sound_PlaySeqArcEx(w->unk1DC, 0, 0x73);
                 flag = 1;
                 w->unk8++;
                 if (w->unk8 > 0x40)
@@ -129,7 +129,7 @@ void func_ov000_023171b4(UnkStruct_023171b4 *w) {
     if (!flag) {
         old = w->unkC;
         func_0201c070(w->unk1DC, 0);
-        w->unkC = func_02068ce4(w->unkC, 0, 2, 0x200, 0x80);
+        w->unkC = ObjShift_Set(w->unkC, 0, 2, 0x200, 0x80);
         if (w->unkC == 0)
             w->unk1B8 = w;
         if (w->unk1E0->unk2 == 0xbb)

@@ -3,7 +3,7 @@
 extern void *data_ov001_0231f068;
 extern s32 data_ov001_0231f520;
 extern s32 data_ov001_0231f524;
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov001_022f3b50(void *p);
 void func_ov001_022fb3c8(void *p, s32 a, s32 b, s32 c);
 void func_ov001_022f524c(void);
@@ -17,7 +17,7 @@ void func_ov001_022f52e0(u8 *p) {
     }
     q = *(u8 **)(p + 0x1dc);
     *(void (**)(void))(p + 0x74) = func_ov001_022f524c;
-    func_02031a68(r, 0, data_ov001_0231f068, 0x11, 0);
+    Model_SetAnimation(r, 0, data_ov001_0231f068, 0x11, 0);
     *(s32 *)(p + 0x1d0) = 3;
     func_ov001_022fb3c8(p, *(s32 *)(q + 0xe0) - data_ov001_0231f524, -(*(s32 *)(q + 0xe4) + data_ov001_0231f520), 0);
 }

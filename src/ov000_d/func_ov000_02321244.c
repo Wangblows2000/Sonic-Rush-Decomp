@@ -27,7 +27,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-void func_02069818(void *w, s32 a);
+void StageObj_SetAnimation(void *w, s32 a);
 u16 func_020027a4(s32 y, s32 x);
 void func_ov000_02321188(void);
 
@@ -35,7 +35,7 @@ void func_ov000_02321244(UnkStruct_02321244 *w, UnkStruct_02321244 *o) {
     s32 idx;
 
     if (w->unk9C & 1) {
-        func_02069818(w, (u16)(w->unk9C - 1));
+        StageObj_SetAnimation(w, (u16)(w->unk9C - 1));
     }
     w->unk68 = func_ov000_02321188;
     w->unk5C |= 4;

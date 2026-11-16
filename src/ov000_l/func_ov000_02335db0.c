@@ -26,7 +26,7 @@ extern UnkVec_02335db0 data_ov000_0236aa9c;
 void func_ov000_02335554(void);
 void func_ov000_023355ac(void);
 void func_ov000_023354ac(void);
-UnkTask_02335db0 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_02335db0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 
 void func_ov000_02335db0(void) {
@@ -34,7 +34,7 @@ void func_ov000_02335db0(void) {
     UnkWork_02335db0 *w;
     vu16 zero;
 
-    task = func_020372d0(func_ov000_02335554, func_ov000_023355ac, 0, 0x90, 3, sizeof(UnkWork_02335db0));
+    task = Task_Create(func_ov000_02335554, func_ov000_023355ac, 0, 0x90, 3, sizeof(UnkWork_02335db0));
     w = task->work;
     data_ov000_0236aa90 = task;
     zero = 0;

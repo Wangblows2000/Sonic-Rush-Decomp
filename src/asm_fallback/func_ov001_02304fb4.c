@@ -3,11 +3,11 @@
 
 extern void MIi_CpuCopy16(void);
 extern u32 data_0206e470;
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 extern u32 data_02087cf0;
-extern u32 data_0208fe70;
-extern u32 data_02250434;
-extern u32 data_02250438;
+extern u32 gRandSeed;
+extern u32 gPaletteTransferTail;
+extern u32 gPaletteTransferHead;
 extern u32 data_ov001_02316ee0;
 extern u32 data_ov001_02316f08;
 extern u32 data_ov001_02316f1c;
@@ -15,8 +15,8 @@ extern u32 data_ov001_02316f44;
 extern u32 data_ov001_02316f94;
 extern u32 data_ov001_0231f54c;
 extern u32 data_ov001_0231f550;
-extern void func_020356bc(void);
-extern void func_02035754(void);
+extern void PaletteTransfer_QueueLoad(void);
+extern void PaletteTransfer_Flush(void);
 extern void func_ov001_022ffce8(void);
 extern void func_ov001_02304948(void);
 extern void func_ov001_0230494c(void);
@@ -41,8 +41,8 @@ asm void func_ov001_02304fb4(void)
     mov r2, #0x5000000
     str r1, [r7]
     str r1, [r3]
-    bl func_020356bc
-    bl func_02035754
+    bl PaletteTransfer_QueueLoad
+    bl PaletteTransfer_Flush
     mov r2, r7
     ldr r0, [pc, #0x2e0]
     ldr r1, [pc, #0x2d8]
@@ -68,8 +68,8 @@ _80:
     mov r2, #0x5000000
     str r1, [r7]
     str r1, [r3]
-    bl func_020356bc
-    bl func_02035754
+    bl PaletteTransfer_QueueLoad
+    bl PaletteTransfer_Flush
     mov r2, r7
     ldr r0, [pc, #0x278]
     ldr r1, [pc, #0x270]
@@ -232,8 +232,8 @@ _238:
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
     dcd data_ov001_0231f550
-    dcd data_02250438
-    dcd data_02250434
+    dcd gPaletteTransferHead
+    dcd gPaletteTransferTail
     dcd data_ov001_0231f54c
     dcd data_ov001_02316f44
     dcd data_ov001_02316f94
@@ -245,7 +245,7 @@ _238:
     dcd data_0206e470
     dcd 0x000008ac
     dcd 0x0000ffff
-    dcd data_0208fe70
+    dcd gRandSeed
     dcd 0x00196225
     dcd 0x3c6ef35f
     dcd 0x00000fff
@@ -254,5 +254,5 @@ _238:
     dcd 0x0000072c
     dcd data_02087cf0
     dcd 0x04000014
-    dcd data_02087cb8
+    dcd gSystemFlags
 }

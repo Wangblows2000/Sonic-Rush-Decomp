@@ -21,15 +21,15 @@ struct UnkStruct_0234ee38 {
     s32 unk3E8;
 };
 
-s16 func_02068df8(s32 v, s32 a, s32 b);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
 void func_ov000_0234a064(UnkStruct_0234ee38 *w, s32 a);
 
 void func_ov000_0234ee38(UnkStruct_0234ee38 *w) {
     w->unkC++;
     if (w->unkC & 0x10)
-        w->unk30 = func_02068df8(w->unk30, -0x10, 0x80);
+        w->unk30 = ObjSpd_UpSet(w->unk30, -0x10, 0x80);
     else
-        w->unk30 = func_02068df8(w->unk30, 0x10, 0x80);
+        w->unk30 = ObjSpd_UpSet(w->unk30, 0x10, 0x80);
     if ((!(w->unk58 & 1) || w->unkC <= 0xc) && w->unkC <= 0x168)
         return;
     if (w->unk340 == 0)

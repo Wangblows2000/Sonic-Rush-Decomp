@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-void func_02033fbc(void *p, s32 v);
+void File_Load(void *p, s32 v);
 
 void func_ov001_02314204(void *p) {
-    func_02033fbc(p, -1);
+    File_Load(p, -1);
 }

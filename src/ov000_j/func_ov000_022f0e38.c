@@ -19,12 +19,12 @@ typedef struct {
 } UnkStruct_022f0e38;
 
 extern UnkStruct_02089250 data_02089250;
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 
 void func_ov000_022f0cb0(UnkStruct_022f0e38 *p);
 
 void func_ov000_022f0e38(UnkStruct_022f0e38 *p) {
     data_02089250.c += 2;
-    if (data_0208922c.unk24.c >= 0x10)
+    if (gDisplayMain.unk24.c >= 0x10)
         p->unk68 = func_ov000_022f0cb0;
 }

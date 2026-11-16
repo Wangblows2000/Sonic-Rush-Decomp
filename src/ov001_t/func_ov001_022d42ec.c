@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
-extern u16 data_0208922c[];
-extern u16 data_02087d04[];
+extern u16 gDisplayMain[];
+extern u16 gDisplaySub[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_0203ac70(s32 a);
-void func_02039b48(void);
-void func_020395f4(void);
+void Vram_SetBankConfig(s32 a);
+void Vram_ResetTexAndPltt(void);
+void VramPltt_Reset(void);
 void func_02002ab0(s32 a, s32 b, s32 c);
 void GXS_SetGraphicsMode(u32 mode);
 
@@ -19,9 +19,9 @@ void func_ov001_022d42ec(void) {
     vu32 z4;
     vu32 z5;
 
-    func_0203ac70(0);
-    func_02039b48();
-    func_020395f4();
+    Vram_SetBankConfig(0);
+    Vram_ResetTexAndPltt();
+    VramPltt_Reset();
     *(vu16 *)0x4000304 = (*(vu16 *)0x4000304 & ~0x20e) | 0x20e;
     *(vu16 *)0x4000304 |= 0x8000;
     func_02002ab0(1, 0, 0);
@@ -40,22 +40,22 @@ void func_ov001_022d42ec(void) {
     *(vu16 *)0x400100a = (*(vu16 *)0x400100a & ~3) | 1;
     *(vu16 *)0x400100c = (*(vu16 *)0x400100c & ~3) | 2;
     *(vu16 *)0x400100e = (*(vu16 *)0x400100e & ~3) | 3;
-    data_0208922c[0] = 0;
-    data_0208922c[1] = 0;
-    data_0208922c[2] = 0;
-    data_0208922c[3] = 0;
-    data_0208922c[4] = 0;
-    data_0208922c[5] = 0;
-    data_0208922c[6] = 0;
-    data_0208922c[7] = 0;
-    data_02087d04[0] = 0;
-    data_02087d04[1] = 0;
-    data_02087d04[2] = 0;
-    data_02087d04[3] = 0;
-    data_02087d04[4] = 0;
-    data_02087d04[5] = 0;
-    data_02087d04[6] = 0;
-    data_02087d04[7] = 0;
+    gDisplayMain[0] = 0;
+    gDisplayMain[1] = 0;
+    gDisplayMain[2] = 0;
+    gDisplayMain[3] = 0;
+    gDisplayMain[4] = 0;
+    gDisplayMain[5] = 0;
+    gDisplayMain[6] = 0;
+    gDisplayMain[7] = 0;
+    gDisplaySub[0] = 0;
+    gDisplaySub[1] = 0;
+    gDisplaySub[2] = 0;
+    gDisplaySub[3] = 0;
+    gDisplaySub[4] = 0;
+    gDisplaySub[5] = 0;
+    gDisplaySub[6] = 0;
+    gDisplaySub[7] = 0;
     z0 = 0;
     MIi_CpuClear32(z0, (void *)0x6000000, 0x80000);
     z1 = 0;

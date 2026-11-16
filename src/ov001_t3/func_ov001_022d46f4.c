@@ -22,25 +22,25 @@ typedef struct {
     UnkWork_022d46f4 *work;
 } UnkTask_022d46f4;
 
-extern s32 data_02250438;
-extern s32 data_02250434;
+extern s32 gPaletteTransferHead;
+extern s32 gPaletteTransferTail;
 
-UnkTask_022d46f4 *func_020372d0(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
+UnkTask_022d46f4 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022d4538(void);
-void func_020356bc(s32 a, s32 b, u16 *pal);
-void func_02035754(void);
+void PaletteTransfer_QueueLoad(s32 a, s32 b, u16 *pal);
+void PaletteTransfer_Flush(void);
 
 #pragma thumb on
 static inline void LoadPal_022d46f4(s32 id, u16 *pal) {
-    s32 s0 = data_02250438;
-    s32 s1 = data_02250434;
-    data_02250438 = 0;
-    data_02250434 = 0;
-    func_020356bc(id, 0, pal);
-    func_02035754();
-    data_02250438 = s0;
-    data_02250434 = s1;
+    s32 s0 = gPaletteTransferHead;
+    s32 s1 = gPaletteTransferTail;
+    gPaletteTransferHead = 0;
+    gPaletteTransferTail = 0;
+    PaletteTransfer_QueueLoad(id, 0, pal);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = s0;
+    gPaletteTransferTail = s1;
 }
 
 UnkTask_022d46f4 *func_ov001_022d46f4(UnkRes_022d46f4 *res, s32 a, s32 b, s32 count, s32 extra) {
@@ -56,7 +56,7 @@ UnkTask_022d46f4 *func_ov001_022d46f4(UnkRes_022d46f4 *res, s32 a, s32 b, s32 co
     u16 b0;
     u16 b1;
 
-    t = func_020372d0(func_ov001_022d4538, NULL, 0, 0x3000, 0, sizeof(UnkWork_022d46f4));
+    t = Task_Create(func_ov001_022d4538, NULL, 0, 0x3000, 0, sizeof(UnkWork_022d46f4));
     w = t->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_022d46f4));

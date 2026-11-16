@@ -13,16 +13,16 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 
-s16 func_02068df8(s32 v, s32 a, s32 m);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void func_ov000_022fe7e8(UnkStruct_022fe84c *w);
 
 void func_ov000_022fe84c(UnkStruct_022fe84c *w) {
     if (w->base.unkC != 0) {
         w->base.unkC--;
         if (w->base.unkC & 0x10)
-            w->base.unk30 = func_02068df8(w->base.unk30, -0x10, 0x40);
+            w->base.unk30 = ObjSpd_UpSet(w->base.unk30, -0x10, 0x40);
         else
-            w->base.unk30 = func_02068df8(w->base.unk30, 0x10, 0x40);
+            w->base.unk30 = ObjSpd_UpSet(w->base.unk30, 0x10, 0x40);
         if (w->base.unkC <= 0xc)
             w->base.unk30 = 0;
         if (w->base.unkC == 8)

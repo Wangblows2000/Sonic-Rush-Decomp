@@ -2,17 +2,17 @@
 #include <nitro/types.h>
 
 s32 func_ov000_023475fc();
-s32 func_02068db4();
+s32 ObjSpd_DownSet();
 s32 func_ov000_0234a064();
 
 void func_ov000_02352ee0(u8 *p0) {
     func_ov000_023475fc();
-    s32 t0 = func_02068db4(*(u8 *)((u8 *)p0 + 0x3), 2);
+    s32 t0 = ObjSpd_DownSet(*(u8 *)((u8 *)p0 + 0x3), 2);
     *(u8 *)((u8 *)p0 + 0x3) = t0;
-    s32 t1 = func_02068db4(*(s16 *)((u8 *)p0 + 0x2e), 0x60);
+    s32 t1 = ObjSpd_DownSet(*(s16 *)((u8 *)p0 + 0x2e), 0x60);
     *(u16 *)((u8 *)p0 + 0x2e) = t1;
     if (*(u32 *)((u8 *)p0 + 0xc) == 0) {
-        s32 t2 = func_02068db4(*(s16 *)((u8 *)p0 + 0x30), 0x60);
+        s32 t2 = ObjSpd_DownSet(*(s16 *)((u8 *)p0 + 0x30), 0x60);
         *(u16 *)((u8 *)p0 + 0x30) = t2;
     }
     *(u32 *)((u8 *)p0 + 0xc) = 1;

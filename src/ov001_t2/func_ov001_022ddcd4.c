@@ -22,10 +22,10 @@ typedef struct UnkTask_022ddcd4 {
 
 extern UnkTask_022ddcd4 *data_ov001_0231f058;
 extern s32 data_ov001_0231be10;
-extern s32 data_02087ccc;
-extern u32 data_02087cb8;
+extern s32 gSaveDataBusy;
+extern u32 gSystemFlags;
 
-UnkTask_022ddcd4 *func_020372d0(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_022ddcd4 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 s32 func_02051814(void);
 void func_020518b8(void);
@@ -35,7 +35,7 @@ void func_ov001_022dd4b8(void);
 
 #pragma thumb on
 void func_ov001_022ddcd4(s32 a, s32 b, s32 c) {
-    UnkTask_022ddcd4 *t = func_020372d0(func_ov001_022dd428, func_ov001_022dd854, 0, 0x1000, 0, sizeof(UnkWork_022ddcd4));
+    UnkTask_022ddcd4 *t = Task_Create(func_ov001_022dd428, func_ov001_022dd854, 0, 0x1000, 0, sizeof(UnkWork_022ddcd4));
     UnkWork_022ddcd4 *w;
 
     data_ov001_0231f058 = t;
@@ -51,8 +51,8 @@ void func_ov001_022ddcd4(s32 a, s32 b, s32 c) {
     w->unkdb4 = c;
     w->unk18 = 0;
     data_ov001_0231be10 = 1;
-    data_02087ccc = 1;
-    data_02087cb8 |= 0x10;
+    gSaveDataBusy = 1;
+    gSystemFlags |= 0x10;
     func_020518b8();
     t->fn = func_ov001_022dd4b8;
 }

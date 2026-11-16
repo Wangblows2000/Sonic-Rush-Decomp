@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern void func_02068a34(void);
+extern void ObjAngle_MoveToward16(void);
 
 asm void func_ov000_023045c0(void)
 {
@@ -41,7 +41,7 @@ _58:
     mov r1, r5, lsl #0x10
     mov r0, r0, lsr #0x10
     mov r1, r1, lsr #0x10
-    bl func_02068a34
+    bl ObjAngle_MoveToward16
     str r0, [r4, #8]
     ldr r1, [r4, #8]
     mov r0, r5, lsl #0x10
@@ -59,7 +59,7 @@ _b8:
     mov r1, r5, lsl #0x10
     mov r0, r0, lsr #0x10
     mov r1, r1, lsr #0x10
-    bl func_02068a34
+    bl ObjAngle_MoveToward16
     str r0, [r4, #8]
     ldr r1, [r4, #8]
     mov r0, r5, lsl #0x10

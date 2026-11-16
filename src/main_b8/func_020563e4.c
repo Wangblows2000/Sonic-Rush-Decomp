@@ -12,8 +12,8 @@ typedef struct {
     UnkModel_020563e4 models[1];
 } UnkWork_020563e4;
 
-void func_020316f4(UnkModel_020563e4 *m);
-void func_020315e0(UnkModel_020563e4 *m);
+void Model_Animate(UnkModel_020563e4 *m);
+void Model_Draw(UnkModel_020563e4 *m);
 
 #pragma thumb on
 void func_020563e4(UnkWork_020563e4 *w) {
@@ -21,8 +21,8 @@ void func_020563e4(UnkWork_020563e4 *w) {
 
     for (i = 0; i < w->count; i++) {
         UnkModel_020563e4 *m = &w->models[i];
-        func_020316f4(m);
-        func_020315e0(m);
+        Model_Animate(m);
+        Model_Draw(m);
     }
 }
 #pragma thumb reset

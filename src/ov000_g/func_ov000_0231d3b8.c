@@ -32,7 +32,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-s32 func_02068db4(s32 a, s32 b);
+s32 ObjSpd_DownSet(s32 a, s32 b);
 void func_02000dfc(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
@@ -54,7 +54,7 @@ void func_ov000_0231d3b8(UnkStruct_0231d3b8 *w) {
         if (p->unk32C & 2) {
             w->unk8 -= w->unkC;
             w->unk8 &= 0xffff;
-            w->unkC = func_02068db4(w->unkC, 6);
+            w->unkC = ObjSpd_DownSet(w->unkC, 6);
         } else {
             old = w->unk8;
             w->unk8 = (u16)((u8)(p->unk3 - 0x10) << 8);
@@ -71,7 +71,7 @@ void func_ov000_0231d3b8(UnkStruct_0231d3b8 *w) {
     } else {
         w->unk8 -= w->unkC;
         w->unk8 &= 0xffff;
-        w->unkC = func_02068db4(w->unkC, 6);
+        w->unkC = ObjSpd_DownSet(w->unkC, 6);
         func_02000dfc(m->mtx);
         idx = (s32)((u16)(-w->unk8) & 0xffff) >> 4;
         MTX_RotY33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);

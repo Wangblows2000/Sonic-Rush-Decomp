@@ -14,12 +14,12 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_022c4520 data_022c4520;
-extern void *data_0208fe78;
+extern void *gSystemHeap;
 
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void Free_0204cb10(u8 *p) {
     if ((u8 *)func_02006abc(0) != p) {
@@ -32,7 +32,7 @@ static inline void Free_0204cb10(u8 *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe78, p);
+    Heap_Free(gSystemHeap, p);
 }
 
 void func_0204cb10(void) {

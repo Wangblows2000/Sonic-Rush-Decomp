@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
-s32 func_020594f8(void);
+s32 SaveData_Startup(void);
 void func_0205a27c(u32 a, u32 b);
 void func_0205a304(void);
 
 s32 func_0205a558(u32 arg) {
-    switch (func_020594f8()) {
+    switch (SaveData_Startup()) {
     case 0:
     case 4:
         return 1;

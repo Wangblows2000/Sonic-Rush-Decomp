@@ -21,42 +21,42 @@ typedef struct {
     UnkStruct_023428dc *work;
 } UnkStruct_023428dc_T;
 
-extern UnkStruct_023428dc_T *data_022b4574;
-extern u8 data_0225044c;
-extern u32 data_02087cb8;
+extern UnkStruct_023428dc_T *gTaskCurrent;
+extern u8 gBGMVolume;
+extern u32 gSystemFlags;
 
 void func_0201c070(void *spr, s32 a);
 void func_0201bf1c(void *spr);
 void func_0201bfac(void *spr, s32 a);
 void func_0204c598(u8 a, s32 b, u32 c);
-void func_020371c8(void *task);
+void Task_Destroy(void *task);
 
 void func_ov000_023428dc(void) {
-    UnkStruct_023428dc *w = data_022b4574->work;
+    UnkStruct_023428dc *w = gTaskCurrent->work;
 
     switch (w->state) {
     case 0x16:
         if (w->pl->unk3B4 == 0x5A) {
             func_0201c070(w->spr, 0x5A);
             func_0201bf1c(w->spr);
-            func_0204c598(data_0225044c, 0x5A, w->pl->unk32C & 0x4000000);
-            func_020371c8(data_022b4574);
+            func_0204c598(gBGMVolume, 0x5A, w->pl->unk32C & 0x4000000);
+            Task_Destroy(gTaskCurrent);
         } else if (w->pl->unk3B4 == 0) {
             func_0201c070(w->spr, 0);
-            func_0204c598(data_0225044c, 0, w->pl->unk32C & 0x4000000);
-            func_020371c8(data_022b4574);
+            func_0204c598(gBGMVolume, 0, w->pl->unk32C & 0x4000000);
+            Task_Destroy(gTaskCurrent);
         }
         break;
     case 0x17:
-        if (data_02087cb8 & 8) {
+        if (gSystemFlags & 8) {
             func_0201bfac(w->spr, 1);
         } else {
             func_0201bfac(w->spr, 0);
         }
         if (w->pl->unk3CA == 0) {
             func_0201c070(w->spr, 0);
-            func_0204c598(data_0225044c, 0x3C, w->pl->unk32C & 0x4000000);
-            func_020371c8(data_022b4574);
+            func_0204c598(gBGMVolume, 0x3C, w->pl->unk32C & 0x4000000);
+            Task_Destroy(gTaskCurrent);
         }
         break;
     }

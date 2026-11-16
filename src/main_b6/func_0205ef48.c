@@ -82,10 +82,10 @@ typedef struct {
 extern UnkWork_0205ef48 *data_022c4d98;
 extern void *data_ov001_0231f528;
 extern char data_0207c610[];
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 extern u16 data_02076b5c[];
 
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 u8 *func_ov001_022ffce8(void);
 UnkCam_0205ef48 *func_ov001_022f71f4(void);
@@ -121,7 +121,7 @@ void func_0205ef48(void) {
     u32 v;
     u32 f[0x18];
 
-    w = ((UnkTask_0205ef48 *)func_020372d0(func_0205ec5c, func_0205eb68, 0, 0x3efe, 3, 0x8d0))->work;
+    w = ((UnkTask_0205ef48 *)Task_Create(func_0205ec5c, func_0205eb68, 0, 0x3efe, 3, 0x8d0))->work;
     data_022c4d98 = w;
     {
         vu16 z = 0;
@@ -169,14 +169,14 @@ void func_0205ef48(void) {
     REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | 0x1c00;
     func_02021310(f, data_0207c610, data_ov001_0231f528);
     w->res[0] = func_02021264(f, 0);
-    switch (data_02072cb8) {
+    switch (gGameLanguage) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        v = data_02072cb8;
+        v = gGameLanguage;
         break;
     default:
         v = 1;

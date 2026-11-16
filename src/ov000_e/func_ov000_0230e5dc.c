@@ -1,10 +1,10 @@
 #include <ov000_c/stageobj.h>
 
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 UnkStruct_StageObj *func_ov000_0232dedc(UnkStruct_StageObj *w, s16 a, s16 b, s16 c, s16 d, u8 e);
 void func_ov000_0232e48c(UnkStruct_StageObj *w, s16 x, s16 y);
 void func_0201c070(s32 a, s32 b);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0230e50c(void);
 
 void func_ov000_0230e5dc(UnkStruct_StageObj *w) {
@@ -18,11 +18,11 @@ void func_ov000_0230e5dc(UnkStruct_StageObj *w) {
     w->unk30 = -0x280;
     w->unk2E = w->unk34 >> 1;
     w->unk34 = 0;
-    func_020446b0(4);
+    ScreenShake_Start(4);
     w->unk62 = 0x44;
     func_ov000_0232dedc(w, 0, 0, 0, -0x200, 0);
     func_ov000_0232dedc(w, 0, 0, 0, -0x200, 1);
     func_ov000_0232e48c(w, 0x14, 0);
     func_0201c070(w->unk1DC, 0);
-    func_0204b7ec(0, 0, 0x64);
+    Sound_PlaySeqArcEx(0, 0, 0x64);
 }

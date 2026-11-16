@@ -13,8 +13,8 @@ typedef struct {
 extern void *data_ov000_0236ac60;
 extern s16 data_ov000_0236a2bc[];
 
-void func_0204b7ec(void *p, s32 a, s32 b);
-void func_02068204(void *a, void *b, void *c);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
+void Sound_SetPositional(void *a, void *b, void *c);
 void func_ov000_02311684(UnkStruct_02311124 *w);
 void func_02067d58(void *a);
 
@@ -28,7 +28,7 @@ void func_ov000_02311124(UnkStruct_02311124 *w) {
         if (w->base.unk1E0->unk7 > 0) {
             if (w->base.unk10 > (((u32)w->base.unk8 + 1) * 12 + w->base.unk1E8) << 8) {
                 w->base.unk8++;
-                func_0204b7ec((void *)w->base.unk1DC, 0, 0x70);
+                Sound_PlaySeqArcEx((void *)w->base.unk1DC, 0, 0x70);
             }
             if (w->base.unk10 > (w->base.unk1E0->unk8 * 12 + w->base.unk1E8) << 8) {
                 w->base.unk10 = w->base.unk1E8 << 8;
@@ -37,7 +37,7 @@ void func_ov000_02311124(UnkStruct_02311124 *w) {
         } else {
             if (w->base.unk10 < (w->base.unk1E8 - ((u32)w->base.unk8 + 1) * 12) << 8) {
                 w->base.unk8++;
-                func_0204b7ec((void *)w->base.unk1DC, 0, 0x70);
+                Sound_PlaySeqArcEx((void *)w->base.unk1DC, 0, 0x70);
             }
             if (w->base.unk10 < (w->base.unk1E8 - w->base.unk1E0->unk8 * 12) << 8) {
                 w->base.unk10 = w->base.unk1E8 << 8;
@@ -48,7 +48,7 @@ void func_ov000_02311124(UnkStruct_02311124 *w) {
         if (w->base.unk1E0->unk7 > 0) {
             if (w->base.unk14 > (((u32)w->base.unk8 + 1) * 12 + w->base.unk1EC) << 8) {
                 w->base.unk8++;
-                func_0204b7ec((void *)w->base.unk1DC, 0, 0x70);
+                Sound_PlaySeqArcEx((void *)w->base.unk1DC, 0, 0x70);
             }
             if (w->base.unk14 > (w->base.unk1E0->unk8 * 12 + w->base.unk1EC) << 8) {
                 w->base.unk14 = w->base.unk1EC << 8;
@@ -57,7 +57,7 @@ void func_ov000_02311124(UnkStruct_02311124 *w) {
         } else {
             if (w->base.unk14 < (w->base.unk1EC - ((u32)w->base.unk8 + 1) * 12) << 8) {
                 w->base.unk8++;
-                func_0204b7ec((void *)w->base.unk1DC, 0, 0x70);
+                Sound_PlaySeqArcEx((void *)w->base.unk1DC, 0, 0x70);
             }
             if (w->base.unk14 < (w->base.unk1EC - w->base.unk1E0->unk8 * 12) << 8) {
                 w->base.unk14 = w->base.unk1EC << 8;
@@ -65,7 +65,7 @@ void func_ov000_02311124(UnkStruct_02311124 *w) {
             }
         }
     }
-    func_02068204((void *)w->base.unk1DC, w, data_ov000_0236ac60);
+    Sound_SetPositional((void *)w->base.unk1DC, w, data_ov000_0236ac60);
     p = w->base.unk1E0;
     if (p->unk6 != 0 && data_ov000_0236a2bc[p->unk6] == 0) {
         func_ov000_02311684(w);

@@ -17,17 +17,17 @@ typedef struct {
     UnkWork_022dbdb0 *work;
 } UnkTask_022dbdb0;
 
-extern UnkTask_022dbdb0 *data_022b4574;
+extern UnkTask_022dbdb0 *gTaskCurrent;
 
 void func_02040d14(UnkAnim_022dbdb0 *a);
 BOOL func_02040cf4(UnkAnim_022dbdb0 *a);
-void func_020371c8(UnkTask_022dbdb0 *t);
+void Task_Destroy(UnkTask_022dbdb0 *t);
 void func_ov001_022d9e50(UnkWork_022dbdb0 *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022dbdb0 *w, s32 x, s32 y);
 
 #pragma thumb on
 void func_ov001_022dbdb0(void) {
-    UnkWork_022dbdb0 *w = data_022b4574->work;
+    UnkWork_022dbdb0 *w = gTaskCurrent->work;
     BOOL done;
 
     func_02040d14(&w->anims[0]);
@@ -41,7 +41,7 @@ void func_ov001_022dbdb0(void) {
     }
     if (done) {
         w->timer = 0;
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         return;
     }
     {

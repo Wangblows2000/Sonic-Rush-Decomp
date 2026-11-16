@@ -63,7 +63,7 @@ typedef struct UnkStruct_022f6be8_p {
     s32 unk1C;
 } UnkStruct_022f6be8_p;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_022f6be8_o *data_ov001_0231f078[];
 extern void *data_ov001_0231f070;
 extern void *data_ov001_0231f068;
@@ -71,14 +71,14 @@ extern void *data_ov001_0231f074;
 extern u16 data_ov001_02316840[];
 
 UnkStruct_022f6be8_o *func_ov001_023014f4(s32 a, s32 b);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_02031c1c(void *s, u32 a);
-void func_02031bd0(void *s, void *res, u32 idx);
-void func_02031a68(void *p, s32 a, void *b, s32 c, u32 d);
+void Model_Init(void *s, u32 a);
+void Model_SetResource(void *s, void *res, u32 idx);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov001_022ee784(void);
 void func_ov001_022ee73c(void);
@@ -93,7 +93,7 @@ void func_ov001_022ee874(void);
 void func_ov001_022f687c(void);
 void func_ov001_022f63dc(UnkStruct_022f6be8_o *o);
 void func_ov001_022f3c60(void);
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern UnkStruct_022f6be8_o *data_ov001_0231f06c;
 typedef struct UnkStruct_022f6be8_q {
     u8 pad0[0x40];
@@ -102,8 +102,8 @@ typedef struct UnkStruct_022f6be8_q {
 UnkStruct_022f6be8_q *func_ov001_022ffce8(void);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 
@@ -120,7 +120,7 @@ UnkStruct_022f6be8_o *func_ov001_022f6be8(void) {
     q = func_ov001_022ffce8();
     o = func_ov001_023014f4(2, 0x2f00);
     data_ov001_0231f06c = o;
-    d = (UnkStruct_022f6be8_d *)func_02034a40(data_0208fe80, 0x1a0, 0x20);
+    d = (UnkStruct_022f6be8_d *)Heap_Alloc(gMainHeap, 0x1a0, 0x20);
     if ((void *)func_02006abc(0) != d) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, d, 0x1a0);
@@ -132,7 +132,7 @@ UnkStruct_022f6be8_o *func_ov001_022f6be8(void) {
     zero = 0;
     MIi_CpuClear16(zero, d, 0x168);
     o->unk1DC = d;
-    a = (UnkStruct_022f6be8_a *)func_02034a40(data_0208fe80, 0x160, 0x20);
+    a = (UnkStruct_022f6be8_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
     if ((void *)func_02006abc(0) != a) {
         fill2 = 0xcccccccc;
         MIi_CpuClear32(fill2, a, 0x160);
@@ -141,11 +141,11 @@ UnkStruct_022f6be8_o *func_ov001_022f6be8(void) {
         DC_StoreRange(a, 0x160);
         a = (UnkStruct_022f6be8_a *)((u8 *)a + 0x20);
     }
-    func_02031c1c(a, 0);
-    func_02031bd0(a, data_ov001_0231f070, 0);
+    Model_Init(a, 0);
+    Model_SetResource(a, data_ov001_0231f070, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x34cc;
     o->unk84 = a;
-    func_02031a68(a, 0, data_ov001_0231f068, 0, 0);
+    Model_SetAnimation(a, 0, data_ov001_0231f068, 0, 0);
     a->unk10C |= 4;
     a->unk114 = 0x1000;
     o->unk14 |= 0x40000;

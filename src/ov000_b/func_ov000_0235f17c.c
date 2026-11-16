@@ -37,7 +37,7 @@ UnkStruct_0235f17c *func_ov000_0235f17c(s32 a, s32 b, s32 c) {
     u8 *p;
     s16 br;
 
-    task = func_020372d0(func_ov000_0235eab8, func_ov000_0235ec68, 0, 0x1000, 0x1000, sizeof(UnkStruct_0235f17c));
+    task = Task_Create(func_ov000_0235eab8, func_ov000_0235ec68, 0, 0x1000, 0x1000, sizeof(UnkStruct_0235f17c));
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0235f17c));

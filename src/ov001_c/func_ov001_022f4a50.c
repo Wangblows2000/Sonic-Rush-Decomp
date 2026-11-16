@@ -49,7 +49,7 @@ extern u16 data_ov001_02316918[];
 extern u16 data_ov001_02316924[];
 
 void func_ov001_022f4910(void);
-void func_02031a68(UnkStruct_022f4a50_o *o, u32 slot, void *res, u32 idx, void *tex);
+void Model_SetAnimation(UnkStruct_022f4a50_o *o, u32 slot, void *res, u32 idx, void *tex);
 s32 func_02002094(s32 n, s32 d);
 void func_ov001_022ffb9c(s32 a, void *b, s32 *c, u16 *d, u16 *e, s32 n);
 
@@ -68,7 +68,7 @@ void func_ov001_022f4a50(UnkStruct_022f4a50 *p) {
         p->unk1CC = 0x1000;
     if (o->unk10C & 2) {
         p->unk74 = func_ov001_022f4910;
-        func_02031a68(o, 0, data_ov001_0231f068, 0, 0);
+        Model_SetAnimation(o, 0, data_ov001_0231f068, 0, 0);
         o->unk10C |= 4;
         p->unk50 = func_02002094(0x100000 - p->unk18, 0xb4);
         p->unk54 = func_02002094(0xc0000 - p->unk1C, 0xb4);

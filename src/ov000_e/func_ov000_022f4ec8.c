@@ -41,7 +41,7 @@ typedef struct {
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_022f4ec8_Pl *data_ov000_0236ac60;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_0234aa80(UnkStruct_022f4ec8_Pl *p);
 void func_ov000_023281c0(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022f8948(void);
@@ -64,7 +64,7 @@ void func_ov000_022f4ec8(UnkStruct_022f4ec8_Coll *a, UnkStruct_022f4ec8_Coll *b)
                 pl->unk2E = -0xb00;
         }
         func_ov000_023281c0(1, pl->unk17C >> 4, -pl->unk180 >> 4, pl->unk184 >> 4);
-        func_02036754(0, 0, 0x7b);
+        Sound_PlaySeqArc(0, 0, 0x7b);
         switch (data_ov000_02369ac0.unk4) {
         case 0x30:
             func_ov000_022f8948();

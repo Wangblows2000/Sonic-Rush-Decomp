@@ -23,7 +23,7 @@ extern u16 data_022c4ef8;
 
 void func_ov000_0234ec78(void);
 void func_ov000_0234c4a4(UnkStruct_0234eccc *w, s32 a);
-void func_02043c7c(s32 a, s32 b);
+void BrightnessFade_Create(s32 a, s32 b);
 
 void func_ov000_0234eccc(UnkStruct_0234eccc *w) {
     w->unk330 |= 0xC0;
@@ -35,7 +35,7 @@ void func_ov000_0234eccc(UnkStruct_0234eccc *w) {
         w->unkC = 0;
         data_022c4ef8 = 0x100;
         w->unk2E = 0;
-        func_02043c7c(3, 0x20);
+        BrightnessFade_Create(3, 0x20);
         w->unk68 = func_ov000_0234ec78;
         func_ov000_0234c4a4(w, 0x2F);
     }

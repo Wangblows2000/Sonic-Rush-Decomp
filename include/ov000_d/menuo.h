@@ -53,7 +53,7 @@ typedef struct {
     UnkStruct_MenuO *work;
 } UnkStruct_MenuOTask;
 
-extern UnkStruct_MenuOTask *data_022b4574;
+extern UnkStruct_MenuOTask *gTaskCurrent;
 
 void func_02040d14(UnkStruct_MenuOPos *p);
 void func_02040ec0(UnkStruct_MenuOPos *p, s32 n);
@@ -71,16 +71,16 @@ static inline void MenuO_Update(UnkStruct_MenuO *w, s32 b) {
     w->unk0++;
 }
 
-void func_02033550(UnkStruct_MenuOSpr *spr, u16 anim);
+void AnimatorSprite_SetAnimation(UnkStruct_MenuOSpr *spr, u16 anim);
 
 static inline void MenuO_SetAnim(UnkStruct_MenuOSpr *spr, s32 *cur, s32 a) {
     if (*cur != a) {
-        func_02033550(spr, a);
+        AnimatorSprite_SetAnimation(spr, a);
         *cur = a;
     }
 }
-void func_0203344c(UnkStruct_MenuOSpr *spr, s32 a, s32 b);
-void func_02032d2c(UnkStruct_MenuOSpr *spr);
-void func_02032480(UnkStruct_MenuOSpr *spr, s32 sx, s32 sy, s32 c);
+void AnimatorSprite_ProcessAnimation(UnkStruct_MenuOSpr *spr, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkStruct_MenuOSpr *spr);
+void AnimatorSprite_DrawRotScale(UnkStruct_MenuOSpr *spr, s32 sx, s32 sy, s32 c);
 
 #endif

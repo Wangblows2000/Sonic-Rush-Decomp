@@ -13,7 +13,7 @@ typedef struct UnkStruct_0230611c_t {
 
 extern UnkStruct_0230611c *volatile data_ov001_0231f5a8;
 extern vu8 data_02087d14[];
-extern UnkStruct_0230611c_t *data_022b4574;
+extern UnkStruct_0230611c_t *gTaskCurrent;
 
 void func_ov001_02305fbc(void);
 
@@ -26,6 +26,6 @@ void func_ov001_0230611c(void) {
     data_02087d14[4] = data_02087d14[6] = data_02087d14[4] + w->t;
     if (data_ov001_0231f5a8->t < 4)
         return;
-    data_022b4574->func = func_ov001_02305fbc;
+    gTaskCurrent->func = func_ov001_02305fbc;
     data_ov001_0231f5a8->unk5E4 = 0;
 }

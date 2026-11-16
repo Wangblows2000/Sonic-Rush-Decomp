@@ -32,7 +32,7 @@ void func_ov000_0231d904(UnkStruct_0231d904 *w) {
         func_ov000_0231d81c(w);
         return;
     }
-    func_02069818(w, 0);
+    StageObj_SetAnimation(w, 0);
     w->unk5C |= 4;
     w->unk30 = -0x200;
     w->unk58 |= 0x10;
@@ -47,7 +47,7 @@ void func_ov000_0231d904(UnkStruct_0231d904 *w) {
             w->unk2E = -w->unk2E;
     case 6:
     case 10:
-        func_02069818(w, 1);
+        StageObj_SetAnimation(w, 1);
         w->unk5C |= 4;
         break;
     }
@@ -69,7 +69,7 @@ void func_ov000_0231d904(UnkStruct_0231d904 *w) {
         case 0x87:
             break;
         }
-        func_02069818(w, 1);
+        StageObj_SetAnimation(w, 1);
         w->unk5C |= 4;
     }
     w->unk198++;

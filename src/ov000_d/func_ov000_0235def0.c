@@ -25,28 +25,28 @@ void func_ov000_0235def0(UnkStruct_SprObj *w, s32 sel, s32 scale) {
     spr = &w->spr[10];
     if (w->anim[10] != a) {
         w->anim[10] = a;
-        func_02033550(spr, w->anim[10]);
+        AnimatorSprite_SetAnimation(spr, w->anim[10]);
     }
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     spr->x = 4;
     spr->y = 0xc0;
     if (scale == 0x1000) {
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     } else {
-        func_02032480(spr, 0x1000, scale, 0);
+        AnimatorSprite_DrawRotScale(spr, 0x1000, scale, 0);
     }
     spr = &w->spr[11];
     if (w->anim[11] != b) {
         w->anim[11] = b;
-        func_02033550(spr, w->anim[11]);
+        AnimatorSprite_SetAnimation(spr, w->anim[11]);
     }
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     spr->x = 0x94;
     spr->y = 0xc0;
     if (scale == 0x1000) {
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     } else {
-        func_02032480(spr, 0x1000, scale, 0);
+        AnimatorSprite_DrawRotScale(spr, 0x1000, scale, 0);
     }
 }
 

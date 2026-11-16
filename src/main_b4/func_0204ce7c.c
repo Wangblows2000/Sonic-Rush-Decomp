@@ -13,8 +13,8 @@ typedef struct {
     s32 unk84;
 } UnkStruct_0208f754;
 
-extern UnkDisp_0204ce7c data_0208922c;
-extern UnkDisp_0204ce7c data_02087d04;
+extern UnkDisp_0204ce7c gDisplayMain;
+extern UnkDisp_0204ce7c gDisplaySub;
 extern UnkStruct_0208f754 data_0208f754;
 
 void func_02002f60(void);
@@ -30,17 +30,17 @@ void func_02002e50(void);
 void func_02002e28(void);
 void func_02002eb4(void);
 void func_02002ea0(void);
-void func_0203a6bc(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_02039d08(s32 i);
-void func_0203a9d0(s32 a);
-void func_02039ef8(s32 a);
-void func_02039b48(void);
-void func_02039d40(s32 a);
-void func_020395f4(void);
+void Vram_SetBankForOBJ(s32 a, s32 b, s32 c, s32 d, s32 e);
+void ObjVram_Reset(s32 i);
+void Vram_SetBankForBG(s32 a);
+void Vram_SetBankForTex(s32 a);
+void Vram_ResetTexAndPltt(void);
+void Vram_SetBankForTexPltt(s32 a);
+void VramPltt_Reset(void);
 void func_02002ab0(s32 a, s32 b, s32 c);
 void func_02004040(u32 a, u32 b, u16 c, u32 d, BOOL e);
-void func_0203a288(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203a43c(s32 a);
+void Vram_SetBankForSubOBJ(s32 a, s32 b, s32 c, s32 d, s32 e);
+void Vram_SetBankForSubBG(s32 a);
 void GXS_SetGraphicsMode(s32 mode);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
 
@@ -68,15 +68,15 @@ void func_0204ce7c(s32 mode) {
     func_02002e28();
     func_02002eb4();
     func_02002ea0();
-    func_0203a6bc(0x40, 0x100010, 0x40, 0, 0x100);
-    func_02039d08(0);
-    func_0203a9d0(0x10);
-    func_02039ef8(0xb);
+    Vram_SetBankForOBJ(0x40, 0x100010, 0x40, 0, 0x100);
+    ObjVram_Reset(0);
+    Vram_SetBankForBG(0x10);
+    Vram_SetBankForTex(0xb);
     if (mode == 0)
-        func_02039b48();
-    func_02039d40(0x20);
+        Vram_ResetTexAndPltt();
+    Vram_SetBankForTexPltt(0x20);
     if (mode == 0)
-        func_020395f4();
+        VramPltt_Reset();
     func_02002ab0(1, 0, 1);
     *(vu32 *)0x4000000 &= ~0x38000000;
     *(vu32 *)0x4000000 &= ~0x7000000;
@@ -96,10 +96,10 @@ void func_0204ce7c(s32 mode) {
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & ~3) | 0;
     *(vu16 *)0x400000e = (*(vu16 *)0x400000e & ~3) | 2;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1100;
-    ClearBlend_0204ce7c(&data_0208922c);
-    func_0203a288(0x100, 0x100010, 0x40, 0, 0x100);
-    func_02039d08(1);
-    func_0203a43c(4);
+    ClearBlend_0204ce7c(&gDisplayMain);
+    Vram_SetBankForSubOBJ(0x100, 0x100010, 0x40, 0, 0x100);
+    ObjVram_Reset(1);
+    Vram_SetBankForSubBG(4);
     GXS_SetGraphicsMode(0);
     *(vu16 *)0x4001008 = (*(vu16 *)0x4001008 & 0x43) | 0x2788;
     *(vu16 *)0x400100a = (*(vu16 *)0x400100a & 0x43) | 0x2698;
@@ -109,10 +109,10 @@ void func_0204ce7c(s32 mode) {
     *(vu16 *)0x400100a = (*(vu16 *)0x400100a & ~3) | 3;
     *(vu16 *)0x400100c = (*(vu16 *)0x400100c & ~3) | 0;
     *(vu16 *)0x400100e = (*(vu16 *)0x400100e & ~3) | 2;
-    data_0208922c.brightness = 0x10;
-    data_02087d04.brightness = 0x10;
-    SetBrightness_0204ce7c((vu16 *)0x400006c, &data_0208922c);
-    SetBrightness_0204ce7c((vu16 *)0x400106c, &data_02087d04);
+    gDisplayMain.brightness = 0x10;
+    gDisplaySub.brightness = 0x10;
+    SetBrightness_0204ce7c((vu16 *)0x400006c, &gDisplayMain);
+    SetBrightness_0204ce7c((vu16 *)0x400106c, &gDisplaySub);
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1c00;
-    ClearBlend_0204ce7c(&data_02087d04);
+    ClearBlend_0204ce7c(&gDisplaySub);
 }

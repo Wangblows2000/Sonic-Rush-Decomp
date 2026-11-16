@@ -33,20 +33,20 @@ typedef struct {
 extern UnkEntry_022c93e0 *data_ov001_0231f048;
 extern u8 data_ov001_0231abc8[];
 extern const char *data_ov001_0231ab44[];
-extern void *data_02250458;
+extern void *gSoundHeap;
 
-void func_02036894(void);
+void Sound_ResetHeap(void);
 void func_0202a2f0(char *buf, const void *fmt, const char *s);
 void func_02036854(char *buf);
 void func_0201e7cc(u8 a, void *b);
-s32 func_02033fbc(char *buf, s32 a);
+s32 File_Load(char *buf, s32 a);
 void func_02036820(s32 a);
 void func_020203bc(s32 a, void *b);
 void func_020201b0(void *a);
 void func_02020230(void *a, u16 id, s32 b);
-void func_020367b4(s32 a, u16 id);
+void Sound_PlaySeq(s32 a, u16 id);
 u8 *func_0201d534(u16 id);
-void func_02036754(s32 a, u8 b, u16 id);
+void Sound_PlaySeqArc(s32 a, u8 b, u16 id);
 void func_020366f4(s32 a, u8 b, u16 id);
 void func_0201cf4c(s32 a, s32 b, s32 c, s32 d, s32 e, void (*fn)(void *), void *arg);
 void func_ov001_022c8f30(void *p);
@@ -58,7 +58,7 @@ void func_ov001_022c93e0(UnkStruct_022c93e0 *p, s32 idx) {
     char buf[0x24];
 
     e = &data_ov001_0231f048[idx];
-    func_02036894();
+    Sound_ResetHeap();
     if (p->active) {
         if (p->cur != p->idx) p->unk24 = 0;
     } else {
@@ -74,21 +74,21 @@ void func_ov001_022c93e0(UnkStruct_022c93e0 *p, s32 idx) {
     func_0202a2f0(buf, data_ov001_0231abc8, data_ov001_0231ab44[e->unk29]);
     if (e->unk29 == 0) {
         func_02036854(buf);
-        func_0201e7cc(e->unk2b, data_02250458);
+        func_0201e7cc(e->unk2b, gSoundHeap);
     } else {
-        p->unk1b0 = func_02033fbc(buf, -1);
+        p->unk1b0 = File_Load(buf, -1);
         func_02036820(p->unk1b0);
     }
     switch (e->type) {
     case 0:
         if (e->unk29 == 0 && e->unk2b == 0xe) {
-            func_020203bc(10, data_02250458);
+            func_020203bc(10, gSoundHeap);
             func_020201b0(p->unk1a4);
             func_02020230(p->unk1a4, e->id, 0);
             p->unk4 = 1;
             p->unk8 = 1;
         } else {
-            func_020367b4(0, e->id);
+            Sound_PlaySeq(0, e->id);
             p->unk4 = 0;
             p->unkc = 1;
             d = func_0201d534(e->id);
@@ -100,7 +100,7 @@ void func_ov001_022c93e0(UnkStruct_022c93e0 *p, s32 idx) {
         }
         break;
     case 1:
-        func_02036754(0, e->unk2c, e->id);
+        Sound_PlaySeqArc(0, e->unk2c, e->id);
         p->unk4 = 0;
         p->unk8 = 1;
         break;

@@ -12,13 +12,13 @@ typedef struct UnkStruct_022ebe00 {
     s32 unk364;
 } UnkStruct_022ebe00;
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022ebdc4(void);
 
 void func_ov000_022ebe00(UnkStruct_022ebe00 *s) {
     void *p = s->unk20C;
     s->unk5C &= ~4;
-    func_02031a68(p, 0, s->unk358, 0, 0);
-    func_02031a68(p, 1, s->unk364, 0, 0);
+    Model_SetAnimation(p, 0, s->unk358, 0, 0);
+    Model_SetAnimation(p, 1, s->unk364, 0, 0);
     s->func = func_ov000_022ebdc4;
 }

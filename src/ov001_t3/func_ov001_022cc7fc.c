@@ -35,14 +35,14 @@ typedef struct {
     u32 flags;
 } UnkTouch_022cc7fc;
 
-extern UnkTask_022cc7fc *data_022b4574;
-extern UnkPad_022cc7fc data_022503e0;
-extern UnkTouch_022cc7fc data_022b65b4;
+extern UnkTask_022cc7fc *gTaskCurrent;
+extern UnkPad_022cc7fc gPad;
+extern UnkTouch_022cc7fc gTouchState;
 
 void func_ov001_022cc17c(UnkWork_022cc7fc *w);
 void func_ov001_022cbf30(UnkWork_022cc7fc *w);
 void func_ov001_022cdef8(void);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 BOOL func_ov001_022c8ba8(u16 x, u16 y);
 s32 func_ov001_022c8d54(UnkSub_022cc7fc *s);
 void func_ov001_022cc33c(void);
@@ -55,7 +55,7 @@ void func_ov001_022cc7fc(void) {
     u16 x;
     u16 y;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     sub = &w->sub;
     func_ov001_022cc17c(w);
     func_ov001_022cbf30(w);
@@ -67,30 +67,30 @@ void func_ov001_022cc7fc(void) {
         if (w->unk1c > 10) {
             w->unk1c = -1;
             func_ov001_022cdef8();
-            data_022b4574->func = func_ov001_022cc33c;
+            gTaskCurrent->func = func_ov001_022cc33c;
         }
     }
     if (w->unk1c < 0) {
-        if (data_022503e0.trg & 2) {
+        if (gPad.trg & 2) {
             func_ov001_022cdef8();
-            data_022b4574->func = func_ov001_022cc33c;
-            func_02052104(1);
-        } else if (data_022b65b4.flags & 0x40) {
-            x = data_022b65b4.x;
-            y = data_022b65b4.y;
+            gTaskCurrent->func = func_ov001_022cc33c;
+            SysSound_PlaySE(1);
+        } else if (gTouchState.flags & 0x40) {
+            x = gTouchState.x;
+            y = gTouchState.y;
             if (x < 0x100 && y < 0xc0 && func_ov001_022c8ba8(x, y)) {
                 w->unk1c = 0;
-                func_02052104(1);
+                SysSound_PlaySE(1);
             }
         }
         sub->unk8 = func_ov001_022c8d54(sub);
         if (sub->unk8 > 0) {
-            func_02052104(0);
+            SysSound_PlaySE(0);
             sub->timer = 0;
             w->unk14 = 0;
             w->unk18 = 0;
             sub->unk4 = 5;
-            data_022b4574->func = func_ov001_022cc6b8;
+            gTaskCurrent->func = func_ov001_022cc6b8;
         }
     }
 }

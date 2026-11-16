@@ -35,7 +35,7 @@ extern s32 data_ov001_0231d5ec[][5];
 
 UnkStruct_022fb17c_c *func_ov001_022ffce8(void);
 void func_ov001_022fb074(UnkStruct_022fb17c *p);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 static inline s32 GetLevel(void) {
     BOOL b = TRUE;
@@ -59,5 +59,5 @@ void func_ov001_022fb17c(UnkStruct_022fb17c *p) {
     else
         p->sy = data_ov001_0231d5ec[GetLevel()][func_ov001_022ffce8()->chr];
     p->unk1D0 = 0;
-    func_02036754(0, 0, 0xaf);
+    Sound_PlaySeqArc(0, 0, 0xaf);
 }

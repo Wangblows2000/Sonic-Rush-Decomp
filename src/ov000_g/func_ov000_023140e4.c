@@ -21,16 +21,16 @@ extern s16 data_0206e470[];
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 
-void func_0204b7ec(void *p, s32 a, s32 b);
-void func_02068204(void *a, void *b, void *c);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
+void Sound_SetPositional(void *a, void *b, void *c);
 
 void func_ov000_023140e4(UnkStruct_023140e4 *w) {
     if (w->unk58 & 0x100)
         return;
     if (!(w->unk58 & 1))
         return;
-    func_0204b7ec(w->unk1DC, 0, 0x5f);
-    func_02068204(w->unk1DC, w, data_ov000_0236ac60);
+    Sound_PlaySeqArcEx(w->unk1DC, 0, 0x5f);
+    Sound_SetPositional(w->unk1DC, w, data_ov000_0236ac60);
     w->unk62 |= 0x44;
     w->unk58 |= 0x100;
     w->unk58 &= ~1;

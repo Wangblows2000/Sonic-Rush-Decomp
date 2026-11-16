@@ -13,10 +13,10 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 extern void *data_ov001_0231f068;
 extern s32 data_ov001_0231694c[][5];
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 u8 *func_ov001_022ffce8(void);
 u16 func_02002094(s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov001_022f4f54(void);
 
 void func_ov001_022f4fac(u8 *p) {
@@ -24,7 +24,7 @@ void func_ov001_022f4fac(u8 *p) {
     BOOL b;
     s32 k;
     *(void (**)(void))(p + 0x74) = func_ov001_022f4f54;
-    func_02031a68(q, 0, data_ov001_0231f068, 0x13, 0);
+    Model_SetAnimation(q, 0, data_ov001_0231f068, 0x13, 0);
     q[0x10c] &= ~4;
     *(s32 *)(q + 0x114) = 0x1000;
     b = TRUE;
@@ -39,5 +39,5 @@ void func_ov001_022f4fac(u8 *p) {
     *(s32 *)(p + 0x1cc) = data_ov001_0231694c[k][*(s32 *)(func_ov001_022ffce8() + 0x40)];
     *(u16 *)(p + 0x1d4) = func_02002094(0x5555, *(s32 *)(p + 0x1cc) - 1);
     *(u32 *)(p + 0xb8) |= 0x200;
-    func_02036754(0, 0, 0xa5);
+    Sound_PlaySeqArc(0, 0, 0xa5);
 }

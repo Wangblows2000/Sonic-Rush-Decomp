@@ -2,7 +2,7 @@
 
 #pragma thumb on
 
-extern u32 data_0224ffa0;
-void *func_020514e4(void) { return &data_0224ffa0; }
+extern u32 gWirelessSendBuffer;
+void *func_020514e4(void) { return &gWirelessSendBuffer; }
 
 #pragma thumb reset

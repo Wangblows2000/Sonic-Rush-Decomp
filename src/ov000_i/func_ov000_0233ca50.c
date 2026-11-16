@@ -20,8 +20,8 @@ typedef struct {
 extern UnkPlayer_0233ca50 data_ov000_0236aad8[2];
 
 s32 func_0200225c(s32 a, s32 b);
-void func_0203344c(void *p, s32 a, s32 b);
-void func_02032d2c(void *p);
+void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
+void AnimatorSprite_Draw(void *p);
 
 void func_ov000_0233ca50(u8 *w) {
     u8 i;
@@ -35,8 +35,8 @@ void func_ov000_0233ca50(u8 *w) {
     if (*(u32 *)((u8 *)data_ov000_0236aad8 + 0xc8) & 0x2000000)
         return;
     s = (UnkSpr_0233ca50 *)(w + 0x8bc);
-    func_0203344c(&s[0], 0, 0);
-    func_0203344c(&s[1], 0, 0);
+    AnimatorSprite_ProcessAnimation(&s[0], 0, 0);
+    AnimatorSprite_ProcessAnimation(&s[1], 0, 0);
     for (i = 0; i < 2; i++) {
         p = &data_ov000_0236aad8[i];
         if ((p->flags & 0x1000000) && !(p->flags & 0x2000000)) {
@@ -47,7 +47,7 @@ void func_ov000_0233ca50(u8 *w) {
                 sp->y = y;
                 for (x = -0x20; x < 0x100; x += 0x40) {
                     sp->x = x;
-                    func_02032d2c(sp);
+                    AnimatorSprite_Draw(sp);
                 }
             }
         }

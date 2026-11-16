@@ -8,8 +8,8 @@ typedef struct {
 
 extern UnkCfg_02348f58 data_022c4560;
 void func_ov000_0234c4a4(u8 *w, s32 a);
-void func_02043c7c(s32 a, s32 b);
-BOOL func_02043a58(void);
+void BrightnessFade_Create(s32 a, s32 b);
+BOOL BrightnessFade_IsDone(void);
 void func_ov000_0234d0bc(u8 *w);
 
 void func_ov000_02348f58(u8 *w) {
@@ -20,15 +20,15 @@ void func_ov000_02348f58(u8 *w) {
     }
     if (*(s32 *)(w + 0xc) == 0x3c) {
         if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2)
-            func_02043c7c(4, 0x40);
+            BrightnessFade_Create(4, 0x40);
         else
-            func_02043c7c(4, 0x100);
+            BrightnessFade_Create(4, 0x100);
     }
     if (*(s32 *)(w + 0xc) < 0x3c)
         return;
-    if (!func_02043a58())
+    if (!BrightnessFade_IsDone())
         return;
-    func_02043c7c(2, 0x100);
+    BrightnessFade_Create(2, 0x100);
     *(u32 *)(w + 0x32c) &= ~0x400;
     func_ov000_0234d0bc(w);
     (*(void (**)(u8 *))(w + 0x334))(w);

@@ -44,7 +44,7 @@ typedef struct {
     void *unk480;
 } UnkStruct_022e8724;
 
-extern volatile UnkStruct_0208922c data_0208922c;
+extern volatile UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Bits5 data_02089250;
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern UnkStruct_Boss *data_ov000_02369b78;
@@ -54,8 +54,8 @@ extern s16 data_0206e470[];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-s32 func_02044690(void);
-s32 func_02044670(void);
+s32 ScreenShake_GetOffsetX(void);
+s32 ScreenShake_GetOffsetY(void);
 UnkStruct_Fx *func_ov000_02328468(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022eb3c4(UnkStruct_022e8724 *w);
 void func_ov000_02326f20(void);
@@ -69,10 +69,10 @@ void func_ov000_022e8724(UnkStruct_022e8724 *w) {
     UnkStruct_Boss *b = data_ov000_02369b78;
     UnkStruct_Fx *fx;
 
-    if (data_0208922c.unk24.b0 != 0) {
+    if (gDisplayMain.unk24.b0 != 0) {
         data_02089250.b0 -= 1;
-        data_ov000_0236a444.unk3C = func_02044690() << 13;
-        data_ov000_0236a444.unk40 = func_02044670() << 13;
+        data_ov000_0236a444.unk3C = ScreenShake_GetOffsetX() << 13;
+        data_ov000_0236a444.unk40 = ScreenShake_GetOffsetY() << 13;
     }
     if (w->unk3D0 == 0) {
         if (!(b->unk220 & 7)) {
@@ -89,7 +89,7 @@ void func_ov000_022e8724(UnkStruct_022e8724 *w) {
     w->base.unk30 = FX_Mul(SIN_IDX((s32)((u16)w->base.unk8 & 0xffff) >> 4), data_ov000_02363b74[w->unk42C]) >> 4;
     if (!(w->base.unk58 & 1))
         return;
-    if (data_0208922c.unk24.b0 != 0)
+    if (gDisplayMain.unk24.b0 != 0)
         return;
     w->base.unk30 = 0;
     w->base.unk58 |= 0x80;

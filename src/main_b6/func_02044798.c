@@ -23,7 +23,7 @@ typedef struct {
 extern u16 data_02073264[];
 extern UnkPos_02044798 data_02073274[];
 
-void func_02032d2c(UnkSpr_02044798 *s);
+void AnimatorSprite_Draw(UnkSpr_02044798 *s);
 
 void func_02044798(UnkWork_02044798 *w, s32 n, u16 prio) {
     s32 i;
@@ -33,7 +33,7 @@ void func_02044798(UnkWork_02044798 *w, s32 n, u16 prio) {
         s->x = data_02073274[i].x;
         s->y = data_02073274[i].y;
         s->prio = prio;
-        func_02032d2c(s);
+        AnimatorSprite_Draw(s);
     }
-    func_02032d2c(&w->extra);
+    AnimatorSprite_Draw(&w->extra);
 }

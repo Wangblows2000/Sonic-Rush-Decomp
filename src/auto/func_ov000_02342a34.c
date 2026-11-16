@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 func_0201bf1c();
-s32 func_020365bc();
+s32 Sound_FreeHandle();
 extern u8 data_ov000_0236ac34[];
 
 void func_ov000_02342a34(u8 *p0) {
@@ -13,7 +13,7 @@ void func_ov000_02342a34(u8 *p0) {
     }
     s32 t2 = *(u32 *)t1;
     if (t2 != 0) {
-        func_020365bc(t2);
+        Sound_FreeHandle(t2);
     }
     *(u32 *)data_ov000_0236ac34 = 0;
 }

@@ -55,16 +55,16 @@ typedef struct {
     UnkStruct_PlayerHit *unk3E4;
 } UnkStruct_Player;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 static inline u16 Player_Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0234c4a4(UnkStruct_Player *w, s32 a);
 void func_ov000_0234307c(UnkStruct_Player *w, s16 a);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_0201c070(void *p, s32 a);
 void func_0201be98(void *p, s32 vol);
 void func_ov000_02345830(UnkStruct_Player *w, s32 a);

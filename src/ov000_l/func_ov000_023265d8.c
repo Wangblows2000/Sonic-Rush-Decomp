@@ -14,7 +14,7 @@ typedef struct {
 } UnkTask_023265d8;
 
 void func_ov000_0232644c(u8 *e);
-void func_0206bef4(UnkTask_023265d8 *t);
+void StageObj_Destructor(UnkTask_023265d8 *t);
 
 void func_ov000_023265d8(UnkTask_023265d8 *t) {
     UnkWork_023265d8 *w = t->work;
@@ -24,5 +24,5 @@ void func_ov000_023265d8(UnkTask_023265d8 *t) {
         func_ov000_0232644c(e);
     else if (!(w->unk194 & 0x10) && e != NULL)
         e[0] = w->unk188;
-    func_0206bef4(t);
+    StageObj_Destructor(t);
 }

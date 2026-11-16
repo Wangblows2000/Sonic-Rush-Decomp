@@ -24,7 +24,7 @@ typedef struct {
     UnkWork_0204fa74 *work;
 } UnkTask_0204fa74;
 
-extern UnkTask_0204fa74 *data_022b4574;
+extern UnkTask_0204fa74 *gTaskCurrent;
 void func_0204f200(UnkWork_0204fa74 *w, void *a, void *b, u16 idx, s32 d);
 extern s32 data_02074ca8[];
 extern u16 data_02074c04[];
@@ -32,7 +32,7 @@ void func_0204fdf4(void);
 
 #pragma thumb on
 void func_0204fa74(void) {
-    UnkWork_0204fa74 *w = data_022b4574->work;
+    UnkWork_0204fa74 *w = gTaskCurrent->work;
     s32 st = w->unk1c;
     if (st != 0x1c) {
         void *b = w->files[data_02074ca8[st]];

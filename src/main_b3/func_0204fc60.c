@@ -12,15 +12,15 @@ typedef struct {
     UnkRes_0204fc60 *res[5];/* 0x570 */
 } UnkWork_0204fc60;
 typedef struct { u8 pad0[8]; void (*fn)(void); u8 padC[4]; UnkWork_0204fc60 *work; } UnkTask_0204fc60;
-extern UnkTask_0204fc60 *data_022b4574;
+extern UnkTask_0204fc60 *gTaskCurrent;
 
-void func_0203473c(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203438c(void *buf);
+void Background_Init(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
+void Background_Draw(void *buf);
 void func_0204fc04(void);
 
 #pragma thumb on
 void func_0204fc60(void) {
-    UnkWork_0204fc60 *w = data_022b4574->work;
+    UnkWork_0204fc60 *w = gTaskCurrent->work;
     UnkRes_0204fc60 *res;
 
     switch (w->unk44) {
@@ -43,8 +43,8 @@ void func_0204fc60(void) {
         res = w->res[0];
         break;
     }
-    func_0203473c(w->bg, res, 0, w->unk28, (u8)w->unk2C, res->unk18, res->unk1A);
-    func_0203438c(w->bg);
-    data_022b4574->fn = func_0204fc04;
+    Background_Init(w->bg, res, 0, w->unk28, (u8)w->unk2C, res->unk18, res->unk1A);
+    Background_Draw(w->bg);
+    gTaskCurrent->fn = func_0204fc04;
 }
 #pragma thumb reset

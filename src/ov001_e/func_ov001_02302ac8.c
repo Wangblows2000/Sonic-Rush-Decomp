@@ -2,13 +2,13 @@
 
 extern void *data_ov001_0231f540;
 extern void *data_ov001_0231f538;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void func_0202566c(void *p);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void Free(void *p) {
     u8 *blk = p;
@@ -22,7 +22,7 @@ static inline void Free(void *p) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }
 
 void func_ov001_02302ac8(void) {

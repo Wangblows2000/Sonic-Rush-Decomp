@@ -20,7 +20,7 @@ typedef struct UnkTask_022edd28 {
     UnkWork_022edd28 *work;
 } UnkTask_022edd28;
 
-UnkTask_022edd28 *func_020372d0(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
+UnkTask_022edd28 *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022ed818(void);
 void func_ov001_022ed964(void);
@@ -31,7 +31,7 @@ UnkWork_022edd28 *func_ov001_022edd28(void) {
     UnkWork_022edd28 *w;
     vu16 zero;
 
-    w = func_020372d0(func_ov001_022ed818, func_ov001_022ed964, 0, 0x1000, 0x1000, sizeof(UnkWork_022edd28))->work;
+    w = Task_Create(func_ov001_022ed818, func_ov001_022ed964, 0, 0x1000, 0x1000, sizeof(UnkWork_022edd28))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_022edd28));
     w->unk0 = 0;

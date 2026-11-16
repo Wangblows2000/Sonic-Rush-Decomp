@@ -37,7 +37,7 @@ typedef struct UnkStruct_022efa00 {
     UnkStruct_022efa00_l *unk1DC;
 } UnkStruct_022efa00;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u16 data_ov001_02316840[];
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
@@ -50,13 +50,13 @@ extern u16 data_ov001_02316804[];
 extern u16 data_ov001_023167f8[];
 
 void func_ov001_022ef8c0(void);
-void func_02031a68(UnkStruct_022efa00_o *o, u32 slot, void *res, u32 idx, void *tex);
+void Model_SetAnimation(UnkStruct_022efa00_o *o, u32 slot, void *res, u32 idx, void *tex);
 s32 func_02002094(s32 n, s32 d);
 void func_ov001_022ffb9c(s32 a, void *b, s32 *c, u16 *d, u16 *e, s32 n);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -77,15 +77,15 @@ void func_ov001_022efa00(UnkStruct_022efa00 *p) {
         o2 = p->unk1DC->unk18->unk84;
         p->unk74 = func_ov001_022ef8c0;
         o->unk10C |= 0x40;
-        func_02031a68(o, 0, data_ov001_0231f068, data_ov001_02316840[0], 0);
-        func_02031a68(o, 4, data_ov001_0231f074, data_ov001_02316840[1], 0);
+        Model_SetAnimation(o, 0, data_ov001_0231f068, data_ov001_02316840[0], 0);
+        Model_SetAnimation(o, 4, data_ov001_0231f074, data_ov001_02316840[1], 0);
         o->unk12C = 0x400;
         o->unk10C |= 4;
         o->unk110 |= 4;
         o->unk114 = 0x1000;
         o2->unk10C |= 0x40;
-        func_02031a68(o2, 0, data_ov001_0231f068, data_ov001_02316840[2], 0);
-        func_02031a68(o2, 4, data_ov001_0231f074, data_ov001_02316840[3], 0);
+        Model_SetAnimation(o2, 0, data_ov001_0231f068, data_ov001_02316840[2], 0);
+        Model_SetAnimation(o2, 4, data_ov001_0231f074, data_ov001_02316840[3], 0);
         o2->unk12C = 0x400;
         o2->unk10C |= 4;
         o2->unk110 |= 4;

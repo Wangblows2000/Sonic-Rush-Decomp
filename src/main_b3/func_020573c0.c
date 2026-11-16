@@ -6,7 +6,7 @@ typedef struct { u8 pad0[0x30]; void *snd0; void *snd1; } UnkPlayer_020573c0;
 extern s16 data_022c4678;
 extern void *data_02250464;
 
-UnkTask_020573c0 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_020573c0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_0205736c(void);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
@@ -15,7 +15,7 @@ void func_0201c070(void *p, s32 a);
 
 #pragma thumb on
 void func_020573c0(UnkPlayer_020573c0 *player) {
-    UnkTask_020573c0 *t = func_020372d0(func_0205736c, NULL, 0, 0x3efd, 3, sizeof(UnkWork_020573c0));
+    UnkTask_020573c0 *t = Task_Create(func_0205736c, NULL, 0, 0x3efd, 3, sizeof(UnkWork_020573c0));
     UnkWork_020573c0 *w;
     vu16 zero;
 

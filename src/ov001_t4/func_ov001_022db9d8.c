@@ -17,7 +17,7 @@ typedef struct {
     UnkWork_022db9d8 *work;
 } UnkTask_022db9d8;
 
-extern UnkTask_022db9d8 *data_022b4574;
+extern UnkTask_022db9d8 *gTaskCurrent;
 
 void func_ov001_022d9eb4(UnkWork_022db9d8 *w);
 void func_ov001_022da614(UnkWork_022db9d8 *w);
@@ -33,7 +33,7 @@ BOOL func_ov001_022da4ec(void);
 void func_ov001_022da304(UnkWork_022db9d8 *w);
 void func_02051f20(void);
 void func_02051f90(void);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_ov001_022da450(UnkWork_022db9d8 *w);
 void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov001_022db810(void);
@@ -42,7 +42,7 @@ void func_ov001_022db8d0(void);
 
 #pragma thumb on
 void func_ov001_022db9d8(void) {
-    UnkWork_022db9d8 *w = data_022b4574->work;
+    UnkWork_022db9d8 *w = gTaskCurrent->work;
     s32 sel;
     BOOL cancel;
     BOOL empty;
@@ -79,14 +79,14 @@ void func_ov001_022db9d8(void) {
                 w->unk10--;
                 w->unk4 = 0;
                 func_ov001_022d9e74(w);
-                func_02052104(4);
+                SysSound_PlaySE(4);
             }
         } else if (func_ov001_022da48c()) {
             if (w->unk10 < w->unk14 - 1) {
                 w->unk10++;
                 w->unk4 = 0;
                 func_ov001_022d9e74(w);
-                func_02052104(4);
+                SysSound_PlaySE(4);
             }
         } else if (func_ov001_022da52c()) {
             func_ov001_022da304(w);
@@ -116,7 +116,7 @@ void func_ov001_022db9d8(void) {
         func_ov001_022d9eb4(w);
         func_ov001_022da450(w);
         func_02050078(5, 3, 1, 1, 2, 0, 0xe, 0x200010);
-        data_022b4574->func = func_ov001_022db810;
+        gTaskCurrent->func = func_ov001_022db810;
         return;
     }
     if (cancel) {
@@ -126,7 +126,7 @@ void func_ov001_022db9d8(void) {
         func_ov001_022d9eb4(w);
         func_ov001_022da450(w);
         func_02050078(9, 3, 1, 1, 2, 0, 0xe, 0x200010);
-        data_022b4574->func = func_ov001_022db97c;
+        gTaskCurrent->func = func_ov001_022db97c;
         return;
     }
     if (empty) {
@@ -134,7 +134,7 @@ void func_ov001_022db9d8(void) {
         w->unk4 = 0;
         w->unk1c = 0;
         func_ov001_022d9eb4(w);
-        data_022b4574->func = func_ov001_022db8d0;
+        gTaskCurrent->func = func_ov001_022db8d0;
     }
 }
 #pragma thumb reset

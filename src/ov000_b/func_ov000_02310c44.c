@@ -12,19 +12,19 @@ UnkStruct_StageObj *func_ov000_02310c44(s32 a, s32 b, s32 c) {
     UnkStruct_StageObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
+    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_StageObj));
     func_ov000_022fba50(w, a, b, c);
-    func_02069f1c(w, data_ov000_02366cc4, 0, data_ov000_0236a0d4, data_ov000_02369ba0);
-    func_0206a054(w, 0, 3);
-    func_02069eb0(w, 0x40, data_ov000_0236a0dc);
+    StageObj_Load2dBAC(w, data_ov000_02366cc4, 0, data_ov000_0236a0d4, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 0, 3);
+    StageObj_SetSharedSpriteVram(w, 0x40, data_ov000_0236a0dc);
     w->spr0.unk46 = 0x14;
     w->spr1.unk46 = 0x14;
-    func_0206e2b4(&w->coll0, 0x53, -1);
+    ObjRect_SetAtkDefFlags(&w->coll0, 0x53, -1);
     w->coll0.unk1C = NULL;
     w->unk1B8 = w;
     if ((u16)(w->unk1E0->unk2 + 0xffb1) <= 1) {

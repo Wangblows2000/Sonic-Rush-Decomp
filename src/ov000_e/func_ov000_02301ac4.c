@@ -5,7 +5,7 @@ typedef struct {
     void *unk18;
 } UnkStruct_Hit;
 
-BOOL func_0206d7c8(UnkStruct_Hit *h, s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
+BOOL ObjRect_BoxCheck(UnkStruct_Hit *h, s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02351950(UnkStruct_StageObj *p, UnkStruct_StageObj *w, s32 x0, s32 y, s32 x1);
 
 void func_ov000_02301ac4(UnkStruct_Hit *a, UnkStruct_Hit *b) {
@@ -17,7 +17,7 @@ void func_ov000_02301ac4(UnkStruct_Hit *a, UnkStruct_Hit *b) {
         return;
     if (p == NULL)
         return;
-    if (!func_0206d7c8(a, p->unk10 >> 8, p->unk14 >> 8, -6, -0x10, 6, 0x10))
+    if (!ObjRect_BoxCheck(a, p->unk10 >> 8, p->unk14 >> 8, -6, -0x10, 6, 0x10))
         return;
     if (p->unk0 != 1)
         return;

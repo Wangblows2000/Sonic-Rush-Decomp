@@ -31,7 +31,7 @@ typedef struct UnkStruct_022de774_m {
     s32 m[9];
 } UnkStruct_022de774_m;
 
-extern volatile u16 data_022503e0;
+extern volatile u16 gPad;
 extern s16 data_0206e470[];
 
 void func_02000e60(void *m, s32 s, s32 c);
@@ -52,21 +52,21 @@ void func_ov001_022de774(UnkStruct_022de774_p *p, UnkStruct_022de774 *w) {
 
     if (p->unk4 & 0x40000000) {
         for (i = 0; i < 2; i++) {
-            keys = data_022503e0;
+            keys = gPad;
             if (keys & 0x40)
                 w->vec[i].y += 0x1800;
             else if (keys & 0x80)
                 w->vec[i].y -= 0x1800;
-            if (data_022503e0 & 0x200)
+            if (gPad & 0x200)
                 w->ang[i][1] -= 0x100;
-            if (data_022503e0 & 0x100)
+            if (gPad & 0x100)
                 w->ang[i][1] += 0x100;
             func_02000e60(&m1, data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2], data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2 + 1]);
             MTX_RotY33_(&m2, data_0206e470[((w->ang[i][1] & 0xffff) >> 4) * 2], data_0206e470[((w->ang[i][1] & 0xffff) >> 4) * 2 + 1]);
             func_02000f34(&m1, &m2, &w->sub[i]);
-            if (data_022503e0 & 4)
+            if (gPad & 4)
                 w->rot[i] -= 0x200;
-            if (data_022503e0 & 8)
+            if (gPad & 8)
                 w->rot[i] += 0x200;
             w->vec[i].z = FX_Mul(data_0206e470[(w->rot[i] >> 4) * 2 + 1], 0x4000);
             w->vec[i].x = FX_Mul(data_0206e470[(w->rot[i] >> 4) * 2], 0x4000);

@@ -21,7 +21,7 @@ typedef struct {
     UnkSprite_02045d98 spr;
 } UnkObj_02045d98;
 
-void func_02032d2c(UnkSprite_02045d98 *spr);
+void AnimatorSprite_Draw(UnkSprite_02045d98 *spr);
 
 #pragma thumb on
 void func_02045d98(UnkObj_02045d98 *o) {
@@ -30,10 +30,10 @@ void func_02045d98(UnkObj_02045d98 *o) {
     spr->x = 0;
     spr->y = s->y0 >> 12;
     spr->flags &= ~0x100;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
     spr->x = 0;
     spr->y = s->y1 >> 12;
     spr->flags |= 0x100;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
 }
 #pragma thumb reset

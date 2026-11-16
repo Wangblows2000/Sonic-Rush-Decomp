@@ -9,11 +9,11 @@ typedef struct UnkStruct_022faf48 {
     u16 unk196;
 } UnkStruct_022faf48;
 
-void func_02069818(UnkStruct_022faf48 *s, s32 a);
+void StageObj_SetAnimation(UnkStruct_022faf48 *s, s32 a);
 
 void func_ov000_022faf48(UnkStruct_022faf48 *s, s32 a) {
     s->unk13E &= ~4;
     s->unk16A &= ~4;
     s->unk196 &= ~4;
-    func_02069818(s, a);
+    StageObj_SetAnimation(s, a);
 }

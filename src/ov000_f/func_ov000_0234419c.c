@@ -95,10 +95,10 @@ typedef struct {
     u8 pad2[0x2E];
 } UnkStruct_0234419c_Tbl;
 
-extern UnkStruct_0234419c_Task *data_022b4574;
+extern UnkStruct_0234419c_Task *gTaskCurrent;
 extern UnkStruct_0234419c_4560 data_022c4560;
 extern UnkStruct_0234419c_abd8 data_ov000_0236abd8;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern UnkStruct_0234419c_Col data_ov000_02368b74;
 extern UnkStruct_0234419c_Tbl data_ov000_02368b7e[];
 extern UnkStruct_0234419c_Tbl data_ov000_02368b8e[];
@@ -117,7 +117,7 @@ BOOL func_ov000_02345758(s32 x, s32 y);
 u32 func_ov000_023376a4(void);
 void func_ov000_02337688(u32 v);
 void func_0206cdf4(UnkStruct_0234419c_Pal *p, s32 a, s32 b, s32 c);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_02349038(UnkStruct_0234419c *w);
 void func_ov000_023461f0(UnkStruct_0234419c *w);
 void func_ov000_02346e38(UnkStruct_0234419c *w);
@@ -130,12 +130,12 @@ void func_ov000_02346040(UnkStruct_0234419c *w);
 void func_ov000_02345e98(UnkStruct_0234419c *w);
 
 static inline u16 Rand_0234419c(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0234419c(void) {
-    UnkStruct_0234419c *w = data_022b4574->ply;
+    UnkStruct_0234419c *w = gTaskCurrent->ply;
     s32 bottom;
     s32 right;
     s32 top;
@@ -267,7 +267,7 @@ void func_ov000_0234419c(void) {
             if (w->unk3B6 == 0) {
                 func_ov000_02337688(func_ov000_023376a4() & ~0x20);
                 func_0206cdf4(&w->pal, 0, 0, 0);
-                func_0204b7ec(NULL, 0, 0x3c);
+                Sound_PlaySeqArcEx(NULL, 0, 0x3c);
             } else {
                 u32 v = data_022c4560.unk20;
                 u32 a;

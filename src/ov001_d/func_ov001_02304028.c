@@ -31,7 +31,7 @@ extern UnkStruct_02304028 *data_ov001_0231f548;
 extern s32 data_ov001_0231f520;
 extern s32 data_ov001_0231f524;
 
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 
 void func_ov001_02304028(void) {
     UnkStruct_02304028 *g = data_ov001_0231f548;
@@ -41,21 +41,21 @@ void func_ov001_02304028(void) {
     for (n = g->list98; n != NULL; n = n->next) {
         g->spr0.x = (n->x + data_ov001_0231f524) >> 12;
         g->spr0.y = (n->y + data_ov001_0231f520) >> 12;
-        func_02032d2c(&g->spr0);
+        AnimatorSprite_Draw(&g->spr0);
     }
     for (n = data_ov001_0231f548->listA8; n != NULL; n = n->next) {
         g->spr0.x = (n->x + data_ov001_0231f524) >> 12;
         g->spr0.y = (n->y + data_ov001_0231f520) >> 12;
-        func_02032d2c(&g->spr0);
+        AnimatorSprite_Draw(&g->spr0);
     }
     for (n = data_ov001_0231f548->listB0; n != NULL; n = n->next) {
         g->spr0.x = (n->x + data_ov001_0231f524) >> 12;
         g->spr0.y = (n->y + data_ov001_0231f520) >> 12;
-        func_02032d2c(&g->spr0);
+        AnimatorSprite_Draw(&g->spr0);
     }
     for (n = data_ov001_0231f548->listA0; n != NULL; n = n->next) {
         s1->x = (n->x + data_ov001_0231f524) >> 12;
         s1->y = (n->y + data_ov001_0231f520) >> 12;
-        func_02032d2c(s1);
+        AnimatorSprite_Draw(s1);
     }
 }

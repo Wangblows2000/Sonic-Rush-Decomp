@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u32 data_0206e470;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u32 data_022c4560;
 extern u32 data_ov000_02363b18;
 extern u32 data_ov000_02369b78;
@@ -138,7 +138,7 @@ _1c8:
     dcd 0x000004cc
     dcd 0x0000ffff
     dcd data_0206e470
-    dcd data_0208fe70
+    dcd gRandSeed
     dcd 0x00196225
     dcd 0x3c6ef35f
 }

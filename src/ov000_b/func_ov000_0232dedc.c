@@ -1,10 +1,10 @@
 #include <ov000_b/stageobj.h>
 
-extern void *data_022c448c;
+extern void *gActComArchive;
 extern u8 data_ov000_02368100[], data_ov000_0236aa00[];
 extern u8 data_ov000_0236aa38[], data_ov000_0236aa48[], data_ov000_0236aa58[], data_ov000_0236aa68[];
 
-void func_020693f0(s16 *x, s16 *y, u8 a);
+void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 void func_ov000_0232dec0(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *func_ov000_0232dedc(UnkStruct_StageObj *arg, s16 x, s16 y, s16 vx, s16 vy, u8 type) {
@@ -13,14 +13,14 @@ UnkStruct_EffObj *func_ov000_0232dedc(UnkStruct_StageObj *arg, s16 x, s16 y, s16
     vu16 zero;
     BOOL flag = FALSE;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_02368100, 0, data_ov000_0236aa00, data_022c448c);
-    func_0206a054(w, 0, 0xc);
+    StageObj_Load2dBAC(w, data_ov000_02368100, 0, data_ov000_0236aa00, gActComArchive);
+    StageObj_AllocSpritePalette(w, 0, 0xc);
     if (type >= 4) {
         if (type != 8)
             flag = TRUE;
@@ -31,29 +31,29 @@ UnkStruct_EffObj *func_ov000_0232dedc(UnkStruct_StageObj *arg, s16 x, s16 y, s16
     }
     switch (type) {
     case 0:
-        func_02069eb0(w, 2, data_ov000_0236aa38);
-        func_02069818(w, type);
+        StageObj_SetSharedSpriteVram(w, 2, data_ov000_0236aa38);
+        StageObj_SetAnimation(w, type);
         break;
     case 1:
-        func_02069eb0(w, 2, data_ov000_0236aa48);
-        func_02069818(w, type);
+        StageObj_SetSharedSpriteVram(w, 2, data_ov000_0236aa48);
+        StageObj_SetAnimation(w, type);
         break;
     case 2:
-        func_02069eb0(w, 2, data_ov000_0236aa58);
-        func_02069818(w, type);
+        StageObj_SetSharedSpriteVram(w, 2, data_ov000_0236aa58);
+        StageObj_SetAnimation(w, type);
         break;
     case 3:
-        func_02069eb0(w, 2, data_ov000_0236aa68);
-        func_02069818(w, type);
+        StageObj_SetSharedSpriteVram(w, 2, data_ov000_0236aa68);
+        StageObj_SetAnimation(w, type);
         break;
     }
-    func_02069918(w, 9);
+    StageObj_SetOAMOrder(w, 9);
     if (arg->unk5C & 1)
         w->unk5C |= 1;
     w->unk10 = arg->unk10;
     w->unk14 = arg->unk14;
     w->unk5 = arg->unk5;
-    func_020693f0(&x, &y, arg->unk5);
+    Math_RotateVec2S16(&x, &y, arg->unk5);
     if (flag) {
         w->unk2E = vx;
         w->unk30 = vy;

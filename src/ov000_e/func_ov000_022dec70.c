@@ -20,7 +20,7 @@ typedef struct {
 
 typedef struct { u8 data[0x5c]; } UnkArc_022dec70;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern char data_ov000_02365728[];
 extern char data_ov000_0236572c[];
 extern char data_ov000_02365740[];
@@ -31,7 +31,7 @@ BOOL func_02021310(UnkArc_022dec70 *arc, const char *name, void *narc);
 void *func_0202128c(const char *path);
 void func_0202566c(void *p);
 BOOL func_020212e0(UnkArc_022dec70 *arc);
-void func_02031768(void *a);
+void Model_Release(void *a);
 void func_ov000_022fb9c8(void *t);
 
 void func_ov000_022dec70(void *t) {
@@ -40,8 +40,8 @@ void func_ov000_022dec70(void *t) {
     s32 i;
 
     for (i = 0; i < 7; i++)
-        func_02031768(&s->mdl[i]);
-    func_02021310(&arc, data_ov000_02365728, data_022c4488);
+        Model_Release(&s->mdl[i]);
+    func_02021310(&arc, data_ov000_02365728, gZoneActArchive);
     func_0202566c(func_0202128c(data_ov000_0236572c));
     func_0202566c(func_0202128c(data_ov000_02365740));
     func_0202566c(func_0202128c(data_ov000_0236575c));

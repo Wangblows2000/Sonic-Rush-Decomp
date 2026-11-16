@@ -1,11 +1,11 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_02069818();
+s32 StageObj_SetAnimation();
 void func_ov000_02304f50();
 
 void func_ov000_02304fa0(u8 *p0) {
-    func_02069818(p0, 0);
+    StageObj_SetAnimation(p0, 0);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_02304f50;
     *(u16 *)((u8 *)p0 + 0x2e) = 0;
     *(u16 *)((u8 *)p0 + 0x30) = 0;

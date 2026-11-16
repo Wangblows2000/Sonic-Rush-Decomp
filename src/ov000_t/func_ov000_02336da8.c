@@ -47,16 +47,16 @@ typedef struct {
 
 extern UnkStruct_02336da8_4560 data_022c4560;
 
-void func_02032c8c(UnkStruct_02336da8_Spr *spr);
+void AnimatorSpriteDS_Draw(UnkStruct_02336da8_Spr *spr);
 void func_02033544(UnkStruct_02336da8_Spr *spr, u16 a);
-void func_020332c4(UnkStruct_02336da8_Spr *spr, s32 a, s32 b);
+void AnimatorSpriteDS_ProcessAnimation(UnkStruct_02336da8_Spr *spr, s32 a, s32 b);
 
 static inline void UnkSetPos_02336da8(UnkStruct_02336da8_Spr *spr, s16 x, s16 y) {
     spr->unk48 = x;
     spr->unk4A = y;
     spr->unk4C = spr->unk48;
     spr->unk4E = spr->unk4A - 0xc0;
-    func_02032c8c(spr);
+    AnimatorSpriteDS_Draw(spr);
 }
 
 void func_ov000_02336da8(UnkStruct_02336da8 *w) {
@@ -81,7 +81,7 @@ void func_ov000_02336da8(UnkStruct_02336da8 *w) {
         func_02033544(spr, c);
         spr->unk5C = chr + c * 0x80;
         spr->unk60 = chr2 + c * 0x80;
-        func_020332c4(spr, 0, 0);
+        AnimatorSpriteDS_ProcessAnimation(spr, 0, 0);
         UnkSetPos_02336da8(spr, x + 0x30 - ofs, y + 0x10);
         spr++;
         sh += 4;
@@ -92,10 +92,10 @@ void func_ov000_02336da8(UnkStruct_02336da8 *w) {
     s->a.unk4C = x;
     y2 = y - 0xc0;
     s->a.unk4E = y2;
-    func_02032c8c(&s->a);
+    AnimatorSpriteDS_Draw(&s->a);
     s->b.unk48 = x;
     s->b.unk4A = y;
     s->b.unk4C = x;
     s->b.unk4E = y2;
-    func_02032c8c(&s->b);
+    AnimatorSpriteDS_Draw(&s->b);
 }

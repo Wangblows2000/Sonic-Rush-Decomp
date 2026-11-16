@@ -13,8 +13,8 @@ typedef struct {
     UnkSpr_022d9cf8 spr[16];
 } UnkStruct_022d9cf8;
 
-void func_0203344c(UnkSpr_022d9cf8 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022d9cf8 *s);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022d9cf8 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022d9cf8 *s);
 
 #pragma thumb on
 void func_ov001_022d9cf8(UnkStruct_022d9cf8 *p, s32 idx, s32 x, s32 y) {
@@ -24,13 +24,13 @@ void func_ov001_022d9cf8(UnkStruct_022d9cf8 *p, s32 idx, s32 x, s32 y) {
     s->x = x;
     s->y = y;
     s->unk46 = 6;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
     s = &p->spr[idx + 7];
     s->x = x + 0x48;
     s->y = y + 4;
     s->unk46 = 6;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 }
 #pragma thumb reset

@@ -19,7 +19,7 @@ typedef struct {
     u32 unk108;
 } UnkStruct_022fea7c;
 
-s16 func_02068bd8(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+s16 ObjShift_SetFromRef(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_ov000_022fe7e8(UnkStruct_022fea7c *w);
 
 void func_ov000_022fea7c(UnkStruct_022fea7c *w) {
@@ -37,8 +37,8 @@ void func_ov000_022fea7c(UnkStruct_022fea7c *w) {
         if (w->unkC != 0) {
             w->unkC--;
         } else {
-            w->unk44 = func_02068bd8(w->unk44, 0x100, 8, 2, 0, 8);
-            w->unk46 = func_02068bd8(w->unk46, 0x100, 0x180, 4, 0, 8);
+            w->unk44 = ObjShift_SetFromRef(w->unk44, 0x100, 8, 2, 0, 8);
+            w->unk46 = ObjShift_SetFromRef(w->unk46, 0x100, 0x180, 4, 0, 8);
             w->unk5C &= ~0x20;
         }
         if (w->unk46 == 0x100 && w->unk44 == 0x100) {

@@ -6,7 +6,7 @@ typedef struct UnkStruct_022cfecc {
     u32 unk18;
 } UnkStruct_022cfecc;
 
-void func_02035704(u16 *src, u16 n, u32 a, u32 b);
+void PaletteTransfer_QueueCopy(u16 *src, u16 n, u32 a, u32 b);
 
 #pragma thumb on
 
@@ -22,7 +22,7 @@ void func_ov001_022cfecc(UnkStruct_022cfecc *p, s32 n, float scale, u16 *src, u1
         b = (s32)((float)b * scale);
         dst[i] = (r & 0x1f) | ((g & 0x1f) << 5) | ((b & 0x1f) << 10);
     }
-    func_02035704(dst, n, p->unk14, p->unk18);
+    PaletteTransfer_QueueCopy(dst, n, p->unk14, p->unk18);
 }
 
 #pragma thumb reset

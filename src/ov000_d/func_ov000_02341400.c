@@ -8,23 +8,23 @@ typedef struct UnkStruct_02341400 {
     u32 flags;
 } UnkStruct_02341400;
 
-extern u32 data_02250438;
-extern u32 data_02250434;
-extern u32 data_02250440;
-extern u32 data_0225043c;
+extern u32 gPaletteTransferHead;
+extern u32 gPaletteTransferTail;
+extern u32 gScreenTransferHead;
+extern u32 gScreenTransferTail;
 
 u32 func_ov000_023418b8(void *res);
 u32 func_ov000_023418ac(void *res);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *res);
-void func_02033a68(void *src, void *dst, u32 size);
+void *Compress_GetData(void *res);
+void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020356bc(void *res, s32 a, u32 b);
-void func_02035754(void);
-void func_02035d04(void *res, s32 a, s32 b, s32 k, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
-void func_020363f0(void);
+void PaletteTransfer_QueueLoad(void *res, s32 a, u32 b);
+void PaletteTransfer_Flush(void);
+void ScreenTransfer_QueueRect(void *res, s32 a, s32 b, s32 k, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
+void ScreenTransfer_Flush(void);
 
 static inline void UnkDecomp_02341400(void *res, void *dst) {
     switch (func_ov000_023418b8(res)) {
@@ -38,32 +38,32 @@ static inline void UnkDecomp_02341400(void *res, void *dst) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_023418ac(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_023418ac(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_023418ac(res));
 }
 
 static inline void UnkPal_02341400(void *res, s32 a, u32 b) {
-    u32 sa = data_02250438;
-    u32 sb = data_02250434;
-    data_02250438 = 0;
-    data_02250434 = 0;
-    func_020356bc(res, a, b);
-    func_02035754();
-    data_02250438 = sa;
-    data_02250434 = sb;
+    u32 sa = gPaletteTransferHead;
+    u32 sb = gPaletteTransferTail;
+    gPaletteTransferHead = 0;
+    gPaletteTransferTail = 0;
+    PaletteTransfer_QueueLoad(res, a, b);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = sa;
+    gPaletteTransferTail = sb;
 }
 
 static inline void UnkScrOne_02341400(void *res, s32 flag, s32 x, u8 y) {
-    u32 sa = data_02250440;
-    u32 sb = data_0225043c;
-    data_02250440 = 0;
-    data_0225043c = 0;
-    func_02035d04(res, 0, 0, 0x20, flag, x, 0, 8, y, 0, 0x20, 0x40);
-    func_020363f0();
-    data_02250440 = sa;
-    data_0225043c = sb;
+    u32 sa = gScreenTransferHead;
+    u32 sb = gScreenTransferTail;
+    gScreenTransferHead = 0;
+    gScreenTransferTail = 0;
+    ScreenTransfer_QueueRect(res, 0, 0, 0x20, flag, x, 0, 8, y, 0, 0x20, 0x40);
+    ScreenTransfer_Flush();
+    gScreenTransferHead = sa;
+    gScreenTransferTail = sb;
 }
 
 static inline void UnkScr_02341400(UnkStruct_02341400 *r, s32 x) {

@@ -27,7 +27,7 @@ typedef struct UnkStruct_022f6450_p {
     s32 unk308;
 } UnkStruct_022f6450_p;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 UnkStruct_022f6450_p *func_ov001_022ffce8(void);
 void func_ov001_022f612c(UnkStruct_022f6450 *w);
@@ -37,8 +37,8 @@ void func_ov001_022f4fac(UnkStruct_022f6450 *w);
 void func_ov001_022f622c(UnkStruct_022f6450 *w);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov001_022f6450(UnkStruct_022f6450 *w) {

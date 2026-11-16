@@ -87,7 +87,7 @@ struct UnkStruct_022d32c0 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 typedef struct UnkStruct_022d32c0_p {
@@ -161,21 +161,21 @@ void func_ov000_022d32c0(UnkStruct_022d32c0 *s) {
         return;
     if (s->unk1470 == 0) {
         if (s->unk1460 < 0) {
-            func_02031a68(x, 0, s->unkF7C, 7, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x27, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x43, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 7, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x27, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x43, 0);
         } else {
-            func_02031a68(x, 0, s->unkF7C, 0xa, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x2a, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x46, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 0xa, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x2a, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x46, 0);
         }
         s->unk1470 = 1;
     } else {
         s->func = func_ov000_022d31c4;
         s->unk14 = 0x20000;
-        func_02031a68(x, 0, s->unkF7C, 0x1d, 0);
-        func_02031a68(y, 0, s->unkF7C, 0x39, 0);
-        func_02031a68(z, 0, s->unkF7C, 0x59, 0);
+        Model_SetAnimation(x, 0, s->unkF7C, 0x1d, 0);
+        Model_SetAnimation(y, 0, s->unkF7C, 0x39, 0);
+        Model_SetAnimation(z, 0, s->unkF7C, 0x59, 0);
         z->unk114 = Lerp(0xccc, 0x1333);
         y->unk114 = z->unk114;
         x->unk114 = y->unk114;

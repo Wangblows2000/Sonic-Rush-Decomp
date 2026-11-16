@@ -6,13 +6,13 @@ extern u32 data_ov000_0236ac48[2];
 extern u32 data_ov000_0236ac40[2];
 extern u32 data_ov000_0236ac38[2];
 extern void *data_ov000_0236ac28;
-void func_020686dc(void *p);
-extern void *data_0208fe80;
+void ObjData_Release(void *p);
+extern void *gMainHeap;
 
 void *func_02006abc(u32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void DC_StoreRange(const void *addr, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 static inline void UnkDbgFree(void *ptr) {
     u8 *p = ptr;
@@ -26,17 +26,17 @@ static inline void UnkDbgFree(void *ptr) {
             DC_StoreRange(p, sz);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov000_0234dee0(void) {
     void *p;
 
-    func_020686dc(&data_ov000_0236ac58);
-    func_020686dc(&data_ov000_0236ac50);
-    func_020686dc(&data_ov000_0236ac48);
-    func_020686dc(&data_ov000_0236ac40);
-    func_020686dc(&data_ov000_0236ac38);
+    ObjData_Release(&data_ov000_0236ac58);
+    ObjData_Release(&data_ov000_0236ac50);
+    ObjData_Release(&data_ov000_0236ac48);
+    ObjData_Release(&data_ov000_0236ac40);
+    ObjData_Release(&data_ov000_0236ac38);
     p = data_ov000_0236ac28;
     if (p != NULL)
         UnkDbgFree(p);

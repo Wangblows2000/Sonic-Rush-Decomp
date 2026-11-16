@@ -53,29 +53,29 @@ typedef struct UnkResSet_02307398 {
 } UnkResSet_02307398;
 
 extern UnkResSet_02307398 *data_ov001_0231f5c4;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkWork_02307398 *data_ov001_0231f5b8;
 extern u8 data_ov001_0231df7c[];
 extern char data_ov001_0231df94[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
-u32 func_0203969c(u32 a, s32 b);
-u32 func_02039428(u16 a, s32 b);
-void func_02031878(UnkObj_02307398 *o, UnkRes_02307398 *res, s32 a, s32 b, u32 c, u32 d, s32 e, s32 f);
-void func_02031c1c(UnkObj2_02307398 *o, s32 a);
-u8 *func_02033fbc(void *p, s32 v);
+u32 VramTex_Alloc(u32 a, s32 b);
+u32 VramPltt_Alloc(u16 a, s32 b);
+void Model_InitSprite3D(UnkObj_02307398 *o, UnkRes_02307398 *res, s32 a, s32 b, u32 c, u32 d, s32 e, s32 f);
+void Model_Init(UnkObj2_02307398 *o, s32 a);
+u8 *File_Load(void *p, s32 v);
 u32 func_ov001_0230776c(u8 *p);
 u32 func_ov001_02307760(u8 *p);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-u32 *func_02033a54(void *s);
-void func_02033a68(void *a, void *b, u32 c);
-void func_020349b8(void *heap, void *p);
+u32 *Compress_GetData(void *s);
+void Mem_Copy(void *a, void *b, u32 c);
+void Heap_Free(void *heap, void *p);
 BOOL func_02021310(UnkArc_02307398 *arc, const char *name, void *data);
 u32 func_02021264(UnkArc_02307398 *arc, u32 idx);
 void func_020257f8(u32 p);
@@ -102,7 +102,7 @@ void func_ov001_02307398(void) {
     UnkHdr_02307398 *hdr;
 
     r = data_ov001_0231f5c4->res;
-    blk = func_02034a40(data_0208fe80, 0x46e0, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x46e0, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, 0x46e0);
@@ -115,15 +115,15 @@ void func_ov001_02307398(void) {
     MI_CpuFill8(blk, 0, sizeof(UnkWork_02307398));
     w = data_ov001_0231f5b8;
     for (i = 0; i < 32; i++) {
-        func_02031878(&w->obj[i], r, 0, 0, func_0203969c(GetHdr(r)->unk18, 0), func_02039428(GetHdr(r)->unk16, 0), 0, 0);
+        Model_InitSprite3D(&w->obj[i], r, 0, 0, VramTex_Alloc(GetHdr(r)->unk18, 0), VramPltt_Alloc(GetHdr(r)->unk16, 0), 0, 0);
         w->obj[i].flags |= 0x8000;
     }
     for (i = 0; i < 32; i++)
-        func_02031c1c(&w->obj2[i], 0);
+        Model_Init(&w->obj2[i], 0);
 
-    res = func_02033fbc(data_ov001_0231df7c, -1);
+    res = File_Load(data_ov001_0231df7c, -1);
     size = ((*(u32 *)res >> 8) + 0x43) & ~0x1f;
-    blk = func_02034a40(data_0208fe80, size, 0x20);
+    blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill2 = 0xcccccccc;
         MIi_CpuClear32(fill2, blk, size);
@@ -145,7 +145,7 @@ void func_ov001_02307398(void) {
         func_020087f8(res, d);
         break;
     default:
-        func_02033a68(func_02033a54(res), d, func_ov001_02307760(res));
+        Mem_Copy(Compress_GetData(res), d, func_ov001_02307760(res));
         break;
     }
     DC_StoreRange(d, func_ov001_02307760(res));
@@ -158,7 +158,7 @@ void func_ov001_02307398(void) {
             DC_StoreRange(res, size);
         }
     }
-    func_020349b8(data_0208fe80, res);
+    Heap_Free(gMainHeap, res);
     func_02021310(&arc, data_ov001_0231df94, w->data);
     w->res0 = func_02021264(&arc, 0);
     w->res1 = func_02021264(&arc, 1);

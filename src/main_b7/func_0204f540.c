@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
 extern void *data_022c4600[];
-extern void *data_0208fe80;
+extern void *gMainHeap;
 void *func_02006abc(u32 a);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 void func_0204f540(s32 idx) {
@@ -24,7 +24,7 @@ void func_0204f540(s32 idx) {
                 DC_StoreRange(p, size);
             }
         }
-        func_020349b8(data_0208fe80, p);
+        Heap_Free(gMainHeap, p);
         *slot = NULL;
     }
 }

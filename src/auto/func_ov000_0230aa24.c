@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_02069818();
+s32 StageObj_SetAnimation();
 
 void func_ov000_0230aa24(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0x88) == 0) {
@@ -16,9 +16,9 @@ void func_ov000_0230aa24(u8 *p0) {
         if (*(u32 *)((u8 *)p0 + 0x8) == 0) {
             if ((*(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x88) + 0x5c) & 8) != 0) {
                 if (*(u16 *)((u8 *)p0 + 0x9c) == 5) {
-                    func_02069818(p0, 6, ((u8 *)p0 + 0x100), t0);
+                    StageObj_SetAnimation(p0, 6, ((u8 *)p0 + 0x100), t0);
                 } else {
-                    func_02069818(p0, 3);
+                    StageObj_SetAnimation(p0, 3);
                 }
                 *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 4);
                 *(u32 *)((u8 *)p0 + 0x8) = 1;

@@ -1,13 +1,13 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_02072c78[];
+extern u8 gDisplayTable[];
 extern u8 data_022c4560[];
 extern u8 data_ov000_0236aad8[];
 s32 func_ov000_0233e658();
 
 void func_0204cdc0(void) {
-    s32 t0 = *(u32 *)data_02072c78;
+    s32 t0 = *(u32 *)gDisplayTable;
     *(u16 *)((u8 *)t0 + 0x20) = 0;
     *(u16 *)((u8 *)t0 + 0x20) = ((*(u16 *)((u8 *)t0 + 0x20) & ~0xc0) | 0x40);
     *(u16 *)((u8 *)t0 + 0x20) = (*(u16 *)((u8 *)t0 + 0x20) | 0x100);

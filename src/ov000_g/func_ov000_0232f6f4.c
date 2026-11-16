@@ -28,8 +28,8 @@ typedef struct {
     u16 unk9C;
 } UnkStruct_0232f6f4;
 
-void func_02069818(void *w, s32 a);
-s32 func_02068ce4(s32 v, s32 a, s32 b, s32 c, s32 d);
+void StageObj_SetAnimation(void *w, s32 a);
+s32 ObjShift_Set(s32 v, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_023511ec(void);
 
 void func_ov000_0232f6f4(UnkStruct_0232f6f4 *w) {
@@ -47,14 +47,14 @@ void func_ov000_0232f6f4(UnkStruct_0232f6f4 *w) {
     w->unkC++;
     if (w->unkC == 0x20) {
         if (w->unk9C == 4)
-            func_02069818(w, 5);
+            StageObj_SetAnimation(w, 5);
         else
-            func_02069818(w, 4);
+            StageObj_SetAnimation(w, 4);
         w->unk5C |= 4;
         w->unk46 = w->unk44 = 0x200;
     }
     if (w->unkC >= 0x20) {
-        w->unk44 = func_02068ce4(w->unk44, 0x100, 1, 0x20, 0);
+        w->unk44 = ObjShift_Set(w->unk44, 0x100, 1, 0x20, 0);
         w->unk46 = w->unk44;
     }
     if (w->unkC > 0x78)

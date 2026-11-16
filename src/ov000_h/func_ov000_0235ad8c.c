@@ -19,10 +19,10 @@ typedef struct {
     UnkStruct_0235ad8c *work;
 } UnkStruct_0235ad8c_Task;
 
-UnkStruct_0235ad8c_Task *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkStruct_0235ad8c_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void *func_02006abc(u32 arg);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
-void func_0203363c(UnkStruct_0235ad8c_Spr *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
+void AnimatorSprite_Init(UnkStruct_0235ad8c_Spr *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
 void func_ov000_0235ad20(void);
 
 void func_ov000_0235ad8c(s32 a, s32 b, void *res, void *f0, void *f1) {
@@ -30,7 +30,7 @@ void func_ov000_0235ad8c(s32 a, s32 b, void *res, void *f0, void *f1) {
     UnkStruct_0235ad8c *w;
     vu16 zero;
 
-    t = func_020372d0(func_ov000_0235ad20, NULL, 0, 0x3000, 2, sizeof(UnkStruct_0235ad8c));
+    t = Task_Create(func_ov000_0235ad20, NULL, 0, 0x3000, 2, sizeof(UnkStruct_0235ad8c));
     if (t == func_02006abc(0))
         return;
     w = t->work;
@@ -38,8 +38,8 @@ void func_ov000_0235ad8c(s32 a, s32 b, void *res, void *f0, void *f1) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0235ad8c));
     w->unk0 = a;
     w->unk4 = b;
-    func_0203363c(&w->spr[0], res, 1, 0, 0, 0, f0, 0, 0x5000200);
-    func_0203363c(&w->spr[1], res, 1, 0, 1, 0, f1, 0, 0x5000600);
+    AnimatorSprite_Init(&w->spr[0], res, 1, 0, 0, 0, f0, 0, 0x5000200);
+    AnimatorSprite_Init(&w->spr[1], res, 1, 0, 1, 0, f1, 0, 0x5000600);
     w->spr[0].unk44 = 2;
     w->spr[1].unk44 = 2;
     w->spr[0].flags |= 0x24010;

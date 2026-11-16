@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u32 data_ov001_0231f520;
 extern u32 data_ov001_0231f54c;
 extern void func_0200203c(void);
@@ -77,7 +77,7 @@ _c0:
     ldmia sp!, {r4, lr}
     bx lr
     dcd data_ov001_0231f54c
-    dcd data_0208fe70
+    dcd gRandSeed
     dcd 0x00196225
     dcd 0x3c6ef35f
     dcd data_ov001_0231f520

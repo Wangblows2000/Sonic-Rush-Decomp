@@ -2,7 +2,7 @@
 #define MAIN_B3_W50_H
 #include <nitro/types.h>
 
-/* 0x48-byte sprite/animator (func_0203344c, func_02032d2c, func_02033550) */
+/* 0x48-byte sprite/animator (AnimatorSprite_ProcessAnimation, AnimatorSprite_Draw, AnimatorSprite_SetAnimation) */
 typedef struct {
     u8 unk0[4];
     s16 x;   /* 0x4 */
@@ -56,5 +56,5 @@ typedef struct {
 typedef struct { u8 unk0[0x10]; UnkWork_W50 *work; } UnkTask_W50;
 
 typedef struct { u16 unk0; u16 unk2; u16 trg; u16 unk6; } UnkPad_022503e0;
-extern UnkPad_022503e0 data_022503e0;
+extern UnkPad_022503e0 gPad;
 #endif

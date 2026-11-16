@@ -1,8 +1,8 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_0206d8bc();
-s32 func_0204b7ec();
+s32 ObjRect_FuncNoHit();
+s32 Sound_PlaySeqArcEx();
 s32 func_ov000_0232e628();
 s32 func_ov000_0234aa80();
 s32 func_ov000_0230da90();
@@ -19,10 +19,10 @@ void func_ov000_0230dcb4(u8 *p0, u8 *p1) {
     }
     s32 t2 = *(s16 *)((u8 *)(t1 + 0x300) + 0xc8);
     if (t2 != 0) {
-        func_0206d8bc(p0, p1, t2);
+        ObjRect_FuncNoHit(p0, p1, t2);
         return;
     }
-    func_0204b7ec(0, 0, 0x34);
+    Sound_PlaySeqArcEx(0, 0, 0x34);
     func_ov000_0232e628(t0, 0, 0);
     *(u32 *)((u8 *)t0 + 0x54) = (*(u32 *)((u8 *)t0 + 0x54) | 8);
     *(u32 *)((u8 *)t0 + 0x54) = (*(u32 *)((u8 *)t0 + 0x54) | 2);

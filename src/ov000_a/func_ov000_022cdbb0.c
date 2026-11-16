@@ -55,25 +55,25 @@ typedef struct UnkStruct_022cdbb0_7 {
 } UnkStruct_022cdbb0_7;
 
 extern UnkStruct_022cdbb0_7 data_ov000_02369ac0;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s32 data_ov000_02362e14[];
 
 void func_ov000_022cff50(void);
 void func_ov000_022d14e8(UnkStruct_022cdbb0 *s);
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 void func_ov000_022cedd8(UnkStruct_022cdbb0 *s);
 void func_ov000_02328710(s32 a, s32 x, s32 y, s32 z);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_0234aa80(UnkStruct_022cdbb0_2 *p);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
-void func_020367b4(s32 a, s32 b);
+void Sound_PlaySeq(s32 a, s32 b);
 void func_020366f4(s32 a, s32 b, s32 c);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022cdbb0(UnkStruct_022cdbb0_c *a, UnkStruct_022cdbb0_c *b) {
@@ -94,9 +94,9 @@ void func_ov000_022cdbb0(UnkStruct_022cdbb0_c *a, UnkStruct_022cdbb0_c *b) {
     s->unkFB0[1].unkA |= 0x1000;
     if (data_ov000_02369ac0.unk8 != 0) {
     s->func = func_ov000_022d14e8;
-    func_02031a68(x, 0, s->unkF7C, 0x10, 0);
-    func_02031a68(y, 0, s->unkF7C, 0x30, 0);
-    func_02031a68(z, 0, s->unkF7C, 0x4c, 0);
+    Model_SetAnimation(x, 0, s->unkF7C, 0x10, 0);
+    Model_SetAnimation(y, 0, s->unkF7C, 0x30, 0);
+    Model_SetAnimation(z, 0, s->unkF7C, 0x4c, 0);
     x->unk10C &= ~4;
     y->unk10C &= ~4;
     z->unk10C &= ~4;
@@ -113,12 +113,12 @@ void func_ov000_022cdbb0(UnkStruct_022cdbb0_c *a, UnkStruct_022cdbb0_c *b) {
     if (data_ov000_02369ac0.unk8 == 2) {
         func_020537b4(0xb);
         func_020533e0(0x12, 0xf0);
-        func_020367b4(0, 0xf);
+        Sound_PlaySeq(0, 0xf);
     } else {
         func_020537b4(0xb);
         func_020533e0(0x10, 0xf0);
     }
-    func_02036754(0, 0, 0x7b);
+    Sound_PlaySeqArc(0, 0, 0x7b);
     func_020366f4(0, 0, data_ov000_02362e14[Rand() & 1]);
     } else {
         func_ov000_022cff50();

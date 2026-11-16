@@ -20,8 +20,8 @@ typedef struct {
     UnkVec_020563a4 pos;
 } UnkWork_020563a4;
 
-void func_020316f4(UnkModel_020563a4 *m);
-void func_020315e0(UnkModel_020563a4 *m);
+void Model_Animate(UnkModel_020563a4 *m);
+void Model_Draw(UnkModel_020563a4 *m);
 
 #pragma thumb on
 void func_020563a4(UnkWork_020563a4 *w) {
@@ -31,7 +31,7 @@ void func_020563a4(UnkWork_020563a4 *w) {
         return;
     m = &w->models[w->cur];
     m->pos = w->pos;
-    func_020316f4(m);
-    func_020315e0(m);
+    Model_Animate(m);
+    Model_Draw(m);
 }
 #pragma thumb reset

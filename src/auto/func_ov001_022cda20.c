@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_022b4574[];
+extern unsigned char gTaskCurrent[];
 int func_ov001_022cc17c();
 int func_ov001_022cbf30();
 int func_ov001_022cde84();
@@ -37,7 +37,7 @@ void func_ov001_022cda20(void)
   int iVar1;
   int iVar2;
   
-  iVar2 = *(int *)(*((int *)data_022b4574) + 0x10);
+  iVar2 = *(int *)(*((int *)gTaskCurrent) + 0x10);
   iVar1 = func_ov001_022cc17c(iVar2);
   func_ov001_022cbf30(iVar2);
   *(int *)(iVar2 + 0x14) = *(int *)(iVar2 + 0x14) + 1;

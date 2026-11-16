@@ -13,7 +13,7 @@ typedef struct {
     UnkSprite_022e3678 spr[4];
 } UnkStruct_022e3678;
 
-void func_0203344c(UnkSprite_022e3678 *s, s32 a, s32 b);
+void AnimatorSprite_ProcessAnimation(UnkSprite_022e3678 *s, s32 a, s32 b);
 
 #pragma thumb on
 void func_ov001_022e3678(UnkStruct_022e3678 *p) {
@@ -22,7 +22,7 @@ void func_ov001_022e3678(UnkStruct_022e3678 *p) {
     if (p->visible != 0) {
         for (i = 0; i < 4; i++) {
             p->spr[i].flags |= 4;
-            func_0203344c(&p->spr[i], 0, 0);
+            AnimatorSprite_ProcessAnimation(&p->spr[i], 0, 0);
         }
     }
     if (p->run != 0) {

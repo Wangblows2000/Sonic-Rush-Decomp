@@ -29,8 +29,8 @@ typedef struct {
 
 extern s32 data_ov001_023162f8[];
 
-void func_0203344c(UnkSpr_022e4ac4 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022e4ac4 *s);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022e4ac4 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022e4ac4 *s);
 
 #pragma thumb on
 void func_ov001_022e4ac4(UnkStruct_022e4ac4 *p) {
@@ -45,8 +45,8 @@ void func_ov001_022e4ac4(UnkStruct_022e4ac4 *p) {
             s->x -= 0x1c;
             s->y += 7;
             if (s->x >= -0x38 && s->x < 0x100 && s->y >= -16 && s->y < 0xc0) {
-                func_0203344c(s, 0, 0);
-                func_02032d2c(s);
+                AnimatorSprite_ProcessAnimation(s, 0, 0);
+                AnimatorSprite_Draw(s);
             }
         }
     }

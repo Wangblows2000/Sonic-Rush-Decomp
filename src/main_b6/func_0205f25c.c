@@ -123,9 +123,9 @@ typedef struct {
 } UnkG_0205f25c;
 
 extern UnkWork_0205f25c *data_022c4d98;
-extern void *data_022c448c;
+extern void *gActComArchive;
 extern char data_0207c614[];
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 extern u16 data_02076b74[];
 extern UnkG_0205f25c data_ov000_02369ac0;
 extern UnkObj_0205f25c *data_ov000_0236ac60[];
@@ -134,7 +134,7 @@ extern UnkState2_0205f25c data_022c4590;
 extern UnkCam_0205f25c data_ov000_0236a448;
 extern UnkGfx_0205f25c data_ov000_0236aad8;
 
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_0205e09c(UnkWork_0205f25c *w);
 void func_ov000_023375c8(void);
@@ -175,7 +175,7 @@ void func_0205f25c(void) {
     u32 f[0x18];
 
     data_ov000_02369ac0.flags &= ~1;
-    w = ((UnkTask_0205f25c *)func_020372d0(func_0205ec5c, func_0205eb68, 0, 0x3efe, 3, 0x8d0))->work;
+    w = ((UnkTask_0205f25c *)Task_Create(func_0205ec5c, func_0205eb68, 0, 0x3efe, 3, 0x8d0))->work;
     data_022c4d98 = w;
     {
         vu16 z = 0;
@@ -258,16 +258,16 @@ void func_0205f25c(void) {
         *(vu16 *)0x0400100c = (*(vu16 *)0x0400100c & 0x43) | 0xa000;
         *(vu16 *)0x0400100e = (*(vu16 *)0x0400100e & 0x43) | 0x4400;
     }
-    func_02021310(f, data_0207c614, data_022c448c);
+    func_02021310(f, data_0207c614, gActComArchive);
     w->res[0] = func_02021264(f, 2);
-    switch (data_02072cb8) {
+    switch (gGameLanguage) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        v = data_02072cb8;
+        v = gGameLanguage;
         break;
     default:
         v = 1;

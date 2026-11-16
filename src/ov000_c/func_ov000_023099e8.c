@@ -33,7 +33,7 @@ UnkStruct_023099e8 *func_ov000_023099e8(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_023099e8 *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_023099c0, 0, 0x4f6, 2, sizeof(UnkStruct_023099e8));
+    task = Task_Create(StageObj_Main, func_ov000_023099c0, 0, 0x4f6, 2, sizeof(UnkStruct_023099e8));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -42,7 +42,7 @@ UnkStruct_023099e8 *func_ov000_023099e8(UnkStruct_ObjParam *p, s32 b, s32 c) {
     func_ov000_022fba50(w, (s32)p, b, c);
     w->base.spr0.unk46 = 0x14;
     w->base.spr1.unk46 = 0x14;
-    func_0206e2b4(&w->base.coll0, 0, -16);
+    ObjRect_SetAtkDefFlags(&w->base.coll0, 0, -16);
     w->base.coll0.unk1C = NULL;
     w->base.coll0.unkA |= 0x800;
     w->base.unk4A = 0x300;

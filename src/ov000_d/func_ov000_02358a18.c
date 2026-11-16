@@ -13,16 +13,16 @@ typedef struct {
 
 extern UnkStruct_02358a18_Bright data_02087d44;
 extern UnkStruct_02358a18_Bright data_0208926c;
-extern UnkStruct_02358a18_Pad data_022503e0;
+extern UnkStruct_02358a18_Pad gPad;
 
 BOOL func_ov000_02356538(UnkStruct_Scene *w);
 BOOL func_ov000_023564cc(UnkStruct_Scene *w);
 BOOL func_ov000_02356590(UnkStruct_Scene *w);
-void func_02036fdc(s32 a);
+void Task_DestroyByTag(s32 a);
 void func_ov000_02355e14(s32 mode, s32 sub);
-void func_02037038(s32 a, s32 b);
+void Task_DestroyRange(s32 a, s32 b);
 void func_ov000_02356694(s32 x, s32 y, s32 a, s32 b);
-void func_02051e7c(s32 a);
+void SysSound_StopBGM(s32 a);
 void func_020520e0(s32 a);
 void func_ov000_023599b0(s32 a);
 void func_ov000_023596f4(s32 a);
@@ -30,7 +30,7 @@ void func_ov000_023596f4(s32 a);
 #pragma thumb on
 
 void func_ov000_02358a18(void) {
-    UnkStruct_Scene *w = data_022b4574->work;
+    UnkStruct_Scene *w = gTaskCurrent->work;
     UnkStruct_ScenePos *p;
     u32 step;
     s32 i;
@@ -43,11 +43,11 @@ void func_ov000_02358a18(void) {
             if (func_ov000_02356538(w)) {
                 s32 mode = w->unkC;
                 s32 sel = w->unk14;
-                func_02036fdc(0x1000);
+                Task_DestroyByTag(0x1000);
                 func_ov000_02355e14(mode, sel);
                 return;
             }
-            func_02037038(0x3000, 0x3000);
+            Task_DestroyRange(0x3000, 0x3000);
             data_02087d44.unk8 = 0;
             data_0208926c.unk8 = data_02087d44.unk8;
             back = TRUE;
@@ -64,19 +64,19 @@ void func_ov000_02358a18(void) {
         } else {
             limit = 0xe2;
         }
-        if (limit - w->unk0 > 0x10 && w->unk0 >= 0x20 && (data_022503e0.trg & 1)) {
+        if (limit - w->unk0 > 0x10 && w->unk0 >= 0x20 && (gPad.trg & 1)) {
             w->unk0 = limit - 0x10;
         }
         if (limit - w->unk0 == 0x10) {
             func_ov000_02356694(0, 0x10, 0x10, 0);
             if (w->unkC == 0) {
-                func_02051e7c(0x10);
+                SysSound_StopBGM(0x10);
             }
         }
         if (w->unk0 >= limit) {
             s32 mode = w->unkC;
             s32 sel = w->unk14;
-            func_02036fdc(0x1000);
+            Task_DestroyByTag(0x1000);
             func_ov000_02355e14(mode, sel);
             return;
         }
@@ -108,7 +108,7 @@ void func_ov000_02358a18(void) {
     }
     func_ov000_02357844(w, 0x80, 0x98);
     func_ov000_02358224(w, 0, 0x1000);
-    data_02087d04[2].x++;
+    gDisplaySub[2].x++;
     func_ov000_023580bc(w, TRUE);
     if (w->unk0 == 8 && (u32)(w->unkC - 1) <= 1) {
         switch (w->unk14) {
@@ -135,7 +135,7 @@ void func_ov000_02358a18(void) {
             w->unk4 = 0;
         }
     }
-    if ((u32)(w->unkC - 1) <= 1 && w->unk4 == 0 && w->unk8 == 0 && (data_022503e0.trg & 2)) {
+    if ((u32)(w->unkC - 1) <= 1 && w->unk4 == 0 && w->unk8 == 0 && (gPad.trg & 2)) {
         back = TRUE;
     }
     if (back) {

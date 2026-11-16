@@ -11,18 +11,18 @@ UnkStruct_EffObj *func_ov000_02320744(UnkStruct_StageObj *arg) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0x4ff, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0x4ff, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_0236730c, 0, data_ov000_0236a720, data_ov000_02369ba0);
-    func_02069eb0(w, 0xffff, data_ov000_0236a890);
-    func_020698f0(w, 1);
-    func_02069918(w, 5);
-    func_0206a054(w, 0, 0x5c);
-    func_02069818(w, 2);
+    StageObj_Load2dBAC(w, data_ov000_0236730c, 0, data_ov000_0236a720, data_ov000_02369ba0);
+    StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_0236a890);
+    StageObj_SetOAMPriority(w, 1);
+    StageObj_SetOAMOrder(w, 5);
+    StageObj_AllocSpritePalette(w, 0, 0x5c);
+    StageObj_SetAnimation(w, 2);
     w->unk10 = arg->unk10;
     w->unk14 = arg->unk14;
     w->unk88 = arg;

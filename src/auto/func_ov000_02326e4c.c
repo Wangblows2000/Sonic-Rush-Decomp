@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 s32 func_ov000_02326d18();
 s32 func_ov000_02326ac8();
 s32 func_ov000_02326b2c();
@@ -9,9 +9,9 @@ void func_ov000_02326dd8();
 void func_ov000_02326744();
 
 void func_ov000_02326e4c(void) {
-    s32 t0 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t1 = *(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x134);
-    if (*(u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x134) == 1) {
+    s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t1 = *(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x134);
+    if (*(u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x134) == 1) {
         if ((*(u32 *)((u8 *)t1 + 0x32c) & 0x80) == 0) {
             *(u32 *)((u8 *)t0 + 0x68) = (u32)func_ov000_02326d18;
             func_ov000_02326d18((u32)func_ov000_02326d18);

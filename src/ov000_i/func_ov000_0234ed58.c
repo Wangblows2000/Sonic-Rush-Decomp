@@ -33,15 +33,15 @@ extern UnkPlayer_0234ed58 data_ov000_0236aad8[];
 void func_ov000_0234ee38(void);
 void func_ov000_0234eccc(void);
 void func_ov000_0234e984(void);
-void func_02043c7c(s32 a, s32 b);
+void BrightnessFade_Create(s32 a, s32 b);
 
 void func_ov000_0234ed58(UnkStruct_0234ed58 *w, void *o) {
     if (w->unk68 != func_ov000_0234ee38)
         return;
     w->unk58 |= 0x100;
     w->unk3E8 = o;
-    func_02043c7c(0x43, 0);
-    func_02043c7c(0x45, 0x2000);
+    BrightnessFade_Create(0x43, 0);
+    BrightnessFade_Create(0x45, 0x2000);
     w->unkC = 0;
     w->unk2E = 0x1000;
     w->unk30 = 0;

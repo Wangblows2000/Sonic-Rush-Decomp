@@ -12,11 +12,11 @@ typedef struct {
 } UnkStruct_022c4680;
 
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_022c4680 gSaveData;
 extern UnkStruct_StageObj *data_ov000_0236ac60;
 
-void func_0204b7ec(s32 a, s32 b, s32 c);
-void func_02068204(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
+void Sound_SetPositional(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
 void func_ov000_022fc5b8(UnkStruct_StageObj *w, s32 a, s32 b, s32 c);
 void func_ov000_022fe7e8(UnkStruct_StageObj *w);
 void func_ov000_022faf48(UnkStruct_StageObj *w, s32 a);
@@ -24,8 +24,8 @@ void func_ov000_022faf48(UnkStruct_StageObj *w, s32 a);
 void func_ov000_022fd5f8(UnkStruct_StageObj *w) {
     if ((w->spr0.unkE >> 4) == 0x15) {
         if (!(w->unk1F4 & 4)) {
-            func_0204b7ec(w->unk1DC, 0, 0x74);
-            func_02068204(w->unk1DC, w, data_ov000_0236ac60);
+            Sound_PlaySeqArcEx(w->unk1DC, 0, 0x74);
+            Sound_SetPositional(w->unk1DC, w, data_ov000_0236ac60);
             func_ov000_022fc5b8(w, 0xe4, 0x30, -0x23);
         }
         w->unk1F4 |= 4;
@@ -40,7 +40,7 @@ void func_ov000_022fd5f8(UnkStruct_StageObj *w) {
         w->unk5C |= 4;
         w->unk1F4 |= 1;
         w->unkC = 0x3a;
-        if ((data_022c4680.unk8 & 1) && data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+        if ((gSaveData.unk8 & 1) && data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
             w->unkC += w->unkC >> 1;
         return;
     }

@@ -28,29 +28,29 @@ typedef struct UnkTask_022dbd5c {
     UnkStruct_022dbd5c *unk10;
 } UnkTask_022dbd5c;
 
-extern UnkTask_022dbd5c *data_022b4574;
+extern UnkTask_022dbd5c *gTaskCurrent;
 
-void func_0206e3c0(UnkStruct_022dbd5c_h *h, s32 a, s32 b, s32 c, s32 d);
-void func_02069090(UnkStruct_022dbd5c *s, UnkStruct_022dbd5c_h *h);
+void ObjRect_SetBox2D(UnkStruct_022dbd5c_h *h, s32 a, s32 b, s32 c, s32 d);
+void StageObj_HandleCollider(UnkStruct_022dbd5c *s, UnkStruct_022dbd5c_h *h);
 void func_ov000_022db894(UnkStruct_022dbd5c_h *h, UnkStruct_022dbd5c_h *out);
 
 void func_ov000_022dbd5c(void) {
-    UnkStruct_022dbd5c *s = data_022b4574->unk10;
+    UnkStruct_022dbd5c *s = gTaskCurrent->unk10;
     UnkStruct_022dbd5c_h *h;
     s->unk10 = s->unk4E0;
     h = &s->unk160;
-    func_0206e3c0(h, -0x50, -0x41, 0, 10);
+    ObjRect_SetBox2D(h, -0x50, -0x41, 0, 10);
     h->unk18 = s;
     h->unk1C = NULL;
     h->unkA |= 4;
-    func_02069090(s, h);
+    StageObj_HandleCollider(s, h);
     func_ov000_022db894(&s->unk160, &s->unk480);
     s->unk10 = s->unk4E4;
     h = &s->unk18C;
-    func_0206e3c0(h, 0, -0x41, 0x50, 10);
+    ObjRect_SetBox2D(h, 0, -0x41, 0x50, 10);
     h->unk18 = s;
     h->unk1C = NULL;
     h->unkA |= 4;
-    func_02069090(s, h);
+    StageObj_HandleCollider(s, h);
     func_ov000_022db894(&s->unk18C, &s->unk4AC);
 }

@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u8 data_ov001_0231f084[];
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 void func_ov001_022f75c8();
 
 void func_ov001_022f7700(void) {
@@ -10,6 +10,6 @@ void func_ov001_022f7700(void) {
     *(u32 *)((u8 *)*(u32 *)data_ov001_0231f084 + 0xe9c) = t0;
     s32 t1 = *(u32 *)((u8 *)*(u32 *)data_ov001_0231f084 + 0xe9c);
     if (t1 <= 0) {
-        *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x8) = (u32)func_ov001_022f75c8;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov001_022f75c8;
     }
 }

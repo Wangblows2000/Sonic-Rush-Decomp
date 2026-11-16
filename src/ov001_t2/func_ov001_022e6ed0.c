@@ -13,7 +13,7 @@ typedef struct {
     UnkWork_022e6ed0 *work;
 } UnkTask_022e6ed0;
 
-extern UnkTask_022e6ed0 *data_022b4574;
+extern UnkTask_022e6ed0 *gTaskCurrent;
 
 void func_ov001_022e6dec(UnkWork_022e6ed0 *w);
 void func_02064788(void *p);
@@ -23,7 +23,7 @@ void func_ov001_022e6870(void);
 
 #pragma thumb on
 void func_ov001_022e6ed0(void) {
-    UnkWork_022e6ed0 *w = data_022b4574->work;
+    UnkWork_022e6ed0 *w = gTaskCurrent->work;
 
     func_ov001_022e6dec(w);
     if (w->timer == 0) {

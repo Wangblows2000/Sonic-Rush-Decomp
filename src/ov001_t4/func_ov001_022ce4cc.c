@@ -18,28 +18,28 @@ typedef struct {
     u16 count;
 } UnkInfo_022ce4cc;
 
-extern void *data_0208fe80;
-extern UnkInfo_022ce4cc data_02072cb8;
+extern void *gMainHeap;
+extern UnkInfo_022ce4cc gGameLanguage;
 extern u16 data_02072cbc[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 s32 func_ov001_022ce664(void *p);
 u32 func_ov001_022ce658(void *p);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *p);
-void func_02033a68(void *src, void *dst, u32 size);
+void *Compress_GetData(void *p);
+void Mem_Copy(void *src, void *dst, u32 size);
 s32 func_0203422c(u16 c);
 
 #pragma thumb on
 static inline u8 *Alloc_022ce4cc(u32 size) {
-    u8 *p = func_02034a40(data_0208fe80, size, 0x20);
+    u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -62,7 +62,7 @@ static inline void Free_022ce4cc(u8 *blk) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }
 
 void func_ov001_022ce4cc(UnkWork_022ce4cc *w) {
@@ -86,11 +86,11 @@ void func_ov001_022ce4cc(UnkWork_022ce4cc *w) {
         func_020087f8(f, buf);
         break;
     default:
-        func_02033a68(func_02033a54(f), buf, func_ov001_022ce658(f));
+        Mem_Copy(Compress_GetData(f), buf, func_ov001_022ce658(f));
         break;
     }
     DC_StoreRange(buf, func_ov001_022ce658(f));
-    n = data_02072cb8.count;
+    n = gGameLanguage.count;
     i = 0;
     c = data_02072cbc;
     t = w->tiles[0];

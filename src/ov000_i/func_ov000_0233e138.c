@@ -19,7 +19,7 @@ typedef struct {
     UnkEnt_0233e138 ent[2];
 } UnkStruct_0233e138;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkTbl_0233e138 data_ov000_02364de0[];
 s32 func_0200311c(void);
 void func_02003788(s32 a);
@@ -32,7 +32,7 @@ void func_ov000_0233e138(UnkStruct_0233e138 *w) {
     UnkTbl_0233e138 *t;
 
     s = func_0200311c();
-    MIi_CpuCopy32(data_0208922c.unk84, w->pal0, 0x200);
+    MIi_CpuCopy32(gDisplayMain.unk84, w->pal0, 0x200);
     func_02003788(s);
     MIi_CpuCopy32((void *)0x5000000, w->pal1, 0x200);
     t = data_ov000_02364de0;

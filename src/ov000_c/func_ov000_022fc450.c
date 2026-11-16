@@ -17,16 +17,16 @@ UnkStruct_022fc450 *func_ov000_022fc450(UnkStruct_ObjParam *p, s32 b, s32 c) {
     vu16 zero;
     s32 k;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_022fc450));
+    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_022fc450));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022fc450));
     func_ov000_022fba50(w, (s32)p, b, c);
-    func_02069f1c(w, data_ov000_023663ac, 4, data_ov000_02369ddc, data_ov000_02369ba0);
-    func_0206a054(w, 0, 0x10);
-    func_02069918(w, 0x15);
+    StageObj_Load2dBAC(w, data_ov000_023663ac, 4, data_ov000_02369ddc, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 0, 0x10);
+    StageObj_SetOAMOrder(w, 0x15);
     if (!(w->base.unk1E0->unk4 & 1))
         w->base.unk5C &= ~1;
     w->base.unk2E = 0x380;

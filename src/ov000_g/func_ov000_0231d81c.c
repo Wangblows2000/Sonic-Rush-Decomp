@@ -33,7 +33,7 @@ typedef struct {
 } UnkStruct_0231d81c;
 
 void func_ov000_0231d79c(void);
-void func_02069818(void *w, s32 a);
+void StageObj_SetAnimation(void *w, s32 a);
 UnkStruct_0231d81c_E *func_ov000_02333694(void *w, s32 a, s32 b);
 
 void func_ov000_0231d81c(UnkStruct_0231d81c *w) {
@@ -42,7 +42,7 @@ void func_ov000_0231d81c(UnkStruct_0231d81c *w) {
     if (w->unk68 == func_ov000_0231d79c)
         return;
     w->unk68 = func_ov000_0231d79c;
-    func_02069818(w, 2);
+    StageObj_SetAnimation(w, 2);
     if (w->unk184->unk2 != 5)
         w->unk5C |= 4;
     else

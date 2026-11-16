@@ -20,9 +20,9 @@ typedef struct UnkStruct_022ed19c {
     u32 ids[21];
 } UnkStruct_022ed19c;
 
-void func_02033550(UnkSpr_022ed19c *s, u16 anim);
-void func_0203344c(UnkSpr_022ed19c *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022ed19c *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022ed19c *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022ed19c *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022ed19c *s);
 s32 _s32_div_f(s32 a, s32 b);
 
 #pragma thumb on
@@ -41,10 +41,10 @@ void func_ov001_022ed19c(UnkStruct_022ed19c *p) {
     id = &p->ids[12];
     if (*id != 0x10) {
         *id = 0x10;
-        func_02033550(s, *id);
+        AnimatorSprite_SetAnimation(s, *id);
     }
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 
     s = &p->spr[10];
     id = &p->ids[10];
@@ -56,10 +56,10 @@ void func_ov001_022ed19c(UnkStruct_022ed19c *p) {
         anim = 0xa;
     if (*id != anim) {
         *id = anim;
-        func_02033550(s, *id);
+        AnimatorSprite_SetAnimation(s, *id);
     }
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 
     s = &p->spr[11];
     id = &p->ids[11];
@@ -71,14 +71,14 @@ void func_ov001_022ed19c(UnkStruct_022ed19c *p) {
         anim = 0xd;
     if (*id != anim) {
         *id = anim;
-        func_02033550(s, *id);
+        AnimatorSprite_SetAnimation(s, *id);
     }
     if (*id != anim) {
         *id = anim;
-        func_02033550(s, *id);
+        AnimatorSprite_SetAnimation(s, *id);
     }
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 
     a = _s32_div_f(p->unk30, 2);
     e = a + (0x57 - _s32_div_f(p->unk34, 2));
@@ -91,12 +91,12 @@ void func_ov001_022ed19c(UnkStruct_022ed19c *p) {
         anim++;
     if (*id != anim) {
         *id = anim;
-        func_02033550(s, *id);
+        AnimatorSprite_SetAnimation(s, *id);
     }
     s->x = 0xd8;
     s->y = a + 0x25;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 
     s = &p->spr[14];
     id = &p->ids[14];
@@ -105,12 +105,12 @@ void func_ov001_022ed19c(UnkStruct_022ed19c *p) {
         anim++;
     if (*id != anim) {
         *id = anim;
-        func_02033550(s, *id);
+        AnimatorSprite_SetAnimation(s, *id);
     }
     s->x = 0xd8;
     s->y = f + 0x25;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 
     s = &p->spr[15];
     id = &p->ids[15];
@@ -119,13 +119,13 @@ void func_ov001_022ed19c(UnkStruct_022ed19c *p) {
         anim++;
     if (*id != anim) {
         *id = anim;
-        func_02033550(s, *id);
+        AnimatorSprite_SetAnimation(s, *id);
     }
-    func_0203344c(s, 0, 0);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
     for (; a < f; a += 8) {
         s->x = 0xd8;
         s->y = a + 0x25;
-        func_02032d2c(s);
+        AnimatorSprite_Draw(s);
     }
 }
 #pragma thumb reset

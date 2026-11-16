@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 s32 func_ov000_0235cde0();
 s32 func_ov000_0235cdc0();
 s32 func_ov000_0235e124();
@@ -15,12 +15,12 @@ s32 func_ov000_0235ddec();
 s32 func_ov000_0235ddac();
 s32 func_02051474();
 s32 MI_CpuCopy8();
-s32 func_02052104();
+s32 SysSound_PlaySE();
 void func_ov000_0235e5b4();
 
 void func_ov000_0235e61c(void) {
-    s32 t0 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t1 = func_ov000_0235cde0(*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10));
+    s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t1 = func_ov000_0235cde0(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
     *(u32 *)((u8 *)t0 + 0x8) = t1;
     s32 t2 = func_ov000_0235cdc0(t0);
     func_ov000_0235e124(t0);
@@ -36,9 +36,9 @@ void func_ov000_0235e61c(void) {
     if (t2 != 0) {
         s32 t4 = func_02051474(t3);
         MI_CpuCopy8((t4 + 0x6), (t0 + 0xc14), 6);
-        func_02052104(7);
+        SysSound_PlaySE(7);
         *(u32 *)t0 = 0;
-        *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x8) = (u32)func_ov000_0235e5b4;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov000_0235e5b4;
     }
 }
 

@@ -15,16 +15,16 @@ typedef struct UnkStruct_022dde00_b {
     u8 unk4[1];
 } UnkStruct_022dde00_b;
 
-void func_02036754(void *p, u32 a, u32 b);
+void Sound_PlaySeqArc(void *p, u32 a, u32 b);
 void func_0201c070(void *p, s32 a);
 void func_020366f4(s32 a, s32 b, s32 c);
 
 void func_ov001_022dde00(UnkStruct_022dde00 *w, UnkStruct_022dde00_b *b) {
     if (w->unk8 == 0x1e) {
         if (w->unk10 != 2)
-            func_02036754(b->unk4, 0xb, 0);
+            Sound_PlaySeqArc(b->unk4, 0xb, 0);
         else
-            func_02036754(b->unk4, 0xb, 1);
+            Sound_PlaySeqArc(b->unk4, 0xb, 1);
     }
     if ((w->unk4 & 0x400) && !(w->unk4 & 0x1000)) {
         func_0201c070(b->unk4, 0x32);

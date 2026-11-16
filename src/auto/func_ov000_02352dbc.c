@@ -23,7 +23,7 @@ int func_ov000_02352cb0();
 int func_ov000_0234c9e8();
 int func_ov000_0234a064();
 int func_ov000_0234c4a4();
-int func_0204b7ec();
+int Sound_PlaySeqArcEx();
 
 void func_ov000_02352dbc(int param_1,undefined4 param_2,int param_3,int param_4)
 
@@ -58,6 +58,6 @@ void func_ov000_02352dbc(int param_1,undefined4 param_2,int param_3,int param_4)
   *(undefined4 *)(param_1 + 0x20) = *(undefined4 *)(param_1 + 0x14);
   *(int *)(param_1 + 0x10) = *(int *)(*(int *)(param_1 + 1000) + 0x10) + *(int *)(param_1 + 0x3f0);
   *(int *)(param_1 + 0x14) = *(int *)(*(int *)(param_1 + 1000) + 0x14) + *(int *)(param_1 + 0x3f4);
-  func_0204b7ec(param_1 + 900,0,0x5b);
+  Sound_PlaySeqArcEx(param_1 + 900,0,0x5b);
   return;
 }

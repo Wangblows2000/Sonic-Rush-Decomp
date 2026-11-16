@@ -14,7 +14,7 @@ typedef struct {
     UnkCfg_020628c4 *cfg;
 } UnkWork_020628c4;
 
-u32 func_02060e70(s32 a);
+u32 TalkDemo_GetFlags(s32 a);
 void func_02062860(void *w);
 void func_02062884(void *w);
 
@@ -29,7 +29,7 @@ void func_020628c4(UnkWork_020628c4 *w) {
         w->unk10 = 7;
         w->state = func_02062884;
     }
-    if (func_02060e70(3) & 0x40)
+    if (TalkDemo_GetFlags(3) & 0x40)
         w->state = func_02062860;
 }
 #pragma thumb reset

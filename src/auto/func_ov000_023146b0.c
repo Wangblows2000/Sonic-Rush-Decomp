@@ -1,8 +1,8 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_0206d6f8();
-s32 func_0206d6dc();
+s32 ObjRect_CenterX();
+s32 ObjRect_CenterY();
 s32 func_ov000_02354c00();
 
 void func_ov000_023146b0(u8 *p0, u8 *p1) {
@@ -32,7 +32,7 @@ void func_ov000_023146b0(u8 *p0, u8 *p1) {
     *(u32 *)((u8 *)t2 + 0x204) = t3;
     s32 t5 = (*(u32 *)((u8 *)t2 + 0x54) | 2);
     *(u32 *)((u8 *)t2 + 0x54) = t5;
-    s32 t6 = func_0206d6f8((t2 + 0x134), t5);
-    s32 t7 = func_0206d6dc((t2 + 0x134));
+    s32 t6 = ObjRect_CenterX((t2 + 0x134), t5);
+    s32 t7 = ObjRect_CenterY((t2 + 0x134));
     func_ov000_02354c00(t3, t2, t6, t7);
 }

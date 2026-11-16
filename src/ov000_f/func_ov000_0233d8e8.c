@@ -38,7 +38,7 @@ extern UnkStruct_0233d8e8 *data_ov000_02369b84;
 extern u32 data_ov000_02369ac0;
 extern UnkStruct_0233d8e8_4560 data_022c4560;
 
-void func_020315e0(UnkObj_0233d8e8 *o);
+void Model_Draw(UnkObj_0233d8e8 *o);
 
 void func_ov000_0233d8e8(void) {
     UnkStruct_0233d8e8 *w = data_ov000_02369b84;
@@ -66,12 +66,12 @@ void func_ov000_0233d8e8(void) {
             o->x = 0x1a0000;
             o->z = 0;
             o->y = w->unk9AC;
-            func_020315e0(o);
+            Model_Draw(o);
             o = w->unk9B8 ? &w->obj[3] : &w->obj[2];
             o->x = 0x1a0000;
             o->z = 0;
             o->y = w->unk9B0;
-            func_020315e0(o);
+            Model_Draw(o);
         } else if (data_022c4560.unk20 > 0xb40 && w->unk994 != 0) {
             w->unk9A4 += 0xc000;
             w->unk9A8 += 0xc000;
@@ -90,9 +90,9 @@ void func_ov000_0233d8e8(void) {
             o->x = 0x1a0000;
             o->z = 0;
             o->y = w->unk9A4;
-            func_020315e0(o);
+            Model_Draw(o);
             o->y = w->unk9A8;
-            func_020315e0(o);
+            Model_Draw(o);
         } else {
             o = &w->obj[0];
             o->y += 0x1800;
@@ -112,7 +112,7 @@ void func_ov000_0233d8e8(void) {
                     o->y = -0x3c8000;
                 }
             }
-            func_020315e0(o);
+            Model_Draw(o);
         }
     }
     w->unk9BC += 0x10000;
@@ -125,7 +125,7 @@ void func_ov000_0233d8e8(void) {
     o->x = 0x1a0000;
     o->z = 0;
     o->y = w->unk9BC;
-    func_020315e0(o);
+    Model_Draw(o);
     o->y = w->unk9C0;
-    func_020315e0(o);
+    Model_Draw(o);
 }

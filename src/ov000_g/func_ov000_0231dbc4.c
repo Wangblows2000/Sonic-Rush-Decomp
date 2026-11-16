@@ -26,8 +26,8 @@ typedef struct {
 
 extern UnkStruct_0231dbc4_Sys data_022c4560;
 
-u8 func_02068b04(u8 a, s32 b, s32 c);
-s16 func_02068df8(s16 a, s16 b, s32 c);
+u8 ObjAngle_MoveToward8(u8 a, s32 b, s32 c);
+s16 ObjSpd_UpSet(s16 a, s16 b, s32 c);
 void func_ov000_0231d79c(void);
 
 void func_ov000_0231dbc4(UnkStruct_0231dbc4 *w) {
@@ -73,7 +73,7 @@ void func_ov000_0231dbc4(UnkStruct_0231dbc4 *w) {
             if (w->unk62 == 0 && !(data_022c4560.unk20 & 0x1f))
                 w->unk5C &= ~0x10;
         } else if (w->unk1 != 0) {
-            w->unk1 = func_02068b04(w->unk1, 0, 4);
+            w->unk1 = ObjAngle_MoveToward8(w->unk1, 0, 4);
             w->unk2E = 0;
         } else {
             w->unk58 &= ~0x2100;
@@ -98,7 +98,7 @@ void func_ov000_0231dbc4(UnkStruct_0231dbc4 *w) {
     if (w->unk68 != func_ov000_0231d79c)
         max = max - (max >> 2);
     if (w->unk5C & 1)
-        w->unk2E = func_02068df8(w->unk2E, -acc, max);
+        w->unk2E = ObjSpd_UpSet(w->unk2E, -acc, max);
     else
-        w->unk2E = func_02068df8(w->unk2E, acc, max);
+        w->unk2E = ObjSpd_UpSet(w->unk2E, acc, max);
 }

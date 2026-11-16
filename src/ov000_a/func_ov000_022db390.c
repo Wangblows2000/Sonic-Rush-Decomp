@@ -52,11 +52,11 @@ typedef struct UnkStruct_022db390_7 {
 
 typedef struct { u8 data[0x5c]; } UnkArc_022db390;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern s32 data_022c4560;
 extern UnkStruct_022db390 *data_ov000_02369b14;
 extern UnkStruct_022db390_7 data_ov000_02369ac0;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s32 data_ov000_02369b18[];
 extern u8 data_ov000_0236554c[];
 extern u8 data_ov000_02365550[];
@@ -68,8 +68,8 @@ extern char data_ov000_023655a4[];
 extern char data_ov000_023655b8[];
 extern char data_ov000_023655cc[];
 
-UnkTask_022db390 *func_020372d0(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
-void func_0206c3d0(void);
+UnkTask_022db390 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
+void StageObj_Main(void);
 void func_ov000_022da3f4(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov000_022da24c(void);
@@ -81,21 +81,21 @@ void *func_0202128c(const char *path);
 void func_020257f8(void *p);
 void func_ov000_022fba50(UnkStruct_022db390 *s, u8 *a, s32 x, s32 y);
 void func_ov000_022da3b4(void);
-void func_02031c1c(void *p, s32 a);
-void func_02031bd0(void *p, s32 a, s32 b);
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022dae28(s32 k, BOOL f);
 void func_ov000_022dad70(s32 k, BOOL f);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
     MIi_CpuClear16(*(volatile u16 *)&data, dest, size);
 }
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 UnkStruct_022db390 *func_ov000_022db390(u8 *a, s32 x, s32 y) {
@@ -105,14 +105,14 @@ UnkStruct_022db390 *func_ov000_022db390(u8 *a, s32 x, s32 y) {
     UnkStruct_022db390_a *p;
     if (a[0] == 0xff && a[1] == 0xff)
         return NULL;
-    s = func_020372d0(func_0206c3d0, func_ov000_022da3f4, 0, 0x500, 2, 0x374)->unk10;
+    s = Task_Create(StageObj_Main, func_ov000_022da3f4, 0, 0x500, 2, 0x374)->unk10;
     MI_CpuFill16(s, 0, 0x374);
     data_ov000_02369b14 = s;
     s->unk68 = func_ov000_022da24c;
     MI_CpuFill16(&data_ov000_02369ac0, 0, 0xc);
     data_ov000_02369ac0.unk8 = func_ov000_022c5f28();
     data_ov000_02369ac0.unkA = func_ov000_022c5f28();
-    func_02021310(&arc1, data_ov000_0236554c, data_022c4488);
+    func_02021310(&arc1, data_ov000_0236554c, gZoneActArchive);
     s->unk230 = func_02021264(&arc1, 8);
     s->unk234 = func_02021264(&arc1, 9);
     func_020212e0(&arc1);
@@ -128,9 +128,9 @@ UnkStruct_022db390 *func_ov000_022db390(u8 *a, s32 x, s32 y) {
     s->unk14 = 0x20000;
     s->unk18 = 0;
     p = &s->unk23C;
-    func_02031c1c(p, 0);
-    func_02031bd0(p, s->unk22C, 0);
-    func_02031a68(p, 3, s->unk234, 0, 0);
+    Model_Init(p, 0);
+    Model_SetResource(p, s->unk22C, 0);
+    Model_SetAnimation(p, 3, s->unk234, 0, 0);
     p->unk10F |= 4;
     p->unk48 = s->unk10 << 4;
     p->unk4C = -(s->unk14 << 4);
@@ -141,7 +141,7 @@ UnkStruct_022db390 *func_ov000_022db390(u8 *a, s32 x, s32 y) {
     s->unk214 = func_ov000_022fad3c(0xcc, x, 0, 0, 0, 0, 0, 0, 0);
     func_ov000_022dae28(data_022c4560, 0);
     func_ov000_022dad70(data_022c4560, 0);
-    func_02021310(&arc2, data_ov000_02365550, data_022c4488);
+    func_02021310(&arc2, data_ov000_02365550, gZoneActArchive);
     func_020257f8(func_0202128c(data_ov000_02365554));
     func_020257f8(func_0202128c(data_ov000_02365568));
     func_020257f8(func_0202128c(data_ov000_0236557c));
@@ -150,6 +150,6 @@ UnkStruct_022db390 *func_ov000_022db390(u8 *a, s32 x, s32 y) {
     func_020257f8(func_0202128c(data_ov000_023655b8));
     func_020257f8(func_0202128c(data_ov000_023655cc));
     func_020212e0(&arc2);
-    func_020446b0(0xb);
+    ScreenShake_Start(0xb);
     return s;
 }

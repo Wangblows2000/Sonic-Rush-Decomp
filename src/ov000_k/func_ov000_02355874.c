@@ -7,12 +7,12 @@ typedef struct {
     u8 unk384[0x3F];
 } UnkStruct_02355874;
 
-void func_020693f0(s16 *x, s16 *y, u8 d);
+void Math_RotateVec2S16(s16 *x, s16 *y, u8 d);
 void func_ov000_023558bc(UnkStruct_02355874 *w, s16 x, s16 y);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02355874(UnkStruct_02355874 *w, s16 x, s16 y) {
-    func_020693f0(&x, &y, w->unk5);
+    Math_RotateVec2S16(&x, &y, w->unk5);
     func_ov000_023558bc(w, x, y);
-    func_0204b7ec(w->unk384, 0, 0x3F);
+    Sound_PlaySeqArcEx(w->unk384, 0, 0x3F);
 }

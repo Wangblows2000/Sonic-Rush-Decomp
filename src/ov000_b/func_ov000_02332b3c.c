@@ -36,14 +36,14 @@ typedef struct {
     u32 unk20;
 } UnkStruct_022c4560;
 
-extern u32 data_0208fe70;
-extern void *data_022c448c;
+extern u32 gRandSeed;
+extern void *gActComArchive;
 extern UnkStruct_022c4560 data_022c4560;
 extern u8 data_ov000_023684f0[];
 extern u8 data_ov000_0236a9f8[];
 
-void func_02069818(void *w, s32 a);
-void func_020693f0(s16 *x, s16 *y, u8 a);
+void StageObj_SetAnimation(void *w, s32 a);
+void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 void func_ov000_023329ec(void);
 
 
@@ -53,18 +53,18 @@ UnkStruct_02332b3c *func_ov000_02332b3c(UnkStruct_StageObj *arg, s16 x, s16 y, s
     vu16 zero;
     u8 n;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_02332b3c));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02332b3c));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02332b3c));
-    func_02069f1c(w, data_ov000_023684f0, 6, data_ov000_0236a9f8, data_022c448c);
-    func_0206a054(w, 2, 0x6e);
-    func_02069818(w, 2);
+    StageObj_Load2dBAC(w, data_ov000_023684f0, 6, data_ov000_0236a9f8, gActComArchive);
+    StageObj_AllocSpritePalette(w, 2, 0x6e);
+    StageObj_SetAnimation(w, 2);
     if (data_022c4560.unk18 & 0x20)
         w->spr1.unk2C |= 0x80008;
-    func_02069918(w, 9);
+    StageObj_SetOAMOrder(w, 9);
     w->spr0.unk2C |= 0x400;
     w->spr1.unk2C |= 0x400;
     w->spr0.unk2A >>= 1;
@@ -83,7 +83,7 @@ UnkStruct_02332b3c *func_ov000_02332b3c(UnkStruct_StageObj *arg, s16 x, s16 y, s
     n = arg->unk1 + arg->unk5;
     if (w->unk5C & 1)
         x = -x;
-    func_020693f0(&x, &y, n);
+    Math_RotateVec2S16(&x, &y, n);
     x += 3 - (Rand() & 6);
     y += 3 - (Rand() & 6);
     w->unkC = (data_022c4560.unk20 & 0xf) << 12;

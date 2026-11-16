@@ -4,17 +4,17 @@ typedef struct { u8 pad0[4]; u32 flags; u32 flags2; } UnkWork_02062340;
 typedef struct { u8 pad0[0x10]; UnkWork_02062340 *work; } UnkTask_02062340;
 typedef struct { u8 pad0[8]; u8 a; u8 b; u8 c; } UnkStruct_0208923c;
 extern UnkTask_02062340 *data_022c4da8;
-extern void *data_022b4574;
+extern void *gTaskCurrent;
 extern UnkStruct_0208923c data_0208923c;
 
-void func_020371c8(void *t);
+void Task_Destroy(void *t);
 
 #pragma thumb on
 void func_02062340(void) {
     UnkWork_02062340 *w;
 
     if (data_022c4da8 == NULL) {
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         return;
     }
     w = data_022c4da8->work;

@@ -20,11 +20,11 @@ typedef struct {
     UnkWork_022db5f4 *work;
 } UnkTask_022db5f4;
 
-extern UnkTask_022db5f4 *data_022b4574;
+extern UnkTask_022db5f4 *gTaskCurrent;
 
 void func_02040d14(UnkAnim_022db5f4 *a);
 BOOL func_02040cf4(UnkAnim_022db5f4 *a);
-void func_020371c8(UnkTask_022db5f4 *t);
+void Task_Destroy(UnkTask_022db5f4 *t);
 void func_ov001_022d9e50(UnkWork_022db5f4 *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022db5f4 *w, s32 x, s32 y);
 void func_ov001_022d9b3c(UnkWork_022db5f4 *w, s32 i, s32 x, s32 y);
@@ -36,7 +36,7 @@ void func_ov001_022db5f4(void) {
     BOOL done;
     UnkAnim_022db5f4 *a;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_02040d14(&w->anims[0]);
     func_02040d14(&w->anims[1]);
     for (i = 0; i < 8; i++) {
@@ -51,7 +51,7 @@ void func_ov001_022db5f4(void) {
     if (done) {
         w->timer = 0;
         w->unk4 = 0;
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         return;
     }
     a = &w->anims[0];

@@ -11,7 +11,7 @@ s32 func_02040ec0();
 s32 func_02040e80();
 s32 func_ov001_022d6dac();
 void func_ov001_022daea0();
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 
 void func_ov001_022da850(s32 p0) {
     func_ov001_022da374();
@@ -33,7 +33,7 @@ void func_ov001_022da850(s32 p0) {
     func_02040e80(((u8 *)p0 + 0xbf4));
     func_02040e80(((u8 *)p0 + 0xc20));
     func_ov001_022d6dac();
-    *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x8) = (u32)func_ov001_022daea0;
+    *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov001_022daea0;
 }
 
 #pragma thumb reset

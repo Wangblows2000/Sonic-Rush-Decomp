@@ -15,13 +15,13 @@ typedef struct {
 } UnkWork_02050638;
 typedef struct { u8 pad0[0x10]; UnkWork_02050638 *work; } UnkTask_02050638;
 extern UnkTask_02050638 *data_022c4638;
-extern UnkTask_02050638 *data_022b4574;
+extern UnkTask_02050638 *gTaskCurrent;
 extern u16 data_022c1950;
 extern u16 data_022c4644[];
 extern s32 data_022c4640;
 
 s32 func_02042958(void);
-void func_020371c8(UnkTask_02050638 *t);
+void Task_Destroy(UnkTask_02050638 *t);
 void func_02050a7c(u16 a);
 void func_02043278(u16 a);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
@@ -41,7 +41,7 @@ void func_02050638(void) {
     if (st < 6) {
         r = func_02042958();
         if (w->unk18) {
-            func_020371c8(data_022b4574);
+            Task_Destroy(gTaskCurrent);
             return;
         }
         if (r == 7 || st == 0 || w->unk14) {

@@ -6,7 +6,7 @@ s32 func_ov000_0234c4a4();
 void func_ov000_0234ee38();
 s32 func_ov000_02346d10();
 s32 func_ov000_02346aa8();
-s32 func_0204b7ec();
+s32 Sound_PlaySeqArcEx();
 
 s32 func_ov000_0234ef30(u8 *p0, s32 p1, s32 p2, s32 p3) {
     if (*(u32 *)((u8 *)p0 + 0x3e8) == (s32)p1) {
@@ -39,6 +39,6 @@ s32 func_ov000_0234ef30(u8 *p0, s32 p1, s32 p2, s32 p3) {
     *(u32 *)((u8 *)p0 + 0x1c) = (*(u32 *)((u8 *)p0 + 0x10) + ((s32)p2 << 8));
     s32 t2 = (*(u32 *)((u8 *)p0 + 0x14) + ((s32)p3 << 8));
     *(u32 *)((u8 *)p0 + 0x20) = t2;
-    s32 t3 = func_0204b7ec(((u8 *)p0 + 0x384), 0, 0x6d, t2);
+    s32 t3 = Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0x6d, t2);
     return t3;
 }

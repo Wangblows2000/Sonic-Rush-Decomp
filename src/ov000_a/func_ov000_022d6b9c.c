@@ -35,14 +35,14 @@ struct UnkStruct_022d6b9c {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_ov000_022d6b0c(UnkStruct_022d6b9c *s);
 
 void func_ov000_022d6b9c(UnkStruct_022d6b9c *s) {
     if (!(s->unk2C4.unk10C & 2))
         return;
-    func_02031a68(&s->unk2C4, 0, s->unk434, 7, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 7, 0);
     s->unk2C4.unk10C |= 4;
     s->unk2C4.unk114 = 0x1000;
     s->unk30 = -0xa00;

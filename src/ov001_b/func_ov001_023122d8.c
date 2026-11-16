@@ -80,15 +80,15 @@ extern UnkStruct_023122d8_g *data_ov001_0231f694;
 extern u8 data_ov001_0231eed0[];
 extern u8 data_ov001_0231eee0[];
 extern u8 data_ov001_0231eec0[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern UnkStruct_023122d8_t data_ov001_0231ee9c;
 extern u32 data_ov001_023178e4[];
 
-void func_02031bd0(void *s, void *res, u32 idx);
-void func_02031a68(void *p, s32 a, void *b, s32 c, u32 d);
+void Model_SetResource(void *s, void *res, u32 idx);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
 void func_ov001_02312aac(UnkStruct_023122d8 *w);
 void func_ov001_023120c8(UnkStruct_023122d8 *w);
-void func_02036754(u32 a, u32 b, u32 c);
+void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 
@@ -97,8 +97,8 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 }
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov001_023122d8(UnkStruct_023122d8 *w, s32 state) {
@@ -179,9 +179,9 @@ void func_ov001_023122d8(UnkStruct_023122d8 *w, s32 state) {
         break;
     }
     if (cur->unk0 != e->unk0) {
-        func_02031bd0(w->unkAC, data_ov001_0231f694->unk13C, e->unk0);
-        func_02031a68(w->unkAC, 0, data_ov001_0231f694->unk140, e->unk2, 0);
-        func_02031a68(data_ov001_0231f694->unk4, 4, data_ov001_0231f694->unk144, e->unk4, 0);
+        Model_SetResource(w->unkAC, data_ov001_0231f694->unk13C, e->unk0);
+        Model_SetAnimation(w->unkAC, 0, data_ov001_0231f694->unk140, e->unk2, 0);
+        Model_SetAnimation(data_ov001_0231f694->unk4, 4, data_ov001_0231f694->unk144, e->unk4, 0);
     } else {
         if (cur->unk2 != e->unk2) {
             w->unkAC->unk10C |= 0x40;
@@ -201,10 +201,10 @@ void func_ov001_023122d8(UnkStruct_023122d8 *w, s32 state) {
                 w->unkAC->unk12E = 0x333;
                 break;
             }
-            func_02031a68(w->unkAC, 0, data_ov001_0231f694->unk140, e->unk2, 0);
+            Model_SetAnimation(w->unkAC, 0, data_ov001_0231f694->unk140, e->unk2, 0);
         }
         if (cur->unk4 != e->unk4)
-            func_02031a68(data_ov001_0231f694->unk4, 4, data_ov001_0231f694->unk144, e->unk4, 0);
+            Model_SetAnimation(data_ov001_0231f694->unk4, 4, data_ov001_0231f694->unk144, e->unk4, 0);
     }
     w->unkAC->unk114 = e->unk8;
     if (e->unkC != 0)
@@ -249,15 +249,15 @@ void func_ov001_023122d8(UnkStruct_023122d8 *w, s32 state) {
     w->unk228 = state;
     w->unk22C = e->unk30;
     if (e->unk10 >= 0) {
-        func_02036754(0, 0x10, e->unk10);
+        Sound_PlaySeqArc(0, 0x10, e->unk10);
     } else {
         switch (state) {
         case 0xb:
         case 0xc:
         case 0xd: {
             UnkStruct_023122d8_t t = data_ov001_0231ee9c;
-            func_02036754(0, 0x10, data_ov001_023178e4[Rand() % 4]);
-            func_02036754(0, 0x10, t.v[w->unk158]);
+            Sound_PlaySeqArc(0, 0x10, data_ov001_023178e4[Rand() % 4]);
+            Sound_PlaySeqArc(0, 0x10, t.v[w->unk158]);
             break;
         }
         }

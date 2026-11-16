@@ -41,23 +41,23 @@ typedef struct {
     u8 unk57C;
 } UnkStruct_022f0478;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_Mgr *data_ov000_02369b84;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022f042c(void);
 
 void func_ov000_022f0478(UnkStruct_022f0478 *w) {
     w->base.unk32 = 0;
     w->unk450 = 0x100;
     w->unk57C |= 1;
-    func_02036754(0, 0, 0xc9);
+    Sound_PlaySeqArc(0, 0, 0xc9);
     w->unk452 = 0;
-    data_0208922c.unk20.raw = 0;
-    data_0208922c.unk20.bits.b0 = 1;
-    data_0208922c.unk20.bits.b6 = 2;
-    data_0208922c.unk24.b0 = 0xc;
+    gDisplayMain.unk20.raw = 0;
+    gDisplayMain.unk20.bits.b0 = 1;
+    gDisplayMain.unk20.bits.b6 = 2;
+    gDisplayMain.unk24.b0 = 0xc;
     data_ov000_02369b84->unk20C |= 4;
     w->unk454 = 0;
     w->base.unk68 = func_ov000_022f042c;

@@ -16,7 +16,7 @@ typedef struct {
     u8 pad68[8];
 } UnkSpr_0205d360;
 
-void func_02032480(void *p, s32 a, s32 b, s32 c);
+void AnimatorSprite_DrawRotScale(void *p, s32 a, s32 b, s32 c);
 
 static inline s32 FX_Mul_0205d360(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -29,7 +29,7 @@ void func_0205d360(u8 *w) {
     for (i = 0; i < 2; i++) {
         s->h8 = (s->x4c + s->x5c - FX_Mul_0205d360(s->x5c, s->h64)) >> 12;
         s->ha = (s->x50 + s->x60 - FX_Mul_0205d360(s->x60, s->h66)) >> 12;
-        func_02032480(s->x4, s->h64, s->h66, 0);
+        AnimatorSprite_DrawRotScale(s->x4, s->h64, s->h66, 0);
         s++;
     }
 }

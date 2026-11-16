@@ -19,8 +19,8 @@ typedef struct {
     s16 unka;
 } UnkStruct_0208922c;
 
-extern UnkTask_022e8f6c *data_022b4574;
-extern UnkStruct_0208922c data_0208922c;
+extern UnkTask_022e8f6c *gTaskCurrent;
+extern UnkStruct_0208922c gDisplayMain;
 
 void func_ov001_022e8b5c(UnkWork_022e8f6c *w);
 void func_ov001_022e8be0(UnkWork_022e8f6c *w, s32 n);
@@ -32,12 +32,12 @@ void func_ov001_022e8f6c(void) {
     UnkWork_022e8f6c *w;
     s32 v;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     v = 0;
     v += w->timer * 6;
     if (v > 0x48) v = 0x48;
     w->pos = v;
-    data_0208922c.unka = v;
+    gDisplayMain.unka = v;
     func_ov001_022e8b5c(w);
     switch (w->mode) {
     case 4:

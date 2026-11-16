@@ -11,23 +11,23 @@ typedef struct {
     UnkWork_02041300 *work;
 } UnkTask_02041300;
 
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 extern UnkTask_02041300 *data_022c4364;
 
-void func_0203dda4(void);
-s32 func_0203e934(void);
-void func_0203dbb4(void);
+void WH_Reset(void);
+s32 WH_GetSystemState(void);
+void WH_End(void);
 void func_0204138c(void);
 
 void func_02041300(void) {
     BOOL loop = TRUE;
 
-    data_02087cb8 &= 0x100;
-    func_0203dda4();
+    gSystemFlags &= 0x100;
+    WH_Reset();
     do {
-        switch (func_0203e934()) {
+        switch (WH_GetSystemState()) {
         case 1:
-            func_0203dbb4();
+            WH_End();
         case 9:
         case 10:
             loop = FALSE;

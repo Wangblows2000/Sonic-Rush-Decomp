@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u32 data_0207ba24;
-extern void func_020337ec(void);
+extern void VRAMTransfer_QueueCopy(void);
 
 asm void func_020551b0(void)
 {
@@ -60,7 +60,7 @@ _48:
     ldr r3, [r1, #0x54]
     add r0, r0, r6, lsl #9
     mov r1, #0x200
-    bl func_020337ec
+    bl VRAMTransfer_QueueCopy
     mov r0, #0x48
     smlabb r1, r5, r0, r4
     ldr r0, [pc, #0x1c]
@@ -68,7 +68,7 @@ _48:
     add r0, r4, r0
     mov r1, #0x200
     mov r2, #0
-    bl func_020337ec
+    bl VRAMTransfer_QueueCopy
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, lr}
     bx lr
     dcd 0x0000017a

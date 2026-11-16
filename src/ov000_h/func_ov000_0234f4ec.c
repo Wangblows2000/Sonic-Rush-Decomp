@@ -36,7 +36,7 @@ void func_ov000_0234f3b4(UnkStruct_0234f4ec *w);
 void func_ov000_0234f054(UnkStruct_0234f4ec *w);
 void func_ov000_0234cb70(UnkStruct_0234f4ec *w);
 void func_ov000_0234c4a4(UnkStruct_0234f4ec *w, s32 a);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_0234f4ec(UnkStruct_0234f4ec *w, UnkStruct_0234f4ec *other, s32 v) {
     if (w->other == other)
@@ -66,8 +66,8 @@ void func_ov000_0234f4ec(UnkStruct_0234f4ec *w, UnkStruct_0234f4ec *other, s32 v
     w->unk3F4 = w->unk10;
     w->unk3F8 = w->unk14;
     if (w->unk324 != 1) {
-        func_0204b7ec(w->unk384, 0, 0);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0);
     } else {
-        func_0204b7ec(w->unk384, 0, 0x11);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x11);
     }
 }

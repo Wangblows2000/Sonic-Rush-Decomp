@@ -47,7 +47,7 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
     UnkStruct_023254dc *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_023254dc));
+    task = Task_Create(StageObj_Main, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_023254dc));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -56,24 +56,24 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
     func_ov000_02326638(w, p, a, b);
     switch (p->unk2) {
     case 0x41:
-        func_02069f1c(w, data_ov000_02367910, 0xffff, data_ov000_0236a6f0, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0x19);
+        StageObj_Load2dBAC(w, data_ov000_02367910, 0xffff, data_ov000_0236a6f0, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0x19);
         w->unk5C |= 4;
-        func_02069918(w, 0x16);
+        StageObj_SetOAMOrder(w, 0x16);
         break;
     case 0x42:
     case 0x43:
     case 0x44:
     case 0xf1:
-        func_02069f1c(w, data_ov000_0236792c, 0, data_ov000_0236a6f8, data_ov000_02369ba0);
+        StageObj_Load2dBAC(w, data_ov000_0236792c, 0, data_ov000_0236a6f8, data_ov000_02369ba0);
         switch (p->unk2) {
         case 0x42:
             w->unk88 = func_ov000_02322d7c(data_ov000_02367948, 8, (u16)(p->unk2 - 0x42), 1, 1);
-            func_02069eb0(w, 8, data_ov000_0236a7a0);
+            StageObj_SetSharedSpriteVram(w, 8, data_ov000_0236a7a0);
             break;
         case 0x43:
             w->unk88 = func_ov000_02322d7c(data_ov000_02367964, 0x10, (u16)(p->unk2 - 0x42), 1, 2);
-            func_02069eb0(w, 0x10, data_ov000_0236a7b0);
+            StageObj_SetSharedSpriteVram(w, 0x10, data_ov000_0236a7b0);
             break;
         case 0xf1:
             w->unk5C ^= 1;
@@ -82,75 +82,75 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
                 w->unk88 = func_ov000_02322d7c(data_ov000_02367980, 3, 2, 1, 3);
             else
                 w->unk88 = func_ov000_02322d7c(data_ov000_0236799c, 3, (u16)(p->unk2 - 0x42), 1, 3);
-            func_02069eb0(w, 3, data_ov000_0236a7c0);
+            StageObj_SetSharedSpriteVram(w, 3, data_ov000_0236a7c0);
             break;
         }
-        func_0206a054(w, 0, 0x19);
+        StageObj_AllocSpritePalette(w, 0, 0x19);
         if (p->unk2 == 0xf1)
-            func_02069818(w, 2);
+            StageObj_SetAnimation(w, 2);
         else
-            func_02069818(w, (u16)(p->unk2 - 0x42));
+            StageObj_SetAnimation(w, (u16)(p->unk2 - 0x42));
         w->unk5C |= 4;
-        func_02069918(w, 6);
-        func_020698f0(w, 1);
+        StageObj_SetOAMOrder(w, 6);
+        StageObj_SetOAMPriority(w, 1);
         w->spr0.unk2C |= 8;
         w->spr1.unk2C |= 8;
         w->unk54 |= 0x200;
         w->unk68 = func_ov000_02322f68;
         break;
     case 0x4d:
-        func_02069f1c(w, data_ov000_023679b8, 0, data_ov000_0236a700, data_ov000_02369ba0);
-        func_02069eb0(w, 0x10, data_ov000_0236a7d0);
-        func_02069818(w, 0);
-        func_0206a054(w, 0, 0x26);
-        func_02069918(w, 0x16);
+        StageObj_Load2dBAC(w, data_ov000_023679b8, 0, data_ov000_0236a700, data_ov000_02369ba0);
+        StageObj_SetSharedSpriteVram(w, 0x10, data_ov000_0236a7d0);
+        StageObj_SetAnimation(w, 0);
+        StageObj_AllocSpritePalette(w, 0, 0x26);
+        StageObj_SetOAMOrder(w, 0x16);
         break;
     case 0x4e:
-        func_02069f1c(w, data_ov000_023679d0, 0, data_ov000_0236a700, data_ov000_02369ba0);
-        func_02069eb0(w, 8, data_ov000_0236a7e0);
-        func_02069818(w, 1);
-        func_0206a054(w, 0, 0x26);
-        func_02069918(w, 0x16);
+        StageObj_Load2dBAC(w, data_ov000_023679d0, 0, data_ov000_0236a700, data_ov000_02369ba0);
+        StageObj_SetSharedSpriteVram(w, 8, data_ov000_0236a7e0);
+        StageObj_SetAnimation(w, 1);
+        StageObj_AllocSpritePalette(w, 0, 0x26);
+        StageObj_SetOAMOrder(w, 0x16);
         w->unk88 = data_ov000_0236ac60;
         w->unk54 |= 0x200;
         w->unk68 = func_ov000_02322f80;
         break;
     case 0x4f:
-        func_02069f1c(w, data_ov000_023679e8, 0x14, data_ov000_0236a708, data_ov000_02369ba0);
-        func_02069818(w, 3);
-        func_0206a054(w, 0, 7);
+        StageObj_Load2dBAC(w, data_ov000_023679e8, 0x14, data_ov000_0236a708, data_ov000_02369ba0);
+        StageObj_SetAnimation(w, 3);
+        StageObj_AllocSpritePalette(w, 0, 7);
         w->unk5C |= 4;
-        func_02069918(w, 5);
-        func_020698f0(w, 1);
+        StageObj_SetOAMOrder(w, 5);
+        StageObj_SetOAMPriority(w, 1);
         break;
     case 0x50:
-        func_02069f1c(w, data_ov000_02367a04, 0x10, data_ov000_0236a708, data_ov000_02369ba0);
-        func_02069818(w, 4);
-        func_0206a054(w, 0, 7);
+        StageObj_Load2dBAC(w, data_ov000_02367a04, 0x10, data_ov000_0236a708, data_ov000_02369ba0);
+        StageObj_SetAnimation(w, 4);
+        StageObj_AllocSpritePalette(w, 0, 7);
         w->unk5C |= 4;
-        func_020698f0(w, 1);
-        func_02069918(w, 5);
+        StageObj_SetOAMPriority(w, 1);
+        StageObj_SetOAMOrder(w, 5);
         break;
     case 0x90:
-        func_02069f1c(w, data_ov000_02367a20, 5, data_ov000_0236a708, data_ov000_02369ba0);
-        func_02069818(w, 6);
-        func_0206a054(w, 0, 7);
+        StageObj_Load2dBAC(w, data_ov000_02367a20, 5, data_ov000_0236a708, data_ov000_02369ba0);
+        StageObj_SetAnimation(w, 6);
+        StageObj_AllocSpritePalette(w, 0, 7);
         w->unk5C |= 4;
-        func_020698f0(w, 1);
-        func_02069918(w, 5);
+        StageObj_SetOAMPriority(w, 1);
+        StageObj_SetOAMOrder(w, 5);
         break;
     case 0x9d:
     case 0x9e:
     case 0x9f:
     case 0xa0:
-        func_02069f1c(w, data_ov000_02367a3c, 0, data_ov000_0236a718, data_ov000_02369ba0);
-        func_02069eb0(w, 0xffff, data_ov000_0236a810);
-        func_0206a054(w, 0, 0x54);
+        StageObj_Load2dBAC(w, data_ov000_02367a3c, 0, data_ov000_0236a718, data_ov000_02369ba0);
+        StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_0236a810);
+        StageObj_AllocSpritePalette(w, 0, 0x54);
         if (w->unk184->unk2 < 0x9f) {
-            func_02069918(w, 0x16);
+            StageObj_SetOAMOrder(w, 0x16);
         } else {
-            func_020698f0(w, 1);
-            func_02069918(w, 5);
+            StageObj_SetOAMPriority(w, 1);
+            StageObj_SetOAMOrder(w, 5);
         }
         if (!(w->unk184->unk2 & 1))
             w->unk5C ^= 1;
@@ -159,15 +159,15 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
     case 0xa2:
     case 0xa3:
     case 0xa4:
-        func_02069f1c(w, data_ov000_02367a54, 0, data_ov000_0236a720, data_ov000_02369ba0);
-        func_02069eb0(w, 0xffff, data_ov000_0236a820);
-        func_0206a054(w, 0, 0x53);
+        StageObj_Load2dBAC(w, data_ov000_02367a54, 0, data_ov000_0236a720, data_ov000_02369ba0);
+        StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_0236a820);
+        StageObj_AllocSpritePalette(w, 0, 0x53);
         if (w->unk184->unk2 < 0xa3) {
-            func_020698f0(w, 3);
-            func_02069918(w, 0x16);
+            StageObj_SetOAMPriority(w, 3);
+            StageObj_SetOAMOrder(w, 0x16);
         } else {
-            func_020698f0(w, 1);
-            func_02069918(w, 5);
+            StageObj_SetOAMPriority(w, 1);
+            StageObj_SetOAMOrder(w, 5);
         }
         if (!(w->unk184->unk2 & 1))
             w->unk5C ^= 1;
@@ -182,15 +182,15 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
     case 0xac:
     case 0xad:
     case 0xae:
-        func_02069f1c(w, data_ov000_02367a6c, 0xffff, data_ov000_0236a728, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0x54);
-        func_020698f0(w, 3);
-        func_02069918(w, 0x16);
+        StageObj_Load2dBAC(w, data_ov000_02367a6c, 0xffff, data_ov000_0236a728, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0x54);
+        StageObj_SetOAMPriority(w, 3);
+        StageObj_SetOAMOrder(w, 0x16);
         if (w->unk184->unk2 >= 0xab) {
-            func_02069918(w, 0x18);
-            func_02069818(w, 4);
+            StageObj_SetOAMOrder(w, 0x18);
+            StageObj_SetAnimation(w, 4);
         } else if (w->unk184->unk2 >= 0xa8) {
-            func_02069818(w, 2);
+            StageObj_SetAnimation(w, 2);
         }
         if (w->unk184->unk2 >= 0xad) {
             w->unk5C |= 0x20;
@@ -209,8 +209,8 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
             func_ov000_02321824(w);
         w->unk54 |= 2;
         if (w->unk184->unk2 == 0xa6 || w->unk184->unk2 == 0xa9 || w->unk184->unk2 == 0xae) {
-            func_0206e3c0(&w->coll0, -0x20, -0x20, 0x20, 0x20);
-            func_0206e2b4(&w->coll0, 0, -0x10);
+            ObjRect_SetBox2D(&w->coll0, -0x20, -0x20, 0x20, 0x20);
+            ObjRect_SetAtkDefFlags(&w->coll0, 0, -0x10);
             w->coll0.unkA |= 0xc0;
             w->coll0.unk1C = func_ov000_0232112c;
             w->coll0.unk18 = w;
@@ -219,7 +219,7 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
         return w;
     }
     if (w->spr0.unk46 == 0)
-        func_02069918(w, 0x16);
+        StageObj_SetOAMOrder(w, 0x16);
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
     return w;

@@ -33,9 +33,9 @@ typedef struct {
     UnkStruct_0231636c_P *unk204;
 } UnkStruct_0231636c;
 
-void func_02069818(void *w, s32 a);
-s16 func_02068db4(s16 a, s32 b);
-s16 func_02068df8(s16 a, s32 b, s32 c);
+void StageObj_SetAnimation(void *w, s32 a);
+s16 ObjSpd_DownSet(s16 a, s32 b);
+s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
 
 void func_ov000_0231636c(UnkStruct_0231636c *w) {
     UnkStruct_0231636c_P *p = w->unk204;
@@ -47,11 +47,11 @@ void func_ov000_0231636c(UnkStruct_0231636c *w) {
         w->unk5C &= ~0x10;
         if (p->unk32C & 0x80) {
             if (w->unk9C == 2) {
-                func_02069818(w, 0);
+                StageObj_SetAnimation(w, 0);
                 w->unk5C |= 4;
             }
         } else if (w->unk9C == 0) {
-            func_02069818(w, 2);
+            StageObj_SetAnimation(w, 2);
             w->unk5C |= 4;
         }
         w->unk1F4 &= ~1;
@@ -83,12 +83,12 @@ void func_ov000_0231636c(UnkStruct_0231636c *w) {
         }
         if (v < 0) {
             if (w->unk34 > 0)
-                w->unk34 = func_02068db4(w->unk34, 0x40);
-            w->unk34 = func_02068df8(w->unk34, -0x40, 0xf00);
+                w->unk34 = ObjSpd_DownSet(w->unk34, 0x40);
+            w->unk34 = ObjSpd_UpSet(w->unk34, -0x40, 0xf00);
         } else {
             if (w->unk34 < 0)
-                w->unk34 = func_02068db4(w->unk34, 0x40);
-            w->unk34 = func_02068df8(w->unk34, 0x40, 0xf00);
+                w->unk34 = ObjSpd_DownSet(w->unk34, 0x40);
+            w->unk34 = ObjSpd_UpSet(w->unk34, 0x40, 0xf00);
         }
         w->unkC -= w->unk34;
         w->unk1 = (w->unkC & 0xffff) >> 8;
@@ -97,7 +97,7 @@ end:
     if (!(w->unk1F4 & 2))
         return;
     w->unk1F4 &= ~2;
-    func_02069818(w, 0);
+    StageObj_SetAnimation(w, 0);
     w->unk5C |= 0x10;
     w->unk5C |= 4;
 }

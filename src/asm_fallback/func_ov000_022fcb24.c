@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 extern u32 data_ov000_0236ac60;
-extern void func_0204b7ec(void);
-extern void func_02068204(void);
+extern void Sound_PlaySeqArcEx(void);
+extern void Sound_SetPositional(void);
 extern void func_ov000_022faf48(void);
 extern void func_ov000_022fcaa8(void);
 
@@ -61,12 +61,12 @@ asm void func_ov000_022fcb24(void)
     str r0, [r4, #0x1f4]
     ldr r0, [r4, #0x1dc]
     mov r2, #0x91
-    bl func_0204b7ec
+    bl Sound_PlaySeqArcEx
     ldr r1, [pc, #0x18]
     ldr r0, [r4, #0x1dc]
     ldr r2, [r1]
     mov r1, r4
-    bl func_02068204
+    bl Sound_SetPositional
     ldmia sp!, {r4, lr}
     bx lr
     dcd func_ov000_022fcaa8

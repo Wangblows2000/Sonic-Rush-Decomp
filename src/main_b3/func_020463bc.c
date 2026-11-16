@@ -28,8 +28,8 @@ typedef struct {
 
 void func_0201c070(void *p, s32 a);
 void func_0204633c(void);
-void func_020367b4(void *a, s32 b);
-void func_02036754(void *a, void *b, s32 c);
+void Sound_PlaySeq(void *a, s32 b);
+void Sound_PlaySeqArc(void *a, void *b, s32 c);
 void func_020366f4(void *a, void *b, s32 c);
 
 #pragma thumb on
@@ -39,7 +39,7 @@ void func_020463bc(UnkWork_020463bc *w, UnkObj_020463bc *o) {
         w->flags |= 0x10000;
         o->fn = func_0204633c;
         o->unk4 = 0;
-        func_02036754(NULL, w->unk1630, 3);
+        Sound_PlaySeqArc(NULL, w->unk1630, 3);
         if (data_022c4560.unk0 == 0) {
             if (data_022c4560.unk1C == 7)
                 func_020366f4(NULL, w->unk1630, 4);

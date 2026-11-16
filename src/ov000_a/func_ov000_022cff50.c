@@ -124,7 +124,7 @@ extern UnkStruct_022cff50_c data_ov000_0236a48c;
 extern UnkStruct_022cff50_4 data_022c4560;
 extern UnkStruct_022cff50_7 data_ov000_02369ac0;
 extern UnkStruct_022cff50_pl *data_ov000_0236ac60;
-extern UnkStruct_022cff50_5 data_0208922c;
+extern UnkStruct_022cff50_5 gDisplayMain;
 extern UnkStruct_022cff50_cam data_ov000_0236a444;
 extern UnkStruct_022cff50_8 data_ov000_02369ae8;
 extern s32 data_ov000_023651f8[][3];
@@ -135,16 +135,16 @@ extern u16 data_ov000_02362dcc[];
 
 void func_ov000_022cfb90(UnkStruct_022cff50 *s);
 void func_0201bfbc(s32 a);
-void func_0206c7d8(void);
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void StageObj_SetPause(void);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02347c44(UnkStruct_022cff50_pl *p);
 void func_ov000_0234c4a4(UnkStruct_022cff50_pl *p, s32 a);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
 void func_ov000_022cfe5c(s32 a, s32 b);
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 
 void func_ov000_022cff50(void) {
@@ -161,7 +161,7 @@ void func_ov000_022cff50(void) {
     z = &s->unkD0C;
     c = (UnkStruct_022cff50_c *)(u32)&data_ov000_0236a48c;
     func_0201bfbc(0);
-    func_0206c7d8();
+    StageObj_SetPause();
     s->unk54 |= 0x20;
     data_022c4560.unk18 &= ~1;
     s->unk460 = s->unk598 = 0;
@@ -171,9 +171,9 @@ void func_ov000_022cff50(void) {
     s->unk1314 = 0;
     s->unk1318 = 0;
     if (data_ov000_02369ac0.unk4 == 9) {
-        func_02031a68(x, 0, s->unkF7C, 0xe, 0);
-        func_02031a68(y, 0, s->unkF7C, 0x2e, 0);
-        func_02031a68(z, 0, s->unkF7C, 0x4a, 0);
+        Model_SetAnimation(x, 0, s->unkF7C, 0xe, 0);
+        Model_SetAnimation(y, 0, s->unkF7C, 0x2e, 0);
+        Model_SetAnimation(z, 0, s->unkF7C, 0x4a, 0);
         *z->unkE4 = 0;
         *y->unkE4 = *z->unkE4;
         *x->unkE4 = *y->unkE4;
@@ -181,17 +181,17 @@ void func_ov000_022cff50(void) {
         s->unk1304 = 0;
     } else {
         if (*(u16 *)&s->unk145C) {
-            func_02031a68(x, 0, s->unkF7C, 0x1a, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x37, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x56, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 0x1a, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x37, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x56, 0);
             s->unk1460 = 2;
             *z->unkE4 = 0x9a000;
             *y->unkE4 = *z->unkE4;
             *x->unkE4 = *y->unkE4;
         } else {
-            func_02031a68(x, 0, s->unkF7C, 0x14, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x33, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x50, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 0x14, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x33, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x50, 0);
             s->unk1460 = 1;
             *z->unkE4 = 0x9a000;
             *y->unkE4 = *z->unkE4;
@@ -217,15 +217,15 @@ void func_ov000_022cff50(void) {
         s->unkF84[i].unkA |= 0x1000;
     }
     data_ov000_02369ac0.unk4 = 0xc;
-    func_020446b0(0);
+    ScreenShake_Start(0);
     func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
     s->unk12F4 = 0x1e;
     s->unk145C = 0;
-    data_0208922c.unk48 = 0x10;
+    gDisplayMain.unk48 = 0x10;
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x700;
     *(vu32 *)0x4000018 = 0;
-    data_0208922c.unk8 = 0;
-    data_0208922c.unkA = 0;
+    gDisplayMain.unk8 = 0;
+    gDisplayMain.unkA = 0;
     func_ov000_022cfe5c(s->unk1460, 0);
     v = (*(vu32 *)0x4000000 & 0x1f00) >> 8;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | ((v | 4) << 8);
@@ -242,6 +242,6 @@ void func_ov000_022cff50(void) {
     c->unk8C = 0x1000;
     c->unk92 = 0x1000;
     c->unk30 = 0x1000;
-    func_02036754(0, 0, 0x7c);
+    Sound_PlaySeqArc(0, 0, 0x7c);
     func_ov000_022c5d4c(data_ov000_02369ae8.unk24, data_ov000_0236510c, data_ov000_02369ae0->unk1444, data_ov000_02362dcc, 1);
 }

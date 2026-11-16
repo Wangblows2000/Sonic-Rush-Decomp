@@ -19,18 +19,18 @@ typedef struct {
     s16 bright;
 } UnkBright_0235f778;
 
-extern UnkTask_0235f778 *data_022b4574;
+extern UnkTask_0235f778 *gTaskCurrent;
 extern UnkBright_0235f778 data_02087d44;
 extern UnkBright_0235f778 data_0208926c;
 
 fx32 func_0200225c(fx32 a, fx32 b);
-void func_020371c8(UnkTask_0235f778 *t);
+void Task_Destroy(UnkTask_0235f778 *t);
 
 #define FX_MUL(a, b) ((fx32)(((s64)(a) * (b) + 0x800) >> 12))
 
 #pragma thumb on
 void func_ov000_0235f778(void) {
-    UnkWork_0235f778 *w = data_022b4574->work;
+    UnkWork_0235f778 *w = gTaskCurrent->work;
     fx32 a, b;
     s32 v;
 
@@ -61,7 +61,7 @@ void func_ov000_0235f778(void) {
     if (w->t - w->delay >= w->dur) {
         data_02087d44.bright = w->to;
         data_0208926c.bright = data_02087d44.bright;
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
     }
 }
 #pragma thumb reset

@@ -16,8 +16,8 @@ typedef struct {
 typedef struct { u8 pad0[0x1c]; u8 unk1C; u8 unk1D; } UnkStruct_022c4560;
 
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkDisp_0205b008 data_02087d04;
-extern UnkDisp_0205b008 data_0208922c;
+extern UnkDisp_0205b008 gDisplaySub;
+extern UnkDisp_0205b008 gDisplayMain;
 
 void func_0205aff8(void);
 
@@ -33,7 +33,7 @@ void func_0205b008(UnkWork_0205b008 *w) {
         if (w->unk488 & 0x400000)
             w->fn = func_0205aff8;
     }
-    data_02087d04.brightness = FX_Mul_0205b008(0x10000, w->t) >> 12;
+    gDisplaySub.brightness = FX_Mul_0205b008(0x10000, w->t) >> 12;
     flag = FALSE;
     if (data_022c4560.unk1C == 8 && data_022c4560.unk1D == 2)
         flag = TRUE;
@@ -41,5 +41,5 @@ void func_0205b008(UnkWork_0205b008 *w) {
         return;
     if (data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2)
         return;
-    data_0208922c.brightness = FX_Mul_0205b008(0x10000, w->t) >> 12;
+    gDisplayMain.brightness = FX_Mul_0205b008(0x10000, w->t) >> 12;
 }

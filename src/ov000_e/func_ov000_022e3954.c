@@ -42,7 +42,7 @@ typedef struct {
 } UnkStruct_022e3954_4;
 
 extern UnkStruct_022e3954_pl *data_ov000_0236ac60;
-extern UnkStruct_022e3954_pad data_022503e0;
+extern UnkStruct_022e3954_pad gPad;
 extern u16 data_ov000_02363710[];
 extern UnkStruct_022e3954_4 data_022c4560;
 
@@ -63,7 +63,7 @@ void func_ov000_022e3954(UnkStruct_022e3954 *s) {
     i = 0;
     found = FALSE;
     for (; i < 2; i++) {
-        if (data_022503e0.unk4 & data_ov000_02363710[i]) {
+        if (gPad.unk4 & data_ov000_02363710[i]) {
             s->unk111C += 0x200;
             found = TRUE;
         }

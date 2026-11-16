@@ -68,8 +68,8 @@ extern s16 data_0206e470[];
 #define SIN_023543a4(a) data_0206e470[(u32)(IDX_023543a4(a) << 1)]
 #define COS_023543a4(a) data_0206e470[(u32)((IDX_023543a4(a) << 1) + 1)]
 
-s16 func_02068df8(s16 v, s32 a, s32 b);
-void func_0204b7ec(void *p, s32 a, s32 b);
+s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_02000dfc(UnkMtx33_023543a4 *m);
 void func_02000e98(UnkMtx33_023543a4 *m, fx32 sin, fx32 cos);
 void MTX_RotY33_(UnkMtx33_023543a4 *m, fx32 sin, fx32 cos);
@@ -104,14 +104,14 @@ void func_ov000_023543a4(UnkStruct_023543a4 *w) {
         return;
     }
     prev = w->unk3;
-    w->unk34 = func_02068df8(w->unk34, 6, 0x280);
+    w->unk34 = ObjSpd_UpSet(w->unk34, 6, 0x280);
     w->unk3F4 -= w->unk34 * 6;
     w->unk3 = (w->unk3F4 & 0xffff) >> 8;
     if (w->unk3 > prev) {
-        func_0204b7ec(w->unk384, 0, 0x4f);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x4f);
     }
     if (w->unk3 < 0x80 && prev >= 0x80) {
-        func_0204b7ec(w->unk384, 0, 0x4f);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x4f);
     }
     w->unkC -= w->unk34;
     if (w->unk8 != 0 && w->unk8 < 0xffff) {

@@ -4,7 +4,7 @@ typedef struct { u8 pad[4]; s16 x; s16 y; u8 pad2[0x3c]; u16 h44; u16 pad3; } Un
 extern u8 *data_ov001_0231f084;
 extern u16 data_ov001_02316abc[];
 extern u16 data_ov001_02316aa0[];
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 
 void func_ov001_022f87c8(void) {
     s32 i;
@@ -16,7 +16,7 @@ void func_ov001_022f87c8(void) {
             o->x = x;
             o->y = 0x1e;
             o->h44 = 0;
-            func_02032d2c(o);
+            AnimatorSprite_Draw(o);
         }
         x += data_ov001_02316abc[c];
     }

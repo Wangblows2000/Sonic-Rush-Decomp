@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
-extern u16 data_0208922c[];
-extern u16 data_02087d04[];
+extern u16 gDisplayMain[];
+extern u16 gDisplaySub[];
 
 #pragma thumb on
 void func_ov001_022d35b4(void) {
-    data_0208922c[2] += 2;
-    data_02087d04[2] += 2;
+    gDisplayMain[2] += 2;
+    gDisplaySub[2] += 2;
 }
 #pragma thumb reset

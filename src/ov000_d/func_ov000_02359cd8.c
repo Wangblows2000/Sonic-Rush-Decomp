@@ -12,7 +12,7 @@ typedef struct {
     UnkSpr_02359cd8 spr[0x13];
 } UnkStruct_02359cd8;
 
-void func_02039bb0(void *a, void *b);
+void ObjVram_Free(void *a, void *b);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 
 #pragma thumb on
@@ -24,7 +24,7 @@ void func_ov000_02359cd8(UnkStruct_02359cd8 *w) {
     for (i = 0, spr = w->spr; i < 0x13; i++) {
         vu16 zero;
         if (spr->unk34 != NULL) {
-            func_02039bb0(spr->unk0, spr->unk34);
+            ObjVram_Free(spr->unk0, spr->unk34);
         }
         zero = 0;
         MIi_CpuClear16(zero, spr, sizeof(UnkSpr_02359cd8));

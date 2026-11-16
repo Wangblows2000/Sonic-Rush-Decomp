@@ -40,20 +40,20 @@ struct UnkStruct_02349e24 {
     u16 unk420;
 };
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 BOOL func_ov000_0232bb20(void);
 void func_ov000_0234c4a4(UnkStruct_02349e24 *w, s32 state);
 void func_ov000_0234a288(UnkStruct_02349e24 *w);
 void func_ov000_02331a24(UnkStruct_02349e24 *w);
-void func_0204b7ec(void *p, s32 a, s32 b);
-void func_0206e2b4(void *p, s32 a, s32 b);
-void func_020446b0(s32 a);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
+void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
+void ScreenShake_Start(s32 a);
 void func_ov000_02345830(UnkStruct_02349e24 *w, s32 a);
 
 static inline u16 Rand_02349e24(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_02349e24(UnkStruct_02349e24 *w) {
@@ -70,11 +70,11 @@ void func_ov000_02349e24(UnkStruct_02349e24 *w) {
     w->unk68 = func_ov000_0234a288;
     w->unk30 = -w->unk370;
     if (w->unk324 == 1) {
-        func_0206e2b4(w->unk2CC, 0x13, 0);
+        ObjRect_SetAtkDefFlags(w->unk2CC, 0x13, 0);
         w->unk3E2 = 0;
         w->unk3D1 = 6;
         w->unk30 <<= 1;
-        func_020446b0(2);
+        ScreenShake_Start(2);
         w->unk62 = 0x44;
         func_ov000_02331a24(w);
         if (w->unk420 & 0x10) {
@@ -95,16 +95,16 @@ void func_ov000_02349e24(UnkStruct_02349e24 *w) {
             w->unk2E = 0;
             w->unk34 = 0;
         }
-        func_0204b7ec(w->unk384, 0, 0x1b);
-        func_0204b7ec(w->unk384, 0, (Rand_02349e24() & 3) + 0x26);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x1b);
+        Sound_PlaySeqArcEx(w->unk384, 0, (Rand_02349e24() & 3) + 0x26);
     } else {
         f = w->unk420;
         if (!(f & 0x30) || (w->unk2E > 0 && (f & 0x20)) || (w->unk2E < 0 && (f & 0x10))) {
             w->unk2E = 0;
             w->unk34 = 0;
         }
-        func_0204b7ec(w->unk384, 0, 0xf);
-        func_0204b7ec(w->unk384, 0, (Rand_02349e24() & 3) + 0x1d);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0xf);
+        Sound_PlaySeqArcEx(w->unk384, 0, (Rand_02349e24() & 3) + 0x1d);
     }
     w->unk32C &= ~5;
     w->unk32C |= 1;

@@ -30,17 +30,17 @@ typedef struct {
 
 extern UnkStruct_02313cfc_4560 data_022c4560;
 extern void *data_ov000_0236ac60[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
-void func_02068204(void *a, UnkStruct_02313cfc *w, void *b);
-void func_020693f0(s16 *x, s16 *y, u8 a);
+void Sound_SetPositional(void *a, UnkStruct_02313cfc *w, void *b);
+void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 UnkStruct_02313cfc_Eff *func_ov000_0232e48c(UnkStruct_02313cfc *w, s16 x, s16 y);
 void func_ov000_02313bb0(UnkStruct_02313cfc *w);
-s16 func_02068df8(s16 v, s32 a, s32 b);
+s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 
 static inline u16 UnkRand_02313cfc(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_02313cfc(UnkStruct_02313cfc *w) {
@@ -51,7 +51,7 @@ void func_ov000_02313cfc(UnkStruct_02313cfc *w) {
             w->unk204 = NULL;
         }
     } else {
-        func_02068204(w->unk1DC, w, data_ov000_0236ac60[0]);
+        Sound_SetPositional(w->unk1DC, w, data_ov000_0236ac60[0]);
     }
     if (!(data_022c4560.unk20 & 3)) {
         s16 x;
@@ -59,7 +59,7 @@ void func_ov000_02313cfc(UnkStruct_02313cfc *w) {
         UnkStruct_02313cfc_Eff *e;
         x = 0x33 - (UnkRand_02313cfc() & 6);
         y = 3 - (UnkRand_02313cfc() & 6);
-        func_020693f0(&x, &y, w->unk1);
+        Math_RotateVec2S16(&x, &y, w->unk1);
         e = func_ov000_0232e48c(w, x, y);
         e->unkDA = 0x15;
         e->unk122 = 0x15;
@@ -68,8 +68,8 @@ void func_ov000_02313cfc(UnkStruct_02313cfc *w) {
         func_ov000_02313bb0(w);
     }
     if (w->unk5C & 1) {
-        w->unk34 = func_02068df8(w->unk34, 0x10, 0xc00);
+        w->unk34 = ObjSpd_UpSet(w->unk34, 0x10, 0xc00);
     } else {
-        w->unk34 = func_02068df8(w->unk34, -0x10, 0xc00);
+        w->unk34 = ObjSpd_UpSet(w->unk34, -0x10, 0xc00);
     }
 }

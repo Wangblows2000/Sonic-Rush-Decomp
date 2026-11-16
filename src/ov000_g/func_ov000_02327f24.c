@@ -24,7 +24,7 @@ typedef struct UnkStruct_02327f24 {
 } UnkStruct_02327f24;
 
 s32 func_02025e8c(void *a);
-void func_02031a68(void *m, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *m, s32 a, void *b, s32 c, s32 d);
 
 void func_ov000_02327f24(UnkStruct_02327f24 *w) {
     UnkStruct_02327f24_M *m = &w->unk134;
@@ -50,7 +50,7 @@ void func_ov000_02327f24(UnkStruct_02327f24 *w) {
         if (w->unk8 != 0)
             return;
         if (w->unk2AC != NULL)
-            func_02031a68(m, 2, w->unk2AC, 0, func_02025e8c(w->unk2A8));
+            Model_SetAnimation(m, 2, w->unk2AC, 0, func_02025e8c(w->unk2A8));
         w->unk5C &= ~0x30;
     }
 }

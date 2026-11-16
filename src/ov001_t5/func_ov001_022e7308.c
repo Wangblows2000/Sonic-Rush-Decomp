@@ -17,7 +17,7 @@ typedef struct {
     UnkWork_022e7308 *work;
 } UnkTask_022e7308;
 
-extern UnkTask_022e7308 *data_022b4574;
+extern UnkTask_022e7308 *gTaskCurrent;
 
 void func_ov001_022e6dec(UnkWork_022e7308 *w);
 BOOL func_02050018(void);
@@ -38,7 +38,7 @@ static inline void SetVisiblePlane_022e7308(u32 plane) {
 void func_ov001_022e7308(void) {
     UnkWork_022e7308 *w;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_ov001_022e6dec(w);
     w->timer++;
     if (func_02050018()) {

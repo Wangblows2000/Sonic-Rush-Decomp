@@ -10,14 +10,14 @@ UnkStruct_EffObj *func_ov000_0230cd00(UnkStruct_StageObj *par) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0x500, 2, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0x500, 2, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_02366b04, 0x20, data_ov000_0236a010, data_ov000_02369ba0);
-    func_0206a054(w, 1, 0x66);
+    StageObj_Load2dBAC(w, data_ov000_02366b04, 0x20, data_ov000_0236a010, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 1, 0x66);
     w->spr0.unk46 = 0x13;
     w->spr1.unk46 = 0x13;
     w->unk88 = par;

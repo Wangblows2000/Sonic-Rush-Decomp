@@ -20,27 +20,27 @@ typedef struct {
     UnkWork_02063e10 *work;
 } UnkTask_02063e10;
 
-extern UnkTask_02063e10 *data_022b4574;
+extern UnkTask_02063e10 *gTaskCurrent;
 
-void func_02032d2c(UnkSpr_02063e10 *s);
+void AnimatorSprite_Draw(UnkSpr_02063e10 *s);
 
 void func_02063e10(void) {
-    UnkWork_02063e10 *w = data_022b4574->work;
+    UnkWork_02063e10 *w = gTaskCurrent->work;
     UnkSpr_02063e10 *s;
 
-    func_02032d2c(&w->spr[13]);
+    AnimatorSprite_Draw(&w->spr[13]);
     w->spr[10].x = -2;
-    func_02032d2c(&w->spr[10]);
+    AnimatorSprite_Draw(&w->spr[10]);
     if (w->sel0 != -1) {
         s = &w->spr[w->sel0];
         s->x = 0x39;
         s->y = 0x57;
-        func_02032d2c(s);
+        AnimatorSprite_Draw(s);
     }
     s = &w->spr[w->sel1];
     s->x = 0x43;
     s->y = 0x57;
-    func_02032d2c(s);
+    AnimatorSprite_Draw(s);
     if (w->unk71c != 0)
-        func_02032d2c(&w->spr[24]);
+        AnimatorSprite_Draw(&w->spr[24]);
 }

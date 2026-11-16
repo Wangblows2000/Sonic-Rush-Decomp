@@ -8,7 +8,7 @@ void func_ov000_023598dc(UnkStruct_SceneTask *t) {
     UnkStruct_Scene *w;
 
     if (t == NULL) {
-        t = data_022b4574;
+        t = gTaskCurrent;
     }
     w = t->work;
     w->unk0 = 0;
@@ -33,7 +33,7 @@ void func_ov000_023598dc(UnkStruct_SceneTask *t) {
     func_ov000_02358138(w);
     w->unk334 = 0;
     if (w->unkC == 0 || (u32)(w->unkC - 3) <= 1) {
-        func_02052104(5);
+        SysSound_PlaySE(5);
     }
     t->unk8 = func_ov000_02358cc8;
 }

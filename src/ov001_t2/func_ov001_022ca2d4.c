@@ -20,9 +20,9 @@ typedef struct {
     UnkWork_022ca2d4 *work;
 } UnkStruct_022ca2d4;
 
-void func_02033550(UnkSpr_022ca2d4 *s, u16 anim);
-void func_0203344c(UnkSpr_022ca2d4 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022ca2d4 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022ca2d4 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022ca2d4 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022ca2d4 *s);
 
 #pragma thumb on
 void func_ov001_022ca2d4(UnkStruct_022ca2d4 *p, s32 x, s32 y, s32 mode) {
@@ -45,7 +45,7 @@ void func_ov001_022ca2d4(UnkStruct_022ca2d4 *p, s32 x, s32 y, s32 mode) {
             break;
         }
         if (w->anim != anim) {
-            func_02033550(s, anim);
+            AnimatorSprite_SetAnimation(s, anim);
             w->anim = anim;
         }
         x += 0xd8;
@@ -54,8 +54,8 @@ void func_ov001_022ca2d4(UnkStruct_022ca2d4 *p, s32 x, s32 y, s32 mode) {
         s->y = y;
         s->flags &= 0x60000;
         s->flags |= 0x20000;
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
     }
 }
 #pragma thumb reset

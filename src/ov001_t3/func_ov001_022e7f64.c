@@ -31,8 +31,8 @@ typedef struct {
     u16 trg;
 } UnkPad_022e7f64;
 
-extern UnkTask_022e7f64 *data_022b4574;
-extern UnkPad_022e7f64 data_022503e0;
+extern UnkTask_022e7f64 *gTaskCurrent;
+extern UnkPad_022e7f64 gPad;
 
 void func_ov001_022e6dec(UnkWork_022e7f64 *w);
 BOOL func_ov001_022e37fc(void);
@@ -53,11 +53,11 @@ void func_ov001_022e7f64(void) {
     UnkWork_022e7f64 *w;
     s32 n;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_ov001_022e6dec(w);
     if (func_ov001_022e37fc() && w->timer != 0) {
         w->timer = 0;
-        data_022b4574->func = func_ov001_022e7728;
+        gTaskCurrent->func = func_ov001_022e7728;
         return;
     }
     n = func_ov001_022e6c90(w, w->state, 0x12);
@@ -68,7 +68,7 @@ void func_ov001_022e7f64(void) {
         w->timer = 0;
         w->next = n;
         w->unk1c = func_ov001_022e6998(w->mode, w->state, w->next);
-        data_022b4574->func = func_ov001_022e794c;
+        gTaskCurrent->func = func_ov001_022e794c;
         return;
     }
     if (w->timer == 0) {
@@ -77,11 +77,11 @@ void func_ov001_022e7f64(void) {
     func_ov001_022e349c(w);
     func_ov001_022e3840(w->sub->c, 0x1000);
     func_ov001_022e3844(w->sub->c, 0);
-    if ((data_022503e0.trg & 1) || n == w->state) {
+    if ((gPad.trg & 1) || n == w->state) {
         func_ov001_022e612c();
         return;
     }
-    if (data_022503e0.trg & 8) {
+    if (gPad.trg & 8) {
         func_ov001_022e5e60();
         return;
     }

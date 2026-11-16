@@ -57,7 +57,7 @@ struct UnkStruct_022d0864 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 typedef struct UnkStruct_022d0864_7 {
@@ -71,7 +71,7 @@ extern s16 data_0206f470[];
 extern s16 data_02071470[];
 
 s32 func_02002094(s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 u8 *func_ov000_02328548(s32 a, s32 x, s32 y, s32 z);
@@ -90,13 +90,13 @@ void func_ov000_022d0864(UnkStruct_022d0864 *s) {
         z = &s->unkD0C;
         v = 0x12d000 - *y->unkE4;
         if (s->unk145C) {
-            func_02031a68(x, 0, s->unkF7C, 0x1a, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x37, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x56, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 0x1a, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x37, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x56, 0);
         } else {
-            func_02031a68(x, 0, s->unkF7C, 0x14, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x33, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x50, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 0x14, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x33, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x50, 0);
         }
         x->unk10C &= ~4;
         y->unk10C &= ~4;
@@ -106,7 +106,7 @@ void func_ov000_022d0864(UnkStruct_022d0864 *s) {
         x->unk114 = y->unk114;
         *y->unkE4 = v;
         s->unk12F4 = 200;
-        func_02036754(s->unk1458, 0, 0xa4);
+        Sound_PlaySeqArc(s->unk1458, 0, 0xa4);
         return;
     }
     if (s->unk12F4 > 0) {
@@ -145,7 +145,7 @@ void func_ov000_022d0864(UnkStruct_022d0864 *s) {
             func_02000e98(obj + 0x158, data_0206f470[0], data_0206f470[1]);
         else
             func_02000e98(obj + 0x158, data_02071470[0], data_02071470[1]);
-        func_02036754(0, 0, 0xa3);
+        Sound_PlaySeqArc(0, 0, 0xa3);
     }
     s->unkA9C.unk114 = s->unkBD4.unk114 = s->unkD0C.unk114 = 0;
     s->unk12F4 = func_02002094(data_ov000_02369ac0.unk8 * 0x3c + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0x1e, data_ov000_02369ac0.unkA);

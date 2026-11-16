@@ -14,10 +14,10 @@ typedef struct {
     s32 anim[4];
 } UnkStruct_02357ec8;
 
-void func_02033550(UnkSpr_02357ec8 *spr, u16 anim);
-void func_0203344c(UnkSpr_02357ec8 *spr, s32 a, s32 b);
-void func_02032480(UnkSpr_02357ec8 *spr, s32 sx, s32 sy, s32 c);
-void func_02032d2c(UnkSpr_02357ec8 *spr);
+void AnimatorSprite_SetAnimation(UnkSpr_02357ec8 *spr, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_02357ec8 *spr, s32 a, s32 b);
+void AnimatorSprite_DrawRotScale(UnkSpr_02357ec8 *spr, s32 sx, s32 sy, s32 c);
+void AnimatorSprite_Draw(UnkSpr_02357ec8 *spr);
 
 #pragma thumb on
 
@@ -55,55 +55,55 @@ void func_ov000_02357ec8(UnkStruct_02357ec8 *w, s32 sel, s32 scale) {
     }
     spr = &w->spr[0];
     if (w->anim[0] != a0) {
-        func_02033550(spr, a0);
+        AnimatorSprite_SetAnimation(spr, a0);
         w->anim[0] = a0;
     }
     spr->unk4 = 0x80;
     spr->unk6 = 0x58;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     if (scale != 0x1000) {
-        func_02032480(spr, scale, scale, 0);
+        AnimatorSprite_DrawRotScale(spr, scale, scale, 0);
     } else {
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     }
     spr = &w->spr[1];
     if (w->anim[1] != a1) {
-        func_02033550(spr, a1);
+        AnimatorSprite_SetAnimation(spr, a1);
         w->anim[1] = a1;
     }
     spr->unk4 = 0x80;
     spr->unk6 = 0x58;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     if (scale != 0x1000) {
-        func_02032480(spr, scale, scale, 0);
+        AnimatorSprite_DrawRotScale(spr, scale, scale, 0);
     } else {
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     }
     spr = &w->spr[2];
     if (w->anim[2] != a2) {
-        func_02033550(spr, a2);
+        AnimatorSprite_SetAnimation(spr, a2);
         w->anim[2] = a2;
     }
     spr->unk4 = 0x80;
     spr->unk6 = 0x58;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     if (scale != 0x1000) {
-        func_02032480(spr, scale, scale, 0);
+        AnimatorSprite_DrawRotScale(spr, scale, scale, 0);
     } else {
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     }
     spr = &w->spr[3];
     if (w->anim[3] != a3) {
-        func_02033550(spr, a3);
+        AnimatorSprite_SetAnimation(spr, a3);
         w->anim[3] = a3;
     }
     spr->unk4 = 0x80;
     spr->unk6 = 0x58;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     if (scale != 0x1000) {
-        func_02032480(spr, scale, scale, 0);
+        AnimatorSprite_DrawRotScale(spr, scale, scale, 0);
     } else {
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     }
 }
 

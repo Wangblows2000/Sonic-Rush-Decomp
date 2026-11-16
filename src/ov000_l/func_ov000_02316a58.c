@@ -3,7 +3,7 @@
 void func_ov000_02316a1c(void);
 
 void func_ov000_02316a58(UnkStruct_StageObj *w) {
-    func_02069818(w, (u16)(w->unk8 + 1));
+    StageObj_SetAnimation(w, (u16)(w->unk8 + 1));
     w->unk68 = func_ov000_02316a1c;
     if (w->unk1E0->unk4 & 4)
         w->unk5C |= 0x20;

@@ -6,7 +6,7 @@ s32 func_ov001_022c69ac();
 void func_ov001_022c75d8();
 s32 func_ov001_022c7a34();
 void func_ov001_022c689c();
-s32 func_020372d0();
+s32 Task_Create();
 s32 _fflt();
 s32 _fdiv();
 s32 func_0202e5e4();
@@ -14,7 +14,7 @@ s32 _fsub();
 s32 _fmul();
 s32 _fadd();
 s32 _ffix();
-extern u8 data_0208922c[];
+extern u8 gDisplayMain[];
 
 void func_ov001_022c7678(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0xc);
@@ -30,7 +30,7 @@ void func_ov001_022c7678(u8 *p0) {
         }
     }
     if (*(u32 *)((u8 *)p0 + 0xc) == 0x1a4) {
-        func_020372d0((u32)func_ov001_022c689c, 0, 0, 0xf200, 0x1173, 0);
+        Task_Create((u32)func_ov001_022c689c, 0, 0, 0xf200, 0x1173, 0);
     }
     s32 t3 = *(u32 *)((u8 *)p0 + 0xc);
     if (t3 < 0x1e0) {
@@ -50,6 +50,6 @@ void func_ov001_022c7678(u8 *p0) {
     s32 t12 = _fmul(0x428c0000, t11);
     _fadd(0xc28c0000, t12);
     s32 t13 = _ffix();
-    *(u16 *)((u8 *)data_0208922c + 0x8) = t13;
-    *(u16 *)((u8 *)data_0208922c + 0xa) = 0;
+    *(u16 *)((u8 *)gDisplayMain + 0x8) = t13;
+    *(u16 *)((u8 *)gDisplayMain + 0xa) = 0;
 }

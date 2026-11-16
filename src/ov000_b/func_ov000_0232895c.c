@@ -5,7 +5,7 @@ typedef struct {
     s16 b;
 } UnkStruct_02367b0c;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern UnkStruct_02367b0c data_ov000_02367b0c;
 extern u8 data_ov000_02367e38[], data_ov000_02367e58[], data_ov000_0236a990[];
 
@@ -22,8 +22,8 @@ void func_ov000_0232895c(s32 x, s16 y, s32 flip, s32 c) {
     vu16 zero2;
 
     off = data_ov000_02367b0c;
-    task1 = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-    task2 = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task1 = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task2 = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task1 == func_02006abc(0))
         return;
     if (task2 == func_02006abc(0))
@@ -36,16 +36,16 @@ void func_ov000_0232895c(s32 x, s16 y, s32 flip, s32 c) {
     MIi_CpuClear16(zero2, w2, sizeof(UnkStruct_EffObj));
     w1->unkC = c;
     w2->unkC = c;
-    func_02069f1c(w1, data_ov000_02367e38, 0x10, data_ov000_0236a990, data_022c4488);
-    func_02069f1c(w2, data_ov000_02367e58, 0x10, data_ov000_0236a990, data_022c4488);
-    func_0206a054(w1, 0xb, 0x52);
-    func_0206a054(w2, 0xc, 0x52);
-    func_02069918(w1, 3);
-    func_02069918(w2, 3);
-    func_020698f0(w1, 0);
-    func_020698f0(w2, 0);
-    func_02069818(w1, 0xb);
-    func_02069818(w2, 0xc);
+    StageObj_Load2dBAC(w1, data_ov000_02367e38, 0x10, data_ov000_0236a990, gZoneActArchive);
+    StageObj_Load2dBAC(w2, data_ov000_02367e58, 0x10, data_ov000_0236a990, gZoneActArchive);
+    StageObj_AllocSpritePalette(w1, 0xb, 0x52);
+    StageObj_AllocSpritePalette(w2, 0xc, 0x52);
+    StageObj_SetOAMOrder(w1, 3);
+    StageObj_SetOAMOrder(w2, 3);
+    StageObj_SetOAMPriority(w1, 0);
+    StageObj_SetOAMPriority(w2, 0);
+    StageObj_SetAnimation(w1, 0xb);
+    StageObj_SetAnimation(w2, 0xc);
     if (flip) {
         w1->unk5C |= 1;
         w2->unk5C |= 1;

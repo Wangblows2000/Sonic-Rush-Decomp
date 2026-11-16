@@ -2,18 +2,18 @@
 #include <nitro/types.h>
 
 extern void MIi_CpuClear16(void);
-extern u32 data_0208fe70;
-extern u32 data_022c448c;
+extern u32 gRandSeed;
+extern u32 gActComArchive;
 extern u32 data_ov000_02368040;
 extern u32 data_ov000_0236a98c;
 extern u32 data_ov000_0236aa18;
 extern void func_02006abc(void);
-extern void func_0203363c(void);
-extern void func_020372d0(void);
-extern void func_0206990c(void);
-extern void func_02069f1c(void);
-extern void func_0206c3d0(void);
-extern void func_0206d2d0(void);
+extern void AnimatorSprite_Init(void);
+extern void Task_Create(void);
+extern void SpritePair_SetOAMOrder(void);
+extern void StageObj_Load2dBAC(void);
+extern void StageObj_Main(void);
+extern void ObjDraw_AllocSpritePalette(void);
 extern void func_ov000_0232c4cc(void);
 extern void func_ov000_0232c658(void);
 extern void func_ov000_0232c794(void);
@@ -42,7 +42,7 @@ asm void func_ov000_0232c7b0(void)
     mov r2, #0
     mov r3, #0xa00
     str r4, [sp, #4]
-    bl func_020372d0
+    bl Task_Create
     mov r4, r0
     mov r0, #0
     bl func_02006abc
@@ -66,7 +66,7 @@ asm void func_ov000_0232c7b0(void)
     mov r0, r5
     mov r2, #6
     str r4, [sp]
-    bl func_02069f1c
+    bl StageObj_Load2dBAC
     mov r4, #0
     mov r8, r4
     mov r6, r4
@@ -95,7 +95,7 @@ _e4:
     mov r0, r10
     mov r2, r4
     mov r3, r8
-    bl func_0203363c
+    bl AnimatorSprite_Init
     str r7, [sp]
     str r6, [sp, #4]
     ldr r1, [r5, #0x110]
@@ -111,7 +111,7 @@ _e4:
     ldr r1, [r1]
     mov r2, r4
     mov r3, r6
-    bl func_0203363c
+    bl AnimatorSprite_Init
     cmp r4, #5
     beq _1a4
     add r0, r5, r9
@@ -132,7 +132,7 @@ _1a4:
     ldr r0, [r0]
     ldr r2, [sp, #0x18]
     add r9, r5, r9
-    bl func_0206d2d0
+    bl ObjDraw_AllocSpritePalette
     add r1, r9, #0x100
     strh r0, [r1, #0x78]
     ldrh r1, [r1, #0x78]
@@ -148,7 +148,7 @@ _1e8:
     ldr r2, [sp, #0x1c]
     mov r0, r10
     mov r1, r11
-    bl func_0206990c
+    bl SpritePair_SetOAMOrder
     add r0, r4, #1
     mov r0, r0, lsl #0x10
     mov r4, r0, lsr #0x10
@@ -289,16 +289,16 @@ _3f0:
     bx lr
     dcd data_ov000_0236a98c
     dcd 0x00000654
-    dcd func_0206c3d0
+    dcd StageObj_Main
     dcd func_ov000_0232c794
-    dcd data_022c448c
+    dcd gActComArchive
     dcd data_ov000_02368040
     dcd data_ov000_0236aa18
     dcd 0x05000200
     dcd 0x05000600
     dcd func_ov000_0232c4cc
     dcd func_ov000_0232c658
-    dcd data_0208fe70
+    dcd gRandSeed
     dcd 0x00196225
     dcd 0x3c6ef35f
     dcd 0x000007ff

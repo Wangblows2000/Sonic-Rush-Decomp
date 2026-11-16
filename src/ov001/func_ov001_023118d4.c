@@ -2,7 +2,7 @@
 
 BOOL func_ov001_02312138(void *p);
 void func_ov001_023122d8(void *p, s32 v);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 void func_ov001_023118d4(u8 *p) {
     u8 *q = *(u8 **)(p + 0x118);
@@ -22,7 +22,7 @@ void func_ov001_023118d4(u8 *p) {
             func_ov001_023122d8(p, 2);
         } else {
             func_ov001_023122d8(p, 8);
-            func_02036754(0, 0x10, 6);
+            Sound_PlaySeqArc(0, 0x10, 6);
         }
         *(s32 *)(p + 0x124) = 0;
         return;

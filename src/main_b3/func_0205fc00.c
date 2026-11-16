@@ -9,10 +9,10 @@ typedef struct {
     UnkWin_0205fc00 win[4]; /* 0x4c */
 } UnkWork_0205fc00;
 extern UnkWork_0205fc00 *data_022c4d9c;
-extern void *data_022b4574;
+extern void *gTaskCurrent;
 
-void func_020371c8(void *t);
-u32 func_02060e70(s32 a);
+void Task_Destroy(void *t);
+u32 TalkDemo_GetFlags(s32 a);
 void func_0205fad0(void);
 void func_0205fb30(void);
 void func_02007318(UnkWin_0205fc00 *p);
@@ -27,10 +27,10 @@ void func_0205fc00(void) {
     UnkWin_0205fc00 *p;
 
     if (w == NULL) {
-        func_020371c8(data_022b4574);
+        Task_Destroy(gTaskCurrent);
         return;
     }
-    if (func_02060e70(0) & 2)
+    if (TalkDemo_GetFlags(0) & 2)
         cb = func_0205fad0;
     else
         cb = func_0205fb30;

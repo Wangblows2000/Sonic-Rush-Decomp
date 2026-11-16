@@ -35,16 +35,16 @@ typedef struct {
     void *unk440;
 } UnkStruct_022e899c;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_StageObj *data_ov000_0236ac60;
 
 void func_ov000_022ee198(UnkStruct_022e899c *w, s32 a);
 void func_ov000_022e9b70(UnkStruct_022e899c *w, s32 a, s32 b);
 s32 func_020027a4(s32 y, s32 x);
 UnkStruct_Fx *func_ov000_02328468(s32 a, s32 x, s32 y, s32 z);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 UnkStruct_StageObj *func_ov000_023275c0(UnkStruct_022e899c *w, s32 a, s32 b, s32 c, s32 d);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 void func_ov000_022e8724(UnkStruct_022e899c *w);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -70,10 +70,10 @@ void func_ov000_022e899c(UnkStruct_022e899c *w) {
         fx->unk14C = FX_Mul(fx->unk14C, 0x1800);
         fx->unk150 = FX_Mul(fx->unk150, 0x1800);
         fx->unk154 = FX_Mul(fx->unk154, 0x1800);
-        func_02036754(0, 0, 7);
+        Sound_PlaySeqArc(0, 0, 7);
         o = func_ov000_023275c0(w, 0, 0, 0, 0);
     } else {
-        func_02036754(0, 0, 0xbd);
+        Sound_PlaySeqArc(0, 0, 0xbd);
         o = func_ov000_023275c0(w, 1, 0, 0, 0);
     }
     if (o != NULL) {
@@ -82,11 +82,11 @@ void func_ov000_022e899c(UnkStruct_022e899c *w) {
         else
             o->unk1 = a >> 8;
     }
-    data_0208922c.unk20.raw = 0;
-    data_0208922c.unk20.bits.b0 = 1;
-    data_0208922c.unk20.bits.b6 = 2;
-    data_0208922c.unk24.b0 = 0xb;
-    func_020446b0(4);
+    gDisplayMain.unk20.raw = 0;
+    gDisplayMain.unk20.bits.b0 = 1;
+    gDisplayMain.unk20.bits.b6 = 2;
+    gDisplayMain.unk24.b0 = 0xb;
+    ScreenShake_Start(4);
     w->unk440 = func_ov000_022e8724;
     ((void (*)(UnkStruct_022e899c *))w->unk440)(w);
 }

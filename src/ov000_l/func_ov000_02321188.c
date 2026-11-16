@@ -13,7 +13,7 @@ typedef struct {
 
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 
-s16 func_02068db4(s32 v, s32 d);
+s16 ObjSpd_DownSet(s32 v, s32 d);
 void func_ov000_023218d0(UnkWork_02321188 *w);
 
 void func_ov000_02321188(UnkWork_02321188 *w) {
@@ -22,8 +22,8 @@ void func_ov000_02321188(UnkWork_02321188 *w) {
     if (w->base.unkC != 0) {
         w->base.unkC--;
     } else {
-        w->base.unk2E = func_02068db4(w->base.unk2E, 0x20);
-        w->base.unk30 = func_02068db4(w->base.unk30, 0x20);
+        w->base.unk2E = ObjSpd_DownSet(w->base.unk2E, 0x20);
+        w->base.unk30 = ObjSpd_DownSet(w->base.unk30, 0x20);
         w->unk190 = 0;
     }
     v = (data_ov000_0236aad8.unk62 + 8) << 8;

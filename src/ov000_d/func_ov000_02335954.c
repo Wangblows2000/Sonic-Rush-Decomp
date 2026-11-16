@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern void *data_ov000_0236aa8c;
 extern u8 data_ov000_023687e0[];
 extern void *data_ov000_0236aa9c[];
@@ -8,7 +8,7 @@ extern void *data_ov000_0236aa9c[];
 void func_02021310(void *buf, void *a, void *b);
 void *func_02021264(void *buf, s32 a);
 void func_020212e0(void *buf);
-void *func_02034a40(void *heap, u32 size, s32 align);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -17,13 +17,13 @@ u32 func_ov000_02335cf4(void *res);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *res);
-void func_02033a68(void *src, void *dst, u32 size);
+void *Compress_GetData(void *res);
+void Mem_Copy(void *src, void *dst, u32 size);
 void func_ov000_02342178(void *res, s32 a, s32 b);
 
 static inline void *UnkAlloc_02335954(u32 size, s32 align) {
     u32 sz = (size + 0x43) & ~0x1f;
-    u8 *p = func_02034a40(data_0208fe80, sz, align);
+    u8 *p = Heap_Alloc(gMainHeap, sz, align);
     if (func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, sz);
@@ -51,7 +51,7 @@ static inline void UnkLoad_02335954(void *arc, s32 idx, void **slot) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_02335cf4(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_02335cf4(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_02335cf4(res));

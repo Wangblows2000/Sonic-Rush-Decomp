@@ -9,9 +9,9 @@ typedef struct {
     s32 unk0;
 } UnkStruct_022c4560;
 
-extern UnkState_02051d34 *data_022c465c;
+extern UnkState_02051d34 *gSysSound;
 extern UnkStruct_022c4560 data_022c4560;
-extern void *data_02250458;
+extern void *gSoundHeap;
 void func_02052000(void);
 void func_0201e7cc(s32 id, void *p);
 
@@ -29,10 +29,10 @@ void func_02051d34(s32 x) {
         kind = 2;
     else
         return;
-    if (kind == data_022c465c->kind)
+    if (kind == gSysSound->kind)
         return;
     func_02052000();
-    data_022c465c->unk4 = 7;
+    gSysSound->unk4 = 7;
     switch (kind) {
     case 0:
         id = 1;
@@ -47,7 +47,7 @@ void func_02051d34(s32 x) {
             id = 3;
         break;
     }
-    func_0201e7cc(id, data_02250458);
-    data_022c465c->kind = kind;
+    func_0201e7cc(id, gSoundHeap);
+    gSysSound->kind = kind;
 }
 #pragma thumb reset

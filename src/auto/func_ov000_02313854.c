@@ -2,9 +2,9 @@
 #include <nitro/types.h>
 
 s32 func_ov000_0234aa80();
-s32 func_020446b0();
+s32 ScreenShake_Start();
 s32 func_ov000_023136ec();
-s32 func_0204b7ec();
+s32 Sound_PlaySeqArcEx();
 
 void func_ov000_02313854(u8 *p0, u8 *p1) {
     u32 t0 = *(u32 *)((u8 *)p0 + 0x18);
@@ -17,7 +17,7 @@ void func_ov000_02313854(u8 *p0, u8 *p1) {
         return;
     }
     func_ov000_0234aa80(t1, (t2 & 0x10));
-    func_020446b0(3);
+    ScreenShake_Start(3);
     u32 t3 = *(u32 *)((u8 *)t0 + 0x54);
     *(u32 *)((u8 *)t0 + 0x54) = (t3 | 8);
     u32 t4 = *(u32 *)((u8 *)t0 + 0x54);
@@ -32,5 +32,5 @@ void func_ov000_02313854(u8 *p0, u8 *p1) {
     func_ov000_023136ec(t0, -0x200, -0x280, 0);
     func_ov000_023136ec(t0, -0x330, -0x2e0, 1);
     func_ov000_023136ec(t0, 0x240, -0x320, 1);
-    func_0204b7ec(0, 0, 0x4c);
+    Sound_PlaySeqArcEx(0, 0, 0x4c);
 }

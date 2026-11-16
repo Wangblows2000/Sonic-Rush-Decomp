@@ -8,11 +8,11 @@ typedef struct UnkStruct_0235ab14 {
     s32 unkF4;
 } UnkStruct_0235ab14;
 
-void func_020315e0(void *p);
+void Model_Draw(void *p);
 
 void func_ov000_0235ab14(UnkStruct_0235ab14 *s, s32 *v) {
     s->unkEC = v[0] << 4;
     s->unkF0 = -v[1] << 4;
     s->unkF4 = 0;
-    func_020315e0(s->unkA4);
+    Model_Draw(s->unkA4);
 }

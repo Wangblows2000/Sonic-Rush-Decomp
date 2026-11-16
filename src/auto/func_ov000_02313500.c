@@ -2,17 +2,17 @@
 #include <nitro/types.h>
 
 s32 func_ov000_0235b804();
-s32 func_0204b7ec();
+s32 Sound_PlaySeqArcEx();
 extern u8 data_ov000_0236ac60[];
-s32 func_02068204();
+s32 Sound_SetPositional();
 
 s32 func_ov000_02313500(u8 *p0) {
     s32 t0 = func_ov000_0235b804();
     if (t0 != 0) {
         if ((*(u16 *)((u8 *)p0 + 0x5c) & 0x10) != 0) {
-            func_0204b7ec(0, 0, 0x65);
+            Sound_PlaySeqArcEx(0, 0, 0x65);
         }
-        func_02068204(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
+        Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
         s32 t1 = (*(u16 *)((u8 *)p0 + 0x5c) & ~0x10);
         *(u16 *)((u8 *)p0 + 0x5c) = t1;
         return t1;

@@ -24,7 +24,7 @@ typedef struct {
     u8 unk57C;
 } UnkStruct_022ef2a4;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_022c4590 data_022c4590;
 extern UnkStruct_Player *data_ov000_0236ac60;
 
@@ -34,8 +34,8 @@ void func_0204d5f8(void (*fn)(void));
 void func_ov000_022ef2a4(UnkStruct_022ef2a4 *w) {
     w->unk434++;
     if (w->unk434 >= 0 && (w->unk434 & 3) == 0) {
-        if (data_0208922c.unk48 > 0)
-            data_0208922c.unk48--;
+        if (gDisplayMain.unk48 > 0)
+            gDisplayMain.unk48--;
     }
     if (!(w->unk57C & 2))
         return;

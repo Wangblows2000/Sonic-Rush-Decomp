@@ -45,9 +45,9 @@ extern UnkStruct_02369b4c *data_ov000_02369b4c;
 extern void *data_ov000_023658ac[];
 
 void func_ov000_022dfd74(void);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 s32 func_02025e8c(void *p);
 
 UnkStruct_022dfd80 *func_ov000_022dfd80(s32 k, s32 x, s32 y, s32 z) {
@@ -55,19 +55,19 @@ UnkStruct_022dfd80 *func_ov000_022dfd80(s32 k, s32 x, s32 y, s32 z) {
     UnkStruct_022dfd80_Sub *sub;
     vu16 zero;
 
-    w = func_020372d0(func_0206c3d0, func_ov000_022dfd74, 0, 0xa00, 4, sizeof(UnkStruct_022dfd80))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022dfd74, 0, 0xa00, 4, sizeof(UnkStruct_022dfd80))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022dfd80));
     sub = &w->sub;
     w->unk124 = sub;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, data_ov000_02369b4c->unkD0C[k], 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, data_ov000_02369b4c->unkD0C[k], 0);
     if (data_ov000_02369b4c->unkD1C[k] != NULL)
-        func_02031a68(sub, 0, data_ov000_02369b4c->unkD1C[k], 0, 0);
+        Model_SetAnimation(sub, 0, data_ov000_02369b4c->unkD1C[k], 0, 0);
     if (data_ov000_02369b4c->unkD2C[k] != NULL)
-        func_02031a68(sub, 1, data_ov000_02369b4c->unkD2C[k], 0, 0);
+        Model_SetAnimation(sub, 1, data_ov000_02369b4c->unkD2C[k], 0, 0);
     if (data_ov000_02369b4c->unkD3C[k] != NULL)
-        func_02031a68(sub, 2, data_ov000_02369b4c->unkD3C[k], 0, func_02025e8c(data_ov000_02369b4c->unkD0C[k]));
+        Model_SetAnimation(sub, 2, data_ov000_02369b4c->unkD3C[k], 0, func_02025e8c(data_ov000_02369b4c->unkD0C[k]));
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     w->unk10 = x;
     w->unk14 = y;

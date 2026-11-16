@@ -18,8 +18,8 @@ typedef struct {
     s32 max;
 } UnkStruct_022ecf5c;
 
-extern UnkTouch_022ecf5c data_022b65b4;
-extern UnkPad_022ecf5c data_022503e0;
+extern UnkTouch_022ecf5c gTouchState;
+extern UnkPad_022ecf5c gPad;
 
 #pragma thumb on
 BOOL func_ov001_022ecf5c(UnkStruct_022ecf5c *p) {
@@ -32,14 +32,14 @@ BOOL func_ov001_022ecf5c(UnkStruct_022ecf5c *p) {
     if (p->cur == 0) {
         return FALSE;
     }
-    if (data_022b65b4.flags & 0x10) {
-        x = data_022b65b4.x;
-        y = data_022b65b4.y;
+    if (gTouchState.flags & 0x10) {
+        x = gTouchState.x;
+        y = gTouchState.y;
         if (x >= 0xd8 && x < 0xee && y >= 0x10 && y < 0x27) {
             return TRUE;
         }
     }
-    if (data_022503e0.trg & 0x40) {
+    if (gPad.trg & 0x40) {
         return TRUE;
     }
     return FALSE;

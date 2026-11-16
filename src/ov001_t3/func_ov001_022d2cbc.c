@@ -48,12 +48,12 @@ typedef struct {
     UnkWork_022d2cbc *work;
 } UnkTask_022d2cbc;
 
-extern UnkTask_022d2cbc *data_022b4574;
-extern UnkGfx_022d2cbc data_0208922c;
-extern UnkGfx_022d2cbc data_02087d04;
+extern UnkTask_022d2cbc *gTaskCurrent;
+extern UnkGfx_022d2cbc gDisplayMain;
+extern UnkGfx_022d2cbc gDisplaySub;
 
-void func_020371c8(void *t);
-void func_02039bb0(s32 a, void *p);
+void Task_Destroy(void *t);
+void ObjVram_Free(s32 a, void *p);
 void func_ov001_022d289c(UnkWork_022d2cbc *w);
 
 #pragma thumb on
@@ -61,35 +61,35 @@ void func_ov001_022d2cbc(void) {
     UnkWork_022d2cbc *w;
     s32 i;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     if (w->task != NULL) {
-        func_020371c8(w->task);
+        Task_Destroy(w->task);
         w->task = NULL;
     }
-    data_0208922c.blend = 0;
-    data_0208922c.alpha.eva = 0;
-    data_0208922c.alpha.evb = 0xf;
-    data_02087d04.blend = 0;
-    data_02087d04.alpha.eva = 0;
-    data_02087d04.alpha.evb = 0xf;
+    gDisplayMain.blend = 0;
+    gDisplayMain.alpha.eva = 0;
+    gDisplayMain.alpha.evb = 0xf;
+    gDisplaySub.blend = 0;
+    gDisplaySub.alpha.eva = 0;
+    gDisplaySub.alpha.evb = 0xf;
     for (i = 0; i < 4; i++) {
-        data_0208922c.ofs[i].x = 0;
-        data_0208922c.ofs[i].y = 0;
-        data_02087d04.ofs[i].x = 0;
-        data_02087d04.ofs[i].y = 0;
+        gDisplayMain.ofs[i].x = 0;
+        gDisplayMain.ofs[i].y = 0;
+        gDisplaySub.ofs[i].x = 0;
+        gDisplaySub.ofs[i].y = 0;
     }
     for (i = 0; i < 18; i++) {
-        func_02039bb0(0, w->objs[i].p);
+        ObjVram_Free(0, w->objs[i].p);
     }
-    func_02039bb0(1, w->c[0].p);
-    func_02039bb0(1, w->c[1].p);
+    ObjVram_Free(1, w->c[0].p);
+    ObjVram_Free(1, w->c[1].p);
     for (i = 0; i < 4; i++) {
-        func_02039bb0(0, w->b[i].p0);
-        func_02039bb0(1, w->b[i].p1);
+        ObjVram_Free(0, w->b[i].p0);
+        ObjVram_Free(1, w->b[i].p1);
     }
     if (w->mode != 2) {
         for (i = 0; i < 3; i++) {
-            func_02039bb0(0, w->d[i].p);
+            ObjVram_Free(0, w->d[i].p);
         }
     }
     func_ov001_022d289c(w);

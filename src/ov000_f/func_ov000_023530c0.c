@@ -73,7 +73,7 @@ typedef struct {
 } UnkStruct_023530c0_aad8;
 
 extern s16 data_0206e470[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern UnkStruct_023530c0_4560 data_022c4560;
 extern UnkStruct_023530c0_aad8 data_ov000_0236aad8;
 
@@ -82,12 +82,12 @@ extern UnkStruct_023530c0_aad8 data_ov000_0236aad8;
 #define COS_023530c0(a) data_0206e470[(u32)((IDX_023530c0(a) << 1) + 1)]
 
 void func_ov000_02329984(UnkStruct_023530c0 *w, s32 x, s32 y, s32 a, s32 b, u16 c);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0234c4a4(UnkStruct_023530c0 *w, s32 state);
 
 static inline u16 Rand_023530c0(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_02000dfc(UnkMtx33_023530c0 *m);
@@ -134,10 +134,10 @@ void func_ov000_023530c0(UnkStruct_023530c0 *w) {
     w->unk3F4 -= w->unk34 * 6;
     w->unk3 = (w->unk3F4 & 0xffff) >> 8;
     if (w->unk3 > prev) {
-        func_0204b7ec(w->unk384, 0, 0x58);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x58);
     }
     if (w->unk3 < 0x80 && prev >= 0x80) {
-        func_0204b7ec(w->unk384, 0, 0x58);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x58);
     }
     w->unk3F8 -= (w->unk3F8 - 0x5000) >> 4;
     w->unkC++;

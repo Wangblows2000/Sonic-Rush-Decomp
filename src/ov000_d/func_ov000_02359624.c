@@ -6,18 +6,18 @@ typedef struct {
     u16 trg;
 } UnkStruct_02359624_Pad;
 
-extern UnkStruct_02359624_Pad data_022503e0;
+extern UnkStruct_02359624_Pad gPad;
 
 void func_ov000_02359af4(s32 a);
 
 #pragma thumb on
 
 void func_ov000_02359624(void) {
-    UnkStruct_Scene *w = data_022b4574->work;
+    UnkStruct_Scene *w = gTaskCurrent->work;
     UnkStruct_ScenePos *q = &w->posB68;
     s32 x;
 
-    if (w->unkC != 1 && w->unkC != 2 && (data_022503e0.trg & 1) && w->unk0 >= 0x15) {
+    if (w->unkC != 1 && w->unkC != 2 && (gPad.trg & 1) && w->unk0 >= 0x15) {
         w->unk340 = 1;
     }
     if (w->unk340) {

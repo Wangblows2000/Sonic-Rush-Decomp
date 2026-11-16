@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 func_ov001_022f71f4();
-s32 func_02048fdc();
+s32 BrightnessLerp_Create();
 s32 func_ov001_022ef11c();
 s32 func_ov001_022ffce8();
 extern u8 data_ov001_023167f8[];
@@ -23,7 +23,7 @@ void func_ov001_022ef558(u8 *p0) {
         *(u16 *)((u8 *)p0 + 0x1cc) = 0x1000;
     }
     if (*(s16 *)((u8 *)p0 + 0x1c8) == 0x77) {
-        func_02048fdc(0x10, 0, 0x10, 3, 0);
+        BrightnessLerp_Create(0x10, 0, 0x10, 3, 0);
     }
     if ((*(u8 *)((u8 *)t0 + 0x10c) & 2) != 0) {
         func_ov001_022ef11c(p0);

@@ -48,7 +48,7 @@ typedef struct {
     u32 unkfc;
 } UnkStruct_02084d38;
 
-extern UnkTask_02326744 *data_022b4574;
+extern UnkTask_02326744 *gTaskCurrent;
 extern s8 data_022c4eec[];
 extern u8 data_ov000_02367ae8[];
 extern u8 data_02084df4[];
@@ -97,7 +97,7 @@ void func_ov000_02326744(void) {
     fx32 scale[3];
     fx32 trans[3];
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
 
     if (w->unk134->unk0 == 1 && (w->unk134->unk330 & 0x20000))
         return;

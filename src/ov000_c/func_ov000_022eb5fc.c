@@ -75,7 +75,7 @@ extern UnkStruct_022eb5fc_Pl *data_ov000_0236ac60;
 
 void func_ov000_022eb574(UnkStruct_022eb5fc *w, UnkStruct_022eb5fc_Pl *pl);
 void func_ov000_022ee014(s32 x, s32 y, s32 z);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_023492f0(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b);
 s32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(s32 a);
@@ -93,7 +93,7 @@ static inline void Hit(UnkStruct_02369b78 *mgr, UnkStruct_022eb5fc *w, UnkStruct
     w->unk448 = v;
     func_ov000_022eb574(w, pl);
     func_ov000_022ee014((w->unk10 + pl->unk10) >> 1, (w->unk14 + pl->unk14) >> 1, (w->unk18 + pl->unk18) >> 1);
-    func_02036754(0, 0, 0xcb);
+    Sound_PlaySeqArc(0, 0, 0xcb);
 }
 
 void func_ov000_022eb5fc(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b) {

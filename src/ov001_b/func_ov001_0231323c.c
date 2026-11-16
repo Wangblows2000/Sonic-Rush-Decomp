@@ -85,7 +85,7 @@ void func_0200148c(void *m);
 void func_02001c00(void *a, void *b, s32 x, s32 y, s32 z);
 void func_0200160c(void *a, void *b, void *c);
 void func_02001558(void *v, void *m, void *out);
-void func_020316f4(void *p);
+void Model_Animate(void *p);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -232,5 +232,5 @@ void func_ov001_0231323c(UnkStruct_0231323c *w) {
     func_02001c00(&m2, &m2, 0, 0x4000, 0);
     func_02001558(&v, &m2, &w->unkE4);
     }
-    func_020316f4(data_ov001_0231f694 + 4);
+    Model_Animate(data_ov001_0231f694 + 4);
 }

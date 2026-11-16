@@ -26,14 +26,14 @@ typedef struct {
     UnkStruct_02329d38_Sub unk134;
 } UnkStruct_02329d38;
 
-extern u32 data_0208fe70;
-extern void *data_022c4488;
+extern u32 gRandSeed;
+extern void *gZoneActArchive;
 extern u8 data_ov000_0236aa08[];
 extern u8 data_ov000_02367f44[];
 extern u16 data_ov000_023645c0[];
 
 void func_ov000_02329be0(void);
-void func_02069934(void *w, UnkStruct_02329d38_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
+void StageObj_Load3dBAC(void *w, UnkStruct_02329d38_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 void func_ov000_022c5e80(s32 a, s32 b, s32 c, s32 *d, s32 *e, s16 *f);
 
 
@@ -45,14 +45,14 @@ UnkStruct_02329d38 *func_ov000_02329d38(UnkStruct_StageObj *arg, s16 x, s16 y, s
     s16 o0C;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_02329d38));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02329d38));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02329d38));
-    func_02069934(w, &w->unk134, data_ov000_02367f44, data_ov000_023645c0[type], 0x10, data_ov000_0236aa08, data_022c4488);
-    func_02069818(w, (u16)(type + 2));
+    StageObj_Load3dBAC(w, &w->unk134, data_ov000_02367f44, data_ov000_023645c0[type], 0x10, data_ov000_0236aa08, gZoneActArchive);
+    StageObj_SetAnimation(w, (u16)(type + 2));
     w->unk134.unkA = 0x14;
     w->unk134.unkB = 7;
     if (arg->unk5C & 1)

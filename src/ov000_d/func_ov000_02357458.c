@@ -1,6 +1,6 @@
 #include <ov000_d/mdl.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern const char *data_ov000_02368e00;
 extern const char *data_ov000_02368dfc;
 extern const char *data_ov000_02368df8;
@@ -10,32 +10,32 @@ extern u8 data_ov000_023690e0[];
 extern u8 data_ov000_02364eb8[];
 extern u16 data_ov000_02364eb0[];
 
-void *func_02033fbc(const char *path, void *dst);
-void *func_02034a40(void *heap, u32 size, s32 align);
+void *File_Load(const char *path, void *dst);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 u32 func_ov000_02357804(void *res);
 u32 func_ov000_023577f8(void *res);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *res);
-void func_02033a68(void *src, void *dst, u32 size);
+void *Compress_GetData(void *res);
+void Mem_Copy(void *src, void *dst, u32 size);
 void func_02021310(void *buf, void *a, void *b);
 void *func_02021264(void *buf, s32 a);
 void func_020257f8(void);
 void func_020212e0(void *buf);
-void func_02031c1c(UnkStruct_MdlRender *r, s32 a);
-void func_02031bd0(UnkStruct_MdlRender *r, void *mdl, s32 a);
+void Model_Init(UnkStruct_MdlRender *r, s32 a);
+void Model_SetResource(UnkStruct_MdlRender *r, void *mdl, s32 a);
 void func_02004084(void *p);
 void func_02022270(s32 idx, u16 val);
 
 static inline void *UnkAlloc_02357458(u32 size, s32 align) {
     u8 *p;
     size = (size + 0x43) & ~0x1f;
-    p = func_02034a40(data_0208fe80, size, align);
+    p = Heap_Alloc(gMainHeap, size, align);
     if (func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -58,7 +58,7 @@ static inline void UnkFree_02357458(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 #pragma thumb on
@@ -73,7 +73,7 @@ void func_ov000_02357458(UnkStruct_Mdl *w, BOOL flag) {
 
     zero = 0;
     MIi_CpuClear32(zero, w, sizeof(UnkStruct_Mdl));
-    res = func_02033fbc(data_ov000_02368e00, (void *)-1);
+    res = File_Load(data_ov000_02368e00, (void *)-1);
     w->unk2F8 = UnkAlloc_02357458(*(u32 *)res >> 8, 0x20);
     dst = w->unk2F8;
     switch (func_ov000_02357804(res)) {
@@ -87,14 +87,14 @@ void func_ov000_02357458(UnkStruct_Mdl *w, BOOL flag) {
         func_020087f8(res, dst);
         break;
     default:
-        func_02033a68(func_02033a54(res), dst, func_ov000_023577f8(res));
+        Mem_Copy(Compress_GetData(res), dst, func_ov000_023577f8(res));
         break;
     }
     DC_StoreRange(dst, func_ov000_023577f8(res));
     UnkFree_02357458(res);
-    w->unk2FC = func_02033fbc(data_ov000_02368dfc, (void *)-1);
+    w->unk2FC = File_Load(data_ov000_02368dfc, (void *)-1);
     if (flag) {
-        w->unk300 = func_02033fbc(data_ov000_02368df8, (void *)-1);
+        w->unk300 = File_Load(data_ov000_02368df8, (void *)-1);
     }
     func_02021310(buf0, data_ov000_023690d8, w->unk2F8);
     func_02021310(buf1, data_ov000_023690dc, w->unk2FC);
@@ -130,14 +130,14 @@ void func_ov000_02357458(UnkStruct_Mdl *w, BOOL flag) {
     }
     func_020212e0(buf1);
     func_020212e0(buf0);
-    func_02031c1c(&w->slot[0].r, 0);
-    func_02031bd0(&w->slot[0].r, w->slot[0].mdl14C, 0);
-    func_02031a68(&w->slot[0].r, 0, w->slot[0].anm150, 0, NULL);
-    func_02031a68(&w->slot[0].r, 4, w->slot[0].anm154, 0, NULL);
-    func_02031c1c(&w->slot[1].r, 0);
-    func_02031bd0(&w->slot[1].r, w->slot[1].mdl14C, 0);
-    func_02031a68(&w->slot[1].r, 0, w->slot[1].anm150, 4, NULL);
-    func_02031a68(&w->slot[1].r, 4, w->slot[1].anm154, 4, NULL);
+    Model_Init(&w->slot[0].r, 0);
+    Model_SetResource(&w->slot[0].r, w->slot[0].mdl14C, 0);
+    Model_SetAnimation(&w->slot[0].r, 0, w->slot[0].anm150, 0, NULL);
+    Model_SetAnimation(&w->slot[0].r, 4, w->slot[0].anm154, 0, NULL);
+    Model_Init(&w->slot[1].r, 0);
+    Model_SetResource(&w->slot[1].r, w->slot[1].mdl14C, 0);
+    Model_SetAnimation(&w->slot[1].r, 0, w->slot[1].anm150, 4, NULL);
+    Model_SetAnimation(&w->slot[1].r, 4, w->slot[1].anm154, 4, NULL);
     w->x = 0;
     w->y = 0;
     w->z = 0;

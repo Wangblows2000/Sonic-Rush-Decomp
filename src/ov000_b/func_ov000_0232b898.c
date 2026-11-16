@@ -9,7 +9,7 @@ typedef struct {
     u32 unk148;
 } UnkStruct_0232b898;
 
-extern void *data_022c448c;
+extern void *gActComArchive;
 extern UnkStruct_Task *data_ov000_0236a980;
 extern u8 data_ov000_02367fe4[];
 
@@ -17,7 +17,7 @@ void func_ov000_0232b870(void);
 void func_ov000_0232b598(void);
 void func_ov000_0232b740(void);
 s32 func_ov000_0233766c(s32 a);
-void func_0203344c(UnkStruct_Spr *s, s32 a, s32 b);
+void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
 void func_ov000_02336f28(u32 *out, s32 a, s32 b);
 
 void func_ov000_0232b898(UnkStruct_StageObj *arg, s32 n) {
@@ -29,14 +29,14 @@ void func_ov000_0232b898(UnkStruct_StageObj *arg, s32 n) {
     if (data_ov000_0236a980 == NULL) {
         if (n == 0)
             return;
-        task = func_020372d0(func_0206c3d0, func_ov000_0232b870, 0, 0xa00, 4, sizeof(UnkStruct_0232b898));
+        task = Task_Create(StageObj_Main, func_ov000_0232b870, 0, 0xa00, 4, sizeof(UnkStruct_0232b898));
         if (task == func_02006abc(0))
             return;
         data_ov000_0236a980 = task;
         w = task->work;
         zero = 0;
         MIi_CpuClear16(zero, w, sizeof(UnkStruct_0232b898));
-        func_02069f1c(w, data_ov000_02367fe4, 0, NULL, data_022c448c);
+        StageObj_Load2dBAC(w, data_ov000_02367fe4, 0, NULL, gActComArchive);
         w->base.spr0.unk34 = func_ov000_0233766c(0);
         w->base.spr1.unk34 = func_ov000_0233766c(1);
         w->base.spr0.unk44 = 1;
@@ -47,13 +47,13 @@ void func_ov000_0232b898(UnkStruct_StageObj *arg, s32 n) {
         w->base.spr1.unk2C |= 0x208;
         w->base.spr0.unk46 = 3;
         w->base.spr1.unk46 = 3;
-        func_02069918(w, 3);
-        func_020698f0(w, 0);
+        StageObj_SetOAMOrder(w, 3);
+        StageObj_SetOAMPriority(w, 0);
         w->base.unk54 |= 0x10;
         w->base.unk5C |= 0x1000;
         w->base.unk5C |= 1;
-        func_0203344c(&w->base.spr0, 0, 0);
-        func_0203344c(&w->base.spr1, 0, 0);
+        AnimatorSprite_ProcessAnimation(&w->base.spr0, 0, 0);
+        AnimatorSprite_ProcessAnimation(&w->base.spr1, 0, 0);
         w->unk144 = n;
     } else {
         w = data_ov000_0236a980->work;

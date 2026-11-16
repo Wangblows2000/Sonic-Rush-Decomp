@@ -21,7 +21,7 @@ void func_ov000_02361744(void);
 #pragma thumb on
 
 void func_ov000_02361804(void) {
-    UnkStruct_MenuO *w = data_022b4574->work;
+    UnkStruct_MenuO *w = gTaskCurrent->work;
     s32 n;
 
     MenuO_Update(w, 0);
@@ -40,7 +40,7 @@ void func_ov000_02361804(void) {
     if (func_ov000_0235faf8(w)) {
         w->unk0 = 0;
         func_ov000_0235f850(0, 0x10, 0x10, 0);
-        data_022b4574->unk8 = func_ov000_02361520;
+        gTaskCurrent->unk8 = func_ov000_02361520;
         return;
     }
     if (func_ov000_0235fba0(w)) {
@@ -48,7 +48,7 @@ void func_ov000_02361804(void) {
         data_022c4560.unk1C = w->unkC / 2;
         data_022c4560.unk1D = w->unkC % 2;
         func_0205004c();
-        data_022b4574->unk8 = func_ov000_02361744;
+        gTaskCurrent->unk8 = func_ov000_02361744;
     }
 }
 

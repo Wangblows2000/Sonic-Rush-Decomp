@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_02068db4();
+s32 ObjSpd_DownSet();
 extern u8 data_ov000_0236aad8[];
 s32 func_ov000_02320f40();
 
@@ -9,9 +9,9 @@ void func_ov000_02320b48(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x88);
     if (t0 != 0) {
         if (*(u32 *)((u8 *)t0 + 0x190) == 0) {
-            s32 t1 = func_02068db4(*(s16 *)((u8 *)p0 + 0x2e), 0x20);
+            s32 t1 = ObjSpd_DownSet(*(s16 *)((u8 *)p0 + 0x2e), 0x20);
             *(u16 *)((u8 *)p0 + 0x2e) = t1;
-            s32 t2 = func_02068db4(*(s16 *)((u8 *)p0 + 0x30), 0x20);
+            s32 t2 = ObjSpd_DownSet(*(s16 *)((u8 *)p0 + 0x30), 0x20);
             *(u16 *)((u8 *)p0 + 0x30) = t2;
         }
     }

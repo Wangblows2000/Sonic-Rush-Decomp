@@ -55,7 +55,7 @@ void func_ov001_022f5984(void);
 void func_ov001_022f5954(void);
 void func_ov001_022f5da0(void);
 void func_ov001_022f5a24(UnkStruct_022f5a24 *w);
-void func_02031a68(void *p, s32 a, void *b, s32 c, u32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
 UnkStruct_022f5a24_t *func_ov001_02300c94(void);
 u16 func_020027a4(s32 y, s32 x);
 s32 func_02002094(s32 n, s32 d);
@@ -104,7 +104,7 @@ void func_ov001_022f5a24(UnkStruct_022f5a24 *w) {
                 return;
             }
             w->unk74 = func_ov001_022f5954;
-            func_02031a68(a, 0, data_ov001_0231f068, 7, 0);
+            Model_SetAnimation(a, 0, data_ov001_0231f068, 7, 0);
             a->unk10C &= ~4;
             a->unk114 = 0x1000;
             return;

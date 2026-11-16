@@ -19,9 +19,9 @@ typedef struct UnkStruct_02310d5c {
     void *unk1D4;
 } UnkStruct_02310d5c;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -29,7 +29,7 @@ void MI_CpuFill8(void *dst, u8 v, u32 size);
 
 static inline u8 *Alloc_02310d5c(u32 size) {
     u32 sz = (size + 0x43) & ~0x1f;
-    u8 *blk = func_02034a40(data_0208fe80, sz, 0x20);
+    u8 *blk = Heap_Alloc(gMainHeap, sz, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, sz);

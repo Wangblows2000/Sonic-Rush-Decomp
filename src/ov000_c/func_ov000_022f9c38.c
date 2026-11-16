@@ -35,7 +35,7 @@ typedef struct {
 
 extern UnkStruct_02369b84 *data_ov000_02369b84;
 extern void *data_ov000_02369b88[];
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern UnkStruct_022c4560 data_022c4560;
 extern s16 data_ov000_02363e60[][3];
 extern s16 data_ov000_02364044[][9];
@@ -47,9 +47,9 @@ void func_ov000_022f7c00(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void func_020212e0(void *f);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 
 static inline BOOL IsMode23(void) {
     return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
@@ -66,11 +66,11 @@ UnkStruct_022f9c38 *func_ov000_022f9c38(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_022f9c38_Sub *sub;
     vu16 zero;
 
-    w = func_020372d0(func_0206c3d0, func_ov000_022f7ca8, 0, 0x501, 2, sizeof(UnkStruct_022f9c38))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022f7ca8, 0, 0x501, 2, sizeof(UnkStruct_022f9c38))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022f9c38));
     w->base.unk68 = func_ov000_022f7ba8;
-    func_02021310(ctx, data_ov000_02366058, data_022c4488);
+    func_02021310(ctx, data_ov000_02366058, gZoneActArchive);
     w->unk210 = func_02021264(ctx, 8);
     func_020212e0(ctx);
     w->unk20C = data_ov000_02369b88[3];
@@ -91,13 +91,13 @@ UnkStruct_022f9c38 *func_ov000_022f9c38(UnkStruct_ObjParam *p, s32 b, s32 c) {
     coll = &w->base.coll0;
     coll->unkA &= ~4;
     coll = &w->base.coll1;
-    func_0206e3c0(coll, 0x10, -0x20, 0x40, 0);
+    ObjRect_SetBox2D(coll, 0x10, -0x20, 0x40, 0);
     coll->unk18 = w;
     coll->unkA |= 4;
     sub = &w->unk214;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, w->unk20C, 0);
-    func_02031a68(sub, 0, w->unk210, 4, 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, w->unk20C, 0);
+    Model_SetAnimation(sub, 0, w->unk210, 4, 0);
     sub->unk10C |= 4;
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     return w;

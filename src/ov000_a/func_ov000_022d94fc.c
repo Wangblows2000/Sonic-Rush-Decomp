@@ -97,13 +97,13 @@ typedef struct UnkStruct_022d94fc_g {
     s16 unk48;
 } UnkStruct_022d94fc_g;
 
-extern UnkStruct_022d94fc_g data_0208922c;
+extern UnkStruct_022d94fc_g gDisplayMain;
 
 void func_ov000_022d932c(UnkStruct_022d94fc *s);
 
 void func_ov000_022d94fc(UnkStruct_022d94fc *s) {
-    if (data_0208922c.unk48 > 0)
-        data_0208922c.unk48 -= 2;
+    if (gDisplayMain.unk48 > 0)
+        gDisplayMain.unk48 -= 2;
     if (s->unk224++ > 0x1e)
         s->func = func_ov000_022d932c;
 }

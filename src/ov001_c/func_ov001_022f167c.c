@@ -52,7 +52,7 @@ void func_ov001_022f1660(void);
 void func_ov001_022f1550(void);
 u8 *func_ov001_022ffce8(void);
 void func_0201c070(void *pp, s32 a);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -102,5 +102,5 @@ void func_ov001_022f167c(UnkStruct_022f167c *p) {
     q->unk14 = 1;
     o2->unk128 &= ~0x200;
     func_0201c070(func_ov001_022ffce8() + 0x33c, 0);
-    func_02036754(0, 0, 0xb4);
+    Sound_PlaySeqArc(0, 0, 0xb4);
 }

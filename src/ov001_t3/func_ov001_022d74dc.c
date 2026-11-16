@@ -45,8 +45,8 @@ extern u16 data_ov001_0231616e[];
 extern u16 data_ov001_02316170[];
 extern u16 data_ov001_02316172[];
 
-void func_02037038(s32 a, s32 b);
-UnkTask_022d74dc *func_020372d0(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
+void Task_DestroyRange(s32 a, s32 b);
+UnkTask_022d74dc *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022d83fc(void);
 void func_02040ef0(UnkAnim_022d74dc *a, s32 b, s32 c);
@@ -63,8 +63,8 @@ void func_ov001_022d74dc(UnkStruct_022d74dc *p, s32 b) {
     vu16 zero;
     s32 i;
 
-    func_02037038(0x3000, 0x3000);
-    w = func_020372d0(func_ov001_022d83fc, NULL, 0, 0x3000, 0x1000, sizeof(UnkWork_022d74dc))->work;
+    Task_DestroyRange(0x3000, 0x3000);
+    w = Task_Create(func_ov001_022d83fc, NULL, 0, 0x3000, 0x1000, sizeof(UnkWork_022d74dc))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_022d74dc));
     w->parent = p;

@@ -49,10 +49,10 @@ extern UnkTask_0235b804 *data_ov000_0236ac80;
 #define SIN_0235b804(a) data_0206e470[(u32)(IDX_0235b804(a) << 1)]
 #define COS_0235b804(a) data_0206e470[(u32)((IDX_0235b804(a) << 1) + 1)]
 
-void func_0206e3c0(UnkBox_0235b804 *box, s32 l, s32 t, s32 r, s32 b);
-BOOL func_0206d7c8(UnkBox_0235b804 *box, s32 x, s32 y, s32 l, s32 t, s32 r, s32 b);
+void ObjRect_SetBox2D(UnkBox_0235b804 *box, s32 l, s32 t, s32 r, s32 b);
+BOOL ObjRect_BoxCheck(UnkBox_0235b804 *box, s32 x, s32 y, s32 l, s32 t, s32 r, s32 b);
 u16 func_020027a4(s32 y, s32 x);
-s16 func_02068df8(s16 v, s32 a, s32 b);
+s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 
 BOOL func_ov000_0235b804(UnkStruct_0235b804 *w) {
     UnkBox_0235b804 box = {0};
@@ -71,7 +71,7 @@ BOOL func_ov000_0235b804(UnkStruct_0235b804 *w) {
     mgr->unk0 |= 4;
     box.x = w->x >> 8;
     box.y = w->y >> 8;
-    func_0206e3c0(&box, -0x80, -0x80, 0x80, 0x80);
+    ObjRect_SetBox2D(&box, -0x80, -0x80, 0x80, 0x80);
     count = mgr->unk9D4;
     for (i = 0; i < 0x40; i++) {
         if (count == 0) {
@@ -83,7 +83,7 @@ BOOL func_ov000_0235b804(UnkStruct_0235b804 *w) {
         }
         count--;
         if ((ring->unk12 & 0x1000) && !(ring->unk12 & 0x4000) && ring->unk10 < 0xd8 &&
-            func_0206d7c8(&box, ring->x >> 8, ring->y >> 8, -6, -0x10, 0x14, 0x10)) {
+            ObjRect_BoxCheck(&box, ring->x >> 8, ring->y >> 8, -6, -0x10, 0x14, 0x10)) {
             result = TRUE;
             ring->unk12 |= 0x200;
             ring->unk12 |= 0x400;
@@ -97,7 +97,7 @@ BOOL func_ov000_0235b804(UnkStruct_0235b804 *w) {
         }
         if ((ring->unk12 & 0x4000) && ring->unk14 == w) {
             ang = func_020027a4(box.y - (ring->y >> 8), box.x - (ring->x >> 8));
-            ring->unk8 = func_02068df8(ring->unk8, 0x10, 0x800);
+            ring->unk8 = ObjSpd_UpSet(ring->unk8, 0x10, 0x800);
             spd = ring->unk8;
             ring->x += (s16)((spd * COS_0235b804((u16)(ang + 0x1000))) >> 12);
             ring->y += (s16)((spd * SIN_0235b804((u16)(ang + 0x1000))) >> 12);

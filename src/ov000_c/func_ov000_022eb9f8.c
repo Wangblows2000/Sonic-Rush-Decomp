@@ -39,7 +39,7 @@ typedef struct {
     u8 unk1D;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022eb9f8_Task *data_022b4574;
+extern UnkStruct_022eb9f8_Task *gTaskCurrent;
 extern UnkStruct_02369b78 *data_ov000_02369b78;
 extern UnkStruct_022c4560 data_022c4560;
 extern u16 data_02074960[][3][3];
@@ -49,14 +49,14 @@ extern s16 data_02071470[];
 extern s16 data_0206f470[];
 
 void func_02022270(s32 a, u32 b);
-void func_020315e0(void *s);
-void func_020316f4(void *s);
+void Model_Draw(void *s);
+void Model_Animate(void *s);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_0203344c(UnkStruct_Spr *s, void (*fn)(void), void *w);
+void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, void (*fn)(void), void *w);
 void func_ov000_022ebccc(void);
 
 void func_ov000_022eb9f8(void) {
-    UnkStruct_022eb9f8 *w = data_022b4574->work;
+    UnkStruct_022eb9f8 *w = gTaskCurrent->work;
     UnkStruct_02369b78 *mgr = data_ov000_02369b78;
     UnkStruct_022eb9f8_Sub *sub = &w->unk20C;
     u16 i;
@@ -78,7 +78,7 @@ void func_ov000_022eb9f8(void) {
             func_02022270(2, 0x1a98);
         }
         sub->unk48 = w->unk48C[i];
-        func_020315e0(sub);
+        Model_Draw(sub);
         func_02022270(0, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D][0]);
         func_02022270(1, data_02074962[data_022c4560.unk1C][data_022c4560.unk1D][0]);
         func_02022270(2, data_02074964[data_022c4560.unk1C][data_022c4560.unk1D][0]);
@@ -99,10 +99,10 @@ void func_ov000_022eb9f8(void) {
     sub->unk48.y = -(w->base.unk14 << 4);
     sub->unk48.z = w->base.unk18 << 4;
     if (!(w->base.unk5C & 0x10)) {
-        func_0203344c(&w->base.spr0, func_ov000_022ebccc, w);
-        func_020316f4(sub);
+        AnimatorSprite_ProcessAnimation(&w->base.spr0, func_ov000_022ebccc, w);
+        Model_Animate(sub);
     }
-    func_020315e0(sub);
+    Model_Draw(sub);
     if (sub->unk10C & 2)
         w->base.unk5C |= 8;
     if (w->base.spr0.unk2C & 2)

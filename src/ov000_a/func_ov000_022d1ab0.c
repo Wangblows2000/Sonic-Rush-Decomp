@@ -80,7 +80,7 @@ struct UnkStruct_022d1ab0 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 typedef struct UnkStruct_022d1ab0_7 {
@@ -100,7 +100,7 @@ extern UnkStruct_022d1ab0_4 data_022c4560;
 extern s32 data_ov000_023651d8[];
 
 s32 func_02002094(s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d1780(UnkStruct_022d1ab0 *s);
 
 static inline s32 Lerp(s32 a, s32 b) {
@@ -127,9 +127,9 @@ void func_ov000_022d1ab0(UnkStruct_022d1ab0 *s) {
         x = &s->unkA9C;
         y = &s->unkBD4;
         z = &s->unkD0C;
-        func_02031a68(x, 0, s->unkF7C, 0xe, 0);
-        func_02031a68(y, 0, s->unkF7C, 0x2e, 0);
-        func_02031a68(z, 0, s->unkF7C, 0x4a, 0);
+        Model_SetAnimation(x, 0, s->unkF7C, 0xe, 0);
+        Model_SetAnimation(y, 0, s->unkF7C, 0x2e, 0);
+        Model_SetAnimation(z, 0, s->unkF7C, 0x4a, 0);
         x->unk10C &= ~4;
         y->unk10C &= ~4;
         z->unk10C &= ~4;
@@ -149,6 +149,6 @@ void func_ov000_022d1ab0(UnkStruct_022d1ab0 *s) {
     s->unkD0C.unk114 = v;
     s->unkBD4.unk114 = s->unkD0C.unk114;
     s->unkA9C.unk114 = s->unkBD4.unk114;
-    func_02036754(0, 0, 0xa3);
+    Sound_PlaySeqArc(0, 0, 0xa3);
     s->unk131C->unk54 |= 4;
 }

@@ -26,7 +26,7 @@ typedef struct {
     UnkWork_022ebc98 *work;
 } UnkTask_022ebc98;
 
-extern UnkTask_022ebc98 *data_022b4574;
+extern UnkTask_022ebc98 *gTaskCurrent;
 
 void func_ov001_022e9708(UnkWork_022ebc98 *w, s32 a, s32 *x, s32 *y);
 void func_02040ec0(UnkAnim_022ebc98 *a, s32 id);
@@ -50,7 +50,7 @@ void func_ov001_022ebc98(UnkTask_022ebc98 *t) {
     s32 i;
 
     if (t == NULL) {
-        t = data_022b4574;
+        t = gTaskCurrent;
     }
     w = t->work;
     w->unk0 = 0;

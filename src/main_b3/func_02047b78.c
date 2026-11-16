@@ -21,40 +21,40 @@ typedef struct {
 } UnkWork_02047b78;
 
 typedef struct UnkNode_02047b78 UnkNode_02047b78;
-extern UnkNode_02047b78 *data_02250438;
-extern UnkNode_02047b78 *data_02250434;
+extern UnkNode_02047b78 *gPaletteTransferHead;
+extern UnkNode_02047b78 *gPaletteTransferTail;
 extern u16 data_02073404[];
 typedef struct { s32 unk0; } UnkStruct_022c4560;
 extern UnkStruct_022c4560 data_022c4560;
 
-void *func_02039c18(u32 a, u32 b);
-void func_0203363c(UnkSpr_02047b78 *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
-void func_0203344c(UnkSpr_02047b78 *s, u32 a, u32 b);
+void *ObjVram_Alloc(u32 a, u32 b);
+void AnimatorSprite_Init(UnkSpr_02047b78 *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
+void AnimatorSprite_ProcessAnimation(UnkSpr_02047b78 *s, u32 a, u32 b);
 void func_020331f8(UnkSpr_02047b78 *s);
-void func_020356bc(void *p, u32 a, u32 b);
-void func_02035754(void);
+void PaletteTransfer_QueueLoad(void *p, u32 a, u32 b);
+void PaletteTransfer_Flush(void);
 
 #pragma thumb on
 static inline void LoadPalA_02047b78(u8 *src, u32 a, u32 b) {
-    UnkNode_02047b78 *s0 = data_02250438;
-    UnkNode_02047b78 *s1 = data_02250434;
-    data_02250438 = NULL;
-    data_02250434 = NULL;
-    func_020356bc(src + 0xcc, a, b);
-    func_02035754();
-    data_02250438 = s0;
-    data_02250434 = s1;
+    UnkNode_02047b78 *s0 = gPaletteTransferHead;
+    UnkNode_02047b78 *s1 = gPaletteTransferTail;
+    gPaletteTransferHead = NULL;
+    gPaletteTransferTail = NULL;
+    PaletteTransfer_QueueLoad(src + 0xcc, a, b);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = s0;
+    gPaletteTransferTail = s1;
 }
 
 static inline void LoadPalB_02047b78(u8 *src, u32 a, u32 b) {
-    UnkNode_02047b78 *s0 = data_02250438;
-    UnkNode_02047b78 *s1 = data_02250434;
-    data_02250438 = NULL;
-    data_02250434 = NULL;
-    func_020356bc(src + 4, a, b);
-    func_02035754();
-    data_02250438 = s0;
-    data_02250434 = s1;
+    UnkNode_02047b78 *s0 = gPaletteTransferHead;
+    UnkNode_02047b78 *s1 = gPaletteTransferTail;
+    gPaletteTransferHead = NULL;
+    gPaletteTransferTail = NULL;
+    PaletteTransfer_QueueLoad(src + 4, a, b);
+    PaletteTransfer_Flush();
+    gPaletteTransferHead = s0;
+    gPaletteTransferTail = s1;
 }
 
 static inline UnkEnt_02047b78 *GetEnt_02047b78(UnkRes_02047b78 *h, u16 idx) {
@@ -68,9 +68,9 @@ void func_02047b78(UnkWork_02047b78 *w) {
 
     for (i = 0; i < 0x33; i++) {
         spr = &w->spr[i];
-        func_0203363c(spr, w->res, (u16)i, 0x4010, 0, 0, func_02039c18(0, ((UnkTbl_02047b78 *)((u8 *)w->res + w->res->unk18))->ent[(u16)i].unk2), 0, 0x05000200);
+        AnimatorSprite_Init(spr, w->res, (u16)i, 0x4010, 0, 0, ObjVram_Alloc(0, ((UnkTbl_02047b78 *)((u8 *)w->res + w->res->unk18))->ent[(u16)i].unk2), 0, 0x05000200);
         spr->unk44 = data_02073404[i];
-        func_0203344c(spr, 0, 0);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
     }
     w->spr[19].unk2C &= ~0x10;
     w->spr[29].unk2C &= ~0x10;

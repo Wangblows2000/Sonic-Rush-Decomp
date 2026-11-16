@@ -83,7 +83,7 @@ struct UnkStruct_022d2730 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 typedef struct UnkStruct_022d2730_7 {
@@ -93,16 +93,16 @@ typedef struct UnkStruct_022d2730_7 {
 
 extern UnkStruct_022d2730 *data_ov000_02369ae0;
 extern UnkStruct_022d2730_7 data_ov000_02369ac0;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022cedd8(UnkStruct_022d2730 *s, s32 a);
 void func_ov000_022d2688(UnkStruct_022d2730 *s);
 void func_ov000_022d255c(UnkStruct_022d2730 *s);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022d2730(void) {
@@ -119,11 +119,11 @@ void func_ov000_022d2730(void) {
         s->func = func_ov000_022d255c;
         s->unkF84[6].unkA &= ~4;
         s->unkF84[6].unkA |= 0x1000;
-        func_02036754(s->unk1450, 0, 0xa0);
+        Sound_PlaySeqArc(s->unk1450, 0, 0xa0);
     }
-    func_02031a68(x, 0, s->unkF7C, 8, 0);
-    func_02031a68(y, 0, s->unkF7C, 0x28, 0);
-    func_02031a68(z, 0, s->unkF7C, 0x44, 0);
+    Model_SetAnimation(x, 0, s->unkF7C, 8, 0);
+    Model_SetAnimation(y, 0, s->unkF7C, 0x28, 0);
+    Model_SetAnimation(z, 0, s->unkF7C, 0x44, 0);
     x->unk10C &= ~4;
     y->unk10C &= ~4;
     z->unk10C &= ~4;

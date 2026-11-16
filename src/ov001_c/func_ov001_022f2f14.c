@@ -73,8 +73,8 @@ void func_02000e60(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000e98(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
-void func_020316f4(void *p);
-void func_020315e0(void *p);
+void Model_Animate(void *p);
+void Model_Draw(void *p);
 void func_02025268(u32 op, const u32 *args, u32 n);
 void func_02025a94(void *mtx, void *p);
 UnkStruct_022f2f14_c *func_ov001_02300c94(void);
@@ -105,8 +105,8 @@ void func_ov001_022f2f14(UnkStruct_022f2f14 *w) {
     func_02000e98(&m, SIN(w->unk40), COS(w->unk40));
     func_02000f34(&a->mtx, &m, &a->mtx);
     if (!(w->unk14 & 0x10000))
-        func_020316f4(a);
-    func_020315e0(a);
+        Model_Animate(a);
+    Model_Draw(a);
     c0 = 2;
     func_02025268(0x10, &c0, 1);
     c1 = 0x1d;

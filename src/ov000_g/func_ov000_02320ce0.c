@@ -42,7 +42,7 @@ extern UnkStruct_02320ce0_Sys data_022c4560;
 extern UnkStruct_02320ce0_Stage data_ov000_0236aad8;
 extern void *data_ov000_0236ac60;
 
-s32 func_02068ce4(s32 v, s32 a, s32 b, u16 c, s32 d);
+s32 ObjShift_Set(s32 v, s32 a, s32 b, u16 c, s32 d);
 void func_ov000_02320be8(UnkStruct_02320ce0 *w, void *p);
 
 void func_ov000_02320ce0(UnkStruct_02320ce0 *w) {
@@ -64,23 +64,23 @@ void func_ov000_02320ce0(UnkStruct_02320ce0 *w) {
     }
     w->unk1C = w->unk10;
     w->unk20 = w->unk14;
-    w->unk10 = func_02068ce4(w->unk10, w->unk88->unk10 + ((s8)w->unk2 << 8), 4, w->unk8, 4);
-    w->unk14 = func_02068ce4(w->unk14, w->unk88->unk14 + ((s8)w->unk3 << 8), 4, w->unk8, 4);
+    w->unk10 = ObjShift_Set(w->unk10, w->unk88->unk10 + ((s8)w->unk2 << 8), 4, w->unk8, 4);
+    w->unk14 = ObjShift_Set(w->unk14, w->unk88->unk14 + ((s8)w->unk3 << 8), 4, w->unk8, 4);
     min = (data_ov000_0236aad8.unk62 + 8) << 8;
     if (w->unk14 < min)
         w->unk14 = min;
     if (w->unk9C & 1) {
         if (w->unk5C & 8) {
-            func_02069818(w, (u16)(w->unk9C - 1));
+            StageObj_SetAnimation(w, (u16)(w->unk9C - 1));
             w->unk5C |= 4;
             w->unk5C ^= 1;
         }
     } else if (w->unk5C & 1) {
         if (w->unk1C < w->unk10 - 0x60)
-            func_02069818(w, (u16)(w->unk9C + 1));
+            StageObj_SetAnimation(w, (u16)(w->unk9C + 1));
     } else {
         if (w->unk1C > w->unk10 + 0x60)
-            func_02069818(w, (u16)(w->unk9C + 1));
+            StageObj_SetAnimation(w, (u16)(w->unk9C + 1));
     }
     if (t->unk190 != NULL)
         func_ov000_02320be8(w, t->unk190);

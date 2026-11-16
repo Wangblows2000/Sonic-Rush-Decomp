@@ -7,7 +7,7 @@ void func_ov000_02361bf0(void);
 #pragma thumb on
 
 void func_ov000_02361914(void) {
-    UnkStruct_MenuO *w = data_022b4574->work;
+    UnkStruct_MenuO *w = gTaskCurrent->work;
 
     MenuO_Update(w, 1);
     if (func_ov000_0235fa34(w)) {
@@ -15,7 +15,7 @@ void func_ov000_02361914(void) {
     }
     if (func_02040cf4(&w->pos[0])) {
         w->unk0 = 0;
-        data_022b4574->unk8 = func_ov000_02361bf0;
+        gTaskCurrent->unk8 = func_ov000_02361bf0;
     }
 }
 

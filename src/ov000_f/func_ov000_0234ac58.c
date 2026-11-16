@@ -51,7 +51,7 @@ typedef struct {
 } UnkStruct_0234ac58_Tbl;
 
 extern s16 data_0206e470[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern UnkStruct_0234ac58_Tbl data_ov000_0236ab3a[];
 
 #define IDX_0234ac58(a) ((s32)((a) & 0xffff) >> 4)
@@ -60,15 +60,15 @@ extern UnkStruct_0234ac58_Tbl data_ov000_0236ab3a[];
 
 void func_ov000_0234c4a4(UnkStruct_0234ac58 *w, s32 state);
 void func_ov000_0234a288(UnkStruct_0234ac58 *w);
-void func_0206e2b4(void *p, s32 a, s32 b);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_0201c070(void *p, s32 a);
 void func_0201bf1c(void *p);
 void func_ov000_0232a11c(UnkStruct_0234ac58 *w, s32 a, s32 b, u16 c);
 
 static inline u16 Rand_0234ac58(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0234ac58(UnkStruct_0234ac58 *w) {
@@ -91,7 +91,7 @@ void func_ov000_0234ac58(UnkStruct_0234ac58 *w) {
             w->unk32 = -w->unk32;
         }
     }
-    func_0206e2b4(w->unk2CC, 0x13, 0);
+    ObjRect_SetAtkDefFlags(w->unk2CC, 0x13, 0);
     w->unk32C &= ~0xf;
     w->unk32C &= ~0xc000;
     w->unkC = 0;
@@ -101,9 +101,9 @@ void func_ov000_0234ac58(UnkStruct_0234ac58 *w) {
         w->unk124->unk114 = 0x4000;
     }
     if (w->unk324 != 1) {
-        func_0204b7ec(w->unk384, 0, 2);
+        Sound_PlaySeqArcEx(w->unk384, 0, 2);
     } else {
-        func_0204b7ec(w->unk384, 0, 0x13);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x13);
     }
     func_0201c070(w->unk390, 0x20);
     func_0201bf1c(w->unk390);

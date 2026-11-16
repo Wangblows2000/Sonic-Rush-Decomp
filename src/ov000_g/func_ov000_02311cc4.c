@@ -34,10 +34,10 @@ typedef struct {
     UnkStruct_02311cc4_P *unk88;
 } UnkStruct_02311cc4;
 
-void func_020693f0(s16 *x, s16 *y, u8 ang);
-void func_02069818(void *w, s32 a);
-u8 func_02068db4(u8 a, s32 b);
-s16 func_02068df8(s16 a, s32 b, s32 c);
+void Math_RotateVec2S16(s16 *x, s16 *y, u8 ang);
+void StageObj_SetAnimation(void *w, s32 a);
+u8 ObjSpd_DownSet(u8 a, s32 b);
+s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
 
 void func_ov000_02311cc4(UnkStruct_02311cc4 *w) {
     s16 x;
@@ -52,7 +52,7 @@ void func_ov000_02311cc4(UnkStruct_02311cc4 *w) {
         else
             w->unk5C &= ~1;
         w->unk1 = w->unk88->unk1;
-        func_020693f0(&x, &y, w->unk1);
+        Math_RotateVec2S16(&x, &y, w->unk1);
         w->unk10 = w->unk88->unk10 + x;
         w->unk14 = w->unk88->unk14 + y;
         if ((w->unk88->unk58 & 1) || (w->unk88->unk58 & 0x2000) || (w->unk88->unk58 & 0x100)) {
@@ -66,13 +66,13 @@ void func_ov000_02311cc4(UnkStruct_02311cc4 *w) {
             return;
         if (p->unk328 != 0x15)
             return;
-        func_02069818(w, 1);
+        StageObj_SetAnimation(w, 1);
         w->unkC = 1;
         w->unk62 = 0x60;
         return;
     }
     if (w->unk54 & 0x10)
-        func_02069818(w, 2);
+        StageObj_SetAnimation(w, 2);
     w->unk54 &= ~0x10;
     w->unk8++;
     if (w->unk8 > 0x20) {
@@ -81,9 +81,9 @@ void func_ov000_02311cc4(UnkStruct_02311cc4 *w) {
         else
             w->unk5C &= ~0x20;
     }
-    w->unk1 = func_02068db4(w->unk1, 1);
-    w->unk2E = func_02068df8(w->unk2E, 8, 0x180);
-    w->unk30 = func_02068df8(w->unk30, -4, 0x200);
+    w->unk1 = ObjSpd_DownSet(w->unk1, 1);
+    w->unk2E = ObjSpd_UpSet(w->unk2E, 8, 0x180);
+    w->unk30 = ObjSpd_UpSet(w->unk30, -4, 0x200);
     if (w->unk8 > 0x40)
         w->unk54 |= 4;
 }

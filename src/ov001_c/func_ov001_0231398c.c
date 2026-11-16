@@ -9,13 +9,13 @@ typedef struct UnkStruct_0231398c_r {
     UnkStruct_0231398c_v pos;
 } UnkStruct_0231398c_r;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern u8 *data_ov001_0231f694;
 extern u8 data_ov001_0231eec0[];
 extern u8 data_ov001_0231eed0[];
 extern u8 data_ov001_0231eee0[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -37,7 +37,7 @@ u8 *func_ov001_0231398c(u16 id) {
     u8 *s = data_ov001_0231f694;
     u8 *blk;
 
-    blk = func_02034a40(data_0208fe80, 0x260, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x260, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0x260);

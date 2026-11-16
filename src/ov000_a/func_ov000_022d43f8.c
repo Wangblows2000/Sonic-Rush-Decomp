@@ -91,11 +91,11 @@ struct UnkStruct_022d43f8 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 extern UnkStruct_022d43f8 *data_ov000_02369ae0;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s32 data_ov000_02362e40[4];
 
 void func_ov000_022cedd8(UnkStruct_022d43f8 *s, s32 a);
@@ -104,8 +104,8 @@ void func_ov000_022d424c(UnkStruct_022d43f8 *s);
 void func_ov000_022d43a8(UnkStruct_022d43f8 *s);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022d43f8(void) {
@@ -116,23 +116,23 @@ void func_ov000_022d43f8(void) {
     s->unk12F4 = data_ov000_02362e40[Rand() & 3];
     if (s->unk1302 == 3) {
         s->func = func_ov000_022d407c;
-        func_02031a68(x, 0, s->unkF7C, 3, 0);
-        func_02031a68(y, 0, s->unkF7C, 0x23, 0);
-        func_02031a68(z, 0, s->unkF7C, 0x3f, 0);
+        Model_SetAnimation(x, 0, s->unkF7C, 3, 0);
+        Model_SetAnimation(y, 0, s->unkF7C, 0x23, 0);
+        Model_SetAnimation(z, 0, s->unkF7C, 0x3f, 0);
         s->unk12F4 += 0x3c;
         func_ov000_022cedd8(s, 0x38e000);
     } else if (s->unk1300 == 3) {
         s->func = func_ov000_022d424c;
-        func_02031a68(x, 0, s->unkF7C, 4, 0);
-        func_02031a68(y, 0, s->unkF7C, 0x24, 0);
-        func_02031a68(z, 0, s->unkF7C, 0x40, 0);
+        Model_SetAnimation(x, 0, s->unkF7C, 4, 0);
+        Model_SetAnimation(y, 0, s->unkF7C, 0x24, 0);
+        Model_SetAnimation(z, 0, s->unkF7C, 0x40, 0);
         s->unk145C = 0x1e;
         func_ov000_022cedd8(s, 0);
     } else {
         s->func = func_ov000_022d43a8;
-        func_02031a68(x, 0, s->unkF7C, 4, 0);
-        func_02031a68(y, 0, s->unkF7C, 0x24, 0);
-        func_02031a68(z, 0, s->unkF7C, 0x40, 0);
+        Model_SetAnimation(x, 0, s->unkF7C, 4, 0);
+        Model_SetAnimation(y, 0, s->unkF7C, 0x24, 0);
+        Model_SetAnimation(z, 0, s->unkF7C, 0x40, 0);
         func_ov000_022cedd8(s, 0x38e000);
     }
     x->unk10C |= 4;

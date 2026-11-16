@@ -115,7 +115,7 @@ extern UnkStruct_022e2470_c data_ov000_0236a48c;
 extern UnkStruct_022e2470_4 data_022c4560;
 extern UnkStruct_022e2470_7 data_ov000_02369ac0;
 extern UnkStruct_022e2470_pl *data_ov000_0236ac60;
-extern UnkStruct_022e2470_5 data_0208922c;
+extern UnkStruct_022e2470_5 gDisplayMain;
 extern UnkStruct_022e2470_cam data_ov000_0236a444;
 extern UnkStruct_022e2470_8 data_ov000_02369b50;
 extern s32 data_ov000_023658cc[][3];
@@ -126,15 +126,15 @@ extern u16 data_ov000_023636f4[];
 
 void func_ov000_022e213c(UnkStruct_022e2470 *s);
 void func_0201bfbc(s32 a);
-void func_0206c7d8(void);
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void StageObj_SetPause(void);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02347c44(UnkStruct_022e2470_pl *p);
 void func_ov000_0234c4a4(UnkStruct_022e2470_pl *p, s32 a);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
 void func_ov000_022e237c(s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c5d4c(s32 a, u32 *p1, s32 p2, u16 *p3, u16 n);
 
 void func_ov000_022e2470(void) {
@@ -147,18 +147,18 @@ void func_ov000_022e2470(void) {
     x = &s->unk960;
     c = (UnkStruct_022e2470_c *)(u32)&data_ov000_0236a48c;
     func_0201bfbc(0);
-    func_0206c7d8();
+    StageObj_SetPause();
     x->unk114 = 0;
     s->unk54 |= 0x20;
     data_022c4560.unk18 &= ~1;
     if (data_ov000_02369ac0.unk4 == 0x1f) {
-        func_02031a68(x, 0, s->unkD08, 4, 0);
+        Model_SetAnimation(x, 0, s->unkD08, 4, 0);
         x->unk10C &= ~4;
         x->unk114 = 0;
         *x->unkE4 = 0x28000;
         s->unk111C = 0;
     } else {
-        func_02031a68(x, 0, s->unkD08, 0x14, 0);
+        Model_SetAnimation(x, 0, s->unkD08, 0x14, 0);
         x->unk10C &= ~4;
         x->unk114 = 0;
         *x->unkE4 = 0x12000;
@@ -181,16 +181,16 @@ void func_ov000_022e2470(void) {
         s->unkD60[i].unkA |= 0x1000;
     }
     s->unkD5E = 0;
-    func_020446b0(0);
+    ScreenShake_Start(0);
     func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
     data_ov000_02369ac0.unk4 = 0x23;
     s->unkF50 = 0x1e;
     s->unk1118 = 0;
-    data_0208922c.unk48 = 0x10;
+    gDisplayMain.unk48 = 0x10;
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x700;
     *(vu32 *)0x4000018 = 0;
-    data_0208922c.unk8 = 0;
-    data_0208922c.unkA = 0;
+    gDisplayMain.unk8 = 0;
+    gDisplayMain.unkA = 0;
     func_ov000_022e237c(s->unk111C, 0);
     v = (*(vu32 *)0x4000000 & 0x1f00) >> 8;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | ((v | 4) << 8);
@@ -205,7 +205,7 @@ void func_ov000_022e2470(void) {
     c->unk8C = 0x1000;
     c->unk92 = 0x1000;
     c->unk30 = 0x1000;
-    func_02036754(0, 0, 0x7c);
+    Sound_PlaySeqArc(0, 0, 0x7c);
     func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, data_ov000_02369b4c->unk110C, data_ov000_023636f4, 1);
     s->unk1114 = 0;
 }

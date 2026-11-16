@@ -25,15 +25,15 @@ typedef struct UnkStruct_0230b658_k {
 } UnkStruct_0230b658_k;
 
 extern UnkStruct_0230b658 *data_ov001_0231f5c0;
-extern s16 data_0208922c[];
-extern s16 data_02087d04[];
-extern UnkStruct_0230b658_k data_022b65b4;
+extern s16 gDisplayMain[];
+extern s16 gDisplaySub[];
+extern UnkStruct_0230b658_k gTouchState;
 extern void *data_02250464;
 
-void func_0203344c(void *c, u32 a, u32 b);
+void AnimatorSprite_ProcessAnimation(void *c, u32 a, u32 b);
 void func_ov001_0231323c(void *w);
 void func_ov001_023159b4(void);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 void func_ov001_0231599c(s32 v);
 void func_0201c070(void **pp, s32 a);
 void func_ov001_0230b164(void);
@@ -45,25 +45,25 @@ void func_ov001_0230b658(void) {
     s16 v;
 
     if (g->timer <= 0x10) {
-        data_0208922c[0x24] = 0x10 - g->timer;
-        data_02087d04[0x24] = 0x10 - g->timer;
+        gDisplayMain[0x24] = 0x10 - g->timer;
+        gDisplaySub[0x24] = 0x10 - g->timer;
     }
     if (g->timer > 0x5c) {
         v = g->timer - 0x5c;
         if (v > 0x10)
             v = 0x10;
-        data_02087d04[0x24] = v;
+        gDisplaySub[0x24] = v;
     }
     if (g->timer <= 0xa) {
         a->x = (g->timer << 8) / 10 - 0x100;
         a->y = 0x20;
-        func_0203344c(a, 0, 0);
+        AnimatorSprite_ProcessAnimation(a, 0, 0);
     } else if (g->timer < 0x14) {
-        func_0203344c(a, 0, 0);
+        AnimatorSprite_ProcessAnimation(a, 0, 0);
     } else if (g->timer >= 0x14) {
         b->x = 0;
         b->y = 0x20;
-        func_0203344c(b, 0, 0);
+        AnimatorSprite_ProcessAnimation(b, 0, 0);
         g->unk30++;
     }
     if (g->timer >= 0) {
@@ -76,9 +76,9 @@ void func_ov001_0230b658(void) {
         func_ov001_0231323c(g->unk18);
     func_ov001_023159b4();
     if (g->timer == 0x5c) {
-        if (!(data_022b65b4.unk10 & 0x40))
+        if (!(gTouchState.unk10 & 0x40))
             return;
-        func_02036754(0, 0x10, 0x14);
+        Sound_PlaySeqArc(0, 0x10, 0x14);
     }
     switch (g->timer) {
     case 0x28:

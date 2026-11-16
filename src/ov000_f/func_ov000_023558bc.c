@@ -48,10 +48,10 @@ extern UnkStruct_023558bc_aad8 data_ov000_0236aad8;
 
 void func_ov000_0234c9e8(UnkStruct_023558bc *w);
 void func_ov000_0234a064(UnkStruct_023558bc *w, u8 a);
-void func_020693f0(s16 *vx, s16 *vy, u8 a);
+void Math_RotateVec2S16(s16 *vx, s16 *vy, u8 a);
 void func_ov000_0234c4a4(UnkStruct_023558bc *w, s32 state);
 void func_ov000_0234a288(UnkStruct_023558bc *w);
-void func_0206e2b4(void *p, s32 a, s32 b);
+void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 void func_ov000_0232a11c(UnkStruct_023558bc *w, s32 a, s32 b, u16 c);
 
 void func_ov000_023558bc(UnkStruct_023558bc *w, s16 vx, s16 vy) {
@@ -60,7 +60,7 @@ void func_ov000_023558bc(UnkStruct_023558bc *w, s16 vx, s16 vy) {
         w->unk2E = w->unk34;
     }
     func_ov000_0234a064(w, 0);
-    func_020693f0(&vx, &vy, w->unk5);
+    Math_RotateVec2S16(&vx, &vy, w->unk5);
     if (!(w->unk58 & 0x10)) {
         w->unk3DA = w->y >> 8;
     }
@@ -93,7 +93,7 @@ void func_ov000_023558bc(UnkStruct_023558bc *w, s16 vx, s16 vy) {
     } else {
         w->unk30 = (w->unk34 * SIN_023558bc((u16)(w->unk1 << 8))) >> 12;
     }
-    func_0206e2b4(w->unk2CC, 0, 0);
+    ObjRect_SetAtkDefFlags(w->unk2CC, 0, 0);
     w->unk32C &= ~0xf;
     w->unk32C |= 1;
     w->unk32C |= 2;

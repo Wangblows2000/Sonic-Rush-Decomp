@@ -6,9 +6,9 @@ typedef struct { u8 unk0[0x18]; s32 unk18; } UnkHdr_0204f200;
 typedef struct { u16 unk0; u16 unk2; u16 unk4; u16 unk6; u8 pad8[0xc]; } UnkEnt_0204f200;
 typedef struct { u8 pad0[0x1c]; UnkEnt_0204f200 ent[1]; } UnkTbl_0204f200;
 
-void *func_02039c18(void *a, u32 b);
-void func_0203363c(UnkSpr_0204f200 *s, UnkHdr_0204f200 *h, u32 idx, u32 c, void *d, u32 e, void *f, u32 g, u32 hh);
-void func_0203344c(UnkSpr_0204f200 *s, u32 a, u32 b);
+void *ObjVram_Alloc(void *a, u32 b);
+void AnimatorSprite_Init(UnkSpr_0204f200 *s, UnkHdr_0204f200 *h, u32 idx, u32 c, void *d, u32 e, void *f, u32 g, u32 hh);
+void AnimatorSprite_ProcessAnimation(UnkSpr_0204f200 *s, u32 a, u32 b);
 
 #pragma thumb on
 static inline UnkEnt_0204f200 *GetEnt_0204f200(UnkHdr_0204f200 *h, u32 idx) { UnkTbl_0204f200 *t = (UnkTbl_0204f200 *)((u8 *)h + h->unk18); return &t->ent[idx]; }
@@ -36,10 +36,10 @@ void func_0204f200(UnkStruct_0204f200 *a, UnkSpr_0204f200 *spr, UnkHdr_0204f200 
         dst = 0x05000200;
     else
         dst = 0x05000600;
-    func_0203363c(spr, h, idx, 0, a->unk28, 0, func_02039c18(a->unk28, v), 0, dst);
+    AnimatorSprite_Init(spr, h, idx, 0, a->unk28, 0, ObjVram_Alloc(a->unk28, v), 0, dst);
     spr->unk2C &= ~0x60000;
     spr->unk2C |= a->unk30 << 17;
     spr->unk44 = a->unk40 + ofs;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
 }
 #pragma thumb reset

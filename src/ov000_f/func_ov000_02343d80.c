@@ -62,7 +62,7 @@ typedef struct {
     u8 pad2[0x2E];
 } UnkStruct_02343d80_Tbl;
 
-extern UnkStruct_02343d80_Task *data_022b4574;
+extern UnkStruct_02343d80_Task *gTaskCurrent;
 extern UnkStruct_02343d80_4560 data_022c4560;
 extern UnkStruct_02343d80_4590 data_022c4590;
 extern UnkStruct_02343d80_Bgm data_02074960[][3];
@@ -75,20 +75,20 @@ void func_ov000_0234307c(UnkStruct_02343d80 *w, s16 v);
 void func_ov000_0235bafc(UnkStruct_02343d80 *w);
 void func_ov000_02345aa8(UnkStruct_02343d80 *w);
 void func_ov000_023458cc(UnkStruct_02343d80 *w);
-BOOL func_02043a58(void);
+BOOL BrightnessFade_IsDone(void);
 void func_0204d5f8(void (*fn)(void));
 void func_0204d684(void (*fn)(void), s32 a);
 void func_ov000_0234cfc8(void);
 void func_ov000_0234cfbc(void);
 void func_02022270(s32 a, u16 b);
-s32 func_02068db4(s32 v, s32 a);
+s32 ObjSpd_DownSet(s32 v, s32 a);
 void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
 void func_ov000_023526cc(UnkStruct_02343d80 *w, UnkStruct_02343d80_Obj *o);
 void func_ov000_02345158(UnkStruct_02343d80 *w);
 void func_ov000_02343ac0(UnkStruct_02343d80 *w);
 
 void func_ov000_02343d80(void) {
-    UnkStruct_02343d80 *w = data_022b4574->ply;
+    UnkStruct_02343d80 *w = gTaskCurrent->ply;
     u32 f;
     s32 bottom;
     s32 right;
@@ -111,7 +111,7 @@ void func_ov000_02343d80(void) {
     if (w->unk3E8 == NULL || (w->unk330 & 8)) {
         w->unk58 &= ~0x4000;
     }
-    if (data_022c4560.unk10 == 1 && w->unk325 == 0 && data_022c4560.unk20 >= 0x8c9f && func_02043a58() &&
+    if (data_022c4560.unk10 == 1 && w->unk325 == 0 && data_022c4560.unk20 >= 0x8c9f && BrightnessFade_IsDone() &&
         data_022c4590.unk40 >= 3) {
         func_0204d5f8(func_ov000_0234cfc8);
         return;
@@ -140,8 +140,8 @@ void func_ov000_02343d80(void) {
     } else if (f & 0x80000) {
         w->unk330 = f & ~0x100000;
         if (!(w->unk58 & 0x10)) {
-            w->z = func_02068db4(w->z, 0x200);
-            w->unk32 = func_02068db4(w->unk32, 0x80);
+            w->z = ObjSpd_DownSet(w->z, 0x200);
+            w->unk32 = ObjSpd_DownSet(w->unk32, 0x80);
         }
     }
     if (w->unk32C & 0x2000000) {

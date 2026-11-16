@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 int func_ov000_02310574();
-int func_02069818();
+int StageObj_SetAnimation();
 int func_ov000_0232b020();
 
 void func_ov000_023106b8(int param_1)
@@ -28,7 +28,7 @@ void func_ov000_023106b8(int param_1)
 {
   undefined4 uVar1;
   
-  func_02069818(param_1,0);
+  StageObj_SetAnimation(param_1,0);
   uVar1 = ((int)func_ov000_02310574);
   *(ushort *)(param_1 + 0x5c) = *(ushort *)(param_1 + 0x5c) | 4;
   *(ushort *)(param_1 + 0x5c) = *(ushort *)(param_1 + 0x5c) | 0x10;

@@ -42,7 +42,7 @@ typedef struct UnkTask_022dbfb4 {
     UnkStruct_022dbfb4 *unk10;
 } UnkTask_022dbfb4;
 
-extern UnkTask_022dbfb4 *data_022b4574;
+extern UnkTask_022dbfb4 *gTaskCurrent;
 
 typedef struct UnkStruct_022dbfb4_q {
     u8 pad[0x10];
@@ -68,7 +68,7 @@ void func_ov000_022db6c8(s32 *p);
 void func_ov000_022db758(s32 *v, u16 *ang, s32 x, s32 y);
 
 void func_ov000_022dbfb4(void) {
-    UnkStruct_022dbfb4 *s = data_022b4574->unk10;
+    UnkStruct_022dbfb4 *s = gTaskCurrent->unk10;
     if (data_ov000_02369ac0.unk4 == 0x1a) {
         s->unk54 |= 8;
         s->unk54 |= 2;

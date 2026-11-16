@@ -18,8 +18,8 @@ typedef struct {
 } UnkWork_0204633c;
 
 void func_0204625c(void);
-void func_020367b4(void *a, s32 b);
-void func_02036754(void *a, void *b, s32 c);
+void Sound_PlaySeq(void *a, s32 b);
+void Sound_PlaySeqArc(void *a, void *b, s32 c);
 
 #pragma thumb on
 static inline s32 FX_Mul_0204633c(s32 a, s32 b) {

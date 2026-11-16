@@ -2,7 +2,7 @@
 
 #pragma thumb on
 
-void func_02037d60(void);
-void func_02058348(void) { func_02037d60(); }
+void Touch_Enable(void);
+void func_02058348(void) { Touch_Enable(); }
 
 #pragma thumb reset

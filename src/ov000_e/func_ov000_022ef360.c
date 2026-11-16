@@ -52,14 +52,14 @@ typedef struct {
 extern UnkStruct_Boss *data_ov000_02369b84;
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 extern UnkStruct_Player *data_ov000_0236ac60;
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 
 void func_ov000_022f4ce4(UnkStruct_022ef360 *s, s32 a, s32 b, s32 c);
-void func_0206c7c0(void);
+void StageObj_ClearPause(void);
 void func_ov000_02328748(s32 a, s32 x, s32 y, s32 z);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022ef2a4(void);
 
 void func_ov000_022ef360(UnkStruct_022ef360 *s) {
@@ -85,7 +85,7 @@ void func_ov000_022ef360(UnkStruct_022ef360 *s) {
     s->base.unk54 &= ~0x20;
     b->unk358 = 0x1000;
     s->unk584 = 0x1000;
-    func_0206c7c0();
+    StageObj_ClearPause();
     data_ov000_0236ac60->base.unk5C |= 0x20;
     data_ov000_0236ac60->unk32C |= 0x200000;
     data_ov000_0236ac60->unk424 = 0;
@@ -94,8 +94,8 @@ void func_ov000_022ef360(UnkStruct_022ef360 *s) {
     func_ov000_02328748(0, s->base.unk10, s->base.unk14, s->base.unk18);
     func_020537b4(0xd);
     func_020533e0(0x13, 0xf0);
-    data_0208922c.unk48 = 0x10;
-    func_02036754(0, 0, 0x7d);
+    gDisplayMain.unk48 = 0x10;
+    Sound_PlaySeqArc(0, 0, 0x7d);
     s->unk434 = 0;
     s->base.unk68 = func_ov000_022ef2a4;
 }

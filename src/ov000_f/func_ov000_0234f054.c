@@ -37,9 +37,9 @@ struct UnkStruct_0234f054 {
 };
 
 void func_ov000_0234c4a4(UnkStruct_0234f054 *w, s32 state);
-void func_0204b7ec(void *p, s32 a, s32 b);
-s32 func_02068db4(s32 v, s32 a);
-s32 func_02068df8(s32 v, s32 a, s32 max);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
+s32 ObjSpd_DownSet(s32 v, s32 a);
+s32 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 void func_ov000_0234739c(UnkStruct_0234f054 *w);
 void func_ov000_023497f4(UnkStruct_0234f054 *w);
 void func_ov000_0234a064(UnkStruct_0234f054 *w, u8 a);
@@ -81,7 +81,7 @@ void func_ov000_0234f054(UnkStruct_0234f054 *w) {
             func_ov000_0234c4a4(w, 0x15);
             w->unk5C |= 4;
             w->unk62 = 100;
-            func_0204b7ec(NULL, 0, 0x90);
+            Sound_PlaySeqArcEx(NULL, 0, 0x90);
             w->unk40 = 8;
             w->unk42 = 0x1e0;
             w->unk30 = 0;
@@ -94,17 +94,17 @@ void func_ov000_0234f054(UnkStruct_0234f054 *w) {
         }
         if (w->unk8 != 0) {
             w->unk8--;
-            w->unk3F0 = func_02068df8(w->unk3F0, 8, 0x80);
+            w->unk3F0 = ObjSpd_UpSet(w->unk3F0, 8, 0x80);
             lim <<= 2;
         } else {
-            w->unk3F0 = func_02068db4(w->unk3F0, 0x10);
+            w->unk3F0 = ObjSpd_DownSet(w->unk3F0, 0x10);
         }
         w->unk40 = ((0x100 - w->unk3F0) << 3) >> 8;
         w->unk42 = ((0x100 - w->unk3F0) * 0x1e0) >> 8;
         if (w->unk32C & 1) {
-            w->unk3F4 = func_02068df8(w->unk3F4, -0x12, 0xa0);
+            w->unk3F4 = ObjSpd_UpSet(w->unk3F4, -0x12, 0xa0);
         } else {
-            w->unk3F4 = func_02068df8(w->unk3F4, 0x12, 0xa0);
+            w->unk3F4 = ObjSpd_UpSet(w->unk3F4, 0x12, 0xa0);
         }
         w->unkC += w->unk3F4;
         if (w->unkC > lim) {

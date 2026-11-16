@@ -103,10 +103,10 @@ typedef struct UnkStruct_022ecec0_5 {
 extern UnkStruct_022ecec0_cam data_ov000_0236a444;
 extern UnkStruct_022ecec0_c data_ov000_0236a48c;
 extern UnkStruct_022ecec0_pl *data_ov000_0236ac60;
-extern UnkStruct_022ecec0_5 data_0208922c;
+extern UnkStruct_022ecec0_5 gDisplayMain;
 
 void func_ov000_022c5c80(u32 id);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022ece84(UnkStruct_022ecec0 *s);
 
 void func_ov000_022ecec0(UnkStruct_022ecec0 *s) {
@@ -130,8 +130,8 @@ void func_ov000_022ecec0(UnkStruct_022ecec0 *s) {
     c->unk8E = 0x71c;
     c->unk92 = 0x1000;
     func_ov000_022c5c80(6);
-    data_0208922c.unk48 = 0x10;
-    func_02036754(0, 0, 0x7c);
+    gDisplayMain.unk48 = 0x10;
+    Sound_PlaySeqArc(0, 0, 0x7c);
     s->unk230 = 0;
     s->func = func_ov000_022ece84;
 }

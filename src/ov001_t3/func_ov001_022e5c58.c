@@ -25,8 +25,8 @@ typedef struct {
     u16 unka;
 } UnkStruct_0208922c;
 
-extern UnkTask_022e5c58 *data_022b4574;
-extern UnkStruct_0208922c data_0208922c;
+extern UnkTask_022e5c58 *gTaskCurrent;
+extern UnkStruct_0208922c gDisplayMain;
 
 void func_02002ab0(s32 a, s32 b, s32 c);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -46,7 +46,7 @@ void func_ov001_022e5c58(void) {
     UnkWork_022e5c58 *w;
     vu32 zero;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     w->unk74 = 0;
     w->sub->unk5c = 1;
     SetPlane_022e5c58(GetPlane_022e5c58() & ~4);
@@ -54,9 +54,9 @@ void func_ov001_022e5c58(void) {
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x484;
     zero = 0;
     MIi_CpuClear32(zero, (void *)0x6002000, 0x800);
-    data_0208922c.unk8 = 0;
-    data_0208922c.unka = 0;
+    gDisplayMain.unk8 = 0;
+    gDisplayMain.unka = 0;
     func_02050078(0x11, 3, 2, 0, 2, 1, 0xe, 0x100010);
-    data_022b4574->func = func_ov001_022e7308;
+    gTaskCurrent->func = func_ov001_022e7308;
 }
 #pragma thumb reset

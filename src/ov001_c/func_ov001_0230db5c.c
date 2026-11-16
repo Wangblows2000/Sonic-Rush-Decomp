@@ -12,13 +12,13 @@ typedef struct UnkStruct_0230db5c {
 } UnkStruct_0230db5c;
 
 extern UnkStruct_0230db5c *data_ov001_0231f654;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02031768(void *o);
+void Heap_Free(void *heap, void *p);
+void Model_Release(void *o);
 void func_0202566c(void *res);
 
 static inline void Free_0230db5c(void *p) {
@@ -32,7 +32,7 @@ static inline void Free_0230db5c(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov001_0230db5c(void) {
@@ -43,8 +43,8 @@ void func_ov001_0230db5c(void) {
     data_ov001_0231f654->unkA44 = 0;
     data_ov001_0231f654->unkA40 = 0;
     for (i = 0; i < 7; i++)
-        func_02031768(data_ov001_0231f654->objs[i]);
-    func_02031768(data_ov001_0231f654->obj8C4);
+        Model_Release(data_ov001_0231f654->objs[i]);
+    Model_Release(data_ov001_0231f654->obj8C4);
     for (i = 0; i < 4; i++) {
         func_0202566c(data_ov001_0231f654->res[i]);
         Free_0230db5c(data_ov001_0231f654->res[i]);

@@ -63,7 +63,7 @@ typedef struct {
 extern UnkStruct_022fa548 *data_ov000_02369b84;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern void *data_ov000_02369b88[];
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_022c4534 data_022c4534;
 extern u8 data_ov000_02366064[], data_ov000_02366068[], data_ov000_02366178[], data_ov000_0236618c[];
@@ -78,12 +78,12 @@ void *func_02021264(void *f, s32 i);
 void func_020257f8(void *p);
 void *func_0202128c(void *a);
 void func_020212e0(void *f);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 s32 func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022f8c88(s32 a, s32 b);
-void *func_02033fbc(void *a, s32 b);
+void *File_Load(void *a, s32 b);
 
 UnkStruct_022fa548 *func_ov000_022fa548(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
@@ -96,7 +96,7 @@ UnkStruct_022fa548 *func_ov000_022fa548(UnkStruct_ObjParam *p, s32 b, s32 c) {
 
     if (p->unk0 == 0xff && p->unk1 == 0xff)
         return NULL;
-    w = func_020372d0(func_0206c3d0, func_ov000_022f84fc, 0, 0x500, 2, sizeof(UnkStruct_022fa548))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022f84fc, 0, 0x500, 2, sizeof(UnkStruct_022fa548))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022fa548));
     data_ov000_02369b84 = w;
@@ -113,7 +113,7 @@ UnkStruct_022fa548 *func_ov000_022fa548(UnkStruct_ObjParam *p, s32 b, s32 c) {
     data_ov000_02369ac0.unk4 = 0x2f;
     data_ov000_02369ac0.unk8 = func_ov000_022c5f28();
     data_ov000_02369ac0.unkA = func_ov000_022c5f28();
-    func_02021310(ctx, data_ov000_02366064, data_022c4488);
+    func_02021310(ctx, data_ov000_02366064, gZoneActArchive);
     w->unk224 = func_02021264(ctx, 8);
     w->unk228 = func_02021264(ctx, 9);
     w->unk22C = func_02021264(ctx, 10);
@@ -130,17 +130,17 @@ UnkStruct_022fa548 *func_ov000_022fa548(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk14 = 0x30000;
     w->base.unk18 = 0;
     sub = &w->unk244;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, w->unk220, 0);
-    func_02031a68(sub, 0, w->unk224, 1, 0);
-    func_02031a68(sub, 4, w->unk228, 0, 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, w->unk220, 0);
+    Model_SetAnimation(sub, 0, w->unk224, 1, 0);
+    Model_SetAnimation(sub, 4, w->unk228, 0, 0);
     sub->unk48 = w->base.unk10 << 4;
     sub->unk4C = -(w->base.unk14 << 4);
     sub->unk50 = w->base.unk18 << 4;
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     w->unk218 = func_ov000_022fad3c(0xd8, 0, 0, 0, 0, 0, 0, 0, 0);
     func_ov000_022f8c88(data_022c4560.unk0, 0);
-    func_02021310(ctx2, data_ov000_02366068, data_022c4488);
+    func_02021310(ctx2, data_ov000_02366068, gZoneActArchive);
     func_020257f8(func_0202128c(data_ov000_0236606c));
     func_020257f8(func_0202128c(data_ov000_02366080));
     func_020257f8(func_0202128c(data_ov000_02366098));
@@ -153,17 +153,17 @@ UnkStruct_022fa548 *func_ov000_022fa548(UnkStruct_ObjParam *p, s32 b, s32 c) {
     func_020257f8(func_0202128c(data_ov000_02366144));
     func_020257f8(func_0202128c(data_ov000_0236615c));
     func_020212e0(ctx2);
-    w->unk238 = func_02033fbc(data_ov000_02366178, 0);
-    w->unk240 = func_02033fbc(data_ov000_0236618c, 0);
+    w->unk238 = File_Load(data_ov000_02366178, 0);
+    w->unk240 = File_Load(data_ov000_0236618c, 0);
     func_020257f8(w->unk238);
     func_020257f8(w->unk240);
     sub = &w->unk85C;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, w->unk234, 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, w->unk234, 0);
     sub = w->unk37C;
     for (i = 0; i < 4; i++) {
-        func_02031c1c(sub, 0);
-        func_02031bd0(sub, w->unk240, i);
+        Model_Init(sub, 0);
+        Model_SetResource(sub, w->unk240, i);
         sub++;
     }
     sub = &w->unk37C[0];

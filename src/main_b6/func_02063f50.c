@@ -68,7 +68,7 @@ typedef struct {
 } UnkState2_02063f50;
 
 extern UnkTask_02063f50 *data_022c4dc4;
-extern UnkRes_02063f50 *data_022c4dc0;
+extern UnkRes_02063f50 *gNaviMSprite;
 extern UnkState_02063f50 data_022c4560;
 extern UnkState2_02063f50 data_022c4590;
 extern u16 data_02077910[];
@@ -80,15 +80,15 @@ extern u16 data_022c4dbc;
 extern u16 data_022c4db8;
 extern u16 data_020778b0[];
 
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_0203363c(UnkSpr_02063f50 *spr, UnkRes_02063f50 *res, u16 anim, u32 flags, s32 d, s32 e, u32 pal, s32 g, u32 h);
-void func_0203344c(UnkSpr_02063f50 *spr, s32 a, s32 b);
-u32 func_02039c18(s32 a, u32 b);
+void AnimatorSprite_Init(UnkSpr_02063f50 *spr, UnkRes_02063f50 *res, u16 anim, u32 flags, s32 d, s32 e, u32 pal, s32 g, u32 h);
+void AnimatorSprite_ProcessAnimation(UnkSpr_02063f50 *spr, s32 a, s32 b);
+u32 ObjVram_Alloc(s32 a, u32 b);
 s32 func_02002094(s32 n, s32 d);
 s32 func_0200203c(s32 n, s32 d);
 void func_02063778(UnkSpr_02063f50 *a, s16 dt);
-void func_020369ac(u32 engine);
+void Oam_Upload(u32 engine);
 void func_02063e10(void);
 void func_02063ebc(void);
 void func_02063df4(void);
@@ -127,7 +127,7 @@ void func_02063f50(void) {
 
     plane = (REG_DB_DISPCNT & 0x1f00) >> 8;
     REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | ((plane & ~0x10) << 8);
-    data_022c4dc4 = func_020372d0(func_02063e10, func_02063ebc, 0, 0x3000, 0, 0x724);
+    data_022c4dc4 = Task_Create(func_02063e10, func_02063ebc, 0, 0x3000, 0, 0x724);
     w = data_022c4dc4->work;
     MI_CpuClear16_(w, 0x724);
     w->unk4 = data_022c4560.unk0;
@@ -138,11 +138,11 @@ void func_02063f50(void) {
 
     spr = w->spr;
     for (i = 0; i <= 12; i++, spr++) {
-        func_0203363c(spr, data_022c4dc0, i, 0x4030, 1, 0, func_02039c18(1, AnimPal_02063f50(data_022c4dc0, i)), 0, 0x05000600);
+        AnimatorSprite_Init(spr, gNaviMSprite, i, 0x4030, 1, 0, ObjVram_Alloc(1, AnimPal_02063f50(gNaviMSprite, i)), 0, 0x05000600);
         spr->unk4 = spr->unk6 = 0;
         spr->prio = data_02077910[i];
         spr->flags |= 0x40000;
-        func_0203344c(spr, 0, 0);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
     }
 
     w->unk720 = data_022c4560.unke;
@@ -156,34 +156,34 @@ void func_02063f50(void) {
     else
         w->unk71c = 1;
     spr = &w->sprX;
-    func_0203363c(spr, data_022c4dc0, anim, 0x4060, 1, 0, func_02039c18(1, AnimPal_02063f50(data_022c4dc0, anim)), 0, 0x05000600);
+    AnimatorSprite_Init(spr, gNaviMSprite, anim, 0x4060, 1, 0, ObjVram_Alloc(1, AnimPal_02063f50(gNaviMSprite, anim)), 0, 0x05000600);
     spr->unk4 = spr->unk6 = 0;
     spr->prio = data_02077910[24];
     spr->flags |= 0x40000;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
 
     spr2 = &w->spr[13];
     for (j = 13; j <= 23; j++, spr2++) {
         a = j + sel;
-        func_0203363c(spr2, data_022c4dc0, a, 0x4030, 1, 0, func_02039c18(1, AnimPal2_02063f50(data_022c4dc0, a)), 0, 0x05000600);
+        AnimatorSprite_Init(spr2, gNaviMSprite, a, 0x4030, 1, 0, ObjVram_Alloc(1, AnimPal2_02063f50(gNaviMSprite, a)), 0, 0x05000600);
         spr2->unk4 = spr2->unk6 = 0;
         spr2->prio = data_02077910[j];
         spr2->flags |= 0x40000;
-        func_0203344c(spr2, 0, 0);
+        AnimatorSprite_ProcessAnimation(spr2, 0, 0);
     }
 
-    func_0203363c(&tmp, data_022c4dc0, data_02077888[w->unk4 * 3], 0x4048, 1, 0, 0, 0, 0x05000600);
+    AnimatorSprite_Init(&tmp, gNaviMSprite, data_02077888[w->unk4 * 3], 0x4048, 1, 0, 0, 0, 0x05000600);
     tmp.prio = 5;
-    func_0203344c(&tmp, 0, 0);
+    AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
     tmp.prio = 6;
-    func_0203344c(&tmp, 0, 0);
+    AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
     tmp.prio = 7;
-    func_0203344c(&tmp, 0, 0);
-    func_0203363c(&tmp, data_022c4dc0, data_0207788a[w->unk4 * 3], 0x4048, 1, 0, 0, 0, 0x05000600);
+    AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
+    AnimatorSprite_Init(&tmp, gNaviMSprite, data_0207788a[w->unk4 * 3], 0x4048, 1, 0, 0, 0, 0x05000600);
     tmp.prio = 4;
-    func_0203344c(&tmp, 0, 0);
+    AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
     if (data_022c4dbc != 0) {
-        func_0203363c(&tmp, data_022c4dc0, data_0207788c[w->unk4 * 3], 0x4048, 1, 0, 0, 0, 0x05000600);
+        AnimatorSprite_Init(&tmp, gNaviMSprite, data_0207788c[w->unk4 * 3], 0x4048, 1, 0, 0, 0, 0x05000600);
         tmp.prio = 8;
         for (k = 0; k < 7; k++) {
             if (data_022c4dbc & (1 << k))
@@ -191,10 +191,10 @@ void func_02063f50(void) {
         }
         if (k != 0)
             func_02063778(&tmp, k * 16 - 1);
-        func_0203344c(&tmp, 0, 0);
+        AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
     }
 
-    w->task8 = func_020372d0(func_02063df4, 0, 0, 0x4000, 0, 0x18);
+    w->task8 = Task_Create(func_02063df4, 0, 0, 0x4000, 0, 0x18);
     subA = w->task8->work;
     MI_CpuClear16_(subA, 0x18);
     subA->owner = w;
@@ -207,14 +207,14 @@ void func_02063f50(void) {
         subA->unk8 = -1;
     subA->unka = func_0200203c(v, 10);
 
-    w->taskC = func_020372d0(func_02063c98, 0, 0, 0x4000, 0, 0x14);
+    w->taskC = Task_Create(func_02063c98, 0, 0, 0x4000, 0, 0x14);
     subB = w->taskC->work;
     MI_CpuClear16_(subB, 0x14);
     subB->owner = w;
     subB->unkc = -1;
     subB->unka = data_022c4560.unk28;
 
-    func_020369ac(1);
+    Oam_Upload(1);
     plane = (REG_DB_DISPCNT & 0x1f00) >> 8;
     REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | ((plane | 0x10) << 8);
 }

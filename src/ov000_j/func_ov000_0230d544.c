@@ -11,10 +11,10 @@ typedef struct {
     u16 unk5C;
 } UnkStruct_0230d544;
 
-s16 func_02068db4(s32 a, s32 b);
+s16 ObjSpd_DownSet(s32 a, s32 b);
 
 void func_ov000_0230d544(UnkStruct_0230d544 *p) {
-    p->unk30 = func_02068db4(p->unk30, 0x20);
+    p->unk30 = ObjSpd_DownSet(p->unk30, 0x20);
     if (p->unkC == 0)
         return;
     p->unkC--;

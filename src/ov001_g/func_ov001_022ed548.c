@@ -25,8 +25,8 @@ typedef struct UnkTouch_022ed548 {
     u32 flags;
 } UnkTouch_022ed548;
 
-extern UnkTask_022ed548 *data_022b4574;
-extern UnkTouch_022ed548 data_022b65b4;
+extern UnkTask_022ed548 *gTaskCurrent;
+extern UnkTouch_022ed548 gTouchState;
 
 void func_ov001_022ed490(UnkWork_022ed548 *w, s16 x, s16 y);
 void func_ov001_022ed3e0(UnkWork_022ed548 *w);
@@ -40,7 +40,7 @@ void func_ov001_022ed6c4(void);
 
 #pragma thumb on
 void func_ov001_022ed548(void) {
-    UnkWork_022ed548 *w = data_022b4574->work;
+    UnkWork_022ed548 *w = gTaskCurrent->work;
     s32 v;
     s32 d;
 
@@ -52,8 +52,8 @@ void func_ov001_022ed548(void) {
     func_ov001_022ed14c(w);
     func_ov001_022ed104(w);
     func_ov001_022ed08c(w);
-    if (data_022b65b4.flags & 0x10) {
-        v = (data_022b65b4.y - w->unk10) * 2;
+    if (gTouchState.flags & 0x10) {
+        v = (gTouchState.y - w->unk10) * 2;
         v += w->unk14;
         if (v < 0)
             v = 0;
@@ -78,9 +78,9 @@ void func_ov001_022ed548(void) {
         }
     }
     w->timer++;
-    if (!(data_022b65b4.flags & 0x10)) {
+    if (!(gTouchState.flags & 0x10)) {
         w->timer = 0;
-        data_022b4574->func = func_ov001_022ed6c4;
+        gTaskCurrent->func = func_ov001_022ed6c4;
     }
 }
 #pragma thumb reset

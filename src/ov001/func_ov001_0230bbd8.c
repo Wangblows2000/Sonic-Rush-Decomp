@@ -1,9 +1,9 @@
 #include <nitro/types.h>
 
-extern u16 data_022503e0[];
+extern u16 gPad[];
 extern u8 *data_ov001_0231f5c0;
 BOOL func_ov001_02309894(void);
-void func_02055918(s32 a);
+void PauseMenu_Create(s32 a);
 void func_ov001_023143c4(void);
 void func_ov001_023147d8(void);
 void func_ov001_0231323c(void);
@@ -16,8 +16,8 @@ void func_ov001_02309e3c(void);
 
 void func_ov001_0230bbd8(void) {
     u8 *g = data_ov001_0231f5c0;
-    if ((data_022503e0[2] & 8) && !func_ov001_02309894()) {
-        func_02055918(1);
+    if ((gPad[2] & 8) && !func_ov001_02309894()) {
+        PauseMenu_Create(1);
         return;
     }
     if (*(s32 *)(g + 0x20) != 0) {

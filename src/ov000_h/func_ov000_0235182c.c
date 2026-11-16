@@ -38,8 +38,8 @@ struct UnkStruct_0235182c {
 
 void func_ov000_0234739c(UnkStruct_0235182c *w);
 void func_ov000_0234a064(UnkStruct_0235182c *w);
-s16 func_02068df8(s32 v, s32 a, s32 b);
-s16 func_02068db4(s32 v, s32 a);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
+s16 ObjSpd_DownSet(s32 v, s32 a);
 
 void func_ov000_0235182c(UnkStruct_0235182c *w) {
     s32 v;
@@ -47,16 +47,16 @@ void func_ov000_0235182c(UnkStruct_0235182c *w) {
     func_ov000_0234739c(w);
     if (w->other != NULL) {
         if ((w->unk14 > w->unk3F4 && !(w->other->unk5C & 2)) || (w->unk14 < w->unk3F4 && (w->other->unk5C & 2))) {
-            w->unk30 = func_02068df8(w->unk30, -0x32, 0x480);
+            w->unk30 = ObjSpd_UpSet(w->unk30, -0x32, 0x480);
         } else {
             if (w->unk30 < 0) {
                 v = w->unk2A;
                 if (v < 0)
                     v = -v;
                 if (v > 0x200)
-                    w->unk30 = func_02068db4(w->unk30, 0x68);
+                    w->unk30 = ObjSpd_DownSet(w->unk30, 0x68);
             }
-            w->unk30 = func_02068df8(w->unk30, 0x32, 0x480);
+            w->unk30 = ObjSpd_UpSet(w->unk30, 0x32, 0x480);
         }
         if (w->unk10 <= w->unk3F0 || w->unk10 >= w->unk3F8)
             w->other = NULL;

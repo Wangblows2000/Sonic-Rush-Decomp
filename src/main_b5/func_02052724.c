@@ -11,7 +11,7 @@ typedef struct {
     s16 bright;
 } UnkDisp_02052724;
 
-extern UnkDisp_02052724 data_02087d04;
+extern UnkDisp_02052724 gDisplaySub;
 
 void GXx_SetMasterBrightness_(vu16 *reg, s32 b);
 void GXS_SetGraphicsMode(s32 mode);
@@ -27,10 +27,10 @@ void GXS_SetGraphicsMode(s32 mode);
 void func_02052724(BOOL white) {
     if (white) {
         GXx_SetMasterBrightness_((vu16 *)0x0400106c, 0x10);
-        data_02087d04.bright = 0x10;
+        gDisplaySub.bright = 0x10;
     } else {
         GXx_SetMasterBrightness_((vu16 *)0x0400106c, -0x10);
-        data_02087d04.bright = -0x10;
+        gDisplaySub.bright = -0x10;
     }
     GXS_SetGraphicsMode(0);
     REG_DB_BG0CNT = (REG_DB_BG0CNT & 0x43) | 0x2788;
@@ -42,12 +42,12 @@ void func_02052724(BOOL white) {
     REG_DB_BG2CNT = (REG_DB_BG2CNT & ~3) | 0;
     REG_DB_BG3CNT = (REG_DB_BG3CNT & ~3) | 2;
     REG_DB_BG0OFS = 0;
-    data_02087d04.bg0x = 0;
-    data_02087d04.bg0y = 0;
+    gDisplaySub.bg0x = 0;
+    gDisplaySub.bg0y = 0;
     REG_DB_BG1OFS = 0;
-    data_02087d04.bg1x = 0;
-    data_02087d04.bg1y = 0;
+    gDisplaySub.bg1x = 0;
+    gDisplaySub.bg1y = 0;
     REG_DB_BG2OFS = 0;
-    data_02087d04.bg2x = 0;
-    data_02087d04.bg2y = 0;
+    gDisplaySub.bg2x = 0;
+    gDisplaySub.bg2y = 0;
 }

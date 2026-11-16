@@ -66,10 +66,10 @@ typedef struct {
 extern UnkStruct_0235bafc_T *data_ov000_0236ac80;
 extern s16 data_0206e470[];
 
-void func_0206e3c0(UnkStruct_0235bafc_Rect *r, s32 a, s32 b, s32 c, s32 d);
-s32 func_0206d7c8(UnkStruct_0235bafc_Rect *r, s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
+void ObjRect_SetBox2D(UnkStruct_0235bafc_Rect *r, s32 a, s32 b, s32 c, s32 d);
+s32 ObjRect_BoxCheck(UnkStruct_0235bafc_Rect *r, s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
 s32 func_020027a4(s32 y, s32 x);
-s16 func_02068df8(s32 v, s32 a, s32 b);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
 
 #define IDX_0235bafc(a) ((s32)((a) & 0xffff) >> 4)
 #define SIN_0235bafc(a) data_0206e470[(u32)(IDX_0235bafc(a) << 1)]
@@ -90,7 +90,7 @@ void func_ov000_0235bafc(UnkStruct_0235bafc_Src *src) {
     w->flags |= 4;
     r.x = src->x >> 8;
     r.y = src->y >> 8;
-    func_0206e3c0(&r, -0x48, -0x48, 0x48, 0x48);
+    ObjRect_SetBox2D(&r, -0x48, -0x48, 0x48, 0x48);
     left = w->count;
     for (i = 0; i < 64; i++) {
         if (left == 0)
@@ -100,7 +100,7 @@ void func_ov000_0235bafc(UnkStruct_0235bafc_Src *src) {
             continue;
         left--;
         if (!(p->flags & 0x2000)) {
-            if (func_0206d7c8(&r, p->x >> 8, p->y >> 8, -6, -16, 0x14, 0x10)) {
+            if (ObjRect_BoxCheck(&r, p->x >> 8, p->y >> 8, -6, -16, 0x14, 0x10)) {
                 p->flags |= 0x200;
                 p->flags |= 0x400;
                 p->flags |= 0x800;
@@ -110,7 +110,7 @@ void func_ov000_0235bafc(UnkStruct_0235bafc_Src *src) {
         }
         if (p->flags & 0x2000) {
             ang = func_020027a4(r.y - (p->y >> 8), r.x - (p->x >> 8));
-            p->vx = func_02068df8(p->vx, 0x40, 0x1F00);
+            p->vx = ObjSpd_UpSet(p->vx, 0x40, 0x1F00);
             v = p->vx;
             p->x += (s16)((v * COS_0235bafc(ang)) >> 12);
             p->y += (s16)((v * SIN_0235bafc(ang)) >> 12);

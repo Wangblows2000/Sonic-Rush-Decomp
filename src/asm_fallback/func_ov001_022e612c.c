@@ -1,8 +1,8 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_022b4574;
-extern void func_02052104(void);
+extern u32 gTaskCurrent;
+extern void SysSound_PlaySE(void);
 extern void func_ov001_022e25b0(void);
 extern void func_ov001_022e2640(void);
 extern void func_ov001_022e5b6c(void);
@@ -99,18 +99,18 @@ _9e:
     beq _b2
     bl func_ov001_022e5b6c
     mov r0, #0xd
-    bl func_02052104
+    bl SysSound_PlaySE
     add sp, #4
     pop {r3}
     bx r3
 _b2:
     bl func_ov001_022e5ba0
     mov r0, #0xb
-    bl func_02052104
+    bl SysSound_PlaySE
     add sp, #4
     pop {r3}
     bx r3
     mov r8, r8
-    dcd data_022b4574
+    dcd gTaskCurrent
 }
 #pragma thumb reset

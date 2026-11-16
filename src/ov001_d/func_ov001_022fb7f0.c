@@ -4,7 +4,7 @@ u8 *func_ov001_022fd428(s32 a, void *b, s32 c, s32 d, s32 e);
 void *func_ov001_02300c94(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void func_ov001_022fb7b0(void);
-void func_02036754(void *p, u32 a, u32 b);
+void Sound_PlaySeqArc(void *p, u32 a, u32 b);
 
 void func_ov001_022fb7f0(void *p, s32 x, s32 y, s32 z, s32 n, u16 ang, u16 rz) {
     u8 *t = func_ov001_022fd428(0xa, p, x, y, z);
@@ -21,5 +21,5 @@ void func_ov001_022fb7f0(void *p, s32 x, s32 y, s32 z, s32 n, u16 ang, u16 rz) {
     func_ov001_022fe8d4(t + 0x120, t, 1, 1, 0x200000, 0x5000, 0x9000, 0, 0, 0, 0);
     *(u8 **)(t + 0xa4) = t + 0x120;
     *(s32 *)(t + 0x1cc) = n;
-    func_02036754(0, 0, 0xab);
+    Sound_PlaySeqArc(0, 0, 0xab);
 }

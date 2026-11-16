@@ -14,28 +14,28 @@ typedef struct UnkStruct_0230de20_a {
     u8 pad0[0x138];
 } UnkStruct_0230de20_a;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern u8 *data_ov001_0231f654;
 extern void *data_ov001_0231e984[][4];
 extern u8 data_ov001_0231e9f4[];
 extern s32 data_ov001_023171ec[];
 extern s32 data_ov001_02317208[];
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
 void func_02000dfc(void *m);
 s32 func_ov001_0230c0cc(void);
-u8 *func_02033fbc(void *p, s32 v);
+u8 *File_Load(void *p, s32 v);
 void func_020257f8(void *p);
 u32 func_020380d8(void *p);
 void func_020380a0(void *src, void *dst);
-void func_020349b8(void *heap, void *p);
-void func_02031c1c(void *s, u32 a);
-void func_02031bd0(void *s, void *res, u32 idx);
-void func_02031a68(void *p, s32 a, void *b, s32 c, u32 d);
+void Heap_Free(void *heap, void *p);
+void Model_Init(void *s, u32 a);
+void Model_SetResource(void *s, void *res, u32 idx);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
 void *func_02026274(void *a, s32 b);
 void func_020221fc(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f);
 void func_02022228(u32 a, u32 b, BOOL c);
@@ -67,7 +67,7 @@ void func_ov001_0230de20(void) {
     UnkStruct_0230de20_e *e;
     s32 i;
 
-    blk = func_02034a40(data_0208fe80, 0xb00, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0xb00, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, 0xb00);
@@ -79,7 +79,7 @@ void func_ov001_0230de20(void) {
     data_ov001_0231f654 = blk;
     MI_CpuFill8(blk, 0, 0xac8);
     sl = data_ov001_0231f654;
-    blk = func_02034a40(data_0208fe80, 0x240, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x240, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill2 = 0xcccccccc;
         MIi_CpuClear32(fill2, blk, 0x240);
@@ -89,7 +89,7 @@ void func_ov001_0230de20(void) {
         blk += 0x20;
     }
     FP(0xa40) = blk;
-    blk = func_02034a40(data_0208fe80, 0x60, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x60, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         fill3 = 0xcccccccc;
         MIi_CpuClear32(fill3, blk, 0x60);
@@ -107,10 +107,10 @@ void func_ov001_0230de20(void) {
     F32(0xa10) = 1;
     func_02000dfc(sl + 0xa14);
     for (j = 0; j < 4; j++) {
-        res = func_02033fbc(data_ov001_0231e984[func_ov001_0230c0cc()][j], -1);
+        res = File_Load(data_ov001_0231e984[func_ov001_0230c0cc()][j], -1);
         func_020257f8(res);
         sz = (func_020380d8(res) + 0x43) & ~0x1f;
-        blk = func_02034a40(data_0208fe80, sz, 0x20);
+        blk = Heap_Alloc(gMainHeap, sz, 0x20);
         if ((u8 *)func_02006abc(0) != blk) {
             fill4 = 0xcccccccc;
             MIi_CpuClear32(fill4, blk, sz);
@@ -130,16 +130,16 @@ void func_ov001_0230de20(void) {
                 DC_StoreRange(res, sz);
             }
         }
-        func_020349b8(data_0208fe80, res);
+        Heap_Free(gMainHeap, res);
     }
-    FP(0xa0c) = func_02033fbc(data_ov001_0231e9f4, -1);
+    FP(0xa0c) = File_Load(data_ov001_0231e9f4, -1);
     e = (UnkStruct_0230de20_e *)sl;
     an = (UnkStruct_0230de20_a *)(sl + 0x3c);
     for (i = 0; i < 7; i++) {
         idx = data_ov001_023171ec[i];
         sub = data_ov001_02317208[i];
-        func_02031c1c(an, 0);
-        func_02031bd0(an, ((void **)(sl + 0x9fc))[idx], sub);
+        Model_Init(an, 0);
+        Model_SetResource(an, ((void **)(sl + 0x9fc))[idx], sub);
         e->unk46 = 4;
         e->unk47 = 2;
         e->unk44 = 0x1e;
@@ -153,9 +153,9 @@ void func_ov001_0230de20(void) {
         an++;
         e++;
     }
-    func_02031c1c(sl + 0x8c4, 0);
-    func_02031bd0(sl + 0x8c4, FP(0xa08), 0);
-    func_02031a68(sl + 0x8c4, 3, FP(0xa0c), 0, 0);
+    Model_Init(sl + 0x8c4, 0);
+    Model_SetResource(sl + 0x8c4, FP(0xa08), 0);
+    Model_SetAnimation(sl + 0x8c4, 3, FP(0xa0c), 0, 0);
     F8(0x9d3) |= 4;
     F32(0x8dc) = 0x320000;
     F32(0x8e0) = 0x320000;

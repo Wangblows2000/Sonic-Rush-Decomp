@@ -46,19 +46,19 @@ extern u8 data_02073bd1[];
 extern u8 data_02073bd2[];
 extern u8 data_02073bd4[];
 extern u8 data_02073bd6[];
-extern u8 data_022503e0[];
-extern u8 data_02072cb8;
+extern u8 gPad[];
+extern u8 gGameLanguage;
 extern char data_02073b38[][0x19];
 
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_0204d768(void);
 void func_0204d6d0(s32 a);
-void func_02068094(void *a, void *res);
-void *func_02033fbc(void *a, s32 b);
-u32 func_02039c18(s32 a, u32 b);
-void func_02033590(UnkDual_02048ba4 *d, void *res, u16 idx, u32 mask, u32 flags, u32 a0, u32 a1, u32 b0, u32 b1, u32 c0, u32 c1, u32 e0, u32 e1);
-void func_020332c4(UnkDual_02048ba4 *d, s32 a, s32 b);
+void DemoInput_Create(void *a, void *res);
+void *File_Load(void *a, s32 b);
+u32 ObjVram_Alloc(s32 a, u32 b);
+void AnimatorSpriteDS_Init(UnkDual_02048ba4 *d, void *res, u16 idx, u32 mask, u32 flags, u32 a0, u32 a1, u32 b0, u32 b1, u32 c0, u32 c1, u32 e0, u32 e1);
+void AnimatorSpriteDS_ProcessAnimation(UnkDual_02048ba4 *d, s32 a, s32 b);
 void func_02048898(void);
 void func_02048ad4(void);
 
@@ -71,7 +71,7 @@ void func_02048ba4(u16 id) {
     u32 palB;
     UnkDual_02048ba4 *d;
 
-    w = ((UnkTask_02048ba4 *)func_020372d0(func_02048898, func_02048ad4, 0, 0x4000, 3, 0x104))->work;
+    w = ((UnkTask_02048ba4 *)Task_Create(func_02048898, func_02048ad4, 0, 0x4000, 3, 0x104))->work;
     {
         vu16 z = 0;
         MIi_CpuClear16(z, w, 0x104);
@@ -90,33 +90,33 @@ void func_02048ba4(u16 id) {
     }
     func_0204d6d0(3);
     data_022c4560.unk10 = 3;
-    func_02068094(data_022503e0, &ENT(data_02073bd0, w->id, u8) + 0xa);
-    switch (data_02072cb8) {
+    DemoInput_Create(gPad, &ENT(data_02073bd0, w->id, u8) + 0xa);
+    switch (gGameLanguage) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        v = data_02072cb8;
+        v = gGameLanguage;
         break;
     default:
         v = 1;
         break;
     }
-    w->res = func_02033fbc(data_02073b38[v], 0);
+    w->res = File_Load(data_02073b38[v], 0);
 
     d = &w->sprA;
-    palA = func_02039c18(0, 0x18);
-    palB = func_02039c18(1, 0x18);
-    func_02033590(d, w->res, 2, 0, 0x10, 0, palA, 0, 0x05000200, 0, palB, 0, 0x05000600);
+    palA = ObjVram_Alloc(0, 0x18);
+    palB = ObjVram_Alloc(1, 0x18);
+    AnimatorSpriteDS_Init(d, w->res, 2, 0, 0x10, 0, palA, 0, 0x05000200, 0, palB, 0, 0x05000600);
     d->unk74 = 2;
     d->unk76 = 2;
 
     d = &w->sprB;
-    palA = func_02039c18(0, 0x30);
-    palB = func_02039c18(1, 0x30);
-    func_02033590(d, w->res, 0, 0, 0x10, 0, palA, 0, 0x05000200, 0, palB, 0, 0x05000600);
+    palA = ObjVram_Alloc(0, 0x30);
+    palB = ObjVram_Alloc(1, 0x30);
+    AnimatorSpriteDS_Init(d, w->res, 0, 0, 0x10, 0, palA, 0, 0x05000200, 0, palB, 0, 0x05000600);
     d->unk74 = 2;
     d->unk76 = 2;
 
@@ -128,6 +128,6 @@ void func_02048ba4(u16 id) {
     w->sprB.unk48[1] = 0;
     w->sprB.unk48[2] = 0;
     w->sprB.unk48[3] = 0;
-    func_020332c4(&w->sprA, 0, 0);
-    func_020332c4(&w->sprB, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(&w->sprA, 0, 0);
+    AnimatorSpriteDS_ProcessAnimation(&w->sprB, 0, 0);
 }

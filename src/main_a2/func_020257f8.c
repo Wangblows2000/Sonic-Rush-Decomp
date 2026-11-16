@@ -2,10 +2,10 @@
 
 typedef struct { u8 unk0[0x20]; u16 plttInfo; } UnkTex_020257f8;
 
-extern u32 (*data_02077d40)(u32 size, BOOL is4x4, u32 opt);
-extern u32 (*data_02077d48)(u32 size, u32 is4pltt, u32 opt);
-extern void (*data_02077d4c)(u32 key);
-extern void (*data_02077d44)(u32 key);
+extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, BOOL is4x4, u32 opt);
+extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, u32 is4pltt, u32 opt);
+extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
+extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 
 UnkTex_020257f8 *func_02025e8c(u32 *res);
 void *func_02025ecc(u32 *res);
@@ -38,27 +38,27 @@ BOOL func_020257f8(u32 *res) {
             tex4 = func_02021c0c(tex);
             pltt = func_02021ad8(tex);
             if (tex1 != 0) {
-                tex1 = data_02077d40(tex1, FALSE, 0);
+                tex1 = NNS_GfdDefaultFuncAllocTexVram(tex1, FALSE, 0);
                 if (tex1 == 0) okTex = FALSE;
             } else {
                 tex1 = 0;
             }
             if (tex4 != 0) {
-                tex4 = data_02077d40(tex4, TRUE, 0);
+                tex4 = NNS_GfdDefaultFuncAllocTexVram(tex4, TRUE, 0);
                 if (tex4 == 0) okTex4x4 = FALSE;
             } else {
                 tex4 = 0;
             }
             if (pltt != 0) {
-                pltt = data_02077d48(pltt, tex->plttInfo & 0x8000, 0);
+                pltt = NNS_GfdDefaultFuncAllocPlttVram(pltt, tex->plttInfo & 0x8000, 0);
                 if (pltt == 0) okPltt = FALSE;
             } else {
                 pltt = 0;
             }
             if (!okTex || !okTex4x4 || !okPltt) {
-                data_02077d4c(pltt);
-                data_02077d44(tex4);
-                data_02077d44(tex1);
+                NNS_GfdDefaultFuncFreePlttVram(pltt);
+                NNS_GfdDefaultFuncFreeTexVram(tex4);
+                NNS_GfdDefaultFuncFreeTexVram(tex1);
                 return FALSE;
             }
             func_02021bf8(tex, tex1, tex4);

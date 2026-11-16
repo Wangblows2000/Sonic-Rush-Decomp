@@ -25,7 +25,7 @@ typedef struct {
     u16 cont;
 } UnkPad_022e6bb4;
 
-extern UnkPad_022e6bb4 data_022503e0;
+extern UnkPad_022e6bb4 gPad;
 extern s32 data_ov001_0231649c[][17][4];
 
 #pragma thumb on
@@ -40,13 +40,13 @@ s32 func_ov001_022e6bb4(UnkStruct_022e6bb4 *p) {
     if (cur == 0x12) {
         return 0x12;
     }
-    if (data_022503e0.cont & 0x20) {
+    if (gPad.cont & 0x20) {
         dir = 0;
-    } else if (data_022503e0.cont & 0x40) {
+    } else if (gPad.cont & 0x40) {
         dir = 1;
-    } else if (data_022503e0.cont & 0x10) {
+    } else if (gPad.cont & 0x10) {
         dir = 2;
-    } else if (data_022503e0.cont & 0x80) {
+    } else if (gPad.cont & 0x80) {
         dir = 3;
     } else {
         return 0x12;

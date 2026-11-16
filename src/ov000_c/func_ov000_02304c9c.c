@@ -6,8 +6,8 @@ extern s16 data_0206e470[];
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 void func_ov000_02304fa0(UnkStruct_StageObj *w);
-s16 func_02068df8(s32 v, s32 a, s32 m);
-s16 func_02068db4(s32 v, s32 a);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
+s16 ObjSpd_DownSet(s32 v, s32 a);
 
 void func_ov000_02304c9c(UnkStruct_StageObj *w) {
     u32 f;
@@ -25,24 +25,24 @@ void func_ov000_02304c9c(UnkStruct_StageObj *w) {
     w->unkC += w->unk34 >> 2;
     if (w->unk1F4 & 4) {
         if (f & 2)
-            w->unk34 = func_02068df8(w->unk34, -0x30, 0xc00);
+            w->unk34 = ObjSpd_UpSet(w->unk34, -0x30, 0xc00);
         else
-            w->unk34 = func_02068df8(w->unk34, 0x30, 0xc00);
+            w->unk34 = ObjSpd_UpSet(w->unk34, 0x30, 0xc00);
     } else if (f & 1) {
-        w->unk34 = func_02068db4(w->unk34, 0xd);
+        w->unk34 = ObjSpd_DownSet(w->unk34, 0xd);
         if (w->unk34 == 0)
             w->unk1F4 |= 1;
     }
     if (w->unk1F4 & 1) {
         if (f & 2) {
-            w->unk34 = func_02068df8(w->unk34, 0x30, 0xc00);
+            w->unk34 = ObjSpd_UpSet(w->unk34, 0x30, 0xc00);
             if (w->unkC > 0) {
                 w->unkC = 0;
                 w->unk1F4 |= 2;
                 w->unk34 = -w->unk34;
             }
         } else {
-            w->unk34 = func_02068df8(w->unk34, -0x30, 0xc00);
+            w->unk34 = ObjSpd_UpSet(w->unk34, -0x30, 0xc00);
             if (w->unkC < 0) {
                 w->unkC = 0;
                 w->unk1F4 |= 2;

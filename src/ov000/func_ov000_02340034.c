@@ -7,7 +7,7 @@ typedef struct UnkStruct_02340034 {
 
 extern void *data_ov000_0236ac1c;
 extern UnkStruct_02340034 data_ov000_0236aad8;
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
 void func_ov000_0233ff54(void *p);
 void func_ov000_0233fd18(void *p, s32 a);
@@ -23,5 +23,5 @@ void func_ov000_02340034(void) {
         func_ov000_0233fd18(p, 0);
         func_ov000_0233fd18(p, 1);
     }
-    data_02087cb8 |= 0x3000;
+    gSystemFlags |= 0x3000;
 }

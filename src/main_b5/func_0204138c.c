@@ -8,12 +8,12 @@ typedef struct {
     u16 unk1a;
 } UnkWork_0204138c;
 
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 
-void func_0203c350(void);
-void func_0203dda4(void);
-u32 func_0203e934(void);
-void func_0203dbb4(void);
+void WFS_End(void);
+void WH_Reset(void);
+u32 WH_GetSystemState(void);
+void WH_End(void);
 
 void func_0204138c(UnkWork_0204138c *w) {
     BOOL loop;
@@ -21,15 +21,15 @@ void func_0204138c(UnkWork_0204138c *w) {
 
     if (w->state != 7) {
         w->state = 7;
-        data_02087cb8 &= ~0x100;
+        gSystemFlags &= ~0x100;
         loop = TRUE;
-        func_0203c350();
-        func_0203dda4();
+        WFS_End();
+        WH_Reset();
         f = FALSE;
         do {
-            switch ((s32)func_0203e934()) {
+            switch ((s32)WH_GetSystemState()) {
             case 1:
-                func_0203dbb4();
+                WH_End();
             case 0:
             case 9:
             case 10:

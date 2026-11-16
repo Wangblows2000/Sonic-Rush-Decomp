@@ -28,10 +28,10 @@ typedef struct {
 extern UnkTbl_0206267c data_02076e58;
 
 void func_02061738(u16 a);
-UnkRes_0206267c **func_02060384(void);
+UnkRes_0206267c **TalkDemo_GetEntry(void);
 void func_0201c070(void *a, s32 b);
 void func_0201bf1c(void *a);
-void func_02036754(void *a, s32 b, s32 c);
+void Sound_PlaySeqArc(void *a, s32 b, s32 c);
 void func_02062664(void *w);
 
 #pragma thumb on
@@ -42,14 +42,14 @@ void func_0206267c(UnkWork_0206267c *w) {
 
     func_02061738(w->unk80);
     s = &w->slot;
-    r = *func_02060384();
+    r = *TalkDemo_GetEntry();
     if (r != NULL) {
         v = r->unk4;
         if (*s->anim != NULL) {
             func_0201c070(s->anim, 0);
             func_0201bf1c(s->anim);
         }
-        func_02036754(s->anim, v, data_02076e58.unk24);
+        Sound_PlaySeqArc(s->anim, v, data_02076e58.unk24);
     }
     w->unkc = 1;
     w->state = func_02062664;

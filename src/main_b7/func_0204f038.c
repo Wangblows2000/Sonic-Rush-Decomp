@@ -8,7 +8,7 @@ typedef struct {
     s32 dist;
 } UnkObj_0204f038;
 
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 u16 *func_0204ef90(UnkObj_0204f038 *o);
 s32 func_0204eedc(s32 from, s32 to, s32 len, s32 cur, s32 e);
 
@@ -23,6 +23,6 @@ void func_0204f038(UnkObj_0204f038 *o, s32 cur, s32 len, s32 e) {
         buf[i] = a;
     for (; i < 0xc0; i++)
         buf[i] = b;
-    data_02087cb8 |= 0x1000 << o->idx;
+    gSystemFlags |= 0x1000 << o->idx;
 }
 #pragma thumb reset

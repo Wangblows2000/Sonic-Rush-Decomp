@@ -9,7 +9,7 @@ s32 func_ov000_02328430();
 extern u8 data_0206f470[];
 s32 MTX_RotY33_();
 extern u8 data_02071470[];
-s32 func_02036754();
+s32 Sound_PlaySeqArc();
 void func_ov000_022ed78c();
 
 void func_ov000_022ed8b4(u8 *p0) {
@@ -26,9 +26,9 @@ void func_ov000_022ed8b4(u8 *p0) {
     s32 t5 = func_ov000_02328430(1, *(u32 *)((u8 *)t0 + 0x10), *(u32 *)((u8 *)t0 + 0x14), *(u32 *)((u8 *)t0 + 0x18));
     MTX_RotY33_((t5 + 0x158), *(s16 *)data_02071470, *(s16 *)((u8 *)data_02071470 + 0x2));
     if (*(u8 *)((u8 *)t1 + 0x324) == 0) {
-        func_02036754(0, 0, 0xa);
+        Sound_PlaySeqArc(0, 0, 0xa);
     } else {
-        func_02036754(0, 0, 0x17);
+        Sound_PlaySeqArc(0, 0, 0x17);
     }
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022ed78c;
 }

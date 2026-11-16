@@ -9,15 +9,15 @@ typedef struct {
     void *unkDF8;
 } UnkStruct_02360324;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern u8 data_ov000_02369a84[];
 
 BOOL func_ov000_0235faf0(void);
-void func_02031768(UnkStruct_MdlRender *r);
+void Model_Release(UnkStruct_MdlRender *r);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 void func_02021310(void *buf, void *a, void *b);
 void func_02021264(void *buf, s32 a);
 void func_0202566c(void);
@@ -35,7 +35,7 @@ static inline void UnkFree_02360324(void **pp) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
     *pp = NULL;
 }
 
@@ -46,15 +46,15 @@ void func_ov000_02360324(UnkStruct_02360324 *w) {
     u8 buf[0x60];
 
     if (func_ov000_0235faf0()) {
-        func_02031768(&w->rA);
-        func_02031768(&w->rB);
+        Model_Release(&w->rA);
+        Model_Release(&w->rB);
         zero = 0;
         MIi_CpuClear32(zero, &w->rA, 0x290);
         return;
     }
     if (w->unkDF8 != NULL) {
-        func_02031768(&w->rA);
-        func_02031768(&w->rB);
+        Model_Release(&w->rA);
+        Model_Release(&w->rB);
         func_02021310(buf, data_ov000_02369a84, w->unkDF8);
         func_02021264(buf, 0);
         func_0202566c();

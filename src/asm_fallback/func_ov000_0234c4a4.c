@@ -5,9 +5,9 @@ extern u32 data_ov000_02368bdc;
 extern u32 data_ov000_02368c44;
 extern u32 data_ov000_02368cac;
 extern u32 data_ov000_02368d14;
-extern void func_02031a68(void);
-extern void func_02031bd0(void);
-extern void func_02033550(void);
+extern void Model_SetAnimation(void);
+extern void Model_SetResource(void);
+extern void AnimatorSprite_SetAnimation(void);
 
 asm void func_ov000_0234c4a4(void)
 {
@@ -56,7 +56,7 @@ _50:
     ldr r1, [r0, #0x138]
     ldr r7, [r5, #0x1f8]
     ldr r6, [r5, #0x1fc]
-    bl func_02031bd0
+    bl Model_SetResource
     ldrh r0, [r5, #0x5c]
     bic r0, r0, #0x400
     strh r0, [r5, #0x5c]
@@ -82,7 +82,7 @@ _d4:
     str r1, [sp]
     ldrb r3, [r3, r4]
     ldr r2, [r0, #0x13c]
-    bl func_02031a68
+    bl Model_SetAnimation
     ldr r0, [pc, #0x78]
     ldrb r3, [r0, r4]
     cmp r3, #0
@@ -92,7 +92,7 @@ _d4:
     str r1, [sp]
     ldr r2, [r0, #0x14c]
     mov r1, #4
-    bl func_02031a68
+    bl Model_SetAnimation
 _140:
     ldr r0, [r5, #0x124]
     mov r1, #0x1000
@@ -108,10 +108,10 @@ _158:
     strh r1, [r0, #6]
     ldrb r1, [r6, r4]
     add r0, r5, #0x94
-    bl func_02033550
+    bl AnimatorSprite_SetAnimation
     ldrb r1, [r6, r4]
     add r0, r5, #0xdc
-    bl func_02033550
+    bl AnimatorSprite_SetAnimation
     add sp, sp, #4
     ldmia sp!, {r4, r5, r6, r7, lr}
     bx lr

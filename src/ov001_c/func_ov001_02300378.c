@@ -36,14 +36,14 @@ typedef struct UnkStruct_02300378_4590 {
     s32 unk18;
 } UnkStruct_02300378_4590;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_02300378 *data_ov001_0231f52c;
 extern UnkStruct_02300378_4560 data_022c4560;
 extern UnkStruct_02300378_4590 data_022c4590;
 extern u8 data_02074960[];
 extern u8 data_020748bc[];
 
-void *func_02034a40(void *heap, u32 size, s32 align);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
@@ -65,7 +65,7 @@ void func_ov001_02306738(void);
 void func_02022270(u32 index, u32 value);
 void func_02022284(u32 idx, s32 x, s32 y, s32 z);
 void func_ov001_022ff3a4(void);
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_02302be8(s32 idx);
 void func_ov001_022fecb0(void);
 void func_ov001_022eec20(void);
@@ -74,7 +74,7 @@ void func_ov001_02300378(void) {
     u8 *blk;
     u16 col;
 
-    blk = func_02034a40(data_0208fe80, 0x380, 0x20);
+    blk = Heap_Alloc(gMainHeap, 0x380, 0x20);
     if (func_02006abc(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0x380);
@@ -122,9 +122,9 @@ void func_ov001_02300378(void) {
     data_ov001_0231f52c->unk54 = 0;
     data_ov001_0231f52c->unk58 = 0x100000;
     data_ov001_0231f52c->unk5C = 0x130000;
-    data_ov001_0231f52c->task8 = func_020372d0(func_ov001_022ff3a4, 0, 0x10, 0x1000, 0, 0);
-    data_ov001_0231f52c->taskC = func_020372d0(0, 0, 0, 0xe000, 0, 0);
-    data_ov001_0231f52c->task10 = func_020372d0(0, 0, 0, 0xe010, 0, 0);
+    data_ov001_0231f52c->task8 = Task_Create(func_ov001_022ff3a4, 0, 0x10, 0x1000, 0, 0);
+    data_ov001_0231f52c->taskC = Task_Create(0, 0, 0, 0xe000, 0, 0);
+    data_ov001_0231f52c->task10 = Task_Create(0, 0, 0, 0xe010, 0, 0);
     func_ov001_02302be8(0);
     data_ov001_0231f52c->unk3C = 0;
     func_ov001_022fecb0();

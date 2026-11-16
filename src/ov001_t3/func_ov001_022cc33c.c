@@ -20,7 +20,7 @@ typedef struct {
     UnkWork_022cc33c *work;
 } UnkTask_022cc33c;
 
-extern UnkTask_022cc33c *data_022b4574;
+extern UnkTask_022cc33c *gTaskCurrent;
 
 void func_ov001_022cc17c(UnkWork_022cc33c *w);
 void func_ov001_022cbf30(UnkWork_022cc33c *w);
@@ -44,7 +44,7 @@ void func_ov001_022cc33c(void) {
     UnkWork_022cc33c *w;
     UnkSub_022cc33c *sub;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     sub = &w->sub;
     func_ov001_022cc17c(w);
     func_ov001_022cbf30(w);
@@ -62,34 +62,34 @@ void func_ov001_022cc33c(void) {
     }
     switch (sub->state) {
     case 0:
-        data_022b4574->func = func_ov001_022ccb5c;
+        gTaskCurrent->func = func_ov001_022ccb5c;
         return;
     case 1:
-        data_022b4574->func = func_ov001_022cca00;
+        gTaskCurrent->func = func_ov001_022cca00;
         return;
     case 2:
-        data_022b4574->func = func_ov001_022cc998;
+        gTaskCurrent->func = func_ov001_022cc998;
         return;
     case 3:
-        data_022b4574->func = func_ov001_022cc8ec;
+        gTaskCurrent->func = func_ov001_022cc8ec;
         return;
     case 4:
-        data_022b4574->func = func_ov001_022cc7fc;
+        gTaskCurrent->func = func_ov001_022cc7fc;
         return;
     case 5:
-        data_022b4574->func = func_ov001_022cc6b8;
+        gTaskCurrent->func = func_ov001_022cc6b8;
         return;
     case 7:
-        data_022b4574->func = func_ov001_022cc588;
+        gTaskCurrent->func = func_ov001_022cc588;
         return;
     case 8:
-        data_022b4574->func = func_ov001_022cc4a0;
+        gTaskCurrent->func = func_ov001_022cc4a0;
         return;
     case 9:
-        data_022b4574->func = func_ov001_022cc268;
+        gTaskCurrent->func = func_ov001_022cc268;
         return;
     case 10:
-        data_022b4574->func = func_ov001_022cc210;
+        gTaskCurrent->func = func_ov001_022cc210;
         return;
     case 6:
     default:

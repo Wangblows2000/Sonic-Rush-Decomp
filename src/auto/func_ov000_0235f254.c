@@ -19,7 +19,7 @@ s32 func_ov000_0235d888();
 s32 func_ov000_0235d7b4();
 s32 func_ov000_0235d1a4();
 s32 func_ov000_0235cd58();
-s32 func_02037d60();
+s32 Touch_Enable();
 
 void func_ov000_0235f254(void) {
     s32 t0 = func_ov000_0235cc60();
@@ -40,7 +40,7 @@ void func_ov000_0235f254(void) {
     func_ov000_0235d7b4(t3, 0);
     func_ov000_0235d1a4(t3);
     func_ov000_0235cd58((t3 + 0x4ec));
-    func_02037d60();
+    Touch_Enable();
 }
 
 #pragma thumb reset

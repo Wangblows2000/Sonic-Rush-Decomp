@@ -39,7 +39,7 @@ void func_ov000_022cc530(UnkStruct_022c798c_v *v, s32 a);
 void func_ov000_022ca484(void *obj, s32 x, s32 y, s32 z, s32 a, s32 b, s32 c, s32 d);
 u8 *func_ov000_023282b8(s32 a, s32 x, s32 y, s32 z);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c7630(UnkStruct_022c798c *s);
 void func_ov000_022c7be4(UnkStruct_022c798c *s);
 
@@ -59,7 +59,7 @@ void func_ov000_022c798c(UnkStruct_022c798c *s) {
     else
         a = g->unk21E;
     MTX_RotY33_(p + 0x158, data_0206e470[((a & 0xffff) >> 4) * 2], data_0206e470[((a & 0xffff) >> 4) * 2 + 1]);
-    func_02036754(0, 0, 0x9c);
+    Sound_PlaySeqArc(0, 0, 0x9c);
     s->unk20C++;
     if (data_ov000_02362b84[data_ov000_02369acc->unk22A] <= s->unk20C)
         s->func = func_ov000_022c7630;

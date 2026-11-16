@@ -5,13 +5,13 @@ typedef struct UnkStruct_02316148 {
     s32 unk1C;
 } UnkStruct_02316148;
 
-extern UnkStruct_02316148 data_0208922c;
-extern UnkStruct_02316148 data_02087d04;
+extern UnkStruct_02316148 gDisplayMain;
+extern UnkStruct_02316148 gDisplaySub;
 
-void func_0206bef4(void *p);
+void StageObj_Destructor(void *p);
 
 void func_ov000_02316148(void *p) {
-    data_0208922c.unk1C = 0;
-    data_02087d04.unk1C = 0;
-    func_0206bef4(p);
+    gDisplayMain.unk1C = 0;
+    gDisplaySub.unk1C = 0;
+    StageObj_Destructor(p);
 }

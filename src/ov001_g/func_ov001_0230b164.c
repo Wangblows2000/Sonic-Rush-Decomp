@@ -47,15 +47,15 @@ typedef struct UnkStruct_0230b164_e {
     u32 c;
 } UnkStruct_0230b164_e;
 
-extern UnkStruct_0230b164_br data_0208922c;
+extern UnkStruct_0230b164_br gDisplayMain;
 extern UnkStruct_0230b164 *data_ov001_0231f5c0;
 extern UnkStruct_0230b164_e data_ov001_023171c8[];
 
-void func_020371c8(void *task);
-void func_02039bb0(u32 a, u32 b);
+void Task_Destroy(void *task);
+void ObjVram_Free(u32 a, u32 b);
 void func_ov001_02312e74(s32 a);
 void func_ov001_023099ec(void);
-void func_020367b4(s32 a, s32 b);
+void Sound_PlaySeq(s32 a, s32 b);
 void func_ov001_0230bbd8(void);
 void func_ov001_0230ba9c(void);
 
@@ -64,22 +64,22 @@ void func_ov001_0230b164(void) {
     s32 i;
 
     g = data_ov001_0231f5c0;
-    data_0208922c.b0 = 0;
-    data_0208922c.x = 0;
-    data_0208922c.b9 = 0;
-    data_0208922c.b10 = 0;
-    data_0208922c.b12 = 0;
-    data_0208922c.y = 0;
-    data_0208922c.b6 = 0;
-    data_0208922c.e0 = 0;
-    data_0208922c.e8 = 0;
-    func_020371c8(g->task14);
+    gDisplayMain.b0 = 0;
+    gDisplayMain.x = 0;
+    gDisplayMain.b9 = 0;
+    gDisplayMain.b10 = 0;
+    gDisplayMain.b12 = 0;
+    gDisplayMain.y = 0;
+    gDisplayMain.b6 = 0;
+    gDisplayMain.e0 = 0;
+    gDisplayMain.e8 = 0;
+    Task_Destroy(g->task14);
     g->task14 = NULL;
     for (i = 0; i < 3; i++)
-        func_02039bb0(data_ov001_023171c8[i].a, g->objs[i].unk34);
+        ObjVram_Free(data_ov001_023171c8[i].a, g->objs[i].unk34);
     func_ov001_02312e74(g->unk18);
     func_ov001_023099ec();
-    func_020367b4(0, 0x1e);
+    Sound_PlaySeq(0, 0x1e);
     g->taskC->func = func_ov001_0230bbd8;
     g->task10->func = func_ov001_0230ba9c;
 }

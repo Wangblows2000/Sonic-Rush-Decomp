@@ -25,11 +25,11 @@ typedef struct {
     s32 unk4;
 } UnkRes_02061130;
 
-UnkRes_02061130 **func_02060384(void);
+UnkRes_02061130 **TalkDemo_GetEntry(void);
 void func_0201c070(void *a, s32 b);
 void func_0201bf1c(void *a);
 void func_020366f4(void *a, s32 b, s32 c);
-void func_02036754(void *a, s32 b, s32 c);
+void Sound_PlaySeqArc(void *a, s32 b, s32 c);
 
 #pragma thumb on
 void func_02061130(UnkWork_02061130 *w) {
@@ -43,7 +43,7 @@ void func_02061130(UnkWork_02061130 *w) {
     d = s->def;
     if (d->unk4 > w->unk10)
         return;
-    r = *func_02060384();
+    r = *TalkDemo_GetEntry();
     if (r == NULL)
         return;
     v = r->unk4;
@@ -54,7 +54,7 @@ void func_02061130(UnkWork_02061130 *w) {
     if (d->flags & 1)
         func_020366f4(s->anim, v, d->unk0);
     else
-        func_02036754(s->anim, v, d->unk0);
+        Sound_PlaySeqArc(s->anim, v, d->unk0);
     w->flags &= ~0x100;
 }
 #pragma thumb reset

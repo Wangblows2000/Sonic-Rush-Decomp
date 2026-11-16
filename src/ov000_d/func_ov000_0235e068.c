@@ -18,12 +18,12 @@ void func_ov000_0235e068(UnkStruct_SprObj *w) {
     for (i = 0; i < 4; i++) {
         if (*cur != a) {
             *cur = a;
-            func_02033550(spr, *cur);
+            AnimatorSprite_SetAnimation(spr, *cur);
         }
         spr->x = 0x38;
         spr->y = 0x58;
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
         spr++;
         cur++;
         a++;
@@ -38,12 +38,12 @@ void func_ov000_0235e068(UnkStruct_SprObj *w) {
     for (i = 0; i < 4; i++) {
         if (*cur != a) {
             *cur = a;
-            func_02033550(spr, *cur);
+            AnimatorSprite_SetAnimation(spr, *cur);
         }
         spr->x = 0xc8;
         spr->y = 0x58;
-        func_0203344c(spr, 0, 0);
-        func_02032d2c(spr);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
+        AnimatorSprite_Draw(spr);
         spr++;
         cur++;
         a++;

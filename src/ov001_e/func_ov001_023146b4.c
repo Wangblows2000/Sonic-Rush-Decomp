@@ -31,7 +31,7 @@ typedef struct UnkStruct_023146b4_tp {
 } UnkStruct_023146b4_tp;
 
 extern UnkStruct_023146b4_g *data_ov001_0231f6a0;
-extern UnkStruct_023146b4_tp data_022b65b4;
+extern UnkStruct_023146b4_tp gTouchState;
 extern u8 data_ov001_02317e80[];
 
 BOOL func_ov001_0230adcc(void *a, UnkStruct_023146b4_v *v, s32 x, s32 y);
@@ -43,11 +43,11 @@ s32 func_ov001_023146b4(s32 idx, s32 n, s32 cur) {
 
     if (e->unk20 < n)
         return -1;
-    if (data_022b65b4.flags & 0x10) {
+    if (gTouchState.flags & 0x10) {
         for (i = cur; i < e->count; i++) {
             v.x = e->pts[i].x << 12;
             v.y = e->pts[i].y << 12;
-            if (func_ov001_0230adcc(data_ov001_02317e80, &v, data_022b65b4.x << 12, data_022b65b4.y << 12)) {
+            if (func_ov001_0230adcc(data_ov001_02317e80, &v, gTouchState.x << 12, gTouchState.y << 12)) {
                 if (i == cur)
                     return cur < e->count - 1 ? cur + 1 : 0x1234;
                 return -1;

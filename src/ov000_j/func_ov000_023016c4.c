@@ -14,7 +14,7 @@ typedef struct {
     u32 unk238;
 } UnkStruct_023016c4;
 
-s16 func_02068db4(s32 a, s32 b);
+s16 ObjSpd_DownSet(s32 a, s32 b);
 void func_ov000_0230187c(UnkStruct_023016c4 *p);
 
 void func_ov000_023016c4(UnkStruct_023016c4 *p) {
@@ -25,7 +25,7 @@ void func_ov000_023016c4(UnkStruct_023016c4 *p) {
     v = p->unk1E0->unk4 & 0xc;
     if (v)
         spd += (v >> 2) << 7;
-    p->unk30 = func_02068db4(p->unk30, (spd << 5) >> 8);
+    p->unk30 = ObjSpd_DownSet(p->unk30, (spd << 5) >> 8);
     p->unk238 ^= 0x10;
     p->unk238 |= 0x10000;
     func_ov000_0230187c(p);

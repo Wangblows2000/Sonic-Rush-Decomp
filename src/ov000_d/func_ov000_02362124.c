@@ -14,14 +14,14 @@ void func_ov000_02361020(UnkStruct_MenuO *w);
 void func_ov000_02361068(UnkStruct_MenuO *w);
 void func_ov000_02360f54(UnkStruct_MenuO *w);
 void func_ov000_0235f850(s32 x, s32 y, s32 a, s32 b);
-void func_020522f4(void);
+void SysSound_Init(void);
 void func_02052168(s32 a);
 void func_ov000_02361e28(void);
 
 #pragma thumb on
 
 void func_ov000_02362124(void) {
-    UnkStruct_MenuO *w = data_022b4574->work;
+    UnkStruct_MenuO *w = gTaskCurrent->work;
     UnkStruct_02362124_Sync *a = func_020514e4();
     UnkStruct_02362124_Sync *b = func_02051474();
     s32 i;
@@ -81,9 +81,9 @@ void func_ov000_02362124(void) {
         func_ov000_02360f54(w);
     }
     func_ov000_0235f850(0x10, 0, 0x10, 0);
-    func_020522f4();
+    SysSound_Init();
     func_02052168(2);
-    data_022b4574->unk8 = func_ov000_02361e28;
+    gTaskCurrent->unk8 = func_ov000_02361e28;
 }
 
 #pragma thumb reset

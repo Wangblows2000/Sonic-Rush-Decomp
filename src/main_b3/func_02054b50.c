@@ -4,7 +4,7 @@ typedef struct { u8 pad0[8]; u16 unk8; } UnkStruct_02054b50;
 extern UnkStruct_02054b50 data_0208926c;
 extern UnkStruct_02054b50 data_02087d44;
 
-void func_0203ac70(s32 a);
+void Vram_SetBankConfig(s32 a);
 void func_02002ab0(s32 a, s32 b, s32 c);
 void GXS_SetGraphicsMode(s32 mode);
 void func_02054ac4(void);
@@ -17,7 +17,7 @@ static inline void Clear32_02054b50(void *dst, u32 size) {
 }
 
 void func_02054b50(void) {
-    func_0203ac70(0);
+    Vram_SetBankConfig(0);
     *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0x1f00) | 0x1000;
     *(vu32 *)0x04001000 = (*(vu32 *)0x04001000 & ~0x1f00) | 0x1000;
     func_02002ab0(1, 0, 0);

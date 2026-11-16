@@ -42,7 +42,7 @@ typedef struct {
     UnkStruct_0230f280_vel vel[16];
 } UnkStruct_0230f280;
 
-s16 func_02068df8(s32 a, s32 b, s32 c);
+s16 ObjSpd_UpSet(s32 a, s32 b, s32 c);
 
 void func_ov000_0230f280(UnkStruct_0230f280 *p) {
     s32 delay;
@@ -93,7 +93,7 @@ void func_ov000_0230f280(UnkStruct_0230f280 *p) {
                 else if (v > 0x100000)
                     v = 0x100000;
                 p->pos[idx].y = v;
-                p->vel[idx].y = func_02068df8(p->vel[idx].y, (p->unkC - t) * 2 + 8, k);
+                p->vel[idx].y = ObjSpd_UpSet(p->vel[idx].y, (p->unkC - t) * 2 + 8, k);
             }
             cnt++;
         }

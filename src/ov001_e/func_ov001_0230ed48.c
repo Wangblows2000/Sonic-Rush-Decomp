@@ -9,15 +9,15 @@ typedef struct UnkStruct_0230ed48 {
     s32 timer;
 } UnkStruct_0230ed48;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 void *func_ov001_0230c0a4(void);
 void func_ov001_02312dc8(void *a, UnkStruct_0230ed48 *p);
 void func_ov001_023070fc(s32 type, s32 x, s32 y, s32 z);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return data_0208fe70 >> 16;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return gRandSeed >> 16;
 }
 
 void func_ov001_0230ed48(UnkStruct_0230ed48 *p) {

@@ -25,14 +25,14 @@ typedef struct {
     void *res[16];
 } UnkStruct_022ce3a0;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void func_ov001_022ce374(UnkSpr_022ce3a0 *s);
-void func_02039bb0(s32 a, void *p);
+void ObjVram_Free(s32 a, void *p);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 static inline void Free_022ce3a0(void *p) {
@@ -46,7 +46,7 @@ static inline void Free_022ce3a0(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov001_022ce3a0(UnkStruct_022ce3a0 *p) {
@@ -60,7 +60,7 @@ void func_ov001_022ce3a0(UnkStruct_022ce3a0 *p) {
     for (i = 0; i < 14; i++) func_ov001_022ce374(&p->e[i]);
     for (i = 0; i < 41; i++) func_ov001_022ce374(&p->f[i]);
     for (i = 0; i < 12; i++) func_ov001_022ce374(&p->g[i]);
-    for (i = 0; i < 7; i++) func_02039bb0(1, p->ptrs[i]);
+    for (i = 0; i < 7; i++) ObjVram_Free(1, p->ptrs[i]);
     for (i = 0; i < 16; i++) {
         if (p->res[i] != NULL) {
             Free_022ce3a0(p->res[i]);

@@ -2,12 +2,12 @@
 
 typedef struct { u8 pad0[0x550]; u8 *buf[0xd]; } UnkWork_0204f454;
 extern s32 data_022c4600[];
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 static inline void Free_0204f454(u8 *blk) {
@@ -21,7 +21,7 @@ static inline void Free_0204f454(u8 *blk) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }
 
 void func_0204f454(UnkWork_0204f454 *w, s32 i) {

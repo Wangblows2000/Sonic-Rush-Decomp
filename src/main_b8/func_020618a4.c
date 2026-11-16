@@ -9,13 +9,13 @@ typedef struct {
     u16 timer;
 } UnkFade_020618a4;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 BOOL func_02061940(UnkFade_020618a4 *f);
 
 static inline u16 Rand_020618a4(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return data_0208fe70 >> 16;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return gRandSeed >> 16;
 }
 
 #pragma thumb on

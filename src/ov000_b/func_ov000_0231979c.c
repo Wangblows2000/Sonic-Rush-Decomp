@@ -19,7 +19,7 @@ extern UnkStruct_StageObj *data_ov000_0236a2fc;
 extern u8 data_ov000_0236a300[], data_ov000_02367110[], data_ov000_0236a310[];
 
 void func_ov000_0231960c(void);
-void func_02069934(void *w, UnkStruct_0231979c_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
+void StageObj_Load3dBAC(void *w, UnkStruct_0231979c_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 void func_02068358(UnkStruct_0231979c_Sub *s, void *a, s32 b, s32 c);
 
 void func_ov000_0231979c(UnkStruct_StageObj *arg, void *n) {
@@ -27,13 +27,13 @@ void func_ov000_0231979c(UnkStruct_StageObj *arg, void *n) {
     UnkStruct_0231979c *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_0231979c));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_0231979c));
     if (task == func_02006abc(0))
         return;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0231979c));
-    func_02069934(w, &w->unk134, data_ov000_02367110, 0, 0, data_ov000_0236a300, data_ov000_02369ba0);
+    StageObj_Load3dBAC(w, &w->unk134, data_ov000_02367110, 0, 0, data_ov000_0236a300, data_ov000_02369ba0);
     func_02068358(&w->unk134, data_ov000_0236a310, 0x80, 0x10);
     w->unk134.unkA = 4;
     w->unk134.unkB = 0;

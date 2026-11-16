@@ -9,24 +9,24 @@ typedef struct {
     u16 unk9C;
 } UnkStruct_02321514;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
-s16 func_02068db4(s16 v, s32 a);
-void func_02069818(void *w, u16 a);
+s16 ObjSpd_DownSet(s16 v, s32 a);
+void StageObj_SetAnimation(void *w, u16 a);
 void func_ov000_02321824(UnkStruct_02321514 *w);
 void func_ov000_02321744(UnkStruct_02321514 *w, s16 x, s16 y, s32 a);
 
 static inline u16 UnkRand_02321514(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_02321514(UnkStruct_02321514 *w) {
-    w->unk2E = func_02068db4(w->unk2E, 8);
+    w->unk2E = ObjSpd_DownSet(w->unk2E, 8);
     if (!(w->unk5C & 8)) {
         return;
     }
-    func_02069818(w, w->unk9C - 1);
+    StageObj_SetAnimation(w, w->unk9C - 1);
     w->unk5C ^= 1;
     if (!(UnkRand_02321514() & 3)) {
         func_ov000_02321824(w);

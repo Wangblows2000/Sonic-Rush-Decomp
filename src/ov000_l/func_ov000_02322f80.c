@@ -4,8 +4,8 @@ void func_ov000_02322f80(UnkStruct_EffObj *w) {
     if (w->unk88 == NULL)
         return;
     if (((UnkStruct_EffObj *)w->unk88)->unk18 <= 0) {
-        func_020698f0(w, 1);
+        StageObj_SetOAMPriority(w, 1);
         return;
     }
-    func_020698f0(w, 2);
+    StageObj_SetOAMPriority(w, 2);
 }

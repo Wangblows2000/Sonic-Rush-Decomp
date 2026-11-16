@@ -18,19 +18,19 @@ typedef struct {
 } UnkRes_02062884;
 
 void func_02061288(UnkWork_02062884 *w);
-u32 func_02060e70(s32 a);
-UnkRes_02062884 **func_02060384(void);
-void func_02036754(void *a, s32 b, s32 c);
+u32 TalkDemo_GetFlags(s32 a);
+UnkRes_02062884 **TalkDemo_GetEntry(void);
+void Sound_PlaySeqArc(void *a, s32 b, s32 c);
 void func_02062860(void *w);
 
 #pragma thumb on
 void func_02062884(UnkWork_02062884 *w) {
     func_02061288(w);
-    if (func_02060e70(3) & 0x50) {
+    if (TalkDemo_GetFlags(3) & 0x50) {
         UnkSlot_02062884 *s = &w->slot;
-        UnkRes_02062884 *r = *func_02060384();
+        UnkRes_02062884 *r = *TalkDemo_GetEntry();
         if (r != NULL)
-            func_02036754(NULL, r->unk4, s->unk8);
+            Sound_PlaySeqArc(NULL, r->unk4, s->unk8);
         w->state = func_02062860;
     }
 }

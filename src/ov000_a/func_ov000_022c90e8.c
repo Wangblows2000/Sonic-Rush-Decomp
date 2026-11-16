@@ -65,9 +65,9 @@ void func_ov000_022cc06c(void *p, s32 a, s32 b);
 BOOL func_ov000_022cc6d4(void);
 void func_ov000_022c9fbc(UnkStruct_022c90e8 *s);
 BOOL func_ov000_022c7274(u32 mask);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 u8 *func_ov000_02328898(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c8f24(UnkStruct_022c90e8 *s);
 
 void func_ov000_022c90e8(UnkStruct_022c90e8 *s) {
@@ -85,12 +85,12 @@ void func_ov000_022c90e8(UnkStruct_022c90e8 *s) {
     }
     if (!(s->unk334 & 2))
         return;
-    func_020446b0(0xc);
+    ScreenShake_Start(0xc);
     obj = func_ov000_02328898(1, data_ov000_02369acc->unk214->unk10, 0x20000, 0);
     *(s32 *)(obj + 0x248) = 0x1000;
     *(s32 *)(obj + 0x14c) = 0x34cc;
     *(s32 *)(obj + 0x150) = 0x34cc;
     *(s32 *)(obj + 0x154) = 0x34cc;
-    func_02036754(0, 0, 0x80);
+    Sound_PlaySeqArc(0, 0, 0x80);
     s->func = func_ov000_022c8f24;
 }

@@ -39,13 +39,13 @@ typedef struct {
 } UnkWork_0205df04;
 
 extern u16 data_02076b48[];
-extern UnkDisp_0205df04 *data_02072c78[];
-extern UnkBlend_0205df04 data_02087d04;
-extern UnkBlend_0205df04 data_0208922c;
+extern UnkDisp_0205df04 *gDisplayTable[];
+extern UnkBlend_0205df04 gDisplaySub;
+extern UnkBlend_0205df04 gDisplayMain;
 
-void func_0203473c(UnkBg_0205df04 *bg, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203438c(UnkBg_0205df04 *bg);
-void func_02035704(void *p, s32 a, s32 b, u32 c);
+void Background_Init(UnkBg_0205df04 *bg, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
+void Background_Draw(UnkBg_0205df04 *bg);
+void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
 
 void func_0205df04(UnkWork_0205df04 *w) {
     u32 ofs;
@@ -55,17 +55,17 @@ void func_0205df04(UnkWork_0205df04 *w) {
     UnkBg_0205df04 bg;
 
     ofs = data_02076b48[w->idx];
-    func_0203473c(&bg, w->res49c, 1, 0, 2, 0x20, 0x20);
-    func_0203438c(&bg);
-    func_02035704((void *)((u32)w->res498 + w->res498->pal + 4 + ofs), 0x10, bg.unk14, 0x05000000);
-    func_0203473c(&bg, w->res498, 1, 1, 3, 0x20, 0x18);
+    Background_Init(&bg, w->res49c, 1, 0, 2, 0x20, 0x20);
+    Background_Draw(&bg);
+    PaletteTransfer_QueueCopy((void *)((u32)w->res498 + w->res498->pal + 4 + ofs), 0x10, bg.unk14, 0x05000000);
+    Background_Init(&bg, w->res498, 1, 1, 3, 0x20, 0x18);
     bg.unk1c += 0x1c0;
-    func_0203438c(&bg);
-    func_02035704((void *)((u32)w->res498 + w->res498->pal + 4 + ofs), 0x10, bg.unk14, 0x05000400);
-    func_0203473c(&bg, w->res49c, 1, 1, 2, 0x20, 0x20);
-    func_0203438c(&bg);
+    Background_Draw(&bg);
+    PaletteTransfer_QueueCopy((void *)((u32)w->res498 + w->res498->pal + 4 + ofs), 0x10, bg.unk14, 0x05000400);
+    Background_Init(&bg, w->res49c, 1, 1, 2, 0x20, 0x20);
+    Background_Draw(&bg);
     for (i = 0; i < 2; i++) {
-        d = data_02072c78[i];
+        d = gDisplayTable[i];
         win = &d->win;
         win->y1 = 0;
         win->y2 = 0;
@@ -75,10 +75,10 @@ void func_0205df04(UnkWork_0205df04 *w) {
         win->out = 0xfb;
         win->enable = 1;
     }
-    data_0208922c.unk8 = 0;
-    data_02087d04.unk8 = 0;
-    data_0208922c.unka = 0;
-    data_02087d04.unka = 0;
-    data_02087d04.unkc = 0;
-    data_02087d04.unke = 0;
+    gDisplayMain.unk8 = 0;
+    gDisplaySub.unk8 = 0;
+    gDisplayMain.unka = 0;
+    gDisplaySub.unka = 0;
+    gDisplaySub.unkc = 0;
+    gDisplaySub.unke = 0;
 }

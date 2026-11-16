@@ -39,8 +39,8 @@ typedef struct {
     u16 count;
 } UnkInfo_022db458;
 
-extern UnkTask_022db458 *data_022b4574;
-extern UnkInfo_022db458 data_02072cb8;
+extern UnkTask_022db458 *gTaskCurrent;
+extern UnkInfo_022db458 gGameLanguage;
 extern u16 data_02072cbc[];
 
 void func_02040d14(UnkAnim_022db458 *a);
@@ -59,7 +59,7 @@ void func_ov001_022db2fc(void);
 
 #pragma thumb on
 void func_ov001_022db458(void) {
-    UnkWork_022db458 *w = data_022b4574->work;
+    UnkWork_022db458 *w = gTaskCurrent->work;
     s32 i;
     BOOL done;
     UnkAnim_022db458 *a;
@@ -104,8 +104,8 @@ void func_ov001_022db458(void) {
         w->unk20 = 0;
         w->unk48 = 0;
         MIi_CpuCopy32(&w->entries[w->unk10], w->cur, 0x1c);
-        func_ov001_022d9a54(w->obj4c, data_02072cbc, data_02072cb8.count);
-        data_022b4574->func = func_ov001_022db2fc;
+        func_ov001_022d9a54(w->obj4c, data_02072cbc, gGameLanguage.count);
+        gTaskCurrent->func = func_ov001_022db2fc;
     }
 }
 #pragma thumb reset

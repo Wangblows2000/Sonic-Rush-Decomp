@@ -33,11 +33,11 @@ typedef struct {
 extern UnkStruct_02345aa8_L data_ov000_0236aad8[];
 extern UnkStruct_02345aa8_L data_ov000_0236aadc[];
 extern UnkStruct_02345aa8_L data_ov000_0236aae0[];
-extern u32 data_022c4ef0;
+extern u32 gObjManagerFlags;
 
 #define ABS_02345aa8(x) ((x) < 0 ? -(x) : (x))
 
-s32 func_02068ce4(s32 cur, s32 target, s32 a, s32 b, s32 step);
+s32 ObjShift_Set(s32 cur, s32 target, s32 a, s32 b, s32 step);
 void func_ov000_0233b1b8(u8 idx);
 void func_ov000_0233b178(u8 idx);
 void func_ov000_0233b198(u8 idx);
@@ -63,10 +63,10 @@ void func_ov000_02345aa8(UnkStruct_02345aa8 *w) {
                 data_ov000_0236aadc[w->unk327].v = t;
                 func_ov000_0233e434(t, w->unk327);
             } else {
-                if (data_022c4ef0 & 0x100) {
-                    data_ov000_0236aadc[w->unk327].v = func_02068ce4(data_ov000_0236aadc[w->unk327].v, t, 4, 0, 0x200);
+                if (gObjManagerFlags & 0x100) {
+                    data_ov000_0236aadc[w->unk327].v = ObjShift_Set(data_ov000_0236aadc[w->unk327].v, t, 4, 0, 0x200);
                 } else {
-                    data_ov000_0236aadc[w->unk327].v = func_02068ce4(data_ov000_0236aadc[w->unk327].v, t, 4, 0, 0x100);
+                    data_ov000_0236aadc[w->unk327].v = ObjShift_Set(data_ov000_0236aadc[w->unk327].v, t, 4, 0, 0x100);
                 }
                 if ((t & ~0x1ff) == (data_ov000_0236aadc[w->unk327].v & ~0x1ff)) {
                     w->unk330 |= 0x40;
@@ -101,7 +101,7 @@ void func_ov000_02345aa8(UnkStruct_02345aa8 *w) {
                 func_ov000_0233e39c(t, w->unk327);
                 return;
             }
-            data_ov000_0236aae0[w->unk327].v = func_02068ce4(data_ov000_0236aae0[w->unk327].v, t, 4, 0, 0x100);
+            data_ov000_0236aae0[w->unk327].v = ObjShift_Set(data_ov000_0236aae0[w->unk327].v, t, 4, 0, 0x100);
             if ((t & ~0x1ff) == (data_ov000_0236aae0[w->unk327].v & ~0x1ff)) {
                 w->unk330 |= 0x80;
             }

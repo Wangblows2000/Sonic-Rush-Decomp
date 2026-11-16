@@ -23,8 +23,8 @@ typedef struct UnkStruct_02305d40 {
 } UnkStruct_02305d40;
 
 extern UnkStruct_02305d40 *data_ov001_0231f5a8;
-extern u32 data_02087cb8;
-extern s16 data_02087d04[];
+extern u32 gSystemFlags;
+extern s16 gDisplaySub[];
 
 void func_ov001_02305cd8(void);
 
@@ -59,6 +59,6 @@ void func_ov001_02305d40(void) {
     }
     data_ov001_0231f5a8->unk10->unk8 = func_ov001_02305cd8;
     data_ov001_0231f5a8->unk5D8 = 10;
-    data_02087cb8 &= ~0x400;
-    data_02087d04[2] = 0x80;
+    gSystemFlags &= ~0x400;
+    gDisplaySub[2] = 0x80;
 }

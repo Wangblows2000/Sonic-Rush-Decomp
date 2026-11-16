@@ -35,7 +35,7 @@ extern UnkStruct_02369b50 data_ov000_02369b50;
 extern u8 data_ov000_023657e0[];
 extern u8 data_ov000_023636f4[];
 
-void func_0206e080(UnkStruct_Node *n);
+void ObjRect_Register(UnkStruct_Node *n);
 void func_ov000_022c5d4c(void *a, void *b, void *c, void *d, s32 e);
 
 void func_ov000_022e1308(UnkStruct_Boss *w) {
@@ -49,7 +49,7 @@ void func_ov000_022e1308(UnkStruct_Boss *w) {
         n->unkA &= ~3;
         if ((w->unkD5E == 0 && (w->unk20C & 0x100)) || (w->unkD5E != 0 && !(w->unk20C & 0x100)))
             n->unkA |= 1;
-        func_0206e080(n);
+        ObjRect_Register(n);
     }
     n = &w->unkEC0;
     if (n->unkA & 4) {
@@ -58,7 +58,7 @@ void func_ov000_022e1308(UnkStruct_Boss *w) {
         n->unkA &= ~3;
         if ((w->unkD5E == 0 && (w->unk20C & 0x100)) || (w->unkD5E != 0 && !(w->unk20C & 0x100)))
             n->unkA |= 1;
-        func_0206e080(n);
+        ObjRect_Register(n);
     }
     if (w->unk1114 == 0)
         return;

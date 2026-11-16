@@ -1,17 +1,17 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_02072c70;
+extern u32 gObjVramBaseTable;
 extern u32 data_02087d84;
-extern u32 data_0208f7dc;
-extern u32 data_0208f7e0;
-extern u32 data_02250434;
-extern u32 data_02250438;
-extern void func_020337ec(void);
-extern void func_0203383c(void);
-extern void func_02035704(void);
-extern void func_02035754(void);
-extern void func_02036bfc(void);
+extern u32 gVRAMTransferTail;
+extern u32 gVRAMTransferHead;
+extern u32 gPaletteTransferTail;
+extern u32 gPaletteTransferHead;
+extern void VRAMTransfer_QueueCopy(void);
+extern void VRAMTransfer_Flush(void);
+extern void PaletteTransfer_QueueCopy(void);
+extern void PaletteTransfer_Flush(void);
+extern void Oam_AllocObj(void);
 
 #pragma thumb on
 asm void func_ov001_022cb5ac(void)
@@ -43,8 +43,8 @@ _1e:
     add r0, sp, #0x20
     mov r1, #1
     ldr r3, [pc, #0xcc]
-    bl func_02035704
-    bl func_02035754
+    bl PaletteTransfer_QueueCopy
+    bl PaletteTransfer_Flush
     ldr r0, [pc, #0xbc]
     str r4, [r0]
     ldr r0, [pc, #0xbc]
@@ -82,8 +82,8 @@ _54:
     add r0, r0, r4
     mov r1, #0x20
     ldr r3, [sp, #4]
-    bl func_020337ec
-    bl func_0203383c
+    bl VRAMTransfer_QueueCopy
+    bl VRAMTransfer_Flush
     ldr r1, [sp, #0xc]
     ldr r0, [pc, #0x80]
     str r1, [r0]
@@ -105,7 +105,7 @@ _54:
     bge _dc
     mov r0, #1
     ldr r1, [sp, #0x1c]
-    bl func_02036bfc
+    bl Oam_AllocObj
     ldr r2, [sp, #4]
     ldr r1, [sp, #0x14]
     sub r1, r2, r1
@@ -138,14 +138,14 @@ _dc:
     pop {r3}
     bx r3
     dcd 0x0000318c
-    dcd data_02250438
-    dcd data_02250434
+    dcd gPaletteTransferHead
+    dcd gPaletteTransferTail
     dcd 0x0500079e
-    dcd data_02072c70
+    dcd gObjVramBaseTable
     dcd 0x000003ac
     dcd 0x00001de8
-    dcd data_0208f7e0
-    dcd data_0208f7dc
+    dcd gVRAMTransferHead
+    dcd gVRAMTransferTail
     dcd 0x00001d08
     dcd 0x00000100
     dcd data_02087d84

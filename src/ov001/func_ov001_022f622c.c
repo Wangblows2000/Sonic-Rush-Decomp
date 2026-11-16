@@ -1,20 +1,20 @@
 #include <nitro/types.h>
 
 extern void *data_ov001_0231f068;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s32 data_ov001_0231693c[];
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov001_022f3c30(void *p);
 void func_ov001_022f61ec(void);
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return data_0208fe70 >> 16;
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return gRandSeed >> 16;
 }
 
 void func_ov001_022f622c(u8 *p) {
     u8 *q = *(u8 **)(p + 0x84);
     *(void (**)(void))(p + 0x74) = func_ov001_022f61ec;
-    func_02031a68(q, 0, data_ov001_0231f068, 0, 0);
+    Model_SetAnimation(q, 0, data_ov001_0231f068, 0, 0);
     q[0x10c] |= 4;
     *(s32 *)(q + 0x114) = 0x1000;
     *(s32 *)(p + 0x1c8) = data_ov001_0231693c[Rand() & 3] + (Rand() & 0x3f);

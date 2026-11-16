@@ -15,7 +15,7 @@ extern UnkStruct_022f8110 *data_ov001_0231f084;
 
 s32 func_02002094(s32 n, s32 d);
 s32 func_0200203c(s32 n, s32 d);
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_022f7e20(void);
 
 static inline void SetDigits(s32 v, s32 k) {
@@ -72,5 +72,5 @@ void func_ov001_022f8110(void) {
     SetDigits0(0);
     SetDigits(data_ov001_0231f084->unkE28, 1);
     SetDigits(data_ov001_0231f084->unkE2C, 2);
-    data_ov001_0231f084->unkE1C = func_020372d0(func_ov001_022f7e20, 0, 0, 0x2000, 0, 0);
+    data_ov001_0231f084->unkE1C = Task_Create(func_ov001_022f7e20, 0, 0, 0x2000, 0, 0);
 }

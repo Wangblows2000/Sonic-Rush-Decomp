@@ -11,10 +11,10 @@ typedef struct {
 
 extern s8 data_02077944[];
 
-s32 func_02068bd8(s32 v, s32 a, s32 b, s32 c, s32 d, s32 e);
+s32 ObjShift_SetFromRef(s32 v, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 void func_ov000_0232d30c(UnkStruct_0232d30c *w, s32 i) {
-    w->unk254[i] = func_02068bd8(w->unk254[i], 0x100, 0x180, 0, 0x10, 0);
+    w->unk254[i] = ObjShift_SetFromRef(w->unk254[i], 0x100, 0x180, 0, 0x10, 0);
     w->unk258[i] = w->unk254[i];
     if (w->unk254[i] != 0x100)
         return;

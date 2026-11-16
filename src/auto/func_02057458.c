@@ -19,8 +19,8 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_022503e0[];
-int func_02060e8c();
+extern unsigned char gPad[];
+int TalkDemo_IsActive();
 int func_02058314();
 int func_020573c0();
 
@@ -31,10 +31,10 @@ void func_02057458(int param_1)
 {
   int iVar1;
   
-  iVar1 = func_02060e8c();
+  iVar1 = TalkDemo_IsActive();
   if (iVar1 == 0) {
     if (((*(uint *)(param_1 + 4) & 0x100000) != 0) &&
-       (((*(ushort *)(((int)data_022503e0) + 4) & 8) != 0 || (iVar1 = func_02058314(), iVar1 != 0)))) {
+       (((*(ushort *)(((int)gPad) + 4) & 8) != 0 || (iVar1 = func_02058314(), iVar1 != 0)))) {
       *(uint *)(param_1 + 4) = *(uint *)(param_1 + 4) | 0x200000;
     }
     if ((*(uint *)(param_1 + 4) & 0x200000) != 0) {

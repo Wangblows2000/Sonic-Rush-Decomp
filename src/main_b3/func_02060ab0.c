@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 typedef struct { u16 v[8]; } UnkMosaic_02060ab0;
-extern UnkMosaic_02060ab0 data_0208922c;
+extern UnkMosaic_02060ab0 gDisplayMain;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_02002ab0(s32 a, s32 b, s32 c);
@@ -24,6 +24,6 @@ void func_02060ab0(void) {
         *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0x1f00) | 0x1f00;
     else
         *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0x1f00) | 0x1700;
-    data_0208922c.v[0] = data_0208922c.v[1] = data_0208922c.v[2] = data_0208922c.v[3] = data_0208922c.v[4] = data_0208922c.v[5] = 0;
+    gDisplayMain.v[0] = gDisplayMain.v[1] = gDisplayMain.v[2] = gDisplayMain.v[3] = gDisplayMain.v[4] = gDisplayMain.v[5] = 0;
 }
 #pragma thumb reset

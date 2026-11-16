@@ -31,17 +31,17 @@ typedef struct {
 
 typedef s32 Tbl_020533e0[6];
 
-extern UnkTask_020533e0 *data_022c4660;
+extern UnkTask_020533e0 *gNaviMsgTask;
 extern s32 data_0207b894;
 extern UnkState_020533e0 data_022c4560;
-extern UnkProg_020533e0 data_022c4680;
+extern UnkProg_020533e0 gSaveData;
 extern Tbl_020533e0 data_0207567c[];
 extern Tbl_020533e0 data_02075680[];
 extern Tbl_020533e0 data_02075684[];
 extern Tbl_020533e0 data_02075688[];
 extern Tbl_020533e0 data_0207568c[];
 extern Tbl_020533e0 data_02075690[];
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s32 data_0207566c[];
 extern Tbl_020533e0 data_020756ac[];
 extern Tbl_020533e0 data_020756b0[];
@@ -58,7 +58,7 @@ void func_020533e0(s32 a, s32 b) {
     UnkWork_020533e0 *w;
     s32 snd = -1;
 
-    if (data_022c4660 == NULL) {
+    if (gNaviMsgTask == NULL) {
         if (data_0207b894 != 1)
             return;
         if (a != 0x11)
@@ -66,11 +66,11 @@ void func_020533e0(s32 a, s32 b) {
         func_020366f4(0, 0, 0xcd);
         return;
     }
-    w = data_022c4660->work;
+    w = gNaviMsgTask->work;
     if (w->mode == 0) {
-        if (data_022c4560.unk0 == 0 && data_022c4680.unkc < 3)
+        if (data_022c4560.unk0 == 0 && gSaveData.unkc < 3)
             return;
-        if (data_022c4560.unk0 == 1 && (data_022c4680.unk64 < 4 || (data_022c4680.unk64 >= 0x1b && data_022c4680.unk64 < 0x1c)))
+        if (data_022c4560.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c)))
             return;
     }
     func_02052af8(w, a, b);
@@ -88,8 +88,8 @@ void func_020533e0(s32 a, s32 b) {
             if (data_022c4560.zone == 6) {
                 w->unk108 = data_02075684[w->idx][0];
             } else {
-                data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-                if (((u16)(data_0208fe70 >> 16) & 1) == 0)
+                gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+                if (((u16)(gRandSeed >> 16) & 1) == 0)
                     w->unk108 = 0xcd;
                 else
                     w->unk108 = data_02075684[w->idx][0];

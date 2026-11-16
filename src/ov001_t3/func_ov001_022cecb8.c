@@ -21,10 +21,10 @@ typedef struct {
     UnkWork_022cecb8 *work;
 } UnkTask_022cecb8;
 
-extern void *data_0208fe80;
-extern u8 data_022503e0[];
+extern void *gMainHeap;
+extern u8 gPad[];
 
-UnkTask_022cecb8 *func_020372d0(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
+UnkTask_022cecb8 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022ce29c(void);
 void func_ov001_022ce218(void);
@@ -36,7 +36,7 @@ s32 func_ov001_022c8b38(void);
 s32 func_ov001_022c8b34(void);
 s32 func_ov001_022c8b30(void);
 s32 func_ov001_022c8b14(void);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -45,15 +45,15 @@ void func_ov001_022ce9b0(UnkWork_022cecb8 *w);
 void func_ov001_022ce960(UnkWork_022cecb8 *w);
 void func_ov001_022ce6f8(UnkWork_022cecb8 *w);
 void func_ov001_022ce4cc(UnkWork_022cecb8 *w);
-void func_020351d8(void *p, s32 a, s32 b);
-void func_02037d60(void);
+void Pad_Reset(void *p, s32 a, s32 b);
+void Touch_Enable(void);
 void func_ov001_022c8994(void);
-void func_020522f4(void);
+void SysSound_Init(void);
 void func_02052168(s32 a);
 
 #pragma thumb on
 static inline u8 *Alloc_022cecb8(u32 size) {
-    u8 *blk = func_02034a40(data_0208fe80, size, 0x20);
+    u8 *blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, size);
@@ -69,7 +69,7 @@ UnkWork_022cecb8 *func_ov001_022cecb8(void) {
     UnkWork_022cecb8 *w;
     vu16 zero;
 
-    w = func_020372d0(func_ov001_022ce29c, func_ov001_022ce218, 0, 0x1000, 0x1000, sizeof(UnkWork_022cecb8))->work;
+    w = Task_Create(func_ov001_022ce29c, func_ov001_022ce218, 0, 0x1000, 0x1000, sizeof(UnkWork_022cecb8))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_022cecb8));
     func_ov001_022cb6d8(w->unk8);
@@ -88,10 +88,10 @@ UnkWork_022cecb8 *func_ov001_022cecb8(void) {
     func_ov001_022ce960(w);
     func_ov001_022ce6f8(w);
     func_ov001_022ce4cc(w);
-    func_020351d8(data_022503e0, 0, 0);
-    func_02037d60();
+    Pad_Reset(gPad, 0, 0);
+    Touch_Enable();
     func_ov001_022c8994();
-    func_020522f4();
+    SysSound_Init();
     func_02052168(0);
     return w;
 }

@@ -11,7 +11,7 @@ typedef struct {
     UnkWork_022dd42c *work;
 } UnkTask_022dd42c;
 
-extern UnkTask_022dd42c *data_022b4574;
+extern UnkTask_022dd42c *gTaskCurrent;
 
 void func_ov001_022ddc3c(UnkWork_022dd42c *w);
 void func_ov001_022ddb00(UnkWork_022dd42c *w);
@@ -23,7 +23,7 @@ void func_ov001_022dd534(UnkTask_022dd42c *t);
 
 #pragma thumb on
 void func_ov001_022dd42c(void) {
-    UnkWork_022dd42c *w = data_022b4574->work;
+    UnkWork_022dd42c *w = gTaskCurrent->work;
 
     if (w->step == 0) {
         func_ov001_022ddc3c(w);
@@ -39,13 +39,13 @@ void func_ov001_022dd42c(void) {
         w->step = 0;
         switch (w->mode) {
         case 0:
-            func_ov001_022dd614(data_022b4574);
+            func_ov001_022dd614(gTaskCurrent);
             break;
         case 1:
-            func_ov001_022dd574(data_022b4574);
+            func_ov001_022dd574(gTaskCurrent);
             break;
         case 2:
-            func_ov001_022dd534(data_022b4574);
+            func_ov001_022dd534(gTaskCurrent);
             break;
         }
     }

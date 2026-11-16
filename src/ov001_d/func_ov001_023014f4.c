@@ -27,10 +27,10 @@ typedef struct UnkStruct_023014f4_g {
 
 extern UnkStruct_023014f4_g *data_ov001_0231f530;
 
-UnkStruct_023014f4_task *func_020372d0(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
+UnkStruct_023014f4_task *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_02300ac8(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_020371c8(UnkStruct_023014f4_task *t);
+void Task_Destroy(UnkStruct_023014f4_task *t);
 
 UnkStruct_023014f4_w *func_ov001_023014f4(s32 kind, u16 id) {
     vu16 zero;
@@ -40,7 +40,7 @@ UnkStruct_023014f4_w *func_ov001_023014f4(s32 kind, u16 id) {
     s32 n;
     s32 i;
 
-    t = func_020372d0(func_ov001_02300ac8, 0, 0, id, 1, 0x1e0);
+    t = Task_Create(func_ov001_02300ac8, 0, 0, id, 1, 0x1e0);
     w = t->work;
     zero = 0;
     MIi_CpuClear16(zero, w, 0x1e0);
@@ -67,7 +67,7 @@ UnkStruct_023014f4_w *func_ov001_023014f4(s32 kind, u16 id) {
             break;
     }
     if (i >= n) {
-        func_020371c8(t);
+        Task_Destroy(t);
         return NULL;
     }
     *slot = w;

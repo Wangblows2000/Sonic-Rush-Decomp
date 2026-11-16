@@ -52,18 +52,18 @@ typedef struct {
     u16 z;
 } UnkStruct_02074960;
 
-extern UnkStruct_022b4574 *data_022b4574;
+extern UnkStruct_022b4574 *gTaskCurrent;
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_02074960 data_02074960[][3];
 
 void func_ov000_02348b28(void);
 void func_02022270(s32 idx, s32 color);
-void func_0206a0ac(s32 x, s32 y, s32 z, s32 a, UnkStruct_0234360c *s, void *b);
+void StageObj_Draw3DEx(s32 x, s32 y, s32 z, s32 a, UnkStruct_0234360c *s, void *b);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
 void func_ov000_0234360c(void) {
-    UnkStruct_0234360c *s = data_022b4574->unk10;
+    UnkStruct_0234360c *s = gTaskCurrent->unk10;
     u16 saved = s->unk5C;
 
     if (s->unk124 == NULL)
@@ -89,14 +89,14 @@ void func_ov000_0234360c(void) {
         if (data_022c4560.unk24 & 1) {
             if (data_022c4560.unk24 & 2) {
                 if (ABS(s->unk10 - s->unk394) >= 0x200 || ABS(s->unk14 - s->unk398) >= 0x200)
-                    func_0206a0ac(s->unk394, s->unk398, s->unk39C, s->unk1, s, s->unk134);
+                    StageObj_Draw3DEx(s->unk394, s->unk398, s->unk39C, s->unk1, s, s->unk134);
             } else {
                 if (ABS(s->unk10 - s->unk3A0) >= 0x200 || ABS(s->unk14 - s->unk3A4) >= 0x200)
-                    func_0206a0ac(s->unk3A0, s->unk3A4, s->unk3A8, s->unk1, s, s->unk134);
+                    StageObj_Draw3DEx(s->unk3A0, s->unk3A4, s->unk3A8, s->unk1, s, s->unk134);
             }
         } else {
             if (ABS(s->unk10 - s->unk1C) >= 0x200 || ABS(s->unk14 - s->unk20) >= 0x200)
-                func_0206a0ac(s->unk1C, s->unk20, s->unk24, s->unk1, s, s->unk134);
+                StageObj_Draw3DEx(s->unk1C, s->unk20, s->unk24, s->unk1, s, s->unk134);
         }
         func_02022270(0, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D].x);
         func_02022270(1, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D].y);

@@ -30,7 +30,7 @@ typedef struct {
 } UnkStruct_022f1374;
 
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Player *data_ov000_0236ac60;
 extern u8 data_ov000_02365c5c[][3];
 
@@ -52,7 +52,7 @@ void func_ov000_022f1374(UnkStruct_022f1374 *w) {
         w->unk434 = 1;
     if (w->unk442-- != 0)
         return;
-    data_0208922c.unk20 &= ~0xc0;
+    gDisplayMain.unk20 &= ~0xc0;
     w->unk440++;
     w->unk43C = Rand() & 1;
     if (w->unk440 < data_ov000_02365c5c[GetLevel()][w->unk458])

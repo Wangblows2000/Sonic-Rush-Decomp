@@ -26,7 +26,7 @@ typedef struct {
 } UnkObj_02045528;
 
 void func_02045768(void *);
-void func_02036754(void *a, void *b, s32 c);
+void Sound_PlaySeqArc(void *a, void *b, s32 c);
 
 #pragma thumb on
 void func_02045528(UnkObj_02045528 *o) {
@@ -40,6 +40,6 @@ void func_02045528(UnkObj_02045528 *o) {
     }
     s->func = func_02045768;
     s->timer = 0x96;
-    func_02036754(o->unk1634, o->unk1630, 2);
+    Sound_PlaySeqArc(o->unk1634, o->unk1630, 2);
 }
 #pragma thumb reset

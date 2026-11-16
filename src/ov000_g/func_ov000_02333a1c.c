@@ -54,7 +54,7 @@ typedef struct {
 extern UnkStruct_02333a1c_Sys data_022c4560;
 extern UnkStruct_02333a1c_Stage data_ov000_0236aad8;
 
-void func_02069818(void *w, s32 a);
+void StageObj_SetAnimation(void *w, s32 a);
 
 static inline BOOL Stage_Busy(void) {
     if (data_ov000_0236aad8.unkE0 != 0 || data_ov000_0236aad8.unkE4 != 0)
@@ -89,9 +89,9 @@ void func_ov000_02333a1c(UnkStruct_02333a1c *w) {
     if (p->unk328 >= 0x32 && p->unk328 <= 0x33 && (p->unk32C & 1))
         return;
     if (s->unk8 == 0)
-        func_02069818(w, 1);
+        StageObj_SetAnimation(w, 1);
     else
-        func_02069818(w, 3);
+        StageObj_SetAnimation(w, 3);
     if (p->unk328 >= 0x32 && p->unk328 <= 0x33)
         return;
     w->unk58 &= ~0x2000;

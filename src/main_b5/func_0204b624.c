@@ -1,13 +1,13 @@
 #include <nitro/types.h>
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
-extern void *data_0208fe80;
-extern u8 *data_022c448c;
+extern void *gMainHeap;
+extern u8 *gActComArchive;
 
 void func_ov000_0234dee0(void);
 
@@ -22,13 +22,13 @@ static inline void Free_0204b624(u8 *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_0204b624(void) {
     func_ov000_0234dee0();
-    if (data_022c448c == NULL)
+    if (gActComArchive == NULL)
         return;
-    Free_0204b624(data_022c448c);
-    data_022c448c = NULL;
+    Free_0204b624(gActComArchive);
+    gActComArchive = NULL;
 }

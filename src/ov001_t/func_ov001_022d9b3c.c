@@ -30,8 +30,8 @@ typedef struct {
     UnkSpr_022d9b3c spr[32];
 } UnkStruct_022d9b3c;
 
-void func_0203344c(UnkSpr_022d9b3c *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022d9b3c *s);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022d9b3c *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022d9b3c *s);
 void func_ov001_022d9864(UnkStruct_022d9b3c *p, s32 *src, u32 *dst, s32 x, s32 y, s32 flag);
 
 #pragma thumb on
@@ -43,14 +43,14 @@ void func_ov001_022d9b3c(UnkStruct_022d9b3c *p, s32 i, s32 x, s32 y) {
     if (p->sel == i) {
         if (p->unk1c) {
             spr = &p->spr[9];
-            func_0203344c(spr, 0, 0);
+            AnimatorSprite_ProcessAnimation(spr, 0, 0);
         } else {
             spr = &p->spr[10];
         }
         skip = 0;
     } else if (p->entries[i].unk28 == 0) {
         spr = &p->spr[11];
-        func_0203344c(spr, 0, 0);
+        AnimatorSprite_ProcessAnimation(spr, 0, 0);
         skip = 1;
     } else {
         spr = &p->spr[10];
@@ -59,14 +59,14 @@ void func_ov001_022d9b3c(UnkStruct_022d9b3c *p, s32 i, s32 x, s32 y) {
     spr->x = x;
     spr->y = y;
     spr->unk46 = 8;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
     if (skip == 1) return;
 
     spr = &p->spr[i + 13];
     spr->x = x;
     spr->y = y;
     spr->unk46 = 6;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
     {
         s32 *src = p->entries[i].tiles;
         u32 *dst = p->entries[i].tiles2;
@@ -82,21 +82,21 @@ void func_ov001_022d9b3c(UnkStruct_022d9b3c *p, s32 i, s32 x, s32 y) {
     spr->x = x + 0x58;
     spr->y = y;
     spr->unk46 = 6;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
     spr = &p->spr[24];
     spr->x = x + 0x60;
     spr->y = y;
     spr->unk46 = 6;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
     spr = &p->spr[23];
     spr->x = x + 0x68;
     spr->y = y;
     spr->unk46 = 6;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
     spr = &p->spr[e->unk20 + 0x19];
     spr->x = x + 0x78;
     spr->y = y;
     spr->unk46 = 6;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
 }
 #pragma thumb reset

@@ -41,7 +41,7 @@ extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_022f50b0_Pl *data_ov000_0236ac60;
 extern UnkStruct_02369b84 *data_ov000_02369b84;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022f8ce8(s32 x, s32 y, s32 z);
 void func_ov000_022f87d8(void);
@@ -63,7 +63,7 @@ void func_ov000_022f50b0(UnkStruct_022f50b0_Coll *a, UnkStruct_022f50b0_Coll *b)
     if (data_ov000_02369ac0.unk4 == 0x38) {
         data_ov000_02369ac0.unk8 = hp - 1;
         if (data_ov000_02369ac0.unk8 != 0) {
-            func_02036754(0, 0, 0x7b);
+            Sound_PlaySeqArc(0, 0, 0x7b);
             func_020366f4(0, 0, (Rand() & 1) ? 0xce : 0xcf);
             func_ov000_022f8ce8(b->unk0 << 8, b->unk4 << 8, 0);
             func_ov000_022f87d8();
@@ -74,7 +74,7 @@ void func_ov000_022f50b0(UnkStruct_022f50b0_Coll *a, UnkStruct_022f50b0_Coll *b)
     }
     if (data_ov000_0236ac60->unk328 == 0x30) {
         data_ov000_02369ac0.unk8 = hp - 1;
-        func_02036754(0, 0, 0x7b);
+        Sound_PlaySeqArc(0, 0, 0x7b);
         func_020366f4(0, 0, (Rand() & 1) ? 0xce : 0xcf);
         func_ov000_022f8ce8(b->unk0 << 8, b->unk4 << 8, 0);
         func_ov000_022f87f4();

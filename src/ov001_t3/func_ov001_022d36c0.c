@@ -22,8 +22,8 @@ typedef struct {
 
 extern UnkDma_022d36c0 data_02087cdc;
 extern u16 *data_02087ce0[];
-extern u32 data_02087cb8;
-extern UnkScroll_022d36c0 data_02087d04;
+extern u32 gSystemFlags;
+extern UnkScroll_022d36c0 gDisplaySub;
 
 s32 func_ov001_022d35f8(s32 from, s32 to, s32 len, s32 cur, s32 e);
 
@@ -44,9 +44,9 @@ void func_ov001_022d36c0(UnkStruct_022d36c0 *p) {
         *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1200;
     }
     if (v >= 0x60) {
-        data_02087cb8 &= ~0x400;
-        data_02087d04.x = 0;
-        data_02087d04.y = 0;
+        gSystemFlags &= ~0x400;
+        gDisplaySub.x = 0;
+        gDisplaySub.y = 0;
         p->reg = NULL;
         return;
     }
@@ -59,7 +59,7 @@ void func_ov001_022d36c0(UnkStruct_022d36c0 *p) {
     for (; i < 0xc0; i++) {
         buf[i] = b;
     }
-    data_02087cb8 |= 0x1000;
+    gSystemFlags |= 0x1000;
     p->unk5d8++;
 }
 #pragma thumb reset

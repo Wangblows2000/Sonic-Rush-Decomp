@@ -29,7 +29,7 @@ extern UnkStruct_Player *data_ov000_0236ac60;
 void func_0206c95c(void);
 UnkStruct_Ev *func_0206c938(s32 a, s32 b);
 u8 *func_ov000_023355d0(void);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void func_ov000_02342f14(UnkStruct_Player *p);
 void func_ov000_02342ef4(UnkStruct_Player *p);
 void func_ov000_02342e9c(UnkStruct_Player *p);
@@ -60,19 +60,19 @@ void func_ov000_022fabbc(void) {
                 continue;
             switch (o->unk0) {
             case 7:
-                func_0204b7ec(0, 0, 0xdf);
+                Sound_PlaySeqArcEx(0, 0, 0xdf);
                 func_ov000_02342f14(data_ov000_0236ac60);
                 break;
             case 8:
-                func_0204b7ec(0, 0, 0xdf);
+                Sound_PlaySeqArcEx(0, 0, 0xdf);
                 func_ov000_02342ef4(data_ov000_0236ac60);
                 break;
             case 9:
-                func_0204b7ec(0, 0, 0xdf);
+                Sound_PlaySeqArcEx(0, 0, 0xdf);
                 func_ov000_02342e9c(data_ov000_0236ac60);
                 break;
             case 10:
-                func_0204b7ec(0, 0, 0xdf);
+                Sound_PlaySeqArcEx(0, 0, 0xdf);
                 func_ov000_02342e28(data_ov000_0236ac60);
                 break;
             case 2:

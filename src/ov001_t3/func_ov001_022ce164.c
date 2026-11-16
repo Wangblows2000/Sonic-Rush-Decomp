@@ -37,7 +37,7 @@ typedef struct {
     s32 unk1e04;
 } UnkStruct_022ce164;
 
-UnkTask_022ce164 *func_020372d0(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
+UnkTask_022ce164 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022cdbc4(void);
 void func_ov001_022cc044(UnkWork_022ce164 *w);
@@ -50,7 +50,7 @@ void func_ov001_022ce164(UnkStruct_022ce164 *p) {
     s32 n;
     s32 i;
 
-    w = func_020372d0(func_ov001_022cdbc4, NULL, 0, 0x2000, 0x1000, sizeof(UnkWork_022ce164))->work;
+    w = Task_Create(func_ov001_022cdbc4, NULL, 0, 0x2000, 0x1000, sizeof(UnkWork_022ce164))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_022ce164));
     w->parent = p;

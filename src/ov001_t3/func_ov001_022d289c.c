@@ -8,15 +8,15 @@ typedef struct {
     void *res2[3];
 } UnkStruct_022d289c;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 void func_0201b348(void);
 void func_02020198(void *p);
-void func_02036894(void);
+void Sound_ResetHeap(void);
 
 #pragma thumb on
 static inline void Free_022d289c(void *p) {
@@ -30,7 +30,7 @@ static inline void Free_022d289c(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov001_022d289c(UnkStruct_022d289c *p) {
@@ -50,6 +50,6 @@ void func_ov001_022d289c(UnkStruct_022d289c *p) {
     }
     func_0201b348();
     func_02020198(p->unkc);
-    func_02036894();
+    Sound_ResetHeap();
 }
 #pragma thumb reset

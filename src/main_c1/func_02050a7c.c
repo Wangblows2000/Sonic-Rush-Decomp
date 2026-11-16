@@ -20,11 +20,11 @@ typedef struct {
 extern UnkTask_02050a7c *data_022c4638;
 extern UnkStruct_0207ad9c data_0207ad9c;
 extern u16 data_02072cbc[];
-extern UnkStruct_02072cb8 data_02072cb8;
+extern UnkStruct_02072cb8 gGameLanguage;
 extern s32 data_022c4640;
 
-void func_020371c8(UnkTask_02050a7c *t);
-UnkTask_02050a7c *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+void Task_Destroy(UnkTask_02050a7c *t);
+UnkTask_02050a7c *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_02050638(void);
 void func_02050928(void);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
@@ -41,10 +41,10 @@ UnkWork_02050a7c *func_02050a7c(s32 target) {
     UnkMsg_02050a7c msg;
 
     if (data_022c4638 != NULL) {
-        func_020371c8(data_022c4638);
+        Task_Destroy(data_022c4638);
         data_022c4638 = NULL;
     }
-    data_022c4638 = func_020372d0(func_02050638, func_02050928, 0, 0x1000, 0, sizeof(UnkWork_02050a7c));
+    data_022c4638 = Task_Create(func_02050638, func_02050928, 0, 0x1000, 0, sizeof(UnkWork_02050a7c));
     w = data_022c4638->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_02050a7c));
@@ -53,7 +53,7 @@ UnkWork_02050a7c *func_02050a7c(s32 target) {
     data_0207ad9c.unk0 = w->unk0;
     data_0207ad9c.unk2 = w->unk4;
     MIi_CpuCopy16(data_02072cbc, w->name, 0x14);
-    n = data_02072cb8.unk18;
+    n = gGameLanguage.unk18;
     for (i = n; i < 10; i++)
         w->name[i] = ' ';
     w->unk32 = i = n;

@@ -34,7 +34,7 @@ typedef struct UnkStruct_022dc568_7 {
     s32 unk4;
 } UnkStruct_022dc568_7;
 
-extern UnkTask_022dc568 *data_022b4574;
+extern UnkTask_022dc568 *gTaskCurrent;
 extern UnkStruct_022dc568_7 data_ov000_02369ac0;
 extern s16 data_0206e470[];
 
@@ -43,7 +43,7 @@ void func_ov000_022db7d4(void *a, u16 *ang, UnkStruct_022dc568 *s);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 
 void func_ov000_022dc568(void) {
-    UnkStruct_022dc568 *s = data_022b4574->unk10;
+    UnkStruct_022dc568 *s = gTaskCurrent->unk10;
     u16 ang;
     if (data_ov000_02369ac0.unk4 == 0x1a) {
         s->unk54 |= 8;

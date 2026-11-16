@@ -5,12 +5,12 @@ typedef struct {
     s32 vram;
 } UnkSpr_0205e218;
 
-void func_02039bb0(s32 a, s32 b);
+void ObjVram_Free(s32 a, s32 b);
 
 static inline void Release_0205e218(UnkSpr_0205e218 *sp) {
     UnkSpr_0205e218 *s = sp;
     if (s->vram != 0) {
-        func_02039bb0(1, s->vram);
+        ObjVram_Free(1, s->vram);
         s->vram = 0;
     }
 }

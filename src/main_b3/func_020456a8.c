@@ -18,8 +18,8 @@ typedef struct {
 } UnkWork_020456a8;
 
 void func_020455c8(void);
-void func_020367b4(void *a, s32 b);
-void func_02036754(void *a, void *b, s32 c);
+void Sound_PlaySeq(void *a, s32 b);
+void Sound_PlaySeqArc(void *a, void *b, s32 c);
 
 #pragma thumb on
 static inline s32 FX_Mul_020456a8(s32 a, s32 b) {
@@ -47,11 +47,11 @@ void func_020456a8(UnkWork_020456a8 *w, UnkObj_020456a8 *o) {
         o->unk4 = 0;
         if (o->unk9C == 0) {
             if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2)
-                func_020367b4(NULL, 0xe);
+                Sound_PlaySeq(NULL, 0xe);
             else
-                func_020367b4(NULL, 0xc);
+                Sound_PlaySeq(NULL, 0xc);
         } else {
-            func_02036754(NULL, w->unk1630, 1);
+            Sound_PlaySeqArc(NULL, w->unk1630, 1);
         }
         o->unkBA = 1;
     }

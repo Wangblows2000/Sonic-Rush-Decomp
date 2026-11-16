@@ -53,8 +53,8 @@ extern UnkStruct_0231f3ec_T data_ov000_0236a48c[];
 extern UnkStruct_0231f3ec data_ov000_0236a444;
 extern void (*data_ov000_023644d4[])(void);
 
-void func_020316f4(void *a);
-void func_020315e0(void *a);
+void Model_Animate(void *a);
+void Model_Draw(void *a);
 
 static inline void Track(UnkStruct_0231f3ec *c, UnkStruct_0231f3ec_T *t, u32 mask) {
     if (t != NULL) {
@@ -85,8 +85,8 @@ void func_ov000_0231f3ec(void) {
     data_ov000_023644d4[c->unkDC]();
     if (c->unk0 & 1) {
         c->unk128 = c->unk18;
-        func_020316f4(c->unkE0);
-        func_020315e0(c->unkE0);
+        Model_Animate(c->unkE0);
+        Model_Draw(c->unkE0);
     }
     c->unk3C = c->unk40 = c->unk44 = 0;
 }

@@ -50,7 +50,7 @@ extern void *data_ov001_0231f074;
 void func_ov001_022f0cbc(void);
 void func_ov001_022f2ca4(void);
 void func_ov001_022f0b70(void);
-void func_02031a68(UnkStruct_022f0e4c_o *o, u32 slot, void *res, u32 idx, void *tex);
+void Model_SetAnimation(UnkStruct_022f0e4c_o *o, u32 slot, void *res, u32 idx, void *tex);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -89,12 +89,12 @@ void func_ov001_022f0e4c(UnkStruct_022f0e4c *p) {
             p->unk74 = func_ov001_022f2ca4;
             return;
         }
-        func_02031a68(a, 0, data_ov001_0231f068, data_ov001_02316840[0x3c], 0);
-        func_02031a68(a, 4, data_ov001_0231f074, data_ov001_02316840[0x3d], 0);
+        Model_SetAnimation(a, 0, data_ov001_0231f068, data_ov001_02316840[0x3c], 0);
+        Model_SetAnimation(a, 4, data_ov001_0231f074, data_ov001_02316840[0x3d], 0);
         a->unk10C &= ~4;
         a->unk110 &= ~4;
-        func_02031a68(b, 0, data_ov001_0231f068, data_ov001_02316840[0x3e], 0);
-        func_02031a68(b, 4, data_ov001_0231f074, data_ov001_02316840[0x3f], 0);
+        Model_SetAnimation(b, 0, data_ov001_0231f068, data_ov001_02316840[0x3e], 0);
+        Model_SetAnimation(b, 4, data_ov001_0231f074, data_ov001_02316840[0x3f], 0);
         b->unk10C &= ~4;
         b->unk110 &= ~4;
         b->unk118 = 0x1000;

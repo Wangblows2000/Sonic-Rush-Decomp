@@ -29,14 +29,14 @@ typedef struct {
     u32 flags;
 } UnkTouch_022cdabc;
 
-extern UnkTask_022cdabc *data_022b4574;
-extern UnkPad_022cdabc data_022503e0;
-extern UnkTouch_022cdabc data_022b65b4;
+extern UnkTask_022cdabc *gTaskCurrent;
+extern UnkPad_022cdabc gPad;
+extern UnkTouch_022cdabc gTouchState;
 
 void func_ov001_022cc17c(UnkWork_022cdabc *w);
 void func_ov001_022cbf30(UnkWork_022cdabc *w);
 void func_ov001_022cb708(UnkWork_022cdabc *w, s32 a, s32 b);
-void func_02052104(s32 a);
+void SysSound_PlaySE(s32 a);
 void func_ov001_022cdcf4(void);
 s32 func_ov001_022c8bc0(UnkWork_022cdabc *w, u16 x, u16 y);
 void func_ov001_022cdd7c(void);
@@ -51,34 +51,34 @@ void func_ov001_022cdabc(void) {
     u16 x;
     u16 y;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_ov001_022cc17c(w);
     func_ov001_022cbf30(w);
     w->timer++;
     ok = FALSE;
     old = w->sel;
-    if (data_022503e0.rep & 0x40) {
+    if (gPad.rep & 0x40) {
         w->sel = old - 1;
         if (w->sel < 0) w->sel = w->count - 1;
         w->timer = 0;
         func_ov001_022cb708(w, w->sel, old);
-        func_02052104(4);
-    } else if (data_022503e0.rep & 0x80) {
+        SysSound_PlaySE(4);
+    } else if (gPad.rep & 0x80) {
         w->sel = old + 1;
         if (w->sel >= w->count) w->sel = 0;
         w->timer = 0;
         func_ov001_022cb708(w, w->sel, old);
-        func_02052104(4);
+        SysSound_PlaySE(4);
     }
-    if (data_022503e0.trg & 1) {
+    if (gPad.trg & 1) {
         ok = TRUE;
         old = w->sel;
-    } else if (data_022503e0.trg & 2) {
-        func_02052104(1);
+    } else if (gPad.trg & 2) {
+        SysSound_PlaySE(1);
         func_ov001_022cdcf4();
-    } else if (data_022b65b4.flags & 0x40) {
-        x = data_022b65b4.x;
-        y = data_022b65b4.y;
+    } else if (gTouchState.flags & 0x40) {
+        x = gTouchState.x;
+        y = gTouchState.y;
         if (x < 0x100 && y < 0xc0) {
             r = func_ov001_022c8bc0(w, x, y);
             if (r < 6) {
@@ -89,7 +89,7 @@ void func_ov001_022cdabc(void) {
                 }
                 ok = TRUE;
             } else if (r == 6) {
-                func_02052104(1);
+                SysSound_PlaySE(1);
                 func_ov001_022cdd7c();
             }
         }

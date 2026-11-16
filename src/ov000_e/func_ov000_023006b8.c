@@ -1,6 +1,6 @@
 #include <ov000_c/stageobj.h>
 
-s16 func_02068df8(s32 v, s32 a, s32 m);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void func_ov000_02300688(UnkStruct_StageObj *w);
 void func_ov000_0230023c(UnkStruct_StageObj *w);
 
@@ -21,9 +21,9 @@ void func_ov000_023006b8(UnkStruct_StageObj *w) {
         m = (m * sp) >> 8;
     }
     if (w->unk5C & 1)
-        w->unk34 = func_02068df8(w->unk34, -a, m);
+        w->unk34 = ObjSpd_UpSet(w->unk34, -a, m);
     else
-        w->unk34 = func_02068df8(w->unk34, a, m);
+        w->unk34 = ObjSpd_UpSet(w->unk34, a, m);
     if (w->unk28 > 0 && w->unk10 > (w->unk1E8 + w->unk1E0->unk6 + w->unk1E0->unk8) << 8) {
         func_ov000_02300688(w);
         return;

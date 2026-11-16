@@ -15,7 +15,7 @@ typedef struct UnkStruct_022fd268 {
 extern void *data_ov001_0231f098[][6];
 
 void *func_02025e8c(void *res);
-void func_02031a68(void *p, s32 a, void *b, s32 c, void *d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, void *d);
 
 void func_ov001_022fd268(UnkStruct_022fd268 *p, s32 frame) {
     s32 i;
@@ -28,6 +28,6 @@ void func_ov001_022fd268(UnkStruct_022fd268 *p, s32 frame) {
     r = func_02025e8c(data_ov001_0231f098[ty][0]);
     for (i = 0; i < 5; i++) {
         if (data_ov001_0231f098[ty][i + 1] != NULL)
-            func_02031a68(obj, i, data_ov001_0231f098[ty][i + 1], frame, r);
+            Model_SetAnimation(obj, i, data_ov001_0231f098[ty][i + 1], frame, r);
     }
 }

@@ -37,9 +37,9 @@ typedef struct {
     UnkWork_022ca710 *work;
 } UnkStruct_022ca710;
 
-void func_02033550(UnkSpr_022ca710 *s, u16 anim);
-void func_0203344c(UnkSpr_022ca710 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022ca710 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022ca710 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022ca710 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022ca710 *s);
 void func_ov001_022ca2d4(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a);
 void func_ov001_022c9f54(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a, s32 b);
 void func_ov001_022c9d58(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a, s32 b);
@@ -68,13 +68,13 @@ void func_ov001_022ca710(UnkStruct_022ca710 *p, s16 x, s16 y) {
         sub = &p->sub;
         s = &w->sprites[0];
         if (w->ids[0] != 0x18) {
-            func_02033550(s, 0x18);
+            AnimatorSprite_SetAnimation(s, 0x18);
             w->ids[0] = 0x18;
         }
         s->x = x + 0x18;
         s->y = y + 0x18;
-        func_0203344c(s, 0, 0);
-        func_02032d2c(s);
+        AnimatorSprite_ProcessAnimation(s, 0, 0);
+        AnimatorSprite_Draw(s);
         if (sub->unk0 != 0) {
             func_ov001_022ca2d4(p, x, y, 2);
         } else if (p->unk1c >= 0) {
@@ -123,60 +123,60 @@ void func_ov001_022ca710(UnkStruct_022ca710 *p, s16 x, s16 y) {
         s3 = &w->sprites[3];
         f3 = &s3->flags;
         if (w->ids[3] != 4) {
-            func_02033550(s3, 4);
+            AnimatorSprite_SetAnimation(s3, 4);
             w->ids[3] = 4;
         }
         s3->x = x;
         s3->y = y;
         *f3 |= 4;
-        func_0203344c(s3, 0, 0);
-        func_02032d2c(s3);
+        AnimatorSprite_ProcessAnimation(s3, 0, 0);
+        AnimatorSprite_Draw(s3);
         s4 = &w->sprites[4];
         f4 = &s4->flags;
         if (w->ids[4] != 5) {
-            func_02033550(s4, 5);
+            AnimatorSprite_SetAnimation(s4, 5);
             w->ids[4] = 5;
         }
         s4->x = x;
         s4->y = y;
         *f4 |= 4;
-        func_0203344c(s4, 0, 0);
-        func_02032d2c(s4);
+        AnimatorSprite_ProcessAnimation(s4, 0, 0);
+        AnimatorSprite_Draw(s4);
         s1 = &w->sprites[1];
         a1 = 0;
         if (sub->unk0 != 0) {
             a1++;
         }
         if (w->ids[1] != a1) {
-            func_02033550(s1, a1);
+            AnimatorSprite_SetAnimation(s1, a1);
             w->ids[1] = a1;
         }
         s1->x = x;
         s1->y = y;
-        func_0203344c(s1, 0, 0);
-        func_02032d2c(s1);
+        AnimatorSprite_ProcessAnimation(s1, 0, 0);
+        AnimatorSprite_Draw(s1);
         s2 = &w->sprites[2];
         a2 = 2;
         if (sub->unk0 == 0) {
             a2++;
         }
         if (w->ids[2] != a2) {
-            func_02033550(s2, a2);
+            AnimatorSprite_SetAnimation(s2, a2);
             w->ids[2] = a2;
         }
         s2->x = x;
         s2->y = y;
-        func_0203344c(s2, 0, 0);
-        func_02032d2c(s2);
+        AnimatorSprite_ProcessAnimation(s2, 0, 0);
+        AnimatorSprite_Draw(s2);
         s13 = &w->sprites[13];
         if (w->ids[13] != 0) {
-            func_02033550(s13, 0);
+            AnimatorSprite_SetAnimation(s13, 0);
             w->ids[13] = 0;
         }
         s13->x = x;
         s13->y = y;
-        func_0203344c(s13, 0, 0);
-        func_02032d2c(s13);
+        AnimatorSprite_ProcessAnimation(s13, 0, 0);
+        AnimatorSprite_Draw(s13);
     }
 }
 #pragma thumb reset

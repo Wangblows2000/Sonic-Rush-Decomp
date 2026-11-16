@@ -66,10 +66,10 @@ extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern s32 data_ov000_02363958[][8];
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
-void func_020446b0(s32 a);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
+void ScreenShake_Start(s32 a);
 void func_ov000_02328670(s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e2bb0(void);
 
 void func_ov000_022e2d0c(UnkStruct_Boss *w) {
@@ -83,7 +83,7 @@ void func_ov000_022e2d0c(UnkStruct_Boss *w) {
     if (w->base.unk14 >= 0x20000) {
         w->base.unk14 = 0x20000;
         w->base.unk68 = func_ov000_022e2bb0;
-        func_02031a68(m, 0, w->unkD08, 0x14, 0);
+        Model_SetAnimation(m, 0, w->unkD08, 0x14, 0);
         m->unk10C &= ~4;
         b = TRUE;
         if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
@@ -93,7 +93,7 @@ void func_ov000_022e2d0c(UnkStruct_Boss *w) {
         else
             i = data_022c4560.unk14;
         m->unk114 = data_ov000_02363958[i][data_ov000_02369ac0.unk8 - 1];
-        func_020446b0(0xc);
+        ScreenShake_Start(0xc);
         w->unkF50 = 0x14;
         func_ov000_02328670(1, w->unk1068 >> 4, 0x20000, w->unk1070 >> 4);
         w->unkD96 |= 4;
@@ -104,9 +104,9 @@ void func_ov000_022e2d0c(UnkStruct_Boss *w) {
         w->unkE46 &= ~0x1000;
         w->unkEF6 |= 4;
         w->unkEF6 &= ~0x1000;
-        func_02036754(0, 0, 0x86);
+        Sound_PlaySeqArc(0, 0, 0x86);
     } else if (m->unk10C & 2) {
-        func_02031a68(m, 0, w->unkD08, 0x13, 0);
+        Model_SetAnimation(m, 0, w->unkD08, 0x13, 0);
         m->unk10C &= ~4;
         m->unk114 = 0x1000;
     }

@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 extern void _s32_div_f(void);
-extern void func_02068db4(void);
-extern void func_02068df8(void);
+extern void ObjSpd_DownSet(void);
+extern void ObjSpd_UpSet(void);
 extern void func_ov000_02347190(void);
 extern void func_ov000_02347b4c(void);
 
@@ -97,7 +97,7 @@ _f4:
     bge _158
     mov r1, r5, lsl #0x11
     mov r1, r1, asr #0x10
-    bl func_02068db4
+    bl ObjSpd_DownSet
     strh r0, [r8, #0x2e]
 _158:
     ldrsh r0, [r8, #0x34]
@@ -105,13 +105,13 @@ _158:
     bge _174
     mov r1, r4, lsl #0x11
     mov r1, r1, asr #0x10
-    bl func_02068db4
+    bl ObjSpd_DownSet
     strh r0, [r8, #0x34]
 _174:
     ldrsh r0, [r8, #0x2e]
     mov r1, r6
     mov r2, r7
-    bl func_02068df8
+    bl ObjSpd_UpSet
     strh r0, [r8, #0x2e]
     b _250
 _18c:
@@ -123,7 +123,7 @@ _18c:
     ble _1b4
     mov r1, r5, lsl #0x11
     mov r1, r1, asr #0x10
-    bl func_02068db4
+    bl ObjSpd_DownSet
     strh r0, [r8, #0x2e]
 _1b4:
     ldrsh r0, [r8, #0x34]
@@ -131,13 +131,13 @@ _1b4:
     ble _1d0
     mov r1, r4, lsl #0x11
     mov r1, r1, asr #0x10
-    bl func_02068db4
+    bl ObjSpd_DownSet
     strh r0, [r8, #0x34]
 _1d0:
     ldrsh r0, [r8, #0x2e]
     mov r2, r7
     rsb r1, r6, #0
-    bl func_02068df8
+    bl ObjSpd_UpSet
     strh r0, [r8, #0x2e]
     b _250
 _1e8:
@@ -163,11 +163,11 @@ _220:
     strh r1, [r0, #0xac]
     ldrsh r0, [r8, #0x2e]
     mov r1, r5
-    bl func_02068db4
+    bl ObjSpd_DownSet
     strh r0, [r8, #0x2e]
     ldrsh r0, [r8, #0x34]
     mov r1, r4
-    bl func_02068db4
+    bl ObjSpd_DownSet
     strh r0, [r8, #0x34]
 _250:
     mov r0, r8

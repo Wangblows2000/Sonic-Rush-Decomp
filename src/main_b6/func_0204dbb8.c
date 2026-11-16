@@ -15,36 +15,36 @@ typedef struct {
     u32 flags;
 } UnkPad_0204dbb8;
 
-extern UnkTask_0204dbb8 *data_022b4574;
-extern UnkPad_0204dbb8 data_022b65b4;
+extern UnkTask_0204dbb8 *gTaskCurrent;
+extern UnkPad_0204dbb8 gTouchState;
 
-void func_020446b0(s32 a);
-void func_02043c7c(s32 a, s32 b);
-s32 func_02043a58(void);
-void func_02037134(void);
-void func_02054e4c(void);
-s32 func_02044690(void);
-s32 func_02044670(void);
-void func_0206c784(s32 a, s32 b);
+void ScreenShake_Start(s32 a);
+void BrightnessFade_Create(s32 a, s32 b);
+s32 BrightnessFade_IsDone(void);
+void Task_DestroyAll(void);
+void SceneChange_Unk_02054e4c(void);
+s32 ScreenShake_GetOffsetX(void);
+s32 ScreenShake_GetOffsetY(void);
+void ObjDraw_SetGlobalOffset(s32 a, s32 b);
 
 void func_0204dbb8(void) {
-    UnkWork_0204dbb8 *w = data_022b4574->work;
+    UnkWork_0204dbb8 *w = gTaskCurrent->work;
 
     if (w->timer < 500) {
-        if (((u16)(((*(vu16 *)0x04000130 | *(vu16 *)0x027fffa8) ^ 0x2fff) & 0x2fff) & 0xc0b) || (data_022b65b4.flags & 0x40))
+        if (((u16)(((*(vu16 *)0x04000130 | *(vu16 *)0x027fffa8) ^ 0x2fff) & 0x2fff) & 0xc0b) || (gTouchState.flags & 0x40))
             w->timer = 500;
     }
     if (w->timer == 0x168)
-        func_020446b0(2);
+        ScreenShake_Start(2);
     if (w->timer == 0x170)
-        func_020446b0(4);
+        ScreenShake_Start(4);
     if (w->timer == 0x200)
-        func_02043c7c(5, 0x100);
+        BrightnessFade_Create(5, 0x100);
     w->timer++;
-    if (w->timer > 0x200 && func_02043a58() != 0) {
-        func_02037134();
-        func_02054e4c();
+    if (w->timer > 0x200 && BrightnessFade_IsDone() != 0) {
+        Task_DestroyAll();
+        SceneChange_Unk_02054e4c();
         return;
     }
-    func_0206c784(func_02044690(), func_02044670());
+    ObjDraw_SetGlobalOffset(ScreenShake_GetOffsetX(), ScreenShake_GetOffsetY());
 }

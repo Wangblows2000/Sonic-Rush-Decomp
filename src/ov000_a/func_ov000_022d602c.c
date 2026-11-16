@@ -59,7 +59,7 @@ typedef struct UnkStruct_022d602c_b {
     UnkStruct_022d602c_q *unk214;
 } UnkStruct_022d602c_b;
 
-extern UnkTask_022d602c *data_022b4574;
+extern UnkTask_022d602c *gTaskCurrent;
 extern UnkStruct_022d602c_b *data_ov000_02369b14;
 extern s16 data_0206e470[];
 
@@ -68,15 +68,15 @@ void func_ov000_022c5e1c(s32 a, s32 b, s32 x, s32 z, s32 *out);
 void func_02000e98(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
-void func_020316f4(UnkStruct_022d602c_a *a);
-void func_020315e0(UnkStruct_022d602c_a *a);
+void Model_Animate(UnkStruct_022d602c_a *a);
+void Model_Draw(UnkStruct_022d602c_a *a);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
 void func_ov000_022d602c(void) {
-    UnkStruct_022d602c *o = data_022b4574->unk10;
+    UnkStruct_022d602c *o = gTaskCurrent->unk10;
     UnkStruct_022d602c_a *a = &o->unk290;
     UnkStruct_022d602c_a *b = &o->unk404;
     s32 sc = FX_Mul(o->unk212, 0x34cc);
@@ -122,10 +122,10 @@ void func_ov000_022d602c(void) {
     b->unk18 = b->unk1C;
     if (o->unk5C & 0x20)
         return;
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
     if (o->unk20C & 4) {
-        func_020316f4(b);
-        func_020315e0(b);
+        Model_Animate(b);
+        Model_Draw(b);
     }
 }

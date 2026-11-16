@@ -5,10 +5,10 @@
 
 s32 func_02056e7c();
 extern u8 data_022c4678[];
-s32 func_02036894();
+s32 Sound_ResetHeap();
 extern u8 data_0207c5bc[];
 s32 func_02036854();
-extern u8 data_02250458[];
+extern u8 gSoundHeap[];
 s32 func_0201e7cc();
 s32 func_0201bf34();
 
@@ -23,10 +23,10 @@ void func_02057668(u8 *p0) {
     if ((*(u32 *)((u8 *)t1 + 0x4) & 1) == 0) {
         s32 t2 = *(s16 *)((u8 *)data_022c4678 + 0);
         if (t2 != 0x2a) {
-            func_02036894(t2, data_022c4678);
+            Sound_ResetHeap(t2, data_022c4678);
         }
         func_02036854(data_0207c5bc);
-        func_0201e7cc(*(u32 *)*(u32 *)*(u32 *)((u8 *)p0 + 0x2c), *(u32 *)data_02250458);
+        func_0201e7cc(*(u32 *)*(u32 *)*(u32 *)((u8 *)p0 + 0x2c), *(u32 *)gSoundHeap);
     }
     func_0201bf34(((u8 *)p0 + 0x30));
     func_0201bf34(((u8 *)p0 + 0x34));

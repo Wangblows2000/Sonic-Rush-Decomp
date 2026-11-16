@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 s32 func_ov001_022cc17c();
 s32 func_ov001_022cbf30();
 s32 func_ov001_022c8d54();
@@ -12,9 +12,9 @@ s32 func_ov001_022cdea8();
 void func_ov001_022cc588();
 
 void func_ov001_022cc628(void) {
-    s32 t0 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t1 = (*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10) + 0x1ec);
-    func_ov001_022cc17c(*(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10));
+    s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t1 = (*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x1ec);
+    func_ov001_022cc17c(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
     func_ov001_022cbf30(t0);
     s32 t2 = (*(u32 *)(t0 + 0x1ec) + 0x1);
     *(u32 *)(t0 + 0x1ec) = t2;
@@ -27,7 +27,7 @@ void func_ov001_022cc628(void) {
         *(u32 *)((u8 *)t0 + 0x14) = 0;
         *(u32 *)((u8 *)t0 + 0x18) = 0;
         *(u32 *)((u8 *)t1 + 0x4) = 4;
-        *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x8) = (u32)func_ov001_022cc7fc;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov001_022cc7fc;
         return;
     }
     if ((u32)*(u32 *)t1 >= (u32)0x10) {
@@ -36,7 +36,7 @@ void func_ov001_022cc628(void) {
         *(u32 *)((u8 *)t0 + 0x18) = 0;
         *(u32 *)((u8 *)t1 + 0x4) = 7;
         func_ov001_022cdea8(7);
-        *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x8) = (u32)func_ov001_022cc588;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov001_022cc588;
     }
 }
 

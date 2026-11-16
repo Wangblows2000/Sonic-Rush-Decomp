@@ -4,7 +4,7 @@
 #pragma thumb on
 
 extern u8 data_022c4560[];
-s32 func_0205515c();
+s32 SceneChange_Unk_0205515c();
 
 void func_02052424(s32 p0, s32 p1) {
     *(u32 *)((u8 *)data_022c4560 + 0x10) = 2;
@@ -19,7 +19,7 @@ void func_02052424(s32 p0, s32 p1) {
         *(u8 *)((u8 *)data_022c4560 + 0x1d) = p1;
         v1 = (s32)data_022c4560;
     }
-    func_0205515c(v1, p1);
+    SceneChange_Unk_0205515c(v1, p1);
 }
 
 #pragma thumb reset

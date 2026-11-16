@@ -48,7 +48,7 @@ struct UnkStruct_022d6f20 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 typedef struct UnkStruct_022d6f20_b {
     u8 pad[0x222];
@@ -56,19 +56,19 @@ typedef struct UnkStruct_022d6f20_b {
 } UnkStruct_022d6f20_b;
 
 extern UnkStruct_022d6f20_b *data_ov000_02369b14;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u8 data_ov000_02363080[];
 extern u16 data_ov000_023630c4[];
 
 void func_ov000_022d6ed4(UnkStruct_022d6f20 *s);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022d6f20(UnkStruct_022d6f20 *s) {
-    func_02031a68(&s->unk2C4, 0, s->unk434, 1, 0);
+    Model_SetAnimation(&s->unk2C4, 0, s->unk434, 1, 0);
     s->unk2C4.unk10C |= 4;
     s->unk2C4.unk114 = 0x1000;
     s->unk25A = data_ov000_02363080[data_ov000_02369b14->unk222] + (data_ov000_023630c4[data_ov000_02369b14->unk222] & Rand());

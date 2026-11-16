@@ -27,16 +27,16 @@ typedef struct UnkStruct_022dccc8_7 {
 extern UnkStruct_022dccc8_7 data_ov000_02369ac0;
 extern s16 data_ov000_02363570[];
 
-void func_02036754(s32 a, s32 b, s32 c);
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022dbb18(s32 a);
 
 void func_ov000_022dccc8(UnkStruct_022dccc8 *s) {
     if (s->unkBD0 == 0) {
         UnkStruct_022dccc8_a *a = &s->unk5D0;
-        func_02036754(0, 0, 0x88);
-        func_02031a68(a, 0, s->unkAB0, 0, 0);
-        func_02031a68(a, 1, s->unkAB4, 0, 0);
+        Sound_PlaySeqArc(0, 0, 0x88);
+        Model_SetAnimation(a, 0, s->unkAB0, 0, 0);
+        Model_SetAnimation(a, 1, s->unkAB4, 0, 0);
         a->unk10C |= 4;
         a->unk10D |= 4;
     }

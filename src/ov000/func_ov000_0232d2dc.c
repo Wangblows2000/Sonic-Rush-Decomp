@@ -11,12 +11,12 @@ typedef struct UnkStruct_0232d2dc {
 } UnkStruct_0232d2dc;
 
 void func_ov000_0232d084(void);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 
 void func_ov000_0232d2dc(UnkStruct_0232d2dc *s) {
     s->unkC = 0;
     s->unk8 = 0;
     s->unk46 = 0;
     s->func = func_ov000_0232d084;
-    func_0204b7ec(0, 0, 0xe7);
+    Sound_PlaySeqArcEx(0, 0, 0xe7);
 }

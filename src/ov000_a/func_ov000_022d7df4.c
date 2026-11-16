@@ -61,7 +61,7 @@ struct UnkStruct_022d7df4 {
     void *unk434;
 };
 
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_ov000_022d7db0(UnkStruct_022d7df4 *s);
 

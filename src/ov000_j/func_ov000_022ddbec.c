@@ -8,7 +8,7 @@ typedef struct {
     s32 unkBEC;
 } UnkStruct_022ddbec;
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022ddb44(UnkStruct_022ddbec *p);
 
 void func_ov000_022ddbec(UnkStruct_022ddbec *p) {
@@ -22,5 +22,5 @@ void func_ov000_022ddbec(UnkStruct_022ddbec *p) {
         return;
     p->unk220 = func_ov000_022ddb44;
     p->unk224 = 0;
-    func_02036754(0, 0, 0x8b);
+    Sound_PlaySeqArc(0, 0, 0x8b);
 }

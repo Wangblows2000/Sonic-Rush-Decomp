@@ -21,8 +21,8 @@ typedef struct UnkStruct_022fecb0 {
 } UnkStruct_022fecb0;
 
 extern UnkStruct_022fecb0 *data_ov001_0231f52c;
-extern s16 data_02087d04[];
-extern s16 data_0208922c[];
+extern s16 gDisplaySub[];
+extern s16 gDisplayMain[];
 extern u8 data_02074960[];
 extern u8 data_020748bc[];
 extern u8 data_02074ba4[];
@@ -34,7 +34,7 @@ void func_02022270(u32 index, u32 value);
 void func_02022284(u32 idx, s32 x, s32 y, s32 z);
 void func_02004084(const void *src);
 void func_0205ef48(void);
-void func_020367b4(u32 *p, u32 a);
+void Sound_PlaySeq(u32 *p, u32 a);
 
 void func_ov001_022fecb0(void) {
     u16 col;
@@ -50,10 +50,10 @@ void func_ov001_022fecb0(void) {
     data_ov001_0231f52c->unk4 = 0;
     data_ov001_0231f52c->unk44 = 0;
     data_ov001_0231f52c->unk318 = 0;
-    data_02087d04[0x24] = -0x10;
-    data_0208922c[0x24] = data_02087d04[0x24];
-    GXx_SetMasterBrightness_((vu16 *)0x400006c, data_0208922c[0x24]);
-    GXx_SetMasterBrightness_((vu16 *)0x400106c, data_02087d04[0x24]);
+    gDisplaySub[0x24] = -0x10;
+    gDisplayMain[0x24] = gDisplaySub[0x24];
+    GXx_SetMasterBrightness_((vu16 *)0x400006c, gDisplayMain[0x24]);
+    GXx_SetMasterBrightness_((vu16 *)0x400106c, gDisplaySub[0x24]);
     *(vu16 *)0x4000008 = (*(vu16 *)0x4000008 & ~3) | 2;
     *(vu16 *)0x400000c = *(vu16 *)0x400000c & ~3;
     col = *(u16 *)(data_02074960 + 0x9c);
@@ -66,7 +66,7 @@ void func_ov001_022fecb0(void) {
     func_02004084(data_02074ba4);
     func_0205ef48();
     if (data_ov001_0231f52c->unk40 < 3)
-        func_020367b4(0, 0x14);
+        Sound_PlaySeq(0, 0x14);
     else
-        func_020367b4(0, 0x15);
+        Sound_PlaySeq(0, 0x15);
 }

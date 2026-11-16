@@ -87,7 +87,7 @@ struct UnkStruct_022d3b8c {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 typedef struct UnkStruct_022d3b8c_p {
@@ -104,7 +104,7 @@ typedef struct UnkStruct_022d3b8c_7 {
 extern UnkStruct_022d3b8c *data_ov000_02369ae0;
 extern UnkStruct_022d3b8c_p *data_ov000_0236ac60;
 extern UnkStruct_022d3b8c_7 data_ov000_02369ac0;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s32 data_ov000_02362e50[4];
 
 s32 func_02002094(s32 a, s32 b);
@@ -117,8 +117,8 @@ static inline s32 Lerp(s32 a, s32 b) {
 }
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022d3b8c(void) {
@@ -140,17 +140,17 @@ void func_ov000_022d3b8c(void) {
         if (b < a) {
             s->func = func_ov000_022d3a78;
             s->unk146C = 0x27d;
-            func_02031a68(x, 0, s->unkF7C, 8, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x28, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x44, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 8, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x28, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x44, 0);
             s->unk1460 = Lerp(0xc, 0x14);
             s->unk1464 = Lerp(0x780, 0xa00);
         } else {
             s->func = func_ov000_022d3994;
             s->unk146C = 0;
-            func_02031a68(x, 0, s->unkF7C, 5, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x25, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x41, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 5, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x25, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x41, 0);
             s->unk1460 = -Lerp(0xc, 0x14);
             s->unk1464 = -Lerp(0x780, 0xa00);
         }
@@ -158,17 +158,17 @@ void func_ov000_022d3b8c(void) {
         if (a < b) {
             s->func = func_ov000_022d3a78;
             s->unk146C = -0x27d;
-            func_02031a68(x, 0, s->unkF7C, 5, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x25, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x41, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 5, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x25, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x41, 0);
             s->unk1460 = -Lerp(0xc, 0x14);
             s->unk1464 = -Lerp(0x780, 0xa00);
         } else {
             s->func = func_ov000_022d3994;
             s->unk146C = 0;
-            func_02031a68(x, 0, s->unkF7C, 8, 0);
-            func_02031a68(y, 0, s->unkF7C, 0x28, 0);
-            func_02031a68(z, 0, s->unkF7C, 0x44, 0);
+            Model_SetAnimation(x, 0, s->unkF7C, 8, 0);
+            Model_SetAnimation(y, 0, s->unkF7C, 0x28, 0);
+            Model_SetAnimation(z, 0, s->unkF7C, 0x44, 0);
             s->unk1460 = Lerp(0xc, 0x14);
             s->unk1464 = Lerp(0x780, 0xa00);
         }

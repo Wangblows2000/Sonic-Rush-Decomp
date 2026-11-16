@@ -9,7 +9,7 @@ typedef struct UnkStruct_023081d8 {
 
 extern UnkStruct_023081d8 *data_ov001_0231f5bc;
 
-void func_02032480(void *p, s32 x, s32 y, s32 z);
+void AnimatorSprite_DrawRotScale(void *p, s32 x, s32 y, s32 z);
 
 void func_ov001_023081d8(s32 t) {
     UnkStruct_023081d8 *g = data_ov001_0231f5bc;
@@ -24,7 +24,7 @@ void func_ov001_023081d8(s32 t) {
     } else if (t > 0x28 && t <= 0x3c) {
         sc += 1228.8f * (0x3c - t) / 20.0f;
     }
-    func_02032480(g->a, sa, sa, 0);
-    func_02032480(g->b, sb, sb, 0);
-    func_02032480(g->c, sc, sc, 0);
+    AnimatorSprite_DrawRotScale(g->a, sa, sa, 0);
+    AnimatorSprite_DrawRotScale(g->b, sb, sb, 0);
+    AnimatorSprite_DrawRotScale(g->c, sc, sc, 0);
 }

@@ -24,13 +24,13 @@ typedef struct {
     UnkWork_0204fb90 *work;
 } UnkTask_0204fb90;
 
-extern UnkTask_0204fb90 *data_022b4574;
+extern UnkTask_0204fb90 *gTaskCurrent;
 void func_0204f200(UnkWork_0204fb90 *w, void *a, void *b, u16 idx, s32 d);
 void func_0204fb18(void);
 
 #pragma thumb on
 void func_0204fb90(void) {
-    UnkWork_0204fb90 *w = data_022b4574->work;
+    UnkWork_0204fb90 *w = gTaskCurrent->work;
     void *b = w->files[1];
     void *a = w->unk430;
     switch (w->unk24) {
@@ -50,6 +50,6 @@ void func_0204fb90(void) {
     }
     if (w->unkc >= 0)
         func_0204f200(w, a, b, w->unkc, 1);
-    data_022b4574->fn = func_0204fb18;
+    gTaskCurrent->fn = func_0204fb18;
 }
 #pragma thumb reset

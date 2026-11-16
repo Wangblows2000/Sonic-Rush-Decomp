@@ -42,7 +42,7 @@ typedef struct {
 } UnkState_0205a654;
 
 extern UnkState_0205a654 data_022c4560;
-extern UnkDisp_0205a654 *data_02072c78[];
+extern UnkDisp_0205a654 *gDisplayTable[];
 
 void func_ov000_023375e8(void);
 void func_0204cdc0(void);
@@ -53,7 +53,7 @@ void func_0205a654(UnkWork_0205a654 *w) {
         func_ov000_023375e8();
         func_0204cdc0();
     } else {
-        UnkDisp_0205a654 *d = data_02072c78[0];
+        UnkDisp_0205a654 *d = gDisplayTable[0];
         d->u.raw = 0;
         d->u.f.b6 = 1;
         d->u.f.b8 = 1;

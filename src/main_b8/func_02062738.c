@@ -12,7 +12,7 @@ typedef struct {
     u16 period;
 } UnkWork_02062738;
 
-void func_02060e54(s32 a, s32 b);
+void TalkDemo_SetFlags(s32 a, s32 b);
 void func_020610e8(UnkWork_02062738 *w);
 void func_02062ae4(void *w);
 
@@ -23,7 +23,7 @@ void func_02062738(UnkWork_02062738 *w) {
         return;
     w->count++;
     if (w->count >= w->limit) {
-        func_02060e54(3, 0x100);
+        TalkDemo_SetFlags(3, 0x100);
         w->unk10 = 0xc;
         w->state = NULL;
     } else {

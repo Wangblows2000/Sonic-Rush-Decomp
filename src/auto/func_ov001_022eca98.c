@@ -6,7 +6,7 @@ typedef struct {
     void *unkDDC[11][7];
 } UnkStruct_022eca98;
 
-void func_02039bb0(void *a, void *b);
+void ObjVram_Free(void *a, void *b);
 
 #pragma thumb on
 
@@ -17,7 +17,7 @@ void func_ov001_022eca98(UnkStruct_022eca98 *w) {
     for (j = 0; j < 11; j++) {
         for (i = 0; i < 7; i++) {
             if (w->unkDDC[j][i] != NULL) {
-                func_02039bb0(NULL, w->unkDDC[j][i]);
+                ObjVram_Free(NULL, w->unkDDC[j][i]);
                 w->unkDDC[j][i] = NULL;
             }
         }

@@ -21,7 +21,7 @@ void func_ov001_022fb28c(void);
 void func_ov001_022faf00(void);
 UnkStruct_022fb3c8_g *func_ov001_022ffce8(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 
 static inline BOOL IsMode_022fb3c8(void) {
     BOOL r = TRUE;
@@ -60,5 +60,5 @@ void func_ov001_022fb3c8(void *parent, s32 x, s32 y, s32 z) {
     *(u8 **)(t + 0x9c) = t + 0xb0;
     func_ov001_022fe8d4(t + 0xe8, t, 1, 1, 0x8000, 0x8000, 0x10000, 0, 0, 0, 0);
     *(u8 **)(t + 0xa0) = t + 0xe8;
-    func_02036754(0, 0, 0xae);
+    Sound_PlaySeqArc(0, 0, 0xae);
 }

@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_02072c78;
+extern u32 gDisplayTable;
 extern u32 data_022c4560;
 extern u32 data_ov000_02368b08;
 extern u32 data_ov000_0236aab0;
@@ -57,6 +57,6 @@ _64:
     dcd data_ov000_02368b08
     dcd data_ov000_0236ac1c
     dcd data_ov000_0236aad8
-    dcd data_02072c78
+    dcd gDisplayTable
     dcd 0x000001ff
 }

@@ -8,9 +8,9 @@ typedef struct {
 
 extern const char *data_ov001_0231d3a0[];
 extern const char *data_ov001_0231d3c0[];
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 
-void *func_02033fbc(const char *path, void *dst);
+void *File_Load(const char *path, void *dst);
 
 #pragma thumb on
 
@@ -22,7 +22,7 @@ void func_ov001_022edcb0(UnkStruct_022edcb0 *w) {
 
     i = 0;
     tbl = data_ov001_0231d3a0;
-    cur = data_02072cb8;
+    cur = gGameLanguage;
     for (; i < 8; i++) {
         if (i == 1) {
             switch (cur) {
@@ -38,9 +38,9 @@ void func_ov001_022edcb0(UnkStruct_022edcb0 *w) {
                 lang = 1;
                 break;
             }
-            w->res[i] = func_02033fbc(data_ov001_0231d3c0[lang], NULL);
+            w->res[i] = File_Load(data_ov001_0231d3c0[lang], NULL);
         } else {
-            w->res[i] = func_02033fbc(tbl[i], NULL);
+            w->res[i] = File_Load(tbl[i], NULL);
         }
     }
 }

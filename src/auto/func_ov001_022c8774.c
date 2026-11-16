@@ -8,7 +8,7 @@ s32 func_02042938();
 s32 func_ov001_022c87f8();
 extern u8 data_ov001_0231f044[];
 void func_ov001_022c8738();
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 
 void func_ov001_022c8774(void) {
     s32 t0 = func_02042958();
@@ -19,7 +19,7 @@ void func_ov001_022c8774(void) {
         return;
     }
     if (t0 == 6) {
-        *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x8) = (u32)func_ov001_022c8738;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov001_022c8738;
     }
 }
 

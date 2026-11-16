@@ -18,18 +18,18 @@ typedef struct { u32 pad0[6]; u8 unk18; u8 pad19[7]; } UnkCfg_020509a0;
 extern UnkTask_020509a0 *data_022c4638;
 extern UnkStruct_0207ad9c data_0207ad9c;
 extern u16 data_02072cbc[];
-extern UnkStruct_02072cb8 data_02072cb8;
+extern UnkStruct_02072cb8 gGameLanguage;
 extern s32 data_022c4640;
 
-void func_020371c8(UnkTask_020509a0 *t);
-UnkTask_020509a0 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+void Task_Destroy(UnkTask_020509a0 *t);
+UnkTask_020509a0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_02050510(void);
 void func_02050900(void);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void func_02051628(s32 a);
-void func_020512a4(UnkCfg_020509a0 *c);
-void func_02051248(UnkCfg_020509a0 *c);
+void DownloadPlay_GetContest(UnkCfg_020509a0 *c);
+void DownloadPlay_GetSonicPreview(UnkCfg_020509a0 *c);
 void func_02042bbc(UnkCfg_020509a0 *c, s32 a);
 
 #pragma thumb on
@@ -41,10 +41,10 @@ UnkWork_020509a0 *func_020509a0(s32 mode) {
     UnkCfg_020509a0 cfg;
 
     if (data_022c4638 != NULL) {
-        func_020371c8(data_022c4638);
+        Task_Destroy(data_022c4638);
         data_022c4638 = NULL;
     }
-    data_022c4638 = func_020372d0(func_02050510, func_02050900, 0, 0x1000, 0, sizeof(UnkWork_020509a0));
+    data_022c4638 = Task_Create(func_02050510, func_02050900, 0, 0x1000, 0, sizeof(UnkWork_020509a0));
     w = data_022c4638->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_020509a0));
@@ -53,18 +53,18 @@ UnkWork_020509a0 *func_020509a0(s32 mode) {
     data_0207ad9c.unk0 = w->unk0;
     data_0207ad9c.unk2 = w->unk4;
     MIi_CpuCopy16(data_02072cbc, w->name, 0x14);
-    n = data_02072cb8.unk18;
+    n = gGameLanguage.unk18;
     for (i = n; i < 10; i++)
         w->name[i] = 0x20;
     w->unk32 = i = n;
     func_02051628(0);
     switch (mode) {
     case 0:
-        func_020512a4(&cfg);
+        DownloadPlay_GetContest(&cfg);
         break;
     case 1:
     default:
-        func_02051248(&cfg);
+        DownloadPlay_GetSonicPreview(&cfg);
         break;
     }
     func_02042bbc(&cfg, 0);

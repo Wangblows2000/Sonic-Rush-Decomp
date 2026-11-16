@@ -17,7 +17,7 @@ typedef struct {
     u16 unk230;
 } UnkStruct_022ec7b4;
 
-extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Player *data_ov000_0236ac60;
 
 void func_ov000_0234c4a4(UnkStruct_Player *p, s32 a);
@@ -28,8 +28,8 @@ void func_ov000_022ec7b4(UnkStruct_022ec7b4 *w) {
     s16 st;
 
     w->unk230++;
-    if (!(w->unk230 & 3) && data_0208922c.unk48 > 0)
-        data_0208922c.unk48--;
+    if (!(w->unk230 & 3) && gDisplayMain.unk48 > 0)
+        gDisplayMain.unk48--;
     p->base.unk10 += p->base.unk2E;
     if (p->base.unk2E < 0) {
         if (-p->base.unk2E > 10)
@@ -57,6 +57,6 @@ void func_ov000_022ec7b4(UnkStruct_022ec7b4 *w) {
         return;
     if (p->base.unk2E != 0)
         return;
-    if (data_0208922c.unk48 == 0)
+    if (gDisplayMain.unk48 == 0)
         w->base.unk68 = func_ov000_022ec564;
 }

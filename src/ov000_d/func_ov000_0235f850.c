@@ -13,8 +13,8 @@ typedef struct {
     void *work;
 } UnkStruct_0235f850_Task;
 
-void func_02037038(s32 a, s32 b);
-UnkStruct_0235f850_Task *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+void Task_DestroyRange(s32 a, s32 b);
+UnkStruct_0235f850_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov000_0235f778(void);
 
@@ -24,7 +24,7 @@ void func_ov000_0235f850(s32 x, s32 y, s32 a, s32 b) {
     UnkStruct_0235f850 *w;
     vu32 zero;
 
-    func_02037038(0x4000, 0x4000);
+    Task_DestroyRange(0x4000, 0x4000);
     if (x < -16) {
         x = -16;
     }
@@ -37,7 +37,7 @@ void func_ov000_0235f850(s32 x, s32 y, s32 a, s32 b) {
     if (y > 16) {
         y = 16;
     }
-    w = func_020372d0(func_ov000_0235f778, NULL, 0, 0x4000, 0x1000, 0x10)->work;
+    w = Task_Create(func_ov000_0235f778, NULL, 0, 0x4000, 0x1000, 0x10)->work;
     zero = 0;
     MIi_CpuClear32(zero, w, 0x10);
     w->unk0 = 0;

@@ -29,7 +29,7 @@ typedef struct {
     void *work;
 } UnkStruct_02339dd4_Task;
 
-extern UnkStruct_02339dd4_Task *data_022b4574;
+extern UnkStruct_02339dd4_Task *gTaskCurrent;
 extern UnkStruct_02339dd4 data_ov000_0236aad8;
 
 void func_ov000_0233877c(void);
@@ -41,7 +41,7 @@ void func_ov000_0233e668(void);
 void func_ov000_0233b684(void);
 
 void func_ov000_02339dd4(void) {
-    void *work = data_022b4574->work;
+    void *work = gTaskCurrent->work;
     u32 i;
     UnkPlayer_02339dd4 *p;
     s32 v;

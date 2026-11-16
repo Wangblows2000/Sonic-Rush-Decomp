@@ -19,19 +19,19 @@ extern u8 data_ov000_0236a04c[];
 extern u8 data_ov000_0236a044[];
 extern u8 data_ov000_0236a03c[];
 
-void func_020686dc(void *a);
+void ObjData_Release(void *a);
 void func_ov000_022fb9c8(UnkStruct_0230ecf8 *p);
 
 void func_ov000_0230ecf8(UnkStruct_0230ecf8 *p) {
     switch ((u8)(p->unk10->unk1E0->unk4 & 3)) {
     default:
-        func_020686dc(data_ov000_0236a04c);
+        ObjData_Release(data_ov000_0236a04c);
         break;
     case 1:
-        func_020686dc(data_ov000_0236a044);
+        ObjData_Release(data_ov000_0236a044);
         break;
     case 2:
-        func_020686dc(data_ov000_0236a03c);
+        ObjData_Release(data_ov000_0236a03c);
         break;
     }
     func_ov000_022fb9c8(p);

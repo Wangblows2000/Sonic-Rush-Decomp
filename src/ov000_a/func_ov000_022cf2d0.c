@@ -43,26 +43,26 @@ typedef struct UnkStruct_022cf2d0_cam {
 extern UnkStruct_022cf2d0_cam data_ov000_0236a444;
 
 s32 func_02002094(s32 a, s32 b);
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 
-s32 func_02044690(void);
-s32 func_02044670(void);
+s32 ScreenShake_GetOffsetX(void);
+s32 ScreenShake_GetOffsetY(void);
 s32 func_0200225c(s32 a, s32 b);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 void func_ov000_022cf288(UnkStruct_022cf2d0 *t);
 
 void func_ov000_022cf2d0(UnkStruct_022cf2d0 *t) {
     s32 k = t->unkC << 12;
-    data_ov000_0236a444.unk3C = func_0200225c(k * func_02044690(), 0xf000);
+    data_ov000_0236a444.unk3C = func_0200225c(k * ScreenShake_GetOffsetX(), 0xf000);
     data_ov000_0236a444.unk3C = data_ov000_0236a444.unk3C * 0x1800;
     data_ov000_0236a444.unk3C = data_ov000_0236a444.unk3C >> 12;
-    data_ov000_0236a444.unk40 = func_0200225c(k * func_02044670(), 0xf000);
+    data_ov000_0236a444.unk40 = func_0200225c(k * ScreenShake_GetOffsetY(), 0xf000);
     data_ov000_0236a444.unk40 = data_ov000_0236a444.unk40 * 0x1800;
     data_ov000_0236a444.unk40 = data_ov000_0236a444.unk3C >> 12;
     t->unkC--;
     if (t->unkC != 0)
         return;
     t->func = func_ov000_022cf288;
-    func_020446b0(0);
+    ScreenShake_Start(0);
     t->unkC = 0xf;
 }

@@ -21,7 +21,7 @@ typedef struct {
     s32 unka0;
 } UnkWork_022e5a68;
 
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_022c4680 gSaveData;
 extern UnkStruct_022c46e0 data_022c46e0;
 
 s32 func_02064828(void);
@@ -43,7 +43,7 @@ BOOL func_ov001_022e5a68(UnkWork_022e5a68 *w) {
     save = FALSE;
     r = func_02064828();
     if (w->mode == 0) {
-        cur = data_022c4680.unkf;
+        cur = gSaveData.unkf;
         b = data_022c46e0.unk7 & 0x7f;
         a = cur & 0x7f;
         if (a > b) {

@@ -13,21 +13,21 @@ typedef struct {
     UnkWork_022e90b8 *work;
 } UnkTask_022e90b8;
 
-extern UnkTask_022e90b8 *data_022b4574;
+extern UnkTask_022e90b8 *gTaskCurrent;
 extern s32 data_ov001_0231c588;
 
-void func_020371c8(void *task);
+void Task_Destroy(void *task);
 
 #pragma thumb on
 void func_ov001_022e90b8(UnkWork_022e90b8 *w) {
     if (w == NULL) {
-        w = data_022b4574->work;
+        w = gTaskCurrent->work;
     }
     if (w->mode == 8 && w->unk10 == 0) {
         data_ov001_0231c588 = 0;
     } else {
         data_ov001_0231c588 = 1;
     }
-    func_020371c8(w->task);
+    Task_Destroy(w->task);
 }
 #pragma thumb reset

@@ -25,7 +25,7 @@ extern s16 data_0206e470[];
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 void func_ov001_022fc934(s32 a, s32 b, s32 c, s32 d, BOOL flag);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 UnkStruct_022faa3c *func_ov001_02300c94(void);
 u16 func_020027a4(s32 y, s32 x);
 
@@ -45,7 +45,7 @@ void func_ov001_022faa3c(UnkStruct_022faa3c *p) {
     if (p->unk20 >= 0) {
         p->flags |= 8;
         func_ov001_022fc934(0, p->unk18, p->unk1C, 0, 1);
-        func_02036754(0, 0, 0xb1);
+        Sound_PlaySeqArc(0, 0, 0xb1);
         return;
     }
     if (p->unk58 + p->unk64 >= 0x4000) {

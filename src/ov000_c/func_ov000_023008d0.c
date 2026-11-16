@@ -11,7 +11,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_022c4680 gSaveData;
 extern UnkStruct_022c4560 data_022c4560;
 extern u8 data_ov000_023665a8[], data_ov000_023665c0[], data_ov000_023665dc[], data_ov000_02366600[], data_ov000_0236661c[], data_ov000_02366638[], data_ov000_02366658[], data_ov000_02369df4[], data_ov000_02369dfc[], data_ov000_02369e04[], data_ov000_02369e0c[], data_ov000_02369e14[], data_ov000_02369e1c[], data_ov000_02369e24[];
 
@@ -33,13 +33,13 @@ UnkStruct_023008d0 *func_ov000_023008d0(UnkStruct_ObjParam *p, s32 b, s32 c) {
 
     if (p == NULL || p->unk0 != 0xff || p->unk1 != 0xff) {
         if (p->unk4 & 0x80) {
-            if (data_022c4680.unk8 & 1) {
+            if (gSaveData.unk8 & 1) {
                 if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
                     return NULL;
             }
         }
     }
-    task = func_020372d0(func_0206c3d0, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_023008d0));
+    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_023008d0));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
@@ -52,63 +52,63 @@ UnkStruct_023008d0 *func_ov000_023008d0(UnkStruct_ObjParam *p, s32 b, s32 c) {
     case 3:
         break;
     case 2:
-        func_02069f1c(w, data_ov000_023665a8, 0xffff, data_ov000_02369e1c, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0xe);
+        StageObj_Load2dBAC(w, data_ov000_023665a8, 0xffff, data_ov000_02369e1c, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0xe);
         break;
     case 4:
-        func_02069f1c(w, data_ov000_023665c0, 0xffff, data_ov000_02369e14, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0x15);
+        StageObj_Load2dBAC(w, data_ov000_023665c0, 0xffff, data_ov000_02369e14, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0x15);
         break;
     case 11:
-        func_02069f1c(w, data_ov000_023665dc, 0xffff, data_ov000_02369e0c, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0x29);
-        func_0206e3c0(&w->base.coll2, -45, 0, 45, 400);
+        StageObj_Load2dBAC(w, data_ov000_023665dc, 0xffff, data_ov000_02369e0c, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0x29);
+        ObjRect_SetBox2D(&w->base.coll2, -45, 0, 45, 400);
         w->base.coll2.unkA |= 0xc0;
-        func_0206e2b4(&w->base.coll2, 0, -16);
+        ObjRect_SetAtkDefFlags(&w->base.coll2, 0, -16);
         w->base.coll2.unk28 = 0x12;
         w->base.coll2.unk1C = func_ov000_022ffb50;
         w->base.coll2.unk18 = w;
         break;
     case 12:
-        func_02069f1c(w, data_ov000_02366600, 0xffff, data_ov000_02369e04, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0x30);
-        func_0206e3c0(&w->base.coll2, -45, 0, 45, 400);
+        StageObj_Load2dBAC(w, data_ov000_02366600, 0xffff, data_ov000_02369e04, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0x30);
+        ObjRect_SetBox2D(&w->base.coll2, -45, 0, 45, 400);
         w->base.coll2.unkA |= 0xc0;
-        func_0206e2b4(&w->base.coll2, 0, -16);
+        ObjRect_SetAtkDefFlags(&w->base.coll2, 0, -16);
         w->base.coll2.unk28 = 0x12;
         w->base.coll2.unk1C = func_ov000_022ffb50;
         w->base.coll2.unk18 = w;
         w->base.unk1F4 |= 0x20;
         break;
     case 16:
-        func_02069f1c(w, data_ov000_0236661c, 0xffff, data_ov000_02369dfc, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0x38);
+        StageObj_Load2dBAC(w, data_ov000_0236661c, 0xffff, data_ov000_02369dfc, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0x38);
         if (w->base.unk1E0->unk9 == 0)
-            func_0206e3c0(&w->base.coll2, -45, -45, 45, 45);
+            ObjRect_SetBox2D(&w->base.coll2, -45, -45, 45, 45);
         else
-            func_0206e3c0(&w->base.coll2, -45, p->unk7, 45, p->unk9 + p->unk7);
+            ObjRect_SetBox2D(&w->base.coll2, -45, p->unk7, 45, p->unk9 + p->unk7);
         w->base.coll2.unkA |= 0xc0;
-        func_0206e2b4(&w->base.coll2, 0, -16);
+        ObjRect_SetAtkDefFlags(&w->base.coll2, 0, -16);
         w->base.coll2.unk28 = 0x12;
         w->base.coll2.unk1C = func_ov000_022ffb50;
         w->base.coll2.unk18 = w;
         break;
     case 17:
-        func_02069f1c(w, data_ov000_02366638, 0xffff, data_ov000_02369df4, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0x45);
-        func_0206e3c0(&w->base.coll2, -100, 0, 0, 100);
+        StageObj_Load2dBAC(w, data_ov000_02366638, 0xffff, data_ov000_02369df4, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0x45);
+        ObjRect_SetBox2D(&w->base.coll2, -100, 0, 0, 100);
         w->base.coll2.unkA |= 0xc0;
-        func_0206e2b4(&w->base.coll2, 0, -16);
+        ObjRect_SetAtkDefFlags(&w->base.coll2, 0, -16);
         w->base.coll2.unk28 = 0x12;
         w->base.coll2.unk1C = func_ov000_022ffb50;
         w->base.coll2.unk18 = w;
         break;
     case 18:
-        func_02069f1c(w, data_ov000_02366658, 0xffff, data_ov000_02369e24, data_ov000_02369ba0);
-        func_0206a054(w, 0, 0x46);
-        func_0206e3c0(&w->base.coll2, -60, 10, 0, 80);
+        StageObj_Load2dBAC(w, data_ov000_02366658, 0xffff, data_ov000_02369e24, data_ov000_02369ba0);
+        StageObj_AllocSpritePalette(w, 0, 0x46);
+        ObjRect_SetBox2D(&w->base.coll2, -60, 10, 0, 80);
         w->base.coll2.unkA |= 0xc0;
-        func_0206e2b4(&w->base.coll2, 0, -16);
+        ObjRect_SetAtkDefFlags(&w->base.coll2, 0, -16);
         w->base.coll2.unk28 = 0x12;
         w->base.coll2.unk1C = func_ov000_022ffb50;
         w->base.coll2.unk18 = w;
@@ -118,7 +118,7 @@ UnkStruct_023008d0 *func_ov000_023008d0(UnkStruct_ObjParam *p, s32 b, s32 c) {
         }
         break;
     }
-    func_02069918(w, 0x14);
+    StageObj_SetOAMOrder(w, 0x14);
     if (w->base.unk1E0->unk4 & 0x10)
         w->base.unk5C &= ~1;
     w->base.unk58 |= 0x140;
@@ -134,6 +134,6 @@ UnkStruct_023008d0 *func_ov000_023008d0(UnkStruct_ObjParam *p, s32 b, s32 c) {
         func_ov000_023008a0(&w->base);
     else
         func_ov000_02300808(&w->base);
-    w->base.unk1DC = func_0203663c();
+    w->base.unk1DC = Sound_AllocHandle();
     return w;
 }

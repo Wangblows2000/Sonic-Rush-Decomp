@@ -10,19 +10,19 @@ void func_ov000_0230d930(UnkStruct_StageObj *par, s32 vx, s32 vy, u32 k) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == func_02006abc(0))
         return;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
-    func_02069f1c(w, data_ov000_02366b60, 2, data_ov000_0236a01c, data_ov000_02369ba0);
+    StageObj_Load2dBAC(w, data_ov000_02366b60, 2, data_ov000_0236a01c, data_ov000_02369ba0);
     if (k >= 6)
-        func_0206a054(w, 8, 0x17);
+        StageObj_AllocSpritePalette(w, 8, 0x17);
     else
-        func_0206a054(w, 0, 2);
-    func_02069818(w, (u16)(k + 2));
-    func_02069918(w, 0x15);
+        StageObj_AllocSpritePalette(w, 0, 2);
+    StageObj_SetAnimation(w, (u16)(k + 2));
+    StageObj_SetOAMOrder(w, 0x15);
     w->unk5C |= 1;
     w->unk5C |= par->unk5C & 2;
     w->unk88 = par;

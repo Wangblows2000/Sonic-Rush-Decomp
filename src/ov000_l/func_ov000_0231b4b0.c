@@ -11,15 +11,15 @@ typedef struct {
     UnkPt_0231b4b0 pt[16];
 } UnkWork_0231b4b0;
 
-void func_020446b0(s32 a);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+void ScreenShake_Start(s32 a);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void func_ov000_0231b37c(void);
 void func_ov000_0231b2d4(void);
 
 void func_ov000_0231b4b0(UnkWork_0231b4b0 *w, s32 a) {
     u8 i;
 
-    func_020446b0(3);
+    ScreenShake_Start(3);
     w->base.unk68 = func_ov000_0231b37c;
     w->base.unk70 = func_ov000_0231b2d4;
     w->base.unkC = 0;
@@ -32,5 +32,5 @@ void func_ov000_0231b4b0(UnkWork_0231b4b0 *w, s32 a) {
             w->pt[i].x = ((a << 15) >> 16) + i * 16;
         w->pt[i].y = i * 0x80 - 0x500;
     }
-    func_0204b7ec(0, 0, 0x4b);
+    Sound_PlaySeqArcEx(0, 0, 0x4b);
 }

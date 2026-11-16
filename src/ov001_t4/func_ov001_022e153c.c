@@ -26,15 +26,15 @@ typedef struct {
     UnkRes_022e153c *res4;
 } UnkWork_022e153c;
 
-void func_0203473c(void *bg, UnkRes_022e153c *res, s32 a, s32 b, s32 c, u16 w, u16 h);
-void func_0203438c(void *bg);
+void Background_Init(void *bg, UnkRes_022e153c *res, s32 a, s32 b, s32 c, u16 w, u16 h);
+void Background_Draw(void *bg);
 s32 func_ov001_022e17bc(void *p);
 u32 func_ov001_022e17b0(void *p);
 void func_02008648(void *src, void *dst);
 void func_02008720(void *src, void *dst);
 void func_020087f8(void *src, void *dst);
-void *func_02033a54(void *p);
-void func_02033a68(void *src, void *dst, u32 size);
+void *Compress_GetData(void *p);
+void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void func_ov001_022e14dc(UnkSpr_022e153c *s, UnkRes_022e153c *res, u32 idx, u16 v, s32 mode);
 
@@ -44,11 +44,11 @@ void func_ov001_022e153c(UnkWork_022e153c *w) {
     s32 i;
 
     res = w->res0;
-    func_0203473c(w->bg0, res, 0x38, 0, 1, res->w, res->h);
-    func_0203438c(w->bg0);
+    Background_Init(w->bg0, res, 0x38, 0, 1, res->w, res->h);
+    Background_Draw(w->bg0);
     res = w->res1;
-    func_0203473c(w->bg1, res, 0x38, 0, 2, res->w, res->h);
-    func_0203438c(w->bg1);
+    Background_Init(w->bg1, res, 0x38, 0, 2, res->w, res->h);
+    Background_Draw(w->bg1);
     res = (UnkRes_022e153c *)((u8 *)res + res->unk10);
     switch (func_ov001_022e17bc(res)) {
     case 0x10:
@@ -61,7 +61,7 @@ void func_ov001_022e153c(UnkWork_022e153c *w) {
         func_020087f8(res, w->buf);
         break;
     default:
-        func_02033a68(func_02033a54(res), w->buf, func_ov001_022e17b0(res));
+        Mem_Copy(Compress_GetData(res), w->buf, func_ov001_022e17b0(res));
         break;
     }
     DC_StoreRange(w->buf, func_ov001_022e17b0(res));

@@ -9,15 +9,15 @@ typedef struct UnkStruct_02313b58_arc {
     u8 pad[0x5c];
 } UnkStruct_02313b58_arc;
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern UnkStruct_02313b58 *data_ov001_0231f694;
 extern char data_ov001_0231eef0[];
 
-void func_02031768(void *o);
+void Model_Release(void *o);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 BOOL func_02021310(void *arc, const char *name, void *narc);
 u32 func_02021264(void *arc, u32 idx);
 void func_0202566c(u32 p);
@@ -31,7 +31,7 @@ void func_ov001_02313b58(void) {
     u32 size;
 
     if (data_ov001_0231f694->res != NULL) {
-        func_02031768(data_ov001_0231f694->obj);
+        Model_Release(data_ov001_0231f694->obj);
         func_02021310(&arc, data_ov001_0231eef0, data_ov001_0231f694->res);
         func_0202566c(func_02021264(&arc, 0));
         func_020212e0(&arc);
@@ -45,7 +45,7 @@ void func_ov001_02313b58(void) {
                 DC_StoreRange(p, size);
             }
         }
-        func_020349b8(data_0208fe80, p);
+        Heap_Free(gMainHeap, p);
         data_ov001_0231f694->res = NULL;
     }
     p = (u8 *)data_ov001_0231f694;
@@ -58,6 +58,6 @@ void func_ov001_02313b58(void) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
     data_ov001_0231f694 = NULL;
 }

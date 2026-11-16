@@ -14,6 +14,6 @@ void func_ov000_02327398(UnkWork_02327398 *w) {
         w->base.unk54 |= 4;
         return;
     }
-    func_02033550((UnkStruct_Spr *)w->spr, w->unk1CC);
+    AnimatorSprite_SetAnimation((UnkStruct_Spr *)w->spr, w->unk1CC);
     w->base.unk5C &= ~8;
 }

@@ -8,13 +8,13 @@ typedef struct UnkStruct_02356728 {
     u32 unk10;
 } UnkStruct_02356728;
 
-extern UnkStruct_02356728 data_022b65b4;
+extern UnkStruct_02356728 gTouchState;
 
 #pragma thumb on
 BOOL func_ov000_02356728(void) {
-    if (data_022b65b4.unk10 & 0x40) {
-        u16 x = data_022b65b4.unk8;
-        u16 y = data_022b65b4.unkA;
+    if (gTouchState.unk10 & 0x40) {
+        u16 x = gTouchState.unk8;
+        u16 y = gTouchState.unkA;
         if (x >= 8 && x < 0x28 && y >= 0x4c && y < 0x6c)
             return TRUE;
     }

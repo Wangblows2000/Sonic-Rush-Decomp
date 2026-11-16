@@ -21,7 +21,7 @@ struct UnkStruct_023495a8 {
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_02346d30(UnkStruct_023495a8 *w);
 
 void func_ov000_023495a8(UnkStruct_023495a8 *w, s16 vx, s16 vy) {
@@ -29,7 +29,7 @@ void func_ov000_023495a8(UnkStruct_023495a8 *w, s16 vx, s16 vy) {
     u32 d3;
 
     w->unk352 = 0x80;
-    func_0204b7ec(w->unk384, 0, 0x40);
+    Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
     if (vx < 0) {
         w->unk5C |= 1;
     } else {

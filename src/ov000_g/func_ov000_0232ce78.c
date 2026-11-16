@@ -30,9 +30,9 @@ typedef struct {
 
 UnkStruct_0232ce78_P *func_ov000_02342358(s32 a);
 void func_ov000_02336f28(u32 *p, s32 v, s32 n);
-void func_02033550(void *s, u16 a);
+void AnimatorSprite_SetAnimation(void *s, u16 a);
 void func_ov000_0232d30c(UnkStruct_0232ce78 *w, s32 a);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0232ce4c(UnkStruct_0232ce78 *w);
 
 void func_ov000_0232ce78(UnkStruct_0232ce78 *w) {
@@ -46,8 +46,8 @@ void func_ov000_0232ce78(UnkStruct_0232ce78 *w) {
         w->unk268 = 0;
     if (w->unk26C != w->unk268) {
         func_ov000_02336f28(&w->unk270, w->unk268, 100);
-        func_02033550(w->unk134, ((w->unk270 & 0xf0) >> 4) + 1);
-        func_02033550(w->unk17C, ((w->unk270 & 0xf0) >> 4) + 1);
+        AnimatorSprite_SetAnimation(w->unk134, ((w->unk270 & 0xf0) >> 4) + 1);
+        AnimatorSprite_SetAnimation(w->unk17C, ((w->unk270 & 0xf0) >> 4) + 1);
         w->unk254 = w->unk258 = 0x180;
         w->unk264 = 4;
         w->unk274 = 8;
@@ -55,8 +55,8 @@ void func_ov000_0232ce78(UnkStruct_0232ce78 *w) {
     if (w->unk274 != 0) {
         w->unk274--;
         if (w->unk274 == 0) {
-            func_02033550(w->unk1C4, (w->unk270 & 0xf) + 1);
-            func_02033550(w->unk20C, (w->unk270 & 0xf) + 1);
+            AnimatorSprite_SetAnimation(w->unk1C4, (w->unk270 & 0xf) + 1);
+            AnimatorSprite_SetAnimation(w->unk20C, (w->unk270 & 0xf) + 1);
             w->unk256 = w->unk25A = 0x180;
             w->unk266 = 4;
         }
@@ -67,7 +67,7 @@ void func_ov000_0232ce78(UnkStruct_0232ce78 *w) {
         func_ov000_0232d30c(w, 1);
     if (w->unk268 == 0) {
         if (w->unk276 == 0)
-            func_0204b7ec(NULL, 0, 0xe8);
+            Sound_PlaySeqArcEx(NULL, 0, 0xe8);
         w->unk276++;
     }
     if (w->unk276 > 0x50)

@@ -20,18 +20,18 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-void func_020316f4(UnkObj_022d58ac *o);
+void Model_Animate(UnkObj_022d58ac *o);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov001_022d5694(UnkStruct_022d58ac *p, s32 a, s32 b);
 void func_02025268(s32 a, s32 *b, s32 c);
-void func_020315e0(UnkObj_022d58ac *o);
+void Model_Draw(UnkObj_022d58ac *o);
 
 #pragma thumb on
 void func_ov001_022d58ac(UnkStruct_022d58ac *p, s32 x, s32 y) {
     UnkObj_022d58ac *o = &p->obj;
     s32 v;
 
-    func_020316f4(o);
+    Model_Animate(o);
     o->x = x << 12;
     o->y = y << 12;
     o->z = -0x50000;
@@ -41,7 +41,7 @@ void func_ov001_022d58ac(UnkStruct_022d58ac *p, s32 x, s32 y) {
     MTX_RotY33_(o->rot, data_0206e470[0], data_0206e470[1]);
     func_ov001_022d5694(p, p->unka8, 2);
     func_02025268(0x11, NULL, 0);
-    func_020315e0(o);
+    Model_Draw(o);
     v = 1;
     func_02025268(0x12, &v, 1);
 }

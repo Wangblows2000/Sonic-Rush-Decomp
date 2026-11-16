@@ -1,15 +1,15 @@
 #include <nitro/types.h>
 
 typedef struct { u8 pad0[4]; u32 flags; } UnkStruct_02058350;
-extern s16 data_022c4da0;
+extern s16 gTalkDemoId;
 
 void func_02059b04(u32 a);
-u32 func_02060e70(s32 a);
+u32 TalkDemo_GetFlags(s32 a);
 UnkStruct_02058350 *func_02058350(void);
 
 #pragma thumb on
 void func_020605a4(void) {
-    switch (data_022c4da0) {
+    switch (gTalkDemoId) {
     case 0xa:
         func_02059b04(0x20000);
         break;
@@ -28,7 +28,7 @@ void func_020605a4(void) {
     case 0x36:
     case 0x38:
     case 0x39:
-        if (func_02060e70(0) & 0x400)
+        if (TalkDemo_GetFlags(0) & 0x400)
             func_02058350()->flags |= 0x200000;
         break;
     case 0xe: {

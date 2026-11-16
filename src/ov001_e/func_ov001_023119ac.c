@@ -24,7 +24,7 @@ typedef struct UnkStruct_023119ac {
 
 BOOL func_ov001_02312138(UnkStruct_023119ac *p);
 void func_ov001_023122d8(UnkStruct_023119ac *p, s32 state);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov001_023070fc(s32 type, s32 x, s32 y, s32 z);
 
 void func_ov001_023119ac(UnkStruct_023119ac *p) {
@@ -39,7 +39,7 @@ void func_ov001_023119ac(UnkStruct_023119ac *p) {
         return;
     }
     if (p->unk120 == 0 && p->rings > 0) {
-        func_02036754(0, 0x10, 4);
+        Sound_PlaySeqArc(0, 0x10, 4);
         for (i = 0; i < p->rings; i++) {
             func_ov001_023070fc(4, p->x, p->y, p->z);
             if (i == 9)

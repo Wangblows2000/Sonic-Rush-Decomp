@@ -58,7 +58,7 @@ extern UnkStruct_022c85e8_2 *data_ov000_02369acc;
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cc06c(void *p, s32 a, s32 b);
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c8428(UnkStruct_022c85e8 *s);
 
 void func_ov000_022c85e8(UnkStruct_022c85e8 *s) {
@@ -72,7 +72,7 @@ void func_ov000_022c85e8(UnkStruct_022c85e8 *s) {
         p->unk420 = 0x1000;
         p->unk418 &= ~1;
     }
-    func_02036754(0, 0, 0x81);
+    Sound_PlaySeqArc(0, 0, 0x81);
     s->unk20C = 0;
     s->func = func_ov000_022c8428;
     s->func(s);

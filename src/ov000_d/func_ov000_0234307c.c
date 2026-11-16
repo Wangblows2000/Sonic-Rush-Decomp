@@ -22,7 +22,7 @@ extern UnkStruct_0234307c_4560 data_022c4560;
 
 void func_ov000_0232ecac(s32 a, s32 b);
 void func_ov000_0232f064(UnkStruct_0234307c *w);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_0206cdf4(void *p, s32 a, s32 b, s32 c);
 
 void func_ov000_0234307c(UnkStruct_0234307c *w, s16 v) {
@@ -39,7 +39,7 @@ void func_ov000_0234307c(UnkStruct_0234307c *w, s16 v) {
     }
     if (v < 0) {
         if (w->unk3B6 != 0) {
-            func_0204b7ec(NULL, 0, 0x3c);
+            Sound_PlaySeqArcEx(NULL, 0, 0x3c);
             func_0206cdf4(w->unk414, 0, 0, 0);
         }
         w->unk3B6 = 0;
@@ -48,11 +48,11 @@ void func_ov000_0234307c(UnkStruct_0234307c *w, s16 v) {
     if (w->unk3B6 == 0) {
         if (w->unk350 >= 0x12c0) {
             w->unk3B6 = 0x140;
-            func_0204b7ec(NULL, 0, 0x3a);
+            Sound_PlaySeqArcEx(NULL, 0, 0x3a);
         }
     } else if (v > 0) {
         w->unk3B6 = 0x140;
-        func_0204b7ec(NULL, 0, 0x3b);
+        Sound_PlaySeqArcEx(NULL, 0, 0x3b);
     }
     t = w->unk350;
     if (t < 0) {

@@ -23,7 +23,7 @@ typedef struct {
 void func_ov000_0234a288(void);
 s32 func_ov000_0234cb70();
 void func_ov000_0234c4a4(UnkStruct_0234aa80 *w, s32 a);
-void func_0206e2b4(void *p, s32 a, s32 b);
+void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 
 void func_ov000_0234aa80(UnkStruct_0234aa80 *w) {
     s16 vx, v;
@@ -37,7 +37,7 @@ void func_ov000_0234aa80(UnkStruct_0234aa80 *w) {
         w->unk58 |= 0x10;
         w->unk58 |= 0x8000;
         w->unk68 = func_ov000_0234a288;
-        func_0206e2b4(w->unk2CC, 0x13, 0);
+        ObjRect_SetAtkDefFlags(w->unk2CC, 0x13, 0);
         w->unk30 = -0x300;
         w->unk2E = vx;
         w->unk34 = v;

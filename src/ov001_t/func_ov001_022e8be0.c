@@ -20,9 +20,9 @@ typedef struct {
     s32 anim[4];
 } UnkStruct_022e8be0;
 
-void func_02033550(UnkSpr_022e8be0 *s, u16 anim);
-void func_0203344c(UnkSpr_022e8be0 *s, u32 a, u32 b);
-void func_02032d2c(UnkSpr_022e8be0 *s);
+void AnimatorSprite_SetAnimation(UnkSpr_022e8be0 *s, u16 anim);
+void AnimatorSprite_ProcessAnimation(UnkSpr_022e8be0 *s, u32 a, u32 b);
+void AnimatorSprite_Draw(UnkSpr_022e8be0 *s);
 
 #pragma thumb on
 void func_ov001_022e8be0(UnkStruct_022e8be0 *p, u32 sel) {
@@ -88,17 +88,17 @@ void func_ov001_022e8be0(UnkStruct_022e8be0 *p, u32 sel) {
             a++;
         }
         if (a != p->anim[3]) {
-            func_02033550(&p->spr[3], a);
+            AnimatorSprite_SetAnimation(&p->spr[3], a);
             p->anim[3] = a;
         }
         p->spr[3].x = 8;
         p->spr[3].y = y;
-        func_0203344c(&p->spr[3], 0, 0);
-        func_02032d2c(&p->spr[3]);
+        AnimatorSprite_ProcessAnimation(&p->spr[3], 0, 0);
+        AnimatorSprite_Draw(&p->spr[3]);
     }
     cur = &p->anim[idx];
     if (base != *cur) {
-        func_02033550(&p->spr[idx], base);
+        AnimatorSprite_SetAnimation(&p->spr[idx], base);
         *cur = base;
     }
     p->spr[idx].x = 0;
@@ -109,7 +109,7 @@ void func_ov001_022e8be0(UnkStruct_022e8be0 *p, u32 sel) {
         p->spr[idx].flags &= ~4;
     }
     spr = &p->spr[idx];
-    func_0203344c(spr, 0, 0);
-    func_02032d2c(spr);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
+    AnimatorSprite_Draw(spr);
 }
 #pragma thumb reset

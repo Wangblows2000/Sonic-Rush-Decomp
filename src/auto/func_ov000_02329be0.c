@@ -1,13 +1,13 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_02068df8();
+s32 ObjSpd_UpSet();
 extern u8 data_022c4560[];
 s32 func_02066a9c();
 extern u8 data_ov000_0236aad8[];
 
 void func_ov000_02329be0(u8 *p0) {
-    s32 t0 = func_02068df8(*(s16 *)((u8 *)p0 + 0x30), -13, *(u32 *)((u8 *)p0 + 0x8));
+    s32 t0 = ObjSpd_UpSet(*(s16 *)((u8 *)p0 + 0x30), -13, *(u32 *)((u8 *)p0 + 0x8));
     *(u16 *)((u8 *)p0 + 0x30) = t0;
     *(u16 *)((u8 *)p0 + 0x2e) = ((s32)*(s16 *)((u8 *)p0 + 0x30) >> 1);
     s32 t1 = (*(u32 *)((u8 *)data_022c4560 + 0x20) & 2);

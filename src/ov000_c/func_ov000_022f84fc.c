@@ -29,9 +29,9 @@ typedef struct {
     } unk20;
 } UnkStruct_0208922c;
 
-extern void *data_022c4488;
-extern void *data_0208fe80;
-extern UnkStruct_0208922c data_0208922c;
+extern void *gZoneActArchive;
+extern void *gMainHeap;
+extern UnkStruct_0208922c gDisplayMain;
 extern u8 data_ov000_02365f38[];
 extern u8 data_ov000_02365f3c[], data_ov000_02365f50[], data_ov000_02365f68[], data_ov000_02365f80[], data_ov000_02365f98[], data_ov000_02365fb0[], data_ov000_02365fc8[], data_ov000_02365fe0[], data_ov000_02365ff8[], data_ov000_02366014[], data_ov000_0236602c[];
 
@@ -41,9 +41,9 @@ void func_0202566c(void *p);
 void func_020212e0(void *f);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 n);
-void func_020349b8(void *heap, void *p);
-void func_02031768(void *s);
-void func_020446b0(s32 a);
+void Heap_Free(void *heap, void *p);
+void Model_Release(void *s);
+void ScreenShake_Start(s32 a);
 void func_ov000_022fb9c8(UnkStruct_022f84fc_Task *t);
 
 static inline void FreeRes(void *p) {
@@ -60,7 +60,7 @@ static inline void FreeRes(void *p) {
             DC_StoreRange(q, size);
         }
     }
-    func_020349b8(data_0208fe80, q);
+    Heap_Free(gMainHeap, q);
 }
 
 void func_ov000_022f84fc(UnkStruct_022f84fc_Task *t) {
@@ -69,7 +69,7 @@ void func_ov000_022f84fc(UnkStruct_022f84fc_Task *t) {
     s32 i;
     UnkStruct_022f84fc_Sub *sub;
 
-    func_02021310(ctx, data_ov000_02365f38, data_022c4488);
+    func_02021310(ctx, data_ov000_02365f38, gZoneActArchive);
     func_0202566c(func_0202128c(data_ov000_02365f3c));
     func_0202566c(func_0202128c(data_ov000_02365f50));
     func_0202566c(func_0202128c(data_ov000_02365f68));
@@ -97,14 +97,14 @@ void func_ov000_022f84fc(UnkStruct_022f84fc_Task *t) {
         FreeRes(w->unk240);
         w->unk240 = NULL;
     }
-    func_02031768(&w->unk244);
-    func_02031768(&w->unk85C);
+    Model_Release(&w->unk244);
+    Model_Release(&w->unk85C);
     sub = w->unk37C;
     for (i = 0; i < 4; i++) {
-        func_02031768(sub);
+        Model_Release(sub);
         sub++;
     }
-    data_0208922c.unk20.b6 = 0;
-    func_020446b0(0);
+    gDisplayMain.unk20.b6 = 0;
+    ScreenShake_Start(0);
     func_ov000_022fb9c8(t);
 }

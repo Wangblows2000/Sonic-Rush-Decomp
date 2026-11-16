@@ -44,7 +44,7 @@ typedef struct {
 } UnkStruct_02369b78;
 
 extern UnkStruct_02369b78 *data_ov000_02369b78;
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02365ae8[];
 
 void func_ov000_022ec530(void);
@@ -53,8 +53,8 @@ void func_ov000_022ec44c(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void func_020212e0(void *f);
-void func_02031c1c(void *s, s32 a);
-void func_02031bd0(void *s, void *res, s32 idx);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
 
 UnkStruct_022ee654 *func_ov000_022ee654(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
@@ -65,14 +65,14 @@ UnkStruct_022ee654 *func_ov000_022ee654(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_022ee654_Sub *sub;
     vu16 zero;
 
-    w = func_020372d0(func_0206c3d0, func_ov000_022ec530, 0, 0x502, 2, sizeof(UnkStruct_022ee654))->work;
+    w = Task_Create(StageObj_Main, func_ov000_022ec530, 0, 0x502, 2, sizeof(UnkStruct_022ee654))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022ee654));
     w->base.unk68 = func_ov000_022ec364;
     w->unk378 = par->unk3D0;
     w->unk37C = par->unk42E;
-    w->unk384 = func_0203663c();
-    func_02021310(ctx, data_ov000_02365ae8, data_022c4488);
+    w->unk384 = Sound_AllocHandle();
+    func_02021310(ctx, data_ov000_02365ae8, gZoneActArchive);
     if (w->unk378 == 0) {
         w->unk388 = func_02021264(ctx, 0x12);
         w->unk38C = func_02021264(ctx, 0x13);
@@ -102,20 +102,20 @@ UnkStruct_022ee654 *func_ov000_022ee654(UnkStruct_ObjParam *p, s32 b, s32 c) {
         coll = &w->base.coll0;
         coll->unkA &= ~4;
         coll = &w->base.coll1;
-        func_0206e3c0(coll, -12, -256, 12, 0);
+        ObjRect_SetBox2D(coll, -12, -256, 12, 0);
         coll->unk18 = w;
         coll->unkA &= ~4;
     } else {
         coll = &w->base.coll0;
         coll->unkA &= ~4;
         coll = &w->base.coll1;
-        func_0206e3c0(coll, -8, -256, 8, 0);
+        ObjRect_SetBox2D(coll, -8, -256, 8, 0);
         coll->unk18 = w;
         coll->unkA &= ~4;
     }
     sub = &w->unk20C;
-    func_02031c1c(sub, 0);
-    func_02031bd0(sub, w->unk388, 0);
+    Model_Init(sub, 0);
+    Model_SetResource(sub, w->unk388, 0);
     sub->unk48 = w->base.unk10 << 4;
     sub->unk4C = -(w->base.unk14 << 4);
     sub->unk50 = w->base.unk18 << 4;

@@ -19,7 +19,7 @@ typedef struct {
     s8 unk67;
 } UnkStruct_023526cc;
 
-extern u32 data_022c4ef0;
+extern u32 gObjManagerFlags;
 extern s16 data_0206e470[];
 
 static inline s16 UnkSin_023526cc(u16 a) {
@@ -54,7 +54,7 @@ void func_ov000_023526cc(UnkStruct_023526cc *w, UnkStruct_023526cc *o) {
         }
         w->unk58 |= 4;
     }
-    if (data_022c4ef0 & 0x100) {
+    if (gObjManagerFlags & 0x100) {
         return;
     }
     if (o->unk1 != 0) {

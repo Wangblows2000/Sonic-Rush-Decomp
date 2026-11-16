@@ -55,8 +55,8 @@ typedef struct {
     s32 unk4;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_022e1684_Task *data_022b4574;
-extern u32 data_022c4ef0;
+extern UnkStruct_022e1684_Task *gTaskCurrent;
+extern u32 gObjManagerFlags;
 extern s16 data_0206e470[];
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_022e1684 *data_ov000_02369b4c;
@@ -67,8 +67,8 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000e98(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
 void func_ov000_022e1f88(UnkStruct_022e1684 *w);
-void func_020316f4(void *s);
-void func_020315e0(void *s);
+void Model_Animate(void *s);
+void Model_Draw(void *s);
 void func_02025268(s32 a, s32 *b, s32 c);
 void func_02025a94(void *a, void *b);
 void func_ov000_022e4568(UnkStruct_022e1684 *w);
@@ -85,13 +85,13 @@ void func_ov000_022e1684(void) {
     s32 t1;
     s32 t2;
     s32 t3;
-    UnkStruct_022e1684 *w = data_022b4574->work;
+    UnkStruct_022e1684 *w = gTaskCurrent->work;
     s32 i;
     UnkStruct_022e1684_Sub *sub;
     s32 idx;
     u32 flags;
 
-    if (!(data_022c4ef0 & 1)) {
+    if (!(gObjManagerFlags & 1)) {
         w->unkD50 += 1.5170370370370372;
         w->unkD52 += 6.674962962962963;
         sub = &w->unk210[1];
@@ -114,12 +114,12 @@ void func_ov000_022e1684(void) {
     if (!(w->unk20C & 1)) {
         sub = w->unk210;
         for (i = 0; i <= 2; i++) {
-            func_020316f4(sub);
-            func_020315e0(sub);
+            Model_Animate(sub);
+            Model_Draw(sub);
             sub++;
         }
     }
-    func_020315e0(&w->unk210[w->unkD5C + 3]);
+    Model_Draw(&w->unk210[w->unkD5C + 3]);
     if (w->base.unk5C & 0x20)
         return;
     sub = &w->unk210[6];
@@ -133,8 +133,8 @@ void func_ov000_022e1684(void) {
         MTX_RotY33_(mtx, SIN_IDX(idx), COS_IDX(idx));
         func_02000f34(sub->unk24, mtx, sub->unk24);
     }
-    func_020316f4(sub);
-    func_020315e0(sub);
+    Model_Animate(sub);
+    Model_Draw(sub);
     switch (data_ov000_02369ac0.unk4) {
     case 0x1f:
     case 0x21:
@@ -159,11 +159,11 @@ void func_ov000_022e1684(void) {
         MTX_RotY33_(sub->unk24, SIN_IDX(idx), COS_IDX(idx));
     }
     sub->unk8 = 0x1e;
-    func_020316f4(sub);
-    func_020315e0(sub);
+    Model_Animate(sub);
+    Model_Draw(sub);
     sub->unk8 = 0x1d;
-    func_020316f4(sub);
-    func_020315e0(sub);
+    Model_Animate(sub);
+    Model_Draw(sub);
     flags = w->unk20C;
     if (flags & 4) {
         func_ov000_022e4568(w);

@@ -8,13 +8,13 @@ typedef struct {
     u8 *res1;               /* 0x210 */
     u8 *res2;               /* 0x214 */
 } UnkWork_020577c4;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void func_02039bb0(s32 a, void *b);
+void ObjVram_Free(s32 a, void *b);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 static inline void Free_020577c4(u8 *blk) {
@@ -28,7 +28,7 @@ static inline void Free_020577c4(u8 *blk) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
 }
 
 void func_020577c4(UnkWork_020577c4 *w) {
@@ -36,7 +36,7 @@ void func_020577c4(UnkWork_020577c4 *w) {
 
     for (i = 0; i < 7; i++) {
         if (w->spr[i].unk34 != NULL)
-            func_02039bb0(1, w->spr[i].unk34);
+            ObjVram_Free(1, w->spr[i].unk34);
     }
     if (w->res1 != NULL)
         Free_020577c4(w->res1);

@@ -28,7 +28,7 @@ extern u16 data_ov001_02317090[];
 UnkStruct_02308884_o *func_ov001_0230c0a4(void);
 UnkStruct_02308884_d *func_ov001_02314664(s32 a);
 float func_0202f1bc(u32 v);
-void func_02032d2c(void *p);
+void AnimatorSprite_Draw(void *p);
 void func_ov001_02315714(void);
 void func_02025268(u32 op, const u32 *args, u32 n);
 void func_ov001_0231402c(void);
@@ -65,7 +65,7 @@ void func_ov001_02308884(void) {
     d = func_ov001_02314664(o->unk150);
     f = 1.0f - func_0202f1bc(o->unk14E) / func_0202f1bc(d->unk20);
     for (i = 0; i < d->unk22; i++)
-        func_02032d2c(g->objs[i]);
+        AnimatorSprite_Draw(g->objs[i]);
     func_ov001_02315714();
     func_02025268(0x11, 0, 0);
     func_ov001_0231402c();
@@ -112,5 +112,5 @@ void func_ov001_02308884(void) {
     a13 = 1;
     func_02025268(0x12, &a13, 1);
     func_ov001_023156a8();
-    func_02032d2c(g->objA50);
+    AnimatorSprite_Draw(g->objA50);
 }

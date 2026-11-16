@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_022b4574[];
+extern unsigned char gTaskCurrent[];
 int func_ov001_022dac0c();
 int func_ov001_022db150();
 int func_ov001_022da59c();
@@ -49,7 +49,7 @@ void func_ov001_022db014(void)
   int iVar1;
   int *piVar2;
   
-  piVar2 = *(int **)(*((int *)data_022b4574) + 0x10);
+  piVar2 = *(int **)(*((int *)gTaskCurrent) + 0x10);
   func_ov001_022da59c(piVar2);
   func_ov001_022d9cb0(piVar2,0,0);
   *piVar2 = *piVar2 + 1;
@@ -74,7 +74,7 @@ void func_ov001_022db014(void)
     func_ov001_022d6dc0();
     func_ov001_022d97a8(0,0x10,0x10,0xc);
     func_02051db0(2,0xc,0x3000,0);
-    *(undefined4 *)(*((int *)data_022b4574) + 8) = ((int)func_ov001_022dac0c);
+    *(undefined4 *)(*((int *)gTaskCurrent) + 8) = ((int)func_ov001_022dac0c);
     return;
   }
   iVar1 = func_02050018();
@@ -91,7 +91,7 @@ void func_ov001_022db014(void)
       return;
     }
     func_ov001_022da33c(piVar2);
-    *(undefined4 *)(*((int *)data_022b4574) + 8) = ((int)func_ov001_022db150);
+    *(undefined4 *)(*((int *)gTaskCurrent) + 8) = ((int)func_ov001_022db150);
   }
   return;
 }

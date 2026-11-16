@@ -8,9 +8,9 @@ typedef struct UnkWork_02058364 {
 } UnkWork_02058364;
 typedef struct { u8 pad0[0x10]; UnkWork_02058364 *work; } UnkTask_02058364;
 extern UnkTask_02058364 *data_022c467c;
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 
-UnkTask_02058364 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_02058364 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_02058280(void);
 void func_020582e4(void);
 u32 func_02006abc(s32 i);
@@ -26,20 +26,20 @@ void func_02058364(void) {
     vu16 zero;
     u32 lang;
 
-    t = func_020372d0(func_02058280, func_020582e4, 0, 0x3efe, 3, sizeof(UnkWork_02058364));
+    t = Task_Create(func_02058280, func_020582e4, 0, 0x3efe, 3, sizeof(UnkWork_02058364));
     data_022c467c = t;
     if (t != (UnkTask_02058364 *)func_02006abc(0)) {
         w = t->work;
         zero = 0;
         MIi_CpuClear16(zero, w, sizeof(UnkWork_02058364));
-        switch (data_02072cb8) {
+        switch (gGameLanguage) {
         case 0:
         case 1:
         case 2:
         case 3:
         case 4:
         case 5:
-            lang = data_02072cb8;
+            lang = gGameLanguage;
             break;
         default:
             lang = 1;

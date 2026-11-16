@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_0204b7ec();
+s32 Sound_PlaySeqArcEx();
 s32 func_ov000_02313e54();
 s32 func_ov000_02351d28();
 
@@ -17,7 +17,7 @@ void func_ov000_02313b00(u8 *p0, u8 *p1) {
     if (*(u8 *)t1 != 1) {
         return;
     }
-    func_0204b7ec(0, 0, 0x6d);
+    Sound_PlaySeqArcEx(0, 0, 0x6d);
     func_ov000_02313e54(t0, t1);
     if ((*(u16 *)((u8 *)*(u32 *)((u8 *)t0 + 0x1e0) + 0x4) & 1) != 0) {
         func_ov000_02351d28(t1, t0, 0xc, 0);

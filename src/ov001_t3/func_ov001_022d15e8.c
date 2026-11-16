@@ -52,14 +52,14 @@ typedef struct {
     u8 unk130c[4];
 } UnkStruct_022d15e8;
 
-extern UnkGfx_022d15e8 data_0208922c;
+extern UnkGfx_022d15e8 gDisplayMain;
 extern UnkTbl_022d15e8 data_ov001_023160e4;
 
 void func_ov001_022d0050(s32 a);
 void func_ov001_022cff74(UnkObj_022d15e8 *o, s32 a, void *b, void *c);
 void func_ov001_022d0158(s32 a);
 void func_ov001_022cfe58(void *a, s32 b, u16 c, s32 d, void *e, void *f);
-void func_0203438c(void *o);
+void Background_Draw(void *o);
 void func_ov001_022d0128(s32 a);
 void func_ov001_022d2234(UnkStruct_022d15e8 *p, void (*fn)(UnkStruct_022d15e8 *));
 void func_ov001_022d1494(UnkStruct_022d15e8 *p);
@@ -76,11 +76,11 @@ void func_ov001_022d15e8(UnkStruct_022d15e8 *p) {
     func_ov001_022cff74(&p->objs[2], 0x100, p->unkf0c, p->unkd0c);
     func_ov001_022d0158(3);
     func_ov001_022cfe58(p->unkb34, p->unk41c, data_ov001_023160e4.unk6, 0x100, p->unk130c, p->unk110c);
-    data_0208922c.blend.bg1a = 1;
-    data_0208922c.blend.mode = 1;
-    data_0208922c.alpha.eva = 0;
-    data_0208922c.alpha.evb = 15 - data_0208922c.alpha.eva;
-    func_0203438c(p->unk2d4);
+    gDisplayMain.blend.bg1a = 1;
+    gDisplayMain.blend.mode = 1;
+    gDisplayMain.alpha.eva = 0;
+    gDisplayMain.alpha.evb = 15 - gDisplayMain.alpha.eva;
+    Background_Draw(p->unk2d4);
     func_ov001_022d0128(2);
     for (i = 0; i < 4; i++) {
         func_ov001_022d0128(i);

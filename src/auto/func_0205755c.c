@@ -3,18 +3,18 @@
 
 #pragma thumb on
 
-extern u8 data_022b4574[];
+extern u8 gTaskCurrent[];
 s32 func_02057350();
-s32 func_020371c8();
+s32 Task_Destroy();
 s32 func_0201c070();
 s32 func_0201bf1c();
-s32 func_02036754();
+s32 Sound_PlaySeqArc();
 
 void func_0205755c(void) {
-    s32 t0 = *(u32 *)((u8 *)*(u32 *)data_022b4574 + 0x10);
-    s32 t1 = func_02057350(*(u32 *)data_022b4574);
+    s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
+    s32 t1 = func_02057350(*(u32 *)gTaskCurrent);
     if (t1 == 0) {
-        func_020371c8(*(u32 *)data_022b4574);
+        Task_Destroy(*(u32 *)gTaskCurrent);
         return;
     }
     *(u8 *)((u8 *)t0 + 0x9) = (*(s8 *)((u8 *)t0 + 9) - 0x1);
@@ -25,7 +25,7 @@ void func_0205755c(void) {
             func_0201c070(t2, 0);
             func_0201bf1c(*(u32 *)((u8 *)t0 + 0x4));
         }
-        func_02036754(*(u32 *)((u8 *)t0 + 0x4), *(u8 *)((u8 *)t0 + 0xa), *(u8 *)((u8 *)t0 + 0xb));
+        Sound_PlaySeqArc(*(u32 *)((u8 *)t0 + 0x4), *(u8 *)((u8 *)t0 + 0xa), *(u8 *)((u8 *)t0 + 0xb));
     }
 }
 

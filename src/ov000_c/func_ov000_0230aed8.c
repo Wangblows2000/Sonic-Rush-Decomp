@@ -3,7 +3,7 @@
 void func_ov000_0230b320(UnkStruct_StageObj *w);
 void func_0201c070(void *a, s32 b);
 void func_0201bd80(void *a, s32 b);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void func_ov000_0230a864(UnkStruct_StageObj *par, s16 dx, s16 dy, s16 vx, s16 vy);
 
 void func_ov000_0230aed8(UnkStruct_StageObj *w) {
@@ -17,10 +17,10 @@ void func_ov000_0230aed8(UnkStruct_StageObj *w) {
         if (w->unkC == 0x10 && (w->unk5C & 8)) {
             func_ov000_0230b320(w);
             w->unkC = 0x60;
-            func_02069818(w, 7);
+            StageObj_SetAnimation(w, 7);
             func_0201c070((void *)w->unk1DC, 0);
             func_0201bd80((void *)w->unk1DC, 0x100);
-            func_0204b7ec(0, 0, 0x46);
+            Sound_PlaySeqArcEx(0, 0, 0x46);
             func_ov000_0230a864(w, 0, 0, 0x1d0, 0);
             func_ov000_0230a864(w, 0, 0, 0, 0x1d0);
             func_ov000_0230a864(w, 0, 0, -0x1d0, 0);

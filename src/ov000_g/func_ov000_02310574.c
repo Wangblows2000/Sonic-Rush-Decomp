@@ -30,7 +30,7 @@ extern UnkStruct_02310574_Sys data_022c4560;
 
 void func_ov000_0232b3e0(UnkStruct_02310574_P *p, s32 t);
 void func_ov000_0232afb4(u16 n, s32 t);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_02310464(UnkStruct_02310574 *w);
 
 void func_ov000_02310574(UnkStruct_02310574 *w) {
@@ -46,7 +46,7 @@ void func_ov000_02310574(UnkStruct_02310574 *w) {
             func_ov000_0232b3e0(p, data_022c4560.unk20 - w->unkC);
             func_ov000_0232afb4(w->unk2E - 1, data_022c4560.unk20 - w->unkC);
             w->unkC = data_022c4560.unk20;
-            func_0204b7ec(NULL, 0, 0x44);
+            Sound_PlaySeqArcEx(NULL, 0, 0x44);
             w->unk8 = w->unk2E;
             w->unk5C &= ~0x10;
             if ((u32)w->unk8 >= 5) {

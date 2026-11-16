@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-extern void (*data_02077d4c)(u32 key);
-extern void (*data_02077d44)(u32 key);
+extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
+extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 
 void *func_02025ecc(u32 *res);
 void *func_02025e8c(u32 *res);
@@ -22,9 +22,9 @@ void func_0202566c(u32 *res) {
             u32 k1;
             u32 k2;
             func_02021ae4(tex, &k1, &k2);
-            if (texKey != 0) data_02077d4c(texKey);
-            if (k2 != 0) data_02077d44(k2);
-            if (k1 != 0) data_02077d44(k1);
+            if (texKey != 0) NNS_GfdDefaultFuncFreePlttVram(texKey);
+            if (k2 != 0) NNS_GfdDefaultFuncFreeTexVram(k2);
+            if (k1 != 0) NNS_GfdDefaultFuncFreeTexVram(k1);
         }
         break;
     }

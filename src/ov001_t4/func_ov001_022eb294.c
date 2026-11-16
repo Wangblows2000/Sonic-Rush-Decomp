@@ -41,7 +41,7 @@ typedef struct {
     UnkWork_022eb294 *work;
 } UnkTask_022eb294;
 
-extern UnkTask_022eb294 *data_022b4574;
+extern UnkTask_022eb294 *gTaskCurrent;
 
 void func_02040d14(UnkAnim_022eb294 *a);
 BOOL func_02040cf4(UnkAnim_022eb294 *a);
@@ -49,9 +49,9 @@ void func_ov001_022ea360(UnkWork_022eb294 *w, s32 i, s32 v);
 void func_ov001_022e9fe4(UnkWork_022eb294 *w, s32 i);
 void func_ov001_022e9fa8(UnkWork_022eb294 *w, s32 i);
 void func_ov001_022ea2f0(UnkWork_022eb294 *w);
-void func_0203344c(void *p, s32 a, s32 b);
-void func_02032d2c(void *p);
-void func_02032480(void *p, s32 sx, s32 sy, s32 d);
+void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
+void AnimatorSprite_Draw(void *p);
+void AnimatorSprite_DrawRotScale(void *p, s32 sx, s32 sy, s32 d);
 BOOL func_ov001_022e9ebc(UnkWork_022eb294 *w);
 BOOL func_ov001_022e9e30(UnkWork_022eb294 *w);
 BOOL func_ov001_022e9df0(UnkWork_022eb294 *w);
@@ -64,7 +64,7 @@ BOOL func_ov001_022e9e70(UnkWork_022eb294 *w);
 
 #pragma thumb on
 void func_ov001_022eb294(void) {
-    UnkWork_022eb294 *w = data_022b4574->work;
+    UnkWork_022eb294 *w = gTaskCurrent->work;
     UnkAnim_022eb294 *a;
     s32 i;
     UnkAnim_022eb294 *an;
@@ -91,61 +91,61 @@ void func_ov001_022eb294(void) {
     if (w->unkd0 >= 14) {
         w->sprites[10].x = a->x;
         w->sprites[10].y = a->y;
-        func_0203344c(&w->sprites[10], 0, 0);
-        func_02032d2c(&w->sprites[10]);
+        AnimatorSprite_ProcessAnimation(&w->sprites[10], 0, 0);
+        AnimatorSprite_Draw(&w->sprites[10]);
     } else {
         w->sprites[5].x = a->x;
         w->sprites[5].y = a->y;
-        func_0203344c(&w->sprites[5], 0, 0);
-        func_02032d2c(&w->sprites[5]);
+        AnimatorSprite_ProcessAnimation(&w->sprites[5], 0, 0);
+        AnimatorSprite_Draw(&w->sprites[5]);
     }
     if (w->unk4 <= 1) {
         a = &w->anims[7];
         w->sprites[0].x = a->x;
         w->sprites[0].y = a->y;
-        func_0203344c(&w->sprites[0], 0, 0);
-        func_02032d2c(&w->sprites[0]);
+        AnimatorSprite_ProcessAnimation(&w->sprites[0], 0, 0);
+        AnimatorSprite_Draw(&w->sprites[0]);
     }
     a = &w->anims[8];
     w->sprites[1].x = a->x;
     w->sprites[1].y = a->y;
-    func_0203344c(&w->sprites[1], 0, 0);
-    func_02032d2c(&w->sprites[1]);
+    AnimatorSprite_ProcessAnimation(&w->sprites[1], 0, 0);
+    AnimatorSprite_Draw(&w->sprites[1]);
     a = &w->anims[9];
     w->sprites[2].x = a->x;
     w->sprites[2].y = a->y;
-    func_0203344c(&w->sprites[2], 0, 0);
-    func_02032d2c(&w->sprites[2]);
+    AnimatorSprite_ProcessAnimation(&w->sprites[2], 0, 0);
+    AnimatorSprite_Draw(&w->sprites[2]);
     a = &w->anims[5];
     if (w->unkd0 >= 14) {
         w->sprites[9].x = a->x;
         w->sprites[9].y = a->y;
-        func_0203344c(&w->sprites[9], 0, 0);
+        AnimatorSprite_ProcessAnimation(&w->sprites[9], 0, 0);
         if (a->sx == 0x1000 && a->sy == 0x1000) {
-            func_02032d2c(&w->sprites[9]);
+            AnimatorSprite_Draw(&w->sprites[9]);
         } else {
-            func_02032480(&w->sprites[9], a->sx, a->sy, 0);
+            AnimatorSprite_DrawRotScale(&w->sprites[9], a->sx, a->sy, 0);
         }
     } else {
         w->sprites[3].x = a->x;
         w->sprites[3].y = a->y;
-        func_0203344c(&w->sprites[3], 0, 0);
+        AnimatorSprite_ProcessAnimation(&w->sprites[3], 0, 0);
         if (a->sx == 0x1000 && a->sy == 0x1000) {
-            func_02032d2c(&w->sprites[3]);
+            AnimatorSprite_Draw(&w->sprites[3]);
         } else {
-            func_02032480(&w->sprites[3], a->sx, a->sy, 0);
+            AnimatorSprite_DrawRotScale(&w->sprites[3], a->sx, a->sy, 0);
         }
     }
     a = &w->anims[10];
     w->sprites[8].x = a->x;
     w->sprites[8].y = a->y;
-    func_0203344c(&w->sprites[8], 0, 0);
-    func_02032d2c(&w->sprites[8]);
+    AnimatorSprite_ProcessAnimation(&w->sprites[8], 0, 0);
+    AnimatorSprite_Draw(&w->sprites[8]);
     a = &w->anims[11];
     w->sprites[4].x = a->x;
     w->sprites[4].y = a->y;
-    func_0203344c(&w->sprites[4], 0, 0);
-    func_02032d2c(&w->sprites[4]);
+    AnimatorSprite_ProcessAnimation(&w->sprites[4], 0, 0);
+    AnimatorSprite_Draw(&w->sprites[4]);
     if (w->unk0 == 0) {
         func_ov001_022ea77c(w);
         func_ov001_022ea694(w);

@@ -7,15 +7,15 @@ void func_ov000_0235e018(UnkStruct_SprObj *w) {
 
     if (w->anim[1] != 4) {
         w->anim[1] = 4;
-        func_02033550(spr, w->anim[1]);
+        AnimatorSprite_SetAnimation(spr, w->anim[1]);
     }
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     spr->x = 8;
     spr->y = 0x88;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
     spr->x = 0x98;
     spr->y = 0x88;
-    func_02032d2c(spr);
+    AnimatorSprite_Draw(spr);
 }
 
 #pragma thumb reset

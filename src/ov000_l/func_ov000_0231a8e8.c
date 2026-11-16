@@ -15,7 +15,7 @@ void func_ov000_0231a8e8(UnkWork_0231a8e8 *w) {
 
     for (i = 0; i < 2; i++) {
         s = &w->spr[i];
-        func_02033550(s, (u16)data_ov000_02364494[w->unk2A4][1]);
+        AnimatorSprite_SetAnimation(s, (u16)data_ov000_02364494[w->unk2A4][1]);
         s->unk2C &= ~4;
     }
 }

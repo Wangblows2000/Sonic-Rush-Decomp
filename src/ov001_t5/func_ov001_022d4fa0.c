@@ -7,8 +7,8 @@ typedef struct {
 
 extern UnkBright_022d4fa0 data_0208926c;
 extern UnkBright_022d4fa0 data_02087d44;
-extern s32 data_02087ccc;
-extern u32 data_02087cb8;
+extern s32 gSaveDataBusy;
+extern u32 gSystemFlags;
 
 s32 func_ov001_022d4f30(void);
 void func_ov001_022d4514(void);
@@ -25,7 +25,7 @@ void func_ov001_022d4fa0(void) {
     r = func_ov001_022d4f30();
     func_ov001_022d4514();
     func_ov001_022d44f4(r);
-    data_02087ccc = 0;
-    data_02087cb8 &= ~0x10;
+    gSaveDataBusy = 0;
+    gSystemFlags &= ~0x10;
 }
 #pragma thumb reset

@@ -38,12 +38,12 @@ struct UnkStruct_022d5c80 {
     UnkStruct_022d5c80_v unk2D8;
 };
 
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d5bf4(UnkStruct_022d5c80 *s);
 
 void func_ov000_022d5c80(UnkStruct_022d5c80 *s) {
     s->unk20C &= ~4;
     if (!(s->unk20C & 0x80))
-        func_02036754(0, 0, 0xe6);
+        Sound_PlaySeqArc(0, 0, 0xe6);
     s->func = func_ov000_022d5bf4;
 }

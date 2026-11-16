@@ -98,16 +98,16 @@ typedef struct UnkStruct_022d9714_g {
 } UnkStruct_022d9714_g;
 
 extern UnkStruct_022d9714_c data_ov000_0236a48c;
-extern UnkStruct_022d9714_g data_0208922c;
-extern void *data_022c4488;
+extern UnkStruct_022d9714_g gDisplayMain;
+extern void *gZoneActArchive;
 extern u8 data_ov000_023654a4[];
 
 void func_02021310(void *ctx, void *a, void *b);
 void *func_02021264(void *ctx, u32 id);
 void func_020212e0(void *ctx);
-void func_0203473c(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0203438c(void *buf);
-void func_02036754(s32 a, s32 b, s32 c);
+void Background_Init(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
+void Background_Draw(void *buf);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d96d8(UnkStruct_022d9714 *s);
 
 static inline u32 GX_GetVisiblePlane(void) {
@@ -144,15 +144,15 @@ void func_ov000_022d9714(UnkStruct_022d9714 *s) {
     c->unk8E = 0x4000;
     c->unk92 = 0x1000;
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x700;
-    func_02021310(arc, data_ov000_023654a4, data_022c4488);
-    func_0203473c(buf, func_02021264(arc, 7), 0x38, 0, 2, 0x20, 0x18);
-    func_0203438c(buf);
-    data_0208922c.unk8 = 0;
-    data_0208922c.unkA = 0;
+    func_02021310(arc, data_ov000_023654a4, gZoneActArchive);
+    Background_Init(buf, func_02021264(arc, 7), 0x38, 0, 2, 0x20, 0x18);
+    Background_Draw(buf);
+    gDisplayMain.unk8 = 0;
+    gDisplayMain.unkA = 0;
     GX_SetVisiblePlane(GX_GetVisiblePlane() | 4);
     func_020212e0(arc);
-    data_0208922c.unk48 = 0x10;
-    func_02036754(0, 0, 0x7c);
+    gDisplayMain.unk48 = 0x10;
+    Sound_PlaySeqArc(0, 0, 0x7c);
     s->unk224 = 0;
     s->func = func_ov000_022d96d8;
 }

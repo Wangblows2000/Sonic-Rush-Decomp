@@ -97,10 +97,10 @@ UnkStruct_02345278_Frame *func_0206c938(s32 a, u8 b);
 void func_ov000_0233b1b8(u8 a);
 void func_ov000_0233b198(u8 a);
 void func_ov000_0234c4a4(UnkStruct_02345278 *w, u8 state);
-s32 func_0206d5d0(void *a, void *b);
-s32 func_0206d4c8(void *a, void *b);
+s32 ObjRect_HitCenterX(void *a, void *b);
+s32 ObjRect_HitCenterY(void *a, void *b);
 void func_ov000_0232ff6c(s32 a, s32 b);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02345278(UnkStruct_02345278 *w) {
     UnkStruct_02345278_Frame *f;
@@ -182,9 +182,9 @@ void func_ov000_02345278(UnkStruct_02345278 *w) {
             }
         }
         data_ov000_0236ac60[0]->unk62 = 0x44;
-        a = func_0206d5d0(w->unk2A0, data_ov000_0236ac60[0]->unk2A0);
-        func_ov000_0232ff6c(a, func_0206d4c8(w->unk2A0, data_ov000_0236ac60[0]->unk2A0));
-        func_0204b7ec(w->unk384, 0, 0x40);
+        a = ObjRect_HitCenterX(w->unk2A0, data_ov000_0236ac60[0]->unk2A0);
+        func_ov000_0232ff6c(a, ObjRect_HitCenterY(w->unk2A0, data_ov000_0236ac60[0]->unk2A0));
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
     }
     if (data_ov000_0236aad8.x - 0x2000 < w->x && data_ov000_0236aad8.x + 0x12000 > w->x &&
         data_ov000_0236aad8.y - 0x2000 < w->y && data_ov000_0236aad8.y + 0x10000 > w->y) {

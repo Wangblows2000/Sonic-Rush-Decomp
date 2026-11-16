@@ -73,12 +73,12 @@ typedef struct UnkStruct_022ce614_7 {
     s32 unk4;
 } UnkStruct_022ce614_7;
 
-extern UnkStruct_022ce614_2 *data_022b4574;
+extern UnkStruct_022ce614_2 *gTaskCurrent;
 extern UnkStruct_022ce614_7 data_ov000_02369ac0;
 extern s16 data_0206e470[];
 
-void func_020316f4(void *p);
-void func_020315e0(void *p);
+void Model_Animate(void *p);
+void Model_Draw(void *p);
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000e98(void *m, s32 s, s32 c);
@@ -88,10 +88,10 @@ void func_ov000_022ce474(UnkStruct_022ce614 *s);
 void func_ov000_022ce194(UnkStruct_022ce614 *s);
 void func_ov000_022cde2c(UnkStruct_022ce614 *s);
 void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
-void func_0206e080(UnkStruct_022ce614_h *h);
+void ObjRect_Register(UnkStruct_022ce614_h *h);
 
 void func_ov000_022ce614(void) {
-    UnkStruct_022ce614 *s = data_022b4574->unk10;
+    UnkStruct_022ce614 *s = gTaskCurrent->unk10;
     UnkStruct_022ce614_a *a;
     UnkStruct_022ce614_h *h1;
     UnkStruct_022ce614_h *h2;
@@ -102,13 +102,13 @@ void func_ov000_022ce614(void) {
     if (!(s->unk20C & 1)) {
         s32 i;
         for (i = 0; i <= 2; i++) {
-            func_020316f4(&s->unk214[i]);
-            func_020315e0(&s->unk214[i]);
+            Model_Animate(&s->unk214[i]);
+            Model_Draw(&s->unk214[i]);
         }
     }
     if (s->unk1420 != NULL) {
-        func_020316f4(s->unk1420);
-        func_020315e0(s->unk1420);
+        Model_Animate(s->unk1420);
+        Model_Draw(s->unk1420);
     }
     if (s->unk5C & 0x20)
         return;
@@ -130,8 +130,8 @@ void func_ov000_022ce614(void) {
     }
     a->unk48 += s->unk6 << 12;
     a->unk4C += s->unk7 << 12;
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
     {
         u32 v = 2;
         func_02025268(0x10, &v, 1);
@@ -144,11 +144,11 @@ void func_ov000_022ce614(void) {
     a = &s->unkBD4;
     if (s->unk20C & 4)
         a->unk24 = s->unkA9C.unk24;
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
     a = &s->unkD0C;
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
     switch (data_ov000_02369ac0.unk4) {
     case 9:
     case 10:
@@ -171,8 +171,8 @@ void func_ov000_022ce614(void) {
     s->unk1318 += (u16)(s->unk130C >> 12);
     a = &s->unkE44;
     func_02000e98(&a->unk24, data_0206e470[((s->unk1318 & 0xffff) >> 4) * 2], data_0206e470[((s->unk1318 & 0xffff) >> 4) * 2 + 1]);
-    func_020316f4(a);
-    func_020315e0(a);
+    Model_Animate(a);
+    Model_Draw(a);
     {
         u32 v = 2;
         func_02025268(0x10, &v, 1);
@@ -219,6 +219,6 @@ void func_ov000_022ce614(void) {
         h1->unkA |= 1;
         h2->unkA |= 1;
     }
-    func_0206e080(h1);
-    func_0206e080(h2);
+    ObjRect_Register(h1);
+    ObjRect_Register(h2);
 }

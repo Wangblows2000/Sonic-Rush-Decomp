@@ -17,10 +17,10 @@ typedef struct UnkStruct_022b4574 {
 } UnkStruct_022b4574;
 
 extern UnkStruct_023059b4 *data_ov001_0231f5a8;
-extern UnkStruct_022b4574 *data_022b4574;
+extern UnkStruct_022b4574 *gTaskCurrent;
 
 void func_ov001_0230587c(void);
-void func_02032480(void *p, s32 x, s32 y, s32 z);
+void AnimatorSprite_DrawRotScale(void *p, s32 x, s32 y, s32 z);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -33,7 +33,7 @@ void func_ov001_023059b4(void) {
 
     data_ov001_0231f5a8->t += 0x199;
     if (data_ov001_0231f5a8->t >= 0x1000) {
-        data_022b4574->func = func_ov001_0230587c;
+        gTaskCurrent->func = func_ov001_0230587c;
         data_ov001_0231f5a8->unk5E8 = 0x10;
         data_ov001_0231f5a8->t = 0x1000;
     }
@@ -43,8 +43,8 @@ void func_ov001_023059b4(void) {
     do {
         s = FX_Mul(s - 0x2000, t) + 0x2000;
     } while (i-- != 0);
-    func_02032480(data_ov001_0231f5a8->o1B8, s, s, 0);
-    func_02032480(data_ov001_0231f5a8->o200, s, s, 0);
-    func_02032480(data_ov001_0231f5a8->o248, s, s, 0);
-    func_02032480(data_ov001_0231f5a8->o290, s, s, 0);
+    AnimatorSprite_DrawRotScale(data_ov001_0231f5a8->o1B8, s, s, 0);
+    AnimatorSprite_DrawRotScale(data_ov001_0231f5a8->o200, s, s, 0);
+    AnimatorSprite_DrawRotScale(data_ov001_0231f5a8->o248, s, s, 0);
+    AnimatorSprite_DrawRotScale(data_ov001_0231f5a8->o290, s, s, 0);
 }

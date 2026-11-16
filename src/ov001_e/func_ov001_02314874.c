@@ -1,19 +1,19 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 extern void *data_ov001_0231f6a0;
 
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
 void func_ov001_023145d8(void);
-void func_02037d60(void);
+void Touch_Enable(void);
 
 static inline u8 *Alloc(u32 sz) {
     u32 size = sz;
-    u8 *p = func_02034a40(data_0208fe80, size, 0x20);
+    u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
@@ -31,5 +31,5 @@ void func_ov001_02314874(void) {
     data_ov001_0231f6a0 = p;
     MI_CpuFill8(p, 0, 0x114);
     func_ov001_023145d8();
-    func_02037d60();
+    Touch_Enable();
 }

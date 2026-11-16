@@ -25,16 +25,16 @@ typedef struct {
     s16 unk276;
 } UnkStruct_0232d084;
 
-s32 func_02068bd8(s32 v, s32 a, s32 b, s32 c, s32 d, s32 e);
-s32 func_02068bb8(s32 a, s32 b, u16 t);
-void func_0204b7ec(void *p, s32 a, s32 b);
+s32 ObjShift_SetFromRef(s32 v, s32 a, s32 b, s32 c, s32 d, s32 e);
+s32 Math_LerpFx32(s32 a, s32 b, u16 t);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0232d30c(UnkStruct_0232d084 *w, s32 a);
 void func_ov000_0232d05c(UnkStruct_0232d084 *w);
 
 void func_ov000_0232d084(UnkStruct_0232d084 *w) {
     switch (w->unk8) {
     case 0:
-        w->unk46 = func_02068bd8(w->unk46, 0x120, 0, 0, 0x10, 0);
+        w->unk46 = ObjShift_SetFromRef(w->unk46, 0x120, 0, 0, 0x10, 0);
         w->unk7 = ((0x100 - w->unk46) * -5) >> 8;
         if (w->unk46 == 0x120) {
             w->unkC = 0x20;
@@ -52,14 +52,14 @@ void func_ov000_0232d084(UnkStruct_0232d084 *w) {
             w->unk256 = w->unk25A = 0x180;
             w->unk266 = 4;
             w->unk276 = 0;
-            func_0204b7ec(NULL, 0, 0xe7);
+            Sound_PlaySeqArcEx(NULL, 0, 0xe7);
         }
         break;
     case 2:
         func_ov000_0232d30c(w, 0);
         if (w->unk254 <= 0x100) {
             if (!(w->unk54 & 0x2000))
-                func_0204b7ec(NULL, 0, 0xe7);
+                Sound_PlaySeqArcEx(NULL, 0, 0xe7);
             w->unk54 |= 0x2000;
             func_ov000_0232d30c(w, 1);
         }
@@ -74,9 +74,9 @@ void func_ov000_0232d084(UnkStruct_0232d084 *w) {
         }
         break;
     case 3:
-        w->unkC = func_02068bd8(w->unkC, 0x1000, 0, 1, 0, 0);
-        w->unk10 = func_02068bb8(0xd400, 0x8000, w->unkC);
-        w->unk14 = func_02068bb8(0xc00, 0x2800, w->unkC);
+        w->unkC = ObjShift_SetFromRef(w->unkC, 0x1000, 0, 1, 0, 0);
+        w->unk10 = Math_LerpFx32(0xd400, 0x8000, w->unkC);
+        w->unk14 = Math_LerpFx32(0xc00, 0x2800, w->unkC);
         if (w->unk10 != 0xd400)
             return;
         if (w->unk14 != 0xc00)

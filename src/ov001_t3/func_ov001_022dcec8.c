@@ -16,7 +16,7 @@ typedef struct {
     UnkWork_022dcec8 *work;
 } UnkTask_022dcec8;
 
-extern UnkTask_022dcec8 *data_022b4574;
+extern UnkTask_022dcec8 *gTaskCurrent;
 
 void func_ov001_022da70c(UnkWork_022dcec8 *w);
 void func_ov001_022da024(UnkWork_022dcec8 *w);
@@ -40,7 +40,7 @@ void func_ov001_022dcdbc(void);
 void func_ov001_022dcec8(void) {
     UnkWork_022dcec8 *w;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     func_ov001_022da70c(w);
     if (w->timer2 >= 0x10) {
         func_ov001_022da024(w);
@@ -63,14 +63,14 @@ void func_ov001_022dcec8(void) {
             func_ov001_022da1cc(w, 1);
             w->unk48 = 1;
             func_ov001_022d983c(w, 1);
-            data_022b4574->func = func_ov001_022dd1ec;
+            gTaskCurrent->func = func_ov001_022dd1ec;
             return;
         }
         if (!func_0205000c()) {
             func_02050d50();
             func_ov001_022da0dc(w, 1);
             w->unk48 = 2;
-            data_022b4574->func = func_ov001_022dcdbc;
+            gTaskCurrent->func = func_ov001_022dcdbc;
             return;
         }
         func_ov001_022daaa8(w);

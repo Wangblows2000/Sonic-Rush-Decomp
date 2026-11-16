@@ -13,13 +13,13 @@ typedef struct {
     s16 unk8;
 } UnkStruct_02358710_Bright;
 
-extern UnkStruct_Task *data_022b4574;
+extern UnkStruct_Task *gTaskCurrent;
 extern UnkStruct_02358710_Bright data_0208926c;
 extern UnkStruct_02358710_Bright data_02087d44;
 
 BOOL func_02050018(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
-void func_02036fdc(s32 a);
+void Task_DestroyByTag(s32 a);
 void func_ov000_02355dac(s32 a, s32 b);
 
 #pragma thumb on
@@ -27,7 +27,7 @@ void func_ov000_02355dac(s32 a, s32 b);
 void func_ov000_02358710(void) {
     s32 a;
     s32 b;
-    UnkStruct_02358710 *w = data_022b4574->work;
+    UnkStruct_02358710 *w = gTaskCurrent->work;
 
     data_02087d44.unk8 = 0;
     data_0208926c.unk8 = data_02087d44.unk8;
@@ -39,7 +39,7 @@ void func_ov000_02358710(void) {
         GXx_SetMasterBrightness_((vu16 *)0x400106c, data_02087d44.unk8);
         a = w->unkC;
         b = w->unk14;
-        func_02036fdc(0x1000);
+        Task_DestroyByTag(0x1000);
         func_ov000_02355dac(a, b);
     }
 }

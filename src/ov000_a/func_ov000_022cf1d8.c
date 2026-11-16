@@ -43,11 +43,11 @@ typedef struct UnkStruct_022cf1d8_cam {
 extern UnkStruct_022cf1d8_cam data_ov000_0236a444;
 
 s32 func_02002094(s32 a, s32 b);
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 
-s32 func_02044690(void);
-s32 func_02044670(void);
-void func_020446b0(s32 a);
+s32 ScreenShake_GetOffsetX(void);
+s32 ScreenShake_GetOffsetY(void);
+void ScreenShake_Start(s32 a);
 void func_ov000_022cf118(UnkStruct_022cf1d8 *t);
 void func_ov000_022cd500(void);
 
@@ -55,12 +55,12 @@ void func_ov000_022cf1d8(UnkStruct_022cf1d8 *t) {
     t->unk8 += 0x1b33;
     if (t->unk8 > 0x66000)
         t->unk8 = 0x66000;
-    data_ov000_0236a444.unk3C = func_02044690() * 0xccc;
-    data_ov000_0236a444.unk40 = func_02044670() * 0xccc;
+    data_ov000_0236a444.unk3C = ScreenShake_GetOffsetX() * 0xccc;
+    data_ov000_0236a444.unk40 = ScreenShake_GetOffsetY() * 0xccc;
     t->unkC--;
     if (t->unkC == 0) {
         t->func = func_ov000_022cf118;
-        func_020446b0(0xc);
+        ScreenShake_Start(0xc);
         t->unkC = 0xf;
     } else if (t->unkC == 0x76) {
         func_ov000_022cd500();

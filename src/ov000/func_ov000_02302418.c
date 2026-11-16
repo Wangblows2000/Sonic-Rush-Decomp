@@ -14,18 +14,18 @@ typedef struct UnkStruct_02302418 {
     void (*func)(void);
 } UnkStruct_02302418;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
-void func_02069818(UnkStruct_02302418 *s, s32 a);
+void StageObj_SetAnimation(UnkStruct_02302418 *s, s32 a);
 void func_ov000_02302398(void);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_02302418(UnkStruct_02302418 *s) {
-    func_02069818(s, 0);
+    StageObj_SetAnimation(s, 0);
     s->unk5C |= 4;
     s->unk58 |= 0x10;
     s->unk44 = 0;

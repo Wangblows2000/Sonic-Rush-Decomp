@@ -32,7 +32,7 @@ typedef struct UnkStruct_02312f24 {
 
 void func_ov001_023113f8(void);
 void func_ov001_023115a4(void);
-void func_02036754(u32 *p, u32 a, u32 b);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 void func_ov001_02312a0c(UnkStruct_02312f24 *p, s32 v);
 void func_ov001_023122d8(UnkStruct_02312f24 *p, s32 v);
 void func_ov001_0230d6f4(s32 v);
@@ -46,7 +46,7 @@ void func_ov001_02312f24(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e) {
         case 0:
         case 1:
             p->unk148 += e->unk5E;
-            func_02036754(0, 0x10, 3);
+            Sound_PlaySeqArc(0, 0x10, 3);
             break;
         }
         return;
@@ -55,7 +55,7 @@ void func_ov001_02312f24(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e) {
     case 0:
     case 1:
         p->unk148 += e->unk5E;
-        func_02036754(0, 0x10, 3);
+        Sound_PlaySeqArc(0, 0x10, 3);
         break;
     case 2:
         func_ov001_02312a0c(p, e->unk6A);
@@ -92,7 +92,7 @@ void func_ov001_02312f24(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e) {
     case 0x11:
     case 0x12:
     case 0x13:
-        func_02036754(0, 0x10, 0x15);
+        Sound_PlaySeqArc(0, 0x10, 0x15);
         break;
     case 0x17:
         func_ov001_0231599c(6);

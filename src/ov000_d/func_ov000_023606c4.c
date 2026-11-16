@@ -13,9 +13,9 @@ typedef struct {
     UnkSpr_023606c4 spr;
 } UnkStruct_023606c4;
 
-void func_0203344c(UnkSpr_023606c4 *spr, s32 a, s32 b);
-void func_02032d2c(UnkSpr_023606c4 *spr);
-void func_02032480(UnkSpr_023606c4 *spr, s32 sx, s32 sy, s32 c);
+void AnimatorSprite_ProcessAnimation(UnkSpr_023606c4 *spr, s32 a, s32 b);
+void AnimatorSprite_Draw(UnkSpr_023606c4 *spr);
+void AnimatorSprite_DrawRotScale(UnkSpr_023606c4 *spr, s32 sx, s32 sy, s32 c);
 
 #pragma thumb on
 
@@ -24,13 +24,13 @@ void func_ov000_023606c4(UnkStruct_023606c4 *w, s16 x, s16 y, s32 scale) {
 
     spr->x = x;
     spr->y = y;
-    func_0203344c(spr, 0, 0);
+    AnimatorSprite_ProcessAnimation(spr, 0, 0);
     if (scale == 0x1000) {
         spr->unk2C &= ~0x200;
-        func_02032d2c(spr);
+        AnimatorSprite_Draw(spr);
     } else {
         spr->unk2C |= 0x200;
-        func_02032480(spr, scale, scale, 0);
+        AnimatorSprite_DrawRotScale(spr, scale, scale, 0);
     }
 }
 

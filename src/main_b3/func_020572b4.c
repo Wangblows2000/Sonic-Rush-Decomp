@@ -6,7 +6,7 @@ extern UnkEnt_02076adc data_02076adc[];
 extern UnkBlend_020572b4 data_0208926c;
 extern UnkBlend_020572b4 data_02087d44;
 
-void func_02043c7c(u16 a, s16 b);
+void BrightnessFade_Create(u16 a, s16 b);
 
 #pragma thumb on
 void func_020572b4(u32 n, u32 flags) {
@@ -14,9 +14,9 @@ void func_020572b4(u32 n, u32 flags) {
 
     if (n != 0) {
         if (flags & 4)
-            func_02043c7c(data_02076adc[idx].a, 0x1000 / n);
+            BrightnessFade_Create(data_02076adc[idx].a, 0x1000 / n);
         else
-            func_02043c7c(data_02076adc[idx].a | 0x100, 0x1000 / n);
+            BrightnessFade_Create(data_02076adc[idx].a | 0x100, 0x1000 / n);
     } else {
         data_0208926c.unk8 = data_02076adc[idx].b;
         if (flags & 4)

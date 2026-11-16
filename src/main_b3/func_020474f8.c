@@ -41,8 +41,8 @@ s32 func_0200225c(s32 a, s32 b);
 void func_020044f4(UnkVec_020474f8 *pos, UnkVec_020474f8 *up, UnkVec_020474f8 *at, s32 a, void *mtx);
 void func_02004988(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, void *mtx);
 void MTX_RotY33_(void *mtx, s32 s, s32 c);
-void func_020316f4(void *p);
-void func_020315e0(void *p);
+void Model_Animate(void *p);
+void Model_Draw(void *p);
 
 #define W_VEC(w, off) ((UnkVec_020474f8 *)((u8 *)(w) + (off)))
 
@@ -65,7 +65,7 @@ void func_020474f8(UnkWork_020474f8 *w) {
     cam->unk1C[1] = cam->unk13C[1];
     cam->unk1C[2] = cam->unk13C[2];
     MTX_RotY33_(cam->unk28, SIN(cam->unk154), COS(cam->unk154));
-    func_020316f4(cam->unk4);
-    func_020315e0(cam->unk4);
+    Model_Animate(cam->unk4);
+    Model_Draw(cam->unk4);
 }
 #pragma thumb reset

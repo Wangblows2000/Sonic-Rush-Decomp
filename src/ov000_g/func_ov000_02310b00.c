@@ -25,7 +25,7 @@ typedef struct {
     s16 unk1F8;
 } UnkStruct_02310b00;
 
-s32 func_0206daf4(void *a, void *b);
+s32 ObjRect_FlagCheck(void *a, void *b);
 void func_ov000_023492f0(void *a, void *b);
 void func_ov000_02310aa0(UnkStruct_02310b00 *w);
 void func_ov000_023109f4(UnkStruct_02310b00 *w);
@@ -55,7 +55,7 @@ void func_ov000_02310b00(UnkStruct_02310b00 *w) {
         return;
     if (r->unk0 != 1)
         return;
-    if (func_0206daf4(w->unk154, r->unk2C4) == 0)
+    if (ObjRect_FlagCheck(w->unk154, r->unk2C4) == 0)
         return;
     func_ov000_023492f0(r->unk2A0, w->unk134);
 }

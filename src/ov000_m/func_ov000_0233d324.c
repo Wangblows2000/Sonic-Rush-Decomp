@@ -9,7 +9,7 @@ typedef struct {
 } UnkStruct_0233d324;
 
 extern UnkStruct_0233d324 *data_ov000_0236ac18;
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 void func_ov000_0233d43c(UnkStruct_0233d324 *w, u8 i);
 void func_ov000_0233d404(UnkStruct_0233d324 *w, u8 i);
 
@@ -23,7 +23,7 @@ void func_ov000_0233d324(void) {
         return;
     for (i = 0; i < 2; i++) {
         w->unkA[i] = w->unk8[i];
-        if (!(data_02087cb8 & 0x80000000)) {
+        if (!(gSystemFlags & 0x80000000)) {
             if (w->unk4[i] == 1)
                 func_ov000_0233d43c(w, i);
             else

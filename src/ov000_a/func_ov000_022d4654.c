@@ -93,7 +93,7 @@ struct UnkStruct_022d4654 {
     s32 unk1474;
 };
 
-void func_02031a68(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
 typedef struct UnkStruct_022d4654_7 {
@@ -104,7 +104,7 @@ typedef struct UnkStruct_022d4654_7 {
 
 extern UnkStruct_022d4654 *data_ov000_02369ae0;
 extern UnkStruct_022d4654_7 data_ov000_02369ac0;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern u16 data_ov000_02362f58[][16];
 extern u16 data_ov000_02362f98[][16];
 
@@ -116,8 +116,8 @@ void func_ov000_022cf38c(UnkStruct_022d4654 *s);
 void func_ov000_022cf074(UnkStruct_022d4654 *s);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022d4654(u16 mode) {

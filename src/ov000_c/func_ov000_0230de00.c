@@ -24,17 +24,17 @@ UnkStruct_0230de00 *func_ov000_0230de00(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_0230de00 *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_0230de00));
+    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_0230de00));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0230de00));
     func_ov000_022fba50(w, (s32)p, b, c);
-    func_02069f1c(w, data_ov000_02366b74, 0xffff, data_ov000_0236a01c, data_ov000_02369ba0);
-    func_0206a054(w, 0, 2);
-    func_02069918(w, 0x16);
-    func_0206e2b4(&w->base.coll0, 0, -16);
+    StageObj_Load2dBAC(w, data_ov000_02366b74, 0xffff, data_ov000_0236a01c, data_ov000_02369ba0);
+    StageObj_AllocSpritePalette(w, 0, 2);
+    StageObj_SetOAMOrder(w, 0x16);
+    ObjRect_SetAtkDefFlags(&w->base.coll0, 0, -16);
     w->base.coll0.unk1C = func_ov000_0230dcb4;
     w->base.coll0.unkA |= 0x800;
     w->base.unk58 |= 0x2100;
@@ -68,7 +68,7 @@ UnkStruct_0230de00 *func_ov000_0230de00(UnkStruct_ObjParam *p, s32 b, s32 c) {
     if (w->base.unk1E0->unk2 <= 0x30) {
         func_ov000_0230d930(w, 0, 0, w->base.unk1E0->unk6);
     } else {
-        func_02069818(w, 1);
+        StageObj_SetAnimation(w, 1);
         w->base.unk5C |= 4;
     }
     func_ov000_0230ddf0(w);

@@ -11,7 +11,7 @@ typedef struct {
     u16 h1e;
 } UnkStruct_022c4560;
 extern UnkStruct_022c4560 data_022c4560;
-void func_02055044(void);
+void SceneChange_Unk_02055044(void);
 
 #pragma thumb on
 void func_ov001_022d6e24(void) {
@@ -20,6 +20,6 @@ void func_ov001_022d6e24(void) {
     data_022c4560.w18 &= ~0x10;
     data_022c4560.b1c = 0;
     data_022c4560.b1d = 0;
-    func_02055044();
+    SceneChange_Unk_02055044();
 }
 #pragma thumb reset

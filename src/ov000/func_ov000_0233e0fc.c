@@ -5,9 +5,9 @@ typedef struct UnkStruct_0233e0fc {
     u16 unk24;
 } UnkStruct_0233e0fc;
 
-extern UnkStruct_0233e0fc *data_02072c78[];
+extern UnkStruct_0233e0fc *gDisplayTable[];
 
 void func_ov000_0233e0fc(void) {
-    data_02072c78[0]->unk24 = 0;
-    data_02072c78[1]->unk24 = 0;
+    gDisplayTable[0]->unk24 = 0;
+    gDisplayTable[1]->unk24 = 0;
 }

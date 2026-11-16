@@ -8,9 +8,9 @@ typedef struct UnkStruct_023216a4 {
 } UnkStruct_023216a4;
 
 void func_ov000_02321514(void);
-void func_02069818(UnkStruct_023216a4 *s, u16 a);
+void StageObj_SetAnimation(UnkStruct_023216a4 *s, u16 a);
 
 void func_ov000_023216a4(UnkStruct_023216a4 *s) {
     s->func = func_ov000_02321514;
-    func_02069818(s, s->unk9C + 1);
+    StageObj_SetAnimation(s, s->unk9C + 1);
 }

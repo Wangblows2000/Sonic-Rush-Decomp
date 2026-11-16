@@ -7,8 +7,8 @@ extern u32 data_ov000_02369b30;
 extern u32 data_ov000_0236a444;
 extern u32 data_ov000_0236a524;
 extern u32 data_ov000_0236ac60;
-extern void func_02031bd0(void);
-extern void func_02031c1c(void);
+extern void Model_SetResource(void);
+extern void Model_Init(void);
 extern void func_020533e0(void);
 extern void func_020537b4(void);
 extern void func_ov000_022dcf20(void);
@@ -51,12 +51,12 @@ asm void func_ov000_022deab4(void)
     str r3, [r2]
     orr r3, r3, #1
     str r3, [r2]
-    bl func_02031c1c
+    bl Model_Init
     ldr r1, [pc, #0xd0]
     mov r0, r5
     ldr r1, [r1, #0x18]
     mov r2, #0
-    bl func_02031bd0
+    bl Model_SetResource
     ldr r0, [pc, #0xc0]
     str r0, [r5, #0x20]
     ldr r0, [r5, #0x20]

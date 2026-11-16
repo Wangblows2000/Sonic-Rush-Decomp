@@ -29,19 +29,19 @@ typedef struct {
     UnkStruct_022ebfc8 *unk10;
 } UnkStruct_022ebfc8_mgr;
 
-extern UnkStruct_022ebfc8_mgr *data_022b4574;
+extern UnkStruct_022ebfc8_mgr *gTaskCurrent;
 extern s16 data_02071470[];
 extern s16 data_0206f470[];
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_020316f4(void *cam);
-void func_020315e0(void *cam);
+void Model_Animate(void *cam);
+void Model_Draw(void *cam);
 
 void func_ov000_022ebfc8(void) {
     UnkStruct_022ebfc8 *obj;
     UnkStruct_022ebfc8_cam *cam;
 
-    obj = data_022b4574->unk10;
+    obj = gTaskCurrent->unk10;
     cam = &obj->cam;
     if (obj->unk5C & 0x20)
         return;
@@ -67,8 +67,8 @@ void func_ov000_022ebfc8(void) {
     cam->unk48 = obj->unk10 << 4;
     cam->unk4C = -(obj->unk14 << 4);
     cam->unk50 = obj->unk18 << 4;
-    func_020316f4(cam);
-    func_020315e0(cam);
+    Model_Animate(cam);
+    Model_Draw(cam);
     if (cam->unk10C & 2)
         obj->unk5C |= 8;
     if (cam->unk10D & 2)

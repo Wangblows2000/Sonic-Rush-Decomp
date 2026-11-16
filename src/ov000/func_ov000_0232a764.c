@@ -12,11 +12,11 @@ typedef struct UnkStruct_0232a764 {
     UnkStruct_0232a764_2 *unk10;
 } UnkStruct_0232a764;
 
-void func_0206bef4(UnkStruct_0232a764 *s);
+void StageObj_Destructor(UnkStruct_0232a764 *s);
 
 void func_ov000_0232a764(UnkStruct_0232a764 *s) {
     UnkStruct_0232a764_2 *p = s->unk10;
     p->unkC8 = 0;
     p->unk110 = 0;
-    func_0206bef4(s);
+    StageObj_Destructor(s);
 }

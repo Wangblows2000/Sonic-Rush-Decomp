@@ -19,10 +19,10 @@ typedef struct {
 
 extern UnkStruct_022501a0 data_022501a0;
 
-u32 func_0203e934(void);
+u32 WH_GetSystemState(void);
 s32 func_0203c340(void);
-void func_0203de84(void *p, u32 size, void (*fn)(void));
-void func_0203de90(void (*fn)(void));
+void WH_SendData(void *p, u32 size, void (*fn)(void));
+void WH_SetReceiver(void (*fn)(void));
 void func_02042360(void);
 void func_02041454(void);
 void func_0204138c(void);
@@ -30,7 +30,7 @@ void func_0204138c(void);
 void func_02041698(UnkWork_02041698 *w) {
     UnkStruct_022501a0 *p = &data_022501a0;
 
-    switch (func_0203e934()) {
+    switch (WH_GetSystemState()) {
     case 8:
     case 9:
     case 10:
@@ -49,8 +49,8 @@ void func_02041698(UnkWork_02041698 *w) {
             return;
         if (!(p->flags & 1))
             return;
-        func_0203de84(p, 4, func_02042360);
-        func_0203de90(NULL);
+        WH_SendData(p, 4, func_02042360);
+        WH_SetReceiver(NULL);
         w->cnt = 4;
         w->unk1a = 0;
         w->fn = func_02041454;

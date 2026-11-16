@@ -46,15 +46,15 @@ extern s32 data_02074bf0[];
 extern s32 data_02074bdc[];
 
 void func_0205002c(void);
-UnkTask_02050078 *func_020372d0(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
+UnkTask_02050078 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 v, void *dst, u32 size);
 void func_0204fe40(void);
 void func_0204fe60(void);
 s32 func_0204f17c(s32 a, s32 b);
 s32 func_0204f0c8(s32 a, s32 b);
 void func_0204f2fc(UnkWork_02050078 *w, s32 a);
-BOOL func_020521a0(void);
-void func_020522f4(void);
+BOOL SysSound_IsInit(void);
+void SysSound_Init(void);
 
 #pragma thumb on
 void func_02050078(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7) {
@@ -69,7 +69,7 @@ void func_02050078(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a
         a1 = 3;
     if (a2 >= 4)
         a2 = 5;
-    data_022c45fc = func_020372d0(func_0204fe40, func_0204fe60, 0, 0x1000, 0, sizeof(UnkWork_02050078));
+    data_022c45fc = Task_Create(func_0204fe40, func_0204fe60, 0, 0x1000, 0, sizeof(UnkWork_02050078));
     w = data_022c45fc->work;
     zero = 0;
     MIi_CpuClear32(zero, w, sizeof(UnkWork_02050078));
@@ -171,8 +171,8 @@ void func_02050078(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a
     w->unk35C = data_02074bdc[w->unk44];
     func_0204f2fc(w, 0);
     func_0204fe40();
-    if (!func_020521a0()) {
-        func_020522f4();
+    if (!SysSound_IsInit()) {
+        SysSound_Init();
         w->unk4C = 1;
     }
 }

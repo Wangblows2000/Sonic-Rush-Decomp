@@ -34,7 +34,7 @@ typedef struct {
     u8 unk130c[4];
 } UnkStruct_022d1494;
 
-extern UnkGfx_022d1494 data_0208922c;
+extern UnkGfx_022d1494 gDisplayMain;
 extern UnkAlpha_022d1494 data_0208924e;
 extern UnkBright_022d1494 data_0208926c;
 
@@ -58,13 +58,13 @@ void func_ov001_022d1494(UnkStruct_022d1494 *p) {
         func_ov001_022cfecc(&p->objs[2], 0x100, f, p->unkf0c, p->unkd0c);
         func_ov001_022cfd7c(p->unkb34, 0x100, f, p->unk130c, p->unk110c);
     }
-    if (data_0208926c.bright < 0 || data_0208922c.alpha.eva != 0xf) {
+    if (data_0208926c.bright < 0 || gDisplayMain.alpha.eva != 0xf) {
         if ((p->timer & 7) == 4) {
             func_ov001_022d0050((s16)(data_0208926c.bright + 1));
         } else if ((p->timer & 7) == 0) {
             data_0208924e.eva++;
-            if (data_0208922c.alpha.eva > 0xf) data_0208922c.alpha.eva = 0xf;
-            data_0208922c.alpha.evb = 0xf - data_0208922c.alpha.eva;
+            if (gDisplayMain.alpha.eva > 0xf) gDisplayMain.alpha.eva = 0xf;
+            gDisplayMain.alpha.evb = 0xf - gDisplayMain.alpha.eva;
         }
     }
     if (p->timer > 0x1c6) {

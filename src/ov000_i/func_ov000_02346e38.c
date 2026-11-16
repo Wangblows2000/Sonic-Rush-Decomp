@@ -33,7 +33,7 @@ typedef struct {
 } UnkCfg_02346e38;
 
 extern UnkCfg_02346e38 data_022c4560;
-UnkTask_02346e38 *func_0206de54(s32 a, u8 b);
+UnkTask_02346e38 *ObjRect_RegistGet(s32 a, u8 b);
 
 void func_ov000_02346e38(UnkStruct_02346e38 *w) {
     UnkTask_02346e38 *t;
@@ -53,7 +53,7 @@ void func_ov000_02346e38(UnkStruct_02346e38 *w) {
         return;
     i = 0;
     while (1) {
-        t = func_0206de54(2, i);
+        t = ObjRect_RegistGet(2, i);
         if (t == NULL)
             break;
         if (!(t->unkA & 0x1000) && (o = t->obj) != NULL && o != NULL && o->unk0 == 2) {

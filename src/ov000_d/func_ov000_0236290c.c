@@ -5,20 +5,20 @@ typedef struct {
     void *res[11];
 } UnkStruct_0236290c;
 
-extern void *data_0208fe78;
+extern void *gSystemHeap;
 extern const char **data_ov000_0236995c[];
-extern u8 data_02072cb8;
+extern u8 gGameLanguage;
 
-u32 func_02033ddc(const char *path);
-void *func_02033fbc(const char *path, void *dst);
-void *func_02034a40(void *heap, u32 size, s32 align);
+u32 File_GetSize(const char *path);
+void *File_Load(const char *path, void *dst);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 
 static inline void *UnkAlloc_0236290c(u32 size, s32 align) {
     u32 sz = (size + 0x43) & ~0x1f;
-    u8 *p = func_02034a40(data_0208fe78, sz, align);
+    u8 *p = Heap_Alloc(gSystemHeap, sz, align);
     if (func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, sz);
@@ -47,12 +47,12 @@ static inline s32 UnkLang_0236290c(u8 cur) {
 #pragma thumb on
 
 void func_ov000_0236290c(UnkStruct_0236290c *w) {
-    const char **tbl = data_ov000_0236995c[UnkLang_0236290c(data_02072cb8)];
+    const char **tbl = data_ov000_0236995c[UnkLang_0236290c(gGameLanguage)];
     s32 i;
 
     for (i = 0; i < 11; i++) {
-        w->res[i] = UnkAlloc_0236290c(func_02033ddc(tbl[i]), -0x20);
-        func_02033fbc(tbl[i], w->res[i]);
+        w->res[i] = UnkAlloc_0236290c(File_GetSize(tbl[i]), -0x20);
+        File_Load(tbl[i], w->res[i]);
     }
 }
 

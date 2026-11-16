@@ -19,7 +19,7 @@ extern u32 data_0207cf78;
 extern u32 data_022c4560;
 extern u32 data_022c4590;
 extern u32 data_022c4ee8;
-extern u32 data_022c4ef0;
+extern u32 gObjManagerFlags;
 extern u32 data_022c4ef4;
 extern u32 data_022c4ef8;
 extern u32 data_022c4efc;
@@ -28,10 +28,10 @@ extern u32 data_ov000_0236a448;
 extern u32 data_ov000_0236aad8;
 extern void func_02004084(void);
 extern void func_02022270(void);
-extern void func_020372d0(void);
-extern void func_0203dba4(void);
-extern void func_02043c7c(void);
-extern void func_02044718(void);
+extern void Task_Create(void);
+extern void WH_GetCurrentAid(void);
+extern void BrightnessFade_Create(void);
+extern void ScreenShake_Create(void);
 extern void func_02044d44(void);
 extern void func_0204b958(void);
 extern void func_0204b95c(void);
@@ -39,13 +39,13 @@ extern void func_0204ba84(void);
 extern void func_0204bab0(void);
 extern void func_0204cdc0(void);
 extern void func_02053b04(void);
-extern void func_02053c58(void);
+extern void NaviMsg_Create(void);
 extern void func_0205f25c(void);
 extern void func_02067cc8(void);
 extern void func_0206cd40(void);
-extern void func_0206d468(void);
-extern void func_0206d484(void);
-extern void func_0206e1f8(void);
+extern void ObjDraw_SetManagedRows(void);
+extern void ObjDraw_InitRows(void);
+extern void ObjRect_CheckInit(void);
 extern void func_ov000_0231f5d0(void);
 extern void func_ov000_0231fc1c(void);
 extern void func_ov000_0232c7b0(void);
@@ -72,7 +72,7 @@ asm void func_0204bf88(void)
     mov r3, r2
     mov r1, #0
     str r4, [sp, #4]
-    bl func_020372d0
+    bl Task_Create
     mov r2, #3
     str r2, [sp]
     ldr r0, [pc, #0x55c]
@@ -80,7 +80,7 @@ asm void func_0204bf88(void)
     mov r2, #0
     mov r3, #0x4000
     str r4, [sp, #4]
-    bl func_020372d0
+    bl Task_Create
     mov r1, #0
     strh r1, [sp, #8]
     mov r1, r0
@@ -198,10 +198,10 @@ _1d4:
     strh r5, [r2, #0x16]
     strh r4, [r1]
     bl func_02004084
-    bl func_0206d484
+    bl ObjDraw_InitRows
     mov r0, r4
     mov r1, #0x10
-    bl func_0206d468
+    bl ObjDraw_SetManagedRows
     bl func_ov000_02335db0
     bl func_ov000_02335704
     bl func_ov000_0233c100
@@ -256,7 +256,7 @@ _2d4:
     ands r1, r1, #0x20
     beq _374
     bl func_ov000_0232d9a4
-    bl func_0203dba4
+    bl WH_GetCurrentAid
     bl func_0206cd40
     ldr r2, [pc, #0x2a8]
     mov r1, r0
@@ -267,7 +267,7 @@ _2d4:
     mov r5, #0
     ldr r4, [pc, #0x28c]
 _310:
-    bl func_0203dba4
+    bl WH_GetCurrentAid
     cmp r5, r0
     beq _33c
     mov r0, r5
@@ -328,8 +328,8 @@ _374:
     str r3, [r2, #0x18]
     bl func_ov000_0234d62c
 _3f8:
-    bl func_02044718
-    bl func_0206e1f8
+    bl ScreenShake_Create
+    bl ObjRect_CheckInit
     bl func_ov000_0235c238
     bl func_ov000_023376c4
     ldr r0, [pc, #0x190]
@@ -389,7 +389,7 @@ _4cc:
     beq _4f4
     mov r0, #0x43
     mov r1, #0x100
-    bl func_02043c7c
+    bl BrightnessFade_Create
     ldr r0, [pc, #0xb8]
     ldr r1, [r0, #0x18]
     orr r1, r1, #1
@@ -412,7 +412,7 @@ _514:
     cmp r1, #2
     blo _550
 _52c:
-    bl func_02053c58
+    bl NaviMsg_Create
     mov r0, #1
     bl func_02053b04
     bl func_02044d44
@@ -436,7 +436,7 @@ _55c:
     mov r0, #0x43
     mov r1, #0x100
     str r3, [r2, #0x18]
-    bl func_02043c7c
+    bl BrightnessFade_Create
     add sp, sp, #0xc
     ldmia sp!, {r4, r5, r6, r7, r8, r9, lr}
     bx lr
@@ -464,7 +464,7 @@ _55c:
     dcd 0x00000fff
     dcd data_022c4ee8
     dcd data_022c4ef8
-    dcd data_022c4ef0
+    dcd gObjManagerFlags
     dcd data_0207cf78
     dcd data_ov000_0236aad8
     dcd data_022c4590

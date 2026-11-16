@@ -12,7 +12,7 @@ void func_ov000_02342f34(void *p);
 void func_ov000_02342f14(void *p);
 void func_ov000_02342ef4(void *p);
 void func_ov000_02342e9c(void *p);
-void func_0204b7ec(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void func_ov000_022fa9e8(void *a, void *p, s32 b);
 
 void func_ov000_0230da90(void *a, void *p, s32 k) {
@@ -43,23 +43,23 @@ void func_ov000_0230da90(void *a, void *p, s32 k) {
         func_ov000_02342f34(p);
         break;
     case 8:
-        func_0204b7ec(0, 0, 0xdf);
+        Sound_PlaySeqArcEx(0, 0, 0xdf);
         func_ov000_022fa9e8(a, p, 7);
         func_ov000_02342f14(data_ov000_0236ac60[1]);
         break;
     case 9:
-        func_0204b7ec(0, 0, 0xdf);
+        Sound_PlaySeqArcEx(0, 0, 0xdf);
         func_ov000_022fa9e8(a, p, 8);
         func_ov000_02342ef4(data_ov000_0236ac60[1]);
         break;
     case 10:
-        func_0204b7ec(0, 0, 0xdf);
+        Sound_PlaySeqArcEx(0, 0, 0xdf);
         func_ov000_0234307c(p, 0x12c0);
         func_ov000_02342e9c(data_ov000_0236ac60[1]);
         func_ov000_022fa9e8(a, p, 9);
         break;
     case 11:
-        func_0204b7ec(0, 0, 0xdf);
+        Sound_PlaySeqArcEx(0, 0, 0xdf);
         func_ov000_022fa9e8(a, p, 10);
         break;
     }

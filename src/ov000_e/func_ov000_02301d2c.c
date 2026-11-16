@@ -5,8 +5,8 @@ typedef struct {
     void *unk18;
 } UnkStruct_Hit;
 
-void func_0206d8bc(UnkStruct_Hit *a, UnkStruct_Hit *b);
-void func_02069818(void *w, s32 a);
+void ObjRect_FuncNoHit(UnkStruct_Hit *a, UnkStruct_Hit *b);
+void StageObj_SetAnimation(void *w, s32 a);
 void func_ov000_023548d8(UnkStruct_StageObj *p, s16 a, s32 b);
 void func_ov000_02355da0(UnkStruct_StageObj *p, UnkStruct_StageObj *w);
 
@@ -32,17 +32,17 @@ void func_ov000_02301d2c(UnkStruct_Hit *a, UnkStruct_Hit *b) {
         }
         if (d < 0x10) {
             t = 10;
-            func_02069818(w, 3);
+            StageObj_SetAnimation(w, 3);
             v = -0x500;
             w->unk8 = 0;
         } else if (d < 0x20) {
             t = 15;
-            func_02069818(w, 2);
+            StageObj_SetAnimation(w, 2);
             v = -0x580;
             w->unk8 = 1;
         } else {
             t = 20;
-            func_02069818(w, 1);
+            StageObj_SetAnimation(w, 1);
             v = -0x600;
             w->unk8 = 2;
         }
@@ -50,9 +50,9 @@ void func_ov000_02301d2c(UnkStruct_Hit *a, UnkStruct_Hit *b) {
         func_ov000_023548d8(p, v - d * 0x18, t);
         func_ov000_02355da0(p, w);
     } else {
-        func_0206d8bc(a, b);
+        ObjRect_FuncNoHit(a, b);
     }
     } else {
-        func_0206d8bc(a, b);
+        ObjRect_FuncNoHit(a, b);
     }
 }

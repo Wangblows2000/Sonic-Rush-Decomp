@@ -66,19 +66,19 @@ typedef struct UnkStruct_022cae4c_6 {
 } UnkStruct_022cae4c_6;
 
 extern UnkStruct_022cae4c_6 data_ov000_02369ac0;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cc224(void);
-void func_020446b0(s32 a);
+void ScreenShake_Start(s32 a);
 void func_ov000_022cc110(s32 a);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022cad94(UnkStruct_022cae4c *s);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022cae4c(UnkStruct_022cae4c *s) {
@@ -89,9 +89,9 @@ void func_ov000_022cae4c(UnkStruct_022cae4c *s) {
     s->unk214->unk29A &= ~4;
     s->unk214->unk242 &= ~4;
     func_ov000_022cc224();
-    func_020446b0(0);
+    ScreenShake_Start(0);
     func_ov000_022cc110(0x1000);
-    func_02036754(0, 0, 0x7b);
+    Sound_PlaySeqArc(0, 0, 0x7b);
     func_020366f4(0, 0, (Rand() & 1) ? 0xce : 0xcf);
     s->unk220 = 0;
     s->unk222 = 0;

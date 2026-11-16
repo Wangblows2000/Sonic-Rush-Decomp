@@ -29,16 +29,16 @@ typedef struct {
     UnkStruct_0232dad8 *work;
 } UnkStruct_0232dad8_Task;
 
-extern UnkStruct_0232dad8_Task *data_022b4574;
+extern UnkStruct_0232dad8_Task *gTaskCurrent;
 extern s32 data_ov000_0236a988;
 extern UnkStruct_0232dad8_P *data_ov000_0236ac60[];
 
-void func_02069818(void *w, s32 a);
-void func_0206bd24(void *w, void *a, void *b);
-void func_0206b768(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
+void StageObj_SetAnimation(void *w, s32 a);
+void StageObj_Draw2D(void *w, void *a, void *b);
+void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
 
 void func_ov000_0232dad8(void) {
-    UnkStruct_0232dad8 *w = data_022b4574->work;
+    UnkStruct_0232dad8 *w = gTaskCurrent->work;
     s8 a;
     s8 b;
 
@@ -47,21 +47,21 @@ void func_ov000_0232dad8(void) {
     if (data_ov000_0236ac60[0]->unk10 > data_ov000_0236ac60[1]->unk10) {
         if (w->unk9C != 0) {
             w->unk62 = 0x80;
-            func_02069818(w, 0);
+            StageObj_SetAnimation(w, 0);
         }
     } else if (w->unk9C == 0) {
         w->unk62 = 0x80;
-        func_02069818(w, 1);
+        StageObj_SetAnimation(w, 1);
     }
     w->unk44 = (((w->unk62 & 0xf0) >> 4) << 3) + 0x100;
     w->unk46 = w->unk44;
-    func_0206bd24(w, w->unk94, NULL);
+    StageObj_Draw2D(w, w->unk94, NULL);
     a = w->unk6;
     b = w->unk7;
     w->unk6 = 0;
     w->unk7 = 0;
     w->unk46 = w->unk44 = 0x100;
-    func_0206b768(w->unk10 + 0x1800, w->unk14, 0, w, w->unk134, NULL, 0);
+    StageObj_Draw2DEx(w->unk10 + 0x1800, w->unk14, 0, w, w->unk134, NULL, 0);
     w->unk6 = a;
     w->unk7 = b;
 }

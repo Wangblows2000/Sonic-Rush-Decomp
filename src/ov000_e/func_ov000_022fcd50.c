@@ -6,7 +6,7 @@ typedef struct {
     s16 unk23A;
 } UnkStruct_022fcd50;
 
-s16 func_02068df8(s32 v, s32 a, s32 m);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void func_ov000_022faf48(UnkStruct_022fcd50 *w, s32 a);
 void func_ov000_022fe304(UnkStruct_022fcd50 *w);
 
@@ -36,9 +36,9 @@ void func_ov000_022fcd50(UnkStruct_022fcd50 *w) {
     if (f & 3)
         sp += ((f & 0xc) >> 2) << 7;
     if (w->base.unk5C & 1)
-        w->base.unk34 = func_02068df8(w->base.unk34, -((sp << 9) >> 8), (sp << 11) >> 8);
+        w->base.unk34 = ObjSpd_UpSet(w->base.unk34, -((sp << 9) >> 8), (sp << 11) >> 8);
     else
-        w->base.unk34 = func_02068df8(w->base.unk34, (sp << 9) >> 8, (sp << 11) >> 8);
+        w->base.unk34 = ObjSpd_UpSet(w->base.unk34, (sp << 9) >> 8, (sp << 11) >> 8);
     if (w->base.unk28 - w->base.unk36 > 0 && w->base.unk10 > width * (w->base.unk1E0->unk6 + w->base.unk1E0->unk8) + (base << 8))
         w->base.unk34 = 0;
     if (w->base.unk28 - w->base.unk36 < 0 && w->base.unk10 < w->base.unk1E0->unk6 * width + (base << 8))

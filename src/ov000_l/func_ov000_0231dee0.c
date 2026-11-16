@@ -20,7 +20,7 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 
-s16 func_02068db4(s32 v, s32 d);
+s16 ObjSpd_DownSet(s32 v, s32 d);
 void func_ov000_0231e06c(UnkStruct_0231dee0 *w);
 void func_ov000_0231d904(UnkStruct_0231dee0 *w);
 void func_ov000_0231db90(UnkStruct_0231dee0 *w);
@@ -28,7 +28,7 @@ void func_ov000_0231db90(UnkStruct_0231dee0 *w);
 void func_ov000_0231dee0(UnkStruct_0231dee0 *w) {
     if (w->base.unk58 & 1) {
         if ((w->base.unk58 & 0x10) && w->unk184->unk2 == 10) {
-            func_02069818(w, 0);
+            StageObj_SetAnimation(w, 0);
             w->base.unk5C |= 4;
         }
         w->base.unk58 &= ~0x10;
@@ -43,7 +43,7 @@ void func_ov000_0231dee0(UnkStruct_0231dee0 *w) {
             }
         }
     }
-    w->base.unk2E = func_02068db4(w->base.unk2E, 0x28);
+    w->base.unk2E = ObjSpd_DownSet(w->base.unk2E, 0x28);
     func_ov000_0231d904(w);
     func_ov000_0231db90(w);
 }

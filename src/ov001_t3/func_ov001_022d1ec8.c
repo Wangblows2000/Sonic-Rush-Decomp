@@ -26,7 +26,7 @@ typedef struct {
     u8 unkf0c[4];
 } UnkStruct_022d1ec8;
 
-void func_02032d2c(UnkSpr_022d1ec8 *s);
+void AnimatorSprite_Draw(UnkSpr_022d1ec8 *s);
 void func_ov001_022d2234(UnkStruct_022d1ec8 *p, void (*fn)(UnkStruct_022d1ec8 *));
 void func_ov001_022cff74(UnkObj_022d1ec8 *o, s32 a, void *b, void *c);
 void func_ov001_022d1904(UnkStruct_022d1ec8 *p);
@@ -42,7 +42,7 @@ void func_ov001_022d1ec8(UnkStruct_022d1ec8 *p) {
     }
     for (i = 0; i < 18; i++) {
         if (i * 3 + 5 <= p->timer) {
-            func_02032d2c(&p->spr[i]);
+            AnimatorSprite_Draw(&p->spr[i]);
         }
     }
     if (p->timer > 0xf0) {

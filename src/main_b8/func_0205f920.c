@@ -29,14 +29,14 @@ typedef struct {
 
 extern UnkBlend_0205f920 data_0208924c;
 
-u32 func_02060e70(s32 a);
+u32 TalkDemo_GetFlags(s32 a);
 void func_0205f8e4(void *t);
 
 #pragma thumb on
 void func_0205f920(UnkTask_0205f920 *t) {
     UnkBlend_0205f920 *b = &data_0208924c;
 
-    if (func_02060e70(0) & 1) {
+    if (TalkDemo_GetFlags(0) & 1) {
         b->bg0a = 0;
         b->bg1a = 0;
         b->bg2a = 0;

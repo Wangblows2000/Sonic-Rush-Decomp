@@ -9,13 +9,13 @@ typedef struct UnkStruct_0230f8b4 {
 } UnkStruct_0230f8b4;
 
 extern UnkStruct_0230f8b4 *data_ov001_0231f658;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
 void *func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
-void func_02031768(void *o);
+void Heap_Free(void *heap, void *p);
+void Model_Release(void *o);
 void func_0202566c(void *res);
 
 static inline void Free_0230f8b4(void *p) {
@@ -29,7 +29,7 @@ static inline void Free_0230f8b4(void *p) {
             DC_StoreRange(p, size);
         }
     }
-    func_020349b8(data_0208fe80, p);
+    Heap_Free(gMainHeap, p);
 }
 
 void func_ov001_0230f8b4(void) {
@@ -38,10 +38,10 @@ void func_ov001_0230f8b4(void) {
     s32 j;
 
     for (i = 0; i < 9; i++)
-        func_02031768(g->objs[i]);
+        Model_Release(g->objs[i]);
     for (i = 0; i < 5; i++) {
         func_0202566c(g->res[i]);
-        func_02031768(g->anims[i]);
+        Model_Release(g->anims[i]);
         Free_0230f8b4(g->res[i]);
     }
     if (g->unk0 != NULL) {

@@ -14,10 +14,10 @@ typedef struct {
     UnkStruct_023279a0_Sub unk134;
 } UnkStruct_023279a0;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_02367c14[];
 
-void func_02069934(void *w, UnkStruct_023279a0_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
+void StageObj_Load3dBAC(void *w, UnkStruct_023279a0_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 void func_ov000_02327988(void);
 
 UnkStruct_023279a0 *func_ov000_023279a0(UnkStruct_StageObj *arg, s32 x, s32 y, s32 z) {
@@ -25,13 +25,13 @@ UnkStruct_023279a0 *func_ov000_023279a0(UnkStruct_StageObj *arg, s32 x, s32 y, s
     UnkStruct_023279a0 *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_023279a0));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_023279a0));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_023279a0));
-    func_02069934(w, &w->unk134, data_ov000_02367c14, 0x200, 0x10, NULL, data_022c4488);
+    StageObj_Load3dBAC(w, &w->unk134, data_ov000_02367c14, 0x200, 0x10, NULL, gZoneActArchive);
     w->unk134.unkA = 7;
     w->unk134.unkB = 0;
     w->unk134.unkDC |= 0x80;
@@ -39,7 +39,7 @@ UnkStruct_023279a0 *func_ov000_023279a0(UnkStruct_StageObj *arg, s32 x, s32 y, s
     w->unk134.unkDC = (w->unk134.unkDC & ~0x1f0000) | 0x180000;
     if (arg->unk5C & 1)
         w->base.unk5C |= 1;
-    func_02069818(w, 0);
+    StageObj_SetAnimation(w, 0);
     w->base.unk88 = arg;
     w->base.unk10 = arg->unk10;
     w->base.unk14 = arg->unk14;

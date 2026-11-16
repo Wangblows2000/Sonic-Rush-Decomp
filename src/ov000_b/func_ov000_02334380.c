@@ -14,12 +14,12 @@ typedef struct {
     UnkStruct_02334380_Sub unk134;
 } UnkStruct_02334380;
 
-extern void *data_022c4488;
+extern void *gZoneActArchive;
 extern u8 data_ov000_023685b0[];
 extern u8 data_ov000_0236a9f0[];
 
-void func_020693f0(s16 *x, s16 *y, u8 a);
-void func_02069934(void *w, UnkStruct_02334380_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
+void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
+void StageObj_Load3dBAC(void *w, UnkStruct_02334380_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 void func_ov000_02334550(void);
 
 UnkStruct_02334380 *func_ov000_02334380(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
@@ -27,13 +27,13 @@ UnkStruct_02334380 *func_ov000_02334380(UnkStruct_StageObj *arg, s16 x, s16 y, s
     UnkStruct_02334380 *w;
     vu16 zero;
 
-    task = func_020372d0(func_0206c3d0, func_0206bef4, 0, 0xa00, 4, sizeof(UnkStruct_02334380));
+    task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02334380));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02334380));
-    func_02069934(w, &w->unk134, data_ov000_023685b0, 0x200, 0x10, data_ov000_0236a9f0, data_022c4488);
+    StageObj_Load3dBAC(w, &w->unk134, data_ov000_023685b0, 0x200, 0x10, data_ov000_0236a9f0, gZoneActArchive);
     if (arg->unk5C & 1)
         w->base.unk5C |= 1;
     w->unk134.unkA = 4;
@@ -41,14 +41,14 @@ UnkStruct_02334380 *func_ov000_02334380(UnkStruct_StageObj *arg, s16 x, s16 y, s
     w->unk134.unkDC |= 0x80;
     w->unk134.unkDC |= 0x40;
     if (type != 1)
-        func_02069818(w, 0);
+        StageObj_SetAnimation(w, 0);
     else
-        func_02069818(w, 1);
+        StageObj_SetAnimation(w, 1);
     w->base.unk88 = arg;
     w->base.unk10 = arg->unk10;
     w->base.unk14 = arg->unk14;
     w->base.unk1 = arg->unk5;
-    func_020693f0(&x, &y, arg->unk5);
+    Math_RotateVec2S16(&x, &y, arg->unk5);
     w->base.unk2E = x;
     w->base.unk30 = y;
     if (w->base.unk5C & 1)

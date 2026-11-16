@@ -81,11 +81,11 @@ typedef struct {
 
 typedef void (*UnkFn_02031f30)(u32 src, u32 mode, u32 dst);
 
-extern UnkScr_02031f30 *data_02072c78[];
+extern UnkScr_02031f30 *gDisplayTable[];
 extern u8 data_02072e64[];
 
-void func_020321e4(u32 a, u32 b, u32 c);
-void func_020337a4(u32 a, u32 b, u32 c);
+void VRAMTransfer_LoadNow(u32 a, u32 b, u32 c);
+void VRAMTransfer_QueueLoad(u32 a, u32 b, u32 c);
 void func_0200be70(UnkFile_02031f30 *f);
 BOOL func_0200bb70(UnkFile_02031f30 *f, UnkFileId_02031f30 id);
 s32 func_0200b99c(UnkFile_02031f30 *f, void *dst, s32 len);
@@ -108,18 +108,18 @@ BOOL func_02031f30(UnkCmd_02031f30 *cmd, UnkCtx_02031f30 *c)
         u32 dst;
         u32 bpp;
         if (flags & 0x20)
-            fn = func_020321e4;
+            fn = VRAMTransfer_LoadNow;
         else
-            fn = func_020337a4;
+            fn = VRAMTransfer_QueueLoad;
         e = cmd->entries;
         dst = c->dst;
         k = 4;
         if (c->unk30 == 0) {
             UnkInfo_02031f30 *info = (UnkInfo_02031f30 *)(c->unk24 + ((u32)c->res + c->res->infoOfs));
             if ((info->flags & 0xc00) == 0xc00)
-                shift = data_02072c78[c->idx]->unk96;
+                shift = gDisplayTable[c->idx]->unk96;
             else
-                shift = data_02072c78[c->idx]->unk94;
+                shift = gDisplayTable[c->idx]->unk94;
         } else {
             shift = 0;
         }

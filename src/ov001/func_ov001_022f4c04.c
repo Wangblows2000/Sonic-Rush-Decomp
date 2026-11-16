@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 extern void *data_ov001_0231f068;
-void func_02031a68(void *p, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov001_022f4a50(void);
 
 void func_ov001_022f4c04(u8 *p) {
@@ -11,7 +11,7 @@ void func_ov001_022f4c04(u8 *p) {
     a[0] = 2;
     *(void (**)(void))(p + 0x74) = func_ov001_022f4a50;
     q[0x10c] |= 0x40;
-    func_02031a68(q, 0, data_ov001_0231f068, 1, 0);
+    Model_SetAnimation(q, 0, data_ov001_0231f068, 1, 0);
     q[0x10c] &= ~4;
     *(u16 *)(q + 0x12c) = 0x400;
     *(s32 *)(q + 0x114) = 0x1000;

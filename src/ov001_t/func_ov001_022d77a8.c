@@ -32,10 +32,10 @@ typedef struct {
     u16 y;
 } UnkScroll_022d77a8;
 
-extern UnkScroll_022d77a8 data_0208922c[];
-extern UnkScroll_022d77a8 data_02087d04[];
+extern UnkScroll_022d77a8 gDisplayMain[];
+extern UnkScroll_022d77a8 gDisplaySub[];
 
-void func_02035704(u16 *src, u16 count, void *dest, u16 *pal);
+void PaletteTransfer_QueueCopy(u16 *src, u16 count, void *dest, u16 *pal);
 
 #pragma thumb on
 void func_ov001_022d77a8(UnkStruct_022d77a8 *a, UnkWork_022d77a8 *b) {
@@ -61,8 +61,8 @@ void func_ov001_022d77a8(UnkStruct_022d77a8 *a, UnkWork_022d77a8 *b) {
         x = a->pos[idx].x;
         y = a->pos[idx].y;
         b->pal[idx] = a->pal[idx];
-        func_02035704(&b->pal[idx], 1, b->layers[idx].destA, b->layers[idx].srcA + 1);
-        func_02035704(&b->pal[idx], 1, b->layers[idx].destB, b->layers[idx].srcB + 1);
+        PaletteTransfer_QueueCopy(&b->pal[idx], 1, b->layers[idx].destA, b->layers[idx].srcA + 1);
+        PaletteTransfer_QueueCopy(&b->pal[idx], 1, b->layers[idx].destB, b->layers[idx].srcB + 1);
         if (x < 0) {
             x += (-x / 512 + 1) * 512;
         }
@@ -73,10 +73,10 @@ void func_ov001_022d77a8(UnkStruct_022d77a8 *a, UnkWork_022d77a8 *b) {
         y %= 512;
         x = 512 - x;
         y = 512 - y;
-        data_0208922c[idx].x = x;
-        data_0208922c[idx].y = y;
-        data_02087d04[idx].x = x;
-        data_02087d04[idx].y = y;
+        gDisplayMain[idx].x = x;
+        gDisplayMain[idx].y = y;
+        gDisplaySub[idx].x = x;
+        gDisplaySub[idx].y = y;
     }
 }
 #pragma thumb reset

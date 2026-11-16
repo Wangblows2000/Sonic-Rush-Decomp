@@ -39,7 +39,7 @@ extern UnkStruct_02304e80_p *data_ov001_0231f550[];
 
 BOOL func_ov001_02300c68(void);
 UnkStruct_02304e80_q *func_ov001_02300c94(void);
-void func_02035704(void *src, u32 size, u32 offset, void *dst);
+void PaletteTransfer_QueueCopy(void *src, u32 size, u32 offset, void *dst);
 
 void func_ov001_02304e80(void) {
     s32 s;
@@ -65,6 +65,6 @@ void func_ov001_02304e80(void) {
         data_ov001_0231f54c->frame = 0;
     f = &data_ov001_0231f54c->frames[data_ov001_0231f54c->frame];
     p = data_ov001_0231f550[f->idx];
-    func_02035704((u8 *)p + p->offset + 4, 0xc0, 0, (void *)0x5000000);
+    PaletteTransfer_QueueCopy((u8 *)p + p->offset + 4, 0xc0, 0, (void *)0x5000000);
     data_ov001_0231f54c->timer = f->dur;
 }

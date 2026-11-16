@@ -11,16 +11,16 @@ typedef void (*UnkFunc_0233e79c)(void *w);
 extern UnkStruct_0233e79c_4560 data_022c4560;
 extern UnkFunc_0233e79c data_ov000_0236885c[][3];
 extern void *data_ov000_0236ac18;
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void *func_02034a40(void *heap, u32 size, s32 align);
+void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *func_02006abc(u32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 void DC_StoreRange(const void *addr, u32 size);
 
 static inline void *UnkAlloc_0233e79c(u32 sz, s32 align) {
-    u8 *p = func_02034a40(data_0208fe80, sz, align);
+    u8 *p = Heap_Alloc(gMainHeap, sz, align);
     if (func_02006abc(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, sz);

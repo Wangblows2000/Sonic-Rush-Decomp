@@ -17,9 +17,9 @@ typedef struct {
     s16 y;
 } UnkOfs_023582e8;
 
-extern UnkOfs_023582e8 data_02087d04[4];
+extern UnkOfs_023582e8 gDisplaySub[4];
 
-void func_0203438c(UnkSub_023582e8 *p);
+void Background_Draw(UnkSub_023582e8 *p);
 
 #pragma thumb on
 
@@ -43,19 +43,19 @@ void func_ov000_023582e8(UnkStruct_023582e8 *w, s32 sel, s32 scroll) {
         }
         if (p != NULL) {
             p->flags &= ~0x3f;
-            func_0203438c(p);
+            Background_Draw(p);
         }
         w->sel = sel;
     }
     if (sel == 4) {
-        data_02087d04[0].x = 0x100;
+        gDisplaySub[0].x = 0x100;
     } else {
         scroll = -scroll;
         if (scroll < 0) {
             scroll += ((-scroll) / 0x200 + 1) << 9;
         }
         scroll = scroll % 0x200;
-        data_02087d04[0].x = scroll;
+        gDisplaySub[0].x = scroll;
     }
 }
 

@@ -32,10 +32,10 @@ typedef struct {
     s32 unk3F8;
 } UnkStruct_0234fe20;
 
-s32 func_02068bd8(s32 cur, s32 target, s32 c, s32 d, s32 e, s32 f);
-s16 func_02068df8(s32 v, s32 a, s32 max);
+s32 ObjShift_SetFromRef(s32 cur, s32 target, s32 c, s32 d, s32 e, s32 f);
+s16 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 void func_ov000_023470a0(UnkStruct_0234fe20 *w, s32 v);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 static inline void Arrive_0234fe20(UnkStruct_0234fe20 *w) {
     w->unk58 &= ~0x10;
@@ -53,22 +53,22 @@ void func_ov000_0234fe20(UnkStruct_0234fe20 *w) {
             w->unk1C = w->x;
             w->unk20 = w->y;
             if (w->unk3F0 == 0 || w->unk3F0 == 0x80) {
-                w->y = func_02068bd8(w->y, w->unk3E8->y, w->unk3F8, 1, 0x400, 0x100);
+                w->y = ObjShift_SetFromRef(w->y, w->unk3E8->y, w->unk3F8, 1, 0x400, 0x100);
                 d = w->y - w->unk3E8->y;
                 if (d < 0) {
                     d = -d;
                 }
                 if (d < 0x800) {
-                    w->x = func_02068bd8(w->x, w->unk3E8->x, w->unk3F4, 1, 0x400, 0x100);
+                    w->x = ObjShift_SetFromRef(w->x, w->unk3E8->x, w->unk3F4, 1, 0x400, 0x100);
                 }
             } else {
-                w->x = func_02068bd8(w->x, w->unk3E8->x, w->unk3F4, 1, 0x400, 0x100);
+                w->x = ObjShift_SetFromRef(w->x, w->unk3E8->x, w->unk3F4, 1, 0x400, 0x100);
                 d = w->x - w->unk3E8->x;
                 if (d < 0) {
                     d = -d;
                 }
                 if (d < 0x800) {
-                    w->y = func_02068bd8(w->y, w->unk3E8->y, w->unk3F8, 1, 0x400, 0x100);
+                    w->y = ObjShift_SetFromRef(w->y, w->unk3E8->y, w->unk3F8, 1, 0x400, 0x100);
                 }
             }
             if (w->unk3E8->x != w->x) {
@@ -99,13 +99,13 @@ void func_ov000_0234fe20(UnkStruct_0234fe20 *w) {
             w->unk34 = -w->unk34;
         }
         w->unk8 = 2;
-        func_0204b7ec(w->unk384, 0, 0x40);
+        Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
         return;
     default:
         if (w->unk32C & 1) {
-            w->unk34 = func_02068df8(w->unk34, -0x10, 0xd00);
+            w->unk34 = ObjSpd_UpSet(w->unk34, -0x10, 0xd00);
         } else {
-            w->unk34 = func_02068df8(w->unk34, 0x10, 0xd00);
+            w->unk34 = ObjSpd_UpSet(w->unk34, 0x10, 0xd00);
         }
         func_ov000_023470a0(w, w->unk34);
         return;

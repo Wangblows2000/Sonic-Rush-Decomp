@@ -54,7 +54,7 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 u16 func_020027a4(s32 y, s32 x);
 void func_ov001_022fd1ec(void);
-void func_02036754(void *p, u32 a, u32 b);
+void Sound_PlaySeqArc(void *p, u32 a, u32 b);
 
 void func_ov001_022faf00(UnkStruct_022faf00_a **pa, UnkStruct_022faf00_t **pt) {
     UnkStruct_022faf00_a *a = *pa;
@@ -75,5 +75,5 @@ void func_ov001_022faf00(UnkStruct_022faf00_a **pa, UnkStruct_022faf00_t **pt) {
     t->unk54 = FX_Mul(SIN(ang), 0x8000);
     t->unk40 = 0x10000 - ang;
     t->unk74 = func_ov001_022fd1ec;
-    func_02036754(0, 0, 0xa9);
+    Sound_PlaySeqArc(0, 0, 0xa9);
 }

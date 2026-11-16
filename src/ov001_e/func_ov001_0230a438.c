@@ -22,14 +22,14 @@ typedef struct UnkStruct_0230a438 {
 
 extern UnkStruct_0230a438 *data_ov001_0231f5bc;
 extern u32 data_ov001_02317144[];
-extern void *data_0208fe80;
+extern void *gMainHeap;
 
-void func_02039bb0(u32 a, u32 b);
-void func_020371c8(void *task);
+void ObjVram_Free(u32 a, u32 b);
+void Task_Destroy(void *task);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 
 void func_ov001_0230a438(void) {
     UnkStruct_0230a438 *g = data_ov001_0231f5bc;
@@ -37,23 +37,23 @@ void func_ov001_0230a438(void) {
     u8 *blk;
 
     for (i = 0; i < 0x17; i++)
-        func_02039bb0(data_ov001_02317144[i], g->objs[i].unk34);
+        ObjVram_Free(data_ov001_02317144[i], g->objs[i].unk34);
     if (g->unkAE8 != 0) {
         for (i = 0; i < 10; i++)
-            func_02039bb0(0, g->objs2[i].unk34);
-        func_02039bb0(0, g->o780.unk34);
-        func_02039bb0(0, g->o7c8.unk34);
+            ObjVram_Free(0, g->objs2[i].unk34);
+        ObjVram_Free(0, g->o780.unk34);
+        ObjVram_Free(0, g->o7c8.unk34);
     }
     if (g->task0 != NULL) {
-        func_020371c8(g->task0);
+        Task_Destroy(g->task0);
         g->task0 = NULL;
     }
     if (g->task4 != NULL) {
-        func_020371c8(g->task4);
+        Task_Destroy(g->task4);
         g->task4 = NULL;
     }
     if (g->taskBF4 != NULL) {
-        func_020371c8(g->taskBF4);
+        Task_Destroy(g->taskBF4);
         g->taskBF4 = NULL;
     }
     blk = (u8 *)g;
@@ -67,6 +67,6 @@ void func_ov001_0230a438(void) {
             DC_StoreRange(blk, size);
         }
     }
-    func_020349b8(data_0208fe80, blk);
+    Heap_Free(gMainHeap, blk);
     data_ov001_0231f5bc = NULL;
 }

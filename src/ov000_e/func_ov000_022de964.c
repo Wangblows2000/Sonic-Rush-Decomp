@@ -35,8 +35,8 @@ extern UnkStruct_022de964_M *data_ov000_02369b2c;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 
 void func_ov000_022db7ec(void *v, UnkStruct_022de964_O *o);
-void func_0206e3c0(UnkStruct_022de964_C *c, s16 a, s16 b, s16 d, s16 e);
-void func_02069090(void *w, void *a);
+void ObjRect_SetBox2D(UnkStruct_022de964_C *c, s16 a, s16 b, s16 d, s16 e);
+void StageObj_HandleCollider(void *w, void *a);
 void func_ov000_022db894(UnkStruct_022de964_C *h, UnkStruct_022de964_C *out);
 void func_ov000_022ded44(void);
 
@@ -49,11 +49,11 @@ void func_ov000_022de964(void) {
     if (data_ov000_02369ac0.unk4 == 0x18)
         return;
     c = &o->coll0;
-    func_0206e3c0(c, -0x28, 0, 0x50, 0x64);
+    ObjRect_SetBox2D(c, -0x28, 0, 0x50, 0x64);
     c->unk18 = o;
     c->unk1C = func_ov000_022ded44;
     c->unkA |= 4;
-    func_02069090(o, c);
+    StageObj_HandleCollider(o, c);
     func_ov000_022db894(c, &o->coll2);
     o->coll2.unk4 = c->unk4;
 }

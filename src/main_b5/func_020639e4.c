@@ -13,11 +13,11 @@ typedef struct {
     UnkWork_020639e4 *work;
 } UnkTask_020639e4;
 
-extern UnkTask_020639e4 *data_022b4574;
+extern UnkTask_020639e4 *gTaskCurrent;
 
-void func_02032480(void *spr, s32 sx, s32 sy, s32 a);
+void AnimatorSprite_DrawRotScale(void *spr, s32 sx, s32 sy, s32 a);
 void func_02063890(UnkWork_020639e4 *w);
-void func_02033550(void *p, u16 a);
+void AnimatorSprite_SetAnimation(void *p, u16 a);
 void func_02063950(void);
 
 #define CLAMP(x, lo, hi) ((x) < (lo) ? (lo) : ((x) > (hi) ? (hi) : (x)))
@@ -41,16 +41,16 @@ void func_020639e4(void) {
     s32 sx;
     s32 sy;
 
-    w = data_022b4574->work;
+    w = gTaskCurrent->work;
     res = w->res;
     w->t += 0x400;
     spr = res + 0x640;
     sx = Ease_020639e4(0xf33, 0x1400, CLAMP(w->t, 0, 0x1000));
     sy = Ease_020639e4(0xf33, 0x1400, CLAMP(w->t, 0, 0x1000));
-    func_02032480(spr, sx, sy, 0);
+    AnimatorSprite_DrawRotScale(spr, sx, sy, 0);
     func_02063890(w);
     if (w->t < 0x1000)
         return;
-    data_022b4574->fn = func_02063950;
-    func_02033550(res + 0x688, *(u16 *)(res + 0x690));
+    gTaskCurrent->fn = func_02063950;
+    AnimatorSprite_SetAnimation(res + 0x688, *(u16 *)(res + 0x690));
 }

@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-void func_02043c7c(s32 a, s32 b);
+void BrightnessFade_Create(s32 a, s32 b);
 void func_ov001_022ddffc(void);
 
 void func_ov001_022de04c(u8 *p, void (**out)(void)) {
@@ -13,6 +13,6 @@ void func_ov001_022de04c(u8 *p, void (**out)(void)) {
     }
     *(u32 *)(p + 4) &= ~0x200;
     *(u32 *)(p + 4) |= 0x420;
-    func_02043c7c(5, 0x44);
+    BrightnessFade_Create(5, 0x44);
     *out = func_ov001_022ddffc;
 }

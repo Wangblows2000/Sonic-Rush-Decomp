@@ -3,7 +3,7 @@
 
 extern void _ll_mul(void);
 extern void _s32_div_f(void);
-extern u32 data_02087cb8;
+extern u32 gSystemFlags;
 extern u32 data_02087cdc;
 extern u32 data_02087ce0;
 extern u32 data_02089264;
@@ -407,7 +407,7 @@ _2c0:
     dcd data_ov001_02316318
     dcd 0x0007f000
     dcd 0x00000800
-    dcd data_02087cb8
+    dcd gSystemFlags
     dcd 0x00001000
 }
 #pragma thumb reset

@@ -1,15 +1,15 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_020446b0();
-s32 func_0206c7d8();
+s32 ScreenShake_Start();
+s32 StageObj_SetPause();
 s32 func_ov000_022ee198();
 extern u8 data_022c4560[];
 void func_ov000_022ecec0();
 
 s32 func_ov000_022ecfcc(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x210) = 0;
-    func_020446b0(0);
+    ScreenShake_Start(0);
     *(u32 *)((u8 *)p0 + 0x54) = (*(u32 *)((u8 *)p0 + 0x54) | 0x20);
     *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x54) = (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x54) | 0x20);
     s32 t0 = *(u32 *)((u8 *)p0 + 0x21c);
@@ -18,7 +18,7 @@ s32 func_ov000_022ecfcc(u8 *p0) {
     *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x320) = 0;
     s32 t1 = *(u32 *)((u8 *)p0 + 0x21c);
     *(u32 *)((u8 *)t1 + 0x320) = 0;
-    func_0206c7d8(t1, 0, t0);
+    StageObj_SetPause(t1, 0, t0);
     s32 t2 = *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x124);
     func_ov000_022ee198(*(u32 *)((u8 *)p0 + 0x214), 0xf);
     *(u32 *)*(u32 *)((u8 *)t2 + 0xe4) = ((s32)(*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)t2 + 0xe4) + 0x8) + 0x4) << 0xc) >> 1);

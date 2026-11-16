@@ -1,16 +1,16 @@
 #include <nitro/types.h>
 
-extern void *data_0208fe80;
+extern void *gMainHeap;
 u32 func_02006abc(s32 i);
-u8 *func_02034a40(void *heap, u32 size, s32 align);
+u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020349b8(void *heap, void *p);
+void Heap_Free(void *heap, void *p);
 typedef struct { u8 data[0x5c]; } UnkStruct_023029d4;
 extern u8 data_ov001_0231c578[];
-void func_02031768(void *p);
+void Model_Release(void *p);
 void func_02021310(UnkStruct_023029d4 *a, void *b, void *c);
 void *func_02021264(UnkStruct_023029d4 *a, s32 i);
 void func_020212e0(UnkStruct_023029d4 *a);
@@ -23,7 +23,7 @@ void func_ov001_022e3b30(u8 *p) {
     vu32 zero;
     if (*(void **)(p + 0x15c) != NULL) {
         u8 *blk;
-        func_02031768(p + 0x24);
+        Model_Release(p + 0x24);
         func_02021310(&arc, data_ov001_0231c578, *(void **)(p + 0x15c));
         if (!func_ov001_022e2ad8()) {
             func_0202566c(func_02021264(&arc, 0));
@@ -42,7 +42,7 @@ void func_ov001_022e3b30(u8 *p) {
                 DC_StoreRange(blk, size);
             }
         }
-        func_020349b8(data_0208fe80, blk);
+        Heap_Free(gMainHeap, blk);
         *(void **)(p + 0x15c) = NULL;
     }
     zero = 0;

@@ -31,12 +31,12 @@ typedef struct {
     UnkStruct_022f54f8 *unk10;
 } UnkStruct_022f54f8_mgr;
 
-extern UnkStruct_022f54f8_mgr *data_022b4574;
+extern UnkStruct_022f54f8_mgr *gTaskCurrent;
 extern s16 data_0206e470[];
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_020316f4(void *cam);
-void func_020315e0(void *cam);
+void Model_Animate(void *cam);
+void Model_Draw(void *cam);
 void func_02025268(s32 a, s32 *b, s32 c);
 void func_02025a94(void *a, s32 b);
 
@@ -50,7 +50,7 @@ void func_ov000_022f54f8(void) {
     UnkStruct_022f54f8 *obj;
     UnkStruct_022f54f8_cam *cam;
 
-    obj = data_022b4574->unk10;
+    obj = gTaskCurrent->unk10;
     cam = &obj->cam;
     if (obj->unk5C & 0x20)
         return;
@@ -58,8 +58,8 @@ void func_ov000_022f54f8(void) {
     cam->unk4C = -(obj->unk14 << 4);
     cam->unk50 = obj->unk18 << 4;
     MTX_RotY33_(cam->unk24, data_0206e470[((obj->unk45E & 0xffff) >> 4) * 2], data_0206e470[((obj->unk45E & 0xffff) >> 4) * 2 + 1]);
-    func_020316f4(cam);
-    func_020315e0(cam);
+    Model_Animate(cam);
+    Model_Draw(cam);
     a0 = 2;
     func_02025268(0x10, &a0, 1);
     a1 = 0x1e;

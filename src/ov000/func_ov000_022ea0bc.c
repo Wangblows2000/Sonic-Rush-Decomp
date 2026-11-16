@@ -7,13 +7,13 @@ typedef struct UnkStruct_022ea0bc {
     u16 unk454;
 } UnkStruct_022ea0bc;
 
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 
 void func_ov000_022ea090(void);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 s32 func_ov000_022ea0bc(UnkStruct_022ea0bc *s) {

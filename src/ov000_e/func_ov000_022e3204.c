@@ -31,7 +31,7 @@ extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern s32 data_ov000_02363844[];
 extern UnkStruct_StageObj *data_ov000_0236ac60;
 
-void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e004c(UnkStruct_Boss *w);
 void func_ov000_022e2fbc(void);
 
@@ -41,7 +41,7 @@ void func_ov000_022e3204(UnkStruct_Boss *w) {
     if (!(m->unk10C & 2))
         return;
     w->base.unk68 = func_ov000_022e2fbc;
-    func_02031a68(m, 0, w->unkD08, 0x11, 0);
+    Model_SetAnimation(m, 0, w->unkD08, 0x11, 0);
     m->unk10C &= ~4;
     m->unk114 = 0x1000;
     w->unk111C = -0x1e00;

@@ -9,8 +9,8 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-void func_0203344c(void *p, s32 a, s32 b);
-void func_02032d2c(void *p);
+void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
+void AnimatorSprite_Draw(void *p);
 
 #define IDX_8384(a) ((s32)((a) & 0xffff) >> 4)
 #define SIN_8384(a) data_0206e470[(u32)(IDX_8384(a) << 1)]
@@ -27,7 +27,7 @@ void func_ov000_02358384(u8 *w, s32 n, s32 ang) {
 
     s->x = (u32)(FXM_8384(SIN_8384((u16)ang), 0x41) + 1) + 0x80;
     s->y = (u32)(FXM_8384(COS_8384((u16)ang), 0x41) + 1) + 0x58;
-    func_0203344c(s, 0, 0);
-    func_02032d2c(s);
+    AnimatorSprite_ProcessAnimation(s, 0, 0);
+    AnimatorSprite_Draw(s);
 }
 #pragma thumb reset

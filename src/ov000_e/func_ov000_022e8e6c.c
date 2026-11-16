@@ -34,7 +34,7 @@ void func_ov000_022e9b70(UnkStruct_022e8e6c *w, s32 a, s32 b);
 void *func_ov000_02326f48(UnkStruct_022e8e6c *w, s32 a, s32 b, s32 c, s32 d);
 UnkStruct_Fx *func_ov000_02328468(s32 a, s32 x, s32 y, s32 z);
 void *func_ov000_023277d4(UnkStruct_022e8e6c *w, s32 a, s32 b, s32 c, s32 d);
-void func_02036754(s32 a, s32 b, s32 c);
+void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e8d98(UnkStruct_022e8e6c *w);
 
 static inline s32 Mul64(s64 a, s64 b) {
@@ -60,9 +60,9 @@ void func_ov000_022e8e6c(UnkStruct_022e8e6c *w) {
         fx->unk150 = Mul64(fx->unk150, 0x1800);
         fx->unk154 = Mul64(fx->unk154, 0x1800);
         w->unk488 = func_ov000_023277d4(w, 0, -4, 8, 0);
-        func_02036754(0, 0, 1);
+        Sound_PlaySeqArc(0, 0, 1);
     } else {
-        func_02036754(0, 0, 0x12);
+        Sound_PlaySeqArc(0, 0, 0x12);
     }
     data_ov000_02369ac0.unk4 = 0x2a;
     w->unk440 = func_ov000_022e8d98;

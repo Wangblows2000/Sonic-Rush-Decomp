@@ -7,11 +7,11 @@ typedef struct UnkStruct_0230ccd4 {
     void (*func)(void);
 } UnkStruct_0230ccd4;
 
-void func_02069818(UnkStruct_0230ccd4 *s, s32 a);
+void StageObj_SetAnimation(UnkStruct_0230ccd4 *s, s32 a);
 void func_ov000_0230cc84(void);
 
 void func_ov000_0230ccd4(UnkStruct_0230ccd4 *s) {
-    func_02069818(s, 1);
+    StageObj_SetAnimation(s, 1);
     s->func = func_ov000_0230cc84;
     s->unkC = 0;
 }

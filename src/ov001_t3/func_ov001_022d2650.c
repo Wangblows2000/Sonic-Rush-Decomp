@@ -26,7 +26,7 @@ typedef struct {
 extern u8 data_ov001_023160f8[];
 extern u32 data_ov001_02316118[];
 
-void func_0203473c(UnkObj_022d2650 *o, UnkRes_022d2650 *r, s32 a, u32 b, u8 c, u16 d, u16 e);
+void Background_Init(UnkObj_022d2650 *o, UnkRes_022d2650 *r, s32 a, u32 b, u8 c, u16 d, u16 e);
 
 #pragma thumb on
 void func_ov001_022d2650(UnkStruct_022d2650 *p) {
@@ -37,7 +37,7 @@ void func_ov001_022d2650(UnkStruct_022d2650 *p) {
     for (i = 0; i < 15; i++) {
         r = p->res[i];
         if (r != NULL) {
-            func_0203473c(&p->objs[i], r, 0x38, data_ov001_02316118[i], data_ov001_023160f8[i], r->unk18, r->unk1a);
+            Background_Init(&p->objs[i], r, 0x38, data_ov001_02316118[i], data_ov001_023160f8[i], r->unk18, r->unk1a);
         }
     }
     p->objs[0].unk1c += 0x2000;

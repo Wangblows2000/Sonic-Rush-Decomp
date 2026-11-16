@@ -1,0 +1,32 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x16];
+    u16 unk16;
+} UnkCfg_0203ff68;
+
+extern s32 sSysState;
+extern UnkCfg_0203ff68 sParentParam;
+extern u32 data_022c1964;
+extern u8 data_022c1da0[];
+extern u32 data_022c1990;
+extern u8 data_022c1fc0[];
+
+void WH_ChangeSysState(s32 a);
+void WH_SetError(s32 v);
+s32 func_02011dcc(void (*cb)(void), void *recvBuf, u16 recvBufSize, void *sendBuf, u16 sendBufSize,
+                  u16 mpFreq, u16 retry, BOOL a, BOOL b, BOOL c, BOOL d);
+void WH_StateOutStartParentMP(void);
+
+s32 WH_StateInStartParentMP(void) {
+    s32 r;
+
+    if ((u32)(sSysState - 4) <= 2)
+        return 1;
+    WH_ChangeSysState(4);
+    r = func_02011dcc(WH_StateOutStartParentMP, data_022c1fc0, data_022c1990, data_022c1da0, data_022c1964, sParentParam.unk16 == 0, 0, 0, 0, 0, 0);
+    if (r == 2)
+        return 1;
+    WH_SetError(r);
+    return 0;
+}

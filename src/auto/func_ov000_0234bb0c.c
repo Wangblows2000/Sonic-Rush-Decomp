@@ -6,7 +6,7 @@ s32 func_ov000_0234c644();
 s32 func_ov000_0234ab34();
 s32 func_ov000_0234729c();
 s32 func_ov000_023470a0();
-extern u8 data_022c4ef0[];
+extern u8 gObjManagerFlags[];
 extern u8 data_022c4560[];
 s32 func_ov000_02332db8();
 
@@ -41,7 +41,7 @@ void func_ov000_0234bb0c(u8 *p0) {
         }
     }
     func_ov000_023470a0(p0);
-    if ((*(u32 *)data_022c4ef0 & 0x100) != 0) {
+    if ((*(u32 *)gObjManagerFlags & 0x100) != 0) {
         return;
     }
     if (*(u8 *)((u8 *)p0 + 0x324) != 1) {

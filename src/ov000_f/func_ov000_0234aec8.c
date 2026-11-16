@@ -53,12 +53,12 @@ typedef struct {
 
 extern UnkStruct_0234aec8_4560 data_022c4560;
 extern UnkStruct_0234aec8_4534 data_022c4534;
-extern u32 data_022c4ef0;
-extern u32 data_0208fe70;
+extern u32 gObjManagerFlags;
+extern u32 gRandSeed;
 extern UnkStruct_0234aec8_Tbl data_ov000_0236ab3a[];
 
 void func_0201c070(void *p, s32 a);
-void func_0204b7ec(void *p, s32 a, s32 b);
+void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0234c4a4(UnkStruct_0234aec8 *w, s32 state);
 BOOL func_ov000_023470ec(UnkStruct_0234aec8 *w);
 void func_ov000_0234b6dc(UnkStruct_0234aec8 *w);
@@ -71,8 +71,8 @@ void func_ov000_0232a11c(UnkStruct_0234aec8 *w, s32 a, s32 b, u16 c);
 void func_ov000_023333a0(UnkStruct_0234aec8 *w);
 
 static inline u16 Rand_0234aec8(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_0234aec8(UnkStruct_0234aec8 *w) {
@@ -84,9 +84,9 @@ void func_ov000_0234aec8(UnkStruct_0234aec8 *w) {
         (((w->unk420 & 0x20) && w->unk34 >= 0x200) || ((w->unk420 & 0x10) && w->unk34 <= -0x200))) {
         func_0201c070(w->unk384, 0);
         if (w->unk324 != 1) {
-            func_0204b7ec(w->unk384, 0, 3);
+            Sound_PlaySeqArcEx(w->unk384, 0, 3);
         } else {
-            func_0204b7ec(w->unk384, 0, 0x14);
+            Sound_PlaySeqArcEx(w->unk384, 0, 0x14);
         }
         a = w->unk34;
         if (a < 0) {
@@ -164,7 +164,7 @@ next:
     }
     func_ov000_023470a0(w, w->unk34);
     if (w->unk328 >= 5 && w->unk328 <= 10) {
-        if (!(data_022c4ef0 & 0x100) && !(w->unkC & 7)) {
+        if (!(gObjManagerFlags & 0x100) && !(w->unkC & 7)) {
             func_ov000_02333934(w);
             if ((w->unk32C & 0x4000000) && !(Rand_0234aec8() & 1)) {
                 func_ov000_0232a11c(w, 0, 0, data_ov000_0236ab3a[w->unk327].v);
@@ -172,7 +172,7 @@ next:
         }
         w->unkC++;
     }
-    if (data_022c4ef0 & 0x100) {
+    if (gObjManagerFlags & 0x100) {
         return;
     }
     if (w->unk324 != 1) {

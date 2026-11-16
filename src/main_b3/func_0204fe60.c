@@ -16,8 +16,8 @@ extern void *data_022c45fc;
 extern s32 data_0207a220;
 
 void func_0204efa8(UnkWork_0204fe60 *w);
-void func_020521b4(void);
-void func_02039bb0(s32 a, void *b);
+void SysSound_Release(void);
+void ObjVram_Free(s32 a, void *b);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void func_0204f454(UnkWork_0204fe60 *w, s32 i);
 void func_0204f2fc(UnkWork_0204fe60 *w, s32 a);
@@ -29,11 +29,11 @@ void func_0204fe60(UnkTask_0204fe60 *t) {
 
     func_0204efa8(w);
     if (w->unk4C)
-        func_020521b4();
+        SysSound_Release();
     for (i = 0; i < 5; i++) {
         vu16 zero;
         if (w->spr[i].unk34 != NULL)
-            func_02039bb0(w->spr[i].unk0, w->spr[i].unk34);
+            ObjVram_Free(w->spr[i].unk0, w->spr[i].unk34);
         zero = 0;
         MIi_CpuClear16(zero, &w->spr[i], sizeof(UnkSpr_0204fe60));
     }

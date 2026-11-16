@@ -41,10 +41,10 @@ typedef struct UnkStruct_022d8db0_b {
 
 extern UnkStruct_022d8db0_7 data_ov000_02369ac0;
 extern UnkStruct_022d8db0_b *data_ov000_02369b14;
-extern u32 data_0208fe70;
+extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
-void func_0206d8bc(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b);
+void ObjRect_FuncNoHit(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b);
 void func_ov000_022daab0(void);
 void func_ov000_022daaf4(void);
 UnkStruct_022d8db0_q *func_ov000_02328710(s32 a, s32 b, s32 c, s32 d);
@@ -53,11 +53,11 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
-void func_020367b4(s32 a, s32 b);
+void Sound_PlaySeq(s32 a, s32 b);
 
 static inline u16 Rand(void) {
-    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
-    return (u16)(data_0208fe70 >> 16);
+    gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
+    return (u16)(gRandSeed >> 16);
 }
 
 void func_ov000_022d8db0(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b) {
@@ -67,15 +67,15 @@ void func_ov000_022d8db0(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b) {
     u8 mtx[0x24];
     u16 ang;
     if ((void *)o == (void *)p) {
-        func_0206d8bc(a, b);
+        ObjRect_FuncNoHit(a, b);
         return;
     }
     if (p->unk0 == 1) {
-        func_0206d8bc(a, b);
+        ObjRect_FuncNoHit(a, b);
         return;
     }
     if (!(p->unk20C & 0x40)) {
-        func_0206d8bc(a, b);
+        ObjRect_FuncNoHit(a, b);
         return;
     }
     b->unkA |= 0x1000;
@@ -95,7 +95,7 @@ void func_ov000_022d8db0(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b) {
         if (data_ov000_02369ac0.unk8 == 2) {
             func_020537b4(0xb);
             func_020533e0(0x12, 0xf0);
-            func_020367b4(0, 0xf);
+            Sound_PlaySeq(0, 0xf);
             data_ov000_02369b14->unk20C |= 1;
         } else {
             func_020537b4(0xb);

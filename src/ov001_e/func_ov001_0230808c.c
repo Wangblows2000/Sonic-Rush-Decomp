@@ -26,12 +26,12 @@ typedef struct UnkStruct_0230808c {
 extern UnkStruct_0230808c *data_ov001_0231f5bc;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_0203438c(void *a);
-void func_02033550(UnkStruct_0230808c_o *s, u16 index);
-void *func_020372d0(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
-void func_0203344c(void *c, u32 a, u32 b);
+void Background_Draw(void *a);
+void AnimatorSprite_SetAnimation(UnkStruct_0230808c_o *s, u16 index);
+void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
+void AnimatorSprite_ProcessAnimation(void *c, u32 a, u32 b);
 void func_ov001_02307990(s32 i);
-void func_020367b4(s32 a, s32 b);
+void Sound_PlaySeq(s32 a, s32 b);
 void func_ov001_02307ad0(void);
 
 void func_ov001_0230808c(void) {
@@ -42,8 +42,8 @@ void func_ov001_0230808c(void) {
     g->unkBD4 = 0;
     zero = 0;
     MIi_CpuClear32(zero, (void *)0x6200000, 0x1000);
-    func_0203438c(g->bg88);
-    func_0203438c(g->bgC8);
+    Background_Draw(g->bg88);
+    Background_Draw(g->bgC8);
     for (i = 0; i < 7; i++) {
         g->unkBD8[i] = 0;
         g->objs[i + 11].x = -100;
@@ -51,14 +51,14 @@ void func_ov001_0230808c(void) {
     }
     g->posX = 0x80;
     g->posY = 0x78;
-    func_02033550(&g->objs[22], 1);
-    g->task = func_020372d0(func_ov001_02307ad0, 0, 0, 0xf400, 0, 0);
+    AnimatorSprite_SetAnimation(&g->objs[22], 1);
+    g->task = Task_Create(func_ov001_02307ad0, 0, 0, 0xf400, 0, 0);
     for (i = 0; i < 3; i++) {
-        func_0203344c(&g->objs3[i], 0, 0);
+        AnimatorSprite_ProcessAnimation(&g->objs3[i], 0, 0);
         g->objs3[i].flags &= ~0x40;
         func_ov001_02307990(i);
     }
-    func_020367b4(0, 0x1f);
+    Sound_PlaySeq(0, 0x1f);
     {
         u32 v = (*(vu32 *)0x4001000 & 0x1f00) >> 8;
         *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | ((v | 2) << 8);
