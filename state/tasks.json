@@ -53,6 +53,10 @@
         {
           "time": "2026-11-16 03:45:17Z",
           "text": "released by main_sdk6: range 95%; remaining are hard near-misses (main_sdk5/6 reports). func_0202d49c true size 0x50 (0202d4e8 split is bogus) - lead TODO"
+        },
+        {
+          "time": "2026-11-16 06:55:54Z",
+          "text": "main_c2 working main 0x02000800-0x02038000 (shared with main-mid)"
         }
       ]
     },
@@ -64,9 +68,9 @@
       "start": "0x0201c000",
       "end": "0x02038000",
       "status": "claimed",
-      "agent": "main_c1",
+      "agent": "main_c2",
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": "2026-11-16 05:39:39Z",
+      "claimed_at": "2026-11-16 06:55:53Z",
       "done_at": null,
       "notes": [
         {
@@ -104,6 +108,14 @@
         {
           "time": "2026-11-16 05:39:39Z",
           "text": "claimed by main_c1"
+        },
+        {
+          "time": "2026-11-16 06:49:20Z",
+          "text": "main_c1: 18 fns/3666 B OK in src/main_c1. Blocked: func_0202d49c C=80B incl trailing bx lr that dsd split as func_0202d4e8 (merge symbol -> matches, scratch w_main_c1/d49c.c); FS_StartOverlay needs 2nd symbol at 0x0207cfc8 (SDK_OVERLAY_DIGEST_END) else pool merges (w_main_c1/FS_StartOverlay_near.c); func_02006990/func_02005e64 pool holds linker consts w/o relocs (stack sizes). func_0202a3e8 printf: target switch table d..u = density>=1/2, our CW uses >1/2 (32B diff, unfixable by C?). Near: 0204ec40 4B, 0203d038 8B, 02009654 10B (pragma opt_loop_invariants off), 0200ff18 12B, 0200f6e0 13B, 02026d58 15B, 02013814 15B, 020125d8 22B, 0203cc68 23B, 02027fc8 22B; scratch /home/claude/w_main_c1/."
+        },
+        {
+          "time": "2026-11-16 06:55:53Z",
+          "text": "claimed by main_c2"
         }
       ]
     },
@@ -115,9 +127,9 @@
       "start": "0x02038000",
       "end": "0x0206e470",
       "status": "claimed",
-      "agent": "main_b7",
+      "agent": "main_b10",
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": "2026-11-16 04:32:49Z",
+      "claimed_at": "2026-11-16 06:55:53Z",
       "done_at": null,
       "notes": [
         {
@@ -155,6 +167,14 @@
         {
           "time": "2026-11-16 05:29:34Z",
           "text": "main_b9 working 0x02053000-0x0206e470"
+        },
+        {
+          "time": "2026-11-16 06:54:44Z",
+          "text": "main_b9 done: 20 funcs 8276 B in src/main_b9 (report build/agents/main_b9.txt); near-misses+idioms in /home/claude/w_main_b9"
+        },
+        {
+          "time": "2026-11-16 06:55:53Z",
+          "text": "claimed by main_b10"
         }
       ]
     },
@@ -165,10 +185,10 @@
       "module": "ov000",
       "start": "0x022c5c80",
       "end": "0x02310000",
-      "status": "claimed",
-      "agent": "ov000_n",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 05:39:39Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -202,6 +222,18 @@
         {
           "time": "2026-11-16 06:37:46Z",
           "text": "ov000_n: +11 OK (3544 B). Still open <0x02310000: 02303c58/930/ac4/79c family (regalloc s/i colored late, ~50 diff), 022e9bb4, 02308110 (13 diff: hoist reg swap, w_ov000n/near_02308110.c), 02304064(12), 02302e2c(14), 022c8f24(11), 022deab4(20, a524 load scheduled early), 022fcb24(36), 023045c0(3), 022ddd4c(8), 022ee198(8), 022f8224 (switch pivot 8 vs 4 unexplained)."
+        },
+        {
+          "time": "2026-11-16 06:46:24Z",
+          "text": "claimed by ov000_q"
+        },
+        {
+          "time": "2026-11-16 07:18:42Z",
+          "text": "ov000_q: matched 022c8f24 (z=0 local var for CSE'd zero constant fixes reg swap). Remaining 14 near-misses resist decl perms, pragmas, inline helpers, z-trick: 4064/2e2c (ip/r4 swap), 45c0, ddd4c, ee198, deab4 (sched), fcb24, 08110, 4x404 family (s/i colored late; 02303930 draft 45 diff at /home/claude/w_ov000q/fam/930_a.c), f8224 (switch pivot 8 not reproducible with any case set tried), e9bb4. Scratch /home/claude/w_ov000q/."
+        },
+        {
+          "time": "2026-11-16 07:18:42Z",
+          "text": "released by ov000_q: ov000_q done: +1 (022c8f24, 452 B)"
         }
       ]
     },
@@ -213,9 +245,9 @@
       "start": "0x02310000",
       "end": "0x02362b58",
       "status": "claimed",
-      "agent": "ov000_l",
+      "agent": "ov000_r",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 05:19:53Z",
+      "claimed_at": "2026-11-16 07:05:11Z",
       "done_at": null,
       "notes": [
         {
@@ -293,6 +325,22 @@
         {
           "time": "2026-11-16 06:36:55Z",
           "text": "ov000_p working 0x02338000-0x02362b58"
+        },
+        {
+          "time": "2026-11-16 07:04:28Z",
+          "text": "ov000_l: 78 funcs/17324 B OK in src/ov000_l; remaining 21 in 0x02310000-0x02338000 all near-misses (see build/agents/ov000_l.txt, scratch /home/claude/w_ov000l/near_*.c)"
+        },
+        {
+          "time": "2026-11-16 07:05:11Z",
+          "text": "claimed by ov000_r"
+        },
+        {
+          "time": "2026-11-16 07:10:55Z",
+          "text": "ov000_p: 5 OK (2792 B) 02344a74 02341d00 0233c00c 02347190 02340388 in src/ov000_p; bl/blx diff is display-only (masked). Parked 0233a4c8 0234739c 02341ebc 023410dc-family 0233a010."
+        },
+        {
+          "time": "2026-11-16 07:14:31Z",
+          "text": "ov000_s working 0x02338000-0x02362b58"
         }
       ]
     },
@@ -387,9 +435,9 @@
       "start": "0x022ed000",
       "end": "0x02315eb4",
       "status": "claimed",
-      "agent": "ov001_h",
+      "agent": "ov001_i",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 06:27:32Z",
+      "claimed_at": "2026-11-16 07:14:26Z",
       "done_at": null,
       "notes": [
         {
@@ -447,6 +495,14 @@
         {
           "time": "2026-11-16 06:27:32Z",
           "text": "claimed by ov001_h"
+        },
+        {
+          "time": "2026-11-16 07:11:58Z",
+          "text": "ov001_h: 28 OK (8200 B) in src/ov001_h. Near-misses in /home/claude/w_ov001h/near: 022c8480 4B (moveq/movne order of bool), 022df490 12B (n/x reg swap; needs #pragma opt_strength_reduction off), 022dfa3c/022dfb48 24B (vec copy scheduling), 022dfc54 105B. Ghidra pool offsets can be wrong (022e023c: 0xbd4 not 0x10d4)."
+        },
+        {
+          "time": "2026-11-16 07:14:26Z",
+          "text": "claimed by ov001_i"
         }
       ]
     },

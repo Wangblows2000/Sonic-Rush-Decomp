@@ -1,0 +1,36 @@
+#include <ov000_b/stageobj.h>
+
+typedef struct {
+    s16 x;
+    s16 y;
+} UnkPt_0231b4b0;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u8 pad20C[0x28c - 0x20c];
+    UnkPt_0231b4b0 pt[16];
+} UnkWork_0231b4b0;
+
+void func_020446b0(s32 a);
+void func_0204b7ec(s32 a, s32 b, s32 c);
+void func_ov000_0231b37c(void);
+void func_ov000_0231b2d4(void);
+
+void func_ov000_0231b4b0(UnkWork_0231b4b0 *w, s32 a) {
+    u8 i;
+
+    func_020446b0(3);
+    w->base.unk68 = func_ov000_0231b37c;
+    w->base.unk70 = func_ov000_0231b2d4;
+    w->base.unkC = 0;
+    w->base.unk54 |= 2;
+    w->base.unk1B8 = NULL;
+    for (i = 0; i < 16; i++) {
+        if (((a << 15) >> 16) > 0)
+            w->pt[i].x = ((a << 15) >> 16) - i * 16;
+        else
+            w->pt[i].x = ((a << 15) >> 16) + i * 16;
+        w->pt[i].y = i * 0x80 - 0x500;
+    }
+    func_0204b7ec(0, 0, 0x4b);
+}
