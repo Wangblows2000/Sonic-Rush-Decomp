@@ -6095,3 +6095,167 @@ src/ov001_t4/func_ov001_022d3110.c:
 src/ov001_t4/func_ov001_022e980c.c:
     complete
     .text       start:0x022e980c end:0x022e9ad0
+
+src/ov001_f/func_ov001_0230b848.c:
+    complete
+    .text       start:0x0230b848 end:0x0230ba9c
+
+src/ov001_t4/func_ov001_022c5d1c.c:
+    complete
+    .text       start:0x022c5d1c end:0x022c5fa0
+
+src/ov001_t4/func_ov001_022cce10.c:
+    complete
+    .text       start:0x022cce10 end:0x022cd05c
+
+src/ov001_t4/func_ov001_022ce4cc.c:
+    complete
+    .text       start:0x022ce4cc end:0x022ce658
+
+src/ov001_t4/func_ov001_022cea0c.c:
+    complete
+    .text       start:0x022cea0c end:0x022cecb8
+
+src/ov001_t4/func_ov001_022ceef4.c:
+    complete
+    .text       start:0x022ceef4 end:0x022cf0b4
+
+src/ov001_t4/func_ov001_022cf93c.c:
+    complete
+    .text       start:0x022cf93c end:0x022cfac8
+
+src/ov001_t4/func_ov001_022d2460.c:
+    complete
+    .text       start:0x022d2460 end:0x022d2650
+
+src/ov001_t4/func_ov001_022d2704.c:
+    complete
+    .text       start:0x022d2704 end:0x022d289c
+
+src/ov001_t4/func_ov001_022d2a18.c:
+    complete
+    .text       start:0x022d2a18 end:0x022d2cbc
+
+src/ov001_t4/func_ov001_022d6000.c:
+    complete
+    .text       start:0x022d6000 end:0x022d61c0
+
+src/ov001_t4/func_ov001_022d61c0.c:
+    complete
+    .text       start:0x022d61c0 end:0x022d6378
+
+src/ov001_t4/func_ov001_022d68d4.c:
+    complete
+    .text       start:0x022d68d4 end:0x022d6b44
+
+src/ov001_t4/func_ov001_022d7c04.c:
+    complete
+    .text       start:0x022d7c04 end:0x022d7dbc
+
+src/ov001_t4/func_ov001_022d8c78.c:
+    complete
+    .text       start:0x022d8c78 end:0x022d8e58
+
+src/ov001_t4/func_ov001_022db150.c:
+    complete
+    .text       start:0x022db150 end:0x022db2fc
+
+src/ov001_t4/func_ov001_022db458.c:
+    complete
+    .text       start:0x022db458 end:0x022db5f4
+
+src/ov001_t4/func_ov001_022db9d8.c:
+    complete
+    .text       start:0x022db9d8 end:0x022dbbd4
+
+src/ov001_t4/func_ov001_022dd93c.c:
+    complete
+    .text       start:0x022dd93c end:0x022ddab4
+
+src/ov001_t4/func_ov001_022e0f94.c:
+    complete
+    .text       start:0x022e0f94 end:0x022e114c
+
+src/ov001_t4/func_ov001_022e1400.c:
+    complete
+    .text       start:0x022e1400 end:0x022e1444
+
+src/ov001_t4/func_ov001_022e153c.c:
+    complete
+    .text       start:0x022e153c end:0x022e17b0
+
+src/ov001_t4/func_ov001_022e3bec.c:
+    complete
+    .text       start:0x022e3bec end:0x022e3ec0
+
+src/ov001_t4/func_ov001_022e5684.c:
+    complete
+    .text       start:0x022e5684 end:0x022e57a4
+
+src/ov001_t4/func_ov001_022e7504.c:
+    complete
+    .text       start:0x022e7504 end:0x022e76ec
+
+src/ov001_t4/func_ov001_022e7728.c:
+    complete
+    .text       start:0x022e7728 end:0x022e794c
+
+src/ov001_t4/func_ov001_022e8090.c:
+    complete
+    .text       start:0x022e8090 end:0x022e8328
+
+src/ov001_t4/func_ov001_022e8784.c:
+    complete
+    .text       start:0x022e8784 end:0x022e89b4
+
+src/ov001_t4/func_ov001_022e92b4.c:
+    complete
+    .text       start:0x022e92b4 end:0x022e9304
+
+src/ov001_t4/func_ov001_022e9510.c:
+    complete
+    .text       start:0x022e9510 end:0x022e955c
+
+src/ov001_t4/func_ov001_022eba70.c:
+    complete
+    .text       start:0x022eba70 end:0x022ebc3c
+
+src/ov001_t4/func_ov001_022ec49c.c:
+    complete
+    .text       start:0x022ec49c end:0x022ec72c
+
+src/ov001_t5/func_ov001_022c93e0.c:
+    complete
+    .text       start:0x022c93e0 end:0x022c9570
+
+src/ov001_t5/func_ov001_022d03f8.c:
+    complete
+    .text       start:0x022d03f8 end:0x022d0544
+
+src/ov001_t5/func_ov001_022d07cc.c:
+    complete
+    .text       start:0x022d07cc end:0x022d0908
+
+src/ov001_t5/func_ov001_022d0b1c.c:
+    complete
+    .text       start:0x022d0b1c end:0x022d0c64
+
+src/ov001_t5/func_ov001_022d1110.c:
+    complete
+    .text       start:0x022d1110 end:0x022d1238
+
+src/ov001_t5/func_ov001_022d1494.c:
+    complete
+    .text       start:0x022d1494 end:0x022d15e8
+
+src/ov001_t5/func_ov001_022d1d88.c:
+    complete
+    .text       start:0x022d1d88 end:0x022d1e00
+
+src/ov001_t5/func_ov001_022e7c50.c:
+    complete
+    .text       start:0x022e7c50 end:0x022e7dd8
+
+src/ov001_t5/func_ov001_022e7dd8.c:
+    complete
+    .text       start:0x022e7dd8 end:0x022e7f64

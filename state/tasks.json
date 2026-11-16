@@ -63,10 +63,10 @@
       "module": "main",
       "start": "0x0201c000",
       "end": "0x02038000",
-      "status": "claimed",
-      "agent": "main_a5",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": "2026-11-16 01:43:40Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -92,6 +92,14 @@
         {
           "time": "2026-11-16 01:43:40Z",
           "text": "claimed by main_a5"
+        },
+        {
+          "time": "2026-11-16 04:24:13Z",
+          "text": "main_a5: OK 02030a84 0202b3f0 02023274 02035e68 (6400B). Near-misses saved (nearmiss.py): 0202a3e8 __pformatter 32B (only switch dispatch split d..u vs d..o; no case-label set reproduces it), 0201cacc 91B (callee reg perm params vs locals), 0201ed04 369B, 02032480 577B. Scratch /home/claude/w_main_a5 (hill.py/combo.py permuters)."
+        },
+        {
+          "time": "2026-11-16 04:32:43Z",
+          "text": "released by main_a5: main_a5: 84%; remaining hard near-misses (0202a3e8 switch table, 0201cacc, 0201ed04, 02032480); scripts /home/claude/w_main_a5/"
         }
       ]
     },
@@ -103,9 +111,9 @@
       "start": "0x02038000",
       "end": "0x0206e470",
       "status": "claimed",
-      "agent": "main_b6",
+      "agent": "main_b7",
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": "2026-11-16 02:49:15Z",
+      "claimed_at": "2026-11-16 04:32:49Z",
       "done_at": null,
       "notes": [
         {
@@ -127,6 +135,14 @@
         {
           "time": "2026-11-16 02:49:15Z",
           "text": "claimed by main_b6"
+        },
+        {
+          "time": "2026-11-16 04:32:41Z",
+          "text": "main_b8 working 0x02053000-0x0206e470"
+        },
+        {
+          "time": "2026-11-16 04:32:49Z",
+          "text": "claimed by main_b7"
         }
       ]
     },
@@ -197,6 +213,14 @@
         {
           "time": "2026-11-16 03:45:24Z",
           "text": "claimed by ov000_g"
+        },
+        {
+          "time": "2026-11-16 04:20:14Z",
+          "text": "ov000_h: 41 OK (14700 B) in src/ov000_h; near-misses in /home/claude/w_ov000h/near_*.c (02340388, 0235bafc, 0233d65c, 0234a878, 02347190, 0233a010, 02338624). Blocker fix for 0233f8a0 family: (s16)((u32)(div>>4)>>8)."
+        },
+        {
+          "time": "2026-11-16 04:24:08Z",
+          "text": "ov000_i working 0x02338000-0x02362b58"
         }
       ]
     },
@@ -208,9 +232,9 @@
       "start": "0x022c5c80",
       "end": "0x022ed000",
       "status": "claimed",
-      "agent": "ov001_t4",
+      "agent": "ov001_t6",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 03:35:16Z",
+      "claimed_at": "2026-11-16 04:32:41Z",
       "done_at": null,
       "notes": [
         {
@@ -236,6 +260,22 @@
         {
           "time": "2026-11-16 03:35:16Z",
           "text": "claimed by ov001_t4"
+        },
+        {
+          "time": "2026-11-16 04:14:54Z",
+          "text": "ov001_t5 doing Thumb functions <=400 B"
+        },
+        {
+          "time": "2026-11-16 04:29:39Z",
+          "text": "ov001_t4: 48 OK (28124 B) in src/ov001_t4, all reloc-checked; near-misses in /home/claude/w_ov001t4/near (022ce6f8, 022e3180, 022d8798); remaining >400B: e519c e4b5c e794c ecae4 d224c e2bd8 e1ce8 d8938 e2f0c (spill-heavy/math)"
+        },
+        {
+          "time": "2026-11-16 04:29:39Z",
+          "text": "released by ov001_t4: ov001_t4 session end"
+        },
+        {
+          "time": "2026-11-16 04:32:41Z",
+          "text": "claimed by ov001_t6"
         }
       ]
     },
@@ -246,10 +286,10 @@
       "module": "ov001",
       "start": "0x022ed000",
       "end": "0x02315eb4",
-      "status": "claimed",
-      "agent": "ov001_f",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 03:05:37Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -287,6 +327,14 @@
         {
           "time": "2026-11-16 03:05:37Z",
           "text": "claimed by ov001_f"
+        },
+        {
+          "time": "2026-11-16 04:12:09Z",
+          "text": "ov001_f: +4 OK (022ede0c,0230a58c,02309e3c,0230b848 = 4508B). 02307d30 matches bytes but needs data_02087d06 symbol dropped (reloc d04+2). Remaining ARM in range = near-misses only; see build/agents/ov001_f.txt"
+        },
+        {
+          "time": "2026-11-16 04:12:09Z",
+          "text": "released by ov001_f: ov001_f done; near-misses in /home/claude/w_ov001f/near_*.c"
         }
       ]
     },
