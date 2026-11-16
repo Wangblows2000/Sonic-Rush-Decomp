@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
-void func_0200d104(void);
+void CP_SaveContext(void);
 
 asm BOOL OS_SaveContext(register void *context)
 {
     stmfd sp!, {r0, lr}
     add r0, r0, #0x48
-    ldr r1, =func_0200d104
+    ldr r1, =CP_SaveContext
     blx r1
     ldmfd sp!, {r0, lr}
     add r1, r0, #0

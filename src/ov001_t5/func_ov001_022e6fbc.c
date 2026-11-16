@@ -36,7 +36,7 @@ typedef struct {
 
 extern UnkTask_022e6fbc *gTaskCurrent;
 
-fx32 func_020021f0(fx32 a);
+fx32 FX_Sqrt(fx32 a);
 fx32 func_0200225c(fx32 a, fx32 b);
 void func_ov001_022e6dec(UnkWork_022e6fbc *w);
 void func_ov001_022e6870(void);
@@ -62,7 +62,7 @@ void func_ov001_022e6fbc(void) {
     dx = (x << 12) - w->x;
     dy = (y << 12) - w->y;
     speed = w->speed;
-    len = func_020021f0(FX_Mul_022e6fbc(dx, dx) + FX_Mul_022e6fbc(dy, dy));
+    len = FX_Sqrt(FX_Mul_022e6fbc(dx, dx) + FX_Mul_022e6fbc(dy, dy));
     if (len != 0) {
         dx = func_0200225c(FX_Mul_022e6fbc(dx, speed), len);
         dy = func_0200225c(FX_Mul_022e6fbc(dy, speed), len);

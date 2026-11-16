@@ -1,8 +1,8 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_0201c070();
-s32 func_0201bf1c();
+s32 NNS_SndPlayerStopSeq();
+s32 NNS_SndHandleReleaseSeq();
 
 void func_ov000_02346aa8(u8 *p0) {
     if ((*(u32 *)((u8 *)p0 + 0x32c) & 0x80) == 0) {
@@ -15,7 +15,7 @@ void func_ov000_02346aa8(u8 *p0) {
         }
     }
     *(u8 *)((u8 *)p0 + 0x3ce) = 8;
-    func_0201c070(((u8 *)p0 + 0x38c), 0x10, 8);
-    func_0201bf1c(((u8 *)p0 + 0x38c));
+    NNS_SndPlayerStopSeq(((u8 *)p0 + 0x38c), 0x10, 8);
+    NNS_SndHandleReleaseSeq(((u8 *)p0 + 0x38c));
     *(u32 *)((u8 *)p0 + 0x32c) = (*(u32 *)((u8 *)p0 + 0x32c) & ~0x80);
 }

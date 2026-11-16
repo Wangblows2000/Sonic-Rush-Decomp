@@ -74,10 +74,10 @@ extern s16 data_0206e470[];
 void func_ov000_02319af8(UnkStruct_02319920 *w);
 void func_ov000_023524d8(void *a, void *b);
 void func_ov000_0235258c(void *a, void *b);
-void func_02000dfc(void *m);
-void func_02000e60(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Identity33_(void *m);
+void MTX_RotX33_(void *m, s32 s, s32 c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 void func_ov000_02319920(UnkStruct_02319920 *w) {
     u8 mtx[0x24];
@@ -100,13 +100,13 @@ void func_ov000_02319920(UnkStruct_02319920 *w) {
         if (w->unk204->unk0 == 1 && (w->unk1BC == NULL || w->unk1BC->unk80 != w) && !(gObjManagerFlags & 0x100))
             func_ov000_0235258c(w->unk204, w);
     }
-    func_02000dfc(mdl->mtx);
+    MTX_Identity33_(mdl->mtx);
     idx = (s32)((u16)w->unk8 & 0xffff) >> 4;
-    func_02000e60(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(mdl->mtx, mtx, mdl->mtx);
+    MTX_RotX33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
+    MTX_Concat33(mdl->mtx, mtx, mdl->mtx);
     idx = (s32)(w->unk428 & 0xffff) >> 4;
-    func_02000e98(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(mdl->mtx, mtx, mdl->mtx);
+    MTX_RotZ33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
+    MTX_Concat33(mdl->mtx, mtx, mdl->mtx);
     if (gPlayers->unk32C & 0x400) {
         w->unk1F4 |= 1;
     }

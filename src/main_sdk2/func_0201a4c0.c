@@ -4,9 +4,9 @@
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
 void func_0201a490(UnkTask_0201a2e8 *task);
-void func_0201a548(UnkTaskCtx_0201a2e8 *ctx);
-void func_02005d5c(void *thread, void (*func)(UnkTaskCtx_0201a2e8 *), void *arg, void *stack, u32 stackSize, u32 prio);
-void func_02005ba0(void *thread);
+void MBi_TaskThread(UnkTaskCtx_0201a2e8 *ctx);
+void OS_CreateThread(void *thread, void (*func)(UnkTaskCtx_0201a2e8 *), void *arg, void *stack, u32 stackSize, u32 prio);
+void OS_WakeupThreadDirect(void *thread);
 
 void func_0201a4c0(UnkTaskCtx_0201a2e8 *ctx, u32 size)
 {
@@ -17,8 +17,8 @@ void func_0201a4c0(UnkTaskCtx_0201a2e8 *ctx, u32 size)
         func_0201a490(&ctx->idle);
         ctx->list = NULL;
         stackSize = (size - sizeof(UnkTaskCtx_0201a2e8)) & ~3;
-        func_02005d5c(ctx, func_0201a548, ctx, (u8 *)ctx + sizeof(UnkTaskCtx_0201a2e8) + stackSize, stackSize, 0);
-        func_02005ba0(ctx);
+        OS_CreateThread(ctx, MBi_TaskThread, ctx, (u8 *)ctx + sizeof(UnkTaskCtx_0201a2e8) + stackSize, stackSize, 0);
+        OS_WakeupThreadDirect(ctx);
     }
     OS_RestoreInterrupts(e);
 }

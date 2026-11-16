@@ -52,14 +52,14 @@ extern UnkTask_02326744 *gTaskCurrent;
 extern s8 data_022c4eec[];
 extern u8 data_ov000_02367ae8[];
 extern u8 data_02084df4[];
-extern UnkStruct_02084d38 data_02084d38;
+extern UnkStruct_02084d38 NNS_G3dGlb;
 
 void func_ov000_0233b2e0(void *m, s32 x, s32 y, s16 *ox, s16 *oy);
 void *func_ov000_0233b654(void);
-void func_02025268(u32 op, const u32 *args, u32 n);
-void func_020222bc(const fx32 *v);
-void func_020222e4(const fx32 *v);
-void func_0202247c(void);
+void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
+void NNS_G3dGlbSetBaseScale(const fx32 *v);
+void NNS_G3dGlbSetBaseTrans(const fx32 *v);
+void NNS_G3dGlbFlushP(void);
 void MI_Copy36B(const void *src, void *dst);
 void func_020490b8(u16 *out, u16 a, u16 b, s32 n, s32 i);
 
@@ -106,7 +106,7 @@ void func_ov000_02326744(void) {
     func_ov000_0233b2e0(func_ov000_0233b654(), node->b.x, node->b.y, &v[0], &v[1]);
     v[2] = 0;
     arg = 2;
-    func_02025268(0x10, &arg, 1);
+    NNS_G3dGeBufferOP_N(0x10, &arg, 1);
     REG_DISP3DCNT &= 0xcfdf;
 
     dx = data_022c4eec[0] + w->unk6 - v[0];
@@ -122,11 +122,11 @@ void func_ov000_02326744(void) {
     trans[0] = v[0] << 12;
     trans[1] = -(v[1] << 12);
     trans[2] = 0;
-    func_020222bc(scale);
+    NNS_G3dGlbSetBaseScale(scale);
     MI_Copy36B(data_ov000_02367ae8, data_02084df4);
-    data_02084d38.unkfc &= ~0xa4;
-    func_020222e4(trans);
-    func_0202247c();
+    NNS_G3dGlb.unkfc &= ~0xa4;
+    NNS_G3dGlbSetBaseTrans(trans);
+    NNS_G3dGlbFlushP();
 
     node = w->unk29c;
     cnt = w->unk2a0;

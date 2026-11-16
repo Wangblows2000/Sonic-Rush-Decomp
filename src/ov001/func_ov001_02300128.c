@@ -4,8 +4,8 @@ typedef struct { u32 flags; s32 v4; u8 pad[0xc]; void *task; u8 pad2[0x320]; u16
 extern UnkStruct_0231f52c *gExtraBossWork;
 void Vram_SetBankForSubBG(s32 a);
 void Vram_SetBankForSubOBJ(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_020030a8(void);
-void func_020030bc(void);
+void GX_ResetBankForSubOBJ(void);
+void GX_ResetBankForSubBG(void);
 void GXS_SetGraphicsMode(s32 a);
 void *Task_Create(void (*f)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov001_022feac8(void);
@@ -16,11 +16,11 @@ void func_ov001_02300128(BOOL on) {
     if (on) {
         gExtraBossWork->h338 = 1;
         gExtraBossWork->v4 = 1;
-        func_020030a8();
+        GX_ResetBankForSubOBJ();
     } else {
         gExtraBossWork->h338 = 0;
         gExtraBossWork->v4 = 2;
-        func_020030bc();
+        GX_ResetBankForSubBG();
     }
     GXS_SetGraphicsMode(5);
     *(vu32 *)0x04001000 &= ~0x1f00;

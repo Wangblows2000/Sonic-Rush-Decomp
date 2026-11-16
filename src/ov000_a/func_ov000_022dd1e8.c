@@ -78,7 +78,7 @@ extern UnkStruct_022dd1e8_g gDisplayMain;
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_02021c24(void *p);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void StageObj_ClearPause(void);
 UnkStruct_022dd1e8_q *BossEffect_CreateBlast4(s32 a, s32 b, s32 c, s32 d);
 void func_020537b4(s32 a);
@@ -118,11 +118,11 @@ void func_ov000_022dd1e8(UnkStruct_022dd1e8 *t) {
     a->unk118 = 0x1000;
     func_02021c24(a->unk90);
     a->unk4C = -0x200000;
-    func_02000dfc(&w->unkAF8);
+    MTX_Identity33_(&w->unkAF8);
     w->unkAF8.x = 0;
     w->unkAF8.y = -0x200000;
     w->unkAF8.z = 0;
-    func_02000dfc(&w->unkB28);
+    MTX_Identity33_(&w->unkB28);
     w->unkB28.x = 0;
     w->unkB28.y = -0x200000;
     w->unkB28.z = 0;

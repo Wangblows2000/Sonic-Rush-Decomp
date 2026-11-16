@@ -31,7 +31,7 @@ extern s32 data_ov001_02316a80[];
 
 void func_ov001_022f7880(void);
 void func_ov001_022f7d64(void);
-s32 func_02002094(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
 void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 void AnimatorSprite_Draw(void *p);
 
@@ -68,7 +68,7 @@ void func_ov001_022f7e20(void) {
         return;
     }
     E90++;
-    n = func_02002094(E90, 0x1e) + 1;
+    n = FX_DivS32(E90, 0x1e) + 1;
     if (n >= 3)
         n = 3;
     for (i = 0; i < n; i++) {

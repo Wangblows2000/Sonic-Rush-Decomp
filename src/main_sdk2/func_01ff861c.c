@@ -6,9 +6,9 @@ extern u32 data_02087cdc;
 extern u32 data_027e0000;
 void DC_StoreRange(void);
 void MIi_CpuCopy16(void);
-void func_02007ab8(void);
-void func_02007eb0(void);
-void func_02007f24(void);
+void MI_StopDma(void);
+void MI_HBlankDmaCopy16(void);
+void MI_HBlankDmaCopy32(void);
 
 asm void func_01ff861c(void)
 {
@@ -38,7 +38,7 @@ asm void func_01ff861c(void)
 @1:
     ldr r7, [r11, r10, lsl #2]
     mov r0, r7
-    bl func_02007ab8
+    bl MI_StopDma
     mov r0, r6, lsl r10
     ldr r1, [r5]
     ands r0, r1, r0
@@ -58,7 +58,7 @@ asm void func_01ff861c(void)
     ldr r2, [r8]
     mov r0, r7
     add r1, r3, r1
-    bl func_02007eb0
+    bl MI_HBlankDmaCopy16
     b @3
 @2:
     add r0, r8, r9, lsl #2
@@ -66,7 +66,7 @@ asm void func_01ff861c(void)
     ldr r2, [r8]
     mov r0, r7
     add r1, r3, r1
-    bl func_02007f24
+    bl MI_HBlankDmaCopy32
 @3:
     ldr r0, [r8, #0xc]
     add r2, r8, r9, lsl #2

@@ -19,7 +19,7 @@ typedef struct UnkStruct_023113f8 {
 
 extern u32 gRandSeed;
 
-void func_0201c000(s32 a, s32 b, s32 c);
+void NNS_SndPlayerStopSeqBySeqArcIdx(s32 a, s32 b, s32 c);
 void func_ov001_0231599c(s32 v);
 void func_ov001_023122d8(UnkStruct_023113f8 *p, s32 v);
 void func_ov001_0230d6f4(s32 v);
@@ -35,7 +35,7 @@ static inline u16 Rand(void) {
 void func_ov001_023113f8(UnkStruct_023113f8 *p) {
     p->unk12 = 0;
     if (p->unkAC[0x10c] & 2) {
-        func_0201c000(0x10, 0xf, 0x5a);
+        NNS_SndPlayerStopSeqBySeqArcIdx(0x10, 0xf, 0x5a);
         if (p->unk152 >= 0) {
             p->unk150 = p->unk152;
             p->unk128 = 0;

@@ -26,7 +26,7 @@ typedef struct {
     u8 unk1634[4];         /* 0x1634 */
 } UnkWork_020453f8;
 
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void func_02045594(void);
 void Sound_PlaySeq(void *a, s32 b);
 void Sound_PlaySeqArc(void *a, void *b, s32 c);
@@ -40,7 +40,7 @@ void func_020453f8(UnkWork_020453f8 *w) {
     o->unkA4 = 0x50000;
     o->unkA8 = 0x7c000;
     o->unkA0 = 0x1000;
-    func_0201c070(w->unk1634, 0);
+    NNS_SndPlayerStopSeq(w->unk1634, 0);
     o->unk4 = 0;
     w->obj.fn = func_02045594;
     w->flags |= 0x8000;

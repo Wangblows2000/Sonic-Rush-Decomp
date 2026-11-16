@@ -43,7 +43,7 @@ extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_022c4590 data_022c4590;
 extern UnkStruct_Player *gPlayers;
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void MIi_CpuCopy16(void *a, void *b, s32 c);
 void func_ov000_02347c6c(UnkStruct_Player *p, void *a);
 void func_ov000_022fa9e8(void *a, UnkStruct_Player *p, s32 b);
@@ -63,7 +63,7 @@ void func_ov000_0230ad04(void *a, UnkStruct_Player *p) {
         if (p->unk37C <= v)
             data_022c4590.unk8 += 4000;
     }
-    data_022c4590.unk8 = func_02002094(data_022c4590.unk8, ++data_022c4590.unkC);
+    data_022c4590.unk8 = FX_DivS32(data_022c4590.unk8, ++data_022c4590.unkC);
     data_022c4590.unk10 = p->unk3AE * 10;
     if (data_022c4560.unk10 == 2) {
         if (data_022c4590.unk4C != 0 && data_022c4590.unk46 == data_022c4560.unk1C &&

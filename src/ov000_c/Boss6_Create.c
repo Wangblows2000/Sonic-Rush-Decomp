@@ -80,13 +80,13 @@ void func_ov000_022e62fc(void);
 u16 func_ov000_022c5f28(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 void *func_0202128c(void *a);
 void func_020212e0(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
-u8 *func_02025ecc(void *p);
-void func_02025b6c(void *p, s32 a);
+u8 *NNS_G3dGetMdlSet(void *p);
+void NNS_G3dMdlSetMdlAlphaAll(void *p, s32 a);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov000_022e671c(UnkStruct_022e6c0c *w);
 void func_ov000_022c5d4c(void *a, void *b, void *c, void *d, s32 e);
@@ -125,7 +125,7 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     for (i = 0; i < 4; i++) {
         if (data_ov000_02363864[i][0] != -1) {
             w->unkD0C[i] = func_02021264(ctx, data_ov000_02363864[i][0]);
-            func_020257f8(w->unkD0C[i]);
+            NNS_G3dResDefaultSetup(w->unkD0C[i]);
         }
         if (data_ov000_02363864[i][1] != -1)
             w->unkD1C[i] = func_02021264(ctx, data_ov000_02363864[i][1]);
@@ -134,10 +134,10 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         if (data_ov000_02363864[i][3] != -1)
             w->unkD3C[i] = func_02021264(ctx, data_ov000_02363864[i][3]);
     }
-    func_020257f8(func_0202128c(data_ov000_0236596c));
-    func_020257f8(func_0202128c(data_ov000_02365980));
-    func_020257f8(func_0202128c(data_ov000_02365994));
-    func_020257f8(func_0202128c(data_ov000_023659b0));
+    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_0236596c));
+    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365980));
+    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365994));
+    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_023659b0));
     func_020212e0(ctx);
     sub = w->unk210;
     for (i = 0; i < 9; i++) {
@@ -162,14 +162,14 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     sub->unk48 = 0x1a0000;
     sub->unk4C = -0x200000;
     sub->unk50 = -0x32000;
-    res = func_02025ecc(data_ov000_02369b50[3]);
-    func_02025b6c(res + *(u32 *)(res + *(u16 *)(res + 0xe) + 0xc), 0);
+    res = NNS_G3dGetMdlSet(data_ov000_02369b50[3]);
+    NNS_G3dMdlSetMdlAlphaAll(res + *(u32 *)(res + *(u16 *)(res + 0xe) + 0xc), 0);
     sub = &w->unk210[4];
     sub->unk48 = 0xffdc20f0;
     sub->unk4C = -0x200000;
     sub->unk50 = 0x32000;
-    res = func_02025ecc(data_ov000_02369b50[4]);
-    func_02025b6c(res + *(u32 *)(res + *(u16 *)(res + 0xe) + 0xc), 0);
+    res = NNS_G3dGetMdlSet(data_ov000_02369b50[4]);
+    NNS_G3dMdlSetMdlAlphaAll(res + *(u32 *)(res + *(u16 *)(res + 0xe) + 0xc), 0);
     sub = &w->unk210[6];
     sub->unk48 = 0x1a0000;
     sub->unk4C = -0x200000;

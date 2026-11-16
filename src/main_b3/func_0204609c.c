@@ -26,7 +26,7 @@ typedef struct {
     u8 unk1634[4];         /* 0x1634 */
 } UnkWork_0204609c;
 
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void func_0204622c(void);
 void Sound_PlaySeq(void *a, s32 b);
 void Sound_PlaySeqArc(void *a, void *b, s32 c);

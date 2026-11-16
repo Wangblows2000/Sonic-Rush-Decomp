@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 extern u8 gTaskCurrent[];
-s32 func_0201c070();
-s32 func_0201bf1c();
+s32 NNS_SndPlayerStopSeq();
+s32 NNS_SndHandleReleaseSeq();
 s32 Task_Destroy();
 
 void func_ov000_0232ec1c(void) {
@@ -12,7 +12,7 @@ void func_ov000_0232ec1c(void) {
     if (*(s16 *)((u8 *)t0 + 0x4) >= 0) {
         return;
     }
-    func_0201c070(*(u32 *)t0, 0x20);
-    func_0201bf1c(*(u32 *)t0);
+    NNS_SndPlayerStopSeq(*(u32 *)t0, 0x20);
+    NNS_SndHandleReleaseSeq(*(u32 *)t0);
     Task_Destroy(*(u32 *)gTaskCurrent);
 }

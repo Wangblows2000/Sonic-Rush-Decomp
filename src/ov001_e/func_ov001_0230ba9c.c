@@ -21,9 +21,9 @@ void func_ov001_0230f438(s32 a);
 void func_ov001_023070b0(void);
 void func_ov001_0231316c(void);
 void func_ov001_02309c14(void);
-void func_0200412c(s32 a, s32 b, s32 c, s32 d);
-void func_020221fc(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_02004070(UnkStruct_0230ba9c_t *t);
+void G3X_SetFog(s32 a, s32 b, s32 c, s32 d);
+void NNS_G3dGlbPolygonAttr(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void G3X_SetFogTable(UnkStruct_0230ba9c_t *t);
 
 void func_ov001_0230ba9c(void) {
     UnkStruct_0230ba9c *g = gSpecialStageWork;
@@ -40,15 +40,15 @@ void func_ov001_0230ba9c(void) {
     func_ov001_02309c14();
     if (g->timer < 0x78) {
         tbl = data_ov001_0231e690;
-        func_020221fc(0, 0, 3, 0, 0x1f, 0x8000);
+        NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0x1f, 0x8000);
         for (i = 0; i < 8; i++) {
             v = (0x7f - g->timer * 0x7f / 120) & 0x7f;
             tbl.v[i] = v | ((v << 24) | (v << 16) | (v << 8));
         }
-        func_0200412c(1, 0, 4, 0);
+        G3X_SetFog(1, 0, 4, 0);
         *(vu32 *)0x4000358 = 0x1f7fff;
-        func_02004070(&tbl);
+        G3X_SetFogTable(&tbl);
     } else {
-        func_0200412c(0, 0, 4, 0);
+        G3X_SetFog(0, 0, 4, 0);
     }
 }

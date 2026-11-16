@@ -13,6 +13,6 @@ typedef struct {
 
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
-void func_02005c48(u16 *queue);
-void func_02005bd4(u16 *queue);
+void OS_SleepThread(u16 *queue);
+void OS_WakeupThread(u16 *queue);
 #endif

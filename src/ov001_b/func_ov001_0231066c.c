@@ -55,8 +55,8 @@ void func_ov001_023102ec(UnkStruct_0231066c *w);
 void Model_Animate(void *p);
 s32 func_ov001_02310144(UnkStruct_0231066c *w);
 void func_ov001_0230d28c(void *a, void *b, s32 c, s32 d, u16 e, s32 f, s32 g);
-void func_0200160c(void *a, void *b, void *c);
-void func_02001558(void *v, void *m, void *out);
+void MTX_Concat43(void *a, void *b, void *c);
+void MTX_MultVec43(void *v, void *m, void *out);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -148,8 +148,8 @@ void func_ov001_0231066c(UnkStruct_0231066c_c *c, UnkStruct_0231066c *w) {
                 flag = 1;
             func_ov001_0230d28c(w->unk7C, w->unk78->unk0, flag, func_ov001_02310144(w), w->unk16, w->unk18, w->unk1C);
         }
-        func_0200160c(w->unk7C, w->unk78->unk4, &m);
-        func_02001558(&v, &m, &v);
+        MTX_Concat43(w->unk7C, w->unk78->unk4, &m);
+        MTX_MultVec43(&v, &m, &v);
         w->pos = v;
     } else {
         u16 a = w->unk16 - 0x4000;

@@ -23,7 +23,7 @@ extern u16 data_0207316c[];
 extern UnkBgInfo_02035e68 data_0207319c[];
 
 UnkXfer_02035e68 *ScreenTransfer_AllocJob(void);
-void *func_02006abc(u32 a);
+void *OS_GetArenaLo(u32 a);
 
 void ScreenTransfer_QueueRectRaw(void *src, u16 srcX, u16 srcY, u32 srcW, BOOL skip, int size, int p7, int p8, u16 x, u16 y, u16 w, u16 h) {
     UnkXfer_02035e68 *e;
@@ -48,7 +48,7 @@ void ScreenTransfer_QueueRectRaw(void *src, u16 srcX, u16 srcY, u32 srcW, BOOL s
             if (x < 32 && y + h > 32) {
                 u16 sy, dy, hh, ww;
                 e = ScreenTransfer_AllocJob();
-                if (func_02006abc(0) == e) return;
+                if (OS_GetArenaLo(0) == e) return;
                 if (y > 32) {
                     sy = srcY;
                     dy = y;
@@ -76,7 +76,7 @@ void ScreenTransfer_QueueRectRaw(void *src, u16 srcX, u16 srcY, u32 srcW, BOOL s
             if (x + w > 32 && y + h > 32) {
                 u16 sx, dx, ww, sy, dy, hh;
                 e = ScreenTransfer_AllocJob();
-                if (func_02006abc(0) == e) return;
+                if (OS_GetArenaLo(0) == e) return;
                 if (x > 32) {
                     sx = srcX;
                     dx = x - 32;
@@ -111,7 +111,7 @@ void ScreenTransfer_QueueRectRaw(void *src, u16 srcX, u16 srcY, u32 srcW, BOOL s
             if (x < 32 && y < 32) {
                 u16 ww, hh;
                 e = ScreenTransfer_AllocJob();
-                if (func_02006abc(0) == e) return;
+                if (OS_GetArenaLo(0) == e) return;
                 if (x + w < 32) {
                     ww = w;
                 } else {
@@ -135,7 +135,7 @@ void ScreenTransfer_QueueRectRaw(void *src, u16 srcX, u16 srcY, u32 srcW, BOOL s
             if (x + w > 32 && y < 32) {
                 u16 sx, dx, ww, hh;
                 e = ScreenTransfer_AllocJob();
-                if (func_02006abc(0) == e) return;
+                if (OS_GetArenaLo(0) == e) return;
                 if (x > 32) {
                     sx = srcX;
                     dx = x - 32;
@@ -165,7 +165,7 @@ void ScreenTransfer_QueueRectRaw(void *src, u16 srcX, u16 srcY, u32 srcW, BOOL s
     }
     if (done) return;
     e = ScreenTransfer_AllocJob();
-    if (func_02006abc(0) == e) return;
+    if (OS_GetArenaLo(0) == e) return;
     e->unk4 = 0;
     e->dstPitch = unit * data_0207319c[size].pitch;
     e->dstOfs = unit * (y * data_0207319c[size].pitch + x);

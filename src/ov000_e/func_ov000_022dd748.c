@@ -56,7 +56,7 @@ extern UnkStruct_Player *gPlayers;
 
 void func_ov000_022dd5d8(UnkStruct_022dd748 *s);
 void ScreenShake_Start(s32 a);
-void func_0201bfbc(s32 a);
+void NNS_SndPlayerStopSeqAll(s32 a);
 void func_ov000_022dcc10(UnkStruct_022dd748 *s);
 void func_ov000_022dbc4c(s32 a);
 void func_ov000_022dbb7c(s32 a);
@@ -80,7 +80,7 @@ void func_ov000_022dd748(UnkStruct_022dd748 *s) {
     *(s32 *)((u8 *)s + 0x224) = 0;
     data_022c4560.unk18 &= ~1;
     ScreenShake_Start(0);
-    func_0201bfbc(0);
+    NNS_SndPlayerStopSeqAll(0);
     func_ov000_022dcc10(s);
     for (i = 0; i < 7; i++)
         s->unk214[i].unk18 |= 2;

@@ -3,7 +3,7 @@
 
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
-void func_02012180(UnkDS *ds, u16 aid, const void *src);
+void WmDataSharingReceiveData(UnkDS *ds, u16 aid, const void *src);
 s32 func_02011ff4(UnkDS *ds, BOOL a);
 
 typedef struct {
@@ -27,7 +27,7 @@ void func_020123bc(UnkPortRecvCb_020123bc *cb)
     if (cb->errcode == 0) {
         switch (cb->state) {
         case 0x15:
-            func_02012180(ds, cb->aid, cb->data);
+            WmDataSharingReceiveData(ds, cb->aid, cb->data);
             func_02011ff4(ds, FALSE);
             break;
         case 7:

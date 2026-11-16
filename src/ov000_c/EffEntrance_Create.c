@@ -19,7 +19,7 @@ void EffEntrance_Create(UnkStruct_StageObj *par, s32 dx, s32 dy) {
     if (data_022c4560.unk18 & 0x20)
         return;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     w = task->work;
     zero = 0;

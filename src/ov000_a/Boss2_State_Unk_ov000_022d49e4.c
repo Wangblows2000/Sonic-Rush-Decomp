@@ -140,10 +140,10 @@ extern UnkStruct_022d49e4_9 data_ov000_0236aad8;
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, void *a, s32 b);
 void func_ov000_022cd5e4(void);
-u8 *func_02025ecc(void *p);
-void func_02025c44(void *s, u32 v);
-void func_02025bfc(void *s, u32 v);
-void func_02025bb4(void *s, u32 v);
+u8 *NNS_G3dGetMdlSet(void *p);
+void NNS_G3dMdlSetMdlDiffAll(void *s, u32 v);
+void NNS_G3dMdlSetMdlAmbAll(void *s, u32 v);
+void NNS_G3dMdlSetMdlEmiAll(void *s, u32 v);
 void func_ov000_022d43f8(void);
 void Boss2_Draw_Unk_ov000_022cebc8(void);
 void func_020537b4(s32 a);
@@ -170,11 +170,11 @@ void Boss2_State_Unk_ov000_022d49e4(UnkStruct_022d49e4 *s) {
     func_ov000_022cd5e4();
     s->unk20C |= 0x20;
     for (i = 0; i < 11; i++) {
-        r = func_02025ecc(data_ov000_02369ae8[i]);
+        r = NNS_G3dGetMdlSet(data_ov000_02369ae8[i]);
         q = r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc);
-        func_02025c44(q, data_ov000_02362fd8[i].unk0);
-        func_02025bfc(q, data_ov000_02362fd8[i].unk2);
-        func_02025bb4(q, data_ov000_02362fd8[i].unk4);
+        NNS_G3dMdlSetMdlDiffAll(q, data_ov000_02362fd8[i].unk0);
+        NNS_G3dMdlSetMdlAmbAll(q, data_ov000_02362fd8[i].unk2);
+        NNS_G3dMdlSetMdlEmiAll(q, data_ov000_02362fd8[i].unk4);
     }
     func_ov000_022d43f8();
     gPlayers->unk70 = Boss2_Draw_Unk_ov000_022cebc8;

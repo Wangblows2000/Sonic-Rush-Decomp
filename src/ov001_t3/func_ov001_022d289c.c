@@ -10,18 +10,18 @@ typedef struct {
 
 extern void *gMainHeap;
 
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-void func_0201b348(void);
+void NNS_SndStopSoundAll(void);
 void func_02020198(void *p);
 void Sound_ResetHeap(void);
 
 #pragma thumb on
 static inline void Free_022d289c(void *p) {
     u32 size;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {
@@ -48,7 +48,7 @@ void func_ov001_022d289c(UnkStruct_022d289c *p) {
             p->res2[i] = NULL;
         }
     }
-    func_0201b348();
+    NNS_SndStopSoundAll();
     func_02020198(p->unkc);
     Sound_ResetHeap();
 }

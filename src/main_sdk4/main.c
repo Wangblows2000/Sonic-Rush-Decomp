@@ -19,9 +19,9 @@ extern UnkStruct_0208f754 data_0208f754;
 
 void System_Init(void);
 void Game_Init(void);
-BOOL func_020105d0(void);
+BOOL CARD_IsPulledOut(void);
 void func_0202ff74(void);
-void func_02010590(void);
+void CARD_TerminateForPulledOut(void);
 void Pad_Update(UnkPad_022503e0 *pad, u16 keys);
 void Touch_Update(void);
 void Mic_Update(void);
@@ -52,9 +52,9 @@ void main(void)
     System_Init();
     Game_Init();
     for (;;) {
-        if (func_020105d0()) {
+        if (CARD_IsPulledOut()) {
             func_0202ff74();
-            func_02010590();
+            CARD_TerminateForPulledOut();
         }
         if (!(gSystemFlags & 0x40)) {
             u16 keys = (u16)(((REG_KEYINPUT | HW_BUTTON_XY) ^ 0x2fff) & 0x2fff);

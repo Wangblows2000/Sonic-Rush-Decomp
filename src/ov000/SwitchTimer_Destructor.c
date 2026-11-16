@@ -20,16 +20,16 @@ typedef struct UnkStruct_02318b08 {
 extern UnkStruct_02318b08_3 *gPlayers;
 extern u16 gSwitchTimers[];
 
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void Sound_FreeHandle(void *p);
 void func_ov000_0233e5c8(s32 a, s32 b);
 
 void SwitchTimer_Destructor(UnkStruct_02318b08 *s) {
     UnkStruct_02318b08_2 *p = s->unk10;
-    func_0201c070(p->unk8, 0);
+    NNS_SndPlayerStopSeq(p->unk8, 0);
     if (p->unk8 != NULL)
-        func_0201bf1c(p->unk8);
+        NNS_SndHandleReleaseSeq(p->unk8);
     if (p->unk8 != NULL)
         Sound_FreeHandle(p->unk8);
     if (p->unk2 != 0) {

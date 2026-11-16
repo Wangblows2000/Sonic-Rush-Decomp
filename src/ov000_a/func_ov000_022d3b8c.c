@@ -107,13 +107,13 @@ extern UnkStruct_022d3b8c_7 data_ov000_02369ac0;
 extern u32 gRandSeed;
 extern s32 data_ov000_02362e50[4];
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void func_ov000_022cedd8(UnkStruct_022d3b8c *s, s32 a);
 void func_ov000_022d3a78(UnkStruct_022d3b8c *s);
 void func_ov000_022d3994(UnkStruct_022d3b8c *s);
 
 static inline s32 Lerp(s32 a, s32 b) {
-    return func_02002094(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
+    return FX_DivS32(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
 }
 
 static inline u16 Rand(void) {

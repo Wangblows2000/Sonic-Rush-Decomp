@@ -18,7 +18,7 @@ extern UnkTask_02062c9c *gTaskCurrent;
 UnkTask_02062c9c *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_02062bb0(void);
 void func_02062c4c(void);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void *func_02060e20(void);
 void Task_Destroy(UnkTask_02062c9c *t);
@@ -37,7 +37,7 @@ void func_02062c9c(void) {
 
     t = Task_Create(func_02062bb0, func_02062c4c, 7, 0xeffe, 3, sizeof(UnkWork_02062c9c));
     data_022c4da8 = t;
-    if (t != (UnkTask_02062c9c *)func_02006abc(0)) {
+    if (t != (UnkTask_02062c9c *)OS_GetArenaLo(0)) {
         w = t->work;
         zero = 0;
         MIi_CpuClear16(zero, w, sizeof(UnkWork_02062c9c));

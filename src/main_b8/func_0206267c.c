@@ -29,8 +29,8 @@ extern UnkTbl_0206267c data_02076e58;
 
 void func_02061738(u16 a);
 UnkRes_0206267c **TalkDemo_GetEntry(void);
-void func_0201c070(void *a, s32 b);
-void func_0201bf1c(void *a);
+void NNS_SndPlayerStopSeq(void *a, s32 b);
+void NNS_SndHandleReleaseSeq(void *a);
 void Sound_PlaySeqArc(void *a, s32 b, s32 c);
 void func_02062664(void *w);
 
@@ -46,8 +46,8 @@ void func_0206267c(UnkWork_0206267c *w) {
     if (r != NULL) {
         v = r->unk4;
         if (*s->anim != NULL) {
-            func_0201c070(s->anim, 0);
-            func_0201bf1c(s->anim);
+            NNS_SndPlayerStopSeq(s->anim, 0);
+            NNS_SndHandleReleaseSeq(s->anim);
         }
         Sound_PlaySeqArc(s->anim, v, data_02076e58.unk24);
     }

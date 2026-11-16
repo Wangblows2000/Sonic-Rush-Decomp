@@ -96,7 +96,7 @@ extern UnkStruct_022ca63c_pl *gPlayers;
 extern UnkStruct_022ca63c_5 gDisplayMain;
 
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void StageObj_ClearPause(void);
 BOOL func_ov000_022cc6d4(void);
 void BossEffect_CreateBlast5(s32 a, s32 x, s32 y, s32 z);
@@ -112,7 +112,7 @@ void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
     func_ov000_022cc00c(s->unk210->unk228, s->unk210->unk220, 0x1f, 0x1000, 0);
     func_ov000_022cc00c(s->unk214->unk30C, s->unk214->unk304, 0xc, 0x1000, 0);
     s->unk20C |= 1;
-    func_02000dfc(s->unk214->unk330);
+    MTX_Identity33_(s->unk214->unk330);
     data_ov000_0236a444.unkDC = 2;
     c = (UnkStruct_022ca63c_c *)(u32)&data_ov000_0236a48c;
     c->unk30 = 0x1000;

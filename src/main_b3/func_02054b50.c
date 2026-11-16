@@ -5,7 +5,7 @@ extern UnkStruct_02054b50 data_0208926c;
 extern UnkStruct_02054b50 data_02087d44;
 
 void Vram_SetBankConfig(s32 a);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void GXS_SetGraphicsMode(s32 mode);
 void func_02054ac4(void);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -20,7 +20,7 @@ void func_02054b50(void) {
     Vram_SetBankConfig(0);
     *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0x1f00) | 0x1000;
     *(vu32 *)0x04001000 = (*(vu32 *)0x04001000 & ~0x1f00) | 0x1000;
-    func_02002ab0(1, 0, 0);
+    GX_SetGraphicsMode(1, 0, 0);
     GXS_SetGraphicsMode(0);
     *(vu16 *)0x04000304 = *(vu16 *)0x04000304 & ~0x8000;
     *(vu16 *)0x04000008 = (*(vu16 *)0x04000008 & 0x43) | 0x84;

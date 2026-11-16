@@ -34,9 +34,9 @@ void func_ov000_023497f4(UnkStruct_Player *w) {
                 Sound_PlaySeqArcEx(w->unk384, 0, 0x29);
             }
         }
-        func_0201c070(w->unk390, 0);
+        NNS_SndPlayerStopSeq(w->unk390, 0);
         Sound_PlaySeqArcEx(w->unk390, 0, 0x31);
-        func_0201be98(w->unk390, 0x7f >> w->unk3D0);
+        NNS_SndPlayerSetVolume(w->unk390, 0x7f >> w->unk3D0);
         func_ov000_02345830(w, 200);
     } else if (w->unk8 & 2) {
         if (w->unk328 == 0x39) {
@@ -57,7 +57,7 @@ void func_ov000_023497f4(UnkStruct_Player *w) {
                 }
             }
             Sound_PlaySeqArcEx(w->unk384, 0, 0x2f);
-            func_0201be98(w->unk384, 0x7f >> w->unk3D0);
+            NNS_SndPlayerSetVolume(w->unk384, 0x7f >> w->unk3D0);
         } else {
             Player_SetAnimation(w, 0x39);
             func_ov000_0234307c(w, 400 >> w->unk3D0);
@@ -67,7 +67,7 @@ void func_ov000_023497f4(UnkStruct_Player *w) {
                 Sound_PlaySeqArcEx(w->unk384, 0, 0x26);
             }
             Sound_PlaySeqArcEx(w->unk384, 0, 0x30);
-            func_0201be98(w->unk384, 0x7f >> w->unk3D0);
+            NNS_SndPlayerSetVolume(w->unk384, 0x7f >> w->unk3D0);
         }
     } else {
         return;

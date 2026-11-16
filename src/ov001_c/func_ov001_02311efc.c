@@ -27,7 +27,7 @@ typedef struct UnkStruct_02311efc {
 } UnkStruct_02311efc;
 
 void func_02022270(u32 index, u32 value);
-void func_02025268(u32 op, const u32 *args, u32 n);
+void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
 void Model_Draw(void *o);
 
 static inline void VecSet(UnkStruct_02311efc_v *d, s32 x, s32 y, s32 z) {
@@ -50,10 +50,10 @@ void func_ov001_02311efc(UnkStruct_02311efc *p) {
             for (i = 0; i < 3; i++) {
                 p->unkAC->rot = p->rot[i];
                 VecSet(&p->unkAC->pos, p->pos[i].x, p->pos[i].y, p->pos[i].z);
-                func_02025268(0x11, 0, 0);
+                NNS_G3dGeBufferOP_N(0x11, 0, 0);
                 Model_Draw(p->unkAC);
                 one = 1;
-                func_02025268(0x12, &one, 1);
+                NNS_G3dGeBufferOP_N(0x12, &one, 1);
             }
         }
     } else {
@@ -65,10 +65,10 @@ void func_ov001_02311efc(UnkStruct_02311efc *p) {
             k = 2;
         p->unkAC->rot = p->rot[k];
         VecSet(&p->unkAC->pos, p->pos[k].x, p->pos[k].y, p->pos[k].z);
-        func_02025268(0x11, 0, 0);
+        NNS_G3dGeBufferOP_N(0x11, 0, 0);
         Model_Draw(p->unkAC);
         one2 = 1;
-        func_02025268(0x12, &one2, 1);
+        NNS_G3dGeBufferOP_N(0x12, &one2, 1);
     }
     func_02022270(0, 0x7fff);
     func_02022270(1, 0x4631);

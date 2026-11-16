@@ -4,14 +4,14 @@ extern void *data_ov001_0231f6a0;
 extern void *gMainHeap;
 
 void Touch_Disable(void);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 
 static inline void Free(void *p) {
     u8 *blk = p;
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;

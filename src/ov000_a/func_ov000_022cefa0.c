@@ -32,7 +32,7 @@ struct UnkStruct_022cefa0 {
     s32 unkC;
 };
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_022cee68(UnkStruct_022cefa0 *t);
@@ -52,7 +52,7 @@ void func_ov000_022cefa0(UnkStruct_022cefa0 *t) {
     b->unk10C[3] |= 4;
     b->unk114 = 0x1000;
     k = (t->unk8 >> 12) + 0xd3;
-    b->unk1C = func_02002094(k * 0x34cc, 0xd3);
+    b->unk1C = FX_DivS32(k * 0x34cc, 0xd3);
     b->unk4C = -(k + 0x12c) << 12;
     s->unk1420 = b;
     t->unkC = 0x78;

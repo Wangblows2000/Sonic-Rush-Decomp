@@ -26,7 +26,7 @@ extern u8 data_0207a1bc[];
 extern u8 data_022c45f0[];
 
 UnkTask_0204da44 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 a, s32 b, s32 c, s32 size);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void StageObj_Load2dBAC(UnkWork_0204da44 *w, void *a, u32 b, void *c, s32 d);
 void StageObj_AllocSpritePalette(UnkWork_0204da44 *w, s32 a, s32 b);
@@ -43,7 +43,7 @@ void GameOver_Create(s32 a, s32 b, s32 x, s32 y, u16 d, s16 e) {
     vu16 z;
 
     t = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, 0x134);
-    if (t == (UnkTask_0204da44 *)func_02006abc(0))
+    if (t == (UnkTask_0204da44 *)OS_GetArenaLo(0))
         return;
     w = t->work;
     z = 0;

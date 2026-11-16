@@ -5,7 +5,7 @@ extern u8 sSysState[];
 s32 OS_Terminate();
 s32 WH_ChangeSysState();
 void WH_StateOutEnd();
-s32 func_02011ac8();
+s32 WM_End();
 
 s32 WH_End(void) {
     s32 t0 = *(u32 *)sSysState;
@@ -21,7 +21,7 @@ s32 WH_End(void) {
         OS_Terminate(t0, v1);
     }
     WH_ChangeSysState(3);
-    s32 t3 = func_02011ac8((u32)WH_StateOutEnd);
+    s32 t3 = WM_End((u32)WH_StateOutEnd);
     if (t3 == 2) {
         return 1;
     }

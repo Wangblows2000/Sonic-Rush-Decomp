@@ -3,24 +3,24 @@
 
 #pragma thumb on
 
-s32 func_020221fc();
-s32 func_02002360();
+s32 NNS_G3dGlbPolygonAttr();
+s32 VEC_Fx16Normalize();
 s32 func_02022284();
 s32 func_02022270();
-s32 func_0202224c();
-s32 func_02025dac();
-s32 func_02025e1c();
+s32 NNS_G3dGlbMaterialColorDiffAmb();
+s32 NNSi_G3dModifyPolygonAttrMask();
+s32 NNSi_G3dModifyMatFlag();
 
 void func_ov000_023568ac(s32 p0, s32 p1, s32 p2) {
-    func_020221fc(1, 0, p1, 0, 0x1f, 0);
-    func_02002360(p2, p2);
+    NNS_G3dGlbPolygonAttr(1, 0, p1, 0, 0x1f, 0);
+    VEC_Fx16Normalize(p2, p2);
     func_02022284(0, *(s16 *)((u8 *)p2 + 0), *(s16 *)((u8 *)p2 + 2), *(s16 *)((u8 *)p2 + 4));
     func_02022270(0, 0x7fff);
-    func_0202224c(0x7fff, 0x6f7b, 1);
-    func_02025dac(p0, 0, 0xf);
-    func_02025e1c(p0, 0, 0x40);
-    func_02025e1c(p0, 0, 0x80);
-    func_02025dac(p0, 0, 0xc0);
+    NNS_G3dGlbMaterialColorDiffAmb(0x7fff, 0x6f7b, 1);
+    NNSi_G3dModifyPolygonAttrMask(p0, 0, 0xf);
+    NNSi_G3dModifyMatFlag(p0, 0, 0x40);
+    NNSi_G3dModifyMatFlag(p0, 0, 0x80);
+    NNSi_G3dModifyPolygonAttrMask(p0, 0, 0xc0);
 }
 
 #pragma thumb reset

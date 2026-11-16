@@ -8,7 +8,7 @@ extern u8 data_02080f84[];
 u32 OS_SetIrqMask(u32 mask);
 void DC_InvalidateRange(void *p, u32 size);
 void DC_FlushAll(void);
-void func_02007d2c(u32 dma, const void *src, void *dst, u32 size);
+void MI_DmaCopy16(u32 dma, const void *src, void *dst, u32 size);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 void func_0201a9dc(u32 data);
 void WaitByLoop(s32 count);
@@ -45,7 +45,7 @@ void func_0201ad7c(void)
     CTRDGi_ChangeLatestAccessCycle(&cycle);
     *(vu16 *)0x04000204 &= ~0x8000;
     DC_InvalidateRange((u8 *)data_02080f80 + 0x80, 0x40);
-    func_02007d2c(1, (void *)0x08000080, (u8 *)data_02080f80 + 0x80, 0x40);
+    MI_DmaCopy16(1, (void *)0x08000080, (u8 *)data_02080f80 + 0x80, 0x40);
     *(vu16 *)0x04000204 = (*(vu16 *)0x04000204 & ~0x8000) | (phi << 15);
     CTRDGi_RestoreAccessCycle(&cycle);
     func_0201aa40(data_02080f54.lockId, &lock);

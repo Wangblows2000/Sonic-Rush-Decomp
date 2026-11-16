@@ -11,7 +11,7 @@ s32 func_ov001_023063a0();
 s32 func_ov001_023010e0();
 s32 func_ov001_0230109c();
 s32 func_ov001_02303c54();
-s32 func_0200203c();
+s32 FX_ModS32();
 s32 func_ov001_02300128();
 s32 func_ov001_022f71b8();
 
@@ -29,7 +29,7 @@ void func_ov001_022ffd2c(void) {
     func_ov001_023010e0(t1, t2);
     func_ov001_0230109c();
     func_ov001_02303c54();
-    s32 t3 = func_0200203c(*(u32 *)((u8 *)*(u32 *)gExtraBossWork + 0x40), 2);
+    s32 t3 = FX_ModS32(*(u32 *)((u8 *)*(u32 *)gExtraBossWork + 0x40), 2);
     if (t3 == 0) {
         func_ov001_02300128(1);
     } else {

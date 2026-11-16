@@ -20,10 +20,10 @@ typedef int code();
 #define false 0
 
 extern unsigned char data_ov000_02369b2c[];
-int func_02002240();
-int func_02025a94();
-int func_020014e8();
-int func_0200160c();
+int FX_Inv();
+int NNS_G3dGetCurrentMtx();
+int MTX_Scale43_();
+int MTX_Concat43();
 
 void func_ov000_022de5e8(undefined4 param_1,undefined4 param_2,uint param_3)
 
@@ -33,10 +33,10 @@ void func_ov000_022de5e8(undefined4 param_1,undefined4 param_2,uint param_3)
   undefined1 auStack_48 [52];
   
   iVar2 = *((int *)data_ov000_02369b2c);
-  uVar1 = func_02002240(0x34cc);
-  func_02025a94(param_1,0);
+  uVar1 = FX_Inv(0x34cc);
+  NNS_G3dGetCurrentMtx(param_1,0);
   *(uint *)(iVar2 + 0xaf4) = *(uint *)(iVar2 + 0xaf4) | param_3;
-  func_020014e8(auStack_48,uVar1,uVar1,uVar1);
-  func_0200160c(auStack_48,param_1,param_1);
+  MTX_Scale43_(auStack_48,uVar1,uVar1,uVar1);
+  MTX_Concat43(auStack_48,param_1,param_1);
   return;
 }

@@ -21,14 +21,14 @@ extern void *gSystemHeap;
 
 void Background_Init(void *bg, UnkStruct_02362518_Res *res, s32 a, s32 b, s32 c, u16 w, u16 h);
 void Background_Draw(void *bg);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 
 static inline void UnkFree_02362518(void *p) {
     u32 size;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {

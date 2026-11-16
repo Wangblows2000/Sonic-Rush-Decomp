@@ -17,12 +17,12 @@ extern s16 data_0206e470[];
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
-void func_0201c070(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void func_ov000_02305e28(void *p);
 s32 ObjShift_Set(s32 v, s32 t, s32 a, s32 b, s32 c);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 void CranePartED_State_Unk_ov000_023056fc(UnkStruct_StageObj *w) {
     UnkStruct_Mdl *mdl = (UnkStruct_Mdl *)w->unk128;
@@ -48,7 +48,7 @@ void CranePartED_State_Unk_ov000_023056fc(UnkStruct_StageObj *w) {
         } else {
             if (w->unk30 != 0) {
                 w->unk62 = 0x80;
-                func_0201c070(w->unk1DC, 0);
+                NNS_SndPlayerStopSeq(w->unk1DC, 0);
             }
             w->unk30 = 0;
             w->unk14 = w->unk1EC << 8;
@@ -64,14 +64,14 @@ void CranePartED_State_Unk_ov000_023056fc(UnkStruct_StageObj *w) {
                 ((UnkStruct_StageObj *)w->unk88)->unk5C |= 0x200;
         }
     } else {
-        func_0201c070(w->unk1DC, 0);
+        NNS_SndPlayerStopSeq(w->unk1DC, 0);
         w->unk30 = 0;
         w->unk20 = w->unk14;
         if (!(w->unk54 & 2))
             w->unk14 = ObjShift_Set(w->unk14, (w->unk1EC + w->unk1E0->unk7 + w->unk1E0->unk8 + w->unk1E0->unk9) << 8, 4, 0x400, 0x20);
     }
-    func_02000dfc(mdl->unk24);
+    MTX_Identity33_(mdl->unk24);
     idx = (s32)((u16)w->unk8 & 0xffff) >> 4;
     MTX_RotY33_(mtx, SIN_IDX(idx), COS_IDX(idx));
-    func_02000f34(mdl->unk24, mtx, mdl->unk24);
+    MTX_Concat33(mdl->unk24, mtx, mdl->unk24);
 }

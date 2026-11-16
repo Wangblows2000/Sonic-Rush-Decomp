@@ -1,18 +1,18 @@
 #include <nitro/types.h>
 
-void func_020030a8(void);
-void func_0200330c(s32 a);
+void GX_ResetBankForSubOBJ(void);
+void GX_SetBankForSubBG(s32 a);
 void GX_SetBankForLCDC(s32 a);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void GXS_SetGraphicsMode(s32 a);
 
 void func_ov001_022dfeec(void) {
     *(vu16 *)0x04000304 |= 0x8000;
-    func_020030a8();
-    func_0200330c(4);
+    GX_ResetBankForSubOBJ();
+    GX_SetBankForSubBG(4);
     GX_SetBankForLCDC(8);
     *(vu32 *)0x04000064 = 0x81330010;
-    func_02002ab0(1, 0, 1);
+    GX_SetGraphicsMode(1, 0, 1);
     *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0x1f00) | 0x100;
     *(vu16 *)0x04000008 &= ~3;
     GXS_SetGraphicsMode(5);

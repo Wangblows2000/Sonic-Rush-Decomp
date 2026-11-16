@@ -36,7 +36,7 @@ extern u8 data_ov001_0231ee88[];
 extern void *gSpecialStageGimmickModelList[][5];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
@@ -46,11 +46,11 @@ u32 VramPltt_Alloc(u32 a, u32 b);
 void Model_InitSprite3D(void *dst, void *h, u32 id, u32 a, u32 b, u32 c, u32 d, u32 e);
 void Model_Animate(void *p);
 s32 SpecialStage_GetStageIndex(void);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
-u32 func_02025e8c(void *h);
+u32 NNS_G3dGetTex(void *h);
 
 #define ENT(h, e, off) ((u8 *)(h) + (h)->unk18 + (e) * 0x14 + (off))
 
@@ -71,7 +71,7 @@ void SpecialStage_LoadGimmickModels(void) {
     u32 a;
 
     blk = Heap_Alloc(gMainHeap, 0xf00, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0xf00);
         *(u32 *)blk = 0xf00;
@@ -108,10 +108,10 @@ void SpecialStage_LoadGimmickModels(void) {
     }
     for (i = 0; i < 5; i++) {
         g->unk898[i] = File_Load(gSpecialStageGimmickModelList[SpecialStage_GetStageIndex()][i], -1);
-        func_020257f8(g->unk898[i]);
+        NNS_G3dResDefaultSetup(g->unk898[i]);
         Model_Init(&g->anims[i], 0);
         Model_SetResource(&g->anims[i], g->unk898[i], 0);
     }
-    Model_SetAnimation(&g->anims[3], 2, g->unkEC4, 0, func_02025e8c(g->unk898[3]));
+    Model_SetAnimation(&g->anims[3], 2, g->unkEC4, 0, NNS_G3dGetTex(g->unk898[3]));
     g->anims[3].unk10E |= 4;
 }

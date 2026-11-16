@@ -2,19 +2,19 @@
 
 extern u32 data_02250464;
 extern u8 gBGMVolume;
-void func_0201c070(void *p, u32 a);
-void func_0201bf1c(void *p);
-void func_0201bf34(void *p);
-void func_0201eb98(void *p, u32 a);
-void func_0201be98(void *p, u8 v);
+void NNS_SndPlayerStopSeq(void *p, u32 a);
+void NNS_SndHandleReleaseSeq(void *p);
+void NNS_SndHandleInit(void *p);
+void NNS_SndArcPlayerStartSeq(void *p, u32 a);
+void NNS_SndPlayerSetVolume(void *p, u8 v);
 
 void Sound_PlaySeq(u32 *p, u32 a) {
     if (p == NULL) p = &data_02250464;
     if (data_02250464 != 0) {
-        func_0201c070(&data_02250464, 0);
-        func_0201bf1c(&data_02250464);
+        NNS_SndPlayerStopSeq(&data_02250464, 0);
+        NNS_SndHandleReleaseSeq(&data_02250464);
     }
-    func_0201bf34(p);
-    func_0201eb98(p, a);
-    func_0201be98(p, gBGMVolume);
+    NNS_SndHandleInit(p);
+    NNS_SndArcPlayerStartSeq(p, a);
+    NNS_SndPlayerSetVolume(p, gBGMVolume);
 }

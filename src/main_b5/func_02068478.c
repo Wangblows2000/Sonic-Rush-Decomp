@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -13,14 +13,14 @@ typedef struct {
 extern void *gMainHeap;
 
 u8 *ObjData_Load(UnkObj_02068478 *s, s32 a, s32 b);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 u32 func_020380d8(void *p);
 void func_020380a0(void *p, void *buf);
 
 static inline u8 *Alloc_02068478(u32 sz) {
     u32 size = sz;
     u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -32,7 +32,7 @@ static inline u8 *Alloc_02068478(u32 sz) {
 }
 
 static inline void Free_02068478(u8 *p) {
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         u32 size;
         p -= 0x20;
         size = *(u32 *)p;
@@ -51,7 +51,7 @@ void func_02068478(UnkObj_02068478 *s, s32 a) {
     res = s->buf;
     if (res == NULL)
         res = ObjData_Load(s, a, 0);
-    func_020257f8(res);
+    NNS_G3dResDefaultSetup(res);
     s->buf = Alloc_02068478((func_020380d8(res) + 0x43) & ~0x1f);
     func_020380a0(res, s->buf);
     Free_02068478(res);

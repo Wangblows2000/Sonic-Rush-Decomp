@@ -31,9 +31,9 @@ extern s32 data_022b8bc0;
 
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
-void func_0200b2f4(u32 a, s32 b);
+void FS_NotifyArchiveAsyncEnd(u32 a, s32 b);
 void func_0203d984(void);
-void func_02014bac(void);
+void WBT_End(void);
 void func_020114f0(u16 a, s32 b, s32 c);
 
 static inline void Free_0203c350(UnkCtx_0203c350 *cp, void *p) {
@@ -61,13 +61,13 @@ void WFS_End(void) {
             if (c->unk1c != NULL) {
                 u32 v = c->unk1c->unk8;
                 c->unk1c = NULL;
-                func_0200b2f4(v, 5);
+                FS_NotifyArchiveAsyncEnd(v, 5);
             }
             Free_0203c350(&data_022b8be0, d->unkaf8);
         } else {
             func_0203d984();
         }
-        func_02014bac();
+        WBT_End();
         func_020114f0(data_022b8be0.unk30, 0, 0);
         data_022b8bc0 = 0;
     }

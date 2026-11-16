@@ -8,9 +8,9 @@ extern u32 data_02087cdc;
 extern u32 data_02087ce0;
 extern u32 data_02089264;
 extern u32 data_ov001_02316318;
-extern void func_02000cb4(void);
+extern void MTX_Identity22_(void);
 extern void func_0200225c(void);
-extern void func_02003d94(void);
+extern void G2x_SetBGyAffine_(void);
 
 #pragma thumb on
 asm void func_ov001_022e519c(void)
@@ -130,7 +130,7 @@ _80:
     cmp r0, #0
     bne _102
     add r0, sp, #0x50
-    bl func_02000cb4
+    bl MTX_Identity22_
     add r0, r4, #0
     mov r1, #8
     bl _s32_div_f
@@ -142,7 +142,7 @@ _80:
     add r1, sp, #0x50
     mov r2, #0
     add r3, r2, #0
-    bl func_02003d94
+    bl G2x_SetBGyAffine_
     add sp, #0x64
     pop {r4, r5, r6, r7}
     pop {r3}
@@ -378,7 +378,7 @@ _2b4:
     blt _2b4
 _2c0:
     add r0, sp, #0x50
-    bl func_02000cb4
+    bl MTX_Identity22_
     ldr r0, [sp, #0x10]
     ldr r0, [r0]
     lsr r0, r0, #8
@@ -389,7 +389,7 @@ _2c0:
     add r1, sp, #0x50
     mov r2, #0
     add r3, r2, #0
-    bl func_02003d94
+    bl G2x_SetBGyAffine_
     ldr r1, [pc, #0x30]
     ldr r2, [r1]
     ldr r0, [pc, #0x30]

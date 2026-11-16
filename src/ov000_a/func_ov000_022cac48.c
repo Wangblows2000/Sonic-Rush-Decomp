@@ -65,7 +65,7 @@ void func_ov000_02347c44(UnkStruct_022cac48_pl *p);
 void Player_SetAnimation(UnkStruct_022cac48_pl *p, s32 a);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
-void func_0201bfbc(s32 a);
+void NNS_SndPlayerStopSeqAll(s32 a);
 void Boss1Hammer_State_Unk_ov000_022cab48(UnkStruct_022cac48 *s);
 
 void func_ov000_022cac48(UnkStruct_022cac48 *s) {
@@ -91,6 +91,6 @@ void func_ov000_022cac48(UnkStruct_022cac48 *s) {
     gPlayers->unk10 = 0xe100;
     gPlayers->unk14 = 0x1a800;
     func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
-    func_0201bfbc(0);
+    NNS_SndPlayerStopSeqAll(0);
     s->func = Boss1Hammer_State_Unk_ov000_022cab48;
 }

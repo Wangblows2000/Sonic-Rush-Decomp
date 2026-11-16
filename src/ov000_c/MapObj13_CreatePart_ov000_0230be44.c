@@ -27,7 +27,7 @@ UnkStruct_0230be44 *MapObj13_CreatePart_ov000_0230be44(void) {
     if (data_ov000_02369f70 != NULL)
         return data_ov000_02369f70->work;
     task = Task_Create(StageObj_Main, MapObj13Part_Destructor_ov000_0230bdf4, 0, 0x3000, 4, sizeof(UnkStruct_0230be44));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

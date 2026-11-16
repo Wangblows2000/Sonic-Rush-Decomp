@@ -22,7 +22,7 @@ extern UnkTask_022e7274 *gTaskCurrent;
 
 void func_ov001_022e6dec(UnkWork_022e7274 *w);
 BOOL func_02050018(void);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 BOOL func_0205000c(void);
 void func_ov001_022e606c(void);
 void func_ov001_022e5f80(void);
@@ -45,7 +45,7 @@ void func_ov001_022e7274(void) {
     if (func_02050018()) {
         w->timer = 0;
         w->sub->unk5c = 1;
-        func_02002ab0(1, 5, 1);
+        GX_SetGraphicsMode(1, 5, 1);
         SetPlane_022e7274(GetPlane_022e7274() & ~4);
         if (!func_0205000c()) {
             switch (w->mode) {

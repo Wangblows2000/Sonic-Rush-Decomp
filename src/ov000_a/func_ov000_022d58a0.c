@@ -40,9 +40,9 @@ extern s16 data_0206e470[];
 void VEC_Add(void *a, void *b, void *c);
 s32 VEC_Mag(void *v);
 u16 func_ov000_022c5e10(s32 x, s32 z);
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 void func_ov000_022d57b8(UnkStruct_022d58a0 *s);
 
 void func_ov000_022d58a0(UnkStruct_022d58a0 *s) {
@@ -54,9 +54,9 @@ void func_ov000_022d58a0(UnkStruct_022d58a0 *s) {
     s->unk214.y -= 0x199;
     ang = func_ov000_022c5e10(s->unk214.x, s->unk214.z);
     s->unk210 += (u16)(VEC_Mag(&s->unk214) >> 4);
-    func_02000e60(s->unk2B4, data_0206e470[((s->unk210 & 0xffff) >> 4) * 2], data_0206e470[((s->unk210 & 0xffff) >> 4) * 2 + 1]);
+    MTX_RotX33_(s->unk2B4, data_0206e470[((s->unk210 & 0xffff) >> 4) * 2], data_0206e470[((s->unk210 & 0xffff) >> 4) * 2 + 1]);
     MTX_RotY33_(mtx, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
-    func_02000f34(s->unk2B4, mtx, s->unk2B4);
+    MTX_Concat33(s->unk2B4, mtx, s->unk2B4);
     v.x = s->unk2D8.x;
     v.y = 0;
     v.z = s->unk2D8.z;

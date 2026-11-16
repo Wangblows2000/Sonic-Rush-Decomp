@@ -38,8 +38,8 @@ extern UnkStruct_02084db8 data_02084db8;
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
 s32 func_0200225c(s32 a, s32 b);
-void func_020044f4(UnkVec_020474f8 *pos, UnkVec_020474f8 *up, UnkVec_020474f8 *at, s32 a, void *mtx);
-void func_02004988(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, void *mtx);
+void G3i_LookAt_(UnkVec_020474f8 *pos, UnkVec_020474f8 *up, UnkVec_020474f8 *at, s32 a, void *mtx);
+void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, void *mtx);
 void MTX_RotY33_(void *mtx, s32 s, s32 c);
 void Model_Animate(void *p);
 void Model_Draw(void *p);
@@ -54,9 +54,9 @@ void func_020474f8(UnkWork_020474f8 *w) {
     data_02084f78 = *W_VEC(w, 0x364);
     data_02084f84 = *W_VEC(w, 0x37c);
     data_02084f90 = *W_VEC(w, 0x370);
-    func_020044f4(W_VEC(w, 0x364), W_VEC(w, 0x37c), W_VEC(w, 0x370), 0, data_02084d84);
+    G3i_LookAt_(W_VEC(w, 0x364), W_VEC(w, 0x37c), W_VEC(w, 0x370), 0, data_02084d84);
     data_02084db8.unk7C &= ~0xe8;
-    func_02004988(SIN(w->unk350), COS(w->unk350), w->unk35C, w->unk354, w->unk358, 0x1000, 0, data_02084d40);
+    G3i_PerspectiveW_(SIN(w->unk350), COS(w->unk350), w->unk35C, w->unk354, w->unk358, 0x1000, 0, data_02084d40);
     data_02084db8.unk7C &= ~0x50;
     cam->unk4C[0] = cam->unk148[0];
     cam->unk4C[1] = cam->unk148[1];

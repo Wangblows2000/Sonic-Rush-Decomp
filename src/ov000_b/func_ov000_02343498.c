@@ -33,7 +33,7 @@ UnkStruct_02343498 *func_ov000_02343498(UnkStruct_02343498_Parent *parent, s16 a
     vu16 zero;
 
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0x101, 1, sizeof(UnkStruct_02343498));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

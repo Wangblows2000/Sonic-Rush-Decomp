@@ -68,7 +68,7 @@ extern s16 data_0206e470[];
 
 void ObjRect_SetBox2D(UnkStruct_0235bafc_Rect *r, s32 a, s32 b, s32 c, s32 d);
 s32 ObjRect_BoxCheck(UnkStruct_0235bafc_Rect *r, s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
-s32 func_020027a4(s32 y, s32 x);
+s32 FX_Atan2(s32 y, s32 x);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
 
 #define IDX_0235bafc(a) ((s32)((a) & 0xffff) >> 4)
@@ -109,7 +109,7 @@ void func_ov000_0235bafc(UnkStruct_0235bafc_Src *src) {
             }
         }
         if (p->flags & 0x2000) {
-            ang = func_020027a4(r.y - (p->y >> 8), r.x - (p->x >> 8));
+            ang = FX_Atan2(r.y - (p->y >> 8), r.x - (p->x >> 8));
             p->vx = ObjSpd_UpSet(p->vx, 0x40, 0x1F00);
             v = p->vx;
             p->x += (s16)((v * COS_0235bafc(ang)) >> 12);

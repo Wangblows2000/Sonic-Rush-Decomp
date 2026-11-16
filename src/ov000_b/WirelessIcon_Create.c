@@ -12,7 +12,7 @@ void WirelessIcon_Create(void) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, FixVs_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     w = task->work;
     zero = 0;

@@ -31,7 +31,7 @@ extern UnkBg_022d8c78 gDisplayMain;
 extern UnkBg_022d8c78 gDisplaySub;
 
 void ObjVram_Free(s32 a, s32 b);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -39,7 +39,7 @@ void func_02049070(void);
 
 #pragma thumb on
 static inline void Free_022d8c78(u8 *blk) {
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;

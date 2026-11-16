@@ -4,7 +4,7 @@ extern u32 data_022c1988;
 extern u16 data_022c1960;
 extern u16 data_022c1958;
 
-void func_020078a4(u16 *mac);
+void OS_GetMacAddress(u16 *mac);
 void WH_ChangeSysState(s32 a);
 void WH_SetError(s32 v);
 s32 WH_StateInMeasureChannel(u16 ch);
@@ -15,7 +15,7 @@ BOOL WH_StartMeasureChannel(void)
     u32 seed;
     s32 r;
 
-    func_020078a4(mac);
+    OS_GetMacAddress(mac);
     seed = *(u32 *)0x027ffc3c;
     seed = mac[2] + (mac[1] + (mac[0] + seed));
     *(volatile u32 *)&data_022c1988 = seed;

@@ -27,7 +27,7 @@ void ObjDraw_LoadPaletteRow(void *res, u16 id, u8 a, s32 b);
 UnkTask_0204423c *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void PaletteAnim_Main(void);
 void PaletteAnim_Destructor(void);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void *File_Load(void *a, s32 b);
 
@@ -52,7 +52,7 @@ void PaletteAnim_Create(s32 idx, UnkSeq_0204423c *seq, void *res, void *path) {
         return;
     }
     t = Task_Create(PaletteAnim_Main, PaletteAnim_Destructor, 0, 0x3e00, 3, sizeof(UnkWork_0204423c));
-    if (t == (UnkTask_0204423c *)func_02006abc(0))
+    if (t == (UnkTask_0204423c *)OS_GetArenaLo(0))
         return;
     gPaletteAnimTasks[idx] = t;
     gPaletteAnimRefCount[idx]++;

@@ -24,9 +24,9 @@ void func_ov000_0232895c(s32 x, s16 y, s32 flip, s32 c) {
     off = data_ov000_02367b0c;
     task1 = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     task2 = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-    if (task1 == func_02006abc(0))
+    if (task1 == OS_GetArenaLo(0))
         return;
-    if (task2 == func_02006abc(0))
+    if (task2 == OS_GetArenaLo(0))
         return;
     w1 = task1->work;
     w2 = task2->work;

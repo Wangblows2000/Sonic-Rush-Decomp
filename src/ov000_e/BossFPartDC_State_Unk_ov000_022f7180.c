@@ -44,7 +44,7 @@ extern UnkStruct_Player *gPlayers;
 
 void func_ov000_022f7804(UnkStruct_022f7180 *w);
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-BOOL func_020254d4(UnkStruct_Vec *v, s32 *a, s32 *b);
+BOOL NNS_G3dWorldPosToScrPos(UnkStruct_Vec *v, s32 *a, s32 *b);
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -121,7 +121,7 @@ void BossFPartDC_State_Unk_ov000_022f7180(UnkStruct_022f7180 *w) {
         vec.x = w->unk220 << 4;
         vec.y = -0x300000;
         vec.z = 0;
-        if (func_020254d4(&vec, &ang, &tmp) == 0) {
+        if (NNS_G3dWorldPosToScrPos(&vec, &ang, &tmp) == 0) {
             ang = 0x80 - ang;
             ang = 0x40 - (ang < 0 ? -ang : ang);
             if (ang < 0)

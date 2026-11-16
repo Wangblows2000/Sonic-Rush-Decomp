@@ -2,7 +2,7 @@
 
 extern u32 data_ov000_02364d70[];
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 
 void func_ov000_02336cec(u32 *out, u32 t) {
     s16 sh;
@@ -18,7 +18,7 @@ void func_ov000_02336cec(u32 *out, u32 t) {
     while (1) {
         d = data_ov000_02364d70[i];
         if (t >= d) {
-            q = func_02002094(t, d);
+            q = FX_DivS32(t, d);
             *out |= q << sh;
             t -= q * d;
         }

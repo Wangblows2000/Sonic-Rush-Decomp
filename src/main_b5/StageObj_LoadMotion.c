@@ -12,9 +12,9 @@ typedef struct {
     u32 flags;
 } UnkWork_02069b34;
 
-s32 func_0202c5f0(const char *s);
+s32 strlen(const char *s);
 void *ObjData_Load(UnkOwner_02069b34 *s, const char *name, BOOL arc);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 
 void StageObj_LoadMotion(void *unused, UnkWork_02069b34 *w, const char *name, UnkOwner_02069b34 *owner, BOOL flag) {
     s32 type = 0;
@@ -22,7 +22,7 @@ void StageObj_LoadMotion(void *unused, UnkWork_02069b34 *w, const char *name, Un
     u16 ext;
     void *res;
 
-    len = func_0202c5f0(name);
+    len = strlen(name);
     ext = (u16)name[len - 1] | (name[len - 2] << 8);
     switch (ext) {
     case 0x6361:
@@ -51,5 +51,5 @@ void StageObj_LoadMotion(void *unused, UnkWork_02069b34 *w, const char *name, Un
         return;
     w->owner[type] = owner;
     if (owner->unk4 == 1)
-        func_020257f8(res);
+        NNS_G3dResDefaultSetup(res);
 }

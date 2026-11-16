@@ -5,12 +5,12 @@ extern UnkMosaic_020609e0 gDisplayMain;
 
 BOOL func_02057350(void);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 
 #pragma thumb on
 void func_020609e0(void) {
     if (!func_02057350()) {
-        func_02002ab0(1, 0, 1);
+        GX_SetGraphicsMode(1, 0, 1);
         *(vu32 *)0x04000000 &= ~0x38000000;
         *(vu32 *)0x04000000 &= ~0x07000000;
         *(vu16 *)0x0400000c = (*(vu16 *)0x0400000c & 0x43) | 0x600;

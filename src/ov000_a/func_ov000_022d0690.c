@@ -54,7 +54,7 @@ void func_ov000_022cd1b0(u32 flags);
 extern s16 data_0206e470[];
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_0201c070(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void func_ov000_022cedd8(UnkStruct_022d0690 *s, s32 a);
 void func_ov000_022d0614(UnkStruct_022d0690 *s);
 
@@ -90,7 +90,7 @@ void func_ov000_022d0690(UnkStruct_022d0690 *s) {
         s->unkF84[5].unkA |= 0x1000;
         s->unkF84[9].unkA &= ~4;
         s->unkF84[9].unkA |= 0x1000;
-        func_0201c070(s->unk1458, 0);
+        NNS_SndPlayerStopSeq(s->unk1458, 0);
     } else {
         s->unk12F4--;
         if (s->unk12F4 == 0)

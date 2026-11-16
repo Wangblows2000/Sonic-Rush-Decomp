@@ -61,8 +61,8 @@ extern s16 data_0206e470[];
 #define SIN_023504e8(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS_023504e8(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void EffSpecial_Create(UnkStruct_023504e8 *w);
 void func_ov000_02330098(UnkStruct_023504e8 *w, s16 a, s16 b);
@@ -85,8 +85,8 @@ void Player_State_GmkSpecial(UnkStruct_023504e8 *w) {
         if (w->unk32C & 0x80) {
             w->unk3F4++;
             if (w->unkC == 0) {
-                func_0201c070(w->unk388, 0x10);
-                func_0201bf1c(w->unk388);
+                NNS_SndPlayerStopSeq(w->unk388, 0x10);
+                NNS_SndHandleReleaseSeq(w->unk388);
                 Sound_PlaySeqArcEx(w->unk388, 0, 0x47);
                 w->unkC++;
                 EffSpecial_Create(w);
@@ -96,16 +96,16 @@ void Player_State_GmkSpecial(UnkStruct_023504e8 *w) {
                     func_ov000_02330098(w, 0xf - (Rand_023504e8() & 0x1e), 0xf - (Rand_023504e8() & 0x1e));
                 }
                 if (w->unkC == 1) {
-                    func_0201c070(w->unk388, 0x10);
-                    func_0201bf1c(w->unk388);
+                    NNS_SndPlayerStopSeq(w->unk388, 0x10);
+                    NNS_SndHandleReleaseSeq(w->unk388);
                     Sound_PlaySeqArcEx(w->unk388, 0, 0x48);
                     w->unkC++;
                 }
             }
             if (w->unk3F4 > 0xc0) {
                 if (w->unkC == 2) {
-                    func_0201c070(w->unk388, 0x10);
-                    func_0201bf1c(w->unk388);
+                    NNS_SndPlayerStopSeq(w->unk388, 0x10);
+                    NNS_SndHandleReleaseSeq(w->unk388);
                     Sound_PlaySeqArcEx(w->unk388, 0, 0x49);
                     w->unkC++;
                 }
@@ -172,8 +172,8 @@ void Player_State_GmkSpecial(UnkStruct_023504e8 *w) {
     if (w->unk334 == NULL) {
         return;
     }
-    func_0201c070(w->unk388, 0x10);
-    func_0201bf1c(w->unk388);
+    NNS_SndPlayerStopSeq(w->unk388, 0x10);
+    NNS_SndHandleReleaseSeq(w->unk388);
     w->unk34 = 0;
     w->unk3E8 = NULL;
     w->unk58 |= 0xc0;

@@ -5,7 +5,7 @@ extern u8 gTaskCurrent[];
 s32 func_02044798();
 extern u8 data_ov000_02369ac0[];
 void func_0204481c();
-s32 func_02003d78();
+s32 G2x_SetBlendAlpha_();
 extern u8 gDisplayTable[];
 
 void func_02044ad0(void) {
@@ -23,7 +23,7 @@ void func_02044ad0(void) {
     }
     *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_0204481c;
     *(u32 *)t1 = 0;
-    func_02003d78(0x4001050, 0, 4, 0x1f, 0);
+    G2x_SetBlendAlpha_(0x4001050, 0, 4, 0x1f, 0);
     s32 t3 = *(u32 *)((u8 *)gDisplayTable + 0x4);
     *(u16 *)((u8 *)t3 + 0x20) = 0x440;
     *(u16 *)((u8 *)t3 + 0x22) = 0x1f;

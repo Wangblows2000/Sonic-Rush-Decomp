@@ -9,7 +9,7 @@ void func_ov000_02300578(UnkStruct_StageObj *w);
 void func_ov000_02300438(UnkStruct_StageObj *w);
 void func_ov000_023000dc(UnkStruct_StageObj *w);
 void func_ov000_022ffd68(UnkStruct_StageObj *w);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 void EffFound_Create(UnkStruct_StageObj *w, s32 a, s32 b);
 
 void EnemyFlapperGroup_OnHit_Box2(UnkStruct_Hit *a, UnkStruct_Hit *b) {
@@ -38,7 +38,7 @@ void EnemyFlapperGroup_OnHit_Box2(UnkStruct_Hit *a, UnkStruct_Hit *b) {
         func_ov000_023000dc(w);
         break;
     case 0x11:
-        ang = func_020027a4((o->unk14 - w->unk14) >> 8, (o->unk10 - w->unk10) >> 8);
+        ang = FX_Atan2((o->unk14 - w->unk14) >> 8, (o->unk10 - w->unk10) >> 8);
         if ((ang > 0x5000 && ang < 0x7000) || (ang > 0x1000 && ang < 0x3000)) {
             w->coll2.unkA &= ~4;
             func_ov000_022ffd68(w);

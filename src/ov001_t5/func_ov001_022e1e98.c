@@ -5,7 +5,7 @@ typedef struct {
     fx32 y;
 } UnkPt_022e1e98;
 
-fx32 func_020021f0(fx32 a);
+fx32 FX_Sqrt(fx32 a);
 fx32 func_0200225c(fx32 a, fx32 b);
 void func_ov001_022e1ce8(s32 n, fx32 *t, fx32 *v, fx32 *c);
 fx32 func_ov001_022e1bec(fx32 s, s32 n, fx32 *t, fx32 *v, fx32 *c);
@@ -38,7 +38,7 @@ void func_ov001_022e1e98(s32 n, s32 *out, fx32 x0, fx32 y0, fx32 x1, fx32 y1, fx
     for (i = 1; i < 4; i++) {
         dx = xs[i] - xs[i - 1];
         dy = ys[i] - ys[i - 1];
-        t[i] = t[i - 1] + func_020021f0(FX_Mul_022e1e98(dx, dx) + FX_Mul_022e1e98(dy, dy));
+        t[i] = t[i - 1] + FX_Sqrt(FX_Mul_022e1e98(dx, dx) + FX_Mul_022e1e98(dy, dy));
     }
     for (i = 1; i < 4; i++) {
         t[i] = func_0200225c(t[i], t[3]);

@@ -14,17 +14,17 @@ typedef struct {
 
 extern u8 gSystemHeapAllocator[];
 
-void func_02021c4c(void *renderObj, void *anm);
+void NNS_G3dRenderObjRemoveAnmObj(void *renderObj, void *anm);
 void func_02025b38(void *alloc, void *anm);
-void *func_02026274(void *res, u32 idx);
-UnkAnmObj_02031a68 *func_02025b44(void *alloc, void *anm, void *mdl);
-void func_02021f60(UnkAnmObj_02031a68 *obj, void *res, void *mdl, void *tex);
-void func_02021d28(void *renderObj, UnkAnmObj_02031a68 *anm);
+void *NNS_G3dGetAnmByIdx(void *res, u32 idx);
+UnkAnmObj_02031a68 *NNS_G3dAllocAnmObj(void *alloc, void *anm, void *mdl);
+void NNS_G3dAnmObjInit(UnkAnmObj_02031a68 *obj, void *res, void *mdl, void *tex);
+void NNS_G3dRenderObjAddAnmObj(void *renderObj, UnkAnmObj_02031a68 *anm);
 
 void Model_SetAnimation(UnkObj_02031a68 *o, u32 slot, void *res, u32 idx, void *tex) {
     void *a;
     if (o->anm2[slot] != NULL) {
-        func_02021c4c(o->renderObj, o->anm2[slot]);
+        NNS_G3dRenderObjRemoveAnmObj(o->renderObj, o->anm2[slot]);
         func_02025b38(gSystemHeapAllocator, o->anm2[slot]);
         o->anm2[slot] = NULL;
     }
@@ -41,16 +41,16 @@ void Model_SetAnimation(UnkObj_02031a68 *o, u32 slot, void *res, u32 idx, void *
     case 2:
     case 3:
         if (o->anm[slot] != NULL) {
-            func_02021c4c(o->renderObj, o->anm[slot]);
+            NNS_G3dRenderObjRemoveAnmObj(o->renderObj, o->anm[slot]);
             func_02025b38(gSystemHeapAllocator, o->anm[slot]);
             o->anm[slot] = NULL;
         }
         break;
     }
-    a = func_02026274(res, idx);
-    o->anm[slot] = func_02025b44(gSystemHeapAllocator, a, o->resMdl);
-    func_02021f60(o->anm[slot], a, o->resMdl, tex);
-    func_02021d28(o->renderObj, o->anm[slot]);
+    a = NNS_G3dGetAnmByIdx(res, idx);
+    o->anm[slot] = NNS_G3dAllocAnmObj(gSystemHeapAllocator, a, o->resMdl);
+    NNS_G3dAnmObjInit(o->anm[slot], a, o->resMdl, tex);
+    NNS_G3dRenderObjAddAnmObj(o->renderObj, o->anm[slot]);
     if (o->anm2[slot] != NULL) {
         o->anm[slot]->ratio = 0;
         o->anm2[slot]->ratio = 0x1000;

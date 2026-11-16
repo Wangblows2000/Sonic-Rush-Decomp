@@ -36,31 +36,31 @@ extern u16 data_ov001_0231628c[3];
 
 u8 *File_Load(void *path, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 s32 func_ov001_022e3ecc(void *p);
 u32 func_ov001_022e3ec0(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 BOOL func_02021310(UnkArc_022e3bec *arc, const char *name, void *narc);
 void *func_02021264(UnkArc_022e3bec *arc, s32 i);
 BOOL func_020212e0(UnkArc_022e3bec *arc);
-void func_020257f8(void *res);
+void NNS_G3dResDefaultSetup(void *res);
 void Model_Init(void *o, s32 a);
 void Model_SetResource(void *o, void *res, s32 a);
 void Model_SetAnimation(void *o, s32 a, void *b, void *c, s32 d);
-void func_02004084(void *p);
+void G3X_SetEdgeColorTable(void *p);
 void func_02022270(u32 index, u32 value);
 
 #pragma thumb on
 static inline u8 *Alloc_022e3bec(u32 size) {
     u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -72,7 +72,7 @@ static inline u8 *Alloc_022e3bec(u32 size) {
 }
 
 static inline void Free_022e3bec(u8 *blk) {
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;
@@ -97,13 +97,13 @@ void ZoneMap_LoadPlayerArchive(UnkWork_022e3bec *w, s32 mode, void *narc) {
     p = w->buf;
     switch (func_ov001_022e3ecc(f)) {
     case 0x10:
-        func_02008648(f, p);
+        MI_UncompressLZ16(f, p);
         break;
     case 0x20:
-        func_02008720(f, p);
+        MI_UncompressHuffman(f, p);
         break;
     case 0x30:
-        func_020087f8(f, p);
+        MI_UncompressRL16(f, p);
         break;
     default:
         Mem_Copy(Compress_GetData(f), p, func_ov001_022e3ec0(f));
@@ -113,14 +113,14 @@ void ZoneMap_LoadPlayerArchive(UnkWork_022e3bec *w, s32 mode, void *narc) {
     Free_022e3bec(f);
     if (mode == 0) {
         func_02021310(&arc, data_ov001_0231c57c, w->buf);
-        func_020257f8(func_02021264(&arc, 0));
+        NNS_G3dResDefaultSetup(func_02021264(&arc, 0));
         w->res160 = func_02021264(&arc, 0);
         w->res164 = func_02021264(&arc, 1);
         w->res168 = func_02021264(&arc, 2);
         func_020212e0(&arc);
     } else {
         func_02021310(&arc, data_ov001_0231c580, w->buf);
-        func_020257f8(func_02021264(&arc, 3));
+        NNS_G3dResDefaultSetup(func_02021264(&arc, 3));
         w->res160 = func_02021264(&arc, 3);
         w->res164 = func_02021264(&arc, 1);
         w->res168 = func_02021264(&arc, 2);
@@ -145,7 +145,7 @@ void ZoneMap_LoadPlayerArchive(UnkWork_022e3bec *w, s32 mode, void *narc) {
     w->unk1c = w->unk20;
     w->unk138 = 0x1000;
     w->unk18 = 0x1f;
-    func_02004084(data_ov001_023162d0);
+    G3X_SetEdgeColorTable(data_ov001_023162d0);
     func_02022270(0, data_ov001_0231628c[0]);
     func_02022270(1, data_ov001_0231628c[1]);
     func_02022270(2, data_ov001_0231628c[2]);

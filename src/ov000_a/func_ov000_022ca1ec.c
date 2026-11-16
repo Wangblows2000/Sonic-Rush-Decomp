@@ -33,7 +33,7 @@ void Model_Release(UnkStruct_022ca1ec_2 **p);
 void Model_Init(UnkStruct_022ca1ec_2 *p, s32 a);
 void Model_SetResource(UnkStruct_022ca1ec_2 *p, s32 a, s32 b);
 void Model_SetAnimation(UnkStruct_022ca1ec_2 *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_02025e8c(s32 a);
+s32 NNS_G3dGetTex(s32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022ca1a8(UnkStruct_022ca1ec *s);
 
@@ -45,7 +45,7 @@ void func_ov000_022ca1ec(UnkStruct_022ca1ec *s) {
     Model_SetAnimation(a, 0, s->unk39C, 0, 0);
     Model_SetAnimation(a, 1, s->unk3A0, 0, 0);
     Model_SetAnimation(a, 3, s->unk3A4, 0, 0);
-    Model_SetAnimation(a, 2, s->unk3A8, 0, func_02025e8c(s->unk398));
+    Model_SetAnimation(a, 2, s->unk3A8, 0, NNS_G3dGetTex(s->unk398));
     a->unkA = 0x14;
     a->unkB = 3;
     a->unkC = 0;

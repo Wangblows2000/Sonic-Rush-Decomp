@@ -39,7 +39,7 @@ extern s16 data_0206e470[];
 
 void func_ov001_022f1a90(UnkStruct_022f1c0c *p);
 void func_ov001_022f2ca4(UnkStruct_022f1c0c_o *p);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -60,7 +60,7 @@ void func_ov001_022f1c0c(UnkStruct_022f1c0c *p) {
     p->flags160 |= 0x200;
     o->flagsF0 |= 0x200;
     o->flags128 |= 0x200;
-    a = func_020027a4(0xc0000 - p->y, 0x162000 - p->x);
+    a = FX_Atan2(0xc0000 - p->y, 0x162000 - p->x);
     p->vx = FX_Mul(COS(a), 0x5000);
     p->vy = FX_Mul(SIN(a), 0x5000);
 }

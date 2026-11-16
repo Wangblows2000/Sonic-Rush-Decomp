@@ -48,9 +48,9 @@ void ObjRect_FuncNoHit(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b);
 void func_ov000_022daab0(void);
 void func_ov000_022daaf4(void);
 UnkStruct_022d8db0_q *BossEffect_CreateHit(s32 a, s32 b, s32 c, s32 d);
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 void Sound_PlaySeq(s32 a, s32 b);
@@ -88,10 +88,10 @@ void Boss3PartCC_OnHit(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b) {
         func_ov000_022daaf4();
         q = BossEffect_CreateHit(1, p->unk2D8 >> 4, -p->unk2DC >> 4, p->unk2E0 >> 4);
         ang = (Rand() & 0xfff) + 0xaaa;
-        func_02000e60(q->unk158, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
+        MTX_RotX33_(q->unk158, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
         ang = Rand();
         MTX_RotY33_(mtx, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
-        func_02000f34(q->unk158, mtx, q->unk158);
+        MTX_Concat33(q->unk158, mtx, q->unk158);
         if (data_ov000_02369ac0.unk8 == 2) {
             func_020537b4(0xb);
             func_020533e0(0x12, 0xf0);

@@ -19,7 +19,7 @@ UnkStruct_0231d5a4 *Wheel2D_Create(s32 a, s32 b, s32 c) {
     u16 i;
 
     task = Task_Create(StageObj_Main, MapObject_Destructor, 0, 0x500, 2, sizeof(UnkStruct_0231d5a4));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

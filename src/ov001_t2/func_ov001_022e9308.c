@@ -19,7 +19,7 @@ extern void *gMainHeap;
 void ObjVram_Free(void *p, s32 q);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 
@@ -41,7 +41,7 @@ void func_ov001_022e9308(UnkStruct_022e9308 *p) {
     for (i = 0; i < 3; i++) {
         buf = p->bufs[i];
         if (buf != NULL) {
-            if (func_02006abc(0) != buf) {
+            if (OS_GetArenaLo(0) != buf) {
                 buf -= 0x20;
                 size = *(s32 *)buf;
                 if (*(u32 *)(buf + size - 4) == 0x2467531) {

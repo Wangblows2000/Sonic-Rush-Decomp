@@ -19,7 +19,7 @@ typedef struct {
 extern UnkCtx_0203c7dc data_022b8be0;
 extern s32 data_022b8bbc;
 
-void func_0200be98(u32 a);
+void FS_Init(u32 a);
 s32 func_020114f0(u16 port, void (*cb)(void), void *arg);
 void OS_Terminate(void);
 void func_0203d038(void);
@@ -27,7 +27,7 @@ void func_0203d038(void);
 void func_0203c7dc(u32 id, u32 a, u32 b, u32 c) {
     UnkCtx_0203c7dc *x = (UnkCtx_0203c7dc *)((u32)&data_022b8be0 | 0);
 
-    func_0200be98(-1);
+    FS_Init(-1);
     x->h30 = id;
     x->x4 = 0;
     x->x8 = 0;

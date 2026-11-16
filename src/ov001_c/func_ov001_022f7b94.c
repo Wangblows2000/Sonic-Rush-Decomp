@@ -33,9 +33,9 @@ extern u32 gRandSeed;
 void func_ov001_022f7880(void);
 void func_ov001_022f7790(void);
 void func_ov001_022f7924(void);
-void func_0201c070(void **pp, s32 a);
+void NNS_SndPlayerStopSeq(void **pp, s32 a);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
-s32 func_02002094(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
 void AnimatorSprite_Draw(void *p);
 
 static inline u16 Rand(void) {
@@ -52,7 +52,7 @@ void func_ov001_022f7b94(void) {
         gTaskCurrent->fn = func_ov001_022f7880;
         func_ov001_022f7880();
         data_ov001_0231f084->unkE38 |= 0x4000;
-        func_0201c070(&data_ov001_0231f084->unkEA0, 0);
+        NNS_SndPlayerStopSeq(&data_ov001_0231f084->unkEA0, 0);
         Sound_PlaySeqArc(0, 8, 2);
         return;
     }

@@ -3,10 +3,10 @@
 typedef struct { fx32 frame; u32 unk4; void *resAnm; } UnkAnmObj_02027dbc;
 typedef struct { u32 flag; u32 unk4[3]; u32 prmTexImage; } UnkMatResult_02027dbc;
 
-void func_02027ec8(void *anm, u16 idx, s32 frame, UnkMatResult_02027dbc *res);
+void GetTexSRTAnm_(void *anm, u16 idx, s32 frame, UnkMatResult_02027dbc *res);
 
 void func_02027dbc(UnkMatResult_02027dbc *res, UnkAnmObj_02027dbc *obj, u32 idx) {
-    func_02027ec8(obj->resAnm, (u16)idx, obj->frame >> 12, res);
+    GetTexSRTAnm_(obj->resAnm, (u16)idx, obj->frame >> 12, res);
     res->prmTexImage &= ~0xC0000000;
     res->prmTexImage |= 0x40000000;
     res->flag |= 8;

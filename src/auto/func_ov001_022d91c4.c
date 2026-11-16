@@ -7,7 +7,7 @@ s32 func_02049070();
 s32 Vram_SetBankConfig();
 s32 Vram_ResetTexAndPltt();
 s32 VramPltt_Reset();
-s32 func_02002ab0();
+s32 GX_SetGraphicsMode();
 s32 GXS_SetGraphicsMode();
 extern u8 gDisplayMain[];
 extern u8 gDisplaySub[];
@@ -27,7 +27,7 @@ void func_ov001_022d91c4(void) {
     Vram_SetBankConfig(0);
     Vram_ResetTexAndPltt();
     VramPltt_Reset();
-    func_02002ab0(1, 0, 0);
+    GX_SetGraphicsMode(1, 0, 0);
     *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & 0xc7ffffff);
     *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & 0xf8ffffff);
     *(volatile u16 *)0x4000008 = ((*(volatile u16 *)0x4000008 & 0x43) | 0x4084);

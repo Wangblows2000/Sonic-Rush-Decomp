@@ -12,13 +12,13 @@ extern UnkNode_02034174 gFileRequestPool[];
 extern UnkNode_02034174 *gFileRequestListHead;
 extern UnkNode_02034174 *gFileRequestListTail;
 
-void func_0200be98(s32 arg);
+void FS_Init(s32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 UnkNode_02034174 *FileRequest_AllocNode(void);
 
 void FileRequest_Init(void) {
     s32 i;
-    func_0200be98(-1);
+    FS_Init(-1);
     {
         vu32 zero = 0;
         gFileRequestUsed = 0;

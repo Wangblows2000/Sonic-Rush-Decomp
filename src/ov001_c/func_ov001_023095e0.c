@@ -27,7 +27,7 @@ extern UnkStruct_023095e0_br gDisplayMain;
 
 BOOL func_0202e5e4(float a, float b);
 BOOL func_0202e528(float a, float b);
-u32 func_0202f17c(float a);
+u32 _ffixu(float a);
 
 #define REG_DISPCNT (*(vu32 *)0x4000000)
 #define REG_BG0CNT (*(vu16 *)0x4000008)
@@ -62,13 +62,13 @@ void func_ov001_023095e0(void) {
         f = (g->timer - 0x168) / 10.0f;
         if (func_0202e5e4(f, 1.0f))
             f = 1.0f;
-        gDisplayMain.e0 = (u16)(func_0202f17c(4.0f * f) & 0xf);
+        gDisplayMain.e0 = (u16)(_ffixu(4.0f * f) & 0xf);
         gDisplayMain.e8 = (u16)((0xf - gDisplayMain.e0) & 0xf);
     } else if (g->timer >= 0x258) {
         f = 1.0f - (g->timer - 0x258) / 10.0f;
         if (func_0202e528(f, 0.0f))
             f = 0.0f;
-        gDisplayMain.e0 = (u16)(func_0202f17c(4.0f * f) & 0xf);
+        gDisplayMain.e0 = (u16)(_ffixu(4.0f * f) & 0xf);
         gDisplayMain.e8 = (u16)((0xf - gDisplayMain.e0) & 0xf);
     }
 }

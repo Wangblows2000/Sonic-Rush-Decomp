@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
 extern u16 data_0208a77e[];
-u32 func_02006abc(u32 a);
+u32 OS_GetArenaLo(u32 a);
 
 void VramTex_Free(u32 addr) {
     u32 idx;
-    if (addr == func_02006abc(0))
+    if (addr == OS_GetArenaLo(0))
         return;
     idx = addr >> 9;
     if (data_0208a77e[idx] & 0x8000) {

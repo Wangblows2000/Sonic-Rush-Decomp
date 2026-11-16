@@ -63,11 +63,11 @@ extern UnkStruct_02330848_4560 data_022c4560;
 #define SIN_02330848(a) data_0206e470[(u32)(IDX_02330848(a) << 1)]
 #define COS_02330848(a) data_0206e470[(u32)((IDX_02330848(a) << 1) + 1)]
 
-void func_02025c8c(void *p, s32 a, u32 b);
-void func_02000dfc(UnkMtx33_02330848 *m);
-void func_02000e98(UnkMtx33_02330848 *m, fx32 sin, fx32 cos);
+void NNS_G3dMdlSetMdlAlpha(void *p, s32 a, u32 b);
+void MTX_Identity33_(UnkMtx33_02330848 *m);
+void MTX_RotZ33_(UnkMtx33_02330848 *m, fx32 sin, fx32 cos);
 void MTX_RotY33_(UnkMtx33_02330848 *m, fx32 sin, fx32 cos);
-void func_02000f34(const UnkMtx33_02330848 *a, const UnkMtx33_02330848 *b, UnkMtx33_02330848 *ab);
+void MTX_Concat33(const UnkMtx33_02330848 *a, const UnkMtx33_02330848 *b, UnkMtx33_02330848 *ab);
 
 static inline u16 Rand_02330848(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -99,20 +99,20 @@ void func_ov000_02330848(UnkStruct_02330848 *w) {
         } else {
             alpha = (alpha * ((3 - t) << 6)) >> 8;
         }
-        func_02025c8c(w->unk128->unk90, 4, alpha);
-        func_02000dfc(&m->mtx);
-        func_02000e98(&r, SIN_02330848(w->unk764), COS_02330848(w->unk764));
-        func_02000f34(&m->mtx, &r, &m->mtx);
+        NNS_G3dMdlSetMdlAlpha(w->unk128->unk90, 4, alpha);
+        MTX_Identity33_(&m->mtx);
+        MTX_RotZ33_(&r, SIN_02330848(w->unk764), COS_02330848(w->unk764));
+        MTX_Concat33(&m->mtx, &r, &m->mtx);
         m = &w->mdl4A4;
-        func_02000dfc(&m->mtx);
-        func_02000e98(&r, SIN_02330848(w->unk768), COS_02330848(w->unk768));
-        func_02000f34(&m->mtx, &r, &m->mtx);
+        MTX_Identity33_(&m->mtx);
+        MTX_RotZ33_(&r, SIN_02330848(w->unk768), COS_02330848(w->unk768));
+        MTX_Concat33(&m->mtx, &r, &m->mtx);
         m = &w->mdl554;
-        func_02000dfc(&m->mtx);
+        MTX_Identity33_(&m->mtx);
         MTX_RotY33_(&r, SIN_02330848((u16)-w->unk766), COS_02330848((u16)-w->unk766));
-        func_02000f34(&m->mtx, &r, &m->mtx);
-        func_02000e98(&r, data_02072070[0], data_02072070[1]);
-        func_02000f34(&m->mtx, &r, &m->mtx);
+        MTX_Concat33(&m->mtx, &r, &m->mtx);
+        MTX_RotZ33_(&r, data_02072070[0], data_02072070[1]);
+        MTX_Concat33(&m->mtx, &r, &m->mtx);
         if (!(p->unk32C & 0x20000000)) {
             w->unk54 |= 4;
         }

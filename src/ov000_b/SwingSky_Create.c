@@ -69,7 +69,7 @@ void SwingSky_Destructor(void);
 void SwingSky_Draw(void);
 void SwingSky_OnHit(void);
 UnkStruct_023185b4_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
-UnkStruct_023185b4_Task *func_02006abc(s32 i);
+UnkStruct_023185b4_Task *OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MapObject_Init(UnkStruct_023185b4 *w, s32 a, s32 b, s32 c);
 void StageObj_Load2dBAC(UnkStruct_023185b4 *w, void *a, s32 b, void *c, void *d);
@@ -91,7 +91,7 @@ UnkStruct_023185b4 *SwingSky_Create(s32 a, s32 b, s32 c) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, SwingSky_Destructor, 0, 0xf6, 2, sizeof(UnkStruct_023185b4));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

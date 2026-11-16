@@ -8,7 +8,7 @@ extern s16 data_0206e470[];
 
 void func_ov000_022faf48(UnkStruct_022fafc8 *s, s32 a);
 void func_ov000_022faf7c(void);
-s32 func_020027a4(s32 y, s32 x);
+s32 FX_Atan2(s32 y, s32 x);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 
 void func_ov000_022fafc8(UnkStruct_022fafc8 *s, UnkStruct_StageObj *o) {
@@ -27,7 +27,7 @@ void func_ov000_022fafc8(UnkStruct_022fafc8 *s, UnkStruct_StageObj *o) {
     sp = 0x37f - (Rand() & 0x1fe);
     s->base.unk2E = o->unk10 - o->unk1C;
     s->base.unk30 = o->unk14 - o->unk20;
-    a = func_020027a4(o->unk2A, o->unk28) - 0x4000;
+    a = FX_Atan2(o->unk2A, o->unk28) - 0x4000;
     if (o->unk5C & 1)
         a += 0x8000;
     s->base.unk2E += (s16)((sp * data_0206e470[((a & 0xffff) >> 4) * 2 + 1]) >> 12);

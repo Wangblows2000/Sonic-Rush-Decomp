@@ -8,12 +8,12 @@ extern u32 data_ov000_02367c40;
 extern u32 data_ov000_02367c48;
 extern u32 data_ov000_02367c50;
 extern u32 data_ov000_02367c54;
-extern void func_02006abc(void);
+extern void OS_GetArenaLo(void);
 extern void func_0202128c(void);
 extern void func_020212e0(void);
 extern void func_02021310(void);
-extern void func_0202c474(void);
-extern void func_0202c518(void);
+extern void strcat(void);
+extern void strcpy(void);
 extern void Model_SetAnimation(void);
 extern void Task_Create(void);
 extern void func_02038050(void);
@@ -41,7 +41,7 @@ asm void BossEffect_Create(void)
     bl Task_Create
     mov r5, r0
     mov r0, #0
-    bl func_02006abc
+    bl OS_GetArenaLo
     cmp r5, r0
     addeq sp, sp, #0x8c
     moveq r0, #0
@@ -62,10 +62,10 @@ asm void BossEffect_Create(void)
     strh r2, [r8, #0x5c]
     mov r2, #2
     str r2, [r8, #8]
-    bl func_0202c518
+    bl strcpy
     ldr r1, [pc, #0x18c]
     add r0, sp, #0xe
-    bl func_0202c474
+    bl strcat
     mov r3, #0
     ldr r1, [pc, #0x180]
     str r3, [sp]
@@ -94,10 +94,10 @@ asm void BossEffect_Create(void)
     bl func_02021310
     add r0, sp, #0x12
     mov r1, r10
-    bl func_0202c518
+    bl strcpy
     ldr r1, [pc, #0x11c]
     add r0, sp, #0x12
-    bl func_0202c474
+    bl strcat
     mov r0, r6
     bl func_0202128c
     str r0, [r8, #0x2a8]
@@ -118,11 +118,11 @@ _15c:
     beq _1bc
     mov r0, r5
     mov r1, r10
-    bl func_0202c518
+    bl strcpy
     ldr r0, [pc, #0xc8]
     ldr r1, [r0, r7, lsl #2]
     mov r0, r5
-    bl func_0202c474
+    bl strcat
     cmp r7, #2
     beq _1b0
     mov r0, r11

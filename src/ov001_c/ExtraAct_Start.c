@@ -69,7 +69,7 @@ extern UnkStruct_022f9eb4_v data_ov001_0231d544;
 extern UnkStruct_022f9eb4_v data_ov001_0231d538;
 extern u8 data_02084d40[];
 extern s16 data_0206e470[];
-extern UnkStruct_022f9eb4_d38 data_02084d38;
+extern UnkStruct_022f9eb4_d38 NNS_G3dGlb;
 extern UnkStruct_022f9eb4_v data_02084f78;
 extern UnkStruct_022f9eb4_v data_02084f84;
 extern UnkStruct_022f9eb4_v data_02084f90;
@@ -84,18 +84,18 @@ extern u16 data_ov001_02316a94[];
 extern u16 data_ov001_02316a88[];
 
 void func_ov001_022f95ec(void);
-void func_02004988(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
-void func_020044f4(void *a, void *b, void *c, s32 d, void *e);
+void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
+void G3i_LookAt_(void *a, void *b, void *c, s32 d, void *e);
 void func_02022270(u32 index, u32 value);
 void func_02022284(u32 idx, s32 x, s32 y, s32 z);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuClearFast(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 s32 func_ov001_022f73cc(s32 a);
-void func_0201bf34(void *p);
+void NNS_SndHandleInit(void *p);
 void ExtraAct_LoadAssets(void);
 u32 ObjVram_Alloc(u32 a, u32 b);
 void AnimatorSprite_Init(void *s, void *h, u16 idx, u32 d, u32 e, u32 f, u32 g, u32 hh, u32 i);
@@ -103,7 +103,7 @@ void AnimatorSprite_ProcessAnimation(void *s, u32 a, u32 b);
 s32 func_020480a0(s32 a);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
-u32 func_02025e8c(void *h);
+u32 NNS_G3dGetTex(void *h);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
 void Background_Init(void *a, void *b, s32 c, s32 d, s32 e, u32 f, u32 g);
 void Background_Draw(void *a);
@@ -146,13 +146,13 @@ void ExtraAct_Start(void) {
     UnkStruct_022f9eb4_v b = {0, 0, 0};
     UnkStruct_022f9eb4_v c = data_ov001_0231d538;
     UnkStruct_022f9eb4_o loc;
-    func_02004988(SIN(0x1555), COS(0x1555), 0x1555, 0x1000, 0x800000, 0x1000, 0, data_02084d40);
-    data_02084d38.unkFC &= ~0x50;
-    data_02084d38.pos = a;
-    data_02084d38.target = c;
-    data_02084d38.up = b;
-    func_020044f4(&a, &c, &b, 0, data_02084d38.unk4C);
-    data_02084d38.unkFC &= ~0xe8;
+    G3i_PerspectiveW_(SIN(0x1555), COS(0x1555), 0x1555, 0x1000, 0x800000, 0x1000, 0, data_02084d40);
+    NNS_G3dGlb.unkFC &= ~0x50;
+    NNS_G3dGlb.pos = a;
+    NNS_G3dGlb.target = c;
+    NNS_G3dGlb.up = b;
+    G3i_LookAt_(&a, &c, &b, 0, NNS_G3dGlb.unk4C);
+    NNS_G3dGlb.unkFC &= ~0xe8;
     func_02022270(0, 0x7fff);
     func_02022270(1, 0x4631);
     func_02022270(2, 0x2108);
@@ -160,7 +160,7 @@ void ExtraAct_Start(void) {
     func_02022284(1, 0, -0x617, -0xecd);
     func_02022284(2, 0xec7, 0x620, 0);
     blk = Heap_Alloc(gMainHeap, 0xee0, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0xee0);
         *(u32 *)blk = 0xee0;
@@ -178,7 +178,7 @@ void ExtraAct_Start(void) {
     data_ov001_0231f084->unkE2C = data_ov001_0231f084->unkE24 + data_ov001_0231f084->unkE28;
     if (data_ov001_0231f084->unkE2C > 999999)
         data_ov001_0231f084->unkE2C = 999999;
-    func_0201bf34((u8 *)data_ov001_0231f084 + 0xea0);
+    NNS_SndHandleInit((u8 *)data_ov001_0231f084 + 0xea0);
     ExtraAct_LoadAssets();
 
     h = data_ov001_0231f084->unk0;
@@ -207,7 +207,7 @@ void ExtraAct_Start(void) {
     Model_Init(an, 0);
     Model_SetResource(an, data_ov001_0231f084->unkC, 0);
     an->unk18 = an->unk1C = an->unk20 = 0x1000;
-    r = func_02025e8c(data_ov001_0231f084->unkC);
+    r = NNS_G3dGetTex(data_ov001_0231f084->unkC);
     Model_SetAnimation(an, 0, data_ov001_0231f084->unk10, 0, r);
     Model_SetAnimation(an, 1, data_ov001_0231f084->unk14, 0, r);
     an->unk114 = 0x1000;

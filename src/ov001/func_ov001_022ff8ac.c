@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 extern void *gMainHeap;
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
@@ -17,7 +17,7 @@ void func_ov001_02304504(void);
 void func_ov001_022fdaa0(void);
 void func_ov001_022fd500(void);
 void func_ov001_023065d4(void);
-void func_0201b348(void);
+void NNS_SndStopSoundAll(void);
 void Sound_ResetHeap(void);
 
 void func_ov001_022ff8ac(void) {
@@ -29,11 +29,11 @@ void func_ov001_022ff8ac(void) {
     func_ov001_022fdaa0();
     func_ov001_022fd500();
     func_ov001_023065d4();
-    func_0201b348();
+    NNS_SndStopSoundAll();
     Sound_ResetHeap();
     gZoneSoundData = 0;
     blk = data_ov001_0231f528;
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;

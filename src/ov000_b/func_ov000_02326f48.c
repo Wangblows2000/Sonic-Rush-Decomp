@@ -46,7 +46,7 @@ UnkStruct_Task *func_ov000_02326f48(void *arg, s32 a, s32 b, s16 c, u16 d) {
 
     data_ov000_0236a970 = 0;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02326f48));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

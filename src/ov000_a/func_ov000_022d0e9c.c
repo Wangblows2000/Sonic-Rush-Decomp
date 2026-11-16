@@ -74,8 +74,8 @@ typedef struct UnkStruct_022d0e9c_pl {
 extern UnkStruct_022d0e9c_7 data_ov000_02369ac0;
 extern UnkStruct_022d0e9c_pl *gPlayers;
 
-s32 func_02002094(s32 a, s32 b);
-void func_0201c070(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
 void func_ov000_022d0864(UnkStruct_022d0e9c *s);
@@ -102,7 +102,7 @@ void func_ov000_022d0e9c(UnkStruct_022d0e9c *s) {
         z->unk10C &= ~4;
         x->unk114 = 0x1000;
         z->unk114 = 0x1000;
-        func_0201c070(s->unk1458, 0);
+        NNS_SndPlayerStopSeq(s->unk1458, 0);
         func_020366f4(0, 0, 0xd2);
         *(u32 *)(s->unk131C + 0x54) |= 4;
         return;
@@ -118,11 +118,11 @@ void func_ov000_022d0e9c(UnkStruct_022d0e9c *s) {
     }
     if (s->unk145C == 0)
         d2 = d1;
-    if (d2 > func_02002094(data_ov000_02369ac0.unk8 * 0xfa000 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0xb4000, data_ov000_02369ac0.unkA))
+    if (d2 > FX_DivS32(data_ov000_02369ac0.unk8 * 0xfa000 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0xb4000, data_ov000_02369ac0.unkA))
         return;
     s->func = func_ov000_022d0d64;
     y->unk114 = 0;
     s->unk1464 = d2;
-    s->unk12F4 = func_02002094(data_ov000_02369ac0.unk8 * 0x14 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0xa, data_ov000_02369ac0.unkA);
-    func_0201c070(s->unk1458, 0);
+    s->unk12F4 = FX_DivS32(data_ov000_02369ac0.unk8 * 0x14 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0xa, data_ov000_02369ac0.unkA);
+    NNS_SndPlayerStopSeq(s->unk1458, 0);
 }

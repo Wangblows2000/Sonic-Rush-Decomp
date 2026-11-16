@@ -77,17 +77,17 @@ void func_02052874(s32 p0);
 void *File_Load(void *a, s32 b);
 void Background_InitEx(void *b, void *res, u32 a, u32 idx, u8 e, u32 v14, u32 base, u32 v1c, u32 v20, u16 v24, u16 v26, u16 v28, u16 v2a, u16 v2c, u16 v2e);
 void Background_Draw(void *buf);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
-s32 func_0200b99c(void *f, void *buf, u32 size);
+s32 FS_ReadFile(void *f, void *buf, u32 size);
 void func_02052e1c(UnkWork_02053c58 *w);
 void func_02052d90(UnkWork_02053c58 *w, s32 n);
-void func_0201bf34(void *p);
+void NNS_SndHandleInit(void *p);
 void NaviMsg_Main(void);
 void NaviMsg_Destructor(void);
 void func_020529d8(void);
@@ -95,7 +95,7 @@ void func_020529d8(void);
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
 
 static inline void Free_02053c58(u8 *p) {
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         u32 size;
         p -= 0x20;
         size = *(u32 *)p;
@@ -111,7 +111,7 @@ static inline void Free_02053c58(u8 *p) {
 static inline u8 *Alloc_02053c58(u32 sz) {
     u32 size = sz;
     u8 *p = Heap_Alloc(gMainHeap, size, -0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -138,7 +138,7 @@ static inline void SetPlane_02053c58(void) {
 }
 
 static inline void LoadFile_02053c58(UnkFile_02053c58 *f, void *buf) {
-    func_0200b99c(f, buf, f->end - f->start);
+    FS_ReadFile(f, buf, f->end - f->start);
     f->cur = f->start;
 }
 
@@ -217,5 +217,5 @@ void NaviMsg_Create(void) {
     Task_Create(func_020529d8, 0, 0, 0xf100, 3, 0);
     w->unk108 = -1;
     w->unk10c = 0;
-    func_0201bf34(&w->unk118);
+    NNS_SndHandleInit(&w->unk118);
 }

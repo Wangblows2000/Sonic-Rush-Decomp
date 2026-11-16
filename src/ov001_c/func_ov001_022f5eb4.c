@@ -46,9 +46,9 @@ UnkStruct_022f5eb4 *func_ov001_02300c94(void);
 void func_ov001_022f5da0(void);
 void func_ov001_022f5a24(void);
 void Model_SetAnimation(UnkStruct_022f5eb4_o *o, u32 slot, void *res, u32 idx, void *tex);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 void func_ov001_022fc09c(void *parent, s32 x, s32 y, s32 z, u16 ang);
-s32 func_02002094(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
 UnkStruct_022f5eb4_g *ExtraBoss_GetWork(void);
 
 void func_ov001_022f5eb4(UnkStruct_022f5eb4 *p) {
@@ -64,7 +64,7 @@ void func_ov001_022f5eb4(UnkStruct_022f5eb4 *p) {
     Model_SetAnimation(a, 0, data_ov001_0231f068, 6, 0);
     a->unk10C &= ~4;
     *a->unkE4 = 0x64000;
-    ang = func_020027a4(t->unk1C - p->unk1C, t->unk18 - p->unk18);
+    ang = FX_Atan2(t->unk1C - p->unk1C, t->unk18 - p->unk18);
     if (ang == 0x8000) {
         q = p->unk1DC;
         p->unk74 = func_ov001_022f5a24;
@@ -79,8 +79,8 @@ void func_ov001_022f5eb4(UnkStruct_022f5eb4 *p) {
         ang = 0x5c71;
     else if (ang > 0xb1c7)
         ang = 0xb1c7;
-    p->unk1D0 = func_02002094((u16)(ang + 0xa38f), 0xb6) << 13;
-    a->unk114 = func_02002094(ExtraBoss_GetWork()->unk308 * 0xa000 + ((ExtraBoss_GetWork()->unk30C - ExtraBoss_GetWork()->unk308) << 16), ExtraBoss_GetWork()->unk30C);
+    p->unk1D0 = FX_DivS32((u16)(ang + 0xa38f), 0xb6) << 13;
+    a->unk114 = FX_DivS32(ExtraBoss_GetWork()->unk308 * 0xa000 + ((ExtraBoss_GetWork()->unk30C - ExtraBoss_GetWork()->unk308) << 16), ExtraBoss_GetWork()->unk30C);
     if (p->unk1D0 < 0x64000)
         a->unk114 = -a->unk114;
 }

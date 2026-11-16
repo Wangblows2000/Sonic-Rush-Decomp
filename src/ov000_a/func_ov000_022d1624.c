@@ -80,7 +80,7 @@ struct UnkStruct_022d1624 {
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
-void func_0201c070(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void func_ov000_022d15f4(UnkStruct_022d1624 *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -111,5 +111,5 @@ void func_ov000_022d1624(UnkStruct_022d1624 *s) {
     s->unk1304 = 0x8000;
     s->unkF84[6].unkA |= 4;
     s->unkF84[6].unkA &= ~0x1000;
-    func_0201c070(s->unk1450, 0);
+    NNS_SndPlayerStopSeq(s->unk1450, 0);
 }

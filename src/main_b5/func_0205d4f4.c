@@ -26,8 +26,8 @@ extern UnkDisp_0205d4f4 gDisplaySub;
 extern u8 data_02089254[];
 extern u8 data_02087d2c[];
 
-void func_02000cb4(UnkMtx22_0205d4f4 *m);
-void func_02003d94(void *p, UnkMtx22_0205d4f4 *m, s32 x, s32 y, s32 a, s32 b);
+void MTX_Identity22_(UnkMtx22_0205d4f4 *m);
+void G2x_SetBGyAffine_(void *p, UnkMtx22_0205d4f4 *m, s32 x, s32 y, s32 a, s32 b);
 
 void func_0205d4f4(u8 *w) {
     UnkCam_0205d4f4 *cam = (UnkCam_0205d4f4 *)(w + 0x78);
@@ -43,8 +43,8 @@ void func_0205d4f4(u8 *w) {
         gDisplaySub.scrollX = cam->x >> 12;
         gDisplaySub.scrollY = cam->y >> 12;
     } else {
-        func_02000cb4(&m);
-        func_02003d94(data_02089254, &m, 0x80, 0x60, cam->x >> 12, cam->y >> 12);
-        func_02003d94(data_02087d2c, &m, 0x80, 0x60, cam->x >> 12, cam->y >> 12);
+        MTX_Identity22_(&m);
+        G2x_SetBGyAffine_(data_02089254, &m, 0x80, 0x60, cam->x >> 12, cam->y >> 12);
+        G2x_SetBGyAffine_(data_02087d2c, &m, 0x80, 0x60, cam->x >> 12, cam->y >> 12);
     }
 }

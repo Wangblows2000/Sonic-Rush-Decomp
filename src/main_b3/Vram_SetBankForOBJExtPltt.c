@@ -8,8 +8,8 @@ extern UnkVram_0208922c gDisplayMain;
 extern u8 data_020892b8[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002f04(void);
-void func_020036d0(s32 bank);
+void GX_DisableBankForOBJExtPltt(void);
+void GX_SetBankForOBJExtPltt(s32 bank);
 
 void Vram_SetBankForOBJExtPltt(s32 bank) {
     vu32 zero = 0;
@@ -22,8 +22,8 @@ void Vram_SetBankForOBJExtPltt(s32 bank) {
         gDisplayMain.tex = 0x06894000;
         break;
     default:
-        func_02002f04();
+        GX_DisableBankForOBJExtPltt();
         return;
     }
-    func_020036d0(bank);
+    GX_SetBankForOBJExtPltt(bank);
 }

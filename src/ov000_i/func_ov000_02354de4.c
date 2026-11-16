@@ -28,7 +28,7 @@ typedef struct {
 } UnkStruct_02354de4;
 
 extern s16 data_0206e470[];
-s32 func_02002094(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 #define IDX_02354de4(a) ((s32)((a) & 0xffff) >> 4)
@@ -64,7 +64,7 @@ void func_ov000_02354de4(UnkStruct_02354de4 *w, s32 len, s16 ox, s16 oy, s32 dis
             }
         }
         t = w->unkC - dist + (quarter = len >> 2);
-        q = func_02002094(quarter + ABS(t), half = len >> 1);
+        q = FX_DivS32(quarter + ABS(t), half = len >> 1);
         if (q >= (w->unk8 >> 2)) {
             if (!(w->unk32C & 2)) {
                 w->unk32C |= 2;
@@ -79,7 +79,7 @@ void func_ov000_02354de4(UnkStruct_02354de4 *w, s32 len, s16 ox, s16 oy, s32 dis
                     w->unk3F4 += ((q - 1) * (oy >> 1) + (oy >> 2)) << 8;
                 }
             }
-            n = func_02002094((quarter + (t - half * (w->unk8 >> 2))) << 8, dist);
+            n = FX_DivS32((quarter + (t - half * (w->unk8 >> 2))) << 8, dist);
             w->unk2 = ((n << 6) >> 8) + 0xc0;
             if (w->unk8 & 2) {
                 sy = -sy;
@@ -98,8 +98,8 @@ void func_ov000_02354de4(UnkStruct_02354de4 *w, s32 len, s16 ox, s16 oy, s32 dis
             w->unk2A = w->y - w->unk20;
             return;
         }
-        q = func_02002094(t, len);
-        n = func_02002094((t - len * q) << 8, len);
+        q = FX_DivS32(t, len);
+        n = FX_DivS32((t - len * q) << 8, len);
         w->unk3 = n + 0xc0;
         w->unk2 = 0xc0;
         if (w->unk8 & 1) {
@@ -122,7 +122,7 @@ void func_ov000_02354de4(UnkStruct_02354de4 *w, s32 len, s16 ox, s16 oy, s32 dis
         w->unk2A = w->y - w->unk20;
         return;
     }
-    n = func_02002094(w->unkC << 8, dist);
+    n = FX_DivS32(w->unkC << 8, dist);
     w->unk2 = 0x100 - ((n << 6) >> 8);
     if ((w->unk8 & 1) && (w->unk8 & 2)) {
         sx = sx - w->unk67;

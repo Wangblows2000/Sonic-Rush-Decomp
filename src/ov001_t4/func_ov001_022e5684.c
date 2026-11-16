@@ -27,15 +27,15 @@ typedef struct {
 extern void *gMainHeap;
 u8 *File_Load(void *path, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 s32 func_ov001_022e3ecc(void *p);
 u32 func_ov001_022e3ec0(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 void Background_Init(void *bg, void *res, s32 a, s32 b, s32 c, u16 w, u16 h);
@@ -45,7 +45,7 @@ void func_ov001_022e833c(UnkWork_022e5684 *w);
 #pragma thumb on
 static inline u8 *Alloc_022e5684(u32 size) {
     u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -77,13 +77,13 @@ void func_ov001_022e5684(UnkWork_022e5684 *w, UnkRes_022e5684 *res) {
     res = (UnkRes_022e5684 *)((u8 *)res + res->unkc);
     switch (func_ov001_022e3ecc(res)) {
     case 0x10:
-        func_02008648(res, p);
+        MI_UncompressLZ16(res, p);
         break;
     case 0x20:
-        func_02008720(res, p);
+        MI_UncompressHuffman(res, p);
         break;
     case 0x30:
-        func_020087f8(res, p);
+        MI_UncompressRL16(res, p);
         break;
     default:
         Mem_Copy(Compress_GetData(res), p, func_ov001_022e3ec0(res));

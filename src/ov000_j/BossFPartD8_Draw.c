@@ -37,8 +37,8 @@ extern s16 data_0206e470[];
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void Model_Animate(void *cam);
 void Model_Draw(void *cam);
-void func_02025268(s32 a, s32 *b, s32 c);
-void func_02025a94(void *a, s32 b);
+void NNS_G3dGeBufferOP_N(s32 a, s32 *b, s32 c);
+void NNS_G3dGetCurrentMtx(void *a, s32 b);
 
 void BossFPartD8_Draw(void) {
     s32 a0;
@@ -61,20 +61,20 @@ void BossFPartD8_Draw(void) {
     Model_Animate(cam);
     Model_Draw(cam);
     a0 = 2;
-    func_02025268(0x10, &a0, 1);
+    NNS_G3dGeBufferOP_N(0x10, &a0, 1);
     a1 = 0x1e;
-    func_02025268(0x14, &a1, 1);
-    func_02025a94(obj->unk340, 0);
+    NNS_G3dGeBufferOP_N(0x14, &a1, 1);
+    NNS_G3dGetCurrentMtx(obj->unk340, 0);
     a2 = 0x1d;
-    func_02025268(0x14, &a2, 1);
-    func_02025a94(obj->unk370, 0);
+    NNS_G3dGeBufferOP_N(0x14, &a2, 1);
+    NNS_G3dGetCurrentMtx(obj->unk370, 0);
     a3 = 0x1c;
-    func_02025268(0x14, &a3, 1);
-    func_02025a94(obj->unk3A0, 0);
+    NNS_G3dGeBufferOP_N(0x14, &a3, 1);
+    NNS_G3dGetCurrentMtx(obj->unk3A0, 0);
     a4 = 0x1b;
-    func_02025268(0x14, &a4, 1);
-    func_02025a94(obj->unk3D0, 0);
+    NNS_G3dGeBufferOP_N(0x14, &a4, 1);
+    NNS_G3dGetCurrentMtx(obj->unk3D0, 0);
     a5 = 0x1a;
-    func_02025268(0x14, &a5, 1);
-    func_02025a94(obj->unk400, 0);
+    NNS_G3dGeBufferOP_N(0x14, &a5, 1);
+    NNS_G3dGetCurrentMtx(obj->unk400, 0);
 }

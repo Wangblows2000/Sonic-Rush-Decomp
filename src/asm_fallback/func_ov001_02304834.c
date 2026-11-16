@@ -4,7 +4,7 @@
 extern u32 gRandSeed;
 extern u32 data_ov001_0231f520;
 extern u32 data_ov001_0231f54c;
-extern void func_0200203c(void);
+extern void FX_ModS32(void);
 extern void func_ov001_022fc89c(void);
 extern void func_ov001_022fc8bc(void);
 
@@ -31,7 +31,7 @@ asm void func_ov001_02304834(void)
     mov r0, r0, lsl #0x10
     mov r0, r0, lsr #0x10
     str r2, [r3]
-    bl func_0200203c
+    bl FX_ModS32
     ldr r1, [pc, #0xa0]
     ldr r2, [pc, #0xac]
     ldr r3, [r1]

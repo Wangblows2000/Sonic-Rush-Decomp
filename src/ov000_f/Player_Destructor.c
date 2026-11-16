@@ -57,8 +57,8 @@ extern UnkStruct_0234d384_4590 data_022c4590;
 extern void *gMainHeap;
 extern u8 gPlayerCount;
 
-void func_0201bf1c(void *p);
-void *func_02006abc(s32 i);
+void NNS_SndHandleReleaseSeq(void *p);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -67,7 +67,7 @@ void StageObj_Destructor(UnkStruct_0234d384 *t);
 
 static inline void Free_0234d384(void *p) {
     u32 size;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {
@@ -82,10 +82,10 @@ static inline void Free_0234d384(void *p) {
 void Player_Destructor(UnkStruct_0234d384 *t) {
     UnkStruct_0234d384_P *w = t->ply;
 
-    func_0201bf1c(w->unk384);
-    func_0201bf1c(w->unk388);
-    func_0201bf1c(w->unk38C);
-    func_0201bf1c(w->unk390);
+    NNS_SndHandleReleaseSeq(w->unk384);
+    NNS_SndHandleReleaseSeq(w->unk388);
+    NNS_SndHandleReleaseSeq(w->unk38C);
+    NNS_SndHandleReleaseSeq(w->unk390);
     if ((data_022c4560.unk18 & 0x40) && w->unk325 == 0) {
         data_022c4590.unk28 = w->unk3AE;
         data_022c4590.unk2A = w->unk3B0;

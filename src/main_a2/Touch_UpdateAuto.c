@@ -30,14 +30,14 @@ typedef struct {
 extern UnkTP_0203787c gTouchSampleBuffer[];
 extern UnkTPState_0203787c gTouchState;
 
-u32 func_0200d544(void);
-void func_0200d1a4(UnkTP_0203787c *out, const UnkTP_0203787c *raw);
+u32 TP_GetLatestIndexInAuto(void);
+void TP_GetCalibratedPoint(UnkTP_0203787c *out, const UnkTP_0203787c *raw);
 void Touch_FilterAutoSamples(s32 idx);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 
 void Touch_UpdateAuto(void) {
     UnkTPState_0203787c *st = &gTouchState;
-    u32 idx = (u8)func_0200d544();
+    u32 idx = (u8)TP_GetLatestIndexInAuto();
     UnkTP_0203787c raw;
     UnkTP_0203787c cal;
     u8 i;
@@ -57,7 +57,7 @@ void Touch_UpdateAuto(void) {
         }
         st->flags |= 0x10;
         st->flags |= 0x40;
-        func_0200d1a4(&cal, &raw);
+        TP_GetCalibratedPoint(&cal, &raw);
         st->startX = cal.x;
         st->x = st->startX;
         st->startY = cal.y;

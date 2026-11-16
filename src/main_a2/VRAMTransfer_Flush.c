@@ -13,17 +13,17 @@ extern UnkJob_0203383c *gVRAMTransferHead;
 extern UnkJob_0203383c *gVRAMTransferTail;
 extern u32 data_0208a754[];
 
-u32 func_020030e4(void);
-void func_020034cc(u32 state);
+u32 GX_ResetBankForTex(void);
+void GX_SetBankForTex(u32 state);
 void Mem_Copy(u32 src, u32 dst, u32 size);
-void func_02007da4(u32 ch, u32 src, u32 dst, u32 size);
-void func_02007d2c(u32 ch, u32 src, u32 dst, u32 size);
+void MI_DmaCopy32(u32 ch, u32 src, u32 dst, u32 size);
+void MI_DmaCopy16(u32 ch, u32 src, u32 dst, u32 size);
 u32 VRAMTransfer_GetCompressionType(u32 src);
 u32 Compress_GetData(u32 src);
 u32 VRAMTransfer_GetDataSize(u32 src);
-void func_02008648(u32 src, u32 dst);
-void func_02008720(u32 src, u32 dst);
-void func_020087f8(u32 src, u32 dst);
+void MI_UncompressLZ16(u32 src, u32 dst);
+void MI_UncompressHuffman(u32 src, u32 dst);
+void MI_UncompressRL16(u32 src, u32 dst);
 void DC_StoreRange(u32 addr, u32 size);
 void TransferJob_Free(UnkJob_0203383c *job);
 
@@ -42,7 +42,7 @@ void VRAMTransfer_Flush(void) {
             u32 page = a >> 17;
             dst = a + data_0208a754[page] - (page << 17);
             if (!(flags & 2)) {
-                saved = func_020030e4();
+                saved = GX_ResetBankForTex();
                 flags |= 2;
             }
             break;
@@ -57,13 +57,13 @@ void VRAMTransfer_Flush(void) {
             } else {
                 u32 n;
                 if (((src | dst) & 3) == 0 && (n = size & ~3) != 0) {
-                    func_02007da4(3, src, dst, n);
+                    MI_DmaCopy32(3, src, dst, n);
                     src += n;
                     dst += n;
                     size &= 3;
                 }
                 if (size != 0) {
-                    func_02007d2c(3, src, dst, size);
+                    MI_DmaCopy16(3, src, dst, size);
                 }
             }
             break;
@@ -72,13 +72,13 @@ void VRAMTransfer_Flush(void) {
             u32 src = job->src;
             switch (VRAMTransfer_GetCompressionType(src)) {
             case 0x10:
-                func_02008648(src, dst);
+                MI_UncompressLZ16(src, dst);
                 break;
             case 0x20:
-                func_02008720(src, dst);
+                MI_UncompressHuffman(src, dst);
                 break;
             case 0x30:
-                func_020087f8(src, dst);
+                MI_UncompressRL16(src, dst);
                 break;
             default:
                 Mem_Copy(Compress_GetData(src), dst, VRAMTransfer_GetDataSize(src));
@@ -95,6 +95,6 @@ void VRAMTransfer_Flush(void) {
         }
     }
     if (flags & 2) {
-        func_020034cc(saved);
+        GX_SetBankForTex(saved);
     }
 }

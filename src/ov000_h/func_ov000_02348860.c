@@ -47,7 +47,7 @@ void Player_ResetGimmickState(UnkStruct_02348860 *w);
 void Player_SetAnimation(UnkStruct_02348860 *w, s32 a);
 void func_ov000_0234a064(UnkStruct_02348860 *w, s32 a);
 void EffGrind_Create(UnkStruct_02348860 *w, s32 a, s32 b);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02348860(UnkStruct_02348860 *w) {
@@ -80,7 +80,7 @@ void func_ov000_02348860(UnkStruct_02348860 *w) {
         else if (v > 0)
             w->unk34 = 0x200;
     }
-    func_0201c070(w->unk388, 0);
+    NNS_SndPlayerStopSeq(w->unk388, 0);
     Sound_PlaySeqArcEx(w->unk388, 0, 0x3E);
     w->unkC = 0;
     w->unk8 = 0;

@@ -37,7 +37,7 @@ typedef struct {
 
 extern UnkTask_02042404 *data_022c4364;
 
-s32 func_0202a1a0(const void *a, const void *b, u32 n);
+s32 memcmp(const void *a, const void *b, u32 n);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 
@@ -56,7 +56,7 @@ void func_02042404(UnkBss_02042404 *d, UnkInfo_02042404 *info) {
         return;
     if (d->unk48 & 0x8000) {
         for (i = 0; i < n; i++) {
-            if (func_0202a1a0(list[i].bss.mac, d->mac, 6) == 0) {
+            if (memcmp(list[i].bss.mac, d->mac, 6) == 0) {
                 for (i++; i < n; i++) {
                     MIi_CpuCopy16(&list[i], &list[i - 1], sizeof(UnkEntry_02042404));
                     n = w->count;
@@ -68,7 +68,7 @@ void func_02042404(UnkBss_02042404 *d, UnkInfo_02042404 *info) {
         return;
     }
     for (i = 0; i < n; i++) {
-        if (func_0202a1a0(list[i].bss.mac, d->mac, 6) == 0) {
+        if (memcmp(list[i].bss.mac, d->mac, 6) == 0) {
             MIi_CpuCopy32(d, &list[i], sizeof(UnkBss_02042404));
             list[i].unkc0 = 0;
             list[i].unkc4 = info->unk12;

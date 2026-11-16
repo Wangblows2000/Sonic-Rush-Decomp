@@ -48,10 +48,10 @@ extern s16 data_02072070[];
 extern s16 data_0206f470[];
 
 void func_020319a4(void *p, void *a, s32 b, s32 c, s32 d);
-void func_02000dfc(void *m);
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_Identity33_(void *m);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 void func_ov000_02314e60(UnkStruct_02314e60 *w) {
     UnkStruct_02314e60_P *p = w->unk204;
@@ -68,13 +68,13 @@ void func_ov000_02314e60(UnkStruct_02314e60 *w) {
             return;
         }
         m = w->unk128;
-        func_02000dfc(m->mtx);
+        MTX_Identity33_(m->mtx);
         idx = (s32)((u16)p->unk8 & 0xffff) >> 4;
-        func_02000e60(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-        func_02000f34(m->mtx, mtx, m->mtx);
+        MTX_RotX33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
+        MTX_Concat33(m->mtx, mtx, m->mtx);
         idx = (s32)((u16)(-((u8)(p->unk3 - 0x40) << 8)) & 0xffff) >> 4;
         MTX_RotY33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-        func_02000f34(m->mtx, mtx, m->mtx);
+        MTX_Concat33(m->mtx, mtx, m->mtx);
         SetVec(&m->unk18, 0x34cc, 0x34cc, ((p->unkC << 8) / 0xa000 * 0x34cc) >> 8);
         if (p->unk3 < 0x80)
             w->unk1F4 |= 1;
@@ -84,11 +84,11 @@ void func_ov000_02314e60(UnkStruct_02314e60 *w) {
         u8 mtx2[0x24];
         m = w->unk128;
         w->unk1F4 &= ~1;
-        func_02000dfc(m->mtx);
-        func_02000e60(mtx2, data_02072070[0], data_02072070[1]);
-        func_02000f34(m->mtx, mtx2, m->mtx);
+        MTX_Identity33_(m->mtx);
+        MTX_RotX33_(mtx2, data_02072070[0], data_02072070[1]);
+        MTX_Concat33(m->mtx, mtx2, m->mtx);
         MTX_RotY33_(mtx2, data_0206f470[0], data_0206f470[1]);
-        func_02000f34(m->mtx, mtx2, m->mtx);
+        MTX_Concat33(m->mtx, mtx2, m->mtx);
         SetVec(&w->unk128->unk18, 0x34cc, 0x34cc, 0x34cc);
     }
 }

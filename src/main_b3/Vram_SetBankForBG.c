@@ -10,8 +10,8 @@ extern UnkVram_0208922c gDisplayMain;
 extern u8 data_02089278[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002f60(void);
-void func_02003a08(s32 bank);
+void GX_DisableBankForBG(void);
+void GX_SetBankForBG(s32 bank);
 
 void Vram_SetBankForBG(s32 bank) {
     vu32 zero = 0;
@@ -92,8 +92,8 @@ void Vram_SetBankForBG(s32 bank) {
         gDisplayMain.addr[3] = 0x06860000;
         break;
     default:
-        func_02002f60();
+        GX_DisableBankForBG();
         return;
     }
-    func_02003a08(bank);
+    GX_SetBankForBG(bank);
 }

@@ -13,8 +13,8 @@ typedef struct UnkStruct_022f8110 {
 
 extern UnkStruct_022f8110 *data_ov001_0231f084;
 
-s32 func_02002094(s32 n, s32 d);
-s32 func_0200203c(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_022f7e20(void);
 
@@ -28,7 +28,7 @@ static inline void SetDigits(s32 v, s32 k) {
     seen = 0;
     div = 100000;
     for (; i < 6; i++) {
-        d = (s16)func_02002094(v, div);
+        d = (s16)FX_DivS32(v, div);
         if (d == 0) {
             if (!seen && i < 5)
                 d = -1;
@@ -37,7 +37,7 @@ static inline void SetDigits(s32 v, s32 k) {
             d = (s16)d;
         }
         data_ov001_0231f084->dig[k][i] = d;
-        v = func_0200203c(v, div);
+        v = FX_ModS32(v, div);
         div /= 10;
     }
 }
@@ -54,7 +54,7 @@ static inline void SetDigits0(s32 k) {
     v = data_ov001_0231f084->unkE24;
     div = 100000;
     for (; i < 6; i++) {
-        d = (s16)func_02002094(v, div);
+        d = (s16)FX_DivS32(v, div);
         if (d == 0) {
             if (!seen && i < 5)
                 d = -1;
@@ -63,7 +63,7 @@ static inline void SetDigits0(s32 k) {
             d = (s16)d;
         }
         data_ov001_0231f084->dig[k][i] = d;
-        v = func_0200203c(v, div);
+        v = FX_ModS32(v, div);
         div /= 10;
     }
 }

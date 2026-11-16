@@ -46,10 +46,10 @@ extern u8 data_02087d3c[];
 
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 void ScreenTransfer_QueueRectRaw(void *data, u16 x, u16 y, u16 a, u32 flip, s32 mode, u16 c, u16 d, u16 e, u16 f, u16 w, u16 h);
-void func_02000cd8(UnkMtx22_0233b684 *m, s32 sin, s32 cos);
-void func_02000d98(const UnkMtx22_0233b684 *src, UnkMtx22_0233b684 *dst, fx32 x, fx32 y);
+void MTX_Rot22_(UnkMtx22_0233b684 *m, s32 sin, s32 cos);
+void MTX_ScaleApply22(const UnkMtx22_0233b684 *src, UnkMtx22_0233b684 *dst, fx32 x, fx32 y);
 fx32 func_0200225c(fx32 a, fx32 b);
-void func_02003d94(void *p, UnkMtx22_0233b684 *m, s32 cx, s32 cy, s32 x1, s32 y1);
+void G2x_SetBGyAffine_(void *p, UnkMtx22_0233b684 *m, s32 cx, s32 cy, s32 x1, s32 y1);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -163,25 +163,25 @@ void func_ov000_0233b684(void) {
     }
 
     l = &g->layer[0];
-    func_02000cd8(&mtx, SIN(l->angle), COS(l->angle));
-    func_02000d98(&mtx, &mtx, l->scaleX << 4, l->scaleY << 4);
+    MTX_Rot22_(&mtx, SIN(l->angle), COS(l->angle));
+    MTX_ScaleApply22(&mtx, &mtx, l->scaleX << 4, l->scaleY << 4);
     x1 = (u32)(func_0200225c((((l->x >> 8) + l->ofsX) & 7) << 8, l->scaleX) >> 4) >> 8;
     y1 = (u32)(func_0200225c((((l->y >> 8) + l->ofsY) & 7) << 8, l->scaleY) >> 4) >> 8;
     if (l->flags & 1) {
-        func_02003d94(data_02089254, &mtx, 0, 0, x1, y1);
+        G2x_SetBGyAffine_(data_02089254, &mtx, 0, 0, x1, y1);
     }
     if (l->flags & 2) {
-        func_02003d94(data_02089264, &mtx, 0, 0, x1, y1);
+        G2x_SetBGyAffine_(data_02089264, &mtx, 0, 0, x1, y1);
     }
     l = &g->layer[1];
-    func_02000cd8(&mtx, SIN(l->angle), COS(l->angle));
-    func_02000d98(&mtx, &mtx, l->scaleX << 4, l->scaleY << 4);
+    MTX_Rot22_(&mtx, SIN(l->angle), COS(l->angle));
+    MTX_ScaleApply22(&mtx, &mtx, l->scaleX << 4, l->scaleY << 4);
     x1 = (u32)(func_0200225c((((l->x >> 8) + l->ofsX) & 7) << 8, l->scaleX) >> 4) >> 8;
     y1 = (u32)(func_0200225c((((l->y >> 8) + l->ofsY) & 7) << 8, l->scaleY) >> 4) >> 8;
     if (l->flags & 1) {
-        func_02003d94(data_02087d2c, &mtx, 0, 0, x1, y1);
+        G2x_SetBGyAffine_(data_02087d2c, &mtx, 0, 0, x1, y1);
     }
     if (l->flags & 2) {
-        func_02003d94(data_02087d3c, &mtx, 0, 0, x1, y1);
+        G2x_SetBGyAffine_(data_02087d3c, &mtx, 0, 0, x1, y1);
     }
 }

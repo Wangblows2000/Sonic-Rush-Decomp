@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-void func_02001c00(s32 a, s32 b, s32 c, s32 d, s32 e);
+void MTX_TransApply43(s32 a, s32 b, s32 c, s32 d, s32 e);
 
 void func_ov001_0230cb74(s32 a) {
-    func_02001c00(a, a, 0, 0, 0x12c000);
+    MTX_TransApply43(a, a, 0, 0, 0x12c000);
 }

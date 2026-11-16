@@ -47,11 +47,11 @@ extern s16 data_0206e470[];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-u16 func_020027a4(s32 y, s32 x);
-void func_02000dfc(UnkStruct_022ee100_m *m);
-void func_02000e98(UnkStruct_022ee100_m *m, s32 s, s32 c);
-void func_02000f34(UnkStruct_022ee100_m *a, UnkStruct_022ee100_m *b, UnkStruct_022ee100_m *c);
-void func_02000eb0(UnkStruct_022ee100_v *v, UnkStruct_022ee100_m *m, UnkStruct_022ee100_v *d);
+u16 FX_Atan2(s32 y, s32 x);
+void MTX_Identity33_(UnkStruct_022ee100_m *m);
+void MTX_RotZ33_(UnkStruct_022ee100_m *m, s32 s, s32 c);
+void MTX_Concat33(UnkStruct_022ee100_m *a, UnkStruct_022ee100_m *b, UnkStruct_022ee100_m *c);
+void MTX_MultVec33(UnkStruct_022ee100_v *v, UnkStruct_022ee100_m *m, UnkStruct_022ee100_v *d);
 
 void func_ov001_022ee100(UnkStruct_022ee100_v *out, UnkStruct_022ee100_p *p) {
     UnkStruct_022ee100_m m;
@@ -73,16 +73,16 @@ void func_ov001_022ee100(UnkStruct_022ee100_v *out, UnkStruct_022ee100_p *p) {
     b.x = 0;
     b.z = 0;
     b.y = w / 2;
-    ang = func_020027a4(o->pos.y - o->prev.y, o->pos.x - o->prev.x);
-    func_02000dfc(&m);
+    ang = FX_Atan2(o->pos.y - o->prev.y, o->pos.x - o->prev.x);
+    MTX_Identity33_(&m);
     idx = (s32)(ang & 0xffff) >> 4;
-    func_02000e98(&r, SIN_IDX(idx), COS_IDX(idx));
-    func_02000f34(&m, &r, &m);
-    func_02000eb0(&a, &m, &a);
+    MTX_RotZ33_(&r, SIN_IDX(idx), COS_IDX(idx));
+    MTX_Concat33(&m, &r, &m);
+    MTX_MultVec33(&a, &m, &a);
     out[1].x = a.x + (o->pos.x + o->ofs.x);
     out[1].y = a.y + (o->pos.y + o->ofs.y);
     out[1].z = o->pos.z + a.z;
-    func_02000eb0(&b, &m, &b);
+    MTX_MultVec33(&b, &m, &b);
     out[0].x = b.x + (o->pos.x + o->ofs.x);
     out[0].y = b.y + (o->pos.y + o->ofs.y);
     out[0].z = o->pos.z + b.z;

@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
-void func_020075b8(u8 *p);
-void func_02007450(void *p);
+void OS_InitVAlarm(u8 *p);
+void OS_CreateVAlarm(void *p);
 
 void func_ov000_0233d554(u8 *p) {
-    func_020075b8(p);
-    func_02007450(p + 0xc);
-    func_02007450(p + 0x34);
-    func_02007450(p + 0x5c);
-    func_02007450(p + 0x84);
+    OS_InitVAlarm(p);
+    OS_CreateVAlarm(p + 0xc);
+    OS_CreateVAlarm(p + 0x34);
+    OS_CreateVAlarm(p + 0x5c);
+    OS_CreateVAlarm(p + 0x84);
 }

@@ -6,14 +6,14 @@ typedef struct {
     u32 flags;
 } UnkStruct_02084d38;
 
-extern UnkStruct_02084d38 data_02084d38;
+extern UnkStruct_02084d38 NNS_G3dGlb;
 extern u8 data_02084df4[];
-void func_02025268(s32 a, void *b, s32 c);
+void NNS_G3dGeBufferOP_N(s32 a, void *b, s32 c);
 
 void func_02038228(void) {
-    UnkStruct_02084d38 *d = (UnkStruct_02084d38 *)((u32)&data_02084d38 | 0);
-    func_02025268(d->unk0, d->unk4, 0x1e);
-    func_02025268(0x1b19, data_02084df4, 0xf);
-    data_02084d38.flags &= ~1;
-    data_02084d38.flags &= ~2;
+    UnkStruct_02084d38 *d = (UnkStruct_02084d38 *)((u32)&NNS_G3dGlb | 0);
+    NNS_G3dGeBufferOP_N(d->unk0, d->unk4, 0x1e);
+    NNS_G3dGeBufferOP_N(0x1b19, data_02084df4, 0xf);
+    NNS_G3dGlb.flags &= ~1;
+    NNS_G3dGlb.flags &= ~2;
 }

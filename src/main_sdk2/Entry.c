@@ -2,10 +2,10 @@
 
 extern u32 data_027e0000;
 void OS_IrqHandler(void);
-void func_02000900(void);
-void func_02000914(void);
-void func_020009b8(void);
-void func_02000afc(void);
+void INITi_CpuClear32(void);
+void MIi_UncompressBackward(void);
+void do_autoload(void);
+void NitroStartUp(void);
 void _fp_init(void);
 void __call_static_initializers(void);
 void init_cp15(void);
@@ -35,19 +35,19 @@ asm void Entry(void)
     mov r0, #0
     ldr r1, =data_027e0000
     mov r2, #0x4000
-    bl func_02000900
+    bl INITi_CpuClear32
     mov r0, #0
     ldr r1, =0x5000000
     mov r2, #0x400
-    bl func_02000900
+    bl INITi_CpuClear32
     mov r0, #0x200
     ldr r1, =0x7000000
     mov r2, #0x400
-    bl func_02000900
+    bl INITi_CpuClear32
     ldr r1, =0x2000b00
     ldr r0, [r1, #0x14]
-    bl func_02000914
-    bl func_020009b8
+    bl MIi_UncompressBackward
+    bl do_autoload
     ldr r0, =0x2000b00
     ldr r1, [r0, #0xc]
     ldr r2, [r0, #0x10]
@@ -64,7 +64,7 @@ asm void Entry(void)
     ldr r0, =OS_IrqHandler
     str r0, [r1]
     bl _fp_init
-    bl func_02000afc
+    bl NitroStartUp
     bl __call_static_initializers
     ldr r1, =main
     ldr lr, =0xffff0000

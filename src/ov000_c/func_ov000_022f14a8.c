@@ -22,7 +22,7 @@ extern s16 data_ov000_02365da0[][3][8];
 extern u16 data_ov000_02365e00[][3][8];
 extern u8 data_ov000_02365c5c[][3];
 
-u16 func_02002094(u32 a, s32 b);
+u16 FX_DivS32(u32 a, s32 b);
 void func_ov000_022f1374(UnkStruct_022f14a8 *w);
 
 static inline BOOL IsMode23(void) {
@@ -38,7 +38,7 @@ void func_ov000_022f14a8(UnkStruct_022f14a8 *w) {
         w->unk442 = data_ov000_02365e20[GetLevel()][0];
         w->unk442 += 0x3c;
     } else {
-        w->unk442 = func_02002094(data_ov000_02365e60[GetLevel()][w->unk458][w->unk440], data_ov000_02365da0[GetLevel()][w->unk458][w->unk440]);
+        w->unk442 = FX_DivS32(data_ov000_02365e60[GetLevel()][w->unk458][w->unk440], data_ov000_02365da0[GetLevel()][w->unk458][w->unk440]);
         w->unk442 += data_ov000_02365e00[GetLevel()][w->unk458][w->unk440];
         if (w->unk440 + 1 == data_ov000_02365c5c[GetLevel()][w->unk458])
             w->unk442 += 0x3c;

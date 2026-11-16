@@ -14,8 +14,8 @@ extern UnkStruct_02089a2c data_02089a2c;
 extern u8 data_02089294[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002f4c(void);
-void func_0200389c(s32 bank);
+void GX_DisableBankForOBJ(void);
+void GX_SetBankForOBJ(s32 bank);
 
 void Vram_SetBankForOBJ(s32 bank, s32 mapping, s32 mode, u16 a, u16 b) {
     vu32 zero = 0;
@@ -68,10 +68,10 @@ void Vram_SetBankForOBJ(s32 bank, s32 mapping, s32 mode, u16 a, u16 b) {
         gDisplayMain.addr[1] = 0x06820000;
         break;
     default:
-        func_02002f4c();
+        GX_DisableBankForOBJ();
         return;
     }
-    func_0200389c(bank);
+    GX_SetBankForOBJ(bank);
     switch (mapping) {
     case 0x10:
         gDisplayMain.unk94 = 0;

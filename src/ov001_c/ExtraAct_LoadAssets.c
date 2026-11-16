@@ -20,23 +20,23 @@ extern void *gSoundHeap;
 
 u8 *File_Load(void *p, s32 v);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 u32 func_ov001_022f9d14(u32 *p);
 u32 func_ov001_022f9d08(u32 *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 u32 *Compress_GetData(void *s);
 void Mem_Copy(void *a, void *b, u32 c);
 void Heap_Free(void *heap, void *p);
 BOOL func_02021310(void *arc, const char *name, void *narc);
 u32 func_02021264(void *arc, u32 idx);
-void func_020257f8(u32 p);
+void NNS_G3dResDefaultSetup(u32 p);
 BOOL func_020212e0(void *arc);
 void func_02036854(void *a);
-void func_0201e7cc(s32 a, void *b);
+void NNS_SndArcLoadGroup(s32 a, void *b);
 
 void ExtraAct_LoadAssets(void) {
     vu32 fill1;
@@ -50,7 +50,7 @@ void ExtraAct_LoadAssets(void) {
     res = File_Load(data_ov001_0231d5a0, -1);
     size = ((*(u32 *)res >> 8) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, size);
         *(u32 *)blk = size;
@@ -61,20 +61,20 @@ void ExtraAct_LoadAssets(void) {
     data_ov001_0231f088 = blk;
     switch (func_ov001_022f9d14((u32 *)res)) {
     case 0x10:
-        func_02008648(res, blk);
+        MI_UncompressLZ16(res, blk);
         break;
     case 0x20:
-        func_02008720(res, blk);
+        MI_UncompressHuffman(res, blk);
         break;
     case 0x30:
-        func_020087f8(res, blk);
+        MI_UncompressRL16(res, blk);
         break;
     default:
         Mem_Copy(Compress_GetData(res), blk, func_ov001_022f9d08((u32 *)res));
         break;
     }
     DC_StoreRange(blk, func_ov001_022f9d08((u32 *)res));
-    if ((u8 *)func_02006abc(0) != res) {
+    if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
         if (*(u32 *)(res + size - 4) == 0x02467531) {
@@ -89,9 +89,9 @@ void ExtraAct_LoadAssets(void) {
     data_ov001_0231f084->unk4 = func_02021264(&arc, 5);
     for (i = 0; i < 4; i++)
         data_ov001_0231f084->res[i] = func_02021264(&arc, i + 7);
-    func_020257f8(data_ov001_0231f084->res[1]);
-    func_020257f8(data_ov001_0231f084->res[0]);
+    NNS_G3dResDefaultSetup(data_ov001_0231f084->res[1]);
+    NNS_G3dResDefaultSetup(data_ov001_0231f084->res[0]);
     func_020212e0(&arc);
     func_02036854(data_ov001_0231d5c0);
-    func_0201e7cc(0xa, gSoundHeap);
+    NNS_SndArcLoadGroup(0xa, gSoundHeap);
 }

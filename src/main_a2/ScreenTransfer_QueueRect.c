@@ -33,7 +33,7 @@ extern UnkWH_02035d04 data_0207319c[];
 
 void ScreenTransfer_QueueRectRaw(void *data, u16 x, u16 y, u16 a, u32 flip, s32 mode, u16 c, u16 d, u16 e, u16 f, u16 w, u16 h);
 UnkJob_02035d04 *ScreenTransfer_AllocJob(void);
-void *func_02006abc(u32 arg);
+void *OS_GetArenaLo(u32 arg);
 
 void ScreenTransfer_QueueRect(UnkScr_02035d04 *src, u16 x, u16 y, u16 a, u32 flip, s32 mode, u16 c, u16 d, u16 e, u16 f, u16 w, u16 h) {
     u32 idx;
@@ -52,7 +52,7 @@ void ScreenTransfer_QueueRect(UnkScr_02035d04 *src, u16 x, u16 y, u16 a, u32 fli
     tbl = data_0207803c;
     job = ScreenTransfer_AllocJob();
     k = data_0207316c[mode];
-    if (func_02006abc(0) == job) {
+    if (OS_GetArenaLo(0) == job) {
         return;
     }
     job->unk4 = 1;

@@ -7,7 +7,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void Vram_SetBankConfig(s32 a);
 void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void GXS_SetGraphicsMode(u32 mode);
 
 #pragma thumb on
@@ -24,7 +24,7 @@ void func_ov001_022d42ec(void) {
     VramPltt_Reset();
     *(vu16 *)0x4000304 = (*(vu16 *)0x4000304 & ~0x20e) | 0x20e;
     *(vu16 *)0x4000304 |= 0x8000;
-    func_02002ab0(1, 0, 0);
+    GX_SetGraphicsMode(1, 0, 0);
     *(vu32 *)0x4000000 &= ~0x38000000;
     *(vu32 *)0x4000000 &= ~0x07000000;
     *(vu16 *)0x400000a = (*(vu16 *)0x400000a & 0x43) | 0x210;

@@ -8,8 +8,8 @@ typedef struct {
 extern UnkVram_0208a754 data_0208a754;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002ef0(void);
-void func_020034cc(s32 bank);
+void GX_DisableBankForTex(void);
+void GX_SetBankForTex(s32 bank);
 
 void Vram_SetBankForTex(s32 bank) {
     vu32 zero = 0;
@@ -93,8 +93,8 @@ void Vram_SetBankForTex(s32 bank) {
         data_0208a754.count = 3;
         break;
     default:
-        func_02002ef0();
+        GX_DisableBankForTex();
         return;
     }
-    func_020034cc(bank);
+    GX_SetBankForTex(bank);
 }

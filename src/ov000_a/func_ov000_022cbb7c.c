@@ -15,15 +15,15 @@ extern s16 data_0206e470[];
 extern u8 data_ov000_02362bc4[];
 extern u8 data_ov000_02362be4[];
 
-s32 func_02025edc(void *p, void *k);
+s32 NNS_G3dGetResDictIdxByName(void *p, void *k);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02025268(s32 a, void *p, s32 n);
+void NNS_G3dGeBufferOP_N(s32 a, void *p, s32 n);
 
 void func_ov000_022cbb7c(u8 *p) {
     UnkStruct_022cbb7c_m m1;
     UnkStruct_022cbb7c_m m2;
-    s32 r1 = func_02025edc(*(u8 **)(*(u8 **)(p + 4) + 4) + 0x40, data_ov000_02362bc4);
-    s32 r2 = func_02025edc(*(u8 **)(*(u8 **)(p + 4) + 4) + 0x40, data_ov000_02362be4);
+    s32 r1 = NNS_G3dGetResDictIdxByName(*(u8 **)(*(u8 **)(p + 4) + 4) + 0x40, data_ov000_02362bc4);
+    s32 r2 = NNS_G3dGetResDictIdxByName(*(u8 **)(*(u8 **)(p + 4) + 4) + 0x40, data_ov000_02362be4);
     s32 expect;
     if (*(u32 *)(p + 8) & 0x10)
         expect = p[0xae];
@@ -32,7 +32,7 @@ void func_ov000_022cbb7c(u8 *p) {
     if (r1 == expect) {
         u16 a = data_ov000_02369acc->unk21C;
         MTX_RotY33_(&m1, data_0206e470[((a & 0xffff) >> 4) * 2], data_0206e470[((a & 0xffff) >> 4) * 2 + 1]);
-        func_02025268(0x1a, &m1, 9);
+        NNS_G3dGeBufferOP_N(0x1a, &m1, 9);
         return;
     }
     if (*(u32 *)(p + 8) & 0x10)
@@ -42,6 +42,6 @@ void func_ov000_022cbb7c(u8 *p) {
     if (r2 == expect) {
         u16 a = data_ov000_02369acc->unk21E;
         MTX_RotY33_(&m2, data_0206e470[((a & 0xffff) >> 4) * 2], data_0206e470[((a & 0xffff) >> 4) * 2 + 1]);
-        func_02025268(0x1a, &m2, 9);
+        NNS_G3dGeBufferOP_N(0x1a, &m2, 9);
     }
 }

@@ -18,7 +18,7 @@ typedef struct {
 
 extern UnkStruct_02080e74 data_02080e74;
 
-void func_02017fe0(void);
+void MBi_ClearSendStatus(void);
 
 static inline UnkObj_02017ec0 *GetNext(UnkObj_02017ec0 *first)
 {
@@ -37,7 +37,7 @@ BOOL func_02017ec0(void)
         return FALSE;
     }
     data_02080e74.unk4 = GetNext(obj);
-    func_02017fe0();
+    MBi_ClearSendStatus();
     data_02080e74.unkE = data_02080e74.unk4->unk4b4;
     data_02080e74.unkC = 2;
     return TRUE;

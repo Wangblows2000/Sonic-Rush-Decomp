@@ -14,8 +14,8 @@ extern UnkStruct_02088504 data_02088504;
 extern u8 data_02087d6c[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002e78(void);
-void func_02003290(s32 bank);
+void GX_DisableBankForSubOBJ(void);
+void GX_SetBankForSubOBJ(s32 bank);
 
 void Vram_SetBankForSubOBJ(s32 bank, s32 mapping, s32 mode, u16 a, u16 b) {
     vu32 zero = 0;
@@ -34,10 +34,10 @@ void Vram_SetBankForSubOBJ(s32 bank, s32 mapping, s32 mode, u16 a, u16 b) {
         gDisplaySub.addr[0] = 0x068a0000;
         break;
     default:
-        func_02002e78();
+        GX_DisableBankForSubOBJ();
         return;
     }
-    func_02003290(bank);
+    GX_SetBankForSubOBJ(bank);
     switch (mapping) {
     case 0x10:
         gDisplaySub.unk94 = 0;

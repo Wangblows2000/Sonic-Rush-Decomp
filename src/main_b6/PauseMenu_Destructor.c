@@ -23,7 +23,7 @@ extern u32 gSystemFlags;
 void ObjData_Release(void *p);
 void ObjVram_Free(s32 a, s32 b);
 void System_Unfreeze(void);
-void func_0201bf40(s32 idx, s32 frames);
+void NNS_SndPlayerPauseByPlayerNo(s32 idx, s32 frames);
 
 void PauseMenu_Destructor(UnkTask_02055878 *t) {
     UnkWork_02055878 *w = t->work;
@@ -39,5 +39,5 @@ void PauseMenu_Destructor(UnkTask_02055878 *t) {
     if (gSystemFlags & 8)
         System_Unfreeze();
     for (k = 3; k < 10; k++)
-        func_0201bf40(k, 0);
+        NNS_SndPlayerPauseByPlayerNo(k, 0);
 }

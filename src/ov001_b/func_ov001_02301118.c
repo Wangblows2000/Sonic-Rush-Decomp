@@ -30,7 +30,7 @@ void func_ov001_02302ac8(UnkStruct_02301118 *w);
 void func_ov001_022fd4f4(UnkStruct_02301118 *w);
 u8 *ExtraBoss_GetWork(void);
 void ObjVram_Free(s32 i, u32 addr);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -73,7 +73,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
             ObjVram_Free(w->unk90->unk0, w->unk90->unk34);
         if (!(w->unk14 & 0x20000000)) {
             p = (u8 *)w->unk90;
-            if ((u8 *)func_02006abc(0) != p) {
+            if ((u8 *)OS_GetArenaLo(0) != p) {
                 p -= 0x20;
                 size = *(u32 *)p;
                 if (*(u32 *)(p + size - 4) == 0x02467531) {
@@ -90,7 +90,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
             Model_Release(w->unk94);
         if (!(w->unk14 & 0x20000000)) {
             p = (u8 *)w->unk94;
-            if ((u8 *)func_02006abc(0) != p) {
+            if ((u8 *)OS_GetArenaLo(0) != p) {
                 p -= 0x20;
                 size = *(u32 *)p;
                 if (*(u32 *)(p + size - 4) == 0x02467531) {
@@ -108,7 +108,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
             Model_Release(w->unk8C);
             if (!(w->unk14 & 0x20000000)) {
                 p = (u8 *)w->unk88;
-                if ((u8 *)func_02006abc(0) != p) {
+                if ((u8 *)OS_GetArenaLo(0) != p) {
                     p -= 0x20;
                     size = *(u32 *)p;
                     if (*(u32 *)(p + size - 4) == 0x02467531) {
@@ -119,7 +119,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
                 }
                 Heap_Free(gMainHeap, p);
                 p = (u8 *)w->unk8C;
-                if ((u8 *)func_02006abc(0) != p) {
+                if ((u8 *)OS_GetArenaLo(0) != p) {
                     p -= 0x20;
                     size = *(u32 *)p;
                     if (*(u32 *)(p + size - 4) == 0x02467531) {
@@ -134,7 +134,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
             Model_Release(w->unk84);
             if (!(w->unk14 & 0x20000000)) {
                 p = (u8 *)w->unk84;
-                if ((u8 *)func_02006abc(0) != p) {
+                if ((u8 *)OS_GetArenaLo(0) != p) {
                     p -= 0x20;
                     size = *(u32 *)p;
                     if (*(u32 *)(p + size - 4) == 0x02467531) {
@@ -149,7 +149,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
     }
     p = (u8 *)w->unk1DC;
     if (p != NULL) {
-        if ((u8 *)func_02006abc(0) != p) {
+        if ((u8 *)OS_GetArenaLo(0) != p) {
             p -= 0x20;
             size = *(u32 *)p;
             if (*(u32 *)(p + size - 4) == 0x02467531) {

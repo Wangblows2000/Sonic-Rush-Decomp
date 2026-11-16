@@ -23,16 +23,16 @@ typedef struct UnkStruct_022c7278 {
 
 extern u8 data_02089264[];
 
-s32 func_02002240(s32 a);
+s32 FX_Inv(s32 a);
 BOOL func_0202e5e4(float a, float b);
 BOOL func_0202e528(float a, float b);
-void func_02000ccc(UnkMtx22_022c7278 *m, s32 x, s32 y);
-void func_02003d94(void *p, UnkMtx22_022c7278 *m, s32 x, s32 y, s32 a, s32 b);
+void MTX_Scale22_(UnkMtx22_022c7278 *m, s32 x, s32 y);
+void G2x_SetBGyAffine_(void *p, UnkMtx22_022c7278 *m, s32 x, s32 y, s32 a, s32 b);
 
 void func_ov001_022c7278(UnkStruct_022c7278 *w) {
     UnkMtx22_022c7278 mtx;
     s32 v = 0x2000 - w->unkC * 10;
-    float f = (float)func_02002240(v) / 4096.0f;
+    float f = (float)FX_Inv(v) / 4096.0f;
     float a;
     float b;
 
@@ -42,8 +42,8 @@ void func_ov001_022c7278(UnkStruct_022c7278 *w) {
     }
     a = w->unk6A8 * f;
     b = w->unk6A4 * f;
-    func_02000ccc(&mtx, v, v);
-    func_02003d94(data_02089264, &mtx, (w->unk50->unk18 << 3) / 2, w->unk50->unk1A << 3, (s32)b, (s32)a);
+    MTX_Scale22_(&mtx, v, v);
+    G2x_SetBGyAffine_(data_02089264, &mtx, (w->unk50->unk18 << 3) / 2, w->unk50->unk1A << 3, (s32)b, (s32)a);
     if (w->unkC & 0xc) {
         w->unk6A8 = w->unk6A8 + 3.0f;
         if (func_0202e5e4(w->unk6A8, 10.0f))

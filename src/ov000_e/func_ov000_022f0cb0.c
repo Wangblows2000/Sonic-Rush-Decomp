@@ -27,14 +27,14 @@ extern UnkStruct_Boss *data_ov000_02369b84;
 extern UnkStruct_Mdl data_ov000_0236a524;
 extern u8 data_ov000_02365f20[];
 
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 void Model_Release(UnkStruct_Mdl *m);
 void func_0202566c(void *p);
 void *File_Load(void *p);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, void *a, s32 b);
 void func_ov000_022f0c8c(void);
@@ -43,7 +43,7 @@ static inline void UnkFree(void **pp) {
     void *p;
     u32 size;
     p = *pp;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {
@@ -67,7 +67,7 @@ void func_ov000_022f0cb0(UnkStruct_022f0cb0 *s) {
     func_0202566c(b->unk240);
     UnkFree(&b->unk240);
     b->unk23C = File_Load(data_ov000_02365f20);
-    func_020257f8(b->unk23C);
+    NNS_G3dResDefaultSetup(b->unk23C);
     Model_Init(m, 0);
     Model_SetResource(m, b->unk23C, 0);
     m->unk18 = m->unk1C = m->unk20 = 0x1355b50;

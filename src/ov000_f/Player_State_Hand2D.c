@@ -60,10 +60,10 @@ extern s16 data_0206e470[];
 #define SIN_023528d4(a) data_0206e470[(u32)(IDX_023528d4(a) << 1)]
 #define COS_023528d4(a) data_0206e470[(u32)((IDX_023528d4(a) << 1) + 1)]
 
-void func_02000dfc(UnkMtx33_023528d4 *m);
+void MTX_Identity33_(UnkMtx33_023528d4 *m);
 void MTX_RotY33_(UnkMtx33_023528d4 *m, fx32 sin, fx32 cos);
-void func_02000f34(const UnkMtx33_023528d4 *a, const UnkMtx33_023528d4 *b, UnkMtx33_023528d4 *ab);
-void func_02000eb0(const UnkVec_023528d4 *v, const UnkMtx33_023528d4 *m, UnkVec_023528d4 *dst);
+void MTX_Concat33(const UnkMtx33_023528d4 *a, const UnkMtx33_023528d4 *b, UnkMtx33_023528d4 *ab);
+void MTX_MultVec33(const UnkVec_023528d4 *v, const UnkMtx33_023528d4 *m, UnkVec_023528d4 *dst);
 
 static inline void VecSet_023528d4(UnkVec_023528d4 *v, fx32 x, fx32 y, fx32 z) {
     v->x = x;
@@ -85,11 +85,11 @@ void Player_State_Hand2D(UnkStruct_023528d4 *w) {
         w->unk1C = w->x;
         w->unk20 = w->y;
         w->unk24 = w->z;
-        func_02000dfc(&m);
+        MTX_Identity33_(&m);
         MTX_RotY33_(&r, SIN_023528d4((u16)-(w->unk3 << 8)), COS_023528d4((u16)-(w->unk3 << 8)));
-        func_02000f34(&m, &r, &m);
+        MTX_Concat33(&m, &r, &m);
         VecSet_023528d4(&v, w->unk3F8 << 4, w->unk3FC << 4, 0);
-        func_02000eb0(&v, &m, &v);
+        MTX_MultVec33(&v, &m, &v);
         w->x = w->unk3E8->x - (v.x >> 4);
         w->y = w->unk3E8->y - (v.y >> 4);
         w->z = w->unk3E8->z - (v.z >> 4);

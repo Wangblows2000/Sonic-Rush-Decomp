@@ -42,10 +42,10 @@ extern u8 data_ov000_023638c4[];
 void func_ov000_022e5c1c(UnkStruct_022e552c *p);
 u8 *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *out);
+void MTX_Concat33(void *a, void *b, void *out);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
-void func_020010d0(void *a, void *b);
-void func_02000eb0(VecFx32_022e552c *a, void *m, VecFx32_022e552c *out);
+void MTX_Inverse33(void *a, void *b);
+void MTX_MultVec33(VecFx32_022e552c *a, void *m, VecFx32_022e552c *out);
 void ObjRect_SetBox3D(void *b, s16 x1, s16 y1, s16 x2, s16 y2, s16 z1, s16 z2);
 u8 *func_ov000_022dfd80(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -81,26 +81,26 @@ void func_ov000_022e552c(UnkStruct_022e552c *p) {
         p->unkF70[p->unkF98] = e;
         if (p->unkD5E != 0) {
             MTX_RotY33_(e + 0x230, data_02070470[0], data_02070470[1]);
-            func_02000f34(e + 0x230, p->unk984, e + 0x230);
+            MTX_Concat33(e + 0x230, p->unk984, e + 0x230);
         } else {
             MIi_CpuCopy32(p->unk984, e + 0x230, 0x24);
         }
         ((UnkStruct_022e552c_obj *)e)->unk10 = p->unk10;
         ((UnkStruct_022e552c_obj *)e)->unk14 = p->unk14;
         ((UnkStruct_022e552c_obj *)e)->unk18 = p->unk18;
-        func_020010d0(e + 0x230, mtx);
+        MTX_Inverse33(e + 0x230, mtx);
         if (p->unkD5E != 0)
-            func_02000f34(mtx, data_ov000_023638c4, mtx);
+            MTX_Concat33(mtx, data_ov000_023638c4, mtx);
         v1.x = 0x33000;
         v1.y = -0x97000;
         v1.z = 0;
-        func_02000eb0(&v1, mtx, &v1);
+        MTX_MultVec33(&v1, mtx, &v1);
         v1.x >>= 12;
         v1.y >>= 12;
         v2.x = -0x33000;
         v2.y = -0x97000;
         v2.z = 0;
-        func_02000eb0(&v2, mtx, &v2);
+        MTX_MultVec33(&v2, mtx, &v2);
         v2.x >>= 12;
         v2.y >>= 12;
         ObjRect_SetBox3D(e + 0x134, v1.x - 13, v1.y - 13, v1.x + 13, v1.y + 13, -32000, 32000);
@@ -108,7 +108,7 @@ void func_ov000_022e552c(UnkStruct_022e552c *p) {
         e = func_ov000_022dfd80(2, ((UnkStruct_022e552c_obj *)e)->unk10, ((UnkStruct_022e552c_obj *)e)->unk14, ((UnkStruct_022e552c_obj *)e)->unk18);
         if (p->unkD5E != 0) {
             MTX_RotY33_(e + 0x158, data_02070470[0], data_02070470[1]);
-            func_02000f34(e + 0x158, p->unk984, e + 0x158);
+            MTX_Concat33(e + 0x158, p->unk984, e + 0x158);
         } else {
             MIi_CpuCopy32(p->unk984, e + 0x158, 0x24);
         }

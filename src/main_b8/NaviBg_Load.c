@@ -44,20 +44,20 @@ extern void *gMainHeap;
 void *File_Load(void *a, s32 b);
 void Background_InitEx(void *b, void *res, u32 a, u32 idx, u8 e, u32 v14, u32 base, u32 v1c, u32 v20, u16 v24, u16 v26, u16 v28, u16 v2a, u16 v2c, u16 v2e);
 void Background_Draw(void *buf);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-void func_0200be70(UnkFile_0205453c *f);
-void func_0200bb20(UnkFile_0205453c *f, UnkPath_0205453c *path);
-void func_0202c518(UnkPath_0205453c *dst, const char *src);
-void func_0202c474(UnkPath_0205453c *dst, const char *src);
+void FS_InitFile(UnkFile_0205453c *f);
+void FS_OpenFile(UnkFile_0205453c *f, UnkPath_0205453c *path);
+void strcpy(UnkPath_0205453c *dst, const char *src);
+void strcat(UnkPath_0205453c *dst, const char *src);
 
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
 
 #define Free_0205453c(p0) do { u8 *p = (p0); \
-    if ((u8 *)func_02006abc(0) != p) { \
+    if ((u8 *)OS_GetArenaLo(0) != p) { \
         p -= 0x20; \
         n = *(u32 *)p; \
         if (*(u32 *)(p + n - 4) == 0x02467531) { \
@@ -71,7 +71,7 @@ void func_0202c474(UnkPath_0205453c *dst, const char *src);
 static inline u8 *Alloc_0205453c(u32 sz) {
     u32 size = sz;
     u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -116,11 +116,11 @@ void NaviBg_Load(s32 mode, s32 idx) {
     data_022c466c = f;
     i = 0;
     if (n > 0) do {
-        func_0200be70(f);
-        func_0202c518(&path, data_0207b8c4[idx]);
-        func_0202c474(&path, data_0207b8cc[idx][i]);
-        func_0202c474(&path, data_0207ba0c);
-        func_0200bb20(f, &path);
+        FS_InitFile(f);
+        strcpy(&path, data_0207b8c4[idx]);
+        strcat(&path, data_0207b8cc[idx][i]);
+        strcat(&path, data_0207ba0c);
+        FS_OpenFile(f, &path);
         len = f->end - f->start;
         if (max < len)
             max = len;
@@ -136,8 +136,8 @@ void NaviBg_Load(s32 mode, s32 idx) {
     if (n > 0) {
     lang = gGameLanguage;
     do {
-        func_0200be70(f);
-        func_0202c518(&path, data_0207b8dc[idx]);
+        FS_InitFile(f);
+        strcpy(&path, data_0207b8dc[idx]);
         switch (lang) {
         case 0:
         case 1:
@@ -151,10 +151,10 @@ void NaviBg_Load(s32 mode, s32 idx) {
             k = 1;
             break;
         }
-        func_0202c474(&path, data_0207b9bc[k]);
-        func_0202c474(&path, data_0207b8b4[idx][i]);
-        func_0202c474(&path, data_0207ba14);
-        func_0200bb20(f, &path);
+        strcat(&path, data_0207b9bc[k]);
+        strcat(&path, data_0207b8b4[idx][i]);
+        strcat(&path, data_0207ba14);
+        FS_OpenFile(f, &path);
         len = f->end - f->start;
         if (max < len)
             max = len;

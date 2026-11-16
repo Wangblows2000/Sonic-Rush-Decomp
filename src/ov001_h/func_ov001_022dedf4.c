@@ -32,9 +32,9 @@ extern s16 data_0206e470[];
 #define SIN(a) data_0206e470[(u32)((((a) & 0xffff) >> 4) << 1)]
 #define COS(a) data_0206e470[(u32)(((((a) & 0xffff) >> 4) << 1) + 1)]
 
-void func_02000e60(UnkMtx33_022dedf4 *m, s32 s, s32 c);
+void MTX_RotX33_(UnkMtx33_022dedf4 *m, s32 s, s32 c);
 void MTX_RotY33_(UnkMtx33_022dedf4 *m, s32 s, s32 c);
-void func_02000f34(UnkMtx33_022dedf4 *a, UnkMtx33_022dedf4 *b, UnkMtx33_022dedf4 *ab);
+void MTX_Concat33(UnkMtx33_022dedf4 *a, UnkMtx33_022dedf4 *b, UnkMtx33_022dedf4 *ab);
 
 void func_ov001_022dedf4(UnkStruct_022dedf4 *w, UnkStruct_022dedf4_o *o) {
     if (w->unk4 & 0x40000000) {
@@ -57,9 +57,9 @@ void func_ov001_022dedf4(UnkStruct_022dedf4 *w, UnkStruct_022dedf4_o *o) {
             o->unk52 -= 0x100;
         if (gPad & 0x100)
             o->unk52 += 0x100;
-        func_02000e60(&rx, SIN(o->unk50), COS(o->unk50));
+        MTX_RotX33_(&rx, SIN(o->unk50), COS(o->unk50));
         MTX_RotY33_(&ry, SIN(o->unk52), COS(o->unk52));
-        func_02000f34(&rx, &ry, &o->mtx);
+        MTX_Concat33(&rx, &ry, &o->mtx);
         o->unk4 = o->unkA8 + 0x5000;
     } else {
         UnkMtx33_022dedf4 rx;
@@ -70,9 +70,9 @@ void func_ov001_022dedf4(UnkStruct_022dedf4 *w, UnkStruct_022dedf4_o *o) {
             o->unk3C += 10;
         o->unk24 += o->unk3C;
         o->unkA8 = o->unk24;
-        func_02000e60(&rx, SIN(o->unk50), COS(o->unk50));
+        MTX_RotX33_(&rx, SIN(o->unk50), COS(o->unk50));
         MTX_RotY33_(&ry, SIN(o->unk52), COS(o->unk52));
-        func_02000f34(&rx, &ry, &o->mtx);
+        MTX_Concat33(&rx, &ry, &o->mtx);
         o->unk4 = o->unkA8 + 0x5000;
     }
 }

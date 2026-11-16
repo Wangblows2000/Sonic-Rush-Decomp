@@ -20,13 +20,13 @@ typedef struct {
 extern UnkStruct_02342a74_Task *data_ov000_0236ac34;
 
 UnkStruct_02342a74_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
-void *func_02006abc(u32 arg);
+void *OS_GetArenaLo(u32 arg);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 void *Sound_AllocHandle(void);
-void func_0201c070(void *spr, s32 a);
+void NNS_SndPlayerStopSeq(void *spr, s32 a);
 void func_0204c598(u8 a, s32 b, u32 c);
 void func_0204b860(void *spr, u16 a, s32 b, s32 c);
-void func_0201be10(void *spr, s32 a);
+void NNS_SndPlayerSetChannelPriority(void *spr, s32 a);
 void func_ov000_023428dc(void);
 void func_ov000_02342a34(void);
 
@@ -37,7 +37,7 @@ void func_ov000_02342a74(UnkStruct_02342a74_Pl *pl, u16 state) {
 
     if (data_ov000_0236ac34 == NULL) {
         t = Task_Create(func_ov000_023428dc, func_ov000_02342a34, 7, 0xA00, 4, sizeof(UnkStruct_02342a74));
-        if (t == func_02006abc(0))
+        if (t == OS_GetArenaLo(0))
             return;
         w = t->work;
         zero = 0;
@@ -49,9 +49,9 @@ void func_ov000_02342a74(UnkStruct_02342a74_Pl *pl, u16 state) {
     }
     w->pl = pl;
     if (w->state != 0)
-        func_0201c070(w->spr, 0);
+        NNS_SndPlayerStopSeq(w->spr, 0);
     w->state = state;
     func_0204c598(0, 0, w->pl->unk32C & 0x4000000);
     func_0204b860(w->spr, w->state, 100, -1);
-    func_0201be10(w->spr, 0x50);
+    NNS_SndPlayerSetChannelPriority(w->spr, 0x50);
 }

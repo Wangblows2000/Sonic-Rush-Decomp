@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 extern unsigned char data_ov001_0231f654[];
-int func_02025268();
+int NNS_G3dGeBufferOP_N();
 int Model_Draw();
 
 void func_ov001_0230cf70(void)
@@ -30,9 +30,9 @@ void func_ov001_0230cf70(void)
   undefined4 local_10 [2];
   
   iVar1 = *((int *)data_ov001_0231f654);
-  func_02025268(0x11,0,0);
+  NNS_G3dGeBufferOP_N(0x11,0,0);
   Model_Draw(iVar1 + 0x654);
   local_10[0] = 1;
-  func_02025268(0x12,local_10);
+  NNS_G3dGeBufferOP_N(0x12,local_10);
   return;
 }

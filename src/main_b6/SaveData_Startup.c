@@ -11,7 +11,7 @@ extern UnkState_020594f8 gSaveState;
 s32 SaveData_Init(void);
 s32 SaveData_IdentifyBackup(void);
 BOOL SaveData_CheckSignature(void);
-BOOL func_0200f29c(void);
+BOOL CARD_GetResultCode(void);
 s32 SaveData_Format(void);
 BOOL SaveData_WriteSignature(void);
 s32 SaveData_SelectLatestSlot(void);
@@ -26,7 +26,7 @@ s32 SaveData_Startup(void) {
         return 1;
     gSaveState.flags &= ~0x80;
     if (SaveData_CheckSignature() == 0) {
-        if (func_0200f29c()) {
+        if (CARD_GetResultCode()) {
             gSaveDataBusy = 0;
             return 1;
         }
@@ -35,7 +35,7 @@ s32 SaveData_Startup(void) {
             return 1;
         }
         SaveData_WriteSignature();
-        if (func_0200f29c()) {
+        if (CARD_GetResultCode()) {
             gSaveDataBusy = 0;
             return 1;
         } else {

@@ -6,7 +6,7 @@ extern s16 data_022c4dac;
 extern u8 data_ov001_023161ec[];
 extern u8 data_ov001_023161ed[];
 UnkStruct_022e05f0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 BOOL func_0204eb7c(void);
 void TransformDemo_Main(void);
@@ -20,7 +20,7 @@ void TransformDemo_Create(void) {
     u8 *w;
     vu16 zero;
     data_022c4db0 = task;
-    if (task == (UnkStruct_022e05f0 *)func_02006abc(0)) {
+    if (task == (UnkStruct_022e05f0 *)OS_GetArenaLo(0)) {
         return;
     }
     w = task->work;

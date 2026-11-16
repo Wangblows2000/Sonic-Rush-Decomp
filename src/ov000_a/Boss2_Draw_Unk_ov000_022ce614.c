@@ -81,9 +81,9 @@ void Model_Animate(void *p);
 void Model_Draw(void *p);
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02025268(s32 a, void *p, s32 n);
-void func_02025a94(void *a, void *b);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void NNS_G3dGeBufferOP_N(s32 a, void *p, s32 n);
+void NNS_G3dGetCurrentMtx(void *a, void *b);
 void func_ov000_022ce474(UnkStruct_022ce614 *s);
 void func_ov000_022ce194(UnkStruct_022ce614 *s);
 void func_ov000_022cde2c(UnkStruct_022ce614 *s);
@@ -134,13 +134,13 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
     Model_Draw(a);
     {
         u32 v = 2;
-        func_02025268(0x10, &v, 1);
+        NNS_G3dGeBufferOP_N(0x10, &v, 1);
     }
     {
         u32 v = 0x1e;
-        func_02025268(0x14, &v, 1);
+        NNS_G3dGeBufferOP_N(0x14, &v, 1);
     }
-    func_02025a94(s->unk1324, s->unk1354);
+    NNS_G3dGetCurrentMtx(s->unk1324, s->unk1354);
     a = &s->unkBD4;
     if (s->unk20C & 4)
         a->unk24 = s->unkA9C.unk24;
@@ -154,13 +154,13 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
     case 10:
         {
             u32 v = 2;
-            func_02025268(0x10, &v, 1);
+            NNS_G3dGeBufferOP_N(0x10, &v, 1);
         }
         {
             u32 v = 0x1a;
-            func_02025268(0x14, &v, 1);
+            NNS_G3dGeBufferOP_N(0x14, &v, 1);
         }
-        func_02025a94(s->unk1378, s->unk13A8);
+        NNS_G3dGetCurrentMtx(s->unk1378, s->unk13A8);
         break;
     }
     s->unk130C += s->unk1308;
@@ -170,18 +170,18 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
         s->unk130C = s->unk1314;
     s->unk1318 += (u16)(s->unk130C >> 12);
     a = &s->unkE44;
-    func_02000e98(&a->unk24, data_0206e470[((s->unk1318 & 0xffff) >> 4) * 2], data_0206e470[((s->unk1318 & 0xffff) >> 4) * 2 + 1]);
+    MTX_RotZ33_(&a->unk24, data_0206e470[((s->unk1318 & 0xffff) >> 4) * 2], data_0206e470[((s->unk1318 & 0xffff) >> 4) * 2 + 1]);
     Model_Animate(a);
     Model_Draw(a);
     {
         u32 v = 2;
-        func_02025268(0x10, &v, 1);
+        NNS_G3dGeBufferOP_N(0x10, &v, 1);
     }
     {
         u32 v = 0x1c;
-        func_02025268(0x14, &v, 1);
+        NNS_G3dGeBufferOP_N(0x14, &v, 1);
     }
-    func_02025a94(s->unk13CC, s->unk13FC);
+    NNS_G3dGetCurrentMtx(s->unk13CC, s->unk13FC);
     switch (data_ov000_02369ac0.unk4) {
     case 7:
     case 8:

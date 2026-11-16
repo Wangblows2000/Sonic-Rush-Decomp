@@ -1,4 +1,4 @@
 #include <nitro/types.h>
 
-void func_0200c2b8(void *p);
-BOOL FS_StopOverlay(void *p) { func_0200c2b8(p); return 1; }
+void FS_EndOverlay(void *p);
+BOOL FS_StopOverlay(void *p) { FS_EndOverlay(p); return 1; }

@@ -4,8 +4,8 @@
 
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
-s32 func_02010a50(u32 num, ...);
-s32 func_02010af8(void);
+s32 WMi_CheckStateEx(u32 num, ...);
+s32 WMi_CheckIdle(void);
 s32 func_02010b54(void);
 struct UnkWmWork_;
 void *func_02010b70(void);

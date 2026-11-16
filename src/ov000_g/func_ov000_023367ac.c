@@ -28,7 +28,7 @@ typedef struct {
 
 extern UnkStruct_023367ac_Sys data_022c4560;
 
-u16 func_02002094(s32 a, s32 b);
+u16 FX_DivS32(s32 a, s32 b);
 
 void func_ov000_023367ac(UnkStruct_023367ac *w) {
     UnkStruct_023367ac_S *s = &w->unk688;
@@ -63,7 +63,7 @@ void func_ov000_023367ac(UnkStruct_023367ac *w) {
                     s->unk272 = s->unk270;
             }
             s->unk28E = s->unk28C;
-            s->unk28C = func_02002094(s->unk272, 5);
+            s->unk28C = FX_DivS32(s->unk272, 5);
             if (s->unk28E != s->unk28C) {
                 for (i = 2; i >= 0; i--)
                     s->unk278[i + 1] = s->unk278[i];

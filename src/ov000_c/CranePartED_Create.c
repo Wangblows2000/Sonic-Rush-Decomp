@@ -27,7 +27,7 @@ UnkStruct_02305ad8 *CranePartED_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u16 v;
 
     task = Task_Create(StageObj_Main, CranePartED_Destructor, 0, 0xf7, 2, sizeof(UnkStruct_02305ad8));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

@@ -3,10 +3,10 @@
 
 extern void MIi_CpuClear16(void);
 extern u32 data_0206e470;
-extern u32 data_02084d38;
+extern u32 NNS_G3dGlb;
 extern u32 data_02084d40;
 extern void func_0200225c(void);
-extern void func_02004988(void);
+extern void G3i_PerspectiveW_(void);
 
 asm void func_ov001_022dfc54(void)
 {
@@ -49,7 +49,7 @@ asm void func_ov001_022dfc54(void)
     ldrsh r1, [r2, r1]
     ldr r2, [r4, #0xc]
     ldr r3, [r4, #4]
-    bl func_02004988
+    bl G3i_PerspectiveW_
     ldr r0, [pc, #0x114]
     mov r2, #0
     ldr r3, [r0, #0xfc]
@@ -121,7 +121,7 @@ asm void func_ov001_022dfc54(void)
     dcd 0x0000ffff
     dcd data_02084d40
     dcd data_0206e470
-    dcd data_02084d38
+    dcd NNS_G3dGlb
     dcd 0x0000071c
     dcd 0x00001110
     dcd 0x000004fa

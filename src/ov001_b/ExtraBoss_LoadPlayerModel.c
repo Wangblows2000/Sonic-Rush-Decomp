@@ -65,13 +65,13 @@ extern UnkStruct_02302be8_t data_ov001_0231da50[];
 extern s32 data_ov001_0231d9e8[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 u8 *File_Load(void *p, s32 v);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 u32 func_020380d8(void *p);
 void func_020380a0(void *src, void *dst);
 void Heap_Free(void *heap, void *p);
@@ -102,10 +102,10 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     UnkStruct_02302be8_p *p;
 
     res = File_Load(data_ov001_0231d9f0[idx], -1);
-    func_020257f8(res);
+    NNS_G3dResDefaultSetup(res);
     size = (func_020380d8(res) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, size);
         *(u32 *)blk = size;
@@ -115,7 +115,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     }
     data_ov001_0231f540 = blk;
     func_020380a0(res, blk);
-    if ((u8 *)func_02006abc(0) != res) {
+    if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
         if (*(u32 *)(res + size - 4) == 0x02467531) {
@@ -127,10 +127,10 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     Heap_Free(gMainHeap, res);
 
     res = File_Load(data_ov001_0231d9f8[idx], -1);
-    func_020257f8(res);
+    NNS_G3dResDefaultSetup(res);
     size = (func_020380d8(res) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill3 = 0xcccccccc;
         MIi_CpuClear32(fill3, blk, size);
         *(u32 *)blk = size;
@@ -140,7 +140,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     }
     data_ov001_0231f538 = blk;
     func_020380a0(res, blk);
-    if ((u8 *)func_02006abc(0) != res) {
+    if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
         if (*(u32 *)(res + size - 4) == 0x02467531) {
@@ -153,7 +153,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
 
     o = func_ov001_023014f4(0, 0x3000);
     a = (UnkStruct_02302be8_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
-    if ((void *)func_02006abc(0) != a) {
+    if ((void *)OS_GetArenaLo(0) != a) {
         fill5 = 0xcccccccc;
         MIi_CpuClear32(fill5, a, 0x160);
         *(u32 *)a = 0x160;
@@ -167,7 +167,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     o->unk84 = a;
     o->unk88 = a;
     a = (UnkStruct_02302be8_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
-    if ((void *)func_02006abc(0) != a) {
+    if ((void *)OS_GetArenaLo(0) != a) {
         fill6 = 0xcccccccc;
         MIi_CpuClear32(fill6, a, 0x160);
         *(u32 *)a = 0x160;
@@ -182,7 +182,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     o->unk74 = func_ov001_0230236c;
     o->unk14 |= 0x1b0020;
     d = (UnkStruct_02302be8_d *)Heap_Alloc(gMainHeap, 0x40, 0x20);
-    if ((void *)func_02006abc(0) != d) {
+    if ((void *)OS_GetArenaLo(0) != d) {
         fill7 = 0xcccccccc;
         MIi_CpuClear32(fill7, d, 0x40);
         *(u32 *)d = 0x40;

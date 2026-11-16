@@ -27,7 +27,7 @@ typedef struct {
 extern UnkStruct_022de51c_M *data_ov000_02369b2c;
 extern u8 data_ov000_02363610[];
 
-s32 func_02025edc(void *dict, void *name);
+s32 NNS_G3dGetResDictIdxByName(void *dict, void *name);
 void func_ov000_022de5e8(void *a, UnkStruct_022de51c *o, s32 b);
 
 void func_ov000_022de49c(UnkStruct_022de51c *o) {
@@ -38,7 +38,7 @@ void func_ov000_022de49c(UnkStruct_022de51c *o) {
         id = o->unkAE;
     else
         id = -1;
-    if (id != func_02025edc(o->unk4->unk4 + 0x40, data_ov000_02363610))
+    if (id != NNS_G3dGetResDictIdxByName(o->unk4->unk4 + 0x40, data_ov000_02363610))
         return;
     func_ov000_022de5e8(m->unkB58, o, 0x4);
     if ((m->unkAF4 & 0x4) == 0x4) {

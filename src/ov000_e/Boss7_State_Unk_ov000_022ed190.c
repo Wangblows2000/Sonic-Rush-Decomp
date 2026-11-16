@@ -57,13 +57,13 @@ extern u8 gSESoundHandle[];
 
 s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 s32 func_ov000_022edb98(u16 a, s32 b);
 void func_ov000_022edb50(UnkStruct_StageObj *o, s32 a);
 void ScreenShake_Start(s32 a);
 void func_ov000_022ed9a0(UnkStruct_022ed190 *s, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_0201be98(void *p, s32 a);
+void NNS_SndPlayerSetVolume(void *p, s32 a);
 void func_ov000_022ed15c(UnkStruct_022ed190 *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -87,7 +87,7 @@ void Boss7_State_Unk_ov000_022ed190(UnkStruct_022ed190 *s) {
         data_ov000_0236a444.unk3C = ScreenShake_GetOffsetX() << 14;
         data_ov000_0236a444.unk40 = ScreenShake_GetOffsetY() << 14;
     } else {
-        m = func_02002094(s->unk390 << 12, 0x80);
+        m = FX_DivS32(s->unk390 << 12, 0x80);
         data_ov000_0236a444.unk3C = FX_Mul(ScreenShake_GetOffsetX() * 0xccc, m);
         v = FX_Mul(ScreenShake_GetOffsetY() * 0xccc, m);
         data_ov000_0236a444.unk40 = v;
@@ -107,7 +107,7 @@ void Boss7_State_Unk_ov000_022ed190(UnkStruct_022ed190 *s) {
         func_ov000_022ed9a0(s, (o->base.unk10 + p->base.unk10) >> 1, (o->base.unk14 + p->base.unk14) >> 1,
                             ((o->base.unk18 + p->base.unk18) >> 1) + 0x1000);
         Sound_PlaySeqArc(0, 0, 0xcb);
-        func_0201be98(gSESoundHandle, 0x30);
+        NNS_SndPlayerSetVolume(gSESoundHandle, 0x30);
     }
     func_ov000_022edb50(s->unk21C, s->unk390);
     func_ov000_022edb50(s->unk218, s->unk38C);

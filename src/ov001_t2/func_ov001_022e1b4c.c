@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 fx32 func_0200225c(fx32 a, fx32 b);
-s32 func_02002978(fx32 t);
+s32 FX_Atan(fx32 t);
 
 #pragma thumb on
 s32 func_ov001_022e1b4c(s32 x0, s32 y0, s32 x1, s32 y1) {
@@ -21,7 +21,7 @@ s32 func_ov001_022e1b4c(s32 x0, s32 y0, s32 x1, s32 y1) {
         }
         return 0xc000;
     }
-    a = func_02002978(func_0200225c(dx < 0 ? -dx : dx, dy < 0 ? -dy : dy));
+    a = FX_Atan(func_0200225c(dx < 0 ? -dx : dx, dy < 0 ? -dy : dy));
     if (dx >= 0) {
         if (dy < 0) {
             return 0x8000 - a;

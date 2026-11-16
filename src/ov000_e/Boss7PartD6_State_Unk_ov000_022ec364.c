@@ -23,7 +23,7 @@ typedef struct {
 extern s16 data_ov000_02363b64[];
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void *func_02025e8c(void *p);
+void *NNS_G3dGetTex(void *p);
 UnkStruct_StageObj *BossEffect_CreateSuction(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss7PartD6_State_Unk_ov000_022ec34c(void);
@@ -32,7 +32,7 @@ void Boss7PartD6_State_Unk_ov000_022ec364(UnkStruct_022ec364 *w) {
     UnkStruct_Mdl *m = &w->mdl;
 
     Model_SetAnimation(m, 1, w->unk38C, 0, 0);
-    Model_SetAnimation(m, 2, w->unk398, 0, (s32)func_02025e8c(w->unk388));
+    Model_SetAnimation(m, 2, w->unk398, 0, (s32)NNS_G3dGetTex(w->unk388));
     w->mdl.unk114 = 0x1000;
     if (w->unk378 == 0) {
         w->unk380 = BossEffect_CreateSuction(1, w->base.unk10, w->base.unk14, w->base.unk18);

@@ -30,7 +30,7 @@ UnkStruct_02333cf8 *func_ov000_02333cf8(UnkStruct_StageObj *arg, s16 x, s16 y, s
     if (arg->unk0 != 1)
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02333cf8));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

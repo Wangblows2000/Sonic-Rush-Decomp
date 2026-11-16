@@ -5,7 +5,7 @@ extern UnkMosaic_02058034 gDisplayMain;
 extern UnkMosaic_02058034 gDisplaySub;
 
 void func_0204ce7c(s32 a);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 
 #pragma thumb on
@@ -24,7 +24,7 @@ static inline void SetPlane_02058034(u32 v) {
 
 void func_02058034(void) {
     func_0204ce7c(0);
-    func_02002ab0(1, 5, 1);
+    GX_SetGraphicsMode(1, 5, 1);
     *(vu32 *)0x04000000 &= ~0x38000000;
     *(vu32 *)0x04000000 &= ~0x07000000;
     Clear32_02058034((void *)0x0600c000, 0x4000);

@@ -3,13 +3,13 @@
 
 #pragma thumb on
 
-s32 func_02002ab0();
+s32 GX_SetGraphicsMode();
 extern u8 data_0208926c[];
 s32 GXx_SetMasterBrightness_();
 extern u8 gDisplayMain[];
 
 void func_ov001_022e17fc(void) {
-    func_02002ab0(1, 3, 1);
+    GX_SetGraphicsMode(1, 3, 1);
     *(volatile u16 *)0x400000a = ((*(volatile u16 *)0x400000a & 0x43) | 0x2484);
     *(volatile u16 *)0x400000c = ((*(volatile u16 *)0x400000c & 0x43) | 0x588);
     *(volatile u16 *)0x400000a = ((*(volatile u16 *)0x400000a & ~3) | 1);

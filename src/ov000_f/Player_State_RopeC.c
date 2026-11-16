@@ -70,11 +70,11 @@ extern s16 data_0206e470[];
 
 s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_02000dfc(UnkMtx33_023543a4 *m);
-void func_02000e98(UnkMtx33_023543a4 *m, fx32 sin, fx32 cos);
+void MTX_Identity33_(UnkMtx33_023543a4 *m);
+void MTX_RotZ33_(UnkMtx33_023543a4 *m, fx32 sin, fx32 cos);
 void MTX_RotY33_(UnkMtx33_023543a4 *m, fx32 sin, fx32 cos);
-void func_02000f34(const UnkMtx33_023543a4 *a, const UnkMtx33_023543a4 *b, UnkMtx33_023543a4 *ab);
-void func_02000eb0(const UnkVec_023543a4 *v, const UnkMtx33_023543a4 *m, UnkVec_023543a4 *dst);
+void MTX_Concat33(const UnkMtx33_023543a4 *a, const UnkMtx33_023543a4 *b, UnkMtx33_023543a4 *ab);
+void MTX_MultVec33(const UnkVec_023543a4 *v, const UnkMtx33_023543a4 *m, UnkVec_023543a4 *dst);
 
 static inline void VecSet_023543a4(UnkVec_023543a4 *v, fx32 x, fx32 y, fx32 z) {
     v->x = x;
@@ -125,13 +125,13 @@ void Player_State_RopeC(UnkStruct_023543a4 *w) {
     w->unk1C = w->x;
     w->unk20 = w->y;
     w->unk24 = w->z;
-    func_02000dfc(&m);
-    func_02000e98(&r, SIN_023543a4((u16)w->unk8), COS_023543a4((u16)w->unk8));
-    func_02000f34(&m, &r, &m);
+    MTX_Identity33_(&m);
+    MTX_RotZ33_(&r, SIN_023543a4((u16)w->unk8), COS_023543a4((u16)w->unk8));
+    MTX_Concat33(&m, &r, &m);
     MTX_RotY33_(&r, SIN_023543a4((u16)-(w->unk3 << 8)), COS_023543a4((u16)-(w->unk3 << 8)));
-    func_02000f34(&m, &r, &m);
+    MTX_Concat33(&m, &r, &m);
     VecSet_023543a4(&v, w->unkC << 4, 0, 0);
-    func_02000eb0(&v, &m, &v);
+    MTX_MultVec33(&v, &m, &v);
     w->x = w->unk3E8->x - (v.x >> 4);
     w->y = w->unk3E8->y - (v.y >> 4);
     w->z = w->unk3E8->z - (v.z >> 4);

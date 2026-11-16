@@ -34,7 +34,7 @@ void func_020212e0(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-s32 func_02025e8c(void *p);
+s32 NNS_G3dGetTex(void *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 UnkStruct_022f9580 *BossFPartDD_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -72,7 +72,7 @@ UnkStruct_022f9580 *BossFPartDD_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     Model_Init(sub, 0);
     Model_SetResource(sub, w->unk20C, 0);
     Model_SetAnimation(sub, 1, w->unk210, 0, 0);
-    Model_SetAnimation(sub, 2, w->unk214, 0, func_02025e8c(w->unk20C));
+    Model_SetAnimation(sub, 2, w->unk214, 0, NNS_G3dGetTex(w->unk20C));
     sub->unk114 = 0x1800;
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     sub->unkA = 0x13;

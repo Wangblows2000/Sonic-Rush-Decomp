@@ -15,8 +15,8 @@ extern u8 data_02089264[];
 extern u8 data_02087d2c[];
 extern u8 data_02087d3c[];
 
-void func_02000cb4(UnkMtx22_022d4ff0 *m);
-void func_02003d94(void *dst, UnkMtx22_022d4ff0 *m, s32 a, s32 b, s32 c, s32 d);
+void MTX_Identity22_(UnkMtx22_022d4ff0 *m);
+void G2x_SetBGyAffine_(void *dst, UnkMtx22_022d4ff0 *m, s32 a, s32 b, s32 c, s32 d);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 
 #pragma thumb on
@@ -29,7 +29,7 @@ void func_ov001_022d4ff0(void) {
     vu32 z5;
     UnkMtx22_022d4ff0 m;
 
-    func_02000cb4(&m);
+    MTX_Identity22_(&m);
     gDisplayMain.v[0] = 0;
     gDisplayMain.v[1] = 0;
     gDisplayMain.v[2] = 0;
@@ -38,8 +38,8 @@ void func_ov001_022d4ff0(void) {
     gDisplayMain.v[5] = 0;
     gDisplayMain.v[6] = 0;
     gDisplayMain.v[7] = 0;
-    func_02003d94(data_02089254, &m, 0, 0, 0, 0);
-    func_02003d94(data_02089264, &m, 0, 0, 0, 0);
+    G2x_SetBGyAffine_(data_02089254, &m, 0, 0, 0, 0);
+    G2x_SetBGyAffine_(data_02089264, &m, 0, 0, 0, 0);
     gDisplaySub.v[0] = 0;
     gDisplaySub.v[1] = 0;
     gDisplaySub.v[2] = 0;
@@ -48,8 +48,8 @@ void func_ov001_022d4ff0(void) {
     gDisplaySub.v[5] = 0;
     gDisplaySub.v[6] = 0;
     gDisplaySub.v[7] = 0;
-    func_02003d94(data_02087d2c, &m, 0, 0, 0, 0);
-    func_02003d94(data_02087d3c, &m, 0, 0, 0, 0);
+    G2x_SetBGyAffine_(data_02087d2c, &m, 0, 0, 0, 0);
+    G2x_SetBGyAffine_(data_02087d3c, &m, 0, 0, 0, 0);
     z0 = 0;
     MIi_CpuClear32(z0, (void *)0x6000000, 0x80000);
     z1 = 0;

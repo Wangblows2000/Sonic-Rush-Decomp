@@ -4,7 +4,7 @@ extern void *gSystemHeap;
 extern u32 gSaveData;
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -14,7 +14,7 @@ BOOL SaveData_Compare(void *a, u8 *p);
 
 static inline u8 *Alloc_02058e34(u32 size) {
     u8 *p = Heap_Alloc(gSystemHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -26,7 +26,7 @@ static inline u8 *Alloc_02058e34(u32 size) {
 }
 
 static inline void Free_02058e34(u8 *p) {
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         u32 size;
         p -= 0x20;
         size = *(u32 *)p;
@@ -43,7 +43,7 @@ BOOL SaveData_IsDirty(void) {
     u8 *p;
 
     p = Alloc_02058e34(0x340);
-    if (p == (u8 *)func_02006abc(0))
+    if (p == (u8 *)OS_GetArenaLo(0))
         return FALSE;
     {
         vu32 zero = 0;

@@ -52,15 +52,15 @@ extern s32 data_ov001_0231f524;
 extern s32 data_ov001_0231f520;
 extern s16 data_0206e470[];
 extern UnkStruct_0230063c_m44 data_02084d40;
-extern UnkStruct_0230063c_d38 data_02084d38;
+extern UnkStruct_0230063c_d38 NNS_G3dGlb;
 
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
 UnkStruct_0230063c_c *func_ov001_022f71f4(void);
 s32 func_0200225c(s32 n, s32 d);
-void func_02004b78(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, void *m);
+void G3i_FrustumW_(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, void *m);
 void Model_Animate(void *p);
 void Model_Draw(void *p);
 
@@ -96,12 +96,12 @@ void func_ov001_0230063c(UnkStruct_0230063c *w, UnkStruct_0230063c_a *a) {
     a->unk4C = -(data_ov001_0231f520 + (w->unk1C + w->unk34));
     a->unk50 = w->unk20 + w->unk38;
     MTX_RotY33_(&a->mtx, SIN(ang), COS(ang));
-    func_02000e60(&m, SIN(w->unk3C), COS(w->unk3C));
-    func_02000f34(&a->mtx, &m, &a->mtx);
+    MTX_RotX33_(&m, SIN(w->unk3C), COS(w->unk3C));
+    MTX_Concat33(&a->mtx, &m, &a->mtx);
     MTX_RotY33_(&m, SIN(w->unk3E), COS(w->unk3E));
-    func_02000f34(&a->mtx, &m, &a->mtx);
-    func_02000e98(&m, SIN(w->unk40), COS(w->unk40));
-    func_02000f34(&a->mtx, &m, &a->mtx);
+    MTX_Concat33(&a->mtx, &m, &a->mtx);
+    MTX_RotZ33_(&m, SIN(w->unk40), COS(w->unk40));
+    MTX_Concat33(&a->mtx, &m, &a->mtx);
     cam = fl & 1;
     if (cam) {
         c = func_ov001_022f71f4();
@@ -113,8 +113,8 @@ void func_ov001_0230063c(UnkStruct_0230063c *w, UnkStruct_0230063c_a *a) {
         a->unk48 = c->unk14;
         a->unk4C = c->unk18;
         saved = data_02084d40;
-        func_02004b78(x + dy, dy - x, dx - y, y + dx, c->unk4, c->unk8, 0x1000, 0, &data_02084d40);
-        data_02084d38.unkFC &= ~0x50;
+        G3i_FrustumW_(x + dy, dy - x, dx - y, y + dx, c->unk4, c->unk8, 0x1000, 0, &data_02084d40);
+        NNS_G3dGlb.unkFC &= ~0x50;
     }
     if (!(fl & 0x10000))
         Model_Animate(a);

@@ -25,7 +25,7 @@ void func_ov000_0235eab8(void);
 void func_ov000_0235ec68(void);
 BOOL func_ov000_0235cbd8(void);
 u8 *func_ov000_0235cd98(UnkStruct_0235f17c *w);
-void func_020078a4(void *p);
+void OS_GetMacAddress(void *p);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
 
 #pragma thumb on
@@ -65,7 +65,7 @@ UnkStruct_0235f17c *func_ov000_0235f17c(s32 a, s32 b, s32 c) {
     p[9] = 0;
     p[10] = 0;
     p[11] = 0;
-    func_020078a4(p + 6);
+    OS_GetMacAddress(p + 6);
     br = data_0208926c.unk8;
     if (br != -0x10 || br != 0x10) {
         data_0208926c.unk8 = -0x10;

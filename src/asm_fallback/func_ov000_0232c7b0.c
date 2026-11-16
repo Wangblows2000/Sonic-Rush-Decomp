@@ -7,7 +7,7 @@ extern u32 gActComArchive;
 extern u32 data_ov000_02368040;
 extern u32 data_ov000_0236a98c;
 extern u32 data_ov000_0236aa18;
-extern void func_02006abc(void);
+extern void OS_GetArenaLo(void);
 extern void AnimatorSprite_Init(void);
 extern void Task_Create(void);
 extern void SpritePair_SetOAMOrder(void);
@@ -45,7 +45,7 @@ asm void func_ov000_0232c7b0(void)
     bl Task_Create
     mov r4, r0
     mov r0, #0
-    bl func_02006abc
+    bl OS_GetArenaLo
     cmp r4, r0
     addeq sp, sp, #0x24
     ldmeqia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}

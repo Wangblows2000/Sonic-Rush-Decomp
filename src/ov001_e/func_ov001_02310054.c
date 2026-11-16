@@ -13,8 +13,8 @@ typedef struct UnkStruct_02310054 {
 
 extern u8 data_02084d84[];
 
-void func_02001558(UnkStruct_02310054_v *v, void *m, UnkStruct_02310054_v *out);
-BOOL func_020254d4(UnkStruct_02310054_v *v, s32 *x, s32 *y);
+void MTX_MultVec43(UnkStruct_02310054_v *v, void *m, UnkStruct_02310054_v *out);
+BOOL NNS_G3dWorldPosToScrPos(UnkStruct_02310054_v *v, s32 *x, s32 *y);
 
 BOOL func_ov001_02310054(UnkStruct_02310054 *p) {
     s32 sx;
@@ -25,8 +25,8 @@ BOOL func_ov001_02310054(UnkStruct_02310054 *p) {
         return TRUE;
     if (p->pos.x > 0x64000 || p->pos.x < -0x64000)
         return TRUE;
-    func_02001558(&p->pos, data_02084d84, &out);
-    if (out.z != 0 && !func_020254d4(&p->pos, &sx, &sy))
+    MTX_MultVec43(&p->pos, data_02084d84, &out);
+    if (out.z != 0 && !NNS_G3dWorldPosToScrPos(&p->pos, &sx, &sy))
         return FALSE;
     if (p->pos.z > 0x19000)
         return TRUE;

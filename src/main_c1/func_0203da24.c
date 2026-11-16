@@ -30,13 +30,13 @@ extern u8 data_0207806c[];
 extern UnkCtx_0203da24 data_022b8be0;
 extern UnkData_0203da24 data_022b9020;
 
-void *func_0200b828(void *name, s32 a);
+void *FS_FindArchive(void *name, s32 a);
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
-void func_02005c48(s32 a);
-BOOL func_0200bbec(void *f, void *arc, u32 top, u32 bottom, u32 id);
-s32 func_0200b99c(void *f, void *buf, u32 size);
-BOOL func_0200bad8(void *f);
+void OS_SleepThread(s32 a);
+BOOL FS_OpenFileDirect(void *f, void *arc, u32 top, u32 bottom, u32 id);
+s32 FS_ReadFile(void *f, void *buf, u32 size);
+BOOL FS_CloseFile(void *f);
 void func_0203d560(UnkData_0203da24 *d, UnkNode_0203da24 *n, s32 a);
 void func_0203d2d0(UnkData_0203da24 *d, UnkNode_0203da24 *n);
 
@@ -46,7 +46,7 @@ void func_0203da24(void)
     u32 e;
     s32 i;
     UnkNode_0203da24 *n;
-    arc = func_0200b828(data_0207806c, 3);
+    arc = FS_FindArchive(data_0207806c, 3);
 
     for (;;) {
         e = OS_DisableInterrupts();
@@ -55,14 +55,14 @@ void func_0203da24(void)
                 OS_RestoreInterrupts(e);
                 return;
             }
-            func_02005c48(0);
+            OS_SleepThread(0);
         }
         OS_RestoreInterrupts(e);
         if (n->unk7c == 1) {
-            func_0200bbec(n->file38, arc, n->unk8c, n->unk8c + n->unk90, n->unk88);
+            FS_OpenFileDirect(n->file38, arc, n->unk8c, n->unk8c + n->unk90, n->unk88);
             for (i = 0; i < 2; i++) {
                 n->unka0[i] = i * 0x400;
-                func_0200b99c(n->file38, n->bufc0[i], 0x400);
+                FS_ReadFile(n->file38, n->bufc0[i], 0x400);
             }
             n->unk94 = 0;
             n->unk9c = 1;
@@ -71,7 +71,7 @@ void func_0203da24(void)
             func_0203d560(&data_022b9020, n, 1);
             OS_RestoreInterrupts(e);
         } else {
-            func_0200bad8(n->file38);
+            FS_CloseFile(n->file38);
             e = OS_DisableInterrupts();
             func_0203d2d0(&data_022b9020, n);
             OS_RestoreInterrupts(e);

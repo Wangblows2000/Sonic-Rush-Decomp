@@ -53,7 +53,7 @@ void func_020212e0(void *f);
 void Model_Init(void *o, s32 a);
 void Model_SetResource(void *o, void *r, s32 a);
 void Model_SetAnimation(void *o, s32 a, void *r, s32 b, s32 c);
-void func_02004084(void *a);
+void G3X_SetEdgeColorTable(void *a);
 void func_02022270(s32 a, u16 b);
 
 #pragma thumb on
@@ -102,7 +102,7 @@ void func_ov000_02357148(UnkStruct_02357148 *w) {
     w->unk1A8 = 0;
     w->unk2B8 |= 4;
     w->unk2B8 |= 4;
-    func_02004084(data_ov000_02364eb8);
+    G3X_SetEdgeColorTable(data_ov000_02364eb8);
     func_02022270(0, data_ov000_02364eb0[0]);
     func_02022270(1, data_ov000_02364eb0[1]);
     func_02022270(2, data_ov000_02364eb0[2]);

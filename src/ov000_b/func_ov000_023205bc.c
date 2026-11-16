@@ -11,7 +11,7 @@ UnkStruct_EffObj *func_ov000_023205bc(UnkStruct_StageObj *arg) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0x4ff, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

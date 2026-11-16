@@ -25,7 +25,7 @@ UnkStruct_0230ca50 *Glider_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u16 i;
 
     task = Task_Create(StageObj_Main, MapObject_Destructor, 0, 0x800, 2, sizeof(UnkStruct_0230ca50));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

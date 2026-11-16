@@ -78,9 +78,9 @@ extern const UnkAff4_0206aa38 data_0207cf84;
 u16 *Oam_AllocObj(s32 engine, u16 prio);
 u16 Oam_GetAffineIndex(u32 engine, UnkMtx22_0206aa38 *mtx);
 void AnimatorSprite_Draw(UnkSpr_0206aa38 *spr);
-fx32 func_02002240(fx32 x);
-void func_02000cb4(UnkMtx22_0206aa38 *m);
-void func_02000d98(const UnkMtx22_0206aa38 *pSrc, UnkMtx22_0206aa38 *pDst, fx32 x, fx32 y);
+fx32 FX_Inv(fx32 x);
+void MTX_Identity22_(UnkMtx22_0206aa38 *m);
+void MTX_ScaleApply22(const UnkMtx22_0206aa38 *pSrc, UnkMtx22_0206aa38 *pDst, fx32 x, fx32 y);
 
 static inline fx32 FX_Mul_0206aa38(fx32 a, fx32 b) {
     return (fx32)(((s64)a * b + 0x800) >> 12);
@@ -141,17 +141,17 @@ void func_0206aa38(UnkSpr_0206aa38 *spr, UnkPos_0206aa38 *pos, fx32 sx, fx32 sy)
         AnimatorSprite_Draw(spr);
         return;
     }
-    ix = func_02002240(sx);
-    iy = func_02002240(sy);
-    func_02000cb4(&mtx[0]);
-    func_02000d98(&mtx[0], &inv[1], -ix, iy);
-    func_02000d98(&mtx[0], &mtx[1], -sx, sy);
-    func_02000d98(&mtx[0], &inv[2], ix, -iy);
-    func_02000d98(&mtx[0], &mtx[2], sx, -sy);
-    func_02000d98(&mtx[0], &inv[3], -ix, -iy);
-    func_02000d98(&mtx[0], &mtx[3], -sx, -sy);
-    func_02000d98(&mtx[0], &inv[0], ix, iy);
-    func_02000d98(&mtx[0], &mtx[0], sx, sy);
+    ix = FX_Inv(sx);
+    iy = FX_Inv(sy);
+    MTX_Identity22_(&mtx[0]);
+    MTX_ScaleApply22(&mtx[0], &inv[1], -ix, iy);
+    MTX_ScaleApply22(&mtx[0], &mtx[1], -sx, sy);
+    MTX_ScaleApply22(&mtx[0], &inv[2], ix, -iy);
+    MTX_ScaleApply22(&mtx[0], &mtx[2], sx, -sy);
+    MTX_ScaleApply22(&mtx[0], &inv[3], -ix, -iy);
+    MTX_ScaleApply22(&mtx[0], &mtx[3], -sx, -sy);
+    MTX_ScaleApply22(&mtx[0], &inv[0], ix, iy);
+    MTX_ScaleApply22(&mtx[0], &mtx[0], sx, sy);
     bx = spr->x;
     by = spr->y;
     shift = gDisplayTable[spr->engine]->shift;

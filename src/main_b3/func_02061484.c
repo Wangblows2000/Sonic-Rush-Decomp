@@ -11,14 +11,14 @@ extern void *gMainHeap;
 
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void ObjVram_Free(s32 a, void *b);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 
 #pragma thumb on
 static inline void Free_02061484(u8 *blk) {
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;

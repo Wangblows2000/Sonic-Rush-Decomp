@@ -21,7 +21,7 @@ void func_ov000_0232fc10(UnkStruct_StageObj *arg) {
     if (data_ov000_0236a984 != NULL)
         return;
     task = Task_Create(StageObj_Main, func_ov000_0232fbf4, 0, 0xf6, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     data_ov000_0236a984 = task;
     w = task->work;

@@ -110,14 +110,14 @@ typedef struct UnkStruct_022d3568_7 {
 extern UnkStruct_022d3568_p *gPlayers;
 extern UnkStruct_022d3568_7 data_ov000_02369ac0;
 
-s32 func_02002094(s32 a, s32 b);
-void func_0201c070(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void func_ov000_022d2920(UnkStruct_022d3568 *s, s32 mode);
 void func_ov000_022d2ccc(UnkStruct_022d3568 *s);
 void func_ov000_022d32c0(UnkStruct_022d3568 *s);
 
 static inline s32 Lerp(s32 a, s32 b) {
-    return func_02002094(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
+    return FX_DivS32(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
 }
 
 static inline s32 GetDist(UnkStruct_022d3568 *s) {
@@ -150,7 +150,7 @@ void func_ov000_022d3568(UnkStruct_022d3568 *s) {
     if (s->unk12F4 <= 0) {
         s->func = func_ov000_022d2ccc;
         s->unk146C = 0;
-        func_0201c070(s->unk1450, 0);
+        NNS_SndPlayerStopSeq(s->unk1450, 0);
         return;
     }
     if (s->unk1470 == 0 && (x->unk10C & 2)) {

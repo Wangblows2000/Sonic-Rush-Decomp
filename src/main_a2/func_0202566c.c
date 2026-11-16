@@ -3,25 +3,25 @@
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 
-void *func_02025ecc(u32 *res);
-void *func_02025e8c(u32 *res);
-void func_020214f0(void *mdlSet);
-u32 func_02021a44(void *tex);
-void func_02021ae4(void *tex, u32 *k1, u32 *k2);
+void *NNS_G3dGetMdlSet(u32 *res);
+void *NNS_G3dGetTex(u32 *res);
+void NNS_G3dReleaseMdlSet(void *mdlSet);
+u32 NNS_G3dPlttReleasePlttKey(void *tex);
+void NNS_G3dTexReleaseTexKey(void *tex, u32 *k1, u32 *k2);
 
 void func_0202566c(u32 *res) {
     switch (*res) {
     case 0x30444D42: {
-        void *mdlSet = func_02025ecc(res);
-        if (func_02025e8c(res) != NULL) func_020214f0(mdlSet);
+        void *mdlSet = NNS_G3dGetMdlSet(res);
+        if (NNS_G3dGetTex(res) != NULL) NNS_G3dReleaseMdlSet(mdlSet);
     }
     case 0x30585442: {
-        void *tex = func_02025e8c(res);
+        void *tex = NNS_G3dGetTex(res);
         if (tex != NULL) {
-            u32 texKey = func_02021a44(tex);
+            u32 texKey = NNS_G3dPlttReleasePlttKey(tex);
             u32 k1;
             u32 k2;
-            func_02021ae4(tex, &k1, &k2);
+            NNS_G3dTexReleaseTexKey(tex, &k1, &k2);
             if (texKey != 0) NNS_GfdDefaultFuncFreePlttVram(texKey);
             if (k2 != 0) NNS_GfdDefaultFuncFreeTexVram(k2);
             if (k1 != 0) NNS_GfdDefaultFuncFreeTexVram(k1);

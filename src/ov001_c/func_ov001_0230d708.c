@@ -40,7 +40,7 @@ extern UnkStruct_0230d708_t data_ov001_0231722c[];
 extern UnkStruct_0230d708_t data_ov001_02317238[];
 
 BOOL func_ov001_0230d150(void);
-void func_02025268(u32 op, const u32 *args, u32 n);
+void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
 void Model_Draw(void *o);
 
 void func_ov001_0230d708(void) {
@@ -58,27 +58,27 @@ void func_ov001_0230d708(void) {
     m = g->mtx;
     ((void (*)(UnkStruct_0230d708_m *))data_ov001_02317238[g->type].unk0)(&m);
     g->mtxA4C = m;
-    func_02025268(0x15, 0, 0);
-    func_02025268(0x11, 0, 0);
-    func_02025268(0x19, (u32 *)&m, 0xc);
+    NNS_G3dGeBufferOP_N(0x15, 0, 0);
+    NNS_G3dGeBufferOP_N(0x11, 0, 0);
+    NNS_G3dGeBufferOP_N(0x19, (u32 *)&m, 0xc);
     a = 0x1e;
-    func_02025268(0x13, &a, 1);
+    NNS_G3dGeBufferOP_N(0x13, &a, 1);
     ((void (*)(void *))data_ov001_0231722c[g->type].unk0)(&g->type);
     one = 1;
-    func_02025268(0x12, &one, 1);
+    NNS_G3dGeBufferOP_N(0x12, &one, 1);
     for (e = g->head; e != (UnkStruct_0230d708_e *)g->sentinel; e = e->next) {
         if (e->flags & 1)
             continue;
         m2 = e->mtx;
         data_ov001_02317224[e->type].fnC(&m2);
-        func_02025268(0x15, 0, 0);
-        func_02025268(0x11, 0, 0);
-        func_02025268(0x19, (u32 *)&m2, 0xc);
+        NNS_G3dGeBufferOP_N(0x15, 0, 0);
+        NNS_G3dGeBufferOP_N(0x11, 0, 0);
+        NNS_G3dGeBufferOP_N(0x19, (u32 *)&m2, 0xc);
         b = 0x1e;
-        func_02025268(0x13, &b, 1);
+        NNS_G3dGeBufferOP_N(0x13, &b, 1);
         data_ov001_02317224[e->type].fn8(e);
         one2 = 1;
-        func_02025268(0x12, &one2, 1);
+        NNS_G3dGeBufferOP_N(0x12, &one2, 1);
     }
     Model_Draw(g->obj8C4);
 }

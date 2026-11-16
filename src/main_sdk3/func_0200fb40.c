@@ -20,7 +20,7 @@ typedef struct {
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void DC_FlushRange(const void *p, u32 size);
 extern void DC_WaitWriteBufferEmpty(void);
-extern BOOL func_020103f0(UnkCardCommon_0200fb40 *p, u32 req, u32 retry);
+extern BOOL CARDi_Request(UnkCardCommon_0200fb40 *p, u32 req, u32 retry);
 extern void func_0200fcb8(UnkCardCommon_0200fb40 *p);
 
 void func_0200fb40(UnkCardCommon_0200fb40 *p)
@@ -39,7 +39,7 @@ void func_0200fb40(UnkCardCommon_0200fb40 *p)
         p->cmd->src = (u32)buf;
         p->cmd->dst = p->dst;
         p->cmd->len = len;
-        if (!func_020103f0(p, 8, 10)) {
+        if (!CARDi_Request(p, 8, 10)) {
             break;
         }
         p->src += len;

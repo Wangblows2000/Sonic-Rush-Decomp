@@ -51,7 +51,7 @@ extern u16 data_ov001_023167f8[];
 
 void func_ov001_022ef8c0(void);
 void Model_SetAnimation(UnkStruct_022efa00_o *o, u32 slot, void *res, u32 idx, void *tex);
-s32 func_02002094(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
 void func_ov001_022ffb9c(s32 a, void *b, s32 *c, u16 *d, u16 *e, s32 n);
 
 static inline u16 Rand(void) {
@@ -91,8 +91,8 @@ void func_ov001_022efa00(UnkStruct_022efa00 *p) {
         o2->unk110 |= 4;
         o2->unk114 = 0x1000;
         r = Rand();
-        p->unk50 = func_02002094(0x100000 - p->unk18, 0xb4);
-        p->unk54 = func_02002094(data_ov001_02316820[r & 7] + 0xc0000 - p->unk1C, 0xb4);
+        p->unk50 = FX_DivS32(0x100000 - p->unk18, 0xb4);
+        p->unk54 = FX_DivS32(data_ov001_02316820[r & 7] + 0xc0000 - p->unk1C, 0xb4);
         p->unk1D0 = 0xb4;
     } else {
         i = 1;

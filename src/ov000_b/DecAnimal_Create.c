@@ -42,7 +42,7 @@ extern char data_ov000_023672a0[];
 
 void DecAnimal_Destructor(void);
 void Decoration_InitFromMap(void *w, void *p, s32 a, s32 b);
-void func_0202a2f0(char *buf, const char *fmt, ...);
+void sprintf(char *buf, const char *fmt, ...);
 BOOL func_ov000_02345758(s32 x, s32 y);
 void func_ov000_0231df98(UnkStruct_0231e324 *w);
 
@@ -55,7 +55,7 @@ UnkStruct_0231e324 *DecAnimal_Create(void *p, s32 a, s32 b) {
     UnkStruct_0231e324_Param *q;
 
     task = Task_Create(StageObj_Main, DecAnimal_Destructor, 0, 0x500, 4, sizeof(UnkStruct_0231e324));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     gDecAnimalCount++;
     w = task->work;
@@ -65,7 +65,7 @@ UnkStruct_0231e324 *DecAnimal_Create(void *p, s32 a, s32 b) {
     n = w->unk184->unk2;
     if (n == 0x87)
         n = 0xf;
-    func_0202a2f0(buf, data_ov000_023672a0, n + 1);
+    sprintf(buf, data_ov000_023672a0, n + 1);
     StageObj_Load2dBAC(w, buf, 0xffff, &data_ov000_0236a3c4[n], gZoneActArchive);
     StageObj_AllocSpritePalette(w, 0, 0x12);
     StageObj_SetOAMOrder(w, 0x12);

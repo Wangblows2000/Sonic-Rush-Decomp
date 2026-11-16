@@ -25,9 +25,9 @@ extern UnkStruct_023428dc_T *gTaskCurrent;
 extern u8 gBGMVolume;
 extern u32 gSystemFlags;
 
-void func_0201c070(void *spr, s32 a);
-void func_0201bf1c(void *spr);
-void func_0201bfac(void *spr, s32 a);
+void NNS_SndPlayerStopSeq(void *spr, s32 a);
+void NNS_SndHandleReleaseSeq(void *spr);
+void NNS_SndPlayerPause(void *spr, s32 a);
 void func_0204c598(u8 a, s32 b, u32 c);
 void Task_Destroy(void *task);
 
@@ -37,24 +37,24 @@ void func_ov000_023428dc(void) {
     switch (w->state) {
     case 0x16:
         if (w->pl->unk3B4 == 0x5A) {
-            func_0201c070(w->spr, 0x5A);
-            func_0201bf1c(w->spr);
+            NNS_SndPlayerStopSeq(w->spr, 0x5A);
+            NNS_SndHandleReleaseSeq(w->spr);
             func_0204c598(gBGMVolume, 0x5A, w->pl->unk32C & 0x4000000);
             Task_Destroy(gTaskCurrent);
         } else if (w->pl->unk3B4 == 0) {
-            func_0201c070(w->spr, 0);
+            NNS_SndPlayerStopSeq(w->spr, 0);
             func_0204c598(gBGMVolume, 0, w->pl->unk32C & 0x4000000);
             Task_Destroy(gTaskCurrent);
         }
         break;
     case 0x17:
         if (gSystemFlags & 8) {
-            func_0201bfac(w->spr, 1);
+            NNS_SndPlayerPause(w->spr, 1);
         } else {
-            func_0201bfac(w->spr, 0);
+            NNS_SndPlayerPause(w->spr, 0);
         }
         if (w->pl->unk3CA == 0) {
-            func_0201c070(w->spr, 0);
+            NNS_SndPlayerStopSeq(w->spr, 0);
             func_0204c598(gBGMVolume, 0x3C, w->pl->unk32C & 0x4000000);
             Task_Destroy(gTaskCurrent);
         }

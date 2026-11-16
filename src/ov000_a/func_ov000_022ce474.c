@@ -49,7 +49,7 @@ extern u16 data_ov000_02362ddc[];
 extern u32 data_ov000_0236510c[];
 extern u16 data_ov000_02362dcc[];
 
-s32 func_020021f0(s32 a);
+s32 FX_Sqrt(s32 a);
 void ObjRect_Register(UnkStruct_022ce474_h *h);
 void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 

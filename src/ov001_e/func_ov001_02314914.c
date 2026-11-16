@@ -19,8 +19,8 @@ typedef struct UnkStruct_02314914_e {
 extern UnkStruct_02314914_e *data_ov001_0231f6a4;
 extern s16 data_0206e470[];
 
-s32 func_02002278(UnkStruct_02314914_v *a, UnkStruct_02314914_v *b);
-void func_02002300(s32 d, UnkStruct_02314914_v *dir, UnkStruct_02314914_v *a, UnkStruct_02314914_v *out);
+s32 VEC_Distance(UnkStruct_02314914_v *a, UnkStruct_02314914_v *b);
+void VEC_MultAdd(s32 d, UnkStruct_02314914_v *dir, UnkStruct_02314914_v *a, UnkStruct_02314914_v *out);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -42,9 +42,9 @@ void func_ov001_02314914(s32 idx, s32 dlat, s16 dlon) {
     else if (v < 0x40)
         v = 0x40;
     e->lat = v;
-    d = func_02002278(&e->pos, &e->target);
+    d = VEC_Distance(&e->pos, &e->target);
     dir.x = FX_Mul(SIN(e->lat), SIN(e->lon));
     dir.y = COS(e->lat);
     dir.z = FX_Mul(SIN(e->lat), COS(e->lon));
-    func_02002300(d, &dir, &e->target, &e->pos);
+    VEC_MultAdd(d, &dir, &e->target, &e->pos);
 }

@@ -34,9 +34,9 @@ typedef struct UnkStruct_022de774_m {
 extern volatile u16 gPad;
 extern s16 data_0206e470[];
 
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -61,9 +61,9 @@ void func_ov001_022de774(UnkStruct_022de774_p *p, UnkStruct_022de774 *w) {
                 w->ang[i][1] -= 0x100;
             if (gPad & 0x100)
                 w->ang[i][1] += 0x100;
-            func_02000e60(&m1, data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2], data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2 + 1]);
+            MTX_RotX33_(&m1, data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2], data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2 + 1]);
             MTX_RotY33_(&m2, data_0206e470[((w->ang[i][1] & 0xffff) >> 4) * 2], data_0206e470[((w->ang[i][1] & 0xffff) >> 4) * 2 + 1]);
-            func_02000f34(&m1, &m2, &w->sub[i]);
+            MTX_Concat33(&m1, &m2, &w->sub[i]);
             if (gPad & 4)
                 w->rot[i] -= 0x200;
             if (gPad & 8)
@@ -83,9 +83,9 @@ void func_ov001_022de774(UnkStruct_022de774_p *p, UnkStruct_022de774 *w) {
             else
                 w->vel[i].y += 0x10;
             w->vec[i].y += w->vel[i].y;
-            func_02000e60(&m3, data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2], data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2 + 1]);
+            MTX_RotX33_(&m3, data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2], data_0206e470[((w->ang[i][0] & 0xffff) >> 4) * 2 + 1]);
             MTX_RotY33_(&m4, data_0206e470[((w->ang[i][1] & 0xffff) >> 4) * 2], data_0206e470[((w->ang[i][1] & 0xffff) >> 4) * 2 + 1]);
-            func_02000f34(&m3, &m4, &w->sub[i]);
+            MTX_Concat33(&m3, &m4, &w->sub[i]);
             w->rot[i] += 0x100;
             w->vec[i].z = FX_Mul(data_0206e470[(w->rot[i] >> 4) * 2 + 1], 0x4000);
             w->vec[i].x = FX_Mul(data_0206e470[(w->rot[i] >> 4) * 2], 0x4000);

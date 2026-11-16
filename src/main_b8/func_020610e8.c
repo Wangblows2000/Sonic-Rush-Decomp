@@ -18,16 +18,16 @@ typedef struct {
     UnkSlot_020610e8 slot;
 } UnkWork_020610e8;
 
-void func_0201c070(void *a, s32 b);
-void func_0201bf1c(void *a);
+void NNS_SndPlayerStopSeq(void *a, s32 b);
+void NNS_SndHandleReleaseSeq(void *a);
 
 #pragma thumb on
 void func_020610e8(UnkWork_020610e8 *w) {
     UnkSlot_020610e8 *s = &w->slot;
 
     if (w->slot.def != NULL && *s->anim != NULL && (w->slot.def->flags & 2)) {
-        func_0201c070(s->anim, 0);
-        func_0201bf1c(s->anim);
+        NNS_SndPlayerStopSeq(s->anim, 0);
+        NNS_SndHandleReleaseSeq(s->anim);
     }
     s->def = NULL;
     w->flags &= ~0x100;

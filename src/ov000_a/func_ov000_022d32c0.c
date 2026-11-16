@@ -108,8 +108,8 @@ typedef struct UnkStruct_022d32c0_7 {
 extern UnkStruct_022d32c0_p *gPlayers;
 extern UnkStruct_022d32c0_7 data_ov000_02369ac0;
 
-s32 func_02002094(s32 a, s32 b);
-void func_0201c070(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022d2920(UnkStruct_022d32c0 *s, s32 mode);
 void func_ov000_022d31c4(UnkStruct_022d32c0 *s);
@@ -130,7 +130,7 @@ static inline s32 Ease(s32 t) {
 }
 
 static inline s32 Lerp(s32 a, s32 b) {
-    return func_02002094(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
+    return FX_DivS32(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
 }
 
 void func_ov000_022d32c0(UnkStruct_022d32c0 *s) {
@@ -179,7 +179,7 @@ void func_ov000_022d32c0(UnkStruct_022d32c0 *s) {
         z->unk114 = Lerp(0xccc, 0x1333);
         y->unk114 = z->unk114;
         x->unk114 = y->unk114;
-        func_0201c070(s->unk1450, 0);
+        NNS_SndPlayerStopSeq(s->unk1450, 0);
         func_020366f4(0, 0, 0xd0);
     }
 }

@@ -4,11 +4,11 @@ typedef struct { u32 param; u32 extra; } UnkTexData_020282b0;
 typedef struct { u8 unk0[8]; u32 vramKey; u8 unkC[0xC]; u32 vramKey4x4; u8 unk1C[0x20]; u8 dict[4]; } UnkTex_020282b0;
 typedef struct { u8 unk0[0x10]; u32 prmTexImage; u8 unk14[0x18]; u16 origW; u16 origH; fx32 magW; fx32 magH; } UnkMatResult_020282b0;
 
-UnkTexData_020282b0 *func_0202603c(void *dict, const void *name);
+UnkTexData_020282b0 *NNS_G3dGetResDataByName(void *dict, const void *name);
 fx32 func_0200225c(fx32 a, fx32 b);
 
 void func_020282b0(UnkTex_020282b0 *tex, const void *name, UnkMatResult_020282b0 *res) {
-    UnkTexData_020282b0 *d = func_0202603c(tex->dict, name);
+    UnkTexData_020282b0 *d = NNS_G3dGetResDataByName(tex->dict, name);
     u32 base;
     u32 w;
     u32 h;

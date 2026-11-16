@@ -5,7 +5,7 @@
 
 extern u8 gSysSound[];
 extern u8 gBGMVolume[];
-s32 func_0201be98();
+s32 NNS_SndPlayerSetVolume();
 
 void SysSound_SetBGMVolume(s32 p0) {
     s32 t0 = *(u32 *)gSysSound;
@@ -13,7 +13,7 @@ void SysSound_SetBGMVolume(s32 p0) {
         s32 t1 = *(u8 *)gBGMVolume;
         if ((s32)p0 != t1) {
             *(u8 *)gBGMVolume = p0;
-            func_0201be98((t0 + 0x14), p0, gBGMVolume, t1);
+            NNS_SndPlayerSetVolume((t0 + 0x14), p0, gBGMVolume, t1);
         }
     }
 }

@@ -2,14 +2,14 @@
 #include <main_sdk2/wm.h>
 
 void DC_InvalidateRange(void *p, u32 size);
-s32 func_02011314(void);
-s32 func_02011400(void);
+s32 WM_GetMPReceiveBufferSize(void);
+s32 WM_GetMPSendBufferSize(void);
 
 s32 func_02011dcc(void *cb, u16 *recvBuf, u16 recvBufSize, u16 *sendBuf, u16 sendBufSize, u16 mpFreq,
                   u16 retry, BOOL minPoll, BOOL single, BOOL fixFreq, BOOL ignoreFatal)
 {
     UnkWmWork *w = func_02010b70();
-    s32 r = func_02010a50(2, 7, 8);
+    s32 r = WMi_CheckStateEx(2, 7, 8);
     u8 *p;
     if (r != 0) {
         return r;
@@ -24,7 +24,7 @@ s32 func_02011dcc(void *cb, u16 *recvBuf, u16 recvBufSize, u16 *sendBuf, u16 sen
     if (*(u32 *)(w->unk4 + 0xc) == 1) {
         return 3;
     }
-    if (recvBufSize < func_02011314()) {
+    if (recvBufSize < WM_GetMPReceiveBufferSize()) {
         return 6;
     }
     if (recvBufSize & 0x3f) {
@@ -32,7 +32,7 @@ s32 func_02011dcc(void *cb, u16 *recvBuf, u16 recvBufSize, u16 *sendBuf, u16 sen
     }
     {
         s32 s = sendBufSize;
-        if (s < func_02011400()) {
+        if (s < WM_GetMPSendBufferSize()) {
             return 6;
         }
         if (s & 0x1f) {

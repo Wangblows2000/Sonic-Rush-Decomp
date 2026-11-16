@@ -40,16 +40,16 @@ extern UnkInfo_022dd93c gGameLanguage;
 extern u16 data_02072cbc[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 s32 func_ov001_022ddac0(void *p);
 u32 func_ov001_022ddab4(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 s32 ObjVram_Alloc(s32 a, s32 b);
@@ -61,7 +61,7 @@ void func_ov001_022d9a54(void *p, u16 *tbl, u16 n);
 #pragma thumb on
 static inline u8 *Alloc_022dd93c(u32 size) {
     u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -83,13 +83,13 @@ void func_ov001_022dd93c(UnkWork_022dd93c *w) {
     p = w->buf;
     switch (func_ov001_022ddac0(f)) {
     case 0x10:
-        func_02008648(f, p);
+        MI_UncompressLZ16(f, p);
         break;
     case 0x20:
-        func_02008720(f, p);
+        MI_UncompressHuffman(f, p);
         break;
     case 0x30:
-        func_020087f8(f, p);
+        MI_UncompressRL16(f, p);
         break;
     default:
         Mem_Copy(Compress_GetData(f), p, func_ov001_022ddab4(f));

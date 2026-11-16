@@ -23,7 +23,7 @@ extern s32 data_02083df4;
 extern UnkEntry_0201c7cc data_02083e64[];
 extern u8 data_02083dfc[];
 
-BOOL func_020064a0(void *queue, void *msg, s32 flags);
+BOOL OS_SendMessage(void *queue, void *msg, s32 flags);
 void DC_InvalidateRange(void *p, u32 size);
 
 void func_0201c7cc(UnkStruct_0201c7cc *s) {
@@ -42,7 +42,7 @@ void func_0201c7cc(UnkStruct_0201c7cc *s) {
         e->offset = off;
         e->a = a;
         e->b = b;
-        func_020064a0(data_02083dfc, e, 0);
+        OS_SendMessage(data_02083dfc, e, 0);
         if (++data_02083df4 >= 8) data_02083df4 = 0;
     } else {
         DC_InvalidateRange(a, size);

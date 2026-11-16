@@ -21,8 +21,8 @@ typedef int code();
 
 extern unsigned char data_022c14a0[];
 int func_0203da24();
-int func_02005d5c();
-int func_02005ba0();
+int OS_CreateThread();
+int OS_WakeupThreadDirect();
 
 void func_0203d9d0(void)
 
@@ -33,7 +33,7 @@ void func_0203d9d0(void)
   iVar1 = ((int)data_022c14a0);
   iVar2 = ((int)data_022c14a0) + 0x400;
   *(undefined2 *)(((int)data_022c14a0) + 0x494) = 0;
-  func_02005d5c(iVar2,((int)func_0203da24),iVar1,iVar2,0x400,0xf);
-  func_02005ba0(iVar1 + 0x400);
+  OS_CreateThread(iVar2,((int)func_0203da24),iVar1,iVar2,0x400,0xf);
+  OS_WakeupThreadDirect(iVar1 + 0x400);
   return;
 }

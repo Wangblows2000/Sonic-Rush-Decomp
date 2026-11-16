@@ -37,7 +37,7 @@ s32 func_ov001_022c8b34(void);
 s32 func_ov001_022c8b30(void);
 s32 func_ov001_022c8b14(void);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void func_ov001_022cea0c(void);
@@ -54,7 +54,7 @@ void func_02052168(s32 a);
 #pragma thumb on
 static inline u8 *Alloc_022cecb8(u32 size) {
     u8 *blk = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, size);
         *(u32 *)blk = size;

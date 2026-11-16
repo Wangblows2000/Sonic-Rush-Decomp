@@ -22,7 +22,7 @@ extern UnkTask_020538d8 *gNaviMsgTask;
 extern UnkDisp_020538d8 *gDisplayTable[];
 
 void func_02052e1c(UnkWork_020538d8 *w);
-void func_02003d78(vu32 *p, u32 a, u32 b, u32 c, u32 d);
+void G2x_SetBlendAlpha_(vu32 *p, u32 a, u32 b, u32 c, u32 d);
 void func_02053b04(BOOL on);
 void func_02052e7c(void);
 
@@ -37,7 +37,7 @@ void func_020538d8(void) {
     w = gNaviMsgTask->work;
     func_02052e1c(w);
     w->fndc = func_02052e7c;
-    func_02003d78((vu32 *)0x04001050, 2, 4, 0, 0x1f);
+    G2x_SetBlendAlpha_((vu32 *)0x04001050, 2, 4, 0, 0x1f);
     gDisplayTable[1]->blendCnt = 0x442;
     gDisplayTable[1]->blendAlpha = 0x1f00;
     w->unkfc = 0;

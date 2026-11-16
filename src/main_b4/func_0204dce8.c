@@ -22,12 +22,12 @@ extern void *gSoundHeap;
 UnkTask_0204dce8 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_0204dbb8(void);
 void func_0204dccc(void);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void BrightnessFade_Create(s32 a, s32 b);
 void GameOver_Create(u16 c, s32 x, s32 a, s32 b, s32 i, s32 cur);
 void func_02036854(void *p);
-void func_0201e7cc(s32 a, void *b);
+void NNS_SndArcLoadGroup(s32 a, void *b);
 void Sound_PlaySeq(s32 a, s32 b);
 void ScreenShake_Create(void);
 
@@ -63,7 +63,7 @@ void func_0204dce8(void) {
     tbl = data_0207a144;
     wt = data_0207a0b4;
     t = Task_Create(func_0204dbb8, func_0204dccc, 7, 0x6100, 3, 4);
-    if (t == (UnkTask_0204dce8 *)func_02006abc(0))
+    if (t == (UnkTask_0204dce8 *)OS_GetArenaLo(0))
         return;
     {
         vu16 zero = 0;
@@ -98,7 +98,7 @@ void func_0204dce8(void) {
         }
     }
     func_02036854(data_0207a1d8);
-    func_0201e7cc(0xb, gSoundHeap);
+    NNS_SndArcLoadGroup(0xb, gSoundHeap);
     Sound_PlaySeq(0, 0x14);
     ScreenShake_Create();
 }

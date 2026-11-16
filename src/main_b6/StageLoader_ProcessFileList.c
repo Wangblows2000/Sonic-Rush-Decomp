@@ -33,7 +33,7 @@ typedef struct {
 
 extern UnkState_0204afc8 gStageLoader;
 
-char *func_0202c518(char *dst, const char *src);
+char *strcpy(char *dst, const char *src);
 UnkJob_0204afc8 *FileRequest_Create(const char *path, void *mem);
 s32 func_020491f4(s32 p0, s32 p1, s32 p2, s32 p3);
 u32 func_02042978(void);
@@ -53,7 +53,7 @@ s32 StageLoader_ProcessFileList(UnkArg_0204afc8 *arg, s32 flag) {
     switch (s->mode) {
     case 0:
         if (s->job == NULL) {
-            func_0202c518(s->path, e->name);
+            strcpy(s->path, e->name);
             if (e->init != NULL)
                 e->init(s);
             s->job = FileRequest_Create(s->path, e->getMem(s->path));
@@ -77,7 +77,7 @@ s32 StageLoader_ProcessFileList(UnkArg_0204afc8 *arg, s32 flag) {
         break;
     case 1:
         if (s->job == NULL) {
-            func_0202c518(s->path, e->name);
+            strcpy(s->path, e->name);
             if (e->init != NULL)
                 e->init(s);
             s->job = FileRequest_Create(s->path, e->getMem(s->path));

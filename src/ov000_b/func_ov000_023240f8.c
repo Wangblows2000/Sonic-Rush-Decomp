@@ -22,7 +22,7 @@ extern UnkStruct_0236a790 data_ov000_0236a790[];
 extern u8 data_ov000_023675e0[], data_ov000_023675f8[], data_ov000_0236a6f8[], data_ov000_0236a840[];
 
 void Decoration_Destructor(void);
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void Decoration_InitFromMap(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
 
 UnkStruct_023240f8 *func_ov000_023240f8(UnkStruct_ObjParam *p, s32 a, s32 b) {
@@ -32,7 +32,7 @@ UnkStruct_023240f8 *func_ov000_023240f8(UnkStruct_ObjParam *p, s32 a, s32 b) {
     s32 i;
 
     task = Task_Create(StageObj_Main, Decoration_Destructor, 0, 0x500, 4, sizeof(UnkStruct_023240f8));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;
@@ -44,7 +44,7 @@ UnkStruct_023240f8 *func_ov000_023240f8(UnkStruct_ObjParam *p, s32 a, s32 b) {
         StageObj_AllocSpritePalette(w, 0, 0x39);
         if (p->unk2 < 0x83) {
             i = p->unk2 - 0x67;
-            i -= func_02002094(i, 7) * 7;
+            i -= FX_DivS32(i, 7) * 7;
             StageObj_SetSharedSpriteVram(w, Res_GetElemVal(data_ov000_0236a6f0[0], i), &data_ov000_0236a790[i]);
             StageObj_SetAnimation(w, (u16)i);
             if (p->unk2 >= 0x6e)

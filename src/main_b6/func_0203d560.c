@@ -35,7 +35,7 @@ extern u8 data_02073214[];
 
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
-void func_02015354(void *p, u32 size, void *a, void *b, u32 c, s32 d);
+void WBT_RegisterBlock(void *p, u32 size, void *a, void *b, u32 c, s32 d);
 void func_0203d358(UnkData_0203d560 *s, UnkNode_0203d560 *n);
 
 void func_0203d560(UnkData_0203d560 *d, UnkNode_0203d560 *n) {
@@ -54,7 +54,7 @@ void func_0203d560(UnkData_0203d560 *d, UnkNode_0203d560 *n) {
             len = n->unk5c - n->unk58;
             if (len <= 0x400)
                 buf = n->bufc0;
-            func_02015354(n->unk4, id, data_02073214, buf, len, 0);
+            WBT_RegisterBlock(n->unk4, id, data_02073214, buf, len, 0);
             func_0203d358(d, n);
         }
         ent = d->ent;

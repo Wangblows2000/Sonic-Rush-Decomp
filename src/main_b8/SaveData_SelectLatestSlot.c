@@ -13,7 +13,7 @@ typedef struct {
 extern void *gSystemHeap;
 extern UnkData_02059054 gSaveState;
 
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -22,7 +22,7 @@ BOOL SaveData_ReadSlot(u8 idx, UnkSave_02059054 *buf);
 BOOL SaveData_VerifyChecksum(UnkSave_02059054 *buf);
 
 static inline void Free_02059054(u8 *p) {
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         u32 size;
         p -= 0x20;
         size = *(u32 *)p;
@@ -38,7 +38,7 @@ static inline void Free_02059054(u8 *p) {
 static inline u8 *Alloc_02059054(u32 sz) {
     u32 size = sz;
     u8 *p = Heap_Alloc(gSystemHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -59,7 +59,7 @@ BOOL SaveData_SelectLatestSlot(void) {
     BOOL zero;
 
     buf = (UnkSave_02059054 *)Alloc_02059054(0x340);
-    if ((u8 *)buf == (u8 *)func_02006abc(0))
+    if ((u8 *)buf == (u8 *)OS_GetArenaLo(0))
         return FALSE;
     {
         vu32 z = 0;

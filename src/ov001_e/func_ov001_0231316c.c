@@ -37,7 +37,7 @@ typedef struct UnkStruct_0231316c_g {
 
 extern UnkStruct_0231316c_g *data_ov001_0231f694;
 
-void func_02025268(s32 a, void *b, s32 c);
+void NNS_G3dGeBufferOP_N(s32 a, void *b, s32 c);
 void Model_Draw(void *p);
 void func_ov001_02311efc(UnkStruct_0231316c *p);
 
@@ -54,10 +54,10 @@ void func_ov001_0231316c(UnkStruct_0231316c *p) {
         return;
     p->unkAC->m = p->m;
     VecSet(&p->unkAC->pos, p->pos.x, p->pos.y, p->pos.z);
-    func_02025268(0x11, 0, 0);
+    NNS_G3dGeBufferOP_N(0x11, 0, 0);
     Model_Draw(data_ov001_0231f694->unk4);
     v = 1;
-    func_02025268(0x12, &v, 1);
+    NNS_G3dGeBufferOP_N(0x12, &v, 1);
     if (p->unk1F0 == 0 && p->unk1F4 <= 0)
         return;
     func_ov001_02311efc(p);

@@ -72,7 +72,7 @@ void SysSound_Init(void);
 void func_02052168(s32 a);
 void SysSound_PlaySE(s32 a);
 BOOL func_ov001_022c9310(UnkSub_022cd05c *s);
-void func_0201c000(u8 a, u16 b, s32 c);
+void NNS_SndPlayerStopSeqBySeqArcIdx(u8 a, u16 b, s32 c);
 BOOL func_ov001_022c88d8(void);
 void SoundTest_PlayTrack(UnkSub_022cd05c *s);
 void SoundTest_LoadTrack(UnkSub_022cd05c *s, s32 a);
@@ -175,7 +175,7 @@ void OptionsMenu_State_SoundTest(void) {
     }
     if (func_ov001_022c9310(sub) && !ok && !cancel && sub->sel == 100 && sub->unk20 == 0x4b) {
         UnkEntry_022cd05c *e = &data_ov001_0231f048[sub->sel];
-        func_0201c000(e->unk2c, e->unk2e, 0x1e);
+        NNS_SndPlayerStopSeqBySeqArcIdx(e->unk2c, e->unk2e, 0x1e);
     }
     busy = func_ov001_022c88d8();
     if (ok) {

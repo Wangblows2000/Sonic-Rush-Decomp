@@ -7,12 +7,12 @@ typedef struct UnkStruct_022d63c0 {
     void *unk2C0;
 } UnkStruct_022d63c0;
 
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void Boss3PartCC_State_Unk_ov000_022d63bc(void);
 
 void func_ov000_022d63c0(UnkStruct_022d63c0 *s) {
-    func_0201c070(s->unk2C0, 0x20);
-    func_0201bf1c(s->unk2C0);
+    NNS_SndPlayerStopSeq(s->unk2C0, 0x20);
+    NNS_SndHandleReleaseSeq(s->unk2C0);
     s->func = Boss3PartCC_State_Unk_ov000_022d63bc;
 }

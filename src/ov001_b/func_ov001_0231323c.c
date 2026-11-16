@@ -76,15 +76,15 @@ void func_ov001_023120c8(UnkStruct_0231323c *w);
 BOOL func_ov001_02310248(UnkStruct_0231323c *w, UnkStruct_0231323c_p *p);
 s32 func_ov001_0230d6e0(void);
 void func_ov001_02312c18(UnkStruct_0231323c *w);
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
-void func_02000e20(void *a, void *b);
-void func_0200148c(void *m);
-void func_02001c00(void *a, void *b, s32 x, s32 y, s32 z);
-void func_0200160c(void *a, void *b, void *c);
-void func_02001558(void *v, void *m, void *out);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
+void MTX_Copy33To43_(void *a, void *b);
+void MTX_Identity43_(void *m);
+void MTX_TransApply43(void *a, void *b, s32 x, s32 y, s32 z);
+void MTX_Concat43(void *a, void *b, void *c);
+void MTX_MultVec43(void *v, void *m, void *out);
 void Model_Animate(void *p);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
@@ -219,18 +219,18 @@ void func_ov001_0231323c(UnkStruct_0231323c *w) {
         }
     }
     MTX_RotY33_(&my, SIN(w->unk12), COS(w->unk12));
-    func_02000e60(&mx, SIN(w->unk10), COS(w->unk10));
-    func_02000e98(&mz, SIN(w->unk16), COS(w->unk16));
-    func_02000f34(&my, &mx, &w->mtx);
-    func_02000f34(&w->mtx, &mz, &w->mtx);
+    MTX_RotX33_(&mx, SIN(w->unk10), COS(w->unk10));
+    MTX_RotZ33_(&mz, SIN(w->unk16), COS(w->unk16));
+    MTX_Concat33(&my, &mx, &w->mtx);
+    MTX_Concat33(&w->mtx, &mz, &w->mtx);
     {
     UnkStruct_0231323c_v v = {0, 0, 0};
-    func_02000e20(&w->mtx, &m1);
-    func_0200148c(&m2);
-    func_02001c00(&m2, &m2, w->pos.x, w->pos.y, w->pos.z);
-    func_0200160c(&m1, &m2, &m2);
-    func_02001c00(&m2, &m2, 0, 0x4000, 0);
-    func_02001558(&v, &m2, &w->unkE4);
+    MTX_Copy33To43_(&w->mtx, &m1);
+    MTX_Identity43_(&m2);
+    MTX_TransApply43(&m2, &m2, w->pos.x, w->pos.y, w->pos.z);
+    MTX_Concat43(&m1, &m2, &m2);
+    MTX_TransApply43(&m2, &m2, 0, 0x4000, 0);
+    MTX_MultVec43(&v, &m2, &w->unkE4);
     }
     Model_Animate(data_ov001_0231f694 + 4);
 }

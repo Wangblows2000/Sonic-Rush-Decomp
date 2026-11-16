@@ -13,9 +13,9 @@ extern void *gPaletteTransferTail;
 
 s32 func_ov001_022ea270(void *src);
 u32 func_ov001_022ea264(void *src);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *src);
 void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(const void *p, u32 size);
@@ -40,13 +40,13 @@ void func_ov001_022ea1b8(UnkStruct_022ea1b8 *p, s32 start, s32 end) {
 
     switch (func_ov001_022ea270(src)) {
     case 0x10:
-        func_02008648(src, buf);
+        MI_UncompressLZ16(src, buf);
         break;
     case 0x20:
-        func_02008720(src, buf);
+        MI_UncompressHuffman(src, buf);
         break;
     case 0x30:
-        func_020087f8(src, buf);
+        MI_UncompressRL16(src, buf);
         break;
     default:
         Mem_Copy(Compress_GetData(src), buf, func_ov001_022ea264(src));

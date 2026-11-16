@@ -30,8 +30,8 @@ extern UnkThreadInfo_0200f9a0 data_0207d090;
 
 extern u32 OS_DisableInterrupts(void);
 extern u32 OS_RestoreInterrupts(u32 state);
-extern void func_02005c48(void *queue);
-extern void func_0200f5ac(void (*fn)(UnkCardCommon_0200f9a0 *));
+extern void OS_SleepThread(void *queue);
+extern void CARDi_SetTask(void (*fn)(UnkCardCommon_0200f9a0 *));
 extern void func_0200fb40(UnkCardCommon_0200f9a0 *p);
 
 BOOL func_0200f9a0(u32 dst, u32 src, u32 len, void *callback, void *arg, BOOL is_async)
@@ -39,7 +39,7 @@ BOOL func_0200f9a0(u32 dst, u32 src, u32 len, void *callback, void *arg, BOOL is
     UnkCardCommon_0200f9a0 *const p = &data_0207f2c0;
     u32 state = OS_DisableInterrupts();
     while (p->flag & 4) {
-        func_02005c48(p->queue);
+        OS_SleepThread(p->queue);
     }
     p->flag |= 4;
     OS_RestoreInterrupts(state);
@@ -49,7 +49,7 @@ BOOL func_0200f9a0(u32 dst, u32 src, u32 len, void *callback, void *arg, BOOL is
     p->callback = callback;
     p->arg = arg;
     if (is_async) {
-        func_0200f5ac(func_0200fb40);
+        CARDi_SetTask(func_0200fb40);
         return TRUE;
     } else {
         data_0207f2c0.priority = data_0207d090.f8;

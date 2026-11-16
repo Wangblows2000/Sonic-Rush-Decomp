@@ -26,7 +26,7 @@ extern UnkEntry_022c9314 *data_ov001_0231f048;
 
 BOOL func_ov001_022c9310(UnkStruct_022c9314 *p);
 void func_0201cf04(void);
-void func_0201b348(void);
+void NNS_SndStopSoundAll(void);
 void func_02020230(void *a, u16 id, s32 b);
 void Sound_PlaySeq(s32 a, u16 id);
 void Sound_PlaySeqArc(s32 a, u8 b, u16 id);
@@ -41,7 +41,7 @@ void SoundTest_PlayTrack(UnkStruct_022c9314 *p) {
     if (!func_ov001_022c9310(p)) return;
     func_0201cf04();
     e = &data_ov001_0231f048[p->idx];
-    func_0201b348();
+    NNS_SndStopSoundAll();
     switch (e->type) {
     case 0:
         if (e->unk29 == 0 && e->unk2b == 0xe) {

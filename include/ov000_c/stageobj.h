@@ -170,7 +170,7 @@ typedef struct {
 
 void StageObj_Main(void);
 UnkStruct_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
-UnkStruct_Task *func_02006abc(s32 i);
+UnkStruct_Task *OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MapObject_Init(void *w, s32 a, s32 b, s32 c);
 void StageObj_Load2dBAC(void *w, void *a, s32 b, void *c, void *d);

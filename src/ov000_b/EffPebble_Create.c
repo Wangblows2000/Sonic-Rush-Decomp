@@ -24,7 +24,7 @@ UnkStruct_02327b5c *EffPebble_Create(s32 x, s32 y, s32 z, s16 a, s16 b, s16 c, s
     vu16 zero;
 
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02327b5c));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

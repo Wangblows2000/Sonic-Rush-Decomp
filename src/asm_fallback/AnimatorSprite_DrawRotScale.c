@@ -7,9 +7,9 @@ extern u32 gDisplayTable;
 extern u32 data_02072d60;
 extern u32 data_02072da0;
 extern u32 data_02078034;
-extern void func_02000cd8(void);
-extern void func_02000d98(void);
-extern void func_02002240(void);
+extern void MTX_Rot22_(void);
+extern void MTX_ScaleApply22(void);
+extern void FX_Inv(void);
 extern void AnimatorSprite_Draw(void);
 extern void Oam_GetAffineIndex(void);
 extern void Oam_AllocObj(void);
@@ -87,20 +87,20 @@ _108:
     cmp r8, #0
     addgt r0, r8, #0xd0
     suble r0, r8, #0xd0
-    bl func_02002240
+    bl FX_Inv
     mov r6, r0
     cmp r7, #0
     addgt r0, r7, #0xd0
     suble r0, r7, #0xd0
-    bl func_02002240
+    bl FX_Inv
     mov r5, r0
     b _14c
 _134:
     mov r0, r8
-    bl func_02002240
+    bl FX_Inv
     mov r6, r0
     mov r0, r7
-    bl func_02002240
+    bl FX_Inv
     mov r5, r0
 _14c:
     ldr r0, [pc, #0x694]
@@ -114,53 +114,53 @@ _14c:
     ldrsh r1, [r2, r1]
     ldrsh r2, [r2, r0]
     add r0, sp, #0x50
-    bl func_02000cd8
+    bl MTX_Rot22_
     rsb r11, r6, #0
     add r0, sp, #0x50
     add r1, sp, #0xa0
     mov r2, r11
     mov r3, r5
-    bl func_02000d98
+    bl MTX_ScaleApply22
     rsb r0, r8, #0
     str r0, [sp, #0x2c]
     ldr r2, [sp, #0x2c]
     add r0, sp, #0x50
     add r1, sp, #0x60
     mov r3, r7
-    bl func_02000d98
+    bl MTX_ScaleApply22
     rsb r4, r5, #0
     add r0, sp, #0x50
     add r1, sp, #0xb0
     mov r2, r6
     mov r3, r4
-    bl func_02000d98
+    bl MTX_ScaleApply22
     rsb r0, r7, #0
     str r0, [sp, #0x28]
     ldr r3, [sp, #0x28]
     add r0, sp, #0x50
     add r1, sp, #0x70
     mov r2, r8
-    bl func_02000d98
+    bl MTX_ScaleApply22
     mov r2, r11
     mov r3, r4
     add r0, sp, #0x50
     add r1, sp, #0xc0
-    bl func_02000d98
+    bl MTX_ScaleApply22
     ldr r2, [sp, #0x2c]
     ldr r3, [sp, #0x28]
     add r0, sp, #0x50
     add r1, sp, #0x80
-    bl func_02000d98
+    bl MTX_ScaleApply22
     mov r2, r6
     mov r3, r5
     add r0, sp, #0x50
     add r1, sp, #0x90
-    bl func_02000d98
+    bl MTX_ScaleApply22
     add r0, sp, #0x50
     mov r2, r8
     mov r3, r7
     mov r1, r0
-    bl func_02000d98
+    bl MTX_ScaleApply22
     ldrsh r1, [r10, #4]
     ldrsh r2, [r10, #6]
     ldr r0, [r10, #0x2c]

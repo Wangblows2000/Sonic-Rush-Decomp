@@ -86,11 +86,11 @@ extern u8 data_02072e64[];
 
 void VRAMTransfer_LoadNow(u32 a, u32 b, u32 c);
 void VRAMTransfer_QueueLoad(u32 a, u32 b, u32 c);
-void func_0200be70(UnkFile_02031f30 *f);
-BOOL func_0200bb70(UnkFile_02031f30 *f, UnkFileId_02031f30 id);
-s32 func_0200b99c(UnkFile_02031f30 *f, void *dst, s32 len);
-BOOL func_0200b930(UnkFile_02031f30 *f, s32 ofs, s32 whence);
-BOOL func_0200bad8(UnkFile_02031f30 *f);
+void FS_InitFile(UnkFile_02031f30 *f);
+BOOL FS_OpenFileFast(UnkFile_02031f30 *f, UnkFileId_02031f30 id);
+s32 FS_ReadFile(UnkFile_02031f30 *f, void *dst, s32 len);
+BOOL FS_SeekFile(UnkFile_02031f30 *f, s32 ofs, s32 whence);
+BOOL FS_CloseFile(UnkFile_02031f30 *f);
 
 static inline UnkTbl_02031f30 *GetTbl_02031f30(UnkRes_02031f30 *r)
 {
@@ -129,25 +129,25 @@ BOOL func_02031f30(UnkCmd_02031f30 *cmd, UnkCtx_02031f30 *c)
             UnkHdr_02031f30 hdr;
             u32 ofs = 0;
             u32 base;
-            func_0200be70(&file);
-            if (!func_0200bb70(&file, c->fileId)) {
+            FS_InitFile(&file);
+            if (!FS_OpenFileFast(&file, c->fileId)) {
                 c->pos += cmd->len;
                 return TRUE;
             }
-            func_0200b99c(&file, &hdr, sizeof(hdr));
-            func_0200b930(&file, hdr.dataOfs, 0);
+            FS_ReadFile(&file, &hdr, sizeof(hdr));
+            FS_SeekFile(&file, hdr.dataOfs, 0);
             base = file.pos - file.top;
             for (; k < cmd->len;) {
-                func_0200b930(&file, base + e->ofs, 0);
-                func_0200b99c(&file, c->buf + ofs, 4);
-                func_0200b99c(&file, c->buf + ofs + 4, *(u32 *)(c->buf + ofs) >> 8);
+                FS_SeekFile(&file, base + e->ofs, 0);
+                FS_ReadFile(&file, c->buf + ofs, 4);
+                FS_ReadFile(&file, c->buf + ofs + 4, *(u32 *)(c->buf + ofs) >> 8);
                 fn((u32)(c->buf + ofs), c->unk30, dst);
                 dst += ((e->size + (1u << shift) - 1) >> shift) << (shift + bpp);
                 e++;
                 k += 8;
                 ofs += (*(u32 *)(c->buf + ofs) >> 8) + 4;
             }
-            func_0200bad8(&file);
+            FS_CloseFile(&file);
         } else {
             for (; k < cmd->len; k += 8, e++) {
                 fn(e->ofs + ((u32)c->res + c->res->dataOfs), c->unk30, dst);

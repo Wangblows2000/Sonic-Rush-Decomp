@@ -22,15 +22,15 @@ extern s32 data_02075704[];
 
 u8 *File_Load(void *path, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 s32 func_02056834(void *p);
 u32 func_02056828(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 BOOL func_02021310(UnkArc_0205652c *arc, const char *name, void *narc);
@@ -39,15 +39,15 @@ BOOL func_020212e0(UnkArc_0205652c *arc);
 void PolyDemo_BuildModelPath(void *name, char *buf);
 u32 func_02057038(void *name);
 void Model_Init(UnkObj_0205652c *o, s32 a);
-void func_020257f8(void *res);
+void NNS_G3dResDefaultSetup(void *res);
 void Model_SetResource(UnkObj_0205652c *o, void *res, s32 a);
-void *func_02025e8c(void *res);
+void *NNS_G3dGetTex(void *res);
 void Model_SetAnimation(UnkObj_0205652c *o, s32 a, void *b, s32 c, void *d);
 
 #pragma thumb on
 static inline u8 *Alloc_0205652c(u32 size) {
     u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -59,7 +59,7 @@ static inline u8 *Alloc_0205652c(u32 size) {
 }
 
 static inline void Free_0205652c(u8 *blk) {
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;
@@ -86,13 +86,13 @@ void func_0205652c(UnkWork_0205652c *w) {
     p = w->arc;
     switch (func_02056834(f)) {
     case 0x10:
-        func_02008648(f, p);
+        MI_UncompressLZ16(f, p);
         break;
     case 0x20:
-        func_02008720(f, p);
+        MI_UncompressHuffman(f, p);
         break;
     case 0x30:
-        func_020087f8(f, p);
+        MI_UncompressRL16(f, p);
         break;
     default:
         Mem_Copy(Compress_GetData(f), p, func_02056828(f));
@@ -127,7 +127,7 @@ void func_0205652c(UnkWork_0205652c *w) {
         obj = &w->objs[j];
         Model_Init(obj, 0);
         obj->unkA = 4;
-        func_020257f8(w->res[j]);
+        NNS_G3dResDefaultSetup(w->res[j]);
         if (w->flags[j] & 1)
             Model_SetResource(obj, w->res[j], j);
         else
@@ -138,7 +138,7 @@ void func_0205652c(UnkWork_0205652c *w) {
             obj->unk18 = obj->unk1C;
         }
         if (w->flags[j] & 4) {
-            void *m = func_02025e8c(w->res[j]);
+            void *m = NNS_G3dGetTex(w->res[j]);
             for (k = 0; k < 5; k++) {
                 if (w->flags[j] & 1) {
                     if (k != 0 && k != 1)

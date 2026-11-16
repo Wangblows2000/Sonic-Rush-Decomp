@@ -16,7 +16,7 @@ extern void *gZoneActArchive;
 extern u8 data_ov000_0236844c[];
 extern u8 data_ov000_0236a9f8[];
 
-s32 func_020027a4(s32 y, s32 x);
+s32 FX_Atan2(s32 y, s32 x);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 void func_ov000_0232e90c(UnkStruct_02331670 *w);
 void StageObj_Load3dBAC(void *w, UnkStruct_02331670_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
@@ -27,7 +27,7 @@ UnkStruct_02331670 *EffBoostJet3D_Create(UnkStruct_StageObj *arg, s16 x, s16 y, 
     vu16 zero;
 
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02331670));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;
@@ -40,7 +40,7 @@ UnkStruct_02331670 *EffBoostJet3D_Create(UnkStruct_StageObj *arg, s16 x, s16 y, 
         x = -x;
     w->base.unk10 = arg->unk10;
     w->base.unk14 = arg->unk14;
-    w->base.unk1 = func_020027a4(-0x800, ((UnkStruct_EffObj *)w->base.unk88)->unk2E) >> 8;
+    w->base.unk1 = FX_Atan2(-0x800, ((UnkStruct_EffObj *)w->base.unk88)->unk2E) >> 8;
     w->base.unk1 += arg->unk5 + 0x40;
     Math_RotateVec2S16(&x, &y, arg->unk1 + arg->unk5);
     w->base.unk2E = x;

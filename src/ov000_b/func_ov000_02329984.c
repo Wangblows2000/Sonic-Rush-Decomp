@@ -46,7 +46,7 @@ void func_ov000_02329984(UnkStruct_02329984_Arg *arg, s32 x, s32 y, s32 dx, s32 
     u16 r = Rand() & 1;
 
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02329984));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     w = task->work;
     zero = 0;

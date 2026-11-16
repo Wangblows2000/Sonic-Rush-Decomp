@@ -32,9 +32,9 @@ extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
 u8 *EffPebble_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -64,14 +64,14 @@ void func_ov000_022c6e58(UnkStruct_022c6e58 *s) {
     *(s32 *)(obj + 0x154) += (Rand() & 0x3fff) - 0x1000;
     switch ((s->unk2BE >> 2) & 3) {
     case 0:
-        func_02000e60(obj + 0x158, data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2], data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2 + 1]);
+        MTX_RotX33_(obj + 0x158, data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2], data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2 + 1]);
         break;
     case 1:
         MTX_RotY33_(obj + 0x158, data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2], data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2 + 1]);
         break;
     case 2:
     default:
-        func_02000e98(obj + 0x158, data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2], data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2 + 1]);
+        MTX_RotZ33_(obj + 0x158, data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2], data_0206e470[((s->unk2CC & 0xffff) >> 4) * 2 + 1]);
         break;
     }
 }

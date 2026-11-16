@@ -107,7 +107,7 @@ u16 func_ov000_022c5f28(void);
 void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022cc3e8(s32 idx, s32 flag);
 void *func_0202128c(void *a);
-void func_020257f8(void *a);
+void NNS_G3dResDefaultSetup(void *a);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -183,13 +183,13 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     s->unk214 = MapObject_Spawn(0xcb, 0, 0, 0, 0, 0, 0, 0, 0);
     func_ov000_022cc3e8(data_022c4560.unk0, 0);
     func_02021310(ctx2, data_ov000_02365064, gZoneActArchive);
-    func_020257f8(func_0202128c(data_ov000_02365068));
-    func_020257f8(func_0202128c(data_ov000_0236507c));
-    func_020257f8(func_0202128c(data_ov000_02365098));
+    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365068));
+    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_0236507c));
+    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365098));
     if (func_ov000_022cc6d4()) {
-        func_020257f8(func_0202128c(data_ov000_023650b4));
-        func_020257f8(func_0202128c(data_ov000_023650cc));
-        func_020257f8(func_0202128c(data_ov000_023650e4));
+        NNS_G3dResDefaultSetup(func_0202128c(data_ov000_023650b4));
+        NNS_G3dResDefaultSetup(func_0202128c(data_ov000_023650cc));
+        NNS_G3dResDefaultSetup(func_0202128c(data_ov000_023650e4));
     }
     func_020212e0(ctx2);
     return s;

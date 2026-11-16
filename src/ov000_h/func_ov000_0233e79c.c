@@ -14,14 +14,14 @@ extern void *data_ov000_0236ac18;
 extern void *gMainHeap;
 
 void *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(u32 arg);
+void *OS_GetArenaLo(u32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 void DC_StoreRange(const void *addr, u32 size);
 
 static inline void *UnkAlloc_0233e79c(u32 sz, s32 align) {
     u8 *p = Heap_Alloc(gMainHeap, sz, align);
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, sz);
         *(u32 *)p = sz;

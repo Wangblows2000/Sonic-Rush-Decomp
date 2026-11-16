@@ -10,7 +10,7 @@ extern UnkStruct_0231f098 data_ov001_0231f098[];
 void func_02021310(UnkStruct_023029d4 *a, void *b, void *c);
 void *func_02021264(UnkStruct_023029d4 *a, s32 i);
 void func_020212e0(UnkStruct_023029d4 *a);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 
 void func_ov001_022fd564(void) {
     UnkStruct_023029d4 arc;
@@ -27,7 +27,7 @@ void func_ov001_022fd564(void) {
             }
         }
         if (d->flags & 1) {
-            func_020257f8(r->res[0]);
+            NNS_G3dResDefaultSetup(r->res[0]);
         }
         d++;
         r++;

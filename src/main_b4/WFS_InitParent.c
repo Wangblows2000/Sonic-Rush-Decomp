@@ -50,13 +50,13 @@ s32 OS_RestoreInterrupts(s32 e);
 void func_0203c7dc(s32 a, s32 b, void (*cb)(void), s32 d);
 void DC_FlushRange(void *p, u32 size);
 void DC_WaitWriteBufferEmpty(void);
-void func_0200be70(void *p);
+void FS_InitFile(void *p);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MI_CpuFill8(void *dst, u8 v, u32 size);
-void func_02014d38(u32 a, u32 b, void (*cb)(void));
+void WBT_InitParent(u32 a, u32 b, void (*cb)(void));
 void func_0203cc68(void);
 void func_0203bdcc(s32 a, s32 b);
-void func_02015354(void *p, u32 size, void *a, u32 b, u32 c, s32 d);
+void WBT_RegisterBlock(void *p, u32 size, void *a, u32 b, u32 c, s32 d);
 void func_0203d9d0(void);
 
 void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u32 e, s32 f, s32 g) {
@@ -80,7 +80,7 @@ void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u32 e, s32 f, s32 g) 
     s->free = p;
     for (; p + 1 < &s->e[15]; p++) {
         p->next = p + 1;
-        func_0200be70(p->unk38);
+        FS_InitFile(p->unk38);
         p->unk80 = 0;
         p->unk7c = 0;
         p->id = p + 0x10001 - s->e;
@@ -104,7 +104,7 @@ void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u32 e, s32 f, s32 g) 
     }
     DC_FlushRange(s, sizeof(UnkSub_0203c5cc));
     DC_WaitWriteBufferEmpty();
-    func_02014d38(m->unk28, m->unk2c, func_0203cc68);
+    WBT_InitParent(m->unk28, m->unk2c, func_0203cc68);
     func_0203bdcc(f, g);
     p = s->free;
     s->free = p->next;
@@ -112,7 +112,7 @@ void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u32 e, s32 f, s32 g) 
     s->used = p;
     p->unk80 = 1;
     MI_CpuFill8(p, 0, sizeof(UnkEntry_0203c5cc));
-    func_02015354(p->unk4, 0x20000, data_02073214, m->unk20, data_022b8be0.unk24, 0);
+    WBT_RegisterBlock(p->unk4, 0x20000, data_02073214, m->unk20, data_022b8be0.unk24, 0);
     m->unkc = 1;
     func_0203d9d0();
 }

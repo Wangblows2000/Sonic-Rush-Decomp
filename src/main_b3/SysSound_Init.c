@@ -9,17 +9,17 @@ extern u8 data_02250448;
 extern u8 data_0207b02c[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_0201bf34(void *p);
+void NNS_SndHandleInit(void *p);
 void func_02036854(void *p);
-void func_0201be98(void *p, u8 v);
+void NNS_SndPlayerSetVolume(void *p, u8 v);
 
 #pragma thumb on
 static inline u8 *Alloc_020522f4(u32 size) {
     u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -38,22 +38,22 @@ void SysSound_Init(void) {
         gSysSound->unk8 = 7;
         gSysSound->task0 = NULL;
         gSysSound->task1 = NULL;
-        func_0201bf34(&gSysSound->snd[0]);
-        func_0201bf34(&gSysSound->snd[1]);
-        func_0201bf34(&gSysSound->snd[2]);
-        func_0201bf34(&gSysSound->snd[3]);
-        func_0201bf34(&gSysSound->snd[4]);
+        NNS_SndHandleInit(&gSysSound->snd[0]);
+        NNS_SndHandleInit(&gSysSound->snd[1]);
+        NNS_SndHandleInit(&gSysSound->snd[2]);
+        NNS_SndHandleInit(&gSysSound->snd[3]);
+        NNS_SndHandleInit(&gSysSound->snd[4]);
         gSysSound->unk28 = 0;
         gSysSound->unk2C = 0;
         func_02036854(data_0207b02c);
         gBGMVolume = 0x7f;
         gSEVolume = 0x7f;
         data_02250448 = 0x7f;
-        func_0201be98(&gSysSound->snd[0], 0x7f);
-        func_0201be98(&gSysSound->snd[1], gBGMVolume);
-        func_0201be98(&gSysSound->snd[2], gSEVolume);
-        func_0201be98(&gSysSound->snd[3], data_02250448);
-        func_0201be98(&gSysSound->snd[4], data_02250448);
+        NNS_SndPlayerSetVolume(&gSysSound->snd[0], 0x7f);
+        NNS_SndPlayerSetVolume(&gSysSound->snd[1], gBGMVolume);
+        NNS_SndPlayerSetVolume(&gSysSound->snd[2], gSEVolume);
+        NNS_SndPlayerSetVolume(&gSysSound->snd[3], data_02250448);
+        NNS_SndPlayerSetVolume(&gSysSound->snd[4], data_02250448);
     }
 }
 #pragma thumb reset

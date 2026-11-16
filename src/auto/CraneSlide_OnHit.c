@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_0201c070();
+s32 NNS_SndPlayerStopSeq();
 s32 Sound_PlaySeqArcEx();
 s32 func_ov000_02353e6c();
 
@@ -29,7 +29,7 @@ void CraneSlide_OnHit(u8 *p0, u8 *p1) {
     *(u16 *)((u8 *)t0 + 0x34) = *(s16 *)((u8 *)t1 + 0x28);
     *(u16 *)((u8 *)t0 + 0x2e) = *(s16 *)((u8 *)t0 + 0x34);
     if (*(s16 *)((u8 *)t0 + 0x34) != 0) {
-        func_0201c070(*(u32 *)((u8 *)t0 + 0x1dc), 0);
+        NNS_SndPlayerStopSeq(*(u32 *)((u8 *)t0 + 0x1dc), 0);
         Sound_PlaySeqArcEx(*(u32 *)((u8 *)t0 + 0x1dc), 0, 0x71);
     }
     func_ov000_02353e6c(t1, t0, 0, 0x70);

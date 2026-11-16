@@ -10,7 +10,7 @@ extern u32 data_02087cc0;
 extern UnkDisp_0204edc0 gDisplayMain;
 
 void Vram_SetBankConfig(s32 a);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void GX_DispOn(void);
 BOOL func_0204ed94(void);
 BOOL func_0204ed68(void);
@@ -24,7 +24,7 @@ void SceneChange_Unk_02054e68(void);
 
 void Game_Init(void) {
     Vram_SetBankConfig(0);
-    func_02002ab0(1, 0, 0);
+    GX_SetGraphicsMode(1, 0, 0);
     REG_DISPCNT &= ~0x1f00;
     REG_POWCNT = (REG_POWCNT & ~0x20e) | 0x202;
     REG_POWCNT |= 0x8000;

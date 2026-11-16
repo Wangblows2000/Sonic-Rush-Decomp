@@ -9,8 +9,8 @@ typedef struct {
     u8 pad8[4];
 } UnkInfo_022c8d7c;
 
-void func_0201b23c(void);
-BOOL func_0201b1dc(s32 ch, UnkInfo_022c8d7c *info);
+void NNS_SndUpdateDriverInfo(void);
+BOOL NNS_SndReadDriverChannelInfo(s32 ch, UnkInfo_022c8d7c *info);
 
 #pragma thumb on
 void func_ov001_022c8d7c(u16 *l, u16 *r) {
@@ -22,12 +22,12 @@ void func_ov001_022c8d7c(u16 *l, u16 *r) {
     u32 vol;
     UnkInfo_022c8d7c info;
 
-    func_0201b23c();
+    NNS_SndUpdateDriverInfo();
     sr = 0;
     sl = 0;
     n = 0;
     for (i = 0; i < 16; i++) {
-        if (func_0201b1dc(i, &info) && info.active) {
+        if (NNS_SndReadDriverChannelInfo(i, &info) && info.active) {
             pan = info.pan;
             vol = info.vol;
             sl += (s32)(vol * (0x7f - pan)) / 0x7f;

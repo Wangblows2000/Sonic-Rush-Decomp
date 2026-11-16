@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
-void func_02005c48(void *q);
-void func_02006698(void *m);
-void func_02006628(void *m);
+void OS_SleepThread(void *q);
+void OS_LockMutex(void *m);
+void OS_UnlockMutex(void *m);
 void *func_0201f988(void *list);
 void func_0201ed04(void *x);
-void func_0201f904(void *x);
+void FreeCommandBuffer(void *x);
 
 void func_0201ec94(u8 *p) {
     void *queue;
@@ -16,17 +16,17 @@ void func_0201ec94(u8 *p) {
     list = p + 0x4AC;
     queue = p + 0x494;
     for (;;) {
-        func_02005c48(queue);
+        OS_SleepThread(queue);
         for (;;) {
-            func_02006698(mutex);
+            OS_LockMutex(mutex);
             x = func_0201f988(list);
             if (x == NULL) {
-                func_02006628(mutex);
+                OS_UnlockMutex(mutex);
                 break;
             }
             func_0201ed04(x);
-            func_0201f904(x);
-            func_02006628(mutex);
+            FreeCommandBuffer(x);
+            OS_UnlockMutex(mutex);
         }
     }
 }

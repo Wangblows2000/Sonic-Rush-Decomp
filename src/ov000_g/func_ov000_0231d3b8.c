@@ -33,9 +33,9 @@ typedef struct {
 extern s16 data_0206e470[];
 
 s32 ObjSpd_DownSet(s32 a, s32 b);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 void func_ov000_0231d3b8(UnkStruct_0231d3b8 *w) {
     u8 mtx[0x24];
@@ -60,10 +60,10 @@ void func_ov000_0231d3b8(UnkStruct_0231d3b8 *w) {
             w->unk8 = (u16)((u8)(p->unk3 - 0x10) << 8);
             w->unkC = (old - w->unk8) & 0xffff;
         }
-        func_02000dfc(m->mtx);
+        MTX_Identity33_(m->mtx);
         idx = (s32)((u16)(-w->unk8) & 0xffff) >> 4;
         MTX_RotY33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-        func_02000f34(m->mtx, mtx, m->mtx);
+        MTX_Concat33(m->mtx, mtx, m->mtx);
         if (p->unk3 < 0x80)
             w->unk1F4 |= 1;
         else
@@ -72,9 +72,9 @@ void func_ov000_0231d3b8(UnkStruct_0231d3b8 *w) {
         w->unk8 -= w->unkC;
         w->unk8 &= 0xffff;
         w->unkC = ObjSpd_DownSet(w->unkC, 6);
-        func_02000dfc(m->mtx);
+        MTX_Identity33_(m->mtx);
         idx = (s32)((u16)(-w->unk8) & 0xffff) >> 4;
         MTX_RotY33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-        func_02000f34(m->mtx, mtx, m->mtx);
+        MTX_Concat33(m->mtx, mtx, m->mtx);
     }
 }

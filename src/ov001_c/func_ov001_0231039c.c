@@ -57,12 +57,12 @@ static inline void VecSet(UnkStruct_0231039c_v *d, s32 x, s32 y, s32 z) {
     d->z = z;
 }
 
-void func_02025268(u32 op, const u32 *args, u32 n);
+void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
 s32 func_ov001_02310054(UnkStruct_0231039c_e *e);
 void MTX_RotY33_(UnkStruct_0231039c_m *m, s32 s, s32 c);
-void func_02000e60(UnkStruct_0231039c_m *m, s32 s, s32 c);
-void func_02000e98(UnkStruct_0231039c_m *m, s32 s, s32 c);
-void func_02000f34(UnkStruct_0231039c_m *a, UnkStruct_0231039c_m *b, UnkStruct_0231039c_m *c);
+void MTX_RotX33_(UnkStruct_0231039c_m *m, s32 s, s32 c);
+void MTX_RotZ33_(UnkStruct_0231039c_m *m, s32 s, s32 c);
+void MTX_Concat33(UnkStruct_0231039c_m *a, UnkStruct_0231039c_m *b, UnkStruct_0231039c_m *c);
 void Model_Draw(UnkStruct_0231039c_r *o);
 
 void func_ov001_0231039c(UnkStruct_0231039c *p) {
@@ -73,7 +73,7 @@ void func_ov001_0231039c(UnkStruct_0231039c *p) {
     UnkStruct_0231039c_e *e;
     s32 idx;
 
-    func_02025268(0x11, 0, 0);
+    NNS_G3dGeBufferOP_N(0x11, 0, 0);
     for (e = p->head; e != (UnkStruct_0231039c_e *)p->sentinel; e = e->next) {
         if (e->unk60 & 1)
             continue;
@@ -87,16 +87,16 @@ void func_ov001_0231039c(UnkStruct_0231039c *p) {
                 idx = (s32)(e->ry & 0xffff) >> 4;
                 MTX_RotY33_(&a, SIN_IDX(idx), COS_IDX(idx));
                 idx = (s32)(e->rx & 0xffff) >> 4;
-                func_02000e60(&b, SIN_IDX(idx), COS_IDX(idx));
+                MTX_RotX33_(&b, SIN_IDX(idx), COS_IDX(idx));
                 if (e->unk64 & 0x2000) {
                     idx = (s32)(e->rz2 & 0xffff) >> 4;
-                    func_02000e98(&c, SIN_IDX(idx), COS_IDX(idx));
+                    MTX_RotZ33_(&c, SIN_IDX(idx), COS_IDX(idx));
                 } else {
                     idx = (s32)(e->rz & 0xffff) >> 4;
-                    func_02000e98(&c, SIN_IDX(idx), COS_IDX(idx));
+                    MTX_RotZ33_(&c, SIN_IDX(idx), COS_IDX(idx));
                 }
-                func_02000f34(&a, &b, &e->unkAC->rot);
-                func_02000f34(&e->unkAC->rot, &c, &e->unkAC->rot);
+                MTX_Concat33(&a, &b, &e->unkAC->rot);
+                MTX_Concat33(&e->unkAC->rot, &c, &e->unkAC->rot);
             }
             VecSet(&e->unkAC->pos, e->pos.x, e->pos.y, e->pos.z);
             Model_Draw(e->unkAC);
@@ -111,10 +111,10 @@ void func_ov001_0231039c(UnkStruct_0231039c *p) {
                 VecSet(&e->unkB0->scale, e->scale.x, e->scale.y, e->scale.z);
                 if (e->unk64 & 0x2000) {
                     idx = (s32)(e->rz2 & 0xffff) >> 4;
-                    func_02000e98(&e->unkB0->rot, SIN_IDX(idx), COS_IDX(idx));
+                    MTX_RotZ33_(&e->unkB0->rot, SIN_IDX(idx), COS_IDX(idx));
                 } else {
                     idx = (s32)(e->rz & 0xffff) >> 4;
-                    func_02000e98(&e->unkB0->rot, SIN_IDX(idx), COS_IDX(idx));
+                    MTX_RotZ33_(&e->unkB0->rot, SIN_IDX(idx), COS_IDX(idx));
                 }
             }
             VecSet(&e->unkB0->pos, e->pos.x, e->pos.y, e->pos.z);
@@ -122,5 +122,5 @@ void func_ov001_0231039c(UnkStruct_0231039c *p) {
         }
     }
     one = 1;
-    func_02025268(0x12, &one, 1);
+    NNS_G3dGeBufferOP_N(0x12, &one, 1);
 }

@@ -51,7 +51,7 @@ extern s16 data_02073274[];
 extern s16 data_02073276[];
 
 void func_02044ad0(void);
-void func_02003d78(vu32 *p, u32 a, u32 b, u32 c, u32 d);
+void G2x_SetBlendAlpha_(vu32 *p, u32 a, u32 b, u32 c, u32 d);
 void AnimatorSprite_DrawRotScale(UnkSpr_0204481c *s, s32 sx, s32 sy, s32 r);
 void func_02044798(UnkObj_0204481c *o, s32 idx, u16 c);
 
@@ -84,7 +84,7 @@ void func_0204481c(void) {
     if (w->unk0 >= 0x1000) {
         gTaskCurrent->fn = func_02044ad0;
         w->unk8 = data_ov000_02369ac0.unk8;
-        func_02003d78((vu32 *)0x4001050, 0, 0, 0x1f, 0x1f);
+        G2x_SetBlendAlpha_((vu32 *)0x4001050, 0, 0, 0x1f, 0x1f);
         gDisplayTable[1]->unk20 = 0x40;
         gDisplayTable[1]->unk22 = 0x1f1f;
     } else {

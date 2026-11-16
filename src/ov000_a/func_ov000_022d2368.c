@@ -91,17 +91,17 @@ typedef struct UnkStruct_022d2368_7 {
 
 extern UnkStruct_022d2368_7 data_ov000_02369ac0;
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_02021c24(void *p);
-void func_0201c070(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void func_ov000_022d4bc8(void);
 void func_ov000_022d2070(UnkStruct_022d2368 *s);
 void func_ov000_022d1624(UnkStruct_022d2368 *s);
 
 static inline s32 Lerp(s32 a, s32 b) {
-    return func_02002094(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
+    return FX_DivS32(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
 }
 
 void func_ov000_022d2368(UnkStruct_022d2368 *s) {
@@ -134,5 +134,5 @@ void func_ov000_022d2368(UnkStruct_022d2368 *s) {
     *(u16 *)&s->unk1460 = Lerp(0x12, 0x12);
     *(u16 *)&s->unk1464 = Lerp(0xda, 0x16c);
     s->unk1474 = (u16)Lerp(0xb4, 0x78);
-    func_0201c070(s->unk1450, 0);
+    NNS_SndPlayerStopSeq(s->unk1450, 0);
 }

@@ -42,7 +42,7 @@ void Background_Draw(UnkBg_02053090 *bg);
 void func_02052638(void *src, u32 a, u16 *dst, s32 b, u16 c, u16 d, s32 e);
 void func_02052568(u32 a, UnkBg_02053090 *bg, s32 b);
 void func_02052d18(UnkWork_02053090 *w);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void func_020366f4(void *a, u32 b, s32 c);
 
 void NaviMsg_Main(void) {
@@ -84,7 +84,7 @@ void NaviMsg_Main(void) {
     if (w->unk10c > 0)
         return;
     if (w->unk114 != NULL)
-        func_0201c070(w->unk114, 0);
+        NNS_SndPlayerStopSeq(w->unk114, 0);
     func_020366f4(w->unk114, w->unk110, w->unk108);
     w->unk108 = -1;
 }

@@ -11,14 +11,14 @@ typedef struct {
     u16 dictOfs;
 } UnkTex_02037f94;
 
-u32 func_0202c5f0(const char *s);
+u32 strlen(const char *s);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
-void *func_0202603c(void *dict, const UnkResName_02037f94 *name);
+void *NNS_G3dGetResDataByName(void *dict, const UnkResName_02037f94 *name);
 
 u32 func_02037f94(UnkTex_02037f94 *tex, const char *name)
 {
-    u32 len = func_0202c5f0(name);
+    u32 len = strlen(name);
     UnkResName_02037f94 rn;
     u16 *e;
     {
@@ -28,6 +28,6 @@ u32 func_02037f94(UnkTex_02037f94 *tex, const char *name)
         MIi_CpuClear32(zero, &rn, sizeof(rn));
     }
     MI_CpuCopy8(name, &rn, len);
-    e = func_0202603c((u8 *)tex + tex->dictOfs, &rn);
+    e = NNS_G3dGetResDataByName((u8 *)tex + tex->dictOfs, &rn);
     return ((tex->unk2C & 0xffff) + *e) << 3;
 }

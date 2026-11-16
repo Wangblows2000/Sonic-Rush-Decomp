@@ -9,7 +9,7 @@ typedef struct {
 
 extern void *gMainHeap;
 
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -23,7 +23,7 @@ void func_020612c0(UnkWork_020612c0 *w) {
         ObjVram_Free(0, w->unkb8);
     p = w->unkcc;
     if (p != NULL) {
-        if ((u8 *)func_02006abc(0) != p) {
+        if ((u8 *)OS_GetArenaLo(0) != p) {
             u32 size;
             p -= 0x20;
             size = *(u32 *)p;

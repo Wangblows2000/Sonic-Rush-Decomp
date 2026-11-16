@@ -44,7 +44,7 @@ UnkStruct_023142f4 *Rock_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     if ((b >> 8) < data_022c4534.unk1C + 0xc4)
         return NULL;
     task = Task_Create(StageObj_Main, Rock_Destructor, 0, 0x500, 2, sizeof(UnkStruct_023142f4));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

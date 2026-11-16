@@ -45,7 +45,7 @@ void func_ov000_0234a878(UnkStruct_02348ca8 *w);
 void Player_SetAnimation(UnkStruct_02348ca8 *w, s32 a);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov000_02348ca8(UnkStruct_02348ca8 *w) {
     s32 dx;
@@ -59,7 +59,7 @@ void func_ov000_02348ca8(UnkStruct_02348ca8 *w) {
     }
     dx = (w->target->unk10 - w->unk10) >> 8;
     dy = (w->target->unk14 - w->unk14) >> 8;
-    ang = func_020027a4(dy, dx) + (w->unk5 << 8);
+    ang = FX_Atan2(dy, dx) + (w->unk5 << 8);
     d = dx * dx + dy * dy;
     if (ang >= 0x8000 || d >= 0x8000) {
         func_ov000_0234a878(w);

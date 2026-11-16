@@ -11,7 +11,7 @@ void func_ov000_0232bc4c(s32 type, s32 x, s32 y, s16 vx, s16 vy, s16 c) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     w = task->work;
     zero = 0;

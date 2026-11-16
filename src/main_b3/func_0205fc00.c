@@ -15,8 +15,8 @@ void Task_Destroy(void *t);
 u32 TalkDemo_GetFlags(s32 a);
 void func_0205fad0(void);
 void func_0205fb30(void);
-void func_02007318(UnkWin_0205fc00 *p);
-void func_020073b8(UnkWin_0205fc00 *p, s32 a, s32 b, void (*cb)(void), s32 i);
+void OS_CancelVAlarm(UnkWin_0205fc00 *p);
+void OS_SetVAlarm(UnkWin_0205fc00 *p, s32 a, s32 b, void (*cb)(void), s32 i);
 
 #pragma thumb on
 void func_0205fc00(void) {
@@ -40,11 +40,11 @@ void func_0205fc00(void) {
     lim[3] = w->unk17 - 1;
     for (i = 0; i < 4; i++) {
         p = &w->win[i];
-        func_02007318(p);
+        OS_CancelVAlarm(p);
         if (i == 1 && lim[1] >= lim[2])
             i = 2;
         else
-            func_020073b8(p, lim[i], 5, cb, i);
+            OS_SetVAlarm(p, lim[i], 5, cb, i);
     }
 }
 #pragma thumb reset

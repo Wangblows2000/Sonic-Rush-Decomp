@@ -27,8 +27,8 @@ typedef struct {
 } UnkObj_0204594c;
 
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
-s32 func_02002094(s32 n, s32 d);
-s32 func_0200203c(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
 s16 func_02059a50(u8 a, u8 b, u16 c);
 
 #pragma thumb on
@@ -51,16 +51,16 @@ void func_0204594c(UnkObj_0204594c *o) {
     o->unkAC = data_022c4560.unk20;
     t = o->unkAC;
     if (t < 0x8c9f) {
-        o->unkB0 = func_02002094(t, 0xe10) + 0x13;
-        t = func_0200203c(t, 0xe10);
-        o->unkB2 = func_02002094(t, 0x258) + 0x13;
-        t = func_0200203c(t, 0x258);
-        o->unkB4 = func_02002094(t, 0x3c) + 0x13;
-        c = (func_0200203c(t, 0x3c) * 0x1b1) >> 8;
+        o->unkB0 = FX_DivS32(t, 0xe10) + 0x13;
+        t = FX_ModS32(t, 0xe10);
+        o->unkB2 = FX_DivS32(t, 0x258) + 0x13;
+        t = FX_ModS32(t, 0x258);
+        o->unkB4 = FX_DivS32(t, 0x3c) + 0x13;
+        c = (FX_ModS32(t, 0x3c) * 0x1b1) >> 8;
         if (c >= 100)
             c = 99;
-        o->unkB6 = func_02002094(c, 10) + 0x13;
-        o->unkB8 = func_0200203c(c, 10) + 0x13;
+        o->unkB6 = FX_DivS32(c, 10) + 0x13;
+        o->unkB8 = FX_ModS32(c, 10) + 0x13;
     } else {
         o->unkB0 = 0x1c;
         o->unkB2 = 0x18;

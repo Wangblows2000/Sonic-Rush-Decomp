@@ -28,13 +28,13 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-u16 func_020027a4(s32 y, s32 x);
-void func_02000dfc(void *m);
-void func_02000e60(void *m, s32 s, s32 c);
+u16 FX_Atan2(s32 y, s32 x);
+void MTX_Identity33_(void *m);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
-void func_02000eb0(void *a, void *m, void *b);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
+void MTX_MultVec33(void *a, void *m, void *b);
 
 void func_ov000_02326b2c(UnkStruct_02326b2c_Out *out, UnkStruct_02326b2c *w, s32 len) {
     u8 mtx[0x24];
@@ -51,22 +51,22 @@ void func_ov000_02326b2c(UnkStruct_02326b2c_Out *out, UnkStruct_02326b2c *w, s32
     v2.y = len / 2;
     v2.z = 0;
     if (w->unk58 & 0x10)
-        ang = func_020027a4((w->unk14 - w->unk20) >> 8, (w->unk10 - w->unk1C) >> 8);
-    func_02000dfc(mtx);
+        ang = FX_Atan2((w->unk14 - w->unk20) >> 8, (w->unk10 - w->unk1C) >> 8);
+    MTX_Identity33_(mtx);
     idx = (s32)((u16)(w->unk2 << 8) & 0xffff) >> 4;
-    func_02000e60(rot, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(mtx, rot, mtx);
+    MTX_RotX33_(rot, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
+    MTX_Concat33(mtx, rot, mtx);
     idx = (s32)((u16)(w->unk3 << 8) & 0xffff) >> 4;
     MTX_RotY33_(rot, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(mtx, rot, mtx);
+    MTX_Concat33(mtx, rot, mtx);
     idx = (s32)((u16)(ang + (w->unk1 << 8)) & 0xffff) >> 4;
-    func_02000e98(rot, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(mtx, rot, mtx);
-    func_02000eb0(&v1, mtx, &v1);
+    MTX_RotZ33_(rot, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
+    MTX_Concat33(mtx, rot, mtx);
+    MTX_MultVec33(&v1, mtx, &v1);
     out->b.x = w->unk10 + v1.x;
     out->b.y = w->unk14 + v1.y;
     out->b.z = w->unk18 + v1.z;
-    func_02000eb0(&v2, mtx, &v2);
+    MTX_MultVec33(&v2, mtx, &v2);
     out->a.x = w->unk10 + v2.x;
     out->a.y = w->unk14 + v2.y;
     out->a.z = w->unk18 + v2.z;

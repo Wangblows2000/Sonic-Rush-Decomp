@@ -42,14 +42,14 @@ typedef struct UnkStruct_022cf118_cam {
 
 extern UnkStruct_022cf118_cam data_ov000_0236a444;
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 
 s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 s32 func_0200225c(s32 a, s32 b);
 void ScreenShake_Start(s32 a);
-void func_0201c070(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 
 void func_ov000_022cf118(UnkStruct_022cf118 *t) {
     s32 k = t->unkC << 12;
@@ -64,5 +64,5 @@ void func_ov000_022cf118(UnkStruct_022cf118 *t) {
         return;
     t->func = NULL;
     ScreenShake_Start(0);
-    func_0201c070(t->unk0->unk1454, 0);
+    NNS_SndPlayerStopSeq(t->unk0->unk1454, 0);
 }

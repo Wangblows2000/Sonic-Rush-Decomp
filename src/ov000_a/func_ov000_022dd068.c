@@ -18,8 +18,8 @@ extern UnkStruct_022dd068 *data_ov000_02369b2c;
 extern s16 data_0206e470[];
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
 void Model_Animate(void *a);
 void Model_Draw(void *a);
 
@@ -31,8 +31,8 @@ void func_ov000_022dd068(void) {
     u16 a1 = w->unkBB8;
     u16 a2 = w->unkBBC;
     MTX_RotY33_(m1, data_0206e470[((a1 & 0xffff) >> 4) * 2], data_0206e470[((a1 & 0xffff) >> 4) * 2 + 1]);
-    func_02000e98(m2, data_0206e470[((a2 & 0xffff) >> 4) * 2], data_0206e470[((a2 & 0xffff) >> 4) * 2 + 1]);
-    func_02000f34(m2, m1, a->unk24);
+    MTX_RotZ33_(m2, data_0206e470[((a2 & 0xffff) >> 4) * 2], data_0206e470[((a2 & 0xffff) >> 4) * 2 + 1]);
+    MTX_Concat33(m2, m1, a->unk24);
     Model_Animate(a);
     Model_Draw(a);
 }

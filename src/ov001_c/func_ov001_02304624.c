@@ -37,7 +37,7 @@ extern UnkStruct_02304624_h *data_ov001_0231f544;
 extern u8 data_ov001_02316cac[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -58,7 +58,7 @@ void func_ov001_02304624(void) {
     u32 r;
 
     blk = Heap_Alloc(gMainHeap, 0x13c0, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0x13c0);
         *(u32 *)blk = 0x13c0;

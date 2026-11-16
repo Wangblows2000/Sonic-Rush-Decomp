@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-BOOL func_0200b034(void *p);
-void func_0200b174(void *p);
+BOOL FS_UnloadArchive(void *p);
+void FS_ReleaseArchiveName(void *p);
 
 BOOL func_020212e0(void *p) {
-    if (!func_0200b034(p)) return FALSE;
-    func_0200b174(p);
+    if (!FS_UnloadArchive(p)) return FALSE;
+    FS_ReleaseArchiveName(p);
     return TRUE;
 }

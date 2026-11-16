@@ -7,7 +7,7 @@ extern UnkStruct_022c4560 data_022c4560;
 extern void *gSoundHeap;
 
 void func_02052000(void);
-void func_0201e7cc(s32 id, void *p);
+void NNS_SndArcLoadGroup(s32 id, void *p);
 
 #pragma thumb on
 void SysSound_LoadSEGroup(s32 stage) {
@@ -47,7 +47,7 @@ void SysSound_LoadSEGroup(s32 stage) {
         id = 0xe;
         break;
     }
-    func_0201e7cc(id, gSoundHeap);
+    NNS_SndArcLoadGroup(id, gSoundHeap);
     gSysSound->unk0 = grp;
 }
 #pragma thumb reset

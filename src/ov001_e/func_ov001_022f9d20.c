@@ -26,13 +26,13 @@ extern UnkStruct_022f9d20_b gDisplayMain;
 extern UnkStruct_022f9d20 *data_ov001_0231f084;
 extern void *gMainHeap;
 
-void func_0201b348(void);
+void NNS_SndStopSoundAll(void);
 void Task_Destroy(void *task);
 void ObjVram_Free(u32 a, u32 b);
 void Model_Release(void *p);
-void func_0201bf1c(void *p);
+void NNS_SndHandleReleaseSeq(void *p);
 void func_ov001_022f99f8(void);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -42,7 +42,7 @@ void func_ov001_022f9d20(void) {
     UnkStruct_022f9d20_o *o;
     u8 *blk;
 
-    func_0201b348();
+    NNS_SndStopSoundAll();
     gDisplayMain.unk1C = 0;
     for (i = 0; i < 7; i++) {
         if (data_ov001_0231f084->tasks[i] != NULL)
@@ -53,10 +53,10 @@ void func_ov001_022f9d20(void) {
         ObjVram_Free(o->unk0, o->unk34);
     Model_Release(data_ov001_0231f084->unkC90);
     Model_Release(&data_ov001_0231f084->objs[0x28]);
-    func_0201bf1c(data_ov001_0231f084->unkEA0);
+    NNS_SndHandleReleaseSeq(data_ov001_0231f084->unkEA0);
     func_ov001_022f99f8();
     blk = (u8 *)data_ov001_0231f084;
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;

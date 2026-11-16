@@ -25,8 +25,8 @@ extern UnkStruct_022f7448_t *gTaskCurrent;
 extern u32 gRandSeed;
 
 void func_ov001_022f741c(void);
-s32 func_02002094(s32 n, s32 d);
-s32 func_0200203c(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
 void AnimatorSprite_Draw(void *p);
 
 static inline u16 Rand(void) {
@@ -53,13 +53,13 @@ void func_ov001_022f7448(void) {
         data_ov001_0231f084->flags |= 2;
         data_ov001_0231f084->flags |= 0x10000;
     }
-    r = func_02002094(0x5000, data_ov001_0231f084->timer << 4);
+    r = FX_DivS32(0x5000, data_ov001_0231f084->timer << 4);
     if (r == 0) {
         x = 0x50000;
         y = 0x8a000;
     } else {
-        x = func_0200203c(Rand(), r) + 0x50000 - (r >> 1);
-        y = func_0200203c(Rand(), r) + 0x8a000 - (r >> 1);
+        x = FX_ModS32(Rand(), r) + 0x50000 - (r >> 1);
+        y = FX_ModS32(Rand(), r) + 0x8a000 - (r >> 1);
     }
     spr = &data_ov001_0231f084->spr;
     spr->x = x >> 12;

@@ -85,8 +85,8 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void AnimatorSprite_Init(UnkSpr_02063f50 *spr, UnkRes_02063f50 *res, u16 anim, u32 flags, s32 d, s32 e, u32 pal, s32 g, u32 h);
 void AnimatorSprite_ProcessAnimation(UnkSpr_02063f50 *spr, s32 a, s32 b);
 u32 ObjVram_Alloc(s32 a, u32 b);
-s32 func_02002094(s32 n, s32 d);
-s32 func_0200203c(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
 void func_02063778(UnkSpr_02063f50 *a, s16 dt);
 void Oam_Upload(u32 engine);
 void func_02063e10(void);
@@ -131,10 +131,10 @@ void func_02063f50(void) {
     w = data_022c4dc4->work;
     MI_CpuClear16_(w, 0x724);
     w->unk4 = data_022c4560.unk0;
-    w->unk718 = func_02002094(data_022c4590.unk14, 10);
+    w->unk718 = FX_DivS32(data_022c4590.unk14, 10);
     if (w->unk718 == 0)
         w->unk718 = -1;
-    w->unk71a = func_0200203c(data_022c4590.unk14, 10);
+    w->unk71a = FX_ModS32(data_022c4590.unk14, 10);
 
     spr = w->spr;
     for (i = 0; i <= 12; i++, spr++) {
@@ -202,10 +202,10 @@ void func_02063f50(void) {
         v = data_020778b0[w->unk720 - 1];
     else
         v = data_020778b0[w->unk720];
-    subA->unk8 = func_02002094(v, 10);
+    subA->unk8 = FX_DivS32(v, 10);
     if (subA->unk8 == 0)
         subA->unk8 = -1;
-    subA->unka = func_0200203c(v, 10);
+    subA->unka = FX_ModS32(v, 10);
 
     w->taskC = Task_Create(func_02063c98, 0, 0, 0x4000, 0, 0x14);
     subB = w->taskC->work;

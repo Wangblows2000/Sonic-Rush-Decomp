@@ -16,7 +16,7 @@ typedef struct UnkStruct_022dde00_b {
 } UnkStruct_022dde00_b;
 
 void Sound_PlaySeqArc(void *p, u32 a, u32 b);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void func_020366f4(s32 a, s32 b, s32 c);
 
 void func_ov001_022dde00(UnkStruct_022dde00 *w, UnkStruct_022dde00_b *b) {
@@ -27,7 +27,7 @@ void func_ov001_022dde00(UnkStruct_022dde00 *w, UnkStruct_022dde00_b *b) {
             Sound_PlaySeqArc(b->unk4, 0xb, 1);
     }
     if ((w->unk4 & 0x400) && !(w->unk4 & 0x1000)) {
-        func_0201c070(b->unk4, 0x32);
+        NNS_SndPlayerStopSeq(b->unk4, 0x32);
         w->unk4 |= 0x1000;
     }
     if (w->unk10 != 2) {
@@ -39,7 +39,7 @@ void func_ov001_022dde00(UnkStruct_022dde00 *w, UnkStruct_022dde00_b *b) {
                 func_020366f4(0, 0xb, 3);
         }
         if (w->unk8 == 0xdc && !(w->unk4 & 0x1000)) {
-            func_0201c070(b->unk4, 0x32);
+            NNS_SndPlayerStopSeq(b->unk4, 0x32);
             w->unk4 |= 0x1000;
         }
     } else {
@@ -48,7 +48,7 @@ void func_ov001_022dde00(UnkStruct_022dde00 *w, UnkStruct_022dde00_b *b) {
         if (w->unk8 == 0x12c)
             func_020366f4(0, 0xb, 3);
         if (w->unk8 == 0x195 && !(w->unk4 & 0x1000)) {
-            func_0201c070(b->unk4, 0x32);
+            NNS_SndPlayerStopSeq(b->unk4, 0x32);
             w->unk4 |= 0x1000;
         }
     }

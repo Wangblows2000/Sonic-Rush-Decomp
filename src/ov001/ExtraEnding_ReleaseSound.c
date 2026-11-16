@@ -2,10 +2,10 @@
 
 typedef struct { u8 pad[0xc]; void *heap; u8 *mem; } UnkStruct_022c61c8;
 extern void *gMainHeap;
-void func_0201b348(void);
-void func_0201da54(void *h);
+void NNS_SndStopSoundAll(void);
+void NNS_SndHeapClear(void *h);
 void func_0201db14(void *h);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -13,11 +13,11 @@ void Sound_ResetHeap(void);
 
 void ExtraEnding_ReleaseSound(UnkStruct_022c61c8 *p) {
     u8 *blk;
-    func_0201b348();
-    func_0201da54(p->heap);
+    NNS_SndStopSoundAll();
+    NNS_SndHeapClear(p->heap);
     func_0201db14(p->heap);
     blk = p->mem;
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;

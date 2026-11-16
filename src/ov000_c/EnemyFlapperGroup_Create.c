@@ -40,7 +40,7 @@ UnkStruct_023008d0 *EnemyFlapperGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c
         }
     }
     task = Task_Create(StageObj_Main, MapObject_Destructor, 0, 0x500, 2, sizeof(UnkStruct_023008d0));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

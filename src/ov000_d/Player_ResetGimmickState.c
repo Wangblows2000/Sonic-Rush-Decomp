@@ -36,7 +36,7 @@ typedef struct {
 
 extern UnkStruct_0234c9e8_4560 data_022c4560;
 
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 
 void Player_ResetGimmickState(UnkStruct_0234c9e8 *w) {
     w->unk3E8 = NULL;
@@ -76,5 +76,5 @@ void Player_ResetGimmickState(UnkStruct_0234c9e8 *w) {
     if (data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2) {
         w->unk5C |= 0x200;
     }
-    func_0201c070(w->unk388, 0);
+    NNS_SndPlayerStopSeq(w->unk388, 0);
 }

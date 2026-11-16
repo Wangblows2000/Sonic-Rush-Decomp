@@ -73,12 +73,12 @@ extern s16 data_0206e470[];
 #define SIN_023539f0(a) data_0206e470[(u32)(IDX_023539f0(a) << 1)]
 #define COS_023539f0(a) data_0206e470[(u32)((IDX_023539f0(a) << 1) + 1)]
 
-void func_02000dfc(UnkMtx33_023539f0 *m);
-void func_02000e60(UnkMtx33_023539f0 *m, fx32 sin, fx32 cos);
+void MTX_Identity33_(UnkMtx33_023539f0 *m);
+void MTX_RotX33_(UnkMtx33_023539f0 *m, fx32 sin, fx32 cos);
 void MTX_RotY33_(UnkMtx33_023539f0 *m, fx32 sin, fx32 cos);
-void func_02000f34(const UnkMtx33_023539f0 *a, const UnkMtx33_023539f0 *b, UnkMtx33_023539f0 *ab);
-void func_02000eb0(const UnkVec_023539f0 *v, const UnkMtx33_023539f0 *m, UnkVec_023539f0 *dst);
-void func_0201c070(void *p, s32 a);
+void MTX_Concat33(const UnkMtx33_023539f0 *a, const UnkMtx33_023539f0 *b, UnkMtx33_023539f0 *ab);
+void MTX_MultVec33(const UnkVec_023539f0 *v, const UnkMtx33_023539f0 *m, UnkVec_023539f0 *dst);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void func_ov000_0234a064(UnkStruct_023539f0 *w, u8 ang);
 
 static inline void VecSet_023539f0(UnkVec_023539f0 *v, fx32 x, fx32 y, fx32 z) {
@@ -97,9 +97,9 @@ void func_ov000_023539f0(UnkStruct_023539f0 *w) {
         w->unk20 = w->y;
         w->unk24 = w->z;
         if (w->unk32C & 2) {
-            func_02000dfc(&m);
+            MTX_Identity33_(&m);
             if (w->unk32C & 4) {
-                func_02000e60(&r, SIN_023539f0((u16)-w->unk3E8->unkC), COS_023539f0((u16)-w->unk3E8->unkC));
+                MTX_RotX33_(&r, SIN_023539f0((u16)-w->unk3E8->unkC), COS_023539f0((u16)-w->unk3E8->unkC));
                 w->unk2 = -w->unk3E8->unkC >> 8;
             } else {
                 MTX_RotY33_(&r, SIN_023539f0((u16)w->unk3E8->unk8), COS_023539f0((u16)w->unk3E8->unk8));
@@ -107,9 +107,9 @@ void func_ov000_023539f0(UnkStruct_023539f0 *w) {
             if (w->unk32C & 8) {
                 w->unk3 = -(w->unk3E8->unk8 >> 8);
             }
-            func_02000f34(&m, &r, &m);
+            MTX_Concat33(&m, &r, &m);
             VecSet_023539f0(&v, -w->unk3F0 << 4, -w->unk3F4 << 4, 0);
-            func_02000eb0(&v, &m, &v);
+            MTX_MultVec33(&v, &m, &v);
             w->x = w->unk3E8->x - (v.x >> 4);
             w->y = w->unk3E8->y - (v.y >> 4);
             w->z = w->unk3E8->z - (v.z >> 4);
@@ -159,7 +159,7 @@ void func_ov000_023539f0(UnkStruct_023539f0 *w) {
     w->unk2 = 0;
     w->unk3 = 0;
     w->unk1 = 0;
-    func_0201c070(w->unk388, 0);
+    NNS_SndPlayerStopSeq(w->unk388, 0);
     if (w->unk422 & 3) {
         w->unk340(w);
         return;

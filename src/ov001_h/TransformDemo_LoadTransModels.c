@@ -50,9 +50,9 @@ extern UnkStruct_0231c350 gTransformDemoModelList;
 
 void *File_Load(void *p, s32 v);
 void Model_Init(UnkObj_022debf0 *o, s32 a);
-void func_020257f8(void *res);
+void NNS_G3dResDefaultSetup(void *res);
 void Model_SetResource(UnkObj_022debf0 *o, void *res, s32 a);
-void *func_02025e8c(void *res);
+void *NNS_G3dGetTex(void *res);
 void Model_SetAnimation(UnkObj_022debf0 *o, u32 slot, void *res, u32 idx, void *tex);
 
 void TransformDemo_LoadTransModels(UnkStruct_022debf0 *w, UnkStruct_022debf0_o *o) {
@@ -74,9 +74,9 @@ void TransformDemo_LoadTransModels(UnkStruct_022debf0 *w, UnkStruct_022debf0_o *
         else
             anim = 0xe;
         Model_Init(obj, 0);
-        func_020257f8(o->res[i]);
+        NNS_G3dResDefaultSetup(o->res[i]);
         Model_SetResource(obj, o->res[i], 0);
-        tex = func_02025e8c(o->res[i]);
+        tex = NNS_G3dGetTex(o->res[i]);
         for (j = 0; j < 5; j++) {
             if (j == 2 || j == 3) {
                 if (tex != NULL) {

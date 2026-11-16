@@ -36,7 +36,7 @@ void func_0204749c(UnkWork_02047ecc *w);
 void func_02045d98(UnkWork_02047ecc *w);
 void func_02047458(UnkWork_02047ecc *w);
 void Task_Destroy(UnkTask_02047ecc *t);
-void func_0201b348(void);
+void NNS_SndStopSoundAll(void);
 void func_02048098(void);
 
 #pragma thumb on
@@ -82,7 +82,7 @@ void func_02047ecc(void) {
         func_02047458(w);
     } else {
         Task_Destroy(gTaskCurrent);
-        func_0201b348();
+        NNS_SndStopSoundAll();
         func_02048098();
     }
 }

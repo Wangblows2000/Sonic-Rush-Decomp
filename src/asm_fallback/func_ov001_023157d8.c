@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u32 data_0206e470;
-extern u32 data_02084d38;
+extern u32 NNS_G3dGlb;
 extern u32 data_02084d40;
 extern u32 data_02084d84;
 extern u32 data_02084f78;
@@ -10,8 +10,8 @@ extern u32 data_02084f84;
 extern u32 data_02084f90;
 extern u32 data_ov001_0231f6a4;
 extern u32 data_ov001_0231f6ac;
-extern void func_020044f4(void);
-extern void func_02004988(void);
+extern void G3i_LookAt_(void);
+extern void G3i_PerspectiveW_(void);
 extern void func_ov001_02314b28(void);
 extern void func_ov001_02314be8(void);
 
@@ -50,7 +50,7 @@ asm void func_ov001_023157d8(void)
     ldrsh r1, [r2, r1]
     ldr r2, [r4, #0x4c]
     ldr r3, [r4, #0x50]
-    bl func_02004988
+    bl G3i_PerspectiveW_
     ldr r0, [pc, #0x84]
     add r8, r4, #0x20
     ldr r1, [r0, #0xfc]
@@ -73,7 +73,7 @@ asm void func_ov001_023157d8(void)
     mov r0, r8
     mov r1, r6
     mov r2, lr
-    bl func_020044f4
+    bl G3i_LookAt_
     ldr r0, [pc, #0x28]
     ldr r1, [r0, #0xfc]
     bic r1, r1, #0xe8
@@ -86,7 +86,7 @@ asm void func_ov001_023157d8(void)
     dcd 0x0000ffff
     dcd data_02084d40
     dcd data_0206e470
-    dcd data_02084d38
+    dcd NNS_G3dGlb
     dcd data_02084f78
     dcd data_02084f84
     dcd data_02084f90

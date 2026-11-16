@@ -19,16 +19,16 @@ typedef struct UnkStruct_022ca0a8 {
 
 extern u8 data_ov000_02362c54;
 
-s32 func_02025edc(void *p, void *q);
-void func_02025268(s32 a, void *b, s32 c);
+s32 NNS_G3dGetResDictIdxByName(void *p, void *q);
+void NNS_G3dGeBufferOP_N(s32 a, void *b, s32 c);
 
 void func_ov000_022ca0a8(UnkStruct_022ca0a8 *s) {
     s32 buf;
-    s32 v = func_02025edc(s->unk4->unk4 + 0x40, &data_ov000_02362c54);
+    s32 v = NNS_G3dGetResDictIdxByName(s->unk4->unk4 + 0x40, &data_ov000_02362c54);
     if (v != ((s->unk8 & 0x10) ? s->unkAE : -1))
         return;
     buf = 0x1e;
-    func_02025268(0x13, &buf, 1);
+    NNS_G3dGeBufferOP_N(0x13, &buf, 1);
     s->unk24 = 0;
     s->unk92 = 0;
 }

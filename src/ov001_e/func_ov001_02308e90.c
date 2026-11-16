@@ -31,7 +31,7 @@ s32 func_ov001_02314368(void);
 UnkStruct_02308e90_t *func_ov001_0230c0a4(void);
 void AnimatorSprite_SetAnimation(UnkStruct_02308e90_o *s, u16 index);
 void func_ov001_02312e04(void *p);
-void func_0201c070(void *p, s32 v);
+void NNS_SndPlayerStopSeq(void *p, s32 v);
 void func_ov001_0230808c(void);
 
 void func_ov001_02308e90(void) {
@@ -61,7 +61,7 @@ void func_ov001_02308e90(void) {
         g->unkBD0 = 0;
         return;
     case 0x1cc:
-        func_0201c070(data_02250464, 0x3c);
+        NNS_SndPlayerStopSeq(data_02250464, 0x3c);
         return;
     case 0x208:
         g->timer = -1;

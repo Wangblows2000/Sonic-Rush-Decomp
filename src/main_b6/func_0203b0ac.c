@@ -37,17 +37,17 @@ void func_0203b09c(u16 v);
 s32 func_0203af98(void);
 void func_0203b828(u32 n);
 void func_0203b8f4(u32 n);
-void *func_02016ad0(u32 n);
+void *MB_CommGetChildUser(u32 n);
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
 void func_020186f8(void);
 void func_0203b75c(u32 n);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 
 static inline void Free_0203b0ac(u8 *p) {
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         u32 size;
         p -= 0x20;
         size = *(u32 *)p;
@@ -104,7 +104,7 @@ void func_0203b0ac(u32 n, u32 type, UnkArg_0203b0ac *arg) {
         }
         data_022b89e8.unk4 |= 1 << n;
         func_0203b8f4(n);
-        p = func_02016ad0(n);
+        p = MB_CommGetChildUser(n);
         if (p == NULL)
             return;
         MI_CpuCopy8(p, data_022b89f8 + (n - 1) * 0x1e, 0x16);

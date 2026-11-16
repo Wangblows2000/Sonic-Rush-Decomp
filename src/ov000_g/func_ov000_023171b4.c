@@ -50,7 +50,7 @@ extern UnkStruct_023171b4_S data_ov000_0236aad8;
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Player_Action_SpringLaunch(UnkStruct_023171b4_P *p, s16 a, s16 b);
 void Player_SetSourceMapObject(UnkStruct_023171b4_P *p, UnkStruct_023171b4 *w);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 s32 ObjShift_Set(s32 v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_023171b4(UnkStruct_023171b4 *w) {
@@ -128,7 +128,7 @@ void func_ov000_023171b4(UnkStruct_023171b4 *w) {
     }
     if (!flag) {
         old = w->unkC;
-        func_0201c070(w->unk1DC, 0);
+        NNS_SndPlayerStopSeq(w->unk1DC, 0);
         w->unkC = ObjShift_Set(w->unkC, 0, 2, 0x200, 0x80);
         if (w->unkC == 0)
             w->unk1B8 = w;

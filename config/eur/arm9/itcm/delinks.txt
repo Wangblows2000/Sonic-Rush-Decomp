@@ -5,43 +5,43 @@ src/main_sdk2/OS_IrqHandler.c:
     complete
     .text       start:0x01ff8000 end:0x01ff8058
 
-src/main_sdk2/func_01ff8058.c:
+src/main_sdk2/OS_IrqHandler_ThreadSwitch.c:
     complete
     .text       start:0x01ff8058 end:0x01ff81ac
 
-src/main_sdk2/func_01ff81ac.c:
+src/main_sdk2/OSi_DoBoot.c:
     complete
     .text       start:0x01ff81ac end:0x01ff825c
 
-src/main_sdk2/func_01ff825c.c:
+src/main_sdk2/OSi_CpuClear32.c:
     complete
     .text       start:0x01ff825c end:0x01ff8270
 
-src/main_sdk2/func_01ff8270.c:
+src/main_sdk2/OSi_ReadCardRom32.c:
     complete
     .text       start:0x01ff8270 end:0x01ff83a0
 
-src/main_sdk2/func_01ff83a0.c:
+src/main_sdk2/OSi_ReloadRomData.c:
     complete
     .text       start:0x01ff83a0 end:0x01ff8480
 
-src/main_sdk2/func_01ff8480.c:
+src/main_sdk2/OSi_DoResetSystem.c:
     complete
     .text       start:0x01ff8480 end:0x01ff84c0
 
-src/main_sdk2/func_01ff84c0.c:
+src/main_sdk2/MIi_DmaSetParams_wait_noInt.c:
     complete
     .text       start:0x01ff84c0 end:0x01ff8520
 
-src/main_sdk2/func_01ff8520.c:
+src/main_sdk2/MIi_DmaSetParams_noInt.c:
     complete
     .text       start:0x01ff8520 end:0x01ff8558
 
-src/main_sdk2/func_01ff8558.c:
+src/main_sdk2/MIi_DmaSetParams_wait.c:
     complete
     .text       start:0x01ff8558 end:0x01ff85cc
 
-src/main_sdk2/func_01ff85cc.c:
+src/main_sdk2/MIi_DmaSetParams.c:
     complete
     .text       start:0x01ff85cc end:0x01ff861c
 

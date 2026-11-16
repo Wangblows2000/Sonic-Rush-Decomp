@@ -21,7 +21,7 @@ typedef struct {
 void *ObjData_Load(UnkOwner_02069a34 *s, const char *name, void *arc);
 void func_020319f0(UnkObj_02069a34 *o, s32 a);
 void func_020319a4(UnkObj_02069a34 *o, void *res, s32 a, u16 b, u16 c);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 
 void StageObj_LoadModelSimple(UnkWork_02069a34 *w, UnkObj_02069a34 *o, const char *name, s32 a, u16 b, u16 c, UnkOwner_02069a34 *owner, void *arc) {
     UnkObj_02069a34 *p;
@@ -51,7 +51,7 @@ void StageObj_LoadModelSimple(UnkWork_02069a34 *w, UnkObj_02069a34 *o, const cha
     if (owner != NULL) {
         o->owner = owner;
         if (owner->unk4 == 1)
-            func_020257f8(res);
+            NNS_G3dResDefaultSetup(res);
     }
     if (res == NULL)
         return;

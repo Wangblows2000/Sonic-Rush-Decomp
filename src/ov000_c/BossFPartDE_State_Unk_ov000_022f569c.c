@@ -36,7 +36,7 @@ extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_02369b84 *data_ov000_02369b84;
 extern s16 data_ov000_02364090[][10];
 
-void func_0201c070(void *a, s32 b);
+void NNS_SndPlayerStopSeq(void *a, s32 b);
 
 static inline BOOL IsMode23(void) {
     return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
@@ -64,7 +64,7 @@ void BossFPartDE_State_Unk_ov000_022f569c(UnkStruct_022f569c *w) {
     if (far && w->unk4A0 != 0) {
         w->unk4A0 = 0;
         w->base.coll0.unkA &= ~4;
-        func_0201c070(w->unk4A8, 0x3c);
+        NNS_SndPlayerStopSeq(w->unk4A8, 0x3c);
     }
     if (w->base.unk14 < 0x1a000) {
         data_ov000_02369b84->unk218->unk438--;

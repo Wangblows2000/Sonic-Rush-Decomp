@@ -26,17 +26,17 @@ extern void *gSoundHeap;
 void *File_Load(void *p, s32 v);
 void *func_ov001_0230b154(void *p);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dst, u8 v, u32 size);
-void *func_0201db30(void *p, u32 size);
+void *NNS_SndHeapCreate(void *p, u32 size);
 void func_0201d868(void *s, const char *path, void *a, u32 b);
-void func_0201ebec(void *h);
-void func_0201e794(u32 a, void *b);
-void func_0201e75c(u32 a, void *b);
+void NNS_SndArcPlayerSetup(void *h);
+void NNS_SndArcLoadSeqArc(u32 a, void *b);
+void NNS_SndArcLoadBank(u32 a, void *b);
 void func_02036854(void *a);
-void func_0201e7cc(s32 a, void *b);
+void NNS_SndArcLoadGroup(s32 a, void *b);
 
 static inline u32 GetLang(void) {
     switch (gGameLanguage) {
@@ -65,7 +65,7 @@ void SpecialStage_LoadHudAssets(UnkStruct_0230be84_o *o) {
         o->res2[i] = File_Load(b[i], -1);
     o->unk2C = func_ov001_0230b154(data_ov001_0231df98);
     blk = Heap_Alloc(gMainHeap, 0x69040, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0x69040);
         *(u32 *)blk = 0x69040;
@@ -75,13 +75,13 @@ void SpecialStage_LoadHudAssets(UnkStruct_0230be84_o *o) {
     }
     g->mem = blk;
     MI_CpuFill8(g->mem, 0, 0x69000);
-    g->heap = func_0201db30(g->mem, 0x69000);
+    g->heap = NNS_SndHeapCreate(g->mem, 0x69000);
     func_0201d868(data_ov001_0231f5c8, data_ov001_0231e6b4, g->heap, 0);
-    func_0201ebec(g->heap);
-    func_0201e794(0xe, g->heap);
-    func_0201e75c(0x16, g->heap);
-    func_0201e794(9, g->heap);
-    func_0201e75c(0x11, g->heap);
+    NNS_SndArcPlayerSetup(g->heap);
+    NNS_SndArcLoadSeqArc(0xe, g->heap);
+    NNS_SndArcLoadBank(0x16, g->heap);
+    NNS_SndArcLoadSeqArc(9, g->heap);
+    NNS_SndArcLoadBank(0x11, g->heap);
     func_02036854(data_ov001_0231e6cc);
-    func_0201e7cc(0x14, gSoundHeap);
+    NNS_SndArcLoadGroup(0x14, gSoundHeap);
 }

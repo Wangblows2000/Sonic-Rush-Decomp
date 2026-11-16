@@ -12,7 +12,7 @@ typedef struct {
 extern UnkTask_020617d4 *gTaskCurrent;
 extern void *gMainHeap;
 
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -23,7 +23,7 @@ void func_020617d4(void) {
     u8 *p = gTaskCurrent->work->buf;
 
     if (p != NULL) {
-        if ((u8 *)func_02006abc(0) != p) {
+        if ((u8 *)OS_GetArenaLo(0) != p) {
             u32 size;
             p -= 0x20;
             size = *(u32 *)p;

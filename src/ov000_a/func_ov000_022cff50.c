@@ -134,7 +134,7 @@ extern u32 data_ov000_0236510c[];
 extern u16 data_ov000_02362dcc[];
 
 void func_ov000_022cfb90(UnkStruct_022cff50 *s);
-void func_0201bfbc(s32 a);
+void NNS_SndPlayerStopSeqAll(s32 a);
 void StageObj_SetPause(void);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02347c44(UnkStruct_022cff50_pl *p);
@@ -160,7 +160,7 @@ void func_ov000_022cff50(void) {
     y = &s->unkBD4;
     z = &s->unkD0C;
     c = (UnkStruct_022cff50_c *)(u32)&data_ov000_0236a48c;
-    func_0201bfbc(0);
+    NNS_SndPlayerStopSeqAll(0);
     StageObj_SetPause();
     s->unk54 |= 0x20;
     data_022c4560.unk18 &= ~1;

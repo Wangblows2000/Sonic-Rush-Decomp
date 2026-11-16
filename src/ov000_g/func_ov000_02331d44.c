@@ -44,7 +44,7 @@ typedef struct {
 } UnkStruct_02331d44;
 
 void Player_State_Rocket(void);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 void StageObj_ReleaseSpriteVram(void *w);
 
 void func_ov000_02331d44(UnkStruct_02331d44 *w) {
@@ -67,7 +67,7 @@ void func_ov000_02331d44(UnkStruct_02331d44 *w) {
             if (w->unk88->unk2A == 0 && w->unk88->unk28 == 0)
                 w->unk1 = w->unk88->unk1;
             else
-                w->unk1 = func_020027a4(w->unk88->unk2A, w->unk88->unk28) >> 8;
+                w->unk1 = FX_Atan2(w->unk88->unk2A, w->unk88->unk28) >> 8;
             if (w->unk1 == 0 && w->unk88->unk5 == 0 && w->unk88->unk1 == 0 && (w->unk88->unk5C & 1))
                 w->unk1 += 0x80;
         }

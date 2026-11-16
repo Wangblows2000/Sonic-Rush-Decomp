@@ -41,8 +41,8 @@ extern UnkStruct_Mgr *data_ov000_02369b84;
 
 void func_ov000_022f4ce4(UnkStruct_022f2014 *s, s32 a, s32 b, s32 c);
 void func_ov000_022f8b70(u32 a, s32 b);
-s32 func_020027a4(s32 y, s32 x);
-s32 func_020021f0(s32 a);
+s32 FX_Atan2(s32 y, s32 x);
+s32 FX_Sqrt(s32 a);
 BOOL func_ov000_022f8f78(void);
 void func_ov000_0234915c(UnkStruct_Player *p, s16 a, s32 b);
 void func_ov000_022f8df8(UnkStruct_022f2014 *s, s32 *x, s32 *y, s32 c);
@@ -72,13 +72,13 @@ void func_ov000_022f2014(UnkStruct_022f2014 *s) {
     func_ov000_022f8b70(data_022c4560.unk0, 0);
     dx = s->unk3C4 - s->unk424;
     dy = s->unk3C8 - s->unk428;
-    s->unk438 = func_020027a4(dy, dx) + 0x8000;
+    s->unk438 = FX_Atan2(dy, dx) + 0x8000;
     dx = s->unk3C4 - (gPlayers->base.unk10 << 4);
     dy = s->unk3C8 - (-gPlayers->base.unk14 << 4);
-    s->unk43A = func_020027a4(dy, dx) + 0x8000;
+    s->unk43A = FX_Atan2(dy, dx) + 0x8000;
     dx = s->unk3C4 - (gPlayers->base.unk10 << 4);
     dy = s->unk3C8 - (-gPlayers->base.unk14 << 4);
-    s->unk43C = func_020021f0(FX_Mul(dx, dx) + FX_Mul(dy, dy));
+    s->unk43C = FX_Sqrt(FX_Mul(dx, dx) + FX_Mul(dy, dy));
     data_ov000_0236a48c.unk74 = 0x2000;
     data_ov000_0236a48c.unk38 = 0x2000;
     if (!func_ov000_022f8f38()) {

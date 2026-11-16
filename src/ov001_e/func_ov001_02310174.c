@@ -30,7 +30,7 @@ typedef struct UnkStruct_02310174 {
 } UnkStruct_02310174;
 
 BOOL func_ov001_02310248(void *a, UnkStruct_02310174_o *o);
-BOOL func_020254d4(UnkStruct_02310174_v *v, s32 *x, s32 *y);
+BOOL NNS_G3dWorldPosToScrPos(UnkStruct_02310174_v *v, s32 *x, s32 *y);
 BOOL func_ov001_0230ae34(void *a, UnkStruct_02310174_p *p, UnkStruct_02310174_p *q);
 
 UnkStruct_02310174_o *func_ov001_02310174(void *a, UnkStruct_02310174 *list, s32 x, s32 y) {
@@ -42,7 +42,7 @@ UnkStruct_02310174_o *func_ov001_02310174(void *a, UnkStruct_02310174 *list, s32
 
     for (o = list->head; o != &list->sentinel; o = o->next) {
         if ((o->unk60 & 9) == 0 && o->unkC4 != NULL && (o->unk60 & 0x100) == 0 && func_ov001_02310248(a, o)) {
-            func_020254d4(&o->pos, &sx, &sy);
+            NNS_G3dWorldPosToScrPos(&o->pos, &sx, &sy);
             p.x = sx << 12;
             p.y = sy << 12;
             q.x = x << 12;

@@ -29,7 +29,7 @@ typedef struct {
 extern s16 data_0207613c[];
 
 UnkTask_020575b4 *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_0205755c(void);
 
@@ -40,7 +40,7 @@ void func_020575b4(UnkObj_020575b4 *o) {
     vu16 z;
 
     t = Task_Create(func_0205755c, NULL, 7, 0x3efe, 3, 0xc);
-    if (t == (UnkTask_020575b4 *)func_02006abc(0))
+    if (t == (UnkTask_020575b4 *)OS_GetArenaLo(0))
         return;
     w = t->work;
     z = 0;

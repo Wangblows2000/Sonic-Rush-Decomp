@@ -20,8 +20,8 @@ extern UnkStruct_022fd744_s *data_ov001_0231f324;
 extern s16 data_ov001_02316e84[];
 
 UnkStruct_022fd744_q *ExtraBoss_GetWork(void);
-s32 func_02002094(s32 n, s32 d);
-s32 func_0200203c(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
 void AnimatorSprite_Draw(void *p);
 void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 
@@ -52,11 +52,11 @@ void func_ov001_022fd744(void) {
             off = 10;
     }
     for (i = 0, x = 0x1c, div = 100; i < 3; i++, div /= 10) {
-        e = &G[off + func_02002094(n, div)];
+        e = &G[off + FX_DivS32(n, div)];
         e->x = x;
         e->y = 0x12;
         AnimatorSprite_Draw(e);
-        n = func_0200203c(n, div);
+        n = FX_ModS32(n, div);
         x += 10;
     }
     AnimatorSprite_Draw((u8 *)G + 0x5a0);
@@ -68,17 +68,17 @@ void func_ov001_022fd744(void) {
         if (*(s32 *)((u8 *)G + 0x79c) & 8)
             off = 10;
     }
-    if (t > 0x87b3 && t < 0x8c9f && func_0200203c(t, 0x78) == 0)
+    if (t > 0x87b3 && t < 0x8c9f && FX_ModS32(t, 0x78) == 0)
         Sound_PlaySeqArc(0, 0, 0x36);
     if (t < 0x8c9f) {
-        d[0] = off + func_02002094(t, 0xe10);
-        t = func_0200203c(t, 0xe10);
-        d[2] = off + func_02002094(t, 0x258);
-        t = func_0200203c(t, 0x258);
-        d[3] = off + func_02002094(t, 0x3c);
-        r = func_0200203c(t, 0x3c) * 100 / 60;
-        d[5] = off + func_02002094(r, 10);
-        r = func_0200203c(r, 10);
+        d[0] = off + FX_DivS32(t, 0xe10);
+        t = FX_ModS32(t, 0xe10);
+        d[2] = off + FX_DivS32(t, 0x258);
+        t = FX_ModS32(t, 0x258);
+        d[3] = off + FX_DivS32(t, 0x3c);
+        r = FX_ModS32(t, 0x3c) * 100 / 60;
+        d[5] = off + FX_DivS32(r, 10);
+        r = FX_ModS32(r, 10);
         d[6] = r + off;
     } else {
         u16 v = off + 9;

@@ -8,7 +8,7 @@ typedef struct {
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
 u32 OS_ReadOwnerOfLockWord(void *lock);
-s32 func_020056d8(u16 lockId);
+s32 OS_TryLockCartridge(u16 lockId);
 void WaitByLoop(s32 count);
 
 void func_0201aa68(u16 lockId, UnkStruct_0201aa68 *s)
@@ -19,7 +19,7 @@ void func_0201aa68(u16 lockId, UnkStruct_0201aa68 *s)
         if (s->locked) {
             return;
         }
-        if (func_020056d8(lockId) == 0) {
+        if (OS_TryLockCartridge(lockId) == 0) {
             return;
         }
         OS_RestoreInterrupts(s->irq);

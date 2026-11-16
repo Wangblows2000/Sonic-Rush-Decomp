@@ -22,16 +22,16 @@ extern u8 data_0207faf0[];
 extern u8 data_0207fb04[];
 extern UnkWmArm7Cmd_02010d60 data_0207fb80[10];
 
-extern void func_02009fa8(void);
+extern void PXI_Init(void);
 extern BOOL PXI_IsCallbackReady(u32 fifotag, u32 proc);
 extern void DC_InvalidateRange(void *p, u32 size);
 extern void DC_StoreRange(const void *p, u32 size);
-extern void func_02007e20(u32 dmaNo, void *dest, u32 data, u32 size);
+extern void MI_DmaFill32(u32 dmaNo, void *dest, u32 data, u32 size);
 extern void func_02010694(void);
 extern void func_020114f0(u16 a, u32 b, u32 c);
-extern void func_02006548(void *queue, void *msgArray, s32 count);
-extern BOOL func_020064a0(void *queue, void *msg, s32 flags);
-extern void func_0200a1b4(u32 fifotag, void (*callback)(u32, u32, BOOL));
+extern void OS_InitMessageQueue(void *queue, void *msgArray, s32 count);
+extern BOOL OS_SendMessage(void *queue, void *msg, s32 flags);
+extern void PXI_SetFifoRecvCallback(u32 fifotag, void (*callback)(u32, u32, BOOL));
 extern void func_020106b0(u32 tag, u32 data, BOOL err);
 
 s32 func_02010d60(void *wmSysBuf, u16 dmaNo, u32 bufSize)
@@ -55,13 +55,13 @@ s32 func_02010d60(void *wmSysBuf, u16 dmaNo, u32 bufSize)
         data_0207fae8 = 0;
         return 6;
     }
-    func_02009fa8();
+    PXI_Init();
     if (!PXI_IsCallbackReady(10, 1)) {
         data_0207fae8 = 0;
         return 4;
     }
     DC_InvalidateRange(wmSysBuf, bufSize);
-    func_02007e20(dmaNo, wmSysBuf, 0, bufSize);
+    MI_DmaFill32(dmaNo, wmSysBuf, 0, bufSize);
     data_0207faec = (UnkWm9Buf_02010d60 *)wmSysBuf;
     data_0207faec->wm7buf = (u32)wmSysBuf + 0xa00;
     data_0207faec->status = data_0207faec->wm7buf + 0x300;
@@ -73,13 +73,13 @@ s32 func_02010d60(void *wmSysBuf, u16 dmaNo, u32 bufSize)
     for (i = 0; i < 16; i++) {
         func_020114f0((u16)i, 0, 0);
     }
-    func_02006548(data_0207faf0, data_0207fb04, 10);
+    OS_InitMessageQueue(data_0207faf0, data_0207fb04, 10);
     for (j = 0; j < 10; j++) {
         cmd = &data_0207fb80[j];
         cmd->command = 0x8000;
         DC_StoreRange(cmd, 2);
-        func_020064a0(data_0207faf0, cmd, 1);
+        OS_SendMessage(data_0207faf0, cmd, 1);
     }
-    func_0200a1b4(10, func_020106b0);
+    PXI_SetFifoRecvCallback(10, func_020106b0);
     return 0;
 }

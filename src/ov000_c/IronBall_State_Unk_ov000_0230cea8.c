@@ -14,14 +14,14 @@ typedef struct {
 extern UnkStruct_0230cea8_Pl *gPlayers;
 extern s32 data_ov000_0236a00c;
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void ScreenShake_Start(s32 a);
-BOOL func_0201bea8(s32 a, s32 b);
-void func_0201bf1c(s32 a);
+BOOL NNS_SndPlayerCountPlayingSeqByPlayerNo(s32 a, s32 b);
+void NNS_SndHandleReleaseSeq(s32 a);
 void func_0204b774(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_0201c070(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 s32 Sound_CalcPan(s32 a, s32 b);
-void func_0201bdb0(s32 a, s32 b, s32 c);
+void NNS_SndPlayerSetTrackPan(s32 a, s32 b, s32 c);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -49,7 +49,7 @@ void IronBall_State_Unk_ov000_0230cea8(UnkStruct_StageObj *w) {
                 w->unk3E = spd - 0x300;
             } else {
                 w->unk3C = 0xc;
-                w->unk3E = spd + ((func_02002094((d - 0x40) << 8, 0x40) * 0x280) >> 8);
+                w->unk3E = spd + ((FX_DivS32((d - 0x40) << 8, 0x40) * 0x280) >> 8);
             }
         }
     }
@@ -94,13 +94,13 @@ void IronBall_State_Unk_ov000_0230cea8(UnkStruct_StageObj *w) {
         }
     }
     if (w->unk58 & 1) {
-        if (!func_0201bea8(0, 0x50)) {
-            func_0201bf1c(w->unk1DC);
+        if (!NNS_SndPlayerCountPlayingSeqByPlayerNo(0, 0x50)) {
+            NNS_SndHandleReleaseSeq(w->unk1DC);
             func_0204b774(w->unk1DC, 0, 0x50, 0x20, -1);
         }
     } else {
-        func_0201c070(w->unk1DC, 0);
+        NNS_SndPlayerStopSeq(w->unk1DC, 0);
     }
-    func_0201bdb0(w->unk1DC, 0xffff, Sound_CalcPan(w->unk10, gPlayers->unk10));
+    NNS_SndPlayerSetTrackPan(w->unk1DC, 0xffff, Sound_CalcPan(w->unk10, gPlayers->unk10));
     w->unk8 = (w->unk8 & 0xffff0000) | w->unk1;
 }

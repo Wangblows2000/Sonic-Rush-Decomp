@@ -24,12 +24,12 @@ typedef struct {
 extern UnkStruct_Task *gTaskCurrent;
 extern UnkStruct_Vec data_ov000_0236a45c;
 
-s32 func_02002278(UnkStruct_Vec *a, UnkStruct_Vec *b);
+s32 VEC_Distance(UnkStruct_Vec *a, UnkStruct_Vec *b);
 void VEC_Subtract(UnkStruct_Vec *a, UnkStruct_Vec *b, UnkStruct_Vec *c);
-void func_020024b4(UnkStruct_Vec *a, UnkStruct_Vec *b);
-void func_0200265c(UnkStruct_Vec *a, UnkStruct_Vec *b, UnkStruct_Vec *c);
-u8 *func_02025ecc(void *p);
-void func_02025dac(void *m, s32 a, s32 b);
+void VEC_Normalize(UnkStruct_Vec *a, UnkStruct_Vec *b);
+void VEC_CrossProduct(UnkStruct_Vec *a, UnkStruct_Vec *b, UnkStruct_Vec *c);
+u8 *NNS_G3dGetMdlSet(void *p);
+void NNSi_G3dModifyPolygonAttrMask(void *m, s32 a, s32 b);
 void Model_Draw(void *m);
 
 static inline s32 Mul64(s64 a, s64 b) {
@@ -51,23 +51,23 @@ void BossFPartDC_Draw(void) {
     m->unk48.x = w->base.unk10 << 4;
     m->unk48.y = -(w->base.unk14 << 4);
     m->unk48.z = w->base.unk18 << 4;
-    m->unk20 = func_02002278(&v, &m->unk48);
+    m->unk20 = VEC_Distance(&v, &m->unk48);
     m->unk20 = Mul64(m->unk20, 0x1199);
     p = &m->unk3C;
     VEC_Subtract(&v, &m->unk48, p);
-    func_020024b4(p, p);
+    VEC_Normalize(p, p);
     p = &m->unk24;
     VEC_Subtract(&data_ov000_0236a45c, &m->unk48, &m->unk30);
-    func_0200265c(&m->unk30, &m->unk3C, p);
-    func_020024b4(p, p);
+    VEC_CrossProduct(&m->unk30, &m->unk3C, p);
+    VEC_Normalize(p, p);
     p = &m->unk30;
-    func_0200265c(&m->unk3C, &m->unk24, p);
-    func_020024b4(p, p);
+    VEC_CrossProduct(&m->unk3C, &m->unk24, p);
+    VEC_Normalize(p, p);
     if (w->unk20C & 8) {
-        r = func_02025ecc(w->unk238);
-        func_02025dac(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x1f0000);
+        r = NNS_G3dGetMdlSet(w->unk238);
+        NNSi_G3dModifyPolygonAttrMask(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x1f0000);
     }
     Model_Draw(m);
-    r = func_02025ecc(w->unk238);
-    func_02025dac(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 1, 0x1f0000);
+    r = NNS_G3dGetMdlSet(w->unk238);
+    NNSi_G3dModifyPolygonAttrMask(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 1, 0x1f0000);
 }

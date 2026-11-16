@@ -3,7 +3,7 @@
 
 extern u8 data_ov000_0236ac18[];
 s32 func_ov000_0233ce78();
-s32 func_020073b8();
+s32 OS_SetVAlarm();
 
 void func_01fff7c4(s32 p0) {
     s32 t0 = *(u32 *)data_ov000_0236ac18;
@@ -11,5 +11,5 @@ void func_01fff7c4(s32 p0) {
         return;
     }
     func_ov000_0233ce78(t0, p0);
-    func_020073b8(((s32)p0 * 0x28 + (t0 + 0x5c)), *(u8 *)((u8 *)(t0 + (s32)p0) + 0xa), 5, (u32)func_01fff7c4, p0);
+    OS_SetVAlarm(((s32)p0 * 0x28 + (t0 + 0x5c)), *(u8 *)((u8 *)(t0 + (s32)p0) + 0xa), 5, (u32)func_01fff7c4, p0);
 }

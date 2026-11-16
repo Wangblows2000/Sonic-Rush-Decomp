@@ -79,7 +79,7 @@ extern void *gActComArchive;
 extern void *gSoundHeap;
 
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
-void func_0201b348(void);
+void NNS_SndStopSoundAll(void);
 UnkTask_020480ec *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void func_02047ecc(void);
@@ -97,13 +97,13 @@ void func_0204594c(void *p);
 void func_02046738(void *p);
 void func_020598bc(u8 a, u8 b, u16 c, u16 d);
 void func_0204e4dc(void);
-void func_0201bf34(void *p);
+void NNS_SndHandleInit(void *p);
 void func_02022270(s32 i, u16 v);
 void func_02022284(s32 i, s32 x, s32 y, s32 z);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void Vram_SetBankForBGExtPltt(s32 a);
 void Vram_SetBankForSubBGExtPltt(s32 a);
-void func_02004040(u32 a, u32 b, u16 c, u32 d, BOOL e);
+void G3X_SetClearColor(u32 a, u32 b, u16 c, u32 d, BOOL e);
 BOOL func_02021310(UnkArc_020480ec *arc, const char *name, void *narc);
 void *func_02021264(UnkArc_020480ec *arc, s32 idx);
 BOOL func_020212e0(UnkArc_020480ec *arc);
@@ -118,7 +118,7 @@ void func_02053b04(s32 a);
 void func_02044d44(void);
 void Sound_ResetHeap(void);
 void func_02036854(void *p);
-void func_0201e7cc(s32 a, void *b);
+void NNS_SndArcLoadGroup(s32 a, void *b);
 void Sound_PlaySeq(s32 a, s32 b);
 
 #pragma thumb on
@@ -133,7 +133,7 @@ void func_020480ec(void) {
     data_0208926c.unk8 = -16;
     GXx_SetMasterBrightness_((vu16 *)0x400106c, -16);
     data_02087d44.unk8 = -16;
-    func_0201b348();
+    NNS_SndStopSoundAll();
     w = Task_Create(func_02047ecc, func_02047d2c, 0, 0x3efe, 3, sizeof(UnkWork_020480ec))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_020480ec));
@@ -153,7 +153,7 @@ void func_020480ec(void) {
         w->fn274 = func_02046608;
         func_0204e4dc();
     }
-    func_0201bf34(w->unk1634);
+    NNS_SndHandleInit(w->unk1634);
     w->unk350 = 0x1555;
     w->unk354 = 0x1000;
     w->unk358 = 0x800000;
@@ -174,10 +174,10 @@ void func_020480ec(void) {
     func_02022270(2, 0x2108);
     func_02022284(2, 0, 0x620, 0xec7);
     if (data_022c4560.unk1c >= 9 || data_022c4560.unk1d >= 2) {
-        func_02002ab0(1, 5, 1);
+        GX_SetGraphicsMode(1, 5, 1);
         Vram_SetBankForBGExtPltt(0);
         Vram_SetBankForSubBGExtPltt(0);
-        func_02004040(0, 0, 0x7fff, 0, 0);
+        G3X_SetClearColor(0, 0, 0x7fff, 0, 0);
         *(vu16 *)0x4000008 = (*(vu16 *)0x4000008 & ~3) | 1;
         *(vu16 *)0x400000a = (*(vu16 *)0x400000a & ~3) | 3;
         *(vu16 *)0x400000c = (*(vu16 *)0x400000c & ~3) | 0;
@@ -241,7 +241,7 @@ void func_020480ec(void) {
         w->unk1630 = 6;
         b = 0xf;
     }
-    func_0201e7cc(a, gSoundHeap);
+    NNS_SndArcLoadGroup(a, gSoundHeap);
     Sound_PlaySeq(0, b);
 }
 #pragma thumb reset

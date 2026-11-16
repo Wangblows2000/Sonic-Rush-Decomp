@@ -3,13 +3,13 @@
 
 extern u8 data_022c2440[];
 extern u8 data_022c1ba0[];
-s32 func_020125d8();
+s32 WM_StepDataSharing();
 extern u8 data_022c197c[];
 extern u8 data_020786dc[];
 s32 WH_SetError();
 
 s32 WH_StepDataSharing(s32 p0) {
-    s32 t0 = func_020125d8(data_022c2440, p0, data_022c1ba0);
+    s32 t0 = WM_StepDataSharing(data_022c2440, p0, data_022c1ba0);
     if (t0 == 7) {
         return 1;
     }

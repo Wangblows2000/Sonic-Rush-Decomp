@@ -32,7 +32,7 @@ static inline u16 Rand_0234801c(void) {
 void Player_SetAnimation(UnkStruct_0234801c *w, s32 a);
 void func_ov000_0234307c(UnkStruct_0234801c *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void func_ov000_02345830(UnkStruct_0234801c *w, s32 a);
 void func_ov000_0232c7b0(u8 a);
 
@@ -77,7 +77,7 @@ void func_ov000_0234801c(UnkStruct_0234801c *w) {
             }
             Sound_PlaySeqArcEx(w->unk384, 0, 0x1a);
         }
-        func_0201c070(w->unk390, 0);
+        NNS_SndPlayerStopSeq(w->unk390, 0);
         Sound_PlaySeqArcEx(w->unk390, 0, 0x31);
         if (w->unk5C & 1) {
             w->unk34 -= 0x200;

@@ -65,8 +65,8 @@ static inline u16 Player_Rand(void) {
 void Player_SetAnimation(UnkStruct_Player *w, s32 a);
 void func_ov000_0234307c(UnkStruct_Player *w, s16 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_0201c070(void *p, s32 a);
-void func_0201be98(void *p, s32 vol);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndPlayerSetVolume(void *p, s32 vol);
 void func_ov000_02345830(UnkStruct_Player *w, s32 a);
 void func_ov000_0232c7b0(u8 a);
 

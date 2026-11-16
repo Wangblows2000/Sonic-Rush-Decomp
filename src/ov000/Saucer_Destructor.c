@@ -10,10 +10,10 @@ typedef struct UnkStruct_02315a64 {
     UnkStruct_02315a64_2 *unk10;
 } UnkStruct_02315a64;
 
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void MapObject_Destructor(UnkStruct_02315a64 *s);
 
 void Saucer_Destructor(UnkStruct_02315a64 *s) {
-    func_0201c070(s->unk10->unk1DC, 0);
+    NNS_SndPlayerStopSeq(s->unk10->unk1DC, 0);
     MapObject_Destructor(s);
 }

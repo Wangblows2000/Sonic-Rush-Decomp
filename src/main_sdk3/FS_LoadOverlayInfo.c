@@ -34,11 +34,11 @@ extern UnkOvtTable_0200c604 data_0207efcc;
 extern u8 data_0207efd4[];
 
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
-void func_0200be70(UnkFSFile_0200c604 *f);
-void func_0200bad8(UnkFSFile_0200c604 *f);
+void FS_InitFile(UnkFSFile_0200c604 *f);
+void FS_CloseFile(UnkFSFile_0200c604 *f);
 void FS_GetOverlayFileID(UnkFSFileID_0200c604 *id, UnkFSOverlayInfo_0200c604 *ovi);
-BOOL func_0200bb70(UnkFSFile_0200c604 *f, UnkFSFileID_0200c604 id);
-BOOL func_0200c718(UnkFSOverlayInfo_0200c604 *p_ovi, u32 target, u32 id, void *p_arc, u32 o9, u32 l9, u32 o7, u32 l7);
+BOOL FS_OpenFileFast(UnkFSFile_0200c604 *f, UnkFSFileID_0200c604 id);
+BOOL FSi_LoadOverlayInfoCore(UnkFSOverlayInfo_0200c604 *p_ovi, u32 target, u32 id, void *p_arc, u32 o9, u32 l9, u32 o7, u32 l7);
 
 BOOL FS_LoadOverlayInfo(UnkFSOverlayInfo_0200c604 *p_ovi, u32 target, u32 id)
 {
@@ -52,18 +52,18 @@ BOOL FS_LoadOverlayInfo(UnkFSOverlayInfo_0200c604 *p_ovi, u32 target, u32 id)
         }
         MI_CpuCopy8(table->ptr + pos, p_ovi, 0x20);
         p_ovi->target = target;
-        func_0200be70(&file);
+        FS_InitFile(&file);
         FS_GetOverlayFileID(&file_id, p_ovi);
-        if (!func_0200bb70(&file, file_id)) {
+        if (!FS_OpenFileFast(&file, file_id)) {
             return FALSE;
         }
         p_ovi->filePos = file.top;
         p_ovi->fileSize = file.bottom - file.top;
-        func_0200bad8(&file);
+        FS_CloseFile(&file);
         return TRUE;
     } else {
         const UnkRomRegion_0200c604 *r9 = (const UnkRomRegion_0200c604 *)0x027ffe50;
         const UnkRomRegion_0200c604 *r7 = (const UnkRomRegion_0200c604 *)0x027ffe58;
-        return func_0200c718(p_ovi, target, id, data_0207efd4, r9->offset, r9->length, r7->offset, r7->length);
+        return FSi_LoadOverlayInfoCore(p_ovi, target, id, data_0207efd4, r9->offset, r9->length, r7->offset, r7->length);
     }
 }

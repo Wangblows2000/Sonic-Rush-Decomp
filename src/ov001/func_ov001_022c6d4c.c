@@ -4,7 +4,7 @@ extern u8 data_02250464[];
 void Ending_FadeIn(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL Ending_FadeOut(void *p, s32 a, s32 b, s32 c, s32 d);
 void Ending_SetSubState(void *p, void (*f)(void));
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void func_ov001_022c6d04(void);
 
 void func_ov001_022c6d4c(u8 *p) {
@@ -15,7 +15,7 @@ void func_ov001_022c6d4c(u8 *p) {
         Ending_FadeOut(p, *(s32 *)(p + 0xc) - 0x389, 0xb4, 1, 1);
     }
     if (*(s32 *)(p + 0xc) == 0x389) {
-        func_0201c070(data_02250464, 0xb4);
+        NNS_SndPlayerStopSeq(data_02250464, 0xb4);
     }
     if (*(s32 *)(p + 0xc) < 0x447) {
         return;

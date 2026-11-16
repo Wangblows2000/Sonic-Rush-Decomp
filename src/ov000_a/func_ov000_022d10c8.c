@@ -86,7 +86,7 @@ typedef struct UnkStruct_022d10c8_7 {
 
 extern UnkStruct_022d10c8_7 data_ov000_02369ac0;
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 UnkStruct_022d10c8_o *BossEffect_CreateSuction2(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022d0e9c(UnkStruct_022d10c8 *s);
@@ -114,7 +114,7 @@ void func_ov000_022d10c8(UnkStruct_022d10c8 *s) {
     x->unk10C &= ~4;
     y->unk10C &= ~4;
     z->unk10C &= ~4;
-    z->unk114 = func_02002094(data_ov000_02369ac0.unk8 * 0xb33 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0x1800, data_ov000_02369ac0.unkA);
+    z->unk114 = FX_DivS32(data_ov000_02369ac0.unk8 * 0xb33 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0x1800, data_ov000_02369ac0.unkA);
     y->unk114 = z->unk114;
     x->unk114 = y->unk114;
     s->unk20C |= 4;

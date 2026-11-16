@@ -15,7 +15,7 @@ extern u8 data_ov000_02368dec[];
 
 void func_02068598(void *obj, void *def, void *res);
 void func_02068478(void *obj, s32 a);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -24,7 +24,7 @@ static inline void UnkFree_0234dfb8(void **pp) {
     void *p = *pp;
     u32 size;
     if (p != NULL) {
-        if (func_02006abc(0) != p) {
+        if (OS_GetArenaLo(0) != p) {
             p = (u8 *)p - 0x20;
             size = *(u32 *)p;
             if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {

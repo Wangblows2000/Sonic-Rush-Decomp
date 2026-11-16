@@ -12,7 +12,7 @@ typedef struct {
 } UnkWork_0205fb68;
 extern UnkWork_0205fb68 *data_022c4d9c;
 
-void func_020073b8(void *p, s32 a, s32 b, void (*cb)(void), s32 i);
+void OS_SetVAlarm(void *p, s32 a, s32 b, void (*cb)(void), s32 i);
 
 #pragma thumb on
 void func_0205fb68(void) {
@@ -38,7 +38,7 @@ void func_0205fb68(void) {
             v = w->unk17 - 1;
             break;
         }
-        func_020073b8(w->win, v, 5, func_0205fb68, w->unk14);
+        OS_SetVAlarm(w->win, v, 5, func_0205fb68, w->unk14);
     }
 }
 #pragma thumb reset

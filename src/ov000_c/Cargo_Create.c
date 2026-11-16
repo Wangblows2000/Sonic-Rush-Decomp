@@ -29,7 +29,7 @@ UnkStruct_0230506c *Cargo_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     s32 idx;
 
     task = Task_Create(StageObj_Main, Cargo_Destructor, 0, 0xf6, 2, sizeof(UnkStruct_0230506c));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

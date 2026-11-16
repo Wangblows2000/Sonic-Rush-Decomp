@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -27,10 +27,10 @@ extern void *gMainHeap;
 extern u32 gNaviMsgTask;
 
 void func_02052724(BOOL a);
-void func_0201bf1c(void *p);
+void NNS_SndHandleReleaseSeq(void *p);
 
 static inline void Free_020532b0(u8 *p) {
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         u32 size;
         p -= 0x20;
         size = *(u32 *)p;
@@ -52,7 +52,7 @@ void NaviMsg_Destructor(UnkTask_020532b0 *t) {
     Free_020532b0(w->buf10);
     if (w->mode == 1)
         func_02052724((w->unkd4 & 0x1000000) ? TRUE : FALSE);
-    func_0201bf1c(w->unk118);
+    NNS_SndHandleReleaseSeq(w->unk118);
     REG_DB_DISPCNT &= ~0x1f00;
     gNaviMsgTask = 0;
 }

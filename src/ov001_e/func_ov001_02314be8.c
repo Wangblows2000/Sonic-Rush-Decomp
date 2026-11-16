@@ -20,17 +20,17 @@ typedef struct UnkStruct_02314be8_e {
 
 extern UnkStruct_02314be8_e *data_ov001_0231f6a4;
 
-void func_020044f4(void *a, void *b, void *c, s32 d, void *e);
-void func_02025268(s32 a, void *b, s32 c);
+void G3i_LookAt_(void *a, void *b, void *c, s32 d, void *e);
+void NNS_G3dGeBufferOP_N(s32 a, void *b, s32 c);
 
 void func_ov001_02314be8(s32 idx) {
     UnkStruct_02314be8_e *e = &data_ov001_0231f6a4[idx];
     s32 v;
     UnkStruct_02314be8_m m;
 
-    func_020044f4(&e->pos, &e->up, &e->target, 1, &m);
+    G3i_LookAt_(&e->pos, &e->up, &e->target, 1, &m);
     v = 2;
-    func_02025268(0x10, &v, 1);
-    func_02025268(0x15, 0, 0);
-    func_02025268(0x17, &m, 0xc);
+    NNS_G3dGeBufferOP_N(0x10, &v, 1);
+    NNS_G3dGeBufferOP_N(0x15, 0, 0);
+    NNS_G3dGeBufferOP_N(0x17, &m, 0xc);
 }

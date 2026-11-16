@@ -91,7 +91,7 @@ typedef struct UnkStruct_022d1780_7 {
 
 extern UnkStruct_022d1780_7 data_ov000_02369ac0;
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_02021c24(void *p);
@@ -100,7 +100,7 @@ void func_ov000_022d2070(UnkStruct_022d1780 *s);
 void func_ov000_022d1624(UnkStruct_022d1780 *s);
 
 static inline s32 Lerp(s32 a, s32 b) {
-    return func_02002094(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
+    return FX_DivS32(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
 }
 
 void func_ov000_022d1780(UnkStruct_022d1780 *s) {

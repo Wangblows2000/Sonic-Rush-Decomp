@@ -21,7 +21,7 @@ typedef struct {
 
 extern void *gMainHeap;
 
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -30,7 +30,7 @@ void ObjVram_Free(s32 a, void *p);
 #pragma thumb on
 static inline void Free_022dd774(void *p) {
     u32 size;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {

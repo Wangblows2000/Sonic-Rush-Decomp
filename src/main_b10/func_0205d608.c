@@ -99,21 +99,21 @@ extern UnkCam_0205d608 *data_022c4d98;
 extern s16 data_0206e470[];
 extern s16 data_02070470[];
 extern UnkPersp_0205d608 *data_022c4ef4;
-extern NNSG3dGlb_0205d608 data_02084d38;
+extern NNSG3dGlb_0205d608 NNS_G3dGlb;
 extern VecFx32_0205d608 data_ov000_0236a480;
 
 void func_02022284(s32 i, s32 x, s32 y, s32 z);
-void func_02000dfc(MtxFx33_0205d608 *m);
+void MTX_Identity33_(MtxFx33_0205d608 *m);
 void MTX_RotY33_(MtxFx33_0205d608 *m, s32 s, s32 c);
-void func_02000e60(MtxFx33_0205d608 *m, s32 s, s32 c);
-void func_02000e98(MtxFx33_0205d608 *m, s32 s, s32 c);
-void func_02000f34(MtxFx33_0205d608 *a, MtxFx33_0205d608 *b, MtxFx33_0205d608 *ab);
+void MTX_RotX33_(MtxFx33_0205d608 *m, s32 s, s32 c);
+void MTX_RotZ33_(MtxFx33_0205d608 *m, s32 s, s32 c);
+void MTX_Concat33(MtxFx33_0205d608 *a, MtxFx33_0205d608 *b, MtxFx33_0205d608 *ab);
 BOOL func_ov000_02345758(s32 a, s32 b);
 s32 func_0200225c(s32 a, s32 b);
 void VEC_Add(VecFx32_0205d608 *a, VecFx32_0205d608 *b, VecFx32_0205d608 *ab);
-void func_02004988(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, MtxFx44_0205d608 *m);
-void func_02004b78(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 s, s32 g, MtxFx44_0205d608 *m);
-void func_020044f4(const VecFx32_0205d608 *pos, const VecFx32_0205d608 *up, const VecFx32_0205d608 *target, s32 a, void *out);
+void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, MtxFx44_0205d608 *m);
+void G3i_FrustumW_(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 s, s32 g, MtxFx44_0205d608 *m);
+void G3i_LookAt_(const VecFx32_0205d608 *pos, const VecFx32_0205d608 *up, const VecFx32_0205d608 *target, s32 a, void *out);
 void Model_Animate(UnkMdl_0205d608 *m);
 void Model_Draw(UnkMdl_0205d608 *m);
 
@@ -121,21 +121,21 @@ void Model_Draw(UnkMdl_0205d608 *m);
 #define COS_0205d608(a) data_0206e470[((((a) & 0xffff) >> 4) << 1) + 1]
 
 static inline void GlbPerspectiveW_0205d608(s32 fovySin, s32 fovyCos, s32 aspect, s32 n, s32 f, s32 scaleW) {
-    func_02004988(fovySin, fovyCos, aspect, n, f, scaleW, 0, &data_02084d38.projMtx);
-    data_02084d38.flag &= ~0x50;
+    G3i_PerspectiveW_(fovySin, fovyCos, aspect, n, f, scaleW, 0, &NNS_G3dGlb.projMtx);
+    NNS_G3dGlb.flag &= ~0x50;
 }
 
 static inline void GlbFrustumW_0205d608(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 scaleW) {
-    func_02004b78(t, b, l, r, n, f, scaleW, 0, &data_02084d38.projMtx);
-    data_02084d38.flag &= ~0x50;
+    G3i_FrustumW_(t, b, l, r, n, f, scaleW, 0, &NNS_G3dGlb.projMtx);
+    NNS_G3dGlb.flag &= ~0x50;
 }
 
 static inline void GlbLookAt_0205d608(const VecFx32_0205d608 *camPos, const VecFx32_0205d608 *camUp, const VecFx32_0205d608 *target) {
-    data_02084d38.camPos = *camPos;
-    data_02084d38.camUp = *camUp;
-    data_02084d38.camTarget = *target;
-    func_020044f4(camPos, camUp, target, 0, data_02084d38.cameraMtx);
-    data_02084d38.flag &= ~0xe8;
+    NNS_G3dGlb.camPos = *camPos;
+    NNS_G3dGlb.camUp = *camUp;
+    NNS_G3dGlb.camTarget = *target;
+    G3i_LookAt_(camPos, camUp, target, 0, NNS_G3dGlb.cameraMtx);
+    NNS_G3dGlb.flag &= ~0xe8;
 }
 
 static inline s32 FX_Mul_0205d608(s32 a, s32 b) {
@@ -153,7 +153,7 @@ void func_0205d608(void) {
     u16 flags;
     int ang;
 
-    saved = data_02084d38.projMtx;
+    saved = NNS_G3dGlb.projMtx;
     if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
         obj = gTaskCurrent->obj;
         mdl = *(UnkMdl_0205d608 **)((u8 *)obj + 0x124);
@@ -184,22 +184,22 @@ void func_0205d608(void) {
     } else {
         func_02022284(0, -0xb50, -0xb50, 0);
     }
-    func_02000dfc(&mdl->rot);
+    MTX_Identity33_(&mdl->rot);
     MTX_RotY33_(&m, SIN_0205d608(ang), COS_0205d608(ang));
-    func_02000f34(&mdl->rot, &m, &mdl->rot);
-    func_02000e60(&m, SIN_0205d608((u16)-(obj->rotX << 8)), COS_0205d608((u16)-(obj->rotX << 8)));
-    func_02000f34(&mdl->rot, &m, &mdl->rot);
+    MTX_Concat33(&mdl->rot, &m, &mdl->rot);
+    MTX_RotX33_(&m, SIN_0205d608((u16)-(obj->rotX << 8)), COS_0205d608((u16)-(obj->rotX << 8)));
+    MTX_Concat33(&mdl->rot, &m, &mdl->rot);
     MTX_RotY33_(&m, SIN_0205d608((u16)-(obj->rotY << 8)), COS_0205d608((u16)-(obj->rotY << 8)));
-    func_02000f34(&mdl->rot, &m, &mdl->rot);
-    func_02000e98(&m, SIN_0205d608((u16)(-obj->rotZ << 8)), COS_0205d608((u16)(-obj->rotZ << 8)));
-    func_02000f34(&mdl->rot, &m, &mdl->rot);
+    MTX_Concat33(&mdl->rot, &m, &mdl->rot);
+    MTX_RotZ33_(&m, SIN_0205d608((u16)(-obj->rotZ << 8)), COS_0205d608((u16)(-obj->rotZ << 8)));
+    MTX_Concat33(&mdl->rot, &m, &mdl->rot);
     if (!(data_022c4560.zone == 8 && data_022c4560.act == 2) && func_ov000_02345758(obj->unk10, obj->unk14)) {
         s16 s = data_02070470[0];
         s16 c = data_02070470[1];
         MTX_RotY33_(&m, s, c);
-        func_02000f34(&mdl->rot, &m, &mdl->rot);
-        func_02000e60(&m, s, c);
-        func_02000f34(&mdl->rot, &m, &mdl->rot);
+        MTX_Concat33(&mdl->rot, &m, &mdl->rot);
+        MTX_RotX33_(&m, s, c);
+        MTX_Concat33(&mdl->rot, &m, &mdl->rot);
     }
     if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
         if (data_022c4d98->flags & 0x400) {
@@ -243,7 +243,7 @@ void func_0205d608(void) {
     mdl->unk90 |= 1;
     Model_Animate(mdl);
     Model_Draw(mdl);
-    data_02084d38.projMtx = saved;
+    NNS_G3dGlb.projMtx = saved;
     if (mdl->parts[0] & 0x80)
         obj->flags &= ~0x400;
     if (!(mdl->parts[0] & 2))

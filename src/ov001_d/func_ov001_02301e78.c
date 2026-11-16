@@ -42,7 +42,7 @@ void func_ov001_02302398(void);
 UnkStruct_02301e78_g *ExtraBoss_GetWork(void);
 BOOL func_ov001_02302408(UnkStruct_02301e78 *p);
 void func_ov001_023024d0(UnkStruct_02301e78 *p, s32 n);
-s32 func_020021f0(s32 a);
+s32 FX_Sqrt(s32 a);
 s32 func_0200225c(s32 n, s32 d);
 void func_ov001_023017c8(UnkStruct_02301e78 *p);
 
@@ -72,7 +72,7 @@ void func_ov001_02301e78(UnkStruct_02301e78 *p) {
         return;
     }
     half = s->unk8->unk14 >> 1;
-    d = func_020021f0(FX_Mul(p->unk50, p->unk50) + FX_Mul(p->unk54, p->unk54));
+    d = FX_Sqrt(FX_Mul(p->unk50, p->unk50) + FX_Mul(p->unk54, p->unk54));
     if (half > d) {
         base = p->unk1C8 > 0x8000 ? 0x10000 : 0;
         p->unk3C = (s32)(p->unk1C8 * d) / half + base * (half - d) / half;

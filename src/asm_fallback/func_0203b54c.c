@@ -4,8 +4,8 @@
 extern void OS_DisableInterrupts(void);
 extern void OS_RestoreInterrupts(void);
 extern u32 data_022b89e8;
-extern void func_02016978(void);
-extern void func_0201854c(void);
+extern void MB_CommResponseRequest(void);
+extern void MB_DisconnectChild(void);
 extern void func_0203b09c(void);
 
 asm void func_0203b54c(void)
@@ -23,7 +23,7 @@ _18:
     beq _a8
     mov r0, r7
     mov r1, r4
-    bl func_02016978
+    bl MB_CommResponseRequest
     cmp r0, #0
     orrne r0, r6, r8
     movne r0, r0, lsl #0x10
@@ -52,7 +52,7 @@ _18:
     strh r8, [r9, #0xc]
     bl OS_RestoreInterrupts
     mov r0, r7
-    bl func_0201854c
+    bl MB_DisconnectChild
 _a8:
     add r0, r7, #1
     mov r0, r0, lsl #0x10

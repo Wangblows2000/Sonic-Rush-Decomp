@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-s32 func_0201c070();
+s32 NNS_SndPlayerStopSeq();
 
 void func_02057d04(u8 *p0, s32 p1) {
     s32 t0 = (*(u32 *)((u8 *)p0 + 0x4) & 0x10000000);
@@ -14,7 +14,7 @@ void func_02057d04(u8 *p0, s32 p1) {
         }
         s32 t2 = *(u32 *)((u8 *)p0 + 0x34);
         if (t2 != 0) {
-            func_0201c070(((u8 *)p0 + 0x34), v1, t2, t0);
+            NNS_SndPlayerStopSeq(((u8 *)p0 + 0x34), v1, t2, t0);
         }
     }
 }

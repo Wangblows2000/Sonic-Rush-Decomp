@@ -11,7 +11,7 @@ extern u8 data_ov000_023684d8[];
 extern u8 data_ov000_0236a9f8[];
 
 BOOL func_ov000_023270d8(UnkStruct_EffObj *a);
-s32 func_020027a4(s32 y, s32 x);
+s32 FX_Atan2(s32 y, s32 x);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 void func_ov000_02334264(UnkStruct_EffObj *w);
 
@@ -29,7 +29,7 @@ UnkStruct_EffObj *func_ov000_02332684(UnkStruct_EffObj *arg) {
     if (func_ov000_023270d8(arg))
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;
@@ -48,7 +48,7 @@ UnkStruct_EffObj *func_ov000_02332684(UnkStruct_EffObj *arg) {
         w->unk5C |= 1;
     w->unk10 = arg->unk10;
     w->unk14 = arg->unk14;
-    w->unk1 = func_020027a4(arg->unk2A, arg->unk28) >> 8;
+    w->unk1 = FX_Atan2(arg->unk2A, arg->unk28) >> 8;
     if (ABS(arg->unk28) > ABS(arg->unk2A))
         w->unk2E = (0x7f - (Rand() & 0xfe)) + ABS(arg->unk28 >> 1);
     else

@@ -1,9 +1,9 @@
 #include <nitro/types.h>
 
-void func_020072bc(void);
+void OS_CancelAllVAlarms(void);
 void func_02007584(void);
 
 void func_ov000_0233d538(void) {
-    func_020072bc();
+    OS_CancelAllVAlarms();
     func_02007584();
 }

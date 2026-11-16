@@ -11,14 +11,14 @@ typedef struct {
 
 extern UnkBg_022e9510 gDisplayMain;
 
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 
 #pragma thumb on
 void func_ov001_022e9510(void) {
     vu32 z;
 
-    func_02002ab0(1, 3, 1);
+    GX_SetGraphicsMode(1, 3, 1);
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x8484;
     z = 0;
     MIi_CpuClear32(z, (void *)0x6002000, 0x1000);

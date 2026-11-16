@@ -27,8 +27,8 @@ typedef struct {
 
 extern UnkStruct_0208922c gDisplayMain;
 extern UnkTbl_0233e290 data_ov000_02364df0[];
-s32 func_0200311c(void);
-void func_02003788(s32 a);
+s32 GX_ResetBankForBGExtPltt(void);
+void GX_SetBankForBGExtPltt(s32 a);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 void func_ov000_0233c550(s32 a);
 extern UnkPlayer_0233e290 data_ov000_0236aad8[];
@@ -41,9 +41,9 @@ void func_ov000_0233e290(UnkStruct_0233e290 *w) {
 
     data_ov000_0236aad8[2].flags |= 0x100000;
     func_ov000_0233c550(0);
-    s = func_0200311c();
+    s = GX_ResetBankForBGExtPltt();
     MIi_CpuCopy32(gDisplayMain.unk84, w->pal1, 0x200);
-    func_02003788(s);
+    GX_SetBankForBGExtPltt(s);
     MIi_CpuCopy32((void *)0x5000000, w->pal2, 0x200);
     t = data_ov000_02364df0;
     for (i = 0; i < 24; i++)

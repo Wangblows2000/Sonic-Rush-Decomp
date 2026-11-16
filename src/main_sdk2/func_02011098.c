@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-void func_020078a4(u8 *mac);
+void OS_GetMacAddress(u8 *mac);
 
 u16 func_02011098(void)
 {
@@ -8,7 +8,7 @@ u16 func_02011098(void)
     s32 i;
     u16 sum;
 
-    func_020078a4(mac);
+    OS_GetMacAddress(mac);
     for (i = 0, sum = 0; i < 6; i++) {
         sum += mac[i];
     }

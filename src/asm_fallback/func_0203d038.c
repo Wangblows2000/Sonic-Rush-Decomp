@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 extern u32 data_022b8be0;
-extern void func_02014a8c(void);
-extern void func_02014b14(void);
+extern void WBT_MpChildRecvHook(void);
+extern void WBT_MpParentRecvHook(void);
 extern void func_0203d190(void);
 
 asm void func_0203d038(void)
@@ -71,13 +71,13 @@ _c0:
     orr r12, r12, r0, lsl r2
     mov r0, lr
     str r12, [r3, #0x418]
-    bl func_02014b14
+    bl WBT_MpParentRecvHook
     add sp, sp, #4
     ldmia sp!, {lr}
     bx lr
 _100:
     mov r0, lr
-    bl func_02014a8c
+    bl WBT_MpChildRecvHook
     add sp, sp, #4
     ldmia sp!, {lr}
     bx lr

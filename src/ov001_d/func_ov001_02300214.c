@@ -34,10 +34,10 @@ void func_ov001_022fd610(void);
 void func_ov001_02306674(void);
 void func_ov001_022ff8ac(void);
 void Task_Destroy(void *t);
-void func_0201bf1c(void *p);
+void NNS_SndHandleReleaseSeq(void *p);
 void func_02059838(s32 a, s32 b);
 s32 func_0205a4ec(s32 p0);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -62,7 +62,7 @@ void func_ov001_02300214(void) {
     Task_Destroy(gExtraBossWork->task10);
     if (gExtraBossWork->task14 != NULL)
         Task_Destroy(gExtraBossWork->task14);
-    func_0201bf1c(gExtraBossWork->unk33C);
+    NNS_SndHandleReleaseSeq(gExtraBossWork->unk33C);
     func_02059838(gExtraBossWork->unk60, gExtraBossWork->unk61);
     func_0205a4ec(0);
     p = (u8 *)gExtraBossWork;
@@ -73,7 +73,7 @@ void func_ov001_02300214(void) {
         size = 2;
     data_022c4560 = 1;
     data_022c4590.unk14 = size;
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         p -= 0x20;
         size = *(s32 *)p;
         if (*(u32 *)(p + size - 4) == 0x02467531) {

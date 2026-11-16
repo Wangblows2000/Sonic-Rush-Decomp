@@ -13,7 +13,7 @@ typedef struct {
 extern UnkStruct_Task *gTaskCurrent;
 
 void StageObj_Draw2D(void *w, UnkStruct_Spr *a, UnkStruct_Spr *b);
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void StageObj_Draw2DEx(s32 x, s32 y, s32 z, void *w, void *a, void *b, s32 c);
 
 void Cargo_Draw(void) {
@@ -26,8 +26,8 @@ void Cargo_Draw(void) {
     s32 ay;
 
     StageObj_Draw2D(w, &w->base.spr0, &w->base.spr1);
-    dx = func_02002094((w->unk32C << 8) - w->base.unk10, 5) >> 8;
-    dy = func_02002094((w->unk32E << 8) - w->base.unk14, 5) >> 8;
+    dx = FX_DivS32((w->unk32C << 8) - w->base.unk10, 5) >> 8;
+    dy = FX_DivS32((w->unk32E << 8) - w->base.unk14, 5) >> 8;
     i = 0;
     ax = i;
     ay = i;

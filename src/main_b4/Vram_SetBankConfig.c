@@ -6,13 +6,13 @@ void Vram_SetBankForBGExtPltt(s32 a);
 void Vram_SetBankForOBJExtPltt(s32 a);
 void Vram_SetBankForTex(s32 a);
 void Vram_SetBankForTexPltt(s32 a);
-void func_02002ec8(void);
+void GX_DisableBankForClearImage(void);
 void Vram_SetBankForSubBG(s32 a);
 void Vram_SetBankForSubOBJ(s32 a, s32 b, s32 c, s32 d, s32 e);
 void Vram_SetBankForSubBGExtPltt(s32 a);
 void Vram_SetBankForSubOBJExtPltt(s32 a);
-void func_02002eb4(void);
-void func_02002ea0(void);
+void GX_DisableBankForARM7(void);
+void GX_DisableBankForLCDC(void);
 void ObjVram_Reset(s32 i);
 
 void Vram_SetBankConfig(s32 mode) {
@@ -22,13 +22,13 @@ void Vram_SetBankConfig(s32 mode) {
     Vram_SetBankForOBJExtPltt(0);
     Vram_SetBankForTex(0);
     Vram_SetBankForTexPltt(0);
-    func_02002ec8();
+    GX_DisableBankForClearImage();
     Vram_SetBankForSubBG(0);
     Vram_SetBankForSubOBJ(0, 0x10, 0x40, 0, 0);
     Vram_SetBankForSubBGExtPltt(0);
     Vram_SetBankForSubOBJExtPltt(0);
-    func_02002eb4();
-    func_02002ea0();
+    GX_DisableBankForARM7();
+    GX_DisableBankForLCDC();
     switch (mode) {
     case 0:
         Vram_SetBankForBG(1);

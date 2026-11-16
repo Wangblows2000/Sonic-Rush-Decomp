@@ -15,9 +15,9 @@ extern u32 gScreenTransferHead;
 
 s32 func_ov000_023418b8(void *p);
 u32 func_ov000_023418ac(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -40,13 +40,13 @@ void func_ov000_02341d00(UnkRes_02341d00 *res, s32 mode, u32 flags) {
         p = (u8 *)res + res->unk8;
         switch (func_ov000_023418b8(p)) {
         case 0x10:
-            func_02008648(p, (void *)0x6008000);
+            MI_UncompressLZ16(p, (void *)0x6008000);
             break;
         case 0x20:
-            func_02008720(p, (void *)0x6008000);
+            MI_UncompressHuffman(p, (void *)0x6008000);
             break;
         case 0x30:
-            func_020087f8(p, (void *)0x6008000);
+            MI_UncompressRL16(p, (void *)0x6008000);
             break;
         default:
             src = Compress_GetData(p);

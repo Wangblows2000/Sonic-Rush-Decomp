@@ -13,7 +13,7 @@ extern u8 gGameLanguage;
 u32 File_GetSize(const char *path);
 void *File_Load(const char *path, void *dst);
 void *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 
@@ -21,7 +21,7 @@ static inline void *UnkAlloc_0235f024(u32 size, s32 align) {
     u8 *p;
     size = (size + 0x43) & ~0x1f;
     p = Heap_Alloc(gSystemHeap, size, align);
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;

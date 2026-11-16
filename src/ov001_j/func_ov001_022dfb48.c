@@ -33,10 +33,10 @@ extern UnkStruct_022dfb48_v data_02084f78;
 extern UnkStruct_022dfb48_v data_02084f84;
 extern UnkStruct_022dfb48_v data_02084f90;
 extern u8 data_02084d84[];
-extern UnkStruct_022dfb48_d38 data_02084d38;
+extern UnkStruct_022dfb48_d38 NNS_G3dGlb;
 
 s32 func_0200225c(s32 n, s32 d);
-void func_020044f4(void *a, void *b, void *c, s32 d, void *e);
+void G3i_LookAt_(void *a, void *b, void *c, s32 d, void *e);
 
 void func_ov001_022dfb48(UnkStruct_022dfb48_w *w, UnkStruct_022dfb48_c *c) {
     s64 k = c->unk38;
@@ -54,9 +54,9 @@ void func_ov001_022dfb48(UnkStruct_022dfb48_w *w, UnkStruct_022dfb48_c *c) {
     } else {
         c->up.y = v;
     }
-    data_02084d38.pos = c->pos;
-    data_02084d38.target = c->target;
-    data_02084d38.up = c->up;
-    func_020044f4(&c->pos, &c->target, &c->up, 0, data_02084d38.unk4C);
-    data_02084d38.unkFC &= ~0xe8;
+    NNS_G3dGlb.pos = c->pos;
+    NNS_G3dGlb.target = c->target;
+    NNS_G3dGlb.up = c->up;
+    G3i_LookAt_(&c->pos, &c->target, &c->up, 0, NNS_G3dGlb.unk4C);
+    NNS_G3dGlb.unkFC &= ~0xe8;
 }

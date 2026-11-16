@@ -10,7 +10,7 @@ extern u16 data_0208ef8a[2][0x200];
 extern u8 data_0207320c[2];
 extern u16 data_0208af8a[4][0x800];
 extern u8 data_02073210[4];
-u32 func_02006abc(u32 a);
+u32 OS_GetArenaLo(u32 a);
 
 u32 VramPltt_Alloc(u32 size, BOOL flag) {
     u16 *tbl;
@@ -72,5 +72,5 @@ u32 VramPltt_Alloc(u32 size, BOOL flag) {
         next2:;
         }
     }
-    return func_02006abc(0);
+    return OS_GetArenaLo(0);
 }

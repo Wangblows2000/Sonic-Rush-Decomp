@@ -21,8 +21,8 @@ typedef struct {
 extern UnkCardCommon_020102d8 data_0207f2c0;
 extern u32 OS_DisableInterrupts(void);
 extern u32 OS_RestoreInterrupts(u32 state);
-extern void func_02005bd4(void *queue);
-extern void func_02005ba0(void *thread);
+extern void OS_WakeupThread(void *queue);
+extern void OS_WakeupThreadDirect(void *thread);
 
 void func_020102d8(void)
 {
@@ -33,9 +33,9 @@ void func_020102d8(void)
     p->cmd->result = 0;
     state = OS_DisableInterrupts();
     p->flag &= ~0xc;
-    func_02005bd4(p->queue);
+    OS_WakeupThread(p->queue);
     if (p->flag & 0x10) {
-        func_02005ba0(p->thread);
+        OS_WakeupThreadDirect(p->thread);
     }
     OS_RestoreInterrupts(state);
     if (callback) {

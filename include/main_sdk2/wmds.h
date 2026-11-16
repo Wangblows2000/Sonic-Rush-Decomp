@@ -25,5 +25,5 @@ typedef struct {
     u16 unk81e;       /* 0x81e */
 } UnkDS;
 
-void *func_02011f4c(void *a, u16 bitmap, void *data, u16 aid);
+void *WmGetSharedDataAddress(void *a, u16 bitmap, void *data, u16 aid);
 #endif

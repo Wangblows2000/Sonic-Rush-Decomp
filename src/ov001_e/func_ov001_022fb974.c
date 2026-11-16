@@ -28,7 +28,7 @@ typedef struct UnkStruct_022fb974 {
 
 extern s16 data_0206e470[];
 
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 void func_ov001_022fba78(UnkStruct_022fb974 *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
@@ -50,7 +50,7 @@ void func_ov001_022fb974(UnkStruct_022fb974_s **self, UnkStruct_022fb974 **other
     p->unkA0 = p->unkE8;
     p->unk6C = 0;
     p->vx = p->vy = 0;
-    a = func_020027a4(s->y - s->py, s->x - s->px);
+    a = FX_Atan2(s->y - s->py, s->x - s->px);
     p->vx = FX_Mul(COS(a), 0x8000);
     p->vy = FX_Mul(SIN(a), 0x8000);
     p->state = func_ov001_022fba78;

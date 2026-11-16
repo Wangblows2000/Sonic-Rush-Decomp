@@ -10,9 +10,9 @@ typedef struct {
 extern UnkFold_0202fd94 gSaveDataBusy;
 
 s32 func_0202fd14(void);
-void func_0200e098(u32 a, u32 b, u32 c);
-BOOL func_0200df88(u32 a);
-s32 func_0200e3e4(u32 a, u32 b);
+void PM_GoSleepMode(u32 a, u32 b, u32 c);
+BOOL PM_SetLCDPower(u32 a);
+s32 PM_SetBackLight(u32 a, u32 b);
 void GX_DispOn(void);
 
 static inline BOOL PAD_DetectFold_0202fd94(void)
@@ -31,15 +31,15 @@ void System_HandleLidClose(void)
         }
         switch (gSaveDataBusy.mode) {
         case 0:
-            func_0200e098(12, 0, 0);
+            PM_GoSleepMode(12, 0, 0);
             break;
         case 1:
-            func_0200df88(0);
+            PM_SetLCDPower(0);
             break;
         case 2:
-            while (!func_0200df88(1)) {
+            while (!PM_SetLCDPower(1)) {
             }
-            func_0200e3e4(2, 0);
+            PM_SetBackLight(2, 0);
             break;
         }
         gSaveDataBusy.prevMode = gSaveDataBusy.mode;
@@ -50,24 +50,24 @@ void System_HandleLidClose(void)
         gSaveDataBusy.folded = 0;
         switch (gSaveDataBusy.prevMode) {
         case 0:
-            while (!func_0200df88(1)) {
+            while (!PM_SetLCDPower(1)) {
             }
             if (gSaveDataBusy.saved != -1) {
-                func_0200e3e4(gSaveDataBusy.saved, 1);
+                PM_SetBackLight(gSaveDataBusy.saved, 1);
             }
             GX_DispOn();
             *(vu32 *)0x04001000 |= 0x10000;
             break;
         case 1:
-            while (!func_0200df88(1)) {
+            while (!PM_SetLCDPower(1)) {
             }
             if (gSaveDataBusy.saved != -1) {
-                func_0200e3e4(gSaveDataBusy.saved, 1);
+                PM_SetBackLight(gSaveDataBusy.saved, 1);
             }
             break;
         case 2:
             if (gSaveDataBusy.saved != -1) {
-                func_0200e3e4(gSaveDataBusy.saved, 1);
+                PM_SetBackLight(gSaveDataBusy.saved, 1);
             }
             break;
         }

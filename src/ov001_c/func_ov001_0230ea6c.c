@@ -45,7 +45,7 @@ extern u8 data_ov001_0231f5c8[];
 extern u8 data_022504e8[];
 
 UnkStruct_0230ea6c_o2 *func_ov001_0230c0a4(void);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void func_0201d568(void *p);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 s32 func_ov001_023070fc(s32 p0, s32 p1, s32 p2, s32 p3);
@@ -66,7 +66,7 @@ void func_ov001_0230ea6c(UnkStruct_0230ea6c *s) {
         s->unkAC->unkA = 4;
         s->unkAC->unkB = 0x10;
         s->unkAC->unkC = 0xd;
-        func_02000dfc(s->unkAC->mtx);
+        MTX_Identity33_(s->unkAC->mtx);
         s->unkAC->unk48 = 0;
         s->unkAC->unk4C = 0;
         s->unkAC->unk50 = 0;

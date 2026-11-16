@@ -32,9 +32,9 @@ UnkInfo_0206243c *func_02060470(s32 a, u8 b);
 UnkRes_0206243c *func_0206041c(u8 a, u8 b);
 s32 func_020620f4(void *p);
 u32 func_020620e8(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -63,13 +63,13 @@ void func_0206243c(UnkWork_0206243c *w) {
     p = (u8 *)res + res->chr;
     switch (func_020620f4(p)) {
     case 0x10:
-        func_02008648(p, (void *)0x06004000);
+        MI_UncompressLZ16(p, (void *)0x06004000);
         break;
     case 0x20:
-        func_02008720(p, (void *)0x06004000);
+        MI_UncompressHuffman(p, (void *)0x06004000);
         break;
     case 0x30:
-        func_020087f8(p, (void *)0x06004000);
+        MI_UncompressRL16(p, (void *)0x06004000);
         break;
     default:
         Mem_Copy(Compress_GetData(p), (void *)0x06004000, func_020620e8(p));

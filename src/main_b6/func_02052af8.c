@@ -23,7 +23,7 @@ typedef struct {
 
 extern UnkFile_02052af8 *data_022c4664;
 
-s32 func_0200b99c(void *f, void *buf, u32 size);
+s32 FS_ReadFile(void *f, void *buf, u32 size);
 void func_020526bc(void *bg, void *buf);
 void func_02052d18(void);
 
@@ -38,7 +38,7 @@ void func_02052af8(UnkWork_02052af8 *w, s32 idx, s32 v) {
         u32 plane;
         w->fidx = idx;
         f = &data_022c4664[idx];
-        func_0200b99c(f, w->buf, f->end - f->start);
+        FS_ReadFile(f, w->buf, f->end - f->start);
         f->cur = f->start;
         func_020526bc(w->bg94, w->buf);
         plane = (REG_DB_DISPCNT & 0x1f00) >> 8;

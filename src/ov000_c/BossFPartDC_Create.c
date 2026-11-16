@@ -51,7 +51,7 @@ void func_020212e0(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_020221fc(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void NNS_G3dGlbPolygonAttr(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
 UnkStruct_022f978c *BossFPartDC_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
@@ -88,7 +88,7 @@ UnkStruct_022f978c *BossFPartDC_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     Model_Init(sub, 0);
     Model_SetResource(sub, w->unk238, 0);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
-    func_020221fc(0, 0, 2, 0, 0x10, 0);
+    NNS_G3dGlbPolygonAttr(0, 0, 2, 0, 0x10, 0);
     gDisplayMain.unk20.raw = 0;
     gDisplayMain.unk20.bits.b0 = 1;
     gDisplayMain.unk20.bits.b6 = 2;

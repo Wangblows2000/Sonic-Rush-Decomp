@@ -18,7 +18,7 @@ typedef struct {
 s32 func_020116a0(void *cb, u16 *list, const void *data, u32 a, u16 b)
 {
     UnkWmCmd_020116a0 *cmd;
-    s32 r = func_02010a50(1, 2);
+    s32 r = WMi_CheckStateEx(1, 2);
     if (r != 0) {
         return r;
     }

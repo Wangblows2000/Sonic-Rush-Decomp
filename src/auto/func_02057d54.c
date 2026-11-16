@@ -3,8 +3,8 @@
 
 #pragma thumb on
 
-s32 func_0201c070();
-s32 func_0201bf1c();
+s32 NNS_SndPlayerStopSeq();
+s32 NNS_SndHandleReleaseSeq();
 extern u8 data_02075a34[];
 s32 Sound_PlaySeq();
 
@@ -13,8 +13,8 @@ void func_02057d54(u8 *p0, s32 p1) {
         if ((s32)p1 >= 0) {
             if ((s32)p1 < 0xc) {
                 if (*(u32 *)((u8 *)p0 + 0x30) != 0) {
-                    func_0201c070(((u8 *)p0 + 0x30), 0);
-                    func_0201bf1c(((u8 *)p0 + 0x30));
+                    NNS_SndPlayerStopSeq(((u8 *)p0 + 0x30), 0);
+                    NNS_SndHandleReleaseSeq(((u8 *)p0 + 0x30));
                 }
                 Sound_PlaySeq(((u8 *)p0 + 0x30), *(s16 *)((u8 *)data_02075a34 + ((s32)p1 << 1)));
             }

@@ -7,12 +7,12 @@ extern u32 data_022c4560;
 extern u32 data_ov001_0231d5d8;
 extern u32 data_ov001_0231f094;
 extern u32 data_ov001_0231f098;
-extern void func_020021f0(void);
-extern void func_020027a4(void);
-extern void func_02025bb4(void);
-extern void func_02025bfc(void);
-extern void func_02025c44(void);
-extern void func_02025ecc(void);
+extern void FX_Sqrt(void);
+extern void FX_Atan2(void);
+extern void NNS_G3dMdlSetMdlEmiAll(void);
+extern void NNS_G3dMdlSetMdlAmbAll(void);
+extern void NNS_G3dMdlSetMdlDiffAll(void);
+extern void NNS_G3dGetMdlSet(void);
 extern void Sound_PlaySeqArc(void);
 extern void func_ov001_022fbb5c(void);
 extern void func_ov001_022fc934(void);
@@ -144,7 +144,7 @@ _18c:
     orr r6, r6, r3, lsl #20
     orr r1, r1, r0, lsl #20
     add r0, r6, r1
-    bl func_020021f0
+    bl FX_Sqrt
     mov r6, r0
     cmp r6, #0x30000
     mov r2, #0
@@ -166,7 +166,7 @@ _218:
     mov r0, r5
     mov r1, r7
     add r6, r6, r2
-    bl func_020027a4
+    bl FX_Atan2
     ldr r1, [pc, #0x1b8]
     mov r5, r0
     ldr r0, [r1, #0x10]
@@ -237,20 +237,20 @@ _2f8:
     mul r2, r1, r0
     ldr r0, [pc, #0xc0]
     ldr r0, [r0, r2]
-    bl func_02025ecc
+    bl NNS_G3dGetMdlSet
     ldrh r2, [r0, #0xe]
     ldr r1, [pc, #0xb4]
     add r2, r0, r2
     ldr r2, [r2, #0xc]
     add r4, r0, r2
     mov r0, r4
-    bl func_02025c44
+    bl NNS_G3dMdlSetMdlDiffAll
     mov r0, r4
     mov r1, #0
-    bl func_02025bfc
+    bl NNS_G3dMdlSetMdlAmbAll
     mov r0, r4
     mov r1, #0
-    bl func_02025bb4
+    bl NNS_G3dMdlSetMdlEmiAll
     add sp, sp, #8
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr
@@ -260,20 +260,20 @@ _37c:
     mul r2, r1, r0
     ldr r0, [pc, #0x68]
     ldr r0, [r0, r2]
-    bl func_02025ecc
+    bl NNS_G3dGetMdlSet
     ldrh r2, [r0, #0xe]
     ldr r1, [pc, #0x60]
     add r2, r0, r2
     ldr r2, [r2, #0xc]
     add r4, r0, r2
     mov r0, r4
-    bl func_02025c44
+    bl NNS_G3dMdlSetMdlDiffAll
     ldr r1, [pc, #0x48]
     mov r0, r4
-    bl func_02025bfc
+    bl NNS_G3dMdlSetMdlAmbAll
     ldr r1, [pc, #0x3c]
     mov r0, r4
-    bl func_02025bb4
+    bl NNS_G3dMdlSetMdlEmiAll
     add sp, sp, #8
     ldmia sp!, {r4, r5, r6, r7, r8, lr}
     bx lr

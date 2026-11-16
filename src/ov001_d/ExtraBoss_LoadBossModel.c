@@ -13,10 +13,10 @@ extern char data_ov001_023167a8[];
 extern char data_ov001_0231d450[];
 
 u8 *File_Load(const char *path, s32 v);
-BOOL func_020257f8(void *res);
+BOOL NNS_G3dResDefaultSetup(void *res);
 u32 func_020380d8(void *s);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void func_020380a0(void *src, void *dst);
@@ -34,10 +34,10 @@ void ExtraBoss_LoadBossModel(void) {
     u8 *blk;
 
     res = File_Load(data_ov001_023167a8, -1);
-    func_020257f8(res);
+    NNS_G3dResDefaultSetup(res);
     size = (func_020380d8(res) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, size);
         *(u32 *)blk = size;
@@ -47,7 +47,7 @@ void ExtraBoss_LoadBossModel(void) {
     }
     data_ov001_0231f070 = blk;
     func_020380a0(res, blk);
-    if ((u8 *)func_02006abc(0) != res) {
+    if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
         if (*(u32 *)(res + size - 4) == 0x02467531) {

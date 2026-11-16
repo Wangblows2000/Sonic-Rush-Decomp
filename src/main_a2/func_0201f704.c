@@ -9,11 +9,11 @@ extern u8 *data_02083f48;
 
 void *NNS_FndGetNextListObject(void *list, void *obj);
 void MI_CpuFill8(void *dst, u8 val, u32 size);
-void func_0202061c(void *list, void *obj);
-void func_0201f904(UnkNode_0201f704 *n);
+void NNS_FndRemoveListObject(void *list, void *obj);
+void FreeCommandBuffer(UnkNode_0201f704 *n);
 UnkNode_0201f704 *func_0201f93c(void);
-void func_0202076c(void *list, void *obj);
-void func_02005bd4(void *q);
+void NNS_FndAppendListObject(void *list, void *obj);
+void OS_WakeupThread(void *q);
 
 void func_0201f704(s32 type, s32 count, void **bufs, u32 size, u32 unused, UnkStrm_0201f704 *s) {
     UnkNode_0201f704 *n;
@@ -26,9 +26,9 @@ void func_0201f704(s32 type, s32 count, void **bufs, u32 size, u32 unused, UnkSt
         for (i = 0; i < n->count; i++) {
             MI_CpuFill8(n->bufs[i], 0, n->size);
         }
-        func_0202061c(data_020847ac, n);
+        NNS_FndRemoveListObject(data_020847ac, n);
         s->unk118--;
-        func_0201f904(n);
+        FreeCommandBuffer(n);
     }
     n = func_0201f93c();
     n->strm = s;
@@ -41,6 +41,6 @@ void func_0201f704(s32 type, s32 count, void **bufs, u32 size, u32 unused, UnkSt
     w = data_02084300;
     if (type == 0 && data_02083f48 != NULL) w = data_02083f48;
     s->unk118++;
-    func_0202076c(w + 0x4AC, n);
-    func_02005bd4(w + 0x494);
+    NNS_FndAppendListObject(w + 0x4AC, n);
+    OS_WakeupThread(w + 0x494);
 }

@@ -28,7 +28,7 @@ extern UnkState_0204b314 gStageLoader;
 extern void *gZoneSoundData;
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-char *func_0202c518(char *dst, const char *src);
+char *strcpy(char *dst, const char *src);
 void *File_Load(const char *path, void *mem);
 
 void func_0204b314(u32 arg, s32 a, s32 b) {
@@ -44,7 +44,7 @@ void func_0204b314(u32 arg, s32 a, s32 b) {
     gStageLoader.unk48 = arg;
     gStageLoader.unk4c = a;
     gStageLoader.unk4d = b;
-    func_0202c518(gStageLoader.path, entries[3].name);
+    strcpy(gStageLoader.path, entries[3].name);
     e->init(&gStageLoader);
     gZoneSoundData = File_Load(gStageLoader.path, e->getMem(gStageLoader.path));
 }

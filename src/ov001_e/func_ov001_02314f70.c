@@ -15,12 +15,12 @@ typedef struct UnkStruct_02314f70 {
     u16 lon;
 } UnkStruct_02314f70;
 
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 
 static inline u16 Atan(s32 y, s32 x) {
     if (x == 0)
         return 0x4000;
-    return func_020027a4(y, x);
+    return FX_Atan2(y, x);
 }
 
 void func_ov001_02314f70(UnkStruct_02314f70 *e) {
@@ -40,6 +40,6 @@ void func_ov001_02314f70(UnkStruct_02314f70 *e) {
         else
             e->lon = 0xc000;
     } else {
-        e->lon = func_020027a4(dx, dz);
+        e->lon = FX_Atan2(dx, dz);
     }
 }

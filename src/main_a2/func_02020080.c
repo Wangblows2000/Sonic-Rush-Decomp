@@ -9,7 +9,7 @@ void func_0201c488(UnkStrm *s);
 void NNSi_SndFaderUpdate(NNSSndFader *f);
 BOOL NNSi_SndFaderIsFinished(NNSSndFader *f);
 s32 func_02020564(NNSSndFader *f);
-void func_0201c3e4(UnkStrm *s, s32 vol);
+void NNS_SndStrmSetVolume(UnkStrm *s, s32 vol);
 
 void func_02020080(void) {
     s32 i;
@@ -34,7 +34,7 @@ void func_02020080(void) {
             vol = data_020725e0[func_02020564(&s->fader) >> 8];
             vol += base;
             if (vol != s->unk154) {
-                func_0201c3e4(s, vol);
+                NNS_SndStrmSetVolume(s, vol);
                 s->unk154 = vol;
             }
             if (s->unk10C_3 && NNSi_SndFaderIsFinished(&s->fader)) {

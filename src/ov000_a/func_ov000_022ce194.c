@@ -43,7 +43,7 @@ extern u16 data_ov000_02362dfc[];
 extern u32 data_ov000_0236510c[];
 extern u16 data_ov000_02362dcc[];
 
-s32 func_020021f0(s32 a);
+s32 FX_Sqrt(s32 a);
 void ObjRect_Register(UnkStruct_022ce194_h *h);
 void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 
@@ -60,7 +60,7 @@ void func_ov000_022ce194(UnkStruct_022ce194 *s) {
     {
         s32 az = s->unk139C >> 12;
         s32 ax = s->unk13A4 >> 12;
-        d = func_020021f0((az * az + ax * ax) << 12);
+        d = FX_Sqrt((az * az + ax * ax) << 12);
     }
     m = (s32)(((s64)((s->unk1304 << 12) >> 16) * 0x6cd98 + 0x800) >> 12);
     if (m < 0x4000)

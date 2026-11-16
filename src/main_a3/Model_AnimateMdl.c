@@ -20,7 +20,7 @@ typedef struct { u32 unk0; u32 flags; } UnkCtx_020313cc;
 
 extern u8 gSystemHeapAllocator[];
 
-void func_02021c4c(void *renderObj, void *anm);
+void NNS_G3dRenderObjRemoveAnmObj(void *renderObj, void *anm);
 void func_02025b38(void *alloc, void *anm);
 
 static inline fx32 FX_Mul_020313cc(fx32 a, fx32 b)
@@ -45,7 +45,7 @@ void Model_AnimateMdl(UnkCtx_020313cc *ctx, UnkObj_020313cc *o)
                 o->anm[i]->ratio = 0x1000;
                 o->flags[i] &= ~0x40;
                 o->flags[i] |= 0x80;
-                func_02021c4c(o->renderObj, o->anm2[i]);
+                NNS_G3dRenderObjRemoveAnmObj(o->renderObj, o->anm2[i]);
                 func_02025b38(gSystemHeapAllocator, o->anm2[i]);
                 o->anm2[i] = NULL;
             }

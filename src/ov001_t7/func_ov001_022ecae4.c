@@ -37,15 +37,15 @@ extern u32 gVRAMTransferTail;
 
 void func_ov001_022ec980(s32 *out, u16 *ids, s32 n);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 u32 func_ov001_022ecdc0(void *p);
 u32 func_ov001_022ecdb4(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *s);
 void Mem_Copy(void *a, void *b, u32 c);
 void Heap_Free(void *heap, void *p);
@@ -94,7 +94,7 @@ void func_ov001_022ecae4(UnkStruct_022ecae4 *p) {
     hdr = p->res + *(u32 *)(p->res + 8);
     size = ((*(u32 *)hdr >> 8) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, -0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, size);
         *(u32 *)blk = size;
@@ -104,13 +104,13 @@ void func_ov001_022ecae4(UnkStruct_022ecae4 *p) {
     }
     switch (func_ov001_022ecdc0(hdr)) {
     case 0x10:
-        func_02008648(hdr, blk);
+        MI_UncompressLZ16(hdr, blk);
         break;
     case 0x20:
-        func_02008720(hdr, blk);
+        MI_UncompressHuffman(hdr, blk);
         break;
     case 0x30:
-        func_020087f8(hdr, blk);
+        MI_UncompressRL16(hdr, blk);
         break;
     default:
         Mem_Copy(Compress_GetData(hdr), blk, func_ov001_022ecdb4(hdr));
@@ -146,7 +146,7 @@ void func_ov001_022ecae4(UnkStruct_022ecae4 *p) {
             LoadPal_022ecae4(p->chr[i][j], p->pal[i][j]);
         }
     }
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         blk -= 0x20;
         size = *(u32 *)blk;
         if (*(u32 *)(blk + size - 4) == 0x02467531) {

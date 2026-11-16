@@ -43,8 +43,8 @@ struct UnkStruct_02351018 {
 
 void Player_State_Cannon(UnkStruct_02351018 *w);
 void Player_ResetGimmickState(UnkStruct_02351018 *w);
-s32 func_020021f0(s32 v);
-s32 func_020027a4(s32 y, s32 x);
+s32 FX_Sqrt(s32 v);
+s32 FX_Atan2(s32 y, s32 x);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 #define ABS_02351018(x) ((x) < 0 ? -(x) : (x))
@@ -96,8 +96,8 @@ void Player_Action_Cannon(UnkStruct_02351018 *w, UnkStruct_02351018_Obj *o) {
     }
     dx = dx * dx << 12;
     dy = dy * dy << 12;
-    w->unkC = func_020021f0(dx + dy) >> 4;
-    w->unk3F8 = func_020027a4(w->unk3E8->y - w->y, w->unk3E8->x - w->x);
+    w->unkC = FX_Sqrt(dx + dy) >> 4;
+    w->unk3F8 = FX_Atan2(w->unk3E8->y - w->y, w->unk3E8->x - w->x);
     w->unk1 = (w->unk3F8 & 0xffff) >> 8;
     w->unk8 = 0;
     if (w->unk324 != 1) {

@@ -15,7 +15,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-s32 func_020027a4(s32 y, s32 x);
+s32 FX_Atan2(s32 y, s32 x);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -29,7 +29,7 @@ void func_ov000_022f8df8(UnkStruct_022f8df8 *s, s32 *x, s32 *y, u8 *z) {
     s32 px;
     s32 py;
 
-    a = func_020027a4(s->unk3C8 - s->unk428, s->unk3C4 - s->unk424) + 0x8000;
+    a = FX_Atan2(s->unk3C8 - s->unk428, s->unk3C4 - s->unk424) + 0x8000;
     ang = a - (s->unk438 - s->unk43A);
     idx = (s32)(ang & 0xffff) >> 4;
     px = s->unk3C4 + FX_Mul(data_0206e470[(u32)((idx << 1) + 1)], s->unk43C);

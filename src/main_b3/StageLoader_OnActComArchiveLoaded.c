@@ -5,14 +5,14 @@ extern void *gMainHeap;
 extern u8 *gActComArchive;
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 s32 Compress_GetType(void *p);
 u32 Compress_GetUncompressedSize(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 
@@ -23,7 +23,7 @@ void StageLoader_OnActComArchiveLoaded(UnkWork_0204abf8 *w) {
 
     size = ((*(u32 *)w->file >> 8) + 0x43) & ~0x1f;
     p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -35,13 +35,13 @@ void StageLoader_OnActComArchiveLoaded(UnkWork_0204abf8 *w) {
     f = w->file;
     switch (Compress_GetType(f)) {
     case 0x10:
-        func_02008648(f, p);
+        MI_UncompressLZ16(f, p);
         break;
     case 0x20:
-        func_02008720(f, p);
+        MI_UncompressHuffman(f, p);
         break;
     case 0x30:
-        func_020087f8(f, p);
+        MI_UncompressRL16(f, p);
         break;
     default:
         Mem_Copy(Compress_GetData(f), p, Compress_GetUncompressedSize(f));

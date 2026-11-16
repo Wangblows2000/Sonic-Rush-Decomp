@@ -52,7 +52,7 @@ extern UnkBright_022c7ac8 gDisplaySub;
 void AnimatorSprite_ProcessAnimation(void *s, s32 a, s32 b);
 void AnimatorSprite_Draw(void *s);
 s32 Ending_HitTestSprite(void *s, u16 x, u16 y);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void AnimatorSprite_SetAnimation(void *s, s32 a);
 void func_ov001_022c7a44(UnkStruct_022c7ac8 *w);
 void func_ov001_022c6804(UnkStruct_022c7ac8 *w);
@@ -82,7 +82,7 @@ void Ending_Main(void) {
         if (r == 1 || (gPad.trg & 8)) {
             w->unk690 = 1;
             w->unk694 = 0x3c;
-            func_0201c070(data_02250464, 0x3c);
+            NNS_SndPlayerStopSeq(data_02250464, 0x3c);
             AnimatorSprite_SetAnimation(w->spr644, 2);
             AnimatorSprite_SetAnimation(w->spr5B4, 3);
         }

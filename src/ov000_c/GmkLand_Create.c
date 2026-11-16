@@ -37,7 +37,7 @@ UnkStruct_0230fa74 *GmkLand_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u16 k;
 
     task = Task_Create(StageObj_Main, GmkLand_Destructor, 0, 0xf6, 2, sizeof(UnkStruct_0230fa74));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 extern u32 data_0207d2e4;
-void func_02006d3c(void);
+void OSi_GetAndDisplayContext(void);
 
 asm void OSi_ExceptionHandler(void)
 {
@@ -18,12 +18,12 @@ asm void OSi_ExceptionHandler(void)
     and r1, r1, #0x1f
     teq r1, #0x17
     bne @1
-    bl func_02006d3c
+    bl OSi_GetAndDisplayContext
     b @2
 @1:
     teq r1, #0x1b
     bne @2
-    bl func_02006d3c
+    bl OSi_GetAndDisplayContext
 @2:
     ldr r12, =data_0207d2e4
     ldr r12, [r12]

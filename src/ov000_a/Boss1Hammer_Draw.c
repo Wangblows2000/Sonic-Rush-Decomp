@@ -42,8 +42,8 @@ extern UnkStruct_022c736c_4 *data_ov000_02369acc;
 
 void Model_Animate(UnkStruct_022c736c_3 *p);
 void Model_Draw(UnkStruct_022c736c_3 *p);
-void func_02025268(s32 a, void *p, s32 n);
-void func_02025a94(void *p, s32 a);
+void NNS_G3dGeBufferOP_N(s32 a, void *p, s32 n);
+void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
 void Boss1Hammer_Draw(void) {
     UnkStruct_022c736c *o = gTaskCurrent->unk10;
@@ -70,13 +70,13 @@ void Boss1Hammer_Draw(void) {
     Model_Draw(p);
     {
         u32 v = 2;
-        func_02025268(0x10, &v, 1);
+        NNS_G3dGeBufferOP_N(0x10, &v, 1);
     }
     {
         u32 v = 0x1e;
-        func_02025268(0x14, &v, 1);
+        NNS_G3dGeBufferOP_N(0x14, &v, 1);
     }
-    func_02025a94(o->unk2D0, 0);
+    NNS_G3dGetCurrentMtx(o->unk2D0, 0);
     o->unk10 = o->unk2F4 >> 4;
     o->unk14 = -o->unk2F8 >> 4;
     o->unk18 = o->unk2FC >> 4;

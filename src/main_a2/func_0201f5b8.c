@@ -23,9 +23,9 @@ typedef struct {
     u32 unk158;
 } UnkStruct_0201f5b8;
 
-u32 *func_0201d340(u32 idx);
+u32 *NNS_SndArcGetStrmInfo(u32 idx);
 u32 func_0201d1ec(u32 fileId);
-s32 func_0201d140(u32 idx, void *buf, u32 size, u32 pos);
+s32 NNS_SndArcReadFile(u32 idx, void *buf, u32 size, u32 pos);
 
 void func_0201f5b8(UnkStruct_0201f5b8 *s) {
     UnkReq_0201f5b8 req;
@@ -38,12 +38,12 @@ void func_0201f5b8(UnkStruct_0201f5b8 *s) {
     res.a = s->unk140;
     res.b = 0;
     if (!s->cb(0, &req, &res, s->cbArg)) return;
-    info = func_0201d340(res.a);
+    info = NNS_SndArcGetStrmInfo(res.a);
     if (info == NULL) return;
     format = s->format;
     rate = s->rate;
     s->unkA0 = func_0201d1ec(*info);
-    func_0201d140(*info, s->unkA4, 0x40, 0);
+    NNS_SndArcReadFile(*info, s->unkA4, 0x40, 0);
     if (rate != s->rate) return;
     if (format == 0 && s->format != 0) return;
     if (format != 0 && s->format == 0) return;

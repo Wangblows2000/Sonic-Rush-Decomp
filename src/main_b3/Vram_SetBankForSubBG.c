@@ -10,8 +10,8 @@ extern UnkVram_02087d04 gDisplaySub;
 extern u8 data_02087d50[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002e8c(void);
-void func_0200330c(s32 bank);
+void GX_DisableBankForSubBG(void);
+void GX_SetBankForSubBG(s32 bank);
 
 void Vram_SetBankForSubBG(s32 bank) {
     vu32 zero = 0;
@@ -32,8 +32,8 @@ void Vram_SetBankForSubBG(s32 bank) {
         gDisplaySub.addr[1] = 0x068a0000;
         break;
     default:
-        func_02002e8c();
+        GX_DisableBankForSubBG();
         return;
     }
-    func_0200330c(bank);
+    GX_SetBankForSubBG(bank);
 }

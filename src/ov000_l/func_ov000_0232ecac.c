@@ -16,7 +16,7 @@ void func_ov000_0232ecac(s32 a, u16 b) {
     vu16 zero;
 
     task = Task_Create(func_ov000_0232ec1c, func_ov000_0232ec74, 0, 0xa00, 4, sizeof(UnkWork_0232ecac));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     w = task->work;
     zero = 0;

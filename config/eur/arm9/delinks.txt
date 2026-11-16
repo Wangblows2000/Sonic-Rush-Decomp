@@ -4,11 +4,11 @@
     .data       start:0x02077960 end:0x0207cfe0 kind:data align:32
     .bss        start:0x0207cfe0 end:0x022c5c80 kind:bss align:32
 
-src/main/func_02006abc.c:
+src/main/OS_GetArenaLo.c:
     complete
     .text       start:0x02006abc end:0x02006ad0
 
-src/main/func_0201bf1c.c:
+src/main/NNS_SndHandleReleaseSeq.c:
     complete
     .text       start:0x0201bf1c end:0x0201bf34
 
@@ -16,7 +16,7 @@ src/main/func_02021264.c:
     complete
     .text       start:0x02021264 end:0x0202128c
 
-src/main/func_02025e8c.c:
+src/main/NNS_G3dGetTex.c:
     complete
     .text       start:0x02025e8c end:0x02025ecc
 
@@ -296,27 +296,27 @@ src/main_sdk/SND_GetWaveDataCount.c:
     complete
     .text       start:0x02009be0 end:0x02009be8
 
-src/main_sdk/func_02006338.c:
+src/main_sdk/OS_IsRunOnEmulator.c:
     complete
     .text       start:0x02006338 end:0x02006340
 
-src/main_sdk/func_0200a32c.c:
+src/main_sdk/FSi_CloseFileCommand.c:
     complete
     .text       start:0x0200a32c end:0x0200a334
 
-src/main_sdk/func_0200c0e8.c:
+src/main_sdk/FSi_EmptyArchiveProc.c:
     complete
     .text       start:0x0200c0e8 end:0x0200c0f0
 
-src/main_sdk/func_0200c0f0.c:
+src/main_sdk/FSi_ReadDummyCallback.c:
     complete
     .text       start:0x0200c0f0 end:0x0200c0f8
 
-src/main_sdk/func_0200c188.c:
+src/main_sdk/FSi_WriteDummyCallback.c:
     complete
     .text       start:0x0200c188 end:0x0200c190
 
-src/main_sdk/func_0200e9f4.c:
+src/main_sdk/PMi_DummyCallback.c:
     complete
     .text       start:0x0200e9f4 end:0x0200e9fc
 
@@ -324,15 +324,15 @@ src/clones/AutoloadCallback.c:
     complete
     .text       start:0x02000a10 end:0x02000a14
 
-src/clones/func_02000afc.c:
+src/clones/NitroStartUp.c:
     complete
     .text       start:0x02000afc end:0x02000b00
 
-src/clones/func_02002a64.c:
+src/clones/FX_Init.c:
     complete
     .text       start:0x02002a64 end:0x02002a68
 
-src/clones/func_02005310.c:
+src/clones/OS_IrqDummy.c:
     complete
     .text       start:0x02005310 end:0x02005314
 
@@ -380,15 +380,15 @@ src/main_a/SetFirstObject.c:
     complete
     .text       start:0x020207d4 end:0x02020800
 
-src/main_a/func_0201c070.c:
+src/main_a/NNS_SndPlayerStopSeq.c:
     complete
     .text       start:0x0201c070 end:0x0201c080
 
-src/main_a/func_0201c120.c:
+src/main_a/NNS_SndPlayerSetAllocatableChannel.c:
     complete
     .text       start:0x0201c120 end:0x0201c138
 
-src/main_a/func_0201c138.c:
+src/main_a/NNS_SndPlayerSetPlayableSeqCount.c:
     complete
     .text       start:0x0201c138 end:0x0201c158
 
@@ -404,7 +404,7 @@ src/main_a/func_0201c458.c:
     complete
     .text       start:0x0201c458 end:0x0201c488
 
-src/main_a/func_0201c6b4.c:
+src/main_a/NNS_SndStrmFreeChannel.c:
     complete
     .text       start:0x0201c6b4 end:0x0201c6e4
 
@@ -444,7 +444,7 @@ src/main_a/func_0201d1ec.c:
     complete
     .text       start:0x0201d1ec end:0x0201d214
 
-src/main_a/func_0201d534.c:
+src/main_a/NNS_SndArcGetSeqParam.c:
     complete
     .text       start:0x0201d534 end:0x0201d558
 
@@ -456,11 +456,11 @@ src/main_a/func_0201d568.c:
     complete
     .text       start:0x0201d568 end:0x0201d580
 
-src/main_a/func_0201d8f0.c:
+src/main_a/EraseSync.c:
     complete
     .text       start:0x0201d8f0 end:0x0201d914
 
-src/main_a/func_0201d964.c:
+src/main_a/InitHeap.c:
     complete
     .text       start:0x0201d964 end:0x0201d9a4
 
@@ -476,35 +476,35 @@ src/main_a/func_0201db14.c:
     complete
     .text       start:0x0201db14 end:0x0201db30
 
-src/main_a/func_0201dde4.c:
+src/main_a/WaveArcTableDisposeCallback.c:
     complete
     .text       start:0x0201dde4 end:0x0201de08
 
-src/main_a/func_0201de08.c:
+src/main_a/WaveArcDisposeCallback.c:
     complete
     .text       start:0x0201de08 end:0x0201de44
 
-src/main_a/func_0201de44.c:
+src/main_a/BankDisposeCallback.c:
     complete
     .text       start:0x0201de44 end:0x0201de80
 
-src/main_a/func_0201de80.c:
+src/main_a/SeqDisposeCallback.c:
     complete
     .text       start:0x0201de80 end:0x0201deb4
 
-src/main_a/func_0201e75c.c:
+src/main_a/NNS_SndArcLoadBank.c:
     complete
     .text       start:0x0201e75c end:0x0201e794
 
-src/main_a/func_0201e794.c:
+src/main_a/NNS_SndArcLoadSeqArc.c:
     complete
     .text       start:0x0201e794 end:0x0201e7cc
 
-src/main_a/func_0201e7cc.c:
+src/main_a/NNS_SndArcLoadGroup.c:
     complete
     .text       start:0x0201e7cc end:0x0201e7f0
 
-src/main_a/func_0201f904.c:
+src/main_a/FreeCommandBuffer.c:
     complete
     .text       start:0x0201f904 end:0x0201f93c
 
@@ -540,7 +540,7 @@ src/main_a/func_020204c0.c:
     complete
     .text       start:0x020204c0 end:0x020204f4
 
-src/main_a/func_020204f4.c:
+src/main_a/NNSi_SndSeqArcGetSeqInfo.c:
     complete
     .text       start:0x020204f4 end:0x02020534
 
@@ -548,43 +548,43 @@ src/main_a/func_02020564.c:
     complete
     .text       start:0x02020564 end:0x020205a0
 
-src/main_a/func_020205a0.c:
+src/main_a/NNSi_SndFaderSet.c:
     complete
     .text       start:0x020205a0 end:0x020205d0
 
-src/main_a/func_02020818.c:
+src/main_a/NNSi_FndFinalizeHeap.c:
     complete
     .text       start:0x02020818 end:0x02020834
 
-src/main_a/func_020208c4.c:
+src/main_a/FindListContainHeap.c:
     complete
     .text       start:0x020208c4 end:0x020208f0
 
-src/main_a/func_02020960.c:
+src/main_a/NNS_FndSetAllocModeForExpHeap.c:
     complete
     .text       start:0x02020960 end:0x02020990
 
-src/main_a/func_02020990.c:
+src/main_a/NNS_FndFreeToExpHeap.c:
     complete
     .text       start:0x02020990 end:0x020209d0
 
-src/main_a/func_02020fb0.c:
+src/main_a/NNS_FndGetAllocatableSizeForFrmHeapEx.c:
     complete
     .text       start:0x02020fb0 end:0x02020ff0
 
-src/main_a/func_02020ff0.c:
+src/main_a/NNS_FndFreeToFrmHeap.c:
     complete
     .text       start:0x02020ff0 end:0x02021030
 
-src/main_a/func_02021078.c:
+src/main_a/NNS_FndDestroyFrmHeap.c:
     complete
     .text       start:0x02021078 end:0x02021084
 
-src/main_a/func_020210d0.c:
+src/main_a/FreeTail.c:
     complete
     .text       start:0x020210d0 end:0x02021100
 
-src/main_a/func_02021100.c:
+src/main_a/FreeHead.c:
     complete
     .text       start:0x02021100 end:0x02021118
 
@@ -600,7 +600,7 @@ src/main_a/func_020214d0.c:
     complete
     .text       start:0x020214d0 end:0x020214f0
 
-src/main_a/func_02021a44.c:
+src/main_a/NNS_G3dPlttReleasePlttKey.c:
     complete
     .text       start:0x02021a44 end:0x02021a64
 
@@ -612,11 +612,11 @@ src/main_a/func_02021ad8.c:
     complete
     .text       start:0x02021ad8 end:0x02021ae4
 
-src/main_a/func_02021ae4.c:
+src/main_a/NNS_G3dTexReleaseTexKey.c:
     complete
     .text       start:0x02021ae4 end:0x02021b1c
 
-src/main_a/func_02021bf8.c:
+src/main_a/NNS_G3dTexSetTexKey.c:
     complete
     .text       start:0x02021bf8 end:0x02021c0c
 
@@ -636,15 +636,15 @@ src/main_a/func_02021c38.c:
     complete
     .text       start:0x02021c38 end:0x02021c4c
 
-src/main_a/func_020221fc.c:
+src/main_a/NNS_G3dGlbPolygonAttr.c:
     complete
     .text       start:0x020221fc end:0x02022228
 
-src/main_a/func_02022228.c:
+src/main_a/NNS_G3dGlbMaterialColorSpecEmi.c:
     complete
     .text       start:0x02022228 end:0x0202224c
 
-src/main_a/func_0202224c.c:
+src/main_a/NNS_G3dGlbMaterialColorDiffAmb.c:
     complete
     .text       start:0x0202224c end:0x02022270
 
@@ -652,23 +652,23 @@ src/main_a/func_02022284.c:
     complete
     .text       start:0x02022284 end:0x020222bc
 
-src/main_a/func_0202247c.c:
+src/main_a/NNS_G3dGlbFlushP.c:
     complete
     .text       start:0x0202247c end:0x020224bc
 
-src/main_a/func_02024ca4.c:
+src/main_a/NNSi_G3dFuncSbc_RET.c:
     complete
     .text       start:0x02024ca4 end:0x02024cd0
 
-src/main_a/func_02024cd0.c:
+src/main_a/NNSi_G3dFuncSbc_NOP.c:
     complete
     .text       start:0x02024cd0 end:0x02024cfc
 
-src/main_a/func_02025430.c:
+src/main_a/simpleUnlock_.c:
     complete
     .text       start:0x02025430 end:0x0202543c
 
-src/main_a/func_0202543c.c:
+src/main_a/NNS_G3dGeWaitSendDL.c:
     complete
     .text       start:0x0202543c end:0x02025454
 
@@ -676,27 +676,27 @@ src/main_a/func_02025b38.c:
     complete
     .text       start:0x02025b38 end:0x02025b44
 
-src/main_a/func_02025b44.c:
+src/main_a/NNS_G3dAllocAnmObj.c:
     complete
     .text       start:0x02025b44 end:0x02025b6c
 
-src/main_a/func_02025ecc.c:
+src/main_a/NNS_G3dGetMdlSet.c:
     complete
     .text       start:0x02025ecc end:0x02025edc
 
-src/main_a/func_020261b8.c:
+src/main_a/NNSi_G3dGetTexPatAnmDataByIdx.c:
     complete
     .text       start:0x020261b8 end:0x020261d4
 
-src/main_a/func_02026254.c:
+src/main_a/NNSi_G3dGetTexPatAnmPlttNameByIdx.c:
     complete
     .text       start:0x02026254 end:0x02026264
 
-src/main_a/func_02026264.c:
+src/main_a/NNSi_G3dGetTexPatAnmTexNameByIdx.c:
     complete
     .text       start:0x02026264 end:0x02026274
 
-src/main_a/func_020284ec.c:
+src/main_a/NNSi_G3dGetJointScaleBasic.c:
     complete
     .text       start:0x020284ec end:0x02028528
 
@@ -732,59 +732,59 @@ src/main_a/func_0202a084.c:
     complete
     .text       start:0x0202a084 end:0x0202a08c
 
-src/main_a/func_0202a08c.c:
+src/main_a/abs.c:
     complete
     .text       start:0x0202a08c end:0x0202a098
 
-src/main_a/func_0202a12c.c:
+src/main_a/wctomb.c:
     complete
     .text       start:0x0202a12c end:0x0202a154
 
-src/main_a/func_0202a154.c:
+src/main_a/__wctomb_noconv.c:
     complete
     .text       start:0x0202a154 end:0x0202a168
 
-src/main_a/func_0202a168.c:
+src/main_a/__mbtowc_noconv.c:
     complete
     .text       start:0x0202a168 end:0x0202a1a0
 
-src/main_a/func_0202a1a0.c:
+src/main_a/memcmp.c:
     complete
     .text       start:0x0202a1a0 end:0x0202a1e0
 
-src/main_a/func_0202a1e0.c:
+src/main_a/memchr.c:
     complete
     .text       start:0x0202a1e0 end:0x0202a20c
 
-src/main_a/func_0202a20c.c:
+src/main_a/memset.c:
     complete
     .text       start:0x0202a20c end:0x0202a224
 
-src/main_a/func_0202a224.c:
+src/main_a/memcpy.c:
     complete
     .text       start:0x0202a224 end:0x0202a244
 
-src/main_a/func_0202c2d8.c:
+src/main_a/strchr.c:
     complete
     .text       start:0x0202c2d8 end:0x0202c314
 
-src/main_a/func_0202c314.c:
+src/main_a/strncmp.c:
     complete
     .text       start:0x0202c314 end:0x0202c348
 
-src/main_a/func_0202c474.c:
+src/main_a/strcat.c:
     complete
     .text       start:0x0202c474 end:0x0202c4a4
 
-src/main_a/func_0202c5f0.c:
+src/main_a/strlen.c:
     complete
     .text       start:0x0202c5f0 end:0x0202c60c
 
-src/main_a/func_0202c60c.c:
+src/main_a/copysign.c:
     complete
     .text       start:0x0202c60c end:0x0202c634
 
-src/main_a/func_0202c634.c:
+src/main_a/fabs.c:
     complete
     .text       start:0x0202c634 end:0x0202c658
 
@@ -1976,7 +1976,7 @@ src/main_sdk/VEC_Subtract.c:
     complete
     .text       start:0x0200273c end:0x02002770
 
-src/main_sdk/func_02002240.c:
+src/main_sdk/FX_Inv.c:
     complete
     .text       start:0x02002240 end:0x0200225c
 
@@ -1984,191 +1984,191 @@ src/main_sdk/func_0200225c.c:
     complete
     .text       start:0x0200225c end:0x02002278
 
-src/main_sdk/func_02002be8.c:
+src/main_sdk/GX_SetVCountEqVal.c:
     complete
     .text       start:0x02002be8 end:0x02002c10
 
-src/main_sdk/func_02002e28.c:
+src/main_sdk/GX_DisableBankForSubOBJExtPltt.c:
     complete
     .text       start:0x02002e28 end:0x02002e50
 
-src/main_sdk/func_02002e50.c:
+src/main_sdk/GX_DisableBankForSubBGExtPltt.c:
     complete
     .text       start:0x02002e50 end:0x02002e78
 
-src/main_sdk/func_02002e78.c:
+src/main_sdk/GX_DisableBankForSubOBJ.c:
     complete
     .text       start:0x02002e78 end:0x02002e8c
 
-src/main_sdk/func_02002e8c.c:
+src/main_sdk/GX_DisableBankForSubBG.c:
     complete
     .text       start:0x02002e8c end:0x02002ea0
 
-src/main_sdk/func_02002ea0.c:
+src/main_sdk/GX_DisableBankForLCDC.c:
     complete
     .text       start:0x02002ea0 end:0x02002eb4
 
-src/main_sdk/func_02002eb4.c:
+src/main_sdk/GX_DisableBankForARM7.c:
     complete
     .text       start:0x02002eb4 end:0x02002ec8
 
-src/main_sdk/func_02002ec8.c:
+src/main_sdk/GX_DisableBankForClearImage.c:
     complete
     .text       start:0x02002ec8 end:0x02002edc
 
-src/main_sdk/func_02002edc.c:
+src/main_sdk/GX_DisableBankForTexPltt.c:
     complete
     .text       start:0x02002edc end:0x02002ef0
 
-src/main_sdk/func_02002ef0.c:
+src/main_sdk/GX_DisableBankForTex.c:
     complete
     .text       start:0x02002ef0 end:0x02002f04
 
-src/main_sdk/func_02002f04.c:
+src/main_sdk/GX_DisableBankForOBJExtPltt.c:
     complete
     .text       start:0x02002f04 end:0x02002f28
 
-src/main_sdk/func_02002f28.c:
+src/main_sdk/GX_DisableBankForBGExtPltt.c:
     complete
     .text       start:0x02002f28 end:0x02002f4c
 
-src/main_sdk/func_02002f4c.c:
+src/main_sdk/GX_DisableBankForOBJ.c:
     complete
     .text       start:0x02002f4c end:0x02002f60
 
-src/main_sdk/func_02002f60.c:
+src/main_sdk/GX_DisableBankForBG.c:
     complete
     .text       start:0x02002f60 end:0x02002f74
 
-src/main_sdk/func_02003058.c:
+src/main_sdk/GX_ResetBankForSubOBJExtPltt.c:
     complete
     .text       start:0x02003058 end:0x02003080
 
-src/main_sdk/func_02003080.c:
+src/main_sdk/GX_ResetBankForSubBGExtPltt.c:
     complete
     .text       start:0x02003080 end:0x020030a8
 
-src/main_sdk/func_020030a8.c:
+src/main_sdk/GX_ResetBankForSubOBJ.c:
     complete
     .text       start:0x020030a8 end:0x020030bc
 
-src/main_sdk/func_020030bc.c:
+src/main_sdk/GX_ResetBankForSubBG.c:
     complete
     .text       start:0x020030bc end:0x020030d0
 
-src/main_sdk/func_020030d0.c:
+src/main_sdk/GX_ResetBankForTexPltt.c:
     complete
     .text       start:0x020030d0 end:0x020030e4
 
-src/main_sdk/func_020030e4.c:
+src/main_sdk/GX_ResetBankForTex.c:
     complete
     .text       start:0x020030e4 end:0x020030f8
 
-src/main_sdk/func_020030f8.c:
+src/main_sdk/GX_ResetBankForOBJExtPltt.c:
     complete
     .text       start:0x020030f8 end:0x0200311c
 
-src/main_sdk/func_0200311c.c:
+src/main_sdk/GX_ResetBankForBGExtPltt.c:
     complete
     .text       start:0x0200311c end:0x02003140
 
-src/main_sdk/func_02003140.c:
+src/main_sdk/resetBankForX_.c:
     complete
     .text       start:0x02003140 end:0x02003178
 
-src/main_sdk/func_02003d78.c:
+src/main_sdk/G2x_SetBlendAlpha_.c:
     complete
     .text       start:0x02003d78 end:0x02003d94
 
-src/main_sdk/func_02003f30.c:
+src/main_sdk/G3X_GetMtxStackLevelPJ.c:
     complete
     .text       start:0x02003f30 end:0x02003f5c
 
-src/main_sdk/func_02003f5c.c:
+src/main_sdk/G3X_GetMtxStackLevelPV.c:
     complete
     .text       start:0x02003f5c end:0x02003f88
 
-src/main_sdk/func_02004040.c:
+src/main_sdk/G3X_SetClearColor.c:
     complete
     .text       start:0x02004040 end:0x02004070
 
-src/main_sdk/func_02004070.c:
+src/main_sdk/G3X_SetFogTable.c:
     complete
     .text       start:0x02004070 end:0x02004084
 
-src/main_sdk/func_02004084.c:
+src/main_sdk/G3X_SetEdgeColorTable.c:
     complete
     .text       start:0x02004084 end:0x0200409c
 
-src/main_sdk/func_020042dc.c:
+src/main_sdk/G3X_ClearFifo.c:
     complete
     .text       start:0x020042dc end:0x02004310
 
-src/main_sdk/func_02005234.c:
+src/main_sdk/OSi_IrqDma3.c:
     complete
     .text       start:0x02005234 end:0x02005244
 
-src/main_sdk/func_02005244.c:
+src/main_sdk/OSi_IrqDma2.c:
     complete
     .text       start:0x02005244 end:0x02005254
 
-src/main_sdk/func_02005264.c:
+src/main_sdk/OSi_IrqDma0.c:
     complete
     .text       start:0x02005264 end:0x02005274
 
-src/main_sdk/func_020055b0.c:
+src/main_sdk/OS_InitIrqTable.c:
     complete
     .text       start:0x020055b0 end:0x020055c4
 
-src/main_sdk/func_02005628.c:
+src/main_sdk/OSi_WaitByLoop.c:
     complete
     .text       start:0x02005628 end:0x02005638
 
-src/main_sdk/func_02005670.c:
+src/main_sdk/OS_UnlockCard.c:
     complete
     .text       start:0x02005670 end:0x0200568c
 
-src/main_sdk/func_0200568c.c:
+src/main_sdk/OS_LockCard.c:
     complete
     .text       start:0x0200568c end:0x020056a8
 
-src/main_sdk/func_020056d8.c:
+src/main_sdk/OS_TryLockCartridge.c:
     complete
     .text       start:0x020056d8 end:0x020056f8
 
-src/main_sdk/func_020056f8.c:
+src/main_sdk/OS_UnlockCartridge.c:
     complete
     .text       start:0x020056f8 end:0x02005718
 
-src/main_sdk/func_02005798.c:
+src/main_sdk/OS_UnlockByWord.c:
     complete
     .text       start:0x02005798 end:0x020057a8
 
-src/main_sdk/func_02005838.c:
+src/main_sdk/OS_LockByWord.c:
     complete
     .text       start:0x02005838 end:0x02005848
 
-src/main_sdk/func_020059a4.c:
+src/main_sdk/OS_SetSwitchThreadCallback.c:
     complete
     .text       start:0x020059a4 end:0x020059d8
 
-src/main_sdk/func_02005b74.c:
+src/main_sdk/OS_SelectThread.c:
     complete
     .text       start:0x02005b74 end:0x02005ba0
 
-src/main_sdk/func_02005ba0.c:
+src/main_sdk/OS_WakeupThreadDirect.c:
     complete
     .text       start:0x02005ba0 end:0x02005bd4
 
-src/main_sdk/func_02005cb0.c:
+src/main_sdk/OS_IsThreadTerminated.c:
     complete
     .text       start:0x02005cb0 end:0x02005cc4
 
-src/main_sdk/func_02005cc4.c:
+src/main_sdk/OS_JoinThread.c:
     complete
     .text       start:0x02005cc4 end:0x02005d00
 
-src/main_sdk/func_02006094.c:
+src/main_sdk/OSi_GetUnusedThreadId.c:
     complete
     .text       start:0x02006094 end:0x020060c4
 
@@ -2176,35 +2176,35 @@ src/main_sdk/func_020061b8.c:
     complete
     .text       start:0x020061b8 end:0x020061ec
 
-src/main_sdk/func_02006548.c:
+src/main_sdk/OS_InitMessageQueue.c:
     complete
     .text       start:0x02006548 end:0x02006568
 
-src/main_sdk/func_02006568.c:
+src/main_sdk/OSi_DequeueHead.c:
     complete
     .text       start:0x02006568 end:0x02006590
 
-src/main_sdk/func_02006590.c:
+src/main_sdk/OSi_DequeueItem.c:
     complete
     .text       start:0x02006590 end:0x020065b4
 
-src/main_sdk/func_020065b4.c:
+src/main_sdk/OSi_EnqueueTail.c:
     complete
     .text       start:0x020065b4 end:0x020065d8
 
-src/main_sdk/func_02006724.c:
+src/main_sdk/OS_InitMutex.c:
     complete
     .text       start:0x02006724 end:0x02006738
 
-src/main_sdk/func_02006edc.c:
+src/main_sdk/OSi_SetTimerReserved.c:
     complete
     .text       start:0x02006edc end:0x02006ef8
 
-src/main_sdk/func_02007450.c:
+src/main_sdk/OS_CreateVAlarm.c:
     complete
     .text       start:0x02007450 end:0x02007464
 
-src/main_sdk/func_02007464.c:
+src/main_sdk/OSi_DetachVAlarm.c:
     complete
     .text       start:0x02007464 end:0x0200749c
 
@@ -2212,183 +2212,183 @@ src/main_sdk/func_02007584.c:
     complete
     .text       start:0x02007584 end:0x020075b8
 
-src/main_sdk/func_0200774c.c:
+src/main_sdk/OSi_SendToPxi.c:
     complete
     .text       start:0x0200774c end:0x0200777c
 
-src/main_sdk/func_020078a4.c:
+src/main_sdk/OS_GetMacAddress.c:
     complete
     .text       start:0x020078a4 end:0x020078c0
 
-src/main_sdk/func_02007984.c:
+src/main_sdk/MI_SetWramBank.c:
     complete
     .text       start:0x02007984 end:0x02007994
 
-src/main_sdk/func_020088ec.c:
+src/main_sdk/MI_Init.c:
     complete
     .text       start:0x020088ec end:0x02008910
 
-src/main_sdk/func_02008968.c:
+src/main_sdk/SNDi_SetSurroundDecay.c:
     complete
     .text       start:0x02008968 end:0x02008994
 
-src/main_sdk/func_02008994.c:
+src/main_sdk/SNDi_SetTrackParam.c:
     complete
     .text       start:0x02008994 end:0x020089c8
 
-src/main_sdk/func_020089c8.c:
+src/main_sdk/SNDi_SetPlayerParam.c:
     complete
     .text       start:0x020089c8 end:0x020089fc
 
-src/main_sdk/func_020089fc.c:
+src/main_sdk/SND_ReadDriverInfo.c:
     complete
     .text       start:0x020089fc end:0x02008a28
 
-src/main_sdk/func_02008a28.c:
+src/main_sdk/SND_SetOutputSelector.c:
     complete
     .text       start:0x02008a28 end:0x02008a5c
 
-src/main_sdk/func_02008a5c.c:
+src/main_sdk/SND_InvalidateWaveData.c:
     complete
     .text       start:0x02008a5c end:0x02008a88
 
-src/main_sdk/func_02008a88.c:
+src/main_sdk/SND_InvalidateBankData.c:
     complete
     .text       start:0x02008a88 end:0x02008ab4
 
-src/main_sdk/func_02008ab4.c:
+src/main_sdk/SND_InvalidateSeqData.c:
     complete
     .text       start:0x02008ab4 end:0x02008ae0
 
-src/main_sdk/func_02008b38.c:
+src/main_sdk/SND_SetChannelPan.c:
     complete
     .text       start:0x02008b38 end:0x02008b64
 
-src/main_sdk/func_02008b64.c:
+src/main_sdk/SND_SetChannelVolume.c:
     complete
     .text       start:0x02008b64 end:0x02008b98
 
-src/main_sdk/func_02008b98.c:
+src/main_sdk/SND_UnlockChannel.c:
     complete
     .text       start:0x02008b98 end:0x02008bc4
 
-src/main_sdk/func_02008bc4.c:
+src/main_sdk/SND_LockChannel.c:
     complete
     .text       start:0x02008bc4 end:0x02008bf0
 
-src/main_sdk/func_02008bf0.c:
+src/main_sdk/SND_StopUnlockedChannel.c:
     complete
     .text       start:0x02008bf0 end:0x02008c1c
 
-src/main_sdk/func_02008d1c.c:
+src/main_sdk/SND_StartTimer.c:
     complete
     .text       start:0x02008d1c end:0x02008d50
 
-src/main_sdk/func_02008d50.c:
+src/main_sdk/SND_SetTrackAllocatableChannel.c:
     complete
     .text       start:0x02008d50 end:0x02008d84
 
-src/main_sdk/func_02008d84.c:
+src/main_sdk/SND_SetTrackPan.c:
     complete
     .text       start:0x02008d84 end:0x02008dac
 
-src/main_sdk/func_02008dac.c:
+src/main_sdk/SND_SetTrackPitch.c:
     complete
     .text       start:0x02008dac end:0x02008dd4
 
-src/main_sdk/func_02008e04.c:
+src/main_sdk/SND_SetPlayerTempoRatio.c:
     complete
     .text       start:0x02008e04 end:0x02008e1c
 
-src/main_sdk/func_02008e1c.c:
+src/main_sdk/SND_PauseSeq.c:
     complete
     .text       start:0x02008e1c end:0x02008e48
 
-src/main_sdk/func_02008e48.c:
+src/main_sdk/SND_StartPreparedSeq.c:
     complete
     .text       start:0x02008e48 end:0x02008e74
 
-src/main_sdk/func_02008e74.c:
+src/main_sdk/SND_PrepareSeq.c:
     complete
     .text       start:0x02008e74 end:0x02008ea8
 
-src/main_sdk/func_02008ea8.c:
+src/main_sdk/SND_StopSeq.c:
     complete
     .text       start:0x02008ea8 end:0x02008ed4
 
-src/main_sdk/func_02008ed4.c:
+src/main_sdk/SNDi_UnlockMutex.c:
     complete
     .text       start:0x02008ed4 end:0x02008ee8
 
-src/main_sdk/func_02008ee8.c:
+src/main_sdk/SNDi_LockMutex.c:
     complete
     .text       start:0x02008ee8 end:0x02008efc
 
-src/main_sdk/func_02008fe8.c:
+src/main_sdk/RequestCommandProc.c:
     complete
     .text       start:0x02008fe8 end:0x0200901c
 
-src/main_sdk/func_02009088.c:
+src/main_sdk/PxiFifoCallback.c:
     complete
     .text       start:0x02009088 end:0x020090b8
 
-src/main_sdk/func_020090b8.c:
+src/main_sdk/SND_CountWaitingCommand.c:
     complete
     .text       start:0x020090b8 end:0x020090d8
 
-src/main_sdk/func_020098cc.c:
+src/main_sdk/SNDi_GetFinishedCommandTag.c:
     complete
     .text       start:0x020098cc end:0x02009900
 
-src/main_sdk/func_02009ab8.c:
+src/main_sdk/SND_GetPlayerStatus.c:
     complete
     .text       start:0x02009ab8 end:0x02009aec
 
-src/main_sdk/func_02009ba8.c:
+src/main_sdk/SND_SetWaveDataAddress.c:
     complete
     .text       start:0x02009ba8 end:0x02009be0
 
-src/main_sdk/func_02009fa8.c:
+src/main_sdk/PXI_Init.c:
     complete
     .text       start:0x02009fa8 end:0x02009fb4
 
-src/main_sdk/func_0200a334.c:
+src/main_sdk/FSi_OpenFileDirectCommand.c:
     complete
     .text       start:0x0200a334 end:0x0200a35c
 
-src/main_sdk/func_0200ac30.c:
+src/main_sdk/FSi_SeekDirDirect.c:
     complete
     .text       start:0x0200ac30 end:0x0200ac64
 
-src/main_sdk/func_0200aee8.c:
+src/main_sdk/FS_SetArchiveProc.c:
     complete
     .text       start:0x0200aee8 end:0x0200af08
 
-src/main_sdk/func_0200b2cc.c:
+src/main_sdk/FS_InitArchive.c:
     complete
     .text       start:0x0200b2cc end:0x0200b2f4
 
-src/main_sdk/func_0200b878.c:
+src/main_sdk/FSi_WriteMemCallback.c:
     complete
     .text       start:0x0200b878 end:0x0200b8a4
 
-src/main_sdk/func_0200b8a4.c:
+src/main_sdk/FSi_ReadMemCallback.c:
     complete
     .text       start:0x0200b8a4 end:0x0200b8cc
 
-src/main_sdk/func_0200b99c.c:
+src/main_sdk/FS_ReadFile.c:
     complete
     .text       start:0x0200b99c end:0x0200b9ac
 
-src/main_sdk/func_0200b9ac.c:
+src/main_sdk/FS_ReadFileAsync.c:
     complete
     .text       start:0x0200b9ac end:0x0200b9bc
 
-src/main_sdk/func_0200be70.c:
+src/main_sdk/FS_InitFile.c:
     complete
     .text       start:0x0200be70 end:0x0200be98
 
-src/main_sdk/func_0200be98.c:
+src/main_sdk/FS_Init.c:
     complete
     .text       start:0x0200be98 end:0x0200bed4
 
@@ -2396,155 +2396,155 @@ src/main_sdk/func_0200bf1c.c:
     complete
     .text       start:0x0200bf1c end:0x0200bf48
 
-src/main_sdk/func_0200c1dc.c:
+src/main_sdk/FSi_OnRomReadDone.c:
     complete
     .text       start:0x0200c1dc end:0x0200c1ec
 
-src/main_sdk/func_0200d178.c:
+src/main_sdk/TP_CheckError.c:
     complete
     .text       start:0x0200d178 end:0x0200d18c
 
-src/main_sdk/func_0200d18c.c:
+src/main_sdk/TP_WaitBusy.c:
     complete
     .text       start:0x0200d18c end:0x0200d1a4
 
-src/main_sdk/func_0200d544.c:
+src/main_sdk/TP_GetLatestIndexInAuto.c:
     complete
     .text       start:0x0200d544 end:0x0200d554
 
-src/main_sdk/func_0200d6f0.c:
+src/main_sdk/TP_SetCallback.c:
     complete
     .text       start:0x0200d6f0 end:0x0200d714
 
-src/main_sdk/func_0200dd98.c:
+src/main_sdk/MIC_GetLastSamplingAddress.c:
     complete
     .text       start:0x0200dd98 end:0x0200dda8
 
-src/main_sdk/func_0200de34.c:
+src/main_sdk/PM_DeletePostSleepCallback.c:
     complete
     .text       start:0x0200de34 end:0x0200de4c
 
-src/main_sdk/func_0200de4c.c:
+src/main_sdk/PM_DeletePreSleepCallback.c:
     complete
     .text       start:0x0200de4c end:0x0200de64
 
-src/main_sdk/func_0200de64.c:
+src/main_sdk/PM_AppendPostSleepCallback.c:
     complete
     .text       start:0x0200de64 end:0x0200de7c
 
-src/main_sdk/func_0200de7c.c:
+src/main_sdk/PM_PrependPreSleepCallback.c:
     complete
     .text       start:0x0200de7c end:0x0200de94
 
-src/main_sdk/func_0200de94.c:
+src/main_sdk/PMi_ExecuteList.c:
     complete
     .text       start:0x0200de94 end:0x0200dec4
 
-src/main_sdk/func_0200df58.c:
+src/main_sdk/PMi_PrependList.c:
     complete
     .text       start:0x0200df58 end:0x0200df6c
 
-src/main_sdk/func_0200df6c.c:
+src/main_sdk/PM_GetLCDPower.c:
     complete
     .text       start:0x0200df6c end:0x0200df88
 
-src/main_sdk/func_0200df88.c:
+src/main_sdk/PM_SetLCDPower.c:
     complete
     .text       start:0x0200df88 end:0x0200dfa8
 
-src/main_sdk/func_0200e2d0.c:
+src/main_sdk/PMi_SendPxiData.c:
     complete
     .text       start:0x0200e2d0 end:0x0200e300
 
-src/main_sdk/func_0200e378.c:
+src/main_sdk/PM_SetAmp.c:
     complete
     .text       start:0x0200e378 end:0x0200e390
 
-src/main_sdk/func_0200e390.c:
+src/main_sdk/PM_ForceToPowerOff.c:
     complete
     .text       start:0x0200e390 end:0x0200e3cc
 
-src/main_sdk/func_0200e3cc.c:
+src/main_sdk/PM_ForceToPowerOffAsync.c:
     complete
     .text       start:0x0200e3cc end:0x0200e3e4
 
-src/main_sdk/func_0200e3e4.c:
+src/main_sdk/PM_SetBackLight.c:
     complete
     .text       start:0x0200e3e4 end:0x0200e420
 
-src/main_sdk/func_0200e4b0.c:
+src/main_sdk/PMi_SetLED.c:
     complete
     .text       start:0x0200e4b0 end:0x0200e4ec
 
-src/main_sdk/func_0200e554.c:
+src/main_sdk/PMi_WriteRegister.c:
     complete
     .text       start:0x0200e554 end:0x0200e590
 
-src/main_sdk/func_0200e610.c:
+src/main_sdk/PMi_ReadRegister.c:
     complete
     .text       start:0x0200e610 end:0x0200e64c
 
-src/main_sdk/func_0200e9fc.c:
+src/main_sdk/PMi_WaitBusy.c:
     complete
     .text       start:0x0200e9fc end:0x0200ea14
 
-src/main_sdk/func_0200ea7c.c:
+src/main_sdk/RtcGetResultCallback.c:
     complete
     .text       start:0x0200ea7c end:0x0200ea8c
 
-src/main_sdk/func_0200f1e8.c:
+src/main_sdk/RtcSendPxiCommand.c:
     complete
     .text       start:0x0200f1e8 end:0x0200f21c
 
-src/main_sdk/func_0200f23c.c:
+src/main_sdk/CARD_UnlockBackup.c:
     complete
     .text       start:0x0200f23c end:0x0200f24c
 
-src/main_sdk/func_0200f24c.c:
+src/main_sdk/CARD_LockBackup.c:
     complete
     .text       start:0x0200f24c end:0x0200f25c
 
-src/main_sdk/func_0200f25c.c:
+src/main_sdk/CARD_UnlockRom.c:
     complete
     .text       start:0x0200f25c end:0x0200f27c
 
-src/main_sdk/func_0200f27c.c:
+src/main_sdk/CARD_LockRom.c:
     complete
     .text       start:0x0200f27c end:0x0200f29c
 
-src/main_sdk/func_0200f29c.c:
+src/main_sdk/CARD_GetResultCode.c:
     complete
     .text       start:0x0200f29c end:0x0200f2b0
 
-src/main_sdk/func_0200f30c.c:
+src/main_sdk/CARD_Enable.c:
     complete
     .text       start:0x0200f30c end:0x0200f31c
 
-src/main_sdk/func_0200f31c.c:
+src/main_sdk/CARD_CheckEnabled.c:
     complete
     .text       start:0x0200f31c end:0x0200f348
 
-src/main_sdk/func_0200f348.c:
+src/main_sdk/CARD_IsEnabled.c:
     complete
     .text       start:0x0200f348 end:0x0200f358
 
-src/main_sdk/func_0200fdb0.c:
+src/main_sdk/CARD_WaitRomAsync.c:
     complete
     .text       start:0x0200fdb0 end:0x0200fdbc
 
-src/main_sdk/func_0200fee4.c:
+src/main_sdk/CARDi_ReadRomSyncCore.c:
     complete
     .text       start:0x0200fee4 end:0x0200ff18
 
-src/main_sdk/func_020105d0.c:
+src/main_sdk/CARD_IsPulledOut.c:
     complete
     .text       start:0x020105d0 end:0x020105e0
 
-src/main_sdk/func_020105e0.c:
+src/main_sdk/CARD_SetPulledOutCallback.c:
     complete
     .text       start:0x020105e0 end:0x020105f0
 
-src/main_sdk/func_0201065c.c:
+src/main_sdk/CARD_InitPulledOutCallback.c:
     complete
     .text       start:0x0201065c end:0x02010694
 
@@ -2568,15 +2568,15 @@ src/main_sdk/func_02010f48.c:
     complete
     .text       start:0x02010f48 end:0x02010f7c
 
-src/main_sdk/func_020111e4.c:
+src/main_sdk/WM_GetAllowedChannel.c:
     complete
     .text       start:0x020111e4 end:0x02011210
 
-src/main_sdk/func_02011904.c:
+src/main_sdk/WM_StartParent.c:
     complete
     .text       start:0x02011904 end:0x02011914
 
-src/main_sdk/func_02011f4c.c:
+src/main_sdk/WmGetSharedDataAddress.c:
     complete
     .text       start:0x02011f4c end:0x02011f88
 
@@ -2584,11 +2584,11 @@ src/main_sdk/func_020141a8.c:
     complete
     .text       start:0x020141a8 end:0x020141d8
 
-src/main_sdk/func_02014adc.c:
+src/main_sdk/WBT_MpChildSendHook.c:
     complete
     .text       start:0x02014adc end:0x02014b14
 
-src/main_sdk/func_02014b74.c:
+src/main_sdk/WBT_MpParentSendHook.c:
     complete
     .text       start:0x02014b74 end:0x02014bac
 
@@ -2600,7 +2600,7 @@ src/main_sdk/func_02014f5c.c:
     complete
     .text       start:0x02014f5c end:0x02014f94
 
-src/main_sdk/func_02015264.c:
+src/main_sdk/WBT_RequestSync.c:
     complete
     .text       start:0x02015264 end:0x02015290
 
@@ -2608,7 +2608,7 @@ src/main_sdk/func_0201541c.c:
     complete
     .text       start:0x0201541c end:0x0201544c
 
-src/main_sdk/func_020154f8.c:
+src/main_sdk/WBT_AidbitmapToAid.c:
     complete
     .text       start:0x020154f8 end:0x02015520
 
@@ -2668,35 +2668,35 @@ src/main_sdk/func_020156c8.c:
     complete
     .text       start:0x020156c8 end:0x020156d8
 
-src/main_sdk/func_020156d8.c:
+src/main_sdk/MBi_CommCallParentError.c:
     complete
     .text       start:0x020156d8 end:0x020156fc
 
-src/main_sdk/func_020156fc.c:
+src/main_sdk/IsChildAidValid.c:
     complete
     .text       start:0x020156fc end:0x02015718
 
-src/main_sdk/func_02015718.c:
+src/main_sdk/MBi_calc_nextsendblock.c:
     complete
     .text       start:0x02015718 end:0x02015728
 
-src/main_sdk/func_020168ec.c:
+src/main_sdk/MBi_CommChangeParentStateCallbackOnly.c:
     complete
     .text       start:0x020168ec end:0x02016928
 
-src/main_sdk/func_02016b6c.c:
+src/main_sdk/MB_CommSetParentStateCallback.c:
     complete
     .text       start:0x02016b6c end:0x02016b98
 
-src/main_sdk/func_020179dc.c:
+src/main_sdk/MBi_BlockHeaderEnd.c:
     complete
     .text       start:0x020179dc end:0x02017a18
 
-src/main_sdk/func_02017cc4.c:
+src/main_sdk/MBi_InitSendVolatBeacon.c:
     complete
     .text       start:0x02017cc4 end:0x02017cf4
 
-src/main_sdk/func_02017fe0.c:
+src/main_sdk/MBi_ClearSendStatus.c:
     complete
     .text       start:0x02017fe0 end:0x02018004
 
@@ -2708,7 +2708,7 @@ src/main_sdk/func_0201807c.c:
     complete
     .text       start:0x0201807c end:0x020180a4
 
-src/main_sdk/func_02018340.c:
+src/main_sdk/MBi_IsStarted.c:
     complete
     .text       start:0x02018340 end:0x02018360
 
@@ -2728,7 +2728,7 @@ src/main_sdk/func_020187c0.c:
     complete
     .text       start:0x020187c0 end:0x020187cc
 
-src/main_sdk/func_020187cc.c:
+src/main_sdk/MBi_CallReset.c:
     complete
     .text       start:0x020187cc end:0x02018808
 
@@ -2748,7 +2748,7 @@ src/main_sdk/func_0201a490.c:
     complete
     .text       start:0x0201a490 end:0x0201a4a4
 
-src/main_sdk/func_0201a4a4.c:
+src/main_sdk/MBi_IsTaskAvailable.c:
     complete
     .text       start:0x0201a4a4 end:0x0201a4c0
 
@@ -2760,11 +2760,11 @@ src/main_sdk/func_0201aa40.c:
     complete
     .text       start:0x0201aa40 end:0x0201aa68
 
-src/main_sdk/func_0201acc0.c:
+src/main_sdk/CTRDG_TerminateForPulledOut.c:
     complete
     .text       start:0x0201acc0 end:0x0201ace0
 
-src/main_sdk/func_0201ad40.c:
+src/main_sdk/CTRDGi_CallbackForInitModuleInfo.c:
     complete
     .text       start:0x0201ad40 end:0x0201ad7c
 
@@ -2772,87 +2772,87 @@ src/main_sdk/func_0201b028.c:
     complete
     .text       start:0x0201b028 end:0x0201b060
 
-src/main_sdk/func_0201b194.c:
+src/main_sdk/EndSleep.c:
     complete
     .text       start:0x0201b194 end:0x0201b1a0
 
-src/main_sdk/func_0201b1a0.c:
+src/main_sdk/BeginSleep.c:
     complete
     .text       start:0x0201b1a0 end:0x0201b1dc
 
-src/main_sdk/func_0201b330.c:
+src/main_sdk/NNS_SndStopChannelAll.c:
     complete
     .text       start:0x0201b330 end:0x0201b348
 
-src/main_sdk/func_0201b3a0.c:
+src/main_sdk/NNS_SndMain.c:
     complete
     .text       start:0x0201b3a0 end:0x0201b3d4
 
-src/main_sdk/func_0201b47c.c:
+src/main_sdk/NNSi_SndInitResourceMgr.c:
     complete
     .text       start:0x0201b47c end:0x0201b4a8
 
-src/main_sdk/func_0201b4a8.c:
+src/main_sdk/NNS_SndFreeAlarm.c:
     complete
     .text       start:0x0201b4a8 end:0x0201b4c8
 
-src/main_sdk/func_0201b50c.c:
+src/main_sdk/NNS_SndUnlockCapture.c:
     complete
     .text       start:0x0201b50c end:0x0201b528
 
-src/main_sdk/func_0201b528.c:
+src/main_sdk/NNS_SndLockCapture.c:
     complete
     .text       start:0x0201b528 end:0x0201b54c
 
-src/main_sdk/func_0201b54c.c:
+src/main_sdk/NNS_SndUnlockChannel.c:
     complete
     .text       start:0x0201b54c end:0x0201b584
 
-src/main_sdk/func_0201b7a4.c:
+src/main_sdk/ForceStopSeq.c:
     complete
     .text       start:0x0201b7a4 end:0x0201b7e0
 
-src/main_sdk/func_0201ba48.c:
+src/main_sdk/NNSi_SndPlayerFreeSeqPlayer.c:
     complete
     .text       start:0x0201ba48 end:0x0201ba54
 
-src/main_sdk/func_0201bd3c.c:
+src/main_sdk/NNS_SndPlayerSetSeqArcNo.c:
     complete
     .text       start:0x0201bd3c end:0x0201bd64
 
-src/main_sdk/func_0201bd64.c:
+src/main_sdk/NNS_SndPlayerSetSeqNo.c:
     complete
     .text       start:0x0201bd64 end:0x0201bd80
 
-src/main_sdk/func_0201bd80.c:
+src/main_sdk/NNS_SndPlayerSetTempoRatio.c:
     complete
     .text       start:0x0201bd80 end:0x0201bdb0
 
-src/main_sdk/func_0201bdb0.c:
+src/main_sdk/NNS_SndPlayerSetTrackPan.c:
     complete
     .text       start:0x0201bdb0 end:0x0201bde0
 
-src/main_sdk/func_0201bde0.c:
+src/main_sdk/NNS_SndPlayerSetTrackPitch.c:
     complete
     .text       start:0x0201bde0 end:0x0201be10
 
-src/main_sdk/func_0201be10.c:
+src/main_sdk/NNS_SndPlayerSetChannelPriority.c:
     complete
     .text       start:0x0201be10 end:0x0201be40
 
-src/main_sdk/func_0201be88.c:
+src/main_sdk/NNS_SndPlayerSetInitialVolume.c:
     complete
     .text       start:0x0201be88 end:0x0201be98
 
-src/main_sdk/func_0201be98.c:
+src/main_sdk/NNS_SndPlayerSetVolume.c:
     complete
     .text       start:0x0201be98 end:0x0201bea8
 
-src/main_sdk/func_0201bf34.c:
+src/main_sdk/NNS_SndHandleInit.c:
     complete
     .text       start:0x0201bf34 end:0x0201bf40
 
-src/main_sdk/func_0201bfac.c:
+src/main_sdk/NNS_SndPlayerPause.c:
     complete
     .text       start:0x0201bfac end:0x0201bfbc
 
@@ -2868,7 +2868,7 @@ src/main_a/func_0201c488.c:
     complete
     .text       start:0x0201c488 end:0x0201c4e4
 
-src/main_a/func_0201c970.c:
+src/main_a/NNSi_SndCaptureBeginSleep.c:
     complete
     .text       start:0x0201c970 end:0x0201c9d0
 
@@ -2876,7 +2876,7 @@ src/main_a/func_0201cf04.c:
     complete
     .text       start:0x0201cf04 end:0x0201cf4c
 
-src/main_a/func_0201d010.c:
+src/main_a/NNS_SndCaptureStopEffect.c:
     complete
     .text       start:0x0201d010 end:0x0201d058
 
@@ -2884,11 +2884,11 @@ src/main_a/func_0201d058.c:
     complete
     .text       start:0x0201d058 end:0x0201d0b8
 
-src/main_a/func_0201d914.c:
+src/main_a/NewSection.c:
     complete
     .text       start:0x0201d914 end:0x0201d964
 
-src/main_a/func_0201eb98.c:
+src/main_a/NNS_SndArcPlayerStartSeq.c:
     complete
     .text       start:0x0201eb98 end:0x0201ebec
 
@@ -2908,19 +2908,19 @@ src/main_a/func_020201bc.c:
     complete
     .text       start:0x020201bc end:0x02020204
 
-src/main_a/func_020209d0.c:
+src/main_a/NNS_FndAllocFromExpHeapEx.c:
     complete
     .text       start:0x020209d0 end:0x02020a14
 
-src/main_a/func_02020a14.c:
+src/main_a/NNS_FndCreateExpHeapEx.c:
     complete
     .text       start:0x02020a14 end:0x02020a60
 
-src/main_a/func_02021030.c:
+src/main_a/NNS_FndAllocFromFrmHeapEx.c:
     complete
     .text       start:0x02021030 end:0x02021078
 
-src/main_a/func_02021084.c:
+src/main_a/NNS_FndCreateFrmHeapEx.c:
     complete
     .text       start:0x02021084 end:0x020210d0
 
@@ -2932,31 +2932,31 @@ src/main_a/func_0202146c.c:
     complete
     .text       start:0x0202146c end:0x020214b0
 
-src/main_a/func_020215dc.c:
+src/main_a/NNS_G3dReleaseMdlPltt.c:
     complete
     .text       start:0x020215dc end:0x02021634
 
-src/main_a/func_0202200c.c:
+src/main_a/NNS_G3dAnmObjCalcSizeRequired.c:
     complete
     .text       start:0x0202200c end:0x0202205c
 
-src/main_a/func_020220c0.c:
+src/main_a/NNS_G3dGlbGetInvWV.c:
     complete
     .text       start:0x020220c0 end:0x02022104
 
-src/main_a/func_02022104.c:
+src/main_a/NNS_G3dGlbGetWV.c:
     complete
     .text       start:0x02022104 end:0x02022148
 
-src/main_a/func_020221ac.c:
+src/main_a/NNS_G3dGlbGetInvV.c:
     complete
     .text       start:0x020221ac end:0x020221fc
 
-src/main_a/func_02022a10.c:
+src/main_a/NNSi_G3dAnmBlendMat.c:
     complete
     .text       start:0x02022a10 end:0x02022a6c
 
-src/main_a/func_02025004.c:
+src/main_a/G3dDrawInternal_Loop_.c:
     complete
     .text       start:0x02025004 end:0x02025054
 
@@ -2964,23 +2964,23 @@ src/main_a/func_02025a60.c:
     complete
     .text       start:0x02025a60 end:0x02025a94
 
-src/main_a/func_02025b6c.c:
+src/main_a/NNS_G3dMdlSetMdlAlphaAll.c:
     complete
     .text       start:0x02025b6c end:0x02025bb4
 
-src/main_a/func_02025bb4.c:
+src/main_a/NNS_G3dMdlSetMdlEmiAll.c:
     complete
     .text       start:0x02025bb4 end:0x02025bfc
 
-src/main_a/func_02025bfc.c:
+src/main_a/NNS_G3dMdlSetMdlAmbAll.c:
     complete
     .text       start:0x02025bfc end:0x02025c44
 
-src/main_a/func_02025c44.c:
+src/main_a/NNS_G3dMdlSetMdlDiffAll.c:
     complete
     .text       start:0x02025c44 end:0x02025c8c
 
-src/main_a/func_020278a8.c:
+src/main_a/NNSi_G3dAnmCalcNsBca.c:
     complete
     .text       start:0x020278a8 end:0x020278f0
 
@@ -2988,7 +2988,7 @@ src/main_a/func_0202845c.c:
     complete
     .text       start:0x0202845c end:0x020284a0
 
-src/main_a/func_020284a0.c:
+src/main_a/NNSi_G3dAnmObjInitNsBva.c:
     complete
     .text       start:0x020284a0 end:0x020284ec
 
@@ -3008,7 +3008,7 @@ src/main_a/func_020296dc.c:
     complete
     .text       start:0x020296dc end:0x02029724
 
-src/main_a/func_0202a398.c:
+src/main_a/__StringWrite.c:
     complete
     .text       start:0x0202a398 end:0x0202a3e8
 
@@ -3080,7 +3080,7 @@ src/main_a/FileRequest_FindPending.c:
     complete
     .text       start:0x02033d58 end:0x02033db0
 
-src/main_a/Mic_Init.c:
+src/main_a/Mic_InitSystem.c:
     complete
     .text       start:0x02034e8c end:0x02034ec0
 
@@ -3780,159 +3780,159 @@ src/main_sdk/MATH_CountPopulation.c:
     complete
     .text       start:0x0201afe4 end:0x0201b028
 
-src/main_sdk/func_02001bc0.c:
+src/main_sdk/MTX_ScaleApply43.c:
     complete
     .text       start:0x02001bc0 end:0x02001c00
 
-src/main_sdk/func_0200203c.c:
+src/main_sdk/FX_ModS32.c:
     complete
     .text       start:0x0200203c end:0x02002094
 
-src/main_sdk/func_02002094.c:
+src/main_sdk/FX_DivS32.c:
     complete
     .text       start:0x02002094 end:0x020020ec
 
-src/main_sdk/func_020026f8.c:
+src/main_sdk/VEC_DotProduct.c:
     complete
     .text       start:0x020026f8 end:0x0200273c
 
-src/main_sdk/func_02002b70.c:
+src/main_sdk/GX_DispOff.c:
     complete
     .text       start:0x02002b70 end:0x02002bb8
 
-src/main_sdk/func_0200409c.c:
+src/main_sdk/G3X_GetVectorMtx.c:
     complete
     .text       start:0x0200409c end:0x020040e4
 
-src/main_sdk/func_020040e4.c:
+src/main_sdk/G3X_GetClipMtx.c:
     complete
     .text       start:0x020040e4 end:0x0200412c
 
-src/main_sdk/func_02004e68.c:
+src/main_sdk/GX_EndLoadTexPltt.c:
     complete
     .text       start:0x02004e68 end:0x02004ec0
 
-src/main_sdk/func_02004f34.c:
+src/main_sdk/GX_BeginLoadTexPltt.c:
     complete
     .text       start:0x02004f34 end:0x02004f7c
 
-src/main_sdk/func_02005348.c:
+src/main_sdk/OS_DisableIrqMask.c:
     complete
     .text       start:0x02005348 end:0x02005390
 
-src/main_sdk/func_020053fc.c:
+src/main_sdk/OSi_EnterTimerCallback.c:
     complete
     .text       start:0x020053fc end:0x02005448
 
-src/main_sdk/func_02005848.c:
+src/main_sdk/OSi_DoLockByWord.c:
     complete
     .text       start:0x02005848 end:0x020058a0
 
-src/main_sdk/func_02005fe4.c:
+src/main_sdk/OSi_RemoveThreadFromList.c:
     complete
     .text       start:0x02005fe4 end:0x0200602c
 
-src/main_sdk/func_020065d8.c:
+src/main_sdk/OSi_UnlockAllMutex.c:
     complete
     .text       start:0x020065d8 end:0x02006628
 
-src/main_sdk/func_02006834.c:
+src/main_sdk/OS_Init.c:
     complete
     .text       start:0x02006834 end:0x02006880
 
-src/main_sdk/func_0200701c.c:
+src/main_sdk/OS_InitAlarm.c:
     complete
     .text       start:0x0200701c end:0x02007074
 
-src/main_sdk/func_02007074.c:
+src/main_sdk/OSi_GetVFrame.c:
     complete
     .text       start:0x02007074 end:0x020070c0
 
-src/main_sdk/func_02007374.c:
+src/main_sdk/OSi_SetNextVAlarm.c:
     complete
     .text       start:0x02007374 end:0x020073b8
 
-src/main_sdk/func_0200749c.c:
+src/main_sdk/OSi_AppendVAlarm.c:
     complete
     .text       start:0x0200749c end:0x020074e8
 
-src/main_sdk/func_0200777c.c:
+src/main_sdk/OSi_CommonCallback.c:
     complete
     .text       start:0x0200777c end:0x020077c0
 
-src/main_sdk/func_02007f98.c:
+src/main_sdk/MIi_DMAFastCallback.c:
     complete
     .text       start:0x02007f98 end:0x02007fd8
 
-src/main_sdk/func_02008910.c:
+src/main_sdk/PushCommand_impl.c:
     complete
     .text       start:0x02008910 end:0x02008968
 
-src/main_sdk/func_02008c1c.c:
+src/main_sdk/SND_SetupAlarm.c:
     complete
     .text       start:0x02008c1c end:0x02008c60
 
-src/main_sdk/func_02008c60.c:
+src/main_sdk/SND_SetupCapture.c:
     complete
     .text       start:0x02008c60 end:0x02008cac
 
-src/main_sdk/func_02008efc.c:
+src/main_sdk/SND_Init.c:
     complete
     .text       start:0x02008efc end:0x02008f48
 
-src/main_sdk/func_02008f48.c:
+src/main_sdk/IsCommandAvailable.c:
     complete
     .text       start:0x02008f48 end:0x02008f90
 
-src/main_sdk/func_02008f90.c:
+src/main_sdk/AllocCommand.c:
     complete
     .text       start:0x02008f90 end:0x02008fe8
 
-src/main_sdk/func_020090d8.c:
+src/main_sdk/SND_CountReservedCommand.c:
     complete
     .text       start:0x020090d8 end:0x02009118
 
-src/main_sdk/func_02009118.c:
+src/main_sdk/SND_CountFreeCommand.c:
     complete
     .text       start:0x02009118 end:0x02009158
 
-src/main_sdk/func_020091ac.c:
+src/main_sdk/SND_GetCurrentCommandTag.c:
     complete
     .text       start:0x020091ac end:0x020091ec
 
-src/main_sdk/func_0200943c.c:
+src/main_sdk/SND_PushCommand.c:
     complete
     .text       start:0x0200943c end:0x02009484
 
-src/main_sdk/func_02009b60.c:
+src/main_sdk/SND_GetWaveDataAddress.c:
     complete
     .text       start:0x02009b60 end:0x02009ba8
 
-src/main_sdk/func_02009de0.c:
+src/main_sdk/SND_DestroyWaveArc.c:
     complete
     .text       start:0x02009de0 end:0x02009e2c
 
-src/main_sdk/func_0200aea4.c:
+src/main_sdk/FSi_ReleaseCommand.c:
     complete
     .text       start:0x0200aea4 end:0x0200aee8
 
-src/main_sdk/func_0200b514.c:
+src/main_sdk/FSi_ExecuteSyncCommand.c:
     complete
     .text       start:0x0200b514 end:0x0200b55c
 
-src/main_sdk/func_0200b828.c:
+src/main_sdk/FS_FindArchive.c:
     complete
     .text       start:0x0200b828 end:0x0200b878
 
-src/main_sdk/func_0200b9bc.c:
+src/main_sdk/FS_CancelFile.c:
     complete
     .text       start:0x0200b9bc end:0x0200ba08
 
-src/main_sdk/func_0200bad8.c:
+src/main_sdk/FS_CloseFile.c:
     complete
     .text       start:0x0200bad8 end:0x0200bb20
 
-src/main_sdk/func_0200bc44.c:
+src/main_sdk/FS_ConvertPathToFileID.c:
     complete
     .text       start:0x0200bc44 end:0x0200bc88
 
@@ -3940,59 +3940,59 @@ src/main_sdk/func_0200bed4.c:
     complete
     .text       start:0x0200bed4 end:0x0200bf1c
 
-src/main_sdk/func_0200c190.c:
+src/main_sdk/FSi_ReadRomCallback.c:
     complete
     .text       start:0x0200c190 end:0x0200c1dc
 
-src/main_sdk/func_0200c850.c:
+src/main_sdk/FS_ClearOverlayImage.c:
     complete
     .text       start:0x0200c850 end:0x0200c894
 
-src/main_sdk/func_0200dec4.c:
+src/main_sdk/PMi_DeleteList.c:
     complete
     .text       start:0x0200dec4 end:0x0200df10
 
-src/main_sdk/func_0200df10.c:
+src/main_sdk/PMi_AppendList.c:
     complete
     .text       start:0x0200df10 end:0x0200df58
 
-src/main_sdk/func_0200ea14.c:
+src/main_sdk/PMi_Lock.c:
     complete
     .text       start:0x0200ea14 end:0x0200ea64
 
-src/main_sdk/func_0200f0a0.c:
+src/main_sdk/RTC_GetTime.c:
     complete
     .text       start:0x0200f0a0 end:0x0200f0e4
 
-src/main_sdk/func_02010590.c:
+src/main_sdk/CARD_TerminateForPulledOut.c:
     complete
     .text       start:0x02010590 end:0x020105d0
 
-src/main_sdk/func_0201154c.c:
+src/main_sdk/WM_SetIndCallback.c:
     complete
     .text       start:0x0201154c end:0x02011598
 
-src/main_sdk/func_02011770.c:
+src/main_sdk/WM_EndScan.c:
     complete
     .text       start:0x02011770 end:0x020117b8
 
-src/main_sdk/func_020118bc.c:
+src/main_sdk/WM_EndParent.c:
     complete
     .text       start:0x020118bc end:0x02011904
 
-src/main_sdk/func_02011970.c:
+src/main_sdk/WmCheckParentParameter.c:
     complete
     .text       start:0x02011970 end:0x020119c0
 
-src/main_sdk/func_02011ac8.c:
+src/main_sdk/WM_End.c:
     complete
     .text       start:0x02011ac8 end:0x02011b10
 
-src/main_sdk/func_02011b10.c:
+src/main_sdk/WM_Reset.c:
     complete
     .text       start:0x02011b10 end:0x02011b50
 
-src/main_sdk/func_02014a8c.c:
+src/main_sdk/WBT_MpChildRecvHook.c:
     complete
     .text       start:0x02014a8c end:0x02014adc
 
@@ -4000,7 +4000,7 @@ src/main_sdk/func_02015e28.c:
     complete
     .text       start:0x02015e28 end:0x02015e6c
 
-src/main_sdk/func_02016928.c:
+src/main_sdk/MBi_CommChangeParentState.c:
     complete
     .text       start:0x02016928 end:0x02016978
 
@@ -4016,7 +4016,7 @@ src/main_sdk/func_02018038.c:
     complete
     .text       start:0x02018038 end:0x0201807c
 
-src/main_sdk/func_020184ec.c:
+src/main_sdk/MBi_SetMPData.c:
     complete
     .text       start:0x020184ec end:0x0201853c
 
@@ -4024,11 +4024,11 @@ src/main_sdk/func_020186f8.c:
     complete
     .text       start:0x020186f8 end:0x02018738
 
-src/main_sdk/func_0201a294.c:
+src/main_sdk/MBi_EndTaskThread.c:
     complete
     .text       start:0x0201a294 end:0x0201a2e8
 
-src/main_sdk/func_0201a934.c:
+src/main_sdk/MBi_ClearParentPieceBuffer.c:
     complete
     .text       start:0x0201a934 end:0x0201a980
 
@@ -4040,31 +4040,31 @@ src/main_sdk/func_0201b0a4.c:
     complete
     .text       start:0x0201b0a4 end:0x0201b0e8
 
-src/main_sdk/func_0201b4c8.c:
+src/main_sdk/NNS_SndAllocAlarm.c:
     complete
     .text       start:0x0201b4c8 end:0x0201b50c
 
-src/main_sdk/func_0201b584.c:
+src/main_sdk/NNS_SndLockChannel.c:
     complete
     .text       start:0x0201b584 end:0x0201b5d8
 
-src/main_sdk/func_0201b89c.c:
+src/main_sdk/InitPlayer.c:
     complete
     .text       start:0x0201b89c end:0x0201b8e8
 
-src/main_sdk/func_0201b944.c:
+src/main_sdk/NNSi_SndPlayerPause.c:
     complete
     .text       start:0x0201b944 end:0x0201b98c
 
-src/main_sdk/func_0201be40.c:
+src/main_sdk/NNS_SndPlayerMoveVolume.c:
     complete
     .text       start:0x0201be40 end:0x0201be88
 
-src/main_sdk/func_0201bfbc.c:
+src/main_sdk/NNS_SndPlayerStopSeqAll.c:
     complete
     .text       start:0x0201bfbc end:0x0201c000
 
-src/main_a/func_0201c080.c:
+src/main_a/NNS_SndPlayerCreateHeap.c:
     complete
     .text       start:0x0201c080 end:0x0201c120
 
@@ -4076,11 +4076,11 @@ src/main_a/func_0201c320.c:
     complete
     .text       start:0x0201c320 end:0x0201c3a0
 
-src/main_a/func_0201c3e4.c:
+src/main_a/NNS_SndStrmSetVolume.c:
     complete
     .text       start:0x0201c3e4 end:0x0201c458
 
-src/main_a/func_0201c6e4.c:
+src/main_a/NNS_SndStrmAllocChannel.c:
     complete
     .text       start:0x0201c6e4 end:0x0201c748
 
@@ -4092,39 +4092,39 @@ src/main_a/func_0201c8d0.c:
     complete
     .text       start:0x0201c8d0 end:0x0201c970
 
-src/main_a/func_0201d140.c:
+src/main_a/NNS_SndArcReadFile.c:
     complete
     .text       start:0x0201d140 end:0x0201d1c4
 
-src/main_a/func_0201d214.c:
+src/main_a/NNS_SndArcGetGroupInfo.c:
     complete
     .text       start:0x0201d214 end:0x0201d278
 
-src/main_a/func_0201d278.c:
+src/main_a/NNS_SndArcGetStrmPlayerInfo.c:
     complete
     .text       start:0x0201d278 end:0x0201d2dc
 
-src/main_a/func_0201d2dc.c:
+src/main_a/NNS_SndArcGetPlayerInfo.c:
     complete
     .text       start:0x0201d2dc end:0x0201d340
 
-src/main_a/func_0201d340.c:
+src/main_a/NNS_SndArcGetStrmInfo.c:
     complete
     .text       start:0x0201d340 end:0x0201d3a4
 
-src/main_a/func_0201d3a4.c:
+src/main_a/NNS_SndArcGetWaveArcInfo.c:
     complete
     .text       start:0x0201d3a4 end:0x0201d408
 
-src/main_a/func_0201d408.c:
+src/main_a/NNS_SndArcGetBankInfo.c:
     complete
     .text       start:0x0201d408 end:0x0201d46c
 
-src/main_a/func_0201d46c.c:
+src/main_a/NNS_SndArcGetSeqArcInfo.c:
     complete
     .text       start:0x0201d46c end:0x0201d4d0
 
-src/main_a/func_0201d4d0.c:
+src/main_a/NNS_SndArcGetSeqInfo.c:
     complete
     .text       start:0x0201d4d0 end:0x0201d534
 
@@ -4132,51 +4132,51 @@ src/main_a/func_0201d868.c:
     complete
     .text       start:0x0201d868 end:0x0201d8f0
 
-src/main_a/func_0201d9e4.c:
+src/main_a/NNS_SndHeapAlloc.c:
     complete
     .text       start:0x0201d9e4 end:0x0201da54
 
-src/main_a/func_0201db30.c:
+src/main_a/NNS_SndHeapCreate.c:
     complete
     .text       start:0x0201db30 end:0x0201dbcc
 
-src/main_a/func_0201dd90.c:
+src/main_a/SingleWaveDisposeCallback.c:
     complete
     .text       start:0x0201dd90 end:0x0201dde4
 
-src/main_a/func_0201deb4.c:
+src/main_a/DisposeCallback.c:
     complete
     .text       start:0x0201deb4 end:0x0201df20
 
-src/main_a/func_0201e054.c:
+src/main_a/LoadWaveArc.c:
     complete
     .text       start:0x0201e054 end:0x0201e0d0
 
-src/main_a/func_0201e0d0.c:
+src/main_a/LoadBank.c:
     complete
     .text       start:0x0201e0d0 end:0x0201e14c
 
-src/main_a/func_0201e14c.c:
+src/main_a/LoadSeqArc.c:
     complete
     .text       start:0x0201e14c end:0x0201e1c8
 
-src/main_a/func_0201e1c8.c:
+src/main_a/LoadSeq.c:
     complete
     .text       start:0x0201e1c8 end:0x0201e244
 
-src/main_a/func_0201e500.c:
+src/main_a/NNSi_SndArcLoadSeqArc.c:
     complete
     .text       start:0x0201e500 end:0x0201e570
 
-src/main_a/func_0201ea88.c:
+src/main_a/NNS_SndArcPlayerStartSeqArc.c:
     complete
     .text       start:0x0201ea88 end:0x0201eb20
 
-src/main_a/func_0201eb20.c:
+src/main_a/NNS_SndArcPlayerStartSeqEx.c:
     complete
     .text       start:0x0201eb20 end:0x0201eb98
 
-src/main_a/func_0201f9dc.c:
+src/main_a/RemoveCommandByPlayer.c:
     complete
     .text       start:0x0201f9dc end:0x0201fa50
 
@@ -4192,27 +4192,27 @@ src/main_a/func_02020278.c:
     complete
     .text       start:0x02020278 end:0x020202e0
 
-src/main_a/func_0202061c.c:
+src/main_a/NNS_FndRemoveListObject.c:
     complete
     .text       start:0x0202061c end:0x02020688
 
-src/main_a/func_02020688.c:
+src/main_a/NNS_FndInsertListObject.c:
     complete
     .text       start:0x02020688 end:0x02020708
 
-src/main_a/func_02020708.c:
+src/main_a/NNS_FndPrependListObject.c:
     complete
     .text       start:0x02020708 end:0x0202076c
 
-src/main_a/func_0202076c.c:
+src/main_a/NNS_FndAppendListObject.c:
     complete
     .text       start:0x0202076c end:0x020207d4
 
-src/main_a/func_02020834.c:
+src/main_a/NNSi_FndInitHeapHead.c:
     complete
     .text       start:0x02020834 end:0x020208c4
 
-src/main_a/func_020208f0.c:
+src/main_a/FindContainHeap.c:
     complete
     .text       start:0x020208f0 end:0x02020960
 
@@ -4224,11 +4224,11 @@ src/main_a/func_02021194.c:
     complete
     .text       start:0x02021194 end:0x02021214
 
-src/main_a/func_020214f0.c:
+src/main_a/NNS_G3dReleaseMdlSet.c:
     complete
     .text       start:0x020214f0 end:0x0202155c
 
-src/main_a/func_0202155c.c:
+src/main_a/NNS_G3dBindMdlSet.c:
     complete
     .text       start:0x0202155c end:0x020215dc
 
@@ -4236,23 +4236,23 @@ src/main_a/func_020216e4.c:
     complete
     .text       start:0x020216e4 end:0x0202177c
 
-src/main_a/func_0202189c.c:
+src/main_a/releaseMdlTex_Internal_.c:
     complete
     .text       start:0x0202189c end:0x02021928
 
-src/main_a/func_02021a64.c:
+src/main_a/NNS_G3dPlttLoad.c:
     complete
     .text       start:0x02021a64 end:0x02021ad0
 
-src/main_a/func_02021c4c.c:
+src/main_a/NNS_G3dRenderObjRemoveAnmObj.c:
     complete
     .text       start:0x02021c4c end:0x02021cb4
 
-src/main_a/func_02021cb4.c:
+src/main_a/removeLink_.c:
     complete
     .text       start:0x02021cb4 end:0x02021d28
 
-src/main_a/func_02021d28.c:
+src/main_a/NNS_G3dRenderObjAddAnmObj.c:
     complete
     .text       start:0x02021d28 end:0x02021dc4
 
@@ -4260,7 +4260,7 @@ src/main_a/func_02021dc4.c:
     complete
     .text       start:0x02021dc4 end:0x02021e3c
 
-src/main_a/func_02021ef8.c:
+src/main_a/NNS_G3dRenderObjInit.c:
     complete
     .text       start:0x02021ef8 end:0x02021f60
 
@@ -4268,19 +4268,19 @@ src/main_a/func_0202205c.c:
     complete
     .text       start:0x0202205c end:0x020220c0
 
-src/main_a/func_02022148.c:
+src/main_a/calcSrtCameraMtx_.c:
     complete
     .text       start:0x02022148 end:0x020221ac
 
-src/main_a/func_02022628.c:
+src/main_a/NNSi_G3dAnmBlendVis.c:
     complete
     .text       start:0x02022628 end:0x0202269c
 
-src/main_a/func_020229a0.c:
+src/main_a/blendScaleVec_.c:
     complete
     .text       start:0x020229a0 end:0x02022a10
 
-src/main_a/func_02023124.c:
+src/main_a/NNSi_G3dFuncSbc_POSSCALE.c:
     complete
     .text       start:0x02023124 end:0x02023190
 
@@ -4288,31 +4288,31 @@ src/main_a/func_02024df8.c:
     complete
     .text       start:0x02024df8 end:0x02024e70
 
-src/main_a/func_02025454.c:
+src/main_a/NNS_G3dGeFlushBuffer.c:
     complete
     .text       start:0x02025454 end:0x020254d4
 
-src/main_a/func_02025a94.c:
+src/main_a/NNS_G3dGetCurrentMtx.c:
     complete
     .text       start:0x02025a94 end:0x02025b38
 
-src/main_a/func_020261d4.c:
+src/main_a/NNSi_G3dGetTexPatAnmFV.c:
     complete
     .text       start:0x020261d4 end:0x02026254
 
-src/main_a/func_02028528.c:
+src/main_a/NNSi_G3dSendJointSRTBasic.c:
     complete
     .text       start:0x02028528 end:0x020285ac
 
-src/main_a/func_0202a098.c:
+src/main_a/wcstombs.c:
     complete
     .text       start:0x0202a098 end:0x0202a12c
 
-src/main_a/func_0202c4a4.c:
+src/main_a/strncpy.c:
     complete
     .text       start:0x0202c4a4 end:0x0202c518
 
-src/main_a/func_0202d438.c:
+src/main_a/__rounddec.c:
     complete
     .text       start:0x0202d438 end:0x0202d49c
 
@@ -5380,27 +5380,27 @@ src/main_sdk/GX_DispOn.c:
     complete
     .text       start:0x02002b24 end:0x02002b70
 
-src/main_sdk/func_020021f0.c:
+src/main_sdk/FX_Sqrt.c:
     complete
     .text       start:0x020021f0 end:0x02002240
 
-src/main_sdk/func_02009158.c:
+src/main_sdk/SND_IsFinishedCommandTag.c:
     complete
     .text       start:0x02009158 end:0x020091ac
 
-src/main_sdk/func_0200d5f8.c:
+src/main_sdk/TP_WaitRawResult.c:
     complete
     .text       start:0x0200d5f8 end:0x0200d650
 
-src/main_sdk/func_020151c4.c:
+src/main_sdk/WBT_GetBlock.c:
     complete
     .text       start:0x020151c4 end:0x0201521c
 
-src/main_sdk/func_020182e8.c:
+src/main_sdk/MBi_CheckWmErrcode.c:
     complete
     .text       start:0x020182e8 end:0x02018340
 
-src/main_sdk/func_0201b348.c:
+src/main_sdk/NNS_SndStopSoundAll.c:
     complete
     .text       start:0x0201b348 end:0x0201b3a0
 
@@ -5556,7 +5556,7 @@ src/main_sdk2/OS_SpinWait.c:
     complete
     .text       start:0x020076ac end:0x020076b8
 
-src/main_sdk2/OS_UnLockCartridge.c:
+src/main_sdk2/OSi_UnLockCartridgeAlias.c:
     complete
     .text       start:0x020055c4 end:0x020055d0
 
@@ -5572,103 +5572,103 @@ src/main_sdk2/OsCountZeroBits.c:
     complete
     .text       start:0x020078c0 end:0x020078c8
 
-src/main_sdk2/func_02000900.c:
+src/main_sdk2/INITi_CpuClear32.c:
     complete
     .text       start:0x02000900 end:0x02000914
 
-src/main_sdk2/func_02000914.c:
+src/main_sdk2/MIi_UncompressBackward.c:
     complete
     .text       start:0x02000914 end:0x020009b8
 
-src/main_sdk2/func_020009b8.c:
+src/main_sdk2/do_autoload.c:
     complete
     .text       start:0x020009b8 end:0x02000a10
 
-src/main_sdk2/func_02000cb4.c:
+src/main_sdk2/MTX_Identity22_.c:
     complete
     .text       start:0x02000cb4 end:0x02000ccc
 
-src/main_sdk2/func_02000ccc.c:
+src/main_sdk2/MTX_Scale22_.c:
     complete
     .text       start:0x02000ccc end:0x02000cd8
 
-src/main_sdk2/func_02000cd8.c:
+src/main_sdk2/MTX_Rot22_.c:
     complete
     .text       start:0x02000cd8 end:0x02000ce4
 
-src/main_sdk2/func_02000dfc.c:
+src/main_sdk2/MTX_Identity33_.c:
     complete
     .text       start:0x02000dfc end:0x02000e20
 
-src/main_sdk2/func_02000e20.c:
+src/main_sdk2/MTX_Copy33To43_.c:
     complete
     .text       start:0x02000e20 end:0x02000e4c
 
-src/main_sdk2/func_02000e4c.c:
+src/main_sdk2/MTX_Scale33_.c:
     complete
     .text       start:0x02000e4c end:0x02000e60
 
-src/main_sdk2/func_02000e60.c:
+src/main_sdk2/MTX_RotX33_.c:
     complete
     .text       start:0x02000e60 end:0x02000e7c
 
-src/main_sdk2/func_02000e98.c:
+src/main_sdk2/MTX_RotZ33_.c:
     complete
     .text       start:0x02000e98 end:0x02000eb0
 
-src/main_sdk2/func_0200148c.c:
+src/main_sdk2/MTX_Identity43_.c:
     complete
     .text       start:0x0200148c end:0x020014b4
 
-src/main_sdk2/func_020014b4.c:
+src/main_sdk2/MTX_Copy43To44_.c:
     complete
     .text       start:0x020014b4 end:0x020014e8
 
-src/main_sdk2/func_020014e8.c:
+src/main_sdk2/MTX_Scale43_.c:
     complete
     .text       start:0x020014e8 end:0x02001500
 
-src/main_sdk2/func_02001500.c:
+src/main_sdk2/MTX_RotX43_.c:
     complete
     .text       start:0x02001500 end:0x02001520
 
-src/main_sdk2/func_02001520.c:
+src/main_sdk2/MTX_RotY43_.c:
     complete
     .text       start:0x02001520 end:0x0200153c
 
-src/main_sdk2/func_0200153c.c:
+src/main_sdk2/MTX_RotZ43_.c:
     complete
     .text       start:0x0200153c end:0x02001558
 
-src/main_sdk2/func_02001cb8.c:
+src/main_sdk2/MTX_Identity44_.c:
     complete
     .text       start:0x02001cb8 end:0x02001ce4
 
-src/main_sdk2/func_02001ce4.c:
+src/main_sdk2/MTX_Copy44To43_.c:
     complete
     .text       start:0x02001ce4 end:0x02001d18
 
-src/main_sdk2/func_020051d0.c:
+src/main_sdk2/GX_SendFifo48B.c:
     complete
     .text       start:0x020051d0 end:0x020051f4
 
-src/main_sdk2/func_02006c7c.c:
+src/main_sdk2/OS_GetDTCMAddress.c:
     complete
     .text       start:0x02006c7c end:0x02006c90
 
-src/main_sdk2/func_02006cc0.c:
+src/main_sdk2/OS_GetProtectionRegion2.c:
     complete
     .text       start:0x02006cc0 end:0x02006cc8
 
-src/main_sdk2/func_02006d3c.c:
+src/main_sdk2/OSi_GetAndDisplayContext.c:
     complete
     .text       start:0x02006d3c end:0x02006d50
 
-src/main_sdk2/func_02008640.c:
+src/main_sdk2/MI_SwapWord.c:
     complete
     .text       start:0x02008640 end:0x02008648
 
-src/main_sdk2/func_02018ed4.c:
+src/main_sdk2/MBi_ChildCallback.c:
     complete
     .text       start:0x02018ed4 end:0x02019744
 
@@ -5828,11 +5828,11 @@ src/main_a2/_s32_div_f.c:
     complete
     .text       start:0x0202f8d8 end:0x0202fae4
 
-src/main_a2/func_0201c224.c:
+src/main_a2/StrmCallback.c:
     complete
     .text       start:0x0201c224 end:0x0201c2dc
 
-src/main_a2/func_0201c4e4.c:
+src/main_a2/NNS_SndStrmSetup.c:
     complete
     .text       start:0x0201c4e4 end:0x0201c6b4
 
@@ -5840,11 +5840,11 @@ src/main_a2/func_0201c7cc.c:
     complete
     .text       start:0x0201c7cc end:0x0201c8d0
 
-src/main_a2/func_0201c9d0.c:
+src/main_a2/NNSi_SndCaptureStop.c:
     complete
     .text       start:0x0201c9d0 end:0x0201cacc
 
-src/main_a2/func_0201ce34.c:
+src/main_a2/NNSi_SndCaptureMain.c:
     complete
     .text       start:0x0201ce34 end:0x0201cee4
 
@@ -5860,47 +5860,47 @@ src/main_a2/func_0201d64c.c:
     complete
     .text       start:0x0201d64c end:0x0201d868
 
-src/main_a2/func_0201da54.c:
+src/main_a2/NNS_SndHeapClear.c:
     complete
     .text       start:0x0201da54 end:0x0201db14
 
-src/main_a2/func_0201dbcc.c:
+src/main_a2/LoadSingleWaves.c:
     complete
     .text       start:0x0201dbcc end:0x0201dc9c
 
-src/main_a2/func_0201dc9c.c:
+src/main_a2/LoadSingleWave.c:
     complete
     .text       start:0x0201dc9c end:0x0201dd90
 
-src/main_a2/func_0201df20.c:
+src/main_a2/LoadWaveArcTable.c:
     complete
     .text       start:0x0201df20 end:0x0201e054
 
-src/main_a2/func_0201e244.c:
+src/main_a2/NNSi_SndArcLoadFile.c:
     complete
     .text       start:0x0201e244 end:0x0201e2f8
 
-src/main_a2/func_0201e2f8.c:
+src/main_a2/NNSi_SndArcLoadWaveArc.c:
     complete
     .text       start:0x0201e2f8 end:0x0201e3a0
 
-src/main_a2/func_0201e3a0.c:
+src/main_a2/NNSi_SndArcLoadBank.c:
     complete
     .text       start:0x0201e3a0 end:0x0201e500
 
-src/main_a2/func_0201e570.c:
+src/main_a2/NNSi_SndArcLoadSeq.c:
     complete
     .text       start:0x0201e570 end:0x0201e61c
 
-src/main_a2/func_0201e61c.c:
+src/main_a2/NNSi_SndArcLoadGroup.c:
     complete
     .text       start:0x0201e61c end:0x0201e75c
 
-src/main_a2/func_0201e7f0.c:
+src/main_a2/StartSeqArc.c:
     complete
     .text       start:0x0201e7f0 end:0x0201e8c0
 
-src/main_a2/func_0201e8c0.c:
+src/main_a2/StartSeq.c:
     complete
     .text       start:0x0201e8c0 end:0x0201e9cc
 
@@ -5908,7 +5908,7 @@ src/main_a2/func_0201e9cc.c:
     complete
     .text       start:0x0201e9cc end:0x0201ea88
 
-src/main_a2/func_0201ebec.c:
+src/main_a2/NNS_SndArcPlayerSetup.c:
     complete
     .text       start:0x0201ebec end:0x0201ec94
 
@@ -5944,7 +5944,7 @@ src/main_a2/func_0201ffd8.c:
     complete
     .text       start:0x0201ffd8 end:0x02020080
 
-src/main_a2/func_0202d4ec.c:
+src/main_a2/__must_round.c:
     complete
     .text       start:0x0202d4ec end:0x0202d55c
 
@@ -6048,7 +6048,7 @@ src/main_a2/func_0202e770.c:
     complete
     .text       start:0x0202e770 end:0x0202e800
 
-src/main_a2/func_0202e800.c:
+src/main_a2/_dneq.c:
     complete
     .text       start:0x0202e800 end:0x0202e888
 
@@ -6088,11 +6088,11 @@ src/main_a2/func_0202f148.c:
     complete
     .text       start:0x0202f148 end:0x0202f17c
 
-src/main_a2/func_0202f17c.c:
+src/main_a2/_ffixu.c:
     complete
     .text       start:0x0202f17c end:0x0202f1bc
 
-src/main_a2/func_0202f1bc.c:
+src/main_a2/_ffltu.c:
     complete
     .text       start:0x0202f1bc end:0x0202f204
 
@@ -6124,11 +6124,11 @@ src/main_b2/func_0206195c.c:
     complete
     .text       start:0x0206195c end:0x0206199c
 
-src/main_sdk2/func_0201640c.c:
+src/main_sdk2/MBi_CommParentCallback.c:
     complete
     .text       start:0x0201640c end:0x020168ec
 
-src/main_sdk2/func_02018360.c:
+src/main_sdk2/MBi_GetAttribute.c:
     complete
     .text       start:0x02018360 end:0x020183c0
 
@@ -6136,11 +6136,11 @@ src/main_sdk2/func_020183e8.c:
     complete
     .text       start:0x020183e8 end:0x020184ec
 
-src/main_sdk2/func_0201854c.c:
+src/main_sdk2/MB_DisconnectChild.c:
     complete
     .text       start:0x0201854c end:0x020186f8
 
-src/main_sdk2/func_02018738.c:
+src/main_sdk2/MBi_CommEnd.c:
     complete
     .text       start:0x02018738 end:0x020187c0
 
@@ -6148,11 +6148,11 @@ src/main_sdk2/func_02018a50.c:
     complete
     .text       start:0x02018a50 end:0x02018b50
 
-src/main_sdk2/func_02018b50.c:
+src/main_sdk2/MB_SetParentCommParam.c:
     complete
     .text       start:0x02018b50 end:0x02018bf4
 
-src/main_sdk2/func_02018bf4.c:
+src/main_sdk2/MBi_IsCommSizeValid.c:
     complete
     .text       start:0x02018bf4 end:0x02018c64
 
@@ -6160,7 +6160,7 @@ src/main_sdk2/func_02018c64.c:
     complete
     .text       start:0x02018c64 end:0x02018e5c
 
-src/main_sdk2/func_02018e5c.c:
+src/main_sdk2/MBi_GetBeaconPeriodDispersion.c:
     complete
     .text       start:0x02018e5c end:0x02018ed4
 
@@ -6172,7 +6172,7 @@ src/main_sdk2/func_0201a014.c:
     complete
     .text       start:0x0201a014 end:0x0201a088
 
-src/main_sdk2/func_0201a088.c:
+src/main_sdk2/MBi_IsSendEnabled.c:
     complete
     .text       start:0x0201a088 end:0x0201a0f0
 
@@ -6180,15 +6180,15 @@ src/main_sdk2/func_0201a0f0.c:
     complete
     .text       start:0x0201a0f0 end:0x0201a16c
 
-src/main_sdk2/func_0201a16c.c:
+src/main_sdk2/MBi_TryLoadCache.c:
     complete
     .text       start:0x0201a16c end:0x0201a20c
 
-src/main_sdk2/func_0201a20c.c:
+src/main_sdk2/MBi_AttachCacheBuffer.c:
     complete
     .text       start:0x0201a20c end:0x0201a280
 
-src/main_sdk2/func_0201a2e8.c:
+src/main_sdk2/MBi_SetTask.c:
     complete
     .text       start:0x0201a2e8 end:0x0201a478
 
@@ -6196,7 +6196,7 @@ src/main_sdk2/func_0201a4c0.c:
     complete
     .text       start:0x0201a4c0 end:0x0201a548
 
-src/main_sdk2/func_0201a548.c:
+src/main_sdk2/MBi_TaskThread.c:
     complete
     .text       start:0x0201a548 end:0x0201a660
 
@@ -6204,11 +6204,11 @@ src/main_sdk2/func_0201a660.c:
     complete
     .text       start:0x0201a660 end:0x0201a6c0
 
-src/main_sdk2/func_0201a770.c:
+src/main_sdk2/MBi_SetRecvBufferFromChild.c:
     complete
     .text       start:0x0201a770 end:0x0201a8ac
 
-src/main_sdk2/func_0201a8ac.c:
+src/main_sdk2/MBi_MakeParentSendBuffer.c:
     complete
     .text       start:0x0201a8ac end:0x0201a934
 
@@ -6236,23 +6236,23 @@ src/main_sdk2/func_0201b0e8.c:
     complete
     .text       start:0x0201b0e8 end:0x0201b194
 
-src/main_sdk2/func_0201b1dc.c:
+src/main_sdk2/NNS_SndReadDriverChannelInfo.c:
     complete
     .text       start:0x0201b1dc end:0x0201b23c
 
-src/main_sdk2/func_0201b23c.c:
+src/main_sdk2/NNS_SndUpdateDriverInfo.c:
     complete
     .text       start:0x0201b23c end:0x0201b330
 
-src/main_sdk2/func_0201b3d4.c:
+src/main_sdk2/NNS_SndInit.c:
     complete
     .text       start:0x0201b3d4 end:0x0201b47c
 
-src/main_sdk2/func_0201ba54.c:
+src/main_sdk2/NNSi_SndPlayerAllocSeqPlayer.c:
     complete
     .text       start:0x0201ba54 end:0x0201bb10
 
-src/main_sdk2/func_0201bb10.c:
+src/main_sdk2/NNSi_SndPlayerMain.c:
     complete
     .text       start:0x0201bb10 end:0x0201bc84
 
@@ -6276,23 +6276,23 @@ src/main_a2/func_020203bc.c:
     complete
     .text       start:0x020203bc end:0x020204c0
 
-src/main_a2/func_02020e78.c:
+src/main_a2/InitExpHeap.c:
     complete
     .text       start:0x02020e78 end:0x02020efc
 
-src/main_a2/func_02020a60.c:
+src/main_a2/RecycleRegion.c:
     complete
     .text       start:0x02020a60 end:0x02020b58
 
-src/main_a2/func_02020b58.c:
+src/main_a2/AllocFromTail.c:
     complete
     .text       start:0x02020b58 end:0x02020c1c
 
-src/main_a2/func_02020c1c.c:
+src/main_a2/AllocFromHead.c:
     complete
     .text       start:0x02020c1c end:0x02020ce4
 
-src/main_a2/func_02021214.c:
+src/main_a2/InitFrameHeap.c:
     complete
     .text       start:0x02021214 end:0x02021264
 
@@ -6300,11 +6300,11 @@ src/main_a2/func_02021310.c:
     complete
     .text       start:0x02021310 end:0x0202146c
 
-src/main_a2/func_02021634.c:
+src/main_a2/NNS_G3dBindMdlPltt.c:
     complete
     .text       start:0x02021634 end:0x020216e4
 
-src/main_a2/func_020217e4.c:
+src/main_a2/NNS_G3dBindMdlTex.c:
     complete
     .text       start:0x020217e4 end:0x0202189c
 
@@ -6312,15 +6312,15 @@ src/main_a2/func_02021928.c:
     complete
     .text       start:0x02021928 end:0x02021a44
 
-src/main_a2/func_02021b1c.c:
+src/main_a2/NNS_G3dTexLoad.c:
     complete
     .text       start:0x02021b1c end:0x02021bf8
 
-src/main_a2/func_02021e3c.c:
+src/main_a2/addLink_.c:
     complete
     .text       start:0x02021e3c end:0x02021ef8
 
-src/main_a2/func_02021f60.c:
+src/main_a2/NNS_G3dAnmObjInit.c:
     complete
     .text       start:0x02021f60 end:0x0202200c
 
@@ -6332,11 +6332,11 @@ src/main_a2/func_020223f4.c:
     complete
     .text       start:0x020223f4 end:0x0202247c
 
-src/main_a2/func_020224bc.c:
+src/main_a2/NNS_G3dGlbInit.c:
     complete
     .text       start:0x020224bc end:0x02022628
 
-src/main_a2/func_02023190.c:
+src/main_a2/NNSi_G3dFuncSbc_CALLDL.c:
     complete
     .text       start:0x02023190 end:0x02023274
 
@@ -6344,23 +6344,23 @@ src/main_a2/func_02023c80.c:
     complete
     .text       start:0x02023c80 end:0x02023fb8
 
-src/main_a2/func_02024478.c:
+src/main_a2/NNSi_G3dFuncSbc_SHP_InternalDefault.c:
     complete
     .text       start:0x02024478 end:0x02024554
 
-src/main_a2/func_02024a40.c:
+src/main_a2/NNSi_G3dFuncSbc_MTX.c:
     complete
     .text       start:0x02024a40 end:0x02024b18
 
-src/main_a2/func_02024b18.c:
+src/main_a2/NNSi_G3dFuncSbc_NODE.c:
     complete
     .text       start:0x02024b18 end:0x02024ca4
 
-src/main_a2/func_02024cfc.c:
+src/main_a2/NNS_G3dDraw.c:
     complete
     .text       start:0x02024cfc end:0x02024df8
 
-src/main_a2/func_02024e70.c:
+src/main_a2/G3dDrawInternal_.c:
     complete
     .text       start:0x02024e70 end:0x02025004
 
@@ -6396,11 +6396,11 @@ src/main_b3/func_0206151c.c:
     complete
     .text       start:0x0206151c end:0x02061700
 
-src/main_sdk2/func_02010a50.c:
+src/main_sdk2/WMi_CheckStateEx.c:
     complete
     .text       start:0x02010a50 end:0x02010af8
 
-src/main_sdk2/func_02010af8.c:
+src/main_sdk2/WMi_CheckIdle.c:
     complete
     .text       start:0x02010af8 end:0x02010b54
 
@@ -6424,23 +6424,23 @@ src/main_sdk2/func_02011098.c:
     complete
     .text       start:0x02011098 end:0x0201113c
 
-src/main_sdk2/func_0201113c.c:
+src/main_sdk2/WM_GetLinkLevel.c:
     complete
     .text       start:0x0201113c end:0x020111e4
 
-src/main_sdk2/func_02011210.c:
+src/main_sdk2/WM_ReadMPData.c:
     complete
     .text       start:0x02011210 end:0x02011314
 
-src/main_sdk2/func_02011314.c:
+src/main_sdk2/WM_GetMPReceiveBufferSize.c:
     complete
     .text       start:0x02011314 end:0x02011400
 
-src/main_sdk2/func_02011400.c:
+src/main_sdk2/WM_GetMPSendBufferSize.c:
     complete
     .text       start:0x02011400 end:0x02011484
 
-src/main_sdk2/func_02011484.c:
+src/main_sdk2/WM_ReadStatus.c:
     complete
     .text       start:0x02011484 end:0x020114f0
 
@@ -6448,7 +6448,7 @@ src/main_sdk2/func_020114f0.c:
     complete
     .text       start:0x020114f0 end:0x0201154c
 
-src/main_sdk2/func_02011598.c:
+src/main_sdk2/WM_Disconnect.c:
     complete
     .text       start:0x02011598 end:0x020116a0
 
@@ -6456,23 +6456,23 @@ src/main_sdk2/func_020116a0.c:
     complete
     .text       start:0x020116a0 end:0x02011770
 
-src/main_sdk2/func_020117b8.c:
+src/main_sdk2/WM_StartScan.c:
     complete
     .text       start:0x020117b8 end:0x020118bc
 
-src/main_sdk2/func_02011914.c:
+src/main_sdk2/WMi_StartParentEx.c:
     complete
     .text       start:0x02011914 end:0x02011970
 
-src/main_sdk2/func_020119c0.c:
+src/main_sdk2/WM_SetParentParameter.c:
     complete
     .text       start:0x020119c0 end:0x02011ac8
 
-src/main_sdk2/func_02011b50.c:
+src/main_sdk2/WM_Initialize.c:
     complete
     .text       start:0x02011b50 end:0x02011bb8
 
-src/main_sdk2/func_02011bb8.c:
+src/main_sdk2/WM_EndMP.c:
     complete
     .text       start:0x02011bb8 end:0x02011c44
 
@@ -6480,7 +6480,7 @@ src/main_sdk2/func_02011c44.c:
     complete
     .text       start:0x02011c44 end:0x02011dcc
 
-src/main_sdk2/func_02011f88.c:
+src/main_sdk2/WM_GetSharedDataAddress.c:
     complete
     .text       start:0x02011f88 end:0x02011ff4
 
@@ -6488,7 +6488,7 @@ src/main_sdk2/func_02011ff4.c:
     complete
     .text       start:0x02011ff4 end:0x02012180
 
-src/main_sdk2/func_02012180.c:
+src/main_sdk2/WmDataSharingReceiveData.c:
     complete
     .text       start:0x02012180 end:0x0201228c
 
@@ -6520,23 +6520,23 @@ src/main_sdk2/func_02012da0.c:
     complete
     .text       start:0x02012da0 end:0x02012e48
 
-src/main_sdk2/func_02012e48.c:
+src/main_sdk2/WM_MeasureChannel.c:
     complete
     .text       start:0x02012e48 end:0x02012ec0
 
-src/main_sdk2/func_02012ec0.c:
+src/main_sdk2/WM_SetLifeTime.c:
     complete
     .text       start:0x02012ec0 end:0x02012f2c
 
-src/main_sdk2/func_02012f2c.c:
+src/main_sdk2/WM_SetBeaconIndication.c:
     complete
     .text       start:0x02012f2c end:0x02012f9c
 
-src/main_sdk2/func_02012f9c.c:
+src/main_sdk2/WM_SetGameInfo.c:
     complete
     .text       start:0x02012f9c end:0x02013064
 
-src/main_sdk2/func_02013064.c:
+src/main_sdk2/WM_SetWEPKey.c:
     complete
     .text       start:0x02013064 end:0x020130e8
 
@@ -6544,11 +6544,11 @@ src/main_b3/func_02045ec0.c:
     complete
     .text       start:0x02045ec0 end:0x0204609c
 
-src/main_a2/func_02022a6c.c:
+src/main_a2/NNSi_G3dFuncSbc_PRJMAP.c:
     complete
     .text       start:0x02022a6c end:0x02022e00
 
-src/main_a2/func_02022e00.c:
+src/main_a2/NNSi_G3dFuncSbc_ENVMAP.c:
     complete
     .text       start:0x02022e00 end:0x02023124
 
@@ -6556,19 +6556,19 @@ src/main_a2/func_020238e8.c:
     complete
     .text       start:0x020238e8 end:0x02023c80
 
-src/main_a2/func_02023fb8.c:
+src/main_a2/NNSi_G3dFuncSbc_NODEDESC.c:
     complete
     .text       start:0x02023fb8 end:0x02024400
 
-src/main_a2/func_02025054.c:
+src/main_a2/NNS_G3dDraw1Mat1Shp.c:
     complete
     .text       start:0x02025054 end:0x02025268
 
-src/main_a2/func_02025268.c:
+src/main_a2/NNS_G3dGeBufferOP_N.c:
     complete
     .text       start:0x02025268 end:0x02025364
 
-src/main_a2/func_02025364.c:
+src/main_a2/NNS_G3dGeSendDL.c:
     complete
     .text       start:0x02025364 end:0x02025430
 
@@ -6576,11 +6576,11 @@ src/main_a2/func_0202566c.c:
     complete
     .text       start:0x0202566c end:0x020257f8
 
-src/main_a2/func_02025edc.c:
+src/main_a2/NNS_G3dGetResDictIdxByName.c:
     complete
     .text       start:0x02025edc end:0x0202603c
 
-src/main_a2/func_0202603c.c:
+src/main_a2/NNS_G3dGetResDataByName.c:
     complete
     .text       start:0x0202603c end:0x020261b8
 
@@ -6736,7 +6736,7 @@ src/auto/func_020623e0.c:
     complete
     .text       start:0x020623e0 end:0x02062404
 
-src/main_a2/func_020257f8.c:
+src/main_a2/NNS_G3dResDefaultSetup.c:
     complete
     .text       start:0x020257f8 end:0x02025a60
 
@@ -6744,15 +6744,15 @@ src/main_a2/func_02026ba0.c:
     complete
     .text       start:0x02026ba0 end:0x02026d58
 
-src/main_a2/func_020278f0.c:
+src/main_a2/NNSi_G3dAnmObjInitNsBca.c:
     complete
     .text       start:0x020278f0 end:0x0202798c
 
-src/main_a2/func_0202798c.c:
+src/main_a2/NNSi_G3dAnmCalcNsBma.c:
     complete
     .text       start:0x0202798c end:0x02027a5c
 
-src/main_a2/func_02027a5c.c:
+src/main_a2/NNSi_G3dAnmObjInitNsBma.c:
     complete
     .text       start:0x02027a5c end:0x02027b18
 
@@ -6764,11 +6764,11 @@ src/main_a2/func_02027dbc.c:
     complete
     .text       start:0x02027dbc end:0x02027e0c
 
-src/main_a2/func_02027e0c.c:
+src/main_a2/NNSi_G3dAnmObjInitNsBta.c:
     complete
     .text       start:0x02027e0c end:0x02027ec8
 
-src/main_a2/func_02027ec8.c:
+src/main_a2/GetTexSRTAnm_.c:
     complete
     .text       start:0x02027ec8 end:0x02027fc8
 
@@ -6776,7 +6776,7 @@ src/main_a2/func_020280d4.c:
     complete
     .text       start:0x020280d4 end:0x020281d0
 
-src/main_a2/func_020281d0.c:
+src/main_a2/NNSi_G3dAnmCalcNsBtp.c:
     complete
     .text       start:0x020281d0 end:0x02028258
 
@@ -6784,11 +6784,11 @@ src/main_a2/func_020282b0.c:
     complete
     .text       start:0x020282b0 end:0x0202839c
 
-src/main_a2/func_0202839c.c:
+src/main_a2/NNSi_G3dAnmObjInitNsBtp.c:
     complete
     .text       start:0x0202839c end:0x0202845c
 
-src/main_a2/func_020285ac.c:
+src/main_a2/NNSi_G3dSendTexSRTMaya.c:
     complete
     .text       start:0x020285ac end:0x020286f8
 
@@ -6796,27 +6796,27 @@ src/main_a2/func_02028760.c:
     complete
     .text       start:0x02028760 end:0x02028824
 
-src/main_a2/func_0202a324.c:
+src/main_a2/vsnprintf.c:
     complete
     .text       start:0x0202a324 end:0x0202a398
 
-src/main_a2/func_0202c348.c:
+src/main_a2/strcmp.c:
     complete
     .text       start:0x0202c348 end:0x0202c474
 
-src/main_a2/func_0202c518.c:
+src/main_a2/strcpy.c:
     complete
     .text       start:0x0202c518 end:0x0202c5f0
 
-src/main_a2/func_0202c658.c:
+src/main_a2/frexp.c:
     complete
     .text       start:0x0202c658 end:0x0202c718
 
-src/main_a2/func_0202c9fc.c:
+src/main_a2/__num2dec.c:
     complete
     .text       start:0x0202c9fc end:0x0202cac4
 
-src/main_a2/func_0202cd1c.c:
+src/main_a2/__two_exp.c:
     complete
     .text       start:0x0202cd1c end:0x0202d0fc
 
@@ -6824,11 +6824,11 @@ src/main_a2/func_0202d0fc.c:
     complete
     .text       start:0x0202d0fc end:0x0202d1c0
 
-src/main_a2/func_0202d1c0.c:
+src/main_a2/__timesdec.c:
     complete
     .text       start:0x0202d1c0 end:0x0202d368
 
-src/main_a2/func_0202d368.c:
+src/main_a2/__ull2dec.c:
     complete
     .text       start:0x0202d368 end:0x0202d438
 
@@ -6836,7 +6836,7 @@ src/auto/func_02056b8c.c:
     complete
     .text       start:0x02056b8c end:0x02056bd4
 
-src/clones/func_02029334.c:
+src/clones/NNSi_G3dSendTexSRT3dsMax.c:
     complete
     .text       start:0x02029334 end:0x02029480
 
@@ -6848,67 +6848,67 @@ src/auto/GX_InitGXState.c:
     complete
     .text       start:0x02002da8 end:0x02002e28
 
-src/auto/func_02004f7c.c:
+src/auto/GX_EndLoadTex.c:
     complete
     .text       start:0x02004f7c end:0x02004fec
 
-src/auto/func_02005150.c:
+src/auto/GX_BeginLoadTex.c:
     complete
     .text       start:0x02005150 end:0x020051d0
 
-src/auto/func_02006628.c:
+src/auto/OS_UnlockMutex.c:
     complete
     .text       start:0x02006628 end:0x02006698
 
-src/auto/func_02006ad0.c:
+src/auto/OS_InitArenaEx.c:
     complete
     .text       start:0x02006ad0 end:0x02006b64
 
-src/auto/func_02007318.c:
+src/auto/OS_CancelVAlarm.c:
     complete
     .text       start:0x02007318 end:0x02007374
 
-src/auto/func_020075b8.c:
+src/auto/OS_InitVAlarm.c:
     complete
     .text       start:0x020075b8 end:0x02007628
 
-src/auto/func_020076cc.c:
+src/auto/OS_ResetSystem.c:
     complete
     .text       start:0x020076cc end:0x0200774c
 
-src/auto/func_02007eb0.c:
+src/auto/MI_HBlankDmaCopy16.c:
     complete
     .text       start:0x02007eb0 end:0x02007f24
 
-src/auto/func_02007f24.c:
+src/auto/MI_HBlankDmaCopy32.c:
     complete
     .text       start:0x02007f24 end:0x02007f98
 
-src/auto/func_0200976c.c:
+src/auto/SNDi_CallAlarmHandler.c:
     complete
     .text       start:0x0200976c end:0x020097cc
 
-src/auto/func_0200ab5c.c:
+src/auto/FSi_WriteFileCommand.c:
     complete
     .text       start:0x0200ab5c end:0x0200ab94
 
-src/auto/func_0200ab94.c:
+src/auto/FSi_ReadFileCommand.c:
     complete
     .text       start:0x0200ab94 end:0x0200abcc
 
-src/auto/func_0200e590.c:
+src/auto/PMi_WriteRegisterAsync.c:
     complete
     .text       start:0x0200e590 end:0x0200e610
 
-src/auto/func_0200e6c4.c:
+src/auto/PM_SendUtilityCommandAsync.c:
     complete
     .text       start:0x0200e6c4 end:0x0200e738
 
-src/auto/func_0200f0e4.c:
+src/auto/RTC_GetTimeAsync.c:
     complete
     .text       start:0x0200f0e4 end:0x0200f160
 
-src/auto/func_0200f690.c:
+src/auto/CARDi_OnFifoRecv.c:
     complete
     .text       start:0x0200f690 end:0x0200f6e0
 
@@ -6916,7 +6916,7 @@ src/auto/func_0200fcb8.c:
     complete
     .text       start:0x0200fcb8 end:0x0200fd28
 
-src/auto/func_0201016c.c:
+src/auto/CARDi_OnReadCard.c:
     complete
     .text       start:0x0201016c end:0x020101e0
 
@@ -7300,23 +7300,23 @@ src/main_a2/func_02028ab4.c:
     complete
     .text       start:0x02028ab4 end:0x02028bcc
 
-src/main_a2/func_02028bcc.c:
+src/main_a2/NNSi_G3dGetJointScaleMaya.c:
     complete
     .text       start:0x02028bcc end:0x02028d20
 
-src/main_a2/func_02028d20.c:
+src/main_a2/NNSi_G3dSendJointSRTMaya.c:
     complete
     .text       start:0x02028d20 end:0x02028dfc
 
-src/main_a2/func_02028dfc.c:
+src/main_a2/NNSi_G3dSendTexSRTSi3d.c:
     complete
     .text       start:0x02028dfc end:0x02028fc4
 
-src/main_a2/func_02028fc4.c:
+src/main_a2/NNSi_G3dGetJointScaleSi3d.c:
     complete
     .text       start:0x02028fc4 end:0x020291fc
 
-src/main_a2/func_020291fc.c:
+src/main_a2/NNSi_G3dSendJointSRTSi3d.c:
     complete
     .text       start:0x020291fc end:0x02029334
 
@@ -7444,7 +7444,7 @@ src/auto/func_02065ee0.c:
     complete
     .text       start:0x02065ee0 end:0x02065f98
 
-src/auto/func_02006b64.c:
+src/auto/OS_InitArena.c:
     complete
     .text       start:0x02006b64 end:0x02006c7c
 
@@ -7472,7 +7472,7 @@ src/auto/func_02059bec.c:
     complete
     .text       start:0x02059bec end:0x02059d78
 
-src/auto/func_020105f0.c:
+src/auto/CARDi_PulledOutCallback.c:
     complete
     .text       start:0x020105f0 end:0x0201065c
 
@@ -7552,19 +7552,19 @@ src/auto/func_0206340c.c:
     complete
     .text       start:0x0206340c end:0x02063480
 
-src/auto/func_0200bbec.c:
+src/auto/FS_OpenFileDirect.c:
     complete
     .text       start:0x0200bbec end:0x0200bc44
 
-src/auto/func_0200e420.c:
+src/auto/PM_SetBackLightAsync.c:
     complete
     .text       start:0x0200e420 end:0x0200e4b0
 
-src/auto/func_0201052c.c:
+src/auto/CARDi_SendtoPxi.c:
     complete
     .text       start:0x0201052c end:0x02010590
 
-src/auto/func_0201544c.c:
+src/auto/WBT_SetPacketSize.c:
     complete
     .text       start:0x0201544c end:0x020154a4
 
@@ -7728,95 +7728,95 @@ src/main_a3/_u32_div_f.c:
     complete
     .text       start:0x0202fae4 end:0x0202fcc8
 
-src/main_a3/func_0201c000.c:
+src/main_a3/NNS_SndPlayerStopSeqBySeqArcIdx.c:
     complete
     .text       start:0x0201c000 end:0x0201c070
 
-src/main_a3/func_02020ce4.c:
+src/main_a3/AllocUsedBlockFromFreeBlock.c:
     complete
     .text       start:0x02020ce4 end:0x02020e78
 
-src/main_a3/func_0202177c.c:
+src/main_a3/NNS_G3dReleaseMdlTex.c:
     complete
     .text       start:0x0202177c end:0x020217e4
 
-src/main_a3/func_020222bc.c:
+src/main_a3/NNS_G3dGlbSetBaseScale.c:
     complete
     .text       start:0x020222bc end:0x020222e4
 
-src/main_a3/func_020222e4.c:
+src/main_a3/NNS_G3dGlbSetBaseTrans.c:
     complete
     .text       start:0x020222e4 end:0x0202230c
 
-src/main_a3/func_0202269c.c:
+src/main_a3/NNSi_G3dAnmBlendJnt.c:
     complete
     .text       start:0x0202269c end:0x020229a0
 
-src/main_a3/func_02024400.c:
+src/main_a3/NNSi_G3dFuncSbc_SHP.c:
     complete
     .text       start:0x02024400 end:0x02024478
 
-src/main_a3/func_02024554.c:
+src/main_a3/NNSi_G3dFuncSbc_MAT.c:
     complete
     .text       start:0x02024554 end:0x020245d8
 
-src/main_a3/func_020245d8.c:
+src/main_a3/NNSi_G3dFuncSbc_MAT_InternalDefault.c:
     complete
     .text       start:0x020245d8 end:0x02024a40
 
-src/main_a3/func_02025c8c.c:
+src/main_a3/NNS_G3dMdlSetMdlAlpha.c:
     complete
     .text       start:0x02025c8c end:0x02025cd4
 
-src/main_a3/func_02025cd4.c:
+src/main_a3/NNS_G3dMdlSetMdlEmi.c:
     complete
     .text       start:0x02025cd4 end:0x02025d1c
 
-src/main_a3/func_02025d1c.c:
+src/main_a3/NNS_G3dMdlSetMdlAmb.c:
     complete
     .text       start:0x02025d1c end:0x02025d64
 
-src/main_a3/func_02025d64.c:
+src/main_a3/NNS_G3dMdlSetMdlDiff.c:
     complete
     .text       start:0x02025d64 end:0x02025dac
 
-src/main_a3/func_02025dac.c:
+src/main_a3/NNSi_G3dModifyPolygonAttrMask.c:
     complete
     .text       start:0x02025dac end:0x02025e1c
 
-src/main_a3/func_02025e1c.c:
+src/main_a3/NNSi_G3dModifyMatFlag.c:
     complete
     .text       start:0x02025e1c end:0x02025e8c
 
-src/main_a3/func_02026274.c:
+src/main_a3/NNS_G3dGetAnmByIdx.c:
     complete
     .text       start:0x02026274 end:0x020262ac
 
-src/main_a3/func_020262ac.c:
+src/main_a3/getRotDataByIdx_.c:
     complete
     .text       start:0x020262ac end:0x0202644c
 
-src/main_a3/func_0202644c.c:
+src/main_a3/getRotDataEx_.c:
     complete
     .text       start:0x0202644c end:0x02026798
 
-src/main_a3/func_02026798.c:
+src/main_a3/getRotData_.c:
     complete
     .text       start:0x02026798 end:0x02026ba0
 
-src/main_a3/func_02027290.c:
+src/main_a3/getJntSRTAnmResult_.c:
     complete
     .text       start:0x02027290 end:0x02027678
 
-src/main_a3/func_02027678.c:
+src/main_a3/getMdlRot_.c:
     complete
     .text       start:0x02027678 end:0x020277d8
 
-src/main_a3/func_020277d8.c:
+src/main_a3/getMdlScale_.c:
     complete
     .text       start:0x020277d8 end:0x02027840
 
-src/main_a3/func_02027840.c:
+src/main_a3/getMdlTrans_.c:
     complete
     .text       start:0x02027840 end:0x020278a8
 
@@ -7840,7 +7840,7 @@ src/main_a3/func_02029d98.c:
     complete
     .text       start:0x02029d98 end:0x02029e20
 
-src/main_a3/func_0202b2c0.c:
+src/main_a3/round_decimal.c:
     complete
     .text       start:0x0202b2c0 end:0x0202b3f0
 
@@ -8496,55 +8496,55 @@ src/main_b4/ObjRect_CheckFuncCall.c:
     complete
     .text       start:0x0206d900 end:0x0206daf4
 
-src/main_sdk2/func_02005718.c:
+src/main_sdk2/OSi_DoTryLockByWord.c:
     complete
     .text       start:0x02005718 end:0x02005798
 
-src/main_sdk2/func_020057a8.c:
+src/main_sdk2/OSi_DoUnlockByWord.c:
     complete
     .text       start:0x020057a8 end:0x02005838
 
-src/main_sdk2/func_020059e0.c:
+src/main_sdk2/OS_SetThreadPriority.c:
     complete
     .text       start:0x020059e0 end:0x02005a94
 
-src/main_sdk2/func_02005a94.c:
+src/main_sdk2/OSi_RescheduleThread.c:
     complete
     .text       start:0x02005a94 end:0x02005b74
 
-src/main_sdk2/func_02005c48.c:
+src/main_sdk2/OS_SleepThread.c:
     complete
     .text       start:0x02005c48 end:0x02005cb0
 
-src/main_sdk2/func_02005d00.c:
+src/main_sdk2/OS_ExitThread.c:
     complete
     .text       start:0x02005d00 end:0x02005d5c
 
-src/main_sdk2/func_02005d5c.c:
+src/main_sdk2/OS_CreateThread.c:
     complete
     .text       start:0x02005d5c end:0x02005e64
 
-src/main_sdk2/func_0200602c.c:
+src/main_sdk2/OSi_InsertThreadToList.c:
     complete
     .text       start:0x0200602c end:0x02006094
 
-src/main_sdk2/func_020060c4.c:
+src/main_sdk2/OS_InitContext.c:
     complete
     .text       start:0x020060c4 end:0x02006128
 
-src/main_sdk2/func_020062c0.c:
+src/main_sdk2/OS_GetConsoleType.c:
     complete
     .text       start:0x020062c0 end:0x02006338
 
-src/main_sdk2/func_02006340.c:
+src/main_sdk2/OS_JamMessage.c:
     complete
     .text       start:0x02006340 end:0x020063f4
 
-src/main_sdk2/func_020063f4.c:
+src/main_sdk2/OS_ReceiveMessage.c:
     complete
     .text       start:0x020063f4 end:0x020064a0
 
-src/main_sdk2/func_020064a0.c:
+src/main_sdk2/OS_SendMessage.c:
     complete
     .text       start:0x020064a0 end:0x02006548
 
@@ -8620,19 +8620,19 @@ src/main_sdk2/func_02014a24.c:
     complete
     .text       start:0x02014a24 end:0x02014a8c
 
-src/main_sdk2/func_02014b14.c:
+src/main_sdk2/WBT_MpParentRecvHook.c:
     complete
     .text       start:0x02014b14 end:0x02014b74
 
-src/main_sdk2/func_02014bac.c:
+src/main_sdk2/WBT_End.c:
     complete
     .text       start:0x02014bac end:0x02014c70
 
-src/main_sdk2/func_02014c70.c:
+src/main_sdk2/WBT_InitChild.c:
     complete
     .text       start:0x02014c70 end:0x02014d38
 
-src/main_sdk2/func_02014d38.c:
+src/main_sdk2/WBT_InitParent.c:
     complete
     .text       start:0x02014d38 end:0x02014e08
 
@@ -8644,15 +8644,15 @@ src/main_sdk2/func_02014f94.c:
     complete
     .text       start:0x02014f94 end:0x02015168
 
-src/main_sdk2/func_02015168.c:
+src/main_sdk2/WBT_PutUserData.c:
     complete
     .text       start:0x02015168 end:0x020151c4
 
-src/main_sdk2/func_02015290.c:
+src/main_sdk2/WBT_UnregisterBlock.c:
     complete
     .text       start:0x02015290 end:0x02015354
 
-src/main_sdk2/func_02015354.c:
+src/main_sdk2/WBT_RegisterBlock.c:
     complete
     .text       start:0x02015354 end:0x0201541c
 
@@ -8664,15 +8664,15 @@ src/main_sdk2/func_02015728.c:
     complete
     .text       start:0x02015728 end:0x02015790
 
-src/main_sdk2/func_02015790.c:
+src/main_sdk2/MBi_CommParentSendData.c:
     complete
     .text       start:0x02015790 end:0x02015924
 
-src/main_sdk2/func_02015bdc.c:
+src/main_sdk2/MBi_ReloadCache.c:
     complete
     .text       start:0x02015bdc end:0x02015c78
 
-src/main_sdk2/func_02015c78.c:
+src/main_sdk2/MBi_CommParentSendDLFileInfo.c:
     complete
     .text       start:0x02015c78 end:0x02015e28
 
@@ -8680,43 +8680,43 @@ src/main_sdk2/func_02015e6c.c:
     complete
     .text       start:0x02015e6c end:0x02015f14
 
-src/main_sdk2/func_02016978.c:
+src/main_sdk2/MB_CommResponseRequest.c:
     complete
     .text       start:0x02016978 end:0x02016a74
 
-src/main_sdk2/func_02016a74.c:
+src/main_sdk2/MB_CommIsBootable.c:
     complete
     .text       start:0x02016a74 end:0x02016ad0
 
-src/main_sdk2/func_02016ad0.c:
+src/main_sdk2/MB_CommGetChildUser.c:
     complete
     .text       start:0x02016ad0 end:0x02016b6c
 
-src/main_sdk2/func_02016b98.c:
+src/main_sdk2/MB_IsAbleToLoad.c:
     complete
     .text       start:0x02016b98 end:0x02016cac
 
-src/main_sdk2/func_02016cac.c:
+src/main_sdk2/MBi_IsAbleToRecv.c:
     complete
     .text       start:0x02016cac end:0x02016d5c
 
-src/main_sdk2/func_02016d5c.c:
+src/main_sdk2/MBi_get_blockinfo.c:
     complete
     .text       start:0x02016d5c end:0x02016e30
 
-src/main_sdk2/func_02016e30.c:
+src/main_sdk2/MBi_MakeBlockInfoTable.c:
     complete
     .text       start:0x02016e30 end:0x02016f0c
 
-src/main_sdk2/func_02016f0c.c:
+src/main_sdk2/MBi_SetSegmentInfo.c:
     complete
     .text       start:0x02016f0c end:0x020170c4
 
-src/main_sdk2/func_02017410.c:
+src/main_sdk2/MBi_ReadSegmentHeader.c:
     complete
     .text       start:0x02017410 end:0x020174a4
 
-src/main_sdk2/func_02017910.c:
+src/main_sdk2/MB_GetSegmentLength.c:
     complete
     .text       start:0x02017910 end:0x02017994
 
@@ -8724,11 +8724,11 @@ src/main_sdk2/func_02017cf4.c:
     complete
     .text       start:0x02017cf4 end:0x02017e74
 
-src/main_sdk2/func_02017f38.c:
+src/main_sdk2/MB_SendGameInfoBeacon.c:
     complete
     .text       start:0x02017f38 end:0x02017fe0
 
-src/main_sdk2/func_020180a4.c:
+src/main_sdk2/MB_UpdateGameInfoMember.c:
     complete
     .text       start:0x020180a4 end:0x02018128
 
@@ -8740,51 +8740,51 @@ src/main_sdk2/func_020181dc.c:
     complete
     .text       start:0x020181dc end:0x020182e8
 
-src/main_sdk2/func_0201b5d8.c:
+src/main_sdk2/SetPlayerPriority.c:
     complete
     .text       start:0x0201b5d8 end:0x0201b63c
 
-src/main_sdk2/func_0201b63c.c:
+src/main_sdk2/PlayerHeapDisposeCallback.c:
     complete
     .text       start:0x0201b63c end:0x0201b698
 
-src/main_sdk2/func_0201b698.c:
+src/main_sdk2/ShutdownPlayer.c:
     complete
     .text       start:0x0201b698 end:0x0201b728
 
-src/main_sdk2/func_0201b728.c:
+src/main_sdk2/AllocSeqPlayer.c:
     complete
     .text       start:0x0201b728 end:0x0201b7a4
 
-src/main_sdk2/func_0201b7e0.c:
+src/main_sdk2/InsertPrioList.c:
     complete
     .text       start:0x0201b7e0 end:0x0201b840
 
-src/main_sdk2/func_0201b840.c:
+src/main_sdk2/InsertPlayerList.c:
     complete
     .text       start:0x0201b840 end:0x0201b89c
 
-src/main_sdk2/func_0201b8e8.c:
+src/main_sdk2/NNSi_SndPlayerAllocHeap.c:
     complete
     .text       start:0x0201b8e8 end:0x0201b944
 
-src/main_sdk2/func_0201b98c.c:
+src/main_sdk2/NNSi_SndPlayerStopSeq.c:
     complete
     .text       start:0x0201b98c end:0x0201b9ec
 
-src/main_sdk2/func_0201b9ec.c:
+src/main_sdk2/NNSi_SndPlayerStartSeq.c:
     complete
     .text       start:0x0201b9ec end:0x0201ba48
 
-src/main_sdk2/func_0201bc84.c:
+src/main_sdk2/NNSi_SndPlayerInit.c:
     complete
     .text       start:0x0201bc84 end:0x0201bd3c
 
-src/main_sdk2/func_0201bea8.c:
+src/main_sdk2/NNS_SndPlayerCountPlayingSeqByPlayerNo.c:
     complete
     .text       start:0x0201bea8 end:0x0201bf1c
 
-src/main_sdk2/func_0201bf40.c:
+src/main_sdk2/NNS_SndPlayerPauseByPlayerNo.c:
     complete
     .text       start:0x0201bf40 end:0x0201bfac
 
@@ -8824,191 +8824,191 @@ src/main_sdk3/VEC_Mag.c:
     complete
     .text       start:0x020025f4 end:0x0200265c
 
-src/main_sdk3/func_02000ce4.c:
+src/main_sdk3/MTX_Concat22.c:
     complete
     .text       start:0x02000ce4 end:0x02000d98
 
-src/main_sdk3/func_02000d98.c:
+src/main_sdk3/MTX_ScaleApply22.c:
     complete
     .text       start:0x02000d98 end:0x02000dfc
 
-src/main_sdk3/func_02000eb0.c:
+src/main_sdk3/MTX_MultVec33.c:
     complete
     .text       start:0x02000eb0 end:0x02000f34
 
-src/main_sdk3/func_02000f34.c:
+src/main_sdk3/MTX_Concat33.c:
     complete
     .text       start:0x02000f34 end:0x020010d0
 
-src/main_sdk3/func_020010d0.c:
+src/main_sdk3/MTX_Inverse33.c:
     complete
     .text       start:0x020010d0 end:0x020013c8
 
-src/main_sdk3/func_020013c8.c:
+src/main_sdk3/MTX_ScaleApply33.c:
     complete
     .text       start:0x020013c8 end:0x0200148c
 
-src/main_sdk3/func_02001558.c:
+src/main_sdk3/MTX_MultVec43.c:
     complete
     .text       start:0x02001558 end:0x0200160c
 
-src/main_sdk3/func_0200160c.c:
+src/main_sdk3/MTX_Concat43.c:
     complete
     .text       start:0x0200160c end:0x0200182c
 
-src/main_sdk3/func_0200182c.c:
+src/main_sdk3/MTX_Inverse43.c:
     complete
     .text       start:0x0200182c end:0x02001bc0
 
-src/main_sdk3/func_02001c00.c:
+src/main_sdk3/MTX_TransApply43.c:
     complete
     .text       start:0x02001c00 end:0x02001cb8
 
-src/main_sdk3/func_02001d18.c:
+src/main_sdk3/MTX_Concat44.c:
     complete
     .text       start:0x02001d18 end:0x0200203c
 
-src/main_sdk3/func_02002278.c:
+src/main_sdk3/VEC_Distance.c:
     complete
     .text       start:0x02002278 end:0x02002300
 
-src/main_sdk3/func_02002300.c:
+src/main_sdk3/VEC_MultAdd.c:
     complete
     .text       start:0x02002300 end:0x02002360
 
-src/main_sdk3/func_02002360.c:
+src/main_sdk3/VEC_Fx16Normalize.c:
     complete
     .text       start:0x02002360 end:0x020024b4
 
-src/main_sdk3/func_020024b4.c:
+src/main_sdk3/VEC_Normalize.c:
     complete
     .text       start:0x020024b4 end:0x020025f4
 
-src/main_sdk3/func_0200265c.c:
+src/main_sdk3/VEC_CrossProduct.c:
     complete
     .text       start:0x0200265c end:0x020026f8
 
-src/main_sdk3/func_020027a4.c:
+src/main_sdk3/FX_Atan2.c:
     complete
     .text       start:0x020027a4 end:0x02002978
 
-src/main_sdk3/func_02002978.c:
+src/main_sdk3/FX_Atan.c:
     complete
     .text       start:0x02002978 end:0x02002a64
 
-src/main_sdk3/func_02002ab0.c:
+src/main_sdk3/GX_SetGraphicsMode.c:
     complete
     .text       start:0x02002ab0 end:0x02002b24
 
-src/main_sdk3/func_02002c10.c:
+src/main_sdk3/GX_Init.c:
     complete
     .text       start:0x02002c10 end:0x02002da8
 
-src/main_sdk3/func_02002f74.c:
+src/main_sdk3/disableBankForX_.c:
     complete
     .text       start:0x02002f74 end:0x02003058
 
-src/main_sdk3/func_02003178.c:
+src/main_sdk3/GX_SetBankForSubOBJExtPltt.c:
     complete
     .text       start:0x02003178 end:0x02003204
 
-src/main_sdk3/func_02003204.c:
+src/main_sdk3/GX_SetBankForSubBGExtPltt.c:
     complete
     .text       start:0x02003204 end:0x02003290
 
-src/main_sdk3/func_020033d8.c:
+src/main_sdk3/GX_SetBankForTexPltt.c:
     complete
     .text       start:0x020033d8 end:0x020034cc
 
-src/main_sdk3/func_020034cc.c:
+src/main_sdk3/GX_SetBankForTex.c:
     complete
     .text       start:0x020034cc end:0x020036d0
 
-src/main_sdk3/func_020036d0.c:
+src/main_sdk3/GX_SetBankForOBJExtPltt.c:
     complete
     .text       start:0x020036d0 end:0x02003788
 
-src/main_sdk3/func_02003788.c:
+src/main_sdk3/GX_SetBankForBGExtPltt.c:
     complete
     .text       start:0x02003788 end:0x0200389c
 
-src/main_sdk3/func_0200389c.c:
+src/main_sdk3/GX_SetBankForOBJ.c:
     complete
     .text       start:0x0200389c end:0x02003a08
 
-src/main_sdk3/func_02003a08.c:
+src/main_sdk3/GX_SetBankForBG.c:
     complete
     .text       start:0x02003a08 end:0x02003cc0
 
-src/main_sdk3/func_02003d94.c:
+src/main_sdk3/G2x_SetBGyAffine_.c:
     complete
     .text       start:0x02003d94 end:0x02003e48
 
-src/main_sdk3/func_02003e9c.c:
+src/main_sdk3/GXi_NopClearFifo128_.c:
     complete
     .text       start:0x02003e9c end:0x02003f30
 
-src/main_sdk3/func_02003f88.c:
+src/main_sdk3/G3X_InitTable.c:
     complete
     .text       start:0x02003f88 end:0x02004040
 
-src/main_sdk3/func_0200412c.c:
+src/main_sdk3/G3X_SetFog.c:
     complete
     .text       start:0x0200412c end:0x02004180
 
-src/main_sdk3/func_02004180.c:
+src/main_sdk3/G3X_ResetMtxStack_2.c:
     complete
     .text       start:0x02004180 end:0x0200422c
 
-src/main_sdk3/func_0200422c.c:
+src/main_sdk3/G3X_InitMtxStack.c:
     complete
     .text       start:0x0200422c end:0x020042dc
 
-src/main_sdk3/func_02004310.c:
+src/main_sdk3/G3X_ResetMtxStack.c:
     complete
     .text       start:0x02004310 end:0x02004398
 
-src/main_sdk3/func_02004398.c:
+src/main_sdk3/G3X_Init.c:
     complete
     .text       start:0x02004398 end:0x020044f4
 
-src/main_sdk3/func_020044f4.c:
+src/main_sdk3/G3i_LookAt_.c:
     complete
     .text       start:0x020044f4 end:0x0200468c
 
-src/main_sdk3/func_0200468c.c:
+src/main_sdk3/G3i_OrthoW_.c:
     complete
     .text       start:0x0200468c end:0x02004988
 
-src/main_sdk3/func_02004988.c:
+src/main_sdk3/G3i_PerspectiveW_.c:
     complete
     .text       start:0x02004988 end:0x02004b78
 
-src/main_sdk3/func_02004b78.c:
+src/main_sdk3/G3i_FrustumW_.c:
     complete
     .text       start:0x02004b78 end:0x02004e68
 
-src/main_sdk3/func_02004ec0.c:
+src/main_sdk3/GX_LoadTexPltt.c:
     complete
     .text       start:0x02004ec0 end:0x02004f34
 
-src/main_sdk3/func_02004fec.c:
+src/main_sdk3/GX_LoadTex.c:
     complete
     .text       start:0x02004fec end:0x02005150
 
-src/main_sdk3/func_02005274.c:
+src/main_sdk3/OSi_IrqCallback.c:
     complete
     .text       start:0x02005274 end:0x02005310
 
-src/main_sdk3/func_02005448.c:
+src/main_sdk3/OSi_EnterDmaCallback.c:
     complete
     .text       start:0x02005448 end:0x02005494
 
-src/main_sdk3/func_02005520.c:
+src/main_sdk3/OS_SetIrqFunction.c:
     complete
     .text       start:0x02005520 end:0x020055b0
 
-src/main_sdk3/func_020058a0.c:
+src/main_sdk3/OS_InitLock.c:
     complete
     .text       start:0x020058a0 end:0x02005990
 
@@ -9016,259 +9016,259 @@ src/main_sdk3/func_020061ec.c:
     complete
     .text       start:0x020061ec end:0x020062c0
 
-src/main_sdk3/func_02006698.c:
+src/main_sdk3/OS_LockMutex.c:
     complete
     .text       start:0x02006698 end:0x02006724
 
-src/main_sdk3/func_020070c0.c:
+src/main_sdk3/OSi_CompareVCount.c:
     complete
     .text       start:0x020070c0 end:0x02007110
 
-src/main_sdk3/func_02007110.c:
+src/main_sdk3/OSi_VAlarmHandler.c:
     complete
     .text       start:0x02007110 end:0x020072bc
 
-src/main_sdk3/func_020072bc.c:
+src/main_sdk3/OS_CancelAllVAlarms.c:
     complete
     .text       start:0x020072bc end:0x02007318
 
-src/main_sdk3/func_020073b8.c:
+src/main_sdk3/OS_SetVAlarm.c:
     complete
     .text       start:0x020073b8 end:0x02007450
 
-src/main_sdk3/func_020074e8.c:
+src/main_sdk3/OSi_InsertVAlarm.c:
     complete
     .text       start:0x020074e8 end:0x02007584
 
-src/main_sdk3/func_020077c0.c:
+src/main_sdk3/OS_InitReset.c:
     complete
     .text       start:0x020077c0 end:0x02007828
 
-src/main_sdk3/func_02007828.c:
+src/main_sdk3/OS_GetOwnerInfo.c:
     complete
     .text       start:0x02007828 end:0x020078a4
 
-src/main_sdk3/func_020078c8.c:
+src/main_sdk3/OSi_UnlockVram.c:
     complete
     .text       start:0x020078c8 end:0x02007950
 
-src/main_sdk3/func_02007994.c:
+src/main_sdk3/MIi_CheckDma0SourceAddress.c:
     complete
     .text       start:0x02007994 end:0x02007a04
 
-src/main_sdk3/func_02007a04.c:
+src/main_sdk3/MIi_CheckAnotherAutoDMA.c:
     complete
     .text       start:0x02007a04 end:0x02007ab8
 
-src/main_sdk3/func_02007ab8.c:
+src/main_sdk3/MI_StopDma.c:
     complete
     .text       start:0x02007ab8 end:0x02007b3c
 
-src/main_sdk3/func_02007b3c.c:
+src/main_sdk3/MI_WaitDma.c:
     complete
     .text       start:0x02007b3c end:0x02007bac
 
-src/main_sdk3/func_02007bac.c:
+src/main_sdk3/MI_DmaCopy32Async.c:
     complete
     .text       start:0x02007bac end:0x02007c54
 
-src/main_sdk3/func_02007d2c.c:
+src/main_sdk3/MI_DmaCopy16.c:
     complete
     .text       start:0x02007d2c end:0x02007da4
 
-src/main_sdk3/func_02007da4.c:
+src/main_sdk3/MI_DmaCopy32.c:
     complete
     .text       start:0x02007da4 end:0x02007e20
 
-src/main_sdk3/func_02007e20.c:
+src/main_sdk3/MI_DmaFill32.c:
     complete
     .text       start:0x02007e20 end:0x02007eb0
 
-src/main_sdk3/func_02007fd8.c:
+src/main_sdk3/MI_SendGXCommandAsyncFast.c:
     complete
     .text       start:0x02007fd8 end:0x02008098
 
-src/main_sdk3/func_0200810c.c:
+src/main_sdk3/MIi_FIFOCallback.c:
     complete
     .text       start:0x0200810c end:0x020081d4
 
-src/main_sdk3/func_020081d4.c:
+src/main_sdk3/MI_SendGXCommandAsync.c:
     complete
     .text       start:0x020081d4 end:0x020082e8
 
-src/main_sdk3/func_02008648.c:
+src/main_sdk3/MI_UncompressLZ16.c:
     complete
     .text       start:0x02008648 end:0x02008720
 
-src/main_sdk3/func_02008720.c:
+src/main_sdk3/MI_UncompressHuffman.c:
     complete
     .text       start:0x02008720 end:0x020087f8
 
-src/main_sdk3/func_02008860.c:
+src/main_sdk3/MIi_CardDmaCopy32.c:
     complete
     .text       start:0x02008860 end:0x020088ec
 
-src/main_sdk3/func_02008cac.c:
+src/main_sdk3/SND_StopTimer.c:
     complete
     .text       start:0x02008cac end:0x02008d1c
 
-src/main_sdk3/func_0200901c.c:
+src/main_sdk3/InitPXI.c:
     complete
     .text       start:0x0200901c end:0x02009088
 
-src/main_sdk3/func_0200927c.c:
+src/main_sdk3/SND_FlushCommand.c:
     complete
     .text       start:0x0200927c end:0x0200943c
 
-src/main_sdk3/func_02009484.c:
+src/main_sdk3/SND_AllocCommand.c:
     complete
     .text       start:0x02009484 end:0x02009520
 
-src/main_sdk3/func_02009520.c:
+src/main_sdk3/SND_RecvCommandReply.c:
     complete
     .text       start:0x02009520 end:0x02009654
 
-src/main_sdk3/func_0200984c.c:
+src/main_sdk3/SNDi_InitSharedWork.c:
     complete
     .text       start:0x0200984c end:0x020098cc
 
-src/main_sdk3/func_02009be8.c:
+src/main_sdk3/SND_GetNextInstData.c:
     complete
     .text       start:0x02009be8 end:0x02009dc0
 
-src/main_sdk3/func_02009e2c.c:
+src/main_sdk3/SND_DestroyBank.c:
     complete
     .text       start:0x02009e2c end:0x02009ecc
 
-src/main_sdk3/func_02009ecc.c:
+src/main_sdk3/SND_AssignWaveArc.c:
     complete
     .text       start:0x02009ecc end:0x02009fa8
 
-src/main_sdk3/func_02009fb4.c:
+src/main_sdk3/PXIi_HandlerRecvFifoNotEmpty.c:
     complete
     .text       start:0x02009fb4 end:0x0200a0d8
 
-src/main_sdk3/func_0200a0d8.c:
+src/main_sdk3/PXI_SendWordByFifo.c:
     complete
     .text       start:0x0200a0d8 end:0x0200a18c
 
-src/main_sdk3/func_0200a1b4.c:
+src/main_sdk3/PXI_SetFifoRecvCallback.c:
     complete
     .text       start:0x0200a1b4 end:0x0200a220
 
-src/main_sdk3/func_0200a220.c:
+src/main_sdk3/PXI_InitFifo.c:
     complete
     .text       start:0x0200a220 end:0x0200a32c
 
-src/main_sdk3/func_0200a35c.c:
+src/main_sdk3/FSi_OpenFileFastCommand.c:
     complete
     .text       start:0x0200a35c end:0x0200a3d8
 
-src/main_sdk3/func_0200a3d8.c:
+src/main_sdk3/FSi_GetPathCommand.c:
     complete
     .text       start:0x0200a3d8 end:0x0200a798
 
-src/main_sdk3/func_0200a798.c:
+src/main_sdk3/FSi_FindPathCommand.c:
     complete
     .text       start:0x0200a798 end:0x0200a9b4
 
-src/main_sdk3/func_0200a9b4.c:
+src/main_sdk3/FSi_ReadDirCommand.c:
     complete
     .text       start:0x0200a9b4 end:0x0200aac4
 
-src/main_sdk3/func_0200aac4.c:
+src/main_sdk3/FSi_SeekDirCommand.c:
     complete
     .text       start:0x0200aac4 end:0x0200ab5c
 
-src/main_sdk3/func_0200abcc.c:
+src/main_sdk3/FSi_StrNICmp.c:
     complete
     .text       start:0x0200abcc end:0x0200ac30
 
-src/main_sdk3/func_0200ac64.c:
+src/main_sdk3/FSi_ReadTable.c:
     complete
     .text       start:0x0200ac64 end:0x0200ad14
 
-src/main_sdk3/func_0200ad14.c:
+src/main_sdk3/FSi_TranslateCommand.c:
     complete
     .text       start:0x0200ad14 end:0x0200aea4
 
-src/main_sdk3/func_0200af08.c:
+src/main_sdk3/FS_ResumeArchive.c:
     complete
     .text       start:0x0200af08 end:0x0200af84
 
-src/main_sdk3/func_0200af84.c:
+src/main_sdk3/FS_SuspendArchive.c:
     complete
     .text       start:0x0200af84 end:0x0200b034
 
-src/main_sdk3/func_0200b034.c:
+src/main_sdk3/FS_UnloadArchive.c:
     complete
     .text       start:0x0200b034 end:0x0200b0fc
 
-src/main_sdk3/func_0200b0fc.c:
+src/main_sdk3/FS_LoadArchive.c:
     complete
     .text       start:0x0200b0fc end:0x0200b174
 
-src/main_sdk3/func_0200b20c.c:
+src/main_sdk3/FS_RegisterArchiveName.c:
     complete
     .text       start:0x0200b20c end:0x0200b2cc
 
-src/main_sdk3/func_0200b2f4.c:
+src/main_sdk3/FS_NotifyArchiveAsyncEnd.c:
     complete
     .text       start:0x0200b2f4 end:0x0200b384
 
-src/main_sdk3/func_0200b384.c:
+src/main_sdk3/FSi_SendCommand.c:
     complete
     .text       start:0x0200b384 end:0x0200b514
 
-src/main_sdk3/func_0200b55c.c:
+src/main_sdk3/FSi_ExecuteAsyncCommand.c:
     complete
     .text       start:0x0200b55c end:0x0200b600
 
-src/main_sdk3/func_0200b600.c:
+src/main_sdk3/FSi_NextCommand.c:
     complete
     .text       start:0x0200b600 end:0x0200b828
 
-src/main_sdk3/func_0200b8cc.c:
+src/main_sdk3/FSi_GetPackedName.c:
     complete
     .text       start:0x0200b8cc end:0x0200b930
 
-src/main_sdk3/func_0200b930.c:
+src/main_sdk3/FS_SeekFile.c:
     complete
     .text       start:0x0200b930 end:0x0200b99c
 
-src/main_sdk3/func_0200ba08.c:
+src/main_sdk3/FS_WaitAsync.c:
     complete
     .text       start:0x0200ba08 end:0x0200bad8
 
-src/main_sdk3/func_0200bb70.c:
+src/main_sdk3/FS_OpenFileFast.c:
     complete
     .text       start:0x0200bb70 end:0x0200bbec
 
-src/main_sdk3/func_0200bc88.c:
+src/main_sdk3/FSi_ReadFileCore.c:
     complete
     .text       start:0x0200bc88 end:0x0200bd10
 
-src/main_sdk3/func_0200bd10.c:
+src/main_sdk3/FSi_FindPath.c:
     complete
     .text       start:0x0200bd10 end:0x0200be70
 
-src/main_sdk3/func_0200bf48.c:
+src/main_sdk3/FSi_InitRom.c:
     complete
     .text       start:0x0200bf48 end:0x0200c0e8
 
-src/main_sdk3/func_0200c0f8.c:
+src/main_sdk3/FSi_RomArchiveProc.c:
     complete
     .text       start:0x0200c0f8 end:0x0200c188
 
-src/main_sdk3/func_0200c2b8.c:
+src/main_sdk3/FS_EndOverlay.c:
     complete
     .text       start:0x0200c2b8 end:0x0200c3c0
 
-src/main_sdk3/func_0200c4c0.c:
+src/main_sdk3/FSi_CompareDigest.c:
     complete
     .text       start:0x0200c4c0 end:0x0200c564
 
-src/main_sdk3/func_0200c718.c:
+src/main_sdk3/FSi_LoadOverlayInfoCore.c:
     complete
     .text       start:0x0200c718 end:0x0200c828
 
@@ -9292,91 +9292,91 @@ src/main_sdk3/func_0200d030.c:
     complete
     .text       start:0x0200d030 end:0x0200d098
 
-src/main_sdk3/func_0200d1a4.c:
+src/main_sdk3/TP_GetCalibratedPoint.c:
     complete
     .text       start:0x0200d1a4 end:0x0200d2d4
 
-src/main_sdk3/func_0200d2d4.c:
+src/main_sdk3/TP_CalcCalibrateParam.c:
     complete
     .text       start:0x0200d2d4 end:0x0200d544
 
-src/main_sdk3/func_0200d554.c:
+src/main_sdk3/TP_RequestAutoSamplingStopAsync.c:
     complete
     .text       start:0x0200d554 end:0x0200d5f8
 
-src/main_sdk3/func_0200d650.c:
+src/main_sdk3/TP_RequestSamplingAsync.c:
     complete
     .text       start:0x0200d650 end:0x0200d6f0
 
-src/main_sdk3/func_0200d714.c:
+src/main_sdk3/TP_SetCalibrateParam.c:
     complete
     .text       start:0x0200d714 end:0x0200d85c
 
-src/main_sdk3/func_0200d85c.c:
+src/main_sdk3/TP_GetUserInfo.c:
     complete
     .text       start:0x0200d85c end:0x0200d908
 
-src/main_sdk3/func_0200d908.c:
+src/main_sdk3/TP_Init.c:
     complete
     .text       start:0x0200d908 end:0x0200d998
 
-src/main_sdk3/func_0200d998.c:
+src/main_sdk3/TPi_TpCallback.c:
     complete
     .text       start:0x0200d998 end:0x0200dc58
 
-src/main_sdk3/func_0200dc58.c:
+src/main_sdk3/MicCommonCallback.c:
     complete
     .text       start:0x0200dc58 end:0x0200dd98
 
-src/main_sdk3/func_0200dda8.c:
+src/main_sdk3/MIC_Init.c:
     complete
     .text       start:0x0200dda8 end:0x0200de34
 
-src/main_sdk3/func_0200e738.c:
+src/main_sdk3/PMi_SendSleepStart.c:
     complete
     .text       start:0x0200e738 end:0x0200e7f0
 
-src/main_sdk3/func_0200e7f0.c:
+src/main_sdk3/PMi_CommonCallback.c:
     complete
     .text       start:0x0200e7f0 end:0x0200e8dc
 
-src/main_sdk3/func_0200e8dc.c:
+src/main_sdk3/PM_Init.c:
     complete
     .text       start:0x0200e8dc end:0x0200e9a0
 
-src/main_sdk3/func_0200eb10.c:
+src/main_sdk3/RtcCommonCallback.c:
     complete
     .text       start:0x0200eb10 end:0x0200f0a0
 
-src/main_sdk3/func_0200f160.c:
+src/main_sdk3/RTC_Init.c:
     complete
     .text       start:0x0200f160 end:0x0200f1e8
 
-src/main_sdk3/func_0200f2b0.c:
+src/main_sdk3/CARDi_WaitAsync.c:
     complete
     .text       start:0x0200f2b0 end:0x0200f30c
 
-src/main_sdk3/func_0200f358.c:
+src/main_sdk3/CARDi_InitCommon.c:
     complete
     .text       start:0x0200f358 end:0x0200f46c
 
-src/main_sdk3/func_0200f46c.c:
+src/main_sdk3/CARDi_UnlockResource.c:
     complete
     .text       start:0x0200f46c end:0x0200f510
 
-src/main_sdk3/func_0200f510.c:
+src/main_sdk3/CARDi_LockResource.c:
     complete
     .text       start:0x0200f510 end:0x0200f5ac
 
-src/main_sdk3/func_0200f5ac.c:
+src/main_sdk3/CARDi_SetTask.c:
     complete
     .text       start:0x0200f5ac end:0x0200f63c
 
-src/main_sdk3/func_0200f63c.c:
+src/main_sdk3/CARDi_TaskThread.c:
     complete
     .text       start:0x0200f63c end:0x0200f690
 
-src/main_sdk3/func_0200f8b8.c:
+src/main_sdk3/CARD_IdentifyBackup.c:
     complete
     .text       start:0x0200f8b8 end:0x0200f9a0
 
@@ -9396,15 +9396,15 @@ src/main_sdk3/func_0200fbfc.c:
     complete
     .text       start:0x0200fbfc end:0x0200fcb8
 
-src/main_sdk3/func_0200fd28.c:
+src/main_sdk3/CARD_Init.c:
     complete
     .text       start:0x0200fd28 end:0x0200fdb0
 
-src/main_sdk3/func_0200fdbc.c:
+src/main_sdk3/CARDi_ReadRom.c:
     complete
     .text       start:0x0200fdbc end:0x0200fee4
 
-src/main_sdk3/func_020101e0.c:
+src/main_sdk3/CARDi_SetCardDma.c:
     complete
     .text       start:0x020101e0 end:0x02010238
 
@@ -9412,11 +9412,11 @@ src/main_sdk3/func_020102d8.c:
     complete
     .text       start:0x020102d8 end:0x02010358
 
-src/main_sdk3/func_02010358.c:
+src/main_sdk3/CARDi_ReadFromCache.c:
     complete
     .text       start:0x02010358 end:0x020103f0
 
-src/main_sdk3/func_020103f0.c:
+src/main_sdk3/CARDi_Request.c:
     complete
     .text       start:0x020103f0 end:0x0201052c
 
@@ -9436,15 +9436,15 @@ src/main_sdk3/func_020138b4.c:
     complete
     .text       start:0x020138b4 end:0x02013e7c
 
-src/main_sdk3/func_02015f14.c:
+src/main_sdk3/MBi_CommParentRecvDataPerChild.c:
     complete
     .text       start:0x02015f14 end:0x0201640c
 
-src/main_sdk3/func_02017148.c:
+src/main_sdk3/MB_RegisterFile.c:
     complete
     .text       start:0x02017148 end:0x02017410
 
-src/main_sdk3/func_020197bc.c:
+src/main_sdk3/MBi_ParentCallback.c:
     complete
     .text       start:0x020197bc end:0x0201a014
 
@@ -9456,31 +9456,31 @@ src/main_a3/FileRequest_Create.c:
     complete
     .text       start:0x02033f44 end:0x02033fbc
 
-src/main_a4/func_0202a2f0.c:
+src/main_a4/sprintf.c:
     complete
     .text       start:0x0202a2f0 end:0x0202a324
 
-src/main_a4/func_0202ac68.c:
+src/main_a4/float2str.c:
     complete
     .text       start:0x0202ac68 end:0x0202b2c0
 
-src/main_a4/func_0202b7b0.c:
+src/main_a4/longlong2str.c:
     complete
     .text       start:0x0202b7b0 end:0x0202ba98
 
-src/main_a4/func_0202ba98.c:
+src/main_a4/long2str.c:
     complete
     .text       start:0x0202ba98 end:0x0202bcfc
 
-src/main_a4/func_0202bcfc.c:
+src/main_a4/parse_format.c:
     complete
     .text       start:0x0202bcfc end:0x0202c2d8
 
-src/main_a4/func_0202c718.c:
+src/main_a4/ldexp.c:
     complete
     .text       start:0x0202c718 end:0x0202c9fc
 
-src/main_a4/func_0202cac4.c:
+src/main_a4/__num2dec_internal.c:
     complete
     .text       start:0x0202cac4 end:0x0202cd1c
 
@@ -9640,11 +9640,11 @@ src/main_b5/func_0206cdf4.c:
     complete
     .text       start:0x0206cdf4 end:0x0206ce90
 
-src/main_sdk3/func_02003290.c:
+src/main_sdk3/GX_SetBankForSubOBJ.c:
     complete
     .text       start:0x02003290 end:0x0200330c
 
-src/main_sdk3/func_0200b174.c:
+src/main_sdk3/FS_ReleaseArchiveName.c:
     complete
     .text       start:0x0200b174 end:0x0200b20c
 
@@ -9652,71 +9652,71 @@ src/main_sdk4/FS_LoadOverlay.c:
     complete
     .text       start:0x0200c240 end:0x0200c29c
 
-src/main_sdk4/func_02005bd4.c:
+src/main_sdk4/OS_WakeupThread.c:
     complete
     .text       start:0x02005bd4 end:0x02005c48
 
-src/main_sdk4/func_020068a8.c:
+src/main_sdk4/OS_GetInitArenaLo.c:
     complete
     .text       start:0x020068a8 end:0x02006990
 
-src/main_sdk4/func_02006de0.c:
+src/main_sdk4/OSi_DisplayExContext.c:
     complete
     .text       start:0x02006de0 end:0x02006e4c
 
-src/main_sdk4/func_02006ef8.c:
+src/main_sdk4/OSi_CountUpTick.c:
     complete
     .text       start:0x02006ef8 end:0x02006f80
 
-src/main_sdk4/func_02006f80.c:
+src/main_sdk4/OS_InitTick.c:
     complete
     .text       start:0x02006f80 end:0x0200701c
 
-src/main_sdk4/func_02008098.c:
+src/main_sdk4/MIi_DMACallback.c:
     complete
     .text       start:0x02008098 end:0x0200810c
 
-src/main_sdk4/func_020087f8.c:
+src/main_sdk4/MI_UncompressRL16.c:
     complete
     .text       start:0x020087f8 end:0x02008860
 
-src/main_sdk4/func_02008ae0.c:
+src/main_sdk4/SND_SetupChannelPcm.c:
     complete
     .text       start:0x02008ae0 end:0x02008b38
 
-src/main_sdk4/func_0200bb20.c:
+src/main_sdk4/FS_OpenFile.c:
     complete
     .text       start:0x0200bb20 end:0x0200bb70
 
-src/main_sdk4/func_0200d098.c:
+src/main_sdk4/CPi_RestoreContext.c:
     complete
     .text       start:0x0200d098 end:0x0200d104
 
-src/main_sdk4/func_0200d104.c:
+src/main_sdk4/CP_SaveContext.c:
     complete
     .text       start:0x0200d104 end:0x0200d178
 
-src/main_sdk4/func_0200dfa8.c:
+src/main_sdk4/PMi_SetLCDPower.c:
     complete
     .text       start:0x0200dfa8 end:0x0200e098
 
-src/main_sdk4/func_0200e300.c:
+src/main_sdk4/PM_GetBackLight.c:
     complete
     .text       start:0x0200e300 end:0x0200e378
 
-src/main_sdk4/func_0200e4ec.c:
+src/main_sdk4/PMi_SetLEDAsync.c:
     complete
     .text       start:0x0200e4ec end:0x0200e554
 
-src/main_sdk4/func_0200ea64.c:
+src/main_sdk4/RtcWaitBusy.c:
     complete
     .text       start:0x0200ea64 end:0x0200ea7c
 
-src/main_sdk4/func_0200ea8c.c:
+src/main_sdk4/RtcBCD2HEX.c:
     complete
     .text       start:0x0200ea8c end:0x0200eb10
 
-src/main_sdk4/func_0201521c.c:
+src/main_sdk4/WBT_GetBlockInfo.c:
     complete
     .text       start:0x0201521c end:0x02015264
 
@@ -9732,15 +9732,15 @@ src/main_sdk4/main.c:
     complete
     .text       start:0x02000b24 end:0x02000cb4
 
-src/main_sdk5/func_0200e64c.c:
+src/main_sdk5/PMi_ReadRegisterAsync.c:
     complete
     .text       start:0x0200e64c end:0x0200e6c4
 
-src/main_sdk5/func_0200e9a0.c:
+src/main_sdk5/PMi_CallCallbackAndUnlock.c:
     complete
     .text       start:0x0200e9a0 end:0x0200e9f4
 
-src/main_sdk5/func_020170c4.c:
+src/main_sdk5/MBi_MakeDownloadFileInfo.c:
     complete
     .text       start:0x020170c4 end:0x02017148
 
@@ -9792,11 +9792,11 @@ src/main_sdk5/func_0200cb88.c:
     complete
     .text       start:0x0200cb88 end:0x0200ce88
 
-src/main_sdk5/func_02017a18.c:
+src/main_sdk5/MBi_SendVolatBeacon.c:
     complete
     .text       start:0x02017a18 end:0x02017cc4
 
-src/main_a5/func_0202b3f0.c:
+src/main_a5/double2hex.c:
     complete
     .text       start:0x0202b3f0 end:0x0202b7b0
 
@@ -10120,11 +10120,11 @@ src/main_b6/func_0205ef48.c:
     complete
     .text       start:0x0205ef48 end:0x0205f25c
 
-src/main_sdk5/func_02007c54.c:
+src/main_sdk5/MI_DmaFill32Async.c:
     complete
     .text       start:0x02007c54 end:0x02007d2c
 
-src/main_sdk5/func_020091ec.c:
+src/main_sdk5/SND_WaitForCommandProc.c:
     complete
     .text       start:0x020091ec end:0x0200927c
 
@@ -10132,11 +10132,11 @@ src/main_sdk5/func_02011dcc.c:
     complete
     .text       start:0x02011dcc end:0x02011f4c
 
-src/main_a5/func_02023274.c:
+src/main_a5/NNSi_G3dFuncSbc_NODEMIX.c:
     complete
     .text       start:0x02023274 end:0x020238e8
 
-src/main_sdk6/func_020174a4.c:
+src/main_sdk6/MB_ReadSegment.c:
     complete
     .text       start:0x020174a4 end:0x02017910
 
@@ -10172,7 +10172,7 @@ src/main_b6/StageObj_Main.c:
     complete
     .text       start:0x0206c3d0 end:0x0206c708
 
-src/main_sdk6/func_02027104.c:
+src/main_sdk6/getTransData_.c:
     complete
     .text       start:0x02027104 end:0x02027290
 
@@ -11084,7 +11084,7 @@ src/main_b9/func_02066638.c:
     complete
     .text       start:0x02066638 end:0x02066a9c
 
-src/lead/func_0202d49c.c:
+src/lead/__dorounddecup.c:
     complete
     .text       start:0x0202d49c end:0x0202d4ec
 
@@ -11112,7 +11112,7 @@ src/main_b9/ObjRect_HitCenterX.c:
     complete
     .text       start:0x0206d5d0 end:0x0206d6dc
 
-src/main_c1/func_02006e4c.c:
+src/main_c1/OS_InitException.c:
     complete
     .text       start:0x02006e4c end:0x02006edc
 
@@ -11124,7 +11124,7 @@ src/main_c1/func_0203da24.c:
     complete
     .text       start:0x0203da24 end:0x0203db90
 
-src/pragma/func_0202a244.c:
+src/pragma/__fill_mem.c:
     complete
     .text       start:0x0202a244 end:0x0202a2f0
 
@@ -11140,7 +11140,7 @@ src/main_b10/StageObj_Draw3DEx.c:
     complete
     .text       start:0x0206a0ac end:0x0206aa04
 
-src/main_c2/func_020125d8.c:
+src/main_c2/WM_StepDataSharing.c:
     complete
     .text       start:0x020125d8 end:0x0201299c
 
@@ -11148,7 +11148,7 @@ src/main_c2/func_02013814.c:
     complete
     .text       start:0x02013814 end:0x020138b4
 
-src/main_c2/func_02015924.c:
+src/main_c2/MBi_CommParentSendBlock.c:
     complete
     .text       start:0x02015924 end:0x02015bdc
 
@@ -11160,19 +11160,19 @@ src/asm/FS_StartOverlay.c:
     complete
     .text       start:0x0200c3c0 end:0x0200c4c0
 
-src/asm/func_0200330c.c:
+src/asm/GX_SetBankForSubBG.c:
     complete
     .text       start:0x0200330c end:0x020033b8
 
-src/asm/func_02005e64.c:
+src/asm/OS_InitThread.c:
     complete
     .text       start:0x02005e64 end:0x02005fe4
 
-src/asm/func_02006990.c:
+src/asm/OS_GetInitArenaHi.c:
     complete
     .text       start:0x02006990 end:0x02006abc
 
-src/asm/func_0202a3e8.c:
+src/asm/__pformatter.c:
     complete
     .text       start:0x0202a3e8 end:0x0202ac68
 
@@ -11196,27 +11196,27 @@ src/main_d3/func_02066e3c.c:
     complete
     .text       start:0x02066e3c end:0x020670bc
 
-src/asm_fallback/func_02009654.c:
+src/asm_fallback/SND_CommandInit.c:
     complete
     .text       start:0x02009654 end:0x0200976c
 
-src/asm_fallback/func_02009900.c:
+src/asm_fallback/SND_ReadChannelInfo.c:
     complete
     .text       start:0x02009900 end:0x02009ab8
 
-src/asm_fallback/func_0200e098.c:
+src/asm_fallback/PM_GoSleepMode.c:
     complete
     .text       start:0x0200e098 end:0x0200e2d0
 
-src/asm_fallback/func_0200f6e0.c:
+src/asm_fallback/CARDi_IdentifyBackupCore.c:
     complete
     .text       start:0x0200f6e0 end:0x0200f8b8
 
-src/asm_fallback/func_0200ff18.c:
+src/asm_fallback/CARDi_ReadCard.c:
     complete
     .text       start:0x0200ff18 end:0x02010018
 
-src/asm_fallback/func_0201cacc.c:
+src/asm_fallback/NNSi_SndCaptureStart.c:
     complete
     .text       start:0x0201cacc end:0x0201ce34
 
@@ -11224,7 +11224,7 @@ src/asm_fallback/func_0201ed04.c:
     complete
     .text       start:0x0201ed04 end:0x0201f5b8
 
-src/asm_fallback/func_020254d4.c:
+src/asm_fallback/NNS_G3dWorldPosToScrPos.c:
     complete
     .text       start:0x020254d4 end:0x0202566c
 
@@ -11232,7 +11232,7 @@ src/asm_fallback/func_02026d58.c:
     complete
     .text       start:0x02026d58 end:0x02026f88
 
-src/asm_fallback/func_02026f88.c:
+src/asm_fallback/getTransDataEx_.c:
     complete
     .text       start:0x02026f88 end:0x02027104
 
@@ -11340,6 +11340,6 @@ src/lead/BuildInfo.c:
     complete
     .text       start:0x02000b00 end:0x02000b24
 
-src/asm_fallback/func_02010018.c:
+src/asm_fallback/CARDi_TryReadCardDma.c:
     complete
     .text       start:0x02010018 end:0x0201016c

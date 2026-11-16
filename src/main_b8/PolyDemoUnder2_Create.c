@@ -6,7 +6,7 @@ typedef struct {
 } UnkTask_02057ca8;
 
 UnkTask_02057ca8 *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void PolyDemoUnder2_Main(void);
 void PolyDemoUnder2_Destructor(void);
@@ -20,7 +20,7 @@ void PolyDemoUnder2_Create(void) {
     vu16 z;
 
     t = Task_Create(PolyDemoUnder2_Main, PolyDemoUnder2_Destructor, 7, 0x3efe, 3, 0x218);
-    if (t == (UnkTask_02057ca8 *)func_02006abc(0))
+    if (t == (UnkTask_02057ca8 *)OS_GetArenaLo(0))
         return;
     w = t->work;
     z = 0;

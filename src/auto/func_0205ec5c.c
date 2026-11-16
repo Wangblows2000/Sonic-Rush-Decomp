@@ -5,7 +5,7 @@ extern u8 gTaskCurrent[];
 extern u8 data_022c4560[];
 extern u8 gPad[];
 void func_0205aff8();
-s32 func_02004040();
+s32 G3X_SetClearColor();
 s32 func_0205d46c();
 s32 func_0205d410();
 s32 func_0205d360();
@@ -34,7 +34,7 @@ void func_0205ec5c(void) {
     ((s32 (*)())*(u32 *)((u8 *)t0 + 0x478))(t0, *(u32 *)((u8 *)t0 + 0x478));
     ((s32 (*)())*(u32 *)((u8 *)t0 + 0x474))(t0, *(u32 *)((u8 *)t0 + 0x474));
     if ((*(u32 *)((u8 *)t0 + 0x488) & 0x80000000) == 0) {
-        func_02004040(0x7fff, *(u16 *)((u8 *)(t0 + 0x400) + 0xd8), 0x7fff, 0, 0);
+        G3X_SetClearColor(0x7fff, *(u16 *)((u8 *)(t0 + 0x400) + 0xd8), 0x7fff, 0, 0);
         if ((*(u32 *)((u8 *)t0 + 0x488) & 4) != 0) {
             ((s32 (*)())*(u32 *)((u8 *)t0 + 0x88))(t0, (t0 + 0x88), *(u32 *)((u8 *)t0 + 0x88));
         }

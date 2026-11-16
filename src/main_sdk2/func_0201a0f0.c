@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 #include <main_sdk2/wh.h>
 
-u32 func_020111e4(void);
+u32 WM_GetAllowedChannel(void);
 
 BOOL func_0201a0f0(UnkScanParam_wh *param)
 {
@@ -10,7 +10,7 @@ BOOL func_0201a0f0(UnkScanParam_wh *param)
     u16 i;
     u16 orig;
 
-    mask = func_020111e4();
+    mask = WM_GetAllowedChannel();
     if (mask == 0) {
         return FALSE;
     }

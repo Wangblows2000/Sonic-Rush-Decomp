@@ -18,7 +18,7 @@ typedef struct {
 extern u32 gSystemFlags;
 
 UnkTask_0205a148 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 a, s32 b, s32 c, s32 size);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_0205a0cc(void);
 void func_0205a130(void);
@@ -32,7 +32,7 @@ void func_0205a148(s32 mode, s32 arg) {
     vu16 z;
 
     t = Task_Create(func_0205a0cc, func_0205a130, 0x20, 0, 3, 0x1c);
-    if (t == (UnkTask_0205a148 *)func_02006abc(0))
+    if (t == (UnkTask_0205a148 *)OS_GetArenaLo(0))
         return;
     w = t->work;
     z = 0;

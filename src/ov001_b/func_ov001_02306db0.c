@@ -80,7 +80,7 @@ void AnimatorSprite_SetAnimation(void *s, u16 index);
 void Model_Animate(void *p);
 void Model_SetResource(void *s, void *res, u32 idx);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
-u32 func_02025e8c(void *h);
+u32 NNS_G3dGetTex(void *h);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -146,7 +146,7 @@ UnkStruct_02306db0_n *func_ov001_02306db0(s32 arg, u32 type) {
         Model_SetResource(n->unkAC, g->unk4690, 0);
         Model_SetAnimation(n->unkAC, 0, g->unk4694, 0, 0);
         Model_SetAnimation(n->unkAC, 1, g->unk4698, 0, 0);
-        Model_SetAnimation(n->unkAC, 2, g->unk469C, 0, func_02025e8c(g->unk4690));
+        Model_SetAnimation(n->unkAC, 2, g->unk469C, 0, NNS_G3dGetTex(g->unk4690));
         break;
     case 4:
         n->unk2C = Rand() % 0x2000;

@@ -64,13 +64,13 @@ extern void *data_ov000_02369b50[];
 extern u8 data_ov000_023657e0[], data_ov000_023636f4[];
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
 void func_ov000_022e1f88(UnkStruct_022e1684 *w);
 void Model_Animate(void *s);
 void Model_Draw(void *s);
-void func_02025268(s32 a, s32 *b, s32 c);
-void func_02025a94(void *a, void *b);
+void NNS_G3dGeBufferOP_N(s32 a, s32 *b, s32 c);
+void NNS_G3dGetCurrentMtx(void *a, void *b);
 void func_ov000_022e4568(UnkStruct_022e1684 *w);
 void func_ov000_022e1474(UnkStruct_022e1684 *w);
 void func_ov000_022e1308(UnkStruct_022e1684 *w);
@@ -127,11 +127,11 @@ void Boss6_Draw(void) {
     sub->unk4C = -w->base.unk14 << 4;
     sub->unk50 = w->base.unk18 << 4;
     idx = (s32)(w->unkF4A & 0xffff) >> 4;
-    func_02000e98(sub->unk24, SIN_IDX(idx), COS_IDX(idx));
+    MTX_RotZ33_(sub->unk24, SIN_IDX(idx), COS_IDX(idx));
     if (w->unkF4C != 0) {
         idx = (s32)((u16)w->unkF4C & 0xffff) >> 4;
         MTX_RotY33_(mtx, SIN_IDX(idx), COS_IDX(idx));
-        func_02000f34(sub->unk24, mtx, sub->unk24);
+        MTX_Concat33(sub->unk24, mtx, sub->unk24);
     }
     Model_Animate(sub);
     Model_Draw(sub);
@@ -139,14 +139,14 @@ void Boss6_Draw(void) {
     case 0x1f:
     case 0x21:
         t1 = 0x1b;
-        func_02025268(0x14, &t1, 1);
-        func_02025a94(w->unk1098, w->unk10C8);
+        NNS_G3dGeBufferOP_N(0x14, &t1, 1);
+        NNS_G3dGetCurrentMtx(w->unk1098, w->unk10C8);
     case 0x20:
         t2 = 2;
-        func_02025268(0x10, &t2, 1);
+        NNS_G3dGeBufferOP_N(0x10, &t2, 1);
         t3 = 0x1c;
-        func_02025268(0x14, &t3, 1);
-        func_02025a94(w->unk1044, w->unk1074);
+        NNS_G3dGeBufferOP_N(0x14, &t3, 1);
+        NNS_G3dGetCurrentMtx(w->unk1044, w->unk1074);
         break;
     }
     if (w->unkF68 < 0x238e) {

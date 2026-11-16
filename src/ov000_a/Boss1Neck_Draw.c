@@ -37,8 +37,8 @@ extern UnkStruct_022ca11c_4 *data_ov000_02369acc;
 
 void Model_Animate(UnkStruct_022ca11c_3 *p);
 void Model_Draw(UnkStruct_022ca11c_3 *p);
-void func_02025268(s32 a, void *p, s32 n);
-void func_02025a94(void *p, s32 a);
+void NNS_G3dGeBufferOP_N(s32 a, void *p, s32 n);
+void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
 void Boss1Neck_Draw(void) {
     UnkStruct_022ca11c *o = gTaskCurrent->unk10;

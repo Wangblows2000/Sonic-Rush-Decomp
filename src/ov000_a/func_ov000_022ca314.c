@@ -22,7 +22,7 @@ struct UnkStruct_022ca314 {
 
 extern s16 data_0206e470[];
 
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void func_ov000_022ca1ec(UnkStruct_022ca314 *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -45,5 +45,5 @@ void func_ov000_022ca314(UnkStruct_022ca314 *s) {
     sn = data_0206e470[((ang & 0xffff) >> 4) * 2];
     a2 = ang - 0x4000;
     s->unk14 -= (s32)(((s64)sn * 0x12c000 + 0x800) >> 12) >> 4;
-    func_02000e60(s->unk230, data_0206e470[((a2 & 0xffff) >> 4) * 2], data_0206e470[((a2 & 0xffff) >> 4) * 2 + 1]);
+    MTX_RotX33_(s->unk230, data_0206e470[((a2 & 0xffff) >> 4) * 2], data_0206e470[((a2 & 0xffff) >> 4) * 2 + 1]);
 }

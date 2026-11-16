@@ -23,8 +23,8 @@ extern s16 data_0206e470[];
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
 void Model_Animate(void *m);
 void Model_Draw(void *m);
 
@@ -44,11 +44,11 @@ void BossFPartD9_Draw(void) {
     else
         MTX_RotY33_(m->unk24, data_0206e470[0x800], data_0206e470[0x801]);
     idx = (s32)(w->unk20C & 0xffff) >> 4;
-    func_02000e98(mtx, SIN_IDX(idx), COS_IDX(idx));
-    func_02000f34(m->unk24, mtx, m->unk24);
+    MTX_RotZ33_(mtx, SIN_IDX(idx), COS_IDX(idx));
+    MTX_Concat33(m->unk24, mtx, m->unk24);
     idx = (s32)(w->unk20E & 0xffff) >> 4;
     MTX_RotY33_(mtx, SIN_IDX(idx), COS_IDX(idx));
-    func_02000f34(m->unk24, mtx, m->unk24);
+    MTX_Concat33(m->unk24, mtx, m->unk24);
     Model_Animate(m);
     Model_Draw(m);
 }

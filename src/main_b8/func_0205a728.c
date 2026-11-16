@@ -33,7 +33,7 @@ extern u16 data_02074a04[][3][8];
 void func_0205a654(void *w);
 u16 func_0205de50(s32 a, u16 b, s32 c);
 void func_02022270(s32 a, u16 b);
-void func_02004084(u16 *p);
+void G3X_SetEdgeColorTable(u16 *p);
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -68,5 +68,5 @@ void func_0205a728(UnkWork_0205a728 *w) {
         return;
     for (i = 0; i < 8; i++)
         buf[i] = func_0205de50(0, data_02074a04[data_022c4560.zone][data_022c4560.act][i], w->unk8ce);
-    func_02004084(buf);
+    G3X_SetEdgeColorTable(buf);
 }

@@ -45,13 +45,13 @@ extern s16 data_0206e470[];
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 UnkStruct_022f167c *func_ov001_02300c94(void);
-u16 func_020027a4(s32 y, s32 x);
-s32 func_02002094(s32 n, s32 d);
+u16 FX_Atan2(s32 y, s32 x);
+s32 FX_DivS32(s32 n, s32 d);
 void func_ov001_022fa94c(s32 p0, s32 p1, s32 p2, s32 p3);
 void func_ov001_022f1660(void);
 void func_ov001_022f1550(void);
 u8 *ExtraBoss_GetWork(void);
-void func_0201c070(void *pp, s32 a);
+void NNS_SndPlayerStopSeq(void *pp, s32 a);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -68,14 +68,14 @@ void func_ov001_022f167c(UnkStruct_022f167c *p) {
     s32 d;
     s32 idx;
 
-    ang = func_020027a4(t->unk1C - (p->unk1C + 0x19d50), t->unk18 - (p->unk18 - 0x10d60));
+    ang = FX_Atan2(t->unk1C - (p->unk1C + 0x19d50), t->unk18 - (p->unk18 - 0x10d60));
     if (ang < 0x4000)
         ang = 0x4000;
     else if (ang > 0xc000)
         ang = 0xc000;
     p->unk1C8--;
     if (p->unk1C8 > 0) {
-        ang = func_02002094((u16)(ang - 0x4000), 0xb6);
+        ang = FX_DivS32((u16)(ang - 0x4000), 0xb6);
         d = (ang << 13) - *a->unkE4;
         if (d > 0) {
             if (d >= 0x4000)
@@ -101,6 +101,6 @@ void func_ov001_022f167c(UnkStruct_022f167c *p) {
     o2->unk20 = q->unk144;
     q->unk14 = 1;
     o2->unk128 &= ~0x200;
-    func_0201c070(ExtraBoss_GetWork() + 0x33c, 0);
+    NNS_SndPlayerStopSeq(ExtraBoss_GetWork() + 0x33c, 0);
     Sound_PlaySeqArc(0, 0, 0xb4);
 }

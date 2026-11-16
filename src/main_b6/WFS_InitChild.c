@@ -25,7 +25,7 @@ void OS_RestoreInterrupts(u32 e);
 void func_0203c7dc(u32 a, u32 b, u32 c, u32 d);
 void DC_FlushRange(void *p, u32 size);
 void DC_WaitWriteBufferEmpty(void);
-void func_02014c70(void (*cb)(void));
+void WBT_InitChild(void (*cb)(void));
 void func_0203c870(void);
 
 void WFS_InitChild(u32 a, u32 b, u32 c, u32 d4) {
@@ -57,6 +57,6 @@ void WFS_InitChild(u32 a, u32 b, u32 c, u32 d4) {
     d->unkb04 = 0;
     DC_FlushRange(d, sizeof(UnkData_0203c4e8));
     DC_WaitWriteBufferEmpty();
-    func_02014c70(func_0203c870);
+    WBT_InitChild(func_0203c870);
     ctx->unkc = 1;
 }

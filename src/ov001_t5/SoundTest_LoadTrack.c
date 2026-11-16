@@ -36,16 +36,16 @@ extern const char *gSoundTestArchiveNameTable[];
 extern void *gSoundHeap;
 
 void Sound_ResetHeap(void);
-void func_0202a2f0(char *buf, const void *fmt, const char *s);
+void sprintf(char *buf, const void *fmt, const char *s);
 void func_02036854(char *buf);
-void func_0201e7cc(u8 a, void *b);
+void NNS_SndArcLoadGroup(u8 a, void *b);
 s32 File_Load(char *buf, s32 a);
 void func_02036820(s32 a);
 void func_020203bc(s32 a, void *b);
 void func_020201b0(void *a);
 void func_02020230(void *a, u16 id, s32 b);
 void Sound_PlaySeq(s32 a, u16 id);
-u8 *func_0201d534(u16 id);
+u8 *NNS_SndArcGetSeqParam(u16 id);
 void Sound_PlaySeqArc(s32 a, u8 b, u16 id);
 void func_020366f4(s32 a, u8 b, u16 id);
 void func_0201cf4c(s32 a, s32 b, s32 c, s32 d, s32 e, void (*fn)(void *), void *arg);
@@ -71,10 +71,10 @@ void SoundTest_LoadTrack(UnkStruct_022c93e0 *p, s32 idx) {
     p->unk1ae = 0;
     p->unk8 = 0;
     p->unkc = 0;
-    func_0202a2f0(buf, data_ov001_0231abc8, gSoundTestArchiveNameTable[e->unk29]);
+    sprintf(buf, data_ov001_0231abc8, gSoundTestArchiveNameTable[e->unk29]);
     if (e->unk29 == 0) {
         func_02036854(buf);
-        func_0201e7cc(e->unk2b, gSoundHeap);
+        NNS_SndArcLoadGroup(e->unk2b, gSoundHeap);
     } else {
         p->unk1b0 = File_Load(buf, -1);
         func_02036820(p->unk1b0);
@@ -91,7 +91,7 @@ void SoundTest_LoadTrack(UnkStruct_022c93e0 *p, s32 idx) {
             Sound_PlaySeq(0, e->id);
             p->unk4 = 0;
             p->unkc = 1;
-            d = func_0201d534(e->id);
+            d = NNS_SndArcGetSeqParam(e->id);
             if (d == NULL) {
                 p->unk10 = 0;
             } else {

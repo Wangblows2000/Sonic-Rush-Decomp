@@ -21,7 +21,7 @@ extern UnkStruct_0230587c *data_ov001_0231f5a8;
 extern void *gTaskCurrent;
 extern u32 gRandSeed;
 
-s32 func_0200203c(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
 void Task_Destroy(void *task);
 void AnimatorSprite_Draw(void *p);
 
@@ -39,8 +39,8 @@ void func_ov001_0230587c(void) {
     data_ov001_0231f5a8->timer--;
     if (data_ov001_0231f5a8->timer > 0) {
         r = data_ov001_0231f5a8->timer * 0x500;
-        x = ((func_0200203c(Rand(), r) - (r >> 1)) >> 12) + 0x80;
-        y = ((func_0200203c(Rand(), r) - (r >> 1)) >> 12) + 0x5b;
+        x = ((FX_ModS32(Rand(), r) - (r >> 1)) >> 12) + 0x80;
+        y = ((FX_ModS32(Rand(), r) - (r >> 1)) >> 12) + 0x5b;
     } else {
         Task_Destroy(gTaskCurrent);
         x = 0x80;

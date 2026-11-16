@@ -23,7 +23,7 @@ extern s16 data_0206e470[];
 void Model_Animate(UnkObj_022d592c *o);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov001_022d5694(UnkStruct_022d592c *p, s32 a, s32 b);
-void func_02025268(s32 a, s32 *b, s32 c);
+void NNS_G3dGeBufferOP_N(s32 a, s32 *b, s32 c);
 void Model_Draw(UnkObj_022d592c *o);
 
 #pragma thumb on
@@ -40,9 +40,9 @@ void func_ov001_022d592c(UnkStruct_022d592c *p, s32 x, s32 y) {
     o->sz = 0xe000;
     MTX_RotY33_(o->rot, data_0206e470[0], data_0206e470[1]);
     func_ov001_022d5694(p, p->unka8, 1);
-    func_02025268(0x11, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     Model_Draw(o);
     v = 1;
-    func_02025268(0x12, &v, 1);
+    NNS_G3dGeBufferOP_N(0x12, &v, 1);
 }
 #pragma thumb reset

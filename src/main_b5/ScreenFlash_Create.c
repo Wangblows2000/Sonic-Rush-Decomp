@@ -24,7 +24,7 @@ extern UnkCfg_02043f0c gScreenFlashDefaultTable;
 extern u16 *gBgPaletteRamTable[2];
 
 UnkTask_02043f0c *Task_Create(void (*fn)(void), void (*fn2)(void), s32 a, s32 b, s32 c, s32 size);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void ScreenFlash_Main(void);
 void ScreenFlash_Destructor(void);
@@ -39,7 +39,7 @@ void ScreenFlash_Create(UnkCfg_02043f0c *cfg) {
     if (gScreenFlashTask == NULL) {
         vu16 z;
         t = Task_Create(ScreenFlash_Main, ScreenFlash_Destructor, 0, 0x3e00, 3, 0x10);
-        if (t == (UnkTask_02043f0c *)func_02006abc(0))
+        if (t == (UnkTask_02043f0c *)OS_GetArenaLo(0))
             return;
         gScreenFlashTask = t;
         w = t->work;

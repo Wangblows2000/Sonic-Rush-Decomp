@@ -24,7 +24,7 @@ UnkStruct_EffObj *func_ov000_02332e30(UnkStruct_StageObj *arg, u32 f) {
     if (func_ov000_023270d8())
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

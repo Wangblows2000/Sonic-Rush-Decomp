@@ -40,8 +40,8 @@ extern s16 data_0206e470[];
 
 #define SIN_02348350(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_023558bc(UnkStruct_02348350 *w, s32 a, s32 b);
 BOOL func_ov000_023470ec(UnkStruct_02348350 *w);
@@ -64,9 +64,9 @@ void func_ov000_02348350(UnkStruct_02348350 *w) {
         }
     }
     if (!(w->unk58 & 1)) {
-        func_0201c070(w->unk388, 0);
-        func_0201c070(w->unk390, 0x20);
-        func_0201bf1c(w->unk390);
+        NNS_SndPlayerStopSeq(w->unk388, 0);
+        NNS_SndPlayerStopSeq(w->unk390, 0x20);
+        NNS_SndHandleReleaseSeq(w->unk390);
         w->unk54 |= 1;
         w->unk410 = 0;
         func_ov000_023558bc(w, w->unk34, -0x500);
@@ -79,9 +79,9 @@ void func_ov000_02348350(UnkStruct_02348350 *w) {
     }
     w->unk1 = 0;
     if (func_ov000_023470ec(w)) {
-        func_0201c070(w->unk388, 0);
-        func_0201c070(w->unk390, 0x20);
-        func_0201bf1c(w->unk390);
+        NNS_SndPlayerStopSeq(w->unk388, 0);
+        NNS_SndPlayerStopSeq(w->unk390, 0x20);
+        NNS_SndHandleReleaseSeq(w->unk390);
         w->unk54 |= 1;
         w->unk410 = 0;
         func_ov000_0234ab34(w);
@@ -89,9 +89,9 @@ void func_ov000_02348350(UnkStruct_02348350 *w) {
     }
     w->unk1 = ang;
     if (w->unk422 & 3) {
-        func_0201c070(w->unk388, 0);
-        func_0201c070(w->unk390, 0x20);
-        func_0201bf1c(w->unk390);
+        NNS_SndPlayerStopSeq(w->unk388, 0);
+        NNS_SndPlayerStopSeq(w->unk390, 0x20);
+        NNS_SndHandleReleaseSeq(w->unk390);
         if (w->unk5E & 0x10) {
             w->unk54 |= 1;
             w->unk410 = 0;
@@ -106,9 +106,9 @@ void func_ov000_02348350(UnkStruct_02348350 *w) {
         }
     }
     if (!(w->unk5E & 8) && w->unk334 != NULL) {
-        func_0201c070(w->unk388, 0);
-        func_0201c070(w->unk390, 0x20);
-        func_0201bf1c(w->unk390);
+        NNS_SndPlayerStopSeq(w->unk388, 0);
+        NNS_SndPlayerStopSeq(w->unk390, 0x20);
+        NNS_SndHandleReleaseSeq(w->unk390);
         w->unk54 |= 1;
         w->unk410 = 0;
         w->unk334(w);
@@ -158,8 +158,8 @@ void func_ov000_02348350(UnkStruct_02348350 *w) {
         break;
     case 0x20:
         if (w->unk5C & 8) {
-            func_0201c070(w->unk390, 0x20);
-            func_0201bf1c(w->unk390);
+            NNS_SndPlayerStopSeq(w->unk390, 0x20);
+            NNS_SndHandleReleaseSeq(w->unk390);
             Player_SetAnimation(w, 0x1a);
             w->unk5C |= 4;
         }

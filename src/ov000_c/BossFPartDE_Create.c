@@ -58,7 +58,7 @@ void func_020212e0(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-s32 func_02025e8c(void *p);
+s32 NNS_G3dGetTex(void *p);
 
 UnkStruct_022f92dc *BossFPartDE_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
@@ -111,7 +111,7 @@ UnkStruct_022f92dc *BossFPartDE_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         s = &w->unk224[i];
         Model_Init(s, 0);
         Model_SetResource(s, w->unk4CC, 0);
-        Model_SetAnimation(s, 2, w->unk4D0, 0, func_02025e8c(w->unk4CC));
+        Model_SetAnimation(s, 2, w->unk4D0, 0, NNS_G3dGetTex(w->unk4CC));
         s->unk10E |= 4;
         s->unk18 = s->unk1C = s->unk20 = 0x34cc;
     }

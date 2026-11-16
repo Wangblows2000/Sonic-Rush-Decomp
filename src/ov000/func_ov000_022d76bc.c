@@ -17,7 +17,7 @@ typedef struct UnkStruct_022d76bc {
 extern UnkStruct_022d76bc_2 *gPlayers;
 extern u32 gRandSeed;
 
-u16 func_020027a4(s32 a, s32 b);
+u16 FX_Atan2(s32 a, s32 b);
 void func_ov000_022d7630(void);
 
 static inline u16 Rand(void) {
@@ -26,7 +26,7 @@ static inline u16 Rand(void) {
 }
 
 void func_ov000_022d76bc(UnkStruct_022d76bc *s) {
-    s->unk258 = func_020027a4(gPlayers->unk17C, gPlayers->unk184);
+    s->unk258 = FX_Atan2(gPlayers->unk17C, gPlayers->unk184);
     s->unk258 += (Rand() & 0xf) * 0x2aa - 0x1555;
     s->func = func_ov000_022d7630;
 }

@@ -46,17 +46,17 @@ typedef struct {
 } UnkStrm_0201fcc4;
 
 UnkStrm_0201fcc4 *func_0201ffd8(void *handle, u32 a, u32 b);
-s32 func_0201d140(u32 idx, void *buf, u32 size, u32 pos);
+s32 NNS_SndArcReadFile(u32 idx, void *buf, u32 size, u32 pos);
 void func_0201ff9c(UnkStrm_0201fcc4 *s);
 UnkFileID_0201fcc4 func_0201d120(void);
-BOOL func_0200bb70(void *file, UnkFileID_0201fcc4 id);
+BOOL FS_OpenFileFast(void *file, UnkFileID_0201fcc4 id);
 u32 func_0201d1ec(u32 fileId);
 void NNSi_SndFaderInit(NNSSndFader *f);
-void func_020205a0(NNSSndFader *f, s32 target, s32 frame);
+void NNSi_SndFaderSet(NNSSndFader *f, s32 target, s32 frame);
 BOOL func_0201fb10(UnkStrm_0201fcc4 *s, s32 ch, void *p);
-void func_0200bad8(void *file);
+void FS_CloseFile(void *file);
 u32 _u32_div_f(u32 a, u32 b);
-BOOL func_0201c4e4(UnkStrm_0201fcc4 *s, s32 format, u32 data, u32 rate, s32 timer, s32 arg5, void *arg6, void *arg7);
+BOOL NNS_SndStrmSetup(UnkStrm_0201fcc4 *s, s32 format, u32 data, u32 rate, s32 timer, s32 arg5, void *arg6, void *arg7);
 void func_0201f704(void);
 void func_0201fac8(UnkStrm_0201fcc4 *s);
 void func_0201c3a0(UnkStrm_0201fcc4 *s, s32 ch, s32 pan);
@@ -70,12 +70,12 @@ BOOL func_0201fcc4(void *handle, UnkStrmInfo_0201fcc4 *info, u32 a, u32 b, u32 s
 
     s = func_0201ffd8(handle, a, b);
     if (s == NULL) return FALSE;
-    if (func_0201d140(info->fileId, s->unkA4, 0x40, 0) != 0x40) {
+    if (NNS_SndArcReadFile(info->fileId, s->unkA4, 0x40, 0) != 0x40) {
         func_0201ff9c(s);
         return FALSE;
     }
     id = func_0201d120();
-    if (!func_0200bb70(s->file, id)) {
+    if (!FS_OpenFileFast(s->file, id)) {
         func_0201ff9c(s);
         return FALSE;
     }
@@ -101,7 +101,7 @@ BOOL func_0201fcc4(void *handle, UnkStrmInfo_0201fcc4 *info, u32 a, u32 b, u32 s
     s->unk154 = 0;
     s->unk150 = info->volume;
     NNSi_SndFaderInit(&s->fader);
-    func_020205a0(&s->fader, 0x7F00, 1);
+    NNSi_SndFaderSet(&s->fader, 0x7F00, 1);
     switch (s->format) {
     case 0:
         fmt = 0;
@@ -116,13 +116,13 @@ BOOL func_0201fcc4(void *handle, UnkStrmInfo_0201fcc4 *info, u32 a, u32 b, u32 s
     if (ch > s->unk120) ch = s->unk120;
     s->unk10C_6 = (ch == 1);
     if (!func_0201fb10(s, ch, s->unk122)) {
-        func_0200bad8(s->file);
+        FS_CloseFile(s->file);
         func_0201ff9c(s);
         return FALSE;
     }
-    if (!func_0201c4e4(s, fmt, s->unk128, _u32_div_f(s->unk12C * ch, s->unk120), s->timer, 4, func_0201f704, s)) {
+    if (!NNS_SndStrmSetup(s, fmt, s->unk128, _u32_div_f(s->unk12C * ch, s->unk120), s->timer, 4, func_0201f704, s)) {
         func_0201fac8(s);
-        func_0200bad8(s->file);
+        FS_CloseFile(s->file);
         func_0201ff9c(s);
         return FALSE;
     }

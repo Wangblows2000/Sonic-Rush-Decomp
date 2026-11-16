@@ -5,8 +5,8 @@ extern void *data_02080f14;
 extern u16 data_02080f10;
 
 void func_0201853c(u32 a);
-s32 func_02011b50(void *buf, void (*cb)(UnkCallback_wh *), u16 dma);
-s32 func_0201154c(void (*cb)(UnkCallback_wh *));
+s32 WM_Initialize(void *buf, void (*cb)(UnkCallback_wh *), u16 dma);
+s32 WM_SetIndCallback(void (*cb)(UnkCallback_wh *));
 void func_0201a014(void);
 
 s32 func_02018a50(void)
@@ -20,16 +20,16 @@ s32 func_02018a50(void)
     func_0201853c(0xa);
     if (data_02080f1c->unk1320 == 0) {
         do {
-            r = func_02011b50(data_02080f14, data_02080f18->unk508, data_02080f10);
+            r = WM_Initialize(data_02080f14, data_02080f18->unk508, data_02080f10);
         } while (r == 4);
         if (r != 2) {
             return 8;
         }
-        func_0201154c(data_02080f18->unk508);
+        WM_SetIndCallback(data_02080f18->unk508);
         data_02080f18->unk50d = 1;
         return 0;
     }
-    func_0201154c(data_02080f18->unk508);
+    WM_SetIndCallback(data_02080f18->unk508);
     data_02080f18->unk50d = 1;
     func_0201a014();
     return 0;

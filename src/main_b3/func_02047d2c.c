@@ -20,23 +20,23 @@ extern UnkStruct_022c4560 data_022c4560;
 extern void *gMainHeap;
 
 void ObjVram_Free(s32 a, void *b);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 void Model_Release(void *p);
-void func_0201bf1c(void *p);
+void NNS_SndHandleReleaseSeq(void *p);
 void func_02053bec(s32 a);
 void NaviMsg_Destroy(void);
 void func_02044cf0(void);
 void func_0205a3f0(void);
 void func_0205a4ec(s32 a);
-void func_0201b348(void);
+void NNS_SndStopSoundAll(void);
 void Sound_ResetHeap(void);
 
 #pragma thumb on
 static inline void Free_02047d2c(u8 *blk) {
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;
@@ -63,7 +63,7 @@ void func_02047d2c(UnkTask_02047d2c *t) {
     for (i = 0; i < 0x33; i++)
         ObjVram_Free(0, w->spr[i].unk34);
     Model_Release(w->obj14);
-    func_0201bf1c(w->unk1634);
+    NNS_SndHandleReleaseSeq(w->unk1634);
     if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2) {
         func_02053bec(1);
         NaviMsg_Destroy();
@@ -72,7 +72,7 @@ void func_02047d2c(UnkTask_02047d2c *t) {
     if (data_022c4560.unk10 != 2)
         func_0205a3f0();
     func_0205a4ec(0);
-    func_0201b348();
+    NNS_SndStopSoundAll();
     Sound_ResetHeap();
 }
 #pragma thumb reset

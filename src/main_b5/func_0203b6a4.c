@@ -13,7 +13,7 @@ typedef struct {
 extern UnkStruct_022b89e8 data_022b89e8;
 
 s32 func_0203af98(u32 n);
-void func_0201854c(u32 n);
+void MB_DisconnectChild(u32 n);
 void func_0203b09c(s32 a);
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
@@ -37,7 +37,7 @@ void func_0203b6a4(void) {
             data_022b89e8.unka &= mask;
             data_022b89e8.unkc &= mask;
             OS_RestoreInterrupts(e);
-            func_0201854c(i);
+            MB_DisconnectChild(i);
         }
     }
 }

@@ -36,7 +36,7 @@ extern UnkStruct_02346b10 *gPlayers[];
 
 void func_ov000_02326f48(UnkStruct_02346b10 *w, s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void ScreenShake_Start(s32 a);
 void func_ov000_02332448(UnkStruct_02346b10 *w, s32 a, s32 b);
 void func_ov000_02331f5c(UnkStruct_02346b10 *w, s32 a, s32 b);
@@ -59,7 +59,7 @@ void func_ov000_02346b10(UnkStruct_02346b10 *w) {
         } else {
             Sound_PlaySeqArcEx(w->unk384, 0, 0x17);
         }
-        func_0201c070(w->unk38C, 0);
+        NNS_SndPlayerStopSeq(w->unk38C, 0);
         w->unk3D1 = 0xc;
         w->unk32C |= 0x80;
         ScreenShake_Start(4);

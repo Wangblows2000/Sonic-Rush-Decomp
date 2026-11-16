@@ -19,7 +19,7 @@ extern char data_02078ab8[];
 
 void WH_SetError(s32 r);
 void WH_ChangeSysState(s32 a);
-s32 func_02011598(s32 a, u16 b);
+s32 WM_Disconnect(s32 a, u16 b);
 void WH_CallbackForWFS(UnkRes_02040048 *r);
 BOOL WH_StateInStartParentMP(void);
 
@@ -37,7 +37,7 @@ void WH_StateOutStartParent(UnkRes_02040048 *r) {
         if (data_022c197c != NULL)
             data_022c197c(data_02078a60, r->unk10);
         if (data_022c1978 != NULL && !data_022c1978(r)) {
-            ret = func_02011598(0, r->unk10);
+            ret = WM_Disconnect(0, r->unk10);
             if (ret == 2)
                 return;
             WH_SetError(ret);

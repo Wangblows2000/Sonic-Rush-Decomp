@@ -8,15 +8,15 @@ typedef struct {
 
 extern u32 data_0207799c;
 
-void func_0200f160(void);
-s32 func_0200f0a0(UnkRtcTime *t);
+void RTC_Init(void);
+s32 RTC_GetTime(UnkRtcTime *t);
 
 u16 func_02010f7c(void)
 {
     if (data_0207799c == 0x10000) {
         UnkRtcTime t;
-        func_0200f160();
-        if (func_0200f0a0(&t) == 0) {
+        RTC_Init();
+        if (RTC_GetTime(&t) == 0) {
             data_0207799c = (u16)(t.second + (t.minute << 8));
         }
     }

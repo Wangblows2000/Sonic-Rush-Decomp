@@ -31,7 +31,7 @@ typedef struct {
 
 extern UnkStruct_022b8be0 data_022b8be0;
 
-void func_0201544c(u32 a, u32 b);
+void WBT_SetPacketSize(u32 a, u32 b);
 BOOL func_0203d8b4(u8 type, u16 mask, u32 v, s32 flag);
 
 void func_0203d644(void) {
@@ -63,7 +63,7 @@ void func_0203d644(void) {
         z = 0;
         s->f420 = z;
         m->unk28 = v;
-        func_0201544c(v, w);
+        WBT_SetPacketSize(v, w);
         if (s->m428 == 0)
             return;
         if (!func_0203d8b4(1, s->m428, z, z))

@@ -28,7 +28,7 @@ typedef struct {
 extern UnkTask_022e5c58 *gTaskCurrent;
 extern UnkStruct_0208922c gDisplayMain;
 
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov001_022e7308(void);
@@ -50,7 +50,7 @@ void func_ov001_022e5c58(void) {
     w->unk74 = 0;
     w->sub->unk5c = 1;
     SetPlane_022e5c58(GetPlane_022e5c58() & ~4);
-    func_02002ab0(1, 3, 1);
+    GX_SetGraphicsMode(1, 3, 1);
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x484;
     zero = 0;
     MIi_CpuClear32(zero, (void *)0x6002000, 0x800);

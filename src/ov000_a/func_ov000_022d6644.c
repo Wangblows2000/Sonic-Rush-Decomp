@@ -32,14 +32,14 @@ struct UnkStruct_022d6644 {
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-void func_0201c070(s32 a, s32 b);
-void func_0201bf1c(s32 a);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
+void NNS_SndHandleReleaseSeq(s32 a);
 void Boss3PartCC_State_Unk_ov000_022d6568(UnkStruct_022d6644 *s);
 
 void func_ov000_022d6644(UnkStruct_022d6644 *s) {
     s->unk30 = 0;
     s->unk14 = 0x20000;
-    func_0201c070(s->unk2C0, 0x20);
-    func_0201bf1c(s->unk2C0);
+    NNS_SndPlayerStopSeq(s->unk2C0, 0x20);
+    NNS_SndHandleReleaseSeq(s->unk2C0);
     s->func = Boss3PartCC_State_Unk_ov000_022d6568;
 }

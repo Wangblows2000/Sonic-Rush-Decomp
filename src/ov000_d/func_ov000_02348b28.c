@@ -31,7 +31,7 @@ extern s16 data_0206e470[];
 
 void func_ov000_0234ab34(UnkStruct_02348b28 *w);
 void func_ov000_0234a064(UnkStruct_02348b28 *w, u8 a);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov000_02348b28(UnkStruct_02348b28 *w) {
     s32 i;
@@ -54,7 +54,7 @@ void func_ov000_02348b28(UnkStruct_02348b28 *w) {
     if (w->unk3DC == NULL) {
         return;
     }
-    i = (s32)((u16)(func_020027a4((w->unk3DC->unk14 - w->unk14) >> 8, (w->unk3DC->unk10 - w->unk10) >> 8) + (w->unk5 << 8)) & 0xffff) >> 4;
+    i = (s32)((u16)(FX_Atan2((w->unk3DC->unk14 - w->unk14) >> 8, (w->unk3DC->unk10 - w->unk10) >> 8) + (w->unk5 << 8)) & 0xffff) >> 4;
     w->unk2E = data_0206e470[(u32)((i << 1) + 1)] >> 1;
     w->unk30 = data_0206e470[(u32)(i << 1)] >> 1;
     if (w->unk2E < 0) {

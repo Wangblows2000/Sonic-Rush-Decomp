@@ -5,8 +5,8 @@ extern UnkWork_02051a74 *gSysSound;
 typedef struct { s32 unk0; } UnkStruct_022c4560;
 extern UnkStruct_022c4560 data_022c4560;
 
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void Sound_PlaySeqArc(void *a, s32 b, s32 c);
 
 #pragma thumb on
@@ -105,8 +105,8 @@ void SysSound_StartSE(s32 n) {
         return;
     }
     if (gSysSound->snd[2] != NULL) {
-        func_0201c070(&gSysSound->snd[2], 0);
-        func_0201bf1c(&gSysSound->snd[2]);
+        NNS_SndPlayerStopSeq(&gSysSound->snd[2], 0);
+        NNS_SndHandleReleaseSeq(&gSysSound->snd[2]);
     }
     Sound_PlaySeqArc(&gSysSound->snd[2], a, b);
 }

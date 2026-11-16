@@ -16,7 +16,7 @@ UnkStruct_EffObj *func_ov000_0232ab9c(UnkStruct_StageObj *arg, s32 x, s32 y, u32
     if (idx >= 10)
         return NULL;
     task = Task_Create(StageObj_Main, func_ov000_0232a764, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

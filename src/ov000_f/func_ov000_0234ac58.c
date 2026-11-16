@@ -62,8 +62,8 @@ void Player_SetAnimation(UnkStruct_0234ac58 *w, s32 state);
 void func_ov000_0234a288(UnkStruct_0234ac58 *w);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void func_ov000_0232a11c(UnkStruct_0234ac58 *w, s32 a, s32 b, u16 c);
 
 static inline u16 Rand_0234ac58(void) {
@@ -105,8 +105,8 @@ void func_ov000_0234ac58(UnkStruct_0234ac58 *w) {
     } else {
         Sound_PlaySeqArcEx(w->unk384, 0, 0x13);
     }
-    func_0201c070(w->unk390, 0x20);
-    func_0201bf1c(w->unk390);
+    NNS_SndPlayerStopSeq(w->unk390, 0x20);
+    NNS_SndHandleReleaseSeq(w->unk390);
     if (!(w->unk32C & 0x4000000)) {
         return;
     }

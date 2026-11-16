@@ -13,7 +13,7 @@ extern u8 gGameLanguage;
 UnkTask_02058364 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_02058280(void);
 void func_020582e4(void);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void func_02058218(UnkWork_02058364 *w);
 void func_020574d8(UnkWork_02058364 *w);
@@ -28,7 +28,7 @@ void func_02058364(void) {
 
     t = Task_Create(func_02058280, func_020582e4, 0, 0x3efe, 3, sizeof(UnkWork_02058364));
     data_022c467c = t;
-    if (t != (UnkTask_02058364 *)func_02006abc(0)) {
+    if (t != (UnkTask_02058364 *)OS_GetArenaLo(0)) {
         w = t->work;
         zero = 0;
         MIi_CpuClear16(zero, w, sizeof(UnkWork_02058364));

@@ -20,7 +20,7 @@ typedef struct {
 } UnkStruct_0235ad8c_Task;
 
 UnkStruct_0235ad8c_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
-void *func_02006abc(u32 arg);
+void *OS_GetArenaLo(u32 arg);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 void AnimatorSprite_Init(UnkStruct_0235ad8c_Spr *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
 void func_ov000_0235ad20(void);
@@ -31,7 +31,7 @@ void func_ov000_0235ad8c(s32 a, s32 b, void *res, void *f0, void *f1) {
     vu16 zero;
 
     t = Task_Create(func_ov000_0235ad20, NULL, 0, 0x3000, 2, sizeof(UnkStruct_0235ad8c));
-    if (t == func_02006abc(0))
+    if (t == OS_GetArenaLo(0))
         return;
     w = t->work;
     zero = 0;

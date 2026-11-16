@@ -10,18 +10,18 @@ typedef struct {
 extern u8 data_02084798[];
 extern u8 *data_02083f48;
 
-void func_02006698(void *m);
-void func_02006628(void *m);
+void OS_LockMutex(void *m);
+void OS_UnlockMutex(void *m);
 void func_0201c458(void *s);
-void func_0200b9bc(void *f);
+void FS_CancelFile(void *f);
 void func_0201fb50(UnkStruct_0201fbc0 *s);
 
 void func_0201fbc0(UnkStruct_0201fbc0 *s) {
-    func_02006698(data_02084798);
-    if (data_02083f48 != NULL) func_02006698(data_02083f48 + 0x498);
+    OS_LockMutex(data_02084798);
+    if (data_02083f48 != NULL) OS_LockMutex(data_02083f48 + 0x498);
     if (s->unk10C_1) func_0201c458(s);
-    if (s->unk10C_0) func_0200b9bc(s->file);
+    if (s->unk10C_0) FS_CancelFile(s->file);
     func_0201fb50(s);
-    func_02006628(data_02084798);
-    if (data_02083f48 != NULL) func_02006628(data_02083f48 + 0x498);
+    OS_UnlockMutex(data_02084798);
+    if (data_02083f48 != NULL) OS_UnlockMutex(data_02083f48 + 0x498);
 }

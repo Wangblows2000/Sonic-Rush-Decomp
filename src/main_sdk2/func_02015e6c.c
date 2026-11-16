@@ -3,8 +3,8 @@
 
 #define ENTRY_02015e6c(k) (((UnkStruct_02080f1c *)((u8 *)data_02080f1c + (k) * sizeof(UnkEntry1788_wh)))->unk1788[0])
 
-u16 *func_02011210(void *hdr, u16 aid);
-void func_02015f14(const u16 *data, u16 aid);
+u16 *WM_ReadMPData(void *hdr, u16 aid);
+void MBi_CommParentRecvDataPerChild(const u16 *data, u16 aid);
 
 void func_02015e6c(void *hdr)
 {
@@ -15,9 +15,9 @@ void func_02015e6c(void *hdr)
         }
     }
     for (i = 1; i <= 15; i++) {
-        u16 *d = func_02011210(hdr, i);
+        u16 *d = WM_ReadMPData(hdr, i);
         if (d != NULL && *d != 0xffff && *d != 0) {
-            func_02015f14(d, i);
+            MBi_CommParentRecvDataPerChild(d, i);
         }
     }
 }

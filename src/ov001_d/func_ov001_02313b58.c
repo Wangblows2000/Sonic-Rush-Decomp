@@ -14,7 +14,7 @@ extern UnkStruct_02313b58 *data_ov001_0231f694;
 extern char data_ov001_0231eef0[];
 
 void Model_Release(void *o);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -36,7 +36,7 @@ void func_ov001_02313b58(void) {
         func_0202566c(func_02021264(&arc, 0));
         func_020212e0(&arc);
         p = data_ov001_0231f694->res;
-        if ((u8 *)func_02006abc(0) != p) {
+        if ((u8 *)OS_GetArenaLo(0) != p) {
             p -= 0x20;
             size = *(u32 *)p;
             if (*(u32 *)(p + size - 4) == 0x02467531) {
@@ -49,7 +49,7 @@ void func_ov001_02313b58(void) {
         data_ov001_0231f694->res = NULL;
     }
     p = (u8 *)data_ov001_0231f694;
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         p -= 0x20;
         size = *(u32 *)p;
         if (*(u32 *)(p + size - 4) == 0x02467531) {

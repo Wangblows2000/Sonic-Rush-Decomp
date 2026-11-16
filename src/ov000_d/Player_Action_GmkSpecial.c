@@ -38,7 +38,7 @@ void Player_State_GmkSpecial(void);
 void Player_ResetGimmickState(UnkStruct_02350968 *w);
 void func_ov000_0234c644(UnkStruct_02350968 *w);
 void Player_SetAnimation(UnkStruct_02350968 *w, s32 a);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void Player_Action_GmkSpecial(UnkStruct_02350968 *w, UnkStruct_02350968 *o) {
@@ -62,7 +62,7 @@ void Player_Action_GmkSpecial(UnkStruct_02350968 *w, UnkStruct_02350968 *o) {
     w->unk34 = w->unk2E + w->unk30;
     w->unk2E = 0;
     w->unk30 = 0;
-    w->unk3F8 = func_020027a4(o->unk14 - w->unk14, o->unk10 - w->unk10);
+    w->unk3F8 = FX_Atan2(o->unk14 - w->unk14, o->unk10 - w->unk10);
     w->unk3F8 += w->unk5 << 8;
     if (w->unk3F8 < 0x4000) {
         w->unk3F8 += 0x10000;

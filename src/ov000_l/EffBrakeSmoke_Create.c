@@ -42,7 +42,7 @@ UnkWork_02333694 *EffBrakeSmoke_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s3
 
     a = 0;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkWork_02333694));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

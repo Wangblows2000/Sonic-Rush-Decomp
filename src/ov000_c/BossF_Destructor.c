@@ -51,7 +51,7 @@ static inline void FreeRes(void *p) {
     u32 size;
     vu32 fill;
 
-    if ((u8 *)func_02006abc(0) != q) {
+    if ((u8 *)OS_GetArenaLo(0) != q) {
         q -= 0x20;
         size = *(u32 *)q;
         if (*(u32 *)(q + size - 4) == 0x02467531) {

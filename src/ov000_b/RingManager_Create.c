@@ -99,7 +99,7 @@ UnkStruct_0235c238 *RingManager_Create(void) {
 
     task = Task_Create(RingManager_Main, RingManager_Destructor, 0, 0x3000, 2, sizeof(UnkStruct_0235c238));
     gRingManagerTask = task;
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

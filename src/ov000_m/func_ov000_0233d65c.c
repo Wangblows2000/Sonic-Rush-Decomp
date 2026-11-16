@@ -18,7 +18,7 @@ void func_ov000_0233d4bc(UnkStruct_0233d65c *w);
 void func_ov000_0233d588(UnkStruct_0233d65c *w);
 void func_ov000_0233cfd8(UnkStruct_0233d65c *w, s32 i);
 void func_ov000_0233cd54(UnkStruct_0233d65c *w, s32 i);
-void func_02007318(void *p);
+void OS_CancelVAlarm(void *p);
 
 void func_ov000_0233d65c(void) {
     UnkStruct_0233d65c *w;
@@ -65,7 +65,7 @@ void func_ov000_0233d65c(void) {
         case 2:
             if (prev == 1) {
                 w->flags |= 0x40000 << i;
-                func_02007318(w->unkC[i]);
+                OS_CancelVAlarm(w->unkC[i]);
             }
             if (prev != 2 || force)
                 func_ov000_0233cd54(w, i);

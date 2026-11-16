@@ -27,7 +27,7 @@ extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_StageObj *gPlayers;
 extern s16 data_ov000_02364068[][10];
 
-void func_020221fc(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void NNS_G3dGlbPolygonAttr(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void BossFPartDE_State_Unk_ov000_022f58ac(void);
 
 static inline BOOL IsMode23(void) {
@@ -82,7 +82,7 @@ void BossFPartDE_State_Unk_ov000_022f58cc(UnkStruct_022f58cc *w) {
         w->unk218 = 0;
     if (w->unk35C > 0x34000)
         w->unk35C = 0x34000;
-    func_020221fc(0, 0, 2, 0, 0xc, 0);
+    NNS_G3dGlbPolygonAttr(0, 0, 2, 0, 0xc, 0);
     w->unk4A0 = 1;
     w->unk4A4 = 1;
     w->base.unk68 = BossFPartDE_State_Unk_ov000_022f58ac;

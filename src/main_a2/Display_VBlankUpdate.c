@@ -22,8 +22,8 @@ extern u16 data_0208f78e[];
 
 void DC_StoreRange(void *p, u32 size);
 void DC_WaitWriteBufferEmpty(void);
-void func_02007da4(u32 dma, const void *src, volatile void *dst, u32 size);
-void func_02007d2c(u32 dma, const void *src, volatile void *dst, u32 size);
+void MI_DmaCopy32(u32 dma, const void *src, volatile void *dst, u32 size);
+void MI_DmaCopy16(u32 dma, const void *src, volatile void *dst, u32 size);
 void GXx_SetMasterBrightness_(volatile u16 *reg, s32 brightness);
 void Oam_Upload(u32 engine);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
@@ -33,8 +33,8 @@ void ScreenTransfer_Flush(void);
 void VRAMTransfer_Flush(void);
 void Task_RunVBlank(void);
 void Task_FreeDestroyed(void);
-void func_0201b3a0(void);
-void func_02007b3c(u32 dma);
+void NNS_SndMain(void);
+void MI_WaitDma(u32 dma);
 
 void Display_VBlankUpdate(void) {
     u32 i;
@@ -42,25 +42,25 @@ void Display_VBlankUpdate(void) {
     vu16 z;
     DC_StoreRange(&gDisplayMain, sizeof(UnkDisp_0203005c));
     DC_WaitWriteBufferEmpty();
-    func_02007da4(3, gDisplayMain.bgcnt, (vu32 *)0x04000010, 0x10);
-    func_02007da4(3, gDisplayMain.bgofs, (vu32 *)0x04000040, 0xC);
+    MI_DmaCopy32(3, gDisplayMain.bgcnt, (vu32 *)0x04000010, 0x10);
+    MI_DmaCopy32(3, gDisplayMain.bgofs, (vu32 *)0x04000040, 0xC);
     *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0xE000) | (gDisplayMain.dispMode << 13);
-    func_02007d2c(3, gDisplayMain.win, (vu16 *)0x04000050, 6);
+    MI_DmaCopy16(3, gDisplayMain.win, (vu16 *)0x04000050, 6);
     GXx_SetMasterBrightness_((vu16 *)0x0400006C, gDisplayMain.brightness);
     *(vu16 *)0x0400004C = gDisplayMain.mosaic;
-    func_02007da4(3, gDisplayMain.bgAffine, (vu32 *)0x04000020, 0x10);
-    func_02007da4(3, gDisplayMain.unk38, (vu32 *)0x04000030, 0x10);
+    MI_DmaCopy32(3, gDisplayMain.bgAffine, (vu32 *)0x04000020, 0x10);
+    MI_DmaCopy32(3, gDisplayMain.unk38, (vu32 *)0x04000030, 0x10);
     Oam_Upload(0);
     DC_StoreRange(&gDisplaySub, sizeof(UnkDisp_0203005c));
     DC_WaitWriteBufferEmpty();
-    func_02007da4(3, gDisplaySub.bgcnt, (vu32 *)0x04001010, 0x10);
-    func_02007da4(3, gDisplaySub.bgofs, (vu32 *)0x04001040, 0xC);
+    MI_DmaCopy32(3, gDisplaySub.bgcnt, (vu32 *)0x04001010, 0x10);
+    MI_DmaCopy32(3, gDisplaySub.bgofs, (vu32 *)0x04001040, 0xC);
     *(vu32 *)0x04001000 = (*(vu32 *)0x04001000 & ~0xE000) | (gDisplaySub.dispMode << 13);
-    func_02007d2c(3, gDisplaySub.win, (vu16 *)0x04001050, 6);
+    MI_DmaCopy16(3, gDisplaySub.win, (vu16 *)0x04001050, 6);
     GXx_SetMasterBrightness_((vu16 *)0x0400106C, gDisplaySub.brightness);
     *(vu16 *)0x0400104C = gDisplaySub.mosaic;
-    func_02007da4(3, gDisplaySub.bgAffine, (vu32 *)0x04001020, 0x10);
-    func_02007da4(3, gDisplaySub.unk38, (vu32 *)0x04001030, 0x10);
+    MI_DmaCopy32(3, gDisplaySub.bgAffine, (vu32 *)0x04001020, 0x10);
+    MI_DmaCopy32(3, gDisplaySub.unk38, (vu32 *)0x04001030, 0x10);
     Oam_Upload(1);
     for (i = 0, c = data_02087cdc; i < 2; i++, c++) {
         if (gSystemFlags & (0x400 << i)) {
@@ -74,6 +74,6 @@ void Display_VBlankUpdate(void) {
     Task_FreeDestroyed();
     z = 0;
     MIi_CpuClear16(z, data_0208f78e, 0x40);
-    func_0201b3a0();
-    func_02007b3c(3);
+    NNS_SndMain();
+    MI_WaitDma(3);
 }

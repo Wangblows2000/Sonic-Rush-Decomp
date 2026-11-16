@@ -28,9 +28,9 @@ extern s16 data_0206e470[];
 
 s16 ObjSpd_UpSet(s32 a, s32 b, s32 c);
 void Sound_PlaySeqArcEx(void *a, s32 b, s32 c);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *out);
+void MTX_Concat33(void *a, void *b, void *out);
 
 void Crane_State_Unk_ov000_02305ea0(UnkStruct_02305ea0 *p) {
     u8 mtx[0x28];
@@ -91,9 +91,9 @@ void Crane_State_Unk_ov000_02305ea0(UnkStruct_02305ea0 *p) {
             }
         }
     }
-    func_02000dfc(obj + 0x24);
+    MTX_Identity33_(obj + 0x24);
     MTX_RotY33_(mtx, data_0206e470[(((u16)p->unkC & 0xffff) >> 4) * 2], data_0206e470[(((u16)p->unkC & 0xffff) >> 4) * 2 + 1]);
-    func_02000f34(obj + 0x24, mtx, obj + 0x24);
+    MTX_Concat33(obj + 0x24, mtx, obj + 0x24);
     v = p->unkC & 0xffff;
     if (v < 0xc000 && v < 0x4000) {
         p->unk5C |= 1;

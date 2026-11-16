@@ -68,15 +68,15 @@ typedef struct {
 extern UnkData_0203cc68 data_022b9020;
 extern UnkCtx_0203cc68 data_022b8be0;
 
-s32 func_020154f8(s32 v);
+s32 WBT_AidbitmapToAid(s32 v);
 UnkNode_0203cc68 *func_0203d518(UnkData_0203cc68 *s, u32 a, u32 len);
 UnkNode_0203cc68 *func_0203d49c(UnkData_0203cc68 *s, u32 a, u32 len);
 UnkNode_0203cc68 *func_0203d464(UnkData_0203cc68 *s, u32 id);
-void func_02015290(u32 id);
+void WBT_UnregisterBlock(u32 id);
 void func_0203d31c(UnkData_0203cc68 *s, UnkNode_0203cc68 *n);
 void func_0203db90(void);
-BOOL func_0200b930(void *f, u32 pos, u32 whence);
-void func_0200b9ac(void *f, void *buf, u32 size);
+BOOL FS_SeekFile(void *f, u32 pos, u32 whence);
+void FS_ReadFileAsync(void *f, void *buf, u32 size);
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
 
@@ -92,7 +92,7 @@ void func_0203cc68(UnkArg_0203cc68 *arg) {
     UnkData_0203cc68 *d;
     s32 off;
 
-    idx = func_020154f8(arg->unka);
+    idx = WBT_AidbitmapToAid(arg->unka);
     if (arg->unk0 != 12)
         return;
     switch (arg->unk4) {
@@ -138,7 +138,7 @@ void func_0203cc68(UnkArg_0203cc68 *arg) {
                 n->unk80--;
                 if (n->unk80 <= 0) {
                     n->unk84 = 0;
-                    func_02015290(p->w4);
+                    WBT_UnregisterBlock(p->w4);
                     func_0203d31c(d, n);
                     func_0203db90();
                 }
@@ -205,8 +205,8 @@ void func_0203cc68(UnkArg_0203cc68 *arg) {
         n->unk9c = k;
         n->unk98 = k;
         n->unka0[k] = a & ~0x1ff;
-        func_0200b930(n->file38, a & ~0x1ff, 0);
-        func_0200b9ac(n->file38, n->bufc0[k], 0x400);
+        FS_SeekFile(n->file38, a & ~0x1ff, 0);
+        FS_ReadFileAsync(n->file38, n->bufc0[k], 0x400);
         break;
     }
     }

@@ -83,7 +83,7 @@ extern u8 gGameLanguage;
 UnkTask_02055918 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void PauseMenu_Main(void);
 void PauseMenu_Destructor(void);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void System_Freeze(s32 a, s32 b, s32 c);
@@ -94,7 +94,7 @@ void ObjAction_Load2dBAC(void *bgA, void *bgB, void *name, u32 pal, void *s, voi
 void AnimatorSprite_SetAnimation(void *s, u16 a);
 void AnimatorSprite_ProcessAnimation(void *s, void *a, void *b);
 void func_020551b0(UnkWork_02055918 *w);
-void func_0201bf40(s32 a, s32 b);
+void NNS_SndPlayerPauseByPlayerNo(s32 a, s32 b);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 
 static inline s32 ClampLang_02055918(s32 lang) {
@@ -134,7 +134,7 @@ void PauseMenu_Create(BOOL alt) {
     if (data_022c4590.unk18 == data_022c4560.unk20)
         return;
     t = Task_Create(PauseMenu_Main, PauseMenu_Destructor, 7, 0x6100, 3, sizeof(UnkWork_02055918));
-    if (t == (UnkTask_02055918 *)func_02006abc(0))
+    if (t == (UnkTask_02055918 *)OS_GetArenaLo(0))
         return;
     w = t->work;
     zero = 0;
@@ -205,6 +205,6 @@ void PauseMenu_Create(BOOL alt) {
     }
     w->unk4 |= 0x18;
     for (k = 3; k < 10; k++)
-        func_0201bf40(k, 1);
+        NNS_SndPlayerPauseByPlayerNo(k, 1);
     Sound_PlaySeqArcEx(0, w->unk164, w->unk168);
 }

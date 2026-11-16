@@ -4,8 +4,8 @@
 extern u32 data_0206e470;
 extern u32 data_022c4ddc;
 extern u32 data_022c4e64;
-extern void func_02000e98(void);
-extern void func_02000eb0(void);
+extern void MTX_RotZ33_(void);
+extern void MTX_MultVec33(void);
 extern void func_02067500(void);
 extern void func_02067c6c(void);
 
@@ -91,11 +91,11 @@ _6c:
     mov r3, r2, lsl #1
     ldr r2, [pc, #0x104]
     ldrsh r2, [r2, r3]
-    bl func_02000e98
+    bl MTX_RotZ33_
     add r0, sp, #0x4c
     add r1, sp, #0x28
     mov r2, r0
-    bl func_02000eb0
+    bl MTX_MultVec33
     ldr r0, [r5]
     ldr r2, [sp, #0x4c]
     ldr r1, [r0, #0x10]

@@ -4,7 +4,7 @@ void ObjDraw_ReleaseSpritePalette(u32 a);
 void ObjVram_Free(s32 a, void *p);
 extern void *gMainHeap;
 
-void *func_02006abc(u32 arg);
+void *OS_GetArenaLo(u32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void DC_StoreRange(const void *addr, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -12,7 +12,7 @@ void Heap_Free(void *heap, void *p);
 static inline void UnkDbgFree(void *ptr) {
     u8 *p = ptr;
     u32 sz;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p -= 0x20;
         sz = *(u32 *)p;
         if (*(u32 *)(p + sz - 4) == 0x2467531) {

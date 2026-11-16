@@ -65,9 +65,9 @@ extern s16 data_0206e470[];
 
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void func_ov000_022c5e1c(s32 a, s32 b, s32 x, s32 z, s32 *out);
-void func_02000e98(void *m, s32 s, s32 c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 void Model_Animate(UnkStruct_022d602c_a *a);
 void Model_Draw(UnkStruct_022d602c_a *a);
 
@@ -95,9 +95,9 @@ void Boss3PartCD_Draw(void) {
             a->unk24.t.y = -o->unk14 << 4;
             if (!(o->unk5C & 0x10))
                 o->unk210 -= o->unk2E;
-            func_02000e98(&a->unk24, data_0206e470[((o->unk210 & 0xffff) >> 4) * 2], data_0206e470[((o->unk210 & 0xffff) >> 4) * 2 + 1]);
+            MTX_RotZ33_(&a->unk24, data_0206e470[((o->unk210 & 0xffff) >> 4) * 2], data_0206e470[((o->unk210 & 0xffff) >> 4) * 2 + 1]);
             MTX_RotY33_(&m1, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
-            func_02000f34(&a->unk24, &m1, &a->unk24);
+            MTX_Concat33(&a->unk24, &m1, &a->unk24);
         }
     } else {
         a->unkA = 3;
@@ -106,9 +106,9 @@ void Boss3PartCD_Draw(void) {
         func_ov000_022c5e1c(0xf42f8, 0x5fe435, a->unk24.t.x, a->unk24.t.z, &o->unk10);
         o->unk10 >>= 4;
         func_ov000_022c5e80(0xf42f8, 0x5fe435, o->unk10 << 4, NULL, NULL, &ang);
-        func_02000e98(&a->unk24, data_0206e470[((o->unk210 & 0xffff) >> 4) * 2], data_0206e470[((o->unk210 & 0xffff) >> 4) * 2 + 1]);
+        MTX_RotZ33_(&a->unk24, data_0206e470[((o->unk210 & 0xffff) >> 4) * 2], data_0206e470[((o->unk210 & 0xffff) >> 4) * 2 + 1]);
         MTX_RotY33_(&m2, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
-        func_02000f34(&a->unk24, &m2, &a->unk24);
+        MTX_Concat33(&a->unk24, &m2, &a->unk24);
     }
     a->unk20 = sc;
     a->unk1C = a->unk20;

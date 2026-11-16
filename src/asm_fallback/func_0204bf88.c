@@ -26,7 +26,7 @@ extern u32 data_022c4efc;
 extern u32 data_ov000_02369ac0;
 extern u32 data_ov000_0236a448;
 extern u32 data_ov000_0236aad8;
-extern void func_02004084(void);
+extern void G3X_SetEdgeColorTable(void);
 extern void func_02022270(void);
 extern void Task_Create(void);
 extern void WH_GetCurrentAid(void);
@@ -197,7 +197,7 @@ _1d4:
     strh r5, [r2, #0x14]
     strh r5, [r2, #0x16]
     strh r4, [r1]
-    bl func_02004084
+    bl G3X_SetEdgeColorTable
     bl ObjDraw_InitRows
     mov r0, r4
     mov r1, #0x10

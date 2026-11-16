@@ -4,7 +4,7 @@
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 u16 func_02017994(const void *p, u32 size);
-s32 func_02012f9c(void *cb, const void *data, u32 size, u32 a, u32 b, u8 c);
+s32 WM_SetGameInfo(void *cb, const void *data, u32 size, u32 a, u32 b, u8 c);
 
 s32 func_02017cf4(u32 a, u32 b, u8 flags)
 {
@@ -39,5 +39,5 @@ s32 func_02017cf4(u32 a, u32 b, u8 flags)
     } else {
         data_02080e74.state = 4;
     }
-    return func_02012f9c(NULL, &data_02080ea0, sizeof(UnkMbBeacon), a, b, flags | 2);
+    return WM_SetGameInfo(NULL, &data_02080ea0, sizeof(UnkMbBeacon), a, b, flags | 2);
 }

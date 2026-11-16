@@ -12,9 +12,9 @@ extern void *gMainHeap;
 UnkRes_02057af8 *File_LoadArchiveEntry(void *a, s32 b, s32 c);
 s32 PolyDemoUnder2_GetCompressionType(void *p);
 u32 PolyDemoUnder2_GetUncompressedSize(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -22,7 +22,7 @@ void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
 void PaletteTransfer_Flush(void);
 void ScreenTransfer_QueueRect(void *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void ScreenTransfer_Flush(void);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void Heap_Free(void *heap, void *p);
 
@@ -51,7 +51,7 @@ static inline void LoadPal_02057af8(void *pal) {
 }
 
 static inline void Free_02057af8(u8 *blk) {
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;
@@ -70,13 +70,13 @@ void PolyDemoUnder2_LoadBg(void) {
 
     switch (PolyDemoUnder2_GetCompressionType(p)) {
     case 0x10:
-        func_02008648(p, (void *)0x06200000);
+        MI_UncompressLZ16(p, (void *)0x06200000);
         break;
     case 0x20:
-        func_02008720(p, (void *)0x06200000);
+        MI_UncompressHuffman(p, (void *)0x06200000);
         break;
     case 0x30:
-        func_020087f8(p, (void *)0x06200000);
+        MI_UncompressRL16(p, (void *)0x06200000);
         break;
     default:
         Mem_Copy(Compress_GetData(p), (void *)0x06200000, PolyDemoUnder2_GetUncompressedSize(p));

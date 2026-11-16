@@ -37,7 +37,7 @@ extern u32 gRandSeed;
 
 UnkStruct_02302658_q *ExtraBoss_GetWork(void);
 UnkStruct_02302658_o *func_ov001_02300c94(void);
-s32 func_0200203c(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
 s32 func_0200225c(s32 n, s32 d);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -81,8 +81,8 @@ void func_ov001_02302658(void) {
         return;
     if (d->unk0 & 4) {
         o->unk50 = o->unk54 = o->unk5C = o->unk60 = 0;
-        o->unk30 = (func_0200203c(Rand(), 5) - 2) << 12;
-        o->unk34 = (func_0200203c(Rand(), 5) - 2) << 12;
+        o->unk30 = (FX_ModS32(Rand(), 5) - 2) << 12;
+        o->unk34 = (FX_ModS32(Rand(), 5) - 2) << 12;
     }
     if (ExtraBoss_GetWork()->unk0 & 0x40) {
         dx = o->unk18 - 0xc0000;

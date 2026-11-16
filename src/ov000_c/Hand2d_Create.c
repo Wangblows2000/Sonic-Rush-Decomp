@@ -19,7 +19,7 @@ UnkStruct_0230ba48 *Hand2d_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u16 i;
 
     task = Task_Create(StageObj_Main, Hand2d_Destructor, 0, 0x500, 2, sizeof(UnkStruct_0230ba48));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

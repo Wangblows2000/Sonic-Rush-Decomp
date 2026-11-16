@@ -42,10 +42,10 @@ typedef struct {
 extern s16 data_0206e470[];
 extern s16 data_02072070[];
 
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 void func_ov000_02330e60(UnkStruct_02330e60 *w) {
     u8 mtx[0x24];
@@ -65,21 +65,21 @@ void func_ov000_02330e60(UnkStruct_02330e60 *w) {
             w->unk49C |= 0x80;
         else
             w->unk49C &= ~0x80;
-        func_02000dfc(m->mtx);
+        MTX_Identity33_(m->mtx);
         idx = (s32)(w->unk764 & 0xffff) >> 4;
         MTX_RotY33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-        func_02000f34(m->mtx, mtx, m->mtx);
+        MTX_Concat33(m->mtx, mtx, m->mtx);
         c = data_02072070[1];
         s = data_02072070[0];
-        func_02000e98(mtx, s, c);
-        func_02000f34(m->mtx, mtx, m->mtx);
+        MTX_RotZ33_(mtx, s, c);
+        MTX_Concat33(m->mtx, mtx, m->mtx);
         m = &w->unk344;
-        func_02000dfc(m->mtx);
+        MTX_Identity33_(m->mtx);
         idx = (s32)((u16)(-w->unk766) & 0xffff) >> 4;
         MTX_RotY33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-        func_02000f34(m->mtx, mtx, m->mtx);
-        func_02000e98(mtx, s, c);
-        func_02000f34(m->mtx, mtx, m->mtx);
+        MTX_Concat33(m->mtx, mtx, m->mtx);
+        MTX_RotZ33_(mtx, s, c);
+        MTX_Concat33(m->mtx, mtx, m->mtx);
         if (!(p->unk32C & 0x10000000) || (p->unk32C & 0x20000000))
             w->unk54 |= 4;
     }

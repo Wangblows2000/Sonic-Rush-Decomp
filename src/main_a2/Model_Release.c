@@ -14,7 +14,7 @@ typedef struct {
 
 extern u8 gSystemHeapAllocator[];
 
-void func_02021c4c(void *renderObj, void *anm);
+void NNS_G3dRenderObjRemoveAnmObj(void *renderObj, void *anm);
 void func_02025b38(void *alloc, void *anm);
 void VramTex_Free(void *p);
 void VramPltt_Free(void *p);
@@ -25,12 +25,12 @@ void Model_Release(UnkObj_02031768 *o) {
     case 0:
         for (i = 0; i < 5; i++) {
             if (o->anm[i] != NULL) {
-                func_02021c4c(o->renderObj, o->anm[i]);
+                NNS_G3dRenderObjRemoveAnmObj(o->renderObj, o->anm[i]);
                 func_02025b38(gSystemHeapAllocator, o->anm[i]);
                 o->anm[i] = NULL;
             }
             if (o->anm2[i] != NULL) {
-                func_02021c4c(o->renderObj, o->anm2[i]);
+                NNS_G3dRenderObjRemoveAnmObj(o->renderObj, o->anm2[i]);
                 func_02025b38(gSystemHeapAllocator, o->anm2[i]);
                 o->anm2[i] = NULL;
             }

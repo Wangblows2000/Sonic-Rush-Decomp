@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_0201c070();
+s32 NNS_SndPlayerStopSeq();
 s32 Sound_PlaySeqArcEx();
 s32 func_ov000_0232e2f0();
 s32 EffZakoDebris_Create();
@@ -13,7 +13,7 @@ void func_ov000_02313bb0(u8 *p0) {
     if ((*(u16 *)((u8 *)p0 + 0x5c) & 0x20) != 0) {
         return;
     }
-    func_0201c070(*(u32 *)((u8 *)p0 + 0x1dc), 0);
+    NNS_SndPlayerStopSeq(*(u32 *)((u8 *)p0 + 0x1dc), 0);
     Sound_PlaySeqArcEx(0, 0, 0x64);
     func_ov000_0232e2f0(p0, 0, 0);
     EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 4);

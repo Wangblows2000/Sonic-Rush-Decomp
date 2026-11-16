@@ -44,12 +44,12 @@ extern u8 data_02074960[];
 extern u8 data_020748bc[];
 
 void *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void func_0204ec40(void);
-void func_0201bf34(u32 *p);
+void NNS_SndHandleInit(u32 *p);
 void func_ov001_022ffcb8(void);
 void func_ov001_022ff3dc(void);
 void ExtraBoss_LoadAssets(void);
@@ -75,7 +75,7 @@ void ExtraBoss_Start(void) {
     u16 col;
 
     blk = Heap_Alloc(gMainHeap, 0x380, 0x20);
-    if (func_02006abc(0) != blk) {
+    if (OS_GetArenaLo(0) != blk) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, blk, 0x380);
         *(u32 *)blk = 0x380;
@@ -96,7 +96,7 @@ void ExtraBoss_Start(void) {
     data_022c4560.unk0 = 1;
     func_0204ec40();
     gExtraBossWork->unk61 = data_022c4590.unk14;
-    func_0201bf34(&gExtraBossWork->unk33C);
+    NNS_SndHandleInit(&gExtraBossWork->unk33C);
     data_022c4560.unk1C = 8;
     data_022c4560.unk1D = 2;
     func_ov001_022ffcb8();

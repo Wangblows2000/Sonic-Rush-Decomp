@@ -63,11 +63,11 @@ extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
 UnkStruct_022d66cc_q *BossEffect_CreateCatch(s32 a, s32 b, s32 c, s32 d);
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
-void func_0201c070(s32 a, s32 b);
-void func_0201bf1c(s32 a);
+void MTX_Concat33(void *a, void *b, void *c);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
+void NNS_SndHandleReleaseSeq(s32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d6688(UnkStruct_022d66cc *s);
 
@@ -89,14 +89,14 @@ void func_ov000_022d66cc(UnkStruct_022d66cc *s) {
     r->unk20C &= ~0x48;
     q = BossEffect_CreateCatch(1, r->unk2D8 >> 4, -r->unk2DC >> 4, r->unk2E0 >> 4);
     ang = (Rand() & 0xfff) + 0xaaa;
-    func_02000e60(q->unk158, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
+    MTX_RotX33_(q->unk158, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
     ang = Rand();
     MTX_RotY33_(mtx, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
-    func_02000f34(q->unk158, mtx, q->unk158);
+    MTX_Concat33(q->unk158, mtx, q->unk158);
     gPlayers->unk32C &= ~0x200000;
     data_ov000_02369b14->unk20C &= ~4;
-    func_0201c070(s->unk2C0, 0x20);
-    func_0201bf1c(s->unk2C0);
+    NNS_SndPlayerStopSeq(s->unk2C0, 0x20);
+    NNS_SndHandleReleaseSeq(s->unk2C0);
     Sound_PlaySeqArc(0, 0, 0xcc);
     s->func = func_ov000_022d6688;
 }

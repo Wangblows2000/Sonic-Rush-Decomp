@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 #include "main_a2/mic.h"
 
-u32 func_0200dd98(void);
+u32 MIC_GetLastSamplingAddress(void);
 void DC_InvalidateRange(u32 addr, u32 size);
 
 void Mic_Update(void) {
@@ -10,7 +10,7 @@ void Mic_Update(void) {
         return;
     }
     m->prev = m->cur;
-    m->cur = func_0200dd98();
+    m->cur = MIC_GetLastSamplingAddress();
     if (m->cur == 0) {
         m->flags |= 2;
         return;

@@ -10,7 +10,7 @@ extern char data_0207cfac[];
 extern u32 gSystemFlags;
 extern u32 data_02087cc4;
 
-char *func_0202c474(char *dst, const char *src);
+char *strcat(char *dst, const char *src);
 BOOL func_02021310(UnkArc_020687b8 *arc, const char *name, void *narc);
 void *func_0202128c(const char *path);
 BOOL func_020212e0(UnkArc_020687b8 *arc);
@@ -24,8 +24,8 @@ void *ObjData_Load(UnkRef_020687b8 *ref, const char *name, void *narc) {
     if (ref == NULL) {
         if (narc != NULL) {
             UnkArc_020687b8 arc;
-            func_0202c474(path, data_0207cf98);
-            func_0202c474(path, name);
+            strcat(path, data_0207cf98);
+            strcat(path, name);
             func_02021310(&arc, data_0207cfa0, narc);
             p = func_0202128c(path);
             func_020212e0(&arc);
@@ -37,8 +37,8 @@ void *ObjData_Load(UnkRef_020687b8 *ref, const char *name, void *narc) {
     if (ref->ptr == NULL) {
         if (narc != NULL) {
             UnkArc_020687b8 arc;
-            func_0202c474(path, data_0207cfa4);
-            func_0202c474(path, name);
+            strcat(path, data_0207cfa4);
+            strcat(path, name);
             func_02021310(&arc, data_0207cfac, narc);
             ref->ptr = func_0202128c(path);
             func_020212e0(&arc);

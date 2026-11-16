@@ -5,7 +5,7 @@
 
 extern u8 data_0207c470[];
 extern u8 data_020768b4[];
-s32 func_0202c474();
+s32 strcat();
 extern u8 data_0207c478[];
 
 void PolyDemo_BuildModelPath(s32 p0, u8 *p1) {
@@ -15,8 +15,8 @@ void PolyDemo_BuildModelPath(s32 p0, u8 *p1) {
     *(u8 *)((u8 *)p1 + 0x3) = *(u8 *)((u8 *)data_0207c470 + 0x3);
     *(u8 *)((u8 *)p1 + 0x4) = *(u8 *)((u8 *)data_0207c470 + 0x4);
     *(u8 *)((u8 *)p1 + 0x5) = *(u8 *)((u8 *)data_0207c470 + 0x5);
-    func_0202c474(p1, *(u32 *)((u8 *)data_020768b4 + ((s32)p0 << 3)));
-    func_0202c474(p1, data_0207c478);
+    strcat(p1, *(u32 *)((u8 *)data_020768b4 + ((s32)p0 << 3)));
+    strcat(p1, data_0207c478);
 }
 
 #pragma thumb reset

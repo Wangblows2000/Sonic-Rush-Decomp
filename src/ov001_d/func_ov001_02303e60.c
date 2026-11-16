@@ -26,7 +26,7 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 }
 
 UnkStruct_02303e60_g *ExtraBoss_GetWork(void);
-s32 func_02002094(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
 UnkStruct_02303e60_e *func_ov001_02303468(void);
 void func_ov001_0230328c(UnkStruct_02303e60_e *e);
 
@@ -47,7 +47,7 @@ void func_ov001_02303e60(s32 x, s32 y, s32 n) {
         step = 0;
     } else {
         ang = 0xa000;
-        step = func_02002094(0x4000, n - 1);
+        step = FX_DivS32(0x4000, n - 1);
     }
     for (i = 0; i < n; i++, ang += step) {
         e = func_ov001_02303468();

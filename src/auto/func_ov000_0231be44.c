@@ -3,7 +3,7 @@
 
 s32 StageObj_SetAnimation();
 void func_ov000_0231bdf8();
-s32 func_0201c070();
+s32 NNS_SndPlayerStopSeq();
 s32 Sound_PlaySeqArcEx();
 extern u8 gPlayers[];
 s32 Sound_SetPositional();
@@ -15,7 +15,7 @@ void func_ov000_0231be44(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0xc) = 0x28;
     *(u32 *)((u8 *)p0 + 0x20c) = (*(u32 *)((u8 *)p0 + 0x20c) | 1);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_0231bdf8;
-    func_0201c070(*(u32 *)((u8 *)p0 + 0x1dc), 0, (u32)func_ov000_0231bdf8, t0);
+    NNS_SndPlayerStopSeq(*(u32 *)((u8 *)p0 + 0x1dc), 0, (u32)func_ov000_0231bdf8, t0);
     Sound_PlaySeqArcEx(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x57);
     Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)gPlayers);
 }

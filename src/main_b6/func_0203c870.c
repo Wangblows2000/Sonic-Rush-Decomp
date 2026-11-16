@@ -57,22 +57,22 @@ typedef struct {
 extern UnkData_0203c870 data_022b9020;
 extern UnkCtx_0203c870 data_022b8be0;
 
-s32 func_020154f8(s32 v);
-void func_0201521c(u16 id, u32 arg1, const void *src, void *arg3);
+s32 WBT_AidbitmapToAid(s32 v);
+void WBT_GetBlockInfo(u16 id, u32 arg1, const void *src, void *arg3);
 void func_0203cb9c(UnkData_0203c870 *d, s32 n);
 void func_0203d268(UnkFile_0203c870 *f);
-void func_020151c4(u16 a, u32 b, const void *c, u32 d, const void *f, void *e);
+void WBT_GetBlock(u16 a, u32 b, const void *c, u32 d, const void *f, void *e);
 void DC_FlushRange(void *p, u32 size);
 u32 func_0203bd08(void *p);
 s32 func_0203d8b4(s32 a, s32 b, u32 c, s32 d);
-void func_02015264(u16 a, void *b);
-void func_0200b2f4(u32 a, s32 b);
+void WBT_RequestSync(u16 a, void *b);
+void FS_NotifyArchiveAsyncEnd(u32 a, s32 b);
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
 void OS_Terminate(void);
 
 void func_0203c870(UnkArg_0203c870 *arg) {
-    s32 idx = func_020154f8(arg->unka);
+    s32 idx = WBT_AidbitmapToAid(arg->unka);
     UnkData_0203c870 *d = &data_022b9020;
 
     switch (arg->unk0) {
@@ -82,7 +82,7 @@ void func_0203c870(UnkArg_0203c870 *arg) {
         data_022b8be0.unk28 = arg->unk16 + 0xe;
         data_022b8be0.unk2c = arg->unk18 + 0xe;
         if (data_022b8be0.unk20 == NULL) {
-            func_0201521c(1, 0, d, func_0203c870);
+            WBT_GetBlockInfo(1, 0, d, func_0203c870);
             return;
         }
         if (data_022b8be0.unk1c == NULL)
@@ -102,7 +102,7 @@ void func_0203c870(UnkArg_0203c870 *arg) {
         data_022b8be0.unk20 = r;
         func_0203cb9c(d, (s32)data_022b8be0.unk24);
         d->arr40[idx] = data_022b8be0.unk20;
-        func_020151c4(1, 0x20000, d->arr40, (u32)data_022b8be0.unk24, d->buf80, func_0203c870);
+        WBT_GetBlock(1, 0x20000, d->arr40, (u32)data_022b8be0.unk24, d->buf80, func_0203c870);
         break;
     }
     case 4:
@@ -127,19 +127,19 @@ void func_0203c870(UnkArg_0203c870 *arg) {
         switch (p->kind) {
         case 1:
             if (p->val == 0) {
-                func_02015264(1, func_0203c870);
+                WBT_RequestSync(1, func_0203c870);
                 return;
             }
             d->unkb04 = p->w4;
             d->arr40[idx] = (void *)data_022b8be0.unk1c->unk2c;
-            func_020151c4(1, d->unkb04, d->arr40, data_022b8be0.unk1c->unk34, d->buf80, func_0203c870);
+            WBT_GetBlock(1, d->unkb04, d->arr40, data_022b8be0.unk1c->unk34, d->buf80, func_0203c870);
             break;
         case 3: {
             UnkFile_0203c870 *f = data_022b8be0.unk1c;
             u32 v = f->unk8;
             data_022b8be0.unk1c = NULL;
             f->unk28 += f->unk34;
-            func_0200b2f4(v, 0);
+            FS_NotifyArchiveAsyncEnd(v, 0);
             break;
         }
         }

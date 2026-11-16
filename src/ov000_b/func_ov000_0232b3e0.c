@@ -17,7 +17,7 @@ void func_ov000_0232b3e0(s32 unused, s32 n) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, func_ov000_0232b3a4, 0, 0xff, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     w = task->work;
     zero = 0;

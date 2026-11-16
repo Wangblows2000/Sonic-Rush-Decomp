@@ -8,8 +8,8 @@ extern UnkVram_0208922c gDisplayMain;
 extern u8 data_020892a8[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002f28(void);
-void func_02003788(s32 bank);
+void GX_DisableBankForBGExtPltt(void);
+void GX_SetBankForBGExtPltt(s32 bank);
 
 void Vram_SetBankForBGExtPltt(s32 bank) {
     vu32 zero = 0;
@@ -36,8 +36,8 @@ void Vram_SetBankForBGExtPltt(s32 bank) {
         gDisplayMain.slot[3] = 0x06896000;
         break;
     default:
-        func_02002f28();
+        GX_DisableBankForBGExtPltt();
         return;
     }
-    func_02003788(bank);
+    GX_SetBankForBGExtPltt(bank);
 }

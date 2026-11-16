@@ -70,12 +70,12 @@ extern UnkStruct_022d0864_7 data_ov000_02369ac0;
 extern s16 data_0206f470[];
 extern s16 data_02071470[];
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 u8 *BossEffect_CreateCatch(s32 a, s32 x, s32 y, s32 z);
-void func_02000e98(void *m, s32 s, s32 c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
 void func_ov000_022d0690(UnkStruct_022d0864 *s);
 
 void func_ov000_022d0864(UnkStruct_022d0864 *s) {
@@ -101,7 +101,7 @@ void func_ov000_022d0864(UnkStruct_022d0864 *s) {
         x->unk10C &= ~4;
         y->unk10C &= ~4;
         z->unk10C &= ~4;
-        z->unk114 = func_02002094(data_ov000_02369ac0.unk8 * 0x666 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0xb33, data_ov000_02369ac0.unkA);
+        z->unk114 = FX_DivS32(data_ov000_02369ac0.unk8 * 0x666 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0xb33, data_ov000_02369ac0.unkA);
         y->unk114 = z->unk114;
         x->unk114 = y->unk114;
         *y->unkE4 = v;
@@ -142,11 +142,11 @@ void func_ov000_022d0864(UnkStruct_022d0864 *s) {
         func_ov000_022c5e80(0x1152f0, 0x6cd988, a, &a, &b, NULL);
         obj = BossEffect_CreateCatch(1, a >> 4, -s->unk13A0 >> 4, b >> 4);
         if (s->unk145C == 0)
-            func_02000e98(obj + 0x158, data_0206f470[0], data_0206f470[1]);
+            MTX_RotZ33_(obj + 0x158, data_0206f470[0], data_0206f470[1]);
         else
-            func_02000e98(obj + 0x158, data_02071470[0], data_02071470[1]);
+            MTX_RotZ33_(obj + 0x158, data_02071470[0], data_02071470[1]);
         Sound_PlaySeqArc(0, 0, 0xa3);
     }
     s->unkA9C.unk114 = s->unkBD4.unk114 = s->unkD0C.unk114 = 0;
-    s->unk12F4 = func_02002094(data_ov000_02369ac0.unk8 * 0x3c + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0x1e, data_ov000_02369ac0.unkA);
+    s->unk12F4 = FX_DivS32(data_ov000_02369ac0.unk8 * 0x3c + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0x1e, data_ov000_02369ac0.unkA);
 }

@@ -25,7 +25,7 @@ UnkStruct_02333520 *EffBrakeSmoke3D_Create(UnkStruct_StageObj *arg, s32 x, s32 y
     vu16 zero;
 
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_02333520));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

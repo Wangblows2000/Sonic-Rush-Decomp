@@ -7,12 +7,12 @@ extern u8 gBGMVolume;
 extern u8 gSEVolume;
 extern u8 data_02250448;
 
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
-void func_0201b348(void);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
+void NNS_SndStopSoundAll(void);
 void Sound_ResetHeap(void);
 void Task_Destroy(void *t);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -21,26 +21,26 @@ void Heap_Free(void *heap, void *p);
 void func_02052000(void) {
     if (gSysSound != NULL) {
         if (gSysSound->snd[0] != NULL) {
-            func_0201c070(&gSysSound->snd[0], 0);
-            func_0201bf1c(&gSysSound->snd[0]);
+            NNS_SndPlayerStopSeq(&gSysSound->snd[0], 0);
+            NNS_SndHandleReleaseSeq(&gSysSound->snd[0]);
         }
         if (gSysSound->snd[1] != NULL) {
-            func_0201c070(&gSysSound->snd[1], 0);
-            func_0201bf1c(&gSysSound->snd[1]);
+            NNS_SndPlayerStopSeq(&gSysSound->snd[1], 0);
+            NNS_SndHandleReleaseSeq(&gSysSound->snd[1]);
         }
         if (gSysSound->snd[2] != NULL) {
-            func_0201c070(&gSysSound->snd[2], 0);
-            func_0201bf1c(&gSysSound->snd[2]);
+            NNS_SndPlayerStopSeq(&gSysSound->snd[2], 0);
+            NNS_SndHandleReleaseSeq(&gSysSound->snd[2]);
         }
         if (gSysSound->snd[3] != NULL) {
-            func_0201c070(&gSysSound->snd[3], 0);
-            func_0201bf1c(&gSysSound->snd[3]);
+            NNS_SndPlayerStopSeq(&gSysSound->snd[3], 0);
+            NNS_SndHandleReleaseSeq(&gSysSound->snd[3]);
         }
         if (gSysSound->snd[4] != NULL) {
-            func_0201c070(&gSysSound->snd[4], 0);
-            func_0201bf1c(&gSysSound->snd[4]);
+            NNS_SndPlayerStopSeq(&gSysSound->snd[4], 0);
+            NNS_SndHandleReleaseSeq(&gSysSound->snd[4]);
         }
-        func_0201b348();
+        NNS_SndStopSoundAll();
         gSysSound->unk4 = 7;
     }
 }

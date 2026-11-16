@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
-void func_0200d098(void);
+void CPi_RestoreContext(void);
 
 asm void OS_LoadContext(void)
 {
     stmfd sp!, {r0, lr}
     add r0, r0, #0x48
-    ldr r1, =func_0200d098
+    ldr r1, =CPi_RestoreContext
     blx r1
     ldmfd sp!, {r0, lr}
     mrs r1, cpsr

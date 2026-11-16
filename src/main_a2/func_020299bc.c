@@ -5,7 +5,7 @@ typedef void (*UnkTexMtxFn_020299bc)(fx32 *m, UnkTexMtx_020299bc *tm);
 
 extern UnkTexMtxFn_020299bc data_02077d20[];
 
-void func_02025268(u32 op, const void *args, u32 n);
+void NNS_G3dGeBufferOP_N(u32 op, const void *args, u32 n);
 
 #define FX_MUL_020299bc(a, b) ((fx32)(((s64)(a) * (b)) >> 12))
 
@@ -38,5 +38,5 @@ void func_020299bc(UnkTexMtx_020299bc *tm) {
         buf.m[5] = FX_MUL_020299bc(tm->magH, buf.m[5]);
         buf.m[13] = FX_MUL_020299bc(tm->magH, buf.m[13]);
     }
-    func_02025268(buf.cmd, (u8 *)&buf + 4, 0x12);
+    NNS_G3dGeBufferOP_N(buf.cmd, (u8 *)&buf + 4, 0x12);
 }

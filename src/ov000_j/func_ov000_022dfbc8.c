@@ -16,8 +16,8 @@ typedef struct {
 extern s16 data_0206e470[];
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *out);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *out);
 
 void func_ov000_022dfbc8(UnkStruct_022dfbc8 *p) {
     u8 mtx[0x24];
@@ -32,8 +32,8 @@ void func_ov000_022dfbc8(UnkStruct_022dfbc8 *p) {
     if (p->unk8 > 0)
         a = 0x8000;
     MTX_RotY33_(mtx, data_0206e470[((a & 0xffff) >> 4) * 2], data_0206e470[((a & 0xffff) >> 4) * 2 + 1]);
-    func_02000e98(cam + 0x24, data_0206e470[(((u16)(p->unkC * 0x2aaa) & 0xffff) >> 4) * 2], data_0206e470[(((u16)(p->unkC * 0x2aaa) & 0xffff) >> 4) * 2 + 1]);
-    func_02000f34(cam + 0x24, mtx, cam + 0x24);
+    MTX_RotZ33_(cam + 0x24, data_0206e470[(((u16)(p->unkC * 0x2aaa) & 0xffff) >> 4) * 2], data_0206e470[(((u16)(p->unkC * 0x2aaa) & 0xffff) >> 4) * 2 + 1]);
+    MTX_Concat33(cam + 0x24, mtx, cam + 0x24);
     if (p->unkC >= 0x78)
         p->unk54 |= 4;
 }

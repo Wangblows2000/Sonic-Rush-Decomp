@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u8 data_02080f60[];
-s32 func_0201acc0();
+s32 CTRDG_TerminateForPulledOut();
 s32 OS_Terminate();
 
 void func_0201ace0(s32 p0, s32 p1) {
@@ -16,7 +16,7 @@ void func_0201ace0(s32 p0, s32 p1) {
         if (v1 == 0) {
             return;
         }
-        func_0201acc0();
+        CTRDG_TerminateForPulledOut();
         return;
     }
     OS_Terminate();

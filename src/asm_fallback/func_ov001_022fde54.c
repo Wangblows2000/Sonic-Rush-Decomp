@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u32 data_0206e470;
-extern void func_020021f0(void);
+extern void FX_Sqrt(void);
 
 asm void func_ov001_022fde54(void)
 {
@@ -58,7 +58,7 @@ _8c:
     orr r4, r4, r3, lsl #20
     orr r1, r1, r0, lsl #20
     add r0, r4, r1
-    bl func_020021f0
+    bl FX_Sqrt
     ldr r1, [sp]
     ldr r4, [r1, #0x1c]
     ldr r1, [r1, #0x18]
@@ -75,7 +75,7 @@ _8c:
     orr r2, r2, r1, lsl #20
     mov r4, r0
     add r0, r5, r2
-    bl func_020021f0
+    bl FX_Sqrt
     ldr r1, [sp]
     add r4, r0, r4
     ldr r5, [r1, #0x28]

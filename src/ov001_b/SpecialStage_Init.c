@@ -54,7 +54,7 @@ extern UnkStruct_0230c364_f754 data_0208f754;
 extern u8 data_ov001_023171a0[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
@@ -64,24 +64,24 @@ void Vram_SetBankForBGExtPltt(s32 a);
 void Vram_SetBankForOBJExtPltt(s32 a);
 void Vram_SetBankForTex(s32 a);
 void Vram_SetBankForTexPltt(s32 a);
-void func_02002ec8(void);
+void GX_DisableBankForClearImage(void);
 void Vram_SetBankForSubBG(s32 a);
 void Vram_SetBankForSubOBJ(s32 a, s32 b, s32 c, s32 d, s32 e);
 void Vram_SetBankForSubBGExtPltt(s32 a);
 void Vram_SetBankForSubOBJExtPltt(s32 a);
-void func_02002eb4(void);
-void func_02002ea0(void);
+void GX_DisableBankForARM7(void);
+void GX_DisableBankForLCDC(void);
 void ObjVram_Reset(s32 i);
 void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void GXS_SetGraphicsMode(u32 mode);
 void GX_DispOn(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 b);
-void func_02004040(u32 a, u32 b, u16 c, u32 d, BOOL e);
+void G3X_SetClearColor(u32 a, u32 b, u16 c, u32 d, BOOL e);
 void func_02022270(u32 index, u32 value);
 void func_02022284(u32 idx, s32 x, s32 y, s32 z);
-void func_02004084(const void *src);
+void G3X_SetEdgeColorTable(const void *src);
 void SpecialStage_LoadHudAssets(UnkStruct_0230c364_c4 *p);
 void func_ov001_0230bca8(void);
 void func_ov001_0230b848(void);
@@ -97,7 +97,7 @@ void func_ov001_0230b098(void);
 void func_ov001_023147c0(s32 a, s32 b);
 s32 func_ov001_0231398c(s32 a);
 s32 func_ov001_0230f804(s32 a);
-void func_0200412c(s32 a, s32 b, s32 c, s32 d);
+void G3X_SetFog(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeq(s32 a, s32 b);
 
 void SpecialStage_Init(s32 arg) {
@@ -109,7 +109,7 @@ void SpecialStage_Init(s32 arg) {
     s32 i;
 
     blk = Heap_Alloc(gMainHeap, 0x200, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, 0x200);
         *(u32 *)blk = 0x200;
@@ -122,7 +122,7 @@ void SpecialStage_Init(s32 arg) {
     gSpecialStageWork->unk4 = arg;
     gSpecialStageWork->unk8 = data_022c4560.unk28;
     blk = Heap_Alloc(gMainHeap, 0x60, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill2 = 0xcccccccc;
         MIi_CpuClear32(fill2, blk, 0x60);
         *(u32 *)blk = 0x60;
@@ -140,13 +140,13 @@ void SpecialStage_Init(s32 arg) {
     Vram_SetBankForOBJExtPltt(0);
     Vram_SetBankForTex(0);
     Vram_SetBankForTexPltt(0);
-    func_02002ec8();
+    GX_DisableBankForClearImage();
     Vram_SetBankForSubBG(0);
     Vram_SetBankForSubOBJ(0, 0x10, 0x40, 0, 0);
     Vram_SetBankForSubBGExtPltt(0);
     Vram_SetBankForSubOBJExtPltt(0);
-    func_02002eb4();
-    func_02002ea0();
+    GX_DisableBankForARM7();
+    GX_DisableBankForLCDC();
     Vram_SetBankForOBJ(0x40, 0x10, 0x40, 0, 0x200);
     ObjVram_Reset(0);
     Vram_SetBankForBG(0x10);
@@ -154,7 +154,7 @@ void SpecialStage_Init(s32 arg) {
     Vram_ResetTexAndPltt();
     Vram_SetBankForTexPltt(0x20);
     VramPltt_Reset();
-    func_02002ab0(1, 0, 1);
+    GX_SetGraphicsMode(1, 0, 1);
     *(vu16 *)0x400000a = (*(vu16 *)0x400000a & 0x43) | 4;
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & 0x43) | 0x108;
     Vram_SetBankForSubOBJ(8, 0x100010, 0x40, 0, 0x400);
@@ -185,7 +185,7 @@ void SpecialStage_Init(s32 arg) {
     *(vu16 *)0x4000340 = 0;
     *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 8;
     *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 0x20;
-    func_02004040(0, 0, 0x7fff, 0, 1);
+    G3X_SetClearColor(0, 0, 0x7fff, 0, 1);
     *(vu32 *)0x4000540 = (data_0208f754.unk84 << 1) | data_0208f754.unk80;
     *(vu32 *)0x4000580 = 0xbfff0000;
     *(vu16 *)0x4000008 = *(vu16 *)0x4000008 & ~3;
@@ -202,7 +202,7 @@ void SpecialStage_Init(s32 arg) {
     func_02022284(1, 0xec7, -0x600, 0);
     func_02022270(2, 0x2108);
     func_02022284(2, 0, 0x620, 0xec7);
-    func_02004084(data_ov001_023171a0);
+    G3X_SetEdgeColorTable(data_ov001_023171a0);
     SpecialStage_LoadHudAssets(data_ov001_0231f5c4);
     func_ov001_0230bca8();
     func_ov001_0230b848();
@@ -218,7 +218,7 @@ void SpecialStage_Init(s32 arg) {
     func_ov001_023147c0(data_ov001_0231f5c4->unk2C->unk8, data_ov001_0231f5c4->unk2C->unkC);
     gSpecialStageWork->unk18 = func_ov001_0231398c(0);
     gSpecialStageWork->unk1C = func_ov001_0230f804(0x80);
-    func_0200412c(0, 0, 4, 0);
+    G3X_SetFog(0, 0, 4, 0);
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1500;
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1400;
     Sound_PlaySeq(0, 0x1f);

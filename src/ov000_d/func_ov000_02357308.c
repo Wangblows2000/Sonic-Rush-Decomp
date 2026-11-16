@@ -4,7 +4,7 @@ extern void *gMainHeap;
 extern u8 data_ov000_023690d4[];
 
 void Model_Release(UnkStruct_MdlRender *r);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
@@ -16,7 +16,7 @@ void func_020212e0(void *buf);
 static inline void UnkFree_02357308(void **pp) {
     u32 size;
     void *p = *pp;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {

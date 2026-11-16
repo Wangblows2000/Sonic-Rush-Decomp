@@ -54,6 +54,8 @@ def main() -> int:
     symfiles = {module_of(p.relative_to(cfg)): p for p in (cfg / "arm9").rglob("symbols.txt")}
     names: dict[str, set[str]] = {}
     all_names: set[str] = set()
+    # mwldarm runs under wibo (Windows semantics): object files are matched
+    # case-insensitively, so names that differ only in case break the link.
     for mod, p in symfiles.items():
         s = set()
         for line in p.read_text().splitlines():
@@ -63,6 +65,7 @@ def main() -> int:
         names[mod] = s
         all_names |= s
 
+    lower_names = {n.lower() for n in all_names}
     rows, seen_old, seen_new, rejected = [], set(), set(), []
     for f in args.csv:
         for r in csv.DictReader(f.open()):
@@ -75,6 +78,8 @@ def main() -> int:
                 why = "invalid identifier"
             elif new in all_names or new in seen_new:
                 why = "name collision"
+            elif new.lower() in lower_names and new.lower() != old.lower():
+                why = "case-insensitive name collision"
             elif (mod, old) in seen_old:
                 why = "duplicate proposal"
             elif not ev:
@@ -84,6 +89,7 @@ def main() -> int:
                 continue
             seen_old.add((mod, old))
             seen_new.add(new)
+            lower_names.add(new.lower())
             rows.append((mod, old, new, ev))
 
     for rj in rejected:

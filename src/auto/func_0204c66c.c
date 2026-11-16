@@ -3,8 +3,8 @@
 
 extern u8 data_022c4560[];
 extern u8 data_022c44f4[];
-s32 func_0201be40();
-s32 func_0201be10();
+s32 NNS_SndPlayerMoveVolume();
+s32 NNS_SndPlayerSetChannelPriority();
 extern u8 gBGMVolume[];
 extern u8 data_022c44f0[];
 
@@ -16,14 +16,14 @@ void func_0204c66c(s32 p0) {
         return;
     }
     if ((s32)p0 != 0) {
-        func_0201be40(data_022c44f4, 0, 0);
-        func_0201be10(data_022c44f4, 0);
-        func_0201be40(data_022c44f0, *(u8 *)gBGMVolume, 0);
-        func_0201be10(data_022c44f0, 0x40);
+        NNS_SndPlayerMoveVolume(data_022c44f4, 0, 0);
+        NNS_SndPlayerSetChannelPriority(data_022c44f4, 0);
+        NNS_SndPlayerMoveVolume(data_022c44f0, *(u8 *)gBGMVolume, 0);
+        NNS_SndPlayerSetChannelPriority(data_022c44f0, 0x40);
         return;
     }
-    func_0201be40(data_022c44f4, *(u8 *)gBGMVolume, 0);
-    func_0201be10(data_022c44f4, 0x40);
-    func_0201be40(data_022c44f0, 0, 0);
-    func_0201be10(data_022c44f0, 0);
+    NNS_SndPlayerMoveVolume(data_022c44f4, *(u8 *)gBGMVolume, 0);
+    NNS_SndPlayerSetChannelPriority(data_022c44f4, 0x40);
+    NNS_SndPlayerMoveVolume(data_022c44f0, 0, 0);
+    NNS_SndPlayerSetChannelPriority(data_022c44f0, 0);
 }

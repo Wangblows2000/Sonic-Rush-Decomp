@@ -59,7 +59,7 @@ extern u8 data_ov001_0231df7c[];
 extern char data_ov001_0231df94[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
@@ -70,15 +70,15 @@ void Model_Init(UnkObj2_02307398 *o, s32 a);
 u8 *File_Load(void *p, s32 v);
 u32 func_ov001_0230776c(u8 *p);
 u32 func_ov001_02307760(u8 *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 u32 *Compress_GetData(void *s);
 void Mem_Copy(void *a, void *b, u32 c);
 void Heap_Free(void *heap, void *p);
 BOOL func_02021310(UnkArc_02307398 *arc, const char *name, void *data);
 u32 func_02021264(UnkArc_02307398 *arc, u32 idx);
-void func_020257f8(u32 p);
+void NNS_G3dResDefaultSetup(u32 p);
 BOOL func_020212e0(UnkArc_02307398 *arc);
 UnkTask_02307398 *func_ov001_02310d5c(s32 a);
 void func_ov001_02306d04(void);
@@ -103,7 +103,7 @@ void SpecialStage_LoadActArchive(void) {
 
     r = data_ov001_0231f5c4->res;
     blk = Heap_Alloc(gMainHeap, 0x46e0, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, 0x46e0);
         *(u32 *)blk = 0x46e0;
@@ -124,7 +124,7 @@ void SpecialStage_LoadActArchive(void) {
     res = File_Load(data_ov001_0231df7c, -1);
     size = ((*(u32 *)res >> 8) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill2 = 0xcccccccc;
         MIi_CpuClear32(fill2, blk, size);
         *(u32 *)blk = size;
@@ -136,20 +136,20 @@ void SpecialStage_LoadActArchive(void) {
     d = w->data;
     switch (func_ov001_0230776c(res)) {
     case 0x10:
-        func_02008648(res, d);
+        MI_UncompressLZ16(res, d);
         break;
     case 0x20:
-        func_02008720(res, d);
+        MI_UncompressHuffman(res, d);
         break;
     case 0x30:
-        func_020087f8(res, d);
+        MI_UncompressRL16(res, d);
         break;
     default:
         Mem_Copy(Compress_GetData(res), d, func_ov001_02307760(res));
         break;
     }
     DC_StoreRange(d, func_ov001_02307760(res));
-    if ((u8 *)func_02006abc(0) != res) {
+    if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
         if (*(u32 *)(res + size - 4) == 0x02467531) {
@@ -167,8 +167,8 @@ void SpecialStage_LoadActArchive(void) {
     w->res4 = func_02021264(&arc, 4);
     w->res5 = func_02021264(&arc, 5);
     w->res6 = func_02021264(&arc, 6);
-    func_020257f8(w->res0);
-    func_020257f8(w->res3);
+    NNS_G3dResDefaultSetup(w->res0);
+    NNS_G3dResDefaultSetup(w->res3);
     func_020212e0(&arc);
     w->task = func_ov001_02310d5c(0x20);
     w->task->unk1DC = func_ov001_02306d04;

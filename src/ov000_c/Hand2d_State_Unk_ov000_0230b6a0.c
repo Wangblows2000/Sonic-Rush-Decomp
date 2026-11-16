@@ -27,9 +27,9 @@ extern UnkStruct_0236aad8 data_ov000_0236aad8;
 extern s16 data_0206e470[];
 
 void Player_Action_Hand2D(UnkStruct_0230b6a0_Pl *p, UnkStruct_StageObj *w, s32 a, s32 b);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
@@ -108,10 +108,10 @@ void Hand2d_State_Unk_ov000_0230b6a0(UnkStruct_StageObj *w) {
             w->unk1F4 &= ~1;
         }
     }
-    func_02000dfc(mdl->unk24);
+    MTX_Identity33_(mdl->unk24);
     idx = (s32)((u16)(-w->unk8) & 0xffff) >> 4;
     MTX_RotY33_(mtx, SIN_IDX(idx), COS_IDX(idx));
-    func_02000f34(mdl->unk24, mtx, mdl->unk24);
+    MTX_Concat33(mdl->unk24, mtx, mdl->unk24);
     idx = (s32)((u16)w->unkC & 0xffff) >> 4;
     w->unk2E = (w->unk1E8 << 8) + 0x8000 + ((COS_IDX(idx) * -0x8000) >> 12) - w->unk10;
     w->unk32 = ((SIN_IDX(idx) << 15) >> 12) - w->unk18;

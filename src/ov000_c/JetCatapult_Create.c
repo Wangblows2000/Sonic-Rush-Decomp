@@ -20,7 +20,7 @@ UnkStruct_0230e8e4 *JetCatapult_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, JetCatapult_Destructor, 0, 0xf6, 2, sizeof(UnkStruct_0230e8e4));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

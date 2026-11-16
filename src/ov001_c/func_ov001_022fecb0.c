@@ -32,7 +32,7 @@ void func_ov001_02302370(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 b);
 void func_02022270(u32 index, u32 value);
 void func_02022284(u32 idx, s32 x, s32 y, s32 z);
-void func_02004084(const void *src);
+void G3X_SetEdgeColorTable(const void *src);
 void func_0205ef48(void);
 void Sound_PlaySeq(u32 *p, u32 a);
 
@@ -63,7 +63,7 @@ void func_ov001_022fecb0(void) {
     func_02022284(0, *(s16 *)(data_020748bc + 0x90), *(s16 *)(data_020748bc + 0x92), *(s16 *)(data_020748bc + 0x94));
     func_02022284(1, *(s16 *)(data_020748bc + 0x96), *(s16 *)(data_020748bc + 0x98), *(s16 *)(data_020748bc + 0x9a));
     func_02022284(2, *(s16 *)(data_020748bc + 0x9c), *(s16 *)(data_020748bc + 0x9e), *(s16 *)(data_020748bc + 0xa0));
-    func_02004084(data_02074ba4);
+    G3X_SetEdgeColorTable(data_02074ba4);
     func_0205ef48();
     if (gExtraBossWork->unk40 < 3)
         Sound_PlaySeq(0, 0x14);

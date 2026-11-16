@@ -96,8 +96,8 @@ void Player_Collide(void);
 void Player_OnHurt(void);
 void func_ov000_02342b78(void);
 void func_ov000_0234c644(UnkStruct_0234cb70 *w);
-void func_0201c070(void *a, s32 b);
-void func_0201bf1c(void *a);
+void NNS_SndPlayerStopSeq(void *a, s32 b);
+void NNS_SndHandleReleaseSeq(void *a);
 
 void func_ov000_0234cb70(UnkStruct_0234cb70 *w) {
     if (data_022c4560.unk1C == 1) {
@@ -200,7 +200,7 @@ void func_ov000_0234cb70(UnkStruct_0234cb70 *w) {
     w->unk58 &= ~0x10000000;
     if (w->unk124 != NULL)
         w->unk124->unk12C = 0x200;
-    func_0201c070(w->unk388, 0);
-    func_0201c070(w->unk390, 0x20);
-    func_0201bf1c(w->unk390);
+    NNS_SndPlayerStopSeq(w->unk388, 0);
+    NNS_SndPlayerStopSeq(w->unk390, 0x20);
+    NNS_SndHandleReleaseSeq(w->unk390);
 }

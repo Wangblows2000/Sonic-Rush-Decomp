@@ -6,7 +6,7 @@ extern u32 data_020756dc;
 extern u32 data_020766a4;
 extern u32 data_0207c3a0;
 extern u32 data_022c4678;
-extern void func_02004084(void);
+extern void G3X_SetEdgeColorTable(void);
 extern void func_02022270(void);
 extern void func_02022284(void);
 extern void func_02056ec8(void);
@@ -116,7 +116,7 @@ _ba:
     ldrh r0, [r1, #6]
     strh r0, [r2, #6]
     add r0, sp, #0xc
-    bl func_02004084
+    bl G3X_SetEdgeColorTable
     add sp, #0x1c
     pop {r4, r5, r6, r7}
     pop {r3}

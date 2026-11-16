@@ -9,7 +9,7 @@ s32 func_020114f0(u16 port, void *cb, void *arg);
 s32 func_0201299c(UnkDS *ds)
 {
     u8 *sys = func_02010b70();
-    s32 r = func_02010a50(2, 9, 10);
+    s32 r = WMi_CheckStateEx(2, 9, 10);
     void *portCb;
     if (r != 0) {
         return r;

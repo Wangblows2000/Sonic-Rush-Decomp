@@ -9,8 +9,8 @@ s32 Sound_ResetHeap();
 extern u8 data_0207cb7c[];
 s32 func_02036854();
 extern u8 gSoundHeap[];
-s32 func_0201e7cc();
-s32 func_0201bf34();
+s32 NNS_SndArcLoadGroup();
+s32 NNS_SndHandleInit();
 
 void func_0206086c(u8 *p0) {
     s32 t0 = TalkDemo_GetEntry();
@@ -27,10 +27,10 @@ void func_0206086c(u8 *p0) {
             Sound_ResetHeap(2, t2, (t3 & 2));
             func_02036854(data_0207cb7c);
         }
-        func_0201e7cc(*(u32 *)*(u32 *)*(u32 *)((u8 *)p0 + 0x28), *(u32 *)gSoundHeap);
+        NNS_SndArcLoadGroup(*(u32 *)*(u32 *)*(u32 *)((u8 *)p0 + 0x28), *(u32 *)gSoundHeap);
     }
-    func_0201bf34(((u8 *)p0 + 0x2c));
-    func_0201bf34(((u8 *)p0 + 0x30));
+    NNS_SndHandleInit(((u8 *)p0 + 0x2c));
+    NNS_SndHandleInit(((u8 *)p0 + 0x30));
 }
 
 #pragma thumb reset

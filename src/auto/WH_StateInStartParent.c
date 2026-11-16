@@ -3,7 +3,7 @@
 
 extern u8 sSysState[];
 void WH_StateOutStartParent();
-s32 func_02011904();
+s32 WM_StartParent();
 s32 WH_SetError();
 extern u8 sMyAid[];
 extern u8 sConnectBitmap[];
@@ -13,7 +13,7 @@ s32 WH_StateInStartParent(void) {
     if ((u32)t0 <= (u32)2) {
         return 1;
     }
-    s32 t1 = func_02011904((u32)WH_StateOutStartParent);
+    s32 t1 = WM_StartParent((u32)WH_StateOutStartParent);
     if (t1 != 2) {
         WH_SetError();
         return 0;

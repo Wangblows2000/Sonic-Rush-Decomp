@@ -27,7 +27,7 @@ extern s16 data_0206e470[];
 void func_ov001_022fc934(s32 a, s32 b, s32 c, s32 d, BOOL flag);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 UnkStruct_022faa3c *func_ov001_02300c94(void);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -55,7 +55,7 @@ void func_ov001_022faa3c(UnkStruct_022faa3c *p) {
     t = func_ov001_02300c94();
     dx = t->unk18 - p->unk18;
     dy = t->unk1C - p->unk1C;
-    idx = (s32)(func_020027a4(dy, dx) & 0xffff) >> 4;
+    idx = (s32)(FX_Atan2(dy, dx) & 0xffff) >> 4;
     vx = FX_Mul(p->unk1D0, COS_IDX(idx));
     vy = FX_Mul(p->unk1D0, SIN_IDX(idx));
     if ((vx > 0 && p->unk50 < -vx) || (vx < 0 && p->unk50 > -vx))
@@ -73,8 +73,8 @@ void func_ov001_022faa3c(UnkStruct_022faa3c *p) {
     else if (p->unk54 < 0 && p->unk54 < dy)
         p->unk54 = dy;
     dz = t->unk20 - p->unk20;
-    p->unk3C = func_020027a4(dy, dz);
-    p->unk3E = func_020027a4(dx, dz);
+    p->unk3C = FX_Atan2(dy, dz);
+    p->unk3E = FX_Atan2(dx, dz);
     p->unk3C >>= 1;
     p->unk3E >>= 1;
 }

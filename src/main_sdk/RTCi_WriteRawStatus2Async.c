@@ -1,4 +1,4 @@
 #include <nitro/types.h>
 
-u32 func_0200f1e8(u32 cmd);
-u32 RTCi_WriteRawStatus2Async(void) { return func_0200f1e8(0x27); }
+u32 RtcSendPxiCommand(u32 cmd);
+u32 RTCi_WriteRawStatus2Async(void) { return RtcSendPxiCommand(0x27); }

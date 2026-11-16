@@ -30,9 +30,9 @@ void Background_Init(void *bg, UnkRes_022e153c *res, s32 a, s32 b, s32 c, u16 w,
 void Background_Draw(void *bg);
 s32 func_ov001_022e17bc(void *p);
 u32 func_ov001_022e17b0(void *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -52,13 +52,13 @@ void func_ov001_022e153c(UnkWork_022e153c *w) {
     res = (UnkRes_022e153c *)((u8 *)res + res->unk10);
     switch (func_ov001_022e17bc(res)) {
     case 0x10:
-        func_02008648(res, w->buf);
+        MI_UncompressLZ16(res, w->buf);
         break;
     case 0x20:
-        func_02008720(res, w->buf);
+        MI_UncompressHuffman(res, w->buf);
         break;
     case 0x30:
-        func_020087f8(res, w->buf);
+        MI_UncompressRL16(res, w->buf);
         break;
     default:
         Mem_Copy(Compress_GetData(res), w->buf, func_ov001_022e17b0(res));

@@ -5,7 +5,7 @@ s32 GXx_SetMasterBrightness_();
 extern u8 gOverlayIsLoaded[];
 extern u8 gOverlayLoadedId[];
 s32 FS_UnloadOverlay();
-s32 func_020076cc();
+s32 OS_ResetSystem();
 
 void System_SoftReset(s32 p0) {
     GXx_SetMasterBrightness_(0x400006c, 0x10);
@@ -13,5 +13,5 @@ void System_SoftReset(s32 p0) {
     if (*(u32 *)gOverlayIsLoaded != 0) {
         FS_UnloadOverlay(0, *(u32 *)gOverlayLoadedId);
     }
-    func_020076cc(((s32)p0 | 0x80000000));
+    OS_ResetSystem(((s32)p0 | 0x80000000));
 }

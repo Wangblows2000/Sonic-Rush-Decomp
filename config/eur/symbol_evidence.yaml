@@ -619,7 +619,7 @@ Touch_Disable:
 Touch_NullCallback:
   confidence: tentative
   evidence: "strong E6: empty function registered as TP callback by Touch_Init (was func_02037c5c, main, 2026-11-16)"
-Mic_Init:
+Mic_InitSystem:
   confidence: tentative
   evidence: "strong E4,E6: called from System_Init; MIC init (PXI FIFO tag 9 = MIC) then clears mic state data_0224ff00 (was func_02034e8c, main, 2026-11-16)"
 Mic_Update:
@@ -4789,3 +4789,2493 @@ TimeAttackMenuBgScroll_Main:
 ExtraBoss_LoadPlayerModel:
   confidence: tentative
   evidence: "strong E3: loads /mod/e_son.nsbmd or /mod/son_easy.nsbmd (data_ov001_0231d9f0/0231d9f8) for the player in the extra boss fight (was func_ov001_02302be8, ov001, 2026-11-16)"
+MTX_Identity22_:
+  confidence: tentative
+  evidence: "strong E4: writes {0x1000,0,0,0x1000} to a 2x2 fx32 matrix; first function of FX_mtx22 cluster before MTX_Scale22_/MTX_Rot22_ (was func_02000cb4, main, 2026-11-16)"
+MTX_Scale22_:
+  confidence: tentative
+  evidence: "strong E4: thumb, m[0]=x m[3]=y m[1]=m[2]=0, 2x2 matrix scale as SDK MTX_Scale22_ (was func_02000ccc, main, 2026-11-16)"
+MTX_Rot22_:
+  confidence: tentative
+  evidence: "strong E4: thumb, (mtx,sin,cos): m00=cos m01=sin m10=-sin m11=cos = SDK MTX_Rot22_ (was func_02000cd8, main, 2026-11-16)"
+MTX_Concat22:
+  confidence: tentative
+  evidence: "strong E4: 2x2 fx32 matrix product with temp when dst aliases src = SDK MTX_Concat22 (was func_02000ce4, main, 2026-11-16)"
+MTX_ScaleApply22:
+  confidence: tentative
+  evidence: "strong E4: (mtx,dst,x,y) scales rows 0/1 by x/y with fx64 >>12 = pokediamond FX_mtx22.c MTX_ScaleApply22 (was func_02000d98, main, 2026-11-16)"
+MTX_Identity33_:
+  confidence: tentative
+  evidence: "strong E4: writes 3x3 identity (0x1000 diag) = SDK MTX_Identity33_ (was func_02000dfc, main, 2026-11-16)"
+MTX_Copy33To43_:
+  confidence: tentative
+  evidence: "strong E4: copies 9 fx32 and zeroes translation [9..11] = SDK MTX_Copy33To43_ (was func_02000e20, main, 2026-11-16)"
+MTX_Scale33_:
+  confidence: tentative
+  evidence: "strong E4: thumb, (mtx,x,y,z) diag m0/m4/m8, rest 0 = SDK MTX_Scale33_ (was func_02000e4c, main, 2026-11-16)"
+MTX_RotX33_:
+  confidence: tentative
+  evidence: "strong E4: thumb, (mtx,sin,cos): m11=cos m12=sin m21=-sin m22=cos = SDK MTX_RotX33_ (neighbour of named MTX_RotY33_) (was func_02000e60, main, 2026-11-16)"
+MTX_RotZ33_:
+  confidence: tentative
+  evidence: "strong E4: thumb, m00=cos m01=sin m10=-sin m11=cos m22=1 = SDK MTX_RotZ33_ (follows MTX_RotY33_) (was func_02000e98, main, 2026-11-16)"
+MTX_MultVec33:
+  confidence: tentative
+  evidence: "strong E4: (vec,mtx,dst) row-vector times 3x3 with fx64 >>12 = pokediamond MTX_MultVec33 (was func_02000eb0, main, 2026-11-16)"
+MTX_Concat33:
+  confidence: tentative
+  evidence: "strong E4: 3x3 fx32 product with temp when dst aliases = pokediamond MTX_Concat33 (was func_02000f34, main, 2026-11-16)"
+MTX_Inverse33:
+  confidence: tentative
+  evidence: "strong E4: 3x3 cofactor inverse via FX_InvAsync/FX_GetDivResult, result copied with MI_Copy36B (Mtx33 size) = SDK MTX_Inverse33 (was func_020010d0, main, 2026-11-16)"
+MTX_ScaleApply33:
+  confidence: tentative
+  evidence: "strong E4: (mtx,dst,x,y,z) scales the 3 rows of a 3x3; called by MTX_ScaleApply43 (0x02001bc0) exactly as in SDK (was func_020013c8, main, 2026-11-16)"
+MTX_Identity43_:
+  confidence: tentative
+  evidence: "strong E4: writes 4x3 identity (12 words) = SDK MTX_Identity43_ (was func_0200148c, main, 2026-11-16)"
+MTX_Copy43To44_:
+  confidence: tentative
+  evidence: "strong E4: copies 4x3 into 4x4 inserting 0 / 0x1000 column = SDK MTX_Copy43To44_ (was func_020014b4, main, 2026-11-16)"
+MTX_Scale43_:
+  confidence: tentative
+  evidence: "strong E4: thumb, 4x3 diag x/y/z, translation 0 = SDK MTX_Scale43_ (was func_020014e8, main, 2026-11-16)"
+MTX_RotX43_:
+  confidence: tentative
+  evidence: "strong E4: thumb, 4x3 RotX layout (m11=cos m12=sin m21=-sin) = SDK MTX_RotX43_ (was func_02001500, main, 2026-11-16)"
+MTX_RotY43_:
+  confidence: tentative
+  evidence: "strong E4: thumb, 4x3 RotY layout (m00=cos m02=-sin m20=sin) = SDK MTX_RotY43_ (was func_02001520, main, 2026-11-16)"
+MTX_RotZ43_:
+  confidence: tentative
+  evidence: "strong E4: thumb, 4x3 RotZ layout = SDK MTX_RotZ43_ (was func_0200153c, main, 2026-11-16)"
+MTX_MultVec43:
+  confidence: tentative
+  evidence: "strong E4: (vec,mtx,dst) 3x3 product plus translation m[9..11] = pokediamond MTX_MultVec43 (was func_02001558, main, 2026-11-16)"
+MTX_Concat43:
+  confidence: tentative
+  evidence: "strong E4: 4x3 product with translation and aliasing temp = pokediamond MTX_Concat43 (was func_0200160c, main, 2026-11-16)"
+MTX_Inverse43:
+  confidence: tentative
+  evidence: "strong E4: 4x3 inverse via FX_InvAsync/FX_GetDivResult and MI_Copy48B (Mtx43 size) = pokediamond MTX_Inverse43 (was func_0200182c, main, 2026-11-16)"
+MTX_ScaleApply43:
+  confidence: tentative
+  evidence: "strong E4: calls MTX_ScaleApply33 then copies translation 0x24..0x2c = pokediamond MTX_ScaleApply43 (was func_02001bc0, main, 2026-11-16)"
+MTX_TransApply43:
+  confidence: tentative
+  evidence: "strong E4: copies 36B if mtx!=dst, dst.t = mtx.t + x*row0+y*row1+z*row2 (same form as pokediamond MTX_TransApply44 for 4x3) (was func_02001c00, main, 2026-11-16)"
+MTX_Identity44_:
+  confidence: tentative
+  evidence: "strong E4: writes 4x4 identity (16 words) = SDK MTX_Identity44_ (was func_02001cb8, main, 2026-11-16)"
+MTX_Copy44To43_:
+  confidence: tentative
+  evidence: "strong E4: copies 4x4 into 4x3 dropping 4th column = SDK MTX_Copy44To43_ (was func_02001ce4, main, 2026-11-16)"
+MTX_Concat44:
+  confidence: tentative
+  evidence: "strong E4: 4x4 fx32 product with aliasing temp = pokediamond MTX_Concat44 (was func_02001d18, main, 2026-11-16)"
+FX_ModS32:
+  confidence: tentative
+  evidence: "strong E4,E5: DIVCNT=0, NUMER/DENOM write, busy-wait, returns DIVREM_RESULT 0x040002a8 = pokediamond FX_ModS32 (was func_0200203c, main, 2026-11-16)"
+FX_DivS32:
+  confidence: tentative
+  evidence: "strong E4,E5: DIVCNT=0, NUMER/DENOM, busy-wait, returns DIV_RESULT 0x040002a0 = pokediamond FX_DivS32 (was func_02002094, main, 2026-11-16)"
+FX_Sqrt:
+  confidence: tentative
+  evidence: "strong E4,E5: x<=0 returns 0, else SQRTCNT=1 SQRT_PARAM=x then FX_GetSqrtResult = pokediamond FX_Sqrt (was func_020021f0, main, 2026-11-16)"
+FX_Inv:
+  confidence: tentative
+  evidence: "strong E4: body FX_InvAsync(x); return FX_GetDivResult(); = pokediamond FX_cp.c FX_Inv (was func_02002240, main, 2026-11-16)"
+VEC_Distance:
+  confidence: tentative
+  evidence: "strong E4,E5: (v1,v2) sum of squared differences fed to SQRT unit 0x040002b0..bc, returns fx32 = SDK VEC_Distance (was func_02002278, main, 2026-11-16)"
+VEC_MultAdd:
+  confidence: tentative
+  evidence: "strong E4: (a,v1,v2,dst) dst = v2 + a*v1 per component with fx64 >>12 = SDK VEC_MultAdd (was func_02002300, main, 2026-11-16)"
+VEC_Fx16Normalize:
+  confidence: tentative
+  evidence: "strong E4,E5: VecFx16 (s16*) in/out, squared length -> SQRT unit, then DIV unit reciprocal = pokediamond VEC_Fx16Normalize (was func_02002360, main, 2026-11-16)"
+VEC_Normalize:
+  confidence: tentative
+  evidence: "strong E4,E5: VecFx32 in/out, sqrt + divide hardware sequence = pokediamond VEC_Normalize (was func_020024b4, main, 2026-11-16)"
+VEC_CrossProduct:
+  confidence: tentative
+  evidence: "strong E4: (a,b,dst) 3 fx64 cross terms >>12 = SDK VEC_CrossProduct (was func_0200265c, main, 2026-11-16)"
+VEC_DotProduct:
+  confidence: tentative
+  evidence: "strong E4: sum of 3 fx64 products +0x800 then >>12 = SDK VEC_DotProduct (was func_020026f8, main, 2026-11-16)"
+FX_Atan2:
+  confidence: tentative
+  evidence: "strong E4: (y,x) quadrant cases with 0/-0x8000/0x4000 returns, ratio through FX_Div and the atan table = SDK FX_Atan2 (follows FX_Atan cluster) (was func_020027a4, main, 2026-11-16)"
+FX_Atan:
+  confidence: tentative
+  evidence: "strong E4: x>0x1000 uses FX_Inv and 0x4000 - table[>>5], x==0x1000 -> 0x2000 = SDK FX_Atan (was func_02002978, main, 2026-11-16)"
+FX_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: empty function, last of the FX cluster before GX, called once from the game init (0x02030598) right before GX init, as SDK FX_Init (release build empty) (was func_02002a64, main, 2026-11-16)"
+GX_SetGraphicsMode:
+  confidence: tentative
+  evidence: "strong E4,E5: (dispMode,bgMode,bg0_2d3d) stores dispMode, writes DISPCNT 0x04000000 with mode<<16 and bg0<<3, clears when display off = SDK GX_SetGraphicsMode (was func_02002ab0, main, 2026-11-16)"
+GX_DispOff:
+  confidence: tentative
+  evidence: "strong E4,E5: clears isDispOn, saves DISPCNT display-mode bits (>>16 &3) and clears them = SDK GX_DispOff (neighbour of named GX_DispOn) (was func_02002b70, main, 2026-11-16)"
+GX_SetVCountEqVal:
+  confidence: tentative
+  evidence: "strong E4,E5: DISPSTAT 0x04000004 = (v&0xff)<<8 | (v&0x100)>>1 keeping low bits = SDK GX_SetVCountEqVal (was func_02002be8, main, 2026-11-16)"
+GX_Init:
+  confidence: tentative
+  evidence: "strong E4,E5,E6: POWCNT/DISPCNT/BG/MASTER_BRIGHT init, OS_GetLockID with OS_Terminate on failure, calls GX_InitGXState and clears regs; called from game init after FX_Init = SDK GX_Init (was func_02002c10, main, 2026-11-16)"
+GX_DisableBankForSubOBJExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: clears sub DISPCNT 0x04001000 bit31 and tail-calls disableBankForX_(&state.sub_objExtPltt 0x0207d000) = pokediamond GX_vramcnt.c (was func_02002e28, main, 2026-11-16)"
+GX_DisableBankForSubBGExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: clears sub DISPCNT bit30, disableBankForX_(&state.sub_bgExtPltt 0x0207cffe) (was func_02002e50, main, 2026-11-16)"
+GX_DisableBankForSubOBJ:
+  confidence: tentative
+  evidence: "strong E4: tail-calls disableBankForX_(&state.sub_obj 0x0207cffc) (GXVRamState field 10) (was func_02002e78, main, 2026-11-16)"
+GX_DisableBankForSubBG:
+  confidence: tentative
+  evidence: "strong E4: disableBankForX_(&state.sub_bg 0x0207cffa) (was func_02002e8c, main, 2026-11-16)"
+GX_DisableBankForLCDC:
+  confidence: tentative
+  evidence: "strong E4: disableBankForX_(&state.lcdc 0x0207cfe8, field 0) (was func_02002ea0, main, 2026-11-16)"
+GX_DisableBankForARM7:
+  confidence: tentative
+  evidence: "strong E4: disableBankForX_(&state.arm7 0x0207cfee, field 3) (was func_02002eb4, main, 2026-11-16)"
+GX_DisableBankForClearImage:
+  confidence: tentative
+  evidence: "strong E4: disableBankForX_(&state.clrImg 0x0207cff4, field 6) (was func_02002ec8, main, 2026-11-16)"
+GX_DisableBankForTexPltt:
+  confidence: tentative
+  evidence: "strong E4: disableBankForX_(&state.texPltt 0x0207cff2, field 5) (was func_02002edc, main, 2026-11-16)"
+GX_DisableBankForTex:
+  confidence: tentative
+  evidence: "strong E4: disableBankForX_(&state.tex 0x0207cff0, field 4) (was func_02002ef0, main, 2026-11-16)"
+GX_DisableBankForOBJExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: clears DISPCNT bit31, disableBankForX_(&state.objExtPltt 0x0207cff8) (was func_02002f04, main, 2026-11-16)"
+GX_DisableBankForBGExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: clears DISPCNT bit30, disableBankForX_(&state.bgExtPltt 0x0207cff6) (was func_02002f28, main, 2026-11-16)"
+GX_DisableBankForOBJ:
+  confidence: tentative
+  evidence: "strong E4: disableBankForX_(&state.obj 0x0207cfec, field 2) (was func_02002f4c, main, 2026-11-16)"
+GX_DisableBankForBG:
+  confidence: tentative
+  evidence: "strong E4: disableBankForX_(&state.bg 0x0207cfea, field 1) (was func_02002f60, main, 2026-11-16)"
+disableBankForX_:
+  confidence: tentative
+  evidence: "strong E4,E5: reads/zeroes *ptr, clears VRAMCNT_A..I 0x04000240-49 per bit, then OSi_UnlockVram = pokediamond static disableBankForX_ (was func_02002f74, main, 2026-11-16)"
+GX_ResetBankForSubOBJExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: clears sub DISPCNT bit31, tail-calls resetBankForX_(&state.sub_objExtPltt) (was func_02003058, main, 2026-11-16)"
+GX_ResetBankForSubBGExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: clears sub DISPCNT bit30, resetBankForX_(&state.sub_bgExtPltt) (was func_02003080, main, 2026-11-16)"
+GX_ResetBankForSubOBJ:
+  confidence: tentative
+  evidence: "strong E4: resetBankForX_(&state.sub_obj 0x0207cffc) (was func_020030a8, main, 2026-11-16)"
+GX_ResetBankForSubBG:
+  confidence: tentative
+  evidence: "strong E4: resetBankForX_(&state.sub_bg 0x0207cffa) (was func_020030bc, main, 2026-11-16)"
+GX_ResetBankForTexPltt:
+  confidence: tentative
+  evidence: "strong E4: resetBankForX_(&state.texPltt 0x0207cff2) (was func_020030d0, main, 2026-11-16)"
+GX_ResetBankForTex:
+  confidence: tentative
+  evidence: "strong E4: resetBankForX_(&state.tex 0x0207cff0) (was func_020030e4, main, 2026-11-16)"
+GX_ResetBankForOBJExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: clears DISPCNT bit31, resetBankForX_(&state.objExtPltt) (was func_020030f8, main, 2026-11-16)"
+GX_ResetBankForBGExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: clears DISPCNT bit30, resetBankForX_(&state.bgExtPltt) (was func_0200311c, main, 2026-11-16)"
+resetBankForX_:
+  confidence: tentative
+  evidence: "strong E4: tmp=*ptr; *ptr=0; state.lcdc|=tmp; GX_VRAMCNT_SetLCDC_(tmp); return tmp = pokediamond static resetBankForX_ (was func_02003140, main, 2026-11-16)"
+GX_SetBankForSubOBJExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: stores state field 12, VRAMCNT_I 0x04000249, sub DISPCNT ext-pltt bit, GX_VRAMCNT_SetLCDC_ of freed banks = SDK GX_SetBankForSubOBJExtPltt (was func_02003178, main, 2026-11-16)"
+GX_SetBankForSubBGExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: state field 11, VRAMCNT_H 0x04000248 and sub DISPCNT = SDK GX_SetBankForSubBGExtPltt (was func_02003204, main, 2026-11-16)"
+GX_SetBankForSubOBJ:
+  confidence: tentative
+  evidence: "strong E4,E5: state field 10, VRAMCNT_D/I 0x04000243/49 = SDK GX_SetBankForSubOBJ (was func_02003290, main, 2026-11-16)"
+GX_SetBankForSubBG:
+  confidence: tentative
+  evidence: "strong E4,E5: state field 9, VRAMCNT_C/H/I = SDK GX_SetBankForSubBG (was func_0200330c, main, 2026-11-16)"
+GX_SetBankForTexPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: stores GXVRamState field 5 (texPltt), VRAMCNT_E/F/G 0x04000244-46, frees old banks via GX_VRAMCNT_SetLCDC_ = SDK GX_SetBankForTexPltt (was func_020033d8, main, 2026-11-16)"
+GX_SetBankForTex:
+  confidence: tentative
+  evidence: "strong E4,E5: state field 4 (tex), VRAMCNT_A-D and DISP3DCNT 0x04000060 texture enable = SDK GX_SetBankForTex (was func_020034cc, main, 2026-11-16)"
+GX_SetBankForOBJExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: state field 8 (objExtPltt), VRAMCNT_F/G and DISPCNT ext-pltt bit = SDK GX_SetBankForOBJExtPltt (was func_020036d0, main, 2026-11-16)"
+GX_SetBankForBGExtPltt:
+  confidence: tentative
+  evidence: "strong E4,E5: state field 7 (bgExtPltt), VRAMCNT_E/F/G and DISPCNT bit30 = SDK GX_SetBankForBGExtPltt (was func_02003788, main, 2026-11-16)"
+GX_SetBankForOBJ:
+  confidence: tentative
+  evidence: "strong E4,E5: state field 2 (obj), VRAMCNT_A/B/E/F/G = SDK GX_SetBankForOBJ (was func_0200389c, main, 2026-11-16)"
+GX_SetBankForBG:
+  confidence: tentative
+  evidence: "strong E4,E5: state field 1 (bg), VRAMCNT_A-G = SDK GX_SetBankForBG (was func_02003a08, main, 2026-11-16)"
+G2x_SetBlendAlpha_:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond GX_g2.c G2x_SetBlendAlpha_ (sdk_ident unique) (was func_02003d78, main, 2026-11-16)"
+G2x_SetBGyAffine_:
+  confidence: tentative
+  evidence: "strong E4: (reg,mtx,centerX,centerY,x1,y1) packs PA..PD as fx16 and computes BGxX/BGxY from (x1-cx),(y1-cy) = pokediamond G2x_SetBGyAffine_ (was func_02003d94, main, 2026-11-16)"
+GXi_NopClearFifo128_:
+  confidence: tentative
+  evidence: "strong E4,E6: stores 128 bytes of zeros to the register passed in; only caller G3X_ClearFifo (0x020042dc) passes GXFIFO 0x04000400 = pokediamond GX_g3x.c GXi_NopClearFifo128_ (was func_02003e9c, main, 2026-11-16)"
+G3X_GetMtxStackLevelPJ:
+  confidence: tentative
+  evidence: "strong E4,E5: GXSTAT 0x04000600 bit14 busy -> -1, else *level=(stat&0x2000)>>13 = pokediamond G3X_GetMtxStackLevelPJ (was func_02003f30, main, 2026-11-16)"
+G3X_GetMtxStackLevelPV:
+  confidence: tentative
+  evidence: "strong E4,E5: GXSTAT bit14 busy -> -1, else *level=(stat&0x1f00)>>8 = pokediamond G3X_GetMtxStackLevelPV (was func_02003f5c, main, 2026-11-16)"
+G3X_InitTable:
+  confidence: tentative
+  evidence: "strong E4,E5: DMA-id -1 check, else MIi_CpuClear32 of edge-color (0x10) and fog table (0x60), then 32 writes to SHININESS 0x040004d0 = pokediamond G3X_InitTable (was func_02003f88, main, 2026-11-16)"
+G3X_SetClearColor:
+  confidence: tentative
+  evidence: "strong E4,E5: col|alpha<<16|polyId<<24 (|0x8000 fog) to CLEAR_COLOR 0x04000350, depth to 0x04000354 = pokediamond G3X_SetClearColor (was func_02004040, main, 2026-11-16)"
+G3X_SetFogTable:
+  confidence: tentative
+  evidence: "strong E4: tail-calls MI_Copy32B(tbl, FOG_TABLE) = pokediamond G3X_SetFogTable (was func_02004070, main, 2026-11-16)"
+G3X_SetEdgeColorTable:
+  confidence: tentative
+  evidence: "strong E4: tail-calls MIi_CpuCopy16(tbl, EDGE_COLOR, 0x10) = pokediamond G3X_SetEdgeColorTable (was func_02004084, main, 2026-11-16)"
+G3X_GetVectorMtx:
+  confidence: tentative
+  evidence: "strong E4,E5: GXSTAT bit27 busy -> -1 else MI_Copy36B(VECMTX_RESULT,dst) = pokediamond G3X_GetVectorMtx (was func_0200409c, main, 2026-11-16)"
+G3X_GetClipMtx:
+  confidence: tentative
+  evidence: "strong E4,E5: GXSTAT bit27 busy -> -1 else MI_Copy64B(CLIPMTX_RESULT,dst) = pokediamond G3X_GetClipMtx (was func_020040e4, main, 2026-11-16)"
+G3X_SetFog:
+  confidence: tentative
+  evidence: "strong E4,E5: enable -> FOG_OFFSET 0x0400035c and DISP3DCNT 0x04000060 depth/alpha bits, else clear 0x3080 = pokediamond G3X_SetFog (was func_0200412c, main, 2026-11-16)"
+G3X_ResetMtxStack_2:
+  confidence: tentative
+  evidence: "strong E4,E5: waits PV/PJ levels, MTX_MODE/IDENTITY/POP sequence without the extra identity; called by G3X_ResetMtxStack = pokediamond G3X_ResetMtxStack_2 (was func_02004180, main, 2026-11-16)"
+G3X_InitMtxStack:
+  confidence: tentative
+  evidence: "strong E4,E5: same PV/PJ sequence plus extra MTX_IDENTITY after the PJ pop; called by G3X_Init = pokediamond G3X_InitMtxStack (was func_0200422c, main, 2026-11-16)"
+G3X_ClearFifo:
+  confidence: tentative
+  evidence: "strong E4,E5: GXi_NopClearFifo128_(GXFIFO) then waits GXSTAT bit27 = pokediamond G3X_ClearFifo (was func_020042dc, main, 2026-11-16)"
+G3X_ResetMtxStack:
+  confidence: tentative
+  evidence: "strong E4,E5: waits busy, GXSTAT|=0x8000, DISP3DCNT|=0x3000, G3X_ResetMtxStack_2, POLYGON_ATTR/TEXIMAGE/TEXPLTT reset = pokediamond G3X_ResetMtxStack (was func_02004310, main, 2026-11-16)"
+G3X_Init:
+  confidence: tentative
+  evidence: "strong E4,E5,E6: G3X_ClearFifo, DISP3DCNT/GXSTAT setup, G3X_InitMtxStack, CLEAR_COLOR/DEPTH, G3X_InitTable, POLYGON_ATTR 0x1f0080; called from game init after GX_Init = pokediamond G3X_Init (was func_02004398, main, 2026-11-16)"
+G3i_LookAt_:
+  confidence: tentative
+  evidence: "strong E4,E5: camera/target/up vectors through VEC_Normalize, VEC_CrossProduct, VEC_DotProduct, loads 4x3 into MTX_MODE/MTX_LOAD = pokediamond G3i_LookAt_ (was func_020044f4, main, 2026-11-16)"
+G3i_OrthoW_:
+  confidence: tentative
+  evidence: "strong E4,E5: 9 args, FX_InvAsync(right-left), DIV unit for (top-bottom) and (near-far), mtx[15]=scale = pokediamond G3i_OrthoW_ (was func_0200468c, main, 2026-11-16)"
+G3i_PerspectiveW_:
+  confidence: tentative
+  evidence: "strong E4,E5: FX_Div(fovcos,fovsin) then DIV unit by ratio and (near-far), FX_GetDivResultFx64c = pokediamond G3i_PerspectiveW_ (was func_02004988, main, 2026-11-16)"
+G3i_FrustumW_:
+  confidence: tentative
+  evidence: "strong E4,E5: 9 args like G3i_OrthoW_ but 2*near numerators and mtx[11]=-scale (perspective w) = SDK G3i_FrustumW_ (was func_02004b78, main, 2026-11-16)"
+GX_EndLoadTexPltt:
+  confidence: tentative
+  evidence: "strong E4: waits DMA if id != -1, GX_SetBankForTexPltt(saved bank), clears saved state = SDK GX_load3d.c GX_EndLoadTexPltt (was func_02004e68, main, 2026-11-16)"
+GX_LoadTexPltt:
+  confidence: tentative
+  evidence: "strong E4: (src,offset,size) MIi_CpuCopy32 when DMA id -1 else MI DMA copy to base+offset = SDK GX_LoadTexPltt (was func_02004ec0, main, 2026-11-16)"
+GX_BeginLoadTexPltt:
+  confidence: tentative
+  evidence: "strong E4: GX_ResetBankForTexPltt, stores bank and LCDC base from table = SDK GX_BeginLoadTexPltt (was func_02004f34, main, 2026-11-16)"
+GX_EndLoadTex:
+  confidence: tentative
+  evidence: "strong E4: waits DMA if id != -1, GX_SetBankForTex(saved), clears state = SDK GX_EndLoadTex (was func_02004f7c, main, 2026-11-16)"
+GX_LoadTex:
+  confidence: tentative
+  evidence: "strong E4: (src,offset,size) splits copy across VRAM bank boundary with CpuCopy32/DMA = SDK GX_LoadTex (was func_02004fec, main, 2026-11-16)"
+GX_BeginLoadTex:
+  confidence: tentative
+  evidence: "strong E4: GX_ResetBankForTex then computes per-slot LCDC addresses = SDK GX_BeginLoadTex (was func_02005150, main, 2026-11-16)"
+GX_SendFifo48B:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond GX_asm.c (4x ldmia r0!,{r2,r3,r12}/stmia r1; bx lr) (was func_020051d0, main, 2026-11-16)"
+OSi_IrqDma3:
+  confidence: tentative
+  evidence: "strong E2,E4: calls OSi_IrqCallback(3); sits in the OS_irqTable block with named OSi_IrqTimer0-3/OSi_IrqDma1 (sdk_ident byte match, ordered) (was func_02005234, main, 2026-11-16)"
+OSi_IrqDma2:
+  confidence: tentative
+  evidence: "strong E2,E4: calls OSi_IrqCallback(2); between OSi_IrqDma3 and named OSi_IrqDma1 (was func_02005244, main, 2026-11-16)"
+OSi_IrqDma0:
+  confidence: tentative
+  evidence: "strong E2,E4: calls OSi_IrqCallback(0); follows named OSi_IrqDma1 (was func_02005264, main, 2026-11-16)"
+OSi_IrqCallback:
+  confidence: tentative
+  evidence: "strong E4,E6: target of all OSi_IrqDma*/Timer* stubs; index*0xc callback table, clears and calls OS_DisableIrqMask = pokediamond OSi_IrqCallback (was func_02005274, main, 2026-11-16)"
+OS_IrqDummy:
+  confidence: tentative
+  evidence: "strong E2,E4: empty function at the end of the OS_irqTable block (sdk_ident byte match OS_IrqDummy) (was func_02005310, main, 2026-11-16)"
+OS_DisableIrqMask:
+  confidence: tentative
+  evidence: "strong E4,E5: IME 0x04000208 saved/cleared, IE 0x04000210 &= ~mask, returns old IE = pokediamond OS_DisableIrqMask (between named ResetRequestIrqMask/EnableIrqMask) (was func_02005348, main, 2026-11-16)"
+OSi_EnterTimerCallback:
+  confidence: tentative
+  evidence: "strong E4: stores (callback,arg) in 0xc-byte table slot and OS_EnableIrqMask(1<<(timerNo+3)) = pokediamond OSi_EnterTimerCallback (was func_020053fc, main, 2026-11-16)"
+OSi_EnterDmaCallback:
+  confidence: tentative
+  evidence: "strong E4: table slot store and OS_EnableIrqMask(1<<(dmaNo+8)) = pokediamond OSi_EnterDmaCallback (was func_02005448, main, 2026-11-16)"
+OS_SetIrqFunction:
+  confidence: tentative
+  evidence: "strong E4,E6: walks the 22 mask bits storing function into the IRQ table / callback info; game init calls it with (1=VBLANK, handler) = pokediamond OS_SetIrqFunction (was func_02005520, main, 2026-11-16)"
+OSi_WaitByLoop:
+  confidence: tentative
+  evidence: "strong E4: calls SVC_WaitByLoop(0x1000); used by OSi_DoLockByWord and OS_InitLock = SDK OSi_WaitByLoop (was func_02005628, main, 2026-11-16)"
+OS_UnlockCard:
+  confidence: tentative
+  evidence: "strong E4: tail-calls OS_UnlockByWord(id, 0x027fffe0 HW_CARD_LOCK_BUF, OSi_FreeCardBus) = SDK OS_UnlockCard (was func_02005670, main, 2026-11-16)"
+OS_LockCard:
+  confidence: tentative
+  evidence: "strong E4: tail-calls OS_LockByWord(id, 0x027fffe0, OSi_AllocateCardBus) = SDK OS_LockCard (was func_0200568c, main, 2026-11-16)"
+OS_TryLockCartridge:
+  confidence: tentative
+  evidence: "strong E4: OSi_DoTryLockByWord(id, 0x027fffe8 HW_CTRDG_LOCK_BUF, OSi_AllocateCartridgeBus, TRUE) = SDK OS_TryLockCartridge (was func_020056d8, main, 2026-11-16)"
+OS_UnlockCartridge:
+  confidence: tentative
+  evidence: "strong E4: OSi_DoUnlockByWord(id, 0x027fffe8, OSi_FreeCartridgeBus, TRUE) = SDK OS_UnlockCartridge (was func_020056f8, main, 2026-11-16)"
+OSi_DoTryLockByWord:
+  confidence: tentative
+  evidence: "strong E4: disable IRQ (or IRQ+FIQ), MI_SwapWord(id,&lockFlag), ctrlFunc and ownerID on success, restore = SDK OSi_DoTryLockByWord (was func_02005718, main, 2026-11-16)"
+OS_UnlockByWord:
+  confidence: tentative
+  evidence: "strong E4: tail-calls OSi_DoUnlockByWord(...,FALSE) = SDK OS_UnlockByWord (was func_02005798, main, 2026-11-16)"
+OSi_DoUnlockByWord:
+  confidence: tentative
+  evidence: "strong E4: returns -2 if owner != id, clears ownerID, ctrlFunc, clears lockFlag under disabled IRQ = SDK OSi_DoUnlockByWord (was func_020057a8, main, 2026-11-16)"
+OS_LockByWord:
+  confidence: tentative
+  evidence: "strong E4: tail-calls OSi_DoLockByWord(...,FALSE) = SDK OS_LockByWord (was func_02005838, main, 2026-11-16)"
+OSi_DoLockByWord:
+  confidence: tentative
+  evidence: "strong E4: loops OSi_DoTryLockByWord while >0 with OSi_WaitByLoop = SDK OSi_DoLockByWord (was func_02005848, main, 2026-11-16)"
+OS_InitLock:
+  confidence: tentative
+  evidence: "strong E4,E5: once-only flag, MIi_CpuClear32 of lock area, OS_LockByWord(0x7e,...)/OS_UnlockByWord, EXMEMCNT 0x04000204 = SDK OS_InitLock (was func_020058a0, main, 2026-11-16)"
+MI_SwapWord:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond MI_swap.c MI_SwapWord (sdk_ident unique); called by OSi_DoTryLockByWord (was func_02008640, main, 2026-11-16)"
+OS_SetSwitchThreadCallback:
+  confidence: tentative
+  evidence: "strong E4: swaps the switch-callback field (+0x10) of the thread info under disabled IRQ and returns the old one = SDK OS_SetSwitchThreadCallback (was func_020059a4, main, 2026-11-16)"
+OS_SetThreadPriority:
+  confidence: tentative
+  evidence: "strong E4: walks thread list (link +0x68), removes and re-inserts by priority (+0x70) via OSi_InsertThreadToList, then OSi_RescheduleThread = SDK OS_SetThreadPriority (was func_020059e0, main, 2026-11-16)"
+OSi_RescheduleThread:
+  confidence: tentative
+  evidence: "strong E4: checks OS_GetProcMode/IRQ depth, OS_SelectThread, switch callback, OS_SaveContext/OS_LoadContext = SDK OSi_RescheduleThread (was func_02005a94, main, 2026-11-16)"
+OS_SelectThread:
+  confidence: tentative
+  evidence: "strong E4: returns first thread in list with state(+0x64)==1 READY = SDK OS_SelectThread (was func_02005b74, main, 2026-11-16)"
+OS_WakeupThreadDirect:
+  confidence: tentative
+  evidence: "strong E4: state=READY then OSi_RescheduleThread under disabled IRQ = SDK OS_WakeupThreadDirect (was func_02005ba0, main, 2026-11-16)"
+OS_WakeupThread:
+  confidence: tentative
+  evidence: "strong E4: for each thread whose id bit is in the queue mask set READY, clear queue, reschedule = SDK OS_WakeupThread (2.x bitmask queue) (was func_02005bd4, main, 2026-11-16)"
+OS_SleepThread:
+  confidence: tentative
+  evidence: "strong E4: sets current thread id bit in queue, state=WAITING(0), OSi_RescheduleThread = SDK OS_SleepThread (was func_02005c48, main, 2026-11-16)"
+OS_IsThreadTerminated:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond OS_IsThreadTerminated (sdk_ident unique): returns state==2 (was func_02005cb0, main, 2026-11-16)"
+OS_JoinThread:
+  confidence: tentative
+  evidence: "strong E4: if state != TERMINATED, OS_SleepThread(&thread->joinQueue +0x90) = SDK OS_JoinThread (was func_02005cc4, main, 2026-11-16)"
+OS_ExitThread:
+  confidence: tentative
+  evidence: "strong E4,E8: stored as the initial LR of every thread by OS_CreateThread (literal 0x02005e60); unlocks mutexes, removes from list, state=2, wakes join queue, reschedules, OS_Terminate = SDK OS_ExitThread (was func_02005d00, main, 2026-11-16)"
+OS_CreateThread:
+  confidence: tentative
+  evidence: "strong E4: OSi_GetUnusedThreadId, OS_InitContext, stack guard words 0xfddb597d/0x7bf9dd5b, LR=OS_ExitThread, MIi_CpuClear32 of stack, OSi_InsertThreadToList = SDK OS_CreateThread (was func_02005d5c, main, 2026-11-16)"
+OS_InitThread:
+  confidence: tentative
+  evidence: "strong E4,E6: once-only flag, sets up launcher and idle thread with OS_CreateThread; called from game init = SDK OS_InitThread (was func_02005e64, main, 2026-11-16)"
+OSi_RemoveThreadFromList:
+  confidence: tentative
+  evidence: "strong E4: unlinks thread from the list at info+0xc via link +0x68 = SDK OSi_RemoveThreadFromList (was func_02005fe4, main, 2026-11-16)"
+OSi_InsertThreadToList:
+  confidence: tentative
+  evidence: "strong E4: inserts thread into list ordered by priority (+0x70) = SDK OSi_InsertThreadToList (was func_0200602c, main, 2026-11-16)"
+OSi_GetUnusedThreadId:
+  confidence: tentative
+  evidence: "strong E4: returns first index <16 whose entry in the thread pointer table is NULL = SDK 2.x OSi_GetUnusedThreadId (was func_02006094, main, 2026-11-16)"
+OS_InitContext:
+  confidence: tentative
+  evidence: "strong E4: context pc=newpc+4, sp=newsp, svc sp=newsp-0x40, cpsr 0x1f or 0x3f by thumb bit = pokediamond OS_context.c OS_InitContext (precedes named OS_SaveContext) (was func_020060c4, main, 2026-11-16)"
+OS_GetConsoleType:
+  confidence: tentative
+  evidence: "strong E4,E6: caches result in a word initialised to 0xffffffff, combines cartridge/debugger detection with OS_IsRunOnEmulator; OS_GetInitArenaLo tests (result&3)==1 for the 8 MB debug arena = SDK OS_GetConsoleType (was func_020062c0, main, 2026-11-16)"
+OS_IsRunOnEmulator:
+  confidence: tentative
+  evidence: "strong E2,E6: returns 0 (sdk_ident byte match OS_IsRunOnEmulator); called by OS_GetConsoleType (was func_02006338, main, 2026-11-16)"
+OS_JamMessage:
+  confidence: tentative
+  evidence: "strong E4: waits while usedCount>=msgCount, firstIndex=(first+count-1)%count, stores msg at the new head, wakes receive queue = SDK OS_JamMessage (was func_02006340, main, 2026-11-16)"
+OS_ReceiveMessage:
+  confidence: tentative
+  evidence: "strong E4: waits while usedCount==0, reads msgArray[firstIndex], advances firstIndex mod count, usedCount--, wakes send queue = SDK OS_ReceiveMessage (was func_020063f4, main, 2026-11-16)"
+OS_SendMessage:
+  confidence: tentative
+  evidence: "strong E4: waits while full, stores at (first+used)%count, usedCount++, wakes receive queue = SDK OS_SendMessage (was func_020064a0, main, 2026-11-16)"
+OS_InitMessageQueue:
+  confidence: tentative
+  evidence: "strong E4: zeroes both thread queues, stores msgArray/msgCount, firstIndex=usedCount=0 = SDK OS_InitMessageQueue (was func_02006548, main, 2026-11-16)"
+OSi_DequeueHead:
+  confidence: tentative
+  evidence: "strong E4: pops the head mutex of thread->mutexQueue (+0x7c/+0x80) = SDK os_mutex.c OSi_DequeueHead (was func_02006568, main, 2026-11-16)"
+OSi_DequeueItem:
+  confidence: tentative
+  evidence: "strong E4: unlinks a given mutex from thread->mutexQueue = SDK OSi_DequeueItem (was func_02006590, main, 2026-11-16)"
+OSi_EnqueueTail:
+  confidence: tentative
+  evidence: "strong E4: appends mutex to thread->mutexQueue tail = SDK OSi_EnqueueTail (was func_020065b4, main, 2026-11-16)"
+OSi_UnlockAllMutex:
+  confidence: tentative
+  evidence: "strong E4: loops OSi_DequeueHead, clears count/thread, OS_WakeupThread(&mutex->queue); called by OS_ExitThread = SDK OSi_UnlockAllMutex (was func_020065d8, main, 2026-11-16)"
+OS_UnlockMutex:
+  confidence: tentative
+  evidence: "strong E4: if owner==current, --count; at 0 OSi_DequeueItem, clear owner, OS_WakeupThread = SDK OS_UnlockMutex (was func_02006628, main, 2026-11-16)"
+OS_LockMutex:
+  confidence: tentative
+  evidence: "strong E4: loop: free -> take and OSi_EnqueueTail, owner==current -> ++count, else OS_SleepThread = SDK OS_LockMutex (was func_02006698, main, 2026-11-16)"
+OS_InitMutex:
+  confidence: tentative
+  evidence: "strong E4: zero queue, thread=NULL, count=0 = SDK OS_InitMutex (was func_02006724, main, 2026-11-16)"
+OS_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: first call of game init; calls OS_InitArena, PXI_Init, OS_InitLock, OS_InitArenaEx, OS_InitIrqTable, OS_InitException, MI_Init, OS_InitVAlarm, OSi_InitVramExclusive, OS_InitThread, OS_InitReset, CTRDG_Init, CARD_Init, PM_Init in pokediamond OS_Init order (was func_02006834, main, 2026-11-16)"
+OS_InitIrqTable:
+  confidence: tentative
+  evidence: "strong E4,E6: zeroes the u16 IRQ thread queue; 5th call of OS_Init exactly where pokediamond calls OS_InitIrqTable (was func_020055b0, main, 2026-11-16)"
+OS_GetInitArenaLo:
+  confidence: tentative
+  evidence: "strong E4: switch on arena id returning SDK linker bounds, MAINEX case checks OS_GetConsoleType for 0x02400000 = SDK OS_GetInitArenaLo (was func_020068a8, main, 2026-11-16)"
+OS_GetArenaLo:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond OS_arena.c OS_GetArenaLo (sdk_ident unique): return 0x027ffda0[id] (was func_02006abc, main, 2026-11-16)"
+OS_GetInitArenaHi:
+  confidence: tentative
+  evidence: "strong E4: switch on arena id (0 main, 3 -> 0x02000000 ...), MAINEX case uses OS_GetConsoleType; paired with OS_GetInitArenaLo in OS_InitArena/OS_InitArenaEx = SDK OS_GetInitArenaHi (was func_02006990, main, 2026-11-16)"
+OS_InitArenaEx:
+  confidence: tentative
+  evidence: "strong E4,E6: OS_SetArenaHi/Lo(2, OS_GetInitArenaHi/Lo(2)), then OS_SetProtectionRegion1/2 unless 8 MB console; 4th call of OS_Init = SDK OS_InitArenaEx (was func_02006ad0, main, 2026-11-16)"
+OS_InitArena:
+  confidence: tentative
+  evidence: "strong E4,E6: once-only flag, OS_SetArenaHi/Lo for every arena id from OS_GetInitArenaHi/Lo; first call of OS_Init = SDK OS_InitArena (was func_02006b64, main, 2026-11-16)"
+OS_GetDTCMAddress:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond OS_tcm.c OS_GetDTCMAddress (sdk_ident unique): mrc p15 c9,c1 & mask (was func_02006c7c, main, 2026-11-16)"
+OS_GetProtectionRegion2:
+  confidence: tentative
+  evidence: "strong E4,E5: asm mrc p15,0,r0,c6,c2,0 (protection region 2 register) right after OS_SetProtectionRegion1/2 = SDK OS_GetProtectionRegion2 (was func_02006cc0, main, 2026-11-16)"
+OSi_GetAndDisplayContext:
+  confidence: tentative
+  evidence: "strong E4: called from OSi_ExceptionHandler; calls OSi_SetExContext then OSi_DisplayExContext = SDK os_exception.c OSi_GetAndDisplayContext (was func_02006d3c, main, 2026-11-16)"
+OSi_DisplayExContext:
+  confidence: tentative
+  evidence: "strong E4: if a user exception handler is set, OS_EnableProtectionUnit, call handler(context,arg), OS_DisableProtectionUnit = SDK OSi_DisplayExContext (was func_02006de0, main, 2026-11-16)"
+OS_InitException:
+  confidence: tentative
+  evidence: "strong E4,E6: debugger handler address accepted only in 0x02600000-0x027fffff, OS_GetConsoleType check, installs OSi_ExceptionHandler; 6th call of OS_Init = SDK OS_InitException (was func_02006e4c, main, 2026-11-16)"
+OSi_SetTimerReserved:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond OS_timer.c OSi_SetTimerReserved (sdk_ident unique) (was func_02006edc, main, 2026-11-16)"
+OSi_CountUpTick:
+  confidence: tentative
+  evidence: "strong E4,E5: increments 48-bit tick on TM0 overflow, rewrites TM0CNT 0x04000100/02, OSi_EnterTimerCallback(0, self) = SDK OSi_CountUpTick (was func_02006ef8, main, 2026-11-16)"
+OS_InitTick:
+  confidence: tentative
+  evidence: "strong E4,E5,E6: once-only, OSi_SetTimerReserved(0), TM0 start, OS_SetIrqFunction(timer0, OSi_CountUpTick), OS_EnableIrqMask; called from game init after OS_Init = SDK OS_InitTick (was func_02006f80, main, 2026-11-16)"
+OS_InitAlarm:
+  confidence: tentative
+  evidence: "strong E4,E6: once-only, OSi_SetTimerReserved(1), clears alarm queue, OS_DisableIrqMask(0x10 timer1); called from game init after OS_InitTick = SDK OS_InitAlarm (was func_0200701c, main, 2026-11-16)"
+OSi_GetVFrame:
+  confidence: tentative
+  evidence: "strong E4: under disabled IRQ, if vcount < previous vcount ++frame; stores vcount and returns frame = SDK os_valarm.c OSi_GetVFrame (was func_02007074, main, 2026-11-16)"
+OSi_CompareVCount:
+  confidence: tentative
+  evidence: "strong E4: compares (frame,count) against alarm frame (+0xc) and count (+0x10) with wrap handling = SDK OSi_CompareVCount (was func_020070c0, main, 2026-11-16)"
+OSi_VAlarmHandler:
+  confidence: tentative
+  evidence: "strong E4,E5: VCOUNT 0x04000006 / DISPSTAT 0x04000004 driven, uses OSi_GetVFrame/OSi_CompareVCount, fires and re-arms valarms = SDK OSi_VAlarmHandler (was func_02007110, main, 2026-11-16)"
+OS_CancelAllVAlarms:
+  confidence: tentative
+  evidence: "strong E4: under disabled IRQ walks the whole valarm list (next +0x18) calling OS_CancelVAlarm on every entry; same loop as pokediamond ARM7 OS_CancelVAlarms but with no tag filter = SDK OS_CancelAllVAlarms (was func_020072bc, main, 2026-11-16)"
+OS_CancelVAlarm:
+  confidence: tentative
+  evidence: "strong E4: sets canceled (+0x24)=1, OSi_DetachVAlarm if handler set, clears handler = pokediamond OS_CancelVAlarm (was func_02007318, main, 2026-11-16)"
+OSi_SetNextVAlarm:
+  confidence: tentative
+  evidence: "strong E4,E5: OS_SetIrqFunction(4 VCOUNT, OSi_VAlarmHandler), GX_SetVCountEqVal(alarm->fire), DISPSTAT|=0x20, OS_EnableIrqMask(4) = SDK OSi_SetNextVAlarm (was func_02007374, main, 2026-11-16)"
+OS_SetVAlarm:
+  confidence: tentative
+  evidence: "strong E4,E5: Terminate if alarm NULL or busy, VCOUNT read + OSi_GetVFrame, period=FALSE, fire/frame/delay/handler/arg, canceled=0, OSi_InsertVAlarm = SDK OS_SetVAlarm (was func_020073b8, main, 2026-11-16)"
+OS_CreateVAlarm:
+  confidence: tentative
+  evidence: "strong E4: clears handler, tag and canceled fields = SDK OS_CreateVAlarm (follows OS_SetVAlarm as in pokediamond ARM7 OS_valarm order) (was func_02007450, main, 2026-11-16)"
+OSi_DetachVAlarm:
+  confidence: tentative
+  evidence: "strong E4: unlinks alarm via prev(+0x14)/next(+0x18), fixing list head/tail = SDK OSi_DetachVAlarm (was func_02007464, main, 2026-11-16)"
+OSi_AppendVAlarm:
+  confidence: tentative
+  evidence: "strong E4: links alarm at list tail; if list was empty set head and OSi_SetNextVAlarm = SDK OSi_AppendVAlarm (was func_0200749c, main, 2026-11-16)"
+OSi_InsertVAlarm:
+  confidence: tentative
+  evidence: "strong E4: inserts by (frame +0xc, fire +0x10) order, OSi_SetNextVAlarm when new head, else OSi_AppendVAlarm = SDK OSi_InsertVAlarm (was func_020074e8, main, 2026-11-16)"
+OS_InitVAlarm:
+  confidence: tentative
+  evidence: "strong E4,E6: once-only flag, clears list, OS_DisableIrqMask(4 VCOUNT); 8th call of OS_Init = SDK OS_InitVAlarm (was func_020075b8, main, 2026-11-16)"
+OS_ResetSystem:
+  confidence: tentative
+  evidence: "strong E4: reset-flag guard, CARD_LockRom(OS_GetLockID()), MI_StopDma(0..3), OS_SetIrqMask(0x40000), OS_ResetRequestIrqMask(~0), OSi_SendToPxi(0x10), OSi_DoResetSystem = SDK OS_reset.c OS_ResetSystem (naming-conventions anchor 17) (was func_020076cc, main, 2026-11-16)"
+OSi_SendToPxi:
+  confidence: tentative
+  evidence: "strong E4: loops PXI_SendWordByFifo(0xc, data<<8, 0) until it returns 0 = pokediamond OS_reset.c OSi_SendToPxi (was func_0200774c, main, 2026-11-16)"
+OSi_CommonCallback:
+  confidence: tentative
+  evidence: "strong E4: PXI callback: (data&0x7f00)==0x1000 sets reset flag, else OS_Terminate = pokediamond OSi_CommonCallback (was func_0200777c, main, 2026-11-16)"
+OS_InitReset:
+  confidence: tentative
+  evidence: "strong E4,E6: once-only, PXI_Init, waits PXI_IsCallbackReady(0xc,1), PXI_SetFifoRecvCallback(0xc, OSi_CommonCallback); 12th call of OS_Init = pokediamond OS_InitReset (was func_020077c0, main, 2026-11-16)"
+OS_GetOwnerInfo:
+  confidence: tentative
+  evidence: "strong E4: copies language/favourite colour/birthday/nickname/comment from the NVRAM user-info mirror (MIi_CpuCopy16) = pokediamond OS_ownerInfo.c OS_GetOwnerInfo (was func_02007828, main, 2026-11-16)"
+OS_GetMacAddress:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond OS_ownerInfo.c OS_GetMacAddress (sdk_ident unique) (was func_020078a4, main, 2026-11-16)"
+OSi_UnlockVram:
+  confidence: tentative
+  evidence: "strong E4,E6: bank&exclusive&0x1ff loop with OsCountZeroBits, clears lockId and exclusive bit when owner matches; called by GX disableBankForX_ = pokediamond OSi_UnlockVram (was func_020078c8, main, 2026-11-16)"
+MI_SetWramBank:
+  confidence: tentative
+  evidence: "confirmed E2,E5: byte-identical to pokediamond MI_wram.c MI_SetWramBank (sdk_ident unique), writes WRAMCNT 0x04000247 (was func_02007984, main, 2026-11-16)"
+PXI_SendWordByFifo:
+  confidence: tentative
+  evidence: "strong E4,E6: OSi_SendToPxi loops on it with (tag 0xc, data<<8, 0) until 0, exactly SDK PXI_SendWordByFifo(tag,data,err) (was func_0200a0d8, main, 2026-11-16)"
+PXI_SetFifoRecvCallback:
+  confidence: tentative
+  evidence: "strong E4,E6: OS_InitReset calls (0xc, OSi_CommonCallback) after PXI_IsCallbackReady = SDK PXI_SetFifoRecvCallback (was func_0200a1b4, main, 2026-11-16)"
+PXI_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: called first by OS_InitReset and 2nd by OS_Init exactly where pokediamond OS_Init calls PXI_Init (sdk_ident byte match among PXI_Init candidates) (was func_02009fa8, main, 2026-11-16)"
+OS_IrqHandler_ThreadSwitch:
+  confidence: tentative
+  evidence: "strong E4,E8: OS_IrqHandler loads its address (literal 0x01ff8054) into lr before calling the IRQ table entry, exactly as SDK OS_IrqHandler returns through OS_IrqHandler_ThreadSwitch (was func_01ff8058, itcm, 2026-11-16)"
+OSi_DoBoot:
+  confidence: tentative
+  evidence: "strong E4,E5: IME off, IPCSYNC 0x04000180 handshake, OSi_CpuClear32 of RAM, DISPCNT clear, jump to boot; called from OSi_DoResetSystem = pokediamond OS_reset.c OSi_DoBoot (was func_01ff81ac, itcm, 2026-11-16)"
+OSi_CpuClear32:
+  confidence: tentative
+  evidence: "strong E2,E6: byte-identical clear-32 loop (sdk_ident match OSi_CpuClear32), only caller OSi_DoBoot as in OS_reset.c (was func_01ff825c, itcm, 2026-11-16)"
+OSi_ReadCardRom32:
+  confidence: tentative
+  evidence: "strong E4,E5: drives card ROM regs 0x040001a1-af and data port 0x04100010 for 32-bit reads = pokediamond OSi_ReadCardRom32 (was func_01ff8270, itcm, 2026-11-16)"
+OSi_ReloadRomData:
+  confidence: tentative
+  evidence: "strong E4: reloads ARM9/ARM7 static modules via OSi_ReadCardRom32 from header 0x027ffe20.. with DC_StoreAll/DC_InvalidateAll/IC_InvalidateAll = pokediamond OSi_ReloadRomData (was func_01ff83a0, itcm, 2026-11-16)"
+OSi_DoResetSystem:
+  confidence: tentative
+  evidence: "strong E4: waits reset flag, IME=0, OSi_ReloadRomData, OSi_DoBoot; final call of OS_ResetSystem = pokediamond OSi_DoResetSystem (was func_01ff8480, itcm, 2026-11-16)"
+MIi_DmaSetParams_wait_noInt:
+  confidence: tentative
+  evidence: "strong E4,E5: DMA regs 0x040000b0/b8 write without IRQ disable plus DMA0 wait loop; used by MI_DmaFill32 = pokediamond MI_dma.c (was func_01ff84c0, itcm, 2026-11-16)"
+MIi_DmaSetParams_noInt:
+  confidence: tentative
+  evidence: "strong E4,E5: plain DMA src/dst/ctrl write without IRQ disable; used by MI_DmaFill32Async = pokediamond MIi_DmaSetParams_noInt (was func_01ff8520, itcm, 2026-11-16)"
+MIi_DmaSetParams_wait:
+  confidence: tentative
+  evidence: "strong E4,E5: IRQ-disabled DMA register write with DMA0 wait; used by MI_DmaCopy16/32 = pokediamond MIi_DmaSetParams_wait (was func_01ff8558, itcm, 2026-11-16)"
+MIi_DmaSetParams:
+  confidence: tentative
+  evidence: "strong E4,E5: IRQ-disabled DMA src/dst/ctrl write; used by async/HBlank/GX DMA functions = pokediamond MIi_DmaSetParams (was func_01ff85cc, itcm, 2026-11-16)"
+MIi_CheckDma0SourceAddress:
+  confidence: tentative
+  evidence: "strong E4: only for dmaNo 0, computes end address by direction, OS_Terminate if source region is invalid = pokediamond MIi_CheckDma0SourceAddress (was func_02007994, main, 2026-11-16)"
+MIi_CheckAnotherAutoDMA:
+  confidence: tentative
+  evidence: "strong E4,E5: scans the 4 DMACNT 0x040000b8+0xc*n for another enabled DMA with a different auto timing (0x38000000 mask), OS_Terminate = pokediamond MIi_CheckAnotherAutoDMA (was func_02007a04, main, 2026-11-16)"
+MI_StopDma:
+  confidence: tentative
+  evidence: "strong E4,E5: under disabled IRQ clears DMACNT enable and repeat bits for dmaNo (DMA0 special case); called 4x by OS_ResetSystem = SDK MI_StopDma (was func_02007ab8, main, 2026-11-16)"
+MI_WaitDma:
+  confidence: tentative
+  evidence: "strong E4,E5: busy-waits DMACNT bit31 for dmaNo, DMA0 fix-up = pokediamond MI_WaitDma (was func_02007b3c, main, 2026-11-16)"
+MI_DmaCopy32Async:
+  confidence: tentative
+  evidence: "strong E4: CheckDma0, MI_WaitDma, no-callback path SetParams(size>>2|0x84000000) else OSi_EnterDmaCallback + IF bit = pokediamond MI_DmaCopy32Async (was func_02007bac, main, 2026-11-16)"
+MI_DmaFill32Async:
+  confidence: tentative
+  evidence: "strong E4: MI_WaitDma, fill source word, MIi_DmaSetParams_noInt(size>>2|0x85000000), callback via OSi_EnterDmaCallback = pokediamond MI_DmaFill32Async (was func_02007c54, main, 2026-11-16)"
+MI_DmaCopy16:
+  confidence: tentative
+  evidence: "strong E4: CheckDma0, wait, MIi_DmaSetParams_wait(size>>1|0x80000000), wait = pokediamond MI_DmaCopy16 (was func_02007d2c, main, 2026-11-16)"
+MI_DmaCopy32:
+  confidence: tentative
+  evidence: "strong E4: CheckDma0, wait, MIi_DmaSetParams_wait(size>>2|0x84000000), wait = pokediamond MI_DmaCopy32 (was func_02007da4, main, 2026-11-16)"
+MI_DmaFill32:
+  confidence: tentative
+  evidence: "strong E4: wait, fill word, MIi_DmaSetParams_wait_noInt(size>>2|0x85000000), wait = pokediamond MI_DmaFill32 (was func_02007e20, main, 2026-11-16)"
+MI_HBlankDmaCopy16:
+  confidence: tentative
+  evidence: "strong E4: MIi_CheckAnotherAutoDMA(dmaNo,0x10000000 HBlank), CheckDma0, wait, SetParams(ctrl|size>>1) = pokediamond MI_HBlankDmaCopy16 (was func_02007eb0, main, 2026-11-16)"
+MI_HBlankDmaCopy32:
+  confidence: tentative
+  evidence: "strong E4: MIi_CheckAnotherAutoDMA(dmaNo,0x10000000), CheckDma0, wait, SetParams(ctrl|size>>2) = pokediamond MI_HBlankDmaCopy32 (was func_02007f24, main, 2026-11-16)"
+MIi_DMAFastCallback:
+  confidence: tentative
+  evidence: "strong E4: clears GX-DMA busy flag and calls the stored callback(arg) = pokediamond MI_dma_gxcommand.c MIi_DMAFastCallback (was func_02007f98, main, 2026-11-16)"
+MI_SendGXCommandAsyncFast:
+  confidence: tentative
+  evidence: "strong E4,E5: waits busy, stores params, MIi_CheckAnotherAutoDMA, CheckDma0, MI_WaitDma, OSi_EnterDmaCallback, SetParams to GXFIFO 0x04000400 = pokediamond MI_SendGXCommandAsyncFast (was func_02007fd8, main, 2026-11-16)"
+MIi_DMACallback:
+  confidence: tentative
+  evidence: "strong E4,E5: OS_DisableIrqMask(GXFIFO 0x200000), restores GXSTAT fifo condition and saved IRQ function, clears busy, callback = pokediamond MIi_DMACallback (was func_02008098, main, 2026-11-16)"
+MIi_FIFOCallback:
+  confidence: tentative
+  evidence: "strong E4,E5: sends next chunk of the GX command buffer by DMA to GXFIFO, last chunk with OSi_EnterDmaCallback, OS_ResetRequestIrqMask = pokediamond MIi_FIFOCallback (was func_0200810c, main, 2026-11-16)"
+MI_SendGXCommandAsync:
+  confidence: tentative
+  evidence: "strong E4,E5: stores params, saves GXSTAT cond and OS_GetIrqFunction(GXFIFO), OS_SetIrqFunction/EnableIrqMask, calls MIi_FIFOCallback = pokediamond MI_SendGXCommandAsync (was func_020081d4, main, 2026-11-16)"
+MI_UncompressLZ16:
+  confidence: tentative
+  evidence: "strong E4: LZ77 decoder (header size>>8, flag byte, 4-bit length+3 / 12-bit displacement+1) that writes output in 16-bit halfwords = SDK MI_UncompressLZ16 (was func_02008648, main, 2026-11-16)"
+MI_UncompressHuffman:
+  confidence: tentative
+  evidence: "strong E4: header low nibble bit size, tree table (size byte+1)*2, 0x3f node offsets with 0x80/0x40 leaf flags, 32-bit output words = SDK MI_UncompressHuffman (was func_02008720, main, 2026-11-16)"
+MI_UncompressRL16:
+  confidence: tentative
+  evidence: "strong E4: thumb run-length decoder (bit7 run of len+3 copies, else len+1 literals) writing 16-bit halfwords = SDK MI_UncompressRL16 (was func_020087f8, main, 2026-11-16)"
+MIi_CardDmaCopy32:
+  confidence: tentative
+  evidence: "strong E4,E5: MIi_CheckAnotherAutoDMA, MIi_CheckDma0SourceAddress with fixed source (0x01000000), waits DMACNT and MIi_DmaSetParams from the card data port = pokediamond MI_dma_card.c MIi_CardDmaCopy32 (was func_02008860, main, 2026-11-16)"
+MI_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: MI_SetWramBank(3) and MI_StopDma(0); 7th call of OS_Init = pokediamond MI_init.c MI_Init (was func_020088ec, main, 2026-11-16)"
+PushCommand_impl:
+  confidence: tentative
+  evidence: "strong E4: SND_AllocCommand(1); if non-NULL store id and 4 args then SND_PushCommand; target of every SND_* command wrapper = SDK snd_interface.c static PushCommand_impl (was func_02008910, main, 2026-11-16)"
+SNDi_SetSurroundDecay:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x16 SND_COMMAND_SURROUND_DECAY, decay) = SDK SNDi_SetSurroundDecay (was func_02008968, main, 2026-11-16)"
+SNDi_SetTrackParam:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(7 TRACK_PARAM, player|size<<24, mask, offset, data) = pokediamond SNDi_SetTrackParam (was func_02008994, main, 2026-11-16)"
+SNDi_SetPlayerParam:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(6 PLAYER_PARAM, player, offset, data, size) = pokediamond SNDi_SetPlayerParam (was func_020089c8, main, 2026-11-16)"
+SND_ReadDriverInfo:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x21 READ_DRIVER_INFO, info) = SDK SND_ReadDriverInfo (was func_020089fc, main, 2026-11-16)"
+SND_SetOutputSelector:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x19 OUTPUT_SELECTOR, l, r, ch1, ch3) = pokediamond SND_SetOutputSelector (was func_02008a28, main, 2026-11-16)"
+SND_InvalidateWaveData:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x20 INVALIDATE_WAVE, start, end) = pokediamond SND_InvalidateWaveData (was func_02008a5c, main, 2026-11-16)"
+SND_InvalidateBankData:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x1f INVALIDATE_BANK, start, end) = pokediamond SND_InvalidateBankData (was func_02008a88, main, 2026-11-16)"
+SND_InvalidateSeqData:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x1e INVALIDATE_SEQ, start, end) = pokediamond SND_InvalidateSeqData (was func_02008ab4, main, 2026-11-16)"
+SND_SetupChannelPcm:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0xe SETUP_CHANNEL_PCM, chn|timer<<16, addr, vol<<24|shift<<22|len, loop<<26|fmt<<24|pan<<16|loopStart) = pokediamond SND_SetupChannelPcm (was func_02008ae0, main, 2026-11-16)"
+SND_SetChannelPan:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x15 CHANNEL_PAN, mask, pan) = pokediamond SND_SetChannelPan (was func_02008b38, main, 2026-11-16)"
+SND_SetChannelVolume:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x14 CHANNEL_VOLUME, mask, vol, shift) = pokediamond SND_SetChannelVolume (was func_02008b64, main, 2026-11-16)"
+SND_UnlockChannel:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x1b UNLOCK_CHANNEL, mask, flags) = pokediamond SND_UnlockChannel (was func_02008b98, main, 2026-11-16)"
+SND_LockChannel:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x1a LOCK_CHANNEL, mask, flags) = pokediamond SND_LockChannel (was func_02008bc4, main, 2026-11-16)"
+SND_StopUnlockedChannel:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x1c STOP_UNLOCKED_CHANNEL, mask, flags) = SDK SND_StopUnlockedChannel (was func_02008bf0, main, 2026-11-16)"
+SND_SetupAlarm:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x12 SETUP_ALARM, alarm, tick, period, SNDi_SetAlarmHandler(alarm,cb,arg)) = pokediamond SND_SetupAlarm (was func_02008c1c, main, 2026-11-16)"
+SND_SetupCapture:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0x11 SETUP_CAPTURE, buf, len, cap<<31|fmt<<30|loop<<29|in<<28|out<<27) = pokediamond SND_SetupCapture (was func_02008c60, main, 2026-11-16)"
+SND_StopTimer:
+  confidence: tentative
+  evidence: "strong E4: SNDi_IncAlarmId for each set bit of alarm mask (<8), then PushCommand_impl(0xd STOP_TIMER) = pokediamond SND_StopTimer (was func_02008cac, main, 2026-11-16)"
+SND_StartTimer:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(0xc START_TIMER, ch, cap, alarm, flags) = pokediamond SND_StartTimer (was func_02008d1c, main, 2026-11-16)"
+SND_SetTrackAllocatableChannel:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(9 ALLOCATABLE_CHANNEL, player, trackMask, chMask) = pokediamond SND_SetTrackAllocatableChannel (was func_02008d50, main, 2026-11-16)"
+SND_SetTrackPan:
+  confidence: tentative
+  evidence: "strong E4: SNDi_SetTrackParam(player, mask, 9, pan, 1) = pokediamond SND_SetTrackPan (was func_02008d84, main, 2026-11-16)"
+SND_SetTrackPitch:
+  confidence: tentative
+  evidence: "strong E4: SNDi_SetTrackParam(player, mask, 12, pitch, 2) = pokediamond SND_SetTrackPitch (was func_02008dac, main, 2026-11-16)"
+SND_SetPlayerTempoRatio:
+  confidence: tentative
+  evidence: "strong E4: tail-calls SNDi_SetPlayerParam(player, 0x1a tempo_ratio, ratio, 2); next to named SND_SetPlayerVolume/ChannelPriority = SDK SND_SetPlayerTempoRatio (was func_02008e04, main, 2026-11-16)"
+SND_PauseSeq:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(4 PAUSE_SEQ, player, flag) = pokediamond SND_PauseSeq (was func_02008e1c, main, 2026-11-16)"
+SND_StartPreparedSeq:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(3 START_PREPARED_SEQ, player) = pokediamond SND_StartPreparedSeq (was func_02008e48, main, 2026-11-16)"
+SND_PrepareSeq:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(2 PREPARE_SEQ, player, base, offset, bank) = pokediamond SND_PrepareSeq (was func_02008e74, main, 2026-11-16)"
+SND_StopSeq:
+  confidence: tentative
+  evidence: "strong E4: PushCommand_impl(1 STOP_SEQ, player) = pokediamond SND_StopSeq (was func_02008ea8, main, 2026-11-16)"
+SNDi_UnlockMutex:
+  confidence: tentative
+  evidence: "strong E4: tail-calls OS_UnlockMutex(&sndMutex 0x0207d3e0) = SDK snd_main.c SNDi_UnlockMutex (was func_02008ed4, main, 2026-11-16)"
+SNDi_LockMutex:
+  confidence: tentative
+  evidence: "strong E4: tail-calls OS_LockMutex(&sndMutex 0x0207d3e0) = SDK SNDi_LockMutex (was func_02008ee8, main, 2026-11-16)"
+SND_Init:
+  confidence: tentative
+  evidence: "strong E4: once-only flag, OS_InitMutex(&sndMutex), SND_CommandInit, SND_AlarmInit = SDK SND_Init (was func_02008efc, main, 2026-11-16)"
+IsCommandAvailable:
+  confidence: tentative
+  evidence: "strong E4: returns TRUE when OS_IsRunOnEmulator()==0, else checks a shared flag under disabled IRQ = SDK snd_command.c static IsCommandAvailable (was func_02008f48, main, 2026-11-16)"
+AllocCommand:
+  confidence: tentative
+  evidence: "strong E4: pops a command from the free list under disabled IRQ = SDK snd_command.c static AllocCommand (was func_02008f90, main, 2026-11-16)"
+RequestCommandProc:
+  confidence: tentative
+  evidence: "strong E4: loops PXI_SendWordByFifo(7 sound tag, 0, 0) while <0 = SDK static RequestCommandProc (was func_02008fe8, main, 2026-11-16)"
+InitPXI:
+  confidence: tentative
+  evidence: "strong E4: PXI_SetFifoRecvCallback(7, PxiFifoCallback), IsCommandAvailable, waits PXI_IsCallbackReady(7,1) with OS_SpinWait = SDK snd_command.c static InitPXI (was func_0200901c, main, 2026-11-16)"
+PxiFifoCallback:
+  confidence: tentative
+  evidence: "strong E4: PXI receive callback that calls SNDi_CallAlarmHandler(data) under disabled IRQ = SDK static PxiFifoCallback (was func_02009088, main, 2026-11-16)"
+SND_CountWaitingCommand:
+  confidence: tentative
+  evidence: "strong E4: returns 0x100 - SND_CountFreeCommand() - SND_CountReservedCommand() = SDK SND_CountWaitingCommand (was func_020090b8, main, 2026-11-16)"
+SND_CountReservedCommand:
+  confidence: tentative
+  evidence: "strong E4: counts the reserve list under disabled IRQ; second term of SND_CountWaitingCommand = SDK SND_CountReservedCommand (was func_020090d8, main, 2026-11-16)"
+SND_CountFreeCommand:
+  confidence: tentative
+  evidence: "strong E4: counts the free list under disabled IRQ; first term of SND_CountWaitingCommand = SDK SND_CountFreeCommand (was func_02009118, main, 2026-11-16)"
+SND_IsFinishedCommandTag:
+  confidence: tentative
+  evidence: "strong E4: tag compare against finished tag with 0x7fffffff wrap test = SDK SND_IsFinishedCommandTag (was func_02009158, main, 2026-11-16)"
+SND_GetCurrentCommandTag:
+  confidence: tentative
+  evidence: "strong E4: returns current tag (or reserve tag) under disabled IRQ = SDK SND_GetCurrentCommandTag (was func_020091ac, main, 2026-11-16)"
+SND_WaitForCommandProc:
+  confidence: tentative
+  evidence: "strong E4: returns if SND_IsFinishedCommandTag(tag), else loops SND_RecvCommandReply/RequestCommandProc = SDK SND_WaitForCommandProc (was func_020091ec, main, 2026-11-16)"
+SND_FlushCommand:
+  confidence: tentative
+  evidence: "strong E4: moves reserve list to send list, DC_FlushRange, PXI_SendWordByFifo with retry/OS_SpinWait, RequestCommandProc = SDK SND_FlushCommand (was func_0200927c, main, 2026-11-16)"
+SND_PushCommand:
+  confidence: tentative
+  evidence: "strong E4: appends a command to the reserve list tail under disabled IRQ = SDK SND_PushCommand (was func_0200943c, main, 2026-11-16)"
+SND_AllocCommand:
+  confidence: tentative
+  evidence: "strong E4: IsCommandAvailable, AllocCommand, else flush/recv/request loop using SND_CountWaitingCommand; called by PushCommand_impl = SDK SND_AllocCommand (was func_02009484, main, 2026-11-16)"
+SND_RecvCommandReply:
+  confidence: tentative
+  evidence: "strong E4: takes finished commands back to the free list, updates tags, blocking variant with OS_SpinWait = SDK SND_RecvCommandReply (was func_02009520, main, 2026-11-16)"
+SND_CommandInit:
+  confidence: tentative
+  evidence: "strong E4: InitPXI, SNDi_InitSharedWork, builds the 0x100-entry free list, pushes/flushes the shared-work command; called by SND_Init = SDK SND_CommandInit (was func_02009654, main, 2026-11-16)"
+SNDi_CallAlarmHandler:
+  confidence: tentative
+  evidence: "strong E4: alarm index = msg&0xff, checks id byte (msg>>8) and calls stored handler(arg) = SDK snd_alarm.c SNDi_CallAlarmHandler (next to named SNDi_SetAlarmHandler) (was func_0200976c, main, 2026-11-16)"
+SNDi_InitSharedWork:
+  confidence: tentative
+  evidence: "strong E4: zeroes shared-work fields (finished tag, statuses, player/channel tables) then DC_FlushRange; called by SND_CommandInit = SDK SNDi_InitSharedWork (was func_0200984c, main, 2026-11-16)"
+SNDi_GetFinishedCommandTag:
+  confidence: tentative
+  evidence: "strong E4: DC_InvalidateRange(sharedWork,0x280) and returns sharedWork->finishCommandTag (+0) = SDK SNDi_GetFinishedCommandTag (was func_020098cc, main, 2026-11-16)"
+SND_ReadChannelInfo:
+  confidence: tentative
+  evidence: "strong E4: (driverInfo, chNo 0..15, info) rejects out-of-range channel and decodes channel register/status fields = SDK SND_ReadChannelInfo (was func_02009900, main, 2026-11-16)"
+SND_GetPlayerStatus:
+  confidence: tentative
+  evidence: "strong E4: DC_InvalidateRange(sharedWork,0x280) and returns sharedWork->playerStatus (+4) = SDK SND_GetPlayerStatus (was func_02009ab8, main, 2026-11-16)"
+SND_GetWaveDataAddress:
+  confidence: tentative
+  evidence: "strong E4: under SNDi_LockMutex reads waveArc->waveOffset[index] (+0x3c), converting offsets to addresses = pokediamond SND_GetWaveDataAddress (was func_02009b60, main, 2026-11-16)"
+SND_SetWaveDataAddress:
+  confidence: tentative
+  evidence: "strong E4: under SNDi_LockMutex stores waveArc->waveOffset[index] (+0x3c) and DC_StoreRange 4 bytes = pokediamond SND_SetWaveDataAddress (was func_02009ba8, main, 2026-11-16)"
+SND_GetNextInstData:
+  confidence: tentative
+  evidence: "strong E4: (bank, instData, pos) walks instrument types (single/drum set/key split) from the bank tables = pokediamond SND_GetNextInstData (next to named SND_GetFirstInstDataPos) (was func_02009be8, main, 2026-11-16)"
+SND_DestroyWaveArc:
+  confidence: tentative
+  evidence: "strong E4: under SNDi_LockMutex walks waveArc->link list (+0x18) clearing back-links with DC_StoreRange = pokediamond SND_DestroyWaveArc (was func_02009de0, main, 2026-11-16)"
+SND_DestroyBank:
+  confidence: tentative
+  evidence: "strong E4: under SNDi_LockMutex unlinks the bank's 4 wave-arc links with DC_StoreRange = pokediamond SND_DestroyBank (was func_02009e2c, main, 2026-11-16)"
+SND_AssignWaveArc:
+  confidence: tentative
+  evidence: "strong E4: (bank, index, waveArc) relinks bank wave-arc slot into the wave arc's list under SNDi_LockMutex, DC_StoreRange = pokediamond SND_AssignWaveArc (was func_02009ecc, main, 2026-11-16)"
+PXIi_HandlerRecvFifoNotEmpty:
+  confidence: tentative
+  evidence: "strong E4,E5: reads IPCFIFOCNT 0x04000184 and receive port 0x04100000 in a loop dispatching tag callbacks = pokediamond PXI_fifo.c PXIi_HandlerRecvFifoNotEmpty (was func_02009fb4, main, 2026-11-16)"
+INITi_CpuClear32:
+  confidence: tentative
+  evidence: "strong E2,E4: 20-byte clear loop called from Entry (crt0) before autoload; sdk_ident byte match INITi_CpuClear32 and position = pokediamond crt0.c (was func_02000900, main, 2026-11-16)"
+MIi_UncompressBackward:
+  confidence: tentative
+  evidence: "strong E4,E6: backward LZ decompressor reading the footer (end-8: size>>24, &0xffffff, end-4 extra); called from Entry and FS_StartOverlay for compressed overlays = pokediamond crt0.c MIi_UncompressBackward (was func_02000914, main, 2026-11-16)"
+do_autoload:
+  confidence: tentative
+  evidence: "strong E4,E6: copies autoload blocks from the module-param table (src,size triplets) and clears bss; called from Entry before AutoloadCallback = pokediamond crt0.c do_autoload (was func_020009b8, main, 2026-11-16)"
+NitroStartUp:
+  confidence: tentative
+  evidence: "strong E2,E6: empty function called by Entry after init (sdk_ident byte match NitroStartUp), follows init_cp15 as in crt0.c (was func_02000afc, main, 2026-11-16)"
+PXI_InitFifo:
+  confidence: tentative
+  evidence: "strong E4,E5: PXI_Init tail-calls it (literal 0x02009fb0); clears callback table, IPCSYNC 0x04000180 / IPCFIFOCNT 0x04000184 setup, OS_SetIrqFunction for FIFO recv = pokediamond PXI_InitFifo (was func_0200a220, main, 2026-11-16)"
+FSi_CloseFileCommand:
+  confidence: tentative
+  evidence: "strong E2,E4: returns FS_RESULT_SUCCESS(0); first entry of the FS_command_default block (sdk_ident byte match) = pokediamond FSi_CloseFileCommand (was func_0200a32c, main, 2026-11-16)"
+FSi_OpenFileDirectCommand:
+  confidence: tentative
+  evidence: "strong E4: file top/pos = arg.top (+0x2c), bottom = arg.bottom (+0x30), own_id = arg.id (+0x34), return 0 = pokediamond FSi_OpenFileDirectCommand (was func_0200a334, main, 2026-11-16)"
+FSi_OpenFileFastCommand:
+  confidence: tentative
+  evidence: "strong E4: reads the FAT entry for file id via FSi_ReadTable then sets top/bottom/pos = pokediamond FSi_OpenFileFastCommand (was func_0200a35c, main, 2026-11-16)"
+FSi_GetPathCommand:
+  confidence: tentative
+  evidence: "strong E4: walks the FNT upward with FSi_SeekDirDirect/FSi_ReadTable and MI_CpuCopy8 to build the path string = pokediamond FSi_GetPathCommand (was func_0200a3d8, main, 2026-11-16)"
+FSi_FindPathCommand:
+  confidence: tentative
+  evidence: "strong E4: parses path components, FSi_SeekDirDirect and FSi_StrNICmp against FNT entries = pokediamond FSi_FindPathCommand (was func_0200a798, main, 2026-11-16)"
+FSi_ReadDirCommand:
+  confidence: tentative
+  evidence: "strong E4: reads one FNT entry (len/flag byte, name, dir id) via FSi_ReadTable = pokediamond FSi_ReadDirCommand (was func_0200a9b4, main, 2026-11-16)"
+FSi_SeekDirCommand:
+  confidence: tentative
+  evidence: "strong E4: reads the FNT directory header via FSi_ReadTable and sets dir position = pokediamond FSi_SeekDirCommand (was func_0200aac4, main, 2026-11-16)"
+FSi_WriteFileCommand:
+  confidence: tentative
+  evidence: "strong E4: calls archive write callback for (pos,len) and advances = pokediamond FSi_WriteFileCommand (was func_0200ab5c, main, 2026-11-16)"
+FSi_ReadFileCommand:
+  confidence: tentative
+  evidence: "strong E4: calls archive read callback for (pos,len) and advances = pokediamond FSi_ReadFileCommand (was func_0200ab94, main, 2026-11-16)"
+FSi_StrNICmp:
+  confidence: tentative
+  evidence: "strong E4: case-insensitive compare of len bytes (A-Z folded by -0x41<0x1a) returning difference = pokediamond FSi_StrNICmp (was func_0200abcc, main, 2026-11-16)"
+FSi_SeekDirDirect:
+  confidence: tentative
+  evidence: "strong E4: sets SYNC flag, dir pos = {arc, id, 0, 0}, FSi_TranslateCommand(dir, 2 SEEKDIR) = pokediamond FSi_SeekDirDirect (was func_0200ac30, main, 2026-11-16)"
+FSi_ReadTable:
+  confidence: tentative
+  evidence: "strong E4: calls archive read_func(+0x44) at the table position, waits with OS_SleepThread when result is ASYNC(6), advances pos = pokediamond FSi_ReadTable (was func_0200ac64, main, 2026-11-16)"
+FSi_TranslateCommand:
+  confidence: tentative
+  evidence: "strong E4: dispatches a command to the archive proc (+0x48 with flag mask) or the default command table, handles ASYNC/UNSUPPORTED, FSi_ReleaseCommand = pokediamond FS_command.c FSi_TranslateCommand (was func_0200ad14, main, 2026-11-16)"
+FSi_ReleaseCommand:
+  confidence: tentative
+  evidence: "strong E4: under disabled IRQ unlinks file from archive list, clears busy flags, stores result, OS_WakeupThread(&file->queue) = pokediamond FSi_ReleaseCommand (was func_0200aea4, main, 2026-11-16)"
+FS_SetArchiveProc:
+  confidence: tentative
+  evidence: "strong E4: if !flags proc=NULL, if !proc flags=0, store at +0x48/+0x4c = pokediamond FS_SetArchiveProc (was func_0200aee8, main, 2026-11-16)"
+FS_ResumeArchive:
+  confidence: tentative
+  evidence: "strong E4: clears suspend flag under disabled IRQ, FSi_NextCommand and FSi_ExecuteAsyncCommand = pokediamond FS_ResumeArchive (was func_0200af08, main, 2026-11-16)"
+FS_SuspendArchive:
+  confidence: tentative
+  evidence: "strong E4: sets suspending flag and sleeps until the running command finishes = pokediamond FS_SuspendArchive (was func_0200af84, main, 2026-11-16)"
+FS_UnloadArchive:
+  confidence: tentative
+  evidence: "strong E4: FS_SuspendArchive, cancels queued files with FSi_ReleaseCommand, clears archive bases, FS_ResumeArchive = pokediamond FS_UnloadArchive (was func_0200b034, main, 2026-11-16)"
+FS_LoadArchive:
+  confidence: tentative
+  evidence: "strong E4: stores base/fat/fat_size/fnt/fnt_size and read/write callbacks (defaults FSi_ReadMemCallback/FSi_WriteMemCallback), sets loaded flag; called by FSi_InitRom = pokediamond FS_LoadArchive (was func_0200b0fc, main, 2026-11-16)"
+FS_ReleaseArchiveName:
+  confidence: tentative
+  evidence: "strong E4: under disabled IRQ unlinks archive from the name list and clears its packed name = pokediamond FS_ReleaseArchiveName (was func_0200b174, main, 2026-11-16)"
+FS_RegisterArchiveName:
+  confidence: tentative
+  evidence: "strong E4: FS_FindArchive duplicate check, FSi_GetPackedName, append to list; called by FSi_InitRom with \"rom\" = pokediamond FS_RegisterArchiveName (was func_0200b20c, main, 2026-11-16)"
+FS_InitArchive:
+  confidence: tentative
+  evidence: "strong E4: MI_CpuFill8(arc,0,size) then default fields = pokediamond FS_InitArchive (was func_0200b2cc, main, 2026-11-16)"
+FS_NotifyArchiveAsyncEnd:
+  confidence: tentative
+  evidence: "strong E4: async completion: FSi_ReleaseCommand(current,ret), FSi_NextCommand, FSi_ExecuteAsyncCommand / OS_WakeupThread = pokediamond FS_NotifyArchiveAsyncEnd (was func_0200b2f4, main, 2026-11-16)"
+FSi_SendCommand:
+  confidence: tentative
+  evidence: "strong E4: validates archive, queues the file by priority, sync path OS_SleepThread / FSi_ExecuteSyncCommand; used by FS_OpenFile*/CloseFile = pokediamond FSi_SendCommand (was func_0200b384, main, 2026-11-16)"
+FSi_ExecuteSyncCommand:
+  confidence: tentative
+  evidence: "strong E4: FSi_TranslateCommand, FSi_ReleaseCommand, then FSi_NextCommand/FSi_ExecuteAsyncCommand = pokediamond FSi_ExecuteSyncCommand (was func_0200b514, main, 2026-11-16)"
+FSi_ExecuteAsyncCommand:
+  confidence: tentative
+  evidence: "strong E4: loops FSi_TranslateCommand on async files, OS_WakeupThread sync waiters, FSi_NextCommand = pokediamond FSi_ExecuteAsyncCommand (was func_0200b55c, main, 2026-11-16)"
+FSi_NextCommand:
+  confidence: tentative
+  evidence: "strong E4: under disabled IRQ handles cancel/suspend flags, picks next queued file, FSi_ReleaseCommand for cancelled ones = pokediamond FSi_NextCommand (was func_0200b600, main, 2026-11-16)"
+FS_FindArchive:
+  confidence: tentative
+  evidence: "strong E4: FSi_GetPackedName(name,len) then walks the archive list comparing packed names = pokediamond FS_FindArchive (was func_0200b828, main, 2026-11-16)"
+FSi_WriteMemCallback:
+  confidence: tentative
+  evidence: "strong E4: MI_CpuCopy8(src, arc->base(+0x1c)+pos, size); return 0 = pokediamond FSi_WriteMemCallback (was func_0200b878, main, 2026-11-16)"
+FSi_ReadMemCallback:
+  confidence: tentative
+  evidence: "strong E4: MI_CpuCopy8(arc->base(+0x1c)+pos, dst, size); return 0 = pokediamond FSi_ReadMemCallback (was func_0200b8a4, main, 2026-11-16)"
+FSi_GetPackedName:
+  confidence: tentative
+  evidence: "strong E4: packs up to 3 name chars, upper-casing a-z, into a u32 = pokediamond FSi_GetPackedName (was func_0200b8cc, main, 2026-11-16)"
+FS_SeekFile:
+  confidence: tentative
+  evidence: "strong E4: origin 0 top(+0x20) / 1 pos(+0x28) / 2 bottom(+0x24), clamps into [top,bottom] = pokediamond FS_SeekFile (was func_0200b930, main, 2026-11-16)"
+FS_ReadFile:
+  confidence: tentative
+  evidence: "strong E2,E4: tail-calls FSi_ReadFileCore(...,FALSE); sdk_ident byte match FS_ReadFile; precedes FS_ReadFileAsync (was func_0200b99c, main, 2026-11-16)"
+FS_ReadFileAsync:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond FS_ReadFileAsync (sdk_ident unique) (was func_0200b9ac, main, 2026-11-16)"
+FS_CancelFile:
+  confidence: tentative
+  evidence: "strong E4: if file busy, set cancel flag on the file and the archive under disabled IRQ = SDK FS_CancelFile (was func_0200b9bc, main, 2026-11-16)"
+FS_WaitAsync:
+  confidence: tentative
+  evidence: "strong E4: sleeps on file queue while busy, runs FSi_ExecuteSyncCommand for sync files, returns result==SUCCESS = pokediamond FS_WaitAsync (was func_0200ba08, main, 2026-11-16)"
+FS_CloseFile:
+  confidence: tentative
+  evidence: "strong E4: FSi_SendCommand(file, 8 CLOSEFILE), clears arc, result=0xe, flags = pokediamond FS_CloseFile (was func_0200bad8, main, 2026-11-16)"
+FS_OpenFile:
+  confidence: tentative
+  evidence: "strong E4: FS_ConvertPathToFileID then FS_OpenFileFast = pokediamond FS_OpenFile (was func_0200bb20, main, 2026-11-16)"
+FS_OpenFileFast:
+  confidence: tentative
+  evidence: "strong E4: arc check, arg = file id, FSi_SendCommand(file, 6 OPENFILEFAST) = pokediamond FS_OpenFileFast (was func_0200bb70, main, 2026-11-16)"
+FS_OpenFileDirect:
+  confidence: tentative
+  evidence: "strong E4: (file, arc, top, bottom, id) FSi_SendCommand(7 OPENFILEDIRECT), sets file flags = pokediamond FS_OpenFileDirect (was func_0200bbec, main, 2026-11-16)"
+FS_ConvertPathToFileID:
+  confidence: tentative
+  evidence: "strong E4: FS_InitFile on a temp FSFile then FSi_FindPath(tmp, path, &id, NULL) = pokediamond FS_ConvertPathToFileID (was func_0200bc44, main, 2026-11-16)"
+FSi_ReadFileCore:
+  confidence: tentative
+  evidence: "strong E4: clamps len to bottom-pos, stores arg, FSi_SendCommand(0 READFILE) sync/async, returns length = pokediamond FSi_ReadFileCore (was func_0200bc88, main, 2026-11-16)"
+FSi_FindPath:
+  confidence: tentative
+  evidence: "strong E4: resolves path relative to current dir / archive prefix with FS_FindArchive-style lookup and FSi_SendCommand(FINDPATH) = pokediamond static FSi_FindPath (was func_0200bd10, main, 2026-11-16)"
+FS_InitFile:
+  confidence: tentative
+  evidence: "strong E4: zeroes link, arc, stat, queue, sets result 0xe (FS_RESULT_ERROR) = pokediamond FS_InitFile (was func_0200be70, main, 2026-11-16)"
+FS_Init:
+  confidence: tentative
+  evidence: "strong E4: once-only flag then FSi_InitRom(default_dma_no) = pokediamond FS_Init (was func_0200be98, main, 2026-11-16)"
+FSi_InitRom:
+  confidence: tentative
+  evidence: "strong E4: OS_GetLockID, CARD_Init, FS_InitArchive, FS_RegisterArchiveName(\"rom\"), FS_SetArchiveProc, FS_LoadArchive from ROM header FAT/FNT = pokediamond FSi_InitRom (was func_0200bf48, main, 2026-11-16)"
+FSi_EmptyArchiveProc:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond FS_rom.c FSi_EmptyArchiveProc (sdk_ident unique) (was func_0200c0e8, main, 2026-11-16)"
+FSi_ReadDummyCallback:
+  confidence: tentative
+  evidence: "strong E2,E4: returns FS_RESULT_FAILURE stub (byte match Read/WriteDummyCallback); position between FSi_EmptyArchiveProc and FSi_RomArchiveProc as pokediamond FS_rom.c (reverse order) (was func_0200c0f0, main, 2026-11-16)"
+FSi_RomArchiveProc:
+  confidence: tentative
+  evidence: "strong E4: archive proc switching on command: CARD_LockRom/CARD_UnlockRom for activate/idle = pokediamond FSi_RomArchiveProc (was func_0200c0f8, main, 2026-11-16)"
+FSi_WriteDummyCallback:
+  confidence: tentative
+  evidence: "strong E2,E4: failure stub between FSi_RomArchiveProc and FSi_ReadRomCallback as pokediamond FS_rom.c (reverse order) (was func_0200c188, main, 2026-11-16)"
+FSi_ReadRomCallback:
+  confidence: tentative
+  evidence: "strong E4: CARDi_ReadRom(dma, src, dst, len, FSi_OnRomReadDone, arc) and returns ASYNC = pokediamond FSi_ReadRomCallback (was func_0200c190, main, 2026-11-16)"
+FSi_OnRomReadDone:
+  confidence: tentative
+  evidence: "strong E4: tail-calls FS_NotifyArchiveAsyncEnd(arc, 0) = pokediamond FSi_OnRomReadDone (was func_0200c1dc, main, 2026-11-16)"
+FS_EndOverlay:
+  confidence: tentative
+  evidence: "strong E4: under disabled IRQ runs and unlinks the overlay's static destructors whose addresses fall in the overlay = pokediamond FS_EndOverlay (was func_0200c2b8, main, 2026-11-16)"
+FSi_CompareDigest:
+  confidence: tentative
+  evidence: "strong E4,E6: called from FS_StartOverlay before OS_Terminate; HMAC digest over the overlay image (MI_CpuFill8/MI_CpuCopy8 of key) compared to the stored digest = pokediamond FSi_CompareDigest (was func_0200c4c0, main, 2026-11-16)"
+FSi_LoadOverlayInfoCore:
+  confidence: tentative
+  evidence: "strong E4: opens the overlay table with FS_OpenFileDirect, seeks/reads the 32-byte entry with FS_ReadFile, FS_CloseFile, opens the file by id = pokediamond FSi_LoadOverlayInfoCore (was func_0200c718, main, 2026-11-16)"
+FS_ClearOverlayImage:
+  confidence: tentative
+  evidence: "strong E4: IC_InvalidateRange, DC_InvalidateRange and MI_CpuFill8 of bss part of the overlay = pokediamond FS_ClearOverlayImage (was func_0200c850, main, 2026-11-16)"
+CPi_RestoreContext:
+  confidence: tentative
+  evidence: "strong E4,E5: restores DIV/SQRT unit state (DIVCNT 0x04000280, numer/denom, SQRTCNT, param) from a CPContext; paired with CP_SaveContext = pokediamond CP_context.c CPi_RestoreContext (was func_0200d098, main, 2026-11-16)"
+CP_SaveContext:
+  confidence: tentative
+  evidence: "strong E4,E5,E6: saves DIV/SQRT unit registers into a CPContext; called from named OS_SaveContext = pokediamond CP_SaveContext (was func_0200d104, main, 2026-11-16)"
+TP_CheckError:
+  confidence: tentative
+  evidence: "strong E4: returns touch-panel shared work error flags (+0x34) & mask = SDK tp.c TP_CheckError (was func_0200d178, main, 2026-11-16)"
+TP_WaitBusy:
+  confidence: tentative
+  evidence: "strong E4: spins while TP busy flags (+0x36) & mask = SDK TP_WaitBusy (was func_0200d18c, main, 2026-11-16)"
+TP_GetCalibratedPoint:
+  confidence: tentative
+  evidence: "strong E4: (disp, raw) converts raw x/y with the stored calibration parameters (fx64 mul/shift, clamps 0..255/0..191) = SDK TP_GetCalibratedPoint (was func_0200d1a4, main, 2026-11-16)"
+TP_CalcCalibrateParam:
+  confidence: tentative
+  evidence: "strong E4,E5: 9 args (param, raw_x1,raw_y1,dx1,dy1,raw_x2,raw_y2,dx2,dy2), rejects raw >0xfff, computes ratios with the DIV unit = SDK TP_CalcCalibrateParam (was func_0200d2d4, main, 2026-11-16)"
+TP_GetLatestIndexInAuto:
+  confidence: tentative
+  evidence: "strong E4: returns the auto-sampling latest index (u16 at work+0xc) = SDK TP_GetLatestIndexInAuto (was func_0200d544, main, 2026-11-16)"
+TP_RequestAutoSamplingStopAsync:
+  confidence: tentative
+  evidence: "strong E4: PXI_SendWordByFifo(6 TP tag, 0x03000200 = START|END|AUTO_OFF<<8), sets busy/err flags = SDK TP_RequestAutoSamplingStopAsync (was func_0200d554, main, 2026-11-16)"
+TP_WaitRawResult:
+  confidence: tentative
+  evidence: "strong E4: TP_WaitBusy(1 sampling), on no error copies x/y/touch/validity from TP work = SDK TP_WaitRawResult (was func_0200d5f8, main, 2026-11-16)"
+TP_RequestSamplingAsync:
+  confidence: tentative
+  evidence: "strong E4: PXI_SendWordByFifo(6, 0x03000000 = START|END|SAMPLING), sets busy flag or error = SDK TP_RequestSamplingAsync (was func_0200d650, main, 2026-11-16)"
+TP_SetCallback:
+  confidence: tentative
+  evidence: "strong E4: stores the TP receive callback under disabled IRQ = SDK TP_SetCallback (was func_0200d6f0, main, 2026-11-16)"
+TP_SetCalibrateParam:
+  confidence: tentative
+  evidence: "strong E4,E5: NULL disables calibration, else stores params and precomputes inverse with the DIV unit = SDK TP_SetCalibrateParam (was func_0200d714, main, 2026-11-16)"
+TP_GetUserInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NVRAM user calibration (0x58..0x63 of owner info) and calls TP_CalcCalibrateParam = SDK TP_GetUserInfo (was func_0200d85c, main, 2026-11-16)"
+TP_Init:
+  confidence: tentative
+  evidence: "strong E4: once-only, PXI_Init, waits PXI_IsCallbackReady, PXI_SetFifoRecvCallback(TP tag) = SDK TP_Init (was func_0200d908, main, 2026-11-16)"
+TPi_TpCallback:
+  confidence: tentative
+  evidence: "strong E4: PXI TP callback decoding command/result, updating sampling buffers and flags, OS_Terminate on bad data = SDK static TPi_TpCallback (was func_0200d998, main, 2026-11-16)"
+MicCommonCallback:
+  confidence: tentative
+  evidence: "strong E4: PXI microphone callback dispatching the stored callback(result,arg) = SDK mic.c static MicCommonCallback (was func_0200dc58, main, 2026-11-16)"
+MIC_GetLastSamplingAddress:
+  confidence: tentative
+  evidence: "strong E4: returns the stored last sampling address = SDK MIC_GetLastSamplingAddress (was func_0200dd98, main, 2026-11-16)"
+MIC_Init:
+  confidence: tentative
+  evidence: "strong E4: once-only, PXI_Init, PXI_IsCallbackReady wait, PXI_SetFifoRecvCallback(mic tag, MicCommonCallback) = SDK MIC_Init (was func_0200dda8, main, 2026-11-16)"
+PM_DeletePostSleepCallback:
+  confidence: tentative
+  evidence: "strong E4: tail-calls PMi_DeleteList(&postList 0x0207f098, info); 0x0207f098 is the list PM_GoSleepMode runs after wake-up = SDK PM_DeletePostSleepCallback (was func_0200de34, main, 2026-11-16)"
+PM_DeletePreSleepCallback:
+  confidence: tentative
+  evidence: "strong E4: PMi_DeleteList(&preList 0x0207f090, info); 0x0207f090 is run first in PM_GoSleepMode = SDK PM_DeletePreSleepCallback (was func_0200de4c, main, 2026-11-16)"
+PM_AppendPostSleepCallback:
+  confidence: tentative
+  evidence: "strong E4: PMi_AppendList(&postList 0x0207f098, info) = SDK PM_AppendPostSleepCallback (was func_0200de64, main, 2026-11-16)"
+PM_PrependPreSleepCallback:
+  confidence: tentative
+  evidence: "strong E4: PMi_PrependList(&preList 0x0207f090, info) = SDK PM_PrependPreSleepCallback (was func_0200de7c, main, 2026-11-16)"
+PMi_ExecuteList:
+  confidence: tentative
+  evidence: "strong E4: walks a PMSleepCallbackInfo list calling func(arg) via next (+8) = SDK PMi_ExecuteList (was func_0200de94, main, 2026-11-16)"
+PMi_DeleteList:
+  confidence: tentative
+  evidence: "strong E4: unlinks info from a singly linked callback list = SDK PMi_DeleteList (was func_0200dec4, main, 2026-11-16)"
+PMi_AppendList:
+  confidence: tentative
+  evidence: "strong E4: appends info at the tail of the list = SDK PMi_AppendList (was func_0200df10, main, 2026-11-16)"
+PMi_PrependList:
+  confidence: tentative
+  evidence: "strong E4: info->next = *list; *list = info = SDK PMi_PrependList (was func_0200df58, main, 2026-11-16)"
+PM_GetLCDPower:
+  confidence: tentative
+  evidence: "strong E4,E5: returns POWCNT 0x04000304 bit0 (LCD on) = SDK PM_GetLCDPower (was func_0200df6c, main, 2026-11-16)"
+PM_SetLCDPower:
+  confidence: tentative
+  evidence: "strong E4: tail-calls PMi_SetLCDPower(sw==1, 0, 0, 1) = SDK PM_SetLCDPower (was func_0200df88, main, 2026-11-16)"
+PMi_SetLCDPower:
+  confidence: tentative
+  evidence: "strong E4,E5: LCD on/off sequencing with POWCNT 0x04000304, PMi_SetLED/LED status and VBlank count wait; used by PM_SetLCDPower and PM_GoSleepMode = SDK PMi_SetLCDPower (was func_0200dfa8, main, 2026-11-16)"
+PM_GoSleepMode:
+  confidence: tentative
+  evidence: "strong E4,E5: runs pre-sleep list, saves IE/IME, DISPCNT/POWCNT off, PMi_SendSleepStart, OS_Halt, restores, GX_DispOn, runs post-sleep list = SDK PM_GoSleepMode (was func_0200e098, main, 2026-11-16)"
+PMi_SendPxiData:
+  confidence: tentative
+  evidence: "strong E4: loops PXI_SendWordByFifo(8 PM tag, data, 0) until success = SDK PMi_SendPxiData (was func_0200e2d0, main, 2026-11-16)"
+PM_GetBackLight:
+  confidence: tentative
+  evidence: "strong E4: PMi_ReadRegister(0 control) and splits top/bottom backlight bits into the two out params = SDK PM_GetBackLight (was func_0200e300, main, 2026-11-16)"
+PM_SetAmp:
+  confidence: tentative
+  evidence: "strong E4: tail-calls PMi_WriteRegister(2 REG_PMIC_OP_CTL, status) = SDK PM_SetAmp (was func_0200e378, main, 2026-11-16)"
+PM_ForceToPowerOff:
+  confidence: tentative
+  evidence: "strong E4: PM_ForceToPowerOffAsync(PMi_DummyCallback,&result) then PMi_WaitBusy; called by CARD_TerminateForPulledOut = SDK PM_ForceToPowerOff (was func_0200e390, main, 2026-11-16)"
+PM_ForceToPowerOffAsync:
+  confidence: tentative
+  evidence: "strong E4: tail-calls PM_SendUtilityCommandAsync(0xe force power off, cb, arg) = SDK PM_ForceToPowerOffAsync (was func_0200e3cc, main, 2026-11-16)"
+PM_SetBackLight:
+  confidence: tentative
+  evidence: "strong E4: PM_SetBackLightAsync(target,sw,PMi_DummyCallback,&result) then PMi_WaitBusy = SDK PM_SetBackLight (was func_0200e3e4, main, 2026-11-16)"
+PM_SetBackLightAsync:
+  confidence: tentative
+  evidence: "strong E4: maps (target top/bottom/all, sw on/off) to utility command, PM_SendUtilityCommandAsync = SDK PM_SetBackLightAsync (was func_0200e420, main, 2026-11-16)"
+PMi_SetLED:
+  confidence: tentative
+  evidence: "strong E4: PMi_SetLEDAsync(status,PMi_DummyCallback,&result) then PMi_WaitBusy = SDK PMi_SetLED (was func_0200e4b0, main, 2026-11-16)"
+PMi_SetLEDAsync:
+  confidence: tentative
+  evidence: "strong E4: maps LED status 1/2 to utility commands for PM_SendUtilityCommandAsync = SDK PMi_SetLEDAsync (was func_0200e4ec, main, 2026-11-16)"
+PMi_WriteRegister:
+  confidence: tentative
+  evidence: "strong E4: PMi_WriteRegisterAsync(reg,data,PMi_DummyCallback,&result) then PMi_WaitBusy = SDK PMi_WriteRegister (was func_0200e554, main, 2026-11-16)"
+PMi_WriteRegisterAsync:
+  confidence: tentative
+  evidence: "strong E4: PMi_Lock, callback set, two PMi_SendPxiData words (write-register command, data) = SDK PMi_WriteRegisterAsync (was func_0200e590, main, 2026-11-16)"
+PMi_ReadRegister:
+  confidence: tentative
+  evidence: "strong E4: PMi_ReadRegisterAsync(reg,buf,PMi_DummyCallback,&result) then PMi_WaitBusy = SDK PMi_ReadRegister (was func_0200e610, main, 2026-11-16)"
+PMi_ReadRegisterAsync:
+  confidence: tentative
+  evidence: "strong E4: PMi_Lock, stores buffer, PMi_SendPxiData read-register command = SDK PMi_ReadRegisterAsync (was func_0200e64c, main, 2026-11-16)"
+PM_SendUtilityCommandAsync:
+  confidence: tentative
+  evidence: "strong E4: PMi_Lock, callback, two PMi_SendPxiData words (utility command, number) = SDK PM_SendUtilityCommandAsync (was func_0200e6c4, main, 2026-11-16)"
+PMi_SendSleepStart:
+  confidence: tentative
+  evidence: "strong E4: PMi_Lock, sends sleep-start command with trigger/key data, waits; called by PM_GoSleepMode = SDK PMi_SendSleepStart (was func_0200e738, main, 2026-11-16)"
+PMi_CommonCallback:
+  confidence: tentative
+  evidence: "strong E4: PM PXI receive callback storing read data and calling PMi_CallCallbackAndUnlock = SDK PMi_CommonCallback (was func_0200e7f0, main, 2026-11-16)"
+PM_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: once-only, PXI_Init, PXI_IsCallbackReady, PXI_SetFifoRecvCallback(8, PMi_CommonCallback), OS_InitMutex-style clears; last call of OS_Init = SDK PM_Init (was func_0200e8dc, main, 2026-11-16)"
+PMi_CallCallbackAndUnlock:
+  confidence: tentative
+  evidence: "strong E4: clears lock flag and calls stored callback(result,arg) = SDK PMi_CallCallbackAndUnlock (was func_0200e9a0, main, 2026-11-16)"
+PMi_DummyCallback:
+  confidence: tentative
+  evidence: "strong E4: *(u32*)arg = result; passed by every synchronous PM wrapper = SDK PMi_DummyCallback (was func_0200e9f4, main, 2026-11-16)"
+PMi_WaitBusy:
+  confidence: tentative
+  evidence: "strong E4: spins while PM lock flag set = SDK PMi_WaitBusy (was func_0200e9fc, main, 2026-11-16)"
+PMi_Lock:
+  confidence: tentative
+  evidence: "strong E4: under disabled IRQ sets lock flag if clear and returns TRUE, else FALSE = SDK PMi_Lock (was func_0200ea14, main, 2026-11-16)"
+RtcWaitBusy:
+  confidence: tentative
+  evidence: "strong E4: spins while RTC busy flag == 1; used by RTC_GetTime = SDK rtc_external.c static RtcWaitBusy (was func_0200ea64, main, 2026-11-16)"
+RtcGetResultCallback:
+  confidence: tentative
+  evidence: "strong E4: stores result into the RTC work result field (+0x20) = SDK static RtcGetResultCallback (was func_0200ea7c, main, 2026-11-16)"
+RtcBCD2HEX:
+  confidence: tentative
+  evidence: "strong E4: converts packed BCD nibbles to binary = SDK static RtcBCD2HEX (was func_0200ea8c, main, 2026-11-16)"
+RtcCommonCallback:
+  confidence: tentative
+  evidence: "strong E4: RTC PXI callback decoding raw date/time/status (via RtcBCD2HEX) per pending command, chaining RTCi_WriteRawStatus2Async = SDK static RtcCommonCallback (was func_0200eb10, main, 2026-11-16)"
+RTC_GetTime:
+  confidence: tentative
+  evidence: "strong E4,E6: RTC_GetTimeAsync(time, RtcGetResultCallback, 0), RtcWaitBusy, returns result; used by Rand_SeedFromRTC (0x0203492c) for h/m/s = SDK RTC_GetTime (was func_0200f0a0, main, 2026-11-16)"
+RTC_GetTimeAsync:
+  confidence: tentative
+  evidence: "strong E4: busy check under disabled IRQ, stores buffer/callback, RTCi_ReadRawTimeAsync = SDK RTC_GetTimeAsync (was func_0200f0e4, main, 2026-11-16)"
+RTC_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: once-only, PXI_Init, PXI_IsCallbackReady(5), PXI_SetFifoRecvCallback(5, RtcCommonCallback); called from game init = SDK RTC_Init (was func_0200f160, main, 2026-11-16)"
+RtcSendPxiCommand:
+  confidence: tentative
+  evidence: "strong E4: PXI_SendWordByFifo(5 RTC tag, (cmd&0x7f)<<8, 0) >= 0; target of named RTCi_* = SDK rtc_internal.c static RtcSendPxiCommand (was func_0200f1e8, main, 2026-11-16)"
+CARD_UnlockBackup:
+  confidence: tentative
+  evidence: "strong E4: tail-calls CARDi_UnlockResource(id, 2 CARD_TARGET_BACKUP) = pokediamond CARD_UnlockBackup (was func_0200f23c, main, 2026-11-16)"
+CARD_LockBackup:
+  confidence: tentative
+  evidence: "strong E4: tail-calls CARDi_LockResource(id, 2) = pokediamond CARD_LockBackup (was func_0200f24c, main, 2026-11-16)"
+CARD_UnlockRom:
+  confidence: tentative
+  evidence: "strong E4: OS_UnlockCard(id) and CARDi_UnlockResource(id, 1 ROM) = pokediamond CARD_UnlockRom (was func_0200f25c, main, 2026-11-16)"
+CARD_LockRom:
+  confidence: tentative
+  evidence: "strong E4: CARDi_LockResource(id, 1 ROM) then OS_LockCard(id); called by OS_ResetSystem and FSi_RomArchiveProc = pokediamond CARD_LockRom (was func_0200f27c, main, 2026-11-16)"
+CARD_GetResultCode:
+  confidence: tentative
+  evidence: "strong E2,E4: returns cardi_common.cmd->result (sdk_ident byte match CARD_GetResultCode) (was func_0200f29c, main, 2026-11-16)"
+CARDi_WaitAsync:
+  confidence: tentative
+  evidence: "strong E4: sleeps while CARD busy flag (+0x34 &4), returns cmd->result==SUCCESS; CARD_WaitRomAsync tail-calls it = pokediamond CARDi_WaitAsync (was func_0200f2b0, main, 2026-11-16)"
+CARD_Enable:
+  confidence: tentative
+  evidence: "strong E2,E4: stores enable flag 0x0207f108 (the flag CARD_IsEnabled returns) = pokediamond CARD_Enable (was func_0200f30c, main, 2026-11-16)"
+CARD_CheckEnabled:
+  confidence: tentative
+  evidence: "strong E4: OS_Terminate if !CARD_IsEnabled() = pokediamond CARD_CheckEnabled (was func_0200f31c, main, 2026-11-16)"
+CARD_IsEnabled:
+  confidence: tentative
+  evidence: "strong E2,E4: returns flag 0x0207f108 = pokediamond CARD_IsEnabled (was func_0200f348, main, 2026-11-16)"
+CARDi_InitCommon:
+  confidence: tentative
+  evidence: "strong E4: clears CARD common work, sets lock owner -3, protection region tweak, creates the CARD task thread (OS_CreateThread/OS_WakeupThreadDirect), PXI_SetFifoRecvCallback, CARD_Enable = pokediamond CARDi_InitCommon (was func_0200f358, main, 2026-11-16)"
+CARDi_UnlockResource:
+  confidence: tentative
+  evidence: "strong E4: owner/lock count check with OS_Terminate, OS_WakeupThread when released = pokediamond static CARDi_UnlockResource (was func_0200f46c, main, 2026-11-16)"
+CARDi_LockResource:
+  confidence: tentative
+  evidence: "strong E4: sleeps until resource free or owned by id, sets owner/target = pokediamond static CARDi_LockResource (was func_0200f510, main, 2026-11-16)"
+CARDi_SetTask:
+  confidence: tentative
+  evidence: "strong E4: saves/raises task thread priority (OS_GetThreadPriority/OS_SetThreadPriority), stores task, OS_WakeupThreadDirect = pokediamond CARDi_SetTask (was func_0200f5ac, main, 2026-11-16)"
+CARDi_TaskThread:
+  confidence: tentative
+  evidence: "strong E4: CARD task thread loop sleeping on the task queue and running the stored task = pokediamond CARD_request.c CARDi_TaskThread (was func_0200f63c, main, 2026-11-16)"
+CARDi_OnFifoRecv:
+  confidence: tentative
+  evidence: "strong E4: PXI callback accepting tag 0xb (card), clears wait flag and OS_WakeupThreadDirect = pokediamond CARDi_OnFifoRecv (was func_0200f690, main, 2026-11-16)"
+CARDi_IdentifyBackupCore:
+  confidence: tentative
+  evidence: "strong E4: fills backup type parameters (size, page, sector) per type with MI_CpuFill8 default = pokediamond CARD_spi.c CARDi_IdentifyBackupCore (was func_0200f6e0, main, 2026-11-16)"
+CARD_IdentifyBackup:
+  confidence: tentative
+  evidence: "strong E4: CARD_CheckEnabled, waits busy, CARDi_IdentifyBackupCore, CARDi_Request init command = pokediamond CARD_IdentifyBackup (was func_0200f8b8, main, 2026-11-16)"
+CARD_Init:
+  confidence: tentative
+  evidence: "strong E4,E6: once-only, CARDi_InitCommon, CARD_InitPulledOutCallback; called by OS_Init and FSi_InitRom = pokediamond CARD_Init (was func_0200fd28, main, 2026-11-16)"
+CARD_WaitRomAsync:
+  confidence: tentative
+  evidence: "strong E4: tail-calls CARDi_WaitAsync (literal 0x0200f2b0) = pokediamond CARD_WaitRomAsync (was func_0200fdb0, main, 2026-11-16)"
+CARDi_ReadRom:
+  confidence: tentative
+  evidence: "strong E4: (dma,src,dst,len,callback,arg,async) CARD_CheckEnabled, waits busy, MI_StopDma, CARDi_TryReadCardDma or CARDi_SetTask(sync core) = pokediamond CARDi_ReadRom (was func_0200fdbc, main, 2026-11-16)"
+CARDi_ReadRomSyncCore:
+  confidence: tentative
+  evidence: "strong E4: CARDi_ReadFromCache then completion (0x020102d8) = pokediamond static CARDi_ReadRomSyncCore (was func_0200fee4, main, 2026-11-16)"
+CARDi_ReadCard:
+  confidence: tentative
+  evidence: "strong E4,E5: page loop: CARDi_ReadFromCache, CARDi_SetRomOp, polls ROMCNT 0x040001a4 and reads 0x04100010 = pokediamond CARDi_ReadCard (was func_0200ff18, main, 2026-11-16)"
+CARDi_TryReadCardDma:
+  confidence: tentative
+  evidence: "strong E4: alignment/DTCM checks (OS_GetDTCMAddress), cache maintenance, OS_SetIrqFunction card IRQ, CARDi_SetCardDma = pokediamond CARDi_TryReadCardDma (was func_02010018, main, 2026-11-16)"
+CARDi_OnReadCard:
+  confidence: tentative
+  evidence: "strong E4: card IRQ: MI_StopDma, OS_DisableIrqMask, next page CARDi_SetCardDma or finish = pokediamond static CARDi_OnReadCard (was func_0201016c, main, 2026-11-16)"
+CARDi_SetCardDma:
+  confidence: tentative
+  evidence: "strong E4,E5: MIi_CardDmaCopy32(dma, 0x04100010, dst, 0x200) and CARDi_SetRomOp(0xb7 page read) = pokediamond static CARDi_SetCardDma (was func_020101e0, main, 2026-11-16)"
+CARDi_ReadFromCache:
+  confidence: tentative
+  evidence: "strong E4: copies from the cached 0x200-byte page when the source page matches = pokediamond static CARDi_ReadFromCache (was func_02010358, main, 2026-11-16)"
+CARDi_Request:
+  confidence: tentative
+  evidence: "strong E4: PXI_IsCallbackReady wait, DC_FlushRange of command, PXI_SendWordByFifo, sleeps for reply, recursive retry = pokediamond CARDi_Request (was func_020103f0, main, 2026-11-16)"
+CARDi_SendtoPxi:
+  confidence: tentative
+  evidence: "strong E4: retries PXI_SendWordByFifo(0xe, data, 0) with WaitByLoop = pokediamond CARD_pullOut.c CARDi_SendtoPxi (was func_0201052c, main, 2026-11-16)"
+CARD_TerminateForPulledOut:
+  confidence: tentative
+  evidence: "strong E4,E6: PM_ForceToPowerOff if needed, CARDi_SendtoPxi(1,1), OS_Terminate; called by main() when the card is pulled out = pokediamond CARD_TerminateForPulledOut (was func_02010590, main, 2026-11-16)"
+CARD_IsPulledOut:
+  confidence: tentative
+  evidence: "strong E4,E6: returns the pulled-out flag; polled by main() every frame = pokediamond CARD_IsPulledOut (was func_020105d0, main, 2026-11-16)"
+CARD_SetPulledOutCallback:
+  confidence: tentative
+  evidence: "strong E4,E6: stores the user pulled-out callback; game init registers one = SDK CARD_SetPulledOutCallback (was func_020105e0, main, 2026-11-16)"
+CARDi_PulledOutCallback:
+  confidence: tentative
+  evidence: "strong E4: PXI callback: (data&0x3f)==0x11 -> set flag, call user callback, else CARD_TerminateForPulledOut = pokediamond static CARDi_PulledOutCallback (was func_020105f0, main, 2026-11-16)"
+CARD_InitPulledOutCallback:
+  confidence: tentative
+  evidence: "strong E4: PXI_Init, PXI_SetFifoRecvCallback(0xe, CARDi_PulledOutCallback), clears flag; called by CARD_Init = pokediamond CARD_InitPulledOutCallback (was func_0201065c, main, 2026-11-16)"
+abs:
+  confidence: tentative
+  evidence: "confirmed E2: byte-identical to pokediamond MSL arith.c abs (sdk_ident unique); called by NNS_FndGetAllocatableSizeForFrmHeapEx on the alignment (was func_0202a08c, main, 2026-11-16)"
+wcstombs:
+  confidence: tentative
+  evidence: "strong E4: MSL mbstring block (reverse of pokediamond MSL_Common_mbstring order); loops wctomb into the buffer with strncpy-style termination, called from __pformatter for %ls = MSL wcstombs (was func_0202a098, main, 2026-11-16)"
+wctomb:
+  confidence: tentative
+  evidence: "strong E4: thin wrapper calling __wctomb_noconv; sits between wcstombs and __wctomb_noconv as in MSL mbstring = MSL wctomb (was func_0202a12c, main, 2026-11-16)"
+__wctomb_noconv:
+  confidence: tentative
+  evidence: "strong E4: stores the low byte of the wide char and returns 1 (structure match 0.80 with pokediamond __wctomb_noconv) = MSL __wctomb_noconv (was func_0202a154, main, 2026-11-16)"
+__mbtowc_noconv:
+  confidence: tentative
+  evidence: "strong E4: zero-extends one byte into a wchar_t, returns 1 or 0 for NUL (structure match pokediamond __mbtowc_noconv) = MSL __mbtowc_noconv (was func_0202a168, main, 2026-11-16)"
+memcmp:
+  confidence: tentative
+  evidence: "strong E4: byte compare loop returning difference (token-identical to pokediamond MSL_Common_mem.s memcmp) = MSL memcmp (was func_0202a1a0, main, 2026-11-16)"
+memchr:
+  confidence: tentative
+  evidence: "strong E4: byte search loop (token-identical to pokediamond memchr), called by __pformatter for precision-limited %s = MSL memchr (was func_0202a1e0, main, 2026-11-16)"
+memset:
+  confidence: tentative
+  evidence: "strong E4: saves dst, calls __fill_mem(dst,val,n), returns dst; between memchr and memcpy as in MSL mem.c (reverse order) = MSL memset (was func_0202a20c, main, 2026-11-16)"
+memcpy:
+  confidence: tentative
+  evidence: "strong E4,E6: 0x20-byte forward copy loop returning dst; called by __StringWrite = MSL memcpy (was func_0202a224, main, 2026-11-16)"
+__fill_mem:
+  confidence: tentative
+  evidence: "strong E4: word-aligned fill with byte replication (structure match 0.85 pokediamond MSL_Common_mem_funcs.s __fill_mem); called by memset (naming-conventions 3.1 lists __fill_mem at 0x0202a244) (was func_0202a244, main, 2026-11-16)"
+sprintf:
+  confidence: tentative
+  evidence: "strong E4: varargs wrapper calling vsnprintf(buf, -1, fmt, args) = MSL sprintf (was func_0202a2f0, main, 2026-11-16)"
+vsnprintf:
+  confidence: tentative
+  evidence: "strong E4: sets up the string-output context and calls __pformatter(__StringWrite,...), NUL-terminates = MSL vsnprintf (was func_0202a324, main, 2026-11-16)"
+__StringWrite:
+  confidence: tentative
+  evidence: "strong E4: output callback copying min(len, remaining) with memcpy and advancing the context (structure 0.86 pokediamond __StringWrite) = MSL __StringWrite (was func_0202a398, main, 2026-11-16)"
+__pformatter:
+  confidence: tentative
+  evidence: "strong E4: 0x880-byte formatter calling parse_format, long2str, longlong2str, float2str, double2hex, strlen, wcstombs, memchr = MSL __pformatter (was func_0202a3e8, main, 2026-11-16)"
+float2str:
+  confidence: tentative
+  evidence: "strong E4: converts double via __num2dec, round_decimal, _dls sign test, strcpy of inf/nan; called only by __pformatter = MSL float2str (was func_0202ac68, main, 2026-11-16)"
+round_decimal:
+  confidence: tentative
+  evidence: "strong E4: decimal digit rounding helper (structure 0.86 with pokediamond round_decimal) called by float2str = MSL round_decimal (was func_0202b2c0, main, 2026-11-16)"
+double2hex:
+  confidence: tentative
+  evidence: "strong E3,E4: references the \"0x0p0\" string, uses fabs/__num2dec, called by __pformatter for %a = MSL double2hex (was func_0202b3f0, main, 2026-11-16)"
+longlong2str:
+  confidence: tentative
+  evidence: "strong E4: 64-bit integer to string using _ll_udiv/_ull_mod, called by __pformatter = MSL longlong2str (was func_0202b7b0, main, 2026-11-16)"
+long2str:
+  confidence: tentative
+  evidence: "strong E4: 32-bit integer to string using _u32_div_f, called by __pformatter and double2hex = MSL long2str (was func_0202ba98, main, 2026-11-16)"
+parse_format:
+  confidence: tentative
+  evidence: "strong E4: 0x5dc format-spec parser (flags/width/precision/length/conversion) called first by __pformatter = MSL parse_format (was func_0202bcfc, main, 2026-11-16)"
+strchr:
+  confidence: tentative
+  evidence: "strong E4: char search returning pointer or NULL; MSL string block in reverse pokediamond order (strchr, strncmp, strcmp, strcat, strncpy, strcpy, strlen) = MSL strchr (was func_0202c2d8, main, 2026-11-16)"
+strncmp:
+  confidence: tentative
+  evidence: "strong E4: token-identical to pokediamond MSL_Common_string.s strncmp = MSL strncmp (was func_0202c314, main, 2026-11-16)"
+strcmp:
+  confidence: tentative
+  evidence: "strong E4: word-at-a-time compare (0x12c, structure 0.81 with pokediamond strcmp), 8 callers = MSL strcmp (was func_0202c348, main, 2026-11-16)"
+strcat:
+  confidence: tentative
+  evidence: "strong E4: seek NUL then byte copy, position between strcmp and strncpy as in MSL string.c = MSL strcat (was func_0202c474, main, 2026-11-16)"
+strncpy:
+  confidence: tentative
+  evidence: "strong E4: copy up to n bytes and zero-pad; called by wcstombs; position between strcat and strcpy = MSL strncpy (was func_0202c4a4, main, 2026-11-16)"
+strcpy:
+  confidence: tentative
+  evidence: "strong E4: aligned word copy with NUL detection (0xd8), called by float2str/double2hex = MSL strcpy (was func_0202c518, main, 2026-11-16)"
+strlen:
+  confidence: tentative
+  evidence: "strong E4,E6: 0x1c length loop, last of the MSL string block (first in pokediamond order), called by __pformatter for %s = MSL strlen (was func_0202c5f0, main, 2026-11-16)"
+copysign:
+  confidence: tentative
+  evidence: "strong E4: double copysign on the high word (structure match pokediamond MSL_DPMath_s_copysign.s), called by ldexp = MSL copysign (was func_0202c60c, main, 2026-11-16)"
+fabs:
+  confidence: tentative
+  evidence: "strong E4,E6: clears the sign bit of the high word (structure match pokediamond fabs); called by double2hex = MSL fabs (was func_0202c634, main, 2026-11-16)"
+frexp:
+  confidence: tentative
+  evidence: "strong E4: splits a double into mantissa/exponent, scales denormals with _dmul; called by __num2dec_internal = MSL frexp (was func_0202c658, main, 2026-11-16)"
+ldexp:
+  confidence: tentative
+  evidence: "strong E4: fdlibm scalbn-style ldexp using _deq/_dmul/_dadd and copysign for overflow/underflow; called by __num2dec_internal = MSL ldexp (was func_0202c718, main, 2026-11-16)"
+__num2dec:
+  confidence: tentative
+  evidence: "strong E4: calls __num2dec_internal then __rounddec (structure 0.87 with pokediamond __num2dec); called by float2str/double2hex = MSL __num2dec (was func_0202c9fc, main, 2026-11-16)"
+__num2dec_internal:
+  confidence: tentative
+  evidence: "strong E4: double to decimal using frexp/ldexp, __two_exp, __ull2dec, __timesdec, _ll_ufrom_d = MSL __num2dec_internal (was func_0202cac4, main, 2026-11-16)"
+__two_exp:
+  confidence: tentative
+  evidence: "strong E3,E4: recursive power-of-two to decimal using the powers-of-5 strings (\"152587890625\", \"23283064365386962890625\", ...) = MSL __two_exp (was func_0202cd1c, main, 2026-11-16)"
+__timesdec:
+  confidence: tentative
+  evidence: "strong E4: decimal multiply of two decimal records, calls __dorounddecup; used by __two_exp/__num2dec_internal = MSL __timesdec (was func_0202d1c0, main, 2026-11-16)"
+__ull2dec:
+  confidence: tentative
+  evidence: "strong E4: unsigned long long to decimal digits using _ll_udiv/_ull_mod = MSL __ull2dec (was func_0202d368, main, 2026-11-16)"
+__rounddec:
+  confidence: tentative
+  evidence: "strong E4: rounds a decimal record via __must_round and __dorounddecup; called by __num2dec = MSL __rounddec (was func_0202d438, main, 2026-11-16)"
+__dorounddecup:
+  confidence: tentative
+  evidence: "strong E4: increments decimal digits with carry (structure 0.85 with pokediamond __dorounddecup) = MSL __dorounddecup (was func_0202d49c, main, 2026-11-16)"
+__must_round:
+  confidence: tentative
+  evidence: "strong E4: round-half-even decision on digit string (structure 0.87 with pokediamond __must_round) = MSL __must_round (was func_0202d4ec, main, 2026-11-16)"
+_dneq:
+  confidence: tentative
+  evidence: "strong E4: 0x88 double compare identical in shape to named _deq/_dls/_dleq/_dgr; position before _deq matches reverse of pokediamond RUNTIME_f_cmp.s order (_dgr,_dleq,_dls,_deq,_dneq) (was func_0202e800, main, 2026-11-16)"
+_ffixu:
+  confidence: tentative
+  evidence: "strong E4: float to unsigned int (structure match pokediamond RUNTIME_f_ftou.s _ffixu) between named _ffix and _fflt (was func_0202f17c, main, 2026-11-16)"
+_ffltu:
+  confidence: tentative
+  evidence: "strong E4: unsigned int to float (structure 0.89 with pokediamond RUNTIME_f_itof.s _ffltu), precedes named _fflt as in f_itof reverse order (was func_0202f1bc, main, 2026-11-16)"
+EndSleep:
+  confidence: tentative
+  evidence: "strong E4: PM post-sleep callback that tail-calls NNSi_SndCaptureEndSleep; NNS nns_snd_main.c static EndSleep (precedes BeginSleep as in pokediamond NNS_SND_main.s) (was func_0201b194, main, 2026-11-16)"
+BeginSleep:
+  confidence: tentative
+  evidence: "strong E4: NNSi_SndCaptureBeginSleep, SND_StopTimer(0,0,0,0), SND_GetCurrentCommandTag, SND_FlushCommand, SND_WaitForCommandProc = NNS nns_snd_main.c static BeginSleep (was func_0201b1a0, main, 2026-11-16)"
+NNS_SndReadDriverChannelInfo:
+  confidence: tentative
+  evidence: "strong E4: current driver-info index check (<0 -> FALSE) then SND_ReadChannelInfo(info, ch, out) = NNS NNS_SndReadDriverChannelInfo (was func_0201b1dc, main, 2026-11-16)"
+NNS_SndUpdateDriverInfo:
+  confidence: tentative
+  evidence: "strong E4: SND_IsFinishedCommandTag, SND_ReadDriverInfo into double buffer, SND_GetCurrentCommandTag, DC_InvalidateRange = NNS NNS_SndUpdateDriverInfo (was func_0201b23c, main, 2026-11-16)"
+NNS_SndStopChannelAll:
+  confidence: tentative
+  evidence: "strong E4: tail-calls SND_StopUnlockedChannel(0xffff, 0) = NNS NNS_SndStopChannelAll (was func_0201b330, main, 2026-11-16)"
+NNS_SndStopSoundAll:
+  confidence: tentative
+  evidence: "strong E4: NNS_SndPlayerStopSeqAll(0), stream stop-all, NNSi_SndCaptureStop, SNDi_SetSurroundDecay(0), SND_StopTimer(0xffff..), flush and wait = NNS NNS_SndStopSoundAll (was func_0201b348, main, 2026-11-16)"
+NNS_SndInit:
+  confidence: tentative
+  evidence: "strong E4: once-only, SND_Init, PM_PrependPreSleepCallback/PM_AppendPostSleepCallback, NNSi_SndInitResourceMgr, capture init, NNSi_SndPlayerInit = NNS NNS_SndInit (was func_0201b3d4, main, 2026-11-16)"
+NNSi_SndInitResourceMgr:
+  confidence: tentative
+  evidence: "strong E4: zeroes the locked channel/capture/alarm masks; called by NNS_SndInit; first of pokediamond NNS_SND_resource_mgr.s order (was func_0201b47c, main, 2026-11-16)"
+NNS_SndFreeAlarm:
+  confidence: tentative
+  evidence: "strong E4: clears bit alarmNo in the alarm mask = NNS NNS_SndFreeAlarm (pokediamond resource_mgr order) (was func_0201b4a8, main, 2026-11-16)"
+NNS_SndAllocAlarm:
+  confidence: tentative
+  evidence: "strong E4: finds the first clear bit in the alarm mask, sets it and returns its index (or -1) = NNS NNS_SndAllocAlarm (was func_0201b4c8, main, 2026-11-16)"
+NNS_SndUnlockCapture:
+  confidence: tentative
+  evidence: "strong E4: capture mask &= ~bits = NNS NNS_SndUnlockCapture (was func_0201b50c, main, 2026-11-16)"
+NNS_SndLockCapture:
+  confidence: tentative
+  evidence: "strong E4: fails if any bit already set, else sets bits = NNS NNS_SndLockCapture (was func_0201b528, main, 2026-11-16)"
+NNS_SndUnlockChannel:
+  confidence: tentative
+  evidence: "strong E4: SND_UnlockChannel(mask,0) and clears the locked-channel mask = NNS NNS_SndUnlockChannel (was func_0201b54c, main, 2026-11-16)"
+NNS_SndLockChannel:
+  confidence: tentative
+  evidence: "strong E4: fails if channels already locked, SND_LockChannel(mask,0), sets mask = NNS NNS_SndLockChannel (was func_0201b584, main, 2026-11-16)"
+PlayerHeapDisposeCallback:
+  confidence: tentative
+  evidence: "strong E4: sound-heap dispose callback that destroys the player heap (NNS_SndHeapDestroy) and unlinks it (NNS_FndRemoveListObject) = NNS snd_player.c static PlayerHeapDisposeCallback (was func_0201b63c, main, 2026-11-16)"
+ShutdownPlayer:
+  confidence: tentative
+  evidence: "strong E4: detaches handle, removes the seq player from player/prio lists, frees heap, adds to free list = NNS snd_player.c static ShutdownPlayer (was func_0201b698, main, 2026-11-16)"
+NNSi_SndPlayerFreeSeqPlayer:
+  confidence: tentative
+  evidence: "strong E4: tail-calls ShutdownPlayer (literal 0x0201b698) = NNS NNSi_SndPlayerFreeSeqPlayer (was func_0201ba48, main, 2026-11-16)"
+NNSi_SndPlayerMain:
+  confidence: tentative
+  evidence: "strong E4: per-frame loop over seq players: SND_GetPlayerStatus, fader update (NNSi_SndFaderUpdate/IsFinished), SND_SetPlayerVolume, ForceStopSeq, SND_StartPreparedSeq; called by NNS_SndMain = NNS NNSi_SndPlayerMain (was func_0201bb10, main, 2026-11-16)"
+NNS_SndPlayerSetSeqArcNo:
+  confidence: tentative
+  evidence: "strong E4: if handle valid: seqType(+0x34)=2 SEQARC, seqNo(+0x38), seqArcIndex(+0x3a) = NNS NNS_SndPlayerSetSeqArcNo (was func_0201bd3c, main, 2026-11-16)"
+NNS_SndPlayerSetSeqNo:
+  confidence: tentative
+  evidence: "strong E4: if handle valid: seqType(+0x34)=1 SEQ, seqNo(+0x38) = NNS NNS_SndPlayerSetSeqNo (was func_0201bd64, main, 2026-11-16)"
+NNS_SndPlayerSetTempoRatio:
+  confidence: tentative
+  evidence: "strong E4: if handle valid, SND_SetPlayerTempoRatio(seqPlayer->playerNo(+0x3c), ratio) = NNS NNS_SndPlayerSetTempoRatio (was func_0201bd80, main, 2026-11-16)"
+NNS_SndPlayerSetTrackPan:
+  confidence: tentative
+  evidence: "strong E4: if handle valid, SND_SetTrackPan(playerNo, mask, pan) = NNS NNS_SndPlayerSetTrackPan (was func_0201bdb0, main, 2026-11-16)"
+NNS_SndPlayerSetTrackPitch:
+  confidence: tentative
+  evidence: "strong E4: if handle valid, SND_SetTrackPitch(playerNo, mask, pitch) = NNS NNS_SndPlayerSetTrackPitch (was func_0201bde0, main, 2026-11-16)"
+NNS_SndPlayerSetChannelPriority:
+  confidence: tentative
+  evidence: "strong E4: if handle valid, SND_SetPlayerChannelPriority(playerNo, prio) = NNS NNS_SndPlayerSetChannelPriority (was func_0201be10, main, 2026-11-16)"
+NNS_SndPlayerMoveVolume:
+  confidence: tentative
+  evidence: "strong E4: if handle valid, NNSi_SndFaderSet(&seqPlayer->fader, target, frames) = NNS NNS_SndPlayerMoveVolume (was func_0201be40, main, 2026-11-16)"
+NNS_SndPlayerSetInitialVolume:
+  confidence: tentative
+  evidence: "strong E4: stores seqPlayer->initVolume (+0x40, NNSSndSeqPlayer layout) = NNS NNS_SndPlayerSetInitialVolume (was func_0201be88, main, 2026-11-16)"
+NNS_SndPlayerSetVolume:
+  confidence: tentative
+  evidence: "strong E4: stores seqPlayer->extVolume (+0x41) = NNS NNS_SndPlayerSetVolume (was func_0201be98, main, 2026-11-16)"
+NNS_SndPlayerCountPlayingSeqByPlayerNo:
+  confidence: tentative
+  evidence: "strong E4: counts entries of sPlayer[playerNo].playerList = NNS NNS_SndPlayerCountPlayingSeqByPlayerNo (pokediamond player order) (was func_0201bea8, main, 2026-11-16)"
+NNS_SndHandleReleaseSeq:
+  confidence: tentative
+  evidence: "strong E4: if handle->player: player->handle=NULL, handle->player=NULL = NNS NNS_SndHandleReleaseSeq (was func_0201bf1c, main, 2026-11-16)"
+NNS_SndHandleInit:
+  confidence: tentative
+  evidence: "strong E4: *handle = NULL; follows NNS_SndHandleReleaseSeq as in pokediamond NNS_SND_player.s = NNS NNS_SndHandleInit (was func_0201bf34, main, 2026-11-16)"
+NNS_SndPlayerPauseByPlayerNo:
+  confidence: tentative
+  evidence: "strong E4: iterates sPlayer[playerNo] (stride 0x24) list calling NNSi_SndPlayerPause(seq, flag) = NNS NNS_SndPlayerPauseByPlayerNo (was func_0201bf40, main, 2026-11-16)"
+NNS_SndPlayerPause:
+  confidence: tentative
+  evidence: "strong E4: tail-calls NNSi_SndPlayerPause(handle->player, flag) = NNS NNS_SndPlayerPause (was func_0201bfac, main, 2026-11-16)"
+NNS_SndPlayerStopSeqBySeqArcIdx:
+  confidence: tentative
+  evidence: "strong E4: for each active seq player with seqType 2, seqNo==seqArcNo and seqArcIndex==index, NNSi_SndPlayerStopSeq(fade) = NNS NNS_SndPlayerStopSeqBySeqArcIdx (was func_0201c000, main, 2026-11-16)"
+NNS_SndPlayerStopSeq:
+  confidence: tentative
+  evidence: "strong E4: tail-calls NNSi_SndPlayerStopSeq(handle->player, fade) = NNS NNS_SndPlayerStopSeq (was func_0201c070, main, 2026-11-16)"
+NNS_SndPlayerSetAllocatableChannel:
+  confidence: tentative
+  evidence: "strong E4: sPlayer[playerNo].allocChBitFlag (+0x1c of 0x24-byte NNSSndPlayer) = mask = NNS NNS_SndPlayerSetAllocatableChannel (was func_0201c120, main, 2026-11-16)"
+NNS_SndPlayerSetPlayableSeqCount:
+  confidence: tentative
+  evidence: "strong E4: sPlayer[playerNo].playableSeqCount (+0x18) = (u16)count = NNS NNS_SndPlayerSetPlayableSeqCount (was func_0201c138, main, 2026-11-16)"
+NNS_SndArcGetPlayerInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NNSSndArcInfo offset table +0x18 (playerInfoOffset) and indexes it = NNS NNS_SndArcGetPlayerInfo (was func_0201d2dc, main, 2026-11-16)"
+NNS_SndArcGetGroupInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NNSSndArcInfo offset table +0x1c (groupInfoOffset) = NNS NNS_SndArcGetGroupInfo (was func_0201d214, main, 2026-11-16)"
+NNS_SndArcGetStrmPlayerInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NNSSndArcInfo offset table +0x20 (strmPlayerInfoOffset) = NNS NNS_SndArcGetStrmPlayerInfo (was func_0201d278, main, 2026-11-16)"
+NNS_SndArcGetStrmInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NNSSndArcInfo offset table +0x24 (strmOffset) = NNS NNS_SndArcGetStrmInfo (was func_0201d340, main, 2026-11-16)"
+NNS_SndArcGetWaveArcInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NNSSndArcInfo offset table +0x14 (waveArcOffset); called by NNSi_SndArcLoadWaveArc = NNS NNS_SndArcGetWaveArcInfo (was func_0201d3a4, main, 2026-11-16)"
+NNS_SndArcGetBankInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NNSSndArcInfo offset table +0x10 (bankOffset); called by NNSi_SndArcLoadBank = NNS NNS_SndArcGetBankInfo (was func_0201d408, main, 2026-11-16)"
+NNS_SndArcGetSeqArcInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NNSSndArcInfo offset table +0xc (seqArcOffset); called by NNSi_SndArcLoadSeqArc = NNS NNS_SndArcGetSeqArcInfo (was func_0201d46c, main, 2026-11-16)"
+NNS_SndArcGetSeqInfo:
+  confidence: tentative
+  evidence: "strong E4: reads NNSSndArcInfo offset table +8 (seqOffset); called by NNSi_SndArcLoadSeq = NNS NNS_SndArcGetSeqInfo (was func_0201d4d0, main, 2026-11-16)"
+WaveArcDisposeCallback:
+  confidence: tentative
+  evidence: "strong E4: DisposeCallback + SND_InvalidateWaveData + SND_DestroyWaveArc; used by LoadWaveArc = NNS sndarc_loader.c static WaveArcDisposeCallback (was func_0201de08, main, 2026-11-16)"
+BankDisposeCallback:
+  confidence: tentative
+  evidence: "strong E4: DisposeCallback + SND_InvalidateBankData + SND_DestroyBank; used by LoadBank = NNS sndarc_loader.c static BankDisposeCallback (was func_0201de44, main, 2026-11-16)"
+LoadWaveArc:
+  confidence: tentative
+  evidence: "strong E4: NNSi_SndArcLoadFile with WaveArcDisposeCallback (literal 0x0201de08); called by NNSi_SndArcLoadWaveArc = NNS static LoadWaveArc (was func_0201e054, main, 2026-11-16)"
+LoadBank:
+  confidence: tentative
+  evidence: "strong E4: NNSi_SndArcLoadFile with BankDisposeCallback (0x0201de44); called by NNSi_SndArcLoadBank = NNS static LoadBank (was func_0201e0d0, main, 2026-11-16)"
+LoadSeqArc:
+  confidence: tentative
+  evidence: "strong E4: NNSi_SndArcLoadFile with SeqDisposeCallback; called by NNSi_SndArcLoadSeqArc = NNS static LoadSeqArc (was func_0201e14c, main, 2026-11-16)"
+LoadSeq:
+  confidence: tentative
+  evidence: "strong E4: NNSi_SndArcLoadFile with SeqDisposeCallback; called by NNSi_SndArcLoadSeq = NNS static LoadSeq (was func_0201e1c8, main, 2026-11-16)"
+NNSi_SndArcLoadWaveArc:
+  confidence: tentative
+  evidence: "strong E4: NNS_SndArcGetWaveArcInfo then LoadWaveArcTable or LoadWaveArc; called by NNSi_SndArcLoadBank/Group = NNS NNSi_SndArcLoadWaveArc (was func_0201e2f8, main, 2026-11-16)"
+NNS_SndArcLoadBank:
+  confidence: tentative
+  evidence: "strong E4: wrapper returning NNSi_SndArcLoadBank(...)==0 = NNS NNS_SndArcLoadBank (was func_0201e75c, main, 2026-11-16)"
+NNS_SndArcLoadSeqArc:
+  confidence: tentative
+  evidence: "strong E4: wrapper returning NNSi_SndArcLoadSeqArc(...)==0 = NNS NNS_SndArcLoadSeqArc (was func_0201e794, main, 2026-11-16)"
+NNS_FndRemoveListObject:
+  confidence: tentative
+  evidence: "strong E4: unlinks object from an NNSFndList using the list offset, fixes head/tail, --numObjects = pokediamond NNS_FND_list.c NNS_FndRemoveListObject (was func_0202061c, main, 2026-11-16)"
+NNS_FndInsertListObject:
+  confidence: tentative
+  evidence: "strong E4: where==NULL -> NNS_FndAppendListObject, where==head -> NNS_FndPrependListObject, else link before where = pokediamond NNS_FndInsertListObject (was func_02020688, main, 2026-11-16)"
+NNS_FndPrependListObject:
+  confidence: tentative
+  evidence: "strong E4: SetFirstObject if empty else link before head = pokediamond NNS_FndPrependListObject (was func_02020708, main, 2026-11-16)"
+NNS_FndAppendListObject:
+  confidence: tentative
+  evidence: "strong E4: SetFirstObject if empty else link after tail = pokediamond NNS_FndAppendListObject (was func_0202076c, main, 2026-11-16)"
+NNSi_FndFinalizeHeap:
+  confidence: tentative
+  evidence: "strong E4: FindListContainHeap then NNS_FndRemoveListObject(list, heap); target of NNS_FndDestroyFrmHeap = pokediamond NNSi_FndFinalizeHeap (was func_02020818, main, 2026-11-16)"
+NNSi_FndInitHeapHead:
+  confidence: tentative
+  evidence: "strong E4: fills signature/start/end, NNS_FndInitList(child list), FindListContainHeap, NNS_FndAppendListObject = pokediamond NNSi_FndInitHeapHead (was func_02020834, main, 2026-11-16)"
+FindListContainHeap:
+  confidence: tentative
+  evidence: "strong E4: FindContainHeap over the root heap list, returns child list or root = pokediamond NNS_FND_heapcommon.c static FindListContainHeap (was func_020208c4, main, 2026-11-16)"
+FindContainHeap:
+  confidence: tentative
+  evidence: "strong E4: recursive search of heap lists for the heap whose range contains the block = pokediamond static FindContainHeap (was func_020208f0, main, 2026-11-16)"
+NNS_FndSetAllocModeForExpHeap:
+  confidence: tentative
+  evidence: "strong E4: swaps alloc-mode bit 0 of the exp heap attribute (+0x36), returns old mode = NNS NNS_FndSetAllocModeForExpHeap (was func_02020960, main, 2026-11-16)"
+NNS_FndAllocFromExpHeapEx:
+  confidence: tentative
+  evidence: "strong E4: alignment>=0 -> AllocFromHead else AllocFromTail(-alignment) = pokediamond NNS_FndAllocFromExpHeapEx (naming-conventions anchor 10) (was func_020209d0, main, 2026-11-16)"
+NNS_FndCreateExpHeapEx:
+  confidence: tentative
+  evidence: "strong E4,E6: computes aligned start/end and calls InitExpHeap; Heap_Init calls it (0x0208ff00, 0x20000, 0) = pokediamond NNS_FndCreateExpHeapEx (anchor 10) (was func_02020a14, main, 2026-11-16)"
+RecycleRegion:
+  confidence: tentative
+  evidence: "strong E4: merges a freed region with adjacent free blocks (RemoveMBlock/InitMBlock/InsertMBlock); called by NNS_FndFreeToExpHeap = pokediamond static RecycleRegion (was func_02020a60, main, 2026-11-16)"
+AllocFromTail:
+  confidence: tentative
+  evidence: "strong E4: walks the exp-heap free list from tail (+0x28) via prev (+8), then AllocUsedBlockFromFreeBlock = pokediamond NNS_FND_expheap.c AllocFromTail (was func_02020b58, main, 2026-11-16)"
+AllocFromHead:
+  confidence: tentative
+  evidence: "strong E4: walks the exp-heap free list from head (+0x24) via next (+0xc), then AllocUsedBlockFromFreeBlock = pokediamond NNS_FND_expheap.c AllocFromHead (was func_02020c1c, main, 2026-11-16)"
+AllocUsedBlockFromFreeBlock:
+  confidence: tentative
+  evidence: "strong E4: splits a free block into used block plus remainders with InitMBlock/InsertMBlock, optional MIi_CpuClear32 = pokediamond AllocUsedBlockFromFreeBlock (was func_02020ce4, main, 2026-11-16)"
+InitExpHeap:
+  confidence: tentative
+  evidence: "strong E4: NNSi_FndInitHeapHead with 'EXPH' signature then InitMBlock of the whole free region; called by NNS_FndCreateExpHeapEx = pokediamond InitExpHeap (was func_02020e78, main, 2026-11-16)"
+NNS_FndGetAllocatableSizeForFrmHeapEx:
+  confidence: tentative
+  evidence: "strong E4: abs(alignment) round-up of heap head (+0x24) against tail (+0x28) returning free bytes = NNS NNS_FndGetAllocatableSizeForFrmHeapEx (was func_02020fb0, main, 2026-11-16)"
+NNS_FndDestroyFrmHeap:
+  confidence: tentative
+  evidence: "strong E4: tail-calls NNSi_FndFinalizeHeap (literal 0x02020818), between NNS_FndAllocFromFrmHeapEx and NNS_FndCreateFrmHeapEx as in pokediamond NNS_FND_frameheap.s (was func_02021078, main, 2026-11-16)"
+WM_StartParent:
+  confidence: tentative
+  evidence: "strong E4: mov r1,#1 and tail-call WMi_StartParentEx = pokediamond WM_StartParent (was func_02011904, main, 2026-11-16)"
+WMi_StartParentEx:
+  confidence: tentative
+  evidence: "strong E4: WMi_CheckStateEx(1, IDLE), WMi_SetCallbackTable(8 START_PARENT), WMi_SendCommand(8, 1, powerSave) (structure 0.90 pokediamond WMi_StartParentEx) (was func_02011914, main, 2026-11-16)"
+WmGetSharedDataAddress:
+  confidence: tentative
+  evidence: "strong E4: token-identical to pokediamond WM_ds.s WmGetSharedDataAddress (MATH_CountPopulation of masked aid bitmap times data size +0x810) (was func_02011f4c, main, 2026-11-16)"
+NNSi_G3dSendTexSRTMaya:
+  confidence: tentative
+  evidence: "strong E4,E8: entry 0 of NNS_G3dSendTexSRT_FuncArray at 0x02077b50 (Maya, Si3d, 3dsMax, Xsi as in pokediamond NNS_G3D_cgtool.s) (was func_020285ac, main, 2026-11-16)"
+NNSi_G3dSendTexSRT3dsMax:
+  confidence: tentative
+  evidence: "strong E4,E8: entry 2 of NNS_G3dSendTexSRT_FuncArray at 0x02077b50; structure 0.83 with pokediamond NNSi_G3dSendTexSRT3dsMax (was func_02029334, main, 2026-11-16)"
+NNSi_G3dGetJointScaleBasic:
+  confidence: tentative
+  evidence: "strong E8: entry 0 of NNS_G3dGetJointScale_FuncArray at 0x02077b44 (Basic, Maya, Si3d) (was func_020284ec, main, 2026-11-16)"
+NNSi_G3dGetJointScaleMaya:
+  confidence: tentative
+  evidence: "strong E8: entry 1 of NNS_G3dGetJointScale_FuncArray at 0x02077b44 (was func_02028bcc, main, 2026-11-16)"
+NNSi_G3dGetJointScaleSi3d:
+  confidence: tentative
+  evidence: "strong E8: entry 2 of NNS_G3dGetJointScale_FuncArray at 0x02077b44 (was func_02028fc4, main, 2026-11-16)"
+NNSi_G3dAnmObjInitNsBma:
+  confidence: tentative
+  evidence: "strong E4,E8: entry tagged 'M\\0AM' of NNS_G3dAnmObjInitFuncArray at 0x02077ae8 (same layout as pokediamond NNS_G3D_anm.s) (was func_02027a5c, main, 2026-11-16)"
+NNSi_G3dAnmObjInitNsBta:
+  confidence: tentative
+  evidence: "strong E4,E8: entry tagged 'M\\0AT' of NNS_G3dAnmObjInitFuncArray at 0x02077ae8 (was func_02027e0c, main, 2026-11-16)"
+NNSi_G3dAnmObjInitNsBtp:
+  confidence: tentative
+  evidence: "strong E4,E8: entry tagged 'M\\0PT' of NNS_G3dAnmObjInitFuncArray at 0x02077ae8; structure 0.80 with pokediamond (was func_0202839c, main, 2026-11-16)"
+NNSi_G3dAnmObjInitNsBca:
+  confidence: tentative
+  evidence: "strong E4,E8: entry tagged 'J\\0AC' of NNS_G3dAnmObjInitFuncArray at 0x02077ae8 (was func_020278f0, main, 2026-11-16)"
+NNSi_G3dFuncSbc_NODEMIX:
+  confidence: tentative
+  evidence: "strong E8: entry 9 of NNS_G3dFuncSbcTable at 0x02077c60 (all other 13 entries match the pokediamond sbc table order) (was func_02023274, main, 2026-11-16)"
+NNSi_G3dFuncSbc_NOP:
+  confidence: tentative
+  evidence: "strong E4,E8: entry 0 of NNS_G3dFuncSbcTable at 0x02077c60 (was func_02024cd0, main, 2026-11-16)"
+NNSi_G3dFuncSbc_PRJMAP:
+  confidence: tentative
+  evidence: "strong E4,E8: last entry of NNS_G3dFuncSbcTable at 0x02077c60; structure 0.80 with pokediamond (was func_02022a6c, main, 2026-11-16)"
+NNS_G3dGlbGetInvWV:
+  confidence: tentative
+  evidence: "strong E4: calls calcSrtCameraMtx_ and copies the inverse world-view result; precedes NNS_G3dGlbGetWV as in pokediamond NNS_G3D_glbstate.s order (was func_020220c0, main, 2026-11-16)"
+NNS_G3dGlbGetWV:
+  confidence: tentative
+  evidence: "strong E4: calls calcSrtCameraMtx_ and copies the world-view result; follows NNS_G3dGlbGetInvWV, precedes calcSrtCameraMtx_ as in pokediamond glbstate order (was func_02022104, main, 2026-11-16)"
+calcSrtCameraMtx_:
+  confidence: tentative
+  evidence: "strong E4: builds the SRT camera matrix with MTX_Concat43/MTX_ScaleApply43/MTX_Inverse43 from NNS_G3dGlb; called by GetWV/GetInvWV = pokediamond static calcSrtCameraMtx_ (was func_02022148, main, 2026-11-16)"
+NNS_G3dGlbGetInvV:
+  confidence: tentative
+  evidence: "strong E4: inverse of the camera matrix via MTX_Inverse43 when dirty; position after calcSrtCameraMtx_ as in pokediamond glbstate order (was func_020221ac, main, 2026-11-16)"
+NNS_G3dGlbPolygonAttr:
+  confidence: tentative
+  evidence: "strong E4: packs light/mode/cull/polyId/alpha/misc into NNS_G3dGlb.prmPolygonAttr (structure 0.80 with pokediamond NNS_G3dGlbPolygonAttr), glbstate order (was func_020221fc, main, 2026-11-16)"
+NNS_G3dGlbSetBaseScale:
+  confidence: tentative
+  evidence: "strong E4: copies a VecFx32 into NNS_G3dGlb base scale and sets its flag; precedes SetBaseTrans as in pokediamond glbstate order (was func_020222bc, main, 2026-11-16)"
+NNS_G3dGlbSetBaseTrans:
+  confidence: tentative
+  evidence: "strong E4: copies a VecFx32 into NNS_G3dGlb base translation and sets its flag; follows SetBaseScale as in pokediamond glbstate order (was func_020222e4, main, 2026-11-16)"
+NNS_G3dGlbInit:
+  confidence: tentative
+  evidence: "strong E4: initialises NNS_G3dGlb with MTX_Identity43_/44_/33_ and the same literal constants as pokediamond NNS_G3dGlbInit (0x17101610, 0x32323232, 0x60293130, 0x4210c210, 0x2d8b62d8, 0x001f008f, ...) (was func_020224bc, main, 2026-11-16)"
+NNS_G3dRenderObjInit:
+  confidence: tentative
+  evidence: "strong E4: MIi_CpuClear32(obj, 0x54), sets default callbacks from globals and obj->resMdl = mdl = NNS NNS_G3dRenderObjInit (kernel order before NNS_G3dAnmObjInit) (was func_02021ef8, main, 2026-11-16)"
+NNS_G3dAnmObjInit:
+  confidence: tentative
+  evidence: "strong E4: frame=0, resAnm=anm, funcAnm, ratio 0x1000, priority 0x7f, resTex, then format-specific init through NNS_G3dAnmObjInitFuncArray = NNS NNS_G3dAnmObjInit (naming-conventions anchor 30) (was func_02021f60, main, 2026-11-16)"
+NNS_G3dDraw:
+  confidence: tentative
+  evidence: "strong E4: if recalc flag 0x10, MIi_CpuClear32 of the 3 animation bitsets and rebuild, then G3dDrawInternal_ = NNS NNS_G3dDraw (sbc order before G3dDrawInternal_) (was func_02024cfc, main, 2026-11-16)"
+G3dDrawInternal_Loop_:
+  confidence: tentative
+  evidence: "strong E4: loops sbc opcodes dispatching NNS_G3dFuncSbcTable[op&0x1f](rs, op&0xe0) until the RET flag = pokediamond static G3dDrawInternal_Loop_ (was func_02025004, main, 2026-11-16)"
+NNS_G3dGeBufferOP_N:
+  confidence: tentative
+  evidence: "strong E4: appends a GX command with N params to the geometry buffer (limit 0xc0 words) or falls back to immediate send = NNS NNS_G3dGeBufferOP_N (was func_02025268, main, 2026-11-16)"
+NNS_G3dGeSendDL:
+  confidence: tentative
+  evidence: "strong E4: size < 0x100 or no DMA -> NNS_G3dGeBufferOP_N, else NNS_G3dGeFlushBuffer and MI_SendGXCommandAsync/AsyncFast with simpleUnlock_ = NNS NNS_G3dGeSendDL (was func_02025364, main, 2026-11-16)"
+simpleUnlock_:
+  confidence: tentative
+  evidence: "strong E4: DMA-completion callback storing 0 to the busy flag; passed by NNS_G3dGeSendDL = pokediamond NNS_G3D_gecom.s static simpleUnlock_ (was func_02025430, main, 2026-11-16)"
+NNS_G3dGeWaitSendDL:
+  confidence: tentative
+  evidence: "strong E4: spins on the DL-busy flag (structure 0.80 with pokediamond NNS_G3dGeWaitSendDL) = NNS NNS_G3dGeWaitSendDL (was func_0202543c, main, 2026-11-16)"
+NNS_G3dGeFlushBuffer:
+  confidence: tentative
+  evidence: "strong E4,E5: waits send, MIi_CpuSend32 of the buffered commands to GXFIFO and resets count = NNS NNS_G3dGeFlushBuffer (was func_02025454, main, 2026-11-16)"
+NNS_G3dGetCurrentMtx:
+  confidence: tentative
+  evidence: "strong E4: NNS_G3dGeFlushBuffer, then loops G3X_GetClipMtx/G3X_GetVectorMtx until ready = NNS NNS_G3dGetCurrentMtx (util order) (was func_02025a94, main, 2026-11-16)"
+NNS_G3dMdlSetMdlAlphaAll:
+  confidence: tentative
+  evidence: "strong E4: loops all materials calling NNS_G3dMdlSetMdlAlpha (0x02025c8c) = NNS NNS_G3dMdlSetMdlAlphaAll (was func_02025b6c, main, 2026-11-16)"
+NNS_G3dMdlSetMdlEmiAll:
+  confidence: tentative
+  evidence: "strong E4: loops all materials calling NNS_G3dMdlSetMdlEmi (0x02025cd4) = NNS NNS_G3dMdlSetMdlEmiAll (was func_02025bb4, main, 2026-11-16)"
+NNS_G3dMdlSetMdlAmbAll:
+  confidence: tentative
+  evidence: "strong E4: loops all materials calling NNS_G3dMdlSetMdlAmb (0x02025d1c) = NNS NNS_G3dMdlSetMdlAmbAll (was func_02025bfc, main, 2026-11-16)"
+NNS_G3dMdlSetMdlDiffAll:
+  confidence: tentative
+  evidence: "strong E4: loops all materials calling NNS_G3dMdlSetMdlDiff (0x02025d64) = NNS NNS_G3dMdlSetMdlDiffAll (was func_02025c44, main, 2026-11-16)"
+NNSi_G3dModifyMatFlag:
+  confidence: tentative
+  evidence: "strong E4: material flag set/clear over all materials, last function of the model block after NNSi_G3dModifyPolygonAttrMask as in pokediamond NNS_G3D_model.s (was func_02025e1c, main, 2026-11-16)"
+getRotDataByIdx_:
+  confidence: tentative
+  evidence: "strong E4: rotation-matrix fetch by index (pivot/compressed 3x3 decode), called by getRotDataEx_/getRotData_; first of pokediamond NNS_G3D_nsbca.s order (was func_020262ac, main, 2026-11-16)"
+getTransDataEx_:
+  confidence: tentative
+  evidence: "strong E4: interpolated translation fetch, called by getJntSRTAnmResult_, nsbca order (was func_02026f88, main, 2026-11-16)"
+getTransData_:
+  confidence: tentative
+  evidence: "strong E4: translation fetch, called by getJntSRTAnmResult_, nsbca order between getTransDataEx_ and getJntSRTAnmResult_ (was func_02027104, main, 2026-11-16)"
+NNSi_G3dAnmBlendVis:
+  confidence: tentative
+  evidence: "strong E4: visibility blend (structure 0.81), first of the anm block before NNSi_G3dAnmBlendJnt as in pokediamond NNS_G3D_anm.s (was func_02022628, main, 2026-11-16)"
+NNS_SndMain:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.96 with pokediamond NNS_SND_main.s NNS_SndMain, file order preserved (was func_0201b3a0, main, 2026-11-16)"
+SetPlayerPriority:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.94 with pokediamond NNS_SND_player.s SetPlayerPriority, file order preserved (was func_0201b5d8, main, 2026-11-16)"
+AllocSeqPlayer:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_SND_player.s AllocSeqPlayer, file order preserved (was func_0201b728, main, 2026-11-16)"
+ForceStopSeq:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with pokediamond NNS_SND_player.s ForceStopSeq, file order preserved (was func_0201b7a4, main, 2026-11-16)"
+InsertPrioList:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.80 with pokediamond NNS_SND_player.s InsertPrioList and same position in file order between aligned neighbours (was func_0201b7e0, main, 2026-11-16)"
+InsertPlayerList:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_SND_player.s InsertPlayerList, file order preserved (was func_0201b840, main, 2026-11-16)"
+InitPlayer:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond NNS_SND_player.s InitPlayer, file order preserved (was func_0201b89c, main, 2026-11-16)"
+NNSi_SndPlayerAllocHeap:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_SND_player.s NNSi_SndPlayerAllocHeap, file order preserved (was func_0201b8e8, main, 2026-11-16)"
+NNSi_SndPlayerPause:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_SND_player.s NNSi_SndPlayerPause, file order preserved (was func_0201b944, main, 2026-11-16)"
+NNSi_SndPlayerStopSeq:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_SND_player.s NNSi_SndPlayerStopSeq, file order preserved (was func_0201b98c, main, 2026-11-16)"
+NNSi_SndPlayerStartSeq:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_SND_player.s NNSi_SndPlayerStartSeq, file order preserved (was func_0201b9ec, main, 2026-11-16)"
+NNSi_SndPlayerAllocSeqPlayer:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_SND_player.s NNSi_SndPlayerAllocSeqPlayer, file order preserved (was func_0201ba54, main, 2026-11-16)"
+NNSi_SndPlayerInit:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.87 with pokediamond NNS_SND_player.s NNSi_SndPlayerInit, file order preserved (was func_0201bc84, main, 2026-11-16)"
+NNS_SndPlayerStopSeqAll:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_SND_player.s NNS_SndPlayerStopSeqAll, file order preserved (was func_0201bfbc, main, 2026-11-16)"
+NNS_SndPlayerCreateHeap:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_SND_player.s NNS_SndPlayerCreateHeap, file order preserved (was func_0201c080, main, 2026-11-16)"
+StrmCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_SND_stream.s StrmCallback, file order preserved (was func_0201c224, main, 2026-11-16)"
+NNS_SndStrmSetVolume:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.85 with pokediamond NNS_SND_stream.s NNS_SndStrmSetVolume, file order preserved (was func_0201c3e4, main, 2026-11-16)"
+NNS_SndStrmSetup:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.87 with pokediamond NNS_SND_stream.s NNS_SndStrmSetup, file order preserved (was func_0201c4e4, main, 2026-11-16)"
+NNS_SndStrmFreeChannel:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_SND_stream.s NNS_SndStrmFreeChannel, file order preserved (was func_0201c6b4, main, 2026-11-16)"
+NNS_SndStrmAllocChannel:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.98 with pokediamond NNS_SND_stream.s NNS_SndStrmAllocChannel, file order preserved (was func_0201c6e4, main, 2026-11-16)"
+NNSi_SndCaptureBeginSleep:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_SND_capture.s NNSi_SndCaptureBeginSleep, file order preserved (was func_0201c970, main, 2026-11-16)"
+NNSi_SndCaptureStop:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond NNS_SND_capture.s NNSi_SndCaptureStop, file order preserved (was func_0201c9d0, main, 2026-11-16)"
+NNSi_SndCaptureStart:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_SND_capture.s NNSi_SndCaptureStart, file order preserved (was func_0201cacc, main, 2026-11-16)"
+NNSi_SndCaptureMain:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_SND_capture.s NNSi_SndCaptureMain, file order preserved (was func_0201ce34, main, 2026-11-16)"
+NNS_SndCaptureStopEffect:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_SND_capture.s NNS_SndCaptureStopEffect, file order preserved (was func_0201d010, main, 2026-11-16)"
+NNS_SndArcReadFile:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.82 with pokediamond NNS_SND_sndarc.s NNS_SndArcReadFile, file order preserved (was func_0201d140, main, 2026-11-16)"
+NNS_SndArcGetSeqParam:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.94 with pokediamond NNS_SND_sndarc.s NNS_SndArcGetSeqParam, file order preserved (was func_0201d534, main, 2026-11-16)"
+EraseSync:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.94 with pokediamond NNS_SND_heap.s EraseSync, file order preserved (was func_0201d8f0, main, 2026-11-16)"
+NewSection:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with pokediamond NNS_SND_heap.s NewSection, file order preserved (was func_0201d914, main, 2026-11-16)"
+InitHeap:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_SND_heap.s InitHeap, file order preserved (was func_0201d964, main, 2026-11-16)"
+NNS_SndHeapAlloc:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_SND_heap.s NNS_SndHeapAlloc, file order preserved (was func_0201d9e4, main, 2026-11-16)"
+NNS_SndHeapClear:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with pokediamond NNS_SND_heap.s NNS_SndHeapClear, file order preserved (was func_0201da54, main, 2026-11-16)"
+NNS_SndHeapCreate:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_SND_heap.s NNS_SndHeapCreate, file order preserved (was func_0201db30, main, 2026-11-16)"
+LoadSingleWaves:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.95 with pokediamond NNS_SND_sndarc_loader.s LoadSingleWaves, file order preserved (was func_0201dbcc, main, 2026-11-16)"
+LoadSingleWave:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond NNS_SND_sndarc_loader.s LoadSingleWave, file order preserved (was func_0201dc9c, main, 2026-11-16)"
+SingleWaveDisposeCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.98 with pokediamond NNS_SND_sndarc_loader.s SingleWaveDisposeCallback, file order preserved (was func_0201dd90, main, 2026-11-16)"
+WaveArcTableDisposeCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.94 with pokediamond NNS_SND_sndarc_loader.s WaveArcTableDisposeCallback, file order preserved (was func_0201dde4, main, 2026-11-16)"
+SeqDisposeCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.96 with pokediamond NNS_SND_sndarc_loader.s SeqDisposeCallback, file order preserved (was func_0201de80, main, 2026-11-16)"
+DisposeCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.96 with pokediamond NNS_SND_sndarc_loader.s DisposeCallback, file order preserved (was func_0201deb4, main, 2026-11-16)"
+LoadWaveArcTable:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_SND_sndarc_loader.s LoadWaveArcTable, file order preserved (was func_0201df20, main, 2026-11-16)"
+NNSi_SndArcLoadFile:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond NNS_SND_sndarc_loader.s NNSi_SndArcLoadFile, file order preserved (was func_0201e244, main, 2026-11-16)"
+NNSi_SndArcLoadBank:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_SND_sndarc_loader.s NNSi_SndArcLoadBank, file order preserved (was func_0201e3a0, main, 2026-11-16)"
+NNSi_SndArcLoadSeqArc:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with pokediamond NNS_SND_sndarc_loader.s NNSi_SndArcLoadSeqArc, file order preserved (was func_0201e500, main, 2026-11-16)"
+NNSi_SndArcLoadSeq:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.85 with pokediamond NNS_SND_sndarc_loader.s NNSi_SndArcLoadSeq, file order preserved (was func_0201e570, main, 2026-11-16)"
+NNSi_SndArcLoadGroup:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_SND_sndarc_loader.s NNSi_SndArcLoadGroup, file order preserved (was func_0201e61c, main, 2026-11-16)"
+NNS_SndArcLoadGroup:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.94 with pokediamond NNS_SND_sndarc_loader.s NNS_SndArcLoadGroup, file order preserved (was func_0201e7cc, main, 2026-11-16)"
+StartSeqArc:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_SND_sndarc_player.s StartSeqArc, file order preserved (was func_0201e7f0, main, 2026-11-16)"
+StartSeq:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.94 with pokediamond NNS_SND_sndarc_player.s StartSeq, file order preserved (was func_0201e8c0, main, 2026-11-16)"
+NNS_SndArcPlayerStartSeqArc:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with pokediamond NNS_SND_sndarc_player.s NNS_SndArcPlayerStartSeqArc, file order preserved (was func_0201ea88, main, 2026-11-16)"
+NNS_SndArcPlayerStartSeqEx:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with pokediamond NNS_SND_sndarc_player.s NNS_SndArcPlayerStartSeqEx, file order preserved (was func_0201eb20, main, 2026-11-16)"
+NNS_SndArcPlayerStartSeq:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_SND_sndarc_player.s NNS_SndArcPlayerStartSeq, file order preserved (was func_0201eb98, main, 2026-11-16)"
+NNS_SndArcPlayerSetup:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_SND_sndarc_player.s NNS_SndArcPlayerSetup, file order preserved (was func_0201ebec, main, 2026-11-16)"
+FreeCommandBuffer:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_SND_sndarc_stream.s FreeCommandBuffer, file order preserved (was func_0201f904, main, 2026-11-16)"
+RemoveCommandByPlayer:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.98 with pokediamond NNS_SND_sndarc_stream.s RemoveCommandByPlayer, file order preserved (was func_0201f9dc, main, 2026-11-16)"
+NNSi_SndSeqArcGetSeqInfo:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_SND_seqdata.s NNSi_SndSeqArcGetSeqInfo, file order preserved (was func_020204f4, main, 2026-11-16)"
+NNSi_SndFaderSet:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.87 with pokediamond NNS_SND_fader.s NNSi_SndFaderSet, file order preserved (was func_020205a0, main, 2026-11-16)"
+WMi_CheckStateEx:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond WM_system.s WMi_CheckStateEx, file order preserved (was func_02010a50, main, 2026-11-16)"
+WMi_CheckIdle:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.82 with pokediamond WM_system.s WMi_CheckIdle, file order preserved (was func_02010af8, main, 2026-11-16)"
+WM_GetLinkLevel:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond WM_sync.s WM_GetLinkLevel, file order preserved (was func_0201113c, main, 2026-11-16)"
+WM_GetAllowedChannel:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.80 with pokediamond WM_sync.s WM_GetAllowedChannel and same position in file order between aligned neighbours (was func_020111e4, main, 2026-11-16)"
+WM_ReadMPData:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond WM_sync.s WM_ReadMPData, file order preserved (was func_02011210, main, 2026-11-16)"
+WM_GetMPReceiveBufferSize:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond WM_sync.s WM_GetMPReceiveBufferSize, file order preserved (was func_02011314, main, 2026-11-16)"
+WM_GetMPSendBufferSize:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond WM_sync.s WM_GetMPSendBufferSize, file order preserved (was func_02011400, main, 2026-11-16)"
+WM_ReadStatus:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond WM_sync.s WM_ReadStatus, file order preserved (was func_02011484, main, 2026-11-16)"
+WM_SetIndCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.95 with pokediamond WM_sync.s WM_SetIndCallback, file order preserved (was func_0201154c, main, 2026-11-16)"
+WM_Disconnect:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with pokediamond WM_standard.s WM_Disconnect, file order preserved (was func_02011598, main, 2026-11-16)"
+WM_EndScan:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond WM_standard.s WM_EndScan, file order preserved (was func_02011770, main, 2026-11-16)"
+WM_StartScan:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.81 with pokediamond WM_standard.s WM_StartScan and same position in file order between aligned neighbours (was func_020117b8, main, 2026-11-16)"
+WM_EndParent:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond WM_standard.s WM_EndParent, file order preserved (was func_020118bc, main, 2026-11-16)"
+WmCheckParentParameter:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond WM_standard.s WmCheckParentParameter, file order preserved (was func_02011970, main, 2026-11-16)"
+WM_SetParentParameter:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with pokediamond WM_standard.s WM_SetParentParameter, file order preserved (was func_020119c0, main, 2026-11-16)"
+WM_End:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond WM_standard.s WM_End, file order preserved (was func_02011ac8, main, 2026-11-16)"
+WM_Reset:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond WM_standard.s WM_Reset, file order preserved (was func_02011b10, main, 2026-11-16)"
+WM_Initialize:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond WM_standard.s WM_Initialize, file order preserved (was func_02011b50, main, 2026-11-16)"
+WM_EndMP:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond WM_mp.s WM_EndMP, file order preserved (was func_02011bb8, main, 2026-11-16)"
+WM_GetSharedDataAddress:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond WM_ds.s WM_GetSharedDataAddress, file order preserved (was func_02011f88, main, 2026-11-16)"
+WmDataSharingReceiveData:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with pokediamond WM_ds.s WmDataSharingReceiveData, file order preserved (was func_02012180, main, 2026-11-16)"
+WM_StepDataSharing:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.87 with pokediamond WM_ds.s WM_StepDataSharing, file order preserved (was func_020125d8, main, 2026-11-16)"
+WM_MeasureChannel:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.81 with pokediamond WM_etc.s WM_MeasureChannel and same position in file order between aligned neighbours (was func_02012e48, main, 2026-11-16)"
+WM_SetLifeTime:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.96 with pokediamond WM_etc.s WM_SetLifeTime, file order preserved (was func_02012ec0, main, 2026-11-16)"
+WM_SetBeaconIndication:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond WM_etc.s WM_SetBeaconIndication, file order preserved (was func_02012f2c, main, 2026-11-16)"
+WM_SetGameInfo:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond WM_etc.s WM_SetGameInfo, file order preserved (was func_02012f9c, main, 2026-11-16)"
+WM_SetWEPKey:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond WM_etc.s WM_SetWEPKey, file order preserved (was func_02013064, main, 2026-11-16)"
+WBT_MpChildRecvHook:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.95 with SRA wm.s WBT_MpChildRecvHook, file order preserved (was func_02014a8c, main, 2026-11-16)"
+WBT_MpChildSendHook:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA wm.s WBT_MpChildSendHook, file order preserved (was func_02014adc, main, 2026-11-16)"
+WBT_MpParentRecvHook:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.96 with SRA wm.s WBT_MpParentRecvHook, file order preserved (was func_02014b14, main, 2026-11-16)"
+WBT_MpParentSendHook:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with SRA wm.s WBT_MpParentSendHook, file order preserved (was func_02014b74, main, 2026-11-16)"
+WBT_End:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with SRA wm.s WBT_End, file order preserved (was func_02014bac, main, 2026-11-16)"
+WBT_InitChild:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with SRA wm.s WBT_InitChild, file order preserved (was func_02014c70, main, 2026-11-16)"
+WBT_InitParent:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with SRA wm.s WBT_InitParent, file order preserved (was func_02014d38, main, 2026-11-16)"
+WBT_PutUserData:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA wm.s WBT_PutUserData, file order preserved (was func_02015168, main, 2026-11-16)"
+WBT_GetBlock:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA wm.s WBT_GetBlock, file order preserved (was func_020151c4, main, 2026-11-16)"
+WBT_GetBlockInfo:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA wm.s WBT_GetBlockInfo, file order preserved (was func_0201521c, main, 2026-11-16)"
+WBT_RequestSync:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA wm.s WBT_RequestSync, file order preserved (was func_02015264, main, 2026-11-16)"
+WBT_UnregisterBlock:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.96 with SRA wm.s WBT_UnregisterBlock, file order preserved (was func_02015290, main, 2026-11-16)"
+WBT_RegisterBlock:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.96 with SRA wm.s WBT_RegisterBlock, file order preserved (was func_02015354, main, 2026-11-16)"
+WBT_SetPacketSize:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.95 with SRA wm.s WBT_SetPacketSize, file order preserved (was func_0201544c, main, 2026-11-16)"
+WBT_AidbitmapToAid:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with SRA wm.s WBT_AidbitmapToAid, file order preserved (was func_020154f8, main, 2026-11-16)"
+MBi_CommCallParentError:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA mb.s MBi_CommCallParentError, file order preserved (was func_020156d8, main, 2026-11-16)"
+IsChildAidValid:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with SRA mb.s IsChildAidValid, file order preserved (was func_020156fc, main, 2026-11-16)"
+MBi_calc_nextsendblock:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA mb.s MBi_calc_nextsendblock, file order preserved (was func_02015718, main, 2026-11-16)"
+MBi_CommParentSendData:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with SRA mb.s MBi_CommParentSendData, file order preserved (was func_02015790, main, 2026-11-16)"
+MBi_CommParentSendBlock:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.85 with SRA mb.s MBi_CommParentSendBlock, file order preserved (was func_02015924, main, 2026-11-16)"
+MBi_ReloadCache:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.87 with SRA mb.s MBi_ReloadCache, file order preserved (was func_02015bdc, main, 2026-11-16)"
+MBi_CommParentSendDLFileInfo:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.80 with SRA mb.s MBi_CommParentSendDLFileInfo and same position in file order between aligned neighbours (was func_02015c78, main, 2026-11-16)"
+MBi_CommParentRecvDataPerChild:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with SRA mb.s MBi_CommParentRecvDataPerChild, file order preserved (was func_02015f14, main, 2026-11-16)"
+MBi_CommParentCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with SRA mb.s MBi_CommParentCallback, file order preserved (was func_0201640c, main, 2026-11-16)"
+MBi_CommChangeParentStateCallbackOnly:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with SRA mb.s MBi_CommChangeParentStateCallbackOnly, file order preserved (was func_020168ec, main, 2026-11-16)"
+MBi_CommChangeParentState:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with SRA mb.s MBi_CommChangeParentState, file order preserved (was func_02016928, main, 2026-11-16)"
+MB_CommResponseRequest:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.95 with SRA mb.s MB_CommResponseRequest, file order preserved (was func_02016978, main, 2026-11-16)"
+MB_CommIsBootable:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.82 with SRA mb.s MB_CommIsBootable, file order preserved (was func_02016a74, main, 2026-11-16)"
+MB_CommGetChildUser:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with SRA mb.s MB_CommGetChildUser, file order preserved (was func_02016ad0, main, 2026-11-16)"
+MB_CommSetParentStateCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with SRA mb.s MB_CommSetParentStateCallback, file order preserved (was func_02016b6c, main, 2026-11-16)"
+MB_IsAbleToLoad:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with SRA mb.s MB_IsAbleToLoad, file order preserved (was func_02016b98, main, 2026-11-16)"
+MBi_IsAbleToRecv:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with SRA mb.s MBi_IsAbleToRecv, file order preserved (was func_02016cac, main, 2026-11-16)"
+MBi_get_blockinfo:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with SRA mb.s MBi_get_blockinfo, file order preserved (was func_02016d5c, main, 2026-11-16)"
+MBi_MakeBlockInfoTable:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.80 with SRA mb.s MBi_MakeBlockInfoTable and same position in file order between aligned neighbours (was func_02016e30, main, 2026-11-16)"
+MBi_SetSegmentInfo:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with SRA mb.s MBi_SetSegmentInfo, file order preserved (was func_02016f0c, main, 2026-11-16)"
+MBi_MakeDownloadFileInfo:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with SRA mb.s MBi_MakeDownloadFileInfo, file order preserved (was func_020170c4, main, 2026-11-16)"
+MB_RegisterFile:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with SRA mb.s MB_RegisterFile, file order preserved (was func_02017148, main, 2026-11-16)"
+MBi_ReadSegmentHeader:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA mb.s MBi_ReadSegmentHeader, file order preserved (was func_02017410, main, 2026-11-16)"
+MB_ReadSegment:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with SRA mb.s MB_ReadSegment, file order preserved (was func_020174a4, main, 2026-11-16)"
+MB_GetSegmentLength:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with SRA mb.s MB_GetSegmentLength, file order preserved (was func_02017910, main, 2026-11-16)"
+MBi_BlockHeaderEnd:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA mb.s MBi_BlockHeaderEnd, file order preserved (was func_020179dc, main, 2026-11-16)"
+MBi_SendVolatBeacon:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.80 with SRA mb.s MBi_SendVolatBeacon and same position in file order between aligned neighbours (was func_02017a18, main, 2026-11-16)"
+MBi_InitSendVolatBeacon:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with SRA mb.s MBi_InitSendVolatBeacon, file order preserved (was func_02017cc4, main, 2026-11-16)"
+MB_SendGameInfoBeacon:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.98 with SRA mb.s MB_SendGameInfoBeacon, file order preserved (was func_02017f38, main, 2026-11-16)"
+MBi_ClearSendStatus:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with SRA mb.s MBi_ClearSendStatus, file order preserved (was func_02017fe0, main, 2026-11-16)"
+MB_UpdateGameInfoMember:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with SRA mb.s MB_UpdateGameInfoMember, file order preserved (was func_020180a4, main, 2026-11-16)"
+MBi_CheckWmErrcode:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with SRA mb.s MBi_CheckWmErrcode, file order preserved (was func_020182e8, main, 2026-11-16)"
+MBi_IsStarted:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with SRA mb.s MBi_IsStarted, file order preserved (was func_02018340, main, 2026-11-16)"
+MBi_GetAttribute:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.96 with SRA mb.s MBi_GetAttribute, file order preserved (was func_02018360, main, 2026-11-16)"
+MBi_SetMPData:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with SRA mb.s MBi_SetMPData, file order preserved (was func_020184ec, main, 2026-11-16)"
+MB_DisconnectChild:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with SRA mb.s MB_DisconnectChild, file order preserved (was func_0201854c, main, 2026-11-16)"
+MBi_CommEnd:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with SRA mb.s MBi_CommEnd, file order preserved (was func_02018738, main, 2026-11-16)"
+MBi_CallReset:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with SRA mb.s MBi_CallReset, file order preserved (was func_020187cc, main, 2026-11-16)"
+MB_SetParentCommParam:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.85 with SRA mb.s MB_SetParentCommParam, file order preserved (was func_02018b50, main, 2026-11-16)"
+MBi_IsCommSizeValid:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with SRA mb.s MBi_IsCommSizeValid, file order preserved (was func_02018bf4, main, 2026-11-16)"
+MBi_GetBeaconPeriodDispersion:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.81 with SRA mb.s MBi_GetBeaconPeriodDispersion and same position in file order between aligned neighbours (was func_02018e5c, main, 2026-11-16)"
+MBi_ChildCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with SRA mb.s MBi_ChildCallback, file order preserved (was func_02018ed4, main, 2026-11-16)"
+MBi_ParentCallback:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with SRA mb.s MBi_ParentCallback, file order preserved (was func_020197bc, main, 2026-11-16)"
+MBi_IsSendEnabled:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with SRA mb.s MBi_IsSendEnabled, file order preserved (was func_0201a088, main, 2026-11-16)"
+MBi_TryLoadCache:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with SRA mb.s MBi_TryLoadCache, file order preserved (was func_0201a16c, main, 2026-11-16)"
+MBi_AttachCacheBuffer:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with SRA mb.s MBi_AttachCacheBuffer, file order preserved (was func_0201a20c, main, 2026-11-16)"
+MBi_EndTaskThread:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.85 with SRA mb.s MBi_EndTaskThread, file order preserved (was func_0201a294, main, 2026-11-16)"
+MBi_SetTask:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.82 with SRA mb.s MBi_SetTask, file order preserved (was func_0201a2e8, main, 2026-11-16)"
+MBi_IsTaskAvailable:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with SRA mb.s MBi_IsTaskAvailable, file order preserved (was func_0201a4a4, main, 2026-11-16)"
+MBi_TaskThread:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with SRA mb.s MBi_TaskThread, file order preserved (was func_0201a548, main, 2026-11-16)"
+MBi_SetRecvBufferFromChild:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with SRA mb.s MBi_SetRecvBufferFromChild, file order preserved (was func_0201a770, main, 2026-11-16)"
+MBi_MakeParentSendBuffer:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with SRA mb.s MBi_MakeParentSendBuffer, file order preserved (was func_0201a8ac, main, 2026-11-16)"
+MBi_ClearParentPieceBuffer:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with SRA mb.s MBi_ClearParentPieceBuffer, file order preserved (was func_0201a934, main, 2026-11-16)"
+CTRDG_TerminateForPulledOut:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond CTRDG_proc.s CTRDG_TerminateForPulledOut, file order preserved (was func_0201acc0, main, 2026-11-16)"
+CTRDGi_CallbackForInitModuleInfo:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond CTRDG_proc.s CTRDGi_CallbackForInitModuleInfo, file order preserved (was func_0201ad40, main, 2026-11-16)"
+NNS_FndFreeToExpHeap:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with pokediamond NNS_FND_expheap_s.s NNS_FndFreeToExpHeap, file order preserved (was func_02020990, main, 2026-11-16)"
+NNS_FndFreeToFrmHeap:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_FND_frameheap.s NNS_FndFreeToFrmHeap, file order preserved (was func_02020ff0, main, 2026-11-16)"
+NNS_FndAllocFromFrmHeapEx:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.94 with pokediamond NNS_FND_frameheap.s NNS_FndAllocFromFrmHeapEx, file order preserved (was func_02021030, main, 2026-11-16)"
+NNS_FndCreateFrmHeapEx:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.94 with pokediamond NNS_FND_frameheap.s NNS_FndCreateFrmHeapEx, file order preserved (was func_02021084, main, 2026-11-16)"
+FreeTail:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_FND_frameheap.s FreeTail, file order preserved (was func_020210d0, main, 2026-11-16)"
+FreeHead:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_FND_frameheap.s FreeHead, file order preserved (was func_02021100, main, 2026-11-16)"
+InitFrameHeap:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_FND_frameheap.s InitFrameHeap, file order preserved (was func_02021214, main, 2026-11-16)"
+NNS_G3dDraw1Mat1Shp:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_G3D_1mat1shp.s NNS_G3dDraw1Mat1Shp, file order preserved (was func_02025054, main, 2026-11-16)"
+NNSi_G3dAnmBlendJnt:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_G3D_anm.s NNSi_G3dAnmBlendJnt, file order preserved (was func_0202269c, main, 2026-11-16)"
+blendScaleVec_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.82 with pokediamond NNS_G3D_anm.s blendScaleVec_, file order preserved (was func_020229a0, main, 2026-11-16)"
+NNSi_G3dAnmBlendMat:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_G3D_anm.s NNSi_G3dAnmBlendMat, file order preserved (was func_02022a10, main, 2026-11-16)"
+NNSi_G3dSendJointSRTBasic:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_G3D_basic.s NNSi_G3dSendJointSRTBasic, file order preserved (was func_02028528, main, 2026-11-16)"
+NNS_G3dGlbMaterialColorSpecEmi:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_G3D_glbstate.s NNS_G3dGlbMaterialColorSpecEmi, file order preserved (was func_02022228, main, 2026-11-16)"
+NNS_G3dGlbMaterialColorDiffAmb:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_G3D_glbstate.s NNS_G3dGlbMaterialColorDiffAmb, file order preserved (was func_0202224c, main, 2026-11-16)"
+NNS_G3dGlbFlushP:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with pokediamond NNS_G3D_glbstate.s NNS_G3dGlbFlushP, file order preserved (was func_0202247c, main, 2026-11-16)"
+NNS_G3dReleaseMdlSet:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond NNS_G3D_kernel.s NNS_G3dReleaseMdlSet, file order preserved (was func_020214f0, main, 2026-11-16)"
+NNS_G3dBindMdlSet:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.95 with pokediamond NNS_G3D_kernel.s NNS_G3dBindMdlSet, file order preserved (was func_0202155c, main, 2026-11-16)"
+NNS_G3dReleaseMdlPltt:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_G3D_kernel.s NNS_G3dReleaseMdlPltt, file order preserved (was func_020215dc, main, 2026-11-16)"
+NNS_G3dBindMdlPltt:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with pokediamond NNS_G3D_kernel.s NNS_G3dBindMdlPltt, file order preserved (was func_02021634, main, 2026-11-16)"
+NNS_G3dReleaseMdlTex:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond NNS_G3D_kernel.s NNS_G3dReleaseMdlTex, file order preserved (was func_0202177c, main, 2026-11-16)"
+NNS_G3dBindMdlTex:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with pokediamond NNS_G3D_kernel.s NNS_G3dBindMdlTex, file order preserved (was func_020217e4, main, 2026-11-16)"
+releaseMdlTex_Internal_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_G3D_kernel.s releaseMdlTex_Internal_, file order preserved (was func_0202189c, main, 2026-11-16)"
+NNS_G3dPlttReleasePlttKey:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_G3D_kernel.s NNS_G3dPlttReleasePlttKey, file order preserved (was func_02021a44, main, 2026-11-16)"
+NNS_G3dPlttLoad:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_G3D_kernel.s NNS_G3dPlttLoad, file order preserved (was func_02021a64, main, 2026-11-16)"
+NNS_G3dTexReleaseTexKey:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_G3D_kernel.s NNS_G3dTexReleaseTexKey, file order preserved (was func_02021ae4, main, 2026-11-16)"
+NNS_G3dTexLoad:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.81 with pokediamond NNS_G3D_kernel.s NNS_G3dTexLoad and same position in file order between aligned neighbours (was func_02021b1c, main, 2026-11-16)"
+NNS_G3dTexSetTexKey:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_G3D_kernel.s NNS_G3dTexSetTexKey, file order preserved (was func_02021bf8, main, 2026-11-16)"
+NNS_G3dRenderObjRemoveAnmObj:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_G3D_kernel.s NNS_G3dRenderObjRemoveAnmObj, file order preserved (was func_02021c4c, main, 2026-11-16)"
+removeLink_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_G3D_kernel.s removeLink_, file order preserved (was func_02021cb4, main, 2026-11-16)"
+NNS_G3dRenderObjAddAnmObj:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond NNS_G3D_kernel.s NNS_G3dRenderObjAddAnmObj, file order preserved (was func_02021d28, main, 2026-11-16)"
+addLink_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_G3D_kernel.s addLink_, file order preserved (was func_02021e3c, main, 2026-11-16)"
+NNS_G3dAnmObjCalcSizeRequired:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.85 with pokediamond NNS_G3D_kernel.s NNS_G3dAnmObjCalcSizeRequired, file order preserved (was func_0202200c, main, 2026-11-16)"
+NNSi_G3dSendJointSRTMaya:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_G3D_maya.s NNSi_G3dSendJointSRTMaya, file order preserved (was func_02028d20, main, 2026-11-16)"
+NNS_G3dAllocAnmObj:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.95 with pokediamond NNS_G3D_mem.s NNS_G3dAllocAnmObj, file order preserved (was func_02025b44, main, 2026-11-16)"
+NNS_G3dMdlSetMdlAlpha:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with pokediamond NNS_G3D_model.s NNS_G3dMdlSetMdlAlpha, file order preserved (was func_02025c8c, main, 2026-11-16)"
+NNS_G3dMdlSetMdlEmi:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_G3D_model.s NNS_G3dMdlSetMdlEmi, file order preserved (was func_02025cd4, main, 2026-11-16)"
+NNS_G3dMdlSetMdlAmb:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_G3D_model.s NNS_G3dMdlSetMdlAmb, file order preserved (was func_02025d1c, main, 2026-11-16)"
+NNS_G3dMdlSetMdlDiff:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.97 with pokediamond NNS_G3D_model.s NNS_G3dMdlSetMdlDiff, file order preserved (was func_02025d64, main, 2026-11-16)"
+NNSi_G3dModifyPolygonAttrMask:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_G3D_model.s NNSi_G3dModifyPolygonAttrMask, file order preserved (was func_02025dac, main, 2026-11-16)"
+getRotDataEx_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.87 with pokediamond NNS_G3D_nsbca.s getRotDataEx_, file order preserved (was func_0202644c, main, 2026-11-16)"
+getRotData_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_G3D_nsbca.s getRotData_, file order preserved (was func_02026798, main, 2026-11-16)"
+getJntSRTAnmResult_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.92 with pokediamond NNS_G3D_nsbca.s getJntSRTAnmResult_, file order preserved (was func_02027290, main, 2026-11-16)"
+getMdlRot_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.80 with pokediamond NNS_G3D_nsbca.s getMdlRot_ and same position in file order between aligned neighbours (was func_02027678, main, 2026-11-16)"
+getMdlScale_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_G3D_nsbca.s getMdlScale_, file order preserved (was func_020277d8, main, 2026-11-16)"
+getMdlTrans_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_G3D_nsbca.s getMdlTrans_, file order preserved (was func_02027840, main, 2026-11-16)"
+NNSi_G3dAnmCalcNsBca:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_G3D_nsbca.s NNSi_G3dAnmCalcNsBca, file order preserved (was func_020278a8, main, 2026-11-16)"
+NNSi_G3dAnmCalcNsBma:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.91 with pokediamond NNS_G3D_nsbma.s NNSi_G3dAnmCalcNsBma, file order preserved (was func_0202798c, main, 2026-11-16)"
+GetTexSRTAnm_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_G3D_nsbta.s GetTexSRTAnm_, file order preserved (was func_02027ec8, main, 2026-11-16)"
+NNSi_G3dAnmCalcNsBtp:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.82 with pokediamond NNS_G3D_nsbtp.s NNSi_G3dAnmCalcNsBtp, file order preserved (was func_020281d0, main, 2026-11-16)"
+NNSi_G3dAnmObjInitNsBva:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with pokediamond NNS_G3D_nsbva.s NNSi_G3dAnmObjInitNsBva, file order preserved (was func_020284a0, main, 2026-11-16)"
+NNS_G3dGetTex:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.87 with pokediamond NNS_G3D_res_struct_acce.s NNS_G3dGetTex, file order preserved (was func_02025e8c, main, 2026-11-16)"
+NNS_G3dGetMdlSet:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_G3D_res_struct_acce.s NNS_G3dGetMdlSet, file order preserved (was func_02025ecc, main, 2026-11-16)"
+NNS_G3dGetResDictIdxByName:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_G3D_res_struct_acce.s NNS_G3dGetResDictIdxByName, file order preserved (was func_02025edc, main, 2026-11-16)"
+NNS_G3dGetResDataByName:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_G3D_res_struct_acce.s NNS_G3dGetResDataByName, file order preserved (was func_0202603c, main, 2026-11-16)"
+NNSi_G3dGetTexPatAnmDataByIdx:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_G3D_res_struct_acce.s NNSi_G3dGetTexPatAnmDataByIdx, file order preserved (was func_020261b8, main, 2026-11-16)"
+NNSi_G3dGetTexPatAnmFV:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.89 with pokediamond NNS_G3D_res_struct_acce.s NNSi_G3dGetTexPatAnmFV, file order preserved (was func_020261d4, main, 2026-11-16)"
+NNSi_G3dGetTexPatAnmPlttNameByIdx:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_G3D_res_struct_acce.s NNSi_G3dGetTexPatAnmPlttNameByIdx, file order preserved (was func_02026254, main, 2026-11-16)"
+NNSi_G3dGetTexPatAnmTexNameByIdx:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 1.00 with pokediamond NNS_G3D_res_struct_acce.s NNSi_G3dGetTexPatAnmTexNameByIdx, file order preserved (was func_02026264, main, 2026-11-16)"
+NNS_G3dGetAnmByIdx:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_G3D_res_struct_acce.s NNS_G3dGetAnmByIdx, file order preserved (was func_02026274, main, 2026-11-16)"
+NNSi_G3dFuncSbc_ENVMAP:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_ENVMAP, file order preserved (was func_02022e00, main, 2026-11-16)"
+NNSi_G3dFuncSbc_POSSCALE:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.83 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_POSSCALE, file order preserved (was func_02023124, main, 2026-11-16)"
+NNSi_G3dFuncSbc_CALLDL:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.90 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_CALLDL, file order preserved (was func_02023190, main, 2026-11-16)"
+NNSi_G3dFuncSbc_NODEDESC:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_NODEDESC, file order preserved (was func_02023fb8, main, 2026-11-16)"
+NNSi_G3dFuncSbc_SHP:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_SHP, file order preserved (was func_02024400, main, 2026-11-16)"
+NNSi_G3dFuncSbc_SHP_InternalDefault:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.93 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_SHP_InternalDefault, file order preserved (was func_02024478, main, 2026-11-16)"
+NNSi_G3dFuncSbc_MAT:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_MAT, file order preserved (was func_02024554, main, 2026-11-16)"
+NNSi_G3dFuncSbc_MAT_InternalDefault:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.87 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_MAT_InternalDefault, file order preserved (was func_020245d8, main, 2026-11-16)"
+NNSi_G3dFuncSbc_MTX:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_MTX, file order preserved (was func_02024a40, main, 2026-11-16)"
+NNSi_G3dFuncSbc_NODE:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_NODE, file order preserved (was func_02024b18, main, 2026-11-16)"
+NNSi_G3dFuncSbc_RET:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.95 with pokediamond NNS_G3D_sbc.s NNSi_G3dFuncSbc_RET, file order preserved (was func_02024ca4, main, 2026-11-16)"
+G3dDrawInternal_:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.86 with pokediamond NNS_G3D_sbc.s G3dDrawInternal_, file order preserved (was func_02024e70, main, 2026-11-16)"
+NNSi_G3dSendTexSRTSi3d:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.85 with pokediamond NNS_G3D_si3d.s NNSi_G3dSendTexSRTSi3d, file order preserved (was func_02028dfc, main, 2026-11-16)"
+NNSi_G3dSendJointSRTSi3d:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.88 with pokediamond NNS_G3D_si3d.s NNSi_G3dSendJointSRTSi3d, file order preserved (was func_020291fc, main, 2026-11-16)"
+NNS_G3dWorldPosToScrPos:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.85 with pokediamond NNS_G3D_util.s NNS_G3dWorldPosToScrPos, file order preserved (was func_020254d4, main, 2026-11-16)"
+NNS_G3dResDefaultSetup:
+  confidence: tentative
+  evidence: "strong E4: instruction-structure match 0.84 with pokediamond NNS_G3D_util.s NNS_G3dResDefaultSetup, file order preserved (was func_020257f8, main, 2026-11-16)"
+NNS_G3dAnmObjInitFuncArray:
+  confidence: tentative
+  evidence: "strong E8: 5 entries {tag 'M\\0AM', InitNsBma}, {'M\\0PT', InitNsBtp}, {'M\\0AT', InitNsBta}, {'V\\0AV', InitNsBva}, {'J\\0AC', InitNsBca} with the same layout as pokediamond NNS_G3D_anm.s NNS_G3dAnmObjInitFuncArray (was data_02077ae8, main, 2026-11-16)"
+NNS_G3dSendJointSRT_FuncArray:
+  confidence: tentative
+  evidence: "strong E8: 3 code pointers {SendJointSRTBasic 0x02028528, Maya 0x02028d20, Si3d 0x020291fc} = pokediamond NNS_G3D_cgtool.s NNS_G3dSendJointSRT_FuncArray (was data_02077b38, main, 2026-11-16)"
+NNS_G3dGetJointScale_FuncArray:
+  confidence: tentative
+  evidence: "strong E8: 3 code pointers {GetJointScaleBasic, Maya, Si3d} immediately after NNS_G3dSendJointSRT_FuncArray = pokediamond NNS_G3dGetJointScale_FuncArray (was data_02077b44, main, 2026-11-16)"
+NNS_G3dSendTexSRT_FuncArray:
+  confidence: tentative
+  evidence: "strong E8: 4 code pointers {SendTexSRTMaya, Si3d, 3dsMax, Xsi} = pokediamond NNS_G3dSendTexSRT_FuncArray (was data_02077b50, main, 2026-11-16)"
+NNS_G3dFuncSbcTable:
+  confidence: tentative
+  evidence: "strong E8: 14 sbc opcode handlers NOP, RET, NODE, MTX, MAT, SHP, NODEDESC, BB, BBY, NODEMIX, CALLDL, POSSCALE, ENVMAP, PRJMAP in pokediamond NNS_G3D_sbc.s order; indexed by G3dDrawInternal_Loop_ (was data_02077c60, main, 2026-11-16)"
+NNS_G3dGlb:
+  confidence: tentative
+  evidence: "strong E7,E8: global G3D state used by every NNS_G3dGlb* function (literal in NNS_G3dGlbFlushP/PolygonAttr/MaterialColor*), initialised by NNS_G3dGlbInit with pokediamond's constants (was data_02084d38, main, 2026-11-16)"
+PMi_PreSleepCallbackList:
+  confidence: tentative
+  evidence: "strong E7: list head passed to PMi_DeleteList/PMi_PrependList by the pre-sleep wrappers and executed first in PM_GoSleepMode = SDK PMi_PreSleepCallbackList (was data_0207f090, main, 2026-11-16)"
+PMi_PostSleepCallbackList:
+  confidence: tentative
+  evidence: "strong E7: list head executed after wake-up in PM_GoSleepMode and used by the post-sleep wrappers = SDK PMi_PostSleepCallbackList (was data_0207f098, main, 2026-11-16)"
+CARDi_EnableFlag:
+  confidence: tentative
+  evidence: "strong E7: flag written by CARD_Enable and read by CARD_IsEnabled/CARD_CheckEnabled = pokediamond CARD_common.c CARDi_EnableFlag (was data_0207f108, main, 2026-11-16)"
+OSi_UnLockCartridgeAlias:
+  confidence: tentative
+  evidence: "strong E4: NitroSDK alias OS_UnLockCartridge (12-byte branch to OS_UnlockCartridge); suffixed because names differing only in case collide as object files under wibo/mwld (was OS_UnLockCartridge, main, 2026-11-16)"

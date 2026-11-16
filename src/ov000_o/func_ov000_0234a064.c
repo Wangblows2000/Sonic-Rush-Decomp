@@ -50,8 +50,8 @@ extern s16 data_0206e470[];
 
 void func_ov000_0234c644(UnkStruct_0234a064 *w);
 BOOL func_020693d4(u8 a);
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 
 void func_ov000_0234a064(UnkStruct_0234a064 *w, u8 ang) {
     s32 a;
@@ -110,6 +110,6 @@ void func_ov000_0234a064(UnkStruct_0234a064 *w, u8 ang) {
         w->unk2 = 0;
     }
     w->unk3DA = 0;
-    func_0201c070(w->unk390, 0x20);
-    func_0201bf1c(w->unk390);
+    NNS_SndPlayerStopSeq(w->unk390, 0x20);
+    NNS_SndHandleReleaseSeq(w->unk390);
 }

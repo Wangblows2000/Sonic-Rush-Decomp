@@ -23,7 +23,7 @@ extern UnkStruct_022df950_q data_ov001_023161e4;
 
 void func_02022270(s32 a, u16 b);
 void func_02022284(s32 i, s32 r, s32 g, s32 b);
-void func_02004084(u16 *p);
+void G3X_SetEdgeColorTable(u16 *p);
 
 void func_ov001_022df950(UnkStruct_022df950 *s) {
     u16 *col;
@@ -50,6 +50,6 @@ void func_ov001_022df950(UnkStruct_022df950 *s) {
         UnkStruct_022df950_p *src = data_ov001_023161e4.v;
         d[0] = src[0];
         d[1] = src[1];
-        func_02004084(edge);
+        G3X_SetEdgeColorTable(edge);
     }
 }

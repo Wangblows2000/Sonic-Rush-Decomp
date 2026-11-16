@@ -97,7 +97,7 @@ typedef struct UnkStruct_022d3070_p {
 
 extern UnkStruct_022d3070_p *gPlayers;
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void func_ov000_022d2920(UnkStruct_022d3070 *s, s32 mode);
 void func_ov000_022d2f4c(UnkStruct_022d3070 *s);
 
@@ -126,11 +126,11 @@ void func_ov000_022d3070(UnkStruct_022d3070 *s) {
     if (s->unk1460 >= 0)
         a = b;
     if (s->unk1460 < 0) {
-        s->unk145C = -func_02002094(a, 10);
+        s->unk145C = -FX_DivS32(a, 10);
         if (s->unk145C < s->unk1464)
             s->unk145C = s->unk1464;
     } else {
-        s->unk145C = func_02002094(a, 10);
+        s->unk145C = FX_DivS32(a, 10);
         if (s->unk145C > s->unk1464)
             s->unk145C = s->unk1464;
     }

@@ -2,14 +2,14 @@
 
 extern u8 *data_ov001_0231f6a4;
 extern void *gMainHeap;
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 
 void func_ov001_02314de8(void) {
     u8 *blk = data_ov001_0231f6a4;
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
         size = *(u32 *)blk;

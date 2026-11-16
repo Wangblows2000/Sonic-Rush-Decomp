@@ -41,7 +41,7 @@ void func_ov000_0232d620(void) {
     if (data_ov000_0236a988 != NULL)
         Task_Destroy(data_ov000_0236a988);
     task = Task_Create(StageObj_Main, func_ov000_0232d5e4, 0, 0xa00, 4, sizeof(UnkStruct_0232d620));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     data_ov000_0236a988 = task;
     w = task->work;

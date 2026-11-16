@@ -9,10 +9,10 @@ extern u32 data_02072a3c;
 extern u32 data_02072a4c;
 extern u32 data_02083f4c;
 extern u32 data_02083f5c;
-extern void func_02006628(void);
-extern void func_02006698(void);
-extern void func_0200b930(void);
-extern void func_0200b99c(void);
+extern void OS_UnlockMutex(void);
+extern void OS_LockMutex(void);
+extern void FS_SeekFile(void);
+extern void FS_ReadFile(void);
 extern void func_0201f5b8(void);
 
 asm void func_0201ed04(void)
@@ -244,7 +244,7 @@ _31c:
     cmp r0, #2
     bne _36c
     ldr r0, [pc, #0x540]
-    bl func_02006698
+    bl OS_LockMutex
     ldr r0, [pc, #0x53c]
     ldr r9, [r0]
 _36c:
@@ -255,12 +255,12 @@ _36c:
     mla r1, r3, r2, r1
     ldr r2, [sp, #0x4c]
     add r0, r0, #0x5c
-    bl func_0200b930
+    bl FS_SeekFile
     ldr r0, [sp, #0x78]
     ldr r2, [sp, #0x2c]
     mov r1, r9
     add r0, r0, #0x5c
-    bl func_0200b99c
+    bl FS_ReadFile
     ldr r1, [sp, #0x2c]
     cmp r0, r1
     beq _3e8
@@ -277,7 +277,7 @@ _36c:
     cmp r0, #2
     bne _744
     ldr r0, [pc, #0x4c0]
-    bl func_02006628
+    bl OS_UnlockMutex
     b _744
 _3e8:
     ldr r0, [sp, #0x78]
@@ -483,7 +483,7 @@ _6bc:
     strh r1, [r5]
 _6d0:
     ldr r0, [pc, #0x1cc]
-    bl func_02006628
+    bl OS_UnlockMutex
     b _720
 _6dc:
     ldr r0, [sp, #0x78]

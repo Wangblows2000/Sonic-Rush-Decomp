@@ -65,7 +65,7 @@ typedef struct UnkStruct_022d0d64_7 {
 extern UnkStruct_022d0d64_7 data_ov000_02369ac0;
 
 s32 func_0200225c(s32 a, s32 b);
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_ov000_022d0c30(UnkStruct_022d0d64 *s);
 
@@ -78,12 +78,12 @@ void func_ov000_022d0d64(UnkStruct_022d0d64 *s) {
     v = s->unk1464;
     s->func = func_ov000_022d0c30;
     y = &s->unkBD4;
-    y->unk114 = func_02002094(data_ov000_02369ac0.unk8 * 0x1666 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0x3000, data_ov000_02369ac0.unkA);
+    y->unk114 = FX_DivS32(data_ov000_02369ac0.unk8 * 0x1666 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 0x3000, data_ov000_02369ac0.unkA);
     if (v < 0)
         v = 0;
-    s->unk12F4 = func_02002094(v * 300, 0x51a326);
-    if (300 - (func_02002094(data_ov000_02369ac0.unk8 * 8 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 4, data_ov000_02369ac0.unkA) + (*y->unkE4 >> 12)) < s->unk12F4)
-        s->unk12F4 = 300 - (func_02002094(data_ov000_02369ac0.unk8 * 8 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 4, data_ov000_02369ac0.unkA) + (*y->unkE4 >> 12));
+    s->unk12F4 = FX_DivS32(v * 300, 0x51a326);
+    if (300 - (FX_DivS32(data_ov000_02369ac0.unk8 * 8 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 4, data_ov000_02369ac0.unkA) + (*y->unkE4 >> 12)) < s->unk12F4)
+        s->unk12F4 = 300 - (FX_DivS32(data_ov000_02369ac0.unk8 * 8 + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * 4, data_ov000_02369ac0.unkA) + (*y->unkE4 >> 12));
     s->unk12F4 = func_0200225c(s->unk12F4, y->unk114);
     func_020366f4(0, 0, 0xd2);
 }

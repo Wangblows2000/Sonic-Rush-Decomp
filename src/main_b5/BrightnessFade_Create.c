@@ -18,7 +18,7 @@ extern u32 gSystemFlags;
 extern UnkTask_02043c7c *gBrightnessFadeTask;
 
 UnkTask_02043c7c *Task_Create(void (*fn)(void), void (*fn2)(void), s32 a, s32 b, s32 c, s32 size);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void BrightnessFade_Apply(UnkWork_02043c7c *w);
 void BrightnessFade_Main(void);
@@ -42,7 +42,7 @@ UnkWork_02043c7c *BrightnessFade_Create(u16 flags, u16 v) {
     } else {
         vu16 z;
         t = Task_Create(BrightnessFade_Main, BrightnessFade_Destructor, grp, 0x3e00, 3, 8);
-        if (t == (UnkTask_02043c7c *)func_02006abc(0))
+        if (t == (UnkTask_02043c7c *)OS_GetArenaLo(0))
             return NULL;
         gBrightnessFadeTask = t;
         w = t->work;

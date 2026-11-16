@@ -14,7 +14,7 @@ extern void *data_ov000_0236ac1c;
 extern void *gMainHeap;
 
 void *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(u32 arg);
+void *OS_GetArenaLo(u32 arg);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void DC_StoreRange(const void *addr, u32 size);
@@ -23,7 +23,7 @@ void func_ov000_02341358(void);
 static inline void *UnkDbgAlloc(u32 size, s32 align) {
     u32 sz = (size + 0x43) & ~0x1f;
     u8 *p = Heap_Alloc(gMainHeap, sz, align);
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, sz);
         *(u32 *)p = sz;

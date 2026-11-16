@@ -53,7 +53,7 @@ extern s16 data_0206e470[];
 #define COS_02350d3c(a) data_0206e470[(u32)((IDX_02350d3c(a) << 1) + 1)]
 
 s32 ObjSpd_UpSet(s32 v, s32 a, s32 max);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Math_RotateVec2S16(s16 *vx, s16 *vy, u8 a);
 void func_ov000_0232e48c(UnkStruct_02350d3c *w, s32 vx, s32 vy);
 void func_ov000_02346d30(UnkStruct_02350d3c *w);
@@ -98,7 +98,7 @@ void Player_State_Cannon(UnkStruct_02350d3c *w) {
     }
     vx = 0x38;
     vy = 0;
-    func_0201c070(w->unk388, 0);
+    NNS_SndPlayerStopSeq(w->unk388, 0);
     sx = 0xa00;
     if (w->unk3E8 != NULL) {
         w->unk1 = w->unk3E8->unk1;

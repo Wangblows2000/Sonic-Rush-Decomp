@@ -41,7 +41,7 @@ extern UnkStruct_0230d964_t data_ov001_02317228[];
 BOOL func_ov001_0230d150(void);
 void func_ov001_0230d17c(UnkStruct_0230d964_e *e);
 void func_ov001_02314398(void);
-void func_0200148c(UnkStruct_0230d964_m *m);
+void MTX_Identity43_(UnkStruct_0230d964_m *m);
 void Model_Animate(void *o);
 
 void func_ov001_0230d964(void) {
@@ -73,7 +73,7 @@ void func_ov001_0230d964(void) {
         if (!(e2->flags & 1))
             break;
     }
-    func_0200148c(&g->mtx);
+    MTX_Identity43_(&g->mtx);
     ((void (*)(void))data_ov001_02317228[e2->type].fn0)();
     m = g->mtx;
     for (e3 = g->head; e3 != (UnkStruct_0230d964_e *)g->sentinel; e3 = e3->next) {

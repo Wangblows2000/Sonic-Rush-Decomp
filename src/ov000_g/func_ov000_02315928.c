@@ -31,7 +31,7 @@ typedef struct {
 extern UnkStruct_02315928_Sys data_022c4560;
 extern void *gPlayers;
 
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Saucer_Explode(UnkStruct_02315928 *w);
 s16 ObjSpd_DownSet(s16 a, s32 b);
 s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
@@ -47,7 +47,7 @@ void func_ov000_02315928(UnkStruct_02315928 *w) {
     s16 max = 0x1c0;
 
     if (w->unk58 & 0xf) {
-        func_0201c070(w->unk1DC, 0);
+        NNS_SndPlayerStopSeq(w->unk1DC, 0);
         Saucer_Explode(w);
         return;
     }

@@ -32,7 +32,7 @@ typedef struct {
 } UnkStruct_0235ac1c_Task;
 
 UnkStruct_0235ac1c_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
-void *func_02006abc(u32 arg);
+void *OS_GetArenaLo(u32 arg);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 s32 VramTex_Alloc(u32 a, s32 b);
 s32 VramPltt_Alloc(u16 a, s32 b);
@@ -47,7 +47,7 @@ void func_ov000_0235ac1c(s32 a, s32 b, s32 c, UnkStruct_0235ac1c_Res *res) {
     vu16 zero;
 
     t = Task_Create(func_ov000_0235abd8, func_ov000_0235abc8, 0, 0x3000, 2, sizeof(UnkStruct_0235ac1c));
-    if (t == func_02006abc(0))
+    if (t == OS_GetArenaLo(0))
         return;
     w = t->work;
     zero = 0;

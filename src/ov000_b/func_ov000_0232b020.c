@@ -21,7 +21,7 @@ void func_ov000_0232b020(void) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, func_ov000_0232aff8, 0, 0xff, 4, sizeof(UnkStruct_0232b020));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     data_ov000_0236a97c = task;
     w = task->work;

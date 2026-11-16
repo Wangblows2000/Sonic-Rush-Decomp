@@ -29,8 +29,8 @@ extern UnkStruct_022ffeb0 *gExtraBossWork;
 extern u8 data_02074ba4[];
 
 UnkStruct_022ffeb0_g *ExtraBoss_GetWork(void);
-void func_0201c070(void *pp, s32 a);
-s32 func_0200203c(s32 n, s32 d);
+void NNS_SndPlayerStopSeq(void *pp, s32 a);
+s32 FX_ModS32(s32 n, s32 d);
 void func_ov001_022ff008(void);
 void func_ov001_022fef3c(void);
 void func_ov001_022feee4(void);
@@ -42,7 +42,7 @@ void func_ov001_0230582c(void);
 void func_ov001_023057f4(void);
 void func_ov001_022ee964(void);
 void func_ov001_02306424(void);
-void func_02004084(const void *src);
+void G3X_SetEdgeColorTable(const void *src);
 
 static inline BOOL IsMulti_022ffeb0(void) {
     if (ExtraBoss_GetWork()->unk40 > 1)
@@ -51,8 +51,8 @@ static inline BOOL IsMulti_022ffeb0(void) {
 }
 
 void func_ov001_022ffeb0(void) {
-    func_0201c070((u8 *)ExtraBoss_GetWork() + 0x33c, 0);
-    if (func_0200203c(gExtraBossWork->unk40, 2) != 0)
+    NNS_SndPlayerStopSeq((u8 *)ExtraBoss_GetWork() + 0x33c, 0);
+    if (FX_ModS32(gExtraBossWork->unk40, 2) != 0)
         *(vu16 *)0x4000304 &= ~0x8000;
     else
         *(vu16 *)0x4000304 |= 0x8000;
@@ -84,5 +84,5 @@ void func_ov001_022ffeb0(void) {
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & ~3) | 2;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1300;
     func_ov001_02306424();
-    func_02004084(data_02074ba4);
+    G3X_SetEdgeColorTable(data_02074ba4);
 }

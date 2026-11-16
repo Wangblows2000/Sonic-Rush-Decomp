@@ -4,7 +4,7 @@ extern UnkStruct_StageObj *gPlayers;
 
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void Sound_SetPositional(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
-void func_0201bde0(s32 a, s32 b, s32 c);
+void NNS_SndPlayerSetTrackPitch(s32 a, s32 b, s32 c);
 void EffFound_Create(UnkStruct_StageObj *w, s32 a, s32 b);
 void func_ov000_022fdf28(UnkStruct_StageObj *w);
 void func_ov000_022fdb9c(UnkStruct_StageObj *w);
@@ -30,7 +30,7 @@ void func_ov000_022fc894(UnkStruct_Coll *a, UnkStruct_Coll *b) {
         return;
     Sound_PlaySeqArcEx(w->unk1DC, 0, 0x79);
     Sound_SetPositional(w->unk1DC, w, gPlayers);
-    func_0201bde0(w->unk1DC, 0xffff, 0x400);
+    NNS_SndPlayerSetTrackPitch(w->unk1DC, 0xffff, 0x400);
     EffFound_Create(w, 0, -0x40);
     w->unk204 = o;
     if (w->unk10 > o->unk10)

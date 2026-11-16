@@ -38,7 +38,7 @@ extern UnkProg_02053998 gSaveData;
 extern UnkDisp_02053998 *gDisplayTable[];
 
 void func_02052e1c(UnkWork_02053998 *w);
-void func_02003d78(vu32 *p, u32 a, u32 b, u32 c, u32 d);
+void G2x_SetBlendAlpha_(vu32 *p, u32 a, u32 b, u32 c, u32 d);
 void func_02053b04(BOOL on);
 void func_02053014(void);
 void func_02052f4c(void);
@@ -72,7 +72,7 @@ void func_02053998(BOOL on) {
         w->fndc = func_02052f4c;
         b = 0;
     }
-    func_02003d78((vu32 *)0x04001050, 2, 4, a, b);
+    G2x_SetBlendAlpha_((vu32 *)0x04001050, 2, 4, a, b);
     gDisplayTable[1]->blendCnt = 0x442;
     gDisplayTable[1]->blendAlpha = a | (b << 8);
     w->unkfc = 0;

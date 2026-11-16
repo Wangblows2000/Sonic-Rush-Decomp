@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 extern u32 data_027e0004;
-void func_01ff8058(void);
+void OS_IrqHandler_ThreadSwitch(void);
 
 asm void OS_IrqHandler(void)
 {
@@ -24,7 +24,7 @@ asm void OS_IrqHandler(void)
     rsbs r0, r0, #0x1f
     ldr r1, =data_027e0004
     ldr r0, [r1, r0, lsl #2]
-    ldr lr, =func_01ff8058
+    ldr lr, =OS_IrqHandler_ThreadSwitch
     bx r0
 }
 

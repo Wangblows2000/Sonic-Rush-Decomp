@@ -22,25 +22,25 @@ extern s32 data_ov001_023171ec[];
 extern s32 data_ov001_02317208[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 s32 SpecialStage_GetStageIndex(void);
 u8 *File_Load(void *p, s32 v);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 u32 func_020380d8(void *p);
 void func_020380a0(void *src, void *dst);
 void Heap_Free(void *heap, void *p);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
-void *func_02026274(void *a, s32 b);
-void func_020221fc(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f);
-void func_02022228(u32 a, u32 b, BOOL c);
-void func_02025dac(void *p, s32 a, s32 b);
-void func_02025e1c(void *p, s32 a, s32 b);
+void *NNS_G3dGetAnmByIdx(void *a, s32 b);
+void NNS_G3dGlbPolygonAttr(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f);
+void NNS_G3dGlbMaterialColorSpecEmi(u32 a, u32 b, BOOL c);
+void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
+void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
 
 #define F32(o) (*(s32 *)(sl + (o)))
 #define FP(o) (*(void **)(sl + (o)))
@@ -68,7 +68,7 @@ void SpecialStage_LoadMapModels(void) {
     s32 i;
 
     blk = Heap_Alloc(gMainHeap, 0xb00, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, 0xb00);
         *(u32 *)blk = 0xb00;
@@ -80,7 +80,7 @@ void SpecialStage_LoadMapModels(void) {
     MI_CpuFill8(blk, 0, 0xac8);
     sl = data_ov001_0231f654;
     blk = Heap_Alloc(gMainHeap, 0x240, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill2 = 0xcccccccc;
         MIi_CpuClear32(fill2, blk, 0x240);
         *(u32 *)blk = 0x240;
@@ -90,7 +90,7 @@ void SpecialStage_LoadMapModels(void) {
     }
     FP(0xa40) = blk;
     blk = Heap_Alloc(gMainHeap, 0x60, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill3 = 0xcccccccc;
         MIi_CpuClear32(fill3, blk, 0x60);
         *(u32 *)blk = 0x60;
@@ -105,13 +105,13 @@ void SpecialStage_LoadMapModels(void) {
     F32(0) = 0;
     F32(4) = 0;
     F32(0xa10) = 1;
-    func_02000dfc(sl + 0xa14);
+    MTX_Identity33_(sl + 0xa14);
     for (j = 0; j < 4; j++) {
         res = File_Load(gSpecialStageMapModelList[SpecialStage_GetStageIndex()][j], -1);
-        func_020257f8(res);
+        NNS_G3dResDefaultSetup(res);
         sz = (func_020380d8(res) + 0x43) & ~0x1f;
         blk = Heap_Alloc(gMainHeap, sz, 0x20);
-        if ((u8 *)func_02006abc(0) != blk) {
+        if ((u8 *)OS_GetArenaLo(0) != blk) {
             fill4 = 0xcccccccc;
             MIi_CpuClear32(fill4, blk, sz);
             *(u32 *)blk = sz;
@@ -121,7 +121,7 @@ void SpecialStage_LoadMapModels(void) {
         }
         ((void **)(sl + 0x9fc))[j] = blk;
         func_020380a0(res, ((void **)(sl + 0x9fc))[j]);
-        if ((u8 *)func_02006abc(0) != res) {
+        if ((u8 *)OS_GetArenaLo(0) != res) {
             res -= 0x20;
             sz = *(u32 *)res;
             if (*(u32 *)(res + sz - 4) == 0x02467531) {
@@ -143,13 +143,13 @@ void SpecialStage_LoadMapModels(void) {
         e->unk46 = 4;
         e->unk47 = 2;
         e->unk44 = 0x1e;
-        m = func_02026274(((void **)(sl + 0x9fc))[idx], sub);
-        func_020221fc(0, 0, 3, 0, 0x1f, 0x8000);
-        func_02022228(0, 0x7fff, 0);
-        func_02025dac(m, 0, 0xf);
-        func_02025e1c(m, 0, 0x400);
-        func_02025dac(m, 0, 0xc0);
-        func_02025dac(m, 0, 0x8000);
+        m = NNS_G3dGetAnmByIdx(((void **)(sl + 0x9fc))[idx], sub);
+        NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0x1f, 0x8000);
+        NNS_G3dGlbMaterialColorSpecEmi(0, 0x7fff, 0);
+        NNSi_G3dModifyPolygonAttrMask(m, 0, 0xf);
+        NNSi_G3dModifyMatFlag(m, 0, 0x400);
+        NNSi_G3dModifyPolygonAttrMask(m, 0, 0xc0);
+        NNSi_G3dModifyPolygonAttrMask(m, 0, 0x8000);
         an++;
         e++;
     }
@@ -163,12 +163,12 @@ void SpecialStage_LoadMapModels(void) {
     F8(0x8ce) = 0x13;
     F8(0x8cf) = 3;
     F8(0x8d0) = 0;
-    m = func_02026274(FP(0xa08), 0);
-    func_020221fc(0, 0, 3, 0, 0x1f, 0x8000);
-    func_02022228(0, 0x7fff, 0);
-    func_02025dac(m, 0, 0xf);
-    func_02025e1c(m, 0, 0x400);
-    func_02025dac(m, 0, 0x8000);
+    m = NNS_G3dGetAnmByIdx(FP(0xa08), 0);
+    NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0x1f, 0x8000);
+    NNS_G3dGlbMaterialColorSpecEmi(0, 0x7fff, 0);
+    NNSi_G3dModifyPolygonAttrMask(m, 0, 0xf);
+    NNSi_G3dModifyMatFlag(m, 0, 0x400);
+    NNSi_G3dModifyPolygonAttrMask(m, 0, 0x8000);
     F16(0xa38) = 8;
     F16(0xa3a) = 0;
     F16(0xa3c) = 0;

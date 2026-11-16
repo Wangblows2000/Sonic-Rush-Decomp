@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-u32 func_02002094(u32 a, u32 b);
+u32 FX_DivS32(u32 a, u32 b);
 
 void func_ov000_02336f28(u32 *out, u32 v, u32 n) {
     s16 sh = 0;
@@ -17,18 +17,18 @@ void func_ov000_02336f28(u32 *out, u32 v, u32 n) {
     }
     *out = 0;
     if (n >= 100) {
-        n = func_02002094(n, 10);
+        n = FX_DivS32(n, 10);
         sh = 0;
         for (;;) {
             if (v >= n) {
-                q = func_02002094(v, n);
+                q = FX_DivS32(v, n);
                 *out |= q << sh;
                 v -= q * n;
             }
             sh += 4;
             if (n <= 10)
                 break;
-            n = func_02002094(n, 10);
+            n = FX_DivS32(n, 10);
         }
     }
     *out |= v << sh;

@@ -23,8 +23,8 @@ typedef struct {
 
 extern void *data_ov000_02369b5c[];
 
-UnkStruct_Res *func_02025ecc(void *a);
-void func_02025b6c(void *a, s32 b);
+UnkStruct_Res *NNS_G3dGetMdlSet(void *a);
+void NNS_G3dMdlSetMdlAlphaAll(void *a, s32 b);
 
 void func_ov000_022e1f88(UnkStruct_Boss *w) {
     u16 i = w->unkD5C;
@@ -48,7 +48,7 @@ void func_ov000_022e1f88(UnkStruct_Boss *w) {
         d = -d;
     d = 0x1eef88 - d;
     if (d < 0x10df4c) {
-        r = func_02025ecc(data_ov000_02369b5c[i]);
-        func_02025b6c((u8 *)r + *(s32 *)((u8 *)r + r->unkE + 0xC), ((d * 0x1f / 0x10df4c) & 0x1f) * 6 / 10);
+        r = NNS_G3dGetMdlSet(data_ov000_02369b5c[i]);
+        NNS_G3dMdlSetMdlAlphaAll((u8 *)r + *(s32 *)((u8 *)r + r->unkE + 0xC), ((d * 0x1f / 0x10df4c) & 0x1f) * 6 / 10);
     }
 }

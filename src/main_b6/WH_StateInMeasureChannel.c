@@ -1,13 +1,13 @@
 #include <nitro/types.h>
 
-u32 func_020111e4(void);
+u32 WM_GetAllowedChannel(void);
 void WH_SetError(s32 v);
 void WH_ChangeSysState(s32 a);
 u32 MeasureChannel(void (*cb)(void), u16 ch);
 void WH_StateOutMeasureChannel(void);
 
 u16 WH_StateInMeasureChannel(u16 ch) {
-    u32 m = func_020111e4();
+    u32 m = WM_GetAllowedChannel();
 
     if (m == 0x8000) {
         WH_SetError(3);

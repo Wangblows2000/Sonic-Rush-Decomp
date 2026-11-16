@@ -45,12 +45,12 @@ static inline u16 Rand(void) {
 }
 
 UnkTask_022df5f0 *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
-UnkTask_022df5f0 *func_02006abc(s32 i);
+UnkTask_022df5f0 *OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void TransformDemoEffect_Main(void);
 void Model_Init(UnkObj_022df5f0 *o, s32 a);
 void Model_SetResource(UnkObj_022df5f0 *o, void *res, s32 a);
-void *func_02025e8c(void *res);
+void *NNS_G3dGetTex(void *res);
 void Model_SetAnimation(UnkObj_022df5f0 *o, u32 slot, void *res, u32 idx, void *tex);
 
 void TransformDemo_SpawnEffect(UnkStruct_022df5f0 *w) {
@@ -63,7 +63,7 @@ void TransformDemo_SpawnEffect(UnkStruct_022df5f0 *w) {
     u8 k;
 
     task = Task_Create(TransformDemoEffect_Main, 0, 0, 0x4000, 3, sizeof(UnkStruct_022df5f0_o));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return;
     o = task->work;
     {
@@ -88,7 +88,7 @@ void TransformDemo_SpawnEffect(UnkStruct_022df5f0 *w) {
     obj = &o->obj;
     Model_Init(obj, 0);
     Model_SetResource(obj, t->res[k], 0);
-    tex = func_02025e8c(t->res[k]);
+    tex = NNS_G3dGetTex(t->res[k]);
     for (j = 0; j < 5; j++) {
         if (j == 2 || j == 3) {
             if (tex != NULL) {

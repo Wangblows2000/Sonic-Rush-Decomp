@@ -8,7 +8,7 @@ extern u32 gMainHeap;
 extern u32 data_ov001_02316e94;
 extern u32 data_ov001_0231f320;
 extern u32 data_ov001_0231f324;
-extern void func_02006abc(void);
+extern void OS_GetArenaLo(void);
 extern void AnimatorSprite_ProcessAnimation(void);
 extern void AnimatorSprite_Init(void);
 extern void Heap_Alloc(void);
@@ -25,7 +25,7 @@ asm void func_ov001_022fdbc0(void)
     bl Heap_Alloc
     mov r4, r0
     mov r0, #0
-    bl func_02006abc
+    bl OS_GetArenaLo
     cmp r0, r4
     beq _64
     ldr r0, [pc, #0x244]

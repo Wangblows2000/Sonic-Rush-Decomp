@@ -17,7 +17,7 @@ extern UnkTask_02042810 *data_022c4364;
 extern u8 data_022c43a0[];
 
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
-s32 func_02012f9c(void (*cb)(void), const void *data, u16 size, u32 a, u32 b, u8 c);
+s32 WM_SetGameInfo(void (*cb)(void), const void *data, u16 size, u32 a, u32 b, u8 c);
 BOOL func_02042760(UnkWork_02042810 *w);
 void func_02042324(void);
 
@@ -35,7 +35,7 @@ void func_02042810(void *src, u32 size, BOOL flag) {
     }
     if (flag)
         f |= 1;
-    if (func_02012f9c(func_02042324, data_022c43a0, w->unk20, 0x51, w->unk12, f) != 2)
+    if (WM_SetGameInfo(func_02042324, data_022c43a0, w->unk20, 0x51, w->unk12, f) != 2)
         return;
     while (func_02042760(w))
         ;

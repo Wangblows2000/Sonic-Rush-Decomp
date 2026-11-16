@@ -38,12 +38,12 @@ typedef struct {
 
 extern UnkCtx_0203bdcc data_022b8be0;
 extern char data_02078068[];
-void func_0200be70(UnkFSFile_0203bdcc *f);
-void *func_0200b828(const char *name, u32 len);
-BOOL func_0200bbec(UnkFSFile_0203bdcc *f, void *arc, u32 top, u32 bottom, s32 id);
-s32 func_0200b99c(void *f, void *buf, u32 size);
-BOOL func_0200b930(void *f, u32 pos, u32 whence);
-void func_0200bad8(UnkFSFile_0203bdcc *f);
+void FS_InitFile(UnkFSFile_0203bdcc *f);
+void *FS_FindArchive(const char *name, u32 len);
+BOOL FS_OpenFileDirect(UnkFSFile_0203bdcc *f, void *arc, u32 top, u32 bottom, s32 id);
+s32 FS_ReadFile(void *f, void *buf, u32 size);
+BOOL FS_SeekFile(void *f, u32 pos, u32 whence);
+void FS_CloseFile(UnkFSFile_0203bdcc *f);
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
 void DC_FlushRange(void *p, u32 size);
@@ -73,8 +73,8 @@ void func_0203bdcc(UnkFSFile_0203bdcc *src, BOOL arg) {
     merge = FALSE;
     if (!single && arg)
         merge = TRUE;
-    func_0200be70(&file);
-    func_0200bbec(&file, func_0200b828(data_02078068, 3), 0, 0x7fffffff, -1);
+    FS_InitFile(&file);
+    FS_OpenFileDirect(&file, FS_FindArchive(data_02078068, 3), 0, 0x7fffffff, -1);
     if (single) {
         base = 0;
         base0 = base;
@@ -85,8 +85,8 @@ void func_0203bdcc(UnkFSFile_0203bdcc *src, BOOL arg) {
         delta = src->pos - src->top;
         base = delta + src->top;
         base0 = base;
-        func_0200b99c(src, hdr, 0x60);
-        func_0200b930(src, delta, 0);
+        FS_ReadFile(src, hdr, 0x60);
+        FS_SeekFile(src, delta, 0);
     }
     if (!merge) {
         tab[0] = hdr->fat;
@@ -124,8 +124,8 @@ void func_0203bdcc(UnkFSFile_0203bdcc *src, BOOL arg) {
         ptrs[i] = p;
         q = ptrs[i];
         *q = tab[i].size;
-        func_0200b930(&file, base0 + tab[i].ofs, 0);
-        func_0200b99c(&file, q + 1, *q);
+        FS_SeekFile(&file, base0 + tab[i].ofs, 0);
+        FS_ReadFile(&file, q + 1, *q);
         p = (u32 *)((u8 *)p + (sizes[i] + 4));
     }
     if (merge) {
@@ -143,8 +143,8 @@ void func_0203bdcc(UnkFSFile_0203bdcc *src, BOOL arg) {
             ovl = (UnkOvl_0203bdcc *)(ov + 1);
             cnt = *ov >> 5;
             for (j = 0; j < cnt; j++) {
-                func_0200b930(&file, fatOfs + ovl[j].fileId * 8, 0);
-                func_0200b99c(&file, &ent[n], 8);
+                FS_SeekFile(&file, fatOfs + ovl[j].fileId * 8, 0);
+                FS_ReadFile(&file, &ent[n], 8);
                 ent[n].ofs += base;
                 ent[n].size += base;
                 ovl[j].fileId = n;
@@ -155,7 +155,7 @@ void func_0203bdcc(UnkFSFile_0203bdcc *src, BOOL arg) {
     }
     DC_FlushRange(buf, total);
     DC_WaitWriteBufferEmpty();
-    func_0200bad8(&file);
+    FS_CloseFile(&file);
     data_022b8be0.table = buf;
     data_022b8be0.tableSize = total;
 }

@@ -6,8 +6,8 @@ extern void FSi_GetOverlayBinarySize(void);
 extern void MI_CpuFill8(void);
 extern void OS_Terminate(void);
 extern u32 data_0207cfc8;
-extern void func_02000914(void);
-extern void func_0200c4c0(void);
+extern void MIi_UncompressBackward(void);
+extern void FSi_CompareDigest(void);
 
 asm void FS_StartOverlay(void)
 {
@@ -38,7 +38,7 @@ asm void FS_StartOverlay(void)
     mla r0, r2, r0, r3
     ldr r1, [r5, #4]
     mov r2, r4
-    bl func_0200c4c0
+    bl FSi_CompareDigest
 _70:
     cmp r0, #0
     bne _94
@@ -55,7 +55,7 @@ _94:
     beq _ac
     ldr r0, [r5, #4]
     add r0, r0, r4
-    bl func_02000914
+    bl MIi_UncompressBackward
 _ac:
     ldr r0, [r5, #4]
     ldr r1, [r5, #8]

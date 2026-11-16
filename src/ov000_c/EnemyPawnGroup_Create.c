@@ -71,7 +71,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         if ((b >> 8) < data_022c4534.unk1C + 0xc4)
             return NULL;
         task = Task_Create(StageObj_Main, EnemyPawnGroup_Destructor, 0, 0x500, 2, 0x344);
-        if (task == func_02006abc(0))
+        if (task == OS_GetArenaLo(0))
             return NULL;
         w = task->work;
         zero = 0;
@@ -79,7 +79,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         MIi_CpuClear16(zero, w, 0x344);
     } else {
         task = Task_Create(StageObj_Main, MapObject_Destructor, 0, 0x500, 2, 0x240);
-        if (task == func_02006abc(0))
+        if (task == OS_GetArenaLo(0))
             return NULL;
         w = task->work;
         zero2 = 0;

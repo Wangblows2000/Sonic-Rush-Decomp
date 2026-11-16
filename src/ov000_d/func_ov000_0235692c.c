@@ -23,7 +23,7 @@ extern UnkVec_0235692c data_02084f90;
 extern u8 data_02084d84[];
 extern UnkStruct_02084db8 data_02084db8;
 
-void func_020044f4(UnkVec_0235692c *pos, UnkVec_0235692c *up, UnkVec_0235692c *at, s32 a, void *mtx);
+void G3i_LookAt_(UnkVec_0235692c *pos, UnkVec_0235692c *up, UnkVec_0235692c *at, s32 a, void *mtx);
 
 #pragma thumb on
 
@@ -31,7 +31,7 @@ void func_ov000_0235692c(UnkCam_0235692c *cam) {
     data_02084f78 = cam->pos;
     data_02084f84 = cam->up;
     data_02084f90 = cam->at;
-    func_020044f4(&cam->pos, &cam->up, &cam->at, 0, data_02084d84);
+    G3i_LookAt_(&cam->pos, &cam->up, &cam->at, 0, data_02084d84);
     data_02084db8.unk7C &= ~0xe8;
 }
 

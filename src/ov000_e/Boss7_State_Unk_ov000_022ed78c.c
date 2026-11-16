@@ -32,9 +32,9 @@ typedef struct {
 
 extern UnkStruct_0208922c gDisplayMain;
 
-u8 *func_02025ecc(void *p);
-void func_02025e1c(void *m, s32 a, s32 b);
-void func_0202224c(s32 a, s32 b, s32 c);
+u8 *NNS_G3dGetMdlSet(void *p);
+void NNSi_G3dModifyMatFlag(void *m, s32 a, s32 b);
+void NNS_G3dGlbMaterialColorDiffAmb(s32 a, s32 b, s32 c);
 void Boss7_State_Unk_ov000_022ed6c4(void);
 
 void Boss7_State_Unk_ov000_022ed78c(UnkStruct_022ed78c *s) {
@@ -47,14 +47,14 @@ void Boss7_State_Unk_ov000_022ed78c(UnkStruct_022ed78c *s) {
     gDisplayMain.unk20.bits.b6 = 2;
     gDisplayMain.unk24.b0 = (u16)(s->unk232 >> 8);
     s->unk234 = 0x1f00;
-    r = func_02025ecc(s->unk23C);
-    func_02025e1c(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x40);
-    r = func_02025ecc(s->unk23C);
-    func_02025e1c(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x80);
-    r = func_02025ecc(s->unk248);
-    func_02025e1c(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x40);
-    r = func_02025ecc(s->unk248);
-    func_02025e1c(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x80);
-    func_0202224c(0x7fff, 0x7fff, 0);
+    r = NNS_G3dGetMdlSet(s->unk23C);
+    NNSi_G3dModifyMatFlag(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x40);
+    r = NNS_G3dGetMdlSet(s->unk23C);
+    NNSi_G3dModifyMatFlag(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x80);
+    r = NNS_G3dGetMdlSet(s->unk248);
+    NNSi_G3dModifyMatFlag(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x40);
+    r = NNS_G3dGetMdlSet(s->unk248);
+    NNSi_G3dModifyMatFlag(r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc), 0, 0x80);
+    NNS_G3dGlbMaterialColorDiffAmb(0x7fff, 0x7fff, 0);
     s->base.unk68 = Boss7_State_Unk_ov000_022ed6c4;
 }

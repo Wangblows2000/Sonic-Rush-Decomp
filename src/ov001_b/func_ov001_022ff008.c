@@ -34,8 +34,8 @@ extern UnkStruct_022ff008_4680 gSaveData;
 void PauseMenu_Create(s32 a);
 u16 func_ov001_022fee88(u16 k);
 void func_ov001_022fea98(void);
-s32 func_0200203c(s32 n, s32 d);
-s32 func_02002094(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
 void func_ov001_02301d14(void);
 void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 void func_ov001_02304e80(void);
@@ -76,7 +76,7 @@ void func_ov001_022ff008(void) {
     func_ov001_022fea98();
     if (!(G->unk0 & 2)) {
         G->unk44++;
-        if (!(G->unk0 & 0x10) && func_0200203c(G->unk44, 0x3c) == 0) {
+        if (!(G->unk0 & 0x10) && FX_ModS32(G->unk44, 0x3c) == 0) {
             G->unk4C--;
             if (G->unk4C < 0) {
                 func_ov001_02301d14();
@@ -109,7 +109,7 @@ void func_ov001_022ff008(void) {
             func_0204e0c0();
             return;
         }
-        G->unk40 = func_02002094(G->unk40, 2) * 2;
+        G->unk40 = FX_DivS32(G->unk40, 2) * 2;
         func_ov001_023010e0();
         func_ov001_0230109c();
         func_ov001_02300fe8();

@@ -33,7 +33,7 @@ typedef struct UnkStruct_022c7d54_2 {
 extern UnkStruct_022c7d54_2 *data_ov000_02369acc;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void func_ov000_022c7d14(UnkStruct_022c7d54 *s);
 
 void func_ov000_022c7d54(UnkStruct_022c7d54 *s) {
@@ -46,6 +46,6 @@ void func_ov000_022c7d54(UnkStruct_022c7d54 *s) {
     if (!(s->unk334 & 2))
         return;
     g->unk20C |= 1;
-    func_02000dfc(g->unk214 + 0x330);
+    MTX_Identity33_(g->unk214 + 0x330);
     s->func = func_ov000_022c7d14;
 }

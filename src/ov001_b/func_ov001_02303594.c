@@ -37,7 +37,7 @@ extern UnkStruct_02303594_g *data_ov001_0231f548;
 extern s16 data_0206e470[];
 
 UnkStruct_02303594_q *ExtraBoss_GetWork(void);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 void func_ov001_02303394(UnkStruct_02303594_p *p);
 void func_ov001_023031e4(UnkStruct_02303594_p *p);
 BOOL func_ov001_02303554(UnkStruct_02303594_p *p);
@@ -75,7 +75,7 @@ void func_ov001_02303594(void) {
             p->unk18--;
             if (p->unk18 <= 0) {
                 p->unk10 = p->unk14 = 0;
-                a = func_020027a4(tz - p->unk4, 0xc0000 - p->unk0);
+                a = FX_Atan2(tz - p->unk4, 0xc0000 - p->unk0);
                 p->unk8 = FX_Mul(COS(a), 0x100);
                 p->unkC = FX_Mul(SIN(a), 0x100);
                 func_ov001_02303394(p);
@@ -99,7 +99,7 @@ void func_ov001_02303594(void) {
         p2->unk18--;
         if (p2->unk18 <= 0) {
             p2->unk10 = p2->unk14 = 0;
-            a = func_020027a4(tz - p2->unk4, 0xc0000 - p2->unk0);
+            a = FX_Atan2(tz - p2->unk4, 0xc0000 - p2->unk0);
             p2->unk8 = FX_Mul(COS(a), 0x100);
             p2->unkC = FX_Mul(SIN(a), 0x100);
             func_ov001_02303244(p2);

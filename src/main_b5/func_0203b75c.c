@@ -12,8 +12,8 @@ typedef struct {
 
 extern UnkStruct_022b89e8 data_022b89e8;
 
-BOOL func_02016978(u32 n, s32 a);
-void func_0201854c(u32 n);
+BOOL MB_CommResponseRequest(u32 n, s32 a);
+void MB_DisconnectChild(u32 n);
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
 
@@ -21,7 +21,7 @@ void func_0203b75c(u32 n) {
     u32 e;
     u16 mask;
 
-    if (!func_02016978(n, 2)) {
+    if (!MB_CommResponseRequest(n, 2)) {
         mask = ~(1 << n);
         e = OS_DisableInterrupts();
         data_022b89e8.unk2 &= mask;
@@ -31,7 +31,7 @@ void func_0203b75c(u32 n) {
         data_022b89e8.unka &= mask;
         data_022b89e8.unkc &= mask;
         OS_RestoreInterrupts(e);
-        func_0201854c(n);
+        MB_DisconnectChild(n);
     } else {
         e = OS_DisableInterrupts();
         data_022b89e8.unk6 &= ~(1 << n);

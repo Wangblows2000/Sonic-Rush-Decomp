@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 #include "main_a2/oammgr.h"
 
-void *func_02006abc(u32 arg);
+void *OS_GetArenaLo(u32 arg);
 
 UnkOamObj *Oam_AllocObj(u32 idx, u32 prio) {
     UnkOamMgr *m = gDisplayTable[idx];
@@ -9,7 +9,7 @@ UnkOamObj *Oam_AllocObj(u32 idx, u32 prio) {
         prio = 31;
     }
     if (m->unk89c >= 128) {
-        return func_02006abc(0);
+        return OS_GetArenaLo(0);
     }
     m->objs[m->unk89c].next = 0xffff;
     if (m->heads[prio] == 0xffff) {

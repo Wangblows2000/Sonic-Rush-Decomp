@@ -43,8 +43,8 @@ s32 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 void func_ov000_0234739c(UnkStruct_0234f054 *w);
 void func_ov000_023497f4(UnkStruct_0234f054 *w);
 void func_ov000_0234a064(UnkStruct_0234f054 *w, u8 a);
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 
 void func_ov000_0234f054(UnkStruct_0234f054 *w) {
     s32 lim = 0x400;
@@ -68,8 +68,8 @@ void func_ov000_0234f054(UnkStruct_0234f054 *w) {
             w->unk8 = 0;
             w->unk32A = 0;
             Player_SetAnimation(w, 0x14);
-            func_0201c070(w->unk390, 0x20);
-            func_0201bf1c(w->unk390);
+            NNS_SndPlayerStopSeq(w->unk390, 0x20);
+            NNS_SndHandleReleaseSeq(w->unk390);
             return;
         }
         if (!(w->unk32C & 4) && (w->unk328 < 0x39 || w->unk32A > 0x18) && w->unk8 != 0) {

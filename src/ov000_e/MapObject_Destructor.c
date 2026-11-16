@@ -19,7 +19,7 @@ typedef struct {
     UnkStruct_022fb9c8_W *unk10;
 } UnkStruct_022fb9c8;
 
-void func_0201bf1c(s32 a);
+void NNS_SndHandleReleaseSeq(s32 a);
 void Sound_FreeHandle(s32 a);
 void MapObject_FreeSpawnEntry(UnkStruct_022fb9c8_P *p);
 void StageObj_Destructor(UnkStruct_022fb9c8 *t);
@@ -28,7 +28,7 @@ void MapObject_Destructor(UnkStruct_022fb9c8 *t) {
     UnkStruct_022fb9c8_W *w = t->unk10;
 
     if (w->unk1DC != 0)
-        func_0201bf1c(w->unk1DC);
+        NNS_SndHandleReleaseSeq(w->unk1DC);
     if (w->unk1DC != 0)
         Sound_FreeHandle(w->unk1DC);
     if (w->unk1E0 != NULL && w->unk1E0->unk0 == 0xff && w->unk1E0->unk1 == 0xff)

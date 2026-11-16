@@ -29,11 +29,11 @@ s32 ObjSpd_AccelToward(void *w, s32 a, s32 b, s32 c, s32 d);
 s16 ObjSpd_DownSet(s32 a, s32 b);
 void ScreenShake_Start(s32 a);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
-void func_02000dfc(void *m);
-void func_02000e60(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
-void func_0201bd80(s32 a, s32 b);
-void func_0201c070(s32 a, s32 b);
+void MTX_Identity33_(void *m);
+void MTX_RotX33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
+void NNS_SndPlayerSetTempoRatio(s32 a, s32 b);
+void NNS_SndPlayerStopSeq(s32 a, s32 b);
 
 void CraneSlide_State_Unk_ov000_023064d8(UnkStruct_023064d8 *w) {
     u32 mtx[9];
@@ -155,10 +155,10 @@ void CraneSlide_State_Unk_ov000_023064d8(UnkStruct_023064d8 *w) {
         }
     }
 
-    func_02000dfc(mdl->unk24);
+    MTX_Identity33_(mdl->unk24);
     idx = (s32)((u16)w->base.unkC & 0xffff) >> 4;
-    func_02000e60(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(mdl->unk24, mtx, mdl->unk24);
+    MTX_RotX33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
+    MTX_Concat33(mdl->unk24, mtx, mdl->unk24);
 
     v = w->base.unkC & 0xffff;
     if (v < 0xc000 && v < 0x4000)
@@ -181,11 +181,11 @@ void CraneSlide_State_Unk_ov000_023064d8(UnkStruct_023064d8 *w) {
             a = 1;
         else if (a > 0x100)
             a = 0x100;
-        func_0201bd80(w->base.unk1DC, a);
+        NNS_SndPlayerSetTempoRatio(w->base.unk1DC, a);
     } else {
-        func_0201bd80(w->base.unk1DC, 0x100);
+        NNS_SndPlayerSetTempoRatio(w->base.unk1DC, 0x100);
     }
     if (w->base.unk2E != 0)
         return;
-    func_0201c070(w->base.unk1DC, 0);
+    NNS_SndPlayerStopSeq(w->base.unk1DC, 0);
 }

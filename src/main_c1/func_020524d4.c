@@ -16,8 +16,8 @@ typedef struct {
 extern u32 gPaletteTransferTail;
 extern u32 gPaletteTransferHead;
 
-s32 func_0200b99c(void *f, void *buf, u32 size);
-BOOL func_0200b930(void *f, u32 pos, u32 whence);
+s32 FS_ReadFile(void *f, void *buf, u32 size);
+BOOL FS_SeekFile(void *f, u32 pos, u32 whence);
 void PaletteTransfer_QueueLoad(void *p, u32 a, u32 b);
 void PaletteTransfer_Flush(void);
 
@@ -28,9 +28,9 @@ void func_020524d4(UnkFile_020524d4 *f)
     u32 b;
     u32 a;
 
-    func_0200b99c(f, &h, 0x20);
-    func_0200b930(f, h.unk10, 0);
-    func_0200b99c(f, buf, 0x204);
+    FS_ReadFile(f, &h, 0x20);
+    FS_SeekFile(f, h.unk10, 0);
+    FS_ReadFile(f, buf, 0x204);
     b = gPaletteTransferHead;
     a = gPaletteTransferTail;
     gPaletteTransferTail = 0;

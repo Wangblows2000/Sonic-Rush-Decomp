@@ -95,8 +95,8 @@ void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAn
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void Model_Animate(UnkStruct_022d8fec_a *a);
 void Model_Draw(UnkStruct_022d8fec_a *a);
-void func_02025268(s32 a, s32 *b, s32 c);
-void func_02025a94(void *p, s32 a);
+void NNS_G3dGeBufferOP_N(s32 a, s32 *b, s32 c);
+void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
 void Boss3PartCC_Draw(void) {
     UnkStruct_022d8fec *s = gTaskCurrent->unk10;
@@ -135,8 +135,8 @@ void Boss3PartCC_Draw(void) {
     s->unk20C = s->unk210;
     *(UnkStruct_022d8fec_v *)&a->unk48 = saved;
     k = 2;
-    func_02025268(0x10, &k, 1);
+    NNS_G3dGeBufferOP_N(0x10, &k, 1);
     k2 = 0x1e;
-    func_02025268(0x14, &k2, 1);
-    func_02025a94(s->unk228, 0);
+    NNS_G3dGeBufferOP_N(0x14, &k2, 1);
+    NNS_G3dGetCurrentMtx(s->unk228, 0);
 }

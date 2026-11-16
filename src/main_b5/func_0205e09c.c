@@ -18,8 +18,8 @@ extern u8 data_02087d3c[];
 void Background_Init(UnkBg_0205e09c *bg, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
 void Background_Draw(UnkBg_0205e09c *bg);
 void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
-void func_02000cb4(UnkMtx22_0205e09c *m);
-void func_02003d94(void *p, UnkMtx22_0205e09c *m, s32 x, s32 y, s32 a, s32 b);
+void MTX_Identity22_(UnkMtx22_0205e09c *m);
+void G2x_SetBGyAffine_(void *p, UnkMtx22_0205e09c *m, s32 x, s32 y, s32 a, s32 b);
 
 void func_0205e09c(UnkWork_0205e09c *w) {
     u32 ofs;
@@ -39,6 +39,6 @@ void func_0205e09c(UnkWork_0205e09c *w) {
     bg.unk1c = 0x06206800;
     Background_Draw(&bg);
     PaletteTransfer_QueueCopy((void *)(ofs + ((u32)w->res498 + w->res498->pal + 4)), 0x10, bg.unk14, 0x4400);
-    func_02000cb4(&m);
-    func_02003d94(data_02087d3c, &m, 0x80, 0x60, 0, 0);
+    MTX_Identity22_(&m);
+    G2x_SetBGyAffine_(data_02087d3c, &m, 0x80, 0x60, 0, 0);
 }

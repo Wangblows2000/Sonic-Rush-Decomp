@@ -177,7 +177,7 @@ void func_0206cf8c(void *a, void *b);
 #define ALLOC4_0234D62C(dst)                                  \
     do {                                                      \
         u8 *p_ = Heap_Alloc(gITCMHeap, 0x3140, 4);     \
-        if ((u8 *)func_02006abc(0) != p_) {                   \
+        if ((u8 *)OS_GetArenaLo(0) != p_) {                   \
             vu32 fill_ = 0xcccccccc;                          \
             MIi_CpuClear32(fill_, p_, 0x3140);                \
             *(u32 *)p_ = 0x3140;                              \
@@ -192,7 +192,7 @@ void func_0206cf8c(void *a, void *b);
     do {                                                        \
         u32 size_ = ((n) + 0x43) & ~0x1f;                       \
         u8 *p_ = Heap_Alloc(gMainHeap, size_, 0x20);     \
-        if ((u8 *)func_02006abc(0) != p_) {                     \
+        if ((u8 *)OS_GetArenaLo(0) != p_) {                     \
             vu32 fill_ = 0xcccccccc;                            \
             MIi_CpuClear32(fill_, p_, size_);                   \
             *(u32 *)p_ = size_;                                 \
@@ -256,7 +256,7 @@ UnkStruct_0234d62c *Player_Create(s32 type, u8 id) {
     BOOL flag;
 
     task = Task_Create(StageObj_Main, Player_Destructor, 0, 0x100, 1, sizeof(UnkStruct_0234d62c));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

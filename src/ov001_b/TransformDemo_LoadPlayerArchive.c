@@ -33,15 +33,15 @@ extern UnkStruct_022de388_t data_ov001_02316244[];
 extern void *gTransformDemoModelList[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 u8 *File_Load(void *p, s32 v);
 u32 func_ov001_022de6f8(u32 *p);
 u32 func_ov001_022de6ec(u32 *p);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 u32 *Compress_GetData(void *s);
 void Mem_Copy(void *a, void *b, u32 c);
 void Heap_Free(void *heap, void *p);
@@ -49,9 +49,9 @@ BOOL func_02021310(void *arc, const char *name, void *narc);
 void *func_02021264(void *arc, u32 idx);
 BOOL func_020212e0(void *arc);
 void Model_Init(void *s, u32 a);
-void func_020257f8(void *p);
+void NNS_G3dResDefaultSetup(void *p);
 void Model_SetResource(void *s, void *res, u32 idx);
-u32 func_02025e8c(void *h);
+u32 NNS_G3dGetTex(void *h);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
 
 void TransformDemo_LoadPlayerArchive(UnkStruct_022de388_c *c, UnkStruct_022de388 *s) {
@@ -72,7 +72,7 @@ void TransformDemo_LoadPlayerArchive(UnkStruct_022de388_c *c, UnkStruct_022de388
     res = File_Load(data_ov001_0231c3ac, -1);
     size = ((*(u32 *)res >> 8) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != blk) {
+    if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, blk, size);
         *(u32 *)blk = size;
@@ -84,20 +84,20 @@ void TransformDemo_LoadPlayerArchive(UnkStruct_022de388_c *c, UnkStruct_022de388
     dst = s->unk0;
     switch (func_ov001_022de6f8((u32 *)res)) {
     case 0x10:
-        func_02008648(res, dst);
+        MI_UncompressLZ16(res, dst);
         break;
     case 0x20:
-        func_02008720(res, dst);
+        MI_UncompressHuffman(res, dst);
         break;
     case 0x30:
-        func_020087f8(res, dst);
+        MI_UncompressRL16(res, dst);
         break;
     default:
         Mem_Copy(Compress_GetData(res), dst, func_ov001_022de6ec((u32 *)res));
         break;
     }
     DC_StoreRange(dst, func_ov001_022de6ec((u32 *)res));
-    if ((u8 *)func_02006abc(0) != res) {
+    if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
         if (*(u32 *)(res + size - 4) == 0x02467531) {
@@ -123,9 +123,9 @@ void TransformDemo_LoadPlayerArchive(UnkStruct_022de388_c *c, UnkStruct_022de388
         if (e == -1)
             continue;
         Model_Init(a, 0);
-        func_020257f8(s->unk768[i]);
+        NNS_G3dResDefaultSetup(s->unk768[i]);
         Model_SetResource(a, s->unk768[i], 0);
-        r = func_02025e8c(s->unk768[i]);
+        r = NNS_G3dGetTex(s->unk768[i]);
         for (j = 0; j < 5; j++) {
             if (j == 2 || j == 3) {
                 if (r != 0) {

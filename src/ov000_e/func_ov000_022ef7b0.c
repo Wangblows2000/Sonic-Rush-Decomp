@@ -58,7 +58,7 @@ void Player_SetAnimation(UnkStruct_Player *p, s32 a);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
 void Task_DestroyByTag(s32 a);
-void func_0201bfbc(s32 a);
+void NNS_SndPlayerStopSeqAll(s32 a);
 void BossFPartD8_State_Unk_ov000_022ef6a0(void);
 
 void func_ov000_022ef7b0(UnkStruct_022ef7b0 *s) {
@@ -87,6 +87,6 @@ void func_ov000_022ef7b0(UnkStruct_022ef7b0 *s) {
     Task_DestroyByTag(4);
     gDisplayMain.unk20.bits.b6 = 0;
     b->unk20C &= ~0x10;
-    func_0201bfbc(0);
+    NNS_SndPlayerStopSeqAll(0);
     s->base.unk68 = BossFPartD8_State_Unk_ov000_022ef6a0;
 }

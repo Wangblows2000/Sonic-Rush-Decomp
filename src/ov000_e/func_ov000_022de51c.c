@@ -28,7 +28,7 @@ extern UnkStruct_022de51c_M *data_ov000_02369b2c;
 extern u8 data_ov000_02363590[];
 extern u8 data_ov000_023635f0[];
 
-s32 func_02025edc(void *dict, void *name);
+s32 NNS_G3dGetResDictIdxByName(void *dict, void *name);
 void func_ov000_022de5e8(void *a, UnkStruct_022de51c *o, s32 b);
 
 void func_ov000_022de51c(UnkStruct_022de51c *o) {
@@ -41,8 +41,8 @@ void func_ov000_022de51c(UnkStruct_022de51c *o) {
         id = o->unkAE;
     else
         id = -1;
-    a = func_02025edc(o->unk4->unk4 + 0x40, data_ov000_02363590);
-    b = func_02025edc(o->unk4->unk4 + 0x40, data_ov000_023635f0);
+    a = NNS_G3dGetResDictIdxByName(o->unk4->unk4 + 0x40, data_ov000_02363590);
+    b = NNS_G3dGetResDictIdxByName(o->unk4->unk4 + 0x40, data_ov000_023635f0);
     if (id == a) {
         func_ov000_022de5e8(m->unkB28, o, 2);
     } else if (id == b) {

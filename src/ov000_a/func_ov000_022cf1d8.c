@@ -42,7 +42,7 @@ typedef struct UnkStruct_022cf1d8_cam {
 
 extern UnkStruct_022cf1d8_cam data_ov000_0236a444;
 
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 
 s32 ScreenShake_GetOffsetX(void);

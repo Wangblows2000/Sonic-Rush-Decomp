@@ -25,7 +25,7 @@ void ItemBox_CreatePart_ov000_0230d5d4(s32 a, s32 b, s32 c, u32 k) {
         }
     } else {
         task = Task_Create(StageObj_Main, ItemBoxPart_Destructor_ov000_0230d5b8, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
-        if (task == func_02006abc(0))
+        if (task == OS_GetArenaLo(0))
             return;
         data_ov000_0236a018 = task;
         w = task->work;

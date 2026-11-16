@@ -17,8 +17,8 @@ typedef struct {
 extern s16 data_0207613c[];
 
 void func_020575b4(UnkObj_02057e08 *o);
-void func_0201c070(void *a, s32 b);
-void func_0201bf1c(void *a);
+void NNS_SndPlayerStopSeq(void *a, s32 b);
+void NNS_SndHandleReleaseSeq(void *a);
 void Sound_PlaySeqArc(void *a, s32 b, s32 c);
 
 #pragma thumb on
@@ -31,8 +31,8 @@ void func_02057e08(UnkObj_02057e08 *o, s32 n) {
     case 1:
     case 0xd:
         if (o->anim != NULL) {
-            func_0201c070(&o->anim, 0);
-            func_0201bf1c(&o->anim);
+            NNS_SndPlayerStopSeq(&o->anim, 0);
+            NNS_SndHandleReleaseSeq(&o->anim);
         }
         Sound_PlaySeqArc(&o->anim, (*o->res)->unk4, data_0207613c[n]);
         return;

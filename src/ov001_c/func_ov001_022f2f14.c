@@ -69,14 +69,14 @@ extern s32 data_ov001_0231f524;
 extern s32 data_ov001_0231f520;
 extern s16 data_0206e470[];
 
-void func_02000e60(void *m, s32 s, s32 c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e98(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
 void Model_Animate(void *p);
 void Model_Draw(void *p);
-void func_02025268(u32 op, const u32 *args, u32 n);
-void func_02025a94(void *mtx, void *p);
+void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
+void NNS_G3dGetCurrentMtx(void *mtx, void *p);
 UnkStruct_022f2f14_c *func_ov001_02300c94(void);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
@@ -99,19 +99,19 @@ void func_ov001_022f2f14(UnkStruct_022f2f14 *w) {
     a->unk48 = w->unk18 + w->unk30;
     a->unk4C = -(w->unk1C + w->unk34);
     a->unk50 = w->unk20 + w->unk38;
-    func_02000e60(&a->mtx, SIN(w->unk3C), COS(w->unk3C));
+    MTX_RotX33_(&a->mtx, SIN(w->unk3C), COS(w->unk3C));
     MTX_RotY33_(&m, SIN(w->unk3E), COS(w->unk3E));
-    func_02000f34(&a->mtx, &m, &a->mtx);
-    func_02000e98(&m, SIN(w->unk40), COS(w->unk40));
-    func_02000f34(&a->mtx, &m, &a->mtx);
+    MTX_Concat33(&a->mtx, &m, &a->mtx);
+    MTX_RotZ33_(&m, SIN(w->unk40), COS(w->unk40));
+    MTX_Concat33(&a->mtx, &m, &a->mtx);
     if (!(w->unk14 & 0x10000))
         Model_Animate(a);
     Model_Draw(a);
     c0 = 2;
-    func_02025268(0x10, &c0, 1);
+    NNS_G3dGeBufferOP_N(0x10, &c0, 1);
     c1 = 0x1d;
-    func_02025268(0x14, &c1, 1);
-    func_02025a94(s->unk16C, s->unk19C);
+    NNS_G3dGeBufferOP_N(0x14, &c1, 1);
+    NNS_G3dGetCurrentMtx(s->unk16C, s->unk19C);
     c = w->unkA0;
     c->unk28 = s->unk190 - data_ov001_0231f524;
     c->unk2C = -(s->unk194 + data_ov001_0231f520);

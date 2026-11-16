@@ -40,7 +40,7 @@ extern UnkStruct_StageObj *gPlayers;
 
 void func_ov000_022ee198(UnkStruct_022e899c *w, s32 a);
 void func_ov000_022e9b70(UnkStruct_022e899c *w, s32 a, s32 b);
-s32 func_020027a4(s32 y, s32 x);
+s32 FX_Atan2(s32 y, s32 x);
 UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 UnkStruct_StageObj *EffBoostA2_3D_Create(UnkStruct_022e899c *w, s32 a, s32 b, s32 c, s32 d);
@@ -58,7 +58,7 @@ void func_ov000_022e899c(UnkStruct_022e899c *w) {
 
     func_ov000_022ee198(w, 0x31);
     func_ov000_022e9b70(w, 0, 1);
-    a = func_020027a4(0x1f000 - w->base.unk14, gPlayers->unk10 - w->base.unk10);
+    a = FX_Atan2(0x1f000 - w->base.unk14, gPlayers->unk10 - w->base.unk10);
     w->base.unk8 = a;
     if (w->base.unk10 > gPlayers->unk10)
         w->base.unk5C |= 1;

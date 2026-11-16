@@ -22,9 +22,9 @@ UnkStruct_02357dbc_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s3
 void func_ov000_02357d5c(void);
 u32 func_ov000_02357804(void *res);
 u32 func_ov000_023577f8(void *res);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *res);
 void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -32,13 +32,13 @@ void DC_StoreRange(void *p, u32 size);
 static inline void UnkDecomp_02357dbc(void *res, void *dst) {
     switch (func_ov000_02357804(res)) {
     case 0x10:
-        func_02008648(res, dst);
+        MI_UncompressLZ16(res, dst);
         break;
     case 0x20:
-        func_02008720(res, dst);
+        MI_UncompressHuffman(res, dst);
         break;
     case 0x30:
-        func_020087f8(res, dst);
+        MI_UncompressRL16(res, dst);
         break;
     default:
         Mem_Copy(Compress_GetData(res), dst, func_ov000_023577f8(res));

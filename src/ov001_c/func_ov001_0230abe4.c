@@ -16,7 +16,7 @@ extern s16 data_0206e470[];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-s32 func_02002278(const UnkStruct_0230abe4_v *a, const UnkStruct_0230abe4_v *b);
+s32 VEC_Distance(const UnkStruct_0230abe4_v *a, const UnkStruct_0230abe4_v *b);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -45,5 +45,5 @@ BOOL func_ov001_0230abe4(UnkStruct_0230abe4_c *a, UnkStruct_0230abe4_v *pa, u16 
     vb.x -= FX_Mul(b->y, s);
     vb.y += FX_Mul(b->y, c);
     vb.z += b->z;
-    return func_02002278(&va, &vb) <= a->r + b->r;
+    return VEC_Distance(&va, &vb) <= a->r + b->r;
 }

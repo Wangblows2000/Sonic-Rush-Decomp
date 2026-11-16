@@ -4,7 +4,7 @@
 extern s32 data_0224ff40;
 
 void SysSound_Release(void);
-void func_0201b348(void);
+void NNS_SndStopSoundAll(void);
 void Sound_ResetHeap(void);
 void func_0204331c(s32 mode);
 void func_02054a04(void);
@@ -15,7 +15,7 @@ void func_02054d70(void);
 #pragma thumb on
 void func_02054dbc(void) {
     SysSound_Release();
-    func_0201b348();
+    NNS_SndStopSoundAll();
     Sound_ResetHeap();
     data_0224ff40 = 0;
     func_0204331c(0);

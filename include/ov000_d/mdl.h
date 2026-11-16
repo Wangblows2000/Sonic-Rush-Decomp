@@ -68,11 +68,11 @@ extern s16 data_0206e470[];
 #define MDL_COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 void MTX_RotY33_(UnkMtx33_Mdl *m, s32 s, s32 c);
-void func_02000e60(UnkMtx33_Mdl *m, s32 s, s32 c);
-void func_02000e98(UnkMtx33_Mdl *m, s32 s, s32 c);
-void func_02000f34(UnkMtx33_Mdl *a, UnkMtx33_Mdl *b, UnkMtx33_Mdl *out);
+void MTX_RotX33_(UnkMtx33_Mdl *m, s32 s, s32 c);
+void MTX_RotZ33_(UnkMtx33_Mdl *m, s32 s, s32 c);
+void MTX_Concat33(UnkMtx33_Mdl *a, UnkMtx33_Mdl *b, UnkMtx33_Mdl *out);
 void Model_SetAnimation(UnkStruct_MdlRender *r, s32 idx, void *anm, s32 frame, void *e);
 void Model_Draw(UnkStruct_MdlRender *r);
-void func_02025268(s32 cmd, void *data, s32 n);
+void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 n);
 
 #endif

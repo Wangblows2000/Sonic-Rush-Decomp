@@ -26,8 +26,8 @@ typedef struct {
 } UnkRes_02061130;
 
 UnkRes_02061130 **TalkDemo_GetEntry(void);
-void func_0201c070(void *a, s32 b);
-void func_0201bf1c(void *a);
+void NNS_SndPlayerStopSeq(void *a, s32 b);
+void NNS_SndHandleReleaseSeq(void *a);
 void func_020366f4(void *a, s32 b, s32 c);
 void Sound_PlaySeqArc(void *a, s32 b, s32 c);
 
@@ -48,8 +48,8 @@ void func_02061130(UnkWork_02061130 *w) {
         return;
     v = r->unk4;
     if (*s->anim != NULL) {
-        func_0201c070(s->anim, 0);
-        func_0201bf1c(s->anim);
+        NNS_SndPlayerStopSeq(s->anim, 0);
+        NNS_SndHandleReleaseSeq(s->anim);
     }
     if (d->flags & 1)
         func_020366f4(s->anim, v, d->unk0);

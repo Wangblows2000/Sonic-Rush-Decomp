@@ -100,7 +100,7 @@ extern s32 data_ov000_0236327c[][5];
 extern u32 gRandSeed;
 
 u16 func_ov000_022c5e10(s32 x, s32 z);
-s32 func_02002240(s32 a);
+s32 FX_Inv(s32 a);
 void func_ov000_022da9c0(u16 ang, s32 v);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d7908(UnkStruct_022d79a4 *s);
@@ -131,7 +131,7 @@ void func_ov000_022d79a4(UnkStruct_022d79a4 *s) {
         else
             m = p->unk34;
         {
-            u16 k = func_02002240(data_ov000_0236327c[data_ov000_02369b14->unk222][data_ov000_02369b14->unk214->unk25E]) * 15 >> 12;
+            u16 k = FX_Inv(data_ov000_0236327c[data_ov000_02369b14->unk222][data_ov000_02369b14->unk214->unk25E]) * 15 >> 12;
             ang += (u16)(k * (m * 4));
         }
         break;

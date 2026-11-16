@@ -8,7 +8,7 @@ extern u8 data_ov001_0231f068[];
 s32 Model_SetAnimation();
 extern u8 data_ov001_0231f074[];
 s32 ExtraBoss_GetWork();
-s32 func_02002094();
+s32 FX_DivS32();
 
 void func_ov001_022f2580(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x1c8) = (*(u32 *)((u8 *)p0 + 0x1c8) - 0x1);
@@ -39,7 +39,7 @@ void func_ov001_022f2580(u8 *p0) {
     s32 t6 = ExtraBoss_GetWork();
     s32 t7 = ExtraBoss_GetWork();
     s32 t8 = ExtraBoss_GetWork();
-    s32 t9 = func_02002094(((*(u32 *)((u8 *)t5 + 0x308) * 0xccc) + ((*(u32 *)((u8 *)t6 + 0x30c) - *(u32 *)((u8 *)t7 + 0x308)) << 0xc)), *(u32 *)((u8 *)t8 + 0x30c), (*(u32 *)((u8 *)t6 + 0x30c) - *(u32 *)((u8 *)t7 + 0x308)), *(u32 *)((u8 *)t5 + 0x308));
+    s32 t9 = FX_DivS32(((*(u32 *)((u8 *)t5 + 0x308) * 0xccc) + ((*(u32 *)((u8 *)t6 + 0x30c) - *(u32 *)((u8 *)t7 + 0x308)) << 0xc)), *(u32 *)((u8 *)t8 + 0x30c), (*(u32 *)((u8 *)t6 + 0x30c) - *(u32 *)((u8 *)t7 + 0x308)), *(u32 *)((u8 *)t5 + 0x308));
     *(u32 *)((u8 *)t1 + 0x114) = t9;
     *(u8 *)((u8 *)t3 + 0x10c) = (*(u8 *)((u8 *)t3 + 0x10c) | 0x40);
     Model_SetAnimation(t3, 0, *(u32 *)data_ov001_0231f068, *(u16 *)((u8 *)data_ov001_02316840 + 0x2c), 0);

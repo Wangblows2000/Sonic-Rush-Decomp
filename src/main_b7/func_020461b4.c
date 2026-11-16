@@ -26,7 +26,7 @@ typedef struct {
 } UnkObj_020461b4;
 
 void func_020463bc(void *);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 
 #pragma thumb on
 void func_020461b4(UnkObj_020461b4 *o) {
@@ -41,6 +41,6 @@ void func_020461b4(UnkObj_020461b4 *o) {
     for (i = 0; i < 6; i++)
         s->digits[i] = s->target[i];
     s->func = func_020463bc;
-    func_0201c070(o->unk1634, 0);
+    NNS_SndPlayerStopSeq(o->unk1634, 0);
 }
 #pragma thumb reset

@@ -21,9 +21,9 @@ typedef struct {
 
 extern UnkTPState_02037a8c gTouchState;
 
-void func_0200d650(void);
-BOOL func_0200d5f8(UnkTP_02037a8c *raw);
-void func_0200d1a4(UnkTP_02037a8c *out, const UnkTP_02037a8c *raw);
+void TP_RequestSamplingAsync(void);
+BOOL TP_WaitRawResult(UnkTP_02037a8c *raw);
+void TP_GetCalibratedPoint(UnkTP_02037a8c *out, const UnkTP_02037a8c *raw);
 
 void Touch_UpdateSingle(void) {
     UnkTPState_02037a8c *st = &gTouchState;
@@ -33,12 +33,12 @@ void Touch_UpdateSingle(void) {
     st->lastY = st->y;
     st->flags = (st->flags & ~0x20) | (((st->flags & 0x10) >> 4) << 5);
     do {
-        func_0200d650();
-    } while (func_0200d5f8(&raw));
+        TP_RequestSamplingAsync();
+    } while (TP_WaitRawResult(&raw));
     if (raw.touch == 1) {
         if (st->flags & 0x10) {
             st->flags &= ~0x40;
-            func_0200d1a4(&cal, &raw);
+            TP_GetCalibratedPoint(&cal, &raw);
             if (raw.validity != 0) {
                 st->flags |= 0x100;
                 return;
@@ -54,7 +54,7 @@ void Touch_UpdateSingle(void) {
         }
         st->flags |= 0x10;
         st->flags |= 0x40;
-        func_0200d1a4(&cal, &raw);
+        TP_GetCalibratedPoint(&cal, &raw);
         st->startX = cal.x;
         st->x = st->startX;
         st->startY = cal.y;

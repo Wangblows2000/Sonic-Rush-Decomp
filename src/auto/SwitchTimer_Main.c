@@ -5,7 +5,7 @@ extern u8 gTaskCurrent[];
 extern u8 gSwitchTimers[];
 s32 Task_Destroy();
 extern u8 gPlayers[];
-s32 func_0201bd80();
+s32 NNS_SndPlayerSetTempoRatio();
 
 void SwitchTimer_Main(void) {
     if (*(s16 *)((u8 *)gSwitchTimers + (*(s16 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) << 1)) == 0x3fc) {
@@ -44,7 +44,7 @@ void SwitchTimer_Main(void) {
     s32 t7 = *(u16 *)((u8 *)t1 + 0x4);
     s32 t8 = *(s16 *)((u8 *)gSwitchTimers + (*(s16 *)t1 << 1));
     if (t8 == 0x3c) {
-        func_0201bd80(*(u32 *)((u8 *)t1 + 0x8), 0x200, t7);
+        NNS_SndPlayerSetTempoRatio(*(u32 *)((u8 *)t1 + 0x8), 0x200, t7);
         *(u16 *)((u8 *)t1 + 0x4) = 2;
         return;
     }
@@ -54,6 +54,6 @@ void SwitchTimer_Main(void) {
     if (t7 != 2) {
         return;
     }
-    func_0201bd80(*(u32 *)((u8 *)t1 + 0x8), 0x100);
+    NNS_SndPlayerSetTempoRatio(*(u32 *)((u8 *)t1 + 0x8), 0x100);
     *(u16 *)((u8 *)t1 + 0x4) = 1;
 }

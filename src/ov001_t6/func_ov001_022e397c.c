@@ -37,11 +37,11 @@ void func_ov001_022e38b8(s32 a, s32 b);
 void func_ov001_022e2b60(s32 *p);
 void func_ov001_022e2af8(s32 *p);
 void MTX_RotY33_(UnkMtx33_022e397c *m, s32 s, s32 c);
-void func_02000e60(UnkMtx33_022e397c *m, s32 s, s32 c);
-void func_02000f34(UnkMtx33_022e397c *a, UnkMtx33_022e397c *b, UnkMtx33_022e397c *ab);
+void MTX_RotX33_(UnkMtx33_022e397c *m, s32 s, s32 c);
+void MTX_Concat33(UnkMtx33_022e397c *a, UnkMtx33_022e397c *b, UnkMtx33_022e397c *ab);
 void Model_SetAnimation(void *model, s32 idx, void *res, void *anim, s32 f);
 void Model_Draw(void *model);
-void func_02025268(u32 op, const void *args, u32 n);
+void NNS_G3dGeBufferOP_N(u32 op, const void *args, u32 n);
 
 #pragma thumb on
 void func_ov001_022e397c(UnkStruct_022e397c *p) {
@@ -81,8 +81,8 @@ void func_ov001_022e397c(UnkStruct_022e397c *p) {
     idx = ((u16)p->rotY & 0xffff) >> 4;
     MTX_RotY33_(&my, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
     idx = ((u16)p->rotX & 0xffff) >> 4;
-    func_02000e60(&mx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(&my, &mx, &p->mtx);
+    MTX_RotX33_(&mx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
+    MTX_Concat33(&my, &mx, &p->mtx);
     if (p->cur != p->prev) {
         if (p->cur != 2) {
             r0 = p->res164;
@@ -101,10 +101,10 @@ void func_ov001_022e397c(UnkStruct_022e397c *p) {
         p->prev = p->cur;
     }
     if (p->draw != 0) {
-        func_02025268(0x11, NULL, 0);
+        NNS_G3dGeBufferOP_N(0x11, NULL, 0);
         Model_Draw(p->model);
         one = 1;
-        func_02025268(0x12, &one, 1);
+        NNS_G3dGeBufferOP_N(0x12, &one, 1);
     }
 }
 #pragma thumb reset

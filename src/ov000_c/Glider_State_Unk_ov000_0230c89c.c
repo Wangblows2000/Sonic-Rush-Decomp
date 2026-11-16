@@ -22,10 +22,10 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-void func_02000dfc(void *m);
+void MTX_Identity33_(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02000e60(void *m, s32 s, s32 c);
-void func_02000f34(void *a, void *b, void *c);
+void MTX_RotX33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 void Glider_State_Unk_ov000_0230c89c(UnkStruct_StageObj *w) {
     UnkStruct_Carrier *p = w->unk204;
@@ -59,11 +59,11 @@ void Glider_State_Unk_ov000_0230c89c(UnkStruct_StageObj *w) {
             }
         }
     }
-    func_02000dfc(mdl->unk24);
+    MTX_Identity33_(mdl->unk24);
     idx = (s32)(ay & 0xffff) >> 4;
     MTX_RotY33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(mdl->unk24, mtx, mdl->unk24);
+    MTX_Concat33(mdl->unk24, mtx, mdl->unk24);
     idx = (s32)(ax & 0xffff) >> 4;
-    func_02000e60(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
-    func_02000f34(mdl->unk24, mtx, mdl->unk24);
+    MTX_RotX33_(mtx, data_0206e470[(u32)(idx << 1)], data_0206e470[(u32)((idx << 1) + 1)]);
+    MTX_Concat33(mdl->unk24, mtx, mdl->unk24);
 }

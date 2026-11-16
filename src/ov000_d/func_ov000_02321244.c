@@ -28,7 +28,7 @@ typedef struct {
 extern s16 data_0206e470[];
 
 void StageObj_SetAnimation(void *w, s32 a);
-u16 func_020027a4(s32 y, s32 x);
+u16 FX_Atan2(s32 y, s32 x);
 void func_ov000_02321188(void);
 
 void func_ov000_02321244(UnkStruct_02321244 *w, UnkStruct_02321244 *o) {
@@ -41,7 +41,7 @@ void func_ov000_02321244(UnkStruct_02321244 *w, UnkStruct_02321244 *o) {
     w->unk5C |= 4;
     w->unk54 |= 2;
     w->unk58 &= ~0x80;
-    idx = (s32)(func_020027a4(w->unk14 - o->unk14, w->unk10 - o->unk10) & 0xffff) >> 4;
+    idx = (s32)(FX_Atan2(w->unk14 - o->unk14, w->unk10 - o->unk10) & 0xffff) >> 4;
     w->unk2E = (data_0206e470[(u32)((idx << 1) + 1)] * 0x400) >> 12;
     w->unk30 = (data_0206e470[(u32)(idx << 1)] * 0x400) >> 12;
     if (w->unk2E > 0) {

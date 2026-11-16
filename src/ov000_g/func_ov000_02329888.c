@@ -27,7 +27,7 @@ extern s16 data_0206e470[];
 
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
-u32 func_02002094(u32 a, u32 b);
+u32 FX_DivS32(u32 a, u32 b);
 s32 func_02066a9c(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02329888(UnkStruct_02329888 *w) {
@@ -36,7 +36,7 @@ void func_ov000_02329888(UnkStruct_02329888 *w) {
     if (w->unk88 != NULL)
         w->unk34 = w->unk88->unk34 << 3;
     w->unkC += w->unk34;
-    w->unk10 = w->unk1C + 0x5400 - ((COS((u16)((u8)func_02002094(w->unkC << 8, 0x21e52) << 8)) * 0x54) >> 4);
+    w->unk10 = w->unk1C + 0x5400 - ((COS((u16)((u8)FX_DivS32(w->unkC << 8, 0x21e52) << 8)) * 0x54) >> 4);
     w->unk14 += w->unk30;
     r = func_02066a9c(w->unk10 >> 8, w->unk14 >> 8, 1, 2, 0, 0);
     if (w->unk8 > (u32)(w->unk14 >> 8) || r < 0)

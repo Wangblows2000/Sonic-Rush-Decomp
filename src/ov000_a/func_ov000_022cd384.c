@@ -26,10 +26,10 @@ extern UnkStruct_022cd384_t data_ov000_02365244[];
 extern void *data_ov000_02369ae8[];
 extern void *gTaskCurrent;
 
-u8 *func_02025ecc(void *p);
-void func_02025c44(u8 *p, u16 a);
-void func_02025bfc(u8 *p, u16 a);
-void func_02025bb4(u8 *p, u16 a);
+u8 *NNS_G3dGetMdlSet(void *p);
+void NNS_G3dMdlSetMdlDiffAll(u8 *p, u16 a);
+void NNS_G3dMdlSetMdlAmbAll(u8 *p, u16 a);
+void NNS_G3dMdlSetMdlEmiAll(u8 *p, u16 a);
 void Task_Destroy(void *p);
 
 void func_ov000_022cd384(void) {
@@ -42,11 +42,11 @@ void func_ov000_022cd384(void) {
         tc = data_ov000_02365244[i].c;
         tb = data_ov000_02365244[i].b;
         ta = data_ov000_02365244[i].a;
-        u8 *r = func_02025ecc(data_ov000_02369ae8[i]);
+        u8 *r = NNS_G3dGetMdlSet(data_ov000_02369ae8[i]);
         u8 *q = r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc);
-        func_02025c44(q, ta);
-        func_02025bfc(q, tb);
-        func_02025bb4(q, tc);
+        NNS_G3dMdlSetMdlDiffAll(q, ta);
+        NNS_G3dMdlSetMdlAmbAll(q, tb);
+        NNS_G3dMdlSetMdlEmiAll(q, tc);
     }
     c->unk80 = 0x200;
     c->unk8C = 0x80;

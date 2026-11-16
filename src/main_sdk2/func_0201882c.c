@@ -7,14 +7,14 @@ u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
-void func_02016b6c(u32 a);
+void MB_CommSetParentStateCallback(u32 a);
 void func_0201a9a0(u16 a);
 void func_0201a980(void *a);
 void func_02018004(void);
 s32 func_02018a50(void);
 u32 PXI_IsCallbackReady(u32 fifo, u32 proc);
-void func_0201640c(u32 a, void *b);
-void func_020197bc(UnkCallback_wh *arg);
+void MBi_CommParentCallback(u32 a, void *b);
+void MBi_ParentCallback(UnkCallback_wh *arg);
 
 s32 func_0201882c(u16 channel)
 {
@@ -31,7 +31,7 @@ s32 func_0201882c(u16 channel)
         vu16 fill = 0;
         MIi_CpuClear16(fill, data_02080f1c->childInit, 0x69c0);
     }
-    func_02016b6c(saved);
+    MB_CommSetParentStateCallback(saved);
     data_02080f1c->unk1318 = data_02080f18->unk500 - 6;
     func_0201a9a0(data_02080f18->unk502);
     func_0201a980(data_02080f1c->unk1538);
@@ -46,8 +46,8 @@ s32 func_0201882c(u16 channel)
     }
     MI_CpuFill8(data_02080f1c->unk1754, 0, sizeof(data_02080f1c->unk1754));
     data_02080f18->unk524 = 1;
-    data_02080f18->callback = func_0201640c;
-    data_02080f18->unk508 = func_020197bc;
+    data_02080f18->callback = MBi_CommParentCallback;
+    data_02080f18->unk508 = MBi_ParentCallback;
     data_02080f18->parentParam.parentMaxSize = data_02080f18->unk500;
     data_02080f18->sendBufSize = (data_02080f18->parentParam.parentMaxSize + 0x23) & ~0x1f;
     data_02080f18->parentParam.childMaxSize = data_02080f18->unk502;

@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
-void func_020072bc(void);
+void OS_CancelAllVAlarms(void);
 void func_02007584(void);
 
 #pragma thumb on
 void func_0205fd50(void) {
-    func_020072bc();
+    OS_CancelAllVAlarms();
     func_02007584();
 }
 #pragma thumb reset

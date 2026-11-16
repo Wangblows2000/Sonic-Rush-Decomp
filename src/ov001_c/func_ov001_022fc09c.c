@@ -13,10 +13,10 @@ extern s16 data_0206e470[];
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 u8 *func_ov001_022fd428(s32 kind, void *parent, s32 x, s32 y, s32 z);
-u8 *func_02025ecc(void *p);
-void func_02025c44(void *s, u32 v);
-void func_02025bfc(void *s, u32 v);
-void func_02025bb4(void *s, u32 v);
+u8 *NNS_G3dGetMdlSet(void *p);
+void NNS_G3dMdlSetMdlDiffAll(void *s, u32 v);
+void NNS_G3dMdlSetMdlAmbAll(void *s, u32 v);
+void NNS_G3dMdlSetMdlEmiAll(void *s, u32 v);
 void *func_ov001_02300c94(void);
 void func_ov001_022fbfcc(void);
 void func_ov001_022fb974(void);
@@ -47,11 +47,11 @@ void func_ov001_022fc09c(void *parent, s32 x, s32 y, s32 z, u16 ang) {
     t = func_ov001_022fd428(kind, parent, x, y, z);
     if (t == NULL)
         return;
-    r = func_02025ecc(data_ov001_0231f098[kind].res);
+    r = NNS_G3dGetMdlSet(data_ov001_0231f098[kind].res);
     h = r + *(u32 *)(r + *(u16 *)(r + 0xe) + 0xc);
-    func_02025c44(h, 0x7fff);
-    func_02025bfc(h, 0);
-    func_02025bb4(h, 0);
+    NNS_G3dMdlSetMdlDiffAll(h, 0x7fff);
+    NNS_G3dMdlSetMdlAmbAll(h, 0);
+    NNS_G3dMdlSetMdlEmiAll(h, 0);
     *(void **)(t + 0x80) = func_ov001_02300c94();
     *(void **)(t + 0x74) = func_ov001_022fbfcc;
     *(s32 *)(t + 0x18) = x;

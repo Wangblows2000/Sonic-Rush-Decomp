@@ -19,31 +19,31 @@ extern u8 data_ov000_02363f1c[];
 extern u8 data_ov000_02363f2c[];
 extern u8 data_ov000_02363f3c[];
 
-s32 func_02025edc(void *dict, void *name);
-void func_02025268(s32 a, s32 *b, s32 c);
+s32 NNS_G3dGetResDictIdxByName(void *dict, void *name);
+void NNS_G3dGeBufferOP_N(s32 a, s32 *b, s32 c);
 
 void func_ov000_022f4d40(UnkStruct_022f4d40 *s) {
-    s32 i0 = func_02025edc(s->unk4->unk4 + 0x40, data_ov000_02363efc);
-    s32 i1 = func_02025edc(s->unk4->unk4 + 0x40, data_ov000_02363f0c);
-    s32 i2 = func_02025edc(s->unk4->unk4 + 0x40, data_ov000_02363f1c);
-    s32 i3 = func_02025edc(s->unk4->unk4 + 0x40, data_ov000_02363f2c);
-    s32 i4 = func_02025edc(s->unk4->unk4 + 0x40, data_ov000_02363f3c);
+    s32 i0 = NNS_G3dGetResDictIdxByName(s->unk4->unk4 + 0x40, data_ov000_02363efc);
+    s32 i1 = NNS_G3dGetResDictIdxByName(s->unk4->unk4 + 0x40, data_ov000_02363f0c);
+    s32 i2 = NNS_G3dGetResDictIdxByName(s->unk4->unk4 + 0x40, data_ov000_02363f1c);
+    s32 i3 = NNS_G3dGetResDictIdxByName(s->unk4->unk4 + 0x40, data_ov000_02363f2c);
+    s32 i4 = NNS_G3dGetResDictIdxByName(s->unk4->unk4 + 0x40, data_ov000_02363f3c);
     s32 cur = (s->unk8 & 0x10) ? s->unkAE : -1;
 
     if (cur == i0) {
         s32 v = 0x1e;
-        func_02025268(0x13, &v, 1);
+        NNS_G3dGeBufferOP_N(0x13, &v, 1);
     } else if (cur == i1) {
         s32 v = 0x1d;
-        func_02025268(0x13, &v, 1);
+        NNS_G3dGeBufferOP_N(0x13, &v, 1);
     } else if (cur == i2) {
         s32 v = 0x1c;
-        func_02025268(0x13, &v, 1);
+        NNS_G3dGeBufferOP_N(0x13, &v, 1);
     } else if (cur == i3) {
         s32 v = 0x1b;
-        func_02025268(0x13, &v, 1);
+        NNS_G3dGeBufferOP_N(0x13, &v, 1);
     } else if (cur == i4) {
         s32 v = 0x1a;
-        func_02025268(0x13, &v, 1);
+        NNS_G3dGeBufferOP_N(0x13, &v, 1);
     }
 }

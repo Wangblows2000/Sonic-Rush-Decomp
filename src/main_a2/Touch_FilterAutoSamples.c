@@ -26,7 +26,7 @@ extern UnkTP_02037650 gTouchSampleBuffer[];
 extern UnkTPState_02037650 gTouchState;
 extern UnkXY_02037650 data_022b65ca[];
 
-void func_0200d1a4(UnkTP_02037650 *out, const UnkTP_02037650 *raw);
+void TP_GetCalibratedPoint(UnkTP_02037650 *out, const UnkTP_02037650 *raw);
 
 void Touch_FilterAutoSamples(s32 idx) {
     u8 n = gTouchState.count;
@@ -40,7 +40,7 @@ void Touch_FilterAutoSamples(s32 idx) {
     st = &gTouchState;
     hist = data_022b65ca;
     for (i = 0; i < n; i++) {
-        func_0200d1a4(&tp[i], &raw[(u8)((idx - i + 5) % 5)]);
+        TP_GetCalibratedPoint(&tp[i], &raw[(u8)((idx - i + 5) % 5)]);
     }
     if (tp[0].validity == 0) {
         st->x = tp[0].x;

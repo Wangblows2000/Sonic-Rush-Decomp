@@ -1,4 +1,4 @@
 #include <nitro/types.h>
 
-void func_020187cc(void);
-void func_020187c0(void) { func_020187cc(); }
+void MBi_CallReset(void);
+void func_020187c0(void) { MBi_CallReset(); }

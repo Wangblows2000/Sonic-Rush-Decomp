@@ -23,8 +23,8 @@ typedef struct {
 } UnkObj_02031878;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02000dfc(void *m);
-void func_0200148c(void *m);
+void MTX_Identity33_(void *m);
+void MTX_Identity43_(void *m);
 void AnimatorSprite_Init(void *p, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
 
 void Model_InitSprite3D(UnkObj_02031878 *o, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g) {
@@ -34,8 +34,8 @@ void Model_InitSprite3D(UnkObj_02031878 *o, u32 a, u32 b, u32 c, u32 d, u32 e, u
     o->flag = c;
     o->cb[0] = 3;
     o->scale[0] = o->scale[1] = o->scale[2] = 0x1000;
-    func_02000dfc(o->rot);
-    func_0200148c(o->mtx);
+    MTX_Identity33_(o->rot);
+    MTX_Identity43_(o->mtx);
     AnimatorSprite_Init(o->unk90, a, b, c, 0, 1, d, 5, e);
     o->polyAttr &= ~0x30;
     o->polyAttr |= 0x80;

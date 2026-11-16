@@ -17,8 +17,8 @@ extern s32 gOverlayRequestedId;
 extern void *gOverlayCallback;
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_02000cb4(void *m);
-void func_02003d94(void *dst, const void *m, s32 a, s32 b, s32 c, s32 d);
+void MTX_Identity22_(void *m);
+void G2x_SetBGyAffine_(void *dst, const void *m, s32 a, s32 b, s32 c, s32 d);
 
 void System_InitState(void) {
     vu16 z1;
@@ -36,14 +36,14 @@ void System_InitState(void) {
     MIi_CpuClear16(z2, gSaveDataBusy, 0x10);
     gSaveDataBusy[1] = 0;
     gSaveDataBusy[0] = 0;
-    func_02000cb4(m);
+    MTX_Identity22_(m);
     for (i = 0; i < 2; i++) {
         UnkDisp_0203039c *d;
         z3 = 0;
         d = gDisplayTable[i];
         MIi_CpuClear16(z3, d, 0x1528);
-        func_02003d94(d->bg2, m, 0, 0, 0, 0);
-        func_02003d94(d->bg3, m, 0, 0, 0, 0);
+        G2x_SetBGyAffine_(d->bg2, m, 0, 0, 0, 0);
+        G2x_SetBGyAffine_(d->bg3, m, 0, 0, 0, 0);
     }
     z4 = 0;
     MIi_CpuClear16(z4, data_0208a754, 0x5088);

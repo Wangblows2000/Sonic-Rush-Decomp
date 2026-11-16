@@ -15,7 +15,7 @@ extern s16 data_0206e470[];
 
 UnkStruct_02303d28_n *func_ov001_02303468(void);
 void func_ov001_0230328c(UnkStruct_02303d28_n *n);
-s32 func_02002094(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -32,7 +32,7 @@ void func_ov001_02303d28(s32 x, s32 y, s32 count) {
         step = 0;
     } else {
         ang = 0xaaaa;
-        step = func_02002094(0x2aab, count - 1);
+        step = FX_DivS32(0x2aab, count - 1);
     }
     for (i = 0; i < count; i++, ang += step) {
         n = func_ov001_02303468();

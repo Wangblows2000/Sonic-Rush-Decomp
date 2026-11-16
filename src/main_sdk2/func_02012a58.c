@@ -16,7 +16,7 @@ s32 func_02012a58(UnkDS *ds, u16 port, u16 aidBitmap, u16 dataLength, BOOL doubl
     u16 childBitmap = 1;
     u16 aid;
     u8 *p = ((UnkWmWork *)func_02010b70())->unk4;
-    s32 r = func_02010a50(2, 9, 10);
+    s32 r = WMi_CheckStateEx(2, 9, 10);
     if (r != 0) {
         return r;
     }

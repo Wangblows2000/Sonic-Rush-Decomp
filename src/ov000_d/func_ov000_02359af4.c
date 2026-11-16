@@ -6,7 +6,7 @@ typedef struct {
 } UnkStruct_02359af4_Sync;
 
 UnkStruct_02359af4_Sync *func_020514e4(void);
-void func_02002ab0(s32 a, s32 b, s32 c);
+void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void func_ov000_023593bc(void);
 
 #pragma thumb on
@@ -41,7 +41,7 @@ void func_ov000_02359af4(UnkStruct_SceneTask *t) {
     } else {
         func_ov000_02358278(w);
     }
-    func_02002ab0(1, 0, 1);
+    GX_SetGraphicsMode(1, 0, 1);
     *(vu16 *)0x400000e = (*(vu16 *)0x400000e & 0x43) | 0x69c;
     w->unk334 = 1;
     w->unk338 = 1;

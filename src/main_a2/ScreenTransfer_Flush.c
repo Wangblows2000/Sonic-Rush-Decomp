@@ -26,9 +26,9 @@ u32 ScreenTransfer_GetCompressionType(void *src);
 u32 ScreenTransfer_GetDataSize(void *src);
 u32 Compress_GetData(void *src);
 void Mem_Copy(u32 src, u32 dst, u32 size);
-void func_02008648(void *src, u32 dst);
-void func_02008720(void *src, u32 dst);
-void func_020087f8(void *src, u32 dst);
+void MI_UncompressLZ16(void *src, u32 dst);
+void MI_UncompressHuffman(void *src, u32 dst);
+void MI_UncompressRL16(void *src, u32 dst);
 void DC_StoreRange(u32 addr, u32 size);
 void TransferJob_Free(UnkJob_020363f0 *job);
 
@@ -45,13 +45,13 @@ void ScreenTransfer_Flush(void) {
                 u32 dst = j->unkC + j->unk8;
                 switch (ScreenTransfer_GetCompressionType(src)) {
                 case 0x10:
-                    func_02008648(src, dst);
+                    MI_UncompressLZ16(src, dst);
                     break;
                 case 0x20:
-                    func_02008720(src, dst);
+                    MI_UncompressHuffman(src, dst);
                     break;
                 case 0x30:
-                    func_020087f8(src, dst);
+                    MI_UncompressRL16(src, dst);
                     break;
                 default:
                     Mem_Copy(Compress_GetData(src), dst, ScreenTransfer_GetDataSize(src));

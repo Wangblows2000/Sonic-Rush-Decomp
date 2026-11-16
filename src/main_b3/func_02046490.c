@@ -16,7 +16,7 @@ typedef struct {
 
 extern u32 gRandSeed;
 void func_020463bc(void);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Sound_PlaySeqArc(void *a, void *b, s32 c);
 
 #pragma thumb on
@@ -37,7 +37,7 @@ void func_02046490(UnkWork_02046490 *w, UnkObj_02046490 *o) {
         o->fn = func_020463bc;
         o->unk4 = 0;
         w->flags |= 0x400000;
-        func_0201c070(w->unk1634, 0);
+        NNS_SndPlayerStopSeq(w->unk1634, 0);
         Sound_PlaySeqArc(NULL, w->unk1630, 2);
     }
     k = 6 - n;

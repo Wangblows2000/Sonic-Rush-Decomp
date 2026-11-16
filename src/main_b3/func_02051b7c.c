@@ -3,8 +3,8 @@
 typedef struct { u8 pad0[4]; s32 unk4; u8 pad8[0xc]; void *snd[5]; s32 unk28; } UnkWork_02051b7c;
 extern UnkWork_02051b7c *gSysSound;
 
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void Sound_PlaySeq(void *a, s32 b);
 
 #pragma thumb on
@@ -37,15 +37,15 @@ void func_02051b7c(s32 n) {
     }
     if (gSysSound->unk28 == 0) {
         if (gSysSound->snd[0] != NULL) {
-            func_0201c070(&gSysSound->snd[0], 0);
-            func_0201bf1c(&gSysSound->snd[0]);
+            NNS_SndPlayerStopSeq(&gSysSound->snd[0], 0);
+            NNS_SndHandleReleaseSeq(&gSysSound->snd[0]);
         }
         Sound_PlaySeq(&gSysSound->snd[0], id);
         gSysSound->unk4 = n;
     } else {
         if (gSysSound->snd[1] != NULL) {
-            func_0201c070(&gSysSound->snd[1], 0);
-            func_0201bf1c(&gSysSound->snd[1]);
+            NNS_SndPlayerStopSeq(&gSysSound->snd[1], 0);
+            NNS_SndHandleReleaseSeq(&gSysSound->snd[1]);
         }
         Sound_PlaySeq(&gSysSound->snd[1], id);
     }

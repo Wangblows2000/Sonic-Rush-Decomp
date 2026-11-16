@@ -32,7 +32,7 @@ void *func_ov000_02322d7c(void *a, s32 b, s32 c, s32 d, u16 e) {
     if (data_ov000_0236a660[i] != NULL)
         return data_ov000_0236a660[i]->work;
     task = Task_Create(StageObj_Main, func_ov000_02322d14, 0, 0x3000, 4, sizeof(UnkStruct_EffObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

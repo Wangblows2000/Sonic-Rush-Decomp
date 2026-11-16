@@ -49,8 +49,8 @@ extern s16 data_0206e470[];
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 void func_02067c6c(UnkEntry_02067670 *e, s16 *ox, s16 *oy);
-void func_02000e98(UnkMtx_02067670 *m, s32 s, s32 c);
-void func_02000eb0(UnkVec_02067670 *v, UnkMtx_02067670 *m, UnkVec_02067670 *d);
+void MTX_RotZ33_(UnkMtx_02067670 *m, s32 s, s32 c);
+void MTX_MultVec33(UnkVec_02067670 *v, UnkMtx_02067670 *m, UnkVec_02067670 *d);
 s32 func_020670bc(UnkEntry_02067670 *e, s32 x, s32 y, s32 p3, s32 dir, u8 *out, s32 p6);
 
 static inline void VecSet_02067670(UnkVec_02067670 *v, s32 x, s32 y, s32 z) {
@@ -119,8 +119,8 @@ s32 func_02067670(UnkActor_02067670 *a, s32 x, s32 y, s32 p3, s32 dir, u8 *out, 
         if ((e->flags & 1) && e->obj->angle != 0) {
             VecSet_02067670(&v, x8 - e->obj->x, y8 - e->obj->y, 0);
             idx = (s32)((u16)(-(e->obj->angle << 8)) & 0xffff) >> 4;
-            func_02000e98(&m, SIN_IDX(idx), COS_IDX(idx));
-            func_02000eb0(&v, &m, &v);
+            MTX_RotZ33_(&m, SIN_IDX(idx), COS_IDX(idx));
+            MTX_MultVec33(&v, &m, &v);
             x = ((v.x >> 4) + e->obj->x) >> 8;
             y = ((v.y >> 4) + e->obj->y) >> 8;
         }

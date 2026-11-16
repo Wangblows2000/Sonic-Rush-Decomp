@@ -3,16 +3,16 @@
 
 #pragma thumb on
 
-s32 func_020075b8();
-s32 func_02007450();
+s32 OS_InitVAlarm();
+s32 OS_CreateVAlarm();
 
 void func_0205fd64(s32 p0) {
-    func_020075b8();
-    func_02007450(((u8 *)p0 + 0x4c));
-    func_02007450(((u8 *)p0 + 0x74));
-    func_02007450(((u8 *)p0 + 0x9c));
-    func_02007450(((u8 *)p0 + 0xc4));
-    func_02007450(((u8 *)p0 + 0x24));
+    OS_InitVAlarm();
+    OS_CreateVAlarm(((u8 *)p0 + 0x4c));
+    OS_CreateVAlarm(((u8 *)p0 + 0x74));
+    OS_CreateVAlarm(((u8 *)p0 + 0x9c));
+    OS_CreateVAlarm(((u8 *)p0 + 0xc4));
+    OS_CreateVAlarm(((u8 *)p0 + 0x24));
 }
 
 #pragma thumb reset

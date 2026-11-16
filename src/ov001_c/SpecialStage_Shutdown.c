@@ -60,15 +60,15 @@ void func_ov001_0231444c(void);
 void func_ov001_0230a438(void);
 void func_ov001_023147dc(void);
 void func_ov001_0230bcc4(void *p);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-void func_0200412c(BOOL enable, u32 fogMode, u32 fogSlope, s32 fogOffset);
+void G3X_SetFog(BOOL enable, u32 fogMode, u32 fogSlope, s32 fogOffset);
 
 static inline void Free_0230c104(void *p) {
     u32 size;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {
@@ -118,7 +118,7 @@ void SpecialStage_Shutdown(void) {
     gDisplayMain.b12 = 0;
     gDisplayMain.b6 = 0;
     gDisplayMain.e8 = 0;
-    func_0200412c(0, 0, 4, 0);
+    G3X_SetFog(0, 0, 4, 0);
     for (i = 0; i < 4; i++) {
         ((UnkStruct_0230c104_p *)&gDisplayMain)[i].x = 0;
         ((UnkStruct_0230c104_p *)&gDisplayMain)[i].y = 0;

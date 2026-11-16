@@ -3,7 +3,7 @@
 
 s32 SaveData_VerifyChecksum();
 s32 SaveData_CalcChecksum();
-s32 func_0202a1a0();
+s32 memcmp();
 
 s32 SaveData_Compare(s32 p0, s32 p1) {
     s32 t0 = SaveData_VerifyChecksum();
@@ -19,6 +19,6 @@ s32 SaveData_Compare(s32 p0, s32 p1) {
     if (t2 != t3) {
         return 0;
     }
-    s32 t4 = func_0202a1a0(p0, p1, 0x314);
+    s32 t4 = memcmp(p0, p1, 0x314);
     return (t4 == 0);
 }

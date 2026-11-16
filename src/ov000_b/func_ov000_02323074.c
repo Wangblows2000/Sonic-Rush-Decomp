@@ -40,7 +40,7 @@ UnkStruct_02323074 *func_ov000_02323074(UnkStruct_ObjParam *p, s32 a, s32 b) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, Decoration_Destructor, 0, 0x500, 4, sizeof(UnkStruct_02323074));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;

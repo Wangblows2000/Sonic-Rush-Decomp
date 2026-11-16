@@ -11,7 +11,7 @@ typedef struct {
     } sig;
 } UnkDecimal_0202d0fc;
 
-void func_0202d49c(UnkDecimal_0202d0fc *d, s32 n);
+void __dorounddecup(UnkDecimal_0202d0fc *d, s32 n);
 
 void func_0202d0fc(UnkDecimal_0202d0fc *d, const u8 *s, s16 exp) {
     s32 i;
@@ -32,5 +32,5 @@ void func_0202d0fc(UnkDecimal_0202d0fc *d, const u8 *s, s16 exp) {
         if (!(d->sig.text[(u32)(i - 1)] & 1)) return;
     }
 round:
-    func_0202d49c(d, d->sig.length);
+    __dorounddecup(d, d->sig.length);
 }

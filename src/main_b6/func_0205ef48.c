@@ -95,7 +95,7 @@ void func_020212e0(void *f);
 void func_0205e378(UnkWork_0205ef48 *w);
 void func_0205df04(UnkWork_0205ef48 *w);
 void func_02022270(u32 index, u32 value);
-void func_02004084(const u16 *table);
+void G3X_SetEdgeColorTable(const u16 *table);
 void func_0205ec5c(void);
 void func_0205eb68(void);
 void func_0205b39c(void);
@@ -193,6 +193,6 @@ void func_0205ef48(void) {
     func_02022270(2, 0);
     {
         u16 edge[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-        func_02004084(edge);
+        G3X_SetEdgeColorTable(edge);
     }
 }

@@ -5,7 +5,7 @@ extern s32 data_ov001_0231d4c0[];
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov001_022f3b50(void *p);
 u8 *ExtraBoss_GetWork(void);
-s32 func_02002094(s32 a, s32 b);
+s32 FX_DivS32(s32 a, s32 b);
 void func_ov001_022fb5ec(void *p);
 void func_ov001_022f56f8(void);
 
@@ -25,7 +25,7 @@ void func_ov001_022f57a8(u8 *p) {
     b = ExtraBoss_GetWork();
     c = ExtraBoss_GetWork();
     d = ExtraBoss_GetWork();
-    *(s32 *)(r + 0x114) = func_02002094(*(s32 *)(a + 0x308) * 0x1333 + (*(s32 *)(b + 0x30c) - *(s32 *)(c + 0x308)) * 0x1800, *(s32 *)(d + 0x30c));
+    *(s32 *)(r + 0x114) = FX_DivS32(*(s32 *)(a + 0x308) * 0x1333 + (*(s32 *)(b + 0x30c) - *(s32 *)(c + 0x308)) * 0x1800, *(s32 *)(d + 0x30c));
     func_ov001_022fb5ec(*(void **)(*(u8 **)(p + 0x1dc) + 0x10));
     *(s32 *)(p + 0x60) = 0;
     *(s32 *)(p + 0x5c) = *(s32 *)(p + 0x60);

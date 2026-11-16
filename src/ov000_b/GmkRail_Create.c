@@ -11,7 +11,7 @@ extern u8 data_ov000_02366d94[], data_ov000_0236a1ac[], data_ov000_02366dac[];
 
 void MapObject_Destructor(void);
 void GmkRail_OnHit(void);
-s32 func_020027a4(s32 y, s32 x);
+s32 FX_Atan2(s32 y, s32 x);
 void func_ov000_02313310(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *GmkRail_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -20,7 +20,7 @@ UnkStruct_StageObj *GmkRail_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     vu16 zero;
 
     task = Task_Create(StageObj_Main, MapObject_Destructor, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
-    if (task == func_02006abc(0))
+    if (task == OS_GetArenaLo(0))
         return NULL;
     w = task->work;
     zero = 0;
@@ -43,7 +43,7 @@ UnkStruct_StageObj *GmkRail_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->coll0.unk18 = w;
     w->unk58 |= 0x100;
     w->unk8 = (w->unk1E8 + (p->unk8 + (p->unk6 << 6))) << 8;
-    w->unkC = func_020027a4(p->unk9 + (p->unk7 << 6), p->unk8 + (p->unk6 << 6)) << 8;
+    w->unkC = FX_Atan2(p->unk9 + (p->unk7 << 6), p->unk8 + (p->unk6 << 6)) << 8;
     func_ov000_02313310(w);
     return w;
 }

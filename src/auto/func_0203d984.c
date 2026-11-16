@@ -20,9 +20,9 @@ typedef int code();
 #define false 0
 
 extern unsigned char data_022c14a0[];
-int func_02005cb0();
-int func_02005ba0();
-int func_02005cc4();
+int OS_IsThreadTerminated();
+int OS_WakeupThreadDirect();
+int OS_JoinThread();
 
 void func_0203d984(void)
 
@@ -31,15 +31,15 @@ void func_0203d984(void)
   int iVar2;
   
   iVar2 = ((int)data_022c14a0);
-  iVar1 = func_02005cb0(((int)data_022c14a0) + 0x400);
+  iVar1 = OS_IsThreadTerminated(((int)data_022c14a0) + 0x400);
   if (iVar1 != 0) {
     return;
   }
   iVar2 = iVar2 + 0x400;
   do {
-    func_02005ba0(iVar2);
-    func_02005cc4(iVar2);
-    iVar1 = func_02005cb0(iVar2);
+    OS_WakeupThreadDirect(iVar2);
+    OS_JoinThread(iVar2);
+    iVar1 = OS_IsThreadTerminated(iVar2);
   } while (iVar1 == 0);
   return;
 }

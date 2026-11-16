@@ -35,8 +35,8 @@ extern u32 gSystemFlags;
 extern u16 gDisplayMain[];
 
 UnkStruct_02304a24_p *ExtraBoss_GetWork(void);
-s32 func_02002094(s32 n, s32 d);
-s32 func_0200203c(s32 n, s32 d);
+s32 FX_DivS32(s32 n, s32 d);
+s32 FX_ModS32(s32 n, s32 d);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -74,13 +74,13 @@ void func_ov001_02304a24(void) {
     if (data_ov001_0231f54c->flags & 1)
         return;
     type = ExtraBoss_GetWork()->unk40;
-    x = (func_02002094((ExtraBoss_GetWork()->unk31C >> 12) - 0x80, 3) + (data_ov001_0231f54c->unk588 >> 16)) & 0xff;
-    y = func_02002094(((ExtraBoss_GetWork()->unk320 >> 12) - 0x60) * 0x38, 0xc0) & 0xff;
+    x = (FX_DivS32((ExtraBoss_GetWork()->unk31C >> 12) - 0x80, 3) + (data_ov001_0231f54c->unk588 >> 16)) & 0xff;
+    y = FX_DivS32(((ExtraBoss_GetWork()->unk320 >> 12) - 0x60) * 0x38, 0xc0) & 0xff;
     g = data_ov001_0231f54c;
     if (g->unkB4C > 0) {
         g->unkB4C--;
-        x += func_0200203c(Rand(), data_ov001_0231f54c->unkB50) - (data_ov001_0231f54c->unkB50 >> 1);
-        y += func_0200203c(Rand(), data_ov001_0231f54c->unkB50) - (data_ov001_0231f54c->unkB50 >> 1);
+        x += FX_ModS32(Rand(), data_ov001_0231f54c->unkB50) - (data_ov001_0231f54c->unkB50 >> 1);
+        y += FX_ModS32(Rand(), data_ov001_0231f54c->unkB50) - (data_ov001_0231f54c->unkB50 >> 1);
         g = data_ov001_0231f54c;
     }
     g->unkB34 += 0x800;
@@ -88,9 +88,9 @@ void func_ov001_02304a24(void) {
     phase = g->unkB34 >> 12;
     if (phase + 0x100 - g->unkB30 > 0) {
         amp = (Rand() & 0x7ff) + 0x1000;
-        k = func_0200203c(g->unkB30 + 1, 0x140);
+        k = FX_ModS32(g->unkB30 + 1, 0x140);
         w = &data_ov001_0231f54c->wave[k];
-        ang = (u16)((func_02002094(k, 0x20) & 1) << 15);
+        ang = (u16)((FX_DivS32(k, 0x20) & 1) << 15);
         for (i = 0; i < 0x20; i++, w++) {
             *w = FX_Mul(Sin(ang), amp) >> 9;
             ang += 0x400;
@@ -111,7 +111,7 @@ void func_ov001_02304a24(void) {
     t = data_ov001_0231f54c->unkB38;
     if (t >= period)
         t = period * 2 - t;
-    s = func_02002094(a * t + b * (period - t), period);
+    s = FX_DivS32(a * t + b * (period - t), period);
     g = data_ov001_0231f54c;
     dst = g->hdma[g->unkB2C];
     k = (phase + y) & 0xff;

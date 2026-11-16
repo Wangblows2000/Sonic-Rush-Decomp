@@ -53,7 +53,7 @@ void func_ov001_022f4028(void);
 void func_ov001_022f3d6c(void);
 UnkStruct_022f41c4_o *func_ov001_023014f4(s32 a, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Model_Init(void *s, u32 a);
@@ -84,7 +84,7 @@ void func_ov001_022f41c4(UnkStruct_022f41c4_o *w) {
 
     o = func_ov001_023014f4(2, 0x2f01);
     a = (UnkStruct_022f41c4_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
-    if ((void *)func_02006abc(0) != a) {
+    if ((void *)OS_GetArenaLo(0) != a) {
         fill1 = 0xcccccccc;
         MIi_CpuClear32(fill1, a, 0x160);
         *(u32 *)a = 0x160;
@@ -101,7 +101,7 @@ void func_ov001_022f41c4(UnkStruct_022f41c4_o *w) {
 
     o = func_ov001_023014f4(2, 0x2f01);
     a = (UnkStruct_022f41c4_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
-    if ((void *)func_02006abc(0) != a) {
+    if ((void *)OS_GetArenaLo(0) != a) {
         fill2 = 0xcccccccc;
         MIi_CpuClear32(fill2, a, 0x160);
         *(u32 *)a = 0x160;
@@ -117,7 +117,7 @@ void func_ov001_022f41c4(UnkStruct_022f41c4_o *w) {
 
     o3 = func_ov001_023014f4(2, 0x2f01);
     a = (UnkStruct_022f41c4_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
-    if ((void *)func_02006abc(0) != a) {
+    if ((void *)OS_GetArenaLo(0) != a) {
         fill3 = 0xcccccccc;
         MIi_CpuClear32(fill3, a, 0x160);
         *(u32 *)a = 0x160;
@@ -140,7 +140,7 @@ void func_ov001_022f41c4(UnkStruct_022f41c4_o *w) {
 
     o = func_ov001_023014f4(2, 0x2f01);
     a = (UnkStruct_022f41c4_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
-    if ((void *)func_02006abc(0) != a) {
+    if ((void *)OS_GetArenaLo(0) != a) {
         fill4 = 0xcccccccc;
         MIi_CpuClear32(fill4, a, 0x160);
         *(u32 *)a = 0x160;

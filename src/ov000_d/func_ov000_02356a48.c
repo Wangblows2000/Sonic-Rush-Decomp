@@ -24,11 +24,11 @@ void func_ov000_02356a48(UnkStruct_Mdl *w) {
     idx = (s32)((u16)(w->ry + m->angOfs) & 0xffff) >> 4;
     MTX_RotY33_(&a, MDL_SIN_IDX(idx), MDL_COS_IDX(idx));
     idx = (s32)((u16)w->rx & 0xffff) >> 4;
-    func_02000e60(&b, MDL_SIN_IDX(idx), MDL_COS_IDX(idx));
-    func_02000f34(&a, &b, &a);
+    MTX_RotX33_(&b, MDL_SIN_IDX(idx), MDL_COS_IDX(idx));
+    MTX_Concat33(&a, &b, &a);
     idx = (s32)((u16)w->rz & 0xffff) >> 4;
-    func_02000e98(&b, MDL_SIN_IDX(idx), MDL_COS_IDX(idx));
-    func_02000f34(&a, &b, &r->rot);
+    MTX_RotZ33_(&b, MDL_SIN_IDX(idx), MDL_COS_IDX(idx));
+    MTX_Concat33(&a, &b, &r->rot);
     if (m->cur != m->prev) {
         if (m->flag) {
             Model_SetAnimation(&m->r, 0, m->anm158, m->cur, NULL);
@@ -50,10 +50,10 @@ void func_ov000_02356a48(UnkStruct_Mdl *w) {
         v[2] = 0x2000;
         func_ov000_023568ac(m->r.unk94, 1, v);
     }
-    func_02025268(0x11, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     Model_Draw(r);
     one = 1;
-    func_02025268(0x12, &one, 1);
+    NNS_G3dGeBufferOP_N(0x12, &one, 1);
 }
 
 #pragma thumb reset

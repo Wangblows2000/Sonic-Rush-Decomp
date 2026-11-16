@@ -40,7 +40,7 @@ extern s16 data_0206e470[];
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Saucer_Explode(UnkStruct_023156e0 *w);
 s32 ObjSpd_UpSet(s32 a, s32 b, s32 c);
 s32 ObjSpd_DownSet(s32 a, s32 b);
@@ -58,7 +58,7 @@ void func_ov000_023156e0(UnkStruct_023156e0 *w) {
         max <<= 1;
     }
     if (w->unk58 & 0xf) {
-        func_0201c070(w->unk1DC, 0);
+        NNS_SndPlayerStopSeq(w->unk1DC, 0);
         Saucer_Explode(w);
         return;
     }

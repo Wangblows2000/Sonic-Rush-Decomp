@@ -52,9 +52,9 @@ extern u8 data_02072e30[];
 extern UnkSize_02030a84 data_02072dd0[];
 extern u16 data_02072d60[];
 
-void func_0200148c(fx32 *mtx);
-void func_02025268(u32 op, const void *args, u32 n);
-void func_02025364(const void *dl, u32 size);
+void MTX_Identity43_(fx32 *mtx);
+void NNS_G3dGeBufferOP_N(u32 op, const void *args, u32 n);
+void NNS_G3dGeSendDL(const void *dl, u32 size);
 
 static inline void VecSet(fx32 *v, fx32 x, fx32 y, fx32 z) {
     v[0] = x;
@@ -63,38 +63,38 @@ static inline void VecSet(fx32 *v, fx32 x, fx32 y, fx32 z) {
 }
 static inline void GeMtxMode(u32 mode) {
     u32 a = mode;
-    func_02025268(0x10, &a, 1);
+    NNS_G3dGeBufferOP_N(0x10, &a, 1);
 }
 static inline void GePushMtx(void) {
-    func_02025268(0x11, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x11, NULL, 0);
 }
 static inline void GePopMtx(u32 n) {
     u32 a = n;
-    func_02025268(0x12, &a, 1);
+    NNS_G3dGeBufferOP_N(0x12, &a, 1);
 }
 static inline void GeMultMtx43(const fx32 *m) {
-    func_02025268(0x17, m, 12);
+    NNS_G3dGeBufferOP_N(0x17, m, 12);
 }
 static inline void GeTranslate(fx32 x, fx32 y, fx32 z) {
     fx32 v[3];
     v[0] = x;
     v[1] = y;
     v[2] = z;
-    func_02025268(0x1c, v, 3);
+    NNS_G3dGeBufferOP_N(0x1c, v, 3);
 }
 static inline void GeTranslateVec(const fx32 *v) {
-    func_02025268(0x1c, v, 3);
+    NNS_G3dGeBufferOP_N(0x1c, v, 3);
 }
 static inline void GeScale(fx32 x, fx32 y, fx32 z) {
     fx32 v[3];
     v[0] = x;
     v[1] = y;
     v[2] = z;
-    func_02025268(0x1b, v, 3);
+    NNS_G3dGeBufferOP_N(0x1b, v, 3);
 }
 static inline void GeTexImageParam(u32 p) {
     u32 a = p;
-    func_02025268(0x2a, &a, 1);
+    NNS_G3dGeBufferOP_N(0x2a, &a, 1);
 }
 
 void Model_DrawSprite3D(UnkObj_02030a84 *o) {
@@ -119,28 +119,28 @@ void Model_DrawSprite3D(UnkObj_02030a84 *o) {
     fx32 trans[3] = {0, 0, 0};
     fx32 mtx[12];
     oam = cell->oam;
-    func_0200148c(mtx);
-    func_02025268(0x29, &o->polyAttr, 1);
+    MTX_Identity43_(mtx);
+    NNS_G3dGeBufferOP_N(0x29, &o->polyAttr, 1);
     texFmt = data_02072d78[fmt];
     {
         u32 a = s->plttAddr >> (4 - (texFmt == 2));
-        func_02025268(0x2b, &a, 1);
+        NNS_G3dGeBufferOP_N(0x2b, &a, 1);
     }
     {
         u32 a = o->dif.col | (o->amb.col << 16) | ((o->dif.flag ? 1 : 0) << 15);
-        func_02025268(0x30, &a, 1);
+        NNS_G3dGeBufferOP_N(0x30, &a, 1);
     }
     {
         u32 a = o->spe.col | (o->emi.col << 16) | ((o->spe.flag ? 1 : 0) << 15);
-        func_02025268(0x31, &a, 1);
+        NNS_G3dGeBufferOP_N(0x31, &a, 1);
     }
     {
         u32 a = o->color;
-        func_02025268(0x20, &a, 1);
+        NNS_G3dGeBufferOP_N(0x20, &a, 1);
     }
     if (!o->dif.flag) {
         u32 a = 0x1ff00000;
-        func_02025268(0x21, &a, 1);
+        NNS_G3dGeBufferOP_N(0x21, &a, 1);
     }
     switch (fmt) {
     case 0:
@@ -194,7 +194,7 @@ void Model_DrawSprite3D(UnkObj_02030a84 *o) {
                     texAddr += 1 << data_02072e64[fmt];
                     GeTranslate(trans[0] + (x << 12), trans[1] - (y << 12), 0);
                     GeScale(0x8000, 0x8000, 0);
-                    func_02025364(data_02072e30, 0x34);
+                    NNS_G3dGeSendDL(data_02072e30, 0x34);
                     GePopMtx(1);
                 }
             }
@@ -239,7 +239,7 @@ void Model_DrawSprite3D(UnkObj_02030a84 *o) {
             GeMtxMode(1);
             GeTranslateVec(trans);
             GeScale((sz->w << 12) + 8, (sz->h << 12) + 8, 0);
-            func_02025364(data_02072e30, 0x34);
+            NNS_G3dGeSendDL(data_02072e30, 0x34);
             GePopMtx(1);
         }
         }

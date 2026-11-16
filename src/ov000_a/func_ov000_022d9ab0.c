@@ -88,7 +88,7 @@ void StageObj_SetPause(void);
 void func_ov000_02347c44(UnkStruct_022d9ab0_p *p);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
-void func_0201bfbc(s32 a);
+void NNS_SndPlayerStopSeqAll(s32 a);
 void Boss3PartCC_State_Unk_ov000_022d9aa0(UnkStruct_022d9ab0 *s);
 
 void func_ov000_022d9ab0(UnkStruct_022d9ab0 *s) {
@@ -123,6 +123,6 @@ void func_ov000_022d9ab0(UnkStruct_022d9ab0 *s) {
     gPlayers->unk422 = gPlayers->unk424;
     gPlayers->unk420 = gPlayers->unk422;
     func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
-    func_0201bfbc(0);
+    NNS_SndPlayerStopSeqAll(0);
     s->func = Boss3PartCC_State_Unk_ov000_022d9aa0;
 }

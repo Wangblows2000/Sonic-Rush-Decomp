@@ -10,7 +10,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
 u16 func_02010f7c(void);
-u16 func_02018e5c(void);
+u16 MBi_GetBeaconPeriodDispersion(void);
 
 s32 func_02018c64(void *buf, UnkInitParam_wh *param, u32 ggid, u32 tgid, u32 dma)
 {
@@ -67,7 +67,7 @@ s32 func_02018c64(void *buf, UnkInitParam_wh *param, u32 ggid, u32 tgid, u32 dma
     work->parentParam.KS_Flag = 0;
     work->parentParam.ggid = ggid;
     work->parentParam.tgid = tgid;
-    work->parentParam.beaconPeriod = func_02018e5c() + 200;
+    work->parentParam.beaconPeriod = MBi_GetBeaconPeriodDispersion() + 200;
     work->parentParam.maxEntry = 15;
     work->unk50c = 0;
     work->unk50d = 0;

@@ -57,7 +57,7 @@ extern u32 gObjManagerFlags;
 extern u32 gRandSeed;
 extern UnkStruct_0234aec8_Tbl data_ov000_0236ab3a[];
 
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Player_SetAnimation(UnkStruct_0234aec8 *w, s32 state);
 BOOL func_ov000_023470ec(UnkStruct_0234aec8 *w);
@@ -82,7 +82,7 @@ void func_ov000_0234aec8(UnkStruct_0234aec8 *w) {
 
     if ((w->unk328 < 5 || w->unk328 > 10) &&
         (((w->unk420 & 0x20) && w->unk34 >= 0x200) || ((w->unk420 & 0x10) && w->unk34 <= -0x200))) {
-        func_0201c070(w->unk384, 0);
+        NNS_SndPlayerStopSeq(w->unk384, 0);
         if (w->unk324 != 1) {
             Sound_PlaySeqArcEx(w->unk384, 0, 3);
         } else {
@@ -108,7 +108,7 @@ void func_ov000_0234aec8(UnkStruct_0234aec8 *w) {
     }
     if ((w->unk328 == 6 || w->unk328 == 9) && (w->unk34 <= 0 || !(w->unk420 & 0x20)) &&
         (w->unk34 >= 0 || !(w->unk420 & 0x10))) {
-        func_0201c070(w->unk384, 0);
+        NNS_SndPlayerStopSeq(w->unk384, 0);
         if (w->unk328 == 6) {
             Player_SetAnimation(w, 7);
         } else {

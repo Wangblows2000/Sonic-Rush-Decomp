@@ -29,8 +29,8 @@ extern s16 data_0206e470[];
 
 s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 void func_ov000_02328e6c(UnkStruct_02353f08 *w, s32 a, s32 b);
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void func_ov000_0234c644(UnkStruct_02353f08 *w);
 void func_ov000_0234a064(UnkStruct_02353f08 *w, u8 a);
 
@@ -62,8 +62,8 @@ void func_ov000_02353f08(UnkStruct_02353f08 *w) {
         if (!(w->unk58 & 1)) {
             return;
         }
-        func_0201c070(w->unk388, 0x10);
-        func_0201bf1c(w->unk388);
+        NNS_SndPlayerStopSeq(w->unk388, 0x10);
+        NNS_SndHandleReleaseSeq(w->unk388);
         func_ov000_0234c644(w);
         w->unk58 |= 0x40000;
         w->unk32C &= ~0x100000;

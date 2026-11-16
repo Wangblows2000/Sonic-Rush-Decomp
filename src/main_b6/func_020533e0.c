@@ -52,7 +52,7 @@ extern Tbl_020533e0 data_020756c0[];
 
 void func_020366f4(s32 a, s32 b, s32 c);
 void func_02052af8(UnkWork_020533e0 *w, s32 a, s32 b);
-void func_0201c070(void *p, s32 a);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
 
 void func_020533e0(s32 a, s32 b) {
     UnkWork_020533e0 *w;
@@ -150,6 +150,6 @@ void func_020533e0(s32 a, s32 b) {
     w->unk114 = &w->unk118;
     if (snd == -1)
         return;
-    func_0201c070(w->unk114, 0);
+    NNS_SndPlayerStopSeq(w->unk114, 0);
     func_020366f4((s32)w->unk114, data_0207566c[w->idx], snd);
 }

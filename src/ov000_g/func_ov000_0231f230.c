@@ -32,11 +32,11 @@ typedef struct {
 } UnkStruct_0231f230_G;
 
 extern UnkStruct_0231f230_C data_ov000_0236a444;
-extern UnkStruct_0231f230_G data_02084d38;
+extern UnkStruct_0231f230_G NNS_G3dGlb;
 extern s16 data_0206e470[];
 
-void func_02004988(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, void *mtx);
-void func_020044f4(UnkVec_0231f230 *pos, UnkVec_0231f230 *up, UnkVec_0231f230 *at, s32 a, void *mtx);
+void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, void *mtx);
+void G3i_LookAt_(UnkVec_0231f230 *pos, UnkVec_0231f230 *up, UnkVec_0231f230 *at, s32 a, void *mtx);
 void VEC_Add(const UnkVec_0231f230 *a, const UnkVec_0231f230 *b, UnkVec_0231f230 *ab);
 s32 func_0200225c(s32 a, s32 b);
 
@@ -44,21 +44,21 @@ s32 func_0200225c(s32 a, s32 b);
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
 static inline void LookAt_0231f230(UnkVec_0231f230 *pos, UnkVec_0231f230 *up, UnkVec_0231f230 *at) {
-    data_02084d38.unk240 = *pos;
-    data_02084d38.unk24C = *up;
-    data_02084d38.unk258 = *at;
-    func_020044f4(pos, up, at, 0, data_02084d38.unk4C);
-    data_02084d38.unkFC &= ~0xe8;
+    NNS_G3dGlb.unk240 = *pos;
+    NNS_G3dGlb.unk24C = *up;
+    NNS_G3dGlb.unk258 = *at;
+    G3i_LookAt_(pos, up, at, 0, NNS_G3dGlb.unk4C);
+    NNS_G3dGlb.unkFC &= ~0xe8;
 }
 
 void func_ov000_0231f230(void) {
     UnkVec_0231f230 pos;
     UnkVec_0231f230 at;
 
-    func_02004988(SIN(data_ov000_0236a444.unk4), COS(data_ov000_0236a444.unk4), data_ov000_0236a444.unk10,
+    G3i_PerspectiveW_(SIN(data_ov000_0236a444.unk4), COS(data_ov000_0236a444.unk4), data_ov000_0236a444.unk10,
                   data_ov000_0236a444.unk8, data_ov000_0236a444.unkC, data_ov000_0236a444.unk14, 0,
-                  data_02084d38.unk8);
-    data_02084d38.unkFC &= ~0x50;
+                  NNS_G3dGlb.unk8);
+    NNS_G3dGlb.unkFC &= ~0x50;
     data_ov000_0236a444.unk24.x = 0x80000;
     data_ov000_0236a444.unk24.y = -0x60000;
     data_ov000_0236a444.unk24.z = 0;

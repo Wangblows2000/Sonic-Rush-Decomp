@@ -28,7 +28,7 @@ typedef struct {
 extern UnkStruct_0208922c gDisplayMain;
 extern u8 data_02250464[];
 
-void func_0201c070(void *a, s32 b);
+void NNS_SndPlayerStopSeq(void *a, s32 b);
 void func_ov000_022f0e38(UnkStruct_022f0e90 *p);
 
 void func_ov000_022f0e90(UnkStruct_022f0e90 *p) {
@@ -36,7 +36,7 @@ void func_ov000_022f0e90(UnkStruct_022f0e90 *p) {
     gDisplayMain.unk20.bits.a = 1;
     gDisplayMain.unk20.bits.b = 2;
     gDisplayMain.unk24.c = 0;
-    func_0201c070(data_02250464, 0x3c);
+    NNS_SndPlayerStopSeq(data_02250464, 0x3c);
     p->unk454 = 0;
     p->unk68 = func_ov000_022f0e38;
 }

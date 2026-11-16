@@ -4,7 +4,7 @@
 s32 Player_SetAnimation();
 s32 func_ov000_0234bc30();
 s32 Sound_PlaySeqArcEx();
-s32 func_0201c070();
+s32 NNS_SndPlayerStopSeq();
 s32 ObjSpd_UpSet();
 s32 func_ov000_023340f0();
 s32 func_ov000_023470a0();
@@ -38,7 +38,7 @@ void func_ov000_0234b810(u8 *p0) {
         return;
     }
     if ((*(u16 *)((u8 *)p0 + 0x422) & 3) != 0) {
-        func_0201c070(((u8 *)p0 + 0x384), 0);
+        NNS_SndPlayerStopSeq(((u8 *)p0 + 0x384), 0);
         if (*(u8 *)((u8 *)p0 + 0x324) != 1) {
             Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0);
         } else {

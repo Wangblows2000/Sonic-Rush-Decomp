@@ -35,7 +35,7 @@ void func_ov001_0231323c(void *w);
 void func_ov001_023159b4(void);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 void func_ov001_0231599c(s32 v);
-void func_0201c070(void **pp, s32 a);
+void NNS_SndPlayerStopSeq(void **pp, s32 a);
 void func_ov001_0230b164(void);
 
 void func_ov001_0230b658(void) {
@@ -88,7 +88,7 @@ void func_ov001_0230b658(void) {
         func_ov001_0231599c(0xb);
         break;
     case 0xf0:
-        func_0201c070(&data_02250464, 0x3c);
+        NNS_SndPlayerStopSeq(&data_02250464, 0x3c);
         break;
     case 0x12c:
         func_ov001_0230b164();

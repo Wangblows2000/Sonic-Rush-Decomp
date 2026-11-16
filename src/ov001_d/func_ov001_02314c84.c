@@ -18,7 +18,7 @@ extern s32 data_ov001_0231f6a8;
 extern UnkStruct_02314c84_e *data_ov001_0231f6a4;
 
 void MI_CpuFill8(void *dest, u8 data, u32 size);
-char *func_0202c4a4(char *dst, const char *src, u32 n);
+char *strncpy(char *dst, const char *src, u32 n);
 void func_ov001_02314a48(s32 i, s32 a, s32 b, s32 c, s32 d);
 
 s32 func_ov001_02314c84(const char *name) {
@@ -35,7 +35,7 @@ s32 func_ov001_02314c84(const char *name) {
     if (i >= n)
         return -1;
     MI_CpuFill8(&data_ov001_0231f6a4[i], 0, 0x20);
-    func_0202c4a4(data_ov001_0231f6a4[i].name, name, 0x1f);
+    strncpy(data_ov001_0231f6a4[i].name, name, 0x1f);
     data_ov001_0231f6a4[i].a = a;
     data_ov001_0231f6a4[i].b = b;
     data_ov001_0231f6a4[i].c = c;

@@ -32,8 +32,8 @@ typedef struct {
 extern s16 data_0206e470[];
 extern UnkStruct_02353568_4560 data_022c4560;
 
-void func_0201c070(void *p, s32 a);
-void func_0201bf1c(void *p);
+void NNS_SndPlayerStopSeq(void *p, s32 a);
+void NNS_SndHandleReleaseSeq(void *p);
 void func_ov000_0234c644(UnkStruct_02353568 *w);
 void func_ov000_0234a064(UnkStruct_02353568 *w, u8 ang);
 void func_ov000_02328e6c(UnkStruct_02353568 *w, s32 a, s32 b);
@@ -50,8 +50,8 @@ void func_ov000_02353568(UnkStruct_02353568 *w) {
     if (w->unk32A != 0) {
         w->unk32A--;
     } else if (w->unk58 & 0xd) {
-        func_0201c070(w->unk388, 0x10);
-        func_0201bf1c(w->unk388);
+        NNS_SndPlayerStopSeq(w->unk388, 0x10);
+        NNS_SndHandleReleaseSeq(w->unk388);
         func_ov000_0234c644(w);
         w->unk1 = 0;
         w->unk58 &= ~0x2000;

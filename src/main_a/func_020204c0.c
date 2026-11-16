@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
 extern u32 data_020779ec;
-void func_02008968(u32 a);
-void func_0201d010(void);
+void SNDi_SetSurroundDecay(u32 a);
+void NNS_SndCaptureStopEffect(void);
 
 void func_020204c0(void) {
     if (data_020779ec == 1) {
-        func_02008968(0);
+        SNDi_SetSurroundDecay(0);
     }
-    func_0201d010();
+    NNS_SndCaptureStopEffect();
 }

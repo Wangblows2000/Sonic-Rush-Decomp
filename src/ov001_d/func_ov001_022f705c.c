@@ -29,15 +29,15 @@ typedef struct UnkStruct_022f705c_d38 {
 
 extern u8 data_02084d40[];
 extern s16 data_0206e470[];
-extern UnkStruct_022f705c_d38 data_02084d38;
+extern UnkStruct_022f705c_d38 NNS_G3dGlb;
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
 void VEC_Add(const UnkStruct_022f705c_v *a, const UnkStruct_022f705c_v *b, UnkStruct_022f705c_v *c);
 s32 func_0200225c(s32 n, s32 d);
-void func_02004988(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
-void func_020044f4(void *a, void *b, void *c, s32 d, void *e);
+void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
+void G3i_LookAt_(void *a, void *b, void *c, s32 d, void *e);
 
 void func_ov001_022f705c(UnkStruct_022f705c *p) {
     UnkStruct_022f705c_v pos;
@@ -46,11 +46,11 @@ void func_ov001_022f705c(UnkStruct_022f705c *p) {
     VEC_Add(&p->v20, &p->v38, &up);
     p->v14.z = func_0200225c(COS(p->ang), SIN(p->ang)) * 0x60 + p->v20.z;
     VEC_Add(&p->v14, &p->v38, &pos);
-    func_02004988(SIN(p->ang), COS(p->ang), p->unkC, p->unk4, p->unk8, p->unk10, 0, data_02084d40);
-    data_02084d38.unkFC &= ~0x50;
-    data_02084d38.pos = pos;
-    data_02084d38.target = p->v2C;
-    data_02084d38.up = up;
-    func_020044f4(&pos, &p->v2C, &up, 0, data_02084d38.unk4C);
-    data_02084d38.unkFC &= ~0xe8;
+    G3i_PerspectiveW_(SIN(p->ang), COS(p->ang), p->unkC, p->unk4, p->unk8, p->unk10, 0, data_02084d40);
+    NNS_G3dGlb.unkFC &= ~0x50;
+    NNS_G3dGlb.pos = pos;
+    NNS_G3dGlb.target = p->v2C;
+    NNS_G3dGlb.up = up;
+    G3i_LookAt_(&pos, &p->v2C, &up, 0, NNS_G3dGlb.unk4C);
+    NNS_G3dGlb.unkFC &= ~0xe8;
 }

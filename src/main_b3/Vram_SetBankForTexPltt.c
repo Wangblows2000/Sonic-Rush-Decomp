@@ -10,8 +10,8 @@ extern UnkVram_0208a754 data_0208a754;
 extern u8 data_0208a764[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02002edc(void);
-void func_020033d8(s32 bank);
+void GX_DisableBankForTexPltt(void);
+void GX_SetBankForTexPltt(s32 bank);
 
 void Vram_SetBankForTexPltt(s32 bank) {
     vu32 zero = 0;
@@ -55,8 +55,8 @@ void Vram_SetBankForTexPltt(s32 bank) {
         data_0208a754.extCount = 6;
         break;
     default:
-        func_02002edc();
+        GX_DisableBankForTexPltt();
         return;
     }
-    func_020033d8(bank);
+    GX_SetBankForTexPltt(bank);
 }

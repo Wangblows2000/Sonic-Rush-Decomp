@@ -5,11 +5,11 @@ typedef struct { u8 unk0[0xC]; u16 headerSize; u16 numBlocks; } UnkNarc_02021310
 typedef struct { u8 unk0[0x50]; void *narc; void *fat; void *img; } UnkArc_02021310;
 
 BOOL func_0202146c(void *narc);
-void func_0200b2cc(UnkArc_02021310 *arc);
-u32 func_0202c5f0(const char *s);
-BOOL func_0200b20c(UnkArc_02021310 *arc, const char *name, u32 len);
-BOOL func_0200b0fc(UnkArc_02021310 *arc, u32 base, u32 fatOff, u32 fatSize, u32 fntOff, u32 fntSize, void *read, void *write);
-void func_0200b174(UnkArc_02021310 *arc);
+void FS_InitArchive(UnkArc_02021310 *arc);
+u32 strlen(const char *s);
+BOOL FS_RegisterArchiveName(UnkArc_02021310 *arc, const char *name, u32 len);
+BOOL FS_LoadArchive(UnkArc_02021310 *arc, u32 base, u32 fatOff, u32 fatSize, u32 fntOff, u32 fntSize, void *read, void *write);
+void FS_ReleaseArchiveName(UnkArc_02021310 *arc);
 
 BOOL func_02021310(UnkArc_02021310 *arc, const char *name, UnkNarc_02021310 *narc) {
     UnkBlock_02021310 *fat = NULL;
@@ -34,13 +34,13 @@ BOOL func_02021310(UnkArc_02021310 *arc, const char *name, UnkNarc_02021310 *nar
         }
         blk = (UnkBlock_02021310 *)((u8 *)blk + blk->size);
     }
-    func_0200b2cc(arc);
+    FS_InitArchive(arc);
     arc->narc = narc;
     arc->fat = fat;
     base = (u32)img + 8;
     arc->img = (void *)base;
-    if (!func_0200b20c(arc, name, func_0202c5f0(name))) return FALSE;
-    if (func_0200b0fc(arc, base, (u32)fat + 0xC - base, fat->size - 0xC, (u32)fnt + 8 - base, fnt->size - 8, NULL, NULL)) return TRUE;
-    func_0200b174(arc);
+    if (!FS_RegisterArchiveName(arc, name, strlen(name))) return FALSE;
+    if (FS_LoadArchive(arc, base, (u32)fat + 0xC - base, fat->size - 0xC, (u32)fnt + 8 - base, fnt->size - 8, NULL, NULL)) return TRUE;
+    FS_ReleaseArchiveName(arc);
     return FALSE;
 }

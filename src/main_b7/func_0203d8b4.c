@@ -14,7 +14,7 @@ typedef struct {
 } UnkMsg_0203d8b4;
 
 extern UnkCtx_0203d8b4 data_022b8be0;
-BOOL func_02015168(u16 bitmap, const void *src, s32 size, void (*cb)(void));
+BOOL WBT_PutUserData(u16 bitmap, const void *src, s32 size, void (*cb)(void));
 void func_0203d930(void);
 
 void func_0203d8b4(u32 a, u16 bitmap, u32 d, u32 c) {
@@ -24,5 +24,5 @@ void func_0203d8b4(u32 a, u16 bitmap, u32 d, u32 c) {
     m.unk4 = d;
     m.b = (u8)(data_022b8be0.unk28 >> 8);
     m.unk8 = data_022b8be0.unk28;
-    func_02015168(bitmap, &m, 9, func_0203d930);
+    WBT_PutUserData(bitmap, &m, 9, func_0203d930);
 }

@@ -19,7 +19,7 @@ extern u16 gDemoInputMode;
 extern u32 gRandSeed;
 
 UnkTask_02068094 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 a, s32 b, s32 c, s32 size);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 u32 *File_Load(void *p, s32 a);
 void DemoInput_Main(void);
@@ -35,7 +35,7 @@ void DemoInput_Create(s32 a, void *res) {
     if (res == NULL)
         prio |= 0x20;
     t = Task_Create(DemoInput_Main, DemoInput_Destructor, prio, 1, 0, 0x20);
-    if (t == (UnkTask_02068094 *)func_02006abc(0))
+    if (t == (UnkTask_02068094 *)OS_GetArenaLo(0))
         return;
     w = t->work;
     z = 0;

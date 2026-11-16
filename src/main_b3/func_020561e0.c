@@ -17,11 +17,11 @@ extern u8 data_02084d84[];
 typedef struct { u8 pad0[0x7c]; u32 unk7C; } UnkStruct_02084db8;
 extern UnkStruct_02084db8 data_02084db8;
 
-void func_02025268(s32 id, s32 *val, s32 flag);
-void func_02025a94(UnkParam_020561e0 *p, s32 a);
+void NNS_G3dGeBufferOP_N(s32 id, s32 *val, s32 flag);
+void NNS_G3dGetCurrentMtx(UnkParam_020561e0 *p, s32 a);
 UnkVec_020561e0 *func_02057224(void);
 void VEC_Add(const UnkVec_020561e0 *a, const UnkVec_020561e0 *b, UnkVec_020561e0 *ab);
-void func_020044f4(UnkVec_020561e0 *pos, UnkVec_020561e0 *up, UnkVec_020561e0 *at, s32 a, void *mtx);
+void G3i_LookAt_(UnkVec_020561e0 *pos, UnkVec_020561e0 *up, UnkVec_020561e0 *at, s32 a, void *mtx);
 
 #pragma thumb on
 void func_020561e0(UnkWork_020561e0 *w) {
@@ -36,18 +36,18 @@ void func_020561e0(UnkWork_020561e0 *w) {
         s32 v2;
         s32 v3;
         v0 = 2;
-        func_02025268(0x10, &v0, 1);
+        NNS_G3dGeBufferOP_N(0x10, &v0, 1);
         v1 = 0x1e;
-        func_02025268(0x14, &v1, 1);
-        func_02025a94(&prm, 0);
+        NNS_G3dGeBufferOP_N(0x14, &v1, 1);
+        NNS_G3dGetCurrentMtx(&prm, 0);
         a->x = prm.pos.x;
         a->y = prm.pos.y;
         a->z = prm.pos.z;
         v2 = 2;
-        func_02025268(0x10, &v2, 1);
+        NNS_G3dGeBufferOP_N(0x10, &v2, 1);
         v3 = 0x1d;
-        func_02025268(0x14, &v3, 1);
-        func_02025a94(&prm, 0);
+        NNS_G3dGeBufferOP_N(0x14, &v3, 1);
+        NNS_G3dGetCurrentMtx(&prm, 0);
         b->x = prm.pos.x;
         b->y = prm.pos.y;
         b->z = prm.pos.z;
@@ -66,7 +66,7 @@ void func_020561e0(UnkWork_020561e0 *w) {
             data_02084f78 = pos;
             data_02084f84 = *up;
             data_02084f90 = at;
-            func_020044f4(&pos, up, &at, 0, data_02084d84);
+            G3i_LookAt_(&pos, up, &at, 0, data_02084d84);
             data_02084db8.unk7C &= ~0xe8;
         }
     }

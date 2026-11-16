@@ -17,21 +17,21 @@ extern u8 *data_ov000_02369b50[];
 extern void *gMainHeap;
 extern u32 data_022c4560;
 
-s32 func_0202c348(const char *a, const char *b);
-void func_020257f8(void *p);
+s32 strcmp(const char *a, const char *b);
+void NNS_G3dResDefaultSetup(void *p);
 u32 func_020380d8(void *p);
 void func_020380a0(void *p, void *buf);
 void NaviBg_Load(s32 a, u32 b);
 void NaviB_Load(void);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
-u32 func_02006abc(s32 i);
+u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 
 static inline u8 *Alloc_0204a450(u32 sz) {
     u32 size = sz;
     u8 *p = Heap_Alloc(gMainHeap, size, 0x20);
-    if ((u8 *)func_02006abc(0) != p) {
+    if ((u8 *)OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -48,10 +48,10 @@ void BossStage6_OnModelLoaded(UnkWork_0204a450 *w, const char *name) {
 
     tbl = data_020746c0;
     for (i = 0; i < 10; i++) {
-        if (func_0202c348(tbl[i].name, name) == 0)
+        if (strcmp(tbl[i].name, name) == 0)
             break;
     }
-    func_020257f8(w->res);
+    NNS_G3dResDefaultSetup(w->res);
     data_ov000_02369b50[i] = Alloc_0204a450((func_020380d8(w->res) + 0x43) & ~0x1f);
     func_020380a0(w->res, data_ov000_02369b50[i]);
     if (i == 9) {

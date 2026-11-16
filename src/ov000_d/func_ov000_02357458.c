@@ -12,31 +12,31 @@ extern u16 data_ov000_02364eb0[];
 
 void *File_Load(const char *path, void *dst);
 void *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 u32 func_ov000_02357804(void *res);
 u32 func_ov000_023577f8(void *res);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *res);
 void Mem_Copy(void *src, void *dst, u32 size);
 void func_02021310(void *buf, void *a, void *b);
 void *func_02021264(void *buf, s32 a);
-void func_020257f8(void);
+void NNS_G3dResDefaultSetup(void);
 void func_020212e0(void *buf);
 void Model_Init(UnkStruct_MdlRender *r, s32 a);
 void Model_SetResource(UnkStruct_MdlRender *r, void *mdl, s32 a);
-void func_02004084(void *p);
+void G3X_SetEdgeColorTable(void *p);
 void func_02022270(s32 idx, u16 val);
 
 static inline void *UnkAlloc_02357458(u32 size, s32 align) {
     u8 *p;
     size = (size + 0x43) & ~0x1f;
     p = Heap_Alloc(gMainHeap, size, align);
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -49,7 +49,7 @@ static inline void *UnkAlloc_02357458(u32 size, s32 align) {
 
 static inline void UnkFree_02357458(void *p) {
     u32 size;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {
@@ -78,13 +78,13 @@ void func_ov000_02357458(UnkStruct_Mdl *w, BOOL flag) {
     dst = w->unk2F8;
     switch (func_ov000_02357804(res)) {
     case 0x10:
-        func_02008648(res, dst);
+        MI_UncompressLZ16(res, dst);
         break;
     case 0x20:
-        func_02008720(res, dst);
+        MI_UncompressHuffman(res, dst);
         break;
     case 0x30:
-        func_020087f8(res, dst);
+        MI_UncompressRL16(res, dst);
         break;
     default:
         Mem_Copy(Compress_GetData(res), dst, func_ov000_023577f8(res));
@@ -102,7 +102,7 @@ void func_ov000_02357458(UnkStruct_Mdl *w, BOOL flag) {
         func_02021310(buf2, data_ov000_023690e0, w->unk300);
     }
     func_02021264(buf0, 0);
-    func_020257f8();
+    NNS_G3dResDefaultSetup();
     w->slot[0].mdl14C = func_02021264(buf0, 0);
     w->slot[0].anm150 = func_02021264(buf1, 0);
     w->slot[0].anm154 = func_02021264(buf1, 1);
@@ -114,7 +114,7 @@ void func_ov000_02357458(UnkStruct_Mdl *w, BOOL flag) {
         w->slot[0].anm15C = NULL;
     }
     func_02021264(buf0, 3);
-    func_020257f8();
+    NNS_G3dResDefaultSetup();
     w->slot[1].mdl14C = func_02021264(buf0, 3);
     w->slot[1].anm150 = func_02021264(buf1, 0);
     w->slot[1].anm154 = func_02021264(buf1, 1);
@@ -159,7 +159,7 @@ void func_ov000_02357458(UnkStruct_Mdl *w, BOOL flag) {
     w->slot[1].angOfs = 0xae38;
     w->slot[0].unk120 |= 4;
     w->slot[1].unk120 |= 4;
-    func_02004084(data_ov000_02364eb8);
+    G3X_SetEdgeColorTable(data_ov000_02364eb8);
     func_02022270(0, data_ov000_02364eb0[0]);
     func_02022270(1, data_ov000_02364eb0[1]);
     func_02022270(2, data_ov000_02364eb0[2]);

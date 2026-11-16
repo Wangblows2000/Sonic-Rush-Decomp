@@ -93,20 +93,20 @@ extern s16 data_0207cf78;
 extern s16 data_0207cf80[];
 extern s16 data_0206e470[];
 extern UnkPersp_0206a0ac *data_022c4ef4;
-extern NNSG3dGlb_0206a0ac data_02084d38;
+extern NNSG3dGlb_0206a0ac NNS_G3dGlb;
 extern s16 data_0207cf7c;
 
 void func_02022284(u32 i, s16 x, s16 y, s16 z);
 void *func_ov000_0233b654(void);
 void func_ov000_0233b2e0(void *a, s32 x, s32 y, s16 *ox, s16 *oy);
-void func_02000dfc(MtxFx33_0206a0ac *m);
+void MTX_Identity33_(MtxFx33_0206a0ac *m);
 void MTX_RotY33_(MtxFx33_0206a0ac *m, s32 s, s32 c);
-void func_02000e60(MtxFx33_0206a0ac *m, s32 s, s32 c);
-void func_02000e98(MtxFx33_0206a0ac *m, s32 s, s32 c);
-void func_02000e4c(MtxFx33_0206a0ac *m, s32 x, s32 y, s32 z);
-void func_02000f34(MtxFx33_0206a0ac *a, MtxFx33_0206a0ac *b, MtxFx33_0206a0ac *ab);
+void MTX_RotX33_(MtxFx33_0206a0ac *m, s32 s, s32 c);
+void MTX_RotZ33_(MtxFx33_0206a0ac *m, s32 s, s32 c);
+void MTX_Scale33_(MtxFx33_0206a0ac *m, s32 x, s32 y, s32 z);
+void MTX_Concat33(MtxFx33_0206a0ac *a, MtxFx33_0206a0ac *b, MtxFx33_0206a0ac *ab);
 s32 func_0200225c(s32 a, s32 b);
-void func_02004b78(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 s, s32 g, MtxFx44_0206a0ac *m);
+void G3i_FrustumW_(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 s, s32 g, MtxFx44_0206a0ac *m);
 void Model_Animate(UnkMdl_0206a0ac *m);
 void Model_Draw(UnkMdl_0206a0ac *m);
 void MI_Copy36B(const void *src, void *dst);
@@ -115,8 +115,8 @@ void MI_Copy36B(const void *src, void *dst);
 #define COS_0206a0ac(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
 static inline void GlbFrustumW_0206a0ac(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 scaleW) {
-    func_02004b78(t, b, l, r, n, f, scaleW, 0, &data_02084d38.projMtx);
-    data_02084d38.flag &= ~0x50;
+    G3i_FrustumW_(t, b, l, r, n, f, scaleW, 0, &NNS_G3dGlb.projMtx);
+    NNS_G3dGlb.flag &= ~0x50;
 }
 
 static inline s32 FX_Mul_0206a0ac(s32 a, s32 b) {
@@ -220,22 +220,22 @@ void StageObj_Draw3DEx(s32 x, s32 y, s32 z, u32 rotZ, UnkObj_0206a0ac *obj, UnkM
             if (obj->scaleY != 0)
                 scy = scy * obj->scaleY >> 8;
         }
-        func_02000dfc(&mdl->rot);
+        MTX_Identity33_(&mdl->rot);
         MTX_RotY33_(&m, SIN_0206a0ac(ang), COS_0206a0ac(ang));
-        func_02000f34(&mdl->rot, &m, &mdl->rot);
+        MTX_Concat33(&mdl->rot, &m, &mdl->rot);
         if (obj != NULL) {
-            func_02000e60(&m, SIN_0206a0ac((u16)-(obj->rotX << 8)), COS_0206a0ac((u16)-(obj->rotX << 8)));
-            func_02000f34(&mdl->rot, &m, &mdl->rot);
+            MTX_RotX33_(&m, SIN_0206a0ac((u16)-(obj->rotX << 8)), COS_0206a0ac((u16)-(obj->rotX << 8)));
+            MTX_Concat33(&mdl->rot, &m, &mdl->rot);
             MTX_RotY33_(&m, SIN_0206a0ac((u16)-(obj->rotY << 8)), COS_0206a0ac((u16)-(obj->rotY << 8)));
-            func_02000f34(&mdl->rot, &m, &mdl->rot);
+            MTX_Concat33(&mdl->rot, &m, &mdl->rot);
         }
-        func_02000e98(&m, SIN_0206a0ac((u16)(-rotZ << 8)), COS_0206a0ac((u16)(-rotZ << 8)));
-        func_02000f34(&mdl->rot, &m, &mdl->rot);
-        func_02000e4c(&m, scx, scy, 0x1000);
-        func_02000f34(&mdl->rot, &m, &mdl->rot);
+        MTX_RotZ33_(&m, SIN_0206a0ac((u16)(-rotZ << 8)), COS_0206a0ac((u16)(-rotZ << 8)));
+        MTX_Concat33(&mdl->rot, &m, &mdl->rot);
+        MTX_Scale33_(&m, scx, scy, 0x1000);
+        MTX_Concat33(&mdl->rot, &m, &mdl->rot);
     } else {
-        func_02000e4c(&ms, data_0207cf80[0] << 4, data_0207cf80[1] << 4, 0x1000);
-        func_02000f34(&mdl->rot, &ms, &mdl->rot);
+        MTX_Scale33_(&ms, data_0207cf80[0] << 4, data_0207cf80[1] << 4, 0x1000);
+        MTX_Concat33(&mdl->rot, &ms, &mdl->rot);
     }
     if (flags & 0x200) {
         UnkPersp_0206a0ac *p = data_022c4ef4;
@@ -249,7 +249,7 @@ void StageObj_Draw3DEx(s32 x, s32 y, s32 z, u32 rotZ, UnkObj_0206a0ac *obj, UnkM
         mdl->trans.x = 0x80000;
         b = FX_Mul_0206a0ac(d, 0x80000 - old);
         mdl->trans.y = -0x60000;
-        saved = data_02084d38.projMtx;
+        saved = NNS_G3dGlb.projMtx;
         GlbFrustumW_0206a0ac(h - a, -(h + a), b - w, w + b, p->nearZ, p->farZ, 0x1000);
     }
     if (m0 != NULL) {
@@ -308,7 +308,7 @@ void StageObj_Draw3DEx(s32 x, s32 y, s32 z, u32 rotZ, UnkObj_0206a0ac *obj, UnkM
         }
     }
     if (flags & 0x200)
-        data_02084d38.projMtx = saved;
+        NNS_G3dGlb.projMtx = saved;
     if (m0 != NULL) {
         if (m0->parts[0] & 0x80)
             flags &= ~0x400;

@@ -32,16 +32,16 @@ extern void *gVRAMTransferTail;
 void func_ov000_0235fbe8(u32 *out, u16 *src, s32 n);
 s32 func_02051300(u16 *buf, s32 n);
 void *Heap_Alloc(void *heap, u32 size, s32 align);
-void *func_02006abc(s32 i);
+void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 u32 func_ov000_0235ffc4(void *res);
 u32 func_ov000_0235ffb8(void *res);
-void func_02008648(void *src, void *dst);
-void func_02008720(void *src, void *dst);
-void func_020087f8(void *src, void *dst);
+void MI_UncompressLZ16(void *src, void *dst);
+void MI_UncompressHuffman(void *src, void *dst);
+void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *res);
 void Mem_Copy(void *src, void *dst, u32 size);
 void *ObjVram_Alloc(s32 a, s32 b);
@@ -54,7 +54,7 @@ static inline void *UnkAlloc_0235fd2c(u32 size, s32 align) {
     u8 *p;
     size = (size + 0x43) & ~0x1f;
     p = Heap_Alloc(gMainHeap, size, align);
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         vu32 fill = 0xcccccccc;
         MIi_CpuClear32(fill, p, size);
         *(u32 *)p = size;
@@ -67,7 +67,7 @@ static inline void *UnkAlloc_0235fd2c(u32 size, s32 align) {
 
 static inline void UnkFree_0235fd2c(void *p) {
     u32 size;
-    if (func_02006abc(0) != p) {
+    if (OS_GetArenaLo(0) != p) {
         p = (u8 *)p - 0x20;
         size = *(u32 *)p;
         if (*(u32 *)((u8 *)p + size - 4) == 0x2467531) {
@@ -114,7 +114,7 @@ void func_ov000_0235fd2c(UnkStruct_0235fd2c *w) {
     {
         u32 size = ((*(u32 *)src >> 8) + 0x43) & ~0x1f;
         dst = Heap_Alloc(gMainHeap, size, -0x20);
-        if (func_02006abc(0) != dst) {
+        if (OS_GetArenaLo(0) != dst) {
             vu32 fill = 0xcccccccc;
             MIi_CpuClear32(fill, dst, size);
             *(u32 *)dst = size;
@@ -125,13 +125,13 @@ void func_ov000_0235fd2c(UnkStruct_0235fd2c *w) {
     }
     switch (func_ov000_0235ffc4(src)) {
     case 0x10:
-        func_02008648(src, dst);
+        MI_UncompressLZ16(src, dst);
         break;
     case 0x20:
-        func_02008720(src, dst);
+        MI_UncompressHuffman(src, dst);
         break;
     case 0x30:
-        func_020087f8(src, dst);
+        MI_UncompressRL16(src, dst);
         break;
     default:
         Mem_Copy(Compress_GetData(src), dst, func_ov000_0235ffb8(src));

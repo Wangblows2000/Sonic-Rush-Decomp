@@ -23,7 +23,7 @@ extern u16 data_0208af7e[];
 extern UnkVramStat_0203969c data_0208af54;
 extern u16 data_0208af86[];
 
-u32 func_02006abc(u32 a);
+u32 OS_GetArenaLo(u32 a);
 
 u32 VramTex_Alloc(u32 size, BOOL pair)
 {
@@ -166,5 +166,5 @@ u32 VramTex_Alloc(u32 size, BOOL pair)
         }
     }
 fail:
-    return func_02006abc(0);
+    return OS_GetArenaLo(0);
 }
