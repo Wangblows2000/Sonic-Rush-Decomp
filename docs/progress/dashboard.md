@@ -1,6 +1,6 @@
 # Progress dashboard
 
-Last updated: **2026-11-16 10:27:13Z** · version `eur` · regenerate with `python tools/project.py dashboard`
+Last updated: **2026-11-16 10:36:20Z** · version `eur` · regenerate with `python tools/project.py dashboard`
 
 Numbers come only from the objdiff report (100 % matched functions in non-generated units) and `symbols.txt` sizes. Nothing estimated, nothing unverified.
 
@@ -8,17 +8,17 @@ Numbers come only from the objdiff report (100 % matched functions in non-genera
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
-| main | `████████████████████` 99.91% | 449,150 / 449,566 | 2,853 / 2,872 | 19 |
+| main | `████████████████████` 99.98% | 449,490 / 449,566 | 2,854 / 2,872 | 18 |
 | itcm | `████████████████████` 100.00% | 2,064 / 2,064 | 14 / 14 | 0 |
 | ov000 | `████████████████████` 100.00% | 642,724 / 642,724 | 2,799 / 2,799 | 0 |
 | ov001 | `████████████████████` 100.00% | 328,118 / 328,118 | 1,723 / 1,723 | 0 |
-| **ARM9 total** | `████████████████████` 99.97% | 1,422,056 / 1,422,472 | 7,389 / 7,408 | 19 |
+| **ARM9 total** | `████████████████████` 99.99% | 1,422,396 / 1,422,472 | 7,390 / 7,408 | 18 |
 
-Next milestone: **100%** matched code — 416 more bytes (currently 99.97%).
+Next milestone: **100%** matched code — 76 more bytes (currently 99.99%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 10:26:23Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 10:27:11Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 10:27:12Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 10:35:32Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 10:36:19Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 10:36:20Z
 
 ## Task board
 
@@ -30,10 +30,11 @@ Next milestone: **100%** matched code — 416 more bytes (currently 99.97%).
 
 ## History
 
-Matched bytes trend: ▁▁▅▅▆▆▇▇▇▇▇▇▇▇▇▇█  (17 changes, 18 runs)
+Matched bytes trend: ▁▁▅▅▆▆▇▇▇▇▇▇▇▇▇▇▇█  (18 changes, 19 runs)
 
 | UTC | Matched bytes | % code | Functions |
 | --- | ------------- | ------ | --------- |
+| 2026-11-16 10:36:20Z | 1,422,396 | 99.99% | 7,390 |
 | 2026-11-16 10:27:13Z | 1,422,056 | 99.97% | 7,389 |
 | 2026-11-16 10:17:39Z | 1,420,980 | 99.90% | 7,386 |
 | 2026-11-16 09:51:06Z | 1,408,712 | 99.03% | 7,357 |
@@ -43,4 +44,3 @@ Matched bytes trend: ▁▁▅▅▆▆▇▇▇▇▇▇▇▇▇▇█  (17 ch
 | 2026-11-16 07:50:47Z | 1,356,818 | 95.38% | 7,249 |
 | 2026-11-16 07:36:16Z | 1,346,618 | 94.67% | 7,232 |
 | 2026-11-16 06:46:17Z | 1,317,362 | 92.61% | 7,111 |
-| 2026-11-16 06:14:24Z | 1,303,530 | 91.64% | 7,059 |

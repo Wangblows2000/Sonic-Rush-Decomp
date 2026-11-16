@@ -39,7 +39,8 @@ as in other NitroSDK games).
 ## Automated identification (session 2)
 
 `tools/analysis/sdk_ident.py` compiles a reference decomp's library C
-**out of tree** with our verified compiler (CW 1.2/sp3) and compares every
+**out of tree** with our verified compiler (CW 1.2/sp3 at the time; the final compiler is
+1.2/sp2, see 0004) and compares every
 resulting function, with relocated fields masked, against all Rush functions of
 the same size. `tools/analysis/apply_names.py` applies a name only if the match
 is unique and either ≥ 32 bytes or backed by a neighbouring match from the same
@@ -61,6 +62,10 @@ rights reserved: it is used only to derive names. Our `src/` C is written
 independently. zeldaret/ph is CC0.
 
 ## Next
+
+Superseded: every SDK function in main is now matched C or asm (STATUS.md).
+What remains is applying names, tracked as the naming refactor in PLAN.md.
+Original list:
 
 - Automate: parse pokediamond/pokeplatinum NitroSDK `asm` bodies and `.s`
   files, assemble with `arm-none-eabi-as`, mask relocated fields, and search

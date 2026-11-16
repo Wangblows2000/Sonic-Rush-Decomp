@@ -2,6 +2,10 @@
 
 Date: 2026-11-16 (verified checkpoint `853dfba` on `main`).
 
+> Historical snapshot at 95 %. Current figures: [dashboard](dashboard.md) and
+> STATUS.md. The structural blockers listed below were later resolved by
+> writing those functions as assembly in `src/asm/`.
+
 ## Verified result
 
 | module | functions | matched | code bytes | matched bytes | % |

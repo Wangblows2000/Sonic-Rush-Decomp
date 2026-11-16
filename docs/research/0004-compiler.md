@@ -2,7 +2,12 @@
 
 **Question.** Which Metrowerks CodeWarrior for NINTENDO DS version and flags
 built Sonic Rush's ARM9 code, SDK and middleware?
-**Status.** CodeWarrior for NINTENDO DS **1.2** (compiler 2.0 build 72–87) verified for ARM9 main; exact service pack open. Linker 1.2/sp3 reproduces the ROM.
+**Status.** Done (final state, 2026-11-16). Compiler: CodeWarrior for
+NINTENDO DS **1.2/sp2** (mwccarm 2.0 build 79, decomp.me `mwcc_20_79`) for all
+ARM9 code: main, ITCM, ov000 and ov001, game code and libraries alike. Linker:
+**1.2/sp3** (mwldarm), which reproduces the ROM SHA-1. Both run on Linux via
+wibo. Evidence: 7,389 of 7,408 functions match byte for byte with one default
+flag set (see "Final result" below).
 
 ## Evidence so far
 
@@ -20,7 +25,9 @@ built Sonic Rush's ARM9 code, SDK and middleware?
 `1.2/base, 1.2/sp2, 1.2/sp2p3, 1.2/sp3, 1.2/sp4, 2.0/base, 2.0/sp1` plus the
 `dsi/1.x` builds in the community mwccarm bundle. Flags start from SRA's set.
 
-## Method (to run once the compiler is available)
+## Method (planned before the compiler was available)
+
+Superseded by the session 2 result and the final result below; kept as history.
 
 1. Pick ~20 small, self-contained leaf functions per region (main ARM, main
    Thumb, ov000, ov001, SDK-looking code near `FS_*`).
@@ -95,13 +102,47 @@ Full pipeline: `ninja` with dsd LCF + mwldarm 1.2/sp3 rebuilds the ROM with
 SHA-1 `52e5024e…`, first with zero C files and then with the 8 functions
 compiled from `src/main/*.c` (objdiff: 8/8 functions 100 %).
 
-## Open
-- Find probes that separate 1.2 base/sp2/sp2p3/sp3/sp4.
-- Check overlays and ITCM code against the same compiler.
-- NitroSDK/NitroSystem library code may use a different 1.2 SP; test once
-  SDK functions are reconstructed.
+## Final result (2026-11-16)
+
+The service pack was settled by matching work, not by the 8-probe sweep:
+
+| Step | Default | Why it changed |
+| ---- | ------- | -------------- |
+| session 2 | 1.2/sp3 | 8/8 probes match on every 1.2 build; sp3 chosen as working default |
+| matching, early | 1.2/sp2p3 | non-leaf ARM functions need the `ldmia sp!, {..., lr}; bx lr` epilogue; sp3/sp4 emit `ldm {..., pc}` |
+| matching, final | **1.2/sp2** | Thumb `switch` dispatch `ldrh; add r0, pc; bx r0` without sign extension (0008) is produced only by sp2 |
+
+All agent output was re-verified with `match.py` under 1.2/sp2 after each
+change of default. Final default flags (config/eur/compilers.yaml):
+
+```
+-O4,p -proc arm946e -enum int -char signed -gccext,on -fp soft -interworking
+-sym on -gccinc -nolink -msgstyle gcc -w off -lang c99 -Cpp_exceptions off
+```
+
+A few TUs carry per-file `// flags:` overrides (e.g. `-O4,s`) or file-level
+`#pragma opt_*` switches (docs/research/0011). The NitroSDK, NitroSystem and
+MSL code in main matches with the same compiler; no separate library compiler
+was needed.
+
+What C could not reproduce on any CW 1.2 build is written as assembly in
+`src/asm/` (6 functions, e.g. the MSL `__pformatter` switch-table density) or
+`src/asm_fallback/` (functions whose C did not match; line 1 of each file
+gives the reason). Converting those back to C is open work (PLAN.md).
+
+## Open (session 2) — resolved
+
+- ~~Find probes that separate 1.2 base/sp2/sp2p3/sp3/sp4.~~ Resolved by the
+  epilogue and Thumb-switch idioms above.
+- ~~Check overlays and ITCM code against the same compiler.~~ All modules
+  match with 1.2/sp2.
+- ~~NitroSDK/NitroSystem library code may use a different 1.2 SP.~~ Not
+  needed: library code matches with 1.2/sp2. The `libs/**` rules in
+  compilers.yaml (sp2p3 / sp4, from SRA) are unused because no `libs/`
+  directory exists.
 
 ## Earlier blocker (resolved)
 
 Running the proprietary `mwccarm.exe` was blocked in the environment that set
-up this project. This is the main external dependency (STATUS.md).
+up this project. The user later authorised the community bundle, and it runs
+via wibo.

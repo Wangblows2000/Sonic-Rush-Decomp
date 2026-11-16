@@ -142,13 +142,18 @@ def main() -> int:
             if n != t:
                 dl.write_text(n)
 
-    # 4. evidence
+    # 4. evidence (mapping keyed by symbol name; carry an existing entry over)
     ev_path = cfg / "symbol_evidence.yaml"
+    text = ev_path.read_text()
     stamp = datetime.date.today().isoformat()
-    with ev_path.open("a") as fh:
-        for mod, old, new, ev in rows:
-            fh.write(f"- name: {new}\n  module: {mod}\n  was: {old}\n  confidence: medium\n"
-                     f"  date: {stamp}\n  evidence: {ev!r}\n")
+    for mod, old, new, ev in rows:
+        if re.search(rf"^{re.escape(old)}:\s*$", text, re.M):
+            text = re.sub(rf"^{re.escape(old)}:\s*$", f"{new}:", text, count=1, flags=re.M)
+        else:
+            esc = ev.replace("\\", "\\\\").replace('"', '\\"')
+            text += (f"{new}:\n  confidence: tentative\n"
+                     f"  evidence: \"{esc} (was {old}, {mod}, {stamp})\"\n")
+    ev_path.write_text(text)
     print(f"renamed {len(rows)} symbols; moved {len(moves)} files")
     return 0
 

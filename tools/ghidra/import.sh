@@ -10,7 +10,8 @@
 # separate v5te variant, v5t decodes the same instruction set used here).
 #
 # Output: ghidra/<ver>/ (project, gitignored) and build/<ver>/ghidra/<module>/
-# STATUS: not yet executed in this project (see docs/research/0007-ghidra.md).
+# (functions.csv, xrefs.csv, strings.csv, decomp/<symbol>.c drafts).
+# Tested with Ghidra 12.2 + OpenJDK 25 (see docs/research/0007-ghidra.md).
 set -euo pipefail
 ver="${1:-eur}"
 root="$(cd "$(dirname "$0")/../.." && pwd)"

@@ -10132,10 +10132,6 @@ src/main_sdk5/func_02011dcc.c:
     complete
     .text       start:0x02011dcc end:0x02011f4c
 
-src/main_sdk6/func_02010018.c:
-    complete
-    .text       start:0x02010018 end:0x0201016c
-
 src/main_a5/func_02023274.c:
     complete
     .text       start:0x02023274 end:0x020238e8
@@ -11343,3 +11339,7 @@ src/main_d3/func_02066360.c:
 src/lead/BuildInfo.c:
     complete
     .text       start:0x02000b00 end:0x02000b24
+
+src/asm_fallback/func_02010018.c:
+    complete
+    .text       start:0x02010018 end:0x0201016c

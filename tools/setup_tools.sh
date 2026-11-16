@@ -6,8 +6,10 @@
 # Requires: git, cargo (Rust >= 1.85), cmake, ninja, a C++ compiler, clang/libclang
 # (wibo), lld (wibo on binutils < 2.43). Tested on Ubuntu 24.04.
 #
-# dsd is patched with tools/patches/*.patch (Thumb unsigned jump tables used by
-# Sonic Rush's compiler; see docs/research/0008-dsd-thumb-jumptables.md).
+# dsd is patched with tools/patches/*.patch: unsigned Thumb jump tables used by
+# Sonic Rush's compiler (docs/research/0008-dsd-thumb-jumptables.md) and asm
+# entry-point fixes for hand-written assembly TUs (conditional first
+# instruction, conditional ARM branches, $d for data inside .text).
 # The Metrowerks compiler is NOT handled here: it is proprietary (INSTALL.md).
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"

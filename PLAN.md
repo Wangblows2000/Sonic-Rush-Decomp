@@ -1,56 +1,76 @@
-# Plan
+# Plan — what remains
 
-## Milestone 1 — Research
-- [x] Inspect pokediamond, ph, mkds-re, mariopartyDS (docs/research/0002)
-- [x] Find Sonic Rush / Rush Adventure prior work; separate the two (0009)
-- [x] Architecture proposal (docs/architecture/overview.md)
-- [ ] Inspect pokeplatinum / pokeheartgold SDK version notes
-- [ ] Study SRA engine headers for hypotheses (task system, objects)
+Measured state: [STATUS.md](STATUS.md). Done so far: research and architecture,
+toolchain built from source, byte-identical ROM rebuild, dsd analysis (7,408
+functions), GNU relink check, compiler identified (CW 1.2/sp2, linker 1.2/sp3),
+full matching ROM build, and 99.97 % of ARM9 code bytes matched.
 
-## Milestone 2 — Environment
-- [x] Python, Git, C/C++ compilers, ninja, cmake checked
-- [x] ARM binutils installed
-- [x] dsd, objdiff-cli, wibo built from pinned sources (tools/setup_tools.sh)
-- [x] `project.py doctor`
-- [x] Metrowerks compiler runnable (CW 1.2 via wibo)
-- [ ] Ghidra installed and scripts executed
+## 1. Last ARM9 code bytes
 
-## Milestone 3 — ROM infrastructure
-- [x] User-supplied ROM, SHA-1 gate (config/versions.yaml)
-- [x] NDS header/OVT/FNT/FAT parser (tools/ndslib)
-- [x] Extract ARM9, ARM7, overlays, NitroFS (dsd + fixups)
-- [x] Byte-identical ROM rebuild (0005)
-- [x] Machine-readable metadata (`project.py analyze`)
-- [ ] ARM7: identify SDK component/version
+- [ ] **Secure-area BIOS stubs (18 functions, 76 B).** `WaitByLoop`, `CpuSet`,
+  `Div`, `GetCRC16` and the other stubs are Thumb `svc #n; bx lr` pairs (4 or
+  6 bytes each) scattered through the 2 KB secure area at 0x02000000–0x02000800.
+  They are not TUs for three reasons:
+  1. Half of them (9 of 18) start at halfword addresses. The LCF uses
+     `ALIGNALL(4)`, so a TU cannot start there.
+  2. The bytes between them are not code. The area begins with the
+     decrypted-secure-area marker `E7FFDEFF E7FFDEFF`, followed by filler that
+     is most likely a prebuilt NitroSDK secure-area object.
+  3. The ROM header's secure-area CRC covers these bytes (docs/research/0005).
+  The region is therefore kept as one dsd gap object with the original bytes,
+  and `match.py --promote` refuses addresses below 0x02000800. Closing the gap
+  needs either one assembly TU for the whole 0x800 bytes (stubs plus filler as
+  data) or an LCF exception that allows halfword-aligned objects.
+- [ ] **`func_02010018` (340 B):** integrated as `src/asm_fallback/` after the
+  last report. Confirm 100 % at the next checkpoint.
 
-## Milestone 4 — Reverse-engineering environment
-- [x] dsd analysis config committed (7,391 functions)
-- [x] Fix dsd Thumb jump-table analysis (0008)
-- [x] Function export (CSV), coverage and symbol reports
-- [x] Ghidra import/export scripts (untested)
-- [x] ITCM: 0x701C-byte gap is a zero buffer, code fully covered
-- [ ] main secure-area/crt0 gaps (19 small gaps)
-- [x] Cross-reference tooling (tools/analysis/callgraph.py)
-- [x] First SDK primitives identified by instruction comparison (0010)
-- [x] Automated SDK identification (sdk_ident.py: 102 names from pokediamond)
-- [ ] SRA library sources compiling out-of-tree
+## 2. Assembly back to C
 
-## Milestone 5 — Matching infrastructure
-- [x] ninja build (configure.py): extract/delink/verify/objdiff targets work
-- [x] Independent GNU relink check (0006)
-- [x] Progress report counting matched bytes only
-- [x] Establish compiler version (CW 1.2 family; SP open)
-- [x] Full ROM build via mwldarm + SHA-1 (0 and 8 TUs)
-- [x] objdiff report wired into progress
-- [ ] CI workflow (verify target)
+- [ ] Convert `src/asm_fallback/` (90 files, 44,082 B) back to C. Line 1 of
+  each file says why C did not match. Some near-miss drafts are committed in
+  `nearmiss/db.jsonl` (56 entries; `tools/matching/nearmiss.py get <symbol>`).
+  The draft paths quoted on line 1 point to scratch directories outside the
+  repository, which do not survive a fresh machine.
+- [ ] Re-examine `src/asm/` (6 files, 3,524 B) marked "C-impossible". Some
+  cases (switch grouping, switch split point) may still be reachable with
+  different case ordering or a different SDK compiler for that TU.
+- Hand-written runtime routines (CP15, SWI, soft-float, 64-bit helpers) stay
+  as `asm`: the original was assembly too.
 
-## Milestone 6 — Decompilation
-- [x] First matched functions (8, ARM + Thumb)
-- [ ] NitroSDK OS/MI/FX basics
-- [ ] Startup: Entry → main → game loop
-- [ ] Shared engine utilities
+## 3. Naming refactor
 
-## Milestone 7 — Continuous improvement
-- [ ] Upstream dsd patches (jump tables, ELF symtab/Thumb/ABS32)
-- [ ] Upstream ds-rom zero-length file ordering
-- [ ] USA/JPN versions
+- [ ] Replace `func_XXXXXXXX` / `data_XXXXXXXX` names with evidence-backed names
+  (`config/eur/symbol_evidence.yaml`; currently 180 named functions). Apply
+  them with `tools/analysis/rename.py`, which renames symbols, source uses,
+  TU file names and delinks paths together.
+- [ ] Name struct types (`UnkStruct_<addr>`) and move shared declarations into
+  `include/` headers instead of per-file `extern` prototypes.
+
+## 4. Source reorganisation
+
+- [ ] Move TUs out of the per-agent directories (`src/<agent>/`, `src/auto/`,
+  `src/clones/`, …) into a subsystem layout: `libs/NitroSDK`,
+  `libs/NitroSystem`, `libs/MSL`, game code by module and subsystem.
+- [ ] Merge adjacent one-function TUs back into original translation units
+  where the evidence supports it (library objects link contiguously).
+- [ ] Remove the 80 unregistered `.c` files under `src/` (duplicates and
+  leftovers that are not in any `delinks.txt`) once they are confirmed
+  redundant.
+
+## 5. Data and rodata
+
+- [ ] Decompile `.rodata`, `.data` and `.bss` into TUs: strings, tables and
+  float constants. Today every TU only declares `extern` data, and all data
+  comes from dsd's delinked gap objects. Needs a strategy for which data
+  belongs to which TU (task `r-data`).
+- [ ] DTCM (0x2060 bytes of data, no functions).
+
+## 6. Beyond ARM9 EUR
+
+- [ ] ARM7: identify the NitroSDK component and version (task `r-arm7`).
+- [ ] Download Play children (`/mb/contest.srl`, `/mb/preview.srl`).
+- [ ] USA (`ASCE`) and Japan (`ASCJ`) versions.
+- [ ] CI workflow for `ninja verify`.
+- [ ] Upstream the dsd patches (jump tables, asm entry points, ELF symtab /
+  Thumb bit / ABS32 fixes from docs/research/0006) and the ds-rom zero-length
+  file ordering fix (docs/research/0005).

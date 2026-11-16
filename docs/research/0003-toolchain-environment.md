@@ -3,6 +3,11 @@
 **Question.** What can run where, and what is pinned?
 **Confidence.** High (observed 2026-11-15).
 
+> Superseded in part (2026-11-16): mwccarm and Ghidra both run in the cloud
+> workspace now. mwccarm 1.2/sp2 and mwldarm 1.2/sp3 run via wibo (0004);
+> Ghidra 12.2 runs with OpenJDK 25 (0007). The table below is the original
+> observation.
+
 ## Setup environment (cloud workspace, Ubuntu 24.04, x86_64)
 
 | Component | Result |
@@ -19,11 +24,11 @@
 
 ## Pins
 
-dsd v0.12.1 (+ patch, 0008), objdiff v3.8.3, wibo 1.2.0. ph pins dsd v0.11.0 /
+dsd v0.12.1 (+ patches in `tools/patches/`, 0008), objdiff v3.8.3, wibo 1.2.0. ph pins dsd v0.11.0 /
 objdiff v3.4.0 / wibo 0.6.16; newer releases were used because they built
 cleanly and pass all checks here.
 
-## Consequence
+## Consequence (superseded: see the note at the top)
 
 Everything except compiling/linking with Metrowerks runs here. The matching
 build (`ninja`) and compiler identification (0004) need a machine where the

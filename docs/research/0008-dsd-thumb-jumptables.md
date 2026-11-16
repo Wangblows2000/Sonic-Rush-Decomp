@@ -55,7 +55,30 @@ whose `add` sat at a halfword address (e.g. 0x02047AB6), breaking
 | ov001 | 185 | 1723 | 100 % |
 | unresolved main→overlay calls | 9 | 0 | |
 
+Later counts (2026-11-16, `project.py functions`): main 2,872, total 7,408.
+The difference in main (+17) matches the 18 secure-area BIOS stubs added to
+symbols.txt, minus one bogus 4-byte split (`func_0202d4e8`) merged back into
+its parent.
+
 GNU relink of all sections still byte-identical with the new relocations.
+
+## Second patch: asm entry points
+
+`tools/patches/ds-decomp-v0.12.1-asm-entry-points.patch` was added later,
+when hand-written runtime routines were written as `asm` TUs. It has three
+independent changes:
+
+1. `lib/src/analysis/functions.rs`: a function with a known end address
+   (defined in the config) may start with a conditional instruction. Such
+   functions are secondary entry points into hand-written assembly.
+2. `cli/src/config/section.rs`: when dsd blanks an `R_ARM_PC24` branch for
+   delinking, it keeps the original condition code (`b<cond> #0` instead of
+   `b #0`), so conditional branches into those entry points survive.
+3. `cli/src/cmd/delink.rs`: a data symbol inside `.text` (a lookup table in
+   hand-written asm) gets a `$d` mapping symbol, so it is not disassembled as
+   code.
+
+`tools/setup_tools.sh` applies every `tools/patches/ds-decomp-v0.12.1-*.patch`.
 
 ## Follow-up
 
