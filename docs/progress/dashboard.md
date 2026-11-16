@@ -1,6 +1,6 @@
 # Progress dashboard
 
-Last updated: **2026-11-16 08:54:28Z** · version `eur` · regenerate with `python tools/project.py dashboard`
+Last updated: **2026-11-16 09:39:54Z** · version `eur` · regenerate with `python tools/project.py dashboard`
 
 Numbers come only from the objdiff report (100 % matched functions in non-generated units) and `symbols.txt` sizes. Nothing estimated, nothing unverified.
 
@@ -8,34 +8,34 @@ Numbers come only from the objdiff report (100 % matched functions in non-genera
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
-| main | `███████████████████░` 93.95% | 422,366 / 449,566 | 2,789 / 2,855 | 66 |
+| main | `███████████████████░` 94.62% | 425,378 / 449,566 | 2,815 / 2,872 | 57 |
 | itcm | `████████████████████` 100.00% | 2,064 / 2,064 | 14 / 14 | 0 |
 | ov000 | `████████████████████` 98.07% | 630,292 / 642,724 | 2,769 / 2,799 | 30 |
 | ov001 | `███████████████████░` 95.82% | 314,388 / 328,118 | 1,694 / 1,723 | 29 |
-| **ARM9 total** | `███████████████████░` 96.25% | 1,369,110 / 1,422,472 | 7,266 / 7,391 | 125 |
+| **ARM9 total** | `███████████████████░` 96.46% | 1,372,122 / 1,422,472 | 7,292 / 7,408 | 116 |
 
-Next milestone: **100%** matched code — 53,362 more bytes (currently 96.25%).
+Next milestone: **100%** matched code — 50,350 more bytes (currently 96.46%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 08:52:15Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 08:54:24Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 08:54:27Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 09:35:44Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 09:37:40Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 09:37:42Z
 
 ## Task board
 
-- 3 claimed · 10 open · 1 done (`python tools/tasks.py list`)
+- 2 claimed · 11 open · 1 done (`python tools/tasks.py list`)
 
 | Task | Agent | Scope | Verified in scope |
 | ---- | ----- | ----- | ----------------- |
-| main-mid | main_d3 | main 0x0201c000-0x02038000 | 102,176/114,664 B (89.1%), 593/613 fn |
 | ov000-hi | ov000_t | ov000 0x02310000-0x02362b58 | 331,008/338,448 B (97.8%), 1350/1366 fn |
 | ov001-arm | ov001_j | ov001 0x022ed000-0x02315eb4 | 159,498/167,454 B (95.2%), 678/691 fn |
 
 ## History
 
-Matched bytes trend: ▁▁▅▆▆▆▇▇▇▇▇▇█  (13 changes, 14 runs)
+Matched bytes trend: ▁▁▅▆▆▆▇▇▇▇▇▇▇█  (14 changes, 15 runs)
 
 | UTC | Matched bytes | % code | Functions |
 | --- | ------------- | ------ | --------- |
+| 2026-11-16 09:39:54Z | 1,372,122 | 96.46% | 7,292 |
 | 2026-11-16 08:54:28Z | 1,369,110 | 96.25% | 7,266 |
 | 2026-11-16 08:08:26Z | 1,358,238 | 95.48% | 7,251 |
 | 2026-11-16 07:50:47Z | 1,356,818 | 95.38% | 7,249 |
@@ -45,4 +45,3 @@ Matched bytes trend: ▁▁▅▆▆▆▇▇▇▇▇▇█  (13 changes, 14 ru
 | 2026-11-16 05:36:01Z | 1,267,512 | 89.11% | 6,879 |
 | 2026-11-16 04:42:45Z | 1,194,076 | 83.94% | 6,508 |
 | 2026-11-16 04:10:13Z | 1,119,952 | 78.73% | 6,280 |
-| 2026-11-16 03:37:49Z | 1,063,252 | 74.75% | 6,166 |

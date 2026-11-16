@@ -1,33 +1,42 @@
+// asm: hand-written runtime library routine (split at mid-function entry points, see w_asm/split_plan.txt)
 #include <nitro/types.h>
+
+extern void _fadd_ec(void);
+void _fsub(void);
+void _fsub_ec(void);
 
 asm void _fsub(void)
 {
     eors r2, r0, r1
     eormi r1, r1, #0x80000000
-    dcd 0x4afffb64  // bmi _fadd+0xc (mid-function entry; no symbol, raw encoding)
+    bmi _fadd_ec
+}
+
+asm void _fsub_ec(void)
+{
     subs r12, r0, r1
-    eorcc r12, r12, #0x80000000
-    subcc r0, r0, r12
-    addcc r1, r1, r12
+    eorlo r12, r12, #0x80000000
+    sublo r0, r0, r12
+    addlo r1, r1, r12
     mov r2, #0x80000000
     mov r3, r0, lsr #0x17
     orr r0, r2, r0, lsl #8
     ands r12, r3, #0xff
     cmpne r12, #0xff
-    beq _128
+    beq _11c
     mov r12, r1, lsr #0x17
     orr r1, r2, r1, lsl #8
     ands r2, r12, #0xff
-    beq _168
-_44:
+    beq _15c
+_38:
     subs r12, r3, r12
-    beq _8c
+    beq _80
     rsb r2, r12, #0x20
     movs r2, r1, lsl r2
     mov r1, r1, lsr r12
     orrne r1, r1, #1
     subs r0, r0, r1
-    bpl _d0
+    bpl _c4
     ands r1, r0, #0xff
     add r0, r0, r0
     mov r0, r0, lsr #9
@@ -38,9 +47,9 @@ _44:
     andeqs r1, r0, #1
     addne r0, r0, #1
     bx lr
-_8c:
+_80:
     subs r0, r0, r1
-    beq _234
+    beq _228
     mov r2, r3, lsl #0x17
     and r2, r2, #0x80000000
     bic r3, r3, #0x100
@@ -48,16 +57,16 @@ _8c:
     movs r0, r0, lsl r12
     sub r3, r3, r12
     cmp r3, #0
-    bgt _c0
+    bgt _b4
     rsb r3, r3, #9
     orr r0, r2, r0, lsr r3
     bx lr
-_c0:
+_b4:
     add r0, r0, r0
     orr r0, r2, r0, lsr #9
     orr r0, r0, r3, lsl #23
     bx lr
-_d0:
+_c4:
     mov r2, r3, lsl #0x17
     and r2, r2, #0x80000000
     bic r3, r3, #0x100
@@ -65,11 +74,11 @@ _d0:
     movs r0, r0, lsl r12
     sub r3, r3, r12
     cmp r3, #0
-    bgt _fc
+    bgt _f0
     rsb r3, r3, #9
     orr r0, r2, r0, lsr r3
     bx lr
-_fc:
+_f0:
     ands r1, r0, #0xff
     add r0, r0, r0
     orr r0, r2, r0, lsr #9
@@ -81,83 +90,83 @@ _fc:
     andeqs r1, r0, #1
     addne r0, r0, #1
     bx lr
-_128:
+_11c:
     cmp r3, #0x100
     movge r2, #0x80000000
     movlt r2, #0
     ands r3, r3, #0xff
-    beq _190
+    beq _184
     movs r0, r0, lsl #1
-    bne _268
+    bne _25c
     mov r12, r1, lsr #0x17
     mov r1, r1, lsl #9
     ands r12, r12, #0xff
-    beq _25c
+    beq _250
     cmp r12, #0xff
-    blt _25c
+    blt _250
     cmp r1, #0
-    beq _270
-    b _268
-_168:
+    beq _264
+    b _25c
+_15c:
     cmp r12, #0x100
     movge r2, #0x80000000
     movlt r2, #0
     and r3, r3, #0xff
     ands r12, r12, #0xff
-    beq _1f8
-_180:
+    beq _1ec
+_174:
     eor r2, r2, #0x80000000
     movs r1, r1, lsl #1
-    bne _268
-    b _25c
-_190:
+    bne _25c
+    b _250
+_184:
     movs r0, r0, lsl #1
-    beq _1c8
+    beq _1bc
     mov r0, r0, lsr #1
     mov r3, #1
     mov r12, r1, lsr #0x17
     mov r1, r1, lsl #8
     ands r12, r12, #0xff
-    beq _1f8
+    beq _1ec
     cmp r12, #0xff
-    beq _180
+    beq _174
     orr r1, r1, #0x80000000
     orr r3, r3, r2, lsr #23
     orr r12, r12, r2, lsr #23
-    b _44
-_1c8:
+    b _38
+_1bc:
     mov r3, r1, lsr #0x17
     mov r0, r1, lsl #9
     ands r2, r3, #0xff
-    beq _1ec
+    beq _1e0
     cmp r2, #0xff
-    blt _214
+    blt _208
     cmp r0, #0
-    bne _254
-    b _25c
+    bne _248
+    b _250
+_1e0:
+    cmp r0, #0
+    beq _228
+    b _208
 _1ec:
-    cmp r0, #0
-    beq _234
-    b _214
-_1f8:
     movs r1, r1, lsl #1
-    beq _21c
+    beq _210
     mov r1, r1, lsr #1
     mov r12, #1
     orr r12, r12, r2, lsr #23
     orr r3, r3, r2, lsr #23
-    b _44
-_214:
+    b _38
+_208:
     mov r0, r1
     bx lr
-_21c:
+_210:
     cmp r0, #0
     subges r3, r3, #1
     add r0, r0, r0
     orr r0, r2, r0, lsr #9
     orr r0, r0, r3, lsl #23
     bx lr
-_234:
+_228:
     mov r0, #0
     bx lr
     cmp r0, #0
@@ -166,17 +175,17 @@ _234:
     mov r0, r0, lsr #9
     orr r0, r0, r3, lsl #23
     bx lr
-_254:
+_248:
     mvn r0, #0x80000000
     bx lr
-_25c:
+_250:
     mov r0, #0xff000000
     orr r0, r2, r0, lsr #1
     bx lr
-_268:
+_25c:
     mvn r0, #0x80000000
     bx lr
-_270:
+_264:
     mvn r0, #0x80000000
     bx lr
 }

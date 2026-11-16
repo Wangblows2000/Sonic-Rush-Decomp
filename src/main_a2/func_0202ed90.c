@@ -1,4 +1,7 @@
+// asm: hand-written runtime library routine (split at mid-function entry points, see w_asm/split_plan.txt)
 #include <nitro/types.h>
+
+void _fdiv(void);
 
 asm void _fdiv(void)
 {
@@ -16,8 +19,8 @@ asm void _fdiv(void)
     bic lr, r1, #0xff000000
 _30:
     cmp r2, lr
-    movcc r2, r2, lsl #1
-    subcc r3, r3, #1
+    movlo r2, r2, lsl #1
+    sublo r3, r3, #1
     teq r0, r1
     sub r0, pc, #0x94
     ldrb r1, [r0, lr, lsr #15]

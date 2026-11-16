@@ -1,13 +1,21 @@
+// asm: hand-written runtime library routine (split at mid-function entry points, see w_asm/split_plan.txt)
 #include <nitro/types.h>
+
+void _u32_div_f(void);
+void _u32_div_f_e8(void);
 
 asm void _u32_div_f(void)
 {
     cmp r1, #0
     bxeq lr
+}
+
+asm void _u32_div_f_e8(void)
+{
     cmp r0, r1
-    movcc r1, r0
-    movcc r0, #0
-    bxcc lr
+    movlo r1, r0
+    movlo r0, #0
+    bxlo lr
     mov r2, #0x1c
     mov r3, r0, lsr #4
     cmp r1, r3, lsr #12
@@ -26,100 +34,100 @@ asm void _u32_div_f(void)
     add pc, pc, r2, lsl #2
     mov r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     adcs r3, r1, r3, lsl #1
-    subcc r3, r3, r1
+    sublo r3, r3, r1
     adcs r0, r0, r0
     mov r1, r3
     bx lr

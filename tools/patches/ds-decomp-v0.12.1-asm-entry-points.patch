@@ -1,0 +1,32 @@
+diff --git a/cli/src/config/section.rs b/cli/src/config/section.rs
+index fc97134..f0d5e4d 100644
+--- a/cli/src/config/section.rs
++++ b/cli/src/config/section.rs
+@@ -55,8 +55,10 @@ impl SectionExt for Section {
+                     &[0xff, 0xf7, 0xfe, 0xff] // bl #0
+                 }
+                 RelocationKind::ArmBranch => {
+-                    // R_ARM_PC24
+-                    &[0xfe, 0xff, 0xff, 0xea] // b #0
++                    // R_ARM_PC24; keep the original condition code (conditional
++                    // branches into secondary entry points of hand-written asm)
++                    let cond = code[offset + 3] & 0xf0;
++                    &[0xfe, 0xff, 0xff, cond | 0x0a] // b<cond> #0
+                 }
+                 RelocationKind::Load
+                 | RelocationKind::OverlayId
+diff --git a/lib/src/analysis/functions.rs b/lib/src/analysis/functions.rs
+index 9f90a08..324e40a 100644
+--- a/lib/src/analysis/functions.rs
++++ b/lib/src/analysis/functions.rs
+@@ -271,7 +271,9 @@ impl Function {
+                 source: NoEpilogueSnafu.build().into(),
+             });
+         };
+-        if !is_valid_function_start(address, ins, &parsed_ins) {
++        // Functions defined in config (known size) may legitimately start with a
++        // conditional instruction (secondary entry points of hand-written asm).
++        if options.known_end_address.is_none() && !is_valid_function_start(address, ins, &parsed_ins) {
+             return Err(FunctionAnalysisError::IntoFunction {
+                 source: InvalidStartSnafu { address, ins }.build().into(),
+             });

@@ -67,10 +67,10 @@
       "module": "main",
       "start": "0x0201c000",
       "end": "0x02038000",
-      "status": "claimed",
-      "agent": "main_d3",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": "2026-11-16 08:09:34Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -128,6 +128,18 @@
         {
           "time": "2026-11-16 08:09:37Z",
           "text": "main_d2 doing 0201ed04, 02032480, 0204bf88, 02032d2c, 0203cc68, 02067670"
+        },
+        {
+          "time": "2026-11-16 09:15:03Z",
+          "text": "main_d2: MATCHED func_0203cc68 (explicit 'off = idx*12' temp declared last + key=(b4<<8)|b8) and func_02067670 (params x,y saved to sx/sy, loop does x=sx;y=sy and x8=x<<8;y8=y<<8 explicit temps; inline VecSet shifts <<4 in body; bounds without bx var). Lesson: CW reg/stack-slot order follows explicit named temps/decl order. func_0204bf88 stuck at 31 bytes (scratch /home/claude/w_main_d2/near/func_0204bf88_31diff.c): only block after func_0204bab0(); target keeps .a store before cf78/ef0 stores and copies z into r0; all stmt orders/types/volatile/inline/pointer/pragma/flag variants tried. 02032480/02032d2c/0201ed04 not improved."
+        },
+        {
+          "time": "2026-11-16 09:18:31Z",
+          "text": "main_d3: matched 02066bc0/02066e3c/020660f4/02066360/020570f4/020604dc (2776B). Levers: opt_propagation off fixed 0f4/360 + 7-byte prefix struct copy via pointer temps (70f4, 04dc +opt_common_subs off). Still stuck (scratch /home/claude/w_main_d3): 0204ec40 movne/moveq order(4), 02056fa4 ldrsh dest(5), 0203d038 orr in-place(8), 02009654(11 w/ opt_loop_invariants off), 0200f6e0 pool-load sched(13), 02067a28 invariant spill(15), 02026d58 s64 add operand(15), 0203b8f4/0203b54c 6th ldrh sched(26), 0205b478 new draft(64), 0205b3b8(52)"
+        },
+        {
+          "time": "2026-11-16 09:18:31Z",
+          "text": "released by main_d3: main_d3 done for now"
         }
       ]
     },
@@ -195,6 +207,10 @@
         {
           "time": "2026-11-16 08:09:35Z",
           "text": "main_d1 doing 020648c4, 0206aa38, 0205e378, 0206b244"
+        },
+        {
+          "time": "2026-11-16 09:06:50Z",
+          "text": "main_d1: OK func_0205e378 (split loop vars tmpp/a2 + decl order) and func_0206aa38 (affine sibling of b244; key: ((s32)(cell[0]<<24)>>24) instead of (s8)cell[0]; ctx= first stmt). func_0206b244 near-miss 85 diff /home/claude/w_main_d1/near_func_0206b244.c (stack slots shift/tile swapped, count/eng regs, tw temp reg) - stuck. func_020648c4 not improved (b4 draft 2363 diff; ax/bx spill choice swapped; opt_common_subs off gives right size but wrong CSE)."
         }
       ]
     },
@@ -547,6 +563,10 @@
         {
           "time": "2026-11-16 08:09:34Z",
           "text": "claimed by ov001_j"
+        },
+        {
+          "time": "2026-11-16 09:39:38Z",
+          "text": "ov001_j: 8 OK (022fd268 022cdfdc 022dfa3c 022dfb48 02314214 02307398 022e4b5c 022c8bc0). Levers: global struct base for camera vecs (data_02084d38.pos etc), inline helper in call args, natural index SR (p->grp[i]) fixes spill-slot order, opt_propagation off + do-while. Near: 022e519c (e1 form only spill slots), 02303494/022c8480/0230e78c 4B, 022fdbc0/023099ec 14B regswap. Scratch /home/claude/w_ov001j (ddiff.py normalizes pool offsets)."
         }
       ]
     },

@@ -1,25 +1,36 @@
+// asm: hand-written runtime library routine (split at mid-function entry points, see w_asm/split_plan.txt)
 #include <nitro/types.h>
+
+extern void _ll_sdiv_e10(void);
+extern void _ll_sdiv_e74(void);
+extern void _u32_div_f_e8(void);
+void _ull_mod(void);
+void _ull_mod_e8(void);
 
 asm void _ull_mod(void)
 {
-    stmfd sp!, {r4, r5, r6, r7, r11, r12, lr}
+    stmdb sp!, {r4, r5, r6, r7, r11, r12, lr}
     mov r4, #1
+}
+
+asm void _ull_mod_e8(void)
+{
     orrs r5, r3, r2
-    bne _18
-    ldmfd sp!, {r4, r5, r6, r7, r11, r12, lr}
+    bne _10
+    ldmia sp!, {r4, r5, r6, r7, r11, r12, lr}
     bx lr
-_18:
+_10:
     orrs r5, r1, r3
-    dcd 0x1a000027  // bne _ll_sdiv+0x74 (mid-function entry; no symbol, raw encoding)
+    bne _ll_sdiv_e74
     mov r1, r2
-    dcd 0xeb000101  // bl _u32_div_f+0x8 (mid-function entry; no symbol, raw encoding)
+    bl _u32_div_f_e8
     cmp r4, #0
     movne r0, r1
     mov r1, #0
-    ldmfd sp!, {r4, r5, r6, r7, r11, r12, lr}
+    ldmia sp!, {r4, r5, r6, r7, r11, r12, lr}
     bx lr
-    stmfd sp!, {r4, r5, r6, r7, r11, r12, lr}
+    stmdb sp!, {r4, r5, r6, r7, r11, r12, lr}
     mov r4, r1
     orr r4, r4, #1
-    dcd 0xea000003  // b _ll_sdiv+0x10 (mid-function entry; no symbol, raw encoding)
+    b _ll_sdiv_e10
 }
