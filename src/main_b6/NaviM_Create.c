@@ -76,8 +76,8 @@ extern u16 data_020778e0[];
 extern u16 data_02077888[];
 extern u16 data_0207788a[];
 extern u16 data_0207788c[];
-extern u16 data_022c4dbc;
-extern u16 data_022c4db8;
+extern u16 gNaviMNewEmeraldMask;
+extern u16 gNaviMCounterPending;
 extern u16 data_020778b0[];
 
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
@@ -87,7 +87,7 @@ void AnimatorSprite_ProcessAnimation(UnkSpr_02063f50 *spr, s32 a, s32 b);
 u32 ObjVram_Alloc(s32 a, u32 b);
 s32 FX_DivS32(s32 n, s32 d);
 s32 FX_ModS32(s32 n, s32 d);
-void NaviM_Unk_02063778(UnkSpr_02063f50 *a, s16 dt);
+void NaviM_AdvanceSpriteAnim(UnkSpr_02063f50 *a, s16 dt);
 void Oam_Upload(u32 engine);
 void NaviM_Main(void);
 void NaviM_Destructor(void);
@@ -182,15 +182,15 @@ void NaviM_Create(void) {
     AnimatorSprite_Init(&tmp, gNaviMSprite, data_0207788a[w->unk4 * 3], 0x4048, 1, 0, 0, 0, 0x05000600);
     tmp.prio = 4;
     AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
-    if (data_022c4dbc != 0) {
+    if (gNaviMNewEmeraldMask != 0) {
         AnimatorSprite_Init(&tmp, gNaviMSprite, data_0207788c[w->unk4 * 3], 0x4048, 1, 0, 0, 0, 0x05000600);
         tmp.prio = 8;
         for (k = 0; k < 7; k++) {
-            if (data_022c4dbc & (1 << k))
+            if (gNaviMNewEmeraldMask & (1 << k))
                 break;
         }
         if (k != 0)
-            NaviM_Unk_02063778(&tmp, k * 16 - 1);
+            NaviM_AdvanceSpriteAnim(&tmp, k * 16 - 1);
         AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
     }
 
@@ -198,7 +198,7 @@ void NaviM_Create(void) {
     subA = w->task8->work;
     MI_CpuClear16_(subA, 0x18);
     subA->owner = w;
-    if (data_022c4db8 != 0)
+    if (gNaviMCounterPending != 0)
         v = data_020778b0[w->unk720 - 1];
     else
         v = data_020778b0[w->unk720];

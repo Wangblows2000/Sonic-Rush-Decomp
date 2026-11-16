@@ -20,7 +20,7 @@ void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void *TalkDemo_GetScript(void);
 void Task_Destroy(UnkTask_020602dc *t);
 void TalkDemoWindow_InitVAlarms(UnkWork_020602dc *w);
-UnkInfo_020602dc *TalkDemo_Unk_0206047c(void *p);
+UnkInfo_020602dc *TalkDemo_GetScriptHeader(void *p);
 u32 TalkDemo_GetFlags(s32 a);
 void TalkDemoWindow_State_InitCenter(UnkWork_020602dc *w);
 void TalkDemoWindow_State_InitLow(UnkWork_020602dc *w);
@@ -42,7 +42,7 @@ void TalkDemoWindow_Create(void) {
             return;
         }
         TalkDemoWindow_InitVAlarms(w);
-        w->unk20 = TalkDemo_Unk_0206047c(w->unk1C)->unk14;
+        w->unk20 = TalkDemo_GetScriptHeader(w->unk1C)->unk14;
         if (TalkDemo_GetFlags(0) & 2)
             w->fn = TalkDemoWindow_State_InitCenter;
         else

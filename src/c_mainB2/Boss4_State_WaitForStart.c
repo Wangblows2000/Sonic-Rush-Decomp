@@ -5,15 +5,11 @@ typedef struct {
     u16 unk5C;
     u8 pad5E[0x70 - 0x5E];
     void *unk70;
-} UnkStruct_Player;
-
-typedef struct {
-    u8 pad[0x5c];
-    u16 unk5C;
-    u8 pad5E[0x20C - 0x5E];
+    u8 pad74[0x20C - 0x74];
     void *unk20C;
     void *unk210;
 } UnkStruct_Boss;
+typedef UnkStruct_Boss UnkStruct_Player;
 
 typedef struct {
     u8 pad[0x18];

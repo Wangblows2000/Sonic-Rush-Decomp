@@ -19,7 +19,7 @@ extern UnkStruct_02314214 *gSpecialStageData;
 s32 SpecialStageMap_GetScrollDistance(void);
 s32 *SpecialStageMap_GetCurrentSegment(void);
 s32 FX_Div(s32 n, s32 d);
-BOOL Runtime_Unk_0202e564(float a, float b);
+BOOL _fleq(float a, float b);
 
 s32 SpecialStageHud_Unk_ov001_02314214(void) {
     UnkStruct_02314214 *g = gSpecialStageData;
@@ -28,7 +28,7 @@ s32 SpecialStageHud_Unk_ov001_02314214(void) {
     s32 r;
 
     v = (float)g->unkC + (float)FX_Div(SpecialStageMap_GetScrollDistance(), 0x12c000) / 4096.0f;
-    if (Runtime_Unk_0202e564(v, 2.0f))
+    if (_fleq(v, 2.0f))
         return 0;
     if (*SpecialStageMap_GetCurrentSegment() == 5)
         return 0x800;
@@ -37,7 +37,7 @@ s32 SpecialStageHud_Unk_ov001_02314214(void) {
     {
         UnkStruct_02314214_t *t = g->t;
         n = t->start;
-        if (Runtime_Unk_0202e564(v, n - 1))
+        if (_fleq(v, n - 1))
             return 2048.0f * (v - 2.0f) / (n - 5);
         n = t->start;
         r = (s32)(2048.0f * (v - (n + 3)) / (t->end - n - 6)) + 0x800;

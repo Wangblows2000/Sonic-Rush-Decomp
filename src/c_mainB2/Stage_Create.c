@@ -109,6 +109,22 @@ void Stage_Unk_0204ba84(void);
 void Stage_Main(void);
 void Stage_Destructor(void);
 
+static inline BOOL IsBossAct_0204bf88(void)
+{
+    BOOL r = FALSE;
+    if (IsBossAct_0204bf88())
+        r = TRUE;
+    return r;
+}
+
+static inline BOOL IsNormalAct_0204bf88(void)
+{
+    BOOL r = FALSE;
+    if (gGameState.zone < 9 && gGameState.act < 2)
+        r = TRUE;
+    return r;
+}
+
 void Stage_Create(void) {
     UnkTask_0204bf88 *t;
     BOOL b;
@@ -125,10 +141,7 @@ void Stage_Create(void) {
     NNS_G3dGlbLightColor(1, data_02074962[gGameState.zone][gGameState.act][0]);
     NNS_G3dGlbLightColor(2, data_02074964[gGameState.zone][gGameState.act][0]);
 
-    b = FALSE;
-    if (gGameState.zone < 9 && gGameState.act < 2)
-        b = TRUE;
-    if (!b) {
+    if (!IsNormalAct_0204bf88()) {
         data_022c4efc.v[0] = data_020748bc[gGameState.zone][0];
         data_022c4efc.v[1] = data_020748be[gGameState.zone][0];
         data_022c4efc.v[2] = data_020748c0[gGameState.zone][0];
@@ -150,8 +163,8 @@ void Stage_Create(void) {
         data_022c4efc.v[8] = 0;
     }
     data_022c4efc.unk12 = 0xfff;
-    data_022c4efc.unk14 = z = 0;
-    data_022c4efc.unk16 = z;
+    data_022c4efc.unk14 = 0;
+    data_022c4efc.unk16 = 0;
     data_022c4ee8 = 3;
     G3X_SetEdgeColorTable(data_02074a04[gGameState.zone][gGameState.act]);
     ObjDraw_InitRows();
@@ -160,12 +173,13 @@ void Stage_Create(void) {
     func_ov000_02335704();
     Camera_Create();
     Stage_InitMapCollision();
+    z = 0;
     gObjManagerFlags = z;
-    gObjManagerFlags |= 0x1c;
     data_022c4ef8.b = z;
-    data_022c4ef8.a = data_022c4ef8.b;
     data_0207cf78 = 0x80;
-    if (gGameState.zone >= 9 || gGameState.act >= 2) {
+    gObjManagerFlags |= 0x1c;
+    data_022c4ef8.a = data_022c4ef8.b;
+    if (IsBossAct_0204bf88()) {
         gObjManagerFlags |= 0x80;
         gObjManagerFlags &= ~4;
     } else {
@@ -198,7 +212,7 @@ void Stage_Create(void) {
     ObjRect_CheckInit();
     RingManager_Create();
     Hud_Create();
-    if (gGameState.zone >= 9 || gGameState.act >= 2)
+    if (IsBossAct_0204bf88())
         Hud_SetFlags(Hud_GetFlags() | 4);
     if (gGameState.unk10 == 1 || gGameState.unk10 == 2)
         Hud_SetFlags(Hud_GetFlags() | 0x10);
@@ -218,7 +232,7 @@ void Stage_Create(void) {
         gGameState.flags |= 1;
     } else if ((gGameState.flags & 8) == 0 && (gGameState.flags & 0x40) == 0) {
         StageTitleCard_Create();
-    } else if (gGameState.zone >= 9 || gGameState.act >= 2) {
+    } else if (IsBossAct_0204bf88()) {
         NaviMsg_Create();
         NaviMsg_SetVisible(1);
         NaviB_Create();

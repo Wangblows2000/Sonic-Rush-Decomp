@@ -17,7 +17,7 @@ typedef struct {
 void NaviBg_Load(s32 a, s32 b);
 void NaviM_Load(void);
 void NaviMsg_Create(void);
-void NaviM_Unk_0206488c(void);
+void NaviM_ResetPending(void);
 UnkTask_022e33c0 *Task_Create(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void NaviMsg_SetVisible(s32 a);
@@ -38,7 +38,7 @@ UnkWork_022e33c0 *ZoneMap_InitNavi(s32 mode, s32 keep) {
     NaviM_Load();
     NaviMsg_Create();
     if (keep == 0) {
-        NaviM_Unk_0206488c();
+        NaviM_ResetPending();
     }
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1400;
     w = Task_Create(ZoneMap_DelayedCall_Main, 0, 0, 0x3000, 0x1000, sizeof(UnkWork_022e33c0))->work;

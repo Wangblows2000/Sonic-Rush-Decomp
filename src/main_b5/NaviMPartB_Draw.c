@@ -25,7 +25,7 @@ typedef struct {
     s16 y;
 } UnkPos_02063890;
 
-extern u16 data_022c4dbc;
+extern u16 gNaviMNewEmeraldMask;
 extern UnkPos_02063890 data_02077894[];
 
 void AnimatorSprite_Draw(UnkSpr_02063890 *s);
@@ -36,7 +36,7 @@ void NaviMPartB_Draw(UnkWork_02063890 *w) {
     UnkSpr_02063890 *cur;
     s32 i;
 
-    mask = w->flags & ~data_022c4dbc;
+    mask = w->flags & ~gNaviMNewEmeraldMask;
     cur = &w->res->cursor;
     icon = w->res->icons;
     for (i = 0; i < 7; i++) {

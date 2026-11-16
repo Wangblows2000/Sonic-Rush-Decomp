@@ -31,13 +31,13 @@ extern UnkState_0205a3f0 gGameState;
 extern UnkState2_0205a3f0 data_022c4590;
 
 u32 StoryProgress_GetZoneIndex(u8 zone);
-u8 StoryProgress_Unk_0204e6e4(u8 act);
+u8 StoryProgress_GetActIndex(u8 act);
 void SaveData_CommitOrShowError(void (*f)(void));
 
 void SaveData_StoreStageResult(void) {
     UnkSave_0205a3f0 *s = &data_022c468c;
     u32 z = StoryProgress_GetZoneIndex(gGameState.zone);
-    u8 a = StoryProgress_Unk_0204e6e4(gGameState.act);
+    u8 a = StoryProgress_GetActIndex(gGameState.act);
 
     if (gGameState.unk0 != 1) {
         s->b2 = data_022c4590.b14;

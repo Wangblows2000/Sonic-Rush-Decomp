@@ -76,15 +76,15 @@ src/main_b/WirelessMgr_ParentSendCallback.c:
     complete
     .text       start:0x02042384 end:0x02042388
 
-src/main_b/ClearDemo_Unk_02045594.c:
+src/main_b/ClearDemoTA_State_Done.c:
     complete
     .text       start:0x02045594 end:0x02045598
 
-src/main_b/ClearDemo_Unk_02045dec.c:
+src/main_b/ClearDemoBars_State_Done.c:
     complete
     .text       start:0x02045dec end:0x02045df0
 
-src/main_b/ClearDemo_Unk_02046228.c:
+src/main_b/ClearDemoScore_State_Done.c:
     complete
     .text       start:0x02046228 end:0x0204622c
 
@@ -212,11 +212,11 @@ src/main_b/Stage_Destructor.c:
     complete
     .text       start:0x0204b958 end:0x0204b95c
 
-src/main_b/StoryProgress_Unk_0204e6ac.c:
+src/main_b/StoryProgress_GetActAt.c:
     complete
     .text       start:0x0204e6ac end:0x0204e6b0
 
-src/main_b/StoryProgress_Unk_0204e6e4.c:
+src/main_b/StoryProgress_GetActIndex.c:
     complete
     .text       start:0x0204e6e4 end:0x0204e6e8
 
@@ -232,11 +232,11 @@ src/main_b/WirelessLobbyParent_Unk_020510bc.c:
     complete
     .text       start:0x020510bc end:0x020510c0
 
-src/main_b/PlayerDemoModel_Unk_02056840.c:
+src/main_b/PlayerDemoModel_State_Done.c:
     complete
     .text       start:0x02056840 end:0x02056844
 
-src/main_b/PlayerDemoBg_Unk_02056c98.c:
+src/main_b/PlayerDemoBg_State_Done.c:
     complete
     .text       start:0x02056c98 end:0x02056c9c
 
@@ -244,7 +244,7 @@ src/main_b/PlayerDemoBg_Destructor.c:
     complete
     .text       start:0x02056e00 end:0x02056e04
 
-src/main_b/PlayerDemo_Unk_02057094.c:
+src/main_b/PlayerDemo_GetScriptHeader.c:
     complete
     .text       start:0x02057094 end:0x02057098
 
@@ -268,11 +268,11 @@ src/main_b/StageTitleCardPart20_State_Idle.c:
     complete
     .text       start:0x0205c704 end:0x0205c708
 
-src/main_b/StageTitleCard_Unk_0205d604.c:
+src/main_b/StageTitleCard_DrawPlayer2Hidden.c:
     complete
     .text       start:0x0205d604 end:0x0205d608
 
-src/main_b/TalkDemo_Unk_0206047c.c:
+src/main_b/TalkDemo_GetScriptHeader.c:
     complete
     .text       start:0x0206047c end:0x02060480
 
@@ -892,7 +892,7 @@ src/main_a/Model_MatrixOp_None.c:
     complete
     .text       start:0x02030a80 end:0x02030a84
 
-src/main_a/Model_Unk_020313c8.c:
+src/main_a/Model_AnimateShape.c:
     complete
     .text       start:0x020313c8 end:0x020313cc
 
@@ -1240,7 +1240,7 @@ src/main_b/WirelessLobby_IsGone.c:
     complete
     .text       start:0x02050c3c end:0x02050c50
 
-src/main_b/WirelessLobby_Unk_02050c50.c:
+src/main_b/WirelessLobbyPreview_RequestStart.c:
     complete
     .text       start:0x02050c50 end:0x02050c60
 
@@ -1488,7 +1488,7 @@ src/main_b/PolyDemo_GetModelFlags.c:
     complete
     .text       start:0x02057038 end:0x02057044
 
-src/main_b/PlayerDemo_Unk_0205708c.c:
+src/main_b/PlayerDemo_GetCommand.c:
     complete
     .text       start:0x0205708c end:0x02057094
 
@@ -1564,11 +1564,11 @@ src/main_b/PlayerDemo_State_Finish.c:
     complete
     .text       start:0x02058168 end:0x0205817c
 
-src/main_b/PlayerDemo_Unk_0205817c.c:
+src/main_b/PlayerDemo_State_ScriptDoneWait.c:
     complete
     .text       start:0x0205817c end:0x02058188
 
-src/main_b/PlayerDemo_Unk_02058188.c:
+src/main_b/PlayerDemo_State_ScriptDone.c:
     complete
     .text       start:0x02058188 end:0x02058194
 
@@ -1588,7 +1588,7 @@ src/main_b/SaveData_IsEnabled.c:
     complete
     .text       start:0x02059338 end:0x02059340
 
-src/main_b/SaveData_Unk_02059874.c:
+src/main_b/SaveData_GetSonicEmeralds.c:
     complete
     .text       start:0x02059874 end:0x02059884
 
@@ -1764,7 +1764,7 @@ src/main_b/NaviM_Destroy.c:
     complete
     .text       start:0x02063f38 end:0x02063f50
 
-src/main_b/NaviM_Unk_02064740.c:
+src/main_b/NaviM_SetNewEmerald.c:
     complete
     .text       start:0x02064740 end:0x02064758
 
@@ -3332,7 +3332,7 @@ src/main_b/Stage_FreeZoneSoundData.c:
     complete
     .text       start:0x0204b2ec end:0x0204b314
 
-src/main_b/Stage_Unk_0204ba84.c:
+src/main_b/StageNetEvent_Main.c:
     complete
     .text       start:0x0204ba84 end:0x0204bab0
 
@@ -3420,7 +3420,7 @@ src/main_b/WirelessLobbyChild_Unk_02050ec0.c:
     complete
     .text       start:0x02050ec0 end:0x02050ee4
 
-src/main_b/WirelessLobbyChild_Unk_02050ee4.c:
+src/main_b/WirelessLobbyChild_GetParentLinkLevel.c:
     complete
     .text       start:0x02050ee4 end:0x02050f04
 
@@ -3460,7 +3460,7 @@ src/main_b/WirelessSession_IsStopped.c:
     complete
     .text       start:0x02051660 end:0x02051684
 
-src/main_b/WirelessSession_Unk_020518b8.c:
+src/main_b/WirelessSession_Reset.c:
     complete
     .text       start:0x020518b8 end:0x020518dc
 
@@ -3540,7 +3540,7 @@ src/main_b/SaveData_SetTimeLimit.c:
     complete
     .text       start:0x02059b74 end:0x02059ba0
 
-src/main_b/SaveData_Unk_02059ba0.c:
+src/main_b/SaveData_SetDifficulty.c:
     complete
     .text       start:0x02059ba0 end:0x02059bcc
 
@@ -3724,7 +3724,7 @@ src/main_b/NaviMPartA_Main.c:
     complete
     .text       start:0x02063df4 end:0x02063e10
 
-src/main_b/NaviM_Unk_02064870.c:
+src/main_b/NaviM_SaveStep.c:
     complete
     .text       start:0x02064870 end:0x0206488c
 
@@ -5308,15 +5308,15 @@ src/main_b/NaviM_Load.c:
     complete
     .text       start:0x02064644 end:0x02064674
 
-src/main_b/NaviM_Unk_02064758.c:
+src/main_b/NaviM_IsCounting.c:
     complete
     .text       start:0x02064758 end:0x02064788
 
-src/main_b/NaviM_Unk_02064828.c:
+src/main_b/NaviM_CheckStepAdvanced.c:
     complete
     .text       start:0x02064828 end:0x02064870
 
-src/main_b/NaviM_Unk_0206488c.c:
+src/main_b/NaviM_ResetPending.c:
     complete
     .text       start:0x0206488c end:0x020648c4
 
@@ -5996,11 +5996,11 @@ src/main_a2/Runtime_Unk_0202e438.c:
     complete
     .text       start:0x0202e438 end:0x0202e478
 
-src/main_a2/Runtime_Unk_0202e478.c:
+src/main_a2/_fneq.c:
     complete
     .text       start:0x0202e478 end:0x0202e4b4
 
-src/main_a2/Runtime_Unk_0202e4b4.c:
+src/main_a2/_feq.c:
     complete
     .text       start:0x0202e4b4 end:0x0202e4f0
 
@@ -6008,11 +6008,11 @@ src/main_a2/Runtime_Unk_0202e4f0.c:
     complete
     .text       start:0x0202e4f0 end:0x0202e528
 
-src/main_a2/Runtime_Unk_0202e528.c:
+src/main_a2/_fls.c:
     complete
     .text       start:0x0202e528 end:0x0202e564
 
-src/main_a2/Runtime_Unk_0202e564.c:
+src/main_a2/_fleq.c:
     complete
     .text       start:0x0202e564 end:0x0202e5a0
 
@@ -6020,7 +6020,7 @@ src/main_a2/Runtime_Unk_0202e5a0.c:
     complete
     .text       start:0x0202e5a0 end:0x0202e5e4
 
-src/main_a2/Runtime_Unk_0202e5e4.c:
+src/main_a2/_fgr.c:
     complete
     .text       start:0x0202e5e4 end:0x0202e620
 
@@ -7272,7 +7272,7 @@ src/auto/VsConnect_Main_WaitWfs.c:
     complete
     .text       start:0x020635d0 end:0x02063620
 
-src/auto/NaviM_Unk_02063950.c:
+src/auto/NaviMPartB_State_EmeraldAnim.c:
     complete
     .text       start:0x02063950 end:0x020639e4
 
@@ -9952,7 +9952,7 @@ src/main_b5/StageTitleCard_Destructor.c:
     complete
     .text       start:0x0205eb68 end:0x0205ec5c
 
-src/main_b5/NaviM_Unk_02063778.c:
+src/main_b5/NaviM_AdvanceSpriteAnim.c:
     complete
     .text       start:0x02063778 end:0x02063890
 
@@ -9960,15 +9960,15 @@ src/main_b5/NaviMPartB_Draw.c:
     complete
     .text       start:0x02063890 end:0x02063950
 
-src/main_b5/NaviM_Unk_020639e4.c:
+src/main_b5/NaviMPartB_State_EmeraldGrow.c:
     complete
     .text       start:0x020639e4 end:0x02063b3c
 
-src/main_b5/NaviM_Unk_02063b3c.c:
+src/main_b5/NaviMPartB_State_EmeraldShrink.c:
     complete
     .text       start:0x02063b3c end:0x02063c98
 
-src/main_b5/NaviM_Unk_02063d34.c:
+src/main_b5/NaviMPartA_State_Count.c:
     complete
     .text       start:0x02063d34 end:0x02063df4
 
@@ -9976,11 +9976,11 @@ src/main_b5/NaviM_Main.c:
     complete
     .text       start:0x02063e10 end:0x02063ebc
 
-src/main_b5/NaviM_Unk_02064674.c:
+src/main_b5/NaviM_StartEmeraldAppear.c:
     complete
     .text       start:0x02064674 end:0x02064740
 
-src/main_b5/NaviM_Unk_02064788.c:
+src/main_b5/NaviM_StartCounter.c:
     complete
     .text       start:0x02064788 end:0x02064828
 
@@ -10268,7 +10268,7 @@ src/main_b6/StoryProgress_Update.c:
     complete
     .text       start:0x0204e4dc end:0x0204e614
 
-src/main_b6/StoryProgress_Unk_0204e614.c:
+src/main_b6/StoryProgress_CalcMapStep.c:
     complete
     .text       start:0x0204e614 end:0x0204e6ac
 
@@ -10800,7 +10800,7 @@ src/main_b7/DownloadPlay_GetContest.c:
     complete
     .text       start:0x020512a4 end:0x02051300
 
-src/main_b7/WirelessSession_Unk_020513a8.c:
+src/main_b7/WirelessSession_IsDownloadPlay.c:
     complete
     .text       start:0x020513a8 end:0x02051404
 

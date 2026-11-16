@@ -61,27 +61,27 @@ u16 *Oam_AllocObj(s32 engine, u16 prio);
 
 void AnimatorSprite_Draw(UnkSprite_02032d2c *spr)
 {
-    UnkAnim_02032d2c *anim;
+    s32 idx;
     UnkFrame_02032d2c *frame;
     UnkEngine_02032d2c *e;
-    s32 eng;
+    s32 xmin;
     u16 attr0;
     u16 attr1;
-    s32 left;
-    s32 top;
-    s32 right;
-    s32 bottom;
-    s32 xmin;
     s32 ymin;
-    s32 x;
-    s32 y;
-    u32 chr;
-    u16 *src;
     u32 shift;
     u32 mode;
+    s32 right;
+    UnkAnim_02032d2c *anim;
+    s32 bottom;
+    s32 x;
+    s32 left;
+    u32 chr;
+    u16 *src;
+    s32 top;
+    s32 y;
     u32 i;
     u32 unit;
-    s32 idx;
+    s32 eng;
     UnkObjSize_02032d2c *sz;
     s32 ox;
     s32 oy;
@@ -90,9 +90,9 @@ void AnimatorSprite_Draw(UnkSprite_02032d2c *spr)
     anim = spr->anim;
     attr0 = 0;
     attr1 = 0;
-    frame = (UnkFrame_02032d2c *)(spr->frame + ((u32)anim + anim->frameOfs));
     eng = spr->engine;
     e = gDisplayTable[eng];
+    frame = (UnkFrame_02032d2c *)(spr->frame + ((u32)anim + anim->frameOfs));
     if (spr->flags & 0x80000)
         return;
     if (frame->count == 0)

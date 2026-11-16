@@ -2,7 +2,7 @@
 
 void SysSound_Release(void);
 void Wireless_EnableErrorCallback(s32 a);
-BOOL WirelessSession_Unk_020513a8(void);
+BOOL WirelessSession_IsDownloadPlay(void);
 void ResultsScreen_CreateRematchSync(void);
 void SceneChange_ToVsStage(void);
 void Stage_FreeZoneFiles(void);
@@ -20,14 +20,14 @@ void ResultsScreen_Exit(s32 mode) {
     case 0:
         SysSound_Release();
         Wireless_EnableErrorCallback(1);
-        if (WirelessSession_Unk_020513a8()) {
+        if (WirelessSession_IsDownloadPlay()) {
             ResultsScreen_CreateRematchSync();
         } else {
             SceneChange_ToVsStage();
         }
         break;
     case 1:
-        if (WirelessSession_Unk_020513a8()) {
+        if (WirelessSession_IsDownloadPlay()) {
             Stage_FreeZoneFiles();
         }
         SysSound_Release();
@@ -39,7 +39,7 @@ void ResultsScreen_Exit(s32 mode) {
         break;
     case 2:
         SysSound_Release();
-        if (WirelessSession_Unk_020513a8()) {
+        if (WirelessSession_IsDownloadPlay()) {
             Stage_FreeZoneFiles();
             Stage_FreeCommonFiles();
         }

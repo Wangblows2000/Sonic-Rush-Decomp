@@ -19,7 +19,7 @@ void *WirelessSession_GetSendBuffer(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MsgBox_Destroy(void);
 void Task_DestroyByTag(s32 a);
-BOOL WirelessSession_Unk_020513a8(void);
+BOOL WirelessSession_IsDownloadPlay(void);
 void Wireless_EnableErrorCallback(s32 a);
 void StageStart_Create(s32 a);
 void SysSound_Release(void);
@@ -47,7 +47,7 @@ void TimeSelectMenu_State_StartStage(void) {
         b = n % 2;
         MsgBox_Destroy();
         Task_DestroyByTag(0x1000);
-        if (WirelessSession_Unk_020513a8()) {
+        if (WirelessSession_IsDownloadPlay()) {
             Wireless_EnableErrorCallback(1);
             StageStart_Create(0);
             return;

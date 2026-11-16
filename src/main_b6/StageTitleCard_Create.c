@@ -138,7 +138,7 @@ void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void StageTitleCard_InitBg(UnkWork_0205f25c *w);
 void Hud_SetOamPriority3(void);
-void StageTitleCard_Unk_0205d604(void);
+void StageTitleCard_DrawPlayer2Hidden(void);
 void StageTitleCard_HoldPlayerX(void);
 void StageTitleCard_HoldPlayerY(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
@@ -204,7 +204,7 @@ void StageTitleCard_Create(void) {
         w->obj2 = gPlayers[1];
         w->fn18 = w->obj2->fn70;
         w->obj2->flags5c &= ~0x40;
-        w->obj2->fn70 = StageTitleCard_Unk_0205d604;
+        w->obj2->fn70 = StageTitleCard_DrawPlayer2Hidden;
     }
     w->flags |= 0x80025;
     w->unk4d8 = 0x1f;

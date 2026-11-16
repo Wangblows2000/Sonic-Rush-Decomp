@@ -10,13 +10,13 @@ typedef struct {
 
 void Boss4_SubState_SpinUp(void);
 void Boss4_SetCameraDefaultDistance(void);
-BOOL Runtime_Unk_0202e5e4(float a, float b);
+BOOL _fgr(float a, float b);
 
 void Boss4_SubState_SlamRecover(UnkStruct_022dd9e8 *s) {
     float t;
 
     t = (float)s->unk224 / 45.0f;
-    if (Runtime_Unk_0202e5e4(t, 1.0f))
+    if (_fgr(t, 1.0f))
         t = 1.0f;
     t = 1.0f - t;
     t = 1.0f - t * (t * t);

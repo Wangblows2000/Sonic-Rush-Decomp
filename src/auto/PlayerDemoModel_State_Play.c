@@ -8,7 +8,7 @@ s32 PlayerDemoModel_DrawModels();
 s32 PlayerDemoModel_UpdateCamera();
 s32 PlayerDemoModel_DrawCurrentModel();
 s32 PlayerDemoModel_NextScene();
-void PlayerDemoModel_Unk_02056840();
+void PlayerDemoModel_State_Done();
 
 s32 PlayerDemoModel_State_Play(u8 *p0) {
     PlayerDemoLight_Update(p0, ((u8 *)p0 + 0x1334));
@@ -27,8 +27,8 @@ s32 PlayerDemoModel_State_Play(u8 *p0) {
     if ((t1 & 0x200) != 0) {
         *(u32 *)((u8 *)t0 + 0x4) = (v4 & -513);
         PlayerDemoModel_NextScene(p0, t0, -513, (t1 & 0x200));
-        *(u32 *)p0 = (u32)PlayerDemoModel_Unk_02056840;
-        v4 = (s32)(u32)PlayerDemoModel_Unk_02056840;
+        *(u32 *)p0 = (u32)PlayerDemoModel_State_Done;
+        v4 = (s32)(u32)PlayerDemoModel_State_Done;
     }
     return v4;
 }

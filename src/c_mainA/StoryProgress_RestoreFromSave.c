@@ -38,7 +38,7 @@ extern u8 data_02074bb4[];
 /* enum-typed ternary keeps CW from canonicalising to !x (movne 0 before moveq 1) */
 typedef enum { E_ZERO, E_ONE } UnkEnum_0204ec40;
 
-u16 StoryProgress_Unk_0204e614(u16 v);
+u16 StoryProgress_CalcMapStep(u16 v);
 
 void StoryProgress_RestoreFromSave(void)
 {
@@ -47,14 +47,14 @@ void StoryProgress_RestoreFromSave(void)
     u8 i;
 
     if (gGameState.unk0 != 1) {
-        gGameState.unke = StoryProgress_Unk_0204e614(p->unk0);
+        gGameState.unke = StoryProgress_CalcMapStep(p->unk0);
         v = p->unk2;
         if (v > 99)
             v = 99;
         data_022c4590.unk14 = v;
         gGameState.unk28 = p->unk3;
     } else {
-        gGameState.unke = StoryProgress_Unk_0204e614(p->unk58);
+        gGameState.unke = StoryProgress_CalcMapStep(p->unk58);
         v = p->unk5a;
         if (v > 99)
             v = 99;

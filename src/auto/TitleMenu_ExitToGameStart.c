@@ -6,7 +6,7 @@
 extern u8 gSaveData[];
 extern u8 gGameState[];
 s32 StoryProgress_RestoreFromSave();
-s32 NaviM_Unk_0206488c();
+s32 NaviM_ResetPending();
 s32 SysSound_Release();
 s32 Game_StartStoryStage();
 s32 SceneChange_ToZoneActSelectMode();
@@ -17,7 +17,7 @@ void TitleMenu_ExitToGameStart(void) {
     s32 t0 = *(u16 *)((u8 *)gSaveData + 0xc);
     *(u32 *)gGameState = 0;
     StoryProgress_RestoreFromSave(gGameState, 0);
-    NaviM_Unk_0206488c();
+    NaviM_ResetPending();
     if (t0 == 0) {
         SysSound_Release();
         *(u32 *)gGameState = 0;

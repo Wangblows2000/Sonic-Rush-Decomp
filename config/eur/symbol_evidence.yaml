@@ -198,7 +198,6 @@ _fflt: {confidence: confirmed, evidence: "compiler-generated call from matched f
 _fadd: {confidence: confirmed, evidence: "compiler-generated call from matched func_020472bc resolves to 0x0202e1cc in the ROM"}
 _ffix: {confidence: confirmed, evidence: "compiler-generated call from matched func_020472bc resolves to 0x0202f148 in the ROM"}
 _fdiv: {confidence: confirmed, evidence: "compiler-generated call from matched func_ov000_022dc78c resolves to 0x0202ed90 in the ROM"}
-_fgr: {confidence: confirmed, evidence: "compiler-generated call from matched func_ov000_022dc78c resolves to 0x0202e620 in the ROM"}
 _fmul: {confidence: confirmed, evidence: "compiler-generated call from matched func_ov000_022dc78c resolves to 0x0202f24c in the ROM"}
 _fsub: {confidence: confirmed, evidence: "compiler-generated call from matched func_ov000_022dc78c resolves to 0x0202f438 in the ROM"}
 _ll_sdiv: {confidence: confirmed, evidence: "compiler-generated call from matched func_0200468c resolves to 0x0202f708 in the ROM"}
@@ -7546,18 +7545,9 @@ NaviB_Destroy:
 NaviB_Create:
   confidence: strong
   evidence: "strong E3,E6: Task_Create plus 15+ AnimatorSprite_Init from gNaviBSprite (the '/act/navi_b.bac' file loaded by NaviB_Load) with ObjVram_Alloc on the sub engine; stores the task in gNaviBTask (was func_02044d44, main, 2026-11-16)"
-ClearDemo_Unk_02045594:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from ClearDemo functions (reloc closure of ClearDemo_Create/Main/Destructor in 0x020453f8-0x020480ec); component state or helper of the act-clear tally task (was func_02045594, main, 2026-11-16)"
 ClearDemo_InitTimeAttackTally:
   confidence: strong
   evidence: "strong E6,E7: only called by ClearDemo_Create when game mode (+0x10)==2 (time attack); splits the stage time (game state +0x20) into min/sec/centisecond digit sprites (FX_DivS32 by 0xe10/0x3c) (was func_0204594c, main, 2026-11-16)"
-ClearDemo_Unk_02045dec:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from ClearDemo functions (reloc closure of ClearDemo_Create/Main/Destructor in 0x020453f8-0x020480ec); component state or helper of the act-clear tally task (was func_02045dec, main, 2026-11-16)"
-ClearDemo_Unk_02046228:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from ClearDemo functions (reloc closure of ClearDemo_Create/Main/Destructor in 0x020453f8-0x020480ec); component state or helper of the act-clear tally task (was func_02046228, main, 2026-11-16)"
 ClearDemo_InitScoreTally:
   confidence: strong
   evidence: "strong E6,E7: only called by ClearDemo_Create in the non time-attack branch; lays out the bonus rows (4 rows for zone<9 act<2) from game state (was func_02046738, main, 2026-11-16)"
@@ -8041,9 +8031,6 @@ PlayerDemoModel_GetUncompressedSize:
 PlayerDemoModel_GetCompressionType:
   confidence: strong
   evidence: "strong E4,E6: returns header&0xf0 (MI_GetCompressionType body, compared to 0x10/0x20/0x30 LZ/Huffman/RL); only caller 0x0205652c (was func_02056834, main, 2026-11-16)"
-PlayerDemoModel_Unk_02056840:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from PlayerDemoModel functions (reloc closure of PlayerDemoModel_Create in 0x0205615c-0x02056a84) (was func_02056840, main, 2026-11-16)"
 PlayerDemoModel_Main:
   confidence: strong
   evidence: "strong E6: Task main passed by PlayerDemoModel_Create (0x020569b9); runs the work state, destroys itself when PlayerDemo work is gone (was func_020569b8, main, 2026-11-16)"
@@ -8059,9 +8046,6 @@ PlayerDemoBg_GetUncompressedSize:
 PlayerDemoBg_GetCompressionType:
   confidence: strong
   evidence: "strong E4,E6: returns header&0xf0 (MI_GetCompressionType body); only caller 0x02056bd4 (was func_02056c8c, main, 2026-11-16)"
-PlayerDemoBg_Unk_02056c98:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from PlayerDemoBg functions (reloc closure of PlayerDemoBg_Create in 0x02056a84-0x02056e7c) (was func_02056c98, main, 2026-11-16)"
 PlayerDemoBg_Main:
   confidence: strong
   evidence: "strong E6: Task main passed by PlayerDemoBg_Create (0x02056dc9) (was func_02056dc8, main, 2026-11-16)"
@@ -8071,12 +8055,6 @@ PlayerDemoBg_Destructor:
 PlayerDemoBg_Create:
   confidence: strong
   evidence: "strong E6,E7: created by PlayerDemo_State_Load; Task_Create(main PlayerDemoBg_Main, dtor PlayerDemoBg_Destructor, work 0x58); decompresses BG screens (ScreenTransfer_QueueRect) and drives BG affine (G2x_SetBGyAffine_) (was func_02056e04, main, 2026-11-16)"
-PlayerDemo_Unk_0205708c:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from PlayerDemo functions (reloc closure of PlayerDemo_Create/Main/Destructor/State_Load in 0x02056e7c-0x02058364) (was func_0205708c, main, 2026-11-16)"
-PlayerDemo_Unk_02057094:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from PlayerDemo functions (reloc closure of PlayerDemo_Create/Main/Destructor/State_Load in 0x02056e7c-0x02058364) (was func_02057094, main, 2026-11-16)"
 PlayerDemo_IsActive:
   confidence: strong
   evidence: "strong E7: returns gPlayerDemoTask != NULL; polled by DemoScript_State_WaitPlayerDemo (was func_02057350, main, 2026-11-16)"
@@ -8092,12 +8070,6 @@ PolyDemoUnder2_DrawSprites:
 PolyDemoUnder2_ReleaseSprites:
   confidence: strong
   evidence: "strong E6: only caller PolyDemoUnder2_Destructor; ObjVram_Free and frees the loaded sprite file (was func_020577c4, main, 2026-11-16)"
-PlayerDemo_Unk_0205817c:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from PlayerDemo functions (reloc closure of PlayerDemo_Create/Main/Destructor/State_Load in 0x02056e7c-0x02058364) (was func_0205817c, main, 2026-11-16)"
-PlayerDemo_Unk_02058188:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from PlayerDemo functions (reloc closure of PlayerDemo_Create/Main/Destructor/State_Load in 0x02056e7c-0x02058364) (was func_02058188, main, 2026-11-16)"
 PlayerDemo_State_Load:
   confidence: strong
   evidence: "strong E6,E7: PlayerDemo_LoadData(gPlayerDemoId) (destroys the task on failure), creates the 3D/2D layer tasks 0x02056e04/0x02056a00 and PolyDemoUnder2_Create, loads sounds (was func_02058218, main, 2026-11-16)"
@@ -17367,27 +17339,12 @@ Runtime_Unk_0202e3f0:
 Runtime_Unk_0202e438:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e438, main, 2026-11-16)"
-Runtime_Unk_0202e478:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e478, main, 2026-11-16)"
-Runtime_Unk_0202e4b4:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e4b4, main, 2026-11-16)"
 Runtime_Unk_0202e4f0:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e4f0, main, 2026-11-16)"
-Runtime_Unk_0202e528:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e528, main, 2026-11-16)"
-Runtime_Unk_0202e564:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e564, main, 2026-11-16)"
 Runtime_Unk_0202e5a0:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e5a0, main, 2026-11-16)"
-Runtime_Unk_0202e5e4:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e5e4, main, 2026-11-16)"
 Runtime_Unk_0202e65c:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e65c, main, 2026-11-16)"
@@ -17433,9 +17390,6 @@ Runtime_Unk_0202fccc:
 Runtime_Unk_0202fcd4:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202fcd4, main, 2026-11-16)"
-Model_Unk_020313c8:
-  confidence: tentative
-  evidence: "tentative E6: empty function; sole caller Model_Animate; between Model_DrawSprite3D and Model_AnimateMdl (was func_020313c8, main, 2026-11-16)"
 AnimatorSprite_Unk_02033544:
   confidence: tentative
   evidence: "tentative E6: forwards all 4 args to AnimatorSprite_SetAnimation; immediately precedes it; 11 ov000 call sites (was func_02033544, main, 2026-11-16)"
@@ -17445,9 +17399,6 @@ WirelessMgr_GetMBParentHostInfo:
 Math_LerpRGB555:
   confidence: strong
   evidence: "strong E5: uses the hardware divider (DIVCNT 0x04000280, numer 0x290, denom 0x298, result 0x2a0) to compute per channel (c1*(d-w)+c2*w)/d for the 5-bit R,G,B fields of two RGB555 colours and stores the packed result (was func_020490b8, main, 2026-11-16)"
-Stage_Unk_0204ba84:
-  confidence: tentative
-  evidence: "tentative E6,E7: task main of the first Task_Create in Stage_Create (pool word 0x0204c51c); stops sound capture reverb/effect/output-effect/sampling and calls ov000 0x022fabbc (was func_0204ba84, main, 2026-11-16)"
 Game_StartupSaveDataOnBoot:
   confidence: strong
   evidence: "strong E6,E7: returns SaveData_StartupOrShowError(SceneChange_ToSegaLogo)!=0; Game_Init calls it when gSystemResetParameter bit31 is clear (cold boot), then goes to the SEGA logo (was func_0204ed94, main, 2026-11-16)"
@@ -17457,15 +17408,6 @@ Game_StartupSaveDataAfterReset:
 gSystemResetParameter:
   confidence: strong
   evidence: "strong E5,E7: System_InitState copies *(u32*)0x027FFC20 (OS reset parameter buffer) into it; main() passes it to System_SoftReset; Game_Init tests bit31 (was data_02087cc0, main, 2026-11-16)"
-StoryProgress_Unk_0204e614:
-  confidence: tentative
-  evidence: "tentative E6: callers StoryProgress_RestoreFromSave and StoryProgress_Update only; walks a per-character zone table (gGameState char == 1 selects the Blaze table) and tests gSaveData+8 bit 0x1000 (game cleared) (was func_0204e614, main, 2026-11-16)"
-StoryProgress_Unk_0204e6ac:
-  confidence: tentative
-  evidence: "tentative E6: empty function inside the StoryProgress cluster (between StoryProgress_Unk_0204e614 and StoryProgress_GetZoneAt); caller Game_StartStoryStage (was func_0204e6ac, main, 2026-11-16)"
-StoryProgress_Unk_0204e6e4:
-  confidence: tentative
-  evidence: "tentative E6: empty function between StoryProgress_GetZoneAt and StoryProgress_GetZoneIndex; callers StoryProgress_IsStageNew, StoryProgress_Update, SaveData_StoreStageResult (was func_0204e6e4, main, 2026-11-16)"
 gWirelessLobbyTask:
   confidence: strong
   evidence: "strong E7: singleton task pointer: WirelessLobby_CreateChild/CreateParent store Task_Create(WirelessLobbyChild_Main/ParentMain...) into it, the destructors clear it, WirelessLobby_IsGone tests it for NULL (was data_022c4638, main, 2026-11-16)"
@@ -17475,9 +17417,6 @@ gWirelessPartnerName:
 gWirelessPartnerNameValid:
   confidence: strong
   evidence: "strong E7: set to 1 together with the copy into gWirelessPartnerName (lobby mains, WirelessSession_CachePartnerName); tested first by WirelessSession_GetPartnerName (was data_022c4640, main, 2026-11-16)"
-WirelessLobby_Unk_02050c50:
-  confidence: tentative
-  evidence: "tentative E7: sets gWirelessLobbyTask->work+8 (lobby frame counter) to 1; between WirelessLobby_IsGone and WirelessLobby_GetChildCount; caller ov001 0x022c8d4c (was func_02050c50, main, 2026-11-16)"
 WirelessLobby_ForceStop:
   confidence: strong
   evidence: "strong E6: body is a call to WirelessSession_ForceStop; located in the WirelessLobby block; caller ov001 0x022c8cc0 (was func_02050c80, main, 2026-11-16)"
@@ -17523,9 +17462,6 @@ WirelessLobbyChild_SelectParent:
 WirelessLobbyChild_Unk_02050ec0:
   confidence: tentative
   evidence: "tentative E7: returns work+0x108[i] (u16 copied from each scan result by WirelessLobbyChild_RefreshParentList) if i < parent count (was func_02050ec0, main, 2026-11-16)"
-WirelessLobbyChild_Unk_02050ee4:
-  confidence: tentative
-  evidence: "tentative E7: returns work+0xE8[i] (scan result +0xC4 copied by WirelessLobbyChild_RefreshParentList) if i < parent count (was func_02050ee4, main, 2026-11-16)"
 WirelessLobbyChild_GetParentName:
   confidence: strong
   evidence: "strong E7: copies names[idx] (work+0x38, filled from WirelessMgr_GetScanResult names) to dst, len<=10, pads with spaces when idx >= count (was func_02050f04, main, 2026-11-16)"
@@ -17574,9 +17510,6 @@ WirelessSession_GetPartnerName:
 WirelessSession_CachePartnerName:
   confidence: strong
   evidence: "strong E7: gWirelessPartnerName.len = WirelessSession_GetPartnerName(&gWirelessPartnerName,10); gWirelessPartnerNameValid = 1 (was func_02051384, main, 2026-11-16)"
-WirelessSession_Unk_020513a8:
-  confidence: tentative
-  evidence: "tentative E7: returns TRUE for session/lobby role 1 or 3 and FALSE for 0 or 2 (gWirelessSession[1] or lobby work+4) (was func_020513a8, main, 2026-11-16)"
 WirelessSession_GetOwnRecvBuffer:
   confidence: strong
   evidence: "strong E7: returns gWirelessRecvBuffers[own aid]: parent role -> [0], child role -> [1] (or [work+0x1c] = WH_GetCurrentAid stored by the lobby) (was func_02051404, main, 2026-11-16)"
@@ -17592,9 +17525,6 @@ WirelessSession_PollConnected:
 WirelessLobby_GetLinkLevel:
   confidence: strong
   evidence: "strong E7: returns Wireless_GetLinkLevel() if gWirelessLobbyTask != NULL else 0; callers VsMenu_Create and ov001 0x022d9ab4 (was func_02051814, main, 2026-11-16)"
-WirelessSession_Unk_020518b8:
-  confidence: tentative
-  evidence: "tentative E7: clears gWirelessLobbyTask and data_022c4634 and sets gWirelessSession = {4,5}; caller VsMenu_Create (was func_020518b8, main, 2026-11-16)"
 Game_StartDemoScript3AtZone8Act2:
   confidence: strong
   evidence: "strong E7: gGameState zone(+0x1c)=8, act(+0x1d)=2, then DemoScript_StartScript3; caller ov000 0x02355e78 (was func_0205240c, main, 2026-11-16)"
@@ -17664,12 +17594,6 @@ SaveData_UnlockSoundTest:
 SaveData_UnlockPlayerSelectPage:
   confidence: strong
   evidence: "strong E7: gSaveData+8 |= 0x100; TitleMenu_IsPlayerSelectPageUnlocked tests that bit; caller PostStaffRoll_State_PlayerSelectUnlockNotice (was func_02059b5c, main, 2026-11-16)"
-SaveData_Unk_02059ba0:
-  confidence: tentative
-  evidence: "tentative E7: (on) clears/sets gSaveData+8 bit 0; among the SaveData flag setters (was func_02059ba0, main, 2026-11-16)"
-SaveData_Unk_02059874:
-  confidence: tentative
-  evidence: "tentative E7: returns the gSaveData+0xF byte; between SaveData_SetLivesBoth and SaveData_SetLives (was func_02059874, main, 2026-11-16)"
 SaveMsgRequest_Destructor:
   confidence: strong
   evidence: "strong E7: empty function passed as the dtor of Task_Create(SaveMsgRequest_Main, ...) in SaveMsg_Request (was func_0205a278, main, 2026-11-16)"
@@ -17679,12 +17603,6 @@ StageTitleCard_HoldPlayerNone:
 StageTitleCardPart20_State_Idle:
   confidence: strong
   evidence: "strong E7: empty state stored to o->fn and called by StageTitleCardPart20_State_Init (was func_0205c704, main, 2026-11-16)"
-StageTitleCard_Unk_0205d604:
-  confidence: tentative
-  evidence: "tentative E7: empty function StageTitleCard_Create stores into gPlayers[1]->fn70 in 2-player mode, after saving the original (was func_0205d604, main, 2026-11-16)"
-TalkDemo_Unk_0206047c:
-  confidence: tentative
-  evidence: "tentative E6: empty function; callers TalkDemoScene_Create, TalkDemoWindow_Create, TalkDemo_PlayBGM; between TalkDemo_GetScriptPage and TalkDemo_FreeScript (was func_0206047c, main, 2026-11-16)"
 TalkDemo_Unk_02061fc4:
   confidence: tentative
   evidence: "tentative E6: empty function; sole caller TalkDemoScene_Destructor; in the TalkDemo cluster (was func_02061fc4, main, 2026-11-16)"
@@ -17718,42 +17636,6 @@ NaviMPartB_Main:
 NaviMPartB_Draw:
   confidence: strong
   evidence: "strong E6: draw routine of the work+0xC sub task (callers NaviMPartB_Main and its states 0x02063950/0x020639e4/0x02063b3c); AnimatorSprite_Draw (was func_02063890, main, 2026-11-16)"
-NaviM_Unk_02063778:
-  confidence: tentative
-  evidence: "tentative E7: called by NaviM_Create; advances a sprite through BAC frames via gBACFrameGroupFuncTable; NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02063778, main, 2026-11-16)"
-NaviM_Unk_02063950:
-  confidence: tentative
-  evidence: "tentative E7: state of the NaviM part-B sub task (sets main back to NaviMPartB_Main); NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02063950, main, 2026-11-16)"
-NaviM_Unk_020639e4:
-  confidence: tentative
-  evidence: "tentative E7: state of the NaviM part-B sub task (chains to 0x02063950); NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_020639e4, main, 2026-11-16)"
-NaviM_Unk_02063b3c:
-  confidence: tentative
-  evidence: "tentative E7: state of the NaviM part-B sub task (chains to 0x020639e4; installed by NaviM_Unk_02064674); NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02063b3c, main, 2026-11-16)"
-NaviM_Unk_02063d34:
-  confidence: tentative
-  evidence: "tentative E7: state of the NaviM part-A sub task (installed by NaviM_Unk_02064788; counts from data_020778b0[idx-1] to [idx]); NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02063d34, main, 2026-11-16)"
-NaviM_Unk_02064674:
-  confidence: tentative
-  evidence: "tentative E7: installs NaviM part-B state 0x02063b3c on gNaviMTask when data_022c4dbc != 0; NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02064674, main, 2026-11-16)"
-NaviM_Unk_02064740:
-  confidence: tentative
-  evidence: "tentative E7: data_022c4dbc = 1 << n (NaviM part-B trigger mask read by NaviM_Unk_02064674); NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02064740, main, 2026-11-16)"
-NaviM_Unk_02064758:
-  confidence: tentative
-  evidence: "tentative E7: returns whether gNaviMTask part-A state == 0x02063d34; NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02064758, main, 2026-11-16)"
-NaviM_Unk_02064788:
-  confidence: tentative
-  evidence: "tentative E7: installs NaviM part-A state 0x02063d34 on gNaviMTask when data_022c4db8 is set; NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02064788, main, 2026-11-16)"
-NaviM_Unk_02064828:
-  confidence: tentative
-  evidence: "tentative E7: sets data_022c4db8 (NaviM part-A trigger) when gGameState+0xE grew past data_022c4db4; NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02064828, main, 2026-11-16)"
-NaviM_Unk_02064870:
-  confidence: tentative
-  evidence: "tentative E7: data_022c4db4 = gGameState+0xE (NaviM baseline); caller Game_StartStoryStage; NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_02064870, main, 2026-11-16)"
-NaviM_Unk_0206488c:
-  confidence: tentative
-  evidence: "tentative E7: resets the NaviM triggers data_022c4dbc/db8 and baseline data_022c4db4; NaviM block between NaviM_Create and StageObj_CollideMapVertical (was func_0206488c, main, 2026-11-16)"
 StageObj_ApplyCollisionAttr:
   confidence: strong
   evidence: "strong E6,E7: (obj, attr): a = attr>>1; a==1 -> obj+0x5e|=1, a==3 -> |=0x10, a==2/3 -> |=8; called by StageObj_CollideMapVertical with the probed tile attribute (was func_020660b0, main, 2026-11-16)"
@@ -22779,3 +22661,132 @@ StageClear_HandleGoalReached:
 ItemBox_GiveItem:
   confidence: strong
   evidence: "strong E7: by item kind: random/5 rings (Player_AddRings), tension (Player_AddTension), 1-up (Player_AddLives), invincibility, barrier, magnet, or VS attack items (SE 0xDF + Player_ApplySlowdown/ApplyConfusion/DrainTension) (was ItemBox_Unk_ov000_0230da90, ov000, 2026-11-16)"
+_fgeq:
+  confidence: strong
+  evidence: "strong E4,E8 (CORRECTION): body at 0x0202e620 returns 1 when a>=b (movge 1/movlt 0; NaN->0), identical core to pokediamond RUNTIME_f_cmp.s _fgeq; Rush order _fls,_fleq,(0x0202e5a0),0x0202e5e4(>),0x0202e620(>=) is the reverse of pokediamond _fgeq,_fgr,_fleq,_fls as for the double set (_dgr movhi > before _dgeq). Old name came from a matched C `f > 1.0f`; its only ROM caller is Boss4PartD0_SubState_Unk_ov000_022dc78c (reloc 0x022dc7b0): APPLY FIRST and change that line to `f >= 1.0f` (CW 1.2/sp2 emits identical call code for _fgeq) (was _fgr, main, 2026-11-16)"
+_fgr:
+  confidence: strong
+  evidence: "strong E4: body returns a>b (movgt 1/movle 0, NaN->0) = pokediamond _fgr core; compiler test: Ending_FadeIn.c with Runtime_Unk_0202e5e4(t,1.0f) rewritten `t > 1.0f` compiles (CW 1.2/sp2, project flags) to byte-identical code with reloc _fgr; 25 ov001 call sites. APPLY AFTER the _fgr->_fgeq row (was Runtime_Unk_0202e5e4, main, 2026-11-16)"
+_feq:
+  confidence: strong
+  evidence: "strong E4: body returns a==b (+0/-0 equal, NaN->0); compiler test: Ending_FadeIn.c `Runtime_Unk_0202e4b4(0.0f, r) != 0` rewritten `0.0f == r` compiles to byte-identical code with reloc _feq (was Runtime_Unk_0202e4b4, main, 2026-11-16)"
+_fls:
+  confidence: strong
+  evidence: "strong E4: body returns a<b (movlt 1/movge 0, NaN->0) = pokediamond _fls core; compiler test: SpecialStageHud_Unk_ov001_02307890.c `Runtime_Unk_0202e528(f, 50.0f)` rewritten `f < 50.0f` compiles to byte-identical code with reloc _fls (was Runtime_Unk_0202e528, main, 2026-11-16)"
+_fleq:
+  confidence: strong
+  evidence: "strong E4: body returns a<=b (movle 1/movgt 0, NaN->0) = pokediamond _fleq core; compiler test: SpecialStageHud_Unk_ov001_02314214.c `Runtime_Unk_0202e564(v, 2.0f)` rewritten `v <= 2.0f` compiles to byte-identical code with reloc _fleq (was Runtime_Unk_0202e564, main, 2026-11-16)"
+_fneq:
+  confidence: strong
+  evidence: "strong E4: body returns a!=b (NaN->1, +0/-0 equal) = exact complement of _feq 0x0202e4b4 which follows it, mirroring _dneq 0x0202e800 before _deq 0x0202e888; _fneq is the CW 1.2 compiler's intrinsic for float != (compiled test emits bl _fneq); no other float != helper in the runtime block (was Runtime_Unk_0202e478, main, 2026-11-16)"
+Model_AnimateShape:
+  confidence: strong
+  evidence: "strong E6,E7: empty animate handler called by Model_Animate for type 1, the type set by Model_InitShape (Model_Draw draws type 1 with NNS_G3dDraw1Mat1Shp); sibling of Model_AnimateMdl (type 0) (was Model_Unk_020313c8, main, 2026-11-16)"
+StageNetEvent_Main:
+  confidence: strong
+  evidence: "strong E6,E7: task main of the first Task_Create in Stage_Create (pool 0x0204c51c, no dtor); each frame stops sound-capture reverb/effect/sampling/output effect and calls ov000 0x022fabbc, which reads type-2 NetPacket data from the rival and applies VS item events (Player_ApplySlowdown/ApplyConfusion/DrainTension/WarpToRival, map-object flags) (was Stage_Unk_0204ba84, main, 2026-11-16)"
+StoryProgress_CalcMapStep:
+  confidence: strong
+  evidence: "strong E6,E7: converts a saved story-progress value (gSaveData+0xc Sonic / +0x64 Blaze, table data_02074bbc/bb4 by character) into the map step stored to gGameState+0xe (3 per cleared zone, +2 at zone end, final +1/+2 by game-cleared flag 0x1000); callers StoryProgress_Update/RestoreFromSave; NaviM_Create reads that step as its counter index (was StoryProgress_Unk_0204e614, main, 2026-11-16)"
+StoryProgress_GetActAt:
+  confidence: strong
+  evidence: "strong E6,E7: identity (bx lr returns arg) act mapping; Game_StartStoryStage stores its result to gGameState.act exactly as it stores StoryProgress_GetZoneAt (next function) to gGameState.zone (was StoryProgress_Unk_0204e6ac, main, 2026-11-16)"
+StoryProgress_GetActIndex:
+  confidence: strong
+  evidence: "strong E6,E7: identity (bx lr returns arg) mapping of gGameState.act to the progress act index (0/1 acts, 2 boss) used by StoryProgress_Update/IsStageNew/SaveData_StoreStageResult beside StoryProgress_GetZoneIndex (next function) for the zone (was StoryProgress_Unk_0204e6e4, main, 2026-11-16)"
+WirelessLobbyPreview_RequestStart:
+  confidence: strong
+  evidence: "strong E6,E7: sets lobby work+8=1; WirelessLobbyPreview_Main (task created by WirelessSession_StartDownloadPlayPreview into gWirelessLobbyTask) on status 2 consumes work+8: WirelessMgr_RequestStart if children>0 else stop; called from the options download-play confirm (OptionsMenu_Unk_ov001_022c8d4c) (was WirelessLobby_Unk_02050c50, main, 2026-11-16)"
+WirelessLobbyChild_GetParentLinkLevel:
+  confidence: strong
+  evidence: "strong E4,E7: returns work+0xe8[i] (0 if i>=parent count) = scan entry +0xc4, written by WirelessMgr_OnScanFoundParent from WMStartScanCallback+0x12 (linkLevel; state +8 and macAddress +0xa match the SDK layout); VsMenu_Unk_ov001_022da614 takes the max over parents and draws it as the signal icon (was WirelessLobbyChild_Unk_02050ee4, main, 2026-11-16)"
+WirelessSession_IsDownloadPlay:
+  confidence: strong
+  evidence: "strong E6,E7: TRUE iff session mode (lobby work+4, else gWirelessSession[1]) is 1 or 3; mode 1 is set only by WirelessSession_StartDownloadPlay/StartDownloadPlayPreview, 0 by CreateParent, 2 by CreateChild (GetOwnRecvBuffer groups 0,1 parent / 2,3 child); callers pick the reduced model sets (PlayerSelectMenu_LoadModels, ResultsScreen_LoadArchives) (was WirelessSession_Unk_020513a8, main, 2026-11-16)"
+WirelessSession_Reset:
+  confidence: strong
+  evidence: "strong E7: clears gWirelessLobbyTask and data_022c4634 and sets gWirelessSession to {4,5} (no session); called by VsMenu_Create before any lobby starts (was WirelessSession_Unk_020518b8, main, 2026-11-16)"
+PlayerDemoModel_State_Done:
+  confidence: strong
+  evidence: "strong E7: empty state stored to the PlayerDemoModel state slot by PlayerDemoModel_State_Play/NextScene when the last scene ends (flag 0x200) (was PlayerDemoModel_Unk_02056840, main, 2026-11-16)"
+PlayerDemoBg_State_Done:
+  confidence: strong
+  evidence: "strong E7: empty state stored to the PlayerDemoBg fn slot when there are no images (State_Init) or the last image was shown (State_WaitNext count>=total) (was PlayerDemoBg_Unk_02056c98, main, 2026-11-16)"
+PlayerDemo_GetCommand:
+  confidence: strong
+  evidence: "strong E7: returns &data[0x14 + i*0x10], the 0x10-byte {?,time,op,arg} script command that PlayerDemo_State_RunScript executes through gPlayerDemoOpTable; used by State_Load/RunScript with the loaded demo data (was PlayerDemo_Unk_0205708c, main, 2026-11-16)"
+PlayerDemo_GetScriptHeader:
+  confidence: strong
+  evidence: "strong E7: identity (bx lr) on the data returned by PlayerDemo_LoadData; State_Load reads header+0xc as the command count (work+0x1a, compared with idx in RunScript) (was PlayerDemo_Unk_02057094, main, 2026-11-16)"
+PlayerDemo_State_ScriptDone:
+  confidence: strong
+  evidence: "strong E7: state installed by PlayerDemo_State_RunScript after the last command (flags |= 4|0x200); its only action is to install PlayerDemo_Unk_0205817c (one-frame wait) (was PlayerDemo_Unk_02058188, main, 2026-11-16)"
+PlayerDemo_State_ScriptDoneWait:
+  confidence: strong
+  evidence: "strong E7: state installed by PlayerDemo_State_ScriptDone (0x02058188); sets the state to PlayerDemo_State_Finish on the next frame (was PlayerDemo_Unk_0205817c, main, 2026-11-16)"
+SaveData_GetSonicEmeralds:
+  confidence: strong
+  evidence: "strong E7: returns save byte +0xf, the Sonic emerald bitmask (StoryProgress_RestoreFromSave copies it to gGameState+0x28; SaveData_StoreStageResult stores gGameState+0x28&0x7f back; SpecialStage_GetEmeraldFlags reads gGameState+0x28); Stage_ExitAfterFail restores gGameState+0x28 from it (was SaveData_Unk_02059874, main, 2026-11-16)"
+SaveData_SetDifficulty:
+  confidence: strong
+  evidence: "strong E6,E7: (BOOL normal) clears/sets save flag bit 0, same shape as SaveData_SetTimeLimit (bit 1); only caller the options two-choice handler OptionsMenu_Unk_ov001_022c8924; bit 0 suppresses objects with param flag 0x80 (Rock_Create), changes enemy-group behaviour and ring-scatter caps, and sets gGameState+0x14 in RestoreFromSave (was SaveData_Unk_02059ba0, main, 2026-11-16)"
+StageTitleCard_DrawPlayer2Hidden:
+  confidence: strong
+  evidence: "strong E7: empty draw stored to player 2's StageObj+0x70 draw slot by StageTitleCard_Create (VS mode) after saving the original to work+0x18; StageObj_Main calls +0x70 instead of the default draw, so player 2 is hidden during the title card (was StageTitleCard_Unk_0205d604, main, 2026-11-16)"
+TalkDemo_GetScriptHeader:
+  confidence: strong
+  evidence: "strong E7: identity (bx lr) on TalkDemo_GetScript's result; TalkDemoWindow_Create reads header+0x14 and TalkDemo_PlayBGM reads header+0x18 as the BGM index into data_02076c54 (was TalkDemo_Unk_0206047c, main, 2026-11-16)"
+ClearDemoTA_State_Done:
+  confidence: strong
+  evidence: "strong E7: empty state stored to the time-attack result object's fn by ClearDemoTA_State_HoldRank (after 60 frames, flags|=0x8000) and ClearDemoTA_SkipToRank (was ClearDemo_Unk_02045594, main, 2026-11-16)"
+ClearDemoBars_State_Done:
+  confidence: strong
+  evidence: "strong E7: empty state stored to the ClearDemoBars fn when ClearDemoBars_State_SlideIn finishes and by ClearDemoBars_Skip (was ClearDemo_Unk_02045dec, main, 2026-11-16)"
+ClearDemoScore_State_Done:
+  confidence: strong
+  evidence: "strong E7: empty state stored to the score object's fn by ClearDemoScore_State_HoldRank after 60 frames (flags|=0x8000) (was ClearDemo_Unk_02046228, main, 2026-11-16)"
+NaviM_AdvanceSpriteAnim:
+  confidence: strong
+  evidence: "strong E7: (animator, dt) advances an AnimatorSprite by dt ticks: decrements the frame wait, runs the BAC frame-group commands via gBACFrameGroupFuncTable on each frame change, stops on end flag; NaviM_Create uses it to jump the emerald sprite to frame k*16-1 (was NaviM_Unk_02063778, main, 2026-11-16)"
+NaviM_SetNewEmerald:
+  confidence: strong
+  evidence: "strong E7,E8: stores 1<<n to data_022c4dbc, the new-emerald mask whose lowest set bit picks one of the 7 hexagonal icon positions data_02077894 (NaviM_StartEmeraldAppear); NaviMPartB shows gGameState+0x28 (emerald flags); caller ZoneMap_Unk_ov001_022e5a68 (was NaviM_Unk_02064740, main, 2026-11-16)"
+NaviM_StartEmeraldAppear:
+  confidence: strong
+  evidence: "strong E7,E8: if the new-emerald mask is set, puts NaviMPartB in state 0x02063b3c, resets its timer and sets the sprite position to data_02077894[first set bit] (7 points of a hexagon); callers ZoneActSelect fade states/ZoneMap (was NaviM_Unk_02064674, main, 2026-11-16)"
+NaviMPartB_State_EmeraldShrink:
+  confidence: strong
+  evidence: "strong E7: NaviMPartB state (installed by NaviM_StartEmeraldAppear): scale eases 1.25->0.95 (+0x100/frame) with AnimatorSprite_DrawRotScale on the emerald sprite, then -> 0x020639e4 (was NaviM_Unk_02063b3c, main, 2026-11-16)"
+NaviMPartB_State_EmeraldGrow:
+  confidence: strong
+  evidence: "strong E7: NaviMPartB state after EmeraldShrink: scale eases 0.95->1.25 (+0x400/frame), then sets the sprite animation from res+0x690 and -> 0x02063950 (was NaviM_Unk_020639e4, main, 2026-11-16)"
+NaviMPartB_State_EmeraldAnim:
+  confidence: strong
+  evidence: "strong E7: NaviMPartB state after EmeraldGrow: plays the emerald sprite animation until its end flag (anim+0x2c bit 2), then returns to NaviMPartB_Main and clears the new-emerald mask (was NaviM_Unk_02063950, main, 2026-11-16)"
+NaviMPartA_State_Count:
+  confidence: strong
+  evidence: "strong E7: NaviMPartA state: every 2 frames moves the counter cur by step toward target, splits it into tens/ones digits (FX_DivS32/FX_ModS32 by 10, tens hidden when 0) for NaviMPartA_Draw, and returns to NaviMPartA_Main clearing the pending flag when cur==target (was NaviM_Unk_02063d34, main, 2026-11-16)"
+NaviM_StartCounter:
+  confidence: strong
+  evidence: "strong E7: if the counter-pending flag data_022c4db8 is set, puts NaviMPartA in NaviMPartA_State_Count from data_020778b0[step-1] to data_020778b0[step] (step = work+0x720 = gGameState+0xe) with step +-1/0 (was NaviM_Unk_02064788, main, 2026-11-16)"
+NaviM_IsCounting:
+  confidence: strong
+  evidence: "strong E7: returns whether the NaviMPartA task fn is NaviMPartA_State_Count (0x02063d34); polled by ZoneMap_State_Unk_ov001_022e6ed0 (was NaviM_Unk_02064758, main, 2026-11-16)"
+NaviM_CheckStepAdvanced:
+  confidence: strong
+  evidence: "strong E7: sets and returns the counter-pending flag data_022c4db8 = (gGameState+0xe map step > saved step data_022c4db4 && step>=1) (was NaviM_Unk_02064828, main, 2026-11-16)"
+NaviM_SaveStep:
+  confidence: strong
+  evidence: "strong E7: saves gGameState+0xe (map step) to data_022c4db4; called by Game_StartStoryStage before a stage (was NaviM_Unk_02064870, main, 2026-11-16)"
+NaviM_ResetPending:
+  confidence: strong
+  evidence: "strong E7: clears the new-emerald mask and counter-pending flag and saves the current map step (gGameState+0xe) to data_022c4db4; called on title-menu game start, zone/act select start and the zone map (was NaviM_Unk_0206488c, main, 2026-11-16)"
+gNaviMNewEmeraldMask:
+  confidence: strong
+  evidence: "strong E7: 1<<n set by NaviM_SetNewEmerald, cleared by NaviM_ResetPending/NaviMPartB_State_EmeraldAnim; lowest set bit selects the emerald icon position (was data_022c4dbc, main, 2026-11-16)"
+gNaviMCounterPending:
+  confidence: strong
+  evidence: "strong E7: set by NaviM_CheckStepAdvanced, consumed by NaviM_StartCounter/NaviM_Create, cleared when NaviMPartA_State_Count reaches its target (was data_022c4db8, main, 2026-11-16)"
+gNaviMSavedStep:
+  confidence: strong
+  evidence: "strong E7: map step snapshot (gGameState+0xe) written by NaviM_SaveStep/NaviM_ResetPending and compared by NaviM_CheckStepAdvanced (was data_022c4db4, main, 2026-11-16)"

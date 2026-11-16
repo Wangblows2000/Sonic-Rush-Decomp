@@ -27,7 +27,7 @@ typedef struct {
 } UnkWork_020453f8;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
-void ClearDemo_Unk_02045594(void);
+void ClearDemoTA_State_Done(void);
 void Sound_PlaySeq(void *a, s32 b);
 void Sound_PlaySeqArc(void *a, void *b, s32 c);
 void Sound_PlayVoice(void *a, void *b, s32 c);
@@ -42,7 +42,7 @@ void ClearDemoTA_SkipToRank(UnkWork_020453f8 *w) {
     o->unkA0 = 0x1000;
     NNS_SndPlayerStopSeq(w->unk1634, 0);
     o->unk4 = 0;
-    w->obj.fn = ClearDemo_Unk_02045594;
+    w->obj.fn = ClearDemoTA_State_Done;
     w->flags |= 0x8000;
     if (o->unkBA == 0) {
         if (o->unk9C == 0) {

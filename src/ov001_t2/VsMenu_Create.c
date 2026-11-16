@@ -28,7 +28,7 @@ extern u32 gSystemFlags;
 UnkTask_022ddcd4 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 s32 WirelessLobby_GetLinkLevel(void);
-void WirelessSession_Unk_020518b8(void);
+void WirelessSession_Reset(void);
 void VsMenu_State_None(void);
 void VsMenu_Destructor(void);
 void VsMenu_State_LoadAssets(void);
@@ -53,7 +53,7 @@ void VsMenu_Create(s32 a, s32 b, s32 c) {
     gVsMenuCancelled = 1;
     gSaveDataBusy = 1;
     gSystemFlags |= 0x10;
-    WirelessSession_Unk_020518b8();
+    WirelessSession_Reset();
     t->fn = VsMenu_State_LoadAssets;
 }
 #pragma thumb reset

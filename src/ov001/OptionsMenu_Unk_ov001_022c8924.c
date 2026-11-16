@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-void SaveData_Unk_02059ba0(s32 a);
+void SaveData_SetDifficulty(s32 a);
 
 #pragma thumb on
 void OptionsMenu_Unk_ov001_022c8924(u8 *p, s32 v) {
@@ -8,10 +8,10 @@ void OptionsMenu_Unk_ov001_022c8924(u8 *p, s32 v) {
         *(s32 *)(p + 8) = v;
         switch (v) {
         case 0:
-            SaveData_Unk_02059ba0(1);
+            SaveData_SetDifficulty(1);
             break;
         case 1:
-            SaveData_Unk_02059ba0(0);
+            SaveData_SetDifficulty(0);
             break;
         }
     }

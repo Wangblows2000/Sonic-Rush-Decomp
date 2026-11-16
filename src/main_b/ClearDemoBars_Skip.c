@@ -4,7 +4,7 @@
 
 typedef struct { void (*fn)(void); u32 unk4; u32 unk8; u32 unkC; } UnkSub_02045d64;
 typedef struct { u8 unk0[0x330]; UnkSub_02045d64 sub; u32 unk340; u32 flags; } UnkStruct_02045d64;
-void ClearDemo_Unk_02045dec(void);
-void ClearDemoBars_Skip(UnkStruct_02045d64 *s) { UnkSub_02045d64 *p = &s->sub; p->unk8 = 0; p->unkC = 0xc0000; s->flags |= 0xe0000; p->fn = ClearDemo_Unk_02045dec; }
+void ClearDemoBars_State_Done(void);
+void ClearDemoBars_Skip(UnkStruct_02045d64 *s) { UnkSub_02045d64 *p = &s->sub; p->unk8 = 0; p->unkC = 0xc0000; s->flags |= 0xe0000; p->fn = ClearDemoBars_State_Done; }
 
 #pragma thumb reset

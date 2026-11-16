@@ -35,8 +35,8 @@ void ZoneActSelect_UpdateTabOffsets(UnkWork_022e129c *w);
 void ZoneActSelect_DrawZoneTabs(UnkWork_022e129c *w);
 void ZoneActSelect_Unk_ov001_022e0884(UnkWork_022e129c *w);
 void ZoneActSelect_LoadZonePalette(UnkWork_022e129c *w, s32 a);
-void NaviM_Unk_02064674(void);
-void NaviM_Unk_02064788(void);
+void NaviM_StartEmeraldAppear(void);
+void NaviM_StartCounter(void);
 void ZoneActSelect_State_Select(void);
 
 #pragma thumb on
@@ -75,10 +75,10 @@ void ZoneActSelect_State_FadeIn(void) {
             GXx_SetMasterBrightness_((vu16 *)0x400106c, data_02087d44.bright);
         }
         if (gZoneActSelectWork->flags & 8) {
-            NaviM_Unk_02064674();
+            NaviM_StartEmeraldAppear();
         }
         if (gZoneActSelectWork->flags & 0x10) {
-            NaviM_Unk_02064788();
+            NaviM_StartCounter();
         }
         gZoneActSelectWork->flags &= ~0x18;
         gTaskCurrent->func = ZoneActSelect_State_Select;

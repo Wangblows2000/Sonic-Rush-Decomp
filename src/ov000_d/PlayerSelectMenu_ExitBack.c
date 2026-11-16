@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 void SceneChange_ToTitleMenu(void);
-BOOL WirelessSession_Unk_020513a8(void);
+BOOL WirelessSession_IsDownloadPlay(void);
 void Stage_FreeCommonFiles(void);
 void SysSound_Release(void);
 void WirelessSession_EndWhenAlone(void (*f)(void));
@@ -16,7 +16,7 @@ void PlayerSelectMenu_ExitBack(s32 mode) {
         SceneChange_ToTitleMenu();
         break;
     case 1:
-        if (WirelessSession_Unk_020513a8()) {
+        if (WirelessSession_IsDownloadPlay()) {
             Stage_FreeCommonFiles();
         }
         SysSound_Release();

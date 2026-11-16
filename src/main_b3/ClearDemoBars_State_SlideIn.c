@@ -12,7 +12,7 @@ typedef struct {
     u32 flags;
 } UnkWork_02045df0;
 
-void ClearDemo_Unk_02045dec(void);
+void ClearDemoBars_State_Done(void);
 
 #pragma thumb on
 static inline s32 FX_Mul_02045df0(s32 a, s32 b) {
@@ -31,7 +31,7 @@ void ClearDemoBars_State_SlideIn(UnkWork_02045df0 *w, UnkObj_02045df0 *o) {
 
     o->unk4++;
     if (o->unk4 >= 0x10) {
-        o->fn = ClearDemo_Unk_02045dec;
+        o->fn = ClearDemoBars_State_Done;
         o->unk4 = 0;
         o->unk8 = 0;
         o->unkC = 0xc0000;

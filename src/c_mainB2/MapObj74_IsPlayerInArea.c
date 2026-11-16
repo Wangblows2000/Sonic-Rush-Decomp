@@ -27,28 +27,31 @@ typedef struct UnkStruct_02304064 {
 
 extern UnkStruct_02304064_Player *gPlayers[];
 
+static inline UnkStruct_02304064_Player *GetPlayer_02304064(s32 id) { return gPlayers[id]; }
+
+static inline BOOL InRange(s32 v, s32 base, const s8 *a, const s8 *b)
+{
+    BOOL r;
+    s32 lo;
+    r = FALSE;
+    lo = base + (*a << 11);
+    if (lo <= v && lo + ((*b - *a) << 11) >= v)
+        r = TRUE;
+    return r;
+}
+
 BOOL MapObj74_IsPlayerInArea(UnkStruct_02304064 *work)
 {
-    s32 lo;
-    BOOL inX;
-    UnkStruct_02304064_Area *area;
-    BOOL inY;
     BOOL result;
+    UnkStruct_02304064_Area *area;
     UnkStruct_02304064_Player *player;
 
     result = FALSE;
     area = work->area;
-    player = gPlayers[work->id];
-    inX = FALSE;
-    lo = work->x + (area->left << 11);
-    if (lo <= player->x && lo + ((area->right - area->left) << 11) >= player->x)
-        inX = TRUE;
-    if (inX) {
-        inY = FALSE;
-        lo = work->y + (area->top << 11);
-        if (lo <= player->y && lo + ((area->bottom - area->top) << 11) >= player->y)
-            inY = TRUE;
-        if (inY)
+    player = GetPlayer_02304064(work->id);
+
+    if (InRange(player->x, work->x, &area->left, &area->right)) {
+        if (InRange(player->y, work->y, &area->top, &area->bottom))
             result = TRUE;
     }
     return result;

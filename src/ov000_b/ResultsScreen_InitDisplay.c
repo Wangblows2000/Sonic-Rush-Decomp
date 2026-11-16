@@ -47,7 +47,7 @@ void Vram_SetBankForSubOBJExtPltt(s32 a);
 void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void GXS_SetGraphicsMode(s32 mode);
 void ObjVram_Reset(s32 a);
-BOOL WirelessSession_Unk_020513a8(void);
+BOOL WirelessSession_IsDownloadPlay(void);
 void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
 void G3X_SetClearColor(s32 a, s32 b, s32 c, s32 d, s32 e);
@@ -105,7 +105,7 @@ void ResultsScreen_InitDisplay(void) {
     Vram_SetBankForSubBGExtPltt(0x80);
     Vram_SetBankForTex(1);
     Vram_SetBankForTexPltt(0x20);
-    if (!WirelessSession_Unk_020513a8()) {
+    if (!WirelessSession_IsDownloadPlay()) {
         Vram_ResetTexAndPltt();
         VramPltt_Reset();
     }

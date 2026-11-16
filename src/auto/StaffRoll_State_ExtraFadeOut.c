@@ -6,7 +6,7 @@
 s32 StaffRoll_DrawSprites();
 s32 _fflt();
 s32 _fdiv();
-s32 Runtime_Unk_0202e5e4();
+s32 _fgr();
 s32 _fmul();
 s32 _ffix();
 s32 StaffRoll_SetMainBrightness();
@@ -21,7 +21,7 @@ void StaffRoll_State_ExtraFadeOut(u8 *p0) {
     if (t0 <= 0x90) {
         s32 t1 = _fflt(t0);
         s32 t2 = _fdiv(t1, 0x43100000);
-        s32 t3 = Runtime_Unk_0202e5e4(t2, 0x3f800000);
+        s32 t3 = _fgr(t2, 0x3f800000);
         s32 v4 = t2;
         if (t3 != 0) {
             v4 = 0x3f800000;

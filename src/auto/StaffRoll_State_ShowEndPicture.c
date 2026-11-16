@@ -8,7 +8,7 @@ extern u8 data_02087d44[];
 s32 StaffRoll_DrawSprites();
 s32 _fflt();
 s32 _fdiv();
-s32 Runtime_Unk_0202e5e4();
+s32 _fgr();
 s32 StaffRoll_FadePalette();
 s32 StaffRoll_CreateCreditTask();
 extern u8 data_ov001_023160e4[];
@@ -26,7 +26,7 @@ s32 StaffRoll_State_ShowEndPicture(u8 *p0) {
     if (t1 <= 0x40) {
         s32 t2 = _fflt(t1);
         s32 t3 = _fdiv(t2, 0x42800000);
-        s32 t4 = Runtime_Unk_0202e5e4(t3, 0x3f800000);
+        s32 t4 = _fgr(t3, 0x3f800000);
         s32 v5 = t3;
         if (t4 != 0) {
             v5 = 0x3f800000;

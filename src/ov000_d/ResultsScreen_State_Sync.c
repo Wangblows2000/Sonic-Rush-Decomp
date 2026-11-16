@@ -18,7 +18,7 @@ UnkStruct_0235eab8_Sync *WirelessSession_GetSendBuffer(void);
 UnkStruct_0235eab8_Sync *WirelessSession_GetPartnerRecvBuffer(void);
 UnkStruct_0235eab8_Sync *WirelessSession_GetOwnRecvBuffer(void);
 BOOL ResultsScreen_Unk_ov000_0235cbd8(void);
-BOOL WirelessSession_Unk_020513a8(void);
+BOOL WirelessSession_IsDownloadPlay(void);
 void *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void ResultsScreen_ScrollBg_Main(void);
 void SysSound_Release(void);
@@ -69,7 +69,7 @@ void ResultsScreen_State_Sync(void) {
     }
     if (go) {
         Task_Create(ResultsScreen_ScrollBg_Main, NULL, 0, 0x2000, 0x1000, 0);
-        if (WirelessSession_Unk_020513a8()) {
+        if (WirelessSession_IsDownloadPlay()) {
             SysSound_Release();
             Stage_FreeZoneSoundData();
         }

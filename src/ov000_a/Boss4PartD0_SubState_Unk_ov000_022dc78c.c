@@ -13,7 +13,7 @@ void Boss4PartD0_StartBurst(UnkStruct_022dc78c *s);
 
 void Boss4PartD0_SubState_Unk_ov000_022dc78c(UnkStruct_022dc78c *s) {
     float f = s->unk48C / 5.0f;
-    if (f > 1.0f)
+    if (f >= 1.0f)
         f = 1.0f;
     f = 1.0f - f * (f * f);
     s->unk228 = f * s->unk484;

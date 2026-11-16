@@ -13,8 +13,8 @@ typedef struct UnkStruct_022c6ac4 {
 extern UnkStruct_022c6ac4_b gDisplayMain;
 extern UnkStruct_022c6ac4_b gDisplaySub;
 
-BOOL Runtime_Unk_0202e5e4(float a, float b);
-BOOL Runtime_Unk_0202e4b4(float a, float b);
+BOOL _fgr(float a, float b);
+BOOL _feq(float a, float b);
 
 BOOL Ending_FadeIn(UnkStruct_022c6ac4 *w, s32 num, s32 den, BOOL main, BOOL sub) {
     float t = (float)num / (float)den;
@@ -22,7 +22,7 @@ BOOL Ending_FadeIn(UnkStruct_022c6ac4 *w, s32 num, s32 den, BOOL main, BOOL sub)
 
     if (w->unk690 != 0)
         return FALSE;
-    if (Runtime_Unk_0202e5e4(t, 1.0f))
+    if (_fgr(t, 1.0f))
         t = 1.0f;
     r = 1.0f - t * t;
     if (main) {
@@ -35,5 +35,5 @@ BOOL Ending_FadeIn(UnkStruct_022c6ac4 *w, s32 num, s32 den, BOOL main, BOOL sub)
         if (gDisplaySub.brightness < 0)
             gDisplaySub.brightness = 0;
     }
-    return Runtime_Unk_0202e4b4(0.0f, r) != 0;
+    return _feq(0.0f, r) != 0;
 }

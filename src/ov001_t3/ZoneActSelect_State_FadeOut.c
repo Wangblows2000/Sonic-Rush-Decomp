@@ -35,8 +35,8 @@ void ZoneActSelect_UpdateTabOffsets(UnkWork_022e114c *w);
 void ZoneActSelect_DrawZoneTabs(UnkWork_022e114c *w);
 void ZoneActSelect_Unk_ov001_022e0884(UnkWork_022e114c *w);
 void ZoneActSelect_LoadZonePalette(UnkWork_022e114c *w, s32 a);
-void NaviM_Unk_02064674(void);
-void NaviM_Unk_02064788(void);
+void NaviM_StartEmeraldAppear(void);
+void NaviM_StartCounter(void);
 void ZoneActSelect_State_Select(void);
 
 #pragma thumb on

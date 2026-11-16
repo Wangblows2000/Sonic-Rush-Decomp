@@ -18,7 +18,7 @@ extern void *data_ov000_0236ac48;
 extern u8 data_ov000_02364ed0[];
 extern u16 data_ov000_02364ec8[];
 
-BOOL WirelessSession_Unk_020513a8(void);
+BOOL WirelessSession_IsDownloadPlay(void);
 void *File_Load(const char *path, void *dst);
 void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *OS_GetArenaLo(s32 i);
@@ -79,7 +79,7 @@ void ResultsScreen_LoadArchives(UnkStruct_Mdl2 *w) {
     u8 buf1[0x5c];
 
     w->unk90C = File_Load(data_ov000_023692f8, (void *)-1);
-    if (WirelessSession_Unk_020513a8()) {
+    if (WirelessSession_IsDownloadPlay()) {
         NNS_FndMountArchive(buf1, data_ov000_02369308, w->unk90C);
         w->mdl8F0 = data_ov000_0236ac50.unk0;
         w->mdl8F4 = data_ov000_0236ac50.unk8;

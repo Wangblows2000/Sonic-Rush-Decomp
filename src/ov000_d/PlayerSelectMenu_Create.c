@@ -20,7 +20,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void PlayerSelectMenu_Main(void);
 void PlayerSelectMenu_Destructor(UnkStruct_SceneTask *t);
 BOOL PlayerSelectMenu_IsFullyUnlocked(void);
-BOOL WirelessSession_Unk_020513a8(void);
+BOOL WirelessSession_IsDownloadPlay(void);
 void PlayerSelectMenu_InitDisplay(BOOL a);
 void PlayerSelectMenu_LoadAssets(UnkStruct_Scene *w);
 void PlayerSelectMenu_InitBackgrounds(UnkStruct_Scene *w);
@@ -92,7 +92,7 @@ void PlayerSelectMenu_Create(s32 mode) {
         break;
     case 1:
     case 2:
-        if (WirelessSession_Unk_020513a8()) {
+        if (WirelessSession_IsDownloadPlay()) {
             fade = FALSE;
         } else {
             fade = TRUE;
@@ -103,7 +103,7 @@ void PlayerSelectMenu_Create(s32 mode) {
     PlayerSelectMenu_LoadAssets(w);
     PlayerSelectMenu_InitBackgrounds(w);
     PlayerSelectMenu_InitSprites(w);
-    if ((w->unkC == 1 || w->unkC == 2) && WirelessSession_Unk_020513a8()) {
+    if ((w->unkC == 1 || w->unkC == 2) && WirelessSession_IsDownloadPlay()) {
         PlayerSelectMenu_LoadModels(&w->mdl);
     } else {
         PlayerSelectMenu_LoadArchives(&w->mdl, PlayerSelectMenu_IsFullyUnlocked());

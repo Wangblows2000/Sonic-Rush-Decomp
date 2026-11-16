@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void _fgr(void)
+asm void _fgeq(void)
 {
     mov r3, #0xff000000
     cmp r3, r0, lsl #1

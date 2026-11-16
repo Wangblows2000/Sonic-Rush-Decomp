@@ -4,7 +4,7 @@ extern void *gMainHeap;
 extern u8 data_ov000_023692f4[];
 
 void Model_Release(UnkStruct_MdlRender *r);
-BOOL WirelessSession_Unk_020513a8(void);
+BOOL WirelessSession_IsDownloadPlay(void);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -35,7 +35,7 @@ static inline void UnkFree_0235d958(void **pp) {
 void ResultsScreen_ReleaseArchives(UnkStruct_Mdl2 *w) {
     u8 buf[0x5c];
 
-    if (WirelessSession_Unk_020513a8()) {
+    if (WirelessSession_IsDownloadPlay()) {
         Model_Release(&w->rA);
         Model_Release(&w->rB);
         UnkFree_0235d958(&w->unk90C);

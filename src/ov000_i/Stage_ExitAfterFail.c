@@ -29,7 +29,7 @@ extern UnkCfg3_0234cfc8 gSaveData;
 void ResultsScreen_Create(void);
 void SceneChange_ToTryAgain(void);
 void SaveData_SetLives(u8 a, u8 b, s32 c);
-u16 SaveData_Unk_02059874(void);
+u16 SaveData_GetSonicEmeralds(void);
 void SaveData_CommitOrShowError(s32 a);
 void GameOverSeq_StartTimeOver(void);
 void GameOverSeq_StartGameOver(void);
@@ -46,7 +46,7 @@ void Stage_ExitAfterFail(void) {
         return;
     case 0:
         SaveData_SetLives(gGameState.unk0, data_022c4590.unk14, 1);
-        gGameState.unk28 = SaveData_Unk_02059874();
+        gGameState.unk28 = SaveData_GetSonicEmeralds();
         SaveData_CommitOrShowError(0);
         if (!(gSaveData.unk8 & 2) && gGameState.unk20 > 0x8c9f) {
             GameOverSeq_StartTimeOver();

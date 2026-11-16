@@ -18,8 +18,8 @@ typedef struct UnkStruct_02307890 {
 
 extern UnkStruct_02307890 *gSpecialStageHud;
 
-BOOL Runtime_Unk_0202e5e4(float a, float b);
-BOOL Runtime_Unk_0202e528(float a, float b);
+BOOL _fgr(float a, float b);
+BOOL _fls(float a, float b);
 void SpecialStageHud_CalcCirclePos(s32 i, float scale, s16 *px, s16 *py);
 
 void SpecialStageHud_UpdateEmeraldCircle(s32 i, s32 t) {
@@ -32,11 +32,11 @@ void SpecialStageHud_UpdateEmeraldCircle(s32 i, s32 t) {
     o = &g->objs[i + 0xb];
     f = g->timers[i] / 60.0f;
     g->timers[i]++;
-    if (Runtime_Unk_0202e5e4(f, 1.0f))
+    if (_fgr(f, 1.0f))
         f = 1.0f;
     f = 1.0f - f;
     f = 120.0f - 70.0f * (1.0f - f * (f * f));
-    if (Runtime_Unk_0202e528(f, 50.0f))
+    if (_fls(f, 50.0f))
         f = 50.0f;
     SpecialStageHud_CalcCirclePos(i, f, &o->x, &o->y);
 }

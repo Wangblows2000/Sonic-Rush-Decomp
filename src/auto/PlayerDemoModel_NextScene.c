@@ -5,7 +5,7 @@
 
 s32 PlayerDemoLight_Stop();
 s32 PlayerDemoModel_ReleaseScene();
-void PlayerDemoModel_Unk_02056840();
+void PlayerDemoModel_State_Done();
 s32 PlayerDemoModel_StartScene();
 
 void PlayerDemoModel_NextScene(u8 *p0) {
@@ -13,7 +13,7 @@ void PlayerDemoModel_NextScene(u8 *p0) {
     PlayerDemoModel_ReleaseScene(p0);
     *(u8 *)((u8 *)p0 + 0x9) = (*(s8 *)((u8 *)p0 + 9) + 0x1);
     if (*(s8 *)((u8 *)p0 + 9) >= *(u8 *)((u8 *)p0 + 0xa)) {
-        *(u32 *)p0 = (u32)PlayerDemoModel_Unk_02056840;
+        *(u32 *)p0 = (u32)PlayerDemoModel_State_Done;
         return;
     }
     s32 t0 = (*(u32 *)((u8 *)p0 + 0x10) | 0x40000000);

@@ -3,14 +3,14 @@
 
 extern u8 gGameState[];
 s32 StoryProgress_GetZoneIndex();
-s32 StoryProgress_Unk_0204e6e4();
+s32 StoryProgress_GetActIndex();
 extern u8 gSaveData[];
 extern u8 data_02074bbc[];
 extern u8 data_02074bb4[];
 
 s32 StoryProgress_IsStageNew(void) {
     s32 t0 = StoryProgress_GetZoneIndex(*(u8 *)((u8 *)gGameState + 0x1c));
-    s32 t1 = StoryProgress_Unk_0204e6e4(*(u8 *)((u8 *)gGameState + 0x1d), gGameState);
+    s32 t1 = StoryProgress_GetActIndex(*(u8 *)((u8 *)gGameState + 0x1d), gGameState);
     if (t0 == 8) {
         return ((*(u32 *)((u8 *)gSaveData + 0x8) & 0x1000) == 0);
     }

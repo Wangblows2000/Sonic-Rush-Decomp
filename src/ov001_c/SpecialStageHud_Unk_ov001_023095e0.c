@@ -25,8 +25,8 @@ typedef struct UnkStruct_023095e0 {
 extern UnkStruct_023095e0 *gSpecialStageHud;
 extern UnkStruct_023095e0_br gDisplayMain;
 
-BOOL Runtime_Unk_0202e5e4(float a, float b);
-BOOL Runtime_Unk_0202e528(float a, float b);
+BOOL _fgr(float a, float b);
+BOOL _fls(float a, float b);
 u32 _ffixu(float a);
 
 #define REG_DISPCNT (*(vu32 *)0x4000000)
@@ -60,13 +60,13 @@ void SpecialStageHud_Unk_ov001_023095e0(void) {
     gDisplayMain.e8 = 0xf - gDisplayMain.e0;
     if (g->timer >= 0x168 && g->timer < 0x172) {
         f = (g->timer - 0x168) / 10.0f;
-        if (Runtime_Unk_0202e5e4(f, 1.0f))
+        if (_fgr(f, 1.0f))
             f = 1.0f;
         gDisplayMain.e0 = (u16)(_ffixu(4.0f * f) & 0xf);
         gDisplayMain.e8 = (u16)((0xf - gDisplayMain.e0) & 0xf);
     } else if (g->timer >= 0x258) {
         f = 1.0f - (g->timer - 0x258) / 10.0f;
-        if (Runtime_Unk_0202e528(f, 0.0f))
+        if (_fls(f, 0.0f))
             f = 0.0f;
         gDisplayMain.e0 = (u16)(_ffixu(4.0f * f) & 0xf);
         gDisplayMain.e8 = (u16)((0xf - gDisplayMain.e0) & 0xf);

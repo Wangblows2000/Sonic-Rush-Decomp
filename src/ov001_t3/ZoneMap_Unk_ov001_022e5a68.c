@@ -24,8 +24,8 @@ typedef struct {
 extern UnkStruct_022c4680 gSaveData;
 extern UnkStruct_022c46e0 data_022c46e0;
 
-s32 NaviM_Unk_02064828(void);
-void NaviM_Unk_02064740(u16 a);
+s32 NaviM_CheckStepAdvanced(void);
+void NaviM_SetNewEmerald(u16 a);
 void SaveData_CommitOrShowError(s32 a);
 
 #pragma thumb on
@@ -41,7 +41,7 @@ BOOL ZoneMap_Unk_ov001_022e5a68(UnkWork_022e5a68 *w) {
 
     found = FALSE;
     save = FALSE;
-    r = NaviM_Unk_02064828();
+    r = NaviM_CheckStepAdvanced();
     if (w->mode == 0) {
         cur = gSaveData.unkf;
         b = data_022c46e0.unk7 & 0x7f;
@@ -85,7 +85,7 @@ BOOL ZoneMap_Unk_ov001_022e5a68(UnkWork_022e5a68 *w) {
     w->unk74 = 0;
     w->unk9c = found;
     w->unka0 = r;
-    if (found) NaviM_Unk_02064740(idx);
+    if (found) NaviM_SetNewEmerald(idx);
     if (save == TRUE) SaveData_CommitOrShowError(0);
     return TRUE;
 }

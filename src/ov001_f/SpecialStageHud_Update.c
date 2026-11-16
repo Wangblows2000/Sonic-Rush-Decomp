@@ -67,7 +67,7 @@ UnkInfo_02309e3c *SpecialStageTrick_GetSequence(s32 a);
 void AnimatorSprite_SetAnimation(UnkSpr_02309e3c *s, u16 anim);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void AnimatorSprite_ProcessAnimation(UnkSpr_02309e3c *s, s32 a, s32 b);
-BOOL Runtime_Unk_0202e5e4(f32 a, f32 b);
+BOOL _fgr(f32 a, f32 b);
 void SpecialStageHud_Unk_ov001_02309228(void);
 void SpecialStageHud_UpdateCheckpoint(void);
 void SpecialStageHud_AnimateSprites(void);
@@ -148,14 +148,14 @@ void SpecialStageHud_Update(void) {
         w->unkAF0--;
         if (w->unkAF0 > 0x35) {
             f = (f32)(0x3c - w->unkAF0) / 7.0f;
-            if (Runtime_Unk_0202e5e4(f, 1.0f))
+            if (_fgr(f, 1.0f))
                 f = 1.0f;
             f = 1.0f - f;
             w->spr[24].x = 148.0f + 256.0f * (f * (f * f));
             w->spr[24].y = 0x22;
         } else if (w->unkAF0 < 5) {
             f = (f32)w->unkAF0 / 5.0f;
-            if (Runtime_Unk_0202e5e4(f, 1.0f))
+            if (_fgr(f, 1.0f))
                 f = 1.0f;
             f = 1.0f - f;
             w->spr[24].x = 138.0f - 256.0f * (f * (f * f));

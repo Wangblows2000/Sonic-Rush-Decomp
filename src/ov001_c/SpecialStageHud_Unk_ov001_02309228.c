@@ -31,7 +31,7 @@ extern s16 data_ov001_02317098[];
 extern u16 data_ov001_02317114[];
 
 void SpecialStageMap_SetScrollSpeed(s32 v);
-BOOL Runtime_Unk_0202e564(float a, float b);
+BOOL _fleq(float a, float b);
 void AnimatorSprite_SetAnimation(UnkStruct_02309228_o *s, u16 index);
 s32 SpecialStage_GetStageIndex(void);
 s32 SpecialStage_GetPlayer(void);
@@ -64,7 +64,7 @@ void SpecialStageHud_Unk_ov001_02309228(void) {
             if (t > (6 - i) * 10) {
                 if (d <= 0) {
                     o->x = tgt;
-                } else if (Runtime_Unk_0202e564(g->fA[i], 0.0f)) {
+                } else if (_fleq(g->fA[i], 0.0f)) {
                     g->fA[i] = 0;
                     g->fB[i] = 0;
                     o->x = tgt;

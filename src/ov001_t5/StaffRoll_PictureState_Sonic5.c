@@ -25,8 +25,8 @@ void AnimatorSprite_SetAnimation(void *s, u16 id);
 void StaffRoll_SetPictureState(UnkStruct_022d1110 *p, void (*fn)(UnkStruct_022d1110 *));
 void StaffRoll_PictureState_Sonic6(UnkStruct_022d1110 *p);
 
-BOOL Runtime_Unk_0202e5e4(float a, float b);
-#define FX_F32_TO_FX32_022d1110(x) ((fx32)(Runtime_Unk_0202e5e4((x), 0.0f) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
+BOOL _fgr(float a, float b);
+#define FX_F32_TO_FX32_022d1110(x) ((fx32)(_fgr((x), 0.0f) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
 
 #pragma thumb on
 void StaffRoll_PictureState_Sonic5(UnkStruct_022d1110 *p) {

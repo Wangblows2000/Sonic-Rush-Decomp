@@ -7,8 +7,8 @@ extern u8 gPlayerDemoId[];
 s32 PlayerDemo_LoadData();
 extern u8 gTaskCurrent[];
 s32 Task_Destroy();
-s32 PlayerDemo_Unk_02057094();
-s32 PlayerDemo_Unk_0205708c();
+s32 PlayerDemo_GetScriptHeader();
+s32 PlayerDemo_GetCommand();
 s32 PlayerDemoBg_Create();
 s32 PlayerDemoModel_Create();
 s32 PolyDemoUnder2_Create();
@@ -22,9 +22,9 @@ void PlayerDemo_State_Load(u8 *p0) {
         Task_Destroy(*(u32 *)gTaskCurrent);
         return;
     }
-    s32 t1 = PlayerDemo_Unk_02057094();
+    s32 t1 = PlayerDemo_GetScriptHeader();
     *(u16 *)((u8 *)p0 + 0x1a) = *(u32 *)((u8 *)t1 + 0xc);
-    s32 t2 = PlayerDemo_Unk_0205708c(*(u32 *)((u8 *)p0 + 0x14), *(u16 *)((u8 *)p0 + 0x18));
+    s32 t2 = PlayerDemo_GetCommand(*(u32 *)((u8 *)p0 + 0x14), *(u16 *)((u8 *)p0 + 0x18));
     *(u32 *)((u8 *)p0 + 0x1c) = t2;
     PlayerDemoBg_Create();
     PlayerDemoModel_Create();

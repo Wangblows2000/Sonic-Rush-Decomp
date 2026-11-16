@@ -12,7 +12,7 @@ void SysSound_PlayBGM(s32 a);
 void NaviBg_Load(s32 a, s32 b);
 void NaviM_Load(void);
 void NaviMsg_Create(void);
-void NaviM_Unk_0206488c(void);
+void NaviM_ResetPending(void);
 void NaviM_Create(void);
 void NaviMsg_SetVisible(s32 a);
 void ZoneActSelect_Create(s32 a, s32 b, s32 c);
@@ -31,7 +31,7 @@ void ZoneActSelectMode_Start(void) {
     NaviBg_Load(0, 0);
     NaviM_Load();
     NaviMsg_Create();
-    NaviM_Unk_0206488c();
+    NaviM_ResetPending();
     NaviM_Create();
     NaviMsg_SetVisible(0);
     ZoneActSelect_Create(0, 0, 3);
