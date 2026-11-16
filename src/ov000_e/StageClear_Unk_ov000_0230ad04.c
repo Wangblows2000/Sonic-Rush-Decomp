@@ -49,7 +49,7 @@ void Player_Action_ReachGoal(UnkStruct_Player *p, void *a);
 void MapObject_Unk_ov000_022fa9e8(void *a, UnkStruct_Player *p, s32 b);
 void Camera_DisableSwapForPlayer(UnkStruct_Player *p);
 
-void func_ov000_0230ad04(void *a, UnkStruct_Player *p) {
+void StageClear_Unk_ov000_0230ad04(void *a, UnkStruct_Player *p) {
     s32 v;
 
     if (p->unk32C & 0x80) {

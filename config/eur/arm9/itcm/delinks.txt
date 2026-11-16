@@ -49,10 +49,10 @@ src/main_sdk2/System_VBlankIrq.c:
     complete
     .text       start:0x01ff861c end:0x01ff8744
 
-src/auto/func_01fff760.c:
+src/auto/ZoneFx_Zone2_VAlarmNormalPalettes.c:
     complete
     .text       start:0x01fff760 end:0x01fff7c4
 
-src/auto/func_01fff7c4.c:
+src/auto/ZoneFx_Zone2_VAlarmTintedPalettes.c:
     complete
     .text       start:0x01fff7c4 end:0x01fff82c

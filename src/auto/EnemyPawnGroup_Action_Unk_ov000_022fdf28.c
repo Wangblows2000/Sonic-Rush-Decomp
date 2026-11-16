@@ -1,13 +1,13 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_022faf48();
+s32 Enemy_Unk_ov000_022faf48();
 void EnemyPawnGroup_State_Unk_ov000_022fdef0();
 extern u8 gSaveData[];
 extern u8 gGameState[];
 
 void EnemyPawnGroup_Action_Unk_ov000_022fdf28(u8 *p0) {
-    func_ov000_022faf48(p0, 3);
+    Enemy_Unk_ov000_022faf48(p0, 3);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)EnemyPawnGroup_State_Unk_ov000_022fdef0;
     *(u16 *)((u8 *)p0 + 0x34) = 0;
     *(u32 *)((u8 *)p0 + 0xc) = 0x20;

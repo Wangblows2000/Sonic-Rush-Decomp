@@ -352,31 +352,50 @@ Lower-priority follow-ups that are already half-proven:
 4. Write a `NAME` line (section 2.3). Never edit config/, never rename files yourself.
 
 
-## 6. Refactor status (2026-11-16, branch `refactor/function-naming`)
+## 6. Rules added during the refactor
+
+**Repeated library statics.** A file-local (static) SDK/NNS helper whose official
+name occurs in more than one source file is named `<OfficialName>_<file stem>`
+(no doubled underscore): `AlarmCallback_stream`, `AlarmCallback_capture`,
+`AllocFromHead_frameheap`, `updateHintVec_kernel`, `texmtxCalc_flagT_maya`. The
+list of such names is `REPEATED_STATICS` in `tools/analysis/rename.py`, which
+rejects the bare name.
+
+**Subsystem-only names.** When a function's subsystem is proven but its exact
+role is not, it is named `<Subsystem>_Unk_<addr>` (overlays:
+`<Subsystem>_Unk_ovNNN_<addr>`) and logged with confidence `tentative` when the
+only evidence is that all referencers belong to that subsystem (E6 alone).
+Upgrade the name when the behaviour is proven.
+
+**Case rule** (above): enforced by `rename.py` and `check_symbols.py`.
+
+## 7. Refactor status (2026-11-16)
 
 | Round | Renamed | Scope |
 |---|---|---|
 | 1 | 2,358 | library official names; engine core; shared game code; ov000 map objects, player, rings, effects, HUD; ov001 screens |
-| 2 | 1,575 | anchored on round-1 names (MB/WFS, wireless manager, stage flow, scene changes, player state machine, bosses, special stage) |
-| 3 | 1,626 | final sweep plus upgrades of `_Unk_` names |
+| 2 | 1,575 | MB/WFS, wireless manager, stage flow, scene changes, player state machine, bosses, special stage |
+| 3 | 1,626 | final sweep plus `_Unk_` upgrades |
+| 4 | 2,305 | every remaining function: bosses/part chains, per-zone hooks, menus, library statics, audit fixes |
 
-Functions named: 5,188 / 7,408 (70 %); 560 of those are subsystem-level
-`<Subsystem>_Unk_<addr>` names. Every batch was applied with
-`tools/analysis/rename.py` and verified with a full build (SHA-1, GNU
-relink, objdiff count unchanged).
+**All 7,408 functions are named**; ~2,140 of them are subsystem-level
+`_Unk_` names (`tentative` in the evidence log) awaiting behaviour names. Every
+batch was applied with `tools/analysis/rename.py` and verified with
+`tools/utilities/verify_all.sh` (SHA-1, GNU relink, objdiff unchanged).
 
-Open items:
-- 2,220 functions still have default names (mostly long boss/part state
-  chains, menu sprite setters, per-zone hooks whose zone numbers are not yet
-  tied to zone names, small empty stubs).
-- File-local library helpers whose official names repeat across files
-  (`AlarmCallback`, `ForceStopStrm`, `AllocFromHead/Tail`, `updateHintVec_`,
-  `texmtxCalc_flag*_`) need a disambiguation rule (e.g. a file prefix)
-  before they can be applied.
-- Possible misnames to re-check: `WMi_StartParentEx` (0x02011914) matches
-  `WM_SetEntry` at 0.98; a few FS rom-cluster names pair better with a
-  differently named reference function; `FS_StopOverlay` (0x0200c29c)
-  behaves like `FS_UnloadOverlayImage`.
-- `OSi_UnLockCartridgeAlias` stands for the SDK alias `OS_UnLockCartridge`
-  and `Mic_InitSystem` for the game's MIC init (both renamed to avoid
-  case-only collisions; see the case rule above).
+**Audit (round 4).** All 1,146 named library functions were compared with the
+reference function of the same name (609 byte-identical, 358 structurally
+≥ 0.95, the rest consistent with the SDK version gap). Three were wrong and were
+corrected: `FS_StopOverlay` → `FS_UnloadOverlayImage`, `FS_LoadOverlayFile` →
+`FS_LoadOverlayImage` (both had been taken from a newer SDK), and
+`NNS_SndPlayerCountPlayingSeqByPlayerNo` → `NNS_SndPlayerCountPlayingSeqBySeqArcIdx`.
+`WMi_StartParentEx` was re-verified correct (it issues WM command 8, start
+parent; `WM_SetEntry` issues 0x21), as were the FS rom-cluster names. A sample
+of 276 game names (all single-E6 names plus 105 random round-1 names) held.
+
+Renamed to avoid case-only collisions: `OSi_UnLockCartridgeAlias` (SDK alias
+`OS_UnLockCartridge`) and `Mic_InitSystem` (game MIC init).
+
+Open: upgrade the `_Unk_` names; `_fgr` (0x0202e620) returns 1 on `>=` (the
+name comes from the compiler-generated call, kept); zone numbers are not yet
+tied to the in-game zone titles.

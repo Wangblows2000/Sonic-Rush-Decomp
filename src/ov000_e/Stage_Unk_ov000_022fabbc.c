@@ -35,7 +35,7 @@ void Player_ApplyConfusion(UnkStruct_Player *p);
 void Player_DrainTension(UnkStruct_Player *p);
 void Player_WarpToRival(UnkStruct_Player *p);
 
-void func_ov000_022fabbc(void) {
+void Stage_Unk_ov000_022fabbc(void) {
     UnkStruct_Ev *o;
     u16 i;
     UnkStruct_Ent *e;

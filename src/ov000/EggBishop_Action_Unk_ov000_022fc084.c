@@ -9,11 +9,11 @@ typedef struct UnkStruct_022fc084 {
     void (*func)(void);
 } UnkStruct_022fc084;
 
-void func_ov000_022faf48(UnkStruct_022fc084 *s, s32 a);
+void Enemy_Unk_ov000_022faf48(UnkStruct_022fc084 *s, s32 a);
 void EggBishop_State_Unk_ov000_022fc038(void);
 
 void EggBishop_Action_Unk_ov000_022fc084(UnkStruct_022fc084 *s) {
-    func_ov000_022faf48(s, 4);
+    Enemy_Unk_ov000_022faf48(s, 4);
     s->unk5C |= 4;
     s->func = EggBishop_State_Unk_ov000_022fc038;
     s->unkC = 0x10;

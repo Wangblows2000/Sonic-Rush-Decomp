@@ -7,7 +7,7 @@ typedef struct {
 } UnkStruct_022fd990;
 
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
-void func_ov000_022faf48(UnkStruct_022fd990 *w, s32 a);
+void Enemy_Unk_ov000_022faf48(UnkStruct_022fd990 *w, s32 a);
 void EnemyPawnGroup_Action_Unk_ov000_022fe304(UnkStruct_022fd990 *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fd990(UnkStruct_022fd990 *w) {
@@ -34,7 +34,7 @@ void EnemyPawnGroup_State_Unk_ov000_022fd990(UnkStruct_022fd990 *w) {
             return;
         w->base.unkC = 0x30;
         w->base.unk1F4 |= 8;
-        func_ov000_022faf48(w, 3);
+        Enemy_Unk_ov000_022faf48(w, 3);
         w->base.unk5C |= 4;
         return;
     }
@@ -52,7 +52,7 @@ void EnemyPawnGroup_State_Unk_ov000_022fd990(UnkStruct_022fd990 *w) {
     if (w->base.unk28 - w->base.unk36 < 0 && w->base.unk10 < w->base.unk1E0->unk6 * width + (base << 8))
         w->base.unk34 = 0;
     if (w->base.unk34 == 0 || (w->base.unk58 & 4)) {
-        func_ov000_022faf48(w, 2);
+        Enemy_Unk_ov000_022faf48(w, 2);
         w->base.unk5C |= 0x10;
     }
 }

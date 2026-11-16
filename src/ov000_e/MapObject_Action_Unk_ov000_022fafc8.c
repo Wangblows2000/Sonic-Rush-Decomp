@@ -6,7 +6,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-void func_ov000_022faf48(UnkStruct_022fafc8 *s, s32 a);
+void Enemy_Unk_ov000_022faf48(UnkStruct_022fafc8 *s, s32 a);
 void MapObject_State_Unk_ov000_022faf7c(void);
 s32 FX_Atan2(s32 y, s32 x);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
@@ -16,7 +16,7 @@ void MapObject_Action_Unk_ov000_022fafc8(UnkStruct_022fafc8 *s, UnkStruct_StageO
     u16 a;
 
     if (s->base.unk1E0->unk2 != 0xb1 && s->base.unk1E0->unk2 != 0xb2)
-        func_ov000_022faf48(s, 0);
+        Enemy_Unk_ov000_022faf48(s, 0);
     s->base.unk5C |= 0x10;
     s->base.unk5C |= 0x100;
     s->base.unk58 |= 0x10;

@@ -18,7 +18,7 @@ typedef struct {
 
 extern UnkStruct_Plr gCamera[];
 
-BOOL func_ov000_02307dfc(UnkStruct_023094f0 *w, s32 a);
+BOOL Gimmick_Unk_ov000_02307dfc(UnkStruct_023094f0 *w, s32 a);
 void EnemyRoom_ClearActive(s32 a);
 void MapObj8C_Action_Unk_ov000_02309430(UnkStruct_023094f0 *w);
 
@@ -27,7 +27,7 @@ void MapObj8C_State_Unk_ov000_023094f0(UnkStruct_023094f0 *w) {
     BOOL all;
     u32 f;
 
-    if (func_ov000_02307dfc(w, 1)) {
+    if (Gimmick_Unk_ov000_02307dfc(w, 1)) {
         if (gCamera[2].unk0 & 1) {
             gCamera[0].unk34 &= ~0x10000;
             gCamera[1].unk34 &= ~0x10000;

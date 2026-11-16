@@ -9,7 +9,7 @@ typedef struct {
 s16 ObjSpd_DownSet(s32 a, s32 b);
 void StageObj_HandleCollider(void *w, void *a);
 void ObjRect_SetBox2D(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e);
-void func_ov000_022faf48(UnkStruct_022fe0f8 *w, s32 a);
+void Enemy_Unk_ov000_022faf48(UnkStruct_022fe0f8 *w, s32 a);
 void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fe0f8 *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fe0f8(UnkStruct_022fe0f8 *w) {
@@ -24,7 +24,7 @@ void EnemyPawnGroup_State_Unk_ov000_022fe0f8(UnkStruct_022fe0f8 *w) {
         w->base.unk54 |= 0x1000;
     }
     if ((w->base.spr0.unkE >> 4) == 7 && (w->base.unk54 & 0x1000)) {
-        func_ov000_022faf48(w, 1);
+        Enemy_Unk_ov000_022faf48(w, 1);
         w->base.unk54 &= ~0x1000;
     }
     if (w->base.unk5C & 8) {

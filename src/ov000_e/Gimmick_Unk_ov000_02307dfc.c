@@ -22,7 +22,7 @@ typedef struct {
 extern UnkStruct_0236aad8 gCamera;
 extern UnkStruct_Player *gPlayers[];
 
-BOOL func_ov000_02307dfc(UnkStruct_02307dfc *t, s32 inc) {
+BOOL Gimmick_Unk_ov000_02307dfc(UnkStruct_02307dfc *t, s32 inc) {
     UnkStruct_Player *p;
     u32 v;
 

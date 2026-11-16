@@ -1,11 +1,11 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_022faf48();
+s32 Enemy_Unk_ov000_022faf48();
 void EnemyPawnGroup_State_Unk_ov000_022fe350();
 
 void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(u8 *p0) {
-    func_ov000_022faf48(p0, 0);
+    Enemy_Unk_ov000_022faf48(p0, 0);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 4);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x10);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x100);

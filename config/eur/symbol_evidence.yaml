@@ -22737,3 +22737,45 @@ gEffSplash3DModelNames:
 gEffRipple3DModelNames:
   confidence: strong
   evidence: "strong E3,E8: pointers to the strings eff_ripple_s/eff_ripple_m/eff_ripple_b used by EffRipple3D_Spawn (was data_ov000_02367b40, ov000, 2026-11-16)"
+ZoneFx_Zone2_VAlarmNormalPalettes:
+  confidence: strong
+  evidence: "strong E6: V-alarm callback (re-arms itself with OS_SetVAlarm) that calls ZoneFx_Zone2_DmaNormalPalettes on gZoneFxWork; installed by ZoneFx_Zone2_SetVAlarms (was func_01fff760, itcm, 2026-11-16)"
+ZoneFx_Zone2_VAlarmTintedPalettes:
+  confidence: strong
+  evidence: "strong E6: V-alarm callback (re-arms itself with OS_SetVAlarm, line from work+0xa) that calls ZoneFx_Zone2_DmaTintedPalettes; installed by ZoneFx_Zone2_SetVAlarms (was func_01fff7c4, itcm, 2026-11-16)"
+System_Unk_02031cc0:
+  confidence: tentative
+  evidence: "tentative E6: empty init hook called only from System_Init (was func_02031cc0, main, 2026-11-16)"
+System_Unk_020336c8:
+  confidence: tentative
+  evidence: "tentative E6: called only from System_Init; clears data_0208f78e with MIi_CpuClear16 (was func_020336c8, main, 2026-11-16)"
+System_Unk_020384ac:
+  confidence: tentative
+  evidence: "tentative E6: empty init hook called only from System_Init (was func_020384ac, main, 2026-11-16)"
+System_Unk_020392ec:
+  confidence: tentative
+  evidence: "tentative E6: empty init hook called only from System_Init (was func_020392ec, main, 2026-11-16)"
+Stage_Unk_ov000_022fabbc:
+  confidence: tentative
+  evidence: "tentative E6: called only from main Stage_Unk_0204ba84 (was func_ov000_022fabbc, ov000, 2026-11-16)"
+Enemy_Unk_ov000_022faf48:
+  confidence: tentative
+  evidence: "tentative E6: shared helper called only from enemy actions (EggBishop, EnemyPawnGroup) (was func_ov000_022faf48, ov000, 2026-11-16)"
+Enemy_Unk_ov000_022fc418:
+  confidence: tentative
+  evidence: "tentative E6: called only from EggPawnM_Create and EggSf_Create (was func_ov000_022fc418, ov000, 2026-11-16)"
+Enemy_Unk_ov000_022fc398:
+  confidence: tentative
+  evidence: "tentative E6: called only from Enemy_Unk_ov000_022fc418 (enemy creation helper) (was func_ov000_022fc398, ov000, 2026-11-16)"
+StageObj_Unk_ov000_022fea7c:
+  confidence: tentative
+  evidence: "tentative E6: shared by EffEntrance and EnemyPawnGroup states/actions (stage objects of different classes) (was func_ov000_022fea7c, ov000, 2026-11-16)"
+Gimmick_Unk_ov000_02307dfc:
+  confidence: tentative
+  evidence: "tentative E6: shared helper called only from gimmick states (GmkWall, MapObj8C, MapObj8D) (was func_ov000_02307dfc, ov000, 2026-11-16)"
+Gimmick_Unk_ov000_02307e84:
+  confidence: tentative
+  evidence: "tentative E6: shared helper called only from gimmick states/creators (GmkWall, MapObj8C) (was func_ov000_02307e84, ov000, 2026-11-16)"
+StageClear_Unk_ov000_0230ad04:
+  confidence: tentative
+  evidence: "tentative E6: called only from GoalRing_OnHit and Marker_Action_StageClear (stage-clear trigger) (was func_ov000_0230ad04, ov000, 2026-11-16)"

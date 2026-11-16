@@ -4,7 +4,7 @@
 s32 StageObj_SetOAMOrder();
 s32 EffZakoBombPuff_Create();
 
-void func_ov000_022fc398(u8 *p0) {
+void Enemy_Unk_ov000_022fc398(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0xc);
     if (t0 != 0) {
         *(u32 *)((u8 *)p0 + 0xc) = (t0 - 0x1);

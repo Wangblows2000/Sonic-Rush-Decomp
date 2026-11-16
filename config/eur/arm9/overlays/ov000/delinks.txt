@@ -656,7 +656,7 @@ src/ov000/DashP_State_Idle.c:
     complete
     .text       start:0x02307a90 end:0x02307aa4
 
-src/ov000/func_ov000_02307e84.c:
+src/ov000/Gimmick_Unk_ov000_02307e84.c:
     complete
     .text       start:0x02307e84 end:0x02307e9c
 
@@ -2336,7 +2336,7 @@ src/ov000/MapObject_AllocSpawnEntry.c:
     complete
     .text       start:0x022faeac end:0x022faf48
 
-src/ov000/func_ov000_022faf48.c:
+src/ov000/Enemy_Unk_ov000_022faf48.c:
     complete
     .text       start:0x022faf48 end:0x022faf7c
 
@@ -2344,7 +2344,7 @@ src/ov000/EggBishop_Action_Unk_ov000_022fc084.c:
     complete
     .text       start:0x022fc084 end:0x022fc0bc
 
-src/ov000/func_ov000_022fc418.c:
+src/ov000/Enemy_Unk_ov000_022fc418.c:
     complete
     .text       start:0x022fc418 end:0x022fc450
 
@@ -4236,7 +4236,7 @@ src/auto/EggBishop_State_Unk_ov000_022fc038.c:
     complete
     .text       start:0x022fc038 end:0x022fc084
 
-src/auto/func_ov000_022fc398.c:
+src/auto/Enemy_Unk_ov000_022fc398.c:
     complete
     .text       start:0x022fc398 end:0x022fc418
 
@@ -6912,7 +6912,7 @@ src/ov000_c/EnemyPawnGroup_State_Unk_ov000_022fe350.c:
     complete
     .text       start:0x022fe350 end:0x022fe7e8
 
-src/ov000_c/func_ov000_022fea7c.c:
+src/ov000_c/StageObj_Unk_ov000_022fea7c.c:
     complete
     .text       start:0x022fea7c end:0x022fec38
 
@@ -8360,7 +8360,7 @@ src/ov000_e/BossF_State_WaitForStart.c:
     complete
     .text       start:0x022f8320 end:0x022f84bc
 
-src/ov000_e/func_ov000_022fabbc.c:
+src/ov000_e/Stage_Unk_ov000_022fabbc.c:
     complete
     .text       start:0x022fabbc end:0x022fad3c
 
@@ -8404,7 +8404,7 @@ src/ov000_e/CranePartED_Draw.c:
     complete
     .text       start:0x02305914 end:0x02305a78
 
-src/ov000_e/func_ov000_0230ad04.c:
+src/ov000_e/StageClear_Unk_ov000_0230ad04.c:
     complete
     .text       start:0x0230ad04 end:0x0230aed8
 
@@ -9544,7 +9544,7 @@ src/ov000_e/Bubble_State_Grow.c:
     complete
     .text       start:0x02302398 end:0x02302418
 
-src/ov000_e/func_ov000_02307dfc.c:
+src/ov000_e/Gimmick_Unk_ov000_02307dfc.c:
     complete
     .text       start:0x02307dfc end:0x02307e84
 

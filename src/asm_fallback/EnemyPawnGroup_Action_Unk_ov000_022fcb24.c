@@ -4,7 +4,7 @@
 extern u32 gPlayers;
 extern void Sound_PlaySeqArcEx(void);
 extern void Sound_SetPositional(void);
-extern void func_ov000_022faf48(void);
+extern void Enemy_Unk_ov000_022faf48(void);
 extern void EnemyPawnGroup_State_Unk_ov000_022fcaa8(void);
 
 asm void EnemyPawnGroup_Action_Unk_ov000_022fcb24(void)
@@ -12,7 +12,7 @@ asm void EnemyPawnGroup_Action_Unk_ov000_022fcb24(void)
     stmdb sp!, {r4, lr}
     mov r4, r0
     mov r1, #3
-    bl func_ov000_022faf48
+    bl Enemy_Unk_ov000_022faf48
     ldr r1, [r4, #0x58]
     mov r0, #0x2c0
     orr r1, r1, #0x10

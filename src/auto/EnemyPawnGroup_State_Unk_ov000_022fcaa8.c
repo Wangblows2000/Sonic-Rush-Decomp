@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 EnemyPawnGroup_Action_Unk_ov000_022fe304();
-s32 func_ov000_022faf48();
+s32 Enemy_Unk_ov000_022faf48();
 
 void EnemyPawnGroup_State_Unk_ov000_022fcaa8(u8 *p0) {
     if ((*(u32 *)((u8 *)p0 + 0x58) & 1) == 0) {
@@ -20,5 +20,5 @@ void EnemyPawnGroup_State_Unk_ov000_022fcaa8(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x34) = 0;
     s32 t1 = (*(u32 *)((u8 *)p0 + 0x1f4) | 1);
     *(u32 *)((u8 *)p0 + 0x1f4) = t1;
-    func_ov000_022faf48(p0, 2, t1);
+    Enemy_Unk_ov000_022faf48(p0, 2, t1);
 }

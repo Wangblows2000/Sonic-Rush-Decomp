@@ -7,7 +7,7 @@ s32 ScreenShake_Start();
 s32 Sound_PlaySeqArcEx();
 extern u8 gPlayers[];
 s32 Sound_SetPositional();
-s32 func_ov000_022faf48();
+s32 Enemy_Unk_ov000_022faf48();
 s32 EnemyPawnGroup_Action_Unk_ov000_022fe7e8();
 
 void EnemyPawnGroup_State_Unk_ov000_022fd410(u8 *p0, s32 p1, s32 p2, s32 p3) {
@@ -45,7 +45,7 @@ void EnemyPawnGroup_State_Unk_ov000_022fd410(u8 *p0, s32 p1, s32 p2, s32 p3) {
         if (*(u32 *)((u8 *)p0 + 0xc) != 0) {
             return;
         }
-        func_ov000_022faf48(p0, 3);
+        Enemy_Unk_ov000_022faf48(p0, 3);
         *(u32 *)((u8 *)p0 + 0x1f4) = (*(u32 *)((u8 *)p0 + 0x1f4) | 4);
         return;
     }

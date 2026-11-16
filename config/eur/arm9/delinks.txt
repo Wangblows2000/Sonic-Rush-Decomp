@@ -60,11 +60,11 @@ src/main/MsgBox_IsClosed.c:
     complete
     .text       start:0x02050018 end:0x0205002c
 
-src/main_b/func_020384ac.c:
+src/main_b/System_Unk_020384ac.c:
     complete
     .text       start:0x020384ac end:0x020384b0
 
-src/main_b/func_020392ec.c:
+src/main_b/System_Unk_020392ec.c:
     complete
     .text       start:0x020392ec end:0x020392f0
 
@@ -896,7 +896,7 @@ src/main_a/Model_Unk_020313c8.c:
     complete
     .text       start:0x020313c8 end:0x020313cc
 
-src/main_a/func_02031cc0.c:
+src/main_a/System_Unk_02031cc0.c:
     complete
     .text       start:0x02031cc0 end:0x02031cc4
 
@@ -3056,7 +3056,7 @@ src/main_a/BAC_FrameGroupFunc_FrameAssembly.c:
     complete
     .text       start:0x02032234 end:0x02032288
 
-src/main_a/func_020336c8.c:
+src/main_a/System_Unk_020336c8.c:
     complete
     .text       start:0x020336c8 end:0x020336f8
 

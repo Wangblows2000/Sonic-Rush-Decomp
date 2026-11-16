@@ -22,7 +22,7 @@ typedef struct {
 s16 ObjShift_SetFromRef(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fea7c *w);
 
-void func_ov000_022fea7c(UnkStruct_022fea7c *w) {
+void StageObj_Unk_ov000_022fea7c(UnkStruct_022fea7c *w) {
     switch (w->unk8) {
     default:
         w->unkC++;

@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u32 gCamera;
-extern void func_ov000_02307e84(void);
+extern void Gimmick_Unk_ov000_02307e84(void);
 extern void MapObj8F_State_Unk_ov000_02307e9c(void);
 extern void Camera_Unk_ov000_0233b250(void);
 extern void EnemyRoom_Get(void);
@@ -12,7 +12,7 @@ asm void MapObj8F_Unk_ov000_02308110(void)
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0xc
     mov r10, r0
-    bl func_ov000_02307e84
+    bl Gimmick_Unk_ov000_02307e84
     mov r1, r0
     mov r0, #1
     bl EnemyRoom_Get

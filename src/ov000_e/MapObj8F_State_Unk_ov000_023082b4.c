@@ -12,20 +12,20 @@ typedef struct {
 
 extern UnkStruct_0236aad8 gCamera;
 
-void *func_ov000_02307e84(void);
+void *Gimmick_Unk_ov000_02307e84(void);
 UnkStruct_023082b4_T *EnemyRoom_Get(s32 a, void *b);
-BOOL func_ov000_02307dfc(void *a, s32 b);
+BOOL Gimmick_Unk_ov000_02307dfc(void *a, s32 b);
 void Camera_TrySwitchScreen(void);
 void MapObj8F_Unk_ov000_02308110(UnkStruct_StageObj *s);
 
 void MapObj8F_State_Unk_ov000_023082b4(UnkStruct_StageObj *s) {
-    UnkStruct_023082b4_T *t = EnemyRoom_Get(1, func_ov000_02307e84());
+    UnkStruct_023082b4_T *t = EnemyRoom_Get(1, Gimmick_Unk_ov000_02307e84());
 
     if (t == NULL) {
         s->unk54 |= 4;
         return;
     }
-    if (func_ov000_02307dfc(t, 0)) {
+    if (Gimmick_Unk_ov000_02307dfc(t, 0)) {
         s->unk1F4 &= ~0x10;
         s->unk54 |= 4;
         return;

@@ -11,7 +11,7 @@ typedef struct UnkStruct_022faf48 {
 
 void StageObj_SetAnimation(UnkStruct_022faf48 *s, s32 a);
 
-void func_ov000_022faf48(UnkStruct_022faf48 *s, s32 a) {
+void Enemy_Unk_ov000_022faf48(UnkStruct_022faf48 *s, s32 a) {
     s->unk13E &= ~4;
     s->unk16A &= ~4;
     s->unk196 &= ~4;

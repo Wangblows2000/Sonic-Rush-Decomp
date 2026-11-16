@@ -9,12 +9,12 @@ typedef struct UnkStruct_022fc418 {
     void (*func)(void);
 } UnkStruct_022fc418;
 
-void func_ov000_022faf48(UnkStruct_022fc418 *s, s32 a);
-void func_ov000_022fc398(void);
+void Enemy_Unk_ov000_022faf48(UnkStruct_022fc418 *s, s32 a);
+void Enemy_Unk_ov000_022fc398(void);
 
-void func_ov000_022fc418(UnkStruct_022fc418 *s) {
-    func_ov000_022faf48(s, 3);
+void Enemy_Unk_ov000_022fc418(UnkStruct_022fc418 *s) {
+    Enemy_Unk_ov000_022faf48(s, 3);
     s->unk5C |= 4;
-    s->func = func_ov000_022fc398;
+    s->func = Enemy_Unk_ov000_022fc398;
     s->unkC = 0x10;
 }
