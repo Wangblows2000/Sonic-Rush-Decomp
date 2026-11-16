@@ -116,6 +116,10 @@
         {
           "time": "2026-11-16 06:55:53Z",
           "text": "claimed by main_c2"
+        },
+        {
+          "time": "2026-11-16 07:51:58Z",
+          "text": "main_c2: matched 02035b5c(252, d0=dst assigned inside if-condition + else), 02015924(696, ENTRY macro + swap if-arms + return per arm), 020125d8(964, opt_common_subs off + decl perm), 02013814(160, unk2 at off 2 + decl perm). Near: 0200330c switch-tree root (CW clusters span<=3; target clusters [0..4]), 020254d4 72, 02026f88 21 (lifetimes off), 9654 11, f6e0 13, ff18 12, 7fc8 22, 9900 28, e098 45. Scratch /home/claude/w_main_c2."
         }
       ]
     },
