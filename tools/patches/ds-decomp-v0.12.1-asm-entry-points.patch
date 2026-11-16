@@ -1,3 +1,20 @@
+diff --git a/cli/src/cmd/delink.rs b/cli/src/cmd/delink.rs
+index d40c580..8e52c90 100644
+--- a/cli/src/cmd/delink.rs
++++ b/cli/src/cmd/delink.rs
+@@ -360,7 +360,12 @@ impl<'a> DelinkObject<'a> {
+             let thumb_bit = if is_thumb { 1 } else { 0 };
+             self.obj_symbols.insert((symbol.addr | thumb_bit, symbol_module), symbol_id);
+ 
++            // Data symbols placed inside code (e.g. lookup tables embedded in
++            // hand-written asm) need a `$d` so they are not disassembled as code.
++            let data_in_code =
++                matches!(symbol.kind, SymbolKind::Data(_)) && file_section.name() == ".text";
+             if all_mapping_symbols
++                || data_in_code
+                 || matches!(
+                     symbol.kind,
+                     SymbolKind::Function(_) | SymbolKind::Label(_) | SymbolKind::PoolConstant
 diff --git a/cli/src/config/section.rs b/cli/src/config/section.rs
 index fc97134..f0d5e4d 100644
 --- a/cli/src/config/section.rs

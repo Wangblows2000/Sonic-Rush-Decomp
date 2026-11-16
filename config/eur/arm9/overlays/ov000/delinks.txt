@@ -11083,3 +11083,111 @@ src/ov000_t/func_ov000_02335704.c:
 src/ov000_t/func_ov000_02334b34.c:
     complete
     .text       start:0x02334b34 end:0x02334c18
+
+src/asm_fallback/func_ov000_022ddd4c.c:
+    complete
+    .text       start:0x022ddd4c end:0x022dde20
+
+src/asm_fallback/func_ov000_022deab4.c:
+    complete
+    .text       start:0x022deab4 end:0x022dec18
+
+src/asm_fallback/func_ov000_022e9bb4.c:
+    complete
+    .text       start:0x022e9bb4 end:0x022e9db8
+
+src/asm_fallback/func_ov000_022ee198.c:
+    complete
+    .text       start:0x022ee198 end:0x022ee380
+
+src/asm_fallback/func_ov000_022fcb24.c:
+    complete
+    .text       start:0x022fcb24 end:0x022fcc1c
+
+src/asm_fallback/func_ov000_02302e2c.c:
+    complete
+    .text       start:0x02302e2c end:0x02302f18
+
+src/asm_fallback/func_ov000_0230379c.c:
+    complete
+    .text       start:0x0230379c end:0x02303930
+
+src/asm_fallback/func_ov000_02303930.c:
+    complete
+    .text       start:0x02303930 end:0x02303ac4
+
+src/asm_fallback/func_ov000_02303ac4.c:
+    complete
+    .text       start:0x02303ac4 end:0x02303c58
+
+src/asm_fallback/func_ov000_02303c58.c:
+    complete
+    .text       start:0x02303c58 end:0x02303dec
+
+src/asm_fallback/func_ov000_02304064.c:
+    complete
+    .text       start:0x02304064 end:0x023040fc
+
+src/asm_fallback/func_ov000_023045c0.c:
+    complete
+    .text       start:0x023045c0 end:0x023046c0
+
+src/asm_fallback/func_ov000_02308110.c:
+    complete
+    .text       start:0x02308110 end:0x023082b4
+
+src/asm_fallback/func_ov000_0231ac3c.c:
+    complete
+    .text       start:0x0231ac3c end:0x0231ad60
+
+src/asm_fallback/func_ov000_0231c834.c:
+    complete
+    .text       start:0x0231c834 end:0x0231c99c
+
+src/asm_fallback/func_ov000_02327ca4.c:
+    complete
+    .text       start:0x02327ca4 end:0x02327ef4
+
+src/asm_fallback/func_ov000_0232c7b0.c:
+    complete
+    .text       start:0x0232c7b0 end:0x0232cbf4
+
+src/asm_fallback/func_ov000_02330670.c:
+    complete
+    .text       start:0x02330670 end:0x02330774
+
+src/asm_fallback/func_ov000_023348f0.c:
+    complete
+    .text       start:0x023348f0 end:0x02334b34
+
+src/asm_fallback/func_ov000_02334c18.c:
+    complete
+    .text       start:0x02334c18 end:0x02334eb4
+
+src/asm_fallback/func_ov000_023350bc.c:
+    complete
+    .text       start:0x023350bc end:0x023352c8
+
+src/asm_fallback/func_ov000_023355e0.c:
+    complete
+    .text       start:0x023355e0 end:0x02335704
+
+src/asm_fallback/func_ov000_023369bc.c:
+    complete
+    .text       start:0x023369bc end:0x02336cec
+
+src/asm_fallback/func_ov000_02341ebc.c:
+    complete
+    .text       start:0x02341ebc end:0x02341f78
+
+src/asm_fallback/func_ov000_0234739c.c:
+    complete
+    .text       start:0x0234739c end:0x023475fc
+
+src/ov000_t/func_ov000_023263c0.c:
+    complete
+    .text       start:0x023263c0 end:0x0232644c
+
+src/ov000_t/func_ov000_02336da8.c:
+    complete
+    .text       start:0x02336da8 end:0x02336f28

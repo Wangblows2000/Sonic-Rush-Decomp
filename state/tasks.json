@@ -284,10 +284,10 @@
       "module": "ov000",
       "start": "0x02310000",
       "end": "0x02362b58",
-      "status": "claimed",
-      "agent": "ov000_t",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 08:09:33Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -389,6 +389,14 @@
         {
           "time": "2026-11-16 08:09:33Z",
           "text": "claimed by ov000_t"
+        },
+        {
+          "time": "2026-11-16 10:09:06Z",
+          "text": "ov000_t: +5 OK (1248 B) 02335704 0231adac 02334b34 02336da8 023263c0, reloc-checked. Levers: split-symbol pool (tbl+1/+2) = struct field tbl[i].f (023263c0); preload w fields into locals before Rand() (0231adac); pairwise decl-position search beats random shuffles (02336da8: x before y + chr/sh positions). Still open: 0231ac3c (21: w r6 vs r4, /home/claude/w_ov000t/near_0231ac3c.c), 023045c0 (3), 022ddd4c/022ee198 (8), others unchanged; decl climb + pragma pairs exhausted on all drafts."
+        },
+        {
+          "time": "2026-11-16 10:09:06Z",
+          "text": "released by ov000_t: ov000_t session end"
         }
       ]
     },

@@ -1,3 +1,5 @@
 #include <nitro/types.h>
 
-void func_020055b0(void) { *(vu16 *)0x27e0000 = 0; }
+extern vu16 data_027e0000;
+
+void func_020055b0(void) { data_027e0000 = 0; }

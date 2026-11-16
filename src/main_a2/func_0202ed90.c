@@ -1,7 +1,5 @@
-// asm: hand-written runtime library routine (split at mid-function entry points, see w_asm/split_plan.txt)
+// asm: hand-written runtime library routine (soft-float divide; 256-byte reciprocal table emitted as data)
 #include <nitro/types.h>
-
-void _fdiv(void);
 
 asm void _fdiv(void)
 {

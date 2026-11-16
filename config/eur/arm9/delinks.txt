@@ -11339,3 +11339,7 @@ src/main_d3/func_020660f4.c:
 src/main_d3/func_02066360.c:
     complete
     .text       start:0x02066360 end:0x020665c8
+
+src/lead/BuildInfo.c:
+    complete
+    .text       start:0x02000b00 end:0x02000b24
