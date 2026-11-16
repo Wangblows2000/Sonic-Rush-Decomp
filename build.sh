@@ -46,11 +46,12 @@ cp -f "$rom" extract/baserom_rush_eur.nds
 export PATH="$root/tools/bin:$PATH"
 export WITH_GHIDRA=0   # Ghidra is a research tool, not needed to build
 
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 missing=()
 for b in git curl unzip python3 cargo; do command -v "$b" >/dev/null || missing+=("$b"); done
 if [ ${#missing[@]} -gt 0 ] && [ ! -x tools/bin/dsd ]; then
   echo "build.sh: missing prerequisites: ${missing[*]}" >&2
-  echo "  Debian/Ubuntu: sudo apt install git curl unzip python3 python3-pip; Rust >= 1.85 from https://rustup.rs" >&2
+  echo "  Debian/Ubuntu: sudo apt install git curl unzip python3 python3-pip; Rust >= 1.88 from https://rustup.rs (distro rustc may be too old)" >&2
   exit 1
 fi
 if [ ! -x tools/bin/dsd ] || [ ! -x tools/bin/wibo ] || [ ! -x tools/bin/objdiff-cli ] || [ ! -f tools/mwccarm/1.2/sp2/mwccarm.exe ]; then

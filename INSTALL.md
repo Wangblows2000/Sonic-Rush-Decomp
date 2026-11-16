@@ -5,7 +5,7 @@
 - Linux (tested: Ubuntu 24.04) or Windows. macOS should work with wibo.
 - Python 3.11+, Git, Ninja.
 - `binutils-arm-none-eabi` (independent relink check, disassembly).
-- To build tools from source: Rust (cargo ≥ 1.85), CMake, a C++ compiler,
+- To build tools from source: Rust (cargo ≥ 1.88, via rustup), CMake, a C++ compiler,
   clang/libclang and lld (for wibo).
 
 ```sh

@@ -3,7 +3,7 @@
 #
 #   bash tools/setup_tools.sh
 #
-# Requires: git, cargo (Rust >= 1.85), cmake, ninja, a C++ compiler, clang/libclang
+# Requires: git, cargo (Rust >= 1.88, from rustup; Debian 13's rustc 1.85 is too old), cmake, ninja, a C++ compiler, clang/libclang
 # (wibo), lld (wibo on binutils < 2.43). Tested on Ubuntu 24.04.
 #
 # dsd is patched with tools/patches/*.patch: unsigned Thumb jump tables used by
@@ -15,6 +15,15 @@ set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 src="$root/tools/src"; bin="$root/tools/bin"
 mkdir -p "$src" "$bin"
+
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"   # prefer rustup's toolchain over the distro's
+rv="$(rustc --version 2>/dev/null | awk '{print $2}')"
+if [ -z "$rv" ] || [ "$(printf '%s\n' 1.88.0 "$rv" | sort -V | head -1)" != 1.88.0 ]; then
+  echo "ERROR: Rust >= 1.88 required (found: ${rv:-none})." >&2
+  echo "  Install rustup:  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh" >&2
+  echo "  then:            . \"\$HOME/.cargo/env\" && rustup default stable" >&2
+  exit 1
+fi
 
 DSD_TAG=v0.12.1
 OBJDIFF_TAG=v3.8.3
@@ -29,11 +38,11 @@ clone AetiasHax/ds-decomp ds-decomp "$DSD_TAG"
     elif git apply --reverse --check "$p" 2>/dev/null; then echo "patch already applied: $(basename "$p")"
     else echo "ERROR: patch does not apply: $(basename "$p")" >&2; exit 1; fi
   done
-  cargo build --release -p ds-decomp-cli )
+  cargo build --locked --release -p ds-decomp-cli )
 cp "$src/ds-decomp/target/release/dsd" "$bin/dsd"
 
 clone encounter/objdiff objdiff "$OBJDIFF_TAG"
-( cd "$src/objdiff" && cargo build --release -p objdiff-cli )
+( cd "$src/objdiff" && cargo build --locked --release -p objdiff-cli )
 cp "$src/objdiff/target/release/objdiff-cli" "$bin/objdiff-cli"
 
 if [ "$(uname -s)" = Linux ]; then

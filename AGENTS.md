@@ -254,7 +254,7 @@ any main TU that starts below 0x02000800.
 | wibo | 1.2.0 | Runs the Windows Metrowerks executables on Linux. |
 | Metrowerks CodeWarrior for NINTENDO DS | compiler **1.2/sp2**, linker **1.2/sp3** | Proprietary. Fetched by `bootstrap_session.sh`; never committed. |
 | arm-none-eabi binutils | 2.42 | `arm-none-eabi-ld` for the relink check, `objdump`/`objcopy`. |
-| Build-only: Rust/cargo ≥ 1.85, CMake, a C++ compiler, clang/libclang, lld | | Used by `setup_tools.sh` (lld and libclang are for wibo). |
+| Build-only: Rust/cargo ≥ 1.88, via rustup, CMake, a C++ compiler, clang/libclang, lld | | Used by `setup_tools.sh` (lld and libclang are for wibo). |
 | Ghidra | 12.2 (`ghidra_12.2_PUBLIC_20261016.zip`, SHA-256 `2c2cd776…a7be67`) | Optional. Needs **JDK 25** (`openjdk-25-jdk-headless`); 12.2 rejects JDK 21. |
 
 **Compiler selection** (`config/eur/compilers.yaml`):
