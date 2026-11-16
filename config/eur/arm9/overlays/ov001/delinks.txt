@@ -6844,7 +6844,7 @@ src/c_ov001/ExtraBoss_TestColliderBoxes.c:
     complete
     .text       start:0x022fe550 end:0x022fe6b8
 
-src/asm_fallback/ExtraBoss_IsRingTouchingPlayer.c:
+src/q/ExtraBoss_IsRingTouchingPlayer.c:
     complete
     .text       start:0x02303494 end:0x02303554
 
