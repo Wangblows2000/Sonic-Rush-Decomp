@@ -27,21 +27,21 @@ USA (`ASCE`) and Japan (`ASCJ`) are not configured yet.
 
 <!-- dashboard:start -->
 
-_Verified progress, updated 2026-11-16 07:50:47Z ([full dashboard](docs/progress/dashboard.md))._
+_Verified progress, updated 2026-11-16 08:08:26Z ([full dashboard](docs/progress/dashboard.md))._
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
 | main | `██████████████████░░` 91.81% | 412,734 / 449,566 | 2,779 / 2,855 | 76 |
 | itcm | `████████████████████` 100.00% | 2,064 / 2,064 | 14 / 14 | 0 |
-| ov000 | `████████████████████` 97.73% | 628,140 / 642,724 | 2,764 / 2,799 | 35 |
+| ov000 | `████████████████████` 97.95% | 629,560 / 642,724 | 2,766 / 2,799 | 33 |
 | ov001 | `███████████████████░` 95.66% | 313,880 / 328,118 | 1,692 / 1,723 | 31 |
-| **ARM9 total** | `███████████████████░` 95.38% | 1,356,818 / 1,422,472 | 7,249 / 7,391 | 142 |
+| **ARM9 total** | `███████████████████░` 95.48% | 1,358,238 / 1,422,472 | 7,251 / 7,391 | 140 |
 
-Next milestone: **100%** matched code — 65,654 more bytes (currently 95.38%).
+Next milestone: **100%** matched code — 64,234 more bytes (currently 95.48%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 07:49:48Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 07:50:45Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 07:50:47Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 08:07:36Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 08:08:25Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 08:08:26Z
 
 <!-- dashboard:end -->
 

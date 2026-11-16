@@ -11059,3 +11059,11 @@ src/ov000_s/func_ov000_023411f0.c:
 src/ov000_s/func_ov000_023412e4.c:
     complete
     .text       start:0x023412e4 end:0x02341358
+
+src/ov000_r/func_ov000_02326744.c:
+    complete
+    .text       start:0x02326744 end:0x02326ac8
+
+src/ov000_r/func_ov000_02334eb4.c:
+    complete
+    .text       start:0x02334eb4 end:0x023350bc
