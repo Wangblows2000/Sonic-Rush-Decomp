@@ -11068,7 +11068,7 @@ src/ov000_r/StageEvent_SpawnInViewSingleScreen.c:
     complete
     .text       start:0x02334eb4 end:0x023350bc
 
-src/asm/BossF_State_Unk_ov000_022f8224.c:
+src/c_mainA/BossF_State_Unk_ov000_022f8224.c:
     complete
     .text       start:0x022f8224 end:0x022f8310
 
@@ -11104,7 +11104,7 @@ src/asm_fallback/EnemyPawnGroup_Action_Unk_ov000_022fcb24.c:
     complete
     .text       start:0x022fcb24 end:0x022fcc1c
 
-src/asm_fallback/MapObj75_Unk_ov000_02302e2c.c:
+src/c_ov000/MapObj75_Unk_ov000_02302e2c.c:
     complete
     .text       start:0x02302e2c end:0x02302f18
 
@@ -11172,11 +11172,11 @@ src/asm_fallback/StageEvent_Unk_ov000_023355e0.c:
     complete
     .text       start:0x023355e0 end:0x02335704
 
-src/asm_fallback/Hud_DrawTime.c:
+src/c_mainB/Hud_DrawTime.c:
     complete
     .text       start:0x023369bc end:0x02336cec
 
-src/asm_fallback/ZoneBg_Update.c:
+src/c_mainB/ZoneBg_Update.c:
     complete
     .text       start:0x02341ebc end:0x02341f78
 

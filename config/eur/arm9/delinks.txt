@@ -11156,11 +11156,11 @@ src/main_c2/Mem_CopyRect.c:
     complete
     .text       start:0x02035b5c end:0x02035c58
 
-src/asm/FS_StartOverlay.c:
+src/c_mainA/FS_StartOverlay.c:
     complete
     .text       start:0x0200c3c0 end:0x0200c4c0
 
-src/asm/GX_SetBankForSubBG.c:
+src/c_mainA/GX_SetBankForSubBG.c:
     complete
     .text       start:0x0200330c end:0x020033b8
 
@@ -11196,15 +11196,15 @@ src/main_d3/ObjCollisionMap_GetTileWidth.c:
     complete
     .text       start:0x02066e3c end:0x020670bc
 
-src/asm_fallback/SND_CommandInit.c:
+src/c_mainA/SND_CommandInit.c:
     complete
     .text       start:0x02009654 end:0x0200976c
 
-src/asm_fallback/SND_ReadChannelInfo.c:
+src/c_mainA/SND_ReadChannelInfo.c:
     complete
     .text       start:0x02009900 end:0x02009ab8
 
-src/asm_fallback/PM_GoSleepMode.c:
+src/c_mainB/PM_GoSleepMode.c:
     complete
     .text       start:0x0200e098 end:0x0200e2d0
 
@@ -11252,15 +11252,15 @@ src/asm_fallback/AnimatorSprite_Draw.c:
     complete
     .text       start:0x02032d2c end:0x020331f8
 
-src/asm_fallback/MBP_StartRebootAll.c:
+src/c_mainA/MBP_StartRebootAll.c:
     complete
     .text       start:0x0203b54c end:0x0203b634
 
-src/asm_fallback/MBP_AcceptChild.c:
+src/c_mainA/MBP_AcceptChild.c:
     complete
     .text       start:0x0203b8f4 end:0x0203b990
 
-src/asm_fallback/WFSi_PortCallback.c:
+src/c_mainA/WFSi_PortCallback.c:
     complete
     .text       start:0x0203d038 end:0x0203d150
 
@@ -11272,7 +11272,7 @@ src/asm_fallback/Stage_Create.c:
     complete
     .text       start:0x0204bf88 end:0x0204c598
 
-src/asm_fallback/StoryProgress_RestoreFromSave.c:
+src/c_mainA/StoryProgress_RestoreFromSave.c:
     complete
     .text       start:0x0204ec40 end:0x0204ed24
 
@@ -11280,7 +11280,7 @@ src/asm_fallback/PauseMenu_HighlightSelection.c:
     complete
     .text       start:0x020551b0 end:0x020552bc
 
-src/asm_fallback/PlayerDemoLight_Apply.c:
+src/c_mainB/PlayerDemoLight_Apply.c:
     complete
     .text       start:0x02055eb4 end:0x02055fa4
 
@@ -11288,11 +11288,11 @@ src/asm_fallback/PlayerDemoBg_LoadImageRes.c:
     complete
     .text       start:0x02056fa4 end:0x02057014
 
-src/asm_fallback/StageTitleCard_HoldPlayerY.c:
+src/c_mainA/StageTitleCard_HoldPlayerY.c:
     complete
     .text       start:0x0205b3b8 end:0x0205b478
 
-src/asm_fallback/StageTitleCard_HoldPlayerX.c:
+src/c_mainB/StageTitleCard_HoldPlayerX.c:
     complete
     .text       start:0x0205b478 end:0x0205b560
 
@@ -11300,11 +11300,11 @@ src/asm_fallback/StageObj_CollideMapVertical.c:
     complete
     .text       start:0x020648c4 end:0x02065624
 
-src/asm_fallback/MapCollision_GetTileAt.c:
+src/c_mainA/MapCollision_GetTileAt.c:
     complete
     .text       start:0x020665c8 end:0x02066638
 
-src/asm_fallback/ObjCollisionMap_ProbeDistance.c:
+src/c_mainB/ObjCollisionMap_ProbeDistance.c:
     complete
     .text       start:0x02067a28 end:0x02067c6c
 
@@ -11340,7 +11340,7 @@ src/lead/BuildInfo.c:
     complete
     .text       start:0x02000b00 end:0x02000b24
 
-src/asm_fallback/CARDi_TryReadCardDma.c:
+src/c_mainB/CARDi_TryReadCardDma.c:
     complete
     .text       start:0x02010018 end:0x0201016c
 

@@ -6800,7 +6800,7 @@ src/asm_fallback/TryAgain_InitSprites.c:
     complete
     .text       start:0x022d3fc8 end:0x022d4048
 
-src/asm_fallback/TransformDemo_Unk_ov001_022df490.c:
+src/c_ov001/TransformDemo_Unk_ov001_022df490.c:
     complete
     .text       start:0x022df490 end:0x022df530
 
@@ -6812,7 +6812,7 @@ src/asm_fallback/ZoneMap_Unk_ov001_022e1aac.c:
     complete
     .text       start:0x022e1aac end:0x022e1b4c
 
-src/asm_fallback/ZoneMap_Unk_ov001_022e2df0.c:
+src/c_ov001/ZoneMap_Unk_ov001_022e2df0.c:
     complete
     .text       start:0x022e2df0 end:0x022e2e40
 
@@ -6848,7 +6848,7 @@ src/asm_fallback/ExtraBoss_Unk_ov001_02303494.c:
     complete
     .text       start:0x02303494 end:0x02303554
 
-src/asm_fallback/ExtraBoss_Unk_ov001_02304834.c:
+src/c_ov001/ExtraBoss_Unk_ov001_02304834.c:
     complete
     .text       start:0x02304834 end:0x02304948
 
@@ -6868,7 +6868,7 @@ src/asm_fallback/SpecialStageGimmick_Unk_ov001_0230e94c.c:
     complete
     .text       start:0x0230e94c end:0x0230ea24
 
-src/asm_fallback/SpecialStageCamera_Apply.c:
+src/c_mainA/SpecialStageCamera_Apply.c:
     complete
     .text       start:0x023157d8 end:0x02315900
 
