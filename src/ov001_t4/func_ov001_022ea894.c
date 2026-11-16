@@ -43,8 +43,8 @@ typedef struct {
 
 extern UnkTask_022ea894 *gTaskCurrent;
 
-void func_02040d14(UnkAnim_022ea894 *a);
-BOOL func_02040cf4(UnkAnim_022ea894 *a);
+void KeyframeAnim_Update(UnkAnim_022ea894 *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022ea894 *a);
 void func_ov001_022ea360(UnkWork_022ea894 *w, s32 i, s32 v);
 void func_ov001_022e9fe4(UnkWork_022ea894 *w, s32 i);
 void func_ov001_022e9fa8(UnkWork_022ea894 *w, s32 i);
@@ -80,13 +80,13 @@ void func_ov001_022ea894(void) {
         ZoneMapPause_ExecuteChoice(id);
         return;
     }
-    func_02040d14(&w->anims[5]);
-    func_02040d14(&w->anims[6]);
-    func_02040d14(&w->anims[7]);
-    func_02040d14(&w->anims[8]);
-    func_02040d14(&w->anims[9]);
-    func_02040d14(&w->anims[10]);
-    func_02040d14(&w->anims[11]);
+    KeyframeAnim_Update(&w->anims[5]);
+    KeyframeAnim_Update(&w->anims[6]);
+    KeyframeAnim_Update(&w->anims[7]);
+    KeyframeAnim_Update(&w->anims[8]);
+    KeyframeAnim_Update(&w->anims[9]);
+    KeyframeAnim_Update(&w->anims[10]);
+    KeyframeAnim_Update(&w->anims[11]);
     i = 0;
     it = w->items;
     for (; i < 5; i++) {

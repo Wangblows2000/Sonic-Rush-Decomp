@@ -38,7 +38,7 @@ typedef struct {
 } UnkStruct_0233f408_aad8;
 
 extern s16 data_0206e470[];
-extern UnkStruct_0233f408_aad8 data_ov000_0236aad8;
+extern UnkStruct_0233f408_aad8 gCamera;
 extern UnkStruct_0233f408_7cdc data_02087cdc;
 extern UnkStruct_0233f408_Tbl data_02087ce0[];
 extern UnkStruct_0233f408_Cur data_02087cec[];
@@ -54,8 +54,8 @@ void func_ov000_0233f408(UnkStruct_0233f408 *w, s32 idx) {
     u16 *tbl;
 
 
-    if (data_ov000_0236aad8.unkC8 & 1) {
-        if (!(data_ov000_0236aad8.unkC8 & 2)) {
+    if (gCamera.unkC8 & 1) {
+        if (!(gCamera.unkC8 & 2)) {
             tbl = data_02087ce0[0].t[data_02087cdc.unk10];
         } else {
             tbl = data_02087cf4[data_02087cdc.unk24];

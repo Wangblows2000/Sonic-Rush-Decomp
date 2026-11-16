@@ -3,7 +3,7 @@
 extern u32 gRandSeed;
 
 u8 *func_ov001_022fd428(s32 a, void *b, s32 c, s32 d, s32 e);
-void *func_ov001_02300c94(void);
+void *ExtraBoss_GetPlayer(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void func_ov001_022fd1ec(void);
 void func_ov001_022fc5f0(void);
@@ -17,7 +17,7 @@ void func_ov001_022fc708(void *p, s32 x, s32 y, s32 z, s32 kind) {
     u8 *t = func_ov001_022fd428(kind, p, x, y, z);
     if (t == NULL)
         return;
-    *(void **)(t + 0x80) = func_ov001_02300c94();
+    *(void **)(t + 0x80) = ExtraBoss_GetPlayer();
     *(u16 *)(t + 0x98) = 0xffff;
     *(void (**)(void))(t + 0x74) = func_ov001_022fd1ec;
     *(s32 *)(t + 0x50) = -0x3000;

@@ -1,14 +1,14 @@
 #include <nitro/types.h>
 
-extern u16 data_022c4560[];
-void SceneChange_Unk_02055124(void);
+extern u16 gGameState[];
+void SceneChange_ToDemoPlay(void);
 
 #pragma thumb on
 void TitleScreen_StartAttractDemo(void) {
-    data_022c4560[0xf]++;
-    if (data_022c4560[0xf] >= 4) {
-        data_022c4560[0xf] = 0;
+    gGameState[0xf]++;
+    if (gGameState[0xf] >= 4) {
+        gGameState[0xf] = 0;
     }
-    SceneChange_Unk_02055124();
+    SceneChange_ToDemoPlay();
 }
 #pragma thumb reset

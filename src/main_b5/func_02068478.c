@@ -14,8 +14,8 @@ extern void *gMainHeap;
 
 u8 *ObjData_Load(UnkObj_02068478 *s, s32 a, s32 b);
 void NNS_G3dResDefaultSetup(void *p);
-u32 func_020380d8(void *p);
-void func_020380a0(void *p, void *buf);
+u32 Asset3D_GetResourceSize(void *p);
+void Asset3D_CopyResource(void *p, void *buf);
 
 static inline u8 *Alloc_02068478(u32 sz) {
     u32 size = sz;
@@ -52,7 +52,7 @@ void func_02068478(UnkObj_02068478 *s, s32 a) {
     if (res == NULL)
         res = ObjData_Load(s, a, 0);
     NNS_G3dResDefaultSetup(res);
-    s->buf = Alloc_02068478((func_020380d8(res) + 0x43) & ~0x1f);
-    func_020380a0(res, s->buf);
+    s->buf = Alloc_02068478((Asset3D_GetResourceSize(res) + 0x43) & ~0x1f);
+    Asset3D_CopyResource(res, s->buf);
     Free_02068478(res);
 }

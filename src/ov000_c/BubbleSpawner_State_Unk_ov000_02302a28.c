@@ -12,13 +12,13 @@ typedef struct {
     u16 unk214;
 } UnkStruct_02302a28;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
-void func_ov000_02329f50(UnkStruct_02302a28 *w, s16 x, s16 y, s32 type, u16 c);
+void EffAirBubble_Create(UnkStruct_02302a28 *w, s16 x, s16 y, s32 type, u16 c);
 void BubbleSpawner_SpawnBubble(UnkStruct_02302a28 *w, s32 type, s32 x, s32 y);
 
 static inline u16 FrameRand(void) {
-    return (u16)(((data_022c4560.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16);
+    return (u16)(((gGameState.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16);
 }
 
 void BubbleSpawner_State_Unk_ov000_02302a28(UnkStruct_02302a28 *w) {
@@ -31,9 +31,9 @@ void BubbleSpawner_State_Unk_ov000_02302a28(UnkStruct_02302a28 *w) {
     w->unk20C &= ~1;
     if (w->unk210 < 0xb2) {
         if ((FrameRand() & 0x3f) == 0)
-            func_ov000_02329f50(w, 7 - (Rand() & 0xe), 7 - (Rand() & 0xe), 0, w->unk214);
+            EffAirBubble_Create(w, 7 - (Rand() & 0xe), 7 - (Rand() & 0xe), 0, w->unk214);
         if (!((FrameRand() & 0x1f) - 1))
-            func_ov000_02329f50(w, 7 - (Rand() & 0xe), 7 - (Rand() & 0xe), 1, w->unk214);
+            EffAirBubble_Create(w, 7 - (Rand() & 0xe), 7 - (Rand() & 0xe), 1, w->unk214);
     }
     w->unk210--;
     if (!(w->unk20C & 2))

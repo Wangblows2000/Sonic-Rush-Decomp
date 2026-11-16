@@ -6,7 +6,7 @@ typedef struct {
     s32 unk8;
 } UnkPlayer_0233dd20;
 
-extern UnkPlayer_0233dd20 data_ov000_0236aad8;
+extern UnkPlayer_0233dd20 gCamera;
 extern UnkPlayer_0233dd20 data_ov000_0236ab3c;
 extern s16 data_0206e470[];
 
@@ -16,7 +16,7 @@ void func_ov000_0233dd20(s32 *t) {
     UnkPlayer_0233dd20 *p;
 
     (*t)++;
-    p = &data_ov000_0236aad8;
+    p = &gCamera;
     if (!(p->flags & 0x80))
         p->unk8 += (SIN_0233dd20((*t << 7) * 3) << 10) >> 12;
     p = &data_ov000_0236ab3c;

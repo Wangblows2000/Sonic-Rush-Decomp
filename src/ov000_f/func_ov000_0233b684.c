@@ -37,7 +37,7 @@ typedef struct {
     fx32 m[4];
 } UnkMtx22_0233b684;
 
-extern UnkStruct_0233b684 data_ov000_0236aad8;
+extern UnkStruct_0233b684 gCamera;
 extern s16 data_0206e470[];
 extern u8 data_02089254[];
 extern u8 data_02089264[];
@@ -55,7 +55,7 @@ void G2x_SetBGyAffine_(void *p, UnkMtx22_0233b684 *m, s32 cx, s32 cy, s32 x1, s3
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
 void func_ov000_0233b684(void) {
-    UnkStruct_0233b684 *g = &data_ov000_0236aad8;
+    UnkStruct_0233b684 *g = &gCamera;
     u32 i;
     u32 j;
     u8 *chr;

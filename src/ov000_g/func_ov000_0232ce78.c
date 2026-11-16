@@ -29,7 +29,7 @@ typedef struct {
 } UnkStruct_0232ce78;
 
 UnkStruct_0232ce78_P *func_ov000_02342358(s32 a);
-void func_ov000_02336f28(u32 *p, s32 v, s32 n);
+void Hud_ToDecimalDigits(u32 *p, s32 v, s32 n);
 void AnimatorSprite_SetAnimation(void *s, u16 a);
 void func_ov000_0232d30c(UnkStruct_0232ce78 *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
@@ -45,7 +45,7 @@ void func_ov000_0232ce78(UnkStruct_0232ce78 *w) {
     else
         w->unk268 = 0;
     if (w->unk26C != w->unk268) {
-        func_ov000_02336f28(&w->unk270, w->unk268, 100);
+        Hud_ToDecimalDigits(&w->unk270, w->unk268, 100);
         AnimatorSprite_SetAnimation(w->unk134, ((w->unk270 & 0xf0) >> 4) + 1);
         AnimatorSprite_SetAnimation(w->unk17C, ((w->unk270 & 0xf0) >> 4) + 1);
         w->unk254 = w->unk258 = 0x180;

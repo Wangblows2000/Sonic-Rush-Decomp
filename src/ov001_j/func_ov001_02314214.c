@@ -14,25 +14,25 @@ typedef struct UnkStruct_02314214 {
     UnkStruct_02314214_t *t;
 } UnkStruct_02314214;
 
-extern UnkStruct_02314214 *data_ov001_0231f69c;
+extern UnkStruct_02314214 *gSpecialStageData;
 
-s32 func_ov001_0230d6b8(void);
-s32 *func_ov001_0230d6cc(void);
+s32 SpecialStageMap_GetScrollDistance(void);
+s32 *SpecialStageMap_GetCurrentSegment(void);
 s32 func_0200225c(s32 n, s32 d);
 BOOL func_0202e564(float a, float b);
 
 s32 func_ov001_02314214(void) {
-    UnkStruct_02314214 *g = data_ov001_0231f69c;
+    UnkStruct_02314214 *g = gSpecialStageData;
     float v;
     s32 n;
     s32 r;
 
-    v = (float)g->unkC + (float)func_0200225c(func_ov001_0230d6b8(), 0x12c000) / 4096.0f;
+    v = (float)g->unkC + (float)func_0200225c(SpecialStageMap_GetScrollDistance(), 0x12c000) / 4096.0f;
     if (func_0202e564(v, 2.0f))
         return 0;
-    if (*func_ov001_0230d6cc() == 5)
+    if (*SpecialStageMap_GetCurrentSegment() == 5)
         return 0x800;
-    if (*func_ov001_0230d6cc() == 6)
+    if (*SpecialStageMap_GetCurrentSegment() == 6)
         return 0x1000;
     {
         UnkStruct_02314214_t *t = g->t;

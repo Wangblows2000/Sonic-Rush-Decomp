@@ -9,7 +9,7 @@ extern u8 data_ov000_023666d0[], data_ov000_02369e44[];
 
 void MapObject_Destructor(void);
 void GmkAir_OnHit(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 
 UnkStruct_02301ba4 *GmkAir_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -33,7 +33,7 @@ UnkStruct_02301ba4 *GmkAir_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll0.unk1C = GmkAir_OnHit;
     w->base.coll0.unk18 = w;
     w->base.unk58 |= 0x2100;
-    if (func_ov000_02345758(w->base.unk10, w->base.unk14))
+    if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14))
         w->base.unk5C |= 2;
     return w;
 }

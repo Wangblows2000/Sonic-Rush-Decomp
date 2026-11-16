@@ -13,13 +13,13 @@ typedef struct {
     u8 pad5C[0x64 - 0x5c];
 } UnkPlayer_023393a8;
 
-extern UnkPlayer_023393a8 data_ov000_0236aad8[];
+extern UnkPlayer_023393a8 gCamera[];
 
 #define CLAMP(v, lo, hi) ((v) < (lo) ? (lo) : ((v) > (hi) ? (hi) : (v)))
 
 void func_ov000_023393a8(s32 unused, s32 idx) {
-    UnkPlayer_023393a8 *p = &data_ov000_0236aad8[idx];
-    u32 flags = data_ov000_0236aad8[2].flags;
+    UnkPlayer_023393a8 *p = &gCamera[idx];
+    u32 flags = gCamera[2].flags;
 
     if (flags & 0x200)
         return;

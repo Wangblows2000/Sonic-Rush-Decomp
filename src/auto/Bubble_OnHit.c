@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_02347f94();
+s32 Player_Action_BreatheAirBubble();
 
 void Bubble_OnHit(u8 *p0, u8 *p1) {
     u32 t0 = *(u32 *)((u8 *)p0 + 0x18);
@@ -17,7 +17,7 @@ void Bubble_OnHit(u8 *p0, u8 *p1) {
         }
         v2 = t3;
     }
-    func_ov000_02347f94(t1, v2);
+    Player_Action_BreatheAirBubble(t1, v2);
     u32 t4 = *(u32 *)((u8 *)t0 + 0x54);
     *(u32 *)((u8 *)t0 + 0x54) = (t4 | 4);
 }

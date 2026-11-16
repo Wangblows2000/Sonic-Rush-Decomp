@@ -93,7 +93,7 @@ typedef struct UnkStruct_022d8c64_d {
     s32 unkDC;
 } UnkStruct_022d8c64_d;
 
-extern UnkStruct_022d8c64_b *data_ov000_02369b14;
+extern UnkStruct_022d8c64_b *gBoss3;
 extern UnkStruct_022d8c64_c data_ov000_0236a48c;
 extern UnkStruct_022d8c64_d data_ov000_0236a444;
 
@@ -104,22 +104,22 @@ BOOL func_ov000_022d8c64(UnkStruct_022d8c64 *s) {
     s32 v;
     if (data_ov000_0236a444.unkDC == 1) {
         UnkStruct_022d8c64_c *c = (UnkStruct_022d8c64_c *)(u32)&data_ov000_0236a48c;
-        UnkStruct_022d8c64_r *r = data_ov000_02369b14->unk218;
+        UnkStruct_022d8c64_r *r = gBoss3->unk218;
         if (func_ov000_022da7c8(r->unk10, s->unk10, r->unk2E <= 0) < 0xc800) {
             c->unk0 = NULL;
             c->unk8 = NULL;
         } else {
-            c->unk0 = data_ov000_02369b14->unk218;
-            c->unk8 = data_ov000_02369b14->unk218;
+            c->unk0 = gBoss3->unk218;
+            c->unk8 = gBoss3->unk218;
         }
     }
     func_ov000_022c5e1c(0xf42f8, 0x5fe435, s->unk24C, s->unk254, &v);
     v >>= 4;
-    if (func_ov000_022da7c8(v, data_ov000_02369b14->unk218->unk10, !(s->unk5C & 1)) < 0x800) {
+    if (func_ov000_022da7c8(v, gBoss3->unk218->unk10, !(s->unk5C & 1)) < 0x800) {
         if (s->unk5C & 1) {
-            if (data_ov000_02369b14->unk218->unk2E < 0)
+            if (gBoss3->unk218->unk2E < 0)
                 return TRUE;
-        } else if (data_ov000_02369b14->unk218->unk2E > 0) {
+        } else if (gBoss3->unk218->unk2E > 0) {
             return TRUE;
         }
     }

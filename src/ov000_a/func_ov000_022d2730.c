@@ -91,14 +91,14 @@ typedef struct UnkStruct_022d2730_7 {
     u16 unk8;
 } UnkStruct_022d2730_7;
 
-extern UnkStruct_022d2730 *data_ov000_02369ae0;
-extern UnkStruct_022d2730_7 data_ov000_02369ac0;
+extern UnkStruct_022d2730 *gBoss2;
+extern UnkStruct_022d2730_7 gBossStatus;
 extern u32 gRandSeed;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022cedd8(UnkStruct_022d2730 *s, s32 a);
-void func_ov000_022d2688(UnkStruct_022d2730 *s);
-void func_ov000_022d255c(UnkStruct_022d2730 *s);
+void Boss2_State_Unk_ov000_022d2688(UnkStruct_022d2730 *s);
+void Boss2_State_Unk_ov000_022d255c(UnkStruct_022d2730 *s);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -106,17 +106,17 @@ static inline u16 Rand(void) {
 }
 
 void func_ov000_022d2730(void) {
-    UnkStruct_022d2730 *s = data_ov000_02369ae0;
+    UnkStruct_022d2730 *s = gBoss2;
     UnkStruct_022d2730_a *x = &s->unkA9C;
     UnkStruct_022d2730_a *y = &s->unkBD4;
     UnkStruct_022d2730_a *z = &s->unkD0C;
     s32 r;
     s32 k;
     if (s->unk1304 == 0) {
-        s->func = func_ov000_022d2688;
+        s->func = Boss2_State_Unk_ov000_022d2688;
         s->unk146C = 0x27d;
     } else {
-        s->func = func_ov000_022d255c;
+        s->func = Boss2_State_Unk_ov000_022d255c;
         s->unkF84[6].unkA &= ~4;
         s->unkF84[6].unkA |= 0x1000;
         Sound_PlaySeqArc(s->unk1450, 0, 0xa0);
@@ -135,7 +135,7 @@ void func_ov000_022d2730(void) {
     s->unk1464 = 0x200;
     func_ov000_022cedd8(s, 0x1555000);
     r = Rand() & 0xff;
-    k = data_ov000_02369ac0.unk8;
+    k = gBossStatus.unk8;
     s->unk1470 = 1;
     if ((k >= 6 && r < 0x40) || (k >= 3 && r < 0x80) || (k > 0 && r < 0xc0))
         s->unk1470++;

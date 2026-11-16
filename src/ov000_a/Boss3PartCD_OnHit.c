@@ -61,13 +61,13 @@ typedef struct UnkStruct_022d5d78_7 {
     s32 unk4;
 } UnkStruct_022d5d78_7;
 
-extern UnkStruct_022d5d78_7 data_ov000_02369ac0;
-extern UnkStruct_022d5d78_b *data_ov000_02369b14;
+extern UnkStruct_022d5d78_7 gBossStatus;
+extern UnkStruct_022d5d78_b *gBoss3;
 extern UnkStruct_022d5d78_p *gPlayers;
 
-void Boss3PartCD_State_Unk_ov000_022d836c(void);
+void Boss3PartCC_State_Unk_ov000_022d836c(void);
 void func_ov000_022daa94(UnkStruct_022d5d78_o *o);
-void func_ov000_0234aa80(UnkStruct_022d5d78_p *p);
+void Player_Action_AttackBounce(UnkStruct_022d5d78_p *p);
 void BossEffect_CreateClash(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Player_OnHurt(UnkStruct_022d5d78_h *a, UnkStruct_022d5d78_h *b);
@@ -78,10 +78,10 @@ void Boss3PartCD_OnHit(UnkStruct_022d5d78_h *a, UnkStruct_022d5d78_h *b) {
     if (p->unk0 != 1)
         return;
     if (p->unk328 == 0x30) {
-        if (data_ov000_02369ac0.unk4 == 0xe) {
-            data_ov000_02369b14->unk214->unk68 = Boss3PartCD_State_Unk_ov000_022d836c;
+        if (gBossStatus.unk4 == 0xe) {
+            gBoss3->unk214->unk68 = Boss3PartCC_State_Unk_ov000_022d836c;
             p->unk62 = 4;
-        } else if (data_ov000_02369ac0.unk4 == 0x10) {
+        } else if (gBossStatus.unk4 == 0x10) {
             p->unk62 = 4;
             o->unk62 = 4;
             if ((o->unk20C & 1) && !(o->unk20C & 0x40)) {
@@ -96,12 +96,12 @@ void Boss3PartCD_OnHit(UnkStruct_022d5d78_h *a, UnkStruct_022d5d78_h *b) {
                 gPlayers->unk424 = 0;
                 gPlayers->unk422 = gPlayers->unk424;
                 gPlayers->unk420 = gPlayers->unk422;
-                data_ov000_02369b14->unk20C |= 4;
-                data_ov000_02369b14->unk210 = 1;
+                gBoss3->unk20C |= 4;
+                gBoss3->unk210 = 1;
             }
         }
         p->unk38 = ((a->unk4 + a->unkE - b->unk12) << 8) - p->unk14;
-        func_ov000_0234aa80(p);
+        Player_Action_AttackBounce(p);
         BossEffect_CreateClash(1, p->unk17C >> 4, -p->unk180 >> 4, p->unk184 >> 4);
         Sound_PlaySeqArc(0, 0, 0xcb);
     } else if (p->unk3B2 == 0) {

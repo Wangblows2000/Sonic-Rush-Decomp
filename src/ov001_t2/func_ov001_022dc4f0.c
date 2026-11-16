@@ -20,9 +20,9 @@ extern UnkTask_022dc4f0 *gTaskCurrent;
 
 void func_ov001_022da694(UnkWork_022dc4f0 *w);
 void func_ov001_022d9cd4(UnkWork_022dc4f0 *w, s32 a, s32 b);
-BOOL func_02050018(void);
+BOOL MsgBox_IsClosed(void);
 void func_ov001_022da41c(UnkWork_022dc4f0 *w);
-BOOL func_0205000c(void);
+BOOL MsgBox_GetResult(void);
 void func_020510e0(void);
 void func_ov001_022da33c(UnkWork_022dc4f0 *w);
 void func_ov001_022da244(UnkWork_022dc4f0 *w, s32 a);
@@ -38,11 +38,11 @@ void func_ov001_022dc4f0(void) {
     func_ov001_022da694(w);
     func_ov001_022d9cd4(w, 0, 0);
     w->timer++;
-    if (func_02050018()) {
+    if (MsgBox_IsClosed()) {
         w->timer = 0;
         w->unk4 = 0;
         func_ov001_022da41c(w);
-        if (!func_0205000c()) {
+        if (!MsgBox_GetResult()) {
             func_020510e0();
             func_ov001_022da33c(w);
             func_ov001_022da244(w, 1);

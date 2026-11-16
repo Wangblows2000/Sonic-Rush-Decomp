@@ -9,9 +9,9 @@ typedef struct {
     u16 unk10;
 } UnkRes_02040048;
 
-extern void (*data_022c197c)(const char *fmt, ...);
+extern void (*sTraceFunc)(const char *fmt, ...);
 extern BOOL (*data_022c1978)(UnkRes_02040048 *r);
-extern s32 data_022c196c;
+extern s32 sConnectMode;
 extern u16 sConnectBitmap;
 extern char data_02078a60[];
 extern char data_02078a8c[];
@@ -34,8 +34,8 @@ void WH_StateOutStartParent(UnkRes_02040048 *r) {
     }
     switch (r->unk8) {
     case 7:
-        if (data_022c197c != NULL)
-            data_022c197c(data_02078a60, r->unk10);
+        if (sTraceFunc != NULL)
+            sTraceFunc(data_02078a60, r->unk10);
         if (data_022c1978 != NULL && !data_022c1978(r)) {
             ret = WM_Disconnect(0, r->unk10);
             if (ret == 2)
@@ -44,13 +44,13 @@ void WH_StateOutStartParent(UnkRes_02040048 *r) {
             WH_ChangeSysState(9);
             return;
         }
-        if (data_022c196c == 6 || data_022c196c == 7)
+        if (sConnectMode == 6 || sConnectMode == 7)
             WH_CallbackForWFS(r);
         sConnectBitmap |= bit;
         return;
     case 9:
-        if (data_022c197c != NULL)
-            data_022c197c(data_02078a8c, r->unk10);
+        if (sTraceFunc != NULL)
+            sTraceFunc(data_02078a8c, r->unk10);
         sConnectBitmap &= ~bit;
         WH_CallbackForWFS(r);
         return;
@@ -61,8 +61,8 @@ void WH_StateOutStartParent(UnkRes_02040048 *r) {
     case 2:
         return;
     default:
-        if (data_022c197c != NULL)
-            data_022c197c(data_02078ab8, r->unk8);
+        if (sTraceFunc != NULL)
+            sTraceFunc(data_02078ab8, r->unk8);
         return;
     }
 }

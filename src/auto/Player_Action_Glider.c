@@ -4,8 +4,8 @@
 s32 Player_ResetGimmickState();
 s32 Player_SetAnimation();
 void Player_State_Glider();
-s32 func_ov000_02346d10();
-s32 func_ov000_02346aa8();
+s32 Player_StopHighSpeed();
+s32 Player_StopBoost();
 s32 Sound_PlaySeqArcEx();
 
 s32 Player_Action_Glider(u8 *p0, s32 p1, s32 p2, s32 p3) {
@@ -23,8 +23,8 @@ s32 Player_Action_Glider(u8 *p0, s32 p1, s32 p2, s32 p3) {
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x80);
     s32 t1 = (*(u32 *)((u8 *)p0 + 0x58) & ~0x40);
     *(u32 *)((u8 *)p0 + 0x58) = t1;
-    func_ov000_02346d10(p0, t1, t0);
-    func_ov000_02346aa8(p0);
+    Player_StopHighSpeed(p0, t1, t0);
+    Player_StopBoost(p0);
     *(u32 *)((u8 *)p0 + 0x32c) = (*(u32 *)((u8 *)p0 + 0x32c) | 0x100000);
     *(u32 *)((u8 *)p0 + 0x32c) = (*(u32 *)((u8 *)p0 + 0x32c) & ~0xf);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) & ~1);

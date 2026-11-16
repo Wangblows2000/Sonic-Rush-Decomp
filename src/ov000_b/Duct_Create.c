@@ -4,7 +4,7 @@ extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366dc4[], data_ov000_0236a1b4[];
 
 void MapObject_Destructor(void);
-void func_ov000_02313574(UnkStruct_StageObj *w);
+void Duct_Action_Unk_ov000_02313574(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Duct_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -24,6 +24,6 @@ UnkStruct_StageObj *Duct_Create(s32 a, s32 b, s32 c) {
     w->spr1.unk46 = 0x14;
     w->unk58 |= 0x2100;
     w->unk1DC = Sound_AllocHandle();
-    func_ov000_02313574(w);
+    Duct_Action_Unk_ov000_02313574(w);
     return w;
 }

@@ -12,8 +12,8 @@ s32 PaletteTransfer_Clear();
 s32 ScreenTransfer_Clear();
 s32 VRAMTransfer_Clear();
 s32 SysSound_Release();
-s32 SceneChange_Unk_0205507c();
-s32 SceneChange_Unk_02055060();
+s32 SceneChange_ToPlayerSelectMenuMode1();
+s32 SceneChange_ToPlayerSelectMenuMode2();
 
 void func_0206340c(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
@@ -36,10 +36,10 @@ void func_0206340c(void) {
         VRAMTransfer_Clear();
         SysSound_Release();
         if (t3 != 0) {
-            SceneChange_Unk_0205507c();
+            SceneChange_ToPlayerSelectMenuMode1();
             return;
         }
-        SceneChange_Unk_02055060();
+        SceneChange_ToPlayerSelectMenuMode2();
     }
 }
 

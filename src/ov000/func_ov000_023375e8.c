@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-void func_ov000_02337048(s32 a);
+void Hud_SetOamPriority(s32 a);
 
 void func_ov000_023375e8(void) {
-    func_ov000_02337048(0);
+    Hud_SetOamPriority(0);
 }

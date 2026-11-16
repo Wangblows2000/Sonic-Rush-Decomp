@@ -54,10 +54,10 @@ typedef struct {
     u16 unk10;
 } UnkStruct_0233f104_abd8;
 
-extern UnkPlayers_0233f104 data_ov000_0236aad8;
+extern UnkPlayers_0233f104 gCamera;
 extern UnkFlags_0233f104 data_ov000_0236ab0c[];
 extern UnkLimit_0233f104 data_ov000_0236ab10[];
-extern UnkStruct_0233f104_4560 data_022c4560;
+extern UnkStruct_0233f104_4560 gGameState;
 extern UnkStruct_0233f104_abd8 data_ov000_0236abd8;
 
 UnkPlayer_0233f104 *func_ov000_0233b62c(void);
@@ -70,8 +70,8 @@ void func_ov000_0233f104(UnkStruct_0233f104 *bg, s32 idx) {
     s32 v;
     s32 t;
 
-    if (!(data_ov000_0236aad8.unkC8 & 1)) {
-        p = &data_ov000_0236aad8.p[idx];
+    if (!(gCamera.unkC8 & 1)) {
+        p = &gCamera.p[idx];
     } else {
         idx = 0;
         p = func_ov000_0233b62c();

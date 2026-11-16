@@ -35,13 +35,13 @@ typedef struct {
     s8 unk23C[2];
 } UnkStruct_02303548;
 
-extern UnkStruct_Plr data_ov000_0236aad8[];
+extern UnkStruct_Plr gCamera[];
 
 void func_ov000_02303310(void);
 void MapObj75_State_Unk_ov000_023034f8(void);
 
 void func_ov000_02303548(UnkStruct_02303548 *s) {
-#define P ((UnkStruct_Plr *)(u32)data_ov000_0236aad8)
+#define P ((UnkStruct_Plr *)(u32)gCamera)
     UnkStruct_Plr *p;
     u8 i;
     if (P[2].unk0 & 1) {

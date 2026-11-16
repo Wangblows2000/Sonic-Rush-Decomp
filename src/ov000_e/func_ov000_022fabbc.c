@@ -23,17 +23,17 @@ typedef struct {
     u32 unk18;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_Player *gPlayers;
 
 void func_0206c95c(void);
 UnkStruct_Ev *func_0206c938(s32 a, s32 b);
 u8 *func_ov000_023355d0(void);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
-void func_ov000_02342f14(UnkStruct_Player *p);
-void func_ov000_02342ef4(UnkStruct_Player *p);
-void func_ov000_02342e9c(UnkStruct_Player *p);
-void func_ov000_02342e28(UnkStruct_Player *p);
+void Player_ApplySlowdown(UnkStruct_Player *p);
+void Player_ApplyConfusion(UnkStruct_Player *p);
+void Player_DrainTension(UnkStruct_Player *p);
+void Player_WarpToRival(UnkStruct_Player *p);
 
 void func_ov000_022fabbc(void) {
     UnkStruct_Ev *o;
@@ -42,7 +42,7 @@ void func_ov000_022fabbc(void) {
     u8 *base;
     u16 off;
 
-    if (!(data_022c4560.unk18 & 0x20))
+    if (!(gGameState.unk18 & 0x20))
         return;
     func_0206c95c();
     for (i = 0; i < 2; i++) {
@@ -61,19 +61,19 @@ void func_ov000_022fabbc(void) {
             switch (o->unk0) {
             case 7:
                 Sound_PlaySeqArcEx(0, 0, 0xdf);
-                func_ov000_02342f14(gPlayers);
+                Player_ApplySlowdown(gPlayers);
                 break;
             case 8:
                 Sound_PlaySeqArcEx(0, 0, 0xdf);
-                func_ov000_02342ef4(gPlayers);
+                Player_ApplyConfusion(gPlayers);
                 break;
             case 9:
                 Sound_PlaySeqArcEx(0, 0, 0xdf);
-                func_ov000_02342e9c(gPlayers);
+                Player_DrainTension(gPlayers);
                 break;
             case 10:
                 Sound_PlaySeqArcEx(0, 0, 0xdf);
-                func_ov000_02342e28(gPlayers);
+                Player_WarpToRival(gPlayers);
                 break;
             case 2:
                 e->unk0 = 0xff;

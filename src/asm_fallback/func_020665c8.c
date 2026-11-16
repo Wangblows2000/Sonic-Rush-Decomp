@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_022c4dc8;
+extern u32 gMapCollisionMap;
 
 asm void func_020665c8(void)
 {
@@ -32,5 +32,5 @@ asm void func_020665c8(void)
     ldrh r0, [r1, r0]
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
-    dcd data_022c4dc8
+    dcd gMapCollisionMap
 }

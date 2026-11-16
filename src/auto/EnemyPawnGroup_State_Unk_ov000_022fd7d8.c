@@ -5,7 +5,7 @@ s32 Sound_PlaySeqArcEx();
 extern u8 gPlayers[];
 s32 Sound_SetPositional();
 s32 func_ov000_022fc5b8();
-s32 func_ov000_022fe7e8();
+s32 EnemyPawnGroup_Action_Unk_ov000_022fe7e8();
 
 void EnemyPawnGroup_State_Unk_ov000_022fd7d8(u8 *p0) {
     if (((s32)*(s16 *)((u8 *)p0 + 0xa2) >> 4) == 6) {
@@ -36,5 +36,5 @@ void EnemyPawnGroup_State_Unk_ov000_022fd7d8(u8 *p0) {
     }
     s32 t1 = (*(u32 *)((u8 *)p0 + 0x1f4) & ~5);
     *(u32 *)((u8 *)p0 + 0x1f4) = t1;
-    func_ov000_022fe7e8(p0, t1);
+    EnemyPawnGroup_Action_Unk_ov000_022fe7e8(p0, t1);
 }

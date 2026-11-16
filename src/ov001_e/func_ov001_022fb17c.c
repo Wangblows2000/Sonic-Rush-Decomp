@@ -30,7 +30,7 @@ typedef struct UnkStruct_022fb17c_c {
     s32 chr;
 } UnkStruct_022fb17c_c;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s32 data_ov001_0231d5ec[][5];
 
 UnkStruct_022fb17c_c *ExtraBoss_GetWork(void);
@@ -39,11 +39,11 @@ void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 static inline s32 GetLevel(void) {
     BOOL b = TRUE;
-    if (data_022c4560.mode != 2 && data_022c4560.mode != 3)
+    if (gGameState.mode != 2 && gGameState.mode != 3)
         b = FALSE;
     if (b)
         return 1;
-    return data_022c4560.level;
+    return gGameState.level;
 }
 
 void func_ov001_022fb17c(UnkStruct_022fb17c *p) {

@@ -6,7 +6,7 @@ typedef struct UnkStruct_0233efb0 {
 } UnkStruct_0233efb0;
 
 extern void *data_ov000_0236ac1c;
-extern UnkStruct_0233efb0 data_ov000_0236aad8;
+extern UnkStruct_0233efb0 gCamera;
 extern u32 gSystemFlags;
 
 void func_ov000_0233eed8(void *p);
@@ -16,7 +16,7 @@ void func_ov000_0233ec68(void *p);
 void func_ov000_0233efb0(void) {
     void *p = data_ov000_0236ac1c;
     func_ov000_0233eed8(p);
-    if (data_ov000_0236aad8.unkC8 & 1) {
+    if (gCamera.unkC8 & 1) {
         func_ov000_0233ed3c(p, 0);
         func_ov000_0233ec68(p);
     } else {

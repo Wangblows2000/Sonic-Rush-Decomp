@@ -16,14 +16,14 @@ typedef struct UnkStruct_02307890 {
     s32 counts[7];
 } UnkStruct_02307890;
 
-extern UnkStruct_02307890 *data_ov001_0231f5bc;
+extern UnkStruct_02307890 *gSpecialStageHud;
 
 BOOL func_0202e5e4(float a, float b);
 BOOL func_0202e528(float a, float b);
 void func_ov001_02307778(s32 i, float scale, s16 *px, s16 *py);
 
 void func_ov001_02307890(s32 i, s32 t) {
-    UnkStruct_02307890 *g = data_ov001_0231f5bc;
+    UnkStruct_02307890 *g = gSpecialStageHud;
     UnkStruct_02307890_o *o;
     float f;
 

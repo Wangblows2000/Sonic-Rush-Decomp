@@ -31,7 +31,7 @@ typedef struct {
     s32 unk210;
 } UnkStruct_02308404;
 
-extern UnkStruct_Plr data_ov000_0236aad8[];
+extern UnkStruct_Plr gCamera[];
 
 void *func_ov000_02307e84(void);
 UnkStruct_Ctl *func_ov000_0234237c(s32 a, void *b);
@@ -39,7 +39,7 @@ BOOL func_ov000_02307dfc(UnkStruct_Ctl *a, s32 b);
 UnkStruct_Plr *func_ov000_0233b62c(void);
 UnkStruct_Plr *func_ov000_0233b610(void);
 void func_ov000_0233b374(void);
-void func_ov000_02308370(UnkStruct_02308404 *s);
+void MapObj8F_Action_Unk_ov000_02308370(UnkStruct_02308404 *s);
 
 void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
     UnkStruct_Ctl *o;
@@ -63,7 +63,7 @@ void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
     for (i = 0; i < 2; i++) {
         f = o->unk20C;
         if (f & (2 << i)) {
-            p = &data_ov000_0236aad8[i];
+            p = &gCamera[i];
             if (!(((UnkStruct_Pad *)s->base.unk1E0)->unk4 & 2)) {
                 m = 0x10000 << i;
                 if (!(f & m)) {
@@ -76,7 +76,7 @@ void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
                 }
                 m = 0x40000 << i;
                 if (!(o->unk20C & m)) {
-                    q = (data_ov000_0236aad8[2].unk0 & 1) ? func_ov000_0233b62c() : p;
+                    q = (gCamera[2].unk0 & 1) ? func_ov000_0233b62c() : p;
                     v = q->unk8 + 0x1000;
                     if (v < s->base.unk14) {
                         p->unk50 = v;
@@ -98,7 +98,7 @@ void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
                 }
                 m = 0x400000 << i;
                 if (!(o->unk20C & m)) {
-                    q = (data_ov000_0236aad8[2].unk0 & 1) ? func_ov000_0233b610() : p;
+                    q = (gCamera[2].unk0 & 1) ? func_ov000_0233b610() : p;
                     v = q->unk8 + q->unk20 * 0xc0 - 0x1000;
                     if (v <= s->base.unk14) {
                         p->unk58 = s->unk210;
@@ -110,8 +110,8 @@ void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
             }
         }
     }
-    if ((data_ov000_0236aad8[2].unk0 & 1) && !(((UnkStruct_Pad *)s->base.unk1E0)->unk4 & 2))
+    if ((gCamera[2].unk0 & 1) && !(((UnkStruct_Pad *)s->base.unk1E0)->unk4 & 2))
         func_ov000_0233b374();
     if (o->unk20C & 0x1000000)
-        func_ov000_02308370(s);
+        MapObj8F_Action_Unk_ov000_02308370(s);
 }

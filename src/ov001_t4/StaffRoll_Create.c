@@ -54,7 +54,7 @@ void MI_CpuFill8(void *dst, s32 v, u32 size);
 void Touch_Enable(void);
 void StaffRoll_SetPictureState(UnkWork_022d2e3c *w, void (*f)(void));
 void StaffRoll_SetState(UnkWork_022d2e3c *w, void (*f)(void));
-void func_ov001_022d2a18(UnkWork_022d2e3c *w);
+void StaffRoll_InitDisplay(UnkWork_022d2e3c *w);
 void StaffRoll_LoadAssets(UnkWork_022d2e3c *w);
 void StaffRoll_InitSprites(UnkWork_022d2e3c *w);
 void Background_Draw(void *bg);
@@ -98,7 +98,7 @@ void StaffRoll_Create(s32 mode) {
         break;
     }
     StaffRoll_SetState(w, StaffRoll_State_Start);
-    func_ov001_022d2a18(w);
+    StaffRoll_InitDisplay(w);
     StaffRoll_LoadAssets(w);
     StaffRoll_InitSprites(w);
     w->unkbc4 = gStaffRollWork->unk182 * 8 - 0x1d0;

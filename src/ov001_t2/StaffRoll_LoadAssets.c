@@ -15,7 +15,7 @@ extern const char **gStaffRollSpriteFileTable[];
 extern u8 data_ov001_0231b058[];
 
 void *File_Load(const char *path, void *dst);
-void func_02036854(void *p);
+void Sound_LoadSoundArchive(void *p);
 
 #pragma thumb on
 void StaffRoll_LoadAssets(UnkStruct_022d2978 *p) {
@@ -51,6 +51,6 @@ void StaffRoll_LoadAssets(UnkStruct_022d2978 *p) {
     for (i = 0; i < 3; i++) {
         p->files2[i] = File_Load(names[i], (void *)-1);
     }
-    func_02036854(data_ov001_0231b058);
+    Sound_LoadSoundArchive(data_ov001_0231b058);
 }
 #pragma thumb reset

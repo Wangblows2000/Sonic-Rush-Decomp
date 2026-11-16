@@ -12,7 +12,7 @@ typedef struct {
 
 extern UnkStruct_02356434_Task *gTaskCurrent;
 
-s32 func_020428d4(void);
+s32 Wireless_GetLinkLevel(void);
 void AnimatorSprite_SetAnimation(void *spr, u16 anim);
 void AnimatorSprite_ProcessAnimation(void *spr, s32 a, s32 b);
 void AnimatorSprite_Draw(void *spr);
@@ -23,7 +23,7 @@ void func_ov000_02356434(void) {
     UnkStruct_02356434 *w = gTaskCurrent->work;
     u32 anim;
 
-    switch (func_020428d4()) {
+    switch (Wireless_GetLinkLevel()) {
     case 0:
         anim = 1;
         break;

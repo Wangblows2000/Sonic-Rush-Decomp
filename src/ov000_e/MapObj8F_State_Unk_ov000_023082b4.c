@@ -10,7 +10,7 @@ typedef struct {
     u32 unkC8;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 void *func_ov000_02307e84(void);
 UnkStruct_023082b4_T *func_ov000_0234237c(s32 a, void *b);
@@ -30,7 +30,7 @@ void MapObj8F_State_Unk_ov000_023082b4(UnkStruct_StageObj *s) {
         s->unk54 |= 4;
         return;
     }
-    if ((data_ov000_0236aad8.unkC8 & 1) && !(s->unk1E0->unk4 & 2))
+    if ((gCamera.unkC8 & 1) && !(s->unk1E0->unk4 & 2))
         func_ov000_0233b374();
     if (t->unk20C & 0x2000)
         func_ov000_02308110(s);

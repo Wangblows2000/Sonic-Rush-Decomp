@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
-extern s32 data_022c4560;
+extern s32 gGameState;
 extern s32 gSaveDataBusy;
 extern u32 gSystemFlags;
 
 void func_0204ec40(void);
-void func_ov001_022c5d1c(void);
+void ZoneActSelectMode_InitDisplay(void);
 void SysSound_Release(void);
 void SysSound_Init(void);
 void func_02052168(s32 a);
@@ -22,9 +22,9 @@ void ZoneActSelectMode_Main(void);
 
 #pragma thumb on
 void ZoneActSelectMode_Start(void) {
-    data_022c4560 = 0;
+    gGameState = 0;
     func_0204ec40();
-    func_ov001_022c5d1c();
+    ZoneActSelectMode_InitDisplay();
     SysSound_Release();
     SysSound_Init();
     func_02052168(4);

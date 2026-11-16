@@ -10,11 +10,11 @@ typedef struct {
     u16 unk4;
 } UnkPad_0233877c;
 
-extern UnkPlayer_0233877c data_ov000_0236aad8[];
+extern UnkPlayer_0233877c gCamera[];
 extern UnkPad_0233877c gPad;
 
 void func_ov000_0233877c(void) {
-    UnkPlayer_0233877c *p = data_ov000_0236aad8;
+    UnkPlayer_0233877c *p = gCamera;
     u32 f = p[2].flags;
     u32 g;
 

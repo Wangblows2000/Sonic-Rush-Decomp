@@ -40,8 +40,8 @@ typedef struct {
     u8 unk57C;
 } UnkStruct_022f3080;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u8 data_ov000_02363e9c[][8];
 
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, u16 d, s32 e, s32 f, s32 g, s32 h, s32 i);
@@ -66,13 +66,13 @@ void func_ov000_022f3080(UnkStruct_022f3080 *s) {
         return;
     s->unk434.h[1] = 0x80;
     b = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;
     if (b)
         i = 1;
     else
-        i = data_022c4560.unk14;
-    if (data_ov000_02363e9c[i][data_ov000_02369ac0.unk8 - 1] != 0) {
+        i = gGameState.unk14;
+    if (data_ov000_02363e9c[i][gBossStatus.unk8 - 1] != 0) {
         MapObject_Spawn(0xdb, (s->unk400.unk24 >> 4) + 0xa000, 0x30000, 2, 0, 0, 0, 0, 0);
         MapObject_Spawn(0xdb, (s->unk3D0.unk24 >> 4) - 0xa000, 0x30000, 3, 0, 0, 0, 0, 0);
     }

@@ -17,7 +17,7 @@ typedef struct {
 } UnkStruct_022f168c;
 
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_StageObj *gPlayers;
 extern u16 data_ov000_02365e20[][0x18];
 extern s32 data_ov000_02365e60[][3][8];
@@ -26,14 +26,14 @@ extern s16 data_ov000_02365da0[][3][8];
 void func_ov000_022f4ce4(UnkStruct_022f168c *w, s32 a, s32 b, s32 c);
 void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022f784c(void *o, s32 a, s32 b, s32 c);
-void func_ov000_022f14a8(void);
+void BossFPartD8_State_Unk_ov000_022f14a8(void);
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 void func_ov000_022f168c(UnkStruct_022f168c *w) {
@@ -68,5 +68,5 @@ void func_ov000_022f168c(UnkStruct_022f168c *w) {
     else if (y > 0x32800)
         y = 0x32800;
     func_ov000_022f784c(o, x, y, data_ov000_02365da0[GetLevel()][w->unk458][w->unk440]);
-    w->base.unk68 = func_ov000_022f14a8;
+    w->base.unk68 = BossFPartD8_State_Unk_ov000_022f14a8;
 }

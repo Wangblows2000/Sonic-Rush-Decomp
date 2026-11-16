@@ -11,14 +11,14 @@ typedef struct {
     u32 unk8;
 } UnkStruct_022c4680;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4680 gSaveData;
 extern UnkStruct_StageObj *gPlayers;
 
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void Sound_SetPositional(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
 void func_ov000_022fc5b8(UnkStruct_StageObj *w, s32 a, s32 b, s32 c);
-void func_ov000_022fe7e8(UnkStruct_StageObj *w);
+void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_StageObj *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fd230(UnkStruct_StageObj *w) {
     if ((w->spr0.unkE >> 4) == 6) {
@@ -35,7 +35,7 @@ void EnemyPawnGroup_State_Unk_ov000_022fd230(UnkStruct_StageObj *w) {
             w->unk5C &= ~0x10;
             w->unk1F4 |= 1;
             w->unkC = 0x20;
-            if ((gSaveData.unk8 & 1) && data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+            if ((gSaveData.unk8 & 1) && gGameState.unk10 != 2 && gGameState.unk10 != 3)
                 w->unkC += w->unkC >> 1;
         }
     }
@@ -44,6 +44,6 @@ void EnemyPawnGroup_State_Unk_ov000_022fd230(UnkStruct_StageObj *w) {
     w->unkC--;
     if (w->unkC == 0) {
         w->unk1F4 &= ~5;
-        func_ov000_022fe7e8(w);
+        EnemyPawnGroup_Action_Unk_ov000_022fe7e8(w);
     }
 }

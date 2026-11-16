@@ -6,7 +6,7 @@ void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov001_022fb5ec(void *p);
 void func_ov001_022f55e4(void *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 
 void func_ov001_022f56f8(u8 *p) {
     u8 *r = *(u8 **)(p + 0x84);
@@ -21,5 +21,5 @@ void func_ov001_022f56f8(u8 *p) {
     func_ov001_022fb5ec(*(void **)(*(u8 **)(p + 0x1dc) + 0x10));
     func_ov001_022f55e4(p);
     Sound_PlaySeqArc(0, 0, 0xad);
-    func_020366f4(0, 0, 0xd0);
+    Sound_PlayVoice(0, 0, 0xd0);
 }

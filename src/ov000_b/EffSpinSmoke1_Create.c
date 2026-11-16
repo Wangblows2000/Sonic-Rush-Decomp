@@ -6,7 +6,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *gActComArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023685cc[];
 extern u8 data_ov000_0236a9f0[];
 
@@ -26,7 +26,7 @@ void EffSpinSmoke1_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
     StageObj_Load2dBAC(w, data_ov000_023685cc, 8, data_ov000_0236a9f0, gActComArchive);
     StageObj_AllocSpritePalette(w, 0, 0xc);
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->spr1.unk2C |= 0x80008;
     if (type != 1)
         StageObj_SetAnimation(w, 0);

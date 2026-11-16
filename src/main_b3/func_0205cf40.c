@@ -14,12 +14,12 @@ typedef struct {
     void (*fn)(void);
 } UnkObj_0205cf40;
 typedef struct { u8 pad0[0x1c]; u8 unk1C; u8 unk1D; } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void func_0205cf28(void);
 
 void func_0205cf40(UnkWork_0205cf40 *w, UnkObj_0205cf40 *o) {
-    if (data_022c4560.unk1C != 8 || data_022c4560.unk1D != 2) {
+    if (gGameState.unk1C != 8 || gGameState.unk1D != 2) {
         w->unk4B4 = 0x9e000;
         w->unk4B8 = -0x5b000;
         w->unk4BC = 0x1e000;

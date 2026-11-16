@@ -21,11 +21,11 @@ typedef struct {
     u32 unkC8;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 void MapObj73_Destructor(void);
 void MapObj73_OnHit(void);
-void func_ov000_02303e24(UnkStruct_02303e50 *w);
+void MapObj73_Action_Unk_ov000_02303e24(UnkStruct_02303e50 *w);
 void func_ov000_02342780(void);
 
 UnkStruct_02303e50 *MapObj73_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -49,12 +49,12 @@ UnkStruct_02303e50 *MapObj73_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll0.unkA |= 0xc0;
     w->base.coll0.unk1C = MapObj73_OnHit;
     w->base.coll0.unk18 = w;
-    if (data_ov000_0236aad8.unkC8 & 1) {
-        w->unk21C = data_ov000_0236aad8.unk3A;
+    if (gCamera.unkC8 & 1) {
+        w->unk21C = gCamera.unk3A;
         w->unk21E = 1;
     } else {
-        w->unk21C = data_ov000_0236aad8.unk3A;
-        w->unk21D = data_ov000_0236aad8.unk9E;
+        w->unk21C = gCamera.unk3A;
+        w->unk21D = gCamera.unk9E;
         w->unk21E = 2;
     }
     w->base.unk58 |= 0x2100;
@@ -75,7 +75,7 @@ UnkStruct_02303e50 *MapObj73_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     }
     w->unk210 = -p->unk6 << 9;
     w->unk214 = -p->unk7 << 9;
-    func_ov000_02303e24(w);
+    MapObj73_Action_Unk_ov000_02303e24(w);
     func_ov000_02342780();
     return w;
 }

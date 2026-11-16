@@ -16,7 +16,7 @@ extern u8 data_ov000_023661c0[];
 
 void MapObject_Destructor(void);
 void CraneSlide_OnHit(void);
-void func_ov000_02306ad0(UnkStruct_02306ae0 *w);
+void CraneSlide_Action_Unk_ov000_02306ad0(UnkStruct_02306ae0 *w);
 
 UnkStruct_02306ae0 *CraneSlide_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_02306ae0_Tbl tbl = data_ov000_02366894;
@@ -62,6 +62,6 @@ UnkStruct_02306ae0 *CraneSlide_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x100;
     w->base.unk204 = 0;
     w->base.unk1DC = Sound_AllocHandle();
-    func_ov000_02306ad0(w);
+    CraneSlide_Action_Unk_ov000_02306ad0(w);
     return w;
 }

@@ -4,7 +4,7 @@
 s32 func_ov000_02307e84();
 s32 func_ov000_0234237c();
 s32 func_ov000_02307dfc();
-s32 func_ov000_02309188();
+s32 MapObj8D_Action_Unk_ov000_02309188();
 
 void MapObj8D_State_Unk_ov000_02309200(u8 *p0) {
     s32 t0 = func_ov000_02307e84();
@@ -30,5 +30,5 @@ void MapObj8D_State_Unk_ov000_02309200(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0xc) != 0) {
         return;
     }
-    func_ov000_02309188(p0, t3, t4);
+    MapObj8D_Action_Unk_ov000_02309188(p0, t3, t4);
 }

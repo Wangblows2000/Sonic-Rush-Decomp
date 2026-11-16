@@ -4,7 +4,7 @@ s32 ObjShift_SetFromRef();
 s32 Math_LerpFx32();
 void Sound_PlaySeqArcEx(void *a, s32 b, s32 c);
 void Sound_SetPositional(void *a, void *b, void *c);
-void func_ov000_022ffef8(u8 *p0);
+void EnemyFlapperGroup_Action_Unk_ov000_022ffef8(u8 *p0);
 
 extern void *gPlayers[];
 
@@ -45,5 +45,5 @@ void EnemyFlapperGroup_State_Unk_ov000_022fff44(u8 *p0) {
         *(s16 *)((u8 *)p0 + 0x34) -= 1;
         return;
     }
-    func_ov000_022ffef8(p0);
+    EnemyFlapperGroup_Action_Unk_ov000_022ffef8(p0);
 }

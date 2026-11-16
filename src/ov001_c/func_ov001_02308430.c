@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
-extern u8 *data_ov001_0231f5bc;
-u8 *func_ov001_0230c0a4(void);
+extern u8 *gSpecialStageHud;
+u8 *SpecialStage_GetPlayer(void);
 void AnimatorSprite_DrawRotScale(void *o, s32 a, s32 b, s32 c);
 
 void func_ov001_02308430(s32 t) {
-    u8 *g = data_ov001_0231f5bc;
-    s32 v = *(s32 *)(func_ov001_0230c0a4() + 0x148);
+    u8 *g = gSpecialStageHud;
+    s32 v = *(s32 *)(SpecialStage_GetPlayer() + 0x148);
     s32 s = 0x1000;
 
     if (t >= 0 && t <= 0x14)

@@ -49,7 +49,7 @@ typedef struct {
 } UnkStruct_0235bd10_T;
 
 extern UnkStruct_0235bd10_T *gTaskCurrent;
-extern UnkStruct_0235bd10_G data_022c4560;
+extern UnkStruct_0235bd10_G gGameState;
 typedef struct {
     u8 pad[0x2A0];
     u8 coll[0xA];
@@ -65,7 +65,7 @@ void SpritePair_SetOAMPriority(void *a, void *b, s32 c);
 void Model_Animate(void *p);
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
 s32 StageObj_ViewOutCheck(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_ov000_02343228(void *p, s32 a);
+void Player_AddRings(void *p, s32 a);
 void func_ov000_0235b2c4(UnkStruct_0235bd10_P *p);
 void func_ov000_0235b644(UnkStruct_0235bd10_P *p);
 
@@ -84,7 +84,7 @@ void RingManager_Main(void) {
     if (w->count == 0)
         return;
 
-    if (data_022c4560.unk1C == 2) {
+    if (gGameState.unk1C == 2) {
         if (gPlayers[0]->flags330 & 0x40000) {
             SpritePair_SetOAMPriority(w->spr0, w->spr1, ok);
             w->cb10 = func_ov000_0235b2c4;
@@ -101,7 +101,7 @@ void RingManager_Main(void) {
     w->spr0Flags &= ~1;
     w->spr1Flags &= ~1;
     w->mdlFlags &= ~1;
-    if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2) {
+    if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
         Model_Animate(w->mdl);
     } else {
         AnimatorSprite_ProcessAnimation(w->spr0, 0, 0);
@@ -132,7 +132,7 @@ void RingManager_Main(void) {
                     if (p->flags & 0x1000)
                         w->flags &= ~2;
                     p->flags &= ~0x20;
-                    func_ov000_02343228(gPlayers[j], 1);
+                    Player_AddRings(gPlayers[j], 1);
                     w->cb8(w, p);
                 }
                 gPlayers[j]->collFlags = save;

@@ -12,8 +12,8 @@ typedef struct {
 } UnkStruct_0236aad8;
 
 extern void *gActComArchive;
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_0236aad8 gCamera;
 extern u8 data_ov000_023672bc[];
 extern u8 data_ov000_0236a6f8[];
 
@@ -24,7 +24,7 @@ UnkStruct_EffObj *func_ov000_0231fe0c(void) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))
@@ -35,8 +35,8 @@ UnkStruct_EffObj *func_ov000_0231fe0c(void) {
     StageObj_Load2dBAC(w, data_ov000_023672bc, 0xffff, data_ov000_0236a6f8, gActComArchive);
     StageObj_AllocSpritePalette(w, 0, 0xc);
     StageObj_SetAnimation(w, (u16)(Rand() & 3));
-    w->unk10 = data_ov000_0236aad8.unk4 - 0x1800;
-    w->unk14 = data_ov000_0236aad8.unk8 + ((Rand() & 0xff) << 8);
+    w->unk10 = gCamera.unk4 - 0x1800;
+    w->unk14 = gCamera.unk8 + ((Rand() & 0xff) << 8);
     w->unk2E = (Rand() & 0x3ff) + 0x700;
     w->unk30 = (Rand() & 0x3ff) - 0x200;
     StageObj_SetOAMPriority(w, 1);

@@ -20,14 +20,14 @@ typedef struct UnkObj_0205bba4 {
     s16 t;  /* 0xc0 */
 } UnkObj_0205bba4;
 typedef struct { u8 pad0[0x1c]; u8 unk1C; u8 unk1D; } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void func_0205bb7c(UnkWork_0205bba4 *w, UnkObj_0205bba4 *o);
 
 void func_0205bba4(UnkWork_0205bba4 *w, UnkObj_0205bba4 *o) {
     w->unk488 &= ~0x1000;
     w->unk48C |= 0x40;
-    if (data_022c4560.unk1C < 7 && data_022c4560.unk1D < 2) {
+    if (gGameState.unk1C < 7 && gGameState.unk1D < 2) {
         o->unk94 = -0x1c000;
         o->unk98 = 0;
         o->unk9C = 0;

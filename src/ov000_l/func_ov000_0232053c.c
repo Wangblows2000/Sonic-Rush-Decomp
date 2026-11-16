@@ -5,7 +5,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 typedef struct {
     u8 pad0[0x9c];
@@ -18,7 +18,7 @@ void func_ov000_0232053c(UnkStruct_EffObj *w) {
     w->unk10 = ((UnkStruct_EffObj *)w->unk88)->unk10;
     w->unk14 = ((UnkStruct_EffObj *)w->unk88)->unk14;
     if (((UnkStruct_EffObj *)w->unk88)->unkC != 0) {
-        if (data_022c4560.unk20 & 1)
+        if (gGameState.unk20 & 1)
             w->unk5C &= ~0x20;
         else
             w->unk5C |= 0x20;

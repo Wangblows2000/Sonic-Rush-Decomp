@@ -11,14 +11,14 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023671e8[], data_ov000_0236a348[], data_ov000_0236a360[], data_ov000_0236a350[], data_ov000_0236a370[];
 extern u8 data_ov000_023644c4[], data_ov000_023661c0[];
 
 void MapObject_Destructor(void);
 void WallBreak_OnHit(void);
 void PaletteAnim_Create(s32 a, void *b, u32 c, s32 d);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void WallBreak_Action_Idle(UnkStruct_0231b5c8 *w);
 
 UnkStruct_0231b5c8 *WallBreak_Create(s32 a, s32 b, s32 c) {
@@ -47,7 +47,7 @@ UnkStruct_0231b5c8 *WallBreak_Create(s32 a, s32 b, s32 c) {
         StageObj_SetSharedSpriteVram(w, 0x10, data_ov000_0236a370);
         break;
     }
-    if (data_022c4560.unk1C == 3) {
+    if (gGameState.unk1C == 3) {
         PaletteAnim_Create(w->base.spr0.unk44, data_ov000_023644c4, *(u32 *)data_ov000_0236a348, 0);
         w->base.unk54 |= 0x800;
     }
@@ -76,7 +76,7 @@ UnkStruct_0231b5c8 *WallBreak_Create(s32 a, s32 b, s32 c) {
         w->base.unk1D4 = -0x10;
         break;
     }
-    if (func_ov000_02345758(w->base.unk10, w->base.unk14))
+    if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14))
         w->base.unk5 = 0x80;
     w->base.unk58 |= 0x2100;
     WallBreak_Action_Idle(w);

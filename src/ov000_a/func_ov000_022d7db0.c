@@ -73,12 +73,12 @@ typedef struct UnkStruct_022d7db0_b {
     UnkStruct_022d7db0_q *unk214;
 } UnkStruct_022d7db0_b;
 
-extern UnkStruct_022d7db0_b *data_ov000_02369b14;
+extern UnkStruct_022d7db0_b *gBoss3;
 
-void func_ov000_022d7d54(UnkStruct_022d7db0 *s);
+void Boss3PartCC_State_Unk_ov000_022d7d54(UnkStruct_022d7db0 *s);
 
 void func_ov000_022d7db0(UnkStruct_022d7db0 *s) {
-    data_ov000_02369b14->unk214->unk25E = 0;
-    s->func = func_ov000_022d7d54;
+    gBoss3->unk214->unk25E = 0;
+    s->func = Boss3PartCC_State_Unk_ov000_022d7d54;
     s->func(s);
 }

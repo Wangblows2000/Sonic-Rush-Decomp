@@ -24,7 +24,7 @@ typedef struct UnkStruct_022dccc8_7 {
     u16 unk8;
 } UnkStruct_022dccc8_7;
 
-extern UnkStruct_022dccc8_7 data_ov000_02369ac0;
+extern UnkStruct_022dccc8_7 gBossStatus;
 extern s16 data_ov000_02363570[];
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -41,7 +41,7 @@ void func_ov000_022dccc8(UnkStruct_022dccc8 *s) {
         a->unk10D |= 4;
     }
     s->unkBD0 = 1;
-    s->unkBD4 = data_ov000_02363570[data_ov000_02369ac0.unk8 - 1];
+    s->unkBD4 = data_ov000_02363570[gBossStatus.unk8 - 1];
     s->unkBD8 = 0;
     func_ov000_022dbb18(0);
 }

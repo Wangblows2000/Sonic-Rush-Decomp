@@ -34,7 +34,7 @@ void AnimatorSprite_SetAnimation(UnkSpr_022d4af8 *s, u16 id);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022d4af8 *s, s32 a, s32 b);
 void AnimatorSprite_Draw(UnkSpr_022d4af8 *s);
 BOOL TitleScreen_CheckStartPressed(void);
-void func_ov001_022d44e4(UnkWork_022d4af8 *w);
+void TitleScreen_PlayStartSound(UnkWork_022d4af8 *w);
 void TitleScreen_State_StartPressed(void);
 void Task_DestroyAll(void);
 void TitleScreen_StartAttractDemo(void);
@@ -83,7 +83,7 @@ void TitleScreen_State_WaitForStart(void) {
     }
     w->timer++;
     if (done == TRUE) {
-        func_ov001_022d44e4(w);
+        TitleScreen_PlayStartSound(w);
         w->timer = 0;
         data_0208926c.bright = 0;
         data_02087d44.bright = 0;

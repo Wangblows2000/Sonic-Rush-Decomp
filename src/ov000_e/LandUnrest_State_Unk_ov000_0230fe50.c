@@ -29,7 +29,7 @@ struct UnkStruct_0230fe50 {
 };
 
 u8 ObjAngle_MoveToward8(u8 a, u8 b, s32 c);
-void func_ov000_023457c8(UnkStruct_0230fe50_o *o, UnkStruct_0230fe50 *s);
+void Player_ApplySlopeForce(UnkStruct_0230fe50_o *o, UnkStruct_0230fe50 *s);
 
 void LandUnrest_State_Unk_ov000_0230fe50(UnkStruct_0230fe50 *s) {
     u8 a;
@@ -42,7 +42,7 @@ void LandUnrest_State_Unk_ov000_0230fe50(UnkStruct_0230fe50 *s) {
             s->unk30 = 0x100;
             s->unk3 = (s->unk1BC->unk10 - s->unk10) >> 8;
             s->unk1 = ObjAngle_MoveToward8(s->unk1, s->unk3, 2);
-            func_ov000_023457c8(s->unk1BC, s);
+            Player_ApplySlopeForce(s->unk1BC, s);
             if (s->unk1 != 0) {
                 if (s->unk1 > 0x80)
                     s->unk8 = (0x100 - s->unk1) >> 1;

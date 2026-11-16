@@ -7,7 +7,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_Res *data_ov000_0236a6f0[];
 extern u8 data_ov000_023672d8[], data_ov000_0236a740[];
 
@@ -36,12 +36,12 @@ UnkStruct_EffObj *DecSonicNeonPart_Create(UnkStruct_StageObj *arg, u16 idx) {
         StageObj_AllocSpritePalette(w, 0xd, 0x62);
         idx -= 0xd;
         w->unk8 = idx + 0x10;
-        if (!(data_022c4560.unk20 & 1))
+        if (!(gGameState.unk20 & 1))
             StageObj_Draw2D(w, &w->spr0, &w->spr1);
     } else {
         StageObj_AllocSpritePalette(w, 0, 0x61);
         w->unk8 = idx;
-        if (data_022c4560.unk20 & 1)
+        if (gGameState.unk20 & 1)
             StageObj_Draw2D(w, &w->spr0, &w->spr1);
     }
     w->unk10 = arg->unk10;

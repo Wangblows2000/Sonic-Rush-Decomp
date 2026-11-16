@@ -43,12 +43,12 @@ struct UnkStruct_022ed428 {
 
 extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_StageObj *gPlayers;
-extern UnkStruct_022c4560 data_022c4560;
-extern u8 data_02250464[];
+extern UnkStruct_022c4560 gGameState;
+extern u8 gBGMSoundHandle[];
 
 void BossEffect_CreateStrikeBig(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_02347c44(UnkStruct_StageObj *p);
+void Player_Action_Blank(UnkStruct_StageObj *p);
 void Player_SetAnimation(UnkStruct_StageObj *p, s32 a);
 void func_ov000_022ee198(UnkStruct_StageObj *p, s32 a);
 void func_ov000_022e9b70(UnkStruct_StageObj *p, s32 a, s32 b);
@@ -70,7 +70,7 @@ void Boss7_State_Unk_ov000_022ed428(UnkStruct_022ed428 *s) {
     gDisplayMain.unk20.bits.b0 = 1;
     gDisplayMain.unk20.bits.b6 = 2;
     gDisplayMain.unk24.b0 = (u16)(s->unk232 >> 8);
-    func_ov000_02347c44(p);
+    Player_Action_Blank(p);
     Player_SetAnimation(p, 0x42);
     p->unk5C |= 4;
     ((UnkStruct_Mdl *)p->unk124)->unk114 = 0x4000;
@@ -81,7 +81,7 @@ void Boss7_State_Unk_ov000_022ed428(UnkStruct_022ed428 *s) {
     s->unk394 = 0;
     ScreenShake_Start(8);
     BossHelp_Create(0);
-    Sound_PlaySeq(data_02250464, 0x11);
-    data_022c4560.unk18 |= 1;
+    Sound_PlaySeq(gBGMSoundHandle, 0x11);
+    gGameState.unk18 |= 1;
     s->base.unk68 = Boss7_State_Unk_ov000_022ed190;
 }

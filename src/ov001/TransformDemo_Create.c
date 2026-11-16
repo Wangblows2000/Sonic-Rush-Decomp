@@ -2,7 +2,7 @@
 
 typedef struct { u8 pad[0x10]; u8 *work; } UnkStruct_022e05f0;
 extern UnkStruct_022e05f0 *data_022c4db0;
-extern s16 data_022c4dac;
+extern s16 gTransformDemoId;
 extern u8 data_ov001_023161ec[];
 extern u8 data_ov001_023161ed[];
 UnkStruct_022e05f0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
@@ -26,8 +26,8 @@ void TransformDemo_Create(void) {
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, 0xeb4);
-    *(s32 *)(w + 0xbd4) = data_ov001_023161ec[data_022c4dac * 2];
-    *(s32 *)(w + 0x10) = data_ov001_023161ed[data_022c4dac * 2];
+    *(s32 *)(w + 0xbd4) = data_ov001_023161ec[gTransformDemoId * 2];
+    *(s32 *)(w + 0x10) = data_ov001_023161ed[gTransformDemoId * 2];
     *(void (**)(void))w = TransformDemo_State_Init;
     if (!func_0204eb7c()) {
         *(u32 *)(w + 4) |= 0x100;

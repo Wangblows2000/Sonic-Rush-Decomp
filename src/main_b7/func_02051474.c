@@ -18,13 +18,13 @@ typedef struct {
 } UnkTask_02051474;
 
 extern UnkTask_02051474 *data_022c4638;
-extern u16 data_0207ad9c[];
+extern u16 gWirelessSession[];
 extern u32 gWirelessRecvBuffers[];
 
 #pragma thumb on
 u32 func_02051474(void) {
     if (data_022c4638 == NULL) {
-        switch (data_0207ad9c[1]) {
+        switch (gWirelessSession[1]) {
         case 0:
         case 1:
             return gWirelessRecvBuffers[1];

@@ -67,12 +67,12 @@ typedef struct UnkStruct_022cb12c_6 {
     s32 unk4;
 } UnkStruct_022cb12c_6;
 
-extern UnkStruct_022cb12c_6 data_ov000_02369ac0;
+extern UnkStruct_022cb12c_6 gBossStatus;
 extern u32 gRandSeed;
 
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cc224(void);
-void func_ov000_022cb0f4(UnkStruct_022cb12c *s);
+void Boss1_State_Unk_ov000_022cb0f4(UnkStruct_022cb12c *s);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -89,6 +89,6 @@ void func_ov000_022cb12c(UnkStruct_022cb12c *s) {
     p->unk242 &= ~4;
     p->unk26E &= ~4;
     p->unk29A &= ~4;
-    data_ov000_02369ac0.unk4 = 1;
-    s->func = func_ov000_022cb0f4;
+    gBossStatus.unk4 = 1;
+    s->func = Boss1_State_Unk_ov000_022cb0f4;
 }

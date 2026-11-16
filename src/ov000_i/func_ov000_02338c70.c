@@ -20,15 +20,15 @@ typedef struct {
     s32 unk14;
 } UnkObj_02338c70;
 
-extern UnkPlayer_02338c70 data_ov000_0236aad8[];
+extern UnkPlayer_02338c70 gCamera[];
 extern UnkObj_02338c70 *gPlayers[];
 
 BOOL func_ov000_02338c70(u32 *in, s32 idx) {
-    UnkPlayer_02338c70 *p = &data_ov000_0236aad8[idx];
+    UnkPlayer_02338c70 *p = &gCamera[idx];
     s32 lim;
     u32 f;
     lim = gPlayers[p->unk3A]->unk14;
-    f = data_ov000_0236aad8[2].flags & 0x20000;
+    f = gCamera[2].flags & 0x20000;
 
     if ((!f && (*in & 2)) || (f && (*in & 4))) {
         if (p->unk8 <= p->unk50) {

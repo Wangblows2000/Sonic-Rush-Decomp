@@ -9,7 +9,7 @@ typedef struct UnkWork_02059ffc {
 extern s32 data_0207c600[];
 
 void func_02059bec(UnkWork_02059ffc *w);
-void func_02050078(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7);
+void MsgBox_Create(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7);
 void func_02059fd8(UnkWork_02059ffc *w);
 void func_02059f00(UnkWork_02059ffc *w);
 void func_02059d78(UnkWork_02059ffc *w);
@@ -22,7 +22,7 @@ void func_02059ffc(UnkWork_02059ffc *w) {
     id = data_0207c600[w->unk14];
     if (w->unk14 == 3)
         id = 0x1a;
-    func_02050078(id, 3, 5, 0, 1, 1, 0, 0x100010);
+    MsgBox_Create(id, 3, 5, 0, 1, 1, 0, 0x100010);
     switch (w->unk14) {
     case 0:
         w->fn = func_02059fd8;

@@ -5,8 +5,8 @@
 
 extern u8 gTaskCurrent[];
 s32 SysSound_PlaySE();
-s32 func_0205004c();
-s32 func_02050018();
+s32 MsgBox_RequestClose();
+s32 MsgBox_IsClosed();
 s32 SysSound_Release();
 s32 Task_Destroy();
 s32 func_02059b5c();
@@ -23,11 +23,11 @@ void func_ov001_022cf21c(void) {
     }
     s32 t1 = *(u32 *)t0;
     if (t1 == 0xf0) {
-        func_0205004c(t1);
+        MsgBox_RequestClose(t1);
     }
     s32 t2 = (*(u32 *)t0 + 0x1);
     *(u32 *)t0 = t2;
-    s32 t3 = func_02050018(t2);
+    s32 t3 = MsgBox_IsClosed(t2);
     if (t3 != 0) {
         *(volatile u32 *)0x4000000 = ((*(volatile u32 *)0x4000000 & -7937) | 0x1000);
         s32 t4 = ((*(volatile u32 *)0x4001000 & -7937) | 0x1000);

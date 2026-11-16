@@ -18,7 +18,7 @@ void func_02059bdc(s32 a);
 void func_02059bcc(s32 a);
 void func_02059b2c(void);
 BOOL func_0205a4ec(s32 a);
-void SceneChange_Unk_02054e30(void);
+void SceneChange_ToPostStaffRoll(void);
 
 #pragma thumb on
 void func_ov001_022d2db8(void) {
@@ -40,7 +40,7 @@ void func_ov001_022d2db8(void) {
         break;
     }
     if (func_0205a4ec(0)) {
-        SceneChange_Unk_02054e30();
+        SceneChange_ToPostStaffRoll();
     }
 }
 #pragma thumb reset

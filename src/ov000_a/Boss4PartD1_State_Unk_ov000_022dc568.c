@@ -35,7 +35,7 @@ typedef struct UnkStruct_022dc568_7 {
 } UnkStruct_022dc568_7;
 
 extern UnkTask_022dc568 *gTaskCurrent;
-extern UnkStruct_022dc568_7 data_ov000_02369ac0;
+extern UnkStruct_022dc568_7 gBossStatus;
 extern s16 data_0206e470[];
 
 void func_ov000_022db6c8(s32 *p);
@@ -45,7 +45,7 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void Boss4PartD1_State_Unk_ov000_022dc568(void) {
     UnkStruct_022dc568 *s = gTaskCurrent->unk10;
     u16 ang;
-    if (data_ov000_02369ac0.unk4 == 0x1a) {
+    if (gBossStatus.unk4 == 0x1a) {
         s->unk54 |= 8;
         s->unk54 |= 2;
         return;

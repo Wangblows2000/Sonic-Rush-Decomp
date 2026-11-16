@@ -52,7 +52,7 @@ extern UnkStruct_02315e84_B *gDisplayTable[];
 
 s16 ObjShift_SetFromRef(s16 v, s32 a, s32 b, s32 c, s32 d, s32 e);
 void StageObj_SetAnimation(void *w, s32 a);
-void func_ov000_0235020c(void);
+void Player_State_GmkSpecialEnter(void);
 
 void func_ov000_02315e84(UnkStruct_02315e84 *w) {
     UnkStruct_02315e84_P *p;
@@ -94,7 +94,7 @@ void func_ov000_02315e84(UnkStruct_02315e84 *w) {
     }
     if (w->unk8 == 0)
         return;
-    if (p->unk68 == func_ov000_0235020c) {
+    if (p->unk68 == Player_State_GmkSpecialEnter) {
         if (w->unkC == 0) {
             for (i = 0; i < 2; i++) {
                 s = &gDisplayTable[i]->unk10;

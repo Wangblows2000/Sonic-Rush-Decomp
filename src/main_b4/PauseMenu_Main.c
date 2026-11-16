@@ -37,7 +37,7 @@ typedef struct {
 
 extern UnkTask_020556a4 *gTaskCurrent;
 extern UnkPad_020556a4 gPad;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void Sound_PlaySeqArcEx(s32 a, void *b, void *c);
 void func_020551b0(UnkWork_020556a4 *w);
@@ -81,7 +81,7 @@ void PauseMenu_Main(void) {
             w->flags |= 1;
             break;
         case 1:
-            if (data_022c4560.unk10 == 2)
+            if (gGameState.unk10 == 2)
                 BrightnessFade_Create(4, 0x100);
             else
                 BrightnessFade_Create(5, 0x100);

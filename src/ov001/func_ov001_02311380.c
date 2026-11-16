@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 BOOL func_ov001_02312138(void *p);
-void func_ov001_023122d8(void *p, s32 v);
+void SpecialStagePlayer_ChangeState(void *p, s32 v);
 
 void func_ov001_02311380(u8 *p) {
     if (*(s32 *)(p + 0x15c) < 2) {
@@ -15,6 +15,6 @@ void func_ov001_02311380(u8 *p) {
         }
     }
     if (func_ov001_02312138(p)) {
-        func_ov001_023122d8(p, 5);
+        SpecialStagePlayer_ChangeState(p, 5);
     }
 }

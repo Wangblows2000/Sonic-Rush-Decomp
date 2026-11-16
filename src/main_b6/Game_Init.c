@@ -15,8 +15,8 @@ void GX_DispOn(void);
 BOOL func_0204ed94(void);
 BOOL func_0204ed68(void);
 s32 func_0205a37c(void (*fn)(void));
-void SceneChange_Unk_02054e4c(void);
-void SceneChange_Unk_02054e68(void);
+void SceneChange_ToSegaLogo(void);
+void SceneChange_ToTitleScreen(void);
 
 #define REG_DISPCNT (*(vu32 *)0x04000000)
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
@@ -39,10 +39,10 @@ void Game_Init(void) {
         if (!func_0204ed68())
             return;
     }
-    if (!func_0205a37c(SceneChange_Unk_02054e4c))
+    if (!func_0205a37c(SceneChange_ToSegaLogo))
         return;
     if ((data_02087cc0 & 0x80000000) == 0)
-        SceneChange_Unk_02054e4c();
+        SceneChange_ToSegaLogo();
     else
-        SceneChange_Unk_02054e68();
+        SceneChange_ToTitleScreen();
 }

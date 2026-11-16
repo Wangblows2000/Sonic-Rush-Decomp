@@ -11,10 +11,10 @@ typedef struct {
     s16 unk23A;
 } UnkStruct_022fe84c;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
-void func_ov000_022fe7e8(UnkStruct_022fe84c *w);
+void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fe84c *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fe84c(UnkStruct_022fe84c *w) {
     if (w->base.unkC != 0) {
@@ -46,9 +46,9 @@ void EnemyPawnGroup_State_Unk_ov000_022fe84c(UnkStruct_022fe84c *w) {
         return;
     }
     w->base.unkC = 200;
-    if (!(data_022c4560.unk18 & 0x20)) {
+    if (!(gGameState.unk18 & 0x20)) {
         w->base.spr1.unk2C |= 0x80008;
         w->base.spr1.unk2C |= 8;
     }
-    func_ov000_022fe7e8(w);
+    EnemyPawnGroup_Action_Unk_ov000_022fe7e8(w);
 }

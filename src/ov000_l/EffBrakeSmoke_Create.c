@@ -23,7 +23,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *gActComArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02368554[], data_ov000_0236aa30[];
 extern s16 data_0206e470[];
 
@@ -51,7 +51,7 @@ UnkWork_02333694 *EffBrakeSmoke_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s3
     StageObj_AllocSpritePalette(w, 0, 0xc);
     StageObj_SetOAMOrder(w, 9);
     StageObj_SetOAMPriority(w, 1);
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->unk108 |= 0x80008;
     if (arg->unk5C & 1)
         w->unk5C |= 1;

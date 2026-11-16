@@ -10,7 +10,7 @@ typedef struct {
     s32 unkBD0;
 } UnkStruct_022dec18;
 
-extern UnkStruct_022dec18 *data_ov000_02369b2c;
+extern UnkStruct_022dec18 *gBoss4;
 
 void func_ov000_022dd068(void);
 void func_ov000_022dce70(void);
@@ -18,7 +18,7 @@ void Model_Animate(void *cam);
 void Model_Draw(void *cam);
 
 void Boss4_Draw_Unk_ov000_022dec18(void) {
-    UnkStruct_022dec18 *o = data_ov000_02369b2c;
+    UnkStruct_022dec18 *o = gBoss4;
     void *cam;
 
     if (o->unk5C & 0x20)

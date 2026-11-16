@@ -25,7 +25,7 @@ void func_ov001_022da304(UnkWork_022dcdbc *w);
 void func_02051f20(void);
 BOOL func_ov001_022da4d4(void);
 void func_ov001_022da450(UnkWork_022dcdbc *w);
-void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov001_022dcd24(void);
 void func_ov001_022da064(UnkWork_022dcdbc *w, s32 a);
 void func_ov001_022dcc10(void);
@@ -65,7 +65,7 @@ void func_ov001_022dcdbc(void) {
         w->timer = 0;
         w->unk4 = 0;
         func_ov001_022da450(w);
-        func_02050078(8, 3, 1, 1, 2, 0, 0xe, 0x200010);
+        MsgBox_Create(8, 3, 1, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = func_ov001_022dcd24;
         return;
     }

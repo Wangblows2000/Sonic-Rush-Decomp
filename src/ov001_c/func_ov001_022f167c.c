@@ -44,7 +44,7 @@ extern s16 data_0206e470[];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-UnkStruct_022f167c *func_ov001_02300c94(void);
+UnkStruct_022f167c *ExtraBoss_GetPlayer(void);
 u16 FX_Atan2(s32 y, s32 x);
 s32 FX_DivS32(s32 n, s32 d);
 void func_ov001_022fa94c(s32 p0, s32 p1, s32 p2, s32 p3);
@@ -59,7 +59,7 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 }
 
 void func_ov001_022f167c(UnkStruct_022f167c *p) {
-    UnkStruct_022f167c *t = func_ov001_02300c94();
+    UnkStruct_022f167c *t = ExtraBoss_GetPlayer();
     UnkStruct_022f167c_q *q = p->unk1DC;
     UnkStruct_022f167c *o2 = q->unk18;
     UnkStruct_022f167c_a *a = p->unk84;

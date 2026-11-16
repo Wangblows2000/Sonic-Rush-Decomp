@@ -13,7 +13,7 @@ typedef struct {
     u32 flags;
 } UnkStruct_02340a4c;
 
-extern UnkStruct_02340a4c data_ov000_0236aad8;
+extern UnkStruct_02340a4c gCamera;
 extern UnkStruct_02340a4c data_ov000_0236ab3c;
 
 UnkStruct_02340a4c *func_ov000_0233b62c(void);
@@ -23,7 +23,7 @@ void func_ov000_02340a4c(void) {
     UnkStruct_02340a4c *a;
     UnkStruct_02340a4c *b;
 
-    if (data_ov000_0236aad8.flags & 1) {
+    if (gCamera.flags & 1) {
         a = func_ov000_0233b62c();
         b = func_ov000_0233b610();
         if (a->unk34 & 1) {
@@ -35,7 +35,7 @@ void func_ov000_02340a4c(void) {
         b->y = 0x14000;
         return;
     }
-    a = &data_ov000_0236aad8;
+    a = &gCamera;
     if (!(a->unk34 & 1)) {
         a->x += (a->unk4 - a->unkC) / 60;
         a->y = 0x3000;

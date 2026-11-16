@@ -19,8 +19,8 @@ typedef struct {
 
 extern UnkTask_022dbdb0 *gTaskCurrent;
 
-void func_02040d14(UnkAnim_022dbdb0 *a);
-BOOL func_02040cf4(UnkAnim_022dbdb0 *a);
+void KeyframeAnim_Update(UnkAnim_022dbdb0 *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022dbdb0 *a);
 void Task_Destroy(UnkTask_022dbdb0 *t);
 void func_ov001_022d9e50(UnkWork_022dbdb0 *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022dbdb0 *w, s32 x, s32 y);
@@ -30,13 +30,13 @@ void func_ov001_022dbdb0(void) {
     UnkWork_022dbdb0 *w = gTaskCurrent->work;
     BOOL done;
 
-    func_02040d14(&w->anims[0]);
-    func_02040d14(&w->anims[1]);
+    KeyframeAnim_Update(&w->anims[0]);
+    KeyframeAnim_Update(&w->anims[1]);
     done = TRUE;
-    if (!func_02040cf4(&w->anims[0])) {
+    if (!KeyframeAnim_IsFinished(&w->anims[0])) {
         done = FALSE;
     }
-    if (!func_02040cf4(&w->anims[1])) {
+    if (!KeyframeAnim_IsFinished(&w->anims[1])) {
         done = FALSE;
     }
     if (done) {

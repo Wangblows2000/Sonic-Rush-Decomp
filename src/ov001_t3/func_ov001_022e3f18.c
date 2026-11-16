@@ -23,9 +23,9 @@ typedef struct {
     UnkPath_022e3f18 paths[4];
 } UnkStruct_022e3f18;
 
-void func_02040ef0(UnkAnim_022e3f18 *a, s32 b, s32 c);
-void func_02040ec0(UnkAnim_022e3f18 *a, s32 id);
-void func_02040d14(UnkAnim_022e3f18 *a);
+void KeyframeAnim_Init(UnkAnim_022e3f18 *a, s32 b, s32 c);
+void KeyframeAnim_SetAnim(UnkAnim_022e3f18 *a, s32 id);
+void KeyframeAnim_Update(UnkAnim_022e3f18 *a);
 void func_ov001_022e1e98(s32 n, void *out, s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 x3, s32 y3);
 void func_ov001_022e1fb8(s32 n, void *out, s32 x0, s32 y0, s32 x1, s32 y1, s32 x3, s32 y3);
 
@@ -42,16 +42,16 @@ void func_ov001_022e3f18(UnkStruct_022e3f18 *p, s32 res, s32 i0, s32 a1, s32 a2,
     s32 y3;
     s32 i;
 
-    func_02040ef0(&anim, res, 0);
+    KeyframeAnim_Init(&anim, res, 0);
     x0 = p->pts[i0].x << 12;
     y0 = p->pts[i0].y << 12;
-    func_02040ec0(&anim, a1);
-    func_02040d14(&anim);
+    KeyframeAnim_SetAnim(&anim, a1);
+    KeyframeAnim_Update(&anim);
     x1 = anim.x << 12;
     y1 = anim.y << 12;
     if (a2 >= 0) {
-        func_02040ec0(&anim, a2);
-        func_02040d14(&anim);
+        KeyframeAnim_SetAnim(&anim, a2);
+        KeyframeAnim_Update(&anim);
         x2 = anim.x << 12;
         y2 = anim.y << 12;
     }

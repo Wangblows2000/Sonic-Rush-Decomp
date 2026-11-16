@@ -11,7 +11,7 @@ extern u8 data_ov000_02366bbc[], data_ov000_0236a02c[], data_ov000_02366bdc[];
 void JetCatapult_Destructor(void);
 void JetCatapult_OnHit(void);
 void ObjData_Load(void *a, void *b, void *c);
-void func_ov000_0230e8b0(UnkStruct_0230e8e4 *w);
+void JetCatapult_Action_Unk_ov000_0230e8b0(UnkStruct_0230e8e4 *w);
 void JetCatapult_CreatePart_ov000_0230e354(UnkStruct_0230e8e4 *w, s32 x, s32 y);
 
 UnkStruct_0230e8e4 *JetCatapult_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -45,7 +45,7 @@ UnkStruct_0230e8e4 *JetCatapult_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk1C4 |= 1;
     w->base.unk5C ^= 1;
     w->base.unk58 |= 0x4080;
-    func_ov000_0230e8b0(w);
+    JetCatapult_Action_Unk_ov000_0230e8b0(w);
     w->base.unk1DC = Sound_AllocHandle();
     JetCatapult_CreatePart_ov000_0230e354(w, w->base.unk10 + (w->base.unk1E0->unk6 << 8), w->base.unk14 + (w->base.unk1E0->unk7 << 8));
     return w;

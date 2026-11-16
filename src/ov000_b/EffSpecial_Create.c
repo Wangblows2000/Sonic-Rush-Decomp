@@ -21,7 +21,7 @@ extern u8 data_ov000_02366f30[], data_ov000_0236a24c[];
 
 void EffSpecial_Destructor(void);
 void func_ov000_02315e84(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 
 void EffSpecial_Create(UnkStruct_02316170_Arg *arg) {
     UnkStruct_Task *task;
@@ -37,7 +37,7 @@ void EffSpecial_Create(UnkStruct_02316170_Arg *arg) {
     StageObj_Load2dBAC(w, data_ov000_02366f30, 0xffff, data_ov000_0236a24c, gActComArchive);
     StageObj_AllocSpritePalette(w, 0, 0x4a);
     StageObj_SetOAMOrder(w, 0xa);
-    if (func_ov000_02345758(arg->unk10, arg->unk14))
+    if (Stage_IsGravityFlipped(arg->unk10, arg->unk14))
         w->unk5C |= 2;
     w->unk88 = arg;
     if (arg->unk3E8 != NULL) {

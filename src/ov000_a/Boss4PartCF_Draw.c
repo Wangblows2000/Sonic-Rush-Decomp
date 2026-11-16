@@ -30,7 +30,7 @@ typedef struct UnkTask_022dcf38 {
 } UnkTask_022dcf38;
 
 extern UnkTask_022dcf38 *gTaskCurrent;
-extern UnkStruct_022dcf38 *data_ov000_02369b2c;
+extern UnkStruct_022dcf38 *gBoss4;
 extern s16 data_0206e470[];
 
 void MTX_RotZ33_(void *m, s32 s, s32 c);
@@ -40,7 +40,7 @@ void Model_Draw(void *a);
 
 void Boss4PartCF_Draw(void) {
     u8 mtx[0x24];
-    UnkStruct_022dcf38 *w = data_ov000_02369b2c;
+    UnkStruct_022dcf38 *w = gBoss4;
     UnkStruct_022dcf38_a *a = gTaskCurrent->unk10->unk20C;
     u16 ang;
     a->unk24 = w->unkB28;

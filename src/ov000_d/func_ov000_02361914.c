@@ -1,7 +1,7 @@
 #include <ov000_d/menuo.h>
 
 BOOL func_ov000_0235fa34(UnkStruct_MenuO *w);
-BOOL func_02040cf4(UnkStruct_MenuOPos *p);
+BOOL KeyframeAnim_IsFinished(UnkStruct_MenuOPos *p);
 void func_ov000_02361bf0(void);
 
 #pragma thumb on
@@ -13,7 +13,7 @@ void func_ov000_02361914(void) {
     if (func_ov000_0235fa34(w)) {
         w->unk18 = 1;
     }
-    if (func_02040cf4(&w->pos[0])) {
+    if (KeyframeAnim_IsFinished(&w->pos[0])) {
         w->unk0 = 0;
         gTaskCurrent->unk8 = func_ov000_02361bf0;
     }

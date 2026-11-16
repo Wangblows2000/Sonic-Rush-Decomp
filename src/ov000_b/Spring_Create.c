@@ -7,7 +7,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02366f78[], data_ov000_0236a254[];
 
 void MapObject_Destructor(void);
@@ -27,7 +27,7 @@ UnkStruct_StageObj *Spring_Create(s32 a, s32 b, s32 c) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_StageObj));
     MapObject_Init(w, a, b, c);
     StageObj_Load2dBAC(w, data_ov000_02366f78, 0xffff, data_ov000_0236a254, data_ov000_02369ba0);
-    if (data_022c4560.unk1C == 3 || (data_022c4560.unk1C == 8 && data_022c4560.unk1D == 0))
+    if (gGameState.unk1C == 3 || (gGameState.unk1C == 8 && gGameState.unk1D == 0))
         StageObj_AllocSpritePalette(w, 0, 0x5b);
     else
         StageObj_AllocSpritePalette(w, 0, 2);

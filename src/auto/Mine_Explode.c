@@ -6,7 +6,7 @@ s32 func_ov000_0232e2f0();
 s32 EffZakoDebris_Create();
 s32 ScreenShake_Start();
 s32 ScreenFlash_Create();
-s32 func_ov000_02343498();
+s32 AttackHitbox_Create();
 
 void Mine_Explode(u8 *p0) {
     if ((*(u32 *)((u8 *)p0 + 0x54) & 2) != 0) {
@@ -20,7 +20,7 @@ void Mine_Explode(u8 *p0) {
     EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 7);
     ScreenShake_Start(4);
     ScreenFlash_Create(0);
-    s32 t0 = func_ov000_02343498(p0, -48, -48, 0x30, 0x30, 8);
+    s32 t0 = AttackHitbox_Create(p0, -48, -48, 0x30, 0x30, 8);
     if (t0 != 0) {
         *(u8 *)((u8 *)t0 + 0x188) = (*(u8 *)((u8 *)t0 + 0x188) | 0x20);
     }

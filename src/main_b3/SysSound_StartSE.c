@@ -3,7 +3,7 @@
 typedef struct { u8 pad0[0x14]; void *snd[5]; } UnkWork_02051a74;
 extern UnkWork_02051a74 *gSysSound;
 typedef struct { s32 unk0; } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
@@ -14,7 +14,7 @@ void SysSound_StartSE(s32 n) {
     s32 a;
     s32 b;
 
-    if (data_022c4560.unk0 == 0)
+    if (gGameState.unk0 == 0)
         a = 2;
     else
         a = 3;

@@ -1,13 +1,13 @@
 #pragma opt_propagation off
 #include <nitro/types.h>
 
-extern u32 data_ov000_02369ac0;
+extern u32 gBossStatus;
 extern u16 data_02074990[];
 extern u16 data_ov000_02364dbc[];
 void func_02022270(s32 a, u16 b);
 
 void func_ov000_0233dfdc(u16 *cnt) {
-    if (!(data_ov000_02369ac0 & 1))
+    if (!(gBossStatus & 1))
         return;
     (*cnt)++;
     if ((*cnt & ~0x8000) <= 6)

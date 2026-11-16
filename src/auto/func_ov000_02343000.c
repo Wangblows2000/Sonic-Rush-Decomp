@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0234307c();
+s32 Player_AddTension();
 
 void func_ov000_02343000(s32 p0, s32 p1) {
     s32 t0 = *(s16 *)((u8 *)p0 + 0x3b8);
@@ -19,7 +19,7 @@ void func_ov000_02343000(s32 p0, s32 p1) {
         }
         v2 = v3;
     }
-    func_ov000_0234307c(p0, ((s32)(v2 << 0x10) >> 0x10), ((s32)(s32)p1 >> 1));
+    Player_AddTension(p0, ((s32)(v2 << 0x10) >> 0x10), ((s32)(s32)p1 >> 1));
     *(u16 *)((u8 *)p0 + 0x3b8) = 0x60;
     *(u16 *)((u8 *)p0 + 0x3ba) = (*(s16 *)((u8 *)p0 + 0x3ba) + 0x1);
 }

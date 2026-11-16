@@ -18,10 +18,10 @@ extern UnkTask_02050430 *data_022c4638;
 extern UnkTask_02050430 *data_022c4634;
 extern UnkTask_02050430 *gTaskCurrent;
 extern u32 gSystemFlags;
-extern u16 data_0207ad9c;
-void func_0204331c(s32 a);
-void func_02042d34(s32 a);
-void func_02042ab8(void);
+extern u16 gWirelessSession;
+void WirelessMgr_StopDataSharing(s32 a);
+void WirelessMgr_StopWfs(s32 a);
+void WirelessMgr_StopDownloadPlay(void);
 void Task_Destroy(UnkTask_02050430 *t);
 
 #pragma thumb on
@@ -67,21 +67,21 @@ void func_02050430(void) {
     }
     if (a == 1) {
         gSystemFlags &= ~0x200;
-        switch (data_0207ad9c) {
+        switch (gWirelessSession) {
         case 0:
-            func_0204331c(0);
+            WirelessMgr_StopDataSharing(0);
             break;
         case 1:
-            func_02042d34(0);
+            WirelessMgr_StopWfs(0);
             break;
         case 2:
-            func_02042ab8();
+            WirelessMgr_StopDownloadPlay();
             break;
         default:
             return;
         }
         a = 0;
-        data_0207ad9c = 4;
+        gWirelessSession = 4;
     }
     if (a == 0 && b <= 1) {
         Task_Destroy(gTaskCurrent);

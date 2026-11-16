@@ -32,7 +32,7 @@ typedef struct {
     s32 unk120;
 } UnkStruct_0233a010;
 
-extern UnkStruct_0233a010 data_ov000_0236aad8;
+extern UnkStruct_0233a010 gCamera;
 extern UnkPlayer_0233a010 data_ov000_0236ab3c;
 
 #define PLAYER2 ((UnkPlayer_0233a010 *)(u32)&data_ov000_0236ab3c)
@@ -41,32 +41,32 @@ void func_ov000_0233a010(void) {
     u32 i;
     UnkPlayer_0233a010 *p;
 
-    data_ov000_0236aad8.flags &= ~1;
-    data_ov000_0236aad8.flags |= 4;
-    data_ov000_0236aad8.p[0].unk3A = 0;
-    data_ov000_0236aad8.p[0].unk3C = 0x8000;
-    data_ov000_0236aad8.p[0].unk40 = 0x6000;
-    data_ov000_0236aad8.p[1].unk3A = 0;
-    data_ov000_0236aad8.p[1].unk3C = 0x8000;
-    data_ov000_0236aad8.p[1].unk40 = 0x5800;
+    gCamera.flags &= ~1;
+    gCamera.flags |= 4;
+    gCamera.p[0].unk3A = 0;
+    gCamera.p[0].unk3C = 0x8000;
+    gCamera.p[0].unk40 = 0x6000;
+    gCamera.p[1].unk3A = 0;
+    gCamera.p[1].unk3C = 0x8000;
+    gCamera.p[1].unk40 = 0x5800;
     *(vu16 *)0x4000304 |= 0x8000;
-    data_ov000_0236aad8.unkD4 = 0;
-    data_ov000_0236aad8.flags &= ~2;
-    data_ov000_0236aad8.unkD8 = 0;
-    p = data_ov000_0236aad8.p;
+    gCamera.unkD4 = 0;
+    gCamera.flags &= ~2;
+    gCamera.unkD8 = 0;
+    p = gCamera.p;
     for (i = 0; i < 2; i++, p++) {
         p->flags |= 0xF;
         p->flags |= 0x30000;
-        p->unk4C = data_ov000_0236aad8.unk114;
-        p->unk50 = data_ov000_0236aad8.unk118;
-        p->unk54 = data_ov000_0236aad8.unk11C;
-        p->unk58 = data_ov000_0236aad8.unk120;
+        p->unk4C = gCamera.unk114;
+        p->unk50 = gCamera.unk118;
+        p->unk54 = gCamera.unk11C;
+        p->unk58 = gCamera.unk120;
     }
-    data_ov000_0236aad8.p[0].unk3A = 0;
-    data_ov000_0236aad8.p[0].unk3C = 0x8000;
-    data_ov000_0236aad8.p[0].unk40 = 0x6000;
-    data_ov000_0236aad8.p[0].unk1E = 0x100;
-    data_ov000_0236aad8.p[0].unk20 = 0x100;
+    gCamera.p[0].unk3A = 0;
+    gCamera.p[0].unk3C = 0x8000;
+    gCamera.p[0].unk40 = 0x6000;
+    gCamera.p[0].unk1E = 0x100;
+    gCamera.p[0].unk20 = 0x100;
     PLAYER2->unk3A = 0;
     PLAYER2->unk3C = 0x8000;
     PLAYER2->unk40 = 0x5800;

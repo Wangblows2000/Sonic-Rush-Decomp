@@ -31,8 +31,8 @@ typedef struct {
     UnkCfg_022cb770 *cfg;
 } UnkStruct_022cb770;
 
-void func_02040ef0(void *p, s32 a, s32 b);
-void func_02040e48(void *p);
+void KeyframeAnim_Init(void *p, s32 a, s32 b);
+void KeyframeAnim_SetToLastFrame(void *p);
 
 #pragma thumb on
 void func_ov001_022cb770(UnkStruct_022cb770 *p) {
@@ -41,18 +41,18 @@ void func_ov001_022cb770(UnkStruct_022cb770 *p) {
     s32 *tbl = cfg->tbl;
     s32 i;
 
-    func_02040ef0(&p->animA, res, tbl[14]);
-    func_02040ef0(&p->animB, res, tbl[12]);
-    func_02040e48(&p->animB);
-    func_02040ef0(&p->animC, res, tbl[16]);
+    KeyframeAnim_Init(&p->animA, res, tbl[14]);
+    KeyframeAnim_Init(&p->animB, res, tbl[12]);
+    KeyframeAnim_SetToLastFrame(&p->animB);
+    KeyframeAnim_Init(&p->animC, res, tbl[16]);
     for (i = 0; i < 6; i++) {
         if (p->items[i].type == 7) continue;
         if (i == p->cur) {
-            func_02040ef0(&p->items[i].anim, res, tbl[4]);
-            func_02040e48(&p->items[i].anim);
+            KeyframeAnim_Init(&p->items[i].anim, res, tbl[4]);
+            KeyframeAnim_SetToLastFrame(&p->items[i].anim);
         } else {
-            func_02040ef0(&p->items[i].anim, res, tbl[5]);
-            func_02040e48(&p->items[i].anim);
+            KeyframeAnim_Init(&p->items[i].anim, res, tbl[5]);
+            KeyframeAnim_SetToLastFrame(&p->items[i].anim);
         }
     }
     cfg->unk0 = 4;

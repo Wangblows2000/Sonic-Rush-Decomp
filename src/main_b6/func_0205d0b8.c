@@ -22,7 +22,7 @@ typedef struct {
     u8 zone;
 } UnkState_0205d0b8;
 
-extern UnkState_0205d0b8 data_022c4560;
+extern UnkState_0205d0b8 gGameState;
 extern u8 data_02076b80[];
 
 void AnimatorSprite_Draw(UnkSpr_0205d0b8 *s);
@@ -31,7 +31,7 @@ void func_0205d0b8(u8 *w, UnkText_0205d0b8 *t) {
     s32 x = 0;
     u32 i;
 
-    if (data_022c4560.zone >= 7)
+    if (gGameState.zone >= 7)
         return;
     for (i = 0; i < t->count; i++) {
         u8 c = t->str[i];

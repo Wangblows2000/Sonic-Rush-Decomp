@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern void MI_CpuFill8(void);
-extern u32 data_022c4560;
+extern u32 gGameState;
 extern u32 gSaveData;
 extern u32 data_ov001_02315ebc;
 extern void Background_Draw(void);
@@ -16,7 +16,7 @@ extern void Ending_Main(void);
 extern void func_ov001_022c7d2c(void);
 extern void func_ov001_022c7d5c(void);
 extern void Ending_LoadAssets(void);
-extern void func_ov001_022c8140(void);
+extern void Ending_InitDisplay(void);
 extern void Ending_Destructor(void);
 
 asm void Ending_Create(void)
@@ -89,7 +89,7 @@ _e8:
     bl Ending_SetSubState
 _f4:
     mov r0, r4
-    bl func_ov001_022c8140
+    bl Ending_InitDisplay
     mov r0, r4
     bl Ending_LoadAssets
     mov r0, r4
@@ -131,7 +131,7 @@ _f4:
     dcd 0x00001173
     dcd Ending_Main
     dcd Ending_Destructor
-    dcd data_022c4560
+    dcd gGameState
     dcd gSaveData
     dcd Ending_SubState_SonicStart
     dcd Ending_SubState_BlazeStart

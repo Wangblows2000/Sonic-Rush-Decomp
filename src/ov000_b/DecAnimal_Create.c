@@ -43,7 +43,7 @@ extern char data_ov000_023672a0[];
 void DecAnimal_Destructor(void);
 void Decoration_InitFromMap(void *w, void *p, s32 a, s32 b);
 void sprintf(char *buf, const char *fmt, ...);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void func_ov000_0231df98(UnkStruct_0231e324 *w);
 
 UnkStruct_0231e324 *DecAnimal_Create(void *p, s32 a, s32 b) {
@@ -74,7 +74,7 @@ UnkStruct_0231e324 *DecAnimal_Create(void *p, s32 a, s32 b) {
     w->unk58 |= 0x80;
     w->unk54 |= 2;
     w->unk5C |= 0x100;
-    if (func_ov000_02345758(w->unk10, w->unk14))
+    if (Stage_IsGravityFlipped(w->unk10, w->unk14))
         w->unk5 = 0x80;
     w->unk190 = gPlayers;
     switch (w->unk184->unk2) {

@@ -5,10 +5,10 @@ typedef struct UnkStruct_022f87bc {
     void *unk218;
 } UnkStruct_022f87bc;
 
-extern UnkStruct_022f87bc *data_ov000_02369b84;
+extern UnkStruct_022f87bc *gBossF;
 
 void func_ov000_022ef7b0(void *p);
 
 void func_ov000_022f87bc(void) {
-    func_ov000_022ef7b0(data_ov000_02369b84->unk218);
+    func_ov000_022ef7b0(gBossF->unk218);
 }

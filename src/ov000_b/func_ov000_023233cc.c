@@ -5,7 +5,7 @@ typedef struct {
     u8 unk1C;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void MapObject_Destructor(void);
 UnkStruct_EffObj *func_ov000_02320944(u32 a);
@@ -28,7 +28,7 @@ UnkStruct_StageObj *func_ov000_023233cc(UnkStruct_ObjParam *p, s32 x, s32 y) {
     w->unk1E0->unk0 = 0xff;
     w->unk58 |= 0x2100;
     w->unk54 |= 0x10;
-    if (data_022c4560.unk1C == 5) {
+    if (gGameState.unk1C == 5) {
         for (i = 0; i < 0x10; i++)
             func_ov000_02320944(i);
     }

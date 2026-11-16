@@ -50,7 +50,7 @@ typedef struct UnkStruct_022d59fc_p {
     u16 unk222;
 } UnkStruct_022d59fc_p;
 
-extern UnkStruct_022d59fc_p *data_ov000_02369b14;
+extern UnkStruct_022d59fc_p *gBoss3;
 extern s32 data_ov000_02363330[][5];
 
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
@@ -58,7 +58,7 @@ void func_ov000_022d59e0(UnkStruct_022d59fc *s);
 void func_ov000_022d58a0(UnkStruct_022d59fc *s);
 
 void func_ov000_022d59fc(UnkStruct_022d59fc *s) {
-    UnkStruct_022d59fc_p *p = data_ov000_02369b14;
+    UnkStruct_022d59fc_p *p = gBoss3;
     s->unk214.y = data_ov000_02363330[p->unk222][p->unk214->unk25E];
     func_ov000_022c5e80(0xf42f8, 0x5fe435, s->unk10 << 4, NULL, NULL, &s->unk220);
     s->unk22E = 0;

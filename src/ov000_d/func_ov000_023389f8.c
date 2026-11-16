@@ -22,7 +22,7 @@ typedef struct {
     void (*unkC)(void);
 } UnkStruct_023389f8;
 
-extern UnkStruct_023389f8_Cam data_ov000_0236aad8;
+extern UnkStruct_023389f8_Cam gCamera;
 extern UnkStruct_023389f8_Ply *gPlayers[];
 
 void func_ov000_02338800(UnkStruct_023389f8 *w);
@@ -30,7 +30,7 @@ void func_ov000_0233887c(void);
 void func_ov000_0233894c(void);
 
 void func_ov000_023389f8(UnkStruct_023389f8 *w) {
-    UnkStruct_023389f8_Cam *c = &data_ov000_0236aad8;
+    UnkStruct_023389f8_Cam *c = &gCamera;
     UnkStruct_023389f8_Ply *p;
     u16 fl;
 
@@ -58,11 +58,11 @@ void func_ov000_023389f8(UnkStruct_023389f8 *w) {
     }
     w->unk6 = 0;
     if (w->unk0 & 2) {
-        data_ov000_0236aad8.unkC8 |= 0x10000;
+        gCamera.unkC8 |= 0x10000;
         w->unk8 = 0;
         w->unkC = func_ov000_0233894c;
     } else {
-        data_ov000_0236aad8.unkC8 |= 0x10000;
+        gCamera.unkC8 |= 0x10000;
         w->unk8 = 0;
         w->unkC = func_ov000_0233887c;
     }

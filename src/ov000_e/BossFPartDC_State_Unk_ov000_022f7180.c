@@ -38,7 +38,7 @@ typedef struct {
 
 extern volatile UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Bits5 data_02089250;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u16 data_ov000_02365c54[];
 extern UnkStruct_Player *gPlayers;
 
@@ -65,12 +65,12 @@ void BossFPartDC_State_Unk_ov000_022f7180(UnkStruct_022f7180 *w) {
     func_ov000_022f7804(w);
     if (w->unk21A-- == 0) {
         b = TRUE;
-        if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+        if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
             b = FALSE;
         if (b)
             i = 1;
         else
-            i = data_022c4560.unk14;
+            i = gGameState.unk14;
         r = Rand();
         w->unk21A = (r & 0xf) + data_ov000_02365c54[i];
         if (gPlayers->unk10 < w->unk220)

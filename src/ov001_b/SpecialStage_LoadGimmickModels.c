@@ -28,7 +28,7 @@ typedef struct UnkStruct_0230fae0 {
 } UnkStruct_0230fae0;
 
 extern void *gMainHeap;
-extern UnkStruct_0230fae0 *data_ov001_0231f658;
+extern UnkStruct_0230fae0 *gSpecialStageGimmickModels;
 extern UnkStruct_0230fae0_o *data_ov001_0231f670[];
 extern UnkStruct_0230fae0_a *data_ov001_0231f65c[];
 extern u8 data_ov001_0231ee78[];
@@ -79,9 +79,9 @@ void SpecialStage_LoadGimmickModels(void) {
         DC_StoreRange(blk, 0xf00);
         blk += 0x20;
     }
-    data_ov001_0231f658 = (UnkStruct_0230fae0 *)blk;
+    gSpecialStageGimmickModels = (UnkStruct_0230fae0 *)blk;
     MI_CpuFill8(blk, 0, 0xec8);
-    g = data_ov001_0231f658;
+    g = gSpecialStageGimmickModels;
     MI_CpuFill8(g, 0, 0xec8);
     for (i = 0; i < 9; i++)
         data_ov001_0231f670[i] = &g->objs[i];

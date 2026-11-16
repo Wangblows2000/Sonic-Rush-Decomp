@@ -77,7 +77,7 @@ void Model_Animate(void *p);
 void Model_Draw(void *p);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
 void NNS_G3dGetCurrentMtx(void *mtx, void *p);
-UnkStruct_022f2f14_c *func_ov001_02300c94(void);
+UnkStruct_022f2f14_c *ExtraBoss_GetPlayer(void);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -122,7 +122,7 @@ void func_ov001_022f2f14(UnkStruct_022f2f14 *w) {
     c->unk30 = s->unk198;
     if (s->unk16 == 0)
         return;
-    t = func_ov001_02300c94();
+    t = ExtraBoss_GetPlayer();
     t->unk18 = s->unk190 - data_ov001_0231f524;
     t->unk1C = -(s->unk194 + data_ov001_0231f520);
 }

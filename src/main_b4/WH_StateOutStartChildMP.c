@@ -6,12 +6,12 @@ typedef struct {
     u16 unk4;
 } UnkRes_0203ee8c;
 
-extern s32 data_022c196c;
+extern s32 sConnectMode;
 extern s32 sSysState;
-extern u16 data_022c1948;
-extern u16 data_022c1950;
+extern u16 gWHMaxChildCount;
+extern u16 gWHPacketSize;
 extern u8 data_022c2440[];
-extern void (*data_022c197c)(const char *fmt, ...);
+extern void (*sTraceFunc)(const char *fmt, ...);
 extern char data_020787d4[];
 extern char data_020787fc[];
 extern char data_02078830[];
@@ -40,29 +40,29 @@ void WH_StateOutStartChildMP(UnkRes_0203ee8c *r) {
     }
     switch (r->unk4) {
     case 10:
-        if (data_022c196c == 3) {
+        if (sConnectMode == 3) {
             if (sSysState == 6)
                 return;
             if (sSysState == 4) {
                 if (WH_StateInStartChildKeyShare())
                     return;
-                if (data_022c197c != NULL)
-                    data_022c197c(data_020787d4);
+                if (sTraceFunc != NULL)
+                    sTraceFunc(data_020787d4);
                 WH_Finalize();
                 return;
             }
-        } else if (data_022c196c == 5) {
-            ret = func_02012a58(data_022c2440, 0xd, (1 << (data_022c1948 + 1)) - 1, data_022c1950, 1);
+        } else if (sConnectMode == 5) {
+            ret = func_02012a58(data_022c2440, 0xd, (1 << (gWHMaxChildCount + 1)) - 1, gWHPacketSize, 1);
             if (ret != 0) {
                 WH_SetError(ret);
                 WH_Finalize();
                 return;
             }
-            if (data_022c197c != NULL)
-                data_022c197c(data_020787fc);
+            if (sTraceFunc != NULL)
+                sTraceFunc(data_020787fc);
             WH_ChangeSysState(5);
             return;
-        } else if (data_022c196c == 7) {
+        } else if (sConnectMode == 7) {
             WH_CallbackForWFS(r);
         }
         WH_ChangeSysState(4);
@@ -72,8 +72,8 @@ void WH_StateOutStartChildMP(UnkRes_0203ee8c *r) {
         break;
     case 11:
     default:
-        if (data_022c197c != NULL)
-            data_022c197c(data_02078830, r->unk4);
+        if (sTraceFunc != NULL)
+            sTraceFunc(data_02078830, r->unk4);
         break;
     }
 }

@@ -3,7 +3,7 @@
 extern void *gActComArchive;
 extern u8 data_ov000_023669b8[], data_ov000_02369f84[];
 
-void MapObj13Part_State_Unk_ov000_0230bc38(void);
+void MapObj13Part_State_DestroyOnAnimEnd(void);
 
 UnkStruct_EffObj *MapObj13_CreatePart_ov000_0230bc50(UnkStruct_StageObj *par) {
     UnkStruct_Task *task;
@@ -26,6 +26,6 @@ UnkStruct_EffObj *MapObj13_CreatePart_ov000_0230bc50(UnkStruct_StageObj *par) {
     w->unk14 = par->unk14;
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    w->unk68 = MapObj13Part_State_Unk_ov000_0230bc38;
+    w->unk68 = MapObj13Part_State_DestroyOnAnimEnd;
     return w;
 }

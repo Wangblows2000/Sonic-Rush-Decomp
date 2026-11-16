@@ -14,14 +14,14 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_Task *data_ov000_0236a660[];
 extern UnkStruct_0236a6f0 data_ov000_0236a6f0[];
 extern UnkStruct_0236a790 data_ov000_0236a790[];
 
 void func_ov000_02322d14(void);
 void func_ov000_02322d44(void);
-void func_020332a8(UnkStruct_Spr *s, s16 a, s32 b, s32 c);
+void AnimatorSprite_AnimateManual(UnkStruct_Spr *s, s16 a, s32 b, s32 c);
 
 void *func_ov000_02322d7c(void *a, s32 b, s32 c, s32 d, u16 e) {
     UnkStruct_Task *task;
@@ -50,7 +50,7 @@ void *func_ov000_02322d7c(void *a, s32 b, s32 c, s32 d, u16 e) {
     w->unk68 = func_ov000_02322d44;
     w->spr0.unk2C |= 0x10;
     w->spr1.unk2C |= 0x10;
-    func_020332a8(&w->spr0, (data_022c4560.unk20 & 0xf) << 4, 0, 0);
-    func_020332a8(&w->spr1, (data_022c4560.unk20 & 0xf) << 4, 0, 0);
+    AnimatorSprite_AnimateManual(&w->spr0, (gGameState.unk20 & 0xf) << 4, 0, 0);
+    AnimatorSprite_AnimateManual(&w->spr1, (gGameState.unk20 & 0xf) << 4, 0, 0);
     return w;
 }

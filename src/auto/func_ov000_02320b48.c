@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 ObjSpd_DownSet();
-extern u8 data_ov000_0236aad8[];
+extern u8 gCamera[];
 s32 func_ov000_02320f40();
 
 void func_ov000_02320b48(u8 *p0) {
@@ -15,7 +15,7 @@ void func_ov000_02320b48(u8 *p0) {
             *(u16 *)((u8 *)p0 + 0x30) = t2;
         }
     }
-    s32 t3 = ((*(u16 *)((u8 *)data_ov000_0236aad8 + 0x62) + 0x8) << 8);
+    s32 t3 = ((*(u16 *)((u8 *)gCamera + 0x62) + 0x8) << 8);
     s32 t4 = *(u32 *)((u8 *)p0 + 0x14);
     if (t4 < t3) {
         *(u32 *)((u8 *)p0 + 0x14) = t3;

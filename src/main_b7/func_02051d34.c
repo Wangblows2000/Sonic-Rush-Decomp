@@ -10,7 +10,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern UnkState_02051d34 *gSysSound;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern void *gSoundHeap;
 void func_02052000(void);
 void NNS_SndArcLoadGroup(s32 id, void *p);
@@ -41,7 +41,7 @@ void func_02051d34(s32 x) {
         id = 0x15;
         break;
     case 2:
-        if (data_022c4560.unk0 == 0)
+        if (gGameState.unk0 == 0)
             id = 2;
         else
             id = 3;

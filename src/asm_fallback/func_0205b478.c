@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_ov000_0236aad8;
+extern u32 gCamera;
 extern u32 data_ov000_0236ab3c;
 extern u32 gPlayers;
 
@@ -63,7 +63,7 @@ _94:
     ldmia sp!, {lr}
     bx lr
     dcd 0x0000ffff
-    dcd data_ov000_0236aad8
+    dcd gCamera
     dcd gPlayers
     dcd data_ov000_0236ab3c
 }

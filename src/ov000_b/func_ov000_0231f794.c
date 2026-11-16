@@ -47,7 +47,7 @@ typedef struct {
     s16 unk8E;
 } UnkStruct_0236a48c;
 
-extern UnkStruct_0231f794_Ctx *data_ov000_02369b78;
+extern UnkStruct_0231f794_Ctx *gBoss7;
 extern UnkStruct_0231f794_Obj2 *gPlayers;
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 
@@ -64,7 +64,7 @@ void func_ov000_0231f794(void) {
     s32 t;
 
     a = &gPlayers->unk134;
-    ctx = data_ov000_02369b78;
+    ctx = gBoss7;
     b = &ctx->unk214->unk20C;
     p = &data_ov000_0236a48c;
 

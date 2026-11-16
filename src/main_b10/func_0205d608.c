@@ -93,7 +93,7 @@ typedef struct {
     VecFx32_0205d608 camTarget;
 } NNSG3dGlb_0205d608;
 
-extern UnkStage_0205d608 data_022c4560;
+extern UnkStage_0205d608 gGameState;
 extern UnkTaskB_0205d608 *gTaskCurrent;
 extern UnkCam_0205d608 *data_022c4d98;
 extern s16 data_0206e470[];
@@ -108,7 +108,7 @@ void MTX_RotY33_(MtxFx33_0205d608 *m, s32 s, s32 c);
 void MTX_RotX33_(MtxFx33_0205d608 *m, s32 s, s32 c);
 void MTX_RotZ33_(MtxFx33_0205d608 *m, s32 s, s32 c);
 void MTX_Concat33(MtxFx33_0205d608 *a, MtxFx33_0205d608 *b, MtxFx33_0205d608 *ab);
-BOOL func_ov000_02345758(s32 a, s32 b);
+BOOL Stage_IsGravityFlipped(s32 a, s32 b);
 s32 func_0200225c(s32 a, s32 b);
 void VEC_Add(VecFx32_0205d608 *a, VecFx32_0205d608 *b, VecFx32_0205d608 *ab);
 void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, MtxFx44_0205d608 *m);
@@ -154,7 +154,7 @@ void func_0205d608(void) {
     int ang;
 
     saved = NNS_G3dGlb.projMtx;
-    if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
+    if (gGameState.zone != 8 || gGameState.act != 2) {
         obj = gTaskCurrent->obj;
         mdl = *(UnkMdl_0205d608 **)((u8 *)obj + 0x124);
     } else {
@@ -193,7 +193,7 @@ void func_0205d608(void) {
     MTX_Concat33(&mdl->rot, &m, &mdl->rot);
     MTX_RotZ33_(&m, SIN_0205d608((u16)(-obj->rotZ << 8)), COS_0205d608((u16)(-obj->rotZ << 8)));
     MTX_Concat33(&mdl->rot, &m, &mdl->rot);
-    if (!(data_022c4560.zone == 8 && data_022c4560.act == 2) && func_ov000_02345758(obj->unk10, obj->unk14)) {
+    if (!(gGameState.zone == 8 && gGameState.act == 2) && Stage_IsGravityFlipped(obj->unk10, obj->unk14)) {
         s16 s = data_02070470[0];
         s16 c = data_02070470[1];
         MTX_RotY33_(&m, s, c);
@@ -201,7 +201,7 @@ void func_0205d608(void) {
         MTX_RotX33_(&m, s, c);
         MTX_Concat33(&mdl->rot, &m, &mdl->rot);
     }
-    if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
+    if (gGameState.zone != 8 || gGameState.act != 2) {
         if (data_022c4d98->flags & 0x400) {
             UnkPersp_0205d608 *p = data_022c4ef4;
             s32 nearZ = p->nearZ;

@@ -74,7 +74,7 @@ typedef struct UnkStruct_022ce614_7 {
 } UnkStruct_022ce614_7;
 
 extern UnkStruct_022ce614_2 *gTaskCurrent;
-extern UnkStruct_022ce614_7 data_ov000_02369ac0;
+extern UnkStruct_022ce614_7 gBossStatus;
 extern s16 data_0206e470[];
 
 void Model_Animate(void *p);
@@ -149,7 +149,7 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
     a = &s->unkD0C;
     Model_Animate(a);
     Model_Draw(a);
-    switch (data_ov000_02369ac0.unk4) {
+    switch (gBossStatus.unk4) {
     case 9:
     case 10:
         {
@@ -182,7 +182,7 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
         NNS_G3dGeBufferOP_N(0x14, &v, 1);
     }
     NNS_G3dGetCurrentMtx(s->unk13CC, s->unk13FC);
-    switch (data_ov000_02369ac0.unk4) {
+    switch (gBossStatus.unk4) {
     case 7:
     case 8:
         func_ov000_022ce474(s);
@@ -195,7 +195,7 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
         break;
     }
     if ((s->unk20C & 2) || (s->unk1304 != 0 && s->unk1304 != 0x8000)) {
-        if (data_ov000_02369ac0.unk4 != 10)
+        if (gBossStatus.unk4 != 10)
             return;
     }
     func_ov000_022c5e1c(0x1152f0, 0x6cd988, s->unk13F0, s->unk13F8, &out);

@@ -3,9 +3,9 @@
 void Touch_Disable(void *p);
 void func_ov001_022eca98(void *p);
 void func_ov001_022ed960(void *p);
-void func_ov001_022ed924(void *p);
-void func_ov001_022ed8b0(void *p);
-void func_ov001_022ec41c(void);
+void Records_ReleaseSprites(void *p);
+void Records_ReleaseAssets(void *p);
+void Records_ResetDisplay(void);
 
 #pragma thumb on
 void Records_Destructor(u8 *p) {
@@ -13,8 +13,8 @@ void Records_Destructor(u8 *p) {
     Touch_Disable(p);
     func_ov001_022eca98(q);
     func_ov001_022ed960(q);
-    func_ov001_022ed924(q);
-    func_ov001_022ed8b0(q);
-    func_ov001_022ec41c();
+    Records_ReleaseSprites(q);
+    Records_ReleaseAssets(q);
+    Records_ResetDisplay();
 }
 #pragma thumb reset

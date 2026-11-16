@@ -13,7 +13,7 @@ typedef struct {
     u8 unk216;
 } UnkStruct_023024b0;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s16 data_0206e470[];
 
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
@@ -21,7 +21,7 @@ extern s16 data_0206e470[];
 u32 func_ov000_02302164(UnkStruct_023024b0 *w);
 
 static inline u16 FrameRand(void) {
-    return (u16)(((data_022c4560.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16);
+    return (u16)(((gGameState.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16);
 }
 
 void Bubble_State_Unk_ov000_023024b0(UnkStruct_023024b0 *w) {

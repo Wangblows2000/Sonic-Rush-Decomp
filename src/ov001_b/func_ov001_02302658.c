@@ -36,7 +36,7 @@ typedef struct UnkStruct_02302658_q {
 extern u32 gRandSeed;
 
 UnkStruct_02302658_q *ExtraBoss_GetWork(void);
-UnkStruct_02302658_o *func_ov001_02300c94(void);
+UnkStruct_02302658_o *ExtraBoss_GetPlayer(void);
 s32 FX_ModS32(s32 n, s32 d);
 s32 func_0200225c(s32 n, s32 d);
 
@@ -65,7 +65,7 @@ void func_ov001_02302658(void) {
     s32 sy;
 
     q = ExtraBoss_GetWork();
-    o = func_ov001_02300c94();
+    o = ExtraBoss_GetPlayer();
     d = o->unk1DC;
     if (d->unk0 & 1) {
         if (o->unk18 < q->unk54 + 0x10000)

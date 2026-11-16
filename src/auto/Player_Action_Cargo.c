@@ -21,7 +21,7 @@ typedef int code();
 
 int Player_State_Cargo();
 int Player_ResetGimmickState();
-int func_ov000_0234a064();
+int Player_Action_LandOnGround();
 int Player_SetAnimation();
 int Sound_PlaySeqArcEx();
 
@@ -31,7 +31,7 @@ void Player_Action_Cargo(int param_1,undefined4 param_2,int param_3,int param_4)
   undefined4 uVar1;
   
   Player_ResetGimmickState();
-  func_ov000_0234a064(param_1,0);
+  Player_Action_LandOnGround(param_1,0);
   *(undefined4 *)(param_1 + 1000) = param_2;
   Player_SetAnimation(param_1,0x30);
   uVar1 = ((int)Player_State_Cargo);

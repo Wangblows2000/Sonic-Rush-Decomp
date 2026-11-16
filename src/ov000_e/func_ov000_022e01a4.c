@@ -68,7 +68,7 @@ typedef struct {
     u16 unkD5E;
 } UnkStruct_022e01a4;
 
-void func_ov000_023385e4(void);
+void BossHelp_Destroy(void);
 
 void func_ov000_022e01a4(UnkStruct_022e01a4 *s) {
     UnkStruct_Cam *cam = &data_ov000_0236a48c;
@@ -89,5 +89,5 @@ void func_ov000_022e01a4(UnkStruct_022e01a4 *s) {
         gPlayers->unk42E = 0x20;
     }
     cam->unk92 = 0x100;
-    func_ov000_023385e4();
+    BossHelp_Destroy();
 }

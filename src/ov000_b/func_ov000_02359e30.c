@@ -20,7 +20,7 @@ typedef struct {
 void func_ov000_02359d5c(UnkStruct_Spr *s, void *res, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02359dc8(UnkStruct_Spr *s, void *res, s32 a, s32 b, s32 c, s32 d);
 void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
-void func_02040ef0(UnkStruct_02359e30_Obj *o, void *res, s32 a);
+void KeyframeAnim_Init(UnkStruct_02359e30_Obj *o, void *res, s32 a);
 
 #pragma thumb on
 
@@ -57,7 +57,7 @@ void func_ov000_02359e30(UnkStruct_02359e30 *w) {
     for (i = 0; i < 19; i++)
         w->unkB1C[i] = -1;
     for (i = 0; i < 9; i++)
-        func_02040ef0(&w->unkB68[i], w->unkD2C, 0);
+        KeyframeAnim_Init(&w->unkB68[i], w->unkD2C, 0);
 }
 
 #pragma thumb reset

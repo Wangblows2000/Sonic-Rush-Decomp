@@ -6,7 +6,7 @@ typedef struct {
     u8 unk1D;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 s32 func_ov000_0235fbcc(UnkStruct_MenuO *w);
 void func_ov000_02360ee0(UnkStruct_MenuO *w, s32 a, s32 b);
@@ -15,7 +15,7 @@ BOOL func_ov000_0235faf8(UnkStruct_MenuO *w);
 void func_ov000_0235f850(s32 x, s32 y, s32 a, s32 b);
 void func_ov000_02361520(void);
 BOOL func_ov000_0235fba0(UnkStruct_MenuO *w);
-void func_0205004c(void);
+void MsgBox_RequestClose(void);
 void func_ov000_02361744(void);
 
 #pragma thumb on
@@ -34,7 +34,7 @@ void func_ov000_02361804(void) {
         func_ov000_02360ee0(w, q, n % 2);
         func_ov000_02360f18(w, q);
         if (q != w->unk10 / 2) {
-            func_02040ec0(&w->pos[0], 6);
+            KeyframeAnim_SetAnim(&w->pos[0], 6);
         }
     }
     if (func_ov000_0235faf8(w)) {
@@ -45,9 +45,9 @@ void func_ov000_02361804(void) {
     }
     if (func_ov000_0235fba0(w)) {
         w->unk0 = 0;
-        data_022c4560.unk1C = w->unkC / 2;
-        data_022c4560.unk1D = w->unkC % 2;
-        func_0205004c();
+        gGameState.unk1C = w->unkC / 2;
+        gGameState.unk1D = w->unkC % 2;
+        MsgBox_RequestClose();
         gTaskCurrent->unk8 = func_ov000_02361744;
     }
 }

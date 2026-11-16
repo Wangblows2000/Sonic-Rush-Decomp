@@ -60,7 +60,7 @@ struct UnkStruct_022c93bc {
     s32 unk33C;
 };
 
-extern UnkStruct_022c93bc_2 *data_ov000_02369acc;
+extern UnkStruct_022c93bc_2 *gBoss1;
 
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cc06c(void *p, s32 a, s32 b);
@@ -90,10 +90,10 @@ typedef struct UnkStruct_022c93bc_cam {
 extern UnkStruct_022c93bc_cam data_ov000_0236a444;
 
 BOOL func_ov000_022cc6d4(void);
-void func_ov000_022c9294(UnkStruct_022c93bc *s);
+void Boss1Neck_State_Unk_ov000_022c9294(UnkStruct_022c93bc *s);
 
 void func_ov000_022c93bc(UnkStruct_022c93bc *s) {
-    UnkStruct_022c93bc_3 *p = data_ov000_02369acc->unk214;
+    UnkStruct_022c93bc_3 *p = gBoss1->unk214;
     if (!func_ov000_022cc6d4())
         s->unk2E = 0;
     func_ov000_022cc00c(s->unk228, s->unk220, 0x14, 0x1000, 0);
@@ -102,6 +102,6 @@ void func_ov000_022c93bc(UnkStruct_022c93bc *s) {
     data_ov000_0236a444.unk94 = 0x180000;
     data_ov000_0236a444.unk68 -= 0x50000;
     s->unk20C = 0;
-    s->func = func_ov000_022c9294;
+    s->func = Boss1Neck_State_Unk_ov000_022c9294;
     s->func(s);
 }

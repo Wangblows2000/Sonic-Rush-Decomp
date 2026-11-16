@@ -60,12 +60,12 @@ struct UnkStruct_022d7778 {
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-void func_ov000_022d7754(UnkStruct_022d7778 *s);
+void Boss3PartCC_State_Unk_ov000_022d7754(UnkStruct_022d7778 *s);
 
 void func_ov000_022d7778(UnkStruct_022d7778 *s) {
     Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0x10, 0);
     s->unk2C4.unk10C |= 4;
     s->unk2C4.unk114 = 0x1000;
     s->unk258 = 0;
-    s->func = func_ov000_022d7754;
+    s->func = Boss3PartCC_State_Unk_ov000_022d7754;
 }

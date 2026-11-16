@@ -27,10 +27,10 @@ typedef struct {
 } UnkStruct_022f2d50;
 
 extern UnkStruct_Cam data_ov000_0236a48c;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 
 void func_ov000_022f4cbc(UnkStruct_022f2d50 *s);
-void func_ov000_022f2cf4(void);
+void BossFPartD8_State_Unk_ov000_022f2cf4(void);
 
 void func_ov000_022f2d50(UnkStruct_022f2d50 *s) {
     UnkStruct_Cam *cam;
@@ -48,6 +48,6 @@ void func_ov000_022f2d50(UnkStruct_022f2d50 *s) {
     cam->unk78 = 0x1f4000;
     cam->unk84 = -0x28000;
     cam->unk8E = 0xd555;
-    data_ov000_02369ac0.unk4 = 0x32;
-    s->base.unk68 = func_ov000_022f2cf4;
+    gBossStatus.unk4 = 0x32;
+    s->base.unk68 = BossFPartD8_State_Unk_ov000_022f2cf4;
 }

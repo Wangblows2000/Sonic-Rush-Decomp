@@ -20,7 +20,7 @@ typedef struct {
 } UnkStruct_022fea7c;
 
 s16 ObjShift_SetFromRef(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_ov000_022fe7e8(UnkStruct_022fea7c *w);
+void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fea7c *w);
 
 void func_ov000_022fea7c(UnkStruct_022fea7c *w) {
     switch (w->unk8) {
@@ -64,6 +64,6 @@ void func_ov000_022fea7c(UnkStruct_022fea7c *w) {
         w->unk54 &= ~2;
         w->unkC = 200;
         w->unk8 = 0;
-        func_ov000_022fe7e8(w);
+        EnemyPawnGroup_Action_Unk_ov000_022fe7e8(w);
     }
 }

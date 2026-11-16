@@ -13,12 +13,12 @@ typedef struct UnkStruct_02308630 {
     s32 unkAE4;
 } UnkStruct_02308630;
 
-extern UnkStruct_02308630 *data_ov001_0231f5bc;
+extern UnkStruct_02308630 *gSpecialStageHud;
 
 void AnimatorSprite_SetAnimation(UnkStruct_02308630_o *s, u16 index);
 
 void func_ov001_02308630(void) {
-    UnkStruct_02308630 *g = data_ov001_0231f5bc;
+    UnkStruct_02308630 *g = gSpecialStageHud;
     s32 n = g->unkAE4;
 
     AnimatorSprite_SetAnimation(&g->a, n / 100 % 10 + 0x1e);

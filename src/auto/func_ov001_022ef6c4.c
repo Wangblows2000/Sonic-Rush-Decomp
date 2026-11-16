@@ -7,7 +7,7 @@ extern u8 data_ov001_02316840[];
 extern u8 data_ov001_0231f068[];
 s32 Model_SetAnimation();
 extern u8 data_ov001_0231f074[];
-s32 func_ov001_02300c94();
+s32 ExtraBoss_GetPlayer();
 s32 func_ov001_02303abc();
 s32 func_ov001_02303a80();
 
@@ -61,7 +61,7 @@ void func_ov001_022ef6c4(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x1c8) = 0;
     *(u16 *)((u8 *)p0 + 0x1cc) = 0;
     *(u32 *)((u8 *)t2 + 0x318) = 1;
-    s32 t23 = func_ov001_02300c94(((u8 *)p0 + 0x100), 1, (t22 | 0x200), 0);
+    s32 t23 = ExtraBoss_GetPlayer(((u8 *)p0 + 0x100), 1, (t22 | 0x200), 0);
     u32 t24 = *(u32 *)((u8 *)t23 + 0x1dc);
     u32 t25 = *(u32 *)((u8 *)t23 + 0xb8);
     *(u32 *)((u8 *)t23 + 0xb8) = (t25 | 0x200);

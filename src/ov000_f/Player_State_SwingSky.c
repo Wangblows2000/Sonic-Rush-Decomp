@@ -40,7 +40,7 @@ extern s16 data_0206e470[];
 #define IDX_0234e0f8(a) ((s32)((a) & 0xffff) >> 4)
 #define SIN_0234e0f8(a) data_0206e470[(u32)(IDX_0234e0f8(a) << 1)]
 
-void func_ov000_0234a064(UnkStruct_0234e0f8 *w, u8 ang);
+void Player_Action_LandOnGround(UnkStruct_0234e0f8 *w, u8 ang);
 
 void Player_State_SwingSky(UnkStruct_0234e0f8 *w) {
     u8 ang;
@@ -82,6 +82,6 @@ void Player_State_SwingSky(UnkStruct_0234e0f8 *w) {
         w->unk30 -= (s16)ABS((vy * SIN_0234e0f8((u16)(ang << 8))) >> 12);
         return;
     }
-    func_ov000_0234a064(w, 0);
+    Player_Action_LandOnGround(w, 0);
     w->unk334(w);
 }

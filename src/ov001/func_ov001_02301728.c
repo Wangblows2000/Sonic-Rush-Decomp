@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-extern u8 *data_ov001_0231f530;
+extern u8 *gExtraBossPlayerManager;
 extern void *gMainHeap;
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 OS_GetArenaLo(s32 i);
@@ -20,6 +20,6 @@ void func_ov001_02301728(void) {
         blk += 0x20;
     }
     zero = 0;
-    data_ov001_0231f530 = blk;
+    gExtraBossPlayerManager = blk;
     MIi_CpuClear16(zero, blk, 0x174);
 }

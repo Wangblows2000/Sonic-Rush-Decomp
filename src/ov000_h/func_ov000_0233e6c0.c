@@ -8,7 +8,7 @@ typedef struct {
 
 typedef void (*UnkFunc_0233e6c0)(void *w);
 
-extern UnkStruct_0233e6c0_4560 data_022c4560;
+extern UnkStruct_0233e6c0_4560 gGameState;
 extern UnkFunc_0233e6c0 data_ov000_023688c8[][3];
 extern void *data_ov000_0236ac18;
 extern void *gMainHeap;
@@ -23,7 +23,7 @@ void func_ov000_0233e6c0(void) {
     void *p;
     u32 size;
 
-    f = data_ov000_023688c8[data_022c4560.unk1C][data_022c4560.unk1D];
+    f = data_ov000_023688c8[gGameState.unk1C][gGameState.unk1D];
     if (f != NULL) {
         f(data_ov000_0236ac18);
     }

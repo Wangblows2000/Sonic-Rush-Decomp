@@ -22,15 +22,15 @@ typedef int code();
 extern unsigned char gSaveDataBusy[];
 extern unsigned char gSystemFlags[];
 int TitleDemo_Create();
-int func_ov001_022d5114();
+int TitleDemo_InitDisplay();
 int TitleDemo_LoadAssets();
 int func_ov001_022d6bf0();
 int func_ov001_022d6b5c();
 int TitleDemo_LoadArchives();
 int TitleDemo_LoadSound();
 int Touch_Enable();
-int func_ov001_022d6630();
-int func_ov001_022d587c();
+int TitleDemo_Action_Scene1();
+int TitleDemo_PlayMusic();
 
 #pragma thumb on
 
@@ -40,15 +40,15 @@ void TitleDemo_Start(void)
   int iVar1;
   
   iVar1 = TitleDemo_Create();
-  func_ov001_022d5114();
+  TitleDemo_InitDisplay();
   TitleDemo_LoadAssets(iVar1);
   func_ov001_022d6bf0(iVar1);
   func_ov001_022d6b5c(iVar1);
   TitleDemo_LoadArchives(iVar1);
   TitleDemo_LoadSound(iVar1);
   Touch_Enable();
-  func_ov001_022d6630(*(undefined4 *)(iVar1 + 0x48c));
-  func_ov001_022d587c(iVar1);
+  TitleDemo_Action_Scene1(*(undefined4 *)(iVar1 + 0x48c));
+  TitleDemo_PlayMusic(iVar1);
   *((int *)gSaveDataBusy) = 0;
   *((int *)gSystemFlags) = *((int *)gSystemFlags) & 0xffffffef;
   return;

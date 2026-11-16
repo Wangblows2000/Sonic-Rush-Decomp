@@ -1,8 +1,8 @@
 #include <ov000_d/scene.h>
 
-BOOL func_02050018(void);
-BOOL func_0205000c(void);
-void func_02051628(s32 a);
+BOOL MsgBox_IsClosed(void);
+BOOL MsgBox_GetResult(void);
+void Wireless_EnableErrorCallback(s32 a);
 void func_ov000_0235650c(UnkStruct_Scene *w);
 void func_ov000_023597b8(s32 a);
 void func_ov000_023599b0(s32 a);
@@ -44,9 +44,9 @@ void func_ov000_0235878c(void) {
     gDisplaySub[2].x++;
     func_ov000_023580bc(w, TRUE);
     w->unk0++;
-    if (func_02050018()) {
-        if (!func_0205000c()) {
-            func_02051628(0);
+    if (MsgBox_IsClosed()) {
+        if (!MsgBox_GetResult()) {
+            Wireless_EnableErrorCallback(0);
             func_ov000_0235650c(w);
             func_ov000_023597b8(0);
         } else {

@@ -7,12 +7,12 @@ typedef struct UnkStruct_023081d8 {
     u8 c[0x48];
 } UnkStruct_023081d8;
 
-extern UnkStruct_023081d8 *data_ov001_0231f5bc;
+extern UnkStruct_023081d8 *gSpecialStageHud;
 
 void AnimatorSprite_DrawRotScale(void *p, s32 x, s32 y, s32 z);
 
 void func_ov001_023081d8(s32 t) {
-    UnkStruct_023081d8 *g = data_ov001_0231f5bc;
+    UnkStruct_023081d8 *g = gSpecialStageHud;
     s32 sa = 0x1000;
     s32 sb = 0x1000;
     s32 sc = 0x1000;

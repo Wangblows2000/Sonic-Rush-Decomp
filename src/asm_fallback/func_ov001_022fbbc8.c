@@ -3,7 +3,7 @@
 
 extern u32 data_0206e470;
 extern u32 gRandSeed;
-extern u32 data_022c4560;
+extern u32 gGameState;
 extern u32 data_ov001_0231d5d8;
 extern u32 data_ov001_0231f094;
 extern u32 data_ov001_0231f098;
@@ -17,14 +17,14 @@ extern void Sound_PlaySeqArc(void);
 extern void func_ov001_022fbb5c(void);
 extern void func_ov001_022fc934(void);
 extern void ExtraBoss_GetWork(void);
-extern void func_ov001_02300c94(void);
+extern void ExtraBoss_GetPlayer(void);
 
 asm void func_ov001_022fbbc8(void)
 {
     stmdb sp!, {r4, r5, r6, r7, r8, lr}
     sub sp, sp, #8
     mov r4, r0
-    bl func_ov001_02300c94
+    bl ExtraBoss_GetPlayer
     ldr r1, [r4, #0x1d8]
     mov r8, r0
     sub r0, r1, #1
@@ -282,7 +282,7 @@ _37c:
     dcd gRandSeed
     dcd 0x00196225
     dcd 0x3c6ef35f
-    dcd data_022c4560
+    dcd gGameState
     dcd data_ov001_0231d5d8
     dcd 0x0000ffff
     dcd data_0206e470

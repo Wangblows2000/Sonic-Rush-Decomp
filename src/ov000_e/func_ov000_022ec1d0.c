@@ -27,7 +27,7 @@ extern s16 data_ov000_02363b64[];
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void *NNS_G3dGetTex(void *p);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
-void Boss7PartD6_State_Unk_ov000_022ec1b8(void);
+void Boss7PartD6_State_DestroyOnAnimEnd(void);
 
 void func_ov000_022ec1d0(UnkStruct_022ec1d0 *w) {
     UnkStruct_Mdl *m = &w->mdl;
@@ -42,5 +42,5 @@ void func_ov000_022ec1d0(UnkStruct_022ec1d0 *w) {
     } else {
         w->mdl.unk114 = data_ov000_02363b64[w->unk37C];
     }
-    w->base.unk68 = Boss7PartD6_State_Unk_ov000_022ec1b8;
+    w->base.unk68 = Boss7PartD6_State_DestroyOnAnimEnd;
 }

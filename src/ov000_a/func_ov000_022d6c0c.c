@@ -47,18 +47,18 @@ typedef struct UnkStruct_022d6c0c_b {
     UnkStruct_022d6c0c_r *unk218;
 } UnkStruct_022d6c0c_b;
 
-extern UnkStruct_022d6c0c_b *data_ov000_02369b14;
+extern UnkStruct_022d6c0c_b *gBoss3;
 
 void BossEffect_CreateJump(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022d6b9c(UnkStruct_022d6c0c *s);
+void Boss3PartCC_State_Unk_ov000_022d6b9c(UnkStruct_022d6c0c *s);
 
 void func_ov000_022d6c0c(UnkStruct_022d6c0c *s) {
     Model_SetAnimation(&s->unk2C4, 0, s->unk434, 6, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
-    data_ov000_02369b14->unk218->unk20C &= ~0x40;
+    gBoss3->unk218->unk20C &= ~0x40;
     BossEffect_CreateJump(1, s->unk2C4.unk48 >> 4, -s->unk2C4.unk4C >> 4, s->unk2C4.unk50 >> 4);
     Sound_PlaySeqArc(0, 0, 0x8f);
-    s->func = func_ov000_022d6b9c;
+    s->func = Boss3PartCC_State_Unk_ov000_022d6b9c;
 }

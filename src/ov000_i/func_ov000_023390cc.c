@@ -18,11 +18,11 @@ typedef struct {
     s32 y;
 } UnkObj_023390cc;
 
-extern UnkPlayer_023390cc data_ov000_0236aad8[];
+extern UnkPlayer_023390cc gCamera[];
 extern UnkObj_023390cc *gPlayers[];
 
 void func_ov000_023390cc(void *unused, s32 idx) {
-    UnkPlayer_023390cc *p = &data_ov000_0236aad8[idx];
+    UnkPlayer_023390cc *p = &gCamera[idx];
 
     if (p->flags & 0x20000)
         p->unk8 = gPlayers[p->unk3A]->y - p->unk40;

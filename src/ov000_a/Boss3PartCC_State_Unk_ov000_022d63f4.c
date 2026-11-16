@@ -28,7 +28,7 @@ struct UnkStruct_022d63f4 {
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-extern s32 data_022c4560;
+extern s32 gGameState;
 extern s32 data_ov000_02369b18[];
 extern u32 data_ov000_02365488[];
 extern u16 data_ov000_02363148[][6];
@@ -48,9 +48,9 @@ void Boss3PartCC_State_Unk_ov000_022d63f4(UnkStruct_022d63f4 *s) {
         s->unk258++;
         if (!(s->unk258 & 1)) {
             if (s->unk258 & 0x8000)
-                func_ov000_022c5d4c(data_ov000_02369b18[1], data_ov000_02365488, data_ov000_02363148[data_022c4560], data_ov000_023630ac, 6);
+                func_ov000_022c5d4c(data_ov000_02369b18[1], data_ov000_02365488, data_ov000_02363148[gGameState], data_ov000_023630ac, 6);
             else
-                func_ov000_022c5d4c(data_ov000_02369b18[1], data_ov000_02365488, data_ov000_02363160[data_022c4560], data_ov000_023630ac, 6);
+                func_ov000_022c5d4c(data_ov000_02369b18[1], data_ov000_02365488, data_ov000_02363160[gGameState], data_ov000_023630ac, 6);
             s->unk258 &= ~1;
             s->unk258 ^= 0x8000;
         }

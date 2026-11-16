@@ -13,24 +13,24 @@ typedef struct {
     s32 unk14;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u8 data_ov000_02363e20[][4];
 extern u8 data_ov000_02363e00[][4];
 extern u8 data_ov000_02363e40[][4];
 extern u8 data_ov000_02363e08[][4];
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 u8 func_ov000_022f3f8c(void) {
     u8 ret = 0;
-    u16 hp = data_ov000_02369ac0.unk8;
+    u16 hp = gBossStatus.unk8;
 
     if (hp >= 7)
         ret = data_ov000_02363e20[GetLevel()][Rand() & 3];

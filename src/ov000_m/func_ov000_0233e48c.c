@@ -12,7 +12,7 @@ typedef struct {
     u8 pad4[0x64 - 4];
 } UnkPlayer_0233e48c;
 
-extern UnkPlayer_0233e48c data_ov000_0236aad8[];
+extern UnkPlayer_0233e48c gCamera[];
 extern UnkStruct_0233e48c *data_ov000_0236ac18;
 void func_ov000_0233c540(UnkStruct_0233e48c *w, u8 i);
 
@@ -20,7 +20,7 @@ void func_ov000_0233e48c(u32 mask) {
     UnkStruct_0233e48c *w;
     u8 i;
 
-    if (!(data_ov000_0236aad8[2].flags & 0x100000))
+    if (!(gCamera[2].flags & 0x100000))
         return;
     w = data_ov000_0236ac18;
     if (w == NULL)

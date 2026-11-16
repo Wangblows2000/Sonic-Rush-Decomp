@@ -7,7 +7,7 @@ void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 
 extern void *gMainHeap;
-extern u8 *data_ov000_02369ae8[];
+extern u8 *gBossStage2Models[];
 
 static inline void Free_0204a0d0(u8 *p) {
     if ((u8 *)OS_GetArenaLo(0) != p) {
@@ -27,9 +27,9 @@ void BossStage2_FreeModels(void) {
     s32 i;
 
     for (i = 0; i < 11; i++) {
-        if (data_ov000_02369ae8[i] != NULL) {
-            Free_0204a0d0(data_ov000_02369ae8[i]);
-            data_ov000_02369ae8[i] = NULL;
+        if (gBossStage2Models[i] != NULL) {
+            Free_0204a0d0(gBossStage2Models[i]);
+            gBossStage2Models[i] = NULL;
         }
     }
 }

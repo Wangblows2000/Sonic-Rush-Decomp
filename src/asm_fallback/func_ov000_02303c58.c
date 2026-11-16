@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern void _s32_div_f(void);
-extern u32 data_ov000_0236aad8;
+extern u32 gCamera;
 extern u32 gPlayers;
 
 asm void func_ov000_02303c58(void)
@@ -111,5 +111,5 @@ _170:
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
     dcd gPlayers
-    dcd data_ov000_0236aad8
+    dcd gCamera
 }

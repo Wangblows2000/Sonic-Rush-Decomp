@@ -13,15 +13,15 @@ typedef struct {
     s16 unk2CE;
 } UnkStruct_022c67a4;
 
-extern UnkStruct_022c67a4_g *data_ov000_02369acc;
+extern UnkStruct_022c67a4_g *gBoss1;
 
-void func_ov000_022c66a4(UnkStruct_022c67a4 *p);
+void Boss1Hammer_State_Unk_ov000_022c66a4(UnkStruct_022c67a4 *p);
 
 void func_ov000_022c67a4(UnkStruct_022c67a4 *p) {
     p->unk2CC = 0;
-    if (data_ov000_02369acc->unk228 > 0)
+    if (gBoss1->unk228 > 0)
         p->unk2CE = 0x1800;
     else
         p->unk2CE = -0x1800;
-    p->unk68 = func_ov000_022c66a4;
+    p->unk68 = Boss1Hammer_State_Unk_ov000_022c66a4;
 }

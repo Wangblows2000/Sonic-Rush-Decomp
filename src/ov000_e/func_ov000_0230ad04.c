@@ -39,13 +39,13 @@ typedef struct {
     s16 unk3AE;
 } UnkStruct_Player;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4590 data_022c4590;
 extern UnkStruct_Player *gPlayers;
 
 s32 FX_DivS32(s32 a, s32 b);
 void MIi_CpuCopy16(void *a, void *b, s32 c);
-void func_ov000_02347c6c(UnkStruct_Player *p, void *a);
+void Player_Action_ReachGoal(UnkStruct_Player *p, void *a);
 void func_ov000_022fa9e8(void *a, UnkStruct_Player *p, s32 b);
 void func_ov000_023422e4(UnkStruct_Player *p);
 
@@ -65,25 +65,25 @@ void func_ov000_0230ad04(void *a, UnkStruct_Player *p) {
     }
     data_022c4590.unk8 = FX_DivS32(data_022c4590.unk8, ++data_022c4590.unkC);
     data_022c4590.unk10 = p->unk3AE * 10;
-    if (data_022c4560.unk10 == 2) {
-        if (data_022c4590.unk4C != 0 && data_022c4590.unk46 == data_022c4560.unk1C &&
-            data_022c4590.unk47 == data_022c4560.unk1D) {
-            if (data_022c4590.unk4C > data_022c4560.unk20) {
-                data_022c4590.unk4C = data_022c4560.unk20;
-                data_022c4590.unk48 = data_022c4560.unk0;
+    if (gGameState.unk10 == 2) {
+        if (data_022c4590.unk4C != 0 && data_022c4590.unk46 == gGameState.unk1C &&
+            data_022c4590.unk47 == gGameState.unk1D) {
+            if (data_022c4590.unk4C > gGameState.unk20) {
+                data_022c4590.unk4C = gGameState.unk20;
+                data_022c4590.unk48 = gGameState.unk0;
                 MIi_CpuCopy16(data_022c4590.unk54, data_022c4590.unk50, 0x3138);
             }
         } else {
-            data_022c4590.unk46 = data_022c4560.unk1C;
-            data_022c4590.unk47 = data_022c4560.unk1D;
-            data_022c4590.unk4C = data_022c4560.unk20;
-            data_022c4590.unk48 = data_022c4560.unk0;
+            data_022c4590.unk46 = gGameState.unk1C;
+            data_022c4590.unk47 = gGameState.unk1D;
+            data_022c4590.unk4C = gGameState.unk20;
+            data_022c4590.unk48 = gGameState.unk0;
             MIi_CpuCopy16(data_022c4590.unk54, data_022c4590.unk50, 0x3138);
         }
     }
-    data_022c4560.unk18 &= ~1;
-    func_ov000_02347c6c(p, a);
-    if (data_022c4560.unk10 == 1) {
+    gGameState.unk18 &= ~1;
+    Player_Action_ReachGoal(p, a);
+    if (gGameState.unk10 == 1) {
         if (p != gPlayers) {
             data_022c4590.unk40 = 2;
         } else {

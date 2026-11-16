@@ -11,7 +11,7 @@ extern u8 data_ov000_02366b20[], data_ov000_0236a010[];
 void IronBall_Destructor(void);
 void IronBall_OnHit_Unk_ov000_0230ce24(void);
 void IronBall_OnHit_Unk_ov000_0230ce4c(void);
-void func_ov000_0230d260(UnkStruct_0230d2a0 *w);
+void IronBall_Action_Unk_ov000_0230d260(UnkStruct_0230d2a0 *w);
 void IronBall_CreatePart_ov000_0230cd00(UnkStruct_0230d2a0 *w);
 
 UnkStruct_0230d2a0 *IronBall_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -61,7 +61,7 @@ UnkStruct_0230d2a0 *IronBall_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk42 = 0x1e00;
     data_ov000_0236a00c = 0;
     w->base.unk1DC = Sound_AllocHandle();
-    func_ov000_0230d260(w);
+    IronBall_Action_Unk_ov000_0230d260(w);
     IronBall_CreatePart_ov000_0230cd00(w);
     return w;
 }

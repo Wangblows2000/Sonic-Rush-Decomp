@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
 extern s32 sSysState;
-extern void (*data_022c197c)(const char *s, ...);
+extern void (*sTraceFunc)(const char *s, ...);
 extern char data_020786a4[];
 extern char data_020786c0[];
-extern s32 data_022c196c;
+extern s32 sConnectMode;
 
 void WH_ChangeSysState(s32 a);
 void WH_Reset(void);
@@ -16,19 +16,19 @@ BOOL WH_StateInEndParentMP(void);
 
 void WH_Finalize(void) {
     if (sSysState == 1) {
-        if (data_022c197c != NULL)
-            data_022c197c(data_020786a4);
+        if (sTraceFunc != NULL)
+            sTraceFunc(data_020786a4);
         return;
     }
-    if (data_022c197c != NULL)
-        data_022c197c(data_020786c0, sSysState);
+    if (sTraceFunc != NULL)
+        sTraceFunc(data_020786c0, sSysState);
     if (sSysState != 6 && sSysState != 5 && sSysState != 4) {
         WH_ChangeSysState(3);
         WH_Reset();
         return;
     }
     WH_ChangeSysState(3);
-    switch (data_022c196c) {
+    switch (sConnectMode) {
     case 3:
         if (!WH_StateInEndChildKeyShare())
             WH_Reset();

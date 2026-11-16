@@ -3,8 +3,8 @@
 
 s32 ObjShift_SetFromRef();
 s32 Math_LerpFx32();
-s32 func_ov000_023008a0();
-s32 func_ov000_02300808();
+s32 EnemyFlapperGroup_Action_Unk_ov000_023008a0();
+s32 EnemyFlapperGroup_Action_Unk_ov000_02300808();
 
 void EnemyFlapperGroup_State_Unk_ov000_022ffdac(u8 *p0) {
     s32 t0 = (*(u32 *)((u8 *)p0 + 0x1e8) << 8);
@@ -37,9 +37,9 @@ void EnemyFlapperGroup_State_Unk_ov000_022ffdac(u8 *p0) {
     s32 t6 = *(u32 *)((u8 *)p0 + 0x1e0);
     if (*(s8 *)((u8 *)*(u32 *)((u8 *)p0 + 0x1e0) + 0x6) == 0) {
         if (*(u8 *)((u8 *)t6 + 0x8) == 0) {
-            func_ov000_023008a0(p0, t6);
+            EnemyFlapperGroup_Action_Unk_ov000_023008a0(p0, t6);
             return;
         }
     }
-    func_ov000_02300808(p0);
+    EnemyFlapperGroup_Action_Unk_ov000_02300808(p0);
 }

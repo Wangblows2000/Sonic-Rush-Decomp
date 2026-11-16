@@ -40,13 +40,13 @@ struct UnkStruct_022d5bb0 {
 
 void func_ov000_022dad70(s32 a, s32 b);
 void func_ov000_022d5b6c(UnkStruct_022d5bb0 *s);
-void func_ov000_022d5b38(UnkStruct_022d5bb0 *s);
-extern s32 data_022c4560;
+void Boss3PartCD_State_Unk_ov000_022d5b38(UnkStruct_022d5bb0 *s);
+extern s32 gGameState;
 
 void func_ov000_022d5bb0(UnkStruct_022d5bb0 *s) {
-    func_ov000_022dad70(data_022c4560, 0);
+    func_ov000_022dad70(gGameState, 0);
     if (!(s->unk20C & 4))
         s->func = func_ov000_022d5b6c;
     else
-        s->func = func_ov000_022d5b38;
+        s->func = Boss3PartCD_State_Unk_ov000_022d5b38;
 }

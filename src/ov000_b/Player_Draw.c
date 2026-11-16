@@ -53,10 +53,10 @@ typedef struct {
 } UnkStruct_02074960;
 
 extern UnkStruct_022b4574 *gTaskCurrent;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_02074960 data_02074960[][3];
 
-void func_ov000_02348b28(void);
+void Player_State_HomingAttack(void);
 void func_02022270(s32 idx, s32 color);
 void StageObj_Draw3DEx(s32 x, s32 y, s32 z, s32 a, UnkStruct_0234360c *s, void *b);
 
@@ -71,7 +71,7 @@ void Player_Draw(void) {
     if (s->unk325 != 0)
         return;
 
-    if (s->unk3C4 != 0 || ((s->unk68 == func_ov000_02348b28 || (s->unk32C & 0x100)) && !(s->unk32C & 0x80))) {
+    if (s->unk3C4 != 0 || ((s->unk68 == Player_State_HomingAttack || (s->unk32C & 0x100)) && !(s->unk32C & 0x80))) {
         if (s->unk324 != 1) {
             func_02022270(0, 0x6182);
             func_02022270(1, 0x6182);
@@ -86,8 +86,8 @@ void Player_Draw(void) {
             s->unk5C &= ~0x1000;
             s->unk32C &= ~0x80000000;
         }
-        if (data_022c4560.unk24 & 1) {
-            if (data_022c4560.unk24 & 2) {
+        if (gGameState.unk24 & 1) {
+            if (gGameState.unk24 & 2) {
                 if (ABS(s->unk10 - s->unk394) >= 0x200 || ABS(s->unk14 - s->unk398) >= 0x200)
                     StageObj_Draw3DEx(s->unk394, s->unk398, s->unk39C, s->unk1, s, s->unk134);
             } else {
@@ -98,9 +98,9 @@ void Player_Draw(void) {
             if (ABS(s->unk10 - s->unk1C) >= 0x200 || ABS(s->unk14 - s->unk20) >= 0x200)
                 StageObj_Draw3DEx(s->unk1C, s->unk20, s->unk24, s->unk1, s, s->unk134);
         }
-        func_02022270(0, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D].x);
-        func_02022270(1, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D].y);
-        func_02022270(2, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D].z);
+        func_02022270(0, data_02074960[gGameState.unk1C][gGameState.unk1D].x);
+        func_02022270(1, data_02074960[gGameState.unk1C][gGameState.unk1D].y);
+        func_02022270(2, data_02074960[gGameState.unk1C][gGameState.unk1D].z);
         s->unk5C = saved;
     }
 

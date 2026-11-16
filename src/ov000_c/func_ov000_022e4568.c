@@ -29,13 +29,13 @@ typedef struct {
     s32 unk18;
 } UnkStruct_Plr18;
 
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_Plr18 *gPlayers;
 
 void func_ov000_022e4568(UnkStruct_022e4568 *w) {
     s32 x;
 
-    if (data_ov000_02369ac0.unk4 == 0x22) {
+    if (gBossStatus.unk4 == 0x22) {
         w->unkD6A &= ~4;
         w->unkD6A |= 0x1000;
         w->unkDC2 &= ~4;

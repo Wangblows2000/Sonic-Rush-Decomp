@@ -47,7 +47,7 @@ extern s16 data_0206e470[];
 extern s16 data_02072070[];
 extern s16 data_0206f470[];
 
-void func_020319a4(void *p, void *a, s32 b, s32 c, s32 d);
+void Model_SetShapeResource(void *p, void *a, s32 b, s32 c, s32 d);
 void MTX_Identity33_(void *m);
 void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
@@ -64,7 +64,7 @@ void func_ov000_02314e60(UnkStruct_02314e60 *w) {
             w->unk5C |= 0x200;
             w->unk54 &= ~2;
             w->unk204 = NULL;
-            func_020319a4(w->unk128, w->unk128->unkA0, 1, 0, 0);
+            Model_SetShapeResource(w->unk128, w->unk128->unkA0, 1, 0, 0);
             return;
         }
         m = w->unk128;

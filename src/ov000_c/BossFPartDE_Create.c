@@ -42,7 +42,7 @@ typedef struct {
     UnkStruct_022f92dc_Ref *unk218;
 } UnkStruct_02369b84;
 
-extern UnkStruct_02369b84 *data_ov000_02369b84;
+extern UnkStruct_02369b84 *gBossF;
 extern void *data_ov000_02369b88[];
 extern void *gZoneActArchive;
 extern u8 data_ov000_02366048[];
@@ -62,7 +62,7 @@ s32 NNS_G3dGetTex(void *p);
 
 UnkStruct_022f92dc *BossFPartDE_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
-    UnkStruct_02369b84 *boss = data_ov000_02369b84;
+    UnkStruct_02369b84 *boss = gBossF;
     UnkStruct_022f92dc *w;
     UnkStruct_Coll *coll;
     UnkStruct_022f92dc_Sub *sub;

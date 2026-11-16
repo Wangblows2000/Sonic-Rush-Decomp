@@ -29,7 +29,7 @@ void Task_Destroy(UnkStruct_Task *t);
 void func_ov000_0232d5e4(void);
 void func_ov000_0232d4c8(void);
 UnkStruct_0232d620_Ply *func_ov000_02342358(s32 a);
-void func_ov000_02336f28(u32 *out, s32 a, s32 b);
+void Hud_ToDecimalDigits(u32 *out, s32 a, s32 b);
 void func_ov000_0232d2dc(UnkStruct_0232d620 *w);
 
 void func_ov000_0232d620(void) {
@@ -84,7 +84,7 @@ void func_ov000_0232d620(void) {
     } else {
         w->unk26C = w->unk268 = 0;
     }
-    func_ov000_02336f28(&w->unk270, w->unk268, 100);
+    Hud_ToDecimalDigits(&w->unk270, w->unk268, 100);
     AnimatorSprite_SetAnimation(&w->s0, (u16)(((w->unk270 & 0xf0) >> 4) + 1));
     AnimatorSprite_SetAnimation(&w->s1, (u16)(((w->unk270 & 0xf0) >> 4) + 1));
     AnimatorSprite_SetAnimation(&w->s2, (u16)((w->unk270 & 0xf) + 1));

@@ -6,7 +6,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *gActComArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02368284[], data_ov000_0236aa18[];
 
 BOOL func_ov000_023270d8(UnkStruct_StageObj *a);
@@ -30,7 +30,7 @@ void func_ov000_02330098(UnkStruct_StageObj *arg, s32 x, s32 y) {
     StageObj_SetAnimation(w, 0xc);
     StageObj_SetOAMOrder(w, 9);
     StageObj_SetOAMPriority(w, 1);
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->spr1.unk2C |= 0x80008;
     if (arg->unk5C & 1)
         w->unk5C |= 1;

@@ -33,8 +33,8 @@ struct UnkStruct_0234f4ec {
 };
 
 void Player_State_Parachute(UnkStruct_0234f4ec *w);
-void func_ov000_0234f054(UnkStruct_0234f4ec *w);
-void func_ov000_0234cb70(UnkStruct_0234f4ec *w);
+void Player_State_ParachuteRelease(UnkStruct_0234f4ec *w);
+void Player_InitState(UnkStruct_0234f4ec *w);
 void Player_SetAnimation(UnkStruct_0234f4ec *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
@@ -43,9 +43,9 @@ void Player_Action_Parachute(UnkStruct_0234f4ec *w, UnkStruct_0234f4ec *other, s
         return;
     if (w->state == Player_State_Parachute)
         return;
-    if (w->state == func_ov000_0234f054)
+    if (w->state == Player_State_ParachuteRelease)
         return;
-    func_ov000_0234cb70(w);
+    Player_InitState(w);
     w->other = other;
     Player_SetAnimation(w, 0x31);
     w->unk5C |= 4;

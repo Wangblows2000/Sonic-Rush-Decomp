@@ -41,7 +41,7 @@ typedef struct {
     void *unkD3C[4];
 } UnkStruct_02369b4c;
 
-extern UnkStruct_02369b4c *data_ov000_02369b4c;
+extern UnkStruct_02369b4c *gBoss6;
 extern void *data_ov000_023658ac[];
 
 void func_ov000_022dfd74(void);
@@ -61,13 +61,13 @@ UnkStruct_022dfd80 *func_ov000_022dfd80(s32 k, s32 x, s32 y, s32 z) {
     sub = &w->sub;
     w->unk124 = sub;
     Model_Init(sub, 0);
-    Model_SetResource(sub, data_ov000_02369b4c->unkD0C[k], 0);
-    if (data_ov000_02369b4c->unkD1C[k] != NULL)
-        Model_SetAnimation(sub, 0, data_ov000_02369b4c->unkD1C[k], 0, 0);
-    if (data_ov000_02369b4c->unkD2C[k] != NULL)
-        Model_SetAnimation(sub, 1, data_ov000_02369b4c->unkD2C[k], 0, 0);
-    if (data_ov000_02369b4c->unkD3C[k] != NULL)
-        Model_SetAnimation(sub, 2, data_ov000_02369b4c->unkD3C[k], 0, NNS_G3dGetTex(data_ov000_02369b4c->unkD0C[k]));
+    Model_SetResource(sub, gBoss6->unkD0C[k], 0);
+    if (gBoss6->unkD1C[k] != NULL)
+        Model_SetAnimation(sub, 0, gBoss6->unkD1C[k], 0, 0);
+    if (gBoss6->unkD2C[k] != NULL)
+        Model_SetAnimation(sub, 1, gBoss6->unkD2C[k], 0, 0);
+    if (gBoss6->unkD3C[k] != NULL)
+        Model_SetAnimation(sub, 2, gBoss6->unkD3C[k], 0, NNS_G3dGetTex(gBoss6->unkD0C[k]));
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     w->unk10 = x;
     w->unk14 = y;

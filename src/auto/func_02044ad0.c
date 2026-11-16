@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 extern u8 gTaskCurrent[];
-s32 func_02044798();
-extern u8 data_ov000_02369ac0[];
+s32 NaviB_DrawIcons();
+extern u8 gBossStatus[];
 void func_0204481c();
 s32 G2x_SetBlendAlpha_();
 extern u8 gDisplayTable[];
@@ -17,8 +17,8 @@ void func_02044ad0(void) {
         *(u16 *)((u8 *)t1 + 0xc) = (*(u16 *)((u8 *)t1 + 0xc) ^ 1);
         *(u16 *)((u8 *)t1 + 0xa) = 0;
     }
-    func_02044798(t0, *(u16 *)((u8 *)t1 + 0x8), ((u32)((*(u16 *)((u8 *)t1 + 0xc) + 0x6) << 0x10) >> 0x10));
-    if (*(u16 *)((u8 *)t1 + 0x8) == *(u16 *)((u8 *)data_ov000_02369ac0 + 0x8)) {
+    NaviB_DrawIcons(t0, *(u16 *)((u8 *)t1 + 0x8), ((u32)((*(u16 *)((u8 *)t1 + 0xc) + 0x6) << 0x10) >> 0x10));
+    if (*(u16 *)((u8 *)t1 + 0x8) == *(u16 *)((u8 *)gBossStatus + 0x8)) {
         return;
     }
     *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_0204481c;

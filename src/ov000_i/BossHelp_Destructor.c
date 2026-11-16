@@ -5,7 +5,7 @@ typedef struct {
     u8 *unk10;
 } UnkTask_02338538;
 
-extern void *data_ov000_0236aaac;
+extern void *gBossHelpTask;
 void ObjDraw_ReleaseSpritePalette(u32 a);
 void ObjVram_Free(s32 a, void *p);
 extern void *gMainHeap;
@@ -36,5 +36,5 @@ void BossHelp_Destructor(UnkTask_02338538 *t) {
     ObjDraw_ReleaseSpritePalette(*(u16 *)(w + 0x44) & 0xff);
     ObjVram_Free(0, *(void **)(w + 0x34));
     UnkDbgFree(*(void **)(w + 0x48));
-    data_ov000_0236aaac = NULL;
+    gBossHelpTask = NULL;
 }

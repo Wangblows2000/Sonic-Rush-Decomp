@@ -15,7 +15,7 @@ typedef struct {
     u16 unkD5E;
 } UnkStruct_022dfcbc_g;
 
-extern UnkStruct_022dfcbc_g *data_ov000_02369b4c;
+extern UnkStruct_022dfcbc_g *gBoss6;
 
 void func_ov000_022dfbc8(UnkStruct_022dfcbc *p);
 
@@ -29,7 +29,7 @@ void func_ov000_022dfcbc(UnkStruct_022dfcbc *p) {
     p->unk68 = func_ov000_022dfbc8;
     p->unkC = 0;
     v = -0xa00;
-    g = data_ov000_02369b4c;
+    g = gBoss6;
     if (g->unkD5E != 0)
         v *= -1;
     if (g->unk20C & 0x100)

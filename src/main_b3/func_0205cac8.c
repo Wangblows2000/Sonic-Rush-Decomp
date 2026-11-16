@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 typedef struct { u8 pad0[0x1c]; u8 unk1C; u8 unk1D; } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 typedef struct {
     void (*fn)(void);
     u8 pad4[8];
@@ -31,7 +31,7 @@ void func_0205cac8(UnkWork_0205cac8 *w, UnkObj_0205cac8 *o) {
         o->t = 0x1000;
         o->fn = func_0205caa0;
     }
-    if (data_022c4560.unk1C != 8 || data_022c4560.unk1D != 2) {
+    if (gGameState.unk1C != 8 || gGameState.unk1D != 2) {
         w->v[0] = Lerp_0205cac8(0x9e000, 0x80000, o->t, 0);
         w->v[1] = Lerp_0205cac8(-0x5b000, -0x5b000, o->t, 0);
         w->v[2] = Lerp_0205cac8(0x1e000, 0x3c000, o->t, 0);

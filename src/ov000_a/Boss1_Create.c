@@ -84,9 +84,9 @@ typedef struct UnkStruct_022cce24_8 {
 extern void *gZoneActArchive;
 extern UnkStruct_022cce24_6 data_ov000_02369ad0;
 
-extern UnkStruct_022cce24 *data_ov000_02369acc;
-extern UnkStruct_022cce24_7 data_ov000_02369ac0;
-extern UnkStruct_022cce24_8 data_022c4560;
+extern UnkStruct_022cce24 *gBoss1;
+extern UnkStruct_022cce24_7 gBossStatus;
+extern UnkStruct_022cce24_8 gGameState;
 extern u32 gRandSeed;
 extern u8 data_ov000_02365060[];
 extern u8 data_ov000_02365064[];
@@ -100,10 +100,10 @@ extern u8 data_ov000_023650e4[];
 UnkTask_022cce24 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
 void StageObj_Main(void);
 void Boss1_Destructor(void);
-void Boss1_State_Unk_ov000_022cb218(void);
+void Boss1_State_WaitForStart(void);
 void Boss1_Draw(void);
 void func_ov000_022cbb7c(void);
-u16 func_ov000_022c5f28(void);
+u16 Boss_GetStartHealth(void);
 void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022cc3e8(s32 idx, s32 flag);
 void *func_0202128c(void *a);
@@ -113,11 +113,11 @@ static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
     return (u16)(gRandSeed >> 16);
 }
-void Boss1Hammer_State_Unk_ov000_022c697c(void);
+void Boss1Hammer_State_Idle(void);
 void Boss1Hammer_Draw(void);
 void Boss1Hammer_Collide(void);
-void func_ov000_022c6bc0(void);
-void func_ov000_022c6980(void);
+void Boss1Hammer_OnHit_Damage(void);
+void Boss1Hammer_OnHit_PushPlayer(void);
 void func_ov000_022c72f8(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_02021310(void *ctx, void *a, void *b);
@@ -144,14 +144,14 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
         return NULL;
     s = Task_Create(StageObj_Main, Boss1_Destructor, 0, 0x500, 2, 0x374)->unk10;
     MI_CpuFill16(s, 0, 0x374);
-    data_ov000_02369acc = s;
-    s->unk68 = Boss1_State_Unk_ov000_022cb218;
+    gBoss1 = s;
+    s->unk68 = Boss1_State_WaitForStart;
     s->unk21A = Rand() & 3;
     s->unk21C = 0xaaa;
-    MI_CpuFill16(&data_ov000_02369ac0, 0, 0xc);
-    data_ov000_02369ac0.unk4 = 1;
-    data_ov000_02369ac0.unk8 = func_ov000_022c5f28();
-    data_ov000_02369ac0.unkA = func_ov000_022c5f28();
+    MI_CpuFill16(&gBossStatus, 0, 0xc);
+    gBossStatus.unk4 = 1;
+    gBossStatus.unk8 = Boss_GetStartHealth();
+    gBossStatus.unkA = Boss_GetStartHealth();
     func_02021310(ctx, data_ov000_02365060, gZoneActArchive);
     if (func_ov000_022cc6d4()) {
         s->unk230 = func_02021264(ctx, 8);
@@ -181,7 +181,7 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     p->unk18 = p->unk1C = p->unk20 = 0x34cc;
     s->unk210 = MapObject_Spawn(0xca, 0, 0, 0, 0, 0, 0, 0, 0);
     s->unk214 = MapObject_Spawn(0xcb, 0, 0, 0, 0, 0, 0, 0, 0);
-    func_ov000_022cc3e8(data_022c4560.unk0, 0);
+    func_ov000_022cc3e8(gGameState.unk0, 0);
     func_02021310(ctx2, data_ov000_02365064, gZoneActArchive);
     NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365068));
     NNS_G3dResDefaultSetup(func_0202128c(data_ov000_0236507c));

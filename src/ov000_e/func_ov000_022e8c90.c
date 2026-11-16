@@ -23,20 +23,20 @@ typedef struct {
     s32 unk4;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_Boss *data_ov000_02369b78;
+extern UnkStruct_Boss *gBoss7;
 extern UnkStruct_StageObj *gPlayers;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 
 void func_ov000_022ee198(UnkStruct_022e8c90 *s, s32 st);
 void func_ov000_022e9b70(UnkStruct_022e8c90 *s, s32 a, s32 b);
-void func_ov000_022e98d8(UnkStruct_022e8c90 *s);
-void func_ov000_022e8bac(UnkStruct_022e8c90 *s);
+void Boss7PartD5_MoveState_Unk_ov000_022e98d8(UnkStruct_022e8c90 *s);
+void Boss7PartD5_MoveState_Unk_ov000_022e8bac(UnkStruct_022e8c90 *s);
 
 void func_ov000_022e8c90(UnkStruct_022e8c90 *w) {
-    UnkStruct_Boss *b = data_ov000_02369b78;
+    UnkStruct_Boss *b = gBoss7;
 
     if (w->base.unk58 & 1) {
-        w->unk440 = func_ov000_022e98d8;
+        w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e98d8;
         return;
     }
     w->base.unk2E = 0;
@@ -54,7 +54,7 @@ void func_ov000_022e8c90(UnkStruct_022e8c90 *w) {
         w->base.unk5C |= 1;
     else
         w->base.unk5C &= ~1;
-    data_ov000_02369ac0.unk4 = 0x2b;
-    w->unk440 = func_ov000_022e8bac;
+    gBossStatus.unk4 = 0x2b;
+    w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e8bac;
     w->unk440(w);
 }

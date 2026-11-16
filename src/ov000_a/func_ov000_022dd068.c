@@ -14,7 +14,7 @@ typedef struct UnkStruct_022dd068 {
     s32 unkBBC;
 } UnkStruct_022dd068;
 
-extern UnkStruct_022dd068 *data_ov000_02369b2c;
+extern UnkStruct_022dd068 *gBoss4;
 extern s16 data_0206e470[];
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
@@ -26,7 +26,7 @@ void Model_Draw(void *a);
 void func_ov000_022dd068(void) {
     u8 m1[0x24];
     u8 m2[0x24];
-    UnkStruct_022dd068 *w = data_ov000_02369b2c;
+    UnkStruct_022dd068 *w = gBoss4;
     UnkStruct_022dd068_a *a = &w->unk708;
     u16 a1 = w->unkBB8;
     u16 a2 = w->unkBBC;

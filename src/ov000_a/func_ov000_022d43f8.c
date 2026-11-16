@@ -94,14 +94,14 @@ struct UnkStruct_022d43f8 {
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
-extern UnkStruct_022d43f8 *data_ov000_02369ae0;
+extern UnkStruct_022d43f8 *gBoss2;
 extern u32 gRandSeed;
 extern s32 data_ov000_02362e40[4];
 
 void func_ov000_022cedd8(UnkStruct_022d43f8 *s, s32 a);
-void func_ov000_022d407c(UnkStruct_022d43f8 *s);
-void func_ov000_022d424c(UnkStruct_022d43f8 *s);
-void func_ov000_022d43a8(UnkStruct_022d43f8 *s);
+void Boss2_State_Unk_ov000_022d407c(UnkStruct_022d43f8 *s);
+void Boss2_State_Unk_ov000_022d424c(UnkStruct_022d43f8 *s);
+void Boss2_State_Unk_ov000_022d43a8(UnkStruct_022d43f8 *s);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -109,27 +109,27 @@ static inline u16 Rand(void) {
 }
 
 void func_ov000_022d43f8(void) {
-    UnkStruct_022d43f8 *s = data_ov000_02369ae0;
+    UnkStruct_022d43f8 *s = gBoss2;
     UnkStruct_022d43f8_a *x = &s->unkA9C;
     UnkStruct_022d43f8_a *y = &s->unkBD4;
     UnkStruct_022d43f8_a *z = &s->unkD0C;
     s->unk12F4 = data_ov000_02362e40[Rand() & 3];
     if (s->unk1302 == 3) {
-        s->func = func_ov000_022d407c;
+        s->func = Boss2_State_Unk_ov000_022d407c;
         Model_SetAnimation(x, 0, s->unkF7C, 3, 0);
         Model_SetAnimation(y, 0, s->unkF7C, 0x23, 0);
         Model_SetAnimation(z, 0, s->unkF7C, 0x3f, 0);
         s->unk12F4 += 0x3c;
         func_ov000_022cedd8(s, 0x38e000);
     } else if (s->unk1300 == 3) {
-        s->func = func_ov000_022d424c;
+        s->func = Boss2_State_Unk_ov000_022d424c;
         Model_SetAnimation(x, 0, s->unkF7C, 4, 0);
         Model_SetAnimation(y, 0, s->unkF7C, 0x24, 0);
         Model_SetAnimation(z, 0, s->unkF7C, 0x40, 0);
         s->unk145C = 0x1e;
         func_ov000_022cedd8(s, 0);
     } else {
-        s->func = func_ov000_022d43a8;
+        s->func = Boss2_State_Unk_ov000_022d43a8;
         Model_SetAnimation(x, 0, s->unkF7C, 4, 0);
         Model_SetAnimation(y, 0, s->unkF7C, 0x24, 0);
         Model_SetAnimation(z, 0, s->unkF7C, 0x40, 0);

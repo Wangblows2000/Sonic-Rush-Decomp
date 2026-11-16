@@ -4,9 +4,9 @@ extern u8 data_0207a208[];
 extern void *gMainHeap;
 extern u8 *data_ov000_0236ac28;
 typedef struct { s32 unk0; } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
-void func_ov000_0234dee0(void);
+void Player_ReleaseAssets(void);
 void Player_LoadAssets(void);
 u8 *File_Load(void *path, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
@@ -56,7 +56,7 @@ void Player_LoadArchive(void) {
     u8 *p;
     u32 size;
 
-    func_ov000_0234dee0();
+    Player_ReleaseAssets();
     f = File_Load(data_0207a208, -1);
     size = ((*(u32 *)f >> 8) + 0x43) & ~0x1f;
     p = Alloc_0204e934(size);
@@ -78,6 +78,6 @@ void Player_LoadArchive(void) {
     DC_StoreRange(p, Player_GetArchiveUncompressedSize(f));
     Free_0204e934(f);
     Player_LoadAssets();
-    NaviBg_Load(1, data_022c4560.unk0);
+    NaviBg_Load(1, gGameState.unk0);
     NaviB_Load();
 }

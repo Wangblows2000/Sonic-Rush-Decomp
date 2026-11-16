@@ -5,8 +5,8 @@
 
 extern u8 gSaveData[];
 s32 ZoneMap_IsBlaze();
-s32 func_ov001_022e2a44();
-s32 func_ov001_022e299c();
+s32 ZoneMap_GetSonicStoryStep();
+s32 ZoneMap_GetBlazeStoryStep();
 
 s32 func_ov001_022e26d0(void) {
     s32 t0 = (*(u32 *)((u8 *)gSaveData + 0x8) & 0x1000);
@@ -15,7 +15,7 @@ s32 func_ov001_022e26d0(void) {
     }
     s32 t1 = ZoneMap_IsBlaze(0x1000, t0);
     if (t1 == 0) {
-        s32 t2 = func_ov001_022e2a44();
+        s32 t2 = ZoneMap_GetSonicStoryStep();
         if (t2 >= 0x22) {
             return 8;
         }
@@ -39,7 +39,7 @@ s32 func_ov001_022e26d0(void) {
         }
         return 1;
     }
-    s32 t3 = func_ov001_022e299c(t1);
+    s32 t3 = ZoneMap_GetBlazeStoryStep(t1);
     if (t3 >= 0x21) {
         return 8;
     }

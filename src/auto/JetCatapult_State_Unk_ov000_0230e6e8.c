@@ -1,15 +1,15 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_022c4560[];
+extern u8 gGameState[];
 extern u8 data_02077944[];
 s32 func_ov000_0230e5dc();
 s32 ObjSpd_UpSet();
 
 void JetCatapult_State_Unk_ov000_0230e6e8(u8 *p0) {
-    s32 t0 = *(u32 *)((u8 *)data_022c4560 + 0x20);
+    s32 t0 = *(u32 *)((u8 *)gGameState + 0x20);
     s32 v1 = t0;
-    if ((*(u32 *)((u8 *)data_022c4560 + 0x20) & 2) != 0) {
+    if ((*(u32 *)((u8 *)gGameState + 0x20) & 2) != 0) {
         s32 t2 = *(s8 *)((u8 *)data_02077944 + (v1 & 3));
         *(u8 *)((u8 *)p0 + 0x7) = t2;
         s32 t3 = *(u32 *)((u8 *)p0 + 0x204);

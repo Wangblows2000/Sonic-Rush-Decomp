@@ -30,7 +30,7 @@ typedef struct {
 } UnkStruct_02339dd4_Task;
 
 extern UnkStruct_02339dd4_Task *gTaskCurrent;
-extern UnkStruct_02339dd4 data_ov000_0236aad8;
+extern UnkStruct_02339dd4 gCamera;
 
 void func_ov000_0233877c(void);
 void func_ov000_02339c2c(void *w);
@@ -46,15 +46,15 @@ void func_ov000_02339dd4(void) {
     UnkPlayer_02339dd4 *p;
     s32 v;
 
-    data_ov000_0236aad8.prevFlags = data_ov000_0236aad8.flags;
-    data_ov000_0236aad8.p[0].prevX = data_ov000_0236aad8.p[0].x;
-    data_ov000_0236aad8.p[0].prevY = data_ov000_0236aad8.p[0].y;
-    data_ov000_0236aad8.p[1].prevX = data_ov000_0236aad8.p[1].x;
-    data_ov000_0236aad8.p[1].prevY = data_ov000_0236aad8.p[1].y;
-    if (data_ov000_0236aad8.flags & 1) {
-        v = !(data_ov000_0236aad8.flags & 2) ? data_ov000_0236aad8.p[0].unk20 * 0x110 : data_ov000_0236aad8.p[0].unk20 * -0x110;
-        data_ov000_0236aad8.unkD8 = v;
-        data_ov000_0236aad8.unkD0 = data_ov000_0236aad8.p[0].unk20 * 0x50;
+    gCamera.prevFlags = gCamera.flags;
+    gCamera.p[0].prevX = gCamera.p[0].x;
+    gCamera.p[0].prevY = gCamera.p[0].y;
+    gCamera.p[1].prevX = gCamera.p[1].x;
+    gCamera.p[1].prevY = gCamera.p[1].y;
+    if (gCamera.flags & 1) {
+        v = !(gCamera.flags & 2) ? gCamera.p[0].unk20 * 0x110 : gCamera.p[0].unk20 * -0x110;
+        gCamera.unkD8 = v;
+        gCamera.unkD0 = gCamera.p[0].unk20 * 0x50;
     }
     func_ov000_0233877c();
     func_ov000_02339c2c(work);
@@ -62,13 +62,13 @@ void func_ov000_02339dd4(void) {
     func_ov000_023423b8();
     func_ov000_02341ebc();
     func_ov000_0233e668();
-    p = data_ov000_0236aad8.p;
+    p = gCamera.p;
     for (i = 0; i < 2; i++, p++) {
         p->x += p->vx;
         p->y += p->vy;
     }
     func_ov000_0233b684();
-    p = data_ov000_0236aad8.p;
+    p = gCamera.p;
     for (i = 0; i < 2; i++, p++) {
         p->vx = p->vy = 0;
         p->unk18 = p->unk1A = 0;

@@ -4,11 +4,11 @@
 #pragma thumb on
 
 extern u8 data_0207584c[];
-s32 func_020366f4();
+s32 Sound_PlayVoice();
 
 void func_02057dd4(u8 *p0, s32 p1) {
     if ((*(u32 *)((u8 *)p0 + 0x4) & 0x10000000) == 0) {
-        func_020366f4(0, *(u32 *)((u8 *)*(u32 *)*(u32 *)((u8 *)p0 + 0x2c) + 0x4), *(s16 *)((u8 *)data_0207584c + ((s32)p1 << 1)));
+        Sound_PlayVoice(0, *(u32 *)((u8 *)*(u32 *)*(u32 *)((u8 *)p0 + 0x2c) + 0x4), *(s16 *)((u8 *)data_0207584c + ((s32)p1 << 1)));
     }
 }
 

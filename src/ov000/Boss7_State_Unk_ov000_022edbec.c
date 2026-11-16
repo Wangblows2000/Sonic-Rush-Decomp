@@ -7,13 +7,13 @@ typedef struct UnkStruct_022edbec {
     u16 unk230;
 } UnkStruct_022edbec;
 
-extern u8 data_02250464;
+extern u8 gBGMSoundHandle;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Boss7_State_Unk_ov000_022edbb8(void);
 
 void Boss7_State_Unk_ov000_022edbec(UnkStruct_022edbec *s) {
     s->unk230 = 0;
-    NNS_SndPlayerStopSeq(&data_02250464, 0x3c);
+    NNS_SndPlayerStopSeq(&gBGMSoundHandle, 0x3c);
     s->func = Boss7_State_Unk_ov000_022edbb8;
 }

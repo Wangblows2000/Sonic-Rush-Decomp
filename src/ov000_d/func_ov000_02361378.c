@@ -8,9 +8,9 @@ typedef struct {
 extern UnkStruct_02361378_Task *gTaskCurrent;
 
 s32 StageLoader_LoadZoneFiles(void);
-void func_02054dbc(void);
+void Wireless_OnError(void);
 u32 WH_GetBitmap(void);
-void func_020516b4(void);
+void WirelessSession_Stop(void);
 void func_ov000_0236133c(void);
 
 #pragma thumb on
@@ -19,15 +19,15 @@ void func_ov000_02361378(void) {
     s32 s = StageLoader_LoadZoneFiles();
 
     if (s == 2) {
-        func_02054dbc();
+        Wireless_OnError();
         return;
     }
     if (WH_GetBitmap() & 0) {
-        func_02054dbc();
+        Wireless_OnError();
         return;
     }
     if (s == 1) {
-        func_020516b4();
+        WirelessSession_Stop();
         gTaskCurrent->unk8 = func_ov000_0236133c;
     }
 }

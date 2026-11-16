@@ -25,25 +25,25 @@ typedef struct UnkStruct_02309228 {
     s32 timer;
 } UnkStruct_02309228;
 
-extern UnkStruct_02309228 *data_ov001_0231f5bc;
+extern UnkStruct_02309228 *gSpecialStageHud;
 extern s16 gDisplaySub[];
 extern s16 data_ov001_02317098[];
 extern u16 data_ov001_02317114[];
 
-void func_ov001_0230d6f4(s32 v);
+void SpecialStageMap_SetScrollSpeed(s32 v);
 BOOL func_0202e564(float a, float b);
 void AnimatorSprite_SetAnimation(UnkStruct_02309228_o *s, u16 index);
 s32 SpecialStage_GetStageIndex(void);
-s32 func_ov001_0230c0a4(void);
+s32 SpecialStage_GetPlayer(void);
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_0230956c(void);
 void func_ov001_023095e0(void);
-void func_ov001_0231599c(s32 v);
+void SpecialStageCamera_SetMode(s32 v);
 void func_ov001_02312dd0(s32 p, s32 v);
 void func_ov001_02312dd8(s32 p, s32 v);
 
 void func_ov001_02309228(void) {
-    UnkStruct_02309228 *g = data_ov001_0231f5bc;
+    UnkStruct_02309228 *g = gSpecialStageHud;
     s32 i;
     s32 t;
     s16 tgt;
@@ -52,7 +52,7 @@ void func_ov001_02309228(void) {
 
     g->timer++;
     if (g->timer < 0x118)
-        func_ov001_0230d6f4(9216.0f * g->timer / 280.0f);
+        SpecialStageMap_SetScrollSpeed(9216.0f * g->timer / 280.0f);
     if (g->timer <= 0x10)
         gDisplaySub[0x24] = 0x10 - g->timer;
     if (g->timer >= 0x96 && g->timer < 0x136) {
@@ -96,17 +96,17 @@ void func_ov001_02309228(void) {
     case 0x118:
         AnimatorSprite_SetAnimation(&g->objs[0x18], 2);
         g->unkBC0 = 0;
-        func_ov001_0231599c(7);
+        SpecialStageCamera_SetMode(7);
         g->unk4 = Task_Create(func_ov001_023095e0, 0, 0, 0xf200, 0, 0);
-        func_ov001_0230d6f4(0x3000);
-        func_ov001_02312dd0(func_ov001_0230c0a4(), 0x50);
+        SpecialStageMap_SetScrollSpeed(0x3000);
+        func_ov001_02312dd0(SpecialStage_GetPlayer(), 0x50);
         break;
     case 0x12c:
-        func_ov001_0231599c(8);
+        SpecialStageCamera_SetMode(8);
         break;
     case 0x168:
-        func_ov001_0231599c(0);
-        func_ov001_02312dd8(func_ov001_0230c0a4(), 1);
+        SpecialStageCamera_SetMode(0);
+        func_ov001_02312dd8(SpecialStage_GetPlayer(), 1);
         g->timer = -1;
         break;
     }

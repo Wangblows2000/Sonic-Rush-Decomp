@@ -16,7 +16,7 @@ extern u16 data_ov000_02364248[][6];
 void func_ov000_022f8fa0(void *p, s32 a, s32 b);
 void func_ov000_022f49f4(UnkStruct_022f3c84 *s);
 void func_ov000_022f499c(UnkStruct_022f3c84 *s, s32 a);
-void func_ov000_022f3bb8(void);
+void BossFPartD8_State_Unk_ov000_022f3bb8(void);
 
 void func_ov000_022f3c84(UnkStruct_022f3c84 *s) {
     u16 t;
@@ -28,5 +28,5 @@ void func_ov000_022f3c84(UnkStruct_022f3c84 *s) {
     else
         func_ov000_022f499c(s, s->unk434);
     if (t < s->unk43C++ || (t > 0x2d && s->base.unk2E == 0))
-        s->base.unk68 = func_ov000_022f3bb8;
+        s->base.unk68 = BossFPartD8_State_Unk_ov000_022f3bb8;
 }

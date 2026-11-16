@@ -8,7 +8,7 @@ typedef struct {
     s16 unk358;
 } UnkStruct_Other;
 
-void func_ov000_023495a8(UnkStruct_Other *o, s32 x, s32 y);
+void Player_Action_DashPanel(UnkStruct_Other *o, s32 x, s32 y);
 
 void DashP_OnHit(UnkStruct_Coll *a, UnkStruct_Coll *b) {
     UnkStruct_StageObj *w = a->unk18;
@@ -57,5 +57,5 @@ void DashP_OnHit(UnkStruct_Coll *a, UnkStruct_Coll *b) {
         break;
     }
     if (o != NULL)
-        func_ov000_023495a8(o, x, y);
+        Player_Action_DashPanel(o, x, y);
 }

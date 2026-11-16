@@ -17,7 +17,7 @@ typedef struct UnkStruct_022d6e70 {
 } UnkStruct_022d6e70;
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022d6de4(void);
+void Boss3PartCC_State_Unk_ov000_022d6de4(void);
 
 void func_ov000_022d6e70(UnkStruct_022d6e70 *s) {
     Model_SetAnimation(s->unk2C4, 0, s->unk434, 0xc, 0);
@@ -25,5 +25,5 @@ void func_ov000_022d6e70(UnkStruct_022d6e70 *s) {
     s->unk3D8 = 0x1000;
     s->unk264 = 0x20;
     s->unk25A = 0;
-    s->func = func_ov000_022d6de4;
+    s->func = Boss3PartCC_State_Unk_ov000_022d6de4;
 }

@@ -5,7 +5,7 @@ typedef struct {
     s32 unk24;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s16 data_0206e470[];
 
 static inline s32 FX_Mul(s32 a, s32 b) { return (s32)(((s64)a * b + 0x800) >> 12); }
@@ -24,9 +24,9 @@ void func_ov000_0230ef70(UnkStruct_StageObj *s) {
     s32 y;
 
     if (k)
-        ang = (data_022c4560.unk24 * k + c) & 0x3ff;
+        ang = (gGameState.unk24 * k + c) & 0x3ff;
     else
-        ang = ((data_022c4560.unk24 + (c >> 2)) & 0xff) << 2;
+        ang = ((gGameState.unk24 + (c >> 2)) & 0xff) << 2;
     if (f & 0x20) {
         x = (bx + ((rx * data_0206e470[(((u16)((ang << 6) + 0x8000) & 0xffff) >> 4) * 2]) >> 12)) << 8;
         y = (by + ((ry * data_0206e470[(((u16)(ang << 6) & 0xffff) >> 4) * 2]) >> 12)) << 8;

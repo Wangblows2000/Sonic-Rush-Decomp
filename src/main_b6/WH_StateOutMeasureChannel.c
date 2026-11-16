@@ -8,7 +8,7 @@ typedef struct {
     u16 unka;
 } UnkArg_0203e6a0;
 
-extern void (*data_022c197c)(const char *s, ...);
+extern void (*sTraceFunc)(const char *s, ...);
 extern char data_02078798[];
 extern u16 data_022c1958;
 extern u16 data_022c1954;
@@ -27,8 +27,8 @@ void WH_StateOutMeasureChannel(UnkArg_0203e6a0 *arg) {
         WH_ChangeSysState(9);
         return;
     }
-    if (data_022c197c != NULL)
-        data_022c197c(data_02078798, arg->unk8, arg->unka);
+    if (sTraceFunc != NULL)
+        sTraceFunc(data_02078798, arg->unk8, arg->unka);
     val = arg->unka;
     ch = arg->unk8;
     if (data_022c1958 > val) {

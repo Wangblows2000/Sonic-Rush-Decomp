@@ -36,7 +36,7 @@ typedef struct {
 } UnkStruct_0231c444;
 
 s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
-s32 func_02066a9c(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
+s32 MapCollision_ProbeDistance(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0232ab9c(void *w, s32 a, s32 b, s32 c);
 void Mine_Explode(void *w);
 
@@ -68,7 +68,7 @@ void func_ov000_0231c444(UnkStruct_0231c444 *w) {
                     w->pts[i].y += w->unk32C;
                     w->pts[i].x += w->unk32C >> 1;
                     flag = 0;
-                    if (func_02066a9c(w->pts[i].x >> 8, w->pts[i].y >> 8, 1, 2, 0, 0) < 0) {
+                    if (MapCollision_ProbeDistance(w->pts[i].x >> 8, w->pts[i].y >> 8, 1, 2, 0, 0) < 0) {
                         w->cnt[i]++;
                     }
                 } else {
@@ -121,7 +121,7 @@ void func_ov000_0231c444(UnkStruct_0231c444 *w) {
             Mine_Explode(w);
     }
     w->unk8++;
-    if (func_02066a9c(w->unk10 >> 8, w->unk14 >> 8, 1, 3, 0, 0) < 0)
+    if (MapCollision_ProbeDistance(w->unk10 >> 8, w->unk14 >> 8, 1, 3, 0, 0) < 0)
         Mine_Explode(w);
     if (!(w->unk54 & 2))
         return;

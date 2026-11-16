@@ -47,7 +47,7 @@ extern s16 data_0206e470[];
 
 UnkStruct_023017c8_g *ExtraBoss_GetWork(void);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
-void func_ov001_023024d0(UnkStruct_023017c8 *p, s32 a);
+void ExtraBossPlayer_ChangeState(UnkStruct_023017c8 *p, s32 a);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void func_ov001_023019f8(void);
 
@@ -66,7 +66,7 @@ void func_ov001_023017c8(UnkStruct_023017c8 *p) {
     else
         Sound_PlaySeqArc(0, 0, 0x13);
     if (keys & 0x20) {
-        func_ov001_023024d0(p, 4);
+        ExtraBossPlayer_ChangeState(p, 4);
         if (keys & 0x40) {
             p->unk40 = 0xe000;
             ang = 0xa000;
@@ -78,7 +78,7 @@ void func_ov001_023017c8(UnkStruct_023017c8 *p) {
             ang = 0x8000;
         }
     } else {
-        func_ov001_023024d0(p, 3);
+        ExtraBossPlayer_ChangeState(p, 3);
         if (keys & 0x40) {
             if (keys & 0x10) {
                 p->unk40 = 0x2000;

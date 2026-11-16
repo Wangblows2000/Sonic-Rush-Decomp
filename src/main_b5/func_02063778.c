@@ -20,7 +20,7 @@ typedef struct UnkAnim_02063778 {
 
 typedef BOOL (*UnkCmd_02063778)(void *cmd, UnkAnim_02063778 *a, s32 b, s32 c);
 
-extern UnkCmd_02063778 data_02072e00[];
+extern UnkCmd_02063778 gBACFrameGroupFuncTable[];
 
 void func_02063778(UnkAnim_02063778 *a, s16 dt) {
     u32 old;
@@ -45,7 +45,7 @@ void func_02063778(UnkAnim_02063778 *a, s16 dt) {
         a->prev = a->cur;
         do {
             base = (u8 *)a->cur + ((u32)a->res + a->res->cmdOfs);
-        } while (data_02072e00[*(u16 *)base](base, a, 0, 0));
+        } while (gBACFrameGroupFuncTable[*(u16 *)base](base, a, 0, 0));
         if ((a->flags & 2) && !(a->flags & 4)) {
             a->flags |= 1;
             break;

@@ -22,14 +22,14 @@ typedef struct {
 
 extern UnkStruct_0233eed8_Dma data_02087cdc[];
 extern u32 gSystemFlags;
-extern UnkStruct_0233eed8_Pl data_ov000_0236aad8[];
+extern UnkStruct_0233eed8_Pl gCamera[];
 
 void func_ov000_0233eed8(UnkStruct_0233eed8 *w) {
     u8 i;
     UnkStruct_0233eed8_Dma *d;
 
     for (i = 0; i < 2; i++) {
-        if ((data_ov000_0236aad8[i].flags & 8) && !(w->flags[i] & 1)) {
+        if ((gCamera[i].flags & 8) && !(w->flags[i] & 1)) {
             d = &data_02087cdc[i];
             d->dst = (i == 0) ? 0x4000014 : 0x4001014;
             d->src0 = w->buf0[i];

@@ -14,8 +14,8 @@ typedef struct { u8 pad0[0x10]; UnkWork_02050f70 *work; } UnkTask_02050f70;
 typedef struct { u8 pad0[0x50]; u16 name[0xb]; u16 unk66; u8 pad68[0x5c]; u16 unkC4; } UnkInfo_02050f70;
 extern UnkTask_02050f70 *data_022c4638;
 
-s32 func_02043300(void);
-UnkInfo_02050f70 *func_020432c0(u16 i);
+s32 WirelessMgr_GetScanResultCount(void);
+UnkInfo_02050f70 *WirelessMgr_GetScanResult(u16 i);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 
 #pragma thumb on
@@ -37,11 +37,11 @@ BOOL func_02050f70(void) {
     if (st > 3)
         return FALSE;
     changed = FALSE;
-    n = func_02043300();
+    n = WirelessMgr_GetScanResultCount();
     if (n != w->unk34)
         changed = TRUE;
     for (i = 0; i < n && i < 8; i++) {
-        p = func_020432c0(i);
+        p = WirelessMgr_GetScanResult(i);
         name = p->name;
         for (j = 0; j < 10 && !changed; j++) {
             if (name[j] != w->names[i][j])

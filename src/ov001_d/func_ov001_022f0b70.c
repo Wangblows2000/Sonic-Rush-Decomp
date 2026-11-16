@@ -93,7 +93,7 @@ typedef struct UnkStruct_022f0b70_p {
 } UnkStruct_022f0b70_p;
 
 void func_ov001_022f0b40(void);
-UnkStruct_022f0b70_t *func_ov001_02300c94(void);
+UnkStruct_022f0b70_t *ExtraBoss_GetPlayer(void);
 void func_ov001_02301dd4(void);
 
 void func_ov001_022f0b70(UnkStruct_022f0b70_p *p) {
@@ -108,7 +108,7 @@ void func_ov001_022f0b70(UnkStruct_022f0b70_p *p) {
 
     if (!(a->unk10C & 2))
         return;
-    r = func_ov001_02300c94()->unk84;
+    r = ExtraBoss_GetPlayer()->unk84;
     Model_SetAnimation(a, 0, data_ov001_0231f068, data_ov001_02316840[0x40], 0);
     Model_SetAnimation(a, 4, data_ov001_0231f074, data_ov001_02316840[0x41], 0);
     a->unk10C &= ~4;

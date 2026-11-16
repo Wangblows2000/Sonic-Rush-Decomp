@@ -23,17 +23,17 @@ typedef struct {
     s16 unk22C;
 } UnkStruct_022e7f00_g;
 
-extern UnkStruct_022e7f00_g *data_ov000_02369b78;
+extern UnkStruct_022e7f00_g *gBoss7;
 
 void func_ov000_022ee198(UnkStruct_022e7f00 *p, s32 a);
-void func_ov000_022e7d14(UnkStruct_022e7f00 *p);
+void Boss7PartD5_MoveState_Unk_ov000_022e7d14(UnkStruct_022e7f00 *p);
 
 void func_ov000_022e7f00(UnkStruct_022e7f00 *p) {
-    data_ov000_02369b78->unk22C = -8;
+    gBoss7->unk22C = -8;
     func_ov000_022ee198(p, 0x32);
     p->unk5C |= 4;
     p->unkBE = 0;
     p->unk106 = 0;
     p->unk124->unk114 = 0;
-    p->unk440 = func_ov000_022e7d14;
+    p->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e7d14;
 }

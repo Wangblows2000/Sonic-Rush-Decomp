@@ -31,7 +31,7 @@ typedef struct {
     u8 unk1D;
 } UnkCfg_0235c168;
 
-extern UnkCfg_0235c168 data_022c4560;
+extern UnkCfg_0235c168 gGameState;
 extern void *gRingManagerTask;
 void ObjVram_Free(s32 a, void *p);
 void Model_Release(void *p);
@@ -51,7 +51,7 @@ void RingManager_Destructor(UnkTask_0235c168 *t) {
         ObjVram_Free(0, w->unk48);
     if (w->unk90 != NULL)
         ObjVram_Free(1, w->unk90);
-    if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2)
+    if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2)
         Model_Release(w->unkA4);
     if (w->unk198 != NULL)
         ObjVram_Free(0, w->unk198);

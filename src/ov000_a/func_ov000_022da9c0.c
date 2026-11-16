@@ -14,7 +14,7 @@ typedef struct UnkStruct_022da9c0_b {
     UnkStruct_022da9c0_r *unk218;
 } UnkStruct_022da9c0_b;
 
-extern UnkStruct_022da9c0_b *data_ov000_02369b14;
+extern UnkStruct_022da9c0_b *gBoss3;
 extern s16 data_0206e470[];
 
 void func_ov000_022d59fc(UnkStruct_022da9c0_r *r);
@@ -24,9 +24,9 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 }
 
 void func_ov000_022da9c0(u16 ang, s32 v) {
-    UnkStruct_022da9c0_r *r = data_ov000_02369b14->unk218;
+    UnkStruct_022da9c0_r *r = gBoss3->unk218;
     r->unk214 = FX_Mul(v, data_0206e470[((ang & 0xffff) >> 4) * 2]);
     r->unk21C = FX_Mul(v, data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
-    data_ov000_02369b14->unk218->unk222 = ang;
-    func_ov000_022d59fc(data_ov000_02369b14->unk218);
+    gBoss3->unk218->unk222 = ang;
+    func_ov000_022d59fc(gBoss3->unk218);
 }

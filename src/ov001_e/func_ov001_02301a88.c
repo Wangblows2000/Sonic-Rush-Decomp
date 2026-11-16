@@ -32,9 +32,9 @@ typedef struct UnkStruct_02301a88_c {
 
 UnkStruct_02301a88_c *ExtraBoss_GetWork(void);
 void func_ov001_02303e60(s32 x, s32 y, s32 n);
-void func_ov001_023024d0(UnkStruct_02301a88_o *o, s32 state);
+void ExtraBossPlayer_ChangeState(UnkStruct_02301a88_o *o, s32 state);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 
 void func_ov001_02301a88(UnkStruct_02301a88_h *self, UnkStruct_02301a88_h *other) {
     UnkStruct_02301a88_o *o = other->owner;
@@ -45,20 +45,20 @@ void func_ov001_02301a88(UnkStruct_02301a88_h *self, UnkStruct_02301a88_h *other
         Sound_PlaySeqArc(0, 0, 5);
     }
     if (self->flags & 0x20) {
-        func_ov001_023024d0(o, 0xc);
+        ExtraBossPlayer_ChangeState(o, 0xc);
         return;
     }
     if (self->flags & 0x40)
         return;
     other->flags |= 0x200;
     o->unkA0 = 0;
-    func_ov001_023024d0(o, 5);
+    ExtraBossPlayer_ChangeState(o, 5);
     o->unk1C8 = 0x3c;
     w->flags |= 2;
     w->unk10 = 0xb4;
     w->flags &= ~4;
     if (ExtraBoss_GetWork()->unk3C == 0)
-        func_020366f4(0, 0, 0x21);
+        Sound_PlayVoice(0, 0, 0x21);
     else
-        func_020366f4(0, 0, 0x2a);
+        Sound_PlayVoice(0, 0, 0x2a);
 }

@@ -16,14 +16,14 @@ typedef struct {
 } UnkStruct_022c1a00;
 
 extern s32 sSysState;
-extern u16 data_022c1938;
-extern u16 data_022c193c;
-extern u16 data_022c1948;
-extern u16 data_022c1950;
-extern s32 data_022c1964;
-extern s32 data_022c196c;
-extern s32 data_022c1990;
-extern void (*data_022c197c)(const char *fmt, ...);
+extern u16 sParentPacketSize;
+extern u16 sChildPacketSize;
+extern u16 gWHMaxChildCount;
+extern u16 gWHPacketSize;
+extern s32 sSendBufferSize;
+extern s32 sConnectMode;
+extern s32 sRecvBufferSize;
+extern void (*sTraceFunc)(const char *fmt, ...);
 extern UnkStruct_022c1a00 sParentParam;
 extern char data_0207874c[];
 extern char data_02078764[];
@@ -44,42 +44,42 @@ BOOL WH_ParentConnect(s32 mode, u16 a, u16 b) {
     if (sSysState != 1)
         OS_Terminate();
     if (mode == 6) {
-        x = (data_022c1938 + 0x23) & ~0x1f;
-        y = (data_022c193c + 0x21) & ~0x1f;
+        x = (sParentPacketSize + 0x23) & ~0x1f;
+        y = (sChildPacketSize + 0x21) & ~0x1f;
         if (x <= y)
             x = y;
-        data_022c1964 = x;
-        x = (((data_022c193c + 0xe) * data_022c1948 + 0x29) & ~0x1f) * 2;
-        y = ((data_022c1938 + 0x55) & ~0x1f) * 2;
+        sSendBufferSize = x;
+        x = (((sChildPacketSize + 0xe) * gWHMaxChildCount + 0x29) & ~0x1f) * 2;
+        y = ((sParentPacketSize + 0x55) & ~0x1f) * 2;
         if (x <= y)
             x = y;
-        data_022c1990 = x;
+        sRecvBufferSize = x;
     } else {
-        data_022c1990 = (((data_022c1950 + 0xe) * data_022c1948 + 0x29) & ~0x1f) * 2;
-        data_022c1964 = (data_022c1950 * (data_022c1948 + 1) + 0x27) & ~0x1f;
+        sRecvBufferSize = (((gWHPacketSize + 0xe) * gWHMaxChildCount + 0x29) & ~0x1f) * 2;
+        sSendBufferSize = (gWHPacketSize * (gWHMaxChildCount + 1) + 0x27) & ~0x1f;
     }
-    data_022c196c = mode;
+    sConnectMode = mode;
     WH_ChangeSysState(3);
     sParentParam.unkc = a;
     sParentParam.unk32 = b;
     sParentParam.unk18 = func_02011098();
     if (mode == 6) {
-        sParentParam.unk34 = data_022c1938;
-        sParentParam.unk36 = data_022c193c;
+        sParentParam.unk34 = sParentPacketSize;
+        sParentParam.unk36 = sChildPacketSize;
     } else {
-        sParentParam.unk34 = data_022c1950 * (data_022c1948 + 1) + 4;
-        sParentParam.unk36 = data_022c1950;
+        sParentParam.unk34 = gWHPacketSize * (gWHMaxChildCount + 1) + 4;
+        sParentParam.unk36 = gWHPacketSize;
     }
-    sParentParam.unk10 = data_022c1948;
+    sParentParam.unk10 = gWHMaxChildCount;
     sParentParam.unk16 = (mode == 6) ? 1 : 0;
     sParentParam.unk12 = 0;
     sParentParam.unke = 1;
     sParentParam.unk14 = (mode == 2) ? 1 : 0;
     switch (mode) {
     case 6:
-        if (data_022c197c != NULL)
-            data_022c197c(data_0207874c);
-        WFS_InitParent(1, 0, WH_Alloc, 0, data_022c1938, 0, 1);
+        if (sTraceFunc != NULL)
+            sTraceFunc(data_0207874c);
+        WFS_InitParent(1, 0, WH_Alloc, 0, sParentPacketSize, 0, 1);
         WFS_SetDebugMode(1);
         WFS_EnableSync(0);
     case 0:
@@ -87,8 +87,8 @@ BOOL WH_ParentConnect(s32 mode, u16 a, u16 b) {
     case 4:
         return WH_StateInSetParentParam();
     default:
-        if (data_022c197c != NULL)
-            data_022c197c(data_02078764, mode);
+        if (sTraceFunc != NULL)
+            sTraceFunc(data_02078764, mode);
         return FALSE;
     }
 }

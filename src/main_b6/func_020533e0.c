@@ -33,7 +33,7 @@ typedef s32 Tbl_020533e0[6];
 
 extern UnkTask_020533e0 *gNaviMsgTask;
 extern s32 data_0207b894;
-extern UnkState_020533e0 data_022c4560;
+extern UnkState_020533e0 gGameState;
 extern UnkProg_020533e0 gSaveData;
 extern Tbl_020533e0 data_0207567c[];
 extern Tbl_020533e0 data_02075680[];
@@ -50,7 +50,7 @@ extern Tbl_020533e0 data_020756b8[];
 extern Tbl_020533e0 data_020756bc[];
 extern Tbl_020533e0 data_020756c0[];
 
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void func_02052af8(UnkWork_020533e0 *w, s32 a, s32 b);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 
@@ -63,14 +63,14 @@ void func_020533e0(s32 a, s32 b) {
             return;
         if (a != 0x11)
             return;
-        func_020366f4(0, 0, 0xcd);
+        Sound_PlayVoice(0, 0, 0xcd);
         return;
     }
     w = gNaviMsgTask->work;
     if (w->mode == 0) {
-        if (data_022c4560.unk0 == 0 && gSaveData.unkc < 3)
+        if (gGameState.unk0 == 0 && gSaveData.unkc < 3)
             return;
-        if (data_022c4560.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c)))
+        if (gGameState.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c)))
             return;
     }
     func_02052af8(w, a, b);
@@ -85,7 +85,7 @@ void func_020533e0(s32 a, s32 b) {
             w->unk10c = 0x14;
             break;
         case 0x11:
-            if (data_022c4560.zone == 6) {
+            if (gGameState.zone == 6) {
                 w->unk108 = data_02075684[w->idx][0];
             } else {
                 gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -101,7 +101,7 @@ void func_020533e0(s32 a, s32 b) {
             w->unk10c = 0x14;
             break;
         case 0x13:
-            if (data_022c4560.zone != 7) {
+            if (gGameState.zone != 7) {
                 w->unk108 = data_0207568c[w->idx][0];
                 w->unk10c = 1;
             } else {
@@ -151,5 +151,5 @@ void func_020533e0(s32 a, s32 b) {
     if (snd == -1)
         return;
     NNS_SndPlayerStopSeq(w->unk114, 0);
-    func_020366f4((s32)w->unk114, data_0207566c[w->idx], snd);
+    Sound_PlayVoice((s32)w->unk114, data_0207566c[w->idx], snd);
 }

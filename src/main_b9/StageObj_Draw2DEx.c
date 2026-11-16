@@ -42,7 +42,7 @@ typedef struct {
 } UnkCam_0206b768;
 
 extern u32 gObjManagerFlags;
-extern UnkCam_0206b768 data_ov000_0236aad8;
+extern UnkCam_0206b768 gCamera;
 extern s8 data_022c4eec[2];
 extern s16 data_0207cf78;
 extern s16 data_0207cf7c;
@@ -89,8 +89,8 @@ void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, UnkObj_0206b768 *o, UnkSpr_0206b768
         s2->flags |= s->flags & ~0x80000;
     }
     if ((gObjManagerFlags & 4) && !(f & 0x80)) {
-        ox = data_ov000_0236aad8.unk4 >> 8;
-        oy = data_ov000_0236aad8.unk8 >> 8;
+        ox = gCamera.unk4 >> 8;
+        oy = gCamera.unk8 >> 8;
     }
     if (!(f & 0x2000)) {
         s->x = (x >> 8) - ox;
@@ -102,8 +102,8 @@ void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, UnkObj_0206b768 *o, UnkSpr_0206b768
     }
     if (s2 != NULL) {
         if ((gObjManagerFlags & 4) && !(f & 0x80)) {
-            ox = data_ov000_0236aad8.unk68 >> 8;
-            oy = data_ov000_0236aad8.unk6C >> 8;
+            ox = gCamera.unk68 >> 8;
+            oy = gCamera.unk6C >> 8;
         }
         if (!(f & 0x2000)) {
             s2->x = (x >> 8) - ox;

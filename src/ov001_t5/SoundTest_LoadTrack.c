@@ -37,17 +37,17 @@ extern void *gSoundHeap;
 
 void Sound_ResetHeap(void);
 void sprintf(char *buf, const void *fmt, const char *s);
-void func_02036854(char *buf);
+void Sound_LoadSoundArchive(char *buf);
 void NNS_SndArcLoadGroup(u8 a, void *b);
 s32 File_Load(char *buf, s32 a);
-void func_02036820(s32 a);
+void Sound_LoadSoundArchiveFromMemory(s32 a);
 void func_020203bc(s32 a, void *b);
 void func_020201b0(void *a);
 void func_02020230(void *a, u16 id, s32 b);
 void Sound_PlaySeq(s32 a, u16 id);
 u8 *NNS_SndArcGetSeqParam(u16 id);
 void Sound_PlaySeqArc(s32 a, u8 b, u16 id);
-void func_020366f4(s32 a, u8 b, u16 id);
+void Sound_PlayVoice(s32 a, u8 b, u16 id);
 void func_0201cf4c(s32 a, s32 b, s32 c, s32 d, s32 e, void (*fn)(void *), void *arg);
 void SoundTest_SamplingCallback(void *p);
 
@@ -73,11 +73,11 @@ void SoundTest_LoadTrack(UnkStruct_022c93e0 *p, s32 idx) {
     p->unkc = 0;
     sprintf(buf, data_ov001_0231abc8, gSoundTestArchiveNameTable[e->unk29]);
     if (e->unk29 == 0) {
-        func_02036854(buf);
+        Sound_LoadSoundArchive(buf);
         NNS_SndArcLoadGroup(e->unk2b, gSoundHeap);
     } else {
         p->unk1b0 = File_Load(buf, -1);
-        func_02036820(p->unk1b0);
+        Sound_LoadSoundArchiveFromMemory(p->unk1b0);
     }
     switch (e->type) {
     case 0:
@@ -105,7 +105,7 @@ void SoundTest_LoadTrack(UnkStruct_022c93e0 *p, s32 idx) {
         p->unk8 = 1;
         break;
     case 2:
-        func_020366f4(0, e->unk2c, e->id);
+        Sound_PlayVoice(0, e->unk2c, e->id);
         p->unk4 = 0;
         p->unk8 = 1;
         break;

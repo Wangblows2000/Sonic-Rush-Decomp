@@ -5,7 +5,7 @@ extern u32 gGameLanguage;
 extern u32 data_02075b6c;
 extern u32 data_020763e4;
 extern u32 data_0207c460;
-extern u32 data_022c4678;
+extern u32 gPlayerDemoId;
 extern void File_LoadArchiveEntry(void);
 
 #pragma thumb on
@@ -60,7 +60,7 @@ _54:
     bx r3
     mov r8, r8
     dcd data_020763e4
-    dcd data_022c4678
+    dcd gPlayerDemoId
     dcd gGameLanguage
     dcd data_0207c460
     dcd data_02075b6c

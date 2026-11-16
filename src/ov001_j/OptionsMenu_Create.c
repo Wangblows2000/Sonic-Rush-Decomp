@@ -67,8 +67,8 @@ UnkTask_022cdfdc *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void OptionsMenu_Main(void);
 void Options_CreateFadeTask(s32 a, s32 b, s32 c, s32 d);
-void func_02040ef0(UnkAnim_022cdfdc *a, void *res, s32 id);
-void func_02040e48(UnkAnim_022cdfdc *a);
+void KeyframeAnim_Init(UnkAnim_022cdfdc *a, void *res, s32 id);
+void KeyframeAnim_SetToLastFrame(UnkAnim_022cdfdc *a);
 void func_ov001_022cb438(UnkWork_022cdfdc *w);
 
 static inline void MI_CpuClear16_022cdfdc(void *dest, u32 size) {
@@ -114,20 +114,20 @@ void OptionsMenu_Create(UnkStruct_022cdfdc *p, s32 a, s32 b) {
     w->unk30 = b;
     res = p->res;
     sub = &p->sub;
-    func_02040ef0(&w->animB, res, sub->unk38);
-    func_02040e48(&w->animB);
-    func_02040ef0(&w->animA, res, sub->unk30);
-    func_02040e48(&w->animA);
-    func_02040ef0(&w->animC, res, sub->unk40);
-    func_02040e48(&w->animC);
+    KeyframeAnim_Init(&w->animB, res, sub->unk38);
+    KeyframeAnim_SetToLastFrame(&w->animB);
+    KeyframeAnim_Init(&w->animA, res, sub->unk30);
+    KeyframeAnim_SetToLastFrame(&w->animA);
+    KeyframeAnim_Init(&w->animC, res, sub->unk40);
+    KeyframeAnim_SetToLastFrame(&w->animC);
     for (i = 0, k = 0; i < 6; i++) {
         if (w->items[i].id != 7) {
             if (i == w->unk4) {
-                func_02040ef0(&w->items[i].anim, res, sub->unk10);
+                KeyframeAnim_Init(&w->items[i].anim, res, sub->unk10);
             } else {
-                func_02040ef0(&w->items[i].anim, res, sub->unk14);
+                KeyframeAnim_Init(&w->items[i].anim, res, sub->unk14);
             }
-            func_02040e48(&w->items[i].anim);
+            KeyframeAnim_SetToLastFrame(&w->items[i].anim);
             k++;
         }
     }

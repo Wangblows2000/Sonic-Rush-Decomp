@@ -25,7 +25,7 @@ typedef struct UnkStruct_02305648_t {
 extern s32 data_ov001_0231f520;
 extern s32 data_ov001_0231f524;
 
-UnkStruct_02305648_t *func_ov001_02300c94(void);
+UnkStruct_02305648_t *ExtraBoss_GetPlayer(void);
 UnkStruct_02305648_g *ExtraBoss_GetWork(void);
 
 void func_ov001_02305648(void) {
@@ -37,7 +37,7 @@ void func_ov001_02305648(void) {
     s32 dd;
     s32 sp;
 
-    t = func_ov001_02300c94();
+    t = ExtraBoss_GetPlayer();
     g = ExtraBoss_GetWork();
     {
         s32 tx = t->x;

@@ -6,7 +6,7 @@
 s32 func_ov001_022e3398();
 s32 func_ov001_022e8528();
 s32 func_ov001_022e8514();
-s32 func_ov001_022e849c();
+s32 ZoneMap_ReleaseAssets();
 extern u8 gPad[];
 s32 Pad_Reset();
 s32 Touch_Disable();
@@ -18,7 +18,7 @@ void ZoneMap_Destructor(u8 *p0) {
     *(u32 *)((u8 *)t0 + 0x1cc4) = 0;
     func_ov001_022e8528(t0, 0);
     func_ov001_022e8514(t0);
-    func_ov001_022e849c(t0);
+    ZoneMap_ReleaseAssets(t0);
     Pad_Reset(gPad, 0, 0);
     Touch_Disable();
     SysSound_Release();

@@ -25,13 +25,13 @@ typedef struct {
     void *unk68;
 } UnkStruct_022f67c8;
 
-extern UnkStruct_022f67c8_g *data_ov000_02369b84;
+extern UnkStruct_022f67c8_g *gBossF;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void BossFPartDE_State_Unk_ov000_022f67a8(UnkStruct_022f67c8 *p);
 
 void BossFPartDE_State_Unk_ov000_022f67c8(UnkStruct_022f67c8 *p) {
-    UnkStruct_022f67c8_t *t = data_ov000_02369b84->unk218;
+    UnkStruct_022f67c8_t *t = gBossF->unk218;
 
     p->unk10 = t->unk10;
     p->unk14 = -t->unk368 >> 4;

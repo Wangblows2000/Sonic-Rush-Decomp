@@ -17,13 +17,13 @@ extern UnkStruct_02361478_Task *gTaskCurrent;
 
 void *func_020514e4(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_0205002c(void);
+void MsgBox_Destroy(void);
 void Task_DestroyByTag(s32 a);
 BOOL func_020513a8(void);
-void func_02051628(s32 a);
-void func_0204d6d0(s32 a);
+void Wireless_EnableErrorCallback(s32 a);
+void StageStart_Create(s32 a);
 void SysSound_Release(void);
-void func_02052458(u8 a, u8 b);
+void Game_StartVsStage(u8 a, u8 b);
 void func_ov000_023611f8(UnkStruct_02361478 *w);
 void func_ov000_0236119c(UnkStruct_02361478 *w, s32 a, s32 b);
 
@@ -45,15 +45,15 @@ void func_ov000_02361478(void) {
         n = w->unkC;
         a = n / 2;
         b = n % 2;
-        func_0205002c();
+        MsgBox_Destroy();
         Task_DestroyByTag(0x1000);
         if (func_020513a8()) {
-            func_02051628(1);
-            func_0204d6d0(0);
+            Wireless_EnableErrorCallback(1);
+            StageStart_Create(0);
             return;
         }
         SysSound_Release();
-        func_02052458(a, b);
+        Game_StartVsStage(a, b);
         return;
     }
     func_ov000_023611f8(w);

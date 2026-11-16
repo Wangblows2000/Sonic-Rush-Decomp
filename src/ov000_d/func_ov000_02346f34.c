@@ -19,8 +19,8 @@ typedef struct UnkStruct_02346f34 {
     void (*unk334)(struct UnkStruct_02346f34 *w);
 } UnkStruct_02346f34;
 
-void func_ov000_0234a064(UnkStruct_02346f34 *w, u8 ang);
-s32 func_02066a9c(s32 x, s32 y, u8 a, s32 b, u8 *ang, s32 c);
+void Player_Action_LandOnGround(UnkStruct_02346f34 *w, u8 ang);
+s32 MapCollision_ProbeDistance(s32 x, s32 y, u8 a, s32 b, u8 *ang, s32 c);
 
 void func_ov000_02346f34(UnkStruct_02346f34 *w) {
     u8 ang;
@@ -35,27 +35,27 @@ void func_ov000_02346f34(UnkStruct_02346f34 *w) {
         return;
     }
     if (fl & 1) {
-        func_ov000_0234a064(w, ang);
+        Player_Action_LandOnGround(w, ang);
     } else if (fl & 2) {
         if (w->unk5C & 1) {
-            func_ov000_0234a064(w, 0x60);
+            Player_Action_LandOnGround(w, 0x60);
         } else {
-            func_ov000_0234a064(w, 0xa0);
+            Player_Action_LandOnGround(w, 0xa0);
         }
         ang = w->unk1;
-        func_02066a9c(w->unk10 >> 8, (w->unk14 >> 8) + w->unk65 - 4, w->unk54 & 1, 3, &ang, 0);
+        MapCollision_ProbeDistance(w->unk10 >> 8, (w->unk14 >> 8) + w->unk65 - 4, w->unk54 & 1, 3, &ang, 0);
         w->unk1 = ang;
     } else if (fl & 4) {
         if (w->unk5C & 1) {
-            func_ov000_0234a064(w, 0x40);
+            Player_Action_LandOnGround(w, 0x40);
         } else {
-            func_ov000_0234a064(w, 0xc0);
+            Player_Action_LandOnGround(w, 0xc0);
         }
     } else if (fl & 8) {
         if (w->unk5C & 1) {
-            func_ov000_0234a064(w, 0xc0);
+            Player_Action_LandOnGround(w, 0xc0);
         } else {
-            func_ov000_0234a064(w, 0x40);
+            Player_Action_LandOnGround(w, 0x40);
         }
     }
     if (w->unk330 & 2) {

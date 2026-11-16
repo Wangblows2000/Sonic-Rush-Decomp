@@ -45,19 +45,19 @@ typedef struct {
     s32 unk0;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022eee38 *data_ov000_02369b78;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022eee38 *gBoss7;
+extern UnkStruct_02369ac0 gBossStatus;
 extern void *data_ov000_02369b7c[];
 extern void *gZoneActArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02365b30[], data_ov000_02365b34[];
 extern u8 data_ov000_02365b38[], data_ov000_02365b4c[], data_ov000_02365b64[], data_ov000_02365b78[], data_ov000_02365b90[], data_ov000_02365ba8[], data_ov000_02365bc0[], data_ov000_02365bd4[], data_ov000_02365bf0[], data_ov000_02365c0c[], data_ov000_02365c28[], data_ov000_02365c3c[];
 
 void Boss7_Destructor(void);
-void func_ov000_022ee420(void);
-void Boss7_State_Unk_ov000_022edd80(void);
+void Boss7FrameCounter_Main(void);
+void Boss7_State_WaitForStart(void);
 void Boss7_Draw(void);
-u16 func_ov000_022c5f28(void);
+u16 Boss_GetStartHealth(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void NNS_G3dResDefaultSetup(void *p);
@@ -83,19 +83,19 @@ UnkStruct_022eee38 *Boss7_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     if (p->unk0 == 0xff && p->unk1 == 0xff)
         return NULL;
     task = Task_Create(StageObj_Main, Boss7_Destructor, 0, 0x500, 2, sizeof(UnkStruct_022eee38));
-    Task_Create(func_ov000_022ee420, 0, 0, 0x503, 2, 0);
+    Task_Create(Boss7FrameCounter_Main, 0, 0, 0x503, 2, 0);
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022eee38));
-    data_ov000_02369b78 = w;
-    w->base.unk68 = Boss7_State_Unk_ov000_022edd80;
+    gBoss7 = w;
+    w->base.unk68 = Boss7_State_WaitForStart;
     w->unk22E = Rand();
     w->unk388 = Sound_AllocHandle();
     zero2 = 0;
-    MIi_CpuClear16(zero2, &data_ov000_02369ac0, sizeof(UnkStruct_02369ac0));
-    data_ov000_02369ac0.unk4 = 0x24;
-    data_ov000_02369ac0.unk8 = func_ov000_022c5f28();
-    data_ov000_02369ac0.unkA = func_ov000_022c5f28();
+    MIi_CpuClear16(zero2, &gBossStatus, sizeof(UnkStruct_02369ac0));
+    gBossStatus.unk4 = 0x24;
+    gBossStatus.unk8 = Boss_GetStartHealth();
+    gBossStatus.unkA = Boss_GetStartHealth();
     func_02021310(ctx, data_ov000_02365b30, gZoneActArchive);
     w->unk240 = func_02021264(ctx, 8);
     w->unk244 = func_02021264(ctx, 9);
@@ -123,7 +123,7 @@ UnkStruct_022eee38 *Boss7_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     Model_Init(sub, 0);
     Model_SetResource(sub, w->unk23C, 0);
     Model_SetAnimation(sub, 0, w->unk240, 3, 0);
-    Model_SetAnimation(sub, 4, w->unk244, data_022c4560.unk0 == 0 ? 4 : 3, 0);
+    Model_SetAnimation(sub, 4, w->unk244, gGameState.unk0 == 0 ? 4 : 3, 0);
     sub->unk10C |= 4;
     sub->unk110 |= 4;
     sub->unk48 = w->base.unk10 << 4;

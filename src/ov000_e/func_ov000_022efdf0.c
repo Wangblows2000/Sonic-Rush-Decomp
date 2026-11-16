@@ -46,8 +46,8 @@ typedef struct {
     u32 unk0;
 } UnkStruct_022c4560;
 
-extern UnkStruct_Boss *data_ov000_02369b84;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_Boss *gBossF;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_StageObj *gPlayers;
 extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_0236a444 data_ov000_0236a444;
@@ -61,11 +61,11 @@ void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022efd08(void);
 
 void func_ov000_022efdf0(UnkStruct_022efdf0 *s) {
-    UnkStruct_Boss *b = data_ov000_02369b84;
+    UnkStruct_Boss *b = gBossF;
 
     func_ov000_022f9044(s);
     func_ov000_022f4cbc(s);
-    func_ov000_022f8b70(data_022c4560.unk0, 0);
+    func_ov000_022f8b70(gGameState.unk0, 0);
     Model_SetAnimation(b->unk244, 0, b->unk224, 2, 0);
     Model_SetAnimation(b->unk244, 4, b->unk228, 1, 0);
     BossEffect_CreateBaseDest(0, 0x1a000, 0x30000, 0);

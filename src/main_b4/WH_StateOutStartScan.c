@@ -20,7 +20,7 @@ typedef struct {
 } UnkStruct_022c1a00;
 
 extern s32 sSysState;
-extern void (*data_022c197c)(const char *fmt, ...);
+extern void (*sTraceFunc)(const char *fmt, ...);
 extern void (*data_022c1968)(void *p, UnkRes_0203f5a0 *r);
 extern s32 data_022c1974;
 extern u16 data_022c1940;
@@ -53,23 +53,23 @@ void WH_StateOutStartScan(UnkRes_0203f5a0 *r) {
     if (r->unk8 == 3)
         return;
     if (r->unk8 != 4 && r->unk8 == 5) {
-        if (data_022c197c != NULL)
-            data_022c197c(data_0207893c, r->mac[0], r->mac[1], r->mac[2], r->mac[3], r->mac[4], r->mac[5]);
+        if (sTraceFunc != NULL)
+            sTraceFunc(data_0207893c, r->mac[0], r->mac[1], r->mac[2], r->mac[3], r->mac[4], r->mac[5]);
         DC_InvalidateRange(data_022c1ae0, 0xc0);
         if (data_022c1974 != 0 && func_0201b0e8(data_022c1ae0)) {
-            if (data_022c197c != NULL)
-                data_022c197c(data_02078974);
+            if (sTraceFunc != NULL)
+                sTraceFunc(data_02078974);
             if (data_022c1968 != NULL)
                 data_022c1968(data_022c1ae0, r);
         } else if (r->unk36 < 8 || r->unk3c != sParentParam.unk8) {
-            if (data_022c197c != NULL)
-                data_022c197c(data_0207898c);
+            if (sTraceFunc != NULL)
+                sTraceFunc(data_0207898c);
         } else if ((r->unk43 & 3) != 1) {
-            if (data_022c197c != NULL)
-                data_022c197c(data_020789a4);
+            if (sTraceFunc != NULL)
+                sTraceFunc(data_020789a4);
         } else {
-            if (data_022c197c != NULL)
-                data_022c197c(data_020789b8);
+            if (sTraceFunc != NULL)
+                sTraceFunc(data_020789b8);
             if (data_022c1968 != NULL)
                 data_022c1968(data_022c1ae0, r);
             if (data_022c1940 != 0) {

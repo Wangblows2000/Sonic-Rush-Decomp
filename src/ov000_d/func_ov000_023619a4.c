@@ -38,7 +38,7 @@ void func_ov000_023611f8(UnkStruct_023619a4 *w);
 void func_ov000_0236119c(UnkStruct_023619a4 *w, s32 a, s32 b);
 UnkStruct_023619a4_Sync *func_020514e4(void);
 BOOL func_ov000_0235fb24(UnkStruct_023619a4 *w);
-void func_02051628(s32 a);
+void Wireless_EnableErrorCallback(s32 a);
 void func_ov000_0235f850(s32 x, s32 y, s32 a, s32 b);
 void func_ov000_02361478(void);
 
@@ -59,7 +59,7 @@ void func_ov000_023619a4(void) {
     }
     if ((w->unk18 && w->unk1C) || w->unk0 >= 0xc8) {
         w->unk0 = 0;
-        func_02051628(0);
+        Wireless_EnableErrorCallback(0);
         func_ov000_0235f850(0, 0x10, 0x10, 0);
         gTaskCurrent->unk8 = func_ov000_02361478;
     }

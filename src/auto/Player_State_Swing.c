@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0235154c();
+s32 Player_SwingAroundPivot();
 s32 func_ov000_02351300();
 s32 Sound_PlaySeqArcEx();
 
@@ -9,7 +9,7 @@ void Player_State_Swing(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0x3e8) != 0) {
         s32 t0 = (*(u32 *)((u8 *)p0 + 0x32c) & 1);
         if (t0 != 0) {
-            func_ov000_0235154c(p0, t0);
+            Player_SwingAroundPivot(p0, t0);
             s32 t1 = *(u32 *)((u8 *)p0 + 0x3f0);
             if (*(u32 *)((u8 *)p0 + 0x3f4) == t1) {
                 *(u32 *)((u8 *)p0 + 0x3e8) = 0;

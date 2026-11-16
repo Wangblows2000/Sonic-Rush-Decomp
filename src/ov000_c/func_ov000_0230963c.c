@@ -26,7 +26,7 @@ typedef struct {
     u16 unk21C;
 } UnkStruct_0230963c;
 
-extern UnkStruct_Plr data_ov000_0236aad8[];
+extern UnkStruct_Plr gCamera[];
 extern UnkStruct_Map data_ov000_0236abd8;
 extern UnkStruct_StageObj *gPlayers[];
 
@@ -46,7 +46,7 @@ void func_ov000_0230963c(UnkStruct_0230963c *w) {
 
     func_ov000_02342348(w->unk214);
     w->unk20C |= 8;
-    if (!(data_ov000_0236aad8[2].unk0 & 1)) {
+    if (!(gCamera[2].unk0 & 1)) {
         u16 x = w->base.unk10 >> 8;
         u16 y = w->base.unk14 >> 8;
         s32 x0, y0, x1, y1;
@@ -75,14 +75,14 @@ void func_ov000_0230963c(UnkStruct_0230963c *w) {
     }
     if (w->unk20C & 2)
         func_ov000_0232d620();
-    if (data_ov000_0236aad8[2].unk0 & 1) {
-        data_ov000_0236aad8[0].unk34 |= 0x10000;
-        data_ov000_0236aad8[1].unk34 |= 0x10000;
+    if (gCamera[2].unk0 & 1) {
+        gCamera[0].unk34 |= 0x10000;
+        gCamera[1].unk34 |= 0x10000;
     } else {
         if (w->unk20C & 2)
-            data_ov000_0236aad8[0].unk34 |= 0x10000;
+            gCamera[0].unk34 |= 0x10000;
         if (w->unk20C & 4)
-            data_ov000_0236aad8[1].unk34 |= 0x10000;
+            gCamera[1].unk34 |= 0x10000;
     }
     w->base.unk68 = MapObj8C_State_Unk_ov000_023094f0;
 }

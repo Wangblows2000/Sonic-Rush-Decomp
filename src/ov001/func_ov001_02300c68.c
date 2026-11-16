@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-extern s32 *data_ov001_0231f530;
+extern s32 *gExtraBossPlayerManager;
 
 BOOL func_ov001_02300c68(void) {
-    if (data_ov001_0231f530 == NULL) {
+    if (gExtraBossPlayerManager == NULL) {
         return FALSE;
     }
-    return data_ov001_0231f530[1] != 0;
+    return gExtraBossPlayerManager[1] != 0;
 }

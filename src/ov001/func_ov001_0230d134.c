@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-extern s32 *data_ov001_0231f654;
+extern s32 *gSpecialStageMap;
 
 s32 func_ov001_0230d134(void) {
-    return data_ov001_0231f654[14];
+    return gSpecialStageMap[14];
 }

@@ -46,8 +46,8 @@ typedef struct {
     u32 unk34;
 } UnkStruct_0233a118_4590;
 
-extern UnkStruct_0233a118 data_ov000_0236aad8;
-extern UnkStruct_0233a118_4560 data_022c4560;
+extern UnkStruct_0233a118 gCamera;
+extern UnkStruct_0233a118_4560 gGameState;
 extern UnkStruct_0233a118_4590 data_022c4590;
 
 s32 func_ov000_0233b078(s32 v);
@@ -58,15 +58,15 @@ void func_ov000_0233a118(void) {
     u32 i;
     UnkPlayer_0233a118 *p;
 
-    data_ov000_0236aad8.flags |= 1;
-    data_ov000_0236aad8.flags &= ~4;
-    data_ov000_0236aad8.unkD0 = 0x5000;
-    data_ov000_0236aad8.p[0].unk3A = 0;
-    data_ov000_0236aad8.p[1].unk3A = -1;
-    data_ov000_0236aad8.p[0].unk3C = 0x8000;
-    data_ov000_0236aad8.p[0].unk40 = 0x6000;
-    if (!(data_ov000_0236aad8.flags & 4)) {
-        if (data_022c4560.unk18 & 0x40) {
+    gCamera.flags |= 1;
+    gCamera.flags &= ~4;
+    gCamera.unkD0 = 0x5000;
+    gCamera.p[0].unk3A = 0;
+    gCamera.p[1].unk3A = -1;
+    gCamera.p[0].unk3C = 0x8000;
+    gCamera.p[0].unk40 = 0x6000;
+    if (!(gCamera.flags & 4)) {
+        if (gGameState.unk18 & 0x40) {
             v = data_022c4590.unk30;
             lim = data_022c4590.unk34;
         } else {
@@ -75,25 +75,25 @@ void func_ov000_0233a118(void) {
         }
         if ((u32)(func_ov000_0233b078(v << 8) >> 8) >= lim) {
             *(vu16 *)0x4000304 |= 0x8000;
-            data_ov000_0236aad8.flags &= ~2;
-            data_ov000_0236aad8.unkD4 = 0;
-            data_ov000_0236aad8.unkD8 = 0x11000;
+            gCamera.flags &= ~2;
+            gCamera.unkD4 = 0;
+            gCamera.unkD8 = 0x11000;
         } else {
             *(vu16 *)0x4000304 &= ~0x8000;
-            data_ov000_0236aad8.flags |= 2;
-            data_ov000_0236aad8.unkD4 = 0;
-            data_ov000_0236aad8.unkD8 = -0x11000;
+            gCamera.flags |= 2;
+            gCamera.unkD4 = 0;
+            gCamera.unkD8 = -0x11000;
         }
     }
-    p = data_ov000_0236aad8.p;
+    p = gCamera.p;
     for (i = 0; i < 2; i++, p++) {
         p->flags |= 0xF;
         p->flags |= 0x30000;
         p->unk1E = 0x100;
         p->unk20 = 0x100;
-        p->unk4C = data_ov000_0236aad8.unk114;
-        p->unk50 = data_ov000_0236aad8.unk118;
-        p->unk54 = data_ov000_0236aad8.unk11C;
-        p->unk58 = data_ov000_0236aad8.unk120;
+        p->unk4C = gCamera.unk114;
+        p->unk50 = gCamera.unk118;
+        p->unk54 = gCamera.unk11C;
+        p->unk58 = gCamera.unk120;
     }
 }

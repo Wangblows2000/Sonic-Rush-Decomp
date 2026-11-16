@@ -18,7 +18,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 s16 ObjSpd_DownSet(s32 v, s32 d);
 void func_ov000_0231e06c(UnkStruct_0231dee0 *w);
@@ -34,7 +34,7 @@ void func_ov000_0231dee0(UnkStruct_0231dee0 *w) {
         w->base.unk58 &= ~0x10;
         if (w->unk194 & 0x30) {
             if (w->base.unkC == 0) {
-                if (!(data_022c4560.unk20 & 7)) {
+                if (!(gGameState.unk20 & 7)) {
                     func_ov000_0231e06c(w);
                     return;
                 }

@@ -60,8 +60,8 @@ typedef struct {
     s32 unk40;
 } UnkStruct_0236a444;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern s32 data_ov000_02363a18[][8][4];
 

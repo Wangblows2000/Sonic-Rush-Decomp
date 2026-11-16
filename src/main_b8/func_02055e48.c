@@ -9,7 +9,7 @@ typedef struct {
     u8 act;
 } UnkObj_02055e48;
 
-extern UnkState_02055e48 data_022c4678;
+extern UnkState_02055e48 gPlayerDemoId;
 
 u16 *func_02056e94(u8 zone, u8 act);
 s16 (*func_02056f10(u8 zone, u8 act))[3];
@@ -18,7 +18,7 @@ void func_02022284(s32 a, s32 x, s32 y, s32 z);
 
 #pragma thumb on
 void func_02055e48(UnkObj_02055e48 *o) {
-    u8 zone = data_022c4678.idx;
+    u8 zone = gPlayerDemoId.idx;
     u8 act = o->act;
     u8 i;
     s16 (*p)[3];

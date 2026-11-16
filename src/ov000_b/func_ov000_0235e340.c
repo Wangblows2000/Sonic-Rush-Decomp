@@ -32,7 +32,7 @@ void func_0205a4ec(s32 a);
 void Task_DestroyAll(void);
 BOOL func_ov000_0235cbd8(void);
 void func_ov000_0235caf8(s32 a);
-void func_020516b4(void);
+void WirelessSession_Stop(void);
 void func_ov000_0235e1c4(void);
 
 #pragma thumb on
@@ -76,7 +76,7 @@ void func_ov000_0235e340(void) {
             return;
         }
         if (next == 2) {
-            func_020516b4();
+            WirelessSession_Stop();
             func_ov000_0235e1c4();
             return;
         }

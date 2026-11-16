@@ -5,7 +5,7 @@ extern UnkWork_020519b0 *gSysSound;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
-void func_020366f4(void *a, s32 b, s32 c);
+void Sound_PlayVoice(void *a, s32 b, s32 c);
 
 #pragma thumb on
 void func_020519b0(s32 n) {
@@ -53,13 +53,13 @@ void func_020519b0(s32 n) {
             NNS_SndPlayerStopSeq(&gSysSound->snd[3], 0);
             NNS_SndHandleReleaseSeq(&gSysSound->snd[3]);
         }
-        func_020366f4(&gSysSound->snd[3], a, b);
+        Sound_PlayVoice(&gSysSound->snd[3], a, b);
     } else {
         if (gSysSound->snd[4] != NULL) {
             NNS_SndPlayerStopSeq(&gSysSound->snd[4], 0);
             NNS_SndHandleReleaseSeq(&gSysSound->snd[4]);
         }
-        func_020366f4(&gSysSound->snd[4], a, b);
+        Sound_PlayVoice(&gSysSound->snd[4], a, b);
     }
 }
 #pragma thumb reset

@@ -23,7 +23,7 @@ typedef struct {
 } UnkRes_022e8a24;
 
 extern UnkPad_022e8a24 gPad;
-extern s32 data_022c4560;
+extern s32 gGameState;
 extern UnkStruct_022c4680 gSaveData;
 extern s32 gSaveDataBusy;
 extern u32 gSystemFlags;
@@ -31,7 +31,7 @@ extern u32 gSystemFlags;
 void func_0204ec40(void);
 UnkWork_022e8a24 *ZoneMap_Create(void);
 void ZoneMap_LoadAssets(void);
-void func_ov001_022e8784(UnkWork_022e8a24 *w);
+void ZoneMap_InitDisplay(UnkWork_022e8a24 *w);
 void func_ov001_022e870c(UnkWork_022e8a24 *w);
 void SysSound_Init(void);
 s32 ZoneMap_IsBlaze(void);
@@ -51,7 +51,7 @@ void ZoneMap_Start(s32 a, s32 b) {
     func_0204ec40();
     w = ZoneMap_Create();
     ZoneMap_LoadAssets();
-    func_ov001_022e8784(w);
+    ZoneMap_InitDisplay(w);
     func_ov001_022e870c(w);
     SysSound_Init();
     w->unk1cc4 = func_ov001_022e33c0(ZoneMap_IsBlaze(), a);
@@ -64,7 +64,7 @@ void ZoneMap_Start(s32 a, s32 b) {
     Touch_Enable();
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1900;
     flag = FALSE;
-    if (data_022c4560 == 0) {
+    if (gGameState == 0) {
         if (r->unk4 >= 0x1f) flag = TRUE;
     } else {
         if (r->unk8 >= 0x1e) flag = TRUE;

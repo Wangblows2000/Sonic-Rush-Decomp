@@ -3,27 +3,27 @@
 
 #pragma thumb on
 
-s32 func_02042958();
-s32 func_02054dbc();
-extern u8 data_0207ad9c[];
-s32 func_02051628();
+s32 WirelessMgr_GetStatus();
+s32 Wireless_OnError();
+extern u8 gWirelessSession[];
+s32 Wireless_EnableErrorCallback();
 s32 func_02051384();
 
 s32 func_020514ec(void) {
-    s32 t0 = func_02042958();
+    s32 t0 = WirelessMgr_GetStatus();
     if (t0 == 7) {
-        func_02054dbc();
+        Wireless_OnError();
         return 0;
     }
-    s32 t1 = func_02042958(t0);
+    s32 t1 = WirelessMgr_GetStatus(t0);
     if (t1 != 6) {
         return 0;
     }
-    if (*(u16 *)data_0207ad9c == 0) {
-        func_02051628(1);
+    if (*(u16 *)gWirelessSession == 0) {
+        Wireless_EnableErrorCallback(1);
         func_02051384();
     } else {
-        func_02051628(0);
+        Wireless_EnableErrorCallback(0);
     }
     return 1;
 }

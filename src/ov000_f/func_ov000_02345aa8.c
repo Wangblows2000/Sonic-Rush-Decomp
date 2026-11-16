@@ -30,7 +30,7 @@ typedef struct {
     u8 pad4[0x60];
 } UnkStruct_02345aa8_L;
 
-extern UnkStruct_02345aa8_L data_ov000_0236aad8[];
+extern UnkStruct_02345aa8_L gCamera[];
 extern UnkStruct_02345aa8_L data_ov000_0236aadc[];
 extern UnkStruct_02345aa8_L data_ov000_0236aae0[];
 extern u32 gObjManagerFlags;
@@ -54,7 +54,7 @@ void func_ov000_02345aa8(UnkStruct_02345aa8 *w) {
         return;
     }
     if (w->unk330 & 0x10) {
-        if (!(data_ov000_0236aad8[w->unk327].v & 0x40)) {
+        if (!(gCamera[w->unk327].v & 0x40)) {
             func_ov000_0233b1b8(w->unk327);
         }
         if (w->unk3E8 != NULL) {
@@ -77,7 +77,7 @@ void func_ov000_02345aa8(UnkStruct_02345aa8 *w) {
         }
     } else {
         w->unk330 &= ~0x40;
-        if (data_ov000_0236aad8[w->unk327].v & 0xc0) {
+        if (gCamera[w->unk327].v & 0xc0) {
             if (ABS_02345aa8(data_ov000_0236aadc[w->unk327].v - (w->x - 0x8000)) > 0x80) {
                 data_ov000_0236aadc[w->unk327].v += ((w->x - 0x8000) - data_ov000_0236aadc[w->unk327].v) >> 2;
             } else {
@@ -91,7 +91,7 @@ void func_ov000_02345aa8(UnkStruct_02345aa8 *w) {
         }
     }
     if (w->unk330 & 0x20) {
-        if (!(data_ov000_0236aad8[w->unk327].v & 0x80)) {
+        if (!(gCamera[w->unk327].v & 0x80)) {
             func_ov000_0233b198(w->unk327);
         }
         if (w->unk3E8 != NULL) {
@@ -111,7 +111,7 @@ void func_ov000_02345aa8(UnkStruct_02345aa8 *w) {
         return;
     }
     w->unk330 &= ~0x80;
-    if (!(data_ov000_0236aad8[w->unk327].v & 0x80)) {
+    if (!(gCamera[w->unk327].v & 0x80)) {
         return;
     }
     if (ABS_02345aa8(data_ov000_0236aae0[w->unk327].v - (w->y - 0x6000)) > 0x80) {

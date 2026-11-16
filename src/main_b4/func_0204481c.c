@@ -45,7 +45,7 @@ typedef struct {
 
 extern UnkTask_0204481c *gTaskCurrent;
 extern UnkDisp_0204481c *gDisplayTable[];
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u16 data_02073264[];
 extern s16 data_02073274[];
 extern s16 data_02073276[];
@@ -53,7 +53,7 @@ extern s16 data_02073276[];
 void func_02044ad0(void);
 void G2x_SetBlendAlpha_(vu32 *p, u32 a, u32 b, u32 c, u32 d);
 void AnimatorSprite_DrawRotScale(UnkSpr_0204481c *s, s32 sx, s32 sy, s32 r);
-void func_02044798(UnkObj_0204481c *o, s32 idx, u16 c);
+void NaviB_DrawIcons(UnkObj_0204481c *o, s32 idx, u16 c);
 
 static inline s32 FX_Mul_0204481c(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -83,7 +83,7 @@ void func_0204481c(void) {
     w->unk0 += 0x100;
     if (w->unk0 >= 0x1000) {
         gTaskCurrent->fn = func_02044ad0;
-        w->unk8 = data_ov000_02369ac0.unk8;
+        w->unk8 = gBossStatus.unk8;
         G2x_SetBlendAlpha_((vu32 *)0x4001050, 0, 0, 0x1f, 0x1f);
         gDisplayTable[1]->unk20 = 0x40;
         gDisplayTable[1]->unk22 = 0x1f1f;
@@ -108,5 +108,5 @@ void func_0204481c(void) {
         w->unkc ^= 1;
         w->unka = 0;
     }
-    func_02044798(obj, idx, w->unkc + 6);
+    NaviB_DrawIcons(obj, idx, w->unkc + 6);
 }

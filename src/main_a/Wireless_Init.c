@@ -4,7 +4,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 extern u8 gWirelessSendBuffer[];
 extern u8 data_022501a0[];
 extern u8 gWirelessRecvBuffers[];
-extern u32 data_0224ff40;
+extern u32 gWirelessErrorCallback;
 
 void Wireless_Init(void) {
     vu32 z0, z1, z2;
@@ -14,5 +14,5 @@ void Wireless_Init(void) {
     MIi_CpuClear32(z1, data_022501a0, 0x240);
     z2 = 0;
     MIi_CpuClear32(z2, gWirelessRecvBuffers, 0x40);
-    data_0224ff40 = 0;
+    gWirelessErrorCallback = 0;
 }

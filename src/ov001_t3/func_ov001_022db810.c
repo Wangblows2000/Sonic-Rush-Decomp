@@ -23,15 +23,15 @@ typedef struct {
 extern UnkTask_022db810 *gTaskCurrent;
 
 void func_ov001_022da614(UnkWork_022db810 *w);
-BOOL func_02050018(void);
+BOOL MsgBox_IsClosed(void);
 void func_ov001_022da41c(UnkWork_022db810 *w);
-BOOL func_0205000c(void);
+BOOL MsgBox_GetResult(void);
 void func_02050ea0(s32 a);
 void func_ov001_022da374(UnkWork_022db810 *w);
 void func_ov001_022da33c(UnkWork_022db810 *w);
 void func_ov001_022d9f6c(UnkWork_022db810 *w);
 void func_ov001_022d9f2c(UnkWork_022db810 *w);
-void func_02040ec0(UnkAnim_022db810 *a, s32 id);
+void KeyframeAnim_SetAnim(UnkAnim_022db810 *a, s32 id);
 void func_ov001_022d6dc0(void);
 void func_ov001_022db458(void);
 void func_ov001_022db9d8(void);
@@ -44,20 +44,20 @@ void func_ov001_022db810(void) {
     w = gTaskCurrent->work;
     func_ov001_022da614(w);
     w->timer++;
-    if (func_02050018()) {
+    if (MsgBox_IsClosed()) {
         w->timer = 0;
         w->unk4 = 0;
         func_ov001_022da41c(w);
-        if (!func_0205000c()) {
+        if (!MsgBox_GetResult()) {
             func_02050ea0(w->unk10);
             func_ov001_022da374(w);
             func_ov001_022da33c(w);
             func_ov001_022d9f6c(w);
             func_ov001_022d9f2c(w);
-            func_02040ec0(&w->anims[0], 0xe);
-            func_02040ec0(&w->anims[1], 0xf);
+            KeyframeAnim_SetAnim(&w->anims[0], 0xe);
+            KeyframeAnim_SetAnim(&w->anims[1], 0xf);
             for (i = 0; i < 8; i++) {
-                func_02040ec0(&w->anims[6 + i], i + 0x14);
+                KeyframeAnim_SetAnim(&w->anims[6 + i], i + 0x14);
             }
             func_ov001_022d6dc0();
             gTaskCurrent->func = func_ov001_022db458;

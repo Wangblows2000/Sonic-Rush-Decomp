@@ -10,7 +10,7 @@ extern u8 data_ov000_02366984[], data_ov000_02369f64[], data_ov000_02369f5c[], d
 extern u8 data_ov000_023661c0[], data_ov000_023661a4[];
 
 void Hand2d_Destructor(void);
-void func_ov000_0230b9f4(UnkStruct_0230ba48 *w);
+void Hand2d_Action_Unk_ov000_0230b9f4(UnkStruct_0230ba48 *w);
 
 UnkStruct_0230ba48 *Hand2d_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -42,6 +42,6 @@ UnkStruct_0230ba48 *Hand2d_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk1D6 = 2;
     w->base.unk58 |= 0x2100;
     w->base.unk204 = 0;
-    func_ov000_0230b9f4(w);
+    Hand2d_Action_Unk_ov000_0230b9f4(w);
     return w;
 }

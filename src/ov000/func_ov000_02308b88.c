@@ -15,7 +15,7 @@ typedef struct UnkStruct_02308b88 {
 u8 func_ov000_02307e84(UnkStruct_02308b88 *s);
 UnkStruct_02308b88_2 *func_ov000_0234237c(s32 a, s32 i);
 BOOL func_ov000_02307dfc(UnkStruct_02308b88_2 *p, s32 a);
-void func_ov000_02308b64(UnkStruct_02308b88 *s);
+void GmkWall_Action_Unk_ov000_02308b64(UnkStruct_02308b88 *s);
 
 void func_ov000_02308b88(UnkStruct_02308b88 *s) {
     UnkStruct_02308b88_2 *p = func_ov000_0234237c(1, func_ov000_02307e84(s));
@@ -30,5 +30,5 @@ void func_ov000_02308b88(UnkStruct_02308b88 *s) {
     }
     if (!(p->unk20C & 0x40))
         return;
-    func_ov000_02308b64(s);
+    GmkWall_Action_Unk_ov000_02308b64(s);
 }

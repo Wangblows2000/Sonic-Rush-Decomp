@@ -7,10 +7,10 @@ extern s32 data_022c463c;
 extern void *data_022c4638;
 
 void func_02051838(void);
-s32 func_02042958(void);
+s32 WirelessMgr_GetStatus(void);
 s32 func_02050c60(void);
-void func_020429d0(void);
-void func_020516b4(void);
+void WirelessMgr_RequestStart(void);
+void WirelessSession_Stop(void);
 
 #pragma thumb on
 void func_02050344(void) {
@@ -21,12 +21,12 @@ void func_02050344(void) {
         data_022c463c = 0;
         return;
     }
-    switch (func_02042958()) {
+    switch (WirelessMgr_GetStatus()) {
     case 2:
         if (w->unk8 != 0) {
             w->unk8 = 0;
             if (func_02050c60() > 0) {
-                func_020429d0();
+                WirelessMgr_RequestStart();
                 return;
             }
             func_02051838();
@@ -35,7 +35,7 @@ void func_02050344(void) {
         }
         break;
     case 6:
-        func_020516b4();
+        WirelessSession_Stop();
         func_02051838();
         data_022c463c = 0;
         data_022c4638 = NULL;

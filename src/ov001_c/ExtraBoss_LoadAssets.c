@@ -29,7 +29,7 @@ void func_ov001_022fd564(void);
 void func_ov001_023065f8(void);
 void *func_0201d9b4(void *p);
 void *NNS_SndHeapAlloc(void *s, u32 size, u32 a, u32 b, u32 c);
-void func_02036820(void *a);
+void Sound_LoadSoundArchiveFromMemory(void *a);
 
 void ExtraBoss_LoadAssets(void) {
     vu32 fill1;
@@ -85,5 +85,5 @@ void ExtraBoss_LoadAssets(void) {
     gZoneSoundData = func_0201d9b4(gSoundHeap);
     gZoneSoundData = NNS_SndHeapAlloc(gSoundHeap, 0x60400, 0, 0, 0);
     File_Load(data_ov001_0231d9cc, gZoneSoundData);
-    func_02036820(gZoneSoundData);
+    Sound_LoadSoundArchiveFromMemory(gZoneSoundData);
 }

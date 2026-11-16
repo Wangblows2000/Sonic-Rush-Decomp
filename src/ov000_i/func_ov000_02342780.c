@@ -7,13 +7,13 @@ typedef struct {
     u8 pad61[0x64 - 0x61];
 } UnkPlayer_02342780;
 
-extern UnkPlayer_02342780 data_ov000_0236aad8[];
+extern UnkPlayer_02342780 gCamera[];
 
 void func_ov000_02342780(void) {
-    if (data_ov000_0236aad8[2].flags & 1) {
-        data_ov000_0236aad8[0].unk60++;
+    if (gCamera[2].flags & 1) {
+        gCamera[0].unk60++;
         return;
     }
-    data_ov000_0236aad8[0].unk60++;
-    data_ov000_0236aad8[1].unk60++;
+    gCamera[0].unk60++;
+    gCamera[1].unk60++;
 }

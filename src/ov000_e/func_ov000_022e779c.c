@@ -16,20 +16,20 @@ typedef struct {
     void *unk440;
 } UnkStruct_022e779c;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u16 data_ov000_02363b94[][4];
 
 void func_ov000_022e8c90(UnkStruct_022e779c *w);
 void func_ov000_022ee198(UnkStruct_022e779c *w, s32 st);
-void func_ov000_022e773c(void);
+void Boss7PartD5_MoveState_Unk_ov000_022e773c(void);
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;
     if (b)
         return 1;
-    return data_022c4560.unk14;
+    return gGameState.unk14;
 }
 
 void func_ov000_022e779c(UnkStruct_022e779c *w) {
@@ -45,5 +45,5 @@ void func_ov000_022e779c(UnkStruct_022e779c *w) {
     w->base.unk58 |= 0x10;
     w->base.unk58 |= 0x80;
     w->base.unk30 = -0x280;
-    w->unk440 = func_ov000_022e773c;
+    w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e773c;
 }

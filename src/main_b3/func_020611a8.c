@@ -19,7 +19,7 @@ extern UnkEnt_02076e58 data_02076e58[];
 extern s32 data_02076d60[];
 extern UnkStruct_02075a34 data_02075a34;
 
-UnkPlayer_020611a8 *func_02058350(void);
+UnkPlayer_020611a8 *PlayerDemo_GetWork(void);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
 void Sound_PlaySeq(void *a, s32 b);
@@ -36,7 +36,7 @@ void func_020611a8(UnkWork_020611a8 *w) {
     }
     if (mode >= 6 && mode <= 0xf) {
         if (mode == 0xf) {
-            UnkPlayer_020611a8 *p = func_02058350();
+            UnkPlayer_020611a8 *p = PlayerDemo_GetWork();
             if (p->snd0 != NULL) {
                 NNS_SndPlayerStopSeq(&p->snd0, 0);
                 NNS_SndHandleReleaseSeq(&p->snd0);

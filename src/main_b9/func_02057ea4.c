@@ -15,7 +15,7 @@ typedef struct {
 } UnkObj_02057ea4;
 
 extern UnkEnt_02057ea4 data_02076afc[];
-extern UnkState_02057ea4 data_022c4678;
+extern UnkState_02057ea4 gPlayerDemoId;
 extern u16 gTalkDemoId;
 
 void TalkDemo_Create(void);
@@ -30,7 +30,7 @@ void func_02057ea4(UnkObj_02057ea4 *o, s32 v) {
     if (v < 0) {
         t = (void *)data_02076afc;
         for (i = 0;; i++) {
-            if (data_022c4678.idx == t[i].id) {
+            if (gPlayerDemoId.idx == t[i].id) {
                 gTalkDemoId = t[i].val;
                 break;
             }

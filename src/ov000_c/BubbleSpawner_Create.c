@@ -11,7 +11,7 @@ extern u8 data_ov000_02369e54[];
 
 void MapObject_Destructor();
 void BubbleSpawner_OnHit_Box1();
-void func_ov000_02302c78();
+void BubbleSpawner_Action_Unk_ov000_02302c78();
 
 UnkStruct_02302cb4 *BubbleSpawner_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -38,6 +38,6 @@ UnkStruct_02302cb4 *BubbleSpawner_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll1.unk1C = BubbleSpawner_OnHit_Box1;
     w->base.coll1.unk18 = w;
     w->base.unk58 |= 0x100;
-    func_ov000_02302c78(w);
+    BubbleSpawner_Action_Unk_ov000_02302c78(w);
     return w;
 }

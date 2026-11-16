@@ -26,7 +26,7 @@ typedef struct {
 s32 ObjShift_Set(s32 a, s32 b, s32 c, s32 d, s32 e);
 s16 ObjSpd_DownSet(s16 v, s32 a);
 s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
-void func_ov000_023521f0(UnkStruct_0235229c *w);
+void Player_Action_SandSlide(UnkStruct_0235229c *w);
 
 void Player_State_SandSlider90(UnkStruct_0235229c *w) {
     if (w->unk3E8 != NULL) {
@@ -55,6 +55,6 @@ void Player_State_SandSlider90(UnkStruct_0235229c *w) {
         w->unk58 &= ~0x100;
     }
     if (w->unk58 & 1) {
-        func_ov000_023521f0(w);
+        Player_Action_SandSlide(w);
     }
 }

@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_ov000_02369ac0[];
+extern u8 gBossStatus[];
 void func_ov000_022dd8c8();
 s32 func_ov000_022db900();
 s32 func_ov000_022dbc4c();
@@ -10,7 +10,7 @@ s32 func_ov000_022dba50();
 s32 func_ov000_022dbab4();
 
 void func_ov000_022dd908(u8 *p0) {
-    *(u32 *)((u8 *)data_ov000_02369ac0 + 0x4) = 0x19;
+    *(u32 *)((u8 *)gBossStatus + 0x4) = 0x19;
     *(u32 *)((u8 *)p0 + 0x220) = (u32)func_ov000_022dd8c8;
     *(u32 *)((u8 *)p0 + 0x224) = 0;
     func_ov000_022db900(p0, 0x60, 0, 0x19);

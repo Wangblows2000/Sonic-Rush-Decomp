@@ -12,7 +12,7 @@ typedef struct {
     u8 unk1D;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern void *gTaskCurrent;
 
 UnkStruct_0235e23c_Sync *func_020514e4(void);
@@ -22,7 +22,7 @@ BOOL func_ov000_0235cbd8(void);
 BOOL func_020513a8(void);
 void func_0204b314(s32 a, u8 b, u8 c);
 void Task_Destroy(void *t);
-void func_0204d6d0(s32 a);
+void StageStart_Create(s32 a);
 
 #pragma thumb on
 
@@ -34,7 +34,7 @@ void func_ov000_0235e23c(void) {
     if (func_ov000_0235cbd8()) {
         if (a->unk3 == 0 && b->unk3 == 0) {
             if (func_020513a8()) {
-                func_0204b314(data_022c4560.unk0, data_022c4560.unk1C, data_022c4560.unk1D);
+                func_0204b314(gGameState.unk0, gGameState.unk1C, gGameState.unk1D);
             }
             a->unk3 = 1;
         } else if (a->unk3 == 1) {
@@ -47,7 +47,7 @@ void func_ov000_0235e23c(void) {
             }
         } else if (c->unk3 >= 3) {
             Task_Destroy(gTaskCurrent);
-            func_0204d6d0(0);
+            StageStart_Create(0);
         }
     } else {
         if (b->unk3 == 0) {
@@ -62,7 +62,7 @@ void func_ov000_0235e23c(void) {
             }
         } else if (a->unk3 == 2 && b->unk3 >= 3) {
             Task_Destroy(gTaskCurrent);
-            func_0204d6d0(0);
+            StageStart_Create(0);
         }
     }
 }

@@ -36,14 +36,14 @@ typedef struct UnkStruct_02350968 {
 
 void Player_State_GmkSpecial(void);
 void Player_ResetGimmickState(UnkStruct_02350968 *w);
-void func_ov000_0234c644(UnkStruct_02350968 *w);
+void Player_LoadPhysicsParams(UnkStruct_02350968 *w);
 void Player_SetAnimation(UnkStruct_02350968 *w, s32 a);
 u16 FX_Atan2(s32 y, s32 x);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void Player_Action_GmkSpecial(UnkStruct_02350968 *w, UnkStruct_02350968 *o) {
     Player_ResetGimmickState(w);
-    func_ov000_0234c644(w);
+    Player_LoadPhysicsParams(w);
     w->unk3E8 = o;
     Player_SetAnimation(w, 0x25);
     w->unk5C |= 4;

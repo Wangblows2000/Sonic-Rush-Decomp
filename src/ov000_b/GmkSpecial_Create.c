@@ -13,13 +13,13 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02366f48[], data_ov000_0236a244[], data_ov000_02366f60[];
 
 void GmkSpecial_Destructor(void);
 void GmkSpecial_Draw(void);
 void GmkSpecial_OnHit(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void func_ov000_023165b0(UnkStruct_02316698 *w);
 
 UnkStruct_02316698 *GmkSpecial_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -27,7 +27,7 @@ UnkStruct_02316698 *GmkSpecial_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_02316698 *w;
     vu16 zero;
 
-    if (data_022c4560.unk10 == 2 || data_022c4560.unk10 == 1 || data_022c4560.unk10 == 4 || data_022c4560.unk0 == 1) {
+    if (gGameState.unk10 == 2 || gGameState.unk10 == 1 || gGameState.unk10 == 4 || gGameState.unk0 == 1) {
         p->unk0 = 0xff;
         return NULL;
     }
@@ -54,7 +54,7 @@ UnkStruct_02316698 *GmkSpecial_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll0.unk1C = GmkSpecial_OnHit;
     w->base.coll0.unkA |= 0x800;
     w->base.unk58 |= 0x2100;
-    if (func_ov000_02345758(w->base.unk10, w->base.unk14)) {
+    if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14)) {
         w->base.unk5C |= 2;
         w->base.unk5 = 0x80;
     }

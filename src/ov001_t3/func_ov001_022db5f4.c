@@ -22,8 +22,8 @@ typedef struct {
 
 extern UnkTask_022db5f4 *gTaskCurrent;
 
-void func_02040d14(UnkAnim_022db5f4 *a);
-BOOL func_02040cf4(UnkAnim_022db5f4 *a);
+void KeyframeAnim_Update(UnkAnim_022db5f4 *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022db5f4 *a);
 void Task_Destroy(UnkTask_022db5f4 *t);
 void func_ov001_022d9e50(UnkWork_022db5f4 *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022db5f4 *w, s32 x, s32 y);
@@ -37,16 +37,16 @@ void func_ov001_022db5f4(void) {
     UnkAnim_022db5f4 *a;
 
     w = gTaskCurrent->work;
-    func_02040d14(&w->anims[0]);
-    func_02040d14(&w->anims[1]);
+    KeyframeAnim_Update(&w->anims[0]);
+    KeyframeAnim_Update(&w->anims[1]);
     for (i = 0; i < 8; i++) {
-        func_02040d14(&w->anims[6 + i]);
+        KeyframeAnim_Update(&w->anims[6 + i]);
     }
     done = TRUE;
-    if (!func_02040cf4(&w->anims[0])) done = FALSE;
-    if (!func_02040cf4(&w->anims[1])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[0])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[1])) done = FALSE;
     for (i = 0; i < 8 && done; i++) {
-        if (!func_02040cf4(&w->anims[6 + i])) done = FALSE;
+        if (!KeyframeAnim_IsFinished(&w->anims[6 + i])) done = FALSE;
     }
     if (done) {
         w->timer = 0;

@@ -24,8 +24,8 @@ void *OS_GetArenaLo(u32 arg);
 void MIi_CpuClear16(u16 data, void *dst, u32 size);
 void *Sound_AllocHandle(void);
 void NNS_SndPlayerStopSeq(void *spr, s32 a);
-void func_0204c598(u8 a, s32 b, u32 c);
-void func_0204b860(void *spr, u16 a, s32 b, s32 c);
+void Stage_FadeBGMLayer(u8 a, s32 b, u32 c);
+void Sound_PlayBGMEx(void *spr, u16 a, s32 b, s32 c);
 void NNS_SndPlayerSetChannelPriority(void *spr, s32 a);
 void func_ov000_023428dc(void);
 void func_ov000_02342a34(void);
@@ -51,7 +51,7 @@ void func_ov000_02342a74(UnkStruct_02342a74_Pl *pl, u16 state) {
     if (w->state != 0)
         NNS_SndPlayerStopSeq(w->spr, 0);
     w->state = state;
-    func_0204c598(0, 0, w->pl->unk32C & 0x4000000);
-    func_0204b860(w->spr, w->state, 100, -1);
+    Stage_FadeBGMLayer(0, 0, w->pl->unk32C & 0x4000000);
+    Sound_PlayBGMEx(w->spr, w->state, 100, -1);
     NNS_SndPlayerSetChannelPriority(w->spr, 0x50);
 }

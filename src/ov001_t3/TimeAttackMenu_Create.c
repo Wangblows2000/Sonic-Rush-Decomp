@@ -26,7 +26,7 @@ typedef struct {
     s16 bright;
 } UnkBright_022ec1e4;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkBright_022ec1e4 data_0208926c;
 extern s32 gSaveDataBusy;
 extern u32 gSystemFlags;
@@ -38,7 +38,7 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void TimeAttackMenu_State_Enter(void);
 void TimeAttackMenu_Destructor(void);
 s32 func_0204e6e8(u8 a);
-void func_ov001_022e980c(void);
+void TimeAttackMenu_InitDisplay(void);
 void TimeAttackMenu_LoadAssets(UnkWork_022ec1e4 *w);
 void func_ov001_022ebfd4(UnkWork_022ec1e4 *w);
 void func_ov001_022ebecc(UnkWork_022ec1e4 *w);
@@ -78,16 +78,16 @@ void TimeAttackMenu_Create(s32 mode) {
     }
     switch (w->mode) {
     case 0:
-        w->sel = data_022c4560.unk1d + func_0204e6e8(data_022c4560.unk1c) * 2;
+        w->sel = gGameState.unk1d + func_0204e6e8(gGameState.unk1c) * 2;
         break;
     case 1:
-        w->sel = func_0204e6e8(data_022c4560.unk1c);
+        w->sel = func_0204e6e8(gGameState.unk1c);
         break;
     }
     if (w->sel >= w->max) {
         w->sel = 0;
     }
-    func_ov001_022e980c();
+    TimeAttackMenu_InitDisplay();
     TimeAttackMenu_LoadAssets(w);
     func_ov001_022ebfd4(w);
     func_ov001_022ebecc(w);

@@ -2,13 +2,13 @@
 #include <nitro/types.h>
 
 extern u8 gTaskCurrent[];
-extern u8 data_ov000_02369ac0[];
+extern u8 gBossStatus[];
 void func_02044ba8();
 s32 AnimatorSprite_Draw();
 
 void func_02044c10(void) {
     s32 t0 = *(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x8);
-    s32 t1 = *(u16 *)((u8 *)data_ov000_02369ac0 + 0x8);
+    s32 t1 = *(u16 *)((u8 *)gBossStatus + 0x8);
     s32 t2 = *(u32 *)gTaskCurrent;
     s32 t3 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
     s32 t4 = *(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x4);

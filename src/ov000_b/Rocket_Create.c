@@ -7,8 +7,8 @@ extern u8 data_ov000_0236a1e4[];
 void MapObject_Destructor(void);
 void Rocket_OnHit(void);
 void Rocket_OnHit_Box1(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
-void func_ov000_02313ec8(UnkStruct_StageObj *w);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
+void Rocket_Action_Unk_ov000_02313ec8(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Rocket_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -42,9 +42,9 @@ UnkStruct_StageObj *Rocket_Create(s32 a, s32 b, s32 c) {
     w->unk58 |= 0x80000;
     w->unk58 &= ~0x80;
     w->unk5C |= 0x100;
-    if (func_ov000_02345758(w->unk10, w->unk14))
+    if (Stage_IsGravityFlipped(w->unk10, w->unk14))
         w->unk5 = 0x80;
     w->unk1DC = Sound_AllocHandle();
-    func_ov000_02313ec8(w);
+    Rocket_Action_Unk_ov000_02313ec8(w);
     return w;
 }

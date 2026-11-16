@@ -1,0 +1,22 @@
+#include <nitro/types.h>
+
+typedef struct {
+    fx32 x, y, z;
+} VecFx32;
+
+void Math_LineClosestPoint(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
+void VEC_Subtract(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
+fx32 VEC_DotProduct(const VecFx32 *a, const VecFx32 *b);
+
+BOOL Math_SegmentHitsSphere(const VecFx32 *a, const VecFx32 *p0, const VecFx32 *p1, fx32 r, const VecFx32 *c) {
+    VecFx32 n;
+    VecFx32 d0;
+    VecFx32 d1;
+    Math_LineClosestPoint(a, c, &n);
+    VEC_Subtract(p0, &n, &d0);
+    VEC_Subtract(p1, &n, &d1);
+    VEC_Subtract(&n, c, &n);
+    if ((s64)r * r < (s64)n.x * n.x + (s64)n.y * n.y + (s64)n.z * n.z)
+        return FALSE;
+    return VEC_DotProduct(&d0, &d1) <= 0;
+}

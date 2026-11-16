@@ -59,8 +59,8 @@ typedef struct UnkStruct_022dbfb4_7 {
     s32 unk4;
 } UnkStruct_022dbfb4_7;
 
-extern UnkStruct_022dbfb4_7 data_ov000_02369ac0;
-extern UnkStruct_022dbfb4_w *data_ov000_02369b2c;
+extern UnkStruct_022dbfb4_7 gBossStatus;
+extern UnkStruct_022dbfb4_w *gBoss4;
 extern s16 data_0206e470[];
 extern s16 data_02070470[];
 
@@ -69,7 +69,7 @@ void func_ov000_022db758(s32 *v, u16 *ang, s32 x, s32 y);
 
 void Boss4PartD2_State_Unk_ov000_022dbfb4(void) {
     UnkStruct_022dbfb4 *s = gTaskCurrent->unk10;
-    if (data_ov000_02369ac0.unk4 == 0x1a) {
+    if (gBossStatus.unk4 == 0x1a) {
         s->unk54 |= 8;
         s->unk54 |= 2;
         return;
@@ -86,7 +86,7 @@ void Boss4PartD2_State_Unk_ov000_022dbfb4(void) {
         u16 d = s->unk4EA - s->unk4E8;
         if (data_0206e470[((d & 0xffff) >> 4) * 2] < data_02070470[0x70]) {
             s->unk4D8 = 1;
-            func_ov000_022db758(&s->unk344.unk48, NULL, data_ov000_02369b2c->unk20C->unk10, s->unk14);
+            func_ov000_022db758(&s->unk344.unk48, NULL, gBoss4->unk20C->unk10, s->unk14);
         }
     } else if (s->unk4D8 != 0 && (s->unk344.unk10C & 2)) {
         s->unk54 |= 8;

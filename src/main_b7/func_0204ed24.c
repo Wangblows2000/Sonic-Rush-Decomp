@@ -19,15 +19,15 @@ typedef struct {
     u8 b14;
 } UnkStruct_022c4590;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkSave_022c468c data_022c468c;
 extern UnkStruct_022c4590 data_022c4590;
 
 void func_0204ed24(void) {
     UnkSave_022c468c *s = &data_022c468c;
-    if (data_022c4560.unk0 != 1) {
+    if (gGameState.unk0 != 1) {
         s->b2 = data_022c4590.b14;
-        s->b3 = data_022c4560.unk28;
+        s->b3 = gGameState.unk28;
     } else {
         s->b5a = data_022c4590.b14;
     }

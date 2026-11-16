@@ -18,13 +18,13 @@ typedef struct {
     s32 unk14;
 } UnkObj_0233b374;
 
-extern UnkPlayer_0233b374 data_ov000_0236aad8[];
+extern UnkPlayer_0233b374 gCamera[];
 extern UnkObj_0233b374 *gPlayers[];
 BOOL func_ov000_0233b470(s32 a);
 void func_ov000_0233b684(void);
 
 BOOL func_ov000_0233b374(void) {
-    UnkPlayer_0233b374 *p = data_ov000_0236aad8;
+    UnkPlayer_0233b374 *p = gCamera;
     u32 flags = p[2].flags;
 
     if (!(flags & 1))

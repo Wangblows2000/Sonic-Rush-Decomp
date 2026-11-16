@@ -21,7 +21,7 @@ typedef int code();
 
 int func_ov000_02307e84();
 int func_ov000_0234237c();
-int func_ov000_02308650();
+int MapObj8F_Action_Unk_ov000_02308650();
 
 void MapObj8F_State_Unk_ov000_023086a8(int param_1)
 
@@ -47,6 +47,6 @@ void MapObj8F_State_Unk_ov000_023086a8(int param_1)
   if ((*(uint *)(iVar2 + 0x20c) & 0x1000) == 0) {
     return;
   }
-  func_ov000_02308650(param_1);
+  MapObj8F_Action_Unk_ov000_02308650(param_1);
   return;
 }

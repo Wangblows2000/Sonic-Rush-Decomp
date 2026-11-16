@@ -88,7 +88,7 @@ void func_ov001_022f2f14(void);
 void func_ov001_022eee68(void);
 void func_ov001_022eed0c(void);
 void func_ov001_022eed64(void);
-UnkStruct_022f3530_p *func_ov001_02300c94(void);
+UnkStruct_022f3530_p *ExtraBoss_GetPlayer(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void func_ov001_022f2b78(UnkStruct_022f3530_o *o);
 
@@ -141,7 +141,7 @@ UnkStruct_022f3530_o *func_ov001_022f3530(void) {
     a->unkA = 4;
     o->unk78 = func_ov001_022f3164;
     o->unk18 = 0x1c0000;
-    o->unk1C = func_ov001_02300c94()->unk1C;
+    o->unk1C = ExtraBoss_GetPlayer()->unk1C;
     if (o->unk1C > 0x111000)
         o->unk1C = 0xc0000;
     else if (o->unk1C < 0x65000)

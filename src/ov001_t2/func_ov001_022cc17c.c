@@ -13,8 +13,8 @@ typedef struct {
     UnkItem_022cc17c items[6];
 } UnkStruct_022cc17c;
 
-void func_02040d14(void *a);
-BOOL func_02040cf4(void *a);
+void KeyframeAnim_Update(void *a);
+BOOL KeyframeAnim_IsFinished(void *a);
 
 #pragma thumb on
 BOOL func_ov001_022cc17c(UnkStruct_022cc17c *p) {
@@ -26,23 +26,23 @@ BOOL func_ov001_022cc17c(UnkStruct_022cc17c *p) {
     it = p->items;
     for (; i < 6; i++) {
         if (it->type != 7) {
-            func_02040d14(it->anim);
-            if (!func_02040cf4(it->anim)) {
+            KeyframeAnim_Update(it->anim);
+            if (!KeyframeAnim_IsFinished(it->anim)) {
                 done = FALSE;
             }
         }
         it++;
     }
-    func_02040d14(p->anim0);
-    if (!func_02040cf4(p->anim0)) {
+    KeyframeAnim_Update(p->anim0);
+    if (!KeyframeAnim_IsFinished(p->anim0)) {
         done = FALSE;
     }
-    func_02040d14(p->anim1);
-    if (!func_02040cf4(p->anim1)) {
+    KeyframeAnim_Update(p->anim1);
+    if (!KeyframeAnim_IsFinished(p->anim1)) {
         done = FALSE;
     }
-    func_02040d14(p->anim2);
-    if (!func_02040cf4(p->anim2)) {
+    KeyframeAnim_Update(p->anim2);
+    if (!KeyframeAnim_IsFinished(p->anim2)) {
         done = FALSE;
     }
     return done;

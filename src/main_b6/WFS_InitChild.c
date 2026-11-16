@@ -22,11 +22,11 @@ extern UnkCtx_0203c4e8 data_022b8be0;
 
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
-void func_0203c7dc(u32 a, u32 b, u32 c, u32 d);
+void WFSi_InitCommon(u32 a, u32 b, u32 c, u32 d);
 void DC_FlushRange(void *p, u32 size);
 void DC_WaitWriteBufferEmpty(void);
 void WBT_InitChild(void (*cb)(void));
-void func_0203c870(void);
+void WFSi_OnChildSystemCallback(void);
 
 void WFS_InitChild(u32 a, u32 b, u32 c, u32 d4) {
     u32 e = OS_DisableInterrupts();
@@ -38,7 +38,7 @@ void WFS_InitChild(u32 a, u32 b, u32 c, u32 d4) {
     if (data_022b8bc0 != 0)
         return;
     data_022b8bc0 = 1;
-    func_0203c7dc(a, b, c, d4);
+    WFSi_InitCommon(a, b, c, d4);
     OS_RestoreInterrupts(e);
     ctx = &data_022b8be0;
     d = (UnkData_0203c4e8 *)((u32)ctx + 0x440);
@@ -57,6 +57,6 @@ void WFS_InitChild(u32 a, u32 b, u32 c, u32 d4) {
     d->unkb04 = 0;
     DC_FlushRange(d, sizeof(UnkData_0203c4e8));
     DC_WaitWriteBufferEmpty();
-    WBT_InitChild(func_0203c870);
+    WBT_InitChild(WFSi_OnChildSystemCallback);
     ctx->unkc = 1;
 }

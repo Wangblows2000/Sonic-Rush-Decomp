@@ -22,7 +22,7 @@ BOOL func_020513a8(void);
 void *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 void func_ov000_0235cadc(void);
 void SysSound_Release(void);
-void func_0204b2ec(void);
+void Stage_FreeZoneSoundData(void);
 void SysSound_Init(void);
 void func_02052168(s32 a);
 void func_ov000_0235ea40(void);
@@ -71,7 +71,7 @@ void func_ov000_0235eab8(void) {
         Task_Create(func_ov000_0235cadc, NULL, 0, 0x2000, 0x1000, 0);
         if (func_020513a8()) {
             SysSound_Release();
-            func_0204b2ec();
+            Stage_FreeZoneSoundData();
         }
         SysSound_Init();
         func_02052168(3);

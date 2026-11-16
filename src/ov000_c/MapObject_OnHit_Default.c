@@ -26,8 +26,8 @@ s32 ObjRect_HitCenterY(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
 void func_ov000_0232ff6c(s32 x, s32 y);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void EffVitality_Create(UnkStruct_StageObj *w, s32 a, s32 b, s32 c);
-void func_ov000_0234a984(UnkStruct_022fb3d8_Pl *pl);
-void func_ov000_0234aa80(UnkStruct_022fb3d8_Pl *pl);
+void Player_Action_AttackRecoil(UnkStruct_022fb3d8_Pl *pl);
+void Player_Action_AttackBounce(UnkStruct_022fb3d8_Pl *pl);
 
 static inline s32 RND(u16 r) {
     return 0xf00 - (r & 0x1fff);
@@ -98,7 +98,7 @@ void MapObject_OnHit_Default(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll
         w->coll1.unk20 &= ~7;
         func_ov000_022fa9e8(w, pl, 1);
         if (pl != NULL && pl->unk0 == 1) {
-            func_ov000_0234a984(pl);
+            Player_Action_AttackRecoil(pl);
             return;
         }
     }
@@ -106,5 +106,5 @@ void MapObject_OnHit_Default(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll
         return;
     if (pl->unk0 != 1)
         return;
-    func_ov000_0234aa80(pl);
+    Player_Action_AttackBounce(pl);
 }

@@ -68,7 +68,7 @@ typedef struct {
 
 extern UnkVals_02055918 data_0207ba1c;
 extern UnkSys_02055918 gDisplayMain;
-extern UnkGame_02055918 data_022c4560;
+extern UnkGame_02055918 gGameState;
 extern UnkSys_02055918 gDisplaySub;
 extern UnkState_02055918 data_022c4590;
 extern u32 gSystemFlags;
@@ -88,7 +88,7 @@ void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void System_Freeze(s32 a, s32 b, s32 c);
 BOOL func_0204eb7c(void);
-u32 func_ov001_0230c0b8(void);
+u32 SpecialStage_GetEmeraldFlags(void);
 u32 SpecialStage_GetStageIndex(void);
 void ObjAction_Load2dBAC(void *bgA, void *bgB, void *name, u32 pal, void *s, void *arc);
 void AnimatorSprite_SetAnimation(void *s, u16 a);
@@ -125,13 +125,13 @@ void PauseMenu_Create(BOOL alt) {
 
     if (gDisplayMain.unk48 != 0)
         return;
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         return;
     if (gDisplayMain.unk48 != 0)
         return;
     if (gDisplaySub.unk48 != 0)
         return;
-    if (data_022c4590.unk18 == data_022c4560.unk20)
+    if (data_022c4590.unk18 == gGameState.unk20)
         return;
     t = Task_Create(PauseMenu_Main, PauseMenu_Destructor, 7, 0x6100, 3, sizeof(UnkWork_02055918));
     if (t == (UnkTask_02055918 *)OS_GetArenaLo(0))
@@ -142,11 +142,11 @@ void PauseMenu_Create(BOOL alt) {
     if (!(gSystemFlags & 8))
         System_Freeze(1, 1, 1);
     gPad.unk4 = 0;
-    if (!func_0204eb7c() || data_022c4560.unk10 == 2)
+    if (!func_0204eb7c() || gGameState.unk10 == 2)
         w->unk4 |= 2;
     if (alt) {
         w->unk4 &= ~2;
-        if (func_ov001_0230c0b8() & (1 << SpecialStage_GetStageIndex()))
+        if (SpecialStage_GetEmeraldFlags() & (1 << SpecialStage_GetStageIndex()))
             w->unk4 |= 2;
         w->unk4 |= 0x20;
         w->unk164 = 0x10;
@@ -167,7 +167,7 @@ void PauseMenu_Create(BOOL alt) {
     ObjAction_Load2dBAC(&w->spr[3], NULL, data_0207ba80, vals.v[3], w->unk18, gActComArchive);
     b = 2;
     a = 3;
-    if (data_022c4560.unk10 == 2 || data_022c4560.unk10 == 4)
+    if (gGameState.unk10 == 2 || gGameState.unk10 == 4)
         a++;
     lang = gGameLanguage;
     b += ClampLang_02055918(lang) * 3;

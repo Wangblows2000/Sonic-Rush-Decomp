@@ -41,7 +41,7 @@ typedef struct {
     u8 act;
 } UnkState_0205a654;
 
-extern UnkState_0205a654 data_022c4560;
+extern UnkState_0205a654 gGameState;
 extern UnkDisp_0205a654 *gDisplayTable[];
 
 void func_ov000_023375e8(void);
@@ -49,7 +49,7 @@ void func_0204cdc0(void);
 void func_0205a630(void);
 
 void func_0205a654(UnkWork_0205a654 *w) {
-    if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
+    if (gGameState.zone != 8 || gGameState.act != 2) {
         func_ov000_023375e8();
         func_0204cdc0();
     } else {
@@ -61,7 +61,7 @@ void func_0205a654(UnkWork_0205a654 *w) {
         d->u.f.b10 = 1;
         d->u.f.b11 = 1;
     }
-    if (data_022c4560.unk10 == 1) {
+    if (gGameState.unk10 == 1) {
         w->obj2->unk70 = w->unk18;
         w->obj2->flags5c |= 0x40;
     }

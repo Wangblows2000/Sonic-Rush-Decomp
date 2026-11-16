@@ -7,14 +7,14 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02366cac[], data_ov000_0236a0cc[];
 
 void MapObject_Destructor(void);
 void Marker_OnHit(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void func_ov000_023106b8(UnkStruct_StageObj *w);
-void func_ov000_023107c4(UnkStruct_StageObj *w);
+void Marker_Action_Unk_ov000_023107c4(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Marker_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -36,14 +36,14 @@ UnkStruct_StageObj *Marker_Create(s32 a, s32 b, s32 c) {
     ObjRect_SetAtkDefFlags(&w->coll0, 0, -0x10);
     w->coll0.unk1C = Marker_OnHit;
     w->unk58 |= 0x2100;
-    if (func_ov000_02345758(w->unk10, w->unk14))
+    if (Stage_IsGravityFlipped(w->unk10, w->unk14))
         w->unk5C |= 2;
     flag = FALSE;
-    if (data_022c4560.unk1C >= 7 && data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2)
+    if (gGameState.unk1C >= 7 && gGameState.unk1C < 9 && gGameState.unk1D < 2)
         flag = TRUE;
     if (flag)
         func_ov000_023106b8(w);
     else
-        func_ov000_023107c4(w);
+        Marker_Action_Unk_ov000_023107c4(w);
     return w;
 }

@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 ObjShift_Set();
-s32 func_ov000_0234a064();
+s32 Player_Action_LandOnGround();
 
 void Player_State_SandSlider(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0x3e8) != 0) {
@@ -24,7 +24,7 @@ void Player_State_SandSlider(u8 *p0) {
     *(u8 *)((u8 *)p0 + 0x3) = 0;
     *(u8 *)((u8 *)p0 + 0x2) = 0;
     *(u8 *)((u8 *)p0 + 0x1) = 0;
-    func_ov000_0234a064(p0, 0, t3);
+    Player_Action_LandOnGround(p0, 0, t3);
     ((s32 (*)())*(u32 *)((u8 *)p0 + 0x334))(p0, *(u32 *)((u8 *)p0 + 0x334));
     *(u16 *)((u8 *)p0 + 0x30) = t2;
 }

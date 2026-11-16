@@ -35,7 +35,7 @@ void func_0201d868(void *s, const char *path, void *a, u32 b);
 void NNS_SndArcPlayerSetup(void *h);
 void NNS_SndArcLoadSeqArc(u32 a, void *b);
 void NNS_SndArcLoadBank(u32 a, void *b);
-void func_02036854(void *a);
+void Sound_LoadSoundArchive(void *a);
 void NNS_SndArcLoadGroup(s32 a, void *b);
 
 static inline u32 GetLang(void) {
@@ -82,6 +82,6 @@ void SpecialStage_LoadHudAssets(UnkStruct_0230be84_o *o) {
     NNS_SndArcLoadBank(0x16, g->heap);
     NNS_SndArcLoadSeqArc(9, g->heap);
     NNS_SndArcLoadBank(0x11, g->heap);
-    func_02036854(data_ov001_0231e6cc);
+    Sound_LoadSoundArchive(data_ov001_0231e6cc);
     NNS_SndArcLoadGroup(0x14, gSoundHeap);
 }

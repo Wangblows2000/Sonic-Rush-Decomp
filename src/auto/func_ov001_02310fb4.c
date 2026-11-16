@@ -1,13 +1,13 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov001_02310f54();
-s32 func_ov001_023122d8();
+s32 SpecialStagePlayer_SlowDownMap();
+s32 SpecialStagePlayer_ChangeState();
 
 void func_ov001_02310fb4(u8 *p0) {
-    func_ov001_02310f54();
+    SpecialStagePlayer_SlowDownMap();
     if ((*(u8 *)((u8 *)*(u32 *)((u8 *)p0 + 0xac) + 0x10c) & 2) == 0) {
         return;
     }
-    func_ov001_023122d8(p0, 0x19);
+    SpecialStagePlayer_ChangeState(p0, 0x19);
 }

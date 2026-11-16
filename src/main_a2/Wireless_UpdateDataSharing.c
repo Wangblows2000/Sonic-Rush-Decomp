@@ -2,9 +2,9 @@
 
 extern u8 gWirelessSendBuffer[];
 extern u32 gSystemFlags;
-extern void (*data_0224ff40)(void);
-extern u16 data_022c1948;
-extern u16 data_022c1950;
+extern void (*gWirelessErrorCallback)(void);
+extern u16 gWHMaxChildCount;
+extern u16 gWHPacketSize;
 extern void *gWirelessRecvBuffers[];
 
 s32 WH_GetSystemState(void);
@@ -31,23 +31,23 @@ void Wireless_UpdateDataSharing(void) {
     } else {
         while (!WH_StepDataSharing(gWirelessSendBuffer)) {
             if (WH_GetErrorCode() != 5) {
-                if (data_0224ff40 != NULL) {
-                    data_0224ff40();
+                if (gWirelessErrorCallback != NULL) {
+                    gWirelessErrorCallback();
                 }
                 return;
             }
             VBlankIntrWait();
         }
-        if (!WH_GetCurrentAid() && WH_GetBitmap() < vcount && data_0224ff40 != NULL) {
-            data_0224ff40();
+        if (!WH_GetCurrentAid() && WH_GetBitmap() < vcount && gWirelessErrorCallback != NULL) {
+            gWirelessErrorCallback();
         }
     }
-    for (i = 0; i < data_022c1948 + 1; i++) {
+    for (i = 0; i < gWHMaxChildCount + 1; i++) {
         void *src = WH_GetSharedDataAdr(i);
         if (src != NULL) {
-            MI_CpuCopy8(src, gWirelessRecvBuffers[i], data_022c1950);
+            MI_CpuCopy8(src, gWirelessRecvBuffers[i], gWHPacketSize);
         } else {
-            MI_CpuFill8(gWirelessRecvBuffers[i], 0, data_022c1950);
+            MI_CpuFill8(gWirelessRecvBuffers[i], 0, gWHPacketSize);
         }
     }
 }

@@ -19,8 +19,8 @@ extern UnkWork_0203c470 data_022b9020;
 void WM_ReadStatus(void *p);
 void func_02015530(u16 v);
 void WBT_RequestSync(s32 a, void (*cb)(void));
-void func_0203c870(void);
-void func_0203d190(void);
+void WFSi_OnChildSystemCallback(void);
+void WFSi_SetMPData(void);
 
 void WFS_Start(void) {
     data_022b8be0.unk4 = 1;
@@ -28,11 +28,11 @@ void WFS_Start(void) {
         UnkWork_0203c470 *w = (UnkWork_0203c470 *)((u32)&data_022b9020 | 0);
         WM_ReadStatus(w->unk340);
         func_02015530(w->unk4c4);
-        WBT_RequestSync(1, func_0203c870);
+        WBT_RequestSync(1, WFSi_OnChildSystemCallback);
     } else {
         data_022b8be0.unkc = 2;
         if (data_022b8be0.cb != NULL)
             data_022b8be0.cb(0);
     }
-    func_0203d190();
+    WFSi_SetMPData();
 }

@@ -101,19 +101,19 @@ typedef struct UnkStruct_022d3b8c_7 {
     u16 unkA;
 } UnkStruct_022d3b8c_7;
 
-extern UnkStruct_022d3b8c *data_ov000_02369ae0;
+extern UnkStruct_022d3b8c *gBoss2;
 extern UnkStruct_022d3b8c_p *gPlayers;
-extern UnkStruct_022d3b8c_7 data_ov000_02369ac0;
+extern UnkStruct_022d3b8c_7 gBossStatus;
 extern u32 gRandSeed;
 extern s32 data_ov000_02362e50[4];
 
 s32 FX_DivS32(s32 a, s32 b);
 void func_ov000_022cedd8(UnkStruct_022d3b8c *s, s32 a);
-void func_ov000_022d3a78(UnkStruct_022d3b8c *s);
-void func_ov000_022d3994(UnkStruct_022d3b8c *s);
+void Boss2_State_Unk_ov000_022d3a78(UnkStruct_022d3b8c *s);
+void Boss2_State_Unk_ov000_022d3994(UnkStruct_022d3b8c *s);
 
 static inline s32 Lerp(s32 a, s32 b) {
-    return FX_DivS32(data_ov000_02369ac0.unk8 * a + (data_ov000_02369ac0.unkA - data_ov000_02369ac0.unk8) * b, data_ov000_02369ac0.unkA);
+    return FX_DivS32(gBossStatus.unk8 * a + (gBossStatus.unkA - gBossStatus.unk8) * b, gBossStatus.unkA);
 }
 
 static inline u16 Rand(void) {
@@ -122,7 +122,7 @@ static inline u16 Rand(void) {
 }
 
 void func_ov000_022d3b8c(void) {
-    UnkStruct_022d3b8c *s = data_ov000_02369ae0;
+    UnkStruct_022d3b8c *s = gBoss2;
     s32 d = gPlayers->unk10;
     UnkStruct_022d3b8c_a *x = &s->unkA9C;
     UnkStruct_022d3b8c_a *y = &s->unkBD4;
@@ -138,7 +138,7 @@ void func_ov000_022d3b8c(void) {
     }
     if (s->unk1304 == 0) {
         if (b < a) {
-            s->func = func_ov000_022d3a78;
+            s->func = Boss2_State_Unk_ov000_022d3a78;
             s->unk146C = 0x27d;
             Model_SetAnimation(x, 0, s->unkF7C, 8, 0);
             Model_SetAnimation(y, 0, s->unkF7C, 0x28, 0);
@@ -146,7 +146,7 @@ void func_ov000_022d3b8c(void) {
             s->unk1460 = Lerp(0xc, 0x14);
             s->unk1464 = Lerp(0x780, 0xa00);
         } else {
-            s->func = func_ov000_022d3994;
+            s->func = Boss2_State_Unk_ov000_022d3994;
             s->unk146C = 0;
             Model_SetAnimation(x, 0, s->unkF7C, 5, 0);
             Model_SetAnimation(y, 0, s->unkF7C, 0x25, 0);
@@ -156,7 +156,7 @@ void func_ov000_022d3b8c(void) {
         }
     } else if (s->unk1304 != 0) {
         if (a < b) {
-            s->func = func_ov000_022d3a78;
+            s->func = Boss2_State_Unk_ov000_022d3a78;
             s->unk146C = -0x27d;
             Model_SetAnimation(x, 0, s->unkF7C, 5, 0);
             Model_SetAnimation(y, 0, s->unkF7C, 0x25, 0);
@@ -164,7 +164,7 @@ void func_ov000_022d3b8c(void) {
             s->unk1460 = -Lerp(0xc, 0x14);
             s->unk1464 = -Lerp(0x780, 0xa00);
         } else {
-            s->func = func_ov000_022d3994;
+            s->func = Boss2_State_Unk_ov000_022d3994;
             s->unk146C = 0;
             Model_SetAnimation(x, 0, s->unkF7C, 8, 0);
             Model_SetAnimation(y, 0, s->unkF7C, 0x28, 0);

@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern void func_ov001_0230d6cc(void);
+extern void SpecialStageMap_GetCurrentSegment(void);
 extern void func_ov001_0230e8fc(void);
 
 asm void func_ov001_0230e94c(void)
@@ -9,7 +9,7 @@ asm void func_ov001_0230e94c(void)
     stmdb sp!, {r4, r5, lr}
     sub sp, sp, #4
     mov r4, r0
-    bl func_ov001_0230d6cc
+    bl SpecialStageMap_GetCurrentSegment
     ldr r1, [r4, #0x78]
     cmp r0, r1
     addne sp, sp, #4

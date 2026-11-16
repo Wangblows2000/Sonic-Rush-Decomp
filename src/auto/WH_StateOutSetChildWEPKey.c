@@ -4,7 +4,7 @@
 s32 WH_SetError();
 s32 WH_ChangeSysState();
 s32 WH_StateInStartChild();
-extern u8 data_022c197c[];
+extern u8 sTraceFunc[];
 extern u8 data_020788e4[];
 
 void WH_StateOutSetChildWEPKey(u8 *p0) {
@@ -18,7 +18,7 @@ void WH_StateOutSetChildWEPKey(u8 *p0) {
     if (t1 != 0) {
         return;
     }
-    s32 t2 = *(u32 *)data_022c197c;
+    s32 t2 = *(u32 *)sTraceFunc;
     if (t2 != 0) {
         ((s32 (*)())t2)(data_020788e4, t2);
     }

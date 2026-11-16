@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 BOOL func_ov001_02312138(void *p);
-void func_ov001_023122d8(void *p, s32 v);
+void SpecialStagePlayer_ChangeState(void *p, s32 v);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 void func_ov001_023118d4(u8 *p) {
@@ -19,9 +19,9 @@ void func_ov001_023118d4(u8 *p) {
     if (!b) {
         if (func_ov001_02312138(p)) {
             *(s32 *)(p + 0x18) = 0;
-            func_ov001_023122d8(p, 2);
+            SpecialStagePlayer_ChangeState(p, 2);
         } else {
-            func_ov001_023122d8(p, 8);
+            SpecialStagePlayer_ChangeState(p, 8);
             Sound_PlaySeqArc(0, 0x10, 6);
         }
         *(s32 *)(p + 0x124) = 0;

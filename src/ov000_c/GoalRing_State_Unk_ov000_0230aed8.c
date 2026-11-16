@@ -1,6 +1,6 @@
 #include <ov000_c/stageobj.h>
 
-void func_ov000_0230b320(UnkStruct_StageObj *w);
+void GoalRing_Action_Unk_ov000_0230b320(UnkStruct_StageObj *w);
 void NNS_SndPlayerStopSeq(void *a, s32 b);
 void NNS_SndPlayerSetTempoRatio(void *a, s32 b);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
@@ -15,7 +15,7 @@ void GoalRing_State_Unk_ov000_0230aed8(UnkStruct_StageObj *w) {
         if (w->unkC < 0x10)
             w->unkC = 0x10;
         if (w->unkC == 0x10 && (w->unk5C & 8)) {
-            func_ov000_0230b320(w);
+            GoalRing_Action_Unk_ov000_0230b320(w);
             w->unkC = 0x60;
             StageObj_SetAnimation(w, 7);
             NNS_SndPlayerStopSeq((void *)w->unk1DC, 0);

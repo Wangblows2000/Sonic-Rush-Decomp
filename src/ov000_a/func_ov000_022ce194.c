@@ -37,8 +37,8 @@ typedef struct UnkStruct_022ce194_2 {
     s32 unk24;
 } UnkStruct_022ce194_2;
 
-extern UnkStruct_022ce194_g *data_ov000_02369ae0;
-extern UnkStruct_022ce194_2 data_ov000_02369ae8;
+extern UnkStruct_022ce194_g *gBoss2;
+extern UnkStruct_022ce194_2 gBossStage2Models;
 extern u16 data_ov000_02362dfc[];
 extern u32 data_ov000_0236510c[];
 extern u16 data_ov000_02362dcc[];
@@ -95,13 +95,13 @@ void func_ov000_022ce194(UnkStruct_022ce194 *s) {
     if (s->unk1034.unkA & 4) {
         s->unk144C++;
         if (s->unk144C == 3) {
-            func_ov000_022c5d4c(data_ov000_02369ae8.unk24, data_ov000_0236510c, data_ov000_02369ae0->unk1448, data_ov000_02362dcc, 1);
+            func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1448, data_ov000_02362dcc, 1);
         } else if (s->unk144C == 7) {
-            func_ov000_022c5d4c(data_ov000_02369ae8.unk24, data_ov000_0236510c, data_ov000_02369ae0->unk1444, data_ov000_02362dcc, 1);
+            func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
             s->unk144C = 0;
         }
     } else if (s->unk144C != 0) {
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk24, data_ov000_0236510c, data_ov000_02369ae0->unk1444, data_ov000_02362dcc, 1);
+        func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
         s->unk144C = 0;
     }
 }

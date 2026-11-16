@@ -20,7 +20,7 @@ extern UnkStruct_0208f754 data_0208f754;
 void System_Init(void);
 void Game_Init(void);
 BOOL CARD_IsPulledOut(void);
-void func_0202ff74(void);
+void System_OnCardPulledOut(void);
 void CARD_TerminateForPulledOut(void);
 void Pad_Update(UnkPad_022503e0 *pad, u16 keys);
 void Touch_Update(void);
@@ -53,7 +53,7 @@ void main(void)
     Game_Init();
     for (;;) {
         if (CARD_IsPulledOut()) {
-            func_0202ff74();
+            System_OnCardPulledOut();
             CARD_TerminateForPulledOut();
         }
         if (!(gSystemFlags & 0x40)) {

@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void func_ov001_022f4068(void);
 
 void func_ov001_022f40b0(u8 *p) {
@@ -14,6 +14,6 @@ void func_ov001_022f40b0(u8 *p) {
         return;
     }
     if (*(s32 *)(p + 0x1c8) == 0xc1) {
-        func_020366f4(0, 0, 0x2c);
+        Sound_PlayVoice(0, 0, 0x2c);
     }
 }

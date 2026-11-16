@@ -19,9 +19,9 @@ typedef struct {
     s32 unk14;
 } UnkStruct_022c4560;
 
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
-extern UnkStruct_022f419c *data_ov000_02369b84;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_02369ac0 gBossStatus;
+extern UnkStruct_022f419c *gBossF;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02363eac[][2][4];
 extern u8 data_ov000_02363ebc[][2][4];
 extern u8 data_ov000_02363ecc[][2][4];
@@ -44,16 +44,16 @@ void func_ov000_022f8838(s32 a);
 void func_ov000_022f8810(s32 a);
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 void func_ov000_022f419c(void) {
-    UnkStruct_022f419c *w = data_ov000_02369b84;
-    u16 hp = data_ov000_02369ac0.unk8;
+    UnkStruct_022f419c *w = gBossF;
+    u16 hp = gBossStatus.unk8;
 
     if (hp >= 7) {
         switch (data_ov000_02363eac[GetLevel()][w->unk214][w->unk212]) {

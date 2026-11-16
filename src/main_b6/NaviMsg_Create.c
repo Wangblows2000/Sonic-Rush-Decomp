@@ -64,7 +64,7 @@ extern s32 data_0207b894;
 extern s32 data_0207b8a4;
 extern void *data_0207b8e4[][2];
 extern UnkInfo_02053c58 **data_0207b8d4[];
-extern UnkState_02053c58 data_022c4560;
+extern UnkState_02053c58 gGameState;
 extern UnkProg_02053c58 gSaveData;
 extern UnkTask_02053c58 *gNaviMsgTask;
 extern u32 data_022c4670;
@@ -152,9 +152,9 @@ void NaviMsg_Create(void) {
     vu32 z1;
     vu32 z2;
 
-    if (data_0207b894 == 1 && data_022c4560.unk10 == 0
-        && ((data_022c4560.unk0 == 0 && gSaveData.unkc < 3)
-            || (data_022c4560.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c))))) {
+    if (data_0207b894 == 1 && gGameState.unk10 == 0
+        && ((gGameState.unk0 == 0 && gSaveData.unkc < 3)
+            || (gGameState.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c))))) {
         func_02052874(data_0207b894);
         res = File_Load(data_0207b8e4[data_0207b8a4][data_0207b894], -1);
         Background_InitEx(&bg, res, 0xe, 1, 2, 0, 0x05000400, 0x06211600, 0xc, 0, 8, 0, 0, res->w18, res->w1a);

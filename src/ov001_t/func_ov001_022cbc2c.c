@@ -42,8 +42,8 @@ typedef struct {
     UnkCfg_022cbc2c *cfg;
 } UnkStruct_022cbc2c;
 
-void func_02040ef0(void *p, s32 a, s32 b);
-void func_02040e80(void *p);
+void KeyframeAnim_Init(void *p, s32 a, s32 b);
+void KeyframeAnim_PlayReverse(void *p);
 
 #pragma thumb on
 void func_ov001_022cbc2c(UnkStruct_022cbc2c *p) {
@@ -53,15 +53,15 @@ void func_ov001_022cbc2c(UnkStruct_022cbc2c *p) {
     s32 k;
     s32 i;
 
-    func_02040ef0(&p->animA, res, tbl->animA);
-    func_02040ef0(&p->animB, res, tbl->animB);
-    func_02040ef0(&p->animC, res, tbl->animC);
+    KeyframeAnim_Init(&p->animA, res, tbl->animA);
+    KeyframeAnim_Init(&p->animB, res, tbl->animB);
+    KeyframeAnim_Init(&p->animC, res, tbl->animC);
     for (i = 0, k = 0; i < 6; i++) {
         if (p->items[i].type == 7) continue;
         if (p->cur == i) {
-            func_02040ef0(&p->items[i].anim, res, tbl->sel + k);
+            KeyframeAnim_Init(&p->items[i].anim, res, tbl->sel + k);
         } else {
-            func_02040ef0(&p->items[i].anim, res, tbl->unsel + k);
+            KeyframeAnim_Init(&p->items[i].anim, res, tbl->unsel + k);
         }
         k++;
     }

@@ -56,7 +56,7 @@ void func_ov001_022f5954(void);
 void func_ov001_022f5da0(void);
 void func_ov001_022f5a24(UnkStruct_022f5a24 *w);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
-UnkStruct_022f5a24_t *func_ov001_02300c94(void);
+UnkStruct_022f5a24_t *ExtraBoss_GetPlayer(void);
 u16 FX_Atan2(s32 y, s32 x);
 s32 FX_DivS32(s32 n, s32 d);
 void func_ov001_022fc09c(UnkStruct_022f5a24 *w, s32 x, s32 y, s32 z, u16 ang);
@@ -109,7 +109,7 @@ void func_ov001_022f5a24(UnkStruct_022f5a24 *w) {
             a->unk114 = 0x1000;
             return;
         }
-        t = func_ov001_02300c94();
+        t = ExtraBoss_GetPlayer();
         w->unk74 = func_ov001_022f5da0;
         ang = FX_Atan2(t->unk1C - w->unk1C, t->unk18 - w->unk18);
         if (ang < 0x5c71)

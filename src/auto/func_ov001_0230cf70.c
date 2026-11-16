@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-extern unsigned char data_ov001_0231f654[];
+extern unsigned char gSpecialStageMap[];
 int NNS_G3dGeBufferOP_N();
 int Model_Draw();
 
@@ -29,7 +29,7 @@ void func_ov001_0230cf70(void)
   int iVar1;
   undefined4 local_10 [2];
   
-  iVar1 = *((int *)data_ov001_0231f654);
+  iVar1 = *((int *)gSpecialStageMap);
   NNS_G3dGeBufferOP_N(0x11,0,0);
   Model_Draw(iVar1 + 0x654);
   local_10[0] = 1;

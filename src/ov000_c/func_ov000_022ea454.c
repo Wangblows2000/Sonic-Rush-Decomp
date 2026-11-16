@@ -24,19 +24,19 @@ typedef struct {
     s16 unk456;
 } UnkStruct_022ea454;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u16 data_ov000_02363c44[][8];
 
-void func_ov000_022ea120(void);
-void func_ov000_022ea798(void);
+void Boss7PartD5_InputState_Unk_ov000_022ea120(void);
+void Boss7PartD5_InputState_Unk_ov000_022ea798(void);
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 u16 func_ov000_022ea454(UnkStruct_022ea454 *w) {
@@ -44,10 +44,10 @@ u16 func_ov000_022ea454(UnkStruct_022ea454 *w) {
 
     w->unk44C++;
     if (w->unk454 != 0 && --w->unk454 == 0) {
-        if (w->unk44C > data_ov000_02363c44[GetLevel()][data_ov000_02369ac0.unk8 - 1]) {
+        if (w->unk44C > data_ov000_02363c44[GetLevel()][gBossStatus.unk8 - 1]) {
             w->unk44C = 0;
             w->unk456 = 0x3c;
-            w->unk43C = func_ov000_022ea120;
+            w->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea120;
             return 0;
         }
     }
@@ -59,6 +59,6 @@ u16 func_ov000_022ea454(UnkStruct_022ea454 *w) {
         r |= 0x20;
     }
     if (w->base.unk58 & 1)
-        w->unk43C = func_ov000_022ea798;
+        w->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea798;
     return r;
 }

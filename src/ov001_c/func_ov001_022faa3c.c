@@ -26,7 +26,7 @@ extern s16 data_0206e470[];
 
 void func_ov001_022fc934(s32 a, s32 b, s32 c, s32 d, BOOL flag);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
-UnkStruct_022faa3c *func_ov001_02300c94(void);
+UnkStruct_022faa3c *ExtraBoss_GetPlayer(void);
 u16 FX_Atan2(s32 y, s32 x);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -52,7 +52,7 @@ void func_ov001_022faa3c(UnkStruct_022faa3c *p) {
         p->unk58 = 0x4000;
         p->unk64 = 0;
     }
-    t = func_ov001_02300c94();
+    t = ExtraBoss_GetPlayer();
     dx = t->unk18 - p->unk18;
     dy = t->unk1C - p->unk1C;
     idx = (s32)(FX_Atan2(dy, dx) & 0xffff) >> 4;

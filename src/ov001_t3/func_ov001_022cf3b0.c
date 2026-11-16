@@ -28,7 +28,7 @@ void SysSound_Init(void);
 void PostStaffRoll_InitDisplay(void);
 UnkTask_022cf3b0 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void func_ov001_022cf21c(void);
-void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void SysSound_Release(void);
 void func_ov001_022cf324(s32 a);
 
@@ -42,7 +42,7 @@ void func_ov001_022cf3b0(s32 a) {
         w = Task_Create(func_ov001_022cf21c, NULL, 0, 0x1000, 0, sizeof(UnkWork_022cf3b0))->work;
         w->unk0 = 0;
         w->unk4 = a;
-        func_02050078(0x14, 3, 5, 0, 0, 0, 0, 0x200010);
+        MsgBox_Create(0x14, 3, 5, 0, 0, 0, 0, 0x200010);
         return;
     }
     SysSound_Release();

@@ -17,7 +17,7 @@ extern UnkStruct_Task *gTaskCurrent;
 extern UnkStruct_02358710_Bright data_0208926c;
 extern UnkStruct_02358710_Bright data_02087d44;
 
-BOOL func_02050018(void);
+BOOL MsgBox_IsClosed(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
 void Task_DestroyByTag(s32 a);
 void func_ov000_02355dac(s32 a, s32 b);
@@ -32,7 +32,7 @@ void func_ov000_02358710(void) {
     data_02087d44.unk8 = 0;
     data_0208926c.unk8 = data_02087d44.unk8;
     w->unk0++;
-    if (func_02050018()) {
+    if (MsgBox_IsClosed()) {
         data_02087d44.unk8 = -0x10;
         data_0208926c.unk8 = data_02087d44.unk8;
         GXx_SetMasterBrightness_((vu16 *)0x400006c, data_0208926c.unk8);

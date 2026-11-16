@@ -15,10 +15,10 @@ void func_ov000_02359a2c(UnkStruct_SceneTask *t) {
     w->unk1C = w->unk14;
     w->unk14 = w->unk18;
     w->unk18 = 4;
-    func_02040ec0(&w->pos[4], 5);
-    func_02040ec0(&w->pos[5], 7);
-    func_02040ec0(&w->pos[6], 9);
-    func_02040ec0(&w->pos[7], 0xb);
+    KeyframeAnim_SetAnim(&w->pos[4], 5);
+    KeyframeAnim_SetAnim(&w->pos[5], 7);
+    KeyframeAnim_SetAnim(&w->pos[6], 9);
+    KeyframeAnim_SetAnim(&w->pos[7], 0xb);
     if (w->unk20) {
         func_ov000_02357d20(w);
         func_ov000_02357c2c(w);

@@ -43,7 +43,7 @@ typedef struct {
     u8 pad9D7;
 } UnkStruct_0235c238;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_Task *gRingManagerTask;
 extern void *gZoneActArchive;
 extern void *gActComArchive;
@@ -82,7 +82,7 @@ void AnimatorSprite_Init(UnkStruct_Spr *s, void *res, s32 a, s32 b, s32 c, s32 d
 
 static inline BOOL func_ov000_0235c238_IsNormal(void) {
     BOOL r = FALSE;
-    if (data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2)
+    if (gGameState.unk1C < 9 && gGameState.unk1D < 2)
         r = TRUE;
     return r;
 }
@@ -105,29 +105,29 @@ UnkStruct_0235c238 *RingManager_Create(void) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0235c238));
     w->unk9D6 = 1;
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->unk9D6 = 2;
     w->unkC = func_ov000_0235a818;
     if (!func_ov000_0235c238_IsNormal()) {
-        if (data_022c4560.unk1C == 1)
+        if (gGameState.unk1C == 1)
             w->unkC = func_ov000_0235a760;
-        else if (data_022c4560.unk1C == 2)
+        else if (gGameState.unk1C == 2)
             w->unkC = func_ov000_0235a6a8;
-        else if (data_022c4560.unk1C == 3)
+        else if (gGameState.unk1C == 3)
             w->unkC = func_ov000_0235a5f8;
     }
-    if (!func_ov000_0235c238_IsNormal() && data_022c4560.unk1C == 7)
+    if (!func_ov000_0235c238_IsNormal() && gGameState.unk1C == 7)
         w->unk10 = func_ov000_0235b484;
     else
         w->unk10 = func_ov000_0235b644;
     if (!func_ov000_0235c238_IsNormal()) {
-        if (data_022c4560.unk1C == 3) {
+        if (gGameState.unk1C == 3) {
             w->unk4 = func_ov000_0235a9e8;
             w->unk8 = func_ov000_0235a848;
-        } else if (data_022c4560.unk1C == 2) {
+        } else if (gGameState.unk1C == 2) {
             w->unk4 = func_ov000_0235aa4c;
             w->unk8 = func_ov000_0235a8b0;
-        } else if (data_022c4560.unk1C == 1) {
+        } else if (gGameState.unk1C == 1) {
             w->unk4 = func_ov000_0235aab0;
             w->unk8 = func_ov000_0235a918;
         } else {

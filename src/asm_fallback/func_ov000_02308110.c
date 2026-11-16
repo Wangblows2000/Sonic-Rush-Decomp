@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_ov000_0236aad8;
+extern u32 gCamera;
 extern void func_ov000_02307e84(void);
 extern void MapObj8F_State_Unk_ov000_02307e9c(void);
 extern void func_ov000_0233b250(void);
@@ -116,6 +116,6 @@ _178:
     add sp, sp, #0xc
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    dcd data_ov000_0236aad8
+    dcd gCamera
     dcd MapObj8F_State_Unk_ov000_02307e9c
 }

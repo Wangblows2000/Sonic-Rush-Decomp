@@ -43,39 +43,39 @@ struct UnkStruct_022c8104 {
     u8 unk228[4];
 };
 
-extern UnkStruct_022c8104_2 *data_ov000_02369acc;
-extern UnkStruct_022c8104_4 data_022c4560;
-extern UnkStruct_022c8104_5 data_ov000_02369ac0;
+extern UnkStruct_022c8104_2 *gBoss1;
+extern UnkStruct_022c8104_4 gGameState;
+extern UnkStruct_022c8104_5 gBossStatus;
 extern s16 data_ov000_02362d04[][8];
 extern s16 data_ov000_02362ce4[][8];
 
 BOOL func_ov000_022cc6d4(void);
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022c8044(UnkStruct_022c8104 *s);
+void Boss1Neck_State_Unk_ov000_022c8044(UnkStruct_022c8104 *s);
 
 void func_ov000_022c8104(UnkStruct_022c8104 *s) {
-    UnkStruct_022c8104_3 *p = data_ov000_02369acc->unk214;
+    UnkStruct_022c8104_3 *p = gBoss1->unk214;
     s32 v;
     BOOL b;
     s32 i;
     if (func_ov000_022cc6d4()) {
         b = TRUE;
-        if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+        if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
             b = FALSE;
         if (b)
             i = 1;
         else
-            i = data_022c4560.unk14;
-        v = data_ov000_02362d04[i][data_ov000_02369ac0.unk8 - 1];
+            i = gGameState.unk14;
+        v = data_ov000_02362d04[i][gBossStatus.unk8 - 1];
     } else {
         b = TRUE;
-        if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+        if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
             b = FALSE;
         if (b)
             i = 1;
         else
-            i = data_022c4560.unk14;
-        v = data_ov000_02362ce4[i][data_ov000_02369ac0.unk8 - 1];
+            i = gGameState.unk14;
+        v = data_ov000_02362ce4[i][gBossStatus.unk8 - 1];
     }
     func_ov000_022cc00c(s->unk228, s->unk220, 0x11, v, 0);
     func_ov000_022cc00c(p->unk30C, p->unk304, 4, v, 0);
@@ -84,5 +84,5 @@ void func_ov000_022c8104(UnkStruct_022c8104 *s) {
     p->unk242 &= ~4;
     s->unk20C = 0x40;
     s->unk218 = 0;
-    s->func = func_ov000_022c8044;
+    s->func = Boss1Neck_State_Unk_ov000_022c8044;
 }

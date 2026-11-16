@@ -33,7 +33,7 @@ typedef struct {
 extern UnkTask_022eba70 *gTaskCurrent;
 
 void SysSound_PlaySE(s32 a);
-void func_02040ec0(UnkAnim_022eba70 *a, s32 id);
+void KeyframeAnim_SetAnim(UnkAnim_022eba70 *a, s32 id);
 void func_ov001_022ea734(UnkWork_022eba70 *w);
 void func_ov001_022ea6e4(UnkWork_022eba70 *w);
 void func_ov001_022ea7c4(UnkWork_022eba70 *w);
@@ -75,25 +75,25 @@ void func_ov001_022eba70(UnkTask_022eba70 *t) {
         return;
     }
     SysSound_PlaySE(4);
-    func_02040ec0(&w->anims[0], 0);
-    func_02040ec0(&w->anims[1], 1);
-    func_02040ec0(&w->anims[2], 2);
-    func_02040ec0(&w->anims[3], 3);
-    func_02040ec0(&w->anims[4], 4);
+    KeyframeAnim_SetAnim(&w->anims[0], 0);
+    KeyframeAnim_SetAnim(&w->anims[1], 1);
+    KeyframeAnim_SetAnim(&w->anims[2], 2);
+    KeyframeAnim_SetAnim(&w->anims[3], 3);
+    KeyframeAnim_SetAnim(&w->anims[4], 4);
     switch (w->unk4) {
     case 0:
     case 2: {
         s32 next = w->unkd4;
         s32 cur = w->unkd0;
         if (cur / 2 != next / 2 && (cur < 14 || next < 14)) {
-            func_02040ec0(&w->anims[5], 0xb);
+            KeyframeAnim_SetAnim(&w->anims[5], 0xb);
         }
         break;
     }
     case 1:
     case 3:
         if (w->unkd0 != w->unkd4) {
-            func_02040ec0(&w->anims[5], 0xb);
+            KeyframeAnim_SetAnim(&w->anims[5], 0xb);
         }
         break;
     }

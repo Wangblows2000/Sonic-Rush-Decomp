@@ -25,7 +25,7 @@ typedef struct {
     s32 unkBDC;
 } UnkStruct_02369b2c;
 
-extern UnkStruct_02369b2c *data_ov000_02369b2c;
+extern UnkStruct_02369b2c *gBoss4;
 extern void *data_ov000_02369b30[];
 
 void Boss4PartD1_Destructor(void);
@@ -40,7 +40,7 @@ void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022dc2ec(UnkStruct_022df094 *w);
 
 UnkStruct_022df094 *Boss4PartD1_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
-    UnkStruct_02369b2c *boss = data_ov000_02369b2c;
+    UnkStruct_02369b2c *boss = gBoss4;
     UnkStruct_022df094 *w;
     UnkStruct_022df094_Sub *sub;
 

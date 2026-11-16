@@ -43,8 +43,8 @@ typedef struct {
 
 extern UnkTask_022eab78 *gTaskCurrent;
 
-void func_02040d14(UnkAnim_022eab78 *a);
-BOOL func_02040cf4(UnkAnim_022eab78 *a);
+void KeyframeAnim_Update(UnkAnim_022eab78 *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022eab78 *a);
 void func_ov001_022ea360(UnkWork_022eab78 *w, s32 i, s32 v);
 void func_ov001_022e9fe4(UnkWork_022eab78 *w, s32 i);
 void func_ov001_022e9fa8(UnkWork_022eab78 *w, s32 i);
@@ -87,13 +87,13 @@ void func_ov001_022eab78(void) {
         func_ov001_022e96a8(id, x, y);
         return;
     }
-    func_02040d14(&w->anims[5]);
-    func_02040d14(&w->anims[6]);
-    func_02040d14(&w->anims[7]);
-    func_02040d14(&w->anims[8]);
-    func_02040d14(&w->anims[9]);
-    func_02040d14(&w->anims[10]);
-    func_02040d14(&w->anims[11]);
+    KeyframeAnim_Update(&w->anims[5]);
+    KeyframeAnim_Update(&w->anims[6]);
+    KeyframeAnim_Update(&w->anims[7]);
+    KeyframeAnim_Update(&w->anims[8]);
+    KeyframeAnim_Update(&w->anims[9]);
+    KeyframeAnim_Update(&w->anims[10]);
+    KeyframeAnim_Update(&w->anims[11]);
     i = 0;
     it = w->items;
     for (; i < 5; i++) {

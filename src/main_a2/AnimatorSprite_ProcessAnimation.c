@@ -2,7 +2,7 @@
 #include "main_a2/dual.h"
 
 typedef BOOL (*UnkCmd_0203344c)(void *cmd, UnkDualSub *c, u32 a, u32 b);
-extern UnkCmd_0203344c data_02072e00[];
+extern UnkCmd_0203344c gBACFrameGroupFuncTable[];
 
 void AnimatorSprite_ProcessAnimation(UnkDualSub *c, u32 a, u32 b) {
     if (c->flags & 1) {
@@ -25,6 +25,6 @@ void AnimatorSprite_ProcessAnimation(UnkDualSub *c, u32 a, u32 b) {
         }
     }
     c->prevPos = c->pos;
-    while (data_02072e00[*(u16 *)(c->pos + UnkSeq_GetData(c->res))]((void *)(c->pos + UnkSeq_GetData(c->res)), c, a, b)) {
+    while (gBACFrameGroupFuncTable[*(u16 *)(c->pos + UnkSeq_GetData(c->res))]((void *)(c->pos + UnkSeq_GetData(c->res)), c, a, b)) {
     }
 }

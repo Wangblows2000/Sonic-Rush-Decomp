@@ -33,7 +33,7 @@ typedef struct {
     u32 unk1c;
 } UnkDisp_0205eb68;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkDisp_0205eb68 gDisplayMain;
 extern UnkDisp_0205eb68 gDisplaySub;
 
@@ -50,14 +50,14 @@ void func_0205eb68(UnkTask_0205eb68 *t) {
     for (i = 0; i < 14; i++)
         ObjVram_Free(0, w->spr[i].vram);
     ObjVram_Free(0, w->vram458);
-    if (data_022c4560.stage != 8 || data_022c4560.act != 2) {
+    if (gGameState.stage != 8 || gGameState.act != 2) {
         ObjDraw_ReleaseSpritePalette(w->palD0);
         ObjDraw_ReleaseSpritePalette(w->pal468);
     }
     special = FALSE;
-    if (data_022c4560.stage == 8 && data_022c4560.act == 2)
+    if (gGameState.stage == 8 && gGameState.act == 2)
         special = TRUE;
-    if (special || data_022c4560.stage >= 9 || data_022c4560.act >= 2) {
+    if (special || gGameState.stage >= 9 || gGameState.act >= 2) {
         gDisplayMain.unk1c = 0;
         gDisplaySub.unk1c = 0;
     }

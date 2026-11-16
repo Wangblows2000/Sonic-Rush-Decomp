@@ -22,7 +22,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s16 data_0206e470[];
 
 s32 ObjSpd_AccelToward(void *w, s32 a, s32 b, s32 c, s32 d);
@@ -133,7 +133,7 @@ void CraneSlide_State_Unk_ov000_023064d8(UnkStruct_023064d8 *w) {
     }
 
     if (w->base.unk34 != 0) {
-        if (!(data_022c4560.unk20 & 8)) {
+        if (!(gGameState.unk20 & 8)) {
             w->blk[0].unkA8 &= ~0x80;
             w->blk[4].unkA8 = w->blk[3].unkA8 = w->blk[2].unkA8 = w->blk[1].unkA8 = w->blk[0].unkA8;
             w->blk[5].unkA8 |= 0x80;

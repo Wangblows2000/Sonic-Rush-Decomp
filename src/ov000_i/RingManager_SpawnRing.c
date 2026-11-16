@@ -27,7 +27,7 @@ typedef struct {
 
 extern UnkStruct_0235b1a4 *gRingManagerTask;
 extern u32 gRandSeed;
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -58,7 +58,7 @@ void RingManager_SpawnRing(s32 a, s32 b, s16 c, s16 d, u16 f) {
             e->unk10 += Rand() & 0x1f;
             e->unk18 = 0;
             e->unk14 = 0;
-            if (func_ov000_02345758(a, b))
+            if (Stage_IsGravityFlipped(a, b))
                 e->unk12 |= 0x8000;
             else
                 e->unk12 &= ~0x8000;

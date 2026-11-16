@@ -33,7 +33,7 @@ typedef struct UnkStruct_022fb28c_c {
     s32 chr;
 } UnkStruct_022fb28c_c;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s32 data_ov001_0231d664[][5];
 
 BOOL func_ov001_02300b84(s32 x, s32 y, s32 w, s32 h);
@@ -42,11 +42,11 @@ void func_ov001_022fb17c(UnkStruct_022fb28c *p);
 
 static inline s32 GetLevel(void) {
     BOOL b = TRUE;
-    if (data_022c4560.mode != 2 && data_022c4560.mode != 3)
+    if (gGameState.mode != 2 && gGameState.mode != 3)
         b = FALSE;
     if (b)
         return 1;
-    return data_022c4560.level;
+    return gGameState.level;
 }
 
 void func_ov001_022fb28c(UnkStruct_022fb28c *p) {

@@ -1,14 +1,14 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_ov000_0236aad8[];
+extern u8 gCamera[];
 void func_ov000_02319920();
 s32 NNS_SndPlayerStopSeq();
 
 void func_ov000_02319bb4(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x80);
     *(u16 *)((u8 *)p0 + 0x30) = 0;
-    *(u32 *)((u8 *)p0 + 0x14) = (*(u16 *)((u8 *)data_ov000_0236aad8 + 0x62) << 8);
+    *(u32 *)((u8 *)p0 + 0x14) = (*(u16 *)((u8 *)gCamera + 0x62) << 8);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_02319920;
     *(u16 *)((u8 *)p0 + 0x34) = 0x100;
     *(u16 *)((u8 *)p0 + 0x2e) = 0;

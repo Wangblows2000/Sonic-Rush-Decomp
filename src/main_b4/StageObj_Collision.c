@@ -14,7 +14,7 @@ typedef struct {
     u16 prevHit;
 } UnkObj_0206bd5c;
 
-void func_02065f98(UnkObj_0206bd5c *o);
+void StageObj_CollideMap(UnkObj_0206bd5c *o);
 
 #define ABS_0206bd5c(v) ((v) < 0 ? -(v) : (v))
 
@@ -69,7 +69,7 @@ void StageObj_Collision(UnkObj_0206bd5c *o) {
                 if (oldx == tx && o->y == ty)
                     break;
                 oldy = o->y;
-                func_02065f98(o);
+                StageObj_CollideMap(o);
                 if (oldx != o->x)
                     tx = o->x;
                 hit |= o->hit;
@@ -79,7 +79,7 @@ void StageObj_Collision(UnkObj_0206bd5c *o) {
             }
         }
     }
-    func_02065f98(o);
+    StageObj_CollideMap(o);
     o->hit = hit | o->hit;
     o->flags |= fl;
 end:

@@ -3,7 +3,7 @@
 
 s32 NNS_SndPlayerStopSeq();
 s32 Sound_PlaySeqArcEx();
-s32 func_ov000_02353e6c();
+s32 Player_Action_GrabCraneSlide();
 
 void CraneSlide_OnHit(u8 *p0, u8 *p1) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x18);
@@ -32,5 +32,5 @@ void CraneSlide_OnHit(u8 *p0, u8 *p1) {
         NNS_SndPlayerStopSeq(*(u32 *)((u8 *)t0 + 0x1dc), 0);
         Sound_PlaySeqArcEx(*(u32 *)((u8 *)t0 + 0x1dc), 0, 0x71);
     }
-    func_ov000_02353e6c(t1, t0, 0, 0x70);
+    Player_Action_GrabCraneSlide(t1, t0, 0, 0x70);
 }

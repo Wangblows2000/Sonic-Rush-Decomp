@@ -22,22 +22,22 @@ typedef struct UnkStruct_02308884 {
     u32 unkAE0;
 } UnkStruct_02308884;
 
-extern UnkStruct_02308884 *data_ov001_0231f5bc;
+extern UnkStruct_02308884 *gSpecialStageHud;
 extern u16 data_ov001_02317090[];
 
-UnkStruct_02308884_o *func_ov001_0230c0a4(void);
-UnkStruct_02308884_d *func_ov001_02314664(s32 a);
+UnkStruct_02308884_o *SpecialStage_GetPlayer(void);
+UnkStruct_02308884_d *SpecialStageTrick_GetSequence(s32 a);
 float _ffltu(u32 v);
 void AnimatorSprite_Draw(void *p);
 void func_ov001_02315714(void);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
 void func_ov001_0231402c(void);
 void func_ov001_02314058(s32 a);
-s32 func_ov001_02314614(s32 a, u16 b);
+s32 SpecialStageTrick_GetRating(s32 a, u16 b);
 void func_ov001_023156a8(void);
 
 void func_ov001_02308884(void) {
-    UnkStruct_02308884 *g = data_ov001_0231f5bc;
+    UnkStruct_02308884 *g = gSpecialStageHud;
     UnkStruct_02308884_o *o;
     UnkStruct_02308884_d *d;
     s32 i;
@@ -59,10 +59,10 @@ void func_ov001_02308884(void) {
     u32 a12[2];
     u32 a13;
 
-    if (func_ov001_0230c0a4()->unk128 == 0)
+    if (SpecialStage_GetPlayer()->unk128 == 0)
         return;
-    o = func_ov001_0230c0a4();
-    d = func_ov001_02314664(o->unk150);
+    o = SpecialStage_GetPlayer();
+    d = SpecialStageTrick_GetSequence(o->unk150);
     f = 1.0f - _ffltu(o->unk14E) / _ffltu(d->unk20);
     for (i = 0; i < d->unk22; i++)
         AnimatorSprite_Draw(g->objs[i]);
@@ -86,7 +86,7 @@ void func_ov001_02308884(void) {
     a5[0] = 0xb000e00;
     a5[1] = 0;
     NNS_G3dGeBufferOP_N(0x23, a5, 2);
-    k = func_ov001_02314614(o->unk150, o->unk14E);
+    k = SpecialStageTrick_GetRating(o->unk150, o->unk14E);
     a6 = data_ov001_02317090[k];
     NNS_G3dGeBufferOP_N(0x20, &a6, 1);
     if (k == 0 && (g->unkAE0 & 4)) {

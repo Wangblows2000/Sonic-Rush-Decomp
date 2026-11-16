@@ -27,9 +27,9 @@ void func_ov001_022cc17c(UnkWork_022cc588 *w);
 void func_ov001_022cbf30(UnkWork_022cc588 *w);
 s32 func_ov001_022c8d54(UnkSub_022cc588 *s);
 void func_ov001_022c8d4c(UnkSub_022cc588 *s);
-void func_0205004c(void);
-BOOL func_02050018(void);
-BOOL func_0205000c(void);
+void MsgBox_RequestClose(void);
+BOOL MsgBox_IsClosed(void);
+BOOL MsgBox_GetResult(void);
 void func_ov001_022cc4a0(void);
 void func_ov001_022cc6b8(void);
 
@@ -45,10 +45,10 @@ void func_ov001_022cc588(void) {
     w->unk18++;
     s->unk8 = func_ov001_022c8d54(s);
     if (s->unk8 == 0) {
-        func_0205004c();
+        MsgBox_RequestClose();
     }
-    if (func_02050018()) {
-        if (!func_0205000c() && s->unk8 > 0) {
+    if (MsgBox_IsClosed()) {
+        if (!MsgBox_GetResult() && s->unk8 > 0) {
             s->unk0 = 0;
             w->unk14 = 0;
             w->unk18 = 0;

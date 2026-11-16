@@ -17,7 +17,7 @@ extern u8 data_ov000_023669e8[], data_ov000_02369fec[];
 void MapObj13Part_Destructor_ov000_0230bdf4(void);
 void MapObj13Part_State_Unk_ov000_0230be10(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_0230be44_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_02068358(UnkStruct_0230be44_Sub *s, void *a, s32 b, s32 c);
+void StageObj_AcquireSharedTexture(UnkStruct_0230be44_Sub *s, void *a, s32 b, s32 c);
 
 UnkStruct_0230be44 *MapObj13_CreatePart_ov000_0230be44(void) {
     UnkStruct_Task *task;
@@ -37,7 +37,7 @@ UnkStruct_0230be44 *MapObj13_CreatePart_ov000_0230be44(void) {
     StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_02369fdc);
     w->base.spr0.unk2C |= 0x80000;
     StageObj_Load3dBAC(w, &w->sub, data_ov000_023669e8, 0, 0, data_ov000_02369f8c, data_ov000_02369ba0);
-    func_02068358(&w->sub, data_ov000_02369fec, 0x800, 0x10);
+    StageObj_AcquireSharedTexture(&w->sub, data_ov000_02369fec, 0x800, 0x10);
     StageObj_AllocSpritePalette(w, 0, 0xe);
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x20;

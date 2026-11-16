@@ -17,7 +17,7 @@ typedef struct {
     u32 anim;
 } UnkStruct_022cbd60;
 
-s32 func_020428d4(UnkStruct_022cbd60 *p);
+s32 Wireless_GetLinkLevel(UnkStruct_022cbd60 *p);
 void AnimatorSprite_SetAnimation(UnkSpr_022cbd60 *s, u16 anim);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022cbd60 *s, u32 a, u32 b);
 void AnimatorSprite_Draw(UnkSpr_022cbd60 *s);
@@ -28,7 +28,7 @@ void func_ov001_022cbd60(UnkStruct_022cbd60 *p, s32 x, s32 y) {
     u32 *cur = &p->anim;
     u32 anim;
 
-    switch (func_020428d4(p)) {
+    switch (Wireless_GetLinkLevel(p)) {
     case 0:
         anim = 1;
         break;

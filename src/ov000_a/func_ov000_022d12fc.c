@@ -78,16 +78,16 @@ struct UnkStruct_022d12fc {
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
-extern UnkStruct_022d12fc *data_ov000_02369ae0;
+extern UnkStruct_022d12fc *gBoss2;
 
 void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov000_022d4bc8(void);
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void func_ov000_022cedd8(UnkStruct_022d12fc *s, s32 a);
-void func_ov000_022d10c8(UnkStruct_022d12fc *s);
+void Boss2_State_Unk_ov000_022d10c8(UnkStruct_022d12fc *s);
 
 void func_ov000_022d12fc(void) {
-    UnkStruct_022d12fc *s = data_ov000_02369ae0;
+    UnkStruct_022d12fc *s = gBoss2;
     UnkStruct_022d12fc_a *x = &s->unkA9C;
     UnkStruct_022d12fc_a *y = &s->unkBD4;
     UnkStruct_022d12fc_a *z = &s->unkD0C;
@@ -108,7 +108,7 @@ void func_ov000_022d12fc(void) {
     x->unk114 = 0x1000;
     y->unk114 = 0x1000;
     z->unk114 = 0x1000;
-    s->func = func_ov000_022d10c8;
+    s->func = Boss2_State_Unk_ov000_022d10c8;
     s->unk145C = s->unk1304;
     s->unk1460 = s->unk10;
     func_ov000_022c5e80(0x1152f0, 0x6cd988, s->unk10 << 4, NULL, NULL, &ang);

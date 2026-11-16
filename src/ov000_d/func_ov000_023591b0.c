@@ -40,13 +40,13 @@ void func_ov000_023591b0(void) {
     p = &w->pos[3];
     func_ov000_02357908(w, p->x, p->y);
     if (w->unk0 >= 6) {
-        func_02040d14(&w->pos[4]);
-        func_02040d14(&w->pos[5]);
+        KeyframeAnim_Update(&w->pos[4]);
+        KeyframeAnim_Update(&w->pos[5]);
         p = &w->pos[4];
         func_ov000_02357994(w, p->x, p->y);
-        func_02040d14(&w->pos[6]);
+        KeyframeAnim_Update(&w->pos[6]);
         func_ov000_02357ec8(w, w->unk14, w->pos[6].unk4);
-        func_02040d14(&w->pos[7]);
+        KeyframeAnim_Update(&w->pos[7]);
         x = w->pos[7].x;
         if (!w->unk20) {
             x = -x;

@@ -96,38 +96,38 @@ typedef struct {
 } UnkStruct_0234419c_Tbl;
 
 extern UnkStruct_0234419c_Task *gTaskCurrent;
-extern UnkStruct_0234419c_4560 data_022c4560;
+extern UnkStruct_0234419c_4560 gGameState;
 extern UnkStruct_0234419c_abd8 data_ov000_0236abd8;
 extern u32 gRandSeed;
-extern UnkStruct_0234419c_Col data_ov000_02368b74;
+extern UnkStruct_0234419c_Col gPlayerDpadRemapTable;
 extern UnkStruct_0234419c_Tbl data_ov000_02368b7e[];
 extern UnkStruct_0234419c_Tbl data_ov000_02368b8e[];
 extern UnkStruct_0234419c_Tbl data_ov000_02368b9e[];
 extern UnkStruct_0234419c_Tbl data_ov000_02368b92[];
 
-void func_ov000_02344f68(UnkStruct_0234419c *w);
-void func_ov000_02345278(UnkStruct_0234419c *w);
-void func_ov000_02344a74(UnkStruct_0234419c *w);
+void Player_RecordReplayFrame(UnkStruct_0234419c *w);
+void Player_ApplyNetState(UnkStruct_0234419c *w);
+void Player_PlayReplayFrame(UnkStruct_0234419c *w);
 s32 func_ov000_0233b078(s32 x);
 void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
-void func_ov000_02344940(UnkStruct_0234419c *w);
-void func_ov000_023455ec(UnkStruct_0234419c *w);
-void func_ov000_02343a38(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
-u32 func_ov000_023376a4(void);
-void func_ov000_02337688(u32 v);
-void func_0206cdf4(UnkStruct_0234419c_Pal *p, s32 a, s32 b, s32 c);
+void Player_UpdateGimmickStageBounds(UnkStruct_0234419c *w);
+void Player_UpdateGravityFlip(UnkStruct_0234419c *w);
+void Player_ReadInput(void);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
+u32 Hud_GetFlags(void);
+void Hud_SetFlags(u32 v);
+void ModelPalette_ShiftColor(UnkStruct_0234419c_Pal *p, s32 a, s32 b, s32 c);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Player_Action_Die(UnkStruct_0234419c *w);
-void func_ov000_023461f0(UnkStruct_0234419c *w);
-void func_ov000_02346e38(UnkStruct_0234419c *w);
+void Player_UpdateUnderwater(UnkStruct_0234419c *w);
+void Player_FindHomingTarget(UnkStruct_0234419c *w);
 void func_ov000_02346f34(UnkStruct_0234419c *w);
-void func_ov000_023466e8(UnkStruct_0234419c *w);
-void func_ov000_02346ddc(UnkStruct_0234419c *w);
-void func_ov000_02346178(UnkStruct_0234419c *w);
+void Player_UpdateBoost(UnkStruct_0234419c *w);
+void Player_CheckStartGrind(UnkStruct_0234419c *w);
+void Player_DrainBoostTension(UnkStruct_0234419c *w);
 void func_ov000_023460ec(UnkStruct_0234419c *w);
-void func_ov000_02346040(UnkStruct_0234419c *w);
-void func_ov000_02345e98(UnkStruct_0234419c *w);
+void Player_CheckCrushed(UnkStruct_0234419c *w);
+void Player_CheckTimeOver(UnkStruct_0234419c *w);
 
 static inline u16 Rand_0234419c(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -141,11 +141,11 @@ void Player_In(void) {
     s32 top;
     s32 left;
 
-    if (data_022c4560.unk10 == 2) {
-        func_ov000_02344f68(w);
+    if (gGameState.unk10 == 2) {
+        Player_RecordReplayFrame(w);
     }
-    func_ov000_02345278(w);
-    func_ov000_02344a74(w);
+    Player_ApplyNetState(w);
+    Player_PlayReplayFrame(w);
     if (w->unk330 & 0x200000) {
         w->unk330 &= ~0x200000;
         if (w->y > func_ov000_0233b078(w->x)) {
@@ -181,9 +181,9 @@ void Player_In(void) {
         }
         func_ov000_023355e0(left, top, right, bottom);
     }
-    func_ov000_02344940(w);
-    func_ov000_023455ec(w);
-    func_ov000_02343a38();
+    Player_UpdateGimmickStageBounds(w);
+    Player_UpdateGravityFlip(w);
+    Player_ReadInput();
     if (w->unk3E8 != NULL && (w->unk3E8->unk54 & 4)) {
         w->unk3E8 = NULL;
     }
@@ -209,7 +209,7 @@ void Player_In(void) {
     }
     if (w->unk3C0 != 0) {
         if (!(w->unk3C0 & 0x7f)) {
-            UnkStruct_0234419c_Col col = data_ov000_02368b74;
+            UnkStruct_0234419c_Col col = gPlayerDpadRemapTable;
             u16 r = Rand_0234419c() & 3;
             w->unk430 = col.v[(u16)(r + 1) & 3];
             w->unk432 = col.v[(u16)(r + 2) & 3];
@@ -220,7 +220,7 @@ void Player_In(void) {
         if (w->unk3C0 == 0) {
             w->unk430 = 0x40;
             w->unk432 = 0x80;
-            if (func_ov000_02345758(w->x, w->y) != 0) {
+            if (Stage_IsGravityFlipped(w->x, w->y) != 0) {
                 w->unk42E = 0x10;
                 w->unk42C = 0x20;
             } else {
@@ -259,27 +259,27 @@ void Player_In(void) {
         }
     }
     if (w->unk3B6 != 0) {
-        if (data_022c4560.unk18 & 1) {
+        if (gGameState.unk18 & 1) {
             w->unk3B6--;
         }
         if (!(w->unk32C & 0x1000000)) {
-            func_ov000_02337688(func_ov000_023376a4() | 0x20);
+            Hud_SetFlags(Hud_GetFlags() | 0x20);
             if (w->unk3B6 == 0) {
-                func_ov000_02337688(func_ov000_023376a4() & ~0x20);
-                func_0206cdf4(&w->pal, 0, 0, 0);
+                Hud_SetFlags(Hud_GetFlags() & ~0x20);
+                ModelPalette_ShiftColor(&w->pal, 0, 0, 0);
                 Sound_PlaySeqArcEx(NULL, 0, 0x3c);
             } else {
-                u32 v = data_022c4560.unk20;
+                u32 v = gGameState.unk20;
                 u32 a;
                 u32 b;
                 if (v & 0x40) {
                     a = (v >> 1) & 0x1f;
                     b = a >> 1;
-                    func_0206cdf4(&w->pal, (s8)a, (s8)b, (s8)-b);
+                    ModelPalette_ShiftColor(&w->pal, (s8)a, (s8)b, (s8)-b);
                 } else {
                     a = 0x1f - ((v >> 1) & 0x1f);
                     b = a >> 1;
-                    func_0206cdf4(&w->pal, (s8)a, (s8)b, (s8)-b);
+                    ModelPalette_ShiftColor(&w->pal, (s8)a, (s8)b, (s8)-b);
                 }
             }
         }
@@ -290,35 +290,35 @@ void Player_In(void) {
         w->unk2C4 |= 5;
         w->unk2C0 |= 0x15;
         if (!(w->unk32C & 0x1000000)) {
-            if (!(data_022c4560.unk20 & 0xe) && (data_022c4560.unk18 & 1)) {
-                func_0206cdf4(&w->pal, 0x1f, 0x1f, 0x1f);
+            if (!(gGameState.unk20 & 0xe) && (gGameState.unk18 & 1)) {
+                ModelPalette_ShiftColor(&w->pal, 0x1f, 0x1f, 0x1f);
             } else if (w->unk3B6 == 0) {
-                func_0206cdf4(&w->pal, 0, 0, 0);
+                ModelPalette_ShiftColor(&w->pal, 0, 0, 0);
             }
         }
         if (w->unk3B4 == 0) {
             w->unk5C &= ~0x20;
             w->unk2C0 = 10;
             w->unk2C4 = 2;
-            func_0206cdf4(&w->pal, 0, 0, 0);
+            ModelPalette_ShiftColor(&w->pal, 0, 0, 0);
         }
     }
     if (!(w->unk58 & 0x100) && !(w->unk32C & 0x1000000) &&
-        (data_022c4560.unk1C != 6 || data_022c4560.unk1D != 0)) {
+        (gGameState.unk1C != 6 || gGameState.unk1D != 0)) {
         if (data_ov000_0236abd8.unk10 - 0x1a <= (w->y >> 8)) {
             Player_Action_Die(w);
         }
-        if (data_022c4560.unk1C == 6 && data_022c4560.unk1D == 1 && (w->y >> 8) <= 0x1a) {
+        if (gGameState.unk1C == 6 && gGameState.unk1D == 1 && (w->y >> 8) <= 0x1a) {
             Player_Action_Die(w);
         }
     }
-    func_ov000_023461f0(w);
-    func_ov000_02346e38(w);
+    Player_UpdateUnderwater(w);
+    Player_FindHomingTarget(w);
     func_ov000_02346f34(w);
-    func_ov000_023466e8(w);
-    func_ov000_02346ddc(w);
-    func_ov000_02346178(w);
+    Player_UpdateBoost(w);
+    Player_CheckStartGrind(w);
+    Player_DrainBoostTension(w);
     func_ov000_023460ec(w);
-    func_ov000_02346040(w);
-    func_ov000_02345e98(w);
+    Player_CheckCrushed(w);
+    Player_CheckTimeOver(w);
 }

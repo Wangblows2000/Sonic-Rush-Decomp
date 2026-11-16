@@ -6,7 +6,7 @@ extern void _ffix(void);
 extern void _fflt(void);
 extern void _fmul(void);
 extern u32 data_0206e470;
-extern void func_ov001_0230c0a4(void);
+extern void SpecialStage_GetPlayer(void);
 extern void func_ov001_0230e634(void);
 extern void func_ov001_0230e710(void);
 
@@ -65,7 +65,7 @@ _bc:
     addlt sp, sp, #4
     ldmltia sp!, {r4, r5, lr}
     bxlt lr
-    bl func_ov001_0230c0a4
+    bl SpecialStage_GetPlayer
     ldr r3, [r0, #0xe4]
     ldr r1, [r4, #0x20]
     ldr r2, [pc, #0x84]

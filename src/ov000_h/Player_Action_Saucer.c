@@ -38,24 +38,24 @@ struct UnkStruct_0234f6a0 {
 };
 
 void Player_State_Parachute(UnkStruct_0234f6a0 *w);
-void func_ov000_0234f054(UnkStruct_0234f6a0 *w);
+void Player_State_ParachuteRelease(UnkStruct_0234f6a0 *w);
 void Player_State_Saucer(UnkStruct_0234f6a0 *w);
-void func_ov000_0234cb70(UnkStruct_0234f6a0 *w);
-void func_ov000_02346d10(UnkStruct_0234f6a0 *w);
-void func_ov000_02346aa8(UnkStruct_0234f6a0 *w);
+void Player_InitState(UnkStruct_0234f6a0 *w);
+void Player_StopHighSpeed(UnkStruct_0234f6a0 *w);
+void Player_StopBoost(UnkStruct_0234f6a0 *w);
 void Player_SetAnimation(UnkStruct_0234f6a0 *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void Player_Action_Saucer(UnkStruct_0234f6a0 *w, UnkStruct_0234f6a0 *other) {
     if (w->state == Player_State_Parachute)
         return;
-    if (w->state == func_ov000_0234f054)
+    if (w->state == Player_State_ParachuteRelease)
         return;
     if (w->other == other)
         return;
-    func_ov000_0234cb70(w);
-    func_ov000_02346d10(w);
-    func_ov000_02346aa8(w);
+    Player_InitState(w);
+    Player_StopHighSpeed(w);
+    Player_StopBoost(w);
     w->other = other;
     Player_SetAnimation(w, 0x3C);
     w->unk5C |= 4;

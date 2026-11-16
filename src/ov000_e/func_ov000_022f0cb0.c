@@ -23,7 +23,7 @@ typedef struct {
 } UnkStruct_022f0cb0;
 
 extern void *gMainHeap;
-extern UnkStruct_Boss *data_ov000_02369b84;
+extern UnkStruct_Boss *gBossF;
 extern UnkStruct_Mdl data_ov000_0236a524;
 extern u8 data_ov000_02365f20[];
 
@@ -37,7 +37,7 @@ void *File_Load(void *p);
 void NNS_G3dResDefaultSetup(void *p);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, void *a, s32 b);
-void func_ov000_022f0c8c(void);
+void BossFPartD8_State_Unk_ov000_022f0c8c(void);
 
 static inline void UnkFree(void **pp) {
     void *p;
@@ -57,7 +57,7 @@ static inline void UnkFree(void **pp) {
 }
 
 void func_ov000_022f0cb0(UnkStruct_022f0cb0 *s) {
-    UnkStruct_Boss *b = data_ov000_02369b84;
+    UnkStruct_Boss *b = gBossF;
     UnkStruct_Mdl *m = &data_ov000_0236a524;
 
     s->unk454 = 0;
@@ -71,5 +71,5 @@ void func_ov000_022f0cb0(UnkStruct_022f0cb0 *s) {
     Model_Init(m, 0);
     Model_SetResource(m, b->unk23C, 0);
     m->unk18 = m->unk1C = m->unk20 = 0x1355b50;
-    s->base.unk68 = func_ov000_022f0c8c;
+    s->base.unk68 = BossFPartD8_State_Unk_ov000_022f0c8c;
 }

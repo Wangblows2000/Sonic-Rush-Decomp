@@ -18,7 +18,7 @@ void CranePartED_Destructor(void);
 void CranePartED_Draw(void);
 void CranePartED_OnHit(void);
 u16 ObjDraw_AllocSpritePalette(void *a, s32 b, s32 c);
-void func_ov000_02305904(UnkStruct_02305ad8 *w);
+void CranePartED_Action_Unk_ov000_02305904(UnkStruct_02305ad8 *w);
 
 UnkStruct_02305ad8 *CranePartED_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -68,6 +68,6 @@ UnkStruct_02305ad8 *CranePartED_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x100;
     w->base.unk54 |= 0x10;
     w->base.unk1DC = Sound_AllocHandle();
-    func_ov000_02305904(w);
+    CranePartED_Action_Unk_ov000_02305904(w);
     return w;
 }

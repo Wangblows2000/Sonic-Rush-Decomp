@@ -47,15 +47,15 @@ extern u8 data_02073214[];
 
 s32 OS_DisableInterrupts(void);
 s32 OS_RestoreInterrupts(s32 e);
-void func_0203c7dc(s32 a, s32 b, void (*cb)(void), s32 d);
+void WFSi_InitCommon(s32 a, s32 b, void (*cb)(void), s32 d);
 void DC_FlushRange(void *p, u32 size);
 void DC_WaitWriteBufferEmpty(void);
 void FS_InitFile(void *p);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MI_CpuFill8(void *dst, u8 v, u32 size);
 void WBT_InitParent(u32 a, u32 b, void (*cb)(void));
-void func_0203cc68(void);
-void func_0203bdcc(s32 a, s32 b);
+void WFSi_OnParentSystemCallback(void);
+void WFSi_LoadTables(s32 a, s32 b);
 void WBT_RegisterBlock(void *p, u32 size, void *a, u32 b, u32 c, s32 d);
 void func_0203d9d0(void);
 
@@ -69,7 +69,7 @@ void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u32 e, s32 f, s32 g) 
     if (data_022b8bc0 != 0)
         return;
     data_022b8bc0 = 1;
-    func_0203c7dc(a, b, cb, d);
+    WFSi_InitCommon(a, b, cb, d);
     OS_RestoreInterrupts(save);
     m = &data_022b8be0;
     s = (UnkSub_0203c5cc *)((u32)m + 0x440);
@@ -104,8 +104,8 @@ void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u32 e, s32 f, s32 g) 
     }
     DC_FlushRange(s, sizeof(UnkSub_0203c5cc));
     DC_WaitWriteBufferEmpty();
-    WBT_InitParent(m->unk28, m->unk2c, func_0203cc68);
-    func_0203bdcc(f, g);
+    WBT_InitParent(m->unk28, m->unk2c, WFSi_OnParentSystemCallback);
+    WFSi_LoadTables(f, g);
     p = s->free;
     s->free = p->next;
     p->next = s->used;

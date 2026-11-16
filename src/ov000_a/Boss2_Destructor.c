@@ -31,7 +31,7 @@ extern char data_ov000_023652f0[];
 extern char data_ov000_02365308[];
 extern char data_ov000_0236531c[];
 extern char data_ov000_02365334[];
-extern UnkStruct_022d4d28_b *data_ov000_02369ae0;
+extern UnkStruct_022d4d28_b *gBoss2;
 
 void Model_Release(UnkStruct_022d4d28_a *a);
 BOOL func_02021310(UnkArc_022d4d28 *arc, const char *name, void *narc);
@@ -65,5 +65,5 @@ void Boss2_Destructor(UnkStruct_022d4d28 *t) {
     Sound_FreeHandle(s->unk1450);
     Sound_FreeHandle(s->unk1454);
     Sound_FreeHandle(s->unk1458);
-    data_ov000_02369ae0 = NULL;
+    gBoss2 = NULL;
 }

@@ -52,7 +52,7 @@ typedef struct UnkStruct_022de65c_c {
     u16 unk92;
 } UnkStruct_022de65c_c;
 
-extern UnkStruct_022de65c_b *data_ov000_02369b14;
+extern UnkStruct_022de65c_b *gBoss3;
 extern UnkStruct_022de65c_d data_ov000_0236a444;
 extern UnkStruct_022de65c_c data_ov000_0236a48c;
 

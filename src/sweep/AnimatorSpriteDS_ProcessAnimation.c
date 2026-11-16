@@ -2,7 +2,7 @@
 #include "main_a2/dual.h"
 
 typedef BOOL (*UnkCmd_020332c4)(void *cmd, UnkDualSub *c, u32 a, u32 b);
-extern UnkCmd_020332c4 data_02072e00[];
+extern UnkCmd_020332c4 gBACFrameGroupFuncTable[];
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 
 void AnimatorSpriteDS_ProcessAnimation(UnkDual *d, u32 a, u32 b)
@@ -43,7 +43,7 @@ void AnimatorSpriteDS_ProcessAnimation(UnkDual *d, u32 a, u32 b)
             c->unk3c = d->unk64[i];
             c->unk40 = d->unk6c[i];
             c->unk44 = d->unk74[i];
-            while (data_02072e00[*(u16 *)(c->pos + UnkSeq_GetData(c->res))]((void *)(c->pos + UnkSeq_GetData(c->res)), c, a, b)) {
+            while (gBACFrameGroupFuncTable[*(u16 *)(c->pos + UnkSeq_GetData(c->res))]((void *)(c->pos + UnkSeq_GetData(c->res)), c, a, b)) {
             }
             a = 0;
             b = 0;

@@ -5,8 +5,8 @@ s32 func_ov000_022ee198();
 s32 func_ov000_022e9b70();
 s32 func_ov000_023273f8();
 s32 Sound_PlaySeqArc();
-extern u8 data_ov000_02369ac0[];
-void func_ov000_022e9038();
+extern u8 gBossStatus[];
+void Boss7PartD5_MoveState_Unk_ov000_022e9038();
 
 void func_ov000_022e908c(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x10);
@@ -24,7 +24,7 @@ void func_ov000_022e908c(u8 *p0) {
     } else {
         Sound_PlaySeqArc(0, 0, 0x11);
     }
-    *(u32 *)((u8 *)data_ov000_02369ac0 + 0x4) = 0x29;
-    *(u32 *)((u8 *)p0 + 0x440) = (u32)func_ov000_022e9038;
+    *(u32 *)((u8 *)gBossStatus + 0x4) = 0x29;
+    *(u32 *)((u8 *)p0 + 0x440) = (u32)Boss7PartD5_MoveState_Unk_ov000_022e9038;
     ((s32 (*)())*(u32 *)((u8 *)p0 + 0x440))(p0, *(u32 *)((u8 *)p0 + 0x440), 0x29);
 }

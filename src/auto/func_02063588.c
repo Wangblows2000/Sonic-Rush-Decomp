@@ -7,8 +7,8 @@ extern u8 gTaskCurrent[];
 s32 func_02063030();
 s32 StageLoader_LoadCommonFiles();
 s32 Task_Destroy();
-s32 func_02054dbc();
-s32 func_020516b4();
+s32 Wireless_OnError();
+s32 WirelessSession_Stop();
 void func_0206353c();
 
 void func_02063588(void) {
@@ -16,11 +16,11 @@ void func_02063588(void) {
     s32 t0 = StageLoader_LoadCommonFiles();
     if (t0 == 2) {
         Task_Destroy(*(u32 *)gTaskCurrent);
-        func_02054dbc();
+        Wireless_OnError();
         return;
     }
     if (t0 == 1) {
-        func_020516b4();
+        WirelessSession_Stop();
         *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_0206353c;
     }
 }

@@ -7,7 +7,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *gActComArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023684c0[];
 extern u8 data_ov000_0236a9f8[];
 
@@ -29,9 +29,9 @@ void func_ov000_02332448(UnkStruct_StageObj *arg, s32 x, s32 y) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
     StageObj_Load2dBAC(w, data_ov000_023684c0, 0xffff, data_ov000_0236a9f8, gActComArchive);
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->spr1.unk2C |= 0x80008;
-    if (data_022c4560.unk0 != 1) {
+    if (gGameState.unk0 != 1) {
         StageObj_AllocSpritePalette(w, 0, 0x17);
         StageObj_SetAnimation(w, 5);
     } else {

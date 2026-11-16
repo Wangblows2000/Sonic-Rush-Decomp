@@ -12,13 +12,13 @@ typedef struct UnkStruct_02312d7c {
     UnkStruct_02312d7c_b b;
 } UnkStruct_02312d7c;
 
-extern UnkStruct_02312d7c *data_ov001_0231f694;
+extern UnkStruct_02312d7c *gSpecialStagePlayerResources;
 
 void func_02021c38(void *p, void (*cb)(void), s32 a, s32 b, s32 c);
 void func_ov001_02311e64(void);
 
 void func_ov001_02312d7c(void) {
-    UnkStruct_02312d7c_b *b = &data_ov001_0231f694->b;
+    UnkStruct_02312d7c_b *b = &gSpecialStagePlayerResources->b;
 
     func_02021c38(b->anm, func_ov001_02311e64, 0, 6, 3);
     b->unkA = 4;

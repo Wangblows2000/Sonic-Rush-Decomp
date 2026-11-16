@@ -54,7 +54,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_023504e8_4560;
 
-extern UnkStruct_023504e8_4560 data_022c4560;
+extern UnkStruct_023504e8_4560 gGameState;
 extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
@@ -66,10 +66,10 @@ void NNS_SndHandleReleaseSeq(void *p);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void EffSpecial_Create(UnkStruct_023504e8 *w);
 void func_ov000_02330098(UnkStruct_023504e8 *w, s16 a, s16 b);
-void func_ov000_02350440(UnkStruct_023504e8 *w);
+void Player_Action_GmkSpecialEnter(UnkStruct_023504e8 *w);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 s16 ObjSpd_DownSet(s32 v, s32 a);
-void func_ov000_0234a064(UnkStruct_023504e8 *w, s32 a);
+void Player_Action_LandOnGround(UnkStruct_023504e8 *w, s32 a);
 
 static inline u16 Rand_023504e8(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -92,7 +92,7 @@ void Player_State_GmkSpecial(UnkStruct_023504e8 *w) {
                 EffSpecial_Create(w);
             }
             if (w->unk3F4 > 0x60) {
-                if (!(data_022c4560.unk20 & 3)) {
+                if (!(gGameState.unk20 & 3)) {
                     func_ov000_02330098(w, 0xf - (Rand_023504e8() & 0x1e), 0xf - (Rand_023504e8() & 0x1e));
                 }
                 if (w->unkC == 1) {
@@ -109,7 +109,7 @@ void Player_State_GmkSpecial(UnkStruct_023504e8 *w) {
                     Sound_PlaySeqArcEx(w->unk388, 0, 0x49);
                     w->unkC++;
                 }
-                func_ov000_02350440(w);
+                Player_Action_GmkSpecialEnter(w);
                 return;
             }
             if (w->unk34 > 0) {
@@ -188,6 +188,6 @@ void Player_State_GmkSpecial(UnkStruct_023504e8 *w) {
         w->unk340(w);
         return;
     }
-    func_ov000_0234a064(w, 0);
+    Player_Action_LandOnGround(w, 0);
     w->unk334(w);
 }

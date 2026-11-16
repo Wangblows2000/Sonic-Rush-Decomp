@@ -14,7 +14,7 @@ typedef struct UnkStruct_0230f284 {
     s32 unkD0;
 } UnkStruct_0230f284;
 
-extern u8 *data_ov001_0231f658;
+extern u8 *gSpecialStageGimmickModels;
 
 void func_ov001_0230e3c8(UnkStruct_0230f284 *p, void *q, u16 ang);
 void func_ov001_0230ea6c(void);
@@ -23,17 +23,17 @@ void func_ov001_0230f284(UnkStruct_0230f284 *p, void *q) {
     switch (p->type) {
     case 0:
     case 1:
-        p->unkB0 = data_ov001_0231f658 + 0xf8;
+        p->unkB0 = gSpecialStageGimmickModels + 0xf8;
         p->flags |= 8;
         p->unkCC = 0;
         p->unk70 = 0x14;
         break;
     case 2:
-        p->unkB0 = data_ov001_0231f658 + 0xf8;
+        p->unkB0 = gSpecialStageGimmickModels + 0xf8;
         p->flags |= 8;
         break;
     case 3:
-        p->unkB0 = data_ov001_0231f658 + 0x3d4;
+        p->unkB0 = gSpecialStageGimmickModels + 0x3d4;
         p->flags |= 8;
         break;
     case 4:

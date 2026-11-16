@@ -13,14 +13,14 @@ typedef struct {
 
 typedef void (*UnkFunc_02342178)(UnkStruct_02342178 *r, s32 a, s32 b);
 
-extern UnkStruct_02342178_4560 data_022c4560;
+extern UnkStruct_02342178_4560 gGameState;
 extern UnkFunc_02342178 data_ov000_02368a30[][3];
 extern u16 data_ov000_0236aab0;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 
 void func_ov000_02342178(UnkStruct_02342178 *r, s32 a, s32 b) {
-    if (r != NULL && data_ov000_02368a30[data_022c4560.unk1C][data_022c4560.unk1D] != NULL) {
+    if (r != NULL && data_ov000_02368a30[gGameState.unk1C][gGameState.unk1D] != NULL) {
         {
             vu32 zero = 0;
             MIi_CpuClear32(zero, (void *)0x6008000, 0x8000);
@@ -37,7 +37,7 @@ void func_ov000_02342178(UnkStruct_02342178 *r, s32 a, s32 b) {
             vu32 zero = 0;
             MIi_CpuClear32(zero, (void *)0x6204000, 0x2000);
         }
-        data_ov000_02368a30[data_022c4560.unk1C][data_022c4560.unk1D](r, a, b);
+        data_ov000_02368a30[gGameState.unk1C][gGameState.unk1D](r, a, b);
         data_ov000_0236aab0 |= 1;
         *(vu16 *)0x5000000 = 0;
         *(vu16 *)0x5000400 = 0;

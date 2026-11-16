@@ -36,7 +36,7 @@ s32 FX_DivS32(s32 a, s32 b);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_022cee04(UnkStruct_022cee68 *t);
-void func_ov000_022cd574(void);
+void Boss2WaterLight_CreateRestore(void);
 
 void func_ov000_022cee68(UnkStruct_022cee68 *t) {
     UnkStruct_022cee68_a *a = t->unk0->unk1420;
@@ -61,6 +61,6 @@ void func_ov000_022cee68(UnkStruct_022cee68 *t) {
         b->unk114 = 0x1000;
         s->unk1420 = b;
     } else if (t->unkC == 0xf) {
-        func_ov000_022cd574();
+        Boss2WaterLight_CreateRestore();
     }
 }

@@ -6,7 +6,7 @@ typedef struct {
     s32 unkE4;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 void func_ov000_022c5e80(s32 a, s32 b, s32 x, s32 *ox, s32 *oy, s32 *oz);
 
@@ -18,7 +18,7 @@ void func_ov000_0232a660(UnkStruct_EffObj *w) {
     if (w->unk88 != NULL) {
         w->unk10 = ((UnkStruct_EffObj *)w->unk88)->unk10 + w->unk2E;
         w->unk14 = ((UnkStruct_EffObj *)w->unk88)->unk14 + w->unk30;
-        func_ov000_022c5e80(data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4, w->unk10 << 4, &x, &y, &z);
+        func_ov000_022c5e80(gCamera.unkE0, gCamera.unkE4, w->unk10 << 4, &x, &y, &z);
         w->unk10 = x >> 4;
         w->unk18 = y >> 4;
     }

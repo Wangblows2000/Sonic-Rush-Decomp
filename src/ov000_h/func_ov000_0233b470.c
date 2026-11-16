@@ -13,7 +13,7 @@ typedef struct {
     u32 flags;
 } UnkStruct_0233b470;
 
-extern UnkStruct_0233b470 data_ov000_0236aad8;
+extern UnkStruct_0233b470 gCamera;
 extern UnkStruct_0233b470 data_ov000_0236ab3c;
 
 #define XSWAP_0233b470(x, y) \
@@ -29,21 +29,21 @@ BOOL func_ov000_0233b470(BOOL on) {
     u8 i;
 
     if (!on) {
-        if (!(data_ov000_0236aad8.flags & 2)) {
+        if (!(gCamera.flags & 2)) {
             return FALSE;
         }
-        data_ov000_0236aad8.flags |= 0x200;
-        data_ov000_0236aad8.flags &= ~2;
-        data_ov000_0236aad8.flags &= ~0x400;
+        gCamera.flags |= 0x200;
+        gCamera.flags &= ~2;
+        gCamera.flags &= ~0x400;
     } else {
-        if (data_ov000_0236aad8.flags & 2) {
+        if (gCamera.flags & 2) {
             return FALSE;
         }
-        data_ov000_0236aad8.flags |= 0x200;
-        data_ov000_0236aad8.flags |= 2;
-        data_ov000_0236aad8.flags |= 0x400;
+        gCamera.flags |= 0x200;
+        gCamera.flags |= 2;
+        gCamera.flags |= 0x400;
     }
-    p = &data_ov000_0236aad8;
+    p = &gCamera;
     q = &data_ov000_0236ab3c;
     for (i = 0; i < 2; i++) {
         XSWAP_0233b470(p->a[i], q->a[i]);

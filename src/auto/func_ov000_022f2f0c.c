@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 func_ov000_022f8fa0();
-extern u8 data_022c4560[];
+extern u8 gGameState[];
 s32 func_ov000_022f8c28();
 s32 func_ov000_022f8bc8();
 s32 func_ov000_022f4cbc();
@@ -13,11 +13,11 @@ void func_ov000_022f2f0c(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x43e) = (*(u16 *)((u8 *)p0 + 0x43e) + 0x1);
     if ((*(u16 *)((u8 *)p0 + 0x43e) & 3) == 0) {
         if ((*(u16 *)((u8 *)p0 + 0x43a) & 0x8000) != 0) {
-            func_ov000_022f8c28(*(u32 *)data_022c4560, 0);
-            func_ov000_022f8bc8(*(u32 *)data_022c4560, 0);
+            func_ov000_022f8c28(*(u32 *)gGameState, 0);
+            func_ov000_022f8bc8(*(u32 *)gGameState, 0);
         } else {
-            func_ov000_022f8c28(*(u32 *)data_022c4560, 1);
-            func_ov000_022f8bc8(*(u32 *)data_022c4560, 1);
+            func_ov000_022f8c28(*(u32 *)gGameState, 1);
+            func_ov000_022f8bc8(*(u32 *)gGameState, 1);
         }
         *(u16 *)((u8 *)p0 + 0x43a) = (*(u16 *)((u8 *)p0 + 0x43a) & ~3);
         *(u16 *)((u8 *)p0 + 0x43a) = (*(u16 *)((u8 *)p0 + 0x43a) ^ 0x8000);

@@ -30,14 +30,14 @@ typedef struct {
 } UnkStruct_02353568_4560;
 
 extern s16 data_0206e470[];
-extern UnkStruct_02353568_4560 data_022c4560;
+extern UnkStruct_02353568_4560 gGameState;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
-void func_ov000_0234c644(UnkStruct_02353568 *w);
-void func_ov000_0234a064(UnkStruct_02353568 *w, u8 ang);
+void Player_LoadPhysicsParams(UnkStruct_02353568 *w);
+void Player_Action_LandOnGround(UnkStruct_02353568 *w, u8 ang);
 void func_ov000_02328e6c(UnkStruct_02353568 *w, s32 a, s32 b);
-void func_ov000_02347680(UnkStruct_02353568 *w);
+void Player_ApplyAutoRunAcceleration(UnkStruct_02353568 *w);
 void StageObj_Move(UnkStruct_02353568 *w);
 
 #define IDX_02353568(a) ((s32)((a) & 0xffff) >> 4)
@@ -52,18 +52,18 @@ void func_ov000_02353568(UnkStruct_02353568 *w) {
     } else if (w->unk58 & 0xd) {
         NNS_SndPlayerStopSeq(w->unk388, 0x10);
         NNS_SndHandleReleaseSeq(w->unk388);
-        func_ov000_0234c644(w);
+        Player_LoadPhysicsParams(w);
         w->unk1 = 0;
         w->unk58 &= ~0x2000;
         w->unk58 |= 0x80;
         w->unk58 |= 0x20000;
         w->unk32C &= ~0x100000;
         w->unk2E = w->unk34;
-        func_ov000_0234a064(w, 0);
+        Player_Action_LandOnGround(w, 0);
         w->unk334(w);
         return;
     }
-    if (!(data_022c4560.unk20 & 7)) {
+    if (!(gGameState.unk20 & 7)) {
         func_ov000_02328e6c(w, 0, 0xc);
     }
     if (w->unk5C & 1) {
@@ -71,7 +71,7 @@ void func_ov000_02353568(UnkStruct_02353568 *w) {
     } else {
         w->unk1 = 0xa;
     }
-    func_ov000_02347680(w);
+    Player_ApplyAutoRunAcceleration(w);
     if (w->unk3F0 != 0) {
         spd = w->unk34;
         if (w->unk5C & 1) {

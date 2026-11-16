@@ -34,7 +34,7 @@ void func_ov001_022f8774(void);
 void func_ov001_022f8110(void);
 void func_ov001_022f7740(void);
 void func_ov001_022f9d20(void);
-void SceneChange_Unk_02054ef4(void);
+void SceneChange_ToExtraEnding(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
 
 #define G data_ov001_0231f084
@@ -110,7 +110,7 @@ void ExtraAct_Main(void) {
             G->unkE40++;
             if (G->unkE40 >= 0x3c) {
                 func_ov001_022f9d20();
-                SceneChange_Unk_02054ef4();
+                SceneChange_ToExtraEnding();
             }
         } else {
             G->unkE34++;

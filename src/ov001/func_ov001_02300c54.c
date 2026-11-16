@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-extern s32 *data_ov001_0231f530;
+extern s32 *gExtraBossPlayerManager;
 
 s32 func_ov001_02300c54(void) {
-    return data_ov001_0231f530[2];
+    return gExtraBossPlayerManager[2];
 }

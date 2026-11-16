@@ -4,7 +4,7 @@
 s32 func_ov000_02307e84();
 s32 func_ov000_0234237c();
 s32 func_ov000_02307dfc();
-s32 func_ov000_02308dac();
+s32 GmkWall_Action_Unk_ov000_02308dac();
 
 void GmkWall_State_Unk_ov000_02308df8(u8 *p0) {
     s32 t0 = func_ov000_02307e84();
@@ -25,5 +25,5 @@ void GmkWall_State_Unk_ov000_02308df8(u8 *p0) {
     if ((t3 & 0x10) == 0) {
         return;
     }
-    func_ov000_02308dac(p0, t3);
+    GmkWall_Action_Unk_ov000_02308dac(p0, t3);
 }

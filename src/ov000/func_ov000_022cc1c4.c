@@ -10,10 +10,10 @@ typedef struct UnkStruct_022cc1c4 {
     UnkStruct_022cc114_2 *unk210;
 } UnkStruct_022cc1c4;
 
-extern UnkStruct_022cc1c4 *data_ov000_02369acc;
+extern UnkStruct_022cc1c4 *gBoss1;
 
 void func_ov000_022c95b8(void);
 
 BOOL func_ov000_022cc1c4(void) {
-    return func_ov000_022c95b8 == data_ov000_02369acc->unk210->func;
+    return func_ov000_022c95b8 == gBoss1->unk210->func;
 }

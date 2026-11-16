@@ -43,8 +43,8 @@ typedef struct {
 
 extern UnkTask_022eb5d0 *gTaskCurrent;
 
-void func_02040d14(UnkAnim_022eb5d0 *a);
-BOOL func_02040cf4(UnkAnim_022eb5d0 *a);
+void KeyframeAnim_Update(UnkAnim_022eb5d0 *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022eb5d0 *a);
 void func_ov001_022ea360(UnkWork_022eb5d0 *w, s32 i, s32 v);
 void func_ov001_022e9fe4(UnkWork_022eb5d0 *w, s32 i);
 void func_ov001_022e9fa8(UnkWork_022eb5d0 *w, s32 i);
@@ -67,18 +67,18 @@ void TimeAttackMenu_State_Enter(void) {
     UnkAnim_022eb5d0 *an;
     UnkItem_022eb5d0 *it;
 
-    func_02040d14(&w->anims[0]);
-    func_02040d14(&w->anims[1]);
-    func_02040d14(&w->anims[2]);
-    func_02040d14(&w->anims[3]);
-    func_02040d14(&w->anims[4]);
-    func_02040d14(&w->anims[5]);
-    func_02040d14(&w->anims[6]);
-    func_02040d14(&w->anims[7]);
-    func_02040d14(&w->anims[8]);
-    func_02040d14(&w->anims[9]);
-    func_02040d14(&w->anims[10]);
-    func_02040d14(&w->anims[11]);
+    KeyframeAnim_Update(&w->anims[0]);
+    KeyframeAnim_Update(&w->anims[1]);
+    KeyframeAnim_Update(&w->anims[2]);
+    KeyframeAnim_Update(&w->anims[3]);
+    KeyframeAnim_Update(&w->anims[4]);
+    KeyframeAnim_Update(&w->anims[5]);
+    KeyframeAnim_Update(&w->anims[6]);
+    KeyframeAnim_Update(&w->anims[7]);
+    KeyframeAnim_Update(&w->anims[8]);
+    KeyframeAnim_Update(&w->anims[9]);
+    KeyframeAnim_Update(&w->anims[10]);
+    KeyframeAnim_Update(&w->anims[11]);
     i = 0;
     it = w->items;
     an = w->anims;
@@ -153,18 +153,18 @@ void TimeAttackMenu_State_Enter(void) {
     AnimatorSprite_Draw(&w->sprites[4]);
     w->unk0++;
     done = TRUE;
-    if (!func_02040cf4(&w->anims[0])) done = FALSE;
-    if (!func_02040cf4(&w->anims[1])) done = FALSE;
-    if (!func_02040cf4(&w->anims[2])) done = FALSE;
-    if (!func_02040cf4(&w->anims[3])) done = FALSE;
-    if (!func_02040cf4(&w->anims[4])) done = FALSE;
-    if (!func_02040cf4(&w->anims[5])) done = FALSE;
-    if (!func_02040cf4(&w->anims[6])) done = FALSE;
-    if (!func_02040cf4(&w->anims[7])) done = FALSE;
-    if (!func_02040cf4(&w->anims[8])) done = FALSE;
-    if (!func_02040cf4(&w->anims[9])) done = FALSE;
-    if (!func_02040cf4(&w->anims[10])) done = FALSE;
-    if (!func_02040cf4(&w->anims[11])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[0])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[1])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[2])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[3])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[4])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[5])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[6])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[7])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[8])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[9])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[10])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[11])) done = FALSE;
     if (done) {
         w->unkdc = 0;
         func_ov001_022ebc3c(0);

@@ -20,7 +20,7 @@ typedef struct {
 
 extern s16 data_ov000_02364444[];
 extern s16 data_ov000_02364446[];
-extern UnkEntry_0231a824 data_ov000_0236aad8[];
+extern UnkEntry_0231a824 gCamera[];
 
 void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
 void AnimatorSprite_Draw(UnkStruct_Spr *s);
@@ -40,7 +40,7 @@ BOOL func_ov000_0231a824(UnkWork_0231a824 *w) {
     oy = data_ov000_02364446[w->unk2A4 * 2];
 
     for (i = 0; i < 2; i++) {
-        p = &data_ov000_0236aad8[i].pos;
+        p = &gCamera[i].pos;
         s = &w->spr[i];
         s->unk4 = ox + (px - (p->x >> 8));
         s->unk6 = oy + (py - (p->y >> 8));

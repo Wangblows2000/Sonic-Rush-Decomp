@@ -15,7 +15,7 @@ typedef struct {
     s32 unk46C;
 } UnkStruct_022e8538;
 
-extern UnkStruct_Boss *data_ov000_02369b78;
+extern UnkStruct_Boss *gBoss7;
 extern s16 data_0206e470[];
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -23,7 +23,7 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 }
 
 void func_ov000_022e8538(UnkStruct_022e8538 *w) {
-    UnkStruct_Boss *b = data_ov000_02369b78;
+    UnkStruct_Boss *b = gBoss7;
     s32 i;
 
     w->unk466 += w->unk468;

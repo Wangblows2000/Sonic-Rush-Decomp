@@ -10,12 +10,12 @@ typedef struct {
     u16 unk62;
 } UnkPlayer_023427bc;
 
-extern UnkPlayer_023427bc data_ov000_0236aad8[];
+extern UnkPlayer_023427bc gCamera[];
 
 #define CLAMP(v, lo, hi) ((v) < (lo) ? (lo) : ((v) > (hi) ? (hi) : (v)))
 
 u8 func_ov000_023427bc(s32 idx) {
-    UnkPlayer_023427bc *p = &data_ov000_0236aad8[idx];
+    UnkPlayer_023427bc *p = &gCamera[idx];
     s16 v;
 
     if (p->flags & 0x1000000) {

@@ -40,8 +40,8 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern UnkStruct_022eb9f8_Task *gTaskCurrent;
-extern UnkStruct_02369b78 *data_ov000_02369b78;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_02369b78 *gBoss7;
+extern UnkStruct_022c4560 gGameState;
 extern u16 data_02074960[][3][3];
 extern u16 data_02074962[][3][3];
 extern u16 data_02074964[][3][3];
@@ -57,7 +57,7 @@ void func_ov000_022ebccc(void);
 
 void Boss7PartD5_Draw(void) {
     UnkStruct_022eb9f8 *w = gTaskCurrent->work;
-    UnkStruct_02369b78 *mgr = data_ov000_02369b78;
+    UnkStruct_02369b78 *mgr = gBoss7;
     UnkStruct_022eb9f8_Sub *sub = &w->unk20C;
     u16 i;
 
@@ -79,9 +79,9 @@ void Boss7PartD5_Draw(void) {
         }
         sub->unk48 = w->unk48C[i];
         Model_Draw(sub);
-        func_02022270(0, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D][0]);
-        func_02022270(1, data_02074962[data_022c4560.unk1C][data_022c4560.unk1D][0]);
-        func_02022270(2, data_02074964[data_022c4560.unk1C][data_022c4560.unk1D][0]);
+        func_02022270(0, data_02074960[gGameState.unk1C][gGameState.unk1D][0]);
+        func_02022270(1, data_02074962[gGameState.unk1C][gGameState.unk1D][0]);
+        func_02022270(2, data_02074964[gGameState.unk1C][gGameState.unk1D][0]);
     }
     w->base.unk5C &= ~8;
     if (w->base.unk5C & 4) {

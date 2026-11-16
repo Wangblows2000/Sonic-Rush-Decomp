@@ -14,7 +14,7 @@ extern u8 data_ov000_02366730[], data_ov000_02369e5c[], data_ov000_02366748[], d
 void Cannon_Destructor(void);
 void Cannon_Draw(void);
 void Cannon_OnHit(void);
-void func_ov000_023046c0(UnkStruct_023047f0 *w);
+void Cannon_Action_Unk_ov000_023046c0(UnkStruct_023047f0 *w);
 
 UnkStruct_023047f0 *Cannon_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -54,6 +54,6 @@ UnkStruct_023047f0 *Cannon_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll0.unk1C = Cannon_OnHit;
     w->base.coll0.unkA |= 0x800;
     w->base.unk58 |= 0x2100;
-    func_ov000_023046c0(w);
+    Cannon_Action_Unk_ov000_023046c0(w);
     return w;
 }

@@ -27,14 +27,14 @@ typedef struct {
 
 void Player_State_SandSlider(void);
 s32 Player_ResetGimmickState();
-s32 func_ov000_0234c644();
+s32 Player_LoadPhysicsParams();
 s32 Player_SetAnimation();
 
 void Player_Action_SandSlider(UnkStruct_02351f50 *w, s32 a) {
     if (w->unk68 == Player_State_SandSlider)
         return;
     Player_ResetGimmickState(w);
-    func_ov000_0234c644(w);
+    Player_LoadPhysicsParams(w);
     w->unk3E8 = a;
     Player_SetAnimation(w, 0x31);
     w->unk5C |= 4;

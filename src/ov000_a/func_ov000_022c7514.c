@@ -15,7 +15,7 @@ struct UnkStruct_022c7514 {
 
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cc224(void);
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void func_ov000_022c74fc(UnkStruct_022c7514 *s);
 
 void func_ov000_022c7514(UnkStruct_022c7514 *s) {
@@ -24,6 +24,6 @@ void func_ov000_022c7514(UnkStruct_022c7514 *s) {
     s->unk14 = 0x20000;
     s->unk18 = -0x8e00;
     func_ov000_022cc224();
-    func_020366f4(0, 0, 0x7e);
+    Sound_PlayVoice(0, 0, 0x7e);
     s->func = func_ov000_022c74fc;
 }

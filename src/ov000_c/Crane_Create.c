@@ -15,7 +15,7 @@ extern UnkStruct_0230614c_Tbl data_ov000_023667d8;
 extern u8 data_ov000_02366868[], data_ov000_02369e9c[], data_ov000_02369e94[], data_ov000_02366880[];
 
 void MapObject_Destructor(void);
-void func_ov000_0230613c(UnkStruct_0230614c *w);
+void Crane_Action_Unk_ov000_0230613c(UnkStruct_0230614c *w);
 UnkStruct_StageObj *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 UnkStruct_0230614c *Crane_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -53,7 +53,7 @@ UnkStruct_0230614c *Crane_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->base.unkC = 0;
     }
     w->base.unk8 = w->base.unkC;
-    func_ov000_0230613c(w);
+    Crane_Action_Unk_ov000_0230613c(w);
     o = MapObject_Spawn(0xed, w->base.unk10, w->base.unk14, w->base.unk1E0->unk4, 0, w->base.unk1E0->unk7,
                             w->base.unk1E0->unk8, w->base.unk1E0->unk9, 0);
     if (o != NULL) {

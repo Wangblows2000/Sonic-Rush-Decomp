@@ -23,7 +23,7 @@ typedef struct {
     s32 unk4A4;
 } UnkStruct_022f58cc;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_StageObj *gPlayers;
 extern s16 data_ov000_02364068[][10];
 
@@ -31,11 +31,11 @@ void NNS_G3dGlbPolygonAttr(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void BossFPartDE_State_Unk_ov000_022f58ac(void);
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 void BossFPartDE_State_Unk_ov000_022f58cc(UnkStruct_022f58cc *w) {

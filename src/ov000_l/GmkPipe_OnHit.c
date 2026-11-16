@@ -13,7 +13,7 @@ typedef struct {
     void *unk18;
 } UnkColl_02312214;
 
-void func_ov000_0234fcbc(UnkPlayer_02312214 *p, s32 v);
+void Player_Action_PipeExit(UnkPlayer_02312214 *p, s32 v);
 void Player_Action_Pipe(UnkPlayer_02312214 *p, UnkStruct_StageObj *o, u8 dir);
 
 void GmkPipe_OnHit(UnkColl_02312214 *a, UnkColl_02312214 *b) {
@@ -31,7 +31,7 @@ void GmkPipe_OnHit(UnkColl_02312214 *a, UnkColl_02312214 *b) {
     if ((f & 4) || (p->unk3E8 != o && (p->unk58 & 0x200))) {
         if (o->unk1E0->unk6 != 0)
             v = o->unk1E0->unk6 * 0x180 + 0x780;
-        func_ov000_0234fcbc(p, v);
+        Player_Action_PipeExit(p, v);
         return;
     }
     if (f & 1)

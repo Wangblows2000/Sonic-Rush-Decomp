@@ -20,7 +20,7 @@ extern u8 data_ov000_0236a300[], data_ov000_02367110[], data_ov000_0236a310[];
 
 void func_ov000_0231960c(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_0231979c_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_02068358(UnkStruct_0231979c_Sub *s, void *a, s32 b, s32 c);
+void StageObj_AcquireSharedTexture(UnkStruct_0231979c_Sub *s, void *a, s32 b, s32 c);
 
 void EffShadow_Create(UnkStruct_StageObj *arg, void *n) {
     UnkStruct_Task *task;
@@ -34,7 +34,7 @@ void EffShadow_Create(UnkStruct_StageObj *arg, void *n) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0231979c));
     StageObj_Load3dBAC(w, &w->unk134, data_ov000_02367110, 0, 0, data_ov000_0236a300, data_ov000_02369ba0);
-    func_02068358(&w->unk134, data_ov000_0236a310, 0x80, 0x10);
+    StageObj_AcquireSharedTexture(&w->unk134, data_ov000_0236a310, 0x80, 0x10);
     w->unk134.unkA = 4;
     w->unk134.unkB = 0;
     w->base.unk5C |= 0x200;

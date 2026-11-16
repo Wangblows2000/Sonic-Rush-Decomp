@@ -24,17 +24,17 @@ typedef struct {
     UnkStruct_022fa128_Sub unk470;
 } UnkStruct_022fa128;
 
-extern UnkStruct_StageObj *data_ov000_02369b84;
+extern UnkStruct_StageObj *gBossF;
 extern void *data_ov000_02369b88[];
 extern void *gZoneActArchive;
 extern u8 data_ov000_02366060[];
 
 void BossFPartD8_Destructor(void);
-void BossFPartD8_State_Unk_ov000_022f3f88(void);
+void BossFPartD8_State_Idle(void);
 void BossFPartD8_Draw(void);
 void BossFPartD8_Collide(void);
-void func_ov000_022f50b0(void);
-void func_ov000_022f4ec8(void);
+void BossFPartD8_OnHit_Unk_ov000_022f50b0(void);
+void BossFPartD8_OnHit_Unk_ov000_022f4ec8(void);
 void func_ov000_022f4d40(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
@@ -47,7 +47,7 @@ void func_ov000_022f9044(UnkStruct_022fa128 *w);
 
 UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     u32 ctx[0x17];
-    UnkStruct_StageObj *mgr = data_ov000_02369b84;
+    UnkStruct_StageObj *mgr = gBossF;
     UnkStruct_022fa128 *w;
     UnkStruct_Coll *c;
     UnkStruct_022fa128_Sub *sub;
@@ -56,7 +56,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     w = Task_Create(StageObj_Main, BossFPartD8_Destructor, 0, 0xf0, 2, sizeof(UnkStruct_022fa128))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022fa128));
-    w->base.unk68 = BossFPartD8_State_Unk_ov000_022f3f88;
+    w->base.unk68 = BossFPartD8_State_Idle;
     func_02021310(ctx, data_ov000_02366060, gZoneActArchive);
     w->unk46C = func_02021264(ctx, 8);
     w->unk460 = func_02021264(ctx, 0xc);
@@ -77,7 +77,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
-    c->unk1C = func_ov000_022f50b0;
+    c->unk1C = BossFPartD8_OnHit_Unk_ov000_022f50b0;
     c->unkA &= ~4;
     c = &w->coll[1];
     *c = w->base.coll1;
@@ -93,7 +93,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
-    c->unk1C = func_ov000_022f4ec8;
+    c->unk1C = BossFPartD8_OnHit_Unk_ov000_022f4ec8;
     c->unkA &= ~4;
     c = &w->coll[4];
     *c = w->base.coll1;
@@ -109,7 +109,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
-    c->unk1C = func_ov000_022f4ec8;
+    c->unk1C = BossFPartD8_OnHit_Unk_ov000_022f4ec8;
     c->unkA &= ~4;
     func_ov000_022f9044(w);
     w->base.unk1C8 = w->unk460;

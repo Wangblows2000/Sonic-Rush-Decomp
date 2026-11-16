@@ -22,7 +22,7 @@ typedef struct UnkStruct_023095e0 {
     s32 timer;
 } UnkStruct_023095e0;
 
-extern UnkStruct_023095e0 *data_ov001_0231f5bc;
+extern UnkStruct_023095e0 *gSpecialStageHud;
 extern UnkStruct_023095e0_br gDisplayMain;
 
 BOOL func_0202e5e4(float a, float b);
@@ -36,7 +36,7 @@ u32 _ffixu(float a);
 #define REG_BG3CNT (*(vu16 *)0x400000e)
 
 void func_ov001_023095e0(void) {
-    UnkStruct_023095e0 *g = data_ov001_0231f5bc;
+    UnkStruct_023095e0 *g = gSpecialStageHud;
     float f;
 
     REG_BG1CNT = REG_BG1CNT & ~3;

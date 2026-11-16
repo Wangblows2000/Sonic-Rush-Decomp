@@ -2,10 +2,10 @@
 #include <nitro/types.h>
 
 extern u32 gDisplayTable;
-extern u32 data_022c4560;
+extern u32 gGameState;
 extern u32 data_ov000_02368b08;
 extern u32 data_ov000_0236aab0;
-extern u32 data_ov000_0236aad8;
+extern u32 gCamera;
 extern u32 data_ov000_0236ac1c;
 
 asm void func_ov000_02341ebc(void)
@@ -53,10 +53,10 @@ _64:
     ldmia sp!, {r4, r5, lr}
     bx lr
     dcd data_ov000_0236aab0
-    dcd data_022c4560
+    dcd gGameState
     dcd data_ov000_02368b08
     dcd data_ov000_0236ac1c
-    dcd data_ov000_0236aad8
+    dcd gCamera
     dcd gDisplayTable
     dcd 0x000001ff
 }

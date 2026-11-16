@@ -32,18 +32,18 @@ typedef struct {
     u8 unk4A8[4];
 } UnkStruct_022f569c;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369b84 *data_ov000_02369b84;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369b84 *gBossF;
 extern s16 data_ov000_02364090[][10];
 
 void NNS_SndPlayerStopSeq(void *a, s32 b);
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 void BossFPartDE_State_Unk_ov000_022f569c(UnkStruct_022f569c *w) {
@@ -67,7 +67,7 @@ void BossFPartDE_State_Unk_ov000_022f569c(UnkStruct_022f569c *w) {
         NNS_SndPlayerStopSeq(w->unk4A8, 0x3c);
     }
     if (w->base.unk14 < 0x1a000) {
-        data_ov000_02369b84->unk218->unk438--;
+        gBossF->unk218->unk438--;
         w->base.unk54 |= 4;
     }
 }

@@ -13,7 +13,7 @@ typedef struct {
 
 void func_0205bd4c(void);
 typedef struct { u8 pad0[0x1c]; u8 unk1C; } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 static inline s32 FX_Mul_0205bd78(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -39,7 +39,7 @@ void func_0205bd78(void *w, UnkObj_0205bd78 *o) {
         o->t = 0x1000;
         o->fn = func_0205bd4c;
     }
-    if (data_022c4560.unk1C < 7)
+    if (gGameState.unk1C < 7)
         o->unkA4 = Lerp_0205bd78(0x12c000, 0x78000, o->t, 3);
     else
         o->unkA4 = Lerp_0205bd78(0x12c000, 0x46000, o->t, 3);

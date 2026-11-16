@@ -57,7 +57,7 @@ extern s16 data_0206e470[];
 
 s32 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 s32 ObjSpd_DownSet(s32 v, s32 a);
-void func_ov000_0234a064(UnkStruct_02351a8c *w, u8 a);
+void Player_Action_LandOnGround(UnkStruct_02351a8c *w, u8 a);
 
 void Player_State_Rocket(UnkStruct_02351a8c *w) {
     u16 m1;
@@ -125,6 +125,6 @@ void Player_State_Rocket(UnkStruct_02351a8c *w) {
         w->unk340(w);
         return;
     }
-    func_ov000_0234a064(w, 0);
+    Player_Action_LandOnGround(w, 0);
     w->unk334(w);
 }

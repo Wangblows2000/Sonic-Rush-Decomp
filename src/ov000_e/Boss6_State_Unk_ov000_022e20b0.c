@@ -26,8 +26,8 @@ extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_022c4590 data_022c4590;
 extern UnkStruct_Player *gPlayers;
 
-void func_0204eb04(void);
-void func_0204d5f8(void (*fn)(void));
+void Stage_OnBossCleared(void);
+void StageShutdown_Create(void (*fn)(void));
 
 void Boss6_State_Unk_ov000_022e20b0(UnkStruct_022e20b0 *w) {
     w->unkF50--;
@@ -38,5 +38,5 @@ void Boss6_State_Unk_ov000_022e20b0(UnkStruct_022e20b0 *w) {
     if (w->unkF50 > 0)
         return;
     data_022c4590.unk10 = gPlayers->unk3AE * 1000;
-    func_0204d5f8(func_0204eb04);
+    StageShutdown_Create(Stage_OnBossCleared);
 }

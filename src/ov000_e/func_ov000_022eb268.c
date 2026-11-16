@@ -28,30 +28,30 @@ typedef struct {
     s16 unk328;
 } UnkStruct_022eb158;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
-extern UnkStruct_02369b78 *data_ov000_02369b78;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
+extern UnkStruct_02369b78 *gBoss7;
 extern u16 data_ov000_02363bc4[][8];
 extern UnkStruct_022eb158 *gPlayers;
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;
     if (b)
         return 1;
-    return data_022c4560.unk14;
+    return gGameState.unk14;
 }
 
 BOOL func_ov000_022eb268(UnkStruct_022eb158 *s) {
     UnkStruct_022eb158 *p = gPlayers;
-    UnkStruct_02369b78 *g = data_ov000_02369b78;
+    UnkStruct_02369b78 *g = gBoss7;
     s32 d;
 
     if (p->unk328 != 0x31) {
         return FALSE;
     }
-    if (g->unk220 & data_ov000_02363bc4[GetIdxB()][data_ov000_02369ac0.unk8 - 1]) {
+    if (g->unk220 & data_ov000_02363bc4[GetIdxB()][gBossStatus.unk8 - 1]) {
         return FALSE;
     }
     d = s->unk10 - p->unk10;

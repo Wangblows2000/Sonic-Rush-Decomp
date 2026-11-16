@@ -39,7 +39,7 @@ typedef struct UnkStruct_022da4b4_c {
 } UnkStruct_022da4b4_c;
 
 extern UnkStruct_022da4b4_p *gPlayers;
-extern UnkStruct_022da4b4_b *data_ov000_02369b14;
+extern UnkStruct_022da4b4_b *gBoss3;
 extern UnkStruct_022da4b4_c data_ov000_0236a444;
 extern s16 data_0206e470[];
 
@@ -69,16 +69,16 @@ void Boss3_Draw_Unk_ov000_022da4b4(void) {
         MTX_RotY33_(p->unk158, data_0206e470[((r & 0xffff) >> 4) * 2], data_0206e470[((r & 0xffff) >> 4) * 2 + 1]);
     }
     data_ov000_0236a444.unkD6 = ang;
-    if (!(data_ov000_02369b14->unk20C & 4))
+    if (!(gBoss3->unk20C & 4))
         return;
-    if (data_ov000_02369b14->unk218 != NULL) {
+    if (gBoss3->unk218 != NULL) {
         f = FALSE;
         p->unk420 = 0;
         if (!(p->unk58 & 1))
             return;
-        if (data_ov000_02369b14->unk218->unk2E <= 0)
+        if (gBoss3->unk218->unk2E <= 0)
             f = TRUE;
-        if (func_ov000_022da7c8(data_ov000_02369b14->unk214->unk10, p->unk10, f) < 0x1f400) {
+        if (func_ov000_022da7c8(gBoss3->unk214->unk10, p->unk10, f) < 0x1f400) {
             if (f)
                 p->unk420 |= 0x20;
             else
@@ -86,9 +86,9 @@ void Boss3_Draw_Unk_ov000_022da4b4(void) {
             return;
         }
         p->unk32C &= ~0x200000;
-        data_ov000_02369b14->unk20C &= ~4;
+        gBoss3->unk20C &= ~4;
         return;
     }
     p->unk32C &= ~0x200000;
-    data_ov000_02369b14->unk20C &= ~4;
+    gBoss3->unk20C &= ~4;
 }

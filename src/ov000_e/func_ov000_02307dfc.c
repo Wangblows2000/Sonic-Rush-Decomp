@@ -19,14 +19,14 @@ typedef struct {
     u32 unkC8;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 extern UnkStruct_Player *gPlayers[];
 
 BOOL func_ov000_02307dfc(UnkStruct_02307dfc *t, s32 inc) {
     UnkStruct_Player *p;
     u32 v;
 
-    if ((data_ov000_0236aad8.unkC8 & 1) || t == NULL)
+    if ((gCamera.unkC8 & 1) || t == NULL)
         return FALSE;
     p = gPlayers[t->unk210];
     v = p->unk32C & 0x400;

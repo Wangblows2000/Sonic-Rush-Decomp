@@ -108,7 +108,7 @@ void func_020212e0(void *ctx);
 void Background_Init(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
 void Background_Draw(void *buf);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void Boss3PartCC_State_Unk_ov000_022d96d8(UnkStruct_022d9714 *s);
+void Boss3_State_Unk_ov000_022d96d8(UnkStruct_022d9714 *s);
 
 static inline u32 GX_GetVisiblePlane(void) {
     return (*(vu32 *)0x4000000 & 0x1f00) >> 8;
@@ -154,5 +154,5 @@ void func_ov000_022d9714(UnkStruct_022d9714 *s) {
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
     s->unk224 = 0;
-    s->func = Boss3PartCC_State_Unk_ov000_022d96d8;
+    s->func = Boss3_State_Unk_ov000_022d96d8;
 }

@@ -13,14 +13,14 @@ typedef struct UnkStruct_022fad38_g {
 
 extern u32 gRandSeed;
 extern s16 data_0206e470[];
-extern UnkStruct_022fad38_4560 data_022c4560;
+extern UnkStruct_022fad38_4560 gGameState;
 extern s32 data_ov001_0231d68c[][5];
 
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
 u8 *func_ov001_022fd428(s32 kind, void *parent, s32 x, s32 y, s32 z);
-void *func_ov001_02300c94(void);
+void *ExtraBoss_GetPlayer(void);
 void func_ov001_022fac54(void);
 UnkStruct_022fad38_g *ExtraBoss_GetWork(void);
 s32 FX_DivS32(s32 n, s32 d);
@@ -37,7 +37,7 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 
 static inline BOOL IsMode_022fad38(void) {
     BOOL r = TRUE;
-    switch (data_022c4560.unk10) {
+    switch (gGameState.unk10) {
     case 2:
     case 3:
         break;
@@ -59,7 +59,7 @@ void func_ov001_022fad38(void *parent, s32 x, s32 y, s32 z, u16 ang) {
     if (t == NULL)
         return;
     *(u32 *)(t + 0x14) &= ~1;
-    *(void **)(t + 0x80) = func_ov001_02300c94();
+    *(void **)(t + 0x80) = ExtraBoss_GetPlayer();
     *(u32 *)(t + 0x14) |= 0x10;
     idx = (s32)(ang & 0xffff) >> 4;
     *(void **)(t + 0x74) = func_ov001_022fac54;
@@ -72,7 +72,7 @@ void func_ov001_022fad38(void *parent, s32 x, s32 y, s32 z, u16 ang) {
     if (IsMode_022fad38())
         k = 1;
     else
-        k = data_022c4560.unk14;
+        k = gGameState.unk14;
     *(s32 *)(t + 0x1d0) = FX_DivS32(r * data_ov001_0231d68c[k][ExtraBoss_GetWork()->unk40] + ((0x100 - r) << 12), 0x100);
     *(s16 *)(t + 0x1cc) = 0;
     Sound_PlaySeqArc(0, 0, 0xb0);

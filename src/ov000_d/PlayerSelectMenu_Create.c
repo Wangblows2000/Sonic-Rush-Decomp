@@ -25,8 +25,8 @@ void func_ov000_02356054(BOOL a);
 void PlayerSelectMenu_LoadAssets(UnkStruct_Scene *w);
 void func_ov000_0235a0a4(UnkStruct_Scene *w);
 void func_ov000_02359e30(UnkStruct_Scene *w);
-void func_ov000_02357148(UnkStruct_Mdl *m);
-void func_ov000_02357458(UnkStruct_Mdl *m, BOOL flag);
+void PlayerSelectMenu_LoadModels(UnkStruct_Mdl *m);
+void PlayerSelectMenu_LoadArchives(UnkStruct_Mdl *m, BOOL flag);
 void func_ov000_02356494(void *p);
 void Touch_Enable(void);
 void func_ov000_02357dbc(void *a, void *b);
@@ -104,9 +104,9 @@ void PlayerSelectMenu_Create(s32 mode) {
     func_ov000_0235a0a4(w);
     func_ov000_02359e30(w);
     if ((w->unkC == 1 || w->unkC == 2) && func_020513a8()) {
-        func_ov000_02357148(&w->mdl);
+        PlayerSelectMenu_LoadModels(&w->mdl);
     } else {
-        func_ov000_02357458(&w->mdl, func_ov000_02356408());
+        PlayerSelectMenu_LoadArchives(&w->mdl, func_ov000_02356408());
     }
     if (w->unkC == 1 || w->unkC == 2) {
         func_ov000_02356494(w->unkAD4);

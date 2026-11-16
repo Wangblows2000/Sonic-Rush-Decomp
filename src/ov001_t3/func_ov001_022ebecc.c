@@ -23,7 +23,7 @@ extern u16 data_ov001_023166cc[];
 
 void func_ov001_022e9f04(UnkSpr_022ebecc *s, void *res, u16 id, s32 a);
 void func_ov001_022e9f58(UnkSpr_022ebecc *s, void *res, u16 id, s32 a);
-void func_02040ef0(UnkAnim_022ebecc *a, void *res, s32 i);
+void KeyframeAnim_Init(UnkAnim_022ebecc *a, void *res, s32 i);
 
 #pragma thumb on
 void func_ov001_022ebecc(UnkStruct_022ebecc *p) {
@@ -62,7 +62,7 @@ void func_ov001_022ebecc(UnkStruct_022ebecc *p) {
         }
     }
     for (i = 0; i < 12; i++) {
-        func_02040ef0(&p->anims[i], p->res[7], 0);
+        KeyframeAnim_Init(&p->anims[i], p->res[7], 0);
     }
 }
 #pragma thumb reset

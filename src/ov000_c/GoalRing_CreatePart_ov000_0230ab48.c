@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_0236694c[], data_ov000_02369f54[];
 
-void func_ov000_0230aafc(UnkStruct_EffObj *w);
+void GoalRingPart_Action_Unk_ov000_0230aafc(UnkStruct_EffObj *w);
 
 void GoalRing_CreatePart_ov000_0230ab48(UnkStruct_StageObj *par) {
     UnkStruct_Task *task;
@@ -27,5 +27,5 @@ void GoalRing_CreatePart_ov000_0230ab48(UnkStruct_StageObj *par) {
     w->unk14 = par->unk14;
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
-    func_ov000_0230aafc(w);
+    GoalRingPart_Action_Unk_ov000_0230aafc(w);
 }

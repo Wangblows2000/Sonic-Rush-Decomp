@@ -22,7 +22,7 @@ struct UnkStruct_0234ee38 {
 };
 
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
-void func_ov000_0234a064(UnkStruct_0234ee38 *w, s32 a);
+void Player_Action_LandOnGround(UnkStruct_0234ee38 *w, s32 a);
 
 void Player_State_Glider(UnkStruct_0234ee38 *w) {
     w->unkC++;
@@ -43,6 +43,6 @@ void Player_State_Glider(UnkStruct_0234ee38 *w) {
     w->unk58 &= ~0x4000;
     w->unk32C &= ~0x100000;
     w->unk1 = 0;
-    func_ov000_0234a064(w, 0);
+    Player_Action_LandOnGround(w, 0);
     w->unk334(w);
 }

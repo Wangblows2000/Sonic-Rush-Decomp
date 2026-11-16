@@ -7,7 +7,7 @@ typedef struct {
     u8 pad2C[0x64 - 0x2C];
 } UnkPlayer_02339eec;
 
-extern UnkPlayer_02339eec data_ov000_0236aad8[];
+extern UnkPlayer_02339eec gCamera[];
 extern u32 data_ov000_0236aab4;
 extern void *gMainHeap;
 
@@ -36,8 +36,8 @@ void func_ov000_02339eec(void) {
     u32 i;
 
     for (i = 0; i < 2; i++) {
-        UnkFree_02339eec(data_ov000_0236aad8[i].unk24);
-        UnkFree_02339eec(data_ov000_0236aad8[i].unk28);
+        UnkFree_02339eec(gCamera[i].unk24);
+        UnkFree_02339eec(gCamera[i].unk28);
     }
     func_ov000_0233e6c0();
     func_ov000_02341f78();

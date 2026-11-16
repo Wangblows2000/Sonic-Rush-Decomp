@@ -5,7 +5,7 @@ extern UnkWork_020522f4 *gSysSound;
 extern void *gMainHeap;
 extern u8 gBGMVolume;
 extern u8 gSEVolume;
-extern u8 data_02250448;
+extern u8 gVoiceVolume;
 extern u8 data_0207b02c[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
@@ -13,7 +13,7 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void NNS_SndHandleInit(void *p);
-void func_02036854(void *p);
+void Sound_LoadSoundArchive(void *p);
 void NNS_SndPlayerSetVolume(void *p, u8 v);
 
 #pragma thumb on
@@ -45,15 +45,15 @@ void SysSound_Init(void) {
         NNS_SndHandleInit(&gSysSound->snd[4]);
         gSysSound->unk28 = 0;
         gSysSound->unk2C = 0;
-        func_02036854(data_0207b02c);
+        Sound_LoadSoundArchive(data_0207b02c);
         gBGMVolume = 0x7f;
         gSEVolume = 0x7f;
-        data_02250448 = 0x7f;
+        gVoiceVolume = 0x7f;
         NNS_SndPlayerSetVolume(&gSysSound->snd[0], 0x7f);
         NNS_SndPlayerSetVolume(&gSysSound->snd[1], gBGMVolume);
         NNS_SndPlayerSetVolume(&gSysSound->snd[2], gSEVolume);
-        NNS_SndPlayerSetVolume(&gSysSound->snd[3], data_02250448);
-        NNS_SndPlayerSetVolume(&gSysSound->snd[4], data_02250448);
+        NNS_SndPlayerSetVolume(&gSysSound->snd[3], gVoiceVolume);
+        NNS_SndPlayerSetVolume(&gSysSound->snd[4], gVoiceVolume);
     }
 }
 #pragma thumb reset

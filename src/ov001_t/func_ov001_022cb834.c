@@ -42,8 +42,8 @@ typedef struct {
     UnkCfg_022cb834 *cfg;
 } UnkStruct_022cb834;
 
-void func_02040ef0(void *p, s32 a, s32 b);
-void func_02040e80(void *p);
+void KeyframeAnim_Init(void *p, s32 a, s32 b);
+void KeyframeAnim_PlayReverse(void *p);
 
 #pragma thumb on
 void func_ov001_022cb834(UnkStruct_022cb834 *p) {
@@ -53,24 +53,24 @@ void func_ov001_022cb834(UnkStruct_022cb834 *p) {
     s32 k;
     s32 i;
 
-    func_02040ef0(&p->animA, res, tbl->animA);
-    func_02040e80(&p->animA);
+    KeyframeAnim_Init(&p->animA, res, tbl->animA);
+    KeyframeAnim_PlayReverse(&p->animA);
     p->animA.flags |= 0x10;
-    func_02040ef0(&p->animB, res, tbl->animB);
-    func_02040e80(&p->animB);
+    KeyframeAnim_Init(&p->animB, res, tbl->animB);
+    KeyframeAnim_PlayReverse(&p->animB);
     p->animB.flags |= 0x10;
-    func_02040ef0(&p->animC, res, tbl->animC);
-    func_02040e80(&p->animC);
+    KeyframeAnim_Init(&p->animC, res, tbl->animC);
+    KeyframeAnim_PlayReverse(&p->animC);
     p->animC.flags |= 0x10;
     for (i = 0, k = 0; i < 6; i++) {
         if (p->items[i].type == 7) continue;
         if (p->cur == i) {
-            func_02040ef0(&p->items[i].anim, res, tbl->sel + k);
-            func_02040e80(&p->items[i].anim);
+            KeyframeAnim_Init(&p->items[i].anim, res, tbl->sel + k);
+            KeyframeAnim_PlayReverse(&p->items[i].anim);
             p->items[i].anim.flags |= 0x10;
         } else {
-            func_02040ef0(&p->items[i].anim, res, tbl->unsel + k);
-            func_02040e80(&p->items[i].anim);
+            KeyframeAnim_Init(&p->items[i].anim, res, tbl->unsel + k);
+            KeyframeAnim_PlayReverse(&p->items[i].anim);
             p->items[i].anim.flags |= 0x10;
         }
         k++;

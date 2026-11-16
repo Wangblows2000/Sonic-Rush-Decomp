@@ -4,7 +4,7 @@
 extern u32 data_ov000_02364d54;
 extern u32 data_ov000_023687d4;
 extern u32 data_ov000_0236aa88;
-extern u32 data_ov000_0236aad8;
+extern u32 gCamera;
 extern u32 data_ov000_0236abd8;
 
 asm void func_ov000_023350bc(void)
@@ -140,7 +140,7 @@ _1d4:
     add sp, sp, #0x44
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    dcd data_ov000_0236aad8
+    dcd gCamera
     dcd data_ov000_0236abd8
     dcd data_ov000_0236aa88
     dcd data_ov000_02364d54

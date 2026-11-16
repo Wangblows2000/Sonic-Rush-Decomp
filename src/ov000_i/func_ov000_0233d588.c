@@ -16,7 +16,7 @@ typedef struct {
     s8 ratio[4];
 } UnkStruct_0233d588;
 
-extern UnkPlayer_0233d588 data_ov000_0236aad8[2];
+extern UnkPlayer_0233d588 gCamera[2];
 s32 func_0200225c(s32 a, s32 b);
 
 void func_ov000_0233d588(UnkStruct_0233d588 *w) {
@@ -25,7 +25,7 @@ void func_ov000_0233d588(UnkStruct_0233d588 *w) {
     u8 i;
 
     for (i = 0; i < 2; i++) {
-        p = &data_ov000_0236aad8[i];
+        p = &gCamera[i];
         if (!(p->flags & 0x1000000) || (p->flags & 0x2000000)) {
             w->state[i] = 3;
         } else {

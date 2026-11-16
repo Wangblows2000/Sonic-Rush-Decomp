@@ -19,7 +19,7 @@ typedef struct {
     s32 unk24;
 } UnkStruct_023126e8_Sys;
 
-extern UnkStruct_023126e8_Sys data_022c4560;
+extern UnkStruct_023126e8_Sys gGameState;
 extern s16 data_0206e470[];
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
@@ -30,9 +30,9 @@ void func_ov000_023126e8(UnkStruct_023126e8 *w) {
     s32 y = w->unk20;
     s32 amp = (w->unk1E0->unk9 << 15) >> 16;
     if (spd != 0)
-        t = (data_022c4560.unk24 * spd + t) & 0x3ff;
+        t = (gGameState.unk24 * spd + t) & 0x3ff;
     else
-        t = ((data_022c4560.unk24 + (t >> 2)) & 0xff) << 2;
+        t = ((gGameState.unk24 + (t >> 2)) & 0xff) << 2;
     if (f & 8)
         y = (y + (((s16)amp * SIN((u16)((t << 6) + 0x8000))) >> 12)) << 8;
     else

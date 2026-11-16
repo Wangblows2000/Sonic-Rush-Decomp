@@ -57,7 +57,7 @@ typedef struct {
 extern s16 data_0206e470[];
 extern s16 data_02072070[];
 extern u32 gRandSeed;
-extern UnkStruct_02330848_4560 data_022c4560;
+extern UnkStruct_02330848_4560 gGameState;
 
 #define IDX_02330848(a) ((s32)((a) & 0xffff) >> 4)
 #define SIN_02330848(a) data_0206e470[(u32)(IDX_02330848(a) << 1)]
@@ -93,7 +93,7 @@ void func_ov000_02330848(UnkStruct_02330848 *w) {
             w->unk75C &= ~0x80;
         }
         alpha = w->unk76A;
-        t = data_022c4560.unk20 & 0xf;
+        t = gGameState.unk20 & 0xf;
         if (t >= 4) {
             alpha = 0;
         } else {
@@ -117,7 +117,7 @@ void func_ov000_02330848(UnkStruct_02330848 *w) {
             w->unk54 |= 4;
         }
     }
-    if (!(data_022c4560.unk20 & 7)) {
+    if (!(gGameState.unk20 & 7)) {
         w->unk764 += 0x2aaa;
         w->unk768 = Rand_02330848();
     }

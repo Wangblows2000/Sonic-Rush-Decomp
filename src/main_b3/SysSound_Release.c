@@ -5,7 +5,7 @@ extern UnkWork_020521b4 *gSysSound;
 extern void *gMainHeap;
 extern u8 gBGMVolume;
 extern u8 gSEVolume;
-extern u8 data_02250448;
+extern u8 gVoiceVolume;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
@@ -68,7 +68,7 @@ void SysSound_Release(void) {
         gSysSound = NULL;
         gBGMVolume = 0x7f;
         gSEVolume = 0x7f;
-        data_02250448 = 0x7f;
+        gVoiceVolume = 0x7f;
     }
 }
 #pragma thumb reset

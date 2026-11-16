@@ -6,10 +6,10 @@ typedef struct {
     s16 unk23A;
 } UnkStruct_022fdc3c;
 
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void func_ov000_022faf48(UnkStruct_022fdc3c *w, s32 a);
-void func_ov000_022fe304(UnkStruct_022fdc3c *w);
+void EnemyPawnGroup_Action_Unk_ov000_022fe304(UnkStruct_022fdc3c *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fdc3c(UnkStruct_022fdc3c *w) {
     u16 f;
@@ -34,7 +34,7 @@ void EnemyPawnGroup_State_Unk_ov000_022fdc3c(UnkStruct_022fdc3c *w) {
             w->base.unk5C &= ~1;
         else
             w->base.unk5C |= 1;
-        if (func_ov000_02345758(w->base.unk10, w->base.unk14))
+        if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14))
             w->base.unk5C ^= 1;
     }
     if (w->base.unk5C & 1)
@@ -64,5 +64,5 @@ void EnemyPawnGroup_State_Unk_ov000_022fdc3c(UnkStruct_022fdc3c *w) {
         }
     }
     if (--w->base.unkC == 0)
-        func_ov000_022fe304(w);
+        EnemyPawnGroup_Action_Unk_ov000_022fe304(w);
 }

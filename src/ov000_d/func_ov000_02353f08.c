@@ -24,15 +24,15 @@ typedef struct {
     u32 unk20;
 } UnkStruct_02353f08_4560;
 
-extern UnkStruct_02353f08_4560 data_022c4560;
+extern UnkStruct_02353f08_4560 gGameState;
 extern s16 data_0206e470[];
 
 s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 void func_ov000_02328e6c(UnkStruct_02353f08 *w, s32 a, s32 b);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
-void func_ov000_0234c644(UnkStruct_02353f08 *w);
-void func_ov000_0234a064(UnkStruct_02353f08 *w, u8 a);
+void Player_LoadPhysicsParams(UnkStruct_02353f08 *w);
+void Player_Action_LandOnGround(UnkStruct_02353f08 *w, u8 a);
 
 static inline s16 UnkCos_02353f08(u16 a) {
     s32 i = (s32)(a & 0xffff) >> 4;
@@ -55,7 +55,7 @@ void func_ov000_02353f08(UnkStruct_02353f08 *w) {
     if (w->unk1 == 0 && ABS_02353f08(w->unk34) < 0x100) {
         w->unk34 = ObjSpd_UpSet(w->unk34, 0x10, 0x100);
     }
-    if ((w->unk58 & 1) && !(data_022c4560.unk20 & 7)) {
+    if ((w->unk58 & 1) && !(gGameState.unk20 & 7)) {
         func_ov000_02328e6c(w, 0, 0xc);
     }
     if (w->unk58 & 0x10) {
@@ -64,11 +64,11 @@ void func_ov000_02353f08(UnkStruct_02353f08 *w) {
         }
         NNS_SndPlayerStopSeq(w->unk388, 0x10);
         NNS_SndHandleReleaseSeq(w->unk388);
-        func_ov000_0234c644(w);
+        Player_LoadPhysicsParams(w);
         w->unk58 |= 0x40000;
         w->unk32C &= ~0x100000;
         w->unk2E = w->unk34;
-        func_ov000_0234a064(w, 0);
+        Player_Action_LandOnGround(w, 0);
         w->unk334(w);
     } else {
         if (w->unk58 & 1) {

@@ -39,7 +39,7 @@ typedef struct {
 } UnkStruct_0236aad8;
 
 extern UnkStruct_Task *gTaskCurrent;
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 void StageObj_Draw2DEx(s32 x, s32 y, s32 a, void *w, UnkStruct_Spr *s0, UnkStruct_Spr *s1, s32 b);
 
@@ -54,7 +54,7 @@ void func_ov000_0232c4cc(void) {
             k = (s16)(w->state[i] & 0xf) - 1;
             w->sprA[k].unk2C &= ~0x80000;
             w->sprB[k].unk2C &= ~0x80000;
-            if (data_ov000_0236aad8.unkC8 & 0x200)
+            if (gCamera.unkC8 & 0x200)
                 w->state[i] ^= 0x80;
             if (w->state[i] & 0x80)
                 w->sprA[k].unk2C |= 0x80000;

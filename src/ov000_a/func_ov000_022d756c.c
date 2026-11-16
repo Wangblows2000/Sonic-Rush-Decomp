@@ -61,7 +61,7 @@ struct UnkStruct_022d756c {
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 extern s16 data_0206e470[];
-void func_ov000_022d74c0(UnkStruct_022d756c *s);
+void Boss3PartCC_State_Unk_ov000_022d74c0(UnkStruct_022d756c *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -72,5 +72,5 @@ void func_ov000_022d756c(UnkStruct_022d756c *s) {
     s->unk21C = -0x200000;
     s->unk220 = FX_Mul(data_0206e470[((s->unk224 & 0xffff) >> 4) * 2 + 1], 0xf42f8);
     s->unk258 = 0;
-    s->func = func_ov000_022d74c0;
+    s->func = Boss3PartCC_State_Unk_ov000_022d74c0;
 }

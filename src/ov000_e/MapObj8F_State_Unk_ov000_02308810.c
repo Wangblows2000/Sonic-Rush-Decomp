@@ -13,7 +13,7 @@ typedef struct {
 void *func_ov000_02307e84(void);
 UnkStruct_02308810_T *func_ov000_0234237c(s32 a, void *b);
 BOOL func_ov000_02307dfc(void *a, s32 b);
-void func_ov000_02308800(UnkStruct_StageObj *s);
+void MapObj8F_Action_Unk_ov000_02308800(UnkStruct_StageObj *s);
 
 void MapObj8F_State_Unk_ov000_02308810(UnkStruct_StageObj *s) {
     UnkStruct_02308810_T *t = func_ov000_0234237c(1, func_ov000_02307e84());
@@ -33,5 +33,5 @@ void MapObj8F_State_Unk_ov000_02308810(UnkStruct_StageObj *s) {
         t->unk21C = s->unk14 >> 8;
     }
     if (t->unk20C & 8)
-        func_ov000_02308800(s);
+        MapObj8F_Action_Unk_ov000_02308800(s);
 }

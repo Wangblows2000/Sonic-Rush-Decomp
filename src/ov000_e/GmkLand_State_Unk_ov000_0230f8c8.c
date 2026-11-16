@@ -6,7 +6,7 @@ typedef struct {
 } UnkStruct_0230f8c8_R;
 
 void func_ov000_0230ef70(UnkStruct_StageObj *w);
-void func_ov000_0230f474(UnkStruct_StageObj *w);
+void GmkLand_Action_Unk_ov000_0230f474(UnkStruct_StageObj *w);
 
 void GmkLand_State_Unk_ov000_0230f8c8(UnkStruct_StageObj *w) {
     if ((u32)w->unk8 < 0x1e)
@@ -27,7 +27,7 @@ void GmkLand_State_Unk_ov000_0230f8c8(UnkStruct_StageObj *w) {
     if (w->unk8 != 0x1e)
         return;
     if (w->unk1E0->unk2 == 0x54) {
-        func_ov000_0230f474(w);
+        GmkLand_Action_Unk_ov000_0230f474(w);
         return;
     }
     w->unk58 &= ~0x2000;

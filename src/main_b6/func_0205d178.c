@@ -31,7 +31,7 @@ typedef struct {
     u8 zone;
 } UnkState_0205d178;
 
-extern UnkState_0205d178 data_022c4560;
+extern UnkState_0205d178 gGameState;
 
 void AnimatorSprite_DrawRotScale(void *p, s32 a, s32 b, s32 c);
 
@@ -45,7 +45,7 @@ void func_0205d178(u8 *w) {
     UnkSpr_0205d178 *s;
     u8 *o;
 
-    if (data_022c4560.zone >= 7)
+    if (gGameState.zone >= 7)
         return;
     s = g->spr;
     o = g->spr[0].x4;

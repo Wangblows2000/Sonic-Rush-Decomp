@@ -39,14 +39,14 @@ typedef struct UnkStruct_022d8db0_b {
     u32 unk20C;
 } UnkStruct_022d8db0_b;
 
-extern UnkStruct_022d8db0_7 data_ov000_02369ac0;
-extern UnkStruct_022d8db0_b *data_ov000_02369b14;
+extern UnkStruct_022d8db0_7 gBossStatus;
+extern UnkStruct_022d8db0_b *gBoss3;
 extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
 void ObjRect_FuncNoHit(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b);
-void func_ov000_022daab0(void);
-void func_ov000_022daaf4(void);
+void Boss3_Action_DefeatAll(void);
+void Boss3_Action_HurtAll(void);
 UnkStruct_022d8db0_q *BossEffect_CreateHit(s32 a, s32 b, s32 c, s32 d);
 void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
@@ -79,29 +79,29 @@ void Boss3PartCC_OnHit(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b) {
         return;
     }
     b->unkA |= 0x1000;
-    data_ov000_02369ac0.unk8--;
-    if (data_ov000_02369ac0.unk8 != 0) {
+    gBossStatus.unk8--;
+    if (gBossStatus.unk8 != 0) {
         if (p->unk2E > 0)
             o->unk5C |= 1;
         else
             o->unk5C &= ~1;
-        func_ov000_022daaf4();
+        Boss3_Action_HurtAll();
         q = BossEffect_CreateHit(1, p->unk2D8 >> 4, -p->unk2DC >> 4, p->unk2E0 >> 4);
         ang = (Rand() & 0xfff) + 0xaaa;
         MTX_RotX33_(q->unk158, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
         ang = Rand();
         MTX_RotY33_(mtx, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
         MTX_Concat33(q->unk158, mtx, q->unk158);
-        if (data_ov000_02369ac0.unk8 == 2) {
+        if (gBossStatus.unk8 == 2) {
             func_020537b4(0xb);
             func_020533e0(0x12, 0xf0);
             Sound_PlaySeq(0, 0xf);
-            data_ov000_02369b14->unk20C |= 1;
+            gBoss3->unk20C |= 1;
         } else {
             func_020537b4(0xb);
             func_020533e0(0x10, 0xf0);
         }
     } else {
-        func_ov000_022daab0();
+        Boss3_Action_DefeatAll();
     }
 }

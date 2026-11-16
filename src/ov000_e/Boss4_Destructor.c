@@ -25,7 +25,7 @@ extern char data_ov000_02365728[];
 extern char data_ov000_0236572c[];
 extern char data_ov000_02365740[];
 extern char data_ov000_0236575c[];
-extern UnkStruct_022dec70_B *data_ov000_02369b2c;
+extern UnkStruct_022dec70_B *gBoss4;
 
 BOOL func_02021310(UnkArc_022dec70 *arc, const char *name, void *narc);
 void *func_0202128c(const char *path);
@@ -36,7 +36,7 @@ void MapObject_Destructor(void *t);
 
 void Boss4_Destructor(void *t) {
     UnkArc_022dec70 arc;
-    UnkStruct_022dec70_B *s = data_ov000_02369b2c;
+    UnkStruct_022dec70_B *s = gBoss4;
     s32 i;
 
     for (i = 0; i < 7; i++)
@@ -52,5 +52,5 @@ void Boss4_Destructor(void *t) {
     func_0202566c(s->unkAE0);
     func_0202566c(s->unkAE8);
     MapObject_Destructor(t);
-    data_ov000_02369b2c = NULL;
+    gBoss4 = NULL;
 }

@@ -42,7 +42,7 @@ extern void *gMainHeap;
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f070;
 
-void func_ov001_022ffd2c(void);
+void ExtraBoss_StartCharacterSwitch(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_02021c24(void *s);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
@@ -69,7 +69,7 @@ void func_ov001_022f41c4(UnkStruct_022f41c4_o *w) {
     UnkStruct_022f41c4_o *o;
     UnkStruct_022f41c4_o *o3;
 
-    func_ov001_022ffd2c();
+    ExtraBoss_StartCharacterSwitch();
     BrightnessLerp_Create(0x20, 0x10, 0, 3, 0);
     func_02021c24(w->unk84->unk90);
     w->unk18 = w->unk1C = w->unk20 = 0;

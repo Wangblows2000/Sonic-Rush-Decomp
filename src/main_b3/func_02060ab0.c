@@ -5,7 +5,7 @@ extern UnkMosaic_02060ab0 gDisplayMain;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
-BOOL func_02057350(void);
+BOOL PlayerDemo_IsActive(void);
 
 #pragma thumb on
 void func_02060ab0(void) {
@@ -20,7 +20,7 @@ void func_02060ab0(void) {
     *(vu16 *)0x0400000c = (*(vu16 *)0x0400000c & ~3) | 1;
     *(vu16 *)0x0400000e = (*(vu16 *)0x0400000e & ~3) | 2;
     *(vu16 *)0x04000008 = (*(vu16 *)0x04000008 & ~3) | 3;
-    if (func_02057350())
+    if (PlayerDemo_IsActive())
         *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0x1f00) | 0x1f00;
     else
         *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0x1f00) | 0x1700;

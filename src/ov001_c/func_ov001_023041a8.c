@@ -36,7 +36,7 @@ typedef struct UnkStruct_023041a8_t {
 
 extern UnkStruct_023041a8 *data_ov001_0231f548;
 
-UnkStruct_023041a8_t *func_ov001_02300c94(void);
+UnkStruct_023041a8_t *ExtraBoss_GetPlayer(void);
 UnkStruct_023041a8_g *ExtraBoss_GetWork(void);
 BOOL func_ov001_02303494(UnkStruct_023041a8_e *e);
 void func_ov001_02303394(UnkStruct_023041a8_e *e);
@@ -47,7 +47,7 @@ void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 void AnimatorSprite_ProcessAnimation(void *c, u32 a, u32 b);
 
 void func_ov001_023041a8(void) {
-    UnkStruct_023041a8_p *p = func_ov001_02300c94()->unk1DC;
+    UnkStruct_023041a8_p *p = ExtraBoss_GetPlayer()->unk1DC;
     UnkStruct_023041a8_e *e;
     UnkStruct_023041a8_e *cur;
     UnkStruct_023041a8_e *e2;

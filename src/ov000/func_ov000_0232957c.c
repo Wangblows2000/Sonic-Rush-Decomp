@@ -12,11 +12,11 @@ typedef struct UnkStruct_0232957c {
     s32 unk2B0;
 } UnkStruct_0232957c;
 
-extern UnkStruct_0232957c_2 data_ov000_0236aad8;
+extern UnkStruct_0232957c_2 gCamera;
 
 void func_ov000_02327f24(UnkStruct_0232957c *s);
 
 void func_ov000_0232957c(UnkStruct_0232957c *s) {
-    s->unk14 = (data_ov000_0236aad8.unk62 << 8) + (s->unk2B0 << 8);
+    s->unk14 = (gCamera.unk62 << 8) + (s->unk2B0 << 8);
     func_ov000_02327f24(s);
 }

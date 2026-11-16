@@ -9,12 +9,12 @@ s32 func_ov000_0235cbf0();
 s32 func_ov000_0235f17c();
 s32 func_ov000_0235c6d8();
 s32 func_020513a8();
-s32 func_0204b528();
-s32 func_0204b624();
+s32 Stage_FreeZoneFiles();
+s32 Stage_FreeCommonFiles();
 s32 ResultsScreen_LoadSprites();
 s32 func_ov000_0235ee18();
 s32 func_ov000_0235ed5c();
-s32 func_ov000_0235dab4();
+s32 ResultsScreen_LoadArchives();
 s32 func_ov000_0235d888();
 s32 func_ov000_0235d7b4();
 s32 func_ov000_0235d1a4();
@@ -29,13 +29,13 @@ void ResultsScreen_Create(void) {
     func_ov000_0235c6d8();
     s32 t4 = func_020513a8();
     if (t4 == 0) {
-        func_0204b528();
-        func_0204b624();
+        Stage_FreeZoneFiles();
+        Stage_FreeCommonFiles();
     }
     ResultsScreen_LoadSprites(t3);
     func_ov000_0235ee18(t3);
     func_ov000_0235ed5c(t3);
-    func_ov000_0235dab4(t3);
+    ResultsScreen_LoadArchives(t3);
     func_ov000_0235d888(t3, 0);
     func_ov000_0235d7b4(t3, 0);
     func_ov000_0235d1a4(t3);

@@ -27,7 +27,7 @@ struct UnkStruct_022f7d74 {
     s16 unk21C;
 };
 
-extern UnkStruct_Mgr *data_ov000_02369b84;
+extern UnkStruct_Mgr *gBossF;
 
 void BossFPartD9_State_Unk_ov000_022f7ccc(void);
 
@@ -40,7 +40,7 @@ static inline s32 Mul64(s64 a, s64 b) {
 }
 
 void BossFPartD9_State_Unk_ov000_022f7d74(UnkStruct_022f7d74 *s) {
-    UnkStruct_Pos *m = &data_ov000_02369b84->unk218->unk340;
+    UnkStruct_Pos *m = &gBossF->unk218->unk340;
     s32 v;
     s32 k;
     s32 cur;

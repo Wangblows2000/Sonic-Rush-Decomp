@@ -23,23 +23,23 @@ typedef struct {
     s16 unk456;
 } UnkStruct_022eabfc;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u16 data_ov000_02363ba4[][8];
 extern UnkStruct_StageObj *gPlayers;
 
-void func_ov000_022ea638(void);
+void Boss7PartD5_InputState_Unk_ov000_022ea638(void);
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 BOOL func_ov000_022eabfc(UnkStruct_022eabfc *w) {
-    if (w->unk44E > data_ov000_02363ba4[GetLevel()][data_ov000_02369ac0.unk8 - 1]) {
+    if (w->unk44E > data_ov000_02363ba4[GetLevel()][gBossStatus.unk8 - 1]) {
         s32 x = w->base.unk10;
         s32 rel = x < 0xa000 ? x : x - 0x14000;
         s32 a = rel < 0 ? -rel : rel;
@@ -50,7 +50,7 @@ BOOL func_ov000_022eabfc(UnkStruct_022eabfc *w) {
                 w->unk456 = (Rand() & 0x3f) + 0x1e;
             else
                 w->unk456 = -((Rand() & 0x3f) + 0x1e);
-            w->unk43C = func_ov000_022ea638;
+            w->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea638;
             w->unk44E = 0;
             return TRUE;
         }
@@ -62,19 +62,19 @@ BOOL func_ov000_022eabfc(UnkStruct_022eabfc *w) {
                 w->unk456 = (Rand() & 0x3f) + 0x2d;
             else
                 w->unk456 = -((Rand() & 0x3f) + 0x2d);
-            w->unk43C = func_ov000_022ea638;
+            w->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea638;
             w->unk44E = 0;
             return TRUE;
         }
     }
     if (w->base.unk10 < gPlayers->unk10 && (w->base.unk5C & 1)) {
         w->unk456 = 10;
-        w->unk43C = func_ov000_022ea638;
+        w->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea638;
         return TRUE;
     }
     if (w->base.unk10 > gPlayers->unk10 && !(w->base.unk5C & 1)) {
         w->unk456 = -10;
-        w->unk43C = func_ov000_022ea638;
+        w->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea638;
         return TRUE;
     }
     return FALSE;

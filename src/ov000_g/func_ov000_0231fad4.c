@@ -40,7 +40,7 @@ typedef struct {
     u16 unk4;
 } UnkStruct_0231fad4;
 
-extern UnkStruct_0231fad4_S *data_ov000_02369b14;
+extern UnkStruct_0231fad4_S *gBoss3;
 extern UnkStruct_0231fad4_T data_ov000_0236a48c;
 extern UnkStruct_0231fad4_C data_ov000_0236a444;
 
@@ -52,20 +52,20 @@ static inline void SetVec(UnkVec_0231fad4 *v, s32 x, s32 y, s32 z) {
 
 void func_ov000_0231fad4(UnkStruct_0231fad4 *w) {
     UnkStruct_0231fad4_T *t = &data_ov000_0236a48c;
-    UnkStruct_0231fad4_S *s = data_ov000_02369b14;
+    UnkStruct_0231fad4_S *s = gBoss3;
 
     if (s->unk210 == 1) {
         if (w->unk4 >= 0x1e) {
             if (w->unk4 == 0x1e) {
                 data_ov000_0236a444.unkDC = 1;
                 t->unk0 = s->unk218;
-                t->unk4 = data_ov000_02369b14->unk218;
-                t->unk8 = data_ov000_02369b14->unk218;
+                t->unk4 = gBoss3->unk218;
+                t->unk8 = gBoss3->unk218;
                 SetVec(&t->unkC, 0, 0x20000, 0);
                 t->unk30 = 0x200;
-                t->unk3C = data_ov000_02369b14->unk214;
+                t->unk3C = gBoss3->unk214;
                 t->unk40 = NULL;
-                t->unk44 = data_ov000_02369b14->unk214;
+                t->unk44 = gBoss3->unk214;
                 t->unk54.y = -0x200000;
                 SetVec(&t->unk48, 0, 0x20000, 0);
                 SetVec(&t->unk54, 0, -0x1c0000, 0);

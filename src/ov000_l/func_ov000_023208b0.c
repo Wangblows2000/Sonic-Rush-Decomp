@@ -12,8 +12,8 @@ typedef struct {
     u32 unk18;
 } UnkStruct_022c4560;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_0236aad8 gCamera;
+extern UnkStruct_022c4560 gGameState;
 
 void func_ov000_023208b0(UnkStruct_EffObj *w) {
     w->spr0.unk2C &= ~0x80000;
@@ -21,10 +21,10 @@ void func_ov000_023208b0(UnkStruct_EffObj *w) {
     w->unk10 += w->unk2E;
     if (w->unk10 < -0x4000)
         w->unk10 += 0x20000;
-    if (data_ov000_0236aad8.unk8 < data_ov000_0236aad8.unk6C)
+    if (gCamera.unk8 < gCamera.unk6C)
         w->spr0.unk2C |= 0x80000;
     else
         w->spr1.unk2C |= 0x80000;
-    if (data_022c4560.unk18 & 1)
+    if (gGameState.unk18 & 1)
         w->unk5C &= ~0x20;
 }

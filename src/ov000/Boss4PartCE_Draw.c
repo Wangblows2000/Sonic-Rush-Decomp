@@ -25,14 +25,14 @@ typedef struct UnkStruct_022dd004_5 {
 } UnkStruct_022dd004_5;
 
 extern UnkStruct_022dd004 *gTaskCurrent;
-extern UnkStruct_022dd004_5 *data_ov000_02369b2c;
+extern UnkStruct_022dd004_5 *gBoss4;
 
 void Model_Animate(void *p);
 void Model_Draw(void *p);
 
 void Boss4PartCE_Draw(void) {
     UnkStruct_022dd004_3 *p = gTaskCurrent->unk10->unk20C;
-    p->unk24 = data_ov000_02369b2c->unkAF8;
+    p->unk24 = gBoss4->unkAF8;
     Model_Animate(p);
     Model_Draw(p);
 }

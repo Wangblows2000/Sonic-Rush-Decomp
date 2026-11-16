@@ -20,7 +20,7 @@ typedef struct UnkStruct_0231c3ac {
 } UnkStruct_0231c3ac;
 
 void func_ov000_0231c808(UnkStruct_0231c3ac_2 *s);
-void func_ov000_02353d6c(UnkStruct_0231c3ac_3 *t, UnkStruct_0231c3ac_2 *s, s32 a, s32 b);
+void Player_Action_AttachToObject(UnkStruct_0231c3ac_3 *t, UnkStruct_0231c3ac_2 *s, s32 a, s32 b);
 
 void Mine_OnHit(UnkStruct_0231c3ac *a, UnkStruct_0231c3ac *b) {
     UnkStruct_0231c3ac_2 *s = a->unk18;
@@ -33,7 +33,7 @@ void Mine_OnHit(UnkStruct_0231c3ac *a, UnkStruct_0231c3ac *b) {
         return;
     func_ov000_0231c808(s);
     s->unk204 = t;
-    func_ov000_02353d6c(t, s, 0, 0x50);
+    Player_Action_AttachToObject(t, s, 0, 0x50);
     t->unk32C |= 0x2000;
     t->unk330 |= 0x30;
     a->unk18 = NULL;

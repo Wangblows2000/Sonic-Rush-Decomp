@@ -3,13 +3,13 @@
 
 #pragma thumb on
 
-s32 func_02042ab8();
-extern u8 data_0207ad9c[];
+s32 WirelessMgr_StopDownloadPlay();
+extern u8 gWirelessSession[];
 extern u8 data_022c4638[];
 
 void func_02050900(s32 p0) {
-    func_02042ab8();
-    *(u16 *)data_0207ad9c = 4;
+    WirelessMgr_StopDownloadPlay();
+    *(u16 *)gWirelessSession = 4;
     if ((s32)p0 == *(u32 *)data_022c4638) {
         *(u32 *)data_022c4638 = 0;
     }

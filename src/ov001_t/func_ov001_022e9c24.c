@@ -21,7 +21,7 @@ typedef struct {
     s32 valid;
 } UnkOut_022e9c24;
 
-extern s32 data_022c4560;
+extern s32 gGameState;
 extern u8 data_ov001_023166c4[];
 extern u8 data_ov001_023166bc[];
 extern UnkSave_022e9c24 data_022c473c;
@@ -35,7 +35,7 @@ void func_ov001_022e9c24(s32 a, s32 b, UnkOut_022e9c24 *out) {
     if (a >= 7) {
         q = b / 2;
         r = b % 2;
-    } else if (data_022c4560 == 0) {
+    } else if (gGameState == 0) {
         a = data_ov001_023166c4[a];
     } else {
         a = data_ov001_023166bc[a];

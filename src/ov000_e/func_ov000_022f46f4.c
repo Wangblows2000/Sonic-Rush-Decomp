@@ -12,12 +12,12 @@ typedef struct {
 } UnkStruct_Player;
 
 extern UnkStruct_Player *gPlayers;
-extern UnkStruct_Mgr *data_ov000_02369b84;
+extern UnkStruct_Mgr *gBossF;
 
 BOOL func_ov000_022f8f00(void);
 BOOL func_ov000_022f8f38(void);
 void func_ov000_022f8df8(UnkStruct_StageObj *s, s32 *x, s32 *y, s32 c);
-void func_ov000_0234915c(UnkStruct_Player *p, s16 a, s32 b);
+void Player_Action_Knockback(UnkStruct_Player *p, s16 a, s32 b);
 void func_ov000_022f4850(void);
 
 BOOL func_ov000_022f46f4(UnkStruct_StageObj *s) {
@@ -29,7 +29,7 @@ BOOL func_ov000_022f46f4(UnkStruct_StageObj *s) {
     case 0xf:
     case 0x11:
     case 0x12:
-        p->base.unk70 = data_ov000_02369b84->unk21C;
+        p->base.unk70 = gBossF->unk21C;
         gPlayers->base.unk5C |= 0x40;
         return FALSE;
     }
@@ -38,9 +38,9 @@ BOOL func_ov000_022f46f4(UnkStruct_StageObj *s) {
             func_ov000_022f8df8(s, &x, &y, 0);
             gPlayers->base.unk10 = x;
             gPlayers->base.unk14 = y;
-            func_ov000_0234915c(gPlayers, (0x1a000 - gPlayers->base.unk10) >> 7, -0x800);
+            Player_Action_Knockback(gPlayers, (0x1a000 - gPlayers->base.unk10) >> 7, -0x800);
             func_ov000_022f8df8(s, &gPlayers->base.unk10, &gPlayers->base.unk14, 0);
-            gPlayers->base.unk70 = data_ov000_02369b84->unk21C;
+            gPlayers->base.unk70 = gBossF->unk21C;
             gPlayers->base.unk5C |= 0x40;
             s->unk1B8 = NULL;
             func_ov000_022f4850();

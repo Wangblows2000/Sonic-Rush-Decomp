@@ -1,4 +1,4 @@
-/* paramclone of func_ov001_022d6684 (src/ov001/func_ov001_022d6684.c); immediates and relocations remapped. */
+/* paramclone of TitleDemo_ReleaseAssets (src/ov001/TitleDemo_ReleaseAssets.c); immediates and relocations remapped. */
 #include <nitro/types.h>
 
 extern void *gMainHeap;

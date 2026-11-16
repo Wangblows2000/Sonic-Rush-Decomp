@@ -57,8 +57,8 @@ typedef struct {
     s32 unk0;
 } UnkStruct_022c4560;
 
-extern UnkStruct_02369b78 *data_ov000_02369b78;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_02369b78 *gBoss7;
+extern UnkStruct_022c4560 gGameState;
 extern void *gZoneActArchive;
 extern void *data_ov000_0236ac28;
 extern u8 data_ov000_02365aec[], data_ov000_02365af0[], data_ov000_0236ac58[], data_ov000_02365afc[];
@@ -69,12 +69,12 @@ extern s16 data_ov000_02368ba4[][0x18];
 extern s16 data_ov000_02368ba6[][0x18];
 
 void Boss7PartD5_Destructor(void);
-void Boss7PartD5_State_Unk_ov000_022eb3c0(void);
-void func_ov000_022ea8f8(void);
-void func_ov000_022e98d8(void);
+void Boss7PartD5_State_Idle(void);
+void Boss7PartD5_InputState_None(void);
+void Boss7PartD5_MoveState_Unk_ov000_022e98d8(void);
 void Boss7PartD5_Draw(void);
 void Boss7PartD5_Collide(void);
-void func_ov000_022eb5fc(void);
+void Boss7PartD5_OnHit_Unk_ov000_022eb5fc(void);
 void Pad_Reset(void *p, s32 a, s32 b);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
@@ -86,7 +86,7 @@ void func_ov000_022ee198(UnkStruct_022ee950 *w, s32 a);
 
 UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
-    UnkStruct_02369b78 *mgr = data_ov000_02369b78;
+    UnkStruct_02369b78 *mgr = gBoss7;
     UnkStruct_022ee950 *w;
     UnkStruct_Coll *coll;
     UnkStruct_022ee950_Sub *sub;
@@ -96,16 +96,16 @@ UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022ee950));
     mgr->unk214 = w;
-    w->base.unk68 = Boss7PartD5_State_Unk_ov000_022eb3c0;
-    w->unk43C = func_ov000_022ea8f8;
-    w->unk440 = func_ov000_022e98d8;
+    w->base.unk68 = Boss7PartD5_State_Idle;
+    w->unk43C = Boss7PartD5_InputState_None;
+    w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e98d8;
     w->unk452 = Rand() & 3;
     Pad_Reset(w->unk3D8, 0, 0);
     func_02021310(ctx, data_ov000_02365aec, gZoneActArchive);
     w->unk4CC = func_02021264(ctx, 8);
     w->unk4D0 = func_02021264(ctx, 9);
     func_020212e0(ctx);
-    if (data_022c4560.unk0 == 0) {
+    if (gGameState.unk0 == 0) {
         w->unk3D0 = 1;
         StageObj_LoadModel(w, &w->unk20C, data_ov000_02365af0, 0, data_ov000_0236ac58, data_ov000_0236ac28);
     } else {
@@ -144,7 +144,7 @@ UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     *coll = w->base.coll0;
     ObjRect_SetAtkDefFlags(coll, 0x11, 0);
     coll->unkA |= 0x40;
-    coll->unk1C = func_ov000_022eb5fc;
+    coll->unk1C = Boss7PartD5_OnHit_Unk_ov000_022eb5fc;
     coll->unk18 = w;
     coll = &w->unk3A4;
     *coll = w->base.coll1;

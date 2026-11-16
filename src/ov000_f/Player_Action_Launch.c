@@ -41,19 +41,19 @@ typedef struct {
 } UnkStruct_02355b44_aad8;
 
 extern s16 data_0206e470[];
-extern UnkStruct_02355b44_aad8 data_ov000_0236aad8;
+extern UnkStruct_02355b44_aad8 gCamera;
 
 #define IDX_02355b44(a) ((s32)((a) & 0xffff) >> 4)
 #define SIN_02355b44(a) data_0206e470[(u32)(IDX_02355b44(a) << 1)]
 #define COS_02355b44(a) data_0206e470[(u32)((IDX_02355b44(a) << 1) + 1)]
 
 void Player_ResetGimmickState(UnkStruct_02355b44 *w);
-void func_ov000_0234a064(UnkStruct_02355b44 *w, u8 ang);
+void Player_Action_LandOnGround(UnkStruct_02355b44 *w, u8 ang);
 void Math_RotateVec2S16(s16 *a, s16 *b, u8 c);
-void func_ov000_0234a288(UnkStruct_02355b44 *w);
+void Player_State_InAir(UnkStruct_02355b44 *w);
 void Player_SetAnimation(UnkStruct_02355b44 *w, s32 state);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
-void func_ov000_0232a11c(UnkStruct_02355b44 *w, s32 a, s32 b, u16 c);
+void EffAirBubble_Spawn(UnkStruct_02355b44 *w, s32 a, s32 b, u16 c);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void Player_Action_Launch(UnkStruct_02355b44 *w, s16 vx, s16 vy) {
@@ -64,7 +64,7 @@ void Player_Action_Launch(UnkStruct_02355b44 *w, s16 vx, s16 vy) {
     if (w->unk58 & 1) {
         w->unk2E = w->unk34;
     }
-    func_ov000_0234a064(w, 0);
+    Player_Action_LandOnGround(w, 0);
     Math_RotateVec2S16(&vx, &vy, w->unk5);
     if (!(w->unk58 & 0x10)) {
         w->unk3DA = w->y >> 8;
@@ -72,7 +72,7 @@ void Player_Action_Launch(UnkStruct_02355b44 *w, s16 vx, s16 vy) {
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;
     w->unk58 &= ~1;
-    w->unk68 = func_ov000_0234a288;
+    w->unk68 = Player_State_InAir;
     if (vx != 0) {
         Player_SetAnimation(w, 0x16);
         w->unk2E = vx;
@@ -111,7 +111,7 @@ void Player_Action_Launch(UnkStruct_02355b44 *w, s16 vx, s16 vy) {
     if (w->unk32C & 0x4000000) {
         w->unk2E = (w->unk2E >> 1) + (w->unk2E >> 2);
         w->unk30 = (w->unk30 >> 1) + (w->unk30 >> 2);
-        func_ov000_0232a11c(w, 0, 0, data_ov000_0236aad8.unk62);
+        EffAirBubble_Spawn(w, 0, 0, gCamera.unk62);
     }
     Sound_PlaySeqArcEx(w->unk384, 0, 0x42);
 }

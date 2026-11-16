@@ -55,10 +55,10 @@ typedef struct {
     u16 unk10;
 } UnkStruct_0233f8a0_abd8;
 
-extern UnkPlayers_0233f8a0 data_ov000_0236aad8;
+extern UnkPlayers_0233f8a0 gCamera;
 extern UnkFlags_0233f8a0 data_ov000_0236ab0c[];
 extern UnkLimit_0233f8a0 data_ov000_0236ab10[];
-extern UnkStruct_0233f8a0_4560 data_022c4560;
+extern UnkStruct_0233f8a0_4560 gGameState;
 extern UnkStruct_0233f8a0_abd8 data_ov000_0236abd8;
 
 UnkPlayer_0233f8a0 *func_ov000_0233b62c(void);
@@ -67,7 +67,7 @@ u8 func_ov000_023427bc(s32 idx);
 
 static inline BOOL IsMode_0233f8a0(void) {
     BOOL r = FALSE;
-    if (data_022c4560.unk1C >= 7 && data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2) {
+    if (gGameState.unk1C >= 7 && gGameState.unk1C < 9 && gGameState.unk1D < 2) {
         r = TRUE;
     }
     return r;
@@ -80,8 +80,8 @@ void func_ov000_0233f8a0(UnkStruct_0233f8a0 *bg, s32 idx) {
     s32 v;
     s32 t;
 
-    if (!(data_ov000_0236aad8.unkC8 & 1)) {
-        p = &data_ov000_0236aad8.p[idx];
+    if (!(gCamera.unkC8 & 1)) {
+        p = &gCamera.p[idx];
     } else {
         idx = 0;
         p = func_ov000_0233b62c();
@@ -137,7 +137,7 @@ void func_ov000_0233f8a0(UnkStruct_0233f8a0 *bg, s32 idx) {
             bg->mid[idx] = 0xc0;
         }
     }
-    if (data_ov000_0236aad8.unkC8 & 1) {
+    if (gCamera.unkC8 & 1) {
         bg->bot[idx] = 0xc0;
         return;
     }

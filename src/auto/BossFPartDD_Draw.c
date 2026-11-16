@@ -34,7 +34,7 @@ typedef struct UnkStruct_022ca11c_4 {
 } UnkStruct_022ca11c_4;
 
 extern UnkStruct_022ca11c_2 *gTaskCurrent;
-extern UnkStruct_022ca11c_4 *data_ov000_02369acc;
+extern UnkStruct_022ca11c_4 *gBoss1;
 
 void Model_Animate(UnkStruct_022ca11c_3 *p);
 void Model_Draw(UnkStruct_022ca11c_3 *p);

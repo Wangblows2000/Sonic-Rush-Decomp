@@ -60,7 +60,7 @@ typedef struct UnkStruct_022d602c_b {
 } UnkStruct_022d602c_b;
 
 extern UnkTask_022d602c *gTaskCurrent;
-extern UnkStruct_022d602c_b *data_ov000_02369b14;
+extern UnkStruct_022d602c_b *gBoss3;
 extern s16 data_0206e470[];
 
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
@@ -102,7 +102,7 @@ void Boss3PartCD_Draw(void) {
     } else {
         a->unkA = 3;
         a->unkB = 0;
-        a->unk24 = data_ov000_02369b14->unk214->unk228;
+        a->unk24 = gBoss3->unk214->unk228;
         func_ov000_022c5e1c(0xf42f8, 0x5fe435, a->unk24.t.x, a->unk24.t.z, &o->unk10);
         o->unk10 >>= 4;
         func_ov000_022c5e80(0xf42f8, 0x5fe435, o->unk10 << 4, NULL, NULL, &ang);

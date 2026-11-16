@@ -6,9 +6,9 @@ typedef struct {
     u8 name[0x16];
 } UnkObj_020502e4;
 
-s32 func_02042958(void);
-u32 func_020429b8(void);
-u8 *func_0204324c(u16 id);
+s32 WirelessMgr_GetStatus(void);
+u32 WirelessMgr_GetConnectedBitmap(void);
+u8 *WirelessMgr_GetChildInfo_0204324c(u16 id);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 
 #pragma thumb on
@@ -16,13 +16,13 @@ BOOL func_020502e4(UnkObj_020502e4 *o) {
     u32 mask;
     u8 *p;
     s32 i;
-    if (func_02042958() != 2)
+    if (WirelessMgr_GetStatus() != 2)
         return FALSE;
-    mask = func_020429b8();
+    mask = WirelessMgr_GetConnectedBitmap();
     p = NULL;
     for (i = 1; i < 16; i++) {
         if (mask & (1 << i)) {
-            p = func_0204324c(i);
+            p = WirelessMgr_GetChildInfo_0204324c(i);
             break;
         }
     }

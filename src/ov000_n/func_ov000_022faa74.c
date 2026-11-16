@@ -12,7 +12,7 @@ typedef struct {
     u32 unk18;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 *gPlayers[];
 
 void func_0206c95c(void);
@@ -29,7 +29,7 @@ void func_ov000_022faa74(UnkStruct_StageObj *s) {
     if (!(prm->unk4 & 0x2000))
         return;
     prm->unk4 &= ~0x2000;
-    if (!(data_022c4560.unk18 & 0x20))
+    if (!(gGameState.unk18 & 0x20))
         return;
     func_0206c95c();
     for (i = 0; i < 2; i++) {

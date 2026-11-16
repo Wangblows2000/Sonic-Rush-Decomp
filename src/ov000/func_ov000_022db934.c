@@ -5,9 +5,9 @@ typedef struct UnkStruct_022db934 {
     u16 unk8;
 } UnkStruct_022db934;
 
-extern UnkStruct_022db934 data_ov000_02369ac0;
+extern UnkStruct_022db934 gBossStatus;
 extern s32 data_ov000_02363668[];
 
 s32 func_ov000_022db934(void) {
-    return data_ov000_02363668[data_ov000_02369ac0.unk8 - 1];
+    return data_ov000_02363668[gBossStatus.unk8 - 1];
 }

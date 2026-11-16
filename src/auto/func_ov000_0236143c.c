@@ -6,7 +6,7 @@
 void func_ov000_02361404();
 s32 Task_Create();
 s32 SysSound_Release();
-s32 func_020516b4();
+s32 WirelessSession_Stop();
 
 void func_ov000_0236143c(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x20) = 0;
@@ -14,7 +14,7 @@ void func_ov000_0236143c(u8 *p0) {
     s32 t1 = *(u32 *)((u8 *)t0 + 0x10);
     *(u32 *)t1 = (u32)p0;
     SysSound_Release(t1);
-    func_020516b4();
+    WirelessSession_Stop();
 }
 
 #pragma thumb reset

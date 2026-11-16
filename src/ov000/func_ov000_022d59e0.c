@@ -7,9 +7,9 @@ typedef struct UnkStruct_022d59e0 {
     u32 unk20C;
 } UnkStruct_022d59e0;
 
-void func_ov000_022d5b38(void);
+void Boss3PartCD_State_Unk_ov000_022d5b38(void);
 
 void func_ov000_022d59e0(UnkStruct_022d59e0 *s) {
     s->unk20C |= 4;
-    s->func = func_ov000_022d5b38;
+    s->func = Boss3PartCD_State_Unk_ov000_022d5b38;
 }

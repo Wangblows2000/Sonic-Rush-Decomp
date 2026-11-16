@@ -35,13 +35,13 @@ extern UnkState_0204afc8 gStageLoader;
 
 char *strcpy(char *dst, const char *src);
 UnkJob_0204afc8 *FileRequest_Create(const char *path, void *mem);
-s32 func_020491f4(s32 p0, s32 p1, s32 p2, s32 p3);
-u32 func_02042978(void);
-s32 func_0203c340(void);
+s32 Math_CalcPercent(s32 p0, s32 p1, s32 p2, s32 p3);
+u32 WirelessMgr_GetMode(void);
+s32 WFS_GetStatus(void);
 void FileRequest_Destroy(UnkJob_0204afc8 *n);
 u32 WH_GetBitmap(void);
-u32 func_0203c27c(void);
-u32 func_02042904(u16 v);
+u32 WFS_GetSentFileCount(void);
+u32 Math_CountBits16(u16 v);
 
 s32 StageLoader_ProcessFileList(UnkArg_0204afc8 *arg, s32 flag) {
     UnkState_0204afc8 *s = &gStageLoader;
@@ -57,9 +57,9 @@ s32 StageLoader_ProcessFileList(UnkArg_0204afc8 *arg, s32 flag) {
             if (e->init != NULL)
                 e->init(s);
             s->job = FileRequest_Create(s->path, e->getMem(s->path));
-            s->unk58 = func_020491f4((u16)arg->count, s->step, 0, 0);
+            s->unk58 = Math_CalcPercent((u16)arg->count, s->step, 0, 0);
         } else if (s->job->status == 5) {
-            if (func_02042978() == 2 && (func_0203c340() == 3 || func_0203c340() == 0)) {
+            if (WirelessMgr_GetMode() == 2 && (WFS_GetStatus() == 3 || WFS_GetStatus() == 0)) {
                 FileRequest_Destroy(s->job);
                 s->job = NULL;
                 s->state = 2;
@@ -70,9 +70,9 @@ s32 StageLoader_ProcessFileList(UnkArg_0204afc8 *arg, s32 flag) {
             FileRequest_Destroy(s->job);
             s->job = NULL;
             s->step++;
-            s->unk58 = func_020491f4((u16)arg->count, s->step, 0, 0);
+            s->unk58 = Math_CalcPercent((u16)arg->count, s->step, 0, 0);
         } else if (s->job->status == 3) {
-            s->unk58 = func_020491f4((u16)arg->count, s->step, 0, 0);
+            s->unk58 = Math_CalcPercent((u16)arg->count, s->step, 0, 0);
         }
         break;
     case 1:
@@ -88,7 +88,7 @@ s32 StageLoader_ProcessFileList(UnkArg_0204afc8 *arg, s32 flag) {
                 s->state = 2;
                 return 2;
             }
-            if (s->step < func_0203c27c()) {
+            if (s->step < WFS_GetSentFileCount()) {
                 if (e->done != NULL)
                     e->done(s->job, s->path);
                 FileRequest_Destroy(s->job);
@@ -101,16 +101,16 @@ s32 StageLoader_ProcessFileList(UnkArg_0204afc8 *arg, s32 flag) {
         u16 old = s->unk56;
         u16 n;
         s->unk56 = WH_GetBitmap();
-        if (func_02042904(old) > func_02042904(s->unk56)) {
+        if (Math_CountBits16(old) > Math_CountBits16(s->unk56)) {
             s->state = 2;
             return 2;
         }
-        n = func_0203c27c();
+        n = WFS_GetSentFileCount();
         if (flag == 0)
             n -= 2;
         if (s->step < n)
             s->step++;
-        s->unk58 = func_020491f4((u16)arg->count, s->step, 0, 0);
+        s->unk58 = Math_CalcPercent((u16)arg->count, s->step, 0, 0);
         break;
     }
     }

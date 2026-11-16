@@ -35,7 +35,7 @@ void func_02051f20(void);
 void func_02051f90(void);
 void SysSound_PlaySE(s32 a);
 void func_ov001_022da450(UnkWork_022db9d8 *w);
-void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov001_022db810(void);
 void func_ov001_022db97c(void);
 void func_ov001_022db8d0(void);
@@ -115,7 +115,7 @@ void func_ov001_022db9d8(void) {
         w->unk1c = 0;
         func_ov001_022d9eb4(w);
         func_ov001_022da450(w);
-        func_02050078(5, 3, 1, 1, 2, 0, 0xe, 0x200010);
+        MsgBox_Create(5, 3, 1, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = func_ov001_022db810;
         return;
     }
@@ -125,7 +125,7 @@ void func_ov001_022db9d8(void) {
         w->unk1c = 0;
         func_ov001_022d9eb4(w);
         func_ov001_022da450(w);
-        func_02050078(9, 3, 1, 1, 2, 0, 0xe, 0x200010);
+        MsgBox_Create(9, 3, 1, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = func_ov001_022db97c;
         return;
     }

@@ -17,7 +17,7 @@ extern u8 data_ov000_02367008[];
 void Swing_Destructor(void);
 void Swing_Draw(void);
 void Swing_OnHit(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void func_ov000_0231797c(UnkStruct_02317ac8 *w);
 
 UnkStruct_02317ac8 *Swing_Create(s32 a, s32 b, s32 c) {
@@ -74,7 +74,7 @@ UnkStruct_02317ac8 *Swing_Create(s32 a, s32 b, s32 c) {
     w->base.coll1.unk18 = w;
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x100;
-    if (func_ov000_02345758(w->base.unk10, w->base.unk14))
+    if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14))
         w->base.unk5 = 0x80;
     func_ov000_0231797c(w);
     return w;

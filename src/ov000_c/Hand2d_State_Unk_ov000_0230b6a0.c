@@ -23,7 +23,7 @@ typedef struct {
     u32 unkC8;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 extern s16 data_0206e470[];
 
 void Player_Action_Hand2D(UnkStruct_0230b6a0_Pl *p, UnkStruct_StageObj *w, s32 a, s32 b);
@@ -72,7 +72,7 @@ void Hand2d_State_Unk_ov000_0230b6a0(UnkStruct_StageObj *w) {
         else
             w->unk8 = (u16)((t->unk3 & 0xff) << 8);
     } else if (w->unk1B8 != NULL && w->unk1BC != NULL && ((UnkStruct_0230b6a0_Pl *)w->unk1BC)->unk80 == w) {
-        data_ov000_0236aad8.unkC8 |= 0x40000;
+        gCamera.unkC8 |= 0x40000;
         w->unk7 = 2;
         p = w->unk1BC;
         if (p->unk0 == 1) {
@@ -83,7 +83,7 @@ void Hand2d_State_Unk_ov000_0230b6a0(UnkStruct_StageObj *w) {
             w->unk1B8 = NULL;
         }
     } else {
-        data_ov000_0236aad8.unkC8 &= ~0x40000;
+        gCamera.unkC8 &= ~0x40000;
         if (w->unk1F4 & 1) {
             w->unk8 = w->unk8 - ((w->unk18 >> 4) + 0x370);
             w->unk8 &= 0xffff;

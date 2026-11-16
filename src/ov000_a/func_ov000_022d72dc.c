@@ -67,7 +67,7 @@ extern void *gPlayers;
 
 void func_ov000_022da6b4(void);
 BOOL func_ov000_022da804(UnkStruct_022d72dc *s, void *p);
-void func_ov000_022d7228(UnkStruct_022d72dc *s);
+void Boss3PartCC_State_Unk_ov000_022d7228(UnkStruct_022d72dc *s);
 
 void func_ov000_022d72dc(UnkStruct_022d72dc *s) {
     UnkStruct_022d72dc_c *c = (UnkStruct_022d72dc_c *)(u32)&data_ov000_0236a48c;
@@ -82,5 +82,5 @@ void func_ov000_022d72dc(UnkStruct_022d72dc *s) {
         s->unk5C &= ~1;
         s->unk258 = s->unk224 + 0x4000;
     }
-    s->func = func_ov000_022d7228;
+    s->func = Boss3PartCC_State_Unk_ov000_022d7228;
 }

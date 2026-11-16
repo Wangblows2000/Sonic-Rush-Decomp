@@ -10,7 +10,7 @@ typedef struct {
     u8 b1d;
     u16 h1e;
 } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s32 data_ov001_023167bc[][5];
 u8 *ExtraBoss_GetWork(void);
 void func_ov001_022f3530(void);
@@ -20,13 +20,13 @@ void func_ov001_022ee964(void) {
     u8 *g = ExtraBoss_GetWork();
     BOOL b = TRUE;
     s32 k;
-    if (data_022c4560.w10 != 2 && data_022c4560.w10 != 3) {
+    if (gGameState.w10 != 2 && gGameState.w10 != 3) {
         b = FALSE;
     }
     if (b) {
         k = 1;
     } else {
-        k = data_022c4560.w14;
+        k = gGameState.w14;
     }
     *(s32 *)(g + 0x30c) = data_ov001_023167bc[k][*(s32 *)(g + 0x40)];
     *(s32 *)(g + 0x308) = *(s32 *)(g + 0x30c);

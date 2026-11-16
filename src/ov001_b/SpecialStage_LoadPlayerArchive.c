@@ -15,7 +15,7 @@ typedef struct UnkStruct_02313cb4_arc {
 } UnkStruct_02313cb4_arc;
 
 extern void *gMainHeap;
-extern UnkStruct_02313cb4 *data_ov001_0231f694;
+extern UnkStruct_02313cb4 *gSpecialStagePlayerResources;
 extern u8 data_ov001_0231eef4[];
 extern char data_ov001_0231ef0c[];
 
@@ -44,7 +44,7 @@ void *NNS_G3dGetAnmByIdx(void *a, s32 b);
 void NNS_G3dGlbPolygonAttr(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f);
 void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 
-#define G data_ov001_0231f694
+#define G gSpecialStagePlayerResources
 
 void SpecialStage_LoadPlayerArchive(void) {
     vu32 fill1;

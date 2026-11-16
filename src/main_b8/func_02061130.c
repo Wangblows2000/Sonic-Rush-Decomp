@@ -28,7 +28,7 @@ typedef struct {
 UnkRes_02061130 **TalkDemo_GetEntry(void);
 void NNS_SndPlayerStopSeq(void *a, s32 b);
 void NNS_SndHandleReleaseSeq(void *a);
-void func_020366f4(void *a, s32 b, s32 c);
+void Sound_PlayVoice(void *a, s32 b, s32 c);
 void Sound_PlaySeqArc(void *a, s32 b, s32 c);
 
 #pragma thumb on
@@ -52,7 +52,7 @@ void func_02061130(UnkWork_02061130 *w) {
         NNS_SndHandleReleaseSeq(s->anim);
     }
     if (d->flags & 1)
-        func_020366f4(s->anim, v, d->unk0);
+        Sound_PlayVoice(s->anim, v, d->unk0);
     else
         Sound_PlaySeqArc(s->anim, v, d->unk0);
     w->flags &= ~0x100;

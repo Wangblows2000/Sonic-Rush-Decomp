@@ -31,8 +31,8 @@ typedef struct {
 
 extern void *data_ov000_02369ba0;
 extern UnkStruct_022c4680 gSaveData;
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_022c4534 data_022c4534;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_022c4534 gStageMapCollision;
 extern u8 data_ov000_023663c8[], data_ov000_02369de4[], data_ov000_02369dac[], data_ov000_023663e0[];
 extern u8 data_ov000_023663fc[], data_ov000_02366414[], data_ov000_02369dd4[], data_ov000_02366430[];
 extern u8 data_ov000_02369ddc[], data_ov000_0236644c[], data_ov000_02369dcc[], data_ov000_02369da4[];
@@ -47,10 +47,10 @@ void EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc768(void);
 void EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc6e8(void);
 void func_ov000_022fc894(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_022fecf4_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void func_ov000_022fe9b4(UnkStruct_022fecf4 *w);
-void func_ov000_022fec38(UnkStruct_022fecf4 *w);
-void func_ov000_022fe7e8(UnkStruct_022fecf4 *w);
+void EnemyPawnGroup_Action_Unk_ov000_022fec38(UnkStruct_022fecf4 *w);
+void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fecf4 *w);
 
 UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -62,13 +62,13 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     if (p == NULL || p->unk0 != 0xff || p->unk1 != 0xff) {
         if (p->unk4 & 0x80) {
             if (gSaveData.unk8 & 1) {
-                if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+                if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
                     return NULL;
             }
         }
     }
     if (p->unk9 != 0 && (p->unk2 == 0 || (u16)(p->unk2 + 0xffec) <= 1)) {
-        if ((b >> 8) < data_022c4534.unk1C + 0xc4)
+        if ((b >> 8) < gStageMapCollision.unk1C + 0xc4)
             return NULL;
         task = Task_Create(StageObj_Main, EnemyPawnGroup_Destructor, 0, 0x500, 2, 0x344);
         if (task == OS_GetArenaLo(0))
@@ -178,7 +178,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->base.unk1E0->unk6 = -0x28;
         w->base.unk1E0->unk8 = 0x50;
     }
-    if (func_ov000_02345758(w->base.unk10, w->base.unk14)) {
+    if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14)) {
         w->base.unk5 = 0x80;
         w->base.unk5C |= 0x100;
     }
@@ -186,13 +186,13 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     if (w->base.unk1E0->unk9 != 0) {
         func_ov000_022fe9b4(w);
     } else if (p->unk4 & 0x40) {
-        func_ov000_022fec38(w);
+        EnemyPawnGroup_Action_Unk_ov000_022fec38(w);
         w->base.unk1F4 |= 0x40;
     } else {
         w->base.unk58 |= 0x80;
         if (w->base.unk1E0->unk2 == 7 && (w->base.unk1E0->unk4 & 0x20))
             w->base.unk58 &= ~0x80;
-        func_ov000_022fe7e8(w);
+        EnemyPawnGroup_Action_Unk_ov000_022fe7e8(w);
     }
     w->base.unk1DC = Sound_AllocHandle();
     return w;

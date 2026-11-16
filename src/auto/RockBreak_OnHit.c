@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0234aa80();
+s32 Player_Action_AttackBounce();
 s32 ScreenShake_Start();
 s32 RockBreak_CreatePart_ov000_023136ec();
 s32 Sound_PlaySeqArcEx();
@@ -16,7 +16,7 @@ void RockBreak_OnHit(u8 *p0, u8 *p1) {
     if ((t2 & 0x10) == 0) {
         return;
     }
-    func_ov000_0234aa80(t1, (t2 & 0x10));
+    Player_Action_AttackBounce(t1, (t2 & 0x10));
     ScreenShake_Start(3);
     u32 t3 = *(u32 *)((u8 *)t0 + 0x54);
     *(u32 *)((u8 *)t0 + 0x54) = (t3 | 8);

@@ -19,7 +19,7 @@ typedef struct {
     s32 unk1C;
 } UnkStruct_022c4534;
 
-extern UnkStruct_022c4534 data_022c4534;
+extern UnkStruct_022c4534 gStageMapCollision;
 extern s16 data_022c4ef8;
 extern void *data_ov000_02369ba0;
 extern void *gActComArchive;
@@ -32,18 +32,18 @@ extern u8 data_ov000_02369ffc[];
 void MapObject_Destructor(void);
 void MapObj13_OnHit(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_0230c398_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_02068358(UnkStruct_0230c398_Sub *s, void *a, s32 b, s32 c);
+void StageObj_AcquireSharedTexture(UnkStruct_0230c398_Sub *s, void *a, s32 b, s32 c);
 void *MapObj13_CreatePart_ov000_0230be44(void);
 void *MapObj13_CreatePart_ov000_0230c02c(void);
 void ObjRect_SetBox3D(UnkStruct_Coll *c, s32 a, s32 b, s32 d, s32 e, s32 f, s32 g);
-void func_ov000_0230c370(UnkStruct_0230c398 *w);
+void MapObj13_Action_Unk_ov000_0230c370(UnkStruct_0230c398 *w);
 
 UnkStruct_0230c398 *MapObj13_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
     UnkStruct_0230c398 *w;
     vu16 zero;
 
-    if ((b >> 8) < data_022c4534.unk1C + 0xc8 || data_022c4ef8 == 0)
+    if ((b >> 8) < gStageMapCollision.unk1C + 0xc8 || data_022c4ef8 == 0)
         return NULL;
     task = Task_Create(StageObj_Main, MapObject_Destructor, 0, 0x500, 2, sizeof(UnkStruct_0230c398));
     if (task == OS_GetArenaLo(0))
@@ -55,7 +55,7 @@ UnkStruct_0230c398 *MapObj13_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     switch (w->base.unk1E0->unk2) {
     case 0xb9:
         StageObj_Load3dBAC(w, &w->sub, data_ov000_02366a3c, 0, 0, data_ov000_02369f74, data_ov000_02369ba0);
-        func_02068358(&w->sub, data_ov000_02369fac, 0x200, 0x10);
+        StageObj_AcquireSharedTexture(&w->sub, data_ov000_02369fac, 0x200, 0x10);
         if (!(w->base.unk1E0->unk4 & 1))
             w->sub.unkBC |= 8;
         w->base.unk54 |= 2;
@@ -63,7 +63,7 @@ UnkStruct_0230c398 *MapObj13_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     case 0xba:
         StageObj_Load3dBAC(w, &w->sub, data_ov000_02366a54, 0, 0, data_ov000_02369f74, data_ov000_02369ba0);
         StageObj_SetAnimation(w, 1);
-        func_02068358(&w->sub, data_ov000_02369fbc, 0x80, 0x10);
+        StageObj_AcquireSharedTexture(&w->sub, data_ov000_02369fbc, 0x80, 0x10);
         if (!(w->base.unk1E0->unk4 & 1))
             w->sub.unkBC |= 8;
         w->base.unk54 |= 2;
@@ -74,7 +74,7 @@ UnkStruct_0230c398 *MapObj13_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         StageObj_AllocSpritePalette(w, 0, 0xe);
         w->base.spr0.unk2C |= 0x80000;
         StageObj_Load3dBAC(w, &w->sub, data_ov000_02366a84, 0, 0, data_ov000_02369f8c, data_ov000_02369ba0);
-        func_02068358(&w->sub, data_ov000_02369fec, 0x800, 0x10);
+        StageObj_AcquireSharedTexture(&w->sub, data_ov000_02369fec, 0x800, 0x10);
         w->base.unk88 = MapObj13_CreatePart_ov000_0230be44();
         w->base.spr0.unk2C |= 8;
         w->base.spr1.unk2C |= 8;
@@ -86,7 +86,7 @@ UnkStruct_0230c398 *MapObj13_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         StageObj_SetSharedSpriteVram(w, 0xffff, data_ov000_02369fcc);
         w->base.spr0.unk2C |= 0x80000;
         StageObj_Load3dBAC(w, &w->sub, data_ov000_02366ab4, 0, 0, data_ov000_02369f7c, data_ov000_02369ba0);
-        func_02068358(&w->sub, data_ov000_02369ffc, 0x80, 0x10);
+        StageObj_AcquireSharedTexture(&w->sub, data_ov000_02369ffc, 0x80, 0x10);
         w->base.spr0.unk44 = 2;
         w->base.spr1.unk44 = 2;
         w->base.unk88 = MapObj13_CreatePart_ov000_0230c02c();
@@ -107,6 +107,6 @@ UnkStruct_0230c398 *MapObj13_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x8000000;
     if (w->base.unk1E0->unk4 & 1)
         w->base.unk54 |= 0x10;
-    func_ov000_0230c370(w);
+    MapObj13_Action_Unk_ov000_0230c370(w);
     return w;
 }

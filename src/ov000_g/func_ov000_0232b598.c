@@ -31,7 +31,7 @@ typedef struct {
 } UnkStruct_0232b598_Sys;
 
 extern UnkStruct_0232b598_Task *gTaskCurrent;
-extern UnkStruct_0232b598_Sys data_022c4560;
+extern UnkStruct_0232b598_Sys gGameState;
 
 void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
 s32 func_ov000_02337650(s32 a);
@@ -46,7 +46,7 @@ void func_ov000_0232b598(void) {
     s32 off;
     u32 d;
 
-    if (w->unk13E < -0x1000 && (data_022c4560.unk20 & 2))
+    if (w->unk13E < -0x1000 && (gGameState.unk20 & 2))
         return;
     s0 = w->spr0.unk34;
     s1 = w->spr1.unk34;
@@ -58,7 +58,7 @@ void func_ov000_0232b598(void) {
             if (w->unk148 >= 2000) {
                 w->unk44 = w->unk8;
                 w->unk46 = w->unk8;
-                if (data_022c4560.unk20 & 2) {
+                if (gGameState.unk20 & 2) {
                     w->spr0.unk34 = func_ov000_02337650(0);
                     w->spr1.unk34 = func_ov000_02337650(1);
                 }

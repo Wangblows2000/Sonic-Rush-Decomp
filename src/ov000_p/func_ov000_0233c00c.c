@@ -37,34 +37,34 @@ typedef struct {
     u8 unk1C;
 } UnkCfg_0233c00c;
 
-extern UnkPlayer_0233c00c data_ov000_0236aad8[];
+extern UnkPlayer_0233c00c gCamera[];
 extern UnkPlayer_0233c00c data_ov000_0236ab3c;
-extern UnkCfg_0233c00c data_022c4560;
+extern UnkCfg_0233c00c gGameState;
 extern UnkObj_0233c00c *gDisplayTable[2];
 
 void func_ov000_0233c00c(void) {
     u8 cfg;
 
-    if (data_ov000_0236aad8[2].flags & 1)
+    if (gCamera[2].flags & 1)
         return;
-    data_ov000_0236aad8[2].flags &= 0xfff8fefb;
-    data_ov000_0236aad8[0].flags &= ~0xf000;
-    data_ov000_0236aad8[0].unk4C = data_ov000_0236aad8[2].unk4C;
-    data_ov000_0236aad8[0].unk50 = data_ov000_0236aad8[2].unk50;
-    data_ov000_0236aad8[0].unk54 = data_ov000_0236aad8[2].unk54;
-    data_ov000_0236aad8[0].unk58 = data_ov000_0236aad8[2].unk58;
-    data_ov000_0236aad8[0].unk5D = data_ov000_0236aad8[0].unk5E = data_ov000_0236aad8[0].unk5F = 0;
-    data_ov000_0236aad8[0].unk60 = 0;
-    data_ov000_0236aad8[0].unk5C = data_ov000_0236aad8[0].unk5D;
-    cfg = data_022c4560.unk1C;
+    gCamera[2].flags &= 0xfff8fefb;
+    gCamera[0].flags &= ~0xf000;
+    gCamera[0].unk4C = gCamera[2].unk4C;
+    gCamera[0].unk50 = gCamera[2].unk50;
+    gCamera[0].unk54 = gCamera[2].unk54;
+    gCamera[0].unk58 = gCamera[2].unk58;
+    gCamera[0].unk5D = gCamera[0].unk5E = gCamera[0].unk5F = 0;
+    gCamera[0].unk60 = 0;
+    gCamera[0].unk5C = gCamera[0].unk5D;
+    cfg = gGameState.unk1C;
     if (cfg == 2) {
-        data_ov000_0236aad8[0].flags &= ~0x1000000;
-        data_ov000_0236aad8[0].unk62 = 0xffff;
+        gCamera[0].flags &= ~0x1000000;
+        gCamera[0].unk62 = 0xffff;
         UnkPlayer_0233c00c *q = &data_ov000_0236ab3c;
         q->flags &= ~0x1000000;
         q->unk62 = 0xffff;
     }
-    if (data_022c4560.unk1C == 3) {
+    if (gGameState.unk1C == 3) {
         gDisplayTable[0]->unk24 = 0;
         gDisplayTable[1]->unk24 = 0;
     }

@@ -40,8 +40,8 @@ void func_ov001_022f0234(void);
 void Model_SetAnimation(UnkStruct_022f034c_o *o, u32 slot, void *res, u32 idx, void *tex);
 void func_ov001_022fa830(UnkStruct_022f034c *p, s32 b, s32 c);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
-void func_020366f4(u32 *p, u32 a, u32 b);
-UnkStruct_022f034c *func_ov001_02300c94(void);
+void Sound_PlayVoice(u32 *p, u32 a, u32 b);
+UnkStruct_022f034c *ExtraBoss_GetPlayer(void);
 
 void func_ov001_022f034c(UnkStruct_022f034c *p) {
     UnkStruct_022f034c_o *b;
@@ -71,10 +71,10 @@ void func_ov001_022f034c(UnkStruct_022f034c *p) {
         b->unk114 = 0x1000;
         func_ov001_022fa830(p, p->unk1C, -0xa000);
         Sound_PlaySeqArc(0, 0, 0xb7);
-        func_020366f4(0, 0, 0xd2);
+        Sound_PlayVoice(0, 0, 0xd2);
         return;
     }
-    t = func_ov001_02300c94();
+    t = ExtraBoss_GetPlayer();
     d = t->unk1C - p->unk1C;
     if (d > 0) {
         if (d > 0x1000)

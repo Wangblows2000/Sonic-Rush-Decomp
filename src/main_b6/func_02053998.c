@@ -33,7 +33,7 @@ typedef struct {
 } UnkDisp_02053998;
 
 extern UnkTask_02053998 *gNaviMsgTask;
-extern UnkState_02053998 data_022c4560;
+extern UnkState_02053998 gGameState;
 extern UnkProg_02053998 gSaveData;
 extern UnkDisp_02053998 *gDisplayTable[];
 
@@ -52,9 +52,9 @@ void func_02053998(BOOL on) {
         return;
     w = gNaviMsgTask->work;
     if (w->mode == 0) {
-        if (data_022c4560.unk0 == 0 && gSaveData.unkc < 3)
+        if (gGameState.unk0 == 0 && gSaveData.unkc < 3)
             return;
-        if (data_022c4560.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c)))
+        if (gGameState.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c)))
             return;
     }
     if ((w->flags & 1) && on)

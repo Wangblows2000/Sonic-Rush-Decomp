@@ -24,13 +24,13 @@ typedef struct {
     u16 unk440;
 } UnkStruct_022f2444;
 
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
-extern UnkStruct_022c4534 data_022c4534;
+extern UnkStruct_02369ac0 gBossStatus;
+extern UnkStruct_022c4534 gStageMapCollision;
 
 void func_ov000_022f4cbc(UnkStruct_022f2444 *s);
 void ObjRect_SetBox3D(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e, s16 f, s16 g);
 void func_ov000_0232895c(s32 x, s16 y, s32 flip, s32 c);
-void func_ov000_022f238c(void);
+void BossFPartD8_State_Unk_ov000_022f238c(void);
 
 void func_ov000_022f2444(UnkStruct_022f2444 *s) {
     UnkStruct_Coll *c;
@@ -42,10 +42,10 @@ void func_ov000_022f2444(UnkStruct_022f2444 *s) {
     ObjRect_SetBox3D(c, -0x60, -0x100, 0, 0, -0x7d00, 0x7d00);
     s->unk434 = 0;
     s->unk436 = 0;
-    data_022c4534.unk1C = 0;
-    data_022c4534.unk24 = data_022c4534.unk18 << 6;
+    gStageMapCollision.unk1C = 0;
+    gStageMapCollision.unk24 = gStageMapCollision.unk18 << 6;
     func_ov000_0232895c(0xb4, 0x30, 0, 0xb4);
     s->unk440 = 0;
-    data_ov000_02369ac0.unk4 = 0x33;
-    s->base.unk68 = func_ov000_022f238c;
+    gBossStatus.unk4 = 0x33;
+    s->base.unk68 = BossFPartD8_State_Unk_ov000_022f238c;
 }

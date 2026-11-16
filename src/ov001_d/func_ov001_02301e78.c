@@ -41,7 +41,7 @@ typedef struct UnkStruct_02301e78_g {
 void func_ov001_02302398(void);
 UnkStruct_02301e78_g *ExtraBoss_GetWork(void);
 BOOL func_ov001_02302408(UnkStruct_02301e78 *p);
-void func_ov001_023024d0(UnkStruct_02301e78 *p, s32 n);
+void ExtraBossPlayer_ChangeState(UnkStruct_02301e78 *p, s32 n);
 s32 FX_Sqrt(s32 a);
 s32 func_0200225c(s32 n, s32 d);
 void func_ov001_023017c8(UnkStruct_02301e78 *p);
@@ -64,7 +64,7 @@ void func_ov001_02301e78(UnkStruct_02301e78 *p) {
     }
     if (p->unk50 == 0 && p->unk54 == 0) {
         if (!func_ov001_02302408(p)) {
-            func_ov001_023024d0(p, 1);
+            ExtraBossPlayer_ChangeState(p, 1);
             p->unk14 &= ~0x700;
         }
         p->unkA0 = NULL;

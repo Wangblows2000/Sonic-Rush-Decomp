@@ -17,15 +17,15 @@ extern UnkTask_02050510 *data_022c4638;
 extern UnkStruct_022c4644 data_022c4644;
 extern s32 data_022c4640;
 
-s32 func_02042958(void);
-s32 func_02042938(void);
-s32 func_02042998(void);
-void func_02054dbc(void);
+s32 WirelessMgr_GetStatus(void);
+s32 WirelessMgr_GetErrorCode(void);
+s32 WirelessMgr_GetPlayerCount(void);
+void Wireless_OnError(void);
 void func_02051838(void);
 void func_02050e0c(void *a);
-void func_020429d0(void);
+void WirelessMgr_RequestStart(void);
 u16 func_02050d60(s32 a, void *b, s32 c);
-void func_020516b4(void);
+void WirelessSession_Stop(void);
 
 #pragma thumb on
 void func_02050510(void) {
@@ -39,10 +39,10 @@ void func_02050510(void) {
     else
         st = w->unkC;
     if (st < 7) {
-        r = func_02042958();
+        r = WirelessMgr_GetStatus();
         if (r == 7 || st == 0 || w->unk18) {
-            if (func_02042938() == 3) {
-                func_02054dbc();
+            if (WirelessMgr_GetErrorCode() == 3) {
+                Wireless_OnError();
             } else {
                 void *p = w->unk10;
                 func_02051838();
@@ -50,10 +50,10 @@ void func_02050510(void) {
             }
             return;
         }
-        w->unk36 = func_02042998() - 1;
+        w->unk36 = WirelessMgr_GetPlayerCount() - 1;
         if (w->unk36 > w->unk34)
             w->unk36 = 0;
-        if (func_02042938() == 2)
+        if (WirelessMgr_GetErrorCode() == 2)
             w->unk36 = 0;
         switch (st) {
         case 0:
@@ -73,7 +73,7 @@ void func_02050510(void) {
                 w->unkC = 2;
                 w->unk8 = 0;
             } else if (w->unk14) {
-                func_020429d0();
+                WirelessMgr_RequestStart();
                 w->unkC = 4;
                 w->unk8 = 0;
                 data_022c4644.unk14 = func_02050d60(0, &data_022c4644, 10);
@@ -89,7 +89,7 @@ void func_02050510(void) {
                 w->unk8 = 0;
                 w->unk14 = 0;
                 w->unk18 = 0;
-                func_020516b4();
+                WirelessSession_Stop();
                 return;
             }
             break;

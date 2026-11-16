@@ -35,7 +35,7 @@ void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
-s32 func_0203422c(u16 c);
+s32 Font_GetGlyphIndex(u16 c);
 
 #pragma thumb on
 static inline u8 *Alloc_022ce4cc(u32 size) {
@@ -95,16 +95,16 @@ void func_ov001_022ce4cc(UnkWork_022ce4cc *w) {
     c = data_02072cbc;
     t = w->tiles[0];
     for (; i < n && i < 6; i++) {
-        MIi_CpuCopy32(buf + func_0203422c(*c) * 0x20, t, 0x20);
+        MIi_CpuCopy32(buf + Font_GetGlyphIndex(*c) * 0x20, t, 0x20);
         c++;
         t += 0x20;
     }
     if (n <= 6) {
         for (; i < 7; i++) {
-            MIi_CpuCopy32(buf + func_0203422c(0x20) * 0x20, w->tiles[i], 0x20);
+            MIi_CpuCopy32(buf + Font_GetGlyphIndex(0x20) * 0x20, w->tiles[i], 0x20);
         }
     } else {
-        MIi_CpuCopy32(buf + func_0203422c(0x2026) * 0x20, w->tiles[i], 0x20);
+        MIi_CpuCopy32(buf + Font_GetGlyphIndex(0x2026) * 0x20, w->tiles[i], 0x20);
     }
     Free_022ce4cc(buf);
 }

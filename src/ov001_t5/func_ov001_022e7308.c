@@ -20,7 +20,7 @@ typedef struct {
 extern UnkTask_022e7308 *gTaskCurrent;
 
 void func_ov001_022e6dec(UnkWork_022e7308 *w);
-BOOL func_02050018(void);
+BOOL MsgBox_IsClosed(void);
 void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void func_ov001_022e6870(void);
 
@@ -41,7 +41,7 @@ void func_ov001_022e7308(void) {
     w = gTaskCurrent->work;
     func_ov001_022e6dec(w);
     w->timer++;
-    if (func_02050018()) {
+    if (MsgBox_IsClosed()) {
         w->timer = 0;
         w->sub->unk5c = 1;
         GX_SetGraphicsMode(1, 5, 1);

@@ -45,7 +45,7 @@ typedef struct {
     UnkStruct_ObjParam *unk1E0;
 } UnkStruct_023171b4;
 
-extern UnkStruct_023171b4_S data_ov000_0236aad8;
+extern UnkStruct_023171b4_S gCamera;
 
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Player_Action_SpringLaunch(UnkStruct_023171b4_P *p, s16 a, s16 b);
@@ -63,7 +63,7 @@ void func_ov000_023171b4(UnkStruct_023171b4 *w) {
     flag = 0;
     if (w->unk1B8 != NULL && (p = w->unk130->unk8) != NULL && p->unk0 == 1) {
         if (w->unk1E0->unk2 == 0xbb) {
-            data_ov000_0236aad8.unkC8 |= 0x40000;
+            gCamera.unkC8 |= 0x40000;
             if (w->unk130->unk4 == p) {
                 if (p->unk420 & 0x80) {
                     if (w->unk8 == 0)
@@ -123,7 +123,7 @@ void func_ov000_023171b4(UnkStruct_023171b4 *w) {
         }
     } else {
         if (w->unk1E0->unk2 == 0xbb)
-            data_ov000_0236aad8.unkC8 &= ~0x40000;
+            gCamera.unkC8 &= ~0x40000;
         w->unk8 = 0;
     }
     if (!flag) {

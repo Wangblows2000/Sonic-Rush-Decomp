@@ -1,14 +1,14 @@
 #include <nitro/types.h>
 
-extern u16 data_0207ad9c;
+extern u16 gWirelessSession;
 extern void *data_022c4638;
 extern u32 gSystemFlags;
-void func_0204331c(s32 a);
+void WirelessMgr_StopDataSharing(s32 a);
 
 #pragma thumb on
 void func_02050964(void *task) {
-    func_0204331c(0);
-    data_0207ad9c = 4;
+    WirelessMgr_StopDataSharing(0);
+    gWirelessSession = 4;
     if (task == data_022c4638)
         data_022c4638 = NULL;
     gSystemFlags &= ~0x200;

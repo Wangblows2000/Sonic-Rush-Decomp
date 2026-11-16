@@ -39,7 +39,7 @@ void func_ov001_022fc8dc(s32 a, s32 x, s32 y, s32 b);
 void func_ov001_022efcdc(UnkStruct_022eee68_o *p);
 void func_ov001_022ef6c4(UnkStruct_022eee68_o *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -71,5 +71,5 @@ void func_ov001_022eee68(UnkStruct_022eee68_o **self, UnkStruct_022eee68_o **oth
         func_ov001_022ef6c4(p);
         Sound_PlaySeqArc(0, 0, 0xba);
     }
-    func_020366f4(0, 0, data_ov001_023167e4[Rand() & 1]);
+    Sound_PlayVoice(0, 0, data_ov001_023167e4[Rand() & 1]);
 }

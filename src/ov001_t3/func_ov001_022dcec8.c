@@ -22,14 +22,14 @@ void func_ov001_022da70c(UnkWork_022dcec8 *w);
 void func_ov001_022da024(UnkWork_022dcec8 *w);
 void func_ov001_022d9cd4(UnkWork_022dcec8 *w, s32 a, s32 b);
 BOOL func_02050dec(void);
-void func_0205004c(void);
-BOOL func_02050018(void);
+void MsgBox_RequestClose(void);
+BOOL MsgBox_IsClosed(void);
 void func_ov001_022da41c(UnkWork_022dcec8 *w);
 void func_ov001_022da33c(UnkWork_022dcec8 *w);
 void func_ov001_022da244(UnkWork_022dcec8 *w, s32 a);
 void func_ov001_022da1cc(UnkWork_022dcec8 *w, s32 a);
 void func_ov001_022d983c(UnkWork_022dcec8 *w, s32 a);
-BOOL func_0205000c(void);
+BOOL MsgBox_GetResult(void);
 void func_02050d50(void);
 void func_ov001_022da0dc(UnkWork_022dcec8 *w, s32 a);
 void func_ov001_022daaa8(UnkWork_022dcec8 *w);
@@ -47,12 +47,12 @@ void func_ov001_022dcec8(void) {
     }
     func_ov001_022d9cd4(w, 0, 0);
     if (!func_02050dec()) {
-        func_0205004c();
+        MsgBox_RequestClose();
         w->unk1c = 1;
     }
     w->timer++;
     w->timer2++;
-    if (func_02050018()) {
+    if (MsgBox_IsClosed()) {
         w->timer = 0;
         w->timer2 = 0;
         func_ov001_022da41c(w);
@@ -66,7 +66,7 @@ void func_ov001_022dcec8(void) {
             gTaskCurrent->func = func_ov001_022dd1ec;
             return;
         }
-        if (!func_0205000c()) {
+        if (!MsgBox_GetResult()) {
             func_02050d50();
             func_ov001_022da0dc(w, 1);
             w->unk48 = 2;

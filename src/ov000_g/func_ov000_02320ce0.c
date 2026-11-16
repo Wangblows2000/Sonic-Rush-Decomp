@@ -38,8 +38,8 @@ typedef struct {
     u16 unk62;
 } UnkStruct_02320ce0_Stage;
 
-extern UnkStruct_02320ce0_Sys data_022c4560;
-extern UnkStruct_02320ce0_Stage data_ov000_0236aad8;
+extern UnkStruct_02320ce0_Sys gGameState;
+extern UnkStruct_02320ce0_Stage gCamera;
 extern void *gPlayers;
 
 s32 ObjShift_Set(s32 v, s32 a, s32 b, u16 c, s32 d);
@@ -50,7 +50,7 @@ void func_ov000_02320ce0(UnkStruct_02320ce0 *w) {
     s32 min;
 
     if (t != NULL) {
-    if (!(data_022c4560.unk20 & 0xf)) {
+    if (!(gGameState.unk20 & 0xf)) {
         w->unk2 += 8 - (Rand() & 0xf);
         w->unk3 += 8 - (Rand() & 0xf);
         if ((s8)w->unk2 > 0x20)
@@ -66,7 +66,7 @@ void func_ov000_02320ce0(UnkStruct_02320ce0 *w) {
     w->unk20 = w->unk14;
     w->unk10 = ObjShift_Set(w->unk10, w->unk88->unk10 + ((s8)w->unk2 << 8), 4, w->unk8, 4);
     w->unk14 = ObjShift_Set(w->unk14, w->unk88->unk14 + ((s8)w->unk3 << 8), 4, w->unk8, 4);
-    min = (data_ov000_0236aad8.unk62 + 8) << 8;
+    min = (gCamera.unk62 + 8) << 8;
     if (w->unk14 < min)
         w->unk14 = min;
     if (w->unk9C & 1) {

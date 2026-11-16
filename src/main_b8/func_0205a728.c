@@ -22,7 +22,7 @@ typedef struct {
     s16 unk8ce;
 } UnkWork_0205a728;
 
-extern UnkState_0205a728 data_022c4560;
+extern UnkState_0205a728 gGameState;
 extern UnkGfx_0205a728 gDisplayMain;
 extern UnkGfx_0205a728 gDisplaySub;
 extern u16 data_02074960[][3][3];
@@ -49,24 +49,24 @@ void func_0205a728(UnkWork_0205a728 *w) {
         w->state = (void (*)(void *))func_0205a654;
     }
     flag = FALSE;
-    if (data_022c4560.zone == 8 && data_022c4560.act == 2)
+    if (gGameState.zone == 8 && gGameState.act == 2)
         flag = TRUE;
     if (flag) {
         gDisplaySub.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
         w->unk4d8 = (FX_MUL(w->unk8ce, -0x1f000) + 0x1f000) >> 12;
-    } else if (data_022c4560.zone >= 9 || data_022c4560.act >= 2) {
+    } else if (gGameState.zone >= 9 || gGameState.act >= 2) {
         gDisplaySub.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
         gDisplayMain.unk48 = gDisplaySub.unk48;
     } else {
         gDisplaySub.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
         w->unk4d8 = (FX_MUL(w->unk8ce, -0x1f000) + 0x1f000) >> 12;
     }
-    func_02022270(0, func_0205de50(0, data_02074960[data_022c4560.zone][data_022c4560.act][0], w->unk8ce));
-    func_02022270(1, func_0205de50(0, data_02074962[data_022c4560.zone][data_022c4560.act][0], w->unk8ce));
-    func_02022270(2, func_0205de50(0, data_02074964[data_022c4560.zone][data_022c4560.act][0], w->unk8ce));
-    if (data_022c4560.zone == 8 && data_022c4560.act == 2)
+    func_02022270(0, func_0205de50(0, data_02074960[gGameState.zone][gGameState.act][0], w->unk8ce));
+    func_02022270(1, func_0205de50(0, data_02074962[gGameState.zone][gGameState.act][0], w->unk8ce));
+    func_02022270(2, func_0205de50(0, data_02074964[gGameState.zone][gGameState.act][0], w->unk8ce));
+    if (gGameState.zone == 8 && gGameState.act == 2)
         return;
     for (i = 0; i < 8; i++)
-        buf[i] = func_0205de50(0, data_02074a04[data_022c4560.zone][data_022c4560.act][i], w->unk8ce);
+        buf[i] = func_0205de50(0, data_02074a04[gGameState.zone][gGameState.act][i], w->unk8ce);
     G3X_SetEdgeColorTable(buf);
 }

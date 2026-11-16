@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-extern u8 data_ov000_02369ac0[];
+extern u8 gBossStatus[];
 extern u32 gRandSeed;
 void func_ov000_022ddd4c();
 s32 func_ov000_022db900();
@@ -15,7 +15,7 @@ static inline u16 Rand(void) {
 }
 
 void func_ov000_022dde20(u8 *p0) {
-    *(u32 *)((u8 *)data_ov000_02369ac0 + 0x4) = 0x18;
+    *(u32 *)((u8 *)gBossStatus + 0x4) = 0x18;
     *(u32 *)((u8 *)p0 + 0x220) = (u32)func_ov000_022ddd4c;
     *(u32 *)((u8 *)p0 + 0x224) = 0;
     func_ov000_022db900(p0, 0x60, 0, 0x18);

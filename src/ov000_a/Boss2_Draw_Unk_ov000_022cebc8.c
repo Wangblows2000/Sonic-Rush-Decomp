@@ -43,10 +43,10 @@ typedef struct UnkStruct_022cebc8_4 {
 } UnkStruct_022cebc8_4;
 
 extern UnkStruct_022cebc8 *gPlayers;
-extern UnkStruct_022cebc8_g *data_ov000_02369ae0;
+extern UnkStruct_022cebc8_g *gBoss2;
 extern UnkStruct_022cebc8_cam data_ov000_0236a444;
-extern UnkStruct_022cebc8_2 data_ov000_0236aad8;
-extern UnkStruct_022cebc8_4 data_022c4560;
+extern UnkStruct_022cebc8_2 gCamera;
+extern UnkStruct_022cebc8_4 gGameState;
 extern s16 data_0206e470[];
 extern u16 data_ov000_02362df4[];
 extern UnkStruct_022cebc8_v data_ov000_02362ef8[];
@@ -76,9 +76,9 @@ void Boss2_Draw_Unk_ov000_022cebc8(void) {
     else
         off = 0x4000;
     MTX_RotY33_(p->unk158, data_0206e470[(((u16)(off + ang) & 0xffff) >> 4) * 2], data_0206e470[(((u16)(off + ang) & 0xffff) >> 4) * 2 + 1]);
-    if (data_ov000_02369ae0->unk20C & 0x20)
+    if (gBoss2->unk20C & 0x20)
         data_ov000_0236a444.unkD6 = ang;
-    if ((data_ov000_0236aad8.unk62 << 12) > -data_ov000_0236a444.unk70) {
+    if ((gCamera.unk62 << 12) > -data_ov000_0236a444.unk70) {
         for (i = 0; i <= 2; i++) {
             func_02022270(i, data_ov000_02362df4[i]);
             func_02022284(i, data_ov000_02362ef8[i].x, data_ov000_02362ef8[i].y, data_ov000_02362ef8[i].z);
@@ -86,7 +86,7 @@ void Boss2_Draw_Unk_ov000_022cebc8(void) {
         return;
     }
     for (i = 0; i <= 2; i++) {
-        func_02022270(i, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D][i]);
-        func_02022284(i, data_020748bc[data_022c4560.unk1C][i].x, data_020748bc[data_022c4560.unk1C][i].y, data_020748bc[data_022c4560.unk1C][i].z);
+        func_02022270(i, data_02074960[gGameState.unk1C][gGameState.unk1D][i]);
+        func_02022284(i, data_020748bc[gGameState.unk1C][i].x, data_020748bc[gGameState.unk1C][i].y, data_020748bc[gGameState.unk1C][i].z);
     }
 }

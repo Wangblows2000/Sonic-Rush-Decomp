@@ -34,7 +34,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_023156e0_Sys;
 
-extern UnkStruct_023156e0_Sys data_022c4560;
+extern UnkStruct_023156e0_Sys gGameState;
 extern s16 data_0206e470[];
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
@@ -70,7 +70,7 @@ void func_ov000_023156e0(UnkStruct_023156e0 *w) {
             w->unkC = ObjSpd_UpSet(w->unkC, 0x100, 0x1800);
         else
             w->unkC = ObjSpd_DownSet(w->unkC, 0x300);
-        if (!(data_022c4560.unk20 & 7))
+        if (!(gGameState.unk20 & 7))
             Sound_PlaySeqArcEx(w->unk1DC, 0, 0x6c);
         if (p->unk3E8 != w) {
             w->unk204 = NULL;

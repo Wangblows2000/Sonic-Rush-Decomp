@@ -20,11 +20,11 @@ typedef struct {
     u32 unkC8;
 } UnkStruct_02338d6c_Cam;
 
-extern UnkStruct_02338d6c_Cam data_ov000_0236aad8;
+extern UnkStruct_02338d6c_Cam gCamera;
 extern UnkStruct_02338d6c_Ent *gPlayers[];
 
 BOOL func_ov000_02338d6c(u32 *p) {
-    UnkStruct_02338d6c_Cam *c = &data_ov000_0236aad8;
+    UnkStruct_02338d6c_Cam *c = &gCamera;
     u32 fl = c->unkC8;
     s32 v;
 

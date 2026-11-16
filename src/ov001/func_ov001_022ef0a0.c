@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void func_ov001_022ef008(void);
 
 void func_ov001_022ef0a0(u8 *p) {
@@ -8,7 +8,7 @@ void func_ov001_022ef0a0(u8 *p) {
     *(u32 *)(p + 0x14) ^= 0x30000;
     *(s32 *)(p + 0x1c8) -= 1;
     if (*(s32 *)(p + 0x1c8) == 0) {
-        func_020366f4(0, 0, 0x2d);
+        Sound_PlayVoice(0, 0, 0x2d);
     }
     if (q[0x10c] & 2) {
         *(void (**)(void))(p + 0x74) = func_ov001_022ef008;

@@ -15,7 +15,7 @@ typedef struct {
 } UnkStruct_02309ca4;
 
 extern UnkStruct_StageObj *gPlayers[];
-extern UnkStruct_Plr data_ov000_0236aad8[];
+extern UnkStruct_Plr gCamera[];
 
 u32 func_ov000_02342480(s32 x, s32 y);
 
@@ -29,7 +29,7 @@ void MapObj70_State_Unk_ov000_02309ca4(UnkStruct_02309ca4 *w) {
             continue;
         if (!((1 << i) & func_ov000_02342480(w->base.unk10, w->base.unk14)))
             continue;
-        p = &data_ov000_0236aad8[i];
+        p = &gCamera[i];
         f = w->base.unk1E0->unk4;
         if (f & 3) {
             if (gPlayers[w->unk214[i]]->unk10 < w->base.unk10) {

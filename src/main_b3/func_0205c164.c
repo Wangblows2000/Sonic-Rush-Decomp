@@ -14,7 +14,7 @@ typedef struct {
 } UnkObj_0205c164;
 typedef struct { u8 pad0[0x1c]; u8 unk1C; } UnkStruct_022c4560;
 typedef struct { s32 a; s32 b; } UnkEnt_0205c164;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkEnt_0205c164 data_02076bb4[];
 extern UnkEnt_0205c164 data_02076bb8[];
 
@@ -48,8 +48,8 @@ void func_0205c164(void *w, UnkObj_0205c164 *o) {
     } else {
         o->delay--;
     }
-    o->unk4C = Lerp_0205c164(-0x50000, data_02076bb4[data_022c4560.unk1C].a, o->t, 3);
-    o->unk50 = o->unk68 + Lerp_0205c164(data_02076bb8[data_022c4560.unk1C].a, data_02076bb8[data_022c4560.unk1C].a, o->t, 3);
+    o->unk4C = Lerp_0205c164(-0x50000, data_02076bb4[gGameState.unk1C].a, o->t, 3);
+    o->unk50 = o->unk68 + Lerp_0205c164(data_02076bb8[gGameState.unk1C].a, data_02076bb8[gGameState.unk1C].a, o->t, 3);
     o->unk64 = Lerp_0205c164(0x4000, 0x1000, o->t, 1);
     o->unk66 = Lerp2_0205c164(0x1000, 0x1000, o->t, 0);
 }

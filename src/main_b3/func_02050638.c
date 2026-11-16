@@ -16,16 +16,16 @@ typedef struct {
 typedef struct { u8 pad0[0x10]; UnkWork_02050638 *work; } UnkTask_02050638;
 extern UnkTask_02050638 *data_022c4638;
 extern UnkTask_02050638 *gTaskCurrent;
-extern u16 data_022c1950;
+extern u16 gWHPacketSize;
 extern u16 data_022c4644[];
 extern s32 data_022c4640;
 
-s32 func_02042958(void);
+s32 WirelessMgr_GetStatus(void);
 void Task_Destroy(UnkTask_02050638 *t);
 void func_02050a7c(u16 a);
-void func_02043278(u16 a);
+void WirelessMgr_SelectParent(u16 a);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
-void func_020516b4(void);
+void WirelessSession_Stop(void);
 
 #pragma thumb on
 void func_02050638(void) {
@@ -39,13 +39,13 @@ void func_02050638(void) {
     else
         st = w->unkC;
     if (st < 6) {
-        r = func_02042958();
+        r = WirelessMgr_GetStatus();
         if (w->unk18) {
             Task_Destroy(gTaskCurrent);
             return;
         }
         if (r == 7 || st == 0 || w->unk14) {
-            func_02050a7c(data_022c1950);
+            func_02050a7c(gWHPacketSize);
             return;
         }
         switch (st) {
@@ -62,11 +62,11 @@ void func_02050638(void) {
             break;
         case 3:
             if (w->unk34 == 0) {
-                func_02050a7c(data_022c1950);
+                func_02050a7c(gWHPacketSize);
                 return;
             }
             if (w->unk10) {
-                func_02043278(w->unk36);
+                WirelessMgr_SelectParent(w->unk36);
                 w->unkC = 4;
                 w->unk8 = 0;
             }
@@ -78,7 +78,7 @@ void func_02050638(void) {
                 MIi_CpuCopy16(&w->names[w->unk36], data_022c4644, 0x16);
                 data_022c4640 = 1;
             } else if (r == 7) {
-                func_02050a7c(data_022c1950);
+                func_02050a7c(gWHPacketSize);
                 return;
             }
             break;
@@ -88,7 +88,7 @@ void func_02050638(void) {
             w->unk10 = 0;
             w->unk14 = 0;
             w->unk18 = 0;
-            func_020516b4();
+            WirelessSession_Stop();
             return;
         case 6:
             break;

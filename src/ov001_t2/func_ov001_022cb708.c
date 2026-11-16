@@ -26,8 +26,8 @@ typedef struct {
     UnkWork_022cb708 *work;
 } UnkStruct_022cb708;
 
-void func_02040ef0(void *p, void *res, s32 a);
-void func_02040e80(void *p);
+void KeyframeAnim_Init(void *p, void *res, s32 a);
+void KeyframeAnim_PlayReverse(void *p);
 void func_ov001_022cc044(UnkStruct_022cb708 *p);
 
 #pragma thumb on
@@ -37,11 +37,11 @@ void func_ov001_022cb708(UnkStruct_022cb708 *p, s32 a, s32 b) {
     UnkSub_022cb708 *sub = &w->sub;
     UnkAnim_022cb708 *anim;
 
-    func_02040ef0(&p->anim[a], res, sub->unkc);
+    KeyframeAnim_Init(&p->anim[a], res, sub->unkc);
     anim = &p->anim[b];
-    func_02040ef0(anim, res, sub->unkc);
-    func_02040e80(anim);
-    func_02040ef0(p->unk208, res, sub->unk2c);
+    KeyframeAnim_Init(anim, res, sub->unkc);
+    KeyframeAnim_PlayReverse(anim);
+    KeyframeAnim_Init(p->unk208, res, sub->unk2c);
     func_ov001_022cc044(p);
 }
 #pragma thumb reset

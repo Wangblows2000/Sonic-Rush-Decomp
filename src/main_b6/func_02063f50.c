@@ -69,7 +69,7 @@ typedef struct {
 
 extern UnkTask_02063f50 *data_022c4dc4;
 extern UnkRes_02063f50 *gNaviMSprite;
-extern UnkState_02063f50 data_022c4560;
+extern UnkState_02063f50 gGameState;
 extern UnkState2_02063f50 data_022c4590;
 extern u16 data_02077910[];
 extern u16 data_020778e0[];
@@ -130,7 +130,7 @@ void func_02063f50(void) {
     data_022c4dc4 = Task_Create(func_02063e10, func_02063ebc, 0, 0x3000, 0, 0x724);
     w = data_022c4dc4->work;
     MI_CpuClear16_(w, 0x724);
-    w->unk4 = data_022c4560.unk0;
+    w->unk4 = gGameState.unk0;
     w->unk718 = FX_DivS32(data_022c4590.unk14, 10);
     if (w->unk718 == 0)
         w->unk718 = -1;
@@ -145,7 +145,7 @@ void func_02063f50(void) {
         AnimatorSprite_ProcessAnimation(spr, 0, 0);
     }
 
-    w->unk720 = data_022c4560.unke;
+    w->unk720 = gGameState.unke;
     if (w->unk4 == 0)
         sel = 0;
     else
@@ -212,7 +212,7 @@ void func_02063f50(void) {
     MI_CpuClear16_(subB, 0x14);
     subB->owner = w;
     subB->unkc = -1;
-    subB->unka = data_022c4560.unk28;
+    subB->unka = gGameState.unk28;
 
     Oam_Upload(1);
     plane = (REG_DB_DISPCNT & 0x1f00) >> 8;

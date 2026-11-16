@@ -37,8 +37,8 @@ void OS_SleepThread(s32 a);
 BOOL FS_OpenFileDirect(void *f, void *arc, u32 top, u32 bottom, u32 id);
 s32 FS_ReadFile(void *f, void *buf, u32 size);
 BOOL FS_CloseFile(void *f);
-void func_0203d560(UnkData_0203da24 *d, UnkNode_0203da24 *n, s32 a);
-void func_0203d2d0(UnkData_0203da24 *d, UnkNode_0203da24 *n);
+void WFSi_SendOpenAck(UnkData_0203da24 *d, UnkNode_0203da24 *n, s32 a);
+void WFSi_FromBusyToFree(UnkData_0203da24 *d, UnkNode_0203da24 *n);
 
 void func_0203da24(void)
 {
@@ -68,12 +68,12 @@ void func_0203da24(void)
             n->unk9c = 1;
             n->unk98 = 2;
             e = OS_DisableInterrupts();
-            func_0203d560(&data_022b9020, n, 1);
+            WFSi_SendOpenAck(&data_022b9020, n, 1);
             OS_RestoreInterrupts(e);
         } else {
             FS_CloseFile(n->file38);
             e = OS_DisableInterrupts();
-            func_0203d2d0(&data_022b9020, n);
+            WFSi_FromBusyToFree(&data_022b9020, n);
             OS_RestoreInterrupts(e);
         }
     }

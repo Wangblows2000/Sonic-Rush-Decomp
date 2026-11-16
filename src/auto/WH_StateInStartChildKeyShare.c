@@ -3,8 +3,8 @@
 
 extern u8 sSysState[];
 s32 WH_ChangeSysState();
-void func_0203ede0();
-extern u8 data_022c1a40[];
+void WH_StateOutStartChildKeyShare();
+extern u8 sWMKeySetBuf[];
 s32 func_02012da0();
 s32 WH_SetError();
 
@@ -17,7 +17,7 @@ s32 WH_StateInStartChildKeyShare(void) {
         return 0;
     }
     WH_ChangeSysState(6);
-    s32 t1 = func_02012da0((u32)func_0203ede0, data_022c1a40);
+    s32 t1 = func_02012da0((u32)WH_StateOutStartChildKeyShare, sWMKeySetBuf);
     if (t1 == 2) {
         return 1;
     }

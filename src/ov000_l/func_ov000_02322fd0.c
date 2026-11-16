@@ -17,7 +17,7 @@ typedef struct {
     s32 y;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 void func_ov000_02322fd0(UnkWork_02322fd0 *w) {
     s32 a;
@@ -27,10 +27,10 @@ void func_ov000_02322fd0(UnkWork_02322fd0 *w) {
         w->unkC = 1;
         return;
     }
-    b = data_ov000_0236aad8.x >> 8;
+    b = gCamera.x >> 8;
     a = w->unk10 >> 8;
     if (b - 0x20 > a || b + 0x120 < a ||
-        (b = data_ov000_0236aad8.y >> 8, a = w->unk14 >> 8, b - 0x20 > a) || b + 0xe0 < a) {
+        (b = gCamera.y >> 8, a = w->unk14 >> 8, b - 0x20 > a) || b + 0xe0 < a) {
         w->unk1A0 |= 1;
         w->unk258 |= 8;
     } else {

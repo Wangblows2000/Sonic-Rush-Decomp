@@ -19,14 +19,14 @@ typedef struct {
     UnkRect_022e432c rects[7];
 } UnkStruct_022e432c;
 
-void func_02040ef0(void *p, s32 a, s32 b);
-void func_02040ec0(void *p, u32 value);
-void func_02040d14(void *p);
+void KeyframeAnim_Init(void *p, s32 a, s32 b);
+void KeyframeAnim_SetAnim(void *p, u32 value);
+void KeyframeAnim_Update(void *p);
 
 #define SET_RECT(i, anim, ww, hh, t)     \
     r = &p->rects[i];                    \
-    func_02040ec0(&buf, anim);           \
-    func_02040d14(&buf);                 \
+    KeyframeAnim_SetAnim(&buf, anim);           \
+    KeyframeAnim_Update(&buf);                 \
     r->x = buf.x;                        \
     r->y = buf.y;                        \
     r->w = ww;                           \
@@ -37,7 +37,7 @@ void func_02040d14(void *p);
 void func_ov001_022e432c(UnkStruct_022e432c *p, s32 a) {
     UnkStruct_02040d14 buf;
     UnkRect_022e432c *r;
-    func_02040ef0(&buf, a, 0);
+    KeyframeAnim_Init(&buf, a, 0);
     SET_RECT(0, 0x39, 0x38, 0x18, 0)
     SET_RECT(1, 0x3a, 0x38, 0x18, 0)
     SET_RECT(2, 0x3b, 0x38, 0x18, 0)

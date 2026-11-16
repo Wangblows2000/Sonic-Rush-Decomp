@@ -14,7 +14,7 @@ typedef struct {
     s32 unk1128;
 } UnkStruct_022e37f0;
 
-extern UnkStruct_Boss *data_ov000_02369b4c;
+extern UnkStruct_Boss *gBoss6;
 
 void func_ov000_022dfd80(s32 a, s32 x, s32 y, s32 z);
 
@@ -31,7 +31,7 @@ void func_ov000_022e37f0(UnkStruct_022e37f0 *s) {
         return;
     s->unk1128 = (0x549f - s->unkF68) * 10 / 0x549f + 5;
     r = Rand() & 0x1f;
-    b = data_ov000_02369b4c;
+    b = gBoss6;
     if (b->unkD5E != 0) {
         if (b->unk20C & 0x100)
             x = 0x328 - r;

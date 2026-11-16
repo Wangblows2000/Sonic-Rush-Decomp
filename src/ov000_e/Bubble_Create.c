@@ -16,12 +16,12 @@ typedef struct {
 
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366700[], data_ov000_02369e54[];
-extern UnkStruct_Plr data_ov000_0236aad8;
+extern UnkStruct_Plr gCamera;
 extern UnkStruct_Plr data_ov000_0236ab3c;
 
 void MapObject_Destructor(void);
 void Bubble_OnHit(void);
-void func_ov000_02302418(UnkStruct_02302774 *w);
+void Bubble_Action_Unk_ov000_02302418(UnkStruct_02302774 *w);
 void func_ov000_02302694(UnkStruct_02302774 *w);
 
 UnkStruct_02302774 *Bubble_Create(s32 a, s32 b, s32 c) {
@@ -60,10 +60,10 @@ UnkStruct_02302774 *Bubble_Create(s32 a, s32 b, s32 c) {
         w->base.coll0.unk1C = NULL;
         break;
     }
-    if ((&data_ov000_0236aad8)[2].unk0 & 1)
-        w->unk214 = data_ov000_0236aad8.unk62;
-    else if (data_ov000_0236aad8.unk0 & 0x1000000)
-        w->unk214 = data_ov000_0236aad8.unk62;
+    if ((&gCamera)[2].unk0 & 1)
+        w->unk214 = gCamera.unk62;
+    else if (gCamera.unk0 & 0x1000000)
+        w->unk214 = gCamera.unk62;
     else {
         UnkStruct_Plr *q = (UnkStruct_Plr *)(u32)&data_ov000_0236ab3c;
         if (q->unk0 & 0x1000000)
@@ -72,7 +72,7 @@ UnkStruct_02302774 *Bubble_Create(s32 a, s32 b, s32 c) {
             w->unk214 = 0;
     }
     if (w->base.unk1E0->unk2 == 0xe8)
-        func_ov000_02302418(w);
+        Bubble_Action_Unk_ov000_02302418(w);
     else
         func_ov000_02302694(w);
     return w;

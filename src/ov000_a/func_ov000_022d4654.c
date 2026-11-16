@@ -102,8 +102,8 @@ typedef struct UnkStruct_022d4654_7 {
     u16 unk8;
 } UnkStruct_022d4654_7;
 
-extern UnkStruct_022d4654 *data_ov000_02369ae0;
-extern UnkStruct_022d4654_7 data_ov000_02369ac0;
+extern UnkStruct_022d4654 *gBoss2;
+extern UnkStruct_022d4654_7 gBossStatus;
 extern u32 gRandSeed;
 extern u16 data_ov000_02362f58[][16];
 extern u16 data_ov000_02362f98[][16];
@@ -121,25 +121,25 @@ static inline u16 Rand(void) {
 }
 
 void func_ov000_022d4654(u16 mode) {
-    UnkStruct_022d4654 *s = data_ov000_02369ae0;
-    s32 k = data_ov000_02369ac0.unk8;
+    UnkStruct_022d4654 *s = gBoss2;
+    s32 k = gBossStatus.unk8;
     s->unk1302 = mode;
     switch (mode) {
     case 0:
         switch (s->unk1300) {
         case 1:
             func_ov000_022d3b8c();
-            data_ov000_02369ac0.unk4 = 8;
+            gBossStatus.unk4 = 8;
             s->unk1300 = 0;
             return;
         case 2:
             func_ov000_022d2730();
-            data_ov000_02369ac0.unk4 = 9;
+            gBossStatus.unk4 = 9;
             s->unk1300 = 0;
             return;
         case 3:
             func_ov000_022d12fc();
-            data_ov000_02369ac0.unk4 = 10;
+            gBossStatus.unk4 = 10;
             s->unk1300 = 0;
             return;
         }
@@ -183,7 +183,7 @@ void func_ov000_022d4654(u16 mode) {
             }
         }
         func_ov000_022d43f8();
-        data_ov000_02369ac0.unk4 = 7;
+        gBossStatus.unk4 = 7;
         break;
     case 3:
         func_ov000_022cf074(s);
@@ -201,7 +201,7 @@ void func_ov000_022d4654(u16 mode) {
                 s->unk1300 = 1;
         }
         func_ov000_022d43f8();
-        data_ov000_02369ac0.unk4 = 7;
+        gBossStatus.unk4 = 7;
         break;
     }
 }

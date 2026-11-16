@@ -10,7 +10,7 @@ typedef struct UnkStruct_02314508 {
 } UnkStruct_02314508;
 
 extern void *gMainHeap;
-extern UnkStruct_02314508 *data_ov001_0231f69c;
+extern UnkStruct_02314508 *gSpecialStageData;
 extern s32 gSpecialStageFileTable[];
 
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
@@ -38,9 +38,9 @@ static inline u8 *Alloc(u32 sz) {
 void SpecialStage_LoadStageData(s32 idx) {
     UnkStruct_02314508 *g;
 
-    data_ov001_0231f69c = (UnkStruct_02314508 *)Alloc(0x40);
-    MI_CpuFill8(data_ov001_0231f69c, 0, sizeof(UnkStruct_02314508));
-    g = data_ov001_0231f69c;
+    gSpecialStageData = (UnkStruct_02314508 *)Alloc(0x40);
+    MI_CpuFill8(gSpecialStageData, 0, sizeof(UnkStruct_02314508));
+    g = gSpecialStageData;
     g->idx = idx;
     g->unk8 = 4;
     g->unk14 = func_ov001_02314204(gSpecialStageFileTable[g->idx]);

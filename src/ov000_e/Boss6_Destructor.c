@@ -30,7 +30,7 @@ extern char data_ov000_0236590c[];
 extern char data_ov000_02365920[];
 extern char data_ov000_02365934[];
 extern char data_ov000_02365950[];
-extern void *data_ov000_02369b4c;
+extern void *gBoss6;
 
 BOOL func_02021310(UnkArc_022e6410 *arc, const char *name, void *narc);
 void *func_0202128c(const char *path);
@@ -57,5 +57,5 @@ void Boss6_Destructor(UnkStruct_022e6410 *t) {
     func_0202566c(func_0202128c(data_ov000_02365950));
     func_020212e0(&arc);
     MapObject_Destructor(t);
-    data_ov000_02369b4c = NULL;
+    gBoss6 = NULL;
 }

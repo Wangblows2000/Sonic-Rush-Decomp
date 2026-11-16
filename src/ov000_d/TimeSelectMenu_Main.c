@@ -6,8 +6,8 @@ typedef struct {
 } UnkStruct_02361e28_Sync;
 
 UnkStruct_02361e28_Sync *func_020514e4(void);
-void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
-BOOL func_02040cf4(UnkStruct_MenuOPos *p);
+void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+BOOL KeyframeAnim_IsFinished(UnkStruct_MenuOPos *p);
 void func_ov000_02360a28(UnkStruct_MenuO *w, s32 x, s32 y);
 void func_ov000_02360ad4(UnkStruct_MenuO *w, s32 x, s32 y);
 void func_ov000_02360ab4(UnkStruct_MenuO *w, s32 x, s32 y);
@@ -40,17 +40,17 @@ void TimeSelectMenu_Main(void) {
 
     if (w->unk0 == 2) {
         if (w->unk4) {
-            func_02050078(0xa, 3, 5, 1, 0, 0, 0xe, 0x200010);
+            MsgBox_Create(0xa, 3, 5, 1, 0, 0, 0xe, 0x200010);
             w->unk14 = 1;
         } else {
-            func_02050078(0xd, 3, 5, 1, 0, 0, 0xe, 0x200010);
+            MsgBox_Create(0xd, 3, 5, 1, 0, 0, 0xe, 0x200010);
             w->unk14 = 1;
         }
     }
     done = TRUE;
     for (i = 0, p = w->pos; i < 0x12; p++, i++) {
-        func_02040d14(p);
-        if (!func_02040cf4(p)) {
+        KeyframeAnim_Update(p);
+        if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
     }
@@ -125,7 +125,7 @@ void TimeSelectMenu_Main(void) {
             gTaskCurrent->unk8 = func_ov000_02361bf0;
             return;
         }
-        func_02040ec0(&w->pos[0], 6);
+        KeyframeAnim_SetAnim(&w->pos[0], 6);
         w->unkC = 0;
         w->unk10 = 0;
         gTaskCurrent->unk8 = func_ov000_02361804;

@@ -61,8 +61,8 @@ typedef struct {
 } UnkStruct_Player;
 
 extern UnkStruct_Player *gPlayers;
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern s32 data_ov000_02363958[][8];
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 
@@ -86,13 +86,13 @@ void func_ov000_022e2d0c(UnkStruct_Boss *w) {
         Model_SetAnimation(m, 0, w->unkD08, 0x14, 0);
         m->unk10C &= ~4;
         b = TRUE;
-        if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+        if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
             b = FALSE;
         if (b)
             i = 1;
         else
-            i = data_022c4560.unk14;
-        m->unk114 = data_ov000_02363958[i][data_ov000_02369ac0.unk8 - 1];
+            i = gGameState.unk14;
+        m->unk114 = data_ov000_02363958[i][gBossStatus.unk8 - 1];
         ScreenShake_Start(0xc);
         w->unkF50 = 0x14;
         BossEffect_CreateLand(1, w->unk1068 >> 4, 0x20000, w->unk1070 >> 4);

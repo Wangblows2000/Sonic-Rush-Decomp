@@ -63,7 +63,7 @@ typedef struct {
 } UnkStruct_02343d80_Tbl;
 
 extern UnkStruct_02343d80_Task *gTaskCurrent;
-extern UnkStruct_02343d80_4560 data_022c4560;
+extern UnkStruct_02343d80_4560 gGameState;
 extern UnkStruct_02343d80_4590 data_022c4590;
 extern UnkStruct_02343d80_Bgm data_02074960[][3];
 extern UnkStruct_02343d80_Bgm data_02074962[][3];
@@ -71,21 +71,21 @@ extern UnkStruct_02343d80_Bgm data_02074964[][3];
 extern UnkStruct_02343d80_Tbl data_ov000_02368ba4[];
 extern UnkStruct_02343d80_Tbl data_ov000_02368ba6[];
 
-void func_ov000_0234307c(UnkStruct_02343d80 *w, s16 v);
+void Player_AddTension(UnkStruct_02343d80 *w, s16 v);
 void func_ov000_0235bafc(UnkStruct_02343d80 *w);
 void func_ov000_02345aa8(UnkStruct_02343d80 *w);
 void func_ov000_023458cc(UnkStruct_02343d80 *w);
 BOOL BrightnessFade_IsDone(void);
-void func_0204d5f8(void (*fn)(void));
-void func_0204d684(void (*fn)(void), s32 a);
+void StageShutdown_Create(void (*fn)(void));
+void StageExit_Create(void (*fn)(void), s32 a);
 void func_ov000_0234cfc8(void);
-void func_ov000_0234cfbc(void);
+void Player_ExitToSpecialStage(void);
 void func_02022270(s32 a, u16 b);
 s32 ObjSpd_DownSet(s32 v, s32 a);
 void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
 void func_ov000_023526cc(UnkStruct_02343d80 *w, UnkStruct_02343d80_Obj *o);
-void func_ov000_02345158(UnkStruct_02343d80 *w);
-void func_ov000_02343ac0(UnkStruct_02343d80 *w);
+void Player_SendNetState(UnkStruct_02343d80 *w);
+void Player_WrapLoopingArena(UnkStruct_02343d80 *w);
 
 void Player_Last(void) {
     UnkStruct_02343d80 *w = gTaskCurrent->ply;
@@ -97,7 +97,7 @@ void Player_Last(void) {
 
     w->unk32C &= ~0x10000;
     if (w->unk3B6 == 0 && (w->unk32C & 0x40000)) {
-        func_ov000_0234307c(w, -0x640);
+        Player_AddTension(w, -0x640);
         w->unk32C &= ~0x40000;
     }
     if (w->unk32C & 0x20000000) {
@@ -111,25 +111,25 @@ void Player_Last(void) {
     if (w->unk3E8 == NULL || (w->unk330 & 8)) {
         w->unk58 &= ~0x4000;
     }
-    if (data_022c4560.unk10 == 1 && w->unk325 == 0 && data_022c4560.unk20 >= 0x8c9f && BrightnessFade_IsDone() &&
+    if (gGameState.unk10 == 1 && w->unk325 == 0 && gGameState.unk20 >= 0x8c9f && BrightnessFade_IsDone() &&
         data_022c4590.unk40 >= 3) {
-        func_0204d5f8(func_ov000_0234cfc8);
+        StageShutdown_Create(func_ov000_0234cfc8);
         return;
     }
     f = w->unk32C;
     if (f & 0x800000) {
-        func_0204d684(func_ov000_0234cfc8, 3);
+        StageExit_Create(func_ov000_0234cfc8, 3);
         return;
     }
     if (f & 0x40000000) {
-        data_022c4560.unk18 |= 0x40;
-        func_0204d684(func_ov000_0234cfbc, 3);
+        gGameState.unk18 |= 0x40;
+        StageExit_Create(Player_ExitToSpecialStage, 3);
         return;
     }
     if (f & 0x4000000) {
-        func_02022270(0, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D].v);
-        func_02022270(1, data_02074962[data_022c4560.unk1C][data_022c4560.unk1D].v);
-        func_02022270(2, data_02074964[data_022c4560.unk1C][data_022c4560.unk1D].v);
+        func_02022270(0, data_02074960[gGameState.unk1C][gGameState.unk1D].v);
+        func_02022270(1, data_02074962[gGameState.unk1C][gGameState.unk1D].v);
+        func_02022270(2, data_02074964[gGameState.unk1C][gGameState.unk1D].v);
     }
     f = w->unk330;
     if (f & 0x1000) {
@@ -161,7 +161,7 @@ void Player_Last(void) {
         w->unk54 |= 1;
     }
     if (w->unk330 & 0x40000) {
-        if ((data_022c4560.unk18 & 0x20) && w->unk325 == 0) {
+        if ((gGameState.unk18 & 0x20) && w->unk325 == 0) {
             left = (w->unk3E8->x >> 8) - 0xbc;
             top = (w->unk3E8->y >> 8) - 0x1d0;
             right = (w->unk3E8->x >> 8) + 0xbc;
@@ -190,7 +190,7 @@ void Player_Last(void) {
         }
         func_ov000_023526cc(w, w->unk3E8);
     }
-    func_ov000_02345158(w);
+    Player_SendNetState(w);
     w->unk32C &= ~0x20000;
-    func_ov000_02343ac0(w);
+    Player_WrapLoopingArena(w);
 }

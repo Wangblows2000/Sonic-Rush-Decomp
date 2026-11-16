@@ -34,7 +34,7 @@ typedef struct {
 
 s32 ObjShift_SetFromRef(s32 cur, s32 target, s32 c, s32 d, s32 e, s32 f);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 max);
-void func_ov000_023470a0(UnkStruct_0234fe20 *w, s32 v);
+void Player_SetAnimSpeedFromVelocity(UnkStruct_0234fe20 *w, s32 v);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 static inline void Arrive_0234fe20(UnkStruct_0234fe20 *w) {
@@ -107,7 +107,7 @@ void Player_State_Pipe(UnkStruct_0234fe20 *w) {
         } else {
             w->unk34 = ObjSpd_UpSet(w->unk34, 0x10, 0xd00);
         }
-        func_ov000_023470a0(w, w->unk34);
+        Player_SetAnimSpeedFromVelocity(w, w->unk34);
         return;
     }
 }

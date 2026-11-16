@@ -94,7 +94,7 @@ typedef struct UnkStruct_022d79a4_p {
     s32 unk184;
 } UnkStruct_022d79a4_p;
 
-extern UnkStruct_022d79a4_b *data_ov000_02369b14;
+extern UnkStruct_022d79a4_b *gBoss3;
 extern UnkStruct_022d79a4_p *gPlayers;
 extern s32 data_ov000_0236327c[][5];
 extern u32 gRandSeed;
@@ -103,7 +103,7 @@ u16 func_ov000_022c5e10(s32 x, s32 z);
 s32 FX_Inv(s32 a);
 void func_ov000_022da9c0(u16 ang, s32 v);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022d7908(UnkStruct_022d79a4 *s);
+void Boss3PartCC_State_Unk_ov000_022d7908(UnkStruct_022d79a4 *s);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -118,10 +118,10 @@ void func_ov000_022d79a4(UnkStruct_022d79a4 *s) {
     Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0x14, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
-    v = data_ov000_0236327c[data_ov000_02369b14->unk222][data_ov000_02369b14->unk214->unk25E];
-    data_ov000_02369b14->unk218->unk20C |= 3;
+    v = data_ov000_0236327c[gBoss3->unk222][gBoss3->unk214->unk25E];
+    gBoss3->unk218->unk20C |= 3;
     ang = func_ov000_022c5e10(gPlayers->unk17C, gPlayers->unk184);
-    switch (data_ov000_02369b14->unk222) {
+    switch (gBoss3->unk222) {
     case 3:
     case 4:
     case 5:
@@ -131,7 +131,7 @@ void func_ov000_022d79a4(UnkStruct_022d79a4 *s) {
         else
             m = p->unk34;
         {
-            u16 k = FX_Inv(data_ov000_0236327c[data_ov000_02369b14->unk222][data_ov000_02369b14->unk214->unk25E]) * 15 >> 12;
+            u16 k = FX_Inv(data_ov000_0236327c[gBoss3->unk222][gBoss3->unk214->unk25E]) * 15 >> 12;
             ang += (u16)(k * (m * 4));
         }
         break;
@@ -142,8 +142,8 @@ void func_ov000_022d79a4(UnkStruct_022d79a4 *s) {
         break;
     }
     func_ov000_022da9c0(ang, v);
-    data_ov000_02369b14->unk218 = NULL;
+    gBoss3->unk218 = NULL;
     Sound_PlaySeqArc(0, 0, 0x97);
-    s->func = func_ov000_022d7908;
+    s->func = Boss3PartCC_State_Unk_ov000_022d7908;
     s->func(s);
 }

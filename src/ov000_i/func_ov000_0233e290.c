@@ -31,7 +31,7 @@ s32 GX_ResetBankForBGExtPltt(void);
 void GX_SetBankForBGExtPltt(s32 a);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 void func_ov000_0233c550(s32 a);
-extern UnkPlayer_0233e290 data_ov000_0236aad8[];
+extern UnkPlayer_0233e290 gCamera[];
 void func_ov000_0233c934(UnkEnt_0233e290 *e, UnkTbl_0233e290 *t);
 
 void func_ov000_0233e290(UnkStruct_0233e290 *w) {
@@ -39,7 +39,7 @@ void func_ov000_0233e290(UnkStruct_0233e290 *w) {
     u8 i;
     UnkTbl_0233e290 *t;
 
-    data_ov000_0236aad8[2].flags |= 0x100000;
+    gCamera[2].flags |= 0x100000;
     func_ov000_0233c550(0);
     s = GX_ResetBankForBGExtPltt();
     MIi_CpuCopy32(gDisplayMain.unk84, w->pal1, 0x200);

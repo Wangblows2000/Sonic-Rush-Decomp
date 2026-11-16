@@ -42,9 +42,9 @@ typedef struct UnkStruct_0230ea6c_o2 {
 
 extern u32 gRandSeed;
 extern u8 data_ov001_0231f5c8[];
-extern u8 data_022504e8[];
+extern u8 gSoundArchive[];
 
-UnkStruct_0230ea6c_o2 *func_ov001_0230c0a4(void);
+UnkStruct_0230ea6c_o2 *SpecialStage_GetPlayer(void);
 void MTX_Identity33_(void *m);
 void func_0201d568(void *p);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
@@ -56,7 +56,7 @@ static inline u16 Rand(void) {
 }
 
 void func_ov001_0230ea6c(UnkStruct_0230ea6c *s) {
-    UnkStruct_0230ea6c_o2 *o = func_ov001_0230c0a4();
+    UnkStruct_0230ea6c_o2 *o = SpecialStage_GetPlayer();
 
     s->unkAC->unk60 = o->unk1F8;
     if (s->unkD0 == 0x2a) {
@@ -75,7 +75,7 @@ void func_ov001_0230ea6c(UnkStruct_0230ea6c *s) {
         s->unkAC->unk5C = -0x5f1;
         func_0201d568(data_ov001_0231f5c8);
         Sound_PlaySeqArc(0, 9, 0);
-        func_0201d568(data_022504e8);
+        func_0201d568(gSoundArchive);
     }
     if (s->unkD0 > 0x2a) {
         if (s->unkD0 % 17 == 1) {

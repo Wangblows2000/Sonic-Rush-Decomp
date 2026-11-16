@@ -18,7 +18,7 @@ typedef struct {
 } UnkStruct_02301488;
 
 void EffFound_Create(UnkStruct_02301488_o *o, s32 a, s32 b);
-void func_ov000_0230169c(UnkStruct_02301488_o *o);
+void Kuragen_Action_Unk_ov000_0230169c(UnkStruct_02301488_o *o);
 
 void func_ov000_02301488(UnkStruct_02301488 *a, UnkStruct_02301488 *b) {
     UnkStruct_02301488_o *o;
@@ -33,5 +33,5 @@ void func_ov000_02301488(UnkStruct_02301488 *a, UnkStruct_02301488 *b) {
         return;
     EffFound_Create(o, 0, -0x20);
     o->unk204 = t;
-    func_ov000_0230169c(o);
+    Kuragen_Action_Unk_ov000_0230169c(o);
 }

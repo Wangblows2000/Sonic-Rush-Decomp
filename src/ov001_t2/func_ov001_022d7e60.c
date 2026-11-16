@@ -17,7 +17,7 @@ typedef struct {
     void *res;
 } UnkRes_022d7e60;
 
-void func_02040ef0(void *p, void *res, s32 a);
+void KeyframeAnim_Init(void *p, void *res, s32 a);
 
 #pragma thumb on
 void func_ov001_022d7e60(UnkStruct_022d7e60 *p, UnkRes_022d7e60 *r) {
@@ -34,16 +34,16 @@ void func_ov001_022d7e60(UnkStruct_022d7e60 *p, UnkRes_022d7e60 *r) {
     }
     p->unk10 = 0;
     e = &p->ent[5];
-    func_02040ef0(e->anim, r->res, 6);
+    KeyframeAnim_Init(e->anim, r->res, 6);
     e = &p->ent[4];
     e->type = 0;
-    func_02040ef0(e->anim, r->res, 0xb);
+    KeyframeAnim_Init(e->anim, r->res, 0xb);
     i = 0;
     e = p->ent;
     off = (4 - n) / 2;
     for (; i < 4; i++) {
         if (e->type < 0x13) {
-            func_02040ef0(e->anim, r->res, i + off + 7);
+            KeyframeAnim_Init(e->anim, r->res, i + off + 7);
         }
         e++;
     }

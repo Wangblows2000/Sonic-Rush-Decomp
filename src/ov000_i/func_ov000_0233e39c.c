@@ -14,8 +14,8 @@ typedef struct {
 } UnkCfg_0233e39c;
 
 extern s32 *data_ov000_0236ac18;
-extern UnkCfg_0233e39c data_022c4560;
-extern UnkPlayer_0233e39c data_ov000_0236aad8[];
+extern UnkCfg_0233e39c gGameState;
+extern UnkPlayer_0233e39c gCamera[];
 extern s16 data_0206e470[];
 
 #define SIN_0233e39c(a) data_0206e470[((s32)((u16)(a) & 0xffff) >> 4) * 2]
@@ -26,11 +26,11 @@ void func_ov000_0233e39c(s32 x, s32 idx) {
 
     if (w == NULL)
         return;
-    if (data_022c4560.unk1C != 5)
+    if (gGameState.unk1C != 5)
         return;
-    if (data_022c4560.unk1D == 2)
+    if (gGameState.unk1D == 2)
         return;
-    p = &data_ov000_0236aad8[idx];
+    p = &gCamera[idx];
     if (!(p->flags & 0x80))
         return;
     p->unk8 = x + ((SIN_0233e39c((*w << 7) * 3) << 10) >> 12);

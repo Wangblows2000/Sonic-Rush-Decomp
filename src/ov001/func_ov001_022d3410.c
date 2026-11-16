@@ -10,16 +10,16 @@ typedef struct {
     u8 b1d;
     u16 h1e;
 } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
-void SceneChange_Unk_02055044(void);
-void SceneChange_Unk_02055028(void);
+extern UnkStruct_022c4560 gGameState;
+void SceneChange_ToPlayerSelectMenuMode3(void);
+void SceneChange_ToPlayerSelectMenuMode4(void);
 
 #pragma thumb on
 void func_ov001_022d3410(void) {
-    if (data_022c4560.b1d < 2) {
-        SceneChange_Unk_02055044();
+    if (gGameState.b1d < 2) {
+        SceneChange_ToPlayerSelectMenuMode3();
     } else {
-        SceneChange_Unk_02055028();
+        SceneChange_ToPlayerSelectMenuMode4();
     }
 }
 #pragma thumb reset

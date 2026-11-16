@@ -25,7 +25,7 @@ typedef struct {
     u16 unk20E;
 } UnkStruct_0231b834;
 
-extern UnkStruct_0231b834_E data_ov000_0236aad8[];
+extern UnkStruct_0231b834_E gCamera[];
 extern UnkStruct_0231b834_P *gPlayers[];
 
 void func_ov000_0231b830(void);
@@ -36,17 +36,17 @@ void func_ov000_0231b834(UnkStruct_0231b834 *w) {
     UnkStruct_0231b834_E *e;
     s32 px;
 
-    if (*(u32 *)((u8 *)data_ov000_0236aad8 + 0xc8) & 1) {
-        w->unk20C[0] = data_ov000_0236aad8[0].unk3A;
-        w->unk20C[1] = data_ov000_0236aad8[0].unk3A;
+    if (*(u32 *)((u8 *)gCamera + 0xc8) & 1) {
+        w->unk20C[0] = gCamera[0].unk3A;
+        w->unk20C[1] = gCamera[0].unk3A;
     } else {
-        w->unk20C[0] = data_ov000_0236aad8[0].unk3A;
-        w->unk20C[1] = data_ov000_0236aad8[1].unk3A;
+        w->unk20C[0] = gCamera[0].unk3A;
+        w->unk20C[1] = gCamera[1].unk3A;
     }
     for (i = 0; i < 2; i++) {
         idx = w->unk20C[i];
         if (idx >= 0) {
-            e = &data_ov000_0236aad8[i];
+            e = &gCamera[i];
             px = gPlayers[idx]->unk10;
             if (w->unk10 >= px - 0x4000 && w->unk10 <= px + 0x4000) {
                 e->unk0 |= 0x1000000;

@@ -48,7 +48,7 @@ extern UnkPhys_02353820 data_ov000_02368ba0[];
 
 void func_ov000_02353568(UnkStruct_02353820 *w);
 void Player_ResetGimmickState(UnkStruct_02353820 *w);
-void func_ov000_0234a064(UnkStruct_02353820 *w, u8 ang);
+void Player_Action_LandOnGround(UnkStruct_02353820 *w, u8 ang);
 void Player_SetAnimation(UnkStruct_02353820 *w, s32 state);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
@@ -71,7 +71,7 @@ void func_ov000_02353820(UnkStruct_02353820 *w, UnkObj_02353820 *o) {
         return;
     }
     Player_ResetGimmickState(w);
-    func_ov000_0234a064(w, 0);
+    Player_Action_LandOnGround(w, 0);
     w->unk2E = 0;
     w->unk30 = 0;
     w->unk1 = 0;

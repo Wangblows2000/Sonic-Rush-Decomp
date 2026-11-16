@@ -30,18 +30,18 @@ typedef struct UnkStruct_02312f24 {
     void (*unk22C)(void);
 } UnkStruct_02312f24;
 
-void func_ov001_023113f8(void);
-void func_ov001_023115a4(void);
+void SpecialStagePlayer_State_Trick(void);
+void SpecialStagePlayer_State_TrickInput(void);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 void func_ov001_02312a0c(UnkStruct_02312f24 *p, s32 v);
-void func_ov001_023122d8(UnkStruct_02312f24 *p, s32 v);
-void func_ov001_0230d6f4(s32 v);
-void func_ov001_0231599c(s32 v);
+void SpecialStagePlayer_ChangeState(UnkStruct_02312f24 *p, s32 v);
+void SpecialStageMap_SetScrollSpeed(s32 v);
+void SpecialStageCamera_SetMode(s32 v);
 void func_ov001_023120ec(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e);
 void func_ov001_02311ec8(UnkStruct_02312f24 *p);
 
 void func_ov001_02312f24(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e) {
-    if (p->unk22C == func_ov001_023113f8 || p->unk22C == func_ov001_023115a4) {
+    if (p->unk22C == SpecialStagePlayer_State_Trick || p->unk22C == SpecialStagePlayer_State_TrickInput) {
         switch (e->unk68) {
         case 0:
         case 1:
@@ -62,9 +62,9 @@ void func_ov001_02312f24(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e) {
         break;
     case 3:
         p->unk150 = e->unk6A;
-        func_ov001_023122d8(p, 9);
-        func_ov001_0230d6f4(0x800);
-        func_ov001_0231599c(1);
+        SpecialStagePlayer_ChangeState(p, 9);
+        SpecialStageMap_SetScrollSpeed(0x800);
+        SpecialStageCamera_SetMode(1);
         p->unk20 = e->unk20;
         p->unk24 = e->unk24;
         p->unk28 = e->unk28;
@@ -95,7 +95,7 @@ void func_ov001_02312f24(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e) {
         Sound_PlaySeqArc(0, 0x10, 0x15);
         break;
     case 0x17:
-        func_ov001_0231599c(6);
+        SpecialStageCamera_SetMode(6);
         break;
     }
 }

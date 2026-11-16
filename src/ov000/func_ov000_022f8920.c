@@ -10,11 +10,11 @@ typedef struct UnkStruct_022f8920 {
     UnkStruct_022f8810_2 *unk218;
 } UnkStruct_022f8920;
 
-extern UnkStruct_022f8920 *data_ov000_02369b84;
+extern UnkStruct_022f8920 *gBossF;
 
 void func_ov000_022f345c(UnkStruct_022f8810_2 *p);
 
 void func_ov000_022f8920(s32 a) {
-    data_ov000_02369b84->unk218->unk458 = a;
-    func_ov000_022f345c(data_ov000_02369b84->unk218);
+    gBossF->unk218->unk458 = a;
+    func_ov000_022f345c(gBossF->unk218);
 }

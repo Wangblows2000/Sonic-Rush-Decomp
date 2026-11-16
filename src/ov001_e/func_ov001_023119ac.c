@@ -23,7 +23,7 @@ typedef struct UnkStruct_023119ac {
 } UnkStruct_023119ac;
 
 BOOL func_ov001_02312138(UnkStruct_023119ac *p);
-void func_ov001_023122d8(UnkStruct_023119ac *p, s32 state);
+void SpecialStagePlayer_ChangeState(UnkStruct_023119ac *p, s32 state);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov001_023070fc(s32 type, s32 x, s32 y, s32 z);
 
@@ -35,7 +35,7 @@ void func_ov001_023119ac(UnkStruct_023119ac *p) {
         p->unk54 = 0;
     }
     if (p->unkAC->unk10C & 2) {
-        func_ov001_023122d8(p, 0x11);
+        SpecialStagePlayer_ChangeState(p, 0x11);
         return;
     }
     if (p->unk120 == 0 && p->rings > 0) {

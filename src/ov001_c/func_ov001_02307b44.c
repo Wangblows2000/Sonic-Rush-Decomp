@@ -18,15 +18,15 @@ typedef struct UnkStruct_02307b44 {
     UnkStruct_02307b44_o objs2[3];
 } UnkStruct_02307b44;
 
-extern UnkStruct_02307b44 *data_ov001_0231f5bc;
+extern UnkStruct_02307b44 *gSpecialStageHud;
 
 void AnimatorSprite_Draw(void *p);
-u32 func_ov001_0230c0b8(void);
+u32 SpecialStage_GetEmeraldFlags(void);
 s32 SpecialStage_GetStageIndex(void);
 void AnimatorSprite_DrawRotScale(void *o, s32 a, s32 b, s32 c);
 
 void func_ov001_02307b44(void) {
-    UnkStruct_02307b44 *g = data_ov001_0231f5bc;
+    UnkStruct_02307b44 *g = gSpecialStageHud;
     UnkStruct_02307b44_o *a = &g->objs[0x15];
     UnkStruct_02307b44_o *b = &g->objs[0x16];
     UnkStruct_02307b44_o *o19;
@@ -42,7 +42,7 @@ void func_ov001_02307b44(void) {
     else
         AnimatorSprite_Draw(b);
     for (i = 0; i < 7; i++) {
-        u32 m = func_ov001_0230c0b8();
+        u32 m = SpecialStage_GetEmeraldFlags();
         if ((m & (1 << i)) && i != SpecialStage_GetStageIndex()) {
             AnimatorSprite_Draw(&g->objs[0xb + i]);
         } else {

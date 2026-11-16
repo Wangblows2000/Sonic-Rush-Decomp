@@ -38,7 +38,7 @@ typedef struct UnkStruct_02300378_4590 {
 
 extern void *gMainHeap;
 extern UnkStruct_02300378 *gExtraBossWork;
-extern UnkStruct_02300378_4560 data_022c4560;
+extern UnkStruct_02300378_4560 gGameState;
 extern UnkStruct_02300378_4590 data_022c4590;
 extern u8 data_02074960[];
 extern u8 data_020748bc[];
@@ -50,8 +50,8 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void func_0204ec40(void);
 void NNS_SndHandleInit(u32 *p);
-void func_ov001_022ffcb8(void);
-void func_ov001_022ff3dc(void);
+void ExtraBoss_InitPadMap(void);
+void ExtraBoss_InitDisplay(void);
 void ExtraBoss_LoadAssets(void);
 void func_ov001_022f7308(void);
 void func_ov001_0230582c(void);
@@ -67,7 +67,7 @@ void func_02022284(u32 idx, s32 x, s32 y, s32 z);
 void ExtraBoss_Main(void);
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void ExtraBoss_LoadPlayerModel(s32 idx);
-void func_ov001_022fecb0(void);
+void ExtraBoss_ResetRound(void);
 void func_ov001_022eec20(void);
 
 void ExtraBoss_Start(void) {
@@ -90,17 +90,17 @@ void ExtraBoss_Start(void) {
     }
     gExtraBossWork->flags |= 4;
     gExtraBossWork->unk4C = 0x32;
-    data_022c4560.unk0 = 0;
+    gGameState.unk0 = 0;
     func_0204ec40();
     gExtraBossWork->unk60 = data_022c4590.unk14;
-    data_022c4560.unk0 = 1;
+    gGameState.unk0 = 1;
     func_0204ec40();
     gExtraBossWork->unk61 = data_022c4590.unk14;
     NNS_SndHandleInit(&gExtraBossWork->unk33C);
-    data_022c4560.unk1C = 8;
-    data_022c4560.unk1D = 2;
-    func_ov001_022ffcb8();
-    func_ov001_022ff3dc();
+    gGameState.unk1C = 8;
+    gGameState.unk1D = 2;
+    ExtraBoss_InitPadMap();
+    ExtraBoss_InitDisplay();
     ExtraBoss_LoadAssets();
     func_ov001_022f7308();
     func_ov001_0230582c();
@@ -127,8 +127,8 @@ void ExtraBoss_Start(void) {
     gExtraBossWork->task10 = Task_Create(0, 0, 0, 0xe010, 0, 0);
     ExtraBoss_LoadPlayerModel(0);
     gExtraBossWork->unk3C = 0;
-    func_ov001_022fecb0();
+    ExtraBoss_ResetRound();
     func_ov001_022eec20();
     data_022c4590.unk18 = 0;
-    data_022c4560.unk20 = 1;
+    gGameState.unk20 = 1;
 }

@@ -15,7 +15,7 @@ typedef struct {
 } UnkWork_0205b008;
 typedef struct { u8 pad0[0x1c]; u8 unk1C; u8 unk1D; } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkDisp_0205b008 gDisplaySub;
 extern UnkDisp_0205b008 gDisplayMain;
 
@@ -35,11 +35,11 @@ void func_0205b008(UnkWork_0205b008 *w) {
     }
     gDisplaySub.brightness = FX_Mul_0205b008(0x10000, w->t) >> 12;
     flag = FALSE;
-    if (data_022c4560.unk1C == 8 && data_022c4560.unk1D == 2)
+    if (gGameState.unk1C == 8 && gGameState.unk1D == 2)
         flag = TRUE;
     if (flag)
         return;
-    if (data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2)
+    if (gGameState.unk1C < 9 && gGameState.unk1D < 2)
         return;
     gDisplayMain.brightness = FX_Mul_0205b008(0x10000, w->t) >> 12;
 }

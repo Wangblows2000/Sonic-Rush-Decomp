@@ -24,7 +24,7 @@ typedef struct {
     u8 unk1D;
 } UnkStruct_0233f6f8_4560;
 
-extern UnkStruct_0233f6f8_4560 data_022c4560;
+extern UnkStruct_0233f6f8_4560 gGameState;
 
 UnkPlayer_0233f6f8 *func_ov000_0233b62c(void);
 UnkPlayer_0233f6f8 *func_ov000_0233b610(void);
@@ -32,7 +32,7 @@ u8 func_ov000_023427bc(s32 idx);
 
 static inline BOOL IsMode_0233f6f8(void) {
     BOOL r = FALSE;
-    if (data_022c4560.unk1C >= 7 && data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2) {
+    if (gGameState.unk1C >= 7 && gGameState.unk1C < 9 && gGameState.unk1D < 2) {
         r = TRUE;
     }
     return r;

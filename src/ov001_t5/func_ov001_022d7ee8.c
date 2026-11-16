@@ -18,8 +18,8 @@ typedef struct {
 } UnkCfg_022d7ee8;
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_02040ef0(void *obj, void *res, s32 idx);
-void func_02040e80(void *obj);
+void KeyframeAnim_Init(void *obj, void *res, s32 idx);
+void KeyframeAnim_PlayReverse(void *obj);
 
 #pragma thumb on
 void func_ov001_022d7ee8(UnkStruct_022d7ee8 *p, s32 id, s32 a, s32 b, s32 c, s32 d, UnkCfg_022d7ee8 *cfg) {
@@ -81,19 +81,19 @@ void func_ov001_022d7ee8(UnkStruct_022d7ee8 *p, s32 id, s32 a, s32 b, s32 c, s32
     }
     e = &p->e[5];
     e->id = id;
-    func_02040ef0(e->obj, cfg->res, 6);
-    func_02040e80(e->obj);
+    KeyframeAnim_Init(e->obj, cfg->res, 6);
+    KeyframeAnim_PlayReverse(e->obj);
     e = &p->e[4];
     e->id = 0;
-    func_02040ef0(e->obj, cfg->res, 0xb);
-    func_02040e80(e->obj);
+    KeyframeAnim_Init(e->obj, cfg->res, 0xb);
+    KeyframeAnim_PlayReverse(e->obj);
     i = 0;
     e = p->e;
     off = (4 - n) / 2;
     for (; i < 4; e++, i++) {
         if (e->id < 0x13) {
-            func_02040ef0(e->obj, cfg->res, i + off + 7);
-            func_02040e80(e->obj);
+            KeyframeAnim_Init(e->obj, cfg->res, i + off + 7);
+            KeyframeAnim_PlayReverse(e->obj);
         }
     }
 }

@@ -5,10 +5,10 @@ typedef struct {
     u8 pad4[0x64 - 4];
 } UnkPlayer_02338728;
 
-extern UnkPlayer_02338728 data_ov000_0236aad8[];
+extern UnkPlayer_02338728 gCamera[];
 
 void func_ov000_02338728(void) {
-    u32 f = data_ov000_0236aad8[2].flags;
+    u32 f = gCamera[2].flags;
 
     if (!(f & 0x200))
         return;
@@ -16,5 +16,5 @@ void func_ov000_02338728(void) {
         *(vu16 *)0x4000304 |= 0x8000;
     else
         *(vu16 *)0x4000304 &= ~0x8000;
-    data_ov000_0236aad8[2].flags &= ~0x200;
+    gCamera[2].flags &= ~0x200;
 }

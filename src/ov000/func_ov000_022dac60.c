@@ -5,12 +5,12 @@ typedef struct UnkStruct_022dac60 {
     void *unk214;
 } UnkStruct_022dac60;
 
-extern UnkStruct_022dac60 *data_ov000_02369b14;
+extern UnkStruct_022dac60 *gBoss3;
 
-void func_ov000_022d9e1c(UnkStruct_022dac60 *s);
-void func_ov000_022d8bf8(void *p);
+void Boss3_Action_Unk_ov000_022d9e1c(UnkStruct_022dac60 *s);
+void Boss3PartCC_Action_Unk_ov000_022d8bf8(void *p);
 
 void func_ov000_022dac60(void) {
-    func_ov000_022d9e1c(data_ov000_02369b14);
-    func_ov000_022d8bf8(data_ov000_02369b14->unk214);
+    Boss3_Action_Unk_ov000_022d9e1c(gBoss3);
+    Boss3PartCC_Action_Unk_ov000_022d8bf8(gBoss3->unk214);
 }

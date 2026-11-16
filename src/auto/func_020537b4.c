@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u8 gNaviMsgTask[];
-extern u8 data_022c4560[];
+extern u8 gGameState[];
 extern u8 gSaveData[];
 extern u8 data_0207b9d4[];
 s32 func_02052c90();
@@ -15,7 +15,7 @@ void func_020537b4(s32 p0) {
     s32 t1 = *(u32 *)((u8 *)t0 + 0x10);
     s32 v2;
     if (*(u32 *)*(u32 *)((u8 *)t0 + 0x10) == 0) {
-        s32 t3 = *(u32 *)data_022c4560;
+        s32 t3 = *(u32 *)gGameState;
         if (t3 == 0) {
             if ((u32)*(u16 *)((u8 *)gSaveData + 0xc) < (u32)3) {
                 return;

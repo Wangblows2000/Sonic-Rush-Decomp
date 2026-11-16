@@ -15,7 +15,7 @@ typedef struct {
     u16 unkC6;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 void func_ov000_0231ba30(void);
 void func_ov000_0231b834(UnkStruct_0231ba3c *w);
@@ -27,9 +27,9 @@ UnkStruct_0231ba3c *func_ov000_0231ba3c(UnkStruct_ObjParam *p, s32 b, s32 c) {
     vu16 zero;
 
     if (p->unk4 & 4) {
-        data_ov000_0236aad8.unk62 = data_ov000_0236aad8.unkC6 = (u8)p->unk6 * 10000 + (u8)p->unk7 * 100 + p->unk8;
-        data_ov000_0236aad8.unk0 |= 0x1000000;
-        data_ov000_0236aad8.unk64 |= 0x1000000;
+        gCamera.unk62 = gCamera.unkC6 = (u8)p->unk6 * 10000 + (u8)p->unk7 * 100 + p->unk8;
+        gCamera.unk0 |= 0x1000000;
+        gCamera.unk64 |= 0x1000000;
         p->unk0 = 0xff;
         return NULL;
     }

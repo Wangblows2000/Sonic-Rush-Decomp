@@ -58,8 +58,8 @@ typedef struct {
 extern UnkStruct_022e1684_Task *gTaskCurrent;
 extern u32 gObjManagerFlags;
 extern s16 data_0206e470[];
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
-extern UnkStruct_022e1684 *data_ov000_02369b4c;
+extern UnkStruct_02369ac0 gBossStatus;
+extern UnkStruct_022e1684 *gBoss6;
 extern void *data_ov000_02369b50[];
 extern u8 data_ov000_023657e0[], data_ov000_023636f4[];
 
@@ -135,7 +135,7 @@ void Boss6_Draw(void) {
     }
     Model_Animate(sub);
     Model_Draw(sub);
-    switch (data_ov000_02369ac0.unk4) {
+    switch (gBossStatus.unk4) {
     case 0x1f:
     case 0x21:
         t1 = 0x1b;
@@ -180,6 +180,6 @@ void Boss6_Draw(void) {
     }
     if (w->unk1114 == 0)
         return;
-    func_ov000_022c5d4c(data_ov000_02369b50[6], data_ov000_023657e0, data_ov000_02369b4c->unk110C, data_ov000_023636f4, 1);
+    func_ov000_022c5d4c(data_ov000_02369b50[6], data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
     w->unk1114 = 0;
 }

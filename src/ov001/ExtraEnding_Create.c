@@ -7,7 +7,7 @@ void ExtraEnding_Main(void);
 void ExtraEnding_Destructor(void);
 void func_ov001_022c6110(void);
 void ExtraEnding_SetState(void *p, void (*f)(void));
-void func_ov001_022c634c(void *p);
+void ExtraEnding_InitDisplay(void *p);
 void ExtraEnding_LoadSound(void *p);
 void func_ov001_022c61c4(void *p);
 
@@ -18,7 +18,7 @@ void ExtraEnding_Create(void) {
     w = Task_Create(ExtraEnding_Main, ExtraEnding_Destructor, 0, 0x5000, 0x1173, 0xa0)->work;
     MI_CpuFill8(w, 0, 0xa0);
     ExtraEnding_SetState(w, func_ov001_022c6110);
-    func_ov001_022c634c(w);
+    ExtraEnding_InitDisplay(w);
     ExtraEnding_LoadSound(w);
     func_ov001_022c61c4(w);
 }

@@ -6,7 +6,7 @@ typedef struct {
     u8 pad3B[0x64 - 0x3b];
 } UnkPlayer_0233c37c;
 
-extern UnkPlayer_0233c37c data_ov000_0236aad8[];
+extern UnkPlayer_0233c37c gCamera[];
 extern void *gPlayers[];
 
 u8 func_ov000_0233c37c(void *obj) {
@@ -16,8 +16,8 @@ u8 func_ov000_0233c37c(void *obj) {
 
     if (obj == NULL)
         return 0;
-    a = data_ov000_0236aad8[0].unk3A;
-    b = data_ov000_0236aad8[1].unk3A;
+    a = gCamera[0].unk3A;
+    b = gCamera[1].unk3A;
     for (i = 0; i < 8; i++) {
         if (gPlayers[i] == obj) {
             r = 0;

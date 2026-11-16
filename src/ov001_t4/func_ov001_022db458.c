@@ -43,9 +43,9 @@ extern UnkTask_022db458 *gTaskCurrent;
 extern UnkInfo_022db458 gGameLanguage;
 extern u16 data_02072cbc[];
 
-void func_02040d14(UnkAnim_022db458 *a);
-BOOL func_02040cf4(UnkAnim_022db458 *a);
-void func_02040ec0(UnkAnim_022db458 *a, s32 id);
+void KeyframeAnim_Update(UnkAnim_022db458 *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022db458 *a);
+void KeyframeAnim_SetAnim(UnkAnim_022db458 *a, s32 id);
 void func_ov001_022d9e50(UnkWork_022db458 *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022db458 *w, s32 x, s32 y);
 void func_ov001_022d9b3c(UnkWork_022db458 *w, s32 i, s32 x, s32 y);
@@ -64,10 +64,10 @@ void func_ov001_022db458(void) {
     BOOL done;
     UnkAnim_022db458 *a;
 
-    func_02040d14(&w->anims[0]);
-    func_02040d14(&w->anims[1]);
+    KeyframeAnim_Update(&w->anims[0]);
+    KeyframeAnim_Update(&w->anims[1]);
     for (i = 0; i < 8; i++) {
-        func_02040d14(&w->anims[i + 6]);
+        KeyframeAnim_Update(&w->anims[i + 6]);
     }
     a = &w->anims[0];
     func_ov001_022d9e50(w, a->x, a->y);
@@ -78,10 +78,10 @@ void func_ov001_022db458(void) {
         func_ov001_022d9b3c(w, i, a->x, a->y);
     }
     done = TRUE;
-    if (!func_02040cf4(&w->anims[0])) done = FALSE;
-    if (!func_02040cf4(&w->anims[1])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[0])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[1])) done = FALSE;
     for (i = 0; i < 8 && done; i++) {
-        if (!func_02040cf4(&w->anims[i + 6])) {
+        if (!KeyframeAnim_IsFinished(&w->anims[i + 6])) {
             done = FALSE;
         }
     }
@@ -95,12 +95,12 @@ void func_ov001_022db458(void) {
         func_ov001_022da2cc(w, 1);
         func_ov001_022da288(w, 0);
         func_ov001_022da288(w, 1);
-        func_02040ec0(&w->anims[0], 0);
-        func_02040ec0(&w->anims[1], 1);
-        func_02040ec0(&w->anims[2], 2);
-        func_02040ec0(&w->anims[3], 3);
-        func_02040ec0(&w->anims[4], 4);
-        func_02040ec0(&w->anims[5], 5);
+        KeyframeAnim_SetAnim(&w->anims[0], 0);
+        KeyframeAnim_SetAnim(&w->anims[1], 1);
+        KeyframeAnim_SetAnim(&w->anims[2], 2);
+        KeyframeAnim_SetAnim(&w->anims[3], 3);
+        KeyframeAnim_SetAnim(&w->anims[4], 4);
+        KeyframeAnim_SetAnim(&w->anims[5], 5);
         w->unk20 = 0;
         w->unk48 = 0;
         MIi_CpuCopy32(&w->entries[w->unk10], w->cur, 0x1c);

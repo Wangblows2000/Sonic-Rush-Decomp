@@ -101,7 +101,7 @@ extern UnkStruct_022ca8cc_5 gDisplayMain;
 
 void func_ov000_022c5c80(u32 id);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void Boss1Hammer_State_Unk_ov000_022ca890(UnkStruct_022ca8cc *s);
+void Boss1_State_Unk_ov000_022ca890(UnkStruct_022ca8cc *s);
 
 void func_ov000_022ca8cc(UnkStruct_022ca8cc *s) {
     UnkStruct_022ca8cc_c *c;
@@ -124,5 +124,5 @@ void func_ov000_022ca8cc(UnkStruct_022ca8cc *s) {
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
     s->unk220 = 0;
-    s->func = Boss1Hammer_State_Unk_ov000_022ca890;
+    s->func = Boss1_State_Unk_ov000_022ca890;
 }

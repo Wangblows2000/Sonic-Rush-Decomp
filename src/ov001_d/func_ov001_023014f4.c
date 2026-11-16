@@ -25,7 +25,7 @@ typedef struct UnkStruct_023014f4_g {
     UnkStruct_023014f4_w *all[0x2e];
 } UnkStruct_023014f4_g;
 
-extern UnkStruct_023014f4_g *data_ov001_0231f530;
+extern UnkStruct_023014f4_g *gExtraBossPlayerManager;
 
 UnkStruct_023014f4_task *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
 void func_ov001_02300ac8(void);
@@ -47,19 +47,19 @@ UnkStruct_023014f4_w *func_ov001_023014f4(s32 kind, u16 id) {
     switch (kind) {
     case 0:
         n = 1;
-        slot = data_ov001_0231f530->a4;
+        slot = gExtraBossPlayerManager->a4;
         break;
     case 1:
         n = 0x1e;
-        slot = data_ov001_0231f530->a44;
+        slot = gExtraBossPlayerManager->a44;
         break;
     case 2:
         n = 5;
-        slot = data_ov001_0231f530->a8;
+        slot = gExtraBossPlayerManager->a8;
         break;
     case 3:
         n = 10;
-        slot = data_ov001_0231f530->a1C;
+        slot = gExtraBossPlayerManager->a1C;
         break;
     }
     for (i = 0; i < n; i++, slot++) {
@@ -73,10 +73,10 @@ UnkStruct_023014f4_w *func_ov001_023014f4(s32 kind, u16 id) {
     *slot = w;
     w->slot = i;
     for (i = 0; i < 0x2e; i++) {
-        if (data_ov001_0231f530->all[i] == NULL)
+        if (gExtraBossPlayerManager->all[i] == NULL)
             break;
     }
-    data_ov001_0231f530->all[i] = w;
+    gExtraBossPlayerManager->all[i] = w;
     w->task = t;
     w->idx = i;
     w->kind = kind;

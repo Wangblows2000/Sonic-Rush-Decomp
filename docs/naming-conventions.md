@@ -86,6 +86,11 @@ Rules:
 - **Main-loop and subsystem singletons**: use `Subsystem_Init`, `Subsystem_Update` and
   `Subsystem_Flush` for functions that main() calls once or every frame.
 
+> **Case rule.** Never give two symbols names that differ only in letter case
+> (e.g. `MIC_Init` vs `Mic_Init`). mwldarm runs under wibo with Windows file
+> semantics, so their object files collide and the link silently shifts.
+> `tools/analysis/rename.py` rejects such names.
+
 ### 1.3 Partially known functions: `Subsystem_Unk_<addr>`
 
 When the subsystem is proven but the role is not, keep the address so the name stays

@@ -14,7 +14,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-void func_ov000_023557c8(UnkStruct_StageObj *p, s32 x, s32 y, s16 vx, s16 vy);
+void Player_Action_DashRing(UnkStruct_StageObj *p, s32 x, s32 y, s16 vx, s16 vy);
 void func_ov000_023497a4(UnkStruct_StageObj *p);
 void Player_SetSourceMapObject(UnkStruct_StageObj *p, UnkStruct_02306d88 *w);
 
@@ -28,10 +28,10 @@ void DashC_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
     if (b->unk18 == NULL)
         return;
     if (w->unk2A0 & 1) {
-        func_ov000_023557c8(b->unk18, w->base.unk10, w->base.unk14, vx, vy);
+        Player_Action_DashRing(b->unk18, w->base.unk10, w->base.unk14, vx, vy);
         func_ov000_023497a4(b->unk18);
     } else {
-        func_ov000_023557c8(b->unk18, w->base.unk10, w->base.unk14, vx, vy);
+        Player_Action_DashRing(b->unk18, w->base.unk10, w->base.unk14, vx, vy);
     }
     Player_SetSourceMapObject(b->unk18, w);
 }

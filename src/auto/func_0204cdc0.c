@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 extern u8 gDisplayTable[];
-extern u8 data_022c4560[];
-extern u8 data_ov000_0236aad8[];
+extern u8 gGameState[];
+extern u8 gCamera[];
 s32 func_ov000_0233e658();
 
 void func_0204cdc0(void) {
@@ -15,7 +15,7 @@ void func_0204cdc0(void) {
     *(u16 *)((u8 *)t0 + 0x20) = (*(u16 *)((u8 *)t0 + 0x20) | 0x400);
     s32 t1 = (*(u16 *)((u8 *)t0 + 0x20) | 0x800);
     *(u16 *)((u8 *)t0 + 0x20) = t1;
-    s32 t2 = *(u32 *)data_022c4560;
+    s32 t2 = *(u32 *)gGameState;
     s32 v3 = t2;
     if (t2 != 0) {
         s32 v4 = v3;
@@ -28,7 +28,7 @@ void func_0204cdc0(void) {
         *(u16 *)((u8 *)t0 + 0x22) = 0xe0c;
         v3 = 0xe0c;
     }
-    s32 t5 = (*(u32 *)((u8 *)data_ov000_0236aad8 + 0xc8) & 0x100000);
+    s32 t5 = (*(u32 *)((u8 *)gCamera + 0xc8) & 0x100000);
     if (t5 == 0) {
         return;
     }

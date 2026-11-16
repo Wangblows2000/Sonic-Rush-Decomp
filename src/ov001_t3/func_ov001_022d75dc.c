@@ -42,8 +42,8 @@ void Task_DestroyRange(s32 a, s32 b);
 UnkTask_022d75dc *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022d83fc(void);
-void func_02040ef0(UnkAnim_022d75dc *a, s32 b, s32 c);
-void func_02040e80(UnkAnim_022d75dc *a);
+void KeyframeAnim_Init(UnkAnim_022d75dc *a, s32 b, s32 c);
+void KeyframeAnim_PlayReverse(UnkAnim_022d75dc *a);
 
 #pragma thumb on
 void func_ov001_022d75dc(UnkStruct_022d75dc *p, s32 a, s32 b) {
@@ -57,8 +57,8 @@ void func_ov001_022d75dc(UnkStruct_022d75dc *p, s32 a, s32 b) {
     MIi_CpuClear16(zero, w, sizeof(UnkWork_022d75dc));
     w->parent = p;
     for (i = 0; i < 6; i++) {
-        func_02040ef0(&w->anims[i], p->unk824, i);
-        func_02040e80(&w->anims[i]);
+        KeyframeAnim_Init(&w->anims[i], p->unk824, i);
+        KeyframeAnim_PlayReverse(&w->anims[i]);
     }
     if (a >= 7) a = 0;
     if (b >= 7) b = 0;

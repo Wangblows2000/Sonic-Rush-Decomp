@@ -13,7 +13,7 @@ typedef struct {
     VecFx32 ofs;
 } UnkStruct_0231f6e0;
 
-extern UnkStruct_0231f6e0 *data_ov000_02369b84;
+extern UnkStruct_0231f6e0 *gBossF;
 extern VecFx32 data_ov000_0236a480;
 
 void VEC_Subtract(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
@@ -22,7 +22,7 @@ s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 
 void func_ov000_0231f6e0(void) {
-    UnkStruct_0231f6e0 *w = data_ov000_02369b84;
+    UnkStruct_0231f6e0 *w = gBossF;
 
     if (w->unk20C & 0x10) {
         if (w->unk20C & 0x20)

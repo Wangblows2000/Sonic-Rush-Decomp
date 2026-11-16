@@ -7,7 +7,7 @@ extern u8 data_022c1940[];
 extern u8 data_022c1994[];
 s32 WH_StateInSetChildWEPKey();
 s32 WH_StateInStartChild();
-extern u8 data_022c197c[];
+extern u8 sTraceFunc[];
 extern u8 data_02078914[];
 
 void WH_StateOutEndScan(u8 *p0) {
@@ -33,7 +33,7 @@ void WH_StateOutEndScan(u8 *p0) {
     if (t3 != 0) {
         return;
     }
-    s32 t4 = *(u32 *)data_022c197c;
+    s32 t4 = *(u32 *)sTraceFunc;
     if (t4 != 0) {
         ((s32 (*)())t4)(data_02078914, t4);
     }

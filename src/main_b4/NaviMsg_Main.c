@@ -43,7 +43,7 @@ void func_02052638(void *src, u32 a, u16 *dst, s32 b, u16 c, u16 d, s32 e);
 void func_02052568(u32 a, UnkBg_02053090 *bg, s32 b);
 void func_02052d18(UnkWork_02053090 *w);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
-void func_020366f4(void *a, u32 b, s32 c);
+void Sound_PlayVoice(void *a, u32 b, s32 c);
 
 void NaviMsg_Main(void) {
     UnkWork_02053090 *w = gNaviMsgTask->work;
@@ -85,6 +85,6 @@ void NaviMsg_Main(void) {
         return;
     if (w->unk114 != NULL)
         NNS_SndPlayerStopSeq(w->unk114, 0);
-    func_020366f4(w->unk114, w->unk110, w->unk108);
+    Sound_PlayVoice(w->unk114, w->unk110, w->unk108);
     w->unk108 = -1;
 }

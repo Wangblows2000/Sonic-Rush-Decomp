@@ -35,7 +35,7 @@ typedef struct UnkStruct_02353408 {
 } UnkStruct_02353408;
 
 void Player_State_Wheel2D(void);
-void func_ov000_0234cb70(UnkStruct_02353408 *w);
+void Player_InitState(UnkStruct_02353408 *w);
 void Player_SetAnimation(UnkStruct_02353408 *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
@@ -43,7 +43,7 @@ void Player_Action_Wheel2D(UnkStruct_02353408 *w, UnkStruct_02353408 *o) {
     if (w->unk68 == Player_State_Wheel2D) {
         return;
     }
-    func_ov000_0234cb70(w);
+    Player_InitState(w);
     w->unk3E8 = o;
     Player_SetAnimation(w, 0x28);
     w->unk5C |= 4;

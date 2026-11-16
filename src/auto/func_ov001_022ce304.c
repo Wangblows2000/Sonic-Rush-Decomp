@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-s32 func_02049070();
+s32 Vram_DisableAllBanks();
 extern u8 gDisplayMain[];
 extern u8 gDisplaySub[];
 
@@ -13,7 +13,7 @@ void func_ov001_022ce304(void) {
     *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & -7937);
     s32 t0 = (*(volatile u32 *)0x4001000 & -7937);
     *(volatile u32 *)0x4001000 = t0;
-    func_02049070(-7937, 0x4001000, t0);
+    Vram_DisableAllBanks(-7937, 0x4001000, t0);
     *(u16 *)gDisplayMain = 0;
     *(u16 *)((u8 *)gDisplayMain + 0x2) = 0;
     *(u16 *)((u8 *)gDisplayMain + 0x4) = 0;

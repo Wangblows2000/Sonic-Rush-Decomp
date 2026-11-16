@@ -26,7 +26,7 @@ typedef struct {
     u16 unkD5E;
 } UnkStruct_02369b4c;
 
-extern UnkStruct_02369b4c *data_ov000_02369b4c;
+extern UnkStruct_02369b4c *gBoss6;
 extern void *data_ov000_02369b50[];
 extern void *gZoneActArchive;
 extern u8 data_ov000_02365964[];
@@ -70,7 +70,7 @@ UnkStruct_022e6500 *Boss6PartD4_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll0.unk1C = Boss6PartD4_OnHit;
     w->base.coll1 = w->base.coll0;
     w->base.coll2.unkA |= 0x1000;
-    if (data_ov000_02369b4c->unkD5E != 0) {
+    if (gBoss6->unkD5E != 0) {
         w->unk348 = -0x8000;
         w->unk34C = -0x1000;
         w->unk350 = -0xf000;

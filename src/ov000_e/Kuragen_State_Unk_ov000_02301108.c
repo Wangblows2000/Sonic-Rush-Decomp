@@ -6,7 +6,7 @@ typedef struct {
     u32 unk238;
 } UnkStruct_02301108_P;
 
-void func_ov000_023010a4(UnkStruct_StageObj *w);
+void Kuragen_Action_Unk_ov000_023010a4(UnkStruct_StageObj *w);
 
 void Kuragen_State_Unk_ov000_02301108(UnkStruct_StageObj *w) {
     UnkStruct_02301108_P *p = w->unk88;
@@ -15,7 +15,7 @@ void Kuragen_State_Unk_ov000_02301108(UnkStruct_StageObj *w) {
     if (w->unkC == 0) {
         if (p != NULL)
             p->unk238 |= 0x100;
-        func_ov000_023010a4(w);
+        Kuragen_Action_Unk_ov000_023010a4(w);
         return;
     }
     if (p == NULL)

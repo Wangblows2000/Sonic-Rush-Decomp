@@ -4,7 +4,7 @@
 #pragma thumb on
 
 s32 Records_Create();
-s32 func_ov001_022ec49c();
+s32 Records_InitDisplay();
 s32 Records_LoadAssets();
 s32 func_ov001_022edb3c();
 s32 func_ov001_022eda54();
@@ -19,7 +19,7 @@ s32 func_02052168();
 
 void Records_Start(void) {
     s32 t0 = Records_Create();
-    func_ov001_022ec49c();
+    Records_InitDisplay();
     Records_LoadAssets(t0);
     func_ov001_022edb3c(t0);
     func_ov001_022eda54(t0);

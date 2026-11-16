@@ -8,7 +8,7 @@ typedef struct {
 
 typedef void (*UnkFunc_02342068)(void *p);
 
-extern UnkCfg_02342068 data_022c4560;
+extern UnkCfg_02342068 gGameState;
 extern UnkFunc_02342068 data_ov000_02368a9c[][3];
 extern void *data_ov000_0236ac1c;
 extern void *gMainHeap;
@@ -38,12 +38,12 @@ void func_ov000_02342068(void) {
     void *p;
     vu16 zero;
 
-    if (data_ov000_02368a9c[data_022c4560.unk1C][data_022c4560.unk1D] != NULL) {
+    if (data_ov000_02368a9c[gGameState.unk1C][gGameState.unk1D] != NULL) {
         p = UnkDbgAlloc(0xc54, 0x20);
         zero = 0;
         data_ov000_0236ac1c = p;
         MIi_CpuClear16(zero, p, 0xc54);
-        data_ov000_02368a9c[data_022c4560.unk1C][data_022c4560.unk1D](data_ov000_0236ac1c);
+        data_ov000_02368a9c[gGameState.unk1C][gGameState.unk1D](data_ov000_0236ac1c);
     }
     func_ov000_02341358();
 }

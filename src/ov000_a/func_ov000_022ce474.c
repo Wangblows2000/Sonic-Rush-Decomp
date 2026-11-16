@@ -43,8 +43,8 @@ typedef struct UnkStruct_022ce474_2 {
     s32 unk24;
 } UnkStruct_022ce474_2;
 
-extern UnkStruct_022ce474_g *data_ov000_02369ae0;
-extern UnkStruct_022ce474_2 data_ov000_02369ae8;
+extern UnkStruct_022ce474_g *gBoss2;
+extern UnkStruct_022ce474_2 gBossStage2Models;
 extern u16 data_ov000_02362ddc[];
 extern u32 data_ov000_0236510c[];
 extern u16 data_ov000_02362dcc[];
@@ -87,7 +87,7 @@ void func_ov000_022ce474(UnkStruct_022ce474 *s) {
         }
     }
     if (s->unk144C != 0) {
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk24, data_ov000_0236510c, data_ov000_02369ae0->unk1444, data_ov000_02362dcc, 1);
+        func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
         s->unk144C = 0;
     }
 }

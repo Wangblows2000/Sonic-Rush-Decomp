@@ -72,11 +72,11 @@ extern UnkStruct_022cc8cc_6 data_ov000_02369ad0;
 UnkTask_022cc8cc *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
 void StageObj_Main(void);
 void Boss1Hammer_Destructor(void);
-void Boss1Hammer_State_Unk_ov000_022c697c(void);
+void Boss1Hammer_State_Idle(void);
 void Boss1Hammer_Draw(void);
 void Boss1Hammer_Collide(void);
-void func_ov000_022c6bc0(void);
-void func_ov000_022c6980(void);
+void Boss1Hammer_OnHit_Damage(void);
+void Boss1Hammer_OnHit_PushPlayer(void);
 void func_ov000_022c72f8(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_02021310(void *ctx, void *a, void *b);
@@ -101,7 +101,7 @@ UnkStruct_022cc8cc *Boss1Hammer_Create(s32 a, s32 x, s32 y) {
     UnkStruct_022cc8cc_a *p;
     s = Task_Create(StageObj_Main, Boss1Hammer_Destructor, 0, 0x502, 2, 0x444)->unk10;
     MI_CpuFill16(s, 0, 0x444);
-    s->unk68 = Boss1Hammer_State_Unk_ov000_022c697c;
+    s->unk68 = Boss1Hammer_State_Idle;
     func_02021310(ctx, data_ov000_02365058, gZoneActArchive);
     if (func_ov000_022cc6d4()) {
         s->unk304 = func_02021264(ctx, 8);
@@ -121,7 +121,7 @@ UnkStruct_022cc8cc *Boss1Hammer_Create(s32 a, s32 x, s32 y) {
     *h = s->unk134;
     ObjRect_SetBox3D(h, -0x14, -0x30, 0x14, -0x20, -0x7d00, 0x7d00);
     h->unk18 = s;
-    h->unk1C = func_ov000_022c6bc0;
+    h->unk1C = Boss1Hammer_OnHit_Damage;
     h->unkA &= ~4;
     h = &s->unk238;
     *h = s->unk160;
@@ -140,7 +140,7 @@ UnkStruct_022cc8cc *Boss1Hammer_Create(s32 a, s32 x, s32 y) {
     h->unkA |= 0xc0;
     h->unk28 = 0x12;
     h->unk18 = s;
-    h->unk1C = func_ov000_022c6980;
+    h->unk1C = Boss1Hammer_OnHit_PushPlayer;
     h->unkA &= ~4;
     s->unk10 = 0;
     s->unk14 = 0;

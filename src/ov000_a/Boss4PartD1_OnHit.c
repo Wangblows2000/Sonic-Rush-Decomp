@@ -33,16 +33,16 @@ typedef struct UnkStruct_022dc3f0_w {
     s32 unkBDC;
 } UnkStruct_022dc3f0_w;
 
-extern UnkStruct_022dc3f0_w *data_ov000_02369b2c;
+extern UnkStruct_022dc3f0_w *gBoss4;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void BossEffect_CreateShootBomb(s32 a, s32 b, s32 c, s32 d);
-void func_ov000_0234a9d4(UnkStruct_022dc3f0_p *p, s32 a);
+void Player_Action_AttackBounceVel(UnkStruct_022dc3f0_p *p, s32 a);
 void func_ov000_022de344(void);
 void Player_OnHurt(UnkStruct_022dc3f0_h *a, UnkStruct_022dc3f0_h *b);
 
 void Boss4PartD1_OnHit(UnkStruct_022dc3f0_h *a, UnkStruct_022dc3f0_h *b) {
-    UnkStruct_022dc3f0_w *w = data_ov000_02369b2c;
+    UnkStruct_022dc3f0_w *w = gBoss4;
     UnkStruct_022dc3f0_o *o = a->unk18;
     UnkStruct_022dc3f0_p *p = b->unk18;
     if (p->unk0 != 1)
@@ -53,7 +53,7 @@ void Boss4PartD1_OnHit(UnkStruct_022dc3f0_h *a, UnkStruct_022dc3f0_h *b) {
             w->unkBDC = 0;
         Sound_PlaySeqArc(0, 0, 0x33);
         BossEffect_CreateShootBomb(1, o->unk254 >> 4, -o->unk258 >> 4, o->unk25C >> 4);
-        func_ov000_0234a9d4(p, -0x900);
+        Player_Action_AttackBounceVel(p, -0x900);
         func_ov000_022de344();
         o->unk54 |= 8;
         o->unk13E |= 0x1000;

@@ -83,7 +83,7 @@ extern u16 data_ov001_02316b4c[];
 extern u16 data_ov001_02316a94[];
 extern u16 data_ov001_02316a88[];
 
-void func_ov001_022f95ec(void);
+void ExtraAct_InitDisplay(void);
 void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
 void G3i_LookAt_(void *a, void *b, void *c, s32 d, void *e);
 void func_02022270(u32 index, u32 value);
@@ -140,7 +140,7 @@ void ExtraAct_Start(void) {
     u32 r;
     u16 idx;
 
-    func_ov001_022f95ec();
+    ExtraAct_InitDisplay();
     {
     UnkStruct_022f9eb4_v a = data_ov001_0231d544;
     UnkStruct_022f9eb4_v b = {0, 0, 0};

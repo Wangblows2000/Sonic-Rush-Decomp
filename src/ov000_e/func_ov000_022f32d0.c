@@ -13,27 +13,27 @@ typedef struct {
     u16 unk434;
 } UnkStruct_022f32d0;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void func_ov000_022f4954(UnkStruct_022f32d0 *s);
 void func_ov000_022f324c(void);
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;
     if (b)
         return 1;
-    return data_022c4560.unk14;
+    return gGameState.unk14;
 }
 
 static inline s32 GetIdxS(void) {
-    switch (data_022c4560.unk10) {
+    switch (gGameState.unk10) {
     case 2:
     case 3:
         return 1;
     }
-    return data_022c4560.unk14;
+    return gGameState.unk14;
 }
 
 void func_ov000_022f32d0(UnkStruct_022f32d0 *s) {

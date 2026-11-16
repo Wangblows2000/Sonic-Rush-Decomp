@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern void func_02066a9c(void);
+extern void MapCollision_ProbeDistance(void);
 
 asm void func_ov000_02302164(void)
 {
@@ -26,7 +26,7 @@ asm void func_ov000_02302164(void)
     mov r3, #3
     mov r8, r9
     str r9, [sp, #4]
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     ble _88
     mov r12, r9
@@ -36,7 +36,7 @@ asm void func_ov000_02302164(void)
     mov r2, #1
     mov r3, #3
     str r12, [sp, #4]
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     bgt _90
 _88:
@@ -50,7 +50,7 @@ _90:
     mov r1, r6
     mov r3, #3
     str r2, [sp, #4]
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     ble _e0
     mov r12, #0
@@ -60,7 +60,7 @@ _90:
     mov r2, #1
     mov r3, #3
     str r12, [sp, #4]
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     bgt _e8
 _e0:
@@ -74,7 +74,7 @@ _e8:
     mov r1, r6
     mov r3, #3
     str r2, [sp, #4]
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     ble _138
     mov r7, #0
@@ -84,7 +84,7 @@ _e8:
     mov r2, #1
     mov r3, #3
     str r7, [sp, #4]
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     bgt _140
 _138:
@@ -97,7 +97,7 @@ _140:
     mov r1, r6
     mov r3, #3
     str r2, [sp, #4]
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     ble _18c
     mov r5, #0
@@ -107,7 +107,7 @@ _140:
     mov r2, #1
     mov r3, #3
     str r5, [sp, #4]
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     bgt _194
 _18c:

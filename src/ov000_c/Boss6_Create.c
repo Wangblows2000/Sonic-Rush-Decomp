@@ -59,11 +59,11 @@ typedef struct {
     s32 unk0;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022e6c0c *data_ov000_02369b4c;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022e6c0c *gBoss6;
+extern UnkStruct_02369ac0 gBossStatus;
 extern void *data_ov000_02369b50[];
 extern void *gZoneActArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02365968[];
 extern s16 data_ov000_02363864[4][4];
 extern u8 data_ov000_0236596c[], data_ov000_02365980[], data_ov000_02365994[], data_ov000_023659b0[];
@@ -75,9 +75,9 @@ extern u8 data_ov000_023657ec[], data_ov000_023636f0[], data_ov000_023657e4[], d
 
 void Boss6_Destructor(void);
 void Boss6_Draw(void);
-void Boss6_State_Unk_ov000_022e5ca4(void);
+void Boss6_State_WaitForStart(void);
 void func_ov000_022e62fc(void);
-u16 func_ov000_022c5f28(void);
+u16 Boss_GetStartHealth(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void NNS_G3dResDefaultSetup(void *p);
@@ -106,17 +106,17 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w = Task_Create(StageObj_Main, Boss6_Destructor, 0, 0x500, 2, sizeof(UnkStruct_022e6c0c))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022e6c0c));
-    data_ov000_02369b4c = w;
+    gBoss6 = w;
     w->unk20C |= 1;
     w->unkD4E = Rand() & 3;
     zero2 = 0;
-    MIi_CpuClear16(zero2, &data_ov000_02369ac0, sizeof(UnkStruct_02369ac0));
-    data_ov000_02369ac0.unk4 = 0x1c;
-    data_ov000_02369ac0.unk8 = func_ov000_022c5f28();
-    data_ov000_02369ac0.unkA = func_ov000_022c5f28();
+    MIi_CpuClear16(zero2, &gBossStatus, sizeof(UnkStruct_02369ac0));
+    gBossStatus.unk4 = 0x1c;
+    gBossStatus.unk8 = Boss_GetStartHealth();
+    gBossStatus.unkA = Boss_GetStartHealth();
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk70 = Boss6_Draw;
-    w->base.unk68 = Boss6_State_Unk_ov000_022e5ca4;
+    w->base.unk68 = Boss6_State_WaitForStart;
     w->base.unk5C |= 0x20;
     w->base.unk54 |= 0x12;
     w->base.unk58 |= 0xa300;
@@ -197,7 +197,7 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unkF48 = 0xffff;
     w->unkD54 = -0x17ff;
     w->unkD58 = 0x17ff;
-    idx = data_022c4560.unk0;
+    idx = gGameState.unk0;
     w->unk10F0 = &data_ov000_0236370c[idx];
     w->unk10F4 = data_ov000_02363884[idx];
     w->unk10F8 = data_ov000_023638a4[idx];
@@ -207,9 +207,9 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk1108 = &data_ov000_02363700[idx];
     w->unk110C = &data_ov000_02363704[idx];
     w->unk1110 = &data_ov000_023636fc[idx];
-    func_ov000_022c5d4c(data_ov000_02369b50[6], data_ov000_023658e4, data_ov000_02369b4c->unk10F4, data_ov000_0236377c, 8);
-    func_ov000_022c5d4c(data_ov000_02369b50[7], data_ov000_023657e8, data_ov000_02369b4c->unk10FC, data_ov000_023636e8, 1);
-    func_ov000_022c5d4c(data_ov000_02369b50[8], data_ov000_023657ec, data_ov000_02369b4c->unk1104, data_ov000_023636f0, 1);
-    func_ov000_022c5d4c(data_ov000_02369b50[9], data_ov000_023657e4, data_ov000_02369b4c->unk10F0, data_ov000_023636ec, 1);
+    func_ov000_022c5d4c(data_ov000_02369b50[6], data_ov000_023658e4, gBoss6->unk10F4, data_ov000_0236377c, 8);
+    func_ov000_022c5d4c(data_ov000_02369b50[7], data_ov000_023657e8, gBoss6->unk10FC, data_ov000_023636e8, 1);
+    func_ov000_022c5d4c(data_ov000_02369b50[8], data_ov000_023657ec, gBoss6->unk1104, data_ov000_023636f0, 1);
+    func_ov000_022c5d4c(data_ov000_02369b50[9], data_ov000_023657e4, gBoss6->unk10F0, data_ov000_023636ec, 1);
     return w;
 }

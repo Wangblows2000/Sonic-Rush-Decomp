@@ -16,14 +16,14 @@ typedef struct {
     s32 unkC;
 } UnkCam_02339264;
 
-extern UnkPlayer_02339264 data_ov000_0236aad8[];
+extern UnkPlayer_02339264 gCamera[];
 extern UnkCam_02339264 data_ov000_0236abec;
 
 #define CLAMP(v, lo, hi) ((v) < (lo) ? (lo) : ((v) > (hi) ? (hi) : (v)))
 
 void func_ov000_02339264(s32 unused, s32 idx) {
-    UnkPlayer_02339264 *p = &data_ov000_0236aad8[idx];
-    u32 flags = data_ov000_0236aad8[2].flags;
+    UnkPlayer_02339264 *p = &gCamera[idx];
+    u32 flags = gCamera[2].flags;
     UnkCam_02339264 *c = &data_ov000_0236abec;
 
     if (flags & 0x200)

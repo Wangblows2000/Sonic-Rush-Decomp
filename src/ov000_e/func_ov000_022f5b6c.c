@@ -13,7 +13,7 @@ typedef struct {
     u16 unk214;
 } UnkStruct_022f5b6c;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02363db0[];
 
 UnkStruct_StageObj *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
@@ -21,11 +21,11 @@ void BossFPartDE_State_Unk_ov000_022f58cc(void);
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;
     if (b)
         return 1;
-    return data_022c4560.unk14;
+    return gGameState.unk14;
 }
 
 void func_ov000_022f5b6c(UnkStruct_022f5b6c *w) {

@@ -22,12 +22,12 @@ typedef struct {
     void *unkC;
 } UnkStruct_0233894c;
 
-extern UnkPlayer_0233894c data_ov000_0236aad8[];
+extern UnkPlayer_0233894c gCamera[];
 extern UnkObj_0233894c *gPlayers[];
 void func_ov000_02338924(void);
 
 void func_ov000_0233894c(UnkStruct_0233894c *w) {
-    UnkPlayer_0233894c *p = data_ov000_0236aad8;
+    UnkPlayer_0233894c *p = gCamera;
     UnkObj_0233894c *o;
 
     if (p[2].flags & 0x40000) {
@@ -40,7 +40,7 @@ void func_ov000_0233894c(UnkStruct_0233894c *w) {
     if (!(o->unk420 & 0x40) || (o->unk328 != 0x21 && o->unk328 != 0x22)) {
         w->unk8 = 0;
         w->unkC = func_ov000_02338924;
-        data_ov000_0236aad8[2].flags |= 0x20000;
+        gCamera[2].flags |= 0x20000;
         return;
     }
     w->unk8 = -((p->unk20 << 10) >> 8);

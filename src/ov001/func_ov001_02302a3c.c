@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
-u8 *func_ov001_02300c94(void);
+u8 *ExtraBoss_GetPlayer(void);
 void func_ov001_02302348(void *p);
 void func_ov001_022fd138(void *p);
 void func_ov001_022ee594(void *p);
 
 void func_ov001_02302a3c(void) {
-    u8 *p = func_ov001_02300c94();
+    u8 *p = ExtraBoss_GetPlayer();
     u32 *a = *(u32 **)(p + 0x1dc);
     func_ov001_02302348(p);
     *(u32 *)(p + 0x14) &= 0xffe4efff;

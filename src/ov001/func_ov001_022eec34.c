@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
-void func_ov001_02300c94(void);
+void ExtraBoss_GetPlayer(void);
 void ExtraBoss_GetWork(void);
 
 void func_ov001_022eec34(u8 *p) {
     s32 x, v, d;
-    func_ov001_02300c94();
+    ExtraBoss_GetPlayer();
     ExtraBoss_GetWork();
     x = *(s32 *)(p + 0x18);
     d = 0x153000 - x;

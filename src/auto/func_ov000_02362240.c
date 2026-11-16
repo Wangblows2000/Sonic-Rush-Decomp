@@ -1,4 +1,4 @@
-/* paramclone of func_ov001_022d3d64 (src/ov001/func_ov001_022d3d64.c); immediates and relocations remapped. */
+/* paramclone of TryAgain_ReleaseAssets (src/ov001/TryAgain_ReleaseAssets.c); immediates and relocations remapped. */
 #include <nitro/types.h>
 
 extern void *gSystemHeap;

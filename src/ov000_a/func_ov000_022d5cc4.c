@@ -39,7 +39,7 @@ struct UnkStruct_022d5cc4 {
 };
 
 void func_ov000_022d5c80(UnkStruct_022d5cc4 *s);
-void func_ov000_022d5bf4(UnkStruct_022d5cc4 *s);
+void Boss3PartCD_State_Unk_ov000_022d5bf4(UnkStruct_022d5cc4 *s);
 
 void func_ov000_022d5cc4(UnkStruct_022d5cc4 *s) {
     s->unk13E |= 4;
@@ -48,5 +48,5 @@ void func_ov000_022d5cc4(UnkStruct_022d5cc4 *s) {
     if (s->unk20C & 4)
         s->func = func_ov000_022d5c80;
     else
-        s->func = func_ov000_022d5bf4;
+        s->func = Boss3PartCD_State_Unk_ov000_022d5bf4;
 }

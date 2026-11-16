@@ -10,14 +10,14 @@ typedef struct {
     u32 unk24;
 } UnkStruct_022c4590;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4590 data_022c4590;
 
 void GoalRing_CreatePart_ov000_0230a864(UnkStruct_StageObj *par, s16 dx, s16 dy, s16 vx, s16 vy);
 void BrightnessFade_Create(s32 a, s32 b);
-void func_0204d5f8(void (*f)(void));
+void StageShutdown_Create(void (*f)(void));
 void ResultsScreen_Create(void);
-void func_020480ec(void);
+void ClearDemo_Create(void);
 
 void GoalRing_State_Unk_ov000_0230b1c8(UnkStruct_StageObj *w) {
     w->unk8++;
@@ -30,12 +30,12 @@ void GoalRing_State_Unk_ov000_0230b1c8(UnkStruct_StageObj *w) {
     if (w->unkC == 8)
         BrightnessFade_Create(4, 0x200);
     if (w->unkC == 0) {
-        if (data_022c4560.unk10 == 1) {
+        if (gGameState.unk10 == 1) {
             data_022c4590.unk24 &= ~1;
             data_022c4590.unk24 &= ~2;
-            func_0204d5f8(ResultsScreen_Create);
+            StageShutdown_Create(ResultsScreen_Create);
         } else {
-            func_0204d5f8(func_020480ec);
+            StageShutdown_Create(ClearDemo_Create);
         }
     } else {
         w->unkC--;

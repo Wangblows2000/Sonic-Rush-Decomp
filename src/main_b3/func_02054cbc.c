@@ -12,7 +12,7 @@ extern u32 gSystemFlags;
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
 void Task_DestroyAll(void);
 void SysSound_Release(void);
-void SceneChange_Unk_020550ec(void);
+void SceneChange_ToTitleMenu(void);
 
 #pragma thumb on
 void func_02054cbc(void) {
@@ -30,7 +30,7 @@ void func_02054cbc(void) {
         SysSound_Release();
         gSaveDataBusy = 0;
         gSystemFlags &= ~0x10;
-        SceneChange_Unk_020550ec();
+        SceneChange_ToTitleMenu();
     }
 }
 #pragma thumb reset

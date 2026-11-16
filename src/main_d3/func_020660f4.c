@@ -13,7 +13,7 @@ typedef struct {
     s32 bottom;
 } UnkColl_020660f4;
 
-extern UnkColl_020660f4 *data_022c4dc8;
+extern UnkColl_020660f4 *gMapCollisionMap;
 
 s32 func_020665c8(s32 x, s32 y, u8 layer);
 
@@ -28,7 +28,7 @@ s32 func_020660f4(s32 y, s32 x, u32 flags, u8 *angleOut, u8 *attrOut) {
     UnkColl_020660f4 *m;
 
     if (flags & 0x40) {
-        m = data_022c4dc8;
+        m = gMapCollisionMap;
         bottom = m->bottom - 1;
         ty = y & ~7;
         if (ty > bottom || y < m->top - 7)
@@ -53,8 +53,8 @@ s32 func_020660f4(s32 y, s32 x, u32 flags, u8 *angleOut, u8 *attrOut) {
         if (x > m->right - 1 || x < m->left)
             return 8;
     } else {
-        x = (x < data_022c4dc8->left) ? data_022c4dc8->left : ((x > data_022c4dc8->right - 1) ? data_022c4dc8->right - 1 : x);
-        y = (y < data_022c4dc8->top) ? data_022c4dc8->top : ((y > data_022c4dc8->bottom - 1) ? data_022c4dc8->bottom - 1 : y);
+        x = (x < gMapCollisionMap->left) ? gMapCollisionMap->left : ((x > gMapCollisionMap->right - 1) ? gMapCollisionMap->right - 1 : x);
+        y = (y < gMapCollisionMap->top) ? gMapCollisionMap->top : ((y > gMapCollisionMap->bottom - 1) ? gMapCollisionMap->bottom - 1 : y);
     }
 
     tile = func_020665c8(x, y, flags & 1);
@@ -62,13 +62,13 @@ s32 func_020660f4(s32 y, s32 x, u32 flags, u8 *angleOut, u8 *attrOut) {
     xi = x & 7;
     if (tile & 0x400)
         xi = 7 - xi;
-    h = data_022c4dc8->height[id][xi] << 20 >> 24;
+    h = gMapCollisionMap->height[id][xi] << 20 >> 24;
     if (h & 8)
         h = (s8)(h | ~0xf);
     if (h == -8)
         h = 8;
     if (flags & 0x80) {
-        if (data_022c4dc8->attr[id] & 1)
+        if (gMapCollisionMap->attr[id] & 1)
             h = 0;
     }
     if (tile & 0x800) {
@@ -80,7 +80,7 @@ s32 func_020660f4(s32 y, s32 x, u32 flags, u8 *angleOut, u8 *attrOut) {
         }
     }
     if (angleOut != NULL && h != 0) {
-        a = data_022c4dc8->angle[id];
+        a = gMapCollisionMap->angle[id];
         if (tile & 0x400)
             a = -(s8)a;
         if (tile & 0x800) {
@@ -90,6 +90,6 @@ s32 func_020660f4(s32 y, s32 x, u32 flags, u8 *angleOut, u8 *attrOut) {
         *angleOut = a;
     }
     if (attrOut != NULL && h != 0)
-        *attrOut = data_022c4dc8->attr[id];
+        *attrOut = gMapCollisionMap->attr[id];
     return h;
 }

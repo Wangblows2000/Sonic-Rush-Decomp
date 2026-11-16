@@ -21,15 +21,15 @@ typedef struct {
     s16 unk468;
 } UnkStruct_022e7f60;
 
-extern UnkStruct_Boss *data_ov000_02369b78;
+extern UnkStruct_Boss *gBoss7;
 extern UnkStruct_StageObj *gPlayers;
 extern s16 data_ov000_02363c24[][4];
 extern s16 data_ov000_02363c64[][4];
 
-void func_ov000_022e822c(void);
+void Boss7PartD5_MoveState_Unk_ov000_022e822c(void);
 
 void func_ov000_022e7f60(UnkStruct_022e7f60 *w) {
-    UnkStruct_Boss *b = data_ov000_02369b78;
+    UnkStruct_Boss *b = gBoss7;
     s32 d;
 
     b->unk22C = -8;
@@ -45,5 +45,5 @@ void func_ov000_022e7f60(UnkStruct_022e7f60 *w) {
     b->unk228 = data_ov000_02363c24[w->unk42E][w->unk464 - 1];
     b->unk22C = data_ov000_02363c64[w->unk42E][w->unk464 - 1] >> 1;
     b->unk22A >>= 2;
-    w->unk440 = func_ov000_022e822c;
+    w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e822c;
 }

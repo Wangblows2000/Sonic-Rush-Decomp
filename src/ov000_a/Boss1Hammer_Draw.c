@@ -38,7 +38,7 @@ typedef struct UnkStruct_022c736c_4 {
 } UnkStruct_022c736c_4;
 
 extern UnkStruct_022c736c_2 *gTaskCurrent;
-extern UnkStruct_022c736c_4 *data_ov000_02369acc;
+extern UnkStruct_022c736c_4 *gBoss1;
 
 void Model_Animate(UnkStruct_022c736c_3 *p);
 void Model_Draw(UnkStruct_022c736c_3 *p);
@@ -50,7 +50,7 @@ void Boss1Hammer_Draw(void) {
     UnkStruct_022c736c_3 *p = &o->unk30C;
     if (o->unk5C & 0x20)
         return;
-    if (data_ov000_02369acc->unk20C & 1) {
+    if (gBoss1->unk20C & 1) {
         p->unkA = 3;
         p->unkB = 0;
         p->unk48 = o->unk10 << 4;

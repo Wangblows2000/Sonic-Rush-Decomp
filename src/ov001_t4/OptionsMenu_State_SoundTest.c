@@ -58,9 +58,9 @@ extern UnkPad_022cd05c gPad;
 extern UnkTouch_022cd05c gTouchState;
 extern UnkEntry_022cd05c *data_ov001_0231f048;
 extern s32 data_ov001_0231f04c;
-extern s32 data_02250464;
+extern s32 gBGMSoundHandle;
 extern s32 gSESoundHandle;
-extern s32 data_02250450;
+extern s32 gVoiceSoundHandle;
 
 void func_ov001_022cc17c(UnkWork_022cd05c *w);
 void func_ov001_022c8e1c(UnkSub_022cd05c *s);
@@ -157,7 +157,7 @@ void OptionsMenu_State_SoundTest(void) {
                 if (sub->unk1a4 == 0) {
                     cancel = TRUE;
                 }
-            } else if (data_02250464 == 0) {
+            } else if (gBGMSoundHandle == 0) {
                 cancel = TRUE;
             }
             break;
@@ -167,7 +167,7 @@ void OptionsMenu_State_SoundTest(void) {
             }
             break;
         case 2:
-            if (data_02250450 == 0) {
+            if (gVoiceSoundHandle == 0) {
                 cancel = TRUE;
             }
             break;

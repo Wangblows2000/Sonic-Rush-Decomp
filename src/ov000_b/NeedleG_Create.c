@@ -4,7 +4,7 @@ extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366cdc[], data_ov000_0236a0ec[], data_ov000_0236a0f4[], data_ov000_0236a104[];
 
 void MapObject_Destructor(void);
-void func_ov000_02310e7c(UnkStruct_StageObj *w);
+void NeedleG_Action_Unk_ov000_02310e7c(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *NeedleG_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -32,6 +32,6 @@ UnkStruct_StageObj *NeedleG_Create(s32 a, s32 b, s32 c) {
     if (w->unk1E0->unk4 & 1)
         w->unk5C ^= 1;
     w->unk1F4 |= 0x20;
-    func_ov000_02310e7c(w);
+    NeedleG_Action_Unk_ov000_02310e7c(w);
     return w;
 }

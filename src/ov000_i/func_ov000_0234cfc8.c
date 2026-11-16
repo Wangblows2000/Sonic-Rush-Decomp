@@ -22,40 +22,40 @@ typedef struct {
     u32 unk8;
 } UnkCfg3_0234cfc8;
 
-extern UnkCfg_0234cfc8 data_022c4560;
+extern UnkCfg_0234cfc8 gGameState;
 extern UnkCfg2_0234cfc8 data_022c4590;
 extern UnkCfg3_0234cfc8 gSaveData;
 
 void ResultsScreen_Create(void);
-void SceneChange_Unk_02054df8(void);
+void SceneChange_ToTryAgain(void);
 void func_02059884(u8 a, u8 b, s32 c);
 u16 func_02059874(void);
 void func_0205a4ec(s32 a);
-void func_0204dce8(void);
-void func_0204e0c0(void);
+void GameOverSeq_StartTimeOver(void);
+void GameOverSeq_StartGameOver(void);
 
 void func_ov000_0234cfc8(void) {
-    switch (data_022c4560.unk10) {
+    switch (gGameState.unk10) {
     case 1:
         data_022c4590.unk24 &= ~1;
         data_022c4590.unk24 &= ~2;
         ResultsScreen_Create();
         return;
     case 2:
-        SceneChange_Unk_02054df8();
+        SceneChange_ToTryAgain();
         return;
     case 0:
-        func_02059884(data_022c4560.unk0, data_022c4590.unk14, 1);
-        data_022c4560.unk28 = func_02059874();
+        func_02059884(gGameState.unk0, data_022c4590.unk14, 1);
+        gGameState.unk28 = func_02059874();
         func_0205a4ec(0);
-        if (!(gSaveData.unk8 & 2) && data_022c4560.unk20 > 0x8c9f) {
-            func_0204dce8();
+        if (!(gSaveData.unk8 & 2) && gGameState.unk20 > 0x8c9f) {
+            GameOverSeq_StartTimeOver();
             return;
         }
-        func_0204e0c0();
+        GameOverSeq_StartGameOver();
         return;
     default:
-        func_0204e0c0();
+        GameOverSeq_StartGameOver();
         return;
     }
 }

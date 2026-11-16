@@ -35,7 +35,7 @@ BOOL func_02021310(void *arc, const char *name, void *narc);
 u32 func_02021264(void *arc, u32 idx);
 void NNS_G3dResDefaultSetup(u32 p);
 BOOL func_020212e0(void *arc);
-void func_02036854(void *a);
+void Sound_LoadSoundArchive(void *a);
 void NNS_SndArcLoadGroup(s32 a, void *b);
 
 void ExtraAct_LoadAssets(void) {
@@ -92,6 +92,6 @@ void ExtraAct_LoadAssets(void) {
     NNS_G3dResDefaultSetup(data_ov001_0231f084->res[1]);
     NNS_G3dResDefaultSetup(data_ov001_0231f084->res[0]);
     func_020212e0(&arc);
-    func_02036854(data_ov001_0231d5c0);
+    Sound_LoadSoundArchive(data_ov001_0231d5c0);
     NNS_SndArcLoadGroup(0xa, gSoundHeap);
 }

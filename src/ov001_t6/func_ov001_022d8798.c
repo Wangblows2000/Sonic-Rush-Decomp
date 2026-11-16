@@ -37,8 +37,8 @@ extern UnkTask_022d8798 *gTaskCurrent;
 void func_ov001_022d7b7c(s32 x, s32 y, s32 a, s32 b);
 void func_ov001_022d7ac4(s32 id, s32 x, s32 y);
 void func_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t);
-BOOL func_02050018(void);
-BOOL func_0205000c(void);
+BOOL MsgBox_IsClosed(void);
+BOOL MsgBox_GetResult(void);
 void func_ov001_022d7360(void *sw);
 void func_ov001_022d7368(void *sw);
 void func_ov001_022d7968(s32 a, s32 b);
@@ -88,11 +88,11 @@ void func_ov001_022d8798(void) {
         it++;
     }
     if (w->unkc != 0) {
-        if (!func_02050018()) {
+        if (!MsgBox_IsClosed()) {
             return;
         }
         func_ov001_022d7360(w->sw);
-        if (func_0205000c()) {
+        if (MsgBox_GetResult()) {
             w->timer = 0;
             w->unkc = 0;
             gTaskCurrent->func = func_ov001_022d8938;

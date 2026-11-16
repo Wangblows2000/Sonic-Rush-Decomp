@@ -8,7 +8,7 @@ typedef struct {
 
 typedef void (*UnkFunc_02341f78)(void *p);
 
-extern UnkCfg_02341f78 data_022c4560;
+extern UnkCfg_02341f78 gGameState;
 extern u32 gSystemFlags;
 extern UnkFunc_02341f78 data_ov000_023689c4[][3];
 extern void *data_ov000_0236ac1c;
@@ -39,7 +39,7 @@ void func_ov000_02341f78(void) {
     void *p;
 
     gSystemFlags &= ~0xc00;
-    f = data_ov000_023689c4[data_022c4560.unk1C][data_022c4560.unk1D];
+    f = data_ov000_023689c4[gGameState.unk1C][gGameState.unk1D];
     if (f != NULL)
         f(data_ov000_0236ac1c);
     p = data_ov000_0236ac1c;

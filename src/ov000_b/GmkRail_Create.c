@@ -6,13 +6,13 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02366d94[], data_ov000_0236a1ac[], data_ov000_02366dac[];
 
 void MapObject_Destructor(void);
 void GmkRail_OnHit(void);
 s32 FX_Atan2(s32 y, s32 x);
-void func_ov000_02313310(UnkStruct_StageObj *w);
+void GmkRail_Action_Unk_ov000_02313310(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *GmkRail_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -26,7 +26,7 @@ UnkStruct_StageObj *GmkRail_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_StageObj));
     MapObject_Init(w, (s32)p, b, c);
-    if (data_022c4560.unk1C == 5) {
+    if (gGameState.unk1C == 5) {
         StageObj_Load2dBAC(w, data_ov000_02366d94, 5, data_ov000_0236a1ac, data_ov000_02369ba0);
         StageObj_SetAnimation(w, 4);
     } else {
@@ -44,6 +44,6 @@ UnkStruct_StageObj *GmkRail_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk58 |= 0x100;
     w->unk8 = (w->unk1E8 + (p->unk8 + (p->unk6 << 6))) << 8;
     w->unkC = FX_Atan2(p->unk9 + (p->unk7 << 6), p->unk8 + (p->unk6 << 6)) << 8;
-    func_ov000_02313310(w);
+    GmkRail_Action_Unk_ov000_02313310(w);
     return w;
 }

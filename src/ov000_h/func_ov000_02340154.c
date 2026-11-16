@@ -34,7 +34,7 @@ typedef struct {
     u16 unk10;
 } UnkStruct_02340154_abd8;
 
-extern UnkStruct_02340154_Pl data_ov000_0236aad8[];
+extern UnkStruct_02340154_Pl gCamera[];
 extern UnkStruct_02340154_abd8 data_ov000_0236abd8;
 
 UnkStruct_02340154_Pl *func_ov000_0233b62c(void);
@@ -46,12 +46,12 @@ void func_ov000_02340154(UnkStruct_02340154 *w, s32 idx) {
     s32 h;
     s32 v;
 
-    if (data_ov000_0236aad8[2].flags & 1) {
+    if (gCamera[2].flags & 1) {
         idx = 0;
         p = func_ov000_0233b62c();
         out = &w->n2[0];
     } else {
-        p = &data_ov000_0236aad8[idx];
+        p = &gCamera[idx];
         if (idx == 0)
             out = &w->n2[0];
         else

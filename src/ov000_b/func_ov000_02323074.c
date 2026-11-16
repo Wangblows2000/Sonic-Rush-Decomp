@@ -32,7 +32,7 @@ void Decoration_Destructor(void);
 void func_ov000_02322fd0(void);
 void Decoration_InitFromMap(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
 void StageObj_Load3dBAC(void *w, UnkStruct_02323074_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_02068358(UnkStruct_02323074_Sub *s, void *a, s32 b, s32 c);
+void StageObj_AcquireSharedTexture(UnkStruct_02323074_Sub *s, void *a, s32 b, s32 c);
 
 UnkStruct_02323074 *func_ov000_02323074(UnkStruct_ObjParam *p, s32 a, s32 b) {
     UnkStruct_Task *task;
@@ -54,7 +54,7 @@ UnkStruct_02323074 *func_ov000_02323074(UnkStruct_ObjParam *p, s32 a, s32 b) {
         StageObj_AllocSpritePalette(w, 0, 0x26);
         StageObj_SetOAMOrder(w, 0x16);
         StageObj_Load3dBAC(w, &w->unk19C, data_ov000_023673cc, 0, 0, data_ov000_0236a710, data_ov000_02369ba0);
-        func_02068358(&w->unk19C, data_ov000_0236a7f0, 0x400, 0x10);
+        StageObj_AcquireSharedTexture(&w->unk19C, data_ov000_0236a7f0, 0x400, 0x10);
         w->unk19C.unkA = 4;
         w->unk19C.unkB = 0;
         StageObj_SetAnimation(w, 0);
@@ -67,7 +67,7 @@ UnkStruct_02323074 *func_ov000_02323074(UnkStruct_ObjParam *p, s32 a, s32 b) {
         StageObj_AllocSpritePalette(w, 0, 0x26);
         StageObj_SetOAMOrder(w, 0x16);
         StageObj_Load3dBAC(w, &w->unk19C, data_ov000_023673fc, 0, 0, data_ov000_0236a710, data_ov000_02369ba0);
-        func_02068358(&w->unk19C, data_ov000_0236a800, 0x200, 0x10);
+        StageObj_AcquireSharedTexture(&w->unk19C, data_ov000_0236a800, 0x200, 0x10);
         w->unk19C.unkA = 4;
         w->unk19C.unkB = 0;
         StageObj_SetAnimation(w, 1);
@@ -79,7 +79,7 @@ UnkStruct_02323074 *func_ov000_02323074(UnkStruct_ObjParam *p, s32 a, s32 b) {
         w->spr0.unk2C |= 0x80000;
         StageObj_AllocSpritePalette(w, 0, 0x50);
         StageObj_Load3dBAC(w, &w->unk19C, data_ov000_02367430, 0, 0, data_ov000_0236a760, data_ov000_02369ba0);
-        func_02068358(&w->unk19C, data_ov000_0236a870, 0x400, 0x10);
+        StageObj_AcquireSharedTexture(&w->unk19C, data_ov000_0236a870, 0x400, 0x10);
         w->unk19C.unkA = 4;
         w->unk19C.unkB = 0;
         w->unk68 = func_ov000_02322fd0;

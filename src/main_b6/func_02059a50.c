@@ -6,7 +6,7 @@ typedef struct {
     u8 act;
 } UnkState_02059a50;
 
-extern UnkState_02059a50 data_022c4560;
+extern UnkState_02059a50 gGameState;
 extern u16 data_022c4752[][3][5];
 extern u16 data_022c4828[][2][5];
 
@@ -17,7 +17,7 @@ s32 func_02059a50(s32 zone, s32 act, u32 score) {
 
     if (score > 35999)
         score = 35999;
-    if (data_022c4560.zone >= 7 && data_022c4560.zone < 9 && data_022c4560.act < 2)
+    if (gGameState.zone >= 7 && gGameState.zone < 9 && gGameState.act < 2)
         b = TRUE;
     if (b)
         p = data_022c4828[zone - 7][act];

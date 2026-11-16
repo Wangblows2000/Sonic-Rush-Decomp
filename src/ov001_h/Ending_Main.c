@@ -45,7 +45,7 @@ typedef struct UnkBright_022c7ac8 {
 extern UnkTask_022c7ac8 *gTaskCurrent;
 extern UnkTouch_022c7ac8 gTouchState;
 extern UnkPad_022c7ac8 gPad;
-extern u8 data_02250464[];
+extern u8 gBGMSoundHandle[];
 extern UnkBright_022c7ac8 gDisplayMain;
 extern UnkBright_022c7ac8 gDisplaySub;
 
@@ -55,7 +55,7 @@ s32 Ending_HitTestSprite(void *s, u16 x, u16 y);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void AnimatorSprite_SetAnimation(void *s, s32 a);
 void func_ov001_022c7a44(UnkStruct_022c7ac8 *w);
-void func_ov001_022c6804(UnkStruct_022c7ac8 *w);
+void Ending_CheckTimedBg0Picture(UnkStruct_022c7ac8 *w);
 void Ending_SetSubState(UnkStruct_022c7ac8 *w, s32 a);
 void Ending_State_GoToStaffRoll(void);
 
@@ -82,13 +82,13 @@ void Ending_Main(void) {
         if (r == 1 || (gPad.trg & 8)) {
             w->unk690 = 1;
             w->unk694 = 0x3c;
-            NNS_SndPlayerStopSeq(data_02250464, 0x3c);
+            NNS_SndPlayerStopSeq(gBGMSoundHandle, 0x3c);
             AnimatorSprite_SetAnimation(w->spr644, 2);
             AnimatorSprite_SetAnimation(w->spr5B4, 3);
         }
     }
     func_ov001_022c7a44(w);
-    func_ov001_022c6804(w);
+    Ending_CheckTimedBg0Picture(w);
     if (w->unk8 != NULL)
         w->unk8(w);
     if (w->unk690 != 0) {

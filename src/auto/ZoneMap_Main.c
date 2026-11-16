@@ -5,7 +5,7 @@
 
 extern u8 gTaskCurrent[];
 s32 Task_DestroyByTag();
-s32 SceneChange_Unk_02054e68();
+s32 SceneChange_ToTitleScreen();
 s32 func_ov001_022e19bc();
 
 void ZoneMap_Main(void) {
@@ -16,7 +16,7 @@ void ZoneMap_Main(void) {
         s32 t3 = *(u32 *)((u8 *)t0 + 0x1cd0);
         Task_DestroyByTag(0x1000, t0);
         if (t2 < 0) {
-            SceneChange_Unk_02054e68();
+            SceneChange_ToTitleScreen();
             return;
         }
         func_ov001_022e19bc(t1, t2, t3);

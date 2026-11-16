@@ -35,7 +35,7 @@ typedef struct {
     s32 unk8;
 } UnkStruct_023395a4_W;
 
-extern UnkStruct_023395a4 data_ov000_0236aad8;
+extern UnkStruct_023395a4 gCamera;
 extern UnkStruct_023395a4_P *gPlayers[];
 
 s32 func_ov000_0233b078(s32 x);
@@ -48,18 +48,18 @@ void func_ov000_0233b470(s32 a);
 void func_ov000_023393a8(UnkStruct_023395a4_W *w, s32 idx);
 
 static inline void Finish_023395a4(UnkStruct_023395a4_W *w) {
-    data_ov000_0236aad8.flags &= ~0x10000;
-    data_ov000_0236aad8.flags &= ~0x20000;
+    gCamera.flags &= ~0x10000;
+    gCamera.flags &= ~0x20000;
     func_ov000_02338800(w);
 }
 
 #define CLAMP_023395a4(v, lo, hi) ((v) < (lo) ? (lo) : ((v) > (hi) ? (hi) : (v)))
 
 void func_ov000_023395a4(UnkStruct_023395a4_W *w, s32 idx) {
-    UnkStruct_023395a4 *g = &data_ov000_0236aad8;
+    UnkStruct_023395a4 *g = &gCamera;
     UnkStruct_023395a4_L *l = &g->layer[idx];
     s32 ground = func_ov000_0233b078(l->x);
-    UnkStruct_023395a4 *g2 = &data_ov000_0236aad8;
+    UnkStruct_023395a4 *g2 = &gCamera;
     u32 flags = g2->flags;
     u32 dn;
 
@@ -73,10 +73,10 @@ void func_ov000_023395a4(UnkStruct_023395a4_W *w, s32 idx) {
             func_ov000_02338d6c(w);
         } else {
             l->y += w->unk8;
-            dn = data_ov000_0236aad8.flags & 2;
+            dn = gCamera.flags & 2;
             if ((dn && gPlayers[l->ply]->y < ground) || (!dn && gPlayers[l->ply]->y > ground)) {
                 func_ov000_02338f88(w);
-                dn = data_ov000_0236aad8.flags & 2;
+                dn = gCamera.flags & 2;
                 if (dn && w->unk8 < 0) {
                     if (l->y < ground + l->scaleY * 0x28) {
                         l->y = CLAMP_023395a4(l->y, ground + l->scaleY * 0x28, l->maxY - l->scaleY * 0xc0);

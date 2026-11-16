@@ -1,8 +1,8 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0234307c();
-s32 func_ov000_02336050();
+s32 Player_AddTension();
+s32 Hud_SetTensionGauge();
 s32 Sound_PlaySeqArcEx();
 s32 RingManager_ScatterRings();
 s32 Player_Action_Die();
@@ -16,9 +16,9 @@ void func_ov000_0234e984(u8 *p0, u8 *p1) {
     }
     u32 t2 = *(u32 *)((u8 *)t0 + 0x32c);
     if ((t2 & 0x10000000) == 0) {
-        func_ov000_0234307c(t0, -0x4b0);
+        Player_AddTension(t0, -0x4b0);
         s16 t3 = *(s16 *)((u8 *)(t0 + 0x300) + 0x50);
-        func_ov000_02336050(((u32)(t3 << 0xc) >> 0x10), 1);
+        Hud_SetTensionGauge(((u32)(t3 << 0xc) >> 0x10), 1);
     }
     u32 t4 = *(u32 *)((u8 *)p1 + 0x20);
     if ((t4 & 0x20) != 0) {

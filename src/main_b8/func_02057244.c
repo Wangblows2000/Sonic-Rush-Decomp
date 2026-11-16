@@ -16,7 +16,7 @@ typedef struct {
     UnkTask_02057244 *child;
 } UnkMgr_02057244;
 
-extern UnkTask_02057244 *data_022c467c;
+extern UnkTask_02057244 *gPlayerDemoTask;
 
 UnkTask_02057244 *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, u16 id, u16 unk1a, u32 workSize);
 u32 OS_GetArenaLo(s32 i);
@@ -31,9 +31,9 @@ void func_02057244(void *p, u16 v) {
     UnkWork_02057244 *w;
     vu16 z;
 
-    if (p == NULL || data_022c467c == NULL)
+    if (p == NULL || gPlayerDemoTask == NULL)
         return;
-    m = data_022c467c->work;
+    m = gPlayerDemoTask->work;
     if (m->child != NULL)
         return;
     t = Task_Create(func_02057174, func_02057210, 0, 0x3efe, 3, 0x14);

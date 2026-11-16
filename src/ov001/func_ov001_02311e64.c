@@ -1,12 +1,12 @@
 #include <nitro/types.h>
 
 extern u8 data_ov001_023178f4[];
-u8 *func_ov001_0230c0a4(void);
+u8 *SpecialStage_GetPlayer(void);
 s32 NNS_G3dGetResDictIdxByName(void *p, void *k);
 void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
 void func_ov001_02311e64(u8 *p) {
-    u8 *g = func_ov001_0230c0a4();
+    u8 *g = SpecialStage_GetPlayer();
     s32 expect;
     if (*(u32 *)(p + 8) & 0x10) {
         expect = p[0xae];

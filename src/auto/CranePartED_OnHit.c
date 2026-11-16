@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 Sound_PlaySeqArcEx();
-s32 func_ov000_02353eb4();
+s32 Player_Action_GrabCranePart();
 
 void CranePartED_OnHit(u8 *p0, u8 *p1) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x18);
@@ -20,5 +20,5 @@ void CranePartED_OnHit(u8 *p0, u8 *p1) {
         Sound_PlaySeqArcEx(*(u32 *)((u8 *)t0 + 0x1dc), 0, 0x69);
     }
     *(u32 *)((u8 *)t0 + 0x204) = t1;
-    func_ov000_02353eb4(t1, t0, -116, 0x12);
+    Player_Action_GrabCranePart(t1, t0, -116, 0x12);
 }

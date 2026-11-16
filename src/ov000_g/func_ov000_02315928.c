@@ -28,7 +28,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_02315928_Sys;
 
-extern UnkStruct_02315928_Sys data_022c4560;
+extern UnkStruct_02315928_Sys gGameState;
 extern void *gPlayers;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
@@ -67,7 +67,7 @@ void func_ov000_02315928(UnkStruct_02315928 *w) {
     }
     if (w->unk58 & 0x2000)
         return;
-    if (!(data_022c4560.unk20 & 7))
+    if (!(gGameState.unk20 & 7))
         Sound_PlaySeqArcEx(w->unk1DC, 0, 0x6c);
     Sound_SetPositional(w->unk1DC, w, gPlayers);
 }

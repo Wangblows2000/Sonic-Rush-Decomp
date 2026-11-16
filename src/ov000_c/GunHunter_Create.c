@@ -10,7 +10,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_0236635c[], data_ov000_02369d9c[];
 
 void MapObject_Destructor(void);
@@ -18,7 +18,7 @@ void GunHunter_State_Unk_ov000_022fbe14(void);
 void func_ov000_022faf48(UnkStruct_022fbe80 *w, s32 a);
 
 static inline u16 FrameRand(void) {
-    return (u16)(((data_022c4560.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16);
+    return (u16)(((gGameState.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16);
 }
 
 UnkStruct_022fbe80 *GunHunter_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {

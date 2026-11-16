@@ -10,8 +10,8 @@ typedef struct UnkStruct_02337650 {
     UnkStruct_02337650_2 *unk10;
 } UnkStruct_02337650;
 
-extern UnkStruct_02337650 *data_ov000_0236aaa8;
+extern UnkStruct_02337650 *gHudTask;
 
 s32 func_ov000_02337650(s32 i) {
-    return data_ov000_0236aaa8->unk10->unk14[i];
+    return gHudTask->unk10->unk14[i];
 }

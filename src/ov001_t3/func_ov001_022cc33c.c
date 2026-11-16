@@ -24,8 +24,8 @@ extern UnkTask_022cc33c *gTaskCurrent;
 
 void func_ov001_022cc17c(UnkWork_022cc33c *w);
 void func_ov001_022cbf30(UnkWork_022cc33c *w);
-BOOL func_02050018(void);
-BOOL func_0205000c(void);
+BOOL MsgBox_IsClosed(void);
+BOOL MsgBox_GetResult(void);
 void func_ov001_022c8cc0(UnkSub_022cc33c *s);
 void func_ov001_022cdd28(void);
 void func_ov001_022ccb5c(void);
@@ -51,8 +51,8 @@ void func_ov001_022cc33c(void) {
     w->sub.timer++;
     w->unk14++;
     w->unk18++;
-    if (!func_02050018()) return;
-    if (!func_0205000c()) {
+    if (!MsgBox_IsClosed()) return;
+    if (!MsgBox_GetResult()) {
         sub->timer = 0;
         w->unk14 = 0;
         w->unk18 = 0;

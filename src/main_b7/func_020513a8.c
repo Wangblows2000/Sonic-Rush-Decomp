@@ -18,12 +18,12 @@ typedef struct {
 } UnkTask_020513a8;
 
 extern UnkTask_020513a8 *data_022c4638;
-extern u16 data_0207ad9c[];
+extern u16 gWirelessSession[];
 
 #pragma thumb on
 BOOL func_020513a8(void) {
     if (data_022c4638 == NULL) {
-        switch (data_0207ad9c[1]) {
+        switch (gWirelessSession[1]) {
         case 0:
         case 2:
             return FALSE;

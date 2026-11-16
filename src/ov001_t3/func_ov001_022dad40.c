@@ -22,8 +22,8 @@ typedef struct {
 
 extern UnkTask_022dad40 *gTaskCurrent;
 
-void func_02040d14(UnkAnim_022dad40 *a);
-BOOL func_02040cf4(UnkAnim_022dad40 *a);
+void KeyframeAnim_Update(UnkAnim_022dad40 *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022dad40 *a);
 void func_ov001_022d9e50(UnkWork_022dad40 *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022dad40 *w, s32 x, s32 y);
 void func_ov001_022d9d98(UnkWork_022dad40 *w, s32 i, s32 x, s32 y);
@@ -33,8 +33,8 @@ void func_ov001_022da244(UnkWork_022dad40 *w, s32 a);
 void func_ov001_022da1cc(UnkWork_022dad40 *w, s32 a);
 void func_ov001_022da374(UnkWork_022dad40 *w);
 void func_ov001_022da33c(UnkWork_022dad40 *w);
-void func_02040ec0(UnkAnim_022dad40 *a, s32 id);
-void func_02040e80(UnkAnim_022dad40 *a);
+void KeyframeAnim_SetAnim(UnkAnim_022dad40 *a, s32 id);
+void KeyframeAnim_PlayReverse(UnkAnim_022dad40 *a);
 void func_ov001_022dbf30(void);
 
 #pragma thumb on
@@ -44,19 +44,19 @@ void func_ov001_022dad40(void) {
     UnkAnim_022dad40 *a;
 
     w = gTaskCurrent->work;
-    func_02040d14(&w->anims[0]);
-    func_02040d14(&w->anims[1]);
-    func_02040d14(&w->anims[2]);
-    func_02040d14(&w->anims[3]);
-    func_02040d14(&w->anims[4]);
-    func_02040d14(&w->anims[5]);
+    KeyframeAnim_Update(&w->anims[0]);
+    KeyframeAnim_Update(&w->anims[1]);
+    KeyframeAnim_Update(&w->anims[2]);
+    KeyframeAnim_Update(&w->anims[3]);
+    KeyframeAnim_Update(&w->anims[4]);
+    KeyframeAnim_Update(&w->anims[5]);
     done = TRUE;
-    if (!func_02040cf4(&w->anims[0])) done = FALSE;
-    if (!func_02040cf4(&w->anims[1])) done = FALSE;
-    if (!func_02040cf4(&w->anims[2])) done = FALSE;
-    if (!func_02040cf4(&w->anims[3])) done = FALSE;
-    if (!func_02040cf4(&w->anims[4])) done = FALSE;
-    if (!func_02040cf4(&w->anims[5])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[0])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[1])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[2])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[3])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[4])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[5])) done = FALSE;
     a = &w->anims[0];
     func_ov001_022d9e50(w, a->x, a->y);
     a = &w->anims[1];
@@ -75,10 +75,10 @@ void func_ov001_022dad40(void) {
         w->unk4 = 0;
         func_ov001_022da374(w);
         func_ov001_022da33c(w);
-        func_02040ec0(&w->anims[0], 0x1e);
-        func_02040ec0(&w->anims[1], 0x1f);
-        func_02040e80(&w->anims[0]);
-        func_02040e80(&w->anims[1]);
+        KeyframeAnim_SetAnim(&w->anims[0], 0x1e);
+        KeyframeAnim_SetAnim(&w->anims[1], 0x1f);
+        KeyframeAnim_PlayReverse(&w->anims[0]);
+        KeyframeAnim_PlayReverse(&w->anims[1]);
         gTaskCurrent->func = func_ov001_022dbf30;
     }
 }

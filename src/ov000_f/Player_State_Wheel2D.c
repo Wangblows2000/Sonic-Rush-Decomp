@@ -74,8 +74,8 @@ typedef struct {
 
 extern s16 data_0206e470[];
 extern u32 gRandSeed;
-extern UnkStruct_023530c0_4560 data_022c4560;
-extern UnkStruct_023530c0_aad8 data_ov000_0236aad8;
+extern UnkStruct_023530c0_4560 gGameState;
+extern UnkStruct_023530c0_aad8 gCamera;
 
 #define IDX_023530c0(a) ((s32)((a) & 0xffff) >> 4)
 #define SIN_023530c0(a) data_0206e470[(u32)(IDX_023530c0(a) << 1)]
@@ -124,8 +124,8 @@ void Player_State_Wheel2D(UnkStruct_023530c0 *w) {
         w->unk340(w);
         return;
     }
-    if (!(data_022c4560.unk20 & 3) && !(Rand_023530c0() & 3)) {
-        func_ov000_02329984(w, w->unk3E8->x, w->unk3E8->y, 0, 0, data_ov000_0236aad8.unk62);
+    if (!(gGameState.unk20 & 3) && !(Rand_023530c0() & 3)) {
+        func_ov000_02329984(w, w->unk3E8->x, w->unk3E8->y, 0, 0, gCamera.unk62);
     }
     if (w->unk34 < 0x40) {
         w->unk34 = 0x40;

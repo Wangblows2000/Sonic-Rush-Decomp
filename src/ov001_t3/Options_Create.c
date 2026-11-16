@@ -28,7 +28,7 @@ UnkTask_022cecb8 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void Options_Main(void);
 void Options_Destructor(void);
-void func_ov001_022cb6d8(void *p);
+void Options_LoadSettingsFromSave(void *p);
 s32 func_ov001_022c8b5c(void);
 s32 func_ov001_022c8b58(void);
 s32 func_ov001_022c8b54(void);
@@ -40,7 +40,7 @@ u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_ov001_022cea0c(void);
+void Options_InitDisplay(void);
 void Options_LoadAssets(UnkWork_022cecb8 *w);
 void func_ov001_022ce960(UnkWork_022cecb8 *w);
 void func_ov001_022ce6f8(UnkWork_022cecb8 *w);
@@ -72,7 +72,7 @@ UnkWork_022cecb8 *Options_Create(void) {
     w = Task_Create(Options_Main, Options_Destructor, 0, 0x1000, 0x1000, sizeof(UnkWork_022cecb8))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_022cecb8));
-    func_ov001_022cb6d8(w->unk8);
+    Options_LoadSettingsFromSave(w->unk8);
     w->unk0 = 0;
     w->unk4 = 6;
     w->unk18 = func_ov001_022c8b5c();
@@ -83,7 +83,7 @@ UnkWork_022cecb8 *Options_Create(void) {
     w->unk2c = func_ov001_022c8b30();
     w->unk14 = func_ov001_022c8b14();
     w->buf = Alloc_022cecb8(0xc0);
-    func_ov001_022cea0c();
+    Options_InitDisplay();
     Options_LoadAssets(w);
     func_ov001_022ce960(w);
     func_ov001_022ce6f8(w);

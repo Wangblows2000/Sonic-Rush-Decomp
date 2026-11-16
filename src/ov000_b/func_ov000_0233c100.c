@@ -19,8 +19,8 @@ typedef struct {
     void *unkC;
 } UnkStruct_0233c100_Work;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_0236aad8 gCamera;
 extern u16 data_ov000_0236aab0;
 extern UnkStruct_Task *data_ov000_0236aab4;
 
@@ -42,24 +42,24 @@ void func_ov000_0233c100(void) {
     u8 mode;
     vu16 zero0;
 
-    mode = data_022c4560.unk1C;
+    mode = gGameState.unk1C;
     zero0 = 0;
-    MIi_CpuClear16(zero0, &data_ov000_0236aad8, sizeof(UnkStruct_0236aad8));
+    MIi_CpuClear16(zero0, &gCamera, sizeof(UnkStruct_0236aad8));
     func_ov000_0233a27c();
-    if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2) {
+    if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
         data_ov000_0236aab0 |= 4;
         func_ov000_0233a000();
         if (mode == 3) {
-            data_ov000_0236aad8.unkE0 = 0x128fb8;
-            data_ov000_0236aad8.unkE4 = 0x749fed;
+            gCamera.unkE0 = 0x128fb8;
+            gCamera.unkE4 = 0x749fed;
         } else if (mode == 2) {
-            data_ov000_0236aad8.unkE0 = 0xf42f8;
-            data_ov000_0236aad8.unkE4 = 0x5fe435;
+            gCamera.unkE0 = 0xf42f8;
+            gCamera.unkE4 = 0x5fe435;
         } else if (mode == 1) {
-            data_ov000_0236aad8.unkE0 = 0x1152f0;
-            data_ov000_0236aad8.unkE4 = 0x6cd988;
+            gCamera.unkE0 = 0x1152f0;
+            gCamera.unkE4 = 0x6cd988;
         }
-    } else if (data_022c4560.unk18 & 0x20) {
+    } else if (gGameState.unk18 & 0x20) {
         func_ov000_0233a010();
     } else {
         func_ov000_0233a118();

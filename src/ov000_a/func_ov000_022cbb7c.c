@@ -10,7 +10,7 @@ typedef struct UnkStruct_022cbb7c_2 {
     u16 unk21E;
 } UnkStruct_022cbb7c_2;
 
-extern UnkStruct_022cbb7c_2 *data_ov000_02369acc;
+extern UnkStruct_022cbb7c_2 *gBoss1;
 extern s16 data_0206e470[];
 extern u8 data_ov000_02362bc4[];
 extern u8 data_ov000_02362be4[];
@@ -30,7 +30,7 @@ void func_ov000_022cbb7c(u8 *p) {
     else
         expect = -1;
     if (r1 == expect) {
-        u16 a = data_ov000_02369acc->unk21C;
+        u16 a = gBoss1->unk21C;
         MTX_RotY33_(&m1, data_0206e470[((a & 0xffff) >> 4) * 2], data_0206e470[((a & 0xffff) >> 4) * 2 + 1]);
         NNS_G3dGeBufferOP_N(0x1a, &m1, 9);
         return;
@@ -40,7 +40,7 @@ void func_ov000_022cbb7c(u8 *p) {
     else
         expect = -1;
     if (r2 == expect) {
-        u16 a = data_ov000_02369acc->unk21E;
+        u16 a = gBoss1->unk21E;
         MTX_RotY33_(&m2, data_0206e470[((a & 0xffff) >> 4) * 2], data_0206e470[((a & 0xffff) >> 4) * 2 + 1]);
         NNS_G3dGeBufferOP_N(0x1a, &m2, 9);
     }

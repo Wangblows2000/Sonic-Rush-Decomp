@@ -30,7 +30,7 @@ extern UnkStruct_0208922c gDisplayMain;
 
 void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov001_022e7308(void);
 
 #pragma thumb on
@@ -56,7 +56,7 @@ void func_ov001_022e5c58(void) {
     MIi_CpuClear32(zero, (void *)0x6002000, 0x800);
     gDisplayMain.unk8 = 0;
     gDisplayMain.unka = 0;
-    func_02050078(0x11, 3, 2, 0, 2, 1, 0xe, 0x100010);
+    MsgBox_Create(0x11, 3, 2, 0, 2, 1, 0xe, 0x100010);
     gTaskCurrent->func = func_ov001_022e7308;
 }
 #pragma thumb reset

@@ -65,7 +65,7 @@ typedef struct UnkStruct_022dae88_b {
     s32 unk18;
 } UnkStruct_022dae88_b;
 
-extern UnkStruct_022dae88_b *data_ov000_02369b14;
+extern UnkStruct_022dae88_b *gBoss3;
 extern void *gZoneActArchive;
 extern u8 data_ov000_02365544[];
 extern s32 data_ov000_02369b18[];
@@ -74,7 +74,7 @@ UnkTask_022dae88 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c,
 void StageObj_Main(void);
 void Boss3PartCD_Destructor(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void Boss3PartCD_State_Unk_ov000_022d5d10(void);
+void Boss3PartCD_State_Idle(void);
 void func_02021310(void *ctx, void *a, void *b);
 void *func_02021264(void *ctx, u32 id);
 void func_020212e0(void *ctx);
@@ -94,12 +94,12 @@ static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
 UnkStruct_022dae88 *Boss3PartCD_Create(void *a, s32 x, s32 y) {
     u32 ctx[0x5c / 4];
     UnkStruct_022dae88 *s;
-    UnkStruct_022dae88_b *b = data_ov000_02369b14;
+    UnkStruct_022dae88_b *b = gBoss3;
     UnkStruct_022dae88_h *h;
     UnkStruct_022dae88_a *p;
     s = Task_Create(StageObj_Main, Boss3PartCD_Destructor, 0, 0x502, 2, 0x578)->unk10;
     MI_CpuFill16(s, 0, 0x578);
-    s->unk68 = Boss3PartCD_State_Unk_ov000_022d5d10;
+    s->unk68 = Boss3PartCD_State_Idle;
     s->unk212 = 0x1000;
     func_02021310(ctx, data_ov000_02365544, gZoneActArchive);
     s->unk290.unk170 = func_02021264(ctx, 8);

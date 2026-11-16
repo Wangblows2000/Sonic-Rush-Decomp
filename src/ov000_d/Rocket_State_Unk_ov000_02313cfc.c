@@ -28,7 +28,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_02313cfc_4560;
 
-extern UnkStruct_02313cfc_4560 data_022c4560;
+extern UnkStruct_02313cfc_4560 gGameState;
 extern void *gPlayers[];
 extern u32 gRandSeed;
 
@@ -53,7 +53,7 @@ void Rocket_State_Unk_ov000_02313cfc(UnkStruct_02313cfc *w) {
     } else {
         Sound_SetPositional(w->unk1DC, w, gPlayers[0]);
     }
-    if (!(data_022c4560.unk20 & 3)) {
+    if (!(gGameState.unk20 & 3)) {
         s16 x;
         s16 y;
         UnkStruct_02313cfc_Eff *e;

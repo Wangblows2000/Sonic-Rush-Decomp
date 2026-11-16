@@ -17,7 +17,7 @@ u8 *NNS_G3dGetMdlSet(void *p);
 void NNS_G3dMdlSetMdlDiffAll(void *s, u32 v);
 void NNS_G3dMdlSetMdlAmbAll(void *s, u32 v);
 void NNS_G3dMdlSetMdlEmiAll(void *s, u32 v);
-void *func_ov001_02300c94(void);
+void *ExtraBoss_GetPlayer(void);
 void func_ov001_022fbfcc(void);
 void func_ov001_022fb974(void);
 void func_ov001_022fb918(void);
@@ -52,7 +52,7 @@ void func_ov001_022fc09c(void *parent, s32 x, s32 y, s32 z, u16 ang) {
     NNS_G3dMdlSetMdlDiffAll(h, 0x7fff);
     NNS_G3dMdlSetMdlAmbAll(h, 0);
     NNS_G3dMdlSetMdlEmiAll(h, 0);
-    *(void **)(t + 0x80) = func_ov001_02300c94();
+    *(void **)(t + 0x80) = ExtraBoss_GetPlayer();
     *(void **)(t + 0x74) = func_ov001_022fbfcc;
     *(s32 *)(t + 0x18) = x;
     *(s32 *)(t + 0x1c) = y;

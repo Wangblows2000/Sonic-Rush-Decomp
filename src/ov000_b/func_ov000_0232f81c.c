@@ -3,7 +3,7 @@
 extern void *gZoneActArchive;
 extern u8 data_ov000_02368210[], data_ov000_0236a9c8[];
 
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void func_ov000_0232f6f4(void);
 
 void func_ov000_0232f81c(UnkStruct_StageObj *arg) {
@@ -28,7 +28,7 @@ void func_ov000_0232f81c(UnkStruct_StageObj *arg) {
     w->unk10 = arg->unk10;
     w->unk14 = arg->unk14;
     w->unk88 = arg;
-    if (func_ov000_02345758(w->unk10, w->unk14))
+    if (Stage_IsGravityFlipped(w->unk10, w->unk14))
         w->unk5C |= 2;
     if (w->unk5C & 2) {
         if (arg->unk5C & 1)

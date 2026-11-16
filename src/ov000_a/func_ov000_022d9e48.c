@@ -17,9 +17,9 @@ typedef struct UnkStruct_022d9e48_4 {
     s32 unk14;
 } UnkStruct_022d9e48_4;
 
-extern UnkStruct_022d9e48_7 data_ov000_02369ac0;
-extern UnkStruct_022d9e48 *data_ov000_02369b14;
-extern UnkStruct_022d9e48_4 data_022c4560;
+extern UnkStruct_022d9e48_7 gBossStatus;
+extern UnkStruct_022d9e48 *gBoss3;
+extern UnkStruct_022d9e48_4 gGameState;
 extern u32 gRandSeed;
 extern u8 data_ov000_02363178[][8];
 extern u8 data_ov000_02363198[][8];
@@ -44,17 +44,17 @@ static inline u16 Rand(void) {
 
 static inline s32 GetIdx(void) {
     BOOL b = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;
     if (b)
         return 1;
-    return data_022c4560.unk14;
+    return gGameState.unk14;
 }
 
 void func_ov000_022d9e48(void) {
-    UnkStruct_022d9e48 *c = data_ov000_02369b14;
+    UnkStruct_022d9e48 *c = gBoss3;
     u16 r;
-    if (data_ov000_02369ac0.unk8 >= 6) {
+    if (gBossStatus.unk8 >= 6) {
         switch (data_ov000_02363178[c->unk21E][c->unk21C]) {
         case 0:
             func_ov000_022dabec(data_ov000_02363098[Rand() & 7]);
@@ -64,7 +64,7 @@ void func_ov000_022d9e48(void) {
             func_ov000_022dab6c(data_ov000_023630f0[GetIdx()][r & 3]);
             break;
         }
-    } else if (data_ov000_02369ac0.unk8 >= 3) {
+    } else if (gBossStatus.unk8 >= 3) {
         switch (data_ov000_02363198[c->unk21E][c->unk21C]) {
         case 0:
             func_ov000_022dabec(data_ov000_02363090[Rand() & 7]);

@@ -3,12 +3,12 @@
 
 s32 func_ov000_022f4ce4();
 s32 Sound_PlaySeqArc();
-s32 func_020366f4();
-void func_ov000_022f08c8();
+s32 Sound_PlayVoice();
+void BossFPartD8_State_Unk_ov000_022f08c8();
 
 void func_ov000_022f0968(u8 *p0) {
     func_ov000_022f4ce4(p0, 0x21, 0x1000, 1);
     Sound_PlaySeqArc(0, 0, 0xc7);
-    func_020366f4(0, 0, 0xd1);
-    *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022f08c8;
+    Sound_PlayVoice(0, 0, 0xd1);
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)BossFPartD8_State_Unk_ov000_022f08c8;
 }

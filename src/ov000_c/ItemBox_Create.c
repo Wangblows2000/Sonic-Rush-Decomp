@@ -10,14 +10,14 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02366b74[], data_ov000_0236a01c[];
 
 void MapObject_Destructor(void);
 void ItemBox_OnHit(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void ItemBox_CreatePart_ov000_0230d930(UnkStruct_0230de00 *w, s32 a, s32 b, u16 c);
-void func_ov000_0230ddf0(UnkStruct_0230de00 *w);
+void ItemBox_Action_Unk_ov000_0230ddf0(UnkStruct_0230de00 *w);
 
 UnkStruct_0230de00 *ItemBox_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -38,7 +38,7 @@ UnkStruct_0230de00 *ItemBox_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll0.unk1C = ItemBox_OnHit;
     w->base.coll0.unkA |= 0x800;
     w->base.unk58 |= 0x2100;
-    if (data_022c4560.unk10 == 2) {
+    if (gGameState.unk10 == 2) {
         if (w->base.unk1E0->unk6 == 2)
             w->base.unk1E0->unk6 = 3;
     }
@@ -61,7 +61,7 @@ UnkStruct_0230de00 *ItemBox_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
             break;
         }
     }
-    if (func_ov000_02345758(w->base.unk10, w->base.unk14)) {
+    if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14)) {
         w->base.unk5C |= 2;
         w->base.unk5 = 0x80;
     }
@@ -71,6 +71,6 @@ UnkStruct_0230de00 *ItemBox_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         StageObj_SetAnimation(w, 1);
         w->base.unk5C |= 4;
     }
-    func_ov000_0230ddf0(w);
+    ItemBox_Action_Unk_ov000_0230ddf0(w);
     return w;
 }

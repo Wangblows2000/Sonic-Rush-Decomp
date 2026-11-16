@@ -17,7 +17,7 @@ typedef struct {
     u8 unk1C;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void Spring_Action_Activate(UnkStruct_StageObj *o);
 void Player_Action_SpringLaunchAlt(UnkPlayer_023168a4 *p);
@@ -58,7 +58,7 @@ void Spring_OnHit(UnkColl_023168a4 *a, UnkColl_023168a4 *b) {
         vx = -vx;
     if ((id == 0x45 || id == 0x46) && !(prm->unk4 & 2))
         p->unk14 = o->unk14 + 0x200;
-    if (data_022c4560.unk1C == 3)
+    if (gGameState.unk1C == 3)
         Player_Action_SpringLaunchAlt(p);
     else
         Player_Action_SpringLaunch(p, vx, vy);

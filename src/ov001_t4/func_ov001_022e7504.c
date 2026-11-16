@@ -38,7 +38,7 @@ typedef struct {
 } UnkCfg_022e7504;
 
 extern UnkTask_022e7504 *gTaskCurrent;
-extern UnkCfg_022e7504 data_022c4560;
+extern UnkCfg_022e7504 gGameState;
 
 void func_ov001_022e3840(void *p, s32 a);
 void func_ov001_022e3844(void *p, s32 a);
@@ -125,7 +125,7 @@ void func_ov001_022e7504(void) {
             w->map->unk19ac = 0x1f;
             SysSound_Init();
             alt = FALSE;
-            if (data_022c4560.unk0 == 0) {
+            if (gGameState.unk0 == 0) {
                 if (w->unk4 >= 0x1f && w->unk4 <= 0x21) {
                     alt = TRUE;
                 }

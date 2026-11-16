@@ -23,25 +23,25 @@ struct UnkStruct_022c61ec {
     s16 unk2CE;
 };
 
-extern UnkStruct_022c61ec_2 *data_ov000_02369acc;
+extern UnkStruct_022c61ec_2 *gBoss1;
 
 void func_ov000_022c71d8(s16 a);
 s32 func_0200225c(s32 a, s32 b);
-void func_ov000_022c5fe4(UnkStruct_022c61ec *s);
+void Boss1Hammer_State_Unk_ov000_022c5fe4(UnkStruct_022c61ec *s);
 
 void func_ov000_022c61ec(UnkStruct_022c61ec *s) {
     s32 v;
-    if (data_ov000_02369acc->unk228 > 0)
+    if (gBoss1->unk228 > 0)
         s->unk2CE = -0xc00;
     else
         s->unk2CE = 0xc00;
-    func_ov000_022c71d8(-data_ov000_02369acc->unk228);
+    func_ov000_022c71d8(-gBoss1->unk228);
     s->unk2C0 = 0;
     v = (s16)s->unk2E;
     if (v < 0)
         v = -v;
     s->unk2C2 = func_0200225c(v << 4, 0x78000);
     s->unk2C2 >>= 1;
-    s->func = func_ov000_022c5fe4;
+    s->func = Boss1Hammer_State_Unk_ov000_022c5fe4;
     s->func(s);
 }

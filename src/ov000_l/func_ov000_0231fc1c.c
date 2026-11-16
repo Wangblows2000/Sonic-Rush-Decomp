@@ -11,7 +11,7 @@ typedef struct {
     u8 pad4[4];
 } UnkWork_0231fc1c;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s32 data_ov000_023644e0[][3];
 
 void func_ov000_0231fbf0(void);
@@ -25,5 +25,5 @@ void func_ov000_0231fc1c(void) {
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_0231fc1c));
-    w->unk0 = data_ov000_023644e0[data_022c4560.unk1C][data_022c4560.unk1D];
+    w->unk0 = data_ov000_023644e0[gGameState.unk1C][gGameState.unk1D];
 }

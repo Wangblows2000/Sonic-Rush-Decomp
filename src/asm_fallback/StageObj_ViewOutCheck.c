@@ -3,7 +3,7 @@
 
 extern u32 data_0207cf80;
 extern u32 gObjManagerFlags;
-extern u32 data_ov000_0236aad8;
+extern u32 gCamera;
 
 asm void StageObj_ViewOutCheck(void)
 {
@@ -153,5 +153,5 @@ _21c:
     bx lr
     dcd data_0207cf80
     dcd gObjManagerFlags
-    dcd data_ov000_0236aad8
+    dcd gCamera
 }

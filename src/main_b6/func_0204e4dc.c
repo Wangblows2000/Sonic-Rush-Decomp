@@ -16,7 +16,7 @@ typedef struct {
     u16 unk64;
 } UnkProg_0204e4dc;
 
-extern UnkState_0204e4dc data_022c4560;
+extern UnkState_0204e4dc gGameState;
 extern UnkProg_0204e4dc gSaveData;
 extern u16 data_022c45f8;
 extern u8 data_02074bbc[];
@@ -30,8 +30,8 @@ void func_02059bcc(u8 v);
 u16 func_0204e614(u16 v);
 
 void func_0204e4dc(void) {
-    u32 z = func_0204e6e8(data_022c4560.zone);
-    u8 a = func_0204e6e4(data_022c4560.act);
+    u32 z = func_0204e6e8(gGameState.zone);
+    u8 a = func_0204e6e4(gGameState.act);
 
     if (z >= 7)
         return;
@@ -42,13 +42,13 @@ void func_0204e4dc(void) {
     }
     if (func_0204eb7c()) {
         data_022c45f8 |= 1;
-        if (data_022c4560.unk0 != 1)
+        if (gGameState.unk0 != 1)
             func_02059bdc(a != 2 ? data_02074bbc[z] - 1 : data_02074bbc[z]);
         else
             func_02059bcc(a != 2 ? data_02074bb4[z] - 1 : data_02074bb4[z]);
     }
-    if (data_022c4560.unk0 != 1)
-        data_022c4560.unke = func_0204e614(gSaveData.unkc);
+    if (gGameState.unk0 != 1)
+        gGameState.unke = func_0204e614(gSaveData.unkc);
     else
-        data_022c4560.unke = func_0204e614(gSaveData.unk64);
+        gGameState.unke = func_0204e614(gSaveData.unk64);
 }

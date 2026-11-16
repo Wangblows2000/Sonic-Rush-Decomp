@@ -9,7 +9,7 @@ typedef struct {
     u32 unk8;
 } UnkProg_0204e614;
 
-extern UnkState_0204e614 data_022c4560;
+extern UnkState_0204e614 gGameState;
 extern UnkProg_0204e614 gSaveData;
 extern u8 data_02074bbc[];
 extern u8 data_02074bb4[];
@@ -19,7 +19,7 @@ u8 func_0204e614(u16 t) {
     u8 i = 0;
     u8 *tbl;
 
-    if (data_022c4560.unk0 != 1)
+    if (gGameState.unk0 != 1)
         tbl = data_02074bbc;
     else
         tbl = data_02074bb4;

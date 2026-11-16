@@ -43,7 +43,7 @@ typedef struct {
     UnkStruct_022ee654_Par *unk214;
 } UnkStruct_02369b78;
 
-extern UnkStruct_02369b78 *data_ov000_02369b78;
+extern UnkStruct_02369b78 *gBoss7;
 extern void *gZoneActArchive;
 extern u8 data_ov000_02365ae8[];
 
@@ -58,7 +58,7 @@ void Model_SetResource(void *s, void *res, s32 idx);
 
 UnkStruct_022ee654 *Boss7PartD6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
-    UnkStruct_02369b78 *mgr = data_ov000_02369b78;
+    UnkStruct_02369b78 *mgr = gBoss7;
     UnkStruct_022ee654 *w;
     UnkStruct_022ee654_Par *par = mgr->unk214;
     UnkStruct_Coll *coll;

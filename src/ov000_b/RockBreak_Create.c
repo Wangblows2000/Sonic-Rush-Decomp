@@ -5,7 +5,7 @@ extern u8 data_ov000_02366df8[], data_ov000_0236a1bc[], data_ov000_023661c0[];
 
 void MapObject_Destructor(void);
 void RockBreak_OnHit(void);
-void func_ov000_0231394c(UnkStruct_StageObj *w);
+void RockBreak_Action_Unk_ov000_0231394c(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *RockBreak_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -32,6 +32,6 @@ UnkStruct_StageObj *RockBreak_Create(s32 a, s32 b, s32 c) {
     w->unk1DA = 4;
     w->unk1D4 = -0x12;
     w->unk1D6 = -0x10;
-    func_ov000_0231394c(w);
+    RockBreak_Action_Unk_ov000_0231394c(w);
     return w;
 }

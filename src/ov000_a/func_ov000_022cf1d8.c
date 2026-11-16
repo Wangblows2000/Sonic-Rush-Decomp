@@ -49,7 +49,7 @@ s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 void ScreenShake_Start(s32 a);
 void func_ov000_022cf118(UnkStruct_022cf1d8 *t);
-void func_ov000_022cd500(void);
+void Boss2WaterLight_CreateApplyAlt(void);
 
 void func_ov000_022cf1d8(UnkStruct_022cf1d8 *t) {
     t->unk8 += 0x1b33;
@@ -63,6 +63,6 @@ void func_ov000_022cf1d8(UnkStruct_022cf1d8 *t) {
         ScreenShake_Start(0xc);
         t->unkC = 0xf;
     } else if (t->unkC == 0x76) {
-        func_ov000_022cd500();
+        Boss2WaterLight_CreateApplyAlt();
     }
 }

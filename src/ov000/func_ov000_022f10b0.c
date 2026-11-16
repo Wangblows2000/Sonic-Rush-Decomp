@@ -6,9 +6,9 @@ typedef struct UnkStruct_022f10b0 {
 } UnkStruct_022f10b0;
 
 void func_ov000_022f4ce4(UnkStruct_022f10b0 *s, s32 a, s32 b, s32 c);
-void func_ov000_022f1064(void);
+void BossFPartD8_State_Unk_ov000_022f1064(void);
 
 void func_ov000_022f10b0(UnkStruct_022f10b0 *s) {
     func_ov000_022f4ce4(s, 0x2b, 0x1000, 0);
-    s->func = func_ov000_022f1064;
+    s->func = BossFPartD8_State_Unk_ov000_022f1064;
 }

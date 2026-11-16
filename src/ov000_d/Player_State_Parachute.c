@@ -23,7 +23,7 @@ typedef struct {
 } UnkStruct_0234f3b4;
 
 s32 ObjShift_SetFromRef(s32 v, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_ov000_0234f320(UnkStruct_0234f3b4 *w);
+void Player_Action_ParachuteRelease(UnkStruct_0234f3b4 *w);
 
 void Player_State_Parachute(UnkStruct_0234f3b4 *w) {
     s32 d;
@@ -53,7 +53,7 @@ void Player_State_Parachute(UnkStruct_0234f3b4 *w) {
         if (w->unkC <= 0x10) {
             return;
         }
-        func_ov000_0234f320(w);
+        Player_Action_ParachuteRelease(w);
         break;
     }
 }

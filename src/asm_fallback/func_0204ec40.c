@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u32 data_02074bb4;
-extern u32 data_022c4560;
+extern u32 gGameState;
 extern u32 data_022c4590;
 extern u32 gSaveData;
 extern u32 data_022c468c;
@@ -65,7 +65,7 @@ _ac:
     str r1, [r0, #0x14]
     ldmia sp!, {r4, lr}
     bx lr
-    dcd data_022c4560
+    dcd gGameState
     dcd data_022c468c
     dcd data_022c4590
     dcd data_02074bb4

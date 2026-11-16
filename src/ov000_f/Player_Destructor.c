@@ -52,7 +52,7 @@ typedef struct {
     u32 unk3C;
 } UnkStruct_0234d384_4590;
 
-extern UnkStruct_0234d384_4560 data_022c4560;
+extern UnkStruct_0234d384_4560 gGameState;
 extern UnkStruct_0234d384_4590 data_022c4590;
 extern void *gMainHeap;
 extern u8 gPlayerCount;
@@ -62,7 +62,7 @@ void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-void func_0206ce90(void *p);
+void ModelPalette_Release(void *p);
 void StageObj_Destructor(UnkStruct_0234d384 *t);
 
 static inline void Free_0234d384(void *p) {
@@ -86,10 +86,10 @@ void Player_Destructor(UnkStruct_0234d384 *t) {
     NNS_SndHandleReleaseSeq(w->unk388);
     NNS_SndHandleReleaseSeq(w->unk38C);
     NNS_SndHandleReleaseSeq(w->unk390);
-    if ((data_022c4560.unk18 & 0x40) && w->unk325 == 0) {
+    if ((gGameState.unk18 & 0x40) && w->unk325 == 0) {
         data_022c4590.unk28 = w->unk3AE;
         data_022c4590.unk2A = w->unk3B0;
-        data_022c4590.unk3C = data_022c4560.unk20;
+        data_022c4590.unk3C = gGameState.unk20;
         data_022c4590.unk2C = 0;
         if (w->unk32C & 0x10000000) {
             data_022c4590.unk2C = 1;
@@ -116,7 +116,7 @@ void Player_Destructor(UnkStruct_0234d384 *t) {
     if (w->unk1FC != NULL) {
         Free_0234d384(w->unk1FC);
     }
-    func_0206ce90(w->unk414);
+    ModelPalette_Release(w->unk414);
     gPlayerCount--;
     StageObj_Destructor(t);
 }

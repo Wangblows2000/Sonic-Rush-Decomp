@@ -19,10 +19,10 @@ typedef int code();
 #define true 1
 #define false 0
 
-int SceneChange_Unk_02055044();
-int SceneChange_Unk_02055028();
-int Options_Unk_ov001_022cee04();
-int Options_Unk_ov001_022cedc0();
+int SceneChange_ToPlayerSelectMenuMode3();
+int SceneChange_ToPlayerSelectMenuMode4();
+int Options_StartFromZoneMapPauseChoice2();
+int Options_StartFromZoneMapPauseChoice3();
 
 #pragma thumb on
 
@@ -31,16 +31,16 @@ void ZoneMapPause_ExecuteChoice(undefined4 param_1)
 {
   switch(param_1) {
   case 0:
-    SceneChange_Unk_02055044();
+    SceneChange_ToPlayerSelectMenuMode3();
     return;
   case 1:
-    SceneChange_Unk_02055028();
+    SceneChange_ToPlayerSelectMenuMode4();
     return;
   case 2:
-    Options_Unk_ov001_022cee04();
+    Options_StartFromZoneMapPauseChoice2();
     return;
   case 3:
-    Options_Unk_ov001_022cedc0();
+    Options_StartFromZoneMapPauseChoice3();
   }
   return;
 }

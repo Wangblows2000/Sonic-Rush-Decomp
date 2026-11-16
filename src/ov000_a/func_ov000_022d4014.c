@@ -96,13 +96,13 @@ struct UnkStruct_022d4014 {
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 
-void func_ov000_022d3fe4(UnkStruct_022d4014 *s);
+void Boss2_State_Unk_ov000_022d3fe4(UnkStruct_022d4014 *s);
 
 void func_ov000_022d4014(UnkStruct_022d4014 *s) {
     s->unk12F4--;
     if (s->unk12F4 != 0)
         return;
-    s->func = func_ov000_022d3fe4;
+    s->func = Boss2_State_Unk_ov000_022d3fe4;
     s->unkA9C.unk10C &= ~4;
     s->unkBD4.unk10C &= ~4;
     s->unkD0C.unk10C &= ~4;

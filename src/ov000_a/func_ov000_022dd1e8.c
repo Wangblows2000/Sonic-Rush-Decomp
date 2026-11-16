@@ -71,7 +71,7 @@ typedef struct UnkStruct_022dd1e8_g {
     s16 unk48;
 } UnkStruct_022dd1e8_g;
 
-extern UnkStruct_022dd1e8_w *data_ov000_02369b2c;
+extern UnkStruct_022dd1e8_w *gBoss4;
 extern UnkStruct_022dd1e8_c data_ov000_0236a48c;
 extern UnkStruct_022dd1e8_p *gPlayers;
 extern UnkStruct_022dd1e8_g gDisplayMain;
@@ -84,7 +84,7 @@ UnkStruct_022dd1e8_q *BossEffect_CreateBlast4(s32 a, s32 b, s32 c, s32 d);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022dd12c(UnkStruct_022dd1e8 *t);
+void Boss4_State_Unk_ov000_022dd12c(UnkStruct_022dd1e8 *t);
 
 static inline u32 GX_GetVisiblePlane(void) {
     return (*(vu32 *)0x4000000 & 0x1f00) >> 8;
@@ -95,7 +95,7 @@ static inline void GX_SetVisiblePlane(u32 p) {
 }
 
 void func_ov000_022dd1e8(UnkStruct_022dd1e8 *t) {
-    UnkStruct_022dd1e8_w *w = data_ov000_02369b2c;
+    UnkStruct_022dd1e8_w *w = gBoss4;
     UnkStruct_022dd1e8_a *a;
     s32 i;
     UnkStruct_022dd1e8_c *c = (UnkStruct_022dd1e8_c *)(u32)&data_ov000_0236a48c;
@@ -138,6 +138,6 @@ void func_ov000_022dd1e8(UnkStruct_022dd1e8 *t) {
     Sound_PlaySeqArc(0, 0, 0x7d);
     for (i = 0; i < 7; i++)
         w->unk228[i].unk4 &= ~2;
-    t->func = func_ov000_022dd12c;
+    t->func = Boss4_State_Unk_ov000_022dd12c;
     w->unk224 = 0;
 }

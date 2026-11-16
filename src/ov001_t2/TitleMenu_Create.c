@@ -20,7 +20,7 @@ void TitleMenu_Main(void);
 void TitleMenu_Destructor(void);
 s32 func_ov001_022d8e58(void);
 void TitleMenu_LoadAssets(UnkWork_022d94b4 *w);
-void func_ov001_022d91c4(void);
+void TitleMenu_InitDisplay(void);
 void func_ov001_022d8e74(UnkWork_022d94b4 *w);
 void Touch_Enable(void);
 void Pad_Reset(void *p, s32 a, s32 b);
@@ -38,7 +38,7 @@ UnkWork_022d94b4 *TitleMenu_Create(void) {
     w->unk4 = 0;
     w->unk8 = func_ov001_022d8e58();
     TitleMenu_LoadAssets(w);
-    func_ov001_022d91c4();
+    TitleMenu_InitDisplay();
     func_ov001_022d8e74(w);
     Touch_Enable();
     Pad_Reset(gPad, 0, 0);

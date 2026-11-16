@@ -1,17 +1,17 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0234cb70();
+s32 Player_InitState();
 s32 Player_SetAnimation();
 void Player_State_Pipe();
-s32 func_ov000_02346aa8();
+s32 Player_StopBoost();
 s32 Sound_PlaySeqArcEx();
 
 void Player_Action_Pipe(u8 *p0, s32 p1, s32 p2) {
     if (*(u32 *)((u8 *)p0 + 0x3e8) == (s32)p1) {
         return;
     }
-    func_ov000_0234cb70(p0, p1, p2, *(u32 *)((u8 *)p0 + 0x3e8));
+    Player_InitState(p0, p1, p2, *(u32 *)((u8 *)p0 + 0x3e8));
     *(u32 *)((u8 *)p0 + 0x3e8) = p1;
     Player_SetAnimation(p0, 0x31);
     s32 t0 = (*(u16 *)((u8 *)p0 + 0x5c) | 4);
@@ -27,7 +27,7 @@ void Player_Action_Pipe(u8 *p0, s32 p1, s32 p2) {
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x100);
     s32 t1 = (*(u32 *)((u8 *)p0 + 0x32c) & ~1);
     *(u32 *)((u8 *)p0 + 0x32c) = t1;
-    func_ov000_02346aa8(p0, t1, t0);
+    Player_StopBoost(p0, t1, t0);
     *(u32 *)((u8 *)p0 + 0x32c) = (*(u32 *)((u8 *)p0 + 0x32c) | 0x100000);
     *(u16 *)((u8 *)p0 + 0x34) = 0;
     *(u16 *)((u8 *)p0 + 0x2e) = 0;

@@ -73,19 +73,19 @@ typedef struct UnkStruct_022ccc38_g {
     s32 unk18;
 } UnkStruct_022ccc38_g;
 
-extern UnkStruct_022ccc38_g *data_ov000_02369acc;
+extern UnkStruct_022ccc38_g *gBoss1;
 
 UnkTask_022ccc38 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c, s32 d, s32 e);
 void StageObj_Main(void);
 void Boss1Neck_Destructor(void);
-void Boss1Neck_State_Unk_ov000_022c9db8(void);
+void Boss1Neck_State_Idle(void);
 void Boss1Neck_Draw(void);
 void func_ov000_022ca0a8(void);
-void Boss1Hammer_State_Unk_ov000_022c697c(void);
+void Boss1Hammer_State_Idle(void);
 void Boss1Hammer_Draw(void);
 void Boss1Hammer_Collide(void);
-void func_ov000_022c6bc0(void);
-void func_ov000_022c6980(void);
+void Boss1Hammer_OnHit_Damage(void);
+void Boss1Hammer_OnHit_PushPlayer(void);
 void func_ov000_022c72f8(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_02021310(void *ctx, void *a, void *b);
@@ -106,11 +106,11 @@ static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
 UnkStruct_022ccc38 *Boss1Neck_Create(s32 a, s32 x, s32 y) {
     u32 ctx[0x5c / 4];
     UnkStruct_022ccc38 *s;
-    UnkStruct_022ccc38_g *g = data_ov000_02369acc;
+    UnkStruct_022ccc38_g *g = gBoss1;
     UnkStruct_022ccc38_a *p;
     s = Task_Create(StageObj_Main, Boss1Neck_Destructor, 0, 0x501, 2, 0x360)->unk10;
     MI_CpuFill16(s, 0, 0x360);
-    s->unk68 = Boss1Neck_State_Unk_ov000_022c9db8;
+    s->unk68 = Boss1Neck_State_Idle;
     func_02021310(ctx, data_ov000_0236505c, gZoneActArchive);
     if (func_ov000_022cc6d4()) {
         s->unk220 = func_02021264(ctx, 8);

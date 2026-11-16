@@ -6,15 +6,15 @@ typedef struct {
 } UnkPlayer_02341358;
 
 extern u16 data_ov000_0236aab0;
-extern UnkPlayer_02341358 data_ov000_0236aad8[];
+extern UnkPlayer_02341358 gCamera[];
 
 void func_ov000_02341358(void) {
     if (data_ov000_0236aab0 & 1) {
-        data_ov000_0236aad8[0].flags |= 4;
-        data_ov000_0236aad8[1].flags |= 4;
+        gCamera[0].flags |= 4;
+        gCamera[1].flags |= 4;
     } else {
-        data_ov000_0236aad8[0].flags &= ~4;
-        data_ov000_0236aad8[1].flags &= ~4;
+        gCamera[0].flags &= ~4;
+        gCamera[1].flags &= ~4;
         return;
     }
     data_ov000_0236aab0 |= 2;

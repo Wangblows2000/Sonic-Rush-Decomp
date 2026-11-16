@@ -49,7 +49,7 @@ void func_ov001_022f167c(void);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 u8 *ExtraBoss_GetWork(void);
 void Sound_PlaySeqArc(void *p, u32 a, u32 b);
-void func_020366f4(void *p, u32 a, u32 b);
+void Sound_PlayVoice(void *p, u32 a, u32 b);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -86,5 +86,5 @@ void func_ov001_022f18e4(UnkStruct_022f18e4 *p) {
         p->unk1C8 = 0xd2;
     }
     Sound_PlaySeqArc(ExtraBoss_GetWork() + 0x33c, 0, 0xb3);
-    func_020366f4(0, 0, 0xd1);
+    Sound_PlayVoice(0, 0, 0xd1);
 }

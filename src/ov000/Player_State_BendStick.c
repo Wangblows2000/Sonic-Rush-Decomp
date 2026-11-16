@@ -5,12 +5,12 @@ typedef struct UnkStruct_023548a4 {
     s32 unkC;
 } UnkStruct_023548a4;
 
-void func_ov000_023547f0(UnkStruct_023548a4 *s);
+void Player_Action_BendStickLaunch(UnkStruct_023548a4 *s);
 
 void Player_State_BendStick(UnkStruct_023548a4 *s) {
     if (s->unkC != 0) {
         s->unkC--;
         return;
     }
-    func_ov000_023547f0(s);
+    Player_Action_BendStickLaunch(s);
 }

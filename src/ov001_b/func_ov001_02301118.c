@@ -23,7 +23,7 @@ typedef struct UnkStruct_02301118 {
     void *unk1DC;
 } UnkStruct_02301118;
 
-extern u8 *data_ov001_0231f530;
+extern u8 *gExtraBossPlayerManager;
 extern void *gMainHeap;
 
 void func_ov001_02302ac8(UnkStruct_02301118 *w);
@@ -37,7 +37,7 @@ void Heap_Free(void *heap, void *p);
 void Model_Release(void *p);
 void Task_Destroy(void *p);
 
-#define ARR(off, i) (((u32 *)(data_ov001_0231f530 + (off)))[i])
+#define ARR(off, i) (((u32 *)(gExtraBossPlayerManager + (off)))[i])
 
 void func_ov001_02301118(UnkStruct_02301118 *w) {
     vu32 fill1;

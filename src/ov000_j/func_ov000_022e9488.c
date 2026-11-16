@@ -16,11 +16,11 @@ typedef struct {
     s32 unk4;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 
 void func_ov000_022ee198(UnkStruct_022e9488 *p, s32 a);
 void func_ov000_022e9b70(UnkStruct_022e9488 *p, s32 a, s32 b);
-void func_ov000_022e9454(UnkStruct_022e9488 *p);
+void Boss7PartD5_MoveState_Unk_ov000_022e9454(UnkStruct_022e9488 *p);
 
 void func_ov000_022e9488(UnkStruct_022e9488 *p) {
     func_ov000_022ee198(p, 0x15);
@@ -31,6 +31,6 @@ void func_ov000_022e9488(UnkStruct_022e9488 *p) {
         p->unk2E = -0xa00;
     p->unk30 = -0x140;
     p->unk58 |= 0x10;
-    data_ov000_02369ac0.unk4 = 0x26;
-    p->unk440 = func_ov000_022e9454;
+    gBossStatus.unk4 = 0x26;
+    p->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e9454;
 }

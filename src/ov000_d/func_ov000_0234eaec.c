@@ -17,15 +17,15 @@ typedef struct {
     u16 unk420;
 } UnkStruct_0234eaec;
 
-extern UnkStruct_0234eaec_Cam data_ov000_0236aad8[];
+extern UnkStruct_0234eaec_Cam gCamera[];
 
 s16 ObjSpd_DownSet(s16 v, s32 a);
 s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 void func_ov000_0234e894(UnkStruct_0234eaec *w);
 
 void func_ov000_0234eaec(UnkStruct_0234eaec *w) {
-    data_ov000_0236aad8[w->unk327].unk0 &= ~1;
-    data_ov000_0236aad8[w->unk327].unk0 &= ~2;
+    gCamera[w->unk327].unk0 &= ~1;
+    gCamera[w->unk327].unk0 &= ~2;
     if (w->unk420 & 0x30) {
         if (w->unk420 & 0x10) {
             if (w->unk2E < 0) {

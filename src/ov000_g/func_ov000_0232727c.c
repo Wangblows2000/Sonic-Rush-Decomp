@@ -22,7 +22,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_0232727c_Sys;
 
-extern UnkStruct_0232727c_Sys data_022c4560;
+extern UnkStruct_0232727c_Sys gGameState;
 
 UnkStruct_0232727c *EffFire01_3D_Create(void *p, s16 a, s16 b, s16 c);
 void func_ov000_02327104(void);
@@ -35,7 +35,7 @@ void func_ov000_0232727c(void *p, s16 a, s16 b, s16 c) {
     c += 3 - (Rand() & 6);
     e = EffFire01_3D_Create(p, a, b, c);
     e->unk30 = -0x80;
-    e->unkC = (data_022c4560.unk20 & 0xf) << 12;
+    e->unkC = (gGameState.unk20 & 0xf) << 12;
     e->unk28 = a;
     e->unk2A = b;
     e->unk2C = c;

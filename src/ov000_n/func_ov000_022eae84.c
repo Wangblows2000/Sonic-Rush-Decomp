@@ -12,10 +12,10 @@ struct UnkStruct_022eae84 {
 
 extern UnkStruct_StageObj *gPlayers;
 
-void func_ov000_022ea25c(UnkStruct_022eae84 *s);
-void func_ov000_022ea614(UnkStruct_022eae84 *s);
-void func_ov000_022ea638(UnkStruct_022eae84 *s);
-void func_ov000_022ea3dc(UnkStruct_022eae84 *s);
+void Boss7PartD5_InputState_Unk_ov000_022ea25c(UnkStruct_022eae84 *s);
+void Boss7PartD5_InputState_Unk_ov000_022ea614(UnkStruct_022eae84 *s);
+void Boss7PartD5_InputState_Unk_ov000_022ea638(UnkStruct_022eae84 *s);
+void Boss7PartD5_InputState_Unk_ov000_022ea3dc(UnkStruct_022eae84 *s);
 
 void func_ov000_022eae84(UnkStruct_022eae84 *s) {
     UnkStruct_StageObj *p = gPlayers;
@@ -31,14 +31,14 @@ void func_ov000_022eae84(UnkStruct_022eae84 *s) {
             s->unk456 = (Rand() & 0xf) + 0xf;
         s->unk458 = (Rand() & 0x3f) + 0x3c;
         if (!(Rand() & 1))
-            s->unk43C = func_ov000_022ea614;
+            s->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea614;
         else
-            s->unk43C = func_ov000_022ea25c;
+            s->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea25c;
         return;
     }
     if (adx < 0x4000 && dy > 0x3000 && p->unk30 < 0) {
         s->unk456 = dx >> 8;
-        s->unk43C = func_ov000_022ea638;
+        s->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea638;
         return;
     }
     if ((s->base.unk5C & 1 ? 0x14000 - x : x) > 0x4000 && !(Rand() & 1)) {
@@ -46,7 +46,7 @@ void func_ov000_022eae84(UnkStruct_022eae84 *s) {
             s->unk456 = -1;
         else
             s->unk456 = 1;
-        s->unk43C = func_ov000_022ea3dc;
+        s->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea3dc;
         return;
     }
     if (s->base.unk10 > 0xa000)
@@ -54,5 +54,5 @@ void func_ov000_022eae84(UnkStruct_022eae84 *s) {
     else
         s->unk456 = (Rand() & 0xf) + 0xf;
     s->unk458 = (Rand() & 0x3f) + 0x3c;
-    s->unk43C = func_ov000_022ea25c;
+    s->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea25c;
 }

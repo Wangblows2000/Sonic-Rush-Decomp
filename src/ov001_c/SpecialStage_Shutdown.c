@@ -43,23 +43,23 @@ typedef struct UnkStruct_0230c104_4560 {
 extern UnkStruct_0230c104 *gSpecialStageWork;
 extern void *data_ov001_0231f5c4;
 extern void *gMainHeap;
-extern UnkStruct_0230c104_4560 data_022c4560;
+extern UnkStruct_0230c104_4560 gGameState;
 extern UnkStruct_0230c104_br gDisplayMain;
 extern UnkStruct_0230c104_p gDisplaySub[];
 
 void Task_Destroy(void *t);
-void func_ov001_0230f77c(u8 *blk);
-void func_ov001_02313900(u8 *blk);
+void SpecialStageGimmick_DestroyManager(u8 *blk);
+void SpecialStagePlayer_Destroy(u8 *blk);
 void func_ov001_0230b094(void);
-void func_ov001_023071fc(void);
-void func_ov001_0230f8b4(void);
-void func_ov001_0230db5c(void);
-void func_ov001_02313b58(void);
-void func_ov001_02315dc0(void);
-void func_ov001_0231444c(void);
-void func_ov001_0230a438(void);
-void func_ov001_023147dc(void);
-void func_ov001_0230bcc4(void *p);
+void SpecialStage_ReleaseActArchive(void);
+void SpecialStage_ReleaseGimmickModels(void);
+void SpecialStage_ReleaseMapModels(void);
+void SpecialStage_ReleasePlayerArchive(void);
+void SpecialStageCamera_Shutdown(void);
+void SpecialStage_ReleaseStageData(void);
+void SpecialStageHud_Destroy(void);
+void SpecialStageTrick_Shutdown(void);
+void SpecialStage_ReleaseHudAssets(void *p);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -90,25 +90,25 @@ void SpecialStage_Shutdown(void) {
         Task_Destroy(g->task10);
     if (g->task14 != NULL)
         Task_Destroy(g->task14);
-    func_ov001_0230f77c(g->unk1C);
+    SpecialStageGimmick_DestroyManager(g->unk1C);
     if (g->unk18 != NULL) {
-        func_ov001_02313900(g->unk18);
+        SpecialStagePlayer_Destroy(g->unk18);
         g->unk18 = NULL;
     }
     func_ov001_0230b094();
-    func_ov001_023071fc();
-    func_ov001_0230f8b4();
-    func_ov001_0230db5c();
-    func_ov001_02313b58();
-    func_ov001_02315dc0();
-    func_ov001_0231444c();
-    func_ov001_0230a438();
-    func_ov001_023147dc();
-    func_ov001_0230bcc4(data_ov001_0231f5c4);
+    SpecialStage_ReleaseActArchive();
+    SpecialStage_ReleaseGimmickModels();
+    SpecialStage_ReleaseMapModels();
+    SpecialStage_ReleasePlayerArchive();
+    SpecialStageCamera_Shutdown();
+    SpecialStage_ReleaseStageData();
+    SpecialStageHud_Destroy();
+    SpecialStageTrick_Shutdown();
+    SpecialStage_ReleaseHudAssets(data_ov001_0231f5c4);
     Free_0230c104(data_ov001_0231f5c4);
     data_ov001_0231f5c4 = NULL;
     if (g->unk24 != 0)
-        data_022c4560.unk28 |= 1 << g->unk4;
+        gGameState.unk28 |= 1 << g->unk4;
     Free_0230c104(gSpecialStageWork);
     gSpecialStageWork = NULL;
     gDisplayMain.b0 = 0;

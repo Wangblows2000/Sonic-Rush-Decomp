@@ -2,7 +2,7 @@
 
 u8 *ExtraBoss_GetWork(void);
 void func_ov001_023017c8(void *p);
-void func_ov001_023024d0(void *p, s32 a);
+void ExtraBossPlayer_ChangeState(void *p, s32 a);
 
 BOOL func_ov001_02302408(u8 *p) {
     u32 *a = *(u32 **)(p + 0x1dc);
@@ -19,11 +19,11 @@ BOOL func_ov001_02302408(u8 *p) {
         func_ov001_023017c8(p);
         r = TRUE;
     } else if (trg & keys[1]) {
-        func_ov001_023024d0(p, 8);
+        ExtraBossPlayer_ChangeState(p, 8);
         r = TRUE;
         *(u32 *)(p + 0x14) &= ~0x700;
     } else if (!(a[1] & 2) && (held & 0xf0)) {
-        func_ov001_023024d0(p, 2);
+        ExtraBossPlayer_ChangeState(p, 2);
         r = TRUE;
         *(u32 *)(p + 0x14) &= ~0x700;
     }

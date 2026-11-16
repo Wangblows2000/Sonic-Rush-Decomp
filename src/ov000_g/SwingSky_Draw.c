@@ -57,7 +57,7 @@ typedef struct {
 } UnkStruct_023180d8_Sys;
 
 extern UnkStruct_023180d8_Task *gTaskCurrent;
-extern UnkStruct_023180d8_Sys data_022c4560;
+extern UnkStruct_023180d8_Sys gGameState;
 extern s16 data_0206e470[];
 
 s16 ObjSpd_DownSet(s16 a, s32 b);
@@ -139,7 +139,7 @@ void SwingSky_Draw(void) {
     pos[n].y = pos[p].y + ((COS_IDX(idx) * 0x2400) >> 12);
     w->unk1C = pos[n].x;
     w->unk20 = pos[n].y;
-    if (!(data_022c4560.unk20 & 3)) {
+    if (!(gGameState.unk20 & 3)) {
         w->unk4A4 = (w->unk4A4 << 1) | ((w->unk4A4 & 0x20000000) >> 29);
     }
 }

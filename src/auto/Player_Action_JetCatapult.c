@@ -1,19 +1,19 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0234cb70();
+s32 Player_InitState();
 s32 Player_SetAnimation();
 void Player_State_JetCatapult();
 s32 Sound_PlaySeqArcEx();
-s32 func_ov000_02343498();
-s32 func_ov000_0234fad0();
+s32 AttackHitbox_Create();
+s32 AttackHitbox_SetJetCatapultState();
 
 void Player_Action_JetCatapult(u8 *p0, s32 p1) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x3e8);
     if (t0 == (s32)p1) {
         return;
     }
-    func_ov000_0234cb70(p0, p1, t0);
+    Player_InitState(p0, p1, t0);
     *(u32 *)((u8 *)p0 + 0x3e8) = p1;
     Player_SetAnimation(p0, 3);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)Player_State_JetCatapult;
@@ -36,6 +36,6 @@ void Player_Action_JetCatapult(u8 *p0, s32 p1) {
     *(u32 *)((u8 *)p0 + 0xc) = 0;
     *(u32 *)((u8 *)p0 + 0x3f0) = 0;
     Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0x6d, t1);
-    func_ov000_02343498(p0, -32, -32, 0x20, 0x20, 0);
-    func_ov000_0234fad0();
+    AttackHitbox_Create(p0, -32, -32, 0x20, 0x20, 0);
+    AttackHitbox_SetJetCatapultState();
 }

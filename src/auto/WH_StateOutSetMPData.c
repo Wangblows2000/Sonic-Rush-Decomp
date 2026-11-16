@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 WH_SetError();
-extern u8 data_022c196c[];
+extern u8 sConnectMode[];
 s32 WH_CallbackForWFS();
 
 void WH_StateOutSetMPData(u8 *p0) {
@@ -17,7 +17,7 @@ void WH_StateOutSetMPData(u8 *p0) {
     if (t1 != 0) {
         ((s32 (*)())t1)((t0 == 0), t1);
     }
-    if ((u32)(*(u32 *)data_022c196c - 0x6) > (u32)1) {
+    if ((u32)(*(u32 *)sConnectMode - 0x6) > (u32)1) {
         return;
     }
     WH_CallbackForWFS(p0);

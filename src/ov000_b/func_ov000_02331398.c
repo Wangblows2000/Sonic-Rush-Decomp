@@ -8,7 +8,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *gActComArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02368434[];
 extern u8 data_ov000_0236a9f8[];
 
@@ -23,7 +23,7 @@ UnkStruct_EffObj *func_ov000_02331398(UnkStruct_StageObj *arg, s16 x, s16 y, s32
 
     if (func_ov000_023270d8(arg))
         return NULL;
-    if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2)
+    if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2)
         return NULL;
     if (arg->unk0 != 1)
         return NULL;
@@ -38,7 +38,7 @@ UnkStruct_EffObj *func_ov000_02331398(UnkStruct_StageObj *arg, s16 x, s16 y, s32
     StageObj_SetAnimation(w, 0xa);
     StageObj_SetOAMOrder(w, 9);
     StageObj_SetOAMPriority(w, 1);
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->spr1.unk2C |= 0x80008;
     w->spr0.unk2C |= 0x400;
     w->spr1.unk2C |= 0x400;

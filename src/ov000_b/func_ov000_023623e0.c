@@ -11,31 +11,31 @@ typedef struct {
     void *unk1028;
 } UnkStruct_023623e0;
 
-void func_02040ef0(UnkStruct_023623e0_Obj *o, void *res, s32 a);
+void KeyframeAnim_Init(UnkStruct_023623e0_Obj *o, void *res, s32 a);
 
 #pragma thumb on
 
 void func_ov000_023623e0(UnkStruct_023623e0 *w) {
     void *res = w->unk1028;
 
-    func_02040ef0(&w->obj[0], res, 0);
-    func_02040ef0(&w->obj[1], res, 1);
-    func_02040ef0(&w->obj[2], res, 2);
-    func_02040ef0(&w->obj[3], res, 3);
-    func_02040ef0(&w->obj[4], res, 4);
-    func_02040ef0(&w->obj[5], res, 5);
-    func_02040ef0(&w->obj[6], res, 7);
-    func_02040ef0(&w->obj[7], res, 8);
-    func_02040ef0(&w->obj[8], res, 9);
-    func_02040ef0(&w->obj[9], res, 10);
-    func_02040ef0(&w->obj[10], res, 11);
-    func_02040ef0(&w->obj[11], res, 12);
-    func_02040ef0(&w->obj[12], res, 13);
-    func_02040ef0(&w->obj[13], res, 14);
-    func_02040ef0(&w->obj[14], res, 15);
-    func_02040ef0(&w->obj[15], res, 16);
-    func_02040ef0(&w->obj[16], res, 17);
-    func_02040ef0(&w->obj[17], res, 18);
+    KeyframeAnim_Init(&w->obj[0], res, 0);
+    KeyframeAnim_Init(&w->obj[1], res, 1);
+    KeyframeAnim_Init(&w->obj[2], res, 2);
+    KeyframeAnim_Init(&w->obj[3], res, 3);
+    KeyframeAnim_Init(&w->obj[4], res, 4);
+    KeyframeAnim_Init(&w->obj[5], res, 5);
+    KeyframeAnim_Init(&w->obj[6], res, 7);
+    KeyframeAnim_Init(&w->obj[7], res, 8);
+    KeyframeAnim_Init(&w->obj[8], res, 9);
+    KeyframeAnim_Init(&w->obj[9], res, 10);
+    KeyframeAnim_Init(&w->obj[10], res, 11);
+    KeyframeAnim_Init(&w->obj[11], res, 12);
+    KeyframeAnim_Init(&w->obj[12], res, 13);
+    KeyframeAnim_Init(&w->obj[13], res, 14);
+    KeyframeAnim_Init(&w->obj[14], res, 15);
+    KeyframeAnim_Init(&w->obj[15], res, 16);
+    KeyframeAnim_Init(&w->obj[16], res, 17);
+    KeyframeAnim_Init(&w->obj[17], res, 18);
 }
 
 #pragma thumb reset

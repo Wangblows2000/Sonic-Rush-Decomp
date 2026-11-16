@@ -15,7 +15,7 @@ extern UnkBlend_02063030 data_02087d44;
 extern UnkMosaic_02063030 gDisplayMain;
 extern UnkMosaic_02063030 gDisplaySub;
 
-s32 func_020428d4(void);
+s32 Wireless_GetLinkLevel(void);
 void AnimatorSprite_ProcessAnimation(UnkSpr_W50 *s, u32 a, u32 b);
 void AnimatorSprite_Draw(UnkSpr_W50 *s);
 void AnimatorSprite_SetAnimation(UnkSpr_W50 *s, u16 anim);
@@ -49,7 +49,7 @@ void func_02063030(UnkWork_02063030 *w) {
         gDisplayMain.unkC = w->unk8 << 1;
         gDisplaySub.unkC = w->unk8 << 1;
         spr = &w->spr[3];
-        anim = func_020428d4() + 1;
+        anim = Wireless_GetLinkLevel() + 1;
         spr->x = 0xe0;
         spr->y = 8;
         AnimatorSprite_SetAnimation(spr, anim);

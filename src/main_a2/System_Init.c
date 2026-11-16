@@ -41,7 +41,7 @@ void Rand_SeedFromRTC(void);
 void Wireless_Init(void);
 void Touch_Init(void);
 void Mic_InitSystem(void);
-void func_0202ff78(void);
+void System_CardPulledOutCallback(void);
 void CARD_SetPulledOutCallback(void (*func)(void));
 void OS_GetOwnerInfo(void *p);
 void PM_SetAmp(u32 a);
@@ -108,7 +108,7 @@ void System_Init(void) {
     Wireless_Init();
     Touch_Init();
     Mic_InitSystem();
-    CARD_SetPulledOutCallback(func_0202ff78);
+    CARD_SetPulledOutCallback(System_CardPulledOutCallback);
     OS_GetOwnerInfo(gGameLanguage);
     PM_SetAmp(0);
     REG_DISP3DCNT &= ~0x3002;

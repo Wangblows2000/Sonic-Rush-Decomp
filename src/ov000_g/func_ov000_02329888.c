@@ -28,7 +28,7 @@ extern s16 data_0206e470[];
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
 u32 FX_DivS32(u32 a, u32 b);
-s32 func_02066a9c(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
+s32 MapCollision_ProbeDistance(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02329888(UnkStruct_02329888 *w) {
     s32 r;
@@ -38,7 +38,7 @@ void func_ov000_02329888(UnkStruct_02329888 *w) {
     w->unkC += w->unk34;
     w->unk10 = w->unk1C + 0x5400 - ((COS((u16)((u8)FX_DivS32(w->unkC << 8, 0x21e52) << 8)) * 0x54) >> 4);
     w->unk14 += w->unk30;
-    r = func_02066a9c(w->unk10 >> 8, w->unk14 >> 8, 1, 2, 0, 0);
+    r = MapCollision_ProbeDistance(w->unk10 >> 8, w->unk14 >> 8, 1, 2, 0, 0);
     if (w->unk8 > (u32)(w->unk14 >> 8) || r < 0)
         w->unk54 |= 4;
 }

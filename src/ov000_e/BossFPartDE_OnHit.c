@@ -28,8 +28,8 @@ typedef struct {
     u8 data[0x18];
 } UnkStruct_Line;
 
-void func_02038458(UnkStruct_Vec *a, UnkStruct_Vec *b, UnkStruct_Line *c);
-BOOL func_02038374(UnkStruct_Line *l, UnkStruct_Vec *a, UnkStruct_Vec *b, s32 r, UnkStruct_Vec *p);
+void Math_LineFromPoints(UnkStruct_Vec *a, UnkStruct_Vec *b, UnkStruct_Line *c);
+BOOL Math_SegmentHitsSphere(UnkStruct_Line *l, UnkStruct_Vec *a, UnkStruct_Vec *b, s32 r, UnkStruct_Vec *p);
 void Player_OnHurt(UnkStruct_Hit *b, UnkStruct_Hit *a);
 
 void BossFPartDE_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
@@ -55,8 +55,8 @@ void BossFPartDE_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
         ep.x = w->unk218[i].x << 4;
         ep.y = -w->unk218[i].y << 4;
         ep.z = w->unk218[i].z << 4;
-        func_02038458(&wp, &ep, &line);
-        if (func_02038374(&line, &wp, &ep, 0xc000, &pp)) {
+        Math_LineFromPoints(&wp, &ep, &line);
+        if (Math_SegmentHitsSphere(&line, &wp, &ep, 0xc000, &pp)) {
             Player_OnHurt(b, a);
             return;
         }

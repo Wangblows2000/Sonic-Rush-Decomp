@@ -20,8 +20,8 @@ typedef struct UnkStruct_022cd1b0_2 {
     s32 unk28;
 } UnkStruct_022cd1b0_2;
 
-extern UnkStruct_022cd1b0 *data_ov000_02369ae0;
-extern UnkStruct_022cd1b0_2 data_ov000_02369ae8;
+extern UnkStruct_022cd1b0 *gBoss2;
+extern UnkStruct_022cd1b0_2 gBossStage2Models;
 extern u32 data_ov000_02365110[];
 extern u32 data_ov000_023651c8[];
 extern u32 data_ov000_023650fc[];
@@ -37,14 +37,14 @@ void func_ov000_022cd1b0(u32 flags) {
     if (flags & 3)
         return;
     if (flags & 4) {
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk1C, data_ov000_02365110, data_ov000_02369ae0->unk1424, data_ov000_02362e04, 3);
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk24, data_ov000_023651c8, data_ov000_02369ae0->unk142C, data_ov000_02362e0c, 4);
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk20, data_ov000_023650fc, data_ov000_02369ae0->unk1434, data_ov000_02362dc8, 1);
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk28, data_ov000_02365108, data_ov000_02369ae0->unk143C, data_ov000_02362dc4, 1);
+        func_ov000_022c5d4c(gBossStage2Models.unk1C, data_ov000_02365110, gBoss2->unk1424, data_ov000_02362e04, 3);
+        func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_023651c8, gBoss2->unk142C, data_ov000_02362e0c, 4);
+        func_ov000_022c5d4c(gBossStage2Models.unk20, data_ov000_023650fc, gBoss2->unk1434, data_ov000_02362dc8, 1);
+        func_ov000_022c5d4c(gBossStage2Models.unk28, data_ov000_02365108, gBoss2->unk143C, data_ov000_02362dc4, 1);
     } else {
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk1C, data_ov000_02365110, data_ov000_02369ae0->unk1428, data_ov000_02362e04, 3);
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk24, data_ov000_023651c8, data_ov000_02369ae0->unk1430, data_ov000_02362e0c, 4);
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk20, data_ov000_023650fc, data_ov000_02369ae0->unk1438, data_ov000_02362dc8, 1);
-        func_ov000_022c5d4c(data_ov000_02369ae8.unk28, data_ov000_02365108, data_ov000_02369ae0->unk1440, data_ov000_02362dc4, 1);
+        func_ov000_022c5d4c(gBossStage2Models.unk1C, data_ov000_02365110, gBoss2->unk1428, data_ov000_02362e04, 3);
+        func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_023651c8, gBoss2->unk1430, data_ov000_02362e0c, 4);
+        func_ov000_022c5d4c(gBossStage2Models.unk20, data_ov000_023650fc, gBoss2->unk1438, data_ov000_02362dc8, 1);
+        func_ov000_022c5d4c(gBossStage2Models.unk28, data_ov000_02365108, gBoss2->unk1440, data_ov000_02362dc4, 1);
     }
 }

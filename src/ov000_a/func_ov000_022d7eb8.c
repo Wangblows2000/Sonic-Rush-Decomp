@@ -70,8 +70,8 @@ typedef struct UnkStruct_022d7eb8_v {
 } UnkStruct_022d7eb8_v;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_020366f4(s32 a, s32 b, s32 c);
-void func_ov000_022d7df4(UnkStruct_022d7eb8 *s);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
+void Boss3PartCC_State_Unk_ov000_022d7df4(UnkStruct_022d7eb8 *s);
 
 void func_ov000_022d7eb8(UnkStruct_022d7eb8 *s) {
     Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0x10, 0);
@@ -80,6 +80,6 @@ void func_ov000_022d7eb8(UnkStruct_022d7eb8 *s) {
     *(UnkStruct_022d7eb8_v *)&s->unk218 = *(UnkStruct_022d7eb8_v *)&s->unk2C4.unk48;
     s->unk258 = 0;
     Sound_PlaySeqArc(s->unk2C0, 0, 0x92);
-    func_020366f4(0, 0, 0xd2);
-    s->func = func_ov000_022d7df4;
+    Sound_PlayVoice(0, 0, 0xd2);
+    s->func = Boss3PartCC_State_Unk_ov000_022d7df4;
 }

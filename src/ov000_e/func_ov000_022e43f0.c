@@ -19,14 +19,14 @@ typedef struct {
     u16 unk8;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_Boss *data_ov000_02369b4c;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_Boss *gBoss6;
+extern UnkStruct_02369ac0 gBossStatus;
 extern s32 data_ov000_02363824[];
 
-void func_ov000_022e434c(void);
+void Boss6_State_Unk_ov000_022e434c(void);
 
 void func_ov000_022e43f0(void) {
-    UnkStruct_Boss *w = data_ov000_02369b4c;
+    UnkStruct_Boss *w = gBoss6;
 
     if (w->unkF54 >= 0) {
         if (w->unkF58 > 0) {
@@ -41,5 +41,5 @@ void func_ov000_022e43f0(void) {
     }
     w->unkF64 = 0;
     w->unkF5C = 0;
-    w->base.unk68 = func_ov000_022e434c;
+    w->base.unk68 = Boss6_State_Unk_ov000_022e434c;
 }

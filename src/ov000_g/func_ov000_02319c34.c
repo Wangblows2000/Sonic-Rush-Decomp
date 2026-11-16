@@ -62,9 +62,9 @@ typedef struct {
     s32 unk420;
 } UnkStruct_02319c34;
 
-extern UnkStruct_02319c34_Stage data_ov000_0236aad8;
+extern UnkStruct_02319c34_Stage gCamera;
 extern UnkStruct_02319c34_Plr *gPlayers;
-extern UnkStruct_02319c34_Sys data_022c4560;
+extern UnkStruct_02319c34_Sys gGameState;
 extern s16 data_0206e470[];
 
 void func_ov000_0235258c(void *a, void *b);
@@ -80,7 +80,7 @@ void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 u8 ObjSpd_DownSet(u8 a, s32 b);
 void func_ov000_02319bb4(UnkStruct_02319c34 *w);
 s32 NNS_SndPlayerCountPlayingSeqByPlayerNo(s32 a, s32 b);
-void func_0204b774(void *a, s32 b, s32 c, s32 d, s32 e);
+void Sound_PlaySeqArcBankPrio(void *a, s32 b, s32 c, s32 d, s32 e);
 
 void func_ov000_02319c34(UnkStruct_02319c34 *w) {
     u8 mtx[0x24];
@@ -94,7 +94,7 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
     if (ring != NULL && ring->unk80 == w && ring->unk0 == 1) {
         w->unk58 &= ~0x2000;
         w->unk204 = w->unk1BC;
-        if (data_ov000_0236aad8.unk62 != 0 && data_ov000_0236aad8.unk62 != 0xffff) {
+        if (gCamera.unk62 != 0 && gCamera.unk62 != 0xffff) {
             func_ov000_0235258c(ring, w);
         } else {
             func_ov000_0235283c(ring, w);
@@ -104,14 +104,14 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
     if (ring != NULL && ring->unk0 == 1) {
         if (w->unk58 & 1) {
             ring->unk80 = w;
-        } else if (data_ov000_0236aad8.unk62 != 0 && data_ov000_0236aad8.unk62 != 0xffff) {
+        } else if (gCamera.unk62 != 0 && gCamera.unk62 != 0xffff) {
             ring->unk80 = w;
             func_ov000_0235258c(ring, w);
         } else if (!(w->unk364 & 0x80) && (ring->unk80 == NULL || ring->unk80 != w)) {
             func_ov000_0235264c(ring, w);
             w->unk204 = NULL;
         }
-    } else if (data_ov000_0236aad8.unk62 != 0 && data_ov000_0236aad8.unk62 != 0xffff) {
+    } else if (gCamera.unk62 != 0 && gCamera.unk62 != 0xffff) {
         ring->unk80 = w;
         func_ov000_0235258c(gPlayers, w);
     }
@@ -137,7 +137,7 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
     if (!(w->unk58 & 0x2000)) {
         w->unk420 += w->unk34;
     }
-    if (data_ov000_0236aad8.unk62 != 0 && data_ov000_0236aad8.unk62 != 0xffff) {
+    if (gCamera.unk62 != 0 && gCamera.unk62 != 0xffff) {
         if (!(w->unk364 & 0x80)) {
             eff = func_ov000_0232e2f0(w, 0, 0);
             if (eff != NULL) {
@@ -147,7 +147,7 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
             w->unk364 |= 0x80;
             w->unk30 = -0x400;
             w->unk58 |= 0x10;
-        } else if (!(data_022c4560.unk20 & 7)) {
+        } else if (!(gGameState.unk20 & 7)) {
             eff = func_ov000_0232e2f0(w, 0, 0);
             if (eff != NULL) {
                 StageObj_SetOAMPriority(eff, 1);
@@ -166,12 +166,12 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
             w->unk18 = 0xf00;
         }
     }
-    if (data_ov000_0236aad8.unk62 != 0 && w->unk14 >= (data_ov000_0236aad8.unk62 << 8)) {
+    if (gCamera.unk62 != 0 && w->unk14 >= (gCamera.unk62 << 8)) {
         func_ov000_02319bb4(w);
         return;
     }
     if (!(w->unk58 & 0x2000) && NNS_SndPlayerCountPlayingSeqByPlayerNo(0, 0x5e) == 0) {
-        func_0204b774(w->unk1DC, 0, 0x5e, 0x20, -1);
+        Sound_PlaySeqArcBankPrio(w->unk1DC, 0, 0x5e, 0x20, -1);
     }
     if (gPlayers->unk32C & 0x400) {
         w->unk1F4 |= 1;

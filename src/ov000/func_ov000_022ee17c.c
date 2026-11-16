@@ -5,10 +5,10 @@ typedef struct UnkStruct_022ee17c {
     void *unk214;
 } UnkStruct_022ee17c;
 
-extern UnkStruct_022ee17c *data_ov000_02369b78;
+extern UnkStruct_022ee17c *gBoss7;
 
-void func_ov000_022eb394(void *p);
+void Boss7PartD5_Action_StartAI(void *p);
 
 void func_ov000_022ee17c(void) {
-    func_ov000_022eb394(data_ov000_02369b78->unk214);
+    Boss7PartD5_Action_StartAI(gBoss7->unk214);
 }

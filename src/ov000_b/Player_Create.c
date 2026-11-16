@@ -133,7 +133,7 @@ typedef struct UnkStruct_0234d62c {
     u8 pad438[0x4BC - 0x438];
 } UnkStruct_0234d62c;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4590 data_022c4590;
 extern UnkStruct_022c4680 gSaveData;
 extern void *gITCMHeap;
@@ -154,25 +154,25 @@ void Player_In(void);
 void Player_SpriteCallback(void);
 void Player_Collide(void);
 void Player_Last(void);
-void func_ov000_0234c3b4(UnkStruct_0234d62c *w);
-void func_ov000_0234b758(void);
-void func_ov000_0234bdac(void);
-void func_ov000_0234ac58(void);
-void func_ov000_02348a54(void);
-void func_ov000_02348ca8(void);
+void Player_Action_GroundIdle(UnkStruct_0234d62c *w);
+void Player_Action_GroundMove(void);
+void Player_Action_Crouch(void);
+void Player_Action_Jump(void);
+void Player_Action_Hover(void);
+void Player_Action_HomingAttack(void);
 void Player_Draw(void);
-void func_ov000_0234cb70(UnkStruct_0234d62c *w);
+void Player_InitState(UnkStruct_0234d62c *w);
 void Barrier_Create(UnkStruct_0234d62c *w);
 void Magnet_Create(UnkStruct_0234d62c *w);
 void PlayerIcon_Create(UnkStruct_0234d62c *w);
 void func_ov000_0233e5c8(s32 a, s32 b);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void StageObj_LoadModel(void *w, void *sub, void *tbl, s32 a, void *b, void *c);
 void StageObj_LoadMotion(void *w, void *sub, void *tbl, void *a, void *b);
-void func_0206cf8c(void *a, void *b);
+void ModelPalette_Init(void *a, void *b);
 
 #define ALLOC4_0234D62C(dst)                                  \
     do {                                                      \
@@ -204,7 +204,7 @@ void func_0206cf8c(void *a, void *b);
     } while (0)
 
 static inline void Init_0234d62c(UnkStruct_022c4590 *p, s32 type) {
-    if (!(p->unk24 & 2) && !(data_022c4560.unk18 & 0x40)) {
+    if (!(p->unk24 & 2) && !(gGameState.unk18 & 0x40)) {
         if (!(p->unk24 & 1)) {
             p->unk24 &= ~4;
             if (type != 0) {
@@ -227,7 +227,7 @@ static inline void Init_0234d62c(UnkStruct_022c4590 *p, s32 type) {
         data_022c4590.unk44 = 0;
         data_022c4590.unk45 = 0;
         data_022c4590.unk15 = 0;
-        if (data_022c4560.unk10 == 2) {
+        if (gGameState.unk10 == 2) {
             if (data_022c4590.unk54 == NULL)
                 ALLOC4_0234D62C(data_022c4590.unk54);
             if (data_022c4590.unk50 == NULL)
@@ -296,25 +296,25 @@ UnkStruct_0234d62c *Player_Create(s32 type, u8 id) {
     w->unk13F = 1;
     w->unk140 = 0xf;
     InitBufs_0234d62c(w);
-    func_0206cf8c(data_ov000_0236ac50[w->unk324].unk0, w->unk414);
-    w->unk334 = func_ov000_0234c3b4;
-    w->unk338 = func_ov000_0234b758;
-    w->unk33C = func_ov000_0234bdac;
-    w->unk340 = func_ov000_0234ac58;
+    ModelPalette_Init(data_ov000_0236ac50[w->unk324].unk0, w->unk414);
+    w->unk334 = Player_Action_GroundIdle;
+    w->unk338 = Player_Action_GroundMove;
+    w->unk33C = Player_Action_Crouch;
+    w->unk340 = Player_Action_Jump;
     if (type == 1)
-        w->unk344 = func_ov000_02348a54;
+        w->unk344 = Player_Action_Hover;
     else
-        w->unk344 = func_ov000_02348ca8;
+        w->unk344 = Player_Action_HomingAttack;
     w->unk348 = NULL;
-    if (!(data_022c4560.unk18 & 0x20))
-        data_022c4560.unk20 = data_022c4590.unk18;
+    if (!(gGameState.unk18 & 0x20))
+        gGameState.unk20 = data_022c4590.unk18;
     w->unk3CA = 0;
     w->unk3E4 = 0;
-    func_ov000_0234cb70(w);
-    if ((data_022c4560.unk18 & 0x40) && w->unk325 == 0) {
+    Player_InitState(w);
+    if ((gGameState.unk18 & 0x40) && w->unk325 == 0) {
         w->unk3AE = data_022c4590.unk28;
         w->unk3B0 = data_022c4590.unk2A;
-        data_022c4560.unk20 = data_022c4590.unk3C;
+        gGameState.unk20 = data_022c4590.unk3C;
         switch (data_022c4590.unk2C) {
         case 1:
             w->unk32C |= 0x10000000;
@@ -345,13 +345,13 @@ UnkStruct_0234d62c *Player_Create(s32 type, u8 id) {
         data_ov000_0236ac2c = w->unk10 >> 8;
         data_ov000_0236ac30 = w->unk14 >> 8;
         data_ov000_0236ac24 = w->unk18 >> 8;
-        if (data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2)
+        if (gGameState.unk1C < 9 && gGameState.unk1D < 2)
             w->unk350 = 0x640;
-        if (func_ov000_02345758(w->unk10, w->unk14))
+        if (Stage_IsGravityFlipped(w->unk10, w->unk14))
             w->unk5C ^= 1;
     }
     w->unk334(w);
-    if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2) {
+    if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
         gPlayers[0]->unk5C &= ~0x200;
         w->unk5C &= ~0x800;
         w->unk5C &= ~0xa00;
@@ -359,14 +359,14 @@ UnkStruct_0234d62c *Player_Create(s32 type, u8 id) {
         gPlayers[0]->unk70 = Player_Draw;
         w->unk5C |= 0x40;
     }
-    if ((data_022c4560.unk18 & 0x20) || w->unk325 != 0)
+    if ((gGameState.unk18 & 0x20) || w->unk325 != 0)
         PlayerIcon_Create(w);
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->unk3AE = 1;
     flag = FALSE;
-    if (data_022c4560.unk1C >= 7 && data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2)
+    if (gGameState.unk1C >= 7 && gGameState.unk1C < 9 && gGameState.unk1D < 2)
         flag = TRUE;
     if (flag)
-        data_022c4560.unk20 = 1;
+        gGameState.unk20 = 1;
     return w;
 }

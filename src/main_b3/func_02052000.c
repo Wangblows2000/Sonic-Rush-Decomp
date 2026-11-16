@@ -5,7 +5,7 @@ extern UnkWork_02052000 *gSysSound;
 extern void *gMainHeap;
 extern u8 gBGMVolume;
 extern u8 gSEVolume;
-extern u8 data_02250448;
+extern u8 gVoiceVolume;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);

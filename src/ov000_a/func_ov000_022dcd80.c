@@ -14,7 +14,7 @@ typedef struct UnkStruct_022dcd80_7 {
     u16 unk8;
 } UnkStruct_022dcd80_7;
 
-extern UnkStruct_022dcd80_7 data_ov000_02369ac0;
+extern UnkStruct_022dcd80_7 gBossStatus;
 extern u8 data_ov000_02363550[];
 
 void func_ov000_022dbb18(s32 a);
@@ -38,7 +38,7 @@ void func_ov000_022dcd80(UnkStruct_022dcd80 *s) {
         return;
     }
     if (s->unkBD0 == 1) {
-        if (func_ov000_022db704((s->unk21C & 1) ? 0xff : data_ov000_02363550[data_ov000_02369ac0.unk8 - 1], 8)) {
+        if (func_ov000_022db704((s->unk21C & 1) ? 0xff : data_ov000_02363550[gBossStatus.unk8 - 1], 8)) {
             func_ov000_022dcc10(s);
             return;
         }

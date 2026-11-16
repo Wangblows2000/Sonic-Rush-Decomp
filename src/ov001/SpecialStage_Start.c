@@ -10,11 +10,11 @@ typedef struct {
     u8 b1d;
     u16 h1e;
 } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s32 data_ov001_0231f698;
 void SpecialStage_Init(s32 a);
 
 void SpecialStage_Start(void) {
     data_ov001_0231f698 = 0;
-    SpecialStage_Init(data_022c4560.b1c);
+    SpecialStage_Init(gGameState.b1c);
 }

@@ -10,18 +10,18 @@ struct UnkStruct_022e91d0 {
     void (*func)(UnkStruct_022e91d0 *s);
 };
 
-extern s32 data_ov000_02369ac0[];
+extern s32 gBossStatus[];
 
 void func_ov000_022ee198(UnkStruct_022e91d0 *s, s32 a);
 void func_ov000_022e9b70(UnkStruct_022e91d0 *s, s32 a, s32 b);
-void func_ov000_022e9170(UnkStruct_022e91d0 *s);
+void Boss7PartD5_MoveState_Unk_ov000_022e9170(UnkStruct_022e91d0 *s);
 
 void func_ov000_022e91d0(UnkStruct_022e91d0 *s) {
     s->unk58 |= 0x10;
     s->unk2E = 0;
     func_ov000_022ee198(s, 3);
     func_ov000_022e9b70(s, 1, 0);
-    data_ov000_02369ac0[1] = 0x27;
-    s->func = func_ov000_022e9170;
+    gBossStatus[1] = 0x27;
+    s->func = Boss7PartD5_MoveState_Unk_ov000_022e9170;
     s->func(s);
 }

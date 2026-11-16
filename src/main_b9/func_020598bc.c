@@ -6,7 +6,7 @@ typedef struct {
     u8 unk1d;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_022c4824[][2];
 extern u16 data_022c4828[][2][5];
 extern u16 data_022c4830[][2][5];
@@ -32,7 +32,7 @@ void func_020598bc(s32 stage, s32 act, u32 time, u32 flag) {
         return;
     n = 4 - rank;
     special = FALSE;
-    if (data_022c4560.unk1c >= 7 && data_022c4560.unk1c < 9 && data_022c4560.unk1d < 2)
+    if (gGameState.unk1c >= 7 && gGameState.unk1c < 9 && gGameState.unk1d < 2)
         special = TRUE;
     if (special) {
         s32 k = stage - 7;

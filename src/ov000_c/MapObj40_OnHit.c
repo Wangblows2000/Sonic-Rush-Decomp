@@ -36,7 +36,7 @@ typedef struct {
 } UnkStruct_022c4590;
 
 extern s16 gSwitchTimers;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4590 data_022c4590;
 
 void func_ov000_02354098(UnkStruct_Player *pl);
@@ -120,7 +120,7 @@ void MapObj40_OnHit(UnkStruct_0230a04c_Coll *a, UnkStruct_0230a04c_Coll *b) {
     case 0xa9:
         if (pl->unk0 != 1)
             return;
-        if (data_022c4560.unk20 & 7)
+        if (gGameState.unk20 & 7)
             return;
         func_ov000_02328d3c(pl, -2, -12);
         return;

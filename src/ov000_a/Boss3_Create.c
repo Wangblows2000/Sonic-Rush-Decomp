@@ -53,9 +53,9 @@ typedef struct UnkStruct_022db390_7 {
 typedef struct { u8 data[0x5c]; } UnkArc_022db390;
 
 extern void *gZoneActArchive;
-extern s32 data_022c4560;
-extern UnkStruct_022db390 *data_ov000_02369b14;
-extern UnkStruct_022db390_7 data_ov000_02369ac0;
+extern s32 gGameState;
+extern UnkStruct_022db390 *gBoss3;
+extern UnkStruct_022db390_7 gBossStatus;
 extern u32 gRandSeed;
 extern s32 data_ov000_02369b18[];
 extern u8 data_ov000_0236554c[];
@@ -72,8 +72,8 @@ UnkTask_022db390 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c,
 void StageObj_Main(void);
 void Boss3_Destructor(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void Boss3_State_Unk_ov000_022da24c(void);
-u16 func_ov000_022c5f28(void);
+void Boss3_State_WaitForStart(void);
+u16 Boss_GetStartHealth(void);
 void func_02021310(UnkArc_022db390 *ctx, void *a, void *b);
 void *func_02021264(UnkArc_022db390 *ctx, u32 id);
 void func_020212e0(UnkArc_022db390 *ctx);
@@ -107,11 +107,11 @@ UnkStruct_022db390 *Boss3_Create(u8 *a, s32 x, s32 y) {
         return NULL;
     s = Task_Create(StageObj_Main, Boss3_Destructor, 0, 0x500, 2, 0x374)->unk10;
     MI_CpuFill16(s, 0, 0x374);
-    data_ov000_02369b14 = s;
-    s->unk68 = Boss3_State_Unk_ov000_022da24c;
-    MI_CpuFill16(&data_ov000_02369ac0, 0, 0xc);
-    data_ov000_02369ac0.unk8 = func_ov000_022c5f28();
-    data_ov000_02369ac0.unkA = func_ov000_022c5f28();
+    gBoss3 = s;
+    s->unk68 = Boss3_State_WaitForStart;
+    MI_CpuFill16(&gBossStatus, 0, 0xc);
+    gBossStatus.unk8 = Boss_GetStartHealth();
+    gBossStatus.unkA = Boss_GetStartHealth();
     func_02021310(&arc1, data_ov000_0236554c, gZoneActArchive);
     s->unk230 = func_02021264(&arc1, 8);
     s->unk234 = func_02021264(&arc1, 9);
@@ -139,8 +139,8 @@ UnkStruct_022db390 *Boss3_Create(u8 *a, s32 x, s32 y) {
     p->unk1C = p->unk20;
     p->unk18 = p->unk1C;
     s->unk214 = MapObject_Spawn(0xcc, x, 0, 0, 0, 0, 0, 0, 0);
-    func_ov000_022dae28(data_022c4560, 0);
-    func_ov000_022dad70(data_022c4560, 0);
+    func_ov000_022dae28(gGameState, 0);
+    func_ov000_022dad70(gGameState, 0);
     func_02021310(&arc2, data_ov000_02365550, gZoneActArchive);
     NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365554));
     NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365568));

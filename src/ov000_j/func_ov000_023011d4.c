@@ -13,8 +13,8 @@ typedef struct {
 } UnkStruct_023011d4;
 
 void StageObj_SetAnimation(UnkStruct_023011d4 *p, s32 a);
-void func_ov000_0230119c(UnkStruct_023011d4 *p);
-void func_ov000_023010a4(UnkStruct_023011d4 *p);
+void Kuragen_Action_Unk_ov000_0230119c(UnkStruct_023011d4 *p);
+void Kuragen_Action_Unk_ov000_023010a4(UnkStruct_023011d4 *p);
 
 void func_ov000_023011d4(UnkStruct_023011d4 *p) {
     UnkStruct_023011d4_o *o = p->unk88;
@@ -23,8 +23,8 @@ void func_ov000_023011d4(UnkStruct_023011d4 *p) {
     p->unk5C |= 4;
     if (o->unk238 & 0x80) {
         o->unk238 &= ~0x80;
-        func_ov000_0230119c(p);
+        Kuragen_Action_Unk_ov000_0230119c(p);
     } else {
-        func_ov000_023010a4(p);
+        Kuragen_Action_Unk_ov000_023010a4(p);
     }
 }

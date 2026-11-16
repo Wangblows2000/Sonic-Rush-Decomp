@@ -51,13 +51,13 @@ typedef struct {
     s32 unkE4;
 } UnkStruct_02333a1c_Stage;
 
-extern UnkStruct_02333a1c_Sys data_022c4560;
-extern UnkStruct_02333a1c_Stage data_ov000_0236aad8;
+extern UnkStruct_02333a1c_Sys gGameState;
+extern UnkStruct_02333a1c_Stage gCamera;
 
 void StageObj_SetAnimation(void *w, s32 a);
 
 static inline BOOL Stage_Busy(void) {
-    if (data_ov000_0236aad8.unkE0 != 0 || data_ov000_0236aad8.unkE4 != 0)
+    if (gCamera.unkE0 != 0 || gCamera.unkE4 != 0)
         return TRUE;
     return FALSE;
 }
@@ -77,7 +77,7 @@ void func_ov000_02333a1c(UnkStruct_02333a1c *w) {
             w->unk54 |= 4;
         return;
     }
-    if ((data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2) || !Stage_Busy()) {
+    if ((gGameState.unk1C < 9 && gGameState.unk1D < 2) || !Stage_Busy()) {
         w->unk10 = p->unk10;
         w->unk14 = w->unk88->unk14;
         if (w->unk5C & 1)

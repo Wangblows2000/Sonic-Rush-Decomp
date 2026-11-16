@@ -62,7 +62,7 @@ void ObjData_Release(void *p);
 void StageObj_ReleaseSpriteVram(UnkWork_0206bef4 *w);
 void Model_Release(void *p);
 void func_0202566c(void *p);
-void func_020682f0(void *p);
+void StageObj_ReleaseSharedTexture(void *p);
 
 static inline void Free_0206bef4(u8 *blk) {
     if ((u8 *)OS_GetArenaLo(0) != blk) {
@@ -138,7 +138,7 @@ void StageObj_Destructor(UnkTask_0206bef4 *task) {
     if (c == NULL)
         return;
     if (c->unk100 != NULL)
-        func_020682f0(c);
+        StageObj_ReleaseSharedTexture(c);
     else
         Model_Release(c);
     if (work->unk12C->unkF8 != NULL) {

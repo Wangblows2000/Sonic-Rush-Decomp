@@ -47,11 +47,11 @@ typedef struct {
     s32 unk14;
 } UnkStruct_022c4560;
 
-extern UnkStruct_02369b84 *data_ov000_02369b84;
+extern UnkStruct_02369b84 *gBossF;
 extern void *data_ov000_02369b88[];
 extern void *gZoneActArchive;
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern s16 data_ov000_02363fbc[][8];
 extern u8 data_ov000_0236605c[];
 
@@ -67,17 +67,17 @@ void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 UnkStruct_022f9e14 *BossFPartD9_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
     UnkStruct_022f9e14 *w;
-    UnkStruct_022f9e14_Sub *r = &data_ov000_02369b84->unk218->unk340;
+    UnkStruct_022f9e14_Sub *r = &gBossF->unk218->unk340;
     UnkStruct_Coll *coll;
     UnkStruct_022f9e14_Sub *sub;
     vu16 zero;
@@ -100,7 +100,7 @@ UnkStruct_022f9e14 *BossFPartD9_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk54 |= 0x10;
     w->base.unk58 |= 0xa000;
     w->base.unk58 |= 0x200;
-    v = data_ov000_02363fbc[GetLevel()][data_ov000_02369ac0.unk8 - 1];
+    v = data_ov000_02363fbc[GetLevel()][gBossStatus.unk8 - 1];
     v += (Rand() & 7) << 4;
     if (p->unk4 & 1) {
         w->base.unk5C |= 1;

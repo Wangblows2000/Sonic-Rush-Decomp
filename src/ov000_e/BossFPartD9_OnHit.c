@@ -18,7 +18,7 @@ typedef struct {
     s16 unk3B2;
 } UnkStruct_Player;
 
-void func_ov000_0234aa80(UnkStruct_Player *p);
+void Player_Action_AttackBounce(UnkStruct_Player *p);
 void Player_OnHurt(UnkStruct_Hit *a, UnkStruct_Hit *b);
 
 void BossFPartD9_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
@@ -32,7 +32,7 @@ void BossFPartD9_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
         return;
     if (p->unk328 == 0x30) {
         w->unk54 |= 8;
-        func_ov000_0234aa80(p);
+        Player_Action_AttackBounce(p);
         w->coll0.unkA &= ~4;
         return;
     }

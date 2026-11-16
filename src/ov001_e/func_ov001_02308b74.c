@@ -9,7 +9,7 @@ typedef struct UnkStruct_02308b74 {
     s32 timer;
 } UnkStruct_02308b74;
 
-extern UnkStruct_02308b74 *data_ov001_0231f5bc;
+extern UnkStruct_02308b74 *gSpecialStageHud;
 
 void func_ov001_02308b74(void) {
     UnkStruct_02308b74 *g;
@@ -24,7 +24,7 @@ void func_ov001_02308b74(void) {
     s32 dr;
     s32 dg;
 
-    g = data_ov001_0231f5bc;
+    g = gSpecialStageHud;
 
     if (g->timer < 0x3c) {
         f = 0.0f;

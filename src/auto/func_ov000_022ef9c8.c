@@ -5,7 +5,7 @@ s32 func_ov000_022f4ce4();
 s32 func_ov000_022f9044();
 s32 func_ov000_022f4cbc();
 s32 func_ov000_022f9188();
-extern u8 data_ov000_02369ac0[];
+extern u8 gBossStatus[];
 void BossFPartD8_State_Unk_ov000_022ef908();
 
 void func_ov000_022ef9c8(u8 *p0) {
@@ -15,6 +15,6 @@ void func_ov000_022ef9c8(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x1b8) = 0;
     func_ov000_022f9188(0);
     *(u16 *)((u8 *)p0 + 0x434) = 0;
-    *(u32 *)((u8 *)data_ov000_02369ac0 + 0x4) = 0x3a;
+    *(u32 *)((u8 *)gBossStatus + 0x4) = 0x3a;
     *(u32 *)((u8 *)p0 + 0x68) = (u32)BossFPartD8_State_Unk_ov000_022ef908;
 }

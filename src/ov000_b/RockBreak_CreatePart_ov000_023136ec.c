@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366ddc[], data_ov000_0236a1bc[], data_ov000_0236a1c4[], data_ov000_0236a1d4[];
 
-void func_ov000_023136dc(UnkStruct_EffObj *w);
+void RockBreakPart_Action_Unk_ov000_023136dc(UnkStruct_EffObj *w);
 
 void RockBreak_CreatePart_ov000_023136ec(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
     UnkStruct_Task *task;
@@ -35,5 +35,5 @@ void RockBreak_CreatePart_ov000_023136ec(UnkStruct_StageObj *arg, s16 x, s16 y, 
     w->unk42 = 0xf00;
     w->unk54 |= 1;
     w->unk58 |= 0x180;
-    func_ov000_023136dc(w);
+    RockBreakPart_Action_Unk_ov000_023136dc(w);
 }

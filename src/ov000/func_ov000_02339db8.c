@@ -6,11 +6,11 @@ typedef struct UnkStruct_02339db8 {
     s32 unkCC;
 } UnkStruct_02339db8;
 
-extern UnkStruct_02339db8 data_ov000_0236aad8;
+extern UnkStruct_02339db8 gCamera;
 
 void func_ov000_0233e668(void);
 
 void func_ov000_02339db8(void) {
-    data_ov000_0236aad8.unkCC = data_ov000_0236aad8.unkC8;
+    gCamera.unkCC = gCamera.unkC8;
     func_ov000_0233e668();
 }

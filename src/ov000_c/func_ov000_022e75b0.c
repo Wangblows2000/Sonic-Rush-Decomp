@@ -15,12 +15,12 @@ typedef struct {
 } UnkStruct_022e75b0;
 
 extern UnkStruct_StageObj *gPlayers;
-extern u8 data_02250464[];
+extern u8 gBGMSoundHandle[];
 
 void func_ov000_022ee198(UnkStruct_022e75b0 *w, s32 a);
 void func_ov000_022e9b70(UnkStruct_022e75b0 *w, s32 a, s32 b);
 void NNS_SndPlayerMoveVolume(void *a, s32 b, s32 c);
-void func_ov000_022e73e0(void);
+void Boss7PartD5_MoveState_Unk_ov000_022e73e0(void);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 #define CLAMP(x, lo, hi) ((x) < (lo) ? (lo) : ((x) > (hi) ? (hi) : (x)))
@@ -50,6 +50,6 @@ void func_ov000_022e75b0(UnkStruct_022e75b0 *w) {
     w->unk478 = ABS(w->unk478);
     w->unk478 >>= 1;
     w->unk478 = CLAMP(w->unk478, 0x10, 0x28);
-    NNS_SndPlayerMoveVolume(data_02250464, 0x20, 0xb4);
-    w->unk440 = func_ov000_022e73e0;
+    NNS_SndPlayerMoveVolume(gBGMSoundHandle, 0x20, 0xb4);
+    w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e73e0;
 }

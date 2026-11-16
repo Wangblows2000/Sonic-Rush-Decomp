@@ -35,7 +35,7 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-void func_02049070(void);
+void Vram_DisableAllBanks(void);
 
 #pragma thumb on
 static inline void Free_022d8c78(u8 *blk) {
@@ -82,7 +82,7 @@ void func_ov001_022d8c78(UnkWork_022d8c78 *w) {
         REG16(0x5000400) = 0xffff;
         REG32(0x4000000) = REG32(0x4000000) & ~0x1f00;
         REG32(0x4001000) = REG32(0x4001000) & ~0x1f00;
-        func_02049070();
+        Vram_DisableAllBanks();
         gDisplayMain.ofs[0].x = 0;
         gDisplayMain.ofs[0].y = 0;
         gDisplayMain.ofs[1].x = 0;

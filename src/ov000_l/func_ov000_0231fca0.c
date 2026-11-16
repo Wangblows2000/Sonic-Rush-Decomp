@@ -7,14 +7,14 @@ typedef struct {
     u32 unk24;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void func_ov000_0231fe0c(void);
 
 void func_ov000_0231fca0(void) {
-    if (data_022c4560.unk1C != 6)
+    if (gGameState.unk1C != 6)
         return;
-    if (data_022c4560.unk24 & 0x7f)
+    if (gGameState.unk24 & 0x7f)
         return;
     if (!(Rand() & 1))
         return;

@@ -51,7 +51,7 @@ void func_ov001_022f0548(void);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 u8 *ExtraBoss_GetWork(void);
 void Sound_PlaySeqArc(void *p, u32 a, u32 b);
-void func_020366f4(void *p, u32 a, u32 b);
+void Sound_PlayVoice(void *p, u32 a, u32 b);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);

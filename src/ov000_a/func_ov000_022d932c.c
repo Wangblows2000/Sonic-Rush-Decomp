@@ -93,7 +93,7 @@ UnkStruct_022d932c_q *BossEffect_CreateBlast3(s32 a, s32 b, s32 c, s32 d);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void Boss3PartCC_State_Unk_ov000_022d9264(UnkStruct_022d932c *s);
+void Boss3_State_Unk_ov000_022d9264(UnkStruct_022d932c *s);
 
 static inline u32 GX_GetVisiblePlane(void) {
     return (*(vu32 *)0x4000000 & 0x1f00) >> 8;
@@ -147,5 +147,5 @@ void func_ov000_022d932c(UnkStruct_022d932c *s) {
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7d);
     s->unk224 = 0;
-    s->func = Boss3PartCC_State_Unk_ov000_022d9264;
+    s->func = Boss3_State_Unk_ov000_022d9264;
 }

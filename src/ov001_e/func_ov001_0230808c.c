@@ -23,7 +23,7 @@ typedef struct UnkStruct_0230808c {
     UnkStruct_0230808c_o objs3[3];
 } UnkStruct_0230808c;
 
-extern UnkStruct_0230808c *data_ov001_0231f5bc;
+extern UnkStruct_0230808c *gSpecialStageHud;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void Background_Draw(void *a);
@@ -35,7 +35,7 @@ void Sound_PlaySeq(s32 a, s32 b);
 void func_ov001_02307ad0(void);
 
 void func_ov001_0230808c(void) {
-    UnkStruct_0230808c *g = data_ov001_0231f5bc;
+    UnkStruct_0230808c *g = gSpecialStageHud;
     s32 i;
     vu32 zero;
 

@@ -21,7 +21,7 @@ typedef struct UnkStruct_02314dc8 {
     void *unk18;
 } UnkStruct_02314dc8;
 
-void func_020319a4(void *p, s32 a, s32 b, s32 c, s32 d);
+void Model_SetShapeResource(void *p, s32 a, s32 b, s32 c, s32 d);
 void Player_Action_RopeC(u8 *t, UnkStruct_02314dc8_2 *s, s32 a);
 
 void RopeC_OnHit(UnkStruct_02314dc8 *a, UnkStruct_02314dc8 *b) {
@@ -34,7 +34,7 @@ void RopeC_OnHit(UnkStruct_02314dc8 *a, UnkStruct_02314dc8 *b) {
         return;
     s->unk204 = t;
     s->unk54 |= 2;
-    func_020319a4(s->unk128, s->unk128->unkA0, 0, 0, 0);
+    Model_SetShapeResource(s->unk128, s->unk128->unkA0, 0, 0, 0);
     if (*t != 1)
         return;
     s->unk5C &= ~0x200;

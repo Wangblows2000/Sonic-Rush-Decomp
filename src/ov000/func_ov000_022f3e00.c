@@ -12,12 +12,12 @@ typedef struct UnkStruct_022f3e00 {
 } UnkStruct_022f3e00;
 
 extern u32 gRandSeed;
-extern s32 data_ov000_02369ac0[];
+extern s32 gBossStatus[];
 
 void func_ov000_022f9044(UnkStruct_022f3e00 *s);
 void func_ov000_022f4cbc(UnkStruct_022f3e00 *s);
-void func_020366f4(s32 a, s32 b, s32 c);
-void func_ov000_022f3dd4(void);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
+void BossFPartD8_State_Unk_ov000_022f3dd4(void);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -31,7 +31,7 @@ void func_ov000_022f3e00(UnkStruct_022f3e00 *s) {
     s->unk434 = (Rand() & 1) ? 1 : 0;
     s->unk438 = 0;
     s->unk43A = 0;
-    func_020366f4(0, 0, 0xd0);
-    data_ov000_02369ac0[1] = 0x30;
-    s->func = func_ov000_022f3dd4;
+    Sound_PlayVoice(0, 0, 0xd0);
+    gBossStatus[1] = 0x30;
+    s->func = BossFPartD8_State_Unk_ov000_022f3dd4;
 }

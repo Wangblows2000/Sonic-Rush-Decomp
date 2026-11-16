@@ -4,7 +4,7 @@
 extern u8 data_022c2440[];
 extern u8 data_022c1ba0[];
 s32 WM_StepDataSharing();
-extern u8 data_022c197c[];
+extern u8 sTraceFunc[];
 extern u8 data_020786dc[];
 s32 WH_SetError();
 
@@ -14,7 +14,7 @@ s32 WH_StepDataSharing(s32 p0) {
         return 1;
     }
     if (t0 == 5) {
-        s32 t1 = *(u32 *)data_022c197c;
+        s32 t1 = *(u32 *)sTraceFunc;
         if (t1 != 0) {
             ((s32 (*)())t1)(data_020786dc, t1);
         }

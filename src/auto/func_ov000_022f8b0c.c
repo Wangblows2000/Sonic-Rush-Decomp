@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 extern unsigned char gTaskCurrent[];
-extern unsigned char data_ov000_02369b84[];
+extern unsigned char gBossF[];
 int func_ov000_022f8df8();
 int StageObj_Draw3DEx();
 
@@ -33,7 +33,7 @@ void func_ov000_022f8b0c(void)
   undefined4 local_10 [2];
   
   iVar1 = *(int *)(*((int *)gTaskCurrent) + 0x10);
-  func_ov000_022f8df8(*(undefined4 *)(*((int *)data_ov000_02369b84) + 0x218),&local_14,local_10,local_18);
+  func_ov000_022f8df8(*(undefined4 *)(*((int *)gBossF) + 0x218),&local_14,local_10,local_18);
   StageObj_Draw3DEx(local_14,local_10[0],*(undefined4 *)(iVar1 + 0x18),local_18[0],iVar1,
                *(undefined4 *)(iVar1 + 0x124));
   return;

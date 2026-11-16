@@ -20,11 +20,11 @@ typedef struct {
     s32 unk8;
 } UnkIn_02338f18;
 
-extern UnkPlayer_02338f18 data_ov000_0236aad8[];
+extern UnkPlayer_02338f18 gCamera[];
 extern UnkObj_02338f18 *gPlayers[];
 
 BOOL func_ov000_02338f18(UnkIn_02338f18 *in) {
-    UnkPlayer_02338f18 *p = data_ov000_0236aad8;
+    UnkPlayer_02338f18 *p = gCamera;
 
     if (in->unk8 >= 0)
         return p->unk8 + p->unk48 >= gPlayers[p->unk3A]->unk14;

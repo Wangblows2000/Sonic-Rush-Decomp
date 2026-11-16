@@ -21,7 +21,7 @@ typedef struct {
 } UnkStruct_0236a444;
 
 extern UnkStruct_022de768 *gPlayers;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern s16 data_0206e470[];
 
@@ -46,7 +46,7 @@ void Boss4_Draw_Unk_ov000_022de768(void) {
     else
         off = 0x4000;
     MTX_RotY33_(p->unk158, data_0206e470[(((u16)(off + ang[0]) & 0xffff) >> 4) * 2], data_0206e470[(((u16)(off + ang[0]) & 0xffff) >> 4) * 2 + 1]);
-    st = data_ov000_02369ac0.unk4;
+    st = gBossStatus.unk4;
     if (st == 0x1a)
         return;
     data_ov000_0236a444.unkD6 = ang[0];

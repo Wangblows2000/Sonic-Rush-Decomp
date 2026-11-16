@@ -36,7 +36,7 @@ extern u32 data_ov001_023178d8[];
 
 BOOL func_ov001_023121f0(u16 a, u16 b);
 void func_ov001_02312b30(UnkStruct_02311bcc *p);
-void func_ov001_023122d8(UnkStruct_02311bcc *p, s32 v);
+void SpecialStagePlayer_ChangeState(UnkStruct_02311bcc *p, s32 v);
 void func_ov001_02312dd0(UnkStruct_02311bcc *p, s32 v);
 void func_ov001_02312d7c(UnkStruct_02311bcc *p);
 void func_ov001_02311b74(UnkStruct_02311bcc *p);
@@ -62,7 +62,7 @@ void func_ov001_02311bcc(UnkStruct_02311bcc *p) {
         p->unk134 = 0;
         p->unk138 = 0x100;
         if (p->unk11C != NULL && p->unk11C->unk28 > -0x6e000) {
-            func_ov001_023122d8(p, 0x18);
+            SpecialStagePlayer_ChangeState(p, 0x18);
             func_ov001_02312dd0(p, 0x1e);
             func_ov001_02312d7c(p);
             return;
@@ -75,7 +75,7 @@ void func_ov001_02311bcc(UnkStruct_02311bcc *p) {
         p->unk44 = 0x4b0;
         p->unk44 = p->unk44 * (IsLeft_02311bcc(p->unk16) > 0 ? 1 : -1);
         p->unk13C = 0;
-        func_ov001_023122d8(p, 6);
+        SpecialStagePlayer_ChangeState(p, 6);
         return;
     }
     if (p->unk16 == (u16)p->unk134) {

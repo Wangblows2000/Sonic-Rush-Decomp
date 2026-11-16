@@ -18,7 +18,7 @@ typedef struct {
     u16 flag;
 } UnkMsg_02050b58;
 extern UnkTask_02050b58 *data_022c4638;
-extern UnkStruct_0207ad9c data_0207ad9c;
+extern UnkStruct_0207ad9c gWirelessSession;
 extern u16 data_02072cbc[];
 extern UnkStruct_02072cb8 gGameLanguage;
 extern s32 data_022c4640;
@@ -29,8 +29,8 @@ void func_02050764(void);
 void func_02050964(void);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
-void func_02051628(s32 a);
-void func_0204390c(s32 a, s32 b, s32 c, void *msg, s32 size);
+void Wireless_EnableErrorCallback(s32 a);
+void WirelessMgr_StartDataSharingLobbyParent(s32 a, s32 b, s32 c, void *msg, s32 size);
 
 #pragma thumb on
 UnkWork_02050b58 *func_02050b58(s32 target) {
@@ -50,17 +50,17 @@ UnkWork_02050b58 *func_02050b58(s32 target) {
     MIi_CpuClear16(zero, w, sizeof(UnkWork_02050b58));
     w->unk0 = 0;
     w->unk4 = 0;
-    data_0207ad9c.unk0 = w->unk0;
-    data_0207ad9c.unk2 = w->unk4;
+    gWirelessSession.unk0 = w->unk0;
+    gWirelessSession.unk2 = w->unk4;
     MIi_CpuCopy16(data_02072cbc, w->name, 0x14);
     n = gGameLanguage.unk18;
     for (i = n; i < 10; i++)
         w->name[i] = ' ';
     w->unk32 = i = n;
-    func_02051628(0);
+    Wireless_EnableErrorCallback(0);
     MIi_CpuCopy16(w->name, msg.name, 0x16);
     msg.flag = 1;
-    func_0204390c(0, 1, target, &msg, sizeof(UnkMsg_02050b58));
+    WirelessMgr_StartDataSharingLobbyParent(0, 1, target, &msg, sizeof(UnkMsg_02050b58));
     w->unkC = 1;
     data_022c4640 = 0;
     return w;

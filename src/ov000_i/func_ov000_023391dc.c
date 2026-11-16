@@ -12,12 +12,12 @@ typedef struct {
     u8 pad1E[0x64 - 0x1e];
 } UnkPlayer_023391dc;
 
-extern UnkPlayer_023391dc data_ov000_0236aad8[];
+extern UnkPlayer_023391dc gCamera[];
 
 void func_ov000_023391dc(s32 unused, s32 idx) {
-    UnkPlayer_023391dc *p = &data_ov000_0236aad8[idx];
+    UnkPlayer_023391dc *p = &gCamera[idx];
 
-    if (data_ov000_0236aad8[2].flags & 0x200)
+    if (gCamera[2].flags & 0x200)
         return;
     if (!(p->flags & 0x100000))
         return;

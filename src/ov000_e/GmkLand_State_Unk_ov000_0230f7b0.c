@@ -5,7 +5,7 @@ typedef struct {
     void *unk80;
 } UnkStruct_0230f7b0_R;
 
-void func_ov000_0230f474(UnkStruct_StageObj *w);
+void GmkLand_Action_Unk_ov000_0230f474(UnkStruct_StageObj *w);
 
 void GmkLand_State_Unk_ov000_0230f7b0(UnkStruct_StageObj *w) {
     s16 n = 0x1e;
@@ -22,7 +22,7 @@ void GmkLand_State_Unk_ov000_0230f7b0(UnkStruct_StageObj *w) {
         w->unk8++;
         if (w->unk8 != n)
             return;
-        func_ov000_0230f474(w);
+        GmkLand_Action_Unk_ov000_0230f474(w);
         return;
     }
     w->unk8 = 0;

@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern void Model_SetAnimation(void);
-extern void func_020366f4(void);
+extern void Sound_PlayVoice(void);
 extern void func_ov000_022db954(void);
 extern void func_ov000_022ddd20(void);
 extern void func_ov000_022de344(void);
@@ -57,7 +57,7 @@ _1c:
     mov r1, r0
     mov r2, #0xd2
     str r0, [r4, #0x224]
-    bl func_020366f4
+    bl Sound_PlayVoice
     add sp, sp, #4
     ldmia sp!, {r4, r5, lr}
     bx lr

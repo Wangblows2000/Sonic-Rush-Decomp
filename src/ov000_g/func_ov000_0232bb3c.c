@@ -25,7 +25,7 @@ typedef struct {
     u32 unkC8;
 } UnkStruct_0232bb3c_S;
 
-extern UnkStruct_0232bb3c_S data_ov000_0236aad8;
+extern UnkStruct_0232bb3c_S gCamera;
 
 void StageObj_SetAnimation(void *w, u16 a);
 
@@ -37,7 +37,7 @@ void func_ov000_0232bb3c(UnkStruct_0232bb3c *w) {
         if (w->unkC == 0)
             w->unk58 &= ~0x2000;
     }
-    if (data_ov000_0236aad8.unkC8 & 0x200)
+    if (gCamera.unkC8 & 0x200)
         w->unk8 ^= 1;
     if (w->unk8 != 0)
         w->unkC0 |= 0x80000;

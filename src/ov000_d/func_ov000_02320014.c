@@ -18,7 +18,7 @@ typedef struct {
     UnkStruct_02320014_184 *unk184;
 } UnkStruct_02320014;
 
-extern UnkStruct_02320014_4560 data_022c4560;
+extern UnkStruct_02320014_4560 gGameState;
 
 void DecSonicNeonPart_Create(UnkStruct_02320014 *w, u16 i);
 
@@ -38,7 +38,7 @@ void func_ov000_02320014(UnkStruct_02320014 *w) {
             }
         }
     }
-    fl = data_022c4560.unk20;
+    fl = gGameState.unk20;
     if (fl & 0x100) {
         if (!(fl & 0xff)) {
             w->unk8 = 0xb6db6db6;
@@ -46,7 +46,7 @@ void func_ov000_02320014(UnkStruct_02320014 *w) {
                 w->unk8 = ~w->unk8;
             }
         }
-        fl = data_022c4560.unk20;
+        fl = gGameState.unk20;
         if (!(fl & 0x80)) {
             if (!(fl & 0xf)) {
                 w->unk8 <<= 1;

@@ -12,13 +12,13 @@ typedef struct {
     s32 unk4;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 
 void func_ov000_022e8478(UnkStruct_022e85f8 *p);
 void func_ov000_022e7a84(UnkStruct_022e85f8 *p);
 
 void func_ov000_022e85f8(UnkStruct_022e85f8 *p) {
-    data_ov000_02369ac0.unk4 = 0x2c;
+    gBossStatus.unk4 = 0x2c;
     if (p->unk3D0 == 0)
         p->unk440 = func_ov000_022e8478;
     else

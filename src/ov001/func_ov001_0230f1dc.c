@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 typedef struct { u8 pad[0x38]; void (*init)(void *p); void (*fn)(void *p); } UnkStruct_023172cc;
-extern UnkStruct_023172cc data_ov001_023172cc[];
+extern UnkStruct_023172cc gSpecialStageGimmickTypeTable[];
 void func_ov001_023070fc(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov001_0230f4bc(void *p);
@@ -15,7 +15,7 @@ void func_ov001_0230f1dc(u8 *p) {
         Sound_PlaySeqArc(0, 0x10, 0x18);
         return;
     }
-    e = &data_ov001_023172cc[*(s16 *)(p + 0x68)];
+    e = &gSpecialStageGimmickTypeTable[*(s16 *)(p + 0x68)];
     if (e->init != NULL) {
         e->init(p);
     }

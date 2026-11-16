@@ -10,7 +10,7 @@ typedef struct {
     u16 unk8;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 extern s16 data_ov000_023635a0[];
 
 void func_ov000_022dc858(UnkStruct_022de39c *s);
@@ -20,7 +20,7 @@ void func_ov000_022dd908(UnkStruct_022de39c *s);
 void func_ov000_022de39c(UnkStruct_022de39c *s, s32 n) {
     switch (n) {
     case 0:
-        s->unkBE4 = data_ov000_023635a0[data_ov000_02369ac0.unk8 - 1];
+        s->unkBE4 = data_ov000_023635a0[gBossStatus.unk8 - 1];
         func_ov000_022dc858(s);
         break;
     case 1:

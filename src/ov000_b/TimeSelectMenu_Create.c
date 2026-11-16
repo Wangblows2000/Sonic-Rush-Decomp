@@ -42,7 +42,7 @@ void TimeSelectMenu_LoadAssets(UnkStruct_023629cc *w);
 void func_ov000_023626a4(UnkStruct_023629cc *w);
 void func_ov000_02362518(UnkStruct_023629cc *w);
 void func_ov000_023623e0(UnkStruct_023629cc *w);
-void func_ov000_02360408(UnkStruct_023629cc *w);
+void TimeSelectMenu_LoadArchives(UnkStruct_023629cc *w);
 void func_ov000_02361174(UnkStruct_023629cc *w);
 void func_ov000_02360f18(UnkStruct_023629cc *w, s32 a);
 void func_ov000_02360ee0(UnkStruct_023629cc *w, s32 a, s32 b);
@@ -99,7 +99,7 @@ void TimeSelectMenu_Create(s32 a, s32 b) {
     func_ov000_023626a4(w);
     func_ov000_02362518(w);
     func_ov000_023623e0(w);
-    func_ov000_02360408(w);
+    TimeSelectMenu_LoadArchives(w);
     func_ov000_02361174(w);
     func_ov000_02360f18(w, 0);
     func_ov000_02360ee0(w, 0, 0);

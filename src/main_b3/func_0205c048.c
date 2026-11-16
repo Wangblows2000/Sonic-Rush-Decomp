@@ -14,7 +14,7 @@ typedef struct {
 } UnkObj_0205c048;
 typedef struct { u8 pad0[0x1c]; u8 unk1C; } UnkStruct_022c4560;
 typedef struct { s32 a; s32 b; } UnkEnt_0205c048;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkEnt_0205c048 data_02076bb8[];
 
 void func_0205c038(void);
@@ -30,5 +30,5 @@ void func_0205c048(void *w, UnkObj_0205c048 *o) {
         o->fn = func_0205c038;
     }
     o->unk4C = o->unk54 + FX_Mul_0205c048(0x1c2000 - o->unk54, o->t);
-    o->unk50 = o->unk58 + FX_Mul_0205c048(o->unk68 + data_02076bb8[data_022c4560.unk1C].a - o->unk58, o->t);
+    o->unk50 = o->unk58 + FX_Mul_0205c048(o->unk68 + data_02076bb8[gGameState.unk1C].a - o->unk58, o->t);
 }

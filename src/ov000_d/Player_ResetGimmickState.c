@@ -34,7 +34,7 @@ typedef struct {
     u8 unk1D;
 } UnkStruct_0234c9e8_4560;
 
-extern UnkStruct_0234c9e8_4560 data_022c4560;
+extern UnkStruct_0234c9e8_4560 gGameState;
 
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 
@@ -73,7 +73,7 @@ void Player_ResetGimmickState(UnkStruct_0234c9e8 *w) {
     w->unk5C &= ~0x20;
     w->unk3 = 0;
     w->unk2 = 0;
-    if (data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2) {
+    if (gGameState.unk1C < 9 && gGameState.unk1D < 2) {
         w->unk5C |= 0x200;
     }
     NNS_SndPlayerStopSeq(w->unk388, 0);

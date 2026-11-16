@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_022c4560[];
+extern u8 gGameState[];
 s32 func_0206c95c();
 extern u8 gPlayers[];
 s32 func_0206c938();
@@ -11,13 +11,13 @@ s32 func_ov000_0233b1b8();
 s32 func_ov000_0233b198();
 
 void func_ov000_02342834(s32 p0) {
-    if ((*(u32 *)((u8 *)data_022c4560 + 0x18) & 0x20) == 0) {
+    if ((*(u32 *)((u8 *)gGameState + 0x18) & 0x20) == 0) {
         return;
     }
     if ((s32)p0 == 0) {
         return;
     }
-    func_0206c95c((*(u32 *)((u8 *)data_022c4560 + 0x18) & 0x20), data_022c4560);
+    func_0206c95c((*(u32 *)((u8 *)gGameState + 0x18) & 0x20), gGameState);
     s32 t0 = func_0206c938(1, *(u8 *)((u8 *)*(u32 *)((u8 *)gPlayers + ((s32)p0 << 2)) + 0x326));
     if (t0 == 0) {
         return;

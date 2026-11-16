@@ -1,13 +1,13 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern void func_ov001_02300c94(void);
+extern void ExtraBoss_GetPlayer(void);
 
 asm void func_ov001_02303494(void)
 {
     stmdb sp!, {r4, r5, r6, lr}
     mov r5, r0
-    bl func_ov001_02300c94
+    bl ExtraBoss_GetPlayer
     add r4, r0, #0xb0
     ldr r1, [r5]
     ldr r5, [r5, #4]

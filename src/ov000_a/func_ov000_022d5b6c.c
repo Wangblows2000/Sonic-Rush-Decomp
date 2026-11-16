@@ -39,11 +39,11 @@ struct UnkStruct_022d5b6c {
 };
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022d5b38(UnkStruct_022d5b6c *s);
+void Boss3PartCD_State_Unk_ov000_022d5b38(UnkStruct_022d5b6c *s);
 
 void func_ov000_022d5b6c(UnkStruct_022d5b6c *s) {
     s->unk20C |= 4;
     if (!(s->unk20C & 0x80))
         Sound_PlaySeqArc(0, 0, 0x94);
-    s->func = func_ov000_022d5b38;
+    s->func = Boss3PartCD_State_Unk_ov000_022d5b38;
 }

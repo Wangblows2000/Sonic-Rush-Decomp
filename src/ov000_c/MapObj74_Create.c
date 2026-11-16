@@ -6,7 +6,7 @@ typedef struct {
 
 extern void *data_ov000_02369ba0;
 
-void func_ov000_02304270();
+void MapObj74_Action_Unk_ov000_02304270();
 void MapObj74_Destructor();
 void func_ov000_02342780();
 
@@ -26,7 +26,7 @@ UnkStruct_0230429c *MapObj74_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk54 |= 0x10;
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x20;
-    func_ov000_02304270(w);
+    MapObj74_Action_Unk_ov000_02304270(w);
     func_ov000_02342780();
     return w;
 }

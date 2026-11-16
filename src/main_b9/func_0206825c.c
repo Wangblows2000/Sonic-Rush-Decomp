@@ -31,7 +31,7 @@ typedef struct {
     u16 y;
 } UnkPos_0206825c;
 
-extern UnkCam_0206825c data_ov000_0236aad8;
+extern UnkCam_0206825c gCamera;
 extern UnkPos_0206825c gTouchState;
 
 BOOL ObjRect_PointCheck(UnkBox_0206825c *b, s32 px, s32 py);
@@ -42,12 +42,12 @@ BOOL func_0206825c(UnkObj_0206825c *o, UnkBox_0206825c *b) {
 
     b->x = (s16)(o->x >> 8);
     b->y = (s16)(o->y >> 8);
-    if (data_ov000_0236aad8.unk8 > data_ov000_0236aad8.unk6C) {
-        cx = (s16)(data_ov000_0236aad8.unk4 >> 8);
-        cy = (s16)(data_ov000_0236aad8.unk8 >> 8);
+    if (gCamera.unk8 > gCamera.unk6C) {
+        cx = (s16)(gCamera.unk4 >> 8);
+        cy = (s16)(gCamera.unk8 >> 8);
     } else {
-        cx = (s16)(data_ov000_0236aad8.unk68 >> 8);
-        cy = (s16)(data_ov000_0236aad8.unk6C >> 8);
+        cx = (s16)(gCamera.unk68 >> 8);
+        cy = (s16)(gCamera.unk6C >> 8);
     }
     return ObjRect_PointCheck(b, gTouchState.x + cx, gTouchState.y + cy);
 }

@@ -5,12 +5,12 @@
 
 void func_ov000_0235e190();
 s32 Task_Create();
-s32 func_02050078();
+s32 MsgBox_Create();
 s32 Touch_Enable();
 
 void func_ov000_0235e1c4(void) {
     Task_Create((u32)func_ov000_0235e190, 0, 0, 0, 0, 0);
-    func_02050078(0xc, 3, 2, 1, 0, 0, 0xe, 0x200010);
+    MsgBox_Create(0xc, 3, 2, 1, 0, 0, 0xe, 0x200010);
     *(volatile u16 *)0x5000000 = 0;
     *(volatile u16 *)0x5000400 = 0;
     *(volatile u32 *)0x4000000 = (*(volatile u32 *)0x4000000 & -7937);

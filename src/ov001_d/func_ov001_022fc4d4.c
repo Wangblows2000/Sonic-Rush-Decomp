@@ -6,10 +6,10 @@ typedef struct UnkStruct_022fc4d4_g {
     s32 unk14;
 } UnkStruct_022fc4d4_g;
 
-extern UnkStruct_022fc4d4_g data_022c4560;
+extern UnkStruct_022fc4d4_g gGameState;
 
 u8 *func_ov001_022fd428(s32 a, void *b, s32 c, s32 d, s32 e);
-void *func_ov001_02300c94(void);
+void *ExtraBoss_GetPlayer(void);
 u8 *ExtraBoss_GetWork(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void func_ov001_022fc494(void);
@@ -17,7 +17,7 @@ void Sound_PlaySeqArc(void *p, u32 a, u32 b);
 
 static inline BOOL IsMode23(void) {
     BOOL r = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         r = FALSE;
     return r;
 }
@@ -25,7 +25,7 @@ static inline BOOL IsMode23(void) {
 static inline s32 GetMode(void) {
     if (IsMode23())
         return 1;
-    return data_022c4560.unk14;
+    return gGameState.unk14;
 }
 
 void func_ov001_022fc4d4(void *p, s32 y, s32 z) {
@@ -36,7 +36,7 @@ void func_ov001_022fc4d4(void *p, s32 y, s32 z) {
         return;
     *(void (**)(void))(t + 0x74) = func_ov001_022fc494;
     *(u32 *)(t + 0x14) |= 0x10000;
-    *(void **)(t + 0x80) = func_ov001_02300c94();
+    *(void **)(t + 0x80) = ExtraBoss_GetPlayer();
     *(u16 *)(t + 0x98) = 0xffff;
     *(s32 *)(t + 0x1cc) = GetMode() == 1 ? 0x10 : 0x18;
     func_ov001_022fe8d4(t + 0xe8, t, 1, 1, 0x80000, 0x10000, 0x9000, 0, 0, 0, 0);

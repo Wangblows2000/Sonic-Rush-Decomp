@@ -36,15 +36,15 @@ struct UnkStruct_0235182c {
     s32 unk3F8;
 };
 
-void func_ov000_0234739c(UnkStruct_0235182c *w);
-void func_ov000_0234a064(UnkStruct_0235182c *w);
+void Player_ApplyAirInput(UnkStruct_0235182c *w);
+void Player_Action_LandOnGround(UnkStruct_0235182c *w);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 b);
 s16 ObjSpd_DownSet(s32 v, s32 a);
 
 void Player_State_Air(UnkStruct_0235182c *w) {
     s32 v;
 
-    func_ov000_0234739c(w);
+    Player_ApplyAirInput(w);
     if (w->other != NULL) {
         if ((w->unk14 > w->unk3F4 && !(w->other->unk5C & 2)) || (w->unk14 < w->unk3F4 && (w->other->unk5C & 2))) {
             w->unk30 = ObjSpd_UpSet(w->unk30, -0x32, 0x480);
@@ -69,6 +69,6 @@ void Player_State_Air(UnkStruct_0235182c *w) {
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;
     w->other = NULL;
-    func_ov000_0234a064(w);
+    Player_Action_LandOnGround(w);
     w->unk334(w);
 }

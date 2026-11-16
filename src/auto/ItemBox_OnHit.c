@@ -4,7 +4,7 @@
 s32 ObjRect_FuncNoHit();
 s32 Sound_PlaySeqArcEx();
 s32 func_ov000_0232e628();
-s32 func_ov000_0234aa80();
+s32 Player_Action_AttackBounce();
 s32 func_ov000_0230da90();
 s32 ItemBox_CreatePart_ov000_0230d5d4();
 
@@ -29,7 +29,7 @@ void ItemBox_OnHit(u8 *p0, u8 *p1) {
     *(u32 *)((u8 *)t0 + 0x1f4) = (*(u32 *)((u8 *)t0 + 0x1f4) | 0x10);
     if (t1 != 0) {
         if (*(u8 *)t1 == 1) {
-            func_ov000_0234aa80(t1);
+            Player_Action_AttackBounce(t1);
         }
     }
     func_ov000_0230da90(t0, t1, ((u32)(*(s8 *)((u8 *)*(u32 *)((u8 *)t0 + 0x1e0) + 0x6) << 0x10) >> 0x10));

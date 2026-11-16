@@ -19,8 +19,8 @@ typedef struct {
     u16 unk8;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u16 data_ov000_023642b4[][8];
 
 void func_ov000_022f2f0c(UnkStruct_022f300c *p);
@@ -29,12 +29,12 @@ void func_ov000_022f300c(UnkStruct_022f300c *p) {
     BOOL b;
     s32 idx;
 
-    b = data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    b = gGameState.unk10 == 2 || gGameState.unk10 == 3;
     if (b)
         idx = 1;
     else
-        idx = data_022c4560.unk14;
-    p->unk438 = data_ov000_023642b4[idx][data_ov000_02369ac0.unk8 - 1];
+        idx = gGameState.unk14;
+    p->unk438 = data_ov000_023642b4[idx][gBossStatus.unk8 - 1];
     p->unk43A = 0;
     p->unk68 = func_ov000_022f2f0c;
 }

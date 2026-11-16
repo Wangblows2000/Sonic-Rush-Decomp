@@ -75,7 +75,7 @@ extern UnkStruct_02306db0_g *data_ov001_0231f5b8;
 extern UnkStruct_02306db0_e data_ov001_02316fe4[];
 extern u32 gRandSeed;
 
-UnkStruct_02306db0_n *func_ov001_023102fc(void *g);
+UnkStruct_02306db0_n *SpecialStageObjList_Alloc(void *g);
 void AnimatorSprite_SetAnimation(void *s, u16 index);
 void Model_Animate(void *p);
 void Model_SetResource(void *s, void *res, u32 idx);
@@ -115,7 +115,7 @@ UnkStruct_02306db0_n *func_ov001_02306db0(s32 arg, u32 type) {
     }
     if (i == 0x20)
         return NULL;
-    n = func_ov001_023102fc(g->unk46A0);
+    n = SpecialStageObjList_Alloc(g->unk46A0);
     e = &data_ov001_02316fe4[type];
     n->unk0 = 1;
     n->unk4 = e->unk0;

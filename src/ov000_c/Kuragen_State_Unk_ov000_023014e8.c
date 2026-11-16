@@ -17,7 +17,7 @@ typedef struct {
 } UnkStruct_023014e8;
 
 void func_ov000_02301390(UnkStruct_023014e8 *w);
-void func_ov000_0230187c(UnkStruct_023014e8 *w);
+void Kuragen_Action_Unk_ov000_0230187c(UnkStruct_023014e8 *w);
 
 void Kuragen_State_Unk_ov000_023014e8(UnkStruct_023014e8 *w) {
     if (w->unk23C == 0) {
@@ -56,7 +56,7 @@ void Kuragen_State_Unk_ov000_023014e8(UnkStruct_023014e8 *w) {
             func_ov000_02301390(w);
             w->unk238 |= 0x10000;
             w->unk238 &= ~1;
-            func_ov000_0230187c(w);
+            Kuragen_Action_Unk_ov000_0230187c(w);
         }
     }
 }

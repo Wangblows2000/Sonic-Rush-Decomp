@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u8 gPlayers[];
-void func_ov000_022e4474();
+void Boss6_State_Unk_ov000_022e4474();
 s32 Player_SetAnimation();
 
 void func_ov000_022e450c(s32 p0) {
@@ -16,6 +16,6 @@ void func_ov000_022e450c(s32 p0) {
     *(u16 *)((u8 *)t0 + 0x34) = 0;
     u32 t1 = *(u32 *)((u8 *)t0 + 0x68);
     *(u32 *)((u8 *)p0 + 0x111c) = t1;
-    *(u32 *)((u8 *)t0 + 0x68) = (u32)func_ov000_022e4474;
-    Player_SetAnimation(t0, 0xf, (u32)func_ov000_022e4474, t0);
+    *(u32 *)((u8 *)t0 + 0x68) = (u32)Boss6_State_Unk_ov000_022e4474;
+    Player_SetAnimation(t0, 0xf, (u32)Boss6_State_Unk_ov000_022e4474, t0);
 }

@@ -5,7 +5,7 @@ typedef struct {
     u8 unk1C;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023661a8[][3];
 
 void Math_RotateVec2S16(s32 a, s16 *b, s32 c);
@@ -18,8 +18,8 @@ void func_ov000_022fb738(UnkStruct_StageObj *w) {
 
     if (w->unk1F4 & 0x20)
         return;
-    if (data_022c4560.unk1C < 8)
-        kind = data_ov000_023661a8[data_022c4560.unk1C][Rand() % 3];
+    if (gGameState.unk1C < 8)
+        kind = data_ov000_023661a8[gGameState.unk1C][Rand() % 3];
     else
         kind = Rand() & 0xf;
     dy = 0x800;

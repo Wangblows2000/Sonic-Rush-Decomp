@@ -44,10 +44,10 @@ typedef struct {
 extern UnkStruct_022e3954_pl *gPlayers;
 extern UnkStruct_022e3954_pad gPad;
 extern u16 data_ov000_02363710[];
-extern UnkStruct_022e3954_4 data_022c4560;
+extern UnkStruct_022e3954_4 gGameState;
 
 s32 func_0200225c(s32 a, s32 b);
-void func_ov000_023491f8(UnkStruct_022e3954_pl *p, s32 a, s32 b);
+void Player_Action_KnockbackIntangible(UnkStruct_022e3954_pl *p, s32 a, s32 b);
 
 void func_ov000_022e3954(UnkStruct_022e3954 *s) {
     s32 i;
@@ -73,12 +73,12 @@ void func_ov000_022e3954(UnkStruct_022e3954 *s) {
         s->unk111C += 0x200;
     }
     b = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;
     if (b)
         idx = 1;
     else
-        idx = data_022c4560.unk14;
+        idx = gGameState.unk14;
     if (idx == 1)
         s->unk111C -= 0x20;
     else
@@ -122,12 +122,12 @@ void func_ov000_022e3954(UnkStruct_022e3954 *s) {
     if (gPlayers->unk328 == 0xf)
         return;
     if (gPlayers->unk10 > 0x33800) {
-        func_ov000_023491f8(gPlayers, 0x500, -0x300);
+        Player_Action_KnockbackIntangible(gPlayers, 0x500, -0x300);
         gPlayers->unk30 *= 2;
         return;
     }
     if (gPlayers->unk10 < 0x800) {
-        func_ov000_023491f8(gPlayers, -0x500, -0x300);
+        Player_Action_KnockbackIntangible(gPlayers, -0x500, -0x300);
         gPlayers->unk30 *= 2;
     }
 }

@@ -8,7 +8,7 @@ typedef struct {
 
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void func_ov000_022faf48(UnkStruct_022fd990 *w, s32 a);
-void func_ov000_022fe304(UnkStruct_022fd990 *w);
+void EnemyPawnGroup_Action_Unk_ov000_022fe304(UnkStruct_022fd990 *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fd990(UnkStruct_022fd990 *w) {
     u16 f;
@@ -25,7 +25,7 @@ void EnemyPawnGroup_State_Unk_ov000_022fd990(UnkStruct_022fd990 *w) {
         if (w->base.unkC != 0 && --w->base.unkC == 0) {
             if (w->base.unk1F4 & 8) {
                 w->base.unk5C &= ~0x10;
-                func_ov000_022fe304(w);
+                EnemyPawnGroup_Action_Unk_ov000_022fe304(w);
                 return;
             }
             w->base.unk5C &= ~0x10;

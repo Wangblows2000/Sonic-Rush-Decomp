@@ -30,12 +30,12 @@ void func_ov001_022d96c4(void);
 void func_ov001_022da304(UnkWork_022db150 *w);
 void func_02051f20(void);
 void func_ov001_022da450(UnkWork_022db150 *w);
-void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov001_022da374(UnkWork_022db150 *w);
 void func_ov001_022da33c(UnkWork_022db150 *w);
 void func_ov001_022da2cc(UnkWork_022db150 *w, s32 i);
 void func_ov001_022da288(UnkWork_022db150 *w, s32 i);
-void func_02040ec0(UnkAnim_022db150 *a, s32 id);
+void KeyframeAnim_SetAnim(UnkAnim_022db150 *a, s32 id);
 void func_ov001_022d6dc0(void);
 void func_ov001_022d97a8(s32 a, s32 b, s32 c, s32 d);
 void func_02051db0(s32 a, s32 b, s32 c, s32 d);
@@ -73,7 +73,7 @@ void func_ov001_022db150(void) {
         w->unk0 = 0;
         w->unk4 = 0;
         func_ov001_022da450(w);
-        func_02050078(3, 3, 1, 1, 2, 0, 0xe, 0x200010);
+        MsgBox_Create(3, 3, 1, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = func_ov001_022db014;
         return;
     }
@@ -86,12 +86,12 @@ void func_ov001_022db150(void) {
         func_ov001_022da2cc(w, 1);
         func_ov001_022da288(w, 0);
         func_ov001_022da288(w, 1);
-        func_02040ec0(&w->anims[0], 0xe);
-        func_02040ec0(&w->anims[1], 0xf);
-        func_02040ec0(&w->anims[2], 0x10);
-        func_02040ec0(&w->anims[3], 0x11);
-        func_02040ec0(&w->anims[4], 0x12);
-        func_02040ec0(&w->anims[5], 0x13);
+        KeyframeAnim_SetAnim(&w->anims[0], 0xe);
+        KeyframeAnim_SetAnim(&w->anims[1], 0xf);
+        KeyframeAnim_SetAnim(&w->anims[2], 0x10);
+        KeyframeAnim_SetAnim(&w->anims[3], 0x11);
+        KeyframeAnim_SetAnim(&w->anims[4], 0x12);
+        KeyframeAnim_SetAnim(&w->anims[5], 0x13);
         func_ov001_022d6dc0();
         func_ov001_022d97a8(0, 0x10, 0x10, 0xc);
         func_02051db0(2, 0xc, 0x3000, 0);
@@ -102,7 +102,7 @@ void func_ov001_022db150(void) {
         w->unk0 = 0;
         w->unk4 = 0;
         func_ov001_022da450(w);
-        func_02050078(2, 3, 2, 1, 2, 0, 0xe, 0x200010);
+        MsgBox_Create(2, 3, 2, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = func_ov001_022dafdc;
     }
 }

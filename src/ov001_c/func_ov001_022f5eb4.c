@@ -42,7 +42,7 @@ extern void *data_ov001_0231f068;
 extern s32 data_ov001_0231f520;
 extern s32 data_ov001_0231f524;
 
-UnkStruct_022f5eb4 *func_ov001_02300c94(void);
+UnkStruct_022f5eb4 *ExtraBoss_GetPlayer(void);
 void func_ov001_022f5da0(void);
 void func_ov001_022f5a24(void);
 void Model_SetAnimation(UnkStruct_022f5eb4_o *o, u32 slot, void *res, u32 idx, void *tex);
@@ -59,7 +59,7 @@ void func_ov001_022f5eb4(UnkStruct_022f5eb4 *p) {
 
     if (!(a->unk10C & 2))
         return;
-    t = func_ov001_02300c94();
+    t = ExtraBoss_GetPlayer();
     p->unk74 = func_ov001_022f5da0;
     Model_SetAnimation(a, 0, data_ov001_0231f068, 6, 0);
     a->unk10C &= ~4;

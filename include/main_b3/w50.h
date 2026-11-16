@@ -14,7 +14,7 @@ typedef struct {
     u16 unk46;
 } UnkSpr_W50;
 
-/* work of task created by func_02050078 (0x588 bytes) */
+/* work of task created by MsgBox_Create (0x588 bytes) */
 typedef struct {
     u32 unk0;
     s32 unk4;

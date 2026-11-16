@@ -15,7 +15,7 @@ typedef struct UnkStruct_0230de20_a {
 } UnkStruct_0230de20_a;
 
 extern void *gMainHeap;
-extern u8 *data_ov001_0231f654;
+extern u8 *gSpecialStageMap;
 extern void *gSpecialStageMapModelList[][4];
 extern u8 data_ov001_0231e9f4[];
 extern s32 data_ov001_023171ec[];
@@ -30,8 +30,8 @@ void MTX_Identity33_(void *m);
 s32 SpecialStage_GetStageIndex(void);
 u8 *File_Load(void *p, s32 v);
 void NNS_G3dResDefaultSetup(void *p);
-u32 func_020380d8(void *p);
-void func_020380a0(void *src, void *dst);
+u32 Asset3D_GetResourceSize(void *p);
+void Asset3D_CopyResource(void *src, void *dst);
 void Heap_Free(void *heap, void *p);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
@@ -76,9 +76,9 @@ void SpecialStage_LoadMapModels(void) {
         DC_StoreRange(blk, 0xb00);
         blk += 0x20;
     }
-    data_ov001_0231f654 = blk;
+    gSpecialStageMap = blk;
     MI_CpuFill8(blk, 0, 0xac8);
-    sl = data_ov001_0231f654;
+    sl = gSpecialStageMap;
     blk = Heap_Alloc(gMainHeap, 0x240, 0x20);
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill2 = 0xcccccccc;
@@ -109,7 +109,7 @@ void SpecialStage_LoadMapModels(void) {
     for (j = 0; j < 4; j++) {
         res = File_Load(gSpecialStageMapModelList[SpecialStage_GetStageIndex()][j], -1);
         NNS_G3dResDefaultSetup(res);
-        sz = (func_020380d8(res) + 0x43) & ~0x1f;
+        sz = (Asset3D_GetResourceSize(res) + 0x43) & ~0x1f;
         blk = Heap_Alloc(gMainHeap, sz, 0x20);
         if ((u8 *)OS_GetArenaLo(0) != blk) {
             fill4 = 0xcccccccc;
@@ -120,7 +120,7 @@ void SpecialStage_LoadMapModels(void) {
             blk += 0x20;
         }
         ((void **)(sl + 0x9fc))[j] = blk;
-        func_020380a0(res, ((void **)(sl + 0x9fc))[j]);
+        Asset3D_CopyResource(res, ((void **)(sl + 0x9fc))[j]);
         if ((u8 *)OS_GetArenaLo(0) != res) {
             res -= 0x20;
             sz = *(u32 *)res;

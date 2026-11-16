@@ -14,12 +14,12 @@ extern char data_ov001_0231d450[];
 
 u8 *File_Load(const char *path, s32 v);
 BOOL NNS_G3dResDefaultSetup(void *res);
-u32 func_020380d8(void *s);
+u32 Asset3D_GetResourceSize(void *s);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void func_020380a0(void *src, void *dst);
+void Asset3D_CopyResource(void *src, void *dst);
 void Heap_Free(void *heap, void *p);
 BOOL func_02021310(void *arc, const char *name, void *narc);
 void *func_02021264(void *arc, u32 idx);
@@ -35,7 +35,7 @@ void ExtraBoss_LoadBossModel(void) {
 
     res = File_Load(data_ov001_023167a8, -1);
     NNS_G3dResDefaultSetup(res);
-    size = (func_020380d8(res) + 0x43) & ~0x1f;
+    size = (Asset3D_GetResourceSize(res) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
@@ -46,7 +46,7 @@ void ExtraBoss_LoadBossModel(void) {
         blk += 0x20;
     }
     data_ov001_0231f070 = blk;
-    func_020380a0(res, blk);
+    Asset3D_CopyResource(res, blk);
     if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;

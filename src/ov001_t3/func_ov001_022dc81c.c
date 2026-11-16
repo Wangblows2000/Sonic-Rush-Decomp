@@ -22,8 +22,8 @@ typedef struct {
 
 extern UnkTask_022dc81c *gTaskCurrent;
 
-void func_02040d14(UnkAnim_022dc81c *a);
-BOOL func_02040cf4(UnkAnim_022dc81c *a);
+void KeyframeAnim_Update(UnkAnim_022dc81c *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022dc81c *a);
 void func_ov001_022d9e50(UnkWork_022dc81c *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022dc81c *w, s32 x, s32 y);
 void func_ov001_022d9d98(UnkWork_022dc81c *w, s32 i, s32 x, s32 y);
@@ -41,12 +41,12 @@ void func_ov001_022dc81c(void) {
     UnkAnim_022dc81c *a;
 
     w = gTaskCurrent->work;
-    func_02040d14(&w->anims[0]);
-    func_02040d14(&w->anims[1]);
-    func_02040d14(&w->anims[2]);
-    func_02040d14(&w->anims[3]);
-    func_02040d14(&w->anims[4]);
-    func_02040d14(&w->anims[5]);
+    KeyframeAnim_Update(&w->anims[0]);
+    KeyframeAnim_Update(&w->anims[1]);
+    KeyframeAnim_Update(&w->anims[2]);
+    KeyframeAnim_Update(&w->anims[3]);
+    KeyframeAnim_Update(&w->anims[4]);
+    KeyframeAnim_Update(&w->anims[5]);
     a = &w->anims[0];
     func_ov001_022d9e50(w, a->x, a->y);
     a = &w->anims[1];
@@ -60,12 +60,12 @@ void func_ov001_022dc81c(void) {
     a = &w->anims[5];
     func_ov001_022d9d64(w, 1, a->x, a->y);
     done = TRUE;
-    if (!func_02040cf4(&w->anims[0])) done = FALSE;
-    if (!func_02040cf4(&w->anims[1])) done = FALSE;
-    if (!func_02040cf4(&w->anims[2])) done = FALSE;
-    if (!func_02040cf4(&w->anims[3])) done = FALSE;
-    if (!func_02040cf4(&w->anims[4])) done = FALSE;
-    if (!func_02040cf4(&w->anims[5])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[0])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[1])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[2])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[3])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[4])) done = FALSE;
+    if (!KeyframeAnim_IsFinished(&w->anims[5])) done = FALSE;
     w->timer++;
     if (done) {
         w->timer = 0;

@@ -20,7 +20,7 @@ typedef struct {
     UnkStruct_02338624 *work;
 } UnkStruct_02338624_Task;
 
-extern UnkStruct_02338624_Task *data_ov000_0236aaac;
+extern UnkStruct_02338624_Task *gBossHelpTask;
 extern u8 data_ov000_023687e8[];
 extern s16 data_ov000_02364d8c[];
 
@@ -37,8 +37,8 @@ void BossHelp_Create(u32 idx) {
     UnkStruct_02338624 *w;
     vu16 zero;
 
-    data_ov000_0236aaac = Task_Create(BossHelp_Main, BossHelp_Destructor, 0, 0x3800, 3, sizeof(UnkStruct_02338624));
-    w = data_ov000_0236aaac->work;
+    gBossHelpTask = Task_Create(BossHelp_Main, BossHelp_Destructor, 0, 0x3800, 3, sizeof(UnkStruct_02338624));
+    w = gBossHelpTask->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02338624));
     w->idx = idx;

@@ -49,8 +49,8 @@ void Task_DestroyRange(s32 a, s32 b);
 UnkTask_022d74dc *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void func_ov001_022d83fc(void);
-void func_02040ef0(UnkAnim_022d74dc *a, s32 b, s32 c);
-void func_02040df8(UnkAnim_022d74dc *a, s32 v);
+void KeyframeAnim_Init(UnkAnim_022d74dc *a, s32 b, s32 c);
+void KeyframeAnim_SetFrame(UnkAnim_022d74dc *a, s32 v);
 
 #pragma thumb on
 static inline s32 GetDur_022d74dc(UnkRes_022d74dc *r, u32 i) {
@@ -69,8 +69,8 @@ void func_ov001_022d74dc(UnkStruct_022d74dc *p, s32 b) {
     MIi_CpuClear16(zero, w, sizeof(UnkWork_022d74dc));
     w->parent = p;
     for (i = 0; i < 6; i++) {
-        func_02040ef0(&w->anims[i], p->unk824, i);
-        func_02040df8(&w->anims[i], (GetDur_022d74dc(w->anims[i].res, i) << 12) / 2);
+        KeyframeAnim_Init(&w->anims[i], p->unk824, i);
+        KeyframeAnim_SetFrame(&w->anims[i], (GetDur_022d74dc(w->anims[i].res, i) << 12) / 2);
     }
     if (b >= 7) b = 0;
     w->x0 = data_ov001_0231616e[b * 4];

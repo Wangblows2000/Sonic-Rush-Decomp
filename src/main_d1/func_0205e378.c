@@ -35,13 +35,13 @@ typedef struct {
     UnkRes_0205e378 *resB;
 } UnkWork_0205e378;
 
-extern UnkState_0205e378 data_022c4560;
+extern UnkState_0205e378 gGameState;
 extern u16 data_02076b50[];
 extern u16 data_02076b4c[];
 
 void AnimatorSprite_Init(UnkSpr_0205e378 *spr, UnkRes_0205e378 *res, u16 anim, u32 flags, s32 d, s32 e, u32 pal, s32 g, u32 h);
 void AnimatorSprite_ProcessAnimation(UnkSpr_0205e378 *spr, s32 a, s32 b);
-void func_020331f8(UnkSpr_0205e378 *spr);
+void AnimatorSprite_ProcessFrame(UnkSpr_0205e378 *spr);
 u16 ObjDraw_AllocSpritePalette(UnkRes_0205e378 *res, u16 anim, s32 n);
 u32 ObjVram_Alloc(s32 a, u32 b);
 u32 func_0204e6e8(u8 zone);
@@ -66,19 +66,19 @@ void func_0205e378(UnkWork_0205e378 *w) {
     u32 i;
     UnkSpr_0205e378 tmp;
 
-    if (data_022c4560.zone == 8 && data_022c4560.act == 2) {
+    if (gGameState.zone == 8 && gGameState.act == 2) {
         prioA = 0xe;
         prioB = 0xf;
         AnimatorSprite_Init(&tmp, w->resA, data_02076b50[w->idx], 0x48, 0, 0, 0, 0, 0x05000200);
         tmp.prio = prioA;
         AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
         tmp.unk0 = 1;
-        func_020331f8(&tmp);
+        AnimatorSprite_ProcessFrame(&tmp);
         AnimatorSprite_Init(&tmp, w->resA, 0x19, 0x48, 0, 0, 0, 0, 0x05000200);
         tmp.prio = prioB;
         AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
         tmp.unk0 = 1;
-        func_020331f8(&tmp);
+        AnimatorSprite_ProcessFrame(&tmp);
     } else {
         prioA = ObjDraw_AllocSpritePalette(w->resA, data_02076b50[w->idx], 199);
         prioB = ObjDraw_AllocSpritePalette(w->resA, 0x19, 200);
@@ -98,7 +98,7 @@ void func_0205e378(UnkWork_0205e378 *w) {
     AnimatorSprite_ProcessAnimation(spr, 0, 0);
 
     spr = SPR(0xe4);
-    anim = data_022c4560.zone + 0xf;
+    anim = gGameState.zone + 0xf;
     AnimatorSprite_Init(spr, w->resA, anim, 0x44210, 1, 0, ObjVram_Alloc(1, AnimPal_0205e378(w->resA, anim)), 0, 0x05000600);
     spr->prio = prioA;
     spr->unk46 = 1;
@@ -110,13 +110,13 @@ void func_0205e378(UnkWork_0205e378 *w) {
     spr->unk46 = 1;
 
     spr = SPR(0x184);
-    anim = data_022c4560.zone * 2;
+    anim = gGameState.zone * 2;
     AnimatorSprite_Init(spr, w->resB, anim, 0x44210, 1, 0, ObjVram_Alloc(1, AnimPal_0205e378(w->resB, anim)), 0, 0x05000600);
     spr->prio = prioA;
     AnimatorSprite_ProcessAnimation(spr, 0, 0);
 
     spr = SPR(0x1f4);
-    anim = data_022c4560.zone * 2 + 1;
+    anim = gGameState.zone * 2 + 1;
     pal = AnimPal_0205e378(w->resB, anim);
     if (pal == 0)
         pal = 1;
@@ -124,7 +124,7 @@ void func_0205e378(UnkWork_0205e378 *w) {
     spr->prio = prioA;
     AnimatorSprite_ProcessAnimation(spr, 0, 0);
 
-    v = func_0204e6e8(data_022c4560.zone);
+    v = func_0204e6e8(gGameState.zone);
     anim16 = v < 7 ? 2 : 0x2a;
     spr = v < 7 ? SPR(0x264) : SPR(0x2ac);
     AnimatorSprite_Init(spr, w->resA, anim16, 0x44210, 1, 0, ObjVram_Alloc(1, AnimPal_0205e378(w->resA, anim16)), 0, 0x05000600);
@@ -143,7 +143,7 @@ void func_0205e378(UnkWork_0205e378 *w) {
     AnimatorSprite_ProcessAnimation(spr2, 0, 0);
 
     spr = SPR(0x328);
-    if (data_022c4560.zone >= 9 || data_022c4560.act >= 2)
+    if (gGameState.zone >= 9 || gGameState.act >= 2)
         spr->anim = 0xb;
     else
         spr->anim = 3;
@@ -152,10 +152,10 @@ void func_0205e378(UnkWork_0205e378 *w) {
     AnimatorSprite_ProcessAnimation(spr, 0, 0);
 
     spr = SPR(0x370);
-    if (data_022c4560.zone >= 9 || data_022c4560.act >= 2)
+    if (gGameState.zone >= 9 || gGameState.act >= 2)
         spr->anim = 0xc;
     else
-        spr->anim = data_022c4560.act + 4;
+        spr->anim = gGameState.act + 4;
     AnimatorSprite_Init(spr, w->resA, spr->anim, 0x44210, 1, 0, ObjVram_Alloc(1, AnimPal_0205e378(w->resA, spr->anim)), 0, 0x05000600);
     spr->prio = prioA;
     AnimatorSprite_ProcessAnimation(spr, 0, 0);

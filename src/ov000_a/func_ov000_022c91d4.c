@@ -57,7 +57,7 @@ struct UnkStruct_022c91d4 {
     s32 unk33C;
 };
 
-extern UnkStruct_022c91d4_2 *data_ov000_02369acc;
+extern UnkStruct_022c91d4_2 *gBoss1;
 
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cc06c(void *p, s32 a, s32 b);
@@ -76,10 +76,10 @@ typedef struct UnkStruct_022c91d4_cam {
 extern UnkStruct_022c91d4_cam data_ov000_0236a444;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022c90e8(UnkStruct_022c91d4 *s);
+void Boss1Neck_State_Unk_ov000_022c90e8(UnkStruct_022c91d4 *s);
 
 void func_ov000_022c91d4(UnkStruct_022c91d4 *s) {
-    UnkStruct_022c91d4_3 *p = data_ov000_02369acc->unk214;
+    UnkStruct_022c91d4_3 *p = gBoss1->unk214;
     func_ov000_022cc00c(s->unk228, s->unk220, 0x15, 0x1000, 0);
     func_ov000_022cc00c(p->unk30C, p->unk304, 8, 0x1000, 0);
     data_ov000_0236a444.unk94 = -0x28000;
@@ -88,6 +88,6 @@ void func_ov000_022c91d4(UnkStruct_022c91d4 *s) {
     data_ov000_0236a444.unk78 = 0x55;
     Sound_PlaySeqArc(0, 0, 0x81);
     s->unk20C = 0;
-    s->func = func_ov000_022c90e8;
+    s->func = Boss1Neck_State_Unk_ov000_022c90e8;
     s->func(s);
 }

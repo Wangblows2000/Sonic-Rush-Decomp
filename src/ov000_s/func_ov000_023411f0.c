@@ -13,7 +13,7 @@ typedef struct {
     u32 flags;
 } UnkPlayers_023411f0;
 
-extern UnkPlayers_023411f0 data_ov000_0236aad8;
+extern UnkPlayers_023411f0 gCamera;
 extern UnkPlayer_023411f0 data_ov000_0236ab3c;
 
 UnkPlayer_023411f0 *func_ov000_0233b62c(void);
@@ -24,7 +24,7 @@ UnkPlayer_023411f0 *func_ov000_0233b610(void);
 void func_ov000_023411f0(void) {
     UnkPlayer_023411f0 *p;
 
-    if (data_ov000_0236aad8.flags & 1) {
+    if (gCamera.flags & 1) {
         p = func_ov000_0233b62c();
         p->x = 0;
         p->y = 0;
@@ -32,8 +32,8 @@ void func_ov000_023411f0(void) {
         p->x = 0;
         p->y = 0x11000;
     } else {
-        data_ov000_0236aad8.p0.x = 0;
-        data_ov000_0236aad8.p0.y = 0;
+        gCamera.p0.x = 0;
+        gCamera.p0.y = 0;
         PLAYER2->x = 0;
         PLAYER2->y = 0;
     }

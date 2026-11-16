@@ -62,13 +62,13 @@ typedef struct {
 } UnkStruct_023102b4_Cam;
 
 extern UnkStruct_023102b4_4590 data_022c4590;
-extern UnkStruct_023102b4_4560 data_022c4560;
+extern UnkStruct_023102b4_4560 gGameState;
 extern UnkStruct_023102b4_Cam data_ov000_0236ab3a[];
 
 void StageObj_SetAnimation(void *w, s32 a);
-void func_ov000_0234307c(UnkStruct_023102b4_Ply *w, s16 a);
+void Player_AddTension(UnkStruct_023102b4_Ply *w, s16 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_ov000_0232b3e0(UnkStruct_023102b4_Ply *w, u32 a);
+void CheckpointTimePopup_Create(UnkStruct_023102b4_Ply *w, u32 a);
 
 void Marker_OnHit(UnkStruct_023102b4 *a, UnkStruct_023102b4 *b) {
     UnkStruct_023102b4_Obj *o;
@@ -90,8 +90,8 @@ void Marker_OnHit(UnkStruct_023102b4 *a, UnkStruct_023102b4 *b) {
         }
         g->unk15 = o->unk1E0->unk4;
         g->unk38 = data_ov000_0236ab3a[p->unk327].unk0;
-        g->unk18 = data_022c4560.unk20;
-        func_ov000_0234307c(p, 800);
+        g->unk18 = gGameState.unk20;
+        Player_AddTension(p, 800);
         if (p->unk32C & 0x80) {
             data_022c4590.unk8 += 10000;
         } else if (p->unk32C & 0x100) {
@@ -107,8 +107,8 @@ void Marker_OnHit(UnkStruct_023102b4 *a, UnkStruct_023102b4 *b) {
         }
         data_022c4590.unkC++;
         Sound_PlaySeqArcEx(NULL, 0, 0x44);
-        if (data_022c4560.unk10 == 2) {
-            func_ov000_0232b3e0(p, data_022c4560.unk20);
+        if (gGameState.unk10 == 2) {
+            CheckpointTimePopup_Create(p, gGameState.unk20);
         }
     }
     o->unk54 |= 2;

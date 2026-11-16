@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u8 sSysState[];
-extern u8 data_022c197c[];
+extern u8 sTraceFunc[];
 extern u8 data_020788b8[];
 s32 WH_ChangeSysState();
 extern u8 data_022c1994[];
@@ -14,7 +14,7 @@ s32 WH_SetError();
 
 s32 WH_StateInStartChild(void) {
     if ((u32)(*(u32 *)sSysState - 0x4) <= (u32)2) {
-        s32 t0 = *(u32 *)data_022c197c;
+        s32 t0 = *(u32 *)sTraceFunc;
         if (t0 != 0) {
             ((s32 (*)())t0)(data_020788b8, t0);
         }

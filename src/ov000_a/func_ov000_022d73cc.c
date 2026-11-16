@@ -66,7 +66,7 @@ void BossEffect_CreateJump(s32 a, s32 b, s32 c, s32 d);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void NNS_SndHandleReleaseSeq(s32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022d7384(UnkStruct_022d73cc *s);
+void Boss3PartCC_State_Unk_ov000_022d7384(UnkStruct_022d73cc *s);
 
 void func_ov000_022d73cc(UnkStruct_022d73cc *s) {
     func_ov000_022c5e1c(0xf42f8, 0x5fe435, s->unk218, s->unk220, &s->unk10);
@@ -82,5 +82,5 @@ void func_ov000_022d73cc(UnkStruct_022d73cc *s) {
     NNS_SndHandleReleaseSeq(s->unk2C0);
     Sound_PlaySeqArc(0, 0, 0x90);
     s->unk264 = 0x40;
-    s->func = func_ov000_022d7384;
+    s->func = Boss3PartCC_State_Unk_ov000_022d7384;
 }

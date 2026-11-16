@@ -15,7 +15,7 @@ typedef struct {
 extern void *data_ov000_02369ba0;
 extern s16 data_ov000_0236a05c;
 extern s32 data_ov000_0236a060;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern void *data_ov000_0236a06c;
 extern u8 data_ov000_02366c58[], data_ov000_0236a064[], data_ov000_02366c78[];
 extern u8 data_ov000_02364424[], data_ov000_0236a084[], data_ov000_0236a074[], data_ov000_0236a094[];
@@ -23,12 +23,12 @@ extern u8 data_ov000_0236a0a4[], data_ov000_023661c0[], data_ov000_023661a4[];
 
 void GmkLand_Destructor(void);
 void PaletteAnim_Create(s32 a, void *b, void *c, s32 d);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void func_ov000_0230f0bc(UnkStruct_0230fa74 *w);
-void func_ov000_0230f9cc(UnkStruct_0230fa74 *w);
-void func_ov000_0230f874(UnkStruct_0230fa74 *w);
+void GmkLand_Action_Unk_ov000_0230f9cc(UnkStruct_0230fa74 *w);
+void GmkLand_Action_Unk_ov000_0230f874(UnkStruct_0230fa74 *w);
 void func_ov000_0230f614(UnkStruct_0230fa74 *w);
-void func_ov000_0230f4fc(UnkStruct_0230fa74 *w);
+void GmkLand_Action_Unk_ov000_0230f4fc(UnkStruct_0230fa74 *w);
 
 UnkStruct_0230fa74 *GmkLand_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -46,7 +46,7 @@ UnkStruct_0230fa74 *GmkLand_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     if (w->base.unk1E0->unk2 == 0xaf) {
         if (data_ov000_0236a05c == 0) {
             if (data_ov000_0236a060 == 0)
-                data_ov000_0236a060 = data_022c4560.unk20;
+                data_ov000_0236a060 = gGameState.unk20;
         }
         data_ov000_0236a05c++;
     }
@@ -55,7 +55,7 @@ UnkStruct_0230fa74 *GmkLand_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     else
         StageObj_Load2dBAC(w, data_ov000_02366c78, 0, &data_ov000_0236a06c, data_ov000_02369ba0);
     StageObj_AllocSpritePalette(w, 0, 5);
-    if (data_022c4560.unk1C == 3 && p->unk2 != 0x76) {
+    if (gGameState.unk1C == 3 && p->unk2 != 0x76) {
         PaletteAnim_Create(w->base.spr0.unk44, data_ov000_02364424, data_ov000_0236a06c, 0);
         w->base.unk54 |= 0x800;
     }
@@ -105,21 +105,21 @@ UnkStruct_0230fa74 *GmkLand_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     switch (w->base.unk1E0->unk2) {
     default:
         func_ov000_0230f0bc(w);
-        func_ov000_0230f9cc(w);
+        GmkLand_Action_Unk_ov000_0230f9cc(w);
         break;
     case 0x76:
-        func_ov000_0230f874(w);
+        GmkLand_Action_Unk_ov000_0230f874(w);
         break;
     case 0xaf:
         func_ov000_0230f614(w);
         w->base.unk4A += 0x100;
         break;
     case 0xef:
-        func_ov000_0230f4fc(w);
+        GmkLand_Action_Unk_ov000_0230f4fc(w);
         w->base.unk4A += 0x200;
         break;
     }
-    if (func_ov000_02345758(w->base.unk10, w->base.unk14)) {
+    if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14)) {
         w->base.unk5C |= 2;
         w->base.unk1D6 -= 2;
     }

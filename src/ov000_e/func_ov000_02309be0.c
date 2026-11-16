@@ -20,7 +20,7 @@ typedef struct {
     s8 unk214[2];
 } UnkStruct_02309be0;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 extern UnkStruct_StageObj *gPlayers[];
 
 void MapObj70_State_Unk_ov000_02309bdc(void);
@@ -31,18 +31,18 @@ void func_ov000_02309be0(UnkStruct_02309be0 *w) {
     UnkStruct_StageObj *p;
     UnkStruct_0236aad8_E *e;
 
-    if (data_ov000_0236aad8.unkC8 & 1) {
-        w->unk214[0] = data_ov000_0236aad8.e[0].unk3A;
-        w->unk214[1] = data_ov000_0236aad8.e[0].unk3A;
+    if (gCamera.unkC8 & 1) {
+        w->unk214[0] = gCamera.e[0].unk3A;
+        w->unk214[1] = gCamera.e[0].unk3A;
     } else {
-        w->unk214[0] = data_ov000_0236aad8.e[0].unk3A;
-        w->unk214[1] = data_ov000_0236aad8.e[1].unk3A;
+        w->unk214[0] = gCamera.e[0].unk3A;
+        w->unk214[1] = gCamera.e[1].unk3A;
     }
     for (i = 0; i < 2; i++) {
         idx = w->unk214[i];
         if (idx >= 0) {
             p = gPlayers[idx];
-            e = &data_ov000_0236aad8.e[i];
+            e = &gCamera.e[i];
             if (w->base.unk10 >= p->unk10 - 0x4000 && w->base.unk10 <= p->unk10 + 0x4000) {
                 e->unk34 |= 0x10;
                 e->unk38 = w->unk212;

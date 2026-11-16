@@ -18,8 +18,8 @@ typedef struct {
     u16 unkA;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_022e1b48 *data_ov000_02369b4c;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022e1b48 *gBoss6;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u16 data_ov000_02363918[][8];
 extern u16 data_ov000_02363998[][8];
 extern u16 data_ov000_023639d8[][8];
@@ -40,27 +40,27 @@ static inline void Pick(UnkStruct_022e1b48 *b, u16 (*tbl)[8]) {
 }
 
 void func_ov000_022e1b48(s32 mode) {
-    UnkStruct_022e1b48 *b = data_ov000_02369b4c;
-    s32 hp = data_ov000_02369ac0.unk8;
+    UnkStruct_022e1b48 *b = gBoss6;
+    s32 hp = gBossStatus.unk8;
 
     b->unkF48 = mode;
     switch (mode) {
     case 0:
         switch (b->unkF46) {
         case 1:
-            data_ov000_02369ac0.unk4 = 0x1e;
+            gBossStatus.unk4 = 0x1e;
             func_ov000_022e591c();
             return;
         case 2:
-            data_ov000_02369ac0.unk4 = 0x1f;
+            gBossStatus.unk4 = 0x1f;
             func_ov000_022e5310();
             return;
         case 3:
-            data_ov000_02369ac0.unk4 = 0x20;
+            gBossStatus.unk4 = 0x20;
             func_ov000_022e43f0();
             return;
         case 4:
-            data_ov000_02369ac0.unk4 = 0x21;
+            gBossStatus.unk4 = 0x21;
             func_ov000_022e3718();
             return;
         }
@@ -73,7 +73,7 @@ void func_ov000_022e1b48(s32 mode) {
             Pick(b, data_ov000_02363998);
         else
             Pick(b, data_ov000_023639d8);
-        data_ov000_02369ac0.unk4 = 0x1c;
+        gBossStatus.unk4 = 0x1c;
         func_ov000_022e5a80();
         break;
     default:
@@ -86,7 +86,7 @@ void func_ov000_022e1b48(s32 mode) {
         } else {
             Pick(b, data_ov000_023639d8);
         }
-        data_ov000_02369ac0.unk4 = 0x1c;
+        gBossStatus.unk4 = 0x1c;
         func_ov000_022e5a80();
         break;
     }

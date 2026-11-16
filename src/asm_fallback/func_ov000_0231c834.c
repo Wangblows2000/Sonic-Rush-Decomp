@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern void func_02066a9c(void);
+extern void MapCollision_ProbeDistance(void);
 
 asm void func_ov000_0231c834(void)
 {
@@ -81,7 +81,7 @@ _100:
     mov r3, r5
     mov r0, r0, asr #8
     mov r1, r1, asr #8
-    bl func_02066a9c
+    bl MapCollision_ProbeDistance
     cmp r0, #0
     addlt r1, r10, r9, lsl #3
     strlt r4, [r1, #0x330]

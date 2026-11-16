@@ -49,7 +49,7 @@ typedef struct {
     s16 unk48;
 } UnkStruct_0208922c;
 
-extern UnkStruct_Boss *data_ov000_02369b84;
+extern UnkStruct_Boss *gBossF;
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 extern UnkStruct_Player *gPlayers;
 extern UnkStruct_0208922c gDisplayMain;
@@ -63,7 +63,7 @@ void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void BossFPartD8_State_Unk_ov000_022ef2a4(void);
 
 void func_ov000_022ef360(UnkStruct_022ef360 *s) {
-    UnkStruct_Boss *b = data_ov000_02369b84;
+    UnkStruct_Boss *b = gBossF;
     u32 v;
     UnkStruct_0236a48c *c;
 

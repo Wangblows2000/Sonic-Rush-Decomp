@@ -34,14 +34,14 @@ typedef struct UnkStruct_022dc6f4_w {
     void *unkAD0;
 } UnkStruct_022dc6f4_w;
 
-extern UnkStruct_022dc6f4_w *data_ov000_02369b2c;
+extern UnkStruct_022dc6f4_w *gBoss4;
 
 void func_ov000_022dc6cc(void);
 void Model_SetResource(void *p, s32 a, s32 b);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void func_ov000_022dc6f4(UnkStruct_022dc6f4 *s) {
-    UnkStruct_022dc6f4_w *w = data_ov000_02369b2c;
+    UnkStruct_022dc6f4_w *w = gBoss4;
     UnkStruct_022dc6f4_a *a;
     s->unk488 = func_ov000_022dc6cc;
     a = &s->unk20C;

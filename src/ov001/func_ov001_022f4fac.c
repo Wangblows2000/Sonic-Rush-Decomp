@@ -10,7 +10,7 @@ typedef struct {
     u8 b1d;
     u16 h1e;
 } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern void *data_ov001_0231f068;
 extern s32 data_ov001_0231694c[][5];
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
@@ -28,13 +28,13 @@ void func_ov001_022f4fac(u8 *p) {
     q[0x10c] &= ~4;
     *(s32 *)(q + 0x114) = 0x1000;
     b = TRUE;
-    if (data_022c4560.w10 != 2 && data_022c4560.w10 != 3) {
+    if (gGameState.w10 != 2 && gGameState.w10 != 3) {
         b = FALSE;
     }
     if (b) {
         k = 1;
     } else {
-        k = data_022c4560.w14;
+        k = gGameState.w14;
     }
     *(s32 *)(p + 0x1cc) = data_ov001_0231694c[k][*(s32 *)(ExtraBoss_GetWork() + 0x40)];
     *(u16 *)(p + 0x1d4) = FX_DivS32(0x5555, *(s32 *)(p + 0x1cc) - 1);

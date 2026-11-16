@@ -12,7 +12,7 @@ typedef struct {
     u32 size1;
 } UnkStruct_022c4520;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4520 data_022c4520;
 
 void *func_ov000_023355d0(void);
@@ -31,7 +31,7 @@ static inline void MI_CpuCopy16(const void *src, void *dest, u32 size) {
 void func_0204c9b0(void) {
     UnkStruct_022c4520 *s;
 
-    if (!(data_022c4560.flags & 0x40))
+    if (!(gGameState.flags & 0x40))
         return;
     s = &data_022c4520;
     if ((s->size0 & 3) == 0)

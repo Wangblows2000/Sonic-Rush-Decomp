@@ -32,17 +32,17 @@ typedef struct {
     u16 unkF6C;
 } UnkStruct_Boss;
 
-extern UnkStruct_Boss *data_ov000_02369b4c;
+extern UnkStruct_Boss *gBoss6;
 extern UnkStruct_StageObj *gPlayers;
 extern u32 data_ov000_023637ac[];
 
 void func_02021c38(void *a, void (*f)(void), s32 b, s32 c, s32 d);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e62fc(void);
-void func_ov000_022e5980(void);
+void Boss6_State_Unk_ov000_022e5980(void);
 
 void func_ov000_022e5a80(void) {
-    UnkStruct_Boss *w = data_ov000_02369b4c;
+    UnkStruct_Boss *w = gBoss6;
     UnkStruct_Mdl960 *m = &w->unk960;
     s32 i;
 
@@ -72,5 +72,5 @@ void func_ov000_022e5a80(void) {
     w->unkF68 = 0x549f;
     w->unkF6A = 0;
     w->unkF6C = 0x549f;
-    w->base.unk68 = func_ov000_022e5980;
+    w->base.unk68 = Boss6_State_Unk_ov000_022e5980;
 }

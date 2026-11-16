@@ -2,7 +2,7 @@
 
 typedef struct { u8 pad[0x10]; u8 *p; } UnkStruct_022b4574;
 extern UnkStruct_022b4574 *gTaskCurrent;
-BOOL func_02063750(void);
+BOOL TransformDemo_IsActive(void);
 void Model_Release(void *p);
 void Task_Destroy(void *p);
 void Model_Animate(void *p);
@@ -11,7 +11,7 @@ void Model_Draw(void *p);
 void TransformDemoEffect_Main(void) {
     u8 *t = gTaskCurrent->p;
     u8 *q = t + 4;
-    if (!func_02063750()) {
+    if (!TransformDemo_IsActive()) {
         Model_Release(q);
         Task_Destroy(gTaskCurrent);
         return;

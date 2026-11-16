@@ -797,6 +797,11 @@ named only when there is evidence.
 
 ---
 
+> **Case rule.** Never give two symbols names that differ only in letter case
+> (e.g. `MIC_Init` vs `Mic_Init`). mwldarm runs under wibo with Windows file
+> semantics, so their object files collide and the link silently shifts.
+> `tools/analysis/rename.py` rejects such names.
+
 ## 14. Task board and multi-agent work
 
 The board is `state/tasks.json` (committed). Tasks are partitions (module plus

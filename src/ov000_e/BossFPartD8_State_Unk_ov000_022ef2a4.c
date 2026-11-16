@@ -28,8 +28,8 @@ extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_022c4590 data_022c4590;
 extern UnkStruct_Player *gPlayers;
 
-void func_0204eb04(void);
-void func_0204d5f8(void (*fn)(void));
+void Stage_OnBossCleared(void);
+void StageShutdown_Create(void (*fn)(void));
 
 void BossFPartD8_State_Unk_ov000_022ef2a4(UnkStruct_022ef2a4 *w) {
     w->unk434++;
@@ -43,5 +43,5 @@ void BossFPartD8_State_Unk_ov000_022ef2a4(UnkStruct_022ef2a4 *w) {
         return;
     w->base.unk54 |= 4;
     data_022c4590.unk10 = gPlayers->unk3AE * 1000;
-    func_0204d5f8(func_0204eb04);
+    StageShutdown_Create(Stage_OnBossCleared);
 }

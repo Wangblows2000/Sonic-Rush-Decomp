@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 SaveData_Commit();
-s32 func_0205004c();
+s32 MsgBox_RequestClose();
 void func_02059f80();
 
 void func_02059fa4(u8 *p0) {
@@ -13,6 +13,6 @@ void func_02059fa4(u8 *p0) {
         *(u32 *)((u8 *)p0 + 0x8) = t2;
         v1 = t2;
     }
-    func_0205004c(v1);
+    MsgBox_RequestClose(v1);
     *(u32 *)p0 = (u32)func_02059f80;
 }

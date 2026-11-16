@@ -4,7 +4,7 @@ extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366c90[], data_ov000_0236a0b4[], data_ov000_0236a0bc[], data_ov000_023661c0[], data_ov000_023661a4[];
 
 void MapObject_Destructor(void);
-void func_ov000_02310114(UnkStruct_StageObj *w);
+void LandUnrest_Action_Unk_ov000_02310114(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *LandUnrest_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -35,6 +35,6 @@ UnkStruct_StageObj *LandUnrest_Create(s32 a, s32 b, s32 c) {
     w->unk58 |= 0x100;
     w->unk5C |= 0x100;
     w->unk54 |= 2;
-    func_ov000_02310114(w);
+    LandUnrest_Action_Unk_ov000_02310114(w);
     return w;
 }

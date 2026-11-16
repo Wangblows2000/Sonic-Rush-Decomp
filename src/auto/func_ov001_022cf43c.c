@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-extern u8 data_022c4560[];
+extern u8 gGameState[];
 extern u8 gSaveData[];
 s32 PostStaffRoll_InitDisplay();
 s32 Vram_SetBankForBGExtPltt();
@@ -14,7 +14,7 @@ s32 TalkDemo_Create();
 s32 func_ov001_022cf4a0();
 
 void func_ov001_022cf43c(void) {
-    if (*(u32 *)data_022c4560 == 0) {
+    if (*(u32 *)gGameState == 0) {
         s32 t0 = (*(u8 *)((u8 *)gSaveData + 0xf) & 0x7f);
         if (t0 != 0x7f) {
             PostStaffRoll_InitDisplay(0x7f, t0);

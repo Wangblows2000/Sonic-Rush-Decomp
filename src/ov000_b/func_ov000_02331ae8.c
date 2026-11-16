@@ -10,7 +10,7 @@ typedef struct {
 
 extern void *gActComArchive;
 extern u32 gObjManagerFlags;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02368478[];
 extern u8 data_ov000_0236a9f8[];
 
@@ -28,7 +28,7 @@ UnkStruct_EffObj *func_ov000_02331ae8(UnkStruct_StageObj *arg, s16 x, s16 y, s32
         return NULL;
     if (func_ov000_023270d8(arg))
         return NULL;
-    if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2)
+    if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2)
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))
@@ -37,9 +37,9 @@ UnkStruct_EffObj *func_ov000_02331ae8(UnkStruct_StageObj *arg, s16 x, s16 y, s32
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
     StageObj_Load2dBAC(w, data_ov000_02368478, 6, data_ov000_0236a9f8, gActComArchive);
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->spr1.unk2C |= 0x80008;
-    if (data_022c4560.unk0 != 1) {
+    if (gGameState.unk0 != 1) {
         StageObj_AllocSpritePalette(w, 0, 0x17);
         StageObj_SetAnimation(w, 0);
     } else {

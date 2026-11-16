@@ -2,7 +2,7 @@
 
 typedef struct { s32 x, y, z; } UnkStruct_02306b18_v;
 void func_ov001_023070f0(void *p);
-void *func_ov001_0230c0a4(void);
+void *SpecialStage_GetPlayer(void);
 BOOL func_ov001_02310248(void *a, void *p);
 
 void func_ov001_02306b18(u8 *p) {
@@ -16,7 +16,7 @@ void func_ov001_02306b18(u8 *p) {
         }
         return;
     }
-    if (!func_ov001_02310248(func_ov001_0230c0a4(), p)) {
+    if (!func_ov001_02310248(SpecialStage_GetPlayer(), p)) {
         func_ov001_023070f0(p);
     }
 }

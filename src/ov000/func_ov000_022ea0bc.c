@@ -9,7 +9,7 @@ typedef struct UnkStruct_022ea0bc {
 
 extern u32 gRandSeed;
 
-void func_ov000_022ea090(void);
+void Boss7PartD5_InputState_Unk_ov000_022ea090(void);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -18,6 +18,6 @@ static inline u16 Rand(void) {
 
 s32 func_ov000_022ea0bc(UnkStruct_022ea0bc *s) {
     s->unk454 = (Rand() & 0x1f) + 0xf;
-    s->func = func_ov000_022ea090;
+    s->func = Boss7PartD5_InputState_Unk_ov000_022ea090;
     return 0;
 }

@@ -29,20 +29,20 @@ typedef struct UnkStruct_0230903c_t {
     s32 unk148;
 } UnkStruct_0230903c_t;
 
-extern UnkStruct_0230903c *data_ov001_0231f5bc;
+extern UnkStruct_0230903c *gSpecialStageHud;
 
 void func_ov001_023085f4(s32 t);
 void func_ov001_0230832c(s32 t);
 u16 func_ov001_02314380(void);
-UnkStruct_0230903c_t *func_ov001_0230c0a4(void);
+UnkStruct_0230903c_t *SpecialStage_GetPlayer(void);
 void AnimatorSprite_SetAnimation(UnkStruct_0230903c_o *s, u16 index);
-void func_ov001_0231599c(s32 v);
+void SpecialStageCamera_SetMode(s32 v);
 void func_ov001_02312e04(void *p);
 s32 SpecialStage_GetStageIndex(void);
 u16 func_ov001_02314368(void);
 
 void func_ov001_0230903c(void) {
-    UnkStruct_0230903c *g = data_ov001_0231f5bc;
+    UnkStruct_0230903c *g = gSpecialStageHud;
     s32 n;
 
     g->timer++;
@@ -53,10 +53,10 @@ void func_ov001_0230903c(void) {
         g->objB.x = 0x80;
         g->objB.y = 0x2a;
         n = func_ov001_02314380();
-        if (n <= func_ov001_0230c0a4()->unk148) {
+        if (n <= SpecialStage_GetPlayer()->unk148) {
             AnimatorSprite_SetAnimation(&g->objB, 3);
-            func_ov001_0231599c(4);
-            func_ov001_02312e04(func_ov001_0230c0a4());
+            SpecialStageCamera_SetMode(4);
+            func_ov001_02312e04(SpecialStage_GetPlayer());
             return;
         }
         AnimatorSprite_SetAnimation(&g->objB, 10);
@@ -73,7 +73,7 @@ void func_ov001_0230903c(void) {
         return;
     case 0x172:
         g->timer = -1;
-        func_ov001_0231599c(0);
+        SpecialStageCamera_SetMode(0);
         break;
     default:
         return;

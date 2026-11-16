@@ -4,7 +4,7 @@
 #pragma thumb on
 
 extern u8 gTaskCurrent[];
-s32 func_02057350();
+s32 PlayerDemo_IsActive();
 s32 Task_Destroy();
 s32 NNS_SndPlayerStopSeq();
 s32 NNS_SndHandleReleaseSeq();
@@ -12,7 +12,7 @@ s32 Sound_PlaySeqArc();
 
 void func_0205755c(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
-    s32 t1 = func_02057350(*(u32 *)gTaskCurrent);
+    s32 t1 = PlayerDemo_IsActive(*(u32 *)gTaskCurrent);
     if (t1 == 0) {
         Task_Destroy(*(u32 *)gTaskCurrent);
         return;

@@ -3,7 +3,7 @@
 typedef struct { s32 unk0; s32 unk4; } UnkWork_02051ca4;
 typedef struct { s32 unk0; } UnkStruct_022c4560;
 extern UnkWork_02051ca4 *gSysSound;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern void *gSoundHeap;
 
 void func_02052000(void);
@@ -38,7 +38,7 @@ void SysSound_LoadSEGroup(s32 stage) {
         id = 0x15;
         break;
     case 2:
-        if (data_022c4560.unk0 == 0)
+        if (gGameState.unk0 == 0)
             id = 2;
         else
             id = 3;

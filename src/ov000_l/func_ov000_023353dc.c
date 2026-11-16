@@ -17,13 +17,13 @@ typedef struct {
     s32 unk6C;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 void func_ov000_023350bc(UnkWork_023353dc *w, s32 idx, u32 flags);
 
 void func_ov000_023353dc(UnkWork_023353dc *w) {
-    if (data_ov000_0236aad8.unk4 != w->unkC || data_ov000_0236aad8.unk8 != w->unk10)
+    if (gCamera.unk4 != w->unkC || gCamera.unk8 != w->unk10)
         func_ov000_023350bc(w, 0, 5);
-    if (data_ov000_0236aad8.unk68 != w->unk14 || data_ov000_0236aad8.unk6C != w->unk18)
+    if (gCamera.unk68 != w->unk14 || gCamera.unk6C != w->unk18)
         func_ov000_023350bc(w, 1, 5);
 }

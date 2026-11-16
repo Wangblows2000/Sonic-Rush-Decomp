@@ -25,18 +25,18 @@ int func_ov001_022db150();
 int func_ov001_022da59c();
 int func_ov001_022d9cb0();
 int func_02050e50();
-int func_0205002c();
+int MsgBox_Destroy();
 int func_ov001_022da41c();
 int func_ov001_022da374();
 int func_ov001_022da33c();
 int func_ov001_022da2cc();
 int func_ov001_022da288();
-int func_02040ec0();
+int KeyframeAnim_SetAnim();
 int func_ov001_022d6dc0();
 int func_ov001_022d97a8();
 int func_02051db0();
-int func_02050018();
-int func_0205000c();
+int MsgBox_IsClosed();
+int MsgBox_GetResult();
 int func_02050e70();
 int func_02051070();
 int func_ov001_022da850();
@@ -57,7 +57,7 @@ void func_ov001_022db014(void)
   if (iVar1 != 0) {
     *piVar2 = 0;
     piVar2[1] = 0;
-    func_0205002c();
+    MsgBox_Destroy();
     func_ov001_022da41c(piVar2);
     func_ov001_022da374(piVar2);
     func_ov001_022da33c(piVar2);
@@ -65,24 +65,24 @@ void func_ov001_022db014(void)
     func_ov001_022da2cc(piVar2,1);
     func_ov001_022da288(piVar2,0);
     func_ov001_022da288(piVar2,1);
-    func_02040ec0((int)piVar2 + 0xb44,0xe);
-    func_02040ec0((int)piVar2 + 0xb70,0xf);
-    func_02040ec0((int)piVar2 + 0xb9c,0x10);
-    func_02040ec0((int)piVar2 + 0xbc8,0x11);
-    func_02040ec0((int)piVar2 + 0xbf4,0x12);
-    func_02040ec0((int)piVar2 + 0xc20,0x13);
+    KeyframeAnim_SetAnim((int)piVar2 + 0xb44,0xe);
+    KeyframeAnim_SetAnim((int)piVar2 + 0xb70,0xf);
+    KeyframeAnim_SetAnim((int)piVar2 + 0xb9c,0x10);
+    KeyframeAnim_SetAnim((int)piVar2 + 0xbc8,0x11);
+    KeyframeAnim_SetAnim((int)piVar2 + 0xbf4,0x12);
+    KeyframeAnim_SetAnim((int)piVar2 + 0xc20,0x13);
     func_ov001_022d6dc0();
     func_ov001_022d97a8(0,0x10,0x10,0xc);
     func_02051db0(2,0xc,0x3000,0);
     *(undefined4 *)(*((int *)gTaskCurrent) + 8) = ((int)func_ov001_022dac0c);
     return;
   }
-  iVar1 = func_02050018();
+  iVar1 = MsgBox_IsClosed();
   if (iVar1 != 0) {
     *piVar2 = 0;
     piVar2[1] = 0;
     func_ov001_022da41c(piVar2);
-    iVar1 = func_0205000c();
+    iVar1 = MsgBox_GetResult();
     if (iVar1 == 0) {
       func_02050e70();
       func_02051070();

@@ -22,7 +22,7 @@ typedef struct {
     u16 unk21C;
 } UnkStruct_02309850;
 
-extern UnkStruct_Plr data_ov000_0236aad8[];
+extern UnkStruct_Plr gCamera[];
 extern UnkStruct_Player *gPlayers[];
 
 void func_ov000_0230963c(UnkStruct_02309850 *w);
@@ -42,7 +42,7 @@ void MapObj8C_State_Unk_ov000_02309850(UnkStruct_02309850 *w) {
                 s32 x = p->base.unk10;
                 s32 y = p->base.unk14;
                 if (w->unk216 << 8 <= x && x <= w->unk21A << 8 && w->unk218 << 8 <= y && y <= w->unk21C << 8 &&
-                    ((data_ov000_0236aad8[2].unk0 & 1) || !(p->unk32C & 0x400))) {
+                    ((gCamera[2].unk0 & 1) || !(p->unk32C & 0x400))) {
                     if (x < w->base.unk10) {
                         if (w->unk20C & 1) {
                             func_ov000_0230963c(w);

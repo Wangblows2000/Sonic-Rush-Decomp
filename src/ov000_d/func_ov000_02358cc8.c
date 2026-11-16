@@ -30,8 +30,8 @@ void func_ov000_02358cc8(void) {
     func_ov000_02356e7c(&w->mdl, ang);
     func_ov000_02356e2c(&w->mdl);
     func_ov000_02356d88(&w->mdl);
-    func_02040d14(&w->pos[4]);
-    func_02040d14(&w->pos[5]);
+    KeyframeAnim_Update(&w->pos[4]);
+    KeyframeAnim_Update(&w->pos[5]);
     p = &w->pos[0];
     func_ov000_023579fc(w, p->x, p->y);
     p = &w->pos[1];
@@ -42,7 +42,7 @@ void func_ov000_02358cc8(void) {
     func_ov000_02357908(w, p->x, p->y);
     p = &w->pos[4];
     func_ov000_02357994(w, p->x, p->y);
-    func_02040d14(&w->pos[7]);
+    KeyframeAnim_Update(&w->pos[7]);
     x = w->pos[7].x;
     if (!w->unk20) {
         x = -x;

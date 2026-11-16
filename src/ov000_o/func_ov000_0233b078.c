@@ -11,11 +11,11 @@ typedef struct {
     u16 unkE;
 } UnkStruct_0236abd8;
 
-extern u8 data_ov000_0236aad8[];
+extern u8 gCamera[];
 extern UnkStruct_0236abd8 data_ov000_0236abd8;
 
 s32 func_ov000_0233b078(s32 x) {
-    UnkMap_0233b078 *m = *(UnkMap_0233b078 **)(data_ov000_0236aad8 + 0x13c);
+    UnkMap_0233b078 *m = *(UnkMap_0233b078 **)(gCamera + 0x13c);
     u16 h;
     u16 i;
     u16 w;

@@ -16,7 +16,7 @@ typedef struct {
     s32 unk458;
 } UnkStruct_022f324c;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s16 data_ov000_02363e54[][3];
 
 void func_ov000_022f4ce4(UnkStruct_022f324c *s, s32 a, s32 b, s32 c);
@@ -25,11 +25,11 @@ void func_ov000_022f3080(void);
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
-    if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+    if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;
     if (b)
         return 1;
-    return data_022c4560.unk14;
+    return gGameState.unk14;
 }
 
 void func_ov000_022f324c(UnkStruct_022f324c *s) {

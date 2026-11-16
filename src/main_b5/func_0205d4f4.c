@@ -20,7 +20,7 @@ typedef struct {
 
 typedef struct { s32 m[4]; } UnkMtx22_0205d4f4;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkDisp_0205d4f4 gDisplayMain;
 extern UnkDisp_0205d4f4 gDisplaySub;
 extern u8 data_02089254[];
@@ -35,9 +35,9 @@ void func_0205d4f4(u8 *w) {
     UnkMtx22_0205d4f4 m;
 
     special = FALSE;
-    if (data_022c4560.stage == 8 && data_022c4560.act == 2)
+    if (gGameState.stage == 8 && gGameState.act == 2)
         special = TRUE;
-    if (special || data_022c4560.stage >= 9 || data_022c4560.act >= 2) {
+    if (special || gGameState.stage >= 9 || gGameState.act >= 2) {
         gDisplayMain.scrollX = cam->x >> 12;
         gDisplayMain.scrollY = cam->y >> 12;
         gDisplaySub.scrollX = cam->x >> 12;

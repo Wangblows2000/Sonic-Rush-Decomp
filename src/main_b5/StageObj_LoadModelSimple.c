@@ -19,8 +19,8 @@ typedef struct {
 } UnkWork_02069a34;
 
 void *ObjData_Load(UnkOwner_02069a34 *s, const char *name, void *arc);
-void func_020319f0(UnkObj_02069a34 *o, s32 a);
-void func_020319a4(UnkObj_02069a34 *o, void *res, s32 a, u16 b, u16 c);
+void Model_InitShape(UnkObj_02069a34 *o, s32 a);
+void Model_SetShapeResource(UnkObj_02069a34 *o, void *res, s32 a, u16 b, u16 c);
 void NNS_G3dResDefaultSetup(void *p);
 
 void StageObj_LoadModelSimple(UnkWork_02069a34 *w, UnkObj_02069a34 *o, const char *name, s32 a, u16 b, u16 c, UnkOwner_02069a34 *owner, void *arc) {
@@ -39,7 +39,7 @@ void StageObj_LoadModelSimple(UnkWork_02069a34 *w, UnkObj_02069a34 *o, const cha
     } else {
         w->list = o;
     }
-    func_020319f0(o, 0);
+    Model_InitShape(o, 0);
     if (arc != NULL)
         o->flags |= 1;
     res = ObjData_Load(owner, name, arc);
@@ -55,5 +55,5 @@ void StageObj_LoadModelSimple(UnkWork_02069a34 *w, UnkObj_02069a34 *o, const cha
     }
     if (res == NULL)
         return;
-    func_020319a4(o, res, a, c, b);
+    Model_SetShapeResource(o, res, a, c, b);
 }

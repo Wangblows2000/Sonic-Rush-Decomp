@@ -3,7 +3,7 @@
 
 s32 func_ov000_022f89a8();
 extern u8 gPlayers[];
-extern u8 data_022c4534[];
+extern u8 gStageMapCollision[];
 s32 func_ov000_022f8888();
 
 void func_ov000_022f1acc(u8 *p0) {
@@ -16,7 +16,7 @@ void func_ov000_022f1acc(u8 *p0) {
     s32 v3 = t1;
     if (t0 == 0) {
         s32 t4 = *(u32 *)gPlayers;
-        *(u32 *)((u8 *)data_022c4534 + 0x24) = 0x340;
+        *(u32 *)((u8 *)gStageMapCollision + 0x24) = 0x340;
         *(u32 *)((u8 *)t4 + 0x10) = 0x33400;
         v2 = t4;
         v3 = 0x33400;

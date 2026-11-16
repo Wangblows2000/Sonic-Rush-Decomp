@@ -24,7 +24,7 @@ src/main/AnimatorSprite_SetAnimation.c:
     complete
     .text       start:0x02033550 end:0x02033590
 
-src/main/func_02040ec0.c:
+src/main/KeyframeAnim_SetAnim.c:
     complete
     .text       start:0x02040ec0 end:0x02040ef0
 
@@ -56,7 +56,7 @@ src/main/func_0204afb8.c:
     complete
     .text       start:0x0204afb8 end:0x0204afc0
 
-src/main/func_02050018.c:
+src/main/MsgBox_IsClosed.c:
     complete
     .text       start:0x02050018 end:0x0205002c
 
@@ -68,147 +68,147 @@ src/main_b/func_020392ec.c:
     complete
     .text       start:0x020392ec end:0x020392f0
 
-src/main_b/func_02042360.c:
+src/main_b/WirelessMgr_ChildSendCallback.c:
     complete
     .text       start:0x02042360 end:0x02042364
 
-src/main_b/func_02042384.c:
+src/main_b/WirelessMgr_ParentSendCallback.c:
     complete
     .text       start:0x02042384 end:0x02042388
 
-src/main_b/func_02045594.c:
+src/main_b/ClearDemo_Unk_02045594.c:
     complete
     .text       start:0x02045594 end:0x02045598
 
-src/main_b/func_02045dec.c:
+src/main_b/ClearDemo_Unk_02045dec.c:
     complete
     .text       start:0x02045dec end:0x02045df0
 
-src/main_b/func_02046228.c:
+src/main_b/ClearDemo_Unk_02046228.c:
     complete
     .text       start:0x02046228 end:0x0204622c
 
-src/main_b/func_02048730.c:
+src/main_b/DemoScript_Destructor.c:
     complete
     .text       start:0x02048730 end:0x02048734
 
-src/main_b/func_02049254.c:
+src/main_b/Zone9Act3_ReleaseResources.c:
     complete
     .text       start:0x02049254 end:0x02049258
 
-src/main_b/func_02049258.c:
+src/main_b/Zone8Act3_ReleaseResources.c:
     complete
     .text       start:0x02049258 end:0x0204925c
 
-src/main_b/func_0204925c.c:
+src/main_b/Zone7Act3_ReleaseResources.c:
     complete
     .text       start:0x0204925c end:0x02049260
 
-src/main_b/func_02049260.c:
+src/main_b/Zone7Act2_ReleaseResources.c:
     complete
     .text       start:0x02049260 end:0x02049264
 
-src/main_b/func_02049264.c:
+src/main_b/Zone7Act1_ReleaseResources.c:
     complete
     .text       start:0x02049264 end:0x02049268
 
-src/main_b/func_02049268.c:
+src/main_b/Zone6Act3_ReleaseResources.c:
     complete
     .text       start:0x02049268 end:0x0204926c
 
-src/main_b/func_02049404.c:
+src/main_b/Zone4Act3_ReleaseResources.c:
     complete
     .text       start:0x02049404 end:0x02049408
 
-src/main_b/func_020495b0.c:
+src/main_b/Zone2Act3_ReleaseResources.c:
     complete
     .text       start:0x020495b0 end:0x020495b4
 
-src/main_b/func_0204976c.c:
+src/main_b/Zone9Act3_SetupResources.c:
     complete
     .text       start:0x0204976c end:0x02049770
 
-src/main_b/func_02049770.c:
+src/main_b/Zone8Act3_SetupResources.c:
     complete
     .text       start:0x02049770 end:0x02049774
 
-src/main_b/func_02049774.c:
+src/main_b/Zone7Act3_SetupResources.c:
     complete
     .text       start:0x02049774 end:0x02049778
 
-src/main_b/func_020497b0.c:
+src/main_b/Zone6Act3_SetupResources.c:
     complete
     .text       start:0x020497b0 end:0x020497b4
 
-src/main_b/func_0204994c.c:
+src/main_b/Zone4Act3_SetupResources.c:
     complete
     .text       start:0x0204994c end:0x02049950
 
-src/main_b/func_02049af8.c:
+src/main_b/Zone2Act3_SetupResources.c:
     complete
     .text       start:0x02049af8 end:0x02049afc
 
-src/main_b/func_02049c94.c:
+src/main_b/Zone9Act3_Free.c:
     complete
     .text       start:0x02049c94 end:0x02049c98
 
-src/main_b/func_02049df8.c:
+src/main_b/Zone7Act2_Free.c:
     complete
     .text       start:0x02049df8 end:0x02049dfc
 
-src/main_b/func_02049dfc.c:
+src/main_b/Zone7Act1_Free.c:
     complete
     .text       start:0x02049dfc end:0x02049e00
 
-src/main_b/func_02049eac.c:
+src/main_b/Zone6Act2_Free.c:
     complete
     .text       start:0x02049eac end:0x02049eb0
 
-src/main_b/func_02049eb0.c:
+src/main_b/Zone6Act1_Free.c:
     complete
     .text       start:0x02049eb0 end:0x02049eb4
 
-src/main_b/func_02049f60.c:
+src/main_b/Zone5Act2_Free.c:
     complete
     .text       start:0x02049f60 end:0x02049f64
 
-src/main_b/func_02049f64.c:
+src/main_b/Zone5Act1_Free.c:
     complete
     .text       start:0x02049f64 end:0x02049f68
 
-src/main_b/func_0204a014.c:
+src/main_b/Zone4Act2_Free.c:
     complete
     .text       start:0x0204a014 end:0x0204a018
 
-src/main_b/func_0204a018.c:
+src/main_b/Zone4Act1_Free.c:
     complete
     .text       start:0x0204a018 end:0x0204a01c
 
-src/main_b/func_0204a0c8.c:
+src/main_b/Zone3Act2_Free.c:
     complete
     .text       start:0x0204a0c8 end:0x0204a0cc
 
-src/main_b/func_0204a0cc.c:
+src/main_b/Zone3Act1_Free.c:
     complete
     .text       start:0x0204a0cc end:0x0204a0d0
 
-src/main_b/func_0204a17c.c:
+src/main_b/Zone2Act2_Free.c:
     complete
     .text       start:0x0204a17c end:0x0204a180
 
-src/main_b/func_0204a180.c:
+src/main_b/Zone2Act1_Free.c:
     complete
     .text       start:0x0204a180 end:0x0204a184
 
-src/main_b/func_0204a230.c:
+src/main_b/Zone1Act2_Free.c:
     complete
     .text       start:0x0204a230 end:0x0204a234
 
-src/main_b/func_0204a234.c:
+src/main_b/Zone1Act1_Free.c:
     complete
     .text       start:0x0204a234 end:0x0204a238
 
-src/main_b/func_0204b958.c:
+src/main_b/Stage_Destructor.c:
     complete
     .text       start:0x0204b958 end:0x0204b95c
 
@@ -232,19 +232,19 @@ src/main_b/func_020510bc.c:
     complete
     .text       start:0x020510bc end:0x020510c0
 
-src/main_b/func_02056840.c:
+src/main_b/PlayerDemoModel_Unk_02056840.c:
     complete
     .text       start:0x02056840 end:0x02056844
 
-src/main_b/func_02056c98.c:
+src/main_b/PlayerDemoBg_Unk_02056c98.c:
     complete
     .text       start:0x02056c98 end:0x02056c9c
 
-src/main_b/func_02056e00.c:
+src/main_b/PlayerDemoBg_Destructor.c:
     complete
     .text       start:0x02056e00 end:0x02056e04
 
-src/main_b/func_02057094.c:
+src/main_b/PlayerDemo_Unk_02057094.c:
     complete
     .text       start:0x02057094 end:0x02057098
 
@@ -808,87 +808,87 @@ src/main_a/__call_static_initializers.c:
     complete
     .text       start:0x0202fcdc end:0x0202fd14
 
-src/main_a/func_0202ff74.c:
+src/main_a/System_OnCardPulledOut.c:
     complete
     .text       start:0x0202ff74 end:0x0202ff78
 
-src/main_a/func_0202ff78.c:
+src/main_a/System_CardPulledOutCallback.c:
     complete
     .text       start:0x0202ff78 end:0x0202ff80
 
-src/main_a/func_020307dc.c:
+src/main_a/Model_MatrixOp_Callback.c:
     complete
     .text       start:0x020307dc end:0x02030808
 
-src/main_a/func_02030898.c:
+src/main_a/Model_MatrixOp_MultCameraRotBillboard.c:
     complete
     .text       start:0x02030898 end:0x020308cc
 
-src/main_a/func_020308cc.c:
+src/main_a/Model_MatrixOp_MultCameraRot.c:
     complete
     .text       start:0x020308cc end:0x02030900
 
-src/main_a/func_02030900.c:
+src/main_a/Model_MatrixOp_MultMtx43.c:
     complete
     .text       start:0x02030900 end:0x02030918
 
-src/main_a/func_02030958.c:
+src/main_a/Model_MatrixOp_RotateScale.c:
     complete
     .text       start:0x02030958 end:0x02030988
 
-src/main_a/func_02030988.c:
+src/main_a/Model_MatrixOp_Translate2.c:
     complete
     .text       start:0x02030988 end:0x020309a0
 
-src/main_a/func_020309a0.c:
+src/main_a/Model_MatrixOp_Translate.c:
     complete
     .text       start:0x020309a0 end:0x020309b8
 
-src/main_a/func_020309b8.c:
+src/main_a/Model_MatrixOp_Rotate.c:
     complete
     .text       start:0x020309b8 end:0x020309d0
 
-src/main_a/func_020309d0.c:
+src/main_a/Model_MatrixOp_Scale.c:
     complete
     .text       start:0x020309d0 end:0x020309e8
 
-src/main_a/func_020309e8.c:
+src/main_a/Model_MatrixOp_GlbFlushWVP.c:
     complete
     .text       start:0x020309e8 end:0x020309f4
 
-src/main_a/func_020309f4.c:
+src/main_a/Model_MatrixOp_GlbFlushVP.c:
     complete
     .text       start:0x020309f4 end:0x02030a00
 
-src/main_a/func_02030a00.c:
+src/main_a/Model_MatrixOp_GlbFlushP.c:
     complete
     .text       start:0x02030a00 end:0x02030a0c
 
-src/main_a/func_02030a0c.c:
+src/main_a/Model_MatrixOp_SendLightMaterial.c:
     complete
     .text       start:0x02030a0c end:0x02030a18
 
-src/main_a/func_02030a18.c:
+src/main_a/Model_MatrixOp_FlushWVP.c:
     complete
     .text       start:0x02030a18 end:0x02030a24
 
-src/main_a/func_02030a24.c:
+src/main_a/Model_MatrixOp_FlushVP.c:
     complete
     .text       start:0x02030a24 end:0x02030a30
 
-src/main_a/func_02030a30.c:
+src/main_a/Model_MatrixOp_FlushP.c:
     complete
     .text       start:0x02030a30 end:0x02030a3c
 
-src/main_a/func_02030a3c.c:
+src/main_a/Model_MatrixOp_RestoreMtx.c:
     complete
     .text       start:0x02030a3c end:0x02030a68
 
-src/main_a/func_02030a68.c:
+src/main_a/Model_MatrixOp_Identity.c:
     complete
     .text       start:0x02030a68 end:0x02030a80
 
-src/main_a/func_02030a80.c:
+src/main_a/Model_MatrixOp_None.c:
     complete
     .text       start:0x02030a80 end:0x02030a84
 
@@ -900,27 +900,27 @@ src/main_a/func_02031cc0.c:
     complete
     .text       start:0x02031cc0 end:0x02031cc4
 
-src/main_a/func_02031cc4.c:
+src/main_a/BAC_FrameGroupFunc_Skip_11.c:
     complete
     .text       start:0x02031cc4 end:0x02031cdc
 
-src/main_a/func_02031cdc.c:
+src/main_a/BAC_FrameGroupFunc_Skip_10.c:
     complete
     .text       start:0x02031cdc end:0x02031cf4
 
-src/main_a/func_02031de4.c:
+src/main_a/BAC_FrameGroupFunc_Skip_5.c:
     complete
     .text       start:0x02031de4 end:0x02031dfc
 
-src/main_a/func_02031dfc.c:
+src/main_a/BAC_FrameGroupFunc_EndAnimation.c:
     complete
     .text       start:0x02031dfc end:0x02031e18
 
-src/main_a/func_02032288.c:
+src/main_a/BAC_FrameGroupFunc_EndFrame.c:
     complete
     .text       start:0x02032288 end:0x020322bc
 
-src/main_a/func_020332a8.c:
+src/main_a/AnimatorSprite_AnimateManual.c:
     complete
     .text       start:0x020332a8 end:0x020332c4
 
@@ -984,7 +984,7 @@ src/main_a/ScreenTransfer_Init.c:
     complete
     .text       start:0x0203659c end:0x020365bc
 
-src/main_a/func_02036820.c:
+src/main_a/Sound_LoadSoundArchiveFromMemory.c:
     complete
     .text       start:0x02036820 end:0x02036854
 
@@ -1004,23 +1004,23 @@ src/main_a/Touch_Disable.c:
     complete
     .text       start:0x02037d40 end:0x02037d60
 
-src/main_a/func_02037f5c.c:
+src/main_a/Asset3D_SetupTask_Main.c:
     complete
     .text       start:0x02037f5c end:0x02037f94
 
-src/main_b/func_0203b078.c:
+src/main_b/MBP_GetChildBmp.c:
     complete
     .text       start:0x0203b078 end:0x0203b08c
 
-src/main_b/func_0203b08c.c:
+src/main_b/MBP_GetState.c:
     complete
     .text       start:0x0203b08c end:0x0203b09c
 
-src/main_b/func_0203b09c.c:
+src/main_b/MBP_ChangeState.c:
     complete
     .text       start:0x0203b09c end:0x0203b0ac
 
-src/main_b/func_0203c218.c:
+src/main_b/WFSi_WriteRomCallback.c:
     complete
     .text       start:0x0203c218 end:0x0203c220
 
@@ -1028,11 +1028,11 @@ src/main_b/WFS_SetDebugMode.c:
     complete
     .text       start:0x0203c244 end:0x0203c254
 
-src/main_b/func_0203c340.c:
+src/main_b/WFS_GetStatus.c:
     complete
     .text       start:0x0203c340 end:0x0203c350
 
-src/main_b/func_0203db90.c:
+src/main_b/WFSi_NotifyBusy.c:
     complete
     .text       start:0x0203db90 end:0x0203dba4
 
@@ -1060,11 +1060,11 @@ src/main_b/WH_GetBitmap.c:
     complete
     .text       start:0x0203e944 end:0x0203e954
 
-src/main_b/func_0203e970.c:
+src/main_b/WH_SetPacketSize.c:
     complete
     .text       start:0x0203e970 end:0x0203e980
 
-src/main_b/func_0203e980.c:
+src/main_b/WH_SetMaxChildCount.c:
     complete
     .text       start:0x0203e980 end:0x0203e990
 
@@ -1080,31 +1080,31 @@ src/main_b/WH_SetGgid.c:
     complete
     .text       start:0x0203e9bc end:0x0203e9cc
 
-src/main_b/func_02040918.c:
+src/main_b/KeyframeAnim_DefaultScaleRotation.c:
     complete
     .text       start:0x02040918 end:0x02040928
 
-src/main_b/func_02040928.c:
+src/main_b/KeyframeAnim_DefaultPosition.c:
     complete
     .text       start:0x02040928 end:0x02040934
 
-src/main_b/func_02040f34.c:
+src/main_b/WirelessMgr_DownloadPlay_ResetTimeout.c:
     complete
     .text       start:0x02040f34 end:0x02040f40
 
-src/main_b/func_02041284.c:
+src/main_b/WirelessMgr_DestructorDownloadPlay.c:
     complete
     .text       start:0x02041284 end:0x02041298
 
-src/main_b/func_02042670.c:
+src/main_b/WirelessMgr_Destructor.c:
     complete
     .text       start:0x02042670 end:0x02042684
 
-src/main_b/func_02042760.c:
+src/main_b/WirelessMgr_IsGameInfoPending.c:
     complete
     .text       start:0x02042760 end:0x02042774
 
-src/main_b/func_020429b8.c:
+src/main_b/WirelessMgr_GetConnectedBitmap.c:
     complete
     .text       start:0x020429b8 end:0x020429d0
 
@@ -1116,67 +1116,67 @@ src/main_b/ScreenShake_Destructor.c:
     complete
     .text       start:0x020443f8 end:0x0204440c
 
-src/main_b/func_02045b7c.c:
+src/main_b/ClearDemo_Unk_02045b7c.c:
     complete
     .text       start:0x02045b7c end:0x02045b94
 
-src/main_b/func_02045ea8.c:
+src/main_b/ClearDemo_Unk_02045ea8.c:
     complete
     .text       start:0x02045ea8 end:0x02045ec0
 
-src/main_b/func_02046a40.c:
+src/main_b/ClearDemo_Unk_02046a40.c:
     complete
     .text       start:0x02046a40 end:0x02046a54
 
-src/main_b/func_02046ea4.c:
+src/main_b/ClearDemo_Unk_02046ea4.c:
     complete
     .text       start:0x02046ea4 end:0x02046ebc
 
-src/main_b/func_02046f78.c:
+src/main_b/ClearDemo_Unk_02046f78.c:
     complete
     .text       start:0x02046f78 end:0x02046f8c
 
-src/main_b/func_0204714c.c:
+src/main_b/ClearDemo_Unk_0204714c.c:
     complete
     .text       start:0x0204714c end:0x02047164
 
-src/main_b/func_020472a8.c:
+src/main_b/ClearDemo_Unk_020472a8.c:
     complete
     .text       start:0x020472a8 end:0x020472bc
 
-src/main_b/func_02048098.c:
+src/main_b/ClearDemo_Finish.c:
     complete
     .text       start:0x02048098 end:0x020480a0
 
-src/main_b/func_02048594.c:
+src/main_b/DemoScript_StartDelay.c:
     complete
     .text       start:0x02048594 end:0x020485ac
 
-src/main_b/func_020485ac.c:
+src/main_b/DemoScript_State_WaitTalkDemo.c:
     complete
     .text       start:0x020485ac end:0x020485c4
 
-src/main_b/func_02048634.c:
+src/main_b/DemoScript_State_WaitPlayerDemo.c:
     complete
     .text       start:0x02048634 end:0x0204864c
 
-src/main_b/func_020486a8.c:
+src/main_b/DemoScript_ScheduleNext.c:
     complete
     .text       start:0x020486a8 end:0x020486b8
 
-src/main_b/func_0204884c.c:
+src/main_b/DemoScript_StartScript3.c:
     complete
     .text       start:0x0204884c end:0x02048858
 
-src/main_b/func_02048858.c:
+src/main_b/DemoScript_StartScript4.c:
     complete
     .text       start:0x02048858 end:0x02048864
 
-src/main_b/func_0204888c.c:
+src/main_b/DemoScript_StartScript0.c:
     complete
     .text       start:0x0204888c end:0x02048898
 
-src/main_b/func_02048e9c.c:
+src/main_b/DemoPlay_Start.c:
     complete
     .text       start:0x02048e9c end:0x02048eb4
 
@@ -1208,11 +1208,11 @@ src/main_b/Player_GetArchiveCompressionType.c:
     complete
     .text       start:0x0204eaf8 end:0x0204eb04
 
-src/main_b/func_0204ef90.c:
+src/main_b/MsgBox_Unk_0204ef90.c:
     complete
     .text       start:0x0204ef90 end:0x0204efa8
 
-src/main_b/func_0204f43c.c:
+src/main_b/MsgBox_Unk_0204f43c.c:
     complete
     .text       start:0x0204f43c end:0x0204f454
 
@@ -1220,15 +1220,15 @@ src/main_b/func_0204ff38.c:
     complete
     .text       start:0x0204ff38 end:0x0204ff50
 
-src/main_b/func_0205000c.c:
+src/main_b/MsgBox_GetResult.c:
     complete
     .text       start:0x0205000c end:0x02050018
 
-src/main_b/func_0205004c.c:
+src/main_b/MsgBox_RequestClose.c:
     complete
     .text       start:0x0205004c end:0x02050060
 
-src/main_b/func_02050060.c:
+src/main_b/MsgBox_SetFlags.c:
     complete
     .text       start:0x02050060 end:0x02050078
 
@@ -1300,139 +1300,139 @@ src/main_b/func_02052d90.c:
     complete
     .text       start:0x02052d90 end:0x02052da8
 
-src/main_b/SceneChange_Unk_02054df8.c:
+src/main_b/SceneChange_ToTryAgain.c:
     complete
     .text       start:0x02054df8 end:0x02054e14
 
-src/main_b/SceneChange_Unk_02054e14.c:
+src/main_b/SceneChange_ToVsLobby.c:
     complete
     .text       start:0x02054e14 end:0x02054e30
 
-src/main_b/SceneChange_Unk_02054e30.c:
+src/main_b/SceneChange_ToPostStaffRoll.c:
     complete
     .text       start:0x02054e30 end:0x02054e4c
 
-src/main_b/SceneChange_Unk_02054e4c.c:
+src/main_b/SceneChange_ToSegaLogo.c:
     complete
     .text       start:0x02054e4c end:0x02054e68
 
-src/main_b/SceneChange_Unk_02054e68.c:
+src/main_b/SceneChange_ToTitleScreen.c:
     complete
     .text       start:0x02054e68 end:0x02054e84
 
-src/main_b/SceneChange_Unk_02054e84.c:
+src/main_b/SceneChange_ToExtraAct.c:
     complete
     .text       start:0x02054e84 end:0x02054ea0
 
-src/main_b/SceneChange_Unk_02054ea0.c:
+src/main_b/SceneChange_ToExtraBoss.c:
     complete
     .text       start:0x02054ea0 end:0x02054ebc
 
-src/main_b/SceneChange_Unk_02054ebc.c:
+src/main_b/SceneChange_ToExtraStaffRoll.c:
     complete
     .text       start:0x02054ebc end:0x02054ed8
 
-src/main_b/SceneChange_Unk_02054ed8.c:
+src/main_b/SceneChange_ToStaffRoll.c:
     complete
     .text       start:0x02054ed8 end:0x02054ef4
 
-src/main_b/SceneChange_Unk_02054ef4.c:
+src/main_b/SceneChange_ToExtraEnding.c:
     complete
     .text       start:0x02054ef4 end:0x02054f10
 
-src/main_b/SceneChange_Unk_02054f10.c:
+src/main_b/SceneChange_ToEnding.c:
     complete
     .text       start:0x02054f10 end:0x02054f2c
 
-src/main_b/SceneChange_Unk_02054f2c.c:
+src/main_b/SceneChange_ToTransformDemo.c:
     complete
     .text       start:0x02054f2c end:0x02054f48
 
-src/main_b/SceneChange_Unk_02054f48.c:
+src/main_b/SceneChange_ToTimeAttackMenuMode3.c:
     complete
     .text       start:0x02054f48 end:0x02054f64
 
-src/main_b/SceneChange_Unk_02054f64.c:
+src/main_b/SceneChange_ToTimeAttackMenuMode2.c:
     complete
     .text       start:0x02054f64 end:0x02054f80
 
-src/main_b/SceneChange_Unk_02054f80.c:
+src/main_b/SceneChange_ToTimeAttackMenuMode1.c:
     complete
     .text       start:0x02054f80 end:0x02054f9c
 
-src/main_b/SceneChange_Unk_02054f9c.c:
+src/main_b/SceneChange_ToTimeAttackMenuMode0.c:
     complete
     .text       start:0x02054f9c end:0x02054fb8
 
-src/main_b/SceneChange_Unk_02054fb8.c:
+src/main_b/SceneChange_ToZoneActSelectMode.c:
     complete
     .text       start:0x02054fb8 end:0x02054fd4
 
-src/main_b/SceneChange_Unk_02054fd4.c:
+src/main_b/SceneChange_ToZoneMap.c:
     complete
     .text       start:0x02054fd4 end:0x02054ff0
 
-src/main_b/SceneChange_Unk_02054ff0.c:
+src/main_b/SceneChange_ToZoneMap_1_1.c:
     complete
     .text       start:0x02054ff0 end:0x0205500c
 
-src/main_b/SceneChange_Unk_0205500c.c:
+src/main_b/SceneChange_ToZoneMap_1_0.c:
     complete
     .text       start:0x0205500c end:0x02055028
 
-src/main_b/SceneChange_Unk_02055028.c:
+src/main_b/SceneChange_ToPlayerSelectMenuMode4.c:
     complete
     .text       start:0x02055028 end:0x02055044
 
-src/main_b/SceneChange_Unk_02055044.c:
+src/main_b/SceneChange_ToPlayerSelectMenuMode3.c:
     complete
     .text       start:0x02055044 end:0x02055060
 
-src/main_b/SceneChange_Unk_02055060.c:
+src/main_b/SceneChange_ToPlayerSelectMenuMode2.c:
     complete
     .text       start:0x02055060 end:0x0205507c
 
-src/main_b/SceneChange_Unk_0205507c.c:
+src/main_b/SceneChange_ToPlayerSelectMenuMode1.c:
     complete
     .text       start:0x0205507c end:0x02055098
 
-src/main_b/SceneChange_Unk_02055098.c:
+src/main_b/SceneChange_ToPlayerSelectMenuMode0.c:
     complete
     .text       start:0x02055098 end:0x020550b4
 
-src/main_b/SceneChange_Unk_020550b4.c:
+src/main_b/SceneChange_ToTitleMenu_1_1.c:
     complete
     .text       start:0x020550b4 end:0x020550d0
 
-src/main_b/SceneChange_Unk_020550d0.c:
+src/main_b/SceneChange_ToTitleMenu_1_0.c:
     complete
     .text       start:0x020550d0 end:0x020550ec
 
-src/main_b/SceneChange_Unk_020550ec.c:
+src/main_b/SceneChange_ToTitleMenu.c:
     complete
     .text       start:0x020550ec end:0x02055108
 
-src/main_b/SceneChange_Unk_02055108.c:
+src/main_b/SceneChange_ToSpecialStage.c:
     complete
     .text       start:0x02055108 end:0x02055124
 
-src/main_b/SceneChange_Unk_02055124.c:
+src/main_b/SceneChange_ToDemoPlay.c:
     complete
     .text       start:0x02055124 end:0x02055140
 
-src/main_b/SceneChange_Unk_02055140.c:
+src/main_b/SceneChange_ToVsStage.c:
     complete
     .text       start:0x02055140 end:0x0205515c
 
-src/main_b/SceneChange_Unk_0205515c.c:
+src/main_b/SceneChange_ToTimeAttackStage.c:
     complete
     .text       start:0x0205515c end:0x02055178
 
-src/main_b/SceneChange_Unk_02055178.c:
+src/main_b/SceneChange_ToStage.c:
     complete
     .text       start:0x02055178 end:0x02055194
 
-src/main_b/SceneChange_Unk_02055194.c:
+src/main_b/SceneChange_ToStageFromSpecialStage.c:
     complete
     .text       start:0x02055194 end:0x020551b0
 
@@ -1444,39 +1444,39 @@ src/main_b/func_02056104.c:
     complete
     .text       start:0x02056104 end:0x02056118
 
-src/main_b/func_02056828.c:
+src/main_b/PlayerDemoModel_GetUncompressedSize.c:
     complete
     .text       start:0x02056828 end:0x02056834
 
-src/main_b/func_02056834.c:
+src/main_b/PlayerDemoModel_GetCompressionType.c:
     complete
     .text       start:0x02056834 end:0x02056840
 
-src/main_b/func_020569f4.c:
+src/main_b/PlayerDemoModel_Destructor.c:
     complete
     .text       start:0x020569f4 end:0x02056a00
 
-src/main_b/func_02056b74.c:
+src/main_b/PlayerDemoBg_Unk_02056b74.c:
     complete
     .text       start:0x02056b74 end:0x02056b80
 
-src/main_b/func_02056b80.c:
+src/main_b/PlayerDemoBg_Unk_02056b80.c:
     complete
     .text       start:0x02056b80 end:0x02056b8c
 
-src/main_b/func_02056c80.c:
+src/main_b/PlayerDemoBg_GetUncompressedSize.c:
     complete
     .text       start:0x02056c80 end:0x02056c8c
 
-src/main_b/func_02056c8c.c:
+src/main_b/PlayerDemoBg_GetCompressionType.c:
     complete
     .text       start:0x02056c8c end:0x02056c98
 
-src/main_b/func_02056ce0.c:
+src/main_b/PlayerDemoBg_Unk_02056ce0.c:
     complete
     .text       start:0x02056ce0 end:0x02056cf8
 
-src/main_b/func_02056e7c.c:
+src/main_b/PlayerDemo_Unk_02056e7c.c:
     complete
     .text       start:0x02056e7c end:0x02056e94
 
@@ -1488,7 +1488,7 @@ src/main_b/func_02057038.c:
     complete
     .text       start:0x02057038 end:0x02057044
 
-src/main_b/func_0205708c.c:
+src/main_b/PlayerDemo_Unk_0205708c.c:
     complete
     .text       start:0x0205708c end:0x02057094
 
@@ -1496,15 +1496,15 @@ src/main_b/func_02057210.c:
     complete
     .text       start:0x02057210 end:0x02057224
 
-src/main_b/func_02057350.c:
+src/main_b/PlayerDemo_IsActive.c:
     complete
     .text       start:0x02057350 end:0x02057364
 
-src/main_b/func_02057364.c:
+src/main_b/PlayerDemo_Start.c:
     complete
     .text       start:0x02057364 end:0x0205736c
 
-src/main_b/func_020574d0.c:
+src/main_b/PlayerDemo_Unk_020574d0.c:
     complete
     .text       start:0x020574d0 end:0x020574d8
 
@@ -1560,27 +1560,27 @@ src/main_b/func_02057f64.c:
     complete
     .text       start:0x02057f64 end:0x02057f70
 
-src/main_b/func_02058168.c:
+src/main_b/PlayerDemo_Unk_02058168.c:
     complete
     .text       start:0x02058168 end:0x0205817c
 
-src/main_b/func_0205817c.c:
+src/main_b/PlayerDemo_Unk_0205817c.c:
     complete
     .text       start:0x0205817c end:0x02058188
 
-src/main_b/func_02058188.c:
+src/main_b/PlayerDemo_Unk_02058188.c:
     complete
     .text       start:0x02058188 end:0x02058194
 
-src/main_b/func_02058340.c:
+src/main_b/PlayerDemo_Unk_02058340.c:
     complete
     .text       start:0x02058340 end:0x02058348
 
-src/main_b/func_02058348.c:
+src/main_b/PlayerDemo_Unk_02058348.c:
     complete
     .text       start:0x02058348 end:0x02058350
 
-src/main_b/func_02058350.c:
+src/main_b/PlayerDemo_GetWork.c:
     complete
     .text       start:0x02058350 end:0x02058364
 
@@ -1756,7 +1756,7 @@ src/main_b/func_02063400.c:
     complete
     .text       start:0x02063400 end:0x0206340c
 
-src/main_b/func_0206376c.c:
+src/main_b/TransformDemo_Start.c:
     complete
     .text       start:0x0206376c end:0x02063778
 
@@ -1768,11 +1768,11 @@ src/main_b/func_02064740.c:
     complete
     .text       start:0x02064740 end:0x02064758
 
-src/main_b/func_02065f98.c:
+src/main_b/StageObj_CollideMap.c:
     complete
     .text       start:0x02065f98 end:0x02065fa4
 
-src/main_b/func_02066bb0.c:
+src/main_b/MapCollision_SetMap.c:
     complete
     .text       start:0x02066bb0 end:0x02066bc0
 
@@ -3012,19 +3012,19 @@ src/main_a/__StringWrite.c:
     complete
     .text       start:0x0202a398 end:0x0202a3e8
 
-src/main_a/func_02030808.c:
+src/main_a/Model_MatrixOp_SetCameraRotBillboard.c:
     complete
     .text       start:0x02030808 end:0x02030850
 
-src/main_a/func_02030850.c:
+src/main_a/Model_MatrixOp_SetCameraRot.c:
     complete
     .text       start:0x02030850 end:0x02030898
 
-src/main_a/func_02030918.c:
+src/main_a/Model_MatrixOp_RotateTranslate2Scale.c:
     complete
     .text       start:0x02030918 end:0x02030958
 
-src/main_a/func_020319a4.c:
+src/main_a/Model_SetShapeResource.c:
     complete
     .text       start:0x020319a4 end:0x020319f0
 
@@ -3032,15 +3032,15 @@ src/main_a/Model_SetResource.c:
     complete
     .text       start:0x02031bd0 end:0x02031c1c
 
-src/main_a/func_02031d24.c:
+src/main_a/BAC_FrameGroupFunc_Callback_8.c:
     complete
     .text       start:0x02031d24 end:0x02031d64
 
-src/main_a/func_02031d64.c:
+src/main_a/BAC_FrameGroupFunc_Callback_7.c:
     complete
     .text       start:0x02031d64 end:0x02031da4
 
-src/main_a/func_02031da4.c:
+src/main_a/BAC_FrameGroupFunc_Callback_6.c:
     complete
     .text       start:0x02031da4 end:0x02031de4
 
@@ -3052,7 +3052,7 @@ src/main_a/VRAMTransfer_LoadNow.c:
     complete
     .text       start:0x020321e4 end:0x02032234
 
-src/main_a/func_02032234.c:
+src/main_a/BAC_FrameGroupFunc_FrameAssembly.c:
     complete
     .text       start:0x02032234 end:0x02032288
 
@@ -3108,7 +3108,7 @@ src/main_a/Sound_InitHandles.c:
     complete
     .text       start:0x0203669c end:0x020366f4
 
-src/main_a/func_02036854.c:
+src/main_a/Sound_LoadSoundArchive.c:
     complete
     .text       start:0x02036854 end:0x02036894
 
@@ -3128,15 +3128,15 @@ src/main_a/TransferJob_Free.c:
     complete
     .text       start:0x02037e68 end:0x02037eb0
 
-src/main_b/func_020380d8.c:
+src/main_b/Asset3D_GetResourceSize.c:
     complete
     .text       start:0x020380d8 end:0x02038100
 
-src/main_b/func_0203863c.c:
+src/main_b/OamFreezeTask_MainB.c:
     complete
     .text       start:0x0203863c end:0x02038668
 
-src/main_b/func_02038668.c:
+src/main_b/OamFreezeTask_MainA.c:
     complete
     .text       start:0x02038668 end:0x02038694
 
@@ -3148,11 +3148,11 @@ src/main_b/VramTex_GfdFree.c:
     complete
     .text       start:0x02039360 end:0x0203938c
 
-src/main_b/func_0203b52c.c:
+src/main_b/MBP_Cancel.c:
     complete
     .text       start:0x0203b52c end:0x0203b54c
 
-src/main_b/func_0203c220.c:
+src/main_b/WFSi_ReadRomCallback.c:
     complete
     .text       start:0x0203c220 end:0x0203c244
 
@@ -3168,11 +3168,11 @@ src/main_b/MeasureChannel.c:
     complete
     .text       start:0x0203e674 end:0x0203e6a0
 
-src/main_b/func_0203e954.c:
+src/main_b/WH_SetMaxParentChildSize.c:
     complete
     .text       start:0x0203e954 end:0x0203e970
 
-src/main_b/func_0203ede0.c:
+src/main_b/WH_StateOutStartChildKeyShare.c:
     complete
     .text       start:0x0203ede0 end:0x0203ee0c
 
@@ -3184,87 +3184,87 @@ src/main_b/WH_GetWMErrCodeName.c:
     complete
     .text       start:0x02040674 end:0x0204069c
 
-src/main_b/func_02040cf4.c:
+src/main_b/KeyframeAnim_IsFinished.c:
     complete
     .text       start:0x02040cf4 end:0x02040d14
 
-src/main_b/func_02041238.c:
+src/main_b/WirelessMgr_State_DownloadPlayWaitStop.c:
     complete
     .text       start:0x02041238 end:0x02041264
 
-src/main_b/func_02041264.c:
+src/main_b/WirelessMgr_State_DownloadPlayEndWH.c:
     complete
     .text       start:0x02041264 end:0x02041284
 
-src/main_b/func_02041430.c:
+src/main_b/WirelessMgr_State_WaitStart.c:
     complete
     .text       start:0x02041430 end:0x02041454
 
-src/main_b/func_02041904.c:
+src/main_b/WirelessMgr_State_BeginRestart.c:
     complete
     .text       start:0x02041904 end:0x02041924
 
-src/main_b/func_020419e4.c:
+src/main_b/WirelessMgr_State_ChildJoined.c:
     complete
     .text       start:0x020419e4 end:0x02041a04
 
-src/main_b/func_020420fc.c:
+src/main_b/WirelessMgr_State_ParentBeginRestart.c:
     complete
     .text       start:0x020420fc end:0x0204211c
 
-src/main_b/func_020421b4.c:
+src/main_b/WirelessMgr_State_LobbyOpen.c:
     complete
     .text       start:0x020421b4 end:0x020421d4
 
-src/main_b/func_02042304.c:
+src/main_b/WirelessMgr_State_BeginMeasureChannel.c:
     complete
     .text       start:0x02042304 end:0x02042324
 
-src/main_b/func_02042324.c:
+src/main_b/WirelessMgr_OnGameInfoSet.c:
     complete
     .text       start:0x02042324 end:0x02042340
 
-src/main_b/func_02042340.c:
+src/main_b/WirelessMgr_ChildReceiver.c:
     complete
     .text       start:0x02042340 end:0x02042360
 
-src/main_b/func_02042938.c:
+src/main_b/WirelessMgr_GetErrorCode.c:
     complete
     .text       start:0x02042938 end:0x02042958
 
-src/main_b/func_02042958.c:
+src/main_b/WirelessMgr_GetStatus.c:
     complete
     .text       start:0x02042958 end:0x02042978
 
-src/main_b/func_02042978.c:
+src/main_b/WirelessMgr_GetMode.c:
     complete
     .text       start:0x02042978 end:0x02042998
 
-src/main_b/func_02042998.c:
+src/main_b/WirelessMgr_GetPlayerCount.c:
     complete
     .text       start:0x02042998 end:0x020429b8
 
-src/main_b/func_020429d0.c:
+src/main_b/WirelessMgr_RequestStart.c:
     complete
     .text       start:0x020429d0 end:0x020429f4
 
-src/main_b/func_020429f4.c:
+src/main_b/WirelessMgr_GetChildInfo.c:
     complete
     .text       start:0x020429f4 end:0x02042a20
 
-src/main_b/func_0204324c.c:
+src/main_b/WirelessMgr_GetChildInfo_0204324c.c:
     complete
     .text       start:0x0204324c end:0x02043278
 
-src/main_b/func_020432c0.c:
+src/main_b/WirelessMgr_GetScanResult.c:
     complete
     .text       start:0x020432c0 end:0x020432e0
 
-src/main_b/func_020432e0.c:
+src/main_b/WirelessMgr_GetScanResult_020432e0.c:
     complete
     .text       start:0x020432e0 end:0x02043300
 
-src/main_b/func_02043300.c:
+src/main_b/WirelessMgr_GetScanResultCount.c:
     complete
     .text       start:0x02043300 end:0x0204331c
 
@@ -3280,39 +3280,39 @@ src/main_b/ScreenShake_GetOffsetX.c:
     complete
     .text       start:0x02044690 end:0x020446b0
 
-src/main_b/func_02044c78.c:
+src/main_b/NaviB_Main.c:
     complete
     .text       start:0x02044c78 end:0x02044ca0
 
-src/main_b/func_02045c28.c:
+src/main_b/ClearDemo_Unk_02045c28.c:
     complete
     .text       start:0x02045c28 end:0x02045c4c
 
-src/main_b/func_02046cf4.c:
+src/main_b/ClearDemo_Unk_02046cf4.c:
     complete
     .text       start:0x02046cf4 end:0x02046d20
 
-src/main_b/func_02046f54.c:
+src/main_b/ClearDemo_Unk_02046f54.c:
     complete
     .text       start:0x02046f54 end:0x02046f78
 
-src/main_b/func_020485c4.c:
+src/main_b/DemoScript_Op_TalkDemo.c:
     complete
     .text       start:0x020485c4 end:0x020485f0
 
-src/main_b/func_0204864c.c:
+src/main_b/DemoScript_Op_PlayerDemo.c:
     complete
     .text       start:0x0204864c end:0x02048678
 
-src/main_b/func_02048864.c:
+src/main_b/DemoScript_StartAfterBoss.c:
     complete
     .text       start:0x02048864 end:0x0204888c
 
-src/main_b/func_02049778.c:
+src/main_b/Zone7Act2_SetupResources.c:
     complete
     .text       start:0x02049778 end:0x02049794
 
-src/main_b/func_02049794.c:
+src/main_b/Zone7Act1_SetupResources.c:
     complete
     .text       start:0x02049794 end:0x020497b0
 
@@ -3328,7 +3328,7 @@ src/main_b/StageLoader_SetCharacterSoundPath.c:
     complete
     .text       start:0x0204af64 end:0x0204af80
 
-src/main_b/func_0204b2ec.c:
+src/main_b/Stage_FreeZoneSoundData.c:
     complete
     .text       start:0x0204b2ec end:0x0204b314
 
@@ -3336,27 +3336,27 @@ src/main_b/func_0204ba84.c:
     complete
     .text       start:0x0204ba84 end:0x0204bab0
 
-src/main_b/func_0204bbbc.c:
+src/main_b/StageRestart_State_CreateStage.c:
     complete
     .text       start:0x0204bbbc end:0x0204bbe4
 
-src/main_b/func_0204bd6c.c:
+src/main_b/StageStart_State_CreateStage.c:
     complete
     .text       start:0x0204bd6c end:0x0204bd94
 
-src/main_b/func_0204bdf8.c:
+src/main_b/StageStart_State_WaitFrame.c:
     complete
     .text       start:0x0204bdf8 end:0x0204be14
 
-src/main_b/func_0204d7e0.c:
+src/main_b/StageEntry_StartFromSpecialStage.c:
     complete
     .text       start:0x0204d7e0 end:0x0204d804
 
-src/main_b/func_0204d834.c:
+src/main_b/StageEntry_Start.c:
     complete
     .text       start:0x0204d834 end:0x0204d854
 
-src/main_b/func_0204dccc.c:
+src/main_b/GameOverSeq_Destructor.c:
     complete
     .text       start:0x0204dccc end:0x0204dce8
 
@@ -3376,15 +3376,15 @@ src/main_b/func_0204ed94.c:
     complete
     .text       start:0x0204ed94 end:0x0204edc0
 
-src/main_b/func_0204fd7c.c:
+src/main_b/MsgBox_Unk_0204fd7c.c:
     complete
     .text       start:0x0204fd7c end:0x0204fd9c
 
-src/main_b/func_0204fe20.c:
+src/main_b/MsgBox_Unk_0204fe20.c:
     complete
     .text       start:0x0204fe20 end:0x0204fe40
 
-src/main_b/func_0204fe40.c:
+src/main_b/MsgBox_Main.c:
     complete
     .text       start:0x0204fe40 end:0x0204fe60
 
@@ -3452,7 +3452,7 @@ src/main_b/func_02051384.c:
     complete
     .text       start:0x02051384 end:0x020513a8
 
-src/main_b/func_02051628.c:
+src/main_b/Wireless_EnableErrorCallback.c:
     complete
     .text       start:0x02051628 end:0x02051644
 
@@ -3492,7 +3492,7 @@ src/main_b/func_02056140.c:
     complete
     .text       start:0x02056140 end:0x0205615c
 
-src/main_b/func_02056d2c.c:
+src/main_b/PlayerDemoBg_Unk_02056d2c.c:
     complete
     .text       start:0x02056d2c end:0x02056d54
 
@@ -3712,7 +3712,7 @@ src/main_b/func_02062b5c.c:
     complete
     .text       start:0x02062b5c end:0x02062b7c
 
-src/main_b/func_02063750.c:
+src/main_b/TransformDemo_IsActive.c:
     complete
     .text       start:0x02063750 end:0x0206376c
 
@@ -4316,7 +4316,7 @@ src/main_a/__rounddec.c:
     complete
     .text       start:0x0202d438 end:0x0202d49c
 
-src/main_a/func_0202fd14.c:
+src/main_a/System_GetBacklightScreens.c:
     complete
     .text       start:0x0202fd14 end:0x0202fd94
 
@@ -4324,7 +4324,7 @@ src/main_a/Model_Animate.c:
     complete
     .text       start:0x020316f4 end:0x02031768
 
-src/main_a/func_020319f0.c:
+src/main_a/Model_InitShape.c:
     complete
     .text       start:0x020319f0 end:0x02031a68
 
@@ -4412,7 +4412,7 @@ src/main_a/Sound_AllocHandle.c:
     complete
     .text       start:0x0203663c end:0x0203669c
 
-src/main_a/func_020366f4.c:
+src/main_a/Sound_PlayVoice.c:
     complete
     .text       start:0x020366f4 end:0x02036754
 
@@ -4448,31 +4448,31 @@ src/main_a/Touch_Init.c:
     complete
     .text       start:0x02037de8 end:0x02037e68
 
-src/main_b/func_02038018.c:
+src/main_b/Asset3D_GetPaletteKeyByIndex.c:
     complete
     .text       start:0x02038018 end:0x02038050
 
-src/main_b/func_02038050.c:
+src/main_b/Asset3D_CreateSetupTask.c:
     complete
     .text       start:0x02038050 end:0x020380a0
 
-src/main_b/func_020380a0.c:
+src/main_b/Asset3D_CopyResource.c:
     complete
     .text       start:0x020380a0 end:0x020380d8
 
-src/main_b/func_020382e0.c:
+src/main_b/Model_TransposeRotBillboard.c:
     complete
     .text       start:0x020382e0 end:0x02038328
 
-src/main_b/func_02038328.c:
+src/main_b/Model_TransposeRot.c:
     complete
     .text       start:0x02038328 end:0x02038374
 
-src/main_b/func_0203841c.c:
+src/main_b/Math_LineClosestPoint.c:
     complete
     .text       start:0x0203841c end:0x02038458
 
-src/main_b/func_02038458.c:
+src/main_b/Math_LineFromPoints.c:
     complete
     .text       start:0x02038458 end:0x020384ac
 
@@ -4480,19 +4480,19 @@ src/main_b/File_ReadArchiveEntryInfo.c:
     complete
     .text       start:0x020384b0 end:0x020384ec
 
-src/main_b/func_020384ec.c:
+src/main_b/DisableSwapBuffersTask_Main.c:
     complete
     .text       start:0x020384ec end:0x02038534
 
-src/main_b/func_02038534.c:
+src/main_b/DisableSwapBuffersTask_Create.c:
     complete
     .text       start:0x02038534 end:0x02038584
 
-src/main_b/func_02038584.c:
+src/main_b/OamUnfreezeTask_MainB.c:
     complete
     .text       start:0x02038584 end:0x020385e0
 
-src/main_b/func_020385e0.c:
+src/main_b/OamUnfreezeTask_MainA.c:
     complete
     .text       start:0x020385e0 end:0x0203863c
 
@@ -4500,11 +4500,11 @@ src/main_b/System_Unfreeze.c:
     complete
     .text       start:0x02038914 end:0x02038954
 
-src/main_b/func_020389b4.c:
+src/main_b/OamFreezeTask_Create.c:
     complete
     .text       start:0x020389b4 end:0x02038a00
 
-src/main_b/func_02038a00.c:
+src/main_b/OamUnfreezeTask_Create.c:
     complete
     .text       start:0x02038a00 end:0x02038a4c
 
@@ -4532,43 +4532,43 @@ src/main_b/ObjVram_Reset.c:
     complete
     .text       start:0x02039d08 end:0x02039d40
 
-src/main_b/func_0203af64.c:
+src/main_b/MBP_GetChildInfo.c:
     complete
     .text       start:0x0203af64 end:0x0203af98
 
-src/main_b/func_0203c300.c:
+src/main_b/WFS_GetCurrentBitmap.c:
     complete
     .text       start:0x0203c300 end:0x0203c340
 
-src/main_b/func_0203d150.c:
+src/main_b/WFSi_OnSetMPDataDone.c:
     complete
     .text       start:0x0203d150 end:0x0203d190
 
-src/main_b/func_0203d2d0.c:
+src/main_b/WFSi_FromBusyToFree.c:
     complete
     .text       start:0x0203d2d0 end:0x0203d31c
 
-src/main_b/func_0203d31c.c:
+src/main_b/WFSi_FromAliveToBusy.c:
     complete
     .text       start:0x0203d31c end:0x0203d358
 
-src/main_b/func_0203d358.c:
+src/main_b/WFSi_FromBusyToAlive.c:
     complete
     .text       start:0x0203d358 end:0x0203d394
 
-src/main_b/func_0203d394.c:
+src/main_b/WFSi_FromFreeToBusy.c:
     complete
     .text       start:0x0203d394 end:0x0203d3e8
 
-src/main_b/func_0203d464.c:
+src/main_b/WFSi_FindAliveForID.c:
     complete
     .text       start:0x0203d464 end:0x0203d49c
 
-src/main_b/func_0203d518.c:
+src/main_b/WFSi_FindAlive.c:
     complete
     .text       start:0x0203d518 end:0x0203d560
 
-src/main_b/func_0203d930.c:
+src/main_b/WFSi_OnSendMessageDone.c:
     complete
     .text       start:0x0203d930 end:0x0203d984
 
@@ -4636,7 +4636,7 @@ src/main_b/WH_StateInEndParentKeyShare.c:
     complete
     .text       start:0x0203fcf4 end:0x0203fd30
 
-src/main_b/func_0203fd30.c:
+src/main_b/WH_StateOutStartParentKeyShare.c:
     complete
     .text       start:0x0203fd30 end:0x0203fd64
 
@@ -4652,43 +4652,43 @@ src/main_b/WH_StateInSetParentParam.c:
     complete
     .text       start:0x02040408 end:0x0204045c
 
-src/main_b/func_02040e48.c:
+src/main_b/KeyframeAnim_SetToLastFrame.c:
     complete
     .text       start:0x02040e48 end:0x02040e80
 
-src/main_b/func_02040e80.c:
+src/main_b/KeyframeAnim_PlayReverse.c:
     complete
     .text       start:0x02040e80 end:0x02040ec0
 
-src/main_b/func_02041454.c:
+src/main_b/WirelessMgr_State_SetupRecvBuffers.c:
     complete
     .text       start:0x02041454 end:0x02041484
 
-src/main_b/func_02041a04.c:
+src/main_b/WirelessMgr_State_ChildWaitDataSharing.c:
     complete
     .text       start:0x02041a04 end:0x02041a54
 
-src/main_b/func_02041b9c.c:
+src/main_b/WirelessMgr_State_BeginScan.c:
     complete
     .text       start:0x02041b9c end:0x02041bcc
 
-src/main_b/func_02041bcc.c:
+src/main_b/WirelessMgr_State_ParentWaitChildAck.c:
     complete
     .text       start:0x02041bcc end:0x02041c14
 
-src/main_b/func_02041e54.c:
+src/main_b/WirelessMgr_State_ParentWaitChildAckReconnect.c:
     complete
     .text       start:0x02041e54 end:0x02041e90
 
-src/main_b/func_020421d4.c:
+src/main_b/WirelessMgr_State_LobbyWaitDataSharing.c:
     complete
     .text       start:0x020421d4 end:0x02042220
 
-src/main_b/func_020428d4.c:
+src/main_b/Wireless_GetLinkLevel.c:
     complete
     .text       start:0x020428d4 end:0x02042904
 
-src/main_b/func_02042904.c:
+src/main_b/Math_CountBits16.c:
     complete
     .text       start:0x02042904 end:0x02042938
 
@@ -4696,19 +4696,19 @@ src/main_b/func_02042a20.c:
     complete
     .text       start:0x02042a20 end:0x02042a70
 
-src/main_b/func_02042a70.c:
+src/main_b/WirelessMgr_GetHostInfo_02042a70.c:
     complete
     .text       start:0x02042a70 end:0x02042ab8
 
-src/main_b/func_02042cec.c:
+src/main_b/WirelessMgr_GetHostInfo.c:
     complete
     .text       start:0x02042cec end:0x02042d34
 
-src/main_b/func_02043204.c:
+src/main_b/WirelessMgr_GetHostInfo_02043204.c:
     complete
     .text       start:0x02043204 end:0x0204324c
 
-src/main_b/func_02043278.c:
+src/main_b/WirelessMgr_SelectParent.c:
     complete
     .text       start:0x02043278 end:0x020432c0
 
@@ -4728,11 +4728,11 @@ src/main_b/ScreenShake_Stop.c:
     complete
     .text       start:0x0204463c end:0x02044670
 
-src/main_b/func_02044ca0.c:
+src/main_b/NaviB_Destructor.c:
     complete
     .text       start:0x02044ca0 end:0x02044cf0
 
-src/main_b/func_02044cf0.c:
+src/main_b/NaviB_Destroy.c:
     complete
     .text       start:0x02044cf0 end:0x02044d44
 
@@ -4740,179 +4740,179 @@ src/main_b/NaviB_Load.c:
     complete
     .text       start:0x0204525c end:0x0204528c
 
-src/main_b/func_02045598.c:
+src/main_b/ClearDemo_Unk_02045598.c:
     complete
     .text       start:0x02045598 end:0x020455c8
 
-src/main_b/func_02045bf8.c:
+src/main_b/ClearDemo_Unk_02045bf8.c:
     complete
     .text       start:0x02045bf8 end:0x02045c28
 
-src/main_b/func_02045c4c.c:
+src/main_b/ClearDemo_Unk_02045c4c.c:
     complete
     .text       start:0x02045c4c end:0x02045c8c
 
-src/main_b/func_02045c8c.c:
+src/main_b/ClearDemo_Unk_02045c8c.c:
     complete
     .text       start:0x02045c8c end:0x02045cd0
 
-src/main_b/func_02045cd0.c:
+src/main_b/ClearDemo_Unk_02045cd0.c:
     complete
     .text       start:0x02045cd0 end:0x02045d10
 
-src/main_b/func_02045d64.c:
+src/main_b/ClearDemo_Unk_02045d64.c:
     complete
     .text       start:0x02045d64 end:0x02045d98
 
-src/main_b/func_0204622c.c:
+src/main_b/ClearDemo_Unk_0204622c.c:
     complete
     .text       start:0x0204622c end:0x0204625c
 
-src/main_b/func_02046ebc.c:
+src/main_b/ClearDemo_Unk_02046ebc.c:
     complete
     .text       start:0x02046ebc end:0x02046ef4
 
-src/main_b/func_02047274.c:
+src/main_b/ClearDemo_Unk_02047274.c:
     complete
     .text       start:0x02047274 end:0x020472a8
 
-src/main_b/func_02047344.c:
+src/main_b/ClearDemo_Unk_02047344.c:
     complete
     .text       start:0x02047344 end:0x02047378
 
-src/main_b/func_02047e20.c:
+src/main_b/ClearDemo_Unk_02047e20.c:
     complete
     .text       start:0x02047e20 end:0x02047e68
 
-src/main_b/func_02048550.c:
+src/main_b/DemoScript_State_Delay.c:
     complete
     .text       start:0x02048550 end:0x02048594
 
-src/main_b/func_02048678.c:
+src/main_b/DemoScript_State_Wait.c:
     complete
     .text       start:0x02048678 end:0x020486a8
 
-src/main_b/func_02049070.c:
+src/main_b/Vram_DisableAllBanks.c:
     complete
     .text       start:0x02049070 end:0x020490b8
 
-src/main_b/func_0204926c.c:
+src/main_b/Zone6Act2_ReleaseResources.c:
     complete
     .text       start:0x0204926c end:0x020492b4
 
-src/main_b/func_020492b4.c:
+src/main_b/Zone6Act1_ReleaseResources.c:
     complete
     .text       start:0x020492b4 end:0x020492fc
 
-src/main_b/func_020492fc.c:
+src/main_b/Zone5Act3_ReleaseResources.c:
     complete
     .text       start:0x020492fc end:0x02049354
 
-src/main_b/func_02049354.c:
+src/main_b/Zone5Act2_ReleaseResources.c:
     complete
     .text       start:0x02049354 end:0x020493ac
 
-src/main_b/func_020493ac.c:
+src/main_b/Zone5Act1_ReleaseResources.c:
     complete
     .text       start:0x020493ac end:0x02049404
 
-src/main_b/func_02049408.c:
+src/main_b/Zone4Act2_ReleaseResources.c:
     complete
     .text       start:0x02049408 end:0x02049450
 
-src/main_b/func_02049450.c:
+src/main_b/Zone4Act1_ReleaseResources.c:
     complete
     .text       start:0x02049450 end:0x02049498
 
-src/main_b/func_02049498.c:
+src/main_b/Zone3Act3_ReleaseResources.c:
     complete
     .text       start:0x02049498 end:0x020494e0
 
-src/main_b/func_020494e0.c:
+src/main_b/Zone3Act2_ReleaseResources.c:
     complete
     .text       start:0x020494e0 end:0x02049548
 
-src/main_b/func_02049548.c:
+src/main_b/Zone3Act1_ReleaseResources.c:
     complete
     .text       start:0x02049548 end:0x020495b0
 
-src/main_b/func_020495b4.c:
+src/main_b/Zone2Act2_ReleaseResources.c:
     complete
     .text       start:0x020495b4 end:0x0204960c
 
-src/main_b/func_0204960c.c:
+src/main_b/Zone2Act1_ReleaseResources.c:
     complete
     .text       start:0x0204960c end:0x02049664
 
-src/main_b/func_02049664.c:
+src/main_b/Zone1Act3_ReleaseResources.c:
     complete
     .text       start:0x02049664 end:0x020496bc
 
-src/main_b/func_020496bc.c:
+src/main_b/Zone1Act2_ReleaseResources.c:
     complete
     .text       start:0x020496bc end:0x02049714
 
-src/main_b/func_02049714.c:
+src/main_b/Zone1Act1_ReleaseResources.c:
     complete
     .text       start:0x02049714 end:0x0204976c
 
-src/main_b/func_020497b4.c:
+src/main_b/Zone6Act2_SetupResources.c:
     complete
     .text       start:0x020497b4 end:0x02049808
 
-src/main_b/func_02049808.c:
+src/main_b/Zone6Act1_SetupResources.c:
     complete
     .text       start:0x02049808 end:0x0204985c
 
-src/main_b/func_0204985c.c:
+src/main_b/Zone5Act3_SetupResources.c:
     complete
     .text       start:0x0204985c end:0x020498a4
 
-src/main_b/func_020498a4.c:
+src/main_b/Zone5Act2_SetupResources.c:
     complete
     .text       start:0x020498a4 end:0x020498f8
 
-src/main_b/func_020498f8.c:
+src/main_b/Zone5Act1_SetupResources.c:
     complete
     .text       start:0x020498f8 end:0x0204994c
 
-src/main_b/func_02049950.c:
+src/main_b/Zone4Act2_SetupResources.c:
     complete
     .text       start:0x02049950 end:0x020499a4
 
-src/main_b/func_020499a4.c:
+src/main_b/Zone4Act1_SetupResources.c:
     complete
     .text       start:0x020499a4 end:0x020499f8
 
-src/main_b/func_020499f8.c:
+src/main_b/Zone3Act3_SetupResources.c:
     complete
     .text       start:0x020499f8 end:0x02049a30
 
-src/main_b/func_02049a30.c:
+src/main_b/Zone3Act2_SetupResources.c:
     complete
     .text       start:0x02049a30 end:0x02049a94
 
-src/main_b/func_02049a94.c:
+src/main_b/Zone3Act1_SetupResources.c:
     complete
     .text       start:0x02049a94 end:0x02049af8
 
-src/main_b/func_02049afc.c:
+src/main_b/Zone2Act2_SetupResources.c:
     complete
     .text       start:0x02049afc end:0x02049b50
 
-src/main_b/func_02049b50.c:
+src/main_b/Zone2Act1_SetupResources.c:
     complete
     .text       start:0x02049b50 end:0x02049ba4
 
-src/main_b/func_02049ba4.c:
+src/main_b/Zone1Act3_SetupResources.c:
     complete
     .text       start:0x02049ba4 end:0x02049bec
 
-src/main_b/func_02049bec.c:
+src/main_b/Zone1Act2_SetupResources.c:
     complete
     .text       start:0x02049bec end:0x02049c40
 
-src/main_b/func_02049c40.c:
+src/main_b/Zone1Act1_SetupResources.c:
     complete
     .text       start:0x02049c40 end:0x02049c94
 
@@ -4920,19 +4920,19 @@ src/main_b/StageLoader_AllocSoundDataMem.c:
     complete
     .text       start:0x0204af80 end:0x0204afb8
 
-src/main_b/func_0204b3b8.c:
+src/main_b/Stage_ReleaseZoneResources.c:
     complete
     .text       start:0x0204b3b8 end:0x0204b414
 
-src/main_b/func_0204b414.c:
+src/main_b/Stage_ReleaseCommonResources.c:
     complete
     .text       start:0x0204b414 end:0x0204b470
 
-src/main_b/func_0204b470.c:
+src/main_b/Stage_SetupZoneResources.c:
     complete
     .text       start:0x0204b470 end:0x0204b4cc
 
-src/main_b/func_0204b4cc.c:
+src/main_b/Stage_SetupCommonResources.c:
     complete
     .text       start:0x0204b4cc end:0x0204b528
 
@@ -4944,39 +4944,39 @@ src/main_b/StageLoader_Init.c:
     complete
     .text       start:0x0204b718 end:0x0204b774
 
-src/main_b/func_0204bb44.c:
+src/main_b/StageShutdown_State_Finish.c:
     complete
     .text       start:0x0204bb44 end:0x0204bb78
 
-src/main_b/func_0204bb78.c:
+src/main_b/StageShutdown_State_Release.c:
     complete
     .text       start:0x0204bb78 end:0x0204bbbc
 
-src/main_b/func_0204bc4c.c:
+src/main_b/StageRestart_State_Release.c:
     complete
     .text       start:0x0204bc4c end:0x0204bc90
 
-src/main_b/func_0204be14.c:
+src/main_b/StageStart_State_LoadZoneFiles.c:
     complete
     .text       start:0x0204be14 end:0x0204be48
 
-src/main_b/func_0204be48.c:
+src/main_b/StageStart_State_InitZoneLoad.c:
     complete
     .text       start:0x0204be48 end:0x0204be9c
 
-src/main_b/func_0204be9c.c:
+src/main_b/StageStart_State_LoadCommonFiles.c:
     complete
     .text       start:0x0204be9c end:0x0204bed0
 
-src/main_b/func_0204bed0.c:
+src/main_b/StageStart_State_InitCommonLoad.c:
     complete
     .text       start:0x0204bed0 end:0x0204bf24
 
-src/main_b/func_0204bf24.c:
+src/main_b/StageStart_State_Begin.c:
     complete
     .text       start:0x0204bf24 end:0x0204bf54
 
-src/main_b/func_0204bf54.c:
+src/main_b/Stage_DestroyTasks.c:
     complete
     .text       start:0x0204bf54 end:0x0204bf88
 
@@ -4984,27 +4984,27 @@ src/main_b/func_0204c964.c:
     complete
     .text       start:0x0204c964 end:0x0204c9b0
 
-src/main_b/func_0204d5f8.c:
+src/main_b/StageShutdown_Create.c:
     complete
     .text       start:0x0204d5f8 end:0x0204d63c
 
-src/main_b/func_0204d63c.c:
+src/main_b/StageRestart_Create.c:
     complete
     .text       start:0x0204d63c end:0x0204d684
 
-src/main_b/func_0204d684.c:
+src/main_b/StageExit_Create.c:
     complete
     .text       start:0x0204d684 end:0x0204d6d0
 
-src/main_b/func_0204d768.c:
+src/main_b/Stage_ResetProgress.c:
     complete
     .text       start:0x0204d768 end:0x0204d7ac
 
-src/main_b/func_0204d7ac.c:
+src/main_b/StageEntry_StartVs.c:
     complete
     .text       start:0x0204d7ac end:0x0204d7e0
 
-src/main_b/func_0204d804.c:
+src/main_b/StageEntry_StartTimeAttack.c:
     complete
     .text       start:0x0204d804 end:0x0204d834
 
@@ -5012,39 +5012,39 @@ src/main_b/func_0204e6b0.c:
     complete
     .text       start:0x0204e6b0 end:0x0204e6e4
 
-src/main_b/func_0204efa8.c:
+src/main_b/MsgBox_Unk_0204efa8.c:
     complete
     .text       start:0x0204efa8 end:0x0204efec
 
-src/main_b/func_0204f3ac.c:
+src/main_b/MsgBox_Unk_0204f3ac.c:
     complete
     .text       start:0x0204f3ac end:0x0204f3dc
 
-src/main_b/func_0204f3dc.c:
+src/main_b/MsgBox_Unk_0204f3dc.c:
     complete
     .text       start:0x0204f3dc end:0x0204f40c
 
-src/main_b/func_0204f40c.c:
+src/main_b/MsgBox_Unk_0204f40c.c:
     complete
     .text       start:0x0204f40c end:0x0204f43c
 
-src/main_b/func_0204fa34.c:
+src/main_b/MsgBox_Unk_0204fa34.c:
     complete
     .text       start:0x0204fa34 end:0x0204fa74
 
-src/main_b/func_0204fad8.c:
+src/main_b/MsgBox_Unk_0204fad8.c:
     complete
     .text       start:0x0204fad8 end:0x0204fb18
 
-src/main_b/func_0204fd9c.c:
+src/main_b/MsgBox_Unk_0204fd9c.c:
     complete
     .text       start:0x0204fd9c end:0x0204fdc8
 
-src/main_b/func_0204fdc8.c:
+src/main_b/MsgBox_Unk_0204fdc8.c:
     complete
     .text       start:0x0204fdc8 end:0x0204fdf4
 
-src/main_b/func_0204fdf4.c:
+src/main_b/MsgBox_Unk_0204fdf4.c:
     complete
     .text       start:0x0204fdf4 end:0x0204fe20
 
@@ -5088,23 +5088,23 @@ src/main_b/func_020560d0.c:
     complete
     .text       start:0x020560d0 end:0x02056104
 
-src/main_b/func_02056988.c:
+src/main_b/PlayerDemoModel_Unk_02056988.c:
     complete
     .text       start:0x02056988 end:0x020569b8
 
-src/main_b/func_02056c9c.c:
+src/main_b/PlayerDemoBg_Unk_02056c9c.c:
     complete
     .text       start:0x02056c9c end:0x02056ce0
 
-src/main_b/func_02056cf8.c:
+src/main_b/PlayerDemoBg_Unk_02056cf8.c:
     complete
     .text       start:0x02056cf8 end:0x02056d2c
 
-src/main_b/func_02056d54.c:
+src/main_b/PlayerDemoBg_Unk_02056d54.c:
     complete
     .text       start:0x02056d54 end:0x02056d8c
 
-src/main_b/func_02056d8c.c:
+src/main_b/PlayerDemoBg_Unk_02056d8c.c:
     complete
     .text       start:0x02056d8c end:0x02056dc8
 
@@ -5700,7 +5700,7 @@ src/main_b/Vram_SetBankForSubOBJExtPltt.c:
     complete
     .text       start:0x0203a18c end:0x0203a1f8
 
-src/main_b/func_0203bb30.c:
+src/main_b/MBP_Start.c:
     complete
     .text       start:0x0203bb30 end:0x0203bb94
 
@@ -5716,7 +5716,7 @@ src/main_b/WH_StateOutEndParentMP.c:
     complete
     .text       start:0x0203fbd8 end:0x0203fc44
 
-src/main_b/func_0203fc88.c:
+src/main_b/WH_StateOutEndParentKeyShare.c:
     complete
     .text       start:0x0203fc88 end:0x0203fcf4
 
@@ -5724,35 +5724,35 @@ src/main_b/WH_CallbackForWFS.c:
     complete
     .text       start:0x0204045c end:0x020404bc
 
-src/main_b/func_020411d8.c:
+src/main_b/WirelessMgr_State_DownloadPlayStartMB.c:
     complete
     .text       start:0x020411d8 end:0x02041238
 
-src/main_b/func_02041298.c:
+src/main_b/WirelessMgr_MainDownloadPlay.c:
     complete
     .text       start:0x02041298 end:0x02041300
 
-src/main_b/func_0204189c.c:
+src/main_b/WirelessMgr_State_RestartFinalize.c:
     complete
     .text       start:0x0204189c end:0x02041904
 
-src/main_b/func_020422a4.c:
+src/main_b/WirelessMgr_State_MeasureChannel.c:
     complete
     .text       start:0x020422a4 end:0x02042304
 
-src/main_b/func_02042608.c:
+src/main_b/WirelessMgr_JudgeAcceptChild.c:
     complete
     .text       start:0x02042608 end:0x02042670
 
-src/main_b/func_02042684.c:
+src/main_b/WirelessMgr_Main.c:
     complete
     .text       start:0x02042684 end:0x020426e8
 
-src/main_b/func_02042c84.c:
+src/main_b/WirelessMgr_GetJoinInfo.c:
     complete
     .text       start:0x02042c84 end:0x02042cec
 
-src/main_b/func_0204319c.c:
+src/main_b/WirelessMgr_GetJoinInfo_0204319c.c:
     complete
     .text       start:0x0204319c end:0x02043204
 
@@ -5768,11 +5768,11 @@ src/main_b/StageLoader_OnMapArchiveLoaded.c:
     complete
     .text       start:0x0204aee8 end:0x0204af48
 
-src/main_b/func_0204bbe4.c:
+src/main_b/StageRestart_State_SetupResources.c:
     complete
     .text       start:0x0204bbe4 end:0x0204bc4c
 
-src/main_b/func_0204bd94.c:
+src/main_b/StageStart_State_SetupResources.c:
     complete
     .text       start:0x0204bd94 end:0x0204bdf8
 
@@ -5820,7 +5820,7 @@ src/main_b/func_02067c6c.c:
     complete
     .text       start:0x02067c6c end:0x02067cc8
 
-src/main_b/func_020682f0.c:
+src/main_b/StageObj_ReleaseSharedTexture.c:
     complete
     .text       start:0x020682f0 end:0x02068358
 
@@ -6368,23 +6368,23 @@ src/main_a2/func_0202f6bc.c:
     complete
     .text       start:0x0202f6bc end:0x0202f708
 
-src/main_b3/func_02046738.c:
+src/main_b3/ClearDemo_InitScoreTally.c:
     complete
     .text       start:0x02046738 end:0x02046938
 
-src/main_b3/func_02046a54.c:
+src/main_b3/ClearDemo_Unk_02046a54.c:
     complete
     .text       start:0x02046a54 end:0x02046cf4
 
-src/main_b3/func_0204f200.c:
+src/main_b3/MsgBox_Unk_0204f200.c:
     complete
     .text       start:0x0204f200 end:0x0204f2fc
 
-src/main_b3/func_0204f754.c:
+src/main_b3/MsgBox_Unk_0204f754.c:
     complete
     .text       start:0x0204f754 end:0x0204f9f8
 
-src/main_b3/func_02050078.c:
+src/main_b3/MsgBox_Create.c:
     complete
     .text       start:0x02050078 end:0x020502e4
 
@@ -6540,7 +6540,7 @@ src/main_sdk2/WM_SetWEPKey.c:
     complete
     .text       start:0x02013064 end:0x020130e8
 
-src/main_b3/func_02045ec0.c:
+src/main_b3/ClearDemo_Unk_02045ec0.c:
     complete
     .text       start:0x02045ec0 end:0x0204609c
 
@@ -6588,23 +6588,23 @@ src/main_b3/func_0204528c.c:
     complete
     .text       start:0x0204528c end:0x020453f8
 
-src/main_b3/func_0204594c.c:
+src/main_b3/ClearDemo_InitTimeAttackTally.c:
     complete
     .text       start:0x0204594c end:0x02045ab4
 
-src/main_b3/func_020474f8.c:
+src/main_b3/ClearDemo_DrawModel.c:
     complete
     .text       start:0x020474f8 end:0x02047664
 
-src/main_b3/func_020479d8.c:
+src/main_b3/ClearDemo_Unk_020479d8.c:
     complete
     .text       start:0x020479d8 end:0x02047b78
 
-src/main_b3/func_02047b78.c:
+src/main_b3/ClearDemo_Unk_02047b78.c:
     complete
     .text       start:0x02047b78 end:0x02047d2c
 
-src/main_b3/func_02047ecc.c:
+src/main_b3/ClearDemo_Main.c:
     complete
     .text       start:0x02047ecc end:0x02048098
 
@@ -6616,11 +6616,11 @@ src/main_b3/Player_LoadArchive.c:
     complete
     .text       start:0x0204e934 end:0x0204eaec
 
-src/main_b3/func_0204f5fc.c:
+src/main_b3/MsgBox_Unk_0204f5fc.c:
     complete
     .text       start:0x0204f5fc end:0x0204f754
 
-src/main_b3/func_020516b4.c:
+src/main_b3/WirelessSession_Stop.c:
     complete
     .text       start:0x020516b4 end:0x02051814
 
@@ -6676,7 +6676,7 @@ src/main_sdk2/func_020137ac.c:
     complete
     .text       start:0x020137ac end:0x02013814
 
-src/main_b3/func_020561e0.c:
+src/main_b3/PlayerDemoModel_Unk_020561e0.c:
     complete
     .text       start:0x020561e0 end:0x02056328
 
@@ -6684,7 +6684,7 @@ src/auto/func_0201a9a0.c:
     complete
     .text       start:0x0201a9a0 end:0x0201a9dc
 
-src/auto/func_02048608.c:
+src/auto/DemoScript_Op_TransformDemo.c:
     complete
     .text       start:0x02048608 end:0x02048634
 
@@ -6704,15 +6704,15 @@ src/auto/func_02051684.c:
     complete
     .text       start:0x02051684 end:0x020516b4
 
-src/auto/func_02052458.c:
+src/auto/Game_StartVsStage.c:
     complete
     .text       start:0x02052458 end:0x0205247c
 
-src/auto/func_02056af0.c:
+src/auto/PlayerDemoBg_Unk_02056af0.c:
     complete
     .text       start:0x02056af0 end:0x02056b20
 
-src/auto/func_020582e4.c:
+src/auto/PlayerDemo_Destructor.c:
     complete
     .text       start:0x020582e4 end:0x02058314
 
@@ -6832,7 +6832,7 @@ src/main_a2/__ull2dec.c:
     complete
     .text       start:0x0202d368 end:0x0202d438
 
-src/auto/func_02056b8c.c:
+src/auto/PlayerDemoBg_Unk_02056b8c.c:
     complete
     .text       start:0x02056b8c end:0x02056bd4
 
@@ -7004,11 +7004,11 @@ src/auto/WH_ChangeSysState.c:
     complete
     .text       start:0x020405e0 end:0x02040658
 
-src/auto/func_02042220.c:
+src/auto/WirelessMgr_State_WaitMeasureChannel.c:
     complete
     .text       start:0x02042220 end:0x020422a4
 
-src/auto/func_02042388.c:
+src/auto/WirelessMgr_OnAutoConnectFoundParent.c:
     complete
     .text       start:0x02042388 end:0x02042404
 
@@ -7016,31 +7016,31 @@ src/auto/func_02044c10.c:
     complete
     .text       start:0x02044c10 end:0x02044c78
 
-src/auto/func_02045d10.c:
+src/auto/ClearDemo_Unk_02045d10.c:
     complete
     .text       start:0x02045d10 end:0x02045d64
 
-src/auto/func_020473d8.c:
+src/auto/ClearDemo_Unk_020473d8.c:
     complete
     .text       start:0x020473d8 end:0x02047458
 
-src/auto/func_02047e68.c:
+src/auto/ClearDemo_Unk_02047e68.c:
     complete
     .text       start:0x02047e68 end:0x02047ecc
 
-src/auto/func_020485f0.c:
+src/auto/DemoScript_State_WaitTransformDemo.c:
     complete
     .text       start:0x020485f0 end:0x02048608
 
-src/auto/func_020486b8.c:
+src/auto/DemoScript_Main.c:
     complete
     .text       start:0x020486b8 end:0x02048730
 
-src/auto/func_0204f9f8.c:
+src/auto/MsgBox_Unk_0204f9f8.c:
     complete
     .text       start:0x0204f9f8 end:0x0204fa34
 
-src/auto/func_0205002c.c:
+src/auto/MsgBox_Destroy.c:
     complete
     .text       start:0x0205002c end:0x0205004c
 
@@ -7068,7 +7068,7 @@ src/auto/SysSound_SetBGMVolume.c:
     complete
     .text       start:0x02051e90 end:0x02051ebc
 
-src/auto/func_0205247c.c:
+src/auto/Game_StartStoryStage.c:
     complete
     .text       start:0x0205247c end:0x020524d4
 
@@ -7080,7 +7080,7 @@ src/auto/func_02054d3c.c:
     complete
     .text       start:0x02054d3c end:0x02054d70
 
-src/auto/func_02054d70.c:
+src/auto/WirelessError_Start.c:
     complete
     .text       start:0x02054d70 end:0x02054dbc
 
@@ -7088,15 +7088,15 @@ src/auto/func_02056038.c:
     complete
     .text       start:0x02056038 end:0x02056084
 
-src/auto/func_02056844.c:
+src/auto/PlayerDemoModel_Unk_02056844.c:
     complete
     .text       start:0x02056844 end:0x02056890
 
-src/auto/func_020569b8.c:
+src/auto/PlayerDemoModel_Main.c:
     complete
     .text       start:0x020569b8 end:0x020569f4
 
-src/auto/func_02056dc8.c:
+src/auto/PlayerDemoBg_Main.c:
     complete
     .text       start:0x02056dc8 end:0x02056e00
 
@@ -7108,7 +7108,7 @@ src/auto/PolyDemo_BuildModelPath.c:
     complete
     .text       start:0x02057044 end:0x0205708c
 
-src/auto/func_0205736c.c:
+src/auto/PlayerDemo_Unk_0205736c.c:
     complete
     .text       start:0x0205736c end:0x020573c0
 
@@ -7116,11 +7116,11 @@ src/auto/func_0205755c.c:
     complete
     .text       start:0x0205755c end:0x020575b4
 
-src/auto/func_0205761c.c:
+src/auto/PlayerDemo_Unk_0205761c.c:
     complete
     .text       start:0x0205761c end:0x02057668
 
-src/auto/func_02057668.c:
+src/auto/PlayerDemo_Unk_02057668.c:
     complete
     .text       start:0x02057668 end:0x020576dc
 
@@ -7128,11 +7128,11 @@ src/auto/PolyDemoUnder2_Main.c:
     complete
     .text       start:0x02057c68 end:0x02057c9c
 
-src/auto/func_02058218.c:
+src/auto/PlayerDemo_State_Load.c:
     complete
     .text       start:0x02058218 end:0x02058280
 
-src/auto/func_02058280.c:
+src/auto/PlayerDemo_Main.c:
     complete
     .text       start:0x02058280 end:0x020582e4
 
@@ -7388,7 +7388,7 @@ src/main_a2/Model_SetAnimation.c:
     complete
     .text       start:0x02031a68 end:0x02031bd0
 
-src/main_a2/func_020322bc.c:
+src/main_a2/AnimatorSprite_AdvanceFrames.c:
     complete
     .text       start:0x020322bc end:0x020323c8
 
@@ -7400,7 +7400,7 @@ src/main_a2/AnimatorSpriteDS_Draw.c:
     complete
     .text       start:0x02032c8c end:0x02032d2c
 
-src/main_a2/func_020331f8.c:
+src/main_a2/AnimatorSprite_ProcessFrame.c:
     complete
     .text       start:0x020331f8 end:0x020332a8
 
@@ -7432,7 +7432,7 @@ src/auto/func_02044ad0.c:
     complete
     .text       start:0x02044ad0 end:0x02044ba8
 
-src/auto/func_0204c598.c:
+src/auto/Stage_FadeBGMLayer.c:
     complete
     .text       start:0x0204c598 end:0x0204c66c
 
@@ -7440,7 +7440,7 @@ src/auto/func_02060c1c.c:
     complete
     .text       start:0x02060c1c end:0x02060cc4
 
-src/auto/func_02065ee0.c:
+src/auto/StageObj_CollideMapImpl.c:
     complete
     .text       start:0x02065ee0 end:0x02065f98
 
@@ -7456,7 +7456,7 @@ src/auto/WH_StateOutStartChild.c:
     complete
     .text       start:0x0203f108 end:0x0203f2ac
 
-src/auto/func_0204c66c.c:
+src/auto/Stage_SelectBGMLayer.c:
     complete
     .text       start:0x0204c66c end:0x0204c748
 
@@ -7488,15 +7488,15 @@ src/auto/WH_End.c:
     complete
     .text       start:0x0203dbb4 end:0x0203dc28
 
-src/auto/func_020426e8.c:
+src/auto/WirelessMgr_MainLobby.c:
     complete
     .text       start:0x020426e8 end:0x02042760
 
-src/auto/func_020465b8.c:
+src/auto/ClearDemo_Unk_020465b8.c:
     complete
     .text       start:0x020465b8 end:0x02046608
 
-src/auto/func_020491f4.c:
+src/auto/Math_CalcPercent.c:
     complete
     .text       start:0x020491f4 end:0x02049254
 
@@ -7508,11 +7508,11 @@ src/auto/func_02051644.c:
     complete
     .text       start:0x02051644 end:0x02051660
 
-src/auto/func_02052424.c:
+src/auto/Game_StartTimeAttackStage.c:
     complete
     .text       start:0x02052424 end:0x02052458
 
-src/auto/func_02056890.c:
+src/auto/PlayerDemoModel_Unk_02056890.c:
     complete
     .text       start:0x02056890 end:0x02056908
 
@@ -7568,7 +7568,7 @@ src/auto/WBT_SetPacketSize.c:
     complete
     .text       start:0x0201544c end:0x020154a4
 
-src/auto/func_0203d268.c:
+src/auto/WFSi_ReadRequest.c:
     complete
     .text       start:0x0203d268 end:0x0203d2d0
 
@@ -7580,7 +7580,7 @@ src/auto/func_0203d9d0.c:
     complete
     .text       start:0x0203d9d0 end:0x0203da24
 
-src/auto/func_02047458.c:
+src/auto/ClearDemo_Unk_02047458.c:
     complete
     .text       start:0x02047458 end:0x0204749c
 
@@ -7596,7 +7596,7 @@ src/auto/func_020537b4.c:
     complete
     .text       start:0x020537b4 end:0x02053874
 
-src/auto/func_02057458.c:
+src/auto/PlayerDemo_Unk_02057458.c:
     complete
     .text       start:0x02057458 end:0x020574d0
 
@@ -7852,19 +7852,19 @@ src/main_a3/Model_AnimateMdl.c:
     complete
     .text       start:0x020313cc end:0x020315e0
 
-src/main_a3/func_02031cf4.c:
+src/main_a3/BAC_FrameGroupFunc_ChangeAnimation.c:
     complete
     .text       start:0x02031cf4 end:0x02031d24
 
-src/main_a3/func_02031e18.c:
+src/main_a3/BAC_FrameGroupFunc_Palette.c:
     complete
     .text       start:0x02031e18 end:0x02031ee0
 
-src/main_a3/func_02031f30.c:
+src/main_a3/BAC_FrameGroupFunc_SpriteParts.c:
     complete
     .text       start:0x02031f30 end:0x020321e4
 
-src/main_a3/func_0203422c.c:
+src/main_a3/Font_GetGlyphIndex.c:
     complete
     .text       start:0x0203422c end:0x020342b0
 
@@ -7880,7 +7880,7 @@ src/main_a3/TransferJob_InitPool.c:
     complete
     .text       start:0x02037efc end:0x02037f5c
 
-src/main_a3/func_02037f94.c:
+src/main_a3/Asset3D_GetPaletteKeyByName.c:
     complete
     .text       start:0x02037f94 end:0x02038018
 
@@ -7924,103 +7924,103 @@ src/main_b3/Vram_SetBankForBG.c:
     complete
     .text       start:0x0203a9d0 end:0x0203ac70
 
-src/main_b3/func_0204069c.c:
+src/main_b3/KeyframeAnim_EaseCurve.c:
     complete
     .text       start:0x0204069c end:0x02040708
 
-src/main_b3/func_02040708.c:
+src/main_b3/KeyframeAnim_LerpScaleRotation.c:
     complete
     .text       start:0x02040708 end:0x02040848
 
-src/main_b3/func_02040848.c:
+src/main_b3/KeyframeAnim_LerpPosition.c:
     complete
     .text       start:0x02040848 end:0x02040918
 
-src/main_b3/func_02040934.c:
+src/main_b3/KeyframeAnim_EvalScaleRotation.c:
     complete
     .text       start:0x02040934 end:0x02040b14
 
-src/main_b3/func_02040b14.c:
+src/main_b3/KeyframeAnim_EvalPosition.c:
     complete
     .text       start:0x02040b14 end:0x02040cf4
 
-src/main_b3/func_020453f8.c:
+src/main_b3/ClearDemo_Unk_020453f8.c:
     complete
     .text       start:0x020453f8 end:0x02045528
 
-src/main_b3/func_020455c8.c:
+src/main_b3/ClearDemo_Unk_020455c8.c:
     complete
     .text       start:0x020455c8 end:0x020456a8
 
-src/main_b3/func_020456a8.c:
+src/main_b3/ClearDemo_Unk_020456a8.c:
     complete
     .text       start:0x020456a8 end:0x02045768
 
-src/main_b3/func_02045768.c:
+src/main_b3/ClearDemo_Unk_02045768.c:
     complete
     .text       start:0x02045768 end:0x02045814
 
-src/main_b3/func_02045814.c:
+src/main_b3/ClearDemo_Unk_02045814.c:
     complete
     .text       start:0x02045814 end:0x0204594c
 
-src/main_b3/func_02045df0.c:
+src/main_b3/ClearDemo_Unk_02045df0.c:
     complete
     .text       start:0x02045df0 end:0x02045ea8
 
-src/main_b3/func_0204609c.c:
+src/main_b3/ClearDemo_Unk_0204609c.c:
     complete
     .text       start:0x0204609c end:0x020461b4
 
-src/main_b3/func_0204625c.c:
+src/main_b3/ClearDemo_Unk_0204625c.c:
     complete
     .text       start:0x0204625c end:0x0204633c
 
-src/main_b3/func_0204633c.c:
+src/main_b3/ClearDemo_Unk_0204633c.c:
     complete
     .text       start:0x0204633c end:0x020463bc
 
-src/main_b3/func_020463bc.c:
+src/main_b3/ClearDemo_Unk_020463bc.c:
     complete
     .text       start:0x020463bc end:0x02046490
 
-src/main_b3/func_02046490.c:
+src/main_b3/ClearDemo_Unk_02046490.c:
     complete
     .text       start:0x02046490 end:0x02046550
 
-src/main_b3/func_02046608.c:
+src/main_b3/ClearDemo_Unk_02046608.c:
     complete
     .text       start:0x02046608 end:0x02046738
 
-src/main_b3/func_02046f8c.c:
+src/main_b3/ClearDemo_Unk_02046f8c.c:
     complete
     .text       start:0x02046f8c end:0x02047010
 
-src/main_b3/func_020472bc.c:
+src/main_b3/ClearDemo_Unk_020472bc.c:
     complete
     .text       start:0x020472bc end:0x02047344
 
-src/main_b3/func_02047664.c:
+src/main_b3/ClearDemo_Unk_02047664.c:
     complete
     .text       start:0x02047664 end:0x0204771c
 
-src/main_b3/func_0204771c.c:
+src/main_b3/ClearDemo_Unk_0204771c.c:
     complete
     .text       start:0x0204771c end:0x020477f8
 
-src/main_b3/func_020477f8.c:
+src/main_b3/ClearDemo_Unk_020477f8.c:
     complete
     .text       start:0x020477f8 end:0x020478f8
 
-src/main_b3/func_020478f8.c:
+src/main_b3/ClearDemo_InitModel.c:
     complete
     .text       start:0x020478f8 end:0x020479d8
 
-src/main_b3/func_02047d2c.c:
+src/main_b3/ClearDemo_Destructor.c:
     complete
     .text       start:0x02047d2c end:0x02047e20
 
-src/main_b3/func_02048734.c:
+src/main_b3/DemoScript_Create.c:
     complete
     .text       start:0x02048734 end:0x0204884c
 
@@ -8032,19 +8032,19 @@ src/main_b3/StageLoader_OnActComArchiveLoaded.c:
     complete
     .text       start:0x0204abf8 end:0x0204ad2c
 
-src/main_b3/func_0204eedc.c:
+src/main_b3/MsgBox_Unk_0204eedc.c:
     complete
     .text       start:0x0204eedc end:0x0204ef90
 
-src/main_b3/func_0204f454.c:
+src/main_b3/MsgBox_Unk_0204f454.c:
     complete
     .text       start:0x0204f454 end:0x0204f4d4
 
-src/main_b3/func_0204fc60.c:
+src/main_b3/MsgBox_Unk_0204fc60.c:
     complete
     .text       start:0x0204fc60 end:0x0204fcfc
 
-src/main_b3/func_0204fe60.c:
+src/main_b3/MsgBox_Destructor.c:
     complete
     .text       start:0x0204fe60 end:0x0204ff38
 
@@ -8064,7 +8064,7 @@ src/main_b3/func_02050764.c:
     complete
     .text       start:0x02050764 end:0x020508a8
 
-src/main_b3/func_02050c88.c:
+src/main_b3/WirelessSession_StartDownloadPlayPreview.c:
     complete
     .text       start:0x02050c88 end:0x02050d0c
 
@@ -8080,7 +8080,7 @@ src/main_b3/func_02051300.c:
     complete
     .text       start:0x02051300 end:0x02051384
 
-src/main_b3/func_02051598.c:
+src/main_b3/WirelessSession_StartDataSharing.c:
     complete
     .text       start:0x02051598 end:0x02051628
 
@@ -8132,27 +8132,27 @@ src/main_b3/func_02055fa4.c:
     complete
     .text       start:0x02055fa4 end:0x02056038
 
-src/main_b3/func_0205615c.c:
+src/main_b3/PlayerDemoModel_Unk_0205615c.c:
     complete
     .text       start:0x0205615c end:0x020561e0
 
-src/main_b3/func_02056428.c:
+src/main_b3/PlayerDemoModel_Unk_02056428.c:
     complete
     .text       start:0x02056428 end:0x0205652c
 
-src/main_b3/func_0205652c.c:
+src/main_b3/PlayerDemoModel_Unk_0205652c.c:
     complete
     .text       start:0x0205652c end:0x02056828
 
-src/main_b3/func_02056908.c:
+src/main_b3/PlayerDemoModel_Unk_02056908.c:
     complete
     .text       start:0x02056908 end:0x02056988
 
-src/main_b3/func_02056a00.c:
+src/main_b3/PlayerDemoModel_Create.c:
     complete
     .text       start:0x02056a00 end:0x02056a84
 
-src/main_b3/func_02056bd4.c:
+src/main_b3/PlayerDemoBg_Unk_02056bd4.c:
     complete
     .text       start:0x02056bd4 end:0x02056c80
 
@@ -8164,31 +8164,31 @@ src/main_b3/func_020572b4.c:
     complete
     .text       start:0x020572b4 end:0x02057350
 
-src/main_b3/func_020573c0.c:
+src/main_b3/PlayerDemo_Unk_020573c0.c:
     complete
     .text       start:0x020573c0 end:0x02057458
 
-src/main_b3/func_020574d8.c:
+src/main_b3/PlayerDemo_Unk_020574d8.c:
     complete
     .text       start:0x020574d8 end:0x0205755c
 
-src/main_b3/func_020576dc.c:
+src/main_b3/PolyDemoUnder2_DrawSprites.c:
     complete
     .text       start:0x020576dc end:0x020577c4
 
-src/main_b3/func_020577c4.c:
+src/main_b3/PolyDemoUnder2_ReleaseSprites.c:
     complete
     .text       start:0x020577c4 end:0x0205788c
 
-src/main_b3/func_02057fb4.c:
+src/main_b3/PlayerDemo_Unk_02057fb4.c:
     complete
     .text       start:0x02057fb4 end:0x02058034
 
-src/main_b3/func_02058034.c:
+src/main_b3/PlayerDemo_Unk_02058034.c:
     complete
     .text       start:0x02058034 end:0x02058168
 
-src/main_b3/func_02058364.c:
+src/main_b3/PlayerDemo_Create.c:
     complete
     .text       start:0x02058364 end:0x020583f4
 
@@ -8392,11 +8392,11 @@ src/main_b4/WH_StateOutStartParent.c:
     complete
     .text       start:0x02040048 end:0x02040230
 
-src/main_b4/func_02040f40.c:
+src/main_b4/WirelessMgr_State_DownloadPlay.c:
     complete
     .text       start:0x02040f40 end:0x020411d8
 
-src/main_b4/func_02042404.c:
+src/main_b4/WirelessMgr_OnScanFoundParent.c:
     complete
     .text       start:0x02042404 end:0x02042608
 
@@ -8412,35 +8412,35 @@ src/main_b4/func_0204481c.c:
     complete
     .text       start:0x0204481c end:0x02044ad0
 
-src/main_b4/func_020480ec.c:
+src/main_b4/ClearDemo_Create.c:
     complete
     .text       start:0x020480ec end:0x02048550
 
-src/main_b4/func_02048898.c:
+src/main_b4/DemoPlay_Main.c:
     complete
     .text       start:0x02048898 end:0x02048ad4
 
-src/main_b4/func_0204ce7c.c:
+src/main_b4/Stage_InitDisplayBoss.c:
     complete
     .text       start:0x0204ce7c end:0x0204d214
 
-src/main_b4/func_0204d214.c:
+src/main_b4/Stage_InitDisplay.c:
     complete
     .text       start:0x0204d214 end:0x0204d5f8
 
-src/main_b4/func_0204d854.c:
+src/main_b4/GameOver_State_Unk_0204d854.c:
     complete
     .text       start:0x0204d854 end:0x0204da44
 
-src/main_b4/func_0204dce8.c:
+src/main_b4/GameOverSeq_StartTimeOver.c:
     complete
     .text       start:0x0204dce8 end:0x0204e0c0
 
-src/main_b4/func_0204e0c0.c:
+src/main_b4/GameOverSeq_StartGameOver.c:
     complete
     .text       start:0x0204e0c0 end:0x0204e498
 
-src/main_b4/func_0204e744.c:
+src/main_b4/ClearDemo_GoToNextScene.c:
     complete
     .text       start:0x0204e744 end:0x0204e934
 
@@ -8472,7 +8472,7 @@ src/main_b4/func_0205961c.c:
     complete
     .text       start:0x0205961c end:0x02059838
 
-src/main_b4/func_02065ea8.c:
+src/main_b4/StageObj_GetMapProbeFlags.c:
     complete
     .text       start:0x02065ea8 end:0x02065ee0
 
@@ -9488,7 +9488,7 @@ src/main_a4/Background_Draw.c:
     complete
     .text       start:0x0203438c end:0x02034644
 
-src/main_b4/func_0203b990.c:
+src/main_b4/MBP_RegistFile.c:
     complete
     .text       start:0x0203b990 end:0x0203bb30
 
@@ -9500,31 +9500,31 @@ src/main_b4/WH_StateOutStartParentMP.c:
     complete
     .text       start:0x0203fdb0 end:0x0203ff68
 
-src/main_b4/func_02042e94.c:
+src/main_b4/WirelessMgr_StartWfsChild.c:
     complete
     .text       start:0x02042e94 end:0x02043010
 
-src/main_b4/func_02043010.c:
+src/main_b4/WirelessMgr_StartWfsParent.c:
     complete
     .text       start:0x02043010 end:0x0204319c
 
-src/main_b4/func_02043478.c:
+src/main_b4/WirelessMgr_StartDataSharingChild.c:
     complete
     .text       start:0x02043478 end:0x0204361c
 
-src/main_b4/func_0204361c.c:
+src/main_b4/WirelessMgr_StartDataSharingScanChild.c:
     complete
     .text       start:0x0204361c end:0x02043758
 
-src/main_b4/func_02043758.c:
+src/main_b4/WirelessMgr_StartDataSharingParent.c:
     complete
     .text       start:0x02043758 end:0x0204390c
 
-src/main_b4/func_0204390c.c:
+src/main_b4/WirelessMgr_StartDataSharingLobbyParent.c:
     complete
     .text       start:0x0204390c end:0x02043a58
 
-src/main_b4/func_0204c748.c:
+src/main_b4/Stage_PlayBGM.c:
     complete
     .text       start:0x0204c748 end:0x0204c8e8
 
@@ -9540,55 +9540,55 @@ src/main_b4/ObjRect_CheckAllGroup.c:
     complete
     .text       start:0x0206ded8 end:0x0206e080
 
-src/main_b5/func_0203b75c.c:
+src/main_b5/MBP_StartDownload.c:
     complete
     .text       start:0x0203b75c end:0x0203b828
 
-src/main_b5/func_0203b828.c:
+src/main_b5/MBP_KickChild.c:
     complete
     .text       start:0x0203b828 end:0x0203b8f4
 
-src/main_b5/func_0203d644.c:
+src/main_b5/WFSi_SendAck.c:
     complete
     .text       start:0x0203d644 end:0x0203d8b4
 
-src/main_b5/func_02041484.c:
+src/main_b5/WirelessMgr_State_ChildWaitConnected.c:
     complete
     .text       start:0x02041484 end:0x020415a8
 
-src/main_b5/func_020415a8.c:
+src/main_b5/WirelessMgr_State_ChildAutoConnect.c:
     complete
     .text       start:0x020415a8 end:0x02041698
 
-src/main_b5/func_02041698.c:
+src/main_b5/WirelessMgr_State_ChildWaitReconnected.c:
     complete
     .text       start:0x02041698 end:0x020417ac
 
-src/main_b5/func_020417ac.c:
+src/main_b5/WirelessMgr_State_ChildReconnect.c:
     complete
     .text       start:0x020417ac end:0x0204189c
 
-src/main_b5/func_02041c14.c:
+src/main_b5/WirelessMgr_State_ParentWaitChildren.c:
     complete
     .text       start:0x02041c14 end:0x02041d8c
 
-src/main_b5/func_02041d8c.c:
+src/main_b5/WirelessMgr_State_ParentConnect.c:
     complete
     .text       start:0x02041d8c end:0x02041e54
 
-src/main_b5/func_02041e90.c:
+src/main_b5/WirelessMgr_State_ParentWaitChildrenReconnect.c:
     complete
     .text       start:0x02041e90 end:0x02041fac
 
-src/main_b5/func_02041fac.c:
+src/main_b5/WirelessMgr_State_ParentReconnect.c:
     complete
     .text       start:0x02041fac end:0x02042080
 
-src/main_b5/func_02042d34.c:
+src/main_b5/WirelessMgr_StopWfs.c:
     complete
     .text       start:0x02042d34 end:0x02042e94
 
-src/main_b5/func_0204331c.c:
+src/main_b5/WirelessMgr_StopDataSharing.c:
     complete
     .text       start:0x0204331c end:0x02043478
 
@@ -9636,7 +9636,7 @@ src/main_b5/func_0205e09c.c:
     complete
     .text       start:0x0205e09c end:0x0205e218
 
-src/main_b5/func_0206cdf4.c:
+src/main_b5/ModelPalette_ShiftColor.c:
     complete
     .text       start:0x0206cdf4 end:0x0206ce90
 
@@ -9748,11 +9748,11 @@ src/main_b5/WH_Alloc.c:
     complete
     .text       start:0x020404bc end:0x020405bc
 
-src/main_b5/func_02042ab8.c:
+src/main_b5/WirelessMgr_StopDownloadPlay.c:
     complete
     .text       start:0x02042ab8 end:0x02042bbc
 
-src/main_b5/func_02042bbc.c:
+src/main_b5/WirelessMgr_StartDownloadPlayParent.c:
     complete
     .text       start:0x02042bbc end:0x02042c84
 
@@ -9784,7 +9784,7 @@ src/main_b5/ObjData_Release.c:
     complete
     .text       start:0x020686dc end:0x020687b8
 
-src/main_b5/func_0206ce90.c:
+src/main_b5/ModelPalette_Release.c:
     complete
     .text       start:0x0206ce90 end:0x0206cf8c
 
@@ -9812,27 +9812,27 @@ src/main_b5/ObjVram_Alloc.c:
     complete
     .text       start:0x02039c18 end:0x02039d08
 
-src/main_b5/func_0203af98.c:
+src/main_b5/MBP_GetChildState.c:
     complete
     .text       start:0x0203af98 end:0x0203b078
 
-src/main_b5/func_0203b6a4.c:
+src/main_b5/MBP_StartDownloadAll.c:
     complete
     .text       start:0x0203b6a4 end:0x0203b75c
 
-src/main_b5/func_0204138c.c:
+src/main_b5/WirelessMgr_State_Error.c:
     complete
     .text       start:0x0204138c end:0x02041430
 
-src/main_b5/func_02041924.c:
+src/main_b5/WirelessMgr_State_LobbyWaitStart.c:
     complete
     .text       start:0x02041924 end:0x020419e4
 
-src/main_b5/func_02041a54.c:
+src/main_b5/WirelessMgr_State_Scan.c:
     complete
     .text       start:0x02041a54 end:0x02041b00
 
-src/main_b5/func_02041b00.c:
+src/main_b5/WirelessMgr_State_StartScan.c:
     complete
     .text       start:0x02041b00 end:0x02041b9c
 
@@ -9856,7 +9856,7 @@ src/main_b5/PaletteAnim_Main.c:
     complete
     .text       start:0x02044120 end:0x0204423c
 
-src/main_b5/func_02048ad4.c:
+src/main_b5/DemoPlay_Destructor.c:
     complete
     .text       start:0x02048ad4 end:0x02048ba4
 
@@ -9900,11 +9900,11 @@ src/main_b5/BossStage1_FreeModels.c:
     complete
     .text       start:0x0204a184 end:0x0204a230
 
-src/main_b5/func_0204b528.c:
+src/main_b5/Stage_FreeZoneFiles.c:
     complete
     .text       start:0x0204b528 end:0x0204b624
 
-src/main_b5/func_0204b624.c:
+src/main_b5/Stage_FreeCommonFiles.c:
     complete
     .text       start:0x0204b624 end:0x0204b6cc
 
@@ -9984,7 +9984,7 @@ src/main_b5/func_02064788.c:
     complete
     .text       start:0x02064788 end:0x02064828
 
-src/main_b5/func_02066a9c.c:
+src/main_b5/MapCollision_ProbeDistance.c:
     complete
     .text       start:0x02066a9c end:0x02066bb0
 
@@ -10056,7 +10056,7 @@ src/main_b5/func_0206cc90.c:
     complete
     .text       start:0x0206cc90 end:0x0206cd40
 
-src/main_b5/func_0206cf8c.c:
+src/main_b5/ModelPalette_Init.c:
     complete
     .text       start:0x0206cf8c end:0x0206d100
 
@@ -10100,11 +10100,11 @@ src/main_b5/ObjRect_SetBox2D.c:
     complete
     .text       start:0x0206e3c0 end:0x0206e470
 
-src/main_b6/func_02044d44.c:
+src/main_b6/NaviB_Create.c:
     complete
     .text       start:0x02044d44 end:0x020451c8
 
-src/main_b6/func_02048ba4.c:
+src/main_b6/DemoPlay_Create.c:
     complete
     .text       start:0x02048ba4 end:0x02048e9c
 
@@ -10144,11 +10144,11 @@ src/main_a5/ScreenTransfer_QueueRectRaw.c:
     complete
     .text       start:0x02035e68 end:0x020363f0
 
-src/main_b6/func_0203b0ac.c:
+src/main_b6/MBP_ParentStateCallback.c:
     complete
     .text       start:0x0203b0ac end:0x0203b52c
 
-src/main_b6/func_0203c870.c:
+src/main_b6/WFSi_OnChildSystemCallback.c:
     complete
     .text       start:0x0203c870 end:0x0203cb9c
 
@@ -10184,7 +10184,7 @@ src/main_b6/StageObj_Move.c:
     complete
     .text       start:0x020694b0 end:0x02069818
 
-src/main_b6/func_02038100.c:
+src/main_b6/Model_GlbFlushWVP.c:
     complete
     .text       start:0x02038100 end:0x0203819c
 
@@ -10192,7 +10192,7 @@ src/main_b6/Bg_GetPaletteDest.c:
     complete
     .text       start:0x02039200 end:0x020392ec
 
-src/main_b6/func_0203bd08.c:
+src/main_b6/WFSi_ReplaceRomArchive.c:
     complete
     .text       start:0x0203bd08 end:0x0203bdcc
 
@@ -10204,11 +10204,11 @@ src/main_b6/WFS_InitChild.c:
     complete
     .text       start:0x0203c4e8 end:0x0203c5cc
 
-src/main_b6/func_0203d190.c:
+src/main_b6/WFSi_SetMPData.c:
     complete
     .text       start:0x0203d190 end:0x0203d268
 
-src/main_b6/func_0203d560.c:
+src/main_b6/WFSi_SendOpenAck.c:
     complete
     .text       start:0x0203d560 end:0x0203d644
 
@@ -10236,11 +10236,11 @@ src/main_b6/WH_StateInStartParentMP.c:
     complete
     .text       start:0x0203ff68 end:0x02040048
 
-src/main_b6/func_02042774.c:
+src/main_b6/WirelessMgr_GenerateTgid.c:
     complete
     .text       start:0x02042774 end:0x02042810
 
-src/main_b6/func_02042810.c:
+src/main_b6/WirelessMgr_UpdateGameInfo.c:
     complete
     .text       start:0x02042810 end:0x020428d4
 
@@ -10248,19 +10248,19 @@ src/main_b6/func_0204b314.c:
     complete
     .text       start:0x0204b314 end:0x0204b3b8
 
-src/main_b6/func_0204b95c.c:
+src/main_b6/Stage_Main.c:
     complete
     .text       start:0x0204b95c end:0x0204ba84
 
-src/main_b6/func_0204bab0.c:
+src/main_b6/Stage_InitMapCollision.c:
     complete
     .text       start:0x0204bab0 end:0x0204bb44
 
-src/main_b6/func_0204d6d0.c:
+src/main_b6/StageStart_Create.c:
     complete
     .text       start:0x0204d6d0 end:0x0204d768
 
-src/main_b6/func_0204dbb8.c:
+src/main_b6/GameOverSeq_Main.c:
     complete
     .text       start:0x0204dbb8 end:0x0204dccc
 
@@ -10368,15 +10368,15 @@ src/main_b6/func_02067cc8.c:
     complete
     .text       start:0x02067cc8 end:0x02067d58
 
-src/main_b6/func_0203c190.c:
+src/main_b6/WFSi_RomArchiveProc.c:
     complete
     .text       start:0x0203c190 end:0x0203c218
 
-src/main_b6/func_0203c7dc.c:
+src/main_b6/WFSi_InitCommon.c:
     complete
     .text       start:0x0203c7dc end:0x0203c870
 
-src/main_b6/func_02041300.c:
+src/main_b6/WirelessMgr_OnConnectionLost.c:
     complete
     .text       start:0x02041300 end:0x0204138c
 
@@ -10388,15 +10388,15 @@ src/main_b6/func_0205d46c.c:
     complete
     .text       start:0x0205d46c end:0x0205d4f4
 
-src/main_b6/func_02068358.c:
+src/main_b6/StageObj_AcquireSharedTexture.c:
     complete
     .text       start:0x02068358 end:0x020683e4
 
-src/main_b6/func_0203819c.c:
+src/main_b6/Model_GlbFlushVP.c:
     complete
     .text       start:0x0203819c end:0x02038228
 
-src/main_b6/func_0203c27c.c:
+src/main_b6/WFS_GetSentFileCount.c:
     complete
     .text       start:0x0203c27c end:0x0203c300
 
@@ -10404,11 +10404,11 @@ src/main_b6/ScreenShake_Create.c:
     complete
     .text       start:0x02044718 end:0x02044798
 
-src/main_b6/func_02044798.c:
+src/main_b6/NaviB_DrawIcons.c:
     complete
     .text       start:0x02044798 end:0x0204481c
 
-src/main_b6/func_0204b860.c:
+src/main_b6/Sound_PlayBGMEx.c:
     complete
     .text       start:0x0204b860 end:0x0204b8e0
 
@@ -10436,23 +10436,23 @@ src/main_b7/VramPltt_Alloc.c:
     complete
     .text       start:0x02039428 end:0x020395f4
 
-src/main_b7/func_0203b634.c:
+src/main_b7/MBP_IsBootableAll.c:
     complete
     .text       start:0x0203b634 end:0x0203b6a4
 
-src/main_b7/func_0203bb94.c:
+src/main_b7/MBP_Init.c:
     complete
     .text       start:0x0203bb94 end:0x0203bd08
 
-src/main_b7/func_0203d3e8.c:
+src/main_b7/WFSi_MoveList.c:
     complete
     .text       start:0x0203d3e8 end:0x0203d464
 
-src/main_b7/func_0203d49c.c:
+src/main_b7/WFSi_FindBusy.c:
     complete
     .text       start:0x0203d49c end:0x0203d518
 
-src/main_b7/func_0203d8b4.c:
+src/main_b7/WFSi_SendMessage.c:
     complete
     .text       start:0x0203d8b4 end:0x0203d930
 
@@ -10476,11 +10476,11 @@ src/main_b8/ObjRect_CheckGroup.c:
     complete
     .text       start:0x0206db24 end:0x0206de54
 
-src/main_b7/func_0203cb9c.c:
+src/main_b7/WFSi_ReallocBitmap.c:
     complete
     .text       start:0x0203cb9c end:0x0203cc68
 
-src/main_b7/func_02038374.c:
+src/main_b7/Math_SegmentHitsSphere.c:
     complete
     .text       start:0x02038374 end:0x0203841c
 
@@ -10492,83 +10492,83 @@ src/main_b7/WFS_Start.c:
     complete
     .text       start:0x0203c470 end:0x0203c4e8
 
-src/main_b7/func_02042080.c:
+src/main_b7/WirelessMgr_State_ParentRestartFinalize.c:
     complete
     .text       start:0x02042080 end:0x020420fc
 
-src/main_b7/func_0204211c.c:
+src/main_b7/WirelessMgr_State_Lobby.c:
     complete
     .text       start:0x0204211c end:0x020421b4
 
-src/main_b7/func_02045528.c:
+src/main_b7/ClearDemo_Unk_02045528.c:
     complete
     .text       start:0x02045528 end:0x02045594
 
-src/main_b7/func_02045ab4.c:
+src/main_b7/ClearDemo_Unk_02045ab4.c:
     complete
     .text       start:0x02045ab4 end:0x02045b00
 
-src/main_b7/func_02045b00.c:
+src/main_b7/ClearDemo_Unk_02045b00.c:
     complete
     .text       start:0x02045b00 end:0x02045b7c
 
-src/main_b7/func_02045b94.c:
+src/main_b7/ClearDemo_Unk_02045b94.c:
     complete
     .text       start:0x02045b94 end:0x02045bf8
 
-src/main_b7/func_02045d98.c:
+src/main_b7/ClearDemo_Unk_02045d98.c:
     complete
     .text       start:0x02045d98 end:0x02045dec
 
-src/main_b7/func_020461b4.c:
+src/main_b7/ClearDemo_Unk_020461b4.c:
     complete
     .text       start:0x020461b4 end:0x02046228
 
-src/main_b7/func_02046550.c:
+src/main_b7/ClearDemo_Unk_02046550.c:
     complete
     .text       start:0x02046550 end:0x020465b8
 
-src/main_b7/func_02046938.c:
+src/main_b7/ClearDemo_Unk_02046938.c:
     complete
     .text       start:0x02046938 end:0x02046a40
 
-src/main_b7/func_02046d20.c:
+src/main_b7/ClearDemo_Unk_02046d20.c:
     complete
     .text       start:0x02046d20 end:0x02046e08
 
-src/main_b7/func_02046e08.c:
+src/main_b7/ClearDemo_Unk_02046e08.c:
     complete
     .text       start:0x02046e08 end:0x02046ea4
 
-src/main_b7/func_02046ef4.c:
+src/main_b7/ClearDemo_Unk_02046ef4.c:
     complete
     .text       start:0x02046ef4 end:0x02046f54
 
-src/main_b7/func_02047010.c:
+src/main_b7/ClearDemo_Unk_02047010.c:
     complete
     .text       start:0x02047010 end:0x020470f8
 
-src/main_b7/func_020470f8.c:
+src/main_b7/ClearDemo_Unk_020470f8.c:
     complete
     .text       start:0x020470f8 end:0x0204714c
 
-src/main_b7/func_02047164.c:
+src/main_b7/ClearDemo_Unk_02047164.c:
     complete
     .text       start:0x02047164 end:0x020471ec
 
-src/main_b7/func_020471ec.c:
+src/main_b7/ClearDemo_Unk_020471ec.c:
     complete
     .text       start:0x020471ec end:0x02047274
 
-src/main_b7/func_02047378.c:
+src/main_b7/ClearDemo_Unk_02047378.c:
     complete
     .text       start:0x02047378 end:0x020473d8
 
-src/main_b7/func_0204749c.c:
+src/main_b7/ClearDemo_Unk_0204749c.c:
     complete
     .text       start:0x0204749c end:0x020474f8
 
-src/main_b7/func_0204b774.c:
+src/main_b7/Sound_PlaySeqArcBankPrio.c:
     complete
     .text       start:0x0204b774 end:0x0204b7ec
 
@@ -10576,11 +10576,11 @@ src/main_b7/Sound_PlaySeqArcEx.c:
     complete
     .text       start:0x0204b7ec end:0x0204b860
 
-src/main_b7/func_0204b8e0.c:
+src/main_b7/Sound_PlayBGMOnPlayer3.c:
     complete
     .text       start:0x0204b8e0 end:0x0204b958
 
-src/main_b7/func_0204eb04.c:
+src/main_b7/Stage_OnBossCleared.c:
     complete
     .text       start:0x0204eb04 end:0x0204eb7c
 
@@ -10648,11 +10648,11 @@ src/main_b8/ObjRect_RegistGet.c:
     complete
     .text       start:0x0206de54 end:0x0206ded8
 
-src/main_b7/func_02040d14.c:
+src/main_b7/KeyframeAnim_Update.c:
     complete
     .text       start:0x02040d14 end:0x02040df8
 
-src/main_b7/func_02040ef0.c:
+src/main_b7/KeyframeAnim_Init.c:
     complete
     .text       start:0x02040ef0 end:0x02040f34
 
@@ -10680,15 +10680,15 @@ src/main_b8/func_020617d4.c:
     complete
     .text       start:0x020617d4 end:0x02061840
 
-src/main_b7/func_02038228.c:
+src/main_b7/Model_GlbFlushP.c:
     complete
     .text       start:0x02038228 end:0x02038280
 
-src/main_b7/func_02038280.c:
+src/main_b7/Model_GlbSendLightMaterial.c:
     complete
     .text       start:0x02038280 end:0x020382e0
 
-src/main_b7/func_0203bdcc.c:
+src/main_b7/WFSi_LoadTables.c:
     complete
     .text       start:0x0203bdcc end:0x0203c190
 
@@ -10696,7 +10696,7 @@ src/main_b7/func_020480a0.c:
     complete
     .text       start:0x020480a0 end:0x020480ec
 
-src/main_b7/func_0204bc90.c:
+src/main_b7/StageExit_Main.c:
     complete
     .text       start:0x0204bc90 end:0x0204bd6c
 
@@ -10708,27 +10708,27 @@ src/main_b7/func_0204ed24.c:
     complete
     .text       start:0x0204ed24 end:0x0204ed68
 
-src/main_b7/func_0204efec.c:
+src/main_b7/MsgBox_Unk_0204efec.c:
     complete
     .text       start:0x0204efec end:0x0204f038
 
-src/main_b7/func_0204f038.c:
+src/main_b7/MsgBox_Unk_0204f038.c:
     complete
     .text       start:0x0204f038 end:0x0204f0c8
 
-src/main_b7/func_0204f0c8.c:
+src/main_b7/MsgBox_Unk_0204f0c8.c:
     complete
     .text       start:0x0204f0c8 end:0x0204f17c
 
-src/main_b7/func_0204f17c.c:
+src/main_b7/MsgBox_Unk_0204f17c.c:
     complete
     .text       start:0x0204f17c end:0x0204f200
 
-src/main_b7/func_0204f2fc.c:
+src/main_b7/MsgBox_Unk_0204f2fc.c:
     complete
     .text       start:0x0204f2fc end:0x0204f3ac
 
-src/main_b7/func_0204f4d4.c:
+src/main_b7/MsgBox_Unk_0204f4d4.c:
     complete
     .text       start:0x0204f4d4 end:0x0204f540
 
@@ -10740,23 +10740,23 @@ src/main_b7/func_0204f5a8.c:
     complete
     .text       start:0x0204f5a8 end:0x0204f5fc
 
-src/main_b7/func_0204fa74.c:
+src/main_b7/MsgBox_Unk_0204fa74.c:
     complete
     .text       start:0x0204fa74 end:0x0204fad8
 
-src/main_b7/func_0204fb18.c:
+src/main_b7/MsgBox_Unk_0204fb18.c:
     complete
     .text       start:0x0204fb18 end:0x0204fb90
 
-src/main_b7/func_0204fb90.c:
+src/main_b7/MsgBox_Unk_0204fb90.c:
     complete
     .text       start:0x0204fb90 end:0x0204fc04
 
-src/main_b7/func_0204fc04.c:
+src/main_b7/MsgBox_Unk_0204fc04.c:
     complete
     .text       start:0x0204fc04 end:0x0204fc60
 
-src/main_b7/func_0204fcfc.c:
+src/main_b7/MsgBox_Unk_0204fcfc.c:
     complete
     .text       start:0x0204fcfc end:0x0204fd7c
 
@@ -10812,7 +10812,7 @@ src/main_b7/func_02051474.c:
     complete
     .text       start:0x02051474 end:0x020514e4
 
-src/main_b7/func_0205153c.c:
+src/main_b7/WirelessSession_StartWfs.c:
     complete
     .text       start:0x0205153c end:0x02051598
 
@@ -10852,7 +10852,7 @@ src/main_b7/func_02051f90.c:
     complete
     .text       start:0x02051f90 end:0x02052000
 
-src/main_b8/func_02054dbc.c:
+src/main_b8/Wireless_OnError.c:
     complete
     .text       start:0x02054dbc end:0x02054df8
 
@@ -10864,31 +10864,31 @@ src/main_b8/func_02056084.c:
     complete
     .text       start:0x02056084 end:0x020560d0
 
-src/main_b8/func_02056328.c:
+src/main_b8/PlayerDemoModel_Unk_02056328.c:
     complete
     .text       start:0x02056328 end:0x020563a4
 
-src/main_b8/func_020563a4.c:
+src/main_b8/PlayerDemoModel_Unk_020563a4.c:
     complete
     .text       start:0x020563a4 end:0x020563e4
 
-src/main_b8/func_020563e4.c:
+src/main_b8/PlayerDemoModel_Unk_020563e4.c:
     complete
     .text       start:0x020563e4 end:0x02056428
 
-src/main_b8/func_02056a84.c:
+src/main_b8/PlayerDemoBg_Unk_02056a84.c:
     complete
     .text       start:0x02056a84 end:0x02056af0
 
-src/main_b8/func_02056b20.c:
+src/main_b8/PlayerDemoBg_Unk_02056b20.c:
     complete
     .text       start:0x02056b20 end:0x02056b74
 
-src/main_b8/func_02056e04.c:
+src/main_b8/PlayerDemoBg_Create.c:
     complete
     .text       start:0x02056e04 end:0x02056e7c
 
-src/main_b8/func_02057098.c:
+src/main_b8/PlayerDemo_Unk_02057098.c:
     complete
     .text       start:0x02057098 end:0x020570f4
 
@@ -10908,7 +10908,7 @@ src/main_b8/func_02057e08.c:
     complete
     .text       start:0x02057e08 end:0x02057e84
 
-src/main_b8/func_02058194.c:
+src/main_b8/PlayerDemo_Unk_02058194.c:
     complete
     .text       start:0x02058194 end:0x02058218
 
@@ -11052,11 +11052,11 @@ src/main_c1/WH_StartMeasureChannel.c:
     complete
     .text       start:0x0203e844 end:0x0203e924
 
-src/main_c1/func_02040df8.c:
+src/main_c1/KeyframeAnim_SetFrame.c:
     complete
     .text       start:0x02040df8 end:0x02040e48
 
-src/main_c1/func_02042364.c:
+src/main_c1/WirelessMgr_ParentReceiver.c:
     complete
     .text       start:0x02042364 end:0x02042384
 
@@ -11064,7 +11064,7 @@ src/main_c1/func_0204c8e8.c:
     complete
     .text       start:0x0204c8e8 end:0x0204c964
 
-src/main_c1/func_020509a0.c:
+src/main_c1/WirelessSession_StartDownloadPlay.c:
     complete
     .text       start:0x020509a0 end:0x02050a7c
 
@@ -11132,7 +11132,7 @@ src/main_b10/func_0205d608.c:
     complete
     .text       start:0x0205d608 end:0x0205de50
 
-src/main_b10/func_020657dc.c:
+src/main_b10/StageObj_CollideMapHorizontal.c:
     complete
     .text       start:0x020657dc end:0x02065ea8
 
@@ -11184,7 +11184,7 @@ src/main_d1/func_0206aa38.c:
     complete
     .text       start:0x0206aa38 end:0x0206b244
 
-src/main_d2/func_0203cc68.c:
+src/main_d2/WFSi_OnParentSystemCallback.c:
     complete
     .text       start:0x0203cc68 end:0x0203d038
 
@@ -11252,15 +11252,15 @@ src/asm_fallback/AnimatorSprite_Draw.c:
     complete
     .text       start:0x02032d2c end:0x020331f8
 
-src/asm_fallback/func_0203b54c.c:
+src/asm_fallback/MBP_StartRebootAll.c:
     complete
     .text       start:0x0203b54c end:0x0203b634
 
-src/asm_fallback/func_0203b8f4.c:
+src/asm_fallback/MBP_AcceptChild.c:
     complete
     .text       start:0x0203b8f4 end:0x0203b990
 
-src/asm_fallback/func_0203d038.c:
+src/asm_fallback/WFSi_PortCallback.c:
     complete
     .text       start:0x0203d038 end:0x0203d150
 
@@ -11268,7 +11268,7 @@ src/asm_fallback/func_020490b8.c:
     complete
     .text       start:0x020490b8 end:0x020491f4
 
-src/asm_fallback/func_0204bf88.c:
+src/asm_fallback/Stage_Create.c:
     complete
     .text       start:0x0204bf88 end:0x0204c598
 
@@ -11296,7 +11296,7 @@ src/asm_fallback/func_0205b478.c:
     complete
     .text       start:0x0205b478 end:0x0205b560
 
-src/asm_fallback/func_020648c4.c:
+src/asm_fallback/StageObj_CollideMapVertical.c:
     complete
     .text       start:0x020648c4 end:0x02065624
 

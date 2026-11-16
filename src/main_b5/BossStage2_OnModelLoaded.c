@@ -13,14 +13,14 @@ typedef struct {
 } UnkWork_0204a880;
 
 extern UnkEntry_0204a880 data_020747a0[];
-extern u8 *data_ov000_02369ae8[];
+extern u8 *gBossStage2Models[];
 extern void *gMainHeap;
-extern u32 data_022c4560;
+extern u32 gGameState;
 
 s32 strcmp(const char *a, const char *b);
 void NNS_G3dResDefaultSetup(void *p);
-u32 func_020380d8(void *p);
-void func_020380a0(void *p, void *buf);
+u32 Asset3D_GetResourceSize(void *p);
+void Asset3D_CopyResource(void *p, void *buf);
 void NaviBg_Load(s32 a, u32 b);
 void NaviB_Load(void);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
@@ -52,10 +52,10 @@ void BossStage2_OnModelLoaded(UnkWork_0204a880 *w, const char *name) {
             break;
     }
     NNS_G3dResDefaultSetup(w->res);
-    data_ov000_02369ae8[i] = Alloc_0204a880((func_020380d8(w->res) + 0x43) & ~0x1f);
-    func_020380a0(w->res, data_ov000_02369ae8[i]);
+    gBossStage2Models[i] = Alloc_0204a880((Asset3D_GetResourceSize(w->res) + 0x43) & ~0x1f);
+    Asset3D_CopyResource(w->res, gBossStage2Models[i]);
     if (i == 10) {
-        NaviBg_Load(1, data_022c4560);
+        NaviBg_Load(1, gGameState);
         NaviB_Load();
     }
 }

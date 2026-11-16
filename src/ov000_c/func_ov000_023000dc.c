@@ -11,7 +11,7 @@ typedef struct {
     u32 unk8;
 } UnkStruct_022c4680;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4680 gSaveData;
 
 void EnemyFlapperGroup_State_Unk_ov000_022fff44(void);
@@ -51,9 +51,9 @@ void func_ov000_023000dc(UnkStruct_StageObj *w) {
     }
     if (!(gSaveData.unk8 & 1))
         return;
-    if (data_022c4560.unk10 == 2)
+    if (gGameState.unk10 == 2)
         return;
-    if (data_022c4560.unk10 == 3)
+    if (gGameState.unk10 == 3)
         return;
     w->unk30 += w->unk30 >> 1;
     w->unk34 += w->unk34 >> 1;

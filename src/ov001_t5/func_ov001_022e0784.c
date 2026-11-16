@@ -5,7 +5,7 @@ typedef struct {
     s32 v[7][3];
 } UnkStruct_022e0784;
 
-extern s32 data_022c4560;
+extern s32 gGameState;
 extern s32 data_022c4690[];
 extern s32 data_022c46e8[];
 
@@ -15,7 +15,7 @@ void func_ov001_022e0784(UnkStruct_022e0784 *p) {
     s32 i;
     s32 j;
 
-    if (data_022c4560 == 0) {
+    if (gGameState == 0) {
         tbl = data_022c4690;
     } else {
         tbl = data_022c46e8;

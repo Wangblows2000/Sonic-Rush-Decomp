@@ -80,7 +80,7 @@ BOOL func_02021310(UnkArc_02307398 *arc, const char *name, void *data);
 u32 func_02021264(UnkArc_02307398 *arc, u32 idx);
 void NNS_G3dResDefaultSetup(u32 p);
 BOOL func_020212e0(UnkArc_02307398 *arc);
-UnkTask_02307398 *func_ov001_02310d5c(s32 a);
+UnkTask_02307398 *SpecialStageObjList_Create(s32 a);
 void func_ov001_02306d04(void);
 void func_ov001_02306a20(void);
 
@@ -170,7 +170,7 @@ void SpecialStage_LoadActArchive(void) {
     NNS_G3dResDefaultSetup(w->res0);
     NNS_G3dResDefaultSetup(w->res3);
     func_020212e0(&arc);
-    w->task = func_ov001_02310d5c(0x20);
+    w->task = SpecialStageObjList_Create(0x20);
     w->task->unk1DC = func_ov001_02306d04;
     w->task->unk1E0 = func_ov001_02306a20;
 }

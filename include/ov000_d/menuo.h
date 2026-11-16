@@ -55,13 +55,13 @@ typedef struct {
 
 extern UnkStruct_MenuOTask *gTaskCurrent;
 
-void func_02040d14(UnkStruct_MenuOPos *p);
-void func_02040ec0(UnkStruct_MenuOPos *p, s32 n);
+void KeyframeAnim_Update(UnkStruct_MenuOPos *p);
+void KeyframeAnim_SetAnim(UnkStruct_MenuOPos *p, s32 n);
 void func_ov000_023611f8(UnkStruct_MenuO *w);
 void func_ov000_0236119c(UnkStruct_MenuO *w, s32 a, s32 b);
 
 static inline void MenuO_Update(UnkStruct_MenuO *w, s32 b) {
-    func_02040d14(&w->pos[0]);
+    KeyframeAnim_Update(&w->pos[0]);
     func_ov000_023611f8(w);
     if (w->unkC / 2 != w->unk10 / 2) {
         func_ov000_0236119c(w, w->pos[0].unk4, b);

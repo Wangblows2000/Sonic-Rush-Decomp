@@ -10,12 +10,12 @@ typedef struct {
     u8 b1d;
     u16 h1e;
 } UnkStruct_022c4560;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 void StaffRoll_Create(s32 a);
 
 #pragma thumb on
 void StaffRoll_Start(void) {
-    if (data_022c4560.w0 == 0) {
+    if (gGameState.w0 == 0) {
         StaffRoll_Create(0);
     } else {
         StaffRoll_Create(1);

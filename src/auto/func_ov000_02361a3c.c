@@ -8,7 +8,7 @@ s32 func_ov000_023611f8();
 s32 func_ov000_0236119c();
 s32 func_ov000_02360998();
 s32 func_ov000_0235fb7c();
-s32 func_02051628();
+s32 Wireless_EnableErrorCallback();
 s32 func_ov000_0235f850();
 void func_ov000_02361478();
 
@@ -21,7 +21,7 @@ void func_ov000_02361a3c(void) {
     s32 t1 = func_ov000_0235fb7c(t0);
     if (t1 != 0) {
         *(u32 *)t0 = 0;
-        func_02051628(0);
+        Wireless_EnableErrorCallback(0);
         func_ov000_0235f850(0, 0x10, 0x10, 0);
         *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov000_02361478;
     }

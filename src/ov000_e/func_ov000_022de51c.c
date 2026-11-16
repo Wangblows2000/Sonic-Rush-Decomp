@@ -24,7 +24,7 @@ typedef struct {
     u8 unkB28[4];
 } UnkStruct_022de51c_M;
 
-extern UnkStruct_022de51c_M *data_ov000_02369b2c;
+extern UnkStruct_022de51c_M *gBoss4;
 extern u8 data_ov000_02363590[];
 extern u8 data_ov000_023635f0[];
 
@@ -32,7 +32,7 @@ s32 NNS_G3dGetResDictIdxByName(void *dict, void *name);
 void func_ov000_022de5e8(void *a, UnkStruct_022de51c *o, s32 b);
 
 void func_ov000_022de51c(UnkStruct_022de51c *o) {
-    UnkStruct_022de51c_M *m = data_ov000_02369b2c;
+    UnkStruct_022de51c_M *m = gBoss4;
     s32 id;
     s32 a;
     s32 b;

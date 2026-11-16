@@ -21,7 +21,7 @@ s32 ObjVramRef_Acquire(void *a, s32 b, s32 c);
 void AnimatorSprite_Init(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 s32 Sound_AllocHandle(void);
 void func_ov000_023127e8(UnkStruct_023129a0 *w);
-void func_ov000_02312930(UnkStruct_023129a0 *w);
+void Piston_Action_Unk_ov000_02312930(UnkStruct_023129a0 *w);
 
 UnkStruct_023129a0 *Piston_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -64,6 +64,6 @@ UnkStruct_023129a0 *Piston_Create(s32 a, s32 b, s32 c) {
     w->base.unk54 |= 2;
     w->base.unk1DC = Sound_AllocHandle();
     func_ov000_023127e8(w);
-    func_ov000_02312930(w);
+    Piston_Action_Unk_ov000_02312930(w);
     return w;
 }

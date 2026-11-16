@@ -21,7 +21,7 @@ typedef struct {
     u16 unk62;
 } UnkStruct_02321430_S;
 
-extern UnkStruct_02321430_S data_ov000_0236aad8;
+extern UnkStruct_02321430_S gCamera;
 
 void func_ov000_02321378(void);
 
@@ -31,7 +31,7 @@ void func_ov000_02321430(UnkStruct_02321430 *w) {
     w->unk68 = func_ov000_02321378;
     w->unk5C |= 4;
     w->unk58 |= 0x100;
-    if (data_ov000_0236aad8.unk4 + 0x8000 > w->unk10)
+    if (gCamera.unk4 + 0x8000 > w->unk10)
         w->unk5C &= ~1;
     else
         w->unk5C |= 1;
@@ -39,7 +39,7 @@ void func_ov000_02321430(UnkStruct_02321430 *w) {
     w->unk30 = 0xff - (Rand() & 0x1fe);
     if (w->unk5C & 1)
         w->unk2E = -w->unk2E;
-    min = (data_ov000_0236aad8.unk62 + 8) << 8;
+    min = (gCamera.unk62 + 8) << 8;
     if (w->unk14 < min)
         w->unk14 = min;
 }

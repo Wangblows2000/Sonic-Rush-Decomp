@@ -30,7 +30,7 @@ typedef struct {
     void *unk18;
 } UnkStruct_02369b50;
 
-extern UnkStruct_Boss *data_ov000_02369b4c;
+extern UnkStruct_Boss *gBoss6;
 extern UnkStruct_02369b50 data_ov000_02369b50;
 extern u8 data_ov000_023657e0[];
 extern u8 data_ov000_023636f4[];
@@ -62,6 +62,6 @@ void func_ov000_022e1308(UnkStruct_Boss *w) {
     }
     if (w->unk1114 == 0)
         return;
-    func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, data_ov000_02369b4c->unk110C, data_ov000_023636f4, 1);
+    func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
     w->unk1114 = 0;
 }

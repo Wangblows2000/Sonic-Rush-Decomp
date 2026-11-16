@@ -26,7 +26,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_023367ac_Sys;
 
-extern UnkStruct_023367ac_Sys data_022c4560;
+extern UnkStruct_023367ac_Sys gGameState;
 
 u16 FX_DivS32(s32 a, s32 b);
 
@@ -38,7 +38,7 @@ void func_ov000_023367ac(UnkStruct_023367ac *w) {
     s->unk292 = s->unk294 = 0;
     if (s->unk290 != 0) {
         s->unk290--;
-        if (data_022c4560.unk20 & 1) {
+        if (gGameState.unk20 & 1) {
             sh = (40 - s->unk290) >> 4;
             s->unk292 = (4 - (Rand() & 7)) >> sh;
             s->unk294 = (4 - (Rand() & 7)) >> sh;

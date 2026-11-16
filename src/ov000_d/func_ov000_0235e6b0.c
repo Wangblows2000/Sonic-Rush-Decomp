@@ -1,7 +1,7 @@
 #include <ov000_d/sprobj.h>
 
-BOOL func_02050018(void);
-BOOL func_0205000c(void);
+BOOL MsgBox_IsClosed(void);
+BOOL MsgBox_GetResult(void);
 void func_ov000_0235cdf0(UnkStruct_SprObj *w);
 void func_ov000_0235ce04(UnkStruct_SprObj *w);
 void func_ov000_0235e340(void);
@@ -18,9 +18,9 @@ void func_ov000_0235e6b0(void) {
     func_ov000_0235dfc4(w);
     func_ov000_0235def0(w, w->unk20, 0x1000);
     w->unk0++;
-    if (func_02050018()) {
+    if (MsgBox_IsClosed()) {
         w->unk0 = 0;
-        if (!func_0205000c()) {
+        if (!MsgBox_GetResult()) {
             w->unkC = 1;
             func_ov000_0235cdf0(w);
             gTaskCurrent->unk8 = func_ov000_0235e340;

@@ -13,10 +13,10 @@ typedef struct UnkStruct_022f2b8c {
 
 extern u16 data_ov000_02364120[][5];
 
-void func_ov000_022f2b44(UnkStruct_022f2b8c *p);
+void BossFPartD8_State_Unk_ov000_022f2b44(UnkStruct_022f2b8c *p);
 
 void func_ov000_022f2b8c(UnkStruct_022f2b8c *p) {
     p->unk438 = data_ov000_02364120[p->unk458][p->unk434];
-    p->unk68 = func_ov000_022f2b44;
+    p->unk68 = BossFPartD8_State_Unk_ov000_022f2b44;
     p->unk68(p);
 }

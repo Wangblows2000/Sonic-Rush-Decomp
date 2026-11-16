@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-extern u8 data_ov000_02369b2c[];
+extern u8 gBoss4[];
 void StageObj_Main();
 void Boss4PartCF_Destructor();
 s32 Task_Create();
@@ -11,7 +11,7 @@ void Boss4PartCF_Draw();
 void Boss4PartCF_Collide();
 
 s32 Boss4PartCF_Create(s32 p0, s32 p1, s32 p2) {
-    s32 t0 = *(u32 *)data_ov000_02369b2c;
+    s32 t0 = *(u32 *)gBoss4;
     s32 t1 = Task_Create((u32)StageObj_Main, (u32)Boss4PartCF_Destructor, 0, 0x502, 2, 0x214);
     s32 t2 = *(u32 *)((u8 *)t1 + 0x10);
     MI_CpuFill8(*(u32 *)((u8 *)t1 + 0x10), 0, 0x214);

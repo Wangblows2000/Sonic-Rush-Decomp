@@ -1,7 +1,7 @@
 #include <ov000_b/stageobj.h>
 
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_02348350(void);
+void Player_State_Grind(void);
 
 void func_ov000_02330240(UnkStruct_EffObj *w) {
     s16 x;
@@ -14,6 +14,6 @@ void func_ov000_02330240(UnkStruct_EffObj *w) {
     Math_RotateVec2S16(&x, &y, ((UnkStruct_EffObj *)w->unk88)->unk5 + ((UnkStruct_EffObj *)w->unk88)->unk1);
     w->unk10 = ((UnkStruct_EffObj *)w->unk88)->unk10 + (x << 8);
     w->unk14 = ((UnkStruct_EffObj *)w->unk88)->unk14 + (y << 8);
-    if (((UnkStruct_EffObj *)w->unk88)->unk68 != func_ov000_02348350)
+    if (((UnkStruct_EffObj *)w->unk88)->unk68 != Player_State_Grind)
         w->unk54 |= 4;
 }

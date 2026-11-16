@@ -21,7 +21,7 @@ typedef struct {
     u16 unk20E;
 } UnkStruct_0231b8f8;
 
-extern UnkStruct_0231b8f8_E data_ov000_0236aad8[];
+extern UnkStruct_0231b8f8_E gCamera[];
 extern UnkStruct_0231b8f8_P *gPlayers[];
 
 void func_ov000_0231b8f8(UnkStruct_0231b8f8 *w) {
@@ -33,7 +33,7 @@ void func_ov000_0231b8f8(UnkStruct_0231b8f8 *w) {
     for (i = 0; i < 2; i++) {
         idx = w->unk20C[i];
         if (idx >= 0) {
-            e = &data_ov000_0236aad8[i];
+            e = &gCamera[i];
             if (gPlayers[idx]->unk10 < w->unk10) {
                 if (w->unk1E0->unk4 & 1)
                     f = FALSE;

@@ -29,7 +29,7 @@ typedef struct {
     void *unk3E8;
 } UnkStruct_0234ed58;
 
-extern UnkPlayer_0234ed58 data_ov000_0236aad8[];
+extern UnkPlayer_0234ed58 gCamera[];
 void Player_State_Glider(void);
 void func_ov000_0234eccc(void);
 void func_ov000_0234e984(void);
@@ -45,8 +45,8 @@ void func_ov000_0234ed58(UnkStruct_0234ed58 *w, void *o) {
     w->unkC = 0;
     w->unk2E = 0x1000;
     w->unk30 = 0;
-    data_ov000_0236aad8[0].unk34 |= 1;
-    data_ov000_0236aad8[1].unk34 |= 1;
+    gCamera[0].unk34 |= 1;
+    gCamera[1].unk34 |= 1;
     w->unk330 |= 0x200;
     w->unk330 |= 0x400;
     w->unk330 |= 0x30;

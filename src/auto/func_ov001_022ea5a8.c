@@ -4,7 +4,7 @@
 #pragma thumb on
 
 s32 AnimatorSprite_SetAnimation();
-extern u8 data_022c4560[];
+extern u8 gGameState[];
 extern u8 data_ov001_023166c4[];
 extern u8 data_ov001_023166bc[];
 
@@ -17,8 +17,8 @@ void func_ov001_022ea5a8(s32 p0, s32 p1) {
         *(u32 *)((u8 *)p0 + 0xa7c) = (*(u32 *)((u8 *)p0 + 0xa7c) & ~4);
         return;
     }
-    s32 v0 = *(u32 *)data_022c4560;
-    if (*(u32 *)data_022c4560 == 0) {
+    s32 v0 = *(u32 *)gGameState;
+    if (*(u32 *)gGameState == 0) {
         v0 = (s32)data_ov001_023166c4;
     } else {
         v0 = (s32)data_ov001_023166bc;

@@ -9,7 +9,7 @@ typedef struct {
 
 extern UnkFold_0202fd94 gSaveDataBusy;
 
-s32 func_0202fd14(void);
+s32 System_GetBacklightScreens(void);
 void PM_GoSleepMode(u32 a, u32 b, u32 c);
 BOOL PM_SetLCDPower(u32 a);
 s32 PM_SetBackLight(u32 a, u32 b);
@@ -25,7 +25,7 @@ void System_HandleLidClose(void)
     if (PAD_DetectFold_0202fd94()) {
         if (gSaveDataBusy.folded != 1) {
             gSaveDataBusy.folded = 1;
-            gSaveDataBusy.saved = func_0202fd14();
+            gSaveDataBusy.saved = System_GetBacklightScreens();
         } else if (gSaveDataBusy.prevMode == gSaveDataBusy.mode) {
             return;
         }

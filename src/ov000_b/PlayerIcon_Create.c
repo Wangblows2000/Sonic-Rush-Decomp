@@ -14,7 +14,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *gActComArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02368254[], data_ov000_0236a9b0[];
 
 void func_ov000_0232fda4(void);
@@ -34,7 +34,7 @@ void PlayerIcon_Create(UnkStruct_0232fde0_Arg *arg) {
     StageObj_SetAnimation(w, arg->unk324);
     w->spr0.unk44 = 0;
     w->spr1.unk44 = 0;
-    if (data_022c4560.unk18 & 0x20) {
+    if (gGameState.unk18 & 0x20) {
         w->spr0.unk2C |= 0x10;
         w->spr1.unk2C |= 0x10;
     }

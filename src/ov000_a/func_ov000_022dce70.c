@@ -19,7 +19,7 @@ typedef struct UnkStruct_022dce70 {
     s32 unkBBC;
 } UnkStruct_022dce70;
 
-extern UnkStruct_022dce70 *data_ov000_02369b2c;
+extern UnkStruct_022dce70 *gBoss4;
 extern s16 data_0206e470[];
 
 void MTX_RotZ33_(void *m, s32 s, s32 c);
@@ -29,7 +29,7 @@ void Model_Draw(void *a);
 
 void func_ov000_022dce70(void) {
     u8 mtx[0x24];
-    UnkStruct_022dce70 *w = data_ov000_02369b2c;
+    UnkStruct_022dce70 *w = gBoss4;
     UnkStruct_022dce70_a *a = &w->unk5D0;
     u16 ang;
     a->unk24 = w->unkB28;

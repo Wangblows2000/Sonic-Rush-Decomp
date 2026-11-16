@@ -19,7 +19,7 @@ void func_ov000_02359744(UnkStruct_SceneTask *t) {
     }
     func_ov000_02357d20(w);
     func_ov000_02357c8c(w);
-    func_02050078(9, 3, 1, 0, 1, 0, 0xc, 0x100010);
+    MsgBox_Create(9, 3, 1, 0, 1, 0, 0xc, 0x100010);
     w->unk334 = 0;
     t->unk8 = func_ov000_0235878c;
 }

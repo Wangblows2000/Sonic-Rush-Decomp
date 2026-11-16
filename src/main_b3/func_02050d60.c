@@ -4,8 +4,8 @@ typedef struct { u8 pad0[0xc]; s32 unkC; } UnkWork_02050d60;
 typedef struct { u8 pad0[0x10]; UnkWork_02050d60 *work; } UnkTask_02050d60;
 extern UnkTask_02050d60 *data_022c4638;
 
-u32 func_020429b8(void);
-u8 *func_020429f4(u16 i);
+u32 WirelessMgr_GetConnectedBitmap(void);
+u8 *WirelessMgr_GetChildInfo(u16 i);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 
 #pragma thumb on
@@ -25,12 +25,12 @@ s32 func_02050d60(s32 n, u16 *dst, s32 len) {
         return 0;
     if (len > 10)
         len = 10;
-    mask = func_020429b8();
+    mask = WirelessMgr_GetConnectedBitmap();
     p = NULL;
     for (i = 1; i < 16; i++) {
         if (mask & (1 << i)) {
             if (n == 0) {
-                p = func_020429f4(i);
+                p = WirelessMgr_GetChildInfo(i);
                 break;
             }
             n--;

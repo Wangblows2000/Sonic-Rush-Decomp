@@ -11,7 +11,7 @@ typedef struct {
     u8 pad22[0x64 - 0x22];
 } UnkStruct_023425f4;
 
-extern UnkStruct_023425f4 data_ov000_0236aad8[];
+extern UnkStruct_023425f4 gCamera[];
 UnkStruct_023425f4 *func_ov000_0233b62c(void);
 
 u8 func_ov000_023425f4(s32 x, s32 y) {
@@ -21,7 +21,7 @@ u8 func_ov000_023425f4(s32 x, s32 y) {
     u8 res;
     u8 i;
 
-    if (data_ov000_0236aad8[2].flags & 1) {
+    if (gCamera[2].flags & 1) {
         p = func_ov000_0233b62c();
         if (x >= p->x - 0x10000 && x <= p->x + (p->w << 8) + 0x10000 &&
             y >= p->y - 0x10000 && y <= p->y + p->h * 0x1d0 + 0x10000)
@@ -30,12 +30,12 @@ u8 func_ov000_023425f4(s32 x, s32 y) {
             h0 = FALSE;
         if (!h0)
             return 0;
-        data_ov000_0236aad8[0].flags |= 0x4000000;
+        gCamera[0].flags |= 0x4000000;
         return 1;
     }
     res = 0;
     for (i = 0; i < 2; i++) {
-        p = &data_ov000_0236aad8[i];
+        p = &gCamera[i];
         if (x >= p->x - 0x10000 && x <= p->x + (p->w << 8) + 0x10000 &&
             y >= p->y - 0x10000 && y <= p->y + p->h * 0xc0 + 0x10000)
             hit = TRUE;

@@ -43,8 +43,8 @@ typedef struct {
 
 extern UnkTask_022d85d0 *gTaskCurrent;
 
-void func_02040d14(UnkAnim_022d85d0 *a);
-BOOL func_02040cf4(UnkAnim_022d85d0 *a);
+void KeyframeAnim_Update(UnkAnim_022d85d0 *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022d85d0 *a);
 void func_ov001_022d7b7c(s32 x, s32 y, s32 a, s32 b);
 void func_ov001_022d7ac4(s32 idx, s16 x, s16 y);
 void func_ov001_022d7c04(s32 id, s32 x, s32 y, s32 mode, s32 e);
@@ -63,8 +63,8 @@ void func_ov001_022d85d0(void) {
     y = w->y;
     for (i = 0, it = w->items; i < 6; it++, i++) {
         if (it->id == 0x14) continue;
-        func_02040d14(&it->anim);
-        if (!func_02040cf4(&it->anim)) done = FALSE;
+        KeyframeAnim_Update(&it->anim);
+        if (!KeyframeAnim_IsFinished(&it->anim)) done = FALSE;
         if (i == 4) {
             func_ov001_022d7b7c(it->anim.x, it->anim.y, 0, 0);
         } else if (i == 5) {

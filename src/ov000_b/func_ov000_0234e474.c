@@ -37,7 +37,7 @@ typedef struct {
     u32 unk98;
 } UnkStruct_0236aad8;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 s32 ObjShift_SetFromRef(s32 cur, s32 target, s32 start, s32 a, s32 b, s32 c);
 void func_ov000_0234e3c4(UnkStruct_0234e474 *s);
@@ -63,8 +63,8 @@ void func_ov000_0234e474(UnkStruct_0234e474 *s) {
         s->unk3F8 = s->unk18;
         s->unk3EC = -0x80;
         s->unk330 &= ~0x40;
-        data_ov000_0236aad8.unk34 &= ~1;
-        data_ov000_0236aad8.unk98 &= ~1;
+        gCamera.unk34 &= ~1;
+        gCamera.unk98 &= ~1;
         break;
     case 1:
         s->unk10 = ObjShift_SetFromRef(s->unk10, s->unk3F0 + 0x5000, s->unk3F0, 4, 0x200, 0x80);

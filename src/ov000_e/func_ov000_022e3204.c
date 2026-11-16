@@ -27,7 +27,7 @@ typedef struct {
     u16 unk8;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 extern s32 data_ov000_02363844[];
 extern UnkStruct_StageObj *gPlayers;
 
@@ -45,7 +45,7 @@ void func_ov000_022e3204(UnkStruct_Boss *w) {
     m->unk10C &= ~4;
     m->unk114 = 0x1000;
     w->unk111C = -0x1e00;
-    w->unk1120 = data_ov000_02363844[data_ov000_02369ac0.unk8 - 1];
+    w->unk1120 = data_ov000_02363844[gBossStatus.unk8 - 1];
     if (gPlayers->unk10 - w->base.unk10 < 0) {
         if (w->unkD5E != 0)
             w->unk1124 = 0x38e;

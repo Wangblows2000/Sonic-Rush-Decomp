@@ -14,13 +14,13 @@ typedef struct {
     s16 unk22C;
 } UnkStruct_022e7c9c_g;
 
-extern UnkStruct_022e7c9c_g *data_ov000_02369b78;
+extern UnkStruct_022e7c9c_g *gBoss7;
 
 void func_ov000_022e8538(UnkStruct_022e7c9c *p);
 void func_ov000_022e7c24(UnkStruct_022e7c9c *p);
 
 void func_ov000_022e7c9c(UnkStruct_022e7c9c *p) {
-    data_ov000_02369b78->unk22C = -8;
+    gBoss7->unk22C = -8;
     p->unk468 -= 0x20;
     if (p->unk468 < 0)
         p->unk468 = 0;

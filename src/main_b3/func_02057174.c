@@ -3,7 +3,7 @@
 typedef struct { s32 x; s32 y; s32 z; s32 timer; } UnkWork_02057174;
 typedef struct { u8 pad0[0x10]; UnkWork_02057174 *work; } UnkTask_02057174;
 extern UnkTask_02057174 *gTaskCurrent;
-extern void *data_022c467c;
+extern void *gPlayerDemoTask;
 extern u32 gRandSeed;
 
 void Task_Destroy(UnkTask_02057174 *t);
@@ -17,7 +17,7 @@ static inline u16 Rand_02057174(void) {
 void func_02057174(void) {
     UnkWork_02057174 *w = gTaskCurrent->work;
 
-    if (data_022c467c == NULL) {
+    if (gPlayerDemoTask == NULL) {
         Task_Destroy(gTaskCurrent);
         return;
     }

@@ -39,8 +39,8 @@ typedef struct {
     u16 unkA;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_022df55c *data_ov000_02369b2c;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022df55c *gBoss4;
+extern UnkStruct_02369ac0 gBossStatus;
 extern s16 data_ov000_02363580[];
 extern void *data_ov000_02369b30[];
 extern void *gZoneActArchive;
@@ -49,12 +49,12 @@ extern u8 data_ov000_02365780[], data_ov000_02365794[], data_ov000_023657a8[], d
 
 void Boss4_Destructor(void);
 void Boss4_Draw_Unk_ov000_022dec18(void);
-void Boss4_State_Unk_ov000_022deab4(void);
+void Boss4_State_WaitForStart(void);
 void func_ov000_022de51c(void);
 void func_ov000_022de49c(void);
 void func_ov000_022de41c(void);
 void MI_CpuFill8(void *p, s32 v, u32 n);
-u16 func_ov000_022c5f28(void);
+u16 Boss_GetStartHealth(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
 void NNS_G3dResDefaultSetup(void *p);
@@ -83,16 +83,16 @@ UnkStruct_022df55c *Boss4_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         return NULL;
     w = Task_Create(StageObj_Main, Boss4_Destructor, 0, 0x500, 2, sizeof(UnkStruct_022df55c))->work;
     MI_CpuFill8(w, 0, sizeof(UnkStruct_022df55c));
-    data_ov000_02369b2c = w;
+    gBoss4 = w;
     zero = 0;
-    MIi_CpuClear16(zero, &data_ov000_02369ac0, sizeof(UnkStruct_02369ac0));
-    data_ov000_02369ac0.unk8 = func_ov000_022c5f28();
-    data_ov000_02369ac0.unkA = func_ov000_022c5f28();
+    MIi_CpuClear16(zero, &gBossStatus, sizeof(UnkStruct_02369ac0));
+    gBossStatus.unk8 = Boss_GetStartHealth();
+    gBossStatus.unkA = Boss_GetStartHealth();
     w->unkBE0 = 0;
-    w->unkBE8 = data_ov000_02363580[data_ov000_02369ac0.unk8 - 1];
+    w->unkBE8 = data_ov000_02363580[gBossStatus.unk8 - 1];
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk70 = Boss4_Draw_Unk_ov000_022dec18;
-    w->base.unk68 = Boss4_State_Unk_ov000_022deab4;
+    w->base.unk68 = Boss4_State_WaitForStart;
     w->base.unk78 = 0;
     w->base.unk54 |= 0x12;
     w->base.unk58 |= 0xa300;

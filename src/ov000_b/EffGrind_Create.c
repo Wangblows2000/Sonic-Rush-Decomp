@@ -6,7 +6,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *gActComArchive;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_0236829c[];
 extern u8 data_ov000_0236a9e0[];
 
@@ -31,7 +31,7 @@ UnkStruct_EffObj *EffGrind_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unu
     StageObj_AllocSpritePalette(w, 0, 0xc);
     StageObj_SetOAMOrder(w, 9);
     StageObj_SetOAMPriority(w, 1);
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         w->spr1.unk2C |= 0x80008;
     if (arg->unk5 != 0) {
         w->spr0.unk2C |= 0x200;

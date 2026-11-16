@@ -7,7 +7,7 @@ s32 TalkDemo_GetEntry();
 s32 TalkDemo_SetFlags();
 s32 Sound_ResetHeap();
 extern u8 data_0207cb7c[];
-s32 func_02036854();
+s32 Sound_LoadSoundArchive();
 extern u8 gSoundHeap[];
 s32 NNS_SndArcLoadGroup();
 s32 NNS_SndHandleInit();
@@ -25,7 +25,7 @@ void func_0206086c(u8 *p0) {
     if (t2 == 0) {
         if ((t3 & 2) == 0) {
             Sound_ResetHeap(2, t2, (t3 & 2));
-            func_02036854(data_0207cb7c);
+            Sound_LoadSoundArchive(data_0207cb7c);
         }
         NNS_SndArcLoadGroup(*(u32 *)*(u32 *)*(u32 *)((u8 *)p0 + 0x28), *(u32 *)gSoundHeap);
     }

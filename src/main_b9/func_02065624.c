@@ -17,7 +17,7 @@ typedef struct {
     s8 unk67;
 } UnkPlayer_02065624;
 
-u8 func_02065ea8(UnkPlayer_02065624 *p);
+u8 StageObj_GetMapProbeFlags(UnkPlayer_02065624 *p);
 s32 func_02066010(UnkPlayer_02065624 *p, s32 x, s32 y, u8 layer, u8 dir, u8 *angle, u8 *attr);
 
 BOOL func_02065624(UnkPlayer_02065624 *p) {
@@ -33,7 +33,7 @@ BOOL func_02065624(UnkPlayer_02065624 *p) {
     s32 y;
     u8 layer;
 
-    layer = func_02065ea8(p);
+    layer = StageObj_GetMapProbeFlags(p);
     x = p->x >> 8;
     y = p->y >> 8;
     if (!(p->flags & 0x10))

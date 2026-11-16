@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0234f928();
+s32 Player_Action_JetCatapultLaunch();
 
 void Player_State_JetCatapult(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0x3e8) == 0) {
@@ -24,5 +24,5 @@ void Player_State_JetCatapult(u8 *p0) {
     if (t0 == 0) {
         return;
     }
-    func_ov000_0234f928(p0, t0);
+    Player_Action_JetCatapultLaunch(p0, t0);
 }

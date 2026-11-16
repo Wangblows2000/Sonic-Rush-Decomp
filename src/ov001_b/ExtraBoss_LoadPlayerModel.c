@@ -72,8 +72,8 @@ void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 u8 *File_Load(void *p, s32 v);
 void NNS_G3dResDefaultSetup(void *p);
-u32 func_020380d8(void *p);
-void func_020380a0(void *src, void *dst);
+u32 Asset3D_GetResourceSize(void *p);
+void Asset3D_CopyResource(void *src, void *dst);
 void Heap_Free(void *heap, void *p);
 UnkStruct_02302be8_o *func_ov001_023014f4(s32 a, s32 b);
 void Model_Init(void *s, u32 a);
@@ -81,7 +81,7 @@ void Model_SetResource(void *s, void *res, u32 idx);
 void func_ov001_0230236c(void);
 void func_ov001_02301a88(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
-void func_ov001_023024d0(UnkStruct_02302be8_o *o, s32 a);
+void ExtraBossPlayer_ChangeState(UnkStruct_02302be8_o *o, s32 a);
 u8 *ExtraBoss_GetWork(void);
 
 void ExtraBoss_LoadPlayerModel(s32 idx) {
@@ -103,7 +103,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
 
     res = File_Load(data_ov001_0231d9f0[idx], -1);
     NNS_G3dResDefaultSetup(res);
-    size = (func_020380d8(res) + 0x43) & ~0x1f;
+    size = (Asset3D_GetResourceSize(res) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill1 = 0xcccccccc;
@@ -114,7 +114,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
         blk += 0x20;
     }
     data_ov001_0231f540 = blk;
-    func_020380a0(res, blk);
+    Asset3D_CopyResource(res, blk);
     if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
@@ -128,7 +128,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
 
     res = File_Load(data_ov001_0231d9f8[idx], -1);
     NNS_G3dResDefaultSetup(res);
-    size = (func_020380d8(res) + 0x43) & ~0x1f;
+    size = (Asset3D_GetResourceSize(res) + 0x43) & ~0x1f;
     blk = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill3 = 0xcccccccc;
@@ -139,7 +139,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
         blk += 0x20;
     }
     data_ov001_0231f538 = blk;
-    func_020380a0(res, blk);
+    Asset3D_CopyResource(res, blk);
     if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
@@ -198,7 +198,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     func_ov001_022fe8d4(&o->subB0, o, 1, 0, 0x8000, 0x8000, 0x8000, 0, -0x8000, 0, 0);
     o->subB0.unk4 = func_ov001_02301a88;
     o->subB0.unk8 |= 0x2000;
-    func_ov001_023024d0(o, 1);
+    ExtraBossPlayer_ChangeState(o, 1);
     o->unk18 = o->unk24 = 0x40000;
     o->unk1C = o->unk28 = 0xc0000;
     o->unk20 = o->unk2C = 0;

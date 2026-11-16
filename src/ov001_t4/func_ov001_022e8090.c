@@ -55,18 +55,18 @@ typedef struct {
     u8 unk1c;
 } UnkCfg_022e8090;
 
-extern UnkCfg_022e8090 data_022c4560;
+extern UnkCfg_022e8090 gGameState;
 
 UnkTask_022e8090 *Task_Create(void (*func)(void), s32 a, s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov001_022e7428(void);
 void func_ov001_022e6e9c(void);
 s32 ZoneMap_IsBlaze(void);
-s32 func_ov001_022e2a44(void);
-s32 func_ov001_022e299c(void);
+s32 ZoneMap_GetSonicStoryStep(void);
+s32 ZoneMap_GetBlazeStoryStep(void);
 s32 func_ov001_022e26d0(void);
-s32 func_ov001_022e27c4(void);
-s32 func_ov001_022e28ac(void);
+s32 ZoneMap_GetNodeForCurrentZone(void);
+s32 ZoneMap_GetNodeForStoryStep(void);
 void func_ov001_022e5a20(UnkWork_022e8090 *w);
 void func_ov001_022e3840(void *p, s32 a);
 void func_ov001_022e5164(void *p, s32 x, s32 y, s32 *a, s32 *b);
@@ -97,17 +97,17 @@ UnkWork_022e8090 *func_ov001_022e8090(UnkMap_022e8090 *map, s32 alt, s32 mode) {
     MIi_CpuClear32(z, w, 0xa8);
     w->unk0 = ZoneMap_IsBlaze();
     if (w->unk0 == 0) {
-        w->unk4 = func_ov001_022e2a44();
+        w->unk4 = ZoneMap_GetSonicStoryStep();
         w->unk8 = 0;
     } else {
         w->unk4 = 0;
-        w->unk8 = func_ov001_022e299c();
+        w->unk8 = ZoneMap_GetBlazeStoryStep();
     }
     w->unkc = func_ov001_022e26d0();
-    if (mode != 0 || (alt != 0 && data_022c4560.unk1c == 7)) {
-        w->unk14 = func_ov001_022e27c4();
+    if (mode != 0 || (alt != 0 && gGameState.unk1c == 7)) {
+        w->unk14 = ZoneMap_GetNodeForCurrentZone();
     } else {
-        w->unk14 = func_ov001_022e28ac();
+        w->unk14 = ZoneMap_GetNodeForStoryStep();
     }
     w->unk18 = 0x12;
     w->unk1c = 0x17;

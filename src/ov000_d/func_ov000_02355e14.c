@@ -9,29 +9,29 @@ typedef struct {
     u8 unk1D;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void SysSound_Release(void);
-void SceneChange_Unk_02054fd4(void);
+void SceneChange_ToZoneMap(void);
 void func_0205240c(void);
 void func_ov000_02362b40(void);
 void func_ov000_02362b28(void);
 u8 func_0204e6b0(s32 a);
-void SceneChange_Unk_02054f9c(void);
-void SceneChange_Unk_02054f80(void);
+void SceneChange_ToTimeAttackMenuMode0(void);
+void SceneChange_ToTimeAttackMenuMode1(void);
 
 #pragma thumb on
 
 void func_ov000_02355e14(s32 mode, s32 sub) {
     switch (sub) {
     case 0:
-        data_022c4560.unk0 = 0;
+        gGameState.unk0 = 0;
         break;
     case 1:
-        data_022c4560.unk0 = 1;
+        gGameState.unk0 = 1;
         break;
     case 2:
-        data_022c4560.unk0 = 0;
+        gGameState.unk0 = 0;
         break;
     }
     switch (mode) {
@@ -40,7 +40,7 @@ void func_ov000_02355e14(s32 mode, s32 sub) {
         case 0:
         case 1:
             SysSound_Release();
-            SceneChange_Unk_02054fd4();
+            SceneChange_ToZoneMap();
             break;
         case 2:
             SysSound_Release();
@@ -51,12 +51,12 @@ void func_ov000_02355e14(s32 mode, s32 sub) {
     case 1:
         switch (sub) {
         case 0:
-            data_022c4560.unk4 = 0;
-            data_022c4560.unk8 = 1;
+            gGameState.unk4 = 0;
+            gGameState.unk8 = 1;
             break;
         case 1:
-            data_022c4560.unk4 = 1;
-            data_022c4560.unk8 = 0;
+            gGameState.unk4 = 1;
+            gGameState.unk8 = 0;
             break;
         }
         func_ov000_02362b40();
@@ -64,25 +64,25 @@ void func_ov000_02355e14(s32 mode, s32 sub) {
     case 2:
         switch (sub) {
         case 0:
-            data_022c4560.unk4 = 1;
-            data_022c4560.unk8 = 0;
+            gGameState.unk4 = 1;
+            gGameState.unk8 = 0;
             break;
         case 1:
-            data_022c4560.unk4 = 0;
-            data_022c4560.unk8 = 1;
+            gGameState.unk4 = 0;
+            gGameState.unk8 = 1;
             break;
         }
         func_ov000_02362b28();
         break;
     case 3:
-        data_022c4560.unk1C = func_0204e6b0(0);
-        data_022c4560.unk1D = 0;
-        SceneChange_Unk_02054f9c();
+        gGameState.unk1C = func_0204e6b0(0);
+        gGameState.unk1D = 0;
+        SceneChange_ToTimeAttackMenuMode0();
         break;
     case 4:
-        data_022c4560.unk1C = func_0204e6b0(0);
-        data_022c4560.unk1D = 0;
-        SceneChange_Unk_02054f80();
+        gGameState.unk1C = func_0204e6b0(0);
+        gGameState.unk1D = 0;
+        SceneChange_ToTimeAttackMenuMode1();
         break;
     }
 }

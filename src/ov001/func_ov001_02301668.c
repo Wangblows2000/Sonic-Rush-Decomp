@@ -9,18 +9,18 @@ void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 typedef struct { u8 pad[0xbc]; void *objs[0x2e]; } UnkStruct_0231f530;
-extern UnkStruct_0231f530 *data_ov001_0231f530;
+extern UnkStruct_0231f530 *gExtraBossPlayerManager;
 void func_ov001_02301118(void *p);
 
 void func_ov001_02301668(void) {
     u8 *blk;
     s32 i;
     for (i = 0; i < 0x2e; i++) {
-        if (data_ov001_0231f530->objs[i] != NULL) {
-            func_ov001_02301118(data_ov001_0231f530->objs[i]);
+        if (gExtraBossPlayerManager->objs[i] != NULL) {
+            func_ov001_02301118(gExtraBossPlayerManager->objs[i]);
         }
     }
-    blk = (u8 *)data_ov001_0231f530;
+    blk = (u8 *)gExtraBossPlayerManager;
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
@@ -32,5 +32,5 @@ void func_ov001_02301668(void) {
         }
     }
     Heap_Free(gMainHeap, blk);
-    data_ov001_0231f530 = NULL;
+    gExtraBossPlayerManager = NULL;
 }

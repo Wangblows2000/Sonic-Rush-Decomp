@@ -5,7 +5,7 @@ extern u32 data_02074a04;
 extern u32 data_020756dc;
 extern u32 data_020766a4;
 extern u32 data_0207c3a0;
-extern u32 data_022c4678;
+extern u32 gPlayerDemoId;
 extern void G3X_SetEdgeColorTable(void);
 extern void func_02022270(void);
 extern void func_02022284(void);
@@ -121,7 +121,7 @@ _ba:
     pop {r4, r5, r6, r7}
     pop {r3}
     bx r3
-    dcd data_022c4678
+    dcd gPlayerDemoId
     dcd data_020766a4
     dcd data_0207c3a0
     dcd data_02074a04

@@ -12,21 +12,21 @@ typedef struct {
     u16 unk8;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u8 data_ov000_02363b54[];
 extern u8 data_ov000_02363b34[];
 extern u8 data_ov000_02363b5c[];
 
-void func_ov000_022e9f64(UnkStruct_022e9f8c *w);
+void Boss7PartD5_InputState_Unk_ov000_022e9f64(UnkStruct_022e9f8c *w);
 
 void func_ov000_022e9f8c(UnkStruct_022e9f8c *w) {
-    if (data_ov000_02369ac0.unk8 >= 6) {
+    if (gBossStatus.unk8 >= 6) {
         w->unk42E = data_ov000_02363b54[Rand() & 7];
-    } else if (data_ov000_02369ac0.unk8 >= 4) {
+    } else if (gBossStatus.unk8 >= 4) {
         w->unk42E = data_ov000_02363b34[Rand() & 7];
     } else {
         w->unk42E = data_ov000_02363b5c[Rand() & 7];
     }
-    w->unk43C = func_ov000_022e9f64;
+    w->unk43C = Boss7PartD5_InputState_Unk_ov000_022e9f64;
     w->unk43C(w);
 }

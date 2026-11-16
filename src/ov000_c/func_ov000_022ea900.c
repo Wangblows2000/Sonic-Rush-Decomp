@@ -20,14 +20,14 @@ typedef struct {
 } UnkStruct_02369ac0;
 
 extern UnkStruct_StageObj *gPlayers;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369ac0 gBossStatus;
 extern u8 data_ov000_02363c84[][8], data_ov000_02363ca4[][8], data_ov000_02363cc4[][8];
 extern u8 data_ov000_02363ce4[][8], data_ov000_02363d04[][8], data_ov000_02363d24[][8];
 extern u8 data_ov000_02363d44[][8], data_ov000_02363d64[][8], data_ov000_02363d84[][8];
 
-void func_ov000_022ea25c(void);
-void func_ov000_022ea120(void);
-void func_ov000_022e9f3c(void);
+void Boss7PartD5_InputState_Unk_ov000_022ea25c(void);
+void Boss7PartD5_InputState_Unk_ov000_022ea120(void);
+void Boss7PartD5_InputState_Unk_ov000_022e9f3c(void);
 
 void func_ov000_022ea900(UnkStruct_022ea900 *w) {
     s32 d = w->base.unk10 - gPlayers->unk10;
@@ -36,7 +36,7 @@ void func_ov000_022ea900(UnkStruct_022ea900 *w) {
 
     if (d < 0)
         d = -d;
-    hp = data_ov000_02369ac0.unk8;
+    hp = gBossStatus.unk8;
     if (hp >= 6) {
         if (d < 0x5000)
             k = data_ov000_02363c84[w->unk452][w->unk450];
@@ -67,14 +67,14 @@ void func_ov000_022ea900(UnkStruct_022ea900 *w) {
         if (w->base.unk10 > gPlayers->unk10)
             w->unk456 = -w->unk456;
         w->unk458 = (Rand() & 0x3f) + 0x1e;
-        w->unk43C = func_ov000_022ea25c;
+        w->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea25c;
         break;
     case 2:
         w->unk456 = Rand() & 0x1f;
-        w->unk43C = func_ov000_022ea120;
+        w->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea120;
         break;
     case 3:
-        w->unk43C = func_ov000_022e9f3c;
+        w->unk43C = Boss7PartD5_InputState_Unk_ov000_022e9f3c;
         break;
     }
     w->unk450++;

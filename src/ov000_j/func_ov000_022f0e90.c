@@ -26,17 +26,17 @@ typedef struct {
 } UnkStruct_022f0e90;
 
 extern UnkStruct_0208922c gDisplayMain;
-extern u8 data_02250464[];
+extern u8 gBGMSoundHandle[];
 
 void NNS_SndPlayerStopSeq(void *a, s32 b);
-void func_ov000_022f0e38(UnkStruct_022f0e90 *p);
+void BossFPartD8_State_Unk_ov000_022f0e38(UnkStruct_022f0e90 *p);
 
 void func_ov000_022f0e90(UnkStruct_022f0e90 *p) {
     gDisplayMain.unk20.raw = 0;
     gDisplayMain.unk20.bits.a = 1;
     gDisplayMain.unk20.bits.b = 2;
     gDisplayMain.unk24.c = 0;
-    NNS_SndPlayerStopSeq(data_02250464, 0x3c);
+    NNS_SndPlayerStopSeq(gBGMSoundHandle, 0x3c);
     p->unk454 = 0;
-    p->unk68 = func_ov000_022f0e38;
+    p->unk68 = BossFPartD8_State_Unk_ov000_022f0e38;
 }

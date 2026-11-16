@@ -26,7 +26,7 @@ typedef struct {
 
 extern UnkStruct_Tbl data_ov000_02364400[];
 
-void func_ov000_02355874(UnkStruct_Player *p, s16 a, s16 b);
+void Player_Action_PedestalLaunch(UnkStruct_Player *p, s16 a, s16 b);
 void Player_SetSourceMapObject(UnkStruct_Player *p, UnkStruct_StageObj *s);
 void func_ov000_023497a4(UnkStruct_Player *p);
 
@@ -50,11 +50,11 @@ void func_ov000_0230eae0(UnkStruct_StageObj *s, UnkStruct_Player *p) {
             px = p->base.unk10;
             k = ((UnkStruct_Param *)s->unk1E0)->unk4 & 3;
             if ((x + 0x1c00 < px && !f) || (x - 0x1c00 > px && f)) {
-                func_ov000_02355874(p, p->base.unk34 + data_ov000_02364400[k].a, data_ov000_02364400[k].b - p->unk370);
+                Player_Action_PedestalLaunch(p, p->base.unk34 + data_ov000_02364400[k].a, data_ov000_02364400[k].b - p->unk370);
                 Player_SetSourceMapObject(p, s);
             } else if ((x - 0x400 < px && !f) || (x + 0x400 > px && f)) {
                 if (p->unk422 & 3) {
-                    func_ov000_02355874(p, p->base.unk34 + data_ov000_02364400[k].c, data_ov000_02364400[k].d - p->unk370);
+                    Player_Action_PedestalLaunch(p, p->base.unk34 + data_ov000_02364400[k].c, data_ov000_02364400[k].d - p->unk370);
                     Player_SetSourceMapObject(p, s);
                     func_ov000_023497a4(p);
                 }

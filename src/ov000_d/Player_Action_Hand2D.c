@@ -39,7 +39,7 @@ typedef struct UnkStruct_02352b14 {
 
 void Player_State_Hand2D(void);
 void Player_ResetGimmickState(UnkStruct_02352b14 *w);
-void func_ov000_0234a064(UnkStruct_02352b14 *w, u8 a);
+void Player_Action_LandOnGround(UnkStruct_02352b14 *w, u8 a);
 void Player_SetAnimation(UnkStruct_02352b14 *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
@@ -51,7 +51,7 @@ void Player_Action_Hand2D(UnkStruct_02352b14 *w, UnkStruct_02352b14 *o, s32 x, s
         w->unk2E = w->unk34;
     }
     Player_ResetGimmickState(w);
-    func_ov000_0234a064(w, 0);
+    Player_Action_LandOnGround(w, 0);
     w->unk3E8 = o;
     Player_SetAnimation(w, 0x2a);
     w->unk5C |= 4;

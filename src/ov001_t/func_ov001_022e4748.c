@@ -13,13 +13,13 @@ typedef struct {
     s32 type;
 } UnkStruct_022e4494;
 
-void func_02040ef0(void *p, s32 a, s32 b);
-void func_02040ec0(void *p, u32 value);
-void func_02040d14(void *p);
+void KeyframeAnim_Init(void *p, s32 a, s32 b);
+void KeyframeAnim_SetAnim(void *p, u32 value);
+void KeyframeAnim_Update(void *p);
 
 #define SET_ENTRY(e, anim, n)            \
-    func_02040ec0(&buf, anim);           \
-    func_02040d14(&buf);                 \
+    KeyframeAnim_SetAnim(&buf, anim);           \
+    KeyframeAnim_Update(&buf);                 \
     out[e].x = buf.x;                    \
     out[e].y = buf.y;                    \
     out[e].id = n;                       \
@@ -28,7 +28,7 @@ void func_02040d14(void *p);
 #pragma thumb on
 void func_ov001_022e4748(UnkStruct_022e4494 *out, s32 a) {
     UnkStruct_02040d14 buf;
-    func_02040ef0(&buf, a, 0);
+    KeyframeAnim_Init(&buf, a, 0);
     SET_ENTRY(1, 0, 2)
     SET_ENTRY(2, 1, 3)
     SET_ENTRY(3, 2, 4)

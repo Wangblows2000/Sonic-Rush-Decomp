@@ -8,13 +8,13 @@ typedef struct UnkStruct_022e9798 {
     u16 unk466;
 } UnkStruct_022e9798;
 
-extern s32 data_ov000_02369ac0[];
+extern s32 gBossStatus[];
 
-void func_ov000_022e9500(void);
+void Boss7PartD5_MoveState_Unk_ov000_022e9500(void);
 
 void func_ov000_022e9798(UnkStruct_022e9798 *s) {
     s->unk464 = 6;
     s->unk466 = 1;
-    data_ov000_02369ac0[1] = 0x25;
-    s->func = func_ov000_022e9500;
+    gBossStatus[1] = 0x25;
+    s->func = Boss7PartD5_MoveState_Unk_ov000_022e9500;
 }

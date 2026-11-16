@@ -27,7 +27,7 @@ typedef struct {
 } UnkState2_0205a3f0;
 
 extern UnkSave_0205a3f0 data_022c468c;
-extern UnkState_0205a3f0 data_022c4560;
+extern UnkState_0205a3f0 gGameState;
 extern UnkState2_0205a3f0 data_022c4590;
 
 u32 func_0204e6e8(u8 zone);
@@ -36,13 +36,13 @@ void func_0205a4ec(void (*f)(void));
 
 void func_0205a3f0(void) {
     UnkSave_0205a3f0 *s = &data_022c468c;
-    u32 z = func_0204e6e8(data_022c4560.zone);
-    u8 a = func_0204e6e4(data_022c4560.act);
+    u32 z = func_0204e6e8(gGameState.zone);
+    u8 a = func_0204e6e4(gGameState.act);
 
-    if (data_022c4560.unk0 != 1) {
+    if (gGameState.unk0 != 1) {
         s->b2 = data_022c4590.b14;
-        s->b3 = data_022c4560.unk28 & 0x7f;
-        if (data_022c4560.zone < 7) {
+        s->b3 = gGameState.unk28 & 0x7f;
+        if (gGameState.zone < 7) {
             u32 *row = s->arr4[z];
             u32 v = row[a];
             u32 t = data_022c4590.score;
@@ -55,7 +55,7 @@ void func_0205a3f0(void) {
         }
     } else {
         s->b5a = data_022c4590.b14;
-        if (data_022c4560.zone < 7) {
+        if (gGameState.zone < 7) {
             u32 *row = s->arr5c[z];
             u32 v = row[a];
             u32 t = data_022c4590.score;

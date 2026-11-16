@@ -21,21 +21,21 @@ typedef struct UnkStruct_02308e90_t {
     s32 unk148;
 } UnkStruct_02308e90_t;
 
-extern UnkStruct_02308e90 *data_ov001_0231f5bc;
+extern UnkStruct_02308e90 *gSpecialStageHud;
 extern s16 gDisplaySub[];
-extern u8 data_02250464[];
+extern u8 gBGMSoundHandle[];
 
 void func_ov001_023085f4(s32 t);
 void func_ov001_02308630(void);
 s32 func_ov001_02314368(void);
-UnkStruct_02308e90_t *func_ov001_0230c0a4(void);
+UnkStruct_02308e90_t *SpecialStage_GetPlayer(void);
 void AnimatorSprite_SetAnimation(UnkStruct_02308e90_o *s, u16 index);
 void func_ov001_02312e04(void *p);
 void NNS_SndPlayerStopSeq(void *p, s32 v);
 void func_ov001_0230808c(void);
 
 void func_ov001_02308e90(void) {
-    UnkStruct_02308e90 *g = data_ov001_0231f5bc;
+    UnkStruct_02308e90 *g = gSpecialStageHud;
     s16 b;
 
     g->timer++;
@@ -51,9 +51,9 @@ void func_ov001_02308e90(void) {
     case 1:
         g->objB.x = 0x80;
         g->objB.y = 0x2a;
-        if (func_ov001_02314368() <= func_ov001_0230c0a4()->unk148) {
+        if (func_ov001_02314368() <= SpecialStage_GetPlayer()->unk148) {
             AnimatorSprite_SetAnimation(&g->objB, 3);
-            func_ov001_02312e04(func_ov001_0230c0a4());
+            func_ov001_02312e04(SpecialStage_GetPlayer());
             return;
         }
         AnimatorSprite_SetAnimation(&g->objB, 10);
@@ -61,7 +61,7 @@ void func_ov001_02308e90(void) {
         g->unkBD0 = 0;
         return;
     case 0x1cc:
-        NNS_SndPlayerStopSeq(data_02250464, 0x3c);
+        NNS_SndPlayerStopSeq(gBGMSoundHandle, 0x3c);
         return;
     case 0x208:
         g->timer = -1;

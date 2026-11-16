@@ -5,7 +5,7 @@ extern u8 data_022c1970[];
 void WH_PortReceiveCallback();
 s32 func_020114f0();
 s32 WH_ChangeSysState();
-extern u8 data_022c197c[];
+extern u8 sTraceFunc[];
 extern u8 data_02078708[];
 
 void WH_SetReceiver(s32 p0) {
@@ -15,7 +15,7 @@ void WH_SetReceiver(s32 p0) {
         return;
     }
     WH_ChangeSysState(9);
-    s32 t1 = *(u32 *)data_022c197c;
+    s32 t1 = *(u32 *)sTraceFunc;
     if (t1 == 0) {
         return;
     }

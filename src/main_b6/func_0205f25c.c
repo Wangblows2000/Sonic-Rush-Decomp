@@ -127,12 +127,12 @@ extern void *gActComArchive;
 extern char data_0207c614[];
 extern u8 gGameLanguage;
 extern u16 data_02076b74[];
-extern UnkG_0205f25c data_ov000_02369ac0;
+extern UnkG_0205f25c gBossStatus;
 extern UnkObj_0205f25c *gPlayers[];
-extern UnkState_0205f25c data_022c4560;
+extern UnkState_0205f25c gGameState;
 extern UnkState2_0205f25c data_022c4590;
 extern UnkCam_0205f25c data_ov000_0236a448;
-extern UnkGfx_0205f25c data_ov000_0236aad8;
+extern UnkGfx_0205f25c gCamera;
 
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
@@ -174,7 +174,7 @@ void func_0205f25c(void) {
     BOOL b2;
     u32 f[0x18];
 
-    data_ov000_02369ac0.flags &= ~1;
+    gBossStatus.flags &= ~1;
     w = ((UnkTask_0205f25c *)Task_Create(func_0205ec5c, func_0205eb68, 0, 0x3efe, 3, 0x8d0))->work;
     data_022c4d98 = w;
     {
@@ -200,7 +200,7 @@ void func_0205f25c(void) {
     w->objY = w->obj->y;
     w->fn8 = w->obj->fn70;
     w->obj->flags5c &= ~0x40;
-    if (data_022c4560.unk10 == 1) {
+    if (gGameState.unk10 == 1) {
         w->obj2 = gPlayers[1];
         w->fn18 = w->obj2->fn70;
         w->obj2->flags5c &= ~0x40;
@@ -211,22 +211,22 @@ void func_0205f25c(void) {
     w->unk1e8 = 0;
     w->unk258 = 0x10000;
     w->unk25c = 0xf;
-    w->unk47c = data_022c4560.unk0 == 1;
+    w->unk47c = gGameState.unk0 == 1;
     w->obj->flags32c |= 0x200000;
     w->obj->flags32c |= 0x400000;
 
     b = FALSE;
-    if (data_022c4560.zone < 9 && data_022c4560.act < 2)
+    if (gGameState.zone < 9 && gGameState.act < 2)
         b = TRUE;
     if (b) {
-        u8 zone = data_022c4560.zone;
-        if (zone == 0 || zone == 1 || (zone == 3 && data_022c4560.act == 0) || (zone == 4 && data_022c4560.act == 0)
-            || (zone == 5 && data_022c4560.act == 1) || zone == 6) {
-            if ((data_022c4560.flags & 2) == 0) {
+        u8 zone = gGameState.zone;
+        if (zone == 0 || zone == 1 || (zone == 3 && gGameState.act == 0) || (zone == 4 && gGameState.act == 0)
+            || (zone == 5 && gGameState.act == 1) || zone == 6) {
+            if ((gGameState.flags & 2) == 0) {
                 w->obj->p218->p8->flags8 |= 1;
                 w->fn478 = func_0205b478;
             }
-        } else if ((data_022c4560.flags & 2) == 0 || data_022c4590.b15 == 0) {
+        } else if ((gGameState.flags & 2) == 0 || data_022c4590.b15 == 0) {
             w->obj->p218->p8->flags8 |= 1;
             w->flags |= 0x800000;
             w->fn478 = func_0205b3b8;
@@ -242,15 +242,15 @@ void func_0205f25c(void) {
     w->v4cc = 0;
     w->v4d0 = 0x1000;
     w->v4d4 = 0;
-    data_ov000_0236aad8.unk0 &= ~3;
-    data_ov000_0236aad8.unk64 &= ~3;
-    if (data_022c4560.zone == 1)
-        data_ov000_0236aad8.unkc8 |= 0x2000000;
-    data_ov000_0236aad8.unkc8 |= 0x800;
-    data_022c4560.flags &= ~1;
-    data_ov000_0236aad8.unk34 |= 1;
-    data_ov000_0236aad8.unk98 |= 1;
-    if (data_022c4560.zone >= 9 || data_022c4560.act >= 2) {
+    gCamera.unk0 &= ~3;
+    gCamera.unk64 &= ~3;
+    if (gGameState.zone == 1)
+        gCamera.unkc8 |= 0x2000000;
+    gCamera.unkc8 |= 0x800;
+    gGameState.flags &= ~1;
+    gCamera.unk34 |= 1;
+    gCamera.unk98 |= 1;
+    if (gGameState.zone >= 9 || gGameState.act >= 2) {
         REG_DISPCNT = (REG_DISPCNT & ~0x1f00) | 0x1500;
         REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | 0x1c00;
     } else {
@@ -275,18 +275,18 @@ void func_0205f25c(void) {
     }
     w->res[1] = func_02021264(f, data_02076b74[v]);
     b2 = FALSE;
-    if (data_022c4560.zone < 9 && data_022c4560.act < 2)
+    if (gGameState.zone < 9 && gGameState.act < 2)
         b2 = TRUE;
     if (!b2) {
-        w->res[2] = func_02021264(f, data_022c4560.zone + 0x10);
+        w->res[2] = func_02021264(f, gGameState.zone + 0x10);
         w->res[3] = func_02021264(f, 0xf);
     } else {
-        w->res[2] = func_02021264(f, data_022c4560.zone + 6);
+        w->res[2] = func_02021264(f, gGameState.zone + 6);
         w->res[3] = func_02021264(f, 5);
     }
     func_020212e0(f);
     func_0205e378(w);
-    if (data_022c4560.zone >= 9 || data_022c4560.act >= 2)
+    if (gGameState.zone >= 9 || gGameState.act >= 2)
         func_0205df04(w);
     else
         func_0205e09c(w);

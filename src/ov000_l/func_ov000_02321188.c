@@ -11,7 +11,7 @@ typedef struct {
     s32 unk190;
 } UnkWork_02321188;
 
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 
 s16 ObjSpd_DownSet(s32 v, s32 d);
 void func_ov000_023218d0(UnkWork_02321188 *w);
@@ -26,7 +26,7 @@ void func_ov000_02321188(UnkWork_02321188 *w) {
         w->base.unk30 = ObjSpd_DownSet(w->base.unk30, 0x20);
         w->unk190 = 0;
     }
-    v = (data_ov000_0236aad8.unk62 + 8) << 8;
+    v = (gCamera.unk62 + 8) << 8;
     if (w->base.unk14 < v)
         w->base.unk14 = v;
     v = w->base.unk2E;

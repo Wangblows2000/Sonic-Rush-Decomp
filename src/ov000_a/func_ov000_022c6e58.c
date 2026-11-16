@@ -26,7 +26,7 @@ struct UnkStruct_022c6e58 {
     s16 unk2CE;
 };
 
-extern UnkStruct_022c6e58_2 *data_ov000_02369acc;
+extern UnkStruct_022c6e58_2 *gBoss1;
 
 extern u32 gRandSeed;
 extern s16 data_0206e470[];

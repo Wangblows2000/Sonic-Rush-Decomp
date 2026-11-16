@@ -42,11 +42,11 @@ typedef struct {
 } UnkStruct_022f0814;
 
 extern UnkStruct_0208922c gDisplayMain;
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_Mgr *data_ov000_02369b84;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_Mgr *gBossF;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022f07c8(void);
+void BossFPartD8_State_Unk_ov000_022f07c8(void);
 
 void func_ov000_022f0814(UnkStruct_022f0814 *w) {
     w->base.unk32 = 0;
@@ -58,7 +58,7 @@ void func_ov000_022f0814(UnkStruct_022f0814 *w) {
     gDisplayMain.unk20.bits.b0 = 1;
     gDisplayMain.unk20.bits.b6 = 2;
     gDisplayMain.unk24.b0 = 8;
-    data_ov000_02369b84->unk20C |= 2;
+    gBossF->unk20C |= 2;
     w->unk454 = 0;
-    w->base.unk68 = func_ov000_022f07c8;
+    w->base.unk68 = BossFPartD8_State_Unk_ov000_022f07c8;
 }

@@ -55,12 +55,12 @@ typedef struct UnkStruct_022d6f20_b {
     u16 unk222;
 } UnkStruct_022d6f20_b;
 
-extern UnkStruct_022d6f20_b *data_ov000_02369b14;
+extern UnkStruct_022d6f20_b *gBoss3;
 extern u32 gRandSeed;
 extern u8 data_ov000_02363080[];
 extern u16 data_ov000_023630c4[];
 
-void func_ov000_022d6ed4(UnkStruct_022d6f20 *s);
+void Boss3PartCC_State_Unk_ov000_022d6ed4(UnkStruct_022d6f20 *s);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -71,7 +71,7 @@ void func_ov000_022d6f20(UnkStruct_022d6f20 *s) {
     Model_SetAnimation(&s->unk2C4, 0, s->unk434, 1, 0);
     s->unk2C4.unk10C |= 4;
     s->unk2C4.unk114 = 0x1000;
-    s->unk25A = data_ov000_02363080[data_ov000_02369b14->unk222] + (data_ov000_023630c4[data_ov000_02369b14->unk222] & Rand());
-    s->func = func_ov000_022d6ed4;
+    s->unk25A = data_ov000_02363080[gBoss3->unk222] + (data_ov000_023630c4[gBoss3->unk222] & Rand());
+    s->func = Boss3PartCC_State_Unk_ov000_022d6ed4;
     s->func(s);
 }

@@ -11,8 +11,8 @@ typedef struct {
     u8 pad8[0x64 - 8];
 } UnkStruct_Plr;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_Plr data_ov000_0236aad8[];
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_Plr gCamera[];
 extern s32 data_ov000_0236a060;
 
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
@@ -32,17 +32,17 @@ void func_ov000_0230f614(UnkStruct_StageObj *w) {
     w->unk42 >>= 3;
     w->unk42 += w->unk1E0->unk7 << 6;
     x = w->unk10;
-    if ((x < data_ov000_0236aad8[0].unk4 - 0x1000 || x > data_ov000_0236aad8[0].unk4 - 0x11000) &&
-        (x < data_ov000_0236aad8[1].unk4 - 0x1000 || x > data_ov000_0236aad8[1].unk4 - 0x11000)) {
+    if ((x < gCamera[0].unk4 - 0x1000 || x > gCamera[0].unk4 - 0x11000) &&
+        (x < gCamera[1].unk4 - 0x1000 || x > gCamera[1].unk4 - 0x11000)) {
         sum = 0;
         v = 0;
-        d = data_022c4560.unk20 - w->unkC;
+        d = gGameState.unk20 - w->unkC;
         if (d > 0) {
             per = (w->unk1E0->unk8 + 1) << 6;
             w->unkC += per * ((u32)d / per);
         }
         p = w->unk1E0;
-        n = (u32)(data_022c4560.unk20 - w->unkC) % ((p->unk8 + 1) << 6);
+        n = (u32)(gGameState.unk20 - w->unkC) % ((p->unk8 + 1) << 6);
         for (i = 0; i < n; i++) {
             v += w->unk40;
             if (v > w->unk42)

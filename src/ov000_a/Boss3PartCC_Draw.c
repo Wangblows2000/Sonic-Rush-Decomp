@@ -88,7 +88,7 @@ typedef struct UnkTask_022d8fec {
 } UnkTask_022d8fec;
 
 extern UnkTask_022d8fec *gTaskCurrent;
-extern UnkStruct_022d8fec_b *data_ov000_02369b14;
+extern UnkStruct_022d8fec_b *gBoss3;
 extern s16 data_0206e470[];
 
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
@@ -105,7 +105,7 @@ void Boss3PartCC_Draw(void) {
     s32 k;
     s32 k2;
     UnkStruct_022d8fec_v saved;
-    if (!(data_ov000_02369b14->unk20C & 2)) {
+    if (!(gBoss3->unk20C & 2)) {
         if (s->unk10 < 0x4000)
             s->unk10 += 0x5fe43;
         else if (s->unk10 > 0x63e43)

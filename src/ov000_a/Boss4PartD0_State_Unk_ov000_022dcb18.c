@@ -37,7 +37,7 @@ typedef struct UnkStruct_022dcb18_7 {
 } UnkStruct_022dcb18_7;
 
 extern UnkTask_022dcb18 *gTaskCurrent;
-extern UnkStruct_022dcb18_7 data_ov000_02369ac0;
+extern UnkStruct_022dcb18_7 gBossStatus;
 
 void func_ov000_022db6c8(s32 *p);
 void func_ov000_022db7d4(void *a, u16 *ang, UnkStruct_022dcb18 *s);
@@ -45,7 +45,7 @@ void func_ov000_022db7d4(void *a, u16 *ang, UnkStruct_022dcb18 *s);
 void Boss4PartD0_State_Unk_ov000_022dcb18(void) {
     UnkStruct_022dcb18 *s = gTaskCurrent->unk10;
     u16 ang;
-    if (data_ov000_02369ac0.unk4 == 0x1a) {
+    if (gBossStatus.unk4 == 0x1a) {
         s->unk54 |= 8;
         s->unk54 |= 2;
         return;

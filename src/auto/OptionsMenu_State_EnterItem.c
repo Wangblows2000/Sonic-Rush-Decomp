@@ -24,9 +24,9 @@ int func_ov001_022cc17c();
 int func_ov001_022cbf30();
 int func_ov001_022cde84();
 int func_ov001_022cde60();
-int func_ov001_022cde3c();
+int OptionsMenu_Action_TimeLimit();
 int OptionsMenu_Action_SoundTest();
-int func_ov001_022cddc4();
+int OptionsMenu_Action_EraseData();
 int func_ov001_022cdda0();
 
 #pragma thumb on
@@ -51,13 +51,13 @@ void OptionsMenu_State_EnterItem(void)
       func_ov001_022cde60();
       return;
     case 2:
-      func_ov001_022cde3c();
+      OptionsMenu_Action_TimeLimit();
       return;
     case 3:
       OptionsMenu_Action_SoundTest();
       return;
     case 4:
-      func_ov001_022cddc4();
+      OptionsMenu_Action_EraseData();
       return;
     case 5:
       func_ov001_022cdda0();

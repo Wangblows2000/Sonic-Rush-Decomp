@@ -6,8 +6,8 @@
 extern u8 gTaskCurrent[];
 s32 func_ov001_022cc17c();
 s32 func_ov001_022cbf30();
-s32 func_02050018();
-s32 func_0205000c();
+s32 MsgBox_IsClosed();
+s32 MsgBox_GetResult();
 void func_ov001_022cc7fc();
 extern u8 gSaveDataBusy[];
 extern u8 gSystemFlags[];
@@ -28,9 +28,9 @@ void func_ov001_022cc8ec(void) {
     *(u32 *)((u8 *)t0 + 0x14) = (*(u32 *)((u8 *)t0 + 0x14) + 0x1);
     s32 t3 = (*(u32 *)((u8 *)t0 + 0x18) + 0x1);
     *(u32 *)((u8 *)t0 + 0x18) = t3;
-    s32 t4 = func_02050018(t3, t2);
+    s32 t4 = MsgBox_IsClosed(t3, t2);
     if (t4 != 0) {
-        s32 t5 = func_0205000c();
+        s32 t5 = MsgBox_GetResult();
         if (t5 == 0) {
             *(u32 *)t1 = 0;
             *(u32 *)((u8 *)t0 + 0x14) = 0;

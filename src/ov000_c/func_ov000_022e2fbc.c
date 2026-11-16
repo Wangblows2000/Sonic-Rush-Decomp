@@ -32,7 +32,7 @@ extern UnkStruct_StageObj *gPlayers;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022dffbc(UnkStruct_Boss *w, s32 a);
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void func_ov000_022e2d0c(void);
 
 void func_ov000_022e2fbc(UnkStruct_Boss *w) {
@@ -67,7 +67,7 @@ void func_ov000_022e2fbc(UnkStruct_Boss *w) {
         w->unkE1A &= ~0x1000;
         w->unkEF6 &= ~4;
         w->unkEF6 |= 0x1000;
-        func_020366f4(0, 0, 0xd0);
+        Sound_PlayVoice(0, 0, 0xd0);
     }
     if (w->unk1120 != 0) {
         d = gPlayers->unk10 - w->base.unk10;

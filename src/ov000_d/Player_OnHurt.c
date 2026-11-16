@@ -53,19 +53,19 @@ typedef struct {
     u8 unk1D;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
-void func_ov000_0234307c(UnkStruct_023492f0_Player *w, s32 a);
-void func_ov000_02336050(u32 a, s32 b);
+void Player_AddTension(UnkStruct_023492f0_Player *w, s32 a);
+void Hud_SetTensionGauge(u32 a, s32 b);
 void RingManager_ScatterRings(UnkStruct_023492f0_Player *w);
 void Player_Action_Die(UnkStruct_023492f0_Player *w);
-void func_ov000_0234cb70(UnkStruct_023492f0_Player *w);
+void Player_InitState(UnkStruct_023492f0_Player *w);
 void Player_SetAnimation(UnkStruct_023492f0_Player *w, s32 a);
 void ScreenShake_Start(s32 a);
-void func_ov000_02349294(void);
+void Player_State_Hurt(void);
 
 #define ABS_023492f0(x) ((x) < 0 ? -(x) : (x))
 
@@ -84,13 +84,13 @@ void Player_OnHurt(UnkStruct_023492f0 *o, UnkStruct_023492f0_Arg *arg) {
     if (arg->unk20 & 0x40) {
         Sound_PlaySeqArcEx(w->unk384, 0, 0x43);
     }
-    if (data_022c4560.unk1C >= 9 || data_022c4560.unk1D >= 2) {
+    if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
         func_020537b4(0xc);
         func_020533e0(0x11, 0x96);
     }
     if (!(w->unk32C & 0x10000000)) {
-        func_ov000_0234307c(w, -0x4b0);
-        func_ov000_02336050((u32)(w->unk350 << 12) >> 16, 1);
+        Player_AddTension(w, -0x4b0);
+        Hud_SetTensionGauge((u32)(w->unk350 << 12) >> 16, 1);
     }
     if (arg->unk20 & 0x20) {
         if (w->unk3AE != 0) {
@@ -105,7 +105,7 @@ void Player_OnHurt(UnkStruct_023492f0 *o, UnkStruct_023492f0_Arg *arg) {
         return;
     }
     old = w->unk330;
-    func_ov000_0234cb70(w);
+    Player_InitState(w);
     w->unk330 |= old & 0x40000;
     if (ABS_023492f0(v) >= w->unk37C) {
         Player_SetAnimation(w, 0x10);
@@ -139,7 +139,7 @@ void Player_OnHurt(UnkStruct_023492f0 *o, UnkStruct_023492f0_Arg *arg) {
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;
     w->unk58 &= ~1;
-    w->unk68 = func_ov000_02349294;
+    w->unk68 = Player_State_Hurt;
     if (w->unk324 != 1) {
         Sound_PlaySeqArcEx(w->unk384, 0, 0x21);
     } else {

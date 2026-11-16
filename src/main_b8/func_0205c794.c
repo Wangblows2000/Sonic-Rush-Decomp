@@ -52,7 +52,7 @@ typedef struct {
     u16 angle;
 } UnkView_0205c794;
 
-extern UnkState_0205c794 data_022c4560;
+extern UnkState_0205c794 gGameState;
 extern s8 data_022c4eec[2];
 extern UnkView_0205c794 data_ov000_0236a444;
 extern s16 data_0206e470[];
@@ -95,7 +95,7 @@ void func_0205c794(UnkWork_0205c794 *w, UnkTask_0205c794 *t) {
     }
     obj = t->obj;
     sub = &obj->sub;
-    if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
+    if (gGameState.zone != 8 || gGameState.act != 2) {
         func_ov000_0233b2e0(func_ov000_0233b654(), obj->x, obj->y, &sx, &sy);
         x = (t->obj->dx + (sx + data_022c4eec[0])) << 12;
         y = -((sy + data_022c4eec[1]) - t->obj->dy) << 12;
@@ -117,7 +117,7 @@ void func_0205c794(UnkWork_0205c794 *w, UnkTask_0205c794 *t) {
     s = (s16)FX_MUL(t->t, 0x1333);
     if (s > 0x1000)
         s = 0x1000;
-    if (data_022c4560.zone != 8 || data_022c4560.act != 2) {
+    if (gGameState.zone != 8 || gGameState.act != 2) {
         a = (data_ov000_0236a444.angle & 0xffff) >> 4;
         h = func_0200225c(COS_IDX(a), SIN_IDX(a)) * 0x60;
     } else {

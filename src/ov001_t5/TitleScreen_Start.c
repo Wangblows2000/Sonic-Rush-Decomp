@@ -12,7 +12,7 @@ extern u32 gSystemFlags;
 
 s32 TitleScreen_Create(void);
 void TitleScreen_LoadSound(void);
-void func_ov001_022d44f4(s32 a);
+void TitleScreen_PlayMusic(s32 a);
 
 #pragma thumb on
 void TitleScreen_Start(void) {
@@ -24,7 +24,7 @@ void TitleScreen_Start(void) {
     }
     r = TitleScreen_Create();
     TitleScreen_LoadSound();
-    func_ov001_022d44f4(r);
+    TitleScreen_PlayMusic(r);
     gSaveDataBusy = 0;
     gSystemFlags &= ~0x10;
 }

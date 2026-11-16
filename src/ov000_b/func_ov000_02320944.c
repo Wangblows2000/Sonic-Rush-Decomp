@@ -11,7 +11,7 @@ typedef struct {
 } UnkStruct_022c4560;
 
 extern void *data_ov000_02369ba0;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_Res *data_ov000_0236a6f0[];
 extern UnkStruct_0236a790 data_ov000_0236a790[];
 extern u8 data_ov000_02367324[], data_ov000_0236a718[];
@@ -24,7 +24,7 @@ UnkStruct_EffObj *func_ov000_02320944(u32 a) {
     vu16 zero;
     u32 i;
 
-    if (data_022c4560.unk18 & 0x20)
+    if (gGameState.unk18 & 0x20)
         return NULL;
     task = Task_Create(StageObj_Main, StageObj_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))

@@ -7,8 +7,8 @@ extern u8 data_ov001_0231be10[];
 s32 func_02051838();
 s32 func_ov001_022dd774();
 s32 func_ov001_022dd770();
-s32 func_ov001_022dd728();
-s32 func_ov001_022dd6b4();
+s32 VsMenu_ReleaseSprites();
+s32 VsMenu_ReleaseAssets();
 extern u8 gVsMenuTask[];
 
 void VsMenu_Destructor(u8 *p0) {
@@ -19,8 +19,8 @@ void VsMenu_Destructor(u8 *p0) {
     }
     func_ov001_022dd774(t0);
     func_ov001_022dd770(t0);
-    func_ov001_022dd728(t0);
-    func_ov001_022dd6b4(t0);
+    VsMenu_ReleaseSprites(t0);
+    VsMenu_ReleaseAssets(t0);
     *(u32 *)gVsMenuTask = 0;
 }
 

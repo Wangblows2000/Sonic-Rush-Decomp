@@ -37,8 +37,8 @@ typedef struct {
 extern UnkTask_022d83fc *gTaskCurrent;
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_02040d14(UnkAnim_022d83fc *a);
-BOOL func_02040cf4(UnkAnim_022d83fc *a);
+void KeyframeAnim_Update(UnkAnim_022d83fc *a);
+BOOL KeyframeAnim_IsFinished(UnkAnim_022d83fc *a);
 void func_ov001_022d77a8(UnkList_022d83fc *l, UnkStruct_022d83fc *p);
 void Task_Destroy(UnkTask_022d83fc *t);
 
@@ -59,8 +59,8 @@ void func_ov001_022d83fc(void) {
     MIi_CpuClear16(zero, &l, sizeof(l));
     n = 0;
     for (i = 0; i < 6; i++) {
-        func_02040d14(&w->anims[i]);
-        r = func_02040cf4(&w->anims[i]);
+        KeyframeAnim_Update(&w->anims[i]);
+        r = KeyframeAnim_IsFinished(&w->anims[i]);
         x = w->anims[i].x;
         if (x > -0x100 && x < 0x100 && n < 3) {
             l.pos[n].x = x;

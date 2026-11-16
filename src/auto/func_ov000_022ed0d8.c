@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 void func_ov000_022ec6b8();
-extern u8 data_ov000_02369ac0[];
+extern u8 gBossStatus[];
 void Boss7_State_Unk_ov000_022ecfcc();
 
 void func_ov000_022ed0d8(u8 *p0) {
@@ -15,6 +15,6 @@ void func_ov000_022ed0d8(u8 *p0) {
     }
     *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x218) + 0x54) = (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x218) + 0x54) | 8);
     *(u32 *)((u8 *)p0 + 0x218) = 0;
-    *(u16 *)((u8 *)data_ov000_02369ac0 + 0x8) = 0;
+    *(u16 *)((u8 *)gBossStatus + 0x8) = 0;
     *(u32 *)((u8 *)p0 + 0x68) = (u32)Boss7_State_Unk_ov000_022ecfcc;
 }

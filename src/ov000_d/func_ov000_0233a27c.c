@@ -36,7 +36,7 @@ typedef struct {
 
 extern void *gMainHeap;
 extern UnkStruct_0236aabc data_ov000_0236aabc;
-extern UnkStruct_0236aad8 data_ov000_0236aad8;
+extern UnkStruct_0236aad8 gCamera;
 extern UnkStruct_0236ab3c data_ov000_0236ab3c;
 extern UnkStruct_0236abd8 data_ov000_0236abd8;
 
@@ -61,7 +61,7 @@ static inline void *UnkAlloc_0233a27c(u32 size, s32 align) {
 }
 
 void func_ov000_0233a27c(void) {
-    UnkStruct_0236aad8 *a = &data_ov000_0236aad8;
+    UnkStruct_0236aad8 *a = &gCamera;
     UnkStruct_0236ab3c *c;
 
     a->unk124.unk0 = data_ov000_0236aabc.unk0;

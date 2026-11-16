@@ -24,7 +24,7 @@ typedef struct {
     u32 unk148;
 } UnkStruct_0232b740;
 
-void func_ov000_02336f28(void *p, u32 v, s32 a);
+void Hud_ToDecimalDigits(void *p, u32 v, s32 a);
 
 void func_ov000_0232b740(UnkStruct_0232b740 *w) {
     BOOL done = TRUE;
@@ -39,7 +39,7 @@ void func_ov000_0232b740(UnkStruct_0232b740 *w) {
             w->unk144 = w->unk148;
         }
         w->unk144 = w->unk144 + ((w->unk148 - w->unk144) >> 2);
-        func_ov000_02336f28(w->unk140, w->unk144, 100000);
+        Hud_ToDecimalDigits(w->unk140, w->unk144, 100000);
     }
     for (i = 0; i < 5; i++) {
         if (w->unk134[i] != 0) {

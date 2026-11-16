@@ -29,7 +29,7 @@ typedef struct {
     u32 unk224;
 } UnkStruct_02307e9c;
 
-extern UnkStruct_Plr data_ov000_0236aad8[];
+extern UnkStruct_Plr gCamera[];
 extern UnkStruct_StageObj *gPlayers[];
 
 void *func_ov000_02307e84(void);
@@ -58,12 +58,12 @@ void MapObj8F_State_Unk_ov000_02307e9c(UnkStruct_02307e9c *s) {
         return;
     }
     s->base.unkC++;
-    P = data_ov000_0236aad8;
+    P = gCamera;
     if (P[2].unk0 & 1) {
         q = gPlayers[P[0].unk3A];
         y = q->unk14;
         v = func_ov000_0233b078(q->unk10);
-        f = data_ov000_0236aad8[2].unk0;
+        f = gCamera[2].unk0;
         if (!(f & 2) && y >= v) {
             P[0].unk8 -= 0x1000;
             func_ov000_0233b374();
@@ -72,7 +72,7 @@ void MapObj8F_State_Unk_ov000_02307e9c(UnkStruct_02307e9c *s) {
             func_ov000_0233b374();
         } else {
             P[0].unk0 &= ~0x200;
-            data_ov000_0236aad8[2].unk0 &= ~4;
+            gCamera[2].unk0 &= ~4;
         }
     } else {
         for (i = 0; i < 2; i++) {
@@ -87,22 +87,22 @@ void MapObj8F_State_Unk_ov000_02307e9c(UnkStruct_02307e9c *s) {
     }
     if (s->base.unkC < 20)
         return;
-    f = data_ov000_0236aad8[2].unk0;
+    f = gCamera[2].unk0;
     if (f & 1) {
-        if (!(data_ov000_0236aad8[0].unk0 & 0x800000))
+        if (!(gCamera[0].unk0 & 0x800000))
             return;
-        data_ov000_0236aad8[2].unk0 = f & ~0x100;
+        gCamera[2].unk0 = f & ~0x100;
         for (i = 0; i < 2; i++) {
-            data_ov000_0236aad8[i].unk0 &= ~0x500000;
-            data_ov000_0236aad8[i].unk0 &= ~0xa00000;
-            data_ov000_0236aad8[i].unk1C = 0xff;
-            data_ov000_0236aad8[i].unk1D = 0xff;
+            gCamera[i].unk0 &= ~0x500000;
+            gCamera[i].unk0 &= ~0xa00000;
+            gCamera[i].unk1C = 0xff;
+            gCamera[i].unk1D = 0xff;
         }
     } else {
         if (s->unk224 & 1)
-            data_ov000_0236aad8[0].unk0 &= ~0x2000;
+            gCamera[0].unk0 &= ~0x2000;
         if (s->unk224 & 2)
-            data_ov000_0236aad8[1].unk0 &= ~0x2000;
+            gCamera[1].unk0 &= ~0x2000;
     }
     s->base.unk1F4 |= 0x10;
     s->base.unk54 |= 4;

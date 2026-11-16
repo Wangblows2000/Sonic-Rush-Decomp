@@ -30,7 +30,7 @@ void NNS_SndStopSoundAll(void);
 void func_02020230(void *a, u16 id, s32 b);
 void Sound_PlaySeq(s32 a, u16 id);
 void Sound_PlaySeqArc(s32 a, u8 b, u16 id);
-void func_020366f4(s32 a, u8 b, u16 id);
+void Sound_PlayVoice(s32 a, u8 b, u16 id);
 void func_0201cf4c(s32 a, s32 b, s32 c, s32 d, s32 e, void (*fn)(void *), void *arg);
 void SoundTest_SamplingCallback(void *p);
 
@@ -57,7 +57,7 @@ void SoundTest_PlayTrack(UnkStruct_022c9314 *p) {
         p->unk4 = 0;
         break;
     case 2:
-        func_020366f4(0, e->unk2c, e->id);
+        Sound_PlayVoice(0, e->unk2c, e->id);
         p->unk4 = 0;
         break;
     }

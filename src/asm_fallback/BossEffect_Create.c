@@ -16,7 +16,7 @@ extern void strcat(void);
 extern void strcpy(void);
 extern void Model_SetAnimation(void);
 extern void Task_Create(void);
-extern void func_02038050(void);
+extern void Asset3D_CreateSetupTask(void);
 extern void StageObj_LoadModel(void);
 extern void StageObj_Main(void);
 extern void BossEffect_Destructor(void);
@@ -105,7 +105,7 @@ asm void BossEffect_Create(void)
     ands r0, r0, #1
     bne _148
     ldr r0, [r8, #0x2a8]
-    bl func_02038050
+    bl Asset3D_CreateSetupTask
 _148:
     mov r7, #0
     add r5, sp, #0x12

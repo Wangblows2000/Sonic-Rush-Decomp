@@ -16,7 +16,7 @@ typedef struct UnkStruct_0230efd4 {
     UnkStruct_0230efd4_v pos;
 } UnkStruct_0230efd4;
 
-UnkStruct_0230efd4_t *func_ov001_0230c0a4(void);
+UnkStruct_0230efd4_t *SpecialStage_GetPlayer(void);
 void VEC_Subtract(UnkStruct_0230efd4_v *a, UnkStruct_0230efd4_v *b, UnkStruct_0230efd4_v *out);
 s32 VEC_Mag(UnkStruct_0230efd4_v *v);
 s32 func_0200225c(s32 n, s32 d);
@@ -29,7 +29,7 @@ void func_ov001_0230efd4(UnkStruct_0230efd4 *p) {
     UnkStruct_0230efd4_v d;
     s32 len;
 
-    VEC_Subtract(&func_ov001_0230c0a4()->pos, &p->pos, &d);
+    VEC_Subtract(&SpecialStage_GetPlayer()->pos, &p->pos, &d);
     len = VEC_Mag(&d);
     if (len > 0x3000) {
         d.x = func_0200225c(d.x, len);

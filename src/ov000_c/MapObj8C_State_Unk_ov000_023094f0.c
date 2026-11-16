@@ -16,7 +16,7 @@ typedef struct {
     u8 unk214;
 } UnkStruct_023094f0;
 
-extern UnkStruct_Plr data_ov000_0236aad8[];
+extern UnkStruct_Plr gCamera[];
 
 BOOL func_ov000_02307dfc(UnkStruct_023094f0 *w, s32 a);
 void func_ov000_0234232c(s32 a);
@@ -28,14 +28,14 @@ void MapObj8C_State_Unk_ov000_023094f0(UnkStruct_023094f0 *w) {
     u32 f;
 
     if (func_ov000_02307dfc(w, 1)) {
-        if (data_ov000_0236aad8[2].unk0 & 1) {
-            data_ov000_0236aad8[0].unk34 &= ~0x10000;
-            data_ov000_0236aad8[1].unk34 &= ~0x10000;
+        if (gCamera[2].unk0 & 1) {
+            gCamera[0].unk34 &= ~0x10000;
+            gCamera[1].unk34 &= ~0x10000;
         } else {
             if (w->unk20C & 2)
-                data_ov000_0236aad8[0].unk34 &= ~0x10000;
+                gCamera[0].unk34 &= ~0x10000;
             if (w->unk20C & 4)
-                data_ov000_0236aad8[1].unk34 &= ~0x10000;
+                gCamera[1].unk34 &= ~0x10000;
         }
         func_ov000_0234232c(w->unk214);
         w->base.unk1F4 &= ~0x10;

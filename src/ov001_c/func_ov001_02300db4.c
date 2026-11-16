@@ -23,7 +23,7 @@ typedef struct UnkStruct_02300db4 {
     UnkStruct_02300db4_o *objs[0x2e];
 } UnkStruct_02300db4;
 
-extern UnkStruct_02300db4 *data_ov001_0231f530;
+extern UnkStruct_02300db4 *gExtraBossPlayerManager;
 
 BOOL func_ov001_02300be4(UnkStruct_02300db4_o *o);
 
@@ -34,7 +34,7 @@ void func_ov001_02300db4(void) {
     s32 s;
 
     for (i = 0; i < 0x2e; i++) {
-        o = data_ov001_0231f530->objs[i];
+        o = gExtraBossPlayerManager->objs[i];
         if (!func_ov001_02300be4(o))
             continue;
         if (o->flags & 0x80000)

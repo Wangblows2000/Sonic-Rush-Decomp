@@ -21,7 +21,7 @@ typedef struct { u8 unk0[0xFC]; u32 flag; } UnkGlb_020315e0;
 
 extern u8 data_02084df4[];
 extern UnkGlb_020315e0 NNS_G3dGlb;
-extern UnkFn_020315e0 data_02072d08[];
+extern UnkFn_020315e0 gModelMatrixOpTable[];
 
 void NNS_G3dGlbSetBaseScale(const fx32 *trans);
 void MI_Copy36B(const void *src, void *dst);
@@ -41,7 +41,7 @@ void Model_Draw(UnkObj_020315e0 *o) {
     a = 2;
     NNS_G3dGeBufferOP_N(0x10, &a, 1);
     for (i = 0; i < 8 && o->cb[i] != 0; i++) {
-        data_02072d08[o->cb[i]](o);
+        gModelMatrixOpTable[o->cb[i]](o);
     }
     if (o->flag & 1) return;
     switch (o->type) {

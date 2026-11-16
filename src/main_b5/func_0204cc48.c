@@ -12,7 +12,7 @@ typedef struct {
     u32 size1;
 } UnkStruct_022c4520;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4520 data_022c4520;
 extern void *data_ov000_0236aa8c;
 extern u8 data_0207a098;
@@ -45,7 +45,7 @@ void func_0204cc48(void) {
     u32 n;
     u32 f[0x18];
 
-    if (data_022c4560.flags & 0x40)
+    if (gGameState.flags & 0x40)
         return;
     s = &data_022c4520;
     func_02021310(f, &data_0207a098, data_ov000_0236aa8c);

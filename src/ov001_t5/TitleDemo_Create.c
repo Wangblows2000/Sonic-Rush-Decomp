@@ -18,7 +18,7 @@ typedef struct {
 
 UnkTask_022d6cf4 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_ov001_022d6378(void);
+void TitleDemo_State_Scene1(void);
 void TitleDemo_Destructor(void);
 
 #pragma thumb on
@@ -26,7 +26,7 @@ UnkWork_022d6cf4 *TitleDemo_Create(void) {
     UnkTask_022d6cf4 *t;
     UnkWork_022d6cf4 *w;
 
-    t = Task_Create(func_ov001_022d6378, TitleDemo_Destructor, 0, 0x1000, 0, sizeof(UnkWork_022d6cf4));
+    t = Task_Create(TitleDemo_State_Scene1, TitleDemo_Destructor, 0, 0x1000, 0, sizeof(UnkWork_022d6cf4));
     w = t->work;
     {
         vu16 z = 0;

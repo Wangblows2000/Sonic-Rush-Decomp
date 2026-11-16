@@ -12,14 +12,14 @@ typedef struct {
     u8 unk1D;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 UnkStruct_02361bf0_Sync *func_020514e4(void);
 void func_ov000_023610d8(UnkStruct_MenuO *w);
 void func_ov000_02360fdc(UnkStruct_MenuO *w);
 BOOL func_ov000_0235fa34(UnkStruct_MenuO *w);
 void SysSound_PlaySE(s32 a);
-void func_0205004c(void);
+void MsgBox_RequestClose(void);
 void func_ov000_0236114c(UnkStruct_MenuO *w);
 void func_ov000_02360ea4(UnkStruct_MenuO *w, s32 a, s32 b);
 void func_ov000_02361b34(void);
@@ -59,13 +59,13 @@ void func_ov000_02361bf0(void) {
         s = func_020514e4();
         s->unk0 = w->unkC;
         s->unk1 = 1;
-        func_0205004c();
+        MsgBox_RequestClose();
         w->unk14 = 0;
         func_ov000_0236114c(w);
         n = w->unkC;
         func_ov000_02360ea4(w, n / 2, n % 2);
-        data_022c4560.unk1C = w->unkC / 2;
-        data_022c4560.unk1D = w->unkC % 2;
+        gGameState.unk1C = w->unkC / 2;
+        gGameState.unk1D = w->unkC % 2;
         gTaskCurrent->unk8 = func_ov000_02361b34;
         return;
     }
@@ -94,7 +94,7 @@ void func_ov000_02361bf0(void) {
             w->unk10 = old;
             w->unkC = n;
             func_020514e4()->unk0 = w->unkC;
-            func_02040ec0(&w->pos[0], 6);
+            KeyframeAnim_SetAnim(&w->pos[0], 6);
             func_ov000_023610a4(w);
             q = n / 2;
             func_ov000_02360ee0(w, q, n % 2);
@@ -119,7 +119,7 @@ void func_ov000_02361bf0(void) {
             w->unk10 = old;
             w->unkC = n;
             func_020514e4()->unk0 = w->unkC;
-            func_02040ec0(&w->pos[0], 6);
+            KeyframeAnim_SetAnim(&w->pos[0], 6);
             func_ov000_02360f98(w);
             q = n / 2;
             func_ov000_02360ee0(w, q, n % 2);

@@ -65,7 +65,7 @@ typedef struct UnkStruct_022db148_b {
     s32 unk18;
 } UnkStruct_022db148_b;
 
-extern UnkStruct_022db148_b *data_ov000_02369b14;
+extern UnkStruct_022db148_b *gBoss3;
 extern void *gZoneActArchive;
 extern u8 data_ov000_02365548[];
 extern s32 data_ov000_02369b18[];
@@ -74,7 +74,7 @@ UnkTask_022db148 *Task_Create(void (*fn)(void), void (*fn2)(void), s32 b, s32 c,
 void StageObj_Main(void);
 void Boss3PartCC_Destructor(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void Boss3PartCC_State_Unk_ov000_022d8c60(void);
+void Boss3PartCC_State_Idle(void);
 u32 *Sound_AllocHandle(void);
 void func_02021310(void *ctx, void *a, void *b);
 void *func_02021264(void *ctx, u32 id);
@@ -96,12 +96,12 @@ static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
 UnkStruct_022db148 *Boss3PartCC_Create(void *a, s32 x, s32 y) {
     u32 ctx[0x5c / 4];
     UnkStruct_022db148 *s;
-    UnkStruct_022db148_b *b = data_ov000_02369b14;
+    UnkStruct_022db148_b *b = gBoss3;
     UnkStruct_022db148_h *h;
     UnkStruct_022db148_a *p;
     s = Task_Create(StageObj_Main, Boss3PartCC_Destructor, 0, 0x501, 2, 0x438)->unk10;
     MI_CpuFill16(s, 0, 0x438);
-    s->unk68 = Boss3PartCC_State_Unk_ov000_022d8c60;
+    s->unk68 = Boss3PartCC_State_Idle;
     s->unk2C0 = Sound_AllocHandle();
     func_02021310(ctx, data_ov000_02365548, gZoneActArchive);
     s->unk2C4.unk170 = func_02021264(ctx, 8);

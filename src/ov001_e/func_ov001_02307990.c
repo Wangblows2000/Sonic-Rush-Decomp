@@ -18,7 +18,7 @@ typedef struct UnkStruct_02307990 {
     UnkStruct_02307990_p pos[3];
 } UnkStruct_02307990;
 
-extern UnkStruct_02307990 *data_ov001_0231f5bc;
+extern UnkStruct_02307990 *gSpecialStageHud;
 extern u32 gRandSeed;
 
 void AnimatorSprite_SetAnimation(UnkStruct_02307990_o *s, u16 index);
@@ -29,7 +29,7 @@ static inline u16 Rand(void) {
 }
 
 void func_ov001_02307990(s32 i) {
-    UnkStruct_02307990 *g = data_ov001_0231f5bc;
+    UnkStruct_02307990 *g = gSpecialStageHud;
 
     g->timers[i] = Rand() % 10 + 15;
     g->pos[i].x = g->posX + (Rand() % 11 - 5);

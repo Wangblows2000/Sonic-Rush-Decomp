@@ -4,16 +4,16 @@
 #pragma thumb on
 
 s32 TitleMenu_Create();
-s32 func_ov001_022d7210();
+s32 TitleMenu_OpenRootPage();
 s32 TitleMenu_CreateFadeTask();
 s32 func_ov001_022d74dc();
 
 void TitleMenu_StartFromOptions(void) {
     s32 t0 = TitleMenu_Create();
     if (*(u32 *)((u8 *)t0 + 0x8) != 0) {
-        func_ov001_022d7210(t0, 1, 3);
+        TitleMenu_OpenRootPage(t0, 1, 3);
     } else {
-        func_ov001_022d7210(t0, 1, 2);
+        TitleMenu_OpenRootPage(t0, 1, 2);
     }
     TitleMenu_CreateFadeTask(8, 0);
     func_ov001_022d74dc(t0, 0);

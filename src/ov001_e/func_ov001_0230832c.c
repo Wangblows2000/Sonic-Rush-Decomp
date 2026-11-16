@@ -11,13 +11,13 @@ typedef struct UnkStruct_0230832c {
     UnkStruct_0230832c_o c;
 } UnkStruct_0230832c;
 
-extern UnkStruct_0230832c *data_ov001_0231f5bc;
+extern UnkStruct_0230832c *gSpecialStageHud;
 
 s32 func_ov001_02314368(void);
 void AnimatorSprite_SetAnimation(UnkStruct_0230832c_o *s, u16 index);
 
 void func_ov001_0230832c(s32 t) {
-    UnkStruct_0230832c *g = data_ov001_0231f5bc;
+    UnkStruct_0230832c *g = gSpecialStageHud;
     s32 n = func_ov001_02314368();
     s32 d100 = n / 100 % 10;
     s32 d10 = n / 10 % 10;

@@ -3,14 +3,14 @@
 
 #pragma thumb on
 
-s32 func_02050018();
+s32 MsgBox_IsClosed();
 s32 Touch_Disable();
 s32 func_02054ac4();
 extern u8 gTaskCurrent[];
 void func_02054cbc();
 
 void func_02054d3c(void) {
-    s32 t0 = func_02050018();
+    s32 t0 = MsgBox_IsClosed();
     if (t0 != 0) {
         Touch_Disable();
         func_02054ac4();

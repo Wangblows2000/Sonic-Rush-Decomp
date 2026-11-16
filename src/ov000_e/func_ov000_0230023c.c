@@ -5,12 +5,12 @@ typedef struct {
     u32 unk20;
 } UnkStruct_022c4560;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 
 s32 ObjShift_Set(s32 cur, s32 target, s32 a, s32 b, s32 step);
 
 void func_ov000_0230023c(UnkStruct_StageObj *w) {
-    if ((data_022c4560.unk20 & 3) == 0) {
+    if ((gGameState.unk20 & 3) == 0) {
         w->unkC = Rand() & 0x1ff;
         if (Rand() & 1)
             w->unkC = -w->unkC;

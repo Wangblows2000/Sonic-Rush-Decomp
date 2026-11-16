@@ -2,13 +2,13 @@
 #include <nitro/types.h>
 
 extern u8 gSaveData[];
-extern u8 data_022c4560[];
+extern u8 gGameState[];
 s32 ScreenShake_Start();
 s32 Sound_PlaySeqArcEx();
 extern u8 gPlayers[];
 s32 Sound_SetPositional();
 s32 func_ov000_022faf48();
-s32 func_ov000_022fe7e8();
+s32 EnemyPawnGroup_Action_Unk_ov000_022fe7e8();
 
 void EnemyPawnGroup_State_Unk_ov000_022fd410(u8 *p0, s32 p1, s32 p2, s32 p3) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x1f4);
@@ -26,10 +26,10 @@ void EnemyPawnGroup_State_Unk_ov000_022fd410(u8 *p0, s32 p1, s32 p2, s32 p3) {
         if ((*(u32 *)((u8 *)gSaveData + 0x8) & 1) == 0) {
             return;
         }
-        if (*(u32 *)((u8 *)data_022c4560 + 0x10) == 2) {
+        if (*(u32 *)((u8 *)gGameState + 0x10) == 2) {
             return;
         }
-        s32 t1 = *(u32 *)((u8 *)data_022c4560 + 0x10);
+        s32 t1 = *(u32 *)((u8 *)gGameState + 0x10);
         if (t1 != 3) {
             *(u32 *)((u8 *)p0 + 0xc) = (*(u32 *)((u8 *)p0 + 0xc) + ((s32)*(u32 *)((u8 *)p0 + 0xc) >> 2));
         }
@@ -53,5 +53,5 @@ void EnemyPawnGroup_State_Unk_ov000_022fd410(u8 *p0, s32 p1, s32 p2, s32 p3) {
         return;
     }
     *(u32 *)((u8 *)p0 + 0x1f4) = (t0 & ~5);
-    func_ov000_022fe7e8(p0, (t0 & ~5));
+    EnemyPawnGroup_Action_Unk_ov000_022fe7e8(p0, (t0 & ~5));
 }

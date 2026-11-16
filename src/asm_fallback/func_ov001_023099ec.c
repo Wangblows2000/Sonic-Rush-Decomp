@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u32 data_ov001_023170b8;
-extern u32 data_ov001_0231f5bc;
+extern u32 gSpecialStageHud;
 extern u32 data_ov001_0231f5c4;
 extern void AnimatorSprite_ProcessAnimation(void);
 extern void AnimatorSprite_Init(void);
@@ -146,7 +146,7 @@ _130:
     add sp, sp, #0x1c
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    dcd data_ov001_0231f5bc
+    dcd gSpecialStageHud
     dcd data_ov001_0231f5c4
     dcd 0x05000200
     dcd 0x000007c8

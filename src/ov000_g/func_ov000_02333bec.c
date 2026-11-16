@@ -16,7 +16,7 @@ typedef struct {
 
 extern s16 data_0206e470[];
 
-UnkStruct_02333bec *func_ov000_02333cf8(s32 a, s32 b, s32 c, u16 d);
+UnkStruct_02333bec *EffSpinSmoke2_3D_Create(s32 a, s32 b, s32 c, u16 d);
 void func_ov000_022c5e80(s32 a, s32 b, s32 x, s32 *ox, s32 *oz, u16 *ang);
 
 static inline s32 FX_MUL(s32 a, s32 b) {
@@ -30,7 +30,7 @@ UnkStruct_02333bec *func_ov000_02333bec(s32 a, s32 b, s32 c, s32 d, s32 e, u16 f
     s32 ox;
     s32 oz;
     s32 v;
-    UnkStruct_02333bec *o = func_ov000_02333cf8(a, b, c, f);
+    UnkStruct_02333bec *o = EffSpinSmoke2_3D_Create(a, b, c, f);
 
     if (o == NULL)
         return NULL;

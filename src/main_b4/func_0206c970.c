@@ -23,7 +23,7 @@ extern UnkStruct_022c4f1c data_022c4f1c;
 extern u8 data_0207cfb0;
 extern u8 data_0207cfb4[];
 extern u16 gPad;
-extern u16 data_022c1950;
+extern u16 gWHPacketSize;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
@@ -63,7 +63,7 @@ BOOL func_0206c970(void) {
             list->head = NULL;
             return FALSE;
         }
-        if (pos + func_0206c7f0(n) > data_022c1950)
+        if (pos + func_0206c7f0(n) > gWHPacketSize)
             return TRUE;
         MIi_CpuCopy16(n, buf + pos, 4);
         pos += 4;

@@ -43,8 +43,8 @@ struct UnkStruct_023523d0 {
 void Player_State_SandSlider90(UnkStruct_023523d0 *w);
 void Player_ResetGimmickState(UnkStruct_023523d0 *w);
 void Player_SetAnimation(UnkStruct_023523d0 *w, s32 a);
-void func_ov000_02346d10(UnkStruct_023523d0 *w);
-void func_ov000_02346aa8(UnkStruct_023523d0 *w);
+void Player_StopHighSpeed(UnkStruct_023523d0 *w);
+void Player_StopBoost(UnkStruct_023523d0 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void Player_Action_SandSlider90(UnkStruct_023523d0 *w, UnkStruct_023523d0 *other) {
@@ -59,8 +59,8 @@ void Player_Action_SandSlider90(UnkStruct_023523d0 *w, UnkStruct_023523d0 *other
     w->unk58 |= 0x100;
     w->unk58 &= ~1;
     w->unk54 &= ~1;
-    func_ov000_02346d10(w);
-    func_ov000_02346aa8(w);
+    Player_StopHighSpeed(w);
+    Player_StopBoost(w);
     w->unk32C |= 0x100000;
     w->unk32C &= ~1;
     w->unk2E = 0;

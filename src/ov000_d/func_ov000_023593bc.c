@@ -24,12 +24,12 @@ void func_ov000_023593bc(void) {
     }
     if (w->unk340) {
         w->unk0 = 0x10;
-        func_02040e48(&w->pos[0]);
-        func_02040e48(&w->pos[1]);
-        func_02040e48(&w->pos[2]);
-        func_02040e48(&w->pos[3]);
-        func_02040e48(&w->pos[4]);
-        func_02040e48(&w->pos[5]);
+        KeyframeAnim_SetToLastFrame(&w->pos[0]);
+        KeyframeAnim_SetToLastFrame(&w->pos[1]);
+        KeyframeAnim_SetToLastFrame(&w->pos[2]);
+        KeyframeAnim_SetToLastFrame(&w->pos[3]);
+        KeyframeAnim_SetToLastFrame(&w->pos[4]);
+        KeyframeAnim_SetToLastFrame(&w->pos[5]);
     }
     ang = (w->unk0 << 14) >> 4;
     if (w->unk20) {
@@ -50,49 +50,49 @@ void func_ov000_023593bc(void) {
     func_ov000_02356d88(&w->mdl);
     done = FALSE;
     if (w->unk0 >= 6) {
-        func_02040d14(&w->pos[6]);
+        KeyframeAnim_Update(&w->pos[6]);
         func_ov000_02357ec8(w, w->unk14, w->pos[6].unk4);
-        func_02040d14(&w->pos[7]);
+        KeyframeAnim_Update(&w->pos[7]);
         x = w->pos[7].x;
         if (!w->unk20) {
             x = -x;
         }
         func_ov000_023582e8(w, w->unk14, x);
-        func_02040d14(&w->pos[0]);
-        func_02040d14(&w->pos[1]);
-        func_02040d14(&w->pos[2]);
-        func_02040d14(&w->pos[3]);
-        func_02040d14(&w->pos[4]);
-        func_02040d14(&w->pos[5]);
+        KeyframeAnim_Update(&w->pos[0]);
+        KeyframeAnim_Update(&w->pos[1]);
+        KeyframeAnim_Update(&w->pos[2]);
+        KeyframeAnim_Update(&w->pos[3]);
+        KeyframeAnim_Update(&w->pos[4]);
+        KeyframeAnim_Update(&w->pos[5]);
         done = TRUE;
         p = &w->pos[0];
         func_ov000_023579fc(w, p->x, p->y);
-        if (!func_02040cf4(p)) {
+        if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[1];
         func_ov000_023579c8(w, p->x, p->y);
-        if (!func_02040cf4(p)) {
+        if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[2];
         func_ov000_0235793c(w, p->x, p->y);
-        if (!func_02040cf4(p)) {
+        if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[3];
         func_ov000_02357908(w, p->x, p->y);
-        if (!func_02040cf4(p)) {
+        if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[4];
         func_ov000_02357994(w, p->x, p->y);
-        if (!func_02040cf4(p)) {
+        if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
         p = &w->pos[5];
         func_ov000_023578d0(w, p->x, p->y);
-        if (!func_02040cf4(p)) {
+        if (!KeyframeAnim_IsFinished(p)) {
             done = FALSE;
         }
     }

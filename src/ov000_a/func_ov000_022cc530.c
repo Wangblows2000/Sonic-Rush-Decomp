@@ -12,7 +12,7 @@ typedef struct UnkStruct_022cc530_v {
     s32 z;
 } UnkStruct_022cc530_v;
 
-extern UnkStruct_022cc530_2 *data_ov000_02369acc;
+extern UnkStruct_022cc530_2 *gBoss1;
 extern s16 data_0206e470[];
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -20,7 +20,7 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 }
 
 void func_ov000_022cc530(UnkStruct_022cc530_v *out, s32 flag) {
-    UnkStruct_022cc530_2 *g = data_ov000_02369acc;
+    UnkStruct_022cc530_2 *g = gBoss1;
     if (flag) {
         out->x = FX_Mul(data_0206e470[((g->unk21C & 0xffff) >> 4) * 2], 0x46f22) + 0xaa8da;
         out->z = FX_Mul(data_0206e470[((g->unk21C & 0xffff) >> 4) * 2 + 1], 0x46f22) - 0x2a1290;

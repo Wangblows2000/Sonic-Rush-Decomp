@@ -16,7 +16,7 @@ typedef struct UnkStruct_0230f0f4 {
     s32 unkD8;
 } UnkStruct_0230f0f4;
 
-void *func_ov001_0230c0a4(void);
+void *SpecialStage_GetPlayer(void);
 s32 func_ov001_02310248(void *a, UnkStruct_0230f0f4 *p);
 UnkStruct_0230f0f4 *func_ov001_023070fc(s32 type, s32 x, s32 y, s32 z);
 
@@ -24,7 +24,7 @@ void func_ov001_0230f0f4(UnkStruct_0230f0f4 *p) {
     UnkStruct_0230f0f4 *r;
 
     if (p->unkC4 != 0) {
-        if (func_ov001_02310248(func_ov001_0230c0a4(), p) == 1) {
+        if (func_ov001_02310248(SpecialStage_GetPlayer(), p) == 1) {
             if (!(p->unk62 & 1) && (r = func_ov001_023070fc(5, 0, 0, 0)) != NULL) {
                 r->unkD4 = p;
                 r->unkD8 = p->unkD8;

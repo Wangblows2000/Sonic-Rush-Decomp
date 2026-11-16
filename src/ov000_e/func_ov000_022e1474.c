@@ -37,7 +37,7 @@ typedef struct UnkStruct_022e1474_2 {
     s32 unk18;
 } UnkStruct_022e1474_2;
 
-extern UnkStruct_022e1474_g *data_ov000_02369b4c;
+extern UnkStruct_022e1474_g *gBoss6;
 extern UnkStruct_022e1474_2 data_ov000_02369b50;
 extern s32 data_ov000_023637dc[];
 extern u32 data_ov000_023657e0[];
@@ -68,13 +68,13 @@ void func_ov000_022e1474(UnkStruct_022e1474 *s) {
     if (s->unkD60[0].unkA & 4) {
         s->unk1114++;
         if (s->unk1114 == 3) {
-            func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, data_ov000_02369b4c->unk1110, data_ov000_023636f4, 1);
+            func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk1110, data_ov000_023636f4, 1);
         } else if (s->unk1114 == 7) {
-            func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, data_ov000_02369b4c->unk110C, data_ov000_023636f4, 1);
+            func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
             s->unk1114 = 0;
         }
     } else if (s->unk1114 != 0) {
-        func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, data_ov000_02369b4c->unk110C, data_ov000_023636f4, 1);
+        func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
         s->unk1114 = 0;
     }
 }

@@ -15,19 +15,19 @@ typedef struct {
 typedef struct { u8 pad0[0x10]; UnkWork_02050764 *work; } UnkTask_02050764;
 extern UnkTask_02050764 *data_022c4638;
 extern UnkTask_02050764 *gTaskCurrent;
-extern u16 data_022c1950;
+extern u16 gWHPacketSize;
 extern u16 data_022c4644[];
 extern s32 data_022c4640;
 
-s32 func_02042958(void);
+s32 WirelessMgr_GetStatus(void);
 void Task_Destroy(UnkTask_02050764 *t);
 void func_02050b58(u16 a);
 BOOL func_020502e4(UnkWork_02050764 *w);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
-void func_02042810(u16 *buf, s32 size, s32 a);
-void func_020429d0(void);
+void WirelessMgr_UpdateGameInfo(u16 *buf, s32 size, s32 a);
+void WirelessMgr_RequestStart(void);
 u16 WH_GetCurrentAid(void);
-void func_020516b4(void);
+void WirelessSession_Stop(void);
 
 #pragma thumb on
 void func_02050764(void) {
@@ -41,13 +41,13 @@ void func_02050764(void) {
     else
         st = w->unkC;
     if (st < 6) {
-        r = func_02042958();
+        r = WirelessMgr_GetStatus();
         if (w->unk18) {
             Task_Destroy(gTaskCurrent);
             return;
         }
         if (r == 7 || st == 0 || w->unk14) {
-            func_02050b58(data_022c1950);
+            func_02050b58(gWHPacketSize);
             return;
         }
         switch (st) {
@@ -62,16 +62,16 @@ void func_02050764(void) {
                 u16 buf[0xc];
                 MIi_CpuCopy16(w->unk1E, buf, 0x16);
                 buf[0xb] = 2;
-                func_02042810(buf, 0x18, 1);
+                WirelessMgr_UpdateGameInfo(buf, 0x18, 1);
                 w->unkC = 3;
                 w->unk8 = 0;
             }
             break;
         case 3:
             if (r != 2) {
-                func_02050b58(data_022c1950);
+                func_02050b58(gWHPacketSize);
             } else if (w->unk10) {
-                func_020429d0();
+                WirelessMgr_RequestStart();
                 w->unk1C = WH_GetCurrentAid();
                 w->unkC = 4;
                 w->unk8 = 0;
@@ -84,7 +84,7 @@ void func_02050764(void) {
                 MIi_CpuCopy16(w->unk36, data_022c4644, 0x16);
                 data_022c4640 = 1;
             } else if (r != 2) {
-                func_02050b58(data_022c1950);
+                func_02050b58(gWHPacketSize);
             }
             break;
         case 5:
@@ -93,7 +93,7 @@ void func_02050764(void) {
             w->unk10 = 0;
             w->unk14 = 0;
             w->unk18 = 0;
-            func_020516b4();
+            WirelessSession_Stop();
             return;
         case 6:
             break;

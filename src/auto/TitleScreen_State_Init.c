@@ -4,7 +4,7 @@
 #pragma thumb on
 
 extern u8 gTaskCurrent[];
-s32 func_ov001_022d42ec();
+s32 TitleScreen_InitDisplay();
 s32 TitleScreen_LoadAssets();
 s32 func_ov001_022d4e4c();
 s32 func_ov001_022d4d94();
@@ -20,7 +20,7 @@ void TitleScreen_State_Init(void) {
     *(u32 *)t0 = (*(u32 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x1);
     s32 t1 = *(u32 *)t0;
     if (t1 >= 2) {
-        func_ov001_022d42ec(t1);
+        TitleScreen_InitDisplay(t1);
         TitleScreen_LoadAssets(t0);
         func_ov001_022d4e4c(t0);
         func_ov001_022d4d94(t0);

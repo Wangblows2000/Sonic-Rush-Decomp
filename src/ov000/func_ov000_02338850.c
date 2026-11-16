@@ -12,9 +12,9 @@ typedef struct UnkStruct_02338850 {
     s32 unk8;
 } UnkStruct_02338850;
 
-extern UnkStruct_02338850_2 data_ov000_0236aad8;
+extern UnkStruct_02338850_2 gCamera;
 
 void func_ov000_02338850(UnkStruct_02338850 *s) {
-    data_ov000_0236aad8.unkC8 |= 0x20000;
-    s->unk8 = -((data_ov000_0236aad8.unk20 << 12) >> 8);
+    gCamera.unkC8 |= 0x20000;
+    s->unk8 = -((gCamera.unk20 << 12) >> 8);
 }

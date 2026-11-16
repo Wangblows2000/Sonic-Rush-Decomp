@@ -12,15 +12,15 @@ typedef struct {
 
 extern void *data_ov000_02369ba0;
 extern UnkStruct_022c4680 gSaveData;
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_023665a8[], data_ov000_023665c0[], data_ov000_023665dc[], data_ov000_02366600[], data_ov000_0236661c[], data_ov000_02366638[], data_ov000_02366658[], data_ov000_02369df4[], data_ov000_02369dfc[], data_ov000_02369e04[], data_ov000_02369e0c[], data_ov000_02369e14[], data_ov000_02369e1c[], data_ov000_02369e24[];
 
 void MapObject_Destructor(void);
 void EnemyFlapperGroup_OnHit_Box2(void);
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void EffEntrance_Create(UnkStruct_StageObj *w, s32 a, s32 b);
-void func_ov000_023008a0(UnkStruct_StageObj *w);
-void func_ov000_02300808(UnkStruct_StageObj *w);
+void EnemyFlapperGroup_Action_Unk_ov000_023008a0(UnkStruct_StageObj *w);
+void EnemyFlapperGroup_Action_Unk_ov000_02300808(UnkStruct_StageObj *w);
 
 typedef struct {
     UnkStruct_StageObj base;
@@ -34,7 +34,7 @@ UnkStruct_023008d0 *EnemyFlapperGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c
     if (p == NULL || p->unk0 != 0xff || p->unk1 != 0xff) {
         if (p->unk4 & 0x80) {
             if (gSaveData.unk8 & 1) {
-                if (data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+                if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
                     return NULL;
             }
         }
@@ -122,7 +122,7 @@ UnkStruct_023008d0 *EnemyFlapperGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c
     if (w->base.unk1E0->unk4 & 0x10)
         w->base.unk5C &= ~1;
     w->base.unk58 |= 0x140;
-    if (func_ov000_02345758(w->base.unk10, w->base.unk14)) {
+    if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14)) {
         w->base.unk5 = 0x80;
         w->base.unk5C |= 0x100;
     }
@@ -131,9 +131,9 @@ UnkStruct_023008d0 *EnemyFlapperGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c
         EffEntrance_Create(&w->base, 0, -16);
     }
     if (w->base.unk1E0->unk6 == 0 && w->base.unk1E0->unk8 == 0)
-        func_ov000_023008a0(&w->base);
+        EnemyFlapperGroup_Action_Unk_ov000_023008a0(&w->base);
     else
-        func_ov000_02300808(&w->base);
+        EnemyFlapperGroup_Action_Unk_ov000_02300808(&w->base);
     w->base.unk1DC = Sound_AllocHandle();
     return w;
 }

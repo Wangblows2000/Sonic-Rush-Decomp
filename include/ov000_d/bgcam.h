@@ -11,7 +11,7 @@ typedef struct UnkStruct_BgCam {
     u32 flags;
 } UnkStruct_BgCam;
 
-extern UnkStruct_BgCam data_ov000_0236aad8;
+extern UnkStruct_BgCam gCamera;
 extern UnkStruct_BgCam data_ov000_0236ab3c;
 
 UnkStruct_BgCam *func_ov000_0233b62c(void);

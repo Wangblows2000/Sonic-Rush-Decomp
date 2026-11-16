@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 extern u8 *gWirelessRecvBuffers[];
-extern u16 data_022c1948;
+extern u16 gWHMaxChildCount;
 extern u8 data_0207cfb4[];
 
 void func_0206caf0(void) {
@@ -10,7 +10,7 @@ void func_0206caf0(void) {
 
     if (gWirelessRecvBuffers[0][1] == 0xff)
         return;
-    for (i = 0; i < data_022c1948 + 1; i++) {
+    for (i = 0; i < gWHMaxChildCount + 1; i++) {
         p = gWirelessRecvBuffers[i];
         if (*p != 0x55)
             return;

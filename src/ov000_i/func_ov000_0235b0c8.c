@@ -26,7 +26,7 @@ typedef struct {
 } UnkStruct_0235b0c8;
 
 extern UnkStruct_0235b0c8 *gRingManagerTask;
-BOOL func_ov000_02345758(s32 x, s32 y);
+BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 
 void func_ov000_0235b0c8(u8 *flag, s32 a, s32 b) {
     UnkStruct_0235b0c8_w *w;
@@ -52,7 +52,7 @@ void func_ov000_0235b0c8(u8 *flag, s32 a, s32 b) {
             *flag = 0xff;
             e->unk18 = flag;
             e->unk14 = 0;
-            if (func_ov000_02345758(a, b))
+            if (Stage_IsGravityFlipped(a, b))
                 e->unk12 |= 0x8000;
             else
                 e->unk12 &= ~0x8000;

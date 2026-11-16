@@ -31,7 +31,7 @@ void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 extern u32 gRandSeed;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_020366f4(s32 a, s32 b, s32 c);
+void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void Boss3PartCC_State_Unk_ov000_022d63f4(UnkStruct_022d6568 *s);
 
 static inline u16 Rand(void) {
@@ -48,7 +48,7 @@ void Boss3PartCC_State_Unk_ov000_022d6568(UnkStruct_022d6568 *s) {
     else
         s->unk2E = -0x400;
     Sound_PlaySeqArc(0, 0, 0x7b);
-    func_020366f4(0, 0, (Rand() & 1) ? 0xce : 0xcf);
+    Sound_PlayVoice(0, 0, (Rand() & 1) ? 0xce : 0xcf);
     s->unk258 = 0;
     s->unk25A = 0;
     s->unk264 = 0x40;

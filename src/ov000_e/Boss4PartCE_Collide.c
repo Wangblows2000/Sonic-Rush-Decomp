@@ -31,27 +31,27 @@ typedef struct {
     s32 unk4;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_022de964_M *data_ov000_02369b2c;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022de964_M *gBoss4;
+extern UnkStruct_02369ac0 gBossStatus;
 
 void func_ov000_022db7ec(void *v, UnkStruct_022de964_O *o);
 void ObjRect_SetBox2D(UnkStruct_022de964_C *c, s16 a, s16 b, s16 d, s16 e);
 void StageObj_HandleCollider(void *w, void *a);
 void func_ov000_022db894(UnkStruct_022de964_C *h, UnkStruct_022de964_C *out);
-void func_ov000_022ded44(void);
+void Boss4_OnHit_Damage(void);
 
 void Boss4PartCE_Collide(void) {
-    UnkStruct_022de964_M *m = data_ov000_02369b2c;
+    UnkStruct_022de964_M *m = gBoss4;
     UnkStruct_022de964_O *o = m->unk20C;
     UnkStruct_022de964_C *c;
 
     func_ov000_022db7ec(m->unk3A8, o);
-    if (data_ov000_02369ac0.unk4 == 0x18)
+    if (gBossStatus.unk4 == 0x18)
         return;
     c = &o->coll0;
     ObjRect_SetBox2D(c, -0x28, 0, 0x50, 0x64);
     c->unk18 = o;
-    c->unk1C = func_ov000_022ded44;
+    c->unk1C = Boss4_OnHit_Damage;
     c->unkA |= 4;
     StageObj_HandleCollider(o, c);
     func_ov000_022db894(c, &o->coll2);

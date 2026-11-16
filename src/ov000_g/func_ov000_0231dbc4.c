@@ -24,7 +24,7 @@ typedef struct {
     u32 unk20;
 } UnkStruct_0231dbc4_Sys;
 
-extern UnkStruct_0231dbc4_Sys data_022c4560;
+extern UnkStruct_0231dbc4_Sys gGameState;
 
 u8 ObjAngle_MoveToward8(u8 a, s32 b, s32 c);
 s16 ObjSpd_UpSet(s16 a, s16 b, s32 c);
@@ -70,14 +70,14 @@ void func_ov000_0231dbc4(UnkStruct_0231dbc4 *w) {
     case 7:
         if (w->unk5C & 0x10) {
             w->unk2E = 0;
-            if (w->unk62 == 0 && !(data_022c4560.unk20 & 0x1f))
+            if (w->unk62 == 0 && !(gGameState.unk20 & 0x1f))
                 w->unk5C &= ~0x10;
         } else if (w->unk1 != 0) {
             w->unk1 = ObjAngle_MoveToward8(w->unk1, 0, 4);
             w->unk2E = 0;
         } else {
             w->unk58 &= ~0x2100;
-            if (!(data_022c4560.unk20 & 0xf) && (w->unk58 & 1) && !(Rand() & 0xf)) {
+            if (!(gGameState.unk20 & 0xf) && (w->unk58 & 1) && !(Rand() & 0xf)) {
                 w->unk1 = 0x40;
                 if (w->unk5C & 1)
                     w->unk1 += 0x80;

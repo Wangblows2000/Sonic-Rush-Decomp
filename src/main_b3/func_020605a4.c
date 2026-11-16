@@ -5,7 +5,7 @@ extern s16 gTalkDemoId;
 
 void func_02059b04(u32 a);
 u32 TalkDemo_GetFlags(s32 a);
-UnkStruct_02058350 *func_02058350(void);
+UnkStruct_02058350 *PlayerDemo_GetWork(void);
 
 #pragma thumb on
 void func_020605a4(void) {
@@ -29,10 +29,10 @@ void func_020605a4(void) {
     case 0x38:
     case 0x39:
         if (TalkDemo_GetFlags(0) & 0x400)
-            func_02058350()->flags |= 0x200000;
+            PlayerDemo_GetWork()->flags |= 0x200000;
         break;
     case 0xe: {
-        UnkStruct_02058350 *p = func_02058350();
+        UnkStruct_02058350 *p = PlayerDemo_GetWork();
         p->flags &= ~0x100000;
         p->flags &= ~0x800000;
         break;

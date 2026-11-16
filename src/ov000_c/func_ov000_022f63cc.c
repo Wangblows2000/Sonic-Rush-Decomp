@@ -16,18 +16,18 @@ typedef struct {
     s16 unk4BC;
 } UnkStruct_022f63cc;
 
-extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4560 gGameState;
 extern s16 data_ov000_02363de4[];
 extern s16 data_ov000_02363dc8[];
 
 void BossFPartDE_State_Unk_ov000_022f62f0(UnkStruct_022f63cc *w);
 
 static inline BOOL IsMode23(void) {
-    return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
+    return gGameState.unk10 == 2 || gGameState.unk10 == 3;
 }
 
 static inline s32 GetLevel(void) {
-    return IsMode23() ? 1 : data_022c4560.unk14;
+    return IsMode23() ? 1 : gGameState.unk14;
 }
 
 void func_ov000_022f63cc(UnkStruct_022f63cc *w) {

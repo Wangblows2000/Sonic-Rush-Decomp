@@ -50,7 +50,7 @@ typedef struct UnkStruct_022da6b4_c {
     u16 unk92;
 } UnkStruct_022da6b4_c;
 
-extern UnkStruct_022da6b4_b *data_ov000_02369b14;
+extern UnkStruct_022da6b4_b *gBoss3;
 extern UnkStruct_022da6b4_d data_ov000_0236a444;
 extern UnkStruct_022da6b4_c data_ov000_0236a48c;
 
@@ -58,7 +58,7 @@ s32 func_0200225c(s32 a, s32 b);
 
 void func_ov000_022da6b4(void) {
     UnkStruct_022da6b4_c *c;
-    data_ov000_02369b14->unk210 = 0;
+    gBoss3->unk210 = 0;
     data_ov000_0236a444.unkDC = 2;
     data_ov000_0236a444.unkC = 0x1a66000;
     c = (UnkStruct_022da6b4_c *)(u32)&data_ov000_0236a48c;

@@ -22,9 +22,9 @@ void PlayerSelectMenu_Main(void) {
     }
     if (w->unk340) {
         w->unk0 = 0x1e;
-        func_02040e48(q);
+        KeyframeAnim_SetToLastFrame(q);
     }
-    func_02040d14(q);
+    KeyframeAnim_Update(q);
     func_ov000_02358410(w, q->unk4);
     if (w->unk0 >= 0x26) {
         w->unk330 += 0x20;
@@ -39,7 +39,7 @@ void PlayerSelectMenu_Main(void) {
     }
     func_ov000_02358224(w, x, 0x1000);
     w->unk0++;
-    if (func_02040cf4(q)) {
+    if (KeyframeAnim_IsFinished(q)) {
         func_ov000_02358410(w, 0x1000);
         func_ov000_02359af4(0);
     }

@@ -34,20 +34,20 @@ typedef struct {
     s32 unk43C;
 } UnkStruct_022f2014;
 
-extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_022c4560 gGameState;
+extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_Player *gPlayers;
-extern UnkStruct_Mgr *data_ov000_02369b84;
+extern UnkStruct_Mgr *gBossF;
 
 void func_ov000_022f4ce4(UnkStruct_022f2014 *s, s32 a, s32 b, s32 c);
 void func_ov000_022f8b70(u32 a, s32 b);
 s32 FX_Atan2(s32 y, s32 x);
 s32 FX_Sqrt(s32 a);
 BOOL func_ov000_022f8f78(void);
-void func_ov000_0234915c(UnkStruct_Player *p, s16 a, s32 b);
+void Player_Action_Knockback(UnkStruct_Player *p, s16 a, s32 b);
 void func_ov000_022f8df8(UnkStruct_022f2014 *s, s32 *x, s32 *y, s32 c);
 void func_ov000_022f4850(void);
-void func_ov000_023385e4(void);
+void BossHelp_Destroy(void);
 void func_ov000_022f1f70(void);
 void func_ov000_022f8b0c(void);
 
@@ -69,7 +69,7 @@ void func_ov000_022f2014(UnkStruct_022f2014 *s) {
     s32 dy;
 
     func_ov000_022f4ce4(s, 0x1a, 0x1000, 0);
-    func_ov000_022f8b70(data_022c4560.unk0, 0);
+    func_ov000_022f8b70(gGameState.unk0, 0);
     dx = s->unk3C4 - s->unk424;
     dy = s->unk3C8 - s->unk428;
     s->unk438 = FX_Atan2(dy, dx) + 0x8000;
@@ -87,6 +87,6 @@ void func_ov000_022f2014(UnkStruct_022f2014 *s) {
         gPlayers->base.unk70 = func_ov000_022f8b0c;
         gPlayers->base.unk5C &= ~0x40;
     }
-    data_ov000_02369ac0.unk4 = 0x34;
+    gBossStatus.unk4 = 0x34;
     s->base.unk68 = func_ov000_022f1f70;
 }
