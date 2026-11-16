@@ -38,7 +38,7 @@ extern UnkGfx_022d1494 gDisplayMain;
 extern UnkAlpha_022d1494 data_0208924e;
 extern UnkBright_022d1494 data_0208926c;
 
-BOOL func_0202e5e4(float a, float b);
+BOOL Runtime_Unk_0202e5e4(float a, float b);
 void StaffRoll_FadePalette(void *a, s32 b, float f, void *c, void *d);
 void StaffRoll_FadeSpritePalette(void *a, s32 b, float f, void *c, void *d);
 void StaffRoll_SetMainBrightness(s32 a);
@@ -53,7 +53,7 @@ void StaffRoll_State_ExtraFinalPictureFadeIn(UnkStruct_022d1494 *p) {
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0xa00;
     if (p->timer <= 0x78) {
         f = p->timer / 120.0f;
-        if (func_0202e5e4(f, 1.0f)) f = 1.0f;
+        if (Runtime_Unk_0202e5e4(f, 1.0f)) f = 1.0f;
         f = f * f;
         StaffRoll_FadePalette(&p->objs[2], 0x100, f, p->unkf0c, p->unkd0c);
         StaffRoll_FadeSpritePalette(p->unkb34, 0x100, f, p->unk130c, p->unk110c);

@@ -10,7 +10,7 @@ typedef struct {
     s32 Corrupted;            /* 0x64 */
 } UnkSha1Ctx_0200ce88;
 
-void func_0200cb88(UnkSha1Ctx_0200ce88 *ctx);
+void DGT_Unk_0200cb88(UnkSha1Ctx_0200ce88 *ctx);
 
 s32 DGT_Hash2SetSource(UnkSha1Ctx_0200ce88 *context, const u8 *message_array, u32 length)
 {
@@ -37,7 +37,7 @@ s32 DGT_Hash2SetSource(UnkSha1Ctx_0200ce88 *context, const u8 *message_array, u3
             }
         }
         if (context->Message_Block_Index == 64) {
-            func_0200cb88(context);
+            DGT_Unk_0200cb88(context);
         }
         message_array++;
     }

@@ -14,11 +14,11 @@ typedef struct {
     UnkName_02050638 names[1]; /* 0x38 */
 } UnkWork_02050638;
 typedef struct { u8 pad0[0x10]; UnkWork_02050638 *work; } UnkTask_02050638;
-extern UnkTask_02050638 *data_022c4638;
+extern UnkTask_02050638 *gWirelessLobbyTask;
 extern UnkTask_02050638 *gTaskCurrent;
 extern u16 gWHPacketSize;
-extern u16 data_022c4644[];
-extern s32 data_022c4640;
+extern u16 gWirelessPartnerName[];
+extern s32 gWirelessPartnerNameValid;
 
 s32 WirelessMgr_GetStatus(void);
 void Task_Destroy(UnkTask_02050638 *t);
@@ -29,7 +29,7 @@ void WirelessSession_Stop(void);
 
 #pragma thumb on
 void WirelessLobbyChild_Main(void) {
-    UnkTask_02050638 *t = data_022c4638;
+    UnkTask_02050638 *t = gWirelessLobbyTask;
     UnkWork_02050638 *w = t->work;
     s32 st;
     s32 r;
@@ -75,8 +75,8 @@ void WirelessLobbyChild_Main(void) {
             if (r == 6) {
                 w->unkC = 5;
                 w->unk8 = 0;
-                MIi_CpuCopy16(&w->names[w->unk36], data_022c4644, 0x16);
-                data_022c4640 = 1;
+                MIi_CpuCopy16(&w->names[w->unk36], gWirelessPartnerName, 0x16);
+                gWirelessPartnerNameValid = 1;
             } else if (r == 7) {
                 WirelessLobby_CreateChild(gWHPacketSize);
                 return;

@@ -20,7 +20,7 @@ void Cargo_Destructor(void);
 void Cargo_Draw(void);
 void Cargo_OnHit(void);
 void ObjData_Load(void *a, void *b, void *c);
-void func_ov000_02304fa0(UnkStruct_0230506c *w);
+void Cargo_Action_Unk_ov000_02304fa0(UnkStruct_0230506c *w);
 
 UnkStruct_0230506c *Cargo_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -84,6 +84,6 @@ UnkStruct_0230506c *Cargo_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         idx = (s32)((u16)w->base.unkC & 0xffff) >> 4;
         w->unk32E = ((w->base.unk1EC << 8) - ((data_0206e470[(u32)((idx << 1) + 1)] * -0xc000) >> 12)) >> 8;
     }
-    func_ov000_02304fa0(w);
+    Cargo_Action_Unk_ov000_02304fa0(w);
     return w;
 }

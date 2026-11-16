@@ -20,15 +20,15 @@ typedef struct {
 
 extern UnkStruct_022f6584_plr *gPlayers;
 
-void func_ov000_022f6b8c(UnkStruct_022f6584 *p);
-void func_ov000_022f6978(UnkStruct_022f6584 *p);
-void func_ov000_022f653c(UnkStruct_022f6584 *p);
+void BossFPartDE_Unk_ov000_022f6b8c(UnkStruct_022f6584 *p);
+void BossFPartDE_Unk_ov000_022f6978(UnkStruct_022f6584 *p);
+void BossFPartDE_State_Unk_ov000_022f653c(UnkStruct_022f6584 *p);
 
 void BossFPartDE_State_Unk_ov000_022f6584(UnkStruct_022f6584 *p) {
     UnkStruct_022f6584_plr *plr;
 
-    func_ov000_022f6b8c(p);
-    func_ov000_022f6978(p);
+    BossFPartDE_Unk_ov000_022f6b8c(p);
+    BossFPartDE_Unk_ov000_022f6978(p);
     if (p->unkC++ <= 0x3c)
         return;
     plr = gPlayers;
@@ -37,5 +37,5 @@ void BossFPartDE_State_Unk_ov000_022f6584(UnkStruct_022f6584 *p) {
     if (p->unk218 >= plr->unk10)
         return;
     if (plr->unk10 < p->unk35C)
-        p->unk68 = func_ov000_022f653c;
+        p->unk68 = BossFPartDE_State_Unk_ov000_022f653c;
 }

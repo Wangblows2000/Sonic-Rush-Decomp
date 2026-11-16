@@ -9,7 +9,7 @@ extern void *data_022c4da8;
 
 void TalkDemo_ResetBg1Scroll(void *f);
 BOOL TalkDemo_ResetBg2Affine(void *o);
-void func_02061fc4(void);
+void TalkDemo_Unk_02061fc4(void);
 void TalkDemoScene_ReleaseSprites(void *w);
 
 #define REG_DISPCNT_ (*(vu32 *)0x04000000)
@@ -24,7 +24,7 @@ void TalkDemoScene_Destructor(UnkTask_02062c4c *t) {
         u32 plane = (REG_DISPCNT_ & 0x1f00) >> 8;
         REG_DISPCNT_ = (REG_DISPCNT_ & ~0x1f00) | ((plane | 4) << 8);
     }
-    func_02061fc4();
+    TalkDemo_Unk_02061fc4();
     TalkDemoScene_ReleaseSprites(w);
     data_022c4da8 = NULL;
 }

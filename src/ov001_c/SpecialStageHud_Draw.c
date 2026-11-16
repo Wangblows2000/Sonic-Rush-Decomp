@@ -32,23 +32,23 @@ typedef struct UnkStruct_02309c14 {
 
 extern UnkStruct_02309c14 *gSpecialStageHud;
 
-void func_ov001_02307b44(void);
+void SpecialStageHud_Unk_ov001_02307b44(void);
 void AnimatorSprite_Draw(void *p);
 u32 SpecialStage_GetEmeraldFlags(void);
-void func_ov001_02308884(void);
-void func_ov001_023091a0(void);
-void func_ov001_02308fc8(void);
-void func_ov001_02308e44(void);
-void func_ov001_02308d40(void);
+void SpecialStageHud_Unk_ov001_02308884(void);
+void SpecialStageHud_Unk_ov001_023091a0(void);
+void SpecialStageHud_Unk_ov001_02308fc8(void);
+void SpecialStageHud_Unk_ov001_02308e44(void);
+void SpecialStageHud_Unk_ov001_02308d40(void);
 void SpecialStageHud_DrawRingCounter(void);
-void func_ov001_02308600(void);
+void SpecialStageHud_Unk_ov001_02308600(void);
 
 void SpecialStageHud_Draw(void) {
     UnkStruct_02309c14 *g = gSpecialStageHud;
     s32 i;
 
     if (g->unkBD4 >= 0) {
-        func_ov001_02307b44();
+        SpecialStageHud_Unk_ov001_02307b44();
         return;
     }
     AnimatorSprite_Draw(&g->objs[0]);
@@ -81,23 +81,23 @@ void SpecialStageHud_Draw(void) {
         }
         AnimatorSprite_Draw(&g->objs[20]);
     }
-    func_ov001_02308884();
+    SpecialStageHud_Unk_ov001_02308884();
     if (g->unkAF0 > 0)
         AnimatorSprite_Draw(&g->objs[24]);
     if (g->unkBC4 >= 0)
-        func_ov001_023091a0();
+        SpecialStageHud_Unk_ov001_023091a0();
     if (g->unkBC8 >= 0) {
-        func_ov001_02308fc8();
+        SpecialStageHud_Unk_ov001_02308fc8();
         return;
     }
     if (g->unkBCC >= 0) {
-        func_ov001_02308e44();
+        SpecialStageHud_Unk_ov001_02308e44();
         return;
     }
     if (g->unkBD0 >= 0)
-        func_ov001_02308d40();
+        SpecialStageHud_Unk_ov001_02308d40();
     SpecialStageHud_DrawRingCounter();
-    func_ov001_02308600();
+    SpecialStageHud_Unk_ov001_02308600();
     if (g->unkAE0 >= 0x17c && g->unkAE0 < 0x258)
         AnimatorSprite_Draw(&g->objs[34]);
 }

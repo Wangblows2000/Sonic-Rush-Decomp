@@ -103,7 +103,7 @@ extern UnkStruct_022d98ec_g gDisplayMain;
 extern void *gZoneActArchive;
 extern u8 data_ov000_023654a8[];
 
-void func_ov000_022da6b4(void);
+void Boss3_Unk_ov000_022da6b4(void);
 void NNS_FndMountArchive(void *ctx, void *a, void *b);
 void *NNS_FndGetArchiveFileByIndex(void *ctx, u32 id);
 void NNS_FndUnmountArchive(void *ctx);
@@ -125,7 +125,7 @@ void Boss3_State_Unk_ov000_022d98ec(UnkStruct_022d98ec *s) {
     UnkStruct_022d98ec_c *c = (UnkStruct_022d98ec_c *)(u32)&data_ov000_0236a48c;
     u8 buf[0x40];
     u8 arc[0x5c];
-    func_ov000_022da6b4();
+    Boss3_Unk_ov000_022da6b4();
     data_ov000_0236a444.unkDC = 2;
     c->unk30 = 0x1000;
     c->unk44 = 0;

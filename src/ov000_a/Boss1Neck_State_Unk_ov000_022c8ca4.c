@@ -62,17 +62,17 @@ extern UnkStruct_022c8ca4_2 *gBoss1;
 void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 
-void func_ov000_022c9f7c(UnkStruct_022c8ca4 *s, s32 x);
-void func_ov000_022c8c50(UnkStruct_022c8ca4 *s);
+void Boss1Neck_Unk_ov000_022c9f7c(UnkStruct_022c8ca4 *s, s32 x);
+void Boss1Neck_State_Unk_ov000_022c8c50(UnkStruct_022c8ca4 *s);
 
 void Boss1Neck_State_Unk_ov000_022c8ca4(UnkStruct_022c8ca4 *s) {
     if (gBoss1->unk228 > 0)
-        func_ov000_022c9f7c(s, 0x1aa00);
+        Boss1Neck_Unk_ov000_022c9f7c(s, 0x1aa00);
     else
-        func_ov000_022c9f7c(s, 0x1800);
+        Boss1Neck_Unk_ov000_022c9f7c(s, 0x1800);
     s->unk20C++;
     if ((s16)s->unk2E != 0)
         s->unk20C = 0;
     if (s->unk20C > 10)
-        s->func = func_ov000_022c8c50;
+        s->func = Boss1Neck_State_Unk_ov000_022c8c50;
 }

@@ -45,7 +45,7 @@ extern s16 data_0206e470[];
 
 void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-s32 func_ov000_022da7c8(s32 a, s32 b, s32 c);
+s32 Boss3_Unk_ov000_022da7c8(s32 a, s32 b, s32 c);
 
 void Boss3_Draw_Unk_ov000_022da4b4(void) {
     UnkStruct_022da4b4_p *p = gPlayers;
@@ -78,7 +78,7 @@ void Boss3_Draw_Unk_ov000_022da4b4(void) {
             return;
         if (gBoss3->unk218->unk2E <= 0)
             f = TRUE;
-        if (func_ov000_022da7c8(gBoss3->unk214->unk10, p->unk10, f) < 0x1f400) {
+        if (Boss3_Unk_ov000_022da7c8(gBoss3->unk214->unk10, p->unk10, f) < 0x1f400) {
             if (f)
                 p->unk420 |= 0x20;
             else

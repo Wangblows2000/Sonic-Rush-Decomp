@@ -1,9 +1,9 @@
 #include <nitro/types.h>
 
-void func_020514e4(void);
+void WirelessSession_GetSendBuffer(void);
 
 #pragma thumb on
 void ResultsScreen_GetLocalRecord(void) {
-    func_020514e4();
+    WirelessSession_GetSendBuffer();
 }
 #pragma thumb reset

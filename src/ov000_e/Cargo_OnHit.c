@@ -11,7 +11,7 @@ typedef struct {
     s16 unk37A;
 } UnkStruct_Player;
 
-void func_ov000_02304f10(UnkStruct_StageObj *w);
+void Cargo_Action_Unk_ov000_02304f10(UnkStruct_StageObj *w);
 void Player_Action_Cargo(UnkStruct_Player *p, UnkStruct_StageObj *w, s32 a, s32 b);
 
 void Cargo_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
@@ -34,7 +34,7 @@ void Cargo_OnHit(UnkStruct_Hit *a, UnkStruct_Hit *b) {
         if (v >= 0)
             return;
     }
-    func_ov000_02304f10(w);
+    Cargo_Action_Unk_ov000_02304f10(w);
     if (w->unk1E0->unk4 & 2)
         Player_Action_Cargo(p, w, 0x18, 0);
     else

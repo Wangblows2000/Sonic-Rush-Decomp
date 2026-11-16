@@ -33,7 +33,7 @@ extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_Mgr *gBossF;
 extern u16 data_ov000_02364344[][8];
 
-void func_ov000_022f4cbc(UnkStruct_022f28b4 *s);
+void BossFPartD8_Unk_ov000_022f4cbc(UnkStruct_022f28b4 *s);
 void ObjRect_SetBox3D(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e, s16 f, s16 g);
 void BossFPartD8_State_Unk_ov000_022f2724(UnkStruct_022f28b4 *s);
 
@@ -49,7 +49,7 @@ static inline s32 GetIdxB(void) {
 void BossFPartD8_State_Unk_ov000_022f28b4(UnkStruct_022f28b4 *s) {
     UnkStruct_Mgr *m = gBossF;
 
-    func_ov000_022f4cbc(s);
+    BossFPartD8_Unk_ov000_022f4cbc(s);
     s->coll314.unkA |= 4;
     ObjRect_SetBox3D(&s->coll314, 0x10, -0x80, 0x70, 0x38, -0x7d00, 0x7d00);
     s->unk438 = data_ov000_02364344[GetIdxB()][gBossStatus.unk8 - 1];

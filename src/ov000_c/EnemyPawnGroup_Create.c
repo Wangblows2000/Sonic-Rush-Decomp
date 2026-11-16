@@ -45,10 +45,10 @@ void EnemyPawnGroup_Destructor(void);
 void MapObject_Destructor(void);
 void EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc768(void);
 void EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc6e8(void);
-void func_ov000_022fc894(void);
+void EnemyPawnGroup_OnDetect(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_022fecf4_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void func_ov000_022fe9b4(UnkStruct_022fecf4 *w);
+void EnemyPawnGroup_Action_Unk_ov000_022fe9b4(UnkStruct_022fecf4 *w);
 void EnemyPawnGroup_Action_Unk_ov000_022fec38(UnkStruct_022fecf4 *w);
 void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fecf4 *w);
 
@@ -169,7 +169,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk20C.unkA |= 0xc0;
     ObjRect_SetAtkDefFlags(&w->unk20C, 0, -16);
     w->unk20C.unk28 = 0x12;
-    w->unk20C.unk1C = func_ov000_022fc894;
+    w->unk20C.unk1C = EnemyPawnGroup_OnDetect;
     w->unk20C.unk18 = w;
     w->base.unk58 |= 0x40;
     if (w->base.unk1E0->unk4 & 0x10)
@@ -184,7 +184,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     }
     w->base.unkC = 200;
     if (w->base.unk1E0->unk9 != 0) {
-        func_ov000_022fe9b4(w);
+        EnemyPawnGroup_Action_Unk_ov000_022fe9b4(w);
     } else if (p->unk4 & 0x40) {
         EnemyPawnGroup_Action_Unk_ov000_022fec38(w);
         w->base.unk1F4 |= 0x40;

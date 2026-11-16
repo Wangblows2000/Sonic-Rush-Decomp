@@ -53,7 +53,7 @@ void Model_Draw(void *s);
 void Model_Animate(void *s);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, void (*fn)(void), void *w);
-void func_ov000_022ebccc(void);
+void Boss7PartD5_Unk_ov000_022ebccc(void);
 
 void Boss7PartD5_Draw(void) {
     UnkStruct_022eb9f8 *w = gTaskCurrent->work;
@@ -99,7 +99,7 @@ void Boss7PartD5_Draw(void) {
     sub->unk48.y = -(w->base.unk14 << 4);
     sub->unk48.z = w->base.unk18 << 4;
     if (!(w->base.unk5C & 0x10)) {
-        AnimatorSprite_ProcessAnimation(&w->base.spr0, func_ov000_022ebccc, w);
+        AnimatorSprite_ProcessAnimation(&w->base.spr0, Boss7PartD5_Unk_ov000_022ebccc, w);
         Model_Animate(sub);
     }
     Model_Draw(sub);

@@ -41,9 +41,9 @@ void MI_CpuFill8(void *p, s32 v, u32 n);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022db758(s32 x, void *a, s32 b, s32 c);
+void Boss4_Unk_ov000_022db758(s32 x, void *a, s32 b, s32 c);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022dbd04(UnkStruct_022dee94 *w);
+void Boss4PartD2_Unk_ov000_022dbd04(UnkStruct_022dee94 *w);
 
 UnkStruct_022dee94 *Boss4PartD2_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_02369b2c *boss = gBoss4;
@@ -72,7 +72,7 @@ UnkStruct_022dee94 *Boss4PartD2_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk18 = 0;
     w->unk4E0 = w->base.unk10;
     w->unk4E4 = w->base.unk10;
-    func_ov000_022db758(0, w->unk4E8, w->unk4E0, 0);
+    Boss4_Unk_ov000_022db758(0, w->unk4E8, w->unk4E0, 0);
     sub = &w->unk344;
     Model_Init(sub, 0);
     Model_SetResource(sub, boss->unkAB0[14], 0);
@@ -80,6 +80,6 @@ UnkStruct_022dee94 *Boss4PartD2_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     Model_SetAnimation(sub, 1, boss->unkAB0[16], 0, 0);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     Sound_PlaySeqArc(0, 0, 0x8c);
-    func_ov000_022dbd04(w);
+    Boss4PartD2_Unk_ov000_022dbd04(w);
     return w;
 }

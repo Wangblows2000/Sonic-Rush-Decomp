@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366d14[], data_ov000_0236a15c[];
 
-void func_ov000_02311cc4(void);
+void ParachuteReleased_State_Unk_ov000_02311cc4(void);
 
 void ParachuteReleased_Create(UnkStruct_StageObj *arg) {
     UnkStruct_Task *task;
@@ -34,5 +34,5 @@ void ParachuteReleased_Create(UnkStruct_StageObj *arg) {
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
     w->unk54 |= 0x10;
-    w->unk68 = func_ov000_02311cc4;
+    w->unk68 = ParachuteReleased_State_Unk_ov000_02311cc4;
 }

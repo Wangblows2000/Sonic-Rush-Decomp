@@ -13,7 +13,7 @@ s32 func_ov000_0235dfc4();
 s32 func_ov000_0235def0();
 s32 func_ov000_0235ddec();
 s32 func_ov000_0235ddac();
-s32 func_02051474();
+s32 WirelessSession_GetPartnerRecvBuffer();
 s32 MI_CpuCopy8();
 s32 SysSound_PlaySE();
 void func_ov000_0235e5b4();
@@ -34,7 +34,7 @@ void func_ov000_0235e61c(void) {
     s32 t3 = (*(u32 *)((u8 *)t0 + 0x4) + 0x1);
     *(u32 *)((u8 *)t0 + 0x4) = t3;
     if (t2 != 0) {
-        s32 t4 = func_02051474(t3);
+        s32 t4 = WirelessSession_GetPartnerRecvBuffer(t3);
         MI_CpuCopy8((t4 + 0x6), (t0 + 0xc14), 6);
         SysSound_PlaySE(7);
         *(u32 *)t0 = 0;

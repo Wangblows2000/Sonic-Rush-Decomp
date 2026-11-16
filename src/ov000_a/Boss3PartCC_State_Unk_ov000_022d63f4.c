@@ -35,14 +35,14 @@ extern u16 data_ov000_02363148[][6];
 extern u16 data_ov000_02363160[][6];
 extern u16 data_ov000_023630ac[];
 
-void func_ov000_022dac94(u16 *p, s32 a, s32 b);
+void Boss3_Unk_ov000_022dac94(u16 *p, s32 a, s32 b);
 void Boss_LoadModelPalettes(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
-void func_ov000_022da6b4(void);
+void Boss3_Unk_ov000_022da6b4(void);
 void Boss3PartCC_State_Unk_ov000_022d63f0(UnkStruct_022d63f4 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d63f4(UnkStruct_022d63f4 *s) {
     s16 v;
-    func_ov000_022dac94(&s->unk264, 2, 6);
+    Boss3_Unk_ov000_022dac94(&s->unk264, 2, 6);
     if (s->unk25A < 0x2d || (s->unk258 & 0x8000)) {
         s->unk25A++;
         s->unk258++;
@@ -68,7 +68,7 @@ void Boss3PartCC_State_Unk_ov000_022d63f4(UnkStruct_022d63f4 *s) {
             s->unk2E = 0;
     }
     if (s->unk2C4.unk10C & 2) {
-        func_ov000_022da6b4();
+        Boss3_Unk_ov000_022da6b4();
         s->func = Boss3PartCC_State_Unk_ov000_022d63f0;
     }
 }

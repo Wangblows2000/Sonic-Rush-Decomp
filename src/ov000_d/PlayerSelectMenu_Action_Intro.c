@@ -5,7 +5,7 @@ typedef struct {
     u8 unk3;
 } UnkStruct_02359af4_Sync;
 
-UnkStruct_02359af4_Sync *func_020514e4(void);
+UnkStruct_02359af4_Sync *WirelessSession_GetSendBuffer(void);
 void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void PlayerSelectMenu_State_Intro(void);
 
@@ -46,7 +46,7 @@ void PlayerSelectMenu_Action_Intro(UnkStruct_SceneTask *t) {
     w->unk334 = 1;
     w->unk338 = 1;
     t->unk8 = PlayerSelectMenu_State_Intro;
-    func_020514e4()->unk3 = 0;
+    WirelessSession_GetSendBuffer()->unk3 = 0;
 }
 
 #pragma thumb reset

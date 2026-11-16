@@ -13,13 +13,13 @@ typedef struct UnkStruct_022f3d48 {
 
 extern u16 data_ov000_02364248[][6];
 
-void func_ov000_022f3c84(UnkStruct_022f3d48 *p);
+void BossFPartD8_State_Unk_ov000_022f3c84(UnkStruct_022f3d48 *p);
 void BossFPartD8_State_Unk_ov000_022f3bb8(UnkStruct_022f3d48 *p);
 
 void BossFPartD8_State_Unk_ov000_022f3d48(UnkStruct_022f3d48 *p) {
     p->unk43C = 0;
     if (data_ov000_02364248[p->unk458][p->unk438] != 0)
-        p->unk68 = func_ov000_022f3c84;
+        p->unk68 = BossFPartD8_State_Unk_ov000_022f3c84;
     else
         p->unk68 = BossFPartD8_State_Unk_ov000_022f3bb8;
     p->unk68(p);

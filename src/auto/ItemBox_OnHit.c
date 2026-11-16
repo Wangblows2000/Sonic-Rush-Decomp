@@ -5,7 +5,7 @@ s32 ObjRect_FuncNoHit();
 s32 Sound_PlaySeqArcEx();
 s32 EffZakoBombBurst_Create();
 s32 Player_Action_AttackBounce();
-s32 func_ov000_0230da90();
+s32 ItemBox_Unk_ov000_0230da90();
 s32 ItemBox_CreatePart_ov000_0230d5d4();
 
 void ItemBox_OnHit(u8 *p0, u8 *p1) {
@@ -32,6 +32,6 @@ void ItemBox_OnHit(u8 *p0, u8 *p1) {
             Player_Action_AttackBounce(t1);
         }
     }
-    func_ov000_0230da90(t0, t1, ((u32)(*(s8 *)((u8 *)*(u32 *)((u8 *)t0 + 0x1e0) + 0x6) << 0x10) >> 0x10));
+    ItemBox_Unk_ov000_0230da90(t0, t1, ((u32)(*(s8 *)((u8 *)*(u32 *)((u8 *)t0 + 0x1e0) + 0x6) << 0x10) >> 0x10));
     ItemBox_CreatePart_ov000_0230d5d4(t1, 0, 0, ((u32)(*(s8 *)((u8 *)*(u32 *)((u8 *)t0 + 0x1e0) + 0x6) << 0x10) >> 0x10));
 }

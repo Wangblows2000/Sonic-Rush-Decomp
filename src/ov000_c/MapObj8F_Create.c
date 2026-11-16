@@ -7,8 +7,8 @@ typedef struct {
 
 extern void *data_ov000_02369ba0;
 
-void func_ov000_02308720();
-void func_ov000_023088e8();
+void MapObj8F_Action_Unk_ov000_02308720();
+void MapObj8F_Action_Unk_ov000_023088e8();
 void MapObj8F_Destructor();
 
 UnkStruct_02308904 *MapObj8F_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -32,8 +32,8 @@ UnkStruct_02308904 *MapObj8F_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x20;
     if (w->base.unk1E0->unk4 & 1)
-        func_ov000_02308720(w);
+        MapObj8F_Action_Unk_ov000_02308720(w);
     else
-        func_ov000_023088e8(w);
+        MapObj8F_Action_Unk_ov000_023088e8(w);
     return w;
 }

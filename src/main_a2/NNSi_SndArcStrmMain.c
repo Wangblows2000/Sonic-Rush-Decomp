@@ -4,7 +4,7 @@
 extern UnkStrm data_020847b8[];
 extern s16 data_020725e0[];
 
-void func_0201fbc0(UnkStrm *s);
+void ForceStopStrm_sndarc_stream(UnkStrm *s);
 void NNS_SndStrmStart(UnkStrm *s);
 void NNSi_SndFaderUpdate(NNSSndFader *f);
 BOOL NNSi_SndFaderIsFinished(NNSSndFader *f);
@@ -20,7 +20,7 @@ void NNSi_SndArcStrmMain(void) {
     for (i = 0; i < 4; i++, s++) {
         if (!s->unk10C_0) continue;
         if (s->unk110 == 0) {
-            func_0201fbc0(s);
+            ForceStopStrm_sndarc_stream(s);
             continue;
         }
         if (s->unk10C_2 && s->unk114 != 0) {
@@ -38,7 +38,7 @@ void NNSi_SndArcStrmMain(void) {
                 s->unk154 = vol;
             }
             if (s->unk10C_3 && NNSi_SndFaderIsFinished(&s->fader)) {
-                func_0201fbc0(s);
+                ForceStopStrm_sndarc_stream(s);
             }
         }
     }

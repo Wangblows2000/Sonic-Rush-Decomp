@@ -24,7 +24,7 @@ typedef struct {
 extern UnkFile_02052af8 *data_022c4664;
 
 s32 FS_ReadFile(void *f, void *buf, u32 size);
-void func_020526bc(void *bg, void *buf);
+void NaviMsg_ParsePanelHeader(void *bg, void *buf);
 void NaviMsg_State_HideTimer(void);
 
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
@@ -40,7 +40,7 @@ void NaviMsg_LoadPanel(UnkWork_02052af8 *w, s32 idx, s32 v) {
         f = &data_022c4664[idx];
         FS_ReadFile(f, w->buf, f->end - f->start);
         f->cur = f->start;
-        func_020526bc(w->bg94, w->buf);
+        NaviMsg_ParsePanelHeader(w->bg94, w->buf);
         plane = (REG_DB_DISPCNT & 0x1f00) >> 8;
         REG_DB_DISPCNT = (REG_DB_DISPCNT & ~0x1f00) | ((plane & ~1) << 8);
         w->flags |= 0x200000;

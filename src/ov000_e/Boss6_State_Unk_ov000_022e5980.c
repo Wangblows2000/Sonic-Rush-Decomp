@@ -14,14 +14,14 @@ typedef struct {
 
 extern UnkStruct_StageObj *gPlayers;
 
-void func_ov000_022e5c1c(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e5c1c(UnkStruct_Boss *w);
 void Boss6_SelectNextAttack(s32 a);
 
 void Boss6_State_Unk_ov000_022e5980(UnkStruct_Boss *w) {
     s32 d;
 
     w->unkF50--;
-    func_ov000_022e5c1c(w);
+    Boss6_Unk_ov000_022e5c1c(w);
     d = gPlayers->unk10 - w->base.unk10;
     if (w->unkF54 >= 0) {
         if (w->base.unk10 > 0x2aa00 || d < -0x8000) {

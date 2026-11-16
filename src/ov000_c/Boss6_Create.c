@@ -76,7 +76,7 @@ extern u8 data_ov000_023657ec[], data_ov000_023636f0[], data_ov000_023657e4[], d
 void Boss6_Destructor(void);
 void Boss6_Draw(void);
 void Boss6_State_WaitForStart(void);
-void func_ov000_022e62fc(void);
+void Boss6_Unk_ov000_022e62fc(void);
 u16 Boss_GetStartHealth(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
@@ -88,7 +88,7 @@ void Model_SetResource(void *s, void *res, s32 idx);
 u8 *NNS_G3dGetMdlSet(void *p);
 void NNS_G3dMdlSetMdlAlphaAll(void *p, s32 a);
 void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
-void func_ov000_022e671c(UnkStruct_022e6c0c *w);
+void Boss6_Unk_ov000_022e671c(UnkStruct_022e6c0c *w);
 void Boss_LoadModelPalettes(void *a, void *b, void *c, void *d, s32 e);
 
 UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -174,7 +174,7 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     sub->unk48 = 0x1a0000;
     sub->unk4C = -0x200000;
     sub->unk50 = 0;
-    NNS_G3dRenderObjSetCallBack(sub->unk90, func_ov000_022e62fc, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(sub->unk90, Boss6_Unk_ov000_022e62fc, 0, 6, 3);
     sub->unkA = 4;
     sub = &w->unk210[7];
     sub->unk48 = 0;
@@ -192,7 +192,7 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     sub->unkA = 4;
     sub->unkB = 2;
     sub->unkC = 0xb;
-    func_ov000_022e671c(w);
+    Boss6_Unk_ov000_022e671c(w);
     w->unkF46 = 1;
     w->unkF48 = 0xffff;
     w->unkD54 = -0x17ff;

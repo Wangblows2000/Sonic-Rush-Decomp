@@ -62,15 +62,15 @@ extern UnkStruct_022c8bd0_2 *gBoss1;
 void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 
-void func_ov000_022c71d8(s16 a);
-void func_ov000_022c8bb4(UnkStruct_022c8bd0 *s);
+void Boss1_Unk_ov000_022c71d8(s16 a);
+void Boss1Neck_State_Unk_ov000_022c8bb4(UnkStruct_022c8bd0 *s);
 
 void Boss1Neck_State_Unk_ov000_022c8bd0(UnkStruct_022c8bd0 *s) {
     UnkStruct_022c8bd0_5 *q = s->unk30C;
     if (((q->unk8->unk4 << 12) - q->unk0) >> 12 < 0x2d && !(gBoss1->unk20C & 1)) {
-        func_ov000_022c71d8(gBoss1->unk228);
+        Boss1_Unk_ov000_022c71d8(gBoss1->unk228);
         gBoss1->unk20C |= 1;
     }
     if (s->unk334 & 2)
-        s->func = func_ov000_022c8bb4;
+        s->func = Boss1Neck_State_Unk_ov000_022c8bb4;
 }

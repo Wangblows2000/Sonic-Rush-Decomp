@@ -6,7 +6,7 @@
 extern u8 gTaskCurrent[];
 s32 WirelessMgr_GetStatus();
 s32 Wireless_OnError();
-s32 func_020514ec();
+s32 WirelessSession_PollConnected();
 s32 Task_Destroy();
 
 void TimeSelectMenu_Transfer_WaitDataSharing(void) {
@@ -16,7 +16,7 @@ void TimeSelectMenu_Transfer_WaitDataSharing(void) {
         Wireless_OnError();
         return;
     }
-    s32 t2 = func_020514ec();
+    s32 t2 = WirelessSession_PollConnected();
     if (t2 != 0) {
         *(u32 *)((u8 *)t0 + 0x20) = 1;
         Task_Destroy(*(u32 *)gTaskCurrent);

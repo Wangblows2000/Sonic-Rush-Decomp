@@ -24,7 +24,7 @@ typedef struct {
 
 void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022e62fc(void);
+void Boss6_Unk_ov000_022e62fc(void);
 void Boss6_State_WaitSelectAttack3(void);
 
 void Boss6_State_Unk_ov000_022e3cec(UnkStruct_Boss *w) {
@@ -32,7 +32,7 @@ void Boss6_State_Unk_ov000_022e3cec(UnkStruct_Boss *w) {
 
     if (!(m->unk10C & 2))
         return;
-    NNS_G3dRenderObjSetCallBack(m->unk90, func_ov000_022e62fc, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(m->unk90, Boss6_Unk_ov000_022e62fc, 0, 6, 3);
     w->base.unk68 = Boss6_State_WaitSelectAttack3;
     Model_SetAnimation(m, 0, w->unkD08, 0xc, 0);
     m->unk114 = 0x1000;

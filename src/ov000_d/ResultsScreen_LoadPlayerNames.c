@@ -29,7 +29,7 @@ extern void *gVRAMTransferHead;
 extern void *gVRAMTransferTail;
 
 void ResultsScreen_GetNameGlyphs(u32 *out, u16 *src, s32 n);
-s32 func_02051300(u16 *buf, s32 n);
+s32 WirelessSession_GetPartnerName(u16 *buf, s32 n);
 void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -104,10 +104,10 @@ void ResultsScreen_LoadPlayerNames(UnkStruct_0235d1a4 *w) {
 
     if (w->unk10) {
         ResultsScreen_GetNameGlyphs(idx[0], data_02072cbc, gGameLanguage.unk18);
-        ResultsScreen_GetNameGlyphs(idx[1], name, (u16)func_02051300(name, 7));
+        ResultsScreen_GetNameGlyphs(idx[1], name, (u16)WirelessSession_GetPartnerName(name, 7));
     } else {
         ResultsScreen_GetNameGlyphs(idx[1], data_02072cbc, gGameLanguage.unk18);
-        ResultsScreen_GetNameGlyphs(idx[0], name, (u16)func_02051300(name, 7));
+        ResultsScreen_GetNameGlyphs(idx[0], name, (u16)WirelessSession_GetPartnerName(name, 7));
     }
     src = (u8 *)w->unkE30 + w->unkE30->unk8;
     {

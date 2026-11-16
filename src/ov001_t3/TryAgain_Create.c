@@ -24,7 +24,7 @@ UnkTask_022d40a4 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void TryAgain_State_Enter(void);
 void TryAgain_Destructor(void);
-BOOL func_ov001_022d344c(void);
+BOOL TryAgain_Unk_ov001_022d344c(void);
 void TryAgain_ExitToRetry(void);
 void TryAgain_ExitToPlayerSelect(void);
 void TryAgain_ExitToTimeAttackMenuMode0(void);
@@ -44,7 +44,7 @@ UnkWork_022d40a4 *TryAgain_Create(void) {
     w->unk8 = 0;
     w->unk5f4 = 1;
     w->unk5f8 = 4;
-    if (func_ov001_022d344c()) {
+    if (TryAgain_Unk_ov001_022d344c()) {
         w->unk5fc = 7;
     } else {
         w->unk5fc = 10;
@@ -52,7 +52,7 @@ UnkWork_022d40a4 *TryAgain_Create(void) {
     w->unk600 = 0xd;
     w->fn604 = TryAgain_ExitToRetry;
     w->fn608 = TryAgain_ExitToPlayerSelect;
-    if (func_ov001_022d344c()) {
+    if (TryAgain_Unk_ov001_022d344c()) {
         w->fn60c = TryAgain_ExitToTimeAttackMenuMode0;
     } else {
         w->fn60c = TryAgain_ExitToTimeAttackMenuMode1;

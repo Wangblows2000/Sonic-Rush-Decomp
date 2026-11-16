@@ -70,7 +70,7 @@ static inline s32 FX_MULI(s32 a, s32 b) {
 void StageTitleCardPlayer_State_Finish(void *t);
 void *Camera_GetPrimary(void);
 void Camera_WorldToScreen(void *m, s32 x, s32 y, s16 *ox, s16 *oy);
-UnkCam_0205c794 *func_ov001_022f71f4(void);
+UnkCam_0205c794 *ExtraBoss_Unk_ov001_022f71f4(void);
 s32 FX_Div(s32 a, s32 b);
 
 void StageTitleCardPlayer_State_Zoom(UnkWork_0205c794 *w, UnkTask_0205c794 *t) {
@@ -121,7 +121,7 @@ void StageTitleCardPlayer_State_Zoom(UnkWork_0205c794 *w, UnkTask_0205c794 *t) {
         a = (data_ov000_0236a444.angle & 0xffff) >> 4;
         h = FX_Div(COS_IDX(a), SIN_IDX(a)) * 0x60;
     } else {
-        h = func_ov001_022f71f4()->unk1c;
+        h = ExtraBoss_Unk_ov001_022f71f4()->unk1c;
     }
     w->unk4b4 = 0x80000;
     a = FX_MUL(-0x5000, s) - 0x5b000;

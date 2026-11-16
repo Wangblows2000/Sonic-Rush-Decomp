@@ -13,39 +13,39 @@ typedef struct {
 
 extern UnkTask_022dd42c *gTaskCurrent;
 
-void func_ov001_022ddc3c(UnkWork_022dd42c *w);
-void func_ov001_022ddb00(UnkWork_022dd42c *w);
-void func_ov001_022dd93c(UnkWork_022dd42c *w);
-void func_ov001_022ddacc(UnkWork_022dd42c *w);
-void func_ov001_022dd614(UnkTask_022dd42c *t);
-void func_ov001_022dd574(UnkTask_022dd42c *t);
-void func_ov001_022dd534(UnkTask_022dd42c *t);
+void VsMenu_Unk_ov001_022ddc3c(UnkWork_022dd42c *w);
+void VsMenu_Unk_ov001_022ddb00(UnkWork_022dd42c *w);
+void VsMenu_Unk_ov001_022dd93c(UnkWork_022dd42c *w);
+void VsMenu_Unk_ov001_022ddacc(UnkWork_022dd42c *w);
+void VsMenu_Unk_ov001_022dd614(UnkTask_022dd42c *t);
+void VsMenu_Unk_ov001_022dd574(UnkTask_022dd42c *t);
+void VsMenu_Unk_ov001_022dd534(UnkTask_022dd42c *t);
 
 #pragma thumb on
 void VsMenu_State_Init(void) {
     UnkWork_022dd42c *w = gTaskCurrent->work;
 
     if (w->step == 0) {
-        func_ov001_022ddc3c(w);
+        VsMenu_Unk_ov001_022ddc3c(w);
     } else if (w->step == 1) {
-        func_ov001_022ddb00(w);
+        VsMenu_Unk_ov001_022ddb00(w);
     } else if (w->step == 2) {
-        func_ov001_022dd93c(w);
+        VsMenu_Unk_ov001_022dd93c(w);
     } else if (w->step == 3) {
-        func_ov001_022ddacc(w);
+        VsMenu_Unk_ov001_022ddacc(w);
     }
     w->step++;
     if (w->step >= 4) {
         w->step = 0;
         switch (w->mode) {
         case 0:
-            func_ov001_022dd614(gTaskCurrent);
+            VsMenu_Unk_ov001_022dd614(gTaskCurrent);
             break;
         case 1:
-            func_ov001_022dd574(gTaskCurrent);
+            VsMenu_Unk_ov001_022dd574(gTaskCurrent);
             break;
         case 2:
-            func_ov001_022dd534(gTaskCurrent);
+            VsMenu_Unk_ov001_022dd534(gTaskCurrent);
             break;
         }
     }

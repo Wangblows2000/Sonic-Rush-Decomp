@@ -28,7 +28,7 @@ extern UnkStruct_02369b84 *gBossF;
 extern s16 data_ov000_02363dc0[];
 extern s16 data_ov000_02363dcc[];
 
-void func_ov000_022f68c4(UnkStruct_022f5ce4 *w, s32 a, s32 b);
+void BossFPartDE_Unk_ov000_022f68c4(UnkStruct_022f5ce4 *w, s32 a, s32 b);
 
 static inline BOOL IsMode23(void) {
     return gGameState.unk10 == 2 || gGameState.unk10 == 3;
@@ -56,7 +56,7 @@ void BossFPartDE_State_Unk_ov000_022f5ce4(UnkStruct_022f5ce4 *w) {
             v = 0;
     }
     w->unk212 = v;
-    func_ov000_022f68c4(w, data_ov000_02363dc0[GetLevel()], data_ov000_02363dcc[GetLevel()]);
+    BossFPartDE_Unk_ov000_022f68c4(w, data_ov000_02363dc0[GetLevel()], data_ov000_02363dcc[GetLevel()]);
     if (w->base.unk14 < 0x18000) {
         gBossF->unk218->unk438--;
         w->base.unk54 |= 4;

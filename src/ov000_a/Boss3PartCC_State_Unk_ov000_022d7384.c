@@ -53,13 +53,13 @@ struct UnkStruct_022d7384 {
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-void func_ov000_022dac94(u16 *p, s32 a, s32 b);
-void func_ov000_022d72dc(UnkStruct_022d7384 *s);
+void Boss3_Unk_ov000_022dac94(u16 *p, s32 a, s32 b);
+void Boss3PartCC_State_Unk_ov000_022d72dc(UnkStruct_022d7384 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d7384(UnkStruct_022d7384 *s) {
-    func_ov000_022dac94(&s->unk264, 2, 6);
+    Boss3_Unk_ov000_022dac94(&s->unk264, 2, 6);
     if (!(s->unk2C4.unk10C & 2))
         return;
     if (s->unk264 == 0)
-        s->func = func_ov000_022d72dc;
+        s->func = Boss3PartCC_State_Unk_ov000_022d72dc;
 }

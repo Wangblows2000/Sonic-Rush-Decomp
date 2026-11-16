@@ -7,11 +7,11 @@ typedef struct UnkStruct_022e9ef0 {
     u16 unk454;
 } UnkStruct_022e9ef0;
 
-void func_ov000_022e9f8c(void);
+void Boss7PartD5_InputState_Unk_ov000_022e9f8c(void);
 
 s32 Boss7PartD5_InputState_Unk_ov000_022e9ef0(UnkStruct_022e9ef0 *s) {
     s->unk454--;
     if (s->unk454 == 0)
-        s->func = func_ov000_022e9f8c;
+        s->func = Boss7PartD5_InputState_Unk_ov000_022e9f8c;
     return 0;
 }

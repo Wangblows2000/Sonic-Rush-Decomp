@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-s32 func_02051300(void *buf, s32 n);
+s32 WirelessSession_GetPartnerName(void *buf, s32 n);
 BOOL func_ov000_0235cbd8(void);
 void SaveData_RecordVsResult(s32 a, void *buf, u8 len, s32 b);
 
@@ -8,7 +8,7 @@ void SaveData_RecordVsResult(s32 a, void *buf, u8 len, s32 b);
 
 void func_ov000_0235cb84(s32 mode, s32 arg) {
     u8 buf[0x18];
-    u8 len = func_02051300(buf, 10);
+    u8 len = WirelessSession_GetPartnerName(buf, 10);
     s32 v;
 
     switch (mode) {

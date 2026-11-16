@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 extern u8 gDisplayMain[];
-void func_ov000_022ca63c();
+void Boss1_State_Unk_ov000_022ca63c();
 
 void Boss1_State_Unk_ov000_022ca890(u8 *p0) {
     s32 t0 = *(s16 *)((u8 *)gDisplayMain + 0x48);
@@ -12,6 +12,6 @@ void Boss1_State_Unk_ov000_022ca890(u8 *p0) {
     s32 t1 = *(u16 *)((u8 *)p0 + 0x220);
     *(u16 *)((u8 *)p0 + 0x220) = (*(u16 *)((u8 *)p0 + 0x220) + 0x1);
     if ((u32)t1 > (u32)0x1e) {
-        *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022ca63c;
+        *(u32 *)((u8 *)p0 + 0x68) = (u32)Boss1_State_Unk_ov000_022ca63c;
     }
 }

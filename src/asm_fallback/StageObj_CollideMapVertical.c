@@ -4,7 +4,7 @@
 extern u32 data_0206e470;
 extern void StageObj_GetMapProbeFlags(void);
 extern void StageObj_ProbeCollision(void);
-extern void func_020660b0(void);
+extern void StageObj_ApplyCollisionAttr(void);
 extern void MapCollision_ProbeDistance(void);
 extern void ObjCollisionMap_ProbeForObj(void);
 extern void ObjAngle_MoveToward8(void);
@@ -260,7 +260,7 @@ _35c:
     mov r8, r0, asr #0x18
     ldrb r1, [sp, #0x67]
     mov r0, r9
-    bl func_020660b0
+    bl StageObj_ApplyCollisionAttr
     ldr r0, [sp, #0x24]
     str r5, [sp]
     add r0, r6, r0
@@ -282,7 +282,7 @@ _35c:
     str r0, [sp, #0x58]
     ldrb r1, [sp, #0x67]
     mov r0, r9
-    bl func_020660b0
+    bl StageObj_ApplyCollisionAttr
     ldr r1, [r9, #0x58]
     ands r0, r1, #0x200000
     beq _554
@@ -409,7 +409,7 @@ _5a8:
 _5ec:
     mov r0, r9
     ldrb r1, [sp, #0x67]
-    bl func_020660b0
+    bl StageObj_ApplyCollisionAttr
     ldrh r1, [r9, #0x5e]
     ands r0, r1, #8
     beq _668

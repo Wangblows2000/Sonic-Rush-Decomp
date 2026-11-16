@@ -5,11 +5,11 @@ typedef struct UnkStruct_0235650c {
     s32 unkC;
 } UnkStruct_0235650c;
 
-u8 *func_020514e4(void);
+u8 *WirelessSession_GetSendBuffer(void);
 
 #pragma thumb on
 void PlayerSelectMenu_SetLocalQuit(UnkStruct_0235650c *s) {
     if (s->unkC == 1)
-        func_020514e4()[2] = 1;
+        WirelessSession_GetSendBuffer()[2] = 1;
 }
 #pragma thumb reset

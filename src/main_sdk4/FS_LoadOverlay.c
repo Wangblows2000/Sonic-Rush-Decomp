@@ -5,13 +5,13 @@ typedef struct {
 } FSOverlayInfo;
 
 BOOL FS_LoadOverlayInfo(FSOverlayInfo *info, u32 target, u32 id);
-BOOL FS_LoadOverlayFile(FSOverlayInfo *info);
+BOOL FS_LoadOverlayImage(FSOverlayInfo *info);
 void FS_StartOverlay(FSOverlayInfo *info);
 
 BOOL FS_LoadOverlay(u32 target, u32 id)
 {
     FSOverlayInfo info;
-    if (!FS_LoadOverlayInfo(&info, target, id) || !FS_LoadOverlayFile(&info)) {
+    if (!FS_LoadOverlayInfo(&info, target, id) || !FS_LoadOverlayImage(&info)) {
         return FALSE;
     }
     FS_StartOverlay(&info);

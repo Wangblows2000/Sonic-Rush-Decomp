@@ -49,7 +49,7 @@ extern u8 data_ov000_02366048[];
 
 void BossFPartDE_Destructor(void);
 void BossFPartDE_State_Unk_ov000_022f6834(void);
-void func_ov000_022f5c78(void);
+void BossFPartDE_Unk_ov000_022f5c78(void);
 void BossFPartDE_Draw(void);
 void BossFPartDE_OnHit(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
@@ -80,7 +80,7 @@ UnkStruct_022f92dc *BossFPartDE_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->base.unk68 = BossFPartDE_State_Unk_ov000_022f6834;
         break;
     case 1:
-        w->base.unk68 = func_ov000_022f5c78;
+        w->base.unk68 = BossFPartDE_Unk_ov000_022f5c78;
         break;
     }
     boss->unk218->unk438++;

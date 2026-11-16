@@ -24,7 +24,7 @@ typedef struct {
 
 extern UnkEntry_022c9314 *data_ov001_0231f048;
 
-BOOL func_ov001_022c9310(UnkStruct_022c9314 *p);
+BOOL SoundTest_Unk_ov001_022c9310(UnkStruct_022c9314 *p);
 void NNS_SndCaptureStopSampling(void);
 void NNS_SndStopSoundAll(void);
 void NNS_SndArcStrmStart(void *a, u16 id, s32 b);
@@ -38,7 +38,7 @@ void SoundTest_SamplingCallback(void *p);
 void SoundTest_PlayTrack(UnkStruct_022c9314 *p) {
     UnkEntry_022c9314 *e;
 
-    if (!func_ov001_022c9310(p)) return;
+    if (!SoundTest_Unk_ov001_022c9310(p)) return;
     NNS_SndCaptureStopSampling();
     e = &data_ov001_0231f048[p->idx];
     NNS_SndStopSoundAll();

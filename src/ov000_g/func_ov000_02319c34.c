@@ -79,7 +79,7 @@ void StageObj_SetOAMPriority(void *a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 u8 ObjSpd_DownSet(u8 a, s32 b);
 void func_ov000_02319bb4(UnkStruct_02319c34 *w);
-s32 NNS_SndPlayerCountPlayingSeqByPlayerNo(s32 a, s32 b);
+s32 NNS_SndPlayerCountPlayingSeqBySeqArcIdx(s32 a, s32 b);
 void Sound_PlaySeqArcBankPrio(void *a, s32 b, s32 c, s32 d, s32 e);
 
 void func_ov000_02319c34(UnkStruct_02319c34 *w) {
@@ -170,7 +170,7 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
         func_ov000_02319bb4(w);
         return;
     }
-    if (!(w->unk58 & 0x2000) && NNS_SndPlayerCountPlayingSeqByPlayerNo(0, 0x5e) == 0) {
+    if (!(w->unk58 & 0x2000) && NNS_SndPlayerCountPlayingSeqBySeqArcIdx(0, 0x5e) == 0) {
         Sound_PlaySeqArcBankPrio(w->unk1DC, 0, 0x5e, 0x20, -1);
     }
     if (gPlayers->unk32C & 0x400) {

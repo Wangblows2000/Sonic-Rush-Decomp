@@ -36,7 +36,7 @@ extern UnkStruct_023619a4_Touch gTouchState;
 
 void func_ov000_023611f8(UnkStruct_023619a4 *w);
 void func_ov000_0236119c(UnkStruct_023619a4 *w, s32 a, s32 b);
-UnkStruct_023619a4_Sync *func_020514e4(void);
+UnkStruct_023619a4_Sync *WirelessSession_GetSendBuffer(void);
 BOOL TimeSelectMenu_IsPartnerReadyAsChooser(UnkStruct_023619a4 *w);
 void Wireless_EnableErrorCallback(s32 a);
 void TimeSelectMenu_StartBrightnessFade(s32 x, s32 y, s32 a, s32 b);
@@ -52,7 +52,7 @@ void TimeSelectMenu_State_ChooserReady(void) {
     w->unk0++;
     if ((gPad.trg & 1) || (gTouchState.flags & 0x40)) {
         w->unk18 = 1;
-        func_020514e4()->unk3 = 1;
+        WirelessSession_GetSendBuffer()->unk3 = 1;
     }
     if (TimeSelectMenu_IsPartnerReadyAsChooser(w)) {
         w->unk1C = 1;

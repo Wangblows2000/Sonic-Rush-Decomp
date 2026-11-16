@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 extern u8 gBoss7[];
-s32 func_ov000_022ee198();
-s32 func_ov000_022e9b70();
+s32 Boss7_Unk_ov000_022ee198();
+s32 Boss7_Unk_ov000_022e9b70();
 s32 func_ov000_02326f20();
 extern u8 gBossStatus[];
 void Boss7PartD5_MoveState_Unk_ov000_022e97cc();
@@ -11,8 +11,8 @@ void Boss7PartD5_MoveState_Unk_ov000_022e97cc();
 void Boss7PartD5_MoveState_Unk_ov000_022e98d8(u8 *p0) {
     s32 t0 = *(u32 *)gBoss7;
     *(u32 *)((u8 *)t0 + 0x210) = 1;
-    func_ov000_022ee198(p0, 0x3c, 1);
-    func_ov000_022e9b70(p0, 1, 0);
+    Boss7_Unk_ov000_022ee198(p0, 0x3c, 1);
+    Boss7_Unk_ov000_022e9b70(p0, 1, 0);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 4);
     s32 t1 = *(u32 *)((u8 *)p0 + 0x480);
     s32 v2 = t1;

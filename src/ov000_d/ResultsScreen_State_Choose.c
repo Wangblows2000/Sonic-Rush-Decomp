@@ -14,7 +14,7 @@ BOOL ResultsScreen_IsTopButtonTouched(void);
 BOOL ResultsScreen_IsMiddleButtonTouched(void);
 BOOL ResultsScreen_IsBottomButtonTouched(void);
 void ResultsScreen_SetLocalChoice(UnkStruct_SprObj *w, s32 sel);
-u8 *func_02051474(void);
+u8 *WirelessSession_GetPartnerRecvBuffer(void);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void SysSound_PlaySE(s32 a);
 void ResultsScreen_SetLocalDecided(UnkStruct_SprObj *w);
@@ -61,7 +61,7 @@ void ResultsScreen_State_Choose(void) {
     w->unk0++;
     w->unk4++;
     if (done) {
-        MI_CpuCopy8(func_02051474() + 6, w->unkC14, 6);
+        MI_CpuCopy8(WirelessSession_GetPartnerRecvBuffer() + 6, w->unkC14, 6);
         SysSound_PlaySE(7);
         w->unk0 = 0;
         ResultsScreen_SetLocalDecided(w);

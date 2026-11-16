@@ -6,7 +6,7 @@ typedef struct {
     u32 unk238;
 } UnkStruct_02301738;
 
-void func_ov000_023013f0(UnkStruct_02301738 *w);
+void Kuragen_Unk_ov000_023013f0(UnkStruct_02301738 *w);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void Kuragen_Action_Unk_ov000_02301728(UnkStruct_02301738 *w);
 void StageObj_HandleCollider(void *w, void *a);
@@ -15,7 +15,7 @@ void Kuragen_State_Unk_ov000_02301738(UnkStruct_02301738 *w) {
     s16 sp = 0x100;
     s32 f;
 
-    func_ov000_023013f0(w);
+    Kuragen_Unk_ov000_023013f0(w);
     f = w->base.unk1E0->unk4 & 0xc;
     if (f)
         sp += (f >> 2) << 7;

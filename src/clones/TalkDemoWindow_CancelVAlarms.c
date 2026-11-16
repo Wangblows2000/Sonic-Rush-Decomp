@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
 void OS_CancelAllVAlarms(void);
-void func_02007584(void);
+void OS_EndVAlarm(void);
 
 #pragma thumb on
 void TalkDemoWindow_CancelVAlarms(void) {
     OS_CancelAllVAlarms();
-    func_02007584();
+    OS_EndVAlarm();
 }
 #pragma thumb reset

@@ -24,8 +24,8 @@ typedef struct UnkStruct_022c7278 {
 extern u8 data_02089264[];
 
 s32 FX_Inv(s32 a);
-BOOL func_0202e5e4(float a, float b);
-BOOL func_0202e528(float a, float b);
+BOOL Runtime_Unk_0202e5e4(float a, float b);
+BOOL Runtime_Unk_0202e528(float a, float b);
 void MTX_Scale22_(UnkMtx22_022c7278 *m, s32 x, s32 y);
 void G2x_SetBGyAffine_(void *p, UnkMtx22_022c7278 *m, s32 x, s32 y, s32 a, s32 b);
 
@@ -46,11 +46,11 @@ void Ending_UpdatePictureZoomShake(UnkStruct_022c7278 *w) {
     G2x_SetBGyAffine_(data_02089264, &mtx, (w->unk50->unk18 << 3) / 2, w->unk50->unk1A << 3, (s32)b, (s32)a);
     if (w->unkC & 0xc) {
         w->unk6A8 = w->unk6A8 + 3.0f;
-        if (func_0202e5e4(w->unk6A8, 10.0f))
+        if (Runtime_Unk_0202e5e4(w->unk6A8, 10.0f))
             w->unk6A8 = 10.0f;
     } else {
         w->unk6A8 = w->unk6A8 - 3.0f;
-        if (func_0202e528(w->unk6A8, -10.0f))
+        if (Runtime_Unk_0202e528(w->unk6A8, -10.0f))
             w->unk6A8 = -10.0f;
     }
     w->unk6A4 = w->unk6A4 + w->unk6AC;

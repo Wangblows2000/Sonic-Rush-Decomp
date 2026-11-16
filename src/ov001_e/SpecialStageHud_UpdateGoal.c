@@ -25,14 +25,14 @@ extern UnkStruct_02308e90 *gSpecialStageHud;
 extern s16 gDisplaySub[];
 extern u8 gBGMSoundHandle[];
 
-void func_ov001_023085f4(s32 t);
+void SpecialStageHud_Unk_ov001_023085f4(s32 t);
 void SpecialStageHud_UpdateQuotaCounter(void);
-s32 func_ov001_02314368(void);
+s32 SpecialStageHud_Unk_ov001_02314368(void);
 UnkStruct_02308e90_t *SpecialStage_GetPlayer(void);
 void AnimatorSprite_SetAnimation(UnkStruct_02308e90_o *s, u16 index);
 void SpecialStagePlayer_Action_Celebrate(void *p);
 void NNS_SndPlayerStopSeq(void *p, s32 v);
-void func_ov001_0230808c(void);
+void SpecialStageHud_Unk_ov001_0230808c(void);
 
 void SpecialStageHud_UpdateGoal(void) {
     UnkStruct_02308e90 *g = gSpecialStageHud;
@@ -45,13 +45,13 @@ void SpecialStageHud_UpdateGoal(void) {
             b = 0x10;
         gDisplaySub[0x24] = b;
     }
-    func_ov001_023085f4(g->timer - 1);
+    SpecialStageHud_Unk_ov001_023085f4(g->timer - 1);
     SpecialStageHud_UpdateQuotaCounter();
     switch (g->timer) {
     case 1:
         g->objB.x = 0x80;
         g->objB.y = 0x2a;
-        if (func_ov001_02314368() <= SpecialStage_GetPlayer()->unk148) {
+        if (SpecialStageHud_Unk_ov001_02314368() <= SpecialStage_GetPlayer()->unk148) {
             AnimatorSprite_SetAnimation(&g->objB, 3);
             SpecialStagePlayer_Action_Celebrate(SpecialStage_GetPlayer());
             return;
@@ -65,7 +65,7 @@ void SpecialStageHud_UpdateGoal(void) {
         return;
     case 0x208:
         g->timer = -1;
-        func_ov001_0230808c();
+        SpecialStageHud_Unk_ov001_0230808c();
         return;
     }
 }

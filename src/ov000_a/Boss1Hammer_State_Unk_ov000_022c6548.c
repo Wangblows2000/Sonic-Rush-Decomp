@@ -28,10 +28,10 @@ struct UnkStruct_022c6548 {
 
 extern UnkStruct_022c6548_2 *gBoss1;
 
-void func_ov000_022c6e58(UnkStruct_022c6548 *s);
-void func_ov000_022c7158(UnkStruct_022c6548 *s);
-void func_ov000_022c64a8(UnkStruct_022c6548 *s);
-void func_ov000_022c61ec(UnkStruct_022c6548 *s);
+void Boss1Hammer_Unk_ov000_022c6e58(UnkStruct_022c6548 *s);
+void Boss1Hammer_Unk_ov000_022c7158(UnkStruct_022c6548 *s);
+void Boss1_State_Unk_ov000_022c64a8(UnkStruct_022c6548 *s);
+void Boss1Hammer_State_Unk_ov000_022c61ec(UnkStruct_022c6548 *s);
 
 void Boss1Hammer_State_Unk_ov000_022c6548(UnkStruct_022c6548 *s) {
     BOOL b = FALSE;
@@ -41,7 +41,7 @@ void Boss1Hammer_State_Unk_ov000_022c6548(UnkStruct_022c6548 *s) {
     else if (s->unk2CE < 0)
         s->unk2CE += 0xa0;
     s->unk2CC += s->unk2CE;
-    func_ov000_022c6e58(s);
+    Boss1Hammer_Unk_ov000_022c6e58(s);
     v = gBoss1->unk228;
     if (v > 0) {
         if (s->unk10 <= 0x9000)
@@ -54,9 +54,9 @@ void Boss1Hammer_State_Unk_ov000_022c6548(UnkStruct_022c6548 *s) {
         if (v < 0)
             v = -v;
         if (v == 1)
-            s->func = func_ov000_022c64a8;
+            s->func = Boss1_State_Unk_ov000_022c64a8;
         else
-            s->func = func_ov000_022c61ec;
+            s->func = Boss1Hammer_State_Unk_ov000_022c61ec;
     }
-    func_ov000_022c7158(s);
+    Boss1Hammer_Unk_ov000_022c7158(s);
 }

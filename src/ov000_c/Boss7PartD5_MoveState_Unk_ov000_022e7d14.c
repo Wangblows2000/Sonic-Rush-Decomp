@@ -33,7 +33,7 @@ typedef struct {
 
 extern UnkStruct_Boss *gBoss7;
 
-void func_ov000_022e8538(UnkStruct_022e7d14 *w);
+void Boss7PartD5_Unk_ov000_022e8538(UnkStruct_022e7d14 *w);
 UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
 void Boss7PartD5_MoveState_Unk_ov000_022e899c(void);
 
@@ -57,7 +57,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e7d14(UnkStruct_022e7d14 *w) {
     w->unk46C -= 0x666;
     if (w->unk46C < 0)
         w->unk46C = 0;
-    func_ov000_022e8538(w);
+    Boss7PartD5_Unk_ov000_022e8538(w);
     if (!(b->unk220 & 0xf))
         BossEffect_CreateHoming(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
     if (w->base.spr0.unk2A != 0x80)

@@ -82,8 +82,8 @@ typedef struct UnkStruct_022d8bf8_b {
 
 extern UnkStruct_022d8bf8_b *gBoss3;
 
-void func_ov000_022daa78(void);
-void func_ov000_022daa94(void);
+void Boss3_Unk_ov000_022daa78(void);
+void Boss3_Unk_ov000_022daa94(void);
 void Boss3PartCC_State_Unk_ov000_022d8bd0(UnkStruct_022d8bf8 *s);
 
 void Boss3PartCC_Action_Unk_ov000_022d8bf8(UnkStruct_022d8bf8 *s) {
@@ -92,9 +92,9 @@ void Boss3PartCC_Action_Unk_ov000_022d8bf8(UnkStruct_022d8bf8 *s) {
     s->unk16A |= 4;
     if (r != NULL) {
         if (r->unk20C & 0x10)
-            func_ov000_022daa78();
+            Boss3_Unk_ov000_022daa78();
         else
-            func_ov000_022daa94();
+            Boss3_Unk_ov000_022daa94();
     }
     s->func = Boss3PartCC_State_Unk_ov000_022d8bd0;
 }

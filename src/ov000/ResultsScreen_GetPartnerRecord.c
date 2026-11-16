@@ -1,9 +1,9 @@
 #include <nitro/types.h>
 
-void func_02051474(void);
+void WirelessSession_GetPartnerRecvBuffer(void);
 
 #pragma thumb on
 void ResultsScreen_GetPartnerRecord(void) {
-    func_02051474();
+    WirelessSession_GetPartnerRecvBuffer();
 }
 #pragma thumb reset

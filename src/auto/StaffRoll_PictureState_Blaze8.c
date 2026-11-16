@@ -3,12 +3,12 @@
 
 #pragma thumb on
 
-s32 func_ov001_022d0220();
+s32 StaffRoll_Unk_ov001_022d0220();
 void StaffRoll_PictureState_Blaze9();
 s32 StaffRoll_SetPictureState();
 
 void StaffRoll_PictureState_Blaze8(s32 p0) {
-    func_ov001_022d0220();
+    StaffRoll_Unk_ov001_022d0220();
     s32 t0 = *(u32 *)((u8 *)p0 + 0xcc0);
     if (t0 >= 0x50000) {
         *(u32 *)((u8 *)p0 + 0xcc0) = 0x50000;

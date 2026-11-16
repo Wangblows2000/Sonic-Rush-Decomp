@@ -38,8 +38,8 @@ struct UnkStruct_022d5bf4 {
     UnkStruct_022d5bf4_v unk2D8;
 };
 
-void func_ov000_022dad70(s32 a, s32 b);
-void func_ov000_022d5d14(UnkStruct_022d5bf4 *s);
+void Boss3_Unk_ov000_022dad70(s32 a, s32 b);
+void Boss3PartCD_Unk_ov000_022d5d14(UnkStruct_022d5bf4 *s);
 extern s32 gGameState;
 
 void Boss3PartCD_State_Unk_ov000_022d5bf4(UnkStruct_022d5bf4 *s) {
@@ -47,11 +47,11 @@ void Boss3PartCD_State_Unk_ov000_022d5bf4(UnkStruct_022d5bf4 *s) {
     s->unk22A++;
     if (!(s->unk22A & 3)) {
         if (s->unk22A & 0x8000)
-            func_ov000_022dad70(gGameState, 0);
+            Boss3_Unk_ov000_022dad70(gGameState, 0);
         else
-            func_ov000_022dad70(gGameState, 1);
+            Boss3_Unk_ov000_022dad70(gGameState, 1);
         s->unk22A &= ~3;
         s->unk22A ^= 0x8000;
     }
-    func_ov000_022d5d14(s);
+    Boss3PartCD_Unk_ov000_022d5d14(s);
 }

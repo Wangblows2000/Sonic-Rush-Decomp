@@ -32,7 +32,7 @@ extern UnkTask_022dbd5c *gTaskCurrent;
 
 void ObjRect_SetBox2D(UnkStruct_022dbd5c_h *h, s32 a, s32 b, s32 c, s32 d);
 void StageObj_HandleCollider(UnkStruct_022dbd5c *s, UnkStruct_022dbd5c_h *h);
-void func_ov000_022db894(UnkStruct_022dbd5c_h *h, UnkStruct_022dbd5c_h *out);
+void Boss4_Unk_ov000_022db894(UnkStruct_022dbd5c_h *h, UnkStruct_022dbd5c_h *out);
 
 void Boss4PartD2_Collide(void) {
     UnkStruct_022dbd5c *s = gTaskCurrent->unk10;
@@ -44,7 +44,7 @@ void Boss4PartD2_Collide(void) {
     h->unk1C = NULL;
     h->unkA |= 4;
     StageObj_HandleCollider(s, h);
-    func_ov000_022db894(&s->unk160, &s->unk480);
+    Boss4_Unk_ov000_022db894(&s->unk160, &s->unk480);
     s->unk10 = s->unk4E4;
     h = &s->unk18C;
     ObjRect_SetBox2D(h, 0, -0x41, 0x50, 10);
@@ -52,5 +52,5 @@ void Boss4PartD2_Collide(void) {
     h->unk1C = NULL;
     h->unkA |= 4;
     StageObj_HandleCollider(s, h);
-    func_ov000_022db894(&s->unk18C, &s->unk4AC);
+    Boss4_Unk_ov000_022db894(&s->unk18C, &s->unk4AC);
 }

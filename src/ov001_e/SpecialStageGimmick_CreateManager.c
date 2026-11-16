@@ -17,7 +17,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
 UnkStruct_0230f804_n *SpecialStageObjList_Create(s32 a);
-void func_ov001_0230f0f4(void);
+void SpecialStageGimmick_Unk_ov001_0230f0f4(void);
 
 static inline u8 *Alloc(u32 sz) {
     u32 size = sz;
@@ -38,6 +38,6 @@ UnkStruct_0230f804 *SpecialStageGimmick_CreateManager(s32 a) {
 
     MI_CpuFill8(w, 0, sizeof(UnkStruct_0230f804));
     w->node = SpecialStageObjList_Create(a);
-    w->node->unk1DC = func_ov001_0230f0f4;
+    w->node->unk1DC = SpecialStageGimmick_Unk_ov001_0230f0f4;
     return w;
 }

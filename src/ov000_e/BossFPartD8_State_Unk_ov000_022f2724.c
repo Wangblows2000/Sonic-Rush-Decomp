@@ -28,9 +28,9 @@ extern u8 data_ov000_02363edc[][8];
 extern u16 data_ov000_02363fdc[][8];
 
 void BossF_UpdateCameraShake(u16 *p, s32 a, s32 b);
-void func_ov000_022f8bc8(u32 a, s32 b);
-void func_ov000_022f89f4(void);
-void func_ov000_022f2680(void);
+void BossFPartD8_Unk_ov000_022f8bc8(u32 a, s32 b);
+void BossFPartD8_Unk_ov000_022f89f4(void);
+void BossFPartD8_State_Unk_ov000_022f2680(void);
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
@@ -46,15 +46,15 @@ void BossFPartD8_State_Unk_ov000_022f2724(UnkStruct_022f2724 *s) {
     s->unk43A++;
     if (!(s->unk43A & 3)) {
         if (s->unk43A & 0x8000)
-            func_ov000_022f8bc8(gGameState.unk0, 0);
+            BossFPartD8_Unk_ov000_022f8bc8(gGameState.unk0, 0);
         else
-            func_ov000_022f8bc8(gGameState.unk0, 1);
+            BossFPartD8_Unk_ov000_022f8bc8(gGameState.unk0, 1);
         s->unk43A &= ~3;
         s->unk43A ^= 0x8000;
     }
     if (data_ov000_02363edc[GetIdxB()][gBossStatus.unk8 - 1] != 0) {
         if (s->unk430-- == 0) {
-            func_ov000_022f89f4();
+            BossFPartD8_Unk_ov000_022f89f4();
             s->unk430 = data_ov000_02363fdc[GetIdxB()][gBossStatus.unk8 - 1];
         }
     }
@@ -63,5 +63,5 @@ void BossFPartD8_State_Unk_ov000_022f2724(UnkStruct_022f2724 *s) {
     if (s->unk438 != 0)
         return;
     if (!(s->unk43A & 0x8000))
-        s->base.unk68 = func_ov000_022f2680;
+        s->base.unk68 = BossFPartD8_State_Unk_ov000_022f2680;
 }

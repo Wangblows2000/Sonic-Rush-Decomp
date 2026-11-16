@@ -29,7 +29,7 @@ typedef struct {
 extern volatile UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Bits5 data_02089250;
 
-void func_ov000_022f7804(UnkStruct_022f75d8 *w);
+void BossFPartDC_Unk_ov000_022f7804(UnkStruct_022f75d8 *w);
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -44,7 +44,7 @@ void BossFPartDC_State_Unk_ov000_022f75d8(UnkStruct_022f75d8 *w) {
         if (gDisplayMain.unk24.b0 == 0)
             w->unk20C |= 0x10;
     }
-    func_ov000_022f7804(w);
+    BossFPartDC_Unk_ov000_022f7804(w);
     w->unk220 += w->base.unk2E;
     x = w->unk220;
     if (x < 0x1800)

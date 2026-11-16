@@ -35,10 +35,10 @@ struct UnkStruct_022d575c {
     UnkStruct_022d575c_v unk2D8;
 };
 
-void func_ov000_022dac94(u16 *p, s32 a, s32 b);
+void Boss3_Unk_ov000_022dac94(u16 *p, s32 a, s32 b);
 
 void Boss3PartCD_State_Unk_ov000_022d575c(UnkStruct_022d575c *s) {
-    func_ov000_022dac94(&s->unk234, 2, 6);
+    Boss3_Unk_ov000_022dac94(&s->unk234, 2, 6);
     if (s->unk22C++ > 10)
         s->unk16A &= ~4;
     if (s->unk234 == 0)

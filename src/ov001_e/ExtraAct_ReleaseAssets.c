@@ -31,7 +31,7 @@ void Task_Destroy(void *task);
 void ObjVram_Free(u32 a, u32 b);
 void Model_Release(void *p);
 void NNS_SndHandleReleaseSeq(void *p);
-void func_ov001_022f99f8(void);
+void ExtraAct_Unk_ov001_022f99f8(void);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -54,7 +54,7 @@ void ExtraAct_ReleaseAssets(void) {
     Model_Release(data_ov001_0231f084->unkC90);
     Model_Release(&data_ov001_0231f084->objs[0x28]);
     NNS_SndHandleReleaseSeq(data_ov001_0231f084->unkEA0);
-    func_ov001_022f99f8();
+    ExtraAct_Unk_ov001_022f99f8();
     blk = (u8 *)data_ov001_0231f084;
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;

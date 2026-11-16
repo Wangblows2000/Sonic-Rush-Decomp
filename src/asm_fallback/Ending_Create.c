@@ -13,8 +13,8 @@ extern void Ending_SubState_BlazeStart(void);
 extern void Ending_SubState_SonicStart(void);
 extern void Ending_SetSubState(void);
 extern void Ending_Main(void);
-extern void func_ov001_022c7d2c(void);
-extern void func_ov001_022c7d5c(void);
+extern void Ending_Unk_ov001_022c7d2c(void);
+extern void Ending_Unk_ov001_022c7d5c(void);
 extern void Ending_LoadAssets(void);
 extern void Ending_InitDisplay(void);
 extern void Ending_Destructor(void);
@@ -93,9 +93,9 @@ _f4:
     mov r0, r4
     bl Ending_LoadAssets
     mov r0, r4
-    bl func_ov001_022c7d5c
+    bl Ending_Unk_ov001_022c7d5c
     mov r0, r4
-    bl func_ov001_022c7d2c
+    bl Ending_Unk_ov001_022c7d2c
     add r0, r4, #0x5c
     bl Background_Draw
     add r0, r4, #0x19c

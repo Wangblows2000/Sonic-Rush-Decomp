@@ -29,8 +29,8 @@ typedef struct {
 extern UnkStruct_02369ac0 gBossStatus;
 extern s16 data_ov000_02368b86[][24];
 
-void func_ov000_022ee198(UnkStruct_022e8e6c *w, s32 a);
-void func_ov000_022e9b70(UnkStruct_022e8e6c *w, s32 a, s32 b);
+void Boss7_Unk_ov000_022ee198(UnkStruct_022e8e6c *w, s32 a);
+void Boss7_Unk_ov000_022e9b70(UnkStruct_022e8e6c *w, s32 a, s32 b);
 void *func_ov000_02326f48(UnkStruct_022e8e6c *w, s32 a, s32 b, s32 c, s32 d);
 UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
 void *EffBoostA_3D_Create(UnkStruct_022e8e6c *w, s32 a, s32 b, s32 c, s32 d);
@@ -49,8 +49,8 @@ void Boss7PartD5_MoveState_Unk_ov000_022e8e6c(UnkStruct_022e8e6c *w) {
         w->base.unk2E = -data_ov000_02368b86[w->unk3D0][0];
     else
         w->base.unk2E = data_ov000_02368b86[w->unk3D0][0];
-    func_ov000_022ee198(w, 0x31);
-    func_ov000_022e9b70(w, 0, 1);
+    Boss7_Unk_ov000_022ee198(w, 0x31);
+    Boss7_Unk_ov000_022e9b70(w, 0, 1);
     w->base.unk5C |= 4;
     if (w->unk3D0 == 0) {
         w->unk480 = func_ov000_02326f48(w, 0x18, 0xa, 0x7ca5, 0x7ca5);

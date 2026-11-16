@@ -54,7 +54,7 @@ extern UnkStruct_0230b164_e data_ov001_023171c8[];
 void Task_Destroy(void *task);
 void ObjVram_Free(u32 a, u32 b);
 void SpecialStagePlayer_Action_Start(s32 a);
-void func_ov001_023099ec(void);
+void SpecialStage_Unk_ov001_023099ec(void);
 void Sound_PlaySeq(s32 a, s32 b);
 void SpecialStage_State_PlayUpdate(void);
 void SpecialStage_State_PlayDraw(void);
@@ -78,7 +78,7 @@ void SpecialStage_StartPlay(void) {
     for (i = 0; i < 3; i++)
         ObjVram_Free(data_ov001_023171c8[i].a, g->objs[i].unk34);
     SpecialStagePlayer_Action_Start(g->unk18);
-    func_ov001_023099ec();
+    SpecialStage_Unk_ov001_023099ec();
     Sound_PlaySeq(0, 0x1e);
     g->taskC->func = SpecialStage_State_PlayUpdate;
     g->task10->func = SpecialStage_State_PlayDraw;

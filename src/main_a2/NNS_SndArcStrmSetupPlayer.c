@@ -7,8 +7,8 @@ extern UnkStrm data_020847b8[];
 
 UnkChInfo_020202e0 *NNS_SndArcGetStrmPlayerInfo(s32 idx);
 void *NNS_SndHeapAlloc(void *heap, u32 size, void *cb, void *arg, u32 c);
-void func_0201f858(void);
-void func_0201fbc0(UnkStrm *s);
+void DisposeCallback_sndarc_stream(void);
+void ForceStopStrm_sndarc_stream(UnkStrm *s);
 
 BOOL NNS_SndArcStrmSetupPlayer(void *heap) {
     s32 i;
@@ -27,9 +27,9 @@ BOOL NNS_SndArcStrmSetupPlayer(void *heap) {
         }
         if (heap == NULL) continue;
         size = s->unk120 << 11;
-        buf = NNS_SndHeapAlloc(heap, size, func_0201f858, s, 0);
+        buf = NNS_SndHeapAlloc(heap, size, DisposeCallback_sndarc_stream, s, 0);
         if (buf == NULL) return FALSE;
-        func_0201fbc0(s);
+        ForceStopStrm_sndarc_stream(s);
         s->unk128 = (u32)buf;
         s->unk12C = size;
     }

@@ -5,7 +5,7 @@ typedef struct {
     s32 count;
 } UnkStruct_022d177c;
 
-void func_ov001_022d0070(UnkStruct_022d177c *p);
+void StaffRoll_Unk_ov001_022d0070(UnkStruct_022d177c *p);
 void StaffRoll_SetState(UnkStruct_022d177c *p, void (*fn)(UnkStruct_022d177c *));
 void StaffRoll_State_ExtraFadeOut(UnkStruct_022d177c *p);
 void StaffRoll_State_ExtraShowPicture(UnkStruct_022d177c *p);
@@ -14,7 +14,7 @@ void StaffRoll_State_ExtraShowPicture(UnkStruct_022d177c *p);
 void StaffRoll_State_ExtraNextPicture(UnkStruct_022d177c *p) {
     s32 *c;
 
-    func_ov001_022d0070(p);
+    StaffRoll_Unk_ov001_022d0070(p);
     c = &p->count;
     (*c)++;
     if (*c >= 4) {

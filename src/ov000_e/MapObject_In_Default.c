@@ -22,7 +22,7 @@ typedef struct {
 
 extern UnkStruct_022b4574 *gTaskCurrent;
 
-void func_ov000_022faa74(UnkStruct_022fb2f8 *w);
+void MapObject_Unk_ov000_022faa74(UnkStruct_022fb2f8 *w);
 BOOL StageObj_PauseCheck(u32 v);
 
 void MapObject_In_Default(void) {
@@ -30,7 +30,7 @@ void MapObject_In_Default(void) {
 
     if (w->unk204 != NULL && (w->unk204->unk54 & 4))
         w->unk204 = NULL;
-    func_ov000_022faa74(w);
+    MapObject_Unk_ov000_022faa74(w);
     if (StageObj_PauseCheck(w->unk54))
         return;
     if (w->unk1F0 == 0)

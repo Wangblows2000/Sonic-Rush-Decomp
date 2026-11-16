@@ -73,13 +73,13 @@ extern s16 data_0206e470[];
 
 u16 Boss3_StepAngleToward(u16 a, u16 b, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_ov000_022d7eb8(UnkStruct_022d7f40 *s);
+void Boss3PartCC_State_Unk_ov000_022d7eb8(UnkStruct_022d7f40 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d7f40(UnkStruct_022d7f40 *s) {
     s->unk224 = Boss3_StepAngleToward(s->unk224, s->unk258, 0x200);
     MTX_RotY33_(s->unk2C4.unk24, data_0206e470[((s->unk224 & 0xffff) >> 4) * 2], data_0206e470[((s->unk224 & 0xffff) >> 4) * 2 + 1]);
     if (s->unk224 == s->unk258) {
         data_ov000_0236a444.unk78 = 0x200;
-        s->func = func_ov000_022d7eb8;
+        s->func = Boss3PartCC_State_Unk_ov000_022d7eb8;
     }
 }

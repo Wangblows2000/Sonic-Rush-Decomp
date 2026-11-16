@@ -212,23 +212,23 @@ src/main_b/Stage_Destructor.c:
     complete
     .text       start:0x0204b958 end:0x0204b95c
 
-src/main_b/func_0204e6ac.c:
+src/main_b/StoryProgress_Unk_0204e6ac.c:
     complete
     .text       start:0x0204e6ac end:0x0204e6b0
 
-src/main_b/func_0204e6e4.c:
+src/main_b/StoryProgress_Unk_0204e6e4.c:
     complete
     .text       start:0x0204e6e4 end:0x0204e6e8
 
-src/main_b/func_02050d2c.c:
+src/main_b/WirelessLobbyDownloadPlay_Unk_02050d2c.c:
     complete
     .text       start:0x02050d2c end:0x02050d30
 
-src/main_b/func_02050e4c.c:
+src/main_b/WirelessLobbyChild_Unk_02050e4c.c:
     complete
     .text       start:0x02050e4c end:0x02050e50
 
-src/main_b/func_020510bc.c:
+src/main_b/WirelessLobbyParent_Unk_020510bc.c:
     complete
     .text       start:0x020510bc end:0x020510c0
 
@@ -248,7 +248,7 @@ src/main_b/PlayerDemo_Unk_02057094.c:
     complete
     .text       start:0x02057094 end:0x02057098
 
-src/main_b/func_02057fb0.c:
+src/main_b/PlayerDemoOp_None.c:
     complete
     .text       start:0x02057fb0 end:0x02057fb4
 
@@ -256,31 +256,31 @@ src/main_b/SaveMsg_State_Halt.c:
     complete
     .text       start:0x02059d78 end:0x02059d7c
 
-src/main_b/func_0205a278.c:
+src/main_b/SaveMsgRequest_Destructor.c:
     complete
     .text       start:0x0205a278 end:0x0205a27c
 
-src/main_b/func_0205b560.c:
+src/main_b/StageTitleCard_HoldPlayerNone.c:
     complete
     .text       start:0x0205b560 end:0x0205b564
 
-src/main_b/func_0205c704.c:
+src/main_b/StageTitleCardPart20_State_Idle.c:
     complete
     .text       start:0x0205c704 end:0x0205c708
 
-src/main_b/func_0205d604.c:
+src/main_b/StageTitleCard_Unk_0205d604.c:
     complete
     .text       start:0x0205d604 end:0x0205d608
 
-src/main_b/func_0206047c.c:
+src/main_b/TalkDemo_Unk_0206047c.c:
     complete
     .text       start:0x0206047c end:0x02060480
 
-src/main_b/func_02061fc4.c:
+src/main_b/TalkDemo_Unk_02061fc4.c:
     complete
     .text       start:0x02061fc4 end:0x02061fc8
 
-src/main_b/func_02061fc8.c:
+src/main_b/TalkDemo_Unk_02061fc8.c:
     complete
     .text       start:0x02061fc8 end:0x02061fcc
 
@@ -392,7 +392,7 @@ src/main_a/NNS_SndPlayerSetPlayableSeqCount.c:
     complete
     .text       start:0x0201c138 end:0x0201c158
 
-src/main_a/func_0201c2dc.c:
+src/main_a/AlarmCallback_stream.c:
     complete
     .text       start:0x0201c2dc end:0x0201c2ec
 
@@ -700,35 +700,35 @@ src/main_a/NNSi_G3dGetJointScaleBasic.c:
     complete
     .text       start:0x020284ec end:0x02028528
 
-src/main_a/func_020286f8.c:
+src/main_a/texmtxCalc_flagTRS_maya.c:
     complete
     .text       start:0x020286f8 end:0x0202871c
 
-src/main_a/func_02029480.c:
+src/main_a/texmtxCalc_flagTRS_3dsmax.c:
     complete
     .text       start:0x02029480 end:0x020294a4
 
-src/main_a/func_02029b4c.c:
+src/main_a/texmtxCalc_flagTRS_xsi.c:
     complete
     .text       start:0x02029b4c end:0x02029b70
 
-src/main_a/func_02029b70.c:
+src/main_a/texmtxCalc_flagTR_xsi.c:
     complete
     .text       start:0x02029b70 end:0x02029bb0
 
-src/main_a/func_0202a06c.c:
+src/main_a/FreeTexVram_.c:
     complete
     .text       start:0x0202a06c end:0x0202a074
 
-src/main_a/func_0202a074.c:
+src/main_a/AllocTexVram_.c:
     complete
     .text       start:0x0202a074 end:0x0202a07c
 
-src/main_a/func_0202a07c.c:
+src/main_a/FreePlttVram_.c:
     complete
     .text       start:0x0202a07c end:0x0202a084
 
-src/main_a/func_0202a084.c:
+src/main_a/AllocPlttVram_.c:
     complete
     .text       start:0x0202a084 end:0x0202a08c
 
@@ -788,7 +788,7 @@ src/main_a/fabs.c:
     complete
     .text       start:0x0202c634 end:0x0202c658
 
-src/main_a/func_0202e3e8.c:
+src/main_a/Runtime_Unk_0202e3e8.c:
     complete
     .text       start:0x0202e3e8 end:0x0202e3f0
 
@@ -796,11 +796,11 @@ src/main_a/_fp_init.c:
     complete
     .text       start:0x0202fcc8 end:0x0202fccc
 
-src/main_a/func_0202fccc.c:
+src/main_a/Runtime_Unk_0202fccc.c:
     complete
     .text       start:0x0202fccc end:0x0202fcd4
 
-src/main_a/func_0202fcd4.c:
+src/main_a/Runtime_Unk_0202fcd4.c:
     complete
     .text       start:0x0202fcd4 end:0x0202fcdc
 
@@ -892,7 +892,7 @@ src/main_a/Model_MatrixOp_None.c:
     complete
     .text       start:0x02030a80 end:0x02030a84
 
-src/main_a/func_020313c8.c:
+src/main_a/Model_Unk_020313c8.c:
     complete
     .text       start:0x020313c8 end:0x020313cc
 
@@ -924,7 +924,7 @@ src/main_a/AnimatorSprite_AnimateManual.c:
     complete
     .text       start:0x020332a8 end:0x020332c4
 
-src/main_a/func_02033544.c:
+src/main_a/AnimatorSprite_Unk_02033544.c:
     complete
     .text       start:0x02033544 end:0x02033550
 
@@ -1240,47 +1240,47 @@ src/main_b/WirelessLobby_IsGone.c:
     complete
     .text       start:0x02050c3c end:0x02050c50
 
-src/main_b/func_02050c50.c:
+src/main_b/WirelessLobby_Unk_02050c50.c:
     complete
     .text       start:0x02050c50 end:0x02050c60
 
-src/main_b/func_02050c80.c:
+src/main_b/WirelessLobby_ForceStop.c:
     complete
     .text       start:0x02050c80 end:0x02050c88
 
-src/main_b/func_02050d50.c:
+src/main_b/WirelessLobbyDownloadPlay_RequestStart.c:
     complete
     .text       start:0x02050d50 end:0x02050d60
 
-src/main_b/func_02050dec.c:
+src/main_b/WirelessLobbyDownloadPlay_GetChildCount.c:
     complete
     .text       start:0x02050dec end:0x02050dfc
 
-src/main_b/func_02050dfc.c:
+src/main_b/WirelessLobbyDownloadPlay_RequestRestart.c:
     complete
     .text       start:0x02050dfc end:0x02050e0c
 
-src/main_b/func_02050e70.c:
+src/main_b/WirelessLobbyChild_RequestRestart.c:
     complete
     .text       start:0x02050e70 end:0x02050e80
 
-src/main_b/func_02050f60.c:
+src/main_b/WirelessLobbyChild_GetParentCount.c:
     complete
     .text       start:0x02050f60 end:0x02050f70
 
-src/main_b/func_02051070.c:
+src/main_b/WirelessLobbyChild_RequestCancel.c:
     complete
     .text       start:0x02051070 end:0x02051080
 
-src/main_b/func_020510e0.c:
+src/main_b/WirelessLobbyParent_RequestRestart.c:
     complete
     .text       start:0x020510e0 end:0x020510f0
 
-src/main_b/func_020511c0.c:
+src/main_b/WirelessLobbyParent_RequestCancel.c:
     complete
     .text       start:0x020511c0 end:0x020511d0
 
-src/main_b/func_020514e4.c:
+src/main_b/WirelessSession_GetSendBuffer.c:
     complete
     .text       start:0x020514e4 end:0x020514ec
 
@@ -1292,7 +1292,7 @@ src/main_b/SysSound_IsInit.c:
     complete
     .text       start:0x020521a0 end:0x020521b4
 
-src/main_b/func_0205240c.c:
+src/main_b/Game_StartDemoScript3AtZone8Act2.c:
     complete
     .text       start:0x0205240c end:0x02052424
 
@@ -1440,7 +1440,7 @@ src/main_b/PauseMenu_QuitToTryAgain.c:
     complete
     .text       start:0x020554d0 end:0x020554dc
 
-src/main_b/func_02056104.c:
+src/main_b/PlayerDemoLight_Update.c:
     complete
     .text       start:0x02056104 end:0x02056118
 
@@ -1484,7 +1484,7 @@ src/main_b/PlayerDemoBg_LoadPaletteRes.c:
     complete
     .text       start:0x02056f90 end:0x02056fa4
 
-src/main_b/func_02057038.c:
+src/main_b/PolyDemo_GetModelFlags.c:
     complete
     .text       start:0x02057038 end:0x02057044
 
@@ -1520,11 +1520,11 @@ src/main_b/PolyDemoUnder2_Destructor.c:
     complete
     .text       start:0x02057c9c end:0x02057ca8
 
-src/main_b/func_02057da4.c:
+src/main_b/PlayerDemoOp_LightAlt.c:
     complete
     .text       start:0x02057da4 end:0x02057db4
 
-src/main_b/func_02057db4.c:
+src/main_b/PlayerDemoOp_LightFlash.c:
     complete
     .text       start:0x02057db4 end:0x02057dc4
 
@@ -1588,7 +1588,7 @@ src/main_b/SaveData_IsEnabled.c:
     complete
     .text       start:0x02059338 end:0x02059340
 
-src/main_b/func_02059874.c:
+src/main_b/SaveData_Unk_02059874.c:
     complete
     .text       start:0x02059874 end:0x02059884
 
@@ -1604,11 +1604,11 @@ src/main_b/SaveData_SetGameCleared.c:
     complete
     .text       start:0x02059b2c end:0x02059b44
 
-src/main_b/func_02059b44.c:
+src/main_b/SaveData_UnlockSoundTest.c:
     complete
     .text       start:0x02059b44 end:0x02059b5c
 
-src/main_b/func_02059b5c.c:
+src/main_b/SaveData_UnlockPlayerSelectPage.c:
     complete
     .text       start:0x02059b5c end:0x02059b74
 
@@ -1760,11 +1760,11 @@ src/main_b/TransformDemo_Start.c:
     complete
     .text       start:0x0206376c end:0x02063778
 
-src/main_b/func_02063f38.c:
+src/main_b/NaviM_Destroy.c:
     complete
     .text       start:0x02063f38 end:0x02063f50
 
-src/main_b/func_02064740.c:
+src/main_b/NaviM_Unk_02064740.c:
     complete
     .text       start:0x02064740 end:0x02064758
 
@@ -1808,7 +1808,7 @@ src/main_sdk/FS_GetOverlayFileID.c:
     complete
     .text       start:0x0200c828 end:0x0200c850
 
-src/main_sdk/FS_StopOverlay.c:
+src/main_sdk/FS_UnloadOverlayImage.c:
     complete
     .text       start:0x0200c29c end:0x0200c2b8
 
@@ -2208,7 +2208,7 @@ src/main_sdk/OSi_DetachVAlarm.c:
     complete
     .text       start:0x02007464 end:0x0200749c
 
-src/main_sdk/func_02007584.c:
+src/main_sdk/OS_EndVAlarm.c:
     complete
     .text       start:0x02007584 end:0x020075b8
 
@@ -2580,7 +2580,7 @@ src/main_sdk/WmGetSharedDataAddress.c:
     complete
     .text       start:0x02011f4c end:0x02011f88
 
-src/main_sdk/func_020141a8.c:
+src/main_sdk/WBT_Unk_020141a8.c:
     complete
     .text       start:0x020141a8 end:0x020141d8
 
@@ -2592,11 +2592,11 @@ src/main_sdk/WBT_MpParentSendHook.c:
     complete
     .text       start:0x02014b74 end:0x02014bac
 
-src/main_sdk/func_02014f2c.c:
+src/main_sdk/WBT_Unk_02014f2c.c:
     complete
     .text       start:0x02014f2c end:0x02014f5c
 
-src/main_sdk/func_02014f5c.c:
+src/main_sdk/WBT_Unk_02014f5c.c:
     complete
     .text       start:0x02014f5c end:0x02014f94
 
@@ -2620,51 +2620,51 @@ src/main_sdk/WBT_SetOwnAid.c:
     complete
     .text       start:0x02015530 end:0x02015540
 
-src/main_sdk/func_02015540.c:
+src/main_sdk/WBT_Unk_02015540.c:
     complete
     .text       start:0x02015540 end:0x0201557c
 
-src/main_sdk/func_0201557c.c:
+src/main_sdk/WBT_Unk_0201557c.c:
     complete
     .text       start:0x0201557c end:0x0201558c
 
-src/main_sdk/func_0201558c.c:
+src/main_sdk/WBT_Unk_0201558c.c:
     complete
     .text       start:0x0201558c end:0x0201559c
 
-src/main_sdk/func_02015634.c:
+src/main_sdk/WBT_Unk_02015634.c:
     complete
     .text       start:0x02015634 end:0x02015640
 
-src/main_sdk/func_02015640.c:
+src/main_sdk/WBT_Unk_02015640.c:
     complete
     .text       start:0x02015640 end:0x0201564c
 
-src/main_sdk/func_0201564c.c:
+src/main_sdk/WBT_Unk_0201564c.c:
     complete
     .text       start:0x0201564c end:0x0201565c
 
-src/main_sdk/func_0201565c.c:
+src/main_sdk/WBT_Unk_0201565c.c:
     complete
     .text       start:0x0201565c end:0x0201566c
 
-src/main_sdk/func_0201566c.c:
+src/main_sdk/WBT_Unk_0201566c.c:
     complete
     .text       start:0x0201566c end:0x0201567c
 
-src/main_sdk/func_0201567c.c:
+src/main_sdk/WBT_Unk_0201567c.c:
     complete
     .text       start:0x0201567c end:0x0201568c
 
-src/main_sdk/func_0201568c.c:
+src/main_sdk/WBT_Unk_0201568c.c:
     complete
     .text       start:0x0201568c end:0x020156a0
 
-src/main_sdk/func_020156a0.c:
+src/main_sdk/WBT_Unk_020156a0.c:
     complete
     .text       start:0x020156a0 end:0x020156c8
 
-src/main_sdk/func_020156c8.c:
+src/main_sdk/WBT_Unk_020156c8.c:
     complete
     .text       start:0x020156c8 end:0x020156d8
 
@@ -2772,11 +2772,11 @@ src/main_sdk/MATH_CalcCRC32.c:
     complete
     .text       start:0x0201b028 end:0x0201b060
 
-src/main_sdk/EndSleep.c:
+src/main_sdk/EndSleep_nns_snd_main.c:
     complete
     .text       start:0x0201b194 end:0x0201b1a0
 
-src/main_sdk/BeginSleep.c:
+src/main_sdk/BeginSleep_nns_snd_main.c:
     complete
     .text       start:0x0201b1a0 end:0x0201b1dc
 
@@ -2856,7 +2856,7 @@ src/main_sdk/NNS_SndPlayerPause.c:
     complete
     .text       start:0x0201bfac end:0x0201bfbc
 
-src/main_a/func_0201c1d0.c:
+src/main_a/BeginSleep_stream.c:
     complete
     .text       start:0x0201c1d0 end:0x0201c224
 
@@ -2992,19 +2992,19 @@ src/main_a/NNSi_G3dAnmObjInitNsBva.c:
     complete
     .text       start:0x020284a0 end:0x020284ec
 
-src/main_a/func_0202871c.c:
+src/main_a/texmtxCalc_flagTR_maya.c:
     complete
     .text       start:0x0202871c end:0x02028760
 
-src/main_a/func_02028910.c:
+src/main_a/texmtxCalc_flagRS_maya.c:
     complete
     .text       start:0x02028910 end:0x02028958
 
-src/main_a/func_020294a4.c:
+src/main_a/texmtxCalc_flagTR_3dsmax.c:
     complete
     .text       start:0x020294a4 end:0x020294f4
 
-src/main_a/func_020296dc.c:
+src/main_a/texmtxCalc_flagRS_3dsmax.c:
     complete
     .text       start:0x020296dc end:0x02029724
 
@@ -3332,7 +3332,7 @@ src/main_b/Stage_FreeZoneSoundData.c:
     complete
     .text       start:0x0204b2ec end:0x0204b314
 
-src/main_b/func_0204ba84.c:
+src/main_b/Stage_Unk_0204ba84.c:
     complete
     .text       start:0x0204ba84 end:0x0204bab0
 
@@ -3368,11 +3368,11 @@ src/main_b/Game_AdvanceAct.c:
     complete
     .text       start:0x0204e4b8 end:0x0204e4dc
 
-src/main_b/func_0204ed68.c:
+src/main_b/Game_StartupSaveDataAfterReset.c:
     complete
     .text       start:0x0204ed68 end:0x0204ed94
 
-src/main_b/func_0204ed94.c:
+src/main_b/Game_StartupSaveDataOnBoot.c:
     complete
     .text       start:0x0204ed94 end:0x0204edc0
 
@@ -3392,63 +3392,63 @@ src/main_b/WirelessSessionEnd_Main_WaitAlone.c:
     complete
     .text       start:0x02050408 end:0x02050430
 
-src/main_b/func_02050d0c.c:
+src/main_b/WirelessLobbyDownloadPlay_IsGone.c:
     complete
     .text       start:0x02050d0c end:0x02050d2c
 
-src/main_b/func_02050d30.c:
+src/main_b/WirelessLobbyDownloadPlay_IsFinished.c:
     complete
     .text       start:0x02050d30 end:0x02050d50
 
-src/main_b/func_02050e2c.c:
+src/main_b/WirelessLobbyChild_IsGone.c:
     complete
     .text       start:0x02050e2c end:0x02050e4c
 
-src/main_b/func_02050e50.c:
+src/main_b/WirelessLobbyChild_IsFinished.c:
     complete
     .text       start:0x02050e50 end:0x02050e70
 
-src/main_b/func_02050e80.c:
+src/main_b/WirelessLobbyChild_IsBeforeConnect.c:
     complete
     .text       start:0x02050e80 end:0x02050ea0
 
-src/main_b/func_02050ea0.c:
+src/main_b/WirelessLobbyChild_SelectParent.c:
     complete
     .text       start:0x02050ea0 end:0x02050ec0
 
-src/main_b/func_02050ec0.c:
+src/main_b/WirelessLobbyChild_Unk_02050ec0.c:
     complete
     .text       start:0x02050ec0 end:0x02050ee4
 
-src/main_b/func_02050ee4.c:
+src/main_b/WirelessLobbyChild_Unk_02050ee4.c:
     complete
     .text       start:0x02050ee4 end:0x02050f04
 
-src/main_b/func_0205109c.c:
+src/main_b/WirelessLobbyParent_IsGone.c:
     complete
     .text       start:0x0205109c end:0x020510bc
 
-src/main_b/func_020510c0.c:
+src/main_b/WirelessLobbyParent_IsFinished.c:
     complete
     .text       start:0x020510c0 end:0x020510e0
 
-src/main_b/func_020510f0.c:
+src/main_b/WirelessLobbyParent_IsBeforeStart.c:
     complete
     .text       start:0x020510f0 end:0x02051110
 
-src/main_b/func_02051110.c:
+src/main_b/WirelessLobbyParent_RequestStart.c:
     complete
     .text       start:0x02051110 end:0x02051130
 
-src/main_b/func_02051130.c:
+src/main_b/WirelessLobbyParent_IsWaitingForChild.c:
     complete
     .text       start:0x02051130 end:0x02051150
 
-src/main_b/func_020511a0.c:
+src/main_b/WirelessLobbyParent_HasChild.c:
     complete
     .text       start:0x020511a0 end:0x020511c0
 
-src/main_b/func_02051384.c:
+src/main_b/WirelessSession_CachePartnerName.c:
     complete
     .text       start:0x02051384 end:0x020513a8
 
@@ -3460,7 +3460,7 @@ src/main_b/WirelessSession_IsStopped.c:
     complete
     .text       start:0x02051660 end:0x02051684
 
-src/main_b/func_020518b8.c:
+src/main_b/WirelessSession_Unk_020518b8.c:
     complete
     .text       start:0x020518b8 end:0x020518dc
 
@@ -3484,11 +3484,11 @@ src/main_b/NaviMsgFace_State_Blink.c:
     complete
     .text       start:0x02052da8 end:0x02052dd4
 
-src/main_b/func_02056118.c:
+src/main_b/PlayerDemoLight_Stop.c:
     complete
     .text       start:0x02056118 end:0x02056140
 
-src/main_b/func_02056140.c:
+src/main_b/PlayerDemoLight_Init.c:
     complete
     .text       start:0x02056140 end:0x0205615c
 
@@ -3540,7 +3540,7 @@ src/main_b/SaveData_SetTimeLimit.c:
     complete
     .text       start:0x02059b74 end:0x02059ba0
 
-src/main_b/func_02059ba0.c:
+src/main_b/SaveData_Unk_02059ba0.c:
     complete
     .text       start:0x02059ba0 end:0x02059bcc
 
@@ -3716,15 +3716,15 @@ src/main_b/TransformDemo_IsActive.c:
     complete
     .text       start:0x02063750 end:0x0206376c
 
-src/main_b/func_02063c98.c:
+src/main_b/NaviMPartB_Main.c:
     complete
     .text       start:0x02063c98 end:0x02063cb4
 
-src/main_b/func_02063df4.c:
+src/main_b/NaviMPartA_Main.c:
     complete
     .text       start:0x02063df4 end:0x02063e10
 
-src/main_b/func_02064870.c:
+src/main_b/NaviM_Unk_02064870.c:
     complete
     .text       start:0x02064870 end:0x0206488c
 
@@ -4068,11 +4068,11 @@ src/main_a/NNS_SndPlayerCreateHeap.c:
     complete
     .text       start:0x0201c080 end:0x0201c120
 
-src/main_a/func_0201c158.c:
+src/main_a/EndSleep_stream.c:
     complete
     .text       start:0x0201c158 end:0x0201c1d0
 
-src/main_a/func_0201c320.c:
+src/main_a/ForceStopStrm_stream.c:
     complete
     .text       start:0x0201c320 end:0x0201c3a0
 
@@ -4144,7 +4144,7 @@ src/main_a/SingleWaveDisposeCallback.c:
     complete
     .text       start:0x0201dd90 end:0x0201dde4
 
-src/main_a/DisposeCallback.c:
+src/main_a/DisposeCallback_sndarc_loader.c:
     complete
     .text       start:0x0201deb4 end:0x0201df20
 
@@ -4180,7 +4180,7 @@ src/main_a/RemoveCommandByPlayer.c:
     complete
     .text       start:0x0201f9dc end:0x0201fa50
 
-src/main_a/func_0201fb50.c:
+src/main_a/ShutdownPlayer_sndarc_stream.c:
     complete
     .text       start:0x0201fb50 end:0x0201fbc0
 
@@ -4216,11 +4216,11 @@ src/main_a/FindContainHeap.c:
     complete
     .text       start:0x020208f0 end:0x02020960
 
-src/main_a/func_02021118.c:
+src/main_a/AllocFromTail_frameheap.c:
     complete
     .text       start:0x02021118 end:0x02021194
 
-src/main_a/func_02021194.c:
+src/main_a/AllocFromHead_frameheap.c:
     complete
     .text       start:0x02021194 end:0x02021214
 
@@ -4256,7 +4256,7 @@ src/main_a/NNS_G3dRenderObjAddAnmObj.c:
     complete
     .text       start:0x02021d28 end:0x02021dc4
 
-src/main_a/func_02021dc4.c:
+src/main_a/updateHintVec_kernel.c:
     complete
     .text       start:0x02021dc4 end:0x02021e3c
 
@@ -4284,7 +4284,7 @@ src/main_a/NNSi_G3dFuncSbc_POSSCALE.c:
     complete
     .text       start:0x02023124 end:0x02023190
 
-src/main_a/func_02024df8.c:
+src/main_a/updateHintVec_sbc.c:
     complete
     .text       start:0x02024df8 end:0x02024e70
 
@@ -4692,7 +4692,7 @@ src/main_b/Math_CountBits16.c:
     complete
     .text       start:0x02042904 end:0x02042938
 
-src/main_b/func_02042a20.c:
+src/main_b/WirelessMgr_GetMBParentHostInfo.c:
     complete
     .text       start:0x02042a20 end:0x02042a70
 
@@ -5076,7 +5076,7 @@ src/main_b/NaviMsg_IsVisible.c:
     complete
     .text       start:0x020538a8 end:0x020538d8
 
-src/main_b/func_02053bec.c:
+src/main_b/NaviMsg_SetRestoreSubDisplayFlag.c:
     complete
     .text       start:0x02053bec end:0x02053c24
 
@@ -5084,7 +5084,7 @@ src/main_b/NaviMsg_Destroy.c:
     complete
     .text       start:0x02053c24 end:0x02053c58
 
-src/main_b/func_020560d0.c:
+src/main_b/PlayerDemoLight_Action_Idle.c:
     complete
     .text       start:0x020560d0 end:0x02056104
 
@@ -5108,15 +5108,15 @@ src/main_b/PlayerDemoBg_State_Init.c:
     complete
     .text       start:0x02056d8c end:0x02056dc8
 
-src/main_b/func_02056e94.c:
+src/main_b/PlayerDemoLight_GetColorsAlt.c:
     complete
     .text       start:0x02056e94 end:0x02056ec8
 
-src/main_b/func_02056f10.c:
+src/main_b/PlayerDemoLight_GetVectorsAlt.c:
     complete
     .text       start:0x02056f10 end:0x02056f50
 
-src/main_b/func_02056f50.c:
+src/main_b/PlayerDemoLight_GetVectors.c:
     complete
     .text       start:0x02056f50 end:0x02056f90
 
@@ -5308,15 +5308,15 @@ src/main_b/NaviM_Load.c:
     complete
     .text       start:0x02064644 end:0x02064674
 
-src/main_b/func_02064758.c:
+src/main_b/NaviM_Unk_02064758.c:
     complete
     .text       start:0x02064758 end:0x02064788
 
-src/main_b/func_02064828.c:
+src/main_b/NaviM_Unk_02064828.c:
     complete
     .text       start:0x02064828 end:0x02064870
 
-src/main_b/func_0206488c.c:
+src/main_b/NaviM_Unk_0206488c.c:
     complete
     .text       start:0x0206488c end:0x020648c4
 
@@ -5780,7 +5780,7 @@ src/main_b/NaviMsg_ReadFaceFrameMap.c:
     complete
     .text       start:0x020525d8 end:0x02052638
 
-src/main_b/func_020526bc.c:
+src/main_b/NaviMsg_ParsePanelHeader.c:
     complete
     .text       start:0x020526bc end:0x02052724
 
@@ -5828,7 +5828,7 @@ src/main_a2/_s32_div_f.c:
     complete
     .text       start:0x0202f8d8 end:0x0202fae4
 
-src/main_a2/StrmCallback.c:
+src/main_a2/StrmCallback_stream.c:
     complete
     .text       start:0x0201c224 end:0x0201c2dc
 
@@ -5836,7 +5836,7 @@ src/main_a2/NNS_SndStrmSetup.c:
     complete
     .text       start:0x0201c4e4 end:0x0201c6b4
 
-src/main_a2/func_0201c7cc.c:
+src/main_a2/AlarmCallback_capture.c:
     complete
     .text       start:0x0201c7cc end:0x0201c8d0
 
@@ -5920,11 +5920,11 @@ src/main_a2/OnDataEnd.c:
     complete
     .text       start:0x0201f5b8 end:0x0201f704
 
-src/main_a2/func_0201f704.c:
+src/main_a2/StrmCallback_sndarc_stream.c:
     complete
     .text       start:0x0201f704 end:0x0201f858
 
-src/main_a2/func_0201f858.c:
+src/main_a2/DisposeCallback_sndarc_stream.c:
     complete
     .text       start:0x0201f858 end:0x0201f904
 
@@ -5932,7 +5932,7 @@ src/main_a2/CreateThread.c:
     complete
     .text       start:0x0201fa50 end:0x0201fac8
 
-src/main_a2/func_0201fbc0.c:
+src/main_a2/ForceStopStrm_sndarc_stream.c:
     complete
     .text       start:0x0201fbc0 end:0x0201fc60
 
@@ -5948,7 +5948,7 @@ src/main_a2/__must_round.c:
     complete
     .text       start:0x0202d4ec end:0x0202d55c
 
-src/main_a2/func_0202d55c.c:
+src/main_a2/MSL_Unk_0202d55c.c:
     complete
     .text       start:0x0202d55c end:0x0202d5d8
 
@@ -5988,39 +5988,39 @@ src/main_a2/func_0202e1cc.c:
     complete
     .text       start:0x0202e1cc end:0x0202e3e8
 
-src/main_a2/func_0202e3f0.c:
+src/main_a2/Runtime_Unk_0202e3f0.c:
     complete
     .text       start:0x0202e3f0 end:0x0202e438
 
-src/main_a2/func_0202e438.c:
+src/main_a2/Runtime_Unk_0202e438.c:
     complete
     .text       start:0x0202e438 end:0x0202e478
 
-src/main_a2/func_0202e478.c:
+src/main_a2/Runtime_Unk_0202e478.c:
     complete
     .text       start:0x0202e478 end:0x0202e4b4
 
-src/main_a2/func_0202e4b4.c:
+src/main_a2/Runtime_Unk_0202e4b4.c:
     complete
     .text       start:0x0202e4b4 end:0x0202e4f0
 
-src/main_a2/func_0202e4f0.c:
+src/main_a2/Runtime_Unk_0202e4f0.c:
     complete
     .text       start:0x0202e4f0 end:0x0202e528
 
-src/main_a2/func_0202e528.c:
+src/main_a2/Runtime_Unk_0202e528.c:
     complete
     .text       start:0x0202e528 end:0x0202e564
 
-src/main_a2/func_0202e564.c:
+src/main_a2/Runtime_Unk_0202e564.c:
     complete
     .text       start:0x0202e564 end:0x0202e5a0
 
-src/main_a2/func_0202e5a0.c:
+src/main_a2/Runtime_Unk_0202e5a0.c:
     complete
     .text       start:0x0202e5a0 end:0x0202e5e4
 
-src/main_a2/func_0202e5e4.c:
+src/main_a2/Runtime_Unk_0202e5e4.c:
     complete
     .text       start:0x0202e5e4 end:0x0202e620
 
@@ -6028,23 +6028,23 @@ src/main_a2/func_0202e620.c:
     complete
     .text       start:0x0202e620 end:0x0202e65c
 
-src/main_a2/func_0202e65c.c:
+src/main_a2/Runtime_Unk_0202e65c.c:
     complete
     .text       start:0x0202e65c end:0x0202e698
 
-src/main_a2/func_0202e698.c:
+src/main_a2/Runtime_Unk_0202e698.c:
     complete
     .text       start:0x0202e698 end:0x0202e6bc
 
-src/main_a2/func_0202e6bc.c:
+src/main_a2/Runtime_Unk_0202e6bc.c:
     complete
     .text       start:0x0202e6bc end:0x0202e6e0
 
-src/main_a2/func_0202e6e0.c:
+src/main_a2/Runtime_Unk_0202e6e0.c:
     complete
     .text       start:0x0202e6e0 end:0x0202e770
 
-src/main_a2/func_0202e770.c:
+src/main_a2/Runtime_Unk_0202e770.c:
     complete
     .text       start:0x0202e770 end:0x0202e800
 
@@ -6072,11 +6072,11 @@ src/main_a2/func_0202ebc4.c:
     complete
     .text       start:0x0202ebc4 end:0x0202ec4c
 
-src/main_a2/func_0202ece4.c:
+src/main_a2/Runtime_Unk_0202ece4.c:
     complete
     .text       start:0x0202ece4 end:0x0202ed34
 
-src/main_a2/func_0202ed34.c:
+src/main_a2/Runtime_Unk_0202ed34.c:
     complete
     .text       start:0x0202ed34 end:0x0202ed84
 
@@ -6268,7 +6268,7 @@ src/main_a2/NNS_SndArcStrmSetupPlayer.c:
     complete
     .text       start:0x020202e0 end:0x020203bc
 
-src/main_sdk2/func_0201882c.c:
+src/main_sdk2/MB_Unk_0201882c.c:
     complete
     .text       start:0x0201882c end:0x02018a50
 
@@ -6284,11 +6284,11 @@ src/main_a2/RecycleRegion.c:
     complete
     .text       start:0x02020a60 end:0x02020b58
 
-src/main_a2/AllocFromTail.c:
+src/main_a2/AllocFromTail_expheap.c:
     complete
     .text       start:0x02020b58 end:0x02020c1c
 
-src/main_a2/AllocFromHead.c:
+src/main_a2/AllocFromHead_expheap.c:
     complete
     .text       start:0x02020c1c end:0x02020ce4
 
@@ -6652,27 +6652,27 @@ src/main_b3/ObjData_Load.c:
     complete
     .text       start:0x020687b8 end:0x0206896c
 
-src/main_sdk2/func_020130e8.c:
+src/main_sdk2/WBT_Unk_020130e8.c:
     complete
     .text       start:0x020130e8 end:0x02013350
 
-src/main_sdk2/func_02013350.c:
+src/main_sdk2/WBT_Unk_02013350.c:
     complete
     .text       start:0x02013350 end:0x020134b4
 
-src/main_sdk2/func_020134b4.c:
+src/main_sdk2/WBT_Unk_020134b4.c:
     complete
     .text       start:0x020134b4 end:0x02013554
 
-src/main_sdk2/func_02013554.c:
+src/main_sdk2/WBT_Unk_02013554.c:
     complete
     .text       start:0x02013554 end:0x020135f8
 
-src/main_sdk2/func_02013748.c:
+src/main_sdk2/WBT_Unk_02013748.c:
     complete
     .text       start:0x02013748 end:0x020137ac
 
-src/main_sdk2/func_020137ac.c:
+src/main_sdk2/WBT_Unk_020137ac.c:
     complete
     .text       start:0x020137ac end:0x02013814
 
@@ -6792,7 +6792,7 @@ src/main_a2/NNSi_G3dSendTexSRTMaya.c:
     complete
     .text       start:0x020285ac end:0x020286f8
 
-src/main_a2/func_02028760.c:
+src/main_a2/texmtxCalc_flagTS_maya.c:
     complete
     .text       start:0x02028760 end:0x02028824
 
@@ -6840,7 +6840,7 @@ src/clones/NNSi_G3dSendTexSRT3dsMax.c:
     complete
     .text       start:0x02029334 end:0x02029480
 
-src/main_a2/func_020289d8.c:
+src/main_a2/texmtxCalc_flagS_maya.c:
     complete
     .text       start:0x020289d8 end:0x02028ab4
 
@@ -7056,11 +7056,11 @@ src/auto/WirelessLobby_GetChildCount.c:
     complete
     .text       start:0x02050c60 end:0x02050c80
 
-src/auto/func_020514ec.c:
+src/auto/WirelessSession_PollConnected.c:
     complete
     .text       start:0x020514ec end:0x0205153c
 
-src/auto/func_02051814.c:
+src/auto/WirelessLobby_GetLinkLevel.c:
     complete
     .text       start:0x02051814 end:0x02051838
 
@@ -7084,7 +7084,7 @@ src/auto/WirelessError_Start.c:
     complete
     .text       start:0x02054d70 end:0x02054dbc
 
-src/auto/func_02056038.c:
+src/auto/PlayerDemoLight_Action_Flash.c:
     complete
     .text       start:0x02056038 end:0x02056084
 
@@ -7100,7 +7100,7 @@ src/auto/PlayerDemoBg_Main.c:
     complete
     .text       start:0x02056dc8 end:0x02056e00
 
-src/auto/func_02056ec8.c:
+src/auto/PlayerDemoLight_GetColors.c:
     complete
     .text       start:0x02056ec8 end:0x02056f10
 
@@ -7272,7 +7272,7 @@ src/auto/VsConnect_Main_WaitWfs.c:
     complete
     .text       start:0x020635d0 end:0x02063620
 
-src/auto/func_02063950.c:
+src/auto/NaviM_Unk_02063950.c:
     complete
     .text       start:0x02063950 end:0x020639e4
 
@@ -7292,11 +7292,11 @@ src/auto/StageObj_Draw.c:
     complete
     .text       start:0x0206c708 end:0x0206c784
 
-src/main_a2/func_02028824.c:
+src/main_a2/texmtxCalc_flagT_maya.c:
     complete
     .text       start:0x02028824 end:0x02028910
 
-src/main_a2/func_02028ab4.c:
+src/main_a2/texmtxCalc_flag_maya.c:
     complete
     .text       start:0x02028ab4 end:0x02028bcc
 
@@ -7320,19 +7320,19 @@ src/main_a2/NNSi_G3dSendJointSRTSi3d.c:
     complete
     .text       start:0x020291fc end:0x02029334
 
-src/main_a2/func_020294f4.c:
+src/main_a2/texmtxCalc_flagTS_3dsmax.c:
     complete
     .text       start:0x020294f4 end:0x020295d8
 
-src/main_a2/func_020295d8.c:
+src/main_a2/texmtxCalc_flagT_3dsmax.c:
     complete
     .text       start:0x020295d8 end:0x020296dc
 
-src/main_a2/func_020297ac.c:
+src/main_a2/texmtxCalc_flagS_3dsmax.c:
     complete
     .text       start:0x020297ac end:0x020298a4
 
-src/main_a2/func_020298a4.c:
+src/main_a2/texmtxCalc_flag_3dsmax.c:
     complete
     .text       start:0x020298a4 end:0x020299bc
 
@@ -7340,15 +7340,15 @@ src/main_a2/NNSi_G3dSendTexSRTXsi.c:
     complete
     .text       start:0x020299bc end:0x02029b4c
 
-src/main_a2/func_02029bb0.c:
+src/main_a2/texmtxCalc_flagTS_xsi.c:
     complete
     .text       start:0x02029bb0 end:0x02029c60
 
-src/main_a2/func_02029c60.c:
+src/main_a2/texmtxCalc_flagT_xsi.c:
     complete
     .text       start:0x02029c60 end:0x02029d38
 
-src/main_a2/func_02029e20.c:
+src/main_a2/texmtxCalc_flagS_xsi.c:
     complete
     .text       start:0x02029e20 end:0x02029f0c
 
@@ -7476,7 +7476,7 @@ src/auto/CARDi_PulledOutCallback.c:
     complete
     .text       start:0x020105f0 end:0x0201065c
 
-src/auto/func_020141d8.c:
+src/auto/WBT_Unk_020141d8.c:
     complete
     .text       start:0x020141d8 end:0x020141fc
 
@@ -7500,7 +7500,7 @@ src/auto/Math_CalcPercent.c:
     complete
     .text       start:0x020491f4 end:0x02049254
 
-src/auto/func_02051150.c:
+src/auto/WirelessLobbyParent_GetChildName.c:
     complete
     .text       start:0x02051150 end:0x020511a0
 
@@ -7824,19 +7824,19 @@ src/main_a3/SetPlttParamaters_.c:
     complete
     .text       start:0x02028258 end:0x020282b0
 
-src/main_a3/func_02028958.c:
+src/main_a3/texmtxCalc_flagR_maya.c:
     complete
     .text       start:0x02028958 end:0x020289d8
 
-src/main_a3/func_02029724.c:
+src/main_a3/texmtxCalc_flagR_3dsmax.c:
     complete
     .text       start:0x02029724 end:0x020297ac
 
-src/main_a3/func_02029d38.c:
+src/main_a3/texmtxCalc_flagRS_xsi.c:
     complete
     .text       start:0x02029d38 end:0x02029d98
 
-src/main_a3/func_02029d98.c:
+src/main_a3/texmtxCalc_flagR_xsi.c:
     complete
     .text       start:0x02029d98 end:0x02029e20
 
@@ -8068,15 +8068,15 @@ src/main_b3/WirelessSession_StartDownloadPlayPreview.c:
     complete
     .text       start:0x02050c88 end:0x02050d0c
 
-src/main_b3/func_02050d60.c:
+src/main_b3/WirelessLobbyDownloadPlay_GetChildName.c:
     complete
     .text       start:0x02050d60 end:0x02050dec
 
-src/main_b3/func_02050f70.c:
+src/main_b3/WirelessLobbyChild_RefreshParentList.c:
     complete
     .text       start:0x02050f70 end:0x02051070
 
-src/main_b3/func_02051300.c:
+src/main_b3/WirelessSession_GetPartnerName.c:
     complete
     .text       start:0x02051300 end:0x02051384
 
@@ -8128,7 +8128,7 @@ src/main_b3/WirelessError_Main_FadeOut.c:
     complete
     .text       start:0x02054cbc end:0x02054d3c
 
-src/main_b3/func_02055fa4.c:
+src/main_b3/PlayerDemoLight_State_Flash.c:
     complete
     .text       start:0x02055fa4 end:0x02056038
 
@@ -8480,7 +8480,7 @@ src/main_b4/StageObj_ProbeCollision.c:
     complete
     .text       start:0x02066010 end:0x020660b0
 
-src/main_b4/func_020660b0.c:
+src/main_b4/StageObj_ApplyCollisionAttr.c:
     complete
     .text       start:0x020660b0 end:0x020660f4
 
@@ -8548,75 +8548,75 @@ src/main_sdk2/OS_SendMessage.c:
     complete
     .text       start:0x020064a0 end:0x02006548
 
-src/main_sdk2/func_02013e7c.c:
+src/main_sdk2/WBT_Unk_02013e7c.c:
     complete
     .text       start:0x02013e7c end:0x02013f58
 
-src/main_sdk2/func_02013f58.c:
+src/main_sdk2/WBT_Unk_02013f58.c:
     complete
     .text       start:0x02013f58 end:0x02014078
 
-src/main_sdk2/func_02014078.c:
+src/main_sdk2/WBT_Unk_02014078.c:
     complete
     .text       start:0x02014078 end:0x02014110
 
-src/main_sdk2/func_02014110.c:
+src/main_sdk2/WBT_Unk_02014110.c:
     complete
     .text       start:0x02014110 end:0x020141a8
 
-src/main_sdk2/func_020141fc.c:
+src/main_sdk2/WBT_Unk_020141fc.c:
     complete
     .text       start:0x020141fc end:0x02014288
 
-src/main_sdk2/func_02014288.c:
+src/main_sdk2/WBT_Unk_02014288.c:
     complete
     .text       start:0x02014288 end:0x02014320
 
-src/main_sdk2/func_02014320.c:
+src/main_sdk2/WBT_Unk_02014320.c:
     complete
     .text       start:0x02014320 end:0x0201442c
 
-src/main_sdk2/func_0201442c.c:
+src/main_sdk2/WBT_Unk_0201442c.c:
     complete
     .text       start:0x0201442c end:0x02014498
 
-src/main_sdk2/func_02014498.c:
+src/main_sdk2/WBT_Unk_02014498.c:
     complete
     .text       start:0x02014498 end:0x02014530
 
-src/main_sdk2/func_02014530.c:
+src/main_sdk2/WBT_Unk_02014530.c:
     complete
     .text       start:0x02014530 end:0x020145b0
 
-src/main_sdk2/func_020145b0.c:
+src/main_sdk2/WBT_Unk_020145b0.c:
     complete
     .text       start:0x020145b0 end:0x02014630
 
-src/main_sdk2/func_02014630.c:
+src/main_sdk2/WBT_Unk_02014630.c:
     complete
     .text       start:0x02014630 end:0x020146f8
 
-src/main_sdk2/func_020146f8.c:
+src/main_sdk2/WBT_Unk_020146f8.c:
     complete
     .text       start:0x020146f8 end:0x0201478c
 
-src/main_sdk2/func_0201478c.c:
+src/main_sdk2/WBT_Unk_0201478c.c:
     complete
     .text       start:0x0201478c end:0x02014854
 
-src/main_sdk2/func_02014854.c:
+src/main_sdk2/WBT_Unk_02014854.c:
     complete
     .text       start:0x02014854 end:0x020148e8
 
-src/main_sdk2/func_020148e8.c:
+src/main_sdk2/WBT_Unk_020148e8.c:
     complete
     .text       start:0x020148e8 end:0x02014990
 
-src/main_sdk2/func_02014990.c:
+src/main_sdk2/WBT_Unk_02014990.c:
     complete
     .text       start:0x02014990 end:0x02014a24
 
-src/main_sdk2/func_02014a24.c:
+src/main_sdk2/WBT_Unk_02014a24.c:
     complete
     .text       start:0x02014a24 end:0x02014a8c
 
@@ -8636,11 +8636,11 @@ src/main_sdk2/WBT_InitParent.c:
     complete
     .text       start:0x02014d38 end:0x02014e08
 
-src/main_sdk2/func_02014e08.c:
+src/main_sdk2/WBT_Unk_02014e08.c:
     complete
     .text       start:0x02014e08 end:0x02014f2c
 
-src/main_sdk2/func_02014f94.c:
+src/main_sdk2/WBT_Unk_02014f94.c:
     complete
     .text       start:0x02014f94 end:0x02015168
 
@@ -8656,7 +8656,7 @@ src/main_sdk2/WBT_RegisterBlock.c:
     complete
     .text       start:0x02015354 end:0x0201541c
 
-src/main_sdk2/func_0201559c.c:
+src/main_sdk2/WBT_Unk_0201559c.c:
     complete
     .text       start:0x0201559c end:0x02015634
 
@@ -8748,7 +8748,7 @@ src/main_sdk2/PlayerHeapDisposeCallback.c:
     complete
     .text       start:0x0201b63c end:0x0201b698
 
-src/main_sdk2/ShutdownPlayer.c:
+src/main_sdk2/ShutdownPlayer_snd_player.c:
     complete
     .text       start:0x0201b698 end:0x0201b728
 
@@ -8780,7 +8780,7 @@ src/main_sdk2/NNSi_SndPlayerInit.c:
     complete
     .text       start:0x0201bc84 end:0x0201bd3c
 
-src/main_sdk2/NNS_SndPlayerCountPlayingSeqByPlayerNo.c:
+src/main_sdk2/NNS_SndPlayerCountPlayingSeqBySeqArcIdx.c:
     complete
     .text       start:0x0201bea8 end:0x0201bf1c
 
@@ -8792,7 +8792,7 @@ src/main_sdk3/CARDi_SetRomOp.c:
     complete
     .text       start:0x02010238 end:0x020102d8
 
-src/main_sdk3/FS_LoadOverlayFile.c:
+src/main_sdk3/FS_LoadOverlayImage.c:
     complete
     .text       start:0x0200c564 end:0x0200c604
 
@@ -9276,7 +9276,7 @@ src/main_sdk3/DGT_Hash2CalcHmac.c:
     complete
     .text       start:0x0200c8b0 end:0x0200ca3c
 
-src/main_sdk3/func_0200ca3c.c:
+src/main_sdk3/DGT_Unk_0200ca3c.c:
     complete
     .text       start:0x0200ca3c end:0x0200cb88
 
@@ -9380,19 +9380,19 @@ src/main_sdk3/CARD_IdentifyBackup.c:
     complete
     .text       start:0x0200f8b8 end:0x0200f9a0
 
-src/main_sdk3/func_0200f9a0.c:
+src/main_sdk3/CARD_Unk_0200f9a0.c:
     complete
     .text       start:0x0200f9a0 end:0x0200fa70
 
-src/main_sdk3/func_0200fa70.c:
+src/main_sdk3/CARD_Unk_0200fa70.c:
     complete
     .text       start:0x0200fa70 end:0x0200fb40
 
-src/main_sdk3/func_0200fb40.c:
+src/main_sdk3/CARD_Unk_0200fb40.c:
     complete
     .text       start:0x0200fb40 end:0x0200fbfc
 
-src/main_sdk3/func_0200fbfc.c:
+src/main_sdk3/CARD_Unk_0200fbfc.c:
     complete
     .text       start:0x0200fbfc end:0x0200fcb8
 
@@ -9428,11 +9428,11 @@ src/main_sdk3/WmInitCore.c:
     complete
     .text       start:0x02010d60 end:0x02010f48
 
-src/main_sdk3/func_020135f8.c:
+src/main_sdk3/WBT_Unk_020135f8.c:
     complete
     .text       start:0x020135f8 end:0x02013748
 
-src/main_sdk3/func_020138b4.c:
+src/main_sdk3/WBT_Unk_020138b4.c:
     complete
     .text       start:0x020138b4 end:0x02013e7c
 
@@ -9788,7 +9788,7 @@ src/main_b5/ModelPalette_Release.c:
     complete
     .text       start:0x0206ce90 end:0x0206cf8c
 
-src/main_sdk5/func_0200cb88.c:
+src/main_sdk5/DGT_Unk_0200cb88.c:
     complete
     .text       start:0x0200cb88 end:0x0200ce88
 
@@ -9952,35 +9952,35 @@ src/main_b5/StageTitleCard_Destructor.c:
     complete
     .text       start:0x0205eb68 end:0x0205ec5c
 
-src/main_b5/func_02063778.c:
+src/main_b5/NaviM_Unk_02063778.c:
     complete
     .text       start:0x02063778 end:0x02063890
 
-src/main_b5/func_02063890.c:
+src/main_b5/NaviMPartB_Draw.c:
     complete
     .text       start:0x02063890 end:0x02063950
 
-src/main_b5/func_020639e4.c:
+src/main_b5/NaviM_Unk_020639e4.c:
     complete
     .text       start:0x020639e4 end:0x02063b3c
 
-src/main_b5/func_02063b3c.c:
+src/main_b5/NaviM_Unk_02063b3c.c:
     complete
     .text       start:0x02063b3c end:0x02063c98
 
-src/main_b5/func_02063d34.c:
+src/main_b5/NaviM_Unk_02063d34.c:
     complete
     .text       start:0x02063d34 end:0x02063df4
 
-src/main_b5/func_02063e10.c:
+src/main_b5/NaviM_Main.c:
     complete
     .text       start:0x02063e10 end:0x02063ebc
 
-src/main_b5/func_02064674.c:
+src/main_b5/NaviM_Unk_02064674.c:
     complete
     .text       start:0x02064674 end:0x02064740
 
-src/main_b5/func_02064788.c:
+src/main_b5/NaviM_Unk_02064788.c:
     complete
     .text       start:0x02064788 end:0x02064828
 
@@ -9992,11 +9992,11 @@ src/main_b5/DemoInput_Destructor.c:
     complete
     .text       start:0x02067fe4 end:0x02068094
 
-src/main_b5/func_02068478.c:
+src/main_b5/ObjData_SetupModelResource.c:
     complete
     .text       start:0x02068478 end:0x02068598
 
-src/main_b5/func_02068598.c:
+src/main_b5/ObjData_LoadFromArchiveCopy.c:
     complete
     .text       start:0x02068598 end:0x020686dc
 
@@ -10164,7 +10164,7 @@ src/main_b6/StageTitleCard_Create.c:
     complete
     .text       start:0x0205f25c end:0x0205f868
 
-src/main_b6/func_02063f50.c:
+src/main_b6/NaviM_Create.c:
     complete
     .text       start:0x02063f50 end:0x020645b0
 
@@ -10268,7 +10268,7 @@ src/main_b6/StoryProgress_Update.c:
     complete
     .text       start:0x0204e4dc end:0x0204e614
 
-src/main_b6/func_0204e614.c:
+src/main_b6/StoryProgress_Unk_0204e614.c:
     complete
     .text       start:0x0204e614 end:0x0204e6ac
 
@@ -10424,11 +10424,11 @@ src/main_b6/SaveData_StartupOrShowError.c:
     complete
     .text       start:0x0205a558 end:0x0205a5dc
 
-src/main_b6/func_02063cb4.c:
+src/main_b6/NaviMPartA_Draw.c:
     complete
     .text       start:0x02063cb4 end:0x02063d34
 
-src/main_b6/func_02063ebc.c:
+src/main_b6/NaviM_Destructor.c:
     complete
     .text       start:0x02063ebc end:0x02063f38
 
@@ -10784,7 +10784,7 @@ src/main_b7/WirelessLobbyParent_Destructor.c:
     complete
     .text       start:0x02050964 end:0x020509a0
 
-src/main_b7/func_02050f04.c:
+src/main_b7/WirelessLobbyChild_GetParentName.c:
     complete
     .text       start:0x02050f04 end:0x02050f60
 
@@ -10800,15 +10800,15 @@ src/main_b7/DownloadPlay_GetContest.c:
     complete
     .text       start:0x020512a4 end:0x02051300
 
-src/main_b7/func_020513a8.c:
+src/main_b7/WirelessSession_Unk_020513a8.c:
     complete
     .text       start:0x020513a8 end:0x02051404
 
-src/main_b7/func_02051404.c:
+src/main_b7/WirelessSession_GetOwnRecvBuffer.c:
     complete
     .text       start:0x02051404 end:0x02051474
 
-src/main_b7/func_02051474.c:
+src/main_b7/WirelessSession_GetPartnerRecvBuffer.c:
     complete
     .text       start:0x02051474 end:0x020514e4
 
@@ -10856,11 +10856,11 @@ src/main_b8/Wireless_OnError.c:
     complete
     .text       start:0x02054dbc end:0x02054df8
 
-src/main_b8/func_02055e48.c:
+src/main_b8/PlayerDemoLight_ApplyAlt.c:
     complete
     .text       start:0x02055e48 end:0x02055eb4
 
-src/main_b8/func_02056084.c:
+src/main_b8/PlayerDemoLight_State_Idle.c:
     complete
     .text       start:0x02056084 end:0x020560d0
 
@@ -10984,15 +10984,15 @@ src/main_b9/StageObj_Destructor.c:
     complete
     .text       start:0x0206bef4 end:0x0206c35c
 
-src/main_c1/func_0202e910.c:
+src/main_c1/Runtime_Unk_0202e910.c:
     complete
     .text       start:0x0202e910 end:0x0202e994
 
-src/main_c1/func_0202eaa4.c:
+src/main_c1/Runtime_Unk_0202eaa4.c:
     complete
     .text       start:0x0202eaa4 end:0x0202eb3c
 
-src/main_c1/func_0202ec4c.c:
+src/main_c1/Runtime_Unk_0202ec4c.c:
     complete
     .text       start:0x0202ec4c end:0x0202ece4
 
@@ -11144,7 +11144,7 @@ src/main_c2/WM_StepDataSharing.c:
     complete
     .text       start:0x020125d8 end:0x0201299c
 
-src/main_c2/func_02013814.c:
+src/main_c2/WBT_Unk_02013814.c:
     complete
     .text       start:0x02013814 end:0x020138b4
 
@@ -11180,7 +11180,7 @@ src/main_d1/StageTitleCard_InitSprites.c:
     complete
     .text       start:0x0205e378 end:0x0205eb68
 
-src/main_d1/func_0206aa38.c:
+src/main_d1/StageObj_DrawSpriteRotScaleAlt.c:
     complete
     .text       start:0x0206aa38 end:0x0206b244
 
@@ -11240,7 +11240,7 @@ src/asm_fallback/GetTexSRTAnmSinCosVal_.c:
     complete
     .text       start:0x02027fc8 end:0x020280d4
 
-src/asm_fallback/func_02029f0c.c:
+src/asm_fallback/texmtxCalc_flag_xsi.c:
     complete
     .text       start:0x02029f0c end:0x0202a06c
 
@@ -11264,7 +11264,7 @@ src/asm_fallback/WFSi_PortCallback.c:
     complete
     .text       start:0x0203d038 end:0x0203d150
 
-src/asm_fallback/func_020490b8.c:
+src/asm_fallback/Math_LerpRGB555.c:
     complete
     .text       start:0x020490b8 end:0x020491f4
 
@@ -11280,7 +11280,7 @@ src/asm_fallback/PauseMenu_HighlightSelection.c:
     complete
     .text       start:0x020551b0 end:0x020552bc
 
-src/asm_fallback/func_02055eb4.c:
+src/asm_fallback/PlayerDemoLight_Apply.c:
     complete
     .text       start:0x02055eb4 end:0x02055fa4
 
@@ -11312,7 +11312,7 @@ src/asm_fallback/StageObj_ViewOutCheck.c:
     complete
     .text       start:0x02068e58 end:0x02069090
 
-src/asm_fallback/func_0206b244.c:
+src/asm_fallback/StageObj_DrawSpriteAlt.c:
     complete
     .text       start:0x0206b244 end:0x0206b768
 

@@ -51,8 +51,8 @@ extern s16 data_0207cf80[2];
 void AnimatorSprite_ProcessAnimation(UnkSpr_0206b768 *s, void *a, UnkObj_0206b768 *o);
 void AnimatorSprite_DrawRotScale(UnkSpr_0206b768 *s, s32 sx, s32 sy, u16 r);
 void AnimatorSprite_Draw(UnkSpr_0206b768 *s);
-void func_0206b244(UnkSpr_0206b768 *s, void *p);
-void func_0206aa38(UnkSpr_0206b768 *s, void *p, s32 sx, s32 sy);
+void StageObj_DrawSpriteAlt(UnkSpr_0206b768 *s, void *p);
+void StageObj_DrawSpriteRotScaleAlt(UnkSpr_0206b768 *s, void *p, s32 sx, s32 sy);
 
 void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, UnkObj_0206b768 *o, UnkSpr_0206b768 *s, UnkSpr_0206b768 *s2, void *p) {
     s32 ox = 0;
@@ -176,9 +176,9 @@ void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, UnkObj_0206b768 *o, UnkSpr_0206b768
             if (!busy) {
                 if (p != NULL) {
                     if (sx == 0x1000 && sy == 0x1000)
-                        func_0206b244(s, p);
+                        StageObj_DrawSpriteAlt(s, p);
                     else
-                        func_0206aa38(s, p, sx, sy);
+                        StageObj_DrawSpriteRotScaleAlt(s, p, sx, sy);
                 } else {
                     if (sx == 0x1000 && sy == 0x1000)
                         AnimatorSprite_Draw(s);
@@ -189,9 +189,9 @@ void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, UnkObj_0206b768 *o, UnkSpr_0206b768
             if (s2 != NULL) {
                 if (p != NULL) {
                     if (sx == 0x1000 && sy == 0x1000)
-                        func_0206b244(s2, p);
+                        StageObj_DrawSpriteAlt(s2, p);
                     else
-                        func_0206aa38(s, p, sx, sy);
+                        StageObj_DrawSpriteRotScaleAlt(s, p, sx, sy);
                 } else {
                     if (sx == 0x1000 && sy == 0x1000)
                         AnimatorSprite_Draw(s2);

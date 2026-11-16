@@ -13,13 +13,13 @@ typedef struct {
 
 extern UnkStruct_StageObj *gPlayers;
 
-void func_ov000_022e5c1c(UnkStruct_022e51a4 *s);
+void Boss6_Unk_ov000_022e5c1c(UnkStruct_022e51a4 *s);
 void Boss6_State_Unk_ov000_022e5078(void);
 
 void Boss6_State_Unk_ov000_022e51a4(UnkStruct_022e51a4 *s) {
     s32 px = gPlayers->unk10;
 
-    func_ov000_022e5c1c(s);
+    Boss6_Unk_ov000_022e5c1c(s);
     if (s->unkF54 >= 0) {
         if (s->base.unk10 > 0x2aa00) {
             s->unkF54 = -s->unkF54;

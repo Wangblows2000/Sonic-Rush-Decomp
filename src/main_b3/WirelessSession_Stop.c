@@ -3,7 +3,7 @@
 typedef struct { s32 unk0; s32 unk4; } UnkWork_020516b4;
 typedef struct { u8 pad0[0x10]; UnkWork_020516b4 *work; } UnkTask_020516b4;
 typedef struct { u16 unk0; u16 unk2; } UnkStruct_0207ad9c;
-extern UnkTask_020516b4 *data_022c4638;
+extern UnkTask_020516b4 *gWirelessLobbyTask;
 extern UnkTask_020516b4 *gTaskCurrent;
 extern UnkStruct_0207ad9c gWirelessSession;
 extern u32 gSystemFlags;
@@ -22,12 +22,12 @@ void Task_Destroy(UnkTask_020516b4 *t);
 void WirelessSession_RequestStop(s32 a, s32 b);
 void WirelessMgr_GetJoinInfo_0204319c(void *p);
 void WirelessMgr_GetJoinInfo(void *p);
-void func_02042a20(void *p, s32 a);
+void WirelessMgr_GetMBParentHostInfo(void *p, s32 a);
 
 #pragma thumb on
 void WirelessSession_Stop(void) {
-    if (data_022c4638 != NULL) {
-        UnkWork_020516b4 *w = data_022c4638->work;
+    if (gWirelessLobbyTask != NULL) {
+        UnkWork_020516b4 *w = gWirelessLobbyTask->work;
         gWirelessSession.unk0 = w->unk0;
         gWirelessSession.unk2 = w->unk4;
     }
@@ -53,7 +53,7 @@ void WirelessSession_Stop(void) {
             WirelessMgr_StopDownloadPlay();
             gWirelessSession.unk0 = 4;
             Task_Destroy(gTaskCurrent);
-            data_022c4638 = NULL;
+            gWirelessLobbyTask = NULL;
             return;
         default:
             return;
@@ -76,11 +76,11 @@ void WirelessSession_Stop(void) {
             break;
         case 2:
             if (WirelessMgr_GetStatus())
-                func_02042a20(data_022c4500, 1);
+                WirelessMgr_GetMBParentHostInfo(data_022c4500, 1);
             WirelessMgr_StopDownloadPlay();
             gWirelessSession.unk0 = 4;
             Task_Destroy(gTaskCurrent);
-            data_022c4638 = NULL;
+            gWirelessLobbyTask = NULL;
             return;
         default:
             return;

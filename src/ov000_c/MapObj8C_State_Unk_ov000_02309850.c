@@ -25,7 +25,7 @@ typedef struct {
 extern UnkStruct_Plr gCamera[];
 extern UnkStruct_Player *gPlayers[];
 
-void func_ov000_0230963c(UnkStruct_02309850 *w);
+void MapObj8C_Action_Unk_ov000_0230963c(UnkStruct_02309850 *w);
 
 void MapObj8C_State_Unk_ov000_02309850(UnkStruct_02309850 *w) {
     UnkStruct_Player *p;
@@ -45,11 +45,11 @@ void MapObj8C_State_Unk_ov000_02309850(UnkStruct_02309850 *w) {
                     ((gCamera[2].unk0 & 1) || !(p->unk32C & 0x400))) {
                     if (x < w->base.unk10) {
                         if (w->unk20C & 1) {
-                            func_ov000_0230963c(w);
+                            MapObj8C_Action_Unk_ov000_0230963c(w);
                             return;
                         }
                     } else if (!(w->unk20C & 1)) {
-                        func_ov000_0230963c(w);
+                        MapObj8C_Action_Unk_ov000_0230963c(w);
                         return;
                     }
                 }

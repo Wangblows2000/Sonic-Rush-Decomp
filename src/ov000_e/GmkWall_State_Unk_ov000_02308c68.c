@@ -4,7 +4,7 @@ void *func_ov000_02307e84(void);
 void *func_ov000_0234237c(s32 a, void *b);
 BOOL func_ov000_02307dfc(void *a, s32 b);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void func_ov000_02308c20(UnkStruct_StageObj *s);
+void GmkWall_Action_Unk_ov000_02308c20(UnkStruct_StageObj *s);
 
 void GmkWall_State_Unk_ov000_02308c68(UnkStruct_StageObj *s) {
     if (func_ov000_02307dfc(func_ov000_0234237c(1, func_ov000_02307e84()), 0)) {
@@ -21,5 +21,5 @@ void GmkWall_State_Unk_ov000_02308c68(UnkStruct_StageObj *s) {
         s->unk1D6 = (s8)(-0x20 - (s->unkC << 6) / 40);
     }
     if (s->unkC == 0)
-        func_ov000_02308c20(s);
+        GmkWall_Action_Unk_ov000_02308c20(s);
 }

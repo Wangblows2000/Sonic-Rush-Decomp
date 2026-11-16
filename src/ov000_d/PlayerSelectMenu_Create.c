@@ -20,7 +20,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void PlayerSelectMenu_Main(void);
 void PlayerSelectMenu_Destructor(UnkStruct_SceneTask *t);
 BOOL PlayerSelectMenu_IsFullyUnlocked(void);
-BOOL func_020513a8(void);
+BOOL WirelessSession_Unk_020513a8(void);
 void PlayerSelectMenu_InitDisplay(BOOL a);
 void PlayerSelectMenu_LoadAssets(UnkStruct_Scene *w);
 void PlayerSelectMenu_InitBackgrounds(UnkStruct_Scene *w);
@@ -31,7 +31,7 @@ void PlayerSelectMenu_CreateLinkIcon(void *p);
 void Touch_Enable(void);
 void PlayerSelectMenu_CreatePaletteAnim(void *a, void *b);
 void SysSound_Init(void);
-UnkStruct_0235a2e8_Sync *func_020514e4(void);
+UnkStruct_0235a2e8_Sync *WirelessSession_GetSendBuffer(void);
 void PlayerSelectMenu_State_StartSync(void);
 void SysSound_PlayBGM(s32 a);
 BOOL PlayerSelectMenu_ShouldShowUnlockNotice(void);
@@ -92,7 +92,7 @@ void PlayerSelectMenu_Create(s32 mode) {
         break;
     case 1:
     case 2:
-        if (func_020513a8()) {
+        if (WirelessSession_Unk_020513a8()) {
             fade = FALSE;
         } else {
             fade = TRUE;
@@ -103,7 +103,7 @@ void PlayerSelectMenu_Create(s32 mode) {
     PlayerSelectMenu_LoadAssets(w);
     PlayerSelectMenu_InitBackgrounds(w);
     PlayerSelectMenu_InitSprites(w);
-    if ((w->unkC == 1 || w->unkC == 2) && func_020513a8()) {
+    if ((w->unkC == 1 || w->unkC == 2) && WirelessSession_Unk_020513a8()) {
         PlayerSelectMenu_LoadModels(&w->mdl);
     } else {
         PlayerSelectMenu_LoadArchives(&w->mdl, PlayerSelectMenu_IsFullyUnlocked());
@@ -115,13 +115,13 @@ void PlayerSelectMenu_Create(s32 mode) {
     PlayerSelectMenu_CreatePaletteAnim(w->unk4C4, w->unk504);
     SysSound_Init();
     if (w->unkC == 1) {
-        s = func_020514e4();
+        s = WirelessSession_GetSendBuffer();
         s->unk0 = 0;
         s->unk2 = 0;
         s->unk1 = 0;
         s->unk3 = 0;
     } else if (w->unkC == 2) {
-        s = func_020514e4();
+        s = WirelessSession_GetSendBuffer();
         s->unk0 = 1;
         s->unk2 = 0;
         s->unk1 = 0;

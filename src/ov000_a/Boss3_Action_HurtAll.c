@@ -25,7 +25,7 @@ typedef struct UnkStruct_022daaf4_c {
 extern UnkStruct_022daaf4_b *gBoss3;
 extern UnkStruct_022daaf4_c data_ov000_0236a48c;
 
-void func_ov000_022da6b4(void);
+void Boss3_Unk_ov000_022da6b4(void);
 void Boss3_Action_Hurt(UnkStruct_022daaf4_b *b);
 void Boss3PartCC_Action_Hurt(void *p);
 
@@ -37,7 +37,7 @@ void Boss3_Action_HurtAll(void) {
         gBoss3->unk218 = NULL;
     }
     c = (UnkStruct_022daaf4_c *)(u32)&data_ov000_0236a48c;
-    func_ov000_022da6b4();
+    Boss3_Unk_ov000_022da6b4();
     c->unk30 = 0;
     c->unk6C = 0;
     c->unk80 = 0;

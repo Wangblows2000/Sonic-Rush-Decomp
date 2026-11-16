@@ -57,10 +57,10 @@ extern UnkStruct_022da24c_c data_ov000_0236a48c;
 void Boss3_Draw_Unk_ov000_022da4b4(void);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
-void func_ov000_022da6b4(void);
+void Boss3_Unk_ov000_022da6b4(void);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
-void func_ov000_022dac60(void);
+void Boss3_Unk_ov000_022dac60(void);
 
 void Boss3_State_WaitForStart(UnkStruct_022da24c *s) {
     UnkStruct_022da24c_o *a;
@@ -86,7 +86,7 @@ void Boss3_State_WaitForStart(UnkStruct_022da24c *s) {
     m->unk1C = m->unk20;
     m->unk18 = m->unk1C;
     c = (UnkStruct_022da24c_c *)(u32)&data_ov000_0236a48c;
-    func_ov000_022da6b4();
+    Boss3_Unk_ov000_022da6b4();
     c->unk24.x = 0xffedc800;
     c->unk24.y = -0x1d0000;
     c->unk24.z = -0x134000;
@@ -97,5 +97,5 @@ void Boss3_State_WaitForStart(UnkStruct_022da24c *s) {
     c->unk54 = c->unk60;
     NaviMsg_SetFaceAnim(9);
     NaviMsg_ShowMessage(0xf, 0xf0);
-    func_ov000_022dac60();
+    Boss3_Unk_ov000_022dac60();
 }

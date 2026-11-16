@@ -74,9 +74,9 @@ extern UnkStruct_022c98d0_7 gBossStatus;
 extern u16 data_ov000_02362d44[][8];
 extern u16 data_ov000_02362d24[][8];
 
-BOOL func_ov000_022cc6d4(void);
-void func_ov000_022ca00c(UnkStruct_022c98d0 *s);
-BOOL func_ov000_022c7274(u32 mask);
+BOOL Boss1_Unk_ov000_022cc6d4(void);
+void Boss1Neck_Unk_ov000_022ca00c(UnkStruct_022c98d0 *s);
+BOOL Boss1Neck_Unk_ov000_022c7274(u32 mask);
 void ScreenShake_Start(s32 a);
 u8 *BossEffect_CreateImpactSmall(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -88,8 +88,8 @@ void Boss1Neck_State_Unk_ov000_022c98d0(UnkStruct_022c98d0 *s) {
     BOOL b;
     s32 i;
     u8 *obj;
-    func_ov000_022cc6d4();
-    if (func_ov000_022cc6d4()) {
+    Boss1_Unk_ov000_022cc6d4();
+    if (Boss1_Unk_ov000_022cc6d4()) {
         b = TRUE;
         if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
             b = FALSE;
@@ -111,9 +111,9 @@ void Boss1Neck_State_Unk_ov000_022c98d0(UnkStruct_022c98d0 *s) {
     if (v >= ((q->unk8->unk4 << 12) - q->unk0) >> 12)
         s->unk2E = 0;
     else
-        func_ov000_022ca00c(s);
+        Boss1Neck_Unk_ov000_022ca00c(s);
     if (s->unk20C == 0) {
-        if (func_ov000_022c7274(2))
+        if (Boss1Neck_Unk_ov000_022c7274(2))
             s->unk20C = 1;
     }
     if (!(s->unk334 & 2))

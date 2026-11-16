@@ -26,7 +26,7 @@ void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void *NNS_G3dGetTex(void *p);
 UnkStruct_StageObj *BossEffect_CreateSuction(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void Boss7PartD6_State_Unk_ov000_022ec34c(void);
+void Boss7PartD6_State_WaitAnimEnd_ov000_022ec34c(void);
 
 void Boss7PartD6_State_Unk_ov000_022ec364(UnkStruct_022ec364 *w) {
     UnkStruct_Mdl *m = &w->mdl;
@@ -43,5 +43,5 @@ void Boss7PartD6_State_Unk_ov000_022ec364(UnkStruct_022ec364 *w) {
         w->mdl.unk114 = data_ov000_02363b64[w->unk37C];
         Sound_PlaySeqArc(w->unk384, 0, 0x99);
     }
-    w->base.unk68 = Boss7PartD6_State_Unk_ov000_022ec34c;
+    w->base.unk68 = Boss7PartD6_State_WaitAnimEnd_ov000_022ec34c;
 }

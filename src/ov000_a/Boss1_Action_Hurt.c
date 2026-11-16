@@ -69,9 +69,9 @@ extern UnkStruct_022cae4c_6 gBossStatus;
 extern u32 gRandSeed;
 
 void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cc224(void);
+void Boss1_Unk_ov000_022cc224(void);
 void ScreenShake_Start(s32 a);
-void func_ov000_022cc110(s32 a);
+void Boss1_Unk_ov000_022cc110(s32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void Boss1_State_Hurt(UnkStruct_022cae4c *s);
@@ -88,9 +88,9 @@ void Boss1_Action_Hurt(UnkStruct_022cae4c *s) {
     s->unk214->unk216 &= ~4;
     s->unk214->unk29A &= ~4;
     s->unk214->unk242 &= ~4;
-    func_ov000_022cc224();
+    Boss1_Unk_ov000_022cc224();
     ScreenShake_Start(0);
-    func_ov000_022cc110(0x1000);
+    Boss1_Unk_ov000_022cc110(0x1000);
     Sound_PlaySeqArc(0, 0, 0x7b);
     Sound_PlayVoice(0, 0, (Rand() & 1) ? 0xce : 0xcf);
     s->unk220 = 0;

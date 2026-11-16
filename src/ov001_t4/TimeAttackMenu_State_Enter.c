@@ -45,18 +45,18 @@ extern UnkTask_022eb5d0 *gTaskCurrent;
 
 void KeyframeAnim_Update(UnkAnim_022eb5d0 *a);
 BOOL KeyframeAnim_IsFinished(UnkAnim_022eb5d0 *a);
-void func_ov001_022ea360(UnkWork_022eb5d0 *w, s32 i, s32 v);
-void func_ov001_022e9fe4(UnkWork_022eb5d0 *w, s32 i);
-void func_ov001_022e9fa8(UnkWork_022eb5d0 *w, s32 i);
-void func_ov001_022ea2f0(UnkWork_022eb5d0 *w);
+void TimeAttackMenu_Unk_ov001_022ea360(UnkWork_022eb5d0 *w, s32 i, s32 v);
+void TimeAttackMenu_Unk_ov001_022e9fe4(UnkWork_022eb5d0 *w, s32 i);
+void TimeAttackMenu_Unk_ov001_022e9fa8(UnkWork_022eb5d0 *w, s32 i);
+void TimeAttackMenu_Unk_ov001_022ea2f0(UnkWork_022eb5d0 *w);
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
 void AnimatorSprite_Draw(void *p);
 void AnimatorSprite_DrawRotScale(void *p, s32 sx, s32 sy, s32 d);
-BOOL func_ov001_022e9ebc(UnkWork_022eb5d0 *w);
-BOOL func_ov001_022e9e30(UnkWork_022eb5d0 *w);
-BOOL func_ov001_022e9df0(UnkWork_022eb5d0 *w);
-void func_ov001_022ebc3c(s32 a);
-void func_ov001_022eba70(s32 a);
+BOOL TimeAttackMenu_Unk_ov001_022e9ebc(UnkWork_022eb5d0 *w);
+BOOL TimeAttackMenu_Unk_ov001_022e9e30(UnkWork_022eb5d0 *w);
+BOOL TimeAttackMenu_Unk_ov001_022e9df0(UnkWork_022eb5d0 *w);
+void TimeAttackMenu_Unk_ov001_022ebc3c(s32 a);
+void TimeAttackMenu_Unk_ov001_022eba70(s32 a);
 
 #pragma thumb on
 void TimeAttackMenu_State_Enter(void) {
@@ -83,15 +83,15 @@ void TimeAttackMenu_State_Enter(void) {
     it = w->items;
     an = w->anims;
     for (; i < 5; i++) {
-        func_ov001_022ea360(w, i, an->x);
+        TimeAttackMenu_Unk_ov001_022ea360(w, i, an->x);
         it->unk8 = 8;
         it->unk8 += i * 0x18;
-        func_ov001_022e9fe4(w, i);
-        func_ov001_022e9fa8(w, i);
+        TimeAttackMenu_Unk_ov001_022e9fe4(w, i);
+        TimeAttackMenu_Unk_ov001_022e9fa8(w, i);
         it++;
         an++;
     }
-    func_ov001_022ea2f0(w);
+    TimeAttackMenu_Unk_ov001_022ea2f0(w);
     a = &w->anims[6];
     if (w->unkd0 >= 14) {
         w->sprites[10].x = a->x;
@@ -167,7 +167,7 @@ void TimeAttackMenu_State_Enter(void) {
     if (!KeyframeAnim_IsFinished(&w->anims[11])) done = FALSE;
     if (done) {
         w->unkdc = 0;
-        func_ov001_022ebc3c(0);
+        TimeAttackMenu_Unk_ov001_022ebc3c(0);
     }
 }
 #pragma thumb reset

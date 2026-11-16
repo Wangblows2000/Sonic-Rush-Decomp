@@ -40,7 +40,7 @@ extern UnkStruct_02369ac0 gBossStatus;
 void Boss4_ArenaToStagePos(void *v, UnkStruct_022de860_O *o);
 void ObjRect_SetBox2D(UnkStruct_022de860_C *c, s16 a, s16 b, s16 d, s16 e);
 void StageObj_HandleCollider(void *w, void *a);
-void func_ov000_022db894(UnkStruct_022de860_C *h, UnkStruct_022de860_C *out);
+void Boss4_Unk_ov000_022db894(UnkStruct_022de860_C *h, UnkStruct_022de860_C *out);
 void Boss4_OnHit_Damage(void);
 
 void Boss4PartCF_Collide(void) {
@@ -66,6 +66,6 @@ void Boss4PartCF_Collide(void) {
     c->unkA |= 4;
     StageObj_HandleCollider(o, c);
     c->unk4 += 0x64;
-    func_ov000_022db894(c, &o->coll2);
+    Boss4_Unk_ov000_022db894(c, &o->coll2);
     o->coll2.unk4 = c->unk4;
 }

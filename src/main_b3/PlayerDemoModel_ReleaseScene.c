@@ -37,7 +37,7 @@ BOOL NNS_FndMountArchive(UnkArc_02056428 *arc, const char *name, void *narc);
 void *NNS_FndGetArchiveFileByIndex(UnkArc_02056428 *arc, s32 i);
 BOOL NNS_FndUnmountArchive(UnkArc_02056428 *arc);
 void PolyDemo_BuildModelPath(void *name, char *buf);
-u32 func_02057038(void *name);
+u32 PolyDemo_GetModelFlags(void *name);
 void Model_Release(UnkObj_02056428 *o);
 void NNS_G3dResDefaultRelease(void *res);
 void Model_Init(UnkObj_02056428 *o, s32 a);

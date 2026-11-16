@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 int StaffRoll_PictureState_Blaze7();
-int func_ov001_022d0220();
+int StaffRoll_Unk_ov001_022d0220();
 int StaffRoll_SetPictureState();
 
 #pragma thumb on
@@ -32,7 +32,7 @@ void StaffRoll_PictureState_Blaze6(int param_1)
     *(undefined4 *)(param_1 + 0xcdc) = 0;
     *(undefined4 *)(param_1 + 0xcf4) = 0;
   }
-  func_ov001_022d0220(param_1);
+  StaffRoll_Unk_ov001_022d0220(param_1);
   if ((*(uint *)(param_1 + 0xc58) & 2) != 0) {
     StaffRoll_SetPictureState(param_1,((int)StaffRoll_PictureState_Blaze7));
   }

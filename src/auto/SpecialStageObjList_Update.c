@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-int func_ov001_0231066c();
+int SpecialStage_Unk_ov001_0231066c();
 int SpecialStageObjList_Free();
 
 void SpecialStageObjList_Update(int param_1)
@@ -29,7 +29,7 @@ void SpecialStageObjList_Update(int param_1)
   int iVar2;
   
   for (iVar2 = *(int *)(param_1 + 0xec); iVar2 != param_1 + 0xf4; iVar2 = *(int *)(iVar2 + 0xdc)) {
-    func_ov001_0231066c(param_1,iVar2);
+    SpecialStage_Unk_ov001_0231066c(param_1,iVar2);
   }
   for (iVar2 = *(int *)(param_1 + 0xec); iVar2 != param_1 + 0xf4; iVar2 = *(int *)(iVar2 + 0xdc)) {
     if ((((*(ushort *)(iVar2 + 100) & 2) != 0) && (*(int *)(iVar2 + 0xd4) != 0)) &&

@@ -12,7 +12,7 @@ s32 Task_DestroyByTag();
 s32 SceneChange_ToPlayerSelectMenuMode0();
 s32 SpecialStage_RequestExit();
 void PauseMenu_QuitToMap();
-s32 func_02053bec();
+s32 NaviMsg_SetRestoreSubDisplayFlag();
 s32 PauseMenu_Draw();
 
 void PauseMenu_Main_Quit(void) {
@@ -49,7 +49,7 @@ void PauseMenu_Main_Quit(void) {
                 return;
             }
         }
-        func_02053bec(1, t5);
+        NaviMsg_SetRestoreSubDisplayFlag(1, t5);
         return;
     }
     PauseMenu_Draw(t0);

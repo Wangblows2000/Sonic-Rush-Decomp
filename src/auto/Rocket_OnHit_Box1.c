@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_02313bb0();
+s32 Rocket_Unk_ov000_02313bb0();
 
 void Rocket_OnHit_Box1(u8 *p0, u8 *p1) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x18);
@@ -12,5 +12,5 @@ void Rocket_OnHit_Box1(u8 *p0, u8 *p1) {
     if (t1 == 0) {
         return;
     }
-    func_ov000_02313bb0(t0, t1);
+    Rocket_Unk_ov000_02313bb0(t0, t1);
 }

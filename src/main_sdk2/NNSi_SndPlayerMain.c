@@ -6,7 +6,7 @@ extern s16 data_020725e0[];
 
 u32 SND_GetPlayerStatus(void);
 BOOL SND_IsFinishedCommandTag(u32 id);
-void ShutdownPlayer(UnkSndPlayer *p);
+void ShutdownPlayer_snd_player(UnkSndPlayer *p);
 void NNSi_SndFaderUpdate(UnkSndFader *f);
 s32 NNSi_SndFaderGet(UnkSndFader *f);
 void SND_SetPlayerVolume(u32 player, s32 vol);
@@ -36,7 +36,7 @@ void NNSi_SndPlayerMain(void)
             }
         }
         if (p->prepared && !(status & (1 << p->playerNo))) {
-            ShutdownPlayer(p);
+            ShutdownPlayer_snd_player(p);
         } else {
             NNSi_SndFaderUpdate(&p->fader);
             v2 = data_020725e0[p->volume2];

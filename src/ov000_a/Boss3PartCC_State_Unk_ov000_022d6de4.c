@@ -50,12 +50,12 @@ struct UnkStruct_022d6de4 {
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-void func_ov000_022dac94(u16 *p, s32 a, s32 b);
+void Boss3_Unk_ov000_022dac94(u16 *p, s32 a, s32 b);
 void Boss3PartCC_State_Unk_ov000_022d6d38(UnkStruct_022d6de4 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d6de4(UnkStruct_022d6de4 *s) {
     if (s->unk25A != 0) {
-        func_ov000_022dac94(&s->unk264, 1, 5);
+        Boss3_Unk_ov000_022dac94(&s->unk264, 1, 5);
     } else {
         UnkStruct_022d6de4_ctl *c = s->unk2C4.unkE4;
         if ((c->unk8->unk4 << 12) - c->unk0 < 0x5a)

@@ -56,9 +56,9 @@ extern UnkGfx_022d15e8 gDisplayMain;
 extern UnkTbl_022d15e8 data_ov001_023160e4;
 
 void StaffRoll_SetMainBrightness(s32 a);
-void func_ov001_022cff74(UnkObj_022d15e8 *o, s32 a, void *b, void *c);
+void StaffRoll_Unk_ov001_022cff74(UnkObj_022d15e8 *o, s32 a, void *b, void *c);
 void StaffRoll_CreateCreditTask(s32 a);
-void func_ov001_022cfe58(void *a, s32 b, u16 c, s32 d, void *e, void *f);
+void StaffRoll_Unk_ov001_022cfe58(void *a, s32 b, u16 c, s32 d, void *e, void *f);
 void Background_Draw(void *o);
 void StaffRoll_DestroyCreditTask(s32 a);
 void StaffRoll_SetState(UnkStruct_022d15e8 *p, void (*fn)(UnkStruct_022d15e8 *));
@@ -73,9 +73,9 @@ void StaffRoll_State_ExtraShowFinalPicture(UnkStruct_022d15e8 *p) {
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1800;
     *(vu16 *)0x400000a = (*(vu16 *)0x400000a & 0x43) | 0x18c;
     *(vu16 *)0x400100a = (*(vu16 *)0x400100a & 0x43) | 0x18c;
-    func_ov001_022cff74(&p->objs[2], 0x100, p->unkf0c, p->unkd0c);
+    StaffRoll_Unk_ov001_022cff74(&p->objs[2], 0x100, p->unkf0c, p->unkd0c);
     StaffRoll_CreateCreditTask(3);
-    func_ov001_022cfe58(p->unkb34, p->unk41c, data_ov001_023160e4.unk6, 0x100, p->unk130c, p->unk110c);
+    StaffRoll_Unk_ov001_022cfe58(p->unkb34, p->unk41c, data_ov001_023160e4.unk6, 0x100, p->unk130c, p->unk110c);
     gDisplayMain.blend.bg1a = 1;
     gDisplayMain.blend.mode = 1;
     gDisplayMain.alpha.eva = 0;

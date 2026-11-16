@@ -14,7 +14,7 @@ typedef struct {
     UnkWork_02050430 *work;
 } UnkTask_02050430;
 
-extern UnkTask_02050430 *data_022c4638;
+extern UnkTask_02050430 *gWirelessLobbyTask;
 extern UnkTask_02050430 *data_022c4634;
 extern UnkTask_02050430 *gTaskCurrent;
 extern u32 gSystemFlags;
@@ -28,7 +28,7 @@ void Task_Destroy(UnkTask_02050430 *t);
 void WirelessSessionStop_Main(void) {
     u32 a;
     u32 b;
-    if (data_022c4638 == NULL) {
+    if (gWirelessLobbyTask == NULL) {
         u32 v;
         u32 x;
         u32 y;
@@ -49,7 +49,7 @@ void WirelessSessionStop_Main(void) {
             y = 0;
         w->unk0 = x | (y << 8);
     } else {
-        UnkWork_02050430 *w = data_022c4638->work;
+        UnkWork_02050430 *w = gWirelessLobbyTask->work;
         u32 v = w->unk8;
         u32 x = v & 0xff;
         u32 y = v >> 8;

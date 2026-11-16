@@ -17,11 +17,11 @@ typedef struct {
     u16 name[11];
     u16 flag;
 } UnkMsg_02050a7c;
-extern UnkTask_02050a7c *data_022c4638;
+extern UnkTask_02050a7c *gWirelessLobbyTask;
 extern UnkStruct_0207ad9c gWirelessSession;
 extern u16 data_02072cbc[];
 extern UnkStruct_02072cb8 gGameLanguage;
-extern s32 data_022c4640;
+extern s32 gWirelessPartnerNameValid;
 
 void Task_Destroy(UnkTask_02050a7c *t);
 UnkTask_02050a7c *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
@@ -40,12 +40,12 @@ UnkWork_02050a7c *WirelessLobby_CreateChild(s32 target) {
     u16 n;
     UnkMsg_02050a7c msg;
 
-    if (data_022c4638 != NULL) {
-        Task_Destroy(data_022c4638);
-        data_022c4638 = NULL;
+    if (gWirelessLobbyTask != NULL) {
+        Task_Destroy(gWirelessLobbyTask);
+        gWirelessLobbyTask = NULL;
     }
-    data_022c4638 = Task_Create(WirelessLobbyChild_Main, WirelessLobbyChild_Destructor, 0, 0x1000, 0, sizeof(UnkWork_02050a7c));
-    w = data_022c4638->work;
+    gWirelessLobbyTask = Task_Create(WirelessLobbyChild_Main, WirelessLobbyChild_Destructor, 0, 0x1000, 0, sizeof(UnkWork_02050a7c));
+    w = gWirelessLobbyTask->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_02050a7c));
     w->unk0 = 0;
@@ -62,7 +62,7 @@ UnkWork_02050a7c *WirelessLobby_CreateChild(s32 target) {
     msg.flag = 1;
     WirelessMgr_StartDataSharingScanChild(0, 1, target, &msg, sizeof(UnkMsg_02050a7c));
     w->unkC = 1;
-    data_022c4640 = 0;
+    gWirelessPartnerNameValid = 0;
     return w;
 }
 #pragma thumb reset

@@ -50,12 +50,12 @@ extern u8 gSoundArchive[];
 s32 SpecialStage_GetStageIndex(void);
 void AnimatorSprite_ProcessAnimation(UnkSpr_02307d30 *s, s32 a, s32 b);
 void AnimatorSprite_SetAnimation(UnkSpr_02307d30 *s, u16 anim);
-void func_ov001_02307890(s32 i, s32 t);
-void func_ov001_02307778(s32 a, f32 f, s16 *x, s16 *y);
-BOOL func_0202e5e4(f32 a, f32 b);
+void SpecialStageHud_Unk_ov001_02307890(s32 i, s32 t);
+void SpecialStageHud_Unk_ov001_02307778(s32 a, f32 f, s16 *x, s16 *y);
+BOOL Runtime_Unk_0202e5e4(f32 a, f32 b);
 void NNS_SndArcSetCurrent(void *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov001_02307990(s32 i);
+void SpecialStageHud_Unk_ov001_02307990(s32 i);
 void SpecialStage_RequestExit(s32 a);
 
 void SpecialStageHud_UpdateClear(void) {
@@ -105,12 +105,12 @@ void SpecialStageHud_UpdateClear(void) {
     if (w->unkBD4 >= 0x46) {
         t = w->unkBD4 - 0x46;
         for (i = 0; i < 7; i++)
-            func_ov001_02307890(i, t);
+            SpecialStageHud_Unk_ov001_02307890(i, t);
         if (w->unkBD4 >= 0x17c) {
             f = (f32)(w->unkBD4 - 0x17c) / 60.0f;
-            if (func_0202e5e4(f, 1.0f))
+            if (Runtime_Unk_0202e5e4(f, 1.0f))
                 f = 1.0f;
-            func_ov001_02307778(SpecialStage_GetStageIndex(), 50.0f * f, &w->unkBF8, &w->unkBFA);
+            SpecialStageHud_Unk_ov001_02307778(SpecialStage_GetStageIndex(), 50.0f * f, &w->unkBF8, &w->unkBFA);
         }
     }
     if (w->unkBD4 == 0xfc) {
@@ -131,7 +131,7 @@ void SpecialStageHud_UpdateClear(void) {
             w->spr2[i].y = w->pos[i].y;
             w->timer[i]--;
         } else {
-            func_ov001_02307990(i);
+            SpecialStageHud_Unk_ov001_02307990(i);
         }
     }
     if (w->unkBD4 == 0x302)

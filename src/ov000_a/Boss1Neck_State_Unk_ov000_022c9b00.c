@@ -37,7 +37,7 @@ struct UnkStruct_022c9b00 {
 
 extern UnkStruct_022c9b00_2 *gBoss1;
 
-void func_ov000_022ca00c(UnkStruct_022c9b00 *s);
+void Boss1Neck_Unk_ov000_022ca00c(UnkStruct_022c9b00 *s);
 void Boss1Neck_State_Unk_ov000_022c9a6c(UnkStruct_022c9b00 *s);
 
 void Boss1Neck_State_Unk_ov000_022c9b00(UnkStruct_022c9b00 *s) {
@@ -45,7 +45,7 @@ void Boss1Neck_State_Unk_ov000_022c9b00(UnkStruct_022c9b00 *s) {
     UnkStruct_022c9b00_5 *q;
     s32 k, r, n;
     s32 k2, r2, n2;
-    func_ov000_022ca00c(s);
+    Boss1Neck_Unk_ov000_022ca00c(s);
     s->unk20C += gBoss1->unk22A;
     if ((s32)s->unk20C >= 0x1000) {
         s->unk2E = 0;

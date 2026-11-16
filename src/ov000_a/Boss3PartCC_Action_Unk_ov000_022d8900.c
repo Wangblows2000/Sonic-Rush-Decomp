@@ -85,8 +85,8 @@ extern UnkStruct_022d8900_b *gBoss3;
 extern UnkStruct_022d8900_4 gGameState;
 extern u8 data_ov000_023633e4[][9][16];
 
-void func_ov000_022daa78(void);
-void func_ov000_022daa94(void);
+void Boss3_Unk_ov000_022daa78(void);
+void Boss3_Unk_ov000_022daa94(void);
 void Boss3PartCC_State_Unk_ov000_022d8890(UnkStruct_022d8900 *s);
 
 static inline s32 GetIdx(void) {
@@ -103,8 +103,8 @@ void Boss3PartCC_Action_Unk_ov000_022d8900(UnkStruct_022d8900 *s) {
     s->unk258 = 0;
     s->unk25A = data_ov000_023633e4[GetIdx()][gBoss3->unk222][0];
     if (s->unk25A != 0)
-        func_ov000_022daa78();
+        Boss3_Unk_ov000_022daa78();
     else
-        func_ov000_022daa94();
+        Boss3_Unk_ov000_022daa94();
     s->func = Boss3PartCC_State_Unk_ov000_022d8890;
 }

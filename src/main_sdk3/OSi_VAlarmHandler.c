@@ -12,8 +12,8 @@ typedef struct UnkVAlarm_02007110 {
     u32 canceled;            /* 0x24 */
 } UnkVAlarm_02007110;
 
-extern UnkVAlarm_02007110 *data_0207d394;
-extern u32 data_0207d390;
+extern UnkVAlarm_02007110 *OSi_VAlarmQueue;
+extern u32 OSi_VFrameCount;
 extern u8 data_027e0000[];
 
 u32 OS_DisableIrqMask(u32 mask);
@@ -48,7 +48,7 @@ void OSi_VAlarmHandler(void *arg)
     DISPSTAT &= ~0x20;
     *(vu32 *)((u32)data_027e0000 + 0x3ff8) |= 4;
     (void)OSi_GetVFrame(func_02007110_GetVCountEqVal() - 1);
-    while ((alarm = data_0207d394) != NULL) {
+    while ((alarm = OSi_VAlarmQueue) != NULL) {
         currentVCount = VCOUNT;
         currentFrame = OSi_GetVFrame(currentVCount);
         switch (OSi_CompareVCount(alarm, currentFrame, currentVCount)) {
@@ -69,7 +69,7 @@ void OSi_VAlarmHandler(void *arg)
             }
             if (alarm->period && !alarm->canceled) {
                 alarm->handler = handler;
-                alarm->frame = data_0207d390 + 1;
+                alarm->frame = OSi_VFrameCount + 1;
                 OSi_AppendVAlarm(alarm);
             }
             break;
@@ -77,7 +77,7 @@ void OSi_VAlarmHandler(void *arg)
         case 2:
             OSi_DetachVAlarm(alarm);
             OSi_AppendVAlarm(alarm);
-            alarm->frame = data_0207d390 + 1;
+            alarm->frame = OSi_VFrameCount + 1;
             break;
         }
     }

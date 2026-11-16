@@ -61,7 +61,7 @@ void NNS_G3dGlbSetBaseScale(const fx32 *v);
 void NNS_G3dGlbSetBaseTrans(const fx32 *v);
 void NNS_G3dGlbFlushP(void);
 void MI_Copy36B(const void *src, void *dst);
-void func_020490b8(u16 *out, u16 a, u16 b, s32 n, s32 i);
+void Math_LerpRGB555(u16 *out, u16 a, u16 b, s32 n, s32 i);
 
 #define REG_DISP3DCNT (*(vu16 *)0x04000060)
 #define REG_POLYGON_ATTR (*(vu32 *)0x040004a4)
@@ -154,7 +154,7 @@ void func_ov000_02326744(void) {
         pts[3].y = next->a.y;
         pts[3].z = next->a.z;
         REG_BEGIN_VTXS = 2;
-        func_020490b8(&col, w->unk2a8, w->unk2aa, w->unk2a0, i);
+        Math_LerpRGB555(&col, w->unk2a8, w->unk2aa, w->unk2a0, i);
         p = pts;
         for (j = 0; j < 4; j++) {
             REG_COLOR = col;

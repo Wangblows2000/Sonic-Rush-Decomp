@@ -38,7 +38,7 @@ void SpecialStagePlayer_ChangeState(UnkStruct_02312f24 *p, s32 v);
 void SpecialStageMap_SetScrollSpeed(s32 v);
 void SpecialStageCamera_SetMode(s32 v);
 void SpecialStagePlayer_StartDash(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e);
-void func_ov001_02311ec8(UnkStruct_02312f24 *p);
+void SpecialStagePlayer_Unk_ov001_02311ec8(UnkStruct_02312f24 *p);
 
 void SpecialStagePlayer_OnTouchGimmick(UnkStruct_02312f24 *p, UnkStruct_02312f24_e *e) {
     if (p->unk22C == SpecialStagePlayer_State_Trick || p->unk22C == SpecialStagePlayer_State_TrickInput) {
@@ -72,19 +72,19 @@ void SpecialStagePlayer_OnTouchGimmick(UnkStruct_02312f24 *p, UnkStruct_02312f24
     case 4:
         SpecialStagePlayer_StartDash(p, e);
         p->unk134 = e->unk16;
-        func_ov001_02311ec8(p);
+        SpecialStagePlayer_Unk_ov001_02311ec8(p);
         p->unk138 = 0x800;
         break;
     case 5:
         SpecialStagePlayer_StartDash(p, e);
         p->unk134 = e->unk16 - 0x4000;
-        func_ov001_02311ec8(p);
+        SpecialStagePlayer_Unk_ov001_02311ec8(p);
         p->unk138 = 0x111;
         break;
     case 6:
         SpecialStagePlayer_StartDash(p, e);
         p->unk134 = e->unk16 + 0x4000;
-        func_ov001_02311ec8(p);
+        SpecialStagePlayer_Unk_ov001_02311ec8(p);
         p->unk138 = 0x111;
         break;
     case 0xf:

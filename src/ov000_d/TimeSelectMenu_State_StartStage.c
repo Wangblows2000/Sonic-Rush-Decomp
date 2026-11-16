@@ -15,11 +15,11 @@ typedef struct {
 
 extern UnkStruct_02361478_Task *gTaskCurrent;
 
-void *func_020514e4(void);
+void *WirelessSession_GetSendBuffer(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MsgBox_Destroy(void);
 void Task_DestroyByTag(s32 a);
-BOOL func_020513a8(void);
+BOOL WirelessSession_Unk_020513a8(void);
 void Wireless_EnableErrorCallback(s32 a);
 void StageStart_Create(s32 a);
 void SysSound_Release(void);
@@ -33,7 +33,7 @@ void TimeSelectMenu_State_StartStage(void) {
     UnkStruct_02361478 *w = gTaskCurrent->work;
 
     if (w->unk0 == 8) {
-        void *s = func_020514e4();
+        void *s = WirelessSession_GetSendBuffer();
         vu16 zero = 0;
         MIi_CpuClear16(zero, s, 0x40);
     }
@@ -47,7 +47,7 @@ void TimeSelectMenu_State_StartStage(void) {
         b = n % 2;
         MsgBox_Destroy();
         Task_DestroyByTag(0x1000);
-        if (func_020513a8()) {
+        if (WirelessSession_Unk_020513a8()) {
             Wireless_EnableErrorCallback(1);
             StageStart_Create(0);
             return;

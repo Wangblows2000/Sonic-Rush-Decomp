@@ -39,13 +39,13 @@ typedef struct UnkStruct_022d6688_c {
 
 extern UnkStruct_022d6688_c data_ov000_0236a444;
 
-void func_ov000_022da6b4(void);
+void Boss3_Unk_ov000_022da6b4(void);
 void Boss3PartCC_State_Unk_ov000_022d6684(UnkStruct_022d6688 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d6688(UnkStruct_022d6688 *s) {
     if (!(s->unk2C4.unk10C & 2))
         return;
     if (data_ov000_0236a444.unkDC != 2)
-        func_ov000_022da6b4();
+        Boss3_Unk_ov000_022da6b4();
     s->func = Boss3PartCC_State_Unk_ov000_022d6684;
 }

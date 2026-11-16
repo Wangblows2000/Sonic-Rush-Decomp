@@ -45,7 +45,7 @@ typedef struct UnkStruct_022d6b0c_c {
 
 extern UnkStruct_022d6b0c_c data_ov000_0236a48c;
 
-void func_ov000_022da6b4(void);
+void Boss3_Unk_ov000_022da6b4(void);
 void Boss3PartCC_State_Unk_ov000_022d6a84(UnkStruct_022d6b0c *s);
 
 void Boss3PartCC_State_Unk_ov000_022d6b0c(UnkStruct_022d6b0c *s) {
@@ -57,7 +57,7 @@ void Boss3PartCC_State_Unk_ov000_022d6b0c(UnkStruct_022d6b0c *s) {
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
     c = (UnkStruct_022d6b0c_c *)(u32)&data_ov000_0236a48c;
-    func_ov000_022da6b4();
+    Boss3_Unk_ov000_022da6b4();
     c->unk30 = 0x199;
     c->unk6C = 0xcc;
     s->func = Boss3PartCC_State_Unk_ov000_022d6a84;

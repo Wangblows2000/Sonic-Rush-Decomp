@@ -3,13 +3,13 @@
 
 #pragma thumb on
 
-s32 func_0206047c();
+s32 TalkDemo_Unk_0206047c();
 s32 TalkDemo_GetFlags();
 extern u8 data_02076c54[];
 s32 Sound_PlaySeq();
 
 void TalkDemo_PlayBGM(u8 *p0) {
-    s32 t0 = func_0206047c(*(u32 *)((u8 *)p0 + 0x24));
+    s32 t0 = TalkDemo_Unk_0206047c(*(u32 *)((u8 *)p0 + 0x24));
     s32 t1 = ((s32)(*(u32 *)((u8 *)t0 + 0x18) << 0x10) >> 0x10);
     s32 t2 = TalkDemo_GetFlags(0);
     if ((t2 & 0x10) == 0) {

@@ -18,7 +18,7 @@ void NNS_FndMountArchive(void *ctx, void *a, void *b);
 void NNS_FndUnmountArchive(void *ctx);
 void *NNS_FndGetArchiveFileByName(void *a);
 void NNS_G3dResDefaultRelease(void *a);
-BOOL func_ov000_022cc6d4(void);
+BOOL Boss1_Unk_ov000_022cc6d4(void);
 void Model_Release(void *p);
 void MapObject_Destructor(UnkStruct_022cbcf4 *s);
 
@@ -29,7 +29,7 @@ void Boss1_Destructor(UnkStruct_022cbcf4 *s) {
     NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02364fc0));
     NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02364fd4));
     NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02364ff0));
-    if (func_ov000_022cc6d4()) {
+    if (Boss1_Unk_ov000_022cc6d4()) {
         NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_0236500c));
         NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365024));
         NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_0236503c));

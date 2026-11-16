@@ -17,7 +17,7 @@ extern UnkStruct_StageObj *gPlayers;
 
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void Sound_SetPositional(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
-void func_ov000_022fc5b8(UnkStruct_StageObj *w, s32 a, s32 b, s32 c);
+void EnemyPawnGroup_Unk_ov000_022fc5b8(UnkStruct_StageObj *w, s32 a, s32 b, s32 c);
 void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_StageObj *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fd230(UnkStruct_StageObj *w) {
@@ -25,7 +25,7 @@ void EnemyPawnGroup_State_Unk_ov000_022fd230(UnkStruct_StageObj *w) {
         if (!(w->unk1F4 & 4)) {
             Sound_PlaySeqArcEx(w->unk1DC, 0, 0x77);
             Sound_SetPositional(w->unk1DC, w, gPlayers);
-            func_ov000_022fc5b8(w, 0xe6, 0x1c, -0x20);
+            EnemyPawnGroup_Unk_ov000_022fc5b8(w, 0xe6, 0x1c, -0x20);
         }
         w->unk1F4 |= 4;
     }

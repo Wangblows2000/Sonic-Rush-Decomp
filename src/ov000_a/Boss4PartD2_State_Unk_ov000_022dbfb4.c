@@ -65,7 +65,7 @@ extern s16 data_0206e470[];
 extern s16 data_02070470[];
 
 void Boss4_WrapArenaX(s32 *p);
-void func_ov000_022db758(s32 *v, u16 *ang, s32 x, s32 y);
+void Boss4_Unk_ov000_022db758(s32 *v, u16 *ang, s32 x, s32 y);
 
 void Boss4PartD2_State_Unk_ov000_022dbfb4(void) {
     UnkStruct_022dbfb4 *s = gTaskCurrent->unk10;
@@ -80,13 +80,13 @@ void Boss4PartD2_State_Unk_ov000_022dbfb4(void) {
         s->unk4F0(s);
     Boss4_WrapArenaX(&s->unk4E0);
     Boss4_WrapArenaX(&s->unk4E4);
-    func_ov000_022db758(NULL, &s->unk4EA, s->unk4E0, 0);
-    func_ov000_022db758(NULL, &s->unk4EC, s->unk4E4, 0);
+    Boss4_Unk_ov000_022db758(NULL, &s->unk4EA, s->unk4E0, 0);
+    Boss4_Unk_ov000_022db758(NULL, &s->unk4EC, s->unk4E4, 0);
     if (s->unk4D8 == 0) {
         u16 d = s->unk4EA - s->unk4E8;
         if (data_0206e470[((d & 0xffff) >> 4) * 2] < data_02070470[0x70]) {
             s->unk4D8 = 1;
-            func_ov000_022db758(&s->unk344.unk48, NULL, gBoss4->unk20C->unk10, s->unk14);
+            Boss4_Unk_ov000_022db758(&s->unk344.unk48, NULL, gBoss4->unk20C->unk10, s->unk14);
         }
     } else if (s->unk4D8 != 0 && (s->unk344.unk10C & 2)) {
         s->unk54 |= 8;

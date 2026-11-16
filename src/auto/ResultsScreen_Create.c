@@ -8,7 +8,7 @@ s32 func_ov000_0235cc4c();
 s32 func_ov000_0235cbf0();
 s32 ResultsScreen_CreateTask();
 s32 ResultsScreen_InitDisplay();
-s32 func_020513a8();
+s32 WirelessSession_Unk_020513a8();
 s32 Stage_FreeZoneFiles();
 s32 Stage_FreeCommonFiles();
 s32 ResultsScreen_LoadSprites();
@@ -27,7 +27,7 @@ void ResultsScreen_Create(void) {
     s32 t2 = func_ov000_0235cbf0();
     s32 t3 = ResultsScreen_CreateTask(t0, t1, t2);
     ResultsScreen_InitDisplay();
-    s32 t4 = func_020513a8();
+    s32 t4 = WirelessSession_Unk_020513a8();
     if (t4 == 0) {
         Stage_FreeZoneFiles();
         Stage_FreeCommonFiles();

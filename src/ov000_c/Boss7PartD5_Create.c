@@ -82,7 +82,7 @@ void NNS_FndUnmountArchive(void *f);
 void StageObj_LoadModel(void *w, void *s, void *a, s32 b, void *c, void *d);
 void StageObj_LoadMotion(void *w, void *s, void *a, void *b, void *c);
 void AnimatorSprite_Init(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, u32 h);
-void func_ov000_022ee198(UnkStruct_022ee950 *w, s32 a);
+void Boss7_Unk_ov000_022ee198(UnkStruct_022ee950 *w, s32 a);
 
 UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
@@ -156,7 +156,7 @@ UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     sub->unkB = 1;
     sub->unkC = 0xf;
     AnimatorSprite_Init(&w->base.spr0, w->unk4D4, 0, 0x18, 0, 0, 0, 0, 0);
-    func_ov000_022ee198(w, 0x3c);
+    Boss7_Unk_ov000_022ee198(w, 0x3c);
     w->base.unk5C |= 4;
     return w;
 }

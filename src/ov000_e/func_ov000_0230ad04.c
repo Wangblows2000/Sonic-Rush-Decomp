@@ -46,7 +46,7 @@ extern UnkStruct_Player *gPlayers;
 s32 FX_DivS32(s32 a, s32 b);
 void MIi_CpuCopy16(void *a, void *b, s32 c);
 void Player_Action_ReachGoal(UnkStruct_Player *p, void *a);
-void func_ov000_022fa9e8(void *a, UnkStruct_Player *p, s32 b);
+void MapObject_Unk_ov000_022fa9e8(void *a, UnkStruct_Player *p, s32 b);
 void Camera_DisableSwapForPlayer(UnkStruct_Player *p);
 
 void func_ov000_0230ad04(void *a, UnkStruct_Player *p) {
@@ -88,7 +88,7 @@ void func_ov000_0230ad04(void *a, UnkStruct_Player *p) {
             data_022c4590.unk40 = 2;
         } else {
             data_022c4590.unk40 = 1;
-            func_ov000_022fa9e8(a, p, 3);
+            MapObject_Unk_ov000_022fa9e8(a, p, 3);
         }
     }
     Camera_DisableSwapForPlayer(p);

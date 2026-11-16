@@ -17,9 +17,9 @@ typedef struct {
     s32 unk111C;
 } UnkStruct_Boss;
 
-void func_ov000_022e03f4(UnkStruct_Boss *w);
-void func_ov000_022e035c(UnkStruct_Boss *w);
-void func_ov000_022df9d4(s32 a);
+void Boss6_Unk_ov000_022e03f4(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e035c(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022df9d4(s32 a);
 void Boss6_SelectNextAttack(s32 a);
 
 void Boss6_State_Unk_ov000_022e4718(UnkStruct_Boss *w) {
@@ -27,15 +27,15 @@ void Boss6_State_Unk_ov000_022e4718(UnkStruct_Boss *w) {
 
     w->unk111C--;
     if (w->unk111C == 0)
-        func_ov000_022e03f4(w);
+        Boss6_Unk_ov000_022e03f4(w);
     if (m->unk10C & 2) {
-        func_ov000_022e035c(w);
+        Boss6_Unk_ov000_022e035c(w);
         w->unkD5E ^= 1;
         w->unk20C &= ~4;
-        func_ov000_022df9d4(4);
+        Boss6_Unk_ov000_022df9d4(4);
         Boss6_SelectNextAttack(2);
         return;
     }
     w->unk1118++;
-    func_ov000_022df9d4(w->unk1118);
+    Boss6_Unk_ov000_022df9d4(w->unk1118);
 }

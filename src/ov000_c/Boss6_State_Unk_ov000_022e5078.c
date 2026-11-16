@@ -41,9 +41,9 @@ extern UnkStruct_StageObj *gPlayers;
 extern UnkStruct_02369ac0 gBossStatus;
 extern s32 data_ov000_02363804[];
 
-void func_ov000_022e5c1c(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e5c1c(UnkStruct_Boss *w);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022e0644(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e0644(UnkStruct_Boss *w);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss6_State_Unk_ov000_022e4f14(void);
 
@@ -51,7 +51,7 @@ void Boss6_State_Unk_ov000_022e5078(UnkStruct_Boss *w) {
     UnkStruct_Mdl960 *m = &w->unk960;
     s32 x;
 
-    func_ov000_022e5c1c(w);
+    Boss6_Unk_ov000_022e5c1c(w);
     w->base.unk10 += w->unkF58;
     if (w->unkF58 != 0)
         return;
@@ -61,7 +61,7 @@ void Boss6_State_Unk_ov000_022e5078(UnkStruct_Boss *w) {
     Model_SetAnimation(m, 0, w->unkD08, 1, 0);
     m->unk10C &= ~4;
     m->unk114 = 0x1000;
-    func_ov000_022e0644(w);
+    Boss6_Unk_ov000_022e0644(w);
     w->unkF54 = 0;
     w->unkF58 = 0;
     w->unkF5C = 0;

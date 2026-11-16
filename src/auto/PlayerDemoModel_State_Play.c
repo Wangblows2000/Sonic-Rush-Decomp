@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-s32 func_02056104();
+s32 PlayerDemoLight_Update();
 s32 PlayerDemoModel_DrawModels();
 s32 PlayerDemoModel_UpdateCamera();
 s32 PlayerDemoModel_DrawCurrentModel();
@@ -11,7 +11,7 @@ s32 PlayerDemoModel_NextScene();
 void PlayerDemoModel_Unk_02056840();
 
 s32 PlayerDemoModel_State_Play(u8 *p0) {
-    func_02056104(p0, ((u8 *)p0 + 0x1334));
+    PlayerDemoLight_Update(p0, ((u8 *)p0 + 0x1334));
     PlayerDemoModel_DrawModels(p0);
     PlayerDemoModel_UpdateCamera(p0);
     PlayerDemoModel_DrawCurrentModel(p0);

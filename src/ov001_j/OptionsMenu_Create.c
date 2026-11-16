@@ -69,7 +69,7 @@ void OptionsMenu_Main(void);
 void Options_CreateFadeTask(s32 a, s32 b, s32 c, s32 d);
 void KeyframeAnim_Init(UnkAnim_022cdfdc *a, void *res, s32 id);
 void KeyframeAnim_SetToLastFrame(UnkAnim_022cdfdc *a);
-void func_ov001_022cb438(UnkWork_022cdfdc *w);
+void OptionsMenu_OpenPage0(UnkWork_022cdfdc *w);
 
 static inline void MI_CpuClear16_022cdfdc(void *dest, u32 size) {
     vu16 zero = 0;
@@ -131,7 +131,7 @@ void OptionsMenu_Create(UnkStruct_022cdfdc *p, s32 a, s32 b) {
             k++;
         }
     }
-    func_ov001_022cb438(w);
+    OptionsMenu_OpenPage0(w);
     p->unk0 = 9;
 }
 #pragma thumb reset

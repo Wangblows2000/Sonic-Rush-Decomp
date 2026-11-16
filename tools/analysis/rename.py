@@ -30,6 +30,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 IDENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+# File-local (static) SDK/NNS helpers whose official name occurs in more than one
+# source file. A bare name is ambiguous and would collide, so it must carry the
+# source-file stem: `<OfficialName>_<stem>` (docs/naming-conventions.md, "Repeated
+# library statics"), e.g. AlarmCallback_stream, AllocFromHead_frameheap.
+REPEATED_STATICS = {
+    "AlarmCallback", "AllocFromHead", "AllocFromTail", "BeginSleep", "EndSleep",
+    "DisposeCallback", "ForceStopStrm", "StrmCallback", "ShutdownPlayer",
+    "updateHintVec_", "texmtxCalc_flagT_", "texmtxCalc_flagS_", "texmtxCalc_flagR_",
+    "texmtxCalc_flagTS_", "texmtxCalc_flagTR_", "texmtxCalc_flagSR_", "texmtxCalc_flagTSR_",
+    "texmtxCalc_flagNone_", "calcTexMtx_",
+}
 SYMLINE = re.compile(r"^(\S+)( kind:.*)$")
 
 
@@ -84,6 +95,8 @@ def main() -> int:
                 why = "duplicate proposal"
             elif not ev:
                 why = "no evidence"
+            elif new in REPEATED_STATICS:
+                why = "repeated library static: use <OfficialName>_<file stem>"
             if why:
                 rejected.append((f.name, mod, old, new, why))
                 continue
@@ -153,8 +166,9 @@ def main() -> int:
     text = ev_path.read_text()
     stamp = datetime.date.today().isoformat()
     for mod, old, new, ev in rows:
-        if re.search(rf"^{re.escape(old)}:\s*$", text, re.M):
-            text = re.sub(rf"^{re.escape(old)}:\s*$", f"{new}:", text, count=1, flags=re.M)
+        if re.search(rf"^{re.escape(old)}:(?=\s)", text, re.M):
+            # block (`Name:` + indented fields) or flow (`Name: {...}`) entry
+            text = re.sub(rf"^{re.escape(old)}:(?=\s)", f"{new}:", text, count=1, flags=re.M)
         else:
             esc = ev.replace("\\", "\\\\").replace('"', '\\"')
             conf = ev.split()[0].lower() if ev.split() and ev.split()[0].lower() in ("confirmed", "strong") else "tentative"

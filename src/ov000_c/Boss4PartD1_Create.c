@@ -37,7 +37,7 @@ void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Boss4_ArenaToStagePos(UnkStruct_Vec *v, UnkStruct_022df094 *w);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022dc2ec(UnkStruct_022df094 *w);
+void Boss4PartD1_Unk_ov000_022dc2ec(UnkStruct_022df094 *w);
 
 UnkStruct_022df094 *Boss4PartD1_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_02369b2c *boss = gBoss4;
@@ -63,6 +63,6 @@ UnkStruct_022df094 *Boss4PartD1_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     Boss4_ArenaToStagePos(&sub->unk48, w);
     w->unk34C = 0;
     Sound_PlaySeqArc(0, 0, 0x8a);
-    func_ov000_022dc2ec(w);
+    Boss4PartD1_Unk_ov000_022dc2ec(w);
     return w;
 }

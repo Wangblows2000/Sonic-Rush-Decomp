@@ -37,7 +37,7 @@ BOOL NNS_FndMountArchive(UnkArc_0205652c *arc, const char *name, void *narc);
 void *NNS_FndGetArchiveFileByIndex(UnkArc_0205652c *arc, s32 i);
 BOOL NNS_FndUnmountArchive(UnkArc_0205652c *arc);
 void PolyDemo_BuildModelPath(void *name, char *buf);
-u32 func_02057038(void *name);
+u32 PolyDemo_GetModelFlags(void *name);
 void Model_Init(UnkObj_0205652c *o, s32 a);
 void NNS_G3dResDefaultSetup(void *res);
 void Model_SetResource(UnkObj_0205652c *o, void *res, s32 a);
@@ -118,7 +118,7 @@ void PlayerDemoModel_LoadScene(UnkWork_0205652c *w) {
         for (i = 2; i < w->count; i++) {
             PolyDemo_BuildModelPath(names[i], buf);
             w->res[i] = File_Load(buf, -1);
-            w->flags[i] = func_02057038(names[i]);
+            w->flags[i] = PolyDemo_GetModelFlags(names[i]);
             if (w->flags[i] & 2)
                 w->unk21 = i;
         }

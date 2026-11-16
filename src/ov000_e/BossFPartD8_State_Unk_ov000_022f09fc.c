@@ -11,7 +11,7 @@ typedef struct {
     u8 unk450[4];
 } UnkStruct_022f09fc;
 
-void func_ov000_022f09e0(void);
+void BossFPartD8_State_Unk_ov000_022f09e0(void);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -21,7 +21,7 @@ void BossFPartD8_State_Unk_ov000_022f09fc(UnkStruct_022f09fc *w) {
     w->unk44C += 0x2d;
     if (w->unk44C >= 0x1000) {
         w->unk44C = 0x1000;
-        w->base.unk68 = func_ov000_022f09e0;
+        w->base.unk68 = BossFPartD8_State_Unk_ov000_022f09e0;
     }
     w->base.unk10 = (w->unk440 + FX_Mul(0x1a0000 - w->unk440, w->unk44C)) >> 4;
     w->base.unk14 = (w->unk444 + FX_Mul(0x358000 - w->unk444, w->unk44C)) >> 4;

@@ -94,9 +94,9 @@ extern u16 data_ov000_023631d8[][9];
 extern u8 data_ov000_023633e4[][9][16];
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022dac94(u16 *p, s32 a, s32 b);
-void func_ov000_022daa78(void);
-void func_ov000_022daa94(void);
+void Boss3_Unk_ov000_022dac94(u16 *p, s32 a, s32 b);
+void Boss3_Unk_ov000_022daa78(void);
+void Boss3_Unk_ov000_022daa94(void);
 void Boss3PartCC_State_Unk_ov000_022d8398(UnkStruct_022d8408 *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -145,15 +145,15 @@ void Boss3PartCC_State_Unk_ov000_022d8408(UnkStruct_022d8408 *s) {
         Sound_PlaySeqArc(0, 0, 0x8e);
         s->unk264 = 0x20;
     }
-    func_ov000_022dac94(&s->unk264, 1, 5);
+    Boss3_Unk_ov000_022dac94(&s->unk264, 1, 5);
     {
         u8 k = data_ov000_023633e4[GetIdx()][gBoss3->unk222][s->unk258 >> 5];
         if (s->unk25A != k) {
             s->unk25A = k;
             if (s->unk25A != 0)
-                func_ov000_022daa78();
+                Boss3_Unk_ov000_022daa78();
             else
-                func_ov000_022daa94();
+                Boss3_Unk_ov000_022daa94();
         }
     }
     if (data_ov000_023631d8[GetIdx()][gBoss3->unk222] < s->unk258++)

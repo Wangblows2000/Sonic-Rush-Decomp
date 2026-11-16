@@ -1,8 +1,8 @@
 #include <nitro/types.h>
 
 void NNS_FndInitList(void *list, u16 offset);
-void func_0201c1d0(void *p);
-void func_0201c158(void *p);
+void BeginSleep_stream(void *p);
+void EndSleep_stream(void *p);
 extern u32 data_02083d24;
 extern u8 data_02083d28[];
 
@@ -13,9 +13,9 @@ void NNS_SndStrmInit(UnkStruct_0201c748 *s) {
         NNS_FndInitList(data_02083d28, 0);
         data_02083d24 = 1;
     }
-    s->unk8 = func_0201c1d0;
+    s->unk8 = BeginSleep_stream;
     s->unkC = s;
-    s->unk14 = func_0201c158;
+    s->unk14 = EndSleep_stream;
     s->unk18 = s;
     s->unk44 = 0;
     s->unk48 = 0;

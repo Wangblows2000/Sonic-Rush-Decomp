@@ -46,7 +46,7 @@ extern UnkEntry_02073bd8 data_02073bd8[];
 
 void BrightnessFade_Create(s32 a, s32 b);
 BOOL BrightnessFade_IsDone(void);
-void func_02053bec(s32 a);
+void NaviMsg_SetRestoreSubDisplayFlag(s32 a);
 void StageExit_Create(void (*f)(void), s32 a);
 void SceneChange_ToTitleScreen(void);
 void SceneChange_ToSegaLogo(void);
@@ -64,7 +64,7 @@ void DemoPlay_Main(void) {
         if (BrightnessFade_IsDone()) {
             gDemoInputMode = 5;
             if (gGameState.unk1c >= 9 || gGameState.unk1d >= 2)
-                func_02053bec(1);
+                NaviMsg_SetRestoreSubDisplayFlag(1);
             if (w->flags & 2)
                 StageExit_Create(SceneChange_ToTitleScreen, 3);
             else

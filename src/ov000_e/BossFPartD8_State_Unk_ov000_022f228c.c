@@ -25,9 +25,9 @@ extern UnkStruct_02369ac0 gBossStatus;
 extern u8 data_ov000_02363edc[][8];
 extern u16 data_ov000_02363fdc[][8];
 
-void func_ov000_022f4c40(UnkStruct_022f228c *s);
-void func_ov000_022f89f4(void);
-void func_ov000_022f21f0(void);
+void BossFPartD8_Unk_ov000_022f4c40(UnkStruct_022f228c *s);
+void BossFPartD8_Unk_ov000_022f89f4(void);
+void BossFPartD8_State_Unk_ov000_022f21f0(void);
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
@@ -39,14 +39,14 @@ static inline s32 GetIdxB(void) {
 }
 
 void BossFPartD8_State_Unk_ov000_022f228c(UnkStruct_022f228c *s) {
-    func_ov000_022f4c40(s);
+    BossFPartD8_Unk_ov000_022f4c40(s);
     if (data_ov000_02363edc[GetIdxB()][gBossStatus.unk8 - 1] != 0) {
         if (s->unk430-- == 0) {
-            func_ov000_022f89f4();
+            BossFPartD8_Unk_ov000_022f89f4();
             s->unk430 = data_ov000_02363fdc[GetIdxB()][gBossStatus.unk8 - 1];
         }
     }
     s->unk434--;
     if (s->unk434 == 0)
-        s->base.unk68 = func_ov000_022f21f0;
+        s->base.unk68 = BossFPartD8_State_Unk_ov000_022f21f0;
 }

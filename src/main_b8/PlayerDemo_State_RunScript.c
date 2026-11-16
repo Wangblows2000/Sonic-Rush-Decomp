@@ -19,7 +19,7 @@ typedef struct UnkSeq_02058194 {
     s16 unk22;
 } UnkSeq_02058194;
 
-extern void (*data_0207c568[])(UnkSeq_02058194 *s, u32 arg);
+extern void (*gPlayerDemoOpTable[])(UnkSeq_02058194 *s, u32 arg);
 
 void PlayerDemo_Unk_02058188(UnkSeq_02058194 *s);
 UnkCmd_02058194 *PlayerDemo_Unk_0205708c(void *p);
@@ -30,7 +30,7 @@ void PlayerDemo_State_RunScript(UnkSeq_02058194 *s) {
         UnkCmd_02058194 *c = s->cmd;
         if (s->time < c->time)
             return;
-        data_0207c568[c->op](s, c->arg);
+        gPlayerDemoOpTable[c->op](s, c->arg);
         s->idx++;
         if (s->idx >= s->count) {
             s->flags |= 4;

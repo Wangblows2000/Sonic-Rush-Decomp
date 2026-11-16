@@ -20,8 +20,8 @@ typedef struct {
     u8 pad194[4];
 } UnkMenu_022d717c;
 
-void func_ov001_022d7ee8(UnkMenu_022d717c *m, s32 a, s32 id0, s32 id1, s32 id2, s32 id3, void *res);
-void func_ov001_022d8060(UnkMenu_022d717c *m, s32 a, s32 id0, s32 id1, s32 id2, s32 id3, void *res);
+void TitleMenu_Unk_ov001_022d7ee8(UnkMenu_022d717c *m, s32 a, s32 id0, s32 id1, s32 id2, s32 id3, void *res);
+void TitleMenu_Unk_ov001_022d8060(UnkMenu_022d717c *m, s32 a, s32 id0, s32 id1, s32 id2, s32 id3, void *res);
 void TitleMenu_CreatePageTask(UnkMenu_022d717c *m, void *p, s32 b);
 void TitleMenu_OpenVsSubPage(void *p, BOOL flag, s32 b);
 void TitleMenu_SelectVsMode0(void);
@@ -32,9 +32,9 @@ void TitleMenu_OpenVsPage(void *p, BOOL flag, s32 b) {
     UnkMenu_022d717c menu;
 
     if (flag) {
-        func_ov001_022d7ee8(&menu, 3, 0xd, 0xe, 0x14, 0x14, p);
+        TitleMenu_Unk_ov001_022d7ee8(&menu, 3, 0xd, 0xe, 0x14, 0x14, p);
     } else {
-        func_ov001_022d8060(&menu, 3, 0xd, 0xe, 0x14, 0x14, p);
+        TitleMenu_Unk_ov001_022d8060(&menu, 3, 0xd, 0xe, 0x14, 0x14, p);
     }
     menu.items[0].cb = (void (*)(void))TitleMenu_OpenVsSubPage;
     menu.items[1].cb = TitleMenu_SelectVsMode0;

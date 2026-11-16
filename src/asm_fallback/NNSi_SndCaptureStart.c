@@ -16,7 +16,7 @@ extern void NNS_SndAllocAlarm(void);
 extern void NNS_SndUnlockCapture(void);
 extern void NNS_SndLockCapture(void);
 extern void NNS_SndLockChannel(void);
-extern void func_0201c7cc(void);
+extern void AlarmCallback_capture(void);
 extern void NNSi_SndFaderSet(void);
 
 asm void NNSi_SndCaptureStart(void)
@@ -246,5 +246,5 @@ _290:
     bx lr
     dcd data_02083e10
     dcd 0x00ffb0ff
-    dcd func_0201c7cc
+    dcd AlarmCallback_capture
 }

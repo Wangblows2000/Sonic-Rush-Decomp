@@ -3,7 +3,7 @@
 
 s32 ScreenShake_Start();
 s32 StageObj_SetPause();
-s32 func_ov000_022ee198();
+s32 Boss7_Unk_ov000_022ee198();
 extern u8 gGameState[];
 void Boss7_State_Unk_ov000_022ecec0();
 
@@ -20,7 +20,7 @@ s32 Boss7_State_Unk_ov000_022ecfcc(u8 *p0) {
     *(u32 *)((u8 *)t1 + 0x320) = 0;
     StageObj_SetPause(t1, 0, t0);
     s32 t2 = *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x124);
-    func_ov000_022ee198(*(u32 *)((u8 *)p0 + 0x214), 0xf);
+    Boss7_Unk_ov000_022ee198(*(u32 *)((u8 *)p0 + 0x214), 0xf);
     *(u32 *)*(u32 *)((u8 *)t2 + 0xe4) = ((s32)(*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)t2 + 0xe4) + 0x8) + 0x4) << 0xc) >> 1);
     *(u32 *)*(u32 *)((u8 *)t2 + 0xf4) = ((s32)(*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)t2 + 0xf4) + 0x8) + 0x4) << 0xc) >> 1);
     *(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x5c) = (*(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x5c) | 0x10);

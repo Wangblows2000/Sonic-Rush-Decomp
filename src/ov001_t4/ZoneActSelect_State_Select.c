@@ -36,23 +36,23 @@ extern UnkPad_022e0f94 gPad;
 extern s32 data_ov001_0231c3ec;
 extern s32 gZoneActSelectResult;
 
-s32 func_ov001_022e0820(s32 x, s32 y);
-s32 func_ov001_022e07e8(s32 x, s32 y);
-BOOL func_ov001_022e07d0(s32 x, s32 y);
+s32 ZoneActSelect_Unk_ov001_022e0820(s32 x, s32 y);
+s32 ZoneActSelect_Unk_ov001_022e07e8(s32 x, s32 y);
+BOOL ZoneActSelect_Unk_ov001_022e07d0(s32 x, s32 y);
 void SysSound_PlayCursorSE(void);
-void func_ov001_022e08e0(UnkWork_022e0f94 *w);
-void func_ov001_022e0968(UnkWork_022e0f94 *w);
-void func_ov001_022e09d0(UnkWork_022e0f94 *w);
-void func_ov001_022e0ad0(UnkWork_022e0f94 *w);
-void func_ov001_022e0c5c(UnkWork_022e0f94 *w);
-void func_ov001_022e0dfc(UnkWork_022e0f94 *w);
-void func_ov001_022e0d30(UnkWork_022e0f94 *w);
-void func_ov001_022e0884(UnkWork_022e0f94 *w);
-void func_ov001_022e0858(UnkWork_022e0f94 *w, s32 a);
+void ZoneActSelect_Unk_ov001_022e08e0(UnkWork_022e0f94 *w);
+void ZoneActSelect_Unk_ov001_022e0968(UnkWork_022e0f94 *w);
+void ZoneActSelect_Unk_ov001_022e09d0(UnkWork_022e0f94 *w);
+void ZoneActSelect_Unk_ov001_022e0ad0(UnkWork_022e0f94 *w);
+void ZoneActSelect_Unk_ov001_022e0c5c(UnkWork_022e0f94 *w);
+void ZoneActSelect_Unk_ov001_022e0dfc(UnkWork_022e0f94 *w);
+void ZoneActSelect_Unk_ov001_022e0d30(UnkWork_022e0f94 *w);
+void ZoneActSelect_Unk_ov001_022e0884(UnkWork_022e0f94 *w);
+void ZoneActSelect_Unk_ov001_022e0858(UnkWork_022e0f94 *w, s32 a);
 void SysSound_PlaySE(s32 a);
-void func_ov001_022e0e6c(void);
+void ZoneActSelect_Unk_ov001_022e0e6c(void);
 void ZoneActSelect_State_FadeOut(void);
-void func_ov001_022e0f08(void);
+void ZoneActSelect_State_Unk_ov001_022e0f08(void);
 
 #pragma thumb on
 void ZoneActSelect_State_Select(void) {
@@ -71,7 +71,7 @@ void ZoneActSelect_State_Select(void) {
         x = gTouchState.x;
         y = gTouchState.y;
     }
-    sel = func_ov001_022e0820(x, y);
+    sel = ZoneActSelect_Unk_ov001_022e0820(x, y);
     if (sel >= w->count) {
         sel = -1;
     }
@@ -92,7 +92,7 @@ void ZoneActSelect_State_Select(void) {
         }
         data_ov001_0231c3ec = sel;
     }
-    sel = func_ov001_022e07e8(x, y);
+    sel = ZoneActSelect_Unk_ov001_022e07e8(x, y);
     if (sel < 0) {
         if (gPad.trg & 0x40) {
             if (gZoneActSelectResult > 0) {
@@ -116,22 +116,22 @@ void ZoneActSelect_State_Select(void) {
         ok = TRUE;
     }
     if (!ok) {
-        if (func_ov001_022e07d0(x, y)) {
+        if (ZoneActSelect_Unk_ov001_022e07d0(x, y)) {
             cancel = TRUE;
             w->unkdc = 1;
         } else if (gPad.trg & 2) {
             cancel = TRUE;
         }
     }
-    func_ov001_022e08e0(w);
-    func_ov001_022e0968(w);
-    func_ov001_022e09d0(w);
-    func_ov001_022e0ad0(w);
-    func_ov001_022e0c5c(w);
-    func_ov001_022e0dfc(w);
-    func_ov001_022e0d30(w);
-    func_ov001_022e0884(w);
-    func_ov001_022e0858(w, data_ov001_0231c3ec);
+    ZoneActSelect_Unk_ov001_022e08e0(w);
+    ZoneActSelect_Unk_ov001_022e0968(w);
+    ZoneActSelect_Unk_ov001_022e09d0(w);
+    ZoneActSelect_Unk_ov001_022e0ad0(w);
+    ZoneActSelect_Unk_ov001_022e0c5c(w);
+    ZoneActSelect_Unk_ov001_022e0dfc(w);
+    ZoneActSelect_Unk_ov001_022e0d30(w);
+    ZoneActSelect_Unk_ov001_022e0884(w);
+    ZoneActSelect_Unk_ov001_022e0858(w, data_ov001_0231c3ec);
     w->unk0++;
     w->unk4++;
     if (cancel) {
@@ -144,8 +144,8 @@ void ZoneActSelect_State_Select(void) {
         w->unk0 = 0;
         w->unkd8 = 1;
         SysSound_PlaySE(0x12);
-        func_ov001_022e0e6c();
-        gTaskCurrent->func = func_ov001_022e0f08;
+        ZoneActSelect_Unk_ov001_022e0e6c();
+        gTaskCurrent->func = ZoneActSelect_State_Unk_ov001_022e0f08;
     }
 }
 #pragma thumb reset

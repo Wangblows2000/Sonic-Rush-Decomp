@@ -38,7 +38,7 @@ typedef struct UnkStruct_0230ae4c {
 UnkStruct_0230ae4c_l **SpecialStage_GetGimmickManager(void);
 UnkStruct_0230ae4c *SpecialStage_GetPlayer(void);
 BOOL SpecialStage_TestCollision(void *a, void *b, u16 c, void *d, void *e, u16 f);
-void func_ov001_0230f284(UnkStruct_0230ae4c_e *e, UnkStruct_0230ae4c *p);
+void SpecialStage_Unk_ov001_0230f284(UnkStruct_0230ae4c_e *e, UnkStruct_0230ae4c *p);
 void SpecialStagePlayer_OnTouchGimmick(UnkStruct_0230ae4c *p, UnkStruct_0230ae4c_e *e);
 void SpecialStageGimmick_OnAttacked(UnkStruct_0230ae4c_e *e, UnkStruct_0230ae4c *p);
 void SpecialStagePlayer_OnAttackHit(UnkStruct_0230ae4c *p, UnkStruct_0230ae4c_e *e);
@@ -66,7 +66,7 @@ void SpecialStage_CheckGimmickCollisions(void) {
             if ((e->unk64 & 0x2000) && !(e->unk64 & 0x4000))
                 ang = e->unk16;
             if (SpecialStage_TestCollision(p->unk12C, p->unk20, p->unk16, e->unkBC, e->unk20, ang)) {
-                func_ov001_0230f284(e, p);
+                SpecialStage_Unk_ov001_0230f284(e, p);
                 SpecialStagePlayer_OnTouchGimmick(p, e);
             }
         }

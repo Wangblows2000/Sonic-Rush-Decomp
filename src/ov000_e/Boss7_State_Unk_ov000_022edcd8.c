@@ -18,7 +18,7 @@ typedef struct {
 
 extern UnkStruct_Player *gPlayers;
 
-void func_ov000_022edcb0(void);
+void Boss7_State_Unk_ov000_022edcb0(void);
 
 void Boss7_State_Unk_ov000_022edcd8(UnkStruct_022edcd8 *w) {
     if (w->unk20C & 0x20) {
@@ -33,5 +33,5 @@ void Boss7_State_Unk_ov000_022edcd8(UnkStruct_022edcd8 *w) {
             gPlayers->base.unk36 = w->unk22A;
     }
     if (w->unk20C & 2)
-        w->base.unk68 = func_ov000_022edcb0;
+        w->base.unk68 = Boss7_State_Unk_ov000_022edcb0;
 }

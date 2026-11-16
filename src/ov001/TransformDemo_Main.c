@@ -6,8 +6,8 @@ extern UnkStruct_022b4574 *gTaskCurrent;
 extern u16 gPad[];
 void Task_Destroy(void *p);
 void TransformDemo_RunFadeState(void *p, void *q);
-void func_ov001_022dde00(void *p, void *q);
-void func_ov001_022df878(void *p);
+void TransformDemo_Unk_ov001_022dde00(void *p, void *q);
+void TransformDemo_Unk_ov001_022df878(void *p);
 
 void TransformDemo_Main(void) {
     UnkStruct_022e04bc *t = gTaskCurrent->p;
@@ -25,8 +25,8 @@ void TransformDemo_Main(void) {
         t->fn(t);
     }
     TransformDemo_RunFadeState(t, (u8 *)t + 0xea0);
-    func_ov001_022dde00(t, (u8 *)t + 0xea8);
-    func_ov001_022df878(t);
+    TransformDemo_Unk_ov001_022dde00(t, (u8 *)t + 0xea8);
+    TransformDemo_Unk_ov001_022df878(t);
     if (t->flags & 0x80000000) {
         Task_Destroy(gTaskCurrent);
     }

@@ -12,8 +12,8 @@ typedef struct {
 
 extern UnkStruct_022dec18 *gBoss4;
 
-void func_ov000_022dd068(void);
-void func_ov000_022dce70(void);
+void Boss4_Unk_ov000_022dd068(void);
+void Boss4_Unk_ov000_022dce70(void);
 void Model_Animate(void *cam);
 void Model_Draw(void *cam);
 
@@ -24,9 +24,9 @@ void Boss4_Draw_Unk_ov000_022dec18(void) {
     if (o->unk5C & 0x20)
         return;
     o->unkAF4 = 0;
-    func_ov000_022dd068();
+    Boss4_Unk_ov000_022dd068();
     if (o->unkBD0 != 0)
-        func_ov000_022dce70();
+        Boss4_Unk_ov000_022dce70();
     cam = o->unk228;
     Model_Animate(cam);
     Model_Draw(cam);

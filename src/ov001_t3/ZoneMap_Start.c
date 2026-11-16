@@ -32,12 +32,12 @@ void StoryProgress_RestoreFromSave(void);
 UnkWork_022e8a24 *ZoneMap_Create(void);
 void ZoneMap_LoadAssets(void);
 void ZoneMap_InitDisplay(UnkWork_022e8a24 *w);
-void func_ov001_022e870c(UnkWork_022e8a24 *w);
+void ZoneMap_Unk_ov001_022e870c(UnkWork_022e8a24 *w);
 void SysSound_Init(void);
 s32 ZoneMap_IsBlaze(void);
-s32 func_ov001_022e33c0(s32 a, s32 b);
-UnkRes_022e8a24 *func_ov001_022e8090(UnkWork_022e8a24 *w, s32 a, s32 b);
-void func_02063f50(void);
+s32 ZoneMap_Unk_ov001_022e33c0(s32 a, s32 b);
+UnkRes_022e8a24 *ZoneMap_Unk_ov001_022e8090(UnkWork_022e8a24 *w, s32 a, s32 b);
+void NaviM_Create(void);
 void Touch_Enable(void);
 void SysSound_PlayBGM(s32 a);
 
@@ -52,11 +52,11 @@ void ZoneMap_Start(s32 a, s32 b) {
     w = ZoneMap_Create();
     ZoneMap_LoadAssets();
     ZoneMap_InitDisplay(w);
-    func_ov001_022e870c(w);
+    ZoneMap_Unk_ov001_022e870c(w);
     SysSound_Init();
-    w->unk1cc4 = func_ov001_022e33c0(ZoneMap_IsBlaze(), a);
-    r = func_ov001_022e8090(w, a, b);
-    func_02063f50();
+    w->unk1cc4 = ZoneMap_Unk_ov001_022e33c0(ZoneMap_IsBlaze(), a);
+    r = ZoneMap_Unk_ov001_022e8090(w, a, b);
+    NaviM_Create();
     for (i = 0; i < 12; i++) {
         gPad.delay[i] = 0x14;
         gPad.rate[i] = 1;

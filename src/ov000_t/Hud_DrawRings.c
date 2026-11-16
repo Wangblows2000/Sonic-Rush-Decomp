@@ -48,7 +48,7 @@ typedef struct {
 extern UnkStruct_02336da8_4560 gGameState;
 
 void AnimatorSpriteDS_Draw(UnkStruct_02336da8_Spr *spr);
-void func_02033544(UnkStruct_02336da8_Spr *spr, u16 a);
+void AnimatorSprite_Unk_02033544(UnkStruct_02336da8_Spr *spr, u16 a);
 void AnimatorSpriteDS_ProcessAnimation(UnkStruct_02336da8_Spr *spr, s32 a, s32 b);
 
 static inline void UnkSetPos_02336da8(UnkStruct_02336da8_Spr *spr, s16 x, s16 y) {
@@ -78,7 +78,7 @@ void Hud_DrawRings(UnkStruct_02336da8 *w) {
     spr = s->c;
     for (; i < 3; i++) {
         u32 c = (u16)((s->unk274 >> sh) & 0xf);
-        func_02033544(spr, c);
+        AnimatorSprite_Unk_02033544(spr, c);
         spr->unk5C = chr + c * 0x80;
         spr->unk60 = chr2 + c * 0x80;
         AnimatorSpriteDS_ProcessAnimation(spr, 0, 0);

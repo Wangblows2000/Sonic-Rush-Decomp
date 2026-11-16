@@ -64,7 +64,7 @@ extern s16 data_0206e470[];
 
 u16 Boss3_StepAngleToward(u16 a, u16 b, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_ov000_022d756c(UnkStruct_022d7630 *s);
+void Boss3PartCC_State_Unk_ov000_022d756c(UnkStruct_022d7630 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d7630(UnkStruct_022d7630 *s) {
     s32 d;
@@ -74,5 +74,5 @@ void Boss3PartCC_State_Unk_ov000_022d7630(UnkStruct_022d7630 *s) {
     if (d < 0)
         d = -d;
     if (d <= 0x40)
-        s->func = func_ov000_022d756c;
+        s->func = Boss3PartCC_State_Unk_ov000_022d756c;
 }

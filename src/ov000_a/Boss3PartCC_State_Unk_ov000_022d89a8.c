@@ -84,13 +84,13 @@ typedef struct UnkStruct_022d89a8_b {
 
 extern UnkStruct_022d89a8_b *gBoss3;
 
-void func_ov000_022dac94(u16 *p, s32 a, s32 b);
-void func_ov000_022d89a4(UnkStruct_022d89a8 *s);
+void Boss3_Unk_ov000_022dac94(u16 *p, s32 a, s32 b);
+void Boss3_State_Unk_ov000_022d89a4(UnkStruct_022d89a8 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d89a8(UnkStruct_022d89a8 *s) {
     UnkStruct_022d89a8_r *r;
     if (s->unk258 != 0) {
-        func_ov000_022dac94(&s->unk264, 1, 5);
+        Boss3_Unk_ov000_022dac94(&s->unk264, 1, 5);
     } else {
         UnkStruct_022d89a8_ctl *c = s->unk2C4.unkE4;
         if ((c->unk8->unk4 << 12) - c->unk0 < 0x3c)
@@ -106,6 +106,6 @@ void Boss3PartCC_State_Unk_ov000_022d89a8(UnkStruct_022d89a8 *s) {
         return;
     if (s->unk264 == 0) {
         r->unk20C &= ~0x80;
-        s->func = func_ov000_022d89a4;
+        s->func = Boss3_State_Unk_ov000_022d89a4;
     }
 }

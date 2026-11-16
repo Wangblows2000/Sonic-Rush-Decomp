@@ -23,7 +23,7 @@ void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void *TalkDemo_GetScript(void);
 void Task_Destroy(UnkTask_02062c9c *t);
 void TalkDemoScene_CreateBg2WindowTask(void);
-UnkInfo_02062c9c *func_0206047c(void *p);
+UnkInfo_02062c9c *TalkDemo_Unk_0206047c(void *p);
 u32 TalkDemo_GetFlags(s32 a);
 void TalkDemoScene_State_FullImage(UnkWork_02062c9c *w);
 void TalkDemoScene_State_Init(UnkWork_02062c9c *w);
@@ -46,7 +46,7 @@ void TalkDemoScene_Create(void) {
             Task_Destroy(gTaskCurrent);
             return;
         }
-        info = func_0206047c(w->unk68);
+        info = TalkDemo_Unk_0206047c(w->unk68);
         w->unk70 = info->unk8;
         w->unk78 = info->unk10;
         TalkDemoScene_CreateBg2WindowTask();

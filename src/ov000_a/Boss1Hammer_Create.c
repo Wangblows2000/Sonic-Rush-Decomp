@@ -82,7 +82,7 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void NNS_FndMountArchive(void *ctx, void *a, void *b);
 void *NNS_FndGetArchiveFileByIndex(void *ctx, u32 id);
 void NNS_FndUnmountArchive(void *ctx);
-BOOL func_ov000_022cc6d4(void);
+BOOL Boss1_Unk_ov000_022cc6d4(void);
 void MapObject_Init(UnkStruct_022cc8cc *s, s32 a, s32 x, s32 y);
 void ObjRect_SetBox3D(UnkStruct_022cc8cc_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void ObjRect_SetAtkDefFlags(UnkStruct_022cc8cc_h *h, s32 a, s32 b);
@@ -103,7 +103,7 @@ UnkStruct_022cc8cc *Boss1Hammer_Create(s32 a, s32 x, s32 y) {
     MI_CpuFill16(s, 0, 0x444);
     s->unk68 = Boss1Hammer_State_Idle;
     NNS_FndMountArchive(ctx, data_ov000_02365058, gZoneActArchive);
-    if (func_ov000_022cc6d4()) {
+    if (Boss1_Unk_ov000_022cc6d4()) {
         s->unk304 = NNS_FndGetArchiveFileByIndex(ctx, 8);
         s->unk308 = NNS_FndGetArchiveFileByIndex(ctx, 9);
     } else {

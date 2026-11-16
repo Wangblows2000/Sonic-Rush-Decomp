@@ -5,7 +5,7 @@ extern u8 data_ov000_02366cc4[], data_ov000_0236a0d4[], data_ov000_0236a0dc[], d
 
 void MapObject_Destructor(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void func_ov000_02310c08(UnkStruct_StageObj *w);
+void Needle_Action_Unk_ov000_02310c08(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Needle_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -49,7 +49,7 @@ UnkStruct_StageObj *Needle_Create(s32 a, s32 b, s32 c) {
         w->unk5C |= 2;
     if (w->unk1E0->unk2 == 0x50)
         w->unk5C &= ~1;
-    func_ov000_02310c08(w);
+    Needle_Action_Unk_ov000_02310c08(w);
     w->unkC = 0x79;
     w->unkC -= w->unk1E0->unk6;
     return w;

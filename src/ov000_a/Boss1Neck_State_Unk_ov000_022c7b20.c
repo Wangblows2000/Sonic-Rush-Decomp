@@ -21,7 +21,7 @@ typedef struct UnkStruct_022c7b20_2 {
 extern UnkStruct_022c7b20_2 *gBoss1;
 extern u16 data_ov000_02362b8c[];
 
-void func_ov000_022c798c(UnkStruct_022c7b20 *s);
+void Boss1_State_Unk_ov000_022c798c(UnkStruct_022c7b20 *s);
 
 void Boss1Neck_State_Unk_ov000_022c7b20(UnkStruct_022c7b20 *s) {
     s16 *p;
@@ -44,5 +44,5 @@ void Boss1Neck_State_Unk_ov000_022c7b20(UnkStruct_022c7b20 *s) {
             *p = t;
     }
     if (data_ov000_02362b8c[gBoss1->unk22A] < s->unk210++)
-        s->func = func_ov000_022c798c;
+        s->func = Boss1_State_Unk_ov000_022c798c;
 }

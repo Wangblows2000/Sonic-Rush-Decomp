@@ -89,21 +89,21 @@ typedef struct UnkStruct_022c9294_cam {
 
 extern UnkStruct_022c9294_cam data_ov000_0236a444;
 
-BOOL func_ov000_022cc6d4(void);
-void func_ov000_022c9fbc(UnkStruct_022c9294 *s);
-void func_ov000_022c91d4(UnkStruct_022c9294 *s);
+BOOL Boss1_Unk_ov000_022cc6d4(void);
+void Boss1Neck_Unk_ov000_022c9fbc(UnkStruct_022c9294 *s);
+void Boss1Neck_State_Unk_ov000_022c91d4(UnkStruct_022c9294 *s);
 
 void Boss1Neck_State_Unk_ov000_022c9294(UnkStruct_022c9294 *s) {
     UnkStruct_022c9294_3 *p = gBoss1->unk214;
     UnkStruct_022c9294_5 *q;
     s32 k, r, n;
     s32 k2, r2, n2;
-    if (func_ov000_022cc6d4())
-        func_ov000_022c9fbc(s);
+    if (Boss1_Unk_ov000_022cc6d4())
+        Boss1Neck_Unk_ov000_022c9fbc(s);
     s->unk20C += gBoss1->unk22A;
     if ((s32)s->unk20C >= 0x1000) {
         s->unk20C = 0x1000;
-        s->func = func_ov000_022c91d4;
+        s->func = Boss1Neck_State_Unk_ov000_022c91d4;
     }
     q = s->unk30C;
     k = (s16)s->unk20C;

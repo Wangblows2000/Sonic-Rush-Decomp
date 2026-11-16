@@ -20,7 +20,7 @@ typedef struct {
 } UnkStruct_Boss;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022dff1c(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022dff1c(UnkStruct_Boss *w);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss6_State_StartJump(void);
 void Boss6_State_EndJumps(void);
@@ -42,7 +42,7 @@ void Boss6_State_AfterLand(UnkStruct_Boss *w) {
         m->unk10C &= ~4;
         m->unk114 = 0x1000;
         w->base.unk14 = 0x20000;
-        func_ov000_022dff1c(w);
+        Boss6_Unk_ov000_022dff1c(w);
         Sound_PlaySeqArc(0, 0, 0x84);
     }
     w->unkF22 &= ~4;

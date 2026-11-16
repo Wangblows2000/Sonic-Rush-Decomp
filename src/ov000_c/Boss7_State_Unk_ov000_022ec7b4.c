@@ -21,7 +21,7 @@ extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Player *gPlayers;
 
 void Player_SetAnimation(UnkStruct_Player *p, s32 a);
-void func_ov000_022ec564(void);
+void Boss7_State_Unk_ov000_022ec564(void);
 
 void Boss7_State_Unk_ov000_022ec7b4(UnkStruct_022ec7b4 *w) {
     UnkStruct_Player *p = gPlayers;
@@ -58,5 +58,5 @@ void Boss7_State_Unk_ov000_022ec7b4(UnkStruct_022ec7b4 *w) {
     if (p->base.unk2E != 0)
         return;
     if (gDisplayMain.unk48 == 0)
-        w->base.unk68 = func_ov000_022ec564;
+        w->base.unk68 = Boss7_State_Unk_ov000_022ec564;
 }

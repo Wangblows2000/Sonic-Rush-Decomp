@@ -64,7 +64,7 @@ void StaffRoll_Destructor(void);
 void StaffRoll_PictureState_SonicStart(void);
 void StaffRoll_PictureState_BlazeStart(void);
 void StaffRoll_State_Start(void);
-void func_ov001_022d224c(void);
+void StaffRoll_Unk_ov001_022d224c(void);
 
 #pragma thumb on
 void StaffRoll_Create(s32 mode) {
@@ -102,7 +102,7 @@ void StaffRoll_Create(s32 mode) {
     StaffRoll_LoadAssets(w);
     StaffRoll_InitSprites(w);
     w->unkbc4 = gStaffRollWork->unk182 * 8 - 0x1d0;
-    w->task8 = Task_Create(func_ov001_022d224c, NULL, 0, 0xf100, 0x1173, 0);
+    w->task8 = Task_Create(StaffRoll_Unk_ov001_022d224c, NULL, 0, 0xf100, 0x1173, 0);
     Background_Draw(&w->bg54);
     Background_Draw(&w->bg154);
     Background_Draw(&w->bg194);

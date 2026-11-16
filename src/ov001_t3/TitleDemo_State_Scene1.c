@@ -15,7 +15,7 @@ typedef struct {
 
 extern UnkTask_022d6378 *gTaskCurrent;
 
-void func_ov001_022d5be4(UnkWork_022d6378 *w);
+void TitleDemo_Unk_ov001_022d5be4(UnkWork_022d6378 *w);
 s32 TitleDemo_Interpolate(s32 from, s32 to, s32 n, s32 i, s32 ease);
 void TitleDemo_SetSubBrightness(UnkWork_022d6378 *w, s32 v);
 void TitleDemo_SetMainBrightness(UnkWork_022d6378 *w, s32 v);
@@ -30,7 +30,7 @@ void TitleDemo_State_Scene1(void) {
     UnkWork_022d6378 *w;
 
     w = gTaskCurrent->work;
-    func_ov001_022d5be4(w);
+    TitleDemo_Unk_ov001_022d5be4(w);
     if (w->timer >= 0) {
         TitleDemo_SetSubBrightness(w, TitleDemo_Interpolate(0x10, 0, 0x20, w->timer, 0x1000));
         TitleDemo_SetMainBrightness(w, 0x10);

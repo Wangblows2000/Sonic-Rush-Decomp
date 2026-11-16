@@ -25,19 +25,19 @@ typedef struct {
     s16 unkF6C;
 } UnkStruct_Boss;
 
-void func_ov000_022e3954(UnkStruct_Boss *w);
-void func_ov000_022e37f0(UnkStruct_Boss *w);
-void func_ov000_022e1f10(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e3954(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e37f0(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e1f10(UnkStruct_Boss *w);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022e01a4(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e01a4(UnkStruct_Boss *w);
 void Boss6_State_Unk_ov000_022e3cec(void);
 
 void Boss6_State_Unk_ov000_022e3d90(UnkStruct_Boss *w) {
     UnkStruct_Mdl960 *m = &w->unk960;
 
-    func_ov000_022e3954(w);
-    func_ov000_022e37f0(w);
-    func_ov000_022e1f10(w);
+    Boss6_Unk_ov000_022e3954(w);
+    Boss6_Unk_ov000_022e37f0(w);
+    Boss6_Unk_ov000_022e1f10(w);
     if (w->unkF68 != w->unkF6C)
         return;
     w->base.unk68 = Boss6_State_Unk_ov000_022e3cec;
@@ -46,7 +46,7 @@ void Boss6_State_Unk_ov000_022e3d90(UnkStruct_Boss *w) {
     w->unkECA &= ~4;
     w->unkECA |= 0x1000;
     w->unk20C &= ~8;
-    func_ov000_022e01a4(w);
+    Boss6_Unk_ov000_022e01a4(w);
     w->unkD54 = -0x17ff;
     w->unkD58 = 0x17ff;
 }

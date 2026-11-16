@@ -6,8 +6,8 @@ typedef struct {
     u16 unk6;
 } UnkStruct_02362124_Sync;
 
-UnkStruct_02362124_Sync *func_020514e4(void);
-UnkStruct_02362124_Sync *func_02051474(void);
+UnkStruct_02362124_Sync *WirelessSession_GetSendBuffer(void);
+UnkStruct_02362124_Sync *WirelessSession_GetPartnerRecvBuffer(void);
 u16 TimeSelectMenu_GetUnlockedStageMask(void);
 void func_ov000_0236110c(UnkStruct_MenuO *w);
 void func_ov000_02361020(UnkStruct_MenuO *w);
@@ -22,8 +22,8 @@ void TimeSelectMenu_Main(void);
 
 void TimeSelectMenu_State_Sync(void) {
     UnkStruct_MenuO *w = gTaskCurrent->work;
-    UnkStruct_02362124_Sync *a = func_020514e4();
-    UnkStruct_02362124_Sync *b = func_02051474();
+    UnkStruct_02362124_Sync *a = WirelessSession_GetSendBuffer();
+    UnkStruct_02362124_Sync *b = WirelessSession_GetPartnerRecvBuffer();
     s32 i;
 
     w->unk0++;

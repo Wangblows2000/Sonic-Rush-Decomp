@@ -12,7 +12,7 @@ typedef struct {
 } UnkStruct_022e9170;
 
 void Boss7PartD5_MoveState_Unk_ov000_022e98d8(UnkStruct_022e9170 *p);
-void func_ov000_022e908c(UnkStruct_022e9170 *p);
+void Boss7PartD5_MoveState_Unk_ov000_022e908c(UnkStruct_022e9170 *p);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e9170(UnkStruct_022e9170 *p) {
     if (p->unk3D8 & 0x20)
@@ -24,5 +24,5 @@ void Boss7PartD5_MoveState_Unk_ov000_022e9170(UnkStruct_022e9170 *p) {
         return;
     }
     if (p->unk3DC & 1)
-        p->unk440 = func_ov000_022e908c;
+        p->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e908c;
 }

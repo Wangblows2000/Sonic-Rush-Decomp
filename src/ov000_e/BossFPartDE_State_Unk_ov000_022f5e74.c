@@ -34,8 +34,8 @@ extern s16 data_ov000_02363dcc[];
 extern u16 data_ov000_02363dbc[];
 extern u16 data_ov000_02363db8[];
 
-void func_ov000_022f685c(UnkStruct_022f5e74 *s);
-void func_ov000_022f68c4(UnkStruct_022f5e74 *s, s32 a, s32 b);
+void BossFPartDE_Unk_ov000_022f685c(UnkStruct_022f5e74 *s);
+void BossFPartDE_Unk_ov000_022f68c4(UnkStruct_022f5e74 *s, s32 a, s32 b);
 void BossFPartDE_State_Unk_ov000_022f5e18(UnkStruct_022f5e74 *s);
 
 static inline s32 GetIdxB(void) {
@@ -63,7 +63,7 @@ void BossFPartDE_State_Unk_ov000_022f5e74(UnkStruct_022f5e74 *s) {
 
     if (s->unk4C4 != 0)
         s->unk4C4--;
-    func_ov000_022f685c(s);
+    BossFPartDE_Unk_ov000_022f685c(s);
     s->unk210 += 0x800;
     s->unk212 = -s->base.unk2E << 3;
     px = gPlayers->unk10;
@@ -94,7 +94,7 @@ void BossFPartDE_State_Unk_ov000_022f5e74(UnkStruct_022f5e74 *s) {
             v = 0x220;
         s->base.unk2E = v;
         i = GetIdxB();
-        func_ov000_022f68c4(s, data_ov000_02363dc0[GetIdxS()], data_ov000_02363dcc[i]);
+        BossFPartDE_Unk_ov000_022f68c4(s, data_ov000_02363dc0[GetIdxS()], data_ov000_02363dcc[i]);
     } else {
         if (s->unk4C4 != 0) {
             if (px < s->base.unk10)
@@ -121,7 +121,7 @@ void BossFPartDE_State_Unk_ov000_022f5e74(UnkStruct_022f5e74 *s) {
         else if (v > 0x600)
             v = 0x600;
         s->base.unk2E = v;
-        func_ov000_022f68c4(s, 0x500, 0x500);
+        BossFPartDE_Unk_ov000_022f68c4(s, 0x500, 0x500);
     }
     if (s->unk4C4 != 0)
         return;

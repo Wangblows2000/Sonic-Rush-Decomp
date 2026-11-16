@@ -12,9 +12,9 @@ typedef struct {
     UnkStruct_Boss *unk214;
 } UnkStruct_022ec568;
 
-void func_ov000_022ee198(UnkStruct_Boss *p, s32 a);
-void func_ov000_022e9b70(UnkStruct_Boss *p, s32 a, s32 b);
-void func_ov000_022ec564(void);
+void Boss7_Unk_ov000_022ee198(UnkStruct_Boss *p, s32 a);
+void Boss7_Unk_ov000_022e9b70(UnkStruct_Boss *p, s32 a, s32 b);
+void Boss7_State_Unk_ov000_022ec564(void);
 
 void Boss7_State_Unk_ov000_022ec568(UnkStruct_022ec568 *w) {
     UnkStruct_Boss *p = w->unk214;
@@ -34,18 +34,18 @@ void Boss7_State_Unk_ov000_022ec568(UnkStruct_022ec568 *w) {
     }
     st = w->unk214->unk3D4;
     if (st == 5 && (p->base.unk5C & 8)) {
-        func_ov000_022ee198(p, 6);
+        Boss7_Unk_ov000_022ee198(p, 6);
         p->base.unk5C |= 4;
     } else if (p->base.unk2E < -0x40 && st == 6 && (p->base.unk5C & 8)) {
-        func_ov000_022ee198(p, 7);
+        Boss7_Unk_ov000_022ee198(p, 7);
         p->base.unk5C &= ~4;
     } else if (st == 7 && (p->base.unk5C & 8)) {
-        func_ov000_022ee198(p, 0x3c);
+        Boss7_Unk_ov000_022ee198(p, 0x3c);
         p->base.unk5C |= 4;
     }
-    func_ov000_022e9b70(p, 0, 0);
+    Boss7_Unk_ov000_022e9b70(p, 0, 0);
     if (w->unk214->unk3D4 != 0x3c)
         return;
     if (p->base.unk2E == 0)
-        w->base.unk68 = func_ov000_022ec564;
+        w->base.unk68 = Boss7_State_Unk_ov000_022ec564;
 }

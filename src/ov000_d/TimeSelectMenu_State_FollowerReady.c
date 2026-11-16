@@ -36,7 +36,7 @@ extern UnkStruct_0236157c_Touch gTouchState;
 
 void func_ov000_023611f8(UnkStruct_0236157c *w);
 void func_ov000_0236119c(UnkStruct_0236157c *w, s32 a, s32 b);
-UnkStruct_0236157c_Sync *func_020514e4(void);
+UnkStruct_0236157c_Sync *WirelessSession_GetSendBuffer(void);
 BOOL TimeSelectMenu_IsPartnerReadyAsFollower(UnkStruct_0236157c *w);
 void Wireless_EnableErrorCallback(s32 a);
 void TimeSelectMenu_StartBrightnessFade(s32 x, s32 y, s32 a, s32 b);
@@ -52,7 +52,7 @@ void TimeSelectMenu_State_FollowerReady(void) {
     w->unk0++;
     if ((gPad.trg & 1) || (gTouchState.flags & 0x40)) {
         w->unk1C = 1;
-        func_020514e4()->unk3 = 1;
+        WirelessSession_GetSendBuffer()->unk3 = 1;
     }
     if (TimeSelectMenu_IsPartnerReadyAsFollower(w)) {
         w->unk18 = 1;

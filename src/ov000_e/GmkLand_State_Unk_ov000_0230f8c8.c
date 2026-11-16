@@ -5,12 +5,12 @@ typedef struct {
     void *unk80;
 } UnkStruct_0230f8c8_R;
 
-void func_ov000_0230ef70(UnkStruct_StageObj *w);
+void GmkLand_Unk_ov000_0230ef70(UnkStruct_StageObj *w);
 void GmkLand_Action_Unk_ov000_0230f474(UnkStruct_StageObj *w);
 
 void GmkLand_State_Unk_ov000_0230f8c8(UnkStruct_StageObj *w) {
     if ((u32)w->unk8 < 0x1e)
-        func_ov000_0230ef70(w);
+        GmkLand_Unk_ov000_0230ef70(w);
     if (w->unk1BC != NULL && ((UnkStruct_0230f8c8_R *)w->unk1BC)->unk80 == w) {
         if (w->unk5C & 2)
             *(s8 *)&w->unk7 = -2;

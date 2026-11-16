@@ -33,7 +33,7 @@ typedef struct {
 extern UnkStruct_0208922c gDisplayMain;
 
 void NNS_G3dGlbMaterialColorDiffAmb(s32 a, s32 b, s32 c);
-void func_ov000_022ed658(void);
+void Boss7_State_Unk_ov000_022ed658(void);
 
 void Boss7_State_Unk_ov000_022ed6c4(UnkStruct_022ed6c4 *s) {
     u16 v;
@@ -50,5 +50,5 @@ void Boss7_State_Unk_ov000_022ed6c4(UnkStruct_022ed6c4 *s) {
     c = v | (v << 5) | (v << 10);
     NNS_G3dGlbMaterialColorDiffAmb(c, c, 0);
     if (s->unk230++ > 0x78)
-        s->base.unk68 = func_ov000_022ed658;
+        s->base.unk68 = Boss7_State_Unk_ov000_022ed658;
 }

@@ -24,7 +24,7 @@ typedef struct {
 extern UnkStruct_Boss *gBoss7;
 
 void BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
-void func_ov000_022eb3c4(UnkStruct_022e8bac *w);
+void Boss7PartD5_Unk_ov000_022eb3c4(UnkStruct_022e8bac *w);
 void Boss7PartD5_MoveState_Unk_ov000_022e899c(UnkStruct_022e8bac *w);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e8bac(UnkStruct_022e8bac *w) {
@@ -38,7 +38,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e8bac(UnkStruct_022e8bac *w) {
             BossEffect_CreateHoming(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
     } else {
         if ((b->unk220 & 7) == 0)
-            func_ov000_022eb3c4(w);
+            Boss7PartD5_Unk_ov000_022eb3c4(w);
     }
     if (w->base.spr0.unk2A < 0x80)
         return;

@@ -59,16 +59,16 @@ extern u16 data_ov001_023170b8[];
 
 UnkPlayer_02309e3c *SpecialStage_GetPlayer(void);
 s32 *SpecialStageMap_GetCurrentSegment(void);
-void func_ov001_02312dd8(UnkPlayer_02309e3c *p, s32 a);
+void SpecialStageHud_Unk_ov001_02312dd8(UnkPlayer_02309e3c *p, s32 a);
 void SpecialStageHud_UpdateClear(void);
-void func_ov001_02308b74(void);
-s32 func_ov001_02314214(void);
+void SpecialStageHud_Unk_ov001_02308b74(void);
+s32 SpecialStageHud_Unk_ov001_02314214(void);
 UnkInfo_02309e3c *SpecialStageTrick_GetSequence(s32 a);
 void AnimatorSprite_SetAnimation(UnkSpr_02309e3c *s, u16 anim);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void AnimatorSprite_ProcessAnimation(UnkSpr_02309e3c *s, s32 a, s32 b);
-BOOL func_0202e5e4(f32 a, f32 b);
-void func_ov001_02309228(void);
+BOOL Runtime_Unk_0202e5e4(f32 a, f32 b);
+void SpecialStageHud_Unk_ov001_02309228(void);
 void SpecialStageHud_UpdateCheckpoint(void);
 void SpecialStageHud_AnimateSprites(void);
 void SpecialStageHud_UpdateGoal(void);
@@ -91,15 +91,15 @@ void SpecialStageHud_Update(void) {
     p = SpecialStage_GetPlayer();
     w->unkAE0++;
     if (*SpecialStageMap_GetCurrentSegment() == 5 || *SpecialStageMap_GetCurrentSegment() == 6)
-        func_ov001_02312dd8(p, 0);
+        SpecialStageHud_Unk_ov001_02312dd8(p, 0);
     else if (w->unkBC4 < 0)
-        func_ov001_02312dd8(p, 1);
+        SpecialStageHud_Unk_ov001_02312dd8(p, 1);
     if (w->unkBD4 >= 0) {
         SpecialStageHud_UpdateClear();
         return;
     }
     if (w->unkAE0 >= 0x96)
-        func_ov001_02308b74();
+        SpecialStageHud_Unk_ov001_02308b74();
     if (w->unkAE0 >= 0x118) {
         s32 off[2] = {0, 0};
         w->unkBB8++;
@@ -108,7 +108,7 @@ void SpecialStageHud_Update(void) {
             off[1] = Rand() % 5 - 2;
             w->unkBB8 = 0x20;
         }
-        w->spr[9].x = off[0] + 0x18 + ((func_ov001_02314214() * 0xd0) >> 12);
+        w->spr[9].x = off[0] + 0x18 + ((SpecialStageHud_Unk_ov001_02314214() * 0xd0) >> 12);
         w->spr[9].y = off[1] + 0xac;
     }
     if (p->unk128 != 0) {
@@ -148,14 +148,14 @@ void SpecialStageHud_Update(void) {
         w->unkAF0--;
         if (w->unkAF0 > 0x35) {
             f = (f32)(0x3c - w->unkAF0) / 7.0f;
-            if (func_0202e5e4(f, 1.0f))
+            if (Runtime_Unk_0202e5e4(f, 1.0f))
                 f = 1.0f;
             f = 1.0f - f;
             w->spr[24].x = 148.0f + 256.0f * (f * (f * f));
             w->spr[24].y = 0x22;
         } else if (w->unkAF0 < 5) {
             f = (f32)w->unkAF0 / 5.0f;
-            if (func_0202e5e4(f, 1.0f))
+            if (Runtime_Unk_0202e5e4(f, 1.0f))
                 f = 1.0f;
             f = 1.0f - f;
             w->spr[24].x = 138.0f - 256.0f * (f * (f * f));
@@ -169,7 +169,7 @@ void SpecialStageHud_Update(void) {
         }
     }
     if (w->unkBC4 >= 0)
-        func_ov001_02309228();
+        SpecialStageHud_Unk_ov001_02309228();
     if (w->unkBC8 >= 0) {
         SpecialStageHud_UpdateCheckpoint();
         SpecialStageHud_AnimateSprites();

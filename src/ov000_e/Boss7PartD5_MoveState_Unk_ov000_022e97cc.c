@@ -21,11 +21,11 @@ typedef struct {
 extern s16 data_ov000_02368b80[][0x18];
 extern UnkStruct_02369ac0 gBossStatus;
 
-void func_ov000_022e85f8(UnkStruct_022e97cc *w);
-BOOL func_ov000_022e9b28(UnkStruct_022e97cc *w);
-BOOL func_ov000_022e9b4c(UnkStruct_022e97cc *w);
-BOOL func_ov000_022e9b04(UnkStruct_022e97cc *w);
-void func_ov000_022e75b0(void);
+void Boss7PartD5_Unk_ov000_022e85f8(UnkStruct_022e97cc *w);
+BOOL Boss7PartD5_Unk_ov000_022e9b28(UnkStruct_022e97cc *w);
+BOOL Boss7PartD5_Unk_ov000_022e9b4c(UnkStruct_022e97cc *w);
+BOOL Boss7PartD5_Unk_ov000_022e9b04(UnkStruct_022e97cc *w);
+void Boss7PartD5_MoveState_Unk_ov000_022e75b0(void);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e97cc(UnkStruct_022e97cc *w) {
     s32 v = w->unk2E;
@@ -41,17 +41,17 @@ void Boss7PartD5_MoveState_Unk_ov000_022e97cc(UnkStruct_022e97cc *w) {
             w->unk2E = 0;
     }
     if (w->unk3DC & 4) {
-        func_ov000_022e85f8(w);
+        Boss7PartD5_Unk_ov000_022e85f8(w);
         return;
     }
-    if (func_ov000_022e9b28(w))
+    if (Boss7PartD5_Unk_ov000_022e9b28(w))
         return;
-    if (func_ov000_022e9b4c(w))
+    if (Boss7PartD5_Unk_ov000_022e9b4c(w))
         return;
-    if (func_ov000_022e9b04(w))
+    if (Boss7PartD5_Unk_ov000_022e9b04(w))
         return;
     if (gBossStatus.unk8 > 1)
         return;
     if (w->unk1F0 == 0)
-        w->unk440 = func_ov000_022e75b0;
+        w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e75b0;
 }

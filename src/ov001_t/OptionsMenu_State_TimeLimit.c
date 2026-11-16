@@ -36,32 +36,32 @@ extern UnkTask_022cd558 *gTaskCurrent;
 extern UnkPad_022cd558 gPad;
 extern UnkTouch_022cd558 gTouchState;
 
-void func_ov001_022cc17c(UnkWork_022cd558 *w);
-void func_ov001_022cbf30(UnkWork_022cd558 *w);
-void func_ov001_022cdd28(void);
+void OptionsMenu_UpdateAnims(UnkWork_022cd558 *w);
+void OptionsMenu_DrawItems(UnkWork_022cd558 *w);
+void OptionsMenu_Unk_ov001_022cdd28(void);
 void SysSound_PlaySE(s32 se);
 void Options_SetTimeLimit(void *p, s32 a);
-BOOL func_ov001_022c8ba8(u32 x, u32 y);
+BOOL OptionsMenu_Unk_ov001_022c8ba8(u32 x, u32 y);
 
 #pragma thumb on
 void OptionsMenu_State_TimeLimit(void) {
     UnkWork_022cd558 *w = gTaskCurrent->work;
     u32 x, y;
 
-    func_ov001_022cc17c(w);
-    func_ov001_022cbf30(w);
+    OptionsMenu_UpdateAnims(w);
+    OptionsMenu_DrawItems(w);
     w->unk14++;
     w->unk18++;
     if (w->unk1c >= 0) {
         w->unk1c++;
         if (w->unk1c > 10) {
-            func_ov001_022cdd28();
+            OptionsMenu_Unk_ov001_022cdd28();
         }
     }
     if (w->unk1c >= 0) return;
     if (w->chosen != -1) {
         if (w->unk18 < 0x10) return;
-        func_ov001_022cdd28();
+        OptionsMenu_Unk_ov001_022cdd28();
         w->chosen = -1;
         return;
     }
@@ -94,14 +94,14 @@ void OptionsMenu_State_TimeLimit(void) {
     }
     if (gPad.trg & 2) {
         SysSound_PlaySE(1);
-        func_ov001_022cdd28();
+        OptionsMenu_Unk_ov001_022cdd28();
         return;
     }
     if (gTouchState.flags & 0x40) {
         x = gTouchState.x;
         y = gTouchState.y;
         if (x < 0x100 && y < 0xc0) {
-            if (func_ov001_022c8ba8(x, y)) {
+            if (OptionsMenu_Unk_ov001_022c8ba8(x, y)) {
                 w->unk1c = 0;
                 SysSound_PlaySE(1);
             }

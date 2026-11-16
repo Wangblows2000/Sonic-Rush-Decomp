@@ -27,8 +27,8 @@ void AnimatorSprite_SetAnimation(void *s, u16 id);
 void StaffRoll_SetPictureState(UnkStruct_022d07cc *p, void (*fn)(UnkStruct_022d07cc *));
 void StaffRoll_PictureState_Blaze11(UnkStruct_022d07cc *p);
 
-BOOL func_0202e5e4(float a, float b);
-#define FX_F32_TO_FX32_022d07cc(x) ((fx32)(func_0202e5e4((x), 0.0f) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
+BOOL Runtime_Unk_0202e5e4(float a, float b);
+#define FX_F32_TO_FX32_022d07cc(x) ((fx32)(Runtime_Unk_0202e5e4((x), 0.0f) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
 
 #pragma thumb on
 void StaffRoll_PictureState_Blaze10(UnkStruct_022d07cc *p) {

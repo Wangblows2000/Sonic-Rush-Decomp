@@ -42,10 +42,10 @@ void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
 void BossEffect_CreateImpactSmall(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022e450c(UnkStruct_Boss *w);
+void Boss6_Action_Unk_ov000_022e450c(UnkStruct_Boss *w);
 void Boss6_State_Unk_ov000_022e4da0(void);
 extern s32 data_ov000_023637bc[];
-void func_ov000_022e05b0(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e05b0(UnkStruct_Boss *w);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 
 static inline s32 Mul64(s64 a, s64 b) {

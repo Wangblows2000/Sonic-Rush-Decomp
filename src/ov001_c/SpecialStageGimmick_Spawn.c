@@ -51,8 +51,8 @@ typedef struct UnkStruct_0230f550_n {
 extern UnkStruct_0230f550_d gSpecialStageGimmickTypeTable[];
 
 UnkStruct_0230f550_n *SpecialStageObjList_Alloc(void *g);
-s32 func_ov001_02310144(UnkStruct_0230f550_n *n);
-void func_ov001_0230d28c(void *m, s32 mode, s32 flag, s32 force, u32 ang, s32 y, s32 z);
+s32 SpecialStageGimmick_Unk_ov001_02310144(UnkStruct_0230f550_n *n);
+void SpecialStageGimmick_Unk_ov001_0230d28c(void *m, s32 mode, s32 flag, s32 force, u32 ang, s32 y, s32 z);
 
 UnkStruct_0230f550_n *SpecialStageGimmick_Spawn(void **g, UnkStruct_0230f550_n *parent, s32 type, s32 arg, UnkStruct_0230f550_n *link, u16 ang, s32 y, s32 z) {
     UnkStruct_0230f550_n *n = SpecialStageObjList_Alloc(*g);
@@ -96,7 +96,7 @@ UnkStruct_0230f550_n *SpecialStageGimmick_Spawn(void **g, UnkStruct_0230f550_n *
             flag = 1;
         else
             flag = 0;
-        func_ov001_0230d28c(n->unk7C, *n->unk78, flag, func_ov001_02310144(n), n->unk16, n->unk18, n->unk1C);
+        SpecialStageGimmick_Unk_ov001_0230d28c(n->unk7C, *n->unk78, flag, SpecialStageGimmick_Unk_ov001_02310144(n), n->unk16, n->unk18, n->unk1C);
     } else {
         n->unk60 |= 0x20;
     }

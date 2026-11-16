@@ -33,21 +33,21 @@ typedef struct {
 
 extern UnkStruct_Mgr *gBossF;
 
-void func_ov000_022f4c40(UnkStruct_022f216c *s);
-void func_ov000_022f2014(void);
-void func_ov000_022f1b74(void);
+void BossFPartD8_Unk_ov000_022f4c40(UnkStruct_022f216c *s);
+void BossFPartD8_State_Unk_ov000_022f2014(void);
+void BossFPartD8_State_Unk_ov000_022f1b74(void);
 
 void BossFPartD8_State_Unk_ov000_022f216c(UnkStruct_022f216c *s) {
     UnkStruct_Mgr *m = gBossF;
 
-    func_ov000_022f4c40(s);
+    BossFPartD8_Unk_ov000_022f4c40(s);
     s->unk434--;
     if (s->unk434 != 0)
         return;
     s->unk436++;
     if (s->unk436 < 3)
-        s->base.unk68 = func_ov000_022f2014;
+        s->base.unk68 = BossFPartD8_State_Unk_ov000_022f2014;
     else
-        s->base.unk68 = func_ov000_022f1b74;
+        s->base.unk68 = BossFPartD8_State_Unk_ov000_022f1b74;
     m->unk20C &= ~0x40;
 }

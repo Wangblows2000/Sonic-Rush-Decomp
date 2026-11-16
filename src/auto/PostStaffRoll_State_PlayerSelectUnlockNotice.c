@@ -9,7 +9,7 @@ s32 MsgBox_RequestClose();
 s32 MsgBox_IsClosed();
 s32 SysSound_Release();
 s32 Task_Destroy();
-s32 func_02059b5c();
+s32 SaveData_UnlockPlayerSelectPage();
 s32 SaveData_CommitOrShowError();
 s32 PostStaffRoll_ShowSoundTestUnlockNotice();
 
@@ -35,7 +35,7 @@ void PostStaffRoll_State_PlayerSelectUnlockNotice(void) {
         s32 t5 = *(u32 *)((u8 *)t0 + 0x4);
         SysSound_Release(-7937, 0x1000, 0x4001000, t4);
         Task_Destroy(*(u32 *)gTaskCurrent);
-        func_02059b5c();
+        SaveData_UnlockPlayerSelectPage();
         s32 t6 = SaveData_CommitOrShowError(0);
         if (t6 != 0) {
             PostStaffRoll_ShowSoundTestUnlockNotice(t5);

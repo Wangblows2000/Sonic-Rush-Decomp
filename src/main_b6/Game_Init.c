@@ -6,14 +6,14 @@ typedef struct {
     u16 unk6;
 } UnkDisp_0204edc0;
 
-extern u32 data_02087cc0;
+extern u32 gSystemResetParameter;
 extern UnkDisp_0204edc0 gDisplayMain;
 
 void Vram_SetBankConfig(s32 a);
 void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void GX_DispOn(void);
-BOOL func_0204ed94(void);
-BOOL func_0204ed68(void);
+BOOL Game_StartupSaveDataOnBoot(void);
+BOOL Game_StartupSaveDataAfterReset(void);
 s32 SaveData_LoadOrShowError(void (*fn)(void));
 void SceneChange_ToSegaLogo(void);
 void SceneChange_ToTitleScreen(void);
@@ -32,16 +32,16 @@ void Game_Init(void) {
     REG_DB_DISPCNT |= 0x10000;
     gDisplayMain.unk4 = 0;
     gDisplayMain.unk6 = 0;
-    if ((data_02087cc0 & 0x80000000) == 0) {
-        if (!func_0204ed94())
+    if ((gSystemResetParameter & 0x80000000) == 0) {
+        if (!Game_StartupSaveDataOnBoot())
             return;
     } else {
-        if (!func_0204ed68())
+        if (!Game_StartupSaveDataAfterReset())
             return;
     }
     if (!SaveData_LoadOrShowError(SceneChange_ToSegaLogo))
         return;
-    if ((data_02087cc0 & 0x80000000) == 0)
+    if ((gSystemResetParameter & 0x80000000) == 0)
         SceneChange_ToSegaLogo();
     else
         SceneChange_ToTitleScreen();

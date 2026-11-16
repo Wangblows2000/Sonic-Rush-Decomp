@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-s32 func_ov001_022d0070();
+s32 StaffRoll_Unk_ov001_022d0070();
 s32 StaffRoll_CreateCreditTask();
 extern u8 data_0208926c[];
 extern u8 data_02087d44[];
@@ -11,7 +11,7 @@ void StaffRoll_State_RevealBanner();
 s32 StaffRoll_SetState();
 
 void StaffRoll_State_SkipFadeIn(u8 *p0) {
-    func_ov001_022d0070();
+    StaffRoll_Unk_ov001_022d0070();
     if (*(u32 *)((u8 *)p0 + 0x14) == 1) {
         s32 t0 = StaffRoll_CreateCreditTask(2);
         *(u32 *)((u8 *)p0 + 0xbd0) = t0;

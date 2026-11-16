@@ -4,7 +4,7 @@ typedef struct { s32 unk0; s32 unk4; s32 unk8; s32 unkC; } UnkWork_02050c88;
 typedef struct { u8 pad0[0x10]; UnkWork_02050c88 *work; } UnkTask_02050c88;
 typedef struct { u16 unk0; u16 unk2; } UnkStruct_0207ad9c;
 typedef struct { u32 pad0[8]; } UnkCfg_02050c88;
-extern UnkTask_02050c88 *data_022c4638;
+extern UnkTask_02050c88 *gWirelessLobbyTask;
 extern s32 data_022c463c;
 extern UnkStruct_0207ad9c gWirelessSession;
 
@@ -27,8 +27,8 @@ void WirelessSession_StartDownloadPlayPreview(s32 mode) {
     WirelessSession_ForceStop();
     NetPacket_Init(0);
     data_022c463c = 0;
-    data_022c4638 = Task_Create(WirelessLobbyPreview_Main, WirelessLobbyDownloadPlay_Destructor, 0, 0x1000, 0, sizeof(UnkWork_02050c88));
-    w = data_022c4638->work;
+    gWirelessLobbyTask = Task_Create(WirelessLobbyPreview_Main, WirelessLobbyDownloadPlay_Destructor, 0, 0x1000, 0, sizeof(UnkWork_02050c88));
+    w = gWirelessLobbyTask->work;
     w->unk0 = 2;
     w->unk4 = 1;
     w->unk8 = 0;

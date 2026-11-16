@@ -88,7 +88,7 @@ extern u16 data_02076b5c[];
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 u8 *ExtraBoss_GetWork(void);
-UnkCam_0205ef48 *func_ov001_022f71f4(void);
+UnkCam_0205ef48 *ExtraBoss_Unk_ov001_022f71f4(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
 void NNS_FndUnmountArchive(void *f);
@@ -99,7 +99,7 @@ void G3X_SetEdgeColorTable(const u16 *table);
 void StageTitleCard_Main(void);
 void StageTitleCard_Destructor(void);
 void StageTitleCard_State_Init(void);
-void func_0205b560(void);
+void StageTitleCard_HoldPlayerNone(void);
 void StageTitleCardBg_State_Init(void);
 void StageTitleCardStrip_State_Init(void);
 void StageTitleCardPartE0_State_Init(void);
@@ -128,7 +128,7 @@ void StageTitleCard_CreateExtraBoss(void) {
         MIi_CpuClear16(z, w, 0x8d0);
     }
     w->fn474 = StageTitleCard_State_Init;
-    w->fn478 = func_0205b560;
+    w->fn478 = StageTitleCard_HoldPlayerNone;
     w->fn78 = StageTitleCardBg_State_Init;
     w->fn88 = StageTitleCardStrip_State_Init;
     w->fne0 = StageTitleCardPartE0_State_Init;
@@ -150,7 +150,7 @@ void StageTitleCard_CreateExtraBoss(void) {
     w->unk258 = 0x10000;
     w->unk25c = 0xf;
     w->unk47c = 0;
-    cam = func_ov001_022f71f4();
+    cam = ExtraBoss_Unk_ov001_022f71f4();
     w->camH = cam->h0;
     w->cam4 = cam->w4;
     w->cam8 = cam->w8;

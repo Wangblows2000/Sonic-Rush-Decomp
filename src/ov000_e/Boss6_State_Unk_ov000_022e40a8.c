@@ -39,7 +39,7 @@ extern UnkStruct_Player *gPlayers;
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
 void BossEffect_CreateLand(s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022e0294(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e0294(UnkStruct_Boss *w);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss6_State_Unk_ov000_022e3f50(void);
 
@@ -55,7 +55,7 @@ void Boss6_State_Unk_ov000_022e40a8(UnkStruct_Boss *w) {
     ScreenShake_Start(0xc);
     w->unkF50 = 0x5a;
     BossEffect_CreateLand(1, w->unk1068 >> 4, 0x20000, w->unk1070 >> 4);
-    func_ov000_022e0294(w);
+    Boss6_Unk_ov000_022e0294(w);
     p = gPlayers;
     if (!(p->unk32C & 0x400)) {
         if ((w->unkD5E != 0 && (w->unk20C & 0x100)) || (w->unkD5E == 0 && !(w->unk20C & 0x100))) {

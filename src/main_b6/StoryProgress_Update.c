@@ -23,15 +23,15 @@ extern u8 data_02074bbc[];
 extern u8 data_02074bb4[];
 
 u32 StoryProgress_GetZoneIndex(u8 zone);
-u8 func_0204e6e4(u8 act);
+u8 StoryProgress_Unk_0204e6e4(u8 act);
 BOOL StoryProgress_IsStageNew(void);
 void SaveData_SetSonicProgress(u8 v);
 void SaveData_SetBlazeProgress(u8 v);
-u16 func_0204e614(u16 v);
+u16 StoryProgress_Unk_0204e614(u16 v);
 
 void StoryProgress_Update(void) {
     u32 z = StoryProgress_GetZoneIndex(gGameState.zone);
-    u8 a = func_0204e6e4(gGameState.act);
+    u8 a = StoryProgress_Unk_0204e6e4(gGameState.act);
 
     if (z >= 7)
         return;
@@ -48,7 +48,7 @@ void StoryProgress_Update(void) {
             SaveData_SetBlazeProgress(a != 2 ? data_02074bb4[z] - 1 : data_02074bb4[z]);
     }
     if (gGameState.unk0 != 1)
-        gGameState.unke = func_0204e614(gSaveData.unkc);
+        gGameState.unke = StoryProgress_Unk_0204e614(gSaveData.unkc);
     else
-        gGameState.unke = func_0204e614(gSaveData.unk64);
+        gGameState.unke = StoryProgress_Unk_0204e614(gSaveData.unk64);
 }

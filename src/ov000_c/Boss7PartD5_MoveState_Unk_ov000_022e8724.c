@@ -57,7 +57,7 @@ extern s16 data_0206e470[];
 s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
-void func_ov000_022eb3c4(UnkStruct_022e8724 *w);
+void Boss7PartD5_Unk_ov000_022eb3c4(UnkStruct_022e8724 *w);
 void func_ov000_02326f20(void);
 void Boss7PartD5_MoveState_Unk_ov000_022e86c0(void);
 
@@ -83,7 +83,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e8724(UnkStruct_022e8724 *w) {
             fx->unk154 = FX_Mul(fx->unk154, 0xc00);
         }
     } else if (!(b->unk220 & 1)) {
-        func_ov000_022eb3c4(w);
+        Boss7PartD5_Unk_ov000_022eb3c4(w);
     }
     w->base.unk2E = FX_Mul(COS_IDX((s32)((u16)w->base.unk8 & 0xffff) >> 4), data_ov000_02363b74[w->unk42C]) >> 4;
     w->base.unk30 = FX_Mul(SIN_IDX((s32)((u16)w->base.unk8 & 0xffff) >> 4), data_ov000_02363b74[w->unk42C]) >> 4;

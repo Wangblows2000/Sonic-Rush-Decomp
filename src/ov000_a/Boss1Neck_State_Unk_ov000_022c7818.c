@@ -29,14 +29,14 @@ extern UnkStruct_022c7818_2 *gBoss1;
 extern UnkStruct_022c7818_3 *gPlayers;
 extern u16 data_ov000_02362b8c[];
 
-s32 func_ov000_022cc4cc(s32 x, s32 y, s32 z, s32 a);
-void func_ov000_022c767c(UnkStruct_022c7818 *s);
+s32 Boss1Neck_Unk_ov000_022cc4cc(s32 x, s32 y, s32 z, s32 a);
+void Boss1_State_Unk_ov000_022c767c(UnkStruct_022c7818 *s);
 
 void Boss1Neck_State_Unk_ov000_022c7818(UnkStruct_022c7818 *s) {
     UnkStruct_022c7818_2 *g = gBoss1;
     s16 t;
     u16 lim;
-    t = func_ov000_022cc4cc(gPlayers->unk10, gPlayers->unk14, gPlayers->unk18, 1);
+    t = Boss1Neck_Unk_ov000_022cc4cc(gPlayers->unk10, gPlayers->unk14, gPlayers->unk18, 1);
     if (g->unk21C < t) {
         if (t - g->unk21C > 0x100)
             g->unk21C += 0x100;
@@ -48,7 +48,7 @@ void Boss1Neck_State_Unk_ov000_022c7818(UnkStruct_022c7818 *s) {
         else
             g->unk21C = t;
     }
-    t = func_ov000_022cc4cc(gPlayers->unk10, gPlayers->unk14, gPlayers->unk18, 0);
+    t = Boss1Neck_Unk_ov000_022cc4cc(gPlayers->unk10, gPlayers->unk14, gPlayers->unk18, 0);
     if (g->unk21E < t) {
         if (t - g->unk21E > 0x100)
             g->unk21E += 0x100;
@@ -64,5 +64,5 @@ void Boss1Neck_State_Unk_ov000_022c7818(UnkStruct_022c7818 *s) {
     if (gBoss1->unk22A == 3 && (s->unk20C & 7) == 0)
         lim += 0x32;
     if (lim < s->unk210++)
-        s->func = func_ov000_022c767c;
+        s->func = Boss1_State_Unk_ov000_022c767c;
 }

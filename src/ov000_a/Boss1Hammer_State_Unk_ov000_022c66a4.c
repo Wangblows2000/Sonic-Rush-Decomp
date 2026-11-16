@@ -28,8 +28,8 @@ struct UnkStruct_022c66a4 {
 
 extern UnkStruct_022c66a4_2 *gBoss1;
 
-void func_ov000_022c6e58(UnkStruct_022c66a4 *s);
-void func_ov000_022c7158(UnkStruct_022c66a4 *s);
+void Boss1Hammer_Unk_ov000_022c6e58(UnkStruct_022c66a4 *s);
+void Boss1Hammer_Unk_ov000_022c7158(UnkStruct_022c66a4 *s);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void Boss1Hammer_State_Unk_ov000_022c6618(UnkStruct_022c66a4 *s);
 
@@ -39,7 +39,7 @@ void Boss1Hammer_State_Unk_ov000_022c66a4(UnkStruct_022c66a4 *s) {
     s32 v;
     n = (s->unk2BC > 4) ? 4 : s->unk2BC;
     k = ((n * 0x80) >> 2) + 0x80;
-    func_ov000_022c6e58(s);
+    Boss1Hammer_Unk_ov000_022c6e58(s);
     if (gBoss1->unk228 > 0)
         s->unk2CE += k;
     else
@@ -51,7 +51,7 @@ void Boss1Hammer_State_Unk_ov000_022c66a4(UnkStruct_022c66a4 *s) {
         v = 0x3800;
     s->unk2CE = v;
     s->unk2CC += s->unk2CE;
-    func_ov000_022c7158(s);
+    Boss1Hammer_Unk_ov000_022c7158(s);
     v = s->unk2CE;
     if (v < 0)
         v = -v;

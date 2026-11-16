@@ -9,7 +9,7 @@ void ExtraEnding_State_StartDemo(void);
 void ExtraEnding_SetState(void *p, void (*f)(void));
 void ExtraEnding_InitDisplay(void *p);
 void ExtraEnding_LoadSound(void *p);
-void func_ov001_022c61c4(void *p);
+void ExtraEnding_Unk_ov001_022c61c4(void *p);
 
 void ExtraEnding_Create(void) {
     void *w;
@@ -20,5 +20,5 @@ void ExtraEnding_Create(void) {
     ExtraEnding_SetState(w, ExtraEnding_State_StartDemo);
     ExtraEnding_InitDisplay(w);
     ExtraEnding_LoadSound(w);
-    func_ov001_022c61c4(w);
+    ExtraEnding_Unk_ov001_022c61c4(w);
 }

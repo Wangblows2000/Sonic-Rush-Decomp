@@ -18,7 +18,7 @@ extern s16 data_0206e470[];
 
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
-void func_ov000_02305e28(void *p);
+void CranePartED_Unk_ov000_02305e28(void *p);
 s32 ObjShift_Set(s32 v, s32 t, s32 a, s32 b, s32 c);
 void MTX_Identity33_(void *m);
 void MTX_RotY33_(void *m, s32 s, s32 c);
@@ -53,7 +53,7 @@ void CranePartED_State_Unk_ov000_023056fc(UnkStruct_StageObj *w) {
             w->unk30 = 0;
             w->unk14 = w->unk1EC << 8;
             if (w->unk62 == 0 && (w->unk5C & 0x200)) {
-                func_ov000_02305e28(w->unk88);
+                CranePartED_Unk_ov000_02305e28(w->unk88);
                 w->unk5C &= ~0x200;
             }
         }

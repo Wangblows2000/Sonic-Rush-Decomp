@@ -11,9 +11,9 @@ extern void Model_SetResource(void);
 extern void Model_Init(void);
 extern void NaviMsg_ShowMessage(void);
 extern void NaviMsg_SetFaceAnim(void);
-extern void func_ov000_022dcf20(void);
-extern void func_ov000_022de304(void);
-extern void func_ov000_022de65c(void);
+extern void Boss4_Unk_ov000_022dcf20(void);
+extern void Boss4_Unk_ov000_022de304(void);
+extern void Boss4_Unk_ov000_022de65c(void);
 extern void Boss4_Draw_Unk_ov000_022de768(void);
 extern void Boss4_State_Unk_ov000_022dea0c(void);
 extern void MapObject_Spawn(void);
@@ -63,7 +63,7 @@ asm void Boss4_State_WaitForStart(void)
     str r0, [r5, #0x1c]
     ldr r0, [r5, #0x1c]
     str r0, [r5, #0x18]
-    bl func_ov000_022de65c
+    bl Boss4_Unk_ov000_022de65c
     mov r1, #0
     str r1, [sp]
     str r1, [sp, #4]
@@ -87,7 +87,7 @@ asm void Boss4_State_WaitForStart(void)
     bl MapObject_Spawn
     str r0, [r4, #0x210]
     mov r0, r4
-    bl func_ov000_022dcf20
+    bl Boss4_Unk_ov000_022dcf20
     mov r0, #9
     bl NaviMsg_SetFaceAnim
     mov r0, #0xf
@@ -96,7 +96,7 @@ asm void Boss4_State_WaitForStart(void)
     ldr r1, [pc, #0x34]
     mov r0, r4
     str r1, [r6, #0x68]
-    bl func_ov000_022de304
+    bl Boss4_Unk_ov000_022de304
     add sp, sp, #0x18
     ldmia sp!, {r4, r5, r6, lr}
     bx lr

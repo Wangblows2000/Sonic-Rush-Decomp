@@ -14,7 +14,7 @@ typedef struct UnkVAlarm {
     u32 canceled;            /* 0x24 */
 } UnkVAlarm;
 
-extern UnkVAlarm *data_0207d394;
+extern UnkVAlarm *OSi_VAlarmQueue;
 
 void OSi_SetNextVAlarm(UnkVAlarm *alarm);
 void OSi_AppendVAlarm(UnkVAlarm *alarm);
@@ -24,7 +24,7 @@ void OSi_InsertVAlarm(UnkVAlarm *alarm)
     UnkVAlarm *prev;
     UnkVAlarm *next;
 
-    for (next = data_0207d394; next; next = next->next) {
+    for (next = OSi_VAlarmQueue; next; next = next->next) {
         if (next->frame < alarm->frame) {
             continue;
         }
@@ -38,7 +38,7 @@ void OSi_InsertVAlarm(UnkVAlarm *alarm)
         if (prev) {
             prev->next = alarm;
         } else {
-            data_0207d394 = alarm;
+            OSi_VAlarmQueue = alarm;
             OSi_SetNextVAlarm(alarm);
         }
         return;

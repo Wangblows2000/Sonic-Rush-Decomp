@@ -45,7 +45,7 @@ void TimeAttackMenu_InitSprites(UnkWork_022ec1e4 *w);
 void TimeAttackMenu_CreateBgScrollTask(void);
 void TimeAttackMenu_CreateFadeTask(s32 a, s32 b, s32 c, s32 d);
 void Touch_Enable(void);
-void func_ov001_022ebc98(UnkTask_022ec1e4 *t);
+void TimeAttackMenu_Unk_ov001_022ebc98(UnkTask_022ec1e4 *t);
 void SysSound_Init(void);
 void SysSound_PlayBGM(s32 a);
 void Pad_Reset(void *p, s32 a, void *b);
@@ -99,7 +99,7 @@ void TimeAttackMenu_Create(s32 mode) {
     }
     TimeAttackMenu_CreateFadeTask(data_0208926c.bright, 0, 8, 0);
     Touch_Enable();
-    func_ov001_022ebc98(t);
+    TimeAttackMenu_Unk_ov001_022ebc98(t);
     SysSound_Init();
     SysSound_PlayBGM(0);
     gSaveDataBusy = 0;

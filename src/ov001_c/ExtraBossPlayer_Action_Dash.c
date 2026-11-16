@@ -48,7 +48,7 @@ extern s16 data_0206e470[];
 UnkStruct_023017c8_g *ExtraBoss_GetWork(void);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 void ExtraBossPlayer_ChangeState(UnkStruct_023017c8 *p, s32 a);
-void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
+void ExtraBoss_Unk_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void ExtraBossPlayer_OnDashHit(void);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -107,7 +107,7 @@ void ExtraBossPlayer_Action_Dash(UnkStruct_023017c8 *p) {
     p->unk60 = FX_Mul(data_ov001_0231da50.unk10, SIN_IDX(idx));
     p->flags |= 0x300;
     p->unk1C8 = p->unk3C;
-    func_ov001_022fe8d4(p->unkE8, p, 2, 1, 0x8000, 0x8000, 0x8000, 0, -0x8000, 0, 0);
+    ExtraBoss_Unk_ov001_022fe8d4(p->unkE8, p, 2, 1, 0x8000, 0x8000, 0x8000, 0, -0x8000, 0, 0);
     p->unkEC = ExtraBossPlayer_OnDashHit;
     p->unkA0 = p->unkE8;
     p->unk1CC = 2;

@@ -7,9 +7,9 @@ typedef struct UnkStruct_022f58ac {
     void (*func)(void);
 } UnkStruct_022f58ac;
 
-void func_ov000_022f5878(void);
+void BossFPartDE_State_Unk_ov000_022f5878(void);
 
 void BossFPartDE_State_Unk_ov000_022f58ac(UnkStruct_022f58ac *s) {
     if (s->unk14 > 0x25600)
-        s->func = func_ov000_022f5878;
+        s->func = BossFPartDE_State_Unk_ov000_022f5878;
 }

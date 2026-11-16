@@ -15,11 +15,11 @@ typedef struct { u8 pad0[0x10]; UnkWork_020509a0 *work; } UnkTask_020509a0;
 typedef struct { u16 unk0; u16 unk2; } UnkStruct_0207ad9c;
 typedef struct { u8 pad0[0x18]; u16 unk18; } UnkStruct_02072cb8;
 typedef struct { u32 pad0[6]; u8 unk18; u8 pad19[7]; } UnkCfg_020509a0;
-extern UnkTask_020509a0 *data_022c4638;
+extern UnkTask_020509a0 *gWirelessLobbyTask;
 extern UnkStruct_0207ad9c gWirelessSession;
 extern u16 data_02072cbc[];
 extern UnkStruct_02072cb8 gGameLanguage;
-extern s32 data_022c4640;
+extern s32 gWirelessPartnerNameValid;
 
 void Task_Destroy(UnkTask_020509a0 *t);
 UnkTask_020509a0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
@@ -40,12 +40,12 @@ UnkWork_020509a0 *WirelessSession_StartDownloadPlay(s32 mode) {
     u16 n;
     UnkCfg_020509a0 cfg;
 
-    if (data_022c4638 != NULL) {
-        Task_Destroy(data_022c4638);
-        data_022c4638 = NULL;
+    if (gWirelessLobbyTask != NULL) {
+        Task_Destroy(gWirelessLobbyTask);
+        gWirelessLobbyTask = NULL;
     }
-    data_022c4638 = Task_Create(WirelessLobbyDownloadPlay_Main, WirelessLobbyDownloadPlay_Destructor, 0, 0x1000, 0, sizeof(UnkWork_020509a0));
-    w = data_022c4638->work;
+    gWirelessLobbyTask = Task_Create(WirelessLobbyDownloadPlay_Main, WirelessLobbyDownloadPlay_Destructor, 0, 0x1000, 0, sizeof(UnkWork_020509a0));
+    w = gWirelessLobbyTask->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkWork_020509a0));
     w->unk0 = 2;
@@ -71,7 +71,7 @@ UnkWork_020509a0 *WirelessSession_StartDownloadPlay(s32 mode) {
     w->unk34 = cfg.unk18 - 1;
     w->unk36 = 0;
     w->unkC = 1;
-    data_022c4640 = 0;
+    gWirelessPartnerNameValid = 0;
     return w;
 }
 #pragma thumb reset

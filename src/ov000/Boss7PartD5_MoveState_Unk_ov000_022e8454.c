@@ -8,11 +8,11 @@ typedef struct UnkStruct_022e8454 {
     void (*func)(void);
 } UnkStruct_022e8454;
 
-void func_ov000_022e837c(void);
+void Boss7PartD5_MoveState_Unk_ov000_022e837c(void);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e8454(UnkStruct_022e8454 *s) {
     if (s->unk30 > -0x100) {
         s->unk2E = 0;
-        s->func = func_ov000_022e837c;
+        s->func = Boss7PartD5_MoveState_Unk_ov000_022e837c;
     }
 }

@@ -32,16 +32,16 @@ UnkStruct_022ffeb0_g *ExtraBoss_GetWork(void);
 void NNS_SndPlayerStopSeq(void *pp, s32 a);
 s32 FX_ModS32(s32 n, s32 d);
 void ExtraBoss_State_Battle(void);
-void func_ov001_022fef3c(void);
-void func_ov001_022feee4(void);
-void func_ov001_02302a3c(void);
-void func_ov001_02304fb4(void);
-void func_ov001_02304460(void);
-void func_ov001_022fd4d4(void);
-void func_ov001_0230582c(void);
-void func_ov001_023057f4(void);
-void func_ov001_022ee964(void);
-void func_ov001_02306424(void);
+void ExtraBoss_Unk_ov001_022fef3c(void);
+void ExtraBoss_Unk_ov001_022feee4(void);
+void ExtraBoss_Unk_ov001_02302a3c(void);
+void ExtraBoss_Unk_ov001_02304fb4(void);
+void ExtraBoss_Unk_ov001_02304460(void);
+void ExtraBoss_Unk_ov001_022fd4d4(void);
+void ExtraBoss_Unk_ov001_0230582c(void);
+void ExtraBoss_Unk_ov001_023057f4(void);
+void ExtraBoss_Unk_ov001_022ee964(void);
+void ExtraBoss_Unk_ov001_02306424(void);
 void G3X_SetEdgeColorTable(const void *src);
 
 static inline BOOL IsMulti_022ffeb0(void) {
@@ -57,14 +57,14 @@ void ExtraBoss_StartBattle(void) {
     else
         *(vu16 *)0x4000304 |= 0x8000;
     gExtraBossWork->task8->fn = ExtraBoss_State_Battle;
-    gExtraBossWork->taskC->fn = func_ov001_022fef3c;
-    gExtraBossWork->task10->fn = func_ov001_022feee4;
+    gExtraBossWork->taskC->fn = ExtraBoss_Unk_ov001_022fef3c;
+    gExtraBossWork->task10->fn = ExtraBoss_Unk_ov001_022feee4;
     gExtraBossWork->flags &= ~0x72;
     gExtraBossWork->flags |= 4;
-    func_ov001_02302a3c();
-    func_ov001_02304fb4();
-    func_ov001_02304460();
-    func_ov001_022fd4d4();
+    ExtraBoss_Unk_ov001_02302a3c();
+    ExtraBoss_Unk_ov001_02304fb4();
+    ExtraBoss_Unk_ov001_02304460();
+    ExtraBoss_Unk_ov001_022fd4d4();
     if (IsMulti_022ffeb0()) {
         gExtraBossWork->unk50 = 0;
         gExtraBossWork->unk54 = 0;
@@ -76,13 +76,13 @@ void ExtraBoss_StartBattle(void) {
         gExtraBossWork->unk58 = 0x100000;
         gExtraBossWork->unk5C = 0x130000;
     }
-    func_ov001_0230582c();
-    func_ov001_023057f4();
+    ExtraBoss_Unk_ov001_0230582c();
+    ExtraBoss_Unk_ov001_023057f4();
     if (IsMulti_022ffeb0())
-        func_ov001_022ee964();
+        ExtraBoss_Unk_ov001_022ee964();
     *(vu16 *)0x4000008 = *(vu16 *)0x4000008 & ~3;
     *(vu16 *)0x400000c = (*(vu16 *)0x400000c & ~3) | 2;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1300;
-    func_ov001_02306424();
+    ExtraBoss_Unk_ov001_02306424();
     G3X_SetEdgeColorTable(data_02074ba4);
 }

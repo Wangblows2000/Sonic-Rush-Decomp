@@ -5,7 +5,7 @@ typedef struct {
     u8 unk3;
 } UnkStruct_0235e94c_Sync;
 
-UnkStruct_0235e94c_Sync *func_020514e4(void);
+UnkStruct_0235e94c_Sync *WirelessSession_GetSendBuffer(void);
 s32 func_ov000_0235c9f8(s32 from, s32 to, s32 total, s32 cur, s32 bias);
 void func_ov000_0235e8ac(void);
 
@@ -51,7 +51,7 @@ void ResultsScreen_State_ShowResult(void) {
     }
     w->unk0++;
     if (w->unk0 >= 0x40) {
-        UnkStruct_0235e94c_Sync *s = func_020514e4();
+        UnkStruct_0235e94c_Sync *s = WirelessSession_GetSendBuffer();
         w->unk0 = 0;
         s->unk3 = 0;
         func_ov000_0235cfc4(w);

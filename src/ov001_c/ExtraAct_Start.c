@@ -94,7 +94,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuClearFast(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-s32 func_ov001_022f73cc(s32 a);
+s32 ExtraAct_Unk_ov001_022f73cc(s32 a);
 void NNS_SndHandleInit(void *p);
 void ExtraAct_LoadAssets(void);
 u32 ObjVram_Alloc(u32 a, u32 b);
@@ -173,7 +173,7 @@ void ExtraAct_Start(void) {
         data_ov001_0231f084 = (UnkStruct_022f9eb4_b *)blk;
         MIi_CpuClear16(zero, blk, 0xea4);
     }
-    data_ov001_0231f084->unkE24 = func_ov001_022f73cc(data_ov001_0231f08c);
+    data_ov001_0231f084->unkE24 = ExtraAct_Unk_ov001_022f73cc(data_ov001_0231f08c);
     data_ov001_0231f084->unkE28 = data_ov001_0231f090 * 100;
     data_ov001_0231f084->unkE2C = data_ov001_0231f084->unkE24 + data_ov001_0231f084->unkE28;
     if (data_ov001_0231f084->unkE2C > 999999)

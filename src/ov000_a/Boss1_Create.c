@@ -105,7 +105,7 @@ void Boss1_Draw(void);
 void Boss1_NodeCallback_Batteries(void);
 u16 Boss_GetStartHealth(void);
 void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void func_ov000_022cc3e8(s32 idx, s32 flag);
+void Boss1_Unk_ov000_022cc3e8(s32 idx, s32 flag);
 void *NNS_FndGetArchiveFileByName(void *a);
 void NNS_G3dResDefaultSetup(void *a);
 
@@ -123,7 +123,7 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void NNS_FndMountArchive(void *ctx, void *a, void *b);
 void *NNS_FndGetArchiveFileByIndex(void *ctx, u32 id);
 void NNS_FndUnmountArchive(void *ctx);
-BOOL func_ov000_022cc6d4(void);
+BOOL Boss1_Unk_ov000_022cc6d4(void);
 void MapObject_Init(UnkStruct_022cce24 *s, s32 a, s32 x, s32 y);
 void ObjRect_SetBox3D(UnkStruct_022cce24_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void ObjRect_SetAtkDefFlags(UnkStruct_022cce24_h *h, s32 a, s32 b);
@@ -153,7 +153,7 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     gBossStatus.unk8 = Boss_GetStartHealth();
     gBossStatus.unkA = Boss_GetStartHealth();
     NNS_FndMountArchive(ctx, data_ov000_02365060, gZoneActArchive);
-    if (func_ov000_022cc6d4()) {
+    if (Boss1_Unk_ov000_022cc6d4()) {
         s->unk230 = NNS_FndGetArchiveFileByIndex(ctx, 8);
         s->unk234 = NNS_FndGetArchiveFileByIndex(ctx, 9);
     } else {
@@ -173,7 +173,7 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     p = &s->unk23C;
     Model_Init(p, 0);
     Model_SetResource(p, s->unk22C, 0);
-    if (func_ov000_022cc6d4())
+    if (Boss1_Unk_ov000_022cc6d4())
         NNS_G3dRenderObjSetCallBack(p->unk90, Boss1_NodeCallback_Batteries, 0, 6, 3);
     p->unk48 = s->unk10 << 4;
     p->unk4C = -(s->unk14 << 4);
@@ -181,12 +181,12 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     p->unk18 = p->unk1C = p->unk20 = 0x34cc;
     s->unk210 = MapObject_Spawn(0xca, 0, 0, 0, 0, 0, 0, 0, 0);
     s->unk214 = MapObject_Spawn(0xcb, 0, 0, 0, 0, 0, 0, 0, 0);
-    func_ov000_022cc3e8(gGameState.unk0, 0);
+    Boss1_Unk_ov000_022cc3e8(gGameState.unk0, 0);
     NNS_FndMountArchive(ctx2, data_ov000_02365064, gZoneActArchive);
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365068));
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_0236507c));
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365098));
-    if (func_ov000_022cc6d4()) {
+    if (Boss1_Unk_ov000_022cc6d4()) {
         NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023650b4));
         NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023650cc));
         NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023650e4));

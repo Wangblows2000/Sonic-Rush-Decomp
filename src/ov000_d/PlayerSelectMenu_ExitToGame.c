@@ -13,7 +13,7 @@ extern UnkStruct_022c4560 gGameState;
 
 void SysSound_Release(void);
 void SceneChange_ToZoneMap(void);
-void func_0205240c(void);
+void Game_StartDemoScript3AtZone8Act2(void);
 void TimeSelectMenu_StartMode0(void);
 void TimeSelectMenu_StartMode1(void);
 u8 StoryProgress_GetZoneAt(s32 a);
@@ -44,7 +44,7 @@ void PlayerSelectMenu_ExitToGame(s32 mode, s32 sub) {
             break;
         case 2:
             SysSound_Release();
-            func_0205240c();
+            Game_StartDemoScript3AtZone8Act2();
             break;
         }
         break;

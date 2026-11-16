@@ -18,7 +18,7 @@ extern s16 data_ov000_02368b80[][0x18];
 extern s16 gPlayerPhysicsTable[][0x18];
 
 void Boss7PartD5_MoveState_Unk_ov000_022e98d8(void);
-void func_ov000_022e8c90(void);
+void Boss7PartD5_MoveState_Unk_ov000_022e8c90(void);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e9234(UnkStruct_022e9234 *w) {
     u16 f = w->unk3D8;
@@ -56,5 +56,5 @@ void Boss7PartD5_MoveState_Unk_ov000_022e9234(UnkStruct_022e9234 *w) {
         return;
     }
     if (w->unk3DC & 0x100)
-        w->unk440 = func_ov000_022e8c90;
+        w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e8c90;
 }

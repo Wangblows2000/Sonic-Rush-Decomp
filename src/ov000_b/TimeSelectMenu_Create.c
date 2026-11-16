@@ -56,8 +56,8 @@ void func_ov000_02360b64(UnkStruct_023629cc *w);
 void func_ov000_02360b2c(UnkStruct_023629cc *w);
 void func_ov000_02360af4(UnkStruct_023629cc *w);
 void TimeSelectMenu_LoadPlayerNames(UnkStruct_023629cc *w);
-UnkStruct_023629cc_Pad *func_020514e4(void);
-UnkStruct_023629cc_Pad *func_02051474(void);
+UnkStruct_023629cc_Pad *WirelessSession_GetSendBuffer(void);
+UnkStruct_023629cc_Pad *WirelessSession_GetPartnerRecvBuffer(void);
 void TimeSelectMenu_CreateLinkIcon(void *p);
 void Touch_Enable(void);
 
@@ -113,14 +113,14 @@ void TimeSelectMenu_Create(s32 a, s32 b) {
     func_ov000_02360b2c(w);
     func_ov000_02360af4(w);
     TimeSelectMenu_LoadPlayerNames(w);
-    p = func_020514e4();
+    p = WirelessSession_GetSendBuffer();
     p->unk0 = 0;
     p->unk1 = 0;
     p->unk2 = 0;
     p->unk3 = 0;
     p->unk4 = 0;
     p->unk6 = 0;
-    p = func_02051474();
+    p = WirelessSession_GetPartnerRecvBuffer();
     p->unk0 = 0;
     p->unk1 = 0;
     p->unk2 = 0;

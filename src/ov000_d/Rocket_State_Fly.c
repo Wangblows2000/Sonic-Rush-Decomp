@@ -35,7 +35,7 @@ extern u32 gRandSeed;
 void Sound_SetPositional(void *a, UnkStruct_02313cfc *w, void *b);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 UnkStruct_02313cfc_Eff *EffZakoBombPuff_Create(UnkStruct_02313cfc *w, s16 x, s16 y);
-void func_ov000_02313bb0(UnkStruct_02313cfc *w);
+void Rocket_Unk_ov000_02313bb0(UnkStruct_02313cfc *w);
 s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
 
 static inline u16 UnkRand_02313cfc(void) {
@@ -65,7 +65,7 @@ void Rocket_State_Fly(UnkStruct_02313cfc *w) {
         e->unk122 = 0x15;
     }
     if ((w->unk58 & 0xf) || w->unk34 == 0) {
-        func_ov000_02313bb0(w);
+        Rocket_Unk_ov000_02313bb0(w);
     }
     if (w->unk5C & 1) {
         w->unk34 = ObjSpd_UpSet(w->unk34, 0x10, 0xc00);

@@ -11,13 +11,13 @@ typedef struct {
     s32 unkcec;
 } UnkStruct_022d0760;
 
-void func_ov001_022d0220(UnkStruct_022d0760 *p);
+void StaffRoll_Unk_ov001_022d0220(UnkStruct_022d0760 *p);
 void StaffRoll_SetPictureState(UnkStruct_022d0760 *p, void (*fn)(UnkStruct_022d0760 *));
 void StaffRoll_PictureState_Blaze12(UnkStruct_022d0760 *p);
 
 #pragma thumb on
 void StaffRoll_PictureState_Blaze11(UnkStruct_022d0760 *p) {
-    func_ov001_022d0220(p);
+    StaffRoll_Unk_ov001_022d0220(p);
     if (p->unkcd4 + p->unkcec > 0) {
         p->unkcd4 = 0;
         p->unkcec = p->unkcec / 4;

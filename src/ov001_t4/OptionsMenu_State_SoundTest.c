@@ -62,21 +62,21 @@ extern s32 gBGMSoundHandle;
 extern s32 gSESoundHandle;
 extern s32 gVoiceSoundHandle;
 
-void func_ov001_022cc17c(UnkWork_022cd05c *w);
+void OptionsMenu_UpdateAnims(UnkWork_022cd05c *w);
 void SoundTest_UpdateLevelMeter(UnkSub_022cd05c *s);
-void func_ov001_022cbf30(UnkWork_022cd05c *w);
-void func_ov001_022cdd28(void);
-BOOL func_ov001_022c8ba8(u16 x, u16 y);
+void OptionsMenu_DrawItems(UnkWork_022cd05c *w);
+void OptionsMenu_Unk_ov001_022cdd28(void);
+BOOL OptionsMenu_Unk_ov001_022c8ba8(u16 x, u16 y);
 void SoundTest_ReleaseTrack(UnkSub_022cd05c *s);
 void SysSound_Init(void);
 void SysSound_PlayBGM(s32 a);
 void SysSound_PlaySE(s32 a);
-BOOL func_ov001_022c9310(UnkSub_022cd05c *s);
+BOOL SoundTest_Unk_ov001_022c9310(UnkSub_022cd05c *s);
 void NNS_SndPlayerStopSeqBySeqArcIdx(u8 a, u16 b, s32 c);
 BOOL Options_IsExtraStoryCleared(void);
 void SoundTest_PlayTrack(UnkSub_022cd05c *s);
 void SoundTest_LoadTrack(UnkSub_022cd05c *s, s32 a);
-void func_ov001_022c90a8(UnkSub_022cd05c *s, s32 a, s32 b);
+void OptionsMenu_Unk_ov001_022c90a8(UnkSub_022cd05c *s, s32 a, s32 b);
 
 #pragma thumb on
 void OptionsMenu_State_SoundTest(void) {
@@ -92,11 +92,11 @@ void OptionsMenu_State_SoundTest(void) {
 
     w = gTaskCurrent->work;
     sub = &w->sub;
-    func_ov001_022cc17c(w);
+    OptionsMenu_UpdateAnims(w);
     if (sub->unkc != 0) {
         SoundTest_UpdateLevelMeter(sub);
     }
-    func_ov001_022cbf30(w);
+    OptionsMenu_DrawItems(w);
     w->unk14++;
     w->unk18++;
     sub->unk1c++;
@@ -105,7 +105,7 @@ void OptionsMenu_State_SoundTest(void) {
     if (w->unk1c >= 0) {
         w->unk1c++;
         if (w->unk1c > 10) {
-            func_ov001_022cdd28();
+            OptionsMenu_Unk_ov001_022cdd28();
         }
     }
     if (w->unk1c >= 0) {
@@ -128,7 +128,7 @@ void OptionsMenu_State_SoundTest(void) {
         x = gTouchState.x;
         y = gTouchState.y;
         if (x < 0x100 && y < 0xc0) {
-            if (func_ov001_022c8ba8(x, y)) {
+            if (OptionsMenu_Unk_ov001_022c8ba8(x, y)) {
                 SoundTest_ReleaseTrack(sub);
                 w->unk1c = 0;
                 SysSound_Init();
@@ -173,7 +173,7 @@ void OptionsMenu_State_SoundTest(void) {
             break;
         }
     }
-    if (func_ov001_022c9310(sub) && !ok && !cancel && sub->sel == 100 && sub->unk20 == 0x4b) {
+    if (SoundTest_Unk_ov001_022c9310(sub) && !ok && !cancel && sub->sel == 100 && sub->unk20 == 0x4b) {
         UnkEntry_022cd05c *e = &data_ov001_0231f048[sub->sel];
         NNS_SndPlayerStopSeqBySeqArcIdx(e->unk2c, e->unk2e, 0x1e);
     }
@@ -182,14 +182,14 @@ void OptionsMenu_State_SoundTest(void) {
         if (sub->sel != sub->cur) {
             sub->unk24 = 0;
         }
-        if (sub->sel == sub->cur && func_ov001_022c9310(sub)) {
+        if (sub->sel == sub->cur && SoundTest_Unk_ov001_022c9310(sub)) {
             SoundTest_PlayTrack(sub);
         } else {
-            if (func_ov001_022c9310(sub)) {
+            if (SoundTest_Unk_ov001_022c9310(sub)) {
                 SoundTest_ReleaseTrack(sub);
             }
             SoundTest_LoadTrack(sub, sub->cur);
-            func_ov001_022c90a8(sub, sub->cur, sub->sel);
+            OptionsMenu_Unk_ov001_022c90a8(sub, sub->cur, sub->sel);
         }
         sub->unk20 = 0;
         return;
@@ -205,7 +205,7 @@ void OptionsMenu_State_SoundTest(void) {
             return;
         } else {
             SoundTest_ReleaseTrack(sub);
-            func_ov001_022cdd28();
+            OptionsMenu_Unk_ov001_022cdd28();
             SysSound_Init();
             SysSound_PlayBGM(0);
             SysSound_PlaySE(1);
@@ -220,7 +220,7 @@ void OptionsMenu_State_SoundTest(void) {
             }
         } while (!busy && data_ov001_0231f048[sub->cur].unk2d == 1);
         sub->unk1c = 0;
-        func_ov001_022c90a8(sub, sub->cur, sub->sel);
+        OptionsMenu_Unk_ov001_022c90a8(sub, sub->cur, sub->sel);
         if (sub->unk0 == 0) {
             sub->sel = sub->cur;
             sub->unk24 = 0;
@@ -235,7 +235,7 @@ void OptionsMenu_State_SoundTest(void) {
             }
         } while (!busy && data_ov001_0231f048[sub->cur].unk2d == 1);
         sub->unk1c = 0;
-        func_ov001_022c90a8(sub, sub->cur, sub->sel);
+        OptionsMenu_Unk_ov001_022c90a8(sub, sub->cur, sub->sel);
         if (sub->unk0 == 0) {
             sub->sel = sub->cur;
             sub->unk24 = 0;

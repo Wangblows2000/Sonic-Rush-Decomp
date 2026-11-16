@@ -1,11 +1,11 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov001_023102c4();
+s32 SpecialStagePlayer_Unk_ov001_023102c4();
 s32 SpecialStagePlayer_TurnTowards();
 
 void SpecialStagePlayer_UpdateTurn(u8 *p0) {
-    s32 t0 = func_ov001_023102c4(*(u16 *)((u8 *)p0 + 0x16));
+    s32 t0 = SpecialStagePlayer_Unk_ov001_023102c4(*(u16 *)((u8 *)p0 + 0x16));
     if (t0 == 1) {
         SpecialStagePlayer_TurnTowards(p0, *(u32 *)((u8 *)p0 + 0x134));
     }

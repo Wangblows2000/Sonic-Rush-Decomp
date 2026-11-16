@@ -19,15 +19,15 @@ typedef struct UnkStruct_022d9dc0_7 {
 
 extern UnkStruct_022d9dc0_7 gBossStatus;
 
-void func_ov000_022dac2c(void);
-void func_ov000_022d9e48(void);
+void Boss3_Unk_ov000_022dac2c(void);
+void Boss3_Unk_ov000_022d9e48(void);
 
 void Boss3_State_Unk_ov000_022d9dc0(UnkStruct_022d9dc0 *s) {
     if (s->unk224++ <= 0x1e)
         return;
     s->unk210 = 0;
     if (s->unk218 == NULL)
-        func_ov000_022dac2c();
+        Boss3_Unk_ov000_022dac2c();
     else
-        func_ov000_022d9e48();
+        Boss3_Unk_ov000_022d9e48();
 }

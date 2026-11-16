@@ -1,4 +1,4 @@
-/* paramclone of func_ov001_022d9cb0 (src/ov001/func_ov001_022d9cb0.c); immediates and relocations remapped. */
+/* paramclone of VsMenu_Unk_ov001_022d9cb0 (src/ov001/VsMenu_Unk_ov001_022d9cb0.c); immediates and relocations remapped. */
 #include <nitro/types.h>
 
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);

@@ -14,7 +14,7 @@ typedef struct {
 
 extern UnkStruct_022c4560 gGameState;
 
-UnkStruct_02361bf0_Sync *func_020514e4(void);
+UnkStruct_02361bf0_Sync *WirelessSession_GetSendBuffer(void);
 void func_ov000_023610d8(UnkStruct_MenuO *w);
 void func_ov000_02360fdc(UnkStruct_MenuO *w);
 BOOL TimeSelectMenu_IsConfirmInput(UnkStruct_MenuO *w);
@@ -56,7 +56,7 @@ void TimeSelectMenu_State_Select(void) {
         UnkStruct_02361bf0_Sync *s;
         w->unk0 = 0;
         SysSound_PlaySE(7);
-        s = func_020514e4();
+        s = WirelessSession_GetSendBuffer();
         s->unk0 = w->unkC;
         s->unk1 = 1;
         MsgBox_RequestClose();
@@ -72,7 +72,7 @@ void TimeSelectMenu_State_Select(void) {
     if (TimeSelectMenu_IsBackTouched(w) || TimeSelectMenu_IsBackPressed(w)) {
         w->unk0 = 0;
         SysSound_PlaySE(8);
-        func_020514e4()->unk2 = 1;
+        WirelessSession_GetSendBuffer()->unk2 = 1;
         if (TimeSelectMenu_IsBackTouched(w)) {
             func_ov000_02360e34(w);
         }
@@ -93,7 +93,7 @@ void TimeSelectMenu_State_Select(void) {
         if (old != n) {
             w->unk10 = old;
             w->unkC = n;
-            func_020514e4()->unk0 = w->unkC;
+            WirelessSession_GetSendBuffer()->unk0 = w->unkC;
             KeyframeAnim_SetAnim(&w->pos[0], 6);
             func_ov000_023610a4(w);
             q = n / 2;
@@ -118,7 +118,7 @@ void TimeSelectMenu_State_Select(void) {
         if (old != n) {
             w->unk10 = old;
             w->unkC = n;
-            func_020514e4()->unk0 = w->unkC;
+            WirelessSession_GetSendBuffer()->unk0 = w->unkC;
             KeyframeAnim_SetAnim(&w->pos[0], 6);
             func_ov000_02360f98(w);
             q = n / 2;

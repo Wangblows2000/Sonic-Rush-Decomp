@@ -15,10 +15,10 @@ void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void SaveMsgRequest_Main(void);
-void func_0205a278(void);
+void SaveMsgRequest_Destructor(void);
 
 void SaveMsg_Request(u32 a, u32 b) {
-    UnkTask_0205a27c *t = Task_Create(SaveMsgRequest_Main, func_0205a278, 0x20, 0, 3, 0x1c);
+    UnkTask_0205a27c *t = Task_Create(SaveMsgRequest_Main, SaveMsgRequest_Destructor, 0x20, 0, 3, 0x1c);
     UnkWork_0205a27c *w;
 
     if (t == OS_GetArenaLo(0))

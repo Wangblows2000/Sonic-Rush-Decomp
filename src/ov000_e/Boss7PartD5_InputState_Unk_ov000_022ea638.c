@@ -28,11 +28,11 @@ extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_02369ac0 gBossStatus;
 extern u16 data_ov000_02363c44[][8];
 
-BOOL func_ov000_022eb268(UnkStruct_022ea638 *w);
+BOOL Boss7PartD5_Unk_ov000_022eb268(UnkStruct_022ea638 *w);
 void Boss7PartD5_Action_Unk_ov000_022eb124(UnkStruct_022ea638 *w);
-BOOL func_ov000_022eb158(UnkStruct_022ea638 *w);
-void func_ov000_022eae84(UnkStruct_022ea638 *w);
-void func_ov000_022ea900(UnkStruct_022ea638 *w);
+BOOL Boss7PartD5_Unk_ov000_022eb158(UnkStruct_022ea638 *w);
+void Boss7PartD5_Unk_ov000_022eae84(UnkStruct_022ea638 *w);
+void Boss7PartD5_Unk_ov000_022ea900(UnkStruct_022ea638 *w);
 void Boss7PartD5_InputState_Unk_ov000_022ea798(void);
 
 static inline BOOL IsMode23(void) {
@@ -48,17 +48,17 @@ u16 Boss7PartD5_InputState_Unk_ov000_022ea638(UnkStruct_022ea638 *w) {
 
     if ((u32)(gBossStatus.unk4 - 0x24) <= 1)
         w->unk44C++;
-    if (func_ov000_022eb268(w)) {
+    if (Boss7PartD5_Unk_ov000_022eb268(w)) {
         Boss7PartD5_Action_Unk_ov000_022eb124(w);
         return 0;
     }
-    if (func_ov000_022eb158(w)) {
-        func_ov000_022eae84(w);
+    if (Boss7PartD5_Unk_ov000_022eb158(w)) {
+        Boss7PartD5_Unk_ov000_022eae84(w);
         return 0;
     }
     if (w->unk44C > data_ov000_02363c44[GetLevel()][gBossStatus.unk8 - 1]) {
         w->unk44C = 0;
-        func_ov000_022ea900(w);
+        Boss7PartD5_Unk_ov000_022ea900(w);
         return 0;
     }
     if (w->unk456 > 0) {

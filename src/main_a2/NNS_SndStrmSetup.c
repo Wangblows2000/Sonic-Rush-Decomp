@@ -25,11 +25,11 @@ u32 _u32_div_f(u32 a, u32 b);
 s32 NNS_SndAllocAlarm(void);
 void SND_SetupChannelPcm(s32 ch, s32 format, u32 data, s32 loop, s32 loopStart, s32 loopLen, s32 volume, s32 shift, s32 timer, s32 pan);
 void SND_SetupAlarm(s32 alarm, u32 tick, u32 period, void (*cb)(void *), void *arg);
-void func_0201c2dc(void *p);
+void AlarmCallback_stream(void *p);
 void NNS_FndAppendListObject(void *list, void *obj);
 s32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(s32 e);
-void StrmCallback(void *p, u32 v);
+void StrmCallback_stream(void *p, u32 v);
 
 BOOL NNS_SndStrmSetup(UnkStruct_0201c4e4 *s, s32 format, u32 data, u32 rate, s32 timer, s32 arg5, s32 arg6, s32 arg7) {
     u32 period;
@@ -54,7 +54,7 @@ BOOL NNS_SndStrmSetup(UnkStruct_0201c4e4 *s, s32 format, u32 data, u32 rate, s32
         data_02083d74[id].unk4 = 0;
         SND_SetupChannelPcm(id, format, data_02083d74[id].unk0, 1, 0, s->unk28 >> 2, 0x7F, 0, timer << 5, 0x40);
     }
-    SND_SetupAlarm(s->unk40, period, period, func_0201c2dc, s);
+    SND_SetupAlarm(s->unk40, period, period, AlarmCallback_stream, s);
     NNS_FndAppendListObject(data_02083d28, s);
     s->unk20 = format;
     s->unk2C = arg5;
@@ -65,7 +65,7 @@ BOOL NNS_SndStrmSetup(UnkStruct_0201c4e4 *s, s32 format, u32 data, u32 rate, s32
     s->unk24_0 = 1;
     en = OS_DisableInterrupts();
     s->unk2C = 1;
-    StrmCallback(s, 0);
+    StrmCallback_stream(s, 0);
     s->unk2C = arg5;
     OS_RestoreInterrupts(en);
     return TRUE;

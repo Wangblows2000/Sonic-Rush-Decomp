@@ -15,15 +15,15 @@ typedef struct {
 
 extern UnkTask_022d6000 *gTaskCurrent;
 
-void func_ov001_022d5be4(UnkWork_022d6000 *w);
-void func_ov001_022d5b44(UnkWork_022d6000 *w, s32 a);
+void TitleDemo_Unk_ov001_022d5be4(UnkWork_022d6000 *w);
+void TitleDemo_Unk_ov001_022d5b44(UnkWork_022d6000 *w, s32 a);
 s32 TitleDemo_Interpolate(s32 from, s32 to, s32 n, s32 i, s32 ease);
-void func_ov001_022d5b94(UnkWork_022d6000 *w, s32 v);
-void func_ov001_022d585c(UnkWork_022d6000 *w);
+void TitleDemo_Unk_ov001_022d5b94(UnkWork_022d6000 *w, s32 v);
+void TitleDemo_Unk_ov001_022d585c(UnkWork_022d6000 *w);
 void TitleDemo_ShowBg2At(UnkWork_022d6000 *w, s32 a, s32 v);
 void TitleDemo_SetSubBrightness(UnkWork_022d6000 *w, s32 v);
 void TitleDemo_SetMainBrightness(UnkWork_022d6000 *w, s32 v);
-void func_ov001_022d586c(UnkWork_022d6000 *w);
+void TitleDemo_Unk_ov001_022d586c(UnkWork_022d6000 *w);
 BOOL TitleDemo_CheckSkipInput(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
 void Task_DestroyAll(void);
@@ -36,13 +36,13 @@ void TitleDemo_State_Scene3(void) {
     s32 t;
     s32 v;
 
-    func_ov001_022d5be4(w);
-    func_ov001_022d5b44(w, 0);
+    TitleDemo_Unk_ov001_022d5be4(w);
+    TitleDemo_Unk_ov001_022d5b44(w, 0);
     t = w->timer - 0x38;
     if (t >= 0) {
-        func_ov001_022d5b94(w, TitleDemo_Interpolate(0x100, 0, 0x10, t, 0x2000));
+        TitleDemo_Unk_ov001_022d5b94(w, TitleDemo_Interpolate(0x100, 0, 0x10, t, 0x2000));
         if (t == 0) {
-            func_ov001_022d585c(w);
+            TitleDemo_Unk_ov001_022d585c(w);
         }
     }
     t = w->timer;
@@ -59,7 +59,7 @@ void TitleDemo_State_Scene3(void) {
             TitleDemo_SetSubBrightness(w, 0);
             TitleDemo_SetMainBrightness(w, v);
             if (t == 0) {
-                func_ov001_022d586c(w);
+                TitleDemo_Unk_ov001_022d586c(w);
             }
         } else {
             TitleDemo_SetSubBrightness(w, 0);

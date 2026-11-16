@@ -35,7 +35,7 @@ extern void ScreenShake_Create(void);
 extern void NaviB_Create(void);
 extern void Stage_Destructor(void);
 extern void Stage_Main(void);
-extern void func_0204ba84(void);
+extern void Stage_Unk_0204ba84(void);
 extern void Stage_InitMapCollision(void);
 extern void Stage_InitBlend(void);
 extern void NaviMsg_SetVisible(void);
@@ -440,7 +440,7 @@ _55c:
     add sp, sp, #0xc
     ldmia sp!, {r4, r5, r6, r7, r8, r9, lr}
     bx lr
-    dcd func_0204ba84
+    dcd Stage_Unk_0204ba84
     dcd Stage_Main
     dcd Stage_Destructor
     dcd gGameState

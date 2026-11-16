@@ -1,0 +1,12 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+void ExtraBoss_Unk_ov001_02305bb8();
+s32 Task_Create();
+extern u8 data_ov001_0231f5a8[];
+
+void ExtraBoss_Unk_ov001_02305c84(void) {
+    s32 t0 = Task_Create((u32)ExtraBoss_Unk_ov001_02305bb8, 0, 0, 0x3100, 2, 0);
+    *(u32 *)((u8 *)*(u32 *)data_ov001_0231f5a8 + 0xc) = t0;
+    *(u32 *)((u8 *)*(u32 *)data_ov001_0231f5a8 + 0x5ec) = 0;
+}

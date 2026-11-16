@@ -6,7 +6,7 @@ typedef struct {
     u8 unk2;
 } UnkStruct_023599b0_Sync;
 
-UnkStruct_023599b0_Sync *func_020514e4(void);
+UnkStruct_023599b0_Sync *WirelessSession_GetSendBuffer(void);
 void PlayerSelectMenu_State_Select(void);
 
 #pragma thumb on
@@ -30,7 +30,7 @@ void PlayerSelectMenu_Action_Select(UnkStruct_SceneTask *t) {
     func_ov000_02357aa8(w, 2);
     func_ov000_02357a6c(w, w->unk14);
     func_ov000_02358180(w);
-    s = func_020514e4();
+    s = WirelessSession_GetSendBuffer();
     s->unk0 = w->unk14;
     s->unk2 = 0;
     s->unk1 = 0;

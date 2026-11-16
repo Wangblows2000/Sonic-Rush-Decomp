@@ -39,7 +39,7 @@ extern UnkStruct_022e552c_obj *gPlayers;
 extern s16 data_02070470[];
 extern u8 data_ov000_023638c4[];
 
-void func_ov000_022e5c1c(UnkStruct_022e552c *p);
+void Boss6_Unk_ov000_022e5c1c(UnkStruct_022e552c *p);
 u8 *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *out);
@@ -47,7 +47,7 @@ void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 void MTX_Inverse33(void *a, void *b);
 void MTX_MultVec33(VecFx32_022e552c *a, void *m, VecFx32_022e552c *out);
 void ObjRect_SetBox3D(void *b, s16 x1, s16 y1, s16 x2, s16 y2, s16 z1, s16 z2);
-u8 *func_ov000_022dfd80(s32 a, s32 x, s32 y, s32 z);
+u8 *Boss6_Unk_ov000_022dfd80(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss6_SelectNextAttack(s32 a);
 
@@ -58,7 +58,7 @@ void Boss6_State_Unk_ov000_022e552c(UnkStruct_022e552c *p) {
     u8 *e;
     s32 d;
 
-    func_ov000_022e5c1c(p);
+    Boss6_Unk_ov000_022e5c1c(p);
     d = gPlayers->unk10 - p->unk10;
     if (p->unkF54 >= 0) {
         if (p->unk10 > 0x2aa00 || d < -0x8000) {
@@ -105,7 +105,7 @@ void Boss6_State_Unk_ov000_022e552c(UnkStruct_022e552c *p) {
         v2.y >>= 12;
         ObjRect_SetBox3D(e + 0x134, v1.x - 13, v1.y - 13, v1.x + 13, v1.y + 13, -32000, 32000);
         ObjRect_SetBox3D(e + 0x160, v2.x - 13, v2.y - 13, v2.x + 13, v2.y + 13, -32000, 32000);
-        e = func_ov000_022dfd80(2, ((UnkStruct_022e552c_obj *)e)->unk10, ((UnkStruct_022e552c_obj *)e)->unk14, ((UnkStruct_022e552c_obj *)e)->unk18);
+        e = Boss6_Unk_ov000_022dfd80(2, ((UnkStruct_022e552c_obj *)e)->unk10, ((UnkStruct_022e552c_obj *)e)->unk14, ((UnkStruct_022e552c_obj *)e)->unk18);
         if (p->unkD5E != 0) {
             MTX_RotY33_(e + 0x158, data_02070470[0], data_02070470[1]);
             MTX_Concat33(e + 0x158, p->unk984, e + 0x158);

@@ -2,8 +2,8 @@
 
 void ExtraBossPlayer_UpdateInvincibility(void *p);
 void ExtraBossPlayer_ChangeState(void *p, s32 a);
-void func_ov001_022fcaa4(void *p, s32 x, s32 y, s32 z);
-void func_ov001_022fc9e4(void *p, s32 x, s32 y, s32 z);
+void ExtraBossPlayer_Unk_ov001_022fcaa4(void *p, s32 x, s32 y, s32 z);
+void ExtraBossPlayer_Unk_ov001_022fc9e4(void *p, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void ExtraBossPlayer_ApplyMoveInputHalf(void *p);
 
@@ -12,8 +12,8 @@ void ExtraBossPlayer_State_SpecialCharge(u8 *p) {
     *(s32 *)(p + 0x1c8) -= 1;
     if (*(s32 *)(p + 0x1c8) <= 0) {
         ExtraBossPlayer_ChangeState(p, 0xa);
-        func_ov001_022fcaa4(p, *(s32 *)(p + 0x18), *(s32 *)(p + 0x1c), 0);
-        func_ov001_022fc9e4(p, *(s32 *)(p + 0x18), *(s32 *)(p + 0x1c), 0);
+        ExtraBossPlayer_Unk_ov001_022fcaa4(p, *(s32 *)(p + 0x18), *(s32 *)(p + 0x1c), 0);
+        ExtraBossPlayer_Unk_ov001_022fc9e4(p, *(s32 *)(p + 0x18), *(s32 *)(p + 0x1c), 0);
         Sound_PlaySeqArc(0, 0, 0x12);
     }
     ExtraBossPlayer_ApplyMoveInputHalf(p);

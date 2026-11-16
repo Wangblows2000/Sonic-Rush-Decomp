@@ -62,9 +62,9 @@ extern UnkStruct_022c90e8_2 *gBoss1;
 void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 
-BOOL func_ov000_022cc6d4(void);
-void func_ov000_022c9fbc(UnkStruct_022c90e8 *s);
-BOOL func_ov000_022c7274(u32 mask);
+BOOL Boss1_Unk_ov000_022cc6d4(void);
+void Boss1Neck_Unk_ov000_022c9fbc(UnkStruct_022c90e8 *s);
+BOOL Boss1Neck_Unk_ov000_022c7274(u32 mask);
 void ScreenShake_Start(s32 a);
 u8 *BossEffect_CreateImpactBig(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -72,15 +72,15 @@ void Boss1Neck_State_Unk_ov000_022c8f24(UnkStruct_022c90e8 *s);
 
 void Boss1Neck_State_Unk_ov000_022c90e8(UnkStruct_022c90e8 *s) {
     u8 *obj;
-    if (func_ov000_022cc6d4()) {
+    if (Boss1_Unk_ov000_022cc6d4()) {
         UnkStruct_022c90e8_5 *q = s->unk30C;
         if (((q->unk8->unk4 << 12) - q->unk0) >> 12 <= 0x14)
             s->unk2E = 0;
         else
-            func_ov000_022c9fbc(s);
+            Boss1Neck_Unk_ov000_022c9fbc(s);
     }
     if (s->unk20C == 0) {
-        if (func_ov000_022c7274(4))
+        if (Boss1Neck_Unk_ov000_022c7274(4))
             s->unk20C = 1;
     }
     if (!(s->unk334 & 2))

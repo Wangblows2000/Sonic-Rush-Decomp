@@ -28,7 +28,7 @@ extern u16 gDisplaySub[];
 
 void Background_Init(void *buf, void *res, s32 a, s32 b, s32 c, s32 d, s32 e);
 void Background_Draw(void *buf);
-void func_ov001_022ea1b8(void *buf, s32 a, s32 b, s32 c);
+void TimeAttackMenu_Unk_ov001_022ea1b8(void *buf, s32 a, s32 b, s32 c);
 
 #pragma thumb on
 void TimeAttackMenu_InitBackgrounds(UnkStruct_022ebfd4 *p) {
@@ -52,11 +52,11 @@ void TimeAttackMenu_InitBackgrounds(UnkStruct_022ebfd4 *p) {
     Background_Draw(&p->bg[0]);
     Background_Draw(&p->bg[1]);
     if (p->state <= 1) {
-        func_ov001_022ea1b8(&p->bg[0], 0, 0xf, 0);
-        func_ov001_022ea1b8(&p->bg[1], 0, 0xf, 0);
+        TimeAttackMenu_Unk_ov001_022ea1b8(&p->bg[0], 0, 0xf, 0);
+        TimeAttackMenu_Unk_ov001_022ea1b8(&p->bg[1], 0, 0xf, 0);
     } else {
-        func_ov001_022ea1b8(&p->bg[0], 0x10, 0x1f, 0);
-        func_ov001_022ea1b8(&p->bg[1], 0x10, 0x1f, 0);
+        TimeAttackMenu_Unk_ov001_022ea1b8(&p->bg[0], 0x10, 0x1f, 0);
+        TimeAttackMenu_Unk_ov001_022ea1b8(&p->bg[1], 0x10, 0x1f, 0);
     }
     res = p->res1070;
     Background_Init(&p->bg[2], res, 0, 0, 1, res->unk18, res->unk1a);

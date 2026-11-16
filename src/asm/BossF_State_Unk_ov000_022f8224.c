@@ -1,7 +1,7 @@
 // asm: C-impossible: switch split point
 #include <nitro/types.h>
 
-extern void func_ov000_022f8a48(void);
+extern void BossF_Unk_ov000_022f8a48(void);
 
 asm void BossF_State_Unk_ov000_022f8224(void)
 {
@@ -44,7 +44,7 @@ _80:
     addeq sp, sp, #4
     ldmeqia sp!, {lr}
     bxeq lr
-    bl func_ov000_022f8a48
+    bl BossF_Unk_ov000_022f8a48
     add sp, sp, #4
     ldmia sp!, {lr}
     bx lr
@@ -54,7 +54,7 @@ _a4:
     addeq sp, sp, #4
     ldmeqia sp!, {lr}
     bxeq lr
-    bl func_ov000_022f8a48
+    bl BossF_Unk_ov000_022f8a48
     add sp, sp, #4
     ldmia sp!, {lr}
     bx lr
@@ -64,7 +64,7 @@ _c8:
     addeq sp, sp, #4
     ldmeqia sp!, {lr}
     bxeq lr
-    bl func_ov000_022f8a48
+    bl BossF_Unk_ov000_022f8a48
     add sp, sp, #4
     ldmia sp!, {lr}
     bx lr

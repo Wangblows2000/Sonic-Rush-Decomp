@@ -19,20 +19,20 @@ typedef int code();
 #define true 1
 #define false 0
 
-int func_02015640();
-int func_0201564c();
-int func_0201565c();
+int WBT_Unk_02015640();
+int WBT_Unk_0201564c();
+int WBT_Unk_0201565c();
 
 undefined4 WBT_SetPacketSize(int param_1,int param_2)
 
 {
   int *piVar1;
   
-  piVar1 = (int *)func_02015640();
+  piVar1 = (int *)WBT_Unk_02015640();
   if ((*piVar1 == 4) || (*piVar1 == 6)) {
     return 0;
   }
-  func_0201564c(param_1 + -0xe);
-  func_0201565c(param_2 + -0xe);
+  WBT_Unk_0201564c(param_1 + -0xe);
+  WBT_Unk_0201565c(param_2 + -0xe);
   return 1;
 }

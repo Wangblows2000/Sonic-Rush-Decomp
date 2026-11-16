@@ -66,15 +66,15 @@ extern u8 data_ov000_023657e0[], data_ov000_023636f4[];
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *c);
-void func_ov000_022e1f88(UnkStruct_022e1684 *w);
+void Boss6_Unk_ov000_022e1f88(UnkStruct_022e1684 *w);
 void Model_Animate(void *s);
 void Model_Draw(void *s);
 void NNS_G3dGeBufferOP_N(s32 a, s32 *b, s32 c);
 void NNS_G3dGetCurrentMtx(void *a, void *b);
-void func_ov000_022e4568(UnkStruct_022e1684 *w);
-void func_ov000_022e1474(UnkStruct_022e1684 *w);
-void func_ov000_022e1308(UnkStruct_022e1684 *w);
-void func_ov000_022e1078(UnkStruct_022e1684 *w);
+void Boss6_Unk_ov000_022e4568(UnkStruct_022e1684 *w);
+void Boss6_Unk_ov000_022e1474(UnkStruct_022e1684 *w);
+void Boss6_Unk_ov000_022e1308(UnkStruct_022e1684 *w);
+void Boss6_Unk_ov000_022e1078(UnkStruct_022e1684 *w);
 void Boss_LoadModelPalettes(void *a, void *b, void *c, void *d, s32 e);
 
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
@@ -100,7 +100,7 @@ void Boss6_Draw(void) {
         sub = &w->unk210[2];
         idx = (s32)(w->unkD52 & 0xffff) >> 4;
         MTX_RotY33_(sub->unk24, SIN_IDX(idx), COS_IDX(idx));
-        func_ov000_022e1f88(w);
+        Boss6_Unk_ov000_022e1f88(w);
         w->unkF68 += w->unkF6A;
         if (w->unkF6A >= 0) {
             if (w->unkF68 > w->unkF6C)
@@ -166,16 +166,16 @@ void Boss6_Draw(void) {
     Model_Draw(sub);
     flags = w->unk20C;
     if (flags & 4) {
-        func_ov000_022e4568(w);
-        func_ov000_022e1474(w);
+        Boss6_Unk_ov000_022e4568(w);
+        Boss6_Unk_ov000_022e1474(w);
         return;
     }
     if (flags & 8) {
-        func_ov000_022e1308(w);
+        Boss6_Unk_ov000_022e1308(w);
         return;
     }
     if (flags & 0x10) {
-        func_ov000_022e1078(w);
+        Boss6_Unk_ov000_022e1078(w);
         return;
     }
     if (w->unk1114 == 0)

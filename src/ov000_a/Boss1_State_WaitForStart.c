@@ -48,7 +48,7 @@ extern UnkStruct_022cb218_c data_ov000_0236a48c;
 
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
-void func_ov000_022cc224(void);
+void Boss1_Unk_ov000_022cc224(void);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
 void Boss1_Action_Unk_ov000_022cbfc8(void);
@@ -71,7 +71,7 @@ void Boss1_State_WaitForStart(UnkStruct_022cb218 *s) {
     Model_SetResource(a, s->unk238, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x1355b50;
     c = (UnkStruct_022cb218_c *)(u32)&data_ov000_0236a48c;
-    func_ov000_022cc224();
+    Boss1_Unk_ov000_022cc224();
     c->unk24.x = 0xc0000;
     c->unk24.y = -0x1d4000;
     c->unk24.z = 0xa0000;

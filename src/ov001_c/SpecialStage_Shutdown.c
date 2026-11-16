@@ -50,7 +50,7 @@ extern UnkStruct_0230c104_p gDisplaySub[];
 void Task_Destroy(void *t);
 void SpecialStageGimmick_DestroyManager(u8 *blk);
 void SpecialStagePlayer_Destroy(u8 *blk);
-void func_ov001_0230b094(void);
+void SpecialStage_Unk_ov001_0230b094(void);
 void SpecialStage_ReleaseActArchive(void);
 void SpecialStage_ReleaseGimmickModels(void);
 void SpecialStage_ReleaseMapModels(void);
@@ -95,7 +95,7 @@ void SpecialStage_Shutdown(void) {
         SpecialStagePlayer_Destroy(g->unk18);
         g->unk18 = NULL;
     }
-    func_ov001_0230b094();
+    SpecialStage_Unk_ov001_0230b094();
     SpecialStage_ReleaseActArchive();
     SpecialStage_ReleaseGimmickModels();
     SpecialStage_ReleaseMapModels();

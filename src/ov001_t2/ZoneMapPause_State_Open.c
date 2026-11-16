@@ -21,10 +21,10 @@ typedef struct {
 
 extern UnkTask_022e901c *gTaskCurrent;
 
-void func_ov001_022e8b5c(UnkWork_022e901c *w);
-void func_ov001_022e8be0(UnkWork_022e901c *w, s32 i);
-void func_ov001_022e9234(void *t);
-void func_ov001_022e915c(void *t);
+void ZoneMapPause_Unk_ov001_022e8b5c(UnkWork_022e901c *w);
+void ZoneMapPause_Unk_ov001_022e8be0(UnkWork_022e901c *w, s32 i);
+void ZoneMapPause_Unk_ov001_022e9234(void *t);
+void ZoneMapPause_Unk_ov001_022e915c(void *t);
 
 #pragma thumb on
 void ZoneMapPause_State_Open(void) {
@@ -37,15 +37,15 @@ void ZoneMapPause_State_Open(void) {
     }
     w->bright = b;
     gDisplayMain.bright = b;
-    func_ov001_022e8b5c(w);
+    ZoneMapPause_Unk_ov001_022e8b5c(w);
     switch (w->mode) {
     case 1:
-        func_ov001_022e8be0(w, 0);
-        func_ov001_022e8be0(w, 1);
+        ZoneMapPause_Unk_ov001_022e8be0(w, 0);
+        ZoneMapPause_Unk_ov001_022e8be0(w, 1);
         break;
     case 5:
-        func_ov001_022e8be0(w, 2);
-        func_ov001_022e8be0(w, 3);
+        ZoneMapPause_Unk_ov001_022e8be0(w, 2);
+        ZoneMapPause_Unk_ov001_022e8be0(w, 3);
         break;
     }
     w->timer++;
@@ -53,10 +53,10 @@ void ZoneMapPause_State_Open(void) {
     if (b <= 0) {
         switch (w->mode) {
         case 1:
-            func_ov001_022e9234(NULL);
+            ZoneMapPause_Unk_ov001_022e9234(NULL);
             break;
         case 5:
-            func_ov001_022e915c(NULL);
+            ZoneMapPause_Unk_ov001_022e915c(NULL);
             break;
         }
     }

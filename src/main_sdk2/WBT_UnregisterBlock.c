@@ -9,13 +9,13 @@ UnkMbNode *WBT_UnregisterBlock(u32 id)
     UnkMbNode *n;
     UnkMbNode *prev;
     u32 e = OS_DisableInterrupts();
-    prev = func_0201558c();
+    prev = WBT_Unk_0201558c();
     if (prev == NULL) {
         OS_RestoreInterrupts(e);
         return NULL;
     }
     if (prev->id == id) {
-        func_0201557c(prev->next);
+        WBT_Unk_0201557c(prev->next);
         OS_RestoreInterrupts(e);
         return prev;
     }

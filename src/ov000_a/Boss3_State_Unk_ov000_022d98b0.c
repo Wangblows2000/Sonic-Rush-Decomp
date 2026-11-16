@@ -99,11 +99,11 @@ typedef struct UnkStruct_022d98b0_g {
 
 extern UnkStruct_022d98b0_g gDisplayMain;
 
-void func_ov000_022d9714(UnkStruct_022d98b0 *s);
+void Boss3_State_Unk_ov000_022d9714(UnkStruct_022d98b0 *s);
 
 void Boss3_State_Unk_ov000_022d98b0(UnkStruct_022d98b0 *s) {
     if (gDisplayMain.unk48 > 0)
         gDisplayMain.unk48 -= 2;
     if (s->unk224++ > 0x1e)
-        s->func = func_ov000_022d9714;
+        s->func = Boss3_State_Unk_ov000_022d9714;
 }

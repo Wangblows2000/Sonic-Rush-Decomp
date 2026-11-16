@@ -18,7 +18,7 @@ extern UnkStruct_0230ba9c_t data_ov001_0231e690;
 void SpecialStageCamera_Apply(void);
 void SpecialStageMap_Draw(void);
 void SpecialStageGimmick_Draw(s32 a);
-void func_ov001_023070b0(void);
+void SpecialStage_DrawObjects(void);
 void SpecialStagePlayer_Draw(void);
 void SpecialStageHud_Draw(void);
 void G3X_SetFog(s32 a, s32 b, s32 c, s32 d);
@@ -34,7 +34,7 @@ void SpecialStage_State_PlayDraw(void) {
     SpecialStageCamera_Apply();
     SpecialStageMap_Draw();
     SpecialStageGimmick_Draw(g->unk1C);
-    func_ov001_023070b0();
+    SpecialStage_DrawObjects();
     if (g->unk18 != 0)
         SpecialStagePlayer_Draw();
     SpecialStageHud_Draw();

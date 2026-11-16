@@ -49,7 +49,7 @@ extern UnkStruct_022c9778_5 gBossStatus;
 extern s16 data_ov000_02362d04[][8];
 extern s16 data_ov000_02362ce4[][8];
 
-BOOL func_ov000_022cc6d4(void);
+BOOL Boss1_Unk_ov000_022cc6d4(void);
 void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Boss1Neck_State_Unk_ov000_022c96b8(UnkStruct_022c9778 *s);
 
@@ -58,7 +58,7 @@ void Boss1Neck_State_Unk_ov000_022c9778(UnkStruct_022c9778 *s) {
     s32 v;
     BOOL b;
     s32 i;
-    if (func_ov000_022cc6d4()) {
+    if (Boss1_Unk_ov000_022cc6d4()) {
         b = TRUE;
         if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
             b = FALSE;

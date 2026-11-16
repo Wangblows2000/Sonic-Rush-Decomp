@@ -38,8 +38,8 @@ typedef struct {
 extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_StageObj *gPlayers;
 
-void func_ov000_022ee198(UnkStruct_022e899c *w, s32 a);
-void func_ov000_022e9b70(UnkStruct_022e899c *w, s32 a, s32 b);
+void Boss7_Unk_ov000_022ee198(UnkStruct_022e899c *w, s32 a);
+void Boss7_Unk_ov000_022e9b70(UnkStruct_022e899c *w, s32 a, s32 b);
 s32 FX_Atan2(s32 y, s32 x);
 UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -56,8 +56,8 @@ void Boss7PartD5_MoveState_Unk_ov000_022e899c(UnkStruct_022e899c *w) {
     UnkStruct_Fx *fx;
     UnkStruct_StageObj *o;
 
-    func_ov000_022ee198(w, 0x31);
-    func_ov000_022e9b70(w, 0, 1);
+    Boss7_Unk_ov000_022ee198(w, 0x31);
+    Boss7_Unk_ov000_022e9b70(w, 0, 1);
     a = FX_Atan2(0x1f000 - w->base.unk14, gPlayers->unk10 - w->base.unk10);
     w->base.unk8 = a;
     if (w->base.unk10 > gPlayers->unk10)

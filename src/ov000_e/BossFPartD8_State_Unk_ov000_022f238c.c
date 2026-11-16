@@ -30,7 +30,7 @@ extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_Mgr *gBossF;
 extern u16 data_ov000_023641e8[][8][3];
 
-void func_ov000_022f4850(void);
+void BossFPartD8_Unk_ov000_022f4850(void);
 void BossFPartD8_State_Unk_ov000_022f228c(void);
 
 static inline s32 GetIdxB(void) {
@@ -46,7 +46,7 @@ void BossFPartD8_State_Unk_ov000_022f238c(UnkStruct_022f238c *s) {
     UnkStruct_Mgr *m = gBossF;
 
     s->unk434 = data_ov000_023641e8[GetIdxB()][gBossStatus.unk8 - 1][s->unk436];
-    func_ov000_022f4850();
+    BossFPartD8_Unk_ov000_022f4850();
     m->unk20C |= 0x40;
     gBossStatus.unk4 = 0x33;
     s->base.unk68 = BossFPartD8_State_Unk_ov000_022f228c;

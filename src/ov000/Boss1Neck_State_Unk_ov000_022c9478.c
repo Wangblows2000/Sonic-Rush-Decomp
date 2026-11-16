@@ -7,11 +7,11 @@ typedef struct UnkStruct_022c9478 {
     u8 unk334;
 } UnkStruct_022c9478;
 
-void func_ov000_022c9fbc(UnkStruct_022c9478 *s);
-void func_ov000_022c93bc(void);
+void Boss1Neck_Unk_ov000_022c9fbc(UnkStruct_022c9478 *s);
+void Boss1Neck_State_Unk_ov000_022c93bc(void);
 
 void Boss1Neck_State_Unk_ov000_022c9478(UnkStruct_022c9478 *s) {
-    func_ov000_022c9fbc(s);
+    Boss1Neck_Unk_ov000_022c9fbc(s);
     if (s->unk334 & 2)
-        s->func = func_ov000_022c93bc;
+        s->func = Boss1Neck_State_Unk_ov000_022c93bc;
 }

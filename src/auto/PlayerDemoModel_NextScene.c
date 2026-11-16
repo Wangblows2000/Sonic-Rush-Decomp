@@ -3,13 +3,13 @@
 
 #pragma thumb on
 
-s32 func_02056118();
+s32 PlayerDemoLight_Stop();
 s32 PlayerDemoModel_ReleaseScene();
 void PlayerDemoModel_Unk_02056840();
 s32 PlayerDemoModel_StartScene();
 
 void PlayerDemoModel_NextScene(u8 *p0) {
-    func_02056118(p0, ((u8 *)p0 + 0x1334));
+    PlayerDemoLight_Stop(p0, ((u8 *)p0 + 0x1334));
     PlayerDemoModel_ReleaseScene(p0);
     *(u8 *)((u8 *)p0 + 0x9) = (*(s8 *)((u8 *)p0 + 9) + 0x1);
     if (*(s8 *)((u8 *)p0 + 9) >= *(u8 *)((u8 *)p0 + 0xa)) {

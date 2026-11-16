@@ -23,7 +23,7 @@ typedef struct {
 extern UnkStruct_Boss *gBoss7;
 extern UnkStruct_02369ac0 gBossStatus;
 
-void func_ov000_022ee198(UnkStruct_022e72ec *s, s32 st);
+void Boss7_Unk_ov000_022ee198(UnkStruct_022e72ec *s, s32 st);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_02326f20(void *p);
 void Boss7PartD5_MoveState_Unk_ov000_022e72cc(void);
@@ -31,7 +31,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e72cc(void);
 void Boss7PartD5_MoveState_Unk_ov000_022e72ec(UnkStruct_022e72ec *w) {
     UnkStruct_Boss *b = gBoss7;
 
-    func_ov000_022ee198(w, 0xf);
+    Boss7_Unk_ov000_022ee198(w, 0xf);
     Sound_PlaySeqArc(0, 0, 0x7b);
     w->base.unk1F0 = 0xb4;
     w->base.unk58 |= 0x90;

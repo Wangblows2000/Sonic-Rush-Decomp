@@ -15,11 +15,11 @@ typedef struct {
 
 extern UnkStruct_022f10dc_plr *gPlayers;
 
-void func_ov000_022f10b0(UnkStruct_022f10dc *p);
+void BossFPartD8_State_Unk_ov000_022f10b0(UnkStruct_022f10dc *p);
 
 void BossFPartD8_State_Unk_ov000_022f10dc(UnkStruct_022f10dc *p) {
     if ((u16)(s16)(gPlayers->unk328 - 0xf) <= 1)
         p->unk434 = 1;
     if (p->unk438 == 0)
-        p->unk68 = func_ov000_022f10b0;
+        p->unk68 = BossFPartD8_State_Unk_ov000_022f10b0;
 }

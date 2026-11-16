@@ -16,7 +16,7 @@ typedef struct {
     s32 unk23C;
 } UnkStruct_023014e8;
 
-void func_ov000_02301390(UnkStruct_023014e8 *w);
+void Kuragen_Unk_ov000_02301390(UnkStruct_023014e8 *w);
 void Kuragen_Action_Unk_ov000_0230187c(UnkStruct_023014e8 *w);
 
 void Kuragen_State_Unk_ov000_023014e8(UnkStruct_023014e8 *w) {
@@ -53,7 +53,7 @@ void Kuragen_State_Unk_ov000_023014e8(UnkStruct_023014e8 *w) {
             w->unk5C &= ~0x10;
             w->unk238 &= ~3;
             w->unk238 |= 0x80;
-            func_ov000_02301390(w);
+            Kuragen_Unk_ov000_02301390(w);
             w->unk238 |= 0x10000;
             w->unk238 &= ~1;
             Kuragen_Action_Unk_ov000_0230187c(w);

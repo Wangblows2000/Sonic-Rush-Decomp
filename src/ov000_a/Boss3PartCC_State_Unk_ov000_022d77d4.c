@@ -79,7 +79,7 @@ extern UnkStruct_022d77d4_b *gBoss3;
 extern u8 data_ov000_023630a0[];
 
 void Boss3PartCC_State_Unk_ov000_022d7d54(UnkStruct_022d77d4 *s);
-void func_ov000_022d7778(UnkStruct_022d77d4 *s);
+void Boss3PartCC_State_Unk_ov000_022d7778(UnkStruct_022d77d4 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d77d4(UnkStruct_022d77d4 *s) {
     if (!(s->unk2C4.unk10C & 2))
@@ -88,5 +88,5 @@ void Boss3PartCC_State_Unk_ov000_022d77d4(UnkStruct_022d77d4 *s) {
     if (data_ov000_023630a0[gBoss3->unk222] > gBoss3->unk214->unk25E)
         s->func = Boss3PartCC_State_Unk_ov000_022d7d54;
     else
-        s->func = func_ov000_022d7778;
+        s->func = Boss3PartCC_State_Unk_ov000_022d7778;
 }

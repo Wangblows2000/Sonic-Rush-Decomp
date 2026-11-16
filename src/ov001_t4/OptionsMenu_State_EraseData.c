@@ -50,10 +50,10 @@ extern UnkTouch_022cce10 gTouchState;
 extern UnkBr_022cce10 data_0208926c;
 extern UnkBr_022cce10 data_02087d44;
 
-void func_ov001_022cc17c(UnkWork_022cce10 *w);
-void func_ov001_022cbf30(UnkWork_022cce10 *w);
-void func_ov001_022cdd28(void);
-BOOL func_ov001_022c8ba8(u16 x, u16 y);
+void OptionsMenu_UpdateAnims(UnkWork_022cce10 *w);
+void OptionsMenu_DrawItems(UnkWork_022cce10 *w);
+void OptionsMenu_Unk_ov001_022cdd28(void);
+BOOL OptionsMenu_Unk_ov001_022c8ba8(u16 x, u16 y);
 void SysSound_PlaySE(s32 a);
 void Options_EraseSaveData(UnkInfo_022cce10 *info);
 void MsgBox_Destroy(void);
@@ -69,8 +69,8 @@ void OptionsMenu_State_EraseData(void) {
     u16 y;
 
     w = gTaskCurrent->work;
-    func_ov001_022cc17c(w);
-    func_ov001_022cbf30(w);
+    OptionsMenu_UpdateAnims(w);
+    OptionsMenu_DrawItems(w);
     w->unk14++;
     w->unk18++;
     if (w->unk28 >= 0 && w->unk2c == 1 && w->unk30 == 0) {
@@ -102,7 +102,7 @@ void OptionsMenu_State_EraseData(void) {
     if (w->unk1c >= 0) {
         w->unk1c++;
         if (w->unk1c > 10) {
-            func_ov001_022cdd28();
+            OptionsMenu_Unk_ov001_022cdd28();
         }
     }
     if (w->unk1c >= 0) {
@@ -123,7 +123,7 @@ void OptionsMenu_State_EraseData(void) {
                     w->unk30 = 1;
                     break;
                 case 1:
-                    func_ov001_022cdd28();
+                    OptionsMenu_Unk_ov001_022cdd28();
                     break;
                 }
                 break;
@@ -134,7 +134,7 @@ void OptionsMenu_State_EraseData(void) {
                     w->unk28 = 0;
                     break;
                 case 1:
-                    func_ov001_022cdd28();
+                    OptionsMenu_Unk_ov001_022cdd28();
                     break;
                 }
                 break;
@@ -165,14 +165,14 @@ void OptionsMenu_State_EraseData(void) {
     }
     if (gPad.trg & 2) {
         SysSound_PlaySE(1);
-        func_ov001_022cdd28();
+        OptionsMenu_Unk_ov001_022cdd28();
         return;
     }
     if (gTouchState.flags & 0x40) {
         x = gTouchState.x;
         y = gTouchState.y;
         if (x < 0x100 && y < 0xc0) {
-            if (func_ov001_022c8ba8(x, y)) {
+            if (OptionsMenu_Unk_ov001_022c8ba8(x, y)) {
                 w->unk1c = 0;
                 SysSound_PlaySE(1);
             }

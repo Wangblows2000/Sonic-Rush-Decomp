@@ -9,11 +9,11 @@ typedef struct UnkStruct_022d5b38 {
     u32 unk20C;
 } UnkStruct_022d5b38;
 
-void func_ov000_022d5d14(UnkStruct_022d5b38 *s);
+void Boss3PartCD_Unk_ov000_022d5d14(UnkStruct_022d5b38 *s);
 
 void Boss3PartCD_State_Unk_ov000_022d5b38(UnkStruct_022d5b38 *s) {
     s->unk13E &= ~4;
     s->unk16A |= 4;
     s->unk20C |= 0x10;
-    func_ov000_022d5d14(s);
+    Boss3PartCD_Unk_ov000_022d5d14(s);
 }

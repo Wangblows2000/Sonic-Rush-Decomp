@@ -14,7 +14,7 @@ extern u8 data_027e0000[];
 extern UnkPad_022503e0 gPad;
 extern u32 gSystemFlags;
 extern u32 data_02087cc4;
-extern u32 data_02087cc0;
+extern u32 gSystemResetParameter;
 extern UnkStruct_0208f754 data_0208f754;
 
 void System_Init(void);
@@ -63,7 +63,7 @@ void main(void)
         Touch_Update();
         Mic_Update();
         if (!(gSystemFlags & 0x10) && (gPad.held & 0x30c) == 0x30c) {
-            System_SoftReset(data_02087cc0);
+            System_SoftReset(gSystemResetParameter);
         }
         System_HandleLidClose();
         System_Update3DErrorFlags();

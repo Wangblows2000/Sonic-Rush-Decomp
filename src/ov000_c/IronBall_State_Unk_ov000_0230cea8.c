@@ -16,7 +16,7 @@ extern s32 data_ov000_0236a00c;
 
 s32 FX_DivS32(s32 a, s32 b);
 void ScreenShake_Start(s32 a);
-BOOL NNS_SndPlayerCountPlayingSeqByPlayerNo(s32 a, s32 b);
+BOOL NNS_SndPlayerCountPlayingSeqBySeqArcIdx(s32 a, s32 b);
 void NNS_SndHandleReleaseSeq(s32 a);
 void Sound_PlaySeqArcBankPrio(s32 a, s32 b, s32 c, s32 d, s32 e);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
@@ -94,7 +94,7 @@ void IronBall_State_Unk_ov000_0230cea8(UnkStruct_StageObj *w) {
         }
     }
     if (w->unk58 & 1) {
-        if (!NNS_SndPlayerCountPlayingSeqByPlayerNo(0, 0x50)) {
+        if (!NNS_SndPlayerCountPlayingSeqBySeqArcIdx(0, 0x50)) {
             NNS_SndHandleReleaseSeq(w->unk1DC);
             Sound_PlaySeqArcBankPrio(w->unk1DC, 0, 0x50, 0x20, -1);
         }

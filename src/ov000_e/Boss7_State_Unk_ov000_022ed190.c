@@ -58,13 +58,13 @@ extern u8 gSESoundHandle[];
 s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 s32 FX_DivS32(s32 a, s32 b);
-s32 func_ov000_022edb98(u16 a, s32 b);
-void func_ov000_022edb50(UnkStruct_StageObj *o, s32 a);
+s32 Boss7_Unk_ov000_022edb98(u16 a, s32 b);
+void Boss7_Unk_ov000_022edb50(UnkStruct_StageObj *o, s32 a);
 void ScreenShake_Start(s32 a);
-void func_ov000_022ed9a0(UnkStruct_022ed190 *s, s32 x, s32 y, s32 z);
+void Boss7_Unk_ov000_022ed9a0(UnkStruct_022ed190 *s, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void NNS_SndPlayerSetVolume(void *p, s32 a);
-void func_ov000_022ed15c(UnkStruct_022ed190 *s);
+void Boss7_State_Unk_ov000_022ed15c(UnkStruct_022ed190 *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -93,8 +93,8 @@ void Boss7_State_Unk_ov000_022ed190(UnkStruct_022ed190 *s) {
         data_ov000_0236a444.unk40 = v;
         data_ov000_0236a444.unk44 = v;
     }
-    s->unk390 = func_ov000_022edb98(gPad.unk4, s->unk390);
-    s->unk38C = func_ov000_022edb98(s->unk214->unk3DC, s->unk38C);
+    s->unk390 = Boss7_Unk_ov000_022edb98(gPad.unk4, s->unk390);
+    s->unk38C = Boss7_Unk_ov000_022edb98(s->unk214->unk3DC, s->unk38C);
     if (gPad.unk4 & 3) {
         if (s->unk390 > 0x60)
             ScreenShake_Start(4);
@@ -104,13 +104,13 @@ void Boss7_State_Unk_ov000_022ed190(UnkStruct_022ed190 *s) {
             ScreenShake_Start(2);
         else
             ScreenShake_Start(1);
-        func_ov000_022ed9a0(s, (o->base.unk10 + p->base.unk10) >> 1, (o->base.unk14 + p->base.unk14) >> 1,
+        Boss7_Unk_ov000_022ed9a0(s, (o->base.unk10 + p->base.unk10) >> 1, (o->base.unk14 + p->base.unk14) >> 1,
                             ((o->base.unk18 + p->base.unk18) >> 1) + 0x1000);
         Sound_PlaySeqArc(0, 0, 0xcb);
         NNS_SndPlayerSetVolume(gSESoundHandle, 0x30);
     }
-    func_ov000_022edb50(s->unk21C, s->unk390);
-    func_ov000_022edb50(s->unk218, s->unk38C);
+    Boss7_Unk_ov000_022edb50(s->unk21C, s->unk390);
+    Boss7_Unk_ov000_022edb50(s->unk218, s->unk38C);
     s->unk384 += s->unk390 - s->unk38C;
     if (gPlayers->unk328 == 0x11 || gPlayers->unk328 == 0x12 ||
         (gPlayers->unk32C & 0x400))
@@ -119,5 +119,5 @@ void Boss7_State_Unk_ov000_022ed190(UnkStruct_022ed190 *s) {
     if (v < 0)
         v = -v;
     if (v >= 0x4000)
-        s->base.unk68 = func_ov000_022ed15c;
+        s->base.unk68 = Boss7_State_Unk_ov000_022ed15c;
 }

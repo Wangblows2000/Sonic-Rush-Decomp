@@ -49,19 +49,19 @@ typedef struct UnkStruct_022d6cac_b {
 
 extern UnkStruct_022d6cac_b *gBoss3;
 
-void func_ov000_022dac94(u16 *p, s32 a, s32 b);
-BOOL func_ov000_022d8c64(UnkStruct_022d6cac *s);
-s32 func_ov000_022da7c8(s32 a, s32 b, s32 c);
+void Boss3_Unk_ov000_022dac94(u16 *p, s32 a, s32 b);
+BOOL Boss3PartCC_Unk_ov000_022d8c64(UnkStruct_022d6cac *s);
+s32 Boss3_Unk_ov000_022da7c8(s32 a, s32 b, s32 c);
 void Boss3PartCC_State_Unk_ov000_022d66cc(UnkStruct_022d6cac *s);
-void func_ov000_022d6c0c(UnkStruct_022d6cac *s);
+void Boss3PartCC_State_Unk_ov000_022d6c0c(UnkStruct_022d6cac *s);
 
 void Boss3PartCC_State_Unk_ov000_022d6cac(UnkStruct_022d6cac *s) {
-    func_ov000_022dac94(&s->unk264, 1, 5);
-    if (func_ov000_022d8c64(s)) {
+    Boss3_Unk_ov000_022dac94(&s->unk264, 1, 5);
+    if (Boss3PartCC_Unk_ov000_022d8c64(s)) {
         s->unk264 = 0;
         s->func = Boss3PartCC_State_Unk_ov000_022d66cc;
         return;
     }
-    if (func_ov000_022da7c8(s->unk10, gBoss3->unk218->unk10, (s->unk5C & 1) ? 1 : 0) < 0xfa00)
-        s->func = func_ov000_022d6c0c;
+    if (Boss3_Unk_ov000_022da7c8(s->unk10, gBoss3->unk218->unk10, (s->unk5C & 1) ? 1 : 0) < 0xfa00)
+        s->func = Boss3PartCC_State_Unk_ov000_022d6c0c;
 }

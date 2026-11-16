@@ -17,7 +17,7 @@ typedef struct UnkWork_02056908 {
 } UnkWork_02056908;
 extern u16 data_022c4674;
 
-void func_02056140(UnkWork_02056908 *w, void *p);
+void PlayerDemoLight_Init(UnkWork_02056908 *w, void *p);
 void PlayerDemoModel_LoadScene(UnkWork_02056908 *w);
 void NNS_G3dRenderObjSetCallBack(void *p, void (*cb)(void), s32 a, s32 b, s32 c);
 void PlayerDemoModel_OnCameraNode(void);
@@ -26,7 +26,7 @@ void PlayerDemoModel_State_Play(UnkWork_02056908 *w);
 
 #pragma thumb on
 void PlayerDemoModel_StartScene(UnkWork_02056908 *w) {
-    func_02056140(w, w->unk1334);
+    PlayerDemoLight_Init(w, w->unk1334);
     w->ent = &w->tbl[w->unk9];
     w->count = w->ent->count;
     w->names = w->ent->names;

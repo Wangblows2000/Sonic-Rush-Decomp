@@ -9,11 +9,11 @@ typedef struct UnkStruct_022c8ad4 {
     u8 unk334;
 } UnkStruct_022c8ad4;
 
-void func_ov000_022c8ad0(void);
+void Boss1Neck_State_Unk_ov000_022c8ad0(void);
 
 void Boss1Neck_State_Unk_ov000_022c8ad4(UnkStruct_022c8ad4 *s) {
     if (s->unk334 & 2) {
         s->unk5C |= 0x20;
-        s->func = func_ov000_022c8ad0;
+        s->func = Boss1Neck_State_Unk_ov000_022c8ad0;
     }
 }

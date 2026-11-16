@@ -16,63 +16,63 @@ src/ov001/ExtraEnding_State_None.c:
     complete
     .text       start:0x022c6090 end:0x022c6094
 
-src/ov001/func_ov001_022c61c4.c:
+src/ov001/ExtraEnding_Unk_ov001_022c61c4.c:
     complete
     .text       start:0x022c61c4 end:0x022c61c8
 
-src/ov001/func_ov001_022c8b30.c:
+src/ov001/Options_Unk_ov001_022c8b30.c:
     complete
     .text       start:0x022c8b30 end:0x022c8b34
 
-src/ov001/func_ov001_022c8b34.c:
+src/ov001/Options_Unk_ov001_022c8b34.c:
     complete
     .text       start:0x022c8b34 end:0x022c8b38
 
-src/ov001/func_ov001_022c8b54.c:
+src/ov001/Options_Unk_ov001_022c8b54.c:
     complete
     .text       start:0x022c8b54 end:0x022c8b58
 
-src/ov001/func_ov001_022c8b58.c:
+src/ov001/Options_Unk_ov001_022c8b58.c:
     complete
     .text       start:0x022c8b58 end:0x022c8b5c
 
-src/ov001/func_ov001_022c8b5c.c:
+src/ov001/Options_Unk_ov001_022c8b5c.c:
     complete
     .text       start:0x022c8b5c end:0x022c8b60
 
-src/ov001/func_ov001_022c8d0c.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8d0c.c:
     complete
     .text       start:0x022c8d0c end:0x022c8d14
 
-src/ov001/func_ov001_022c8d44.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8d44.c:
     complete
     .text       start:0x022c8d44 end:0x022c8d4c
 
-src/ov001/func_ov001_022c8d4c.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8d4c.c:
     complete
     .text       start:0x022c8d4c end:0x022c8d54
 
-src/ov001/func_ov001_022c9310.c:
+src/ov001/SoundTest_Unk_ov001_022c9310.c:
     complete
     .text       start:0x022c9310 end:0x022c9314
 
-src/ov001/func_ov001_022cb20c.c:
+src/ov001/OptionsMenu_ClosePage4.c:
     complete
     .text       start:0x022cb20c end:0x022cb214
 
-src/ov001/func_ov001_022cb31c.c:
+src/ov001/OptionsMenu_ClosePage2.c:
     complete
     .text       start:0x022cb31c end:0x022cb324
 
-src/ov001/func_ov001_022cb324.c:
+src/ov001/OptionsMenu_OpenPage2.c:
     complete
     .text       start:0x022cb324 end:0x022cb32c
 
-src/ov001/func_ov001_022cf894.c:
+src/ov001/SegaLogo_Unk_ov001_022cf894.c:
     complete
     .text       start:0x022cf894 end:0x022cf898
 
-src/ov001/func_ov001_022cfc5c.c:
+src/ov001/StaffRoll_Unk_ov001_022cfc5c.c:
     complete
     .text       start:0x022cfc5c end:0x022cfc60
 
@@ -96,11 +96,11 @@ src/ov001/TryAgain_ExitToTimeAttackMenuMode0.c:
     complete
     .text       start:0x022d3408 end:0x022d3410
 
-src/ov001/func_ov001_022d3e10.c:
+src/ov001/TryAgain_Unk_ov001_022d3e10.c:
     complete
     .text       start:0x022d3e10 end:0x022d3e14
 
-src/ov001/func_ov001_022d4d2c.c:
+src/ov001/TitleScreen_Unk_ov001_022d4d2c.c:
     complete
     .text       start:0x022d4d2c end:0x022d4d30
 
@@ -108,7 +108,7 @@ src/ov001/TitleDemo_SkipToTitleScreen.c:
     complete
     .text       start:0x022d5834 end:0x022d583c
 
-src/ov001/func_ov001_022d6734.c:
+src/ov001/TitleDemo_Unk_ov001_022d6734.c:
     complete
     .text       start:0x022d6734 end:0x022d6738
 
@@ -136,7 +136,7 @@ src/ov001/TitleMenu_SelectTitleScreen.c:
     complete
     .text       start:0x022d6f6c end:0x022d6f74
 
-src/ov001/func_ov001_022d7360.c:
+src/ov001/TitleMenu_Unk_ov001_022d7360.c:
     complete
     .text       start:0x022d7360 end:0x022d7368
 
@@ -144,39 +144,39 @@ src/ov001/VsMenu_State_None.c:
     complete
     .text       start:0x022dd428 end:0x022dd42c
 
-src/ov001/func_ov001_022dd770.c:
+src/ov001/VsMenu_Unk_ov001_022dd770.c:
     complete
     .text       start:0x022dd770 end:0x022dd774
 
-src/ov001/func_ov001_022e3840.c:
+src/ov001/ZoneMap_Unk_ov001_022e3840.c:
     complete
     .text       start:0x022e3840 end:0x022e3844
 
-src/ov001/func_ov001_022e5618.c:
+src/ov001/ZoneMap_Unk_ov001_022e5618.c:
     complete
     .text       start:0x022e5618 end:0x022e561c
 
-src/ov001/func_ov001_022e561c.c:
+src/ov001/ZoneMap_Unk_ov001_022e561c.c:
     complete
     .text       start:0x022e561c end:0x022e5620
 
-src/ov001/func_ov001_022e9304.c:
+src/ov001/ZoneMapPause_Unk_ov001_022e9304.c:
     complete
     .text       start:0x022e9304 end:0x022e9308
 
-src/ov001/func_ov001_022e9804.c:
+src/ov001/TimeAttackMenu_Unk_ov001_022e9804.c:
     complete
     .text       start:0x022e9804 end:0x022e980c
 
-src/ov001/func_ov001_022ebe4c.c:
+src/ov001/TimeAttackMenu_Unk_ov001_022ebe4c.c:
     complete
     .text       start:0x022ebe4c end:0x022ebe50
 
-src/ov001/func_ov001_022ed960.c:
+src/ov001/Records_Unk_ov001_022ed960.c:
     complete
     .text       start:0x022ed960 end:0x022ed964
 
-src/ov001/func_ov001_022f2ca4.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f2ca4.c:
     complete
     .text       start:0x022f2ca4 end:0x022f2ca8
 
@@ -188,23 +188,23 @@ src/ov001/ExtraBossPlayer_State_None.c:
     complete
     .text       start:0x0230236c end:0x02302370
 
-src/ov001/func_ov001_023030dc.c:
+src/ov001/ExtraBoss_Unk_ov001_023030dc.c:
     complete
     .text       start:0x023030dc end:0x023030e0
 
-src/ov001/func_ov001_023030e0.c:
+src/ov001/ExtraBoss_Unk_ov001_023030e0.c:
     complete
     .text       start:0x023030e0 end:0x023030e4
 
-src/ov001/func_ov001_02304948.c:
+src/ov001/ExtraBoss_Unk_ov001_02304948.c:
     complete
     .text       start:0x02304948 end:0x0230494c
 
-src/ov001/func_ov001_0230b094.c:
+src/ov001/SpecialStage_Unk_ov001_0230b094.c:
     complete
     .text       start:0x0230b094 end:0x0230b098
 
-src/ov001/func_ov001_0230b098.c:
+src/ov001/SpecialStage_Unk_ov001_0230b098.c:
     complete
     .text       start:0x0230b098 end:0x0230b09c
 
@@ -220,23 +220,23 @@ src/ov001/SpecialStagePlayer_State_Stopped.c:
     complete
     .text       start:0x02310f80 end:0x02310f84
 
-src/ov001/func_ov001_02312250.c:
+src/ov001/SpecialStagePlayer_Unk_ov001_02312250.c:
     complete
     .text       start:0x02312250 end:0x02312258
 
-src/ov001/func_ov001_02312dc8.c:
+src/ov001/SpecialStageGimmick_Unk_ov001_02312dc8.c:
     complete
     .text       start:0x02312dc8 end:0x02312dd0
 
-src/ov001/func_ov001_02312dd0.c:
+src/ov001/SpecialStage_Unk_ov001_02312dd0.c:
     complete
     .text       start:0x02312dd0 end:0x02312dd8
 
-src/ov001/func_ov001_02312dd8.c:
+src/ov001/SpecialStageHud_Unk_ov001_02312dd8.c:
     complete
     .text       start:0x02312dd8 end:0x02312de0
 
-src/ov001/func_ov001_023147d8.c:
+src/ov001/SpecialStage_Unk_ov001_023147d8.c:
     complete
     .text       start:0x023147d8 end:0x023147dc
 
@@ -252,11 +252,11 @@ src/ov001/Ending_SetSubState.c:
     complete
     .text       start:0x022c7a34 end:0x022c7a44
 
-src/ov001/func_ov001_022c87d0.c:
+src/ov001/OptionsWfsHost_HasError.c:
     complete
     .text       start:0x022c87d0 end:0x022c87e4
 
-src/ov001/func_ov001_022c87e4.c:
+src/ov001/OptionsWfsHost_IsFinished.c:
     complete
     .text       start:0x022c87e4 end:0x022c87f8
 
@@ -280,7 +280,7 @@ src/ov001/Options_IsExtraStoryCleared.c:
     complete
     .text       start:0x022c88d8 end:0x022c88f4
 
-src/ov001/func_ov001_022c8b14.c:
+src/ov001/Options_IsPlayerSelectUnlocked.c:
     complete
     .text       start:0x022c8b14 end:0x022c8b30
 
@@ -288,55 +288,55 @@ src/ov001/Options_IsSoundTestUnlocked.c:
     complete
     .text       start:0x022c8b38 end:0x022c8b54
 
-src/ov001/func_ov001_022c8b60.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8b60.c:
     complete
     .text       start:0x022c8b60 end:0x022c8b78
 
-src/ov001/func_ov001_022c8b78.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8b78.c:
     complete
     .text       start:0x022c8b78 end:0x022c8b90
 
-src/ov001/func_ov001_022c8b90.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8b90.c:
     complete
     .text       start:0x022c8b90 end:0x022c8ba8
 
-src/ov001/func_ov001_022c8ba8.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8ba8.c:
     complete
     .text       start:0x022c8ba8 end:0x022c8bc0
 
-src/ov001/func_ov001_022c8cc0.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8cc0.c:
     complete
     .text       start:0x022c8cc0 end:0x022c8cd4
 
-src/ov001/func_ov001_022c8d54.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8d54.c:
     complete
     .text       start:0x022c8d54 end:0x022c8d70
 
-src/ov001/func_ov001_022c8d70.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8d70.c:
     complete
     .text       start:0x022c8d70 end:0x022c8d7c
 
-src/ov001/func_ov001_022cb214.c:
+src/ov001/OptionsMenu_OpenPage4.c:
     complete
     .text       start:0x022cb214 end:0x022cb228
 
-src/ov001/func_ov001_022cdbf8.c:
+src/ov001/Options_Unk_ov001_022cdbf8.c:
     complete
     .text       start:0x022cdbf8 end:0x022cdc10
 
-src/ov001/func_ov001_022cdc10.c:
+src/ov001/Options_Unk_ov001_022cdc10.c:
     complete
     .text       start:0x022cdc10 end:0x022cdc28
 
-src/ov001/func_ov001_022cdc5c.c:
+src/ov001/Options_Unk_ov001_022cdc5c.c:
     complete
     .text       start:0x022cdc5c end:0x022cdc74
 
-src/ov001/func_ov001_022cdc74.c:
+src/ov001/Options_Unk_ov001_022cdc74.c:
     complete
     .text       start:0x022cdc74 end:0x022cdc8c
 
-src/ov001/func_ov001_022cdc8c.c:
+src/ov001/Options_Unk_ov001_022cdc8c.c:
     complete
     .text       start:0x022cdc8c end:0x022cdca4
 
@@ -352,7 +352,7 @@ src/ov001/SegaLogo_Destructor.c:
     complete
     .text       start:0x022cf898 end:0x022cf8b4
 
-src/ov001/func_ov001_022cfc50.c:
+src/ov001/StaffRoll_Unk_ov001_022cfc50.c:
     complete
     .text       start:0x022cfc50 end:0x022cfc5c
 
@@ -416,7 +416,7 @@ src/ov001/TryAgain_ExitToRetry.c:
     complete
     .text       start:0x022d3434 end:0x022d344c
 
-src/ov001/func_ov001_022d344c.c:
+src/ov001/TryAgain_Unk_ov001_022d344c.c:
     complete
     .text       start:0x022d344c end:0x022d3460
 
@@ -424,7 +424,7 @@ src/ov001/TryAgainBgScroll_Main.c:
     complete
     .text       start:0x022d35b4 end:0x022d35d0
 
-src/ov001/func_ov001_022d36ac.c:
+src/ov001/TryAgain_Unk_ov001_022d36ac.c:
     complete
     .text       start:0x022d36ac end:0x022d36c0
 
@@ -444,19 +444,19 @@ src/ov001/TitleScreen_PlayMusic.c:
     complete
     .text       start:0x022d44f4 end:0x022d4500
 
-src/ov001/func_ov001_022d583c.c:
+src/ov001/TitleDemo_Unk_ov001_022d583c.c:
     complete
     .text       start:0x022d583c end:0x022d584c
 
-src/ov001/func_ov001_022d584c.c:
+src/ov001/TitleDemo_Unk_ov001_022d584c.c:
     complete
     .text       start:0x022d584c end:0x022d585c
 
-src/ov001/func_ov001_022d585c.c:
+src/ov001/TitleDemo_Unk_ov001_022d585c.c:
     complete
     .text       start:0x022d585c end:0x022d586c
 
-src/ov001/func_ov001_022d586c.c:
+src/ov001/TitleDemo_Unk_ov001_022d586c.c:
     complete
     .text       start:0x022d586c end:0x022d587c
 
@@ -472,31 +472,31 @@ src/ov001/TitleDemo_GetCompressionType.c:
     complete
     .text       start:0x022d6b50 end:0x022d6b5c
 
-src/ov001/func_ov001_022d6dac.c:
+src/ov001/TitleMenu_Unk_ov001_022d6dac.c:
     complete
     .text       start:0x022d6dac end:0x022d6dc0
 
-src/ov001/func_ov001_022d6dc0.c:
+src/ov001/TitleMenu_Unk_ov001_022d6dc0.c:
     complete
     .text       start:0x022d6dc0 end:0x022d6dd4
 
-src/ov001/func_ov001_022d6dd4.c:
+src/ov001/TitleMenu_Unk_ov001_022d6dd4.c:
     complete
     .text       start:0x022d6dd4 end:0x022d6de4
 
-src/ov001/func_ov001_022d6de4.c:
+src/ov001/TitleMenu_Unk_ov001_022d6de4.c:
     complete
     .text       start:0x022d6de4 end:0x022d6df4
 
-src/ov001/func_ov001_022d6e4c.c:
+src/ov001/TitleMenu_Unk_ov001_022d6e4c.c:
     complete
     .text       start:0x022d6e4c end:0x022d6e6c
 
-src/ov001/func_ov001_022d6e6c.c:
+src/ov001/TitleMenu_Unk_ov001_022d6e6c.c:
     complete
     .text       start:0x022d6e6c end:0x022d6e8c
 
-src/ov001/func_ov001_022d6e8c.c:
+src/ov001/TitleMenu_Unk_ov001_022d6e8c.c:
     complete
     .text       start:0x022d6e8c end:0x022d6eac
 
@@ -504,7 +504,7 @@ src/ov001/TitleMenu_ExitToTitleScreen.c:
     complete
     .text       start:0x022d6f38 end:0x022d6f4c
 
-src/ov001/func_ov001_022d7340.c:
+src/ov001/TitleMenu_AttachVsMenu.c:
     complete
     .text       start:0x022d7340 end:0x022d7360
 
@@ -512,31 +512,31 @@ src/ov001/TitleMenu_IsPlayerSelectPageUnlocked.c:
     complete
     .text       start:0x022d8e58 end:0x022d8e74
 
-src/ov001/func_ov001_022d96b8.c:
+src/ov001/VsMenu_PlayDecideSE.c:
     complete
     .text       start:0x022d96b8 end:0x022d96c4
 
-src/ov001/func_ov001_022d96c4.c:
+src/ov001/VsMenu_PlayErrorSE.c:
     complete
     .text       start:0x022d96c4 end:0x022d96d0
 
-src/ov001/func_ov001_022da48c.c:
+src/ov001/VsMenu_IsDownRepeated.c:
     complete
     .text       start:0x022da48c end:0x022da4a4
 
-src/ov001/func_ov001_022da4a4.c:
+src/ov001/VsMenu_IsUpRepeated.c:
     complete
     .text       start:0x022da4a4 end:0x022da4bc
 
-src/ov001/func_ov001_022da4bc.c:
+src/ov001/VsMenu_IsStartPressed.c:
     complete
     .text       start:0x022da4bc end:0x022da4d4
 
-src/ov001/func_ov001_022da4d4.c:
+src/ov001/VsMenu_IsBPressed.c:
     complete
     .text       start:0x022da4d4 end:0x022da4ec
 
-src/ov001/func_ov001_022da4ec.c:
+src/ov001/VsMenu_IsAPressed.c:
     complete
     .text       start:0x022da4ec end:0x022da500
 
@@ -604,11 +604,11 @@ src/ov001/TransformDemo_DrawPlayerModel.c:
     complete
     .text       start:0x022dedd4 end:0x022dedf4
 
-src/ov001/func_ov001_022df474.c:
+src/ov001/TransformDemo_Unk_ov001_022df474.c:
     complete
     .text       start:0x022df474 end:0x022df490
 
-src/ov001/func_ov001_022e07d0.c:
+src/ov001/ZoneActSelect_Unk_ov001_022e07d0.c:
     complete
     .text       start:0x022e07d0 end:0x022e07e8
 
@@ -636,19 +636,19 @@ src/ov001/ZoneMap_EnableBlend.c:
     complete
     .text       start:0x022e2ba4 end:0x022e2bbc
 
-src/ov001/func_ov001_022e2ee8.c:
+src/ov001/ZoneMap_Unk_ov001_022e2ee8.c:
     complete
     .text       start:0x022e2ee8 end:0x022e2f00
 
-src/ov001/func_ov001_022e2f00.c:
+src/ov001/ZoneMap_Unk_ov001_022e2f00.c:
     complete
     .text       start:0x022e2f00 end:0x022e2f0c
 
-src/ov001/func_ov001_022e35c4.c:
+src/ov001/ZoneMap_Unk_ov001_022e35c4.c:
     complete
     .text       start:0x022e35c4 end:0x022e35d4
 
-src/ov001/func_ov001_022e3b24.c:
+src/ov001/ZoneMap_Unk_ov001_022e3b24.c:
     complete
     .text       start:0x022e3b24 end:0x022e3b30
 
@@ -660,15 +660,15 @@ src/ov001/ZoneMap_GetCompressionType.c:
     complete
     .text       start:0x022e3ecc end:0x022e3ed8
 
-src/ov001/func_ov001_022e560c.c:
+src/ov001/ZoneMap_Unk_ov001_022e560c.c:
     complete
     .text       start:0x022e560c end:0x022e5618
 
-src/ov001/func_ov001_022e8328.c:
+src/ov001/ZoneMap_Unk_ov001_022e8328.c:
     complete
     .text       start:0x022e8328 end:0x022e833c
 
-src/ov001/func_ov001_022e8514.c:
+src/ov001/ZoneMap_Unk_ov001_022e8514.c:
     complete
     .text       start:0x022e8514 end:0x022e8528
 
@@ -684,7 +684,7 @@ src/ov001/ZoneMap_StartFromStageWithFade.c:
     complete
     .text       start:0x022e8b20 end:0x022e8b2c
 
-src/ov001/func_ov001_022e955c.c:
+src/ov001/ZoneMap_Unk_ov001_022e955c.c:
     complete
     .text       start:0x022e955c end:0x022e9570
 
@@ -700,7 +700,7 @@ src/ov001/TimeAttackMenu_GetCompressionType.c:
     complete
     .text       start:0x022ea270 end:0x022ea27c
 
-src/ov001/func_ov001_022ea27c.c:
+src/ov001/TimeAttackMenu_Unk_ov001_022ea27c.c:
     complete
     .text       start:0x022ea27c end:0x022ea290
 
@@ -728,23 +728,23 @@ src/ov001/Records_GetCompressionType.c:
     complete
     .text       start:0x022ecdc0 end:0x022ecdcc
 
-src/ov001/func_ov001_022ecec0.c:
+src/ov001/Records_IsBPressed.c:
     complete
     .text       start:0x022ecec0 end:0x022eced8
 
-src/ov001/func_ov001_022ed188.c:
+src/ov001/Records_Unk_ov001_022ed188.c:
     complete
     .text       start:0x022ed188 end:0x022ed19c
 
-src/ov001/func_ov001_022eec20.c:
+src/ov001/ExtraBoss_Unk_ov001_022eec20.c:
     complete
     .text       start:0x022eec20 end:0x022eec34
 
-src/ov001/func_ov001_022ef10c.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022ef10c.c:
     complete
     .text       start:0x022ef10c end:0x022ef11c
 
-src/ov001/func_ov001_022f41b4.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f41b4.c:
     complete
     .text       start:0x022f41b4 end:0x022f41c4
 
@@ -756,19 +756,19 @@ src/ov001/ExtraAct_GetCompressionType.c:
     complete
     .text       start:0x022f9d14 end:0x022f9d20
 
-src/ov001/func_ov001_022fb5d4.c:
+src/ov001/ExtraBoss_Unk_ov001_022fb5d4.c:
     complete
     .text       start:0x022fb5d4 end:0x022fb5ec
 
-src/ov001/func_ov001_022fd4f4.c:
+src/ov001/ExtraBossObj_Unk_ov001_022fd4f4.c:
     complete
     .text       start:0x022fd4f4 end:0x022fd500
 
-src/ov001/func_ov001_022fdaa0.c:
+src/ov001/ExtraBoss_Unk_ov001_022fdaa0.c:
     complete
     .text       start:0x022fdaa0 end:0x022fdab4
 
-src/ov001/func_ov001_022feed8.c:
+src/ov001/ExtraBoss_Unk_ov001_022feed8.c:
     complete
     .text       start:0x022feed8 end:0x022feee4
 
@@ -784,7 +784,7 @@ src/ov001/ExtraBoss_GetWork.c:
     complete
     .text       start:0x022ffce8 end:0x022ffcf8
 
-src/ov001/func_ov001_02300c54.c:
+src/ov001/ExtraBoss_Unk_ov001_02300c54.c:
     complete
     .text       start:0x02300c54 end:0x02300c68
 
@@ -792,11 +792,11 @@ src/ov001/ExtraBoss_GetPlayer.c:
     complete
     .text       start:0x02300c94 end:0x02300ca8
 
-src/ov001/func_ov001_02301ba0.c:
+src/ov001/ExtraBossPlayer_State_Unk_ov001_02301ba0.c:
     complete
     .text       start:0x02301ba0 end:0x02301bac
 
-src/ov001/func_ov001_02304504.c:
+src/ov001/ExtraBoss_Unk_ov001_02304504.c:
     complete
     .text       start:0x02304504 end:0x02304518
 
@@ -812,7 +812,7 @@ src/ov001/SpecialStageActArchive_GetCompressionType.c:
     complete
     .text       start:0x0230776c end:0x02307778
 
-src/ov001/func_ov001_023085f4.c:
+src/ov001/SpecialStageHud_Unk_ov001_023085f4.c:
     complete
     .text       start:0x023085f4 end:0x02308600
 
@@ -820,7 +820,7 @@ src/ov001/SpecialStageHud_EndTrickRating.c:
     complete
     .text       start:0x023098b4 end:0x023098cc
 
-src/ov001/func_ov001_0230ae34.c:
+src/ov001/SpecialStageGimmick_Unk_ov001_0230ae34.c:
     complete
     .text       start:0x0230ae34 end:0x0230ae4c
 
@@ -900,11 +900,11 @@ src/ov001/SpecialStage_LoadStageDataFile.c:
     complete
     .text       start:0x02314204 end:0x02314214
 
-src/ov001/func_ov001_02314368.c:
+src/ov001/SpecialStageHud_Unk_ov001_02314368.c:
     complete
     .text       start:0x02314368 end:0x02314380
 
-src/ov001/func_ov001_02314380.c:
+src/ov001/SpecialStage_Unk_ov001_02314380.c:
     complete
     .text       start:0x02314380 end:0x02314398
 
@@ -936,11 +936,11 @@ src/ov001/Ending_State_GoToStaffRoll.c:
     complete
     .text       start:0x022c8458 end:0x022c8480
 
-src/ov001/func_ov001_022cdd7c.c:
+src/ov001/Options_Unk_ov001_022cdd7c.c:
     complete
     .text       start:0x022cdd7c end:0x022cdda0
 
-src/ov001/func_ov001_022cdda0.c:
+src/ov001/OptionsMenu_Unk_ov001_022cdda0.c:
     complete
     .text       start:0x022cdda0 end:0x022cddc4
 
@@ -948,27 +948,27 @@ src/ov001/OptionsMenu_Action_TimeLimit.c:
     complete
     .text       start:0x022cde3c end:0x022cde60
 
-src/ov001/func_ov001_022cde60.c:
+src/ov001/OptionsMenu_Unk_ov001_022cde60.c:
     complete
     .text       start:0x022cde60 end:0x022cde84
 
-src/ov001/func_ov001_022cde84.c:
+src/ov001/OptionsMenu_Unk_ov001_022cde84.c:
     complete
     .text       start:0x022cde84 end:0x022cdea8
 
-src/ov001/func_ov001_022cdea8.c:
+src/ov001/OptionsMenu_Unk_ov001_022cdea8.c:
     complete
     .text       start:0x022cdea8 end:0x022cded0
 
-src/ov001/func_ov001_022cded0.c:
+src/ov001/OptionsMenu_Unk_ov001_022cded0.c:
     complete
     .text       start:0x022cded0 end:0x022cdef8
 
-src/ov001/func_ov001_022cdef8.c:
+src/ov001/OptionsMenu_Unk_ov001_022cdef8.c:
     complete
     .text       start:0x022cdef8 end:0x022cdf20
 
-src/ov001/func_ov001_022cdfb4.c:
+src/ov001/Options_Unk_ov001_022cdfb4.c:
     complete
     .text       start:0x022cdfb4 end:0x022cdfdc
 
@@ -1020,11 +1020,11 @@ src/ov001/TitleMenu_ExitToPlayerSelectMode3.c:
     complete
     .text       start:0x022d6e24 end:0x022d6e4c
 
-src/ov001/func_ov001_022d731c.c:
+src/ov001/TitleMenu_DetachVsMenu.c:
     complete
     .text       start:0x022d731c end:0x022d7340
 
-src/ov001/func_ov001_022d7a60.c:
+src/ov001/TitleMenu_Unk_ov001_022d7a60.c:
     complete
     .text       start:0x022d7a60 end:0x022d7a84
 
@@ -1040,23 +1040,23 @@ src/ov001/ZoneActSelect_GetResult.c:
     complete
     .text       start:0x022e18a4 end:0x022e18c8
 
-src/ov001/func_ov001_022e18c8.c:
+src/ov001/ZoneActSelect_Unk_ov001_022e18c8.c:
     complete
     .text       start:0x022e18c8 end:0x022e18ec
 
-src/ov001/func_ov001_022e2dcc.c:
+src/ov001/ZoneMap_Unk_ov001_022e2dcc.c:
     complete
     .text       start:0x022e2dcc end:0x022e2df0
 
-src/ov001/func_ov001_022e3544.c:
+src/ov001/ZoneMap_Unk_ov001_022e3544.c:
     complete
     .text       start:0x022e3544 end:0x022e3564
 
-src/ov001/func_ov001_022e5a20.c:
+src/ov001/ZoneMap_Unk_ov001_022e5a20.c:
     complete
     .text       start:0x022e5a20 end:0x022e5a48
 
-src/ov001/func_ov001_022e5a48.c:
+src/ov001/ZoneMap_Unk_ov001_022e5a48.c:
     complete
     .text       start:0x022e5a48 end:0x022e5a68
 
@@ -1064,59 +1064,59 @@ src/ov001/TimeAttackMenuBgScroll_Main.c:
     complete
     .text       start:0x022e9dac end:0x022e9dc8
 
-src/ov001/func_ov001_022ea290.c:
+src/ov001/TimeAttackMenu_Unk_ov001_022ea290.c:
     complete
     .text       start:0x022ea290 end:0x022ea2b0
 
-src/ov001/func_ov001_022ea360.c:
+src/ov001/TimeAttackMenu_Unk_ov001_022ea360.c:
     complete
     .text       start:0x022ea360 end:0x022ea37c
 
-src/ov001/func_ov001_022ec964.c:
+src/ov001/Records_Unk_ov001_022ec964.c:
     complete
     .text       start:0x022ec964 end:0x022ec980
 
-src/ov001/func_ov001_022ece98.c:
+src/ov001/Records_Unk_ov001_022ece98.c:
     complete
     .text       start:0x022ece98 end:0x022ecec0
 
-src/ov001/func_ov001_022f1660.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f1660.c:
     complete
     .text       start:0x022f1660 end:0x022f167c
 
-src/ov001/func_ov001_022f8f54.c:
+src/ov001/ExtraAct_State_Unk_ov001_022f8f54.c:
     complete
     .text       start:0x022f8f54 end:0x022f8f70
 
-src/ov001/func_ov001_022fa558.c:
+src/ov001/ExtraBoss_Unk_ov001_022fa558.c:
     complete
     .text       start:0x022fa558 end:0x022fa574
 
-src/ov001/func_ov001_022fc89c.c:
+src/ov001/ExtraBoss_Unk_ov001_022fc89c.c:
     complete
     .text       start:0x022fc89c end:0x022fc8bc
 
-src/ov001/func_ov001_022fc8bc.c:
+src/ov001/ExtraBoss_Unk_ov001_022fc8bc.c:
     complete
     .text       start:0x022fc8bc end:0x022fc8dc
 
-src/ov001/func_ov001_022fcae8.c:
+src/ov001/ExtraBoss_Unk_ov001_022fcae8.c:
     complete
     .text       start:0x022fcae8 end:0x022fcb08
 
-src/ov001/func_ov001_022fd1c8.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022fd1c8.c:
     complete
     .text       start:0x022fd1c8 end:0x022fd1ec
 
-src/ov001/func_ov001_022fd4ac.c:
+src/ov001/ExtraBoss_Unk_ov001_022fd4ac.c:
     complete
     .text       start:0x022fd4ac end:0x022fd4d4
 
-src/ov001/func_ov001_022fd4d4.c:
+src/ov001/ExtraBoss_Unk_ov001_022fd4d4.c:
     complete
     .text       start:0x022fd4d4 end:0x022fd4f4
 
-src/ov001/func_ov001_022fef1c.c:
+src/ov001/ExtraBoss_Unk_ov001_022fef1c.c:
     complete
     .text       start:0x022fef1c end:0x022fef3c
 
@@ -1136,55 +1136,55 @@ src/ov001/ExtraBossPlayer_Action_LockControl.c:
     complete
     .text       start:0x02302370 end:0x02302398
 
-src/ov001/func_ov001_023029b4.c:
+src/ov001/ExtraBoss_Unk_ov001_023029b4.c:
     complete
     .text       start:0x023029b4 end:0x023029d4
 
-src/ov001/func_ov001_02303c38.c:
+src/ov001/ExtraBoss_Unk_ov001_02303c38.c:
     complete
     .text       start:0x02303c38 end:0x02303c54
 
-src/ov001/func_ov001_02304a00.c:
+src/ov001/ExtraBoss_Unk_ov001_02304a00.c:
     complete
     .text       start:0x02304a00 end:0x02304a24
 
-src/ov001/func_ov001_02305344.c:
+src/ov001/ExtraBoss_Unk_ov001_02305344.c:
     complete
     .text       start:0x02305344 end:0x02305368
 
-src/ov001/func_ov001_02305ec8.c:
+src/ov001/ExtraBoss_Unk_ov001_02305ec8.c:
     complete
     .text       start:0x02305ec8 end:0x02305ee8
 
-src/ov001/func_ov001_02305ee8.c:
+src/ov001/ExtraBoss_Unk_ov001_02305ee8.c:
     complete
     .text       start:0x02305ee8 end:0x02305f08
 
-src/ov001/func_ov001_023065d4.c:
+src/ov001/ExtraBoss_Unk_ov001_023065d4.c:
     complete
     .text       start:0x023065d4 end:0x023065f8
 
-src/ov001/func_ov001_023070b0.c:
+src/ov001/SpecialStage_DrawObjects.c:
     complete
     .text       start:0x023070b0 end:0x023070d0
 
-src/ov001/func_ov001_023070d0.c:
+src/ov001/SpecialStage_UpdateObjects.c:
     complete
     .text       start:0x023070d0 end:0x023070f0
 
-src/ov001/func_ov001_02308d40.c:
+src/ov001/SpecialStageHud_Unk_ov001_02308d40.c:
     complete
     .text       start:0x02308d40 end:0x02308d64
 
-src/ov001/func_ov001_02309894.c:
+src/ov001/SpecialStage_Unk_ov001_02309894.c:
     complete
     .text       start:0x02309894 end:0x023098b4
 
-src/ov001/func_ov001_023099c4.c:
+src/ov001/SpecialStageGimmick_Unk_ov001_023099c4.c:
     complete
     .text       start:0x023099c4 end:0x023099ec
 
-src/ov001/func_ov001_0230bca8.c:
+src/ov001/SpecialStage_Unk_ov001_0230bca8.c:
     complete
     .text       start:0x0230bca8 end:0x0230bcc4
 
@@ -1204,7 +1204,7 @@ src/ov001/SpecialStageMap_Curve2PivotOffset.c:
     complete
     .text       start:0x0230cd8c end:0x0230cdb4
 
-src/ov001/func_ov001_023102c4.c:
+src/ov001/SpecialStagePlayer_Unk_ov001_023102c4.c:
     complete
     .text       start:0x023102c4 end:0x023102ec
 
@@ -1228,7 +1228,7 @@ src/ov001/SpecialStagePlayer_OnAttackHit.c:
     complete
     .text       start:0x0231314c end:0x0231316c
 
-src/ov001/func_ov001_02314694.c:
+src/ov001/SpecialStagePlayer_Unk_ov001_02314694.c:
     complete
     .text       start:0x02314694 end:0x023146b4
 
@@ -1296,11 +1296,11 @@ src/ov001/Ending_DrawSprites.c:
     complete
     .text       start:0x022c7a44 end:0x022c7ac8
 
-src/ov001/func_ov001_022c7d2c.c:
+src/ov001/Ending_Unk_ov001_022c7d2c.c:
     complete
     .text       start:0x022c7d2c end:0x022c7d5c
 
-src/ov001/func_ov001_022c8d14.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8d14.c:
     complete
     .text       start:0x022c8d14 end:0x022c8d44
 
@@ -1308,7 +1308,7 @@ src/ov001/Options_LoadSettingsFromSave.c:
     complete
     .text       start:0x022cb6d8 end:0x022cb708
 
-src/ov001/func_ov001_022cbe98.c:
+src/ov001/OptionsMenu_Unk_ov001_022cbe98.c:
     complete
     .text       start:0x022cbe98 end:0x022cbecc
 
@@ -1316,19 +1316,19 @@ src/ov001/OptionsMenu_Main.c:
     complete
     .text       start:0x022ccbac end:0x022ccbe0
 
-src/ov001/func_ov001_022ccddc.c:
+src/ov001/OptionsMenu_State_Unk_ov001_022ccddc.c:
     complete
     .text       start:0x022ccddc end:0x022cce10
 
-src/ov001/func_ov001_022cdbc4.c:
+src/ov001/Options_Unk_ov001_022cdbc4.c:
     complete
     .text       start:0x022cdbc4 end:0x022cdbf8
 
-src/ov001/func_ov001_022cdc28.c:
+src/ov001/Options_Unk_ov001_022cdc28.c:
     complete
     .text       start:0x022cdc28 end:0x022cdc5c
 
-src/ov001/func_ov001_022cdcf4.c:
+src/ov001/Options_Unk_ov001_022cdcf4.c:
     complete
     .text       start:0x022cdcf4 end:0x022cdd28
 
@@ -1376,23 +1376,23 @@ src/ov001/TitleDemo_CheckSkipInput.c:
     complete
     .text       start:0x022d5808 end:0x022d5834
 
-src/ov001/func_ov001_022d7368.c:
+src/ov001/TitleMenu_Unk_ov001_022d7368.c:
     complete
     .text       start:0x022d7368 end:0x022d7394
 
-src/ov001/func_ov001_022da41c.c:
+src/ov001/VsMenu_Unk_ov001_022da41c.c:
     complete
     .text       start:0x022da41c end:0x022da450
 
-src/ov001/func_ov001_022da500.c:
+src/ov001/VsMenu_Unk_ov001_022da500.c:
     complete
     .text       start:0x022da500 end:0x022da52c
 
-src/ov001/func_ov001_022da52c.c:
+src/ov001/VsMenu_Unk_ov001_022da52c.c:
     complete
     .text       start:0x022da52c end:0x022da558
 
-src/ov001/func_ov001_022ddacc.c:
+src/ov001/VsMenu_Unk_ov001_022ddacc.c:
     complete
     .text       start:0x022ddacc end:0x022ddb00
 
@@ -1428,15 +1428,15 @@ src/ov001/TransformDemo_Destructor.c:
     complete
     .text       start:0x022e0588 end:0x022e05f0
 
-src/ov001/func_ov001_022e3150.c:
+src/ov001/ZoneMap_Unk_ov001_022e3150.c:
     complete
     .text       start:0x022e3150 end:0x022e3180
 
-src/ov001/func_ov001_022e57a4.c:
+src/ov001/ZoneMap_Unk_ov001_022e57a4.c:
     complete
     .text       start:0x022e57a4 end:0x022e57d4
 
-src/ov001/func_ov001_022e5b6c.c:
+src/ov001/ZoneMap_Unk_ov001_022e5b6c.c:
     complete
     .text       start:0x022e5b6c end:0x022e5ba0
 
@@ -1444,163 +1444,163 @@ src/ov001/ZoneMapPause_Destructor.c:
     complete
     .text       start:0x022e8d5c end:0x022e8d88
 
-src/ov001/func_ov001_022eced8.c:
+src/ov001/Records_Unk_ov001_022eced8.c:
     complete
     .text       start:0x022eced8 end:0x022ecf04
 
-src/ov001/func_ov001_022ee2b0.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022ee2b0.c:
     complete
     .text       start:0x022ee2b0 end:0x022ee354
 
-src/ov001/func_ov001_022ee41c.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022ee41c.c:
     complete
     .text       start:0x022ee41c end:0x022ee4c4
 
-src/ov001/func_ov001_022ee964.c:
+src/ov001/ExtraBoss_Unk_ov001_022ee964.c:
     complete
     .text       start:0x022ee964 end:0x022ee9f8
 
-src/ov001/func_ov001_022eec34.c:
+src/ov001/ExtraBoss_Unk_ov001_022eec34.c:
     complete
     .text       start:0x022eec34 end:0x022eecdc
 
-src/ov001/func_ov001_022ef008.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022ef008.c:
     complete
     .text       start:0x022ef008 end:0x022ef0a0
 
-src/ov001/func_ov001_022ef0a0.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022ef0a0.c:
     complete
     .text       start:0x022ef0a0 end:0x022ef10c
 
-src/ov001/func_ov001_022f40b0.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f40b0.c:
     complete
     .text       start:0x022f40b0 end:0x022f4148
 
-src/ov001/func_ov001_022f4148.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f4148.c:
     complete
     .text       start:0x022f4148 end:0x022f41b4
 
-src/ov001/func_ov001_022f4d04.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f4d04.c:
     complete
     .text       start:0x022f4d04 end:0x022f4d74
 
-src/ov001/func_ov001_022f5090.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f5090.c:
     complete
     .text       start:0x022f5090 end:0x022f5108
 
-src/ov001/func_ov001_022f5108.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f5108.c:
     complete
     .text       start:0x022f5108 end:0x022f51a8
 
-src/ov001/func_ov001_022f51a8.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f51a8.c:
     complete
     .text       start:0x022f51a8 end:0x022f524c
 
-src/ov001/func_ov001_022f524c.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f524c.c:
     complete
     .text       start:0x022f524c end:0x022f52e0
 
-src/ov001/func_ov001_022f52e0.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f52e0.c:
     complete
     .text       start:0x022f52e0 end:0x022f5384
 
-src/ov001/func_ov001_022f5384.c:
+src/ov001/ExtraBoss_Unk_ov001_022f5384.c:
     complete
     .text       start:0x022f5384 end:0x022f53f0
 
-src/ov001/func_ov001_022f5984.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f5984.c:
     complete
     .text       start:0x022f5984 end:0x022f5a24
 
-src/ov001/func_ov001_022f60a4.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f60a4.c:
     complete
     .text       start:0x022f60a4 end:0x022f612c
 
-src/ov001/func_ov001_022f63dc.c:
+src/ov001/ExtraBoss_Unk_ov001_022f63dc.c:
     complete
     .text       start:0x022f63dc end:0x022f6450
 
-src/ov001/func_ov001_022f7274.c:
+src/ov001/ExtraBoss_Unk_ov001_022f7274.c:
     complete
     .text       start:0x022f7274 end:0x022f7308
 
-src/ov001/func_ov001_022f741c.c:
+src/ov001/ExtraAct_State_Unk_ov001_022f741c.c:
     complete
     .text       start:0x022f741c end:0x022f7448
 
-src/ov001/func_ov001_022f7880.c:
+src/ov001/ExtraAct_State_Unk_ov001_022f7880.c:
     complete
     .text       start:0x022f7880 end:0x022f7924
 
-src/ov001/func_ov001_022f8330.c:
+src/ov001/ExtraAct_State_Unk_ov001_022f8330.c:
     complete
     .text       start:0x022f8330 end:0x022f83c0
 
-src/ov001/func_ov001_022f87c8.c:
+src/ov001/ExtraAct_State_Unk_ov001_022f87c8.c:
     complete
     .text       start:0x022f87c8 end:0x022f8858
 
-src/ov001/func_ov001_022f8a98.c:
+src/ov001/ExtraAct_State_Unk_ov001_022f8a98.c:
     complete
     .text       start:0x022f8a98 end:0x022f8b04
 
-src/ov001/func_ov001_022fa5c8.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022fa5c8.c:
     complete
     .text       start:0x022fa5c8 end:0x022fa5f4
 
-src/ov001/func_ov001_022fa5f4.c:
+src/ov001/ExtraBoss_Unk_ov001_022fa5f4.c:
     complete
     .text       start:0x022fa5f4 end:0x022fa664
 
-src/ov001/func_ov001_022fa664.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022fa664.c:
     complete
     .text       start:0x022fa664 end:0x022fa6e8
 
-src/ov001/func_ov001_022fa6e8.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022fa6e8.c:
     complete
     .text       start:0x022fa6e8 end:0x022fa768
 
-src/ov001/func_ov001_022fb5ec.c:
+src/ov001/ExtraBoss_Unk_ov001_022fb5ec.c:
     complete
     .text       start:0x022fb5ec end:0x022fb678
 
-src/ov001/func_ov001_022fba78.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022fba78.c:
     complete
     .text       start:0x022fba78 end:0x022fbaf0
 
-src/ov001/func_ov001_022fbaf0.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022fbaf0.c:
     complete
     .text       start:0x022fbaf0 end:0x022fbb5c
 
-src/ov001/func_ov001_022fbb5c.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022fbb5c.c:
     complete
     .text       start:0x022fbb5c end:0x022fbbc8
 
-src/ov001/func_ov001_022fd138.c:
+src/ov001/ExtraBoss_Unk_ov001_022fd138.c:
     complete
     .text       start:0x022fd138 end:0x022fd1c8
 
-src/ov001/func_ov001_022fd428.c:
+src/ov001/ExtraBossPlayer_Unk_ov001_022fd428.c:
     complete
     .text       start:0x022fd428 end:0x022fd4ac
 
-src/ov001/func_ov001_022fd500.c:
+src/ov001/ExtraBoss_Unk_ov001_022fd500.c:
     complete
     .text       start:0x022fd500 end:0x022fd564
 
-src/ov001/func_ov001_022fd610.c:
+src/ov001/ExtraBoss_Unk_ov001_022fd610.c:
     complete
     .text       start:0x022fd610 end:0x022fd6a4
 
-src/ov001/func_ov001_022fd6a4.c:
+src/ov001/ExtraBoss_Unk_ov001_022fd6a4.c:
     complete
     .text       start:0x022fd6a4 end:0x022fd744
 
-src/ov001/func_ov001_022fea6c.c:
+src/ov001/ExtraBoss_Unk_ov001_022fea6c.c:
     complete
     .text       start:0x022fea6c end:0x022fea98
 
-src/ov001/func_ov001_022fef3c.c:
+src/ov001/ExtraBoss_Unk_ov001_022fef3c.c:
     complete
     .text       start:0x022fef3c end:0x022fef68
 
@@ -1608,7 +1608,7 @@ src/ov001/ExtraBoss_State_CharacterSwitch.c:
     complete
     .text       start:0x022fef68 end:0x022ff008
 
-src/ov001/func_ov001_022ffc4c.c:
+src/ov001/ExtraBoss_Unk_ov001_022ffc4c.c:
     complete
     .text       start:0x022ffc4c end:0x022ffcb8
 
@@ -1632,11 +1632,11 @@ src/ov001/ExtraBossObj_DestroyKind2And3.c:
     complete
     .text       start:0x02300fe8 end:0x02301058
 
-src/ov001/func_ov001_0230343c.c:
+src/ov001/ExtraBoss_StackPush.c:
     complete
     .text       start:0x0230343c end:0x02303468
 
-src/ov001/func_ov001_02303468.c:
+src/ov001/ExtraBoss_StackPop.c:
     complete
     .text       start:0x02303468 end:0x02303494
 
@@ -1708,55 +1708,55 @@ src/ov001/ExtraBossPlayer_UpdateInvincibility.c:
     complete
     .text       start:0x02302398 end:0x02302408
 
-src/ov001/func_ov001_023029d4.c:
+src/ov001/ExtraBoss_Unk_ov001_023029d4.c:
     complete
     .text       start:0x023029d4 end:0x02302a3c
 
-src/ov001/func_ov001_02302a3c.c:
+src/ov001/ExtraBoss_Unk_ov001_02302a3c.c:
     complete
     .text       start:0x02302a3c end:0x02302ac8
 
-src/ov001/func_ov001_02304460.c:
+src/ov001/ExtraBoss_Unk_ov001_02304460.c:
     complete
     .text       start:0x02304460 end:0x02304504
 
-src/ov001/func_ov001_02305368.c:
+src/ov001/ExtraBoss_Unk_ov001_02305368.c:
     complete
     .text       start:0x02305368 end:0x023053cc
 
-src/ov001/func_ov001_023053cc.c:
+src/ov001/ExtraBoss_Unk_ov001_023053cc.c:
     complete
     .text       start:0x023053cc end:0x02305474
 
-src/ov001/func_ov001_02305cd8.c:
+src/ov001/ExtraBoss_Unk_ov001_02305cd8.c:
     complete
     .text       start:0x02305cd8 end:0x02305d40
 
-src/ov001/func_ov001_023061b0.c:
+src/ov001/ExtraBoss_Unk_ov001_023061b0.c:
     complete
     .text       start:0x023061b0 end:0x02306244
 
-src/ov001/func_ov001_023063a0.c:
+src/ov001/ExtraBoss_Unk_ov001_023063a0.c:
     complete
     .text       start:0x023063a0 end:0x02306424
 
-src/ov001/func_ov001_023065f8.c:
+src/ov001/ExtraBoss_Unk_ov001_023065f8.c:
     complete
     .text       start:0x023065f8 end:0x02306674
 
-src/ov001/func_ov001_02306a20.c:
+src/ov001/SpecialStage_Unk_ov001_02306a20.c:
     complete
     .text       start:0x02306a20 end:0x02306aa8
 
-src/ov001/func_ov001_02306aa8.c:
+src/ov001/SpecialStage_Unk_ov001_02306aa8.c:
     complete
     .text       start:0x02306aa8 end:0x02306b18
 
-src/ov001/func_ov001_02306b18.c:
+src/ov001/SpecialStage_Unk_ov001_02306b18.c:
     complete
     .text       start:0x02306b18 end:0x02306b90
 
-src/ov001/func_ov001_02307ad0.c:
+src/ov001/SpecialStageHud_Unk_ov001_02307ad0.c:
     complete
     .text       start:0x02307ad0 end:0x02307b44
 
@@ -1800,15 +1800,15 @@ src/ov001/Ending_SubState_SonicNextPicture3.c:
     complete
     .text       start:0x022c75d8 end:0x022c7678
 
-src/ov001/func_ov001_022c8640.c:
+src/ov001/OptionsWfsHost_State_WaitChildrenGone.c:
     complete
     .text       start:0x022c8640 end:0x022c8674
 
-src/ov001/func_ov001_022c87b4.c:
+src/ov001/OptionsWfsHost_Destructor.c:
     complete
     .text       start:0x022c87b4 end:0x022c87d0
 
-src/ov001/func_ov001_022c87f8.c:
+src/ov001/OptionsWfsHost_Destroy.c:
     complete
     .text       start:0x022c87f8 end:0x022c8820
 
@@ -1824,7 +1824,7 @@ src/ov001/Options_SetTimeLimit.c:
     complete
     .text       start:0x022c890c end:0x022c8924
 
-src/ov001/func_ov001_022c8924.c:
+src/ov001/OptionsMenu_Unk_ov001_022c8924.c:
     complete
     .text       start:0x022c8924 end:0x022c8958
 
@@ -1840,7 +1840,7 @@ src/ov001/Options_Destructor.c:
     complete
     .text       start:0x022ce218 end:0x022ce29c
 
-src/ov001/func_ov001_022ce374.c:
+src/ov001/Options_ReleaseSprite.c:
     complete
     .text       start:0x022ce374 end:0x022ce3a0
 
@@ -1864,7 +1864,7 @@ src/ov001/SegaLogo_LoadAssets.c:
     complete
     .text       start:0x022cf90c end:0x022cf93c
 
-src/ov001/func_ov001_022d0070.c:
+src/ov001/StaffRoll_Unk_ov001_022d0070.c:
     complete
     .text       start:0x022d0070 end:0x022d0094
 
@@ -1928,39 +1928,39 @@ src/ov001/TitleMenu_Destructor.c:
     complete
     .text       start:0x022d8c30 end:0x022d8c44
 
-src/ov001/func_ov001_022d9814.c:
+src/ov001/VsMenu_Unk_ov001_022d9814.c:
     complete
     .text       start:0x022d9814 end:0x022d983c
 
-src/ov001/func_ov001_022d983c.c:
+src/ov001/VsMenu_Unk_ov001_022d983c.c:
     complete
     .text       start:0x022d983c end:0x022d9864
 
-src/ov001/func_ov001_022d9cb0.c:
+src/ov001/VsMenu_Unk_ov001_022d9cb0.c:
     complete
     .text       start:0x022d9cb0 end:0x022d9cd4
 
-src/ov001/func_ov001_022d9cd4.c:
+src/ov001/VsMenu_Unk_ov001_022d9cd4.c:
     complete
     .text       start:0x022d9cd4 end:0x022d9cf8
 
-src/ov001/func_ov001_022d9e2c.c:
+src/ov001/VsMenu_Unk_ov001_022d9e2c.c:
     complete
     .text       start:0x022d9e2c end:0x022d9e50
 
-src/ov001/func_ov001_022d9e50.c:
+src/ov001/VsMenu_Unk_ov001_022d9e50.c:
     complete
     .text       start:0x022d9e50 end:0x022d9e74
 
-src/ov001/func_ov001_022dabe4.c:
+src/ov001/VsMenu_State_Unk_ov001_022dabe4.c:
     complete
     .text       start:0x022dabe4 end:0x022dac0c
 
-src/ov001/func_ov001_022dc08c.c:
+src/ov001/VsMenu_State_Unk_ov001_022dc08c.c:
     complete
     .text       start:0x022dc08c end:0x022dc0b4
 
-src/ov001/func_ov001_022dc970.c:
+src/ov001/VsMenu_State_Unk_ov001_022dc970.c:
     complete
     .text       start:0x022dc970 end:0x022dc998
 
@@ -1980,19 +1980,19 @@ src/ov001/TransformDemoEffect_Main.c:
     complete
     .text       start:0x022df530 end:0x022df5f0
 
-src/ov001/func_ov001_022df878.c:
+src/ov001/TransformDemo_Unk_ov001_022df878.c:
     complete
     .text       start:0x022df878 end:0x022df950
 
-src/ov001/func_ov001_022dfe20.c:
+src/ov001/TransformDemo_Unk_ov001_022dfe20.c:
     complete
     .text       start:0x022dfe20 end:0x022dfeec
 
-src/ov001/func_ov001_022dfeec.c:
+src/ov001/TransformDemo_Unk_ov001_022dfeec.c:
     complete
     .text       start:0x022dfeec end:0x022dffcc
 
-src/ov001/func_ov001_022e034c.c:
+src/ov001/TransformDemo_Unk_ov001_022e034c.c:
     complete
     .text       start:0x022e034c end:0x022e0450
 
@@ -2004,15 +2004,15 @@ src/ov001/TransformDemo_Create.c:
     complete
     .text       start:0x022e05f0 end:0x022e06e4
 
-src/ov001/func_ov001_022e0858.c:
+src/ov001/ZoneActSelect_Unk_ov001_022e0858.c:
     complete
     .text       start:0x022e0858 end:0x022e0884
 
-src/ov001/func_ov001_022e0e6c.c:
+src/ov001/ZoneActSelect_Unk_ov001_022e0e6c.c:
     complete
     .text       start:0x022e0e6c end:0x022e0e98
 
-src/ov001/func_ov001_022e13d4.c:
+src/ov001/ZoneActSelect_Unk_ov001_022e13d4.c:
     complete
     .text       start:0x022e13d4 end:0x022e1400
 
@@ -2020,11 +2020,11 @@ src/ov001/ZoneActSelect_ReleaseAssets.c:
     complete
     .text       start:0x022e1444 end:0x022e14b8
 
-src/ov001/func_ov001_022e21b8.c:
+src/ov001/ZoneMap_Unk_ov001_022e21b8.c:
     complete
     .text       start:0x022e21b8 end:0x022e21ec
 
-src/ov001/func_ov001_022e2480.c:
+src/ov001/ZoneMap_SaveProgress.c:
     complete
     .text       start:0x022e2480 end:0x022e24a8
 
@@ -2036,15 +2036,15 @@ src/ov001/ZoneMap_Shutdown.c:
     complete
     .text       start:0x022e3398 end:0x022e33c0
 
-src/ov001/func_ov001_022e3b30.c:
+src/ov001/ZoneMap_Unk_ov001_022e3b30.c:
     complete
     .text       start:0x022e3b30 end:0x022e3bec
 
-src/ov001/func_ov001_022e5620.c:
+src/ov001/ZoneMap_Unk_ov001_022e5620.c:
     complete
     .text       start:0x022e5620 end:0x022e5684
 
-src/ov001/func_ov001_022e8470.c:
+src/ov001/ZoneMap_ReleaseSprite.c:
     complete
     .text       start:0x022e8470 end:0x022e849c
 
@@ -2052,7 +2052,7 @@ src/ov001/ZoneMap_ReleaseAssets.c:
     complete
     .text       start:0x022e849c end:0x022e8514
 
-src/ov001/func_ov001_022e8d44.c:
+src/ov001/ZoneMapPause_Unk_ov001_022e8d44.c:
     complete
     .text       start:0x022e8d44 end:0x022e8d5c
 
@@ -2064,7 +2064,7 @@ src/ov001/TimeAttackMenu_ReleaseAssets.c:
     complete
     .text       start:0x022ebdd8 end:0x022ebe4c
 
-src/ov001/func_ov001_022ece04.c:
+src/ov001/Records_Unk_ov001_022ece04.c:
     complete
     .text       start:0x022ece04 end:0x022ece30
 
@@ -2076,107 +2076,107 @@ src/ov001/Records_Destructor.c:
     complete
     .text       start:0x022ed964 end:0x022ed990
 
-src/ov001/func_ov001_022ee354.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022ee354.c:
     complete
     .text       start:0x022ee354 end:0x022ee41c
 
-src/ov001/func_ov001_022ee4c4.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022ee4c4.c:
     complete
     .text       start:0x022ee4c4 end:0x022ee594
 
-src/ov001/func_ov001_022ee9f8.c:
+src/ov001/ExtraBoss_Unk_ov001_022ee9f8.c:
     complete
     .text       start:0x022ee9f8 end:0x022eeab0
 
-src/ov001/func_ov001_022eed64.c:
+src/ov001/ExtraBoss_Unk_ov001_022eed64.c:
     complete
     .text       start:0x022eed64 end:0x022eee68
 
-src/ov001/func_ov001_022f2780.c:
+src/ov001/ExtraBoss_Unk_ov001_022f2780.c:
     complete
     .text       start:0x022f2780 end:0x022f2858
 
-src/ov001/func_ov001_022f3b50.c:
+src/ov001/ExtraBoss_Unk_ov001_022f3b50.c:
     complete
     .text       start:0x022f3b50 end:0x022f3c30
 
-src/ov001/func_ov001_022f4c04.c:
+src/ov001/ExtraBoss_Unk_ov001_022f4c04.c:
     complete
     .text       start:0x022f4c04 end:0x022f4cd0
 
-src/ov001/func_ov001_022f4e88.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f4e88.c:
     complete
     .text       start:0x022f4e88 end:0x022f4f54
 
-src/ov001/func_ov001_022f4fac.c:
+src/ov001/ExtraBoss_Unk_ov001_022f4fac.c:
     complete
     .text       start:0x022f4fac end:0x022f5090
 
-src/ov001/func_ov001_022f5424.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f5424.c:
     complete
     .text       start:0x022f5424 end:0x022f54dc
 
-src/ov001/func_ov001_022f56f8.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f56f8.c:
     complete
     .text       start:0x022f56f8 end:0x022f57a8
 
-src/ov001/func_ov001_022f57a8.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022f57a8.c:
     complete
     .text       start:0x022f57a8 end:0x022f589c
 
-src/ov001/func_ov001_022f589c.c:
+src/ov001/ExtraBoss_Unk_ov001_022f589c.c:
     complete
     .text       start:0x022f589c end:0x022f5954
 
-src/ov001/func_ov001_022f612c.c:
+src/ov001/ExtraBoss_Unk_ov001_022f612c.c:
     complete
     .text       start:0x022f612c end:0x022f61ec
 
-src/ov001/func_ov001_022f622c.c:
+src/ov001/ExtraBoss_Unk_ov001_022f622c.c:
     complete
     .text       start:0x022f622c end:0x022f62f0
 
-src/ov001/func_ov001_022f7308.c:
+src/ov001/ExtraBoss_Unk_ov001_022f7308.c:
     complete
     .text       start:0x022f7308 end:0x022f73cc
 
-src/ov001/func_ov001_022f7d64.c:
+src/ov001/ExtraAct_State_Unk_ov001_022f7d64.c:
     complete
     .text       start:0x022f7d64 end:0x022f7e20
 
-src/ov001/func_ov001_022f99f8.c:
+src/ov001/ExtraAct_Unk_ov001_022f99f8.c:
     complete
     .text       start:0x022f99f8 end:0x022f9ab4
 
-src/ov001/func_ov001_022fa768.c:
+src/ov001/ExtraBossObj_State_Unk_ov001_022fa768.c:
     complete
     .text       start:0x022fa768 end:0x022fa830
 
-src/ov001/func_ov001_022fa830.c:
+src/ov001/ExtraBoss_Unk_ov001_022fa830.c:
     complete
     .text       start:0x022fa830 end:0x022fa908
 
-src/ov001/func_ov001_022fa990.c:
+src/ov001/ExtraBoss_Unk_ov001_022fa990.c:
     complete
     .text       start:0x022fa990 end:0x022faa3c
 
-src/ov001/func_ov001_022fb678.c:
+src/ov001/ExtraBoss_Unk_ov001_022fb678.c:
     complete
     .text       start:0x022fb678 end:0x022fb764
 
-src/ov001/func_ov001_022fc934.c:
+src/ov001/ExtraBoss_Unk_ov001_022fc934.c:
     complete
     .text       start:0x022fc934 end:0x022fc9e4
 
-src/ov001/func_ov001_022fc9e4.c:
+src/ov001/ExtraBossPlayer_Unk_ov001_022fc9e4.c:
     complete
     .text       start:0x022fc9e4 end:0x022fcaa4
 
-src/ov001/func_ov001_022fd564.c:
+src/ov001/ExtraBoss_Unk_ov001_022fd564.c:
     complete
     .text       start:0x022fd564 end:0x022fd610
 
-src/ov001/func_ov001_022fdb04.c:
+src/ov001/ExtraBoss_Unk_ov001_022fdb04.c:
     complete
     .text       start:0x022fdb04 end:0x022fdbc0
 
@@ -2184,7 +2184,7 @@ src/ov001/ExtraBoss_ReleaseAssets.c:
     complete
     .text       start:0x022ff8ac end:0x022ff970
 
-src/ov001/func_ov001_022ffb9c.c:
+src/ov001/ExtraBoss_Unk_ov001_022ffb9c.c:
     complete
     .text       start:0x022ffb9c end:0x022ffc4c
 
@@ -2192,15 +2192,15 @@ src/ov001/ExtraBoss_AdvancePhase.c:
     complete
     .text       start:0x022ffe04 end:0x022ffeb0
 
-src/ov001/func_ov001_0230007c.c:
+src/ov001/ExtraBoss_Unk_ov001_0230007c.c:
     complete
     .text       start:0x0230007c end:0x02300128
 
-src/ov001/func_ov001_02300128.c:
+src/ov001/ExtraBoss_Unk_ov001_02300128.c:
     complete
     .text       start:0x02300128 end:0x02300214
 
-src/ov001/func_ov001_02300978.c:
+src/ov001/ExtraBossObj_Unk_ov001_02300978.c:
     complete
     .text       start:0x02300978 end:0x02300a64
 
@@ -2212,43 +2212,43 @@ src/ov001/ExtraBossPlayer_CheckActionInput.c:
     complete
     .text       start:0x02302408 end:0x023024d0
 
-src/ov001/func_ov001_023030e4.c:
+src/ov001/ExtraBoss_Unk_ov001_023030e4.c:
     complete
     .text       start:0x023030e4 end:0x0230319c
 
-src/ov001/func_ov001_02303c54.c:
+src/ov001/ExtraBoss_Unk_ov001_02303c54.c:
     complete
     .text       start:0x02303c54 end:0x02303d28
 
-src/ov001/func_ov001_02304568.c:
+src/ov001/ExtraBoss_Unk_ov001_02304568.c:
     complete
     .text       start:0x02304568 end:0x02304624
 
-src/ov001/func_ov001_0230494c.c:
+src/ov001/ExtraBoss_Unk_ov001_0230494c.c:
     complete
     .text       start:0x0230494c end:0x02304a00
 
-src/ov001/func_ov001_02305aec.c:
+src/ov001/ExtraBoss_Unk_ov001_02305aec.c:
     complete
     .text       start:0x02305aec end:0x02305bb8
 
-src/ov001/func_ov001_02305f08.c:
+src/ov001/ExtraBoss_Unk_ov001_02305f08.c:
     complete
     .text       start:0x02305f08 end:0x02305fbc
 
-src/ov001/func_ov001_02306674.c:
+src/ov001/ExtraBoss_Unk_ov001_02306674.c:
     complete
     .text       start:0x02306674 end:0x02306738
 
-src/ov001/func_ov001_02308fc8.c:
+src/ov001/SpecialStageHud_Unk_ov001_02308fc8.c:
     complete
     .text       start:0x02308fc8 end:0x0230903c
 
-src/ov001/func_ov001_023091a0.c:
+src/ov001/SpecialStageHud_Unk_ov001_023091a0.c:
     complete
     .text       start:0x023091a0 end:0x02309228
 
-src/ov001/func_ov001_0230956c.c:
+src/ov001/SpecialStageHud_Unk_ov001_0230956c.c:
     complete
     .text       start:0x0230956c end:0x023095e0
 
@@ -2276,11 +2276,11 @@ src/ov001/SpecialStage_ArcLengthToAngle.c:
     complete
     .text       start:0x0230d650 end:0x0230d6b8
 
-src/ov001/func_ov001_0230e634.c:
+src/ov001/SpecialStageGimmick_Unk_ov001_0230e634.c:
     complete
     .text       start:0x0230e634 end:0x0230e6c0
 
-src/ov001/func_ov001_0230e710.c:
+src/ov001/SpecialStageGimmick_Unk_ov001_0230e710.c:
     complete
     .text       start:0x0230e710 end:0x0230e78c
 
@@ -2344,7 +2344,7 @@ src/ov001/SpecialStagePlayer_State_Start0.c:
     complete
     .text       start:0x02311dfc end:0x02311e64
 
-src/ov001/func_ov001_02311e64.c:
+src/ov001/SpecialStagePlayer_Unk_ov001_02311e64.c:
     complete
     .text       start:0x02311e64 end:0x02311ec8
 
@@ -2376,7 +2376,7 @@ src/ov001/SpecialStage_ReleaseStageData.c:
     complete
     .text       start:0x0231444c end:0x02314508
 
-src/ov001_b/func_ov001_022de774.c:
+src/ov001_b/TransformDemo_Unk_ov001_022de774.c:
     complete
     .text       start:0x022de774 end:0x022deb20
 
@@ -2388,7 +2388,7 @@ src/ov001_b/SpecialStage_Init.c:
     complete
     .text       start:0x0230c364 end:0x0230c9f4
 
-src/ov001_b/func_ov001_022f3530.c:
+src/ov001_b/ExtraBoss_Unk_ov001_022f3530.c:
     complete
     .text       start:0x022f3530 end:0x022f3b50
 
@@ -2436,11 +2436,11 @@ src/auto/OptionsBgScroll_Main.c:
     complete
     .text       start:0x022c8958 end:0x022c8994
 
-src/auto/func_ov001_022ce670.c:
+src/auto/OptionsMenu_Unk_ov001_022ce670.c:
     complete
     .text       start:0x022ce670 end:0x022ce6b4
 
-src/auto/func_ov001_022ce6b4.c:
+src/auto/Options_Unk_ov001_022ce6b4.c:
     complete
     .text       start:0x022ce6b4 end:0x022ce6f8
 
@@ -2456,11 +2456,11 @@ src/auto/Options_StartFromRecords.c:
     complete
     .text       start:0x022cee48 end:0x022cee8c
 
-src/auto/func_ov001_022cfcb8.c:
+src/auto/StaffRoll_Unk_ov001_022cfcb8.c:
     complete
     .text       start:0x022cfcb8 end:0x022cfcf8
 
-src/auto/func_ov001_022cfcf8.c:
+src/auto/StaffRoll_Unk_ov001_022cfcf8.c:
     complete
     .text       start:0x022cfcf8 end:0x022cfd34
 
@@ -2480,15 +2480,15 @@ src/auto/TitleDemo_Destructor.c:
     complete
     .text       start:0x022d682c end:0x022d6864
 
-src/auto/func_ov001_022d9d64.c:
+src/auto/VsMenu_Unk_ov001_022d9d64.c:
     complete
     .text       start:0x022d9d64 end:0x022d9d98
 
-src/auto/func_ov001_022da2cc.c:
+src/auto/VsMenu_Unk_ov001_022da2cc.c:
     complete
     .text       start:0x022da2cc end:0x022da304
 
-src/auto/func_ov001_022dd534.c:
+src/auto/VsMenu_Unk_ov001_022dd534.c:
     complete
     .text       start:0x022dd534 end:0x022dd574
 
@@ -2496,23 +2496,23 @@ src/auto/TransformDemo_LoadSound.c:
     complete
     .text       start:0x022ddfc4 end:0x022ddffc
 
-src/auto/func_ov001_022e345c.c:
+src/auto/ZoneMap_Unk_ov001_022e345c.c:
     complete
     .text       start:0x022e345c end:0x022e349c
 
-src/auto/func_ov001_022e349c.c:
+src/auto/ZoneMap_Unk_ov001_022e349c.c:
     complete
     .text       start:0x022e349c end:0x022e34dc
 
-src/auto/func_ov001_022e5d7c.c:
+src/auto/ZoneMap_Unk_ov001_022e5d7c.c:
     complete
     .text       start:0x022e5d7c end:0x022e5db0
 
-src/auto/func_ov001_022e5db0.c:
+src/auto/ZoneMap_Unk_ov001_022e5db0.c:
     complete
     .text       start:0x022e5db0 end:0x022e5de0
 
-src/auto/func_ov001_022e5e28.c:
+src/auto/ZoneMap_Unk_ov001_022e5e28.c:
     complete
     .text       start:0x022e5e28 end:0x022e5e60
 
@@ -2520,7 +2520,7 @@ src/auto/ZoneMap_Destructor.c:
     complete
     .text       start:0x022e8378 end:0x022e83bc
 
-src/auto/func_ov001_022e8528.c:
+src/auto/ZoneMap_Unk_ov001_022e8528.c:
     complete
     .text       start:0x022e8528 end:0x022e855c
 
@@ -2528,27 +2528,27 @@ src/auto/TimeAttackMenu_Destructor.c:
     complete
     .text       start:0x022ebe98 end:0x022ebecc
 
-src/auto/func_ov001_022f71b8.c:
+src/auto/ExtraBoss_Unk_ov001_022f71b8.c:
     complete
     .text       start:0x022f71b8 end:0x022f71f4
 
-src/auto/func_ov001_022f71f4.c:
+src/auto/ExtraBoss_Unk_ov001_022f71f4.c:
     complete
     .text       start:0x022f71f4 end:0x022f7224
 
-src/auto/func_ov001_022ffcf8.c:
+src/auto/ExtraBoss_Unk_ov001_022ffcf8.c:
     complete
     .text       start:0x022ffcf8 end:0x022ffd2c
 
-src/auto/func_ov001_02303a80.c:
+src/auto/ExtraBoss_Unk_ov001_02303a80.c:
     complete
     .text       start:0x02303a80 end:0x02303abc
 
-src/auto/func_ov001_02303abc.c:
+src/auto/ExtraBoss_Unk_ov001_02303abc.c:
     complete
     .text       start:0x02303abc end:0x02303af8
 
-src/auto/func_ov001_02308600.c:
+src/auto/SpecialStageHud_Unk_ov001_02308600.c:
     complete
     .text       start:0x02308600 end:0x02308630
 
@@ -2576,19 +2576,19 @@ src/auto/SpecialStageTrick_Reset.c:
     complete
     .text       start:0x023145d8 end:0x02314614
 
-src/auto/func_ov001_022ea734.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea734.c:
     complete
     .text       start:0x022ea734 end:0x022ea77c
 
-src/auto/func_ov001_022ea77c.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea77c.c:
     complete
     .text       start:0x022ea77c end:0x022ea7c4
 
-src/auto/func_ov001_022ea7c4.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea7c4.c:
     complete
     .text       start:0x022ea7c4 end:0x022ea80c
 
-src/auto/func_ov001_022ed104.c:
+src/auto/Records_Unk_ov001_022ed104.c:
     complete
     .text       start:0x022ed104 end:0x022ed14c
 
@@ -2620,43 +2620,43 @@ src/auto/Ending_SubState_SonicNextPicture4.c:
     complete
     .text       start:0x022c74e8 end:0x022c7538
 
-src/auto/func_ov001_022c8774.c:
+src/auto/OptionsWfsHost_State_WaitWfsReady.c:
     complete
     .text       start:0x022c8774 end:0x022c87b4
 
-src/auto/func_ov001_022c8820.c:
+src/auto/OptionsWfsHost_Create.c:
     complete
     .text       start:0x022c8820 end:0x022c8880
 
-src/auto/func_ov001_022c8cd4.c:
+src/auto/OptionsMenu_Unk_ov001_022c8cd4.c:
     complete
     .text       start:0x022c8cd4 end:0x022c8d0c
 
-src/auto/func_ov001_022cc210.c:
+src/auto/OptionsMenu_State_Unk_ov001_022cc210.c:
     complete
     .text       start:0x022cc210 end:0x022cc268
 
-src/auto/func_ov001_022cc628.c:
+src/auto/OptionsMenu_State_Unk_ov001_022cc628.c:
     complete
     .text       start:0x022cc628 end:0x022cc6b8
 
-src/auto/func_ov001_022cc998.c:
+src/auto/OptionsMenu_State_Unk_ov001_022cc998.c:
     complete
     .text       start:0x022cc998 end:0x022cca00
 
-src/auto/func_ov001_022ccb5c.c:
+src/auto/OptionsMenu_State_Unk_ov001_022ccb5c.c:
     complete
     .text       start:0x022ccb5c end:0x022ccbac
 
-src/auto/func_ov001_022ccc6c.c:
+src/auto/Options_State_Unk_ov001_022ccc6c.c:
     complete
     .text       start:0x022ccc6c end:0x022cccbc
 
-src/auto/func_ov001_022cdca4.c:
+src/auto/OptionsMenu_Unk_ov001_022cdca4.c:
     complete
     .text       start:0x022cdca4 end:0x022cdcf4
 
-src/auto/func_ov001_022ce304.c:
+src/auto/Options_Unk_ov001_022ce304.c:
     complete
     .text       start:0x022ce304 end:0x022ce374
 
@@ -2804,55 +2804,55 @@ src/auto/TitleMenu_StartFromOptions.c:
     complete
     .text       start:0x022d95f0 end:0x022d9650
 
-src/auto/func_ov001_022da59c.c:
+src/auto/VsMenu_Unk_ov001_022da59c.c:
     complete
     .text       start:0x022da59c end:0x022da614
 
-src/auto/func_ov001_022da694.c:
+src/auto/VsMenu_Unk_ov001_022da694.c:
     complete
     .text       start:0x022da694 end:0x022da70c
 
-src/auto/func_ov001_022da70c.c:
+src/auto/VsMenu_Unk_ov001_022da70c.c:
     complete
     .text       start:0x022da70c end:0x022da784
 
-src/auto/func_ov001_022da9a8.c:
+src/auto/VsMenu_Unk_ov001_022da9a8.c:
     complete
     .text       start:0x022da9a8 end:0x022da9fc
 
-src/auto/func_ov001_022dafdc.c:
+src/auto/VsMenu_State_Unk_ov001_022dafdc.c:
     complete
     .text       start:0x022dafdc end:0x022db014
 
-src/auto/func_ov001_022db97c.c:
+src/auto/VsMenu_State_Unk_ov001_022db97c.c:
     complete
     .text       start:0x022db97c end:0x022db9d8
 
-src/auto/func_ov001_022dc498.c:
+src/auto/VsMenu_State_Unk_ov001_022dc498.c:
     complete
     .text       start:0x022dc498 end:0x022dc4f0
 
-src/auto/func_ov001_022dc6d8.c:
+src/auto/VsMenu_State_Unk_ov001_022dc6d8.c:
     complete
     .text       start:0x022dc6d8 end:0x022dc734
 
-src/auto/func_ov001_022dcf94.c:
+src/auto/VsMenu_State_Unk_ov001_022dcf94.c:
     complete
     .text       start:0x022dcf94 end:0x022dcfec
 
-src/auto/func_ov001_022dcfec.c:
+src/auto/VsMenu_State_Unk_ov001_022dcfec.c:
     complete
     .text       start:0x022dcfec end:0x022dd050
 
-src/auto/func_ov001_022dd190.c:
+src/auto/VsMenu_State_Unk_ov001_022dd190.c:
     complete
     .text       start:0x022dd190 end:0x022dd1ec
 
-src/auto/func_ov001_022dd574.c:
+src/auto/VsMenu_Unk_ov001_022dd574.c:
     complete
     .text       start:0x022dd574 end:0x022dd614
 
-src/auto/func_ov001_022dd614.c:
+src/auto/VsMenu_Unk_ov001_022dd614.c:
     complete
     .text       start:0x022dd614 end:0x022dd6b4
 
@@ -2872,39 +2872,39 @@ src/auto/TransformDemo_FadeState_WaitStart.c:
     complete
     .text       start:0x022de0f0 end:0x022de14c
 
-src/auto/func_ov001_022e0e98.c:
+src/auto/ZoneActSelect_Unk_ov001_022e0e98.c:
     complete
     .text       start:0x022e0e98 end:0x022e0ee0
 
-src/auto/func_ov001_022e0f08.c:
+src/auto/ZoneActSelect_State_Unk_ov001_022e0f08.c:
     complete
     .text       start:0x022e0f08 end:0x022e0f94
 
-src/auto/func_ov001_022e3844.c:
+src/auto/ZoneMap_Unk_ov001_022e3844.c:
     complete
     .text       start:0x022e3844 end:0x022e38b8
 
-src/auto/func_ov001_022e5e60.c:
+src/auto/ZoneMap_Unk_ov001_022e5e60.c:
     complete
     .text       start:0x022e5e60 end:0x022e5e98
 
-src/auto/func_ov001_022e5e98.c:
+src/auto/ZoneMap_Unk_ov001_022e5e98.c:
     complete
     .text       start:0x022e5e98 end:0x022e5f04
 
-src/auto/func_ov001_022e5f04.c:
+src/auto/ZoneMap_Unk_ov001_022e5f04.c:
     complete
     .text       start:0x022e5f04 end:0x022e5f80
 
-src/auto/func_ov001_022e6e9c.c:
+src/auto/ZoneMap_State_Unk_ov001_022e6e9c.c:
     complete
     .text       start:0x022e6e9c end:0x022e6ed0
 
-src/auto/func_ov001_022e6f3c.c:
+src/auto/ZoneMap_State_Unk_ov001_022e6f3c.c:
     complete
     .text       start:0x022e6f3c end:0x022e6fbc
 
-src/auto/func_ov001_022e76ec.c:
+src/auto/ZoneMap_State_Unk_ov001_022e76ec.c:
     complete
     .text       start:0x022e76ec end:0x022e7728
 
@@ -2912,47 +2912,47 @@ src/auto/ZoneMap_Main.c:
     complete
     .text       start:0x022e83bc end:0x022e8410
 
-src/auto/func_ov001_022e870c.c:
+src/auto/ZoneMap_Unk_ov001_022e870c.c:
     complete
     .text       start:0x022e870c end:0x022e8784
 
-src/auto/func_ov001_022e9584.c:
+src/auto/ZoneMapPause_Destroy.c:
     complete
     .text       start:0x022e9584 end:0x022e95b8
 
-src/auto/func_ov001_022e9f04.c:
+src/auto/TimeAttackMenu_Unk_ov001_022e9f04.c:
     complete
     .text       start:0x022e9f04 end:0x022e9f58
 
-src/auto/func_ov001_022e9f58.c:
+src/auto/TimeAttackMenu_Unk_ov001_022e9f58.c:
     complete
     .text       start:0x022e9f58 end:0x022e9fa8
 
-src/auto/func_ov001_022ea3e0.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea3e0.c:
     complete
     .text       start:0x022ea3e0 end:0x022ea41c
 
-src/auto/func_ov001_022ea41c.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea41c.c:
     complete
     .text       start:0x022ea41c end:0x022ea458
 
-src/auto/func_ov001_022ea644.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea644.c:
     complete
     .text       start:0x022ea644 end:0x022ea694
 
-src/auto/func_ov001_022ea694.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea694.c:
     complete
     .text       start:0x022ea694 end:0x022ea6e4
 
-src/auto/func_ov001_022ea6e4.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea6e4.c:
     complete
     .text       start:0x022ea6e4 end:0x022ea734
 
-src/auto/func_ov001_022ea80c.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea80c.c:
     complete
     .text       start:0x022ea80c end:0x022ea850
 
-src/auto/func_ov001_022ea850.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea850.c:
     complete
     .text       start:0x022ea850 end:0x022ea894
 
@@ -2964,135 +2964,135 @@ src/auto/Records_Start.c:
     complete
     .text       start:0x022edd9c end:0x022ede0c
 
-src/auto/func_ov001_022eed0c.c:
+src/auto/ExtraBoss_Unk_ov001_022eed0c.c:
     complete
     .text       start:0x022eed0c end:0x022eed64
 
-src/auto/func_ov001_022eef90.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022eef90.c:
     complete
     .text       start:0x022eef90 end:0x022eefc0
 
-src/auto/func_ov001_022eefc0.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022eefc0.c:
     complete
     .text       start:0x022eefc0 end:0x022ef008
 
-src/auto/func_ov001_022efe50.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022efe50.c:
     complete
     .text       start:0x022efe50 end:0x022efea0
 
-src/auto/func_ov001_022f0b40.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f0b40.c:
     complete
     .text       start:0x022f0b40 end:0x022f0b70
 
-src/auto/func_ov001_022f10d0.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f10d0.c:
     complete
     .text       start:0x022f10d0 end:0x022f1130
 
-src/auto/func_ov001_022f1d24.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f1d24.c:
     complete
     .text       start:0x022f1d24 end:0x022f1d54
 
-src/auto/func_ov001_022f2858.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f2858.c:
     complete
     .text       start:0x022f2858 end:0x022f2898
 
-src/auto/func_ov001_022f4068.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f4068.c:
     complete
     .text       start:0x022f4068 end:0x022f40b0
 
-src/auto/func_ov001_022f4cd0.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f4cd0.c:
     complete
     .text       start:0x022f4cd0 end:0x022f4d04
 
-src/auto/func_ov001_022f4f54.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f4f54.c:
     complete
     .text       start:0x022f4f54 end:0x022f4fac
 
-src/auto/func_ov001_022f53f0.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f53f0.c:
     complete
     .text       start:0x022f53f0 end:0x022f5424
 
-src/auto/func_ov001_022f5954.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f5954.c:
     complete
     .text       start:0x022f5954 end:0x022f5984
 
-src/auto/func_ov001_022f61ec.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f61ec.c:
     complete
     .text       start:0x022f61ec end:0x022f622c
 
-src/auto/func_ov001_022f7224.c:
+src/auto/ExtraBoss_Unk_ov001_022f7224.c:
     complete
     .text       start:0x022f7224 end:0x022f7274
 
-src/auto/func_ov001_022f7700.c:
+src/auto/ExtraAct_Unk_ov001_022f7700.c:
     complete
     .text       start:0x022f7700 end:0x022f7740
 
-src/auto/func_ov001_022f7740.c:
+src/auto/ExtraAct_Unk_ov001_022f7740.c:
     complete
     .text       start:0x022f7740 end:0x022f7790
 
-src/auto/func_ov001_022f8774.c:
+src/auto/ExtraAct_Unk_ov001_022f8774.c:
     complete
     .text       start:0x022f8774 end:0x022f87c8
 
-src/auto/func_ov001_022f8a40.c:
+src/auto/ExtraAct_Unk_ov001_022f8a40.c:
     complete
     .text       start:0x022f8a40 end:0x022f8a98
 
-src/auto/func_ov001_022f9134.c:
+src/auto/ExtraAct_Unk_ov001_022f9134.c:
     complete
     .text       start:0x022f9134 end:0x022f9188
 
-src/auto/func_ov001_022f9e58.c:
+src/auto/ExtraBoss_Unk_ov001_022f9e58.c:
     complete
     .text       start:0x022f9e58 end:0x022f9eb4
 
-src/auto/func_ov001_022fa574.c:
+src/auto/ExtraBossObj_Unk_ov001_022fa574.c:
     complete
     .text       start:0x022fa574 end:0x022fa5c8
 
-src/auto/func_ov001_022fa908.c:
+src/auto/ExtraBoss_Unk_ov001_022fa908.c:
     complete
     .text       start:0x022fa908 end:0x022fa94c
 
-src/auto/func_ov001_022fa94c.c:
+src/auto/ExtraBoss_Unk_ov001_022fa94c.c:
     complete
     .text       start:0x022fa94c end:0x022fa990
 
-src/auto/func_ov001_022fb764.c:
+src/auto/ExtraBossPlayer_Unk_ov001_022fb764.c:
     complete
     .text       start:0x022fb764 end:0x022fb7b0
 
-src/auto/func_ov001_022fc318.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022fc318.c:
     complete
     .text       start:0x022fc318 end:0x022fc34c
 
-src/auto/func_ov001_022fc440.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022fc440.c:
     complete
     .text       start:0x022fc440 end:0x022fc494
 
-src/auto/func_ov001_022fc494.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022fc494.c:
     complete
     .text       start:0x022fc494 end:0x022fc4d4
 
-src/auto/func_ov001_022fc8dc.c:
+src/auto/ExtraBoss_Unk_ov001_022fc8dc.c:
     complete
     .text       start:0x022fc8dc end:0x022fc934
 
-src/auto/func_ov001_022fcaa4.c:
+src/auto/ExtraBossPlayer_Unk_ov001_022fcaa4.c:
     complete
     .text       start:0x022fcaa4 end:0x022fcae8
 
-src/auto/func_ov001_022fd1ec.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022fd1ec.c:
     complete
     .text       start:0x022fd1ec end:0x022fd220
 
-src/auto/func_ov001_022fe6b8.c:
+src/auto/ExtraBoss_Unk_ov001_022fe6b8.c:
     complete
     .text       start:0x022fe6b8 end:0x022fe710
 
-src/auto/func_ov001_022feee4.c:
+src/auto/ExtraBoss_Unk_ov001_022feee4.c:
     complete
     .text       start:0x022feee4 end:0x022fef1c
 
@@ -3116,23 +3116,23 @@ src/auto/ExtraBossPlayer_Action_Defeat.c:
     complete
     .text       start:0x02301d14 end:0x02301d70
 
-src/auto/func_ov001_02303fd4.c:
+src/auto/ExtraBoss_Unk_ov001_02303fd4.c:
     complete
     .text       start:0x02303fd4 end:0x02304028
 
-src/auto/func_ov001_02304410.c:
+src/auto/ExtraBoss_Unk_ov001_02304410.c:
     complete
     .text       start:0x02304410 end:0x02304460
 
-src/auto/func_ov001_023057f4.c:
+src/auto/ExtraBoss_Unk_ov001_023057f4.c:
     complete
     .text       start:0x023057f4 end:0x0230582c
 
-src/auto/func_ov001_0230582c.c:
+src/auto/ExtraBoss_Unk_ov001_0230582c.c:
     complete
     .text       start:0x0230582c end:0x0230587c
 
-src/auto/func_ov001_02305c84.c:
+src/auto/ExtraBoss_Unk_ov001_02305c84.c:
     complete
     .text       start:0x02305c84 end:0x02305cd8
 
@@ -3140,11 +3140,11 @@ src/auto/SpecialStageActObj_SpawnAt.c:
     complete
     .text       start:0x023070fc end:0x02307148
 
-src/auto/func_ov001_02308e44.c:
+src/auto/SpecialStageHud_Unk_ov001_02308e44.c:
     complete
     .text       start:0x02308e44 end:0x02308e90
 
-src/auto/func_ov001_02309994.c:
+src/auto/SpecialStageGimmick_Unk_ov001_02309994.c:
     complete
     .text       start:0x02309994 end:0x023099c4
 
@@ -3152,11 +3152,11 @@ src/auto/SpecialStage_State_Exit.c:
     complete
     .text       start:0x0230bc70 end:0x0230bca8
 
-src/auto/func_ov001_0230e6c0.c:
+src/auto/SpecialStageGimmick_Unk_ov001_0230e6c0.c:
     complete
     .text       start:0x0230e6c0 end:0x0230e710
 
-src/auto/func_ov001_0230e8fc.c:
+src/auto/SpecialStageGimmick_Unk_ov001_0230e8fc.c:
     complete
     .text       start:0x0230e8fc end:0x0230e94c
 
@@ -3172,7 +3172,7 @@ src/auto/SpecialStagePlayer_State_Celebrate.c:
     complete
     .text       start:0x02311064 end:0x02311098
 
-src/auto/func_ov001_02311abc.c:
+src/auto/SpecialStagePlayer_Unk_ov001_02311abc.c:
     complete
     .text       start:0x02311abc end:0x02311afc
 
@@ -3184,7 +3184,7 @@ src/auto/SpecialStagePlayer_UpdateTurn.c:
     complete
     .text       start:0x02311b74 end:0x02311bcc
 
-src/auto/func_ov001_02311ec8.c:
+src/auto/SpecialStagePlayer_Unk_ov001_02311ec8.c:
     complete
     .text       start:0x02311ec8 end:0x02311efc
 
@@ -3196,7 +3196,7 @@ src/auto/SpecialStagePlayer_Action_StartTrick.c:
     complete
     .text       start:0x02312a0c end:0x02312a5c
 
-src/auto/func_ov001_022cc8ec.c:
+src/auto/OptionsMenu_State_Unk_ov001_022cc8ec.c:
     complete
     .text       start:0x022cc8ec end:0x022cc998
 
@@ -3208,19 +3208,19 @@ src/auto/TryAgain_InitBackgrounds.c:
     complete
     .text       start:0x022d3f10 end:0x022d3fc8
 
-src/auto/func_ov001_022da784.c:
+src/auto/VsMenu_Unk_ov001_022da784.c:
     complete
     .text       start:0x022da784 end:0x022da850
 
-src/auto/func_ov001_022da850.c:
+src/auto/VsMenu_Unk_ov001_022da850.c:
     complete
     .text       start:0x022da850 end:0x022da91c
 
-src/auto/func_ov001_022da9fc.c:
+src/auto/VsMenu_Unk_ov001_022da9fc.c:
     complete
     .text       start:0x022da9fc end:0x022daaa8
 
-src/auto/func_ov001_022daaa8.c:
+src/auto/VsMenu_Unk_ov001_022daaa8.c:
     complete
     .text       start:0x022daaa8 end:0x022dab54
 
@@ -3228,11 +3228,11 @@ src/auto/ZoneActSelect_InitDisplay.c:
     complete
     .text       start:0x022e17fc end:0x022e18a4
 
-src/auto/func_ov001_022ed614.c:
+src/auto/Records_State_Unk_ov001_022ed614.c:
     complete
     .text       start:0x022ed614 end:0x022ed6c4
 
-src/auto/func_ov001_023062f0.c:
+src/auto/ExtraBoss_Unk_ov001_023062f0.c:
     complete
     .text       start:0x023062f0 end:0x023063a0
 
@@ -3252,7 +3252,7 @@ src/auto/StaffRoll_State_SkipBlaze.c:
     complete
     .text       start:0x022d1acc end:0x022d1bec
 
-src/auto/func_ov001_022e26d0.c:
+src/auto/ZoneMap_Unk_ov001_022e26d0.c:
     complete
     .text       start:0x022e26d0 end:0x022e27c4
 
@@ -3260,59 +3260,59 @@ src/auto/ZoneMap_GetNodeForStoryStep.c:
     complete
     .text       start:0x022e28ac end:0x022e299c
 
-src/auto/func_ov001_022e5928.c:
+src/auto/ZoneMap_Unk_ov001_022e5928.c:
     complete
     .text       start:0x022e5928 end:0x022e5a20
 
-src/auto/func_ov001_022e85c8.c:
+src/auto/ZoneMap_Unk_ov001_022e85c8.c:
     complete
     .text       start:0x022e85c8 end:0x022e870c
 
-src/auto/func_ov001_022eda54.c:
+src/auto/Records_Unk_ov001_022eda54.c:
     complete
     .text       start:0x022eda54 end:0x022edb3c
 
-src/auto/func_ov001_022ef558.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022ef558.c:
     complete
     .text       start:0x022ef558 end:0x022ef6c4
 
-src/auto/func_ov001_022ef6c4.c:
+src/auto/ExtraBoss_Unk_ov001_022ef6c4.c:
     complete
     .text       start:0x022ef6c4 end:0x022ef8c0
 
-src/auto/func_ov001_022f011c.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f011c.c:
     complete
     .text       start:0x022f011c end:0x022f0234
 
-src/auto/func_ov001_022f0234.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f0234.c:
     complete
     .text       start:0x022f0234 end:0x022f034c
 
-src/auto/func_ov001_022f0988.c:
+src/auto/ExtraBoss_Unk_ov001_022f0988.c:
     complete
     .text       start:0x022f0988 end:0x022f0b40
 
-src/auto/func_ov001_022f1ea0.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f1ea0.c:
     complete
     .text       start:0x022f1ea0 end:0x022f1fd8
 
-src/auto/func_ov001_022f2580.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f2580.c:
     complete
     .text       start:0x022f2580 end:0x022f2780
 
-src/auto/func_ov001_022f2b78.c:
+src/auto/ExtraBoss_Unk_ov001_022f2b78.c:
     complete
     .text       start:0x022f2b78 end:0x022f2ca4
 
-src/auto/func_ov001_022f47d4.c:
+src/auto/ExtraBoss_Unk_ov001_022f47d4.c:
     complete
     .text       start:0x022f47d4 end:0x022f4910
 
-src/auto/func_ov001_022f55e4.c:
+src/auto/ExtraBossObj_State_Unk_ov001_022f55e4.c:
     complete
     .text       start:0x022f55e4 end:0x022f56f8
 
-src/auto/func_ov001_022f904c.c:
+src/auto/ExtraAct_Unk_ov001_022f904c.c:
     complete
     .text       start:0x022f904c end:0x022f9134
 
@@ -3352,31 +3352,31 @@ src/auto/TitleMenu_InitDisplay.c:
     complete
     .text       start:0x022d91c4 end:0x022d9458
 
-src/auto/func_ov001_022dd8d8.c:
+src/auto/VsMenu_Unk_ov001_022dd8d8.c:
     complete
     .text       start:0x022dd8d8 end:0x022dd93c
 
-src/auto/func_ov001_022e5d08.c:
+src/auto/ZoneMap_Unk_ov001_022e5d08.c:
     complete
     .text       start:0x022e5d08 end:0x022e5d7c
 
-src/auto/func_ov001_022e5de0.c:
+src/auto/ZoneMap_Unk_ov001_022e5de0.c:
     complete
     .text       start:0x022e5de0 end:0x022e5e28
 
-src/auto/func_ov001_022e9194.c:
+src/auto/ZoneMapPause_Unk_ov001_022e9194.c:
     complete
     .text       start:0x022e9194 end:0x022e91cc
 
-src/auto/func_ov001_022e926c.c:
+src/auto/ZoneMapPause_Unk_ov001_022e926c.c:
     complete
     .text       start:0x022e926c end:0x022e92b4
 
-src/auto/func_ov001_022e9fa8.c:
+src/auto/TimeAttackMenu_Unk_ov001_022e9fa8.c:
     complete
     .text       start:0x022e9fa8 end:0x022e9fe4
 
-src/auto/func_ov001_022eb994.c:
+src/auto/TimeAttackMenu_Unk_ov001_022eb994.c:
     complete
     .text       start:0x022eb994 end:0x022eba08
 
@@ -3384,7 +3384,7 @@ src/clones/TryAgain_InitSubSprite.c:
     complete
     .text       start:0x022d3e4c end:0x022d3eb0
 
-src/clones/func_ov001_022e2b60.c:
+src/clones/ZoneMap_SetOrthoProjection.c:
     complete
     .text       start:0x022e2b60 end:0x022e2ba4
 
@@ -3396,7 +3396,7 @@ src/clones/Records_CreateFadeTask.c:
     complete
     .text       start:0x022ec8e8 end:0x022ec964
 
-src/clones/func_ov001_022ed990.c:
+src/clones/Records_Unk_ov001_022ed990.c:
     complete
     .text       start:0x022ed990 end:0x022ed9f4
 
@@ -3404,7 +3404,7 @@ src/auto/Ending_SubState_SonicShowPicture2.c:
     complete
     .text       start:0x022c7678 end:0x022c77e4
 
-src/auto/func_ov001_022ca364.c:
+src/auto/OptionsMenu_DrawSprite.c:
     complete
     .text       start:0x022ca364 end:0x022ca3c4
 
@@ -3444,11 +3444,11 @@ src/auto/TitleDemo_Start.c:
     complete
     .text       start:0x022d6d4c end:0x022d6dac
 
-src/auto/func_ov001_022d8248.c:
+src/auto/TitleMenu_Unk_ov001_022d8248.c:
     complete
     .text       start:0x022d8248 end:0x022d8294
 
-src/auto/func_ov001_022d8294.c:
+src/auto/TitleMenu_Unk_ov001_022d8294.c:
     complete
     .text       start:0x022d8294 end:0x022d82dc
 
@@ -3456,15 +3456,15 @@ src/auto/ZoneActSelect_LoadAssets.c:
     complete
     .text       start:0x022e17c8 end:0x022e17fc
 
-src/auto/func_ov001_022e38b8.c:
+src/auto/ZoneMap_Unk_ov001_022e38b8.c:
     complete
     .text       start:0x022e38b8 end:0x022e397c
 
-src/auto/func_ov001_022e736c.c:
+src/auto/ZoneMap_State_Unk_ov001_022e736c.c:
     complete
     .text       start:0x022e736c end:0x022e7428
 
-src/auto/func_ov001_022e93b0.c:
+src/auto/ZoneMapPause_Unk_ov001_022e93b0.c:
     complete
     .text       start:0x022e93b0 end:0x022e9408
 
@@ -3472,35 +3472,35 @@ src/auto/ZoneMapPause_ExecuteChoice.c:
     complete
     .text       start:0x022e9664 end:0x022e96a8
 
-src/auto/func_ov001_022ea5a8.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ea5a8.c:
     complete
     .text       start:0x022ea5a8 end:0x022ea644
 
-src/auto/func_ov001_022ebc3c.c:
+src/auto/TimeAttackMenu_Unk_ov001_022ebc3c.c:
     complete
     .text       start:0x022ebc3c end:0x022ebc98
 
-src/auto/func_ov001_022ed08c.c:
+src/auto/Records_Unk_ov001_022ed08c.c:
     complete
     .text       start:0x022ed08c end:0x022ed104
 
-src/auto/func_ov001_022ed14c.c:
+src/auto/Records_Unk_ov001_022ed14c.c:
     complete
     .text       start:0x022ed14c end:0x022ed188
 
-src/auto/func_ov001_022ed9f4.c:
+src/auto/Records_Unk_ov001_022ed9f4.c:
     complete
     .text       start:0x022ed9f4 end:0x022eda54
 
-src/auto/func_ov001_022eecdc.c:
+src/auto/ExtraBoss_Unk_ov001_022eecdc.c:
     complete
     .text       start:0x022eecdc end:0x022eed0c
 
-src/auto/func_ov001_022f3c30.c:
+src/auto/ExtraBoss_Unk_ov001_022f3c30.c:
     complete
     .text       start:0x022f3c30 end:0x022f3c60
 
-src/auto/func_ov001_022f8f70.c:
+src/auto/ExtraAct_Unk_ov001_022f8f70.c:
     complete
     .text       start:0x022f8f70 end:0x022f904c
 
@@ -3508,31 +3508,31 @@ src/auto/ExtraBossObj_IsOutOfArena.c:
     complete
     .text       start:0x02300b84 end:0x02300be4
 
-src/auto/func_ov001_0230319c.c:
+src/auto/ExtraBoss_Unk_ov001_0230319c.c:
     complete
     .text       start:0x0230319c end:0x023031e4
 
-src/auto/func_ov001_02303244.c:
+src/auto/ExtraBoss_Unk_ov001_02303244.c:
     complete
     .text       start:0x02303244 end:0x0230328c
 
-src/auto/func_ov001_023032ec.c:
+src/auto/ExtraBoss_Unk_ov001_023032ec.c:
     complete
     .text       start:0x023032ec end:0x02303334
 
-src/auto/func_ov001_02303394.c:
+src/auto/ExtraBoss_Unk_ov001_02303394.c:
     complete
     .text       start:0x02303394 end:0x023033dc
 
-src/auto/func_ov001_02303554.c:
+src/auto/ExtraBoss_Unk_ov001_02303554.c:
     complete
     .text       start:0x02303554 end:0x02303594
 
-src/auto/func_ov001_02305564.c:
+src/auto/ExtraBoss_Unk_ov001_02305564.c:
     complete
     .text       start:0x02305564 end:0x02305648
 
-src/auto/func_ov001_023057b4.c:
+src/auto/ExtraBoss_Unk_ov001_023057b4.c:
     complete
     .text       start:0x023057b4 end:0x023057f4
 
@@ -3576,39 +3576,39 @@ src/ov001_b/TransformDemo_LoadPlayerNarc.c:
     complete
     .text       start:0x022df0b4 end:0x022df3a4
 
-src/ov001_b/func_ov001_022ef11c.c:
+src/ov001_b/ExtraBoss_Unk_ov001_022ef11c.c:
     complete
     .text       start:0x022ef11c end:0x022ef558
 
-src/ov001_b/func_ov001_022f3164.c:
+src/ov001_b/ExtraBossObj_Draw_Unk_ov001_022f3164.c:
     complete
     .text       start:0x022f3164 end:0x022f3530
 
-src/ov001_b/func_ov001_022f3d6c.c:
+src/ov001_b/ExtraBossObj_Draw_Unk_ov001_022f3d6c.c:
     complete
     .text       start:0x022f3d6c end:0x022f4028
 
-src/ov001_b/func_ov001_022f41c4.c:
+src/ov001_b/ExtraBoss_Unk_ov001_022f41c4.c:
     complete
     .text       start:0x022f41c4 end:0x022f4634
 
-src/ov001_b/func_ov001_022f5a24.c:
+src/ov001_b/ExtraBossObj_State_Unk_ov001_022f5a24.c:
     complete
     .text       start:0x022f5a24 end:0x022f5da0
 
-src/ov001_b/func_ov001_022f6450.c:
+src/ov001_b/ExtraBoss_Unk_ov001_022f6450.c:
     complete
     .text       start:0x022f6450 end:0x022f687c
 
-src/ov001_b/func_ov001_022f687c.c:
+src/ov001_b/ExtraBossObj_Draw_Unk_ov001_022f687c.c:
     complete
     .text       start:0x022f687c end:0x022f6be8
 
-src/ov001_b/func_ov001_022f6be8.c:
+src/ov001_b/ExtraBoss_Unk_ov001_022f6be8.c:
     complete
     .text       start:0x022f6be8 end:0x022f6f40
 
-src/ov001_b/func_ov001_022f7e20.c:
+src/ov001_b/ExtraAct_Unk_ov001_022f7e20.c:
     complete
     .text       start:0x022f7e20 end:0x022f8110
 
@@ -3620,7 +3620,7 @@ src/ov001_b/ExtraAct_InitDisplay.c:
     complete
     .text       start:0x022f95ec end:0x022f99f8
 
-src/ov001_b/func_ov001_022fd744.c:
+src/ov001_b/ExtraBoss_Unk_ov001_022fd744.c:
     complete
     .text       start:0x022fd744 end:0x022fdaa0
 
@@ -3632,7 +3632,7 @@ src/ov001_b/ExtraBoss_InitDisplay.c:
     complete
     .text       start:0x022ff3dc end:0x022ff8ac
 
-src/ov001_b/func_ov001_0230063c.c:
+src/ov001_b/ExtraBossObj_Unk_ov001_0230063c.c:
     complete
     .text       start:0x0230063c end:0x02300978
 
@@ -3640,19 +3640,19 @@ src/ov001_b/ExtraBossObj_Destroy.c:
     complete
     .text       start:0x02301118 end:0x023014f4
 
-src/ov001_b/func_ov001_02302658.c:
+src/ov001_b/ExtraBoss_Unk_ov001_02302658.c:
     complete
     .text       start:0x02302658 end:0x023029b4
 
-src/ov001_b/func_ov001_02303594.c:
+src/ov001_b/ExtraBoss_Unk_ov001_02303594.c:
     complete
     .text       start:0x02303594 end:0x02303934
 
-src/ov001_b/func_ov001_02306738.c:
+src/ov001_b/ExtraBoss_Unk_ov001_02306738.c:
     complete
     .text       start:0x02306738 end:0x02306a20
 
-src/ov001_b/func_ov001_02306db0.c:
+src/ov001_b/SpecialStageActObj_Unk_ov001_02306db0.c:
     complete
     .text       start:0x02306db0 end:0x023070b0
 
@@ -3660,7 +3660,7 @@ src/ov001_b/SpecialStage_DrawFadeQuad.c:
     complete
     .text       start:0x0230b260 end:0x0230b504
 
-src/ov001_b/func_ov001_0231066c.c:
+src/ov001_b/SpecialStage_Unk_ov001_0231066c.c:
     complete
     .text       start:0x0231066c end:0x02310af4
 
@@ -3668,63 +3668,63 @@ src/ov001_b/SpecialStage_LoadPlayerArchive.c:
     complete
     .text       start:0x02313cb4 end:0x02314014
 
-src/ov001_c/func_ov001_022ee100.c:
+src/ov001_c/ExtraBoss_Unk_ov001_022ee100.c:
     complete
     .text       start:0x022ee100 end:0x022ee2b0
 
-src/ov001_c/func_ov001_022efa00.c:
+src/ov001_c/ExtraBossObj_State_Unk_ov001_022efa00.c:
     complete
     .text       start:0x022efa00 end:0x022efcdc
 
-src/ov001_c/func_ov001_022f034c.c:
+src/ov001_c/ExtraBossObj_State_Unk_ov001_022f034c.c:
     complete
     .text       start:0x022f034c end:0x022f0548
 
-src/ov001_c/func_ov001_022f0e4c.c:
+src/ov001_c/ExtraBossObj_State_Unk_ov001_022f0e4c.c:
     complete
     .text       start:0x022f0e4c end:0x022f10d0
 
-src/ov001_c/func_ov001_022f167c.c:
+src/ov001_c/ExtraBossObj_State_Unk_ov001_022f167c.c:
     complete
     .text       start:0x022f167c end:0x022f18e4
 
-src/ov001_c/func_ov001_022f2898.c:
+src/ov001_c/ExtraBoss_Unk_ov001_022f2898.c:
     complete
     .text       start:0x022f2898 end:0x022f2a8c
 
-src/ov001_c/func_ov001_022f2ca8.c:
+src/ov001_c/ExtraBoss_Unk_ov001_022f2ca8.c:
     complete
     .text       start:0x022f2ca8 end:0x022f2f14
 
-src/ov001_c/func_ov001_022f2f14.c:
+src/ov001_c/ExtraBossObj_Draw_Unk_ov001_022f2f14.c:
     complete
     .text       start:0x022f2f14 end:0x022f3164
 
-src/ov001_c/func_ov001_022f4634.c:
+src/ov001_c/ExtraBossObj_State_Unk_ov001_022f4634.c:
     complete
     .text       start:0x022f4634 end:0x022f47d4
 
-src/ov001_c/func_ov001_022f4a50.c:
+src/ov001_c/ExtraBossObj_State_Unk_ov001_022f4a50.c:
     complete
     .text       start:0x022f4a50 end:0x022f4c04
 
-src/ov001_c/func_ov001_022f5eb4.c:
+src/ov001_c/ExtraBossObj_State_Unk_ov001_022f5eb4.c:
     complete
     .text       start:0x022f5eb4 end:0x022f60a4
 
-src/ov001_c/func_ov001_022f7924.c:
+src/ov001_c/ExtraAct_State_Unk_ov001_022f7924.c:
     complete
     .text       start:0x022f7924 end:0x022f7b94
 
-src/ov001_c/func_ov001_022f7b94.c:
+src/ov001_c/ExtraAct_State_Unk_ov001_022f7b94.c:
     complete
     .text       start:0x022f7b94 end:0x022f7d64
 
-src/ov001_c/func_ov001_022f8858.c:
+src/ov001_c/ExtraAct_Unk_ov001_022f8858.c:
     complete
     .text       start:0x022f8858 end:0x022f8a40
 
-src/ov001_c/func_ov001_022f8c78.c:
+src/ov001_c/ExtraAct_Unk_ov001_022f8c78.c:
     complete
     .text       start:0x022f8c78 end:0x022f8e7c
 
@@ -3736,31 +3736,31 @@ src/ov001_c/ExtraAct_Start.c:
     complete
     .text       start:0x022f9eb4 end:0x022fa558
 
-src/ov001_c/func_ov001_022faa3c.c:
+src/ov001_c/ExtraBossObj_State_Unk_ov001_022faa3c.c:
     complete
     .text       start:0x022faa3c end:0x022fac54
 
-src/ov001_c/func_ov001_022fad38.c:
+src/ov001_c/ExtraBoss_Unk_ov001_022fad38.c:
     complete
     .text       start:0x022fad38 end:0x022faf00
 
-src/ov001_c/func_ov001_022fb3c8.c:
+src/ov001_c/ExtraBoss_Unk_ov001_022fb3c8.c:
     complete
     .text       start:0x022fb3c8 end:0x022fb590
 
-src/ov001_c/func_ov001_022fc09c.c:
+src/ov001_c/ExtraBoss_Unk_ov001_022fc09c.c:
     complete
     .text       start:0x022fc09c end:0x022fc318
 
-src/ov001_c/func_ov001_022fe710.c:
+src/ov001_c/ExtraBoss_Unk_ov001_022fe710.c:
     complete
     .text       start:0x022fe710 end:0x022fe8d4
 
-src/auto/func_ov001_022db014.c:
+src/auto/VsMenu_State_Unk_ov001_022db014.c:
     complete
     .text       start:0x022db014 end:0x022db150
 
-src/ov001_c/func_ov001_022feac8.c:
+src/ov001_c/ExtraBoss_Unk_ov001_022feac8.c:
     complete
     .text       start:0x022feac8 end:0x022fecb0
 
@@ -3792,23 +3792,23 @@ src/ov001_c/ExtraBossPlayer_Action_Dash.c:
     complete
     .text       start:0x023017c8 end:0x023019f8
 
-src/ov001_c/func_ov001_023041a8.c:
+src/ov001_c/ExtraBoss_Unk_ov001_023041a8.c:
     complete
     .text       start:0x023041a8 end:0x02304410
 
-src/ov001_c/func_ov001_02304624.c:
+src/ov001_c/ExtraBoss_Unk_ov001_02304624.c:
     complete
     .text       start:0x02304624 end:0x02304834
 
-src/ov001_c/func_ov001_02304a24.c:
+src/ov001_c/ExtraBoss_Unk_ov001_02304a24.c:
     complete
     .text       start:0x02304a24 end:0x02304e80
 
-src/ov001_c/func_ov001_02306424.c:
+src/ov001_c/ExtraBoss_Unk_ov001_02306424.c:
     complete
     .text       start:0x02306424 end:0x023065d4
 
-src/ov001_c/func_ov001_02307b44.c:
+src/ov001_c/SpecialStageHud_Unk_ov001_02307b44.c:
     complete
     .text       start:0x02307b44 end:0x02307d30
 
@@ -3816,15 +3816,15 @@ src/ov001_c/SpecialStageHud_DrawRingCounterScaled.c:
     complete
     .text       start:0x02308430 end:0x023085f4
 
-src/ov001_c/func_ov001_02308884.c:
+src/ov001_c/SpecialStageHud_Unk_ov001_02308884.c:
     complete
     .text       start:0x02308884 end:0x02308b74
 
-src/ov001_c/func_ov001_02309228.c:
+src/ov001_c/SpecialStageHud_Unk_ov001_02309228.c:
     complete
     .text       start:0x02309228 end:0x0230956c
 
-src/ov001_c/func_ov001_023095e0.c:
+src/ov001_c/SpecialStageHud_Unk_ov001_023095e0.c:
     complete
     .text       start:0x023095e0 end:0x02309894
 
@@ -3856,7 +3856,7 @@ src/ov001_c/SpecialStage_Shutdown.c:
     complete
     .text       start:0x0230c104 end:0x0230c364
 
-src/ov001_c/func_ov001_0230d28c.c:
+src/ov001_c/SpecialStageGimmick_Unk_ov001_0230d28c.c:
     complete
     .text       start:0x0230d28c end:0x0230d528
 
@@ -3872,11 +3872,11 @@ src/ov001_c/SpecialStage_ReleaseMapModels.c:
     complete
     .text       start:0x0230db5c end:0x0230de20
 
-src/ov001_c/func_ov001_0230ea6c.c:
+src/ov001_c/SpecialStage_Unk_ov001_0230ea6c.c:
     complete
     .text       start:0x0230ea6c end:0x0230ed48
 
-src/ov001_c/func_ov001_0230f284.c:
+src/ov001_c/SpecialStage_Unk_ov001_0230f284.c:
     complete
     .text       start:0x0230f284 end:0x0230f438
 
@@ -3904,7 +3904,7 @@ src/ov001_c/SpecialStagePlayer_State_Run.c:
     complete
     .text       start:0x02311bcc end:0x02311d94
 
-src/ov001_c/func_ov001_02311efc.c:
+src/ov001_c/SpecialStagePlayer_Unk_ov001_02311efc.c:
     complete
     .text       start:0x02311efc end:0x023120c8
 
@@ -3920,15 +3920,15 @@ src/ov001_c/SpecialStageCamera_Update.c:
     complete
     .text       start:0x023159b4 end:0x02315dc0
 
-src/ov001_d/func_ov001_022f0cbc.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f0cbc.c:
     complete
     .text       start:0x022f0cbc end:0x022f0e4c
 
-src/ov001_d/func_ov001_022f1130.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f1130.c:
     complete
     .text       start:0x022f1130 end:0x022f12c0
 
-src/ov001_d/func_ov001_022f18e4.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f18e4.c:
     complete
     .text       start:0x022f18e4 end:0x022f1a90
 
@@ -3936,19 +3936,19 @@ src/ov001_t/ZoneActSelectMode_ResetDisplay.c:
     complete
     .text       start:0x022c5c9c end:0x022c5d1c
 
-src/ov001_t/func_ov001_022c8674.c:
+src/ov001_t/OptionsWfsHost_State_LoadZoneFiles.c:
     complete
     .text       start:0x022c8674 end:0x022c86b8
 
-src/ov001_t/func_ov001_022c86b8.c:
+src/ov001_t/OptionsWfsHost_State_InitZoneFiles.c:
     complete
     .text       start:0x022c86b8 end:0x022c86f4
 
-src/ov001_t/func_ov001_022c86f4.c:
+src/ov001_t/OptionsWfsHost_State_LoadCommonFiles.c:
     complete
     .text       start:0x022c86f4 end:0x022c8738
 
-src/ov001_t/func_ov001_022c8738.c:
+src/ov001_t/OptionsWfsHost_State_InitCommonFiles.c:
     complete
     .text       start:0x022c8738 end:0x022c8774
 
@@ -3956,111 +3956,111 @@ src/ov001_t/OptionsFadeTask_Main.c:
     complete
     .text       start:0x022c89c8 end:0x022c8aa0
 
-src/ov001_t/func_ov001_022c90a8.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022c90a8.c:
     complete
     .text       start:0x022c90a8 end:0x022c9260
 
-src/ov001_t/func_ov001_022c9570.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022c9570.c:
     complete
     .text       start:0x022c9570 end:0x022c970c
 
-src/ov001_t/func_ov001_022c970c.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022c970c.c:
     complete
     .text       start:0x022c970c end:0x022c98a4
 
-src/ov001_t/func_ov001_022c98a4.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022c98a4.c:
     complete
     .text       start:0x022c98a4 end:0x022c9924
 
-src/ov001_t/func_ov001_022c9c0c.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022c9c0c.c:
     complete
     .text       start:0x022c9c0c end:0x022c9d58
 
-src/ov001_t/func_ov001_022c9d58.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022c9d58.c:
     complete
     .text       start:0x022c9d58 end:0x022c9f54
 
-src/ov001_t/func_ov001_022c9f54.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022c9f54.c:
     complete
     .text       start:0x022c9f54 end:0x022ca150
 
-src/ov001_t/func_ov001_022ca150.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022ca150.c:
     complete
     .text       start:0x022ca150 end:0x022ca1cc
 
-src/ov001_t/func_ov001_022ca1cc.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022ca1cc.c:
     complete
     .text       start:0x022ca1cc end:0x022ca248
 
-src/ov001_t/func_ov001_022ca3c4.c:
+src/ov001_t/OptionsMenu_DrawPage5.c:
     complete
     .text       start:0x022ca3c4 end:0x022ca508
 
-src/ov001_t/func_ov001_022ca508.c:
+src/ov001_t/OptionsMenu_DrawPage4.c:
     complete
     .text       start:0x022ca508 end:0x022ca710
 
-src/ov001_t/func_ov001_022ca9f4.c:
+src/ov001_t/OptionsMenu_DrawPage2.c:
     complete
     .text       start:0x022ca9f4 end:0x022cabd8
 
-src/ov001_t/func_ov001_022cabd8.c:
+src/ov001_t/OptionsMenu_DrawPage1.c:
     complete
     .text       start:0x022cabd8 end:0x022cadbc
 
-src/ov001_t/func_ov001_022cb134.c:
+src/ov001_t/OptionsMenu_OpenPage5.c:
     complete
     .text       start:0x022cb134 end:0x022cb20c
 
-src/ov001_t/func_ov001_022cb260.c:
+src/ov001_t/OptionsMenu_OpenPage3.c:
     complete
     .text       start:0x022cb260 end:0x022cb31c
 
-src/ov001_t/func_ov001_022cb32c.c:
+src/ov001_t/OptionsMenu_ClosePage1.c:
     complete
     .text       start:0x022cb32c end:0x022cb364
 
-src/ov001_t/func_ov001_022cb364.c:
+src/ov001_t/OptionsMenu_OpenPage1.c:
     complete
     .text       start:0x022cb364 end:0x022cb400
 
-src/ov001_t/func_ov001_022cb400.c:
+src/ov001_t/OptionsMenu_ClosePage0.c:
     complete
     .text       start:0x022cb400 end:0x022cb438
 
-src/ov001_t/func_ov001_022cb438.c:
+src/ov001_t/OptionsMenu_OpenPage0.c:
     complete
     .text       start:0x022cb438 end:0x022cb4d8
 
-src/ov001_t/func_ov001_022cb770.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022cb770.c:
     complete
     .text       start:0x022cb770 end:0x022cb834
 
-src/ov001_t/func_ov001_022cb834.c:
+src/ov001_t/Options_Unk_ov001_022cb834.c:
     complete
     .text       start:0x022cb834 end:0x022cb96c
 
-src/ov001_t/func_ov001_022cb96c.c:
+src/ov001_t/Options_Unk_ov001_022cb96c.c:
     complete
     .text       start:0x022cb96c end:0x022cba1c
 
-src/ov001_t/func_ov001_022cba1c.c:
+src/ov001_t/OptionsMenu_Unk_ov001_022cba1c.c:
     complete
     .text       start:0x022cba1c end:0x022cbac0
 
-src/ov001_t/func_ov001_022cbac0.c:
+src/ov001_t/Options_Unk_ov001_022cbac0.c:
     complete
     .text       start:0x022cbac0 end:0x022cbb7c
 
-src/ov001_t/func_ov001_022cbb7c.c:
+src/ov001_t/Options_Unk_ov001_022cbb7c.c:
     complete
     .text       start:0x022cbb7c end:0x022cbc2c
 
-src/ov001_t/func_ov001_022cbc2c.c:
+src/ov001_t/Options_Unk_ov001_022cbc2c.c:
     complete
     .text       start:0x022cbc2c end:0x022cbcec
 
-src/ov001_t/func_ov001_022cc044.c:
+src/ov001_t/Options_Unk_ov001_022cc044.c:
     complete
     .text       start:0x022cc044 end:0x022cc17c
 
@@ -4068,7 +4068,7 @@ src/ov001_t/OptionsMenu_State_TimeLimit.c:
     complete
     .text       start:0x022cd3c8 end:0x022cd558
 
-src/ov001_t/func_ov001_022cd558.c:
+src/ov001_t/OptionsMenu_State_Unk_ov001_022cd558.c:
     complete
     .text       start:0x022cd558 end:0x022cd6e8
 
@@ -4108,7 +4108,7 @@ src/ov001_t/TitleScreen_InitDisplay.c:
     complete
     .text       start:0x022d42ec end:0x022d44d4
 
-src/ov001_t/func_ov001_022d4538.c:
+src/ov001_t/TitleScreen_Unk_ov001_022d4538.c:
     complete
     .text       start:0x022d4538 end:0x022d46f4
 
@@ -4128,11 +4128,11 @@ src/ov001_t/TitleDemo_ShowBg2At.c:
     complete
     .text       start:0x022d59e0 end:0x022d5a18
 
-src/ov001_t/func_ov001_022d5b44.c:
+src/ov001_t/TitleDemo_Unk_ov001_022d5b44.c:
     complete
     .text       start:0x022d5b44 end:0x022d5b94
 
-src/ov001_t/func_ov001_022d5b94.c:
+src/ov001_t/TitleDemo_Unk_ov001_022d5b94.c:
     complete
     .text       start:0x022d5b94 end:0x022d5be4
 
@@ -4176,15 +4176,15 @@ src/ov001_t/TitleMenu_OpenRootPage.c:
     complete
     .text       start:0x022d7210 end:0x022d731c
 
-src/ov001_t/func_ov001_022d7394.c:
+src/ov001_t/TitleMenu_Unk_ov001_022d7394.c:
     complete
     .text       start:0x022d7394 end:0x022d7454
 
-src/ov001_t/func_ov001_022d7454.c:
+src/ov001_t/TitleMenu_Unk_ov001_022d7454.c:
     complete
     .text       start:0x022d7454 end:0x022d74dc
 
-src/ov001_t/func_ov001_022d77a8.c:
+src/ov001_t/TitleMenu_Unk_ov001_022d77a8.c:
     complete
     .text       start:0x022d77a8 end:0x022d78f4
 
@@ -4192,107 +4192,107 @@ src/ov001_t/TitleMenuFadeTask_Main.c:
     complete
     .text       start:0x022d84f8 end:0x022d85d0
 
-src/ov001_t/func_ov001_022d96d0.c:
+src/ov001_t/VsMenuBrightnessFade_Main.c:
     complete
     .text       start:0x022d96d0 end:0x022d97a8
 
-src/ov001_t/func_ov001_022d9a54.c:
+src/ov001_t/VsMenu_BuildGlyphString.c:
     complete
     .text       start:0x022d9a54 end:0x022d9ab4
 
-src/ov001_t/func_ov001_022d9b3c.c:
+src/ov001_t/VsMenu_Unk_ov001_022d9b3c.c:
     complete
     .text       start:0x022d9b3c end:0x022d9cb0
 
-src/ov001_t/func_ov001_022d9e74.c:
+src/ov001_t/VsMenu_Unk_ov001_022d9e74.c:
     complete
     .text       start:0x022d9e74 end:0x022d9eb4
 
-src/ov001_t/func_ov001_022d9eb4.c:
+src/ov001_t/VsMenu_Unk_ov001_022d9eb4.c:
     complete
     .text       start:0x022d9eb4 end:0x022d9ef4
 
-src/ov001_t/func_ov001_022d9f2c.c:
+src/ov001_t/VsMenu_Unk_ov001_022d9f2c.c:
     complete
     .text       start:0x022d9f2c end:0x022d9f6c
 
-src/ov001_t/func_ov001_022d9fa4.c:
+src/ov001_t/VsMenu_Unk_ov001_022d9fa4.c:
     complete
     .text       start:0x022d9fa4 end:0x022d9fe4
 
-src/ov001_t/func_ov001_022d9fe4.c:
+src/ov001_t/VsMenu_Unk_ov001_022d9fe4.c:
     complete
     .text       start:0x022d9fe4 end:0x022da024
 
-src/ov001_t/func_ov001_022da024.c:
+src/ov001_t/VsMenu_Unk_ov001_022da024.c:
     complete
     .text       start:0x022da024 end:0x022da064
 
-src/ov001_t/func_ov001_022da064.c:
+src/ov001_t/VsMenu_Unk_ov001_022da064.c:
     complete
     .text       start:0x022da064 end:0x022da0dc
 
-src/ov001_t/func_ov001_022da0dc.c:
+src/ov001_t/VsMenu_Unk_ov001_022da0dc.c:
     complete
     .text       start:0x022da0dc end:0x022da154
 
-src/ov001_t/func_ov001_022da154.c:
+src/ov001_t/VsMenu_Unk_ov001_022da154.c:
     complete
     .text       start:0x022da154 end:0x022da1cc
 
-src/ov001_t/func_ov001_022da1cc.c:
+src/ov001_t/VsMenu_Unk_ov001_022da1cc.c:
     complete
     .text       start:0x022da1cc end:0x022da244
 
-src/ov001_t/func_ov001_022da244.c:
+src/ov001_t/VsMenu_Unk_ov001_022da244.c:
     complete
     .text       start:0x022da244 end:0x022da288
 
-src/ov001_t/func_ov001_022da288.c:
+src/ov001_t/VsMenu_Unk_ov001_022da288.c:
     complete
     .text       start:0x022da288 end:0x022da2cc
 
-src/ov001_t/func_ov001_022da304.c:
+src/ov001_t/VsMenu_Unk_ov001_022da304.c:
     complete
     .text       start:0x022da304 end:0x022da33c
 
-src/ov001_t/func_ov001_022da33c.c:
+src/ov001_t/VsMenu_Unk_ov001_022da33c.c:
     complete
     .text       start:0x022da33c end:0x022da374
 
-src/ov001_t/func_ov001_022da374.c:
+src/ov001_t/VsMenu_Unk_ov001_022da374.c:
     complete
     .text       start:0x022da374 end:0x022da3ac
 
-src/ov001_t/func_ov001_022da3ac.c:
+src/ov001_t/VsMenu_Unk_ov001_022da3ac.c:
     complete
     .text       start:0x022da3ac end:0x022da3e4
 
-src/ov001_t/func_ov001_022da3e4.c:
+src/ov001_t/VsMenu_Unk_ov001_022da3e4.c:
     complete
     .text       start:0x022da3e4 end:0x022da41c
 
-src/ov001_t/func_ov001_022dac0c.c:
+src/ov001_t/VsMenu_State_Unk_ov001_022dac0c.c:
     complete
     .text       start:0x022dac0c end:0x022dad40
 
-src/ov001_t/func_ov001_022daea0.c:
+src/ov001_t/VsMenu_State_Unk_ov001_022daea0.c:
     complete
     .text       start:0x022daea0 end:0x022dafdc
 
-src/ov001_t/func_ov001_022dc0b4.c:
+src/ov001_t/VsMenu_State_Unk_ov001_022dc0b4.c:
     complete
     .text       start:0x022dc0b4 end:0x022dc1e8
 
-src/ov001_t/func_ov001_022dc1e8.c:
+src/ov001_t/VsMenu_State_Unk_ov001_022dc1e8.c:
     complete
     .text       start:0x022dc1e8 end:0x022dc324
 
-src/ov001_t/func_ov001_022dc998.c:
+src/ov001_t/VsMenu_State_Unk_ov001_022dc998.c:
     complete
     .text       start:0x022dc998 end:0x022dcad4
 
-src/ov001_t/func_ov001_022dcad4.c:
+src/ov001_t/VsMenu_State_Unk_ov001_022dcad4.c:
     complete
     .text       start:0x022dcad4 end:0x022dcc10
 
@@ -4304,11 +4304,11 @@ src/ov001_t/VsMenu_State_LoadAssets.c:
     complete
     .text       start:0x022dd4b8 end:0x022dd534
 
-src/ov001_t/func_ov001_022ddb00.c:
+src/ov001_t/VsMenu_Unk_ov001_022ddb00.c:
     complete
     .text       start:0x022ddb00 end:0x022ddc3c
 
-src/ov001_t/func_ov001_022e19d0.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e19d0.c:
     complete
     .text       start:0x022e19d0 end:0x022e1a30
 
@@ -4316,27 +4316,27 @@ src/ov001_t/ZoneMap_SelectTalkDemo.c:
     complete
     .text       start:0x022e1a30 end:0x022e1aac
 
-src/ov001_t/func_ov001_022e22d0.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e22d0.c:
     complete
     .text       start:0x022e22d0 end:0x022e23b0
 
-src/ov001_t/func_ov001_022e23b0.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e23b0.c:
     complete
     .text       start:0x022e23b0 end:0x022e2480
 
-src/ov001_t/func_ov001_022e24a8.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e24a8.c:
     complete
     .text       start:0x022e24a8 end:0x022e252c
 
-src/ov001_t/func_ov001_022e252c.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e252c.c:
     complete
     .text       start:0x022e252c end:0x022e25b0
 
-src/ov001_t/func_ov001_022e25b0.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e25b0.c:
     complete
     .text       start:0x022e25b0 end:0x022e2640
 
-src/ov001_t/func_ov001_022e2640.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e2640.c:
     complete
     .text       start:0x022e2640 end:0x022e26d0
 
@@ -4352,67 +4352,67 @@ src/ov001_t/ZoneMap_GetSonicStoryStep.c:
     complete
     .text       start:0x022e2a44 end:0x022e2ad8
 
-src/ov001_t/func_ov001_022e34dc.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e34dc.c:
     complete
     .text       start:0x022e34dc end:0x022e3510
 
-src/ov001_t/func_ov001_022e3510.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e3510.c:
     complete
     .text       start:0x022e3510 end:0x022e3544
 
-src/ov001_t/func_ov001_022e3564.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e3564.c:
     complete
     .text       start:0x022e3564 end:0x022e35c4
 
-src/ov001_t/func_ov001_022e37bc.c:
+src/ov001_t/ZoneMap_IsCornerButtonOrBPressed.c:
     complete
     .text       start:0x022e37bc end:0x022e37fc
 
-src/ov001_t/func_ov001_022e4000.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e4000.c:
     complete
     .text       start:0x022e4000 end:0x022e4198
 
-src/ov001_t/func_ov001_022e4198.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e4198.c:
     complete
     .text       start:0x022e4198 end:0x022e432c
 
-src/ov001_t/func_ov001_022e432c.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e432c.c:
     complete
     .text       start:0x022e432c end:0x022e4494
 
-src/ov001_t/func_ov001_022e4494.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e4494.c:
     complete
     .text       start:0x022e4494 end:0x022e4748
 
-src/ov001_t/func_ov001_022e4748.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e4748.c:
     complete
     .text       start:0x022e4748 end:0x022e49c8
 
-src/ov001_t/func_ov001_022e4eb8.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e4eb8.c:
     complete
     .text       start:0x022e4eb8 end:0x022e5164
 
-src/ov001_t/func_ov001_022e57d4.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e57d4.c:
     complete
     .text       start:0x022e57d4 end:0x022e5928
 
-src/ov001_t/func_ov001_022e690c.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e690c.c:
     complete
     .text       start:0x022e690c end:0x022e6998
 
-src/ov001_t/func_ov001_022e6998.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e6998.c:
     complete
     .text       start:0x022e6998 end:0x022e6bb4
 
-src/ov001_t/func_ov001_022e6bb4.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e6bb4.c:
     complete
     .text       start:0x022e6bb4 end:0x022e6c90
 
-src/ov001_t/func_ov001_022e6c90.c:
+src/ov001_t/ZoneMap_Unk_ov001_022e6c90.c:
     complete
     .text       start:0x022e6c90 end:0x022e6dec
 
-src/ov001_d/func_ov001_022ee594.c:
+src/ov001_d/ExtraBoss_Unk_ov001_022ee594.c:
     complete
     .text       start:0x022ee594 end:0x022ee73c
 
@@ -4420,59 +4420,59 @@ src/ov001_t/ZoneMap_Create.c:
     complete
     .text       start:0x022e8410 end:0x022e8470
 
-src/ov001_d/func_ov001_022efcdc.c:
+src/ov001_d/ExtraBoss_Unk_ov001_022efcdc.c:
     complete
     .text       start:0x022efcdc end:0x022efe50
 
-src/ov001_t/func_ov001_022e8be0.c:
+src/ov001_t/ZoneMapPause_Unk_ov001_022e8be0.c:
     complete
     .text       start:0x022e8be0 end:0x022e8d44
 
-src/ov001_d/func_ov001_022efea0.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022efea0.c:
     complete
     .text       start:0x022efea0 end:0x022efff4
 
-src/ov001_d/func_ov001_022efff4.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022efff4.c:
     complete
     .text       start:0x022efff4 end:0x022f011c
 
-src/ov001_t/func_ov001_022e90f4.c:
+src/ov001_t/ZoneMapPause_Unk_ov001_022e90f4.c:
     complete
     .text       start:0x022e90f4 end:0x022e9128
 
-src/ov001_d/func_ov001_022f0548.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f0548.c:
     complete
     .text       start:0x022f0548 end:0x022f06c4
 
-src/ov001_t/func_ov001_022e9128.c:
+src/ov001_t/ZoneMapPause_Unk_ov001_022e9128.c:
     complete
     .text       start:0x022e9128 end:0x022e915c
 
-src/ov001_d/func_ov001_022f06c4.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f06c4.c:
     complete
     .text       start:0x022f06c4 end:0x022f0840
 
-src/ov001_t/func_ov001_022e915c.c:
+src/ov001_t/ZoneMapPause_Unk_ov001_022e915c.c:
     complete
     .text       start:0x022e915c end:0x022e9194
 
-src/ov001_t/func_ov001_022e91cc.c:
+src/ov001_t/ZoneMapPause_Unk_ov001_022e91cc.c:
     complete
     .text       start:0x022e91cc end:0x022e9200
 
-src/ov001_d/func_ov001_022f0840.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f0840.c:
     complete
     .text       start:0x022f0840 end:0x022f0988
 
-src/ov001_d/func_ov001_022f0b70.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f0b70.c:
     complete
     .text       start:0x022f0b70 end:0x022f0cbc
 
-src/ov001_t/func_ov001_022e9200.c:
+src/ov001_t/ZoneMapPause_Unk_ov001_022e9200.c:
     complete
     .text       start:0x022e9200 end:0x022e9234
 
-src/ov001_t/func_ov001_022e9234.c:
+src/ov001_t/ZoneMapPause_Unk_ov001_022e9234.c:
     complete
     .text       start:0x022e9234 end:0x022e926c
 
@@ -4480,35 +4480,35 @@ src/ov001_t/TimeAttackMenuFadeTask_Main.c:
     complete
     .text       start:0x022e9ad0 end:0x022e9ba8
 
-src/ov001_d/func_ov001_022f12c0.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f12c0.c:
     complete
     .text       start:0x022f12c0 end:0x022f1438
 
-src/ov001_t/func_ov001_022e9c24.c:
+src/ov001_t/TimeAttackMenu_Unk_ov001_022e9c24.c:
     complete
     .text       start:0x022e9c24 end:0x022e9dac
 
-src/ov001_t/func_ov001_022e9df0.c:
+src/ov001_t/TimeAttackMenu_Unk_ov001_022e9df0.c:
     complete
     .text       start:0x022e9df0 end:0x022e9e30
 
-src/ov001_d/func_ov001_022f1a90.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f1a90.c:
     complete
     .text       start:0x022f1a90 end:0x022f1c0c
 
-src/ov001_t/func_ov001_022e9e30.c:
+src/ov001_t/TimeAttackMenu_Unk_ov001_022e9e30.c:
     complete
     .text       start:0x022e9e30 end:0x022e9e70
 
-src/ov001_d/func_ov001_022f1d54.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f1d54.c:
     complete
     .text       start:0x022f1d54 end:0x022f1ea0
 
-src/ov001_t/func_ov001_022e9fe4.c:
+src/ov001_t/TimeAttackMenu_Unk_ov001_022e9fe4.c:
     complete
     .text       start:0x022e9fe4 end:0x022ea1b8
 
-src/ov001_d/func_ov001_022f1fd8.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f1fd8.c:
     complete
     .text       start:0x022f1fd8 end:0x022f2138
 
@@ -4516,7 +4516,7 @@ src/ov001_t/TimeAttackMenu_InitBackgrounds.c:
     complete
     .text       start:0x022ebfd4 end:0x022ec16c
 
-src/ov001_d/func_ov001_022f2138.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f2138.c:
     complete
     .text       start:0x022f2138 end:0x022f22ac
 
@@ -4524,7 +4524,7 @@ src/ov001_t/Records_ResetDisplay.c:
     complete
     .text       start:0x022ec41c end:0x022ec49c
 
-src/ov001_d/func_ov001_022f22ac.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f22ac.c:
     complete
     .text       start:0x022f22ac end:0x022f240c
 
@@ -4532,15 +4532,15 @@ src/ov001_t/RecordsFadeTask_Main.c:
     complete
     .text       start:0x022ec810 end:0x022ec8e8
 
-src/ov001_d/func_ov001_022f240c.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f240c.c:
     complete
     .text       start:0x022f240c end:0x022f2580
 
-src/ov001_t/func_ov001_022ec980.c:
+src/ov001_t/Records_Unk_ov001_022ec980.c:
     complete
     .text       start:0x022ec980 end:0x022ec9e0
 
-src/ov001_d/func_ov001_022f4d74.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f4d74.c:
     complete
     .text       start:0x022f4d74 end:0x022f4e88
 
@@ -4548,7 +4548,7 @@ src/ov001_t2/ZoneActSelectMode_Start.c:
     complete
     .text       start:0x022c6004 end:0x022c6090
 
-src/ov001_d/func_ov001_022f54dc.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022f54dc.c:
     complete
     .text       start:0x022f54dc end:0x022f55e4
 
@@ -4556,23 +4556,23 @@ src/ov001_t2/Options_CreateFadeTask.c:
     complete
     .text       start:0x022c8aa0 end:0x022c8b14
 
-src/ov001_d/func_ov001_022fc708.c:
+src/ov001_d/ExtraBoss_Unk_ov001_022fc708.c:
     complete
     .text       start:0x022fc708 end:0x022fc89c
 
-src/ov001_t2/func_ov001_022c9b78.c:
+src/ov001_t2/OptionsMenu_Unk_ov001_022c9b78.c:
     complete
     .text       start:0x022c9b78 end:0x022c9c0c
 
-src/ov001_t2/func_ov001_022ca248.c:
+src/ov001_t2/OptionsMenu_Unk_ov001_022ca248.c:
     complete
     .text       start:0x022ca248 end:0x022ca2d4
 
-src/ov001_d/func_ov001_022fd2dc.c:
+src/ov001_d/ExtraBossPlayer_Unk_ov001_022fd2dc.c:
     complete
     .text       start:0x022fd2dc end:0x022fd428
 
-src/ov001_t2/func_ov001_022ca2d4.c:
+src/ov001_t2/OptionsMenu_Unk_ov001_022ca2d4.c:
     complete
     .text       start:0x022ca2d4 end:0x022ca364
 
@@ -4580,31 +4580,31 @@ src/ov001_d/ExtraBossPlayer_ChangeState.c:
     complete
     .text       start:0x023024d0 end:0x02302658
 
-src/ov001_t2/func_ov001_022cb4d8.c:
+src/ov001_t2/OptionsMenu_DrawItemLabel2.c:
     complete
     .text       start:0x022cb4d8 end:0x022cb540
 
-src/ov001_t2/func_ov001_022cb540.c:
+src/ov001_t2/OptionsMenu_DrawItemLabel1.c:
     complete
     .text       start:0x022cb540 end:0x022cb5ac
 
-src/ov001_t2/func_ov001_022cb708.c:
+src/ov001_t2/Options_Unk_ov001_022cb708.c:
     complete
     .text       start:0x022cb708 end:0x022cb770
 
-src/ov001_t2/func_ov001_022cbcec.c:
+src/ov001_t2/OptionsMenu_UpdatePage.c:
     complete
     .text       start:0x022cbcec end:0x022cbd60
 
-src/ov001_t2/func_ov001_022cbd60.c:
+src/ov001_t2/OptionsMenu_DrawLinkLevelIcon.c:
     complete
     .text       start:0x022cbd60 end:0x022cbdf0
 
-src/ov001_t2/func_ov001_022cc17c.c:
+src/ov001_t2/OptionsMenu_UpdateAnims.c:
     complete
     .text       start:0x022cc17c end:0x022cc210
 
-src/ov001_t2/func_ov001_022ccbe0.c:
+src/ov001_t2/OptionsMenu_State_Unk_ov001_022ccbe0.c:
     complete
     .text       start:0x022ccbe0 end:0x022ccc6c
 
@@ -4620,11 +4620,11 @@ src/ov001_t2/PostStaffRollFade_Main.c:
     complete
     .text       start:0x022cf110 end:0x022cf190
 
-src/ov001_t2/func_ov001_022cfe58.c:
+src/ov001_t2/StaffRoll_Unk_ov001_022cfe58.c:
     complete
     .text       start:0x022cfe58 end:0x022cfecc
 
-src/ov001_t2/func_ov001_022cff74.c:
+src/ov001_t2/StaffRoll_Unk_ov001_022cff74.c:
     complete
     .text       start:0x022cff74 end:0x022cffdc
 
@@ -4632,11 +4632,11 @@ src/ov001_t2/StaffRollCredit_Main.c:
     complete
     .text       start:0x022d0094 end:0x022d0128
 
-src/ov001_t2/func_ov001_022d019c.c:
+src/ov001_t2/StaffRoll_Unk_ov001_022d019c.c:
     complete
     .text       start:0x022d019c end:0x022d0220
 
-src/ov001_t2/func_ov001_022d0220.c:
+src/ov001_t2/StaffRoll_Unk_ov001_022d0220.c:
     complete
     .text       start:0x022d0220 end:0x022d02a8
 
@@ -4680,19 +4680,19 @@ src/ov001_t2/TitleScreen_CreateFadeTask.c:
     complete
     .text       start:0x022d48ec end:0x022d4960
 
-src/ov001_t2/func_ov001_022d5738.c:
+src/ov001_t2/TitleDemo_Unk_ov001_022d5738.c:
     complete
     .text       start:0x022d5738 end:0x022d57b4
 
-src/ov001_t2/func_ov001_022d58ac.c:
+src/ov001_t2/TitleDemo_Unk_ov001_022d58ac.c:
     complete
     .text       start:0x022d58ac end:0x022d592c
 
-src/ov001_t2/func_ov001_022d592c.c:
+src/ov001_t2/TitleDemo_Unk_ov001_022d592c.c:
     complete
     .text       start:0x022d592c end:0x022d59a8
 
-src/ov001_t2/func_ov001_022d5a7c.c:
+src/ov001_t2/TitleDemo_Unk_ov001_022d5a7c.c:
     complete
     .text       start:0x022d5a7c end:0x022d5af0
 
@@ -4700,11 +4700,11 @@ src/ov001_t2/TitleDemo_InitSubSprite.c:
     complete
     .text       start:0x022d6864 end:0x022d68d4
 
-src/ov001_t2/func_ov001_022d78f4.c:
+src/ov001_t2/TitleMenu_Unk_ov001_022d78f4.c:
     complete
     .text       start:0x022d78f4 end:0x022d7968
 
-src/ov001_t2/func_ov001_022d7968.c:
+src/ov001_t2/TitleMenu_Unk_ov001_022d7968.c:
     complete
     .text       start:0x022d7968 end:0x022d79d8
 
@@ -4712,11 +4712,11 @@ src/ov001_t2/TitleMenu_CreateFadeTask.c:
     complete
     .text       start:0x022d79d8 end:0x022d7a60
 
-src/ov001_t2/func_ov001_022d7b7c.c:
+src/ov001_t2/TitleMenu_Unk_ov001_022d7b7c.c:
     complete
     .text       start:0x022d7b7c end:0x022d7c04
 
-src/ov001_t2/func_ov001_022d7e60.c:
+src/ov001_t2/TitleMenu_Unk_ov001_022d7e60.c:
     complete
     .text       start:0x022d7e60 end:0x022d7ee8
 
@@ -4732,43 +4732,43 @@ src/ov001_t2/TitleMenu_Start.c:
     complete
     .text       start:0x022d9650 end:0x022d96b8
 
-src/ov001_t2/func_ov001_022d97a8.c:
+src/ov001_t2/VsMenu_CreateBrightnessFade.c:
     complete
     .text       start:0x022d97a8 end:0x022d9814
 
-src/ov001_t2/func_ov001_022d9cf8.c:
+src/ov001_t2/VsMenu_Unk_ov001_022d9cf8.c:
     complete
     .text       start:0x022d9cf8 end:0x022d9d64
 
-src/ov001_t2/func_ov001_022d9d98.c:
+src/ov001_t2/VsMenu_Unk_ov001_022d9d98.c:
     complete
     .text       start:0x022d9d98 end:0x022d9e2c
 
-src/ov001_t2/func_ov001_022da614.c:
+src/ov001_t2/VsMenu_Unk_ov001_022da614.c:
     complete
     .text       start:0x022da614 end:0x022da694
 
-src/ov001_t2/func_ov001_022da91c.c:
+src/ov001_t2/VsMenu_Unk_ov001_022da91c.c:
     complete
     .text       start:0x022da91c end:0x022da9a8
 
-src/ov001_t2/func_ov001_022dab54.c:
+src/ov001_t2/VsMenu_Unk_ov001_022dab54.c:
     complete
     .text       start:0x022dab54 end:0x022dabe4
 
-src/ov001_t2/func_ov001_022dbdb0.c:
+src/ov001_t2/VsMenu_State_Unk_ov001_022dbdb0.c:
     complete
     .text       start:0x022dbdb0 end:0x022dbe3c
 
-src/ov001_t2/func_ov001_022dc410.c:
+src/ov001_t2/VsMenu_State_Unk_ov001_022dc410.c:
     complete
     .text       start:0x022dc410 end:0x022dc498
 
-src/ov001_t2/func_ov001_022dc4f0.c:
+src/ov001_t2/VsMenu_State_Unk_ov001_022dc4f0.c:
     complete
     .text       start:0x022dc4f0 end:0x022dc580
 
-src/ov001_t2/func_ov001_022dcd24.c:
+src/ov001_t2/VsMenu_State_Unk_ov001_022dcd24.c:
     complete
     .text       start:0x022dcd24 end:0x022dcdbc
 
@@ -4776,7 +4776,7 @@ src/ov001_t2/VsMenu_ReleaseSprites.c:
     complete
     .text       start:0x022dd728 end:0x022dd770
 
-src/ov001_t2/func_ov001_022ddc3c.c:
+src/ov001_t2/VsMenu_Unk_ov001_022ddc3c.c:
     complete
     .text       start:0x022ddc3c end:0x022ddcd4
 
@@ -4784,23 +4784,23 @@ src/ov001_t2/VsMenu_Create.c:
     complete
     .text       start:0x022ddcd4 end:0x022ddd70
 
-src/ov001_t2/func_ov001_022e06e4.c:
+src/ov001_t2/ZoneActSelect_Unk_ov001_022e06e4.c:
     complete
     .text       start:0x022e06e4 end:0x022e0784
 
-src/ov001_t2/func_ov001_022e08e0.c:
+src/ov001_t2/ZoneActSelect_Unk_ov001_022e08e0.c:
     complete
     .text       start:0x022e08e0 end:0x022e0968
 
-src/ov001_t2/func_ov001_022e0968.c:
+src/ov001_t2/ZoneActSelect_Unk_ov001_022e0968.c:
     complete
     .text       start:0x022e0968 end:0x022e09d0
 
-src/ov001_t2/func_ov001_022e0dfc.c:
+src/ov001_t2/ZoneActSelect_Unk_ov001_022e0dfc.c:
     complete
     .text       start:0x022e0dfc end:0x022e0e6c
 
-src/ov001_t2/func_ov001_022e14dc.c:
+src/ov001_t2/ZoneActSelect_Unk_ov001_022e14dc.c:
     complete
     .text       start:0x022e14dc end:0x022e153c
 
@@ -4812,35 +4812,35 @@ src/ov001_t2/ZoneMap_CreateFadeTask.c:
     complete
     .text       start:0x022e213c end:0x022e21b8
 
-src/ov001_t2/func_ov001_022e2af8.c:
+src/ov001_t2/ZoneMap_Unk_ov001_022e2af8.c:
     complete
     .text       start:0x022e2af8 end:0x022e2b60
 
-src/ov001_t2/func_ov001_022e33c0.c:
+src/ov001_t2/ZoneMap_Unk_ov001_022e33c0.c:
     complete
     .text       start:0x022e33c0 end:0x022e345c
 
-src/ov001_t2/func_ov001_022e3608.c:
+src/ov001_t2/ZoneMap_Unk_ov001_022e3608.c:
     complete
     .text       start:0x022e3608 end:0x022e3678
 
-src/ov001_t2/func_ov001_022e4ac4.c:
+src/ov001_t2/ZoneMap_Unk_ov001_022e4ac4.c:
     complete
     .text       start:0x022e4ac4 end:0x022e4b5c
 
-src/ov001_t2/func_ov001_022e6870.c:
+src/ov001_t2/ZoneMap_Unk_ov001_022e6870.c:
     complete
     .text       start:0x022e6870 end:0x022e690c
 
-src/ov001_t2/func_ov001_022e6ed0.c:
+src/ov001_t2/ZoneMap_State_Unk_ov001_022e6ed0.c:
     complete
     .text       start:0x022e6ed0 end:0x022e6f3c
 
-src/ov001_t2/func_ov001_022e7274.c:
+src/ov001_t2/ZoneMap_State_Unk_ov001_022e7274.c:
     complete
     .text       start:0x022e7274 end:0x022e7308
 
-src/ov001_t2/func_ov001_022e855c.c:
+src/ov001_t2/ZoneMap_Unk_ov001_022e855c.c:
     complete
     .text       start:0x022e855c end:0x022e85c8
 
@@ -4848,11 +4848,11 @@ src/ov001_t2/ZoneMap_LoadAssets.c:
     complete
     .text       start:0x022e89b4 end:0x022e8a24
 
-src/ov001_t2/func_ov001_022e8b5c.c:
+src/ov001_t2/ZoneMapPause_Unk_ov001_022e8b5c.c:
     complete
     .text       start:0x022e8b5c end:0x022e8be0
 
-src/ov001_t2/func_ov001_022e8d88.c:
+src/ov001_t2/ZoneMapPause_State_Unk_ov001_022e8d88.c:
     complete
     .text       start:0x022e8d88 end:0x022e8e04
 
@@ -4860,15 +4860,15 @@ src/ov001_t2/ZoneMapPause_State_Open.c:
     complete
     .text       start:0x022e901c end:0x022e90b8
 
-src/ov001_t2/func_ov001_022e9708.c:
+src/ov001_t2/TimeAttackMenu_Unk_ov001_022e9708.c:
     complete
     .text       start:0x022e9708 end:0x022e9778
 
-src/ov001_t2/func_ov001_022ea2f0.c:
+src/ov001_t2/TimeAttackMenu_Unk_ov001_022ea2f0.c:
     complete
     .text       start:0x022ea2f0 end:0x022ea360
 
-src/ov001_t2/func_ov001_022eba08.c:
+src/ov001_t2/TimeAttackMenu_Unk_ov001_022eba08.c:
     complete
     .text       start:0x022eba08 end:0x022eba70
 
@@ -4880,19 +4880,19 @@ src/ov001_t2/TimeAttackMenu_LoadAssets.c:
     complete
     .text       start:0x022ec16c end:0x022ec1e4
 
-src/ov001_t2/func_ov001_022ec38c.c:
+src/ov001_t2/Records_Unk_ov001_022ec38c.c:
     complete
     .text       start:0x022ec38c end:0x022ec41c
 
-src/ov001_t2/func_ov001_022ece30.c:
+src/ov001_t2/Records_Unk_ov001_022ece30.c:
     complete
     .text       start:0x022ece30 end:0x022ece98
 
-src/auto/func_ov001_022cb0fc.c:
+src/auto/OptionsMenu_ClosePage5.c:
     complete
     .text       start:0x022cb0fc end:0x022cb134
 
-src/auto/func_ov001_022cb228.c:
+src/auto/OptionsMenu_ClosePage3.c:
     complete
     .text       start:0x022cb228 end:0x022cb260
 
@@ -4908,7 +4908,7 @@ src/auto/TitleDemo_ReleaseSprites.c:
     complete
     .text       start:0x022d66f8 end:0x022d6734
 
-src/auto/func_ov001_022eca98.c:
+src/auto/Records_Unk_ov001_022eca98.c:
     complete
     .text       start:0x022eca98 end:0x022ecae4
 
@@ -4920,39 +4920,39 @@ src/ov001_d/ExtraBoss_LoadBossModel.c:
     complete
     .text       start:0x022eeab0 end:0x022eec20
 
-src/ov001_d/func_ov001_022f705c.c:
+src/ov001_d/ExtraBoss_Unk_ov001_022f705c.c:
     complete
     .text       start:0x022f705c end:0x022f71b8
 
-src/ov001_d/func_ov001_022f7448.c:
+src/ov001_d/ExtraAct_State_Unk_ov001_022f7448.c:
     complete
     .text       start:0x022f7448 end:0x022f75c8
 
-src/ov001_d/func_ov001_022f8608.c:
+src/ov001_d/ExtraAct_Unk_ov001_022f8608.c:
     complete
     .text       start:0x022f8608 end:0x022f8774
 
-src/ov001_d/func_ov001_022f8b04.c:
+src/ov001_d/ExtraAct_State_Unk_ov001_022f8b04.c:
     complete
     .text       start:0x022f8b04 end:0x022f8c78
 
-src/ov001_d/func_ov001_022faf00.c:
+src/ov001_d/ExtraBoss_Unk_ov001_022faf00.c:
     complete
     .text       start:0x022faf00 end:0x022fb074
 
-src/ov001_d/func_ov001_022fb7f0.c:
+src/ov001_d/ExtraBoss_Unk_ov001_022fb7f0.c:
     complete
     .text       start:0x022fb7f0 end:0x022fb918
 
-src/ov001_d/func_ov001_022fc4d4.c:
+src/ov001_d/ExtraBoss_Unk_ov001_022fc4d4.c:
     complete
     .text       start:0x022fc4d4 end:0x022fc5f0
 
-src/ov001_d/func_ov001_022fcbd4.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022fcbd4.c:
     complete
     .text       start:0x022fcbd4 end:0x022fcd44
 
-src/ov001_d/func_ov001_022fce7c.c:
+src/ov001_d/ExtraBossObj_State_Unk_ov001_022fce7c.c:
     complete
     .text       start:0x022fce7c end:0x022fd000
 
@@ -4968,31 +4968,31 @@ src/ov001_d/ExtraBossPlayer_State_Dash.c:
     complete
     .text       start:0x02301e78 end:0x02301ff4
 
-src/ov001_d/func_ov001_02303e60.c:
+src/ov001_d/ExtraBoss_Unk_ov001_02303e60.c:
     complete
     .text       start:0x02303e60 end:0x02303fd4
 
-src/ov001_d/func_ov001_02304028.c:
+src/ov001_d/ExtraBoss_Unk_ov001_02304028.c:
     complete
     .text       start:0x02304028 end:0x023041a8
 
-src/ov001_d/func_ov001_02305648.c:
+src/ov001_d/ExtraBoss_Unk_ov001_02305648.c:
     complete
     .text       start:0x02305648 end:0x023057b4
 
-src/ov001_d/func_ov001_02305d40.c:
+src/ov001_d/ExtraBoss_Unk_ov001_02305d40.c:
     complete
     .text       start:0x02305d40 end:0x02305ec8
 
-src/ov001_d/func_ov001_02305fbc.c:
+src/ov001_d/ExtraBoss_State_Unk_ov001_02305fbc.c:
     complete
     .text       start:0x02305fbc end:0x0230611c
 
-src/ov001_d/func_ov001_02306b90.c:
+src/ov001_d/SpecialStage_Unk_ov001_02306b90.c:
     complete
     .text       start:0x02306b90 end:0x02306d04
 
-src/ov001_d/func_ov001_0230e3c8.c:
+src/ov001_d/SpecialStage_Unk_ov001_0230e3c8.c:
     complete
     .text       start:0x0230e3c8 end:0x0230e554
 
@@ -5016,11 +5016,11 @@ src/ov001_d/SpecialStageCamera_Register.c:
     complete
     .text       start:0x02314c84 end:0x02314de8
 
-src/ov001_e/func_ov001_022f8110.c:
+src/ov001_e/ExtraAct_Unk_ov001_022f8110.c:
     complete
     .text       start:0x022f8110 end:0x022f8330
 
-src/ov001_e/func_ov001_022f83c0.c:
+src/ov001_e/ExtraAct_State_Unk_ov001_022f83c0.c:
     complete
     .text       start:0x022f83c0 end:0x022f8508
 
@@ -5032,23 +5032,23 @@ src/ov001_e/ExtraBossPlayer_ApplyMoveInput.c:
     complete
     .text       start:0x02302140 end:0x02302298
 
-src/ov001_e/func_ov001_02303934.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02303934.c:
     complete
     .text       start:0x02303934 end:0x02303a80
 
-src/ov001_e/func_ov001_02307990.c:
+src/ov001_e/SpecialStageHud_Unk_ov001_02307990.c:
     complete
     .text       start:0x02307990 end:0x02307ad0
 
-src/ov001_e/func_ov001_0230808c.c:
+src/ov001_e/SpecialStageHud_Unk_ov001_0230808c.c:
     complete
     .text       start:0x0230808c end:0x023081d8
 
-src/ov001_e/func_ov001_023081d8.c:
+src/ov001_e/SpecialStageHud_Unk_ov001_023081d8.c:
     complete
     .text       start:0x023081d8 end:0x0230832c
 
-src/ov001_e/func_ov001_02308b74.c:
+src/ov001_e/SpecialStageHud_Unk_ov001_02308b74.c:
     complete
     .text       start:0x02308b74 end:0x02308ccc
 
@@ -5064,11 +5064,11 @@ src/ov001_t2/SoundTest_GetChannelLevels.c:
     complete
     .text       start:0x022c8d7c end:0x022c8e1c
 
-src/ov001_t2/func_ov001_022cc588.c:
+src/ov001_t2/OptionsMenu_State_Unk_ov001_022cc588.c:
     complete
     .text       start:0x022cc588 end:0x022cc628
 
-src/ov001_t2/func_ov001_022cdf20.c:
+src/ov001_t2/Options_Unk_ov001_022cdf20.c:
     complete
     .text       start:0x022cdf20 end:0x022cdfb4
 
@@ -5076,19 +5076,19 @@ src/ov001_t2/StaffRoll_LoadAssets.c:
     complete
     .text       start:0x022d2978 end:0x022d2a18
 
-src/ov001_t2/func_ov001_022d5694.c:
+src/ov001_t2/TitleDemo_Unk_ov001_022d5694.c:
     complete
     .text       start:0x022d5694 end:0x022d5738
 
-src/ov001_t2/func_ov001_022d7dbc.c:
+src/ov001_t2/TitleMenu_Unk_ov001_022d7dbc.c:
     complete
     .text       start:0x022d7dbc end:0x022d7e60
 
-src/ov001_t2/func_ov001_022db8d0.c:
+src/ov001_t2/VsMenu_State_Unk_ov001_022db8d0.c:
     complete
     .text       start:0x022db8d0 end:0x022db97c
 
-src/ov001_t2/func_ov001_022dbf30.c:
+src/ov001_t2/VsMenu_State_Unk_ov001_022dbf30.c:
     complete
     .text       start:0x022dbf30 end:0x022dbfdc
 
@@ -5096,7 +5096,7 @@ src/ov001_t2/ZoneMap_GetDirectionAngle.c:
     complete
     .text       start:0x022e1b4c end:0x022e1bec
 
-src/ov001_t2/func_ov001_022e9308.c:
+src/ov001_t2/ZoneMapPause_Unk_ov001_022e9308.c:
     complete
     .text       start:0x022e9308 end:0x022e93b0
 
@@ -5104,27 +5104,27 @@ src/ov001_t2/ZoneMapPause_Create.c:
     complete
     .text       start:0x022e95b8 end:0x022e9664
 
-src/ov001_t2/func_ov001_022ea1b8.c:
+src/ov001_t2/TimeAttackMenu_Unk_ov001_022ea1b8.c:
     complete
     .text       start:0x022ea1b8 end:0x022ea264
 
-src/ov001_t2/func_ov001_022ea504.c:
+src/ov001_t2/TimeAttackMenu_Unk_ov001_022ea504.c:
     complete
     .text       start:0x022ea504 end:0x022ea5a8
 
-src/ov001_e/func_ov001_022ef8c0.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022ef8c0.c:
     complete
     .text       start:0x022ef8c0 end:0x022efa00
 
-src/ov001_e/func_ov001_022f4910.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022f4910.c:
     complete
     .text       start:0x022f4910 end:0x022f4a50
 
-src/ov001_e/func_ov001_022fe92c.c:
+src/ov001_e/ExtraBossObj_Unk_ov001_022fe92c.c:
     complete
     .text       start:0x022fe92c end:0x022fea6c
 
-src/ov001_e/func_ov001_02303af8.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02303af8.c:
     complete
     .text       start:0x02303af8 end:0x02303c38
 
@@ -5136,67 +5136,67 @@ src/ov001_t3/TitleDemo_InitSprites.c:
     complete
     .text       start:0x022d6bf0 end:0x022d6c98
 
-src/ov001_e/func_ov001_022ee73c.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022ee73c.c:
     complete
     .text       start:0x022ee73c end:0x022ee784
 
-src/ov001_e/func_ov001_022ee784.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022ee784.c:
     complete
     .text       start:0x022ee784 end:0x022ee874
 
-src/ov001_e/func_ov001_022ee874.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022ee874.c:
     complete
     .text       start:0x022ee874 end:0x022ee964
 
-src/ov001_e/func_ov001_022eee68.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022eee68.c:
     complete
     .text       start:0x022eee68 end:0x022eef90
 
-src/ov001_e/func_ov001_022f1438.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022f1438.c:
     complete
     .text       start:0x022f1438 end:0x022f1550
 
-src/ov001_e/func_ov001_022f1550.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022f1550.c:
     complete
     .text       start:0x022f1550 end:0x022f1660
 
-src/ov001_e/func_ov001_022f1c0c.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022f1c0c.c:
     complete
     .text       start:0x022f1c0c end:0x022f1d24
 
-src/ov001_e/func_ov001_022f2a8c.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022f2a8c.c:
     complete
     .text       start:0x022f2a8c end:0x022f2b78
 
-src/ov001_e/func_ov001_022f3c60.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022f3c60.c:
     complete
     .text       start:0x022f3c60 end:0x022f3d6c
 
-src/ov001_e/func_ov001_022f4028.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022f4028.c:
     complete
     .text       start:0x022f4028 end:0x022f4068
 
-src/ov001_e/func_ov001_022f5da0.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022f5da0.c:
     complete
     .text       start:0x022f5da0 end:0x022f5eb4
 
-src/ov001_e/func_ov001_022f62f0.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022f62f0.c:
     complete
     .text       start:0x022f62f0 end:0x022f63dc
 
-src/ov001_e/func_ov001_022f73cc.c:
+src/ov001_e/ExtraAct_Unk_ov001_022f73cc.c:
     complete
     .text       start:0x022f73cc end:0x022f741c
 
-src/ov001_e/func_ov001_022f75c8.c:
+src/ov001_e/ExtraAct_State_Unk_ov001_022f75c8.c:
     complete
     .text       start:0x022f75c8 end:0x022f7700
 
-src/ov001_e/func_ov001_022f7790.c:
+src/ov001_e/ExtraAct_Unk_ov001_022f7790.c:
     complete
     .text       start:0x022f7790 end:0x022f7880
 
-src/ov001_e/func_ov001_022f8508.c:
+src/ov001_e/ExtraAct_State_Unk_ov001_022f8508.c:
     complete
     .text       start:0x022f8508 end:0x022f8608
 
@@ -5204,71 +5204,71 @@ src/ov001_e/ExtraAct_ReleaseAssets.c:
     complete
     .text       start:0x022f9d20 end:0x022f9e58
 
-src/ov001_e/func_ov001_022fb074.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb074.c:
     complete
     .text       start:0x022fb074 end:0x022fb17c
 
-src/ov001_e/func_ov001_022fb17c.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb17c.c:
     complete
     .text       start:0x022fb17c end:0x022fb28c
 
-src/ov001_e/func_ov001_022fb28c.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb28c.c:
     complete
     .text       start:0x022fb28c end:0x022fb3c8
 
-src/ov001_e/func_ov001_022fb590.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb590.c:
     complete
     .text       start:0x022fb590 end:0x022fb5d4
 
-src/ov001_e/func_ov001_022fb7b0.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb7b0.c:
     complete
     .text       start:0x022fb7b0 end:0x022fb7f0
 
-src/ov001_e/func_ov001_022fb918.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022fb918.c:
     complete
     .text       start:0x022fb918 end:0x022fb974
 
-src/ov001_e/func_ov001_022fb974.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022fb974.c:
     complete
     .text       start:0x022fb974 end:0x022fba78
 
-src/ov001_e/func_ov001_022fbfcc.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fbfcc.c:
     complete
     .text       start:0x022fbfcc end:0x022fc09c
 
-src/ov001_e/func_ov001_022fc34c.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fc34c.c:
     complete
     .text       start:0x022fc34c end:0x022fc440
 
-src/ov001_e/func_ov001_022fc5f0.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022fc5f0.c:
     complete
     .text       start:0x022fc5f0 end:0x022fc708
 
-src/ov001_e/func_ov001_022fcb08.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022fcb08.c:
     complete
     .text       start:0x022fcb08 end:0x022fcbd4
 
-src/ov001_e/func_ov001_022fcd44.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fcd44.c:
     complete
     .text       start:0x022fcd44 end:0x022fce7c
 
-src/ov001_e/func_ov001_022fd000.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fd000.c:
     complete
     .text       start:0x022fd000 end:0x022fd138
 
-src/ov001_e/func_ov001_022fd220.c:
+src/ov001_e/ExtraBossObj_State_Unk_ov001_022fd220.c:
     complete
     .text       start:0x022fd220 end:0x022fd268
 
-src/ov001_e/func_ov001_022fdab4.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022fdab4.c:
     complete
     .text       start:0x022fdab4 end:0x022fdb04
 
-src/ov001_e/func_ov001_022fe8d4.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022fe8d4.c:
     complete
     .text       start:0x022fe8d4 end:0x022fe92c
 
-src/ov001_e/func_ov001_022fea98.c:
+src/ov001_e/ExtraBoss_Unk_ov001_022fea98.c:
     complete
     .text       start:0x022fea98 end:0x022feac8
 
@@ -5296,63 +5296,63 @@ src/ov001_e/ExtraBossObj_DestroyKind1.c:
     complete
     .text       start:0x0230109c end:0x023010e0
 
-src/ov001_e/func_ov001_02301a88.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02301a88.c:
     complete
     .text       start:0x02301a88 end:0x02301ba0
 
-src/ov001_e/func_ov001_02302ac8.c:
+src/ov001_e/ExtraBossObj_Unk_ov001_02302ac8.c:
     complete
     .text       start:0x02302ac8 end:0x02302be8
 
-src/ov001_e/func_ov001_023031e4.c:
+src/ov001_e/ExtraBoss_Unk_ov001_023031e4.c:
     complete
     .text       start:0x023031e4 end:0x02303244
 
-src/ov001_e/func_ov001_0230328c.c:
+src/ov001_e/ExtraBoss_Unk_ov001_0230328c.c:
     complete
     .text       start:0x0230328c end:0x023032ec
 
-src/ov001_e/func_ov001_02303334.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02303334.c:
     complete
     .text       start:0x02303334 end:0x02303394
 
-src/ov001_e/func_ov001_023033dc.c:
+src/ov001_e/ExtraBoss_Unk_ov001_023033dc.c:
     complete
     .text       start:0x023033dc end:0x0230343c
 
-src/ov001_e/func_ov001_02303d28.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02303d28.c:
     complete
     .text       start:0x02303d28 end:0x02303e60
 
-src/ov001_e/func_ov001_02304518.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02304518.c:
     complete
     .text       start:0x02304518 end:0x02304568
 
-src/ov001_e/func_ov001_02304e80.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02304e80.c:
     complete
     .text       start:0x02304e80 end:0x02304fb4
 
-src/ov001_e/func_ov001_02305474.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02305474.c:
     complete
     .text       start:0x02305474 end:0x02305564
 
-src/ov001_e/func_ov001_0230587c.c:
+src/ov001_e/ExtraBoss_State_Unk_ov001_0230587c.c:
     complete
     .text       start:0x0230587c end:0x023059b4
 
-src/ov001_e/func_ov001_023059b4.c:
+src/ov001_e/ExtraBoss_Unk_ov001_023059b4.c:
     complete
     .text       start:0x023059b4 end:0x02305aec
 
-src/ov001_e/func_ov001_02305bb8.c:
+src/ov001_e/ExtraBoss_Unk_ov001_02305bb8.c:
     complete
     .text       start:0x02305bb8 end:0x02305c84
 
-src/ov001_e/func_ov001_02306d04.c:
+src/ov001_e/SpecialStage_Unk_ov001_02306d04.c:
     complete
     .text       start:0x02306d04 end:0x02306db0
 
-src/ov001_e/func_ov001_02307148.c:
+src/ov001_e/SpecialStageGimmick_Unk_ov001_02307148.c:
     complete
     .text       start:0x02307148 end:0x023071fc
 
@@ -5360,15 +5360,15 @@ src/ov001_e/SpecialStage_ReleaseActArchive.c:
     complete
     .text       start:0x023071fc end:0x02307398
 
-src/ov001_e/func_ov001_02307778.c:
+src/ov001_e/SpecialStageHud_Unk_ov001_02307778.c:
     complete
     .text       start:0x02307778 end:0x02307890
 
-src/ov001_e/func_ov001_02307890.c:
+src/ov001_e/SpecialStageHud_Unk_ov001_02307890.c:
     complete
     .text       start:0x02307890 end:0x02307990
 
-src/ov001_e/func_ov001_0230832c.c:
+src/ov001_e/SpecialStageHud_Unk_ov001_0230832c.c:
     complete
     .text       start:0x0230832c end:0x02308430
 
@@ -5468,19 +5468,19 @@ src/ov001_e/SpecialStageGimmick_SwayRotation.c:
     complete
     .text       start:0x0230e5c0 end:0x0230e634
 
-src/ov001_e/func_ov001_0230ed48.c:
+src/ov001_e/SpecialStageGimmick_Unk_ov001_0230ed48.c:
     complete
     .text       start:0x0230ed48 end:0x0230ee44
 
-src/ov001_e/func_ov001_0230ee44.c:
+src/ov001_e/SpecialStageGimmick_Unk_ov001_0230ee44.c:
     complete
     .text       start:0x0230ee44 end:0x0230ef64
 
-src/ov001_e/func_ov001_0230ef64.c:
+src/ov001_e/SpecialStageGimmick_Unk_ov001_0230ef64.c:
     complete
     .text       start:0x0230ef64 end:0x0230ef9c
 
-src/ov001_e/func_ov001_0230ef9c.c:
+src/ov001_e/SpecialStageGimmick_Unk_ov001_0230ef9c.c:
     complete
     .text       start:0x0230ef9c end:0x0230efd4
 
@@ -5488,7 +5488,7 @@ src/ov001_e/SpecialStageTrickReward_Update.c:
     complete
     .text       start:0x0230efd4 end:0x0230f0f4
 
-src/ov001_e/func_ov001_0230f0f4.c:
+src/ov001_e/SpecialStageGimmick_Unk_ov001_0230f0f4.c:
     complete
     .text       start:0x0230f0f4 end:0x0230f1dc
 
@@ -5500,7 +5500,7 @@ src/ov001_e/SpecialStageObjList_IsCulled.c:
     complete
     .text       start:0x02310054 end:0x02310144
 
-src/ov001_e/func_ov001_02310144.c:
+src/ov001_e/SpecialStageGimmick_Unk_ov001_02310144.c:
     complete
     .text       start:0x02310144 end:0x02310174
 
@@ -5516,7 +5516,7 @@ src/ov001_e/SpecialStagePlayer_IsGrounded.c:
     complete
     .text       start:0x02312138 end:0x023121f0
 
-src/ov001_e/func_ov001_023121f0.c:
+src/ov001_e/SpecialStagePlayer_Unk_ov001_023121f0.c:
     complete
     .text       start:0x023121f0 end:0x02312250
 
@@ -5536,7 +5536,7 @@ src/ov001_e/SpecialStagePlayer_TurnTowards.c:
     complete
     .text       start:0x02312bcc end:0x02312c18
 
-src/ov001_e/func_ov001_02312d7c.c:
+src/ov001_e/SpecialStagePlayer_Unk_ov001_02312d7c.c:
     complete
     .text       start:0x02312d7c end:0x02312dc8
 
@@ -5636,35 +5636,35 @@ src/ov001_t3/SoundTest_PlayTrack.c:
     complete
     .text       start:0x022c9314 end:0x022c93e0
 
-src/ov001_t3/func_ov001_022c9924.c:
+src/ov001_t3/OptionsMenu_Unk_ov001_022c9924.c:
     complete
     .text       start:0x022c9924 end:0x022c9a2c
 
-src/ov001_t3/func_ov001_022cbf30.c:
+src/ov001_t3/OptionsMenu_DrawItems.c:
     complete
     .text       start:0x022cbf30 end:0x022cc044
 
-src/ov001_t3/func_ov001_022cc268.c:
+src/ov001_t3/OptionsMenu_State_Unk_ov001_022cc268.c:
     complete
     .text       start:0x022cc268 end:0x022cc33c
 
-src/ov001_t3/func_ov001_022cc4a0.c:
+src/ov001_t3/OptionsMenu_State_Unk_ov001_022cc4a0.c:
     complete
     .text       start:0x022cc4a0 end:0x022cc588
 
-src/ov001_t3/func_ov001_022cc7fc.c:
+src/ov001_t3/OptionsMenu_State_Unk_ov001_022cc7fc.c:
     complete
     .text       start:0x022cc7fc end:0x022cc8ec
 
-src/ov001_t3/func_ov001_022cccbc.c:
+src/ov001_t3/Options_State_Unk_ov001_022cccbc.c:
     complete
     .text       start:0x022cccbc end:0x022ccddc
 
-src/ov001_t3/func_ov001_022cdabc.c:
+src/ov001_t3/Options_State_Unk_ov001_022cdabc.c:
     complete
     .text       start:0x022cdabc end:0x022cdbc4
 
-src/ov001_t3/func_ov001_022ce164.c:
+src/ov001_t3/Options_Unk_ov001_022ce164.c:
     complete
     .text       start:0x022ce164 end:0x022ce218
 
@@ -5700,7 +5700,7 @@ src/ov001_t3/StaffRoll_State_RevealBanner.c:
     complete
     .text       start:0x022d1ec8 end:0x022d1fd4
 
-src/ov001_t3/func_ov001_022d2650.c:
+src/ov001_t3/StaffRoll_Unk_ov001_022d2650.c:
     complete
     .text       start:0x022d2650 end:0x022d2704
 
@@ -5712,11 +5712,11 @@ src/ov001_t3/StaffRoll_Destructor.c:
     complete
     .text       start:0x022d2cbc end:0x022d2db8
 
-src/ov001_t3/func_ov001_022d36c0.c:
+src/ov001_t3/TryAgain_Unk_ov001_022d36c0.c:
     complete
     .text       start:0x022d36c0 end:0x022d37ac
 
-src/ov001_t3/func_ov001_022d37ac.c:
+src/ov001_t3/TryAgain_Unk_ov001_022d37ac.c:
     complete
     .text       start:0x022d37ac end:0x022d3864
 
@@ -5724,7 +5724,7 @@ src/ov001_t3/TryAgain_Create.c:
     complete
     .text       start:0x022d40a4 end:0x022d4174
 
-src/ov001_t3/func_ov001_022d46f4.c:
+src/ov001_t3/TitleScreen_Unk_ov001_022d46f4.c:
     complete
     .text       start:0x022d46f4 end:0x022d4814
 
@@ -5752,99 +5752,99 @@ src/ov001_t3/TitleDemo_ReleaseModels.c:
     complete
     .text       start:0x022d6738 end:0x022d682c
 
-src/ov001_t3/func_ov001_022d74dc.c:
+src/ov001_t3/TitleMenu_Unk_ov001_022d74dc.c:
     complete
     .text       start:0x022d74dc end:0x022d75dc
 
-src/ov001_t3/func_ov001_022d75dc.c:
+src/ov001_t3/TitleMenu_Unk_ov001_022d75dc.c:
     complete
     .text       start:0x022d75dc end:0x022d76c4
 
-src/ov001_t3/func_ov001_022d76c4.c:
+src/ov001_t3/TitleMenu_Unk_ov001_022d76c4.c:
     complete
     .text       start:0x022d76c4 end:0x022d77a8
 
-src/ov001_t3/func_ov001_022d7ac4.c:
+src/ov001_t3/TitleMenu_Unk_ov001_022d7ac4.c:
     complete
     .text       start:0x022d7ac4 end:0x022d7b7c
 
-src/ov001_t3/func_ov001_022d83fc.c:
+src/ov001_t3/TitleMenu_Unk_ov001_022d83fc.c:
     complete
     .text       start:0x022d83fc end:0x022d84f8
 
-src/ov001_t3/func_ov001_022d85d0.c:
+src/ov001_t3/TitleMenu_State_Unk_ov001_022d85d0.c:
     complete
     .text       start:0x022d85d0 end:0x022d86b0
 
-src/ov001_t3/func_ov001_022d8b54.c:
+src/ov001_t3/TitleMenu_Unk_ov001_022d8b54.c:
     complete
     .text       start:0x022d8b54 end:0x022d8c30
 
-src/ov001_t3/func_ov001_022db5f4.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022db5f4.c:
     complete
     .text       start:0x022db5f4 end:0x022db6ec
 
-src/ov001_t3/func_ov001_022db6ec.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022db6ec.c:
     complete
     .text       start:0x022db6ec end:0x022db810
 
-src/ov001_t3/func_ov001_022db810.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022db810.c:
     complete
     .text       start:0x022db810 end:0x022db8d0
 
-src/ov001_t3/func_ov001_022dbbd4.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dbbd4.c:
     complete
     .text       start:0x022dbbd4 end:0x022dbcd8
 
-src/ov001_t3/func_ov001_022dbcd8.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dbcd8.c:
     complete
     .text       start:0x022dbcd8 end:0x022dbdb0
 
-src/ov001_t3/func_ov001_022dbe3c.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dbe3c.c:
     complete
     .text       start:0x022dbe3c end:0x022dbf30
 
-src/ov001_t3/func_ov001_022dbfdc.c:
+src/ov001_t3/VsMenu_Unk_ov001_022dbfdc.c:
     complete
     .text       start:0x022dbfdc end:0x022dc08c
 
-src/ov001_t3/func_ov001_022dc324.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dc324.c:
     complete
     .text       start:0x022dc324 end:0x022dc410
 
-src/ov001_t3/func_ov001_022dc734.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dc734.c:
     complete
     .text       start:0x022dc734 end:0x022dc81c
 
-src/ov001_t3/func_ov001_022dcc10.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dcc10.c:
     complete
     .text       start:0x022dcc10 end:0x022dccc8
 
-src/ov001_t3/func_ov001_022dcdbc.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dcdbc.c:
     complete
     .text       start:0x022dcdbc end:0x022dcec8
 
-src/ov001_t3/func_ov001_022dcec8.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dcec8.c:
     complete
     .text       start:0x022dcec8 end:0x022dcf94
 
-src/ov001_t3/func_ov001_022dd1ec.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dd1ec.c:
     complete
     .text       start:0x022dd1ec end:0x022dd2d4
 
-src/ov001_t3/func_ov001_022dd774.c:
+src/ov001_t3/VsMenu_Unk_ov001_022dd774.c:
     complete
     .text       start:0x022dd774 end:0x022dd854
 
-src/ov001_t3/func_ov001_022e09d0.c:
+src/ov001_t3/ZoneActSelect_Unk_ov001_022e09d0.c:
     complete
     .text       start:0x022e09d0 end:0x022e0ad0
 
-src/ov001_t3/func_ov001_022e0c5c.c:
+src/ov001_t3/ZoneActSelect_Unk_ov001_022e0c5c.c:
     complete
     .text       start:0x022e0c5c end:0x022e0d30
 
-src/ov001_t3/func_ov001_022e0d30.c:
+src/ov001_t3/ZoneActSelect_Unk_ov001_022e0d30.c:
     complete
     .text       start:0x022e0d30 end:0x022e0dfc
 
@@ -5856,43 +5856,43 @@ src/ov001_t3/ZoneMapFadeTask_Main.c:
     complete
     .text       start:0x022e2054 end:0x022e213c
 
-src/ov001_t3/func_ov001_022e36fc.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e36fc.c:
     complete
     .text       start:0x022e36fc end:0x022e37bc
 
-src/ov001_t3/func_ov001_022e3f18.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e3f18.c:
     complete
     .text       start:0x022e3f18 end:0x022e4000
 
-src/ov001_t3/func_ov001_022e4a10.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e4a10.c:
     complete
     .text       start:0x022e4a10 end:0x022e4ac4
 
-src/ov001_t3/func_ov001_022e5a68.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e5a68.c:
     complete
     .text       start:0x022e5a68 end:0x022e5b6c
 
-src/ov001_t3/func_ov001_022e5ba0.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e5ba0.c:
     complete
     .text       start:0x022e5ba0 end:0x022e5c58
 
-src/ov001_t3/func_ov001_022e5c58.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e5c58.c:
     complete
     .text       start:0x022e5c58 end:0x022e5d08
 
-src/ov001_t3/func_ov001_022e5f80.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e5f80.c:
     complete
     .text       start:0x022e5f80 end:0x022e606c
 
-src/ov001_t3/func_ov001_022e606c.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e606c.c:
     complete
     .text       start:0x022e606c end:0x022e612c
 
-src/ov001_t3/func_ov001_022e6dec.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e6dec.c:
     complete
     .text       start:0x022e6dec end:0x022e6e9c
 
-src/ov001_t3/func_ov001_022e7428.c:
+src/ov001_t3/ZoneMap_State_Unk_ov001_022e7428.c:
     complete
     .text       start:0x022e7428 end:0x022e7504
 
@@ -5900,7 +5900,7 @@ src/ov001_t3/ZoneMap_Start.c:
     complete
     .text       start:0x022e8a24 end:0x022e8b08
 
-src/ov001_t3/func_ov001_022e8f6c.c:
+src/ov001_t3/ZoneMapPause_State_Unk_ov001_022e8f6c.c:
     complete
     .text       start:0x022e8f6c end:0x022e901c
 
@@ -5908,7 +5908,7 @@ src/ov001_t3/ZoneMapPause_LoadAssets.c:
     complete
     .text       start:0x022e9408 end:0x022e9510
 
-src/ov001_t3/func_ov001_022ea458.c:
+src/ov001_t3/TimeAttackMenu_Unk_ov001_022ea458.c:
     complete
     .text       start:0x022ea458 end:0x022ea504
 
@@ -5916,19 +5916,19 @@ src/ov001_t3/TimeAttackMenu_InitSprites.c:
     complete
     .text       start:0x022ebecc end:0x022ebfd4
 
-src/ov001_t3/func_ov001_022ec72c.c:
+src/ov001_t3/Records_Unk_ov001_022ec72c.c:
     complete
     .text       start:0x022ec72c end:0x022ec810
 
-src/ov001_t3/func_ov001_022ec9e0.c:
+src/ov001_t3/Records_Unk_ov001_022ec9e0.c:
     complete
     .text       start:0x022ec9e0 end:0x022eca98
 
-src/ov001_t3/func_ov001_022ecfb0.c:
+src/ov001_t3/Records_Unk_ov001_022ecfb0.c:
     complete
     .text       start:0x022ecfb0 end:0x022ed08c
 
-src/ov001_t3/func_ov001_022ce3a0.c:
+src/ov001_t3/Options_Unk_ov001_022ce3a0.c:
     complete
     .text       start:0x022ce3a0 end:0x022ce4cc
 
@@ -5940,11 +5940,11 @@ src/ov001_t3/ZoneActSelect_State_FadeIn.c:
     complete
     .text       start:0x022e129c end:0x022e13d4
 
-src/ov001_t3/func_ov001_022e7f64.c:
+src/ov001_t3/ZoneMap_State_Unk_ov001_022e7f64.c:
     complete
     .text       start:0x022e7f64 end:0x022e8090
 
-src/ov001_f/func_ov001_022ede0c.c:
+src/ov001_f/ExtraBossObj_Draw_Unk_ov001_022ede0c.c:
     complete
     .text       start:0x022ede0c end:0x022ee100
 
@@ -5956,23 +5956,23 @@ src/ov001_f/SpecialStageHud_Create.c:
     complete
     .text       start:0x0230a58c end:0x0230abe4
 
-src/ov001_t3/func_ov001_022cc33c.c:
+src/ov001_t3/OptionsMenu_State_Unk_ov001_022cc33c.c:
     complete
     .text       start:0x022cc33c end:0x022cc4a0
 
-src/ov001_t3/func_ov001_022cc6b8.c:
+src/ov001_t3/OptionsMenu_State_Unk_ov001_022cc6b8.c:
     complete
     .text       start:0x022cc6b8 end:0x022cc7fc
 
-src/ov001_t3/func_ov001_022cca00.c:
+src/ov001_t3/OptionsMenu_State_Unk_ov001_022cca00.c:
     complete
     .text       start:0x022cca00 end:0x022ccb5c
 
-src/ov001_t3/func_ov001_022d3864.c:
+src/ov001_t3/TryAgain_State_Unk_ov001_022d3864.c:
     complete
     .text       start:0x022d3864 end:0x022d39ac
 
-src/ov001_t3/func_ov001_022d39ac.c:
+src/ov001_t3/TryAgain_State_Unk_ov001_022d39ac.c:
     complete
     .text       start:0x022d39ac end:0x022d3af0
 
@@ -5988,27 +5988,27 @@ src/ov001_t3/TitleDemo_State_Scene4.c:
     complete
     .text       start:0x022d5e78 end:0x022d6000
 
-src/ov001_t3/func_ov001_022dad40.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dad40.c:
     complete
     .text       start:0x022dad40 end:0x022daea0
 
-src/ov001_t3/func_ov001_022db2fc.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022db2fc.c:
     complete
     .text       start:0x022db2fc end:0x022db458
 
-src/ov001_t3/func_ov001_022dc580.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dc580.c:
     complete
     .text       start:0x022dc580 end:0x022dc6d8
 
-src/ov001_t3/func_ov001_022dc81c.c:
+src/ov001_t3/VsMenu_Unk_ov001_022dc81c.c:
     complete
     .text       start:0x022dc81c end:0x022dc970
 
-src/ov001_t3/func_ov001_022dd050.c:
+src/ov001_t3/VsMenu_State_Unk_ov001_022dd050.c:
     complete
     .text       start:0x022dd050 end:0x022dd190
 
-src/ov001_t3/func_ov001_022dd2d4.c:
+src/ov001_t3/VsMenu_Unk_ov001_022dd2d4.c:
     complete
     .text       start:0x022dd2d4 end:0x022dd428
 
@@ -6016,19 +6016,19 @@ src/ov001_t3/ZoneActSelect_State_FadeOut.c:
     complete
     .text       start:0x022e114c end:0x022e129c
 
-src/ov001_t3/func_ov001_022e54b4.c:
+src/ov001_t3/ZoneMap_Unk_ov001_022e54b4.c:
     complete
     .text       start:0x022e54b4 end:0x022e560c
 
-src/ov001_t3/func_ov001_022e7114.c:
+src/ov001_t3/ZoneMap_State_Unk_ov001_022e7114.c:
     complete
     .text       start:0x022e7114 end:0x022e7274
 
-src/ov001_t3/func_ov001_022e8e04.c:
+src/ov001_t3/ZoneMapPause_State_Unk_ov001_022e8e04.c:
     complete
     .text       start:0x022e8e04 end:0x022e8f6c
 
-src/ov001_t3/func_ov001_022ebc98.c:
+src/ov001_t3/TimeAttackMenu_Unk_ov001_022ebc98.c:
     complete
     .text       start:0x022ebc98 end:0x022ebdd8
 
@@ -6036,11 +6036,11 @@ src/ov001_t3/TimeAttackMenu_Create.c:
     complete
     .text       start:0x022ec1e4 end:0x022ec344
 
-src/ov001_t4/func_ov001_022ca710.c:
+src/ov001_t4/OptionsMenu_DrawPage3.c:
     complete
     .text       start:0x022ca710 end:0x022ca9f4
 
-src/ov001_t4/func_ov001_022cadbc.c:
+src/ov001_t4/OptionsMenu_DrawPage0.c:
     complete
     .text       start:0x022cadbc end:0x022cb0fc
 
@@ -6048,7 +6048,7 @@ src/ov001_t4/OptionsMenu_State_SoundTest.c:
     complete
     .text       start:0x022cd05c end:0x022cd3c8
 
-src/ov001_t4/func_ov001_022cd6e8.c:
+src/ov001_t4/OptionsMenu_State_Unk_ov001_022cd6e8.c:
     complete
     .text       start:0x022cd6e8 end:0x022cda20
 
@@ -6060,27 +6060,27 @@ src/ov001_t4/TitleMenu_InitSprites.c:
     complete
     .text       start:0x022d8e74 end:0x022d91c4
 
-src/ov001_t4/func_ov001_022e61f4.c:
+src/ov001_t4/ZoneMap_Unk_ov001_022e61f4.c:
     complete
     .text       start:0x022e61f4 end:0x022e6538
 
-src/ov001_t4/func_ov001_022e6538.c:
+src/ov001_t4/ZoneMap_Unk_ov001_022e6538.c:
     complete
     .text       start:0x022e6538 end:0x022e6870
 
-src/ov001_t4/func_ov001_022ea894.c:
+src/ov001_t4/TimeAttackMenu_Unk_ov001_022ea894.c:
     complete
     .text       start:0x022ea894 end:0x022eab78
 
-src/ov001_t4/func_ov001_022eab78.c:
+src/ov001_t4/TimeAttackMenu_Unk_ov001_022eab78.c:
     complete
     .text       start:0x022eab78 end:0x022eae98
 
-src/ov001_t4/func_ov001_022eae98.c:
+src/ov001_t4/TimeAttackMenu_State_Unk_ov001_022eae98.c:
     complete
     .text       start:0x022eae98 end:0x022eb294
 
-src/ov001_t4/func_ov001_022eb294.c:
+src/ov001_t4/TimeAttackMenu_Unk_ov001_022eb294.c:
     complete
     .text       start:0x022eb294 end:0x022eb5d0
 
@@ -6108,7 +6108,7 @@ src/ov001_t4/OptionsMenu_State_EraseData.c:
     complete
     .text       start:0x022cce10 end:0x022cd05c
 
-src/ov001_t4/func_ov001_022ce4cc.c:
+src/ov001_t4/Options_Unk_ov001_022ce4cc.c:
     complete
     .text       start:0x022ce4cc end:0x022ce658
 
@@ -6148,27 +6148,27 @@ src/ov001_t4/TitleDemo_LoadArchives.c:
     complete
     .text       start:0x022d68d4 end:0x022d6b44
 
-src/ov001_t4/func_ov001_022d7c04.c:
+src/ov001_t4/TitleMenu_Unk_ov001_022d7c04.c:
     complete
     .text       start:0x022d7c04 end:0x022d7dbc
 
-src/ov001_t4/func_ov001_022d8c78.c:
+src/ov001_t4/TitleMenu_Unk_ov001_022d8c78.c:
     complete
     .text       start:0x022d8c78 end:0x022d8e58
 
-src/ov001_t4/func_ov001_022db150.c:
+src/ov001_t4/VsMenu_State_Unk_ov001_022db150.c:
     complete
     .text       start:0x022db150 end:0x022db2fc
 
-src/ov001_t4/func_ov001_022db458.c:
+src/ov001_t4/VsMenu_State_Unk_ov001_022db458.c:
     complete
     .text       start:0x022db458 end:0x022db5f4
 
-src/ov001_t4/func_ov001_022db9d8.c:
+src/ov001_t4/VsMenu_State_Unk_ov001_022db9d8.c:
     complete
     .text       start:0x022db9d8 end:0x022dbbd4
 
-src/ov001_t4/func_ov001_022dd93c.c:
+src/ov001_t4/VsMenu_Unk_ov001_022dd93c.c:
     complete
     .text       start:0x022dd93c end:0x022ddab4
 
@@ -6180,7 +6180,7 @@ src/ov001_t4/ZoneActSelect_ResetDisplay.c:
     complete
     .text       start:0x022e1400 end:0x022e1444
 
-src/ov001_t4/func_ov001_022e153c.c:
+src/ov001_t4/ZoneActSelect_Unk_ov001_022e153c.c:
     complete
     .text       start:0x022e153c end:0x022e17b0
 
@@ -6188,19 +6188,19 @@ src/ov001_t4/ZoneMap_LoadPlayerArchive.c:
     complete
     .text       start:0x022e3bec end:0x022e3ec0
 
-src/ov001_t4/func_ov001_022e5684.c:
+src/ov001_t4/ZoneMap_Unk_ov001_022e5684.c:
     complete
     .text       start:0x022e5684 end:0x022e57a4
 
-src/ov001_t4/func_ov001_022e7504.c:
+src/ov001_t4/ZoneMap_State_Unk_ov001_022e7504.c:
     complete
     .text       start:0x022e7504 end:0x022e76ec
 
-src/ov001_t4/func_ov001_022e7728.c:
+src/ov001_t4/ZoneMap_State_Unk_ov001_022e7728.c:
     complete
     .text       start:0x022e7728 end:0x022e794c
 
-src/ov001_t4/func_ov001_022e8090.c:
+src/ov001_t4/ZoneMap_Unk_ov001_022e8090.c:
     complete
     .text       start:0x022e8090 end:0x022e8328
 
@@ -6216,7 +6216,7 @@ src/ov001_t4/ZoneMapPause_InitDisplay.c:
     complete
     .text       start:0x022e9510 end:0x022e955c
 
-src/ov001_t4/func_ov001_022eba70.c:
+src/ov001_t4/TimeAttackMenu_Unk_ov001_022eba70.c:
     complete
     .text       start:0x022eba70 end:0x022ebc3c
 
@@ -6252,11 +6252,11 @@ src/ov001_t5/StaffRoll_State_EndPictureHold.c:
     complete
     .text       start:0x022d1d88 end:0x022d1e00
 
-src/ov001_t5/func_ov001_022e7c50.c:
+src/ov001_t5/ZoneMap_State_Unk_ov001_022e7c50.c:
     complete
     .text       start:0x022e7c50 end:0x022e7dd8
 
-src/ov001_t5/func_ov001_022e7dd8.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e7dd8.c:
     complete
     .text       start:0x022e7dd8 end:0x022e7f64
 
@@ -6264,23 +6264,23 @@ src/ov001_t4/StaffRoll_Create.c:
     complete
     .text       start:0x022d2e3c end:0x022d3010
 
-src/ov001_t4/func_ov001_022d9864.c:
+src/ov001_t4/VsMenu_Unk_ov001_022d9864.c:
     complete
     .text       start:0x022d9864 end:0x022d9a14
 
-src/ov001_t5/func_ov001_022cbdf0.c:
+src/ov001_t5/OptionsMenu_Unk_ov001_022cbdf0.c:
     complete
     .text       start:0x022cbdf0 end:0x022cbe50
 
-src/ov001_t5/func_ov001_022cbe50.c:
+src/ov001_t5/OptionsMenu_Unk_ov001_022cbe50.c:
     complete
     .text       start:0x022cbe50 end:0x022cbe98
 
-src/ov001_t5/func_ov001_022cbecc.c:
+src/ov001_t5/OptionsMenu_DrawItemSprite.c:
     complete
     .text       start:0x022cbecc end:0x022cbf30
 
-src/ov001_t5/func_ov001_022cdd28.c:
+src/ov001_t5/OptionsMenu_Unk_ov001_022cdd28.c:
     complete
     .text       start:0x022cdd28 end:0x022cdd7c
 
@@ -6288,7 +6288,7 @@ src/ov001_t5/OptionsMenu_Action_SoundTest.c:
     complete
     .text       start:0x022cddf0 end:0x022cde3c
 
-src/ov001_t5/func_ov001_022ce960.c:
+src/ov001_t5/Options_Unk_ov001_022ce960.c:
     complete
     .text       start:0x022ce960 end:0x022ce9b0
 
@@ -6308,11 +6308,11 @@ src/ov001_t5/StaffRoll_HitTestSprite.c:
     complete
     .text       start:0x022cfb44 end:0x022cfb90
 
-src/ov001_t5/func_ov001_022cfc60.c:
+src/ov001_t5/StaffRoll_Unk_ov001_022cfc60.c:
     complete
     .text       start:0x022cfc60 end:0x022cfcb8
 
-src/ov001_t5/func_ov001_022cfd34.c:
+src/ov001_t5/StaffRoll_Unk_ov001_022cfd34.c:
     complete
     .text       start:0x022cfd34 end:0x022cfd7c
 
@@ -6344,15 +6344,15 @@ src/ov001_t5/TitleDemo_SetOrthoProjection.c:
     complete
     .text       start:0x022d57b4 end:0x022d5808
 
-src/ov001_t5/func_ov001_022d5a18.c:
+src/ov001_t5/TitleDemo_Unk_ov001_022d5a18.c:
     complete
     .text       start:0x022d5a18 end:0x022d5a7c
 
-src/ov001_t5/func_ov001_022d5af0.c:
+src/ov001_t5/TitleDemo_Unk_ov001_022d5af0.c:
     complete
     .text       start:0x022d5af0 end:0x022d5b44
 
-src/ov001_t5/func_ov001_022d5be4.c:
+src/ov001_t5/TitleDemo_Unk_ov001_022d5be4.c:
     complete
     .text       start:0x022d5be4 end:0x022d5c30
 
@@ -6360,11 +6360,11 @@ src/ov001_t5/TitleDemo_Create.c:
     complete
     .text       start:0x022d6cf4 end:0x022d6d4c
 
-src/ov001_t5/func_ov001_022d7ee8.c:
+src/ov001_t5/TitleMenu_Unk_ov001_022d7ee8.c:
     complete
     .text       start:0x022d7ee8 end:0x022d8060
 
-src/ov001_t5/func_ov001_022d8060.c:
+src/ov001_t5/TitleMenu_Unk_ov001_022d8060.c:
     complete
     .text       start:0x022d8060 end:0x022d81c4
 
@@ -6372,55 +6372,55 @@ src/ov001_t5/TitleMenu_LoadAssets.c:
     complete
     .text       start:0x022d9458 end:0x022d94b4
 
-src/ov001_t5/func_ov001_022d9a14.c:
+src/ov001_t5/VsMenu_SetSubObjPaletteColor.c:
     complete
     .text       start:0x022d9a14 end:0x022d9a54
 
-src/ov001_t5/func_ov001_022d9ab4.c:
+src/ov001_t5/VsMenu_Unk_ov001_022d9ab4.c:
     complete
     .text       start:0x022d9ab4 end:0x022d9b0c
 
-src/ov001_t5/func_ov001_022d9b0c.c:
+src/ov001_t5/VsMenu_Unk_ov001_022d9b0c.c:
     complete
     .text       start:0x022d9b0c end:0x022d9b3c
 
-src/ov001_t5/func_ov001_022d9ef4.c:
+src/ov001_t5/VsMenu_Unk_ov001_022d9ef4.c:
     complete
     .text       start:0x022d9ef4 end:0x022d9f2c
 
-src/ov001_t5/func_ov001_022d9f6c.c:
+src/ov001_t5/VsMenu_Unk_ov001_022d9f6c.c:
     complete
     .text       start:0x022d9f6c end:0x022d9fa4
 
-src/ov001_t5/func_ov001_022da450.c:
+src/ov001_t5/VsMenu_Unk_ov001_022da450.c:
     complete
     .text       start:0x022da450 end:0x022da48c
 
-src/ov001_t5/func_ov001_022da558.c:
+src/ov001_t5/VsMenu_GetTouchedListRow.c:
     complete
     .text       start:0x022da558 end:0x022da59c
 
-src/ov001_t5/func_ov001_022dccc8.c:
+src/ov001_t5/VsMenu_State_Unk_ov001_022dccc8.c:
     complete
     .text       start:0x022dccc8 end:0x022dcd24
 
-src/ov001_t5/func_ov001_022e0784.c:
+src/ov001_t5/ZoneActSelect_Unk_ov001_022e0784.c:
     complete
     .text       start:0x022e0784 end:0x022e07d0
 
-src/ov001_t5/func_ov001_022e07e8.c:
+src/ov001_t5/ZoneActSelect_Unk_ov001_022e07e8.c:
     complete
     .text       start:0x022e07e8 end:0x022e0820
 
-src/ov001_t5/func_ov001_022e0820.c:
+src/ov001_t5/ZoneActSelect_Unk_ov001_022e0820.c:
     complete
     .text       start:0x022e0820 end:0x022e0858
 
-src/ov001_t5/func_ov001_022e0884.c:
+src/ov001_t5/ZoneActSelect_Unk_ov001_022e0884.c:
     complete
     .text       start:0x022e0884 end:0x022e08e0
 
-src/ov001_t5/func_ov001_022e0ad0.c:
+src/ov001_t5/ZoneActSelect_Unk_ov001_022e0ad0.c:
     complete
     .text       start:0x022e0ad0 end:0x022e0c5c
 
@@ -6428,119 +6428,119 @@ src/ov001_t5/ZoneMap_BuildSplinePath.c:
     complete
     .text       start:0x022e1e98 end:0x022e1fb8
 
-src/ov001_t5/func_ov001_022e2e40.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e2e40.c:
     complete
     .text       start:0x022e2e40 end:0x022e2e9c
 
-src/ov001_t5/func_ov001_022e2e9c.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e2e9c.c:
     complete
     .text       start:0x022e2e9c end:0x022e2ee8
 
-src/ov001_t5/func_ov001_022e35d4.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e35d4.c:
     complete
     .text       start:0x022e35d4 end:0x022e3608
 
-src/ov001_t5/func_ov001_022e3678.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e3678.c:
     complete
     .text       start:0x022e3678 end:0x022e36c4
 
-src/ov001_t5/func_ov001_022e36c4.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e36c4.c:
     complete
     .text       start:0x022e36c4 end:0x022e36fc
 
-src/ov001_t5/func_ov001_022e37fc.c:
+src/ov001_t5/ZoneMap_IsCornerButtonOrXPressed.c:
     complete
     .text       start:0x022e37fc end:0x022e3840
 
-src/ov001_t5/func_ov001_022e3ed8.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e3ed8.c:
     complete
     .text       start:0x022e3ed8 end:0x022e3f18
 
-src/ov001_t5/func_ov001_022e49c8.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e49c8.c:
     complete
     .text       start:0x022e49c8 end:0x022e4a10
 
-src/ov001_t5/func_ov001_022e4e64.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e4e64.c:
     complete
     .text       start:0x022e4e64 end:0x022e4eb8
 
-src/ov001_t5/func_ov001_022e5164.c:
+src/ov001_t5/ZoneMap_CalcClampedScroll.c:
     complete
     .text       start:0x022e5164 end:0x022e519c
 
-src/ov001_t5/func_ov001_022e6fbc.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e6fbc.c:
     complete
     .text       start:0x022e6fbc end:0x022e7114
 
-src/ov001_t5/func_ov001_022e7308.c:
+src/ov001_t5/ZoneMap_State_Unk_ov001_022e7308.c:
     complete
     .text       start:0x022e7308 end:0x022e736c
 
-src/ov001_t5/func_ov001_022e833c.c:
+src/ov001_t5/ZoneMap_Unk_ov001_022e833c.c:
     complete
     .text       start:0x022e833c end:0x022e8378
 
-src/ov001_t5/func_ov001_022e8b2c.c:
+src/ov001_t5/ZoneMapPause_Unk_ov001_022e8b2c.c:
     complete
     .text       start:0x022e8b2c end:0x022e8b5c
 
-src/ov001_t5/func_ov001_022e90b8.c:
+src/ov001_t5/ZoneMapPause_Unk_ov001_022e90b8.c:
     complete
     .text       start:0x022e90b8 end:0x022e90f4
 
-src/ov001_t5/func_ov001_022e96a8.c:
+src/ov001_t5/TimeAttackMenu_Unk_ov001_022e96a8.c:
     complete
     .text       start:0x022e96a8 end:0x022e9708
 
-src/ov001_t5/func_ov001_022e9e70.c:
+src/ov001_t5/TimeAttackMenu_Unk_ov001_022e9e70.c:
     complete
     .text       start:0x022e9e70 end:0x022e9ebc
 
-src/ov001_t5/func_ov001_022e9ebc.c:
+src/ov001_t5/TimeAttackMenu_Unk_ov001_022e9ebc.c:
     complete
     .text       start:0x022e9ebc end:0x022e9f04
 
-src/ov001_t5/func_ov001_022ea2b0.c:
+src/ov001_t5/TimeAttackMenu_Unk_ov001_022ea2b0.c:
     complete
     .text       start:0x022ea2b0 end:0x022ea2f0
 
-src/ov001_t5/func_ov001_022ea37c.c:
+src/ov001_t5/TimeAttackMenu_Unk_ov001_022ea37c.c:
     complete
     .text       start:0x022ea37c end:0x022ea3e0
 
-src/ov001_t5/func_ov001_022ecdcc.c:
+src/ov001_t5/Records_Unk_ov001_022ecdcc.c:
     complete
     .text       start:0x022ecdcc end:0x022ece04
 
-src/ov001_t5/func_ov001_022ecf04.c:
+src/ov001_t5/Records_Unk_ov001_022ecf04.c:
     complete
     .text       start:0x022ecf04 end:0x022ecf5c
 
-src/ov001_t5/func_ov001_022ecf5c.c:
+src/ov001_t5/Records_Unk_ov001_022ecf5c.c:
     complete
     .text       start:0x022ecf5c end:0x022ecfb0
 
-src/ov001_t6/func_ov001_022ce6f8.c:
+src/ov001_t6/Options_Unk_ov001_022ce6f8.c:
     complete
     .text       start:0x022ce6f8 end:0x022ce960
 
-src/ov001_t6/func_ov001_022d8798.c:
+src/ov001_t6/TitleMenu_State_Unk_ov001_022d8798.c:
     complete
     .text       start:0x022d8798 end:0x022d8938
 
-src/ov001_t6/func_ov001_022d8938.c:
+src/ov001_t6/TitleMenu_State_Unk_ov001_022d8938.c:
     complete
     .text       start:0x022d8938 end:0x022d8b54
 
-src/ov001_t6/func_ov001_022e2f0c.c:
+src/ov001_t6/ZoneMap_Unk_ov001_022e2f0c.c:
     complete
     .text       start:0x022e2f0c end:0x022e3150
 
-src/ov001_t6/func_ov001_022e3180.c:
+src/ov001_t6/ZoneMap_Unk_ov001_022e3180.c:
     complete
     .text       start:0x022e3180 end:0x022e3398
 
-src/ov001_t6/func_ov001_022d3af0.c:
+src/ov001_t6/TryAgain_State_Unk_ov001_022d3af0.c:
     complete
     .text       start:0x022d3af0 end:0x022d3cd0
 
@@ -6548,11 +6548,11 @@ src/ov001_t6/ZoneMap_SplineSolve.c:
     complete
     .text       start:0x022e1ce8 end:0x022e1e98
 
-src/ov001_t6/func_ov001_022e2bd8.c:
+src/ov001_t6/ZoneMap_Unk_ov001_022e2bd8.c:
     complete
     .text       start:0x022e2bd8 end:0x022e2dcc
 
-src/ov001_t6/func_ov001_022e397c.c:
+src/ov001_t6/ZoneMap_Unk_ov001_022e397c.c:
     complete
     .text       start:0x022e397c end:0x022e3b24
 
@@ -6560,27 +6560,27 @@ src/sweep/ZoneActSelect_IsActive.c:
     complete
     .text       start:0x022e1900 end:0x022e190c
 
-src/sweep/func_ov001_022e21ec.c:
+src/sweep/ZoneMap_Unk_ov001_022e21ec.c:
     complete
     .text       start:0x022e21ec end:0x022e22d0
 
-src/sweep/func_ov001_022fac54.c:
+src/sweep/ExtraBossObj_State_Unk_ov001_022fac54.c:
     complete
     .text       start:0x022fac54 end:0x022fad38
 
-src/ov001_t7/func_ov001_022d7a84.c:
+src/ov001_t7/TitleMenu_Unk_ov001_022d7a84.c:
     complete
     .text       start:0x022d7a84 end:0x022d7ac4
 
-src/ov001_t7/func_ov001_022d86b0.c:
+src/ov001_t7/TitleMenu_State_Unk_ov001_022d86b0.c:
     complete
     .text       start:0x022d86b0 end:0x022d8798
 
-src/ov001_t7/func_ov001_022dd890.c:
+src/ov001_t7/VsMenu_Unk_ov001_022dd890.c:
     complete
     .text       start:0x022dd890 end:0x022dd8d8
 
-src/ov001_t7/func_ov001_022ecae4.c:
+src/ov001_t7/Records_Unk_ov001_022ecae4.c:
     complete
     .text       start:0x022ecae4 end:0x022ecdb4
 
@@ -6592,19 +6592,19 @@ src/sweep/SpecialStageHud_UpdateClear.c:
     complete
     .text       start:0x02307d30 end:0x0230808c
 
-src/ov001_g/func_ov001_022ed19c.c:
+src/ov001_g/Records_Unk_ov001_022ed19c.c:
     complete
     .text       start:0x022ed19c end:0x022ed390
 
-src/ov001_g/func_ov001_022ed390.c:
+src/ov001_g/Records_Unk_ov001_022ed390.c:
     complete
     .text       start:0x022ed390 end:0x022ed3e0
 
-src/ov001_g/func_ov001_022ed3e0.c:
+src/ov001_g/Records_Unk_ov001_022ed3e0.c:
     complete
     .text       start:0x022ed3e0 end:0x022ed490
 
-src/ov001_g/func_ov001_022ed490.c:
+src/ov001_g/Records_Unk_ov001_022ed490.c:
     complete
     .text       start:0x022ed490 end:0x022ed4d8
 
@@ -6612,11 +6612,11 @@ src/ov001_g/Records_State_ExitToOptions.c:
     complete
     .text       start:0x022ed4d8 end:0x022ed548
 
-src/ov001_g/func_ov001_022ed548.c:
+src/ov001_g/Records_State_Unk_ov001_022ed548.c:
     complete
     .text       start:0x022ed548 end:0x022ed614
 
-src/ov001_g/func_ov001_022ed6c4.c:
+src/ov001_g/Records_State_Unk_ov001_022ed6c4.c:
     complete
     .text       start:0x022ed6c4 end:0x022ed818
 
@@ -6624,7 +6624,7 @@ src/ov001_g/Records_ReleaseSprites.c:
     complete
     .text       start:0x022ed924 end:0x022ed960
 
-src/ov001_g/func_ov001_022edb3c.c:
+src/ov001_g/Records_Unk_ov001_022edb3c.c:
     complete
     .text       start:0x022edb3c end:0x022edcb0
 
@@ -6632,19 +6632,19 @@ src/ov001_g/Records_Create.c:
     complete
     .text       start:0x022edd28 end:0x022edd9c
 
-src/ov001_g/func_ov001_022f6f40.c:
+src/ov001_g/ExtraBoss_Unk_ov001_022f6f40.c:
     complete
     .text       start:0x022f6f40 end:0x022f705c
 
-src/ov001_g/func_ov001_022f8e7c.c:
+src/ov001_g/ExtraAct_Unk_ov001_022f8e7c.c:
     complete
     .text       start:0x022f8e7c end:0x022f8f54
 
-src/ov001_g/func_ov001_0230611c.c:
+src/ov001_g/ExtraBoss_State_Unk_ov001_0230611c.c:
     complete
     .text       start:0x0230611c end:0x023061b0
 
-src/ov001_g/func_ov001_02306244.c:
+src/ov001_g/ExtraBoss_Unk_ov001_02306244.c:
     complete
     .text       start:0x02306244 end:0x023062f0
 
@@ -6656,7 +6656,7 @@ src/ov001_g/SpecialStageCamera_Init.c:
     complete
     .text       start:0x02315de8 end:0x02315eb4
 
-src/lead/func_ov001_022d224c.c:
+src/lead/StaffRoll_Unk_ov001_022d224c.c:
     complete
     .text       start:0x022d224c end:0x022d2460
 
@@ -6700,7 +6700,7 @@ src/ov001_h/Ending_Main.c:
     complete
     .text       start:0x022c7ac8 end:0x022c7d2c
 
-src/ov001_h/func_ov001_022c7d5c.c:
+src/ov001_h/Ending_Unk_ov001_022c7d5c.c:
     complete
     .text       start:0x022c7d5c end:0x022c7eb4
 
@@ -6724,7 +6724,7 @@ src/ov001_h/StaffRoll_FadeSpritePalette.c:
     complete
     .text       start:0x022cfd7c end:0x022cfe58
 
-src/ov001_h/func_ov001_022dde00.c:
+src/ov001_h/TransformDemo_Unk_ov001_022dde00.c:
     complete
     .text       start:0x022dde00 end:0x022ddfa4
 
@@ -6732,11 +6732,11 @@ src/ov001_h/TransformDemo_FadeState_Init.c:
     complete
     .text       start:0x022de184 end:0x022de1e0
 
-src/ov001_h/func_ov001_022de1e0.c:
+src/ov001_h/TransformDemo_Unk_ov001_022de1e0.c:
     complete
     .text       start:0x022de1e0 end:0x022de240
 
-src/ov001_h/func_ov001_022de240.c:
+src/ov001_h/TransformDemo_Unk_ov001_022de240.c:
     complete
     .text       start:0x022de240 end:0x022de388
 
@@ -6748,7 +6748,7 @@ src/ov001_h/TransformDemo_LoadTransModels.c:
     complete
     .text       start:0x022debf0 end:0x022dedd4
 
-src/ov001_h/func_ov001_022dedf4.c:
+src/ov001_h/TransformDemo_Unk_ov001_022dedf4.c:
     complete
     .text       start:0x022dedf4 end:0x022df008
 
@@ -6756,7 +6756,7 @@ src/ov001_h/TransformDemo_SpawnEffect.c:
     complete
     .text       start:0x022df5f0 end:0x022df878
 
-src/ov001_h/func_ov001_022df950.c:
+src/ov001_h/TransformDemo_Unk_ov001_022df950.c:
     complete
     .text       start:0x022df950 end:0x022dfa3c
 
@@ -6764,7 +6764,7 @@ src/ov001_h/TransformDemo_InitDisplay.c:
     complete
     .text       start:0x022dffcc end:0x022e023c
 
-src/ov001_h/func_ov001_022e023c.c:
+src/ov001_h/TransformDemo_Unk_ov001_022e023c.c:
     complete
     .text       start:0x022e023c end:0x022e034c
 
@@ -6776,7 +6776,7 @@ src/ov001_j/OptionsMenu_Create.c:
     complete
     .text       start:0x022cdfdc end:0x022ce164
 
-src/ov001_j/func_ov001_022fd268.c:
+src/ov001_j/ExtraBoss_Unk_ov001_022fd268.c:
     complete
     .text       start:0x022fd268 end:0x022fd2dc
 
@@ -6788,11 +6788,11 @@ src/asm_fallback/SoundTest_SamplingCallback.c:
     complete
     .text       start:0x022c8f30 end:0x022c90a8
 
-src/asm_fallback/func_ov001_022c9a2c.c:
+src/asm_fallback/OptionsMenu_Unk_ov001_022c9a2c.c:
     complete
     .text       start:0x022c9a2c end:0x022c9b78
 
-src/asm_fallback/func_ov001_022cb5ac.c:
+src/asm_fallback/OptionsMenu_DrawItemLabel0.c:
     complete
     .text       start:0x022cb5ac end:0x022cb6d8
 
@@ -6800,71 +6800,71 @@ src/asm_fallback/TryAgain_InitSprites.c:
     complete
     .text       start:0x022d3fc8 end:0x022d4048
 
-src/asm_fallback/func_ov001_022df490.c:
+src/asm_fallback/TransformDemo_Unk_ov001_022df490.c:
     complete
     .text       start:0x022df490 end:0x022df530
 
-src/asm_fallback/func_ov001_022dfc54.c:
+src/asm_fallback/TransformDemo_Unk_ov001_022dfc54.c:
     complete
     .text       start:0x022dfc54 end:0x022dfe20
 
-src/asm_fallback/func_ov001_022e1aac.c:
+src/asm_fallback/ZoneMap_Unk_ov001_022e1aac.c:
     complete
     .text       start:0x022e1aac end:0x022e1b4c
 
-src/asm_fallback/func_ov001_022e2df0.c:
+src/asm_fallback/ZoneMap_Unk_ov001_022e2df0.c:
     complete
     .text       start:0x022e2df0 end:0x022e2e40
 
-src/asm_fallback/func_ov001_022e519c.c:
+src/asm_fallback/ZoneMap_Unk_ov001_022e519c.c:
     complete
     .text       start:0x022e519c end:0x022e54b4
 
-src/asm_fallback/func_ov001_022e612c.c:
+src/asm_fallback/ZoneMap_Unk_ov001_022e612c.c:
     complete
     .text       start:0x022e612c end:0x022e61f4
 
-src/asm_fallback/func_ov001_022e794c.c:
+src/asm_fallback/ZoneMap_Unk_ov001_022e794c.c:
     complete
     .text       start:0x022e794c end:0x022e7c50
 
-src/asm_fallback/func_ov001_022fbbc8.c:
+src/asm_fallback/ExtraBossObj_State_Unk_ov001_022fbbc8.c:
     complete
     .text       start:0x022fbbc8 end:0x022fbfcc
 
-src/asm_fallback/func_ov001_022fdbc0.c:
+src/asm_fallback/ExtraBoss_Unk_ov001_022fdbc0.c:
     complete
     .text       start:0x022fdbc0 end:0x022fde54
 
-src/asm_fallback/func_ov001_022fde54.c:
+src/asm_fallback/ExtraBoss_Unk_ov001_022fde54.c:
     complete
     .text       start:0x022fde54 end:0x022fe550
 
-src/asm_fallback/func_ov001_022fe550.c:
+src/asm_fallback/ExtraBoss_Unk_ov001_022fe550.c:
     complete
     .text       start:0x022fe550 end:0x022fe6b8
 
-src/asm_fallback/func_ov001_02303494.c:
+src/asm_fallback/ExtraBoss_Unk_ov001_02303494.c:
     complete
     .text       start:0x02303494 end:0x02303554
 
-src/asm_fallback/func_ov001_02304834.c:
+src/asm_fallback/ExtraBoss_Unk_ov001_02304834.c:
     complete
     .text       start:0x02304834 end:0x02304948
 
-src/asm_fallback/func_ov001_02304fb4.c:
+src/asm_fallback/ExtraBoss_Unk_ov001_02304fb4.c:
     complete
     .text       start:0x02304fb4 end:0x02305344
 
-src/asm_fallback/func_ov001_023099ec.c:
+src/asm_fallback/SpecialStage_Unk_ov001_023099ec.c:
     complete
     .text       start:0x023099ec end:0x02309c14
 
-src/asm_fallback/func_ov001_0230e78c.c:
+src/asm_fallback/SpecialStageGimmick_Unk_ov001_0230e78c.c:
     complete
     .text       start:0x0230e78c end:0x0230e8fc
 
-src/asm_fallback/func_ov001_0230e94c.c:
+src/asm_fallback/SpecialStageGimmick_Unk_ov001_0230e94c.c:
     complete
     .text       start:0x0230e94c end:0x0230ea24
 
@@ -6872,19 +6872,19 @@ src/asm_fallback/SpecialStageCamera_Apply.c:
     complete
     .text       start:0x023157d8 end:0x02315900
 
-src/ov001_j/func_ov001_022c8bc0.c:
+src/ov001_j/Options_Unk_ov001_022c8bc0.c:
     complete
     .text       start:0x022c8bc0 end:0x022c8cc0
 
-src/ov001_j/func_ov001_022dfa3c.c:
+src/ov001_j/TransformDemo_Unk_ov001_022dfa3c.c:
     complete
     .text       start:0x022dfa3c end:0x022dfb48
 
-src/ov001_j/func_ov001_022dfb48.c:
+src/ov001_j/TransformDemo_Unk_ov001_022dfb48.c:
     complete
     .text       start:0x022dfb48 end:0x022dfc54
 
-src/ov001_j/func_ov001_022e4b5c.c:
+src/ov001_j/ZoneMap_Unk_ov001_022e4b5c.c:
     complete
     .text       start:0x022e4b5c end:0x022e4e64
 
@@ -6892,6 +6892,6 @@ src/ov001_j/SpecialStage_LoadActArchive.c:
     complete
     .text       start:0x02307398 end:0x02307760
 
-src/ov001_j/func_ov001_02314214.c:
+src/ov001_j/SpecialStageHud_Unk_ov001_02314214.c:
     complete
     .text       start:0x02314214 end:0x02314368

@@ -13,7 +13,7 @@ typedef struct {
     u16 unk45E;
 } UnkStruct_022f19a0;
 
-void func_ov000_022f898c(void);
+void BossF_Unk_ov000_022f898c(void);
 
 void BossFPartD8_State_Unk_ov000_022f19a0(UnkStruct_022f19a0 *s) {
     s->unk2E -= 0x80;
@@ -43,5 +43,5 @@ void BossFPartD8_State_Unk_ov000_022f19a0(UnkStruct_022f19a0 *s) {
         return;
     if (s->unk18 != -0x1f400)
         return;
-    func_ov000_022f898c();
+    BossF_Unk_ov000_022f898c();
 }

@@ -138,7 +138,7 @@ void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void StageTitleCard_InitBg(UnkWork_0205f25c *w);
 void func_ov000_023375c8(void);
-void func_0205d604(void);
+void StageTitleCard_Unk_0205d604(void);
 void StageTitleCard_HoldPlayerX(void);
 void StageTitleCard_HoldPlayerY(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
@@ -151,7 +151,7 @@ void G3X_SetEdgeColorTable(const u16 *table);
 void StageTitleCard_Main(void);
 void StageTitleCard_Destructor(void);
 void StageTitleCard_State_Init(void);
-void func_0205b560(void);
+void StageTitleCard_HoldPlayerNone(void);
 void StageTitleCardBg_State_Init(void);
 void StageTitleCardStrip_State_Init(void);
 void StageTitleCardPartE0_State_Init(void);
@@ -182,7 +182,7 @@ void StageTitleCard_Create(void) {
         MIi_CpuClear16(z, w, 0x8d0);
     }
     w->fn474 = StageTitleCard_State_Init;
-    w->fn478 = func_0205b560;
+    w->fn478 = StageTitleCard_HoldPlayerNone;
     w->fn78 = StageTitleCardBg_State_Init;
     w->fn88 = StageTitleCardStrip_State_Init;
     w->fne0 = StageTitleCardPartE0_State_Init;
@@ -204,7 +204,7 @@ void StageTitleCard_Create(void) {
         w->obj2 = gPlayers[1];
         w->fn18 = w->obj2->fn70;
         w->obj2->flags5c &= ~0x40;
-        w->obj2->fn70 = func_0205d604;
+        w->obj2->fn70 = StageTitleCard_Unk_0205d604;
     }
     w->flags |= 0x80025;
     w->unk4d8 = 0x1f;

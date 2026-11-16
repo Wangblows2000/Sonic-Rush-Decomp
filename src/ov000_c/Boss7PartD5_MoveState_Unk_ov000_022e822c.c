@@ -27,7 +27,7 @@ extern UnkStruct_Boss *gBoss7;
 extern u16 data_ov000_02363c04[][4];
 extern s16 data_ov000_02363c64[][4];
 
-void func_ov000_022e8538(UnkStruct_022e822c *w);
+void Boss7PartD5_Unk_ov000_022e8538(UnkStruct_022e822c *w);
 UnkStruct_StageObj *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void Boss7PartD5_MoveState_Unk_ov000_022e8120(void);
 
@@ -41,7 +41,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e822c(UnkStruct_022e822c *w) {
     }
     w->unk468 += 0x40;
     w->unk46C += 0x4cc;
-    func_ov000_022e8538(w);
+    Boss7PartD5_Unk_ov000_022e8538(w);
     if (w->unk46C > 0x30000)
         w->unk46C = 0x30000;
     if (w->unk468 > 0x1555)

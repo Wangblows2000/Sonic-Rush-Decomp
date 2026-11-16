@@ -18,7 +18,7 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 extern s32 data_ov000_02364198[][10];
 
-void func_ov000_022f5b6c(UnkStruct_022f5c14 *p);
+void BossFPartDE_State_Unk_ov000_022f5b6c(UnkStruct_022f5c14 *p);
 
 void BossFPartDE_State_Unk_ov000_022f5c14(UnkStruct_022f5c14 *p) {
     BOOL b;
@@ -30,5 +30,5 @@ void BossFPartDE_State_Unk_ov000_022f5c14(UnkStruct_022f5c14 *p) {
     else
         idx = gGameState.unk14;
     if (data_ov000_02364198[idx][p->unk214] > p->unk14)
-        p->unk68 = func_ov000_022f5b6c;
+        p->unk68 = BossFPartDE_State_Unk_ov000_022f5b6c;
 }

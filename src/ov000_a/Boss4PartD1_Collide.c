@@ -27,7 +27,7 @@ extern UnkTask_022dc328 *gTaskCurrent;
 
 void ObjRect_SetBox2D(UnkStruct_022dc328_h *h, s32 a, s32 b, s32 c, s32 d);
 void StageObj_HandleCollider(UnkStruct_022dc328 *s, UnkStruct_022dc328_h *h);
-void func_ov000_022db894(UnkStruct_022dc328_h *h, UnkStruct_022dc328_h *out);
+void Boss4_Unk_ov000_022db894(UnkStruct_022dc328_h *h, UnkStruct_022dc328_h *out);
 void Boss4PartD1_OnHit(void);
 
 void Boss4PartD1_Collide(void) {
@@ -46,6 +46,6 @@ void Boss4PartD1_Collide(void) {
     h2->unk1C = NULL;
     h2->unkA |= 4;
     StageObj_HandleCollider(s, h2);
-    func_ov000_022db894(&s->unk134, &s->unk350);
-    func_ov000_022db894(&s->unk160, &s->unk37C);
+    Boss4_Unk_ov000_022db894(&s->unk134, &s->unk350);
+    Boss4_Unk_ov000_022db894(&s->unk160, &s->unk37C);
 }

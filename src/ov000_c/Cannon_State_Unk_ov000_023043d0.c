@@ -19,14 +19,14 @@ extern s16 data_0206e470[];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-void func_ov000_023045c0(UnkStruct_023043d0 *w);
+void Cannon_Unk_ov000_023045c0(UnkStruct_023043d0 *w);
 
 void Cannon_State_Unk_ov000_023043d0(UnkStruct_023043d0 *w) {
     UnkStruct_Link *l = w->base.unk204;
 
     if (l != NULL) {
         if (w->base.unk1F4 & 1) {
-            func_ov000_023045c0(w);
+            Cannon_Unk_ov000_023045c0(w);
             w->base.unk1 = (u32)w->base.unk8 >> 8;
         } else if (l->unkC == 0) {
             w->base.unk1F4 |= 1;

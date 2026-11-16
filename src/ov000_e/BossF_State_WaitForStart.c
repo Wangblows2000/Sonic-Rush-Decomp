@@ -70,7 +70,7 @@ void Model_SetResource(void *p, s32 a, s32 b);
 void BossF_InitCamera(void);
 void Model_SetAnimation(void *s, s32 a, s32 b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
-void func_ov000_022f898c(void);
+void BossF_Unk_ov000_022f898c(void);
 void BossF_Action_Unk_ov000_022f8310(void *p);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
@@ -107,6 +107,6 @@ void BossF_State_WaitForStart(UnkStruct_022f8320 *s) {
     NaviMsg_SetFaceAnim(9);
     NaviMsg_ShowMessage(0xf, 0xf0);
     ScreenShake_Start(0xc);
-    func_ov000_022f898c();
+    BossF_Unk_ov000_022f898c();
     BossF_Action_Unk_ov000_022f8310(gBossF);
 }

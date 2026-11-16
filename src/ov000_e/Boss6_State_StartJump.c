@@ -32,7 +32,7 @@ extern s32 data_ov000_02363844[];
 extern UnkStruct_StageObj *gPlayers;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022e004c(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e004c(UnkStruct_Boss *w);
 void Boss6_State_JumpRise(void);
 
 void Boss6_State_StartJump(UnkStruct_Boss *w) {
@@ -57,5 +57,5 @@ void Boss6_State_StartJump(UnkStruct_Boss *w) {
         else
             w->unk1124 = 0x38e;
     }
-    func_ov000_022e004c(w);
+    Boss6_Unk_ov000_022e004c(w);
 }

@@ -74,7 +74,7 @@ void BossEffect_CreatePick(s32 a, s32 b, s32 c, s32 d);
 void BossEffect_CreateParts(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss6_State_StartJump(void);
-void func_ov000_022e00a8(UnkStruct_Boss *w, s32 a);
+void Boss6_Unk_ov000_022e00a8(UnkStruct_Boss *w, s32 a);
 
 typedef struct {
     u8 pad[0x30];
@@ -91,7 +91,7 @@ typedef struct {
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 extern UnkStruct_Pl2 *gPlayers;
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022e04a8(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e04a8(UnkStruct_Boss *w);
 
 void Boss6_State_Unk_ov000_022e3308(UnkStruct_Boss *w) {
     UnkStruct_Mdl960 *m = &w->unk960;
@@ -113,7 +113,7 @@ void Boss6_State_Unk_ov000_022e3308(UnkStruct_Boss *w) {
         m->unk10C &= ~4;
         m->unk114 = 0x1000;
         ScreenShake_Start(0);
-        func_ov000_022e00a8(w, w->unkF4C);
+        Boss6_Unk_ov000_022e00a8(w, w->unkF4C);
     }
     if (gPlayers->unk32C & 0x400) {
         UnkStruct_0236a48c *c = (UnkStruct_0236a48c *)(u32)&data_ov000_0236a48c;

@@ -20,7 +20,7 @@ extern UnkStruct_Plr gCamera[];
 
 BOOL func_ov000_02307dfc(UnkStruct_023094f0 *w, s32 a);
 void func_ov000_0234232c(s32 a);
-void func_ov000_02309430(UnkStruct_023094f0 *w);
+void MapObj8C_Action_Unk_ov000_02309430(UnkStruct_023094f0 *w);
 
 void MapObj8C_State_Unk_ov000_023094f0(UnkStruct_023094f0 *w) {
     u8 i;
@@ -58,5 +58,5 @@ void MapObj8C_State_Unk_ov000_023094f0(UnkStruct_023094f0 *w) {
         w->unk20C |= 0x100;
     if (w->unk213 < w->unk212)
         return;
-    func_ov000_02309430(w);
+    MapObj8C_Action_Unk_ov000_02309430(w);
 }

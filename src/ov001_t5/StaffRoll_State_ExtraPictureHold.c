@@ -7,14 +7,14 @@ typedef struct {
     s32 count;
 } UnkStruct_022d1840;
 
-void func_ov001_022d0070(UnkStruct_022d1840 *p);
+void StaffRoll_Unk_ov001_022d0070(UnkStruct_022d1840 *p);
 void StaffRoll_SetState(UnkStruct_022d1840 *p, void (*fn)(UnkStruct_022d1840 *));
 void StaffRoll_State_ExtraFadeOut(UnkStruct_022d1840 *p);
 void StaffRoll_State_ExtraPictureFadeOut(UnkStruct_022d1840 *p);
 
 #pragma thumb on
 void StaffRoll_State_ExtraPictureHold(UnkStruct_022d1840 *p) {
-    func_ov001_022d0070(p);
+    StaffRoll_Unk_ov001_022d0070(p);
     if (p->timer > 0x12c) {
         if (p->count + 1 >= 4) {
             StaffRoll_SetState(p, StaffRoll_State_ExtraFadeOut);

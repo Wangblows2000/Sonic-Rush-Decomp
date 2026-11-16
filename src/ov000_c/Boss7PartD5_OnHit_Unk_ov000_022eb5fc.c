@@ -73,7 +73,7 @@ extern UnkStruct_02369b78 *gBoss7;
 extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022eb5fc_Pl *gPlayers;
 
-void func_ov000_022eb574(UnkStruct_022eb5fc *w, UnkStruct_022eb5fc_Pl *pl);
+void Boss7PartD5_Unk_ov000_022eb574(UnkStruct_022eb5fc *w, UnkStruct_022eb5fc_Pl *pl);
 void Boss7PartD5_CreateClashEffect(s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Player_OnHurt(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b);
@@ -84,14 +84,14 @@ void NaviMsg_ShowMessage(s32 a, s32 b);
 void Boss7PartD5_InputState_Unk_ov000_022e9de8(void);
 void Boss7PartD5_MoveState_Unk_ov000_022e72ec(void);
 void Player_Action_AttackBounce(UnkStruct_022eb5fc_Pl *pl);
-void func_ov000_022ee06c(s32 x, s32 y, s32 z);
+void Boss7PartD5_Unk_ov000_022ee06c(s32 x, s32 y, s32 z);
 
 static inline void Hit(UnkStruct_02369b78 *mgr, UnkStruct_022eb5fc *w, UnkStruct_022eb5fc_Pl *pl) {
     u32 v = mgr->unk220;
     if (v - w->unk448 < 4)
         return;
     w->unk448 = v;
-    func_ov000_022eb574(w, pl);
+    Boss7PartD5_Unk_ov000_022eb574(w, pl);
     Boss7PartD5_CreateClashEffect((w->unk10 + pl->unk10) >> 1, (w->unk14 + pl->unk14) >> 1, (w->unk18 + pl->unk18) >> 1);
     Sound_PlaySeqArc(0, 0, 0xcb);
 }
@@ -146,7 +146,7 @@ void Boss7PartD5_OnHit_Unk_ov000_022eb5fc(UnkStruct_022eb5fc_Coll *a, UnkStruct_
         }
         w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e72ec;
         Player_Action_AttackBounce(gPlayers);
-        func_ov000_022ee06c(b->unk0 << 8, b->unk4 << 8, 0);
+        Boss7PartD5_Unk_ov000_022ee06c(b->unk0 << 8, b->unk4 << 8, 0);
         return;
     }
     if (pl->unk3B2 > 0)

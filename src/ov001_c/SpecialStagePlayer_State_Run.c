@@ -34,14 +34,14 @@ typedef struct UnkStruct_02311bcc_k {
 extern UnkStruct_02311bcc_k gTouchState;
 extern u32 data_ov001_023178d8[];
 
-BOOL func_ov001_023121f0(u16 a, u16 b);
+BOOL SpecialStagePlayer_Unk_ov001_023121f0(u16 a, u16 b);
 void SpecialStagePlayer_UpdateTouchSteer(UnkStruct_02311bcc *p);
 void SpecialStagePlayer_ChangeState(UnkStruct_02311bcc *p, s32 v);
-void func_ov001_02312dd0(UnkStruct_02311bcc *p, s32 v);
-void func_ov001_02312d7c(UnkStruct_02311bcc *p);
+void SpecialStage_Unk_ov001_02312dd0(UnkStruct_02311bcc *p, s32 v);
+void SpecialStagePlayer_Unk_ov001_02312d7c(UnkStruct_02311bcc *p);
 void SpecialStagePlayer_UpdateTurn(UnkStruct_02311bcc *p);
 BOOL SpecialStagePlayer_CheckTouchTarget(UnkStruct_02311bcc *p);
-s32 func_ov001_02312250(UnkStruct_02311bcc *p);
+s32 SpecialStagePlayer_Unk_ov001_02312250(UnkStruct_02311bcc *p);
 
 static inline BOOL IsLeft_02311bcc(u16 a) {
     if (a < 0x8000)
@@ -56,22 +56,22 @@ void SpecialStagePlayer_State_Run(UnkStruct_02311bcc *p) {
     else
         p->unk1F0 = 0;
     if (p->unk114 != 0) {
-        if (p->unk144 <= 0 && !func_ov001_023121f0(gTouchState.held, gTouchState.trig))
+        if (p->unk144 <= 0 && !SpecialStagePlayer_Unk_ov001_023121f0(gTouchState.held, gTouchState.trig))
             SpecialStagePlayer_UpdateTouchSteer(p);
     } else {
         p->unk134 = 0;
         p->unk138 = 0x100;
         if (p->unk11C != NULL && p->unk11C->unk28 > -0x6e000) {
             SpecialStagePlayer_ChangeState(p, 0x18);
-            func_ov001_02312dd0(p, 0x1e);
-            func_ov001_02312d7c(p);
+            SpecialStage_Unk_ov001_02312dd0(p, 0x1e);
+            SpecialStagePlayer_Unk_ov001_02312d7c(p);
             return;
         }
     }
     SpecialStagePlayer_UpdateTurn(p);
     if (SpecialStagePlayer_CheckTouchTarget(p))
         return;
-    if (func_ov001_02312250(p) && (u16)p->unk134 == p->unk16 && (p->unk16 == (u16)data_ov001_023178d8[0] || p->unk16 == (u16)data_ov001_023178d8[2])) {
+    if (SpecialStagePlayer_Unk_ov001_02312250(p) && (u16)p->unk134 == p->unk16 && (p->unk16 == (u16)data_ov001_023178d8[0] || p->unk16 == (u16)data_ov001_023178d8[2])) {
         p->unk44 = 0x4b0;
         p->unk44 = p->unk44 * (IsLeft_02311bcc(p->unk16) > 0 ? 1 : -1);
         p->unk13C = 0;

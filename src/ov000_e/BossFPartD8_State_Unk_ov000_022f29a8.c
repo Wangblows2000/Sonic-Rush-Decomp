@@ -20,7 +20,7 @@ extern u8 data_ov000_02363df0[];
 UnkStruct_StageObj *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void BossEffect_CreateImpactSt(s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022f2680(void);
+void BossFPartD8_State_Unk_ov000_022f2680(void);
 void BossFPartD8_State_Unk_ov000_022f28b4(void);
 
 void BossFPartD8_State_Unk_ov000_022f29a8(UnkStruct_022f29a8 *s) {
@@ -35,7 +35,7 @@ void BossFPartD8_State_Unk_ov000_022f29a8(UnkStruct_022f29a8 *s) {
     o->unk2E = (o->unk2E * (s32)(u32)data_ov000_0236415c[s->unk458][s->unk434]) >> 12;
     Sound_PlaySeqArc(0, 0, 0xbe);
     if (s->unk434 + 1 != data_ov000_02363df0[s->unk458]) {
-        s->unk68 = func_ov000_022f2680;
+        s->unk68 = BossFPartD8_State_Unk_ov000_022f2680;
         return;
     }
     BossEffect_CreateImpactSt(1, x, 0x30000, 0);

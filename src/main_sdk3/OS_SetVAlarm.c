@@ -14,7 +14,7 @@ typedef struct UnkVAlarm {
     u32 canceled;            /* 0x24 */
 } UnkVAlarm;
 
-extern UnkVAlarm *data_0207d394;
+extern UnkVAlarm *OSi_VAlarmQueue;
 
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 state);

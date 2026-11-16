@@ -21,7 +21,7 @@ typedef struct {
 extern volatile UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Bits5 data_02089250;
 
-void func_ov000_022f0bd0(void);
+void BossFPartD8_State_Unk_ov000_022f0bd0(void);
 
 void BossFPartD8_State_Unk_ov000_022f0bec(UnkStruct_022f0bec *w) {
     w->unk454++;
@@ -31,6 +31,6 @@ void BossFPartD8_State_Unk_ov000_022f0bec(UnkStruct_022f0bec *w) {
     data_02089250.b0 -= 1;
     if (gDisplayMain.unk24.b0 == 0) {
         gDisplayMain.unk20 &= ~0xc0;
-        w->base.unk68 = func_ov000_022f0bd0;
+        w->base.unk68 = BossFPartD8_State_Unk_ov000_022f0bd0;
     }
 }

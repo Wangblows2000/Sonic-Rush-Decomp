@@ -7,13 +7,13 @@ typedef struct UnkStruct_022ea120 {
     void (*func)(void);
 } UnkStruct_022ea120;
 
-void func_ov000_022ea0bc(void);
-void func_ov000_022e9f8c(void);
+void Boss7PartD5_InputState_Unk_ov000_022ea0bc(void);
+void Boss7PartD5_InputState_Unk_ov000_022e9f8c(void);
 
 s32 Boss7PartD5_InputState_Unk_ov000_022ea120(UnkStruct_022ea120 *s) {
     if (s->unk58 & 1)
-        s->func = func_ov000_022ea0bc;
+        s->func = Boss7PartD5_InputState_Unk_ov000_022ea0bc;
     else
-        s->func = func_ov000_022e9f8c;
+        s->func = Boss7PartD5_InputState_Unk_ov000_022e9f8c;
     return 0;
 }

@@ -8,7 +8,7 @@ typedef struct {
     s16 unk456;
 } UnkStruct_022ea20c;
 
-void func_ov000_022ea1b8(UnkStruct_022ea20c *p);
+void Boss7PartD5_InputState_Unk_ov000_022ea1b8(UnkStruct_022ea20c *p);
 
 u16 Boss7PartD5_InputState_Unk_ov000_022ea20c(UnkStruct_022ea20c *p) {
     u16 r = 0x80;
@@ -18,6 +18,6 @@ u16 Boss7PartD5_InputState_Unk_ov000_022ea20c(UnkStruct_022ea20c *p) {
     else
         r |= 0x20;
     if (p->unk454++ > 4)
-        p->unk43C = func_ov000_022ea1b8;
+        p->unk43C = Boss7PartD5_InputState_Unk_ov000_022ea1b8;
     return r;
 }

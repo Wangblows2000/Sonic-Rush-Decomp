@@ -91,14 +91,14 @@ extern UnkStruct_022c94a0_cam data_ov000_0236a444;
 
 extern void *gPlayers;
 
-void func_ov000_022ca060(UnkStruct_022c94a0 *s);
+void Boss1Neck_Unk_ov000_022ca060(UnkStruct_022c94a0 *s);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void Boss1Neck_State_Unk_ov000_022c9478(UnkStruct_022c94a0 *s);
 
 void Boss1Neck_State_Unk_ov000_022c94a0(UnkStruct_022c94a0 *s) {
     UnkStruct_022c94a0_3 *p = gBoss1->unk214;
-    func_ov000_022ca060(s);
+    Boss1Neck_Unk_ov000_022ca060(s);
     if (!(s->unk334 & 2))
         return;
     Boss1_SetPartAnimation(s->unk228, s->unk220, 0x13, 0x1000, 0);

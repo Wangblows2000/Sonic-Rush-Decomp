@@ -24,11 +24,11 @@ extern u16 data_ov000_02363918[][8];
 extern u16 data_ov000_02363998[][8];
 extern u16 data_ov000_023639d8[][8];
 
-void func_ov000_022e591c(void);
-void func_ov000_022e5310(void);
-void func_ov000_022e43f0(void);
-void func_ov000_022e3718(void);
-void func_ov000_022e5a80(void);
+void Boss6_Action_Unk_ov000_022e591c(void);
+void Boss6_Action_Unk_ov000_022e5310(void);
+void Boss6_Action_Unk_ov000_022e43f0(void);
+void Boss6_Action_Unk_ov000_022e3718(void);
+void Boss6_Action_Unk_ov000_022e5a80(void);
 
 static inline void Pick(UnkStruct_022e1b48 *b, u16 (*tbl)[8]) {
     b->unkF46 = tbl[b->unkD4E][b->unkD4C];
@@ -49,19 +49,19 @@ void Boss6_SelectNextAttack(s32 mode) {
         switch (b->unkF46) {
         case 1:
             gBossStatus.unk4 = 0x1e;
-            func_ov000_022e591c();
+            Boss6_Action_Unk_ov000_022e591c();
             return;
         case 2:
             gBossStatus.unk4 = 0x1f;
-            func_ov000_022e5310();
+            Boss6_Action_Unk_ov000_022e5310();
             return;
         case 3:
             gBossStatus.unk4 = 0x20;
-            func_ov000_022e43f0();
+            Boss6_Action_Unk_ov000_022e43f0();
             return;
         case 4:
             gBossStatus.unk4 = 0x21;
-            func_ov000_022e3718();
+            Boss6_Action_Unk_ov000_022e3718();
             return;
         }
         break;
@@ -74,7 +74,7 @@ void Boss6_SelectNextAttack(s32 mode) {
         else
             Pick(b, data_ov000_023639d8);
         gBossStatus.unk4 = 0x1c;
-        func_ov000_022e5a80();
+        Boss6_Action_Unk_ov000_022e5a80();
         break;
     default:
         if (Rand() & 1) {
@@ -87,7 +87,7 @@ void Boss6_SelectNextAttack(s32 mode) {
             Pick(b, data_ov000_023639d8);
         }
         gBossStatus.unk4 = 0x1c;
-        func_ov000_022e5a80();
+        Boss6_Action_Unk_ov000_022e5a80();
         break;
     }
 }

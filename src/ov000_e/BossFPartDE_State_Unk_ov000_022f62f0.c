@@ -16,8 +16,8 @@ typedef struct {
     s16 unk4BC;
 } UnkStruct_022f62f0;
 
-void func_ov000_022f685c(UnkStruct_022f62f0 *w);
-void func_ov000_022f62bc(void);
+void BossFPartDE_Unk_ov000_022f685c(UnkStruct_022f62f0 *w);
+void BossFPartDE_State_Unk_ov000_022f62bc(void);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -28,12 +28,12 @@ static inline s32 Lerp(s32 a, s32 b, s32 t) {
 }
 
 void BossFPartDE_State_Unk_ov000_022f62f0(UnkStruct_022f62f0 *w) {
-    func_ov000_022f685c(w);
+    BossFPartDE_Unk_ov000_022f685c(w);
     w->unk210 += 0x800;
     w->unk4AC += w->unk4BC;
     if (w->unk4AC >= 0x1000) {
         w->unk4AC = 0x1000;
-        w->base.unk68 = func_ov000_022f62bc;
+        w->base.unk68 = BossFPartDE_State_Unk_ov000_022f62bc;
     }
     w->unk218 = Lerp((w->base.unk10 - 0x8000) << 4, (w->unk4B4 - (w->unk4B8 >> 1)) << 4, w->unk4AC) >> 4;
     w->unk35C = Lerp((w->base.unk10 + 0x8000) << 4, (w->unk4B4 + (w->unk4B8 >> 1)) << 4, w->unk4AC) >> 4;

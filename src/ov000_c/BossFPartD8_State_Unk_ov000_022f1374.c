@@ -34,9 +34,9 @@ extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Player *gPlayers;
 extern u8 data_ov000_02365c5c[][3];
 
-void func_ov000_022f490c(UnkStruct_022f1374 *w);
-void func_ov000_022f168c(void);
-void func_ov000_022f133c(void);
+void BossFPartD8_Unk_ov000_022f490c(UnkStruct_022f1374 *w);
+void BossFPartD8_State_Unk_ov000_022f168c(void);
+void BossFPartD8_State_Unk_ov000_022f133c(void);
 
 static inline BOOL IsMode23(void) {
     return gGameState.unk10 == 2 || gGameState.unk10 == 3;
@@ -47,7 +47,7 @@ static inline s32 GetLevel(void) {
 }
 
 void BossFPartD8_State_Unk_ov000_022f1374(UnkStruct_022f1374 *w) {
-    func_ov000_022f490c(w);
+    BossFPartD8_Unk_ov000_022f490c(w);
     if ((u16)(s16)(gPlayers->unk328 - 0xf) <= 1)
         w->unk434 = 1;
     if (w->unk442-- != 0)
@@ -56,7 +56,7 @@ void BossFPartD8_State_Unk_ov000_022f1374(UnkStruct_022f1374 *w) {
     w->unk440++;
     w->unk43C = Rand() & 1;
     if (w->unk440 < data_ov000_02365c5c[GetLevel()][w->unk458])
-        w->base.unk68 = func_ov000_022f168c;
+        w->base.unk68 = BossFPartD8_State_Unk_ov000_022f168c;
     else
-        w->base.unk68 = func_ov000_022f133c;
+        w->base.unk68 = BossFPartD8_State_Unk_ov000_022f133c;
 }

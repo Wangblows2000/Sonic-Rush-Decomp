@@ -21,8 +21,8 @@ typedef struct {
 
 extern u16 data_ov001_023166cc[];
 
-void func_ov001_022e9f04(UnkSpr_022ebecc *s, void *res, u16 id, s32 a);
-void func_ov001_022e9f58(UnkSpr_022ebecc *s, void *res, u16 id, s32 a);
+void TimeAttackMenu_Unk_ov001_022e9f04(UnkSpr_022ebecc *s, void *res, u16 id, s32 a);
+void TimeAttackMenu_Unk_ov001_022e9f58(UnkSpr_022ebecc *s, void *res, u16 id, s32 a);
 void KeyframeAnim_Init(UnkAnim_022ebecc *a, void *res, s32 i);
 
 #pragma thumb on
@@ -56,9 +56,9 @@ void TimeAttackMenu_InitSprites(UnkStruct_022ebecc *p) {
         id = data_ov001_023166cc[i];
         p->anim[i] = -1;
         if (i == 0x18) {
-            func_ov001_022e9f04(s, res, id, 0);
+            TimeAttackMenu_Unk_ov001_022e9f04(s, res, id, 0);
         } else {
-            func_ov001_022e9f58(s, res, id, 1);
+            TimeAttackMenu_Unk_ov001_022e9f58(s, res, id, 1);
         }
     }
     for (i = 0; i < 12; i++) {

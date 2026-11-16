@@ -4,7 +4,7 @@ typedef struct { u8 pad0[8]; s32 unk8; s32 unkC; } UnkWork_02050344;
 typedef struct { u8 pad0[0x10]; UnkWork_02050344 *work; } UnkTask_02050344;
 extern UnkTask_02050344 *gTaskCurrent;
 extern s32 data_022c463c;
-extern void *data_022c4638;
+extern void *gWirelessLobbyTask;
 
 void WirelessSession_ForceStop(void);
 s32 WirelessMgr_GetStatus(void);
@@ -38,7 +38,7 @@ void WirelessLobbyPreview_Main(void) {
         WirelessSession_Stop();
         WirelessSession_ForceStop();
         data_022c463c = 0;
-        data_022c4638 = NULL;
+        gWirelessLobbyTask = NULL;
         return;
     case 7:
         WirelessSession_ForceStop();

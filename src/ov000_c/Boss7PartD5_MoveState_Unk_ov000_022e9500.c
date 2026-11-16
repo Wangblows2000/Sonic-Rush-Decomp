@@ -20,12 +20,12 @@ typedef struct {
 extern s16 data_ov000_02368b80[][0x18];
 extern s16 gPlayerPhysicsTable[][0x18];
 
-void func_ov000_022e99e0(UnkStruct_022e9500 *w);
-void func_ov000_022e9990(UnkStruct_022e9500 *w, s32 v);
-void func_ov000_022e85f8(UnkStruct_022e9500 *w);
-BOOL func_ov000_022e9b28(UnkStruct_022e9500 *w);
-BOOL func_ov000_022e9b04(UnkStruct_022e9500 *w);
-void func_ov000_022e9488(void);
+void Boss7PartD5_Unk_ov000_022e99e0(UnkStruct_022e9500 *w);
+void Boss7PartD5_Unk_ov000_022e9990(UnkStruct_022e9500 *w, s32 v);
+void Boss7PartD5_Unk_ov000_022e85f8(UnkStruct_022e9500 *w);
+BOOL Boss7PartD5_Unk_ov000_022e9b28(UnkStruct_022e9500 *w);
+BOOL Boss7PartD5_Unk_ov000_022e9b04(UnkStruct_022e9500 *w);
+void Boss7PartD5_MoveState_Unk_ov000_022e9488(void);
 void Boss7PartD5_MoveState_Unk_ov000_022e98d8(void);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e9500(UnkStruct_022e9500 *w) {
@@ -67,24 +67,24 @@ void Boss7PartD5_MoveState_Unk_ov000_022e9500(UnkStruct_022e9500 *w) {
         w->base.unk2E = w->base.unk2E < (s16)-lim ? (s16)-lim : (w->base.unk2E > (s16)lim ? (s16)lim : w->base.unk2E);
         w->base.unk34 = w->base.unk2E;
     }
-    func_ov000_022e99e0(w);
-    func_ov000_022e9990(w, w->base.unk34);
+    Boss7PartD5_Unk_ov000_022e99e0(w);
+    Boss7PartD5_Unk_ov000_022e9990(w, w->base.unk34);
     if (w->unk464 != 0) {
         w->unk464--;
         if (((w->base.unk5C & 1) && (w->unk3DC & 0x10)) || (!(w->base.unk5C & 1) && (w->unk3DC & 0x20))) {
             if (++w->unk466 == 2) {
-                w->unk440 = func_ov000_022e9488;
+                w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e9488;
                 return;
             }
         }
     }
     if (w->unk3DC & 4) {
-        func_ov000_022e85f8(w);
+        Boss7PartD5_Unk_ov000_022e85f8(w);
         return;
     }
-    if (func_ov000_022e9b28(w))
+    if (Boss7PartD5_Unk_ov000_022e9b28(w))
         return;
-    if (func_ov000_022e9b04(w))
+    if (Boss7PartD5_Unk_ov000_022e9b04(w))
         return;
     if (w->base.unk2E != 0)
         return;

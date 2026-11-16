@@ -43,10 +43,10 @@ extern UnkStruct_02369b84 *gBossF;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
-void func_ov000_022f8ce8(s32 x, s32 y, s32 z);
-void func_ov000_022f87d8(void);
-void func_ov000_022f87bc(void);
-void func_ov000_022f87f4(void);
+void BossFPartD8_Unk_ov000_022f8ce8(s32 x, s32 y, s32 z);
+void BossFPartD8_Unk_ov000_022f87d8(void);
+void BossFPartD8_Unk_ov000_022f87bc(void);
+void BossFPartD8_Unk_ov000_022f87f4(void);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
 
@@ -65,19 +65,19 @@ void BossFPartD8_OnHit_Unk_ov000_022f50b0(UnkStruct_022f50b0_Coll *a, UnkStruct_
         if (gBossStatus.unk8 != 0) {
             Sound_PlaySeqArc(0, 0, 0x7b);
             Sound_PlayVoice(0, 0, (Rand() & 1) ? 0xce : 0xcf);
-            func_ov000_022f8ce8(b->unk0 << 8, b->unk4 << 8, 0);
-            func_ov000_022f87d8();
+            BossFPartD8_Unk_ov000_022f8ce8(b->unk0 << 8, b->unk4 << 8, 0);
+            BossFPartD8_Unk_ov000_022f87d8();
             return;
         }
-        func_ov000_022f87bc();
+        BossFPartD8_Unk_ov000_022f87bc();
         return;
     }
     if (gPlayers->unk328 == 0x30) {
         gBossStatus.unk8 = hp - 1;
         Sound_PlaySeqArc(0, 0, 0x7b);
         Sound_PlayVoice(0, 0, (Rand() & 1) ? 0xce : 0xcf);
-        func_ov000_022f8ce8(b->unk0 << 8, b->unk4 << 8, 0);
-        func_ov000_022f87f4();
+        BossFPartD8_Unk_ov000_022f8ce8(b->unk0 << 8, b->unk4 << 8, 0);
+        BossFPartD8_Unk_ov000_022f87f4();
         pl->unk36 = (((a->unk0 + ((w->unk5C & 1) ? a->unkC : (s16)-a->unk10)) - b->unk10) << 8) - pl->unk10;
         pl->unk58 |= 4;
         if (gBossStatus.unk8 <= 1) {

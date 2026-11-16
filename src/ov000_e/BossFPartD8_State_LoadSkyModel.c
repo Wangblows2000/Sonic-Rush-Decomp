@@ -37,7 +37,7 @@ void *File_Load(void *p);
 void NNS_G3dResDefaultSetup(void *p);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, void *a, s32 b);
-void BossFPartD8_State_Unk_ov000_022f0c8c(void);
+void BossFPartD8_State_WaitTimer_ov000_022f0c8c(void);
 
 static inline void UnkFree(void **pp) {
     void *p;
@@ -71,5 +71,5 @@ void BossFPartD8_State_LoadSkyModel(UnkStruct_022f0cb0 *s) {
     Model_Init(m, 0);
     Model_SetResource(m, b->unk23C, 0);
     m->unk18 = m->unk1C = m->unk20 = 0x1355b50;
-    s->base.unk68 = BossFPartD8_State_Unk_ov000_022f0c8c;
+    s->base.unk68 = BossFPartD8_State_WaitTimer_ov000_022f0c8c;
 }

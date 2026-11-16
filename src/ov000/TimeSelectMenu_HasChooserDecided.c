@@ -5,16 +5,16 @@ typedef struct UnkStruct_0235fba0 {
     s32 unk4;
 } UnkStruct_0235fba0;
 
-u8 *func_020514e4(void);
-u8 *func_02051474(void);
+u8 *WirelessSession_GetSendBuffer(void);
+u8 *WirelessSession_GetPartnerRecvBuffer(void);
 
 #pragma thumb on
 BOOL TimeSelectMenu_HasChooserDecided(UnkStruct_0235fba0 *s) {
     u8 *p;
     if (s->unk4 != 0)
-        p = func_020514e4();
+        p = WirelessSession_GetSendBuffer();
     else
-        p = func_02051474();
+        p = WirelessSession_GetPartnerRecvBuffer();
     if (p[1] == 0)
         return FALSE;
     return TRUE;

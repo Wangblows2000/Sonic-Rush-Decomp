@@ -13,9 +13,9 @@ typedef struct {
 } UnkWork_02050510;
 typedef struct { u8 pad0[0x10]; UnkWork_02050510 *work; } UnkTask_02050510;
 typedef struct { u8 pad0[0x14]; u16 unk14; } UnkStruct_022c4644;
-extern UnkTask_02050510 *data_022c4638;
-extern UnkStruct_022c4644 data_022c4644;
-extern s32 data_022c4640;
+extern UnkTask_02050510 *gWirelessLobbyTask;
+extern UnkStruct_022c4644 gWirelessPartnerName;
+extern s32 gWirelessPartnerNameValid;
 
 s32 WirelessMgr_GetStatus(void);
 s32 WirelessMgr_GetErrorCode(void);
@@ -24,12 +24,12 @@ void Wireless_OnError(void);
 void WirelessSession_ForceStop(void);
 void WirelessSession_RestartDownloadPlay(void *a);
 void WirelessMgr_RequestStart(void);
-u16 func_02050d60(s32 a, void *b, s32 c);
+u16 WirelessLobbyDownloadPlay_GetChildName(s32 a, void *b, s32 c);
 void WirelessSession_Stop(void);
 
 #pragma thumb on
 void WirelessLobbyDownloadPlay_Main(void) {
-    UnkTask_02050510 *t = data_022c4638;
+    UnkTask_02050510 *t = gWirelessLobbyTask;
     UnkWork_02050510 *w = t->work;
     s32 st;
     s32 r;
@@ -76,8 +76,8 @@ void WirelessLobbyDownloadPlay_Main(void) {
                 WirelessMgr_RequestStart();
                 w->unkC = 4;
                 w->unk8 = 0;
-                data_022c4644.unk14 = func_02050d60(0, &data_022c4644, 10);
-                data_022c4640 = 1;
+                gWirelessPartnerName.unk14 = WirelessLobbyDownloadPlay_GetChildName(0, &gWirelessPartnerName, 10);
+                gWirelessPartnerNameValid = 1;
             }
             break;
         case 4:

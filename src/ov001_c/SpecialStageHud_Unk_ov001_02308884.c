@@ -1,0 +1,116 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_02308884_o {
+    u8 pad0[0x128];
+    s32 unk128;
+    u8 pad12C[0x14e - 0x12c];
+    u16 unk14E;
+    s16 unk150;
+} UnkStruct_02308884_o;
+
+typedef struct UnkStruct_02308884_d {
+    u8 pad0[0x20];
+    u16 unk20;
+    u16 unk22;
+} UnkStruct_02308884_d;
+
+typedef struct UnkStruct_02308884 {
+    u8 pad0[0x810];
+    u8 objs[0x5][0x48];
+    u8 pad978[0xa50 - 0x978];
+    u8 objA50[0xae0 - 0xa50];
+    u32 unkAE0;
+} UnkStruct_02308884;
+
+extern UnkStruct_02308884 *gSpecialStageHud;
+extern u16 data_ov001_02317090[];
+
+UnkStruct_02308884_o *SpecialStage_GetPlayer(void);
+UnkStruct_02308884_d *SpecialStageTrick_GetSequence(s32 a);
+float _ffltu(u32 v);
+void AnimatorSprite_Draw(void *p);
+void SpecialStageCamera_PushOrtho(void);
+void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
+void SpecialStage_DisableTexture(void);
+void SpecialStage_SetPolygonAlpha(s32 a);
+s32 SpecialStageTrick_GetRating(s32 a, u16 b);
+void SpecialStageCamera_PopOrtho(void);
+
+void SpecialStageHud_Unk_ov001_02308884(void) {
+    UnkStruct_02308884 *g = gSpecialStageHud;
+    UnkStruct_02308884_o *o;
+    UnkStruct_02308884_d *d;
+    s32 i;
+    float f;
+    s32 k;
+    u16 w;
+    u32 a0;
+    u32 a1;
+    u32 a2[2];
+    u32 a3[2];
+    u32 a4[2];
+    u32 a5[2];
+    u32 a6;
+    u32 a7;
+    u32 a8;
+    u32 a9[2];
+    u32 a10[2];
+    u32 a11[2];
+    u32 a12[2];
+    u32 a13;
+
+    if (SpecialStage_GetPlayer()->unk128 == 0)
+        return;
+    o = SpecialStage_GetPlayer();
+    d = SpecialStageTrick_GetSequence(o->unk150);
+    f = 1.0f - _ffltu(o->unk14E) / _ffltu(d->unk20);
+    for (i = 0; i < d->unk22; i++)
+        AnimatorSprite_Draw(g->objs[i]);
+    SpecialStageCamera_PushOrtho();
+    NNS_G3dGeBufferOP_N(0x11, 0, 0);
+    SpecialStage_DisableTexture();
+    SpecialStage_SetPolygonAlpha(0x1f);
+    a0 = 0;
+    NNS_G3dGeBufferOP_N(0x20, &a0, 1);
+    a1 = 1;
+    NNS_G3dGeBufferOP_N(0x40, &a1, 1);
+    a2[0] = 0xb000200;
+    a2[1] = 0;
+    NNS_G3dGeBufferOP_N(0x23, a2, 2);
+    a3[0] = 0xb800200;
+    a3[1] = 0;
+    NNS_G3dGeBufferOP_N(0x23, a3, 2);
+    a4[0] = 0xb800e00;
+    a4[1] = 0;
+    NNS_G3dGeBufferOP_N(0x23, a4, 2);
+    a5[0] = 0xb000e00;
+    a5[1] = 0;
+    NNS_G3dGeBufferOP_N(0x23, a5, 2);
+    k = SpecialStageTrick_GetRating(o->unk150, o->unk14E);
+    a6 = data_ov001_02317090[k];
+    NNS_G3dGeBufferOP_N(0x20, &a6, 1);
+    if (k == 0 && (g->unkAE0 & 4)) {
+        a7 = data_ov001_02317090[2];
+        NNS_G3dGeBufferOP_N(0x20, &a7, 1);
+    }
+    a8 = 1;
+    NNS_G3dGeBufferOP_N(0x40, &a8, 1);
+    a9[0] = 0xb000200;
+    a9[1] = 0x1000;
+    NNS_G3dGeBufferOP_N(0x23, a9, 2);
+    a10[0] = 0xb800200;
+    a10[1] = 0x1000;
+    NNS_G3dGeBufferOP_N(0x23, a10, 2);
+    w = (s32)(512.0f + 786432.0f * f / 256.0f);
+    a11[0] = w | 0xb800000;
+    a11[1] = 0x1000;
+    NNS_G3dGeBufferOP_N(0x23, a11, 2);
+    a12[0] = w | 0xb000000;
+    a12[1] = 0x1000;
+    NNS_G3dGeBufferOP_N(0x23, a12, 2);
+    NNS_G3dGeBufferOP_N(0x41, 0, 0);
+    a13 = 1;
+    NNS_G3dGeBufferOP_N(0x12, &a13, 1);
+    SpecialStageCamera_PopOrtho();
+    AnimatorSprite_Draw(g->objA50);
+}

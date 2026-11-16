@@ -68,7 +68,7 @@ void BossEffect_CreateParts(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss6_State_Unk_ov000_022e47b8(void);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022e04a8(UnkStruct_Boss *w);
+void Boss6_Unk_ov000_022e04a8(UnkStruct_Boss *w);
 
 void Boss6_State_Unk_ov000_022e4834(UnkStruct_Boss *w) {
     UnkStruct_Mdl960 *m = &w->unk960;
@@ -98,7 +98,7 @@ void Boss6_State_Unk_ov000_022e4834(UnkStruct_Boss *w) {
     gPlayers->unk436 = 2;
     gPlayers->unk430 = 0x40;
     gPlayers->unk432 = 0x80;
-    func_ov000_022e04a8(w);
+    Boss6_Unk_ov000_022e04a8(w);
     w->unk111C = 8;
     Sound_PlaySeqArc(0, 0, 0x84);
 }

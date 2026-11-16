@@ -14,12 +14,12 @@ typedef struct UnkStruct_022edbb8 {
     u16 unk230;
 } UnkStruct_022edbb8;
 
-void func_ov000_022e9db8(void);
-void func_ov000_022ed8b4(void);
+void Boss7PartD5_InputState_Unk_ov000_022e9db8(void);
+void Boss7_State_Unk_ov000_022ed8b4(void);
 
 void Boss7_State_Unk_ov000_022edbb8(UnkStruct_022edbb8 *s) {
     if (s->unk230++ > 0x3c) {
-        s->unk214->func = func_ov000_022e9db8;
-        s->func = func_ov000_022ed8b4;
+        s->unk214->func = Boss7PartD5_InputState_Unk_ov000_022e9db8;
+        s->func = Boss7_State_Unk_ov000_022ed8b4;
     }
 }

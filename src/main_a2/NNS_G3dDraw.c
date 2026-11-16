@@ -18,7 +18,7 @@ typedef struct {
 extern UnkRS *data_02084f9c;
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02024df8(u32 *blk, void *anm);
+void updateHintVec_sbc(u32 *blk, void *anm);
 void G3dDrawInternal_(UnkRS *rs, UnkObj_02024cfc *obj);
 
 void NNS_G3dDraw(UnkObj_02024cfc *obj) {
@@ -35,9 +35,9 @@ void NNS_G3dDraw(UnkObj_02024cfc *obj) {
             vu32 z = 0;
             MIi_CpuClear32(z, obj->blk2, 8);
         }
-        if (obj->anm0 != NULL) func_02024df8(obj->blk0, obj->anm0);
-        if (obj->anm1 != NULL) func_02024df8(obj->blk1, obj->anm1);
-        if (obj->anm2 != NULL) func_02024df8(obj->blk2, obj->anm2);
+        if (obj->anm0 != NULL) updateHintVec_sbc(obj->blk0, obj->anm0);
+        if (obj->anm1 != NULL) updateHintVec_sbc(obj->blk1, obj->anm1);
+        if (obj->anm2 != NULL) updateHintVec_sbc(obj->blk2, obj->anm2);
         obj->flag &= ~0x10;
     }
     if (data_02084f9c != NULL) {

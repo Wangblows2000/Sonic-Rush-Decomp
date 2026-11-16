@@ -15,11 +15,11 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 extern void *gTaskCurrent;
 
-UnkStruct_0235e23c_Sync *func_020514e4(void);
-UnkStruct_0235e23c_Sync *func_02051474(void);
-UnkStruct_0235e23c_Sync *func_02051404(void);
+UnkStruct_0235e23c_Sync *WirelessSession_GetSendBuffer(void);
+UnkStruct_0235e23c_Sync *WirelessSession_GetPartnerRecvBuffer(void);
+UnkStruct_0235e23c_Sync *WirelessSession_GetOwnRecvBuffer(void);
 BOOL func_ov000_0235cbd8(void);
-BOOL func_020513a8(void);
+BOOL WirelessSession_Unk_020513a8(void);
 void StageLoader_LoadZoneSoundData(s32 a, u8 b, u8 c);
 void Task_Destroy(void *t);
 void StageStart_Create(s32 a);
@@ -27,13 +27,13 @@ void StageStart_Create(s32 a);
 #pragma thumb on
 
 void ResultsScreen_RematchSync_Main(void) {
-    UnkStruct_0235e23c_Sync *a = func_020514e4();
-    UnkStruct_0235e23c_Sync *b = func_02051474();
-    UnkStruct_0235e23c_Sync *c = func_02051404();
+    UnkStruct_0235e23c_Sync *a = WirelessSession_GetSendBuffer();
+    UnkStruct_0235e23c_Sync *b = WirelessSession_GetPartnerRecvBuffer();
+    UnkStruct_0235e23c_Sync *c = WirelessSession_GetOwnRecvBuffer();
 
     if (func_ov000_0235cbd8()) {
         if (a->unk3 == 0 && b->unk3 == 0) {
-            if (func_020513a8()) {
+            if (WirelessSession_Unk_020513a8()) {
                 StageLoader_LoadZoneSoundData(gGameState.unk0, gGameState.unk1C, gGameState.unk1D);
             }
             a->unk3 = 1;

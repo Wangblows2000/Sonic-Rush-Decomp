@@ -5,7 +5,7 @@ typedef struct {
     u16 unk4;
 } UnkStruct_02361e28_Sync;
 
-UnkStruct_02361e28_Sync *func_020514e4(void);
+UnkStruct_02361e28_Sync *WirelessSession_GetSendBuffer(void);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 BOOL KeyframeAnim_IsFinished(UnkStruct_MenuOPos *p);
 void func_ov000_02360a28(UnkStruct_MenuO *w, s32 x, s32 y);
@@ -118,7 +118,7 @@ void TimeSelectMenu_Main(void) {
     func_ov000_02360264(w);
     w->unk0++;
     if (done) {
-        func_020514e4()->unk4 = 0;
+        WirelessSession_GetSendBuffer()->unk4 = 0;
         w->unk0 = 0;
         if (w->unk4) {
             w->unk18 = 0;

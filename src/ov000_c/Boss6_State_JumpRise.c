@@ -31,7 +31,7 @@ typedef struct {
 extern UnkStruct_StageObj *gPlayers;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022dffbc(UnkStruct_Boss *w, s32 a);
+void Boss6_Unk_ov000_022dffbc(UnkStruct_Boss *w, s32 a);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void Boss6_State_JumpFall(void);
 
@@ -49,18 +49,18 @@ void Boss6_State_JumpRise(UnkStruct_Boss *w) {
         if (gPlayers->unk10 - w->base.unk10 < 0) {
             if (w->unkD5E != 0) {
                 w->unk1124 = 0x38e;
-                func_ov000_022dffbc(w, 1);
+                Boss6_Unk_ov000_022dffbc(w, 1);
             } else {
                 w->unk1124 = -0x38e;
-                func_ov000_022dffbc(w, 0);
+                Boss6_Unk_ov000_022dffbc(w, 0);
             }
         } else {
             if (w->unkD5E != 0) {
                 w->unk1124 = -0x38e;
-                func_ov000_022dffbc(w, 0);
+                Boss6_Unk_ov000_022dffbc(w, 0);
             } else {
                 w->unk1124 = 0x38e;
-                func_ov000_022dffbc(w, 1);
+                Boss6_Unk_ov000_022dffbc(w, 1);
             }
         }
         w->unkE1A |= 4;

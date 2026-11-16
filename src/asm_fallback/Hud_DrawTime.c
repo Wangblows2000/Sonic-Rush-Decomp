@@ -4,7 +4,7 @@
 extern u32 gGameState;
 extern void AnimatorSpriteDS_Draw(void);
 extern void AnimatorSpriteDS_ProcessAnimation(void);
-extern void func_02033544(void);
+extern void AnimatorSprite_Unk_02033544(void);
 
 asm void Hud_DrawTime(void)
 {
@@ -61,7 +61,7 @@ _88:
     mov r0, r10
     mov r1, r2, lsr #0x10
     sub r8, r8, #0xa
-    bl func_02033544
+    bl AnimatorSprite_Unk_02033544
     add r0, r11, r7, lsl #7
     str r0, [r10, #0x5c]
     ldr r0, [sp, #4]
@@ -124,7 +124,7 @@ _17c:
     mov r0, r7
     mov r1, r2, lsr #0x10
     sub r10, r10, #0xa
-    bl func_02033544
+    bl AnimatorSprite_Unk_02033544
     add r0, r11, r9, lsl #7
     str r0, [r7, #0x5c]
     ldr r0, [sp, #4]
@@ -174,7 +174,7 @@ _17c:
     add r9, r1, r2, asr #16
     mov r0, r7
     mov r1, r3, lsr #0x10
-    bl func_02033544
+    bl AnimatorSprite_Unk_02033544
     ldr r0, [sp, #4]
     add r1, r11, r8, lsl #7
     str r1, [r7, #0x5c]

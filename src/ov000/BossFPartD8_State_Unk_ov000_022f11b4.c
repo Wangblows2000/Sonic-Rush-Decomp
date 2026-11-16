@@ -7,10 +7,10 @@ typedef struct UnkStruct_022f11b4 {
     u16 unk43A;
 } UnkStruct_022f11b4;
 
-void func_ov000_022f112c(void);
+void BossFPartD8_State_Unk_ov000_022f112c(void);
 
 void BossFPartD8_State_Unk_ov000_022f11b4(UnkStruct_022f11b4 *s) {
     s->unk43A++;
     if (s->unk43A != 0)
-        s->func = func_ov000_022f112c;
+        s->func = BossFPartD8_State_Unk_ov000_022f112c;
 }

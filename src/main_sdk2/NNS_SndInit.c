@@ -13,8 +13,8 @@ extern s8 data_02081040;
 extern u32 data_02081044;
 
 void SND_Init(void);
-void BeginSleep(void *arg);
-void EndSleep(void *arg);
+void BeginSleep_nns_snd_main(void *arg);
+void EndSleep_nns_snd_main(void *arg);
 void PM_PrependPreSleepCallback(UnkPMCallback *cb);
 void PM_AppendPostSleepCallback(UnkPMCallback *cb);
 void NNSi_SndInitResourceMgr(void);
@@ -34,8 +34,8 @@ void NNS_SndInit(void)
     }
     data_0208104c = 1;
     SND_Init();
-    func_0201b3d4_SetCb(&data_02081050, BeginSleep, NULL);
-    func_0201b3d4_SetCb(&data_0208105c, EndSleep, NULL);
+    func_0201b3d4_SetCb(&data_02081050, BeginSleep_nns_snd_main, NULL);
+    func_0201b3d4_SetCb(&data_0208105c, EndSleep_nns_snd_main, NULL);
     PM_PrependPreSleepCallback(&data_02081050);
     PM_AppendPostSleepCallback(&data_0208105c);
     NNSi_SndInitResourceMgr();

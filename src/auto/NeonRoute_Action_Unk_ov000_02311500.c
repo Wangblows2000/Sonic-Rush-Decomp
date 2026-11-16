@@ -1,0 +1,29 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+void NeonRoute_State_Unk_ov000_02311124();
+extern u8 gGameState[];
+
+void NeonRoute_Action_Unk_ov000_02311500(u8 *p0) {
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)NeonRoute_State_Unk_ov000_02311124;
+    *(u32 *)((u8 *)p0 + 0x20c) = (u32)p0;
+    *(u32 *)((u8 *)p0 + 0x1b8) = (u32)p0;
+    s32 t0 = *(u32 *)((u8 *)p0 + 0x1e0);
+    if (*(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x1e0) + 0x2) == 0xc0) {
+        *(u16 *)((u8 *)p0 + 0x2e) = (*(s8 *)((u8 *)t0 + 0x7) << 5);
+        s32 t1 = *(u32 *)((u8 *)p0 + 0x1e0);
+        if ((*(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x1e0) + 0x4) & 1) == 0) {
+            return;
+        }
+        *(u32 *)((u8 *)p0 + 0x10) = (((u32)*(u32 *)((u8 *)gGameState + 0x20) % (u32)(*(s16 *)((u8 *)p0 + 0x2e) * ((*(u8 *)((u8 *)t1 + 0x8) * 0xc) / *(s16 *)((u8 *)p0 + 0x2e)))) + (*(u32 *)((u8 *)p0 + 0x1e8) << 8));
+        *(u32 *)((u8 *)p0 + 0x8) = ((u32)*(u32 *)((u8 *)p0 + 0x10) % (u32)(((*(u32 *)((u8 *)p0 + 0x8) + 0x1) * 0xc + *(u32 *)((u8 *)p0 + 0x1e8)) << 8));
+        return;
+    }
+    *(u16 *)((u8 *)p0 + 0x30) = (*(s8 *)((u8 *)t0 + 0x7) << 5);
+    s32 t2 = *(u32 *)((u8 *)p0 + 0x1e0);
+    if ((*(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x1e0) + 0x4) & 1) == 0) {
+        return;
+    }
+    *(u32 *)((u8 *)p0 + 0x14) = (((u32)*(u32 *)((u8 *)gGameState + 0x20) % (u32)(*(s16 *)((u8 *)p0 + 0x30) * ((*(u8 *)((u8 *)t2 + 0x8) * 0xc) / *(s16 *)((u8 *)p0 + 0x30)))) + (*(u32 *)((u8 *)p0 + 0x1ec) << 8));
+    *(u32 *)((u8 *)p0 + 0x8) = ((u32)*(u32 *)((u8 *)p0 + 0x14) % (u32)(((*(u32 *)((u8 *)p0 + 0x8) + 0x1) * 0xc + *(u32 *)((u8 *)p0 + 0x1ec)) << 8));
+}

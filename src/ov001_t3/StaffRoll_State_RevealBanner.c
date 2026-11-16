@@ -28,7 +28,7 @@ typedef struct {
 
 void AnimatorSprite_Draw(UnkSpr_022d1ec8 *s);
 void StaffRoll_SetState(UnkStruct_022d1ec8 *p, void (*fn)(UnkStruct_022d1ec8 *));
-void func_ov001_022cff74(UnkObj_022d1ec8 *o, s32 a, void *b, void *c);
+void StaffRoll_Unk_ov001_022cff74(UnkObj_022d1ec8 *o, s32 a, void *b, void *c);
 void StaffRoll_State_ExtraShowPicture(UnkStruct_022d1ec8 *p);
 void StaffRoll_State_ShowEndPicture(UnkStruct_022d1ec8 *p);
 
@@ -57,7 +57,7 @@ void StaffRoll_State_RevealBanner(UnkStruct_022d1ec8 *p) {
         *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1800;
         *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1800;
         *(vu16 *)0x400100a = (*(vu16 *)0x400100a & 0x43) | 0x18c;
-        func_ov001_022cff74(&p->objs[2], 0x100, p->unkf0c, p->unkd0c);
+        StaffRoll_Unk_ov001_022cff74(&p->objs[2], 0x100, p->unkf0c, p->unkd0c);
         StaffRoll_SetState(p, StaffRoll_State_ShowEndPicture);
     }
 }

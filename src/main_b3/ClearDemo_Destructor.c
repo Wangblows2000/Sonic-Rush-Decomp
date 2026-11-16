@@ -26,7 +26,7 @@ void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 void Model_Release(void *p);
 void NNS_SndHandleReleaseSeq(void *p);
-void func_02053bec(s32 a);
+void NaviMsg_SetRestoreSubDisplayFlag(s32 a);
 void NaviMsg_Destroy(void);
 void NaviB_Destroy(void);
 void SaveData_StoreStageResult(void);
@@ -65,7 +65,7 @@ void ClearDemo_Destructor(UnkTask_02047d2c *t) {
     Model_Release(w->obj14);
     NNS_SndHandleReleaseSeq(w->unk1634);
     if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
-        func_02053bec(1);
+        NaviMsg_SetRestoreSubDisplayFlag(1);
         NaviMsg_Destroy();
         NaviB_Destroy();
     }

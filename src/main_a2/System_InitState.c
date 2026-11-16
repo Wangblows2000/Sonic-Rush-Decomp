@@ -5,7 +5,7 @@ typedef struct { u8 unk0[0x80]; u32 unk80; u32 unk84; } UnkStruct_0203039c;
 
 extern u32 gSystemFlags;
 extern u32 data_02087cc4;
-extern u32 data_02087cc0;
+extern u32 gSystemResetParameter;
 extern u8 data_02087cdc[];
 extern u32 gSaveDataBusy[];
 extern UnkDisp_0203039c *gDisplayTable[];
@@ -29,7 +29,7 @@ void System_InitState(void) {
     u32 i;
     gSystemFlags = 0;
     data_02087cc4 = 0;
-    data_02087cc0 = *(u32 *)0x027FFC20;
+    gSystemResetParameter = *(u32 *)0x027FFC20;
     z1 = 0;
     MIi_CpuClear16(z1, data_02087cdc, 0x28);
     z2 = 0;

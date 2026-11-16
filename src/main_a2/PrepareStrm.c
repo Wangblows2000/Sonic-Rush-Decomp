@@ -57,7 +57,7 @@ BOOL AllocChannel(UnkStrm_0201fcc4 *s, s32 ch, void *p);
 void FS_CloseFile(void *file);
 u32 _u32_div_f(u32 a, u32 b);
 BOOL NNS_SndStrmSetup(UnkStrm_0201fcc4 *s, s32 format, u32 data, u32 rate, s32 timer, s32 arg5, void *arg6, void *arg7);
-void func_0201f704(void);
+void StrmCallback_sndarc_stream(void);
 void FreeChannel(UnkStrm_0201fcc4 *s);
 void NNS_SndStrmSetChannelPan(UnkStrm_0201fcc4 *s, s32 ch, s32 pan);
 
@@ -120,7 +120,7 @@ BOOL PrepareStrm(void *handle, UnkStrmInfo_0201fcc4 *info, u32 a, u32 b, u32 str
         FreePlayer(s);
         return FALSE;
     }
-    if (!NNS_SndStrmSetup(s, fmt, s->unk128, _u32_div_f(s->unk12C * ch, s->unk120), s->timer, 4, func_0201f704, s)) {
+    if (!NNS_SndStrmSetup(s, fmt, s->unk128, _u32_div_f(s->unk12C * ch, s->unk120), s->timer, 4, StrmCallback_sndarc_stream, s)) {
         FreeChannel(s);
         FS_CloseFile(s->file);
         FreePlayer(s);

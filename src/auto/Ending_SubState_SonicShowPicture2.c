@@ -9,7 +9,7 @@ void EndingBg0Hide_Main();
 s32 Task_Create();
 s32 _fflt();
 s32 _fdiv();
-s32 func_0202e5e4();
+s32 Runtime_Unk_0202e5e4();
 s32 _fsub();
 s32 _fmul();
 s32 _fadd();
@@ -38,7 +38,7 @@ void Ending_SubState_SonicShowPicture2(u8 *p0) {
     }
     s32 t4 = _fflt((t3 - 0x1e0));
     s32 t5 = _fdiv(t4, 0x42700000);
-    s32 t6 = func_0202e5e4(t5, 0x3f800000);
+    s32 t6 = Runtime_Unk_0202e5e4(t5, 0x3f800000);
     s32 v7 = t5;
     if (t6 != 0) {
         v7 = 0x3f800000;

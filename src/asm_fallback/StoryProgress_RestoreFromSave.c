@@ -6,7 +6,7 @@ extern u32 gGameState;
 extern u32 data_022c4590;
 extern u32 gSaveData;
 extern u32 data_022c468c;
-extern void func_0204e614(void);
+extern void StoryProgress_Unk_0204e614(void);
 
 asm void StoryProgress_RestoreFromSave(void)
 {
@@ -17,7 +17,7 @@ asm void StoryProgress_RestoreFromSave(void)
     cmp r0, #1
     beq _4c
     ldrh r0, [r4]
-    bl func_0204e614
+    bl StoryProgress_Unk_0204e614
     ldr r1, [pc, #0xa8]
     strh r0, [r1, #0xe]
     ldrb r2, [r4, #2]
@@ -31,7 +31,7 @@ asm void StoryProgress_RestoreFromSave(void)
     b _ac
 _4c:
     ldrh r0, [r4, #0x58]
-    bl func_0204e614
+    bl StoryProgress_Unk_0204e614
     ldr r1, [pc, #0x74]
     mov lr, #0
     strh r0, [r1, #0xe]

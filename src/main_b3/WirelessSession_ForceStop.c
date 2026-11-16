@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 typedef struct { u16 unk0; u16 unk2; } UnkStruct_0207ad9c;
-extern void *data_022c4638;
+extern void *gWirelessLobbyTask;
 extern void *data_022c4634;
 extern u32 gSystemFlags;
 extern UnkStruct_0207ad9c gWirelessSession;
@@ -13,9 +13,9 @@ void WirelessMgr_StopDownloadPlay(void);
 
 #pragma thumb on
 void WirelessSession_ForceStop(void) {
-    if (data_022c4638 != NULL) {
-        Task_Destroy(data_022c4638);
-        data_022c4638 = NULL;
+    if (gWirelessLobbyTask != NULL) {
+        Task_Destroy(gWirelessLobbyTask);
+        gWirelessLobbyTask = NULL;
     }
     if (data_022c4634 != NULL) {
         Task_Destroy(data_022c4634);

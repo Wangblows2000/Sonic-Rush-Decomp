@@ -3,12 +3,12 @@
 
 #pragma thumb on
 
-s32 func_020514e4();
-s32 func_02051474();
+s32 WirelessSession_GetSendBuffer();
+s32 WirelessSession_GetPartnerRecvBuffer();
 
 s32 PlayerSelectMenu_IsSameChoiceAsPartner(void) {
-    s32 t0 = func_020514e4();
-    s32 t1 = func_02051474();
+    s32 t0 = WirelessSession_GetSendBuffer();
+    s32 t1 = WirelessSession_GetPartnerRecvBuffer();
     if (*(u8 *)((u8 *)t0 + 0x1) == 0) {
         return 0;
     }

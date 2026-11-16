@@ -7,9 +7,9 @@ typedef struct UnkStruct_022f2bdc {
     u8 unk57c;
 } UnkStruct_022f2bdc;
 
-void func_ov000_022f2b8c(void);
+void BossFPartD8_State_Unk_ov000_022f2b8c(void);
 
 void BossFPartD8_State_Unk_ov000_022f2bdc(UnkStruct_022f2bdc *s) {
     if (s->unk57c & 2)
-        s->func = func_ov000_022f2b8c;
+        s->func = BossFPartD8_State_Unk_ov000_022f2b8c;
 }

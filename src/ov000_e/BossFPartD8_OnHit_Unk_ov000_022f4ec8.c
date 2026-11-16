@@ -44,9 +44,9 @@ extern UnkStruct_022f4ec8_Pl *gPlayers;
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Player_Action_AttackBounce(UnkStruct_022f4ec8_Pl *p);
 void BossEffect_CreateDmgHand(s32 a, s32 x, s32 y, s32 z);
-void func_ov000_022f8948(void);
-void func_ov000_022f8904(void);
-void func_ov000_022f88c0(void);
+void BossFPartD8_Unk_ov000_022f8948(void);
+void BossFPartD8_Unk_ov000_022f8904(void);
+void BossFPartD8_Unk_ov000_022f88c0(void);
 
 void BossFPartD8_OnHit_Unk_ov000_022f4ec8(UnkStruct_022f4ec8_Coll *a, UnkStruct_022f4ec8_Coll *b) {
     UnkStruct_022f4ec8_Pl *pl = b->unk18;
@@ -67,13 +67,13 @@ void BossFPartD8_OnHit_Unk_ov000_022f4ec8(UnkStruct_022f4ec8_Coll *a, UnkStruct_
         Sound_PlaySeqArc(0, 0, 0x7b);
         switch (gBossStatus.unk4) {
         case 0x30:
-            func_ov000_022f8948();
+            BossFPartD8_Unk_ov000_022f8948();
             break;
         case 0x31:
-            func_ov000_022f8904();
+            BossFPartD8_Unk_ov000_022f8904();
             break;
         case 0x32:
-            func_ov000_022f88c0();
+            BossFPartD8_Unk_ov000_022f88c0();
             break;
         }
         return;

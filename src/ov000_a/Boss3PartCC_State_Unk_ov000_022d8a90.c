@@ -87,7 +87,7 @@ typedef struct UnkStruct_022d8a90_b {
 extern UnkStruct_022d8a90_b *gBoss3;
 
 UnkStruct_022d8a90_r *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void func_ov000_022daa78(void);
+void Boss3_Unk_ov000_022daa78(void);
 void BossEffect_CreatePop(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void ScreenShake_Start(s32 a);
@@ -101,7 +101,7 @@ void Boss3PartCC_State_Unk_ov000_022d8a90(UnkStruct_022d8a90 *s) {
     gBoss3->unk218->unk5C &= ~0x20;
     gBoss3->unk218->unk212 = 0;
     gBoss3->unk218->unk20C |= 0x80;
-    func_ov000_022daa78();
+    Boss3_Unk_ov000_022daa78();
     BossEffect_CreatePop(1, s->unk24C >> 4, -s->unk250 >> 4, s->unk254 >> 4);
     Sound_PlaySeqArc(0, 0, 0x95);
     ScreenShake_Start(0xb);

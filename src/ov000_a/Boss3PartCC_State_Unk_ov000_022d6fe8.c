@@ -50,15 +50,15 @@ struct UnkStruct_022d6fe8 {
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-BOOL func_ov000_022d8c64(UnkStruct_022d6fe8 *s);
+BOOL Boss3PartCC_Unk_ov000_022d8c64(UnkStruct_022d6fe8 *s);
 void Boss3PartCC_State_Unk_ov000_022d66cc(UnkStruct_022d6fe8 *s);
-void func_ov000_022d6f20(UnkStruct_022d6fe8 *s);
+void Boss3PartCC_State_Unk_ov000_022d6f20(UnkStruct_022d6fe8 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d6fe8(UnkStruct_022d6fe8 *s) {
-    if (func_ov000_022d8c64(s)) {
+    if (Boss3PartCC_Unk_ov000_022d8c64(s)) {
         s->func = Boss3PartCC_State_Unk_ov000_022d66cc;
         return;
     }
     if (s->unk2C4.unk10C & 2)
-        s->func = func_ov000_022d6f20;
+        s->func = Boss3PartCC_State_Unk_ov000_022d6f20;
 }

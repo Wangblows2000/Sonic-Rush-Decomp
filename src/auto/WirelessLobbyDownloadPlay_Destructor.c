@@ -5,13 +5,13 @@
 
 s32 WirelessMgr_StopDownloadPlay();
 extern u8 gWirelessSession[];
-extern u8 data_022c4638[];
+extern u8 gWirelessLobbyTask[];
 
 void WirelessLobbyDownloadPlay_Destructor(s32 p0) {
     WirelessMgr_StopDownloadPlay();
     *(u16 *)gWirelessSession = 4;
-    if ((s32)p0 == *(u32 *)data_022c4638) {
-        *(u32 *)data_022c4638 = 0;
+    if ((s32)p0 == *(u32 *)gWirelessLobbyTask) {
+        *(u32 *)gWirelessLobbyTask = 0;
     }
 }
 

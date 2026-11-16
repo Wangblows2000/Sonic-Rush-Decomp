@@ -69,7 +69,7 @@ extern UnkStruct_022dd5d8_d data_ov000_0236a444;
 
 void Player_Action_Blank(UnkStruct_022dd5d8_p *p);
 void Player_SetAnimation(UnkStruct_022dd5d8_p *p, s32 a);
-void func_ov000_022de65c(void);
+void Boss4_Unk_ov000_022de65c(void);
 void StageObj_SetPause(void);
 void Boss4_State_Unk_ov000_022dd590(UnkStruct_022dd5d8 *t);
 
@@ -87,7 +87,7 @@ void Boss4_State_Unk_ov000_022dd5d8(UnkStruct_022dd5d8 *t) {
         return;
     }
     c = (UnkStruct_022dd5d8_c *)(u32)&data_ov000_0236a48c;
-    func_ov000_022de65c();
+    Boss4_Unk_ov000_022de65c();
     data_ov000_0236a444.unkDC = 2;
     c->unk30 = 0x1000;
     c->unk44 = 0;

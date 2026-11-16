@@ -42,7 +42,7 @@ void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
 void BossEffect_CreateImpactSmall(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022e450c(UnkStruct_Boss *w);
+void Boss6_Action_Unk_ov000_022e450c(UnkStruct_Boss *w);
 void Boss6_State_Unk_ov000_022e49b0(void);
 
 static inline s32 Mul64(s64 a, s64 b) {
@@ -111,6 +111,6 @@ void Boss6_State_Unk_ov000_022e4b80(UnkStruct_Boss *w) {
     BossEffect_CreateImpactSmall(1, w->unk1068 >> 4, 0x20000, d + (w->unk1070 >> 4));
     p = gPlayers;
     if (!(p->unk32C & 0x400) && (p->base.unk58 & 1))
-        func_ov000_022e450c(w);
+        Boss6_Action_Unk_ov000_022e450c(w);
     Sound_PlaySeqArc(0, 0, 0x86);
 }

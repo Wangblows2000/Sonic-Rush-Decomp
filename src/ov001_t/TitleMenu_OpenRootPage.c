@@ -25,8 +25,8 @@ typedef struct {
     s32 unk8;
 } UnkWork_022d7210;
 
-void func_ov001_022d7ee8(UnkMenu_022d7210 *m, s32 a, s32 id0, s32 id1, s32 id2, s32 id3, UnkWork_022d7210 *res);
-void func_ov001_022d8060(UnkMenu_022d7210 *m, s32 a, s32 id0, s32 id1, s32 id2, s32 id3, UnkWork_022d7210 *res);
+void TitleMenu_Unk_ov001_022d7ee8(UnkMenu_022d7210 *m, s32 a, s32 id0, s32 id1, s32 id2, s32 id3, UnkWork_022d7210 *res);
+void TitleMenu_Unk_ov001_022d8060(UnkMenu_022d7210 *m, s32 a, s32 id0, s32 id1, s32 id2, s32 id3, UnkWork_022d7210 *res);
 void TitleMenu_CreatePageTask(UnkMenu_022d7210 *m, UnkWork_022d7210 *p, s32 b);
 void TitleMenu_SelectGameStart(void);
 void TitleMenu_OpenVsPage(void *p, BOOL flag, s32 b);
@@ -40,15 +40,15 @@ void TitleMenu_OpenRootPage(UnkWork_022d7210 *p, BOOL flag, s32 b) {
 
     if (flag) {
         if (p->unk8) {
-            func_ov001_022d7ee8(&menu, 2, 9, 10, 11, 12, p);
+            TitleMenu_Unk_ov001_022d7ee8(&menu, 2, 9, 10, 11, 12, p);
         } else {
-            func_ov001_022d7ee8(&menu, 2, 9, 10, 12, 0x14, p);
+            TitleMenu_Unk_ov001_022d7ee8(&menu, 2, 9, 10, 12, 0x14, p);
         }
     } else {
         if (p->unk8) {
-            func_ov001_022d8060(&menu, 2, 9, 10, 11, 12, p);
+            TitleMenu_Unk_ov001_022d8060(&menu, 2, 9, 10, 11, 12, p);
         } else {
-            func_ov001_022d8060(&menu, 2, 9, 10, 12, 0x14, p);
+            TitleMenu_Unk_ov001_022d8060(&menu, 2, 9, 10, 12, 0x14, p);
         }
     }
     menu.items[0].cb = TitleMenu_SelectGameStart;

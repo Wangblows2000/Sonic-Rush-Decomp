@@ -84,9 +84,9 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
 void NNS_G3dGeBufferOP_N(s32 a, void *p, s32 n);
 void NNS_G3dGetCurrentMtx(void *a, void *b);
-void func_ov000_022ce474(UnkStruct_022ce614 *s);
-void func_ov000_022ce194(UnkStruct_022ce614 *s);
-void func_ov000_022cde2c(UnkStruct_022ce614 *s);
+void Boss2_Unk_ov000_022ce474(UnkStruct_022ce614 *s);
+void Boss2_Unk_ov000_022ce194(UnkStruct_022ce614 *s);
+void Boss2_Unk_ov000_022cde2c(UnkStruct_022ce614 *s);
 void BossArena_CirclePosToArc(s32 unused, s32 len, s32 x, s32 y, s32 *out);
 void ObjRect_Register(UnkStruct_022ce614_h *h);
 
@@ -185,13 +185,13 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
     switch (gBossStatus.unk4) {
     case 7:
     case 8:
-        func_ov000_022ce474(s);
+        Boss2_Unk_ov000_022ce474(s);
         break;
     case 9:
-        func_ov000_022ce194(s);
+        Boss2_Unk_ov000_022ce194(s);
         break;
     case 10:
-        func_ov000_022cde2c(s);
+        Boss2_Unk_ov000_022cde2c(s);
         break;
     }
     if ((s->unk20C & 2) || (s->unk1304 != 0 && s->unk1304 != 0x8000)) {

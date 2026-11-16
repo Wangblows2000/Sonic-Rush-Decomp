@@ -24,7 +24,7 @@ void Sound_PlaySeqArc(void *p, u32 a, u32 b);
 void SpecialStageMap_SetScrollSpeed(s32 v);
 void SpecialStageHud_ShowTrickRating(s32 v);
 s32 SpecialStageTrick_GetRating(s16 a, u16 b);
-s16 func_ov001_02314694(s16 a);
+s16 SpecialStagePlayer_Unk_ov001_02314694(s16 a);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -51,7 +51,7 @@ void SpecialStagePlayer_State_TrickInput(UnkStruct_023115a4 *p) {
         n = SpecialStageTrick_GetRating(p->unk150, p->unk14E);
         p->unk158 = n;
         p->unk154 = data_ov001_023178cc[n];
-        p->unk152 = func_ov001_02314694(p->unk150);
+        p->unk152 = SpecialStagePlayer_Unk_ov001_02314694(p->unk150);
         SpecialStageHud_ShowTrickRating(n);
         SpecialStagePlayer_ChangeState(p, Rand() % 3 + 0xb);
     }
