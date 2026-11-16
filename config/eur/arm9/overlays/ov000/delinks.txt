@@ -11164,7 +11164,7 @@ src/c_ov000/StageEvent_SpawnMapObjectsInBlock.c:
     complete
     .text       start:0x02334c18 end:0x02334eb4
 
-src/asm_fallback/StageEvent_SpawnInView.c:
+src/r2d/StageEvent_SpawnInView.c:
     complete
     .text       start:0x023350bc end:0x023352c8
 
