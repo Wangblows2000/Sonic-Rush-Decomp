@@ -8,10 +8,10 @@
       "module": "main",
       "start": "0x02000800",
       "end": "0x0201c000",
-      "status": "claimed",
-      "agent": "main_sdk6",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": "2026-11-16 02:49:15Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -45,6 +45,14 @@
         {
           "time": "2026-11-16 02:49:15Z",
           "text": "claimed by main_sdk6"
+        },
+        {
+          "time": "2026-11-16 03:40:14Z",
+          "text": "main_sdk6: +4 matched (02010018, 020174a4, 02027104, 02027c0c = 2300 B). func_0202d49c symbol size wrong (0x50; bogus func_0202d4e8). Levers in build/agents/main_sdk6.txt."
+        },
+        {
+          "time": "2026-11-16 03:45:17Z",
+          "text": "released by main_sdk6: range 95%; remaining are hard near-misses (main_sdk5/6 reports). func_0202d49c true size 0x50 (0202d4e8 split is bogus) - lead TODO"
         }
       ]
     },
@@ -157,9 +165,9 @@
       "start": "0x02310000",
       "end": "0x02362b58",
       "status": "claimed",
-      "agent": "ov000_f",
+      "agent": "ov000_g",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 01:43:47Z",
+      "claimed_at": "2026-11-16 03:45:24Z",
       "done_at": null,
       "notes": [
         {
@@ -173,6 +181,22 @@
         {
           "time": "2026-11-16 01:43:47Z",
           "text": "claimed by ov000_f"
+        },
+        {
+          "time": "2026-11-16 03:40:14Z",
+          "text": "ov000_f: 52 OK (~38KB) in src/ov000_f. Parked near-misses in /home/claude/w_ov000f/near_*.c: bg family 0233f8a0/0233ea38/0233f104 (h=((div>>4)<<8)>>16 sched diff), 02340388/023405cc (wave loop idx), 02334c18/023348f0 (spill i/count), 0235b804, 0235aea8, 02341d00, 02342480/023425f4."
+        },
+        {
+          "time": "2026-11-16 03:40:15Z",
+          "text": "released by ov000_f: ov000_f stopped; see note"
+        },
+        {
+          "time": "2026-11-16 03:45:21Z",
+          "text": "ov000_h working 0x02338000-0x02362b58"
+        },
+        {
+          "time": "2026-11-16 03:45:24Z",
+          "text": "claimed by ov000_g"
         }
       ]
     },
@@ -301,12 +325,17 @@
       "module": null,
       "start": null,
       "end": null,
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:56Z",
       "claimed_at": null,
-      "done_at": null,
-      "notes": []
+      "done_at": "2026-11-16 03:45:17Z",
+      "notes": [
+        {
+          "time": "2026-11-16 03:45:17Z",
+          "text": "done: Ghidra 12.2 + JDK25 working; drafts in build/eur/ghidra/<module>/decomp (docs/research/0007)"
+        }
+      ]
     },
     {
       "id": "r-sra-lib",

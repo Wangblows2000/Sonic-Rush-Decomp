@@ -10147,3 +10147,47 @@ src/main_a5/func_02023274.c:
 src/main_sdk6/func_020174a4.c:
     complete
     .text       start:0x020174a4 end:0x02017910
+
+src/main_a5/func_02035e68.c:
+    complete
+    .text       start:0x02035e68 end:0x020363f0
+
+src/main_b6/func_0203b0ac.c:
+    complete
+    .text       start:0x0203b0ac end:0x0203b52c
+
+src/main_b6/func_0203c870.c:
+    complete
+    .text       start:0x0203c870 end:0x0203cb9c
+
+src/main_b6/func_0204afc8.c:
+    complete
+    .text       start:0x0204afc8 end:0x0204b2ec
+
+src/main_b6/func_020533e0.c:
+    complete
+    .text       start:0x020533e0 end:0x020537b4
+
+src/main_b6/func_0205f25c.c:
+    complete
+    .text       start:0x0205f25c end:0x0205f868
+
+src/main_b6/func_02063f50.c:
+    complete
+    .text       start:0x02063f50 end:0x020645b0
+
+src/main_b6/func_0206c3d0.c:
+    complete
+    .text       start:0x0206c3d0 end:0x0206c708
+
+src/main_sdk6/func_02027104.c:
+    complete
+    .text       start:0x02027104 end:0x02027290
+
+src/main_sdk6/func_02027c0c.c:
+    complete
+    .text       start:0x02027c0c end:0x02027dbc
+
+src/main_b6/func_020694b0.c:
+    complete
+    .text       start:0x020694b0 end:0x02069818

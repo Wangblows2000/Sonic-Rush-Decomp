@@ -1,0 +1,100 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_02346b10 UnkStruct_02346b10;
+
+struct UnkStruct_02346b10 {
+    u8 pad0[0x2E];
+    s16 unk2E;
+    u8 pad30[0x34 - 0x30];
+    s16 unk34;
+    u8 pad36[0x58 - 0x36];
+    u32 unk58;
+    u16 unk5C;
+    u8 pad5E[0x324 - 0x5E];
+    u8 unk324;
+    u8 pad325[0x32C - 0x325];
+    u32 unk32C;
+    u32 unk330;
+    u8 pad334[0x350 - 0x334];
+    s16 unk350;
+    u8 pad352[0x368 - 0x352];
+    s16 unk368;
+    u8 pad36A[0x384 - 0x36A];
+    u8 unk384[0x38C - 0x384];
+    u8 unk38C[0x3B6 - 0x38C];
+    s16 unk3B6;
+    u8 pad3B8[0x3D1 - 0x3B8];
+    u8 unk3D1;
+    u8 pad3D2[0x420 - 0x3D2];
+    u16 unk420;
+};
+
+extern u32 data_022c4ef0;
+extern UnkStruct_02346b10 *data_ov000_0236ac60[];
+
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+
+void func_ov000_02326f48(UnkStruct_02346b10 *w, s32 a, s32 b, s32 c, s32 d);
+void func_0204b7ec(void *p, s32 a, s32 b);
+void func_0201c070(void *p, s32 a);
+void func_020446b0(s32 a);
+void func_ov000_02332448(UnkStruct_02346b10 *w, s32 a, s32 b);
+void func_ov000_02331f5c(UnkStruct_02346b10 *w, s32 a, s32 b);
+void func_ov000_02343498(UnkStruct_02346b10 *w, s32 l, s32 t, s32 r, s32 b, s32 c);
+void func_ov000_023433c4(void);
+void func_ov000_0234307c(UnkStruct_02346b10 *w, s32 a);
+void func_ov000_02336050(u16 a, s32 b);
+void func_ov000_02346d30(UnkStruct_02346b10 *w);
+
+void func_ov000_02346b10(UnkStruct_02346b10 *w) {
+    if (!(w->unk32C & 0x80)) {
+        if (!(data_022c4ef0 & 0x100)) {
+            w->unk58 |= 0x4000;
+        }
+        if (w->unk324 == 0 && !(w->unk330 & 0x100)) {
+            func_ov000_02326f48(w, 0x18, 0xa, 0x7ca5, 0x7ca5);
+        }
+        if (w->unk324 != 1) {
+            func_0204b7ec(w->unk384, 0, 0xa);
+        } else {
+            func_0204b7ec(w->unk384, 0, 0x17);
+        }
+        func_0201c070(w->unk38C, 0);
+        w->unk3D1 = 0xc;
+        w->unk32C |= 0x80;
+        func_020446b0(4);
+        if (w->unk420 & 0x20) {
+            w->unk5C |= 1;
+        } else if (w->unk420 & 0x10) {
+            w->unk5C &= ~1;
+        }
+        func_ov000_02332448(w, 0, 0);
+        func_ov000_02331f5c(w, 0, 0);
+        if (w->unk58 & 0x10) {
+            if (ABS(w->unk2E) < w->unk368) {
+                if (w->unk5C & 1) {
+                    w->unk2E = -w->unk368;
+                } else {
+                    w->unk2E = w->unk368;
+                }
+            }
+        } else {
+            if (ABS(w->unk34) < w->unk368) {
+                if (w->unk5C & 1) {
+                    w->unk34 = -w->unk368;
+                } else {
+                    w->unk34 = w->unk368;
+                }
+            }
+        }
+        func_ov000_02343498(w, -0x20, -0x20, 0x20, 0x20, 0);
+        func_ov000_023433c4();
+        if (w->unk3B6 != 0) {
+            w->unk32C |= 0x40000;
+        } else {
+            func_ov000_0234307c(w, -0x70);
+            func_ov000_02336050(data_ov000_0236ac60[0]->unk350 >> 4, 1);
+        }
+    }
+    func_ov000_02346d30(w);
+}
