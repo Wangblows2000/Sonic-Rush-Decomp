@@ -350,3 +350,33 @@ Lower-priority follow-ups that are already half-proven:
    `build/eur/ghidra/<mod>/decomp/<sym>.c` and the matched `src/*/<sym>.c`.
 3. Assign an E-code. With no E-code, keep the name and move on.
 4. Write a `NAME` line (section 2.3). Never edit config/, never rename files yourself.
+
+
+## 6. Refactor status (2026-11-16, branch `refactor/function-naming`)
+
+| Round | Renamed | Scope |
+|---|---|---|
+| 1 | 2,358 | library official names; engine core; shared game code; ov000 map objects, player, rings, effects, HUD; ov001 screens |
+| 2 | 1,575 | anchored on round-1 names (MB/WFS, wireless manager, stage flow, scene changes, player state machine, bosses, special stage) |
+| 3 | 1,626 | final sweep plus upgrades of `_Unk_` names |
+
+Functions named: 5,188 / 7,408 (70 %); 560 of those are subsystem-level
+`<Subsystem>_Unk_<addr>` names. Every batch was applied with
+`tools/analysis/rename.py` and verified with a full build (SHA-1, GNU
+relink, objdiff count unchanged).
+
+Open items:
+- 2,220 functions still have default names (mostly long boss/part state
+  chains, menu sprite setters, per-zone hooks whose zone numbers are not yet
+  tied to zone names, small empty stubs).
+- File-local library helpers whose official names repeat across files
+  (`AlarmCallback`, `ForceStopStrm`, `AllocFromHead/Tail`, `updateHintVec_`,
+  `texmtxCalc_flag*_`) need a disambiguation rule (e.g. a file prefix)
+  before they can be applied.
+- Possible misnames to re-check: `WMi_StartParentEx` (0x02011914) matches
+  `WM_SetEntry` at 0.98; a few FS rom-cluster names pair better with a
+  differently named reference function; `FS_StopOverlay` (0x0200c29c)
+  behaves like `FS_UnloadOverlayImage`.
+- `OSi_UnLockCartridgeAlias` stands for the SDK alias `OS_UnLockCartridge`
+  and `Mic_InitSystem` for the game's MIC init (both renamed to avoid
+  case-only collisions; see the case rule above).

@@ -157,7 +157,8 @@ def main() -> int:
             text = re.sub(rf"^{re.escape(old)}:\s*$", f"{new}:", text, count=1, flags=re.M)
         else:
             esc = ev.replace("\\", "\\\\").replace('"', '\\"')
-            text += (f"{new}:\n  confidence: tentative\n"
+            conf = ev.split()[0].lower() if ev.split() and ev.split()[0].lower() in ("confirmed", "strong") else "tentative"
+            text += (f"{new}:\n  confidence: {conf}\n"
                      f"  evidence: \"{esc} (was {old}, {mod}, {stamp})\"\n")
     ev_path.write_text(text)
     print(f"renamed {len(rows)} symbols; moved {len(moves)} files")

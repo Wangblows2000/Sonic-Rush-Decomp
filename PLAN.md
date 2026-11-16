@@ -39,10 +39,15 @@ full matching ROM build, and 99.97 % of ARM9 code bytes matched.
 
 ## 3. Naming refactor
 
-- [ ] Replace `func_XXXXXXXX` / `data_XXXXXXXX` names with evidence-backed names
-  (`config/eur/symbol_evidence.yaml`; currently 180 named functions). Apply
-  them with `tools/analysis/rename.py`, which renames symbols, source uses,
-  TU file names and delinks paths together.
+In progress on branch `refactor/function-naming` (conventions, evidence
+standard and status: docs/naming-conventions.md).
+
+- [x] Rounds 1–3: 5,188 / 7,408 functions named (560 subsystem-level
+  `_Unk_` names), every batch build-verified.
+- [ ] Name the remaining 2,220 default-named functions and upgrade `_Unk_`
+  names (see docs/naming-conventions.md §6 for the open list).
+- [ ] Disambiguation rule for file-local library helpers whose official
+  names repeat across files; re-check the possible misnames listed there.
 - [ ] Name struct types (`UnkStruct_<addr>`) and move shared declarations into
   `include/` headers instead of per-file `extern` prototypes.
 
