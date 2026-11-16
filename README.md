@@ -40,8 +40,6 @@ _Verified progress, updated 2026-11-16 15:31:28Z ([full dashboard](docs/progress
 | ov001 | `████████████████████` 100.00% | 328,118 / 328,118 | 1,723 / 1,723 | 0 |
 | **ARM9 total** | `████████████████████` 100.00% | 1,422,472 / 1,422,472 | 7,408 / 7,408 | 0 |
 
-Next milestone: **100%** matched code — 0 more bytes (currently 100.00%).
-
 - ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 15:28:00Z
 - GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 15:28:40Z
 - objdiff report: `build/eur/report.json` — 2026-11-16 15:28:41Z
