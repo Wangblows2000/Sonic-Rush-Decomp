@@ -96,7 +96,7 @@ def main() -> int:
         # prune TUs whose source vanished (agents may delete their own files)
         t0 = dl.read_text()
         t1 = t0
-        for f in _re0.findall(r"^(src/\S+\.c):$", t0, _re0.M):
+        for f in _re0.findall(r"^(src/\S+\.(?:c|s)):$", t0, _re0.M):
             if not (ROOT / f).exists():
                 t1 = _re0.sub(rf"\n*^{_re0.escape(f)}:\n(?:    .*\n?)*", "\n", t1, flags=_re0.M)
                 print(f"pruned missing TU {f}", file=sys.stderr)
@@ -152,6 +152,11 @@ def main() -> int:
         # mwcc 1.2 writes -MD output to the cwd; use all headers as a coarse dependency instead.
         n.rule("mwcc", f'{wine} "$cc" $cflags $in -o $out', description="MWCC $in")
         n.rule("mwld", f'{wine} "$ld" $ldflags @$objects $lcf -o $out', description="MWLD $out")
+        # Assembly TUs (.s) that need exact sub-word layout inside one section, e.g. the
+        # secure area: GNU as, `.incbin` of the user's extracted binary for bytes that
+        # are not ours to commit (see src/secure/secure_area.s).
+        gas = find("arm-none-eabi-as")
+        n.rule("gas", f"{gas} -mcpu=arm946e-s -I . $in -o $out", description="GAS $in")
         n.rule("rom_config", f"{dsd} rom config --elf $in --config $config", description="ROM-CONFIG")
         n.rule("rom_build", f"{dsd} rom build --config $in --rom $out && "
                             f"{py} tools/extraction/fix_header.py {ver} $out",
@@ -176,6 +181,11 @@ def main() -> int:
 
         objs = []
         for src in sources:
+            if src.endswith(".s"):
+                o = f"{b}/{Path(src).with_suffix('.o').as_posix()}"
+                objs.append(o)
+                n.build(o, "gas", src, implicit=[f"{ex}/config.yaml"])
+                continue
             c = compiler_for(src, cc_cfg)
             flags = " ".join(c["flags"].split())
             head = (ROOT / src).read_text(errors="replace").splitlines()[:3]

@@ -162,7 +162,14 @@ def main() -> int:
                      f"  evidence: \"{esc} (was {old}, {mod}, {stamp})\"\n")
     ev_path.write_text(text)
     print(f"renamed {len(rows)} symbols; moved {len(moves)} files")
-    return 0
+    # Post-condition: the tree must stay consistent (no duplicates, no case-only
+    # collisions, no stale references, valid evidence).
+    rc = subprocess.run([sys.executable, str(ROOT / "tools/analysis/check_symbols.py"),
+                         "--version", args.version], cwd=ROOT).returncode
+    if rc:
+        print("rename.py: check_symbols FAILED after applying; fix or revert this batch",
+              file=sys.stderr)
+    return rc
 
 
 if __name__ == "__main__":

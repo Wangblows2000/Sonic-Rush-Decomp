@@ -11,6 +11,7 @@ log=build/checkpoint.log
   python3 tools/matching/integrate.py --no-build
   python3 tools/matching/fix_stale_names.py
   python3 tools/configure.py eur
+  python3 tools/analysis/check_symbols.py || { echo 'check_symbols failed'; exit 1; }
   ninja && python3 tools/analysis/name_intrinsics.py
 } > "$log" 2>&1
 if ! ninja >> "$log" 2>&1; then

@@ -11343,3 +11343,7 @@ src/lead/BuildInfo.c:
 src/asm_fallback/CARDi_TryReadCardDma.c:
     complete
     .text       start:0x02010018 end:0x0201016c
+
+src/secure/secure_area.s:
+    complete
+    .text       start:0x02000000 end:0x02000800

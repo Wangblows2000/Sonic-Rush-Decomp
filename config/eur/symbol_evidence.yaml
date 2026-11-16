@@ -97,7 +97,8 @@ OS_ResetRequestIrqMask: {confidence: strong, evidence: "main 0x02005314 (52 B) b
 OS_EnableIrqMask: {confidence: strong, evidence: "main 0x02005390 (56 B) byte-identical (relocs masked) to lib/NitroSDK/src/OS_interrupt.c from pret/pokediamond NitroSDK C (identification only) compiled with CW 1.2/sp3"}
 OS_SetIrqMask: {confidence: strong, evidence: "main 0x020053c8 (52 B) byte-identical (relocs masked) to lib/NitroSDK/src/OS_interrupt.c from pret/pokediamond NitroSDK C (identification only) compiled with CW 1.2/sp3"}
 OS_GetIrqFunction: {confidence: strong, evidence: "main 0x02005494 (140 B) byte-identical (relocs masked) to lib/NitroSDK/src/OS_interrupt.c from pret/pokediamond NitroSDK C (identification only) compiled with CW 1.2/sp3"}
-OS_UnLockCartridge: {confidence: tentative, evidence: "main 0x020055c4 (12 B) byte-identical (relocs masked) to lib/NitroSDK/src/OS_spinLock.c from pret/pokediamond NitroSDK C (identification only) compiled with CW 1.2/sp3"}
+# OS_UnLockCartridge -> renamed OSi_UnLockCartridgeAlias (see that entry)
+#   earlier sdk_ident evidence: {confidence: tentative, evidence: "main 0x020055c4 (12 B) byte-identical (relocs masked) to lib/NitroSDK/src/OS_spinLock.c from pret/pokediamond NitroSDK C (identification only) compiled with CW 1.2/sp3"}
 OS_GetLockID: {confidence: strong, evidence: "main 0x020055d0 (88 B) byte-identical (relocs masked) to lib/NitroSDK/src/OS_spinLock.c from pret/pokediamond NitroSDK C (identification only) compiled with CW 1.2/sp3"}
 OS_ReadOwnerOfLockWord: {confidence: tentative, evidence: "main 0x02005638 (8 B) byte-identical (relocs masked) to lib/NitroSDK/src/OS_spinLock.c from pret/pokediamond NitroSDK C (identification only) compiled with CW 1.2/sp3"}
 OSi_FreeCardBus: {confidence: tentative, evidence: "main 0x02005640 (24 B) byte-identical (relocs masked) to lib/NitroSDK/src/OS_spinLock.c from pret/pokediamond NitroSDK C (identification only) compiled with CW 1.2/sp3"}
@@ -15919,3 +15920,56 @@ ZoneMapPause_InitDisplay:
 ExtraAct_ReleaseAssets:
   confidence: strong
   evidence: "strong E6,E7: called by ExtraAct_Main on exit; stops sound, destroys the 7 sub-tasks, frees the 0x28 sprites' OBJ VRAM, releases the models and the BGM handle (NNS_SndHandleReleaseSeq) (was func_ov001_022f9d20, ov001, 2026-11-16)"
+
+# --- secondary entry points of hand-written CW runtime routines ----------------
+func_0202ec4c_e70:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202ec4c+0x70: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+func_0202eaa4_e70:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202eaa4+0x70: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+func_0202e910_e14:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202e910+0x14: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+_dadd_e10:
+  confidence: confirmed
+  evidence: "Secondary entry point at _dadd+0x10: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+_ll_sdiv_e74:
+  confidence: confirmed
+  evidence: "Secondary entry point at _ll_sdiv+0x74: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+func_0202e910_e40:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202e910+0x40: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+func_0202eaa4_e44:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202eaa4+0x44: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+func_0202eaa4_e14:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202eaa4+0x14: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+_ull_mod_e8:
+  confidence: confirmed
+  evidence: "Secondary entry point at _ull_mod+0x8: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+_u32_div_f_e8:
+  confidence: confirmed
+  evidence: "Secondary entry point at _u32_div_f+0x8: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+_ddiv_e10:
+  confidence: confirmed
+  evidence: "Secondary entry point at _ddiv+0x10: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+func_0202ec4c_e14:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202ec4c+0x14: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+func_0202ec4c_e44:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202ec4c+0x44: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+func_0202e910_e64:
+  confidence: confirmed
+  evidence: "Secondary entry point at func_0202e910+0x64: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+_ll_sdiv_e10:
+  confidence: confirmed
+  evidence: "Secondary entry point at _ll_sdiv+0x10: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+_fsub_ec:
+  confidence: confirmed
+  evidence: "Secondary entry point at _fsub+0xc: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
+_fadd_ec:
+  confidence: confirmed
+  evidence: "Secondary entry point at _fadd+0xc: target of a branch from another runtime routine (relocs.txt arm_branch); split so the branch can carry a relocation (docs/research/0008-dsd-thumb-jumptables.md, asm-entry-points patch)."
