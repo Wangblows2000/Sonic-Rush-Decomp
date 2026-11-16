@@ -11159,3 +11159,43 @@ src/main_c2/func_02015924.c:
 src/main_c2/func_02035b5c.c:
     complete
     .text       start:0x02035b5c end:0x02035c58
+
+src/asm/FS_StartOverlay.c:
+    complete
+    .text       start:0x0200c3c0 end:0x0200c4c0
+
+src/asm/func_0200330c.c:
+    complete
+    .text       start:0x0200330c end:0x020033b8
+
+src/asm/func_02005e64.c:
+    complete
+    .text       start:0x02005e64 end:0x02005fe4
+
+src/asm/func_02006990.c:
+    complete
+    .text       start:0x02006990 end:0x02006abc
+
+src/asm/func_0202a3e8.c:
+    complete
+    .text       start:0x0202a3e8 end:0x0202ac68
+
+src/main_d1/func_0205e378.c:
+    complete
+    .text       start:0x0205e378 end:0x0205eb68
+
+src/main_d1/func_0206aa38.c:
+    complete
+    .text       start:0x0206aa38 end:0x0206b244
+
+src/main_d2/func_0203cc68.c:
+    complete
+    .text       start:0x0203cc68 end:0x0203d038
+
+src/main_d3/func_02066bc0.c:
+    complete
+    .text       start:0x02066bc0 end:0x02066e3c
+
+src/main_d3/func_02066e3c.c:
+    complete
+    .text       start:0x02066e3c end:0x020670bc

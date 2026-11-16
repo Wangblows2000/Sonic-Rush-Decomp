@@ -6771,3 +6771,11 @@ src/ov001_h/func_ov001_022e023c.c:
 src/ov001_h/func_ov001_022cfecc.c:
     complete
     .text       start:0x022cfecc end:0x022cff74
+
+src/ov001_j/func_ov001_022cdfdc.c:
+    complete
+    .text       start:0x022cdfdc end:0x022ce164
+
+src/ov001_j/func_ov001_022fd268.c:
+    complete
+    .text       start:0x022fd268 end:0x022fd2dc

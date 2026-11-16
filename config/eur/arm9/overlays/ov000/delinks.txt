@@ -11067,3 +11067,15 @@ src/ov000_r/func_ov000_02326744.c:
 src/ov000_r/func_ov000_02334eb4.c:
     complete
     .text       start:0x02334eb4 end:0x023350bc
+
+src/asm/func_ov000_022f8224.c:
+    complete
+    .text       start:0x022f8224 end:0x022f8310
+
+src/ov000_t/func_ov000_0231adac.c:
+    complete
+    .text       start:0x0231adac end:0x0231aec0
+
+src/ov000_t/func_ov000_02335704.c:
+    complete
+    .text       start:0x02335704 end:0x023357e0
