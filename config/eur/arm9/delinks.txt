@@ -11135,3 +11135,27 @@ src/pragma/func_0202a244.c:
 src/main_b10/func_0205d608.c:
     complete
     .text       start:0x0205d608 end:0x0205de50
+
+src/main_b10/func_020657dc.c:
+    complete
+    .text       start:0x020657dc end:0x02065ea8
+
+src/main_b10/func_0206a0ac.c:
+    complete
+    .text       start:0x0206a0ac end:0x0206aa04
+
+src/main_c2/func_020125d8.c:
+    complete
+    .text       start:0x020125d8 end:0x0201299c
+
+src/main_c2/func_02013814.c:
+    complete
+    .text       start:0x02013814 end:0x020138b4
+
+src/main_c2/func_02015924.c:
+    complete
+    .text       start:0x02015924 end:0x02015bdc
+
+src/main_c2/func_02035b5c.c:
+    complete
+    .text       start:0x02035b5c end:0x02035c58

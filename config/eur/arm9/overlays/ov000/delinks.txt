@@ -11015,3 +11015,47 @@ src/ov000_p/func_ov000_02347190.c:
 src/ov000_q/func_ov000_022c8f24.c:
     complete
     .text       start:0x022c8f24 end:0x022c90e8
+
+src/ov000_r/func_ov000_023126e8.c:
+    complete
+    .text       start:0x023126e8 end:0x023127e8
+
+src/ov000_r/func_ov000_0231b834.c:
+    complete
+    .text       start:0x0231b834 end:0x0231b8f8
+
+src/ov000_r/func_ov000_0232c4cc.c:
+    complete
+    .text       start:0x0232c4cc end:0x0232c658
+
+src/ov000_r/func_ov000_023352c8.c:
+    complete
+    .text       start:0x023352c8 end:0x023353c8
+
+src/ov000_s/func_ov000_0233a010.c:
+    complete
+    .text       start:0x0233a010 end:0x0233a118
+
+src/ov000_s/func_ov000_0233a4c8.c:
+    complete
+    .text       start:0x0233a4c8 end:0x0233ac78
+
+src/ov000_s/func_ov000_02341044.c:
+    complete
+    .text       start:0x02341044 end:0x023410dc
+
+src/ov000_s/func_ov000_023410dc.c:
+    complete
+    .text       start:0x023410dc end:0x02341158
+
+src/ov000_s/func_ov000_02341158.c:
+    complete
+    .text       start:0x02341158 end:0x023411f0
+
+src/ov000_s/func_ov000_023411f0.c:
+    complete
+    .text       start:0x023411f0 end:0x02341264
+
+src/ov000_s/func_ov000_023412e4.c:
+    complete
+    .text       start:0x023412e4 end:0x02341358

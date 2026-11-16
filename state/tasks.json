@@ -126,10 +126,10 @@
       "module": "main",
       "start": "0x02038000",
       "end": "0x0206e470",
-      "status": "claimed",
-      "agent": "main_b10",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": "2026-11-16 06:55:53Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -175,6 +175,10 @@
         {
           "time": "2026-11-16 06:55:53Z",
           "text": "claimed by main_b10"
+        },
+        {
+          "time": "2026-11-16 07:42:00Z",
+          "text": "released by main_b10: main_b10: 3 big matched; near-misses /home/claude/w_main_b10/"
         }
       ]
     },
@@ -341,6 +345,10 @@
         {
           "time": "2026-11-16 07:14:31Z",
           "text": "ov000_s working 0x02338000-0x02362b58"
+        },
+        {
+          "time": "2026-11-16 07:42:00Z",
+          "text": "ov000_s matched 7 (2892 B); u32-cast lever for ab3c; left 0234739c, 02341ebc"
         }
       ]
     },
@@ -434,10 +442,10 @@
       "module": "ov001",
       "start": "0x022ed000",
       "end": "0x02315eb4",
-      "status": "claimed",
-      "agent": "ov001_i",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 07:14:26Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -503,6 +511,10 @@
         {
           "time": "2026-11-16 07:14:26Z",
           "text": "claimed by ov001_i"
+        },
+        {
+          "time": "2026-11-16 07:42:00Z",
+          "text": "released by ov001_i: ov001_i stopped (classifier); best lead 022e4b5c draft /home/claude/w_ov001i/e4/"
         }
       ]
     },
