@@ -1,5 +1,7 @@
 # Sonic Rush (Nintendo DS) decompilation
 
+**Do be aware; this is all vibeslop. If you do not agree with the usage of AI, move along.**
+
 Work-in-progress **matching decompilation** of *Sonic Rush* (Sonic Team / Dimps,
 2005) for the Nintendo DS. The goal is C/C++ source (plus assembly where
 unavoidable) that compiles back to the original game code byte for byte.
