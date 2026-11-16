@@ -63,10 +63,10 @@
       "module": "main",
       "start": "0x0201c000",
       "end": "0x02038000",
-      "status": "open",
-      "agent": null,
+      "status": "claimed",
+      "agent": "main_c1",
       "created": "2026-11-15 20:37:55Z",
-      "claimed_at": null,
+      "claimed_at": "2026-11-16 05:39:39Z",
       "done_at": null,
       "notes": [
         {
@@ -100,6 +100,10 @@
         {
           "time": "2026-11-16 04:32:43Z",
           "text": "released by main_a5: main_a5: 84%; remaining hard near-misses (0202a3e8 switch table, 0201cacc, 0201ed04, 02032480); scripts /home/claude/w_main_a5/"
+        },
+        {
+          "time": "2026-11-16 05:39:39Z",
+          "text": "claimed by main_c1"
         }
       ]
     },
@@ -161,10 +165,10 @@
       "module": "ov000",
       "start": "0x022c5c80",
       "end": "0x02310000",
-      "status": "open",
-      "agent": null,
+      "status": "claimed",
+      "agent": "ov000_n",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": null,
+      "claimed_at": "2026-11-16 05:39:39Z",
       "done_at": null,
       "notes": [
         {
@@ -190,6 +194,10 @@
         {
           "time": "2026-11-16 05:29:36Z",
           "text": "released by ov000_j: ov000_j session end"
+        },
+        {
+          "time": "2026-11-16 05:39:39Z",
+          "text": "claimed by ov000_n"
         }
       ]
     },
@@ -265,6 +273,14 @@
         {
           "time": "2026-11-16 05:23:44Z",
           "text": "ov000_k: 23 OK in src/ov000_k (6108 B), range 0x0234d000-0x02362b58 now fully covered except 02354de4/0235b1a4 (in src/ov000_i). Tricks: sin/cos '(v*T<<4)>>16' must be written '(s16)((v*T) >> 12)' (fixes regalloc near-misses); thumb bool return via switch(x){case 0: return 0; default: return 1;}; '+1+0x80' unfolded via (u32)(FX+1)+0x80."
+        },
+        {
+          "time": "2026-11-16 05:42:54Z",
+          "text": "ov000_m: 9 OK (2288 B) 02339c2c 023425f4 02342480 0233dfdc 0233d324 0233e48c 0233e524 0233e5c8 0233d65c. Levers: #pragma opt_lifetimes off / opt_common_subs off / opt_propagation off fix regalloc swaps. Parked see build/agents/ov000_m.txt"
+        },
+        {
+          "time": "2026-11-16 05:58:57Z",
+          "text": "ov000_o working 0x02338000-0x02362b58"
         }
       ]
     },
@@ -275,10 +291,10 @@
       "module": "ov001",
       "start": "0x022c5c80",
       "end": "0x022ed000",
-      "status": "claimed",
-      "agent": "ov001_t7",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 05:29:34Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -336,6 +352,14 @@
         {
           "time": "2026-11-16 05:29:34Z",
           "text": "claimed by ov001_t7"
+        },
+        {
+          "time": "2026-11-16 05:51:40Z",
+          "text": "ov001_t7: +4 OK (1088 B): 022ecae4 022d7a84 022dd890 022d86b0. Near: w_ov001t7/near (022e519c slots 23B, 022d3fc8 16B, 022cdfdc 4B). Remaining Thumb w/o src: 022e2df0 022d3fc8 022e1aac 022cfecc 022e612c 022cfd7c 022c8bc0 022cb5ac 022c9a2c 022c8f30 022cdfdc 022d224c 022e794c 022e4b5c 022e519c"
+        },
+        {
+          "time": "2026-11-16 05:51:40Z",
+          "text": "released by ov001_t7: ov001_t7 done"
         }
       ]
     },
@@ -346,10 +370,10 @@
       "module": "ov001",
       "start": "0x022ed000",
       "end": "0x02315eb4",
-      "status": "open",
-      "agent": null,
+      "status": "claimed",
+      "agent": "ov001_g",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": null,
+      "claimed_at": "2026-11-16 05:39:40Z",
       "done_at": null,
       "notes": [
         {
@@ -395,6 +419,10 @@
         {
           "time": "2026-11-16 04:12:09Z",
           "text": "released by ov001_f: ov001_f done; near-misses in /home/claude/w_ov001f/near_*.c"
+        },
+        {
+          "time": "2026-11-16 05:39:40Z",
+          "text": "claimed by ov001_g"
         }
       ]
     },

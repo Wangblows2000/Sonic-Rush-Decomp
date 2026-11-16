@@ -1,0 +1,23 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x43c];
+    void *unk43C;
+    u8 pad440[0x454 - 0x440];
+    u16 unk454;
+    s16 unk456;
+} UnkStruct_022ea20c;
+
+void func_ov000_022ea1b8(UnkStruct_022ea20c *p);
+
+u16 func_ov000_022ea20c(UnkStruct_022ea20c *p) {
+    u16 r = 0x80;
+
+    if (p->unk456 > 0)
+        r |= 0x10;
+    else
+        r |= 0x20;
+    if (p->unk454++ > 4)
+        p->unk43C = func_ov000_022ea1b8;
+    return r;
+}

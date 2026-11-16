@@ -6567,3 +6567,27 @@ src/sweep/func_ov001_022e21ec.c:
 src/sweep/func_ov001_022fac54.c:
     complete
     .text       start:0x022fac54 end:0x022fad38
+
+src/ov001_t7/func_ov001_022d7a84.c:
+    complete
+    .text       start:0x022d7a84 end:0x022d7ac4
+
+src/ov001_t7/func_ov001_022d86b0.c:
+    complete
+    .text       start:0x022d86b0 end:0x022d8798
+
+src/ov001_t7/func_ov001_022dd890.c:
+    complete
+    .text       start:0x022dd890 end:0x022dd8d8
+
+src/ov001_t7/func_ov001_022ecae4.c:
+    complete
+    .text       start:0x022ecae4 end:0x022ecdb4
+
+src/sweep/func_ov001_022e1bec.c:
+    complete
+    .text       start:0x022e1bec end:0x022e1ce8
+
+src/sweep/func_ov001_02307d30.c:
+    complete
+    .text       start:0x02307d30 end:0x0230808c
