@@ -11140,7 +11140,7 @@ src/asm_fallback/Valve_State_Active.c:
     complete
     .text       start:0x0231ac3c end:0x0231ad60
 
-src/asm_fallback/Mine_State_Main.c:
+src/r2e/Mine_State_Main.c:
     complete
     .text       start:0x0231c834 end:0x0231c99c
 
