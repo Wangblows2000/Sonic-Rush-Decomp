@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-u8 *ExtraBossPlayer_Unk_ov001_022fd428(s32 a, s32 b, s32 c, s32 d, s32 e);
+u8 *ExtraBossPlayer_CreateFxObj(s32 a, s32 b, s32 c, s32 d, s32 e);
 void *ExtraBoss_GetPlayer(void);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void ExtraBossObj_State_Unk_ov001_022fd1c8(void);
@@ -8,9 +8,9 @@ void ExtraBossObj_State_Unk_ov001_022fd1c8(void);
 void ExtraBoss_Unk_ov001_022fa990(s32 a, s32 b, s32 c, s32 d, s16 big) {
     u8 *t;
     if (big != 0) {
-        t = ExtraBossPlayer_Unk_ov001_022fd428(0x11, a, b, c, d);
+        t = ExtraBossPlayer_CreateFxObj(0x11, a, b, c, d);
     } else {
-        t = ExtraBossPlayer_Unk_ov001_022fd428(0x10, a, b, c, d);
+        t = ExtraBossPlayer_CreateFxObj(0x10, a, b, c, d);
     }
     if (t == NULL) {
         return;

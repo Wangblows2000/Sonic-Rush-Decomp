@@ -26,7 +26,7 @@ BOOL KeyframeAnim_IsFinished(UnkAnim_022dbfdc *a);
 void VsMenu_Unk_ov001_022d9e50(UnkWork_022dbfdc *w, s32 x, s32 y);
 void VsMenu_Unk_ov001_022d9e2c(UnkWork_022dbfdc *w, s32 x, s32 y);
 void WirelessLobby_StartChild(void);
-void VsMenu_Unk_ov001_022da450(UnkWork_022dbfdc *w);
+void VsMenu_PrepareMsgBox(UnkWork_022dbfdc *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void VsMenu_State_Unk_ov001_022dbe3c(void);
 
@@ -50,7 +50,7 @@ void VsMenu_Unk_ov001_022dbfdc(void) {
     if (done) {
         w->timer = 0;
         WirelessLobby_StartChild();
-        VsMenu_Unk_ov001_022da450(w);
+        VsMenu_PrepareMsgBox(w);
         MsgBox_Create(4, 3, 5, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = VsMenu_State_Unk_ov001_022dbe3c;
     }

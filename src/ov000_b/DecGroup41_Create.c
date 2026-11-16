@@ -39,8 +39,8 @@ void DecGroup41_OnHit(void);
 void Decoration_InitFromMap(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
 void *DecShared_Create(void *a, s32 b, s32 c, s32 d, s32 e);
 void DecFishPart_Create(UnkStruct_023254dc *w, s32 a, s32 b);
-void DecGroup41_Action_Unk_ov000_02321430(UnkStruct_023254dc *w);
-void DecGroup41_Action_Unk_ov000_02321824(UnkStruct_023254dc *w);
+void DecGroup41_Action_Cruise(UnkStruct_023254dc *w);
+void DecGroup41_Action_Sink(UnkStruct_023254dc *w);
 
 UnkStruct_023254dc *DecGroup41_Create(UnkStruct_ObjParam *p, s32 a, s32 b) {
     UnkStruct_Task *task;
@@ -204,9 +204,9 @@ UnkStruct_023254dc *DecGroup41_Create(UnkStruct_ObjParam *p, s32 a, s32 b) {
             DecFishPart_Create(w, -2, -10);
         }
         if (w->unk184->unk2 == 0xa7 || w->unk184->unk2 == 0xaa || w->unk184->unk2 == 0xac)
-            DecGroup41_Action_Unk_ov000_02321430(w);
+            DecGroup41_Action_Cruise(w);
         else
-            DecGroup41_Action_Unk_ov000_02321824(w);
+            DecGroup41_Action_Sink(w);
         w->unk54 |= 2;
         if (w->unk184->unk2 == 0xa6 || w->unk184->unk2 == 0xa9 || w->unk184->unk2 == 0xae) {
             ObjRect_SetBox2D(&w->coll0, -0x20, -0x20, 0x20, 0x20);

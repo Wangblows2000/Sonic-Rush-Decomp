@@ -9,7 +9,7 @@ extern void *data_ov000_02369ba0;
 extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02366340[], data_ov000_02369dec[];
 
-void EffEntrance_State_Unk_ov000_022fbbb8(void);
+void EffEntrance_State_ScaleInOut(void);
 
 void EffEntrance_Create(UnkStruct_StageObj *par, s32 dx, s32 dy) {
     UnkStruct_Task *task;
@@ -37,5 +37,5 @@ void EffEntrance_Create(UnkStruct_StageObj *par, s32 dx, s32 dy) {
     w->unk5C |= 4;
     w->unk58 |= 0x2100;
     w->unk54 |= 0x202;
-    w->unk68 = EffEntrance_State_Unk_ov000_022fbbb8;
+    w->unk68 = EffEntrance_State_ScaleInOut;
 }

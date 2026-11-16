@@ -17,8 +17,8 @@ extern s32 data_ov000_023638ec[][3];
 extern s32 data_ov000_023638f0[][3];
 
 void Boss6_Unk_ov000_022e3954(UnkStruct_Boss *w);
-void Boss6_Unk_ov000_022dfd80(s32 a, s32 x, s32 y, s32 z);
-void Boss6_Unk_ov000_022e37f0(UnkStruct_Boss *w);
+void Boss6_CreatePiece(s32 a, s32 x, s32 y, s32 z);
+void Boss6_SpawnDebrisTimed(UnkStruct_Boss *w);
 void Boss6_Unk_ov000_022e1f10(UnkStruct_Boss *w);
 void Boss6_State_Unk_ov000_022e3d90(void);
 
@@ -30,9 +30,9 @@ void Boss6_State_Unk_ov000_022e3e50(UnkStruct_Boss *w) {
     if (w->unkF50 == data_ov000_0236375c[w->unk1124]) {
         i = Rand() & 3;
         w->unk1124++;
-        Boss6_Unk_ov000_022dfd80(0, data_ov000_023638e8[i][0], data_ov000_023638ec[i][0], data_ov000_023638f0[i][0]);
+        Boss6_CreatePiece(0, data_ov000_023638e8[i][0], data_ov000_023638ec[i][0], data_ov000_023638f0[i][0]);
     }
-    Boss6_Unk_ov000_022e37f0(w);
+    Boss6_SpawnDebrisTimed(w);
     Boss6_Unk_ov000_022e1f10(w);
     if (w->unkF50 > 0)
         return;

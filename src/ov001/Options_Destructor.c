@@ -11,8 +11,8 @@ void Heap_Free(void *heap, void *p);
 extern u8 gPad[];
 void Touch_Disable(void);
 void Pad_Reset(void *p, s32 a, s32 b);
-void Options_Unk_ov001_022ce3a0(void *p);
-void Options_Unk_ov001_022ce304(void);
+void Options_ReleaseAssets(void *p);
+void Options_ResetDisplay(void);
 
 #pragma thumb on
 void Options_Destructor(u8 *t) {
@@ -34,7 +34,7 @@ void Options_Destructor(u8 *t) {
     }
     Touch_Disable();
     Pad_Reset(gPad, 0, 0);
-    Options_Unk_ov001_022ce3a0(p);
-    Options_Unk_ov001_022ce304();
+    Options_ReleaseAssets(p);
+    Options_ResetDisplay();
 }
 #pragma thumb reset

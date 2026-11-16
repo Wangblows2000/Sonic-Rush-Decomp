@@ -8,8 +8,8 @@ typedef struct {
 
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
-void Enemy_Unk_ov000_022faf48(UnkStruct_022fdc3c *w, s32 a);
-void EnemyPawnGroup_Action_Unk_ov000_022fe304(UnkStruct_022fdc3c *w);
+void Enemy_DisableCollidersSetAnim(UnkStruct_022fdc3c *w, s32 a);
+void EnemyPawnGroup_Action_Turn(UnkStruct_022fdc3c *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fdc3c(UnkStruct_022fdc3c *w) {
     u16 f;
@@ -46,9 +46,9 @@ void EnemyPawnGroup_State_Unk_ov000_022fdc3c(UnkStruct_022fdc3c *w) {
         if (w->base.unk10 > lim) {
             w->base.unk10 = lim;
             w->base.unk34 = 0;
-            Enemy_Unk_ov000_022faf48(w, 3);
+            Enemy_DisableCollidersSetAnim(w, 3);
         } else if (!(w->base.unk5C & 4)) {
-            Enemy_Unk_ov000_022faf48(w, 2);
+            Enemy_DisableCollidersSetAnim(w, 2);
             w->base.unk5C |= 4;
         }
     }
@@ -57,12 +57,12 @@ void EnemyPawnGroup_State_Unk_ov000_022fdc3c(UnkStruct_022fdc3c *w) {
         if (w->base.unk10 < lim) {
             w->base.unk10 = lim;
             w->base.unk34 = 0;
-            Enemy_Unk_ov000_022faf48(w, 3);
+            Enemy_DisableCollidersSetAnim(w, 3);
         } else if (!(w->base.unk5C & 4)) {
-            Enemy_Unk_ov000_022faf48(w, 2);
+            Enemy_DisableCollidersSetAnim(w, 2);
             w->base.unk5C |= 4;
         }
     }
     if (--w->base.unkC == 0)
-        EnemyPawnGroup_Action_Unk_ov000_022fe304(w);
+        EnemyPawnGroup_Action_Turn(w);
 }

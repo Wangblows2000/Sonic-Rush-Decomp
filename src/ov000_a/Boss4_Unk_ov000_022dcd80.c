@@ -20,7 +20,7 @@ extern u8 data_ov000_02363550[];
 void Boss4_Unk_ov000_022dbb18(s32 a);
 void Boss4_Unk_ov000_022dccc8(UnkStruct_022dcd80 *s);
 void Boss4_Unk_ov000_022dcc10(UnkStruct_022dcd80 *s);
-BOOL Boss4_Unk_ov000_022db704(u32 mask, s32 n);
+BOOL Boss4_RandomBitInMask(u32 mask, s32 n);
 
 void Boss4_Unk_ov000_022dcd80(UnkStruct_022dcd80 *s) {
     s->unkBD4--;
@@ -38,7 +38,7 @@ void Boss4_Unk_ov000_022dcd80(UnkStruct_022dcd80 *s) {
         return;
     }
     if (s->unkBD0 == 1) {
-        if (Boss4_Unk_ov000_022db704((s->unk21C & 1) ? 0xff : data_ov000_02363550[gBossStatus.unk8 - 1], 8)) {
+        if (Boss4_RandomBitInMask((s->unk21C & 1) ? 0xff : data_ov000_02363550[gBossStatus.unk8 - 1], 8)) {
             Boss4_Unk_ov000_022dcc10(s);
             return;
         }

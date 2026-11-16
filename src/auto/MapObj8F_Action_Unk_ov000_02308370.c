@@ -2,14 +2,14 @@
 #include <nitro/types.h>
 
 extern u8 gCamera[];
-s32 Gimmick_Unk_ov000_02307e84();
+s32 Gimmick_GetRoomIndex();
 s32 EnemyRoom_Get();
 void MapObj8F_State_Unk_ov000_023082b4();
 
 void MapObj8F_Action_Unk_ov000_02308370(u8 *p0) {
     s32 t0 = (*(u32 *)((u8 *)gCamera + 0xc8) & 1);
     if (t0 != 0) {
-        s32 t1 = Gimmick_Unk_ov000_02307e84(p0, t0);
+        s32 t1 = Gimmick_GetRoomIndex(p0, t0);
         s32 t2 = EnemyRoom_Get(1, t1);
         if (t2 == 0) {
             *(u32 *)((u8 *)p0 + 0x1f4) = (*(u32 *)((u8 *)p0 + 0x1f4) | 0x10);

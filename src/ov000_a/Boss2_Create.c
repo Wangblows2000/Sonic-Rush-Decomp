@@ -145,7 +145,7 @@ void Boss2_Destructor(void *t);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 u16 Boss_GetStartHealth(void);
 void MapObject_Init(UnkStruct_022d4e54 *s, u8 *a, s32 x, s32 y);
-void Boss2_Draw_Unk_ov000_022ce614(void);
+void Boss2_Draw_ModelsAndHitboxes(void);
 void Boss2_State_WaitForStart(void);
 void ObjRect_SetBox3D(UnkStruct_022d4e54_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void ObjRect_SetAtkDefFlags(UnkStruct_022d4e54_h *h, s32 a, s32 b);
@@ -192,7 +192,7 @@ UnkStruct_022d4e54 *Boss2_Create(u8 *a, s32 x, s32 y) {
     gBossStatus.unk8 = Boss_GetStartHealth();
     gBossStatus.unkA = Boss_GetStartHealth();
     MapObject_Init(s, a, x, y);
-    s->unk70 = Boss2_Draw_Unk_ov000_022ce614;
+    s->unk70 = Boss2_Draw_ModelsAndHitboxes;
     s->unk68 = Boss2_State_WaitForStart;
     s->unk5C |= 0x20;
     s->unk54 |= 0x12;

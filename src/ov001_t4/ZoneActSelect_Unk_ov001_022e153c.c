@@ -36,7 +36,7 @@ void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
-void ZoneActSelect_Unk_ov001_022e14dc(UnkSpr_022e153c *s, UnkRes_022e153c *res, u32 idx, u16 v, s32 mode);
+void ZoneActSelect_InitSprite(UnkSpr_022e153c *s, UnkRes_022e153c *res, u32 idx, u16 v, s32 mode);
 
 #pragma thumb on
 void ZoneActSelect_Unk_ov001_022e153c(UnkWork_022e153c *w) {
@@ -66,26 +66,26 @@ void ZoneActSelect_Unk_ov001_022e153c(UnkWork_022e153c *w) {
     }
     DC_StoreRange(w->buf, ZoneActSelect_GetUncompressedSize(res));
     res = w->res2;
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[0], res, 0, 1, 1);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[1], res, 1, 1, 1);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[2], res, 2, 1, 1);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[3], res, 3, 2, 1);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[4], res, 4, 2, 1);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[5], res, 5, 2, 1);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[6], res, 6, 3, 1);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[7], res, 7, 13, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[8], res, 8, 13, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[9], res, 15, 4, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[10], res, 18, 4, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[11], res, 21, 4, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[12], res, 25, 0, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[13], res, 26, 10, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[14], res, 26, 10, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[15], res, 26, 10, 0);
-    ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[37], w->res4, 0, 0xe, 0);
+    ZoneActSelect_InitSprite(&w->sprites[0], res, 0, 1, 1);
+    ZoneActSelect_InitSprite(&w->sprites[1], res, 1, 1, 1);
+    ZoneActSelect_InitSprite(&w->sprites[2], res, 2, 1, 1);
+    ZoneActSelect_InitSprite(&w->sprites[3], res, 3, 2, 1);
+    ZoneActSelect_InitSprite(&w->sprites[4], res, 4, 2, 1);
+    ZoneActSelect_InitSprite(&w->sprites[5], res, 5, 2, 1);
+    ZoneActSelect_InitSprite(&w->sprites[6], res, 6, 3, 1);
+    ZoneActSelect_InitSprite(&w->sprites[7], res, 7, 13, 0);
+    ZoneActSelect_InitSprite(&w->sprites[8], res, 8, 13, 0);
+    ZoneActSelect_InitSprite(&w->sprites[9], res, 15, 4, 0);
+    ZoneActSelect_InitSprite(&w->sprites[10], res, 18, 4, 0);
+    ZoneActSelect_InitSprite(&w->sprites[11], res, 21, 4, 0);
+    ZoneActSelect_InitSprite(&w->sprites[12], res, 25, 0, 0);
+    ZoneActSelect_InitSprite(&w->sprites[13], res, 26, 10, 0);
+    ZoneActSelect_InitSprite(&w->sprites[14], res, 26, 10, 0);
+    ZoneActSelect_InitSprite(&w->sprites[15], res, 26, 10, 0);
+    ZoneActSelect_InitSprite(&w->sprites[37], w->res4, 0, 0xe, 0);
     res = w->res3;
     for (i = 0x10; i <= 0x24; i++) {
-        ZoneActSelect_Unk_ov001_022e14dc(&w->sprites[i], res, 0, 7, 0);
+        ZoneActSelect_InitSprite(&w->sprites[i], res, 0, 7, 0);
     }
 }
 #pragma thumb reset

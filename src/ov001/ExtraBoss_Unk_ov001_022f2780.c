@@ -3,7 +3,7 @@
 extern u32 gRandSeed;
 void ExtraBossObj_State_Unk_ov001_022f2580(void);
 void ExtraBossObj_State_Unk_ov001_022f2ca4(void);
-void ExtraBoss_Unk_ov001_022eecdc(void *p);
+void ExtraBoss_StopAndFaceCenter(void *p);
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
     return gRandSeed >> 16;
@@ -28,5 +28,5 @@ void ExtraBoss_Unk_ov001_022f2780(u8 *p) {
     } else {
         *(s32 *)(p + 0x1c8) = 0x12c;
     }
-    ExtraBoss_Unk_ov001_022eecdc(p);
+    ExtraBoss_StopAndFaceCenter(p);
 }

@@ -26,7 +26,7 @@ typedef struct {
 } UnkStruct_Boss;
 
 void Boss6_Unk_ov000_022e3954(UnkStruct_Boss *w);
-void Boss6_Unk_ov000_022e37f0(UnkStruct_Boss *w);
+void Boss6_SpawnDebrisTimed(UnkStruct_Boss *w);
 void Boss6_Unk_ov000_022e1f10(UnkStruct_Boss *w);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void Boss6_Unk_ov000_022e01a4(UnkStruct_Boss *w);
@@ -36,7 +36,7 @@ void Boss6_State_Unk_ov000_022e3d90(UnkStruct_Boss *w) {
     UnkStruct_Mdl960 *m = &w->unk960;
 
     Boss6_Unk_ov000_022e3954(w);
-    Boss6_Unk_ov000_022e37f0(w);
+    Boss6_SpawnDebrisTimed(w);
     Boss6_Unk_ov000_022e1f10(w);
     if (w->unkF68 != w->unkF6C)
         return;

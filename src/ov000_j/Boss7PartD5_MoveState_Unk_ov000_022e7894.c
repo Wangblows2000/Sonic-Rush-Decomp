@@ -9,12 +9,12 @@ typedef struct {
     u16 unk468;
 } UnkStruct_022e7894;
 
-void Boss7PartD5_Unk_ov000_022e7b6c(UnkStruct_022e7894 *p);
+void Boss7PartD5_HoverBob(UnkStruct_022e7894 *p);
 void Boss7PartD5_MoveState_Unk_ov000_022e78f0(UnkStruct_022e7894 *p);
 void Boss7PartD5_MoveState_Unk_ov000_022e779c(UnkStruct_022e7894 *p);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e7894(UnkStruct_022e7894 *p) {
-    Boss7PartD5_Unk_ov000_022e7b6c(p);
+    Boss7PartD5_HoverBob(p);
     if (p->unk468-- != 0)
         return;
     p->unk464--;

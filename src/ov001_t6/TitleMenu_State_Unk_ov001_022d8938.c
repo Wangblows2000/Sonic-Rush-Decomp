@@ -57,8 +57,8 @@ void TitleMenu_Unk_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t);
 void SysSound_PlaySE(s32 a);
 void TitleMenu_Unk_ov001_022d7dbc(void *p, void *sw);
 void TitleMenu_Unk_ov001_022d75dc(void *sw, void *a, void *b);
-s32 TitleMenu_Unk_ov001_022d7a84(u32 x, u32 y, s32 y0);
-BOOL TitleMenu_Unk_ov001_022d7a60(u32 x, u32 y);
+s32 TitleMenu_GetTouchedItem(u32 x, u32 y, s32 y0);
+BOOL TitleMenu_IsBackButtonTouched(u32 x, u32 y);
 void TitleMenu_Unk_ov001_022d7968(s32 a, s32 b);
 void TitleMenu_Unk_ov001_022d78f4(s32 a, s32 b);
 void TitleMenu_State_Unk_ov001_022d8798(void);
@@ -140,7 +140,7 @@ void TitleMenu_State_Unk_ov001_022d8938(void) {
         tx = gTouchState.x;
         ty = gTouchState.y;
         if (tx < 0x100 && ty < 0xc0) {
-            i = TitleMenu_Unk_ov001_022d7a84(tx, ty, w->y0);
+            i = TitleMenu_GetTouchedItem(tx, ty, w->y0);
             if (i >= 0) {
                 if (w->items[i].id != 0x14) {
                     w->sel = i;
@@ -148,7 +148,7 @@ void TitleMenu_State_Unk_ov001_022d8938(void) {
                     gTaskCurrent->func = TitleMenu_State_Unk_ov001_022d8798;
                     SysSound_PlaySE(0);
                 }
-            } else if (TitleMenu_Unk_ov001_022d7a60(tx, ty)) {
+            } else if (TitleMenu_IsBackButtonTouched(tx, ty)) {
                 w->sel = 4;
                 w->timer = 0;
                 gTaskCurrent->func = TitleMenu_State_Unk_ov001_022d86b0;

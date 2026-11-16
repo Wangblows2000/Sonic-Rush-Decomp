@@ -71,7 +71,7 @@ void BossEffect_CreateStrikeFin(s32 a, s32 x, s32 y, s32 z);
 void StageObj_ClearPause(void);
 void Player_SetAnimation(UnkStruct_StageObj *p, s32 a);
 void Boss7PartD7_State_WaitAnimEnd_ov000_022ebe64(void);
-void Boss7PartD5_MoveState_Unk_ov000_022e726c(void);
+void Boss7PartD5_MoveState_StartDefeatExit(void);
 void Boss7_State_Unk_ov000_022ec7b4(void);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 u8 *NNS_G3dGetMdlSet(void *p);
@@ -123,7 +123,7 @@ void Boss7_State_Unk_ov000_022ec954(UnkStruct_022ec954 *w) {
     pl->unk5C &= ~4;
     w->unk21C->base.unk68 = Boss7PartD7_State_WaitAnimEnd_ov000_022ebe64;
     w->unk21C = NULL;
-    w->unk214->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e726c;
+    w->unk214->unk440 = Boss7PartD5_MoveState_StartDefeatExit;
     w->unk214->base.unk5C &= ~0x10;
     w->unk214->base.unk58 |= 0x80;
     Sound_PlaySeqArc(0, 0, 0x9b);

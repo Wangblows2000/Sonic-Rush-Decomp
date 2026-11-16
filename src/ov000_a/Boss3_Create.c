@@ -80,7 +80,7 @@ void NNS_FndUnmountArchive(UnkArc_022db390 *ctx);
 void *NNS_FndGetArchiveFileByName(const char *path);
 void NNS_G3dResDefaultSetup(void *p);
 void MapObject_Init(UnkStruct_022db390 *s, u8 *a, s32 x, s32 y);
-void Boss3_Draw_Unk_ov000_022da3b4(void);
+void Boss3_Draw_Model(void);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
@@ -119,7 +119,7 @@ UnkStruct_022db390 *Boss3_Create(u8 *a, s32 x, s32 y) {
     s->unk22C = data_ov000_02369b18[0];
     s->unk238 = data_ov000_02369b18[4];
     MapObject_Init(s, a, x, y);
-    s->unk70 = Boss3_Draw_Unk_ov000_022da3b4;
+    s->unk70 = Boss3_Draw_Model;
     s->unk54 |= 0x12;
     s->unk58 |= 0xa300;
     s->unk5C |= 0x20;

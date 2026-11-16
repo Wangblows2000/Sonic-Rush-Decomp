@@ -24,7 +24,7 @@ UnkTask_022edd28 *Task_Create(void (*func)(void), void (*dtor)(void), u16 prio, 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void Records_State_Enter(void);
 void Records_Destructor(void);
-void Records_Unk_ov001_022ec38c(UnkWork_022edd28 *w);
+void Records_LoadFromSave(UnkWork_022edd28 *w);
 
 #pragma thumb on
 UnkWork_022edd28 *Records_Create(void) {
@@ -44,7 +44,7 @@ UnkWork_022edd28 *Records_Create(void) {
     w->unkC = 0;
     w->unk10 = 0;
     w->unk24 = 0;
-    Records_Unk_ov001_022ec38c(w);
+    Records_LoadFromSave(w);
     if (w->unk28 > 4) {
         w->unk2C = 1;
         w->unk34 = (w->unk28 - 4) * 16;

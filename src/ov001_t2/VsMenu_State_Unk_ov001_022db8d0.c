@@ -20,7 +20,7 @@ typedef struct {
 
 extern UnkTask_022db8d0 *gTaskCurrent;
 
-void VsMenu_Unk_ov001_022da614(UnkWork_022db8d0 *w);
+void VsMenu_DrawParentList(UnkWork_022db8d0 *w);
 BOOL MsgBox_IsClosed(void);
 void VsMenu_Unk_ov001_022da374(UnkWork_022db8d0 *w);
 void VsMenu_Unk_ov001_022da33c(UnkWork_022db8d0 *w);
@@ -36,7 +36,7 @@ void VsMenu_State_Unk_ov001_022db8d0(void) {
     UnkWork_022db8d0 *w = gTaskCurrent->work;
     s32 i;
 
-    VsMenu_Unk_ov001_022da614(w);
+    VsMenu_DrawParentList(w);
     w->timer++;
     if (!MsgBox_IsClosed()) {
         return;

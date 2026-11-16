@@ -131,9 +131,9 @@ void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Player_Action_Blank(UnkStruct_022e2470_pl *p);
 void Player_SetAnimation(UnkStruct_022e2470_pl *p, s32 a);
 void ScreenShake_Start(s32 a);
-u32 RingManager_Unk_ov000_0235b0a8(void);
-void RingManager_Unk_ov000_0235b08c(u32 a);
-void Boss6_Unk_ov000_022e237c(s32 a, s32 b);
+u32 RingManager_GetFlags(void);
+void RingManager_SetFlags(u32 a);
+void Boss6_SetDefeatCameraShot(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss_LoadModelPalettes(s32 a, u32 *p1, s32 p2, u16 *p3, u16 n);
 
@@ -182,7 +182,7 @@ void Boss6_Action_Defeat(void) {
     }
     s->unkD5E = 0;
     ScreenShake_Start(0);
-    RingManager_Unk_ov000_0235b08c(RingManager_Unk_ov000_0235b0a8() | 1);
+    RingManager_SetFlags(RingManager_GetFlags() | 1);
     gBossStatus.unk4 = 0x23;
     s->unkF50 = 0x1e;
     s->unk1118 = 0;
@@ -191,7 +191,7 @@ void Boss6_Action_Defeat(void) {
     *(vu32 *)0x4000018 = 0;
     gDisplayMain.unk8 = 0;
     gDisplayMain.unkA = 0;
-    Boss6_Unk_ov000_022e237c(s->unk111C, 0);
+    Boss6_SetDefeatCameraShot(s->unk111C, 0);
     v = (*(vu32 *)0x4000000 & 0x1f00) >> 8;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | ((v | 4) << 8);
     data_ov000_0236a444.unkDC = 2;

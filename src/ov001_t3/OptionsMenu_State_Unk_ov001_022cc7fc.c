@@ -41,10 +41,10 @@ extern UnkTouch_022cc7fc gTouchState;
 
 void OptionsMenu_UpdateAnims(UnkWork_022cc7fc *w);
 void OptionsMenu_DrawItems(UnkWork_022cc7fc *w);
-void OptionsMenu_Unk_ov001_022cdef8(void);
+void OptionsMenu_ShowMsgBox13(void);
 void SysSound_PlaySE(s32 a);
-BOOL OptionsMenu_Unk_ov001_022c8ba8(u16 x, u16 y);
-s32 OptionsMenu_Unk_ov001_022c8d54(UnkSub_022cc7fc *s);
+BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
+s32 OptionsMenu_GetChildCount(UnkSub_022cc7fc *s);
 void OptionsMenu_State_Unk_ov001_022cc33c(void);
 void OptionsMenu_State_Unk_ov001_022cc6b8(void);
 
@@ -66,24 +66,24 @@ void OptionsMenu_State_Unk_ov001_022cc7fc(void) {
         w->unk1c++;
         if (w->unk1c > 10) {
             w->unk1c = -1;
-            OptionsMenu_Unk_ov001_022cdef8();
+            OptionsMenu_ShowMsgBox13();
             gTaskCurrent->func = OptionsMenu_State_Unk_ov001_022cc33c;
         }
     }
     if (w->unk1c < 0) {
         if (gPad.trg & 2) {
-            OptionsMenu_Unk_ov001_022cdef8();
+            OptionsMenu_ShowMsgBox13();
             gTaskCurrent->func = OptionsMenu_State_Unk_ov001_022cc33c;
             SysSound_PlaySE(1);
         } else if (gTouchState.flags & 0x40) {
             x = gTouchState.x;
             y = gTouchState.y;
-            if (x < 0x100 && y < 0xc0 && OptionsMenu_Unk_ov001_022c8ba8(x, y)) {
+            if (x < 0x100 && y < 0xc0 && OptionsMenu_IsBackButtonTouched(x, y)) {
                 w->unk1c = 0;
                 SysSound_PlaySE(1);
             }
         }
-        sub->unk8 = OptionsMenu_Unk_ov001_022c8d54(sub);
+        sub->unk8 = OptionsMenu_GetChildCount(sub);
         if (sub->unk8 > 0) {
             SysSound_PlaySE(0);
             sub->timer = 0;

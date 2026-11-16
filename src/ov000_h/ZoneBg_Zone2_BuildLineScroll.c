@@ -54,7 +54,7 @@ extern u16 *data_02087cf4[];
 #define SIN_023405cc(a) data_0206e470[(u32)(IDX_023405cc(a) << 1)]
 #define COS_023405cc(a) data_0206e470[(u32)((IDX_023405cc(a) << 1) + 1)]
 
-void ZoneBg_Zone2_Unk_ov000_0233e8ac(UnkWave_023405cc *wave, s32 v, u32 z);
+void ZoneBg_Zone2_InitWave(UnkWave_023405cc *wave, s32 v, u32 z);
 
 void ZoneBg_Zone2_BuildLineScroll(UnkStruct_023405cc *w, s32 idx) {
     UnkWave_023405cc wave = {0};
@@ -90,7 +90,7 @@ void ZoneBg_Zone2_BuildLineScroll(UnkStruct_023405cc *w, s32 idx) {
         *(u16 *)((u8 *)tbl + (i * 4 + 2)) = y + ((u32)(COS_023405cc((u16)((wave.t << 11) - (wave.unk4 << ((wave.unk4 << 9) + 10)))) << 5) >> 16);
     }
 
-    ZoneBg_Zone2_Unk_ov000_0233e8ac(&wave, 0, w->unk0);
+    ZoneBg_Zone2_InitWave(&wave, 0, w->unk0);
     x = w->b[idx].x >> 8;
     y = w->b[idx].y >> 8;
     for (; i < 0xc0; i++) {

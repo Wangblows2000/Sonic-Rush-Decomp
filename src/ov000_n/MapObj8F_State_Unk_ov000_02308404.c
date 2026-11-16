@@ -33,7 +33,7 @@ typedef struct {
 
 extern UnkStruct_Plr gCamera[];
 
-void *Gimmick_Unk_ov000_02307e84(void);
+void *Gimmick_GetRoomIndex(void);
 UnkStruct_Ctl *EnemyRoom_Get(s32 a, void *b);
 BOOL Gimmick_Unk_ov000_02307dfc(UnkStruct_Ctl *a, s32 b);
 UnkStruct_Plr *Camera_GetBySwapState(void);
@@ -50,7 +50,7 @@ void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
     u32 m;
     s32 v;
 
-    o = EnemyRoom_Get(1, Gimmick_Unk_ov000_02307e84());
+    o = EnemyRoom_Get(1, Gimmick_GetRoomIndex());
     if (o == NULL) {
         s->base.unk54 |= 4;
         return;

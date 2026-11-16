@@ -54,8 +54,8 @@ void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
 s32 ObjVram_Alloc(s32 a, s32 b);
 void VsMenu_SetSubObjPaletteColor(UnkWork_022dd93c *w, s32 a);
-void VsMenu_Unk_ov001_022d983c(UnkWork_022dd93c *w, s32 i);
-void VsMenu_Unk_ov001_022d9814(UnkWork_022dd93c *w, s32 i);
+void VsMenu_ClearNameSlot2(UnkWork_022dd93c *w, s32 i);
+void VsMenu_ClearNameSlot(UnkWork_022dd93c *w, s32 i);
 void VsMenu_BuildGlyphString(void *p, u16 *tbl, u16 n);
 
 #pragma thumb on
@@ -101,7 +101,7 @@ void VsMenu_Unk_ov001_022dd93c(UnkWork_022dd93c *w) {
         for (j = 0; j < 2; j++) {
             w->a[i].h[j] = ObjVram_Alloc(1, 1);
         }
-        VsMenu_Unk_ov001_022d983c(w, i);
+        VsMenu_ClearNameSlot2(w, i);
     }
     for (i = 0; i < 8; i++) {
         w->b[i].unk20 = 0;
@@ -111,7 +111,7 @@ void VsMenu_Unk_ov001_022dd93c(UnkWork_022dd93c *w) {
         for (j = 0; j < 2; j++) {
             w->b[i].h[j] = ObjVram_Alloc(1, 1);
         }
-        VsMenu_Unk_ov001_022d9814(w, i);
+        VsMenu_ClearNameSlot(w, i);
     }
     VsMenu_BuildGlyphString((u8 *)w + 0x24, data_02072cbc, gGameLanguage.count);
 }

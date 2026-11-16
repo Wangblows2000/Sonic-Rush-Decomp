@@ -72,8 +72,8 @@ extern u32 gObjManagerFlags;
 extern s16 data_0206e470[];
 
 void GmkTable_UpdateBob(UnkStruct_02319920 *w);
-void Player_Unk_ov000_023524d8(void *a, void *b);
-void Player_Unk_ov000_0235258c(void *a, void *b);
+void Player_AttachGimmickTableReleased(void *a, void *b);
+void Player_AttachGimmickTableNoInput(void *a, void *b);
 void MTX_Identity33_(void *m);
 void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
@@ -93,12 +93,12 @@ void GmkTable_State_Released(UnkStruct_02319920 *w) {
     if (ring != NULL && ring->unk80 == w && ring->unk0 == 1) {
         w->unk58 &= ~0x2000;
         w->unk204 = w->unk1BC;
-        Player_Unk_ov000_023524d8(ring, w);
+        Player_AttachGimmickTableReleased(ring, w);
     }
     if (w->unk204 != NULL) {
         w->unk204->unk80 = w;
         if (w->unk204->unk0 == 1 && (w->unk1BC == NULL || w->unk1BC->unk80 != w) && !(gObjManagerFlags & 0x100))
-            Player_Unk_ov000_0235258c(w->unk204, w);
+            Player_AttachGimmickTableNoInput(w->unk204, w);
     }
     MTX_Identity33_(mdl->mtx);
     idx = (s32)((u16)w->unk8 & 0xffff) >> 4;

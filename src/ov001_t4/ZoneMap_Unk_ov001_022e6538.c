@@ -30,12 +30,12 @@ extern UnkTask_022e6538 *gTaskCurrent;
 
 void ZoneMap_Unk_ov001_022e5a48(s32 v);
 void ZoneMap_Unk_ov001_022e5f04(void);
-void ZoneMap_Unk_ov001_022e5c58(void);
+void ZoneMap_Action_ShowMsgBox11(void);
 void ZoneMap_Unk_ov001_022e5e28(s32 a, s32 b, s32 c);
 void ZoneMap_Unk_ov001_022e5db0(s32 a);
 void ZoneMap_Unk_ov001_022e3180(s32 a, s32 b);
 void NaviMsg_StartIntro(void);
-void ZoneMap_State_Unk_ov001_022e7f64(void);
+void ZoneMap_State_SelectNode(void);
 
 #pragma thumb on
 void ZoneMap_Unk_ov001_022e6538(void) {
@@ -53,7 +53,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
         break;
     case 3:
         w->unk94 = 4;
-        ZoneMap_Unk_ov001_022e5c58();
+        ZoneMap_Action_ShowMsgBox11();
         break;
     case 4:
         w->unk94 = 5;
@@ -61,7 +61,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
         break;
     case 5:
         w->unk90 = 1;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 6:
         w->unk94 = 7;
@@ -85,7 +85,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
         break;
     case 11:
         w->unk90 = 1;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 12:
         w->unk94 = 0xd;
@@ -109,7 +109,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
         break;
     case 17:
         w->unk90 = 1;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 18:
         w->unk94 = 0x13;
@@ -117,7 +117,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
         break;
     case 19:
         w->unk90 = 1;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 20:
         w->child->unk6f0 = 2;
@@ -131,7 +131,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
     case 22:
         w->unk90 = 1;
         ZoneMap_Unk_ov001_022e3180(w->child->unk1cc4, 8);
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 23:
         w->unk94 = 0x18;
@@ -139,7 +139,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
         break;
     case 24:
         w->unk90 = 1;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 25:
         w->child->unk710 = 2;
@@ -153,7 +153,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
     case 27:
         w->unk90 = 1;
         ZoneMap_Unk_ov001_022e3180(w->child->unk1cc4, 9);
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 28:
         w->unk94 = 0x1d;
@@ -165,7 +165,7 @@ void ZoneMap_Unk_ov001_022e6538(void) {
         break;
     case 30:
         w->unk90 = 1;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 31:
         w->unk94 = 0x20;
@@ -177,11 +177,11 @@ void ZoneMap_Unk_ov001_022e6538(void) {
         break;
     case 33:
         w->unk90 = 1;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 34:
         w->unk90 = 1;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7f64;
+        gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     }
 }

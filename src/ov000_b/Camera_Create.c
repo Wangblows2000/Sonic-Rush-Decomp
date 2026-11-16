@@ -35,7 +35,7 @@ void Camera_Look_Idle(void);
 void ZoneFx_Init(void);
 void ZoneBg_Init(void);
 void Camera_ApplyLcdSwap(void);
-void Camera_Unk_ov000_02338778(void);
+void Camera_LcdSwapDestructor(void);
 
 void Camera_Create(void) {
     UnkStruct_0233c100_Work *w;
@@ -81,5 +81,5 @@ void Camera_Create(void) {
     }
     ZoneFx_Init();
     ZoneBg_Init();
-    Task_Create(Camera_ApplyLcdSwap, Camera_Unk_ov000_02338778, 0, 0xf00a, 3, 0);
+    Task_Create(Camera_ApplyLcdSwap, Camera_LcdSwapDestructor, 0, 0xf00a, 3, 0);
 }

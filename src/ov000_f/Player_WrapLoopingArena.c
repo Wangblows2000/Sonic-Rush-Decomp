@@ -28,7 +28,7 @@ extern UnkStruct_02343ac0_Cam gCamera;
 extern s32 data_ov000_0236ac2c;
 
 void EffTrail_SetWrapShift(s32 d);
-void StageEvent_Unk_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
+void StageEvent_SpawnInRect(u16 a, u16 b, u16 c, u16 d);
 
 void Player_WrapLoopingArena(UnkStruct_02343ac0 *w) {
     BOOL ok;
@@ -102,7 +102,7 @@ void Player_WrapLoopingArena(UnkStruct_02343ac0 *w) {
             } else if (bottom > 0xffff) {
                 bottom = 0xffff;
             }
-            StageEvent_Unk_ov000_023355e0(left, top, right, bottom);
+            StageEvent_SpawnInRect(left, top, right, bottom);
         }
     }
     if (w->x >= lo) {
@@ -142,5 +142,5 @@ void Player_WrapLoopingArena(UnkStruct_02343ac0 *w) {
     } else if (b2 > 0xffff) {
         b2 = 0xffff;
     }
-    StageEvent_Unk_ov000_023355e0(l2, t2, r2, b2);
+    StageEvent_SpawnInRect(l2, t2, r2, b2);
 }

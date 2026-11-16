@@ -33,19 +33,19 @@ extern UnkTouch_022ed6c4 gTouchState;
 
 void Records_Unk_ov001_022ed490(UnkWork_022ed6c4 *w, s16 x, s16 y);
 void Records_Unk_ov001_022ed3e0(UnkWork_022ed6c4 *w);
-void Records_Unk_ov001_022ed390(UnkWork_022ed6c4 *w, s32 flag);
+void Records_DrawBackButton(UnkWork_022ed6c4 *w, s32 flag);
 void Records_Unk_ov001_022ed19c(UnkWork_022ed6c4 *w);
 void Records_Unk_ov001_022ed188(UnkWork_022ed6c4 *w);
 void Records_Unk_ov001_022ed14c(UnkWork_022ed6c4 *w);
 void Records_Unk_ov001_022ed104(UnkWork_022ed6c4 *w);
 void Records_Unk_ov001_022ed08c(UnkWork_022ed6c4 *w);
-BOOL Records_Unk_ov001_022eced8(UnkWork_022ed6c4 *w);
+BOOL Records_IsBackButtonTouched(UnkWork_022ed6c4 *w);
 BOOL Records_IsBPressed(UnkWork_022ed6c4 *w);
 BOOL Records_Unk_ov001_022ece98(UnkWork_022ed6c4 *w);
-BOOL Records_Unk_ov001_022ecf5c(UnkWork_022ed6c4 *w);
-BOOL Records_Unk_ov001_022ecf04(UnkWork_022ed6c4 *w);
-s32 Records_Unk_ov001_022ece04(UnkWork_022ed6c4 *w, s32 v);
-s32 Records_Unk_ov001_022ecdcc(UnkWork_022ed6c4 *w, s32 v);
+BOOL Records_IsUpArrowTouched(UnkWork_022ed6c4 *w);
+BOOL Records_IsDownArrowTouched(UnkWork_022ed6c4 *w);
+s32 Records_PrevPageStart(UnkWork_022ed6c4 *w, s32 v);
+s32 Records_NextPageStart(UnkWork_022ed6c4 *w, s32 v);
 void SysSound_PlaySE(s32 a);
 void Records_CreateFadeTask(s32 a, s32 b, s32 c, s32 d);
 void Records_State_ExitToOptions(void);
@@ -59,7 +59,7 @@ void Records_State_Unk_ov001_022ed6c4(void) {
 
     Records_Unk_ov001_022ed490(w, 0, 0x90);
     Records_Unk_ov001_022ed3e0(w);
-    Records_Unk_ov001_022ed390(w, 0);
+    Records_DrawBackButton(w, 0);
     Records_Unk_ov001_022ed19c(w);
     Records_Unk_ov001_022ed188(w);
     Records_Unk_ov001_022ed14c(w);
@@ -68,7 +68,7 @@ void Records_State_Unk_ov001_022ed6c4(void) {
     f1 = FALSE;
     f2 = FALSE;
     f3 = FALSE;
-    if (Records_Unk_ov001_022eced8(w)) {
+    if (Records_IsBackButtonTouched(w)) {
         f1 = TRUE;
         w->unk24 = 1;
     } else if (Records_IsBPressed(w)) {
@@ -82,16 +82,16 @@ void Records_State_Unk_ov001_022ed6c4(void) {
         w->unkC = gTouchState.x;
         w->unk10 = gTouchState.y;
         w->unk18 = 0;
-    } else if (Records_Unk_ov001_022ecf5c(w)) {
+    } else if (Records_IsUpArrowTouched(w)) {
         f3 = TRUE;
         w->unk1C = w->unk30;
-        w->unk20 = Records_Unk_ov001_022ece04(w, w->unk30);
+        w->unk20 = Records_PrevPageStart(w, w->unk30);
         w->unk4 = 0;
         w->unk8 = 0;
-    } else if (Records_Unk_ov001_022ecf04(w)) {
+    } else if (Records_IsDownArrowTouched(w)) {
         f3 = TRUE;
         w->unk1C = w->unk30;
-        w->unk20 = Records_Unk_ov001_022ecdcc(w, w->unk30);
+        w->unk20 = Records_NextPageStart(w, w->unk30);
         w->unk4 = 1;
         w->unk8 = 1;
     } else {

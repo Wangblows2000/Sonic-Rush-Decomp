@@ -113,8 +113,8 @@ extern UnkStruct_022d3568_7 gBossStatus;
 s32 FX_DivS32(s32 a, s32 b);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void Boss2_UpdateArenaSpeed(UnkStruct_022d3568 *s, s32 mode);
-void Boss2_State_Unk_ov000_022d2ccc(UnkStruct_022d3568 *s);
-void Boss2_State_Unk_ov000_022d32c0(UnkStruct_022d3568 *s);
+void Boss2_State_DashHop(UnkStruct_022d3568 *s);
+void Boss2_State_JumpRise(UnkStruct_022d3568 *s);
 
 static inline s32 Lerp(s32 a, s32 b) {
     return FX_DivS32(gBossStatus.unk8 * a + (gBossStatus.unkA - gBossStatus.unk8) * b, gBossStatus.unkA);
@@ -148,7 +148,7 @@ void Boss2_State_Dash(UnkStruct_022d3568 *s) {
     Boss2_UpdateArenaSpeed(s, 0);
     s->unk12F4--;
     if (s->unk12F4 <= 0) {
-        s->func = Boss2_State_Unk_ov000_022d2ccc;
+        s->func = Boss2_State_DashHop;
         s->unk146C = 0;
         NNS_SndPlayerStopSeq(s->unk1450, 0);
         return;
@@ -199,7 +199,7 @@ void Boss2_State_Dash(UnkStruct_022d3568 *s) {
             m = 0;
         if (a > m)
             return;
-        s->func = Boss2_State_Unk_ov000_022d32c0;
+        s->func = Boss2_State_JumpRise;
         x = &s->unkA9C;
         x->unk10C &= ~4;
         y = &s->unkBD4;

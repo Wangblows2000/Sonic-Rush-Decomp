@@ -20,7 +20,7 @@ typedef struct {
 } UnkStruct_02322638_C;
 
 void DecGroup35_SpawnPieceBurst(s32 x, s32 y);
-void DecGroup35_Unk_ov000_02321f18(s32 x, s32 y, s32 a, s32 b, s32 c);
+void DecGroup35_CreateFallingDebris(s32 x, s32 y, s32 a, s32 b, s32 c);
 void *EffWaterGmk_CreateSplash(UnkStruct_02322638_O *o, s32 a, s32 b);
 
 void DecGroup35_OnHit(UnkStruct_02322638_C *a, UnkStruct_02322638_C *b) {
@@ -54,10 +54,10 @@ void DecGroup35_OnHit(UnkStruct_02322638_C *a, UnkStruct_02322638_C *b) {
         if (v <= 0x180)
             return;
         if (!(Rand() & 1)) {
-            DecGroup35_Unk_ov000_02321f18(w->unk10 + (0x1fff - (Rand() & 0x3ffe)), w->unk14, 0, 0, 0);
+            DecGroup35_CreateFallingDebris(w->unk10 + (0x1fff - (Rand() & 0x3ffe)), w->unk14, 0, 0, 0);
         }
         if (!(Rand() & 1)) {
-            DecGroup35_Unk_ov000_02321f18(w->unk10 + (0x1fff - (Rand() & 0x3ffe)), w->unk14, 0, 0, 1);
+            DecGroup35_CreateFallingDebris(w->unk10 + (0x1fff - (Rand() & 0x3ffe)), w->unk14, 0, 0, 1);
         }
         w->unk54 |= 2;
         break;

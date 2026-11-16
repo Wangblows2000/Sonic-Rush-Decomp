@@ -31,8 +31,8 @@ extern UnkStruct_Map data_ov000_0236abd8;
 extern UnkStruct_StageObj *gPlayers[];
 
 void EnemyRoom_SetActive(s32 a);
-void StageEvent_Unk_ov000_023355e0(u16 x0, u16 y0, u16 x1, u16 y1);
-u8 Gimmick_Unk_ov000_02307e84(UnkStruct_0230963c *w);
+void StageEvent_SpawnInRect(u16 x0, u16 y0, u16 x1, u16 y1);
+u8 Gimmick_GetRoomIndex(UnkStruct_0230963c *w);
 void EnemyRoom_Register(s32 a, UnkStruct_0230963c *w, s32 b);
 void EnemyRoomHud_Create(void);
 void MapObj8C_State_Unk_ov000_023094f0(void);
@@ -56,8 +56,8 @@ void MapObj8C_Action_Unk_ov000_0230963c(UnkStruct_0230963c *w) {
         y0 = CLAMP(y - 0x300, 0, mh - 1);
         x1 = CLAMP(x + 0x300, 0, mw - 1);
         y1 = CLAMP(y + 0x300, 0, mh - 1);
-        StageEvent_Unk_ov000_023355e0(x0, y0, x1, y1);
-        w->unk214 = Gimmick_Unk_ov000_02307e84(w);
+        StageEvent_SpawnInRect(x0, y0, x1, y1);
+        w->unk214 = Gimmick_GetRoomIndex(w);
         EnemyRoom_Register(1, w, w->unk214);
     }
     w->unk20C |= 0x1000;

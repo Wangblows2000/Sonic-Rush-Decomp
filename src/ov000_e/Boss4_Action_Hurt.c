@@ -21,11 +21,11 @@ extern s32 data_ov000_02363538[];
 void Boss4_Unk_ov000_022db900(UnkStruct_022de018 *s, s32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
-void Boss4_SubState_Unk_ov000_022ddedc(void);
+void Boss4_SubState_HurtFlash(void);
 
 void Boss4_Action_Hurt(UnkStruct_022de018 *s) {
     gBossStatus.unk4 = 0x16;
-    s->unk220 = Boss4_SubState_Unk_ov000_022ddedc;
+    s->unk220 = Boss4_SubState_HurtFlash;
     s->unk224 = 0;
     Boss4_Unk_ov000_022db900(s, 0x20);
     s->unkBC4 = 0x180;

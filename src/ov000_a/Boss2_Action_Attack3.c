@@ -84,7 +84,7 @@ void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c)
 void Boss2_NodeCallback_Head(void);
 void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void Boss2_SetTargetAngle(UnkStruct_022d12fc *s, s32 a);
-void Boss2_State_Unk_ov000_022d10c8(UnkStruct_022d12fc *s);
+void Boss2_State_Attack3Start(UnkStruct_022d12fc *s);
 
 void Boss2_Action_Attack3(void) {
     UnkStruct_022d12fc *s = gBoss2;
@@ -108,7 +108,7 @@ void Boss2_Action_Attack3(void) {
     x->unk114 = 0x1000;
     y->unk114 = 0x1000;
     z->unk114 = 0x1000;
-    s->func = Boss2_State_Unk_ov000_022d10c8;
+    s->func = Boss2_State_Attack3Start;
     s->unk145C = s->unk1304;
     s->unk1460 = s->unk10;
     BossArena_ArcToCirclePos(0x1152f0, 0x6cd988, s->unk10 << 4, NULL, NULL, &ang);

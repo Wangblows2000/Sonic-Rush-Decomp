@@ -43,14 +43,14 @@ extern u8 data_ov000_02366528[], data_ov000_02369d8c[];
 
 void EnemyPawnGroup_Destructor(void);
 void MapObject_Destructor(void);
-void EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc768(void);
-void EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc6e8(void);
+void EnemyPawnGroup_OnHit_Box2_PushPlayer(void);
+void EnemyPawnGroup_OnHit_Box2_Bounce(void);
 void EnemyPawnGroup_OnDetect(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_022fecf4_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void EnemyPawnGroup_Action_Unk_ov000_022fe9b4(UnkStruct_022fecf4 *w);
 void EnemyPawnGroup_Action_Unk_ov000_022fec38(UnkStruct_022fecf4 *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fecf4 *w);
+void EnemyPawnGroup_Action_Walk(UnkStruct_022fecf4 *w);
 
 UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -141,7 +141,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         StageObj_AllocSpritePalette(w, 0, 0x28);
         ObjRect_SetAtkDefFlags(&w->base.coll2, 0x13, 8);
         w->base.coll2.unkA |= 0x800;
-        w->base.coll2.unk1C = EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc768;
+        w->base.coll2.unk1C = EnemyPawnGroup_OnHit_Box2_PushPlayer;
         break;
     case 13:
         StageObj_Load2dBAC(w, data_ov000_023664f4, 0xffff, data_ov000_02369d9c, data_ov000_02369ba0);
@@ -155,7 +155,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->base.unk1E5 = 2;
         w->base.unk1E5 -= w->base.unk1E0->unkB;
         ObjRect_SetAtkDefFlags(&w->base.coll2, 0, -16);
-        w->base.coll2.unk1C = EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc6e8;
+        w->base.coll2.unk1C = EnemyPawnGroup_OnHit_Box2_Bounce;
         w->base.coll2.unkA |= 0x800;
         break;
     case 15:
@@ -192,7 +192,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->base.unk58 |= 0x80;
         if (w->base.unk1E0->unk2 == 7 && (w->base.unk1E0->unk4 & 0x20))
             w->base.unk58 &= ~0x80;
-        EnemyPawnGroup_Action_Unk_ov000_022fe7e8(w);
+        EnemyPawnGroup_Action_Walk(w);
     }
     w->base.unk1DC = Sound_AllocHandle();
     return w;

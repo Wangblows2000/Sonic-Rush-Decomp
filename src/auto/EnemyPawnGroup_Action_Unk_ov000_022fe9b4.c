@@ -1,12 +1,12 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 Enemy_Unk_ov000_022faf48();
+s32 Enemy_DisableCollidersSetAnim();
 void EnemyPawnGroup_State_Unk_ov000_022fe84c();
 s32 EffShadow_Create();
 
 void EnemyPawnGroup_Action_Unk_ov000_022fe9b4(u8 *p0) {
-    Enemy_Unk_ov000_022faf48(p0, 0);
+    Enemy_DisableCollidersSetAnim(p0, 0);
     *(u32 *)((u8 *)p0 + 0x54) = (*(u32 *)((u8 *)p0 + 0x54) & ~1);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 0x10);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x80);

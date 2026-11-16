@@ -18,17 +18,17 @@ typedef struct {
 
 extern UnkTask_022dcec8 *gTaskCurrent;
 
-void VsMenu_Unk_ov001_022da70c(UnkWork_022dcec8 *w);
+void VsMenu_DrawDownloadPlayScreen(UnkWork_022dcec8 *w);
 void VsMenu_Unk_ov001_022da024(UnkWork_022dcec8 *w);
 void VsMenu_Unk_ov001_022d9cd4(UnkWork_022dcec8 *w, s32 a, s32 b);
 BOOL WirelessLobbyDownloadPlay_GetChildCount(void);
 void MsgBox_RequestClose(void);
 BOOL MsgBox_IsClosed(void);
-void VsMenu_Unk_ov001_022da41c(UnkWork_022dcec8 *w);
+void VsMenu_RestoreAfterMsgBox(UnkWork_022dcec8 *w);
 void VsMenu_Unk_ov001_022da33c(UnkWork_022dcec8 *w);
 void VsMenu_Unk_ov001_022da244(UnkWork_022dcec8 *w, s32 a);
 void VsMenu_Unk_ov001_022da1cc(UnkWork_022dcec8 *w, s32 a);
-void VsMenu_Unk_ov001_022d983c(UnkWork_022dcec8 *w, s32 a);
+void VsMenu_ClearNameSlot2(UnkWork_022dcec8 *w, s32 a);
 BOOL MsgBox_GetResult(void);
 void WirelessLobbyDownloadPlay_RequestStart(void);
 void VsMenu_Unk_ov001_022da0dc(UnkWork_022dcec8 *w, s32 a);
@@ -41,7 +41,7 @@ void VsMenu_State_Unk_ov001_022dcec8(void) {
     UnkWork_022dcec8 *w;
 
     w = gTaskCurrent->work;
-    VsMenu_Unk_ov001_022da70c(w);
+    VsMenu_DrawDownloadPlayScreen(w);
     if (w->timer2 >= 0x10) {
         VsMenu_Unk_ov001_022da024(w);
     }
@@ -55,14 +55,14 @@ void VsMenu_State_Unk_ov001_022dcec8(void) {
     if (MsgBox_IsClosed()) {
         w->timer = 0;
         w->timer2 = 0;
-        VsMenu_Unk_ov001_022da41c(w);
+        VsMenu_RestoreAfterMsgBox(w);
         if (w->unk1c == 1) {
             w->unk1c = 0;
             VsMenu_Unk_ov001_022da33c(w);
             VsMenu_Unk_ov001_022da244(w, 1);
             VsMenu_Unk_ov001_022da1cc(w, 1);
             w->unk48 = 1;
-            VsMenu_Unk_ov001_022d983c(w, 1);
+            VsMenu_ClearNameSlot2(w, 1);
             gTaskCurrent->func = VsMenu_State_Unk_ov001_022dd1ec;
             return;
         }

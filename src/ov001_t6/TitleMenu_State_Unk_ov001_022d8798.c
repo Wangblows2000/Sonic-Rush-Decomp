@@ -39,8 +39,8 @@ void TitleMenu_Unk_ov001_022d7ac4(s32 id, s32 x, s32 y);
 void TitleMenu_Unk_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t);
 BOOL MsgBox_IsClosed(void);
 BOOL MsgBox_GetResult(void);
-void TitleMenu_Unk_ov001_022d7360(void *sw);
-void TitleMenu_Unk_ov001_022d7368(void *sw);
+void TitleMenu_RestoreSubDisplayThunk(void *sw);
+void TitleMenu_ShowMsgBox0(void *sw);
 void TitleMenu_Unk_ov001_022d7968(s32 a, s32 b);
 void TitleMenu_Unk_ov001_022d78f4(s32 a, s32 b);
 void TitleMenu_Unk_ov001_022d7e60(void *p, void *sw);
@@ -91,7 +91,7 @@ void TitleMenu_State_Unk_ov001_022d8798(void) {
         if (!MsgBox_IsClosed()) {
             return;
         }
-        TitleMenu_Unk_ov001_022d7360(w->sw);
+        TitleMenu_RestoreSubDisplayThunk(w->sw);
         if (MsgBox_GetResult()) {
             w->timer = 0;
             w->unkc = 0;
@@ -104,7 +104,7 @@ void TitleMenu_State_Unk_ov001_022d8798(void) {
         si = &w->items[w->sel];
         if ((si->flags & 4) && w->unkc == 0) {
             w->unkc = 1;
-            TitleMenu_Unk_ov001_022d7368(w->sw);
+            TitleMenu_ShowMsgBox0(w->sw);
             return;
         }
         snd = FALSE;

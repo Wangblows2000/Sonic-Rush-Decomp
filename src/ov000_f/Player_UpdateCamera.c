@@ -42,7 +42,7 @@ void Camera_LockX(u8 idx);
 void Camera_UnlockX(u8 idx);
 void Camera_LockY(u8 idx);
 void Camera_UnlockY(u8 idx);
-void ZoneFx_Zone6_Unk_ov000_0233e434(s32 v, u8 idx);
+void ZoneFx_Zone6_SetLockedCameraX(s32 v, u8 idx);
 void ZoneFx_Zone6_ApplyCameraWave(s32 v, u8 idx);
 
 void Player_UpdateCamera(UnkStruct_02345aa8 *w) {
@@ -61,7 +61,7 @@ void Player_UpdateCamera(UnkStruct_02345aa8 *w) {
             t = w->unk3E8->x - ((w->unk3EC + 0x80) << 8);
             if (w->unk330 & 0x40) {
                 data_ov000_0236aadc[w->unk327].v = t;
-                ZoneFx_Zone6_Unk_ov000_0233e434(t, w->unk327);
+                ZoneFx_Zone6_SetLockedCameraX(t, w->unk327);
             } else {
                 if (gObjManagerFlags & 0x100) {
                     data_ov000_0236aadc[w->unk327].v = ObjShift_Set(data_ov000_0236aadc[w->unk327].v, t, 4, 0, 0x200);

@@ -39,21 +39,21 @@ s32 FX_DivS32(s32 n, s32 d);
 void ExtraBossPlayer_Action_Defeat(void);
 void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 void ExtraBoss_Unk_ov001_02304e80(void);
-void ExtraBoss_Unk_ov001_022f7224(s32 a);
+void ExtraBoss_InitCharacterSlot(s32 a);
 void ExtraBossObj_UpdateMotionAll(void);
 void ExtraBoss_Unk_ov001_02302658(void);
-void ExtraBoss_Unk_ov001_02304410(void);
+void ExtraBoss_UpdateSpawnWork(void);
 void ExtraBoss_Unk_ov001_023063a0(void);
 void ExtraBoss_Shutdown(void);
 void GameOverSeq_StartGameOver(void);
 void ExtraBossObj_DestroyPlayer(void);
 void ExtraBossObj_DestroyKind1(void);
 void ExtraBossObj_DestroyKind2And3(void);
-void ExtraBoss_Unk_ov001_02303c54(void);
+void ExtraBoss_ClearSpawnLists(void);
 void ExtraBoss_LoadPlayerModel(s32 idx);
 void ExtraBoss_ResetRound(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
-void ExtraBoss_Unk_ov001_022f9e58(s32 a, s32 b);
+void ExtraBoss_SetTimeAndRings(s32 a, s32 b);
 void DemoScript_StartAfterBoss(void);
 
 #define G gExtraBossWork
@@ -94,10 +94,10 @@ void ExtraBoss_State_Battle(void) {
         }
     }
     ExtraBoss_Unk_ov001_02304e80();
-    ExtraBoss_Unk_ov001_022f7224(G->unk4);
+    ExtraBoss_InitCharacterSlot(G->unk4);
     ExtraBossObj_UpdateMotionAll();
     ExtraBoss_Unk_ov001_02302658();
-    ExtraBoss_Unk_ov001_02304410();
+    ExtraBoss_UpdateSpawnWork();
     f = G->unk0;
     if (f & 0x20) {
         if (G->unk316 == 0)
@@ -113,7 +113,7 @@ void ExtraBoss_State_Battle(void) {
         ExtraBossObj_DestroyPlayer();
         ExtraBossObj_DestroyKind1();
         ExtraBossObj_DestroyKind2And3();
-        ExtraBoss_Unk_ov001_02303c54();
+        ExtraBoss_ClearSpawnLists();
         ExtraBoss_LoadPlayerModel(0);
         G->unk3C = 0;
         ExtraBoss_ResetRound();
@@ -130,7 +130,7 @@ void ExtraBoss_State_Battle(void) {
         t = G->unk44;
         if (f & 0x200)
             t = 0x8c9f;
-        ExtraBoss_Unk_ov001_022f9e58(t, G->unk4C);
+        ExtraBoss_SetTimeAndRings(t, G->unk4C);
         ExtraBoss_Shutdown();
         DemoScript_StartAfterBoss();
     }

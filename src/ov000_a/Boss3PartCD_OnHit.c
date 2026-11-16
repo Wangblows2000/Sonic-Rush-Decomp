@@ -65,7 +65,7 @@ extern UnkStruct_022d5d78_7 gBossStatus;
 extern UnkStruct_022d5d78_b *gBoss3;
 extern UnkStruct_022d5d78_p *gPlayers;
 
-void Boss3PartCC_State_Unk_ov000_022d836c(void);
+void Boss3PartCC_State_StartStagger(void);
 void Boss3_Unk_ov000_022daa94(UnkStruct_022d5d78_o *o);
 void Player_Action_AttackBounce(UnkStruct_022d5d78_p *p);
 void BossEffect_CreateClash(s32 a, s32 b, s32 c, s32 d);
@@ -79,7 +79,7 @@ void Boss3PartCD_OnHit(UnkStruct_022d5d78_h *a, UnkStruct_022d5d78_h *b) {
         return;
     if (p->unk328 == 0x30) {
         if (gBossStatus.unk4 == 0xe) {
-            gBoss3->unk214->unk68 = Boss3PartCC_State_Unk_ov000_022d836c;
+            gBoss3->unk214->unk68 = Boss3PartCC_State_StartStagger;
             p->unk62 = 4;
         } else if (gBossStatus.unk4 == 0x10) {
             p->unk62 = 4;

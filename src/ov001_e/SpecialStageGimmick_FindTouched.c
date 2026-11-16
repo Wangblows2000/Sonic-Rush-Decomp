@@ -31,7 +31,7 @@ typedef struct UnkStruct_02310174 {
 
 BOOL SpecialStageObj_IsInReach(void *a, UnkStruct_02310174_o *o);
 BOOL NNS_G3dWorldPosToScrPos(UnkStruct_02310174_v *v, s32 *x, s32 *y);
-BOOL SpecialStageGimmick_Unk_ov001_0230ae34(void *a, UnkStruct_02310174_p *p, UnkStruct_02310174_p *q);
+BOOL SpecialStageGimmick_TestTouchCircle(void *a, UnkStruct_02310174_p *p, UnkStruct_02310174_p *q);
 
 UnkStruct_02310174_o *SpecialStageGimmick_FindTouched(void *a, UnkStruct_02310174 *list, s32 x, s32 y) {
     UnkStruct_02310174_o *o;
@@ -47,7 +47,7 @@ UnkStruct_02310174_o *SpecialStageGimmick_FindTouched(void *a, UnkStruct_0231017
             p.y = sy << 12;
             q.x = x << 12;
             q.y = y << 12;
-            if (SpecialStageGimmick_Unk_ov001_0230ae34(o->unkC4, &p, &q))
+            if (SpecialStageGimmick_TestTouchCircle(o->unkC4, &p, &q))
                 return o;
         }
     }

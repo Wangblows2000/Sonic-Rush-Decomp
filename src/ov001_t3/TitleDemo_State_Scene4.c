@@ -24,14 +24,14 @@ void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
 void Task_DestroyAll(void);
 void TitleDemo_SkipToTitleScreen(void);
 void TitleDemo_Action_Scene5(s32 a);
-void TitleDemo_Unk_ov001_022d5a7c(UnkWork_022d5e78 *w, s32 scale, u16 angle);
-void TitleDemo_Unk_ov001_022d584c(UnkWork_022d5e78 *w);
+void TitleDemo_SetSubBgAffine(UnkWork_022d5e78 *w, s32 scale, u16 angle);
+void TitleDemo_PlaySeq3(UnkWork_022d5e78 *w);
 void TitleDemo_Unk_ov001_022d5b44(UnkWork_022d5e78 *w, s32 a);
 void TitleDemo_Unk_ov001_022d5b94(UnkWork_022d5e78 *w, s32 a);
 void TitleDemo_Unk_ov001_022d5a18(UnkWork_022d5e78 *w);
-void TitleDemo_Unk_ov001_022d583c(UnkWork_022d5e78 *w);
+void TitleDemo_PlaySeq4(UnkWork_022d5e78 *w);
 void TitleDemo_SetOrthoProjection(UnkWork_022d5e78 *w);
-void TitleDemo_Unk_ov001_022d5738(UnkWork_022d5e78 *w);
+void TitleDemo_SetupCamera(UnkWork_022d5e78 *w);
 void TitleDemo_Unk_ov001_022d592c(UnkWork_022d5e78 *w, s32 a, s32 b);
 void TitleDemo_Unk_ov001_022d58ac(UnkWork_022d5e78 *w, s32 a, s32 b);
 
@@ -48,9 +48,9 @@ void TitleDemo_State_Scene4(void) {
     t = w->timer;
     if (t >= 0) {
         v = TitleDemo_Interpolate(0x800, 0x1000, 0x20, t, 0x2000);
-        TitleDemo_Unk_ov001_022d5a7c(w, v, TitleDemo_Interpolate(0x28000, 0, 0x20, t, 0x2000));
+        TitleDemo_SetSubBgAffine(w, v, TitleDemo_Interpolate(0x28000, 0, 0x20, t, 0x2000));
         if (t == 0) {
-            TitleDemo_Unk_ov001_022d584c(w);
+            TitleDemo_PlaySeq3(w);
         }
     }
     if (w->timer >= 0) {
@@ -64,7 +64,7 @@ void TitleDemo_State_Scene4(void) {
     if (w->timer >= 0) {
         v = TitleDemo_Interpolate(0x80, 0x28, 0x20, w->timer, 0x2000);
         TitleDemo_SetOrthoProjection(w);
-        TitleDemo_Unk_ov001_022d5738(w);
+        TitleDemo_SetupCamera(w);
         TitleDemo_Unk_ov001_022d592c(w, v, -0x40);
         TitleDemo_Unk_ov001_022d58ac(w, -v, -0x40);
     }

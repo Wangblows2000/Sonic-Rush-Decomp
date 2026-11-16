@@ -52,7 +52,7 @@ void TimeSelectMenu_SetSprite7Anim1(UnkStruct_023629cc *w);
 void TimeSelectMenu_SetSprites8To11(UnkStruct_023629cc *w);
 void TimeSelectMenu_SetSprites12To15(UnkStruct_023629cc *w);
 void TimeSelectMenu_SetSprite16Anim4(UnkStruct_023629cc *w);
-void TimeSelectMenu_Unk_ov000_02360b64(UnkStruct_023629cc *w);
+void TimeSelectMenu_SetSprite17Anim3B(UnkStruct_023629cc *w);
 void TimeSelectMenu_SetSprite17Anim3(UnkStruct_023629cc *w);
 void TimeSelectMenu_SetSprite19Anim0(UnkStruct_023629cc *w);
 void TimeSelectMenu_LoadPlayerNames(UnkStruct_023629cc *w);
@@ -109,7 +109,7 @@ void TimeSelectMenu_Create(s32 a, s32 b) {
     TimeSelectMenu_SetSprites8To11(w);
     TimeSelectMenu_SetSprites12To15(w);
     TimeSelectMenu_SetSprite16Anim4(w);
-    TimeSelectMenu_Unk_ov000_02360b64(w);
+    TimeSelectMenu_SetSprite17Anim3B(w);
     TimeSelectMenu_SetSprite17Anim3(w);
     TimeSelectMenu_SetSprite19Anim0(w);
     TimeSelectMenu_LoadPlayerNames(w);

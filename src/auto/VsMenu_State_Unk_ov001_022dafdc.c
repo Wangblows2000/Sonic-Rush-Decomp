@@ -6,7 +6,7 @@
 extern u8 gTaskCurrent[];
 s32 VsMenu_Unk_ov001_022da59c();
 s32 MsgBox_IsClosed();
-s32 VsMenu_Unk_ov001_022da41c();
+s32 VsMenu_RestoreAfterMsgBox();
 s32 VsMenu_Unk_ov001_022da784();
 
 void VsMenu_State_Unk_ov001_022dafdc(void) {
@@ -18,7 +18,7 @@ void VsMenu_State_Unk_ov001_022dafdc(void) {
     if (t2 != 0) {
         *(u32 *)t0 = 0;
         *(u32 *)((u8 *)t0 + 0x4) = 0;
-        VsMenu_Unk_ov001_022da41c(t0);
+        VsMenu_RestoreAfterMsgBox(t0);
         VsMenu_Unk_ov001_022da784(t0);
     }
 }

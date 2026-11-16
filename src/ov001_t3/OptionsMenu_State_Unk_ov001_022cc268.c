@@ -41,7 +41,7 @@ extern UnkTouch_022cc268 gTouchState;
 void OptionsMenu_UpdateAnims(UnkWork_022cc268 *w);
 void OptionsMenu_DrawItems(UnkWork_022cc268 *w);
 void SysSound_PlaySE(s32 a);
-BOOL OptionsMenu_Unk_ov001_022c8ba8(u16 x, u16 y);
+BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
 void OptionsMenu_State_Unk_ov001_022cc210(void);
 
 #pragma thumb on
@@ -74,7 +74,7 @@ void OptionsMenu_State_Unk_ov001_022cc268(void) {
         } else if (gTouchState.flags & 0x40) {
             x = gTouchState.x;
             y = gTouchState.y;
-            if (x < 0x100 && y < 0xc0 && OptionsMenu_Unk_ov001_022c8ba8(x, y) && !done) {
+            if (x < 0x100 && y < 0xc0 && OptionsMenu_IsBackButtonTouched(x, y) && !done) {
                 w->unk1c = 0;
                 SysSound_PlaySE(1);
             }

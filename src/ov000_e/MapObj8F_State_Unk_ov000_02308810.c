@@ -10,13 +10,13 @@ typedef struct {
     s16 unk21C;
 } UnkStruct_02308810_T;
 
-void *Gimmick_Unk_ov000_02307e84(void);
+void *Gimmick_GetRoomIndex(void);
 UnkStruct_02308810_T *EnemyRoom_Get(s32 a, void *b);
 BOOL Gimmick_Unk_ov000_02307dfc(void *a, s32 b);
 void MapObj8F_Action_Unk_ov000_02308800(UnkStruct_StageObj *s);
 
 void MapObj8F_State_Unk_ov000_02308810(UnkStruct_StageObj *s) {
-    UnkStruct_02308810_T *t = EnemyRoom_Get(1, Gimmick_Unk_ov000_02307e84());
+    UnkStruct_02308810_T *t = EnemyRoom_Get(1, Gimmick_GetRoomIndex());
 
     if (Gimmick_Unk_ov000_02307dfc(t, 0)) {
         s->unk1F4 &= ~0x10;

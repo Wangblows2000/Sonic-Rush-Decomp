@@ -60,7 +60,7 @@ extern s32 data_ov000_023658d0[][3];
 extern s32 data_ov000_023658d4[][3];
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void Boss6_Unk_ov000_022e237c(s32 a, s32 b);
+void Boss6_SetDefeatCameraShot(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void StageObj_ClearPause(void);
 UnkStruct_Fx *BossEffect_CreateBlast(s32 a, s32 x, s32 y, s32 z);
@@ -113,7 +113,7 @@ void Boss6_State_Defeat(UnkStruct_Boss *w) {
         NaviMsg_ShowMessage(0x13, 0xf0);
     } else {
         w->unkF50 = 0x1e;
-        Boss6_Unk_ov000_022e237c(w->unk111C, w->unk1118);
+        Boss6_SetDefeatCameraShot(w->unk111C, w->unk1118);
         gDisplayMain.unk48 = 0x10;
         Sound_PlaySeqArc(0, 0, 0x7c);
     }

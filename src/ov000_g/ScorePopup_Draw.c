@@ -34,7 +34,7 @@ extern UnkStruct_0232b598_Task *gTaskCurrent;
 extern UnkStruct_0232b598_Sys gGameState;
 
 void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
-s32 Hud_Unk_ov000_02337650(s32 a);
+s32 Hud_GetDigitGlyphVramB(s32 a);
 
 void ScorePopup_Draw(void) {
     s16 i;
@@ -59,8 +59,8 @@ void ScorePopup_Draw(void) {
                 w->unk44 = w->unk8;
                 w->unk46 = w->unk8;
                 if (gGameState.unk20 & 2) {
-                    w->spr0.unk34 = Hud_Unk_ov000_02337650(0);
-                    w->spr1.unk34 = Hud_Unk_ov000_02337650(1);
+                    w->spr0.unk34 = Hud_GetDigitGlyphVramB(0);
+                    w->spr1.unk34 = Hud_GetDigitGlyphVramB(1);
                 }
             }
             d = (w->unk140 & (0xf << sh)) >> sh;

@@ -48,13 +48,13 @@ BOOL KeyframeAnim_IsFinished(UnkAnim_022eb5d0 *a);
 void TimeAttackMenu_Unk_ov001_022ea360(UnkWork_022eb5d0 *w, s32 i, s32 v);
 void TimeAttackMenu_Unk_ov001_022e9fe4(UnkWork_022eb5d0 *w, s32 i);
 void TimeAttackMenu_Unk_ov001_022e9fa8(UnkWork_022eb5d0 *w, s32 i);
-void TimeAttackMenu_Unk_ov001_022ea2f0(UnkWork_022eb5d0 *w);
+void TimeAttackMenu_FillHdmaBuffer(UnkWork_022eb5d0 *w);
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
 void AnimatorSprite_Draw(void *p);
 void AnimatorSprite_DrawRotScale(void *p, s32 sx, s32 sy, s32 d);
-BOOL TimeAttackMenu_Unk_ov001_022e9ebc(UnkWork_022eb5d0 *w);
-BOOL TimeAttackMenu_Unk_ov001_022e9e30(UnkWork_022eb5d0 *w);
-BOOL TimeAttackMenu_Unk_ov001_022e9df0(UnkWork_022eb5d0 *w);
+BOOL TimeAttackMenu_IsConfirmPressed(UnkWork_022eb5d0 *w);
+BOOL TimeAttackMenu_IsLeftPressed(UnkWork_022eb5d0 *w);
+BOOL TimeAttackMenu_IsRightPressed(UnkWork_022eb5d0 *w);
 void TimeAttackMenu_Unk_ov001_022ebc3c(s32 a);
 void TimeAttackMenu_Unk_ov001_022eba70(s32 a);
 
@@ -91,7 +91,7 @@ void TimeAttackMenu_State_Enter(void) {
         it++;
         an++;
     }
-    TimeAttackMenu_Unk_ov001_022ea2f0(w);
+    TimeAttackMenu_FillHdmaBuffer(w);
     a = &w->anims[6];
     if (w->unkd0 >= 14) {
         w->sprites[10].x = a->x;

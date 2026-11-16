@@ -14,7 +14,7 @@ struct UnkStruct_0233d65c {
 
 extern UnkStruct_0233d65c *gZoneFxWork;
 
-void ZoneFx_Zone2_Unk_ov000_0233d4bc(UnkStruct_0233d65c *w);
+void ZoneFx_Zone2_UpdateVAlarmsByCamera(UnkStruct_0233d65c *w);
 void ZoneFx_Zone2_UpdateScreenStates(UnkStruct_0233d65c *w);
 void ZoneFx_Zone2_QueueNormalPalettes(UnkStruct_0233d65c *w, s32 i);
 void ZoneFx_Zone2_QueueTintedPalettes(UnkStruct_0233d65c *w, s32 i);
@@ -32,7 +32,7 @@ void ZoneFx_Zone2_TaskMain(void) {
         return;
     if (w->flags & 0x80000000)
         return;
-    ZoneFx_Zone2_Unk_ov000_0233d4bc(w);
+    ZoneFx_Zone2_UpdateVAlarmsByCamera(w);
     if (w->flags & 0x1000)
         return;
     w->prev[0] = w->state[0];

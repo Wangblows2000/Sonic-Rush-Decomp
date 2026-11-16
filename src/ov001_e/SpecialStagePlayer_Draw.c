@@ -39,7 +39,7 @@ extern UnkStruct_0231316c_g *gSpecialStagePlayerResources;
 
 void NNS_G3dGeBufferOP_N(s32 a, void *b, s32 c);
 void Model_Draw(void *p);
-void SpecialStagePlayer_Unk_ov001_02311efc(UnkStruct_0231316c *p);
+void SpecialStagePlayer_DrawModels(UnkStruct_0231316c *p);
 
 static inline void VecSet(UnkStruct_0231316c_v *d, s32 x, s32 y, s32 z) {
     d->x = x;
@@ -60,5 +60,5 @@ void SpecialStagePlayer_Draw(UnkStruct_0231316c *p) {
     NNS_G3dGeBufferOP_N(0x12, &v, 1);
     if (p->unk1F0 == 0 && p->unk1F4 <= 0)
         return;
-    SpecialStagePlayer_Unk_ov001_02311efc(p);
+    SpecialStagePlayer_DrawModels(p);
 }

@@ -86,10 +86,10 @@ extern UnkStruct_022d9ab0_p *gPlayers;
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void StageObj_SetPause(void);
 void Player_Action_Blank(UnkStruct_022d9ab0_p *p);
-u32 RingManager_Unk_ov000_0235b0a8(void);
-void RingManager_Unk_ov000_0235b08c(u32 a);
+u32 RingManager_GetFlags(void);
+void RingManager_SetFlags(u32 a);
 void NNS_SndPlayerStopSeqAll(s32 a);
-void Boss3_State_Unk_ov000_022d9aa0(UnkStruct_022d9ab0 *s);
+void Boss3_State_StartDefeat(UnkStruct_022d9ab0 *s);
 
 void Boss3_Action_Defeat(UnkStruct_022d9ab0 *s) {
     UnkStruct_022d9ab0_brl *a = s->unk214;
@@ -122,7 +122,7 @@ void Boss3_Action_Defeat(UnkStruct_022d9ab0 *s) {
     gPlayers->unk424 = 0;
     gPlayers->unk422 = gPlayers->unk424;
     gPlayers->unk420 = gPlayers->unk422;
-    RingManager_Unk_ov000_0235b08c(RingManager_Unk_ov000_0235b0a8() | 1);
+    RingManager_SetFlags(RingManager_GetFlags() | 1);
     NNS_SndPlayerStopSeqAll(0);
-    s->func = Boss3_State_Unk_ov000_022d9aa0;
+    s->func = Boss3_State_StartDefeat;
 }

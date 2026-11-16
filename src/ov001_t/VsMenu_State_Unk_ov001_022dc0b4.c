@@ -25,7 +25,7 @@ extern UnkTask_022dc0b4 *gTaskCurrent;
 void KeyframeAnim_Update(UnkAnim_022dc0b4 *a);
 BOOL KeyframeAnim_IsFinished(UnkAnim_022dc0b4 *a);
 void WirelessLobbyParent_Unk_020510bc(void);
-void VsMenu_State_Unk_ov001_022dc08c(void);
+void VsMenu_State_WaitLobbyParentGone(void);
 void VsMenu_Unk_ov001_022d9e50(UnkWork_022dc0b4 *w, s16 x, s16 y);
 void VsMenu_Unk_ov001_022d9e2c(UnkWork_022dc0b4 *w, s16 x, s16 y);
 void VsMenu_Unk_ov001_022d9d98(UnkWork_022dc0b4 *w, s32 i, s16 x, s16 y);
@@ -67,7 +67,7 @@ void VsMenu_State_Unk_ov001_022dc0b4(void) {
         w->step = 0;
         w->unk4 = 0;
         WirelessLobbyParent_Unk_020510bc();
-        gTaskCurrent->func = VsMenu_State_Unk_ov001_022dc08c;
+        gTaskCurrent->func = VsMenu_State_WaitLobbyParentGone;
     }
 }
 #pragma thumb reset

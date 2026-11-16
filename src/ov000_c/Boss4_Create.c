@@ -48,7 +48,7 @@ extern u8 data_ov000_02365778[], data_ov000_0236577c[];
 extern u8 data_ov000_02365780[], data_ov000_02365794[], data_ov000_023657a8[], data_ov000_023657c4[];
 
 void Boss4_Destructor(void);
-void Boss4_Draw_Unk_ov000_022dec18(void);
+void Boss4_Draw_Body(void);
 void Boss4_State_WaitForStart(void);
 void Boss4_NodeCallback_Rods(void);
 void Boss4_NodeCallback_ArmGun(void);
@@ -91,7 +91,7 @@ UnkStruct_022df55c *Boss4_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unkBE0 = 0;
     w->unkBE8 = data_ov000_02363580[gBossStatus.unk8 - 1];
     MapObject_Init(w, (s32)p, b, c);
-    w->base.unk70 = Boss4_Draw_Unk_ov000_022dec18;
+    w->base.unk70 = Boss4_Draw_Body;
     w->base.unk68 = Boss4_State_WaitForStart;
     w->base.unk78 = 0;
     w->base.unk54 |= 0x12;

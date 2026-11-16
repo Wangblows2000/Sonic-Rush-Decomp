@@ -5,7 +5,7 @@ extern u8 *gSpecialStageWork;
 BOOL SpecialStage_Unk_ov001_02309894(void);
 void PauseMenu_Create(s32 a);
 void SpecialStageData_Update(void);
-void SpecialStage_Unk_ov001_023147d8(void);
+void SpecialStage_PlayUpdateDummy(void);
 void SpecialStagePlayer_Update(void);
 void SpecialStageCamera_Update(void);
 void SpecialStageMap_Update(void);
@@ -24,7 +24,7 @@ void SpecialStage_State_PlayUpdate(void) {
         return;
     }
     SpecialStageData_Update();
-    SpecialStage_Unk_ov001_023147d8();
+    SpecialStage_PlayUpdateDummy();
     if (*(s32 *)(g + 0x18) != 0) {
         SpecialStagePlayer_Update();
     }

@@ -2,7 +2,7 @@
 
 extern void *data_ov001_0231f068;
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
-void ExtraBoss_Unk_ov001_022f3c30(void *p);
+void ExtraBoss_StopAndFaceCenter2(void *p);
 void ExtraBossObj_State_Unk_ov001_022f52e0(void);
 
 void ExtraBoss_Unk_ov001_022f5384(u8 *p) {
@@ -12,5 +12,5 @@ void ExtraBoss_Unk_ov001_022f5384(u8 *p) {
     *(s32 *)(q + 0x114) = 0x1000;
     *(s32 *)(p + 0x1cc) = 4;
     *(void (**)(void))(p + 0x74) = ExtraBossObj_State_Unk_ov001_022f52e0;
-    ExtraBoss_Unk_ov001_022f3c30(p);
+    ExtraBoss_StopAndFaceCenter2(p);
 }

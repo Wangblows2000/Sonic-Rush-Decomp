@@ -38,12 +38,12 @@ void TimeAttackMenu_Unk_ov001_022ea734(UnkWork_022eba70 *w);
 void TimeAttackMenu_Unk_ov001_022ea6e4(UnkWork_022eba70 *w);
 void TimeAttackMenu_Unk_ov001_022ea7c4(UnkWork_022eba70 *w);
 void TimeAttackMenu_Unk_ov001_022ea644(UnkWork_022eba70 *w);
-void TimeAttackMenu_Unk_ov001_022e9708(UnkWork_022eba70 *w, s32 a, s32 *x, s32 *y);
+void TimeAttackMenu_IndexToGrid(UnkWork_022eba70 *w, s32 a, s32 *x, s32 *y);
 void TimeAttackMenu_Unk_ov001_022ea5a8(UnkWork_022eba70 *w, s32 x);
 void TimeAttackMenu_Unk_ov001_022ea504(UnkWork_022eba70 *w, s32 x, s32 y);
 void TimeAttackMenu_Unk_ov001_022e9c24(s32 x, s32 y, UnkItem_022eba70 *items);
-void TimeAttackMenu_Unk_ov001_022ea2b0(UnkWork_022eba70 *w);
-void TimeAttackMenu_Unk_ov001_022ea2f0(UnkWork_022eba70 *w);
+void TimeAttackMenu_StartBg1HOfsHdma(UnkWork_022eba70 *w);
+void TimeAttackMenu_FillHdmaBuffer(UnkWork_022eba70 *w);
 void TimeAttackMenu_Unk_ov001_022eb294(void);
 void TimeAttackMenu_State_Unk_ov001_022eae98(void);
 
@@ -104,7 +104,7 @@ void TimeAttackMenu_Unk_ov001_022eba70(UnkTask_022eba70 *t) {
         TimeAttackMenu_Unk_ov001_022ea7c4(w);
         TimeAttackMenu_Unk_ov001_022ea644(w);
     }
-    TimeAttackMenu_Unk_ov001_022e9708(w, w->unkd4, &x, &y);
+    TimeAttackMenu_IndexToGrid(w, w->unkd4, &x, &y);
     TimeAttackMenu_Unk_ov001_022ea5a8(w, x);
     TimeAttackMenu_Unk_ov001_022ea504(w, x, y);
     TimeAttackMenu_Unk_ov001_022e9c24(x, y, w->items);
@@ -112,8 +112,8 @@ void TimeAttackMenu_Unk_ov001_022eba70(UnkTask_022eba70 *t) {
         w->items[i].a = 0x100;
         w->items[i].b = 0x100;
     }
-    TimeAttackMenu_Unk_ov001_022ea2b0(w);
-    TimeAttackMenu_Unk_ov001_022ea2f0(w);
+    TimeAttackMenu_StartBg1HOfsHdma(w);
+    TimeAttackMenu_FillHdmaBuffer(w);
     t->func = TimeAttackMenu_State_Unk_ov001_022eae98;
 }
 #pragma thumb reset

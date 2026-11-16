@@ -88,7 +88,7 @@ typedef struct UnkStruct_022f0840_p {
 } UnkStruct_022f0840_p;
 
 void ExtraBossObj_State_Unk_ov001_022f06c4(void);
-void ExtraBoss_Unk_ov001_023057b4(s32 a, s32 b, s32 c, s32 d, s32 e);
+void ExtraBoss_SetCameraParams(s32 a, s32 b, s32 c, s32 d, s32 e);
 
 void ExtraBossObj_State_Unk_ov001_022f0840(UnkStruct_022f0840_p *p) {
     UnkStruct_022f0840_o *a;
@@ -110,7 +110,7 @@ void ExtraBossObj_State_Unk_ov001_022f0840(UnkStruct_022f0840_p *p) {
         Model_SetAnimation(b, 0, data_ov001_0231f068, data_ov001_02316840[0x4a], 0);
         Model_SetAnimation(b, 4, data_ov001_0231f074, data_ov001_02316840[0x4b], 0);
         p->unk1CC = 0;
-        ExtraBoss_Unk_ov001_023057b4(0, 0, 0, 0, 0x2000);
+        ExtraBoss_SetCameraParams(0, 0, 0, 0, 0x2000);
         p->unkB8 |= 0x200;
     }
 }

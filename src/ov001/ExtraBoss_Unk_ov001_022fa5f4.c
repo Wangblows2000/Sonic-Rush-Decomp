@@ -1,13 +1,13 @@
 #include <nitro/types.h>
 
 u8 *ExtraBoss_GetWork(void);
-u8 *ExtraBossPlayer_Unk_ov001_022fd428(s32 a, s32 b, s32 c, s32 d, s32 e);
+u8 *ExtraBossPlayer_CreateFxObj(s32 a, s32 b, s32 c, s32 d, s32 e);
 s32 ExtraBoss_GetPlayer(void);
 void ExtraBossObj_State_Unk_ov001_022fa5c8(void);
 
 void ExtraBoss_Unk_ov001_022fa5f4(s32 a, s32 b, s32 c) {
     s32 v = *(s32 *)(ExtraBoss_GetWork() + 0x31c);
-    u8 *t = ExtraBossPlayer_Unk_ov001_022fd428(0x15, a, v, b, c);
+    u8 *t = ExtraBossPlayer_CreateFxObj(0x15, a, v, b, c);
     if (t == NULL) {
         return;
     }

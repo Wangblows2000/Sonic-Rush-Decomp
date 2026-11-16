@@ -31,10 +31,10 @@ void ZoneActSelect_Unk_ov001_022e08e0(UnkWork_022e114c *w);
 void ZoneActSelect_Unk_ov001_022e09d0(UnkWork_022e114c *w);
 void ZoneActSelect_Unk_ov001_022e0ad0(UnkWork_022e114c *w);
 void ZoneActSelect_Unk_ov001_022e0c5c(UnkWork_022e114c *w);
-void ZoneActSelect_Unk_ov001_022e0dfc(UnkWork_022e114c *w);
-void ZoneActSelect_Unk_ov001_022e0d30(UnkWork_022e114c *w);
+void ZoneActSelect_UpdateTabOffsets(UnkWork_022e114c *w);
+void ZoneActSelect_DrawZoneTabs(UnkWork_022e114c *w);
 void ZoneActSelect_Unk_ov001_022e0884(UnkWork_022e114c *w);
-void ZoneActSelect_Unk_ov001_022e0858(UnkWork_022e114c *w, s32 a);
+void ZoneActSelect_LoadZonePalette(UnkWork_022e114c *w, s32 a);
 void NaviM_Unk_02064674(void);
 void NaviM_Unk_02064788(void);
 void ZoneActSelect_State_Select(void);
@@ -76,10 +76,10 @@ void ZoneActSelect_State_FadeOut(void) {
         ZoneActSelect_Unk_ov001_022e09d0(w);
         ZoneActSelect_Unk_ov001_022e0ad0(w);
         ZoneActSelect_Unk_ov001_022e0c5c(w);
-        ZoneActSelect_Unk_ov001_022e0dfc(w);
-        ZoneActSelect_Unk_ov001_022e0d30(w);
+        ZoneActSelect_UpdateTabOffsets(w);
+        ZoneActSelect_DrawZoneTabs(w);
         ZoneActSelect_Unk_ov001_022e0884(w);
-        ZoneActSelect_Unk_ov001_022e0858(w, data_ov001_0231c3ec);
+        ZoneActSelect_LoadZonePalette(w, data_ov001_0231c3ec);
     }
     if (w->timer >= 0x1e) {
         w->timer = 0;

@@ -19,7 +19,7 @@ typedef struct {
 
 void Boss6_Unk_ov000_022e03f4(UnkStruct_Boss *w);
 void Boss6_Unk_ov000_022e035c(UnkStruct_Boss *w);
-void Boss6_Unk_ov000_022df9d4(s32 a);
+void Boss6_UpdateFlashPalettes(s32 a);
 void Boss6_SelectNextAttack(s32 a);
 
 void Boss6_State_Unk_ov000_022e47b8(UnkStruct_Boss *w) {

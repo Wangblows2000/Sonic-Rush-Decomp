@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-int Records_Unk_ov001_022ecfb0();
+int Records_DrawTwoDigits();
 
 #pragma thumb on
 
@@ -38,9 +38,9 @@ void Records_Unk_ov001_022ed08c(int param_1)
     do {
       iVar1 = iVar3 - *(int *)(param_1 + 0x30);
       if ((0x28 < iVar1) && (iVar1 < 0x78)) {
-        Records_Unk_ov001_022ecfb0(param_1,0x68,iVar1,*(undefined1 *)(iVar2 + 0x3c),2);
-        Records_Unk_ov001_022ecfb0(param_1,0x90,iVar1,*(undefined1 *)(iVar2 + 0x3d),2);
-        Records_Unk_ov001_022ecfb0(param_1,0xb8,iVar1,*(undefined1 *)(iVar2 + 0x3e),2);
+        Records_DrawTwoDigits(param_1,0x68,iVar1,*(undefined1 *)(iVar2 + 0x3c),2);
+        Records_DrawTwoDigits(param_1,0x90,iVar1,*(undefined1 *)(iVar2 + 0x3d),2);
+        Records_DrawTwoDigits(param_1,0xb8,iVar1,*(undefined1 *)(iVar2 + 0x3e),2);
       }
       iVar3 = iVar3 + 0x10;
       iVar2 = iVar2 + 4;

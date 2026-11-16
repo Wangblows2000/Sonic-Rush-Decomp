@@ -9,7 +9,7 @@ s32 ZoneMap_Unk_ov001_022e2ee8();
 s32 ZoneMap_Unk_ov001_022e3180();
 s32 ZoneMap_Unk_ov001_022e3840();
 s32 ZoneMap_Unk_ov001_022e3844();
-void ZoneMap_State_Unk_ov001_022e6f3c();
+void ZoneMap_State_FadeOutExit();
 
 void ZoneMap_Unk_ov001_022e5d08(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
@@ -27,7 +27,7 @@ void ZoneMap_Unk_ov001_022e5d08(void) {
     }
     ZoneMap_Unk_ov001_022e3840((*(u32 *)(t0 + 0xa4) + 0x1994), 0x1000);
     ZoneMap_Unk_ov001_022e3844((*(u32 *)(t0 + 0xa4) + 0x1994), 0);
-    *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ZoneMap_State_Unk_ov001_022e6f3c;
+    *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ZoneMap_State_FadeOutExit;
 }
 
 #pragma thumb reset

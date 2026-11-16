@@ -32,7 +32,7 @@ typedef struct {
 extern UnkStruct_Plr gCamera[];
 extern UnkStruct_StageObj *gPlayers[];
 
-void *Gimmick_Unk_ov000_02307e84(void);
+void *Gimmick_GetRoomIndex(void);
 void *EnemyRoom_Get(s32 a, void *b);
 BOOL Gimmick_Unk_ov000_02307dfc(void *a, s32 b);
 s32 Stage_GetSplitLineY(s32 x);
@@ -48,7 +48,7 @@ void MapObj8F_State_Unk_ov000_02307e9c(UnkStruct_02307e9c *s) {
     u8 i;
     s32 x;
 
-    o = EnemyRoom_Get(1, Gimmick_Unk_ov000_02307e84());
+    o = EnemyRoom_Get(1, Gimmick_GetRoomIndex());
     if (o == NULL) {
         s->base.unk54 |= 4;
         return;

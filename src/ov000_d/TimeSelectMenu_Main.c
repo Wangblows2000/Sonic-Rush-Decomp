@@ -26,7 +26,7 @@ void TimeSelectMenu_DrawSpriteScaled(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale
 void TimeSelectMenu_SetupOrthoCamera(UnkStruct_MenuO *w);
 void TimeSelectMenu_DrawModelB(UnkStruct_MenuO *w, s32 x, s32 y, BOOL flip);
 void TimeSelectMenu_DrawModelA(UnkStruct_MenuO *w, s32 x, s32 y, BOOL flip);
-void TimeSelectMenu_Unk_ov000_02360264(UnkStruct_MenuO *w);
+void TimeSelectMenu_DrawNop(UnkStruct_MenuO *w);
 void TimeSelectMenu_State_Select(void);
 void TimeSelectMenu_State_FollowChooser(void);
 
@@ -115,7 +115,7 @@ void TimeSelectMenu_Main(void) {
         p = &w->pos[7];
         TimeSelectMenu_DrawModelB(w, p->x, p->y, FALSE);
     }
-    TimeSelectMenu_Unk_ov000_02360264(w);
+    TimeSelectMenu_DrawNop(w);
     w->unk0++;
     if (done) {
         WirelessSession_GetSendBuffer()->unk4 = 0;

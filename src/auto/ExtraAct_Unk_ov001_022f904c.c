@@ -3,7 +3,7 @@
 
 extern u8 data_ov001_0231f084[];
 extern u8 gTaskCurrent[];
-void ExtraAct_State_Unk_ov001_022f8f54();
+void ExtraAct_State_DrawModel();
 void ExtraAct_Unk_ov001_022f8f70();
 s32 Sound_PlaySeqArc();
 
@@ -13,7 +13,7 @@ s32 ExtraAct_Unk_ov001_022f904c(void) {
         *(u32 *)((u8 *)(t0 + 0xc90) + 0x114) = 0;
         *(u32 *)*(u32 *)((u8 *)(t0 + 0xc90) + 0xe8) = (*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)(t0 + 0xc90) + 0xe4) + 0x8) + 0x4) << 0xc);
         *(u32 *)*(u32 *)((u8 *)(t0 + 0xc90) + 0xe4) = *(u32 *)*(u32 *)((u8 *)(t0 + 0xc90) + 0xe8);
-        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ExtraAct_State_Unk_ov001_022f8f54;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ExtraAct_State_DrawModel;
         *(u32 *)((u8 *)*(u32 *)data_ov001_0231f084 + 0xe38) = (*(u32 *)((u8 *)*(u32 *)data_ov001_0231f084 + 0xe38) & ~0x10);
         *(u32 *)((u8 *)*(u32 *)data_ov001_0231f084 + 0xe38) = (*(u32 *)((u8 *)*(u32 *)data_ov001_0231f084 + 0xe38) | 0x20);
     }

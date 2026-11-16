@@ -8,12 +8,12 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-void ZoneMap_Unk_ov001_022e8328(void);
+void ZoneMap_StopHdma(void);
 
 #pragma thumb on
 void ZoneMap_Unk_ov001_022e5620(u8 *p) {
     u8 *blk;
-    ZoneMap_Unk_ov001_022e8328();
+    ZoneMap_StopHdma();
     blk = *(u8 **)(p + 0x50);
     if (blk != NULL) {
         if ((u8 *)OS_GetArenaLo(0) != blk) {

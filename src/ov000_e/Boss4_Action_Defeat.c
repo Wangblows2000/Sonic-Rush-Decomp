@@ -54,7 +54,7 @@ extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Player *gPlayers;
 
-void Boss4_State_Unk_ov000_022dd5d8(UnkStruct_022dd748 *s);
+void Boss4_State_DefeatCamera1(UnkStruct_022dd748 *s);
 void ScreenShake_Start(s32 a);
 void NNS_SndPlayerStopSeqAll(s32 a);
 void Boss4_Unk_ov000_022dcc10(UnkStruct_022dd748 *s);
@@ -62,8 +62,8 @@ void Boss4_Unk_ov000_022dbc4c(s32 a);
 void Boss4_Unk_ov000_022dbb7c(s32 a);
 void Boss4_Unk_ov000_022dba50(s32 a);
 void Boss4_Unk_ov000_022dbab4(s32 a);
-u32 RingManager_Unk_ov000_0235b0a8(void);
-void RingManager_Unk_ov000_0235b08c(u32 a);
+u32 RingManager_GetFlags(void);
+void RingManager_SetFlags(u32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss_DrawExcBackground(s32 a);
 void Player_Action_Blank(UnkStruct_Player *p);
@@ -75,7 +75,7 @@ void Boss4_Action_Defeat(UnkStruct_022dd748 *s) {
     s32 i;
 
     gBossStatus.unk4 = 0x1a;
-    s->func = Boss4_State_Unk_ov000_022dd5d8;
+    s->func = Boss4_State_DefeatCamera1;
     *(s32 *)((u8 *)s + 0x220) = 0;
     *(s32 *)((u8 *)s + 0x224) = 0;
     gGameState.unk18 &= ~1;
@@ -88,7 +88,7 @@ void Boss4_Action_Defeat(UnkStruct_022dd748 *s) {
     Boss4_Unk_ov000_022dbb7c(0);
     Boss4_Unk_ov000_022dba50(0);
     Boss4_Unk_ov000_022dbab4(0);
-    RingManager_Unk_ov000_0235b08c(RingManager_Unk_ov000_0235b0a8() | 1);
+    RingManager_SetFlags(RingManager_GetFlags() | 1);
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
     Boss_DrawExcBackground(6);

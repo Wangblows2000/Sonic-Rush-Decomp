@@ -3,7 +3,7 @@
 void TitleScreen_ReleaseSound(void *p);
 void Touch_Disable(void);
 void TitleScreen_ReleaseSprites(void *p);
-void TitleScreen_Unk_ov001_022d4d2c(void *p);
+void TitleScreen_Dummy(void *p);
 void TitleScreen_ReleaseAssets(void *p);
 void TitleScreen_ResetDisplay(void);
 
@@ -13,7 +13,7 @@ void TitleScreen_Destructor(u8 *p) {
     TitleScreen_ReleaseSound(q);
     Touch_Disable();
     TitleScreen_ReleaseSprites(q);
-    TitleScreen_Unk_ov001_022d4d2c(q);
+    TitleScreen_Dummy(q);
     TitleScreen_ReleaseAssets(q);
     TitleScreen_ResetDisplay();
 }

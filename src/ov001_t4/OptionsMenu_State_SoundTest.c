@@ -66,7 +66,7 @@ void OptionsMenu_UpdateAnims(UnkWork_022cd05c *w);
 void SoundTest_UpdateLevelMeter(UnkSub_022cd05c *s);
 void OptionsMenu_DrawItems(UnkWork_022cd05c *w);
 void OptionsMenu_Unk_ov001_022cdd28(void);
-BOOL OptionsMenu_Unk_ov001_022c8ba8(u16 x, u16 y);
+BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
 void SoundTest_ReleaseTrack(UnkSub_022cd05c *s);
 void SysSound_Init(void);
 void SysSound_PlayBGM(s32 a);
@@ -128,7 +128,7 @@ void OptionsMenu_State_SoundTest(void) {
         x = gTouchState.x;
         y = gTouchState.y;
         if (x < 0x100 && y < 0xc0) {
-            if (OptionsMenu_Unk_ov001_022c8ba8(x, y)) {
+            if (OptionsMenu_IsBackButtonTouched(x, y)) {
                 SoundTest_ReleaseTrack(sub);
                 w->unk1c = 0;
                 SysSound_Init();

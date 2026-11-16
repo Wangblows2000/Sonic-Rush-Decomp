@@ -11,8 +11,8 @@ extern void ZoneMap_Unk_ov001_022e2f0c(void);
 extern void ZoneMap_Unk_ov001_022e3840(void);
 extern void ZoneMap_Unk_ov001_022e3844(void);
 extern void ZoneMap_CalcClampedScroll(void);
-extern void ZoneMap_Unk_ov001_022e6870(void);
-extern void ZoneMap_Unk_ov001_022e6dec(void);
+extern void ZoneMap_SelectNextState(void);
+extern void ZoneMap_UpdateView(void);
 
 #pragma thumb on
 asm void ZoneMap_Unk_ov001_022e794c(void)
@@ -292,7 +292,7 @@ _1ea:
     add r3, #0x6c
     bl ZoneMap_CalcClampedScroll
     add r0, r5, #0
-    bl ZoneMap_Unk_ov001_022e6dec
+    bl ZoneMap_UpdateView
     ldr r0, [r5]
     cmp r0, #0
     bne _236
@@ -386,7 +386,7 @@ _2cc:
     ldr r0, [r1, r0]
     str r2, [r0]
 _2dc:
-    bl ZoneMap_Unk_ov001_022e6870
+    bl ZoneMap_SelectNextState
 _2e0:
     add sp, #0x34
     pop {r4, r5, r6, r7}

@@ -67,8 +67,8 @@ typedef struct UnkStruct_022cad94_6 {
 
 extern UnkStruct_022cad94_5 gGameState;
 
-void Boss1_Unk_ov000_022cc3e8(s32 a, s32 b);
-void Boss1_Action_Unk_ov000_022cbfc8(void);
+void Boss1_SetPalettes(s32 a, s32 b);
+void Boss1_Action_IdleAll(void);
 
 void Boss1_State_Hurt(UnkStruct_022cad94 *s) {
     if (s->unk222 < 0x2d || (s->unk220 & 0x8000)) {
@@ -76,13 +76,13 @@ void Boss1_State_Hurt(UnkStruct_022cad94 *s) {
         s->unk220++;
         if (!(s->unk220 & 1)) {
             if (s->unk220 & 0x8000)
-                Boss1_Unk_ov000_022cc3e8(gGameState.unk0, 0);
+                Boss1_SetPalettes(gGameState.unk0, 0);
             else
-                Boss1_Unk_ov000_022cc3e8(gGameState.unk0, 1);
+                Boss1_SetPalettes(gGameState.unk0, 1);
             s->unk220 &= ~1;
             s->unk220 ^= 0x8000;
         }
     }
     if (s->unk210->unk334 & 2)
-        Boss1_Action_Unk_ov000_022cbfc8();
+        Boss1_Action_IdleAll();
 }

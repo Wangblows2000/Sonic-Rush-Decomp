@@ -11,9 +11,9 @@ typedef struct {
     s32 unk18C;
 } UnkStruct_023218d0;
 
-void DecGroup41_Action_Unk_ov000_02321824(UnkStruct_023218d0 *w);
-void DecGroup41_Action_Unk_ov000_02321744(UnkStruct_023218d0 *w, s16 x, s16 y, s32 c);
-void DecGroup41_Action_Unk_ov000_023216a4(UnkStruct_023218d0 *w);
+void DecGroup41_Action_Sink(UnkStruct_023218d0 *w);
+void DecGroup41_Action_Dart(UnkStruct_023218d0 *w, s16 x, s16 y, s32 c);
+void DecGroup41_Action_Turn(UnkStruct_023218d0 *w);
 
 void DecGroup41_ChooseNextAction(UnkStruct_023218d0 *w) {
     s16 r;
@@ -41,29 +41,29 @@ void DecGroup41_ChooseNextAction(UnkStruct_023218d0 *w) {
     }
     r -= b;
     if (r < 0) {
-        DecGroup41_Action_Unk_ov000_02321824(w);
+        DecGroup41_Action_Sink(w);
         return;
     }
     r -= c;
     if (r < 0) {
         if (w->unk5C & 1) {
-            DecGroup41_Action_Unk_ov000_02321744(w, -0x81 - (Rand() & 0xfe), 0xff - (Rand() & 0x1fe), Rand() & 7);
+            DecGroup41_Action_Dart(w, -0x81 - (Rand() & 0xfe), 0xff - (Rand() & 0x1fe), Rand() & 7);
         } else {
-            DecGroup41_Action_Unk_ov000_02321744(w, 0x17f - (Rand() & 0xfe), 0xff - (Rand() & 0x1fe), Rand() & 7);
+            DecGroup41_Action_Dart(w, 0x17f - (Rand() & 0xfe), 0xff - (Rand() & 0x1fe), Rand() & 7);
         }
         return;
     }
     r -= a;
     if (r < 0) {
         if (w->unk5C & 1) {
-            DecGroup41_Action_Unk_ov000_02321744(w, -0x81 - (Rand() & 0x1fe), -0xc1 - (Rand() & 0x7e), Rand() & 7);
+            DecGroup41_Action_Dart(w, -0x81 - (Rand() & 0x1fe), -0xc1 - (Rand() & 0x7e), Rand() & 7);
         } else {
-            DecGroup41_Action_Unk_ov000_02321744(w, 0x27f - (Rand() & 0x1fe), -0xc1 - (Rand() & 0x7e), Rand() & 7);
+            DecGroup41_Action_Dart(w, 0x27f - (Rand() & 0x1fe), -0xc1 - (Rand() & 0x7e), Rand() & 7);
         }
         return;
     }
     r -= d;
     if (r < 0) {
-        DecGroup41_Action_Unk_ov000_023216a4(w);
+        DecGroup41_Action_Turn(w);
     }
 }

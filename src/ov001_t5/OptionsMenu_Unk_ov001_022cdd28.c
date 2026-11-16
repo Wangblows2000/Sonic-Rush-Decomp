@@ -22,7 +22,7 @@ extern u32 gSystemFlags;
 
 void OptionsMenu_Unk_ov001_022cba1c(UnkWork_022cdd28 *w);
 void Pad_Reset(void *a, s32 b, s32 c);
-void OptionsMenu_State_Unk_ov001_022ccddc(void);
+void OptionsMenu_State_WaitOpenAnims(void);
 
 #pragma thumb on
 void OptionsMenu_Unk_ov001_022cdd28(void) {
@@ -34,7 +34,7 @@ void OptionsMenu_Unk_ov001_022cdd28(void) {
     w->unk34 = -1;
     OptionsMenu_Unk_ov001_022cba1c(w);
     Pad_Reset(gPad, 0, 0);
-    gTaskCurrent->func = OptionsMenu_State_Unk_ov001_022ccddc;
+    gTaskCurrent->func = OptionsMenu_State_WaitOpenAnims;
     gSaveDataBusy = 0;
     gSystemFlags &= ~0x10;
 }

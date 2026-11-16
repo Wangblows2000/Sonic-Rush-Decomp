@@ -2,9 +2,9 @@
 #include <nitro/types.h>
 
 extern u32 gCamera;
-extern void Gimmick_Unk_ov000_02307e84(void);
+extern void Gimmick_GetRoomIndex(void);
 extern void MapObj8F_State_Unk_ov000_02307e9c(void);
-extern void Camera_Unk_ov000_0233b250(void);
+extern void Camera_GetTrackedPlayerOffset(void);
 extern void EnemyRoom_Get(void);
 
 asm void MapObj8F_Unk_ov000_02308110(void)
@@ -12,7 +12,7 @@ asm void MapObj8F_Unk_ov000_02308110(void)
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #0xc
     mov r10, r0
-    bl Gimmick_Unk_ov000_02307e84
+    bl Gimmick_GetRoomIndex
     mov r1, r0
     mov r0, #1
     bl EnemyRoom_Get
@@ -91,7 +91,7 @@ _120:
     str r3, [r8]
     add r1, r1, r7, lsl #3
     add r2, r2, r7, lsl #3
-    bl Camera_Unk_ov000_0233b250
+    bl Camera_GetTrackedPlayerOffset
     add r1, r10, r7, lsl #3
     ldr r0, [r1, #0x214]
     str r0, [r8, #0x3c]

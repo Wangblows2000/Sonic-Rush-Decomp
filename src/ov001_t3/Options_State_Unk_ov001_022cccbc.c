@@ -37,11 +37,11 @@ extern UnkFn_022cccbc gOptionsMenuItemLabelDrawTable[];
 
 void OptionsMenu_DrawItemSprite(UnkObj_022cccbc *o, s32 id, s32 x, s32 y, s32 sel);
 void OptionsMenu_UpdatePage(UnkStruct_022cccbc *p, s32 x, s32 y);
-void OptionsMenu_Unk_ov001_022cbe98(UnkObj_022cccbc *o, s32 x, s32 y);
+void OptionsMenu_SetSubScroll(UnkObj_022cccbc *o, s32 x, s32 y);
 void OptionsMenu_Unk_ov001_022cbe50(UnkObj_022cccbc *o, s32 x, s32 y);
 void OptionsMenu_Unk_ov001_022cbdf0(UnkObj_022cccbc *o, s32 x, s32 y, s32 a);
 void OptionsMenu_UpdateAnims(UnkStruct_022cccbc *p);
-void Options_Unk_ov001_022cdcf4(void);
+void Options_Action_Exit(void);
 
 typedef struct {
     u8 pad0[0x10];
@@ -74,12 +74,12 @@ void Options_State_Unk_ov001_022cccbc(void) {
         y += 0x18;
     }
     OptionsMenu_UpdatePage(p, p->ax, p->ay);
-    OptionsMenu_Unk_ov001_022cbe98(p->obj, p->ax, p->ay);
+    OptionsMenu_SetSubScroll(p->obj, p->ax, p->ay);
     OptionsMenu_Unk_ov001_022cbe50(p->obj, p->bx, p->by);
     OptionsMenu_Unk_ov001_022cbdf0(p->obj, p->cx, p->cy, 1);
     p->timer++;
     if (p->timer >= 10) {
-        Options_Unk_ov001_022cdcf4();
+        Options_Action_Exit();
     }
 }
 #pragma thumb reset

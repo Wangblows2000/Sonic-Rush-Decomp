@@ -48,13 +48,13 @@ BOOL KeyframeAnim_IsFinished(UnkAnim_022eae98 *a);
 void TimeAttackMenu_Unk_ov001_022ea360(UnkWork_022eae98 *w, s32 i, s32 v);
 void TimeAttackMenu_Unk_ov001_022e9fe4(UnkWork_022eae98 *w, s32 i);
 void TimeAttackMenu_Unk_ov001_022e9fa8(UnkWork_022eae98 *w, s32 i);
-void TimeAttackMenu_Unk_ov001_022ea2f0(UnkWork_022eae98 *w);
+void TimeAttackMenu_FillHdmaBuffer(UnkWork_022eae98 *w);
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
 void AnimatorSprite_Draw(void *p);
 void AnimatorSprite_DrawRotScale(void *p, s32 sx, s32 sy, s32 d);
-BOOL TimeAttackMenu_Unk_ov001_022e9ebc(UnkWork_022eae98 *w);
-BOOL TimeAttackMenu_Unk_ov001_022e9e30(UnkWork_022eae98 *w);
-BOOL TimeAttackMenu_Unk_ov001_022e9df0(UnkWork_022eae98 *w);
+BOOL TimeAttackMenu_IsConfirmPressed(UnkWork_022eae98 *w);
+BOOL TimeAttackMenu_IsLeftPressed(UnkWork_022eae98 *w);
+BOOL TimeAttackMenu_IsRightPressed(UnkWork_022eae98 *w);
 void TimeAttackMenu_Unk_ov001_022ebc3c(s32 a);
 void TimeAttackMenu_Unk_ov001_022eba70(s32 a);
 
@@ -93,7 +93,7 @@ void TimeAttackMenu_State_Unk_ov001_022eae98(void) {
         it++;
         an++;
     }
-    TimeAttackMenu_Unk_ov001_022ea2f0(w);
+    TimeAttackMenu_FillHdmaBuffer(w);
     a = &w->anims[6];
     if (w->unkd4 >= 14) {
         w->sprites[10].x = a->x;
@@ -154,7 +154,7 @@ void TimeAttackMenu_State_Unk_ov001_022eae98(void) {
     AnimatorSprite_ProcessAnimation(&w->sprites[4], 0, 0);
     AnimatorSprite_Draw(&w->sprites[4]);
     w->unk0++;
-    if (TimeAttackMenu_Unk_ov001_022e9ebc(w)) {
+    if (TimeAttackMenu_IsConfirmPressed(w)) {
         w->unkdc = 1;
         w->unkd0 = w->unkd4;
         TimeAttackMenu_Unk_ov001_022ebc3c(0);
@@ -172,13 +172,13 @@ void TimeAttackMenu_State_Unk_ov001_022eae98(void) {
         TimeAttackMenu_Unk_ov001_022ebc3c(0);
         return;
     }
-    if (TimeAttackMenu_Unk_ov001_022e9e30(w)) {
+    if (TimeAttackMenu_IsLeftPressed(w)) {
         w->unke0 = 1;
         w->unkd0 = w->unkd4;
         TimeAttackMenu_Unk_ov001_022eba70(0);
         return;
     }
-    if (TimeAttackMenu_Unk_ov001_022e9df0(w)) {
+    if (TimeAttackMenu_IsRightPressed(w)) {
         w->unke0 = 0;
         w->unkd0 = w->unkd4;
         TimeAttackMenu_Unk_ov001_022eba70(0);

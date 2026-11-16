@@ -16,11 +16,11 @@ typedef struct {
 } UnkStruct_022fb3d8_Coll;
 
 void ObjRect_FuncNoHit(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
-void Player_Unk_ov000_02343000(UnkStruct_022fb3d8_Pl *pl, s32 a);
-void MapObject_Action_Unk_ov000_022fafc8(UnkStruct_StageObj *w, UnkStruct_022fb3d8_Pl *pl);
-void MapObject_Unk_ov000_022fa9e8(UnkStruct_StageObj *w, UnkStruct_022fb3d8_Pl *pl, s32 a);
-void MapObject_Unk_ov000_022fb898(UnkStruct_StageObj *w);
-void MapObject_Unk_ov000_022fb738(UnkStruct_StageObj *w);
+void Player_AddTensionCombo(UnkStruct_022fb3d8_Pl *pl, s32 a);
+void MapObject_Action_KnockAway(UnkStruct_StageObj *w, UnkStruct_022fb3d8_Pl *pl);
+void MapObject_NetSendEvent(UnkStruct_StageObj *w, UnkStruct_022fb3d8_Pl *pl, s32 a);
+void MapObject_SpawnDestroyBurst(UnkStruct_StageObj *w);
+void MapObject_SpawnFreedAnimal(UnkStruct_StageObj *w);
 s32 ObjRect_HitCenterX(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
 s32 ObjRect_HitCenterY(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll *b);
 void EffVs_Create(s32 x, s32 y);
@@ -63,25 +63,25 @@ void MapObject_OnHit_Default(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll
         }
         if (pl != NULL) {
             if (pl->unk0 == 1) {
-                Player_Unk_ov000_02343000(pl, 400);
+                Player_AddTensionCombo(pl, 400);
             } else if (pl->unk88 != NULL) {
                 pl = pl->unk88;
                 if (pl->unk0 == 1) {
-                    Player_Unk_ov000_02343000(pl, 400);
-                    MapObject_Action_Unk_ov000_022fafc8(w, pl);
+                    Player_AddTensionCombo(pl, 400);
+                    MapObject_Action_KnockAway(w, pl);
                     if (pl->unk32C & 0x80) {
                         pl->unk62 = 0x44;
                         w->unk62 = 0x44;
                     }
-                    MapObject_Unk_ov000_022fa9e8(w, pl, 2);
+                    MapObject_NetSendEvent(w, pl, 2);
                     return;
                 }
             }
         }
-        MapObject_Unk_ov000_022fb898(w);
-        MapObject_Unk_ov000_022fb738(w);
+        MapObject_SpawnDestroyBurst(w);
+        MapObject_SpawnFreedAnimal(w);
         w->unk54 |= 8;
-        MapObject_Unk_ov000_022fa9e8(w, pl, 2);
+        MapObject_NetSendEvent(w, pl, 2);
     } else {
         EffVs_Create(ObjRect_HitCenterX(a, b), ObjRect_HitCenterY(a, b));
         r1 = Rand();
@@ -96,7 +96,7 @@ void MapObject_OnHit_Default(UnkStruct_022fb3d8_Coll *a, UnkStruct_022fb3d8_Coll
         w->unk1E0->unkB++;
         w->unk1F0 = 0x3c;
         w->coll1.unk20 &= ~7;
-        MapObject_Unk_ov000_022fa9e8(w, pl, 1);
+        MapObject_NetSendEvent(w, pl, 1);
         if (pl != NULL && pl->unk0 == 1) {
             Player_Action_AttackRecoil(pl);
             return;

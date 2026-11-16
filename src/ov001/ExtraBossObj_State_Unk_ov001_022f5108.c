@@ -2,19 +2,19 @@
 
 extern void *data_ov001_0231f068;
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
-void ExtraBoss_Unk_ov001_022f3b50(void *p);
-void ExtraBoss_Unk_ov001_022f6450(void *p);
+void ExtraBoss_StepXTowardCameraTarget(void *p);
+void ExtraBoss_WeaponBoss_SelectNextAttack(void *p);
 void ExtraBossObj_State_Unk_ov001_022f5090(void);
 
 void ExtraBossObj_State_Unk_ov001_022f5108(u8 *p) {
     u8 *q = *(u8 **)(p + 0x84);
-    ExtraBoss_Unk_ov001_022f3b50(p);
+    ExtraBoss_StepXTowardCameraTarget(p);
     if (!(q[0x10c] & 2)) {
         return;
     }
     *(s32 *)(p + 0x1cc) -= 1;
     if (*(s32 *)(p + 0x1cc) <= 0) {
-        ExtraBoss_Unk_ov001_022f6450(p);
+        ExtraBoss_WeaponBoss_SelectNextAttack(p);
         return;
     }
     *(void (**)(void))(p + 0x74) = ExtraBossObj_State_Unk_ov001_022f5090;

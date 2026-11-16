@@ -20,7 +20,7 @@ typedef struct {
 
 extern UnkTask_022e7428 *gTaskCurrent;
 
-void ZoneMap_Unk_ov001_022e6dec(UnkWork_022e7428 *w);
+void ZoneMap_UpdateView(UnkWork_022e7428 *w);
 s32 ZoneMap_Unk_ov001_022e252c(s32 a);
 s32 ZoneMap_Unk_ov001_022e24a8(s32 a);
 BOOL ZoneMap_Unk_ov001_022e2f00(s32 a);
@@ -35,7 +35,7 @@ void ZoneMap_State_Unk_ov001_022e7428(void) {
     s32 n;
 
     w = gTaskCurrent->work;
-    ZoneMap_Unk_ov001_022e6dec(w);
+    ZoneMap_UpdateView(w);
     w->timer++;
     if (w->timer >= 0x10) {
         idx = 0;

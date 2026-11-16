@@ -40,7 +40,7 @@ UnkStruct_02303594_q *ExtraBoss_GetWork(void);
 u16 FX_Atan2(s32 y, s32 x);
 void ExtraBoss_Unk_ov001_02303394(UnkStruct_02303594_p *p);
 void ExtraBoss_Unk_ov001_023031e4(UnkStruct_02303594_p *p);
-BOOL ExtraBoss_Unk_ov001_02303554(UnkStruct_02303594_p *p);
+BOOL ExtraBoss_IsOutOfField(UnkStruct_02303594_p *p);
 void ExtraBoss_StackPush(UnkStruct_02303594_p *p);
 void ExtraBoss_Unk_ov001_02303244(UnkStruct_02303594_p *p);
 void ExtraBoss_Unk_ov001_0230319c(UnkStruct_02303594_p *p);
@@ -83,7 +83,7 @@ void ExtraBoss_Unk_ov001_02303594(void) {
                 continue;
             }
         }
-        if (ExtraBoss_Unk_ov001_02303554(p)) {
+        if (ExtraBoss_IsOutOfField(p)) {
             ExtraBoss_Unk_ov001_02303394(p);
             ExtraBoss_StackPush(p);
         }
@@ -104,7 +104,7 @@ void ExtraBoss_Unk_ov001_02303594(void) {
             p2->unkC = FX_Mul(SIN(a), 0x100);
             ExtraBoss_Unk_ov001_02303244(p2);
             ExtraBoss_Unk_ov001_023031e4(p2);
-        } else if (ExtraBoss_Unk_ov001_02303554(p2)) {
+        } else if (ExtraBoss_IsOutOfField(p2)) {
             ExtraBoss_Unk_ov001_02303244(p2);
             ExtraBoss_StackPush(p2);
         }

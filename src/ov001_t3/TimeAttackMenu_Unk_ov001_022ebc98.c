@@ -28,7 +28,7 @@ typedef struct {
 
 extern UnkTask_022ebc98 *gTaskCurrent;
 
-void TimeAttackMenu_Unk_ov001_022e9708(UnkWork_022ebc98 *w, s32 a, s32 *x, s32 *y);
+void TimeAttackMenu_IndexToGrid(UnkWork_022ebc98 *w, s32 a, s32 *x, s32 *y);
 void KeyframeAnim_SetAnim(UnkAnim_022ebc98 *a, s32 id);
 void TimeAttackMenu_Unk_ov001_022ea850(UnkWork_022ebc98 *w);
 void TimeAttackMenu_Unk_ov001_022ea7c4(UnkWork_022ebc98 *w);
@@ -38,8 +38,8 @@ void TimeAttackMenu_Unk_ov001_022ea504(UnkWork_022ebc98 *w, s32 x, s32 y);
 void TimeAttackMenu_Unk_ov001_022ea41c(UnkWork_022ebc98 *w);
 void TimeAttackMenu_Unk_ov001_022ea37c(UnkWork_022ebc98 *w);
 void TimeAttackMenu_Unk_ov001_022e9c24(s32 x, s32 y, UnkItem_022ebc98 *items);
-void TimeAttackMenu_Unk_ov001_022ea2b0(UnkWork_022ebc98 *w);
-void TimeAttackMenu_Unk_ov001_022ea2f0(UnkWork_022ebc98 *w);
+void TimeAttackMenu_StartBg1HOfsHdma(UnkWork_022ebc98 *w);
+void TimeAttackMenu_FillHdmaBuffer(UnkWork_022ebc98 *w);
 void TimeAttackMenu_State_Enter(void);
 
 #pragma thumb on
@@ -54,7 +54,7 @@ void TimeAttackMenu_Unk_ov001_022ebc98(UnkTask_022ebc98 *t) {
     }
     w = t->work;
     w->unk0 = 0;
-    TimeAttackMenu_Unk_ov001_022e9708(w, w->unkd0, &x, &y);
+    TimeAttackMenu_IndexToGrid(w, w->unkd0, &x, &y);
     KeyframeAnim_SetAnim(&w->anims[0], 0);
     KeyframeAnim_SetAnim(&w->anims[1], 1);
     KeyframeAnim_SetAnim(&w->anims[2], 2);
@@ -79,8 +79,8 @@ void TimeAttackMenu_Unk_ov001_022ebc98(UnkTask_022ebc98 *t) {
         w->items[i].a = 0x100;
         w->items[i].b = 0x100;
     }
-    TimeAttackMenu_Unk_ov001_022ea2b0(w);
-    TimeAttackMenu_Unk_ov001_022ea2f0(w);
+    TimeAttackMenu_StartBg1HOfsHdma(w);
+    TimeAttackMenu_FillHdmaBuffer(w);
     t->func = TimeAttackMenu_State_Enter;
 }
 #pragma thumb reset

@@ -44,15 +44,15 @@ extern UnkTouch_022cca00 gTouchState;
 
 void OptionsMenu_UpdateAnims(UnkWork_022cca00 *w);
 void OptionsMenu_DrawItems(UnkWork_022cca00 *w);
-void OptionsMenu_Unk_ov001_022cdef8(void);
+void OptionsMenu_ShowMsgBox13(void);
 void SysSound_PlaySE(s32 a);
-BOOL OptionsMenu_Unk_ov001_022c8ba8(u16 x, u16 y);
-s32 OptionsMenu_Unk_ov001_022c8d54(UnkSub_022cca00 *s);
+BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
+s32 OptionsMenu_GetChildCount(UnkSub_022cca00 *s);
 void OptionsMenu_State_Unk_ov001_022cc33c(void);
 void OptionsMenu_Unk_ov001_022cdd28(void);
 void OptionsMenu_State_Unk_ov001_022cc998(void);
-BOOL OptionsMenu_Unk_ov001_022c8b78(u16 x, u16 y);
-BOOL OptionsMenu_Unk_ov001_022c8b60(u16 x, u16 y);
+BOOL OptionsMenu_IsLeftChoiceTouched(u16 x, u16 y);
+BOOL OptionsMenu_IsRightChoiceTouched(u16 x, u16 y);
 
 #pragma thumb on
 void OptionsMenu_State_Unk_ov001_022cca00(void) {
@@ -88,14 +88,14 @@ void OptionsMenu_State_Unk_ov001_022cca00(void) {
             x = gTouchState.x;
             y = gTouchState.y;
             if (x < 0x100 && y < 0xc0) {
-                if (OptionsMenu_Unk_ov001_022c8ba8(x, y)) {
+                if (OptionsMenu_IsBackButtonTouched(x, y)) {
                     w->unk1c = 0;
                     SysSound_PlaySE(1);
-                } else if (OptionsMenu_Unk_ov001_022c8b78(x, y)) {
+                } else if (OptionsMenu_IsLeftChoiceTouched(x, y)) {
                     ok = TRUE;
                     sub->unkc = 0;
                     SysSound_PlaySE(0);
-                } else if (OptionsMenu_Unk_ov001_022c8b60(x, y)) {
+                } else if (OptionsMenu_IsRightChoiceTouched(x, y)) {
                     ok = TRUE;
                     sub->unkc = 1;
                     SysSound_PlaySE(0);

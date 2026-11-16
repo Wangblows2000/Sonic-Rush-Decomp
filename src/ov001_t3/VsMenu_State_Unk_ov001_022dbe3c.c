@@ -26,16 +26,16 @@ extern UnkTask_022dbe3c *gTaskCurrent;
 
 void VsMenu_Unk_ov001_022d9e50(UnkWork_022dbe3c *w, s32 x, s32 y);
 void VsMenu_Unk_ov001_022d9e2c(UnkWork_022dbe3c *w, s32 x, s32 y);
-void VsMenu_Unk_ov001_022d9ab4(UnkWork_022dbe3c *w, s32 a, s32 b, s32 c, s32 d);
-BOOL VsMenu_Unk_ov001_022da52c(void);
+void VsMenu_DrawLinkLevelIcon(UnkWork_022dbe3c *w, s32 a, s32 b, s32 c, s32 d);
+BOOL VsMenu_IsBackButtonTouched(void);
 void VsMenu_Unk_ov001_022da304(UnkWork_022dbe3c *w);
 void MsgBox_RequestClose(void);
 void SysSound_PlayCancelSE(void);
 BOOL VsMenu_IsBPressed(void);
 s32 WirelessLobbyChild_GetParentCount(void);
-void VsMenu_Unk_ov001_022dab54(UnkWork_022dbe3c *w);
+void VsMenu_RefreshParentList(UnkWork_022dbe3c *w);
 BOOL MsgBox_IsClosed(void);
-void VsMenu_Unk_ov001_022da41c(UnkWork_022dbe3c *w);
+void VsMenu_RestoreAfterMsgBox(UnkWork_022dbe3c *w);
 void WirelessLobbyChild_RequestCancel(void);
 void VsMenu_Unk_ov001_022da9a8(UnkWork_022dbe3c *w);
 void VsMenu_Unk_ov001_022da374(UnkWork_022dbe3c *w);
@@ -52,8 +52,8 @@ void VsMenu_State_Unk_ov001_022dbe3c(void) {
     w = gTaskCurrent->work;
     VsMenu_Unk_ov001_022d9e50(w, 0x38, 0x98);
     VsMenu_Unk_ov001_022d9e2c(w, 0x10, 0x48);
-    VsMenu_Unk_ov001_022d9ab4(w, 0xb0, 8, 0, 0);
-    if (VsMenu_Unk_ov001_022da52c()) {
+    VsMenu_DrawLinkLevelIcon(w, 0xb0, 8, 0, 0);
+    if (VsMenu_IsBackButtonTouched()) {
         VsMenu_Unk_ov001_022da304(w);
         MsgBox_RequestClose();
         w->unk1c = 1;
@@ -67,12 +67,12 @@ void VsMenu_State_Unk_ov001_022dbe3c(void) {
         w->unk14 = WirelessLobbyChild_GetParentCount();
         w->unk1c = 0;
     }
-    VsMenu_Unk_ov001_022dab54(w);
+    VsMenu_RefreshParentList(w);
     w->timer++;
     if (MsgBox_IsClosed()) {
         w->timer = 0;
         w->unk4 = 0;
-        VsMenu_Unk_ov001_022da41c(w);
+        VsMenu_RestoreAfterMsgBox(w);
         if (w->unk1c != 0) {
             WirelessLobbyChild_RequestCancel();
             VsMenu_Unk_ov001_022da9a8(w);

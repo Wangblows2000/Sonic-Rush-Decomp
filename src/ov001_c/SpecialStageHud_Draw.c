@@ -32,7 +32,7 @@ typedef struct UnkStruct_02309c14 {
 
 extern UnkStruct_02309c14 *gSpecialStageHud;
 
-void SpecialStageHud_Unk_ov001_02307b44(void);
+void SpecialStageHud_DrawEmeralds(void);
 void AnimatorSprite_Draw(void *p);
 u32 SpecialStage_GetEmeraldFlags(void);
 void SpecialStageHud_Unk_ov001_02308884(void);
@@ -41,14 +41,14 @@ void SpecialStageHud_Unk_ov001_02308fc8(void);
 void SpecialStageHud_Unk_ov001_02308e44(void);
 void SpecialStageHud_Unk_ov001_02308d40(void);
 void SpecialStageHud_DrawRingCounter(void);
-void SpecialStageHud_Unk_ov001_02308600(void);
+void SpecialStageHud_DrawDigits(void);
 
 void SpecialStageHud_Draw(void) {
     UnkStruct_02309c14 *g = gSpecialStageHud;
     s32 i;
 
     if (g->unkBD4 >= 0) {
-        SpecialStageHud_Unk_ov001_02307b44();
+        SpecialStageHud_DrawEmeralds();
         return;
     }
     AnimatorSprite_Draw(&g->objs[0]);
@@ -97,7 +97,7 @@ void SpecialStageHud_Draw(void) {
     if (g->unkBD0 >= 0)
         SpecialStageHud_Unk_ov001_02308d40();
     SpecialStageHud_DrawRingCounter();
-    SpecialStageHud_Unk_ov001_02308600();
+    SpecialStageHud_DrawDigits();
     if (g->unkAE0 >= 0x17c && g->unkAE0 < 0x258)
         AnimatorSprite_Draw(&g->objs[34]);
 }

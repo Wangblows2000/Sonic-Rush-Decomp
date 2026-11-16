@@ -5,7 +5,7 @@ BOOL WirelessSession_Unk_020513a8(void);
 void PlayerSelectMenu_ReleaseModels(UnkStruct_Mdl *m);
 void PlayerSelectMenu_ReleaseArchives(UnkStruct_Mdl *m);
 void PlayerSelectMenu_ReleaseSprites(UnkStruct_Scene *w);
-void PlayerSelectMenu_Unk_ov000_02359cd4(UnkStruct_Scene *w);
+void PlayerSelectMenu_ReleaseNop(UnkStruct_Scene *w);
 void PlayerSelectMenu_FreeBuffers(UnkStruct_Scene *w);
 void PlayerSelectMenu_ReleaseDisplay(void);
 
@@ -21,7 +21,7 @@ void PlayerSelectMenu_Destructor(UnkStruct_SceneTask *t) {
         PlayerSelectMenu_ReleaseArchives(&w->mdl);
     }
     PlayerSelectMenu_ReleaseSprites(w);
-    PlayerSelectMenu_Unk_ov000_02359cd4(w);
+    PlayerSelectMenu_ReleaseNop(w);
     PlayerSelectMenu_FreeBuffers(w);
     PlayerSelectMenu_ReleaseDisplay();
 }

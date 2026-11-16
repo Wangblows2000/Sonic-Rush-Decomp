@@ -6,12 +6,12 @@ typedef struct {
     UnkStruct_Coll coll[11];
 } UnkStruct_022e671c;
 
-void Boss6_OnHit_Unk_ov000_022e0e7c(void);
+void Boss6_OnHit_DamageFlip(void);
 void Boss6_OnHit_Damage(void);
-void Boss6_OnHit_Unk_ov000_022e0ba8(void);
-void Boss6_OnHit_Unk_ov000_022e0af8(void);
-void Boss6_OnHit_Unk_ov000_022e0998(void);
-void Boss6_OnHit_Unk_ov000_022e08b0(void);
+void Boss6_OnHit_PushPlayer_ov000_022e0ba8(void);
+void Boss6_OnHit_PushPlayer_ov000_022e0af8(void);
+void Boss6_OnHit_PushPlayer_ov000_022e0998(void);
+void Boss6_OnHit_PushPlayer_ov000_022e08b0(void);
 void ObjRect_SetBox3D(UnkStruct_Coll *c, s32 a, s32 b, s32 d, s32 e, s32 f, s32 g);
 
 void Boss6_Unk_ov000_022e671c(UnkStruct_022e671c *w) {
@@ -24,7 +24,7 @@ void Boss6_Unk_ov000_022e671c(UnkStruct_022e671c *w) {
     *c = w->base.coll0;
     ObjRect_SetBox3D(c, -13, -10, 13, 12, -0x7d00, 0x7d00);
     c->unk18 = w;
-    c->unk1C = Boss6_OnHit_Unk_ov000_022e0e7c;
+    c->unk1C = Boss6_OnHit_DamageFlip;
     c->unkA &= ~4;
     c = &w->coll[1];
     *c = w->base.coll0;
@@ -64,7 +64,7 @@ void Boss6_Unk_ov000_022e671c(UnkStruct_022e671c *w) {
     c->unkA |= 0xc0;
     c->unk28 = 0x12;
     c->unk18 = w;
-    c->unk1C = Boss6_OnHit_Unk_ov000_022e0ba8;
+    c->unk1C = Boss6_OnHit_PushPlayer_ov000_022e0ba8;
     c->unkA &= ~4;
     c = &w->coll[8];
     ObjRect_SetBox3D(c, -35, -16, -20, 92, -0x7d00, 0x7d00);
@@ -72,7 +72,7 @@ void Boss6_Unk_ov000_022e671c(UnkStruct_022e671c *w) {
     c->unkA |= 0xc0;
     c->unk28 = 0x12;
     c->unk18 = w;
-    c->unk1C = Boss6_OnHit_Unk_ov000_022e0af8;
+    c->unk1C = Boss6_OnHit_PushPlayer_ov000_022e0af8;
     c->unkA &= ~4;
     c = &w->coll[9];
     ObjRect_SetBox3D(c, -28, -30, 48, 55, -0x7d00, 0x7d00);
@@ -80,7 +80,7 @@ void Boss6_Unk_ov000_022e671c(UnkStruct_022e671c *w) {
     c->unkA |= 0xc0;
     c->unk28 = 0x12;
     c->unk18 = w;
-    c->unk1C = Boss6_OnHit_Unk_ov000_022e0998;
+    c->unk1C = Boss6_OnHit_PushPlayer_ov000_022e0998;
     c->unkA &= ~4;
     c = &w->coll[10];
     ObjRect_SetBox3D(c, -45, 5, 30, 24, -0x7d00, 0x7d00);
@@ -88,7 +88,7 @@ void Boss6_Unk_ov000_022e671c(UnkStruct_022e671c *w) {
     c->unkA |= 0xc0;
     c->unk28 = 0x12;
     c->unk18 = w;
-    c->unk1C = Boss6_OnHit_Unk_ov000_022e08b0;
+    c->unk1C = Boss6_OnHit_PushPlayer_ov000_022e08b0;
     c->unkA &= ~4;
     w->base.unk78 = 0;
 }

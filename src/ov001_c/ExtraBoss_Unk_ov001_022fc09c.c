@@ -12,7 +12,7 @@ extern s16 data_0206e470[];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-u8 *ExtraBossPlayer_Unk_ov001_022fd428(s32 kind, void *parent, s32 x, s32 y, s32 z);
+u8 *ExtraBossPlayer_CreateFxObj(s32 kind, void *parent, s32 x, s32 y, s32 z);
 u8 *NNS_G3dGetMdlSet(void *p);
 void NNS_G3dMdlSetMdlDiffAll(void *s, u32 v);
 void NNS_G3dMdlSetMdlAmbAll(void *s, u32 v);
@@ -21,7 +21,7 @@ void *ExtraBoss_GetPlayer(void);
 void ExtraBossObj_State_Unk_ov001_022fbfcc(void);
 void ExtraBoss_Unk_ov001_022fb974(void);
 void ExtraBoss_Unk_ov001_022fb918(void);
-void ExtraBoss_Unk_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
+void ExtraBoss_InitCollider(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -44,7 +44,7 @@ void ExtraBoss_Unk_ov001_022fc09c(void *parent, s32 x, s32 y, s32 z, u16 ang) {
         *data_ov001_0231f094 |= 1;
         kind = 8;
     }
-    t = ExtraBossPlayer_Unk_ov001_022fd428(kind, parent, x, y, z);
+    t = ExtraBossPlayer_CreateFxObj(kind, parent, x, y, z);
     if (t == NULL)
         return;
     r = NNS_G3dGetMdlSet(data_ov001_0231f098[kind].res);
@@ -62,11 +62,11 @@ void ExtraBoss_Unk_ov001_022fc09c(void *parent, s32 x, s32 y, s32 z, u16 ang) {
     *(s32 *)(t + 0x54) = FX_Mul(SIN_IDX(idx), 0xa000);
     *(s32 *)(t + 0x5c) = FX_Mul(COS_IDX(idx), -0xa00);
     *(s32 *)(t + 0x60) = FX_Mul(SIN_IDX(idx), -0xa00);
-    ExtraBoss_Unk_ov001_022fe8d4(t + 0xb0, t, 2, 0, 0xa000, 0xa000, 0xa000, 0, 0, 0, 0);
+    ExtraBoss_InitCollider(t + 0xb0, t, 2, 0, 0xa000, 0xa000, 0xa000, 0, 0, 0, 0);
     *(void **)(t + 0xb4) = ExtraBoss_Unk_ov001_022fb974;
     *(u32 *)(t + 0xb8) |= 0x2200;
     *(u8 **)(t + 0x9c) = t + 0xb0;
-    ExtraBoss_Unk_ov001_022fe8d4(t + 0xe8, t, 4, 1, 0xa000, 0xa000, 0xa000, 0, 0, 0, 0);
+    ExtraBoss_InitCollider(t + 0xe8, t, 4, 1, 0xa000, 0xa000, 0xa000, 0, 0, 0, 0);
     *(void **)(t + 0xec) = ExtraBoss_Unk_ov001_022fb918;
     *(u32 *)(t + 0xf0) |= 0x2000;
     *(s32 *)(t + 0x1d8) = 0x78;

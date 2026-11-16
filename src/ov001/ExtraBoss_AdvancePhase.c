@@ -5,7 +5,7 @@ extern UnkStruct_0231f52c *gExtraBossWork;
 void Sound_PlaySeq(s32 a, s32 b);
 s32 FX_ModS32(s32 a, s32 b);
 void ExtraBoss_LoadPlayerModel(s32 a);
-void ExtraBoss_Unk_ov001_0230582c(void);
+void ExtraBoss_ResetCamera(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, s32 e);
 void ExtraBoss_StartBattle(void);
 
@@ -16,7 +16,7 @@ void ExtraBoss_AdvancePhase(void) {
     }
     gExtraBossWork->v3c = FX_ModS32(gExtraBossWork->v40, 2);
     ExtraBoss_LoadPlayerModel(gExtraBossWork->v3c);
-    ExtraBoss_Unk_ov001_0230582c();
+    ExtraBoss_ResetCamera();
     BrightnessLerp_Create(0x10, 0x10, 0, 3, 0);
     ExtraBoss_StartBattle();
     if (gExtraBossWork->v3c == 0) {

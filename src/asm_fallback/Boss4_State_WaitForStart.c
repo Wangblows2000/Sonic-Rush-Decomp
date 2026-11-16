@@ -12,10 +12,10 @@ extern void Model_Init(void);
 extern void NaviMsg_ShowMessage(void);
 extern void NaviMsg_SetFaceAnim(void);
 extern void Boss4_Unk_ov000_022dcf20(void);
-extern void Boss4_Unk_ov000_022de304(void);
-extern void Boss4_Unk_ov000_022de65c(void);
-extern void Boss4_Draw_Unk_ov000_022de768(void);
-extern void Boss4_State_Unk_ov000_022dea0c(void);
+extern void Boss4_Action_StartSpin(void);
+extern void Boss4_ResetCamera(void);
+extern void Boss4_Draw_PlayerOnArena(void);
+extern void Boss4_State_Fight(void);
 extern void MapObject_Spawn(void);
 
 asm void Boss4_State_WaitForStart(void)
@@ -63,7 +63,7 @@ asm void Boss4_State_WaitForStart(void)
     str r0, [r5, #0x1c]
     ldr r0, [r5, #0x1c]
     str r0, [r5, #0x18]
-    bl Boss4_Unk_ov000_022de65c
+    bl Boss4_ResetCamera
     mov r1, #0
     str r1, [sp]
     str r1, [sp, #4]
@@ -96,17 +96,17 @@ asm void Boss4_State_WaitForStart(void)
     ldr r1, [pc, #0x34]
     mov r0, r4
     str r1, [r6, #0x68]
-    bl Boss4_Unk_ov000_022de304
+    bl Boss4_Action_StartSpin
     add sp, sp, #0x18
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
     dcd gBossStatus
     dcd gBoss4
     dcd gPlayers
-    dcd Boss4_Draw_Unk_ov000_022de768
+    dcd Boss4_Draw_PlayerOnArena
     dcd data_ov000_0236a444
     dcd data_ov000_0236a524
     dcd data_ov000_02369b30
     dcd 0x01355b50
-    dcd Boss4_State_Unk_ov000_022dea0c
+    dcd Boss4_State_Fight
 }

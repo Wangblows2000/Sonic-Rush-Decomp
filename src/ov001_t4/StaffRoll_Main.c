@@ -65,7 +65,7 @@ void AnimatorSprite_Draw(UnkSpr_022d2460 *s);
 void AnimatorSprite_SetAnimation(UnkSpr_022d2460 *s, u16 anim);
 s32 StaffRoll_HitTestSprite(UnkSpr_022d2460 *s, u16 x, u16 y);
 void NNS_SndArcStrmStop(void *p, s32 a);
-void StaffRoll_Unk_ov001_022d019c(UnkWork_022d2460 *w);
+void StaffRoll_UpdateChaseSpeed(UnkWork_022d2460 *w);
 void StaffRoll_DrawPictureSprites(UnkWork_022d2460 *w, s32 a);
 void StaffRoll_SetState(UnkWork_022d2460 *w, void (*f)(void));
 void StaffRoll_State_Skip(void);
@@ -108,7 +108,7 @@ void StaffRoll_Main(void) {
         w->vel2[i] += w->acc2[i];
     }
     w->funcbd8(w);
-    StaffRoll_Unk_ov001_022d019c(w);
+    StaffRoll_UpdateChaseSpeed(w);
     StaffRoll_DrawPictureSprites(w, 1);
     if (w->unkbb4 != 0) {
         w->unkbb8--;

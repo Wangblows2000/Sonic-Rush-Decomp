@@ -5,10 +5,10 @@ typedef struct UnkStruct_022fcce4 {
     u16 unk5C;
 } UnkStruct_022fcce4;
 
-void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fcce4 *s);
+void EnemyPawnGroup_Action_Walk(UnkStruct_022fcce4 *s);
 
 void EnemyPawnGroup_State_Unk_ov000_022fcce4(UnkStruct_022fcce4 *s) {
     if (!(s->unk5C & 8))
         return;
-    EnemyPawnGroup_Action_Unk_ov000_022fe7e8(s);
+    EnemyPawnGroup_Action_Walk(s);
 }

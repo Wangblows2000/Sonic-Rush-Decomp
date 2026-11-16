@@ -5,12 +5,12 @@ typedef struct UnkStruct_022db900 {
     s32 unkBC0;
 } UnkStruct_022db900;
 
-s32 Boss4_Unk_ov000_022db934(void);
+s32 Boss4_GetHealthSpinScale(void);
 void *_fflt(void *p);
 void *_fmul(void *p, s32 a);
 s32 _ffix(void *p);
 
 void Boss4_Unk_ov000_022db900(UnkStruct_022db900 *s, void *p) {
-    s32 v = Boss4_Unk_ov000_022db934();
+    s32 v = Boss4_GetHealthSpinScale();
     s->unkBC0 = _ffix(_fmul(_fflt(p), v));
 }

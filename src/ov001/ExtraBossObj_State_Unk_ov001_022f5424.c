@@ -3,16 +3,16 @@
 extern void *data_ov001_0231f068;
 extern s32 data_ov001_0231d4c0[];
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
-void ExtraBoss_Unk_ov001_022f3b50(void *p);
+void ExtraBoss_StepXTowardCameraTarget(void *p);
 u8 *ExtraBoss_Unk_ov001_022fb678(void *p);
-void ExtraBoss_Unk_ov001_022f3c30(void *p);
+void ExtraBoss_StopAndFaceCenter2(void *p);
 void ExtraBossObj_State_Unk_ov001_022f57a8(void);
 
 void ExtraBossObj_State_Unk_ov001_022f5424(u8 *p) {
     u8 *r = *(u8 **)(p + 0x84);
     u8 *q;
     u8 *t;
-    ExtraBoss_Unk_ov001_022f3b50(p);
+    ExtraBoss_StepXTowardCameraTarget(p);
     *(s32 *)(p + 0x1c8) -= 1;
     if (*(s32 *)(p + 0x1c8) > 0) {
         return;
@@ -27,5 +27,5 @@ void ExtraBossObj_State_Unk_ov001_022f5424(u8 *p) {
     *(u16 *)(t + 8) = 0x1e;
     t[0xa] = 4;
     t[0xb] = 2;
-    ExtraBoss_Unk_ov001_022f3c30(p);
+    ExtraBoss_StopAndFaceCenter2(p);
 }

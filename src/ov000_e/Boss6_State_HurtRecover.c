@@ -27,7 +27,7 @@ typedef struct {
 } UnkStruct_Boss;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void Boss6_Unk_ov000_022df9d4(s32 a);
+void Boss6_UpdateFlashPalettes(s32 a);
 void Boss6_State_HurtWaitSelectAttack(void);
 
 void Boss6_State_HurtRecover(UnkStruct_Boss *w) {
@@ -40,12 +40,12 @@ void Boss6_State_HurtRecover(UnkStruct_Boss *w) {
         m->unk114 = 0x1000;
         w->base.unk10 = w->unk1118;
         w->unkF4C = 0;
-        Boss6_Unk_ov000_022df9d4(4);
+        Boss6_UpdateFlashPalettes(4);
         w->unkF68 = 0x549f;
         w->unkF6A = 0;
         w->unkF6C = 0x549f;
         return;
     }
     w->unk1118++;
-    Boss6_Unk_ov000_022df9d4(w->unk1118);
+    Boss6_UpdateFlashPalettes(w->unk1118);
 }

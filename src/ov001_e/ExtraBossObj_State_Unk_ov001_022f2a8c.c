@@ -10,7 +10,7 @@ typedef struct UnkStruct_022f2a8c {
     s16 t;
 } UnkStruct_022f2a8c;
 
-void ExtraBoss_Unk_ov001_022f2ca8(UnkStruct_022f2a8c *p);
+void ExtraBoss_HandBoss_SelectNextAttack(UnkStruct_022f2a8c *p);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -31,7 +31,7 @@ void ExtraBossObj_State_Unk_ov001_022f2a8c(UnkStruct_022f2a8c *p) {
     p->t += 0x22;
     if (p->t >= 0x1000) {
         p->flagsB8 &= ~0x200;
-        ExtraBoss_Unk_ov001_022f2ca8(p);
+        ExtraBoss_HandBoss_SelectNextAttack(p);
         return;
     }
     p->x = Lerp(p->t, 0x1c0000, 0xdc000);

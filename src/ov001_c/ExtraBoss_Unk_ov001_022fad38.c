@@ -19,7 +19,7 @@ extern s32 data_ov001_0231d68c[][5];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-u8 *ExtraBossPlayer_Unk_ov001_022fd428(s32 kind, void *parent, s32 x, s32 y, s32 z);
+u8 *ExtraBossPlayer_CreateFxObj(s32 kind, void *parent, s32 x, s32 y, s32 z);
 void *ExtraBoss_GetPlayer(void);
 void ExtraBossObj_State_Unk_ov001_022fac54(void);
 UnkStruct_022fad38_g *ExtraBoss_GetWork(void);
@@ -55,7 +55,7 @@ void ExtraBoss_Unk_ov001_022fad38(void *parent, s32 x, s32 y, s32 z, u16 ang) {
     s32 k;
 
     r = Rand() & 0xff;
-    t = ExtraBossPlayer_Unk_ov001_022fd428(0xe, parent, x, y, z);
+    t = ExtraBossPlayer_CreateFxObj(0xe, parent, x, y, z);
     if (t == NULL)
         return;
     *(u32 *)(t + 0x14) &= ~1;

@@ -30,7 +30,7 @@ extern UnkTouch_022ed548 gTouchState;
 
 void Records_Unk_ov001_022ed490(UnkWork_022ed548 *w, s16 x, s16 y);
 void Records_Unk_ov001_022ed3e0(UnkWork_022ed548 *w);
-void Records_Unk_ov001_022ed390(UnkWork_022ed548 *w, s32 flag);
+void Records_DrawBackButton(UnkWork_022ed548 *w, s32 flag);
 void Records_Unk_ov001_022ed19c(UnkWork_022ed548 *w);
 void Records_Unk_ov001_022ed188(UnkWork_022ed548 *w);
 void Records_Unk_ov001_022ed14c(UnkWork_022ed548 *w);
@@ -46,7 +46,7 @@ void Records_State_Unk_ov001_022ed548(void) {
 
     Records_Unk_ov001_022ed490(w, 0, 0x90);
     Records_Unk_ov001_022ed3e0(w);
-    Records_Unk_ov001_022ed390(w, 0);
+    Records_DrawBackButton(w, 0);
     Records_Unk_ov001_022ed19c(w);
     Records_Unk_ov001_022ed188(w);
     Records_Unk_ov001_022ed14c(w);

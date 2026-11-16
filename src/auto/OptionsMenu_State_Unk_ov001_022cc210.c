@@ -4,7 +4,7 @@
 #pragma thumb on
 
 extern u8 gTaskCurrent[];
-s32 OptionsMenu_Unk_ov001_022c8cc0();
+s32 OptionsMenu_StopWireless();
 s32 OptionsMenu_UpdateAnims();
 s32 OptionsMenu_DrawItems();
 s32 OptionsMenu_Unk_ov001_022cdd28();
@@ -12,7 +12,7 @@ s32 OptionsMenu_Unk_ov001_022cdd28();
 void OptionsMenu_State_Unk_ov001_022cc210(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
     s32 t1 = (*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x1ec);
-    OptionsMenu_Unk_ov001_022c8cc0((*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x1ec));
+    OptionsMenu_StopWireless((*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x1ec));
     OptionsMenu_UpdateAnims(t0);
     OptionsMenu_DrawItems(t0);
     *(u32 *)(t0 + 0x1ec) = (*(u32 *)(t0 + 0x1ec) + 0x1);

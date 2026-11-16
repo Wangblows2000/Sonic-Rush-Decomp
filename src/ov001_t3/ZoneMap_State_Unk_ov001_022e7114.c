@@ -41,7 +41,7 @@ BOOL ZoneMap_Unk_ov001_022e2ee8(s32 a);
 void ZoneMap_Unk_ov001_022e3180(s32 a, s32 b);
 void ZoneMap_Unk_ov001_022e3840(void *c, s32 a);
 void ZoneMap_Unk_ov001_022e3844(void *c, s32 a);
-void ZoneMap_Unk_ov001_022e6dec(UnkWork_022e7114 *w);
+void ZoneMap_UpdateView(UnkWork_022e7114 *w);
 void SysSound_StopBGM(s32 a);
 
 #pragma thumb on
@@ -94,7 +94,7 @@ void ZoneMap_State_Unk_ov001_022e7114(void) {
         ZoneMap_Unk_ov001_022e3840(w->sub->c, 0x4000);
         ZoneMap_Unk_ov001_022e3844(w->sub->c, 2);
     }
-    ZoneMap_Unk_ov001_022e6dec(w);
+    ZoneMap_UpdateView(w);
     w->timer++;
     if (w->timer >= 0x96) {
         data_0208926c.bright = (w->timer - 0x96) >> 1;

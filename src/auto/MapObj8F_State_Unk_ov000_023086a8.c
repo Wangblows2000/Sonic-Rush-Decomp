@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-int Gimmick_Unk_ov000_02307e84();
+int Gimmick_GetRoomIndex();
 int EnemyRoom_Get();
 int MapObj8F_Action_Unk_ov000_02308650();
 
@@ -29,7 +29,7 @@ void MapObj8F_State_Unk_ov000_023086a8(int param_1)
   undefined4 uVar1;
   int iVar2;
   
-  uVar1 = Gimmick_Unk_ov000_02307e84();
+  uVar1 = Gimmick_GetRoomIndex();
   iVar2 = EnemyRoom_Get(1,uVar1);
   if (iVar2 != 0) {
     if ((*(ushort *)(*(int *)(param_1 + 0x1e0) + 4) & 2) == 0) {

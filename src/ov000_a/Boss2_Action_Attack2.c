@@ -98,7 +98,7 @@ extern u32 gRandSeed;
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss2_SetTargetAngle(UnkStruct_022d2730 *s, s32 a);
 void Boss2_State_Attack2Turn(UnkStruct_022d2730 *s);
-void Boss2_State_Unk_ov000_022d255c(UnkStruct_022d2730 *s);
+void Boss2_State_Attack2EnterTurnMode(UnkStruct_022d2730 *s);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -116,7 +116,7 @@ void Boss2_Action_Attack2(void) {
         s->func = Boss2_State_Attack2Turn;
         s->unk146C = 0x27d;
     } else {
-        s->func = Boss2_State_Unk_ov000_022d255c;
+        s->func = Boss2_State_Attack2EnterTurnMode;
         s->unkF84[6].unkA &= ~4;
         s->unkF84[6].unkA |= 0x1000;
         Sound_PlaySeqArc(s->unk1450, 0, 0xa0);

@@ -68,7 +68,7 @@ extern s32 data_ov001_02316974[];
 
 void ExtraBossObj_State_Unk_ov001_022f53f0(void);
 void ExtraBossObj_State_Unk_ov001_022f5424(void);
-void ExtraBoss_Unk_ov001_022f3c30(UnkStruct_022f54dc *p);
+void ExtraBoss_StopAndFaceCenter2(UnkStruct_022f54dc *p);
 
 void ExtraBossObj_State_Unk_ov001_022f54dc(UnkStruct_022f54dc *p) {
     UnkStruct_022f54dc_o *a = p->unk84;
@@ -78,7 +78,7 @@ void ExtraBossObj_State_Unk_ov001_022f54dc(UnkStruct_022f54dc *p) {
     p->unk1CC--;
     if (p->unk1CC <= 0) {
         p->unk74 = ExtraBossObj_State_Unk_ov001_022f53f0;
-        ExtraBoss_Unk_ov001_022f3c30(p);
+        ExtraBoss_StopAndFaceCenter2(p);
         p->unk1C8 = 0x5a;
         p->unkB8 &= ~0x200;
         return;
@@ -88,5 +88,5 @@ void ExtraBossObj_State_Unk_ov001_022f54dc(UnkStruct_022f54dc *p) {
     a->unk10C |= 4;
     p->unk1C8 = data_ov001_02316974[Rand() & 0xf];
     p->unkB8 &= ~0x200;
-    ExtraBoss_Unk_ov001_022f3c30(p);
+    ExtraBoss_StopAndFaceCenter2(p);
 }

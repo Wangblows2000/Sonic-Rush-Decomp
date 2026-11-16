@@ -25,7 +25,7 @@ extern UnkStruct_02369ac0 gBossStatus;
 
 void Boss7_Unk_ov000_022ee198(UnkStruct_022e72ec *s, s32 st);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void EffTrail_Unk_ov000_02326f20(void *p);
+void EffTrail_StartFollow(void *p);
 void Boss7PartD5_MoveState_Unk_ov000_022e72cc(void);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e72ec(UnkStruct_022e72ec *w) {
@@ -41,7 +41,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e72ec(UnkStruct_022e72ec *w) {
     else
         w->base.unk2E = -0x180;
     if (w->unk480 != NULL) {
-        EffTrail_Unk_ov000_02326f20(w->unk480);
+        EffTrail_StartFollow(w->unk480);
         w->unk480 = NULL;
     }
     if (w->unk488 != NULL) {

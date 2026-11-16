@@ -20,7 +20,7 @@ typedef struct UnkStruct_022fe204 {
 } UnkStruct_022fe204;
 
 void EnemyPawnGroup_Action_Unk_ov000_022fe084(UnkStruct_022fe204 *s);
-void Enemy_Unk_ov000_022faf48(UnkStruct_022fe204 *s, s32 a);
+void Enemy_DisableCollidersSetAnim(UnkStruct_022fe204 *s, s32 a);
 void EnemyPawnGroup_State_Unk_ov000_022fe0f8(void);
 void ObjRect_SetBox2D(void *p, s32 a, s32 b, s32 c, s32 d);
 
@@ -29,7 +29,7 @@ void EnemyPawnGroup_Action_Unk_ov000_022fe204(UnkStruct_022fe204 *s) {
         EnemyPawnGroup_Action_Unk_ov000_022fe084(s);
         return;
     }
-    Enemy_Unk_ov000_022faf48(s, 1);
+    Enemy_DisableCollidersSetAnim(s, 1);
     s->unk58 &= ~0x10;
     s->unk5C |= 4;
     s->unk54 &= ~0x1000;

@@ -8,7 +8,7 @@ src/ov000/Boss1Hammer_State_Defeated.c:
     complete
     .text       start:0x022c5f68 end:0x022c5f6c
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c9d9c.c:
+src/ov000/Boss1Neck_State_FollowPlayer.c:
     complete
     .text       start:0x022c9d9c end:0x022c9da8
 
@@ -36,51 +36,51 @@ src/ov000/Boss1Hammer_Action_Hurt.c:
     complete
     .text       start:0x022c5f80 end:0x022c5f90
 
-src/ov000/Boss1Hammer_State_Unk_ov000_022c5f90.c:
+src/ov000/Boss1Hammer_State_Idle_ov000_022c5f90.c:
     complete
     .text       start:0x022c5f90 end:0x022c5f94
 
-src/ov000/Boss1Hammer_Action_Unk_ov000_022c5f94.c:
+src/ov000/Boss1Hammer_Action_Idle_ov000_022c5f94.c:
     complete
     .text       start:0x022c5f94 end:0x022c5fa4
 
-src/ov000/Boss1Hammer_State_Unk_ov000_022c5fa4.c:
+src/ov000/Boss1Hammer_State_Idle_ov000_022c5fa4.c:
     complete
     .text       start:0x022c5fa4 end:0x022c5fa8
 
-src/ov000/Boss1Hammer_Action_Unk_ov000_022c5fa8.c:
+src/ov000/Boss1Hammer_Action_Idle_ov000_022c5fa8.c:
     complete
     .text       start:0x022c5fa8 end:0x022c5fb8
 
-src/ov000/Boss1Hammer_State_Unk_ov000_022c5fb8.c:
+src/ov000/Boss1Hammer_State_Idle_ov000_022c5fb8.c:
     complete
     .text       start:0x022c5fb8 end:0x022c5fbc
 
-src/ov000/Boss1Hammer_Action_Unk_ov000_022c6924.c:
+src/ov000/Boss1Hammer_Action_StartRoll.c:
     complete
     .text       start:0x022c6924 end:0x022c6940
 
-src/ov000/Boss1Hammer_State_Unk_ov000_022c6940.c:
+src/ov000/Boss1Hammer_State_Idle_ov000_022c6940.c:
     complete
     .text       start:0x022c6940 end:0x022c6944
 
-src/ov000/Boss1Hammer_Action_Unk_ov000_022c6944.c:
+src/ov000/Boss1Hammer_Action_Idle_ov000_022c6944.c:
     complete
     .text       start:0x022c6944 end:0x022c6954
 
-src/ov000/Boss1Hammer_State_Unk_ov000_022c6954.c:
+src/ov000/Boss1Hammer_State_Idle_ov000_022c6954.c:
     complete
     .text       start:0x022c6954 end:0x022c6958
 
-src/ov000/Boss1Hammer_Action_Unk_ov000_022c6958.c:
+src/ov000/Boss1Hammer_Action_Idle_ov000_022c6958.c:
     complete
     .text       start:0x022c6958 end:0x022c6968
 
-src/ov000/Boss1Hammer_State_Unk_ov000_022c6968.c:
+src/ov000/Boss1Hammer_State_Idle_ov000_022c6968.c:
     complete
     .text       start:0x022c6968 end:0x022c696c
 
-src/ov000/Boss1Hammer_Action_Unk_ov000_022c696c.c:
+src/ov000/Boss1Hammer_Action_Idle_ov000_022c696c.c:
     complete
     .text       start:0x022c696c end:0x022c697c
 
@@ -104,75 +104,75 @@ src/ov000/Boss1Neck_Action_Hurt.c:
     complete
     .text       start:0x022c74e8 end:0x022c74f8
 
-src/ov000/Boss1_State_Unk_ov000_022c74f8.c:
+src/ov000/Boss1Neck_State_MissileDone.c:
     complete
     .text       start:0x022c74f8 end:0x022c74fc
 
-src/ov000/Boss1_State_Unk_ov000_022c74fc.c:
+src/ov000/Boss1Neck_State_MissileWaitResetPose.c:
     complete
     .text       start:0x022c74fc end:0x022c7514
 
-src/ov000/Boss1_State_Unk_ov000_022c7584.c:
+src/ov000/Boss1Neck_State_MissileWaitRetract.c:
     complete
     .text       start:0x022c7584 end:0x022c759c
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c7970.c:
+src/ov000/Boss1Neck_State_StartTrackPlayer.c:
     complete
     .text       start:0x022c7970 end:0x022c798c
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c7e68.c:
+src/ov000/Boss1Neck_State_MissileWaitIntro.c:
     complete
     .text       start:0x022c7e68 end:0x022c7e80
 
-src/ov000/Boss1Neck_Action_Unk_ov000_022c7f1c.c:
+src/ov000/Boss1Neck_Action_StartMissileAttack.c:
     complete
     .text       start:0x022c7f1c end:0x022c7f34
 
-src/ov000/Boss1Neck_Action_Unk_ov000_022c8940.c:
+src/ov000/Boss1Neck_Action_StartTripleSlam.c:
     complete
     .text       start:0x022c8940 end:0x022c895c
 
-src/ov000/Boss1_State_Unk_ov000_022c895c.c:
+src/ov000/Boss1Neck_State_HammerRollDone.c:
     complete
     .text       start:0x022c895c end:0x022c8960
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8960.c:
+src/ov000/Boss1Neck_State_RollReturnWait3.c:
     complete
     .text       start:0x022c8960 end:0x022c8978
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8a14.c:
+src/ov000/Boss1Neck_State_RollReturnWait2.c:
     complete
     .text       start:0x022c8a14 end:0x022c8a2c
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8a6c.c:
+src/ov000/Boss1Neck_State_RollReturnWait1.c:
     complete
     .text       start:0x022c8a6c end:0x022c8a84
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8ad0.c:
+src/ov000/Boss1Neck_State_RollWaitHammer.c:
     complete
     .text       start:0x022c8ad0 end:0x022c8ad4
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8b38.c:
+src/ov000/Boss1Neck_State_RollWaitAnim2.c:
     complete
     .text       start:0x022c8b38 end:0x022c8b50
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8bb4.c:
+src/ov000/Boss1Neck_State_RollStartWait.c:
     complete
     .text       start:0x022c8bb4 end:0x022c8bd0
 
-src/ov000/Boss1Neck_Action_Unk_ov000_022c8d54.c:
+src/ov000/Boss1Neck_Action_StartHammerRoll.c:
     complete
     .text       start:0x022c8d54 end:0x022c8d64
 
-src/ov000/Boss1Neck_Action_Unk_ov000_022c95a8.c:
+src/ov000/Boss1Neck_Action_StartBigSlam.c:
     complete
     .text       start:0x022c95a8 end:0x022c95b8
 
-src/ov000/Boss1Neck_Action_Unk_ov000_022c9d8c.c:
+src/ov000/Boss1Neck_Action_StartSlam.c:
     complete
     .text       start:0x022c9d8c end:0x022c9d9c
 
-src/ov000/Boss1Neck_Action_Unk_ov000_022c9da8.c:
+src/ov000/Boss1Neck_Action_FollowPlayer.c:
     complete
     .text       start:0x022c9da8 end:0x022c9db8
 
@@ -184,35 +184,35 @@ src/ov000/Boss5PartD3_Destructor.c:
     complete
     .text       start:0x022ca550 end:0x022ca574
 
-src/ov000/Boss1_State_Unk_ov000_022caf78.c:
+src/ov000/Boss1_State_WaitMissileAttack.c:
     complete
     .text       start:0x022caf78 end:0x022cafa4
 
-src/ov000/Boss1_Action_Unk_ov000_022cafa4.c:
+src/ov000/Boss1_Action_WaitMissileAttack.c:
     complete
     .text       start:0x022cafa4 end:0x022cafc4
 
-src/ov000/Boss1_State_Unk_ov000_022cafc4.c:
+src/ov000/Boss1_State_WaitTripleSlam.c:
     complete
     .text       start:0x022cafc4 end:0x022caff0
 
-src/ov000/Boss1_Action_Unk_ov000_022caff0.c:
+src/ov000/Boss1_Action_WaitTripleSlam.c:
     complete
     .text       start:0x022caff0 end:0x022cb010
 
-src/ov000/Boss1_State_Unk_ov000_022cb010.c:
+src/ov000/Boss1_State_WaitHammerRoll.c:
     complete
     .text       start:0x022cb010 end:0x022cb03c
 
-src/ov000/Boss1_State_Unk_ov000_022cb05c.c:
+src/ov000/Boss1_State_WaitBigSlam.c:
     complete
     .text       start:0x022cb05c end:0x022cb088
 
-src/ov000/Boss1_State_Unk_ov000_022cb0a8.c:
+src/ov000/Boss1_State_WaitSlam.c:
     complete
     .text       start:0x022cb0a8 end:0x022cb0d4
 
-src/ov000/Boss1_Action_Unk_ov000_022cb0d4.c:
+src/ov000/Boss1_Action_WaitSlam.c:
     complete
     .text       start:0x022cb0d4 end:0x022cb0f4
 
@@ -220,23 +220,23 @@ src/ov000/Boss1_Unk_ov000_022cc110.c:
     complete
     .text       start:0x022cc110 end:0x022cc114
 
-src/ov000/Boss1_Unk_ov000_022cc114.c:
+src/ov000/Boss1_IsMissileAttackDone.c:
     complete
     .text       start:0x022cc114 end:0x022cc140
 
-src/ov000/Boss1_Unk_ov000_022cc140.c:
+src/ov000/Boss1_IsTripleSlamDone.c:
     complete
     .text       start:0x022cc140 end:0x022cc16c
 
-src/ov000/Boss1_Unk_ov000_022cc16c.c:
+src/ov000/Boss1_IsHammerRollDone.c:
     complete
     .text       start:0x022cc16c end:0x022cc198
 
-src/ov000/Boss1_Unk_ov000_022cc198.c:
+src/ov000/Boss1_IsBigSlamDone.c:
     complete
     .text       start:0x022cc198 end:0x022cc1c4
 
-src/ov000/Boss1_Unk_ov000_022cc1c4.c:
+src/ov000/Boss1_IsSlamDone.c:
     complete
     .text       start:0x022cc1c4 end:0x022cc1f0
 
@@ -288,35 +288,35 @@ src/ov000/Boss3PartCC_State_Defeated.c:
     complete
     .text       start:0x022d63bc end:0x022d63c0
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d63f0.c:
+src/ov000/Boss3PartCC_State_HurtDone.c:
     complete
     .text       start:0x022d63f0 end:0x022d63f4
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d6684.c:
+src/ov000/Boss3PartCC_State_CatchBallDone.c:
     complete
     .text       start:0x022d6684 end:0x022d6688
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d7224.c:
+src/ov000/Boss3PartCC_State_ReturnDone.c:
     complete
     .text       start:0x022d7224 end:0x022d7228
 
-src/ov000/Boss3PartCC_Action_Unk_ov000_022d8184.c:
+src/ov000/Boss3PartCC_Action_StartThrowAttack.c:
     complete
     .text       start:0x022d8184 end:0x022d8194
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d8194.c:
+src/ov000/Boss3PartCC_State_PushDone.c:
     complete
     .text       start:0x022d8194 end:0x022d81ac
 
-src/ov000/Boss3_State_Unk_ov000_022d89a4.c:
+src/ov000/Boss3PartCC_State_SummonBallDone.c:
     complete
     .text       start:0x022d89a4 end:0x022d89a8
 
-src/ov000/Boss3PartCC_Action_Unk_ov000_022d8ba8.c:
+src/ov000/Boss3PartCC_Action_StartSummonBall.c:
     complete
     .text       start:0x022d8ba8 end:0x022d8bb8
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d8bb8.c:
+src/ov000/Boss3PartCC_State_Idle_ov000_022d8bb8.c:
     complete
     .text       start:0x022d8bb8 end:0x022d8bd0
 
@@ -324,47 +324,47 @@ src/ov000/Boss3PartCC_State_Idle.c:
     complete
     .text       start:0x022d8c60 end:0x022d8c64
 
-src/ov000/Boss3_State_Unk_ov000_022d9aa0.c:
+src/ov000/Boss3_State_StartDefeat.c:
     complete
     .text       start:0x022d9aa0 end:0x022d9ab0
 
-src/ov000/Boss3_State_Unk_ov000_022d9c44.c:
+src/ov000/Boss3_State_WaitHurt.c:
     complete
     .text       start:0x022d9c44 end:0x022d9c70
 
-src/ov000/Boss3_State_Unk_ov000_022d9c90.c:
+src/ov000/Boss3_State_WaitKickBall.c:
     complete
     .text       start:0x022d9c90 end:0x022d9cbc
 
-src/ov000/Boss3_State_Unk_ov000_022d9cdc.c:
+src/ov000/Boss3_State_WaitThrowAttack.c:
     complete
     .text       start:0x022d9cdc end:0x022d9d08
 
-src/ov000/Boss3_State_Unk_ov000_022d9d28.c:
+src/ov000/Boss3_State_WaitPushBall.c:
     complete
     .text       start:0x022d9d28 end:0x022d9d54
 
-src/ov000/Boss3_State_Unk_ov000_022d9d74.c:
+src/ov000/Boss3_State_WaitSummonBall.c:
     complete
     .text       start:0x022d9d74 end:0x022d9da0
 
-src/ov000/Boss3_Unk_ov000_022da8e4.c:
+src/ov000/Boss3_IsHurtDone.c:
     complete
     .text       start:0x022da8e4 end:0x022da910
 
-src/ov000/Boss3_Unk_ov000_022da910.c:
+src/ov000/Boss3_IsKickBallDone.c:
     complete
     .text       start:0x022da910 end:0x022da93c
 
-src/ov000/Boss3_Unk_ov000_022da93c.c:
+src/ov000/Boss3_IsThrowAttackDone.c:
     complete
     .text       start:0x022da93c end:0x022da968
 
-src/ov000/Boss3_Unk_ov000_022da968.c:
+src/ov000/Boss3_IsPushBallDone.c:
     complete
     .text       start:0x022da968 end:0x022da994
 
-src/ov000/Boss3_Unk_ov000_022da994.c:
+src/ov000/Boss3_IsSummonBallDone.c:
     complete
     .text       start:0x022da994 end:0x022da9c0
 
@@ -380,7 +380,7 @@ src/ov000/Boss3_Unk_ov000_022daa94.c:
     complete
     .text       start:0x022daa94 end:0x022daab0
 
-src/ov000/Boss4_Unk_ov000_022db7d4.c:
+src/ov000/Boss4_ObjArenaPosToWorld.c:
     complete
     .text       start:0x022db7d4 end:0x022db7ec
 
@@ -400,7 +400,7 @@ src/ov000/Boss4PartCE_Destructor.c:
     complete
     .text       start:0x022dcff8 end:0x022dd004
 
-src/ov000/Boss6_Destructor_Unk_ov000_022dfd74.c:
+src/ov000/Boss6_Destructor_Piece.c:
     complete
     .text       start:0x022dfd74 end:0x022dfd80
 
@@ -484,7 +484,7 @@ src/ov000/BossFPartD8_State_Unk_ov000_022f09e0.c:
     complete
     .text       start:0x022f09e0 end:0x022f09fc
 
-src/ov000/BossFPartD8_State_Unk_ov000_022f0bd0.c:
+src/ov000/BossFPartD8_State_StartWaitTalkDemo.c:
     complete
     .text       start:0x022f0bd0 end:0x022f0bec
 
@@ -596,7 +596,7 @@ src/ov000/EnemyPawnGroup_Destructor.c:
     complete
     .text       start:0x022fece8 end:0x022fecf4
 
-src/ov000/Kuragen_State_Unk_ov000_02300ec4.c:
+src/ov000/KuragenBomb_State_Exploded.c:
     complete
     .text       start:0x02300ec4 end:0x02300ec8
 
@@ -656,7 +656,7 @@ src/ov000/DashP_State_Idle.c:
     complete
     .text       start:0x02307a90 end:0x02307aa4
 
-src/ov000/Gimmick_Unk_ov000_02307e84.c:
+src/ov000/Gimmick_GetRoomIndex.c:
     complete
     .text       start:0x02307e84 end:0x02307e9c
 
@@ -1096,11 +1096,11 @@ src/ov000/Hud_SetRingCount.c:
     complete
     .text       start:0x02337634 end:0x02337650
 
-src/ov000/Hud_Unk_ov000_02337650.c:
+src/ov000/Hud_GetDigitGlyphVramB.c:
     complete
     .text       start:0x02337650 end:0x0233766c
 
-src/ov000/Hud_Unk_ov000_0233766c.c:
+src/ov000/Hud_GetDigitGlyphVram.c:
     complete
     .text       start:0x0233766c end:0x02337688
 
@@ -1108,7 +1108,7 @@ src/ov000/Hud_SetFlags.c:
     complete
     .text       start:0x02337688 end:0x023376a4
 
-src/ov000/Camera_Unk_ov000_02338778.c:
+src/ov000/Camera_LcdSwapDestructor.c:
     complete
     .text       start:0x02338778 end:0x0233877c
 
@@ -1172,11 +1172,11 @@ src/ov000/Camera_GetPrimary.c:
     complete
     .text       start:0x0233b654 end:0x0233b660
 
-src/ov000/Stage_Unk_ov000_0233bc3c.c:
+src/ov000/Stage_ReleaseZoneResourcesNop.c:
     complete
     .text       start:0x0233bc3c end:0x0233bc40
 
-src/ov000/Stage_Unk_ov000_0233bc40.c:
+src/ov000/Stage_SetupZoneResourcesNop.c:
     complete
     .text       start:0x0233bc40 end:0x0233bc44
 
@@ -1188,7 +1188,7 @@ src/ov000/ZoneFx_Zone4_ResetBldyTimer.c:
     complete
     .text       start:0x0233c540 end:0x0233c550
 
-src/ov000/ZoneFx_Zone5_Unk_ov000_0233c5cc.c:
+src/ov000/ZoneFx_Zone5_InactivePaletteNop.c:
     complete
     .text       start:0x0233c5cc end:0x0233c5d0
 
@@ -1356,11 +1356,11 @@ src/ov000/Player_ExitToSpecialStage.c:
     complete
     .text       start:0x0234cfbc end:0x0234cfc8
 
-src/ov000/Stage_Unk_ov000_0234ded8.c:
+src/ov000/Stage_ReleaseCommonResourcesNop.c:
     complete
     .text       start:0x0234ded8 end:0x0234dedc
 
-src/ov000/Stage_Unk_ov000_0234dedc.c:
+src/ov000/Stage_SetupCommonResourcesNop.c:
     complete
     .text       start:0x0234dedc end:0x0234dee0
 
@@ -1404,11 +1404,11 @@ src/ov000/PlayerSelectMenu_GetCompressionType.c:
     complete
     .text       start:0x02357804 end:0x02357810
 
-src/ov000/PlayerSelectMenu_Unk_ov000_02357aa8.c:
+src/ov000/PlayerSelectMenu_SetSlotSpriteNop.c:
     complete
     .text       start:0x02357aa8 end:0x02357aac
 
-src/ov000/PlayerSelectMenu_Unk_ov000_02359cd4.c:
+src/ov000/PlayerSelectMenu_ReleaseNop.c:
     complete
     .text       start:0x02359cd4 end:0x02359cd8
 
@@ -1416,7 +1416,7 @@ src/ov000/RingEffect3D_Destructor.c:
     complete
     .text       start:0x0235abc8 end:0x0235abd8
 
-src/ov000/RingManager_Unk_ov000_0235b08c.c:
+src/ov000/RingManager_SetFlags.c:
     complete
     .text       start:0x0235b08c end:0x0235b0a8
 
@@ -1472,11 +1472,11 @@ src/ov000/ResultsScreen_GetCompressionType.c:
     complete
     .text       start:0x0235d43c end:0x0235d448
 
-src/ov000/ResultsScreen_Unk_ov000_0235d6f4.c:
+src/ov000/ResultsScreen_DrawModelsNop.c:
     complete
     .text       start:0x0235d6f4 end:0x0235d6f8
 
-src/ov000/ResultsScreen_Unk_ov000_0235ec64.c:
+src/ov000/ResultsScreen_ReleaseNop.c:
     complete
     .text       start:0x0235ec64 end:0x0235ec68
 
@@ -1512,15 +1512,15 @@ src/ov000/TimeSelectMenu_GetCompressionType.c:
     complete
     .text       start:0x0235ffc4 end:0x0235ffd0
 
-src/ov000/TimeSelectMenu_Unk_ov000_02360264.c:
+src/ov000/TimeSelectMenu_DrawNop.c:
     complete
     .text       start:0x02360264 end:0x02360268
 
-src/ov000/TimeSelectMenu_Unk_ov000_023622ec.c:
+src/ov000/TimeSelectMenu_ReleaseNopB.c:
     complete
     .text       start:0x023622ec end:0x023622f0
 
-src/ov000/TimeSelectMenu_Unk_ov000_023622f0.c:
+src/ov000/TimeSelectMenu_ReleaseNopA.c:
     complete
     .text       start:0x023622f0 end:0x023622f4
 
@@ -1532,7 +1532,7 @@ src/ov000/TimeSelectMenu_StartMode0.c:
     complete
     .text       start:0x02362b40 end:0x02362b58
 
-src/ov000/Boss1Hammer_State_Unk_ov000_022c5fbc.c:
+src/ov000/Boss1Hammer_State_EndRoll.c:
     complete
     .text       start:0x022c5fbc end:0x022c5fe4
 
@@ -1540,7 +1540,7 @@ src/ov000/Boss1Hammer_State_WaitTimer_ov000_022c67ec.c:
     complete
     .text       start:0x022c67ec end:0x022c6810
 
-src/ov000/Boss1Hammer_State_Unk_ov000_022c6900.c:
+src/ov000/Boss1Hammer_State_WaitRelease.c:
     complete
     .text       start:0x022c6900 end:0x022c6924
 
@@ -1548,11 +1548,11 @@ src/ov000/Boss1Hammer_Destructor.c:
     complete
     .text       start:0x022c74ac end:0x022c74d0
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8874.c:
+src/ov000/Boss1Neck_State_TripleSlamWindUp.c:
     complete
     .text       start:0x022c8874 end:0x022c889c
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8ad4.c:
+src/ov000/Boss1Neck_State_RollWaitAnim3.c:
     complete
     .text       start:0x022c8ad4 end:0x022c8af8
 
@@ -1560,11 +1560,11 @@ src/ov000/Boss1Neck_State_WaitTimer_ov000_022c8b90.c:
     complete
     .text       start:0x022c8b90 end:0x022c8bb4
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c9478.c:
+src/ov000/Boss1Neck_State_BigSlamWindUp.c:
     complete
     .text       start:0x022c9478 end:0x022c94a0
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c9cc0.c:
+src/ov000/Boss1Neck_State_SlamWindUp.c:
     complete
     .text       start:0x022c9cc0 end:0x022c9ce8
 
@@ -1572,15 +1572,15 @@ src/ov000/Boss1Neck_Destructor.c:
     complete
     .text       start:0x022ca184 end:0x022ca1a8
 
-src/ov000/Boss1_Action_Unk_ov000_022cb03c.c:
+src/ov000/Boss1_Action_WaitHammerRoll.c:
     complete
     .text       start:0x022cb03c end:0x022cb05c
 
-src/ov000/Boss1_Action_Unk_ov000_022cb088.c:
+src/ov000/Boss1_Action_WaitBigSlam.c:
     complete
     .text       start:0x022cb088 end:0x022cb0a8
 
-src/ov000/Boss3PartCC_Action_Unk_ov000_022d7204.c:
+src/ov000/Boss3PartCC_Action_StartKickBall.c:
     complete
     .text       start:0x022d7204 end:0x022d7224
 
@@ -1588,7 +1588,7 @@ src/ov000/Boss3PartCC_State_WaitTimer_ov000_022d7754.c:
     complete
     .text       start:0x022d7754 end:0x022d7778
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d8bd0.c:
+src/ov000/Boss3PartCC_State_StartIdle.c:
     complete
     .text       start:0x022d8bd0 end:0x022d8bf8
 
@@ -1596,31 +1596,31 @@ src/ov000/Boss3_Action_Hurt.c:
     complete
     .text       start:0x022d9c70 end:0x022d9c90
 
-src/ov000/Boss3_Action_Unk_ov000_022d9cbc.c:
+src/ov000/Boss3_Action_WaitKickBall.c:
     complete
     .text       start:0x022d9cbc end:0x022d9cdc
 
-src/ov000/Boss3_Action_Unk_ov000_022d9d08.c:
+src/ov000/Boss3_Action_WaitThrowAttack.c:
     complete
     .text       start:0x022d9d08 end:0x022d9d28
 
-src/ov000/Boss3_Action_Unk_ov000_022d9d54.c:
+src/ov000/Boss3_Action_WaitPushBall.c:
     complete
     .text       start:0x022d9d54 end:0x022d9d74
 
-src/ov000/Boss3_Action_Unk_ov000_022d9da0.c:
+src/ov000/Boss3_Action_WaitSummonBall.c:
     complete
     .text       start:0x022d9da0 end:0x022d9dc0
 
-src/ov000/Boss4_Unk_ov000_022db934.c:
+src/ov000/Boss4_GetHealthSpinScale.c:
     complete
     .text       start:0x022db934 end:0x022db954
 
-src/ov000/Boss4PartD1_Unk_ov000_022dc188.c:
+src/ov000/Boss4PartD1_StartBrake.c:
     complete
     .text       start:0x022dc188 end:0x022dc1a8
 
-src/ov000/Boss4PartD0_SubState_Unk_ov000_022dc6cc.c:
+src/ov000/Boss4PartD0_SubState_DestroyOnAnimEnd.c:
     complete
     .text       start:0x022dc6cc end:0x022dc6f4
 
@@ -1792,7 +1792,7 @@ src/ov000/KuragenBomb_Destructor.c:
     complete
     .text       start:0x02301234 end:0x02301258
 
-src/ov000/GmkWall_Action_Unk_ov000_02308b64.c:
+src/ov000/GmkWall_Action_MoveUp.c:
     complete
     .text       start:0x02308b64 end:0x02308b88
 
@@ -1856,7 +1856,7 @@ src/ov000/FixVs_Destructor.c:
     complete
     .text       start:0x0232dbfc end:0x0232dc20
 
-src/ov000/Hud_Unk_ov000_023375f8.c:
+src/ov000/Hud_SetLifeCount.c:
     complete
     .text       start:0x023375f8 end:0x02337618
 
@@ -1916,7 +1916,7 @@ src/ov000/PlayerSelectMenu_State_StartSync.c:
     complete
     .text       start:0x02358524 end:0x02358548
 
-src/ov000/RingManager_Unk_ov000_0235b0a8.c:
+src/ov000/RingManager_GetFlags.c:
     complete
     .text       start:0x0235b0a8 end:0x0235b0c8
 
@@ -1932,7 +1932,7 @@ src/ov000/BossArena_CirclePosToArc.c:
     complete
     .text       start:0x022c5e1c end:0x022c5e80
 
-src/ov000/Boss1_Unk_ov000_022c71d8.c:
+src/ov000/Boss1_SetCameraSide.c:
     complete
     .text       start:0x022c71d8 end:0x022c7274
 
@@ -1940,19 +1940,19 @@ src/ov000/Boss1Hammer_NodeCallback_Hammer.c:
     complete
     .text       start:0x022c72f8 end:0x022c736c
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c82a0.c:
+src/ov000/Boss1Neck_State_TripleSlamStartReraiseShake.c:
     complete
     .text       start:0x022c82a0 end:0x022c82d4
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c87d8.c:
+src/ov000/Boss1Neck_State_TripleSlamHold.c:
     complete
     .text       start:0x022c87d8 end:0x022c8874
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c8d20.c:
+src/ov000/Boss1Neck_State_RollStart.c:
     complete
     .text       start:0x022c8d20 end:0x022c8d54
 
-src/ov000/Boss1Neck_State_Unk_ov000_022c9c24.c:
+src/ov000/Boss1Neck_State_SlamHold.c:
     complete
     .text       start:0x022c9c24 end:0x022c9cc0
 
@@ -1960,27 +1960,27 @@ src/ov000/Boss1Neck_NodeCallback_NeckHam.c:
     complete
     .text       start:0x022ca0a8 end:0x022ca11c
 
-src/ov000/Boss1Neck_Action_Unk_ov000_022ca484.c:
+src/ov000/Boss5PartD3_Action_Launch.c:
     complete
     .text       start:0x022ca484 end:0x022ca4e8
 
-src/ov000/Boss1_State_Unk_ov000_022cb0f4.c:
+src/ov000/Boss1_State_Idle.c:
     complete
     .text       start:0x022cb0f4 end:0x022cb12c
 
-src/ov000/Boss1_Action_Unk_ov000_022cbe38.c:
+src/ov000/Boss1_Action_StartMissileAttack.c:
     complete
     .text       start:0x022cbe38 end:0x022cbe88
 
-src/ov000/Boss1_Action_Unk_ov000_022cbe88.c:
+src/ov000/Boss1_Action_StartTripleSlam.c:
     complete
     .text       start:0x022cbe88 end:0x022cbed8
 
-src/ov000/Boss1_Action_Unk_ov000_022cbf28.c:
+src/ov000/Boss1_Action_StartBigSlam.c:
     complete
     .text       start:0x022cbf28 end:0x022cbf78
 
-src/ov000/Boss1_Action_Unk_ov000_022cbf78.c:
+src/ov000/Boss1_Action_StartSlam.c:
     complete
     .text       start:0x022cbf78 end:0x022cbfc8
 
@@ -1988,7 +1988,7 @@ src/ov000/Boss1Neck_Unk_ov000_022cc1f0.c:
     complete
     .text       start:0x022cc1f0 end:0x022cc224
 
-src/ov000/Boss1Neck_Unk_ov000_022cc4cc.c:
+src/ov000/Boss1Neck_CalcTurretAngle.c:
     complete
     .text       start:0x022cc4cc end:0x022cc530
 
@@ -2036,15 +2036,15 @@ src/ov000/Boss3PartCC_Action_Defeat.c:
     complete
     .text       start:0x022d63c0 end:0x022d63f0
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d6e70.c:
+src/ov000/Boss3PartCC_State_StartTurn.c:
     complete
     .text       start:0x022d6e70 end:0x022d6ed4
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d76bc.c:
+src/ov000/Boss3PartCC_State_PickEdgeTarget.c:
     complete
     .text       start:0x022d76bc end:0x022d7754
 
-src/ov000/Boss3PartCC_State_Unk_ov000_022d836c.c:
+src/ov000/Boss3PartCC_State_StartStagger.c:
     complete
     .text       start:0x022d836c end:0x022d8398
 
@@ -2056,15 +2056,15 @@ src/ov000/Boss3PartCC_Destructor.c:
     complete
     .text       start:0x022d9230 end:0x022d9264
 
-src/ov000/Boss3_Action_Unk_ov000_022d9e1c.c:
+src/ov000/Boss3_Action_Idle.c:
     complete
     .text       start:0x022d9e1c end:0x022d9e48
 
-src/ov000/Boss3_Unk_ov000_022dac2c.c:
+src/ov000/Boss3_StartSummonBall.c:
     complete
     .text       start:0x022dac2c end:0x022dac60
 
-src/ov000/Boss3_Unk_ov000_022dac60.c:
+src/ov000/Boss3_IdleAll.c:
     complete
     .text       start:0x022dac60 end:0x022dac94
 
@@ -2096,19 +2096,19 @@ src/ov000/Boss4PartD2_Destructor.c:
     complete
     .text       start:0x022dbe38 end:0x022dbe6c
 
-src/ov000/Boss4PartD1_SubState_Unk_ov000_022dc158.c:
+src/ov000/Boss4PartD1_SubState_Brake.c:
     complete
     .text       start:0x022dc158 end:0x022dc188
 
-src/ov000/Boss4PartD1_SubState_Unk_ov000_022dc1a8.c:
+src/ov000/Boss4PartD1_SubState_Chase.c:
     complete
     .text       start:0x022dc1a8 end:0x022dc1d4
 
-src/ov000/Boss4PartD1_Unk_ov000_022dc1d4.c:
+src/ov000/Boss4PartD1_StartChase.c:
     complete
     .text       start:0x022dc1d4 end:0x022dc20c
 
-src/ov000/Boss4PartD1_SubState_Unk_ov000_022dc2b8.c:
+src/ov000/Boss4PartD1_SubState_Fall.c:
     complete
     .text       start:0x022dc2b8 end:0x022dc2ec
 
@@ -2124,7 +2124,7 @@ src/ov000/Boss4PartCE_Draw.c:
     complete
     .text       start:0x022dd004 end:0x022dd068
 
-src/ov000/Boss4_SubState_Unk_ov000_022ddd20.c:
+src/ov000/Boss4_SubState_SlamWaitAnim.c:
     complete
     .text       start:0x022ddd20 end:0x022ddd4c
 
@@ -2132,7 +2132,7 @@ src/ov000/Boss4_Action_Clash.c:
     complete
     .text       start:0x022de224 end:0x022de288
 
-src/ov000/Boss6_State_Unk_ov000_022dfb34.c:
+src/ov000/Boss6_State_PieceSlide.c:
     complete
     .text       start:0x022dfb34 end:0x022dfb68
 
@@ -2336,7 +2336,7 @@ src/ov000/MapObject_AllocSpawnEntry.c:
     complete
     .text       start:0x022faeac end:0x022faf48
 
-src/ov000/Enemy_Unk_ov000_022faf48.c:
+src/ov000/Enemy_DisableCollidersSetAnim.c:
     complete
     .text       start:0x022faf48 end:0x022faf7c
 
@@ -2536,7 +2536,7 @@ src/ov000/StageZoneScript_Main.c:
     complete
     .text       start:0x0231fbf0 end:0x0231fc1c
 
-src/ov000/DecGroup41_Action_Unk_ov000_023216a4.c:
+src/ov000/DecGroup41_Action_Turn.c:
     complete
     .text       start:0x023216a4 end:0x023216cc
 
@@ -2552,7 +2552,7 @@ src/ov000/Decoration_In_Default.c:
     complete
     .text       start:0x023265a8 end:0x023265d8
 
-src/ov000/EffTrail_Unk_ov000_02326f20.c:
+src/ov000/EffTrail_StartFollow.c:
     complete
     .text       start:0x02326f20 end:0x02326f48
 
@@ -2600,7 +2600,7 @@ src/ov000/ScorePopup_Destructor.c:
     complete
     .text       start:0x0232b870 end:0x0232b898
 
-src/ov000/EnemyRoomHud_Action_Unk_ov000_0232ce4c.c:
+src/ov000/EnemyRoomHud_Action_Vanish.c:
     complete
     .text       start:0x0232ce4c end:0x0232ce78
 
@@ -2708,11 +2708,11 @@ src/ov000/RingManager_DrawRing3D.c:
     complete
     .text       start:0x0235ab14 end:0x0235ab48
 
-src/ov000/RingManager_Unk_ov000_0235b2c4.c:
+src/ov000/RingManager_CollideObjMap.c:
     complete
     .text       start:0x0235b2c4 end:0x0235b484
 
-src/ov000/RingManager_Unk_ov000_0235b484.c:
+src/ov000/RingManager_CollideMapAll.c:
     complete
     .text       start:0x0235b484 end:0x0235b644
 
@@ -2780,31 +2780,31 @@ src/ov000_a/BossArena_ArcToCirclePos.c:
     complete
     .text       start:0x022c5e80 end:0x022c5f28
 
-src/ov000_a/Boss1Hammer_State_Unk_ov000_022c5fe4.c:
+src/ov000_a/Boss1Hammer_State_SlideToEdge.c:
     complete
     .text       start:0x022c5fe4 end:0x022c61ec
 
-src/ov000_a/Boss1Hammer_State_Unk_ov000_022c61ec.c:
+src/ov000_a/Boss1Hammer_State_TurnAtEdge.c:
     complete
     .text       start:0x022c61ec end:0x022c62a0
 
-src/ov000_a/Boss1Hammer_State_Unk_ov000_022c62a0.c:
+src/ov000_a/Boss1Hammer_State_SlideBackSpinDown.c:
     complete
     .text       start:0x022c62a0 end:0x022c64a8
 
-src/ov000_a/Boss1_State_Unk_ov000_022c64a8.c:
+src/ov000_a/Boss1Hammer_State_FinishRoll.c:
     complete
     .text       start:0x022c64a8 end:0x022c6548
 
-src/ov000_a/Boss1Hammer_State_Unk_ov000_022c6548.c:
+src/ov000_a/Boss1Hammer_State_Roll.c:
     complete
     .text       start:0x022c6548 end:0x022c6618
 
-src/ov000_a/Boss1Hammer_State_Unk_ov000_022c6618.c:
+src/ov000_a/Boss1Hammer_State_LaunchRoll.c:
     complete
     .text       start:0x022c6618 end:0x022c66a4
 
-src/ov000_a/Boss1Hammer_State_Unk_ov000_022c66a4.c:
+src/ov000_a/Boss1Hammer_State_SpinUp.c:
     complete
     .text       start:0x022c66a4 end:0x022c67a4
 
@@ -2820,11 +2820,11 @@ src/ov000_a/Boss1Hammer_Collide.c:
     complete
     .text       start:0x022c6db4 end:0x022c6e58
 
-src/ov000_a/Boss1Hammer_Unk_ov000_022c6e58.c:
+src/ov000_a/Boss1Hammer_SpawnDebris.c:
     complete
     .text       start:0x022c6e58 end:0x022c7158
 
-src/ov000_a/Boss1Hammer_Unk_ov000_022c7158.c:
+src/ov000_a/Boss1Hammer_ApplySpinRotation.c:
     complete
     .text       start:0x022c7158 end:0x022c71d8
 
@@ -2836,131 +2836,131 @@ src/ov000_a/Boss1Hammer_Draw.c:
     complete
     .text       start:0x022c736c end:0x022c74ac
 
-src/ov000_a/Boss1_State_Unk_ov000_022c7514.c:
+src/ov000_a/Boss1Neck_State_MissileResetPose.c:
     complete
     .text       start:0x022c7514 end:0x022c7584
 
-src/ov000_a/Boss1_State_Unk_ov000_022c767c.c:
+src/ov000_a/Boss1Neck_State_FireAtPlayer.c:
     complete
     .text       start:0x022c767c end:0x022c7818
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c7818.c:
+src/ov000_a/Boss1Neck_State_TrackPlayer.c:
     complete
     .text       start:0x022c7818 end:0x022c7970
 
-src/ov000_a/Boss1_State_Unk_ov000_022c798c.c:
+src/ov000_a/Boss1Neck_State_FireAtTarget.c:
     complete
     .text       start:0x022c798c end:0x022c7b20
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c7b20.c:
+src/ov000_a/Boss1Neck_State_AimAtTarget.c:
     complete
     .text       start:0x022c7b20 end:0x022c7be4
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c7be4.c:
+src/ov000_a/Boss1Neck_State_PickRandomTarget.c:
     complete
     .text       start:0x022c7be4 end:0x022c7c70
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c7d54.c:
+src/ov000_a/Boss1Neck_State_MissilePoseAnim.c:
     complete
     .text       start:0x022c7d54 end:0x022c7dfc
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c7dfc.c:
+src/ov000_a/Boss1Neck_State_MissileSetPose.c:
     complete
     .text       start:0x022c7dfc end:0x022c7e68
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c7fcc.c:
+src/ov000_a/Boss1Neck_State_TripleSlamRecover.c:
     complete
     .text       start:0x022c7fcc end:0x022c8044
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c8044.c:
+src/ov000_a/Boss1Neck_State_TripleSlamFinalShake.c:
     complete
     .text       start:0x022c8044 end:0x022c8104
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c8104.c:
+src/ov000_a/Boss1Neck_State_TripleSlamFinalImpact.c:
     complete
     .text       start:0x022c8104 end:0x022c825c
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c82d4.c:
+src/ov000_a/Boss1Neck_State_TripleSlamRewind.c:
     complete
     .text       start:0x022c82d4 end:0x022c8348
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c8428.c:
+src/ov000_a/Boss1Neck_State_TripleSlamDown.c:
     complete
     .text       start:0x022c8428 end:0x022c85e8
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c85e8.c:
+src/ov000_a/Boss1Neck_State_TripleSlamStrike.c:
     complete
     .text       start:0x022c85e8 end:0x022c86b4
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c86b4.c:
+src/ov000_a/Boss1Neck_State_TripleSlamRaise.c:
     complete
     .text       start:0x022c86b4 end:0x022c87d8
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c889c.c:
+src/ov000_a/Boss1Neck_State_TripleSlamApproach.c:
     complete
     .text       start:0x022c889c end:0x022c8940
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c8bd0.c:
+src/ov000_a/Boss1Neck_State_RollReleaseHammer.c:
     complete
     .text       start:0x022c8bd0 end:0x022c8c50
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c8ca4.c:
+src/ov000_a/Boss1Neck_State_RollMoveToEdge.c:
     complete
     .text       start:0x022c8ca4 end:0x022c8d20
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c8dec.c:
+src/ov000_a/Boss1Neck_State_BigSlamRecover.c:
     complete
     .text       start:0x022c8dec end:0x022c8e64
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c8e64.c:
+src/ov000_a/Boss1Neck_State_BigSlamImpactShake.c:
     complete
     .text       start:0x022c8e64 end:0x022c8f24
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c90e8.c:
+src/ov000_a/Boss1Neck_State_BigSlamDown.c:
     complete
     .text       start:0x022c90e8 end:0x022c91d4
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c91d4.c:
+src/ov000_a/Boss1Neck_State_BigSlamStrike.c:
     complete
     .text       start:0x022c91d4 end:0x022c9294
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c9294.c:
+src/ov000_a/Boss1Neck_State_BigSlamRaise.c:
     complete
     .text       start:0x022c9294 end:0x022c93bc
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c93bc.c:
+src/ov000_a/Boss1Neck_State_BigSlamHold.c:
     complete
     .text       start:0x022c93bc end:0x022c9478
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c94a0.c:
+src/ov000_a/Boss1Neck_State_BigSlamApproach.c:
     complete
     .text       start:0x022c94a0 end:0x022c95a8
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c9640.c:
+src/ov000_a/Boss1Neck_State_SlamRecover.c:
     complete
     .text       start:0x022c9640 end:0x022c96b8
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c96b8.c:
+src/ov000_a/Boss1Neck_State_SlamImpactShake.c:
     complete
     .text       start:0x022c96b8 end:0x022c9778
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c9778.c:
+src/ov000_a/Boss1Neck_State_SlamImpact.c:
     complete
     .text       start:0x022c9778 end:0x022c98d0
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c98d0.c:
+src/ov000_a/Boss1Neck_State_SlamDown.c:
     complete
     .text       start:0x022c98d0 end:0x022c9a6c
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c9a6c.c:
+src/ov000_a/Boss1Neck_State_SlamStrike.c:
     complete
     .text       start:0x022c9a6c end:0x022c9b00
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c9b00.c:
+src/ov000_a/Boss1Neck_State_SlamRaise.c:
     complete
     .text       start:0x022c9b00 end:0x022c9c24
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022c9ce8.c:
+src/ov000_a/Boss1Neck_State_SlamApproach.c:
     complete
     .text       start:0x022c9ce8 end:0x022c9d8c
 
@@ -2968,7 +2968,7 @@ src/ov000_a/Boss2_DrawDefeatBackground.c:
     complete
     .text       start:0x022cfe5c end:0x022cff50
 
-src/ov000_a/Boss6_Unk_ov000_022e237c.c:
+src/ov000_a/Boss6_SetDefeatCameraShot.c:
     complete
     .text       start:0x022e237c end:0x022e2470
 
@@ -3088,11 +3088,11 @@ src/ov000_a/Boss1Neck_Draw.c:
     complete
     .text       start:0x022ca11c end:0x022ca184
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022ca1ec.c:
+src/ov000_a/Boss5PartD3_State_Explode.c:
     complete
     .text       start:0x022ca1ec end:0x022ca314
 
-src/ov000_a/Boss1Neck_State_Unk_ov000_022ca314.c:
+src/ov000_a/Boss5PartD3_State_Fly.c:
     complete
     .text       start:0x022ca314 end:0x022ca484
 
@@ -3100,19 +3100,19 @@ src/ov000_a/Boss5PartD3_Draw.c:
     complete
     .text       start:0x022ca4e8 end:0x022ca550
 
-src/ov000_a/Boss1_State_Unk_ov000_022ca574.c:
+src/ov000_a/Boss1_State_DefeatFinish.c:
     complete
     .text       start:0x022ca574 end:0x022ca63c
 
-src/ov000_a/Boss1_State_Unk_ov000_022ca63c.c:
+src/ov000_a/Boss1_State_DefeatExplode.c:
     complete
     .text       start:0x022ca63c end:0x022ca890
 
-src/ov000_a/Boss1_State_Unk_ov000_022ca8cc.c:
+src/ov000_a/Boss1_State_DefeatCamera3.c:
     complete
     .text       start:0x022ca8cc end:0x022ca9cc
 
-src/ov000_a/Boss1_State_Unk_ov000_022caa08.c:
+src/ov000_a/Boss1_State_DefeatCamera2.c:
     complete
     .text       start:0x022caa08 end:0x022cab0c
 
@@ -3132,7 +3132,7 @@ src/ov000_a/Boss1_Action_Hurt.c:
     complete
     .text       start:0x022cae4c end:0x022caf78
 
-src/ov000_a/Boss1_Action_Unk_ov000_022cb12c.c:
+src/ov000_a/Boss1_Action_Idle.c:
     complete
     .text       start:0x022cb12c end:0x022cb218
 
@@ -3140,7 +3140,7 @@ src/ov000_a/Boss1_State_WaitForStart.c:
     complete
     .text       start:0x022cb218 end:0x022cb344
 
-src/ov000_a/Boss1_Unk_ov000_022cb344.c:
+src/ov000_a/Boss1_SelectNextAttack.c:
     complete
     .text       start:0x022cb344 end:0x022cbb7c
 
@@ -3156,19 +3156,19 @@ src/ov000_a/Boss1_UpdateCameraShake.c:
     complete
     .text       start:0x022cc06c end:0x022cc110
 
-src/ov000_a/Boss1_Unk_ov000_022cc224.c:
+src/ov000_a/Boss1_ResetCamera.c:
     complete
     .text       start:0x022cc224 end:0x022cc35c
 
-src/ov000_a/Boss1_Unk_ov000_022cc35c.c:
+src/ov000_a/Boss1_SetFlashPalette.c:
     complete
     .text       start:0x022cc35c end:0x022cc3e8
 
-src/ov000_a/Boss1_Unk_ov000_022cc3e8.c:
+src/ov000_a/Boss1_SetPalettes.c:
     complete
     .text       start:0x022cc3e8 end:0x022cc4cc
 
-src/ov000_a/Boss1Neck_Unk_ov000_022cc530.c:
+src/ov000_a/Boss1Neck_GetTurretMuzzlePos.c:
     complete
     .text       start:0x022cc530 end:0x022cc6d4
 
@@ -3216,7 +3216,7 @@ src/ov000_a/Boss2_OnHit_PushPlayer.c:
     complete
     .text       start:0x022cd738 end:0x022cd880
 
-src/ov000_a/Boss2_OnHit_Unk_ov000_022cdbb0.c:
+src/ov000_a/Boss2_OnHit_DamageAttack2.c:
     complete
     .text       start:0x022cdbb0 end:0x022cde2c
 
@@ -3308,23 +3308,23 @@ src/ov000_b/EffSpinSmoke2_Create.c:
     complete
     .text       start:0x02333ef0 end:0x023340f0
 
-src/ov000_a/Boss2_Unk_ov000_022cde2c.c:
+src/ov000_a/Boss2_UpdateAttack3Hitboxes.c:
     complete
     .text       start:0x022cde2c end:0x022ce194
 
-src/ov000_a/Boss2_Unk_ov000_022ce194.c:
+src/ov000_a/Boss2_UpdateAttack2Hitboxes.c:
     complete
     .text       start:0x022ce194 end:0x022ce474
 
-src/ov000_a/Boss2_Unk_ov000_022ce474.c:
+src/ov000_a/Boss2_UpdateBodyHitboxes.c:
     complete
     .text       start:0x022ce474 end:0x022ce614
 
-src/ov000_a/Boss2_Draw_Unk_ov000_022ce614.c:
+src/ov000_a/Boss2_Draw_ModelsAndHitboxes.c:
     complete
     .text       start:0x022ce614 end:0x022cebc8
 
-src/ov000_a/Boss2_Draw_Unk_ov000_022cebc8.c:
+src/ov000_a/Boss2_Draw_PlayerOnArena.c:
     complete
     .text       start:0x022cebc8 end:0x022cedd8
 
@@ -3416,43 +3416,43 @@ src/ov000_b/DecAnimal_Create.c:
     complete
     .text       start:0x0231e324 end:0x0231e850
 
-src/auto/Boss1Hammer_State_Unk_ov000_022c6810.c:
+src/auto/Boss1Hammer_State_Land.c:
     complete
     .text       start:0x022c6810 end:0x022c6850
 
-src/auto/Boss1_State_Unk_ov000_022c759c.c:
+src/auto/Boss1Neck_State_MissileRetractAnim.c:
     complete
     .text       start:0x022c759c end:0x022c75dc
 
-src/auto/Boss1Neck_State_Unk_ov000_022c7d14.c:
+src/auto/Boss1Neck_State_MissileReadyAnim.c:
     complete
     .text       start:0x022c7d14 end:0x022c7d54
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8978.c:
+src/auto/Boss1Neck_State_RollReturnAnim3.c:
     complete
     .text       start:0x022c8978 end:0x022c89b8
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8a2c.c:
+src/auto/Boss1Neck_State_RollReturnAnim2.c:
     complete
     .text       start:0x022c8a2c end:0x022c8a6c
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8af8.c:
+src/auto/Boss1Neck_State_RollAnim3.c:
     complete
     .text       start:0x022c8af8 end:0x022c8b38
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8b50.c:
+src/auto/Boss1Neck_State_RollAnim2.c:
     complete
     .text       start:0x022c8b50 end:0x022c8b90
 
-src/auto/Boss1_State_Unk_ov000_022c8d64.c:
+src/auto/Boss1Neck_State_BigSlamDone.c:
     complete
     .text       start:0x022c8d64 end:0x022c8da0
 
-src/auto/Boss1_State_Unk_ov000_022c95b8.c:
+src/auto/Boss1Neck_State_SlamDone.c:
     complete
     .text       start:0x022c95b8 end:0x022c95f4
 
-src/auto/Boss1Neck_Unk_ov000_022c9f7c.c:
+src/auto/Boss1Neck_MoveToX.c:
     complete
     .text       start:0x022c9f7c end:0x022c9fbc
 
@@ -3464,7 +3464,7 @@ src/auto/Boss1_Action_HurtAll.c:
     complete
     .text       start:0x022cbdf4 end:0x022cbe38
 
-src/auto/Boss1_Action_Unk_ov000_022cbfc8.c:
+src/auto/Boss1_Action_IdleAll.c:
     complete
     .text       start:0x022cbfc8 end:0x022cc00c
 
@@ -3476,27 +3476,27 @@ src/auto/Boss3_Action_DefeatAll.c:
     complete
     .text       start:0x022daab0 end:0x022daaf4
 
-src/auto/Boss3_Unk_ov000_022dab6c.c:
+src/auto/Boss3_StartKickBall.c:
     complete
     .text       start:0x022dab6c end:0x022dabac
 
-src/auto/Boss3_Unk_ov000_022dabac.c:
+src/auto/Boss3_StartThrowAttack.c:
     complete
     .text       start:0x022dabac end:0x022dabec
 
-src/auto/Boss3_Unk_ov000_022dabec.c:
+src/auto/Boss3_StartPushBall.c:
     complete
     .text       start:0x022dabec end:0x022dac2c
 
-src/auto/Boss4PartD1_Unk_ov000_022dc274.c:
+src/auto/Boss4PartD1_StartTurnToPlayer.c:
     complete
     .text       start:0x022dc274 end:0x022dc2b8
 
-src/auto/Boss4PartD1_Unk_ov000_022dc2ec.c:
+src/auto/Boss4PartD1_StartFall.c:
     complete
     .text       start:0x022dc2ec end:0x022dc328
 
-src/auto/Boss4_Unk_ov000_022de304.c:
+src/auto/Boss4_Action_StartSpin.c:
     complete
     .text       start:0x022de304 end:0x022de344
 
@@ -3524,7 +3524,7 @@ src/auto/EnemyPawnGroup_Action_Unk_ov000_022fdfd4.c:
     complete
     .text       start:0x022fdfd4 end:0x022fe00c
 
-src/auto/EnemyFlapperGroup_Action_Unk_ov000_022ffd68.c:
+src/auto/EnemyFlapperGroup_Action_FireShot_ov000_022ffd68.c:
     complete
     .text       start:0x022ffd68 end:0x022ffdac
 
@@ -3532,7 +3532,7 @@ src/auto/EnemyFlapperGroup_Action_Unk_ov000_02300808.c:
     complete
     .text       start:0x02300808 end:0x02300844
 
-src/auto/Kuragen_Action_Unk_ov000_0230119c.c:
+src/auto/KuragenBomb_Action_Hold.c:
     complete
     .text       start:0x0230119c end:0x023011d4
 
@@ -3540,7 +3540,7 @@ src/auto/BubbleSpawner_Action_Init.c:
     complete
     .text       start:0x02302c78 end:0x02302cb4
 
-src/auto/Cargo_Action_Unk_ov000_02304f10.c:
+src/auto/Cargo_Action_StartMove.c:
     complete
     .text       start:0x02304f10 end:0x02304f50
 
@@ -3600,11 +3600,11 @@ src/auto/EnemyRoomHud_Destructor.c:
     complete
     .text       start:0x0232d5e4 end:0x0232d620
 
-src/auto/Camera_Unk_ov000_0233905c.c:
+src/auto/Camera_SetYFromPartnerScreen.c:
     complete
     .text       start:0x0233905c end:0x02339094
 
-src/auto/Camera_Unk_ov000_02339094.c:
+src/auto/Camera_SetXFromPartnerScreen.c:
     complete
     .text       start:0x02339094 end:0x023390cc
 
@@ -3772,11 +3772,11 @@ src/auto/TimeSelectMenu_Destructor.c:
     complete
     .text       start:0x023622f4 end:0x0236232c
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8348.c:
+src/auto/Boss1Neck_State_TripleSlamStartRewind.c:
     complete
     .text       start:0x022c8348 end:0x022c8390
 
-src/auto/Boss1Neck_Unk_ov000_022ca060.c:
+src/auto/Boss1Neck_TrackPlayerFast.c:
     complete
     .text       start:0x022ca060 end:0x022ca0a8
 
@@ -3808,7 +3808,7 @@ src/auto/BossFPartDE_State_Unk_ov000_022f653c.c:
     complete
     .text       start:0x022f653c end:0x022f6584
 
-src/auto/EnemyFlapperGroup_Action_Unk_ov000_02300578.c:
+src/auto/EnemyFlapperGroup_Action_FireShot_ov000_02300578.c:
     complete
     .text       start:0x02300578 end:0x023005bc
 
@@ -3816,7 +3816,7 @@ src/auto/Rock_Action_Fall.c:
     complete
     .text       start:0x023141b8 end:0x02314200
 
-src/auto/RopeCSpring_Action_Unk_ov000_02314b34.c:
+src/auto/RopeCSpring_Action_Active.c:
     complete
     .text       start:0x02314b34 end:0x02314b78
 
@@ -3828,91 +3828,91 @@ src/auto/PlayerSelectMenu_SetSprite654Anim3.c:
     complete
     .text       start:0x02357c8c end:0x02357cd0
 
-src/auto/Boss1Hammer_State_Unk_ov000_022c68ac.c:
+src/auto/Boss1Hammer_State_StartFall.c:
     complete
     .text       start:0x022c68ac end:0x022c6900
 
-src/auto/Boss1_State_Unk_ov000_022c75dc.c:
+src/auto/Boss1Neck_State_MissileWaitEndAnim.c:
     complete
     .text       start:0x022c75dc end:0x022c7630
 
-src/auto/Boss1_State_Unk_ov000_022c7630.c:
+src/auto/Boss1Neck_State_MissileEndAnim.c:
     complete
     .text       start:0x022c7630 end:0x022c767c
 
-src/auto/Boss1Neck_State_Unk_ov000_022c7ccc.c:
+src/auto/Boss1Neck_State_MissileWaitReady.c:
     complete
     .text       start:0x022c7ccc end:0x022c7d14
 
-src/auto/Boss1Neck_State_Unk_ov000_022c7e80.c:
+src/auto/Boss1Neck_State_MissileIntroAnim.c:
     complete
     .text       start:0x022c7e80 end:0x022c7ee0
 
-src/auto/Boss1Neck_State_Unk_ov000_022c7ee0.c:
+src/auto/Boss1Neck_State_MissileWaitStart.c:
     complete
     .text       start:0x022c7ee0 end:0x022c7f1c
 
-src/auto/Boss1_State_Unk_ov000_022c7f34.c:
+src/auto/Boss1Neck_State_TripleSlamDone.c:
     complete
     .text       start:0x022c7f34 end:0x022c7f80
 
-src/auto/Boss1Neck_State_Unk_ov000_022c7f80.c:
+src/auto/Boss1Neck_State_TripleSlamRecoverWait.c:
     complete
     .text       start:0x022c7f80 end:0x022c7fcc
 
-src/auto/Boss1Neck_State_Unk_ov000_022c825c.c:
+src/auto/Boss1Neck_State_TripleSlamReraiseShake.c:
     complete
     .text       start:0x022c825c end:0x022c82a0
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8390.c:
+src/auto/Boss1Neck_State_TripleSlamImpactShake.c:
     complete
     .text       start:0x022c8390 end:0x022c83d4
 
-src/auto/Boss1Neck_State_Unk_ov000_022c83d4.c:
+src/auto/Boss1Neck_State_TripleSlamAfterImpact.c:
     complete
     .text       start:0x022c83d4 end:0x022c8428
 
-src/auto/Boss1Neck_State_Unk_ov000_022c89b8.c:
+src/auto/Boss1Neck_State_RollRegrabHammer.c:
     complete
     .text       start:0x022c89b8 end:0x022c8a14
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8a84.c:
+src/auto/Boss1Neck_State_RollReturnAnim1.c:
     complete
     .text       start:0x022c8a84 end:0x022c8ad0
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8c50.c:
+src/auto/Boss1Neck_State_RollReleaseAnim.c:
     complete
     .text       start:0x022c8c50 end:0x022c8ca4
 
-src/auto/Boss1Neck_State_Unk_ov000_022c8da0.c:
+src/auto/Boss1Neck_State_BigSlamRecoverWait.c:
     complete
     .text       start:0x022c8da0 end:0x022c8dec
 
-src/auto/Boss1Neck_State_Unk_ov000_022c95f4.c:
+src/auto/Boss1Neck_State_SlamRecoverWait.c:
     complete
     .text       start:0x022c95f4 end:0x022c9640
 
-src/auto/Boss1Neck_Unk_ov000_022c9fbc.c:
+src/auto/Boss1Neck_TrackPlayerSlow.c:
     complete
     .text       start:0x022c9fbc end:0x022ca00c
 
-src/auto/Boss1Neck_Unk_ov000_022ca00c.c:
+src/auto/Boss1Neck_TrackPlayerMedium.c:
     complete
     .text       start:0x022ca00c end:0x022ca060
 
-src/auto/Boss1Neck_State_Unk_ov000_022ca1a8.c:
+src/auto/Boss5PartD3_State_Exploding.c:
     complete
     .text       start:0x022ca1a8 end:0x022ca1ec
 
-src/auto/Boss1_State_Unk_ov000_022ca890.c:
+src/auto/Boss1_State_DefeatFade_ov000_022ca890.c:
     complete
     .text       start:0x022ca890 end:0x022ca8cc
 
-src/auto/Boss1_State_Unk_ov000_022ca9cc.c:
+src/auto/Boss1_State_DefeatFade_ov000_022ca9cc.c:
     complete
     .text       start:0x022ca9cc end:0x022caa08
 
-src/auto/Boss1_State_Unk_ov000_022cab0c.c:
+src/auto/Boss1_State_DefeatFade_ov000_022cab0c.c:
     complete
     .text       start:0x022cab0c end:0x022cab48
 
@@ -3920,7 +3920,7 @@ src/auto/Boss1_Draw.c:
     complete
     .text       start:0x022cbcb4 end:0x022cbcf4
 
-src/auto/Boss1_Action_Unk_ov000_022cbed8.c:
+src/auto/Boss1_Action_StartHammerRoll.c:
     complete
     .text       start:0x022cbed8 end:0x022cbf28
 
@@ -3936,7 +3936,7 @@ src/auto/Boss2Water_Action_StartLower.c:
     complete
     .text       start:0x022cf38c end:0x022cf3dc
 
-src/auto/Boss3_Draw_Unk_ov000_022da3b4.c:
+src/auto/Boss3_Draw_Model.c:
     complete
     .text       start:0x022da3b4 end:0x022da3f4
 
@@ -3944,7 +3944,7 @@ src/auto/Boss4_WrapArenaX.c:
     complete
     .text       start:0x022db6c8 end:0x022db704
 
-src/auto/Boss4_Unk_ov000_022db758.c:
+src/auto/Boss4_ArenaPosToWorld.c:
     complete
     .text       start:0x022db758 end:0x022db7d4
 
@@ -3952,35 +3952,35 @@ src/auto/Boss4_ArenaToStagePos.c:
     complete
     .text       start:0x022db7ec end:0x022db848
 
-src/auto/Boss4PartD2_SubState_Unk_ov000_022dbcb8.c:
+src/auto/Boss4PartD2_SubState_Spread.c:
     complete
     .text       start:0x022dbcb8 end:0x022dbd04
 
-src/auto/Boss4_Unk_ov000_022dc858.c:
+src/auto/Boss4_SpawnPartD0.c:
     complete
     .text       start:0x022dc858 end:0x022dc8cc
 
-src/auto/Boss4_State_Unk_ov000_022dd410.c:
+src/auto/Boss4_State_DefeatFade_ov000_022dd410.c:
     complete
     .text       start:0x022dd410 end:0x022dd458
 
-src/auto/Boss4_State_Unk_ov000_022dd4d0.c:
+src/auto/Boss4_State_DefeatFade_ov000_022dd4d0.c:
     complete
     .text       start:0x022dd4d0 end:0x022dd518
 
-src/auto/Boss4_State_Unk_ov000_022dd590.c:
+src/auto/Boss4_State_DefeatFade_ov000_022dd590.c:
     complete
     .text       start:0x022dd590 end:0x022dd5d8
 
-src/auto/Boss4_Unk_ov000_022dd908.c:
+src/auto/Boss4_Action_StartTiltSpin.c:
     complete
     .text       start:0x022dd908 end:0x022dd98c
 
-src/auto/Boss4_SubState_Unk_ov000_022dd98c.c:
+src/auto/Boss4_SubState_SpinUp.c:
     complete
     .text       start:0x022dd98c end:0x022dd9e8
 
-src/auto/Boss4_SubState_Unk_ov000_022ddab8.c:
+src/auto/Boss4_SubState_SlamShake.c:
     complete
     .text       start:0x022ddab8 end:0x022ddb44
 
@@ -4072,15 +4072,15 @@ src/auto/Boss7PartD5_CreateClashEffect.c:
     complete
     .text       start:0x022ee014 end:0x022ee06c
 
-src/auto/BossFPartD8_State_Unk_ov000_022ef4ec.c:
+src/auto/BossFPartD8_State_DefeatFade_ov000_022ef4ec.c:
     complete
     .text       start:0x022ef4ec end:0x022ef528
 
-src/auto/BossFPartD8_State_Unk_ov000_022ef5a4.c:
+src/auto/BossFPartD8_State_DefeatFade_ov000_022ef5a4.c:
     complete
     .text       start:0x022ef5a4 end:0x022ef5e0
 
-src/auto/BossFPartD8_State_Unk_ov000_022ef664.c:
+src/auto/BossFPartD8_State_DefeatFade_ov000_022ef664.c:
     complete
     .text       start:0x022ef664 end:0x022ef6a0
 
@@ -4220,11 +4220,11 @@ src/auto/BossFPartD8_Unk_ov000_022f8f38.c:
     complete
     .text       start:0x022f8f38 end:0x022f8f78
 
-src/auto/MapObject_Unk_ov000_022fa9e8.c:
+src/auto/MapObject_NetSendEvent.c:
     complete
     .text       start:0x022fa9e8 end:0x022faa74
 
-src/auto/MapObject_State_Unk_ov000_022faf7c.c:
+src/auto/MapObject_State_KnockedAway.c:
     complete
     .text       start:0x022faf7c end:0x022fafc8
 
@@ -4252,15 +4252,15 @@ src/auto/EnemyPawnGroup_Action_Unk_ov000_022fcef4.c:
     complete
     .text       start:0x022fcef4 end:0x022fcf88
 
-src/auto/EnemyPawnGroup_Action_Unk_ov000_022fd030.c:
+src/auto/EnemyPawnGroup_Action_Brake.c:
     complete
     .text       start:0x022fd030 end:0x022fd0d0
 
-src/auto/EnemyPawnGroup_Action_Unk_ov000_022fd19c.c:
+src/auto/EnemyPawnGroup_Action_AttackSpawnGunHunter.c:
     complete
     .text       start:0x022fd19c end:0x022fd230
 
-src/auto/EnemyPawnGroup_Action_Unk_ov000_022fd370.c:
+src/auto/EnemyPawnGroup_Action_AttackSpawnEggSf.c:
     complete
     .text       start:0x022fd370 end:0x022fd410
 
@@ -4268,7 +4268,7 @@ src/auto/EnemyPawnGroup_Action_Unk_ov000_022fd564.c:
     complete
     .text       start:0x022fd564 end:0x022fd5f8
 
-src/auto/EnemyPawnGroup_Action_Unk_ov000_022fd744.c:
+src/auto/EnemyPawnGroup_Action_AttackSpawnEggBishop.c:
     complete
     .text       start:0x022fd744 end:0x022fd7d8
 
@@ -4292,11 +4292,11 @@ src/auto/EnemyPawnGroup_Action_Unk_ov000_022fe084.c:
     complete
     .text       start:0x022fe084 end:0x022fe0f8
 
-src/auto/EnemyPawnGroup_Action_Unk_ov000_022fe304.c:
+src/auto/EnemyPawnGroup_Action_Turn.c:
     complete
     .text       start:0x022fe304 end:0x022fe350
 
-src/auto/EnemyPawnGroup_Action_Unk_ov000_022fe7e8.c:
+src/auto/EnemyPawnGroup_Action_Walk.c:
     complete
     .text       start:0x022fe7e8 end:0x022fe84c
 
@@ -4308,23 +4308,23 @@ src/auto/EnemyFlapperGroup_Action_Unk_ov000_022ffef8.c:
     complete
     .text       start:0x022ffef8 end:0x022fff44
 
-src/auto/EnemyFlapperGroup_Action_Unk_ov000_02300438.c:
+src/auto/EnemyFlapperGroup_Action_FireShot_ov000_02300438.c:
     complete
     .text       start:0x02300438 end:0x02300484
 
-src/auto/Kuragen_State_Unk_ov000_02300f78.c:
+src/auto/KuragenBomb_State_Fall.c:
     complete
     .text       start:0x02300f78 end:0x02300fd0
 
-src/auto/Kuragen_Action_Unk_ov000_02300fd0.c:
+src/auto/KuragenBomb_Action_Drop.c:
     complete
     .text       start:0x02300fd0 end:0x02301034
 
-src/auto/Kuragen_State_Unk_ov000_02301034.c:
+src/auto/KuragenBomb_State_FollowCarrier.c:
     complete
     .text       start:0x02301034 end:0x023010a4
 
-src/auto/Kuragen_Action_Unk_ov000_023010a4.c:
+src/auto/KuragenBomb_Action_FollowCarrier.c:
     complete
     .text       start:0x023010a4 end:0x02301108
 
@@ -4376,7 +4376,7 @@ src/auto/Cannon_Destructor.c:
     complete
     .text       start:0x02304768 end:0x023047f0
 
-src/auto/Cargo_Action_Unk_ov000_02304fa0.c:
+src/auto/Cargo_Action_Stop.c:
     complete
     .text       start:0x02304fa0 end:0x02304ff4
 
@@ -4532,7 +4532,7 @@ src/auto/RopeCLand_State_Idle.c:
     complete
     .text       start:0x0231492c end:0x0231499c
 
-src/auto/RopeCSpring_State_Unk_ov000_02314acc.c:
+src/auto/RopeCSpring_State_Active.c:
     complete
     .text       start:0x02314acc end:0x02314b34
 
@@ -4628,7 +4628,7 @@ src/auto/DecGroupAFChild_Draw.c:
     complete
     .text       start:0x023206f0 end:0x02320744
 
-src/auto/DecGroup41_Action_Unk_ov000_02321744.c:
+src/auto/DecGroup41_Action_Dart.c:
     complete
     .text       start:0x02321744 end:0x0232179c
 
@@ -4680,7 +4680,7 @@ src/auto/CheckpointTimePopup_Destructor.c:
     complete
     .text       start:0x0232b3a4 end:0x0232b3e0
 
-src/auto/EnemyRoomHud_State_Unk_ov000_0232cbf4.c:
+src/auto/EnemyRoomHud_State_Finish.c:
     complete
     .text       start:0x0232cbf4 end:0x0232cc2c
 
@@ -4700,7 +4700,7 @@ src/auto/FixInformation_State_SwingSky.c:
     complete
     .text       start:0x0232f53c end:0x0232f5a8
 
-src/auto/FixVs_State_Unk_ov000_0232fa00.c:
+src/auto/FixVs_State_FollowPlayer.c:
     complete
     .text       start:0x0232fa00 end:0x0232fa4c
 
@@ -4748,7 +4748,7 @@ src/auto/Camera_UpdateX.c:
     complete
     .text       start:0x02339bdc end:0x02339c2c
 
-src/auto/Camera_Unk_ov000_0233b250.c:
+src/auto/Camera_GetTrackedPlayerOffset.c:
     complete
     .text       start:0x0233b250 end:0x0233b2c8
 
@@ -4776,7 +4776,7 @@ src/auto/ZoneFx_Zone2_SetVAlarms.c:
     complete
     .text       start:0x0233d43c end:0x0233d4bc
 
-src/auto/ZoneFx_Zone2_Unk_ov000_0233d4bc.c:
+src/auto/ZoneFx_Zone2_UpdateVAlarmsByCamera.c:
     complete
     .text       start:0x0233d4bc end:0x0233d538
 
@@ -4852,7 +4852,7 @@ src/auto/Player_State_Hurt.c:
     complete
     .text       start:0x02349294 end:0x023492f0
 
-src/auto/Player_Unk_ov000_023497a4.c:
+src/auto/Player_StartLaunchTrick.c:
     complete
     .text       start:0x023497a4 end:0x023497f4
 
@@ -4864,7 +4864,7 @@ src/auto/Player_DetachGimmick.c:
     complete
     .text       start:0x0235264c end:0x023526cc
 
-src/auto/Player_Unk_ov000_0235283c.c:
+src/auto/Player_AttachGimmickTable.c:
     complete
     .text       start:0x0235283c end:0x023528d4
 
@@ -4964,7 +4964,7 @@ src/auto/ResultsScreen_State_WaitPartner.c:
     complete
     .text       start:0x0235e430 end:0x0235e4c0
 
-src/auto/ResultsScreen_Main_Unk_ov000_0235e5b4.c:
+src/auto/ResultsScreen_Main_DelayOpenWindow.c:
     complete
     .text       start:0x0235e5b4 end:0x0235e61c
 
@@ -4972,7 +4972,7 @@ src/auto/ResultsScreen_Main_WaitPartnerChoice.c:
     complete
     .text       start:0x0235e61c end:0x0235e6b0
 
-src/auto/ResultsScreen_Main_Unk_ov000_0235e738.c:
+src/auto/ResultsScreen_Main_DelayOpenWindowNoSprite16.c:
     complete
     .text       start:0x0235e738 end:0x0235e79c
 
@@ -5056,7 +5056,7 @@ src/auto/MapObject_SpriteCallback_Default.c:
     complete
     .text       start:0x022fb23c end:0x022fb2f8
 
-src/auto/EnemyPawnGroup_Action_Unk_ov000_022fd8d8.c:
+src/auto/EnemyPawnGroup_Action_AttackSpawnEggPawnM.c:
     complete
     .text       start:0x022fd8d8 end:0x022fd990
 
@@ -5068,11 +5068,11 @@ src/auto/EnemyPawnGroup_Action_Unk_ov000_022fec38.c:
     complete
     .text       start:0x022fec38 end:0x022fece8
 
-src/auto/EnemyFlapperGroup_State_Unk_ov000_022ffcac.c:
+src/auto/EnemyFlapperGroup_State_FireShot_ov000_022ffcac.c:
     complete
     .text       start:0x022ffcac end:0x022ffd68
 
-src/auto/Kuragen_Action_Unk_ov000_02300ec8.c:
+src/auto/KuragenBomb_Action_Explode.c:
     complete
     .text       start:0x02300ec8 end:0x02300f78
 
@@ -5136,7 +5136,7 @@ src/auto/ZoneFx_Zone2_BuildPalettes.c:
     complete
     .text       start:0x0233d82c end:0x0233d8e8
 
-src/auto/Camera_Unk_ov000_02342834.c:
+src/auto/Camera_ApplyNetPartnerPosition.c:
     complete
     .text       start:0x02342834 end:0x023428dc
 
@@ -5184,11 +5184,11 @@ src/auto/Player_Action_SandSlide.c:
     complete
     .text       start:0x023521f0 end:0x0235229c
 
-src/auto/Player_Unk_ov000_023524d8.c:
+src/auto/Player_AttachGimmickTableReleased.c:
     complete
     .text       start:0x023524d8 end:0x0235258c
 
-src/auto/Player_Unk_ov000_0235258c.c:
+src/auto/Player_AttachGimmickTableNoInput.c:
     complete
     .text       start:0x0235258c end:0x0235264c
 
@@ -5208,7 +5208,7 @@ src/clones/TimeSelectMenu_ResetBgOffsets.c:
     complete
     .text       start:0x0235f2d0 end:0x0235f35c
 
-src/auto/Boss6_Unk_ov000_022df9d4.c:
+src/auto/Boss6_UpdateFlashPalettes.c:
     complete
     .text       start:0x022df9d4 end:0x022dfb34
 
@@ -5244,7 +5244,7 @@ src/auto/BossF_Unk_ov000_022f8c88.c:
     complete
     .text       start:0x022f8c88 end:0x022f8ce8
 
-src/auto/EffEntrance_State_Unk_ov000_022fbbb8.c:
+src/auto/EffEntrance_State_ScaleInOut.c:
     complete
     .text       start:0x022fbbb8 end:0x022fbcac
 
@@ -5252,7 +5252,7 @@ src/auto/EnemyPawnGroup_State_Unk_ov000_022fd410.c:
     complete
     .text       start:0x022fd410 end:0x022fd564
 
-src/auto/EnemyPawnGroup_State_Unk_ov000_022fd7d8.c:
+src/auto/EnemyPawnGroup_State_AttackSpawnEggPawnM.c:
     complete
     .text       start:0x022fd7d8 end:0x022fd8d8
 
@@ -5264,11 +5264,11 @@ src/auto/EnemyFlapperGroup_State_Unk_ov000_022ffdac.c:
     complete
     .text       start:0x022ffdac end:0x022ffef8
 
-src/auto/EnemyFlapperGroup_State_Unk_ov000_02300338.c:
+src/auto/EnemyFlapperGroup_State_FireShot_ov000_02300338.c:
     complete
     .text       start:0x02300338 end:0x02300438
 
-src/auto/EnemyFlapperGroup_State_Unk_ov000_02300484.c:
+src/auto/EnemyFlapperGroup_State_FireShot_ov000_02300484.c:
     complete
     .text       start:0x02300484 end:0x02300578
 
@@ -5312,11 +5312,11 @@ src/auto/Mine_Explode.c:
     complete
     .text       start:0x0231c21c end:0x0231c36c
 
-src/auto/EnemyRoomHud_Action_Unk_ov000_0232cc2c.c:
+src/auto/EnemyRoomHud_Action_Finish.c:
     complete
     .text       start:0x0232cc2c end:0x0232cd18
 
-src/auto/EnemyRoomHud_Unk_ov000_0232d3dc.c:
+src/auto/EnemyRoomHud_DrawFinish.c:
     complete
     .text       start:0x0232d3dc end:0x0232d4c8
 
@@ -5444,7 +5444,7 @@ src/auto/Camera_DisableSwapForPlayer.c:
     complete
     .text       start:0x023422e4 end:0x0234232c
 
-src/auto/Player_Unk_ov000_02343000.c:
+src/auto/Player_AddTensionCombo.c:
     complete
     .text       start:0x02343000 end:0x0234307c
 
@@ -5464,15 +5464,15 @@ src/auto/Needle_State_Unk_ov000_0231096c.c:
     complete
     .text       start:0x0231096c end:0x023109f4
 
-src/auto/Boss1Neck_State_Unk_ov000_022c7c70.c:
+src/auto/Boss1Neck_State_MissileSelectPattern.c:
     complete
     .text       start:0x022c7c70 end:0x022c7ccc
 
-src/auto/Boss4_Unk_ov000_022de344.c:
+src/auto/Boss4_SetCameraZoomOut.c:
     complete
     .text       start:0x022de344 end:0x022de370
 
-src/auto/Boss4_Unk_ov000_022de370.c:
+src/auto/Boss4_SetCameraDefaultDistance.c:
     complete
     .text       start:0x022de370 end:0x022de39c
 
@@ -5480,7 +5480,7 @@ src/auto/Boss4_CaptureNodeMatrix.c:
     complete
     .text       start:0x022de5e8 end:0x022de65c
 
-src/auto/Boss4_State_Unk_ov000_022dea0c.c:
+src/auto/Boss4_State_Fight.c:
     complete
     .text       start:0x022dea0c end:0x022deab4
 
@@ -5496,11 +5496,11 @@ src/auto/Boss7PartD6_Draw.c:
     complete
     .text       start:0x022ec44c end:0x022ec530
 
-src/auto/BossFPartD8_State_Unk_ov000_022ef528.c:
+src/auto/BossFPartD8_State_DefeatCamera3.c:
     complete
     .text       start:0x022ef528 end:0x022ef5a4
 
-src/auto/BossFPartD8_State_Unk_ov000_022ef5e0.c:
+src/auto/BossFPartD8_State_DefeatCamera2.c:
     complete
     .text       start:0x022ef5e0 end:0x022ef664
 
@@ -5584,7 +5584,7 @@ src/auto/Player_Action_DashRing.c:
     complete
     .text       start:0x023557c8 end:0x02355874
 
-src/ov000_a/Boss2_OnHit_Unk_ov000_022cd880.c:
+src/ov000_a/Boss2_OnHit_DamageAttack3.c:
     complete
     .text       start:0x022cd880 end:0x022cdbb0
 
@@ -5600,35 +5600,35 @@ src/ov000_a/Boss2_Action_Defeat.c:
     complete
     .text       start:0x022cff50 end:0x022d046c
 
-src/ov000_a/Boss2_State_Unk_ov000_022d046c.c:
+src/ov000_a/Boss2_State_Attack3Hurt.c:
     complete
     .text       start:0x022d046c end:0x022d0614
 
-src/ov000_a/Boss2_State_Unk_ov000_022d0614.c:
+src/ov000_a/Boss2_State_Attack3End.c:
     complete
     .text       start:0x022d0614 end:0x022d0690
 
-src/ov000_a/Boss2_State_Unk_ov000_022d0690.c:
+src/ov000_a/Boss2_State_Attack3Recover.c:
     complete
     .text       start:0x022d0690 end:0x022d0864
 
-src/ov000_a/Boss2_State_Unk_ov000_022d0864.c:
+src/ov000_a/Boss2_State_Attack3Catch.c:
     complete
     .text       start:0x022d0864 end:0x022d0c30
 
-src/ov000_a/Boss2_State_Unk_ov000_022d0c30.c:
+src/ov000_a/Boss2_State_Attack3Close.c:
     complete
     .text       start:0x022d0c30 end:0x022d0d64
 
-src/ov000_a/Boss2_State_Unk_ov000_022d0d64.c:
+src/ov000_a/Boss2_State_Attack3Hold.c:
     complete
     .text       start:0x022d0d64 end:0x022d0e9c
 
-src/ov000_a/Boss2_State_Unk_ov000_022d0e9c.c:
+src/ov000_a/Boss2_State_Attack3Suck.c:
     complete
     .text       start:0x022d0e9c end:0x022d10c8
 
-src/ov000_a/Boss2_State_Unk_ov000_022d10c8.c:
+src/ov000_a/Boss2_State_Attack3Start.c:
     complete
     .text       start:0x022d10c8 end:0x022d12fc
 
@@ -5636,39 +5636,39 @@ src/ov000_a/Boss2_Action_Attack3.c:
     complete
     .text       start:0x022d12fc end:0x022d14e8
 
-src/ov000_a/Boss2_State_Unk_ov000_022d14e8.c:
+src/ov000_a/Boss2_State_Attack2Hurt.c:
     complete
     .text       start:0x022d14e8 end:0x022d15f4
 
-src/ov000_a/Boss2_State_Unk_ov000_022d1624.c:
+src/ov000_a/Boss2_State_Attack2End.c:
     complete
     .text       start:0x022d1624 end:0x022d1780
 
-src/ov000_a/Boss2_State_Unk_ov000_022d1780.c:
+src/ov000_a/Boss2_State_Attack2Recover.c:
     complete
     .text       start:0x022d1780 end:0x022d1ab0
 
-src/ov000_a/Boss2_State_Unk_ov000_022d1ab0.c:
+src/ov000_a/Boss2_State_Attack2Strike.c:
     complete
     .text       start:0x022d1ab0 end:0x022d1cb0
 
-src/ov000_a/Boss2_State_Unk_ov000_022d1cb0.c:
+src/ov000_a/Boss2_State_Attack2Charge.c:
     complete
     .text       start:0x022d1cb0 end:0x022d1dec
 
-src/ov000_a/Boss2_State_Unk_ov000_022d1dec.c:
+src/ov000_a/Boss2_State_Attack2AimEnd.c:
     complete
     .text       start:0x022d1dec end:0x022d2070
 
-src/ov000_a/Boss2_State_Unk_ov000_022d2070.c:
+src/ov000_a/Boss2_State_Attack2Aim.c:
     complete
     .text       start:0x022d2070 end:0x022d2368
 
-src/ov000_a/Boss2_State_Unk_ov000_022d2368.c:
+src/ov000_a/Boss2_State_Attack2StartAim.c:
     complete
     .text       start:0x022d2368 end:0x022d255c
 
-src/ov000_a/Boss2_State_Unk_ov000_022d255c.c:
+src/ov000_a/Boss2_State_Attack2EnterTurnMode.c:
     complete
     .text       start:0x022d255c end:0x022d2688
 
@@ -5684,35 +5684,35 @@ src/ov000_a/Boss2_UpdateArenaSpeed.c:
     complete
     .text       start:0x022d2920 end:0x022d29cc
 
-src/ov000_a/Boss2_State_Unk_ov000_022d29cc.c:
+src/ov000_a/Boss2_State_DashStop.c:
     complete
     .text       start:0x022d29cc end:0x022d2afc
 
-src/ov000_a/Boss2_State_Unk_ov000_022d2afc.c:
+src/ov000_a/Boss2_State_DashBrake.c:
     complete
     .text       start:0x022d2afc end:0x022d2ccc
 
-src/ov000_a/Boss2_State_Unk_ov000_022d2ccc.c:
+src/ov000_a/Boss2_State_DashHop.c:
     complete
     .text       start:0x022d2ccc end:0x022d2de4
 
-src/ov000_a/Boss2_State_Unk_ov000_022d2e14.c:
+src/ov000_a/Boss2_State_JumpLandShake.c:
     complete
     .text       start:0x022d2e14 end:0x022d2f4c
 
-src/ov000_a/Boss2_State_Unk_ov000_022d2f4c.c:
+src/ov000_a/Boss2_State_JumpFall.c:
     complete
     .text       start:0x022d2f4c end:0x022d3070
 
-src/ov000_a/Boss2_State_Unk_ov000_022d3070.c:
+src/ov000_a/Boss2_State_JumpStartFall.c:
     complete
     .text       start:0x022d3070 end:0x022d31c4
 
-src/ov000_a/Boss2_State_Unk_ov000_022d31c4.c:
+src/ov000_a/Boss2_State_JumpAirborne.c:
     complete
     .text       start:0x022d31c4 end:0x022d32c0
 
-src/ov000_a/Boss2_State_Unk_ov000_022d32c0.c:
+src/ov000_a/Boss2_State_JumpRise.c:
     complete
     .text       start:0x022d32c0 end:0x022d3568
 
@@ -5776,19 +5776,19 @@ src/ov000_a/Boss2_Create.c:
     complete
     .text       start:0x022d4e54 end:0x022d5740
 
-src/ov000_a/Boss3PartCD_State_Unk_ov000_022d575c.c:
+src/ov000_a/Boss3PartCD_State_Exploding.c:
     complete
     .text       start:0x022d575c end:0x022d57b8
 
-src/ov000_a/Boss3PartCD_State_Unk_ov000_022d57b8.c:
+src/ov000_a/Boss3PartCD_State_Explode.c:
     complete
     .text       start:0x022d57b8 end:0x022d58a0
 
-src/ov000_a/Boss3PartCD_State_Unk_ov000_022d58a0.c:
+src/ov000_a/Boss3PartCD_State_Fly.c:
     complete
     .text       start:0x022d58a0 end:0x022d59e0
 
-src/ov000_a/Boss3_Action_Unk_ov000_022d59fc.c:
+src/ov000_a/Boss3PartCD_Action_Throw.c:
     complete
     .text       start:0x022d59fc end:0x022d5aa4
 
@@ -5828,11 +5828,11 @@ src/ov000_a/Boss3PartCD_Draw.c:
     complete
     .text       start:0x022d602c end:0x022d6380
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d63f4.c:
+src/ov000_a/Boss3PartCC_State_HurtKnockback.c:
     complete
     .text       start:0x022d63f4 end:0x022d6568
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6568.c:
+src/ov000_a/Boss3PartCC_State_StartHurt.c:
     complete
     .text       start:0x022d6568 end:0x022d6644
 
@@ -5840,211 +5840,211 @@ src/ov000_a/Boss3PartCC_Action_Hurt.c:
     complete
     .text       start:0x022d6644 end:0x022d6684
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6688.c:
+src/ov000_a/Boss3PartCC_State_CatchBallWait.c:
     complete
     .text       start:0x022d6688 end:0x022d66cc
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d66cc.c:
+src/ov000_a/Boss3PartCC_State_CatchBall.c:
     complete
     .text       start:0x022d66cc end:0x022d68a4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d68a4.c:
+src/ov000_a/Boss3PartCC_State_WaitCatchBall.c:
     complete
     .text       start:0x022d68a4 end:0x022d68f0
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d68f0.c:
+src/ov000_a/Boss3PartCC_State_StartWaitCatchBall.c:
     complete
     .text       start:0x022d68f0 end:0x022d694c
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d694c.c:
+src/ov000_a/Boss3PartCC_State_JumpLandTurn.c:
     complete
     .text       start:0x022d694c end:0x022d69b4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d69b4.c:
+src/ov000_a/Boss3PartCC_State_JumpFall.c:
     complete
     .text       start:0x022d69b4 end:0x022d6a84
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6a84.c:
+src/ov000_a/Boss3PartCC_State_JumpFallStart.c:
     complete
     .text       start:0x022d6a84 end:0x022d6b0c
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6b0c.c:
+src/ov000_a/Boss3PartCC_State_JumpRise.c:
     complete
     .text       start:0x022d6b0c end:0x022d6b9c
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6b9c.c:
+src/ov000_a/Boss3PartCC_State_JumpTakeoff.c:
     complete
     .text       start:0x022d6b9c end:0x022d6c0c
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6c0c.c:
+src/ov000_a/Boss3PartCC_State_JumpOverBall.c:
     complete
     .text       start:0x022d6c0c end:0x022d6cac
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6cac.c:
+src/ov000_a/Boss3PartCC_State_WatchBall.c:
     complete
     .text       start:0x022d6cac end:0x022d6d38
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6d38.c:
+src/ov000_a/Boss3PartCC_State_SelectWatchOrCatch.c:
     complete
     .text       start:0x022d6d38 end:0x022d6de4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6de4.c:
+src/ov000_a/Boss3PartCC_State_Turn.c:
     complete
     .text       start:0x022d6de4 end:0x022d6e70
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6ed4.c:
+src/ov000_a/Boss3PartCC_State_WaitAfterKick.c:
     complete
     .text       start:0x022d6ed4 end:0x022d6f20
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6f20.c:
+src/ov000_a/Boss3PartCC_State_StartWaitAfterKick.c:
     complete
     .text       start:0x022d6f20 end:0x022d6fe8
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6fe8.c:
+src/ov000_a/Boss3PartCC_State_KickFollowThrough.c:
     complete
     .text       start:0x022d6fe8 end:0x022d7028
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7028.c:
+src/ov000_a/Boss3PartCC_State_KickBall.c:
     complete
     .text       start:0x022d7028 end:0x022d7168
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7168.c:
+src/ov000_a/Boss3PartCC_State_KickWindUpWait.c:
     complete
     .text       start:0x022d7168 end:0x022d71a4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d71a4.c:
+src/ov000_a/Boss3PartCC_State_KickWindUp.c:
     complete
     .text       start:0x022d71a4 end:0x022d7204
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7228.c:
+src/ov000_a/Boss3PartCC_State_TurnToSide.c:
     complete
     .text       start:0x022d7228 end:0x022d72dc
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d72dc.c:
+src/ov000_a/Boss3PartCC_State_FacePlayerSide.c:
     complete
     .text       start:0x022d72dc end:0x022d7384
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7384.c:
+src/ov000_a/Boss3PartCC_State_LandAtEdgeShake.c:
     complete
     .text       start:0x022d7384 end:0x022d73cc
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d73cc.c:
+src/ov000_a/Boss3PartCC_State_LandAtEdge.c:
     complete
     .text       start:0x022d73cc end:0x022d74c0
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d74c0.c:
+src/ov000_a/Boss3PartCC_State_JumpToEdge.c:
     complete
     .text       start:0x022d74c0 end:0x022d756c
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d756c.c:
+src/ov000_a/Boss3PartCC_State_StartJumpToEdge.c:
     complete
     .text       start:0x022d756c end:0x022d7630
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7630.c:
+src/ov000_a/Boss3PartCC_State_TurnToEdgeTarget.c:
     complete
     .text       start:0x022d7630 end:0x022d76bc
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7778.c:
+src/ov000_a/Boss3PartCC_State_EndThrows.c:
     complete
     .text       start:0x022d7778 end:0x022d77d4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d77d4.c:
+src/ov000_a/Boss3PartCC_State_WaitBallSpawned.c:
     complete
     .text       start:0x022d77d4 end:0x022d7844
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7844.c:
+src/ov000_a/Boss3PartCC_State_SpawnBall.c:
     complete
     .text       start:0x022d7844 end:0x022d7908
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7908.c:
+src/ov000_a/Boss3PartCC_State_ThrowFollowThrough.c:
     complete
     .text       start:0x022d7908 end:0x022d79a4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d79a4.c:
+src/ov000_a/Boss3PartCC_State_ThrowBall.c:
     complete
     .text       start:0x022d79a4 end:0x022d7b7c
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7b7c.c:
+src/ov000_a/Boss3PartCC_State_ThrowWindUpTurn.c:
     complete
     .text       start:0x022d7b7c end:0x022d7c18
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7c18.c:
+src/ov000_a/Boss3PartCC_State_ThrowWindUp.c:
     complete
     .text       start:0x022d7c18 end:0x022d7c74
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7c74.c:
+src/ov000_a/Boss3PartCC_State_ThrowAim.c:
     complete
     .text       start:0x022d7c74 end:0x022d7d54
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7d54.c:
+src/ov000_a/Boss3PartCC_State_StartThrowAim.c:
     complete
     .text       start:0x022d7d54 end:0x022d7db0
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7db0.c:
+src/ov000_a/Boss3PartCC_State_StartThrows.c:
     complete
     .text       start:0x022d7db0 end:0x022d7df4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7df4.c:
+src/ov000_a/Boss3PartCC_State_MoveToCentre.c:
     complete
     .text       start:0x022d7df4 end:0x022d7eb8
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7eb8.c:
+src/ov000_a/Boss3PartCC_State_StartMoveToCentre.c:
     complete
     .text       start:0x022d7eb8 end:0x022d7f40
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7f40.c:
+src/ov000_a/Boss3PartCC_State_ThrowAttackTurn.c:
     complete
     .text       start:0x022d7f40 end:0x022d7fd4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d7fd4.c:
+src/ov000_a/Boss3PartCC_State_ThrowAttackJump.c:
     complete
     .text       start:0x022d7fd4 end:0x022d8184
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d81ac.c:
+src/ov000_a/Boss3PartCC_State_Stagger.c:
     complete
     .text       start:0x022d81ac end:0x022d836c
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d8398.c:
+src/ov000_a/Boss3PartCC_State_PushEnd.c:
     complete
     .text       start:0x022d8398 end:0x022d8408
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d8408.c:
+src/ov000_a/Boss3PartCC_State_PushBall.c:
     complete
     .text       start:0x022d8408 end:0x022d8734
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d8734.c:
+src/ov000_a/Boss3PartCC_State_StartPushBall.c:
     complete
     .text       start:0x022d8734 end:0x022d87c0
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d87c0.c:
+src/ov000_a/Boss3PartCC_State_PushTurnWait.c:
     complete
     .text       start:0x022d87c0 end:0x022d8820
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d8820.c:
+src/ov000_a/Boss3PartCC_State_PushTurn.c:
     complete
     .text       start:0x022d8820 end:0x022d8890
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d8890.c:
+src/ov000_a/Boss3PartCC_State_PushSelectDirection.c:
     complete
     .text       start:0x022d8890 end:0x022d8900
 
-src/ov000_a/Boss3PartCC_Action_Unk_ov000_022d8900.c:
+src/ov000_a/Boss3PartCC_Action_StartPushBall.c:
     complete
     .text       start:0x022d8900 end:0x022d89a4
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d89a8.c:
+src/ov000_a/Boss3PartCC_State_SummonBallGrow.c:
     complete
     .text       start:0x022d89a8 end:0x022d8a90
 
-src/ov000_a/Boss3PartCC_State_Unk_ov000_022d8a90.c:
+src/ov000_a/Boss3PartCC_State_SummonBall.c:
     complete
     .text       start:0x022d8a90 end:0x022d8ba8
 
-src/ov000_a/Boss3PartCC_Action_Unk_ov000_022d8bf8.c:
+src/ov000_a/Boss3PartCC_Action_Idle.c:
     complete
     .text       start:0x022d8bf8 end:0x022d8c60
 
-src/ov000_a/Boss3PartCC_Unk_ov000_022d8c64.c:
+src/ov000_a/Boss3PartCC_CanCatchBall.c:
     complete
     .text       start:0x022d8c64 end:0x022d8db0
 
@@ -6056,35 +6056,35 @@ src/ov000_a/Boss3PartCC_Draw.c:
     complete
     .text       start:0x022d8fec end:0x022d91bc
 
-src/ov000_a/Boss3_State_Unk_ov000_022d9264.c:
+src/ov000_a/Boss3_State_DefeatFinish.c:
     complete
     .text       start:0x022d9264 end:0x022d932c
 
-src/ov000_a/Boss3_State_Unk_ov000_022d932c.c:
+src/ov000_a/Boss3_State_DefeatExplode.c:
     complete
     .text       start:0x022d932c end:0x022d94fc
 
-src/ov000_a/Boss3_State_Unk_ov000_022d94fc.c:
+src/ov000_a/Boss3_State_DefeatFade_ov000_022d94fc.c:
     complete
     .text       start:0x022d94fc end:0x022d9538
 
-src/ov000_a/Boss3_State_Unk_ov000_022d9538.c:
+src/ov000_a/Boss3_State_DefeatCamera3.c:
     complete
     .text       start:0x022d9538 end:0x022d96d8
 
-src/ov000_a/Boss3_State_Unk_ov000_022d96d8.c:
+src/ov000_a/Boss3_State_DefeatFade_ov000_022d96d8.c:
     complete
     .text       start:0x022d96d8 end:0x022d9714
 
-src/ov000_a/Boss3_State_Unk_ov000_022d9714.c:
+src/ov000_a/Boss3_State_DefeatCamera2.c:
     complete
     .text       start:0x022d9714 end:0x022d98b0
 
-src/ov000_a/Boss3_State_Unk_ov000_022d98b0.c:
+src/ov000_a/Boss3_State_DefeatFade_ov000_022d98b0.c:
     complete
     .text       start:0x022d98b0 end:0x022d98ec
 
-src/ov000_a/Boss3_State_Unk_ov000_022d98ec.c:
+src/ov000_a/Boss3_State_DefeatCamera1.c:
     complete
     .text       start:0x022d98ec end:0x022d9aa0
 
@@ -6092,11 +6092,11 @@ src/ov000_a/Boss3_Action_Defeat.c:
     complete
     .text       start:0x022d9ab0 end:0x022d9c44
 
-src/ov000_a/Boss3_State_Unk_ov000_022d9dc0.c:
+src/ov000_a/Boss3_State_Idle.c:
     complete
     .text       start:0x022d9dc0 end:0x022d9e1c
 
-src/ov000_a/Boss3_Unk_ov000_022d9e48.c:
+src/ov000_a/Boss3_SelectNextAttack.c:
     complete
     .text       start:0x022d9e48 end:0x022da24c
 
@@ -6108,15 +6108,15 @@ src/ov000_a/Boss3_Destructor.c:
     complete
     .text       start:0x022da3f4 end:0x022da4b4
 
-src/ov000_a/Boss3_Draw_Unk_ov000_022da4b4.c:
+src/ov000_a/Boss3_Draw_PlayerOnArena.c:
     complete
     .text       start:0x022da4b4 end:0x022da6b4
 
-src/ov000_a/Boss3_Unk_ov000_022da6b4.c:
+src/ov000_a/Boss3_ResetCamera.c:
     complete
     .text       start:0x022da6b4 end:0x022da7c8
 
-src/ov000_a/Boss3_Unk_ov000_022da7c8.c:
+src/ov000_a/Boss3_ArenaDistance.c:
     complete
     .text       start:0x022da7c8 end:0x022da804
 
@@ -6128,7 +6128,7 @@ src/ov000_a/Boss3_StepAngleToward.c:
     complete
     .text       start:0x022da88c end:0x022da8e4
 
-src/ov000_a/Boss3PartCC_Unk_ov000_022da9c0.c:
+src/ov000_a/Boss3PartCC_ThrowBall.c:
     complete
     .text       start:0x022da9c0 end:0x022daa5c
 
@@ -6136,7 +6136,7 @@ src/ov000_a/Boss3_Action_HurtAll.c:
     complete
     .text       start:0x022daaf4 end:0x022dab6c
 
-src/ov000_a/Boss3_Unk_ov000_022dac94.c:
+src/ov000_a/Boss3_UpdateCameraShake.c:
     complete
     .text       start:0x022dac94 end:0x022dad70
 
@@ -6160,23 +6160,23 @@ src/ov000_a/Boss3_Create.c:
     complete
     .text       start:0x022db390 end:0x022db6c8
 
-src/ov000_a/Boss4_Unk_ov000_022db704.c:
+src/ov000_a/Boss4_RandomBitInMask.c:
     complete
     .text       start:0x022db704 end:0x022db758
 
-src/ov000_a/Boss4PartD1_Unk_ov000_022db848.c:
+src/ov000_a/Boss4PartD1_GetPlayerDirection.c:
     complete
     .text       start:0x022db848 end:0x022db894
 
-src/ov000_a/Boss4_Unk_ov000_022db894.c:
+src/ov000_a/Boss4_HandleColliderWrapped.c:
     complete
     .text       start:0x022db894 end:0x022db900
 
-src/ov000_a/Boss4_Unk_ov000_022db954.c:
+src/ov000_a/Boss4_StepTiltToward.c:
     complete
     .text       start:0x022db954 end:0x022db9a8
 
-src/ov000_a/Boss4_Unk_ov000_022db9a8.c:
+src/ov000_a/Boss4_IsTiltPastLimits.c:
     complete
     .text       start:0x022db9a8 end:0x022db9ec
 
@@ -6188,7 +6188,7 @@ src/ov000_a/Boss4_Unk_ov000_022dbc4c.c:
     complete
     .text       start:0x022dbc4c end:0x022dbcb8
 
-src/ov000_a/Boss4PartD2_Unk_ov000_022dbd04.c:
+src/ov000_a/Boss4PartD2_StartSpread.c:
     complete
     .text       start:0x022dbd04 end:0x022dbd5c
 
@@ -6200,11 +6200,11 @@ src/ov000_a/Boss4PartD2_Draw.c:
     complete
     .text       start:0x022dbe6c end:0x022dbfb4
 
-src/ov000_a/Boss4PartD2_State_Unk_ov000_022dbfb4.c:
+src/ov000_a/Boss4PartD2_State_Update.c:
     complete
     .text       start:0x022dbfb4 end:0x022dc158
 
-src/ov000_a/Boss4PartD1_SubState_Unk_ov000_022dc20c.c:
+src/ov000_a/Boss4PartD1_SubState_TurnToPlayer.c:
     complete
     .text       start:0x022dc20c end:0x022dc274
 
@@ -6220,11 +6220,11 @@ src/ov000_a/Boss4PartD1_Draw.c:
     complete
     .text       start:0x022dc528 end:0x022dc568
 
-src/ov000_a/Boss4PartD1_State_Unk_ov000_022dc568.c:
+src/ov000_a/Boss4PartD1_State_Update.c:
     complete
     .text       start:0x022dc568 end:0x022dc6cc
 
-src/ov000_a/Boss4PartD0_Unk_ov000_022dc6f4.c:
+src/ov000_a/Boss4PartD0_StartBurst.c:
     complete
     .text       start:0x022dc6f4 end:0x022dc78c
 
@@ -6232,7 +6232,7 @@ src/ov000_a/Boss4PartD0_SubState_Unk_ov000_022dc78c.c:
     complete
     .text       start:0x022dc78c end:0x022dc82c
 
-src/ov000_a/Boss4_Unk_ov000_022dc8cc.c:
+src/ov000_a/Boss4_UpdateAttackTimer.c:
     complete
     .text       start:0x022dc8cc end:0x022dc9fc
 
@@ -6244,7 +6244,7 @@ src/ov000_a/Boss4PartD0_Draw.c:
     complete
     .text       start:0x022dcaa4 end:0x022dcb18
 
-src/ov000_a/Boss4PartD0_State_Unk_ov000_022dcb18.c:
+src/ov000_a/Boss4PartD0_State_Update.c:
     complete
     .text       start:0x022dcb18 end:0x022dcc10
 
@@ -6260,7 +6260,7 @@ src/ov000_a/Boss4_Unk_ov000_022dcd80.c:
     complete
     .text       start:0x022dcd80 end:0x022dce70
 
-src/ov000_a/Boss4_Unk_ov000_022dce70.c:
+src/ov000_a/Boss4_DrawAuxModel.c:
     complete
     .text       start:0x022dce70 end:0x022dcf20
 
@@ -6268,27 +6268,27 @@ src/ov000_a/Boss4PartCF_Draw.c:
     complete
     .text       start:0x022dcf38 end:0x022dcff8
 
-src/ov000_a/Boss4_Unk_ov000_022dd068.c:
+src/ov000_a/Boss4_DrawSpinTiltModel.c:
     complete
     .text       start:0x022dd068 end:0x022dd12c
 
-src/ov000_a/Boss4_State_Unk_ov000_022dd12c.c:
+src/ov000_a/Boss4_State_DefeatFinish.c:
     complete
     .text       start:0x022dd12c end:0x022dd1e8
 
-src/ov000_a/Boss4_State_Unk_ov000_022dd1e8.c:
+src/ov000_a/Boss4_State_DefeatExplode.c:
     complete
     .text       start:0x022dd1e8 end:0x022dd410
 
-src/ov000_a/Boss4_State_Unk_ov000_022dd458.c:
+src/ov000_a/Boss4_State_DefeatCamera3.c:
     complete
     .text       start:0x022dd458 end:0x022dd4d0
 
-src/ov000_a/Boss4_State_Unk_ov000_022dd518.c:
+src/ov000_a/Boss4_State_DefeatCamera2.c:
     complete
     .text       start:0x022dd518 end:0x022dd590
 
-src/ov000_a/Boss4_State_Unk_ov000_022dd5d8.c:
+src/ov000_a/Boss4_State_DefeatCamera1.c:
     complete
     .text       start:0x022dd5d8 end:0x022dd748
 
@@ -6432,11 +6432,11 @@ src/ov000_b/EffDebrisSpawner_Create.c:
     complete
     .text       start:0x0231fd28 end:0x0231fdec
 
-src/ov000_b/DecGroupAF_Unk_ov000_023205bc.c:
+src/ov000_b/DecGroupAF_CreateChildFront.c:
     complete
     .text       start:0x023205bc end:0x023206f0
 
-src/ov000_b/DecGroupAF_Unk_ov000_02320744.c:
+src/ov000_b/DecGroupAF_CreateChildBack.c:
     complete
     .text       start:0x02320744 end:0x02320894
 
@@ -6448,7 +6448,7 @@ src/ov000_b/DecBird_Create.c:
     complete
     .text       start:0x02321da4 end:0x02321f18
 
-src/ov000_b/DecGroup35_Unk_ov000_02321f18.c:
+src/ov000_b/DecGroup35_CreateFallingDebris.c:
     complete
     .text       start:0x02321f18 end:0x023220d0
 
@@ -6588,11 +6588,11 @@ src/ov000_b/FixInformation_CreateSwingSky.c:
     complete
     .text       start:0x0232f5a8 end:0x0232f6f4
 
-src/ov000_b/FixInformation_Unk_ov000_0232f81c.c:
+src/ov000_b/FixInformation_CreateSwing.c:
     complete
     .text       start:0x0232f81c end:0x0232fa00
 
-src/ov000_b/FixVs_Unk_ov000_0232fa4c.c:
+src/ov000_b/FixVs_CreateAbovePlayer.c:
     complete
     .text       start:0x0232fa4c end:0x0232fb98
 
@@ -6608,7 +6608,7 @@ src/ov000_b/EffVs_Create.c:
     complete
     .text       start:0x0232ff6c end:0x02330098
 
-src/ov000_b/EffTrick_Unk_ov000_02330098.c:
+src/ov000_b/EffTrick_CreateAtOffset.c:
     complete
     .text       start:0x02330098 end:0x02330240
 
@@ -6736,7 +6736,7 @@ src/ov000_c/Boss4_Create.c:
     complete
     .text       start:0x022df55c end:0x022df9d4
 
-src/ov000_c/Boss6_Unk_ov000_022dfd80.c:
+src/ov000_c/Boss6_CreatePiece.c:
     complete
     .text       start:0x022dfd80 end:0x022dff1c
 
@@ -6908,7 +6908,7 @@ src/ov000_c/EggPawnM_Create.c:
     complete
     .text       start:0x022fc450 end:0x022fc5b8
 
-src/ov000_c/EnemyPawnGroup_State_Unk_ov000_022fe350.c:
+src/ov000_c/EnemyPawnGroup_State_Walk.c:
     complete
     .text       start:0x022fe350 end:0x022fe7e8
 
@@ -7156,7 +7156,7 @@ src/ov000_d/DecGroup41_Action_Flee.c:
     complete
     .text       start:0x02321244 end:0x02321378
 
-src/ov000_d/EnemyRoomHud_State_Unk_ov000_0232cd18.c:
+src/ov000_d/EnemyRoomHud_State_Vanish.c:
     complete
     .text       start:0x0232cd18 end:0x0232ce4c
 
@@ -7616,7 +7616,7 @@ src/ov000_d/TimeSelectMenu_SetSprite17Anim3.c:
     complete
     .text       start:0x02360b2c end:0x02360b64
 
-src/ov000_d/TimeSelectMenu_Unk_ov000_02360b64.c:
+src/ov000_d/TimeSelectMenu_SetSprite17Anim3B.c:
     complete
     .text       start:0x02360b64 end:0x02360b9c
 
@@ -7848,7 +7848,7 @@ src/ov000_d/ShooterPart1_State_Main.c:
     complete
     .text       start:0x02316db0 end:0x02316ee8
 
-src/ov000_d/DecSonicNeon_State_Unk_ov000_02320014.c:
+src/ov000_d/DecSonicNeon_State_BlinkPair.c:
     complete
     .text       start:0x02320014 end:0x02320168
 
@@ -7860,7 +7860,7 @@ src/ov000_d/EffBlazeSpinFlame_State_Main.c:
     complete
     .text       start:0x023329ec end:0x02332b3c
 
-src/ov000_d/Hud_Unk_ov000_02335ee0.c:
+src/ov000_d/Hud_DrawLives.c:
     complete
     .text       start:0x02335ee0 end:0x02336014
 
@@ -7908,19 +7908,19 @@ src/ov000_d/Player_Action_CorkscrewPath.c:
     complete
     .text       start:0x0235566c end:0x023557c8
 
-src/ov000_c/Boss6_Unk_ov000_022e0700.c:
+src/ov000_c/Boss6_ResetCamera.c:
     complete
     .text       start:0x022e0700 end:0x022e0860
 
-src/ov000_c/Boss6_OnHit_Unk_ov000_022e0998.c:
+src/ov000_c/Boss6_OnHit_PushPlayer_ov000_022e0998.c:
     complete
     .text       start:0x022e0998 end:0x022e0af8
 
-src/ov000_c/Boss6_OnHit_Unk_ov000_022e0e7c.c:
+src/ov000_c/Boss6_OnHit_DamageFlip.c:
     complete
     .text       start:0x022e0e7c end:0x022e1078
 
-src/ov000_c/Boss6_Unk_ov000_022e1f88.c:
+src/ov000_c/Boss6_ScrollFadeModel.c:
     complete
     .text       start:0x022e1f88 end:0x022e20b0
 
@@ -7976,19 +7976,19 @@ src/ov000_c/BossF_InitCamera.c:
     complete
     .text       start:0x022f9188 end:0x022f92dc
 
-src/ov000_c/MapObject_Unk_ov000_022fb738.c:
+src/ov000_c/MapObject_SpawnFreedAnimal.c:
     complete
     .text       start:0x022fb738 end:0x022fb898
 
-src/ov000_c/MapObject_Unk_ov000_022fb898.c:
+src/ov000_c/MapObject_SpawnDestroyBurst.c:
     complete
     .text       start:0x022fb898 end:0x022fb9c8
 
-src/ov000_c/EnemyPawnGroup_Unk_ov000_022fc5b8.c:
+src/ov000_c/EnemyPawnGroup_SpawnChild.c:
     complete
     .text       start:0x022fc5b8 end:0x022fc6e8
 
-src/ov000_c/EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc768.c:
+src/ov000_c/EnemyPawnGroup_OnHit_Box2_PushPlayer.c:
     complete
     .text       start:0x022fc768 end:0x022fc894
 
@@ -7996,7 +7996,7 @@ src/ov000_c/EnemyPawnGroup_OnDetect.c:
     complete
     .text       start:0x022fc894 end:0x022fcaa8
 
-src/ov000_c/EnemyPawnGroup_State_Unk_ov000_022fd230.c:
+src/ov000_c/EnemyPawnGroup_State_AttackSpawnEggSf.c:
     complete
     .text       start:0x022fd230 end:0x022fd370
 
@@ -8040,11 +8040,11 @@ src/ov000_d/Valve_InitSteamSprites.c:
     complete
     .text       start:0x0231aa74 end:0x0231abe8
 
-src/ov000_d/DecSonicNeon_State_Unk_ov000_02320168.c:
+src/ov000_d/DecSonicNeon_State_BlinkFull.c:
     complete
     .text       start:0x02320168 end:0x023202f8
 
-src/ov000_d/DecGroup41_State_Unk_ov000_02321514.c:
+src/ov000_d/DecGroup41_State_Turn.c:
     complete
     .text       start:0x02321514 end:0x023216a4
 
@@ -8116,7 +8116,7 @@ src/ov000_d/Player_Action_Swing.c:
     complete
     .text       start:0x023516b8 end:0x0235182c
 
-src/ov000_d/Player_Unk_ov000_023526cc.c:
+src/ov000_d/Player_ClampToAttachedGimmick.c:
     complete
     .text       start:0x023526cc end:0x0235283c
 
@@ -8156,15 +8156,15 @@ src/ov000_d/PlayerSelectMenu_Action_Opening.c:
     complete
     .text       start:0x02359c0c end:0x02359c60
 
-src/ov000_e/Boss1Neck_Unk_ov000_022c9dbc.c:
+src/ov000_e/Boss1Neck_MoveTowardX.c:
     complete
     .text       start:0x022c9dbc end:0x022c9f7c
 
-src/ov000_e/Boss4_Unk_ov000_022dde20.c:
+src/ov000_e/Boss4_Action_StartSlam.c:
     complete
     .text       start:0x022dde20 end:0x022ddedc
 
-src/ov000_e/Boss4_Unk_ov000_022de65c.c:
+src/ov000_e/Boss4_ResetCamera.c:
     complete
     .text       start:0x022de65c end:0x022de768
 
@@ -8196,7 +8196,7 @@ src/ov000_e/Boss7_State_Unk_ov000_022ed190.c:
     complete
     .text       start:0x022ed190 end:0x022ed428
 
-src/ov000_e/BossFPartD8_State_Unk_ov000_022ef6a0.c:
+src/ov000_e/BossFPartD8_State_DefeatCamera1.c:
     complete
     .text       start:0x022ef6a0 end:0x022ef7b0
 
@@ -8232,7 +8232,7 @@ src/ov000_e/Boss4_Action_Defeat.c:
     complete
     .text       start:0x022dd748 end:0x022dd8c8
 
-src/ov000_e/Boss4_SubState_Unk_ov000_022de0d0.c:
+src/ov000_e/Boss4_SubState_ClashFlash.c:
     complete
     .text       start:0x022de0d0 end:0x022de224
 
@@ -8252,7 +8252,7 @@ src/ov000_e/Boss6_State_LandShake.c:
     complete
     .text       start:0x022e2bb0 end:0x022e2d0c
 
-src/ov000_e/Boss6_Unk_ov000_022e37f0.c:
+src/ov000_e/Boss6_SpawnDebrisTimed.c:
     complete
     .text       start:0x022e37f0 end:0x022e3954
 
@@ -8304,7 +8304,7 @@ src/ov000_e/Boss7_State_Unk_ov000_022ed428.c:
     complete
     .text       start:0x022ed428 end:0x022ed5ac
 
-src/ov000_e/BossFPartD8_State_Unk_ov000_022ef360.c:
+src/ov000_e/BossFPartD8_State_DefeatExplode.c:
     complete
     .text       start:0x022ef360 end:0x022ef4ec
 
@@ -8360,11 +8360,11 @@ src/ov000_e/BossF_State_WaitForStart.c:
     complete
     .text       start:0x022f8320 end:0x022f84bc
 
-src/ov000_e/Stage_Unk_ov000_022fabbc.c:
+src/ov000_e/Stage_NetProcessRivalEvents.c:
     complete
     .text       start:0x022fabbc end:0x022fad3c
 
-src/ov000_e/MapObject_Action_Unk_ov000_022fafc8.c:
+src/ov000_e/MapObject_Action_KnockAway.c:
     complete
     .text       start:0x022fafc8 end:0x022fb170
 
@@ -8376,7 +8376,7 @@ src/ov000_e/EnemyPawnGroup_State_Unk_ov000_022fcd50.c:
     complete
     .text       start:0x022fcd50 end:0x022fcef4
 
-src/ov000_e/EnemyPawnGroup_State_Unk_ov000_022fd5f8.c:
+src/ov000_e/EnemyPawnGroup_State_AttackSpawnEggBishop.c:
     complete
     .text       start:0x022fd5f8 end:0x022fd744
 
@@ -8404,11 +8404,11 @@ src/ov000_e/CranePartED_Draw.c:
     complete
     .text       start:0x02305914 end:0x02305a78
 
-src/ov000_e/StageClear_Unk_ov000_0230ad04.c:
+src/ov000_e/StageClear_HandleGoalReached.c:
     complete
     .text       start:0x0230ad04 end:0x0230aed8
 
-src/ov000_e/ItemBox_Unk_ov000_0230da90.c:
+src/ov000_e/ItemBox_GiveItem.c:
     complete
     .text       start:0x0230da90 end:0x0230dcb4
 
@@ -8512,7 +8512,7 @@ src/ov000_f/Player_Action_Cannon.c:
     complete
     .text       start:0x02351018 end:0x023511ec
 
-src/ov000_f/Player_Unk_ov000_02351300.c:
+src/ov000_f/Player_SwingAroundPivotRetract.c:
     complete
     .text       start:0x02351300 end:0x0235154c
 
@@ -8568,7 +8568,7 @@ src/ov000_e/GmkLand_Unk_ov000_0230ef70.c:
     complete
     .text       start:0x0230ef70 end:0x0230f0bc
 
-src/ov000_e/Boss4_SubState_Unk_ov000_022ddedc.c:
+src/ov000_e/Boss4_SubState_HurtFlash.c:
     complete
     .text       start:0x022ddedc end:0x022de018
 
@@ -8736,7 +8736,7 @@ src/ov000_e/Cargo_OnHit.c:
     complete
     .text       start:0x02304ba0 end:0x02304c9c
 
-src/ov000_e/GmkWall_State_Unk_ov000_02308c68.c:
+src/ov000_e/GmkWall_State_MoveDown.c:
     complete
     .text       start:0x02308c68 end:0x02308dac
 
@@ -8828,7 +8828,7 @@ src/ov000_e/EnemyFlapperGroup_FireShot.c:
     complete
     .text       start:0x022ffa58 end:0x022ffb50
 
-src/ov000_e/Boss4_SubState_Unk_ov000_022ddc44.c:
+src/ov000_e/Boss4_SubState_SlamTiltUp.c:
     complete
     .text       start:0x022ddc44 end:0x022ddd20
 
@@ -8864,11 +8864,11 @@ src/ov000_e/Boss6_Unk_ov000_022e0644.c:
     complete
     .text       start:0x022e0644 end:0x022e0700
 
-src/ov000_e/Boss6_OnHit_Unk_ov000_022e08b0.c:
+src/ov000_e/Boss6_OnHit_PushPlayer_ov000_022e08b0.c:
     complete
     .text       start:0x022e08b0 end:0x022e0998
 
-src/ov000_e/Boss6_OnHit_Unk_ov000_022e0ba8.c:
+src/ov000_e/Boss6_OnHit_PushPlayer_ov000_022e0ba8.c:
     complete
     .text       start:0x022e0ba8 end:0x022e0c94
 
@@ -8936,7 +8936,7 @@ src/ov000_e/Boss7PartD5_MoveState_Unk_ov000_022e8478.c:
     complete
     .text       start:0x022e8478 end:0x022e8538
 
-src/ov000_e/Boss7PartD5_Unk_ov000_022e8538.c:
+src/ov000_e/Boss7PartD5_UpdateCircleMotion.c:
     complete
     .text       start:0x022e8538 end:0x022e85f8
 
@@ -8956,7 +8956,7 @@ src/ov000_e/Boss7_State_Unk_ov000_022ed6c4.c:
     complete
     .text       start:0x022ed6c4 end:0x022ed78c
 
-src/ov000_e/BossFPartD8_State_Unk_ov000_022ef2a4.c:
+src/ov000_e/BossFPartD8_State_DefeatFinish.c:
     complete
     .text       start:0x022ef2a4 end:0x022ef360
 
@@ -9036,7 +9036,7 @@ src/ov000_e/MapObject_In_Default.c:
     complete
     .text       start:0x022fb2f8 end:0x022fb3d8
 
-src/ov000_e/EnemyPawnGroup_State_Unk_ov000_022fd0d0.c:
+src/ov000_e/EnemyPawnGroup_State_AttackSpawnGunHunter.c:
     complete
     .text       start:0x022fd0d0 end:0x022fd19c
 
@@ -9064,7 +9064,7 @@ src/ov000_e/MapObj8F_State_Unk_ov000_02308810.c:
     complete
     .text       start:0x02308810 end:0x023088e8
 
-src/ov000_e/GmkWall_State_Unk_ov000_02308a7c.c:
+src/ov000_e/GmkWall_State_MoveUp.c:
     complete
     .text       start:0x02308a7c end:0x02308b64
 
@@ -9172,7 +9172,7 @@ src/ov000_g/Hud_SetTensionGauge.c:
     complete
     .text       start:0x02336050 end:0x0233624c
 
-src/ov000_g/Hud_Unk_ov000_023367ac.c:
+src/ov000_g/Hud_UpdateTensionGauge.c:
     complete
     .text       start:0x023367ac end:0x023369bc
 
@@ -9228,11 +9228,11 @@ src/ov000_h/ZoneBg_Zone7_UpdateParallax.c:
     complete
     .text       start:0x0233e960 end:0x0233ea38
 
-src/ov000_h/ZoneBg_Zone7_Unk_ov000_0233ea38.c:
+src/ov000_h/ZoneBg_Zone7_UpdateScreenScroll.c:
     complete
     .text       start:0x0233ea38 end:0x0233ec68
 
-src/ov000_h/ZoneBg_Zone7_Unk_ov000_0233ec68.c:
+src/ov000_h/ZoneBg_Zone7_BuildLineScrollOtherScreen.c:
     complete
     .text       start:0x0233ec68 end:0x0233ed3c
 
@@ -9248,11 +9248,11 @@ src/ov000_h/ZoneBg_Zone5_UpdateParallax.c:
     complete
     .text       start:0x0233f02c end:0x0233f104
 
-src/ov000_h/ZoneBg_Zone5_Unk_ov000_0233f104.c:
+src/ov000_h/ZoneBg_Zone5_UpdateScreenScroll.c:
     complete
     .text       start:0x0233f104 end:0x0233f334
 
-src/ov000_h/ZoneBg_Zone5_Unk_ov000_0233f334.c:
+src/ov000_h/ZoneBg_Zone5_BuildLineScrollOtherScreen.c:
     complete
     .text       start:0x0233f334 end:0x0233f408
 
@@ -9268,11 +9268,11 @@ src/ov000_h/ZoneBg_Zone3_UpdateParallax.c:
     complete
     .text       start:0x0233f6f8 end:0x0233f8a0
 
-src/ov000_h/ZoneBg_Zone3_Unk_ov000_0233f8a0.c:
+src/ov000_h/ZoneBg_Zone3_UpdateScreenScroll.c:
     complete
     .text       start:0x0233f8a0 end:0x0233fc44
 
-src/ov000_h/ZoneBg_Zone3_Unk_ov000_0233fc44.c:
+src/ov000_h/ZoneBg_Zone3_BuildLineScrollOtherScreen.c:
     complete
     .text       start:0x0233fc44 end:0x0233fd18
 
@@ -9280,7 +9280,7 @@ src/ov000_h/ZoneBg_Zone3_BuildLineScroll.c:
     complete
     .text       start:0x0233fd18 end:0x0233ff54
 
-src/ov000_h/ZoneBg_Zone2_Unk_ov000_02340154.c:
+src/ov000_h/ZoneBg_Zone2_UpdateScreenScroll.c:
     complete
     .text       start:0x02340154 end:0x02340388
 
@@ -9340,7 +9340,7 @@ src/ov000_h/RingManager_Main.c:
     complete
     .text       start:0x0235bd10 end:0x0235c168
 
-src/ov000_e/Boss6_OnHit_Unk_ov000_022e0af8.c:
+src/ov000_e/Boss6_OnHit_PushPlayer_ov000_022e0af8.c:
     complete
     .text       start:0x022e0af8 end:0x022e0ba8
 
@@ -9368,15 +9368,15 @@ src/ov000_g/EnemyRoomHud_State_Count.c:
     complete
     .text       start:0x0232ce78 end:0x0232d05c
 
-src/ov000_e/Boss4_SubState_Unk_ov000_022ddb44.c:
+src/ov000_e/Boss4_SubState_SlamDown.c:
     complete
     .text       start:0x022ddb44 end:0x022ddbec
 
-src/ov000_e/Boss4_SubState_Unk_ov000_022de288.c:
+src/ov000_e/Boss4_SubState_Spin.c:
     complete
     .text       start:0x022de288 end:0x022de304
 
-src/ov000_e/Boss4_Unk_ov000_022de39c.c:
+src/ov000_e/Boss4_StartAttack.c:
     complete
     .text       start:0x022de39c end:0x022de41c
 
@@ -9432,7 +9432,7 @@ src/ov000_e/Boss6_Action_Unk_ov000_022e43f0.c:
     complete
     .text       start:0x022e43f0 end:0x022e4474
 
-src/ov000_e/Boss6_State_Unk_ov000_022e4718.c:
+src/ov000_e/Boss6_State_HurtFlip.c:
     complete
     .text       start:0x022e4718 end:0x022e47b8
 
@@ -9444,7 +9444,7 @@ src/ov000_e/Boss6_Unk_ov000_022e5c1c.c:
     complete
     .text       start:0x022e5c1c end:0x022e5ca4
 
-src/ov000_e/Boss7PartD5_Unk_ov000_022e7b6c.c:
+src/ov000_e/Boss7PartD5_HoverBob.c:
     complete
     .text       start:0x022e7b6c end:0x022e7bf4
 
@@ -9532,11 +9532,11 @@ src/ov000_e/MapObject_Destructor.c:
     complete
     .text       start:0x022fb9c8 end:0x022fba50
 
-src/ov000_e/EnemyPawnGroup_State_Unk_ov000_022fcf88.c:
+src/ov000_e/EnemyPawnGroup_State_Brake.c:
     complete
     .text       start:0x022fcf88 end:0x022fd030
 
-src/ov000_e/Kuragen_State_Unk_ov000_02301108.c:
+src/ov000_e/KuragenBomb_State_Hold.c:
     complete
     .text       start:0x02301108 end:0x0230119c
 
@@ -9668,7 +9668,7 @@ src/ov000_g/FixVsHud_Draw.c:
     complete
     .text       start:0x0232dad8 end:0x0232dbfc
 
-src/ov000_g/FixInformation_State_Unk_ov000_0232f6f4.c:
+src/ov000_g/FixInformation_State_Swing.c:
     complete
     .text       start:0x0232f6f4 end:0x0232f81c
 
@@ -9768,7 +9768,7 @@ src/ov000_i/ZoneFx_Zone4_Init.c:
     complete
     .text       start:0x0233e290 end:0x0233e32c
 
-src/ov000_i/ZoneBg_Zone2_Unk_ov000_0233e8ac.c:
+src/ov000_i/ZoneBg_Zone2_InitWave.c:
     complete
     .text       start:0x0233e8ac end:0x0233e960
 
@@ -9916,7 +9916,7 @@ src/ov000_i/Player_Action_BendStick.c:
     complete
     .text       start:0x023548d8 end:0x02354980
 
-src/ov000_i/Player_Unk_ov000_02354de4.c:
+src/ov000_i/Player_MoveAlongCorkscrewPath.c:
     complete
     .text       start:0x02354de4 end:0x02355254
 
@@ -10044,7 +10044,7 @@ src/ov000_g/DecFishPart_Action_Flee.c:
     complete
     .text       start:0x02320be8 end:0x02320ce0
 
-src/ov000_g/DecGroup41_Action_Unk_ov000_02321430.c:
+src/ov000_g/DecGroup41_Action_Cruise.c:
     complete
     .text       start:0x02321430 end:0x02321514
 
@@ -10164,7 +10164,7 @@ src/ov000_i/ZoneFx_Zone7_Init.c:
     complete
     .text       start:0x0233e138 end:0x0233e1c0
 
-src/ov000_i/ZoneFx_Zone6_Unk_ov000_0233e434.c:
+src/ov000_i/ZoneFx_Zone6_SetLockedCameraX.c:
     complete
     .text       start:0x0233e434 end:0x0233e48c
 
@@ -10220,11 +10220,11 @@ src/ov000_i/Player_Action_Crouch.c:
     complete
     .text       start:0x0234bdac end:0x0234be10
 
-src/ov000_j/Boss4_Draw_Unk_ov000_022de768.c:
+src/ov000_j/Boss4_Draw_PlayerOnArena.c:
     complete
     .text       start:0x022de768 end:0x022de860
 
-src/ov000_j/Boss6_State_Unk_ov000_022dfbc8.c:
+src/ov000_j/Boss6_State_PieceSpinFly.c:
     complete
     .text       start:0x022dfbc8 end:0x022dfcbc
 
@@ -10232,7 +10232,7 @@ src/ov000_j/Boss7PartD7_Draw.c:
     complete
     .text       start:0x022ebfc8 end:0x022ec138
 
-src/ov000_j/BossFPartD8_State_Unk_ov000_022f0b44.c:
+src/ov000_j/BossFPartD8_State_WaitTalkDemo.c:
     complete
     .text       start:0x022f0b44 end:0x022f0bd0
 
@@ -10260,11 +10260,11 @@ src/ov000_j/Boss_GetStartHealth.c:
     complete
     .text       start:0x022c5f28 end:0x022c5f68
 
-src/ov000_j/Boss1Hammer_State_Unk_ov000_022c67a4.c:
+src/ov000_j/Boss1Hammer_State_StartSpin.c:
     complete
     .text       start:0x022c67a4 end:0x022c67ec
 
-src/ov000_j/Boss1Hammer_State_Unk_ov000_022c6850.c:
+src/ov000_j/Boss1Hammer_State_Fall.c:
     complete
     .text       start:0x022c6850 end:0x022c68ac
 
@@ -10272,31 +10272,31 @@ src/ov000_j/Boss1_SetPartAnimation.c:
     complete
     .text       start:0x022cc00c end:0x022cc06c
 
-src/ov000_j/Boss4_SubState_Unk_ov000_022dd8c8.c:
+src/ov000_j/Boss4_SubState_TiltSpin.c:
     complete
     .text       start:0x022dd8c8 end:0x022dd908
 
-src/ov000_j/Boss4_SubState_Unk_ov000_022dd9e8.c:
+src/ov000_j/Boss4_SubState_SlamRecover.c:
     complete
     .text       start:0x022dd9e8 end:0x022ddab8
 
-src/ov000_j/Boss4_SubState_Unk_ov000_022ddbec.c:
+src/ov000_j/Boss4_SubState_SlamHold.c:
     complete
     .text       start:0x022ddbec end:0x022ddc44
 
-src/ov000_j/Boss4_Draw_Unk_ov000_022dec18.c:
+src/ov000_j/Boss4_Draw_Body.c:
     complete
     .text       start:0x022dec18 end:0x022dec70
 
-src/ov000_j/Boss6_State_Unk_ov000_022dfb68.c:
+src/ov000_j/Boss6_State_PieceStartSlide.c:
     complete
     .text       start:0x022dfb68 end:0x022dfbc8
 
-src/ov000_j/Boss6_State_Unk_ov000_022dfcbc.c:
+src/ov000_j/Boss6_State_PieceWaitSpinFly.c:
     complete
     .text       start:0x022dfcbc end:0x022dfd30
 
-src/ov000_j/Boss6_State_Unk_ov000_022dfd30.c:
+src/ov000_j/Boss6_State_PieceDestroyOnAnimEnd.c:
     complete
     .text       start:0x022dfd30 end:0x022dfd74
 
@@ -10312,11 +10312,11 @@ src/ov000_j/Boss6_State_Unk_ov000_022e552c.c:
     complete
     .text       start:0x022e552c end:0x022e591c
 
-src/ov000_j/Boss7PartD5_MoveState_Unk_ov000_022e7210.c:
+src/ov000_j/Boss7PartD5_MoveState_DefeatExit.c:
     complete
     .text       start:0x022e7210 end:0x022e726c
 
-src/ov000_j/Boss7PartD5_MoveState_Unk_ov000_022e726c.c:
+src/ov000_j/Boss7PartD5_MoveState_StartDefeatExit.c:
     complete
     .text       start:0x022e726c end:0x022e72cc
 
@@ -10464,11 +10464,11 @@ src/ov000_j/MapObject_FreeSpawnEntry.c:
     complete
     .text       start:0x022fae34 end:0x022faeac
 
-src/ov000_j/EnemyPawnGroup_State_Unk_ov000_022fe29c.c:
+src/ov000_j/EnemyPawnGroup_State_Turn.c:
     complete
     .text       start:0x022fe29c end:0x022fe304
 
-src/ov000_j/Kuragen_Unk_ov000_023011d4.c:
+src/ov000_j/KuragenBomb_Attach.c:
     complete
     .text       start:0x023011d4 end:0x02301234
 
@@ -10488,7 +10488,7 @@ src/ov000_j/MapObj74_Action_ReleaseCamera.c:
     complete
     .text       start:0x023041f4 end:0x0230422c
 
-src/ov000_j/Cargo_State_Unk_ov000_02304f50.c:
+src/ov000_j/Cargo_State_Stopped.c:
     complete
     .text       start:0x02304f50 end:0x02304fa0
 
@@ -10504,7 +10504,7 @@ src/ov000_j/GmkWall_Action_Unk_ov000_02308c20.c:
     complete
     .text       start:0x02308c20 end:0x02308c68
 
-src/ov000_j/GmkWall_Action_Unk_ov000_02308dac.c:
+src/ov000_j/GmkWall_Action_MoveDown.c:
     complete
     .text       start:0x02308dac end:0x02308df8
 
@@ -10540,11 +10540,11 @@ src/ov000_k/RingManager_ScatterRings.c:
     complete
     .text       start:0x0235aea8 end:0x0235b08c
 
-src/ov000_k/RingManager_Unk_ov000_0235b804.c:
+src/ov000_k/RingManager_SuckScatteredRings.c:
     complete
     .text       start:0x0235b804 end:0x0235bafc
 
-src/ov000_k/RingManager_Unk_ov000_0235bafc.c:
+src/ov000_k/RingManager_AttractRings.c:
     complete
     .text       start:0x0235bafc end:0x0235bd10
 
@@ -10620,7 +10620,7 @@ src/ov000_n/BossFPartDE_Unk_ov000_022f6978.c:
     complete
     .text       start:0x022f6978 end:0x022f6a80
 
-src/ov000_n/EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc6e8.c:
+src/ov000_n/EnemyPawnGroup_OnHit_Box2_Bounce.c:
     complete
     .text       start:0x022fc6e8 end:0x022fc768
 
@@ -10652,11 +10652,11 @@ src/ov000_n/BossFPartD8_Unk_ov000_022f8df8.c:
     complete
     .text       start:0x022f8df8 end:0x022f8f00
 
-src/ov000_n/MapObject_Unk_ov000_022faa74.c:
+src/ov000_n/MapObject_NetReceiveHits.c:
     complete
     .text       start:0x022faa74 end:0x022fabbc
 
-src/ov000_n/Kuragen_Unk_ov000_02301390.c:
+src/ov000_n/Kuragen_SpawnBomb.c:
     complete
     .text       start:0x02301390 end:0x023013f0
 
@@ -10772,19 +10772,19 @@ src/ov000_l/DecGroup41_State_Flee.c:
     complete
     .text       start:0x02321188 end:0x02321244
 
-src/ov000_l/DecGroup41_State_Unk_ov000_02321378.c:
+src/ov000_l/DecGroup41_State_Cruise.c:
     complete
     .text       start:0x02321378 end:0x02321430
 
-src/ov000_l/DecGroup41_State_Unk_ov000_023216cc.c:
+src/ov000_l/DecGroup41_State_Dart.c:
     complete
     .text       start:0x023216cc end:0x02321744
 
-src/ov000_l/DecGroup41_State_Unk_ov000_0232179c.c:
+src/ov000_l/DecGroup41_State_Sink.c:
     complete
     .text       start:0x0232179c end:0x02321824
 
-src/ov000_l/DecGroup41_Action_Unk_ov000_02321824.c:
+src/ov000_l/DecGroup41_Action_Sink.c:
     complete
     .text       start:0x02321824 end:0x023218d0
 
@@ -11004,7 +11004,7 @@ src/ov000_p/Camera_ResetOnRespawn.c:
     complete
     .text       start:0x0233c00c end:0x0233c100
 
-src/ov000_p/ZoneBg_Zone2_Unk_ov000_02340388.c:
+src/ov000_p/ZoneBg_Zone2_BuildLineScrollOtherScreen.c:
     complete
     .text       start:0x02340388 end:0x023405cc
 
@@ -11012,7 +11012,7 @@ src/ov000_p/Player_ApplyVerticalInput.c:
     complete
     .text       start:0x02347190 end:0x0234729c
 
-src/ov000_q/Boss1Neck_State_Unk_ov000_022c8f24.c:
+src/ov000_q/Boss1Neck_State_BigSlamImpact.c:
     complete
     .text       start:0x022c8f24 end:0x022c90e8
 
@@ -11084,7 +11084,7 @@ src/ov000_t/StageEvent_SpawnRingsInBlock.c:
     complete
     .text       start:0x02334b34 end:0x02334c18
 
-src/asm_fallback/Boss4_SubState_Unk_ov000_022ddd4c.c:
+src/asm_fallback/Boss4_SubState_SlamStopSpin.c:
     complete
     .text       start:0x022ddd4c end:0x022dde20
 
@@ -11168,7 +11168,7 @@ src/asm_fallback/StageEvent_SpawnInView.c:
     complete
     .text       start:0x023350bc end:0x023352c8
 
-src/asm_fallback/StageEvent_Unk_ov000_023355e0.c:
+src/asm_fallback/StageEvent_SpawnInRect.c:
     complete
     .text       start:0x023355e0 end:0x02335704
 

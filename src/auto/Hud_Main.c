@@ -6,9 +6,9 @@ s32 Hud_ToDecimalDigits();
 s32 Hud_DrawRings();
 s32 Hud_FramesToTimeDigits();
 s32 Hud_DrawTime();
-s32 Hud_Unk_ov000_023367ac();
+s32 Hud_UpdateTensionGauge();
 s32 Hud_DrawTensionGauge();
-s32 Hud_Unk_ov000_02335ee0();
+s32 Hud_DrawLives();
 
 void Hud_Main(void) {
     s32 t0 = (*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x290);
@@ -23,7 +23,7 @@ void Hud_Main(void) {
     if ((*(u32 *)t1 & 1) == 0) {
         Hud_DrawTime(t1);
     }
-    Hud_Unk_ov000_023367ac(t1);
+    Hud_UpdateTensionGauge(t1);
     if ((*(u32 *)t1 & 4) == 0) {
         Hud_DrawTensionGauge(t1);
     }
@@ -32,5 +32,5 @@ void Hud_Main(void) {
     if ((*(u32 *)t1 & 8) != 0) {
         return;
     }
-    Hud_Unk_ov000_02335ee0(t1);
+    Hud_DrawLives(t1);
 }

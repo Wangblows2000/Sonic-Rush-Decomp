@@ -3,7 +3,7 @@
 
 #pragma thumb on
 
-s32 StaffRoll_Unk_ov001_022d0070();
+s32 StaffRoll_DrawSprites();
 extern u8 data_0208926c[];
 s32 StaffRoll_SetMainBrightness();
 extern u8 data_02087d44[];
@@ -15,7 +15,7 @@ void StaffRoll_State_WaitEnd();
 void StaffRoll_State_FadeOut(u8 *p0) {
     s32 t0 = *(u32 *)p0;
     if (t0 != 2) {
-        StaffRoll_Unk_ov001_022d0070(p0, t0);
+        StaffRoll_DrawSprites(p0, t0);
     }
     s32 t1 = *(s16 *)((u8 *)data_0208926c + 8);
     if (t1 > -16) {

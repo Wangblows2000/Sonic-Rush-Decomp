@@ -8,12 +8,12 @@ void NNS_SndPlayerSetTrackPitch(s32 a, s32 b, s32 c);
 void EffFound_Create(UnkStruct_StageObj *w, s32 a, s32 b);
 void EnemyPawnGroup_Action_Unk_ov000_022fdf28(UnkStruct_StageObj *w);
 void EnemyPawnGroup_Action_Unk_ov000_022fdb9c(UnkStruct_StageObj *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fd8d8(UnkStruct_StageObj *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fd744(UnkStruct_StageObj *w);
+void EnemyPawnGroup_Action_AttackSpawnEggPawnM(UnkStruct_StageObj *w);
+void EnemyPawnGroup_Action_AttackSpawnEggBishop(UnkStruct_StageObj *w);
 void EnemyPawnGroup_Action_Unk_ov000_022fd564(UnkStruct_StageObj *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fd370(UnkStruct_StageObj *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fd19c(UnkStruct_StageObj *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fd030(UnkStruct_StageObj *w);
+void EnemyPawnGroup_Action_AttackSpawnEggSf(UnkStruct_StageObj *w);
+void EnemyPawnGroup_Action_AttackSpawnGunHunter(UnkStruct_StageObj *w);
+void EnemyPawnGroup_Action_Brake(UnkStruct_StageObj *w);
 void EnemyPawnGroup_Action_Unk_ov000_022fcc50(UnkStruct_StageObj *w);
 
 void EnemyPawnGroup_OnDetect(UnkStruct_Coll *a, UnkStruct_Coll *b) {
@@ -48,26 +48,26 @@ void EnemyPawnGroup_OnDetect(UnkStruct_Coll *a, UnkStruct_Coll *b) {
         EnemyPawnGroup_Action_Unk_ov000_022fdb9c(w);
         return;
     case 1:
-        EnemyPawnGroup_Action_Unk_ov000_022fd8d8(w);
+        EnemyPawnGroup_Action_AttackSpawnEggPawnM(w);
         return;
     case 7:
     case 0x15:
-        EnemyPawnGroup_Action_Unk_ov000_022fd744(w);
+        EnemyPawnGroup_Action_AttackSpawnEggBishop(w);
         return;
     case 8:
         EnemyPawnGroup_Action_Unk_ov000_022fd564(w);
         return;
     case 9:
-        EnemyPawnGroup_Action_Unk_ov000_022fd370(w);
+        EnemyPawnGroup_Action_AttackSpawnEggSf(w);
         return;
     case 10:
         EnemyPawnGroup_Action_Unk_ov000_022fdf28(w);
         return;
     case 0xd:
-        EnemyPawnGroup_Action_Unk_ov000_022fd19c(w);
+        EnemyPawnGroup_Action_AttackSpawnGunHunter(w);
         return;
     case 0xe:
-        EnemyPawnGroup_Action_Unk_ov000_022fd030(w);
+        EnemyPawnGroup_Action_Brake(w);
         return;
     case 0xf:
         w->unk204 = o;

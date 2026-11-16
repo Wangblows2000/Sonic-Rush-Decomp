@@ -12,7 +12,7 @@ extern u8 data_ov000_02367fbc[];
 void MarkerTimeList_Destructor(void);
 void MarkerTimeList_Draw(void);
 void MarkerTimeList_State_Idle(void);
-s32 Hud_Unk_ov000_0233766c(s32 a);
+s32 Hud_GetDigitGlyphVram(s32 a);
 void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
 
 void MarkerTimeList_Create(void) {
@@ -28,8 +28,8 @@ void MarkerTimeList_Create(void) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0232b020));
     StageObj_Load2dBAC(w, data_ov000_02367fbc, 0, NULL, gActComArchive);
-    w->base.spr0.unk34 = Hud_Unk_ov000_0233766c(0);
-    w->base.spr1.unk34 = Hud_Unk_ov000_0233766c(1);
+    w->base.spr0.unk34 = Hud_GetDigitGlyphVram(0);
+    w->base.spr1.unk34 = Hud_GetDigitGlyphVram(1);
     w->base.spr0.unk44 = 1;
     w->base.spr1.unk44 = 1;
     w->base.spr0.unk2C |= 0x10;

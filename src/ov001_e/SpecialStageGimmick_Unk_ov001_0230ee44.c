@@ -21,7 +21,7 @@ typedef struct UnkStruct_0230ee44 {
 extern u32 gRandSeed;
 
 float _ffltu(u32 v);
-UnkStruct_0230ee44_r *SpecialStageGimmick_Unk_ov001_02307148(s32 a, s32 b, u16 ang, s32 c, s32 speed);
+UnkStruct_0230ee44_r *SpecialStageGimmick_SpawnActObjAt(s32 a, s32 b, u16 ang, s32 c, s32 speed);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -36,7 +36,7 @@ void SpecialStageGimmick_Unk_ov001_0230ee44(UnkStruct_0230ee44 *p) {
     v = Rand();
     Rand();
     f = p->unk1C;
-    r = SpecialStageGimmick_Unk_ov001_02307148(p->unk78, 2, p->rot + (u16)(gRandSeed >> 16) % 0x2000 - 0x1000, 0,
+    r = SpecialStageGimmick_SpawnActObjAt(p->unk78, 2, p->rot + (u16)(gRandSeed >> 16) % 0x2000 - 0x1000, 0,
                             f + 143360.0f * (_ffltu(v) / 65535.0f) - 69632.0f);
     if (r == NULL)
         return;

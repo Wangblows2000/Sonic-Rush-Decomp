@@ -37,8 +37,8 @@ extern UnkTask_022e7dd8 *gTaskCurrent;
 void ZoneMap_CalcClampedScroll(void *a, s32 x, s32 y, s32 *ox, s32 *oy);
 fx32 FX_Sqrt(fx32 a);
 fx32 FX_Div(fx32 a, fx32 b);
-void ZoneMap_Unk_ov001_022e6dec(UnkWork_022e7dd8 *w);
-void ZoneMap_State_Unk_ov001_022e7c50(void);
+void ZoneMap_UpdateView(UnkWork_022e7dd8 *w);
+void ZoneMap_State_MoveAlongPath(void);
 
 static inline fx32 FX_Mul_022e7dd8(fx32 a, fx32 b) {
     return (fx32)(((s64)a * b + 0x800) >> 12);
@@ -107,11 +107,11 @@ void ZoneMap_Unk_ov001_022e7dd8(void) {
             done = FALSE;
         }
     }
-    ZoneMap_Unk_ov001_022e6dec(w);
+    ZoneMap_UpdateView(w);
     w->timer++;
     if (done) {
         w->timer = 0;
-        gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7c50;
+        gTaskCurrent->func = ZoneMap_State_MoveAlongPath;
     }
 }
 #pragma thumb reset

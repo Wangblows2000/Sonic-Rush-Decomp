@@ -4,7 +4,7 @@
 extern u8 gSpecialStageHud[];
 s32 AnimatorSprite_Draw();
 s32 SpecialStageHud_DrawRingCounterScaled();
-s32 SpecialStageHud_Unk_ov001_02308600();
+s32 SpecialStageHud_DrawDigits();
 
 void SpecialStageHud_Unk_ov001_02308e44(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gSpecialStageHud + 0xbcc);
@@ -15,5 +15,5 @@ void SpecialStageHud_Unk_ov001_02308e44(void) {
         }
     }
     SpecialStageHud_DrawRingCounterScaled((*(u32 *)((u8 *)t1 + 0xbcc) - 0x1));
-    SpecialStageHud_Unk_ov001_02308600();
+    SpecialStageHud_DrawDigits();
 }

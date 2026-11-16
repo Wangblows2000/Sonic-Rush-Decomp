@@ -7,9 +7,9 @@ typedef struct UnkStruct_022c8b90 {
     u16 unk20C;
 } UnkStruct_022c8b90;
 
-void Boss1Neck_State_Unk_ov000_022c8b50(void);
+void Boss1Neck_State_RollAnim2(void);
 
 void Boss1Neck_State_WaitTimer_ov000_022c8b90(UnkStruct_022c8b90 *s) {
     if (s->unk20C++ > 5)
-        s->func = Boss1Neck_State_Unk_ov000_022c8b50;
+        s->func = Boss1Neck_State_RollAnim2;
 }

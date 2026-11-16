@@ -22,8 +22,8 @@ void ZoneMapPause_InitDisplay(void);
 UnkTask_022e95b8 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void ZoneMapPause_LoadAssets(UnkWork_022e95b8 *w);
-void ZoneMapPause_Unk_ov001_022e926c(UnkWork_022e95b8 *w);
-void ZoneMapPause_Unk_ov001_022e8d44(void);
+void ZoneMapPause_Action_OpenA(UnkWork_022e95b8 *w);
+void ZoneMapPause_ShowNaviMessage(void);
 void ZoneMapPause_State_Open(void);
 void ZoneMapPause_Destructor(void);
 
@@ -54,10 +54,10 @@ void ZoneMapPause_Create(BOOL flag) {
     gZoneMapPauseWork->unk8 = 0;
     gZoneMapPauseWork->task = t;
     ZoneMapPause_LoadAssets(gZoneMapPauseWork);
-    ZoneMapPause_Unk_ov001_022e926c(gZoneMapPauseWork);
+    ZoneMapPause_Action_OpenA(gZoneMapPauseWork);
     SetPlane_022e95b8(GetPlane_022e95b8() | 4);
     if (flag) {
-        ZoneMapPause_Unk_ov001_022e8d44();
+        ZoneMapPause_ShowNaviMessage();
     }
 }
 #pragma thumb reset

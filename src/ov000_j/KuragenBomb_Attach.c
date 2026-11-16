@@ -1,0 +1,30 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x238];
+    u32 unk238;
+} UnkStruct_023011d4_o;
+
+typedef struct {
+    u8 pad0[0x5c];
+    u16 unk5C;
+    u8 pad5E[0x88 - 0x5e];
+    UnkStruct_023011d4_o *unk88;
+} UnkStruct_023011d4;
+
+void StageObj_SetAnimation(UnkStruct_023011d4 *p, s32 a);
+void KuragenBomb_Action_Hold(UnkStruct_023011d4 *p);
+void KuragenBomb_Action_FollowCarrier(UnkStruct_023011d4 *p);
+
+void KuragenBomb_Attach(UnkStruct_023011d4 *p) {
+    UnkStruct_023011d4_o *o = p->unk88;
+
+    StageObj_SetAnimation(p, 1);
+    p->unk5C |= 4;
+    if (o->unk238 & 0x80) {
+        o->unk238 &= ~0x80;
+        KuragenBomb_Action_Hold(p);
+    } else {
+        KuragenBomb_Action_FollowCarrier(p);
+    }
+}

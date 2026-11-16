@@ -51,8 +51,8 @@ typedef struct {
 
 void AnimatorSprite_ProcessAnimation(UnkSpr_022e4b5c *s, u32 a, u32 b);
 void AnimatorSprite_Draw(UnkSpr_022e4b5c *s);
-void ZoneMap_Unk_ov001_022e4ac4(UnkStruct_022e4b5c *p);
-s32 ZoneMap_Unk_ov001_022e4a10(s32 a, s32 b, s32 n, s32 m, s32 t);
+void ZoneMap_DrawNodeIcons(UnkStruct_022e4b5c *p);
+s32 ZoneMap_EaseInterp(s32 a, s32 b, s32 n, s32 m, s32 t);
 
 #pragma thumb on
 void ZoneMap_Unk_ov001_022e4b5c(UnkStruct_022e4b5c *p) {
@@ -71,7 +71,7 @@ void ZoneMap_Unk_ov001_022e4b5c(UnkStruct_022e4b5c *p) {
 
     AnimatorSprite_ProcessAnimation(s0, 0, 0);
     AnimatorSprite_ProcessAnimation(s1, 0, 0);
-    ZoneMap_Unk_ov001_022e4ac4(p);
+    ZoneMap_DrawNodeIcons(p);
     for (i = 0, pt = p->pts; i < 17; pt++, i++) {
         if (pt->type == 7 || pt->type == 4 || pt->type == 5)
             continue;
@@ -145,7 +145,7 @@ void ZoneMap_Unk_ov001_022e4b5c(UnkStruct_022e4b5c *p) {
             t = 0;
             break;
         }
-        v = ZoneMap_Unk_ov001_022e4a10(0, 6, 60, t, 0x2000);
+        v = ZoneMap_EaseInterp(0, 6, 60, t, 0x2000);
         if (sgn < 0)
             v = -v;
         s->x += (s16)v;

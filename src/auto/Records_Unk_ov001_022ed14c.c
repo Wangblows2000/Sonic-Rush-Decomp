@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-int Records_Unk_ov001_022ec9e0();
+int Records_DrawName();
 
 #pragma thumb on
 
@@ -36,7 +36,7 @@ void Records_Unk_ov001_022ed14c(int param_1)
     do {
       iVar1 = iVar3 - *(int *)(param_1 + 0x30);
       if ((0x2d < iVar1) && (iVar1 < 0x7d)) {
-        Records_Unk_ov001_022ec9e0(param_1,0x18,iVar1,iVar2 + 1);
+        Records_DrawName(param_1,0x18,iVar1,iVar2 + 1);
       }
       iVar3 = iVar3 + 0x10;
       iVar2 = iVar2 + 1;

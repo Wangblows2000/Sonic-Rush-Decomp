@@ -25,7 +25,7 @@ extern UnkTask_022cc588 *gTaskCurrent;
 
 void OptionsMenu_UpdateAnims(UnkWork_022cc588 *w);
 void OptionsMenu_DrawItems(UnkWork_022cc588 *w);
-s32 OptionsMenu_Unk_ov001_022c8d54(UnkSub_022cc588 *s);
+s32 OptionsMenu_GetChildCount(UnkSub_022cc588 *s);
 void OptionsMenu_Unk_ov001_022c8d4c(UnkSub_022cc588 *s);
 void MsgBox_RequestClose(void);
 BOOL MsgBox_IsClosed(void);
@@ -43,7 +43,7 @@ void OptionsMenu_State_Unk_ov001_022cc588(void) {
     w->sub.unk0++;
     w->unk14++;
     w->unk18++;
-    s->unk8 = OptionsMenu_Unk_ov001_022c8d54(s);
+    s->unk8 = OptionsMenu_GetChildCount(s);
     if (s->unk8 == 0) {
         MsgBox_RequestClose();
     }

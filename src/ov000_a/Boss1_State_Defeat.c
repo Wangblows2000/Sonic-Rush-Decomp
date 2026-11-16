@@ -101,7 +101,7 @@ extern UnkStruct_022cab48_5 gDisplayMain;
 
 void Boss_DrawExcBackground(u32 id);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void Boss1_State_Unk_ov000_022cab0c(UnkStruct_022cab48 *s);
+void Boss1_State_DefeatFade_ov000_022cab0c(UnkStruct_022cab48 *s);
 
 void Boss1_State_Defeat(UnkStruct_022cab48 *s) {
     UnkStruct_022cab48_c *c;
@@ -124,5 +124,5 @@ void Boss1_State_Defeat(UnkStruct_022cab48 *s) {
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
     s->unk220 = 0;
-    s->func = Boss1_State_Unk_ov000_022cab0c;
+    s->func = Boss1_State_DefeatFade_ov000_022cab0c;
 }

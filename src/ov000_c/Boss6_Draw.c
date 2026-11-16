@@ -66,7 +66,7 @@ extern u8 data_ov000_023657e0[], data_ov000_023636f4[];
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *c);
-void Boss6_Unk_ov000_022e1f88(UnkStruct_022e1684 *w);
+void Boss6_ScrollFadeModel(UnkStruct_022e1684 *w);
 void Model_Animate(void *s);
 void Model_Draw(void *s);
 void NNS_G3dGeBufferOP_N(s32 a, s32 *b, s32 c);
@@ -100,7 +100,7 @@ void Boss6_Draw(void) {
         sub = &w->unk210[2];
         idx = (s32)(w->unkD52 & 0xffff) >> 4;
         MTX_RotY33_(sub->unk24, SIN_IDX(idx), COS_IDX(idx));
-        Boss6_Unk_ov000_022e1f88(w);
+        Boss6_ScrollFadeModel(w);
         w->unkF68 += w->unkF6A;
         if (w->unkF6A >= 0) {
             if (w->unkF68 > w->unkF6C)

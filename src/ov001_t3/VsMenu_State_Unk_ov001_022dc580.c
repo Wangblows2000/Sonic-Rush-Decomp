@@ -19,20 +19,20 @@ typedef struct {
 
 extern UnkTask_022dc580 *gTaskCurrent;
 
-void VsMenu_Unk_ov001_022da70c(UnkWork_022dc580 *w);
+void VsMenu_DrawDownloadPlayScreen(UnkWork_022dc580 *w);
 BOOL WirelessLobbyDownloadPlay_IsFinished(void);
 BOOL WirelessLobbyDownloadPlay_GetChildCount(void);
 void VsMenu_PlayErrorSE(void);
-BOOL VsMenu_Unk_ov001_022da52c(void);
+BOOL VsMenu_IsBackButtonTouched(void);
 void VsMenu_Unk_ov001_022da304(UnkWork_022dc580 *w);
 void SysSound_PlayCancelSE(void);
 BOOL VsMenu_IsBPressed(void);
-void VsMenu_Unk_ov001_022da450(UnkWork_022dc580 *w);
+void VsMenu_PrepareMsgBox(UnkWork_022dc580 *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
-void VsMenu_State_Unk_ov001_022dc4f0(void);
-void VsMenu_State_Unk_ov001_022dc410(void);
+void VsMenu_State_ParentConfirmRestart(void);
+void VsMenu_State_ParentConfirmStart(void);
 void VsMenu_State_Unk_ov001_022dc498(void);
-void VsMenu_Unk_ov001_022da694(UnkWork_022dc580 *w);
+void VsMenu_DrawParentScreen(UnkWork_022dc580 *w);
 s32 WirelessLobbyParent_GetChildName(u8 *buf, s32 n);
 BOOL WirelessLobbyParent_IsWaitingForChild(void);
 s32 WirelessLobbyDownloadPlay_GetChildName(s32 a, u8 *buf, s32 n);
@@ -47,8 +47,8 @@ void VsMenu_State_Unk_ov001_022dcc10(void);
 void VsMenu_Unk_ov001_022da33c(UnkWork_022dc580 *w);
 void VsMenu_Unk_ov001_022da244(UnkWork_022dc580 *w, s32 a);
 void VsMenu_Unk_ov001_022da1cc(UnkWork_022dc580 *w, s32 a);
-void VsMenu_Unk_ov001_022d983c(UnkWork_022dc580 *w, s32 a);
-void VsMenu_State_Unk_ov001_022dccc8(void);
+void VsMenu_ClearNameSlot2(UnkWork_022dc580 *w, s32 a);
+void VsMenu_State_DownloadPlayRestartDelay(void);
 
 #pragma thumb on
 void VsMenu_State_Unk_ov001_022dc580(void) {
@@ -58,13 +58,13 @@ void VsMenu_State_Unk_ov001_022dc580(void) {
     u8 buf[16];
 
     w = gTaskCurrent->work;
-    VsMenu_Unk_ov001_022da694(w);
+    VsMenu_DrawParentScreen(w);
     VsMenu_Unk_ov001_022d9cd4(w, 0, 0);
     VsMenu_BuildGlyphString(w->unk4c, buf, WirelessLobbyParent_GetChildName(buf, 7));
     a = FALSE;
     c = FALSE;
     if (w->unk1c == 0) {
-        if (VsMenu_Unk_ov001_022da52c()) {
+        if (VsMenu_IsBackButtonTouched()) {
             VsMenu_Unk_ov001_022da304(w);
             a = TRUE;
             SysSound_PlayCancelSE();
@@ -90,18 +90,18 @@ void VsMenu_State_Unk_ov001_022dc580(void) {
     if (a) {
         w->timer = 0;
         w->unk4 = 0;
-        VsMenu_Unk_ov001_022da450(w);
+        VsMenu_PrepareMsgBox(w);
         MsgBox_Create(1, 3, 1, 1, 2, 0, 0xe, 0x200010);
-        gTaskCurrent->func = VsMenu_State_Unk_ov001_022dc4f0;
+        gTaskCurrent->func = VsMenu_State_ParentConfirmRestart;
         return;
     }
     if (w->unk1c != 0 && w->unk4 > 0x10) {
         w->timer = 0;
         w->unk4 = 0;
         w->unk1c = 0;
-        VsMenu_Unk_ov001_022da450(w);
+        VsMenu_PrepareMsgBox(w);
         MsgBox_Create(6, 3, 1, 1, 2, 0, 0xe, 0x200010);
-        gTaskCurrent->func = VsMenu_State_Unk_ov001_022dc410;
+        gTaskCurrent->func = VsMenu_State_ParentConfirmStart;
         return;
     }
     if (c) {

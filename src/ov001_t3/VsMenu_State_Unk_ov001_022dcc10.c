@@ -22,7 +22,7 @@ typedef struct {
 
 extern UnkTask_022dcc10 *gTaskCurrent;
 
-void VsMenu_Unk_ov001_022da70c(UnkWork_022dcc10 *w);
+void VsMenu_DrawDownloadPlayScreen(UnkWork_022dcc10 *w);
 void VsMenu_Unk_ov001_022da154(UnkWork_022dcc10 *w, s32 a);
 void KeyframeAnim_SetAnim(UnkAnim_022dcc10 *a, s32 id);
 void TitleMenu_Unk_ov001_022d6dc0(void);
@@ -35,7 +35,7 @@ void VsMenu_State_Unk_ov001_022dcc10(void) {
     UnkWork_022dcc10 *w;
 
     w = gTaskCurrent->work;
-    VsMenu_Unk_ov001_022da70c(w);
+    VsMenu_DrawDownloadPlayScreen(w);
     w->timer++;
     if (w->timer >= 0x3c) {
         w->timer = 0;

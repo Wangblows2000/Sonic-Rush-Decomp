@@ -19,15 +19,15 @@ typedef struct {
 
 extern UnkTask_022dd050 *gTaskCurrent;
 
-void VsMenu_Unk_ov001_022da70c(UnkWork_022dd050 *w);
+void VsMenu_DrawDownloadPlayScreen(UnkWork_022dd050 *w);
 BOOL WirelessLobbyDownloadPlay_IsFinished(void);
 BOOL WirelessLobbyDownloadPlay_GetChildCount(void);
 void VsMenu_PlayErrorSE(void);
-BOOL VsMenu_Unk_ov001_022da52c(void);
+BOOL VsMenu_IsBackButtonTouched(void);
 void VsMenu_Unk_ov001_022da304(UnkWork_022dd050 *w);
 void SysSound_PlayCancelSE(void);
 BOOL VsMenu_IsBPressed(void);
-void VsMenu_Unk_ov001_022da450(UnkWork_022dd050 *w);
+void VsMenu_PrepareMsgBox(UnkWork_022dd050 *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void VsMenu_State_Unk_ov001_022dcfec(void);
 void VsMenu_State_Unk_ov001_022dcec8(void);
@@ -44,8 +44,8 @@ void VsMenu_State_Unk_ov001_022dcc10(void);
 void VsMenu_Unk_ov001_022da33c(UnkWork_022dd050 *w);
 void VsMenu_Unk_ov001_022da244(UnkWork_022dd050 *w, s32 a);
 void VsMenu_Unk_ov001_022da1cc(UnkWork_022dd050 *w, s32 a);
-void VsMenu_Unk_ov001_022d983c(UnkWork_022dd050 *w, s32 a);
-void VsMenu_State_Unk_ov001_022dccc8(void);
+void VsMenu_ClearNameSlot2(UnkWork_022dd050 *w, s32 a);
+void VsMenu_State_DownloadPlayRestartDelay(void);
 
 #pragma thumb on
 void VsMenu_State_Unk_ov001_022dd050(void) {
@@ -57,14 +57,14 @@ void VsMenu_State_Unk_ov001_022dd050(void) {
 
     w = gTaskCurrent->work;
     VsMenu_BuildGlyphString(w->unk4c, buf, WirelessLobbyDownloadPlay_GetChildName(0, buf, 7));
-    VsMenu_Unk_ov001_022da70c(w);
+    VsMenu_DrawDownloadPlayScreen(w);
     VsMenu_Unk_ov001_022d9cd4(w, 0, 0);
     a = FALSE;
     b = FALSE;
     c = FALSE;
     if (!WirelessLobbyDownloadPlay_GetChildCount()) {
         c = TRUE;
-    } else if (VsMenu_Unk_ov001_022da52c()) {
+    } else if (VsMenu_IsBackButtonTouched()) {
         VsMenu_Unk_ov001_022da304(w);
         a = TRUE;
         SysSound_PlayCancelSE();
@@ -85,7 +85,7 @@ void VsMenu_State_Unk_ov001_022dd050(void) {
     if (a) {
         w->timer = 0;
         w->unk4 = 0;
-        VsMenu_Unk_ov001_022da450(w);
+        VsMenu_PrepareMsgBox(w);
         MsgBox_Create(8, 3, 1, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = VsMenu_State_Unk_ov001_022dcfec;
         return;
@@ -94,7 +94,7 @@ void VsMenu_State_Unk_ov001_022dd050(void) {
         w->timer = 0;
         w->unk4 = 0;
         w->unk1c = 0;
-        VsMenu_Unk_ov001_022da450(w);
+        VsMenu_PrepareMsgBox(w);
         MsgBox_Create(7, 3, 1, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = VsMenu_State_Unk_ov001_022dcec8;
         return;

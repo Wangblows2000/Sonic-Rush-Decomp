@@ -40,7 +40,7 @@ extern s32 data_ov000_02363718[];
 
 void Boss6_Action_Defeat(void);
 void Boss6_Unk_ov000_022e04a8(UnkStruct_Boss *w);
-void Boss6_Unk_ov000_022df9d4(s32 a);
+void Boss6_UpdateFlashPalettes(s32 a);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void BossEffect_CreateHit(s32 a, s32 x, s32 y, s32 z);
 void NaviMsg_SetFaceAnim(s32 a);
@@ -65,7 +65,7 @@ void Boss6_OnHit_Damage(UnkStruct_Coll *a, UnkStruct_Hit *b) {
     w->unk20C &= ~0x10;
     if (gBossStatus.unk8 != 0) {
       w->base.unk68 = Boss6_State_Hurt;
-      Boss6_Unk_ov000_022df9d4(0);
+      Boss6_UpdateFlashPalettes(0);
       w->unk1118 = 0;
       Model_SetAnimation(m, 0, w->unkD08, 0x18, 0);
       m->unk10C &= ~4;

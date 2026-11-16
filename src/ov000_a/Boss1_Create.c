@@ -105,7 +105,7 @@ void Boss1_Draw(void);
 void Boss1_NodeCallback_Batteries(void);
 u16 Boss_GetStartHealth(void);
 void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void Boss1_Unk_ov000_022cc3e8(s32 idx, s32 flag);
+void Boss1_SetPalettes(s32 idx, s32 flag);
 void *NNS_FndGetArchiveFileByName(void *a);
 void NNS_G3dResDefaultSetup(void *a);
 
@@ -181,7 +181,7 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     p->unk18 = p->unk1C = p->unk20 = 0x34cc;
     s->unk210 = MapObject_Spawn(0xca, 0, 0, 0, 0, 0, 0, 0, 0);
     s->unk214 = MapObject_Spawn(0xcb, 0, 0, 0, 0, 0, 0, 0, 0);
-    Boss1_Unk_ov000_022cc3e8(gGameState.unk0, 0);
+    Boss1_SetPalettes(gGameState.unk0, 0);
     NNS_FndMountArchive(ctx2, data_ov000_02365064, gZoneActArchive);
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365068));
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_0236507c));

@@ -30,9 +30,9 @@ void OptionsMenu_UpdateAnims(UnkWork_022cc4a0 *w);
 void OptionsMenu_DrawItems(UnkWork_022cc4a0 *w);
 s32 OptionsMenu_Unk_ov001_022c8d44(UnkSub_022cc4a0 *s);
 s32 OptionsMenu_Unk_ov001_022c8d0c(UnkSub_022cc4a0 *s);
-BOOL OptionsMenu_Unk_ov001_022c8cd4(UnkSub_022cc4a0 *s);
-void OptionsMenu_Unk_ov001_022c8d14(UnkSub_022cc4a0 *s);
-void OptionsMenu_Unk_ov001_022c8cc0(UnkSub_022cc4a0 *s);
+BOOL OptionsMenu_HasWirelessError(UnkSub_022cc4a0 *s);
+void OptionsMenu_CreateWfsHost(UnkSub_022cc4a0 *s);
+void OptionsMenu_StopWireless(UnkSub_022cc4a0 *s);
 void SysSound_PlaySE(s32 a);
 void OptionsMenu_State_Unk_ov001_022cc268(void);
 void OptionsMenu_State_Unk_ov001_022cca00(void);
@@ -56,16 +56,16 @@ void OptionsMenu_State_Unk_ov001_022cc4a0(void) {
     if (sub->unk10 == 0) {
         sub->unk10 = OptionsMenu_Unk_ov001_022c8d44(sub);
         if (sub->unk10 != 0) {
-            if (OptionsMenu_Unk_ov001_022c8cd4(sub)) {
+            if (OptionsMenu_HasWirelessError(sub)) {
                 ok = TRUE;
             } else {
-                OptionsMenu_Unk_ov001_022c8d14(sub);
+                OptionsMenu_CreateWfsHost(sub);
             }
         }
     } else if (sub->unk14 == 0) {
         sub->unk14 = OptionsMenu_Unk_ov001_022c8d0c(sub);
         if (sub->unk14 != 0) {
-            if (OptionsMenu_Unk_ov001_022c8cd4(sub)) {
+            if (OptionsMenu_HasWirelessError(sub)) {
                 ok = TRUE;
             } else {
                 done = TRUE;
@@ -79,7 +79,7 @@ void OptionsMenu_State_Unk_ov001_022cc4a0(void) {
         w->unk14 = 0;
         w->unk18 = 0;
         sub->unk4 = 9;
-        OptionsMenu_Unk_ov001_022c8cc0(sub);
+        OptionsMenu_StopWireless(sub);
         gTaskCurrent->func = OptionsMenu_State_Unk_ov001_022cc268;
         return;
     }
@@ -89,7 +89,7 @@ void OptionsMenu_State_Unk_ov001_022cc4a0(void) {
         w->unk14 = 0;
         w->unk18 = 0;
         sub->unk4 = 1;
-        OptionsMenu_Unk_ov001_022c8cc0(sub);
+        OptionsMenu_StopWireless(sub);
         gTaskCurrent->func = OptionsMenu_State_Unk_ov001_022cca00;
     }
 }

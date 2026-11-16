@@ -27,9 +27,9 @@ void PlayerSelectMenu_Action_ScrollOut(UnkStruct_SceneTask *t) {
     PlayerSelectMenu_SetSprite6E4Anim7(w);
     PlayerSelectMenu_SetSprite9B4Anim(w);
     PlayerSelectMenu_SetSpriteA8CAnim0(w);
-    PlayerSelectMenu_Unk_ov000_02357aa8(w, 0);
-    PlayerSelectMenu_Unk_ov000_02357aa8(w, 1);
-    PlayerSelectMenu_Unk_ov000_02357aa8(w, 2);
+    PlayerSelectMenu_SetSlotSpriteNop(w, 0);
+    PlayerSelectMenu_SetSlotSpriteNop(w, 1);
+    PlayerSelectMenu_SetSlotSpriteNop(w, 2);
     PlayerSelectMenu_SetSprite5C4Anim2(w);
     w->unk334 = 0;
     if (w->unkC == 0 || (u32)(w->unkC - 3) <= 1) {

@@ -16,7 +16,7 @@ typedef struct {
 
 extern UnkStruct_022e7c9c_g *gBoss7;
 
-void Boss7PartD5_Unk_ov000_022e8538(UnkStruct_022e7c9c *p);
+void Boss7PartD5_UpdateCircleMotion(UnkStruct_022e7c9c *p);
 void Boss7PartD5_MoveState_Unk_ov000_022e7c24(UnkStruct_022e7c9c *p);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e7c9c(UnkStruct_022e7c9c *p) {
@@ -25,7 +25,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e7c9c(UnkStruct_022e7c9c *p) {
     if (p->unk468 < 0)
         p->unk468 = 0;
     p->unk46C -= 0x666;
-    Boss7PartD5_Unk_ov000_022e8538(p);
+    Boss7PartD5_UpdateCircleMotion(p);
     if (p->unk46C < 0)
         p->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e7c24;
 }

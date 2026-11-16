@@ -1,5 +1,10 @@
 #include <nitro/types.h>
 
+typedef enum EndingCharacter_022c8480 {
+    ENDING_CHAR_SONIC = 0,
+    ENDING_CHAR_BLAZE = 1
+} EndingCharacter_022c8480;
+
 typedef struct UnkTask_022c8480 {
     u8 pad0[0x10];
     void *work;
@@ -42,13 +47,11 @@ void Ending_SubState_BlazeStart(void);
 void Ending_SetSubState(UnkStruct_022c8480 *w, void (*fn)(void));
 void Ending_InitDisplay(UnkStruct_022c8480 *w);
 void Ending_LoadAssets(UnkStruct_022c8480 *w);
-void Ending_Unk_ov001_022c7d5c(UnkStruct_022c8480 *w);
-void Ending_Unk_ov001_022c7d2c(UnkStruct_022c8480 *w);
+void Ending_InitBackgroundsAndSprites(UnkStruct_022c8480 *w);
+void Ending_InitDisplayOffsets(UnkStruct_022c8480 *w);
 void Background_Draw(void *a);
 void Sound_PlaySeq(s32 a, u32 b);
 
-static inline s32 EC_b(s32 v){ if (v == 0) return 0; return 1; }
-static inline BOOL EC_c(UnkStruct_022c4560 *g){ if (g->unk0 != 0) return 1; else return 0; }
 void Ending_Create(void) {
     UnkStruct_022c8480 *w;
 
@@ -57,7 +60,7 @@ void Ending_Create(void) {
     w = Task_Create(Ending_Main, Ending_Destructor, 0, 0x5000, 0x1173, sizeof(UnkStruct_022c8480))->work;
     MI_CpuFill8(w, 0, sizeof(UnkStruct_022c8480));
     Touch_Enable();
-    w->unk0 = EC_c(&gGameState);
+    w->unk0 = gGameState.unk0 == 0 ? ENDING_CHAR_SONIC : ENDING_CHAR_BLAZE;
     switch (w->unk0) {
     case 0:
         if (gSaveData.unkC >= 0x1a)
@@ -78,8 +81,8 @@ void Ending_Create(void) {
     }
     Ending_InitDisplay(w);
     Ending_LoadAssets(w);
-    Ending_Unk_ov001_022c7d5c(w);
-    Ending_Unk_ov001_022c7d2c(w);
+    Ending_InitBackgroundsAndSprites(w);
+    Ending_InitDisplayOffsets(w);
     Background_Draw(w->bg5C);
     Background_Draw(w->bg19C);
     Background_Draw(w->bg41C);

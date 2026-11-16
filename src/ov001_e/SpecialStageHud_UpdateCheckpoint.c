@@ -31,8 +31,8 @@ typedef struct UnkStruct_0230903c_t {
 
 extern UnkStruct_0230903c *gSpecialStageHud;
 
-void SpecialStageHud_Unk_ov001_023085f4(s32 t);
-void SpecialStageHud_Unk_ov001_0230832c(s32 t);
+void SpecialStageHud_UpdateRingCounterThunk(s32 t);
+void SpecialStageHud_SetDigitAnims(s32 t);
 u16 SpecialStage_Unk_ov001_02314380(void);
 UnkStruct_0230903c_t *SpecialStage_GetPlayer(void);
 void AnimatorSprite_SetAnimation(UnkStruct_0230903c_o *s, u16 index);
@@ -46,8 +46,8 @@ void SpecialStageHud_UpdateCheckpoint(void) {
     s32 n;
 
     g->timer++;
-    SpecialStageHud_Unk_ov001_023085f4(g->timer - 1);
-    SpecialStageHud_Unk_ov001_0230832c(g->timer - 0xb4);
+    SpecialStageHud_UpdateRingCounterThunk(g->timer - 1);
+    SpecialStageHud_SetDigitAnims(g->timer - 0xb4);
     switch (g->timer) {
     case 1:
         g->objB.x = 0x80;

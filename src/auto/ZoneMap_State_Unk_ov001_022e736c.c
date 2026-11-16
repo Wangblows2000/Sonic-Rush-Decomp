@@ -21,7 +21,7 @@ typedef int code();
 
 extern unsigned char gTaskCurrent[];
 int ZoneActSelect_IsFinished();
-int ZoneActSelect_Unk_ov001_022e18c8();
+int ZoneActSelect_GetSelectedZone();
 int ZoneActSelect_GetResult();
 int ZoneMap_Unk_ov001_022e19d0();
 int ZoneMap_Unk_ov001_022e3840();
@@ -42,7 +42,7 @@ void ZoneMap_State_Unk_ov001_022e736c(void)
   puVar3[0x1d] = puVar3[0x1d] + 1;
   iVar1 = ZoneActSelect_IsFinished();
   if (iVar1 != 0) {
-    iVar1 = ZoneActSelect_Unk_ov001_022e18c8();
+    iVar1 = ZoneActSelect_GetSelectedZone();
     iVar2 = ZoneActSelect_GetResult();
     if ((iVar1 < 0) || (iVar2 < 0)) {
       ZoneMap_Unk_ov001_022e19d0(puVar3[0x29]);

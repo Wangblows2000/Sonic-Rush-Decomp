@@ -7,9 +7,9 @@ typedef struct UnkStruct_022c67ec {
     u16 unk2C0;
 } UnkStruct_022c67ec;
 
-void Boss1Hammer_State_Unk_ov000_022c67a4(void);
+void Boss1Hammer_State_StartSpin(void);
 
 void Boss1Hammer_State_WaitTimer_ov000_022c67ec(UnkStruct_022c67ec *s) {
     if (s->unk2C0++ > 0x1e)
-        s->func = Boss1Hammer_State_Unk_ov000_022c67a4;
+        s->func = Boss1Hammer_State_StartSpin;
 }

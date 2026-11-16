@@ -1,0 +1,37 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    u8 pad0[0x1C];
+    u8 unk1C;
+} UnkStruct_022c4560;
+
+extern UnkStruct_022c4560 gGameState;
+extern u8 data_ov000_023661a8[][3];
+
+void Math_RotateVec2S16(s32 a, s16 *b, s32 c);
+UnkStruct_StageObj *Decoration_Spawn(s32 kind, s32 x, s32 y);
+
+void MapObject_SpawnFreedAnimal(UnkStruct_StageObj *w) {
+    s16 dy = 0;
+    u8 kind;
+    UnkStruct_StageObj *o;
+
+    if (w->unk1F4 & 0x20)
+        return;
+    if (gGameState.unk1C < 8)
+        kind = data_ov000_023661a8[gGameState.unk1C][Rand() % 3];
+    else
+        kind = Rand() & 0xf;
+    dy = 0x800;
+    Math_RotateVec2S16(0, &dy, w->unk5);
+    o = Decoration_Spawn(kind, w->unk10, w->unk14 - dy);
+    if (o == NULL)
+        return;
+    o->unk5 = w->unk5;
+    if (!(w->unk58 & 0x1000) && !(w->unk1F4 & 0x40))
+        return;
+    if (w->unk1F4 & 0x40)
+        o->unk8 = 1;
+    else
+        o->unk58 |= 0x100;
+}

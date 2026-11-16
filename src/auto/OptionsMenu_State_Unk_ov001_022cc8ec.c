@@ -11,8 +11,8 @@ s32 MsgBox_GetResult();
 void OptionsMenu_State_Unk_ov001_022cc7fc();
 extern u8 gSaveDataBusy[];
 extern u8 gSystemFlags[];
-s32 OptionsMenu_Unk_ov001_022c8cc0();
-s32 OptionsMenu_Unk_ov001_022c8d70();
+s32 OptionsMenu_StopWireless();
+s32 OptionsMenu_StartDownloadPlayPreview();
 void OptionsMenu_State_Unk_ov001_022cca00();
 
 void OptionsMenu_State_Unk_ov001_022cc8ec(void) {
@@ -40,8 +40,8 @@ void OptionsMenu_State_Unk_ov001_022cc8ec(void) {
             *(u32 *)gSaveDataBusy = 1;
             s32 t6 = (*(u32 *)gSystemFlags | 0x10);
             *(u32 *)gSystemFlags = t6;
-            OptionsMenu_Unk_ov001_022c8cc0(t1, gSystemFlags, t6);
-            OptionsMenu_Unk_ov001_022c8d70(t1);
+            OptionsMenu_StopWireless(t1, gSystemFlags, t6);
+            OptionsMenu_StartDownloadPlayPreview(t1);
             return;
         }
         *(u32 *)((u8 *)t1 + 0x4) = 1;

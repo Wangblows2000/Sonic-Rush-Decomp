@@ -4,7 +4,7 @@
 extern u8 gBoss7[];
 s32 Boss7_Unk_ov000_022ee198();
 s32 Boss7_Unk_ov000_022e9b70();
-s32 EffTrail_Unk_ov000_02326f20();
+s32 EffTrail_StartFollow();
 extern u8 gBossStatus[];
 void Boss7PartD5_MoveState_Unk_ov000_022e97cc();
 
@@ -17,7 +17,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e98d8(u8 *p0) {
     s32 t1 = *(u32 *)((u8 *)p0 + 0x480);
     s32 v2 = t1;
     if (t1 != 0) {
-        EffTrail_Unk_ov000_02326f20(v2);
+        EffTrail_StartFollow(v2);
         *(u32 *)((u8 *)p0 + 0x480) = 0;
         v2 = 0;
     }

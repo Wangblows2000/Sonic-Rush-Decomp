@@ -34,12 +34,12 @@ void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void NNS_SndHandleReleaseSeq(s32 a);
-void Boss3PartCC_State_Unk_ov000_022d6568(UnkStruct_022d6644 *s);
+void Boss3PartCC_State_StartHurt(UnkStruct_022d6644 *s);
 
 void Boss3PartCC_Action_Hurt(UnkStruct_022d6644 *s) {
     s->unk30 = 0;
     s->unk14 = 0x20000;
     NNS_SndPlayerStopSeq(s->unk2C0, 0x20);
     NNS_SndHandleReleaseSeq(s->unk2C0);
-    s->func = Boss3PartCC_State_Unk_ov000_022d6568;
+    s->func = Boss3PartCC_State_StartHurt;
 }

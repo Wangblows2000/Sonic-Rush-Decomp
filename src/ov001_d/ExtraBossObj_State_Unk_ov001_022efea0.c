@@ -82,7 +82,7 @@ typedef struct UnkStruct_022efea0_p {
 } UnkStruct_022efea0_p;
 
 void ExtraBossObj_State_Unk_ov001_022efe50(void);
-void ExtraBoss_Unk_ov001_023057b4(s32 a, s32 b, s32 c, s32 d, s32 e);
+void ExtraBoss_SetCameraParams(s32 a, s32 b, s32 c, s32 d, s32 e);
 
 void ExtraBossObj_State_Unk_ov001_022efea0(UnkStruct_022efea0_p *p) {
     UnkStruct_022efea0_o *b;
@@ -105,6 +105,6 @@ void ExtraBossObj_State_Unk_ov001_022efea0(UnkStruct_022efea0_p *p) {
     b->unk10C |= 4;
     b->unk110 |= 4;
     b->unk114 = 0x1000;
-    ExtraBoss_Unk_ov001_023057b4(0, 0x20000, -0x20000, 0, 0x2000);
+    ExtraBoss_SetCameraParams(0, 0x20000, -0x20000, 0, 0x2000);
     p->unkB8 &= ~0x200;
 }

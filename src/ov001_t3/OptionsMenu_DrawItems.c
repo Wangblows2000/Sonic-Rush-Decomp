@@ -35,7 +35,7 @@ extern UnkFn_022cbf30 gOptionsMenuItemLabelDrawTable[];
 
 void OptionsMenu_DrawItemSprite(UnkObj_022cbf30 *o, s32 id, s32 x, s32 y, s32 sel);
 void OptionsMenu_UpdatePage(UnkStruct_022cbf30 *p, s32 x, s32 y);
-void OptionsMenu_Unk_ov001_022cbe98(UnkObj_022cbf30 *o, s32 x, s32 y);
+void OptionsMenu_SetSubScroll(UnkObj_022cbf30 *o, s32 x, s32 y);
 void OptionsMenu_Unk_ov001_022cbe50(UnkObj_022cbf30 *o, s32 x, s32 y);
 void OptionsMenu_Unk_ov001_022cbdf0(UnkObj_022cbf30 *o, s32 x, s32 y, s32 a);
 
@@ -63,7 +63,7 @@ void OptionsMenu_DrawItems(UnkStruct_022cbf30 *p) {
         y += 0x18;
     }
     OptionsMenu_UpdatePage(p, p->ax, p->ay);
-    OptionsMenu_Unk_ov001_022cbe98(p->obj, p->ax, p->ay);
+    OptionsMenu_SetSubScroll(p->obj, p->ax, p->ay);
     OptionsMenu_Unk_ov001_022cbe50(p->obj, p->bx, p->by);
     OptionsMenu_Unk_ov001_022cbdf0(p->obj, p->cx, p->cy, 0);
 }

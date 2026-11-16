@@ -51,7 +51,7 @@ static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-void ExtraBoss_Unk_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
+void ExtraBoss_InitCollider(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 u16 FX_Atan2(s32 y, s32 x);
 void ExtraBossObj_State_Unk_ov001_022fd1ec(void);
 void Sound_PlaySeqArc(void *p, u32 a, u32 b);
@@ -65,7 +65,7 @@ void ExtraBoss_Unk_ov001_022faf00(UnkStruct_022faf00_a **pa, UnkStruct_022faf00_
         return;
     t->unk9C->unk8 |= 0x200;
     t->unkA0->unk8 |= 0x200;
-    ExtraBoss_Unk_ov001_022fe8d4(t->unk120, t, 4, 1, 0x10000, 0x10000, 0x10000, 0, 0, 0, 0);
+    ExtraBoss_InitCollider(t->unk120, t, 4, 1, 0x10000, 0x10000, 0x10000, 0, 0, 0, 0);
     t->unkA4 = t->unk120;
     t->unk98 = 1;
     t->unk84->unk18 = 0x6998;

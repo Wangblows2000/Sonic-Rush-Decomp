@@ -12,12 +12,12 @@ typedef struct {
     void *unk68;
 } UnkStruct_02308c20;
 
-s32 Gimmick_Unk_ov000_02307e84(UnkStruct_02308c20 *p);
+s32 Gimmick_GetRoomIndex(UnkStruct_02308c20 *p);
 UnkStruct_02308c20_o *EnemyRoom_Get(s32 a, s32 b);
 void GmkWall_State_Unk_ov000_02308b88(UnkStruct_02308c20 *p);
 
 void GmkWall_Action_Unk_ov000_02308c20(UnkStruct_02308c20 *p) {
-    UnkStruct_02308c20_o *o = EnemyRoom_Get(1, Gimmick_Unk_ov000_02307e84(p));
+    UnkStruct_02308c20_o *o = EnemyRoom_Get(1, Gimmick_GetRoomIndex(p));
 
     if (o == NULL) {
         p->unk54 |= 4;

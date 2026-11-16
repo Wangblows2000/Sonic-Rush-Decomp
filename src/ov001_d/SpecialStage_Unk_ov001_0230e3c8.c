@@ -18,8 +18,8 @@ typedef struct UnkStruct_0230e3c8 {
 
 extern UnkStruct_0230e3c8_g data_ov001_0231f65c;
 
-void *SpecialStageGimmick_Unk_ov001_02307148(void *a, s32 b, u16 c, s32 d, s32 e);
-void SpecialStage_Unk_ov001_0231066c(void *c, void *w);
+void *SpecialStageGimmick_SpawnActObjAt(void *a, s32 b, u16 c, s32 d, s32 e);
+void SpecialStage_UpdateObject(void *c, void *w);
 
 void SpecialStage_Unk_ov001_0230e3c8(UnkStruct_0230e3c8 *p, s32 unused, u16 ang) {
     void *w;
@@ -27,24 +27,24 @@ void SpecialStage_Unk_ov001_0230e3c8(UnkStruct_0230e3c8 *p, s32 unused, u16 ang)
 
     if (p->unk78 == NULL)
         return;
-    w = SpecialStageGimmick_Unk_ov001_02307148(p->unk78, 6, ang, 0x1000, p->unk1C + 0x78000);
+    w = SpecialStageGimmick_SpawnActObjAt(p->unk78, 6, ang, 0x1000, p->unk1C + 0x78000);
     if (w == NULL)
         return;
-    SpecialStage_Unk_ov001_0231066c(NULL, w);
+    SpecialStage_UpdateObject(NULL, w);
     for (i = 0; i < 4; i++) {
-        w = SpecialStageGimmick_Unk_ov001_02307148(p->unk78, 6, ang + 0x38e, 0x1000, p->unk1C + 0x8c000 + (i << 12) * 0x14);
+        w = SpecialStageGimmick_SpawnActObjAt(p->unk78, 6, ang + 0x38e, 0x1000, p->unk1C + 0x8c000 + (i << 12) * 0x14);
         if (w == NULL)
             return;
-        SpecialStage_Unk_ov001_0231066c(NULL, w);
-        w = SpecialStageGimmick_Unk_ov001_02307148(p->unk78, 6, ang - 0x38e, 0x1000, p->unk1C + 0x8c000 + (i << 12) * 0x14);
+        SpecialStage_UpdateObject(NULL, w);
+        w = SpecialStageGimmick_SpawnActObjAt(p->unk78, 6, ang - 0x38e, 0x1000, p->unk1C + 0x8c000 + (i << 12) * 0x14);
         if (w == NULL)
             return;
-        SpecialStage_Unk_ov001_0231066c(NULL, w);
+        SpecialStage_UpdateObject(NULL, w);
     }
-    w = SpecialStageGimmick_Unk_ov001_02307148(p->unk78, 6, ang, 0x1000, p->unk1C + 0x8c000 + (i << 12) * 0x14);
+    w = SpecialStageGimmick_SpawnActObjAt(p->unk78, 6, ang, 0x1000, p->unk1C + 0x8c000 + (i << 12) * 0x14);
     if (w == NULL)
         return;
-    SpecialStage_Unk_ov001_0231066c(NULL, w);
+    SpecialStage_UpdateObject(NULL, w);
     p->unkAC = data_ov001_0231f65c.unk8;
     p->unk60 |= 8;
 }

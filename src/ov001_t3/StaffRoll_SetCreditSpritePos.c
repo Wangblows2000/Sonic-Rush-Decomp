@@ -9,8 +9,8 @@ typedef struct {
     u32 flags;
 } UnkSpr_022cfbc4;
 
-s32 StaffRoll_Unk_ov001_022cfc5c(s32 n);
-s32 StaffRoll_Unk_ov001_022cfc50(s32 n);
+s32 StaffRoll_EmptyCallback(s32 n);
+s32 StaffRoll_ToSubScreenY(s32 n);
 void StaffRoll_GetSpriteFrameSize(UnkSpr_022cfbc4 *s, s32 a, s32 *out);
 void AnimatorSpriteDS_Draw(UnkSpr_022cfbc4 *s);
 
@@ -20,8 +20,8 @@ void StaffRoll_SetCreditSpritePos(UnkSpr_022cfbc4 *s, s32 x, s32 n) {
     s32 y1;
     s32 h;
 
-    y0 = StaffRoll_Unk_ov001_022cfc5c(n);
-    y1 = StaffRoll_Unk_ov001_022cfc50(n);
+    y0 = StaffRoll_EmptyCallback(n);
+    y1 = StaffRoll_ToSubScreenY(n);
     StaffRoll_GetSpriteFrameSize(s, 0, &h);
     if (-h <= y0 && y0 <= 0xc0) {
         s->flags &= ~1;

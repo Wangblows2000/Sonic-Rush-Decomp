@@ -17,13 +17,13 @@ typedef struct {
 extern UnkStruct_Boss *gBoss7;
 extern UnkStruct_StageObj *gPlayers;
 
-void Boss7PartD5_Unk_ov000_022e8538(UnkStruct_022e8050 *w);
+void Boss7PartD5_UpdateCircleMotion(UnkStruct_022e8050 *w);
 void Boss7PartD5_MoveState_Unk_ov000_022e7f60(void);
 
 void Boss7PartD5_MoveState_Unk_ov000_022e8050(UnkStruct_022e8050 *w) {
     UnkStruct_Boss *b = gBoss7;
 
-    Boss7PartD5_Unk_ov000_022e8538(w);
+    Boss7PartD5_UpdateCircleMotion(w);
     if (b->unk224 < gPlayers->unk10) {
         if (w->unk466 < 0xaaab)
             return;

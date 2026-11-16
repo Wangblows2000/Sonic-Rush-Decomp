@@ -5,8 +5,8 @@
 
 extern u8 gVsMenuCancelled[];
 s32 WirelessSession_ForceStop();
-s32 VsMenu_Unk_ov001_022dd774();
-s32 VsMenu_Unk_ov001_022dd770();
+s32 VsMenu_FreeSpriteVram();
+s32 VsMenu_Dummy();
 s32 VsMenu_ReleaseSprites();
 s32 VsMenu_ReleaseAssets();
 extern u8 gVsMenuTask[];
@@ -17,8 +17,8 @@ void VsMenu_Destructor(u8 *p0) {
     if (t1 != 0) {
         WirelessSession_ForceStop(t1);
     }
-    VsMenu_Unk_ov001_022dd774(t0);
-    VsMenu_Unk_ov001_022dd770(t0);
+    VsMenu_FreeSpriteVram(t0);
+    VsMenu_Dummy(t0);
     VsMenu_ReleaseSprites(t0);
     VsMenu_ReleaseAssets(t0);
     *(u32 *)gVsMenuTask = 0;

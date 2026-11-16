@@ -33,7 +33,7 @@ typedef struct {
 extern UnkTouch_022e6c90 gTouchState;
 extern s32 data_ov001_0231649c[][17][4];
 
-BOOL ZoneMap_Unk_ov001_022e690c(UnkStruct_022e6c90 *p, s32 node, s32 x, s32 y);
+BOOL ZoneMap_IsPointOnNode(UnkStruct_022e6c90 *p, s32 node, s32 x, s32 y);
 
 #pragma thumb on
 s32 ZoneMap_Unk_ov001_022e6c90(UnkStruct_022e6c90 *p, s32 node, s32 prev) {
@@ -57,7 +57,7 @@ s32 ZoneMap_Unk_ov001_022e6c90(UnkStruct_022e6c90 *p, s32 node, s32 prev) {
     }
     x += p->map->scrollX;
     y += p->map->scrollY;
-    if (p->map->nodes[node].type <= 1 && ZoneMap_Unk_ov001_022e690c(p, node, x, y)) {
+    if (p->map->nodes[node].type <= 1 && ZoneMap_IsPointOnNode(p, node, x, y)) {
         return node;
     }
     for (i = 0; i < 4; i++) {
@@ -70,7 +70,7 @@ s32 ZoneMap_Unk_ov001_022e6c90(UnkStruct_022e6c90 *p, s32 node, s32 prev) {
         }
         if (next == prev) continue;
         if (nd->type == 3 || nd->type == 4) continue;
-        if (ZoneMap_Unk_ov001_022e690c(p, next, x, y)) {
+        if (ZoneMap_IsPointOnNode(p, next, x, y)) {
             if (nd->type > 1) {
                 next = 0x12;
             }

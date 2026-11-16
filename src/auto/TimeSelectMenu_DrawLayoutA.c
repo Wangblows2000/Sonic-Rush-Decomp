@@ -15,7 +15,7 @@ s32 TimeSelectMenu_DrawSpriteScaled();
 s32 TimeSelectMenu_SetupOrthoCamera();
 s32 TimeSelectMenu_DrawModelB();
 s32 TimeSelectMenu_DrawModelA();
-s32 TimeSelectMenu_Unk_ov000_02360264();
+s32 TimeSelectMenu_DrawNop();
 
 void TimeSelectMenu_DrawLayoutA(u8 *p0) {
     TimeSelectMenu_DrawSprite588(p0, 8, 0x88);
@@ -45,7 +45,7 @@ void TimeSelectMenu_DrawLayoutA(u8 *p0) {
         TimeSelectMenu_DrawModelA(p0, 0x38, 0x90, 1);
         TimeSelectMenu_DrawModelB(p0, 0xc8, 0x90, 0);
     }
-    TimeSelectMenu_Unk_ov000_02360264(p0);
+    TimeSelectMenu_DrawNop(p0);
 }
 
 #pragma thumb reset

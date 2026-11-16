@@ -22,7 +22,7 @@ extern s16 data_0206e470[];
 
 void Model_Animate(UnkObj_022d592c *o);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void TitleDemo_Unk_ov001_022d5694(UnkStruct_022d592c *p, s32 a, s32 b);
+void TitleDemo_SetupModelLighting(UnkStruct_022d592c *p, s32 a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 a, s32 *b, s32 c);
 void Model_Draw(UnkObj_022d592c *o);
 
@@ -39,7 +39,7 @@ void TitleDemo_Unk_ov001_022d592c(UnkStruct_022d592c *p, s32 x, s32 y) {
     o->sy = 0xe000;
     o->sz = 0xe000;
     MTX_RotY33_(o->rot, data_0206e470[0], data_0206e470[1]);
-    TitleDemo_Unk_ov001_022d5694(p, p->unka8, 1);
+    TitleDemo_SetupModelLighting(p, p->unka8, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     Model_Draw(o);
     v = 1;

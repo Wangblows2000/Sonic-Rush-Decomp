@@ -22,7 +22,7 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 extern u16 data_ov000_02363b84[][4];
 
-void Boss7PartD5_Unk_ov000_022e8538(UnkStruct_022e8120 *w);
+void Boss7PartD5_UpdateCircleMotion(UnkStruct_022e8120 *w);
 void Boss7PartD5_MoveState_Unk_ov000_022e8050(void);
 void Boss7PartD5_MoveState_Unk_ov000_022e7f00(void);
 void Boss7PartD5_MoveState_Unk_ov000_022e7c9c(void);
@@ -38,7 +38,7 @@ static inline s32 GetIdxB(void) {
 
 void Boss7PartD5_MoveState_Unk_ov000_022e8120(UnkStruct_022e8120 *w) {
     u16 t;
-    Boss7PartD5_Unk_ov000_022e8538(w);
+    Boss7PartD5_UpdateCircleMotion(w);
     if (w->unk470 > 0) {
         w->unk470--;
     }

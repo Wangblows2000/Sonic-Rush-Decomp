@@ -1,7 +1,7 @@
 #include <ov000_b/stageobj.h>
 
 void StageObj_Draw2DEx(s32 x, s32 y, u8 rot, void *w, void *a, void *b, s32 c);
-s32 Hud_Unk_ov000_02337650(s32 a);
+s32 Hud_GetDigitGlyphVramB(s32 a);
 
 void MarkerTimeList_DrawRow(UnkStruct_StageObj *w, s32 x, s32 y, u32 digits, u16 k) {
     s16 i;
@@ -30,8 +30,8 @@ void MarkerTimeList_DrawRow(UnkStruct_StageObj *w, s32 x, s32 y, u32 digits, u16
         if (i == 3)
             off += 0x600;
     }
-    w->spr0.unk34 = Hud_Unk_ov000_02337650(0);
-    w->spr1.unk34 = Hud_Unk_ov000_02337650(1);
+    w->spr0.unk34 = Hud_GetDigitGlyphVramB(0);
+    w->spr1.unk34 = Hud_GetDigitGlyphVramB(1);
     w->spr0.unk34 += 0xba0;
     w->spr1.unk34 += 0xba0;
     for (i = 0, off = -0x3200; i < 2; i++, off += 0x1a00) {

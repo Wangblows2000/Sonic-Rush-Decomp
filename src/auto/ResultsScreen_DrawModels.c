@@ -6,7 +6,7 @@
 s32 ResultsScreen_SetupOrthoCamera();
 s32 ResultsScreen_DrawModelB();
 s32 ResultsScreen_DrawModelA();
-s32 ResultsScreen_Unk_ov000_0235d6f4();
+s32 ResultsScreen_DrawModelsNop();
 
 void ResultsScreen_DrawModels(u8 *p0) {
     ResultsScreen_SetupOrthoCamera();
@@ -20,7 +20,7 @@ void ResultsScreen_DrawModels(u8 *p0) {
     } else {
         ResultsScreen_DrawModelA(p0, 0xc8, 0x90, 0);
     }
-    ResultsScreen_Unk_ov000_0235d6f4(p0);
+    ResultsScreen_DrawModelsNop(p0);
 }
 
 #pragma thumb reset

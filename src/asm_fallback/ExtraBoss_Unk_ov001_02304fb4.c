@@ -18,8 +18,8 @@ extern u32 data_ov001_0231f550;
 extern void PaletteTransfer_QueueLoad(void);
 extern void PaletteTransfer_Flush(void);
 extern void ExtraBoss_GetWork(void);
-extern void ExtraBoss_Unk_ov001_02304948(void);
-extern void ExtraBoss_Unk_ov001_0230494c(void);
+extern void ExtraBoss_State_ScrollDone(void);
+extern void ExtraBoss_State_ScrollSpawn(void);
 
 asm void ExtraBoss_Unk_ov001_02304fb4(void)
 {
@@ -239,8 +239,8 @@ _238:
     dcd data_ov001_02316f94
     dcd data_ov001_02316ee0
     dcd data_ov001_02316f1c
-    dcd ExtraBoss_Unk_ov001_02304948
-    dcd ExtraBoss_Unk_ov001_0230494c
+    dcd ExtraBoss_State_ScrollDone
+    dcd ExtraBoss_State_ScrollSpawn
     dcd data_ov001_02316f08
     dcd data_0206e470
     dcd 0x000008ac

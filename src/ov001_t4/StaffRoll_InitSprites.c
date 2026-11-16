@@ -37,11 +37,11 @@ extern u16 data_ov001_023160dc[];
 extern u16 data_ov001_023160e4[];
 extern s32 gSoundHeap;
 
-void StaffRoll_Unk_ov001_022d2650(void);
-void StaffRoll_Unk_ov001_022cfd34(UnkSpr_022d2704 *s, void *res, u16 a);
-void StaffRoll_Unk_ov001_022cfcb8(UnkSpr_022d2704 *s, void *res, u16 a);
-void StaffRoll_Unk_ov001_022cfcf8(UnkSpr_022d2704 *s, void *res, u16 a);
-void StaffRoll_Unk_ov001_022cfc60(UnkObj_022d2704 *o, void *res, u16 a);
+void StaffRoll_InitBackgrounds(void);
+void StaffRoll_InitSpriteMainById(UnkSpr_022d2704 *s, void *res, u16 a);
+void StaffRoll_InitSpriteSub(UnkSpr_022d2704 *s, void *res, u16 a);
+void StaffRoll_InitSpriteMain(UnkSpr_022d2704 *s, void *res, u16 a);
+void StaffRoll_InitSpriteDS(UnkObj_022d2704 *o, void *res, u16 a);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022d2704 *s, s32 a, s32 b);
 void AnimatorSpriteDS_ProcessAnimation(UnkObj_022d2704 *o, s32 a, s32 b);
 void NNS_SndArcStrmInit(s32 a, s32 b);
@@ -52,21 +52,21 @@ void StaffRoll_InitSprites(UnkWork_022d2704 *w) {
     s32 i;
     UnkSpr_022d2704 *s;
 
-    StaffRoll_Unk_ov001_022d2650();
+    StaffRoll_InitBackgrounds();
     i = 0;
     s = w->sprites;
     for (; i < 18; i++) {
-        StaffRoll_Unk_ov001_022cfd34(s, w->res414, i);
+        StaffRoll_InitSpriteMainById(s, w->res414, i);
         AnimatorSprite_ProcessAnimation(s, 0, 0);
         s->flags |= 0x18;
         s++;
     }
     s = &w->spr930;
-    StaffRoll_Unk_ov001_022cfcb8(s, w->res418, 0);
+    StaffRoll_InitSpriteSub(s, w->res418, 0);
     s->unk46 = 2;
     AnimatorSprite_ProcessAnimation(s, 0, 0);
     s = &w->spr978;
-    StaffRoll_Unk_ov001_022cfcb8(s, w->res414, 0x24);
+    StaffRoll_InitSpriteSub(s, w->res414, 0x24);
     s->unk46 = 3;
     AnimatorSprite_ProcessAnimation(s, 0, 0);
     if (w->mode != 2) {
@@ -84,7 +84,7 @@ void StaffRoll_InitSprites(UnkWork_022d2704 *w) {
             } else {
                 a = t1[3];
             }
-            StaffRoll_Unk_ov001_022cfcf8(s, res, a);
+            StaffRoll_InitSpriteMain(s, res, a);
             s->unk44 = *t2;
             s->unk46 = 7;
             s->flags |= 0x60000;
@@ -104,7 +104,7 @@ void StaffRoll_InitSprites(UnkWork_022d2704 *w) {
         o = w->objs;
         t = data_ov001_023160e4;
         for (; i < 4; i++) {
-            StaffRoll_Unk_ov001_022cfc60(o, w->res41c, *t);
+            StaffRoll_InitSpriteDS(o, w->res41c, *t);
             o->unk74 = i;
             o->unk76 = i;
             o->spr.unk46 = 5;

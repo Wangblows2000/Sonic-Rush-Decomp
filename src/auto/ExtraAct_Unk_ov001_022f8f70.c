@@ -3,7 +3,7 @@
 
 extern u8 data_ov001_0231f084[];
 extern u8 gTaskCurrent[];
-void ExtraAct_State_Unk_ov001_022f8f54();
+void ExtraAct_State_DrawModel();
 s32 Model_Animate();
 s32 Model_Draw();
 
@@ -18,7 +18,7 @@ void ExtraAct_Unk_ov001_022f8f70(void) {
         *(u32 *)*(u32 *)((u8 *)t1 + 0xe8) = (*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)t1 + 0xe4) + 0x8) + 0x4) << 0xc);
         s32 t5 = *(u32 *)((u8 *)t1 + 0xe4);
         *(u32 *)t5 = *(u32 *)*(u32 *)((u8 *)t1 + 0xe8);
-        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ExtraAct_State_Unk_ov001_022f8f54;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ExtraAct_State_DrawModel;
         s32 t6 = *(u32 *)v2;
         *(u32 *)((u8 *)t6 + 0xe38) = (*(u32 *)((u8 *)*(u32 *)v2 + 0xe38) & ~0x10);
         s32 t7 = *(u32 *)v2;
@@ -33,6 +33,6 @@ void ExtraAct_Unk_ov001_022f8f70(void) {
         return;
     }
     *(u32 *)((u8 *)t1 + 0x114) = 0;
-    *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ExtraAct_State_Unk_ov001_022f8f54;
+    *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ExtraAct_State_DrawModel;
     *(u32 *)((u8 *)*(u32 *)data_ov001_0231f084 + 0xe38) = (*(u32 *)((u8 *)*(u32 *)data_ov001_0231f084 + 0xe38) | 0x10);
 }

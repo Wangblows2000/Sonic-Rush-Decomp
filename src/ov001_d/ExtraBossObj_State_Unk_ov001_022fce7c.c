@@ -39,9 +39,9 @@ typedef struct UnkStruct_022fce7c_g {
 } UnkStruct_022fce7c_g;
 
 UnkStruct_022fce7c_g *ExtraBoss_GetWork(void);
-void ExtraBoss_Unk_ov001_022fd268(UnkStruct_022fce7c *p, s32 a);
-void ExtraBoss_Unk_ov001_022fcae8(UnkStruct_022fce7c *p);
-void ExtraBoss_Unk_ov001_022fcb08(UnkStruct_022fce7c *p, s32 a);
+void ExtraBoss_SetObjModelAnims(UnkStruct_022fce7c *p, s32 a);
+void ExtraBoss_CopyParentPosition(UnkStruct_022fce7c *p);
+void ExtraBoss_SwapObjModel(UnkStruct_022fce7c *p, s32 a);
 void ExtraBossObj_State_Unk_ov001_022fcbd4(void);
 void ExtraBossObj_State_Unk_ov001_022fcd44(void);
 void ExtraBossObj_State_Unk_ov001_022fd000(void);
@@ -57,7 +57,7 @@ void ExtraBossObj_State_Unk_ov001_022fce7c(UnkStruct_022fce7c *p) {
 
     if (ExtraBoss_GetWork()->unk3C == 0 && p->unk1CC == 0 && (o->unk10C & 2)) {
         p->unk1CC = 1;
-        ExtraBoss_Unk_ov001_022fd268(p, 1);
+        ExtraBoss_SetObjModelAnims(p, 1);
         o->unk10C |= 4;
         o->unk10D |= 4;
     }
@@ -73,18 +73,18 @@ void ExtraBossObj_State_Unk_ov001_022fce7c(UnkStruct_022fce7c *p) {
         }
         if (ExtraBoss_GetWork()->unk3C == 0) {
             p->unk74 = ExtraBossObj_State_Unk_ov001_022fcd44;
-            ExtraBoss_Unk_ov001_022fd268(p, 2);
+            ExtraBoss_SetObjModelAnims(p, 2);
             o->unk10C &= ~4;
             o->unk10D &= ~4;
             return;
         }
         p->unk74 = ExtraBossObj_State_Unk_ov001_022fd000;
-        ExtraBoss_Unk_ov001_022fcb08(p, 0x19);
+        ExtraBoss_SwapObjModel(p, 0x19);
         p->unk84->unk10C |= 4;
         p->unk84->unk10D |= 4;
         return;
     }
-    ExtraBoss_Unk_ov001_022fcae8(p);
+    ExtraBoss_CopyParentPosition(p);
     if (s->unk4 == 3)
         p->unk40 = q->unk40;
     else

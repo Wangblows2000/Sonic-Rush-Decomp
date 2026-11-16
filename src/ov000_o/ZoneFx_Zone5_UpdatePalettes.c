@@ -11,7 +11,7 @@ typedef struct {
 
 extern UnkPlayer_0233c6ac gCamera[];
 void ZoneFx_Zone5_ApplyPaletteAdd(u8 *w, s32 i);
-void ZoneFx_Zone5_Unk_ov000_0233c5cc(u8 *w, s32 i);
+void ZoneFx_Zone5_InactivePaletteNop(u8 *w, s32 i);
 
 void ZoneFx_Zone5_UpdatePalettes(u8 *w) {
     s32 i;
@@ -29,7 +29,7 @@ void ZoneFx_Zone5_UpdatePalettes(u8 *w) {
             }
             ZoneFx_Zone5_ApplyPaletteAdd(w, i);
         } else if (w[i + 0x200] != 0) {
-            ZoneFx_Zone5_Unk_ov000_0233c5cc(w, i);
+            ZoneFx_Zone5_InactivePaletteNop(w, i);
             w[i + 0x200] = 0;
             w[i + 0x202] = 0;
         }

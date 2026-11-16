@@ -67,8 +67,8 @@ extern UnkStruct_02319c34_Plr *gPlayers;
 extern UnkStruct_02319c34_Sys gGameState;
 extern s16 data_0206e470[];
 
-void Player_Unk_ov000_0235258c(void *a, void *b);
-void Player_Unk_ov000_0235283c(void *a, void *b);
+void Player_AttachGimmickTableNoInput(void *a, void *b);
+void Player_AttachGimmickTable(void *a, void *b);
 void Player_DetachGimmick(void *a, void *b);
 void MTX_Identity33_(void *m);
 void MTX_RotX33_(void *m, s32 s, s32 c);
@@ -95,9 +95,9 @@ void GmkTable_State_Main(UnkStruct_02319c34 *w) {
         w->unk58 &= ~0x2000;
         w->unk204 = w->unk1BC;
         if (gCamera.unk62 != 0 && gCamera.unk62 != 0xffff) {
-            Player_Unk_ov000_0235258c(ring, w);
+            Player_AttachGimmickTableNoInput(ring, w);
         } else {
-            Player_Unk_ov000_0235283c(ring, w);
+            Player_AttachGimmickTable(ring, w);
         }
     }
     ring = w->unk204;
@@ -106,14 +106,14 @@ void GmkTable_State_Main(UnkStruct_02319c34 *w) {
             ring->unk80 = w;
         } else if (gCamera.unk62 != 0 && gCamera.unk62 != 0xffff) {
             ring->unk80 = w;
-            Player_Unk_ov000_0235258c(ring, w);
+            Player_AttachGimmickTableNoInput(ring, w);
         } else if (!(w->unk364 & 0x80) && (ring->unk80 == NULL || ring->unk80 != w)) {
             Player_DetachGimmick(ring, w);
             w->unk204 = NULL;
         }
     } else if (gCamera.unk62 != 0 && gCamera.unk62 != 0xffff) {
         ring->unk80 = w;
-        Player_Unk_ov000_0235258c(gPlayers, w);
+        Player_AttachGimmickTableNoInput(gPlayers, w);
     }
     if (w->unk34 < 0x100) {
         w->unk34 = 0x100;

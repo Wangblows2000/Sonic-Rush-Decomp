@@ -48,23 +48,23 @@ BOOL KeyframeAnim_IsFinished(UnkAnim_022eab78 *a);
 void TimeAttackMenu_Unk_ov001_022ea360(UnkWork_022eab78 *w, s32 i, s32 v);
 void TimeAttackMenu_Unk_ov001_022e9fe4(UnkWork_022eab78 *w, s32 i);
 void TimeAttackMenu_Unk_ov001_022e9fa8(UnkWork_022eab78 *w, s32 i);
-void TimeAttackMenu_Unk_ov001_022ea2f0(UnkWork_022eab78 *w);
+void TimeAttackMenu_FillHdmaBuffer(UnkWork_022eab78 *w);
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
 void AnimatorSprite_Draw(void *p);
 void AnimatorSprite_DrawRotScale(void *p, s32 sx, s32 sy, s32 d);
-BOOL TimeAttackMenu_Unk_ov001_022e9ebc(UnkWork_022eab78 *w);
-BOOL TimeAttackMenu_Unk_ov001_022e9e30(UnkWork_022eab78 *w);
-BOOL TimeAttackMenu_Unk_ov001_022e9df0(UnkWork_022eab78 *w);
-void TimeAttackMenu_Unk_ov001_022e9708(UnkWork_022eab78 *w, s32 a, s32 *x, s32 *y);
+BOOL TimeAttackMenu_IsConfirmPressed(UnkWork_022eab78 *w);
+BOOL TimeAttackMenu_IsLeftPressed(UnkWork_022eab78 *w);
+BOOL TimeAttackMenu_IsRightPressed(UnkWork_022eab78 *w);
+void TimeAttackMenu_IndexToGrid(UnkWork_022eab78 *w, s32 a, s32 *x, s32 *y);
 void Task_DestroyByTag(s32 a);
-void TimeAttackMenu_Unk_ov001_022e96a8(u32 id, s32 x, s32 y);
+void TimeAttackMenu_StartStage(u32 id, s32 x, s32 y);
 void TimeAttackMenu_Unk_ov001_022ea850(UnkWork_022eab78 *w);
 void TimeAttackMenu_Unk_ov001_022ea504(UnkWork_022eab78 *w, s32 x, s32 y);
 void TimeAttackMenu_Unk_ov001_022ea77c(UnkWork_022eab78 *w);
 void TimeAttackMenu_Unk_ov001_022ea694(UnkWork_022eab78 *w);
 void TimeAttackMenu_Unk_ov001_022eba08(s32 a);
 void TimeAttackMenu_Unk_ov001_022eb994(s32 a);
-BOOL TimeAttackMenu_Unk_ov001_022e9e70(UnkWork_022eab78 *w);
+BOOL TimeAttackMenu_IsBackPressed(UnkWork_022eab78 *w);
 
 #pragma thumb on
 void TimeAttackMenu_Unk_ov001_022eab78(void) {
@@ -76,7 +76,7 @@ void TimeAttackMenu_Unk_ov001_022eab78(void) {
     UnkAnim_022eab78 *an;
     UnkItem_022eab78 *it;
 
-    TimeAttackMenu_Unk_ov001_022e9708(w, w->unkd0, &x, &y);
+    TimeAttackMenu_IndexToGrid(w, w->unkd0, &x, &y);
     if (w->unk0 >= 16) {
         u32 id = w->unk4;
         Task_DestroyByTag(0x1000);
@@ -84,7 +84,7 @@ void TimeAttackMenu_Unk_ov001_022eab78(void) {
             x += y / 2;
             y %= 2;
         }
-        TimeAttackMenu_Unk_ov001_022e96a8(id, x, y);
+        TimeAttackMenu_StartStage(id, x, y);
         return;
     }
     KeyframeAnim_Update(&w->anims[5]);

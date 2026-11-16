@@ -38,7 +38,7 @@ extern UnkStruct_022dc3f0_w *gBoss4;
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void BossEffect_CreateShootBomb(s32 a, s32 b, s32 c, s32 d);
 void Player_Action_AttackBounceVel(UnkStruct_022dc3f0_p *p, s32 a);
-void Boss4_Unk_ov000_022de344(void);
+void Boss4_SetCameraZoomOut(void);
 void Player_OnHurt(UnkStruct_022dc3f0_h *a, UnkStruct_022dc3f0_h *b);
 
 void Boss4PartD1_OnHit(UnkStruct_022dc3f0_h *a, UnkStruct_022dc3f0_h *b) {
@@ -54,7 +54,7 @@ void Boss4PartD1_OnHit(UnkStruct_022dc3f0_h *a, UnkStruct_022dc3f0_h *b) {
         Sound_PlaySeqArc(0, 0, 0x33);
         BossEffect_CreateShootBomb(1, o->unk254 >> 4, -o->unk258 >> 4, o->unk25C >> 4);
         Player_Action_AttackBounceVel(p, -0x900);
-        Boss4_Unk_ov000_022de344();
+        Boss4_SetCameraZoomOut();
         o->unk54 |= 8;
         o->unk13E |= 0x1000;
         o->unk16A |= 0x1000;

@@ -32,10 +32,10 @@ void StoryProgress_RestoreFromSave(void);
 UnkWork_022e8a24 *ZoneMap_Create(void);
 void ZoneMap_LoadAssets(void);
 void ZoneMap_InitDisplay(UnkWork_022e8a24 *w);
-void ZoneMap_Unk_ov001_022e870c(UnkWork_022e8a24 *w);
+void ZoneMap_InitWork(UnkWork_022e8a24 *w);
 void SysSound_Init(void);
 s32 ZoneMap_IsBlaze(void);
-s32 ZoneMap_Unk_ov001_022e33c0(s32 a, s32 b);
+s32 ZoneMap_InitNavi(s32 a, s32 b);
 UnkRes_022e8a24 *ZoneMap_Unk_ov001_022e8090(UnkWork_022e8a24 *w, s32 a, s32 b);
 void NaviM_Create(void);
 void Touch_Enable(void);
@@ -52,9 +52,9 @@ void ZoneMap_Start(s32 a, s32 b) {
     w = ZoneMap_Create();
     ZoneMap_LoadAssets();
     ZoneMap_InitDisplay(w);
-    ZoneMap_Unk_ov001_022e870c(w);
+    ZoneMap_InitWork(w);
     SysSound_Init();
-    w->unk1cc4 = ZoneMap_Unk_ov001_022e33c0(ZoneMap_IsBlaze(), a);
+    w->unk1cc4 = ZoneMap_InitNavi(ZoneMap_IsBlaze(), a);
     r = ZoneMap_Unk_ov001_022e8090(w, a, b);
     NaviM_Create();
     for (i = 0; i < 12; i++) {

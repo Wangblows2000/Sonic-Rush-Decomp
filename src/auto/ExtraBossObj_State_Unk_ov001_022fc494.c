@@ -1,11 +1,11 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 ExtraBoss_Unk_ov001_022fa558();
+s32 ExtraBoss_SnapObjToCameraX();
 void ExtraBossObj_State_Unk_ov001_022fc440();
 
 void ExtraBossObj_State_Unk_ov001_022fc494(u8 *p0) {
-    ExtraBoss_Unk_ov001_022fa558();
+    ExtraBoss_SnapObjToCameraX();
     *(u32 *)((u8 *)p0 + 0x1cc) = (*(u32 *)((u8 *)p0 + 0x1cc) - 0x1);
     s32 t0 = *(u32 *)((u8 *)p0 + 0x1cc);
     if (t0 <= 0) {

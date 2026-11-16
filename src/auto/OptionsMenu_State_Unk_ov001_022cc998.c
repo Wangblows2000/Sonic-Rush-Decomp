@@ -6,7 +6,7 @@
 extern u8 gTaskCurrent[];
 s32 OptionsMenu_UpdateAnims();
 s32 OptionsMenu_DrawItems();
-s32 OptionsMenu_Unk_ov001_022cded0();
+s32 OptionsMenu_ShowMsgBox0();
 void OptionsMenu_State_Unk_ov001_022cc8ec();
 
 void OptionsMenu_State_Unk_ov001_022cc998(void) {
@@ -25,7 +25,7 @@ void OptionsMenu_State_Unk_ov001_022cc998(void) {
         *(u32 *)t1 = 0;
         *(u32 *)((u8 *)t0 + 0x18) = 0;
         *(u32 *)((u8 *)t1 + 0x4) = 3;
-        OptionsMenu_Unk_ov001_022cded0(3, t2);
+        OptionsMenu_ShowMsgBox0(3, t2);
         *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)OptionsMenu_State_Unk_ov001_022cc8ec;
     }
 }

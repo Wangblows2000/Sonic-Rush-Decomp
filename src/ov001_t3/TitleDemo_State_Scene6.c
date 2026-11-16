@@ -27,9 +27,9 @@ void TitleDemo_Unk_ov001_022d5af0(UnkWork_022d5c30 *w);
 void TitleDemo_Unk_ov001_022d5b44(UnkWork_022d5c30 *w, s32 a);
 void TitleDemo_Unk_ov001_022d5b94(UnkWork_022d5c30 *w, s32 a);
 void TitleDemo_Unk_ov001_022d5a18(UnkWork_022d5c30 *w);
-void TitleDemo_Unk_ov001_022d583c(UnkWork_022d5c30 *w);
+void TitleDemo_PlaySeq4(UnkWork_022d5c30 *w);
 void TitleDemo_SetOrthoProjection(UnkWork_022d5c30 *w);
-void TitleDemo_Unk_ov001_022d5738(UnkWork_022d5c30 *w);
+void TitleDemo_SetupCamera(UnkWork_022d5c30 *w);
 void TitleDemo_Unk_ov001_022d592c(UnkWork_022d5c30 *w, s32 a, s32 b);
 void TitleDemo_Unk_ov001_022d58ac(UnkWork_022d5c30 *w, s32 a, s32 b);
 
@@ -52,7 +52,7 @@ void TitleDemo_State_Scene6(void) {
         TitleDemo_SetMainBrightness(w, 0);
     }
     TitleDemo_SetOrthoProjection(w);
-    TitleDemo_Unk_ov001_022d5738(w);
+    TitleDemo_SetupCamera(w);
     TitleDemo_Unk_ov001_022d592c(w, 0x28, -0x40);
     TitleDemo_Unk_ov001_022d58ac(w, -0x28, -0x40);
     if (w->state == 0 && TitleDemo_CheckSkipInput()) {

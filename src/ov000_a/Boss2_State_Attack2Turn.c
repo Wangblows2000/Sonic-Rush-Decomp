@@ -88,12 +88,12 @@ void Boss2_SetPalettes(u32 flags);
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss2_UpdateArenaSpeed(UnkStruct_022d2688 *s, s32 mode);
-void Boss2_State_Unk_ov000_022d255c(UnkStruct_022d2688 *s);
+void Boss2_State_Attack2EnterTurnMode(UnkStruct_022d2688 *s);
 
 void Boss2_State_Attack2Turn(UnkStruct_022d2688 *s) {
     s->unk1304 += s->unk146C;
     if (s->unk1304 >= 0x8000) {
-        s->func = Boss2_State_Unk_ov000_022d255c;
+        s->func = Boss2_State_Attack2EnterTurnMode;
         s->unk1304 = 0x8000;
         s->unkF84[6].unkA &= ~4;
         s->unkF84[6].unkA |= 0x1000;

@@ -67,8 +67,8 @@ extern s32 data_ov001_0231f04c;
 void Background_Init(void *bg, UnkRes_022ce6f8 *res, s32 a, s32 b, s32 c, u16 w, u16 h);
 void Background_Draw(void *bg);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void OptionsMenu_Unk_ov001_022ce670(UnkSpr_022ce6f8 *s, void *res, u16 anim);
-void Options_Unk_ov001_022ce6b4(UnkSpr_022ce6f8 *s, void *res, u16 anim);
+void OptionsMenu_InitSpriteSub(UnkSpr_022ce6f8 *s, void *res, u16 anim);
+void Options_InitSpriteMain(UnkSpr_022ce6f8 *s, void *res, u16 anim);
 s32 ObjVram_Alloc(s32 a, s32 b);
 
 #pragma thumb on
@@ -108,7 +108,7 @@ void Options_Unk_ov001_022ce6f8(UnkWork_022ce6f8 *p) {
         } else if (i == 10) {
             sres = p->res1e28;
         }
-        OptionsMenu_Unk_ov001_022ce670(&p->sprites[i], sres, data_ov001_02315fdc[i]);
+        OptionsMenu_InitSpriteSub(&p->sprites[i], sres, data_ov001_02315fdc[i]);
         p->sprites[i].flags &= 0x60000;
         if (i == 1 || i == 10) {
             p->sprites[i].flags |= 0x20000;
@@ -117,7 +117,7 @@ void Options_Unk_ov001_022ce6f8(UnkWork_022ce6f8 *p) {
         }
     }
     for (i = 0; i < 1; i++) {
-        Options_Unk_ov001_022ce6b4(&p->spr3bc + i, p->res1e14, data_ov001_02315fbc[i]);
+        Options_InitSpriteMain(&p->spr3bc + i, p->res1e14, data_ov001_02315fbc[i]);
         (&p->spr3bc + i)->flags &= 0x60000;
         (&p->spr3bc + i)->flags |= 0x20000;
     }
@@ -132,7 +132,7 @@ void Options_Unk_ov001_022ce6f8(UnkWork_022ce6f8 *p) {
     id = p->ids2;
     sres = p->res1e1c;
     for (i = 0; i < 41; i++) {
-        OptionsMenu_Unk_ov001_022ce670(spr, sres, 0);
+        OptionsMenu_InitSpriteSub(spr, sres, 0);
         spr->flags &= 0x60000;
         *id++ = 0;
         spr++;

@@ -36,7 +36,7 @@ void AnimatorSprite_SetAnimation(UnkStruct_02309228_o *s, u16 index);
 s32 SpecialStage_GetStageIndex(void);
 s32 SpecialStage_GetPlayer(void);
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
-void SpecialStageHud_Unk_ov001_0230956c(void);
+void SpecialStageHud_FlushPaletteNow(void);
 void SpecialStageHud_Unk_ov001_023095e0(void);
 void SpecialStageCamera_SetMode(s32 v);
 void SpecialStage_Unk_ov001_02312dd0(s32 p, s32 v);
@@ -90,7 +90,7 @@ void SpecialStageHud_Unk_ov001_02309228(void) {
     switch (g->timer) {
     case 0x96:
         AnimatorSprite_SetAnimation(&g->objs[0x17], SpecialStage_GetStageIndex() * 2 + 1);
-        g->unk0 = Task_Create(SpecialStageHud_Unk_ov001_0230956c, 0, 0, 0xf300, 0, 0);
+        g->unk0 = Task_Create(SpecialStageHud_FlushPaletteNow, 0, 0, 0xf300, 0, 0);
         g->unkBB0 = 1;
         break;
     case 0x118:

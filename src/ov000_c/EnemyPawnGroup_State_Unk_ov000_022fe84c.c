@@ -14,7 +14,7 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
-void EnemyPawnGroup_Action_Unk_ov000_022fe7e8(UnkStruct_022fe84c *w);
+void EnemyPawnGroup_Action_Walk(UnkStruct_022fe84c *w);
 
 void EnemyPawnGroup_State_Unk_ov000_022fe84c(UnkStruct_022fe84c *w) {
     if (w->base.unkC != 0) {
@@ -50,5 +50,5 @@ void EnemyPawnGroup_State_Unk_ov000_022fe84c(UnkStruct_022fe84c *w) {
         w->base.spr1.unk2C |= 0x80008;
         w->base.spr1.unk2C |= 8;
     }
-    EnemyPawnGroup_Action_Unk_ov000_022fe7e8(w);
+    EnemyPawnGroup_Action_Walk(w);
 }

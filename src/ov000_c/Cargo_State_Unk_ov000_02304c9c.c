@@ -5,7 +5,7 @@ extern s16 data_0206e470[];
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
 
-void Cargo_Action_Unk_ov000_02304fa0(UnkStruct_StageObj *w);
+void Cargo_Action_Stop(UnkStruct_StageObj *w);
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 s16 ObjSpd_DownSet(s32 v, s32 a);
 
@@ -15,7 +15,7 @@ void Cargo_State_Unk_ov000_02304c9c(UnkStruct_StageObj *w) {
     s32 i, c, x, y;
 
     if (w->unk1F4 & 2) {
-        Cargo_Action_Unk_ov000_02304fa0(w);
+        Cargo_Action_Stop(w);
         return;
     }
     f = w->unk1E0->unk4;

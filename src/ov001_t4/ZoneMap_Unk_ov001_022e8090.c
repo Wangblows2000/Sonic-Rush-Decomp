@@ -60,7 +60,7 @@ extern UnkCfg_022e8090 gGameState;
 UnkTask_022e8090 *Task_Create(void (*func)(void), s32 a, s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void ZoneMap_State_Unk_ov001_022e7428(void);
-void ZoneMap_State_Unk_ov001_022e6e9c(void);
+void ZoneMap_State_WaitTimer(void);
 s32 ZoneMap_IsBlaze(void);
 s32 ZoneMap_GetSonicStoryStep(void);
 s32 ZoneMap_GetBlazeStoryStep(void);
@@ -90,7 +90,7 @@ UnkWork_022e8090 *ZoneMap_Unk_ov001_022e8090(UnkMap_022e8090 *map, s32 alt, s32 
     if (mode != 0) {
         t = Task_Create(ZoneMap_State_Unk_ov001_022e7428, 0, 0, 0x2000, 0x1000, 0xa8);
     } else {
-        t = Task_Create(ZoneMap_State_Unk_ov001_022e6e9c, 0, 0, 0x2000, 0x1000, 0xa8);
+        t = Task_Create(ZoneMap_State_WaitTimer, 0, 0, 0x2000, 0x1000, 0xa8);
     }
     w = t->work;
     z = 0;

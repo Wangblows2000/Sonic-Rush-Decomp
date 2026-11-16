@@ -12,13 +12,13 @@ typedef struct UnkStruct_02308b88 {
     u32 unk1F4;
 } UnkStruct_02308b88;
 
-u8 Gimmick_Unk_ov000_02307e84(UnkStruct_02308b88 *s);
+u8 Gimmick_GetRoomIndex(UnkStruct_02308b88 *s);
 UnkStruct_02308b88_2 *EnemyRoom_Get(s32 a, s32 i);
 BOOL Gimmick_Unk_ov000_02307dfc(UnkStruct_02308b88_2 *p, s32 a);
-void GmkWall_Action_Unk_ov000_02308b64(UnkStruct_02308b88 *s);
+void GmkWall_Action_MoveUp(UnkStruct_02308b88 *s);
 
 void GmkWall_State_Unk_ov000_02308b88(UnkStruct_02308b88 *s) {
-    UnkStruct_02308b88_2 *p = EnemyRoom_Get(1, Gimmick_Unk_ov000_02307e84(s));
+    UnkStruct_02308b88_2 *p = EnemyRoom_Get(1, Gimmick_GetRoomIndex(s));
     if (Gimmick_Unk_ov000_02307dfc(p, 0)) {
         s->unk1F4 &= ~0x10;
         s->unk54 |= 4;
@@ -30,5 +30,5 @@ void GmkWall_State_Unk_ov000_02308b88(UnkStruct_02308b88 *s) {
     }
     if (!(p->unk20C & 0x40))
         return;
-    GmkWall_Action_Unk_ov000_02308b64(s);
+    GmkWall_Action_MoveUp(s);
 }

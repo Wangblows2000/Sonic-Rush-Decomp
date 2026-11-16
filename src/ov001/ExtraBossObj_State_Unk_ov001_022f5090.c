@@ -2,13 +2,13 @@
 
 extern void *data_ov001_0231f068;
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
-void ExtraBoss_Unk_ov001_022f3b50(void *p);
+void ExtraBoss_StepXTowardCameraTarget(void *p);
 void ExtraBossObj_State_Unk_ov001_022f52e0(void);
 
 void ExtraBossObj_State_Unk_ov001_022f5090(u8 *p) {
     u8 *q;
     *(s32 *)(p + 0x1c8) -= 1;
-    ExtraBoss_Unk_ov001_022f3b50(p);
+    ExtraBoss_StepXTowardCameraTarget(p);
     if (*(s32 *)(p + 0x1c8) > 0) {
         return;
     }

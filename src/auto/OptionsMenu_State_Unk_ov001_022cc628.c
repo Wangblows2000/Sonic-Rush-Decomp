@@ -6,9 +6,9 @@
 extern u8 gTaskCurrent[];
 s32 OptionsMenu_UpdateAnims();
 s32 OptionsMenu_DrawItems();
-s32 OptionsMenu_Unk_ov001_022c8d54();
+s32 OptionsMenu_GetChildCount();
 void OptionsMenu_State_Unk_ov001_022cc7fc();
-s32 OptionsMenu_Unk_ov001_022cdea8();
+s32 OptionsMenu_ShowMsgBox7();
 void OptionsMenu_State_Unk_ov001_022cc588();
 
 void OptionsMenu_State_Unk_ov001_022cc628(void) {
@@ -20,7 +20,7 @@ void OptionsMenu_State_Unk_ov001_022cc628(void) {
     *(u32 *)(t0 + 0x1ec) = t2;
     *(u32 *)((u8 *)t0 + 0x14) = (*(u32 *)((u8 *)t0 + 0x14) + 0x1);
     *(u32 *)((u8 *)t0 + 0x18) = (*(u32 *)((u8 *)t0 + 0x18) + 0x1);
-    s32 t3 = OptionsMenu_Unk_ov001_022c8d54(t1, t2);
+    s32 t3 = OptionsMenu_GetChildCount(t1, t2);
     *(u32 *)((u8 *)t1 + 0x8) = t3;
     if (*(u32 *)((u8 *)t1 + 0x8) == 0) {
         *(u32 *)t1 = 0;
@@ -35,7 +35,7 @@ void OptionsMenu_State_Unk_ov001_022cc628(void) {
         *(u32 *)((u8 *)t0 + 0x14) = 0;
         *(u32 *)((u8 *)t0 + 0x18) = 0;
         *(u32 *)((u8 *)t1 + 0x4) = 7;
-        OptionsMenu_Unk_ov001_022cdea8(7);
+        OptionsMenu_ShowMsgBox7(7);
         *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)OptionsMenu_State_Unk_ov001_022cc588;
     }
 }

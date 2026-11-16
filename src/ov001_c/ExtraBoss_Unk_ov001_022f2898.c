@@ -44,7 +44,7 @@ extern u32 gRandSeed;
 void ExtraBossObj_State_Unk_ov001_022f2858(void);
 void ExtraBossObj_State_Unk_ov001_022f2ca4(void);
 void Model_SetAnimation(UnkStruct_022f2898_o *o, u32 slot, void *res, u32 idx, void *tex);
-void ExtraBoss_Unk_ov001_022eecdc(UnkStruct_022f2898 *p);
+void ExtraBoss_StopAndFaceCenter(UnkStruct_022f2898 *p);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -79,5 +79,5 @@ void ExtraBoss_Unk_ov001_022f2898(UnkStruct_022f2898 *p) {
     b->unk110 |= 4;
     b->unk114 = 0x1000;
     p->unk1C8 = (Rand() & 0x3f) + data_ov001_02316810[Rand() & 3];
-    ExtraBoss_Unk_ov001_022eecdc(p);
+    ExtraBoss_StopAndFaceCenter(p);
 }

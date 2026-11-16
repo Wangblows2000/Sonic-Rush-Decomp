@@ -3,13 +3,13 @@
 
 #pragma thumb on
 
-s32 StaffRoll_Unk_ov001_022d0220();
+s32 StaffRoll_AdvancePictureAnim();
 void StaffRoll_PictureState_BlazeExit1();
 s32 StaffRoll_SetPictureState();
 void StaffRoll_PictureState_BlazeRepeat();
 
 s32 StaffRoll_PictureState_Blaze16(s32 p0) {
-    StaffRoll_Unk_ov001_022d0220();
+    StaffRoll_AdvancePictureAnim();
     s32 t0 = *(u32 *)((u8 *)p0 + 0xbdc);
     s32 v1 = t0;
     if (t0 > 1) {

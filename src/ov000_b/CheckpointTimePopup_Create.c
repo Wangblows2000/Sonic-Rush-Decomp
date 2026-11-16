@@ -7,7 +7,7 @@ extern u8 data_ov000_02367fd0[];
 void CheckpointTimePopup_Destructor(void);
 void CheckpointTimePopup_Draw(void);
 void CheckpointTimePopup_State_Main(void);
-s32 Hud_Unk_ov000_0233766c(s32 a);
+s32 Hud_GetDigitGlyphVram(s32 a);
 void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
 void Hud_FramesToTimeDigits(s32 *out, s32 n);
 
@@ -24,8 +24,8 @@ void CheckpointTimePopup_Create(s32 unused, s32 n) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
     data_ov000_0236a978 = w;
     StageObj_Load2dBAC(w, data_ov000_02367fd0, 0, NULL, gActComArchive);
-    w->spr0.unk34 = Hud_Unk_ov000_0233766c(0);
-    w->spr1.unk34 = Hud_Unk_ov000_0233766c(1);
+    w->spr0.unk34 = Hud_GetDigitGlyphVram(0);
+    w->spr1.unk34 = Hud_GetDigitGlyphVram(1);
     w->spr0.unk44 = 1;
     w->spr1.unk44 = 1;
     w->spr0.unk2C |= 0x10;

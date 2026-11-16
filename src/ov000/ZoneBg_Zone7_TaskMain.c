@@ -11,14 +11,14 @@ extern u32 gSystemFlags;
 
 void ZoneBg_Zone7_EnableLineScroll(void *p);
 void ZoneBg_Zone7_BuildLineScroll(void *p, s32 a);
-void ZoneBg_Zone7_Unk_ov000_0233ec68(void *p);
+void ZoneBg_Zone7_BuildLineScrollOtherScreen(void *p);
 
 void ZoneBg_Zone7_TaskMain(void) {
     void *p = gZoneBgWork;
     ZoneBg_Zone7_EnableLineScroll(p);
     if (gCamera.unkC8 & 1) {
         ZoneBg_Zone7_BuildLineScroll(p, 0);
-        ZoneBg_Zone7_Unk_ov000_0233ec68(p);
+        ZoneBg_Zone7_BuildLineScrollOtherScreen(p);
     } else {
         ZoneBg_Zone7_BuildLineScroll(p, 0);
         ZoneBg_Zone7_BuildLineScroll(p, 1);

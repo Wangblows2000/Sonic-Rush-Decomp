@@ -16,7 +16,7 @@ extern UnkStruct_02310464_P *gPlayers;
 
 void Marker_State_StageClearFade(void);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void StageClear_Unk_ov000_0230ad04(UnkStruct_02310464 *w, UnkStruct_02310464_P *p);
+void StageClear_HandleGoalReached(UnkStruct_02310464 *w, UnkStruct_02310464_P *p);
 
 void Marker_Action_StageClear(UnkStruct_02310464 *w) {
     UnkStruct_02310464_P *p = gPlayers;
@@ -35,5 +35,5 @@ void Marker_Action_StageClear(UnkStruct_02310464 *w) {
             Sound_PlaySeqArcEx(NULL, 0, 0x29);
     }
     Sound_PlaySeqArcEx(NULL, 0, 0x31);
-    StageClear_Unk_ov000_0230ad04(w, p);
+    StageClear_HandleGoalReached(w, p);
 }

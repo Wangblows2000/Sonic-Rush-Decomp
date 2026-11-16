@@ -16,7 +16,7 @@ extern u8 data_ov000_02367fe4[];
 void ScorePopup_Destructor(void);
 void ScorePopup_Draw(void);
 void ScorePopup_State_Main(void);
-s32 Hud_Unk_ov000_0233766c(s32 a);
+s32 Hud_GetDigitGlyphVram(s32 a);
 void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
 void Hud_ToDecimalDigits(u32 *out, s32 a, s32 b);
 
@@ -37,8 +37,8 @@ void ScorePopup_Create(UnkStruct_StageObj *arg, s32 n) {
         zero = 0;
         MIi_CpuClear16(zero, w, sizeof(UnkStruct_0232b898));
         StageObj_Load2dBAC(w, data_ov000_02367fe4, 0, NULL, gActComArchive);
-        w->base.spr0.unk34 = Hud_Unk_ov000_0233766c(0);
-        w->base.spr1.unk34 = Hud_Unk_ov000_0233766c(1);
+        w->base.spr0.unk34 = Hud_GetDigitGlyphVram(0);
+        w->base.spr1.unk34 = Hud_GetDigitGlyphVram(1);
         w->base.spr0.unk44 = 1;
         w->base.spr1.unk44 = 1;
         w->base.spr0.unk2C |= 0x10;

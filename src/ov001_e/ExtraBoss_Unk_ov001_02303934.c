@@ -24,7 +24,7 @@ typedef struct UnkStruct_02303934 {
 
 extern UnkStruct_02303934 *data_ov001_0231f548;
 
-BOOL ExtraBoss_Unk_ov001_02303554(UnkStruct_02303934_n *n);
+BOOL ExtraBoss_IsOutOfField(UnkStruct_02303934_n *n);
 void ExtraBoss_Unk_ov001_02303394(UnkStruct_02303934_n *n);
 void ExtraBoss_StackPush(UnkStruct_02303934_n *n);
 void ExtraBoss_Unk_ov001_02303244(UnkStruct_02303934_n *n);
@@ -39,7 +39,7 @@ void ExtraBoss_Unk_ov001_02303934(void) {
         n = next;
         next = n->next;
         n->x -= 0x4000;
-        if (ExtraBoss_Unk_ov001_02303554(n)) {
+        if (ExtraBoss_IsOutOfField(n)) {
             ExtraBoss_Unk_ov001_02303394(n);
             ExtraBoss_StackPush(n);
         }
@@ -52,7 +52,7 @@ void ExtraBoss_Unk_ov001_02303934(void) {
         n->vy += n->ay;
         n->x += n->vx;
         n->y += n->vy;
-        if (ExtraBoss_Unk_ov001_02303554(n)) {
+        if (ExtraBoss_IsOutOfField(n)) {
             ExtraBoss_Unk_ov001_02303244(n);
             ExtraBoss_StackPush(n);
         }

@@ -23,7 +23,7 @@ typedef struct {
 
 extern u16 data_ov001_02315fc0[];
 
-void OptionsMenu_Unk_ov001_022ce670(UnkSpr_022cb364 *s, void *res, u16 id);
+void OptionsMenu_InitSpriteSub(UnkSpr_022cb364 *s, void *res, u16 id);
 
 #pragma thumb on
 void OptionsMenu_OpenPage1(UnkStruct_022cb364 *p) {
@@ -45,7 +45,7 @@ void OptionsMenu_OpenPage1(UnkStruct_022cb364 *p) {
             res = p->work->res1e14;
             break;
         }
-        OptionsMenu_Unk_ov001_022ce670(&spr[i], res, data_ov001_02315fc0[i]);
+        OptionsMenu_InitSpriteSub(&spr[i], res, data_ov001_02315fc0[i]);
         spr[i].flags &= 0x60000;
         spr[i].flags |= 0x20000;
         ids[i] = data_ov001_02315fc0[i];

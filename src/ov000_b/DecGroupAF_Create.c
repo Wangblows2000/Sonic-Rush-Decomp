@@ -41,12 +41,12 @@ void Decoration_Destructor(void);
 void DecGroupAF_State_SwitchVisible(void);
 void DecGroupAF_OnHit(void);
 void DecGroupAF_State_ClearTouched(void);
-void DecSonicNeon_State_Unk_ov000_02320014(void);
-void DecSonicNeon_State_Unk_ov000_02320168(void);
+void DecSonicNeon_State_BlinkPair(void);
+void DecSonicNeon_State_BlinkFull(void);
 void Decoration_InitFromMap(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
 void PaletteAnim_Create(s32 a, void *b, void *c, s32 d);
-void DecGroupAF_Unk_ov000_02320744(UnkStruct_02324400 *w);
-void DecGroupAF_Unk_ov000_023205bc(UnkStruct_02324400 *w);
+void DecGroupAF_CreateChildBack(UnkStruct_02324400 *w);
+void DecGroupAF_CreateChildFront(UnkStruct_02324400 *w);
 
 UnkStruct_02324400 *DecGroupAF_Create(UnkStruct_ObjParam *p, s32 a, s32 b) {
     UnkStruct_Task *task;
@@ -131,8 +131,8 @@ UnkStruct_02324400 *DecGroupAF_Create(UnkStruct_ObjParam *p, s32 a, s32 b) {
         StageObj_SetSharedSpriteVram(w, 0x31, data_ov000_0236a880);
         StageObj_AllocSpritePalette(w, 0, 0x5c);
         StageObj_SetAnimation(w, 0);
-        DecGroupAF_Unk_ov000_02320744(w);
-        DecGroupAF_Unk_ov000_023205bc(w);
+        DecGroupAF_CreateChildBack(w);
+        DecGroupAF_CreateChildFront(w);
         StageObj_SetOAMOrder(w, 0x16);
         ObjRect_SetBox2D(&w->coll0, -0x30, -8, 0x30, 0x40);
         ObjRect_SetAtkDefFlags(&w->coll0, 0, -0x10);
@@ -175,12 +175,12 @@ UnkStruct_02324400 *DecGroupAF_Create(UnkStruct_ObjParam *p, s32 a, s32 b) {
         break;
     case 0xec:
     case 0xee:
-        w->unk68 = DecSonicNeon_State_Unk_ov000_02320014;
+        w->unk68 = DecSonicNeon_State_BlinkPair;
         w->unk5C |= 0x20;
         break;
     case 0xef:
         w->unk8 = 0xffff;
-        w->unk68 = DecSonicNeon_State_Unk_ov000_02320168;
+        w->unk68 = DecSonicNeon_State_BlinkFull;
         w->unk5C |= 0x20;
         break;
     }

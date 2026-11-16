@@ -81,8 +81,8 @@ u32 NNS_FndGetArchiveFileByIndex(UnkArc_02307398 *arc, u32 idx);
 void NNS_G3dResDefaultSetup(u32 p);
 BOOL NNS_FndUnmountArchive(UnkArc_02307398 *arc);
 UnkTask_02307398 *SpecialStageObjList_Create(s32 a);
-void SpecialStage_Unk_ov001_02306d04(void);
-void SpecialStage_Unk_ov001_02306a20(void);
+void SpecialStage_ActObjDestroyWhenDone(void);
+void SpecialStage_ActObjReleaseSlots(void);
 
 static inline UnkHdr_02307398 *GetHdr(UnkRes_02307398 *r) { return (UnkHdr_02307398 *)((u8 *)r + r->hdrOfs); }
 
@@ -171,6 +171,6 @@ void SpecialStage_LoadActArchive(void) {
     NNS_G3dResDefaultSetup(w->res3);
     NNS_FndUnmountArchive(&arc);
     w->task = SpecialStageObjList_Create(0x20);
-    w->task->unk1DC = SpecialStage_Unk_ov001_02306d04;
-    w->task->unk1E0 = SpecialStage_Unk_ov001_02306a20;
+    w->task->unk1DC = SpecialStage_ActObjDestroyWhenDone;
+    w->task->unk1E0 = SpecialStage_ActObjReleaseSlots;
 }

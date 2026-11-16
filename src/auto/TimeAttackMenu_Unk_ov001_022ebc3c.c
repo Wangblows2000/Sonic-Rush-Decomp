@@ -21,12 +21,12 @@ typedef int code();
 
 extern unsigned char gTaskCurrent[];
 int TimeAttackMenu_Unk_ov001_022eb294();
-int TimeAttackMenu_Unk_ov001_022e9708();
+int TimeAttackMenu_IndexToGrid();
 int TimeAttackMenu_Unk_ov001_022ea850();
 int TimeAttackMenu_Unk_ov001_022ea5a8();
 int TimeAttackMenu_Unk_ov001_022ea504();
 int TimeAttackMenu_Unk_ov001_022ea41c();
-int TimeAttackMenu_Unk_ov001_022ea290();
+int TimeAttackMenu_StopHdma();
 
 #pragma thumb on
 
@@ -42,12 +42,12 @@ void TimeAttackMenu_Unk_ov001_022ebc3c(int param_1)
   }
   puVar1 = *(undefined4 **)(param_1 + 0x10);
   *puVar1 = 0;
-  TimeAttackMenu_Unk_ov001_022e9708(puVar1,puVar1[0x34],&local_18,local_14);
+  TimeAttackMenu_IndexToGrid(puVar1,puVar1[0x34],&local_18,local_14);
   TimeAttackMenu_Unk_ov001_022ea850(puVar1);
   TimeAttackMenu_Unk_ov001_022ea5a8(puVar1,local_18);
   TimeAttackMenu_Unk_ov001_022ea504(puVar1,local_18,local_14[0]);
   TimeAttackMenu_Unk_ov001_022ea41c(puVar1);
-  TimeAttackMenu_Unk_ov001_022ea290(puVar1);
+  TimeAttackMenu_StopHdma(puVar1);
   *(undefined4 *)(param_1 + 8) = ((int)TimeAttackMenu_Unk_ov001_022eb294);
   return;
 }

@@ -53,7 +53,7 @@ extern UnkBr_022cce10 data_02087d44;
 void OptionsMenu_UpdateAnims(UnkWork_022cce10 *w);
 void OptionsMenu_DrawItems(UnkWork_022cce10 *w);
 void OptionsMenu_Unk_ov001_022cdd28(void);
-BOOL OptionsMenu_Unk_ov001_022c8ba8(u16 x, u16 y);
+BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
 void SysSound_PlaySE(s32 a);
 void Options_EraseSaveData(UnkInfo_022cce10 *info);
 void MsgBox_Destroy(void);
@@ -172,7 +172,7 @@ void OptionsMenu_State_EraseData(void) {
         x = gTouchState.x;
         y = gTouchState.y;
         if (x < 0x100 && y < 0xc0) {
-            if (OptionsMenu_Unk_ov001_022c8ba8(x, y)) {
+            if (OptionsMenu_IsBackButtonTouched(x, y)) {
                 w->unk1c = 0;
                 SysSound_PlaySE(1);
             }

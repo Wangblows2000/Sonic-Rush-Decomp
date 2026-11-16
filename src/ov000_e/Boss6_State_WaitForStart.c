@@ -30,7 +30,7 @@ extern UnkStruct_02369b50 data_ov000_02369b50;
 
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
-void Boss6_Unk_ov000_022e0700(void);
+void Boss6_ResetCamera(void);
 void Boss6_Action_Unk_ov000_022e5a80(void);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
@@ -48,7 +48,7 @@ void Boss6_State_WaitForStart(UnkStruct_Boss *w) {
     Model_Init(a, 0);
     Model_SetResource(a, data_ov000_02369b50.unk14, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x1355b50;
-    Boss6_Unk_ov000_022e0700();
+    Boss6_ResetCamera();
     Boss6_Action_Unk_ov000_022e5a80();
     w->unkF50 = 0xb4;
     NaviMsg_SetFaceAnim(9);

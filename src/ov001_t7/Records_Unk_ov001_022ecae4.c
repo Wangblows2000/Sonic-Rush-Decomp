@@ -35,7 +35,7 @@ extern u32 gPaletteTransferTail;
 extern u32 gVRAMTransferHead;
 extern u32 gVRAMTransferTail;
 
-void Records_Unk_ov001_022ec980(s32 *out, u16 *ids, s32 n);
+void Records_BuildNameGlyphs(s32 *out, u16 *ids, s32 n);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -84,10 +84,10 @@ void Records_Unk_ov001_022ecae4(UnkStruct_022ecae4 *p) {
     s32 tbl[11][7];
     u8 *q;
 
-    Records_Unk_ov001_022ec980(tbl[0], data_02072cbc, gGameLanguage.len);
+    Records_BuildNameGlyphs(tbl[0], data_02072cbc, gGameLanguage.len);
     for (i = 1, q = (u8 *)&data_022c46a0; i < 11; i++) {
         if (i <= p->n) {
-            Records_Unk_ov001_022ec980(tbl[i], data_022c4854[i - 1].name, q[0x1d0]);
+            Records_BuildNameGlyphs(tbl[i], data_022c4854[i - 1].name, q[0x1d0]);
         }
         q += 0x20;
     }

@@ -5,8 +5,8 @@ extern u32 gTaskCurrent;
 extern void SysSound_PlaySE(void);
 extern void ZoneMap_Unk_ov001_022e25b0(void);
 extern void ZoneMap_Unk_ov001_022e2640(void);
-extern void ZoneMap_Unk_ov001_022e5b6c(void);
-extern void ZoneMap_Unk_ov001_022e5ba0(void);
+extern void ZoneMap_Action_FadeOut(void);
+extern void ZoneMap_Action_ShowMsgBox12(void);
 extern void ZoneMap_Unk_ov001_022e5f80(void);
 extern void ZoneMap_Unk_ov001_022e606c(void);
 
@@ -97,14 +97,14 @@ _98:
 _9e:
     cmp r0, #0
     beq _b2
-    bl ZoneMap_Unk_ov001_022e5b6c
+    bl ZoneMap_Action_FadeOut
     mov r0, #0xd
     bl SysSound_PlaySE
     add sp, #4
     pop {r3}
     bx r3
 _b2:
-    bl ZoneMap_Unk_ov001_022e5ba0
+    bl ZoneMap_Action_ShowMsgBox12
     mov r0, #0xb
     bl SysSound_PlaySE
     add sp, #4

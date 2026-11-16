@@ -58,7 +58,7 @@ s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
 void Boss7PartD5_Unk_ov000_022eb3c4(UnkStruct_022e8724 *w);
-void EffTrail_Unk_ov000_02326f20(void);
+void EffTrail_StartFollow(void);
 void Boss7PartD5_MoveState_Unk_ov000_022e86c0(void);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -94,7 +94,7 @@ void Boss7PartD5_MoveState_Unk_ov000_022e8724(UnkStruct_022e8724 *w) {
     w->base.unk30 = 0;
     w->base.unk58 |= 0x80;
     if (w->unk480 != NULL) {
-        EffTrail_Unk_ov000_02326f20();
+        EffTrail_StartFollow();
         w->unk480 = NULL;
     }
     b->unk20C &= ~0x10;

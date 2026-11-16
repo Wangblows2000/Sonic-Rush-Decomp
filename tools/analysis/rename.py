@@ -161,19 +161,21 @@ def main() -> int:
             if n != t:
                 dl.write_text(n)
 
-    # 4. evidence (mapping keyed by symbol name; carry an existing entry over)
+    # 4. evidence (mapping keyed by symbol name). The new row's evidence replaces
+    # any existing entry for the old name (block or flow style); the old name is
+    # recorded in the text.
     ev_path = cfg / "symbol_evidence.yaml"
     text = ev_path.read_text()
     stamp = datetime.date.today().isoformat()
     for mod, old, new, ev in rows:
-        if re.search(rf"^{re.escape(old)}:(?=\s)", text, re.M):
-            # block (`Name:` + indented fields) or flow (`Name: {...}`) entry
-            text = re.sub(rf"^{re.escape(old)}:(?=\s)", f"{new}:", text, count=1, flags=re.M)
-        else:
-            esc = ev.replace("\\", "\\\\").replace('"', '\\"')
-            conf = ev.split()[0].lower() if ev.split() and ev.split()[0].lower() in ("confirmed", "strong") else "tentative"
-            text += (f"{new}:\n  confidence: {conf}\n"
-                     f"  evidence: \"{esc} (was {old}, {mod}, {stamp})\"\n")
+        text = re.sub(rf"(?m)^{re.escape(old)}:(?:[ \t]*\{{.*\}}[ \t]*\n|[ \t]*\n(?:[ \t]+.*\n)*)",
+                      "", text, count=1)
+        conf = ev.split()[0].lower() if ev.split() and ev.split()[0].lower() in ("confirmed", "strong") else "tentative"
+        esc = ev.replace("\\", "\\\\").replace('"', '\\"')
+        if not text.endswith("\n"):
+            text += "\n"
+        text += (f"{new}:\n  confidence: {conf}\n"
+                 f"  evidence: \"{esc} (was {old}, {mod}, {stamp})\"\n")
     ev_path.write_text(text)
     print(f"renamed {len(rows)} symbols; moved {len(moves)} files")
     # Post-condition: the tree must stay consistent (no duplicates, no case-only

@@ -12,7 +12,7 @@ extern u8 data_ov000_02366690[], data_ov000_02369e34[], data_ov000_023666b0[], d
 
 void MapObject_Destructor(void);
 void Kuragen_OnDetect(void);
-void Kuragen_Unk_ov000_02301390(UnkStruct_023018cc *w);
+void Kuragen_SpawnBomb(UnkStruct_023018cc *w);
 void Kuragen_Action_Unk_ov000_0230187c(UnkStruct_023018cc *w);
 
 UnkStruct_023018cc *Kuragen_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -47,7 +47,7 @@ UnkStruct_023018cc *Kuragen_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk20C.unk18 = w;
     if (w->base.unk1E0->unk2 == 5) {
         w->unk238 |= 1;
-        Kuragen_Unk_ov000_02301390(w);
+        Kuragen_SpawnBomb(w);
     } else {
         w->base.unkC = 0xb4;
         w->unk23C = w->base.coll0.unk1C;

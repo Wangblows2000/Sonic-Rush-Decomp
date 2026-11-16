@@ -145,7 +145,7 @@ void NNS_G3dMdlSetMdlDiffAll(void *s, u32 v);
 void NNS_G3dMdlSetMdlAmbAll(void *s, u32 v);
 void NNS_G3dMdlSetMdlEmiAll(void *s, u32 v);
 void Boss2_Action_Idle(void);
-void Boss2_Draw_Unk_ov000_022cebc8(void);
+void Boss2_Draw_PlayerOnArena(void);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
 void Boss2_CreateWaterController(UnkStruct_022d49e4 *s);
@@ -177,7 +177,7 @@ void Boss2_State_WaitForStart(UnkStruct_022d49e4 *s) {
         NNS_G3dMdlSetMdlEmiAll(q, gBoss2ModelColorsDefault[i].unk4);
     }
     Boss2_Action_Idle();
-    gPlayers->unk70 = Boss2_Draw_Unk_ov000_022cebc8;
+    gPlayers->unk70 = Boss2_Draw_PlayerOnArena;
     gPlayers->unk5C |= 0x2040;
     NaviMsg_SetFaceAnim(9);
     NaviMsg_ShowMessage(0xf, 0xf0);

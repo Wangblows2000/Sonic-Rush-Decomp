@@ -79,8 +79,8 @@ UnkStruct_02302be8_o *ExtraBossObj_Create(s32 a, s32 b);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
 void ExtraBossPlayer_State_None(void);
-void ExtraBoss_Unk_ov001_02301a88(void);
-void ExtraBoss_Unk_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
+void ExtraBoss_PlayerOnHurt(void);
+void ExtraBoss_InitCollider(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void ExtraBossPlayer_ChangeState(UnkStruct_02302be8_o *o, s32 a);
 u8 *ExtraBoss_GetWork(void);
 
@@ -195,8 +195,8 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     o->unk1DC = d;
     d->unk8 = &data_ov001_0231da50[idx];
     d->unkC = data_ov001_0231d9e8[idx];
-    ExtraBoss_Unk_ov001_022fe8d4(&o->subB0, o, 1, 0, 0x8000, 0x8000, 0x8000, 0, -0x8000, 0, 0);
-    o->subB0.unk4 = ExtraBoss_Unk_ov001_02301a88;
+    ExtraBoss_InitCollider(&o->subB0, o, 1, 0, 0x8000, 0x8000, 0x8000, 0, -0x8000, 0, 0);
+    o->subB0.unk4 = ExtraBoss_PlayerOnHurt;
     o->subB0.unk8 |= 0x2000;
     ExtraBossPlayer_ChangeState(o, 1);
     o->unk18 = o->unk24 = 0x40000;

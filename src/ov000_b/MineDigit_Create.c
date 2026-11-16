@@ -5,7 +5,7 @@ extern u8 data_ov000_02367fa8[];
 
 void MineDigit_Destructor(void);
 void MineDigit_State_FollowParent(void);
-s32 Hud_Unk_ov000_0233766c(s32 a);
+s32 Hud_GetDigitGlyphVram(s32 a);
 void AnimatorSprite_ProcessAnimation(UnkStruct_Spr *s, s32 a, s32 b);
 
 UnkStruct_EffObj *MineDigit_Create(UnkStruct_StageObj *arg, s32 x, s32 y, u32 idx) {
@@ -22,8 +22,8 @@ UnkStruct_EffObj *MineDigit_Create(UnkStruct_StageObj *arg, s32 x, s32 y, u32 id
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_EffObj));
     StageObj_Load2dBAC(w, data_ov000_02367fa8, 0, NULL, gActComArchive);
-    w->spr0.unk34 = Hud_Unk_ov000_0233766c(0);
-    w->spr1.unk34 = Hud_Unk_ov000_0233766c(1);
+    w->spr0.unk34 = Hud_GetDigitGlyphVram(0);
+    w->spr1.unk34 = Hud_GetDigitGlyphVram(1);
     w->spr0.unk34 += idx << 7;
     w->spr1.unk34 += idx << 7;
     w->spr0.unk44 = 1;

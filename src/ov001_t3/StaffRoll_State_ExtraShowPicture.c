@@ -45,8 +45,8 @@ typedef struct {
 
 extern UnkGfx_022d1904 gDisplayMain;
 
-void StaffRoll_Unk_ov001_022d0070(UnkStruct_022d1904 *p);
-void StaffRoll_Unk_ov001_022cff74(UnkObj_022d1904 *o, s32 a, void *b, void *c);
+void StaffRoll_DrawSprites(UnkStruct_022d1904 *p);
+void StaffRoll_ShowBgBlackPalette(UnkObj_022d1904 *o, s32 a, void *b, void *c);
 void StaffRoll_SetState(UnkStruct_022d1904 *p, void (*fn)(UnkStruct_022d1904 *));
 void StaffRoll_State_ExtraPictureFadeIn(UnkStruct_022d1904 *p);
 
@@ -61,7 +61,7 @@ static inline void SetPlane_022d1904(u32 plane) {
 
 void StaffRoll_State_ExtraShowPicture(UnkStruct_022d1904 *p) {
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1a00;
-    StaffRoll_Unk_ov001_022d0070(p);
+    StaffRoll_DrawSprites(p);
     gDisplayMain.blend.bg0a = 0;
     gDisplayMain.blend.bg1a = 0;
     gDisplayMain.blend.bg2a = 0;
@@ -74,7 +74,7 @@ void StaffRoll_State_ExtraShowPicture(UnkStruct_022d1904 *p) {
     gDisplayMain.alpha.eva = 0;
     gDisplayMain.alpha.evb = 15 - gDisplayMain.alpha.eva;
     SetPlane_022d1904(GetPlane_022d1904() | 1);
-    StaffRoll_Unk_ov001_022cff74(&p->objs[p->unkd08 + 0xb], 0x100, p->unkf0c, p->unkd0c);
+    StaffRoll_ShowBgBlackPalette(&p->objs[p->unkd08 + 0xb], 0x100, p->unkf0c, p->unkd0c);
     StaffRoll_SetState(p, StaffRoll_State_ExtraPictureFadeIn);
 }
 #pragma thumb reset

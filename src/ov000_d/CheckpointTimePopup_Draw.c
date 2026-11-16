@@ -26,7 +26,7 @@ typedef struct {
 extern UnkStruct_0232b1cc_Task *gTaskCurrent;
 extern UnkStruct_0232b1cc_4560 gGameState;
 
-u32 Hud_Unk_ov000_02337650(s32 a);
+u32 Hud_GetDigitGlyphVramB(s32 a);
 void StageObj_Draw2DEx(s32 x, s32 y, s32 a, void *w, void *b, s32 c, s32 d);
 
 void CheckpointTimePopup_Draw(void) {
@@ -48,8 +48,8 @@ void CheckpointTimePopup_Draw(void) {
         w->unkC8 = s0;
         w->unk110 = s1;
         if (gGameState.unk24 & 8) {
-            w->unkC8 = Hud_Unk_ov000_02337650(0);
-            w->unk110 = Hud_Unk_ov000_02337650(1);
+            w->unkC8 = Hud_GetDigitGlyphVramB(0);
+            w->unk110 = Hud_GetDigitGlyphVramB(1);
         }
         d = (w->unk8 & (0xf << sh)) >> sh;
         w->unkC8 += d * 0x80;
@@ -64,8 +64,8 @@ void CheckpointTimePopup_Draw(void) {
         }
         sh += 4;
     }
-    w->unkC8 = Hud_Unk_ov000_02337650(0);
-    w->unk110 = Hud_Unk_ov000_02337650(1);
+    w->unkC8 = Hud_GetDigitGlyphVramB(0);
+    w->unk110 = Hud_GetDigitGlyphVramB(1);
     w->unkC8 += 0xba0;
     w->unk110 += 0xba0;
     for (ofs = 0x1400, i = 0; i < 2; i++) {

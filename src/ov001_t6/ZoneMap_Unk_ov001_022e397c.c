@@ -33,9 +33,9 @@ extern void *data_ov001_023162c4[];
 extern void *data_ov001_023162b8[];
 extern void *data_ov001_023162a0[];
 
-void ZoneMap_Unk_ov001_022e38b8(s32 a, s32 b);
+void ZoneMap_SetupLighting(s32 a, s32 b);
 void ZoneMap_SetOrthoProjection(s32 *p);
-void ZoneMap_Unk_ov001_022e2af8(s32 *p);
+void ZoneMap_ApplyCameraLookAt(s32 *p);
 void MTX_RotY33_(UnkMtx33_022e397c *m, s32 s, s32 c);
 void MTX_RotX33_(UnkMtx33_022e397c *m, s32 s, s32 c);
 void MTX_Concat33(UnkMtx33_022e397c *a, UnkMtx33_022e397c *b, UnkMtx33_022e397c *ab);
@@ -54,7 +54,7 @@ void ZoneMap_Unk_ov001_022e397c(UnkStruct_022e397c *p) {
     void *r0;
     void *r1;
 
-    ZoneMap_Unk_ov001_022e38b8(p->unkb8, p->unk18);
+    ZoneMap_SetupLighting(p->unkb8, p->unk18);
     cam[0] = 0x5f000;
     cam[1] = -0x60000;
     cam[2] = -0x80000;
@@ -71,7 +71,7 @@ void ZoneMap_Unk_ov001_022e397c(UnkStruct_022e397c *p) {
     lt[6] = 0;
     lt[7] = 0x1000;
     lt[8] = 0;
-    ZoneMap_Unk_ov001_022e2af8(lt);
+    ZoneMap_ApplyCameraLookAt(lt);
     p->scale[0] = 0x4000;
     p->scale[1] = 0x4000;
     p->scale[2] = 0x4000;

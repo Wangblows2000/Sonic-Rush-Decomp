@@ -31,7 +31,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 void ExtraBossObj_Unk_ov001_022fa574(UnkStruct_022fc34c *p);
-void ExtraBoss_Unk_ov001_022fa558(UnkStruct_022fc34c *p);
+void ExtraBoss_SnapObjToCameraX(UnkStruct_022fc34c *p);
 void ExtraBossObj_State_Unk_ov001_022fc318(UnkStruct_022fc34c *p);
 void *ExtraBossPlayer_Unk_ov001_022fd2dc(s32 a, s32 b);
 void ExtraBossObj_State_Unk_ov001_022fd220(UnkStruct_022fc34c *p);
@@ -54,7 +54,7 @@ static inline void Free(void *p) {
 
 void ExtraBossObj_State_Unk_ov001_022fc34c(UnkStruct_022fc34c *p) {
     p->unk1CC--;
-    ExtraBoss_Unk_ov001_022fa558(p);
+    ExtraBoss_SnapObjToCameraX(p);
     if (p->unk1CC > 0)
         return;
     p->state = ExtraBossObj_State_Unk_ov001_022fc318;

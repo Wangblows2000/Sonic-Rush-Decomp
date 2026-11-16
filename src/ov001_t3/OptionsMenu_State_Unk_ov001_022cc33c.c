@@ -26,7 +26,7 @@ void OptionsMenu_UpdateAnims(UnkWork_022cc33c *w);
 void OptionsMenu_DrawItems(UnkWork_022cc33c *w);
 BOOL MsgBox_IsClosed(void);
 BOOL MsgBox_GetResult(void);
-void OptionsMenu_Unk_ov001_022c8cc0(UnkSub_022cc33c *s);
+void OptionsMenu_StopWireless(UnkSub_022cc33c *s);
 void OptionsMenu_Unk_ov001_022cdd28(void);
 void OptionsMenu_State_Unk_ov001_022ccb5c(void);
 void OptionsMenu_State_Unk_ov001_022cca00(void);
@@ -56,7 +56,7 @@ void OptionsMenu_State_Unk_ov001_022cc33c(void) {
         sub->timer = 0;
         w->unk14 = 0;
         w->unk18 = 0;
-        OptionsMenu_Unk_ov001_022c8cc0(sub);
+        OptionsMenu_StopWireless(sub);
         OptionsMenu_Unk_ov001_022cdd28();
         return;
     }
@@ -93,7 +93,7 @@ void OptionsMenu_State_Unk_ov001_022cc33c(void) {
         return;
     case 6:
     default:
-        OptionsMenu_Unk_ov001_022c8cc0(sub);
+        OptionsMenu_StopWireless(sub);
         OptionsMenu_Unk_ov001_022cdd28();
         break;
     }

@@ -22,14 +22,14 @@ extern UnkTask_022db150 *gTaskCurrent;
 
 void VsMenu_Unk_ov001_022da59c(UnkWork_022db150 *w);
 void VsMenu_Unk_ov001_022d9cb0(UnkWork_022db150 *w, s32 a, s32 b);
-BOOL VsMenu_Unk_ov001_022da52c(void);
+BOOL VsMenu_IsBackButtonTouched(void);
 BOOL VsMenu_IsBPressed(void);
 BOOL WirelessLobbyChild_IsFinished(void);
 BOOL WirelessLobbyChild_IsBeforeConnect(void);
 void VsMenu_PlayErrorSE(void);
 void VsMenu_Unk_ov001_022da304(UnkWork_022db150 *w);
 void SysSound_PlayCancelSE(void);
-void VsMenu_Unk_ov001_022da450(UnkWork_022db150 *w);
+void VsMenu_PrepareMsgBox(UnkWork_022db150 *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void VsMenu_Unk_ov001_022da374(UnkWork_022db150 *w);
 void VsMenu_Unk_ov001_022da33c(UnkWork_022db150 *w);
@@ -55,7 +55,7 @@ void VsMenu_State_Unk_ov001_022db150(void) {
     cancel = FALSE;
     ok = FALSE;
     other = FALSE;
-    if (VsMenu_Unk_ov001_022da52c()) {
+    if (VsMenu_IsBackButtonTouched()) {
         VsMenu_Unk_ov001_022da304(w);
         cancel = TRUE;
         SysSound_PlayCancelSE();
@@ -72,7 +72,7 @@ void VsMenu_State_Unk_ov001_022db150(void) {
     if (cancel) {
         w->unk0 = 0;
         w->unk4 = 0;
-        VsMenu_Unk_ov001_022da450(w);
+        VsMenu_PrepareMsgBox(w);
         MsgBox_Create(3, 3, 1, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = VsMenu_State_Unk_ov001_022db014;
         return;
@@ -101,7 +101,7 @@ void VsMenu_State_Unk_ov001_022db150(void) {
     if (other) {
         w->unk0 = 0;
         w->unk4 = 0;
-        VsMenu_Unk_ov001_022da450(w);
+        VsMenu_PrepareMsgBox(w);
         MsgBox_Create(2, 3, 2, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = VsMenu_State_Unk_ov001_022dafdc;
     }

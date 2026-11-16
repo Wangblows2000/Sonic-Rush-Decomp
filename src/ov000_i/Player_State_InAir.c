@@ -53,7 +53,7 @@ void Player_ApplyAirInput(UnkStruct_0234a288 *w);
 void Player_SetAnimation(UnkStruct_0234a288 *w, s32 state);
 void EffBlazeSpinFlame_Spawn(UnkStruct_0234a288 *w);
 void EffBlazeTrickFlame_Create(UnkStruct_0234a288 *w, s32 a);
-void EffTrick_Unk_ov000_02330098(UnkStruct_0234a288 *w, s16 a, s16 b);
+void EffTrick_CreateAtOffset(UnkStruct_0234a288 *w, s16 a, s16 b);
 void Player_Action_LandOnGround(UnkStruct_0234a288 *w, s32 a);
 void Player_Action_TrickUp(UnkStruct_0234a288 *w);
 void Player_Action_TrickForward(UnkStruct_0234a288 *w);
@@ -154,7 +154,7 @@ void Player_State_InAir(UnkStruct_0234a288 *w) {
         break;
     case 0x38:
         if (!(gGameState.unk20 & 7)) {
-            EffTrick_Unk_ov000_02330098(w, 0xf - (Rand_0234a288() & 0x1e), 0xf - (Rand_0234a288() & 0x1e));
+            EffTrick_CreateAtOffset(w, 0xf - (Rand_0234a288() & 0x1e), 0xf - (Rand_0234a288() & 0x1e));
         }
         if (w->unk5C & 8) {
             Player_SetAnimation(w, 2);

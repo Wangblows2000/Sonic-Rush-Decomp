@@ -16,7 +16,7 @@ s32 ResultsScreen_DrawSprite16();
 s32 WirelessSession_GetPartnerRecvBuffer();
 s32 MI_CpuCopy8();
 s32 SysSound_PlaySE();
-void ResultsScreen_Main_Unk_ov000_0235e5b4();
+void ResultsScreen_Main_DelayOpenWindow();
 
 void ResultsScreen_Main_WaitPartnerChoice(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
@@ -38,7 +38,7 @@ void ResultsScreen_Main_WaitPartnerChoice(void) {
         MI_CpuCopy8((t4 + 0x6), (t0 + 0xc14), 6);
         SysSound_PlaySE(7);
         *(u32 *)t0 = 0;
-        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ResultsScreen_Main_Unk_ov000_0235e5b4;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ResultsScreen_Main_DelayOpenWindow;
     }
 }
 

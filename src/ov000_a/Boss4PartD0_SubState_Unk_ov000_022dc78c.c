@@ -9,7 +9,7 @@ typedef struct UnkStruct_022dc78c {
     s32 unk48C;
 } UnkStruct_022dc78c;
 
-void Boss4PartD0_Unk_ov000_022dc6f4(UnkStruct_022dc78c *s);
+void Boss4PartD0_StartBurst(UnkStruct_022dc78c *s);
 
 void Boss4PartD0_SubState_Unk_ov000_022dc78c(UnkStruct_022dc78c *s) {
     float f = s->unk48C / 5.0f;
@@ -19,5 +19,5 @@ void Boss4PartD0_SubState_Unk_ov000_022dc78c(UnkStruct_022dc78c *s) {
     s->unk228 = f * s->unk484;
     if (s->unk48C < 5)
         return;
-    Boss4PartD0_Unk_ov000_022dc6f4(s);
+    Boss4PartD0_StartBurst(s);
 }

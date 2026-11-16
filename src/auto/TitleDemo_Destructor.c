@@ -8,7 +8,7 @@ s32 PaletteTransfer_Clear();
 s32 ScreenTransfer_Clear();
 s32 VRAMTransfer_Clear();
 s32 TitleDemo_ReleaseModels();
-s32 TitleDemo_Unk_ov001_022d6734();
+s32 TitleDemo_Dummy();
 s32 TitleDemo_ReleaseSprites();
 s32 TitleDemo_ReleaseAssets();
 s32 TitleDemo_ResetDisplay();
@@ -20,7 +20,7 @@ void TitleDemo_Destructor(u8 *p0) {
     ScreenTransfer_Clear();
     VRAMTransfer_Clear();
     TitleDemo_ReleaseModels(t0);
-    TitleDemo_Unk_ov001_022d6734(t0);
+    TitleDemo_Dummy(t0);
     TitleDemo_ReleaseSprites(t0);
     TitleDemo_ReleaseAssets(t0);
     TitleDemo_ResetDisplay();

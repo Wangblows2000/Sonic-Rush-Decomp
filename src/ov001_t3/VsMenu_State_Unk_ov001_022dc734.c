@@ -19,15 +19,15 @@ typedef struct {
 
 extern UnkTask_022dc734 *gTaskCurrent;
 
-void VsMenu_Unk_ov001_022da694(UnkWork_022dc734 *w);
-BOOL VsMenu_Unk_ov001_022da52c(void);
+void VsMenu_DrawParentScreen(UnkWork_022dc734 *w);
+BOOL VsMenu_IsBackButtonTouched(void);
 void VsMenu_Unk_ov001_022da304(UnkWork_022dc734 *w);
 void SysSound_PlayCancelSE(void);
 BOOL VsMenu_IsBPressed(void);
 BOOL WirelessLobbyParent_HasChild(void);
-void VsMenu_Unk_ov001_022da450(UnkWork_022dc734 *w);
+void VsMenu_PrepareMsgBox(UnkWork_022dc734 *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
-void VsMenu_State_Unk_ov001_022dc6d8(void);
+void VsMenu_State_ParentConfirmCancel(void);
 s32 WirelessLobbyParent_GetChildName(u8 *buf, s32 n);
 void VsMenu_BuildGlyphString(void *p, u8 *buf, u16 len);
 void VsMenu_Unk_ov001_022da024(UnkWork_022dc734 *w);
@@ -44,10 +44,10 @@ void VsMenu_State_Unk_ov001_022dc734(void) {
     u8 buf[16];
 
     w = gTaskCurrent->work;
-    VsMenu_Unk_ov001_022da694(w);
+    VsMenu_DrawParentScreen(w);
     a = FALSE;
     b = FALSE;
-    if (VsMenu_Unk_ov001_022da52c()) {
+    if (VsMenu_IsBackButtonTouched()) {
         VsMenu_Unk_ov001_022da304(w);
         a = TRUE;
         SysSound_PlayCancelSE();
@@ -61,9 +61,9 @@ void VsMenu_State_Unk_ov001_022dc734(void) {
     if (a) {
         w->timer = 0;
         w->unk4 = 0;
-        VsMenu_Unk_ov001_022da450(w);
+        VsMenu_PrepareMsgBox(w);
         MsgBox_Create(1, 3, 1, 1, 2, 0, 0xe, 0x200010);
-        gTaskCurrent->func = VsMenu_State_Unk_ov001_022dc6d8;
+        gTaskCurrent->func = VsMenu_State_ParentConfirmCancel;
         return;
     }
     if (b) {

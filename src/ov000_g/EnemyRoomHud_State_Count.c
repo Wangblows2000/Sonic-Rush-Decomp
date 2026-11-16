@@ -33,7 +33,7 @@ void Hud_ToDecimalDigits(u32 *p, s32 v, s32 n);
 void AnimatorSprite_SetAnimation(void *s, u16 a);
 void EnemyRoomHud_UpdateDigitScale(UnkStruct_0232ce78 *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void EnemyRoomHud_Action_Unk_ov000_0232ce4c(UnkStruct_0232ce78 *w);
+void EnemyRoomHud_Action_Vanish(UnkStruct_0232ce78 *w);
 
 void EnemyRoomHud_State_Count(UnkStruct_0232ce78 *w) {
     UnkStruct_0232ce78_P *p;
@@ -71,5 +71,5 @@ void EnemyRoomHud_State_Count(UnkStruct_0232ce78 *w) {
         w->unk276++;
     }
     if (w->unk276 > 0x50)
-        EnemyRoomHud_Action_Unk_ov000_0232ce4c(w);
+        EnemyRoomHud_Action_Vanish(w);
 }

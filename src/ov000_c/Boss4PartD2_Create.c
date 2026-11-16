@@ -35,15 +35,15 @@ extern UnkStruct_02369b2c *gBoss4;
 
 void Boss4PartD2_Destructor(void);
 void Boss4PartD2_Draw(void);
-void Boss4PartD2_State_Unk_ov000_022dbfb4(void);
+void Boss4PartD2_State_Update(void);
 void Boss4PartD2_Collide(void);
 void MI_CpuFill8(void *p, s32 v, u32 n);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void Boss4_Unk_ov000_022db758(s32 x, void *a, s32 b, s32 c);
+void Boss4_ArenaPosToWorld(s32 x, void *a, s32 b, s32 c);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void Boss4PartD2_Unk_ov000_022dbd04(UnkStruct_022dee94 *w);
+void Boss4PartD2_StartSpread(UnkStruct_022dee94 *w);
 
 UnkStruct_022dee94 *Boss4PartD2_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_02369b2c *boss = gBoss4;
@@ -54,7 +54,7 @@ UnkStruct_022dee94 *Boss4PartD2_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     MI_CpuFill8(w, 0, sizeof(UnkStruct_022dee94));
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk70 = Boss4PartD2_Draw;
-    w->base.unk68 = Boss4PartD2_State_Unk_ov000_022dbfb4;
+    w->base.unk68 = Boss4PartD2_State_Update;
     w->base.unk78 = Boss4PartD2_Collide;
     w->base.unk54 |= 0x10;
     w->base.unk58 |= 0xa300;
@@ -72,7 +72,7 @@ UnkStruct_022dee94 *Boss4PartD2_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk18 = 0;
     w->unk4E0 = w->base.unk10;
     w->unk4E4 = w->base.unk10;
-    Boss4_Unk_ov000_022db758(0, w->unk4E8, w->unk4E0, 0);
+    Boss4_ArenaPosToWorld(0, w->unk4E8, w->unk4E0, 0);
     sub = &w->unk344;
     Model_Init(sub, 0);
     Model_SetResource(sub, boss->unkAB0[14], 0);
@@ -80,6 +80,6 @@ UnkStruct_022dee94 *Boss4PartD2_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     Model_SetAnimation(sub, 1, boss->unkAB0[16], 0, 0);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     Sound_PlaySeqArc(0, 0, 0x8c);
-    Boss4PartD2_Unk_ov000_022dbd04(w);
+    Boss4PartD2_StartSpread(w);
     return w;
 }

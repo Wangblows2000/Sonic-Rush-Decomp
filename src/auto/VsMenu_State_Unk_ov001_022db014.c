@@ -26,7 +26,7 @@ int VsMenu_Unk_ov001_022da59c();
 int VsMenu_Unk_ov001_022d9cb0();
 int WirelessLobbyChild_IsFinished();
 int MsgBox_Destroy();
-int VsMenu_Unk_ov001_022da41c();
+int VsMenu_RestoreAfterMsgBox();
 int VsMenu_Unk_ov001_022da374();
 int VsMenu_Unk_ov001_022da33c();
 int VsMenu_Unk_ov001_022da2cc();
@@ -58,7 +58,7 @@ void VsMenu_State_Unk_ov001_022db014(void)
     *piVar2 = 0;
     piVar2[1] = 0;
     MsgBox_Destroy();
-    VsMenu_Unk_ov001_022da41c(piVar2);
+    VsMenu_RestoreAfterMsgBox(piVar2);
     VsMenu_Unk_ov001_022da374(piVar2);
     VsMenu_Unk_ov001_022da33c(piVar2);
     VsMenu_Unk_ov001_022da2cc(piVar2,0);
@@ -81,7 +81,7 @@ void VsMenu_State_Unk_ov001_022db014(void)
   if (iVar1 != 0) {
     *piVar2 = 0;
     piVar2[1] = 0;
-    VsMenu_Unk_ov001_022da41c(piVar2);
+    VsMenu_RestoreAfterMsgBox(piVar2);
     iVar1 = MsgBox_GetResult();
     if (iVar1 == 0) {
       WirelessLobbyChild_RequestRestart();

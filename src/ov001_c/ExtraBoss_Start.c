@@ -53,14 +53,14 @@ void NNS_SndHandleInit(u32 *p);
 void ExtraBoss_InitPadMap(void);
 void ExtraBoss_InitDisplay(void);
 void ExtraBoss_LoadAssets(void);
-void ExtraBoss_Unk_ov001_022f7308(void);
-void ExtraBoss_Unk_ov001_0230582c(void);
+void ExtraBoss_AllocCharacterSlots(void);
+void ExtraBoss_ResetCamera(void);
 void ExtraBossPlayerManager_Create(void);
-void ExtraBoss_Unk_ov001_023030e0(void);
-void ExtraBoss_Unk_ov001_02305474(void);
+void ExtraBoss_StartDummy(void);
+void ExtraBoss_AllocBgWork(void);
 void ExtraBoss_Unk_ov001_02304624(void);
 void ExtraBoss_Unk_ov001_022fdbc0(void);
-void ExtraBoss_Unk_ov001_022fd6a4(void);
+void ExtraBoss_AllocFlagBlock(void);
 void ExtraBoss_Unk_ov001_02306738(void);
 void NNS_G3dGlbLightColor(u32 index, u32 value);
 void NNS_G3dGlbLightVector(u32 idx, s32 x, s32 y, s32 z);
@@ -68,7 +68,7 @@ void ExtraBoss_Main(void);
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void ExtraBoss_LoadPlayerModel(s32 idx);
 void ExtraBoss_ResetRound(void);
-void ExtraBoss_Unk_ov001_022eec20(void);
+void ExtraBoss_ResetNodeStep(void);
 
 void ExtraBoss_Start(void) {
     u8 *blk;
@@ -102,14 +102,14 @@ void ExtraBoss_Start(void) {
     ExtraBoss_InitPadMap();
     ExtraBoss_InitDisplay();
     ExtraBoss_LoadAssets();
-    ExtraBoss_Unk_ov001_022f7308();
-    ExtraBoss_Unk_ov001_0230582c();
+    ExtraBoss_AllocCharacterSlots();
+    ExtraBoss_ResetCamera();
     ExtraBossPlayerManager_Create();
-    ExtraBoss_Unk_ov001_023030e0();
-    ExtraBoss_Unk_ov001_02305474();
+    ExtraBoss_StartDummy();
+    ExtraBoss_AllocBgWork();
     ExtraBoss_Unk_ov001_02304624();
     ExtraBoss_Unk_ov001_022fdbc0();
-    ExtraBoss_Unk_ov001_022fd6a4();
+    ExtraBoss_AllocFlagBlock();
     ExtraBoss_Unk_ov001_02306738();
     col = *(u16 *)(data_02074960 + 0x9c);
     NNS_G3dGlbLightColor(0, col);
@@ -128,7 +128,7 @@ void ExtraBoss_Start(void) {
     ExtraBoss_LoadPlayerModel(0);
     gExtraBossWork->unk3C = 0;
     ExtraBoss_ResetRound();
-    ExtraBoss_Unk_ov001_022eec20();
+    ExtraBoss_ResetNodeStep();
     data_022c4590.unk18 = 0;
     gGameState.unk20 = 1;
 }

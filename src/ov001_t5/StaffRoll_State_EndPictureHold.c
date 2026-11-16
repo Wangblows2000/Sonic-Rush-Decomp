@@ -10,7 +10,7 @@ typedef struct {
 } UnkStruct_022d1d88;
 
 BOOL Runtime_Unk_0202e5e4(float a, float b);
-void StaffRoll_Unk_ov001_022d0070(UnkStruct_022d1d88 *p);
+void StaffRoll_DrawSprites(UnkStruct_022d1d88 *p);
 void StaffRoll_FadeSpritePalette(void *a, s32 b, float f, void *c, void *d);
 void StaffRoll_SetState(UnkStruct_022d1d88 *p, void (*fn)(UnkStruct_022d1d88 *));
 void StaffRoll_State_FadeOut(UnkStruct_022d1d88 *p);
@@ -19,7 +19,7 @@ void StaffRoll_State_FadeOut(UnkStruct_022d1d88 *p);
 void StaffRoll_State_EndPictureHold(UnkStruct_022d1d88 *p) {
     float f;
 
-    StaffRoll_Unk_ov001_022d0070(p);
+    StaffRoll_DrawSprites(p);
     if (p->timer <= 0x40) {
         f = p->timer / 64.0f;
         if (Runtime_Unk_0202e5e4(f, 1.0f)) f = 1.0f;

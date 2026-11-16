@@ -25,14 +25,14 @@ extern UnkStruct_02308e90 *gSpecialStageHud;
 extern s16 gDisplaySub[];
 extern u8 gBGMSoundHandle[];
 
-void SpecialStageHud_Unk_ov001_023085f4(s32 t);
+void SpecialStageHud_UpdateRingCounterThunk(s32 t);
 void SpecialStageHud_UpdateQuotaCounter(void);
 s32 SpecialStageHud_Unk_ov001_02314368(void);
 UnkStruct_02308e90_t *SpecialStage_GetPlayer(void);
 void AnimatorSprite_SetAnimation(UnkStruct_02308e90_o *s, u16 index);
 void SpecialStagePlayer_Action_Celebrate(void *p);
 void NNS_SndPlayerStopSeq(void *p, s32 v);
-void SpecialStageHud_Unk_ov001_0230808c(void);
+void SpecialStageHud_InitGoalSequence(void);
 
 void SpecialStageHud_UpdateGoal(void) {
     UnkStruct_02308e90 *g = gSpecialStageHud;
@@ -45,7 +45,7 @@ void SpecialStageHud_UpdateGoal(void) {
             b = 0x10;
         gDisplaySub[0x24] = b;
     }
-    SpecialStageHud_Unk_ov001_023085f4(g->timer - 1);
+    SpecialStageHud_UpdateRingCounterThunk(g->timer - 1);
     SpecialStageHud_UpdateQuotaCounter();
     switch (g->timer) {
     case 1:
@@ -65,7 +65,7 @@ void SpecialStageHud_UpdateGoal(void) {
         return;
     case 0x208:
         g->timer = -1;
-        SpecialStageHud_Unk_ov001_0230808c();
+        SpecialStageHud_InitGoalSequence();
         return;
     }
 }

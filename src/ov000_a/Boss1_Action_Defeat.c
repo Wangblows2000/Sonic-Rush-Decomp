@@ -60,11 +60,11 @@ extern UnkStruct_022cac48_pl *gPlayers;
 
 void ScreenShake_Start(s32 a);
 void StageObj_SetPause(void);
-void Boss1_Unk_ov000_022cc35c(s32 a, s32 b);
+void Boss1_SetFlashPalette(s32 a, s32 b);
 void Player_Action_Blank(UnkStruct_022cac48_pl *p);
 void Player_SetAnimation(UnkStruct_022cac48_pl *p, s32 a);
-u32 RingManager_Unk_ov000_0235b0a8(void);
-void RingManager_Unk_ov000_0235b08c(u32 a);
+u32 RingManager_GetFlags(void);
+void RingManager_SetFlags(u32 a);
 void NNS_SndPlayerStopSeqAll(s32 a);
 void Boss1_State_Defeat(UnkStruct_022cac48 *s);
 
@@ -84,13 +84,13 @@ void Boss1_Action_Defeat(UnkStruct_022cac48 *s) {
     StageObj_SetPause();
     gGameState.unk18 &= ~1;
     p->unk10 = 0xe100;
-    Boss1_Unk_ov000_022cc35c(gGameState.unk0, 0);
+    Boss1_SetFlashPalette(gGameState.unk0, 0);
     Player_Action_Blank(gPlayers);
     Player_SetAnimation(gPlayers, 0x30);
     gPlayers->unk3B2 = 0;
     gPlayers->unk10 = 0xe100;
     gPlayers->unk14 = 0x1a800;
-    RingManager_Unk_ov000_0235b08c(RingManager_Unk_ov000_0235b0a8() | 1);
+    RingManager_SetFlags(RingManager_GetFlags() | 1);
     NNS_SndPlayerStopSeqAll(0);
     s->func = Boss1_State_Defeat;
 }

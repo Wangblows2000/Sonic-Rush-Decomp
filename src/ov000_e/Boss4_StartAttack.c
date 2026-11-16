@@ -1,0 +1,33 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0xBE4];
+    s32 unkBE4;
+} UnkStruct_022de39c;
+
+typedef struct {
+    u8 pad[8];
+    u16 unk8;
+} UnkStruct_02369ac0;
+
+extern UnkStruct_02369ac0 gBossStatus;
+extern s16 data_ov000_023635a0[];
+
+void Boss4_SpawnPartD0(UnkStruct_022de39c *s);
+void Boss4_Action_StartSlam(UnkStruct_022de39c *s);
+void Boss4_Action_StartTiltSpin(UnkStruct_022de39c *s);
+
+void Boss4_StartAttack(UnkStruct_022de39c *s, s32 n) {
+    switch (n) {
+    case 0:
+        s->unkBE4 = data_ov000_023635a0[gBossStatus.unk8 - 1];
+        Boss4_SpawnPartD0(s);
+        break;
+    case 1:
+        Boss4_Action_StartSlam(s);
+        break;
+    case 2:
+        Boss4_Action_StartTiltSpin(s);
+        break;
+    }
+}

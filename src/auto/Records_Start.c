@@ -12,7 +12,7 @@ s32 Records_Unk_ov001_022ecae4();
 s32 Touch_Enable();
 extern u8 data_0208926c[];
 s32 Records_CreateFadeTask();
-void Records_Unk_ov001_022ec964();
+void Records_ScrollBg_Main();
 s32 Task_Create();
 s32 SysSound_Init();
 s32 SysSound_PlayBGM();
@@ -26,7 +26,7 @@ void Records_Start(void) {
     Records_Unk_ov001_022ecae4(t0);
     Touch_Enable();
     Records_CreateFadeTask(*(s16 *)((u8 *)data_0208926c + 8), 0, 0x10, 0);
-    Task_Create((u32)Records_Unk_ov001_022ec964, 0, 0, 0x2000, 0x1000, 0);
+    Task_Create((u32)Records_ScrollBg_Main, 0, 0, 0x2000, 0x1000, 0);
     SysSound_Init();
     SysSound_PlayBGM(0);
 }

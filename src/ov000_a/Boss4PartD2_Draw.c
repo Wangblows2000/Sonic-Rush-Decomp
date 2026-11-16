@@ -48,7 +48,7 @@ extern s16 data_0206e470[];
 
 void Model_Animate(UnkStruct_022dbe6c_a *a);
 void Model_Draw(UnkStruct_022dbe6c_a *a);
-void Boss4_Unk_ov000_022db758(s32 *v, u16 *ang, s32 x, s32 y);
+void Boss4_ArenaPosToWorld(s32 *v, u16 *ang, s32 x, s32 y);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 
 void Boss4PartD2_Draw(void) {
@@ -64,11 +64,11 @@ void Boss4PartD2_Draw(void) {
     }
     a = &s->unk20C;
     Model_Animate(a);
-    Boss4_Unk_ov000_022db758(&a->unk48, &s->unk4EA, s->unk4E0, s->unk14);
+    Boss4_ArenaPosToWorld(&a->unk48, &s->unk4EA, s->unk4E0, s->unk14);
     s->unk4EA += 0x4000;
     MTX_RotY33_(s->unk20C.unk24, data_0206e470[((s->unk4EA & 0xffff) >> 4) * 2], data_0206e470[((s->unk4EA & 0xffff) >> 4) * 2 + 1]);
     Model_Draw(a);
-    Boss4_Unk_ov000_022db758(&a->unk48, &s->unk4EC, s->unk4E4, s->unk14);
+    Boss4_ArenaPosToWorld(&a->unk48, &s->unk4EC, s->unk4E4, s->unk14);
     s->unk4EC -= 0x4000;
     MTX_RotY33_(s->unk20C.unk24, data_0206e470[((s->unk4EC & 0xffff) >> 4) * 2], data_0206e470[((s->unk4EC & 0xffff) >> 4) * 2 + 1]);
     Model_Draw(a);

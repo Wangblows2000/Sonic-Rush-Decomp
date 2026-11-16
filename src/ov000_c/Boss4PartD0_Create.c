@@ -30,7 +30,7 @@ extern UnkStruct_02369b2c *gBoss4;
 
 void Boss4PartD0_Destructor(void);
 void Boss4PartD0_Draw(void);
-void Boss4PartD0_State_Unk_ov000_022dcb18(void);
+void Boss4PartD0_State_Update(void);
 void Boss4PartD0_Collide(void);
 void MI_CpuFill8(void *p, s32 v, u32 n);
 void Model_Init(void *s, s32 a);
@@ -49,7 +49,7 @@ UnkStruct_022df200 *Boss4PartD0_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     MI_CpuFill8(w, 0, sizeof(UnkStruct_022df200));
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk70 = Boss4PartD0_Draw;
-    w->base.unk68 = Boss4PartD0_State_Unk_ov000_022dcb18;
+    w->base.unk68 = Boss4PartD0_State_Update;
     w->base.unk78 = Boss4PartD0_Collide;
     w->base.unk54 |= 0x10;
     w->base.unk58 |= 0xa300;

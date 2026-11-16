@@ -38,8 +38,8 @@ extern UnkTask_022e6fbc *gTaskCurrent;
 
 fx32 FX_Sqrt(fx32 a);
 fx32 FX_Div(fx32 a, fx32 b);
-void ZoneMap_Unk_ov001_022e6dec(UnkWork_022e6fbc *w);
-void ZoneMap_Unk_ov001_022e6870(void);
+void ZoneMap_UpdateView(UnkWork_022e6fbc *w);
+void ZoneMap_SelectNextState(void);
 
 static inline fx32 FX_Mul_022e6fbc(fx32 a, fx32 b) {
     return (fx32)(((s64)a * b + 0x800) >> 12);
@@ -103,10 +103,10 @@ void ZoneMap_Unk_ov001_022e6fbc(void) {
             done = FALSE;
         }
     }
-    ZoneMap_Unk_ov001_022e6dec(w);
+    ZoneMap_UpdateView(w);
     w->timer++;
     if (done) {
-        ZoneMap_Unk_ov001_022e6870();
+        ZoneMap_SelectNextState();
     }
 }
 #pragma thumb reset
