@@ -101,6 +101,7 @@ Full instructions: [INSTALL.md](INSTALL.md). How to contribute:
 
 Architecture informed by [zeldaret/ph](https://github.com/zeldaret/ph),
 [pret/pokediamond](https://github.com/pret/pokediamond),
+[tangosdev/sm64ds-decomp](https://github.com/tangosdev/sm64ds-decomp),
 [XorTroll/mkds-re](https://github.com/XorTroll/mkds-re),
 [mariopartyrd/mariopartyDS](https://github.com/mariopartyrd/mariopartyDS) and
 [RushRE/SonicRushAdventure-Decomp](https://github.com/RushRE/SonicRushAdventure-Decomp).
