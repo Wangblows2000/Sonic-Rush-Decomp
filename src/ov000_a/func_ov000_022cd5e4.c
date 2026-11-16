@@ -56,7 +56,7 @@ typedef struct UnkStruct_022cd5e4_pl {
 
 extern UnkStruct_022cd5e4_cam data_ov000_0236a444;
 extern UnkStruct_022cd5e4_c data_ov000_0236a48c;
-extern UnkStruct_022cd5e4_pl *data_ov000_0236ac60;
+extern UnkStruct_022cd5e4_pl *gPlayers;
 
 s32 func_0200225c(s32 a, s32 b);
 
@@ -86,8 +86,8 @@ void func_ov000_022cd5e4(void) {
     c->unk8C = 0x80;
     c->unk8E = c->unk90 = 0;
     c->unk92 = 0x100;
-    data_ov000_0236ac60->unk430 = 0x40;
-    data_ov000_0236ac60->unk432 = 0x80;
-    data_ov000_0236ac60->unk42C = 0x10;
-    data_ov000_0236ac60->unk42E = 0x20;
+    gPlayers->unk430 = 0x40;
+    gPlayers->unk432 = 0x80;
+    gPlayers->unk42C = 0x10;
+    gPlayers->unk42E = 0x20;
 }

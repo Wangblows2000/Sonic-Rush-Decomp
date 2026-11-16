@@ -22,7 +22,7 @@ typedef struct {
 
 void func_ov001_022cffdc(float *a, float *b, float c, float d);
 void AnimatorSprite_SetAnimation(void *s, u16 id);
-void func_ov001_022d1404(UnkStruct_022d03f8 *p, void (*fn)(UnkStruct_022d03f8 *));
+void StaffRoll_SetPictureState(UnkStruct_022d03f8 *p, void (*fn)(UnkStruct_022d03f8 *));
 void func_ov001_022d0658(UnkStruct_022d03f8 *p);
 
 BOOL func_0202e5e4(float a, float b);
@@ -46,6 +46,6 @@ void func_ov001_022d03f8(UnkStruct_022d03f8 *p) {
     t = b;
     p->unkcf0 = FX_F32_TO_FX32_022d03f8(t);
     AnimatorSprite_SetAnimation(p->spr, 0x1c);
-    func_ov001_022d1404(p, func_ov001_022d0658);
+    StaffRoll_SetPictureState(p, func_ov001_022d0658);
 }
 #pragma thumb reset

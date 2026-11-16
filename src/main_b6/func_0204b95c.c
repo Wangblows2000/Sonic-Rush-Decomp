@@ -31,7 +31,7 @@ typedef struct {
 
 extern UnkState2_0204b95c data_022c4590;
 extern UnkState_0204b95c data_022c4560;
-extern UnkPlayer_0204b95c *data_ov000_0236ac60[];
+extern UnkPlayer_0204b95c *gPlayers[];
 extern u32 gObjManagerFlags;
 extern UnkGfx_0204b95c data_ov000_0236aad8;
 extern u16 gPad[];
@@ -50,12 +50,12 @@ void func_0206c970(void);
 
 void func_0204b95c(void) {
     func_ov000_023375f8(data_022c4590.unk14);
-    func_ov000_02337634(data_ov000_0236ac60[0]->unk3ae);
+    func_ov000_02337634(gPlayers[0]->unk3ae);
     func_ov000_02337618(data_022c4560.unk20);
     if (data_022c4560.flags & 1)
         data_022c4560.unk20++;
     data_022c4560.unk24++;
-    func_ov000_02336050((u16)(data_ov000_0236ac60[0]->unk350 >> 4), 0);
+    func_ov000_02336050((u16)(gPlayers[0]->unk350 >> 4), 0);
     if ((gObjManagerFlags & 0x80) == 0) {
         ObjDraw_SetGlobalOffset(ScreenShake_GetOffsetX(), ScreenShake_GetOffsetY());
         data_ov000_0236aad8.unk18 = -ScreenShake_GetOffsetX();

@@ -50,7 +50,7 @@ extern u32 gRandSeed;
 
 void func_ov000_023475fc(UnkStruct_0234a288 *w);
 void func_ov000_0234739c(UnkStruct_0234a288 *w);
-void func_ov000_0234c4a4(UnkStruct_0234a288 *w, s32 state);
+void Player_SetAnimation(UnkStruct_0234a288 *w, s32 state);
 void func_ov000_02332db8(UnkStruct_0234a288 *w);
 void func_ov000_02332e30(UnkStruct_0234a288 *w, s32 a);
 void func_ov000_02330098(UnkStruct_0234a288 *w, s16 a, s16 b);
@@ -99,32 +99,32 @@ void func_ov000_0234a288(UnkStruct_0234a288 *w) {
         break;
     case 1:
         if (w->unk5C & 8) {
-            func_ov000_0234c4a4(w, 2);
+            Player_SetAnimation(w, 2);
             w->unk5C |= 4;
         }
         break;
     case 0x13:
         if (v > 0x40) {
-            func_ov000_0234c4a4(w, 0x14);
+            Player_SetAnimation(w, 0x14);
         }
         break;
     case 0x14:
         if (w->unk5C & 8) {
-            func_ov000_0234c4a4(w, 0x15);
+            Player_SetAnimation(w, 0x15);
             w->unk5C |= 4;
         }
         break;
     case 0x16:
         if (w->unk5C & 8) {
             w->unk5C |= 0x400;
-            func_ov000_0234c4a4(w, 0x17);
+            Player_SetAnimation(w, 0x17);
             w->unk5C |= 4;
         }
         break;
     case 0x18:
         if (v > 0x1c0) {
             w->unk5C |= 0x400;
-            func_ov000_0234c4a4(w, 0x19);
+            Player_SetAnimation(w, 0x19);
             w->unk5C |= 4;
         }
         break;
@@ -136,7 +136,7 @@ void func_ov000_0234a288(UnkStruct_0234a288 *w) {
             w->unk3E2++;
         }
         if (w->unk5C & 8) {
-            func_ov000_0234c4a4(w, 0x36);
+            Player_SetAnimation(w, 0x36);
         }
         break;
     case 0x36:
@@ -148,7 +148,7 @@ void func_ov000_0234a288(UnkStruct_0234a288 *w) {
         }
         if (v > 0x40 && (w->unk5C & 8)) {
             w->unk5C |= 0x400;
-            func_ov000_0234c4a4(w, 2);
+            Player_SetAnimation(w, 2);
             w->unk5C |= 4;
         }
         break;
@@ -157,7 +157,7 @@ void func_ov000_0234a288(UnkStruct_0234a288 *w) {
             func_ov000_02330098(w, 0xf - (Rand_0234a288() & 0x1e), 0xf - (Rand_0234a288() & 0x1e));
         }
         if (w->unk5C & 8) {
-            func_ov000_0234c4a4(w, 2);
+            Player_SetAnimation(w, 2);
             w->unk5C |= 4;
         }
         break;

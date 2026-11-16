@@ -26,14 +26,14 @@ typedef struct UnkStruct_022c767c_v {
 
 extern u32 gRandSeed;
 extern UnkStruct_022c767c_2 *data_ov000_02369acc;
-extern UnkStruct_022c767c_3 *data_ov000_0236ac60;
+extern UnkStruct_022c767c_3 *gPlayers;
 extern s16 data_ov000_02362b94[];
 extern u16 data_ov000_02362b84[];
 
-void *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022cc530(UnkStruct_022c767c_v *v, s32 a);
 void func_ov000_022ca484(void *obj, s32 x, s32 y, s32 z, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_023282b8(s32 a, s32 x, s32 y, s32 z);
+void BossEffect_CreateLaunch(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c7630(UnkStruct_022c767c *s);
 void func_ov000_022c7970(UnkStruct_022c767c *s);
@@ -47,16 +47,16 @@ void func_ov000_022c767c(UnkStruct_022c767c *s) {
     void *obj;
     UnkStruct_022c767c_v v;
     s32 x;
-    obj = func_ov000_022fad3c(0xd3, 0, 0, 0, 0, 0, 0, 0, 0);
+    obj = MapObject_Spawn(0xd3, 0, 0, 0, 0, 0, 0, 0, 0);
     func_ov000_022cc530(&v, s->unk20C & 1);
-    x = data_ov000_0236ac60->unk10 << 4;
+    x = gPlayers->unk10 << 4;
     x += ((Rand() & 0x7f) - 0x40) << 12;
     if (x < 0)
         x = 0;
     else if (x > 0x1c2000)
         x = 0x1c2000;
     func_ov000_022ca484(obj, v.x, v.y, v.z, x, -0x200000, 0, data_ov000_02362b94[data_ov000_02369acc->unk22A]);
-    func_ov000_023282b8(1, v.x >> 4, -v.y >> 4, v.z >> 4);
+    BossEffect_CreateLaunch(1, v.x >> 4, -v.y >> 4, v.z >> 4);
     Sound_PlaySeqArc(0, 0, 0x9c);
     s->unk20C++;
     if (data_ov000_02362b84[data_ov000_02369acc->unk22A] <= s->unk20C)

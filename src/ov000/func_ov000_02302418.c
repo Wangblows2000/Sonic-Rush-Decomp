@@ -17,7 +17,7 @@ typedef struct UnkStruct_02302418 {
 extern u32 gRandSeed;
 
 void StageObj_SetAnimation(UnkStruct_02302418 *s, s32 a);
-void func_ov000_02302398(void);
+void Bubble_State_Unk_ov000_02302398(void);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -32,5 +32,5 @@ void func_ov000_02302418(UnkStruct_02302418 *s) {
     s->unk46 = 0;
     s->unk30 = (-0xc1 - (Rand() & 0x1e)) >> 1;
     s->unk54 |= 2;
-    s->func = func_ov000_02302398;
+    s->func = Bubble_State_Unk_ov000_02302398;
 }

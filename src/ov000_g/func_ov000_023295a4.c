@@ -16,7 +16,7 @@ typedef struct {
 
 extern void *data_ov000_02367b38[];
 
-UnkStruct_023295a4 *func_ov000_02327ca4(void *a, s32 b, s32 c, s32 d, s32 e, s32 f);
+UnkStruct_023295a4 *BossEffect_Create(void *a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_ov000_022c5e80(s32 a, s32 b, s32 x, s32 *ox, s32 *oz, u16 *ang);
 void func_ov000_0232957c(void);
 
@@ -24,7 +24,7 @@ UnkStruct_023295a4 *func_ov000_023295a4(UnkStruct_023295a4 *p, s32 dx, s32 b, s3
     u16 ang;
     s32 ox;
     s32 oz;
-    UnkStruct_023295a4 *o = func_ov000_02327ca4(data_ov000_02367b38[k], 3, 1, 0, 0, 0);
+    UnkStruct_023295a4 *o = BossEffect_Create(data_ov000_02367b38[k], 3, 1, 0, 0, 0);
 
     o->unk10 = p->unk10 + (dx << 8);
     o->unk14 = (c << 8) + b * 256;

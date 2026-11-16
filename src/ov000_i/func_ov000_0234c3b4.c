@@ -21,7 +21,7 @@ struct UnkStruct_0234c3b4 {
 
 void func_ov000_0234bce4(void);
 void func_ov000_0234bfa0(void);
-void func_ov000_0234c4a4(UnkStruct_0234c3b4 *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234c3b4 *w, s32 a);
 
 void func_ov000_0234c3b4(UnkStruct_0234c3b4 *w) {
     s16 s;
@@ -34,10 +34,10 @@ void func_ov000_0234c3b4(UnkStruct_0234c3b4 *w) {
     if (s < 0x30 && ((w->unk5C & 8) || (s != 0x16 && s != 0x39 && s != 0x3a && s != 0x3b)))
         w->unk5C |= 0x400;
     if (w->unk68 == func_ov000_0234bce4 && w->unk124 == 0) {
-        func_ov000_0234c4a4(w, 4);
+        Player_SetAnimation(w, 4);
         w->unk5C &= ~4;
     } else {
-        func_ov000_0234c4a4(w, 0x3c);
+        Player_SetAnimation(w, 0x3c);
         w->unk5C |= 4;
     }
     w->unk58 &= ~0x10;

@@ -85,7 +85,7 @@ u32 ObjVram_Alloc(u32 a, u16 b);
 void AnimatorSprite_Init(UnkSpr_0230a58c *s, void *res, u16 idx, s32 a, u32 b, s32 c, u32 d, s32 e, u32 pal);
 void AnimatorSprite_ProcessAnimation(UnkSpr_0230a58c *s, s32 a, s32 b);
 void ObjVram_Free(s32 a, u32 b);
-s32 func_ov001_0230c0cc(void);
+s32 SpecialStage_GetStageIndex(void);
 
 void func_ov001_0230a58c(void) {
     volatile f32 f1;
@@ -189,7 +189,7 @@ void func_ov001_0230a58c(void) {
     AnimatorSprite_Init(&spr, data_ov001_0231f5c4->anim, 0x12, 0x48, 1, 0, ObjVram_Alloc(1, ANIM_HDR(data_ov001_0231f5c4->anim)->e[0x12].unk12), 0, (u32)w->pal0);
     AnimatorSprite_ProcessAnimation(&spr, 0, 0);
     ObjVram_Free(1, spr.unk34);
-    idx = func_ov001_0230c0cc() + 0x13;
+    idx = SpecialStage_GetStageIndex() + 0x13;
     AnimatorSprite_Init(&spr, data_ov001_0231f5c4->anim, idx, 0x48, 1, 0, ObjVram_Alloc(1, ANIM_HDR(data_ov001_0231f5c4->anim)->e[idx].unk12), 0, (u32)w->pal1);
     AnimatorSprite_ProcessAnimation(&spr, 0, 0);
     ObjVram_Free(1, spr.unk34);

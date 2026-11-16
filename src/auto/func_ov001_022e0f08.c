@@ -14,7 +14,7 @@ s32 func_ov001_022e0c5c();
 s32 func_ov001_022e0884();
 extern u8 data_ov001_0231c3ec[];
 s32 func_ov001_022e0858();
-void func_ov001_022e114c();
+void ZoneActSelect_State_FadeOut();
 s32 SysSound_StopBGM();
 
 void func_ov001_022e0f08(void) {
@@ -35,8 +35,8 @@ void func_ov001_022e0f08(void) {
     *(u32 *)((u8 *)t0 + 0x4) = (*(u32 *)((u8 *)t0 + 0x4) + 0x1);
     if ((u32)*(u32 *)t0 >= (u32)0x3c) {
         *(u32 *)t0 = 0;
-        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov001_022e114c;
-        SysSound_StopBGM(0x1e, (u32)func_ov001_022e114c);
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ZoneActSelect_State_FadeOut;
+        SysSound_StopBGM(0x1e, (u32)ZoneActSelect_State_FadeOut);
     }
 }
 

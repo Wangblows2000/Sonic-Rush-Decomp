@@ -34,11 +34,11 @@ struct UnkStruct_Player {
     u16 unk420;
 };
 
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
-void func_ov000_02328670(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreateLand(s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022e0294(UnkStruct_Boss *w);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e3f50(void);
@@ -54,16 +54,16 @@ void func_ov000_022e40a8(UnkStruct_Boss *w) {
     m->unk114 = 0x1000;
     ScreenShake_Start(0xc);
     w->unkF50 = 0x5a;
-    func_ov000_02328670(1, w->unk1068 >> 4, 0x20000, w->unk1070 >> 4);
+    BossEffect_CreateLand(1, w->unk1068 >> 4, 0x20000, w->unk1070 >> 4);
     func_ov000_022e0294(w);
-    p = data_ov000_0236ac60;
+    p = gPlayers;
     if (!(p->unk32C & 0x400)) {
         if ((w->unkD5E != 0 && (w->unk20C & 0x100)) || (w->unkD5E == 0 && !(w->unk20C & 0x100))) {
             p->unk420 = 0x10;
-            data_ov000_0236ac60->unk338(data_ov000_0236ac60);
+            gPlayers->unk338(gPlayers);
         } else {
             p->unk420 = 0x20;
-            data_ov000_0236ac60->unk338(data_ov000_0236ac60);
+            gPlayers->unk338(gPlayers);
         }
     }
     Sound_PlaySeqArc(0, 0, 0x86);

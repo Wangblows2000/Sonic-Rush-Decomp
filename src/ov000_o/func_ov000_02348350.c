@@ -47,7 +47,7 @@ void func_ov000_023558bc(UnkStruct_02348350 *w, s32 a, s32 b);
 BOOL func_ov000_023470ec(UnkStruct_02348350 *w);
 void func_ov000_0234ab34(UnkStruct_02348350 *w);
 void func_ov000_023497a4(UnkStruct_02348350 *w);
-void func_ov000_0234c4a4(UnkStruct_02348350 *w, s32 state);
+void Player_SetAnimation(UnkStruct_02348350 *w, s32 state);
 void func_ov000_0234801c(UnkStruct_02348350 *w);
 
 void func_ov000_02348350(UnkStruct_02348350 *w) {
@@ -145,14 +145,14 @@ void func_ov000_02348350(UnkStruct_02348350 *w) {
     switch (w->unk328) {
     case 0x1e:
         if (w->unk5C & 8) {
-            func_ov000_0234c4a4(w, 0x1f);
+            Player_SetAnimation(w, 0x1f);
             w->unk5C |= 4;
         }
         break;
     case 0x1f:
         w->unk8++;
         if (w->unk8 >= 0x20 && (w->unk5C & 8)) {
-            func_ov000_0234c4a4(w, 0x20);
+            Player_SetAnimation(w, 0x20);
             w->unk8 = 0;
         }
         break;
@@ -160,7 +160,7 @@ void func_ov000_02348350(UnkStruct_02348350 *w) {
         if (w->unk5C & 8) {
             func_0201c070(w->unk390, 0x20);
             func_0201bf1c(w->unk390);
-            func_ov000_0234c4a4(w, 0x1a);
+            Player_SetAnimation(w, 0x1a);
             w->unk5C |= 4;
         }
         break;

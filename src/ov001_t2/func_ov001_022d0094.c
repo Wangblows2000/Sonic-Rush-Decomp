@@ -21,7 +21,7 @@ typedef struct {
 } UnkTask_022d0094;
 
 extern UnkTask_022d0094 *gTaskCurrent;
-extern UnkMgr_022d0094 *data_ov001_0231f050;
+extern UnkMgr_022d0094 *gStaffRollWork;
 
 void func_ov001_022cfb90(UnkObj_022d0094 *o, s32 a, s32 *out);
 void AnimatorSpriteDS_ProcessAnimation(UnkObj_022d0094 *o, s32 a, s32 b);
@@ -34,7 +34,7 @@ void func_ov001_022d0094(void) {
     s32 idx = w->idx;
     s32 v[2];
 
-    func_ov001_022cfb90(&data_ov001_0231f050->objs[idx], 0, v);
+    func_ov001_022cfb90(&gStaffRollWork->objs[idx], 0, v);
     w->unk8--;
     if (idx == 2) {
         if (w->unk8 < 16) {
@@ -44,8 +44,8 @@ void func_ov001_022d0094(void) {
         w->unk4 = 0;
         w->unk8 = 0x110;
     }
-    AnimatorSpriteDS_ProcessAnimation(&data_ov001_0231f050->objs[idx], 0, 0);
-    func_ov001_022cfbc4(&data_ov001_0231f050->objs[idx], w->unk4, w->unk8);
+    AnimatorSpriteDS_ProcessAnimation(&gStaffRollWork->objs[idx], 0, 0);
+    func_ov001_022cfbc4(&gStaffRollWork->objs[idx], w->unk4, w->unk8);
     if (w->unk8 + v[0] < 0) {
         func_ov001_022d0128(idx);
     }

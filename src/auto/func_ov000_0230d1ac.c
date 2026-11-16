@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 StageObj_SetAnimation();
-void func_ov000_0230cea8();
+void IronBall_State_Unk_ov000_0230cea8();
 s32 ObjRect_SetAtkDefFlags();
 
 void func_ov000_0230d1ac(u8 *p0) {
@@ -10,7 +10,7 @@ void func_ov000_0230d1ac(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x13e) = (*(u16 *)((u8 *)p0 + 0x13e) & ~4);
     *(u16 *)((u8 *)p0 + 0x16a) = (*(u16 *)((u8 *)p0 + 0x16a) & ~4);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 4);
-    *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_0230cea8;
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)IronBall_State_Unk_ov000_0230cea8;
     *(u32 *)((u8 *)p0 + 0xc) = 0;
     *(u32 *)((u8 *)p0 + 0x8) = 0;
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x2100);

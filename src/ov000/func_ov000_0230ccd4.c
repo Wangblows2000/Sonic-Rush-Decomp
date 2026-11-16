@@ -8,10 +8,10 @@ typedef struct UnkStruct_0230ccd4 {
 } UnkStruct_0230ccd4;
 
 void StageObj_SetAnimation(UnkStruct_0230ccd4 *s, s32 a);
-void func_ov000_0230cc84(void);
+void IronBallPart_State_Unk_ov000_0230cc84(void);
 
 void func_ov000_0230ccd4(UnkStruct_0230ccd4 *s) {
     StageObj_SetAnimation(s, 1);
-    s->func = func_ov000_0230cc84;
+    s->func = IronBallPart_State_Unk_ov000_0230cc84;
     s->unkC = 0;
 }

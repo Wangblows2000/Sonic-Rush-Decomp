@@ -1,10 +1,10 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov001_022ffce8();
+s32 ExtraBoss_GetWork();
 
 void func_ov001_0230582c(void) {
-    s32 t0 = func_ov001_022ffce8();
+    s32 t0 = ExtraBoss_GetWork();
     *(u32 *)((u8 *)t0 + 0x31c) = 0x80000;
     *(u32 *)((u8 *)t0 + 0x320) = 0xc0000;
     *(u32 *)((u8 *)t0 + 0x318) = 0;

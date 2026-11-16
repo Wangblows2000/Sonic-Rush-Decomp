@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-void func_ov000_0234e0f8();
+void Player_State_SwingSky();
 
 void func_ov000_0232f53c(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0x88) == 0) {
@@ -16,7 +16,7 @@ void func_ov000_0232f53c(u8 *p0) {
     if (t1 > 0x1e0) {
         *(u32 *)((u8 *)p0 + 0x54) = (*(u32 *)((u8 *)p0 + 0x54) | 4);
     }
-    if (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x88) + 0x68) != (s32)(u32)func_ov000_0234e0f8) {
+    if (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x88) + 0x68) != (s32)(u32)Player_State_SwingSky) {
         *(u32 *)((u8 *)p0 + 0x54) = (*(u32 *)((u8 *)p0 + 0x54) | 4);
     }
 }

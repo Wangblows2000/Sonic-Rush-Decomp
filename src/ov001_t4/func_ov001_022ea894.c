@@ -77,7 +77,7 @@ void func_ov001_022ea894(void) {
     if (w->unk0 >= 16) {
         u32 id = w->unk4;
         Task_DestroyByTag(0x1000);
-        func_ov001_022e9664(id);
+        ZoneMapPause_ExecuteChoice(id);
         return;
     }
     func_02040d14(&w->anims[5]);

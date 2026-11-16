@@ -26,14 +26,14 @@ typedef struct UnkStruct_022f2ca8 {
     UnkStruct_022f2ca8_s *unk1DC;
 } UnkStruct_022f2ca8;
 
-UnkStruct_022f2ca8_g *func_ov001_022ffce8(void);
+UnkStruct_022f2ca8_g *ExtraBoss_GetWork(void);
 void func_ov001_022f2780(UnkStruct_022f2ca8 *p);
 void func_ov001_022f1c0c(UnkStruct_022f2ca8 *p);
 void func_ov001_022f0988(UnkStruct_022f2ca8 *p);
 void func_ov001_022f2898(UnkStruct_022f2ca8 *p);
 
 void func_ov001_022f2ca8(UnkStruct_022f2ca8 *p) {
-    UnkStruct_022f2ca8_g *g = func_ov001_022ffce8();
+    UnkStruct_022f2ca8_g *g = ExtraBoss_GetWork();
     UnkStruct_022f2ca8_s *s = p->unk1DC;
     s32 st;
 

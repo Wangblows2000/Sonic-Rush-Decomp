@@ -36,12 +36,12 @@ typedef struct {
     u16 unk6C;
 } UnkStruct_Cam;
 
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 extern UnkStruct_Cam data_ov000_0236a48c;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
-void func_ov000_02328670(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreateLand(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e3308(void);
 
@@ -55,12 +55,12 @@ void func_ov000_022e342c(UnkStruct_Boss *w) {
         m->unk114 = 0x1000;
         ScreenShake_Start(0xc);
         w->unkF50 = 0x14;
-        func_ov000_02328670(1, w->unk1068 >> 4, 0x20000, w->unk1070 >> 4);
+        BossEffect_CreateLand(1, w->unk1068 >> 4, 0x20000, w->unk1070 >> 4);
         w->unkE72 &= ~4;
         w->unkE72 |= 0x1000;
         Sound_PlaySeqArc(0, 0, 0x86);
     }
-    if (data_ov000_0236ac60->unk32C & 0x400) {
+    if (gPlayers->unk32C & 0x400) {
         UnkStruct_Cam *c = (UnkStruct_Cam *)(u32)&data_ov000_0236a48c;
         c->unk30 = 0x10;
         c->unk6C = 0x10;

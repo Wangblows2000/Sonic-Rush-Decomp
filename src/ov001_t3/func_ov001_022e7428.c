@@ -25,7 +25,7 @@ s32 func_ov001_022e252c(s32 a);
 s32 func_ov001_022e24a8(s32 a);
 BOOL func_ov001_022e2f00(s32 a);
 BOOL func_ov001_022e2ee8(s32 a);
-void func_ov001_022e190c(s32 a, s32 b, u32 c);
+void ZoneActSelect_Create(s32 a, s32 b, u32 c);
 void func_ov001_022e736c(void);
 
 #pragma thumb on
@@ -84,7 +84,7 @@ void func_ov001_022e7428(void) {
             }
         }
         if (idx > n) idx = n;
-        func_ov001_022e190c(idx, n, w->flags);
+        ZoneActSelect_Create(idx, n, w->flags);
         w->flags = 0;
         gTaskCurrent->func = func_ov001_022e736c;
     }

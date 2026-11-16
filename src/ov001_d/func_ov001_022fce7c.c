@@ -38,7 +38,7 @@ typedef struct UnkStruct_022fce7c_g {
     s32 unk3C;
 } UnkStruct_022fce7c_g;
 
-UnkStruct_022fce7c_g *func_ov001_022ffce8(void);
+UnkStruct_022fce7c_g *ExtraBoss_GetWork(void);
 void func_ov001_022fd268(UnkStruct_022fce7c *p, s32 a);
 void func_ov001_022fcae8(UnkStruct_022fce7c *p);
 void func_ov001_022fcb08(UnkStruct_022fce7c *p, s32 a);
@@ -55,7 +55,7 @@ void func_ov001_022fce7c(UnkStruct_022fce7c *p) {
     o = p->unk84;
     s = q->unk1DC;
 
-    if (func_ov001_022ffce8()->unk3C == 0 && p->unk1CC == 0 && (o->unk10C & 2)) {
+    if (ExtraBoss_GetWork()->unk3C == 0 && p->unk1CC == 0 && (o->unk10C & 2)) {
         p->unk1CC = 1;
         func_ov001_022fd268(p, 1);
         o->unk10C |= 4;
@@ -71,7 +71,7 @@ void func_ov001_022fce7c(UnkStruct_022fce7c *p) {
             p->unk14 |= 0x30000;
             return;
         }
-        if (func_ov001_022ffce8()->unk3C == 0) {
+        if (ExtraBoss_GetWork()->unk3C == 0) {
             p->unk74 = func_ov001_022fcd44;
             func_ov001_022fd268(p, 2);
             o->unk10C &= ~4;

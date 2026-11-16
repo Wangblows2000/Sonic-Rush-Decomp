@@ -43,7 +43,7 @@ struct UnkStruct_02349e24 {
 extern u32 gRandSeed;
 
 BOOL func_ov000_0232bb20(void);
-void func_ov000_0234c4a4(UnkStruct_02349e24 *w, s32 state);
+void Player_SetAnimation(UnkStruct_02349e24 *w, s32 state);
 void func_ov000_0234a288(UnkStruct_02349e24 *w);
 void func_ov000_02331a24(UnkStruct_02349e24 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
@@ -63,7 +63,7 @@ void func_ov000_02349e24(UnkStruct_02349e24 *w) {
     if (!func_ov000_0232bb20()) {
         w->unk3CF = 0;
     }
-    func_ov000_0234c4a4(w, 0x35);
+    Player_SetAnimation(w, 0x35);
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;
     w->unk32C |= 0x8000;

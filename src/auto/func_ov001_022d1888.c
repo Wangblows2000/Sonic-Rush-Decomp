@@ -9,7 +9,7 @@ s32 _fdiv();
 s32 func_0202e5e4();
 s32 func_ov001_022cfecc();
 void func_ov001_022d1840();
-s32 func_ov001_022d2234();
+s32 StaffRoll_SetState();
 
 void func_ov001_022d1888(u8 *p0) {
     func_ov001_022d0070();
@@ -25,7 +25,7 @@ void func_ov001_022d1888(u8 *p0) {
         func_ov001_022cfecc(((s32)((u8 *)p0 + 0x54) + ((*(u32 *)((u8 *)p0 + 0xd08) + 0xb) << 6)), 0x100, v4, ((u8 *)p0 + 0xf0c), ((u8 *)p0 + 0xd0c));
         return;
     }
-    func_ov001_022d2234(p0, (u32)func_ov001_022d1840);
+    StaffRoll_SetState(p0, (u32)func_ov001_022d1840);
 }
 
 #pragma thumb reset

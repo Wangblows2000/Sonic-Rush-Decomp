@@ -128,7 +128,7 @@ extern char data_0207c614[];
 extern u8 gGameLanguage;
 extern u16 data_02076b74[];
 extern UnkG_0205f25c data_ov000_02369ac0;
-extern UnkObj_0205f25c *data_ov000_0236ac60[];
+extern UnkObj_0205f25c *gPlayers[];
 extern UnkState_0205f25c data_022c4560;
 extern UnkState2_0205f25c data_022c4590;
 extern UnkCam_0205f25c data_ov000_0236a448;
@@ -195,13 +195,13 @@ void func_0205f25c(void) {
     w->fn420 = func_0205b574;
     w->fn0 = func_0205cfd0;
     w->fn20 = func_0205c708;
-    w->obj = data_ov000_0236ac60[0];
+    w->obj = gPlayers[0];
     w->objX = w->obj->x;
     w->objY = w->obj->y;
     w->fn8 = w->obj->fn70;
     w->obj->flags5c &= ~0x40;
     if (data_022c4560.unk10 == 1) {
-        w->obj2 = data_ov000_0236ac60[1];
+        w->obj2 = gPlayers[1];
         w->fn18 = w->obj2->fn70;
         w->obj2->flags5c &= ~0x40;
         w->obj2->fn70 = func_0205d604;

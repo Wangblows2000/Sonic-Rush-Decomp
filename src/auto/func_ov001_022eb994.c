@@ -4,7 +4,7 @@
 #pragma thumb on
 
 extern u8 gTaskCurrent[];
-s32 func_ov001_022e9ba8();
+s32 TimeAttackMenu_CreateFadeTask();
 s32 func_ov001_022ea3e0();
 s32 func_ov001_022ea41c();
 s32 func_ov001_022ea7c4();
@@ -26,10 +26,10 @@ void func_ov001_022eb994(s32 p0) {
         v2 = -16;
     }
     if (*(u32 *)(t1 + 0xe4) != 0) {
-        func_ov001_022e9ba8(0, v2, 8, 8);
+        TimeAttackMenu_CreateFadeTask(0, v2, 8, 8);
         func_ov001_022ea3e0(t1);
     } else {
-        func_ov001_022e9ba8(0, v2, 8, 0);
+        TimeAttackMenu_CreateFadeTask(0, v2, 8, 0);
         func_ov001_022ea41c(t1);
     }
     func_ov001_022ea7c4(t1);

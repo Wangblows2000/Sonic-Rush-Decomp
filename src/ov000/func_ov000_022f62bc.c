@@ -8,10 +8,10 @@ struct UnkStruct_022f62bc {
     u16 unk4AE;
 };
 
-void func_ov000_022f6278(UnkStruct_022f62bc *s);
+void BossFPartDE_State_Unk_ov000_022f6278(UnkStruct_022f62bc *s);
 
 void func_ov000_022f62bc(UnkStruct_022f62bc *s) {
     s->unk4AE = 0;
-    s->func = func_ov000_022f6278;
+    s->func = BossFPartDE_State_Unk_ov000_022f6278;
     s->func(s);
 }

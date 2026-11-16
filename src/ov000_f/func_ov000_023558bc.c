@@ -46,16 +46,16 @@ extern UnkStruct_023558bc_aad8 data_ov000_0236aad8;
 #define SIN_023558bc(a) data_0206e470[(u32)(IDX_023558bc(a) << 1)]
 #define COS_023558bc(a) data_0206e470[(u32)((IDX_023558bc(a) << 1) + 1)]
 
-void func_ov000_0234c9e8(UnkStruct_023558bc *w);
+void Player_ResetGimmickState(UnkStruct_023558bc *w);
 void func_ov000_0234a064(UnkStruct_023558bc *w, u8 a);
 void Math_RotateVec2S16(s16 *vx, s16 *vy, u8 a);
-void func_ov000_0234c4a4(UnkStruct_023558bc *w, s32 state);
+void Player_SetAnimation(UnkStruct_023558bc *w, s32 state);
 void func_ov000_0234a288(UnkStruct_023558bc *w);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 void func_ov000_0232a11c(UnkStruct_023558bc *w, s32 a, s32 b, u16 c);
 
 void func_ov000_023558bc(UnkStruct_023558bc *w, s16 vx, s16 vy) {
-    func_ov000_0234c9e8(w);
+    Player_ResetGimmickState(w);
     if (w->unk58 & 1) {
         w->unk2E = w->unk34;
     }
@@ -69,7 +69,7 @@ void func_ov000_023558bc(UnkStruct_023558bc *w, s16 vx, s16 vy) {
     w->unk58 &= ~1;
     w->unk68 = func_ov000_0234a288;
     if (vx != 0) {
-        func_ov000_0234c4a4(w, 0x18);
+        Player_SetAnimation(w, 0x18);
         w->unk5C |= 4;
         w->unk2E = vx;
         if (w->unk2E < 0) {
@@ -84,7 +84,7 @@ void func_ov000_023558bc(UnkStruct_023558bc *w, s16 vx, s16 vy) {
             w->unk5C &= ~1;
         }
     } else {
-        func_ov000_0234c4a4(w, 0x13);
+        Player_SetAnimation(w, 0x13);
         w->unk5C |= 4;
         w->unk2E = (w->unk34 * COS_023558bc((u16)(w->unk1 << 8))) >> 12;
     }

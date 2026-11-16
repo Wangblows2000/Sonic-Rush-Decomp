@@ -59,7 +59,7 @@ extern UnkStruct_0234aec8_Tbl data_ov000_0236ab3a[];
 
 void func_0201c070(void *p, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_ov000_0234c4a4(UnkStruct_0234aec8 *w, s32 state);
+void Player_SetAnimation(UnkStruct_0234aec8 *w, s32 state);
 BOOL func_ov000_023470ec(UnkStruct_0234aec8 *w);
 void func_ov000_0234b6dc(UnkStruct_0234aec8 *w);
 void func_ov000_0234ab34(UnkStruct_0234aec8 *w);
@@ -93,26 +93,26 @@ void func_ov000_0234aec8(UnkStruct_0234aec8 *w) {
             a = -a;
         }
         if (a > 0x700) {
-            func_ov000_0234c4a4(w, 8);
+            Player_SetAnimation(w, 8);
         } else {
-            func_ov000_0234c4a4(w, 5);
+            Player_SetAnimation(w, 5);
         }
     }
     if (w->unk328 == 5 && (w->unk5C & 8)) {
-        func_ov000_0234c4a4(w, 6);
+        Player_SetAnimation(w, 6);
         w->unk5C |= 4;
     }
     if (w->unk328 == 8 && (w->unk5C & 8)) {
-        func_ov000_0234c4a4(w, 9);
+        Player_SetAnimation(w, 9);
         w->unk5C |= 4;
     }
     if ((w->unk328 == 6 || w->unk328 == 9) && (w->unk34 <= 0 || !(w->unk420 & 0x20)) &&
         (w->unk34 >= 0 || !(w->unk420 & 0x10))) {
         func_0201c070(w->unk384, 0);
         if (w->unk328 == 6) {
-            func_ov000_0234c4a4(w, 7);
+            Player_SetAnimation(w, 7);
         } else {
-            func_ov000_0234c4a4(w, 10);
+            Player_SetAnimation(w, 10);
         }
     }
     if (w->unk328 == 0 || (w->unk328 >= 5 && w->unk328 <= 10)) {
@@ -132,9 +132,9 @@ void func_ov000_0234aec8(UnkStruct_0234aec8 *w) {
         if ((((f & 1) && (w->unk420 & 0x20)) || (!(f & 1) && (w->unk420 & 0x10))) &&
             (w->x >> 8) > data_022c4534.unk1C + 0xe && (w->x >> 8) < data_022c4534.unk24 - 0xe) {
             if (st != 0xb && st != 0xc) {
-                func_ov000_0234c4a4(w, 0xb);
+                Player_SetAnimation(w, 0xb);
             } else if (st == 0xb && (f & 8)) {
-                func_ov000_0234c4a4(w, 0xc);
+                Player_SetAnimation(w, 0xc);
                 w->unk5C |= 4;
             }
             goto next;

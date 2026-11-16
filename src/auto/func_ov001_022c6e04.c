@@ -5,12 +5,12 @@ extern u8 gDisplayMain[];
 s32 func_ov001_022c6944();
 s32 func_ov001_022c6878();
 void func_ov001_022c6d4c();
-s32 func_ov001_022c7a34();
+s32 Ending_SetSubState();
 
 void func_ov001_022c6e04(s32 p0) {
     *(u16 *)((u8 *)gDisplayMain + 0x48) = 0x10;
     func_ov001_022c6944(p0, gDisplayMain, 0x10);
     func_ov001_022c6878(p0);
-    func_ov001_022c7a34(p0, (u32)func_ov001_022c6d4c);
+    Ending_SetSubState(p0, (u32)func_ov001_022c6d4c);
     *(volatile u32 *)0x4000000 = ((*(volatile u32 *)0x4000000 & ~0x1f00) | 0x300);
 }

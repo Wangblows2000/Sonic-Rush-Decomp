@@ -3,12 +3,12 @@
 
 #pragma thumb on
 
-s32 func_ov001_022e2ad8();
+s32 ZoneMap_IsBlaze();
 s32 func_ov001_022e2a44();
 s32 func_ov001_022e299c();
 
 s32 func_ov001_022e28ac(void) {
-    s32 t0 = func_ov001_022e2ad8();
+    s32 t0 = ZoneMap_IsBlaze();
     if (t0 == 0) {
         s32 t1 = func_ov001_022e2a44();
         if (t1 >= 0x22) {

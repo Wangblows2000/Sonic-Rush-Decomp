@@ -28,7 +28,7 @@ typedef struct {
 extern UnkStruct_022f5c78_g *data_ov000_02369b84;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022f5c14(UnkStruct_022f5c78 *p);
+void BossFPartDE_State_Unk_ov000_022f5c14(UnkStruct_022f5c78 *p);
 
 void func_ov000_022f5c78(UnkStruct_022f5c78 *p) {
     UnkStruct_022f5c78_t *t = data_ov000_02369b84->unk218;
@@ -38,5 +38,5 @@ void func_ov000_022f5c78(UnkStruct_022f5c78 *p) {
     p->unk18 = t->unk18 - 0x3200;
     p->unk30 = -0x1000;
     Sound_PlaySeqArc(0, 0, 0xe4);
-    p->unk68 = func_ov000_022f5c14;
+    p->unk68 = BossFPartDE_State_Unk_ov000_022f5c14;
 }

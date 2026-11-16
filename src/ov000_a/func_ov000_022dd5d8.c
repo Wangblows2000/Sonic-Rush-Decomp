@@ -64,11 +64,11 @@ typedef struct UnkStruct_022dd5d8_d {
 
 extern UnkStruct_022dd5d8_w *data_ov000_02369b2c;
 extern UnkStruct_022dd5d8_c data_ov000_0236a48c;
-extern UnkStruct_022dd5d8_p *data_ov000_0236ac60;
+extern UnkStruct_022dd5d8_p *gPlayers;
 extern UnkStruct_022dd5d8_d data_ov000_0236a444;
 
 void func_ov000_02347c44(UnkStruct_022dd5d8_p *p);
-void func_ov000_0234c4a4(UnkStruct_022dd5d8_p *p, s32 a);
+void Player_SetAnimation(UnkStruct_022dd5d8_p *p, s32 a);
 void func_ov000_022de65c(void);
 void StageObj_SetPause(void);
 void func_ov000_022dd590(UnkStruct_022dd5d8 *t);
@@ -78,12 +78,12 @@ void func_ov000_022dd5d8(UnkStruct_022dd5d8 *t) {
     UnkStruct_022dd5d8_c *c;
     w->unk224++;
     if (w->unk224 == 1) {
-        func_ov000_02347c44(data_ov000_0236ac60);
+        func_ov000_02347c44(gPlayers);
         w->unkBB8 = 0x7200;
         w->unkBBC = 0xd80;
-        data_ov000_0236ac60->unk10 = 0x1c200;
-        data_ov000_0236ac60->unk14 = 0x1a100;
-        func_ov000_0234c4a4(data_ov000_0236ac60, 0x30);
+        gPlayers->unk10 = 0x1c200;
+        gPlayers->unk14 = 0x1a100;
+        Player_SetAnimation(gPlayers, 0x30);
         return;
     }
     c = (UnkStruct_022dd5d8_c *)(u32)&data_ov000_0236a48c;
@@ -99,9 +99,9 @@ void func_ov000_022dd5d8(UnkStruct_022dd5d8 *t) {
     c->unk50 = 0;
     c->unk4C = c->unk50;
     c->unk48 = c->unk4C;
-    c->unk54 = data_ov000_0236ac60->unk17C;
-    c->unk58 = data_ov000_0236ac60->unk180;
-    c->unk5C = data_ov000_0236ac60->unk184;
+    c->unk54 = gPlayers->unk17C;
+    c->unk58 = gPlayers->unk180;
+    c->unk5C = gPlayers->unk184;
     c->unk6C = 0x1000;
     c->unk80 = 0x1000;
     c->unk8C = 0x1000;

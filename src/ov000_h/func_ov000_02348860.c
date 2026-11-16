@@ -43,10 +43,10 @@ struct UnkStruct_02348860 {
 };
 
 void func_ov000_02348350(UnkStruct_02348860 *w);
-void func_ov000_0234c9e8(UnkStruct_02348860 *w);
-void func_ov000_0234c4a4(UnkStruct_02348860 *w, s32 a);
+void Player_ResetGimmickState(UnkStruct_02348860 *w);
+void Player_SetAnimation(UnkStruct_02348860 *w, s32 a);
 void func_ov000_0234a064(UnkStruct_02348860 *w, s32 a);
-void func_ov000_023302e4(UnkStruct_02348860 *w, s32 a, s32 b);
+void EffGrind_Create(UnkStruct_02348860 *w, s32 a, s32 b);
 void func_0201c070(void *p, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
@@ -56,8 +56,8 @@ void func_ov000_02348860(UnkStruct_02348860 *w) {
     s16 v;
 
     w->unk410 &= ~0x80;
-    func_ov000_0234c9e8(w);
-    func_ov000_0234c4a4(w, 0x1A);
+    Player_ResetGimmickState(w);
+    Player_SetAnimation(w, 0x1A);
     w->unk5C |= 4;
     w->unk58 &= ~0x10;
     w->unk32C &= ~0xC000;
@@ -85,5 +85,5 @@ void func_ov000_02348860(UnkStruct_02348860 *w) {
     w->unkC = 0;
     w->unk8 = 0;
     w->unk3CF = 0;
-    func_ov000_023302e4(w, 0, 0x12);
+    EffGrind_Create(w, 0, 0x12);
 }

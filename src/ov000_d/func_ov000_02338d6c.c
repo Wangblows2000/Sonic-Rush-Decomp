@@ -21,7 +21,7 @@ typedef struct {
 } UnkStruct_02338d6c_Cam;
 
 extern UnkStruct_02338d6c_Cam data_ov000_0236aad8;
-extern UnkStruct_02338d6c_Ent *data_ov000_0236ac60[];
+extern UnkStruct_02338d6c_Ent *gPlayers[];
 
 BOOL func_ov000_02338d6c(u32 *p) {
     UnkStruct_02338d6c_Cam *c = &data_ov000_0236aad8;
@@ -38,7 +38,7 @@ BOOL func_ov000_02338d6c(u32 *p) {
                 return TRUE;
             }
         } else {
-            v = data_ov000_0236ac60[c->unk3A]->unk14 - c->unk20 * 0x60;
+            v = gPlayers[c->unk3A]->unk14 - c->unk20 * 0x60;
             if (c->unk8 >= v) {
                 c->unk8 = v;
                 return TRUE;
@@ -47,7 +47,7 @@ BOOL func_ov000_02338d6c(u32 *p) {
         return FALSE;
     }
     if ((!(fl & 0x20000) && (*p & 2)) || ((fl & 0x20000) && (*p & 4))) {
-        v = data_ov000_0236ac60[c->unk3A]->unk14 - c->unk20 * 0x58;
+        v = gPlayers[c->unk3A]->unk14 - c->unk20 * 0x58;
         if (c->unk8 <= v) {
             c->unk8 = v;
             return TRUE;

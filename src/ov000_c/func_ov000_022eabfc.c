@@ -26,7 +26,7 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern u16 data_ov000_02363ba4[][8];
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void func_ov000_022ea638(void);
 
@@ -54,7 +54,7 @@ BOOL func_ov000_022eabfc(UnkStruct_022eabfc *w) {
             w->unk44E = 0;
             return TRUE;
         }
-        d = x - data_ov000_0236ac60->unk10;
+        d = x - gPlayers->unk10;
         if (d < 0)
             d = -d;
         if (d < 0x2000) {
@@ -67,12 +67,12 @@ BOOL func_ov000_022eabfc(UnkStruct_022eabfc *w) {
             return TRUE;
         }
     }
-    if (w->base.unk10 < data_ov000_0236ac60->unk10 && (w->base.unk5C & 1)) {
+    if (w->base.unk10 < gPlayers->unk10 && (w->base.unk5C & 1)) {
         w->unk456 = 10;
         w->unk43C = func_ov000_022ea638;
         return TRUE;
     }
-    if (w->base.unk10 > data_ov000_0236ac60->unk10 && !(w->base.unk5C & 1)) {
+    if (w->base.unk10 > gPlayers->unk10 && !(w->base.unk5C & 1)) {
         w->unk456 = -10;
         w->unk43C = func_ov000_022ea638;
         return TRUE;

@@ -6,7 +6,7 @@
 s32 func_ov001_022d0220();
 s32 AnimatorSprite_SetAnimation();
 void func_ov001_022d0a00();
-s32 func_ov001_022d1404();
+s32 StaffRoll_SetPictureState();
 
 void func_ov001_022d0a5c(s32 p0) {
     func_ov001_022d0220();
@@ -20,7 +20,7 @@ void func_ov001_022d0a5c(s32 p0) {
     *(u32 *)((u8 *)p0 + 0xcd4) = 0;
     *(u32 *)((u8 *)p0 + 0xcec) = 0;
     AnimatorSprite_SetAnimation(((u8 *)p0 + 0xc2c), 0x20, 0x80, ((u8 *)p0 + 0xca0));
-    func_ov001_022d1404(p0, (u32)func_ov001_022d0a00);
+    StaffRoll_SetPictureState(p0, (u32)func_ov001_022d0a00);
 }
 
 #pragma thumb reset

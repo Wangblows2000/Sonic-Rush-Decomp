@@ -92,19 +92,19 @@ typedef struct UnkStruct_022ca63c_5 {
 
 extern UnkStruct_022ca63c_cam data_ov000_0236a444;
 extern UnkStruct_022ca63c_c data_ov000_0236a48c;
-extern UnkStruct_022ca63c_pl *data_ov000_0236ac60;
+extern UnkStruct_022ca63c_pl *gPlayers;
 extern UnkStruct_022ca63c_5 gDisplayMain;
 
 void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_02000dfc(void *m);
 void StageObj_ClearPause(void);
 BOOL func_ov000_022cc6d4(void);
-void func_ov000_02328780(s32 a, s32 x, s32 y, s32 z);
-u8 *func_ov000_02328828(s32 a, s32 x, s32 y, s32 z);
+void BossEffect_CreateBlast5(s32 a, s32 x, s32 y, s32 z);
+u8 *BossEffect_CreateBlast1(s32 a, s32 x, s32 y, s32 z);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022ca574(UnkStruct_022ca63c *s);
+void Boss1Hammer_State_Unk_ov000_022ca574(UnkStruct_022ca63c *s);
 
 void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
     u32 v;
@@ -137,13 +137,13 @@ void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
     s->unk210->unk33C = 0x1000;
     s->unk214->unk420 = 0x1000;
     StageObj_ClearPause();
-    data_ov000_0236ac60->unk5C |= 0x20;
-    data_ov000_0236ac60->unk32C |= 0x200000;
-    data_ov000_0236ac60->unk420 = data_ov000_0236ac60->unk422 = data_ov000_0236ac60->unk424 = 0;
+    gPlayers->unk5C |= 0x20;
+    gPlayers->unk32C |= 0x200000;
+    gPlayers->unk420 = gPlayers->unk422 = gPlayers->unk424 = 0;
     if (func_ov000_022cc6d4()) {
-        func_ov000_02328780(0, s->unk210->unk10, s->unk210->unk14, s->unk210->unk18);
+        BossEffect_CreateBlast5(0, s->unk210->unk10, s->unk210->unk14, s->unk210->unk18);
     } else {
-        u8 *obj = func_ov000_02328828(0, 0xe100, 0x20000, 0);
+        u8 *obj = BossEffect_CreateBlast1(0, 0xe100, 0x20000, 0);
         *(s32 *)(obj + 0x248) = 0x800;
     }
     func_020537b4(0xd);
@@ -151,5 +151,5 @@ void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7d);
     s->unk220 = 0;
-    s->func = func_ov000_022ca574;
+    s->func = Boss1Hammer_State_Unk_ov000_022ca574;
 }

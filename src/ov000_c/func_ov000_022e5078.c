@@ -37,7 +37,7 @@ typedef struct {
     s32 unk1124;
 } UnkStruct_Boss;
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern s32 data_ov000_02363804[];
 
@@ -70,7 +70,7 @@ void func_ov000_022e5078(UnkStruct_Boss *w) {
     w->unkF4A = 0;
     w->unk1118 = 0;
     w->unk111C = w->base.unk10;
-    x = data_ov000_0236ac60->unk10;
+    x = gPlayers->unk10;
     if (x < 0x3000)
         x = 0x3000;
     else if (x > 0x31000)

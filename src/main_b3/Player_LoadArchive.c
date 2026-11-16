@@ -7,7 +7,7 @@ typedef struct { s32 unk0; } UnkStruct_022c4560;
 extern UnkStruct_022c4560 data_022c4560;
 
 void func_ov000_0234dee0(void);
-void func_ov000_0234dfb8(void);
+void Player_LoadAssets(void);
 u8 *File_Load(void *path, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
@@ -77,7 +77,7 @@ void Player_LoadArchive(void) {
     }
     DC_StoreRange(p, Player_GetArchiveUncompressedSize(f));
     Free_0204e934(f);
-    func_ov000_0234dfb8();
+    Player_LoadAssets();
     NaviBg_Load(1, data_022c4560.unk0);
     NaviB_Load();
 }

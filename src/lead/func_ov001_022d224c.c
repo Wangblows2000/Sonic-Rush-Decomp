@@ -29,7 +29,7 @@ typedef struct {
     u16 y;
 } UnkOfs_022d224c;
 
-extern UnkWork_022d224c *data_ov001_0231f050;
+extern UnkWork_022d224c *gStaffRollWork;
 extern u8 data_ov001_023160f8[];
 extern u32 gScreenTransferHead;
 extern u32 gScreenTransferTail;
@@ -63,12 +63,12 @@ void func_ov001_022d224c(void) {
     s32 k;
     s32 r;
 
-    x = data_ov001_0231f050->scroll;
+    x = gStaffRollWork->scroll;
     q = x / 8;
     r = x % 8;
     for (k = 4; k < 7; k++) {
-        res = data_ov001_0231f050->res[k];
-        bg = &data_ov001_0231f050->bg[k];
+        res = gStaffRollWork->res[k];
+        bg = &gStaffRollWork->bg[k];
         LoadBg_022d224c((u8 *)res + res->offs, bg->unk3c, bg->flags & 0x1000, bg->unk20, bg->unk24, bg->unk26, q);
         gDisplayMain[data_ov001_023160f8[k]].x = 0;
         gDisplayMain[data_ov001_023160f8[k]].y = r;
@@ -78,9 +78,9 @@ void func_ov001_022d224c(void) {
     *(vu32 *)0x4000014 = v;
     *(vu32 *)0x4000018 = v;
     for (k = 7; k < 10; k++) {
-        res = data_ov001_0231f050->res[k];
-        bg = &data_ov001_0231f050->bg[k];
-        x = data_ov001_0231f050->scroll + 0x110;
+        res = gStaffRollWork->res[k];
+        bg = &gStaffRollWork->bg[k];
+        x = gStaffRollWork->scroll + 0x110;
         r = x % 8;
         LoadBg_022d224c((u8 *)res + res->offs, bg->unk3c, bg->flags & 0x1000, bg->unk20, bg->unk24, bg->unk26, x / 8);
         gDisplaySub[data_ov001_023160f8[k]].x = 0;

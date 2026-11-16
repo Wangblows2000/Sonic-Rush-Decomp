@@ -4,7 +4,7 @@
 s32 func_ov001_022f71f4();
 s32 BrightnessLerp_Create();
 s32 func_ov001_022ef11c();
-s32 func_ov001_022ffce8();
+s32 ExtraBoss_GetWork();
 extern u8 data_ov001_023167f8[];
 extern u8 data_ov001_0231f070[];
 extern u8 data_ov001_0231f528[];
@@ -27,7 +27,7 @@ void func_ov001_022ef558(u8 *p0) {
     }
     if ((*(u8 *)((u8 *)t0 + 0x10c) & 2) != 0) {
         func_ov001_022ef11c(p0);
-        s32 t2 = func_ov001_022ffce8();
+        s32 t2 = ExtraBoss_GetWork();
         *(u32 *)((u8 *)t2 + 0x318) = 0;
         func_ov001_022ffb9c(*(u32 *)data_ov001_0231f070, *(u32 *)data_ov001_0231f528, data_ov001_0231d4ac, data_ov001_02316804, data_ov001_023167f8, 6);
         return;

@@ -61,7 +61,7 @@ void func_ov001_022d0158(s32 a);
 void func_ov001_022cfe58(void *a, s32 b, u16 c, s32 d, void *e, void *f);
 void Background_Draw(void *o);
 void func_ov001_022d0128(s32 a);
-void func_ov001_022d2234(UnkStruct_022d15e8 *p, void (*fn)(UnkStruct_022d15e8 *));
+void StaffRoll_SetState(UnkStruct_022d15e8 *p, void (*fn)(UnkStruct_022d15e8 *));
 void func_ov001_022d1494(UnkStruct_022d15e8 *p);
 
 #pragma thumb on
@@ -85,6 +85,6 @@ void func_ov001_022d15e8(UnkStruct_022d15e8 *p) {
     for (i = 0; i < 4; i++) {
         func_ov001_022d0128(i);
     }
-    func_ov001_022d2234(p, func_ov001_022d1494);
+    StaffRoll_SetState(p, func_ov001_022d1494);
 }
 #pragma thumb reset

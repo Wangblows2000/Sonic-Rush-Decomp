@@ -10,7 +10,7 @@ struct UnkStruct_022eae84 {
     u16 unk458;
 };
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void func_ov000_022ea25c(UnkStruct_022eae84 *s);
 void func_ov000_022ea614(UnkStruct_022eae84 *s);
@@ -18,7 +18,7 @@ void func_ov000_022ea638(UnkStruct_022eae84 *s);
 void func_ov000_022ea3dc(UnkStruct_022eae84 *s);
 
 void func_ov000_022eae84(UnkStruct_022eae84 *s) {
-    UnkStruct_StageObj *p = data_ov000_0236ac60;
+    UnkStruct_StageObj *p = gPlayers;
     s32 x = s->base.unk10;
     s32 dx = p->unk10 - x;
     s32 adx = dx < 0 ? -dx : dx;

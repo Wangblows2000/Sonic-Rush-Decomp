@@ -25,7 +25,7 @@ typedef struct {
     UnkStruct_0235b0c8_w *unk10;
 } UnkStruct_0235b0c8;
 
-extern UnkStruct_0235b0c8 *data_ov000_0236ac80;
+extern UnkStruct_0235b0c8 *gRingManagerTask;
 BOOL func_ov000_02345758(s32 x, s32 y);
 
 void func_ov000_0235b0c8(u8 *flag, s32 a, s32 b) {
@@ -33,9 +33,9 @@ void func_ov000_0235b0c8(u8 *flag, s32 a, s32 b) {
     UnkStruct_0235b0c8_e *e;
     u8 i;
 
-    if (data_ov000_0236ac80 == NULL)
+    if (gRingManagerTask == NULL)
         return;
-    w = data_ov000_0236ac80->unk10;
+    w = gRingManagerTask->unk10;
     if (w->count >= 64)
         return;
     for (i = 0; i < 64; i++) {

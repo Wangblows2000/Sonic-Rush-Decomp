@@ -16,7 +16,7 @@ typedef struct UnkTask_022eba08 {
 extern UnkTask_022eba08 *gTaskCurrent;
 
 void func_ov001_022e9708(UnkWork_022eba08 *w, s32 a, s32 *x, s32 *y);
-void func_ov001_022e9ba8(s32 a, s32 b, s32 c, s32 d);
+void TimeAttackMenu_CreateFadeTask(s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022ea80c(UnkWork_022eba08 *w);
 void func_ov001_022ea458(UnkWork_022eba08 *w, s32 x, s32 y);
 void func_ov001_022ea7c4(UnkWork_022eba08 *w);
@@ -36,7 +36,7 @@ void func_ov001_022eba08(UnkTask_022eba08 *t) {
     w = t->work;
     w->state = 0;
     func_ov001_022e9708(w, w->unkd0, &x, &y);
-    func_ov001_022e9ba8(0, 0x10, 8, 8);
+    TimeAttackMenu_CreateFadeTask(0, 0x10, 8, 8);
     func_ov001_022ea80c(w);
     func_ov001_022ea458(w, x, y);
     func_ov001_022ea7c4(w);

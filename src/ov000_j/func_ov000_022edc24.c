@@ -9,7 +9,7 @@ extern s32 data_022c4560;
 extern u16 gTalkDemoId;
 
 void TalkDemo_Create(void);
-void func_ov000_022edbec(UnkStruct_022edc24 *p);
+void Boss7_State_Unk_ov000_022edbec(UnkStruct_022edc24 *p);
 
 void func_ov000_022edc24(UnkStruct_022edc24 *p) {
     if (data_022c4560 == 0)
@@ -17,5 +17,5 @@ void func_ov000_022edc24(UnkStruct_022edc24 *p) {
     else
         gTalkDemoId = 0xb;
     TalkDemo_Create();
-    p->unk68 = func_ov000_022edbec;
+    p->unk68 = Boss7_State_Unk_ov000_022edbec;
 }

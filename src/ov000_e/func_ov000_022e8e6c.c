@@ -32,8 +32,8 @@ extern s16 data_ov000_02368b86[][24];
 void func_ov000_022ee198(UnkStruct_022e8e6c *w, s32 a);
 void func_ov000_022e9b70(UnkStruct_022e8e6c *w, s32 a, s32 b);
 void *func_ov000_02326f48(UnkStruct_022e8e6c *w, s32 a, s32 b, s32 c, s32 d);
-UnkStruct_Fx *func_ov000_02328468(s32 a, s32 x, s32 y, s32 z);
-void *func_ov000_023277d4(UnkStruct_022e8e6c *w, s32 a, s32 b, s32 c, s32 d);
+UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
+void *EffBoostA_3D_Create(UnkStruct_022e8e6c *w, s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e8d98(UnkStruct_022e8e6c *w);
 
@@ -54,12 +54,12 @@ void func_ov000_022e8e6c(UnkStruct_022e8e6c *w) {
     w->base.unk5C |= 4;
     if (w->unk3D0 == 0) {
         w->unk480 = func_ov000_02326f48(w, 0x18, 0xa, 0x7ca5, 0x7ca5);
-        fx = func_ov000_02328468(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
+        fx = BossEffect_CreateHoming(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
         fx->unk248 = 0x999;
         fx->unk14C = Mul64(fx->unk14C, 0x1800);
         fx->unk150 = Mul64(fx->unk150, 0x1800);
         fx->unk154 = Mul64(fx->unk154, 0x1800);
-        w->unk488 = func_ov000_023277d4(w, 0, -4, 8, 0);
+        w->unk488 = EffBoostA_3D_Create(w, 0, -4, 8, 0);
         Sound_PlaySeqArc(0, 0, 1);
     } else {
         Sound_PlaySeqArc(0, 0, 0x12);

@@ -42,7 +42,7 @@ typedef struct {
 } UnkBox_0235b804;
 
 extern s16 data_0206e470[];
-extern UnkTask_0235b804 *data_ov000_0236ac80;
+extern UnkTask_0235b804 *gRingManagerTask;
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 #define IDX_0235b804(a) ((s32)((a) & 0xffff) >> 4)
@@ -64,10 +64,10 @@ BOOL func_ov000_0235b804(UnkStruct_0235b804 *w) {
     u16 ang;
     s32 spd;
 
-    if (data_ov000_0236ac80 == NULL) {
+    if (gRingManagerTask == NULL) {
         return FALSE;
     }
-    mgr = data_ov000_0236ac80->unk10;
+    mgr = gRingManagerTask->unk10;
     mgr->unk0 |= 4;
     box.x = w->x >> 8;
     box.y = w->y >> 8;

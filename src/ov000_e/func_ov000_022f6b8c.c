@@ -7,14 +7,14 @@ typedef struct {
     s16 unk2E;
 } UnkStruct_022f6b8c;
 
-extern UnkStruct_022f6b8c *data_ov000_0236ac60;
+extern UnkStruct_022f6b8c *gPlayers;
 
 void func_ov000_022f6b8c(UnkStruct_022f6b8c *s) {
     s32 t;
     s32 d;
     s16 a;
 
-    t = data_ov000_0236ac60->unk10;
+    t = gPlayers->unk10;
     if (t < 0x8000) {
         t = 0x8000;
     } else if (t > 0x2c000) {

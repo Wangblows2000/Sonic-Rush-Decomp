@@ -39,7 +39,7 @@ typedef struct UnkStruct_02301e78_g {
 } UnkStruct_02301e78_g;
 
 void func_ov001_02302398(void);
-UnkStruct_02301e78_g *func_ov001_022ffce8(void);
+UnkStruct_02301e78_g *ExtraBoss_GetWork(void);
 BOOL func_ov001_02302408(UnkStruct_02301e78 *p);
 void func_ov001_023024d0(UnkStruct_02301e78 *p, s32 n);
 s32 func_020021f0(s32 a);
@@ -57,7 +57,7 @@ void func_ov001_02301e78(UnkStruct_02301e78 *p) {
     s32 base;
 
     func_ov001_02302398();
-    if (func_ov001_022ffce8()->unk3C == 0) {
+    if (ExtraBoss_GetWork()->unk3C == 0) {
         p->unk1CC--;
         if (p->unk1CC <= 0)
             p->unk9C = NULL;
@@ -79,6 +79,6 @@ void func_ov001_02301e78(UnkStruct_02301e78 *p) {
     }
     if (func_0200225c(d, s->unk8->unk14) >= 0x800)
         return;
-    if (s->unk8->unk0 & func_ov001_022ffce8()->unk1C)
+    if (s->unk8->unk0 & ExtraBoss_GetWork()->unk1C)
         func_ov001_023017c8(p);
 }

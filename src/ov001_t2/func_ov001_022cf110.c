@@ -24,7 +24,7 @@ extern UnkBright_022cf110 data_02087d44;
 void SysSound_Release(void);
 void Task_Destroy(UnkTask_022cf110 *t);
 void SceneChange_Unk_020550ec(void);
-void func_ov001_022cf0b4(void);
+void PostStaffRoll_State_GoToSegaLogo(void);
 
 #pragma thumb on
 void func_ov001_022cf110(void) {
@@ -47,7 +47,7 @@ void func_ov001_022cf110(void) {
             SceneChange_Unk_020550ec();
         } else {
             w->timer = 0;
-            gTaskCurrent->fn = func_ov001_022cf0b4;
+            gTaskCurrent->fn = PostStaffRoll_State_GoToSegaLogo;
         }
     }
 }

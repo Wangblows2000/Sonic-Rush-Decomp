@@ -92,7 +92,7 @@ void func_ov000_022cd1b0(u32 flags);
 
 void ScreenShake_Start(s32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_023288d0(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreateImpactSmall(s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022d2920(UnkStruct_022d2f4c *s, s32 mode);
 void func_ov000_022d2e14(UnkStruct_022d2f4c *s);
 
@@ -113,6 +113,6 @@ void func_ov000_022d2f4c(UnkStruct_022d2f4c *s) {
     s->unkF84[6].unkA &= ~0x1000;
     ScreenShake_Start(0xc);
     s->unk12F4 = 0xf;
-    func_ov000_023288d0(1, s->unkA9C.unk48 >> 4, 0x20000, s->unkA9C.unk50 >> 4);
+    BossEffect_CreateImpactSmall(1, s->unkA9C.unk48 >> 4, 0x20000, s->unkA9C.unk50 >> 4);
     Sound_PlaySeqArc(0, 0, 0xa2);
 }

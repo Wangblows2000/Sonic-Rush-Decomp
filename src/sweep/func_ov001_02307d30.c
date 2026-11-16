@@ -47,7 +47,7 @@ extern u16 data_ov001_02317114[];
 extern u8 data_ov001_0231f5c8[];
 extern u8 data_022504e8[];
 
-s32 func_ov001_0230c0cc(void);
+s32 SpecialStage_GetStageIndex(void);
 void AnimatorSprite_ProcessAnimation(UnkSpr_02307d30 *s, s32 a, s32 b);
 void AnimatorSprite_SetAnimation(UnkSpr_02307d30 *s, u16 anim);
 void func_ov001_02307890(s32 i, s32 t);
@@ -56,7 +56,7 @@ BOOL func_0202e5e4(f32 a, f32 b);
 void func_0201d568(void *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov001_02307990(s32 i);
-void func_ov001_0230c0e0(s32 a);
+void SpecialStage_RequestExit(s32 a);
 
 void func_ov001_02307d30(void) {
     UnkWork_02307d30 *w = data_ov001_0231f5bc;
@@ -70,7 +70,7 @@ void func_ov001_02307d30(void) {
     f32 f;
     u8 idx;
 
-    k = func_ov001_0230c0cc() + 0xb;
+    k = SpecialStage_GetStageIndex() + 0xb;
     w->unkBD4++;
     sp = &w->spr[k];
     if (w->unkBD4 <= 0x32) {
@@ -110,7 +110,7 @@ void func_ov001_02307d30(void) {
             f = (f32)(w->unkBD4 - 0x17c) / 60.0f;
             if (func_0202e5e4(f, 1.0f))
                 f = 1.0f;
-            func_ov001_02307778(func_ov001_0230c0cc(), 50.0f * f, &w->unkBF8, &w->unkBFA);
+            func_ov001_02307778(SpecialStage_GetStageIndex(), 50.0f * f, &w->unkBF8, &w->unkBFA);
         }
     }
     if (w->unkBD4 == 0xfc) {
@@ -135,5 +135,5 @@ void func_ov001_02307d30(void) {
         }
     }
     if (w->unkBD4 == 0x302)
-        func_ov001_0230c0e0(1);
+        SpecialStage_RequestExit(1);
 }

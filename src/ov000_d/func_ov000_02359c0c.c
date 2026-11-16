@@ -1,6 +1,6 @@
 #include <ov000_d/scene.h>
 
-void func_ov000_02359624(void);
+void PlayerSelectMenu_Main(void);
 
 #pragma thumb on
 
@@ -16,7 +16,7 @@ void func_ov000_02359c0c(UnkStruct_SceneTask *t) {
     func_ov000_023582e8(w, w->unk14, 0x100);
     w->unk330 = -0x100;
     func_ov000_023581dc(w);
-    t->unk8 = func_ov000_02359624;
+    t->unk8 = PlayerSelectMenu_Main;
 }
 
 #pragma thumb reset

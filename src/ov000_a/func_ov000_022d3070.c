@@ -95,7 +95,7 @@ typedef struct UnkStruct_022d3070_p {
     s32 unk10;
 } UnkStruct_022d3070_p;
 
-extern UnkStruct_022d3070_p *data_ov000_0236ac60;
+extern UnkStruct_022d3070_p *gPlayers;
 
 s32 func_02002094(s32 a, s32 b);
 void func_ov000_022d2920(UnkStruct_022d3070 *s, s32 mode);
@@ -115,7 +115,7 @@ void func_ov000_022d3070(UnkStruct_022d3070 *s) {
     Model_SetAnimation(x, 0, s->unkF7C, 0x1f, 0);
     Model_SetAnimation(y, 0, s->unkF7C, 0x3b, 0);
     Model_SetAnimation(z, 0, s->unkF7C, 0x5b, 0);
-    d = data_ov000_0236ac60->unk10;
+    d = gPlayers->unk10;
     if (d < s->unk10) {
         a = s->unk10 - d;
         b = d + 0x6cd98 - s->unk10;

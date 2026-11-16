@@ -3,15 +3,15 @@
 
 #pragma thumb on
 
-extern u8 data_ov001_0231f060[];
+extern u8 gZoneMapPauseWork[];
 s32 Task_Destroy();
 extern u8 data_ov001_0231c588[];
 
 void func_ov001_022e9584(void) {
-    s32 t0 = *(u32 *)data_ov001_0231f060;
+    s32 t0 = *(u32 *)gZoneMapPauseWork;
     if (t0 != 0) {
         Task_Destroy(*(u32 *)((u8 *)t0 + 0x190), t0);
-        *(u32 *)data_ov001_0231f060 = 0;
+        *(u32 *)gZoneMapPauseWork = 0;
         *(u32 *)data_ov001_0231c588 = 3;
     }
 }

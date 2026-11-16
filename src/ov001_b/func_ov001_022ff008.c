@@ -28,7 +28,7 @@ typedef struct UnkStruct_022ff008_4680 {
 
 extern u32 gSystemFlags;
 extern u16 gPad[];
-extern UnkStruct_022ff008 *data_ov001_0231f52c;
+extern UnkStruct_022ff008 *gExtraBossWork;
 extern UnkStruct_022ff008_4680 gSaveData;
 
 void PauseMenu_Create(s32 a);
@@ -50,13 +50,13 @@ void func_ov001_023010e0(void);
 void func_ov001_0230109c(void);
 void func_ov001_02300fe8(void);
 void func_ov001_02303c54(void);
-void func_ov001_02302be8(s32 idx);
+void ExtraBoss_LoadPlayerModel(s32 idx);
 void func_ov001_022fecb0(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
 void func_ov001_022f9e58(s32 a, s32 b);
 void func_02048864(void);
 
-#define G data_ov001_0231f52c
+#define G gExtraBossWork
 
 void func_ov001_022ff008(void) {
     u32 f;
@@ -114,7 +114,7 @@ void func_ov001_022ff008(void) {
         func_ov001_0230109c();
         func_ov001_02300fe8();
         func_ov001_02303c54();
-        func_ov001_02302be8(0);
+        ExtraBoss_LoadPlayerModel(0);
         G->unk3C = 0;
         func_ov001_022fecb0();
         G->unk44 = G->unk48;

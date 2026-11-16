@@ -17,7 +17,7 @@ typedef struct {
     s16 unk380;
 } UnkStruct_0234b424;
 
-void func_ov000_0234c4a4(UnkStruct_0234b424 *w, s32 state);
+void Player_SetAnimation(UnkStruct_0234b424 *w, s32 state);
 
 void func_ov000_0234b424(UnkStruct_0234b424 *w) {
     s32 a = w->unk34;
@@ -28,45 +28,45 @@ void func_ov000_0234b424(UnkStruct_0234b424 *w) {
     }
     sp = a;
     if (w->unk328 < 0x3d || w->unk328 > 0x42) {
-        func_ov000_0234c4a4(w, 0x3d);
+        Player_SetAnimation(w, 0x3d);
     }
     if (w->unk328 == 0x3d && (w->unk5C & 8) && sp >= w->unk378) {
-        func_ov000_0234c4a4(w, 0x3e);
+        Player_SetAnimation(w, 0x3e);
     }
     if (w->unk328 == 0x3e && (w->unk5C & 8)) {
         if (sp >= w->unk37A) {
-            func_ov000_0234c4a4(w, 0x3f);
+            Player_SetAnimation(w, 0x3f);
         } else {
-            func_ov000_0234c4a4(w, 0x3d);
+            Player_SetAnimation(w, 0x3d);
         }
     }
     if (w->unk328 == 0x3f && (w->unk5C & 8)) {
         if (sp >= w->unk37C) {
-            func_ov000_0234c4a4(w, 0x40);
+            Player_SetAnimation(w, 0x40);
         } else {
-            func_ov000_0234c4a4(w, 0x3e);
+            Player_SetAnimation(w, 0x3e);
         }
     }
     if (w->unk32C & 0x180) {
         if (w->unk328 == 0x40 && (w->unk5C & 8)) {
             if (sp >= w->unk37E) {
-                func_ov000_0234c4a4(w, 0x41);
+                Player_SetAnimation(w, 0x41);
             } else {
-                func_ov000_0234c4a4(w, 0x3f);
+                Player_SetAnimation(w, 0x3f);
             }
         }
         if (w->unk328 == 0x41 && (w->unk5C & 8)) {
             if (sp >= w->unk380) {
-                func_ov000_0234c4a4(w, 0x42);
+                Player_SetAnimation(w, 0x42);
             } else {
-                func_ov000_0234c4a4(w, 0x40);
+                Player_SetAnimation(w, 0x40);
             }
         }
         if (w->unk328 == 0x42 && (w->unk5C & 8) && sp < w->unk380) {
-            func_ov000_0234c4a4(w, 0x41);
+            Player_SetAnimation(w, 0x41);
         }
     } else if (w->unk328 == 0x40 && (w->unk5C & 8) && sp < w->unk37E) {
-        func_ov000_0234c4a4(w, 0x3f);
+        Player_SetAnimation(w, 0x3f);
     }
     w->unk5C |= 4;
 }

@@ -4,7 +4,7 @@
 #pragma thumb on
 
 void func_ov001_022d1238();
-s32 func_ov001_022d1404();
+s32 StaffRoll_SetPictureState();
 
 void func_ov001_022d12a8(s32 p0) {
     *(u32 *)((u8 *)p0 + 0xc10) = (*(u32 *)((u8 *)p0 + 0xc10) | 4);
@@ -17,7 +17,7 @@ void func_ov001_022d12a8(s32 p0) {
     *(u32 *)((u8 *)p0 + 0xcd8) = -2048;
     *(u32 *)((u8 *)p0 + 0xcec) = -192;
     *(u32 *)((u8 *)p0 + 0xcf0) = -128;
-    func_ov001_022d1404(p0, (u32)func_ov001_022d1238, -128, ((u8 *)p0 + 0xc58));
+    StaffRoll_SetPictureState(p0, (u32)func_ov001_022d1238, -128, ((u8 *)p0 + 0xc58));
 }
 
 #pragma thumb reset

@@ -4,7 +4,7 @@
 void func_ov000_0231bec0();
 s32 func_0201c070();
 s32 Sound_PlaySeqArcEx();
-extern u8 data_ov000_0236ac60[];
+extern u8 gPlayers[];
 s32 Sound_SetPositional();
 
 void func_ov000_0231bef8(u8 *p0) {
@@ -15,5 +15,5 @@ void func_ov000_0231bef8(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_0231bec0;
     func_0201c070(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x50, t0);
     Sound_PlaySeqArcEx(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x56);
-    Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
+    Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)gPlayers);
 }

@@ -28,7 +28,7 @@ typedef struct UnkStruct_022f3c60_c {
 extern u32 gRandSeed;
 extern s32 data_ov001_02316910[];
 
-UnkStruct_022f3c60_c *func_ov001_022ffce8(void);
+UnkStruct_022f3c60_c *ExtraBoss_GetWork(void);
 void func_ov001_022fc8dc(s32 a, s32 x, s32 y, s32 b);
 void func_ov001_022fb5d4(void);
 void func_ov001_022f4c04(UnkStruct_022f3c60_o *p);
@@ -44,7 +44,7 @@ static inline u16 Rand(void) {
 void func_ov001_022f3c60(UnkStruct_022f3c60_o **self, UnkStruct_022f3c60_o **other) {
     UnkStruct_022f3c60_o *s = *self;
     UnkStruct_022f3c60_o *p = *other;
-    UnkStruct_022f3c60_c *c = func_ov001_022ffce8();
+    UnkStruct_022f3c60_c *c = ExtraBoss_GetWork();
     UnkStruct_022f3c60_w *w = p->work;
 
     c->lives--;

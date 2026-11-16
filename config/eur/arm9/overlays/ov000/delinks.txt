@@ -4,7 +4,7 @@
     .data       start:0x02364f00 end:0x02369ac0 kind:data align:32
     .bss        start:0x02369ac0 end:0x0236aca0 kind:bss align:32
 
-src/ov000/func_ov000_022c5f68.c:
+src/ov000/Boss1Hammer_State_Unk_ov000_022c5f68.c:
     complete
     .text       start:0x022c5f68 end:0x022c5f6c
 
@@ -28,7 +28,7 @@ src/ov000/func_ov000_022c5e10.c:
     complete
     .text       start:0x022c5e10 end:0x022c5e1c
 
-src/ov000/func_ov000_022c5f7c.c:
+src/ov000/Boss1Hammer_State_Unk_ov000_022c5f7c.c:
     complete
     .text       start:0x022c5f7c end:0x022c5f80
 
@@ -84,11 +84,11 @@ src/ov000/func_ov000_022c696c.c:
     complete
     .text       start:0x022c696c end:0x022c697c
 
-src/ov000/func_ov000_022c697c.c:
+src/ov000/Boss1Hammer_State_Unk_ov000_022c697c.c:
     complete
     .text       start:0x022c697c end:0x022c6980
 
-src/ov000/func_ov000_022c74d0.c:
+src/ov000/Boss1Hammer_State_Unk_ov000_022c74d0.c:
     complete
     .text       start:0x022c74d0 end:0x022c74d4
 
@@ -96,7 +96,7 @@ src/ov000/func_ov000_022c74d4.c:
     complete
     .text       start:0x022c74d4 end:0x022c74e4
 
-src/ov000/func_ov000_022c74e4.c:
+src/ov000/Boss1Hammer_State_Unk_ov000_022c74e4.c:
     complete
     .text       start:0x022c74e4 end:0x022c74e8
 
@@ -176,11 +176,11 @@ src/ov000/func_ov000_022c9da8.c:
     complete
     .text       start:0x022c9da8 end:0x022c9db8
 
-src/ov000/func_ov000_022c9db8.c:
+src/ov000/Boss1Neck_State_Unk_ov000_022c9db8.c:
     complete
     .text       start:0x022c9db8 end:0x022c9dbc
 
-src/ov000/func_ov000_022ca550.c:
+src/ov000/Boss5PartD3_Destructor.c:
     complete
     .text       start:0x022ca550 end:0x022ca574
 
@@ -248,7 +248,7 @@ src/ov000/func_ov000_022cd370.c:
     complete
     .text       start:0x022cd370 end:0x022cd384
 
-src/ov000/func_ov000_022cf3dc.c:
+src/ov000/Boss2Part_Destructor_ov000_022cf3dc.c:
     complete
     .text       start:0x022cf3dc end:0x022cf3e0
 
@@ -260,7 +260,7 @@ src/ov000/func_ov000_022d4234.c:
     complete
     .text       start:0x022d4234 end:0x022d424c
 
-src/ov000/func_ov000_022d5740.c:
+src/ov000/Boss3PartCC_State_Unk_ov000_022d5740.c:
     complete
     .text       start:0x022d5740 end:0x022d5744
 
@@ -280,15 +280,15 @@ src/ov000/func_ov000_022d5ab0.c:
     complete
     .text       start:0x022d5ab0 end:0x022d5acc
 
-src/ov000/func_ov000_022d5d10.c:
+src/ov000/Boss3PartCD_State_Unk_ov000_022d5d10.c:
     complete
     .text       start:0x022d5d10 end:0x022d5d14
 
-src/ov000/func_ov000_022d63bc.c:
+src/ov000/Boss3PartCC_State_Unk_ov000_022d63bc.c:
     complete
     .text       start:0x022d63bc end:0x022d63c0
 
-src/ov000/func_ov000_022d63f0.c:
+src/ov000/Boss3PartCC_State_Unk_ov000_022d63f0.c:
     complete
     .text       start:0x022d63f0 end:0x022d63f4
 
@@ -320,15 +320,15 @@ src/ov000/func_ov000_022d8bb8.c:
     complete
     .text       start:0x022d8bb8 end:0x022d8bd0
 
-src/ov000/func_ov000_022d8c60.c:
+src/ov000/Boss3PartCC_State_Unk_ov000_022d8c60.c:
     complete
     .text       start:0x022d8c60 end:0x022d8c64
 
-src/ov000/func_ov000_022d9aa0.c:
+src/ov000/Boss3PartCC_State_Unk_ov000_022d9aa0.c:
     complete
     .text       start:0x022d9aa0 end:0x022d9ab0
 
-src/ov000/func_ov000_022d9c44.c:
+src/ov000/Boss3PartCC_State_Unk_ov000_022d9c44.c:
     complete
     .text       start:0x022d9c44 end:0x022d9c70
 
@@ -384,7 +384,7 @@ src/ov000/func_ov000_022db7d4.c:
     complete
     .text       start:0x022db7d4 end:0x022db7ec
 
-src/ov000/func_ov000_022dc504.c:
+src/ov000/Boss4PartD1_Destructor.c:
     complete
     .text       start:0x022dc504 end:0x022dc528
 
@@ -392,11 +392,11 @@ src/ov000/func_ov000_022dcf20.c:
     complete
     .text       start:0x022dcf20 end:0x022dcf2c
 
-src/ov000/func_ov000_022dcf2c.c:
+src/ov000/Boss4PartCF_Destructor.c:
     complete
     .text       start:0x022dcf2c end:0x022dcf38
 
-src/ov000/func_ov000_022dcff8.c:
+src/ov000/Boss4PartCE_Destructor.c:
     complete
     .text       start:0x022dcff8 end:0x022dd004
 
@@ -404,7 +404,7 @@ src/ov000/func_ov000_022dfd74.c:
     complete
     .text       start:0x022dfd74 end:0x022dfd80
 
-src/ov000/func_ov000_022e63ec.c:
+src/ov000/Boss6PartD4_Destructor.c:
     complete
     .text       start:0x022e63ec end:0x022e6410
 
@@ -420,15 +420,15 @@ src/ov000/func_ov000_022ea8f8.c:
     complete
     .text       start:0x022ea8f8 end:0x022ea900
 
-src/ov000/func_ov000_022eb3c0.c:
+src/ov000/Boss7PartD5_State_Unk_ov000_022eb3c0.c:
     complete
     .text       start:0x022eb3c0 end:0x022eb3c4
 
-src/ov000/func_ov000_022ebda0.c:
+src/ov000/Boss7PartD5_Destructor.c:
     complete
     .text       start:0x022ebda0 end:0x022ebdc4
 
-src/ov000/func_ov000_022ebea0.c:
+src/ov000/Boss7_State_Unk_ov000_022ebea0.c:
     complete
     .text       start:0x022ebea0 end:0x022ebea4
 
@@ -440,7 +440,7 @@ src/ov000/func_ov000_022ebfac.c:
     complete
     .text       start:0x022ebfac end:0x022ebfc8
 
-src/ov000/func_ov000_022ec138.c:
+src/ov000/Boss7PartD7_Destructor.c:
     complete
     .text       start:0x022ec138 end:0x022ec15c
 
@@ -448,11 +448,11 @@ src/ov000/func_ov000_022ec15c.c:
     complete
     .text       start:0x022ec15c end:0x022ec16c
 
-src/ov000/func_ov000_022ec1b8.c:
+src/ov000/Boss7PartD6_State_Unk_ov000_022ec1b8.c:
     complete
     .text       start:0x022ec1b8 end:0x022ec1d0
 
-src/ov000/func_ov000_022ec34c.c:
+src/ov000/Boss7PartD6_State_Unk_ov000_022ec34c.c:
     complete
     .text       start:0x022ec34c end:0x022ec364
 
@@ -460,7 +460,7 @@ src/ov000/func_ov000_022ec564.c:
     complete
     .text       start:0x022ec564 end:0x022ec568
 
-src/ov000/func_ov000_022edc94.c:
+src/ov000/Boss7_State_Unk_ov000_022edc94.c:
     complete
     .text       start:0x022edc94 end:0x022edcb0
 
@@ -504,7 +504,7 @@ src/ov000/func_ov000_022f2bdc.c:
     complete
     .text       start:0x022f2bdc end:0x022f2bf4
 
-src/ov000/func_ov000_022f3f88.c:
+src/ov000/BossFPartD8_State_Unk_ov000_022f3f88.c:
     complete
     .text       start:0x022f3f88 end:0x022f3f8c
 
@@ -516,7 +516,7 @@ src/ov000/func_ov000_022f6684.c:
     complete
     .text       start:0x022f6684 end:0x022f669c
 
-src/ov000/func_ov000_022f66d0.c:
+src/ov000/BossFPartDE_State_Unk_ov000_022f66d0.c:
     complete
     .text       start:0x022f66d0 end:0x022f66e8
 
@@ -524,7 +524,7 @@ src/ov000/func_ov000_022f7f28.c:
     complete
     .text       start:0x022f7f28 end:0x022f7f44
 
-src/ov000/func_ov000_022f7f68.c:
+src/ov000/BossFPartD9_State_Unk_ov000_022f7f68.c:
     complete
     .text       start:0x022f7f68 end:0x022f7f80
 
@@ -592,7 +592,7 @@ src/ov000/func_ov000_022f898c.c:
     complete
     .text       start:0x022f898c end:0x022f89a8
 
-src/ov000/func_ov000_022fece8.c:
+src/ov000/EnemyPawnGroup_Destructor.c:
     complete
     .text       start:0x022fece8 end:0x022fecf4
 
@@ -608,15 +608,15 @@ src/ov000/func_ov000_02301fc0.c:
     complete
     .text       start:0x02301fc0 end:0x02301fe4
 
-src/ov000/func_ov000_02302a14.c:
+src/ov000/BubbleSpawner_OnHit_Box1.c:
     complete
     .text       start:0x02302a14 end:0x02302a28
 
-src/ov000/func_ov000_023036b8.c:
+src/ov000/MapObj75_Destructor.c:
     complete
     .text       start:0x023036b8 end:0x023036d4
 
-src/ov000/func_ov000_02303798.c:
+src/ov000/MapObj73_OnHit.c:
     complete
     .text       start:0x02303798 end:0x0230379c
 
@@ -624,7 +624,7 @@ src/ov000/func_ov000_02303e24.c:
     complete
     .text       start:0x02303e24 end:0x02303e34
 
-src/ov000/func_ov000_02303e34.c:
+src/ov000/MapObj73_Destructor.c:
     complete
     .text       start:0x02303e34 end:0x02303e50
 
@@ -632,7 +632,7 @@ src/ov000/func_ov000_02304270.c:
     complete
     .text       start:0x02304270 end:0x02304280
 
-src/ov000/func_ov000_02304280.c:
+src/ov000/MapObj74_Destructor.c:
     complete
     .text       start:0x02304280 end:0x0230429c
 
@@ -652,7 +652,7 @@ src/ov000/func_ov000_02306e74.c:
     complete
     .text       start:0x02306e74 end:0x02306e90
 
-src/ov000/func_ov000_02307a90.c:
+src/ov000/DashP_State_Unk_ov000_02307a90.c:
     complete
     .text       start:0x02307a90 end:0x02307aa4
 
@@ -668,7 +668,7 @@ src/ov000/func_ov000_023088e8.c:
     complete
     .text       start:0x023088e8 end:0x023088f8
 
-src/ov000/func_ov000_023088f8.c:
+src/ov000/MapObj8F_Destructor.c:
     complete
     .text       start:0x023088f8 end:0x02308904
 
@@ -688,7 +688,7 @@ src/ov000/func_ov000_023092cc.c:
     complete
     .text       start:0x023092cc end:0x023092e4
 
-src/ov000/func_ov000_023093e4.c:
+src/ov000/MapObj8C_State_Unk_ov000_023093e4.c:
     complete
     .text       start:0x023093e4 end:0x023093e8
 
@@ -700,11 +700,11 @@ src/ov000/func_ov000_023099b0.c:
     complete
     .text       start:0x023099b0 end:0x023099c0
 
-src/ov000/func_ov000_02309bdc.c:
+src/ov000/MapObj70_State_Unk_ov000_02309bdc.c:
     complete
     .text       start:0x02309bdc end:0x02309be0
 
-src/ov000/func_ov000_02309e80.c:
+src/ov000/MapObj70_Destructor.c:
     complete
     .text       start:0x02309e80 end:0x02309e9c
 
@@ -712,15 +712,15 @@ src/ov000/func_ov000_0230b320.c:
     complete
     .text       start:0x0230b320 end:0x0230b344
 
-src/ov000/func_ov000_0230bc38.c:
+src/ov000/MapObj13Part_State_Unk_ov000_0230bc38.c:
     complete
     .text       start:0x0230bc38 end:0x0230bc50
 
-src/ov000/func_ov000_0230bdf4.c:
+src/ov000/MapObj13Part_Destructor_ov000_0230bdf4.c:
     complete
     .text       start:0x0230bdf4 end:0x0230be10
 
-src/ov000/func_ov000_0230bfdc.c:
+src/ov000/MapObj13Part_Destructor_ov000_0230bfdc.c:
     complete
     .text       start:0x0230bfdc end:0x0230bff8
 
@@ -728,7 +728,7 @@ src/ov000/func_ov000_0230ca40.c:
     complete
     .text       start:0x0230ca40 end:0x0230ca50
 
-src/ov000/func_ov000_0230d25c.c:
+src/ov000/IronBall_State_Unk_ov000_0230d25c.c:
     complete
     .text       start:0x0230d25c end:0x0230d260
 
@@ -736,7 +736,7 @@ src/ov000/func_ov000_0230d260.c:
     complete
     .text       start:0x0230d260 end:0x0230d270
 
-src/ov000/func_ov000_0230d5b8.c:
+src/ov000/ItemBoxPart_Destructor_ov000_0230d5b8.c:
     complete
     .text       start:0x0230d5b8 end:0x0230d5d4
 
@@ -744,7 +744,7 @@ src/ov000/func_ov000_0230ddf0.c:
     complete
     .text       start:0x0230ddf0 end:0x0230de00
 
-src/ov000/func_ov000_0230e89c.c:
+src/ov000/JetCatapult_State_Unk_ov000_0230e89c.c:
     complete
     .text       start:0x0230e89c end:0x0230e8b0
 
@@ -756,7 +756,7 @@ src/ov000/func_ov000_02310114.c:
     complete
     .text       start:0x02310114 end:0x02310130
 
-src/ov000/func_ov000_02310e78.c:
+src/ov000/NeedleG_State_Unk_ov000_02310e78.c:
     complete
     .text       start:0x02310e78 end:0x02310e7c
 
@@ -764,7 +764,7 @@ src/ov000/func_ov000_02310e7c.c:
     complete
     .text       start:0x02310e7c end:0x02310e8c
 
-src/ov000/func_ov000_0231206c.c:
+src/ov000/Parachute_State_Unk_ov000_0231206c.c:
     complete
     .text       start:0x0231206c end:0x02312070
 
@@ -788,7 +788,7 @@ src/ov000/func_ov000_023136dc.c:
     complete
     .text       start:0x023136dc end:0x023136ec
 
-src/ov000/func_ov000_02313948.c:
+src/ov000/RockBreak_State_Unk_ov000_02313948.c:
     complete
     .text       start:0x02313948 end:0x0231394c
 
@@ -796,7 +796,7 @@ src/ov000/func_ov000_0231394c.c:
     complete
     .text       start:0x0231394c end:0x02313970
 
-src/ov000/func_ov000_02313ec4.c:
+src/ov000/Rocket_State_Unk_ov000_02313ec4.c:
     complete
     .text       start:0x02313ec4 end:0x02313ec8
 
@@ -804,7 +804,7 @@ src/ov000/func_ov000_02313ec8.c:
     complete
     .text       start:0x02313ec8 end:0x02313eec
 
-src/ov000/func_ov000_023142e8.c:
+src/ov000/Rock_Destructor.c:
     complete
     .text       start:0x023142e8 end:0x023142f4
 
@@ -812,11 +812,11 @@ src/ov000/func_ov000_0231478c.c:
     complete
     .text       start:0x0231478c end:0x0231479c
 
-src/ov000/func_ov000_0231499c.c:
+src/ov000/RopeCLand_Action_Idle.c:
     complete
     .text       start:0x0231499c end:0x023149c0
 
-src/ov000/func_ov000_02314bb8.c:
+src/ov000/RopeCSpring_Action_Idle.c:
     complete
     .text       start:0x02314bb8 end:0x02314bdc
 
@@ -824,11 +824,11 @@ src/ov000/func_ov000_0231506c.c:
     complete
     .text       start:0x0231506c end:0x0231507c
 
-src/ov000/func_ov000_02315278.c:
+src/ov000/SandSliderPart_State_Idle.c:
     complete
     .text       start:0x02315278 end:0x0231527c
 
-src/ov000/func_ov000_0231540c.c:
+src/ov000/SandSlider_State_Idle.c:
     complete
     .text       start:0x0231540c end:0x02315410
 
@@ -848,11 +848,11 @@ src/ov000/func_ov000_0231a0a0.c:
     complete
     .text       start:0x0231a0a0 end:0x0231a0b8
 
-src/ov000/func_ov000_0231a44c.c:
+src/ov000/Trampoline_State_Idle.c:
     complete
     .text       start:0x0231a44c end:0x0231a450
 
-src/ov000/func_ov000_0231a450.c:
+src/ov000/Trampoline_Action_Idle.c:
     complete
     .text       start:0x0231a450 end:0x0231a474
 
@@ -860,7 +860,7 @@ src/ov000/func_ov000_0231aec0.c:
     complete
     .text       start:0x0231aec0 end:0x0231aed8
 
-src/ov000/func_ov000_0231b564.c:
+src/ov000/WallBreak_State_Idle.c:
     complete
     .text       start:0x0231b564 end:0x0231b568
 
@@ -896,7 +896,7 @@ src/ov000/func_ov000_023208a4.c:
     complete
     .text       start:0x023208a4 end:0x023208b0
 
-src/ov000/func_ov000_02321d90.c:
+src/ov000/DecBird_OnHit.c:
     complete
     .text       start:0x02321d90 end:0x02321da4
 
@@ -912,95 +912,95 @@ src/ov000/func_ov000_02327988.c:
     complete
     .text       start:0x02327988 end:0x023279a0
 
-src/ov000/func_ov000_023280b0.c:
+src/ov000/BossEffect_CreateBeamFinB.c:
     complete
     .text       start:0x023280b0 end:0x023280e8
 
-src/ov000/func_ov000_02328170.c:
+src/ov000/BossEffect_CreateProduce.c:
     complete
     .text       start:0x02328170 end:0x023281c0
 
-src/ov000/func_ov000_023281c0.c:
+src/ov000/BossEffect_CreateDmgHand.c:
     complete
     .text       start:0x023281c0 end:0x02328210
 
-src/ov000/func_ov000_02328210.c:
+src/ov000/BossEffect_CreateImpactPr.c:
     complete
     .text       start:0x02328210 end:0x02328248
 
-src/ov000/func_ov000_02328248.c:
+src/ov000/BossEffect_CreateImpactSt.c:
     complete
     .text       start:0x02328248 end:0x02328280
 
-src/ov000/func_ov000_02328280.c:
+src/ov000/BossEffect_CreateImpactSl.c:
     complete
     .text       start:0x02328280 end:0x023282b8
 
-src/ov000/func_ov000_023282b8.c:
+src/ov000/BossEffect_CreateLaunch.c:
     complete
     .text       start:0x023282b8 end:0x02328308
 
-src/ov000/func_ov000_02328340.c:
+src/ov000/BossEffect_CreateStrikeFin.c:
     complete
     .text       start:0x02328340 end:0x02328390
 
-src/ov000/func_ov000_02328390.c:
+src/ov000/BossEffect_CreateStrikeHit.c:
     complete
     .text       start:0x02328390 end:0x023283e0
 
-src/ov000/func_ov000_023283e0.c:
+src/ov000/BossEffect_CreateStrikeBig.c:
     complete
     .text       start:0x023283e0 end:0x02328430
 
-src/ov000/func_ov000_02328430.c:
+src/ov000/BossEffect_CreateBoost.c:
     complete
     .text       start:0x02328430 end:0x02328468
 
-src/ov000/func_ov000_023284d8.c:
+src/ov000/BossEffect_CreatePick.c:
     complete
     .text       start:0x023284d8 end:0x02328510
 
-src/ov000/func_ov000_02328548.c:
+src/ov000/BossEffect_CreateCatch.c:
     complete
     .text       start:0x02328548 end:0x02328580
 
-src/ov000/func_ov000_023285d0.c:
+src/ov000/BossEffect_CreateClash.c:
     complete
     .text       start:0x023285d0 end:0x02328620
 
-src/ov000/func_ov000_02328710.c:
+src/ov000/BossEffect_CreateHit.c:
     complete
     .text       start:0x02328710 end:0x02328748
 
-src/ov000/func_ov000_02328748.c:
+src/ov000/BossEffect_CreateBlastF.c:
     complete
     .text       start:0x02328748 end:0x02328780
 
-src/ov000/func_ov000_02328780.c:
+src/ov000/BossEffect_CreateBlast5.c:
     complete
     .text       start:0x02328780 end:0x023287b8
 
-src/ov000/func_ov000_023287b8.c:
+src/ov000/BossEffect_CreateBlast4.c:
     complete
     .text       start:0x023287b8 end:0x023287f0
 
-src/ov000/func_ov000_023287f0.c:
+src/ov000/BossEffect_CreateBlast3.c:
     complete
     .text       start:0x023287f0 end:0x02328828
 
-src/ov000/func_ov000_02328828.c:
+src/ov000/BossEffect_CreateBlast1.c:
     complete
     .text       start:0x02328828 end:0x02328860
 
-src/ov000/func_ov000_02328860.c:
+src/ov000/BossEffect_CreateBlast.c:
     complete
     .text       start:0x02328860 end:0x02328898
 
-src/ov000/func_ov000_02328898.c:
+src/ov000/BossEffect_CreateImpactBig.c:
     complete
     .text       start:0x02328898 end:0x023288d0
 
-src/ov000/func_ov000_023288d0.c:
+src/ov000/BossEffect_CreateImpactSmall.c:
     complete
     .text       start:0x023288d0 end:0x02328908
 
@@ -1368,7 +1368,7 @@ src/ov000/func_ov000_0234fad0.c:
     complete
     .text       start:0x0234fad0 end:0x0234fae0
 
-src/ov000/func_ov000_02355da0.c:
+src/ov000/Player_SetSourceMapObject.c:
     complete
     .text       start:0x02355da0 end:0x02355dac
 
@@ -1544,7 +1544,7 @@ src/ov000/func_ov000_022c6900.c:
     complete
     .text       start:0x022c6900 end:0x022c6924
 
-src/ov000/func_ov000_022c74ac.c:
+src/ov000/Boss1Hammer_Destructor.c:
     complete
     .text       start:0x022c74ac end:0x022c74d0
 
@@ -1568,7 +1568,7 @@ src/ov000/func_ov000_022c9cc0.c:
     complete
     .text       start:0x022c9cc0 end:0x022c9ce8
 
-src/ov000/func_ov000_022ca184.c:
+src/ov000/Boss1Neck_Destructor.c:
     complete
     .text       start:0x022ca184 end:0x022ca1a8
 
@@ -1676,7 +1676,7 @@ src/ov000/func_ov000_022ea614.c:
     complete
     .text       start:0x022ea614 end:0x022ea638
 
-src/ov000/func_ov000_022ed138.c:
+src/ov000/Boss7_State_Unk_ov000_022ed138.c:
     complete
     .text       start:0x022ed138 end:0x022ed15c
 
@@ -1684,7 +1684,7 @@ src/ov000/func_ov000_022edb98.c:
     complete
     .text       start:0x022edb98 end:0x022edbb8
 
-src/ov000/func_ov000_022edc70.c:
+src/ov000/Boss7_State_Unk_ov000_022edc70.c:
     complete
     .text       start:0x022edc70 end:0x022edc94
 
@@ -1744,51 +1744,51 @@ src/ov000/func_ov000_022f4cbc.c:
     complete
     .text       start:0x022f4cbc end:0x022f4ce4
 
-src/ov000/func_ov000_022f5678.c:
+src/ov000/BossFPartD8_Destructor.c:
     complete
     .text       start:0x022f5678 end:0x022f569c
 
-src/ov000/func_ov000_022f5840.c:
+src/ov000/BossFPartDE_State_Unk_ov000_022f5840.c:
     complete
     .text       start:0x022f5840 end:0x022f5860
 
-src/ov000/func_ov000_022f58ac.c:
+src/ov000/BossFPartDE_State_Unk_ov000_022f58ac.c:
     complete
     .text       start:0x022f58ac end:0x022f58cc
 
-src/ov000/func_ov000_022f67a8.c:
+src/ov000/BossFPartDE_State_Unk_ov000_022f67a8.c:
     complete
     .text       start:0x022f67a8 end:0x022f67c8
 
-src/ov000/func_ov000_022f6834.c:
+src/ov000/BossFPartDE_State_Unk_ov000_022f6834.c:
     complete
     .text       start:0x022f6834 end:0x022f685c
 
-src/ov000/func_ov000_022f715c.c:
+src/ov000/BossFPartDD_Destructor.c:
     complete
     .text       start:0x022f715c end:0x022f7180
 
-src/ov000/func_ov000_022f7a60.c:
+src/ov000/BossFPartDC_Destructor.c:
     complete
     .text       start:0x022f7a60 end:0x022f7a84
 
-src/ov000/func_ov000_022f7b84.c:
+src/ov000/BossFPartDB_Destructor.c:
     complete
     .text       start:0x022f7b84 end:0x022f7ba8
 
-src/ov000/func_ov000_022f7ca8.c:
+src/ov000/BossFPartDA_Destructor.c:
     complete
     .text       start:0x022f7ca8 end:0x022f7ccc
 
-src/ov000/func_ov000_022f7f44.c:
+src/ov000/BossFPartD9_State_Unk_ov000_022f7f44.c:
     complete
     .text       start:0x022f7f44 end:0x022f7f68
 
-src/ov000/func_ov000_022f8200.c:
+src/ov000/BossFPartD9_Destructor.c:
     complete
     .text       start:0x022f8200 end:0x022f8224
 
-src/ov000/func_ov000_02301234.c:
+src/ov000/KuragenBomb_Destructor.c:
     complete
     .text       start:0x02301234 end:0x02301258
 
@@ -1800,11 +1800,11 @@ src/ov000/func_ov000_0230a840.c:
     complete
     .text       start:0x0230a840 end:0x0230a864
 
-src/ov000/func_ov000_0230ba28.c:
+src/ov000/Hand2d_Destructor.c:
     complete
     .text       start:0x0230ba28 end:0x0230ba48
 
-src/ov000/func_ov000_0230e8c0.c:
+src/ov000/JetCatapult_Destructor.c:
     complete
     .text       start:0x0230e8c0 end:0x0230e8e4
 
@@ -1812,19 +1812,19 @@ src/ov000/func_ov000_02312c70.c:
     complete
     .text       start:0x02312c70 end:0x02312c94
 
-src/ov000/func_ov000_023136bc.c:
+src/ov000/RockBreakPart_State_Unk_ov000_023136bc.c:
     complete
     .text       start:0x023136bc end:0x023136dc
 
-src/ov000/func_ov000_0231a428.c:
+src/ov000/Trampoline_Action_Bounce.c:
     complete
     .text       start:0x0231a428 end:0x0231a44c
 
-src/ov000/func_ov000_0231af54.c:
+src/ov000/Valve_Destructor.c:
     complete
     .text       start:0x0231af54 end:0x0231af74
 
-src/ov000/func_ov000_0231e304.c:
+src/ov000/DecAnimal_Destructor.c:
     complete
     .text       start:0x0231e304 end:0x0231e324
 
@@ -1852,7 +1852,7 @@ src/ov000/func_ov000_0232bc28.c:
     complete
     .text       start:0x0232bc28 end:0x0232bc4c
 
-src/ov000/func_ov000_0232dbfc.c:
+src/ov000/FixVs_Destructor.c:
     complete
     .text       start:0x0232dbfc end:0x0232dc20
 
@@ -1904,11 +1904,11 @@ src/ov000/func_ov000_02346d10.c:
     complete
     .text       start:0x02346d10 end:0x02346d30
 
-src/ov000/func_ov000_02355afc.c:
+src/ov000/Player_Action_SpringLaunchAlt.c:
     complete
     .text       start:0x02355afc end:0x02355b20
 
-src/ov000/func_ov000_02355b20.c:
+src/ov000/Player_Action_SpringLaunch.c:
     complete
     .text       start:0x02355b20 end:0x02355b44
 
@@ -2044,7 +2044,7 @@ src/ov000/func_ov000_022d76bc.c:
     complete
     .text       start:0x022d76bc end:0x022d7754
 
-src/ov000/func_ov000_022d836c.c:
+src/ov000/Boss3PartCD_State_Unk_ov000_022d836c.c:
     complete
     .text       start:0x022d836c end:0x022d8398
 
@@ -2052,7 +2052,7 @@ src/ov000/func_ov000_022d91bc.c:
     complete
     .text       start:0x022d91bc end:0x022d9230
 
-src/ov000/func_ov000_022d9230.c:
+src/ov000/Boss3PartCC_Destructor.c:
     complete
     .text       start:0x022d9230 end:0x022d9264
 
@@ -2092,7 +2092,7 @@ src/ov000/func_ov000_022dbb7c.c:
     complete
     .text       start:0x022dbb7c end:0x022dbbe0
 
-src/ov000/func_ov000_022dbe38.c:
+src/ov000/Boss4PartD2_Destructor.c:
     complete
     .text       start:0x022dbe38 end:0x022dbe6c
 
@@ -2116,11 +2116,11 @@ src/ov000/func_ov000_022dc82c.c:
     complete
     .text       start:0x022dc82c end:0x022dc858
 
-src/ov000/func_ov000_022dca70.c:
+src/ov000/Boss4PartD0_Destructor.c:
     complete
     .text       start:0x022dca70 end:0x022dcaa4
 
-src/ov000/func_ov000_022dd004.c:
+src/ov000/Boss4PartCE_Draw.c:
     complete
     .text       start:0x022dd004 end:0x022dd068
 
@@ -2136,7 +2136,7 @@ src/ov000/func_ov000_022dfb34.c:
     complete
     .text       start:0x022dfb34 end:0x022dfb68
 
-src/ov000/func_ov000_022e282c.c:
+src/ov000/Boss6_State_Unk_ov000_022e282c.c:
     complete
     .text       start:0x022e282c end:0x022e285c
 
@@ -2196,7 +2196,7 @@ src/ov000/func_ov000_022eb124.c:
     complete
     .text       start:0x022eb124 end:0x022eb158
 
-src/ov000/func_ov000_022eb364.c:
+src/ov000/Boss7_State_Unk_ov000_022eb364.c:
     complete
     .text       start:0x022eb364 end:0x022eb394
 
@@ -2204,23 +2204,23 @@ src/ov000/func_ov000_022eb394.c:
     complete
     .text       start:0x022eb394 end:0x022eb3c0
 
-src/ov000/func_ov000_022ebe00.c:
+src/ov000/Boss7_State_Unk_ov000_022ebe00.c:
     complete
     .text       start:0x022ebe00 end:0x022ebe64
 
-src/ov000/func_ov000_022ebea4.c:
+src/ov000/Boss7_State_Unk_ov000_022ebea4.c:
     complete
     .text       start:0x022ebea4 end:0x022ebf08
 
-src/ov000/func_ov000_022ebf44.c:
+src/ov000/Boss7_State_Unk_ov000_022ebf44.c:
     complete
     .text       start:0x022ebf44 end:0x022ebfa8
 
-src/ov000/func_ov000_022ec294.c:
+src/ov000/Boss7PartD6_State_Unk_ov000_022ec294.c:
     complete
     .text       start:0x022ec294 end:0x022ec2c8
 
-src/ov000/func_ov000_022ec530.c:
+src/ov000/Boss7PartD6_Destructor.c:
     complete
     .text       start:0x022ec530 end:0x022ec564
 
@@ -2228,11 +2228,11 @@ src/ov000/func_ov000_022ed15c.c:
     complete
     .text       start:0x022ed15c end:0x022ed190
 
-src/ov000/func_ov000_022edbb8.c:
+src/ov000/Boss7_State_Unk_ov000_022edbb8.c:
     complete
     .text       start:0x022edbb8 end:0x022edbec
 
-src/ov000/func_ov000_022edbec.c:
+src/ov000/Boss7_State_Unk_ov000_022edbec.c:
     complete
     .text       start:0x022edbec end:0x022edc24
 
@@ -2268,11 +2268,11 @@ src/ov000/func_ov000_022f21f0.c:
     complete
     .text       start:0x022f21f0 end:0x022f228c
 
-src/ov000/func_ov000_022f24f8.c:
+src/ov000/BossFPartD8_State_Unk_ov000_022f24f8.c:
     complete
     .text       start:0x022f24f8 end:0x022f2524
 
-src/ov000/func_ov000_022f2524.c:
+src/ov000/BossFPartD8_State_Unk_ov000_022f2524.c:
     complete
     .text       start:0x022f2524 end:0x022f2550
 
@@ -2280,7 +2280,7 @@ src/ov000/func_ov000_022f25d0.c:
     complete
     .text       start:0x022f25d0 end:0x022f2608
 
-src/ov000/func_ov000_022f2e20.c:
+src/ov000/BossFPartD8_State_Unk_ov000_022f2e20.c:
     complete
     .text       start:0x022f2e20 end:0x022f2e58
 
@@ -2312,7 +2312,7 @@ src/ov000/func_ov000_022f62bc.c:
     complete
     .text       start:0x022f62bc end:0x022f62f0
 
-src/ov000/func_ov000_022f6654.c:
+src/ov000/BossFPartDE_State_Unk_ov000_022f6654.c:
     complete
     .text       start:0x022f6654 end:0x022f6684
 
@@ -2320,7 +2320,7 @@ src/ov000/func_ov000_022f669c.c:
     complete
     .text       start:0x022f669c end:0x022f66d0
 
-src/ov000/func_ov000_022f7f80.c:
+src/ov000/BossFPartD9_State_Unk_ov000_022f7f80.c:
     complete
     .text       start:0x022f7f80 end:0x022f7fb4
 
@@ -2332,7 +2332,7 @@ src/ov000/func_ov000_022f8f78.c:
     complete
     .text       start:0x022f8f78 end:0x022f8fa0
 
-src/ov000/func_ov000_022faeac.c:
+src/ov000/MapObject_AllocSpawnEntry.c:
     complete
     .text       start:0x022faeac end:0x022faf48
 
@@ -2348,15 +2348,15 @@ src/ov000/func_ov000_022fc418.c:
     complete
     .text       start:0x022fc418 end:0x022fc450
 
-src/ov000/func_ov000_022fcc1c.c:
+src/ov000/EnemyPawnGroup_State_Unk_ov000_022fcc1c.c:
     complete
     .text       start:0x022fcc1c end:0x022fcc50
 
-src/ov000/func_ov000_022fcce4.c:
+src/ov000/EnemyPawnGroup_State_Unk_ov000_022fcce4.c:
     complete
     .text       start:0x022fcce4 end:0x022fcd10
 
-src/ov000/func_ov000_022fdef0.c:
+src/ov000/EnemyPawnGroup_State_Unk_ov000_022fdef0.c:
     complete
     .text       start:0x022fdef0 end:0x022fdf28
 
@@ -2376,7 +2376,7 @@ src/ov000/func_ov000_023008a0.c:
     complete
     .text       start:0x023008a0 end:0x023008d0
 
-src/ov000/func_ov000_02300e94.c:
+src/ov000/KuragenBomb_OnHit_Box1.c:
     complete
     .text       start:0x02300e94 end:0x02300ec4
 
@@ -2392,11 +2392,11 @@ src/ov000/func_ov000_02302418.c:
     complete
     .text       start:0x02302418 end:0x023024b0
 
-src/ov000/func_ov000_02305450.c:
+src/ov000/CranePartEE_Draw.c:
     complete
     .text       start:0x02305450 end:0x023054e8
 
-src/ov000/func_ov000_02306e48.c:
+src/ov000/DashC_State_Unk_ov000_02306e48.c:
     complete
     .text       start:0x02306e48 end:0x02306e74
 
@@ -2404,7 +2404,7 @@ src/ov000/func_ov000_02308b88.c:
     complete
     .text       start:0x02308b88 end:0x02308c20
 
-src/ov000/func_ov000_023099c0.c:
+src/ov000/MapObj8C_Destructor.c:
     complete
     .text       start:0x023099c0 end:0x023099e8
 
@@ -2412,11 +2412,11 @@ src/ov000/func_ov000_0230b9f4.c:
     complete
     .text       start:0x0230b9f4 end:0x0230ba28
 
-src/ov000/func_ov000_0230be10.c:
+src/ov000/MapObj13Part_State_Unk_ov000_0230be10.c:
     complete
     .text       start:0x0230be10 end:0x0230be44
 
-src/ov000/func_ov000_0230bff8.c:
+src/ov000/MapObj13Part_State_Unk_ov000_0230bff8.c:
     complete
     .text       start:0x0230bff8 end:0x0230c02c
 
@@ -2428,11 +2428,11 @@ src/ov000/func_ov000_0230ccd4.c:
     complete
     .text       start:0x0230ccd4 end:0x0230cd00
 
-src/ov000/func_ov000_0230ce24.c:
+src/ov000/IronBall_OnHit_Unk_ov000_0230ce24.c:
     complete
     .text       start:0x0230ce24 end:0x0230ce4c
 
-src/ov000/func_ov000_0230d270.c:
+src/ov000/IronBall_Destructor.c:
     complete
     .text       start:0x0230d270 end:0x0230d2a0
 
@@ -2444,7 +2444,7 @@ src/ov000/func_ov000_0230ecc8.c:
     complete
     .text       start:0x0230ecc8 end:0x0230ecf8
 
-src/ov000/func_ov000_0230f4c8.c:
+src/ov000/GmkLand_State_Unk_ov000_0230f4c8.c:
     complete
     .text       start:0x0230f4c8 end:0x0230f4fc
 
@@ -2452,11 +2452,11 @@ src/ov000/func_ov000_023107c4.c:
     complete
     .text       start:0x023107c4 end:0x023107f4
 
-src/ov000/func_ov000_023121e4.c:
+src/ov000/GmkPipe_OnHit_Box1.c:
     complete
     .text       start:0x023121e4 end:0x02312214
 
-src/ov000/func_ov000_023122d8.c:
+src/ov000/GmkPipe_State_Unk_ov000_023122d8.c:
     complete
     .text       start:0x023122d8 end:0x02312304
 
@@ -2464,15 +2464,15 @@ src/ov000/func_ov000_02314758.c:
     complete
     .text       start:0x02314758 end:0x0231478c
 
-src/ov000/func_ov000_02314dc8.c:
+src/ov000/RopeC_OnHit.c:
     complete
     .text       start:0x02314dc8 end:0x02314e60
 
-src/ov000/func_ov000_02315a64.c:
+src/ov000/Saucer_Destructor.c:
     complete
     .text       start:0x02315a64 end:0x02315a8c
 
-src/ov000/func_ov000_02316148.c:
+src/ov000/EffSpecial_Destructor.c:
     complete
     .text       start:0x02316148 end:0x02316170
 
@@ -2480,19 +2480,19 @@ src/ov000/func_ov000_023174e4.c:
     complete
     .text       start:0x023174e4 end:0x0231750c
 
-src/ov000/func_ov000_02317db8.c:
+src/ov000/SwingSky_OnHit.c:
     complete
     .text       start:0x02317db8 end:0x02317e50
 
-src/ov000/func_ov000_02318b08.c:
+src/ov000/SwitchTimer_Destructor.c:
     complete
     .text       start:0x02318b08 end:0x02318ba0
 
-src/ov000/func_ov000_0231a364.c:
+src/ov000/Trampoline_OnHit.c:
     complete
     .text       start:0x0231a364 end:0x0231a3fc
 
-src/ov000/func_ov000_0231a3fc.c:
+src/ov000/Trampoline_State_Bounce.c:
     complete
     .text       start:0x0231a3fc end:0x0231a428
 
@@ -2516,7 +2516,7 @@ src/ov000/func_ov000_0231bf68.c:
     complete
     .text       start:0x0231bf68 end:0x0231bfa0
 
-src/ov000/func_ov000_0231c3ac.c:
+src/ov000/Mine_OnHit.c:
     complete
     .text       start:0x0231c3ac end:0x0231c444
 
@@ -2548,7 +2548,7 @@ src/ov000/func_ov000_02322f3c.c:
     complete
     .text       start:0x02322f3c end:0x02322f68
 
-src/ov000/func_ov000_023265a8.c:
+src/ov000/Decoration_In_Default.c:
     complete
     .text       start:0x023265a8 end:0x023265d8
 
@@ -2564,23 +2564,23 @@ src/ov000/func_ov000_023277ac.c:
     complete
     .text       start:0x023277ac end:0x023277d4
 
-src/ov000/func_ov000_02327ef4.c:
+src/ov000/BossEffect_Destructor.c:
     complete
     .text       start:0x02327ef4 end:0x02327f24
 
-src/ov000/func_ov000_023280e8.c:
+src/ov000/BossEffect_CreateTackle.c:
     complete
     .text       start:0x023280e8 end:0x02328120
 
-src/ov000/func_ov000_02328308.c:
+src/ov000/BossEffect_CreateSuction.c:
     complete
     .text       start:0x02328308 end:0x02328340
 
-src/ov000/func_ov000_02328468.c:
+src/ov000/BossEffect_CreateHoming.c:
     complete
     .text       start:0x02328468 end:0x023284a0
 
-src/ov000/func_ov000_023284a0.c:
+src/ov000/BossEffect_CreateParts.c:
     complete
     .text       start:0x023284a0 end:0x023284d8
 
@@ -2612,7 +2612,7 @@ src/ov000/func_ov000_0232d2dc.c:
     complete
     .text       start:0x0232d2dc end:0x0232d30c
 
-src/ov000/func_ov000_02338504.c:
+src/ov000/BossHelp_Main.c:
     complete
     .text       start:0x02338504 end:0x02338538
 
@@ -2652,7 +2652,7 @@ src/ov000/func_ov000_02347c44.c:
     complete
     .text       start:0x02347c44 end:0x02347c6c
 
-src/ov000/func_ov000_023548a4.c:
+src/ov000/Player_State_BendStick.c:
     complete
     .text       start:0x023548a4 end:0x023548d8
 
@@ -2720,7 +2720,7 @@ src/ov000/func_ov000_0235b644.c:
     complete
     .text       start:0x0235b644 end:0x0235b804
 
-src/ov000/func_ov000_0235c674.c:
+src/ov000/Ring_Create.c:
     complete
     .text       start:0x0235c674 end:0x0235c6a8
 
@@ -2816,7 +2816,7 @@ src/ov000_a/func_ov000_022c6bc0.c:
     complete
     .text       start:0x022c6bc0 end:0x022c6db4
 
-src/ov000_a/func_ov000_022c6db4.c:
+src/ov000_a/Boss1Hammer_Collide.c:
     complete
     .text       start:0x022c6db4 end:0x022c6e58
 
@@ -2832,7 +2832,7 @@ src/ov000_a/func_ov000_022c7274.c:
     complete
     .text       start:0x022c7274 end:0x022c72f8
 
-src/ov000_a/func_ov000_022c736c.c:
+src/ov000_a/Boss1Hammer_Draw.c:
     complete
     .text       start:0x022c736c end:0x022c74ac
 
@@ -2996,27 +2996,27 @@ src/ov000_a/func_ov000_022f8ce8.c:
     complete
     .text       start:0x022f8ce8 end:0x022f8df8
 
-src/ov000_b/func_ov000_023129a0.c:
+src/ov000_b/Piston_Create.c:
     complete
     .text       start:0x023129a0 end:0x02312c20
 
-src/ov000_b/func_ov000_02317ac8.c:
+src/ov000_b/Swing_Create.c:
     complete
     .text       start:0x02317ac8 end:0x02317db8
 
-src/ov000_b/func_ov000_023185b4.c:
+src/ov000_b/SwingSky_Create.c:
     complete
     .text       start:0x023185b4 end:0x023189c4
 
-src/ov000_b/func_ov000_0231a0f0.c:
+src/ov000_b/GmkTable_Create.c:
     complete
     .text       start:0x0231a0f0 end:0x0231a364
 
-src/ov000_b/func_ov000_0231af74.c:
+src/ov000_b/Valve_Create.c:
     complete
     .text       start:0x0231af74 end:0x0231b1e8
 
-src/ov000_b/func_ov000_0231cb18.c:
+src/ov000_b/Mine_Create.c:
     complete
     .text       start:0x0231cb18 end:0x0231cda4
 
@@ -3036,7 +3036,7 @@ src/ov000_b/func_ov000_02329984.c:
     complete
     .text       start:0x02329984 end:0x02329be0
 
-src/ov000_b/func_ov000_02329d38.c:
+src/ov000_b/Bubble3D_Create.c:
     complete
     .text       start:0x02329d38 end:0x02329f50
 
@@ -3056,11 +3056,11 @@ src/ov000_b/func_ov000_0232be64.c:
     complete
     .text       start:0x0232be64 end:0x0232c4cc
 
-src/ov000_b/func_ov000_02330aec.c:
+src/ov000_b/Magnet_Create.c:
     complete
     .text       start:0x02330aec end:0x02330e60
 
-src/ov000_b/func_ov000_02331058.c:
+src/ov000_b/Barrier_Create.c:
     complete
     .text       start:0x02331058 end:0x023312f0
 
@@ -3068,7 +3068,7 @@ src/ov000_b/func_ov000_02332b3c.c:
     complete
     .text       start:0x02332b3c end:0x02332db8
 
-src/ov000_b/func_ov000_0234360c.c:
+src/ov000_b/Player_Draw.c:
     complete
     .text       start:0x0234360c end:0x02343940
 
@@ -3076,7 +3076,7 @@ src/ov000_b/func_ov000_0234e474.c:
     complete
     .text       start:0x0234e474 end:0x0234e7b4
 
-src/ov000_b/func_ov000_02313eec.c:
+src/ov000_b/Rocket_Create.c:
     complete
     .text       start:0x02313eec end:0x023140e4
 
@@ -3084,7 +3084,7 @@ src/ov000_b/func_ov000_02324b9c.c:
     complete
     .text       start:0x02324b9c end:0x023254dc
 
-src/ov000_a/func_ov000_022ca11c.c:
+src/ov000_a/Boss1Neck_Draw.c:
     complete
     .text       start:0x022ca11c end:0x022ca184
 
@@ -3096,11 +3096,11 @@ src/ov000_a/func_ov000_022ca314.c:
     complete
     .text       start:0x022ca314 end:0x022ca484
 
-src/ov000_a/func_ov000_022ca4e8.c:
+src/ov000_a/Boss5PartD3_Draw.c:
     complete
     .text       start:0x022ca4e8 end:0x022ca550
 
-src/ov000_a/func_ov000_022ca574.c:
+src/ov000_a/Boss1Hammer_State_Unk_ov000_022ca574.c:
     complete
     .text       start:0x022ca574 end:0x022ca63c
 
@@ -3116,7 +3116,7 @@ src/ov000_a/func_ov000_022caa08.c:
     complete
     .text       start:0x022caa08 end:0x022cab0c
 
-src/ov000_a/func_ov000_022cab48.c:
+src/ov000_a/Boss1Hammer_State_Unk_ov000_022cab48.c:
     complete
     .text       start:0x022cab48 end:0x022cac48
 
@@ -3124,7 +3124,7 @@ src/ov000_a/func_ov000_022cac48.c:
     complete
     .text       start:0x022cac48 end:0x022cad94
 
-src/ov000_a/func_ov000_022cad94.c:
+src/ov000_a/Boss1Hammer_State_Unk_ov000_022cad94.c:
     complete
     .text       start:0x022cad94 end:0x022cae4c
 
@@ -3136,7 +3136,7 @@ src/ov000_a/func_ov000_022cb12c.c:
     complete
     .text       start:0x022cb12c end:0x022cb218
 
-src/ov000_a/func_ov000_022cb218.c:
+src/ov000_a/Boss1_State_Unk_ov000_022cb218.c:
     complete
     .text       start:0x022cb218 end:0x022cb344
 
@@ -3148,7 +3148,7 @@ src/ov000_a/func_ov000_022cbb7c.c:
     complete
     .text       start:0x022cbb7c end:0x022cbcb4
 
-src/ov000_a/func_ov000_022cbcf4.c:
+src/ov000_a/Boss1_Destructor.c:
     complete
     .text       start:0x022cbcf4 end:0x022cbdb0
 
@@ -3172,19 +3172,19 @@ src/ov000_a/func_ov000_022cc530.c:
     complete
     .text       start:0x022cc530 end:0x022cc6d4
 
-src/ov000_a/func_ov000_022cc6f0.c:
+src/ov000_a/Boss5PartD3_Create.c:
     complete
     .text       start:0x022cc6f0 end:0x022cc8cc
 
-src/ov000_a/func_ov000_022cc8cc.c:
+src/ov000_a/Boss1Hammer_Create.c:
     complete
     .text       start:0x022cc8cc end:0x022ccc38
 
-src/ov000_a/func_ov000_022ccc38.c:
+src/ov000_a/Boss1Neck_Create.c:
     complete
     .text       start:0x022ccc38 end:0x022cce24
 
-src/ov000_a/func_ov000_022cce24.c:
+src/ov000_a/Boss1_Create.c:
     complete
     .text       start:0x022cce24 end:0x022cd1b0
 
@@ -3224,23 +3224,23 @@ src/ov000_a/func_ov000_022f8fa0.c:
     complete
     .text       start:0x022f8fa0 end:0x022f9044
 
-src/ov000_b/func_ov000_02310c44.c:
+src/ov000_b/Needle_Create.c:
     complete
     .text       start:0x02310c44 end:0x02310e78
 
-src/ov000_b/func_ov000_02312c94.c:
+src/ov000_b/GmkLandAA_Create.c:
     complete
     .text       start:0x02312c94 end:0x02312eb0
 
-src/ov000_b/func_ov000_02316698.c:
+src/ov000_b/GmkSpecial_Create.c:
     complete
     .text       start:0x02316698 end:0x023168a4
 
-src/ov000_b/func_ov000_023193d8.c:
+src/ov000_b/Switch_Create.c:
     complete
     .text       start:0x023193d8 end:0x0231960c
 
-src/ov000_b/func_ov000_0231bffc.c:
+src/ov000_b/WaterJet_Create.c:
     complete
     .text       start:0x0231bffc end:0x0231c21c
 
@@ -3304,7 +3304,7 @@ src/ov000_b/func_ov000_02333cf8.c:
     complete
     .text       start:0x02333cf8 end:0x02333ef0
 
-src/ov000_b/func_ov000_02333ef0.c:
+src/ov000_b/EffSpinSmoke2_Create.c:
     complete
     .text       start:0x02333ef0 end:0x023340f0
 
@@ -3320,11 +3320,11 @@ src/ov000_a/func_ov000_022ce474.c:
     complete
     .text       start:0x022ce474 end:0x022ce614
 
-src/ov000_a/func_ov000_022ce614.c:
+src/ov000_a/Boss2_Draw_Unk_ov000_022ce614.c:
     complete
     .text       start:0x022ce614 end:0x022cebc8
 
-src/ov000_a/func_ov000_022cebc8.c:
+src/ov000_a/Boss2_Draw_Unk_ov000_022cebc8.c:
     complete
     .text       start:0x022cebc8 end:0x022cedd8
 
@@ -3352,7 +3352,7 @@ src/ov000_a/func_ov000_022cf2d0.c:
     complete
     .text       start:0x022cf2d0 end:0x022cf38c
 
-src/ov000_a/func_ov000_022cf8b0.c:
+src/ov000_a/Boss2_CreatePart_ov000_022cf8b0.c:
     complete
     .text       start:0x022cf8b0 end:0x022cf92c
 
@@ -3360,23 +3360,23 @@ src/ov000_a/func_ov000_022cf92c.c:
     complete
     .text       start:0x022cf92c end:0x022cfb90
 
-src/ov000_b/func_ov000_023142f4.c:
+src/ov000_b/Rock_Create.c:
     complete
     .text       start:0x023142f4 end:0x023144f0
 
-src/ov000_b/func_ov000_0231507c.c:
+src/ov000_b/RopeC_Create.c:
     complete
     .text       start:0x0231507c end:0x02315278
 
-src/ov000_b/func_ov000_0231750c.c:
+src/ov000_b/Shooter_Create.c:
     complete
     .text       start:0x0231750c end:0x02317704
 
-src/ov000_b/func_ov000_0231d5a4.c:
+src/ov000_b/Wheel2D_Create.c:
     complete
     .text       start:0x0231d5a4 end:0x0231d79c
 
-src/ov000_b/func_ov000_02320344.c:
+src/ov000_b/DecSonicNeonPart_Create.c:
     complete
     .text       start:0x02320344 end:0x0232053c
 
@@ -3400,19 +3400,19 @@ src/ov000_b/func_ov000_02325e60.c:
     complete
     .text       start:0x02325e60 end:0x023263c0
 
-src/ov000_b/func_ov000_023275c0.c:
+src/ov000_b/EffBoostA2_3D_Create.c:
     complete
     .text       start:0x023275c0 end:0x023277ac
 
-src/ov000_b/func_ov000_0232dedc.c:
+src/ov000_b/EffZakoDebris_Create.c:
     complete
     .text       start:0x0232dedc end:0x0232e2f0
 
-src/ov000_b/func_ov000_023302e4.c:
+src/ov000_b/EffGrind_Create.c:
     complete
     .text       start:0x023302e4 end:0x023304d4
 
-src/ov000_b/func_ov000_0231e324.c:
+src/ov000_b/DecAnimal_Create.c:
     complete
     .text       start:0x0231e324 end:0x0231e850
 
@@ -3468,7 +3468,7 @@ src/auto/func_ov000_022cbfc8.c:
     complete
     .text       start:0x022cbfc8 end:0x022cc00c
 
-src/auto/func_ov000_022d6380.c:
+src/auto/Boss3PartCD_Destructor.c:
     complete
     .text       start:0x022d6380 end:0x022d63bc
 
@@ -3508,11 +3508,11 @@ src/auto/func_ov000_022f2550.c:
     complete
     .text       start:0x022f2550 end:0x022f2594
 
-src/auto/func_ov000_022f703c.c:
+src/auto/BossFPartDE_Destructor.c:
     complete
     .text       start:0x022f703c end:0x022f7080
 
-src/auto/func_ov000_022f70f4.c:
+src/auto/BossFPartDD_Draw.c:
     complete
     .text       start:0x022f70f4 end:0x022f715c
 
@@ -3564,7 +3564,7 @@ src/auto/func_ov000_023165b0.c:
     complete
     .text       start:0x023165b0 end:0x023165ec
 
-src/auto/func_ov000_0231a0b8.c:
+src/auto/GmkTable_Destructor.c:
     complete
     .text       start:0x0231a0b8 end:0x0231a0f0
 
@@ -3572,27 +3572,27 @@ src/auto/func_ov000_0231a7e4.c:
     complete
     .text       start:0x0231a7e4 end:0x0231a824
 
-src/auto/func_ov000_02328040.c:
+src/auto/BossEffect_CreateBaseDest.c:
     complete
     .text       start:0x02328040 end:0x02328078
 
-src/auto/func_ov000_02328078.c:
+src/auto/BossEffect_CreateLaserFinB.c:
     complete
     .text       start:0x02328078 end:0x023280b0
 
-src/auto/func_ov000_02328510.c:
+src/auto/BossEffect_CreateSuction2.c:
     complete
     .text       start:0x02328510 end:0x02328548
 
-src/auto/func_ov000_02328620.c:
+src/auto/BossEffect_CreatePop.c:
     complete
     .text       start:0x02328620 end:0x02328670
 
-src/auto/func_ov000_02328670.c:
+src/auto/BossEffect_CreateLand.c:
     complete
     .text       start:0x02328670 end:0x023286c0
 
-src/auto/func_ov000_023286c0.c:
+src/auto/BossEffect_CreateJump.c:
     complete
     .text       start:0x023286c0 end:0x02328710
 
@@ -3768,7 +3768,7 @@ src/auto/func_ov000_02362240.c:
     complete
     .text       start:0x02362240 end:0x023622b4
 
-src/auto/func_ov000_023622f4.c:
+src/auto/TimeSelectMenu_Destructor.c:
     complete
     .text       start:0x023622f4 end:0x0236232c
 
@@ -3812,7 +3812,7 @@ src/auto/func_ov000_02300578.c:
     complete
     .text       start:0x02300578 end:0x023005bc
 
-src/auto/func_ov000_023141b8.c:
+src/auto/Rock_Action_Fall.c:
     complete
     .text       start:0x023141b8 end:0x02314200
 
@@ -3904,19 +3904,19 @@ src/auto/func_ov000_022ca1a8.c:
     complete
     .text       start:0x022ca1a8 end:0x022ca1ec
 
-src/auto/func_ov000_022ca890.c:
+src/auto/Boss1Hammer_State_Unk_ov000_022ca890.c:
     complete
     .text       start:0x022ca890 end:0x022ca8cc
 
-src/auto/func_ov000_022ca9cc.c:
+src/auto/Boss1Hammer_State_Unk_ov000_022ca9cc.c:
     complete
     .text       start:0x022ca9cc end:0x022caa08
 
-src/auto/func_ov000_022cab0c.c:
+src/auto/Boss1Hammer_State_Unk_ov000_022cab0c.c:
     complete
     .text       start:0x022cab0c end:0x022cab48
 
-src/auto/func_ov000_022cbcb4.c:
+src/auto/Boss1_Draw.c:
     complete
     .text       start:0x022cbcb4 end:0x022cbcf4
 
@@ -3936,7 +3936,7 @@ src/auto/func_ov000_022cf38c.c:
     complete
     .text       start:0x022cf38c end:0x022cf3dc
 
-src/auto/func_ov000_022da3b4.c:
+src/auto/Boss3_Draw_Unk_ov000_022da3b4.c:
     complete
     .text       start:0x022da3b4 end:0x022da3f4
 
@@ -3984,11 +3984,11 @@ src/auto/func_ov000_022ddab8.c:
     complete
     .text       start:0x022ddab8 end:0x022ddb44
 
-src/auto/func_ov000_022e0860.c:
+src/auto/Boss6PartD4_OnHit.c:
     complete
     .text       start:0x022e0860 end:0x022e08b0
 
-src/auto/func_ov000_022e162c.c:
+src/auto/Boss6PartD4_Draw.c:
     complete
     .text       start:0x022e162c end:0x022e1684
 
@@ -4024,19 +4024,19 @@ src/auto/func_ov000_022ea1b8.c:
     complete
     .text       start:0x022ea1b8 end:0x022ea20c
 
-src/auto/func_ov000_022eb970.c:
+src/auto/Boss7PartD5_Collide.c:
     complete
     .text       start:0x022eb970 end:0x022eb9f8
 
-src/auto/func_ov000_022ebdc4.c:
+src/auto/Boss7_State_Unk_ov000_022ebdc4.c:
     complete
     .text       start:0x022ebdc4 end:0x022ebe00
 
-src/auto/func_ov000_022ebe64.c:
+src/auto/Boss7_State_Unk_ov000_022ebe64.c:
     complete
     .text       start:0x022ebe64 end:0x022ebea0
 
-src/auto/func_ov000_022ebf08.c:
+src/auto/Boss7_State_Unk_ov000_022ebf08.c:
     complete
     .text       start:0x022ebf08 end:0x022ebf44
 
@@ -4044,15 +4044,15 @@ src/auto/func_ov000_022ec16c.c:
     complete
     .text       start:0x022ec16c end:0x022ec1b8
 
-src/auto/func_ov000_022ecc00.c:
+src/auto/Boss7_State_Unk_ov000_022ecc00.c:
     complete
     .text       start:0x022ecc00 end:0x022ecc3c
 
-src/auto/func_ov000_022ecd3c.c:
+src/auto/Boss7_State_Unk_ov000_022ecd3c.c:
     complete
     .text       start:0x022ecd3c end:0x022ecd78
 
-src/auto/func_ov000_022ece84.c:
+src/auto/Boss7_State_Unk_ov000_022ece84.c:
     complete
     .text       start:0x022ece84 end:0x022ecec0
 
@@ -4064,7 +4064,7 @@ src/auto/func_ov000_022ed658.c:
     complete
     .text       start:0x022ed658 end:0x022ed6c4
 
-src/auto/func_ov000_022edea8.c:
+src/auto/Boss7_Draw.c:
     complete
     .text       start:0x022edea8 end:0x022edee8
 
@@ -4072,15 +4072,15 @@ src/auto/func_ov000_022ee014.c:
     complete
     .text       start:0x022ee014 end:0x022ee06c
 
-src/auto/func_ov000_022ef4ec.c:
+src/auto/BossFPartD8_State_Unk_ov000_022ef4ec.c:
     complete
     .text       start:0x022ef4ec end:0x022ef528
 
-src/auto/func_ov000_022ef5a4.c:
+src/auto/BossFPartD8_State_Unk_ov000_022ef5a4.c:
     complete
     .text       start:0x022ef5a4 end:0x022ef5e0
 
-src/auto/func_ov000_022ef664.c:
+src/auto/BossFPartD8_State_Unk_ov000_022ef664.c:
     complete
     .text       start:0x022ef664 end:0x022ef6a0
 
@@ -4088,7 +4088,7 @@ src/auto/func_ov000_022ef9c8.c:
     complete
     .text       start:0x022ef9c8 end:0x022efa2c
 
-src/auto/func_ov000_022efa2c.c:
+src/auto/BossFPartD8_State_Unk_ov000_022efa2c.c:
     complete
     .text       start:0x022efa2c end:0x022efaa0
 
@@ -4152,7 +4152,7 @@ src/auto/func_ov000_022f2cf4.c:
     complete
     .text       start:0x022f2cf4 end:0x022f2d50
 
-src/auto/func_ov000_022f2de0.c:
+src/auto/BossFPartD8_State_Unk_ov000_022f2de0.c:
     complete
     .text       start:0x022f2de0 end:0x022f2e20
 
@@ -4164,11 +4164,11 @@ src/auto/func_ov000_022f338c.c:
     complete
     .text       start:0x022f338c end:0x022f33d0
 
-src/auto/func_ov000_022f3504.c:
+src/auto/BossFPartD8_State_Unk_ov000_022f3504.c:
     complete
     .text       start:0x022f3504 end:0x022f3544
 
-src/auto/func_ov000_022f3544.c:
+src/auto/BossFPartD8_State_Unk_ov000_022f3544.c:
     complete
     .text       start:0x022f3544 end:0x022f3588
 
@@ -4188,11 +4188,11 @@ src/auto/func_ov000_022f5e18.c:
     complete
     .text       start:0x022f5e18 end:0x022f5e74
 
-src/auto/func_ov000_022f6278.c:
+src/auto/BossFPartDE_State_Unk_ov000_022f6278.c:
     complete
     .text       start:0x022f6278 end:0x022f62bc
 
-src/auto/func_ov000_022f6500.c:
+src/auto/BossFPartDE_State_Unk_ov000_022f6500.c:
     complete
     .text       start:0x022f6500 end:0x022f653c
 
@@ -4204,11 +4204,11 @@ src/auto/func_ov000_022f7804.c:
     complete
     .text       start:0x022f7804 end:0x022f784c
 
-src/auto/func_ov000_022f7a84.c:
+src/auto/BossFPartDB_State_Unk_ov000_022f7a84.c:
     complete
     .text       start:0x022f7a84 end:0x022f7adc
 
-src/auto/func_ov000_022f7ba8.c:
+src/auto/BossFPartDA_State_Unk_ov000_022f7ba8.c:
     complete
     .text       start:0x022f7ba8 end:0x022f7c00
 
@@ -4228,11 +4228,11 @@ src/auto/func_ov000_022faf7c.c:
     complete
     .text       start:0x022faf7c end:0x022fafc8
 
-src/auto/func_ov000_022fbe14.c:
+src/auto/GunHunter_State_Unk_ov000_022fbe14.c:
     complete
     .text       start:0x022fbe14 end:0x022fbe80
 
-src/auto/func_ov000_022fc038.c:
+src/auto/EggBishop_State_Unk_ov000_022fc038.c:
     complete
     .text       start:0x022fc038 end:0x022fc084
 
@@ -4240,7 +4240,7 @@ src/auto/func_ov000_022fc398.c:
     complete
     .text       start:0x022fc398 end:0x022fc418
 
-src/auto/func_ov000_022fcaa8.c:
+src/auto/EnemyPawnGroup_State_Unk_ov000_022fcaa8.c:
     complete
     .text       start:0x022fcaa8 end:0x022fcb24
 
@@ -4300,7 +4300,7 @@ src/auto/func_ov000_022fe7e8.c:
     complete
     .text       start:0x022fe7e8 end:0x022fe84c
 
-src/auto/func_ov000_022ff770.c:
+src/auto/EggBombHawk_State_Unk_ov000_022ff770.c:
     complete
     .text       start:0x022ff770 end:0x022ff7dc
 
@@ -4312,7 +4312,7 @@ src/auto/func_ov000_02300438.c:
     complete
     .text       start:0x02300438 end:0x02300484
 
-src/auto/func_ov000_02300f78.c:
+src/auto/Kuragen_State_Unk_ov000_02300f78.c:
     complete
     .text       start:0x02300f78 end:0x02300fd0
 
@@ -4320,7 +4320,7 @@ src/auto/func_ov000_02300fd0.c:
     complete
     .text       start:0x02300fd0 end:0x02301034
 
-src/auto/func_ov000_02301034.c:
+src/auto/Kuragen_State_Unk_ov000_02301034.c:
     complete
     .text       start:0x02301034 end:0x023010a4
 
@@ -4340,11 +4340,11 @@ src/auto/func_ov000_023032d4.c:
     complete
     .text       start:0x023032d4 end:0x02303310
 
-src/auto/func_ov000_023034f8.c:
+src/auto/MapObj75_State_Unk_ov000_023034f8.c:
     complete
     .text       start:0x023034f8 end:0x02303548
 
-src/auto/func_ov000_02303dec.c:
+src/auto/MapObj73_State_Unk_ov000_02303dec.c:
     complete
     .text       start:0x02303dec end:0x02303e24
 
@@ -4356,11 +4356,11 @@ src/auto/func_ov000_023041bc.c:
     complete
     .text       start:0x023041bc end:0x023041f4
 
-src/auto/func_ov000_0230422c.c:
+src/auto/MapObj74_State_Unk_ov000_0230422c.c:
     complete
     .text       start:0x0230422c end:0x02304270
 
-src/auto/func_ov000_02304374.c:
+src/auto/Cannon_OnHit.c:
     complete
     .text       start:0x02304374 end:0x023043d0
 
@@ -4368,11 +4368,11 @@ src/auto/func_ov000_023046c0.c:
     complete
     .text       start:0x023046c0 end:0x02304704
 
-src/auto/func_ov000_02304704.c:
+src/auto/Cannon_Draw.c:
     complete
     .text       start:0x02304704 end:0x02304768
 
-src/auto/func_ov000_02304768.c:
+src/auto/Cannon_Destructor.c:
     complete
     .text       start:0x02304768 end:0x023047f0
 
@@ -4380,15 +4380,15 @@ src/auto/func_ov000_02304fa0.c:
     complete
     .text       start:0x02304fa0 end:0x02304ff4
 
-src/auto/func_ov000_02304ff4.c:
+src/auto/Cargo_Destructor.c:
     complete
     .text       start:0x02304ff4 end:0x0230506c
 
-src/auto/func_ov000_02305678.c:
+src/auto/CranePartED_OnHit.c:
     complete
     .text       start:0x02305678 end:0x023056fc
 
-src/auto/func_ov000_02305a78.c:
+src/auto/CranePartED_Destructor.c:
     complete
     .text       start:0x02305a78 end:0x02305ad8
 
@@ -4396,7 +4396,7 @@ src/auto/func_ov000_02305e28.c:
     complete
     .text       start:0x02305e28 end:0x02305ea0
 
-src/auto/func_ov000_02306e90.c:
+src/auto/DashC_Destructor.c:
     complete
     .text       start:0x02306e90 end:0x02306f08
 
@@ -4408,15 +4408,15 @@ src/auto/func_ov000_02308370.c:
     complete
     .text       start:0x02308370 end:0x02308404
 
-src/auto/func_ov000_02308a20.c:
+src/auto/GmkWall_State_Unk_ov000_02308a20.c:
     complete
     .text       start:0x02308a20 end:0x02308a6c
 
-src/auto/func_ov000_02308df8.c:
+src/auto/GmkWall_State_Unk_ov000_02308df8.c:
     complete
     .text       start:0x02308df8 end:0x02308e94
 
-src/auto/func_ov000_023090e8.c:
+src/auto/MapObj8D_State_Unk_ov000_023090e8.c:
     complete
     .text       start:0x023090e8 end:0x02309188
 
@@ -4424,19 +4424,19 @@ src/auto/func_ov000_02309188.c:
     complete
     .text       start:0x02309188 end:0x02309200
 
-src/auto/func_ov000_023093f8.c:
+src/auto/MapObj8C_State_Unk_ov000_023093f8.c:
     complete
     .text       start:0x023093f8 end:0x02309430
 
-src/auto/func_ov000_0230a7f0.c:
+src/auto/GoalRingPart_State_Unk_ov000_0230a7f0.c:
     complete
     .text       start:0x0230a7f0 end:0x0230a840
 
-src/auto/func_ov000_0230b490.c:
+src/auto/MapObj9C_OnHit.c:
     complete
     .text       start:0x0230b490 end:0x0230b510
 
-src/auto/func_ov000_0230bd78.c:
+src/auto/MapObj13_OnHit.c:
     complete
     .text       start:0x0230bd78 end:0x0230bdf4
 
@@ -4444,23 +4444,23 @@ src/auto/func_ov000_0230c290.c:
     complete
     .text       start:0x0230c290 end:0x0230c2d0
 
-src/auto/func_ov000_0230c814.c:
+src/auto/Glider_OnHit.c:
     complete
     .text       start:0x0230c814 end:0x0230c89c
 
-src/auto/func_ov000_0230cc84.c:
+src/auto/IronBallPart_State_Unk_ov000_0230cc84.c:
     complete
     .text       start:0x0230cc84 end:0x0230ccd4
 
-src/auto/func_ov000_0230ce4c.c:
+src/auto/IronBall_OnHit_Unk_ov000_0230ce4c.c:
     complete
     .text       start:0x0230ce4c end:0x0230cea8
 
-src/auto/func_ov000_0230ddac.c:
+src/auto/ItemBox_State_Unk_ov000_0230ddac.c:
     complete
     .text       start:0x0230ddac end:0x0230ddf0
 
-src/auto/func_ov000_0230e47c.c:
+src/auto/JetCatapult_OnHit.c:
     complete
     .text       start:0x0230e47c end:0x0230e50c
 
@@ -4468,11 +4468,11 @@ src/auto/func_ov000_0230e770.c:
     complete
     .text       start:0x0230e770 end:0x0230e7ec
 
-src/auto/func_ov000_0230e7ec.c:
+src/auto/JetCatapult_State_Unk_ov000_0230e7ec.c:
     complete
     .text       start:0x0230e7ec end:0x0230e868
 
-src/auto/func_ov000_0230ec88.c:
+src/auto/JumpPedestal_State_Unk_ov000_0230ec88.c:
     complete
     .text       start:0x0230ec88 end:0x0230ecc8
 
@@ -4488,7 +4488,7 @@ src/auto/func_ov000_0230f9cc.c:
     complete
     .text       start:0x0230f9cc end:0x0230fa20
 
-src/auto/func_ov000_02310418.c:
+src/auto/Marker_State_Unk_ov000_02310418.c:
     complete
     .text       start:0x02310418 end:0x02310464
 
@@ -4504,31 +4504,31 @@ src/auto/func_ov000_02311684.c:
     complete
     .text       start:0x02311684 end:0x023116d0
 
-src/auto/func_ov000_02312014.c:
+src/auto/Parachute_OnHit.c:
     complete
     .text       start:0x02312014 end:0x0231206c
 
-src/auto/func_ov000_023128c4.c:
+src/auto/Piston_State_Unk_ov000_023128c4.c:
     complete
     .text       start:0x023128c4 end:0x02312930
 
-src/auto/func_ov000_02312954.c:
+src/auto/Piston_Destructor.c:
     complete
     .text       start:0x02312954 end:0x023129a0
 
-src/auto/func_ov000_02313ac0.c:
+src/auto/Rocket_OnHit_Box1.c:
     complete
     .text       start:0x02313ac0 end:0x02313b00
 
-src/auto/func_ov000_02314200.c:
+src/auto/Rock_State_Wait.c:
     complete
     .text       start:0x02314200 end:0x02314290
 
-src/auto/func_ov000_02314290.c:
+src/auto/Rock_Action_Wait.c:
     complete
     .text       start:0x02314290 end:0x023142e8
 
-src/auto/func_ov000_0231492c.c:
+src/auto/RopeCLand_State_Idle.c:
     complete
     .text       start:0x0231492c end:0x0231499c
 
@@ -4536,11 +4536,11 @@ src/auto/func_ov000_02314acc.c:
     complete
     .text       start:0x02314acc end:0x02314b34
 
-src/auto/func_ov000_02314b78.c:
+src/auto/RopeCSpring_State_Idle.c:
     complete
     .text       start:0x02314b78 end:0x02314bb8
 
-src/auto/func_ov000_023153a4.c:
+src/auto/SandSlider_OnHit.c:
     complete
     .text       start:0x023153a4 end:0x0231540c
 
@@ -4548,39 +4548,39 @@ src/auto/func_ov000_023158c0.c:
     complete
     .text       start:0x023158c0 end:0x02315928
 
-src/auto/func_ov000_0231630c.c:
+src/auto/GmkSpecial_OnHit.c:
     complete
     .text       start:0x0231630c end:0x0231636c
 
-src/auto/func_ov000_023165ec.c:
+src/auto/GmkSpecial_Draw.c:
     complete
     .text       start:0x023165ec end:0x02316640
 
-src/auto/func_ov000_02316640.c:
+src/auto/GmkSpecial_Destructor.c:
     complete
     .text       start:0x02316640 end:0x02316698
 
-src/auto/func_ov000_02316a1c.c:
+src/auto/Spring_State_Activated.c:
     complete
     .text       start:0x02316a1c end:0x02316a58
 
-src/auto/func_ov000_02316adc.c:
+src/auto/Spring_State_Idle.c:
     complete
     .text       start:0x02316adc end:0x02316b5c
 
-src/auto/func_ov000_02316b5c.c:
+src/auto/Spring_Action_Idle.c:
     complete
     .text       start:0x02316b5c end:0x02316ba0
 
-src/auto/func_ov000_02317764.c:
+src/auto/Swing_OnHit.c:
     complete
     .text       start:0x02317764 end:0x023177e8
 
-src/auto/func_ov000_02317a40.c:
+src/auto/Swing_Destructor.c:
     complete
     .text       start:0x02317a40 end:0x02317ac8
 
-src/auto/func_ov000_02319390.c:
+src/auto/Switch_Destructor.c:
     complete
     .text       start:0x02319390 end:0x023193d8
 
@@ -4612,15 +4612,15 @@ src/auto/func_ov000_0231bfa0.c:
     complete
     .text       start:0x0231bfa0 end:0x0231bffc
 
-src/auto/func_ov000_0231c36c.c:
+src/auto/Mine_OnHitExplode.c:
     complete
     .text       start:0x0231c36c end:0x0231c3ac
 
-src/auto/func_ov000_0231caac.c:
+src/auto/Mine_Destructor.c:
     complete
     .text       start:0x0231caac end:0x0231cb18
 
-src/auto/func_ov000_0231d370.c:
+src/auto/Wheel2D_OnHit.c:
     complete
     .text       start:0x0231d370 end:0x0231d3b8
 
@@ -4644,19 +4644,19 @@ src/auto/func_ov000_02322d44.c:
     complete
     .text       start:0x02322d44 end:0x02322d7c
 
-src/auto/func_ov000_023264dc.c:
+src/auto/Decoration_Collide_Default.c:
     complete
     .text       start:0x023264dc end:0x02326538
 
-src/auto/func_ov000_02326538.c:
+src/auto/Decoration_SpriteCallback_Default.c:
     complete
     .text       start:0x02326538 end:0x023265a8
 
-src/auto/func_ov000_02328120.c:
+src/auto/BossEffect_CreateBombBall.c:
     complete
     .text       start:0x02328120 end:0x02328170
 
-src/auto/func_ov000_02328580.c:
+src/auto/BossEffect_CreateShootBomb.c:
     complete
     .text       start:0x02328580 end:0x023285d0
 
@@ -4684,7 +4684,7 @@ src/auto/func_ov000_0232cbf4.c:
     complete
     .text       start:0x0232cbf4 end:0x0232cc2c
 
-src/auto/func_ov000_0232d95c.c:
+src/auto/WirelessIcon_State_Update.c:
     complete
     .text       start:0x0232d95c end:0x0232d9a4
 
@@ -4812,11 +4812,11 @@ src/auto/func_ov000_02342e9c.c:
     complete
     .text       start:0x02342e9c end:0x02342ef4
 
-src/auto/func_ov000_02342f34.c:
+src/auto/Player_GiveMagnet.c:
     complete
     .text       start:0x02342f34 end:0x02342f74
 
-src/auto/func_ov000_02342f74.c:
+src/auto/Player_GiveBarrier.c:
     complete
     .text       start:0x02342f74 end:0x02342fb4
 
@@ -4824,11 +4824,11 @@ src/auto/func_ov000_02342fb4.c:
     complete
     .text       start:0x02342fb4 end:0x02343000
 
-src/auto/func_ov000_02343940.c:
+src/auto/Player_Collide.c:
     complete
     .text       start:0x02343940 end:0x023439b8
 
-src/auto/func_ov000_023439b8.c:
+src/auto/Player_SpriteCallback.c:
     complete
     .text       start:0x023439b8 end:0x02343a38
 
@@ -4856,7 +4856,7 @@ src/auto/func_ov000_023497a4.c:
     complete
     .text       start:0x023497a4 end:0x023497f4
 
-src/auto/func_ov000_0234f614.c:
+src/auto/Player_State_Saucer.c:
     complete
     .text       start:0x0234f614 end:0x0234f6a0
 
@@ -4980,7 +4980,7 @@ src/auto/func_ov000_0235e8ac.c:
     complete
     .text       start:0x0235e8ac end:0x0235e94c
 
-src/auto/func_ov000_0235f254.c:
+src/auto/ResultsScreen_Create.c:
     complete
     .text       start:0x0235f254 end:0x0235f2d0
 
@@ -5016,11 +5016,11 @@ src/auto/func_ov000_02361a3c.c:
     complete
     .text       start:0x02361a3c end:0x02361a98
 
-src/auto/func_ov000_022df3c4.c:
+src/auto/Boss4PartCF_Create.c:
     complete
     .text       start:0x022df3c4 end:0x022df494
 
-src/auto/func_ov000_022df494.c:
+src/auto/Boss4PartCE_Create.c:
     complete
     .text       start:0x022df494 end:0x022df55c
 
@@ -5028,11 +5028,11 @@ src/auto/func_ov000_022ebccc.c:
     complete
     .text       start:0x022ebccc end:0x022ebda0
 
-src/auto/func_ov000_022ef908.c:
+src/auto/BossFPartD8_State_Unk_ov000_022ef908.c:
     complete
     .text       start:0x022ef908 end:0x022ef9c8
 
-src/auto/func_ov000_022efb08.c:
+src/auto/BossFPartD8_State_Unk_ov000_022efb08.c:
     complete
     .text       start:0x022efb08 end:0x022efbd8
 
@@ -5044,15 +5044,15 @@ src/auto/func_ov000_022f345c.c:
     complete
     .text       start:0x022f345c end:0x022f3504
 
-src/auto/func_ov000_022f5444.c:
+src/auto/BossFPartD8_Collide.c:
     complete
     .text       start:0x022f5444 end:0x022f54f8
 
-src/auto/func_ov000_022fb170.c:
+src/auto/MapObject_Collide_Default.c:
     complete
     .text       start:0x022fb170 end:0x022fb23c
 
-src/auto/func_ov000_022fb23c.c:
+src/auto/MapObject_SpriteCallback_Default.c:
     complete
     .text       start:0x022fb23c end:0x022fb2f8
 
@@ -5068,7 +5068,7 @@ src/auto/func_ov000_022fec38.c:
     complete
     .text       start:0x022fec38 end:0x022fece8
 
-src/auto/func_ov000_022ffcac.c:
+src/auto/EnemyFlapperGroup_State_Unk_ov000_022ffcac.c:
     complete
     .text       start:0x022ffcac end:0x022ffd68
 
@@ -5076,19 +5076,19 @@ src/auto/func_ov000_02300ec8.c:
     complete
     .text       start:0x02300ec8 end:0x02300f78
 
-src/auto/func_ov000_0230875c.c:
+src/auto/MapObj8F_State_Unk_ov000_0230875c.c:
     complete
     .text       start:0x0230875c end:0x02308800
 
-src/auto/func_ov000_02309034.c:
+src/auto/MapObj8D_State_Unk_ov000_02309034.c:
     complete
     .text       start:0x02309034 end:0x023090d8
 
-src/auto/func_ov000_02309200.c:
+src/auto/MapObj8D_State_Unk_ov000_02309200.c:
     complete
     .text       start:0x02309200 end:0x023092cc
 
-src/auto/func_ov000_0230c1c8.c:
+src/auto/MapObj13_State_Unk_ov000_0230c1c8.c:
     complete
     .text       start:0x0230c1c8 end:0x0230c290
 
@@ -5096,19 +5096,19 @@ src/auto/func_ov000_0230d1ac.c:
     complete
     .text       start:0x0230d1ac end:0x0230d25c
 
-src/auto/func_ov000_02313b00.c:
+src/auto/Rocket_OnHit.c:
     complete
     .text       start:0x02313b00 end:0x02313bb0
 
-src/auto/func_ov000_02314d0c.c:
+src/auto/RopeC_SpawnParts.c:
     complete
     .text       start:0x02314d0c end:0x02314dc8
 
-src/auto/func_ov000_0231798c.c:
+src/auto/Swing_Draw.c:
     complete
     .text       start:0x0231798c end:0x02317a40
 
-src/auto/func_ov000_023184e4.c:
+src/auto/SwingSky_Destructor.c:
     complete
     .text       start:0x023184e4 end:0x023185b4
 
@@ -5172,11 +5172,11 @@ src/auto/func_ov000_0234e3c4.c:
     complete
     .text       start:0x0234e3c4 end:0x0234e474
 
-src/auto/func_ov000_0234fae0.c:
+src/auto/Player_State_JetCatapult.c:
     complete
     .text       start:0x0234fae0 end:0x0234fba0
 
-src/auto/func_ov000_02351e80.c:
+src/auto/Player_State_SandSlider.c:
     complete
     .text       start:0x02351e80 end:0x02351f50
 
@@ -5216,7 +5216,7 @@ src/auto/func_ov000_022e908c.c:
     complete
     .text       start:0x022e908c end:0x022e9170
 
-src/auto/func_ov000_022ecfcc.c:
+src/auto/Boss7_State_Unk_ov000_022ecfcc.c:
     complete
     .text       start:0x022ecfcc end:0x022ed0d8
 
@@ -5228,7 +5228,7 @@ src/auto/func_ov000_022f2f0c.c:
     complete
     .text       start:0x022f2f0c end:0x022f300c
 
-src/auto/func_ov000_022f84bc.c:
+src/auto/BossF_Draw.c:
     complete
     .text       start:0x022f84bc end:0x022f84fc
 
@@ -5244,15 +5244,15 @@ src/auto/func_ov000_022f8c88.c:
     complete
     .text       start:0x022f8c88 end:0x022f8ce8
 
-src/auto/func_ov000_022fbbb8.c:
+src/auto/EffEntrance_State_Unk_ov000_022fbbb8.c:
     complete
     .text       start:0x022fbbb8 end:0x022fbcac
 
-src/auto/func_ov000_022fd410.c:
+src/auto/EnemyPawnGroup_State_Unk_ov000_022fd410.c:
     complete
     .text       start:0x022fd410 end:0x022fd564
 
-src/auto/func_ov000_022fd7d8.c:
+src/auto/EnemyPawnGroup_State_Unk_ov000_022fd7d8.c:
     complete
     .text       start:0x022fd7d8 end:0x022fd8d8
 
@@ -5260,31 +5260,31 @@ src/auto/func_ov000_022ff668.c:
     complete
     .text       start:0x022ff668 end:0x022ff770
 
-src/auto/func_ov000_022ffdac.c:
+src/auto/EnemyFlapperGroup_State_Unk_ov000_022ffdac.c:
     complete
     .text       start:0x022ffdac end:0x022ffef8
 
-src/auto/func_ov000_02300338.c:
+src/auto/EnemyFlapperGroup_State_Unk_ov000_02300338.c:
     complete
     .text       start:0x02300338 end:0x02300438
 
-src/auto/func_ov000_02300484.c:
+src/auto/EnemyFlapperGroup_State_Unk_ov000_02300484.c:
     complete
     .text       start:0x02300484 end:0x02300578
 
-src/auto/func_ov000_023063ec.c:
+src/auto/CraneSlide_OnHit.c:
     complete
     .text       start:0x023063ec end:0x023064d8
 
-src/auto/func_ov000_0230aa24.c:
+src/auto/GoalRingPart_State_Unk_ov000_0230aa24.c:
     complete
     .text       start:0x0230aa24 end:0x0230aafc
 
-src/auto/func_ov000_0230d804.c:
+src/auto/ItemBoxPart_State_Unk_ov000_0230d804.c:
     complete
     .text       start:0x0230d804 end:0x0230d930
 
-src/auto/func_ov000_0230dcb4.c:
+src/auto/ItemBox_OnHit.c:
     complete
     .text       start:0x0230dcb4 end:0x0230ddac
 
@@ -5292,7 +5292,7 @@ src/auto/func_ov000_02311500.c:
     complete
     .text       start:0x02311500 end:0x02311644
 
-src/auto/func_ov000_02313854.c:
+src/auto/RockBreak_OnHit.c:
     complete
     .text       start:0x02313854 end:0x02313948
 
@@ -5300,15 +5300,15 @@ src/auto/func_ov000_02313bb0.c:
     complete
     .text       start:0x02313bb0 end:0x02313cfc
 
-src/auto/func_ov000_023155cc.c:
+src/auto/Saucer_Explode.c:
     complete
     .text       start:0x023155cc end:0x023156e0
 
-src/auto/func_ov000_023189c4.c:
+src/auto/SwitchTimer_Main.c:
     complete
     .text       start:0x023189c4 end:0x02318b08
 
-src/auto/func_ov000_0231c21c.c:
+src/auto/Mine_Explode.c:
     complete
     .text       start:0x0231c21c end:0x0231c36c
 
@@ -5340,7 +5340,7 @@ src/auto/func_ov000_023455ec.c:
     complete
     .text       start:0x023455ec end:0x02345758
 
-src/auto/func_ov000_02349038.c:
+src/auto/Player_Action_Die.c:
     complete
     .text       start:0x02349038 end:0x0234915c
 
@@ -5352,23 +5352,23 @@ src/auto/func_ov000_0234e984.c:
     complete
     .text       start:0x0234e984 end:0x0234eaec
 
-src/auto/func_ov000_0234ef30.c:
+src/auto/Player_Action_Glider.c:
     complete
     .text       start:0x0234ef30 end:0x0234f054
 
-src/auto/func_ov000_0234fba0.c:
+src/auto/Player_Action_JetCatapult.c:
     complete
     .text       start:0x0234fba0 end:0x0234fcbc
 
-src/auto/func_ov000_023500dc.c:
+src/auto/Player_Action_Pipe.c:
     complete
     .text       start:0x023500dc end:0x0235020c
 
-src/auto/func_ov000_023511ec.c:
+src/auto/Player_State_Swing.c:
     complete
     .text       start:0x023511ec end:0x02351300
 
-src/auto/func_ov000_02352cb0.c:
+src/auto/Player_State_Cargo.c:
     complete
     .text       start:0x02352cb0 end:0x02352dbc
 
@@ -5376,7 +5376,7 @@ src/auto/func_ov000_02353d6c.c:
     complete
     .text       start:0x02353d6c end:0x02353e6c
 
-src/auto/func_ov000_02354708.c:
+src/auto/Player_Action_RopeC.c:
     complete
     .text       start:0x02354708 end:0x023547f0
 
@@ -5404,15 +5404,15 @@ src/auto/func_ov000_022f1acc.c:
     complete
     .text       start:0x022f1acc end:0x022f1b20
 
-src/auto/func_ov000_02300844.c:
+src/auto/EnemyFlapperGroup_State_Unk_ov000_02300844.c:
     complete
     .text       start:0x02300844 end:0x023008a0
 
-src/auto/func_ov000_02302350.c:
+src/auto/Bubble_OnHit.c:
     complete
     .text       start:0x02302350 end:0x02302398
 
-src/auto/func_ov000_023029b8.c:
+src/auto/BubbleSpawner_SpawnBubble.c:
     complete
     .text       start:0x023029b8 end:0x02302a14
 
@@ -5420,11 +5420,11 @@ src/auto/func_ov000_0230aafc.c:
     complete
     .text       start:0x0230aafc end:0x0230ab48
 
-src/auto/func_ov000_0230fa20.c:
+src/auto/GmkLand_Destructor.c:
     complete
     .text       start:0x0230fa20 end:0x0230fa74
 
-src/auto/func_ov000_02313500.c:
+src/auto/Duct_State_Unk_ov000_02313500.c:
     complete
     .text       start:0x02313500 end:0x02313574
 
@@ -5456,7 +5456,7 @@ src/auto/func_ov000_0234b810.c:
     complete
     .text       start:0x0234b810 end:0x0234ba48
 
-src/auto/func_ov000_0230e6e8.c:
+src/auto/JetCatapult_State_Unk_ov000_0230e6e8.c:
     complete
     .text       start:0x0230e6e8 end:0x0230e770
 
@@ -5480,7 +5480,7 @@ src/auto/func_ov000_022de5e8.c:
     complete
     .text       start:0x022de5e8 end:0x022de65c
 
-src/auto/func_ov000_022dea0c.c:
+src/auto/Boss4_State_Unk_ov000_022dea0c.c:
     complete
     .text       start:0x022dea0c end:0x022deab4
 
@@ -5492,7 +5492,7 @@ src/auto/func_ov000_022e98d8.c:
     complete
     .text       start:0x022e98d8 end:0x022e9990
 
-src/auto/func_ov000_022ec44c.c:
+src/auto/Boss7PartD6_Draw.c:
     complete
     .text       start:0x022ec44c end:0x022ec530
 
@@ -5524,11 +5524,11 @@ src/auto/func_ov000_022f8b0c.c:
     complete
     .text       start:0x022f8b0c end:0x022f8b70
 
-src/auto/func_ov000_023086a8.c:
+src/auto/MapObj8F_State_Unk_ov000_023086a8.c:
     complete
     .text       start:0x023086a8 end:0x02308720
 
-src/auto/func_ov000_0230ac58.c:
+src/auto/GoalRing_OnHit.c:
     complete
     .text       start:0x0230ac58 end:0x0230ad04
 
@@ -5536,15 +5536,15 @@ src/auto/func_ov000_023106b8.c:
     complete
     .text       start:0x023106b8 end:0x02310730
 
-src/auto/func_ov000_02312eb0.c:
+src/auto/GmkRail_OnHit.c:
     complete
     .text       start:0x02312eb0 end:0x02312f70
 
-src/auto/func_ov000_023146b0.c:
+src/auto/Rope_OnHit.c:
     complete
     .text       start:0x023146b0 end:0x02314758
 
-src/auto/func_ov000_0231a608.c:
+src/auto/Steam_Action_Rise.c:
     complete
     .text       start:0x0231a608 end:0x0231a66c
 
@@ -5760,7 +5760,7 @@ src/ov000_a/func_ov000_022d4654.c:
     complete
     .text       start:0x022d4654 end:0x022d49e4
 
-src/ov000_a/func_ov000_022d49e4.c:
+src/ov000_a/Boss2_State_Unk_ov000_022d49e4.c:
     complete
     .text       start:0x022d49e4 end:0x022d4b5c
 
@@ -5768,11 +5768,11 @@ src/ov000_a/func_ov000_022d4c30.c:
     complete
     .text       start:0x022d4c30 end:0x022d4d28
 
-src/ov000_a/func_ov000_022d4d28.c:
+src/ov000_a/Boss2_Destructor.c:
     complete
     .text       start:0x022d4d28 end:0x022d4e54
 
-src/ov000_a/func_ov000_022d4e54.c:
+src/ov000_a/Boss2_Create.c:
     complete
     .text       start:0x022d4e54 end:0x022d5740
 
@@ -5816,23 +5816,23 @@ src/ov000_a/func_ov000_022d5cc4.c:
     complete
     .text       start:0x022d5cc4 end:0x022d5d10
 
-src/ov000_a/func_ov000_022d5d78.c:
+src/ov000_a/Boss3PartCD_OnHit.c:
     complete
     .text       start:0x022d5d78 end:0x022d5f38
 
-src/ov000_a/func_ov000_022d5f38.c:
+src/ov000_a/Boss3PartCD_Collide.c:
     complete
     .text       start:0x022d5f38 end:0x022d602c
 
-src/ov000_a/func_ov000_022d602c.c:
+src/ov000_a/Boss3PartCD_Draw.c:
     complete
     .text       start:0x022d602c end:0x022d6380
 
-src/ov000_a/func_ov000_022d63f4.c:
+src/ov000_a/Boss3PartCC_State_Unk_ov000_022d63f4.c:
     complete
     .text       start:0x022d63f4 end:0x022d6568
 
-src/ov000_a/func_ov000_022d6568.c:
+src/ov000_a/Boss3PartCC_State_Unk_ov000_022d6568.c:
     complete
     .text       start:0x022d6568 end:0x022d6644
 
@@ -6000,7 +6000,7 @@ src/ov000_a/func_ov000_022d7fd4.c:
     complete
     .text       start:0x022d7fd4 end:0x022d8184
 
-src/ov000_a/func_ov000_022d81ac.c:
+src/ov000_a/Boss3PartCD_State_Unk_ov000_022d81ac.c:
     complete
     .text       start:0x022d81ac end:0x022d836c
 
@@ -6048,15 +6048,15 @@ src/ov000_a/func_ov000_022d8c64.c:
     complete
     .text       start:0x022d8c64 end:0x022d8db0
 
-src/ov000_a/func_ov000_022d8db0.c:
+src/ov000_a/Boss3PartCC_OnHit.c:
     complete
     .text       start:0x022d8db0 end:0x022d8fec
 
-src/ov000_a/func_ov000_022d8fec.c:
+src/ov000_a/Boss3PartCC_Draw.c:
     complete
     .text       start:0x022d8fec end:0x022d91bc
 
-src/ov000_a/func_ov000_022d9264.c:
+src/ov000_a/Boss3PartCC_State_Unk_ov000_022d9264.c:
     complete
     .text       start:0x022d9264 end:0x022d932c
 
@@ -6064,7 +6064,7 @@ src/ov000_a/func_ov000_022d932c.c:
     complete
     .text       start:0x022d932c end:0x022d94fc
 
-src/ov000_a/func_ov000_022d94fc.c:
+src/ov000_a/Boss3PartCC_State_Unk_ov000_022d94fc.c:
     complete
     .text       start:0x022d94fc end:0x022d9538
 
@@ -6072,7 +6072,7 @@ src/ov000_a/func_ov000_022d9538.c:
     complete
     .text       start:0x022d9538 end:0x022d96d8
 
-src/ov000_a/func_ov000_022d96d8.c:
+src/ov000_a/Boss3PartCC_State_Unk_ov000_022d96d8.c:
     complete
     .text       start:0x022d96d8 end:0x022d9714
 
@@ -6080,11 +6080,11 @@ src/ov000_a/func_ov000_022d9714.c:
     complete
     .text       start:0x022d9714 end:0x022d98b0
 
-src/ov000_a/func_ov000_022d98b0.c:
+src/ov000_a/Boss3PartCC_State_Unk_ov000_022d98b0.c:
     complete
     .text       start:0x022d98b0 end:0x022d98ec
 
-src/ov000_a/func_ov000_022d98ec.c:
+src/ov000_a/Boss3PartCC_State_Unk_ov000_022d98ec.c:
     complete
     .text       start:0x022d98ec end:0x022d9aa0
 
@@ -6100,15 +6100,15 @@ src/ov000_a/func_ov000_022d9e48.c:
     complete
     .text       start:0x022d9e48 end:0x022da24c
 
-src/ov000_a/func_ov000_022da24c.c:
+src/ov000_a/Boss3_State_Unk_ov000_022da24c.c:
     complete
     .text       start:0x022da24c end:0x022da3b4
 
-src/ov000_a/func_ov000_022da3f4.c:
+src/ov000_a/Boss3_Destructor.c:
     complete
     .text       start:0x022da3f4 end:0x022da4b4
 
-src/ov000_a/func_ov000_022da4b4.c:
+src/ov000_a/Boss3_Draw_Unk_ov000_022da4b4.c:
     complete
     .text       start:0x022da4b4 end:0x022da6b4
 
@@ -6148,15 +6148,15 @@ src/ov000_a/func_ov000_022dae28.c:
     complete
     .text       start:0x022dae28 end:0x022dae88
 
-src/ov000_a/func_ov000_022dae88.c:
+src/ov000_a/Boss3PartCD_Create.c:
     complete
     .text       start:0x022dae88 end:0x022db148
 
-src/ov000_a/func_ov000_022db148.c:
+src/ov000_a/Boss3PartCC_Create.c:
     complete
     .text       start:0x022db148 end:0x022db390
 
-src/ov000_a/func_ov000_022db390.c:
+src/ov000_a/Boss3_Create.c:
     complete
     .text       start:0x022db390 end:0x022db6c8
 
@@ -6192,15 +6192,15 @@ src/ov000_a/func_ov000_022dbd04.c:
     complete
     .text       start:0x022dbd04 end:0x022dbd5c
 
-src/ov000_a/func_ov000_022dbd5c.c:
+src/ov000_a/Boss4PartD2_Collide.c:
     complete
     .text       start:0x022dbd5c end:0x022dbe38
 
-src/ov000_a/func_ov000_022dbe6c.c:
+src/ov000_a/Boss4PartD2_Draw.c:
     complete
     .text       start:0x022dbe6c end:0x022dbfb4
 
-src/ov000_a/func_ov000_022dbfb4.c:
+src/ov000_a/Boss4PartD2_State_Unk_ov000_022dbfb4.c:
     complete
     .text       start:0x022dbfb4 end:0x022dc158
 
@@ -6208,19 +6208,19 @@ src/ov000_a/func_ov000_022dc20c.c:
     complete
     .text       start:0x022dc20c end:0x022dc274
 
-src/ov000_a/func_ov000_022dc328.c:
+src/ov000_a/Boss4PartD1_Collide.c:
     complete
     .text       start:0x022dc328 end:0x022dc3f0
 
-src/ov000_a/func_ov000_022dc3f0.c:
+src/ov000_a/Boss4PartD1_OnHit.c:
     complete
     .text       start:0x022dc3f0 end:0x022dc504
 
-src/ov000_a/func_ov000_022dc528.c:
+src/ov000_a/Boss4PartD1_Draw.c:
     complete
     .text       start:0x022dc528 end:0x022dc568
 
-src/ov000_a/func_ov000_022dc568.c:
+src/ov000_a/Boss4PartD1_State_Unk_ov000_022dc568.c:
     complete
     .text       start:0x022dc568 end:0x022dc6cc
 
@@ -6236,15 +6236,15 @@ src/ov000_a/func_ov000_022dc8cc.c:
     complete
     .text       start:0x022dc8cc end:0x022dc9fc
 
-src/ov000_a/func_ov000_022dc9fc.c:
+src/ov000_a/Boss4PartD0_Collide.c:
     complete
     .text       start:0x022dc9fc end:0x022dca70
 
-src/ov000_a/func_ov000_022dcaa4.c:
+src/ov000_a/Boss4PartD0_Draw.c:
     complete
     .text       start:0x022dcaa4 end:0x022dcb18
 
-src/ov000_a/func_ov000_022dcb18.c:
+src/ov000_a/Boss4PartD0_State_Unk_ov000_022dcb18.c:
     complete
     .text       start:0x022dcb18 end:0x022dcc10
 
@@ -6264,7 +6264,7 @@ src/ov000_a/func_ov000_022dce70.c:
     complete
     .text       start:0x022dce70 end:0x022dcf20
 
-src/ov000_a/func_ov000_022dcf38.c:
+src/ov000_a/Boss4PartCF_Draw.c:
     complete
     .text       start:0x022dcf38 end:0x022dcff8
 
@@ -6292,23 +6292,23 @@ src/ov000_a/func_ov000_022dd5d8.c:
     complete
     .text       start:0x022dd5d8 end:0x022dd748
 
-src/ov000_b/func_ov000_02310130.c:
+src/ov000_b/LandUnrest_Create.c:
     complete
     .text       start:0x02310130 end:0x023102b4
 
-src/ov000_b/func_ov000_023107f4.c:
+src/ov000_b/Marker_Create.c:
     complete
     .text       start:0x023107f4 end:0x0231096c
 
-src/ov000_b/func_ov000_02310e8c.c:
+src/ov000_b/NeedleG_Create.c:
     complete
     .text       start:0x02310e8c end:0x02311000
 
-src/ov000_b/func_ov000_02311000.c:
+src/ov000_b/MapObjC2_Create.c:
     complete
     .text       start:0x02311000 end:0x02311124
 
-src/ov000_b/func_ov000_02311900.c:
+src/ov000_b/NeonRoute_Create.c:
     complete
     .text       start:0x02311900 end:0x02311cc4
 
@@ -6316,47 +6316,47 @@ src/ov000_b/func_ov000_02311eac.c:
     complete
     .text       start:0x02311eac end:0x02312014
 
-src/ov000_b/func_ov000_02312080.c:
+src/ov000_b/Parachute_Create.c:
     complete
     .text       start:0x02312080 end:0x023121e4
 
-src/ov000_b/func_ov000_02312314.c:
+src/ov000_b/GmkPipe_Create.c:
     complete
     .text       start:0x02312314 end:0x02312634
 
-src/ov000_b/func_ov000_02313320.c:
+src/ov000_b/GmkRail_Create.c:
     complete
     .text       start:0x02313320 end:0x02313500
 
-src/ov000_b/func_ov000_023135b0.c:
+src/ov000_b/Duct_Create.c:
     complete
     .text       start:0x023135b0 end:0x023136bc
 
-src/ov000_b/func_ov000_023136ec.c:
+src/ov000_b/RockBreak_CreatePart_ov000_023136ec.c:
     complete
     .text       start:0x023136ec end:0x02313854
 
-src/ov000_b/func_ov000_02313970.c:
+src/ov000_b/RockBreak_Create.c:
     complete
     .text       start:0x02313970 end:0x02313ac0
 
-src/ov000_b/func_ov000_0231479c.c:
+src/ov000_b/Rope_Create.c:
     complete
     .text       start:0x0231479c end:0x0231492c
 
-src/ov000_b/func_ov000_023149c0.c:
+src/ov000_b/RopeCLand_Create.c:
     complete
     .text       start:0x023149c0 end:0x02314acc
 
-src/ov000_b/func_ov000_02314bdc.c:
+src/ov000_b/RopeCSpring_Create.c:
     complete
     .text       start:0x02314bdc end:0x02314d0c
 
-src/ov000_b/func_ov000_0231527c.c:
+src/ov000_b/SandSlider_CreatePart.c:
     complete
     .text       start:0x0231527c end:0x023153a4
 
-src/ov000_b/func_ov000_02315a8c.c:
+src/ov000_b/Saucer_Create.c:
     complete
     .text       start:0x02315a8c end:0x02315c50
 
@@ -6364,39 +6364,39 @@ src/ov000_b/func_ov000_02315d54.c:
     complete
     .text       start:0x02315d54 end:0x02315e84
 
-src/ov000_b/func_ov000_02316170.c:
+src/ov000_b/EffSpecial_Create.c:
     complete
     .text       start:0x02316170 end:0x0231630c
 
-src/ov000_b/func_ov000_02316ba0.c:
+src/ov000_b/Spring_Create.c:
     complete
     .text       start:0x02316ba0 end:0x02316db0
 
-src/ov000_b/func_ov000_02316ee8.c:
+src/ov000_b/Shooter_CreatePart1.c:
     complete
     .text       start:0x02316ee8 end:0x02317068
 
-src/ov000_b/func_ov000_02317068.c:
+src/ov000_b/Shooter_CreatePart2.c:
     complete
     .text       start:0x02317068 end:0x023171b4
 
-src/ov000_b/func_ov000_02318cc4.c:
+src/ov000_b/Switch_CreatePart.c:
     complete
     .text       start:0x02318cc4 end:0x02318e68
 
-src/ov000_b/func_ov000_0231979c.c:
+src/ov000_b/EffShadow_Create.c:
     complete
     .text       start:0x0231979c end:0x02319920
 
-src/ov000_b/func_ov000_0231a474.c:
+src/ov000_b/Trampoline_Create.c:
     complete
     .text       start:0x0231a474 end:0x0231a5a0
 
-src/ov000_b/func_ov000_0231a66c.c:
+src/ov000_b/Steam_Create.c:
     complete
     .text       start:0x0231a66c end:0x0231a7e4
 
-src/ov000_b/func_ov000_0231b5c8.c:
+src/ov000_b/WallBreak_Create.c:
     complete
     .text       start:0x0231b5c8 end:0x0231b830
 
@@ -6440,11 +6440,11 @@ src/ov000_b/func_ov000_02320744.c:
     complete
     .text       start:0x02320744 end:0x02320894
 
-src/ov000_b/func_ov000_02320fec.c:
+src/ov000_b/DecFishPart_Create.c:
     complete
     .text       start:0x02320fec end:0x0232112c
 
-src/ov000_b/func_ov000_02321da4.c:
+src/ov000_b/DecBird_Create.c:
     complete
     .text       start:0x02321da4 end:0x02321f18
 
@@ -6460,7 +6460,7 @@ src/ov000_b/func_ov000_02322970.c:
     complete
     .text       start:0x02322970 end:0x02322acc
 
-src/ov000_b/func_ov000_02322b38.c:
+src/ov000_b/DecVine_Create.c:
     complete
     .text       start:0x02322b38 end:0x02322d14
 
@@ -6472,7 +6472,7 @@ src/ov000_b/func_ov000_023233cc.c:
     complete
     .text       start:0x023233cc end:0x023234b8
 
-src/ov000_b/func_ov000_023234b8.c:
+src/ov000_b/DecArrow_Create.c:
     complete
     .text       start:0x023234b8 end:0x023236c0
 
@@ -6484,15 +6484,15 @@ src/ov000_b/func_ov000_023273f8.c:
     complete
     .text       start:0x023273f8 end:0x023275a8
 
-src/ov000_b/func_ov000_023277d4.c:
+src/ov000_b/EffBoostA_3D_Create.c:
     complete
     .text       start:0x023277d4 end:0x02327988
 
-src/ov000_b/func_ov000_023279a0.c:
+src/ov000_b/EffFire01_3D_Create.c:
     complete
     .text       start:0x023279a0 end:0x02327b3c
 
-src/ov000_b/func_ov000_02327b5c.c:
+src/ov000_b/EffPebble_Create.c:
     complete
     .text       start:0x02327b5c end:0x02327ca4
 
@@ -6512,7 +6512,7 @@ src/ov000_b/func_ov000_02328fb8.c:
     complete
     .text       start:0x02328fb8 end:0x02329110
 
-src/ov000_b/func_ov000_02329128.c:
+src/ov000_b/EffWater3D_Create.c:
     complete
     .text       start:0x02329128 end:0x0232929c
 
@@ -6528,7 +6528,7 @@ src/ov000_b/func_ov000_0232a7b8.c:
     complete
     .text       start:0x0232a7b8 end:0x0232a93c
 
-src/ov000_b/func_ov000_0232a9d0.c:
+src/ov000_b/FixMoji3D_Create.c:
     complete
     .text       start:0x0232a9d0 end:0x0232ab9c
 
@@ -6540,11 +6540,11 @@ src/ov000_b/func_ov000_0232b3e0.c:
     complete
     .text       start:0x0232b3e0 end:0x0232b598
 
-src/ov000_b/func_ov000_0232d9a4.c:
+src/ov000_b/WirelessIcon_Create.c:
     complete
     .text       start:0x0232d9a4 end:0x0232dad8
 
-src/ov000_b/func_ov000_0232dc20.c:
+src/ov000_b/FixVsHud_Create.c:
     complete
     .text       start:0x0232dc20 end:0x0232ddd4
 
@@ -6560,11 +6560,11 @@ src/ov000_b/func_ov000_0232e628.c:
     complete
     .text       start:0x0232e628 end:0x0232e7e0
 
-src/ov000_b/func_ov000_0232e91c.c:
+src/ov000_b/EffVitality_Create.c:
     complete
     .text       start:0x0232e91c end:0x0232eaac
 
-src/ov000_b/func_ov000_0232eaac.c:
+src/ov000_b/EffFound_Create.c:
     complete
     .text       start:0x0232eaac end:0x0232ec1c
 
@@ -6600,7 +6600,7 @@ src/ov000_b/func_ov000_0232fc10.c:
     complete
     .text       start:0x0232fc10 end:0x0232fda4
 
-src/ov000_b/func_ov000_0232fde0.c:
+src/ov000_b/PlayerIcon_Create.c:
     complete
     .text       start:0x0232fde0 end:0x0232ff6c
 
@@ -6620,19 +6620,19 @@ src/ov000_b/func_ov000_02330774.c:
     complete
     .text       start:0x02330774 end:0x02330848
 
-src/ov000_b/func_ov000_02331670.c:
+src/ov000_b/EffBoostJet3D_Create.c:
     complete
     .text       start:0x02331670 end:0x0233181c
 
-src/ov000_b/func_ov000_02333520.c:
+src/ov000_b/EffBrakeSmoke3D_Create.c:
     complete
     .text       start:0x02333520 end:0x02333694
 
-src/ov000_b/func_ov000_02334380.c:
+src/ov000_b/EffSpinSmoke1_3D_Create.c:
     complete
     .text       start:0x02334380 end:0x02334550
 
-src/ov000_b/func_ov000_02334628.c:
+src/ov000_b/EffSpinSmoke1_Create.c:
     complete
     .text       start:0x02334628 end:0x02334808
 
@@ -6652,7 +6652,7 @@ src/ov000_b/func_ov000_0234cb70.c:
     complete
     .text       start:0x0234cb70 end:0x0234cfbc
 
-src/ov000_b/func_ov000_0234d62c.c:
+src/ov000_b/Player_Create.c:
     complete
     .text       start:0x0234d62c end:0x0234ded8
 
@@ -6684,7 +6684,7 @@ src/ov000_b/func_ov000_0235a0a4.c:
     complete
     .text       start:0x0235a0a4 end:0x0235a270
 
-src/ov000_b/func_ov000_0235c238.c:
+src/ov000_b/RingManager_Create.c:
     complete
     .text       start:0x0235c238 end:0x0235c674
 
@@ -6716,23 +6716,23 @@ src/ov000_b/func_ov000_023626a4.c:
     complete
     .text       start:0x023626a4 end:0x0236290c
 
-src/ov000_b/func_ov000_023629cc.c:
+src/ov000_b/TimeSelectMenu_Create.c:
     complete
     .text       start:0x023629cc end:0x02362b28
 
-src/ov000_c/func_ov000_022dee94.c:
+src/ov000_c/Boss4PartD2_Create.c:
     complete
     .text       start:0x022dee94 end:0x022df094
 
-src/ov000_c/func_ov000_022df094.c:
+src/ov000_c/Boss4PartD1_Create.c:
     complete
     .text       start:0x022df094 end:0x022df200
 
-src/ov000_c/func_ov000_022df200.c:
+src/ov000_c/Boss4PartD0_Create.c:
     complete
     .text       start:0x022df200 end:0x022df3c4
 
-src/ov000_c/func_ov000_022df55c.c:
+src/ov000_c/Boss4_Create.c:
     complete
     .text       start:0x022df55c end:0x022df9d4
 
@@ -6740,7 +6740,7 @@ src/ov000_c/func_ov000_022dfd80.c:
     complete
     .text       start:0x022dfd80 end:0x022dff1c
 
-src/ov000_c/func_ov000_022e1684.c:
+src/ov000_c/Boss6_Draw.c:
     complete
     .text       start:0x022e1684 end:0x022e1b48
 
@@ -6752,7 +6752,7 @@ src/ov000_c/func_ov000_022e4568.c:
     complete
     .text       start:0x022e4568 end:0x022e4718
 
-src/ov000_c/func_ov000_022e6500.c:
+src/ov000_c/Boss6PartD4_Create.c:
     complete
     .text       start:0x022e6500 end:0x022e671c
 
@@ -6760,7 +6760,7 @@ src/ov000_c/func_ov000_022e671c.c:
     complete
     .text       start:0x022e671c end:0x022e6c0c
 
-src/ov000_c/func_ov000_022e6c0c.c:
+src/ov000_c/Boss6_Create.c:
     complete
     .text       start:0x022e6c0c end:0x022e7210
 
@@ -6788,7 +6788,7 @@ src/ov000_c/func_ov000_022eb5fc.c:
     complete
     .text       start:0x022eb5fc end:0x022eb970
 
-src/ov000_c/func_ov000_022eb9f8.c:
+src/ov000_c/Boss7PartD5_Draw.c:
     complete
     .text       start:0x022eb9f8 end:0x022ebccc
 
@@ -6796,19 +6796,19 @@ src/ov000_c/func_ov000_022ec954.c:
     complete
     .text       start:0x022ec954 end:0x022ecc00
 
-src/ov000_c/func_ov000_022ee43c.c:
+src/ov000_c/Boss7PartD7_Create.c:
     complete
     .text       start:0x022ee43c end:0x022ee654
 
-src/ov000_c/func_ov000_022ee654.c:
+src/ov000_c/Boss7PartD6_Create.c:
     complete
     .text       start:0x022ee654 end:0x022ee950
 
-src/ov000_c/func_ov000_022ee950.c:
+src/ov000_c/Boss7PartD5_Create.c:
     complete
     .text       start:0x022ee950 end:0x022eee38
 
-src/ov000_c/func_ov000_022eee38.c:
+src/ov000_c/Boss7_Create.c:
     complete
     .text       start:0x022eee38 end:0x022ef2a4
 
@@ -6840,71 +6840,71 @@ src/ov000_c/func_ov000_022f50b0.c:
     complete
     .text       start:0x022f50b0 end:0x022f53d0
 
-src/ov000_c/func_ov000_022f58cc.c:
+src/ov000_c/BossFPartDE_State_Unk_ov000_022f58cc.c:
     complete
     .text       start:0x022f58cc end:0x022f5b6c
 
-src/ov000_c/func_ov000_022f75d8.c:
+src/ov000_c/BossFPartDC_State_Unk_ov000_022f75d8.c:
     complete
     .text       start:0x022f75d8 end:0x022f7804
 
-src/ov000_c/func_ov000_022f84fc.c:
+src/ov000_c/BossF_Destructor.c:
     complete
     .text       start:0x022f84fc end:0x022f87bc
 
-src/ov000_c/func_ov000_022f92dc.c:
+src/ov000_c/BossFPartDE_Create.c:
     complete
     .text       start:0x022f92dc end:0x022f9580
 
-src/ov000_c/func_ov000_022f9580.c:
+src/ov000_c/BossFPartDD_Create.c:
     complete
     .text       start:0x022f9580 end:0x022f978c
 
-src/ov000_c/func_ov000_022f978c.c:
+src/ov000_c/BossFPartDC_Create.c:
     complete
     .text       start:0x022f978c end:0x022f9988
 
-src/ov000_c/func_ov000_022f9988.c:
+src/ov000_c/BossFPartDB_Create.c:
     complete
     .text       start:0x022f9988 end:0x022f9c38
 
-src/ov000_c/func_ov000_022f9c38.c:
+src/ov000_c/BossFPartDA_Create.c:
     complete
     .text       start:0x022f9c38 end:0x022f9e14
 
-src/ov000_c/func_ov000_022f9e14.c:
+src/ov000_c/BossFPartD9_Create.c:
     complete
     .text       start:0x022f9e14 end:0x022fa128
 
-src/ov000_c/func_ov000_022fa128.c:
+src/ov000_c/BossFPartD8_Create.c:
     complete
     .text       start:0x022fa128 end:0x022fa548
 
-src/ov000_c/func_ov000_022fa548.c:
+src/ov000_c/BossF_Create.c:
     complete
     .text       start:0x022fa548 end:0x022fa9e8
 
-src/ov000_c/func_ov000_022fb3d8.c:
+src/ov000_c/MapObject_OnHit_Default.c:
     complete
     .text       start:0x022fb3d8 end:0x022fb738
 
-src/ov000_c/func_ov000_022fbcac.c:
+src/ov000_c/EffEntrance_Create.c:
     complete
     .text       start:0x022fbcac end:0x022fbe14
 
-src/ov000_c/func_ov000_022fbe80.c:
+src/ov000_c/GunHunter_Create.c:
     complete
     .text       start:0x022fbe80 end:0x022fc038
 
-src/ov000_c/func_ov000_022fc0bc.c:
+src/ov000_c/EggBishop_Create.c:
     complete
     .text       start:0x022fc0bc end:0x022fc230
 
-src/ov000_c/func_ov000_022fc230.c:
+src/ov000_c/EggSf_Create.c:
     complete
     .text       start:0x022fc230 end:0x022fc398
 
-src/ov000_c/func_ov000_022fc450.c:
+src/ov000_c/EggPawnM_Create.c:
     complete
     .text       start:0x022fc450 end:0x022fc5b8
 
@@ -6916,59 +6916,59 @@ src/ov000_c/func_ov000_022fea7c.c:
     complete
     .text       start:0x022fea7c end:0x022fec38
 
-src/ov000_c/func_ov000_022fecf4.c:
+src/ov000_c/EnemyPawnGroup_Create.c:
     complete
     .text       start:0x022fecf4 end:0x022ff50c
 
-src/ov000_c/func_ov000_022ff50c.c:
+src/ov000_c/FlapperCannon_Create.c:
     complete
     .text       start:0x022ff50c end:0x022ff668
 
-src/ov000_c/func_ov000_022ff7dc.c:
+src/ov000_c/EggBombHawk_Create.c:
     complete
     .text       start:0x022ff7dc end:0x022ff920
 
-src/ov000_c/func_ov000_022ff920.c:
+src/ov000_c/EggFlapperLaser_Create.c:
     complete
     .text       start:0x022ff920 end:0x022ffa58
 
-src/ov000_c/func_ov000_023008d0.c:
+src/ov000_c/EnemyFlapperGroup_Create.c:
     complete
     .text       start:0x023008d0 end:0x02300e94
 
-src/ov000_c/func_ov000_02301258.c:
+src/ov000_c/KuragenBomb_Create.c:
     complete
     .text       start:0x02301258 end:0x02301390
 
-src/ov000_c/func_ov000_023014e8.c:
+src/ov000_c/Kuragen_State_Unk_ov000_023014e8.c:
     complete
     .text       start:0x023014e8 end:0x0230169c
 
-src/ov000_c/func_ov000_023018cc.c:
+src/ov000_c/Kuragen_Create.c:
     complete
     .text       start:0x023018cc end:0x02301ac4
 
-src/ov000_c/func_ov000_02301ba4.c:
+src/ov000_c/GmkAir_Create.c:
     complete
     .text       start:0x02301ba4 end:0x02301d2c
 
-src/ov000_c/func_ov000_02301e54.c:
+src/ov000_c/BendStick_State_Unk_ov000_02301e54.c:
     complete
     .text       start:0x02301e54 end:0x02301fc0
 
-src/ov000_c/func_ov000_02301fe4.c:
+src/ov000_c/BendStick_Create.c:
     complete
     .text       start:0x02301fe4 end:0x02302164
 
-src/ov000_c/func_ov000_023024b0.c:
+src/ov000_c/Bubble_State_Unk_ov000_023024b0.c:
     complete
     .text       start:0x023024b0 end:0x02302694
 
-src/ov000_c/func_ov000_02302a28.c:
+src/ov000_c/BubbleSpawner_State_Unk_ov000_02302a28.c:
     complete
     .text       start:0x02302a28 end:0x02302c78
 
-src/ov000_c/func_ov000_02302cb4.c:
+src/ov000_c/BubbleSpawner_Create.c:
     complete
     .text       start:0x02302cb4 end:0x02302e2c
 
@@ -6976,179 +6976,179 @@ src/ov000_c/func_ov000_02303310.c:
     complete
     .text       start:0x02303310 end:0x023034f8
 
-src/ov000_c/func_ov000_023036d4.c:
+src/ov000_c/MapObj75_Create.c:
     complete
     .text       start:0x023036d4 end:0x02303798
 
-src/ov000_c/func_ov000_02303e50.c:
+src/ov000_c/MapObj73_Create.c:
     complete
     .text       start:0x02303e50 end:0x02304064
 
-src/ov000_c/func_ov000_0230429c.c:
+src/ov000_c/MapObj74_Create.c:
     complete
     .text       start:0x0230429c end:0x02304374
 
-src/ov000_c/func_ov000_023043d0.c:
+src/ov000_c/Cannon_State_Unk_ov000_023043d0.c:
     complete
     .text       start:0x023043d0 end:0x023045c0
 
-src/ov000_c/func_ov000_023047f0.c:
+src/ov000_c/Cannon_Create.c:
     complete
     .text       start:0x023047f0 end:0x02304a1c
 
-src/ov000_c/func_ov000_0230506c.c:
+src/ov000_c/Cargo_Create.c:
     complete
     .text       start:0x0230506c end:0x02305450
 
-src/ov000_c/func_ov000_023054e8.c:
+src/ov000_c/CranePartEE_Create.c:
     complete
     .text       start:0x023054e8 end:0x02305678
 
-src/ov000_c/func_ov000_02305ad8.c:
+src/ov000_c/CranePartED_Create.c:
     complete
     .text       start:0x02305ad8 end:0x02305e28
 
-src/ov000_c/func_ov000_0230614c.c:
+src/ov000_c/Crane_Create.c:
     complete
     .text       start:0x0230614c end:0x023063ec
 
-src/ov000_c/func_ov000_023064d8.c:
+src/ov000_c/CraneSlide_State_Unk_ov000_023064d8.c:
     complete
     .text       start:0x023064d8 end:0x02306ad0
 
-src/ov000_c/func_ov000_02306ae0.c:
+src/ov000_c/CraneSlide_Create.c:
     complete
     .text       start:0x02306ae0 end:0x02306d88
 
-src/ov000_c/func_ov000_02306f08.c:
+src/ov000_c/DashCT_Create.c:
     complete
     .text       start:0x02306f08 end:0x02307380
 
-src/ov000_c/func_ov000_02307380.c:
+src/ov000_c/DashC_Create.c:
     complete
     .text       start:0x02307380 end:0x0230787c
 
-src/ov000_c/func_ov000_023078f4.c:
+src/ov000_c/DashP_OnHit.c:
     complete
     .text       start:0x023078f4 end:0x02307a90
 
-src/ov000_c/func_ov000_02307adc.c:
+src/ov000_c/DashP_Create.c:
     complete
     .text       start:0x02307adc end:0x02307dfc
 
-src/ov000_c/func_ov000_02308904.c:
+src/ov000_c/MapObj8F_Create.c:
     complete
     .text       start:0x02308904 end:0x02308a20
 
-src/ov000_c/func_ov000_02308eb8.c:
+src/ov000_c/GmkWall_Create.c:
     complete
     .text       start:0x02308eb8 end:0x02309034
 
-src/ov000_c/func_ov000_023092e4.c:
+src/ov000_c/MapObj8D_Create.c:
     complete
     .text       start:0x023092e4 end:0x023093e4
 
-src/ov000_c/func_ov000_023099e8.c:
+src/ov000_c/MapObj8C_Create.c:
     complete
     .text       start:0x023099e8 end:0x02309b60
 
-src/ov000_c/func_ov000_02309e9c.c:
+src/ov000_c/MapObj70_Create.c:
     complete
     .text       start:0x02309e9c end:0x0230a04c
 
-src/ov000_c/func_ov000_0230a04c.c:
+src/ov000_c/MapObj40_OnHit.c:
     complete
     .text       start:0x0230a04c end:0x0230a688
 
-src/ov000_c/func_ov000_0230a688.c:
+src/ov000_c/MapObj40_Create.c:
     complete
     .text       start:0x0230a688 end:0x0230a7f0
 
-src/ov000_c/func_ov000_0230a864.c:
+src/ov000_c/GoalRing_CreatePart_ov000_0230a864.c:
     complete
     .text       start:0x0230a864 end:0x0230aa24
 
-src/ov000_c/func_ov000_0230ab48.c:
+src/ov000_c/GoalRing_CreatePart_ov000_0230ab48.c:
     complete
     .text       start:0x0230ab48 end:0x0230ac58
 
-src/ov000_c/func_ov000_0230b344.c:
+src/ov000_c/GoalRing_Create.c:
     complete
     .text       start:0x0230b344 end:0x0230b490
 
-src/ov000_c/func_ov000_0230b510.c:
+src/ov000_c/MapObj9C_Create.c:
     complete
     .text       start:0x0230b510 end:0x0230b6a0
 
-src/ov000_c/func_ov000_0230b6a0.c:
+src/ov000_c/Hand2d_State_Unk_ov000_0230b6a0.c:
     complete
     .text       start:0x0230b6a0 end:0x0230b9f4
 
-src/ov000_c/func_ov000_0230ba48.c:
+src/ov000_c/Hand2d_Create.c:
     complete
     .text       start:0x0230ba48 end:0x0230bc38
 
-src/ov000_c/func_ov000_0230bc50.c:
+src/ov000_c/MapObj13_CreatePart_ov000_0230bc50.c:
     complete
     .text       start:0x0230bc50 end:0x0230bd78
 
-src/ov000_c/func_ov000_0230be44.c:
+src/ov000_c/MapObj13_CreatePart_ov000_0230be44.c:
     complete
     .text       start:0x0230be44 end:0x0230bfdc
 
-src/ov000_c/func_ov000_0230c02c.c:
+src/ov000_c/MapObj13_CreatePart_ov000_0230c02c.c:
     complete
     .text       start:0x0230c02c end:0x0230c1c8
 
-src/ov000_c/func_ov000_0230c398.c:
+src/ov000_c/MapObj13_Create.c:
     complete
     .text       start:0x0230c398 end:0x0230c814
 
-src/ov000_c/func_ov000_0230ca50.c:
+src/ov000_c/Glider_Create.c:
     complete
     .text       start:0x0230ca50 end:0x0230cc84
 
-src/ov000_c/func_ov000_0230cd00.c:
+src/ov000_c/IronBall_CreatePart_ov000_0230cd00.c:
     complete
     .text       start:0x0230cd00 end:0x0230ce24
 
-src/ov000_c/func_ov000_0230cea8.c:
+src/ov000_c/IronBall_State_Unk_ov000_0230cea8.c:
     complete
     .text       start:0x0230cea8 end:0x0230d1ac
 
-src/ov000_c/func_ov000_0230d2a0.c:
+src/ov000_c/IronBall_Create.c:
     complete
     .text       start:0x0230d2a0 end:0x0230d544
 
-src/ov000_c/func_ov000_0230d5d4.c:
+src/ov000_c/ItemBox_CreatePart_ov000_0230d5d4.c:
     complete
     .text       start:0x0230d5d4 end:0x0230d804
 
-src/ov000_c/func_ov000_0230d930.c:
+src/ov000_c/ItemBox_CreatePart_ov000_0230d930.c:
     complete
     .text       start:0x0230d930 end:0x0230da90
 
-src/ov000_c/func_ov000_0230de00.c:
+src/ov000_c/ItemBox_Create.c:
     complete
     .text       start:0x0230de00 end:0x0230e030
 
-src/ov000_c/func_ov000_0230e0dc.c:
+src/ov000_c/EffJet_Create.c:
     complete
     .text       start:0x0230e0dc end:0x0230e238
 
-src/ov000_c/func_ov000_0230e354.c:
+src/ov000_c/JetCatapult_CreatePart_ov000_0230e354.c:
     complete
     .text       start:0x0230e354 end:0x0230e47c
 
-src/ov000_c/func_ov000_0230e8e4.c:
+src/ov000_c/JetCatapult_Create.c:
     complete
     .text       start:0x0230e8e4 end:0x0230eae0
 
-src/ov000_c/func_ov000_0230ed60.c:
+src/ov000_c/JumpPedestal_Create.c:
     complete
     .text       start:0x0230ed60 end:0x0230ef70
 
-src/ov000_c/func_ov000_0230fa74.c:
+src/ov000_c/GmkLand_Create.c:
     complete
     .text       start:0x0230fa74 end:0x0230fe50
 
@@ -7192,7 +7192,7 @@ src/ov000_d/func_ov000_0234801c.c:
     complete
     .text       start:0x0234801c end:0x02348350
 
-src/ov000_d/func_ov000_023492f0.c:
+src/ov000_d/Player_OnHurt.c:
     complete
     .text       start:0x023492f0 end:0x023495a8
 
@@ -7344,7 +7344,7 @@ src/ov000_d/func_ov000_023593bc.c:
     complete
     .text       start:0x023593bc end:0x02359624
 
-src/ov000_d/func_ov000_02359624.c:
+src/ov000_d/PlayerSelectMenu_Main.c:
     complete
     .text       start:0x02359624 end:0x023596f4
 
@@ -7360,7 +7360,7 @@ src/ov000_d/func_ov000_02359cd8.c:
     complete
     .text       start:0x02359cd8 end:0x02359d14
 
-src/ov000_d/func_ov000_02359d14.c:
+src/ov000_d/PlayerSelectMenu_Destructor.c:
     complete
     .text       start:0x02359d14 end:0x02359d5c
 
@@ -7372,11 +7372,11 @@ src/ov000_d/func_ov000_02359dc8.c:
     complete
     .text       start:0x02359dc8 end:0x02359e30
 
-src/ov000_d/func_ov000_0235a270.c:
+src/ov000_d/PlayerSelectMenu_LoadAssets.c:
     complete
     .text       start:0x0235a270 end:0x0235a2e8
 
-src/ov000_d/func_ov000_0235a2e8.c:
+src/ov000_d/PlayerSelectMenu_Create.c:
     complete
     .text       start:0x0235a2e8 end:0x0235a530
 
@@ -7516,7 +7516,7 @@ src/ov000_d/func_ov000_0235ecfc.c:
     complete
     .text       start:0x0235ecfc end:0x0235ed5c
 
-src/ov000_d/func_ov000_0235f024.c:
+src/ov000_d/ResultsScreen_LoadSprites.c:
     complete
     .text       start:0x0235f024 end:0x0235f17c
 
@@ -7748,7 +7748,7 @@ src/ov000_d/func_ov000_02361bf0.c:
     complete
     .text       start:0x02361bf0 end:0x02361e28
 
-src/ov000_d/func_ov000_02361e28.c:
+src/ov000_d/TimeSelectMenu_Main.c:
     complete
     .text       start:0x02361e28 end:0x02362124
 
@@ -7772,11 +7772,11 @@ src/ov000_d/func_ov000_02362518.c:
     complete
     .text       start:0x02362518 end:0x023626a4
 
-src/ov000_d/func_ov000_0236290c.c:
+src/ov000_d/TimeSelectMenu_LoadAssets.c:
     complete
     .text       start:0x0236290c end:0x023629cc
 
-src/auto/func_ov000_02352dbc.c:
+src/auto/Player_Action_Cargo.c:
     complete
     .text       start:0x02352dbc end:0x02352ee0
 
@@ -7784,7 +7784,7 @@ src/ov000_c/func_ov000_022e1308.c:
     complete
     .text       start:0x022e1308 end:0x022e1474
 
-src/ov000_c/func_ov000_022e213c.c:
+src/ov000_c/Boss6_State_Unk_ov000_022e213c.c:
     complete
     .text       start:0x022e213c end:0x022e237c
 
@@ -7808,7 +7808,7 @@ src/ov000_c/func_ov000_022e9500.c:
     complete
     .text       start:0x022e9500 end:0x022e9798
 
-src/ov000_c/func_ov000_022ec7b4.c:
+src/ov000_c/Boss7_State_Unk_ov000_022ec7b4.c:
     complete
     .text       start:0x022ec7b4 end:0x022ec954
 
@@ -7816,7 +7816,7 @@ src/ov000_c/func_ov000_022ed9a0.c:
     complete
     .text       start:0x022ed9a0 end:0x022edb50
 
-src/ov000_c/func_ov000_022fdc3c.c:
+src/ov000_c/EnemyPawnGroup_State_Unk_ov000_022fdc3c.c:
     complete
     .text       start:0x022fdc3c end:0x022fde64
 
@@ -7824,15 +7824,15 @@ src/ov000_c/func_ov000_02304c9c.c:
     complete
     .text       start:0x02304c9c end:0x02304f10
 
-src/ov000_c/func_ov000_02309ca4.c:
+src/ov000_c/MapObj70_State_Unk_ov000_02309ca4.c:
     complete
     .text       start:0x02309ca4 end:0x02309e40
 
-src/ov000_c/func_ov000_0230aed8.c:
+src/ov000_c/GoalRing_State_Unk_ov000_0230aed8.c:
     complete
     .text       start:0x0230aed8 end:0x0230b134
 
-src/ov000_c/func_ov000_0230c89c.c:
+src/ov000_c/Glider_State_Unk_ov000_0230c89c.c:
     complete
     .text       start:0x0230c89c end:0x0230ca40
 
@@ -7840,7 +7840,7 @@ src/ov000_c/func_ov000_0230f614.c:
     complete
     .text       start:0x0230f614 end:0x0230f7b0
 
-src/ov000_d/func_ov000_02313cfc.c:
+src/ov000_d/Rocket_State_Unk_ov000_02313cfc.c:
     complete
     .text       start:0x02313cfc end:0x02313e54
 
@@ -7884,23 +7884,23 @@ src/ov000_d/func_ov000_02344940.c:
     complete
     .text       start:0x02344940 end:0x02344a74
 
-src/ov000_d/func_ov000_0234f3b4.c:
+src/ov000_d/Player_State_Parachute.c:
     complete
     .text       start:0x0234f3b4 end:0x0234f4ec
 
-src/ov000_d/func_ov000_02351950.c:
+src/ov000_d/Player_Action_Air.c:
     complete
     .text       start:0x02351950 end:0x02351a8c
 
-src/ov000_d/func_ov000_02351d28.c:
+src/ov000_d/Player_Action_Rocket.c:
     complete
     .text       start:0x02351d28 end:0x02351e80
 
-src/ov000_d/func_ov000_0235229c.c:
+src/ov000_d/Player_State_SandSlider90.c:
     complete
     .text       start:0x0235229c end:0x023523d0
 
-src/ov000_d/func_ov000_02353408.c:
+src/ov000_d/Player_Action_Wheel2D.c:
     complete
     .text       start:0x02353408 end:0x02353568
 
@@ -7948,7 +7948,7 @@ src/ov000_c/func_ov000_022ea454.c:
     complete
     .text       start:0x022ea454 end:0x022ea584
 
-src/ov000_c/func_ov000_022ec568.c:
+src/ov000_c/Boss7_State_Unk_ov000_022ec568.c:
     complete
     .text       start:0x022ec568 end:0x022ec6b8
 
@@ -7956,7 +7956,7 @@ src/ov000_c/func_ov000_022f1374.c:
     complete
     .text       start:0x022f1374 end:0x022f14a8
 
-src/ov000_c/func_ov000_022f569c.c:
+src/ov000_c/BossFPartDE_State_Unk_ov000_022f569c.c:
     complete
     .text       start:0x022f569c end:0x022f57f8
 
@@ -7968,7 +7968,7 @@ src/ov000_c/func_ov000_022f63cc.c:
     complete
     .text       start:0x022f63cc end:0x022f6500
 
-src/ov000_c/func_ov000_022f80b4.c:
+src/ov000_c/BossFPartD9_Draw.c:
     complete
     .text       start:0x022f80b4 end:0x022f8200
 
@@ -7988,7 +7988,7 @@ src/ov000_c/func_ov000_022fc5b8.c:
     complete
     .text       start:0x022fc5b8 end:0x022fc6e8
 
-src/ov000_c/func_ov000_022fc768.c:
+src/ov000_c/EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc768.c:
     complete
     .text       start:0x022fc768 end:0x022fc894
 
@@ -7996,15 +7996,15 @@ src/ov000_c/func_ov000_022fc894.c:
     complete
     .text       start:0x022fc894 end:0x022fcaa8
 
-src/ov000_c/func_ov000_022fd230.c:
+src/ov000_c/EnemyPawnGroup_State_Unk_ov000_022fd230.c:
     complete
     .text       start:0x022fd230 end:0x022fd370
 
-src/ov000_c/func_ov000_022fd990.c:
+src/ov000_c/EnemyPawnGroup_State_Unk_ov000_022fd990.c:
     complete
     .text       start:0x022fd990 end:0x022fdb9c
 
-src/ov000_c/func_ov000_022fe84c.c:
+src/ov000_c/EnemyPawnGroup_State_Unk_ov000_022fe84c.c:
     complete
     .text       start:0x022fe84c end:0x022fe9b4
 
@@ -8012,11 +8012,11 @@ src/ov000_c/func_ov000_023000dc.c:
     complete
     .text       start:0x023000dc end:0x0230023c
 
-src/ov000_c/func_ov000_023056fc.c:
+src/ov000_c/CranePartED_State_Unk_ov000_023056fc.c:
     complete
     .text       start:0x023056fc end:0x02305904
 
-src/ov000_c/func_ov000_023094f0.c:
+src/ov000_c/MapObj8C_State_Unk_ov000_023094f0.c:
     complete
     .text       start:0x023094f0 end:0x0230963c
 
@@ -8024,15 +8024,15 @@ src/ov000_c/func_ov000_0230963c.c:
     complete
     .text       start:0x0230963c end:0x02309850
 
-src/ov000_c/func_ov000_02309850.c:
+src/ov000_c/MapObj8C_State_Unk_ov000_02309850.c:
     complete
     .text       start:0x02309850 end:0x023099b0
 
-src/ov000_c/func_ov000_0230b1c8.c:
+src/ov000_c/GoalRing_State_Unk_ov000_0230b1c8.c:
     complete
     .text       start:0x0230b1c8 end:0x0230b320
 
-src/ov000_d/func_ov000_023102b4.c:
+src/ov000_d/Marker_OnHit.c:
     complete
     .text       start:0x023102b4 end:0x02310418
 
@@ -8084,11 +8084,11 @@ src/ov000_d/func_ov000_0234be10.c:
     complete
     .text       start:0x0234be10 end:0x0234bfa0
 
-src/ov000_d/func_ov000_0234c9e8.c:
+src/ov000_d/Player_ResetGimmickState.c:
     complete
     .text       start:0x0234c9e8 end:0x0234cb70
 
-src/ov000_d/func_ov000_0234dfb8.c:
+src/ov000_d/Player_LoadAssets.c:
     complete
     .text       start:0x0234dfb8 end:0x0234e0f8
 
@@ -8104,7 +8104,7 @@ src/ov000_d/func_ov000_0234fcbc.c:
     complete
     .text       start:0x0234fcbc end:0x0234fe20
 
-src/ov000_d/func_ov000_02350968.c:
+src/ov000_d/Player_Action_GmkSpecial.c:
     complete
     .text       start:0x02350968 end:0x02350adc
 
@@ -8112,7 +8112,7 @@ src/ov000_d/func_ov000_0235154c.c:
     complete
     .text       start:0x0235154c end:0x023516b8
 
-src/ov000_d/func_ov000_023516b8.c:
+src/ov000_d/Player_Action_Swing.c:
     complete
     .text       start:0x023516b8 end:0x0235182c
 
@@ -8120,7 +8120,7 @@ src/ov000_d/func_ov000_023526cc.c:
     complete
     .text       start:0x023526cc end:0x0235283c
 
-src/ov000_d/func_ov000_02352b14.c:
+src/ov000_d/Player_Action_Hand2D.c:
     complete
     .text       start:0x02352b14 end:0x02352cb0
 
@@ -8188,15 +8188,15 @@ src/ov000_e/func_ov000_022ecd78.c:
     complete
     .text       start:0x022ecd78 end:0x022ece84
 
-src/ov000_e/func_ov000_022ecec0.c:
+src/ov000_e/Boss7_State_Unk_ov000_022ecec0.c:
     complete
     .text       start:0x022ecec0 end:0x022ecfcc
 
-src/ov000_e/func_ov000_022ed190.c:
+src/ov000_e/Boss7_State_Unk_ov000_022ed190.c:
     complete
     .text       start:0x022ed190 end:0x022ed428
 
-src/ov000_e/func_ov000_022ef6a0.c:
+src/ov000_e/BossFPartD8_State_Unk_ov000_022ef6a0.c:
     complete
     .text       start:0x022ef6a0 end:0x022ef7b0
 
@@ -8208,7 +8208,7 @@ src/ov000_e/func_ov000_022f5e74.c:
     complete
     .text       start:0x022f5e74 end:0x022f61a0
 
-src/ov000_e/func_ov000_022f7180.c:
+src/ov000_e/BossFPartDC_State_Unk_ov000_022f7180.c:
     complete
     .text       start:0x022f7180 end:0x022f75d8
 
@@ -8216,7 +8216,7 @@ src/ov000_e/func_ov000_02302f54.c:
     complete
     .text       start:0x02302f54 end:0x023032d4
 
-src/ov000_e/func_ov000_0230fe50.c:
+src/ov000_e/LandUnrest_State_Unk_ov000_0230fe50.c:
     complete
     .text       start:0x0230fe50 end:0x02310114
 
@@ -8300,7 +8300,7 @@ src/ov000_e/func_ov000_022ea798.c:
     complete
     .text       start:0x022ea798 end:0x022ea8f8
 
-src/ov000_e/func_ov000_022ed428.c:
+src/ov000_e/Boss7_State_Unk_ov000_022ed428.c:
     complete
     .text       start:0x022ed428 end:0x022ed5ac
 
@@ -8348,15 +8348,15 @@ src/ov000_e/func_ov000_022f4ec8.c:
     complete
     .text       start:0x022f4ec8 end:0x022f50b0
 
-src/ov000_e/func_ov000_022f78bc.c:
+src/ov000_e/BossFPartDC_Draw.c:
     complete
     .text       start:0x022f78bc end:0x022f7a60
 
-src/ov000_e/func_ov000_022f7d74.c:
+src/ov000_e/BossFPartD9_State_Unk_ov000_022f7d74.c:
     complete
     .text       start:0x022f7d74 end:0x022f7f28
 
-src/ov000_e/func_ov000_022f8320.c:
+src/ov000_e/BossF_State_Unk_ov000_022f8320.c:
     complete
     .text       start:0x022f8320 end:0x022f84bc
 
@@ -8368,23 +8368,23 @@ src/ov000_e/func_ov000_022fafc8.c:
     complete
     .text       start:0x022fafc8 end:0x022fb170
 
-src/ov000_e/func_ov000_022fba50.c:
+src/ov000_e/MapObject_Init.c:
     complete
     .text       start:0x022fba50 end:0x022fbbb8
 
-src/ov000_e/func_ov000_022fcd50.c:
+src/ov000_e/EnemyPawnGroup_State_Unk_ov000_022fcd50.c:
     complete
     .text       start:0x022fcd50 end:0x022fcef4
 
-src/ov000_e/func_ov000_022fd5f8.c:
+src/ov000_e/EnemyPawnGroup_State_Unk_ov000_022fd5f8.c:
     complete
     .text       start:0x022fd5f8 end:0x022fd744
 
-src/ov000_e/func_ov000_022ffb50.c:
+src/ov000_e/EnemyFlapperGroup_OnHit_Box2.c:
     complete
     .text       start:0x022ffb50 end:0x022ffcac
 
-src/ov000_e/func_ov000_022fff44.c:
+src/ov000_e/EnemyFlapperGroup_State_Unk_ov000_022fff44.c:
     complete
     .text       start:0x022fff44 end:0x023000dc
 
@@ -8392,15 +8392,15 @@ src/ov000_e/func_ov000_023006b8.c:
     complete
     .text       start:0x023006b8 end:0x02300808
 
-src/ov000_e/func_ov000_02302774.c:
+src/ov000_e/Bubble_Create.c:
     complete
     .text       start:0x02302774 end:0x023029b8
 
-src/ov000_e/func_ov000_02304a1c.c:
+src/ov000_e/Cargo_Draw.c:
     complete
     .text       start:0x02304a1c end:0x02304ba0
 
-src/ov000_e/func_ov000_02305914.c:
+src/ov000_e/CranePartED_Draw.c:
     complete
     .text       start:0x02305914 end:0x02305a78
 
@@ -8428,11 +8428,11 @@ src/ov000_f/func_ov000_02343ac0.c:
     complete
     .text       start:0x02343ac0 end:0x02343d80
 
-src/ov000_f/func_ov000_02343d80.c:
+src/ov000_f/Player_Last.c:
     complete
     .text       start:0x02343d80 end:0x0234419c
 
-src/ov000_f/func_ov000_0234419c.c:
+src/ov000_f/Player_In.c:
     complete
     .text       start:0x0234419c end:0x02344940
 
@@ -8488,7 +8488,7 @@ src/ov000_f/func_ov000_0234d0bc.c:
     complete
     .text       start:0x0234d0bc end:0x0234d384
 
-src/ov000_f/func_ov000_0234d384.c:
+src/ov000_f/Player_Destructor.c:
     complete
     .text       start:0x0234d384 end:0x0234d5b8
 
@@ -8496,7 +8496,7 @@ src/ov000_f/func_ov000_0234f054.c:
     complete
     .text       start:0x0234f054 end:0x0234f320
 
-src/ov000_f/func_ov000_0234fe20.c:
+src/ov000_f/Player_State_Pipe.c:
     complete
     .text       start:0x0234fe20 end:0x023500dc
 
@@ -8508,7 +8508,7 @@ src/ov000_f/func_ov000_02350adc.c:
     complete
     .text       start:0x02350adc end:0x02350d3c
 
-src/ov000_f/func_ov000_02351018.c:
+src/ov000_f/Player_Action_Cannon.c:
     complete
     .text       start:0x02351018 end:0x023511ec
 
@@ -8516,11 +8516,11 @@ src/ov000_f/func_ov000_02351300.c:
     complete
     .text       start:0x02351300 end:0x0235154c
 
-src/ov000_f/func_ov000_023528d4.c:
+src/ov000_f/Player_State_Hand2D.c:
     complete
     .text       start:0x023528d4 end:0x02352b14
 
-src/ov000_f/func_ov000_023530c0.c:
+src/ov000_f/Player_State_Wheel2D.c:
     complete
     .text       start:0x023530c0 end:0x02353408
 
@@ -8532,11 +8532,11 @@ src/ov000_f/func_ov000_023539f0.c:
     complete
     .text       start:0x023539f0 end:0x02353d6c
 
-src/ov000_f/func_ov000_023543a4.c:
+src/ov000_f/Player_State_RopeC.c:
     complete
     .text       start:0x023543a4 end:0x02354708
 
-src/ov000_f/func_ov000_02354980.c:
+src/ov000_f/Player_State_Rope.c:
     complete
     .text       start:0x02354980 end:0x02354c00
 
@@ -8548,7 +8548,7 @@ src/ov000_f/func_ov000_023558bc.c:
     complete
     .text       start:0x023558bc end:0x02355afc
 
-src/ov000_f/func_ov000_02355b44.c:
+src/ov000_f/Player_Action_Launch.c:
     complete
     .text       start:0x02355b44 end:0x02355da0
 
@@ -8572,7 +8572,7 @@ src/ov000_e/func_ov000_022ddedc.c:
     complete
     .text       start:0x022ddedc end:0x022de018
 
-src/ov000_e/func_ov000_022de860.c:
+src/ov000_e/Boss4PartCF_Collide.c:
     complete
     .text       start:0x022de860 end:0x022de964
 
@@ -8604,7 +8604,7 @@ src/ov000_e/func_ov000_022e5310.c:
     complete
     .text       start:0x022e5310 end:0x022e5408
 
-src/ov000_e/func_ov000_022e5408.c:
+src/ov000_e/Boss6PartD4_State_Unk_ov000_022e5408.c:
     complete
     .text       start:0x022e5408 end:0x022e552c
 
@@ -8652,15 +8652,15 @@ src/ov000_e/func_ov000_022ec6b8.c:
     complete
     .text       start:0x022ec6b8 end:0x022ec7b4
 
-src/ov000_e/func_ov000_022ed78c.c:
+src/ov000_e/Boss7_State_Unk_ov000_022ed78c.c:
     complete
     .text       start:0x022ed78c end:0x022ed8b4
 
-src/ov000_e/func_ov000_022edd80.c:
+src/ov000_e/Boss7_State_Unk_ov000_022edd80.c:
     complete
     .text       start:0x022edd80 end:0x022edea8
 
-src/ov000_e/func_ov000_022edee8.c:
+src/ov000_e/Boss7_Destructor.c:
     complete
     .text       start:0x022edee8 end:0x022ee014
 
@@ -8700,11 +8700,11 @@ src/ov000_e/func_ov000_022f6b8c.c:
     complete
     .text       start:0x022f6b8c end:0x022f6cb0
 
-src/ov000_e/func_ov000_022f6cb0.c:
+src/ov000_e/BossFPartDE_OnHit.c:
     complete
     .text       start:0x022f6cb0 end:0x022f6ddc
 
-src/ov000_e/func_ov000_022f7fb4.c:
+src/ov000_e/BossFPartD9_OnHit.c:
     complete
     .text       start:0x022f7fb4 end:0x022f80b4
 
@@ -8712,7 +8712,7 @@ src/ov000_e/func_ov000_022f9044.c:
     complete
     .text       start:0x022f9044 end:0x022f9188
 
-src/ov000_e/func_ov000_022fad3c.c:
+src/ov000_e/MapObject_Spawn.c:
     complete
     .text       start:0x022fad3c end:0x022fae34
 
@@ -8728,19 +8728,19 @@ src/ov000_e/func_ov000_02301738.c:
     complete
     .text       start:0x02301738 end:0x0230187c
 
-src/ov000_e/func_ov000_02301d2c.c:
+src/ov000_e/BendStick_OnHit.c:
     complete
     .text       start:0x02301d2c end:0x02301e54
 
-src/ov000_e/func_ov000_02304ba0.c:
+src/ov000_e/Cargo_OnHit.c:
     complete
     .text       start:0x02304ba0 end:0x02304c9c
 
-src/ov000_e/func_ov000_02308c68.c:
+src/ov000_e/GmkWall_State_Unk_ov000_02308c68.c:
     complete
     .text       start:0x02308c68 end:0x02308dac
 
-src/ov000_e/func_ov000_0230e238.c:
+src/ov000_e/JetCatapultPart_State_Unk_ov000_0230e238.c:
     complete
     .text       start:0x0230e238 end:0x0230e354
 
@@ -8752,7 +8752,7 @@ src/ov000_e/func_ov000_0230f0bc.c:
     complete
     .text       start:0x0230f0bc end:0x0230f1d8
 
-src/ov000_e/func_ov000_0230f8c8.c:
+src/ov000_e/GmkLand_State_Unk_ov000_0230f8c8.c:
     complete
     .text       start:0x0230f8c8 end:0x0230f9cc
 
@@ -8800,7 +8800,7 @@ src/ov000_f/func_ov000_023495a8.c:
     complete
     .text       start:0x023495a8 end:0x023497a4
 
-src/ov000_f/func_ov000_0234e0f8.c:
+src/ov000_f/Player_State_SwingSky.c:
     complete
     .text       start:0x0234e0f8 end:0x0234e2ac
 
@@ -8812,7 +8812,7 @@ src/ov000_f/func_ov000_02353820.c:
     complete
     .text       start:0x02353820 end:0x023539f0
 
-src/ov000_f/func_ov000_02354c00.c:
+src/ov000_f/Player_Action_Rope.c:
     complete
     .text       start:0x02354c00 end:0x02354de4
 
@@ -8840,7 +8840,7 @@ src/ov000_e/func_ov000_022de51c.c:
     complete
     .text       start:0x022de51c end:0x022de5e8
 
-src/ov000_e/func_ov000_022dec70.c:
+src/ov000_e/Boss4_Destructor.c:
     complete
     .text       start:0x022dec70 end:0x022ded44
 
@@ -8872,7 +8872,7 @@ src/ov000_e/func_ov000_022e0ba8.c:
     complete
     .text       start:0x022e0ba8 end:0x022e0c94
 
-src/ov000_e/func_ov000_022e285c.c:
+src/ov000_e/Boss6_State_Unk_ov000_022e285c.c:
     complete
     .text       start:0x022e285c end:0x022e291c
 
@@ -8900,11 +8900,11 @@ src/ov000_e/func_ov000_022e4298.c:
     complete
     .text       start:0x022e4298 end:0x022e434c
 
-src/ov000_e/func_ov000_022e5ca4.c:
+src/ov000_e/Boss6_State_Unk_ov000_022e5ca4.c:
     complete
     .text       start:0x022e5ca4 end:0x022e5d84
 
-src/ov000_e/func_ov000_022e6410.c:
+src/ov000_e/Boss6_Destructor.c:
     complete
     .text       start:0x022e6410 end:0x022e6500
 
@@ -8948,15 +8948,15 @@ src/ov000_e/func_ov000_022ec1d0.c:
     complete
     .text       start:0x022ec1d0 end:0x022ec294
 
-src/ov000_e/func_ov000_022ec364.c:
+src/ov000_e/Boss7PartD6_State_Unk_ov000_022ec364.c:
     complete
     .text       start:0x022ec364 end:0x022ec44c
 
-src/ov000_e/func_ov000_022ed6c4.c:
+src/ov000_e/Boss7_State_Unk_ov000_022ed6c4.c:
     complete
     .text       start:0x022ed6c4 end:0x022ed78c
 
-src/ov000_e/func_ov000_022ef2a4.c:
+src/ov000_e/BossFPartD8_State_Unk_ov000_022ef2a4.c:
     complete
     .text       start:0x022ef2a4 end:0x022ef360
 
@@ -9020,7 +9020,7 @@ src/ov000_e/func_ov000_022f61a0.c:
     complete
     .text       start:0x022f61a0 end:0x022f6278
 
-src/ov000_e/func_ov000_022f62f0.c:
+src/ov000_e/BossFPartDE_State_Unk_ov000_022f62f0.c:
     complete
     .text       start:0x022f62f0 end:0x022f63cc
 
@@ -9032,11 +9032,11 @@ src/ov000_e/func_ov000_022f8a48.c:
     complete
     .text       start:0x022f8a48 end:0x022f8b0c
 
-src/ov000_e/func_ov000_022fb2f8.c:
+src/ov000_e/MapObject_In_Default.c:
     complete
     .text       start:0x022fb2f8 end:0x022fb3d8
 
-src/ov000_e/func_ov000_022fd0d0.c:
+src/ov000_e/EnemyPawnGroup_State_Unk_ov000_022fd0d0.c:
     complete
     .text       start:0x022fd0d0 end:0x022fd19c
 
@@ -9044,7 +9044,7 @@ src/ov000_e/func_ov000_023005bc.c:
     complete
     .text       start:0x023005bc end:0x02300688
 
-src/ov000_e/func_ov000_02301ac4.c:
+src/ov000_e/GmkAir_OnHit.c:
     complete
     .text       start:0x02301ac4 end:0x02301ba4
 
@@ -9052,19 +9052,19 @@ src/ov000_e/func_ov000_02302694.c:
     complete
     .text       start:0x02302694 end:0x02302774
 
-src/ov000_e/func_ov000_02306d88.c:
+src/ov000_e/DashC_OnHit.c:
     complete
     .text       start:0x02306d88 end:0x02306e48
 
-src/ov000_e/func_ov000_023082b4.c:
+src/ov000_e/MapObj8F_State_Unk_ov000_023082b4.c:
     complete
     .text       start:0x023082b4 end:0x02308370
 
-src/ov000_e/func_ov000_02308810.c:
+src/ov000_e/MapObj8F_State_Unk_ov000_02308810.c:
     complete
     .text       start:0x02308810 end:0x023088e8
 
-src/ov000_e/func_ov000_02308a7c.c:
+src/ov000_e/GmkWall_State_Unk_ov000_02308a7c.c:
     complete
     .text       start:0x02308a7c end:0x02308b64
 
@@ -9076,11 +9076,11 @@ src/ov000_e/func_ov000_02309be0.c:
     complete
     .text       start:0x02309be0 end:0x02309ca4
 
-src/ov000_e/func_ov000_0230e50c.c:
+src/ov000_e/JetCatapult_State_Unk_ov000_0230e50c.c:
     complete
     .text       start:0x0230e50c end:0x0230e5dc
 
-src/ov000_e/func_ov000_0230f7b0.c:
+src/ov000_e/GmkLand_State_Unk_ov000_0230f7b0.c:
     complete
     .text       start:0x0230f7b0 end:0x0230f874
 
@@ -9088,11 +9088,11 @@ src/ov000_g/func_ov000_02311124.c:
     complete
     .text       start:0x02311124 end:0x02311500
 
-src/ov000_g/func_ov000_023116d0.c:
+src/ov000_g/NeonRoute_Draw.c:
     complete
     .text       start:0x023116d0 end:0x02311900
 
-src/ov000_g/func_ov000_0231301c.c:
+src/ov000_g/GmkRail_State_Unk_ov000_0231301c.c:
     complete
     .text       start:0x0231301c end:0x02313310
 
@@ -9116,7 +9116,7 @@ src/ov000_g/func_ov000_02317e50.c:
     complete
     .text       start:0x02317e50 end:0x02318080
 
-src/ov000_g/func_ov000_023180d8.c:
+src/ov000_g/SwingSky_Draw.c:
     complete
     .text       start:0x023180d8 end:0x023184e4
 
@@ -9308,23 +9308,23 @@ src/ov000_h/func_ov000_0234ab34.c:
     complete
     .text       start:0x0234ab34 end:0x0234ac58
 
-src/ov000_h/func_ov000_0234e2ac.c:
+src/ov000_h/Player_Action_SwingSky.c:
     complete
     .text       start:0x0234e2ac end:0x0234e3c4
 
-src/ov000_h/func_ov000_0234f4ec.c:
+src/ov000_h/Player_Action_Parachute.c:
     complete
     .text       start:0x0234f4ec end:0x0234f614
 
-src/ov000_h/func_ov000_0234f6a0.c:
+src/ov000_h/Player_Action_Saucer.c:
     complete
     .text       start:0x0234f6a0 end:0x0234f7ac
 
-src/ov000_h/func_ov000_0235182c.c:
+src/ov000_h/Player_State_Air.c:
     complete
     .text       start:0x0235182c end:0x02351950
 
-src/ov000_h/func_ov000_023523d0.c:
+src/ov000_h/Player_Action_SandSlider90.c:
     complete
     .text       start:0x023523d0 end:0x023524d8
 
@@ -9336,7 +9336,7 @@ src/ov000_h/func_ov000_0235ad8c.c:
     complete
     .text       start:0x0235ad8c end:0x0235aea8
 
-src/ov000_h/func_ov000_0235bd10.c:
+src/ov000_h/RingManager_Main.c:
     complete
     .text       start:0x0235bd10 end:0x0235c168
 
@@ -9344,7 +9344,7 @@ src/ov000_e/func_ov000_022e0af8.c:
     complete
     .text       start:0x022e0af8 end:0x022e0ba8
 
-src/ov000_e/func_ov000_022ed5ac.c:
+src/ov000_e/Boss7_State_Unk_ov000_022ed5ac.c:
     complete
     .text       start:0x022ed5ac end:0x022ed658
 
@@ -9356,7 +9356,7 @@ src/ov000_e/func_ov000_022f68c4.c:
     complete
     .text       start:0x022f68c4 end:0x022f6978
 
-src/ov000_e/func_ov000_0230e030.c:
+src/ov000_e/EffJet_State_Unk_ov000_0230e030.c:
     complete
     .text       start:0x0230e030 end:0x0230e0dc
 
@@ -9388,7 +9388,7 @@ src/ov000_e/func_ov000_022de49c.c:
     complete
     .text       start:0x022de49c end:0x022de51c
 
-src/ov000_e/func_ov000_022de964.c:
+src/ov000_e/Boss4PartCE_Collide.c:
     complete
     .text       start:0x022de964 end:0x022dea0c
 
@@ -9408,11 +9408,11 @@ src/ov000_e/func_ov000_022e05b0.c:
     complete
     .text       start:0x022e05b0 end:0x022e0644
 
-src/ov000_e/func_ov000_022e20b0.c:
+src/ov000_e/Boss6_State_Unk_ov000_022e20b0.c:
     complete
     .text       start:0x022e20b0 end:0x022e213c
 
-src/ov000_e/func_ov000_022e291c.c:
+src/ov000_e/Boss6_State_Unk_ov000_022e291c.c:
     complete
     .text       start:0x022e291c end:0x022e29ac
 
@@ -9432,7 +9432,7 @@ src/ov000_e/func_ov000_022e43f0.c:
     complete
     .text       start:0x022e43f0 end:0x022e4474
 
-src/ov000_e/func_ov000_022e4718.c:
+src/ov000_e/Boss6_State_Unk_ov000_022e4718.c:
     complete
     .text       start:0x022e4718 end:0x022e47b8
 
@@ -9464,7 +9464,7 @@ src/ov000_e/func_ov000_022ec2c8.c:
     complete
     .text       start:0x022ec2c8 end:0x022ec34c
 
-src/ov000_e/func_ov000_022edcd8.c:
+src/ov000_e/Boss7_State_Unk_ov000_022edcd8.c:
     complete
     .text       start:0x022edcd8 end:0x022edd80
 
@@ -9524,23 +9524,23 @@ src/ov000_e/func_ov000_022f5b6c.c:
     complete
     .text       start:0x022f5b6c end:0x022f5c14
 
-src/ov000_e/func_ov000_022f7ccc.c:
+src/ov000_e/BossFPartD9_State_Unk_ov000_022f7ccc.c:
     complete
     .text       start:0x022f7ccc end:0x022f7d74
 
-src/ov000_e/func_ov000_022fb9c8.c:
+src/ov000_e/MapObject_Destructor.c:
     complete
     .text       start:0x022fb9c8 end:0x022fba50
 
-src/ov000_e/func_ov000_022fcf88.c:
+src/ov000_e/EnemyPawnGroup_State_Unk_ov000_022fcf88.c:
     complete
     .text       start:0x022fcf88 end:0x022fd030
 
-src/ov000_e/func_ov000_02301108.c:
+src/ov000_e/Kuragen_State_Unk_ov000_02301108.c:
     complete
     .text       start:0x02301108 end:0x0230119c
 
-src/ov000_e/func_ov000_02302398.c:
+src/ov000_e/Bubble_State_Unk_ov000_02302398.c:
     complete
     .text       start:0x02302398 end:0x02302418
 
@@ -9548,7 +9548,7 @@ src/ov000_e/func_ov000_02307dfc.c:
     complete
     .text       start:0x02307dfc end:0x02307e84
 
-src/ov000_e/func_ov000_02309b60.c:
+src/ov000_e/MapObj8C_CreateByType.c:
     complete
     .text       start:0x02309b60 end:0x02309bdc
 
@@ -9556,11 +9556,11 @@ src/ov000_e/func_ov000_0230b134.c:
     complete
     .text       start:0x0230b134 end:0x0230b1c8
 
-src/ov000_e/func_ov000_0230c2d0.c:
+src/ov000_e/MapObj13_State_Unk_ov000_0230c2d0.c:
     complete
     .text       start:0x0230c2d0 end:0x0230c370
 
-src/ov000_e/func_ov000_0230f1d8.c:
+src/ov000_e/GmkLand_Draw.c:
     complete
     .text       start:0x0230f1d8 end:0x0230f280
 
@@ -9568,7 +9568,7 @@ src/ov000_e/func_ov000_0230f4fc.c:
     complete
     .text       start:0x0230f4fc end:0x0230f590
 
-src/ov000_e/func_ov000_0230f590.c:
+src/ov000_e/GmkLand_State_Unk_ov000_0230f590.c:
     complete
     .text       start:0x0230f590 end:0x0230f614
 
@@ -9576,7 +9576,7 @@ src/ov000_g/func_ov000_02310464.c:
     complete
     .text       start:0x02310464 end:0x02310574
 
-src/ov000_g/func_ov000_02310574.c:
+src/ov000_g/Marker_State_Unk_ov000_02310574.c:
     complete
     .text       start:0x02310574 end:0x023106b8
 
@@ -9584,7 +9584,7 @@ src/ov000_g/func_ov000_02310b00.c:
     complete
     .text       start:0x02310b00 end:0x02310c08
 
-src/ov000_g/func_ov000_023144f0.c:
+src/ov000_g/Rope_Draw.c:
     complete
     .text       start:0x023144f0 end:0x023146b0
 
@@ -9600,7 +9600,7 @@ src/ov000_g/func_ov000_023177e8.c:
     complete
     .text       start:0x023177e8 end:0x0231797c
 
-src/ov000_g/func_ov000_02318ba0.c:
+src/ov000_g/SwitchTimer_Create.c:
     complete
     .text       start:0x02318ba0 end:0x02318cc4
 
@@ -9612,11 +9612,11 @@ src/ov000_g/func_ov000_02319920.c:
     complete
     .text       start:0x02319920 end:0x02319af8
 
-src/ov000_g/func_ov000_0231b2d4.c:
+src/ov000_g/WallBreak_DrawBroken.c:
     complete
     .text       start:0x0231b2d4 end:0x0231b37c
 
-src/ov000_g/func_ov000_0231b37c.c:
+src/ov000_g/WallBreak_State_Broken.c:
     complete
     .text       start:0x0231b37c end:0x0231b4b0
 
@@ -9640,7 +9640,7 @@ src/ov000_g/func_ov000_0231fad4.c:
     complete
     .text       start:0x0231fad4 end:0x0231fbf0
 
-src/ov000_g/func_ov000_02326638.c:
+src/ov000_g/Decoration_InitFromMap.c:
     complete
     .text       start:0x02326638 end:0x02326744
 
@@ -9664,7 +9664,7 @@ src/ov000_g/func_ov000_0232c658.c:
     complete
     .text       start:0x0232c658 end:0x0232c794
 
-src/ov000_g/func_ov000_0232dad8.c:
+src/ov000_g/FixVsHud_Draw.c:
     complete
     .text       start:0x0232dad8 end:0x0232dbfc
 
@@ -9688,7 +9688,7 @@ src/ov000_g/func_ov000_02336f28.c:
     complete
     .text       start:0x02336f28 end:0x02337048
 
-src/ov000_i/func_ov000_02338538.c:
+src/ov000_i/BossHelp_Destructor.c:
     complete
     .text       start:0x02338538 end:0x023385e4
 
@@ -9840,7 +9840,7 @@ src/ov000_i/func_ov000_02348dc0.c:
     complete
     .text       start:0x02348dc0 end:0x02348e90
 
-src/ov000_i/func_ov000_02348f58.c:
+src/ov000_i/Player_State_Die.c:
     complete
     .text       start:0x02348f58 end:0x02349038
 
@@ -9888,7 +9888,7 @@ src/ov000_i/func_ov000_0234ed58.c:
     complete
     .text       start:0x0234ed58 end:0x0234ee38
 
-src/ov000_i/func_ov000_0234ee38.c:
+src/ov000_i/Player_State_Glider.c:
     complete
     .text       start:0x0234ee38 end:0x0234ef30
 
@@ -9900,7 +9900,7 @@ src/ov000_i/func_ov000_0234fa14.c:
     complete
     .text       start:0x0234fa14 end:0x0234fad0
 
-src/ov000_i/func_ov000_02351f50.c:
+src/ov000_i/Player_Action_SandSlider.c:
     complete
     .text       start:0x02351f50 end:0x02352044
 
@@ -9912,7 +9912,7 @@ src/ov000_i/func_ov000_02354098.c:
     complete
     .text       start:0x02354098 end:0x02354174
 
-src/ov000_i/func_ov000_023548d8.c:
+src/ov000_i/Player_Action_BendStick.c:
     complete
     .text       start:0x023548d8 end:0x02354980
 
@@ -9936,15 +9936,15 @@ src/ov000_i/func_ov000_0235b0c8.c:
     complete
     .text       start:0x0235b0c8 end:0x0235b1a4
 
-src/ov000_i/func_ov000_0235b1a4.c:
+src/ov000_i/RingManager_SpawnRing.c:
     complete
     .text       start:0x0235b1a4 end:0x0235b2c4
 
-src/ov000_i/func_ov000_0235c168.c:
+src/ov000_i/RingManager_Destructor.c:
     complete
     .text       start:0x0235c168 end:0x0235c238
 
-src/ov000_j/func_ov000_02305ea0.c:
+src/ov000_j/Crane_State_Unk_ov000_02305ea0.c:
     complete
     .text       start:0x02305ea0 end:0x0230613c
 
@@ -10012,11 +10012,11 @@ src/ov000_g/func_ov000_023127e8.c:
     complete
     .text       start:0x023127e8 end:0x023128c4
 
-src/ov000_g/func_ov000_023140e4.c:
+src/ov000_g/Rock_State_Fall.c:
     complete
     .text       start:0x023140e4 end:0x023141b8
 
-src/ov000_g/func_ov000_0231b1e8.c:
+src/ov000_g/WallBreak_OnHit.c:
     complete
     .text       start:0x0231b1e8 end:0x0231b2d4
 
@@ -10024,7 +10024,7 @@ src/ov000_g/func_ov000_0231b8f8.c:
     complete
     .text       start:0x0231b8f8 end:0x0231b9f0
 
-src/ov000_g/func_ov000_0231c9ac.c:
+src/ov000_g/Mine_Draw.c:
     complete
     .text       start:0x0231c9ac end:0x0231caac
 
@@ -10220,7 +10220,7 @@ src/ov000_i/func_ov000_0234bdac.c:
     complete
     .text       start:0x0234bdac end:0x0234be10
 
-src/ov000_j/func_ov000_022de768.c:
+src/ov000_j/Boss4_Draw_Unk_ov000_022de768.c:
     complete
     .text       start:0x022de768 end:0x022de860
 
@@ -10228,7 +10228,7 @@ src/ov000_j/func_ov000_022dfbc8.c:
     complete
     .text       start:0x022dfbc8 end:0x022dfcbc
 
-src/ov000_j/func_ov000_022ebfc8.c:
+src/ov000_j/Boss7PartD7_Draw.c:
     complete
     .text       start:0x022ebfc8 end:0x022ec138
 
@@ -10236,23 +10236,23 @@ src/ov000_j/func_ov000_022f0b44.c:
     complete
     .text       start:0x022f0b44 end:0x022f0bd0
 
-src/ov000_j/func_ov000_022f54f8.c:
+src/ov000_j/BossFPartD8_Draw.c:
     complete
     .text       start:0x022f54f8 end:0x022f5678
 
-src/ov000_j/func_ov000_022f6ddc.c:
+src/ov000_j/BossFPartDE_Draw.c:
     complete
     .text       start:0x022f6ddc end:0x022f703c
 
-src/ov000_j/func_ov000_022f7adc.c:
+src/ov000_j/BossFPartDB_Draw.c:
     complete
     .text       start:0x022f7adc end:0x022f7b84
 
-src/ov000_j/func_ov000_022f7c00.c:
+src/ov000_j/BossFPartDA_Draw.c:
     complete
     .text       start:0x022f7c00 end:0x022f7ca8
 
-src/ov000_j/func_ov000_0230f280.c:
+src/ov000_j/GmkLand_State_Unk_ov000_0230f280.c:
     complete
     .text       start:0x0230f280 end:0x0230f474
 
@@ -10284,7 +10284,7 @@ src/ov000_j/func_ov000_022ddbec.c:
     complete
     .text       start:0x022ddbec end:0x022ddc44
 
-src/ov000_j/func_ov000_022dec18.c:
+src/ov000_j/Boss4_Draw_Unk_ov000_022dec18.c:
     complete
     .text       start:0x022dec18 end:0x022dec70
 
@@ -10424,7 +10424,7 @@ src/ov000_j/func_ov000_022f4ce4.c:
     complete
     .text       start:0x022f4ce4 end:0x022f4d40
 
-src/ov000_j/func_ov000_022f5c14.c:
+src/ov000_j/BossFPartDE_State_Unk_ov000_022f5c14.c:
     complete
     .text       start:0x022f5c14 end:0x022f5c78
 
@@ -10432,11 +10432,11 @@ src/ov000_j/func_ov000_022f5c78.c:
     complete
     .text       start:0x022f5c78 end:0x022f5ce4
 
-src/ov000_j/func_ov000_022f6584.c:
+src/ov000_j/BossFPartDE_State_Unk_ov000_022f6584.c:
     complete
     .text       start:0x022f6584 end:0x022f65fc
 
-src/ov000_j/func_ov000_022f67c8.c:
+src/ov000_j/BossFPartDE_State_Unk_ov000_022f67c8.c:
     complete
     .text       start:0x022f67c8 end:0x022f6834
 
@@ -10444,7 +10444,7 @@ src/ov000_j/func_ov000_022f685c.c:
     complete
     .text       start:0x022f685c end:0x022f68c4
 
-src/ov000_j/func_ov000_022f7080.c:
+src/ov000_j/BossFPartDD_State_Unk_ov000_022f7080.c:
     complete
     .text       start:0x022f7080 end:0x022f70f4
 
@@ -10460,7 +10460,7 @@ src/ov000_j/func_ov000_022f8b70.c:
     complete
     .text       start:0x022f8b70 end:0x022f8bc8
 
-src/ov000_j/func_ov000_022fae34.c:
+src/ov000_j/MapObject_FreeSpawnEntry.c:
     complete
     .text       start:0x022fae34 end:0x022faeac
 
@@ -10492,7 +10492,7 @@ src/ov000_j/func_ov000_02304f50.c:
     complete
     .text       start:0x02304f50 end:0x02304fa0
 
-src/ov000_j/func_ov000_0230787c.c:
+src/ov000_j/DashC_CreateByType.c:
     complete
     .text       start:0x0230787c end:0x023078f4
 
@@ -10512,23 +10512,23 @@ src/ov000_j/func_ov000_02309e40.c:
     complete
     .text       start:0x02309e40 end:0x02309e80
 
-src/ov000_j/func_ov000_0230d544.c:
+src/ov000_j/ItemBoxPart_State_Unk_ov000_0230d544.c:
     complete
     .text       start:0x0230d544 end:0x0230d5b8
 
-src/ov000_j/func_ov000_0230ecf8.c:
+src/ov000_j/JumpPedestal_Destructor.c:
     complete
     .text       start:0x0230ecf8 end:0x0230ed60
 
-src/ov000_k/func_ov000_023504e8.c:
+src/ov000_k/Player_State_GmkSpecial.c:
     complete
     .text       start:0x023504e8 end:0x02350968
 
-src/ov000_k/func_ov000_02350d3c.c:
+src/ov000_k/Player_State_Cannon.c:
     complete
     .text       start:0x02350d3c end:0x02351018
 
-src/ov000_k/func_ov000_02351a8c.c:
+src/ov000_k/Player_State_Rocket.c:
     complete
     .text       start:0x02351a8c end:0x02351d28
 
@@ -10536,7 +10536,7 @@ src/ov000_k/func_ov000_02358384.c:
     complete
     .text       start:0x02358384 end:0x02358410
 
-src/ov000_k/func_ov000_0235aea8.c:
+src/ov000_k/RingManager_ScatterRings.c:
     complete
     .text       start:0x0235aea8 end:0x0235b08c
 
@@ -10568,7 +10568,7 @@ src/ov000_l/func_ov000_02332e30.c:
     complete
     .text       start:0x02332e30 end:0x02333098
 
-src/ov000_l/func_ov000_02333694.c:
+src/ov000_l/EffBrakeSmoke_Create.c:
     complete
     .text       start:0x02333694 end:0x02333934
 
@@ -10620,11 +10620,11 @@ src/ov000_n/func_ov000_022f6978.c:
     complete
     .text       start:0x022f6978 end:0x022f6a80
 
-src/ov000_n/func_ov000_022fc6e8.c:
+src/ov000_n/EnemyPawnGroup_OnHit_Box2_Unk_ov000_022fc6e8.c:
     complete
     .text       start:0x022fc6e8 end:0x022fc768
 
-src/sweep/func_ov000_02338624.c:
+src/sweep/BossHelp_Create.c:
     complete
     .text       start:0x02338624 end:0x02338728
 
@@ -10632,11 +10632,11 @@ src/ov000_n/func_ov000_022eae84.c:
     complete
     .text       start:0x022eae84 end:0x022eb124
 
-src/ov000_l/func_ov000_02315420.c:
+src/ov000_l/SandSlider_Create.c:
     complete
     .text       start:0x02315420 end:0x023155cc
 
-src/ov000_l/func_ov000_023168a4.c:
+src/ov000_l/Spring_OnHit.c:
     complete
     .text       start:0x023168a4 end:0x02316a1c
 
@@ -10692,11 +10692,11 @@ src/ov000_o/func_ov000_0234a064.c:
     complete
     .text       start:0x0234a064 end:0x0234a288
 
-src/ov000_l/func_ov000_02310730.c:
+src/ov000_l/Marker_State_Unk_ov000_02310730.c:
     complete
     .text       start:0x02310730 end:0x023107c4
 
-src/ov000_l/func_ov000_02312214.c:
+src/ov000_l/GmkPipe_OnHit.c:
     complete
     .text       start:0x02312214 end:0x023122d8
 
@@ -10708,7 +10708,7 @@ src/ov000_l/func_ov000_02312f70.c:
     complete
     .text       start:0x02312f70 end:0x0231301c
 
-src/ov000_l/func_ov000_02316a58.c:
+src/ov000_l/Spring_Action_Activate.c:
     complete
     .text       start:0x02316a58 end:0x02316adc
 
@@ -10724,11 +10724,11 @@ src/ov000_l/func_ov000_0231a9b0.c:
     complete
     .text       start:0x0231a9b0 end:0x0231aa74
 
-src/ov000_l/func_ov000_0231b4b0.c:
+src/ov000_l/WallBreak_Action_Break.c:
     complete
     .text       start:0x0231b4b0 end:0x0231b564
 
-src/ov000_l/func_ov000_0231bd44.c:
+src/ov000_l/WaterJet_OnHit.c:
     complete
     .text       start:0x0231bd44 end:0x0231bdf8
 
@@ -10864,11 +10864,11 @@ src/ov000_l/func_ov000_02336cec.c:
     complete
     .text       start:0x02336cec end:0x02336da8
 
-src/ov000_n/func_ov000_02307e9c.c:
+src/ov000_n/MapObj8F_State_Unk_ov000_02307e9c.c:
     complete
     .text       start:0x02307e9c end:0x02308110
 
-src/ov000_n/func_ov000_02308404.c:
+src/ov000_n/MapObj8F_State_Unk_ov000_02308404.c:
     complete
     .text       start:0x02308404 end:0x02308650
 
@@ -10904,7 +10904,7 @@ src/ov000_l/func_ov000_023315f4.c:
     complete
     .text       start:0x023315f4 end:0x02331670
 
-src/ov000_l/func_ov000_02312c20.c:
+src/ov000_l/GmkLandAA_State_Unk_ov000_02312c20.c:
     complete
     .text       start:0x02312c20 end:0x02312c70
 
@@ -10916,7 +10916,7 @@ src/ov000_l/func_ov000_02318080.c:
     complete
     .text       start:0x02318080 end:0x023180d8
 
-src/ov000_l/func_ov000_0231a5a0.c:
+src/ov000_l/Steam_State_Rise.c:
     complete
     .text       start:0x0231a5a0 end:0x0231a608
 
@@ -10928,7 +10928,7 @@ src/ov000_l/func_ov000_0231a94c.c:
     complete
     .text       start:0x0231a94c end:0x0231a9b0
 
-src/ov000_l/func_ov000_0231b568.c:
+src/ov000_l/WallBreak_Action_Idle.c:
     complete
     .text       start:0x0231b568 end:0x0231b5c8
 
@@ -10952,7 +10952,7 @@ src/ov000_l/func_ov000_0232112c.c:
     complete
     .text       start:0x0232112c end:0x02321188
 
-src/ov000_l/func_ov000_02322acc.c:
+src/ov000_l/DecVine_OnHit.c:
     complete
     .text       start:0x02322acc end:0x02322b38
 
@@ -10968,7 +10968,7 @@ src/ov000_l/func_ov000_02326498.c:
     complete
     .text       start:0x02326498 end:0x023264dc
 
-src/ov000_l/func_ov000_023265d8.c:
+src/ov000_l/Decoration_Destructor.c:
     complete
     .text       start:0x023265d8 end:0x02326638
 
@@ -11068,7 +11068,7 @@ src/ov000_r/func_ov000_02334eb4.c:
     complete
     .text       start:0x02334eb4 end:0x023350bc
 
-src/asm/func_ov000_022f8224.c:
+src/asm/BossF_State_Unk_ov000_022f8224.c:
     complete
     .text       start:0x022f8224 end:0x022f8310
 
@@ -11088,7 +11088,7 @@ src/asm_fallback/func_ov000_022ddd4c.c:
     complete
     .text       start:0x022ddd4c end:0x022dde20
 
-src/asm_fallback/func_ov000_022deab4.c:
+src/asm_fallback/Boss4_State_Unk_ov000_022deab4.c:
     complete
     .text       start:0x022deab4 end:0x022dec18
 
@@ -11144,7 +11144,7 @@ src/asm_fallback/func_ov000_0231c834.c:
     complete
     .text       start:0x0231c834 end:0x0231c99c
 
-src/asm_fallback/func_ov000_02327ca4.c:
+src/asm_fallback/BossEffect_Create.c:
     complete
     .text       start:0x02327ca4 end:0x02327ef4
 
@@ -11196,6 +11196,6 @@ src/asm_fallback/func_ov000_02302164.c:
     complete
     .text       start:0x02302164 end:0x02302350
 
-src/asm_fallback/func_ov000_0234c4a4.c:
+src/asm_fallback/Player_SetAnimation.c:
     complete
     .text       start:0x0234c4a4 end:0x0234c644

@@ -34,7 +34,7 @@ typedef struct UnkStruct_022eee68_c {
 extern u32 gRandSeed;
 extern s32 data_ov001_023167e4[];
 
-UnkStruct_022eee68_c *func_ov001_022ffce8(void);
+UnkStruct_022eee68_c *ExtraBoss_GetWork(void);
 void func_ov001_022fc8dc(s32 a, s32 x, s32 y, s32 b);
 void func_ov001_022efcdc(UnkStruct_022eee68_o *p);
 void func_ov001_022ef6c4(UnkStruct_022eee68_o *p);
@@ -51,7 +51,7 @@ void func_ov001_022eee68(UnkStruct_022eee68_o **self, UnkStruct_022eee68_o **oth
     UnkStruct_022eee68_o *p = *other;
     UnkStruct_022eee68_w *w = p->work;
     UnkStruct_022eee68_o *o = w->unk18;
-    UnkStruct_022eee68_c *c = func_ov001_022ffce8();
+    UnkStruct_022eee68_c *c = ExtraBoss_GetWork();
 
     c->lives--;
     p->flagsB8 |= 0x200;

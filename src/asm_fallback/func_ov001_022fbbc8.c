@@ -16,7 +16,7 @@ extern void func_02025ecc(void);
 extern void Sound_PlaySeqArc(void);
 extern void func_ov001_022fbb5c(void);
 extern void func_ov001_022fc934(void);
-extern void func_ov001_022ffce8(void);
+extern void ExtraBoss_GetWork(void);
 extern void func_ov001_02300c94(void);
 
 asm void func_ov001_022fbbc8(void)
@@ -103,7 +103,7 @@ _104:
     mov r0, #0x1e
     str r1, [r4, #0x50]
     str r0, [r4, #0x1cc]
-    bl func_ov001_022ffce8
+    bl ExtraBoss_GetWork
     ldr r0, [r0, #0x40]
     cmp r0, #4
     bne _180
@@ -180,7 +180,7 @@ _248:
     ldreq r0, [pc, #0x194]
     movne r7, #1
     ldreq r7, [r0, #0x14]
-    bl func_ov001_022ffce8
+    bl ExtraBoss_GetWork
     ldr r3, [pc, #0x188]
     mov r1, #0xa
     ldr r2, [r0, #0x40]

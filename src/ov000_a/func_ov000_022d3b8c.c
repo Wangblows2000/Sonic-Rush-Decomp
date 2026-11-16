@@ -102,7 +102,7 @@ typedef struct UnkStruct_022d3b8c_7 {
 } UnkStruct_022d3b8c_7;
 
 extern UnkStruct_022d3b8c *data_ov000_02369ae0;
-extern UnkStruct_022d3b8c_p *data_ov000_0236ac60;
+extern UnkStruct_022d3b8c_p *gPlayers;
 extern UnkStruct_022d3b8c_7 data_ov000_02369ac0;
 extern u32 gRandSeed;
 extern s32 data_ov000_02362e50[4];
@@ -123,7 +123,7 @@ static inline u16 Rand(void) {
 
 void func_ov000_022d3b8c(void) {
     UnkStruct_022d3b8c *s = data_ov000_02369ae0;
-    s32 d = data_ov000_0236ac60->unk10;
+    s32 d = gPlayers->unk10;
     UnkStruct_022d3b8c_a *x = &s->unkA9C;
     UnkStruct_022d3b8c_a *y = &s->unkBD4;
     UnkStruct_022d3b8c_a *z = &s->unkD0C;

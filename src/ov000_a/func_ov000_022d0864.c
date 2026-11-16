@@ -74,7 +74,7 @@ s32 func_02002094(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
-u8 *func_ov000_02328548(s32 a, s32 x, s32 y, s32 z);
+u8 *BossEffect_CreateCatch(s32 a, s32 x, s32 y, s32 z);
 void func_02000e98(void *m, s32 s, s32 c);
 void func_ov000_022d0690(UnkStruct_022d0864 *s);
 
@@ -140,7 +140,7 @@ void func_ov000_022d0864(UnkStruct_022d0864 *s) {
         else if (a > 0x70d988)
             a += -0x6cd988;
         func_ov000_022c5e80(0x1152f0, 0x6cd988, a, &a, &b, NULL);
-        obj = func_ov000_02328548(1, a >> 4, -s->unk13A0 >> 4, b >> 4);
+        obj = BossEffect_CreateCatch(1, a >> 4, -s->unk13A0 >> 4, b >> 4);
         if (s->unk145C == 0)
             func_02000e98(obj + 0x158, data_0206f470[0], data_0206f470[1]);
         else

@@ -37,13 +37,13 @@ extern u8 data_ov000_023676f4[], data_ov000_0236a738[], data_ov000_0236a8f0[], d
 extern u8 data_ov000_02367710[], data_ov000_0236a740[];
 extern u8 data_ov000_0236772c[];
 
-void func_ov000_023265d8(void);
+void Decoration_Destructor(void);
 void func_ov000_02322f3c(void);
 void func_ov000_02320894(void);
 void func_ov000_023208a4(void);
 void func_ov000_02320014(void);
 void func_ov000_02320168(void);
-void func_ov000_02326638(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
+void Decoration_InitFromMap(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
 void PaletteAnim_Create(s32 a, void *b, void *c, s32 d);
 void func_ov000_02320744(UnkStruct_02324400 *w);
 void func_ov000_023205bc(UnkStruct_02324400 *w);
@@ -54,13 +54,13 @@ UnkStruct_02324400 *func_ov000_02324400(UnkStruct_ObjParam *p, s32 a, s32 b) {
     vu16 zero;
     s32 idx = 0;
 
-    task = Task_Create(StageObj_Main, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_02324400));
+    task = Task_Create(StageObj_Main, Decoration_Destructor, 0, 0x500, 4, sizeof(UnkStruct_02324400));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02324400));
-    func_ov000_02326638(w, p, a, b);
+    Decoration_InitFromMap(w, p, a, b);
     switch (p->unk2) {
     default:
         StageObj_Load2dBAC(w, data_ov000_02367610, 0, data_ov000_0236a6f0, data_ov000_02369ba0);

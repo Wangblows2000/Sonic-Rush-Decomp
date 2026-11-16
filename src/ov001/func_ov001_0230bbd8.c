@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 extern u16 gPad[];
-extern u8 *data_ov001_0231f5c0;
+extern u8 *gSpecialStageWork;
 BOOL func_ov001_02309894(void);
 void PauseMenu_Create(s32 a);
 void func_ov001_023143c4(void);
@@ -15,7 +15,7 @@ void func_ov001_0230ae4c(void);
 void func_ov001_02309e3c(void);
 
 void func_ov001_0230bbd8(void) {
-    u8 *g = data_ov001_0231f5c0;
+    u8 *g = gSpecialStageWork;
     if ((gPad[2] & 8) && !func_ov001_02309894()) {
         PauseMenu_Create(1);
         return;

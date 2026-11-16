@@ -36,7 +36,7 @@ typedef struct UnkStruct_02303594_q {
 extern UnkStruct_02303594_g *data_ov001_0231f548;
 extern s16 data_0206e470[];
 
-UnkStruct_02303594_q *func_ov001_022ffce8(void);
+UnkStruct_02303594_q *ExtraBoss_GetWork(void);
 u16 func_020027a4(s32 y, s32 x);
 void func_ov001_02303394(UnkStruct_02303594_p *p);
 void func_ov001_023031e4(UnkStruct_02303594_p *p);
@@ -65,13 +65,13 @@ void func_ov001_02303594(void) {
     UnkStruct_02303594_p *n3;
     UnkStruct_02303594_p *p4;
 
-    tz = func_ov001_022ffce8()->unk310;
+    tz = ExtraBoss_GetWork()->unk310;
     n = data_ov001_0231f548->unk98;
     while (n != NULL) {
         p = n;
         n = p->unk28;
         p->unk0 -= 0x4000;
-        if (p->unk0 < func_ov001_022ffce8()->unk31C + 0x80000) {
+        if (p->unk0 < ExtraBoss_GetWork()->unk31C + 0x80000) {
             p->unk18--;
             if (p->unk18 <= 0) {
                 p->unk10 = p->unk14 = 0;

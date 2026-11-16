@@ -71,12 +71,12 @@ typedef struct {
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_02369b78 *data_ov000_02369b78;
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_022eb5fc_Pl *data_ov000_0236ac60;
+extern UnkStruct_022eb5fc_Pl *gPlayers;
 
 void func_ov000_022eb574(UnkStruct_022eb5fc *w, UnkStruct_022eb5fc_Pl *pl);
 void func_ov000_022ee014(s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_023492f0(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b);
+void Player_OnHurt(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b);
 s32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(s32 a);
 void func_020537b4(s32 a);
@@ -114,7 +114,7 @@ void func_ov000_022eb5fc(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b)
         }
         if (pl->unk3B2 > 0)
             return;
-        func_ov000_023492f0(b, a);
+        Player_OnHurt(b, a);
         return;
     }
     if (data_ov000_02369ac0.unk4 == 0x28) {
@@ -124,7 +124,7 @@ void func_ov000_022eb5fc(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b)
         }
         if (pl->unk3B2 > 0)
             return;
-        func_ov000_023492f0(b, a);
+        Player_OnHurt(b, a);
         return;
     }
     if ((u16)(s16)(pl->unk328 - 0x30) <= 1) {
@@ -132,10 +132,10 @@ void func_ov000_022eb5fc(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b)
         if (data_ov000_02369ac0.unk8 <= 1) {
             data_ov000_02369ac0.unk8 = 1;
             data_022c4560.unk18 &= ~1;
-            data_ov000_0236ac60->unk32C |= 0x200000;
-            data_ov000_0236ac60->unk420 = 0;
-            data_ov000_0236ac60->unk422 = 0;
-            data_ov000_0236ac60->unk424 = 0;
+            gPlayers->unk32C |= 0x200000;
+            gPlayers->unk420 = 0;
+            gPlayers->unk422 = 0;
+            gPlayers->unk424 = 0;
             func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
             func_020537b4(0xb);
             func_020533e0(0x12, 0xf0);
@@ -145,7 +145,7 @@ void func_ov000_022eb5fc(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b)
             func_020533e0(0x10, 0xf0);
         }
         w->unk440 = func_ov000_022e72ec;
-        func_ov000_0234aa80(data_ov000_0236ac60);
+        func_ov000_0234aa80(gPlayers);
         func_ov000_022ee06c(b->unk0 << 8, b->unk4 << 8, 0);
         return;
     }

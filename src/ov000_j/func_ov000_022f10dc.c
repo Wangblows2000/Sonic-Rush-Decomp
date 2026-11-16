@@ -13,12 +13,12 @@ typedef struct {
     u16 unk438;
 } UnkStruct_022f10dc;
 
-extern UnkStruct_022f10dc_plr *data_ov000_0236ac60;
+extern UnkStruct_022f10dc_plr *gPlayers;
 
 void func_ov000_022f10b0(UnkStruct_022f10dc *p);
 
 void func_ov000_022f10dc(UnkStruct_022f10dc *p) {
-    if ((u16)(s16)(data_ov000_0236ac60->unk328 - 0xf) <= 1)
+    if ((u16)(s16)(gPlayers->unk328 - 0xf) <= 1)
         p->unk434 = 1;
     if (p->unk438 == 0)
         p->unk68 = func_ov000_022f10b0;

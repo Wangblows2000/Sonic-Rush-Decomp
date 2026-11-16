@@ -23,7 +23,7 @@ typedef struct {
 } UnkStruct_023389f8;
 
 extern UnkStruct_023389f8_Cam data_ov000_0236aad8;
-extern UnkStruct_023389f8_Ply *data_ov000_0236ac60[];
+extern UnkStruct_023389f8_Ply *gPlayers[];
 
 void func_ov000_02338800(UnkStruct_023389f8 *w);
 void func_ov000_0233887c(void);
@@ -38,7 +38,7 @@ void func_ov000_023389f8(UnkStruct_023389f8 *w) {
         func_ov000_02338800(w);
         return;
     }
-    p = data_ov000_0236ac60[c->unk3A];
+    p = gPlayers[c->unk3A];
     fl = p->unk420;
     if (fl & 1) {
         func_ov000_02338800(w);

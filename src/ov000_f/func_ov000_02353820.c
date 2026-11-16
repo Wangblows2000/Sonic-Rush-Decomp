@@ -47,9 +47,9 @@ typedef struct {
 extern UnkPhys_02353820 data_ov000_02368ba0[];
 
 void func_ov000_02353568(UnkStruct_02353820 *w);
-void func_ov000_0234c9e8(UnkStruct_02353820 *w);
+void Player_ResetGimmickState(UnkStruct_02353820 *w);
 void func_ov000_0234a064(UnkStruct_02353820 *w, u8 ang);
-void func_ov000_0234c4a4(UnkStruct_02353820 *w, s32 state);
+void Player_SetAnimation(UnkStruct_02353820 *w, s32 state);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02353820(UnkStruct_02353820 *w, UnkObj_02353820 *o) {
@@ -70,13 +70,13 @@ void func_ov000_02353820(UnkStruct_02353820 *w, UnkObj_02353820 *o) {
         }
         return;
     }
-    func_ov000_0234c9e8(w);
+    Player_ResetGimmickState(w);
     func_ov000_0234a064(w, 0);
     w->unk2E = 0;
     w->unk30 = 0;
     w->unk1 = 0;
     w->unk3 = 0;
-    func_ov000_0234c4a4(w, 0x27);
+    Player_SetAnimation(w, 0x27);
     if (w->unk34 > 0) {
         w->unk5C &= ~1;
     } else {

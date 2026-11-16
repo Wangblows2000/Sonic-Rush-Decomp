@@ -35,12 +35,12 @@ typedef struct {
     s32 unk1118;
 } UnkStruct_022e552c;
 
-extern UnkStruct_022e552c_obj *data_ov000_0236ac60;
+extern UnkStruct_022e552c_obj *gPlayers;
 extern s16 data_02070470[];
 extern u8 data_ov000_023638c4[];
 
 void func_ov000_022e5c1c(UnkStruct_022e552c *p);
-u8 *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+u8 *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *out);
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
@@ -59,7 +59,7 @@ void func_ov000_022e552c(UnkStruct_022e552c *p) {
     s32 d;
 
     func_ov000_022e5c1c(p);
-    d = data_ov000_0236ac60->unk10 - p->unk10;
+    d = gPlayers->unk10 - p->unk10;
     if (p->unkF54 >= 0) {
         if (p->unk10 > 0x2aa00 || d < -0x8000) {
             p->unkF54 = -p->unkF54;
@@ -77,7 +77,7 @@ void func_ov000_022e552c(UnkStruct_022e552c *p) {
     }
     p->unk10 += p->unkF58;
     if (p->unk1118 % 15 == 0) {
-        e = func_ov000_022fad3c(0xd4, 0, 0, 0, 0, 0, 0, 0, 0);
+        e = MapObject_Spawn(0xd4, 0, 0, 0, 0, 0, 0, 0, 0);
         p->unkF70[p->unkF98] = e;
         if (p->unkD5E != 0) {
             MTX_RotY33_(e + 0x230, data_02070470[0], data_02070470[1]);

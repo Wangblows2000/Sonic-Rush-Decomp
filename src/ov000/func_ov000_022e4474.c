@@ -23,13 +23,13 @@ typedef struct UnkStruct_022e4474 {
 
 extern UnkStruct_022e4474_2 *data_ov000_02369b4c;
 
-void func_ov000_0234c4a4(UnkStruct_022e4474 *s, s32 a);
+void Player_SetAnimation(UnkStruct_022e4474 *s, s32 a);
 
 void func_ov000_022e4474(UnkStruct_022e4474 *s) {
     if (!(s->unk240 & 2))
         return;
     s->func = data_ov000_02369b4c->unk111C;
-    func_ov000_0234c4a4(s, 0x3c);
+    Player_SetAnimation(s, 0x3c);
     s->unk434 = 1;
     s->unk436 = 2;
     s->unk430 = 0x40;

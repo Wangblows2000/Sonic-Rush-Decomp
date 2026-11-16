@@ -11,7 +11,7 @@ s32 _fmul();
 s32 _ffix();
 s32 func_ov001_022d0050();
 void func_ov001_022d15e8();
-s32 func_ov001_022d2234();
+s32 StaffRoll_SetState();
 
 void func_ov001_022d1710(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0xbb0) = 0;
@@ -31,7 +31,7 @@ void func_ov001_022d1710(u8 *p0) {
         func_ov001_022d0050();
         return;
     }
-    func_ov001_022d2234(p0, (u32)func_ov001_022d15e8);
+    StaffRoll_SetState(p0, (u32)func_ov001_022d15e8);
 }
 
 #pragma thumb reset

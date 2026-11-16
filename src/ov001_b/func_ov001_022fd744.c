@@ -19,7 +19,7 @@ typedef struct UnkStruct_022fd744_q {
 extern UnkStruct_022fd744_s *data_ov001_0231f324;
 extern s16 data_ov001_02316e84[];
 
-UnkStruct_022fd744_q *func_ov001_022ffce8(void);
+UnkStruct_022fd744_q *ExtraBoss_GetWork(void);
 s32 func_02002094(s32 n, s32 d);
 s32 func_0200203c(s32 n, s32 d);
 void AnimatorSprite_Draw(void *p);
@@ -40,7 +40,7 @@ void func_ov001_022fd744(void) {
     UnkStruct_022fd744_s *e;
     UnkStruct_022fd744_q *q;
 
-    n = func_ov001_022ffce8()->unk4C;
+    n = ExtraBoss_GetWork()->unk4C;
     if (n > 999)
         n = 999;
     else if (n < 0)
@@ -61,7 +61,7 @@ void func_ov001_022fd744(void) {
     }
     AnimatorSprite_Draw((u8 *)G + 0x5a0);
     AnimatorSprite_Draw((u8 *)G + 0x5e8);
-    t = func_ov001_022ffce8()->unk44;
+    t = ExtraBoss_GetWork()->unk44;
     off = 0;
     if (t > 0x7e90) {
         *(s32 *)((u8 *)G + 0x79c) += 1;
@@ -97,13 +97,13 @@ void func_ov001_022fd744(void) {
         e->y = 0x12;
         AnimatorSprite_Draw(e);
     }
-    q = func_ov001_022ffce8();
-    lives = *(s8 *)((u8 *)q + func_ov001_022ffce8()->unk3C + 0x60);
+    q = ExtraBoss_GetWork();
+    lives = *(s8 *)((u8 *)q + ExtraBoss_GetWork()->unk3C + 0x60);
     if (lives > 9)
         lives = 9;
     else if (lives < 0)
         lives = 0;
-    AnimatorSprite_Draw(&G[func_ov001_022ffce8()->unk3C + 0x19]);
+    AnimatorSprite_Draw(&G[ExtraBoss_GetWork()->unk3C + 0x19]);
     AnimatorSprite_Draw((u8 *)G + 0x6c0);
     e = &G[lives];
     e->x = 0x26;

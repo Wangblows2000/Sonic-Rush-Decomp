@@ -32,7 +32,7 @@ extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_02369b78 *data_ov000_02369b78;
 extern u16 data_ov000_02363bc4[][8];
-extern UnkStruct_022eb158 *data_ov000_0236ac60;
+extern UnkStruct_022eb158 *gPlayers;
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
@@ -44,7 +44,7 @@ static inline s32 GetIdxB(void) {
 }
 
 BOOL func_ov000_022eb268(UnkStruct_022eb158 *s) {
-    UnkStruct_022eb158 *p = data_ov000_0236ac60;
+    UnkStruct_022eb158 *p = gPlayers;
     UnkStruct_02369b78 *g = data_ov000_02369b78;
     s32 d;
 

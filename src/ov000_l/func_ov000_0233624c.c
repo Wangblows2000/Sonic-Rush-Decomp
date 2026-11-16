@@ -39,7 +39,7 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern u16 data_ov000_02364d60[];
-extern UnkPlayer_0233624c *data_ov000_0236ac60;
+extern UnkPlayer_0233624c *gPlayers;
 
 void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
 void AnimatorSpriteDS_DrawRotScale(UnkDual *d, s32 scale, s32 b, s32 c);
@@ -158,7 +158,7 @@ void func_ov000_0233624c(UnkWork_0233624c *work) {
 
     d = &sub->d[4];
     if (q == 2 && n == 20) {
-        v = data_ov000_0236ac60->unk3b6;
+        v = gPlayers->unk3b6;
         if (d->sub.unk8 != 0x26)
             func_02033544(d, 0x26);
         if (v > 0) {

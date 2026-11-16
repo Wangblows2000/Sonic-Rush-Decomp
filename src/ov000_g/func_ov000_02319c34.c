@@ -63,7 +63,7 @@ typedef struct {
 } UnkStruct_02319c34;
 
 extern UnkStruct_02319c34_Stage data_ov000_0236aad8;
-extern UnkStruct_02319c34_Plr *data_ov000_0236ac60;
+extern UnkStruct_02319c34_Plr *gPlayers;
 extern UnkStruct_02319c34_Sys data_022c4560;
 extern s16 data_0206e470[];
 
@@ -113,7 +113,7 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
         }
     } else if (data_ov000_0236aad8.unk62 != 0 && data_ov000_0236aad8.unk62 != 0xffff) {
         ring->unk80 = w;
-        func_ov000_0235258c(data_ov000_0236ac60, w);
+        func_ov000_0235258c(gPlayers, w);
     }
     if (w->unk34 < 0x100) {
         w->unk34 = 0x100;
@@ -173,11 +173,11 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
     if (!(w->unk58 & 0x2000) && func_0201bea8(0, 0x5e) == 0) {
         func_0204b774(w->unk1DC, 0, 0x5e, 0x20, -1);
     }
-    if (data_ov000_0236ac60->unk32C & 0x400) {
+    if (gPlayers->unk32C & 0x400) {
         w->unk1F4 |= 1;
     }
     if (w->unk1F4 & 1) {
-        if (!(data_ov000_0236ac60->unk32C & 0x400)) {
+        if (!(gPlayers->unk32C & 0x400)) {
             w->unk54 |= 4;
         }
     }

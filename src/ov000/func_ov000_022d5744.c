@@ -7,9 +7,9 @@ typedef struct UnkStruct_022d5744 {
     void (*func)(void);
 } UnkStruct_022d5744;
 
-void func_ov000_022d5740(void);
+void Boss3PartCC_State_Unk_ov000_022d5740(void);
 
 void func_ov000_022d5744(UnkStruct_022d5744 *s) {
     s->unk2E = 0;
-    s->func = func_ov000_022d5740;
+    s->func = Boss3PartCC_State_Unk_ov000_022d5740;
 }

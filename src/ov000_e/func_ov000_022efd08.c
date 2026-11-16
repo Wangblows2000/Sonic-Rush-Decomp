@@ -23,7 +23,7 @@ typedef struct {
 
 extern volatile UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_Bits5 data_02089250;
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void func_ov000_022efd08(UnkStruct_022efd08 *w) {
     if (gDisplayMain.unk24.b0 != 0 && !(w->unk454++ & 1)) {
@@ -36,7 +36,7 @@ void func_ov000_022efd08(UnkStruct_022efd08 *w) {
     if (w->unk43C < 0)
         w->unk43C = 0;
     w->unk438 += w->unk43C;
-    data_ov000_0236ac60->unk18 = w->unk438;
+    gPlayers->unk18 = w->unk438;
     w->base.unk32 -= 0x60;
     if (w->base.unk32 < 0)
         w->base.unk32 = 0;

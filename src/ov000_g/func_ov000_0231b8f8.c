@@ -22,7 +22,7 @@ typedef struct {
 } UnkStruct_0231b8f8;
 
 extern UnkStruct_0231b8f8_E data_ov000_0236aad8[];
-extern UnkStruct_0231b8f8_P *data_ov000_0236ac60[];
+extern UnkStruct_0231b8f8_P *gPlayers[];
 
 void func_ov000_0231b8f8(UnkStruct_0231b8f8 *w) {
     u8 i;
@@ -34,7 +34,7 @@ void func_ov000_0231b8f8(UnkStruct_0231b8f8 *w) {
         idx = w->unk20C[i];
         if (idx >= 0) {
             e = &data_ov000_0236aad8[i];
-            if (data_ov000_0236ac60[idx]->unk10 < w->unk10) {
+            if (gPlayers[idx]->unk10 < w->unk10) {
                 if (w->unk1E0->unk4 & 1)
                     f = FALSE;
                 else

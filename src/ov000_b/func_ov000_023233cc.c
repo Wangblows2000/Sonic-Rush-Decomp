@@ -7,7 +7,7 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 
-void func_ov000_022fb9c8(void);
+void MapObject_Destructor(void);
 UnkStruct_EffObj *func_ov000_02320944(u32 a);
 
 UnkStruct_StageObj *func_ov000_023233cc(UnkStruct_ObjParam *p, s32 x, s32 y) {
@@ -16,7 +16,7 @@ UnkStruct_StageObj *func_ov000_023233cc(UnkStruct_ObjParam *p, s32 x, s32 y) {
     vu16 zero;
     u16 i;
 
-    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
+    task = Task_Create(StageObj_Main, MapObject_Destructor, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_StageObj));

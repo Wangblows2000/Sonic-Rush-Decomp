@@ -1,10 +1,10 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-void func_ov000_0234ee38();
+void Player_State_Glider();
 
 void func_ov000_0234e3c4(u8 *p0) {
-    *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_0234ee38;
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)Player_State_Glider;
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x10);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x8000);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x80);

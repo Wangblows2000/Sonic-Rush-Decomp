@@ -87,7 +87,7 @@ extern u16 data_02076b5c[];
 
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 UnkCam_0205ef48 *func_ov001_022f71f4(void);
 void func_02021310(void *f, void *path, void *arc);
 void *func_02021264(void *f, s32 i);
@@ -141,7 +141,7 @@ void func_0205ef48(void) {
     w->fn420 = func_0205b574;
     w->fn0 = func_0205cfd0;
     w->fn20 = func_0205c708;
-    w->obj = (UnkObj_0205ef48 *)(func_ov001_022ffce8() + 0x64);
+    w->obj = (UnkObj_0205ef48 *)(ExtraBoss_GetWork() + 0x64);
     w->objX = w->obj->x;
     w->objY = w->obj->y;
     w->flags |= 0x80025;

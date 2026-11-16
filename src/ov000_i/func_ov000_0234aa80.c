@@ -22,7 +22,7 @@ typedef struct {
 
 void func_ov000_0234a288(void);
 s32 func_ov000_0234cb70();
-void func_ov000_0234c4a4(UnkStruct_0234aa80 *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234aa80 *w, s32 a);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 
 void func_ov000_0234aa80(UnkStruct_0234aa80 *w) {
@@ -32,7 +32,7 @@ void func_ov000_0234aa80(UnkStruct_0234aa80 *w) {
         vx = w->unk2E;
         v = w->unk34;
         func_ov000_0234cb70(w);
-        func_ov000_0234c4a4(w, 2);
+        Player_SetAnimation(w, 2);
         w->unk5C |= 4;
         w->unk58 |= 0x10;
         w->unk58 |= 0x8000;

@@ -6,7 +6,7 @@
 extern u8 gTaskCurrent[];
 s32 func_ov001_022e2f00();
 s32 func_ov001_022e2ee8();
-s32 func_ov001_022e95b8();
+s32 ZoneMapPause_Create();
 void func_ov001_022e76ec();
 
 void func_ov001_022e5e60(void) {
@@ -16,7 +16,7 @@ void func_ov001_022e5e60(void) {
     } else {
         func_ov001_022e2ee8(*(u32 *)((u8 *)t0 + 0x8));
     }
-    func_ov001_022e95b8();
+    ZoneMapPause_Create();
     *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov001_022e76ec;
 }
 

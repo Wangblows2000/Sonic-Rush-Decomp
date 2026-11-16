@@ -14,7 +14,7 @@ typedef struct {
     u16 unk4B0;
 } UnkStruct_022f685c;
 
-void func_ov000_023280b0(s32 a, s32 x, s32 y, s32 z);
+void BossEffect_CreateBeamFinB(s32 a, s32 x, s32 y, s32 z);
 
 void func_ov000_022f685c(UnkStruct_022f685c *p) {
     s32 i;
@@ -29,5 +29,5 @@ void func_ov000_022f685c(UnkStruct_022f685c *p) {
     default:
         return;
     }
-    func_ov000_023280b0(1, p->elems[i].x, p->elems[i].y, p->elems[i].z);
+    BossEffect_CreateBeamFinB(1, p->elems[i].x, p->elems[i].y, p->elems[i].z);
 }

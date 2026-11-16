@@ -31,7 +31,7 @@ extern UnkStruct_022c6e58_2 *data_ov000_02369acc;
 extern u32 gRandSeed;
 extern s16 data_0206e470[];
 
-u8 *func_ov000_02327b5c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+u8 *EffPebble_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 void func_02000e60(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000e98(void *m, s32 s, s32 c);
@@ -58,7 +58,7 @@ void func_ov000_022c6e58(UnkStruct_022c6e58 *s) {
         a = -a;
     b = -(a >> 3);
     b = b - (s16)(Rand() & 0xff);
-    obj = func_ov000_02327b5c(s->unk10, 0x20000, 0x1000 - (Rand() & 0x1fff), v, b, (s16)(0x100 - (Rand() & 0x1ff)), 0x3c);
+    obj = EffPebble_Create(s->unk10, 0x20000, 0x1000 - (Rand() & 0x1fff), v, b, (s16)(0x100 - (Rand() & 0x1ff)), 0x3c);
     *(s32 *)(obj + 0x14c) += (Rand() & 0x3fff) - 0x1000;
     *(s32 *)(obj + 0x150) += (Rand() & 0x3fff) - 0x1000;
     *(s32 *)(obj + 0x154) += (Rand() & 0x3fff) - 0x1000;

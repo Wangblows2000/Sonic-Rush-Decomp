@@ -1,11 +1,11 @@
 #include <ov000_c/stageobj.h>
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void Sound_SetPositional(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
 void func_0201bde0(s32 a, s32 b, s32 c);
-void func_ov000_0232eaac(UnkStruct_StageObj *w, s32 a, s32 b);
+void EffFound_Create(UnkStruct_StageObj *w, s32 a, s32 b);
 void func_ov000_022fdf28(UnkStruct_StageObj *w);
 void func_ov000_022fdb9c(UnkStruct_StageObj *w);
 void func_ov000_022fd8d8(UnkStruct_StageObj *w);
@@ -29,9 +29,9 @@ void func_ov000_022fc894(UnkStruct_Coll *a, UnkStruct_Coll *b) {
     if (o == NULL)
         return;
     Sound_PlaySeqArcEx(w->unk1DC, 0, 0x79);
-    Sound_SetPositional(w->unk1DC, w, data_ov000_0236ac60);
+    Sound_SetPositional(w->unk1DC, w, gPlayers);
     func_0201bde0(w->unk1DC, 0xffff, 0x400);
-    func_ov000_0232eaac(w, 0, -0x40);
+    EffFound_Create(w, 0, -0x40);
     w->unk204 = o;
     if (w->unk10 > o->unk10)
         w->unk5C |= 1;

@@ -34,7 +34,7 @@ typedef struct {
 
 void func_ov000_0231d79c(void);
 void StageObj_SetAnimation(void *w, s32 a);
-UnkStruct_0231d81c_E *func_ov000_02333694(void *w, s32 a, s32 b);
+UnkStruct_0231d81c_E *EffBrakeSmoke_Create(void *w, s32 a, s32 b);
 
 void func_ov000_0231d81c(UnkStruct_0231d81c *w) {
     UnkStruct_0231d81c_E *e;
@@ -52,7 +52,7 @@ void func_ov000_0231d81c(UnkStruct_0231d81c *w) {
     else
         w->unk5C |= 1;
     if (w->unk184->unk2 == 0xb) {
-        e = func_ov000_02333694(w, 0, -6);
+        e = EffBrakeSmoke_Create(w, 0, -6);
         if (e != NULL) {
             e->unk2E = 0;
             e->unk30 = 0x60;

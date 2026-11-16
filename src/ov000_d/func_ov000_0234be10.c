@@ -16,7 +16,7 @@ typedef struct {
 } UnkStruct_0234be10;
 
 s32 func_02066638(s32 x, s32 y, u8 a, s32 b, s32 c, s32 d);
-void func_ov000_0234c4a4(UnkStruct_0234be10 *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234be10 *w, s32 a);
 
 BOOL func_ov000_0234be10(UnkStruct_0234be10 *w, BOOL set) {
     s32 l;
@@ -29,9 +29,9 @@ BOOL func_ov000_0234be10(UnkStruct_0234be10 *w, BOOL set) {
             if (set) {
                 w->unk5C &= ~0x400;
                 if (w->unk5C & 1) {
-                    func_ov000_0234c4a4(w, 0xe);
+                    Player_SetAnimation(w, 0xe);
                 } else {
-                    func_ov000_0234c4a4(w, 0xd);
+                    Player_SetAnimation(w, 0xd);
                 }
             }
             return TRUE;
@@ -40,9 +40,9 @@ BOOL func_ov000_0234be10(UnkStruct_0234be10 *w, BOOL set) {
             if (set) {
                 w->unk5C &= ~0x400;
                 if (w->unk5C & 1) {
-                    func_ov000_0234c4a4(w, 0xd);
+                    Player_SetAnimation(w, 0xd);
                 } else {
-                    func_ov000_0234c4a4(w, 0xe);
+                    Player_SetAnimation(w, 0xe);
                 }
             }
             return TRUE;

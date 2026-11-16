@@ -1,13 +1,13 @@
 #include <nitro/types.h>
 
 void func_ov001_02300c94(void);
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 s32 func_0200225c(s32 a, s32 b);
 
 void func_ov001_022f3b50(u8 *p) {
     s32 v, x, d;
     func_ov001_02300c94();
-    d = (s32)(((s64)func_0200225c(*(s32 *)(func_ov001_022ffce8() + 0x31c) - 0x80000, 0x80000) * 0x53000 + 0x800) >> 12) + 0x100000;
+    d = (s32)(((s64)func_0200225c(*(s32 *)(ExtraBoss_GetWork() + 0x31c) - 0x80000, 0x80000) * 0x53000 + 0x800) >> 12) + 0x100000;
     x = *(s32 *)(p + 0x18);
     v = d - x;
     if (v > 0) {

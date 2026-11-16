@@ -24,7 +24,7 @@ extern UnkStruct_02331a24_Sys data_022c4560;
 extern UnkStruct_02331a24_Stage data_ov000_0236aad8;
 
 void *func_ov000_023315f4(void *a, s32 b, s32 c, s32 d, s32 e);
-void *func_ov000_02331670(void *a, s32 b, s32 c);
+void *EffBoostJet3D_Create(void *a, s32 b, s32 c);
 void *func_ov000_0233181c(void *a, s32 b, s32 c);
 
 static inline BOOL Stage_Busy(void) {
@@ -40,7 +40,7 @@ void func_ov000_02331a24(UnkStruct_02331a24 *p) {
         if (Stage_Busy())
             func_ov000_023315f4(p, -8, 6, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
         else
-            func_ov000_02331670(p, -8, 6);
+            EffBoostJet3D_Create(p, -8, 6);
     } else {
         func_ov000_0233181c(p, -8, 6);
     }

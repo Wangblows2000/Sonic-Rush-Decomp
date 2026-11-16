@@ -24,7 +24,7 @@ extern UnkBright_022d7968 data_0208926c;
 void Task_DestroyRange(u16 lo, u16 hi);
 UnkTask_022d7968 *Task_Create(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_ov001_022d84f8(void);
+void TitleMenuFadeTask_Main(void);
 
 #pragma thumb on
 void func_ov001_022d7968(s32 a, s32 b) {
@@ -32,7 +32,7 @@ void func_ov001_022d7968(s32 a, s32 b) {
 
     Task_DestroyRange(0x4000, 0x4000);
     if (a != 0) {
-        w = Task_Create(func_ov001_022d84f8, 0, 0, 0x4000, 0x1000, 0x10)->work;
+        w = Task_Create(TitleMenuFadeTask_Main, 0, 0, 0x4000, 0x1000, 0x10)->work;
         {
             vu16 z = 0;
             MIi_CpuClear16(z, w, 0x10);

@@ -13,9 +13,9 @@ typedef struct UnkStruct_0230ecc8 {
 } UnkStruct_0230ecc8;
 
 void StageObj_SetAnimation(UnkStruct_0230ecc8 *s, u8 a);
-void func_ov000_0230ec88(void);
+void JumpPedestal_State_Unk_ov000_0230ec88(void);
 
 void func_ov000_0230ecc8(UnkStruct_0230ecc8 *s) {
     StageObj_SetAnimation(s, s->unk1E0->unk4 & 3);
-    s->func = func_ov000_0230ec88;
+    s->func = JumpPedestal_State_Unk_ov000_0230ec88;
 }

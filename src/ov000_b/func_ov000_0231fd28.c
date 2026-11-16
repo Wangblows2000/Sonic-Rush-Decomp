@@ -1,6 +1,6 @@
 #include <ov000_b/stageobj.h>
 
-void func_ov000_022fb9c8(void);
+void MapObject_Destructor(void);
 void func_ov000_0231fca0(void);
 
 UnkStruct_StageObj *func_ov000_0231fd28(UnkStruct_ObjParam *p, s32 x, s32 y) {
@@ -8,7 +8,7 @@ UnkStruct_StageObj *func_ov000_0231fd28(UnkStruct_ObjParam *p, s32 x, s32 y) {
     UnkStruct_StageObj *w;
     vu16 zero;
 
-    task = Task_Create(StageObj_Main, func_ov000_022fb9c8, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
+    task = Task_Create(StageObj_Main, MapObject_Destructor, 0, 0x500, 2, sizeof(UnkStruct_StageObj));
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_StageObj));

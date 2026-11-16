@@ -74,7 +74,7 @@ void ScreenShake_Start(s32 a);
 void func_ov000_022cc110(s32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_020366f4(s32 a, s32 b, s32 c);
-void func_ov000_022cad94(UnkStruct_022cae4c *s);
+void Boss1Hammer_State_Unk_ov000_022cad94(UnkStruct_022cae4c *s);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -95,5 +95,5 @@ void func_ov000_022cae4c(UnkStruct_022cae4c *s) {
     func_020366f4(0, 0, (Rand() & 1) ? 0xce : 0xcf);
     s->unk220 = 0;
     s->unk222 = 0;
-    s->func = func_ov000_022cad94;
+    s->func = Boss1Hammer_State_Unk_ov000_022cad94;
 }

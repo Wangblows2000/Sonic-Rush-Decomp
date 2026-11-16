@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 Sound_PlaySeqArcEx();
-s32 func_ov000_0234c4a4();
+s32 Player_SetAnimation();
 void func_ov000_02347ec0();
 
 void func_ov000_02347f94(u8 *p0) {
@@ -12,7 +12,7 @@ void func_ov000_02347f94(u8 *p0) {
         return;
     }
     Sound_PlaySeqArcEx(((u8 *)p0 + 0x384), 0, 0x53);
-    func_ov000_0234c4a4(p0, 0x23);
+    Player_SetAnimation(p0, 0x23);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_02347ec0;
     *(u16 *)((u8 *)p0 + 0x30) = 0;
     *(u16 *)((u8 *)p0 + 0x3ca) = 0;

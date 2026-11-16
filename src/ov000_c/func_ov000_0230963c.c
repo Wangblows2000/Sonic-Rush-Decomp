@@ -28,14 +28,14 @@ typedef struct {
 
 extern UnkStruct_Plr data_ov000_0236aad8[];
 extern UnkStruct_Map data_ov000_0236abd8;
-extern UnkStruct_StageObj *data_ov000_0236ac60[];
+extern UnkStruct_StageObj *gPlayers[];
 
 void func_ov000_02342348(s32 a);
 void func_ov000_023355e0(u16 x0, u16 y0, u16 x1, u16 y1);
 u8 func_ov000_02307e84(UnkStruct_0230963c *w);
 void func_ov000_023423a4(s32 a, UnkStruct_0230963c *w, s32 b);
 void func_ov000_0232d620(void);
-void func_ov000_023094f0(void);
+void MapObj8C_State_Unk_ov000_023094f0(void);
 
 #define CLAMP(x, lo, hi) ((x) < (lo) ? (lo) : ((x) > (hi) ? (hi) : (x)))
 
@@ -64,7 +64,7 @@ void func_ov000_0230963c(UnkStruct_0230963c *w) {
     w->unk20C |= 0x10;
     for (i = 0; i < 2; i = (u8)(i + 1)) {
         if (w->unk210[i] >= 0) {
-            p = data_ov000_0236ac60[w->unk210[i]];
+            p = gPlayers[w->unk210[i]];
             px = p->unk10 >> 8;
             if (w->unk216 <= px && px <= w->unk21A) {
                 py = p->unk14 >> 8;
@@ -84,5 +84,5 @@ void func_ov000_0230963c(UnkStruct_0230963c *w) {
         if (w->unk20C & 4)
             data_ov000_0236aad8[1].unk34 |= 0x10000;
     }
-    w->base.unk68 = func_ov000_023094f0;
+    w->base.unk68 = MapObj8C_State_Unk_ov000_023094f0;
 }

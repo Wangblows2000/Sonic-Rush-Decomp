@@ -41,7 +41,7 @@ typedef struct {
     s32 unk14;
 } UnkStruct_022e3954_4;
 
-extern UnkStruct_022e3954_pl *data_ov000_0236ac60;
+extern UnkStruct_022e3954_pl *gPlayers;
 extern UnkStruct_022e3954_pad gPad;
 extern u16 data_ov000_02363710[];
 extern UnkStruct_022e3954_4 data_022c4560;
@@ -58,7 +58,7 @@ void func_ov000_022e3954(UnkStruct_022e3954 *s) {
     s32 d;
     s32 v;
 
-    if (data_ov000_0236ac60->unk32C & 0x400)
+    if (gPlayers->unk32C & 0x400)
         return;
     i = 0;
     found = FALSE;
@@ -93,7 +93,7 @@ void func_ov000_022e3954(UnkStruct_022e3954 *s) {
         s->unk1120++;
     if (s->unk1120 >= 0xf)
         s->unk111C = 0;
-    x = data_ov000_0236ac60->unk10;
+    x = gPlayers->unk10;
     if (x > 0x34000)
         return;
     if (x < 0)
@@ -105,29 +105,29 @@ void func_ov000_022e3954(UnkStruct_022e3954 *s) {
     if (d < 0)
         d = 0;
     v = func_0200225c(((-((0x2fc00 - d) << 8)) / 0x2fc00 - 0x400) * s->unkF68, 0x549f) >> 12;
-    data_ov000_0236ac60->unk34 = s->unk111C * 0x500 / 0x2000;
+    gPlayers->unk34 = s->unk111C * 0x500 / 0x2000;
     if (s->unk20C & 0x100) {
         v *= -1;
-        data_ov000_0236ac60->unk34 *= -1;
+        gPlayers->unk34 *= -1;
     }
     if (s->unkD5E != 0) {
         v *= -1;
-        data_ov000_0236ac60->unk34 *= -1;
+        gPlayers->unk34 *= -1;
     }
-    data_ov000_0236ac60->unk10 += v;
-    if (data_ov000_0236ac60->unk34 != 0) {
-        if (data_ov000_0236ac60->unk328 < 0x3d || data_ov000_0236ac60->unk328 > 0x42)
-            data_ov000_0236ac60->unk338(data_ov000_0236ac60);
+    gPlayers->unk10 += v;
+    if (gPlayers->unk34 != 0) {
+        if (gPlayers->unk328 < 0x3d || gPlayers->unk328 > 0x42)
+            gPlayers->unk338(gPlayers);
     }
-    if (data_ov000_0236ac60->unk328 == 0xf)
+    if (gPlayers->unk328 == 0xf)
         return;
-    if (data_ov000_0236ac60->unk10 > 0x33800) {
-        func_ov000_023491f8(data_ov000_0236ac60, 0x500, -0x300);
-        data_ov000_0236ac60->unk30 *= 2;
+    if (gPlayers->unk10 > 0x33800) {
+        func_ov000_023491f8(gPlayers, 0x500, -0x300);
+        gPlayers->unk30 *= 2;
         return;
     }
-    if (data_ov000_0236ac60->unk10 < 0x800) {
-        func_ov000_023491f8(data_ov000_0236ac60, -0x500, -0x300);
-        data_ov000_0236ac60->unk30 *= 2;
+    if (gPlayers->unk10 < 0x800) {
+        func_ov000_023491f8(gPlayers, -0x500, -0x300);
+        gPlayers->unk30 *= 2;
     }
 }

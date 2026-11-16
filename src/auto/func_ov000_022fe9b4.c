@@ -2,8 +2,8 @@
 #include <nitro/types.h>
 
 s32 func_ov000_022faf48();
-void func_ov000_022fe84c();
-s32 func_ov000_0231979c();
+void EnemyPawnGroup_State_Unk_ov000_022fe84c();
+s32 EffShadow_Create();
 
 void func_ov000_022fe9b4(u8 *p0) {
     func_ov000_022faf48(p0, 0);
@@ -22,6 +22,6 @@ void func_ov000_022fe9b4(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x108) = (*(u32 *)((u8 *)p0 + 0x108) | 0x20000);
     *(u32 *)((u8 *)p0 + 0xc) = *(u8 *)((u8 *)*(u32 *)((u8 *)p0 + 0x1e0) + 0x9);
     *(u32 *)((u8 *)p0 + 0x8) = 0xc;
-    *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022fe84c;
-    func_ov000_0231979c(p0, 0, (u32)func_ov000_022fe84c, 0xc);
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)EnemyPawnGroup_State_Unk_ov000_022fe84c;
+    EffShadow_Create(p0, 0, (u32)EnemyPawnGroup_State_Unk_ov000_022fe84c, 0xc);
 }

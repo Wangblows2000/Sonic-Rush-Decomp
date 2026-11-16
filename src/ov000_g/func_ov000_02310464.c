@@ -12,16 +12,16 @@ typedef struct {
     void *unk68;
 } UnkStruct_02310464;
 
-extern UnkStruct_02310464_P *data_ov000_0236ac60;
+extern UnkStruct_02310464_P *gPlayers;
 
-void func_ov000_02310418(void);
+void Marker_State_Unk_ov000_02310418(void);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0230ad04(UnkStruct_02310464 *w, UnkStruct_02310464_P *p);
 
 void func_ov000_02310464(UnkStruct_02310464 *w) {
-    UnkStruct_02310464_P *p = data_ov000_0236ac60;
+    UnkStruct_02310464_P *p = gPlayers;
 
-    w->unk68 = func_ov000_02310418;
+    w->unk68 = Marker_State_Unk_ov000_02310418;
     w->unkC = 0x78;
     if (p->unk324 != 1) {
         if (Rand() & 1)

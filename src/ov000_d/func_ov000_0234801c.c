@@ -29,7 +29,7 @@ static inline u16 Rand_0234801c(void) {
     return (u16)(gRandSeed >> 16);
 }
 
-void func_ov000_0234c4a4(UnkStruct_0234801c *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234801c *w, s32 a);
 void func_ov000_0234307c(UnkStruct_0234801c *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_0201c070(void *p, s32 a);
@@ -41,7 +41,7 @@ void func_ov000_0234801c(UnkStruct_0234801c *w) {
 
     w->unk3D0 = 0;
     if (w->unk328 == 0x1c) {
-        func_ov000_0234c4a4(w, 0x1d);
+        Player_SetAnimation(w, 0x1d);
         func_ov000_0234307c(w, 0xa0);
         if (w->unk324 != 1) {
             if (Rand_0234801c() & 1) {
@@ -60,7 +60,7 @@ void func_ov000_0234801c(UnkStruct_0234801c *w) {
         }
         Sound_PlaySeqArcEx(w->unk384, 0, 0x30);
     } else if (w->unk328 == 0x1d) {
-        func_ov000_0234c4a4(w, 0x1e);
+        Player_SetAnimation(w, 0x1e);
         func_ov000_0234307c(w, 0x140);
         if (w->unk324 != 1) {
             if (Rand_0234801c() & 1) {
@@ -87,7 +87,7 @@ void func_ov000_0234801c(UnkStruct_0234801c *w) {
         w->unk8 = 0;
         func_ov000_02345830(w, 200);
     } else {
-        func_ov000_0234c4a4(w, 0x1c);
+        Player_SetAnimation(w, 0x1c);
         func_ov000_0234307c(w, 0xa0);
         if (w->unk324 != 1) {
             Sound_PlaySeqArcEx(w->unk384, 0, 0x1d);

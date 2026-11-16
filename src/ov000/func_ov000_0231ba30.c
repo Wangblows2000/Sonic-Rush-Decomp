@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-void func_ov000_022fb9c8(void);
+void MapObject_Destructor(void);
 
 void func_ov000_0231ba30(void) {
-    func_ov000_022fb9c8();
+    MapObject_Destructor();
 }

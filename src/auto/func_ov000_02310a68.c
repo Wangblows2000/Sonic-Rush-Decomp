@@ -1,4 +1,4 @@
-/* paramclone of func_ov000_022fdef0 (src/ov000/func_ov000_022fdef0.c); immediates and relocations remapped. */
+/* paramclone of EnemyPawnGroup_State_Unk_ov000_022fdef0 (src/ov000/EnemyPawnGroup_State_Unk_ov000_022fdef0.c); immediates and relocations remapped. */
 #include <nitro/types.h>
 
 typedef struct UnkStruct_02310a68 {

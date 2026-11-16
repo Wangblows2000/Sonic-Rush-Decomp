@@ -36,7 +36,7 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 extern UnkStruct_Mgr *data_ov000_02369b84;
 
 void func_ov000_022f4ce4(UnkStruct_022f2014 *s, s32 a, s32 b, s32 c);
@@ -73,19 +73,19 @@ void func_ov000_022f2014(UnkStruct_022f2014 *s) {
     dx = s->unk3C4 - s->unk424;
     dy = s->unk3C8 - s->unk428;
     s->unk438 = func_020027a4(dy, dx) + 0x8000;
-    dx = s->unk3C4 - (data_ov000_0236ac60->base.unk10 << 4);
-    dy = s->unk3C8 - (-data_ov000_0236ac60->base.unk14 << 4);
+    dx = s->unk3C4 - (gPlayers->base.unk10 << 4);
+    dy = s->unk3C8 - (-gPlayers->base.unk14 << 4);
     s->unk43A = func_020027a4(dy, dx) + 0x8000;
-    dx = s->unk3C4 - (data_ov000_0236ac60->base.unk10 << 4);
-    dy = s->unk3C8 - (-data_ov000_0236ac60->base.unk14 << 4);
+    dx = s->unk3C4 - (gPlayers->base.unk10 << 4);
+    dy = s->unk3C8 - (-gPlayers->base.unk14 << 4);
     s->unk43C = func_020021f0(FX_Mul(dx, dx) + FX_Mul(dy, dy));
     data_ov000_0236a48c.unk74 = 0x2000;
     data_ov000_0236a48c.unk38 = 0x2000;
     if (!func_ov000_022f8f38()) {
         s->base.unk1B8 = NULL;
     } else {
-        data_ov000_0236ac60->base.unk70 = func_ov000_022f8b0c;
-        data_ov000_0236ac60->base.unk5C &= ~0x40;
+        gPlayers->base.unk70 = func_ov000_022f8b0c;
+        gPlayers->base.unk5C &= ~0x40;
     }
     data_ov000_02369ac0.unk4 = 0x34;
     s->base.unk68 = func_ov000_022f1f70;

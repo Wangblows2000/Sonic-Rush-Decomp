@@ -25,7 +25,7 @@ typedef struct UnkStruct_022dd12c_c {
 } UnkStruct_022dd12c_c;
 
 extern UnkStruct_022dd12c_w *data_ov000_02369b2c;
-extern UnkStruct_022dd12c_p *data_ov000_0236ac60;
+extern UnkStruct_022dd12c_p *gPlayers;
 extern UnkStruct_022dd12c_g gDisplayMain;
 extern UnkStruct_022dd12c_c data_022c4590;
 
@@ -35,14 +35,14 @@ void func_0204d5f8(void (*fn)(void));
 void func_ov000_022dd12c(void) {
     UnkStruct_022dd12c_w *w = data_ov000_02369b2c;
     w->unk224++;
-    data_ov000_0236ac60->unk3B2 = 0;
-    data_ov000_0236ac60->unk5C |= 0x20;
+    gPlayers->unk3B2 = 0;
+    gPlayers->unk5C |= 0x20;
     if (!(w->unk224 & 3)) {
         if (gDisplayMain.unk48 > 0)
             gDisplayMain.unk48--;
     }
     if (w->unk224 <= 0x12c)
         return;
-    data_022c4590.unk10 = data_ov000_0236ac60->unk3AE * 1000;
+    data_022c4590.unk10 = gPlayers->unk3AE * 1000;
     func_0204d5f8(func_0204eb04);
 }

@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_02314bb8();
+s32 RopeCSpring_Action_Idle();
 
 void func_ov000_02314acc(u8 *p0) {
     s32 t0 = *(s16 *)((u8 *)p0 + 0x44);
@@ -19,5 +19,5 @@ void func_ov000_02314acc(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0x44) = 0;
     s32 t2 = *(s16 *)((u8 *)p0 + 0x44);
     *(u16 *)((u8 *)p0 + 0x46) = t2;
-    func_ov000_02314bb8(p0, t2);
+    RopeCSpring_Action_Idle(p0, t2);
 }

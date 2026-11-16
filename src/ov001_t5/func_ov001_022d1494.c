@@ -42,7 +42,7 @@ BOOL func_0202e5e4(float a, float b);
 void func_ov001_022cfecc(void *a, s32 b, float f, void *c, void *d);
 void func_ov001_022cfd7c(void *a, s32 b, float f, void *c, void *d);
 void func_ov001_022d0050(s32 a);
-void func_ov001_022d2234(UnkStruct_022d1494 *p, void (*fn)(UnkStruct_022d1494 *));
+void StaffRoll_SetState(UnkStruct_022d1494 *p, void (*fn)(UnkStruct_022d1494 *));
 void func_ov001_022d1ce0(UnkStruct_022d1494 *p);
 
 #pragma thumb on
@@ -68,7 +68,7 @@ void func_ov001_022d1494(UnkStruct_022d1494 *p) {
         }
     }
     if (p->timer > 0x1c6) {
-        func_ov001_022d2234(p, func_ov001_022d1ce0);
+        StaffRoll_SetState(p, func_ov001_022d1ce0);
     }
 }
 #pragma thumb reset

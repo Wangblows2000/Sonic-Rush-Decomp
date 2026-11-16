@@ -24,7 +24,7 @@ typedef struct UnkStruct_02306424_g {
 extern UnkStruct_02306424 *data_ov001_0231f5a8;
 extern s16 gDisplaySub[];
 
-UnkStruct_02306424_g *func_ov001_022ffce8(void);
+UnkStruct_02306424_g *ExtraBoss_GetWork(void);
 void Background_Draw(void *a);
 void MIi_CpuClearFast(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
@@ -33,7 +33,7 @@ void func_ov001_023062f0(void);
 void func_ov001_02306244(void);
 
 void func_ov001_02306424(void) {
-    s32 k = func_ov001_022ffce8()->unk3C;
+    s32 k = ExtraBoss_GetWork()->unk3C;
 
     data_ov001_0231f5a8->unk0 = 0;
     Background_Draw(data_ov001_0231f5a8->bg[k]);

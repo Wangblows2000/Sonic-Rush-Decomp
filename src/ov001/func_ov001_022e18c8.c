@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
 extern s32 data_ov001_0231c3ec;
-BOOL func_ov001_022e18ec(void);
+BOOL ZoneActSelect_IsFinished(void);
 
 #pragma thumb on
 s32 func_ov001_022e18c8(void) {
-    if (func_ov001_022e18ec()) {
+    if (ZoneActSelect_IsFinished()) {
         return data_ov001_0231c3ec;
     }
     return -1;

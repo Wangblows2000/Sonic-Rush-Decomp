@@ -89,7 +89,7 @@ void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void System_Freeze(s32 a, s32 b, s32 c);
 BOOL func_0204eb7c(void);
 u32 func_ov001_0230c0b8(void);
-u32 func_ov001_0230c0cc(void);
+u32 SpecialStage_GetStageIndex(void);
 void ObjAction_Load2dBAC(void *bgA, void *bgB, void *name, u32 pal, void *s, void *arc);
 void AnimatorSprite_SetAnimation(void *s, u16 a);
 void AnimatorSprite_ProcessAnimation(void *s, void *a, void *b);
@@ -146,7 +146,7 @@ void PauseMenu_Create(BOOL alt) {
         w->unk4 |= 2;
     if (alt) {
         w->unk4 &= ~2;
-        if (func_ov001_0230c0b8() & (1 << func_ov001_0230c0cc()))
+        if (func_ov001_0230c0b8() & (1 << SpecialStage_GetStageIndex()))
             w->unk4 |= 2;
         w->unk4 |= 0x20;
         w->unk164 = 0x10;

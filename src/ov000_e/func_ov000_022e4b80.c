@@ -36,11 +36,11 @@ typedef struct {
     u32 unk32C;
 } UnkStruct_Player;
 
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
-void func_ov000_023288d0(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreateImpactSmall(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e450c(UnkStruct_Boss *w);
 void func_ov000_022e49b0(void);
@@ -62,7 +62,7 @@ void func_ov000_022e4b80(UnkStruct_Boss *w) {
 
     w->unk1124--;
     if (w->unk1124 >= 0) {
-        p = data_ov000_0236ac60;
+        p = gPlayers;
         x = p->base.unk10;
         if (p->base.unk2E > 0) {
             w->unk1128++;
@@ -108,8 +108,8 @@ void func_ov000_022e4b80(UnkStruct_Boss *w) {
         d = -0x2100;
     else
         d = 0x2100;
-    func_ov000_023288d0(1, w->unk1068 >> 4, 0x20000, d + (w->unk1070 >> 4));
-    p = data_ov000_0236ac60;
+    BossEffect_CreateImpactSmall(1, w->unk1068 >> 4, 0x20000, d + (w->unk1070 >> 4));
+    p = gPlayers;
     if (!(p->unk32C & 0x400) && (p->base.unk58 & 1))
         func_ov000_022e450c(w);
     Sound_PlaySeqArc(0, 0, 0x86);

@@ -2,14 +2,14 @@
 #include <nitro/types.h>
 
 s32 func_ov000_022faf48();
-void func_ov000_022fcc1c();
+void EnemyPawnGroup_State_Unk_ov000_022fcc1c();
 extern u8 gSaveData[];
 extern u8 data_022c4560[];
 
 void func_ov000_022fcc50(u8 *p0) {
     func_ov000_022faf48(p0, 2);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x10);
-    *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022fcc1c;
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)EnemyPawnGroup_State_Unk_ov000_022fcc1c;
     *(u16 *)((u8 *)p0 + 0x34) = 0;
     s32 t0 = *(u32 *)((u8 *)p0 + 0x204);
     if (t0 != 0) {

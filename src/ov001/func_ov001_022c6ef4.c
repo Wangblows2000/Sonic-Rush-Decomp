@@ -5,7 +5,7 @@ extern u16 gDisplayMain[];
 extern u8 data_02089264[];
 void func_ov001_022c6944(void *p);
 void func_ov001_022c6878(void *p);
-void func_ov001_022c7a34(void *p, void (*f)(void));
+void Ending_SetSubState(void *p, void (*f)(void));
 void func_ov001_022c6e54(void);
 void Background_Draw(void *p);
 void func_02000ccc(UnkStruct_022c6ef4 *m, s32 a, s32 b);
@@ -16,7 +16,7 @@ void func_ov001_022c6ef4(u8 *p) {
     gDisplayMain[0x24] = 0x10;
     func_ov001_022c6944(p);
     func_ov001_022c6878(p);
-    func_ov001_022c7a34(p, func_ov001_022c6e54);
+    Ending_SetSubState(p, func_ov001_022c6e54);
     Background_Draw(p + 0x45c);
     *(vu32 *)0x04000000 = (*(vu32 *)0x04000000 & ~0x1f00) | 0xb00;
     func_02000ccc(&m, 0, 0);

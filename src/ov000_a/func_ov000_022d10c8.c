@@ -88,7 +88,7 @@ extern UnkStruct_022d10c8_7 data_ov000_02369ac0;
 
 s32 func_02002094(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-UnkStruct_022d10c8_o *func_ov000_02328510(s32 a, s32 x, s32 y, s32 z);
+UnkStruct_022d10c8_o *BossEffect_CreateSuction2(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022d0e9c(UnkStruct_022d10c8 *s);
 
 void func_ov000_022d10c8(UnkStruct_022d10c8 *s) {
@@ -124,7 +124,7 @@ void func_ov000_022d10c8(UnkStruct_022d10c8 *s) {
     s->unkF84[9].unkA |= 4;
     s->unkF84[9].unkA &= ~0x1000;
     Sound_PlaySeqArc(s->unk1458, 0, 0xa4);
-    s->unk131C = func_ov000_02328510(1, s->unk139C >> 4, -s->unk13A0 >> 4, s->unk13A4 >> 4);
+    s->unk131C = BossEffect_CreateSuction2(1, s->unk139C >> 4, -s->unk13A0 >> 4, s->unk13A4 >> 4);
     q = &s->unk131C->unk134;
     s->unk131C->unk5C |= 4;
     s->unk131C->unk5C &= ~0x30;

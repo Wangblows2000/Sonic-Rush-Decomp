@@ -36,7 +36,7 @@ typedef struct UnkStruct_022fcd44_c {
     s32 unk3C;
 } UnkStruct_022fcd44_c;
 
-UnkStruct_022fcd44_c *func_ov001_022ffce8(void);
+UnkStruct_022fcd44_c *ExtraBoss_GetWork(void);
 void func_ov001_022fcb08(UnkStruct_022fcd44 *p, s32 n);
 void func_ov001_022fcae8(UnkStruct_022fcd44 *p);
 void func_ov001_022fce7c(UnkStruct_022fcd44 *p);

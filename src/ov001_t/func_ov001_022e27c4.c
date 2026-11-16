@@ -7,12 +7,12 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 
-BOOL func_ov001_022e2ad8(void);
+BOOL ZoneMap_IsBlaze(void);
 s32 func_ov001_022e28ac(void);
 
 #pragma thumb on
 s32 func_ov001_022e27c4(void) {
-    if (!func_ov001_022e2ad8()) {
+    if (!ZoneMap_IsBlaze()) {
         switch (data_022c4560.unk1c) {
         case 0: return 1;
         case 1: return 2;

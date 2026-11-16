@@ -32,7 +32,7 @@ extern UnkTask_022d39ac *gTaskCurrent;
 void AnimatorSprite_SetAnimation(UnkSpr_022d39ac *s, u16 id);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022d39ac *s, s32 a, s32 b);
 void AnimatorSprite_Draw(UnkSpr_022d39ac *s);
-void func_ov001_022d3538(s32 a, s32 b, s32 c, s32 d);
+void TryAgain_CreateFadeTask(s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022d3864(void);
 
 #pragma thumb on
@@ -82,7 +82,7 @@ void func_ov001_022d39ac(void) {
     w->timer++;
     if (w->timer >= 0x20) {
         w->timer = 0;
-        func_ov001_022d3538(0, 0x10, 0x10, 0);
+        TryAgain_CreateFadeTask(0, 0x10, 0x10, 0);
         gTaskCurrent->func = func_ov001_022d3864;
     }
 }

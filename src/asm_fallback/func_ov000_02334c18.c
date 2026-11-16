@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_ov000_0236498c;
+extern u32 gMapObjectCreateTable;
 extern u32 data_ov000_023686e0;
 extern u32 data_ov000_0236aa78;
 extern u32 data_ov000_0236abd8;
@@ -179,5 +179,5 @@ _258:
     dcd data_ov000_023686e0
     dcd data_ov000_0236aa78
     dcd 0x55555556
-    dcd data_ov000_0236498c
+    dcd gMapObjectCreateTable
 }

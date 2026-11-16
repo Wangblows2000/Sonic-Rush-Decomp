@@ -34,7 +34,7 @@ typedef struct {
 extern UnkStruct_Boss *data_ov000_02369b78;
 
 void func_ov000_022e8538(UnkStruct_022e7d14 *w);
-UnkStruct_Fx *func_ov000_02328468(s32 a, s32 x, s32 y, s32 z);
+UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022e899c(void);
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -59,7 +59,7 @@ void func_ov000_022e7d14(UnkStruct_022e7d14 *w) {
         w->unk46C = 0;
     func_ov000_022e8538(w);
     if (!(b->unk220 & 0xf))
-        func_ov000_02328468(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
+        BossEffect_CreateHoming(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
     if (w->base.spr0.unk2A != 0x80)
         return;
     if (w->unk46C != 0)
@@ -70,7 +70,7 @@ void func_ov000_022e7d14(UnkStruct_022e7d14 *w) {
     ((UnkStruct_Light *)w->base.unk124)->unk114 = 0x8000;
     b->unk20C &= ~0x20;
     b->unk20C |= 0x10;
-    fx = func_ov000_02328468(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
+    fx = BossEffect_CreateHoming(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
     fx->unk248 = 0x999;
     fx->unk14C = FX_MUL(fx->unk14C, 0x1800);
     fx->unk150 = FX_MUL(fx->unk150, 0x1800);

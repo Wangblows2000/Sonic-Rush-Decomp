@@ -37,7 +37,7 @@ typedef struct UnkStruct_023041a8_t {
 extern UnkStruct_023041a8 *data_ov001_0231f548;
 
 UnkStruct_023041a8_t *func_ov001_02300c94(void);
-UnkStruct_023041a8_g *func_ov001_022ffce8(void);
+UnkStruct_023041a8_g *ExtraBoss_GetWork(void);
 BOOL func_ov001_02303494(UnkStruct_023041a8_e *e);
 void func_ov001_02303394(UnkStruct_023041a8_e *e);
 void func_ov001_02303244(UnkStruct_023041a8_e *e);
@@ -55,7 +55,7 @@ void func_ov001_023041a8(void) {
     UnkStruct_023041a8_e *e3;
     UnkStruct_023041a8_e *cur3;
 
-    if ((data_ov001_0231f548->unk94 & 2) && !(func_ov001_022ffce8()->flags & 0x10) && p->unk4 != 5 && p->unk4 != 6 && p->unk4 != 0xc) {
+    if ((data_ov001_0231f548->unk94 & 2) && !(ExtraBoss_GetWork()->flags & 0x10) && p->unk4 != 5 && p->unk4 != 6 && p->unk4 != 0xc) {
         e = data_ov001_0231f548->list98;
         while (e != NULL) {
             cur = e;
@@ -64,9 +64,9 @@ void func_ov001_023041a8(void) {
                 func_ov001_02303394(cur);
                 func_ov001_02303334(cur);
                 cur->unk20 = 0xf;
-                func_ov001_022ffce8()->unk4C++;
-                if (func_ov001_022ffce8()->unk4C > 999)
-                    func_ov001_022ffce8()->unk4C = 999;
+                ExtraBoss_GetWork()->unk4C++;
+                if (ExtraBoss_GetWork()->unk4C > 999)
+                    ExtraBoss_GetWork()->unk4C = 999;
                 Sound_PlaySeqArc(0, 0, 4);
             }
         }
@@ -80,9 +80,9 @@ void func_ov001_023041a8(void) {
                 func_ov001_02303244(cur2);
                 func_ov001_02303334(cur2);
                 cur2->unk20 = 0xf;
-                func_ov001_022ffce8()->unk4C++;
-                if (func_ov001_022ffce8()->unk4C > 999)
-                    func_ov001_022ffce8()->unk4C = 999;
+                ExtraBoss_GetWork()->unk4C++;
+                if (ExtraBoss_GetWork()->unk4C > 999)
+                    ExtraBoss_GetWork()->unk4C = 999;
                 Sound_PlaySeqArc(0, 0, 4);
             }
         }
@@ -96,9 +96,9 @@ void func_ov001_023041a8(void) {
                 func_ov001_0230319c(cur3);
                 func_ov001_02303334(cur3);
                 cur3->unk20 = 0xf;
-                func_ov001_022ffce8()->unk4C++;
-                if (func_ov001_022ffce8()->unk4C > 999)
-                    func_ov001_022ffce8()->unk4C = 999;
+                ExtraBoss_GetWork()->unk4C++;
+                if (ExtraBoss_GetWork()->unk4C > 999)
+                    ExtraBoss_GetWork()->unk4C = 999;
                 Sound_PlaySeqArc(0, 0, 4);
             }
         }

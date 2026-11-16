@@ -15,7 +15,7 @@ void func_ov000_023497f4(UnkStruct_Player *w) {
         w->unk3E4 = NULL;
     }
     if ((w->unk32C & 0x4000) && (w->unk8 & 1)) {
-        func_ov000_0234c4a4(w, 0x3b);
+        Player_SetAnimation(w, 0x3b);
         w->unk32C |= 4;
         if (w->unk3D0 == 0) {
             func_ov000_0232be64(0);
@@ -40,7 +40,7 @@ void func_ov000_023497f4(UnkStruct_Player *w) {
         func_ov000_02345830(w, 200);
     } else if (w->unk8 & 2) {
         if (w->unk328 == 0x39) {
-            func_ov000_0234c4a4(w, 0x3a);
+            Player_SetAnimation(w, 0x3a);
             w->unk32C |= 0x4000;
             func_ov000_0234307c(w, 400 >> w->unk3D0);
             if (w->unk324 != 1) {
@@ -59,7 +59,7 @@ void func_ov000_023497f4(UnkStruct_Player *w) {
             Sound_PlaySeqArcEx(w->unk384, 0, 0x2f);
             func_0201be98(w->unk384, 0x7f >> w->unk3D0);
         } else {
-            func_ov000_0234c4a4(w, 0x39);
+            Player_SetAnimation(w, 0x39);
             func_ov000_0234307c(w, 400 >> w->unk3D0);
             if (w->unk324 != 1) {
                 Sound_PlaySeqArcEx(w->unk384, 0, 0x1d);

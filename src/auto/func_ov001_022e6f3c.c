@@ -4,14 +4,14 @@
 #pragma thumb on
 
 extern u8 gTaskCurrent[];
-s32 func_ov001_022e213c();
+s32 ZoneMap_CreateFadeTask();
 s32 SysSound_StopBGM();
 s32 func_ov001_022e6dec();
 
 void func_ov001_022e6f3c(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
     if (*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x74) == 0xa4) {
-        func_ov001_022e213c(0, 0x10, 0x10, 0, 1, 1);
+        ZoneMap_CreateFadeTask(0, 0x10, 0x10, 0, 1, 1);
         SysSound_StopBGM(0xf);
     }
     func_ov001_022e6dec(t0);

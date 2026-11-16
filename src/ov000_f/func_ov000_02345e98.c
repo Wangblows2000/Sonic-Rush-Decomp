@@ -36,7 +36,7 @@ extern UnkStruct_02345e98_4680 gSaveData;
 
 void BrightnessFade_Create(s32 a, s32 b);
 void func_ov000_02347c6c(UnkStruct_02345e98 *w, s32 a);
-void func_ov000_02349038(UnkStruct_02345e98 *w);
+void Player_Action_Die(UnkStruct_02345e98 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02345e98(UnkStruct_02345e98 *w) {
@@ -53,7 +53,7 @@ void func_ov000_02345e98(UnkStruct_02345e98 *w) {
         if (data_022c4560.unk20 >= 0x8c9f) {
             data_022c4590.unk18 = 0;
             data_022c4590.unk24 |= 4;
-            func_ov000_02349038(w);
+            Player_Action_Die(w);
         }
     }
     if (!(data_022c4560.unk18 & 1)) {

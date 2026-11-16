@@ -63,14 +63,14 @@ typedef struct {
 
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern UnkStruct_Cam data_ov000_0236a48c;
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 
 typedef struct {
     u8 pad0[0x20C];
     u32 unk20C;
 } UnkStruct_022e0294;
 
-void func_ov000_02338624(s32 a);
+void BossHelp_Create(s32 a);
 
 void func_ov000_022e0294(UnkStruct_022e0294 *s) {
     UnkStruct_Cam *cam = &data_ov000_0236a48c;
@@ -80,14 +80,14 @@ void func_ov000_022e0294(UnkStruct_022e0294 *s) {
     else
         cam->unk8E -= 0x38e3;
     cam->unk92 = 0x200;
-    data_ov000_0236ac60->unk434 = 0;
-    data_ov000_0236ac60->unk436 = 0;
-    data_ov000_0236ac60->unk430 = 0;
-    data_ov000_0236ac60->unk432 = 0;
-    data_ov000_0236ac60->unk42C = 0;
-    data_ov000_0236ac60->unk42E = 0;
-    data_ov000_0236ac60->unk424 = 0;
-    data_ov000_0236ac60->unk422 = data_ov000_0236ac60->unk424;
-    data_ov000_0236ac60->unk420 = data_ov000_0236ac60->unk422;
-    func_ov000_02338624(0);
+    gPlayers->unk434 = 0;
+    gPlayers->unk436 = 0;
+    gPlayers->unk430 = 0;
+    gPlayers->unk432 = 0;
+    gPlayers->unk42C = 0;
+    gPlayers->unk42E = 0;
+    gPlayers->unk424 = 0;
+    gPlayers->unk422 = gPlayers->unk424;
+    gPlayers->unk420 = gPlayers->unk422;
+    BossHelp_Create(0);
 }

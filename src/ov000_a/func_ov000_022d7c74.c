@@ -83,7 +83,7 @@ typedef struct UnkStruct_022d7c74_p {
 } UnkStruct_022d7c74_p;
 
 extern UnkStruct_022d7c74_b *data_ov000_02369b14;
-extern UnkStruct_022d7c74_p *data_ov000_0236ac60;
+extern UnkStruct_022d7c74_p *gPlayers;
 extern u16 data_ov000_02363220[][5];
 extern s16 data_0206e470[];
 
@@ -93,7 +93,7 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov000_022d7c18(UnkStruct_022d7c74 *s);
 
 void func_ov000_022d7c74(UnkStruct_022d7c74 *s) {
-    s->unk224 = func_ov000_022da88c(s->unk224, (u16)(func_ov000_022c5e10(data_ov000_0236ac60->unk17C, data_ov000_0236ac60->unk184) + 0x8000), 0x400);
+    s->unk224 = func_ov000_022da88c(s->unk224, (u16)(func_ov000_022c5e10(gPlayers->unk17C, gPlayers->unk184) + 0x8000), 0x400);
     MTX_RotY33_(s->unk2C4.unk24, data_0206e470[((s->unk224 & 0xffff) >> 4) * 2], data_0206e470[((s->unk224 & 0xffff) >> 4) * 2 + 1]);
     if (data_ov000_02363220[data_ov000_02369b14->unk222][data_ov000_02369b14->unk214->unk25E] < s->unk258++)
         s->func = func_ov000_022d7c18;

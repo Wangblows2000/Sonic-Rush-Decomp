@@ -72,7 +72,7 @@ typedef struct UnkStruct_022cf3e0_4 {
 } UnkStruct_022cf3e0_4;
 
 extern UnkStruct_022cf3e0_2 *gTaskCurrent;
-extern UnkStruct_022cf3e0_pl *data_ov000_0236ac60;
+extern UnkStruct_022cf3e0_pl *gPlayers;
 extern UnkStruct_022cf3e0_cam data_ov000_0236a444;
 extern UnkStruct_022cf3e0_7 data_ov000_0236aad8;
 extern UnkStruct_022cf3e0_4 data_022c4560;
@@ -85,7 +85,7 @@ void func_02022270(s32 i, u16 a);
 void func_02022284(s32 i, s32 x, s32 y, s32 z);
 UnkStruct_022cf3e0_o *func_ov000_023293f4(UnkStruct_022cf3e0_s *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 UnkStruct_022cf3e0_o *func_ov000_023295a4(UnkStruct_022cf3e0_s *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_ov000_02329128(UnkStruct_022cf3e0_pl *p, s32 a, s32 b, s32 c, s32 d, s32 e);
+void EffWater3D_Create(UnkStruct_022cf3e0_pl *p, s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_023294c8(UnkStruct_022cf3e0_pl *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
@@ -95,7 +95,7 @@ void func_ov000_022cf3e0(void) {
     UnkStruct_022cf3e0_pl *pl;
     s32 i;
     u16 h;
-    pl = data_ov000_0236ac60;
+    pl = gPlayers;
     t = gTaskCurrent->unk10;
     s = t->unk0;
     if (t->func != NULL)
@@ -155,7 +155,7 @@ void func_ov000_022cf3e0(void) {
             t->unk10 = 0;
         } else {
             if (t->unk10 == 0 && vel != 0) {
-                func_ov000_02329128(pl, 0, 0, data_ov000_0236aad8.unk62, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+                EffWater3D_Create(pl, 0, 0, data_ov000_0236aad8.unk62, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
                 t->unk10 = 0xc;
                 Sound_PlaySeqArc(0, 0, 0x51);
             }

@@ -30,7 +30,7 @@ typedef struct {
 
 void StageObj_SetAnimation(void *w, s32 a);
 s32 ObjShift_Set(s32 v, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_023511ec(void);
+void Player_State_Swing(void);
 
 void func_ov000_0232f6f4(UnkStruct_0232f6f4 *w) {
     UnkStruct_0232f6f4_P *p = w->unk88;
@@ -59,6 +59,6 @@ void func_ov000_0232f6f4(UnkStruct_0232f6f4 *w) {
     }
     if (w->unkC > 0x78)
         w->unk54 |= 4;
-    if (w->unk88->unk68 != func_ov000_023511ec)
+    if (w->unk88->unk68 != Player_State_Swing)
         w->unk54 |= 4;
 }

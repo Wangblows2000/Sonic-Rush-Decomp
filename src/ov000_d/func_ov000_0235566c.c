@@ -24,7 +24,7 @@ typedef struct {
 } UnkStruct_0235566c;
 
 void func_ov000_02355414(void);
-void func_ov000_0234c9e8(UnkStruct_0235566c *w);
+void Player_ResetGimmickState(UnkStruct_0235566c *w);
 void func_ov000_0234b63c(UnkStruct_0235566c *w);
 
 void func_ov000_0235566c(UnkStruct_0235566c *w, s32 x, s32 y, s32 flags) {
@@ -35,7 +35,7 @@ void func_ov000_0235566c(UnkStruct_0235566c *w, s32 x, s32 y, s32 flags) {
         return;
     }
     w->unk410 = 0;
-    func_ov000_0234c9e8(w);
+    Player_ResetGimmickState(w);
     kind = flags >> 12;
     w->unk410 = save;
     if (kind != 2 && w->unk328 != 0x31) {

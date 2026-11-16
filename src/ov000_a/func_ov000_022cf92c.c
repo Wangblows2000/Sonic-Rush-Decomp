@@ -36,7 +36,7 @@ typedef struct UnkStruct_022cf92c_7 {
 } UnkStruct_022cf92c_7;
 
 extern UnkStruct_022cf92c_4 gDisplayMain;
-extern UnkStruct_022cf92c_5 *data_ov000_0236ac60;
+extern UnkStruct_022cf92c_5 *gPlayers;
 extern UnkStruct_022cf92c_6 data_022c4590;
 extern UnkStruct_022cf92c_7 data_ov000_0236aad8;
 
@@ -55,7 +55,7 @@ void func_ov000_022cf92c(UnkStruct_022cf92c *s) {
             gDisplayMain.unk48--;
     }
     if (s->unk12F4 <= 0) {
-        data_022c4590.unk10 = data_ov000_0236ac60->unk3AE * 1000;
+        data_022c4590.unk10 = gPlayers->unk3AE * 1000;
         func_0204d5f8(func_0204eb04);
         return;
     }

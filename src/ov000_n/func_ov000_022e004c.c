@@ -19,15 +19,15 @@ typedef struct {
     u16 unk8C;
 } UnkStruct_0236a48c;
 
-extern s32 data_ov000_0236ac60;
+extern s32 gPlayers;
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 
 void func_ov000_022e004c(void) {
     UnkStruct_0236a48c *g = (UnkStruct_0236a48c *)(u32)&data_ov000_0236a48c;
 
-    g->unk3C = data_ov000_0236ac60;
+    g->unk3C = gPlayers;
     g->unk40 = 0;
-    g->unk44 = data_ov000_0236ac60;
+    g->unk44 = gPlayers;
     g->unk58 = -0xdc000;
     g->unk6C = 0x100;
     g->unk84 = -0x15e000;

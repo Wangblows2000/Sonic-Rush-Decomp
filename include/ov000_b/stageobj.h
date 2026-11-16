@@ -133,7 +133,7 @@ void StageObj_Main(void);
 UnkStruct_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 UnkStruct_Task *func_02006abc(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_ov000_022fba50(void *w, s32 a, s32 b, s32 c);
+void MapObject_Init(void *w, s32 a, s32 b, s32 c);
 void StageObj_Load2dBAC(void *w, void *a, s32 b, void *c, void *d);
 void StageObj_AllocSpritePalette(void *w, s32 a, s32 b);
 void StageObj_SetOAMOrder(void *w, s32 a);

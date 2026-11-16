@@ -95,7 +95,7 @@ typedef struct UnkStruct_022d79a4_p {
 } UnkStruct_022d79a4_p;
 
 extern UnkStruct_022d79a4_b *data_ov000_02369b14;
-extern UnkStruct_022d79a4_p *data_ov000_0236ac60;
+extern UnkStruct_022d79a4_p *gPlayers;
 extern s32 data_ov000_0236327c[][5];
 extern u32 gRandSeed;
 
@@ -120,12 +120,12 @@ void func_ov000_022d79a4(UnkStruct_022d79a4 *s) {
     s->unk2C4.unk114 = 0x1000;
     v = data_ov000_0236327c[data_ov000_02369b14->unk222][data_ov000_02369b14->unk214->unk25E];
     data_ov000_02369b14->unk218->unk20C |= 3;
-    ang = func_ov000_022c5e10(data_ov000_0236ac60->unk17C, data_ov000_0236ac60->unk184);
+    ang = func_ov000_022c5e10(gPlayers->unk17C, gPlayers->unk184);
     switch (data_ov000_02369b14->unk222) {
     case 3:
     case 4:
     case 5:
-        p = data_ov000_0236ac60;
+        p = gPlayers;
         if (p->unk58 & 0x8000)
             m = p->unk2E;
         else

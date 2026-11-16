@@ -25,10 +25,10 @@ typedef struct UnkStruct_022ffeb0_g {
     s32 unk40;
 } UnkStruct_022ffeb0_g;
 
-extern UnkStruct_022ffeb0 *data_ov001_0231f52c;
+extern UnkStruct_022ffeb0 *gExtraBossWork;
 extern u8 data_02074ba4[];
 
-UnkStruct_022ffeb0_g *func_ov001_022ffce8(void);
+UnkStruct_022ffeb0_g *ExtraBoss_GetWork(void);
 void func_0201c070(void *pp, s32 a);
 s32 func_0200203c(s32 n, s32 d);
 void func_ov001_022ff008(void);
@@ -45,36 +45,36 @@ void func_ov001_02306424(void);
 void func_02004084(const void *src);
 
 static inline BOOL IsMulti_022ffeb0(void) {
-    if (func_ov001_022ffce8()->unk40 > 1)
+    if (ExtraBoss_GetWork()->unk40 > 1)
         return TRUE;
     return FALSE;
 }
 
 void func_ov001_022ffeb0(void) {
-    func_0201c070((u8 *)func_ov001_022ffce8() + 0x33c, 0);
-    if (func_0200203c(data_ov001_0231f52c->unk40, 2) != 0)
+    func_0201c070((u8 *)ExtraBoss_GetWork() + 0x33c, 0);
+    if (func_0200203c(gExtraBossWork->unk40, 2) != 0)
         *(vu16 *)0x4000304 &= ~0x8000;
     else
         *(vu16 *)0x4000304 |= 0x8000;
-    data_ov001_0231f52c->task8->fn = func_ov001_022ff008;
-    data_ov001_0231f52c->taskC->fn = func_ov001_022fef3c;
-    data_ov001_0231f52c->task10->fn = func_ov001_022feee4;
-    data_ov001_0231f52c->flags &= ~0x72;
-    data_ov001_0231f52c->flags |= 4;
+    gExtraBossWork->task8->fn = func_ov001_022ff008;
+    gExtraBossWork->taskC->fn = func_ov001_022fef3c;
+    gExtraBossWork->task10->fn = func_ov001_022feee4;
+    gExtraBossWork->flags &= ~0x72;
+    gExtraBossWork->flags |= 4;
     func_ov001_02302a3c();
     func_ov001_02304fb4();
     func_ov001_02304460();
     func_ov001_022fd4d4();
     if (IsMulti_022ffeb0()) {
-        data_ov001_0231f52c->unk50 = 0;
-        data_ov001_0231f52c->unk54 = 0;
-        data_ov001_0231f52c->unk58 = 0x180000;
-        data_ov001_0231f52c->unk5C = 0x180000;
+        gExtraBossWork->unk50 = 0;
+        gExtraBossWork->unk54 = 0;
+        gExtraBossWork->unk58 = 0x180000;
+        gExtraBossWork->unk5C = 0x180000;
     } else {
-        data_ov001_0231f52c->unk50 = 0x50000;
-        data_ov001_0231f52c->unk54 = 0;
-        data_ov001_0231f52c->unk58 = 0x100000;
-        data_ov001_0231f52c->unk5C = 0x130000;
+        gExtraBossWork->unk50 = 0x50000;
+        gExtraBossWork->unk54 = 0;
+        gExtraBossWork->unk58 = 0x100000;
+        gExtraBossWork->unk5C = 0x130000;
     }
     func_ov001_0230582c();
     func_ov001_023057f4();

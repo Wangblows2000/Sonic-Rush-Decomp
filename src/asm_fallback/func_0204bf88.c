@@ -49,16 +49,16 @@ extern void ObjRect_CheckInit(void);
 extern void func_ov000_0231f5d0(void);
 extern void func_ov000_0231fc1c(void);
 extern void func_ov000_0232c7b0(void);
-extern void func_ov000_0232d9a4(void);
-extern void func_ov000_0232dc20(void);
+extern void WirelessIcon_Create(void);
+extern void FixVsHud_Create(void);
 extern void func_ov000_02335704(void);
 extern void func_ov000_02335db0(void);
 extern void func_ov000_02337688(void);
 extern void func_ov000_023376a4(void);
 extern void func_ov000_023376c4(void);
 extern void func_ov000_0233c100(void);
-extern void func_ov000_0234d62c(void);
-extern void func_ov000_0235c238(void);
+extern void Player_Create(void);
+extern void RingManager_Create(void);
 
 asm void func_0204bf88(void)
 {
@@ -255,7 +255,7 @@ _2d4:
     ldr r1, [r0, #0x18]
     ands r1, r1, #0x20
     beq _374
-    bl func_ov000_0232d9a4
+    bl WirelessIcon_Create
     bl WH_GetCurrentAid
     bl func_0206cd40
     ldr r2, [pc, #0x2a8]
@@ -263,7 +263,7 @@ _2d4:
     ldr r0, [r2]
     mov r0, r0, lsl #0x10
     mov r0, r0, lsr #0x10
-    bl func_ov000_0234d62c
+    bl Player_Create
     mov r5, #0
     ldr r4, [pc, #0x28c]
 _310:
@@ -277,7 +277,7 @@ _310:
     mov r1, r0
     mov r0, r2, lsl #0x10
     mov r0, r0, lsr #0x10
-    bl func_ov000_0234d62c
+    bl Player_Create
 _33c:
     add r0, r5, #1
     mov r0, r0, lsl #0x10
@@ -291,14 +291,14 @@ _33c:
     bic r2, r2, #0x200
     strb r3, [r1, #0x9e]
     str r2, [r0]
-    bl func_ov000_0232dc20
+    bl FixVsHud_Create
     b _3f8
 _374:
     ldr r0, [r0]
     mov r1, #0
     mov r0, r0, lsl #0x10
     mov r0, r0, lsr #0x10
-    bl func_ov000_0234d62c
+    bl Player_Create
     ldr r0, [pc, #0x264]
     ldr r2, [pc, #0x20c]
     ldr r3, [r0]
@@ -326,11 +326,11 @@ _374:
     mov r0, r0, lsr #0x10
     mov r1, #1
     str r3, [r2, #0x18]
-    bl func_ov000_0234d62c
+    bl Player_Create
 _3f8:
     bl ScreenShake_Create
     bl ObjRect_CheckInit
-    bl func_ov000_0235c238
+    bl RingManager_Create
     bl func_ov000_023376c4
     ldr r0, [pc, #0x190]
     ldrb r1, [r0, #0x1c]

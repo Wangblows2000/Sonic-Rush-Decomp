@@ -22,7 +22,7 @@ typedef struct {
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 
 void func_ov000_02354174(void);
-void func_ov000_0234c9e8(UnkStruct_02354310 *w);
+void Player_ResetGimmickState(UnkStruct_02354310 *w);
 void func_ov000_0234b63c(UnkStruct_02354310 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
@@ -30,7 +30,7 @@ void func_ov000_02354310(UnkStruct_02354310 *w) {
     if (w->unk68 == func_ov000_02354174) {
         return;
     }
-    func_ov000_0234c9e8(w);
+    Player_ResetGimmickState(w);
     func_ov000_0234b63c(w);
     w->unk5C |= 4;
     w->unk58 |= 0x10;

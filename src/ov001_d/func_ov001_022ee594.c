@@ -45,7 +45,7 @@ u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-UnkStruct_022ee594_g *func_ov001_022ffce8(void);
+UnkStruct_022ee594_g *ExtraBoss_GetWork(void);
 void func_ov001_022ee100(UnkStruct_022ee594_n *out, UnkStruct_022ee594_p *p);
 void func_ov001_022ee4c4(void);
 void func_ov001_022ede0c(void);
@@ -82,7 +82,7 @@ void func_ov001_022ee594(s32 arg) {
     b->head = &b->nodes[0];
     b->unk0 = 0xc000;
     b->unk2AC = 0x14;
-    if (func_ov001_022ffce8()->unk3C == 0) {
+    if (ExtraBoss_GetWork()->unk3C == 0) {
         b->unk2B0 = 0x3ff;
         b->unk2B2 = 0x17ff;
     } else {

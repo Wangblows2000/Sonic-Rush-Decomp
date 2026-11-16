@@ -22,7 +22,7 @@ typedef struct {
 extern u16 data_022c4ef8;
 
 void func_ov000_0234ec78(void);
-void func_ov000_0234c4a4(UnkStruct_0234eccc *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234eccc *w, s32 a);
 void BrightnessFade_Create(s32 a, s32 b);
 
 void func_ov000_0234eccc(UnkStruct_0234eccc *w) {
@@ -37,6 +37,6 @@ void func_ov000_0234eccc(UnkStruct_0234eccc *w) {
         w->unk2E = 0;
         BrightnessFade_Create(3, 0x20);
         w->unk68 = func_ov000_0234ec78;
-        func_ov000_0234c4a4(w, 0x2F);
+        Player_SetAnimation(w, 0x2F);
     }
 }

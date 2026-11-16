@@ -86,9 +86,9 @@ typedef struct UnkStruct_022d8a90_b {
 
 extern UnkStruct_022d8a90_b *data_ov000_02369b14;
 
-UnkStruct_022d8a90_r *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+UnkStruct_022d8a90_r *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022daa78(void);
-void func_ov000_02328620(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreatePop(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void ScreenShake_Start(s32 a);
 void func_ov000_022d89a8(UnkStruct_022d8a90 *s);
@@ -97,12 +97,12 @@ void func_ov000_022d8a90(UnkStruct_022d8a90 *s) {
     Model_SetAnimation(&s->unk2C4, 0, s->unk434, 3, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
-    data_ov000_02369b14->unk218 = func_ov000_022fad3c(0xcd, 0, 0, 0, 0, 0, 0, 0, 0);
+    data_ov000_02369b14->unk218 = MapObject_Spawn(0xcd, 0, 0, 0, 0, 0, 0, 0, 0);
     data_ov000_02369b14->unk218->unk5C &= ~0x20;
     data_ov000_02369b14->unk218->unk212 = 0;
     data_ov000_02369b14->unk218->unk20C |= 0x80;
     func_ov000_022daa78();
-    func_ov000_02328620(1, s->unk24C >> 4, -s->unk250 >> 4, s->unk254 >> 4);
+    BossEffect_CreatePop(1, s->unk24C >> 4, -s->unk250 >> 4, s->unk254 >> 4);
     Sound_PlaySeqArc(0, 0, 0x95);
     ScreenShake_Start(0xb);
     s->unk264 = 0x20;

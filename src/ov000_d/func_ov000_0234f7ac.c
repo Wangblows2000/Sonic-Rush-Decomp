@@ -20,7 +20,7 @@ typedef struct UnkStruct_0234f7ac {
 } UnkStruct_0234f7ac;
 
 void func_ov000_023497f4(UnkStruct_0234f7ac *w);
-void func_ov000_0234c4a4(UnkStruct_0234f7ac *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234f7ac *w, s32 a);
 void func_ov000_0234a064(UnkStruct_0234f7ac *w, u8 a);
 
 void func_ov000_0234f7ac(UnkStruct_0234f7ac *w) {
@@ -52,7 +52,7 @@ void func_ov000_0234f7ac(UnkStruct_0234f7ac *w) {
     }
     if (w->unk328 == 0x18 && vy > 0x40) {
         w->unk5C |= 0x400;
-        func_ov000_0234c4a4(w, 0x19);
+        Player_SetAnimation(w, 0x19);
         w->unk5C |= 4;
     }
     if (!(w->unk58 & 1)) {

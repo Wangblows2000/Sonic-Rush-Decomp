@@ -41,7 +41,7 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_022c4590 data_022c4590;
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 
 s32 func_02002094(s32 a, s32 b);
 void MIi_CpuCopy16(void *a, void *b, s32 c);
@@ -84,7 +84,7 @@ void func_ov000_0230ad04(void *a, UnkStruct_Player *p) {
     data_022c4560.unk18 &= ~1;
     func_ov000_02347c6c(p, a);
     if (data_022c4560.unk10 == 1) {
-        if (p != data_ov000_0236ac60) {
+        if (p != gPlayers) {
             data_022c4590.unk40 = 2;
         } else {
             data_022c4590.unk40 = 1;

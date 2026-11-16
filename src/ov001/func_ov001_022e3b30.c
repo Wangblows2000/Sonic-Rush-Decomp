@@ -15,7 +15,7 @@ void func_02021310(UnkStruct_023029d4 *a, void *b, void *c);
 void *func_02021264(UnkStruct_023029d4 *a, s32 i);
 void func_020212e0(UnkStruct_023029d4 *a);
 void func_0202566c(void *p);
-BOOL func_ov001_022e2ad8(void);
+BOOL ZoneMap_IsBlaze(void);
 
 #pragma thumb on
 void func_ov001_022e3b30(u8 *p) {
@@ -25,7 +25,7 @@ void func_ov001_022e3b30(u8 *p) {
         u8 *blk;
         Model_Release(p + 0x24);
         func_02021310(&arc, data_ov001_0231c578, *(void **)(p + 0x15c));
-        if (!func_ov001_022e2ad8()) {
+        if (!ZoneMap_IsBlaze()) {
             func_0202566c(func_02021264(&arc, 0));
         } else {
             func_0202566c(func_02021264(&arc, 3));

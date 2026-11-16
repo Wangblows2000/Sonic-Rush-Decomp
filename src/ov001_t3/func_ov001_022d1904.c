@@ -47,7 +47,7 @@ extern UnkGfx_022d1904 gDisplayMain;
 
 void func_ov001_022d0070(UnkStruct_022d1904 *p);
 void func_ov001_022cff74(UnkObj_022d1904 *o, s32 a, void *b, void *c);
-void func_ov001_022d2234(UnkStruct_022d1904 *p, void (*fn)(UnkStruct_022d1904 *));
+void StaffRoll_SetState(UnkStruct_022d1904 *p, void (*fn)(UnkStruct_022d1904 *));
 void func_ov001_022d1888(UnkStruct_022d1904 *p);
 
 #pragma thumb on
@@ -75,6 +75,6 @@ void func_ov001_022d1904(UnkStruct_022d1904 *p) {
     gDisplayMain.alpha.evb = 15 - gDisplayMain.alpha.eva;
     SetPlane_022d1904(GetPlane_022d1904() | 1);
     func_ov001_022cff74(&p->objs[p->unkd08 + 0xb], 0x100, p->unkf0c, p->unkd0c);
-    func_ov001_022d2234(p, func_ov001_022d1888);
+    StaffRoll_SetState(p, func_ov001_022d1888);
 }
 #pragma thumb reset

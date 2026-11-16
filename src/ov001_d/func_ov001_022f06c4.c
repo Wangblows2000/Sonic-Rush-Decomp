@@ -49,7 +49,7 @@ extern u32 gRandSeed;
 
 void func_ov001_022f0548(void);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 void Sound_PlaySeqArc(void *p, u32 a, u32 b);
 void func_020366f4(void *p, u32 a, u32 b);
 

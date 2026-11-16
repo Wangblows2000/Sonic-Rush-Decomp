@@ -20,14 +20,14 @@ typedef struct UnkStruct_022fecb0 {
     s32 unk318;
 } UnkStruct_022fecb0;
 
-extern UnkStruct_022fecb0 *data_ov001_0231f52c;
+extern UnkStruct_022fecb0 *gExtraBossWork;
 extern s16 gDisplaySub[];
 extern s16 gDisplayMain[];
 extern u8 data_02074960[];
 extern u8 data_020748bc[];
 extern u8 data_02074ba4[];
 
-void func_ov001_022ff3a4(void);
+void ExtraBoss_Main(void);
 void func_ov001_02302370(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 b);
 void func_02022270(u32 index, u32 value);
@@ -40,16 +40,16 @@ void func_ov001_022fecb0(void) {
     u16 col;
 
     *(vu16 *)0x4000304 |= 0x8000;
-    data_ov001_0231f52c->flags |= 2;
-    data_ov001_0231f52c->flags &= ~0x74;
-    data_ov001_0231f52c->task8->fn = func_ov001_022ff3a4;
-    data_ov001_0231f52c->taskC->fn = 0;
-    data_ov001_0231f52c->task10->fn = 0;
+    gExtraBossWork->flags |= 2;
+    gExtraBossWork->flags &= ~0x74;
+    gExtraBossWork->task8->fn = ExtraBoss_Main;
+    gExtraBossWork->taskC->fn = 0;
+    gExtraBossWork->task10->fn = 0;
     func_ov001_02302370();
-    data_ov001_0231f52c->unk4C = 0x32;
-    data_ov001_0231f52c->unk4 = 0;
-    data_ov001_0231f52c->unk44 = 0;
-    data_ov001_0231f52c->unk318 = 0;
+    gExtraBossWork->unk4C = 0x32;
+    gExtraBossWork->unk4 = 0;
+    gExtraBossWork->unk44 = 0;
+    gExtraBossWork->unk318 = 0;
     gDisplaySub[0x24] = -0x10;
     gDisplayMain[0x24] = gDisplaySub[0x24];
     GXx_SetMasterBrightness_((vu16 *)0x400006c, gDisplayMain[0x24]);
@@ -65,7 +65,7 @@ void func_ov001_022fecb0(void) {
     func_02022284(2, *(s16 *)(data_020748bc + 0x9c), *(s16 *)(data_020748bc + 0x9e), *(s16 *)(data_020748bc + 0xa0));
     func_02004084(data_02074ba4);
     func_0205ef48();
-    if (data_ov001_0231f52c->unk40 < 3)
+    if (gExtraBossWork->unk40 < 3)
         Sound_PlaySeq(0, 0x14);
     else
         Sound_PlaySeq(0, 0x15);

@@ -47,13 +47,13 @@ extern s16 data_0206e470[];
 #define COS_0234a878(a) data_0206e470[(u32)((IDX_0234a878(a) << 1) + 1)]
 
 void func_ov000_0234a288(UnkStruct_0234a878 *w);
-void func_ov000_0234c4a4(UnkStruct_0234a878 *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234a878 *w, s32 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_0234a878(UnkStruct_0234a878 *w) {
     u8 a;
 
-    func_ov000_0234c4a4(w, 0x18);
+    Player_SetAnimation(w, 0x18);
     w->unk5C |= 4;
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;

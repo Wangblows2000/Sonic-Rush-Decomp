@@ -96,12 +96,12 @@ typedef struct UnkStruct_022ca8cc_5 {
 
 extern UnkStruct_022ca8cc_cam data_ov000_0236a444;
 extern UnkStruct_022ca8cc_c data_ov000_0236a48c;
-extern UnkStruct_022ca8cc_pl *data_ov000_0236ac60;
+extern UnkStruct_022ca8cc_pl *gPlayers;
 extern UnkStruct_022ca8cc_5 gDisplayMain;
 
 void func_ov000_022c5c80(u32 id);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022ca890(UnkStruct_022ca8cc *s);
+void Boss1Hammer_State_Unk_ov000_022ca890(UnkStruct_022ca8cc *s);
 
 void func_ov000_022ca8cc(UnkStruct_022ca8cc *s) {
     UnkStruct_022ca8cc_c *c;
@@ -110,9 +110,9 @@ void func_ov000_022ca8cc(UnkStruct_022ca8cc *s) {
     c->unk30 = 0x1000;
     c->unk3C = c->unk40 = c->unk44 = 0;
     c->unk48 = c->unk4C = c->unk50 = 0;
-    c->unk54 = data_ov000_0236ac60->unk10 << 4;
-    c->unk58 = -data_ov000_0236ac60->unk14 << 4;
-    c->unk5C = data_ov000_0236ac60->unk18 << 4;
+    c->unk54 = gPlayers->unk10 << 4;
+    c->unk58 = -gPlayers->unk14 << 4;
+    c->unk5C = gPlayers->unk18 << 4;
     c->unk6C = 0x1000;
     c->unk78 = 0x60000;
     c->unk80 = 0x1000;
@@ -124,5 +124,5 @@ void func_ov000_022ca8cc(UnkStruct_022ca8cc *s) {
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
     s->unk220 = 0;
-    s->func = func_ov000_022ca890;
+    s->func = Boss1Hammer_State_Unk_ov000_022ca890;
 }

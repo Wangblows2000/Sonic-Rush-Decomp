@@ -12,7 +12,7 @@ extern s32 data_ov001_02316108[];
 
 void *func_ov001_022d0158(s32 i);
 void func_ov001_022d2018(UnkStruct_022d2060 *p);
-void func_ov001_022d2234(UnkStruct_022d2060 *p, void (*fn)(UnkStruct_022d2060 *));
+void StaffRoll_SetState(UnkStruct_022d2060 *p, void (*fn)(UnkStruct_022d2060 *));
 void func_ov001_022d1ff4(UnkStruct_022d2060 *p);
 
 #pragma thumb on
@@ -28,7 +28,7 @@ void func_ov001_022d2060(UnkStruct_022d2060 *p) {
     }
     if (p->timer >= p->end) {
         func_ov001_022d2018(p);
-        func_ov001_022d2234(p, func_ov001_022d1ff4);
+        StaffRoll_SetState(p, func_ov001_022d1ff4);
     }
 }
 #pragma thumb reset

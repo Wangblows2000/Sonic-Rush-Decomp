@@ -20,7 +20,7 @@ typedef struct {
 } UnkStruct_0236aad8;
 
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
-extern UnkStruct_Player *data_ov000_0236ac60[];
+extern UnkStruct_Player *gPlayers[];
 
 BOOL func_ov000_02307dfc(UnkStruct_02307dfc *t, s32 inc) {
     UnkStruct_Player *p;
@@ -28,7 +28,7 @@ BOOL func_ov000_02307dfc(UnkStruct_02307dfc *t, s32 inc) {
 
     if ((data_ov000_0236aad8.unkC8 & 1) || t == NULL)
         return FALSE;
-    p = data_ov000_0236ac60[t->unk210];
+    p = gPlayers[t->unk210];
     v = p->unk32C & 0x400;
     if ((t->unk20C & 0x10000000) && v == 0)
         return TRUE;

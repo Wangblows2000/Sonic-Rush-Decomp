@@ -62,17 +62,17 @@ typedef struct {
     u16 unk48;
 } UnkStruct_0208922c;
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 extern UnkStruct_0208922c gDisplayMain;
 
-void func_ov000_02328340(s32 a, s32 x, s32 y, s32 z);
+void BossEffect_CreateStrikeFin(s32 a, s32 x, s32 y, s32 z);
 void StageObj_ClearPause(void);
-void func_ov000_0234c4a4(UnkStruct_StageObj *p, s32 a);
-void func_ov000_022ebe64(void);
+void Player_SetAnimation(UnkStruct_StageObj *p, s32 a);
+void Boss7_State_Unk_ov000_022ebe64(void);
 void func_ov000_022e726c(void);
-void func_ov000_022ec7b4(void);
+void Boss7_State_Unk_ov000_022ec7b4(void);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 u8 *func_02025ecc(void *p);
 void func_02025e1c(void *p, s32 a, s32 b);
@@ -89,11 +89,11 @@ static inline void SetVisiblePlane(u32 p) {
 
 void func_ov000_022ec954(UnkStruct_022ec954 *w) {
     UnkStruct_022ec954_B2 *b2 = w->unk214;
-    UnkStruct_StageObj *pl = data_ov000_0236ac60;
+    UnkStruct_StageObj *pl = gPlayers;
     UnkStruct_0236a48c *st;
     u8 *res;
 
-    func_ov000_02328340(1, (b2->base.unk10 + pl->unk10) >> 1, (b2->base.unk14 + pl->unk14) >> 1,
+    BossEffect_CreateStrikeFin(1, (b2->base.unk10 + pl->unk10) >> 1, (b2->base.unk14 + pl->unk14) >> 1,
                         ((b2->base.unk18 + pl->unk18) >> 1) + 0x1000);
     data_ov000_0236a444.unkDC = 2;
     st = (UnkStruct_0236a48c *)(u32)&data_ov000_0236a48c;
@@ -119,9 +119,9 @@ void func_ov000_022ec954(UnkStruct_022ec954 *w) {
     w->unk21C->unk320 = 0x1000;
     StageObj_ClearPause();
     pl->unk2E = 0x200;
-    func_ov000_0234c4a4(pl, 5);
+    Player_SetAnimation(pl, 5);
     pl->unk5C &= ~4;
-    w->unk21C->base.unk68 = func_ov000_022ebe64;
+    w->unk21C->base.unk68 = Boss7_State_Unk_ov000_022ebe64;
     w->unk21C = NULL;
     w->unk214->unk440 = func_ov000_022e726c;
     w->unk214->base.unk5C &= ~0x10;
@@ -139,5 +139,5 @@ void func_ov000_022ec954(UnkStruct_022ec954 *w) {
     func_020537b4(0xd);
     func_020533e0(0x13, 0xf0);
     w->unk230 = 0;
-    w->base.unk68 = func_ov000_022ec7b4;
+    w->base.unk68 = Boss7_State_Unk_ov000_022ec7b4;
 }

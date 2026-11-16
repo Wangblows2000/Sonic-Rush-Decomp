@@ -40,7 +40,7 @@ void func_ov001_022ea37c(UnkWork_022ebc98 *w);
 void func_ov001_022e9c24(s32 x, s32 y, UnkItem_022ebc98 *items);
 void func_ov001_022ea2b0(UnkWork_022ebc98 *w);
 void func_ov001_022ea2f0(UnkWork_022ebc98 *w);
-void func_ov001_022eb5d0(void);
+void TimeAttackMenu_State_Enter(void);
 
 #pragma thumb on
 void func_ov001_022ebc98(UnkTask_022ebc98 *t) {
@@ -81,6 +81,6 @@ void func_ov001_022ebc98(UnkTask_022ebc98 *t) {
     }
     func_ov001_022ea2b0(w);
     func_ov001_022ea2f0(w);
-    t->func = func_ov001_022eb5d0;
+    t->func = TimeAttackMenu_State_Enter;
 }
 #pragma thumb reset

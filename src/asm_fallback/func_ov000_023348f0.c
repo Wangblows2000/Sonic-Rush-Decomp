@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_ov000_023645c4;
+extern u32 gDecorationCreateTable;
 extern u32 data_ov000_023685ec;
 extern u32 data_ov000_0236abd8;
 
@@ -155,5 +155,5 @@ _208:
     bx lr
     dcd data_ov000_0236abd8
     dcd data_ov000_023685ec
-    dcd data_ov000_023645c4
+    dcd gDecorationCreateTable
 }

@@ -62,7 +62,7 @@ void func_ov000_023294c8(UnkStruct_023461f0 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_ov000_0232a93c(UnkStruct_023461f0 *w, s32 a, s32 b, s32 c);
 void func_ov000_02342a74(UnkStruct_023461f0 *w, s32 a);
-void func_ov000_02349038(UnkStruct_023461f0 *w);
+void Player_Action_Die(UnkStruct_023461f0 *w);
 
 static inline u16 Rand_023461f0(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -155,7 +155,7 @@ void func_ov000_023461f0(UnkStruct_023461f0 *w) {
     if (w->unk3CA <= w->unk374) {
         return;
     }
-    func_ov000_02349038(w);
+    Player_Action_Die(w);
     if (data_022c4560.unk1C < 9 && data_022c4560.unk1D < 2) {
         w->unk30 = 0;
     }

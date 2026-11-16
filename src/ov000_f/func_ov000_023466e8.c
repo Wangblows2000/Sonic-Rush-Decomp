@@ -57,7 +57,7 @@ typedef struct {
 } UnkStruct_023466e8_4560;
 
 extern UnkStruct_023466e8_4560 data_022c4560;
-extern UnkStruct_023466e8 *data_ov000_0236ac60[];
+extern UnkStruct_023466e8 *gPlayers[];
 
 s32 ObjRect_HitCenterX(void *a, void *b);
 s32 ObjRect_HitCenterY(void *a, void *b);
@@ -94,8 +94,8 @@ void func_ov000_023466e8(UnkStruct_023466e8 *w) {
         return;
     }
     if ((w->unk32C & 0x10000) && (w->unk422 & 0x100)) {
-        func_ov000_0232ff6c(ObjRect_HitCenterX(data_ov000_0236ac60[0]->unk2A0, data_ov000_0236ac60[1]->unk2A0),
-                            ObjRect_HitCenterY(data_ov000_0236ac60[0]->unk2A0, data_ov000_0236ac60[1]->unk2A0));
+        func_ov000_0232ff6c(ObjRect_HitCenterX(gPlayers[0]->unk2A0, gPlayers[1]->unk2A0),
+                            ObjRect_HitCenterY(gPlayers[0]->unk2A0, gPlayers[1]->unk2A0));
         Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
         w->unk3BE = 0x10;
         if (w->unk58 & 0x10) {

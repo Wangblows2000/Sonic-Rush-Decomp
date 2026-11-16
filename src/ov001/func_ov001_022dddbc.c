@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-extern s32 data_ov001_0231f058;
+extern s32 gVsMenuTask;
 
 #pragma thumb on
 BOOL func_ov001_022dddbc(void) {
-    if (data_ov001_0231f058 == 0) {
+    if (gVsMenuTask == 0) {
         return TRUE;
     }
     return FALSE;

@@ -89,7 +89,7 @@ typedef struct UnkStruct_022c94a0_cam {
 
 extern UnkStruct_022c94a0_cam data_ov000_0236a444;
 
-extern void *data_ov000_0236ac60;
+extern void *gPlayers;
 
 void func_ov000_022ca060(UnkStruct_022c94a0 *s);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -111,7 +111,7 @@ void func_ov000_022c94a0(UnkStruct_022c94a0 *s) {
     data_ov000_0236a444.unk8C = p;
     data_ov000_0236a444.unk4C = 0;
     data_ov000_0236a444.unk50 = 0;
-    data_ov000_0236a444.unk48 = (s32)data_ov000_0236ac60;
+    data_ov000_0236a444.unk48 = (s32)gPlayers;
     data_ov000_0236a444.unkDC = 1;
     data_ov000_0236a444.unkB4 = 0x40;
     data_ov000_0236a444.unk64 = -0x200000;

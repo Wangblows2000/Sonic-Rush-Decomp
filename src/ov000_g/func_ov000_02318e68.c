@@ -31,9 +31,9 @@ typedef struct {
     u32 unk1F4;
 } UnkStruct_02318e68;
 
-extern s16 data_ov000_0236a2bc[];
+extern s16 gSwitchTimers[];
 
-void func_ov000_02318ba0(s32 a, u16 b);
+void SwitchTimer_Create(s32 a, u16 b);
 s32 ObjShift_Set(s32 v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02318e68(UnkStruct_02318e68 *w) {
@@ -46,10 +46,10 @@ void func_ov000_02318e68(UnkStruct_02318e68 *w) {
     p = w->unk130->unk8;
     if (p != NULL && p->unk0 == 1 && w->unk130->unk4 != p && (p->unk58 & 4) &&
         (((w->unk5C & 1) && (p->unk5C & 1)) || (!(w->unk5C & 1) && !(p->unk5C & 1)))) {
-        if (data_ov000_0236a2bc[w->unk1E0->unk6] == 0)
-            func_ov000_02318ba0(w->unk1E0->unk6, w->unk1E0->unk4 & 2);
+        if (gSwitchTimers[w->unk1E0->unk6] == 0)
+            SwitchTimer_Create(w->unk1E0->unk6, w->unk1E0->unk4 & 2);
         flag = 1;
-        data_ov000_0236a2bc[w->unk1E0->unk6] = (w->unk1E0->unk8 + w->unk1E0->unk9) * 2;
+        gSwitchTimers[w->unk1E0->unk6] = (w->unk1E0->unk8 + w->unk1E0->unk9) * 2;
         w->unk1F4 |= 2;
     }
     if (w->unk1F4 & 1) {
@@ -74,7 +74,7 @@ void func_ov000_02318e68(UnkStruct_02318e68 *w) {
             w->unk1F4 &= ~2;
         }
     }
-    if (!flag && data_ov000_0236a2bc[w->unk1E0->unk6] == 0) {
+    if (!flag && gSwitchTimers[w->unk1E0->unk6] == 0) {
         old = w->unkC;
         w->unk1F4 &= ~1;
         w->unkC = ObjShift_Set(w->unkC, 0, 2, 0x200, 0x80);

@@ -3,7 +3,7 @@
 
 extern u32 data_ov000_0236aad8;
 extern u32 data_ov000_0236ab3c;
-extern u32 data_ov000_0236ac60;
+extern u32 gPlayers;
 
 asm void func_0205b3b8(void)
 {
@@ -53,6 +53,6 @@ asm void func_0205b3b8(void)
     bx lr
     dcd 0x0000ffff
     dcd data_ov000_0236aad8
-    dcd data_ov000_0236ac60
+    dcd gPlayers
     dcd data_ov000_0236ab3c
 }

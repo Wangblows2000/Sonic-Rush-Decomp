@@ -10,10 +10,10 @@ typedef struct UnkStruct_0230169c {
     s32 unk23C;
 } UnkStruct_0230169c;
 
-void func_ov000_023014e8(void);
+void Kuragen_State_Unk_ov000_023014e8(void);
 
 void func_ov000_0230169c(UnkStruct_0230169c *s) {
-    s->func = func_ov000_023014e8;
+    s->func = Kuragen_State_Unk_ov000_023014e8;
     s->unk30 = 0;
     s->unk23C = 0;
     s->unk238 &= ~3;

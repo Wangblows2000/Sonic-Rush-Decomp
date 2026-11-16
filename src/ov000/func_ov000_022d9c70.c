@@ -7,9 +7,9 @@ typedef struct UnkStruct_022d9c70 {
 
 extern s32 data_ov000_02369ac0[];
 
-void func_ov000_022d9c44(void);
+void Boss3PartCC_State_Unk_ov000_022d9c44(void);
 
 void func_ov000_022d9c70(UnkStruct_022d9c70 *s) {
     data_ov000_02369ac0[1] = 0x12;
-    s->func = func_ov000_022d9c44;
+    s->func = Boss3PartCC_State_Unk_ov000_022d9c44;
 }

@@ -18,7 +18,7 @@ typedef struct UnkStruct_02300214_s {
     u8 unk14;
 } UnkStruct_02300214_s;
 
-extern UnkStruct_02300214 *data_ov001_0231f52c;
+extern UnkStruct_02300214 *gExtraBossWork;
 extern UnkStruct_02300214_s data_022c4590;
 extern s32 data_022c4560;
 extern void *gMainHeap;
@@ -57,16 +57,16 @@ void func_ov001_02300214(void) {
     func_ov001_022fd610();
     func_ov001_02306674();
     func_ov001_022ff8ac();
-    Task_Destroy(data_ov001_0231f52c->task8);
-    Task_Destroy(data_ov001_0231f52c->taskC);
-    Task_Destroy(data_ov001_0231f52c->task10);
-    if (data_ov001_0231f52c->task14 != NULL)
-        Task_Destroy(data_ov001_0231f52c->task14);
-    func_0201bf1c(data_ov001_0231f52c->unk33C);
-    func_02059838(data_ov001_0231f52c->unk60, data_ov001_0231f52c->unk61);
+    Task_Destroy(gExtraBossWork->task8);
+    Task_Destroy(gExtraBossWork->taskC);
+    Task_Destroy(gExtraBossWork->task10);
+    if (gExtraBossWork->task14 != NULL)
+        Task_Destroy(gExtraBossWork->task14);
+    func_0201bf1c(gExtraBossWork->unk33C);
+    func_02059838(gExtraBossWork->unk60, gExtraBossWork->unk61);
     func_0205a4ec(0);
-    p = (u8 *)data_ov001_0231f52c;
-    size = data_ov001_0231f52c->unk61;
+    p = (u8 *)gExtraBossWork;
+    size = gExtraBossWork->unk61;
     if (size > 99)
         size = 99;
     else if (size < 2)
@@ -83,5 +83,5 @@ void func_ov001_02300214(void) {
         }
     }
     Heap_Free(gMainHeap, p);
-    data_ov001_0231f52c = NULL;
+    gExtraBossWork = NULL;
 }

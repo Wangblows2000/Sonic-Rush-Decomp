@@ -6,7 +6,7 @@ typedef struct {
     s32 unk248;
 } UnkStruct_022f8a48;
 
-UnkStruct_022f8a48 *func_ov000_02328078(s32 a, s32 x, s32 y, s32 z);
+UnkStruct_022f8a48 *BossEffect_CreateLaserFinB(s32 a, s32 x, s32 y, s32 z);
 
 void func_ov000_022f8a48(void) {
     UnkStruct_022f8a48 *o;
@@ -17,7 +17,7 @@ void func_ov000_022f8a48(void) {
     x = ((Rand() & 0x1ff) + (Rand() & 0xff)) << 8;
     y = ((Rand() & 0x1f) << 10) + 0x30000;
     z = ((Rand() & 0xf) << 10) + 0x3000;
-    o = func_ov000_02328078(1, x, y, z);
+    o = BossEffect_CreateLaserFinB(1, x, y, z);
     o->base.unk30 = -0x1000;
     o->unk248 = 0x1599;
 }

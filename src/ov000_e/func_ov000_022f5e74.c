@@ -28,7 +28,7 @@ struct UnkStruct_022f5e74 {
 };
 
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 extern s16 data_ov000_02363dc0[];
 extern s16 data_ov000_02363dcc[];
 extern u16 data_ov000_02363dbc[];
@@ -66,7 +66,7 @@ void func_ov000_022f5e74(UnkStruct_022f5e74 *s) {
     func_ov000_022f685c(s);
     s->unk210 += 0x800;
     s->unk212 = -s->base.unk2E << 3;
-    px = data_ov000_0236ac60->unk10;
+    px = gPlayers->unk10;
     if (s->unk218 < px && px < s->unk35C) {
         if (s->unk4C4 != 0) {
             if (s->unk4C0)

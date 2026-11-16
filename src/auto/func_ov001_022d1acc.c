@@ -4,13 +4,13 @@
 #pragma thumb on
 
 void func_ov001_022d0588();
-s32 func_ov001_022d1404();
+s32 StaffRoll_SetPictureState();
 s32 AnimatorSprite_SetAnimation();
 void func_ov001_022d1a24();
-s32 func_ov001_022d2234();
+s32 StaffRoll_SetState();
 
 void func_ov001_022d1acc(s32 p0) {
-    func_ov001_022d1404(p0, (u32)func_ov001_022d0588);
+    StaffRoll_SetPictureState(p0, (u32)func_ov001_022d0588);
     *(u32 *)((u8 *)p0 + 0xc10) = (*(u32 *)((u8 *)p0 + 0xc10) | 4);
     *(u32 *)((u8 *)p0 + 0xc58) = (*(u32 *)((u8 *)p0 + 0xc58) | 4);
     *(u32 *)((u8 *)p0 + 0xca0) = (*(u32 *)((u8 *)p0 + 0xca0) | 4);
@@ -33,7 +33,7 @@ void func_ov001_022d1acc(s32 p0) {
     *(u32 *)((u8 *)p0 + 0xcdc) = 0;
     *(u32 *)((u8 *)p0 + 0xcf4) = 0;
     *(u32 *)((u8 *)p0 + 0xd04) = 1;
-    func_ov001_022d2234(p0, (u32)func_ov001_022d1a24);
+    StaffRoll_SetState(p0, (u32)func_ov001_022d1a24);
 }
 
 #pragma thumb reset

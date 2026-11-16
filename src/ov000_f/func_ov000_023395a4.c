@@ -36,7 +36,7 @@ typedef struct {
 } UnkStruct_023395a4_W;
 
 extern UnkStruct_023395a4 data_ov000_0236aad8;
-extern UnkStruct_023395a4_P *data_ov000_0236ac60[];
+extern UnkStruct_023395a4_P *gPlayers[];
 
 s32 func_ov000_0233b078(s32 x);
 void func_ov000_02338f88(UnkStruct_023395a4_W *w);
@@ -74,7 +74,7 @@ void func_ov000_023395a4(UnkStruct_023395a4_W *w, s32 idx) {
         } else {
             l->y += w->unk8;
             dn = data_ov000_0236aad8.flags & 2;
-            if ((dn && data_ov000_0236ac60[l->ply]->y < ground) || (!dn && data_ov000_0236ac60[l->ply]->y > ground)) {
+            if ((dn && gPlayers[l->ply]->y < ground) || (!dn && gPlayers[l->ply]->y > ground)) {
                 func_ov000_02338f88(w);
                 dn = data_ov000_0236aad8.flags & 2;
                 if (dn && w->unk8 < 0) {
@@ -94,12 +94,12 @@ void func_ov000_023395a4(UnkStruct_023395a4_W *w, s32 idx) {
                         l->y = CLAMP_023395a4(l->y, l->minY, ground - l->scaleY * 0xe8);
                         Finish_023395a4(w);
                     } else if (func_ov000_02338f18(w)) {
-                        l->y = data_ov000_0236ac60[l->ply]->y - l->unk48;
+                        l->y = gPlayers[l->ply]->y - l->unk48;
                         Finish_023395a4(w);
                     }
                 } else if (w->unk8 < 0) {
-                    if (l->y < ground - l->scaleY * 0xe8 && l->y < data_ov000_0236ac60[l->ply]->y - l->unk48) {
-                        l->y = data_ov000_0236ac60[l->ply]->y - l->unk48;
+                    if (l->y < ground - l->scaleY * 0xe8 && l->y < gPlayers[l->ply]->y - l->unk48) {
+                        l->y = gPlayers[l->ply]->y - l->unk48;
                         l->y = CLAMP_023395a4(l->y, l->minY, ground - l->scaleY * 0xe8);
                         Finish_023395a4(w);
                     }
@@ -109,8 +109,8 @@ void func_ov000_023395a4(UnkStruct_023395a4_W *w, s32 idx) {
                 }
             } else {
                 if (w->unk8 > 0) {
-                    if (l->y > ground + l->scaleY * 0x28 && l->y > data_ov000_0236ac60[l->ply]->y - l->unk48) {
-                        l->y = data_ov000_0236ac60[l->ply]->y - l->unk48;
+                    if (l->y > ground + l->scaleY * 0x28 && l->y > gPlayers[l->ply]->y - l->unk48) {
+                        l->y = gPlayers[l->ply]->y - l->unk48;
                         l->y = CLAMP_023395a4(l->y, ground + l->scaleY * 0x28, l->maxY - l->scaleY * 0xc0);
                         Finish_023395a4(w);
                     }
@@ -119,7 +119,7 @@ void func_ov000_023395a4(UnkStruct_023395a4_W *w, s32 idx) {
                         l->y = CLAMP_023395a4(l->y, ground + l->scaleY * 0x28, l->maxY - l->scaleY * 0xc0);
                         Finish_023395a4(w);
                     } else if (func_ov000_02338f18(w)) {
-                        l->y = data_ov000_0236ac60[l->ply]->y - l->unk48;
+                        l->y = gPlayers[l->ply]->y - l->unk48;
                         Finish_023395a4(w);
                     }
                 } else if (func_ov000_02338d6c(w)) {
@@ -130,7 +130,7 @@ void func_ov000_023395a4(UnkStruct_023395a4_W *w, s32 idx) {
         }
     } else if (!(flags & 4)) {
         if (!(flags & 2)) {
-            if (data_ov000_0236ac60[l->ply]->y > ground) {
+            if (gPlayers[l->ply]->y > ground) {
                 func_ov000_023390cc(w, idx);
                 func_ov000_0233b470(1);
                 g->flags |= 0x200;
@@ -140,7 +140,7 @@ void func_ov000_023395a4(UnkStruct_023395a4_W *w, s32 idx) {
                 l->y = CLAMP_023395a4(l->y, l->minY, ground - l->scaleY * 0xe8);
             }
         } else {
-            if (data_ov000_0236ac60[l->ply]->y < ground) {
+            if (gPlayers[l->ply]->y < ground) {
                 func_ov000_023390cc(w, idx);
                 func_ov000_0233b470(0);
                 g->flags |= 0x200;

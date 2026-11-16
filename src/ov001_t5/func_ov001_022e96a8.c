@@ -6,7 +6,7 @@ extern u8 data_ov001_023166bc[];
 
 void SysSound_Release(s32 mode);
 void func_02052424(s32 a, s32 b);
-void func_ov001_022e9664(s32 mode);
+void ZoneMapPause_ExecuteChoice(s32 mode);
 
 #pragma thumb on
 void func_ov001_022e96a8(s32 mode, s32 id, s32 b) {
@@ -26,7 +26,7 @@ void func_ov001_022e96a8(s32 mode, s32 id, s32 b) {
     case 2:
     case 3:
     default:
-        func_ov001_022e9664(mode);
+        ZoneMapPause_ExecuteChoice(mode);
         break;
     }
 }

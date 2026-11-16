@@ -12,7 +12,7 @@ typedef struct UnkStruct_0230ba9c {
     s32 timer;
 } UnkStruct_0230ba9c;
 
-extern UnkStruct_0230ba9c *data_ov001_0231f5c0;
+extern UnkStruct_0230ba9c *gSpecialStageWork;
 extern UnkStruct_0230ba9c_t data_ov001_0231e690;
 
 void func_ov001_023157d8(void);
@@ -26,7 +26,7 @@ void func_020221fc(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_02004070(UnkStruct_0230ba9c_t *t);
 
 void func_ov001_0230ba9c(void) {
-    UnkStruct_0230ba9c *g = data_ov001_0231f5c0;
+    UnkStruct_0230ba9c *g = gSpecialStageWork;
     UnkStruct_0230ba9c_t tbl;
     s32 i;
     u32 v;

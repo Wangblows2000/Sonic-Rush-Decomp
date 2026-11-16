@@ -36,7 +36,7 @@ typedef struct UnkStruct_022fcbd4_g {
     s32 unk3C;
 } UnkStruct_022fcbd4_g;
 
-UnkStruct_022fcbd4_g *func_ov001_022ffce8(void);
+UnkStruct_022fcbd4_g *ExtraBoss_GetWork(void);
 void func_ov001_022fcae8(UnkStruct_022fcbd4 *p);
 void func_ov001_022fcb08(UnkStruct_022fcbd4 *p, s32 a);
 void func_ov001_022fce7c(void);
@@ -53,7 +53,7 @@ void func_ov001_022fcbd4(UnkStruct_022fcbd4 *p) {
         return;
     if (s->unk4 == 6)
         return;
-    if (func_ov001_022ffce8()->unk3C == 0) {
+    if (ExtraBoss_GetWork()->unk3C == 0) {
         a = 0x17;
         b = 0x18;
     } else {
@@ -65,7 +65,7 @@ void func_ov001_022fcbd4(UnkStruct_022fcbd4 *p) {
         p->unk74 = func_ov001_022fce7c;
         p->unk1CC = 0;
         func_ov001_022fcb08(p, b);
-        if (func_ov001_022ffce8()->unk3C == 0) {
+        if (ExtraBoss_GetWork()->unk3C == 0) {
             p->unk84->unk10C &= ~4;
             p->unk84->unk10D &= ~4;
             p->unk84->unk10F &= ~4;

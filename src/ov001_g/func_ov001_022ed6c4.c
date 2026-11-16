@@ -47,8 +47,8 @@ BOOL func_ov001_022ecf04(UnkWork_022ed6c4 *w);
 s32 func_ov001_022ece04(UnkWork_022ed6c4 *w, s32 v);
 s32 func_ov001_022ecdcc(UnkWork_022ed6c4 *w, s32 v);
 void SysSound_PlaySE(s32 a);
-void func_ov001_022ec8e8(s32 a, s32 b, s32 c, s32 d);
-void func_ov001_022ed4d8(void);
+void Records_CreateFadeTask(s32 a, s32 b, s32 c, s32 d);
+void Records_State_ExitToOptions(void);
 void func_ov001_022ed548(void);
 void func_ov001_022ed614(void);
 
@@ -104,8 +104,8 @@ void func_ov001_022ed6c4(void) {
         w->timer = 0;
         w->unk4 = 6;
         w->unk8 = 6;
-        func_ov001_022ec8e8(0, -16, 16, 0);
-        gTaskCurrent->func = func_ov001_022ed4d8;
+        Records_CreateFadeTask(0, -16, 16, 0);
+        gTaskCurrent->func = Records_State_ExitToOptions;
     } else if (f2) {
         w->timer = 0;
         gTaskCurrent->func = func_ov001_022ed548;

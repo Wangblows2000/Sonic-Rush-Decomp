@@ -11,13 +11,13 @@ typedef struct UnkStruct_0230e868 {
     void (*func)(void);
 } UnkStruct_0230e868;
 
-void func_ov000_0230e7ec(void);
-void func_ov000_0230e0dc(UnkStruct_0230e868 *s);
+void JetCatapult_State_Unk_ov000_0230e7ec(void);
+void EffJet_Create(UnkStruct_0230e868 *s);
 
 void func_ov000_0230e868(UnkStruct_0230e868 *s) {
-    s->func = func_ov000_0230e7ec;
+    s->func = JetCatapult_State_Unk_ov000_0230e7ec;
     s->unk54 |= 2;
     s->unkC = 0xb6;
     s->unk30 = 0x100;
-    func_ov000_0230e0dc(s);
+    EffJet_Create(s);
 }

@@ -12,7 +12,7 @@ typedef struct UnkStruct_0230bcc4 {
     u8 *mem;
 } UnkStruct_0230bcc4;
 
-extern UnkStruct_0230bcc4 *data_ov001_0231f5c0;
+extern UnkStruct_0230bcc4 *gSpecialStageWork;
 extern void *gMainHeap;
 
 void *func_02006abc(s32 i);
@@ -40,7 +40,7 @@ static inline void Free_0230bcc4(void *p) {
 }
 
 void func_ov001_0230bcc4(UnkStruct_0230bcc4_o *o) {
-    UnkStruct_0230bcc4 *g = data_ov001_0231f5c0;
+    UnkStruct_0230bcc4 *g = gSpecialStageWork;
     s32 i;
 
     for (i = 0; i < 7; i++) {

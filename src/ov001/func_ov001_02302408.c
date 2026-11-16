@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 void func_ov001_023017c8(void *p);
 void func_ov001_023024d0(void *p, s32 a);
 
@@ -8,8 +8,8 @@ BOOL func_ov001_02302408(u8 *p) {
     u32 *a = *(u32 **)(p + 0x1dc);
     u16 held;
     BOOL r = FALSE;
-    held = *(u16 *)(func_ov001_022ffce8() + 0x18);
-    u16 trg = *(u16 *)(func_ov001_022ffce8() + 0x1c);
+    held = *(u16 *)(ExtraBoss_GetWork() + 0x18);
+    u16 trg = *(u16 *)(ExtraBoss_GetWork() + 0x1c);
     u16 *keys;
     if (a[0] & 4) {
         return r;

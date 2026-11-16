@@ -28,7 +28,7 @@ extern void *gMainHeap;
 
 void func_ov001_02302ac8(UnkStruct_02301118 *w);
 void func_ov001_022fd4f4(UnkStruct_02301118 *w);
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 void ObjVram_Free(s32 i, u32 addr);
 u32 func_02006abc(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -61,7 +61,7 @@ void func_ov001_02301118(UnkStruct_02301118 *w) {
         break;
     case 2:
         ARR(8, w->unkA) = 0;
-        *(u16 *)(func_ov001_022ffce8() + 0x304) = 0xffff;
+        *(u16 *)(ExtraBoss_GetWork() + 0x304) = 0xffff;
         break;
     case 3:
         ARR(0x1c, w->unkA) = 0;

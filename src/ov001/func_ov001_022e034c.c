@@ -6,7 +6,7 @@ void func_ov001_022dfeec(void);
 void func_ov001_022dfe20(void);
 void func_ov001_022dfb48(void *p, void *q);
 void func_ov001_022dfa3c(void *p, void *q);
-void func_ov001_022df5f0(void *p);
+void TransformDemo_SpawnEffect(void *p);
 void func_ov001_022df474(void *p);
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -29,11 +29,11 @@ void func_ov001_022e034c(u8 *p) {
     *(u32 *)(p + 4) ^= 1;
     if (*(s32 *)(p + 0x10) == 2) {
         if ((Rand() & 7) == 0) {
-            func_ov001_022df5f0(p);
+            TransformDemo_SpawnEffect(p);
         }
     } else {
         if ((Rand() & 3) == 0) {
-            func_ov001_022df5f0(p);
+            TransformDemo_SpawnEffect(p);
         }
     }
     func_ov001_022df474(p);

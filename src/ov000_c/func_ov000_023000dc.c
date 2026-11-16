@@ -14,7 +14,7 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_022c4680 gSaveData;
 
-void func_ov000_022fff44(void);
+void EnemyFlapperGroup_State_Unk_ov000_022fff44(void);
 
 void func_ov000_023000dc(UnkStruct_StageObj *w) {
     u16 *f;
@@ -24,7 +24,7 @@ void func_ov000_023000dc(UnkStruct_StageObj *w) {
     else
         StageObj_SetAnimation(w, 0);
     w->unk5C |= 4;
-    w->unk68 = func_ov000_022fff44;
+    w->unk68 = EnemyFlapperGroup_State_Unk_ov000_022fff44;
     f = &w->unk5C;
     w->unk1F4 &= ~1;
     w->unk34 = 0;

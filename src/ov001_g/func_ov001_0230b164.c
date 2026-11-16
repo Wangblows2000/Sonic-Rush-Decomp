@@ -48,7 +48,7 @@ typedef struct UnkStruct_0230b164_e {
 } UnkStruct_0230b164_e;
 
 extern UnkStruct_0230b164_br gDisplayMain;
-extern UnkStruct_0230b164 *data_ov001_0231f5c0;
+extern UnkStruct_0230b164 *gSpecialStageWork;
 extern UnkStruct_0230b164_e data_ov001_023171c8[];
 
 void Task_Destroy(void *task);
@@ -63,7 +63,7 @@ void func_ov001_0230b164(void) {
     UnkStruct_0230b164 *g;
     s32 i;
 
-    g = data_ov001_0231f5c0;
+    g = gSpecialStageWork;
     gDisplayMain.b0 = 0;
     gDisplayMain.x = 0;
     gDisplayMain.b9 = 0;

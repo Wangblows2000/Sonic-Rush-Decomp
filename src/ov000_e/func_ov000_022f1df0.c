@@ -15,7 +15,7 @@ typedef struct UnkStruct_022f1df0 {
 } UnkStruct_022f1df0;
 
 extern UnkStruct_Cam data_ov000_0236a48c;
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 BOOL func_ov000_022f46f4(UnkStruct_022f1df0 *s);
 BOOL func_ov000_022f8f38(void);
@@ -35,8 +35,8 @@ void func_ov000_022f1df0(UnkStruct_022f1df0 *s) {
     if (func_ov000_022f8f38() && func_ov000_022f8f00()) {
         cam = (UnkStruct_Cam *)(u32)&data_ov000_0236a48c;
         func_ov000_022f8df8(s, &x, &y, 0);
-        cam->unk48 = ((x - data_ov000_0236ac60->unk10) << 4) + 0x14000;
-        cam->unk4C = 0x32000 - ((y - data_ov000_0236ac60->unk14) << 4);
+        cam->unk48 = ((x - gPlayers->unk10) << 4) + 0x14000;
+        cam->unk4C = 0x32000 - ((y - gPlayers->unk14) << 4);
     }
     if ((s->unk434 & 0x3f) == 0)
         Sound_PlaySeqArc(0, 0, 0xbe);

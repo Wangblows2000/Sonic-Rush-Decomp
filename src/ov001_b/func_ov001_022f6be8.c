@@ -99,7 +99,7 @@ typedef struct UnkStruct_022f6be8_q {
     u8 pad0[0x40];
     s32 unk40;
 } UnkStruct_022f6be8_q;
-UnkStruct_022f6be8_q *func_ov001_022ffce8(void);
+UnkStruct_022f6be8_q *ExtraBoss_GetWork(void);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -117,7 +117,7 @@ UnkStruct_022f6be8_o *func_ov001_022f6be8(void) {
     UnkStruct_022f6be8_a *a;
     s32 r;
 
-    q = func_ov001_022ffce8();
+    q = ExtraBoss_GetWork();
     o = func_ov001_023014f4(2, 0x2f00);
     data_ov001_0231f06c = o;
     d = (UnkStruct_022f6be8_d *)Heap_Alloc(gMainHeap, 0x1a0, 0x20);

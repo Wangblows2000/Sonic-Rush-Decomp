@@ -21,9 +21,9 @@ extern UnkStruct_Res *data_ov000_0236a6f0[];
 extern UnkStruct_0236a790 data_ov000_0236a790[];
 extern u8 data_ov000_023675e0[], data_ov000_023675f8[], data_ov000_0236a6f8[], data_ov000_0236a840[];
 
-void func_ov000_023265d8(void);
+void Decoration_Destructor(void);
 s32 func_02002094(s32 a, s32 b);
-void func_ov000_02326638(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
+void Decoration_InitFromMap(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
 
 UnkStruct_023240f8 *func_ov000_023240f8(UnkStruct_ObjParam *p, s32 a, s32 b) {
     UnkStruct_Task *task;
@@ -31,13 +31,13 @@ UnkStruct_023240f8 *func_ov000_023240f8(UnkStruct_ObjParam *p, s32 a, s32 b) {
     vu16 zero;
     s32 i;
 
-    task = Task_Create(StageObj_Main, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_023240f8));
+    task = Task_Create(StageObj_Main, Decoration_Destructor, 0, 0x500, 4, sizeof(UnkStruct_023240f8));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_023240f8));
-    func_ov000_02326638(w, p, a, b);
+    Decoration_InitFromMap(w, p, a, b);
     switch (p->unk2) {
     default:
         StageObj_Load2dBAC(w, data_ov000_023675e0, 0, data_ov000_0236a6f0, data_ov000_02369ba0);

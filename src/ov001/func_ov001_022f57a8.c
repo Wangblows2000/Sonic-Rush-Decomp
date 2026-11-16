@@ -4,7 +4,7 @@ extern void *data_ov001_0231f068;
 extern s32 data_ov001_0231d4c0[];
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_ov001_022f3b50(void *p);
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 s32 func_02002094(s32 a, s32 b);
 void func_ov001_022fb5ec(void *p);
 void func_ov001_022f56f8(void);
@@ -21,10 +21,10 @@ void func_ov001_022f57a8(u8 *p) {
     }
     *(void (**)(void))(p + 0x74) = func_ov001_022f56f8;
     Model_SetAnimation(r, 0, data_ov001_0231f068, data_ov001_0231d4c0[*(s32 *)(p + 0x1cc)] + 1, 0);
-    a = func_ov001_022ffce8();
-    b = func_ov001_022ffce8();
-    c = func_ov001_022ffce8();
-    d = func_ov001_022ffce8();
+    a = ExtraBoss_GetWork();
+    b = ExtraBoss_GetWork();
+    c = ExtraBoss_GetWork();
+    d = ExtraBoss_GetWork();
     *(s32 *)(r + 0x114) = func_02002094(*(s32 *)(a + 0x308) * 0x1333 + (*(s32 *)(b + 0x30c) - *(s32 *)(c + 0x308)) * 0x1800, *(s32 *)(d + 0x30c));
     func_ov001_022fb5ec(*(void **)(*(u8 **)(p + 0x1dc) + 0x10));
     *(s32 *)(p + 0x60) = 0;

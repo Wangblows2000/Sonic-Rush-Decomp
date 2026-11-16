@@ -36,14 +36,14 @@ typedef struct {
 } UnkStruct_022e899c;
 
 extern UnkStruct_0208922c gDisplayMain;
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void func_ov000_022ee198(UnkStruct_022e899c *w, s32 a);
 void func_ov000_022e9b70(UnkStruct_022e899c *w, s32 a, s32 b);
 s32 func_020027a4(s32 y, s32 x);
-UnkStruct_Fx *func_ov000_02328468(s32 a, s32 x, s32 y, s32 z);
+UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-UnkStruct_StageObj *func_ov000_023275c0(UnkStruct_022e899c *w, s32 a, s32 b, s32 c, s32 d);
+UnkStruct_StageObj *EffBoostA2_3D_Create(UnkStruct_022e899c *w, s32 a, s32 b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
 void func_ov000_022e8724(UnkStruct_022e899c *w);
 
@@ -58,23 +58,23 @@ void func_ov000_022e899c(UnkStruct_022e899c *w) {
 
     func_ov000_022ee198(w, 0x31);
     func_ov000_022e9b70(w, 0, 1);
-    a = func_020027a4(0x1f000 - w->base.unk14, data_ov000_0236ac60->unk10 - w->base.unk10);
+    a = func_020027a4(0x1f000 - w->base.unk14, gPlayers->unk10 - w->base.unk10);
     w->base.unk8 = a;
-    if (w->base.unk10 > data_ov000_0236ac60->unk10)
+    if (w->base.unk10 > gPlayers->unk10)
         w->base.unk5C |= 1;
     else
         w->base.unk5C &= ~1;
     if (w->unk3D0 == 0) {
-        fx = func_ov000_02328468(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
+        fx = BossEffect_CreateHoming(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
         fx->unk248 = 0x999;
         fx->unk14C = FX_Mul(fx->unk14C, 0x1800);
         fx->unk150 = FX_Mul(fx->unk150, 0x1800);
         fx->unk154 = FX_Mul(fx->unk154, 0x1800);
         Sound_PlaySeqArc(0, 0, 7);
-        o = func_ov000_023275c0(w, 0, 0, 0, 0);
+        o = EffBoostA2_3D_Create(w, 0, 0, 0, 0);
     } else {
         Sound_PlaySeqArc(0, 0, 0xbd);
-        o = func_ov000_023275c0(w, 1, 0, 0, 0);
+        o = EffBoostA2_3D_Create(w, 1, 0, 0, 0);
     }
     if (o != NULL) {
         if (o->unk5C & 1)

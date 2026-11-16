@@ -72,7 +72,7 @@ typedef struct UnkStruct_022d0e9c_pl {
 } UnkStruct_022d0e9c_pl;
 
 extern UnkStruct_022d0e9c_7 data_ov000_02369ac0;
-extern UnkStruct_022d0e9c_pl *data_ov000_0236ac60;
+extern UnkStruct_022d0e9c_pl *gPlayers;
 
 s32 func_02002094(s32 a, s32 b);
 void func_0201c070(s32 a, s32 b);
@@ -108,7 +108,7 @@ void func_ov000_022d0e9c(UnkStruct_022d0e9c *s) {
         return;
     }
     func_ov000_022c5e1c(0x1152f0, 0x6cd988, s->unk139C, s->unk13A4, &a);
-    p = data_ov000_0236ac60->unk10 << 4;
+    p = gPlayers->unk10 << 4;
     if (p < a) {
         d1 = a - p;
         d2 = p + 0x6cd988 - a;

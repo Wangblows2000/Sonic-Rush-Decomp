@@ -55,7 +55,7 @@ typedef struct UnkSprDef_0230b848 {
 
 #define ANIM_HDR(r) ((UnkAnimHdr_0230b848 *)((u8 *)(r) + (r)->hdrOfs))
 
-extern UnkWork_0230b848 *data_ov001_0231f5c0;
+extern UnkWork_0230b848 *gSpecialStageWork;
 typedef struct UnkResSet_0230b848 {
     u16 *res[7];
     UnkAnimRes_0230b848 *anim[1];
@@ -81,7 +81,7 @@ static inline u16 GetPltt(UnkAnimRes_0230b848 *a, u16 idx) {
 }
 
 void func_ov001_0230b848(void) {
-    UnkWork_0230b848 *w = data_ov001_0231f5c0;
+    UnkWork_0230b848 *w = gSpecialStageWork;
     UnkResSet_0230b848 *rs = data_ov001_0231f5c4;
     s32 i;
     u32 pal;

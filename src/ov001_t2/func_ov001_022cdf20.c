@@ -25,7 +25,7 @@ void func_ov001_022cdc28(void *p);
 void func_ov001_022cdc10(void *p);
 void func_ov001_022cdbf8(void *p);
 void SysSound_PlaySE(s32 a);
-void func_ov001_022cda20(void);
+void OptionsMenu_State_EnterItem(void);
 
 #pragma thumb on
 void func_ov001_022cdf20(s32 sel, s32 b) {
@@ -55,6 +55,6 @@ void func_ov001_022cdf20(s32 sel, s32 b) {
         break;
     }
     SysSound_PlaySE(0);
-    gTaskCurrent->fn = func_ov001_022cda20;
+    gTaskCurrent->fn = OptionsMenu_State_EnterItem;
 }
 #pragma thumb reset

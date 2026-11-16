@@ -29,7 +29,7 @@ typedef struct {
 } UnkStruct_022e0ad0;
 
 extern s32 data_ov001_0231c3ec;
-extern s32 data_ov001_0231c3f0;
+extern s32 gZoneActSelectResult;
 
 void AnimatorSprite_SetAnimation(UnkSprite_022e0ad0 *s, u16 id);
 void AnimatorSprite_ProcessAnimation(UnkSprite_022e0ad0 *s, s32 a, s32 b);
@@ -71,7 +71,7 @@ void func_ov001_022e0ad0(UnkStruct_022e0ad0 *p) {
             n = i * 7 + 0x10 + j;
             s = &p->spr[n];
             id *= 3;
-            if (i == data_ov001_0231c3f0) {
+            if (i == gZoneActSelectResult) {
                 if (p->unkd8 != 0 && p->timer < 0x3c) {
                     id += 2;
                     pal = 9;

@@ -5,11 +5,11 @@ typedef struct {
     s16 unk34;
 } UnkView_02313e54;
 
-void func_ov000_02313cfc(void);
+void Rocket_State_Unk_ov000_02313cfc(void);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 
 void func_ov000_02313e54(UnkStruct_StageObj *w, s32 a) {
-    w->unk68 = func_ov000_02313cfc;
+    w->unk68 = Rocket_State_Unk_ov000_02313cfc;
     w->unk58 |= 0x40;
     w->unk58 &= ~0x2100;
     w->unk58 &= ~0x200;

@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 func_ov000_0234cb70();
-s32 func_ov000_0234c4a4();
+s32 Player_SetAnimation();
 s32 func_ov000_02346d10();
 s32 func_ov000_02346aa8();
 void func_ov000_02348dc0();
@@ -16,7 +16,7 @@ void func_ov000_02348e90(u8 *p0) {
         return;
     }
     func_ov000_0234cb70(p0, (*(u32 *)((u8 *)p0 + 0x32c) & 0x1000000), *(u32 *)((u8 *)p0 + 0x32c));
-    func_ov000_0234c4a4(p0, 0x11);
+    Player_SetAnimation(p0, 0x11);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) & ~1);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x100);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x2000);

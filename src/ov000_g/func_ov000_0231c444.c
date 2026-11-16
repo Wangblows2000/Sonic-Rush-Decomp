@@ -38,7 +38,7 @@ typedef struct {
 s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
 s32 func_02066a9c(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0232ab9c(void *w, s32 a, s32 b, s32 c);
-void func_ov000_0231c21c(void *w);
+void Mine_Explode(void *w);
 
 void func_ov000_0231c444(UnkStruct_0231c444 *w) {
     s16 i;
@@ -118,11 +118,11 @@ void func_ov000_0231c444(UnkStruct_0231c444 *w) {
             break;
         }
         if (t < 0)
-            func_ov000_0231c21c(w);
+            Mine_Explode(w);
     }
     w->unk8++;
     if (func_02066a9c(w->unk10 >> 8, w->unk14 >> 8, 1, 3, 0, 0) < 0)
-        func_ov000_0231c21c(w);
+        Mine_Explode(w);
     if (!(w->unk54 & 2))
         return;
     if (flag)

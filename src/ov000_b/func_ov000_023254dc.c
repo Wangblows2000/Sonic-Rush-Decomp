@@ -20,7 +20,7 @@ typedef struct {
 } UnkStruct_023254dc;
 
 extern void *data_ov000_02369ba0;
-extern void *data_ov000_0236ac60;
+extern void *gPlayers;
 extern u8 data_ov000_02367910[], data_ov000_0236a6f0[];
 extern u8 data_ov000_0236792c[], data_ov000_0236a6f8[];
 extern u8 data_ov000_02367948[], data_ov000_0236a7a0[], data_ov000_02367964[], data_ov000_0236a7b0[];
@@ -32,13 +32,13 @@ extern u8 data_ov000_02367a3c[], data_ov000_0236a718[], data_ov000_0236a810[];
 extern u8 data_ov000_02367a54[], data_ov000_0236a720[], data_ov000_0236a820[];
 extern u8 data_ov000_02367a6c[], data_ov000_0236a728[];
 
-void func_ov000_023265d8(void);
+void Decoration_Destructor(void);
 void func_ov000_02322f68(void);
 void func_ov000_02322f80(void);
 void func_ov000_0232112c(void);
-void func_ov000_02326638(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
+void Decoration_InitFromMap(void *w, UnkStruct_ObjParam *p, s32 a, s32 b);
 void *func_ov000_02322d7c(void *a, s32 b, s32 c, s32 d, s32 e);
-void func_ov000_02320fec(UnkStruct_023254dc *w, s32 a, s32 b);
+void DecFishPart_Create(UnkStruct_023254dc *w, s32 a, s32 b);
 void func_ov000_02321430(UnkStruct_023254dc *w);
 void func_ov000_02321824(UnkStruct_023254dc *w);
 
@@ -47,13 +47,13 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
     UnkStruct_023254dc *w;
     vu16 zero;
 
-    task = Task_Create(StageObj_Main, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_023254dc));
+    task = Task_Create(StageObj_Main, Decoration_Destructor, 0, 0x500, 4, sizeof(UnkStruct_023254dc));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_023254dc));
-    func_ov000_02326638(w, p, a, b);
+    Decoration_InitFromMap(w, p, a, b);
     switch (p->unk2) {
     case 0x41:
         StageObj_Load2dBAC(w, data_ov000_02367910, 0xffff, data_ov000_0236a6f0, data_ov000_02369ba0);
@@ -111,7 +111,7 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
         StageObj_SetAnimation(w, 1);
         StageObj_AllocSpritePalette(w, 0, 0x26);
         StageObj_SetOAMOrder(w, 0x16);
-        w->unk88 = data_ov000_0236ac60;
+        w->unk88 = gPlayers;
         w->unk54 |= 0x200;
         w->unk68 = func_ov000_02322f80;
         break;
@@ -194,14 +194,14 @@ UnkStruct_023254dc *func_ov000_023254dc(UnkStruct_ObjParam *p, s32 a, s32 b) {
         }
         if (w->unk184->unk2 >= 0xad) {
             w->unk5C |= 0x20;
-            func_ov000_02320fec(w, 4, 4);
-            func_ov000_02320fec(w, -8, 2);
-            func_ov000_02320fec(w, 8, 0x10);
-            func_ov000_02320fec(w, 2, -8);
-            func_ov000_02320fec(w, -0xc, 6);
-            func_ov000_02320fec(w, 8, 8);
-            func_ov000_02320fec(w, -6, -4);
-            func_ov000_02320fec(w, -2, -10);
+            DecFishPart_Create(w, 4, 4);
+            DecFishPart_Create(w, -8, 2);
+            DecFishPart_Create(w, 8, 0x10);
+            DecFishPart_Create(w, 2, -8);
+            DecFishPart_Create(w, -0xc, 6);
+            DecFishPart_Create(w, 8, 8);
+            DecFishPart_Create(w, -6, -4);
+            DecFishPart_Create(w, -2, -10);
         }
         if (w->unk184->unk2 == 0xa7 || w->unk184->unk2 == 0xaa || w->unk184->unk2 == 0xac)
             func_ov000_02321430(w);

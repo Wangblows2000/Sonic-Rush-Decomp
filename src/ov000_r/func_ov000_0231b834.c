@@ -26,7 +26,7 @@ typedef struct {
 } UnkStruct_0231b834;
 
 extern UnkStruct_0231b834_E data_ov000_0236aad8[];
-extern UnkStruct_0231b834_P *data_ov000_0236ac60[];
+extern UnkStruct_0231b834_P *gPlayers[];
 
 void func_ov000_0231b830(void);
 
@@ -47,7 +47,7 @@ void func_ov000_0231b834(UnkStruct_0231b834 *w) {
         idx = w->unk20C[i];
         if (idx >= 0) {
             e = &data_ov000_0236aad8[i];
-            px = data_ov000_0236ac60[idx]->unk10;
+            px = gPlayers[idx]->unk10;
             if (w->unk10 >= px - 0x4000 && w->unk10 <= px + 0x4000) {
                 e->unk0 |= 0x1000000;
                 e->unk62 = w->unk20E;

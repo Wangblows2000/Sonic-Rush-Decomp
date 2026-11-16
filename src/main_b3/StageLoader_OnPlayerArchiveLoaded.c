@@ -4,7 +4,7 @@ extern void *gMainHeap;
 extern u8 *data_ov000_0236ac28;
 typedef struct { u8 pad0[0x5c]; u8 *file; } UnkWork_0204ad2c;
 
-void func_ov000_0234dfb8(void);
+void Player_LoadAssets(void);
 u8 *File_Load(void *path, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
@@ -67,5 +67,5 @@ void StageLoader_OnPlayerArchiveLoaded(UnkWork_0204ad2c *w) {
     DC_StoreRange(p, Compress_GetUncompressedSize(f));
     Free_0204ad2c(w->file);
     w->file = NULL;
-    func_ov000_0234dfb8();
+    Player_LoadAssets();
 }

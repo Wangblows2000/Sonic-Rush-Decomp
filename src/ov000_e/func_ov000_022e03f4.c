@@ -57,7 +57,7 @@ typedef struct {
 
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern UnkStruct_Cam data_ov000_0236a48c;
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 
 typedef struct {
     u8 pad0[0xD5E];
@@ -69,11 +69,11 @@ void func_ov000_022e03f4(UnkStruct_022e03f4 *s) {
 
     data_ov000_0236a444.unkDC = 1;
     cam = (UnkStruct_Cam *)(u32)&data_ov000_0236a48c;
-    cam->unk0 = data_ov000_0236ac60;
+    cam->unk0 = gPlayers;
     cam->unk1C = -0x200000;
     cam->unk30 = 0x200;
     cam->unk3C = (void *)(cam->unk40 = (s32)(cam->unk44 = 0));
-    cam->unk3C = data_ov000_0236ac60;
+    cam->unk3C = gPlayers;
     cam->unk58 = -0x174000;
     cam->unk6C = 0x200;
     if (s->unkD5E == 0) {

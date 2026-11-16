@@ -35,7 +35,7 @@ typedef struct UnkStruct_02302658_q {
 
 extern u32 gRandSeed;
 
-UnkStruct_02302658_q *func_ov001_022ffce8(void);
+UnkStruct_02302658_q *ExtraBoss_GetWork(void);
 UnkStruct_02302658_o *func_ov001_02300c94(void);
 s32 func_0200203c(s32 n, s32 d);
 s32 func_0200225c(s32 n, s32 d);
@@ -64,7 +64,7 @@ void func_ov001_02302658(void) {
     s32 sx;
     s32 sy;
 
-    q = func_ov001_022ffce8();
+    q = ExtraBoss_GetWork();
     o = func_ov001_02300c94();
     d = o->unk1DC;
     if (d->unk0 & 1) {
@@ -84,9 +84,9 @@ void func_ov001_02302658(void) {
         o->unk30 = (func_0200203c(Rand(), 5) - 2) << 12;
         o->unk34 = (func_0200203c(Rand(), 5) - 2) << 12;
     }
-    if (func_ov001_022ffce8()->unk0 & 0x40) {
+    if (ExtraBoss_GetWork()->unk0 & 0x40) {
         dx = o->unk18 - 0xc0000;
-        q = func_ov001_022ffce8();
+        q = ExtraBoss_GetWork();
         dy = o->unk1C - q->unk310;
         adx = Abs(dx);
         ady = Abs(dy);
@@ -108,14 +108,14 @@ void func_ov001_02302658(void) {
                 o->unk1C += sy;
                 return;
             }
-            o->unk1C = func_ov001_022ffce8()->unk310;
+            o->unk1C = ExtraBoss_GetWork()->unk310;
             d->unk0 |= 4;
         } else if (dy > 0) {
             if (ady >= sy) {
                 o->unk1C -= sy;
                 return;
             }
-            o->unk1C = func_ov001_022ffce8()->unk310;
+            o->unk1C = ExtraBoss_GetWork()->unk310;
             d->unk0 |= 4;
         }
     } else {

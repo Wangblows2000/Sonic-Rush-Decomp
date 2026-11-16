@@ -37,7 +37,7 @@ extern UnkStruct_022c4560 data_022c4560;
 extern s32 data_ov001_0231d664[][5];
 
 BOOL func_ov001_02300b84(s32 x, s32 y, s32 w, s32 h);
-UnkStruct_022fb28c_c *func_ov001_022ffce8(void);
+UnkStruct_022fb28c_c *ExtraBoss_GetWork(void);
 void func_ov001_022fb17c(UnkStruct_022fb28c *p);
 
 static inline s32 GetLevel(void) {
@@ -56,8 +56,8 @@ void func_ov001_022fb28c(UnkStruct_022fb28c *p) {
         p->flags |= 8;
         return;
     }
-    if (p->sx + p->vx >= data_ov001_0231d664[GetLevel()][func_ov001_022ffce8()->chr]) {
-        p->sx = data_ov001_0231d664[GetLevel()][func_ov001_022ffce8()->chr];
+    if (p->sx + p->vx >= data_ov001_0231d664[GetLevel()][ExtraBoss_GetWork()->chr]) {
+        p->sx = data_ov001_0231d664[GetLevel()][ExtraBoss_GetWork()->chr];
         p->vx = 0;
     }
     if (t->x < p->x - 0xa000)

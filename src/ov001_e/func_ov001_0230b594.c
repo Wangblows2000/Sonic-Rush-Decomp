@@ -25,7 +25,7 @@ typedef struct UnkStruct_0230b594_br {
     u16 y;
 } UnkStruct_0230b594_br;
 
-extern UnkStruct_0230b594 *data_ov001_0231f5c0;
+extern UnkStruct_0230b594 *gSpecialStageWork;
 extern UnkStruct_0230b594_br gDisplayMain;
 
 void func_ov001_023157d8(void);
@@ -34,7 +34,7 @@ void func_ov001_0231316c(void *p);
 void func_ov001_0230b260(s32 n);
 
 void func_ov001_0230b594(void) {
-    UnkStruct_0230b594 *g = data_ov001_0231f5c0;
+    UnkStruct_0230b594 *g = gSpecialStageWork;
     UnkStruct_0230b594_o *o1 = &g->objs[0];
     UnkStruct_0230b594_o *o2 = &g->objs[1];
     s32 n;

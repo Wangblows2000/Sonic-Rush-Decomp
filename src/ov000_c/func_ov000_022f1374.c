@@ -31,7 +31,7 @@ typedef struct {
 
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_0208922c gDisplayMain;
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 extern u8 data_ov000_02365c5c[][3];
 
 void func_ov000_022f490c(UnkStruct_022f1374 *w);
@@ -48,7 +48,7 @@ static inline s32 GetLevel(void) {
 
 void func_ov000_022f1374(UnkStruct_022f1374 *w) {
     func_ov000_022f490c(w);
-    if ((u16)(s16)(data_ov000_0236ac60->unk328 - 0xf) <= 1)
+    if ((u16)(s16)(gPlayers->unk328 - 0xf) <= 1)
         w->unk434 = 1;
     if (w->unk442-- != 0)
         return;

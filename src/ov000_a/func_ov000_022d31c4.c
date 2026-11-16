@@ -99,13 +99,13 @@ typedef struct UnkStruct_022d31c4_p {
     u32 unk58;
 } UnkStruct_022d31c4_p;
 
-extern UnkStruct_022d31c4_p *data_ov000_0236ac60;
+extern UnkStruct_022d31c4_p *gPlayers;
 
 void func_ov000_022d2920(UnkStruct_022d31c4 *s, s32 mode);
 void func_ov000_022d3070(UnkStruct_022d31c4 *s);
 
 void func_ov000_022d31c4(UnkStruct_022d31c4 *s) {
-    UnkStruct_022d31c4_p *p = data_ov000_0236ac60;
+    UnkStruct_022d31c4_p *p = gPlayers;
     UnkStruct_022d31c4_a *x = &s->unkA9C;
     UnkStruct_022d31c4_a *y = &s->unkBD4;
     UnkStruct_022d31c4_a *z = &s->unkD0C;

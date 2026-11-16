@@ -34,7 +34,7 @@ extern s32 data_ov001_02316ecc[];
 extern u32 gSystemFlags;
 extern u16 gDisplayMain[];
 
-UnkStruct_02304a24_p *func_ov001_022ffce8(void);
+UnkStruct_02304a24_p *ExtraBoss_GetWork(void);
 s32 func_02002094(s32 n, s32 d);
 s32 func_0200203c(s32 n, s32 d);
 
@@ -73,9 +73,9 @@ void func_ov001_02304a24(void) {
 
     if (data_ov001_0231f54c->flags & 1)
         return;
-    type = func_ov001_022ffce8()->unk40;
-    x = (func_02002094((func_ov001_022ffce8()->unk31C >> 12) - 0x80, 3) + (data_ov001_0231f54c->unk588 >> 16)) & 0xff;
-    y = func_02002094(((func_ov001_022ffce8()->unk320 >> 12) - 0x60) * 0x38, 0xc0) & 0xff;
+    type = ExtraBoss_GetWork()->unk40;
+    x = (func_02002094((ExtraBoss_GetWork()->unk31C >> 12) - 0x80, 3) + (data_ov001_0231f54c->unk588 >> 16)) & 0xff;
+    y = func_02002094(((ExtraBoss_GetWork()->unk320 >> 12) - 0x60) * 0x38, 0xc0) & 0xff;
     g = data_ov001_0231f54c;
     if (g->unkB4C > 0) {
         g->unkB4C--;

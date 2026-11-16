@@ -11,14 +11,14 @@ typedef struct {
 } UnkStruct_Spark;
 
 s32 func_02002094(s32 n, s32 d);
-UnkStruct_StageObj *func_ov000_02328390(s32 a);
+UnkStruct_StageObj *BossEffect_CreateStrikeHit(s32 a);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
 UnkStruct_StageObj *func_ov000_022ed9a0(UnkStruct_022ed9a0 *w) {
-    UnkStruct_StageObj *o = func_ov000_02328390(1);
+    UnkStruct_StageObj *o = BossEffect_CreateStrikeHit(1);
     s32 s;
 
     o->unk10 += ((Rand() & 0xf) - 8) << 8;

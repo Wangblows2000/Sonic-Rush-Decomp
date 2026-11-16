@@ -19,11 +19,11 @@ typedef struct {
 } UnkObj_02339110;
 
 extern UnkPlayer_02339110 data_ov000_0236aad8[];
-extern UnkObj_02339110 *data_ov000_0236ac60[];
+extern UnkObj_02339110 *gPlayers[];
 
 void func_ov000_02339110(void *unused, s32 idx) {
     UnkPlayer_02339110 *p = &data_ov000_0236aad8[idx];
 
     if (p->flags & 0x10000)
-        p->unk4 = data_ov000_0236ac60[p->unk3A]->x - p->unk3C;
+        p->unk4 = gPlayers[p->unk3A]->x - p->unk3C;
 }

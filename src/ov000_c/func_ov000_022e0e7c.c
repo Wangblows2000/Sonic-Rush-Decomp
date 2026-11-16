@@ -42,14 +42,14 @@ void func_ov000_022e2470(void);
 void func_ov000_022e04a8(UnkStruct_Boss *w);
 void func_ov000_022df9d4(s32 a);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_02328710(s32 a, s32 x, s32 y, s32 z);
+void BossEffect_CreateHit(s32 a, s32 x, s32 y, s32 z);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 void Sound_PlaySeq(s32 a, s32 b);
 void func_ov000_0234aa80(UnkStruct_StageObj *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_020366f4(s32 a, s32 b, s32 c);
-void func_ov000_022e4718(void);
+void Boss6_State_Unk_ov000_022e4718(void);
 
 void func_ov000_022e0e7c(UnkStruct_Coll *a, UnkStruct_Hit *b) {
   UnkStruct_Boss *w = a->unk18;
@@ -64,7 +64,7 @@ void func_ov000_022e0e7c(UnkStruct_Coll *a, UnkStruct_Hit *b) {
     }
     w->unk20C &= ~4;
     if (data_ov000_02369ac0.unk8 != 0) {
-      w->base.unk68 = func_ov000_022e4718;
+      w->base.unk68 = Boss6_State_Unk_ov000_022e4718;
       func_ov000_022e04a8(w);
       w->unk111C = 8;
       func_ov000_022df9d4(0);
@@ -74,7 +74,7 @@ void func_ov000_022e0e7c(UnkStruct_Coll *a, UnkStruct_Hit *b) {
       m->unk114 = 0x1000;
       data_ov000_02369ac0.unk4 = 0x22;
       w->unk20C |= 0x200;
-      func_ov000_02328710(0, b->unk0 << 8, b->unk4 << 8, 0);
+      BossEffect_CreateHit(0, b->unk0 << 8, b->unk4 << 8, 0);
       if (data_ov000_02369ac0.unk8 == 2) {
         func_020537b4(0xb);
         func_020533e0(0x12, 0xf0);

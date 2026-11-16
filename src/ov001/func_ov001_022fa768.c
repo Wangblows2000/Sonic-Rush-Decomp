@@ -2,7 +2,7 @@
 
 void func_ov001_022fa558(void *p);
 void func_ov001_022fd268(void *p, s32 a);
-u32 *func_ov001_022ffce8(void);
+u32 *ExtraBoss_GetWork(void);
 void func_ov001_02303c38(s32 a);
 void func_ov001_022fa5f4(s32 a, s32 b, s32 c);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -20,8 +20,8 @@ void func_ov001_022fa768(u8 *p) {
     (*(u8 **)(p + 0x84))[0x10d] |= 4;
     (*(u8 **)(p + 0x84))[0x10e] |= 4;
     *(s32 *)(p + 0x1cc) = 0x12c;
-    *func_ov001_022ffce8() |= 0x40;
-    func_ov001_022ffce8()[0x310 / 4] = *(s32 *)(p + 0x1c);
+    *ExtraBoss_GetWork() |= 0x40;
+    ExtraBoss_GetWork()[0x310 / 4] = *(s32 *)(p + 0x1c);
     func_ov001_02303c38(*(s32 *)(p + 0x1c));
     func_ov001_022fa5f4(0, *(s32 *)(p + 0x1c), *(s32 *)(p + 0x20));
     Sound_PlaySeqArc(0, 0, 0xb9);

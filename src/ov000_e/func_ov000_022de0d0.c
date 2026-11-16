@@ -18,7 +18,7 @@ typedef struct {
 
 void func_ov000_022de304(UnkStruct_022de0d0 *s);
 void func_ov000_022dbbe0(s32 a);
-s32 func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 BOOL func_ov000_022db9a8(UnkStruct_022de0d0 *s);
 
 void func_ov000_022de0d0(UnkStruct_022de0d0 *s) {
@@ -33,7 +33,7 @@ void func_ov000_022de0d0(UnkStruct_022de0d0 *s) {
         return;
     }
     if (s->unk224 == 10 && s->unkBDC < 1)
-        func_ov000_022fad3c(0xd1, 0, 0, 0, 0, 0, 0, 0, 0);
+        MapObject_Spawn(0xd1, 0, 0, 0, 0, 0, 0, 0, 0);
     s->unkBB8 += s->unkBC0;
     s->unkBBC += s->unkBC4;
     if (s->unk224 & 4) {

@@ -8,7 +8,7 @@ s32 func_ov001_022d0158();
 extern u8 data_0208926c[];
 extern u8 data_02087d44[];
 void func_ov001_022d1ec8();
-s32 func_ov001_022d2234();
+s32 StaffRoll_SetState();
 
 void func_ov001_022d1a24(u8 *p0) {
     func_ov001_022d0070();
@@ -31,7 +31,7 @@ void func_ov001_022d1a24(u8 *p0) {
         if (*(s16 *)((u8 *)data_02087d44 + 8) >= 0) {
             *(u16 *)((u8 *)data_0208926c + 0x8) = 0;
             *(u16 *)((u8 *)data_02087d44 + 0x8) = 0;
-            func_ov001_022d2234(p0, (u32)func_ov001_022d1ec8, data_0208926c);
+            StaffRoll_SetState(p0, (u32)func_ov001_022d1ec8, data_0208926c);
             *(u32 *)((u8 *)p0 + 0x14) = 0xf0;
         }
     }

@@ -8,7 +8,7 @@ typedef struct {
 } UnkStruct_022d1840;
 
 void func_ov001_022d0070(UnkStruct_022d1840 *p);
-void func_ov001_022d2234(UnkStruct_022d1840 *p, void (*fn)(UnkStruct_022d1840 *));
+void StaffRoll_SetState(UnkStruct_022d1840 *p, void (*fn)(UnkStruct_022d1840 *));
 void func_ov001_022d1710(UnkStruct_022d1840 *p);
 void func_ov001_022d17bc(UnkStruct_022d1840 *p);
 
@@ -17,10 +17,10 @@ void func_ov001_022d1840(UnkStruct_022d1840 *p) {
     func_ov001_022d0070(p);
     if (p->timer > 0x12c) {
         if (p->count + 1 >= 4) {
-            func_ov001_022d2234(p, func_ov001_022d1710);
+            StaffRoll_SetState(p, func_ov001_022d1710);
             return;
         }
-        func_ov001_022d2234(p, func_ov001_022d17bc);
+        StaffRoll_SetState(p, func_ov001_022d17bc);
     }
 }
 #pragma thumb reset

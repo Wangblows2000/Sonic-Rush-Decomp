@@ -5,8 +5,8 @@ typedef struct UnkStruct_02312070 {
     void (*func)(void);
 } UnkStruct_02312070;
 
-void func_ov000_0231206c(void);
+void Parachute_State_Unk_ov000_0231206c(void);
 
 void func_ov000_02312070(UnkStruct_02312070 *s) {
-    s->func = func_ov000_0231206c;
+    s->func = Parachute_State_Unk_ov000_0231206c;
 }

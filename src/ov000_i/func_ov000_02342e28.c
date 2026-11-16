@@ -8,7 +8,7 @@ typedef struct {
     u32 unk330;
 } UnkObj_02342e28;
 
-extern UnkObj_02342e28 *volatile data_ov000_0236ac60[];
+extern UnkObj_02342e28 *volatile gPlayers[];
 typedef struct {
     u8 pad0[0x54];
     u32 unk54;
@@ -24,11 +24,11 @@ void func_ov000_02348e90(UnkStruct_02342e28 *w);
 void func_ov000_02342e28(UnkStruct_02342e28 *w) {
     if (w->unk32C & 0x1000000)
         return;
-    if (data_ov000_0236ac60[1]->unk330 & 0x800000)
+    if (gPlayers[1]->unk330 & 0x800000)
         w->unk54 |= 1;
     else
         w->unk54 &= ~1;
-    w->unk408 = data_ov000_0236ac60[1]->x;
-    w->unk40C = data_ov000_0236ac60[1]->y;
+    w->unk408 = gPlayers[1]->x;
+    w->unk40C = gPlayers[1]->y;
     func_ov000_02348e90(w);
 }

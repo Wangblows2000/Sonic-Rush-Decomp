@@ -22,13 +22,13 @@ typedef struct UnkStruct_022c7274_5 {
 } UnkStruct_022c7274_5;
 
 extern UnkStruct_022c7274_2 *data_ov000_02369acc;
-extern UnkStruct_022c7274_5 *data_ov000_0236ac60;
+extern UnkStruct_022c7274_5 *gPlayers;
 
 BOOL func_ov000_022cc1f0(void *a, UnkStruct_022c7274_4 *o);
 
 void func_ov000_022c7274(u32 mask) {
     UnkStruct_022c7274_4 *o = data_ov000_02369acc->unk214;
-    BOOL r = func_ov000_022cc1f0(data_ov000_0236ac60->unk18, o);
+    BOOL r = func_ov000_022cc1f0(gPlayers->unk18, o);
     u32 i;
     UnkStruct_022c7274_3 *p;
     for (i = 0, p = o->unk20C; i < 4; i++, p++) {

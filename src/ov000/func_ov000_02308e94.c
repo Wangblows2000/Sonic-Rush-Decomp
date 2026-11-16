@@ -6,9 +6,9 @@ typedef struct UnkStruct_02308e94 {
 } UnkStruct_02308e94;
 
 void StageObj_SetAnimation(UnkStruct_02308e94 *s, s32 a);
-void func_ov000_02308df8(void);
+void GmkWall_State_Unk_ov000_02308df8(void);
 
 void func_ov000_02308e94(UnkStruct_02308e94 *s) {
     StageObj_SetAnimation(s, 0);
-    s->func = func_ov000_02308df8;
+    s->func = GmkWall_State_Unk_ov000_02308df8;
 }

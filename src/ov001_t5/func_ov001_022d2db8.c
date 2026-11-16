@@ -10,7 +10,7 @@ typedef struct {
 } UnkTask_022d2db8;
 
 extern UnkTask_022d2db8 *gTaskCurrent;
-extern s32 data_ov001_0231f050;
+extern s32 gStaffRollWork;
 
 void Task_DestroyByTag(s32 a);
 void Touch_Disable(void);
@@ -25,7 +25,7 @@ void func_ov001_022d2db8(void) {
     s32 mode;
 
     mode = gTaskCurrent->work->mode;
-    data_ov001_0231f050 = 0;
+    gStaffRollWork = 0;
     Task_DestroyByTag(0x1173);
     Touch_Disable();
     switch (mode) {

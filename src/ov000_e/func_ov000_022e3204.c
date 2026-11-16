@@ -29,7 +29,7 @@ typedef struct {
 
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern s32 data_ov000_02363844[];
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e004c(UnkStruct_Boss *w);
@@ -46,7 +46,7 @@ void func_ov000_022e3204(UnkStruct_Boss *w) {
     m->unk114 = 0x1000;
     w->unk111C = -0x1e00;
     w->unk1120 = data_ov000_02363844[data_ov000_02369ac0.unk8 - 1];
-    if (data_ov000_0236ac60->unk10 - w->base.unk10 < 0) {
+    if (gPlayers->unk10 - w->base.unk10 < 0) {
         if (w->unkD5E != 0)
             w->unk1124 = 0x38e;
         else

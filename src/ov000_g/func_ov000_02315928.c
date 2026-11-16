@@ -29,14 +29,14 @@ typedef struct {
 } UnkStruct_02315928_Sys;
 
 extern UnkStruct_02315928_Sys data_022c4560;
-extern void *data_ov000_0236ac60;
+extern void *gPlayers;
 
 void func_0201c070(void *p, s32 a);
-void func_ov000_023155cc(UnkStruct_02315928 *w);
+void Saucer_Explode(UnkStruct_02315928 *w);
 s16 ObjSpd_DownSet(s16 a, s32 b);
 s16 ObjSpd_UpSet(s16 a, s32 b, s32 c);
 u8 ObjAngle_MoveToward8(u8 a, s32 b, s32 c);
-void func_ov000_0234f6a0(void *a, void *b);
+void Player_Action_Saucer(void *a, void *b);
 void func_ov000_023158c0(UnkStruct_02315928 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Sound_SetPositional(void *a, void *b, void *c);
@@ -48,7 +48,7 @@ void func_ov000_02315928(UnkStruct_02315928 *w) {
 
     if (w->unk58 & 0xf) {
         func_0201c070(w->unk1DC, 0);
-        func_ov000_023155cc(w);
+        Saucer_Explode(w);
         return;
     }
     if (w->unk1E0->unk4 & 1) {
@@ -61,7 +61,7 @@ void func_ov000_02315928(UnkStruct_02315928 *w) {
     r = w->unk1BC;
     if (r != NULL && r->unk80 == w && r->unk0 == 1) {
         w->unk204 = r;
-        func_ov000_0234f6a0(r, w);
+        Player_Action_Saucer(r, w);
         func_ov000_023158c0(w);
         return;
     }
@@ -69,5 +69,5 @@ void func_ov000_02315928(UnkStruct_02315928 *w) {
         return;
     if (!(data_022c4560.unk20 & 7))
         Sound_PlaySeqArcEx(w->unk1DC, 0, 0x6c);
-    Sound_SetPositional(w->unk1DC, w, data_ov000_0236ac60);
+    Sound_SetPositional(w->unk1DC, w, gPlayers);
 }

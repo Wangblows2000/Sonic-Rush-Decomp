@@ -107,7 +107,7 @@ typedef struct UnkStruct_022d3568_7 {
     u16 unkA;
 } UnkStruct_022d3568_7;
 
-extern UnkStruct_022d3568_p *data_ov000_0236ac60;
+extern UnkStruct_022d3568_p *gPlayers;
 extern UnkStruct_022d3568_7 data_ov000_02369ac0;
 
 s32 func_02002094(s32 a, s32 b);
@@ -121,7 +121,7 @@ static inline s32 Lerp(s32 a, s32 b) {
 }
 
 static inline s32 GetDist(UnkStruct_022d3568 *s) {
-    s32 d = data_ov000_0236ac60->unk10;
+    s32 d = gPlayers->unk10;
     s32 a;
     s32 b;
     if (d < s->unk10) {
@@ -174,7 +174,7 @@ void func_ov000_022d3568(UnkStruct_022d3568 *s) {
     }
     if (s->unk1470 == 0)
         return;
-    p = data_ov000_0236ac60;
+    p = gPlayers;
     if (p->unk58 & 0x8000)
         v = p->unk2E;
     else

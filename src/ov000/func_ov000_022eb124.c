@@ -14,11 +14,11 @@ typedef struct UnkStruct_022eb124 {
     s16 unk456;
 } UnkStruct_022eb124;
 
-extern UnkStruct_022eb124_2 *data_ov000_0236ac60;
+extern UnkStruct_022eb124_2 *gPlayers;
 
 void func_ov000_022ea614(void);
 
 void func_ov000_022eb124(UnkStruct_022eb124 *s) {
-    s->unk456 = (data_ov000_0236ac60->unk10 - s->unk10) >> 9;
+    s->unk456 = (gPlayers->unk10 - s->unk10) >> 9;
     s->func = func_ov000_022ea614;
 }

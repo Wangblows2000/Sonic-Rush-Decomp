@@ -12,7 +12,7 @@ typedef struct {
 } UnkStruct_02308dac;
 
 BOOL func_ov000_02345758(s32 x, s32 y);
-void func_ov000_02308c68(UnkStruct_02308dac *p);
+void GmkWall_State_Unk_ov000_02308c68(UnkStruct_02308dac *p);
 
 void func_ov000_02308dac(UnkStruct_02308dac *p) {
     p->unkC = 0x28;
@@ -20,5 +20,5 @@ void func_ov000_02308dac(UnkStruct_02308dac *p) {
         p->unk1D6 = 0x20;
     else
         p->unk1D6 = -0x60;
-    p->unk68 = func_ov000_02308c68;
+    p->unk68 = GmkWall_State_Unk_ov000_02308c68;
 }

@@ -71,7 +71,7 @@ typedef struct UnkStruct_022cfb90_5 {
 
 extern UnkStruct_022cfb90_5 gDisplayMain;
 extern UnkStruct_022cfb90_c data_ov000_0236a48c;
-extern UnkStruct_022cfb90_pl *data_ov000_0236ac60;
+extern UnkStruct_022cfb90_pl *gPlayers;
 extern s32 data_ov000_023651fc[][3];
 
 void func_ov000_022cf92c(UnkStruct_022cfb90 *s);
@@ -79,7 +79,7 @@ void func_ov000_022cfe5c(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void StageObj_ClearPause(void);
-u8 *func_ov000_02328860(s32 a, s32 x, s32 y, s32 z);
+u8 *BossEffect_CreateBlast(s32 a, s32 x, s32 y, s32 z);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 
@@ -122,8 +122,8 @@ void func_ov000_022cfb90(UnkStruct_022cfb90 *s) {
     StageObj_ClearPause();
     s->unk54 &= ~0x20;
     s->unk460 = s->unk598 = 0x1000;
-    data_ov000_0236ac60->unk5C |= 0x20;
-    data_ov000_0236ac60->unk32C |= 0x200000;
+    gPlayers->unk5C |= 0x20;
+    gPlayers->unk32C |= 0x200000;
     gDisplayMain.unk48 = 0x10;
     c->unk54 = 0;
     c->unk58 = -data_ov000_023651fc[s->unk1460][0] << 12;
@@ -131,7 +131,7 @@ void func_ov000_022cfb90(UnkStruct_022cfb90 *s) {
     c->unk78 = c->unk7C = 0x12c000;
     c->unk84 = c->unk88 = -0x80000;
     c->unk8E = c->unk90 = 0;
-    obj = func_ov000_02328860(0, 0, data_ov000_023651fc[s->unk1460][0] << 8, 0);
+    obj = BossEffect_CreateBlast(0, 0, data_ov000_023651fc[s->unk1460][0] << 8, 0);
     *(s32 *)(obj + 0x248) = 0x800;
     Sound_PlaySeqArc(0, 0, 0x7d);
     s->unk12F4 = 0x12c;

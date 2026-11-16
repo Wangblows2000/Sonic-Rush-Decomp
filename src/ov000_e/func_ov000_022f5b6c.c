@@ -16,8 +16,8 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 extern u8 data_ov000_02363db0[];
 
-UnkStruct_StageObj *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void func_ov000_022f58cc(void);
+UnkStruct_StageObj *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+void BossFPartDE_State_Unk_ov000_022f58cc(void);
 
 static inline s32 GetIdxB(void) {
     BOOL b = TRUE;
@@ -34,6 +34,6 @@ void func_ov000_022f5b6c(UnkStruct_022f5b6c *w) {
 
     n = w->unk214 + 1;
     if (n < data_ov000_02363db0[i])
-        func_ov000_022fad3c(0xde, 0, 0, (u16)((n << 4) | 1), 0, 0, 0, 0, 0);
-    w->base.unk68 = func_ov000_022f58cc;
+        MapObject_Spawn(0xde, 0, 0, (u16)((n << 4) | 1), 0, 0, 0, 0, 0);
+    w->base.unk68 = BossFPartDE_State_Unk_ov000_022f58cc;
 }

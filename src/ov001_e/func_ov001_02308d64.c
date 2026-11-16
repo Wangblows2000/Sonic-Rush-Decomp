@@ -14,7 +14,7 @@ extern s16 gDisplaySub[];
 void func_ov001_0230d6f4(s32 v);
 void *func_ov001_0230c0a4(void);
 void func_ov001_02312de0(void *p);
-void func_ov001_0230c0e0(s32 v);
+void SpecialStage_RequestExit(s32 v);
 
 void func_ov001_02308d64(void) {
     UnkStruct_02308d64 *g = data_ov001_0231f5bc;
@@ -37,7 +37,7 @@ void func_ov001_02308d64(void) {
         return;
     case 200:
         g->timer = -1;
-        func_ov001_0230c0e0(0);
+        SpecialStage_RequestExit(0);
         return;
     }
 }

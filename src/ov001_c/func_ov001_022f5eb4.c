@@ -49,7 +49,7 @@ void Model_SetAnimation(UnkStruct_022f5eb4_o *o, u32 slot, void *res, u32 idx, v
 u16 func_020027a4(s32 y, s32 x);
 void func_ov001_022fc09c(void *parent, s32 x, s32 y, s32 z, u16 ang);
 s32 func_02002094(s32 n, s32 d);
-UnkStruct_022f5eb4_g *func_ov001_022ffce8(void);
+UnkStruct_022f5eb4_g *ExtraBoss_GetWork(void);
 
 void func_ov001_022f5eb4(UnkStruct_022f5eb4 *p) {
     UnkStruct_022f5eb4_o *a = p->unk84;
@@ -80,7 +80,7 @@ void func_ov001_022f5eb4(UnkStruct_022f5eb4 *p) {
     else if (ang > 0xb1c7)
         ang = 0xb1c7;
     p->unk1D0 = func_02002094((u16)(ang + 0xa38f), 0xb6) << 13;
-    a->unk114 = func_02002094(func_ov001_022ffce8()->unk308 * 0xa000 + ((func_ov001_022ffce8()->unk30C - func_ov001_022ffce8()->unk308) << 16), func_ov001_022ffce8()->unk30C);
+    a->unk114 = func_02002094(ExtraBoss_GetWork()->unk308 * 0xa000 + ((ExtraBoss_GetWork()->unk30C - ExtraBoss_GetWork()->unk308) << 16), ExtraBoss_GetWork()->unk30C);
     if (p->unk1D0 < 0x64000)
         a->unk114 = -a->unk114;
 }

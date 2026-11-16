@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-void func_ov000_0234c4a4(u8 *w, s32 a);
+void Player_SetAnimation(u8 *w, s32 a);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -24,6 +24,6 @@ void func_ov000_0234b63c(u8 *w) {
             anim = 0x42;
     } else
         anim = 0x40;
-    func_ov000_0234c4a4(w, anim);
+    Player_SetAnimation(w, anim);
     *(u16 *)(w + 0x5c) |= 4;
 }

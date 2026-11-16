@@ -61,7 +61,7 @@ UnkTask_022e8090 *Task_Create(void (*func)(void), s32 a, s32 b, s32 c, s32 d, s3
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void func_ov001_022e7428(void);
 void func_ov001_022e6e9c(void);
-s32 func_ov001_022e2ad8(void);
+s32 ZoneMap_IsBlaze(void);
 s32 func_ov001_022e2a44(void);
 s32 func_ov001_022e299c(void);
 s32 func_ov001_022e26d0(void);
@@ -78,7 +78,7 @@ BOOL func_ov001_022e2ee8(s32 a);
 BOOL func_ov001_022e2e40(s32 a);
 BOOL func_ov001_022e2dcc(s32 a);
 void func_ov001_022e3180(s32 a, s32 b);
-void func_ov001_022e213c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void ZoneMap_CreateFadeTask(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void func_ov001_022e5a68(UnkWork_022e8090 *w);
 
 #pragma thumb on
@@ -95,7 +95,7 @@ UnkWork_022e8090 *func_ov001_022e8090(UnkMap_022e8090 *map, s32 alt, s32 mode) {
     w = t->work;
     z = 0;
     MIi_CpuClear32(z, w, 0xa8);
-    w->unk0 = func_ov001_022e2ad8();
+    w->unk0 = ZoneMap_IsBlaze();
     if (w->unk0 == 0) {
         w->unk4 = func_ov001_022e2a44();
         w->unk8 = 0;
@@ -175,7 +175,7 @@ UnkWork_022e8090 *func_ov001_022e8090(UnkMap_022e8090 *map, s32 alt, s32 mode) {
         break;
     }
     if (mode == 0) {
-        func_ov001_022e213c(0x10, 0, 8, 0, 1, 1);
+        ZoneMap_CreateFadeTask(0x10, 0, 8, 0, 1, 1);
     } else {
         w->unk74 = 0x10;
     }

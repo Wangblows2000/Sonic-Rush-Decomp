@@ -28,7 +28,7 @@ typedef struct {
     s16 unk1124;
 } UnkStruct_Boss;
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022dffbc(UnkStruct_Boss *w, s32 a);
@@ -46,7 +46,7 @@ void func_ov000_022e2fbc(UnkStruct_Boss *w) {
         Model_SetAnimation(m, 0, w->unkD08, 0x12, 0);
         m->unk10C &= ~4;
         m->unk114 = 0x1000;
-        if (data_ov000_0236ac60->unk10 - w->base.unk10 < 0) {
+        if (gPlayers->unk10 - w->base.unk10 < 0) {
             if (w->unkD5E != 0) {
                 w->unk1124 = 0x38e;
                 func_ov000_022dffbc(w, 1);
@@ -70,7 +70,7 @@ void func_ov000_022e2fbc(UnkStruct_Boss *w) {
         func_020366f4(0, 0, 0xd0);
     }
     if (w->unk1120 != 0) {
-        d = data_ov000_0236ac60->unk10 - w->base.unk10;
+        d = gPlayers->unk10 - w->base.unk10;
         w->unk1120--;
         if (d < -0x1000) {
             w->base.unk10 -= 0xa00;

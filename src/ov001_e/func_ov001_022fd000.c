@@ -36,7 +36,7 @@ typedef struct UnkStruct_022fd000_c {
     s32 unk3C;
 } UnkStruct_022fd000_c;
 
-UnkStruct_022fd000_c *func_ov001_022ffce8(void);
+UnkStruct_022fd000_c *ExtraBoss_GetWork(void);
 void func_ov001_022fcb08(UnkStruct_022fd000 *p, s32 n);
 void func_ov001_022fcae8(UnkStruct_022fd000 *p);
 void func_ov001_022fce7c(UnkStruct_022fd000 *p);
@@ -57,8 +57,8 @@ void func_ov001_022fd000(UnkStruct_022fd000 *p) {
     case 4:
         p->state = func_ov001_022fce7c;
         p->unk1CC = 0;
-        func_ov001_022fcb08(p, func_ov001_022ffce8()->unk3C == 0 ? 0x18 : 0x1a);
-        if (func_ov001_022ffce8()->unk3C == 0) {
+        func_ov001_022fcb08(p, ExtraBoss_GetWork()->unk3C == 0 ? 0x18 : 0x1a);
+        if (ExtraBoss_GetWork()->unk3C == 0) {
             p->unk84->unk10C &= ~4;
             p->unk84->unk10D &= ~4;
             p->unk84->unk10F &= ~4;

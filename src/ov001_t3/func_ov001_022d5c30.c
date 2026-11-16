@@ -22,7 +22,7 @@ void func_ov001_022d5634(UnkWork_022d5c30 *w, s32 v);
 BOOL func_ov001_022d5808(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
 void Task_DestroyAll(void);
-void func_ov001_022d5834(void);
+void TitleDemo_SkipToTitleScreen(void);
 void func_ov001_022d5af0(UnkWork_022d5c30 *w);
 void func_ov001_022d5b44(UnkWork_022d5c30 *w, s32 a);
 void func_ov001_022d5b94(UnkWork_022d5c30 *w, s32 a);
@@ -70,7 +70,7 @@ void func_ov001_022d5c30(void) {
             GXx_SetMasterBrightness_((vu16 *)0x400006c, 0x10);
             GXx_SetMasterBrightness_((vu16 *)0x400106c, 0x10);
             Task_DestroyAll();
-            func_ov001_022d5834();
+            TitleDemo_SkipToTitleScreen();
             return;
         }
     }
@@ -81,7 +81,7 @@ void func_ov001_022d5c30(void) {
         GXx_SetMasterBrightness_((vu16 *)0x400006c, 0x10);
         GXx_SetMasterBrightness_((vu16 *)0x400106c, 0x10);
         Task_DestroyAll();
-        func_ov001_022d5834();
+        TitleDemo_SkipToTitleScreen();
     }
 }
 #pragma thumb reset

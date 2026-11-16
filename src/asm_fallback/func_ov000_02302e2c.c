@@ -1,7 +1,7 @@
 // asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
-extern u32 data_ov000_0236ac60;
+extern u32 gPlayers;
 
 asm void func_ov000_02302e2c(void)
 {
@@ -70,5 +70,5 @@ _dc:
     mov r0, r12
     ldmia sp!, {r4, r5, r6, lr}
     bx lr
-    dcd data_ov000_0236ac60
+    dcd gPlayers
 }

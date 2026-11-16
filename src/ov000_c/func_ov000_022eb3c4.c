@@ -6,7 +6,7 @@ typedef struct {
     u32 unk210;
 } UnkStruct_Debris;
 
-UnkStruct_Debris *func_ov000_023279a0(UnkStruct_StageObj *w, s16 x, s16 y, s16 z);
+UnkStruct_Debris *EffFire01_3D_Create(UnkStruct_StageObj *w, s16 x, s16 y, s16 z);
 
 void func_ov000_022eb3c4(UnkStruct_StageObj *w) {
     s16 dx, dy, dz;
@@ -17,7 +17,7 @@ void func_ov000_022eb3c4(UnkStruct_StageObj *w) {
     dy = (Rand() & 0xf) - 0xc;
     dy += w->unk30 >> 8;
     dz = (Rand() & 0x1f) - 10;
-    o = func_ov000_023279a0(w, dx, dy, dz);
+    o = EffFire01_3D_Create(w, dx, dy, dz);
 
     if (w->unk5C & 1)
         o->base.unk2E = (Rand() & 0x3f) + 0x1c0;

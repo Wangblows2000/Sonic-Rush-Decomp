@@ -5,8 +5,8 @@ typedef struct UnkStruct_022f8f78 {
     s32 unk10;
 } UnkStruct_022f8f78;
 
-extern UnkStruct_022f8f78 *data_ov000_0236ac60;
+extern UnkStruct_022f8f78 *gPlayers;
 
 BOOL func_ov000_022f8f78(void) {
-    return data_ov000_0236ac60->unk10 > 0x2fa00;
+    return gPlayers->unk10 > 0x2fa00;
 }

@@ -36,7 +36,7 @@ struct UnkStruct_0234f054 {
     u16 unk422;
 };
 
-void func_ov000_0234c4a4(UnkStruct_0234f054 *w, s32 state);
+void Player_SetAnimation(UnkStruct_0234f054 *w, s32 state);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 s32 ObjSpd_DownSet(s32 v, s32 a);
 s32 ObjSpd_UpSet(s32 v, s32 a, s32 max);
@@ -67,7 +67,7 @@ void func_ov000_0234f054(UnkStruct_0234f054 *w) {
             }
             w->unk8 = 0;
             w->unk32A = 0;
-            func_ov000_0234c4a4(w, 0x14);
+            Player_SetAnimation(w, 0x14);
             func_0201c070(w->unk390, 0x20);
             func_0201bf1c(w->unk390);
             return;
@@ -78,7 +78,7 @@ void func_ov000_0234f054(UnkStruct_0234f054 *w) {
         break;
     case 0x14:
         if (w->unk5C & 8) {
-            func_ov000_0234c4a4(w, 0x15);
+            Player_SetAnimation(w, 0x15);
             w->unk5C |= 4;
             w->unk62 = 100;
             Sound_PlaySeqArcEx(NULL, 0, 0x90);

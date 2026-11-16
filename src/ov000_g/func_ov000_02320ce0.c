@@ -40,7 +40,7 @@ typedef struct {
 
 extern UnkStruct_02320ce0_Sys data_022c4560;
 extern UnkStruct_02320ce0_Stage data_ov000_0236aad8;
-extern void *data_ov000_0236ac60;
+extern void *gPlayers;
 
 s32 ObjShift_Set(s32 v, s32 a, s32 b, u16 c, s32 d);
 void func_ov000_02320be8(UnkStruct_02320ce0 *w, void *p);
@@ -85,6 +85,6 @@ void func_ov000_02320ce0(UnkStruct_02320ce0 *w) {
     if (t->unk190 != NULL)
         func_ov000_02320be8(w, t->unk190);
     } else {
-        func_ov000_02320be8(w, data_ov000_0236ac60);
+        func_ov000_02320be8(w, gPlayers);
     }
 }

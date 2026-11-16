@@ -22,7 +22,7 @@ typedef int code();
 extern unsigned char data_ov001_0231f524[];
 extern unsigned char data_ov001_0231f520[];
 int func_ov001_02300c54();
-int func_ov001_022ffce8();
+int ExtraBoss_GetWork();
 
 void func_ov001_02305564(void)
 
@@ -32,7 +32,7 @@ void func_ov001_02305564(void)
   int iVar3;
   
   iVar1 = func_ov001_02300c54();
-  iVar2 = func_ov001_022ffce8();
+  iVar2 = ExtraBoss_GetWork();
   iVar3 = *(int *)(iVar1 + 0x18) - *(int *)(iVar2 + 0x31c);
   iVar1 = *(int *)(iVar1 + 0x1c) - *(int *)(iVar2 + 800);
   if (iVar3 < 0) {

@@ -30,7 +30,7 @@ typedef struct UnkStruct_02301a88_c {
     s32 unk40;
 } UnkStruct_02301a88_c;
 
-UnkStruct_02301a88_c *func_ov001_022ffce8(void);
+UnkStruct_02301a88_c *ExtraBoss_GetWork(void);
 void func_ov001_02303e60(s32 x, s32 y, s32 n);
 void func_ov001_023024d0(UnkStruct_02301a88_o *o, s32 state);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -41,7 +41,7 @@ void func_ov001_02301a88(UnkStruct_02301a88_h *self, UnkStruct_02301a88_h *other
     UnkStruct_02301a88_w *w = o->work;
 
     if (self->flags & 0x10) {
-        func_ov001_02303e60(o->x, o->y, func_ov001_022ffce8()->unk40 <= 2 ? 5 : 10);
+        func_ov001_02303e60(o->x, o->y, ExtraBoss_GetWork()->unk40 <= 2 ? 5 : 10);
         Sound_PlaySeqArc(0, 0, 5);
     }
     if (self->flags & 0x20) {
@@ -57,7 +57,7 @@ void func_ov001_02301a88(UnkStruct_02301a88_h *self, UnkStruct_02301a88_h *other
     w->flags |= 2;
     w->unk10 = 0xb4;
     w->flags &= ~4;
-    if (func_ov001_022ffce8()->unk3C == 0)
+    if (ExtraBoss_GetWork()->unk3C == 0)
         func_020366f4(0, 0, 0x21);
     else
         func_020366f4(0, 0, 0x2a);

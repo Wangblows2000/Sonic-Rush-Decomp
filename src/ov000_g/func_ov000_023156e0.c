@@ -41,7 +41,7 @@ extern s16 data_0206e470[];
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
 void func_0201c070(void *p, s32 a);
-void func_ov000_023155cc(UnkStruct_023156e0 *w);
+void Saucer_Explode(UnkStruct_023156e0 *w);
 s32 ObjSpd_UpSet(s32 a, s32 b, s32 c);
 s32 ObjSpd_DownSet(s32 a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
@@ -59,7 +59,7 @@ void func_ov000_023156e0(UnkStruct_023156e0 *w) {
     }
     if (w->unk58 & 0xf) {
         func_0201c070(w->unk1DC, 0);
-        func_ov000_023155cc(w);
+        Saucer_Explode(w);
         return;
     }
     p = w->unk204;

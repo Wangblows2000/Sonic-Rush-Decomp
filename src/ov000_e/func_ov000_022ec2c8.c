@@ -26,7 +26,7 @@ extern s16 data_ov000_02363b64[];
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void *func_02025e8c(void *p);
 void func_0201c070(s32 a, s32 b);
-void func_ov000_022ec294(void);
+void Boss7PartD6_State_Unk_ov000_022ec294(void);
 
 void func_ov000_022ec2c8(UnkStruct_022ec2c8 *w) {
     UnkStruct_Mdl *m = &w->mdl;
@@ -36,5 +36,5 @@ void func_ov000_022ec2c8(UnkStruct_022ec2c8 *w) {
     w->mdl.unk114 = 0x1000;
     w->base.coll1.unkA |= 4;
     w->base.unk5C |= 4;
-    w->base.unk68 = func_ov000_022ec294;
+    w->base.unk68 = Boss7PartD6_State_Unk_ov000_022ec294;
 }

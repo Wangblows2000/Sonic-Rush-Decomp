@@ -4,7 +4,7 @@
 extern u8 gTaskCurrent[];
 s32 StageObj_Draw2D();
 s32 StageObj_Draw2DEx();
-extern u8 data_ov000_0236ac60[];
+extern u8 gPlayers[];
 
 void func_ov000_0232d4c8(void) {
     u32 t0 = *(u32 *)gTaskCurrent;
@@ -38,7 +38,7 @@ void func_ov000_0232d4c8(void) {
     }
     *(u16 *)((u8 *)t1 + 0x44) = t3;
     *(u16 *)((u8 *)t1 + 0x46) = t4;
-    u32 t18 = *(u32 *)data_ov000_0236ac60;
+    u32 t18 = *(u32 *)gPlayers;
     u32 t19 = *(u32 *)((u8 *)t18 + 0x32c);
     if ((t19 & 0x400) != 0) {
         u32 t20 = *(u32 *)((u8 *)t1 + 0x54);

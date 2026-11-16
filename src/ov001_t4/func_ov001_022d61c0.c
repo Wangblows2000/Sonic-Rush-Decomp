@@ -27,7 +27,7 @@ void func_ov001_022d586c(UnkWork_022d61c0 *w);
 BOOL func_ov001_022d5808(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
 void Task_DestroyAll(void);
-void func_ov001_022d5834(void);
+void TitleDemo_SkipToTitleScreen(void);
 void func_ov001_022d6588(s32 a);
 
 #pragma thumb on
@@ -90,7 +90,7 @@ void func_ov001_022d61c0(void) {
             GXx_SetMasterBrightness_((vu16 *)0x400006c, 0x10);
             GXx_SetMasterBrightness_((vu16 *)0x400106c, 0x10);
             Task_DestroyAll();
-            func_ov001_022d5834();
+            TitleDemo_SkipToTitleScreen();
             return;
         }
     }

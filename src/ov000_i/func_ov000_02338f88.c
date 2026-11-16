@@ -19,21 +19,21 @@ typedef struct {
 } UnkObj_02338f88;
 
 extern UnkPlayer_02338f88 data_ov000_0236aad8[];
-extern UnkObj_02338f88 *data_ov000_0236ac60[];
+extern UnkObj_02338f88 *gPlayers[];
 BOOL func_ov000_0233b470(s32 a);
 
 BOOL func_ov000_02338f88(void) {
     UnkPlayer_02338f88 *p = data_ov000_0236aad8;
 
     if (!(p[2].flags & 2)) {
-        if (data_ov000_0236ac60[p->unk3A]->unk14 > p->unk8 + p->unk20 * 0xe8) {
+        if (gPlayers[p->unk3A]->unk14 > p->unk8 + p->unk20 * 0xe8) {
             func_ov000_0233b470(1);
             p[2].flags |= 0x200;
             p[2].unk10 = -p[2].unk10;
             return TRUE;
         }
     } else {
-        if (data_ov000_0236ac60[p->unk3A]->unk14 < p->unk8 - p->unk20 * 0x28) {
+        if (gPlayers[p->unk3A]->unk14 < p->unk8 - p->unk20 * 0x28) {
             func_ov000_0233b470(0);
             p[2].flags |= 0x200;
             p[2].unk10 = -p[2].unk10;

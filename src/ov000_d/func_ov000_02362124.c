@@ -16,7 +16,7 @@ void func_ov000_02360f54(UnkStruct_MenuO *w);
 void func_ov000_0235f850(s32 x, s32 y, s32 a, s32 b);
 void SysSound_Init(void);
 void func_02052168(s32 a);
-void func_ov000_02361e28(void);
+void TimeSelectMenu_Main(void);
 
 #pragma thumb on
 
@@ -83,7 +83,7 @@ void func_ov000_02362124(void) {
     func_ov000_0235f850(0x10, 0, 0x10, 0);
     SysSound_Init();
     func_02052168(2);
-    gTaskCurrent->unk8 = func_ov000_02361e28;
+    gTaskCurrent->unk8 = TimeSelectMenu_Main;
 }
 
 #pragma thumb reset

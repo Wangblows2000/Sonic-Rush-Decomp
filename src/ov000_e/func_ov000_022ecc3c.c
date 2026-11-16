@@ -100,12 +100,12 @@ typedef struct UnkStruct_022ecc3c_5 {
 
 extern UnkStruct_022ecc3c_cam data_ov000_0236a444;
 extern UnkStruct_022ecc3c_c data_ov000_0236a48c;
-extern UnkStruct_022ecc3c_pl *data_ov000_0236ac60;
+extern UnkStruct_022ecc3c_pl *gPlayers;
 extern UnkStruct_022ecc3c_5 gDisplayMain;
 
 void func_ov000_022c5c80(u32 id);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022ecc00(UnkStruct_022ecc3c *s);
+void Boss7_State_Unk_ov000_022ecc00(UnkStruct_022ecc3c *s);
 
 void func_ov000_022ecc3c(UnkStruct_022ecc3c *s) {
     UnkStruct_022ecc3c_c *c;
@@ -115,7 +115,7 @@ void func_ov000_022ecc3c(UnkStruct_022ecc3c *s) {
     c->unk30 = 0x1000;
     c->unk3C = c->unk40 = c->unk44 = 0;
     c->unk48 = c->unk4C = c->unk50 = 0;
-    c->unk54 = (data_ov000_0236ac60->unk10 + o->unk10) << 3;
+    c->unk54 = (gPlayers->unk10 + o->unk10) << 3;
     c->unk58 = -o->unk14 << 4;
     c->unk5C = 0;
     c->unk6C = 0x1000;
@@ -129,5 +129,5 @@ void func_ov000_022ecc3c(UnkStruct_022ecc3c *s) {
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
     s->unk230 = 0;
-    s->func = func_ov000_022ecc00;
+    s->func = Boss7_State_Unk_ov000_022ecc00;
 }

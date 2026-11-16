@@ -19,7 +19,7 @@ typedef struct {
 } UnkObj_0233b374;
 
 extern UnkPlayer_0233b374 data_ov000_0236aad8[];
-extern UnkObj_0233b374 *data_ov000_0236ac60[];
+extern UnkObj_0233b374 *gPlayers[];
 BOOL func_ov000_0233b470(s32 a);
 void func_ov000_0233b684(void);
 
@@ -30,14 +30,14 @@ BOOL func_ov000_0233b374(void) {
     if (!(flags & 1))
         return FALSE;
     if (!(flags & 2)) {
-        if (data_ov000_0236ac60[p->unk3A]->unk14 > p->unk8 + p->unk20 * 0xe8 && func_ov000_0233b470(1)) {
+        if (gPlayers[p->unk3A]->unk14 > p->unk8 + p->unk20 * 0xe8 && func_ov000_0233b470(1)) {
             p[2].flags |= 0x200;
             p[2].unk10 = -p[2].unk10;
             func_ov000_0233b684();
             return TRUE;
         }
     } else {
-        if (data_ov000_0236ac60[p->unk3A]->unk14 < p->unk8 - p->unk20 * 0x28 && func_ov000_0233b470(0)) {
+        if (gPlayers[p->unk3A]->unk14 < p->unk8 - p->unk20 * 0x28 && func_ov000_0233b470(0)) {
             p[2].flags |= 0x200;
             p[2].unk10 = -p[2].unk10;
             func_ov000_0233b684();

@@ -3,11 +3,11 @@
 extern s32 gSaveDataBusy;
 extern u32 gSystemFlags;
 
-void func_ov000_0235a2e8(s32 a);
+void PlayerSelectMenu_Create(s32 a);
 
 #pragma thumb on
 void func_ov000_0235a5d0(void) {
-    func_ov000_0235a2e8(0);
+    PlayerSelectMenu_Create(0);
     gSaveDataBusy = 0;
     gSystemFlags &= ~0x10;
 }

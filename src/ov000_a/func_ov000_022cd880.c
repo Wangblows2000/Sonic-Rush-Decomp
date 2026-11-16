@@ -69,7 +69,7 @@ void func_ov000_022d046c(UnkStruct_022cd880 *s);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cd1b0(u32 flags);
 void func_ov000_022cedd8(UnkStruct_022cd880 *s, s32 a);
-void func_ov000_02328710(s32 a, s32 x, s32 y, s32 z);
+void BossEffect_CreateHit(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_0234aa80(UnkStruct_022cd880_2 *p);
 void func_020537b4(s32 a);
@@ -124,7 +124,7 @@ void func_ov000_022cd880(UnkStruct_022cd880_c *a, UnkStruct_022cd880_c *b) {
     s->unk1474 = NULL;
     data_ov000_02369ac0.unk4 = 0xb;
     func_ov000_022cedd8(s, 0);
-    func_ov000_02328710(0, s->unk139C >> 4, (-s->unk13A0 >> 4) - 0x3200, s->unk13A4 >> 4);
+    BossEffect_CreateHit(0, s->unk139C >> 4, (-s->unk13A0 >> 4) - 0x3200, s->unk13A4 >> 4);
     Sound_PlaySeqArc(s->unk1458, 0, 0xa4);
     p = b->unk18;
     if (p != NULL && p->unk0 == 1)

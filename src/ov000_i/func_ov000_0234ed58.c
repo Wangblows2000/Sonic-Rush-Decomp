@@ -30,13 +30,13 @@ typedef struct {
 } UnkStruct_0234ed58;
 
 extern UnkPlayer_0234ed58 data_ov000_0236aad8[];
-void func_ov000_0234ee38(void);
+void Player_State_Glider(void);
 void func_ov000_0234eccc(void);
 void func_ov000_0234e984(void);
 void BrightnessFade_Create(s32 a, s32 b);
 
 void func_ov000_0234ed58(UnkStruct_0234ed58 *w, void *o) {
-    if (w->unk68 != func_ov000_0234ee38)
+    if (w->unk68 != Player_State_Glider)
         return;
     w->unk58 |= 0x100;
     w->unk3E8 = o;

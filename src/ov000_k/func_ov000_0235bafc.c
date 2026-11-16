@@ -63,7 +63,7 @@ typedef struct {
     s32 y;
 } UnkStruct_0235bafc_Src;
 
-extern UnkStruct_0235bafc_T *data_ov000_0236ac80;
+extern UnkStruct_0235bafc_T *gRingManagerTask;
 extern s16 data_0206e470[];
 
 void ObjRect_SetBox2D(UnkStruct_0235bafc_Rect *r, s32 a, s32 b, s32 c, s32 d);
@@ -84,9 +84,9 @@ void func_ov000_0235bafc(UnkStruct_0235bafc_Src *src) {
     s32 ang;
     s32 v;
 
-    if (data_ov000_0236ac80 == NULL)
+    if (gRingManagerTask == NULL)
         return;
-    w = data_ov000_0236ac80->work;
+    w = gRingManagerTask->work;
     w->flags |= 4;
     r.x = src->x >> 8;
     r.y = src->y >> 8;

@@ -17,7 +17,7 @@ extern u32 data_ov001_0231f54c;
 extern u32 data_ov001_0231f550;
 extern void PaletteTransfer_QueueLoad(void);
 extern void PaletteTransfer_Flush(void);
-extern void func_ov001_022ffce8(void);
+extern void ExtraBoss_GetWork(void);
 extern void func_ov001_02304948(void);
 extern void func_ov001_0230494c(void);
 
@@ -25,7 +25,7 @@ asm void func_ov001_02304fb4(void)
 {
     stmdb sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     sub sp, sp, #4
-    bl func_ov001_022ffce8
+    bl ExtraBoss_GetWork
     ldr r6, [r0, #0x40]
     cmp r6, #4
     bge _80
@@ -82,7 +82,7 @@ _80:
     mov r1, #0x14
     str r1, [r0, #0x5a8]
 _e4:
-    bl func_ov001_022ffce8
+    bl ExtraBoss_GetWork
     ldr r1, [pc, #0x24c]
     ldr r3, [r0, #0x40]
     ldr r2, [pc, #0x250]
@@ -104,7 +104,7 @@ _e4:
     ldr r2, [r2, r6, lsl #2]
     ldr r0, [r1]
     str r2, [r0, #0x590]
-    bl func_ov001_022ffce8
+    bl ExtraBoss_GetWork
     ldr r0, [r0, #0x40]
     mov r10, #0
     cmp r0, #1

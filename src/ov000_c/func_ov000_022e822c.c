@@ -28,7 +28,7 @@ extern u16 data_ov000_02363c04[][4];
 extern s16 data_ov000_02363c64[][4];
 
 void func_ov000_022e8538(UnkStruct_022e822c *w);
-UnkStruct_StageObj *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+UnkStruct_StageObj *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022e8120(void);
 
 void func_ov000_022e822c(UnkStruct_022e822c *w) {
@@ -51,7 +51,7 @@ void func_ov000_022e822c(UnkStruct_022e822c *w) {
     if (w->unk468 != 0x1555)
         return;
     b = data_ov000_02369b78;
-    o = func_ov000_022fad3c(0xd6, b->unk224, 0x20000, 0, 0, 0, 0, 0, 0);
+    o = MapObject_Spawn(0xd6, b->unk224, 0x20000, 0, 0, 0, 0, 0, 0);
     o->unkC = data_ov000_02363c04[w->unk42E][w->unk464 - 1];
     w->unk470 = o->unkC;
     b->unk22C = data_ov000_02363c64[w->unk42E][w->unk464 - 1];

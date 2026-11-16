@@ -70,7 +70,7 @@ typedef struct UnkStruct_022d7908_p {
     s32 unk184;
 } UnkStruct_022d7908_p;
 
-extern UnkStruct_022d7908_p *data_ov000_0236ac60;
+extern UnkStruct_022d7908_p *gPlayers;
 extern s16 data_0206e470[];
 
 u16 func_ov000_022c5e10(s32 x, s32 z);
@@ -79,7 +79,7 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov000_022d7844(UnkStruct_022d7908 *s);
 
 void func_ov000_022d7908(UnkStruct_022d7908 *s) {
-    s->unk224 = func_ov000_022da88c(s->unk224, (u16)(func_ov000_022c5e10(data_ov000_0236ac60->unk17C, data_ov000_0236ac60->unk184) + 0x8000), 0x400);
+    s->unk224 = func_ov000_022da88c(s->unk224, (u16)(func_ov000_022c5e10(gPlayers->unk17C, gPlayers->unk184) + 0x8000), 0x400);
     MTX_RotY33_(s->unk2C4.unk24, data_0206e470[((s->unk224 & 0xffff) >> 4) * 2], data_0206e470[((s->unk224 & 0xffff) >> 4) * 2 + 1]);
     if (s->unk2C4.unk10C & 2)
         s->func = func_ov000_022d7844;

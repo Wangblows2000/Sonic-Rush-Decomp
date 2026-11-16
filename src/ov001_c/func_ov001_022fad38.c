@@ -22,7 +22,7 @@ extern s32 data_ov001_0231d68c[][5];
 u8 *func_ov001_022fd428(s32 kind, void *parent, s32 x, s32 y, s32 z);
 void *func_ov001_02300c94(void);
 void func_ov001_022fac54(void);
-UnkStruct_022fad38_g *func_ov001_022ffce8(void);
+UnkStruct_022fad38_g *ExtraBoss_GetWork(void);
 s32 func_02002094(s32 n, s32 d);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 
@@ -73,7 +73,7 @@ void func_ov001_022fad38(void *parent, s32 x, s32 y, s32 z, u16 ang) {
         k = 1;
     else
         k = data_022c4560.unk14;
-    *(s32 *)(t + 0x1d0) = func_02002094(r * data_ov001_0231d68c[k][func_ov001_022ffce8()->unk40] + ((0x100 - r) << 12), 0x100);
+    *(s32 *)(t + 0x1d0) = func_02002094(r * data_ov001_0231d68c[k][ExtraBoss_GetWork()->unk40] + ((0x100 - r) << 12), 0x100);
     *(s16 *)(t + 0x1cc) = 0;
     Sound_PlaySeqArc(0, 0, 0xb0);
 }

@@ -63,7 +63,7 @@ typedef struct UnkStruct_022d72dc_c {
 } UnkStruct_022d72dc_c;
 
 extern UnkStruct_022d72dc_c data_ov000_0236a48c;
-extern void *data_ov000_0236ac60;
+extern void *gPlayers;
 
 void func_ov000_022da6b4(void);
 BOOL func_ov000_022da804(UnkStruct_022d72dc *s, void *p);
@@ -75,7 +75,7 @@ void func_ov000_022d72dc(UnkStruct_022d72dc *s) {
     c->unk74 = 0xccc;
     c->unk30 = 0x80;
     c->unk38 = 0x4cc;
-    if (!func_ov000_022da804(s, data_ov000_0236ac60)) {
+    if (!func_ov000_022da804(s, gPlayers)) {
         s->unk5C |= 1;
         s->unk258 = s->unk224 - 0x4000;
     } else {

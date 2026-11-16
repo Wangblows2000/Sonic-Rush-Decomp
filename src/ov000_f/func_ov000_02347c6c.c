@@ -46,9 +46,9 @@ typedef struct {
 
 extern UnkStruct_02347c6c_4560 data_022c4560;
 extern UnkStruct_02347c6c_4590 data_022c4590;
-extern UnkStruct_02347c6c *data_ov000_0236ac60[];
+extern UnkStruct_02347c6c *gPlayers[];
 
-void func_ov000_0234c9e8(UnkStruct_02347c6c *w);
+void Player_ResetGimmickState(UnkStruct_02347c6c *w);
 BOOL BrightnessFade_IsDone(void);
 void BrightnessFade_Create(s32 a, s32 b);
 void func_0206cdf4(UnkStruct_02347c6c_Pal *p, s32 a, s32 b, s32 c);
@@ -60,7 +60,7 @@ void func_ov000_02347c6c(UnkStruct_02347c6c *w, void *o) {
     if (w->unk32C & 0x200000) {
         return;
     }
-    func_ov000_0234c9e8(w);
+    Player_ResetGimmickState(w);
     w->unk3E8 = o;
     w->unk330 |= 0x30;
     ok = FALSE;
@@ -105,7 +105,7 @@ void func_ov000_02347c6c(UnkStruct_02347c6c *w, void *o) {
     if (w->unk325 == 0) {
         return;
     }
-    p = data_ov000_0236ac60[0];
+    p = gPlayers[0];
     p->unk32C |= 0x400000;
     p->unk32C |= 0x1000000;
     p->unk3B6 = 0;

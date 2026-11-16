@@ -48,8 +48,8 @@ typedef struct {
 extern UnkStruct_023171b4_S data_ov000_0236aad8;
 
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_ov000_02355b20(UnkStruct_023171b4_P *p, s16 a, s16 b);
-void func_ov000_02355da0(UnkStruct_023171b4_P *p, UnkStruct_023171b4 *w);
+void Player_Action_SpringLaunch(UnkStruct_023171b4_P *p, s16 a, s16 b);
+void Player_SetSourceMapObject(UnkStruct_023171b4_P *p, UnkStruct_023171b4 *w);
 void func_0201c070(void *p, s32 a);
 s32 ObjShift_Set(s32 v, s32 a, s32 b, s32 c, s32 d);
 
@@ -79,8 +79,8 @@ void func_ov000_023171b4(UnkStruct_023171b4 *w) {
                     if (w->unk8 > 8) {
                         s = -(s16)(w->unk8 << 6);
                         w->unk30 = s;
-                        func_ov000_02355b20(p, 0, s);
-                        func_ov000_02355da0(p, w);
+                        Player_Action_SpringLaunch(p, 0, s);
+                        Player_SetSourceMapObject(p, w);
                         w->unk62 = 0x40;
                         w->unk8 = 0;
                         w->unk1B8 = NULL;
@@ -112,8 +112,8 @@ void func_ov000_023171b4(UnkStruct_023171b4 *w) {
                     if (!(w->unk5C & 1))
                         s = -s;
                     w->unk2E = s;
-                    func_ov000_02355b20(p, s, 0);
-                    func_ov000_02355da0(p, w);
+                    Player_Action_SpringLaunch(p, s, 0);
+                    Player_SetSourceMapObject(p, w);
                     w->unk62 = 0x40;
                     w->unk8 = 0;
                     w->unk1B8 = NULL;

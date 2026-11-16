@@ -20,7 +20,7 @@ typedef struct {
 
 extern UnkStruct_02320014_4560 data_022c4560;
 
-void func_ov000_02320344(UnkStruct_02320014 *w, u16 i);
+void DecSonicNeonPart_Create(UnkStruct_02320014 *w, u16 i);
 
 void func_ov000_02320014(UnkStruct_02320014 *w) {
     s32 i;
@@ -30,11 +30,11 @@ void func_ov000_02320014(UnkStruct_02320014 *w) {
         w->unkC = 1;
         if (w->unk184->unk2 == 0xec) {
             for (i = 0; i < 0xc; i++) {
-                func_ov000_02320344(w, i);
+                DecSonicNeonPart_Create(w, i);
             }
         } else {
             for (i = 0xd; i < 0x19; i++) {
-                func_ov000_02320344(w, i);
+                DecSonicNeonPart_Create(w, i);
             }
         }
     }

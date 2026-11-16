@@ -58,7 +58,7 @@ extern UnkStruct_0234ac58_Tbl data_ov000_0236ab3a[];
 #define SIN_0234ac58(a) data_0206e470[(u32)(IDX_0234ac58(a) << 1)]
 #define COS_0234ac58(a) data_0206e470[(u32)((IDX_0234ac58(a) << 1) + 1)]
 
-void func_ov000_0234c4a4(UnkStruct_0234ac58 *w, s32 state);
+void Player_SetAnimation(UnkStruct_0234ac58 *w, s32 state);
 void func_ov000_0234a288(UnkStruct_0234ac58 *w);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
@@ -72,7 +72,7 @@ static inline u16 Rand_0234ac58(void) {
 }
 
 void func_ov000_0234ac58(UnkStruct_0234ac58 *w) {
-    func_ov000_0234c4a4(w, 0x30);
+    Player_SetAnimation(w, 0x30);
     if (!(w->unk58 & 0x10)) {
         w->unk3DA = w->y >> 8;
     }

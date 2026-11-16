@@ -51,8 +51,8 @@ extern s32 data_ov000_02363a18[][8][4];
 s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 s32 func_0200225c(s32 a, s32 b);
-void func_ov000_023284d8(s32 a, s32 b, s32 c, s32 d);
-void func_ov000_023284a0(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreatePick(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreateParts(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e4834(void);
 
@@ -94,7 +94,7 @@ void func_ov000_022e49b0(UnkStruct_Boss *w) {
         d = -0x4200;
     else
         d = 0x4200;
-    func_ov000_023284d8(1, w->unk1068 >> 4, 0x20000, d + (w->unk1070 >> 4));
-    func_ov000_023284a0(1, w->unk1068 >> 4, 0x20000, d + (w->unk1070 >> 4));
+    BossEffect_CreatePick(1, w->unk1068 >> 4, 0x20000, d + (w->unk1070 >> 4));
+    BossEffect_CreateParts(1, w->unk1068 >> 4, 0x20000, d + (w->unk1070 >> 4));
     Sound_PlaySeqArc(0, 0, 0x8d);
 }

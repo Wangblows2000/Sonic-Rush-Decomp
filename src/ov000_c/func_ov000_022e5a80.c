@@ -33,7 +33,7 @@ typedef struct {
 } UnkStruct_Boss;
 
 extern UnkStruct_Boss *data_ov000_02369b4c;
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 extern u32 data_ov000_023637ac[];
 
 void func_02021c38(void *a, void (*f)(void), s32 b, s32 c, s32 d);
@@ -56,7 +56,7 @@ void func_ov000_022e5a80(void) {
     }
     w->unkF50 = data_ov000_023637ac[Rand() & 3];
     if (w->unkF48 != 1 && w->unkF48 != 0) {
-        if (data_ov000_0236ac60->unk10 < w->base.unk10) {
+        if (gPlayers->unk10 < w->base.unk10) {
             w->unkF54 = -0x17;
             w->unkF5C = -0x580;
             w->unkF60 = 0x5b;

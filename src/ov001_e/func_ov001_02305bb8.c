@@ -22,12 +22,12 @@ typedef struct UnkStruct_02305bb8_c {
 extern UnkStruct_02305bb8 *data_ov001_0231f5a8;
 extern void *gTaskCurrent;
 
-UnkStruct_02305bb8_c *func_ov001_022ffce8(void);
+UnkStruct_02305bb8_c *ExtraBoss_GetWork(void);
 void Task_Destroy(void *task);
 void AnimatorSprite_DrawRotScale(void *p, s32 x, s32 y, s32 z);
 
 void func_ov001_02305bb8(void) {
-    s32 c = func_ov001_022ffce8()->unk3C;
+    s32 c = ExtraBoss_GetWork()->unk3C;
 
     data_ov001_0231f5a8->t += 0x199;
     if (data_ov001_0231f5a8->t >= 0x1000) {

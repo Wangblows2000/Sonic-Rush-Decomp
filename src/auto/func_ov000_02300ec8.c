@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 Sound_PlaySeqArcEx();
-extern u8 data_ov000_0236ac60[];
+extern u8 gPlayers[];
 s32 Sound_SetPositional();
 s32 ScreenShake_Start();
 s32 ScreenFlash_Create();
@@ -15,7 +15,7 @@ void func_ov000_02300ec8(u8 *p0) {
         return;
     }
     Sound_PlaySeqArcEx(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x59);
-    Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
+    Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)gPlayers);
     ScreenShake_Start(4);
     ScreenFlash_Create(0);
     func_ov000_0232e2f0(p0, 0, -32);

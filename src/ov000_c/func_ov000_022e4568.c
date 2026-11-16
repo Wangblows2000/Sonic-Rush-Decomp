@@ -30,7 +30,7 @@ typedef struct {
 } UnkStruct_Plr18;
 
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
-extern UnkStruct_Plr18 *data_ov000_0236ac60;
+extern UnkStruct_Plr18 *gPlayers;
 
 void func_ov000_022e4568(UnkStruct_022e4568 *w) {
     s32 x;
@@ -59,7 +59,7 @@ void func_ov000_022e4568(UnkStruct_022e4568 *w) {
         w->unkE9E &= ~4;
     }
     if (w->unk20C & 0x1000) {
-        x = (data_ov000_0236ac60->unk18 << 4) - (w->unk10C4 + x);
+        x = (gPlayers->unk18 << 4) - (w->unk10C4 + x);
         if (x < 0)
             x = -x;
         if (x <= 0x64000) {

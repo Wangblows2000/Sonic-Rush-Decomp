@@ -70,14 +70,14 @@ struct UnkStruct_022d8890 {
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-extern void *data_ov000_0236ac60;
+extern void *gPlayers;
 
 BOOL func_ov000_022da804(UnkStruct_022d8890 *s, void *p);
 void func_ov000_022d8734(UnkStruct_022d8890 *s);
 void func_ov000_022d8820(UnkStruct_022d8890 *s);
 
 void func_ov000_022d8890(UnkStruct_022d8890 *s) {
-    BOOL f = func_ov000_022da804(s, data_ov000_0236ac60) == 0;
+    BOOL f = func_ov000_022da804(s, gPlayers) == 0;
     if (((s->unk5C & 1) && f) || (!(s->unk5C & 1) && !f)) {
         s->func = func_ov000_022d8734;
         return;

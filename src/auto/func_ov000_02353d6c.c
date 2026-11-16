@@ -1,8 +1,8 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0234c9e8();
-s32 func_ov000_0234c4a4();
+s32 Player_ResetGimmickState();
+s32 Player_SetAnimation();
 void func_ov000_023539f0();
 s32 Sound_PlaySeqArcEx();
 
@@ -10,9 +10,9 @@ s32 func_ov000_02353d6c(u8 *p0, s32 p1, s32 p2, s32 p3) {
     if (*(u32 *)((u8 *)p0 + 0x3e8) == (s32)p1) {
         return (s32)p0;
     }
-    func_ov000_0234c9e8();
+    Player_ResetGimmickState();
     *(u32 *)((u8 *)p0 + 0x3e8) = p1;
-    func_ov000_0234c4a4(p0, 0x2c);
+    Player_SetAnimation(p0, 0x2c);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 4);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_023539f0;
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) | 0x10);

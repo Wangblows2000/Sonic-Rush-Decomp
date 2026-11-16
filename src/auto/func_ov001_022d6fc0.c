@@ -6,13 +6,13 @@
 void func_ov001_022d833c();
 s32 Task_Create();
 s32 func_ov001_022d7340();
-s32 func_ov001_022ddde0();
+s32 VsMenu_CreateMode1();
 
 void func_ov001_022d6fc0(s32 p0) {
     s32 t0 = Task_Create((u32)func_ov001_022d833c, 0, 0, 0x2000, 0x1000, 4);
     *(u32 *)*(u32 *)((u8 *)t0 + 0x10) = p0;
     func_ov001_022d7340(p0);
-    func_ov001_022ddde0(*(u32 *)((u8 *)p0 + 0x808), *(u32 *)((u8 *)p0 + 0x80c));
+    VsMenu_CreateMode1(*(u32 *)((u8 *)p0 + 0x808), *(u32 *)((u8 *)p0 + 0x80c));
 }
 
 #pragma thumb reset

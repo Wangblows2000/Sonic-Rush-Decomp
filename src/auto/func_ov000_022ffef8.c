@@ -1,10 +1,10 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-void func_ov000_022ffdac();
+void EnemyFlapperGroup_State_Unk_ov000_022ffdac();
 
 void func_ov000_022ffef8(u8 *p0) {
-    *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022ffdac;
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)EnemyFlapperGroup_State_Unk_ov000_022ffdac;
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) ^ 1);
     *(u32 *)((u8 *)p0 + 0x1f4) = (*(u32 *)((u8 *)p0 + 0x1f4) & ~1);
     *(u16 *)((u8 *)p0 + 0x34) = 0;

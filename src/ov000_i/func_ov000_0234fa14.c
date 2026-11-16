@@ -21,7 +21,7 @@ struct UnkObj_0234fa14 {
 
 void StageObj_HandleCollider(UnkObj_0234fa14 *o, void *p);
 void ScreenShake_Start(s32 a);
-void func_ov000_0234fae0(void);
+void Player_State_JetCatapult(void);
 
 void func_ov000_0234fa14(UnkObj_0234fa14 *o) {
     UnkObj_0234fa14 *p;
@@ -37,7 +37,7 @@ void func_ov000_0234fa14(UnkObj_0234fa14 *o) {
         o->unk5C &= ~1;
         if (o->parent->unk5C & 1)
             o->unk5C |= 1;
-        if (p->unk68 != func_ov000_0234fae0)
+        if (p->unk68 != Player_State_JetCatapult)
             o->unk54 |= 4;
         StageObj_HandleCollider(o, o->unk160);
         return;

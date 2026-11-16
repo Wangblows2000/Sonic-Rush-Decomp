@@ -11,13 +11,13 @@ typedef struct {
     s16 unkF64;
 } UnkStruct_022e51a4;
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void func_ov000_022e5c1c(UnkStruct_022e51a4 *s);
 void func_ov000_022e5078(void);
 
 void func_ov000_022e51a4(UnkStruct_022e51a4 *s) {
-    s32 px = data_ov000_0236ac60->unk10;
+    s32 px = gPlayers->unk10;
 
     func_ov000_022e5c1c(s);
     if (s->unkF54 >= 0) {

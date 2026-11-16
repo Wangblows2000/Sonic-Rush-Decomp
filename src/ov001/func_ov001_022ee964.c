@@ -12,12 +12,12 @@ typedef struct {
 } UnkStruct_022c4560;
 extern UnkStruct_022c4560 data_022c4560;
 extern s32 data_ov001_023167bc[][5];
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 void func_ov001_022f3530(void);
 void func_ov001_022f6be8(void);
 
 void func_ov001_022ee964(void) {
-    u8 *g = func_ov001_022ffce8();
+    u8 *g = ExtraBoss_GetWork();
     BOOL b = TRUE;
     s32 k;
     if (data_022c4560.w10 != 2 && data_022c4560.w10 != 3) {

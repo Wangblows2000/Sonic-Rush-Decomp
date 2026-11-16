@@ -24,7 +24,7 @@ typedef struct {
 } UnkStruct_02369ac0;
 
 extern UnkStruct_Boss *data_ov000_02369b78;
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 
 void func_ov000_022ee198(UnkStruct_022e8c90 *s, s32 st);
@@ -50,7 +50,7 @@ void func_ov000_022e8c90(UnkStruct_022e8c90 *w) {
     ((UnkStruct_124 *)w->base.unk124)->unk114 = 0;
     if (w->unk3D0 == 0)
         b->unk20C |= 0x10;
-    if (w->base.unk10 > data_ov000_0236ac60->unk10)
+    if (w->base.unk10 > gPlayers->unk10)
         w->base.unk5C |= 1;
     else
         w->base.unk5C &= ~1;

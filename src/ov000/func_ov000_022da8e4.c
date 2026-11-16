@@ -12,8 +12,8 @@ typedef struct UnkStruct_022da8e4 {
 
 extern UnkStruct_022da8e4 *data_ov000_02369b14;
 
-void func_ov000_022d63f0(void);
+void Boss3PartCC_State_Unk_ov000_022d63f0(void);
 
 BOOL func_ov000_022da8e4(void) {
-    return data_ov000_02369b14->unk214->func == func_ov000_022d63f0;
+    return data_ov000_02369b14->unk214->func == Boss3PartCC_State_Unk_ov000_022d63f0;
 }

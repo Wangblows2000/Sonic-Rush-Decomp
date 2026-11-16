@@ -56,7 +56,7 @@ extern s16 data_0206e470[];
 
 s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
-UnkStruct_Fx *func_ov000_02328468(s32 a, s32 x, s32 y, s32 z);
+UnkStruct_Fx *BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022eb3c4(UnkStruct_022e8724 *w);
 void func_ov000_02326f20(void);
 void func_ov000_022e86c0(void);
@@ -76,7 +76,7 @@ void func_ov000_022e8724(UnkStruct_022e8724 *w) {
     }
     if (w->unk3D0 == 0) {
         if (!(b->unk220 & 7)) {
-            fx = func_ov000_02328468(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
+            fx = BossEffect_CreateHoming(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
             fx->unk248 = 0x2000;
             fx->unk14C = FX_Mul(fx->unk14C, 0xc00);
             fx->unk150 = FX_Mul(fx->unk150, 0xc00);

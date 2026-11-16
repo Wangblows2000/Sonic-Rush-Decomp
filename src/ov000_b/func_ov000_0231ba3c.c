@@ -39,7 +39,7 @@ UnkStruct_0231ba3c *func_ov000_0231ba3c(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_0231ba3c));
-    func_ov000_022fba50(w, (s32)p, b, c);
+    MapObject_Init(w, (s32)p, b, c);
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x20;
     w->unk20E = (u8)p->unk6 * 10000 + (u8)p->unk7 * 100 + p->unk8;

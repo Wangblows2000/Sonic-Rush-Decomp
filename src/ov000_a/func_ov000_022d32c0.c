@@ -105,7 +105,7 @@ typedef struct UnkStruct_022d32c0_7 {
     u16 unkA;
 } UnkStruct_022d32c0_7;
 
-extern UnkStruct_022d32c0_p *data_ov000_0236ac60;
+extern UnkStruct_022d32c0_p *gPlayers;
 extern UnkStruct_022d32c0_7 data_ov000_02369ac0;
 
 s32 func_02002094(s32 a, s32 b);
@@ -134,7 +134,7 @@ static inline s32 Lerp(s32 a, s32 b) {
 }
 
 void func_ov000_022d32c0(UnkStruct_022d32c0 *s) {
-    UnkStruct_022d32c0_p *p = data_ov000_0236ac60;
+    UnkStruct_022d32c0_p *p = gPlayers;
     UnkStruct_022d32c0_a *x = &s->unkA9C;
     UnkStruct_022d32c0_a *y = &s->unkBD4;
     UnkStruct_022d32c0_a *z = &s->unkD0C;

@@ -1,14 +1,14 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0234c4a4();
+s32 Player_SetAnimation();
 void func_ov000_0234b810();
 s32 ObjRect_SetAtkDefFlags();
 s32 func_ov000_023340f0();
 s32 Sound_PlaySeqArcEx();
 
 void func_ov000_0234ba48(u8 *p0) {
-    func_ov000_0234c4a4(p0, 0x32);
+    Player_SetAnimation(p0, 0x32);
     *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) | 4);
     *(u32 *)((u8 *)p0 + 0x58) = (*(u32 *)((u8 *)p0 + 0x58) & ~0x10);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_0234b810;

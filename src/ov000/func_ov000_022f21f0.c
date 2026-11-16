@@ -24,7 +24,7 @@ extern UnkStruct_022f21f0_4 data_ov000_02369ac0;
 extern u16 data_ov000_02363f9c[][8];
 
 void func_ov000_022f4ce4(UnkStruct_022f21f0 *s, s32 a, s32 b, s32 c);
-void func_ov000_02338624(s32 a);
+void BossHelp_Create(s32 a);
 void func_ov000_022f216c(UnkStruct_022f21f0 *s);
 
 void func_ov000_022f21f0(UnkStruct_022f21f0 *s) {
@@ -39,7 +39,7 @@ void func_ov000_022f21f0(UnkStruct_022f21f0 *s) {
     else
         i = data_022c4560.unk14;
     s->unk434 = data_ov000_02363f9c[i][data_ov000_02369ac0.unk8 - 1];
-    func_ov000_02338624(1);
+    BossHelp_Create(1);
     s->func = func_ov000_022f216c;
     s->func(s);
 }

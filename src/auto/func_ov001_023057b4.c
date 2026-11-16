@@ -19,7 +19,7 @@ typedef int code();
 #define true 1
 #define false 0
 
-int func_ov001_022ffce8();
+int ExtraBoss_GetWork();
 
 void func_ov001_023057b4(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4
                         ,undefined4 param_5)
@@ -27,7 +27,7 @@ void func_ov001_023057b4(undefined4 param_1,undefined4 param_2,undefined4 param_
 {
   int iVar1;
   
-  iVar1 = func_ov001_022ffce8();
+  iVar1 = ExtraBoss_GetWork();
   *(undefined4 *)(iVar1 + 0x324) = param_1;
   *(undefined4 *)(iVar1 + 0x328) = param_2;
   *(undefined4 *)(iVar1 + 0x32c) = param_3;

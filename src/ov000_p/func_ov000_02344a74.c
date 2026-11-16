@@ -58,7 +58,7 @@ extern UnkStruct_02344a74_4560 data_022c4560;
 extern UnkStruct_02344a74_4590 data_022c4590;
 extern UnkStruct_02344a74_Cam data_ov000_0236aad8;
 
-void func_ov000_0234c4a4(UnkStruct_02344a74 *w, s16 state);
+void Player_SetAnimation(UnkStruct_02344a74 *w, s16 state);
 void func_ov000_023470a0(UnkStruct_02344a74 *w, s32 v);
 
 void func_ov000_02344a74(UnkStruct_02344a74 *w) {
@@ -143,7 +143,7 @@ void func_ov000_02344a74(UnkStruct_02344a74 *w) {
     w->unk1 = rec[i].ang << 4;
     if (w->unk328 != (rec[i].f3 & 0x7f)) {
         w->unk5C &= ~0x400;
-        func_ov000_0234c4a4(w, (rec[i].f3 & 0x7f));
+        Player_SetAnimation(w, (rec[i].f3 & 0x7f));
         if (w->unk328 >= 0x3d && w->unk328 <= 0x42) {
             dy = w->unk20 - w->y;
             if (dy < 0) {

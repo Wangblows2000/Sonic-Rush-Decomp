@@ -38,7 +38,7 @@ typedef struct {
 } UnkStruct_02369b84;
 
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
-extern UnkStruct_022f50b0_Pl *data_ov000_0236ac60;
+extern UnkStruct_022f50b0_Pl *gPlayers;
 extern UnkStruct_02369b84 *data_ov000_02369b84;
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -72,7 +72,7 @@ void func_ov000_022f50b0(UnkStruct_022f50b0_Coll *a, UnkStruct_022f50b0_Coll *b)
         func_ov000_022f87bc();
         return;
     }
-    if (data_ov000_0236ac60->unk328 == 0x30) {
+    if (gPlayers->unk328 == 0x30) {
         data_ov000_02369ac0.unk8 = hp - 1;
         Sound_PlaySeqArc(0, 0, 0x7b);
         func_020366f4(0, 0, (Rand() & 1) ? 0xce : 0xcf);

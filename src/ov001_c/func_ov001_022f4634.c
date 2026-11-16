@@ -33,7 +33,7 @@ extern u16 data_ov001_02316930[];
 
 s32 func_ov001_022f71f4(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
-UnkStruct_022f4634_g *func_ov001_022ffce8(void);
+UnkStruct_022f4634_g *ExtraBoss_GetWork(void);
 void func_ov001_022f41c4(UnkStruct_022f4634 *p);
 void func_ov001_022ffb9c(s32 a, void *b, s32 *c, u16 *d, u16 *e, s32 n);
 
@@ -48,13 +48,13 @@ void func_ov001_022f4634(UnkStruct_022f4634 *p) {
     if (p->unk1C8 == 0x77)
         BrightnessLerp_Create(0x10, 0, 0x10, 3, 0);
     if (o->unk10C & 2) {
-        if (func_ov001_022ffce8()->unk40 == 4) {
-            func_ov001_022ffce8()->flags |= 0x100;
+        if (ExtraBoss_GetWork()->unk40 == 4) {
+            ExtraBoss_GetWork()->flags |= 0x100;
             p->unk74 = 0;
             return;
         }
         func_ov001_022f41c4(p);
-        func_ov001_022ffce8()->unk318 = 0;
+        ExtraBoss_GetWork()->unk318 = 0;
         func_ov001_022ffb9c(data_ov001_0231f070, data_ov001_0231f528, data_ov001_0231d518, data_ov001_02316918, data_ov001_02316924, 5);
         return;
     }

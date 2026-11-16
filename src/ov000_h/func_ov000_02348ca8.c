@@ -42,7 +42,7 @@ struct UnkStruct_02348ca8 {
 
 void func_ov000_02348b28(UnkStruct_02348ca8 *w);
 void func_ov000_0234a878(UnkStruct_02348ca8 *w);
-void func_ov000_0234c4a4(UnkStruct_02348ca8 *w, s32 a);
+void Player_SetAnimation(UnkStruct_02348ca8 *w, s32 a);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 u16 func_020027a4(s32 y, s32 x);
@@ -65,7 +65,7 @@ void func_ov000_02348ca8(UnkStruct_02348ca8 *w) {
         func_ov000_0234a878(w);
         return;
     }
-    func_ov000_0234c4a4(w, 0x30);
+    Player_SetAnimation(w, 0x30);
     w->unk5C |= 4;
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;

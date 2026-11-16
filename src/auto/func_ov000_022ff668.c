@@ -2,10 +2,10 @@
 #include <nitro/types.h>
 
 s32 Sound_PlaySeqArcEx();
-extern u8 data_ov000_0236ac60[];
+extern u8 gPlayers[];
 s32 Sound_SetPositional();
 s32 func_ov000_0232e2f0();
-s32 func_ov000_0232dedc();
+s32 EffZakoDebris_Create();
 s32 ScreenShake_Start();
 s32 ScreenFlash_Create();
 s32 func_ov000_02343498();
@@ -15,10 +15,10 @@ void func_ov000_022ff668(u8 *p0) {
         return;
     }
     Sound_PlaySeqArcEx(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x59);
-    Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)data_ov000_0236ac60);
+    Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)gPlayers);
     func_ov000_0232e2f0(p0, 0, 0);
-    func_ov000_0232dedc(p0, 0, -24, 0, -0x200, 4);
-    func_ov000_0232dedc(p0, 0, -24, 0, -0x200, 5);
+    EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 4);
+    EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 5);
     ScreenShake_Start(3);
     ScreenFlash_Create(0);
     func_ov000_02343498(p0, -24, -24, 0x18, 0x18, 8);

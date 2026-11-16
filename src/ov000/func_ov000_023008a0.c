@@ -8,10 +8,10 @@ typedef struct UnkStruct_023008a0 {
 } UnkStruct_023008a0;
 
 void StageObj_SetAnimation(UnkStruct_023008a0 *s, s32 a);
-void func_ov000_02300844(void);
+void EnemyFlapperGroup_State_Unk_ov000_02300844(void);
 
 void func_ov000_023008a0(UnkStruct_023008a0 *s) {
     StageObj_SetAnimation(s, 0);
     s->unk5C |= 4;
-    s->func = func_ov000_02300844;
+    s->func = EnemyFlapperGroup_State_Unk_ov000_02300844;
 }

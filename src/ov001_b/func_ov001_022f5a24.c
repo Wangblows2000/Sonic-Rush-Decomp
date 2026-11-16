@@ -60,7 +60,7 @@ UnkStruct_022f5a24_t *func_ov001_02300c94(void);
 u16 func_020027a4(s32 y, s32 x);
 s32 func_02002094(s32 n, s32 d);
 void func_ov001_022fc09c(UnkStruct_022f5a24 *w, s32 x, s32 y, s32 z, u16 ang);
-UnkStruct_022f5a24_q *func_ov001_022ffce8(void);
+UnkStruct_022f5a24_q *ExtraBoss_GetWork(void);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -128,10 +128,10 @@ void func_ov001_022f5a24(UnkStruct_022f5a24 *w) {
             w->unk1D4 = 0;
             return;
         }
-        q1 = func_ov001_022ffce8();
-        q2 = func_ov001_022ffce8();
-        q3 = func_ov001_022ffce8();
-        a->unk114 = func_02002094(q1->unk308 * 0xa000 + ((q2->unk30C - q3->unk308) << 16), func_ov001_022ffce8()->unk30C);
+        q1 = ExtraBoss_GetWork();
+        q2 = ExtraBoss_GetWork();
+        q3 = ExtraBoss_GetWork();
+        a->unk114 = func_02002094(q1->unk308 * 0xa000 + ((q2->unk30C - q3->unk308) << 16), ExtraBoss_GetWork()->unk30C);
         if (w->unk1D0 < *a->unkE4)
             a->unk114 = -a->unk114;
         return;

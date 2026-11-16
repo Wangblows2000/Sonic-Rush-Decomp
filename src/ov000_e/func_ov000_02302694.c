@@ -1,7 +1,7 @@
 #include <ov000_c/stageobj.h>
 
 void StageObj_SetAnimation(void *w, s32 a);
-void func_ov000_023024b0(void);
+void Bubble_State_Unk_ov000_023024b0(void);
 
 void func_ov000_02302694(UnkStruct_StageObj *w) {
     switch (w->unk1E0->unk2) {
@@ -18,5 +18,5 @@ void func_ov000_02302694(UnkStruct_StageObj *w) {
     }
     w->unk5C |= 4;
     w->unk58 |= 0x10;
-    w->unk68 = func_ov000_023024b0;
+    w->unk68 = Bubble_State_Unk_ov000_023024b0;
 }

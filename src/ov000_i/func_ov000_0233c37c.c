@@ -7,7 +7,7 @@ typedef struct {
 } UnkPlayer_0233c37c;
 
 extern UnkPlayer_0233c37c data_ov000_0236aad8[];
-extern void *data_ov000_0236ac60[];
+extern void *gPlayers[];
 
 u8 func_ov000_0233c37c(void *obj) {
     u8 i;
@@ -19,7 +19,7 @@ u8 func_ov000_0233c37c(void *obj) {
     a = data_ov000_0236aad8[0].unk3A;
     b = data_ov000_0236aad8[1].unk3A;
     for (i = 0; i < 8; i++) {
-        if (data_ov000_0236ac60[i] == obj) {
+        if (gPlayers[i] == obj) {
             r = 0;
             if (a == i)
                 r |= 1;

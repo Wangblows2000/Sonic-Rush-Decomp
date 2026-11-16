@@ -16,7 +16,7 @@ extern u32 gRandSeed;
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 
-void func_ov000_02329d38(void *a, s16 x, s16 y, s32 b, s32 c, s32 d, s32 e);
+void Bubble3D_Create(void *a, s16 x, s16 y, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_02329f50(void *a, s16 x, s16 y, s32 b, s32 c);
 
 static inline u16 Rand(void) {
@@ -37,20 +37,20 @@ void func_ov000_0232a11c(void *a, s32 x, s32 y, s32 c) {
             return;
         switch (r) {
         case 0:
-            func_ov000_02329d38(a, x, y, 0, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+            Bubble3D_Create(a, x, y, 0, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
             break;
         case 1:
-            func_ov000_02329d38(a, x + 4, y + 8, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
-            func_ov000_02329d38(a, x + 1, y - 3, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+            Bubble3D_Create(a, x + 4, y + 8, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+            Bubble3D_Create(a, x + 1, y - 3, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
             break;
         case 2:
-            func_ov000_02329d38(a, x, y, 0, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
-            func_ov000_02329d38(a, x + 2, y + 6, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+            Bubble3D_Create(a, x, y, 0, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+            Bubble3D_Create(a, x + 2, y + 6, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
             break;
         case 3:
-            func_ov000_02329d38(a, x, y, 0, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
-            func_ov000_02329d38(a, x - 2, y + 6, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
-            func_ov000_02329d38(a, x + 4, y + 9, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+            Bubble3D_Create(a, x, y, 0, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+            Bubble3D_Create(a, x - 2, y + 6, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
+            Bubble3D_Create(a, x + 4, y + 9, 1, c, data_ov000_0236aad8.unkE0, data_ov000_0236aad8.unkE4);
             break;
         }
     } else {

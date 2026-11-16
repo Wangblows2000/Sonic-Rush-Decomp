@@ -21,13 +21,13 @@ typedef struct {
 } UnkObj_02338c70;
 
 extern UnkPlayer_02338c70 data_ov000_0236aad8[];
-extern UnkObj_02338c70 *data_ov000_0236ac60[];
+extern UnkObj_02338c70 *gPlayers[];
 
 BOOL func_ov000_02338c70(u32 *in, s32 idx) {
     UnkPlayer_02338c70 *p = &data_ov000_0236aad8[idx];
     s32 lim;
     u32 f;
-    lim = data_ov000_0236ac60[p->unk3A]->unk14;
+    lim = gPlayers[p->unk3A]->unk14;
     f = data_ov000_0236aad8[2].flags & 0x20000;
 
     if ((!f && (*in & 2)) || (f && (*in & 4))) {

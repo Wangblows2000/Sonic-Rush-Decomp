@@ -9,7 +9,7 @@ typedef struct {
 
 void func_ov001_022d2018(UnkStruct_022d1c20 *p);
 void func_ov001_022d0128(s32 i);
-void func_ov001_022d2234(UnkStruct_022d1c20 *p, void (*fn)(UnkStruct_022d1c20 *));
+void StaffRoll_SetState(UnkStruct_022d1c20 *p, void (*fn)(UnkStruct_022d1c20 *));
 void func_ov001_022d1bec(UnkStruct_022d1c20 *p);
 void func_ov001_022d1acc(UnkStruct_022d1c20 *p);
 void func_ov001_022d1a04(UnkStruct_022d1c20 *p);
@@ -26,13 +26,13 @@ void func_ov001_022d1c20(UnkStruct_022d1c20 *p) {
     }
     switch (p->mode) {
     case 0:
-        func_ov001_022d2234(p, func_ov001_022d1bec);
+        StaffRoll_SetState(p, func_ov001_022d1bec);
         break;
     case 1:
-        func_ov001_022d2234(p, func_ov001_022d1acc);
+        StaffRoll_SetState(p, func_ov001_022d1acc);
         break;
     case 2:
-        func_ov001_022d2234(p, func_ov001_022d1a04);
+        StaffRoll_SetState(p, func_ov001_022d1a04);
         break;
     }
 }

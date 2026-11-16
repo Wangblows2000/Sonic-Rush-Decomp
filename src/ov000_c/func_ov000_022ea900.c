@@ -19,7 +19,7 @@ typedef struct {
     u16 unkA;
 } UnkStruct_02369ac0;
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern u8 data_ov000_02363c84[][8], data_ov000_02363ca4[][8], data_ov000_02363cc4[][8];
 extern u8 data_ov000_02363ce4[][8], data_ov000_02363d04[][8], data_ov000_02363d24[][8];
@@ -30,7 +30,7 @@ void func_ov000_022ea120(void);
 void func_ov000_022e9f3c(void);
 
 void func_ov000_022ea900(UnkStruct_022ea900 *w) {
-    s32 d = w->base.unk10 - data_ov000_0236ac60->unk10;
+    s32 d = w->base.unk10 - gPlayers->unk10;
     u16 hp;
     u8 k;
 
@@ -64,7 +64,7 @@ void func_ov000_022ea900(UnkStruct_022ea900 *w) {
         break;
     case 1:
         w->unk456 = (Rand() & 0x1f) + 0x14;
-        if (w->base.unk10 > data_ov000_0236ac60->unk10)
+        if (w->base.unk10 > gPlayers->unk10)
             w->unk456 = -w->unk456;
         w->unk458 = (Rand() & 0x3f) + 0x1e;
         w->unk43C = func_ov000_022ea25c;

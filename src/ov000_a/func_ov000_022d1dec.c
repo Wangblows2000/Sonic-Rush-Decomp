@@ -90,10 +90,10 @@ typedef struct UnkStruct_022d1dec_pl {
     s32 unk10;
 } UnkStruct_022d1dec_pl;
 
-extern UnkStruct_022d1dec_pl *data_ov000_0236ac60;
+extern UnkStruct_022d1dec_pl *gPlayers;
 
 void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
-UnkStruct_022d1dec_o *func_ov000_02328510(s32 a, s32 x, s32 y, s32 z);
+UnkStruct_022d1dec_o *BossEffect_CreateSuction2(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022d1cb0(UnkStruct_022d1dec *s);
 
 void func_ov000_022d1dec(UnkStruct_022d1dec *s) {
@@ -102,7 +102,7 @@ void func_ov000_022d1dec(UnkStruct_022d1dec *s) {
     UnkStruct_022d1dec_a *x;
     UnkStruct_022d1dec_a *y;
     UnkStruct_022d1dec_a *z;
-    func_ov000_022c5e80(0x1152f0, 0x6cd988, data_ov000_0236ac60->unk10 << 4, NULL, NULL, &ang);
+    func_ov000_022c5e80(0x1152f0, 0x6cd988, gPlayers->unk10 << 4, NULL, NULL, &ang);
     if (s->unk145C >= 0x8000) {
         if ((u16)(ang - s->unk1304 + 0x71c) < 0x4000) {
             s->unk145C += s->unk1464 >> 3;
@@ -135,7 +135,7 @@ void func_ov000_022d1dec(UnkStruct_022d1dec *s) {
     z->unk114 = 0;
     y->unk114 = z->unk114;
     x->unk114 = y->unk114;
-    s->unk131C = func_ov000_02328510(1, s->unk139C >> 4, -s->unk13A0 >> 4, s->unk13A4 >> 4);
+    s->unk131C = BossEffect_CreateSuction2(1, s->unk139C >> 4, -s->unk13A0 >> 4, s->unk13A4 >> 4);
     q = &s->unk131C->unk134;
     s->unk131C->unk5C |= 4;
     s->unk131C->unk5C &= ~0x30;

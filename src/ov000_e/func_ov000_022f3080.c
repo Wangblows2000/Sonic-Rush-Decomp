@@ -44,8 +44,8 @@ extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern u8 data_ov000_02363e9c[][8];
 
-s32 func_ov000_022fad3c(s32 a, s32 b, s32 c, u16 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void func_ov000_02328210(s32 a, s32 b, s32 c, s32 d);
+s32 MapObject_Spawn(s32 a, s32 b, s32 c, u16 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+void BossEffect_CreateImpactPr(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022f300c(UnkStruct_022f3080 *s);
 
@@ -73,10 +73,10 @@ void func_ov000_022f3080(UnkStruct_022f3080 *s) {
     else
         i = data_022c4560.unk14;
     if (data_ov000_02363e9c[i][data_ov000_02369ac0.unk8 - 1] != 0) {
-        func_ov000_022fad3c(0xdb, (s->unk400.unk24 >> 4) + 0xa000, 0x30000, 2, 0, 0, 0, 0, 0);
-        func_ov000_022fad3c(0xdb, (s->unk3D0.unk24 >> 4) - 0xa000, 0x30000, 3, 0, 0, 0, 0, 0);
+        MapObject_Spawn(0xdb, (s->unk400.unk24 >> 4) + 0xa000, 0x30000, 2, 0, 0, 0, 0, 0);
+        MapObject_Spawn(0xdb, (s->unk3D0.unk24 >> 4) - 0xa000, 0x30000, 3, 0, 0, 0, 0, 0);
     }
-    func_ov000_02328210(1, (s->unk3D0.unk24 + s->unk400.unk24) >> 5, 0x30000, 0);
+    BossEffect_CreateImpactPr(1, (s->unk3D0.unk24 + s->unk400.unk24) >> 5, 0x30000, 0);
     s->unk26E &= ~4;
     s->unk2F2 &= ~4;
     s->unk29A |= 4;

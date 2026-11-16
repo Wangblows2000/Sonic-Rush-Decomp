@@ -1,10 +1,10 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov001_022c6ac4();
-s32 func_ov001_022c69ac();
+s32 Ending_FadeIn();
+s32 Ending_FadeOut();
 void func_ov001_022c75d8();
-s32 func_ov001_022c7a34();
+s32 Ending_SetSubState();
 void func_ov001_022c689c();
 s32 Task_Create();
 s32 _fflt();
@@ -19,13 +19,13 @@ extern u8 gDisplayMain[];
 void func_ov001_022c7678(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0xc);
     if (t0 >= 5) {
-        func_ov001_022c6ac4(p0, (t0 - 0x5), 0x3c, 1, 0);
+        Ending_FadeIn(p0, (t0 - 0x5), 0x3c, 1, 0);
     }
     s32 t1 = *(u32 *)((u8 *)p0 + 0xc);
     if (t1 >= 0x299) {
-        s32 t2 = func_ov001_022c69ac(p0, (t1 - 0x299), 0x1e, 1, 0);
+        s32 t2 = Ending_FadeOut(p0, (t1 - 0x299), 0x1e, 1, 0);
         if (t2 != 0) {
-            func_ov001_022c7a34(p0, (u32)func_ov001_022c75d8);
+            Ending_SetSubState(p0, (u32)func_ov001_022c75d8);
             return;
         }
     }

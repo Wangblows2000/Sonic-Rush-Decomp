@@ -24,7 +24,7 @@ typedef struct UnkStruct_0230b658_k {
     u32 unk10;
 } UnkStruct_0230b658_k;
 
-extern UnkStruct_0230b658 *data_ov001_0231f5c0;
+extern UnkStruct_0230b658 *gSpecialStageWork;
 extern s16 gDisplayMain[];
 extern s16 gDisplaySub[];
 extern UnkStruct_0230b658_k gTouchState;
@@ -39,7 +39,7 @@ void func_0201c070(void **pp, s32 a);
 void func_ov001_0230b164(void);
 
 void func_ov001_0230b658(void) {
-    UnkStruct_0230b658 *g = data_ov001_0231f5c0;
+    UnkStruct_0230b658 *g = gSpecialStageWork;
     UnkStruct_0230b658_o *a = &g->objA;
     UnkStruct_0230b658_o *b = &g->objB;
     s16 v;

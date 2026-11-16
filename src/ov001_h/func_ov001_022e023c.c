@@ -23,7 +23,7 @@ void func_ov001_022dfeec(void);
 void func_ov001_022dfe20(void);
 void func_ov001_022dfb48(UnkStruct_022e023c *w, void *cam);
 void func_ov001_022dfa3c(UnkStruct_022e023c *w, void *cam);
-void func_ov001_022df5f0(UnkStruct_022e023c *w);
+void TransformDemo_SpawnEffect(UnkStruct_022e023c *w);
 void func_ov001_022de1e0(UnkStruct_022e023c *w, void *a);
 void func_ov001_022df3d8(UnkStruct_022e023c *w, void *a);
 void func_ov001_022df3a4(UnkStruct_022e023c *w, void *a);
@@ -40,10 +40,10 @@ void func_ov001_022e023c(UnkStruct_022e023c *w) {
     w->unk4 ^= 1;
     if (w->unk10 == 2) {
         if ((Rand() & 7) == 0)
-            func_ov001_022df5f0(w);
+            TransformDemo_SpawnEffect(w);
     } else {
         if ((Rand() & 3) == 0)
-            func_ov001_022df5f0(w);
+            TransformDemo_SpawnEffect(w);
     }
     func_ov001_022de1e0(w, w->unk454);
     func_ov001_022df3d8(w, &w->unkBD4);

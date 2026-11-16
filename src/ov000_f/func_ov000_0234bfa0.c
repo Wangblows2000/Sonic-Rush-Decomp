@@ -40,7 +40,7 @@ typedef struct {
 
 extern UnkStruct_0234bfa0_4534 data_022c4534;
 
-void func_ov000_0234c4a4(UnkStruct_0234bfa0 *w, s32 state);
+void Player_SetAnimation(UnkStruct_0234bfa0 *w, s32 state);
 BOOL func_ov000_0234be10(UnkStruct_0234bfa0 *w, s32 a);
 BOOL func_ov000_023470ec(UnkStruct_0234bfa0 *w);
 void func_ov000_0234ab34(UnkStruct_0234bfa0 *w);
@@ -53,22 +53,22 @@ void func_ov000_0234bfa0(UnkStruct_0234bfa0 *w) {
     s32 x;
 
     if (w->unk328 == 4 && (w->unk5C & 8)) {
-        func_ov000_0234c4a4(w, 0x3c);
+        Player_SetAnimation(w, 0x3c);
         w->unk5C |= 4;
     }
     if (!(w->unk420 & 0x40) && w->unk328 >= 0x21 && w->unk328 <= 0x22) {
         w->unk5C |= 0x400;
-        func_ov000_0234c4a4(w, 0x3c);
+        Player_SetAnimation(w, 0x3c);
         w->unk5C |= 4;
     }
     if (!(w->unk330 & 0x1100) && (w->unk420 & 0x40)) {
         if (w->unk328 < 0x21 || w->unk328 > 0x22) {
-            func_ov000_0234c4a4(w, 0x21);
+            Player_SetAnimation(w, 0x21);
         }
     } else if (w->unk328 >= 0xd && w->unk328 <= 0xe) {
         if (w->unk325 == 0 && !func_ov000_0234be10(w, 0)) {
             w->unk5C |= 0x400;
-            func_ov000_0234c4a4(w, 0x3c);
+            Player_SetAnimation(w, 0x3c);
             w->unk5C |= 4;
         }
     } else if (w->unk328 == 0x3c && func_ov000_0234be10(w, 1)) {
@@ -111,7 +111,7 @@ void func_ov000_0234bfa0(UnkStruct_0234bfa0 *w) {
         return;
     }
     if (func_0206825c(w, w->unk2A0)) {
-        func_ov000_0234c4a4(w, 0x45);
+        Player_SetAnimation(w, 0x45);
         w->unkC = 0;
         if (w->unk324 != 0) {
             w->unk5C &= ~1;
@@ -125,7 +125,7 @@ void func_ov000_0234bfa0(UnkStruct_0234bfa0 *w) {
             return;
         }
         w->unk5C |= 0x400;
-        func_ov000_0234c4a4(w, 0x3c);
+        Player_SetAnimation(w, 0x3c);
         w->unk5C |= 4;
         return;
     }
@@ -135,6 +135,6 @@ void func_ov000_0234bfa0(UnkStruct_0234bfa0 *w) {
     if (!(w->unk5C & 8)) {
         return;
     }
-    func_ov000_0234c4a4(w, 0x47);
+    Player_SetAnimation(w, 0x47);
     w->unk5C |= 4;
 }

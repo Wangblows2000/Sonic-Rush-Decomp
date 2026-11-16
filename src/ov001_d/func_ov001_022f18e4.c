@@ -47,7 +47,7 @@ extern u32 gRandSeed;
 
 void func_ov001_022f167c(void);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 void Sound_PlaySeqArc(void *p, u32 a, u32 b);
 void func_020366f4(void *p, u32 a, u32 b);
 
@@ -85,6 +85,6 @@ void func_ov001_022f18e4(UnkStruct_022f18e4 *p) {
     } else {
         p->unk1C8 = 0xd2;
     }
-    Sound_PlaySeqArc(func_ov001_022ffce8() + 0x33c, 0, 0xb3);
+    Sound_PlaySeqArc(ExtraBoss_GetWork() + 0x33c, 0, 0xb3);
     func_020366f4(0, 0, 0xd1);
 }

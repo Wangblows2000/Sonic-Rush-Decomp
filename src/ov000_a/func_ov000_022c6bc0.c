@@ -32,7 +32,7 @@ extern UnkStruct_022c6bc0_5 *data_ov000_02369acc;
 
 void func_ov000_022cbdf4(void);
 void func_ov000_022cbdb0(void);
-u8 *func_ov000_02328710(s32 a, s32 b, s32 c, s32 d);
+u8 *BossEffect_CreateHit(s32 a, s32 b, s32 c, s32 d);
 void func_02000e60(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_02000f34(void *a, void *b, void *c);
@@ -56,7 +56,7 @@ void func_ov000_022c6bc0(void *a, UnkStruct_022c6bc0 *b) {
     data_ov000_02369ac0.unk8--;
     if (data_ov000_02369ac0.unk8 != 0) {
         func_ov000_022cbdf4();
-        obj = func_ov000_02328710(1, b->unk0 << 8, b->unk4 << 8, 0);
+        obj = BossEffect_CreateHit(1, b->unk0 << 8, b->unk4 << 8, 0);
         ang = (Rand() & 0xfff) + 0xaaa;
         func_02000e60(obj + 0x158, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
         ang = Rand();

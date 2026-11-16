@@ -10,8 +10,8 @@ typedef struct {
     u16 unk22E;
 } UnkStruct_02311124;
 
-extern void *data_ov000_0236ac60;
-extern s16 data_ov000_0236a2bc[];
+extern void *gPlayers;
+extern s16 gSwitchTimers[];
 
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Sound_SetPositional(void *a, void *b, void *c);
@@ -65,9 +65,9 @@ void func_ov000_02311124(UnkStruct_02311124 *w) {
             }
         }
     }
-    Sound_SetPositional((void *)w->base.unk1DC, w, data_ov000_0236ac60);
+    Sound_SetPositional((void *)w->base.unk1DC, w, gPlayers);
     p = w->base.unk1E0;
-    if (p->unk6 != 0 && data_ov000_0236a2bc[p->unk6] == 0) {
+    if (p->unk6 != 0 && gSwitchTimers[p->unk6] == 0) {
         func_ov000_02311684(w);
         return;
     }

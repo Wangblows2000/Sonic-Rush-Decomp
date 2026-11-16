@@ -1,7 +1,7 @@
 #include <ov000_c/stageobj.h>
 
 void StageObj_Move(UnkStruct_StageObj *w);
-void func_ov000_0230f4c8(void);
+void GmkLand_State_Unk_ov000_0230f4c8(void);
 
 void func_ov000_0230f4fc(UnkStruct_StageObj *w) {
     s32 i;
@@ -14,5 +14,5 @@ void func_ov000_0230f4fc(UnkStruct_StageObj *w) {
         for (i = 0; i < w->unk1E0->unk8; i++)
             StageObj_Move(w);
     }
-    w->unk68 = func_ov000_0230f4c8;
+    w->unk68 = GmkLand_State_Unk_ov000_0230f4c8;
 }

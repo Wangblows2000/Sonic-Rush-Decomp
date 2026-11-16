@@ -21,7 +21,7 @@ void func_ov000_022dbc4c(s32 a);
 void func_ov000_022dbb7c(s32 a);
 void func_ov000_022dba50(s32 a);
 void func_ov000_022dbab4(s32 a);
-s32 func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 BOOL func_ov000_022db9a8(UnkStruct_022ddedc *s);
 
 void func_ov000_022ddedc(UnkStruct_022ddedc *s) {

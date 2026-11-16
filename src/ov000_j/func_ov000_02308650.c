@@ -15,7 +15,7 @@ typedef struct {
 
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 
-void func_ov000_02308404(UnkStruct_02308650 *p);
+void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308650 *p);
 
 void func_ov000_02308650(UnkStruct_02308650 *p) {
     if (data_ov000_0236aad8.unkC8 & 1) {
@@ -24,5 +24,5 @@ void func_ov000_02308650(UnkStruct_02308650 *p) {
         data_ov000_0236aad8.unk1D = 0x10;
         data_ov000_0236aad8.unkC8 |= 0x100;
     }
-    p->unk68 = func_ov000_02308404;
+    p->unk68 = MapObj8F_State_Unk_ov000_02308404;
 }

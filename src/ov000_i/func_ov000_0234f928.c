@@ -30,7 +30,7 @@ struct UnkStruct_0234f928 {
 };
 
 void func_ov000_0234f7ac(void);
-void func_ov000_0234c4a4(UnkStruct_0234f928 *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234f928 *w, s32 a);
 
 void func_ov000_0234f928(UnkStruct_0234f928 *w) {
     w->unk58 |= 0x200000;
@@ -44,7 +44,7 @@ void func_ov000_0234f928(UnkStruct_0234f928 *w) {
     w->unk58 |= 0x8000;
     w->unk58 &= ~1;
     w->unk68 = func_ov000_0234f7ac;
-    func_ov000_0234c4a4(w, 0x18);
+    Player_SetAnimation(w, 0x18);
     w->unk5C |= 4;
     w->unk2E = w->unk3E8->unk2E << 1;
     w->unk30 = -0x680;

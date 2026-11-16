@@ -52,7 +52,7 @@ typedef struct {
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_0208922c gDisplayMain;
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 
 void func_ov000_022dd5d8(UnkStruct_022dd748 *s);
 void ScreenShake_Start(s32 a);
@@ -67,7 +67,7 @@ void func_ov000_0235b08c(u32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022c5c80(s32 a);
 void func_ov000_02347c44(UnkStruct_Player *p);
-void func_ov000_0234c4a4(UnkStruct_Player *p, s32 a);
+void Player_SetAnimation(UnkStruct_Player *p, s32 a);
 
 void func_ov000_022dd748(UnkStruct_022dd748 *s) {
     UnkStruct_Obj *a = s->unk20C;
@@ -92,14 +92,14 @@ void func_ov000_022dd748(UnkStruct_022dd748 *s) {
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
     func_ov000_022c5c80(6);
-    func_ov000_02347c44(data_ov000_0236ac60);
-    func_ov000_0234c4a4(data_ov000_0236ac60, 0x30);
-    data_ov000_0236ac60->unk3B2 = 0;
-    data_ov000_0236ac60->unk5C &= ~0x20;
-    data_ov000_0236ac60->unk2AA &= ~4;
-    data_ov000_0236ac60->unk2AA |= 0x1000;
-    data_ov000_0236ac60->unk2D6 &= ~4;
-    data_ov000_0236ac60->unk2D6 |= 0x1000;
+    func_ov000_02347c44(gPlayers);
+    Player_SetAnimation(gPlayers, 0x30);
+    gPlayers->unk3B2 = 0;
+    gPlayers->unk5C &= ~0x20;
+    gPlayers->unk2AA &= ~4;
+    gPlayers->unk2AA |= 0x1000;
+    gPlayers->unk2D6 &= ~4;
+    gPlayers->unk2D6 |= 0x1000;
     s->unk78 = 0;
     a->unk78 = 0;
     b->unk78 = 0;

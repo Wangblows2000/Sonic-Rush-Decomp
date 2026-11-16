@@ -75,18 +75,18 @@ typedef struct UnkStruct_022d7844_b {
 
 extern UnkStruct_022d7844_b *data_ov000_02369b14;
 
-UnkStruct_022d7844_r *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+UnkStruct_022d7844_r *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022daa5c(void);
-void func_ov000_02328620(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreatePop(s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022d77d4(UnkStruct_022d7844 *s);
 
 void func_ov000_022d7844(UnkStruct_022d7844 *s) {
     Model_SetAnimation(&s->unk2C4, 0, s->unk434, 4, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
-    data_ov000_02369b14->unk218 = func_ov000_022fad3c(0xcd, 0, 0, 0, 0, 0, 0, 0, 0);
+    data_ov000_02369b14->unk218 = MapObject_Spawn(0xcd, 0, 0, 0, 0, 0, 0, 0, 0);
     data_ov000_02369b14->unk218->unk5C &= ~0x20;
     func_ov000_022daa5c();
-    func_ov000_02328620(1, s->unk24C >> 4, -s->unk250 >> 4, s->unk254 >> 4);
+    BossEffect_CreatePop(1, s->unk24C >> 4, -s->unk250 >> 4, s->unk254 >> 4);
     s->func = func_ov000_022d77d4;
 }

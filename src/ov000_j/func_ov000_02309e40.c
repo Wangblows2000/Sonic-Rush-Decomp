@@ -19,7 +19,7 @@ typedef struct {
 
 extern UnkStruct_0236aad8 data_ov000_0236aad8;
 
-void func_ov000_02309ca4(UnkStruct_02309e40 *p);
+void MapObj70_State_Unk_ov000_02309ca4(UnkStruct_02309e40 *p);
 
 void func_ov000_02309e40(UnkStruct_02309e40 *p) {
     if (data_ov000_0236aad8.unkC8 & 1) {
@@ -29,5 +29,5 @@ void func_ov000_02309e40(UnkStruct_02309e40 *p) {
         p->unk214 = data_ov000_0236aad8.unk3A;
         p->unk215 = data_ov000_0236aad8.unk9E;
     }
-    p->unk68 = func_ov000_02309ca4;
+    p->unk68 = MapObj70_State_Unk_ov000_02309ca4;
 }

@@ -56,17 +56,17 @@ typedef struct UnkStruct_022cac48_6 {
 
 extern UnkStruct_022cac48_6 data_ov000_02369ac0;
 extern UnkStruct_022cac48_5 data_022c4560;
-extern UnkStruct_022cac48_pl *data_ov000_0236ac60;
+extern UnkStruct_022cac48_pl *gPlayers;
 
 void ScreenShake_Start(s32 a);
 void StageObj_SetPause(void);
 void func_ov000_022cc35c(s32 a, s32 b);
 void func_ov000_02347c44(UnkStruct_022cac48_pl *p);
-void func_ov000_0234c4a4(UnkStruct_022cac48_pl *p, s32 a);
+void Player_SetAnimation(UnkStruct_022cac48_pl *p, s32 a);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
 void func_0201bfbc(s32 a);
-void func_ov000_022cab48(UnkStruct_022cac48 *s);
+void Boss1Hammer_State_Unk_ov000_022cab48(UnkStruct_022cac48 *s);
 
 void func_ov000_022cac48(UnkStruct_022cac48 *s) {
     UnkStruct_022cac48_3 *p = s->unk210;
@@ -85,12 +85,12 @@ void func_ov000_022cac48(UnkStruct_022cac48 *s) {
     data_022c4560.unk18 &= ~1;
     p->unk10 = 0xe100;
     func_ov000_022cc35c(data_022c4560.unk0, 0);
-    func_ov000_02347c44(data_ov000_0236ac60);
-    func_ov000_0234c4a4(data_ov000_0236ac60, 0x30);
-    data_ov000_0236ac60->unk3B2 = 0;
-    data_ov000_0236ac60->unk10 = 0xe100;
-    data_ov000_0236ac60->unk14 = 0x1a800;
+    func_ov000_02347c44(gPlayers);
+    Player_SetAnimation(gPlayers, 0x30);
+    gPlayers->unk3B2 = 0;
+    gPlayers->unk10 = 0xe100;
+    gPlayers->unk14 = 0x1a800;
     func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
     func_0201bfbc(0);
-    s->func = func_ov000_022cab48;
+    s->func = Boss1Hammer_State_Unk_ov000_022cab48;
 }

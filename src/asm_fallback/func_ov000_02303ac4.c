@@ -3,7 +3,7 @@
 
 extern void _s32_div_f(void);
 extern u32 data_ov000_0236aad8;
-extern u32 data_ov000_0236ac60;
+extern u32 gPlayers;
 
 asm void func_ov000_02303ac4(void)
 {
@@ -110,6 +110,6 @@ _170:
     add sp, sp, #4
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
-    dcd data_ov000_0236ac60
+    dcd gPlayers
     dcd data_ov000_0236aad8
 }

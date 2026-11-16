@@ -1,6 +1,6 @@
 #include <ov000_c/stageobj.h>
 
-UnkStruct_StageObj *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+UnkStruct_StageObj *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void Math_RotateVec2S16(s16 *a, s16 *b, s32 c);
 
 void func_ov000_022fc5b8(UnkStruct_StageObj *w, s32 type, s16 dx, s16 dy) {
@@ -10,7 +10,7 @@ void func_ov000_022fc5b8(UnkStruct_StageObj *w, s32 type, s16 dx, s16 dy) {
     if (w->unk5C & 1)
         f = w->unk5C & 1;
     f |= w->unk1E0->unk4 & 0xc;
-    o = func_ov000_022fad3c(type, w->unk10, w->unk14, f, 0, 0, 0, 0, 0);
+    o = MapObject_Spawn(type, w->unk10, w->unk14, f, 0, 0, 0, 0, 0);
     if (o == NULL)
         return;
     o->unk5 = w->unk5;

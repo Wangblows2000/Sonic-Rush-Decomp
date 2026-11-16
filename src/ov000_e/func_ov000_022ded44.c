@@ -43,9 +43,9 @@ void func_ov000_022de018(UnkStruct_Boss *b);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 void Sound_PlaySeq(s32 a, s32 b);
-void func_ov000_02328710(s32 a, s32 x, s32 y, s32 z);
+void BossEffect_CreateHit(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_022de224(UnkStruct_Boss *b);
-UnkStruct_Fx *func_ov000_023285d0(s32 a, s32 x, s32 y, s32 z);
+UnkStruct_Fx *BossEffect_CreateClash(s32 a, s32 x, s32 y, s32 z);
 void func_ov000_0234aa80(UnkStruct_Player *p);
 
 void func_ov000_022ded44(UnkStruct_Hit *a, UnkStruct_Hit *h) {
@@ -73,10 +73,10 @@ void func_ov000_022ded44(UnkStruct_Hit *a, UnkStruct_Hit *h) {
             func_020537b4(0xb);
             func_020533e0(0x10, 0xf0);
         }
-        func_ov000_02328710(1, p->unk17C >> 4, -p->unk180 >> 4, p->unk184 >> 4);
+        BossEffect_CreateHit(1, p->unk17C >> 4, -p->unk180 >> 4, p->unk184 >> 4);
     } else {
         func_ov000_022de224(b);
-        fx = func_ov000_023285d0(1, p->unk17C >> 4, -p->unk180 >> 4, p->unk184 >> 4);
+        fx = BossEffect_CreateClash(1, p->unk17C >> 4, -p->unk180 >> 4, p->unk184 >> 4);
         fx->unk13E = 0x13;
         fx->unk13F = 3;
         fx->unk140 = 0;

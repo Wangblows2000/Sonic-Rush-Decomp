@@ -36,11 +36,11 @@ typedef struct {
     u32 unk32C;
 } UnkStruct_Player;
 
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
-void func_ov000_023288d0(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreateImpactSmall(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022e450c(UnkStruct_Boss *w);
 void func_ov000_022e4b80(void);
@@ -62,7 +62,7 @@ void func_ov000_022e4da0(UnkStruct_Boss *w) {
 
     w->unk1124--;
     if (w->unk1124 >= 0) {
-        x = data_ov000_0236ac60->base.unk10;
+        x = gPlayers->base.unk10;
         if (x < 0x3000)
             x = 0x3000;
         else if (x > 0x31000)

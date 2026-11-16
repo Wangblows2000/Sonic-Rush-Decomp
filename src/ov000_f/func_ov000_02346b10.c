@@ -30,7 +30,7 @@ struct UnkStruct_02346b10 {
 };
 
 extern u32 gObjManagerFlags;
-extern UnkStruct_02346b10 *data_ov000_0236ac60[];
+extern UnkStruct_02346b10 *gPlayers[];
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
@@ -93,7 +93,7 @@ void func_ov000_02346b10(UnkStruct_02346b10 *w) {
             w->unk32C |= 0x40000;
         } else {
             func_ov000_0234307c(w, -0x70);
-            func_ov000_02336050(data_ov000_0236ac60[0]->unk350 >> 4, 1);
+            func_ov000_02336050(gPlayers[0]->unk350 >> 4, 1);
         }
     }
     func_ov000_02346d30(w);

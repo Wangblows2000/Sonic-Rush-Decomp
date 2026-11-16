@@ -50,7 +50,7 @@ typedef struct UnkStruct_022cc224_pl {
 
 extern UnkStruct_022cc224_cam data_ov000_0236a444;
 extern UnkStruct_022cc224_c data_ov000_0236a48c;
-extern UnkStruct_022cc224_pl *data_ov000_0236ac60;
+extern UnkStruct_022cc224_pl *gPlayers;
 
 s32 func_0200225c(s32 a, s32 b);
 
@@ -64,9 +64,9 @@ void func_ov000_022cc224(void) {
     c->unk0 = c->unk4 = c->unk8 = 0;
     c->unkC = c->unk10 = c->unk14 = 0;
     c->unk30 = 0x200;
-    c->unk3C = data_ov000_0236ac60;
+    c->unk3C = gPlayers;
     c->unk40 = 0;
-    c->unk44 = data_ov000_0236ac60;
+    c->unk44 = gPlayers;
     c->unk58 = -0x1c0000;
     c->unk48 = 0;
     c->unk4C = 0x28000;
@@ -78,6 +78,6 @@ void func_ov000_022cc224(void) {
     c->unk8C = 0x80;
     c->unk8E = c->unk90 = 0;
     c->unk92 = 0x100;
-    data_ov000_0236ac60->unk430 = 0x40;
-    data_ov000_0236ac60->unk432 = 0x80;
+    gPlayers->unk430 = 0x40;
+    gPlayers->unk432 = 0x80;
 }

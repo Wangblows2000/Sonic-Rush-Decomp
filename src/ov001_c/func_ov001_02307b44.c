@@ -22,7 +22,7 @@ extern UnkStruct_02307b44 *data_ov001_0231f5bc;
 
 void AnimatorSprite_Draw(void *p);
 u32 func_ov001_0230c0b8(void);
-s32 func_ov001_0230c0cc(void);
+s32 SpecialStage_GetStageIndex(void);
 void AnimatorSprite_DrawRotScale(void *o, s32 a, s32 b, s32 c);
 
 void func_ov001_02307b44(void) {
@@ -43,7 +43,7 @@ void func_ov001_02307b44(void) {
         AnimatorSprite_Draw(b);
     for (i = 0; i < 7; i++) {
         u32 m = func_ov001_0230c0b8();
-        if ((m & (1 << i)) && i != func_ov001_0230c0cc()) {
+        if ((m & (1 << i)) && i != SpecialStage_GetStageIndex()) {
             AnimatorSprite_Draw(&g->objs[0xb + i]);
         } else {
             g->objs[10].x = g->objs[0xb + i].x;
@@ -54,7 +54,7 @@ void func_ov001_02307b44(void) {
     if (g->timer < 0xf0)
         return;
     o19 = &g->objs[19];
-    o = &g->objs[func_ov001_0230c0cc() + 0xb];
+    o = &g->objs[SpecialStage_GetStageIndex() + 0xb];
     d = g->timer - 0xf0;
     if (g->timer < 0xf5) {
         s = (d << 12) / 7 + 0x800;

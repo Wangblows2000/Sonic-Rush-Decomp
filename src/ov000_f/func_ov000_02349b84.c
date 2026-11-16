@@ -41,7 +41,7 @@ extern u32 gRandSeed;
 #define SIN_02349b84(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 
 BOOL func_ov000_0232bb20(void);
-void func_ov000_0234c4a4(UnkStruct_02349b84 *w, s32 state);
+void Player_SetAnimation(UnkStruct_02349b84 *w, s32 state);
 void func_ov000_0234a288(UnkStruct_02349b84 *w);
 void func_ov000_02331a24(UnkStruct_02349b84 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
@@ -62,7 +62,7 @@ void func_ov000_02349b84(UnkStruct_02349b84 *w) {
     if (!func_ov000_0232bb20()) {
         w->unk3CF = 0;
     }
-    func_ov000_0234c4a4(w, 0x37);
+    Player_SetAnimation(w, 0x37);
     w->unk5C |= 4;
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;

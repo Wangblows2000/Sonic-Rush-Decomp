@@ -3,7 +3,7 @@
 
 extern u32 data_ov000_0236aad8;
 extern void func_ov000_02307e84(void);
-extern void func_ov000_02307e9c(void);
+extern void MapObj8F_State_Unk_ov000_02307e9c(void);
 extern void func_ov000_0233b250(void);
 extern void func_ov000_0234237c(void);
 
@@ -117,5 +117,5 @@ _178:
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}
     bx lr
     dcd data_ov000_0236aad8
-    dcd func_ov000_02307e9c
+    dcd MapObj8F_State_Unk_ov000_02307e9c
 }

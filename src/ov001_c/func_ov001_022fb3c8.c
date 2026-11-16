@@ -19,7 +19,7 @@ u8 *func_ov001_022fd428(s32 kind, void *parent, s32 x, s32 y, s32 z);
 void *func_ov001_02300c94(void);
 void func_ov001_022fb28c(void);
 void func_ov001_022faf00(void);
-UnkStruct_022fb3c8_g *func_ov001_022ffce8(void);
+UnkStruct_022fb3c8_g *ExtraBoss_GetWork(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
 
@@ -52,8 +52,8 @@ void func_ov001_022fb3c8(void *parent, s32 x, s32 y, s32 z) {
     *(u32 *)(t + 0x14) |= 0x10;
     *(u16 *)(t + 0x98) = 0xffff;
     *(void **)(t + 0x74) = func_ov001_022fb28c;
-    *(s32 *)(t + 0x50) = data_ov001_0231d63c[GetLevel_022fb3c8()][func_ov001_022ffce8()->unk40];
-    *(s32 *)(t + 0x5c) = data_ov001_0231d614[GetLevel_022fb3c8()][func_ov001_022ffce8()->unk40];
+    *(s32 *)(t + 0x50) = data_ov001_0231d63c[GetLevel_022fb3c8()][ExtraBoss_GetWork()->unk40];
+    *(s32 *)(t + 0x5c) = data_ov001_0231d614[GetLevel_022fb3c8()][ExtraBoss_GetWork()->unk40];
     func_ov001_022fe8d4(t + 0xb0, t, 2, 0, 0x8000, 0x8000, 0x10000, 0, 0, 0, 0);
     *(void **)(t + 0xb4) = func_ov001_022faf00;
     *(u32 *)(t + 0xb8) |= 0x2000;

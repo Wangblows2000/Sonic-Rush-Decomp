@@ -12,23 +12,23 @@ typedef struct {
     u8 pad160[0x19C - 0x160];
 } UnkStruct_02322970;
 
-void func_ov000_023265d8(void);
+void Decoration_Destructor(void);
 void func_ov000_02322638(void);
 void func_ov000_02322934(void);
-void func_ov000_02326638(void *w, void *p, s32 a, s32 b);
+void Decoration_InitFromMap(void *w, void *p, s32 a, s32 b);
 
 UnkStruct_02322970 *func_ov000_02322970(UnkStruct_ObjParam *p, s32 a, s32 b) {
     UnkStruct_Task *task;
     UnkStruct_02322970 *w;
     vu16 zero;
 
-    task = Task_Create(StageObj_Main, func_ov000_023265d8, 0, 0x500, 4, sizeof(UnkStruct_02322970));
+    task = Task_Create(StageObj_Main, Decoration_Destructor, 0, 0x500, 4, sizeof(UnkStruct_02322970));
     if (task == func_02006abc(0))
         return NULL;
     w = task->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02322970));
-    func_ov000_02326638(w, p, a, b);
+    Decoration_InitFromMap(w, p, a, b);
     if (p->unk2 == 0x36)
         ObjRect_SetBox2D(&w->coll0, -0x20, -0x30, 0x20, 0);
     else

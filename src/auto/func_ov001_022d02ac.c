@@ -21,7 +21,7 @@ typedef int code();
 
 int func_ov001_022d02a8();
 int AnimatorSprite_SetAnimation();
-int func_ov001_022d1404();
+int StaffRoll_SetPictureState();
 
 #pragma thumb on
 
@@ -32,7 +32,7 @@ void func_ov001_022d02ac(int param_1)
     *(undefined4 *)(param_1 + 0xcd4) = 0;
     *(undefined4 *)(param_1 + 0xcec) = 0;
     AnimatorSprite_SetAnimation(param_1 + 0xbe4,0x1e);
-    func_ov001_022d1404(param_1,((int)func_ov001_022d02a8));
+    StaffRoll_SetPictureState(param_1,((int)func_ov001_022d02a8));
   }
   return;
 }

@@ -38,7 +38,7 @@ UnkStruct_0230903c_t *func_ov001_0230c0a4(void);
 void AnimatorSprite_SetAnimation(UnkStruct_0230903c_o *s, u16 index);
 void func_ov001_0231599c(s32 v);
 void func_ov001_02312e04(void *p);
-s32 func_ov001_0230c0cc(void);
+s32 SpecialStage_GetStageIndex(void);
 u16 func_ov001_02314368(void);
 
 void func_ov001_0230903c(void) {
@@ -66,7 +66,7 @@ void func_ov001_0230903c(void) {
     case 0xf0:
         g->objA.x = 0x80;
         g->objA.y = 0x22;
-        AnimatorSprite_SetAnimation(&g->objA, func_ov001_0230c0cc() * 2 + 2);
+        AnimatorSprite_SetAnimation(&g->objA, SpecialStage_GetStageIndex() * 2 + 2);
         g->unkBB4 = 1;
         g->unkBA8 = 1;
         g->unkBAC = 0;

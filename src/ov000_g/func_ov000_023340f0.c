@@ -25,7 +25,7 @@ extern UnkStruct_023340f0_Stage data_ov000_0236aad8;
 
 void *func_ov000_02333bec(void *a, s32 b, s32 c, s32 d, s32 e, u16 f);
 void *func_ov000_02333cf8(void *a, s32 b, s32 c, u16 d);
-void *func_ov000_02333ef0(void *a, s32 b, s32 c, u16 d);
+void *EffSpinSmoke2_Create(void *a, s32 b, s32 c, u16 d);
 
 static inline BOOL Stage_Busy(void) {
     if (data_ov000_0236aad8.unkE0 != 0 || data_ov000_0236aad8.unkE4 != 0)
@@ -44,6 +44,6 @@ void func_ov000_023340f0(UnkStruct_023340f0 *p) {
     } else {
         if (p->unk330 & 0x1000)
             return;
-        func_ov000_02333ef0(p, -10, 0xe, p->unk324);
+        EffSpinSmoke2_Create(p, -10, 0xe, p->unk324);
     }
 }

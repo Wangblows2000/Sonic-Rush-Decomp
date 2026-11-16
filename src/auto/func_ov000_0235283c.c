@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0231979c();
+s32 EffShadow_Create();
 
 void func_ov000_0235283c(u8 *p0, s32 p1) {
     *(u32 *)((u8 *)p0 + 0x3e8) = p1;
@@ -16,7 +16,7 @@ void func_ov000_0235283c(u8 *p0, s32 p1) {
     *(u16 *)((u8 *)p0 + 0x3ee) = 0x28;
     s32 t0 = (*(u32 *)((u8 *)p0 + 0x330) & 0x200);
     if (t0 == 0) {
-        func_ov000_0231979c(p0, p1, t0, 0x28);
+        EffShadow_Create(p0, p1, t0, 0x28);
     }
     *(u32 *)((u8 *)p0 + 0x330) = (*(u32 *)((u8 *)p0 + 0x330) | 0x200);
 }

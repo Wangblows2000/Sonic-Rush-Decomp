@@ -22,13 +22,13 @@ typedef struct UnkStruct_0234fcbc {
     void *unk3E8;
 } UnkStruct_0234fcbc;
 
-void func_ov000_0234fe20(void);
+void Player_State_Pipe(void);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_0234fcbc(UnkStruct_0234fcbc *w, s16 spd) {
     u8 dir;
 
-    if (w->unk68 != func_ov000_0234fe20) {
+    if (w->unk68 != Player_State_Pipe) {
         return;
     }
     dir = ((w->unk1 - 0x20) & 0xc0) >> 6;

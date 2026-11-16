@@ -20,13 +20,13 @@ typedef int code();
 #define false 0
 
 extern unsigned char gTaskCurrent[];
-int func_ov001_022e18ec();
+int ZoneActSelect_IsFinished();
 int func_ov001_022e18c8();
-int func_ov001_022e18a4();
+int ZoneActSelect_GetResult();
 int func_ov001_022e19d0();
 int func_ov001_022e3840();
 int func_ov001_022e3844();
-int func_ov001_022e213c();
+int ZoneMap_CreateFadeTask();
 int func_ov001_022e5a48();
 
 #pragma thumb on
@@ -40,15 +40,15 @@ void func_ov001_022e736c(void)
   
   puVar3 = *(undefined4 **)(*((int *)gTaskCurrent) + 0x10);
   puVar3[0x1d] = puVar3[0x1d] + 1;
-  iVar1 = func_ov001_022e18ec();
+  iVar1 = ZoneActSelect_IsFinished();
   if (iVar1 != 0) {
     iVar1 = func_ov001_022e18c8();
-    iVar2 = func_ov001_022e18a4();
+    iVar2 = ZoneActSelect_GetResult();
     if ((iVar1 < 0) || (iVar2 < 0)) {
       func_ov001_022e19d0(puVar3[0x29]);
       func_ov001_022e3840(puVar3[0x29] + 0x1994,0x1000);
       func_ov001_022e3844(puVar3[0x29] + 0x1994,0);
-      func_ov001_022e213c(0x10,0,8,0,1,0);
+      ZoneMap_CreateFadeTask(0x10,0,8,0,1,0);
       func_ov001_022e5a48(8);
       return;
     }

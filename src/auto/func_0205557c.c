@@ -10,7 +10,7 @@ s32 func_0204d684();
 s32 func_ov001_02300214();
 s32 Task_DestroyByTag();
 s32 SceneChange_Unk_02055098();
-s32 func_ov001_0230c0e0();
+s32 SpecialStage_RequestExit();
 void func_020554dc();
 s32 func_02053bec();
 s32 func_020552bc();
@@ -39,7 +39,7 @@ void func_0205557c(void) {
             }
         }
         if ((t1 & 0x20) != 0) {
-            func_ov001_0230c0e0(0);
+            SpecialStage_RequestExit(0);
             return;
         }
         func_0204d684((u32)func_020554dc, 3);

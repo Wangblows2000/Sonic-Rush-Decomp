@@ -11,11 +11,11 @@ typedef struct UnkStruct_02308b64 {
     s32 unk1C8;
 } UnkStruct_02308b64;
 
-void func_ov000_02308a7c(void);
+void GmkWall_State_Unk_ov000_02308a7c(void);
 
 void func_ov000_02308b64(UnkStruct_02308b64 *s) {
     s->unk1B8 = 0;
     s->unk1C8 = 0;
     s->unkC = 0x3c;
-    s->func = func_ov000_02308a7c;
+    s->func = GmkWall_State_Unk_ov000_02308a7c;
 }

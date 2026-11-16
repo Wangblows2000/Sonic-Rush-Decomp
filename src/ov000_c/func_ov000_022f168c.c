@@ -18,13 +18,13 @@ typedef struct {
 
 
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 extern u16 data_ov000_02365e20[][0x18];
 extern s32 data_ov000_02365e60[][3][8];
 extern s16 data_ov000_02365da0[][3][8];
 
 void func_ov000_022f4ce4(UnkStruct_022f168c *w, s32 a, s32 b, s32 c);
-void *func_ov000_022fad3c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022f784c(void *o, s32 a, s32 b, s32 c);
 void func_ov000_022f14a8(void);
 
@@ -48,9 +48,9 @@ void func_ov000_022f168c(UnkStruct_022f168c *w) {
         p |= 1;
         p |= data_ov000_02365e20[GetLevel()][0] << 1;
     }
-    o = func_ov000_022fad3c(0xdc, 0, 0, p, 0, 0, 0, 0, 0);
+    o = MapObject_Spawn(0xdc, 0, 0, p, 0, 0, 0, 0, 0);
     wd = data_ov000_02365e60[GetLevel()][w->unk458][w->unk440];
-    x = data_ov000_0236ac60->unk10 - 0x2000 + ((Rand() & 0x3f) << 8);
+    x = gPlayers->unk10 - 0x2000 + ((Rand() & 0x3f) << 8);
     if (w->unk43C != 0)
         x += wd >> 1;
     else

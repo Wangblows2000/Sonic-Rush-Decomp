@@ -33,7 +33,7 @@ typedef struct UnkStruct_022fb17c_c {
 extern UnkStruct_022c4560 data_022c4560;
 extern s32 data_ov001_0231d5ec[][5];
 
-UnkStruct_022fb17c_c *func_ov001_022ffce8(void);
+UnkStruct_022fb17c_c *ExtraBoss_GetWork(void);
 void func_ov001_022fb074(UnkStruct_022fb17c *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
@@ -55,9 +55,9 @@ void func_ov001_022fb17c(UnkStruct_022fb17c *p) {
     o = p->target;
     p->state = func_ov001_022fb074;
     if (o->y < p->y)
-        p->sy = -data_ov001_0231d5ec[GetLevel()][func_ov001_022ffce8()->chr];
+        p->sy = -data_ov001_0231d5ec[GetLevel()][ExtraBoss_GetWork()->chr];
     else
-        p->sy = data_ov001_0231d5ec[GetLevel()][func_ov001_022ffce8()->chr];
+        p->sy = data_ov001_0231d5ec[GetLevel()][ExtraBoss_GetWork()->chr];
     p->unk1D0 = 0;
     Sound_PlaySeqArc(0, 0, 0xaf);
 }

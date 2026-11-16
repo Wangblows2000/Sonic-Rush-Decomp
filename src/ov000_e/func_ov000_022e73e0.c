@@ -17,7 +17,7 @@ struct UnkStruct_022e73e0 {
     s16 unk47C;
 };
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 extern s16 data_0206e470[];
 
 void func_ov000_022e73c4(UnkStruct_022e73e0 *s);
@@ -52,8 +52,8 @@ void func_ov000_022e73e0(UnkStruct_022e73e0 *s) {
     }
     func_ov000_022e9b70(s, 0, 0);
     sn = data_0206e470[((ang & 0xffff) >> 4) * 2];
-    data_ov000_0236ac60->unk14 = (s->unk468 - s->unk46C * sn) >> 4;
+    gPlayers->unk14 = (s->unk468 - s->unk46C * sn) >> 4;
     s->base.unk14 = (s->unk474 - s->unk478 * sn) >> 4;
-    data_ov000_0236ac60->unk10 = (s->unk464 + FX_Mul(0x40000 - s->unk464, s->unk47C)) >> 4;
+    gPlayers->unk10 = (s->unk464 + FX_Mul(0x40000 - s->unk464, s->unk47C)) >> 4;
     s->base.unk10 = (s->unk470 + FX_Mul(0x100000 - s->unk470, s->unk47C)) >> 4;
 }

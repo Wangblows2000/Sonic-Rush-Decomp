@@ -22,19 +22,19 @@ typedef struct {
 } UnkStruct_02338b54;
 
 extern UnkPlayer_02338b54 data_ov000_0236aad8[];
-extern UnkObj_02338b54 *data_ov000_0236ac60[];
+extern UnkObj_02338b54 *gPlayers[];
 void func_ov000_023389f8(void);
 
 void func_ov000_02338b54(UnkStruct_02338b54 *w) {
     UnkPlayer_02338b54 *p = data_ov000_0236aad8;
     UnkObj_02338b54 *o;
 
-    if ((data_ov000_0236ac60[p->unk3A]->unk420 & 0x40) && (u16)(s16)(data_ov000_0236ac60[p->unk3A]->unk328 - 0x21) <= 1) {
+    if ((gPlayers[p->unk3A]->unk420 & 0x40) && (u16)(s16)(gPlayers[p->unk3A]->unk328 - 0x21) <= 1) {
         w->flags |= 2;
         w->unk6 = 0;
         w->unkC = func_ov000_023389f8;
     }
-    o = data_ov000_0236ac60[p->unk3A];
+    o = gPlayers[p->unk3A];
     if ((o->unk420 & 0x80) && (u16)(s16)(o->unk328 - 3) <= 1) {
         w->flags |= 4;
         w->unk6 = 0;

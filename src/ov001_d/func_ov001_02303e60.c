@@ -25,13 +25,13 @@ static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-UnkStruct_02303e60_g *func_ov001_022ffce8(void);
+UnkStruct_02303e60_g *ExtraBoss_GetWork(void);
 s32 func_02002094(s32 n, s32 d);
 UnkStruct_02303e60_e *func_ov001_02303468(void);
 void func_ov001_0230328c(UnkStruct_02303e60_e *e);
 
 void func_ov001_02303e60(s32 x, s32 y, s32 n) {
-    UnkStruct_02303e60_g *g = func_ov001_022ffce8();
+    UnkStruct_02303e60_g *g = ExtraBoss_GetWork();
     UnkStruct_02303e60_e *e;
     s32 i;
     u16 ang;

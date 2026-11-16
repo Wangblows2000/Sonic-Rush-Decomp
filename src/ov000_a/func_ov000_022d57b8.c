@@ -36,7 +36,7 @@ struct UnkStruct_022d57b8 {
 };
 
 void func_ov000_022c5e1c(s32 a, s32 b, s32 x, s32 z, s32 *out);
-void func_ov000_02328580(s32 a, s32 b, s32 c, s32 d);
+void BossEffect_CreateShootBomb(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022d575c(UnkStruct_022d57b8 *s);
 
@@ -50,7 +50,7 @@ void func_ov000_022d57b8(UnkStruct_022d57b8 *s) {
     s->unk14 = 0x1e000;
     s->unk20C &= ~2;
     s->unk22C = 0;
-    func_ov000_02328580(1, s->unk2D8.x >> 4, -s->unk2D8.y >> 4, s->unk2D8.z >> 4);
+    BossEffect_CreateShootBomb(1, s->unk2D8.x >> 4, -s->unk2D8.y >> 4, s->unk2D8.z >> 4);
     Sound_PlaySeqArc(0, 0, 0x96);
     s->unk234 = 0x20;
     s->func = func_ov000_022d575c;

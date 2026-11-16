@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 int func_ov001_022d1048();
-int func_ov001_022d1404();
+int StaffRoll_SetPictureState();
 
 #pragma thumb on
 
@@ -30,7 +30,7 @@ void func_ov001_022d10d8(int param_1)
   if (0x82000 <= *(int *)(param_1 + 0xcbc)) {
     *(undefined4 *)(param_1 + 0xcd4) = 0;
     *(undefined4 *)(param_1 + 0xcec) = 0;
-    func_ov001_022d1404(param_1,((int)func_ov001_022d1048));
+    StaffRoll_SetPictureState(param_1,((int)func_ov001_022d1048));
   }
   return;
 }

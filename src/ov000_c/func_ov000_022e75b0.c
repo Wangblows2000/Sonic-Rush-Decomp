@@ -14,7 +14,7 @@ typedef struct {
     u16 unk47C;
 } UnkStruct_022e75b0;
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 extern u8 data_02250464[];
 
 void func_ov000_022ee198(UnkStruct_022e75b0 *w, s32 a);
@@ -28,21 +28,21 @@ void func_ov000_022e73e0(void);
 void func_ov000_022e75b0(UnkStruct_022e75b0 *w) {
     if (!(w->base.unk58 & 1))
         return;
-    if (!(data_ov000_0236ac60->unk58 & 1))
+    if (!(gPlayers->unk58 & 1))
         return;
     if ((s16)w->base.unk1F0 > 0)
         return;
     func_ov000_022ee198(w, 0x3c);
     func_ov000_022e9b70(w, 0, 0);
     w->base.unk5C |= 4;
-    data_ov000_0236ac60->unk5C &= ~1;
+    gPlayers->unk5C &= ~1;
     w->base.unk5C |= 1;
-    w->unk464 = data_ov000_0236ac60->unk10 << 4;
-    w->unk468 = data_ov000_0236ac60->unk14 << 4;
+    w->unk464 = gPlayers->unk10 << 4;
+    w->unk468 = gPlayers->unk14 << 4;
     w->unk470 = w->base.unk10 << 4;
     w->unk474 = w->base.unk14 << 4;
     w->unk47C = 0;
-    w->unk46C = (data_ov000_0236ac60->unk10 >> 8) - 0x40;
+    w->unk46C = (gPlayers->unk10 >> 8) - 0x40;
     w->unk46C = ABS(w->unk46C);
     w->unk46C >>= 1;
     w->unk46C = CLAMP(w->unk46C, 0x10, 0x28);

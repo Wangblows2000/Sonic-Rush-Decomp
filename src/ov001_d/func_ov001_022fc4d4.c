@@ -10,7 +10,7 @@ extern UnkStruct_022fc4d4_g data_022c4560;
 
 u8 *func_ov001_022fd428(s32 a, void *b, s32 c, s32 d, s32 e);
 void *func_ov001_02300c94(void);
-u8 *func_ov001_022ffce8(void);
+u8 *ExtraBoss_GetWork(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void func_ov001_022fc494(void);
 void Sound_PlaySeqArc(void *p, u32 a, u32 b);
@@ -30,7 +30,7 @@ static inline s32 GetMode(void) {
 
 void func_ov001_022fc4d4(void *p, s32 y, s32 z) {
     u8 *t;
-    s32 x = *(s32 *)(func_ov001_022ffce8() + 0x31c);
+    s32 x = *(s32 *)(ExtraBoss_GetWork() + 0x31c);
     t = func_ov001_022fd428(6, p, x, y, z);
     if (t == NULL)
         return;

@@ -43,11 +43,11 @@ extern s16 data_0206e470[];
 #define COS_0234ab34(a) data_0206e470[(u32)((IDX_0234ab34(a) << 1) + 1)]
 
 void func_ov000_0234a288(UnkStruct_0234ab34 *w);
-void func_ov000_0234c4a4(UnkStruct_0234ab34 *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234ab34 *w, s32 a);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
 
 void func_ov000_0234ab34(UnkStruct_0234ab34 *w) {
-    func_ov000_0234c4a4(w, 2);
+    Player_SetAnimation(w, 2);
     w->unk5C |= 4;
     w->unk58 |= 0x10;
     w->unk58 |= 0x8000;

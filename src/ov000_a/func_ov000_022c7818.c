@@ -26,7 +26,7 @@ typedef struct UnkStruct_022c7818_3 {
 } UnkStruct_022c7818_3;
 
 extern UnkStruct_022c7818_2 *data_ov000_02369acc;
-extern UnkStruct_022c7818_3 *data_ov000_0236ac60;
+extern UnkStruct_022c7818_3 *gPlayers;
 extern u16 data_ov000_02362b8c[];
 
 s32 func_ov000_022cc4cc(s32 x, s32 y, s32 z, s32 a);
@@ -36,7 +36,7 @@ void func_ov000_022c7818(UnkStruct_022c7818 *s) {
     UnkStruct_022c7818_2 *g = data_ov000_02369acc;
     s16 t;
     u16 lim;
-    t = func_ov000_022cc4cc(data_ov000_0236ac60->unk10, data_ov000_0236ac60->unk14, data_ov000_0236ac60->unk18, 1);
+    t = func_ov000_022cc4cc(gPlayers->unk10, gPlayers->unk14, gPlayers->unk18, 1);
     if (g->unk21C < t) {
         if (t - g->unk21C > 0x100)
             g->unk21C += 0x100;
@@ -48,7 +48,7 @@ void func_ov000_022c7818(UnkStruct_022c7818 *s) {
         else
             g->unk21C = t;
     }
-    t = func_ov000_022cc4cc(data_ov000_0236ac60->unk10, data_ov000_0236ac60->unk14, data_ov000_0236ac60->unk18, 0);
+    t = func_ov000_022cc4cc(gPlayers->unk10, gPlayers->unk14, gPlayers->unk18, 0);
     if (g->unk21E < t) {
         if (t - g->unk21E > 0x100)
             g->unk21E += 0x100;

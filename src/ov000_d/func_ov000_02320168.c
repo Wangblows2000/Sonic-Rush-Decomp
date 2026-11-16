@@ -8,7 +8,7 @@ typedef struct {
     u32 unk54;
 } UnkStruct_02320168;
 
-void func_ov000_02320344(UnkStruct_02320168 *w, u16 i);
+void DecSonicNeonPart_Create(UnkStruct_02320168 *w, u16 i);
 
 void func_ov000_02320168(UnkStruct_02320168 *w) {
     s32 i;
@@ -18,10 +18,10 @@ void func_ov000_02320168(UnkStruct_02320168 *w) {
     if (!(w->unk54 & 0x1000)) {
         w->unk54 |= 0x1000;
         for (i = 0; i < 0xc; i++) {
-            func_ov000_02320344(w, i);
+            DecSonicNeonPart_Create(w, i);
         }
         for (i = 0xd; i < 0x19; i++) {
-            func_ov000_02320344(w, i);
+            DecSonicNeonPart_Create(w, i);
         }
     }
     p = &w->unk8;

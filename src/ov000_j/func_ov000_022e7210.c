@@ -15,7 +15,7 @@ typedef struct {
     s32 unk10;
 } UnkStruct_022c4590;
 
-extern UnkStruct_022e7210_plr *data_ov000_0236ac60;
+extern UnkStruct_022e7210_plr *gPlayers;
 extern UnkStruct_022c4590 data_022c4590;
 
 void func_0204d5f8(void (*f)(void));
@@ -24,6 +24,6 @@ void func_0204eb04(void);
 void func_ov000_022e7210(UnkStruct_022e7210 *p) {
     if (p->unk14 <= 0x6b000)
         return;
-    data_022c4590.unk10 = data_ov000_0236ac60->unk3AE * 1000;
+    data_022c4590.unk10 = gPlayers->unk3AE * 1000;
     func_0204d5f8(func_0204eb04);
 }

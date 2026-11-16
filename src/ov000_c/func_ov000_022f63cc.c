@@ -20,7 +20,7 @@ extern UnkStruct_022c4560 data_022c4560;
 extern s16 data_ov000_02363de4[];
 extern s16 data_ov000_02363dc8[];
 
-void func_ov000_022f62f0(UnkStruct_022f63cc *w);
+void BossFPartDE_State_Unk_ov000_022f62f0(UnkStruct_022f63cc *w);
 
 static inline BOOL IsMode23(void) {
     return data_022c4560.unk10 == 2 || data_022c4560.unk10 == 3;
@@ -38,6 +38,6 @@ void func_ov000_022f63cc(UnkStruct_022f63cc *w) {
     w->unk4B8 = data_ov000_02363de4[GetLevel()];
     w->unk4BC = data_ov000_02363dc8[GetLevel()];
     w->unk4AC = 0;
-    w->base.unk68 = func_ov000_022f62f0;
+    w->base.unk68 = BossFPartDE_State_Unk_ov000_022f62f0;
     ((void (*)(UnkStruct_022f63cc *))w->base.unk68)(w);
 }

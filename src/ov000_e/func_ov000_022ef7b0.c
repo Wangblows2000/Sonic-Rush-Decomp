@@ -46,7 +46,7 @@ typedef struct {
 extern UnkStruct_Boss *data_ov000_02369b84;
 extern UnkStruct_02369ac0 data_ov000_02369ac0;
 extern UnkStruct_022c4560 data_022c4560;
-extern UnkStruct_Player *data_ov000_0236ac60;
+extern UnkStruct_Player *gPlayers;
 extern UnkStruct_0208922c gDisplayMain;
 
 void func_ov000_022f9044(UnkStruct_022ef7b0 *s);
@@ -54,12 +54,12 @@ void func_ov000_022f4cbc(UnkStruct_022ef7b0 *s);
 void StageObj_SetPause(void);
 void func_ov000_022f8b70(u32 a, s32 b);
 void func_ov000_02347c44(UnkStruct_Player *p);
-void func_ov000_0234c4a4(UnkStruct_Player *p, s32 a);
+void Player_SetAnimation(UnkStruct_Player *p, s32 a);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
 void Task_DestroyByTag(s32 a);
 void func_0201bfbc(s32 a);
-void func_ov000_022ef6a0(void);
+void BossFPartD8_State_Unk_ov000_022ef6a0(void);
 
 void func_ov000_022ef7b0(UnkStruct_022ef7b0 *s) {
     UnkStruct_Boss *b = data_ov000_02369b84;
@@ -75,12 +75,12 @@ void func_ov000_022ef7b0(UnkStruct_022ef7b0 *s) {
     StageObj_SetPause();
     func_ov000_022f8b70(data_022c4560.unk0, 0);
     data_022c4560.unk18 &= ~1;
-    func_ov000_02347c44(data_ov000_0236ac60);
-    func_ov000_0234c4a4(data_ov000_0236ac60, 0x30);
-    data_ov000_0236ac60->unk3B2 = 0;
-    data_ov000_0236ac60->base.unk10 = 0x19e00;
-    data_ov000_0236ac60->base.unk14 = 0x2b100;
-    data_ov000_0236ac60->base.unk18 = 0x2000;
+    func_ov000_02347c44(gPlayers);
+    Player_SetAnimation(gPlayers, 0x30);
+    gPlayers->unk3B2 = 0;
+    gPlayers->base.unk10 = 0x19e00;
+    gPlayers->base.unk14 = 0x2b100;
+    gPlayers->base.unk18 = 0x2000;
     s->base.unk18 += 0x1400;
     func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
     data_ov000_02369b84->unk20C &= ~0xe;
@@ -88,5 +88,5 @@ void func_ov000_022ef7b0(UnkStruct_022ef7b0 *s) {
     gDisplayMain.unk20.bits.b6 = 0;
     b->unk20C &= ~0x10;
     func_0201bfbc(0);
-    s->base.unk68 = func_ov000_022ef6a0;
+    s->base.unk68 = BossFPartD8_State_Unk_ov000_022ef6a0;
 }

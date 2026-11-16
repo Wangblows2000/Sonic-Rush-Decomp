@@ -12,7 +12,7 @@ typedef struct {
 } UnkStruct_022d0658;
 
 void func_ov001_022d0220(UnkStruct_022d0658 *p);
-void func_ov001_022d1404(UnkStruct_022d0658 *p, void (*fn)(UnkStruct_022d0658 *));
+void StaffRoll_SetPictureState(UnkStruct_022d0658 *p, void (*fn)(UnkStruct_022d0658 *));
 void func_ov001_022d05f8(UnkStruct_022d0658 *p);
 
 #pragma thumb on
@@ -26,7 +26,7 @@ void func_ov001_022d0658(UnkStruct_022d0658 *p) {
     if (p->unkcd4 + p->unkcec > 0) {
         p->unkcd4 = 0;
         p->unkcec = p->unkcec / 4;
-        func_ov001_022d1404(p, func_ov001_022d05f8);
+        StaffRoll_SetPictureState(p, func_ov001_022d05f8);
     }
 }
 #pragma thumb reset

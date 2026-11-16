@@ -30,7 +30,7 @@ typedef struct {
 
 void func_ov000_02352ee0(void);
 s32 func_ov000_0234cb70();
-s32 func_ov000_0234c4a4();
+s32 Player_SetAnimation();
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_02352fc0(UnkStruct_02352fc0 *w, s32 x, s32 y) {
@@ -45,7 +45,7 @@ void func_ov000_02352fc0(UnkStruct_02352fc0 *w, s32 x, s32 y) {
         return;
     }
     func_ov000_0234cb70(w);
-    func_ov000_0234c4a4(w, 0x29);
+    Player_SetAnimation(w, 0x29);
     w->unk5C |= 4;
     w->unk68 = func_ov000_02352ee0;
     w->unk58 |= 0x10;

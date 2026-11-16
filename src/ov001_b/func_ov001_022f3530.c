@@ -70,7 +70,7 @@ extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
 extern u16 data_ov001_02316840[];
 
-s32 func_ov001_022ffce8(void);
+s32 ExtraBoss_GetWork(void);
 UnkStruct_022f3530_o *func_ov001_023014f4(s32 a, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 func_02006abc(s32 i);
@@ -103,7 +103,7 @@ UnkStruct_022f3530_o *func_ov001_022f3530(void) {
     UnkStruct_022f3530_a *a2;
     UnkStruct_022f3530_o *o2;
 
-    func_ov001_022ffce8();
+    ExtraBoss_GetWork();
     o = func_ov001_023014f4(2, 0x2f00);
     data_ov001_0231f078[0] = o;
     d = (UnkStruct_022f3530_d *)Heap_Alloc(gMainHeap, 0x200, 0x20);

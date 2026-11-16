@@ -20,12 +20,12 @@ typedef struct {
 } UnkStruct_0234f320;
 
 void func_ov000_0234f054(void);
-void func_ov000_0234c4a4(UnkStruct_0234f320 *w, s32 a);
+void Player_SetAnimation(UnkStruct_0234f320 *w, s32 a);
 void func_ov000_02311eac(UnkStruct_0234f320 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void func_ov000_0234f320(UnkStruct_0234f320 *w) {
-    func_ov000_0234c4a4(w, 0x13);
+    Player_SetAnimation(w, 0x13);
     w->unk5C |= 4;
     w->unk68 = func_ov000_0234f054;
     w->unk58 |= 0x80;

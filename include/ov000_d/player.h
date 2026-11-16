@@ -62,7 +62,7 @@ static inline u16 Player_Rand(void) {
     return (u16)(gRandSeed >> 16);
 }
 
-void func_ov000_0234c4a4(UnkStruct_Player *w, s32 a);
+void Player_SetAnimation(UnkStruct_Player *w, s32 a);
 void func_ov000_0234307c(UnkStruct_Player *w, s16 a);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void func_0201c070(void *p, s32 a);

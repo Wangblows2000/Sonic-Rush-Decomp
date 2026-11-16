@@ -25,7 +25,7 @@ extern UnkStruct_022c4680 gSaveData;
 extern UnkStruct_022c46c0 data_022c46c0;
 
 void SysSound_Init(void);
-void func_ov001_022ceef4(void);
+void PostStaffRoll_InitDisplay(void);
 UnkTask_022cf324 *Task_Create(void (*fn)(void), void *a, s32 b, s32 c, s32 d, s32 size);
 void func_ov001_022cf190(void);
 void func_02050078(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
@@ -37,7 +37,7 @@ void func_ov001_022cf324(s32 arg) {
     if ((gSaveData.unkc >= 0x1a || data_022c46c0.unk24 >= 0x1c) && !(gSaveData.flags & 0x200)) {
         UnkWork_022cf324 *w;
         SysSound_Init();
-        func_ov001_022ceef4();
+        PostStaffRoll_InitDisplay();
         w = Task_Create(func_ov001_022cf190, NULL, 0, 0x1000, 0, sizeof(UnkWork_022cf324))->work;
         w->timer = 0;
         w->arg = arg;

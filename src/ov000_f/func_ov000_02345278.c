@@ -90,13 +90,13 @@ typedef struct {
 extern UnkStruct_02345278_4560 data_022c4560;
 extern UnkStruct_02345278_4590 data_022c4590;
 extern UnkStruct_02345278_Cam data_ov000_0236aad8;
-extern UnkStruct_02345278 *volatile data_ov000_0236ac60[];
+extern UnkStruct_02345278 *volatile gPlayers[];
 
 void func_0206c95c(void);
 UnkStruct_02345278_Frame *func_0206c938(s32 a, u8 b);
 void func_ov000_0233b1b8(u8 a);
 void func_ov000_0233b198(u8 a);
-void func_ov000_0234c4a4(UnkStruct_02345278 *w, u8 state);
+void Player_SetAnimation(UnkStruct_02345278 *w, u8 state);
 s32 ObjRect_HitCenterX(void *a, void *b);
 s32 ObjRect_HitCenterY(void *a, void *b);
 void func_ov000_0232ff6c(s32 a, s32 b);
@@ -128,7 +128,7 @@ void func_ov000_02345278(UnkStruct_02345278 *w) {
     func_ov000_0233b198(w->unk327);
     if (w->unk328 != f->unk10) {
         w->unk5C &= ~0x400;
-        func_ov000_0234c4a4(w, f->unk10);
+        Player_SetAnimation(w, f->unk10);
     }
     w->unkBE = f->unkE;
     w->unk106 = f->unkE;
@@ -157,9 +157,9 @@ void func_ov000_02345278(UnkStruct_02345278 *w) {
     }
     w->unk58 |= 0x2100;
     if (w->unk32C & 0x20000) {
-        data_ov000_0236ac60[0]->unk3BE = 0xc;
+        gPlayers[0]->unk3BE = 0xc;
         if (f->unk20 < 0) {
-            p = data_ov000_0236ac60[0];
+            p = gPlayers[0];
             if (p->unk58 & 0x10) {
                 if (p->unk2E > -0x480) {
                     p->unk2E = -0x480;
@@ -170,7 +170,7 @@ void func_ov000_02345278(UnkStruct_02345278 *w) {
                 }
             }
         } else {
-            p = data_ov000_0236ac60[0];
+            p = gPlayers[0];
             if (p->unk58 & 0x10) {
                 if (p->unk2E < 0x480) {
                     p->unk2E = 0x480;
@@ -181,9 +181,9 @@ void func_ov000_02345278(UnkStruct_02345278 *w) {
                 }
             }
         }
-        data_ov000_0236ac60[0]->unk62 = 0x44;
-        a = ObjRect_HitCenterX(w->unk2A0, data_ov000_0236ac60[0]->unk2A0);
-        func_ov000_0232ff6c(a, ObjRect_HitCenterY(w->unk2A0, data_ov000_0236ac60[0]->unk2A0));
+        gPlayers[0]->unk62 = 0x44;
+        a = ObjRect_HitCenterX(w->unk2A0, gPlayers[0]->unk2A0);
+        func_ov000_0232ff6c(a, ObjRect_HitCenterY(w->unk2A0, gPlayers[0]->unk2A0));
         Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
     }
     if (data_ov000_0236aad8.x - 0x2000 < w->x && data_ov000_0236aad8.x + 0x12000 > w->x &&

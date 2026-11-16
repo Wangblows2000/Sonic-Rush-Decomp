@@ -15,10 +15,10 @@ typedef struct UnkStruct_0230b9f4 {
     u32 unk1F4;
 } UnkStruct_0230b9f4;
 
-void func_ov000_0230b6a0(void);
+void Hand2d_State_Unk_ov000_0230b6a0(void);
 
 void func_ov000_0230b9f4(UnkStruct_0230b9f4 *s) {
-    s->func = func_ov000_0230b6a0;
+    s->func = Hand2d_State_Unk_ov000_0230b6a0;
     s->unkC = 0;
     s->unk8 = 0;
     s->unk2E = 0;

@@ -26,7 +26,7 @@ extern UnkCfg_0234cfc8 data_022c4560;
 extern UnkCfg2_0234cfc8 data_022c4590;
 extern UnkCfg3_0234cfc8 gSaveData;
 
-void func_ov000_0235f254(void);
+void ResultsScreen_Create(void);
 void SceneChange_Unk_02054df8(void);
 void func_02059884(u8 a, u8 b, s32 c);
 u16 func_02059874(void);
@@ -39,7 +39,7 @@ void func_ov000_0234cfc8(void) {
     case 1:
         data_022c4590.unk24 &= ~1;
         data_022c4590.unk24 &= ~2;
-        func_ov000_0235f254();
+        ResultsScreen_Create();
         return;
     case 2:
         SceneChange_Unk_02054df8();

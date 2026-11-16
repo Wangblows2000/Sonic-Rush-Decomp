@@ -4,7 +4,7 @@
 #pragma thumb on
 
 extern u8 gSaveData[];
-s32 func_ov001_022e2ad8();
+s32 ZoneMap_IsBlaze();
 s32 func_ov001_022e2a44();
 s32 func_ov001_022e299c();
 
@@ -13,7 +13,7 @@ s32 func_ov001_022e26d0(void) {
     if (t0 != 0) {
         return 0;
     }
-    s32 t1 = func_ov001_022e2ad8(0x1000, t0);
+    s32 t1 = ZoneMap_IsBlaze(0x1000, t0);
     if (t1 == 0) {
         s32 t2 = func_ov001_022e2a44();
         if (t2 >= 0x22) {

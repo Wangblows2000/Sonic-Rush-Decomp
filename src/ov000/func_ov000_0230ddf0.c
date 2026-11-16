@@ -5,8 +5,8 @@ typedef struct UnkStruct_0230ddf0 {
     void (*func)(void);
 } UnkStruct_0230ddf0;
 
-void func_ov000_0230ddac(void);
+void ItemBox_State_Unk_ov000_0230ddac(void);
 
 void func_ov000_0230ddf0(UnkStruct_0230ddf0 *s) {
-    s->func = func_ov000_0230ddac;
+    s->func = ItemBox_State_Unk_ov000_0230ddac;
 }

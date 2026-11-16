@@ -43,7 +43,7 @@ typedef struct {
     UnkStruct_02331d44_P *unk88;
 } UnkStruct_02331d44;
 
-void func_ov000_02351a8c(void);
+void Player_State_Rocket(void);
 u16 func_020027a4(s32 y, s32 x);
 void StageObj_ReleaseSpriteVram(void *w);
 
@@ -55,7 +55,7 @@ void func_ov000_02331d44(UnkStruct_02331d44 *w) {
     w->unk10 = p->unk10;
     w->unk14 = w->unk88->unk14;
     w->unk18 = w->unk88->unk18;
-    if (p->unk68 == func_ov000_02351a8c) {
+    if (p->unk68 == Player_State_Rocket) {
         w->unk5C &= ~1;
         if (p->unk5C & 1)
             w->unk1 = w->unk88->unk1 + 0x80;

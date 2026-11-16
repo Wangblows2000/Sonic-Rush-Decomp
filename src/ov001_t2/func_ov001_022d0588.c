@@ -13,7 +13,7 @@ typedef struct {
 } UnkStruct_022d0588;
 
 void func_ov001_022d0220(UnkStruct_022d0588 *p);
-void func_ov001_022d1404(UnkStruct_022d0588 *p, void (*fn)(UnkStruct_022d0588 *));
+void StaffRoll_SetPictureState(UnkStruct_022d0588 *p, void (*fn)(UnkStruct_022d0588 *));
 void func_ov001_022d0544(UnkStruct_022d0588 *p);
 
 #pragma thumb on
@@ -28,7 +28,7 @@ void func_ov001_022d0588(UnkStruct_022d0588 *p) {
         p->unkcec = 0;
         p->unkcd8 = 0;
         p->unkcf0 = 0;
-        func_ov001_022d1404(p, func_ov001_022d0544);
+        StaffRoll_SetPictureState(p, func_ov001_022d0544);
     }
 }
 #pragma thumb reset

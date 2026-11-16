@@ -1,4 +1,4 @@
-/* paramclone of func_ov001_022c89c8 (src/ov001_t/func_ov001_022c89c8.c); immediates and relocations remapped. */
+/* paramclone of OptionsFadeTask_Main (src/ov001_t/OptionsFadeTask_Main.c); immediates and relocations remapped. */
 #include <nitro/types.h>
 
 typedef struct {

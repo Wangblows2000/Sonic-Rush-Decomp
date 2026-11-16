@@ -20,7 +20,7 @@ typedef struct UnkStruct_022c71d8_2 {
 } UnkStruct_022c71d8_2;
 
 extern UnkStruct_022c71d8 data_ov000_0236a444;
-extern UnkStruct_022c71d8_2 *data_ov000_0236ac60;
+extern UnkStruct_022c71d8_2 *gPlayers;
 
 void func_ov000_022c71d8(s32 dir) {
     data_ov000_0236a444.unk90 = 0;
@@ -30,11 +30,11 @@ void func_ov000_022c71d8(s32 dir) {
     data_ov000_0236a444.unkCC = 0xf000;
     if (dir > 0) {
         data_ov000_0236a444.unkD6 = 0xcaaa;
-        data_ov000_0236ac60->unk430 = 0x10;
-        data_ov000_0236ac60->unk432 = 0x20;
+        gPlayers->unk430 = 0x10;
+        gPlayers->unk432 = 0x20;
     } else {
         data_ov000_0236a444.unkD6 = 0x3555;
-        data_ov000_0236ac60->unk430 = 0x20;
-        data_ov000_0236ac60->unk432 = 0x10;
+        gPlayers->unk430 = 0x20;
+        gPlayers->unk432 = 0x10;
     }
 }

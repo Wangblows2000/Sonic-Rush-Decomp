@@ -81,7 +81,7 @@ typedef struct UnkStruct_022d9ab0_4 {
 
 extern UnkStruct_022d9ab0_7 data_ov000_02369ac0;
 extern UnkStruct_022d9ab0_4 data_022c4560;
-extern UnkStruct_022d9ab0_p *data_ov000_0236ac60;
+extern UnkStruct_022d9ab0_p *gPlayers;
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void StageObj_SetPause(void);
@@ -89,7 +89,7 @@ void func_ov000_02347c44(UnkStruct_022d9ab0_p *p);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
 void func_0201bfbc(s32 a);
-void func_ov000_022d9aa0(UnkStruct_022d9ab0 *s);
+void Boss3PartCC_State_Unk_ov000_022d9aa0(UnkStruct_022d9ab0 *s);
 
 void func_ov000_022d9ab0(UnkStruct_022d9ab0 *s) {
     UnkStruct_022d9ab0_brl *a = s->unk214;
@@ -115,14 +115,14 @@ void func_ov000_022d9ab0(UnkStruct_022d9ab0 *s) {
     a->unk30 = 0;
     b->unk10 = -0x4600;
     b->unk2E = 0;
-    func_ov000_02347c44(data_ov000_0236ac60);
-    data_ov000_0236ac60->unk3B2 = 0;
-    data_ov000_0236ac60->unk5C |= 0x20;
-    data_ov000_0236ac60->unk32C |= 0x200000;
-    data_ov000_0236ac60->unk424 = 0;
-    data_ov000_0236ac60->unk422 = data_ov000_0236ac60->unk424;
-    data_ov000_0236ac60->unk420 = data_ov000_0236ac60->unk422;
+    func_ov000_02347c44(gPlayers);
+    gPlayers->unk3B2 = 0;
+    gPlayers->unk5C |= 0x20;
+    gPlayers->unk32C |= 0x200000;
+    gPlayers->unk424 = 0;
+    gPlayers->unk422 = gPlayers->unk424;
+    gPlayers->unk420 = gPlayers->unk422;
     func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
     func_0201bfbc(0);
-    s->func = func_ov000_022d9aa0;
+    s->func = Boss3PartCC_State_Unk_ov000_022d9aa0;
 }

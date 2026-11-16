@@ -21,7 +21,7 @@ typedef int code();
 
 extern unsigned char data_ov000_0236a48c[];
 extern unsigned char gDisplayMain[];
-int func_ov000_022ef4ec();
+int BossFPartD8_State_Unk_ov000_022ef4ec();
 int func_ov000_022c5c80();
 int Sound_PlaySeqArc();
 
@@ -41,7 +41,7 @@ void func_ov000_022ef528(int param_1)
   func_ov000_022c5c80(6);
   *(undefined2 *)(((int)gDisplayMain) + 0x48) = 0x10;
   Sound_PlaySeqArc(0,0,0x7c);
-  uVar2 = ((int)func_ov000_022ef4ec);
+  uVar2 = ((int)BossFPartD8_State_Unk_ov000_022ef4ec);
   *(undefined2 *)(param_1 + 0x434) = 0;
   *(undefined4 *)(param_1 + 0x68) = uVar2;
   return;

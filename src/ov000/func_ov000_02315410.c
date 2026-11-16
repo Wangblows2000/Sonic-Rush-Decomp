@@ -5,8 +5,8 @@ typedef struct UnkStruct_02315410 {
     void (*func)(void);
 } UnkStruct_02315410;
 
-void func_ov000_0231540c(void);
+void SandSlider_State_Idle(void);
 
 void func_ov000_02315410(UnkStruct_02315410 *s) {
-    s->func = func_ov000_0231540c;
+    s->func = SandSlider_State_Idle;
 }

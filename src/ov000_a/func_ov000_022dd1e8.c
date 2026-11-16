@@ -73,14 +73,14 @@ typedef struct UnkStruct_022dd1e8_g {
 
 extern UnkStruct_022dd1e8_w *data_ov000_02369b2c;
 extern UnkStruct_022dd1e8_c data_ov000_0236a48c;
-extern UnkStruct_022dd1e8_p *data_ov000_0236ac60;
+extern UnkStruct_022dd1e8_p *gPlayers;
 extern UnkStruct_022dd1e8_g gDisplayMain;
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void func_02021c24(void *p);
 void func_02000dfc(void *m);
 void StageObj_ClearPause(void);
-UnkStruct_022dd1e8_q *func_ov000_023287b8(s32 a, s32 b, s32 c, s32 d);
+UnkStruct_022dd1e8_q *BossEffect_CreateBlast4(s32 a, s32 b, s32 c, s32 d);
 void func_020537b4(s32 a);
 void func_020533e0(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -129,9 +129,9 @@ void func_ov000_022dd1e8(UnkStruct_022dd1e8 *t) {
     GX_SetVisiblePlane(GX_GetVisiblePlane() & ~4);
     w->unk54 &= ~0x20;
     StageObj_ClearPause();
-    data_ov000_0236ac60->unk5C |= 0x20;
-    data_ov000_0236ac60->unk32C |= 0x200000;
-    func_ov000_023287b8(0, 0, 0x1ce00, 0xfa00)->unk248 = 0x800;
+    gPlayers->unk5C |= 0x20;
+    gPlayers->unk32C |= 0x200000;
+    BossEffect_CreateBlast4(0, 0, 0x1ce00, 0xfa00)->unk248 = 0x800;
     gDisplayMain.unk48 = 0x10;
     func_020537b4(0xd);
     func_020533e0(0x13, 0xf0);

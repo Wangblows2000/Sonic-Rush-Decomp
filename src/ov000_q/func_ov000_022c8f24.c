@@ -72,7 +72,7 @@ extern UnkStruct_022c8f24_4 data_022c4560;
 extern UnkStruct_022c8f24_5 data_ov000_02369ac0;
 extern s16 data_ov000_02362d04[][8];
 extern s16 data_ov000_02362ce4[][8];
-extern s32 data_ov000_0236ac60;
+extern s32 gPlayers;
 extern UnkStruct_0236a444 data_ov000_0236a444;
 
 BOOL func_ov000_022cc6d4(void);
@@ -110,7 +110,7 @@ void func_ov000_022c8f24(UnkStruct_022c8f24 *s) {
     p->unk216 |= 4;
     p->unk29A |= 4;
     p->unk26E &= ~4;
-    t = data_ov000_0236ac60;
+    t = gPlayers;
     z = 0;
     data_ov000_0236a444.unkA0 = -0x1c0000;
     data_ov000_0236a444.unk84 = t;

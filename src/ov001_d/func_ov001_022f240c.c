@@ -88,7 +88,7 @@ typedef struct UnkStruct_022f240c_p {
 } UnkStruct_022f240c_p;
 
 void func_ov001_022f22ac(void);
-UnkStruct_022f240c_g *func_ov001_022ffce8(void);
+UnkStruct_022f240c_g *ExtraBoss_GetWork(void);
 s32 func_02002094(s32 n, s32 d);
 s32 func_0200225c(s32 n, s32 d);
 void func_ov001_022fa990(s32 a, s32 b, s32 c, s32 d, s16 e);
@@ -103,7 +103,7 @@ void func_ov001_022f240c(UnkStruct_022f240c_p *p) {
     p->unk74 = func_ov001_022f22ac;
     Model_SetAnimation(a, 0, data_ov001_0231f068, data_ov001_02316840[0x18], 0);
     Model_SetAnimation(a, 4, data_ov001_0231f074, data_ov001_02316840[0x19], 0);
-    a->unk114 = func_02002094(func_ov001_022ffce8()->unk308 * 0x1333 + (func_ov001_022ffce8()->unk30C - func_ov001_022ffce8()->unk308) * 0x1800, func_ov001_022ffce8()->unk30C);
+    a->unk114 = func_02002094(ExtraBoss_GetWork()->unk308 * 0x1333 + (ExtraBoss_GetWork()->unk30C - ExtraBoss_GetWork()->unk308) * 0x1800, ExtraBoss_GetWork()->unk30C);
     Model_SetAnimation(b, 0, data_ov001_0231f068, data_ov001_02316840[0x1a], 0);
     Model_SetAnimation(b, 4, data_ov001_0231f074, data_ov001_02316840[0x1b], 0);
     b->unk114 = a->unk114;

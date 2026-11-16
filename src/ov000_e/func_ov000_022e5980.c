@@ -12,7 +12,7 @@ typedef struct {
     s16 unkF64;
 } UnkStruct_Boss;
 
-extern UnkStruct_StageObj *data_ov000_0236ac60;
+extern UnkStruct_StageObj *gPlayers;
 
 void func_ov000_022e5c1c(UnkStruct_Boss *w);
 void func_ov000_022e1b48(s32 a);
@@ -22,7 +22,7 @@ void func_ov000_022e5980(UnkStruct_Boss *w) {
 
     w->unkF50--;
     func_ov000_022e5c1c(w);
-    d = data_ov000_0236ac60->unk10 - w->base.unk10;
+    d = gPlayers->unk10 - w->base.unk10;
     if (w->unkF54 >= 0) {
         if (w->base.unk10 > 0x2aa00 || d < -0x8000) {
             w->unkF54 = -w->unkF54;

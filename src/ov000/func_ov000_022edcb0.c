@@ -14,10 +14,10 @@ typedef struct UnkStruct_022edcb0 {
 
 extern UnkStruct_022edcb0_2 data_ov000_0236a444;
 
-void func_ov000_022edc94(void);
+void Boss7_State_Unk_ov000_022edc94(void);
 
 void func_ov000_022edcb0(UnkStruct_022edcb0 *s) {
     s->unk210 = 3;
     data_ov000_0236a444.unkDC = 2;
-    s->func = func_ov000_022edc94;
+    s->func = Boss7_State_Unk_ov000_022edc94;
 }

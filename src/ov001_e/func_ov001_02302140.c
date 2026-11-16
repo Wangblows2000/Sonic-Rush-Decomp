@@ -32,11 +32,11 @@ typedef struct UnkStruct_02302140 {
     UnkStruct_02302140_w *work;
 } UnkStruct_02302140;
 
-UnkStruct_02302140_k *func_ov001_022ffce8(void);
+UnkStruct_02302140_k *ExtraBoss_GetWork(void);
 
 void func_ov001_02302140(UnkStruct_02302140 *p) {
     UnkStruct_02302140_w *w = p->work;
-    u16 held = func_ov001_022ffce8()->held;
+    u16 held = ExtraBoss_GetWork()->held;
     s32 accel = w->cfg->accel;
     s32 decel = w->cfg->decel;
     s32 max = w->cfg->max;

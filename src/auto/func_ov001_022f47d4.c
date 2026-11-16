@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov001_022ffce8();
+s32 ExtraBoss_GetWork();
 void func_ov001_022f4634();
 extern u8 data_ov001_0231f068[];
 s32 Model_SetAnimation();
@@ -12,7 +12,7 @@ s32 func_ov001_02303a80();
 void func_ov001_022f47d4(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x1dc);
     s32 t1 = *(u32 *)((u8 *)p0 + 0x84);
-    s32 t2 = func_ov001_022ffce8();
+    s32 t2 = ExtraBoss_GetWork();
     *(u32 *)((u8 *)t0 + 0x8) = *(u32 *)t0;
     *(u32 *)t0 = 3;
     *(u32 *)((u8 *)p0 + 0x74) = (u32)func_ov001_022f4634;
@@ -40,7 +40,7 @@ void func_ov001_022f47d4(u8 *p0) {
     s32 t7 = (*(u32 *)t5 & ~2);
     *(u32 *)t5 = t7;
     *(u32 *)((u8 *)t5 + 0x10) = 0;
-    s32 t8 = func_ov001_022ffce8(t7, 0, t6, t5);
+    s32 t8 = ExtraBoss_GetWork(t7, 0, t6, t5);
     s32 t9 = (*(u32 *)t8 | 2);
     *(u32 *)t8 = t9;
     func_ov001_02303abc(0, t9);

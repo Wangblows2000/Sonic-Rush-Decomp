@@ -26,7 +26,7 @@ extern s32 data_ov001_0231f520;
 extern s32 data_ov001_0231f524;
 
 UnkStruct_02305648_t *func_ov001_02300c94(void);
-UnkStruct_02305648_g *func_ov001_022ffce8(void);
+UnkStruct_02305648_g *ExtraBoss_GetWork(void);
 
 void func_ov001_02305648(void) {
     UnkStruct_02305648_t *t;
@@ -38,7 +38,7 @@ void func_ov001_02305648(void) {
     s32 sp;
 
     t = func_ov001_02300c94();
-    g = func_ov001_022ffce8();
+    g = ExtraBoss_GetWork();
     {
         s32 tx = t->x;
         s32 ty = t->y;

@@ -90,10 +90,10 @@ typedef struct {
 extern UnkStruct_022c4560 data_022c4560;
 extern UnkStruct_0236ab3a data_ov000_0236ab3a[];
 
-void func_ov000_0234419c(void);
-void func_ov000_023439b8(void);
-void func_ov000_02343940(void);
-void func_ov000_023492f0(void);
+void Player_In(void);
+void Player_SpriteCallback(void);
+void Player_Collide(void);
+void Player_OnHurt(void);
 void func_ov000_02342b78(void);
 void func_ov000_0234c644(UnkStruct_0234cb70 *w);
 void func_0201c070(void *a, s32 b);
@@ -110,14 +110,14 @@ void func_ov000_0234cb70(UnkStruct_0234cb70 *w) {
             w->unk32C &= ~0x4000000;
         }
     }
-    w->unk6C = func_ov000_0234419c;
-    w->unk74 = func_ov000_023439b8;
-    w->unk78 = func_ov000_02343940;
+    w->unk6C = Player_In;
+    w->unk74 = Player_SpriteCallback;
+    w->unk78 = Player_Collide;
     w->unk64 = -7;
     w->unk66 = 7;
     w->unk65 = -0xc;
     w->unk67 = 0xd;
-    w->coll2A0.unk1C = func_ov000_023492f0;
+    w->coll2A0.unk1C = Player_OnHurt;
     w->coll2A0.unk28 = 0x21;
     w->coll2A0.unkA &= ~0x300;
     w->coll2A0.unkA |= 0x20;

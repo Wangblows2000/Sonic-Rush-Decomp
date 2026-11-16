@@ -6,7 +6,7 @@ typedef struct {
 } UnkStruct_022d177c;
 
 void func_ov001_022d0070(UnkStruct_022d177c *p);
-void func_ov001_022d2234(UnkStruct_022d177c *p, void (*fn)(UnkStruct_022d177c *));
+void StaffRoll_SetState(UnkStruct_022d177c *p, void (*fn)(UnkStruct_022d177c *));
 void func_ov001_022d1710(UnkStruct_022d177c *p);
 void func_ov001_022d1904(UnkStruct_022d177c *p);
 
@@ -18,9 +18,9 @@ void func_ov001_022d177c(UnkStruct_022d177c *p) {
     c = &p->count;
     (*c)++;
     if (*c >= 4) {
-        func_ov001_022d2234(p, func_ov001_022d1710);
+        StaffRoll_SetState(p, func_ov001_022d1710);
         return;
     }
-    func_ov001_022d2234(p, func_ov001_022d1904);
+    StaffRoll_SetState(p, func_ov001_022d1904);
 }
 #pragma thumb reset

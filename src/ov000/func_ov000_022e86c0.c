@@ -15,14 +15,14 @@ struct UnkStruct_022e86c0 {
     void (*func)(UnkStruct_022e86c0 *s);
 };
 
-extern UnkStruct_022e86c0_2 *data_ov000_0236ac60;
+extern UnkStruct_022e86c0_2 *gPlayers;
 
 void func_ov000_022e9b70(UnkStruct_022e86c0 *s, s32 a, s32 b);
 void func_ov000_022e8644(UnkStruct_022e86c0 *s);
 
 void func_ov000_022e86c0(UnkStruct_022e86c0 *s) {
     func_ov000_022e9b70(s, 1, 0);
-    if (s->unk10 > data_ov000_0236ac60->unk10)
+    if (s->unk10 > gPlayers->unk10)
         s->unk5C |= 1;
     else
         s->unk5C &= ~1;

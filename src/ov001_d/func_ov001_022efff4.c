@@ -76,13 +76,13 @@ typedef struct UnkStruct_022efff4_p {
 } UnkStruct_022efff4_p;
 
 void func_ov001_022efea0(void);
-u32 *func_ov001_022ffce8(void);
+u32 *ExtraBoss_GetWork(void);
 
 void func_ov001_022efff4(UnkStruct_022efff4_p *p) {
     UnkStruct_022efff4_o *b;
     UnkStruct_022efff4_o *a;
 
-    if (!(*func_ov001_022ffce8() & 0x40)) {
+    if (!(*ExtraBoss_GetWork() & 0x40)) {
         a = p->unk84;
         b = p->unk1DC->unk18->unk84;
         p->unk74 = func_ov001_022efea0;

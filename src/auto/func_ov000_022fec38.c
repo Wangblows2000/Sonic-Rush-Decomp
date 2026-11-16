@@ -3,7 +3,7 @@
 
 s32 func_ov000_022faf48();
 void func_ov000_022fea7c();
-s32 func_ov000_022fbcac();
+s32 EffEntrance_Create();
 
 void func_ov000_022fec38(u8 *p0) {
     func_ov000_022faf48(p0, 0);
@@ -20,5 +20,5 @@ void func_ov000_022fec38(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0xc) = 0x18;
     *(u32 *)((u8 *)p0 + 0x8) = 0;
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022fea7c;
-    func_ov000_022fbcac(p0, 0, -16, (u32)func_ov000_022fea7c);
+    EffEntrance_Create(p0, 0, -16, (u32)func_ov000_022fea7c);
 }

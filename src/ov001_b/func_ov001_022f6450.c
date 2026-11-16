@@ -29,7 +29,7 @@ typedef struct UnkStruct_022f6450_p {
 
 extern u32 gRandSeed;
 
-UnkStruct_022f6450_p *func_ov001_022ffce8(void);
+UnkStruct_022f6450_p *ExtraBoss_GetWork(void);
 void func_ov001_022f612c(UnkStruct_022f6450 *w);
 void func_ov001_022f589c(UnkStruct_022f6450 *w);
 void func_ov001_022f5384(UnkStruct_022f6450 *w);
@@ -42,7 +42,7 @@ static inline u16 Rand(void) {
 }
 
 void func_ov001_022f6450(UnkStruct_022f6450 *w) {
-    UnkStruct_022f6450_p *p = func_ov001_022ffce8();
+    UnkStruct_022f6450_p *p = ExtraBoss_GetWork();
     UnkStruct_022f6450_s *s = w->unk1DC;
     s32 r;
 
