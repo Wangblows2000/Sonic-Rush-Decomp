@@ -1,4 +1,3 @@
-// cc: 1.2/sp2 (does not match default 1.2/sp3)
 #include <nitro/types.h>
 
 #pragma thumb on

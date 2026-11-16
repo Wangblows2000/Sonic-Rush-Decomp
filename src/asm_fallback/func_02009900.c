@@ -1,4 +1,4 @@
-// asm: fallback — C attempts did not match (best C draft: /home/claude/w_main_c2/9900i.c)
+// asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
 asm void func_02009900(void)

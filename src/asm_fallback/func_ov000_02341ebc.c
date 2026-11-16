@@ -1,4 +1,4 @@
-// asm: fallback — C attempts did not match (best C draft: /home/claude/w_ov000t/ebp_opt_dead_code.c)
+// asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
 extern u32 data_02072c78;

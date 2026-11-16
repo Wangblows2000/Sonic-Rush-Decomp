@@ -1,4 +1,4 @@
-// asm: fallback — C attempts did not match (best C draft: /home/claude/w_ov001j/var_func_ov001_022fdbc0_l2.c)
+// asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
 extern void DC_StoreRange(void);

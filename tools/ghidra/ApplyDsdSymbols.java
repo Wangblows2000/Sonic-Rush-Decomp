@@ -8,8 +8,8 @@
 //   SourceType.ANALYSIS; any other name with SourceType.IMPORTED so that the
 //   distinction between unknown and named symbols survives in Ghidra.
 //
-// STATUS: written against the Ghidra 11.x API, not yet executed in this
-// project's CI (see docs/research/0007-ghidra.md).
+// STATUS: used with Ghidra 12.2 + JDK 25 via tools/ghidra/import.sh; Thumb
+// context is set for all functions before disassembly (docs/research/0007-ghidra.md).
 //@category SonicRush
 
 import java.io.*;

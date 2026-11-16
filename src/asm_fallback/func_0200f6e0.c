@@ -1,4 +1,4 @@
-// asm: fallback — C attempts did not match (best C draft: /home/claude/w_main_d3/f6e0_i.c)
+// asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
 extern void MI_CpuFill8(void);

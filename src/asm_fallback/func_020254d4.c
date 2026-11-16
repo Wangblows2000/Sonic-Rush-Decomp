@@ -1,4 +1,4 @@
-// asm: fallback — C attempts did not match (best C draft: /home/claude/w_main_c2/54d4P_best.c)
+// asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
 extern void FX_GetDivResultFx64c(void);

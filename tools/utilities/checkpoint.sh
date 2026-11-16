@@ -38,7 +38,7 @@ for p in glob.glob('config/eur/arm9/**/delinks.txt',recursive=True):
 print('\n'.join(sorted(s)))
 EOF
 )
-git add config include tools docs state nearmiss README.md CLAUDE.md .claude STATUS.md PLAN.md >/dev/null 2>&1
+git add config include tools docs state nearmiss README.md CLAUDE.md AGENTS.md .claude STATUS.md PLAN.md CONTRIBUTING.md INSTALL.md >/dev/null 2>&1
 echo "$regs" | xargs -r git add >/dev/null 2>&1
 if ! git diff --cached --quiet; then
   git commit -q -m "Checkpoint: ${summary}

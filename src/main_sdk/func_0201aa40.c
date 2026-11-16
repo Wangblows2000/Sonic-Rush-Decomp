@@ -1,4 +1,3 @@
-// cc: 1.2/sp2p3
 #include <nitro/types.h>
 
 void OS_UnLockCartridge(u16 id);

@@ -1,4 +1,3 @@
-// cc: 1.2/sp2p3
 #include <nitro/types.h>
 
 u32 func_0200f348(void);

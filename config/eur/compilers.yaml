@@ -1,11 +1,11 @@
 # Compiler configuration for Sonic Rush (EUR).
 #
-# STATUS (2026-11-15): CodeWarrior for NINTENDO DS **1.2** family verified for
-# main-module game/SDK code: 8 reconstructed functions (ARM and Thumb) match
-# byte-for-byte on 1.2/base, sp2, sp2p3, sp3 and sp4, and 3 of them fail on
-# 1.2/b56 and every 2.0 release (tools/matching/compiler_sweep.py,
-# docs/research/0004-compiler.md). The exact service pack is not yet
-# distinguished; sp3 is used as the working default.
+# STATUS (2026-11-16): CodeWarrior for NINTENDO DS 1.2/sp2 is the verified
+# compiler for all ARM9 code (main, ITCM, ov000, ov001): every C translation unit
+# in the build matches with the default flags below (per-file overrides via a
+# `// flags:` first line). sp2 is the only build that reproduces the Thumb switch
+# tables; sp3/sp4 emit `ldm {pc}` epilogues. The linker is 1.2/sp3.
+# History: docs/research/0004-compiler.md.
 #
 # Path globs are matched in order; first match wins.
 
@@ -23,26 +23,12 @@ default:
     -fp soft -interworking -sym on -gccinc -nolink
     -msgstyle gcc -w off -lang c99 -Cpp_exceptions off
   evidence: >-
-    Flags taken from Sonic Rush Adventure decomp (same Dimps engine lineage)
-    and zeldaret/ph; not yet tested against Sonic Rush code.
+    Verified: every C TU in the ROM build matches with these flags (base flags
+    from the Sonic Rush Adventure decomp and zeldaret/ph; -Cpp_exceptions off
+    added to suppress .exceptix sections).
 
-rules:
-  - glob: "libs/NitroSDK/**"
-    version: "1.2/sp2p3"
-    status: unverified
-    evidence: "SRA builds NitroSDK with 1.2/sp2p3; SDK release used by Rush differs."
-    flags: >-
-      -O4,p -proc arm946e -enum int -char signed -gccext,on -fp soft
-      -inline on,noauto -interworking -sym on -gccinc -nolink -msgstyle gcc
-      -w off -lang c99
-  - glob: "libs/NitroSystem/**"
-    version: "1.2/sp4"
-    status: unverified
-    evidence: "SRA builds NitroSystem with 1.2/sp4."
-    flags: >-
-      -O4,p -proc arm946e -enum int -char signed -gccext,on -fp soft
-      -inline on,noauto -interworking -sym on -gccinc -nolink -msgstyle gcc
-      -w off -lang c99
+# Per-path overrides (none needed: no libs/ split exists; per-file `// flags:` is used instead).
+rules: []
 
 linker:
   version: "1.2/sp3"

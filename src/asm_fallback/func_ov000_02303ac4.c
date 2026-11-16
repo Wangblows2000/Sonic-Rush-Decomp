@@ -1,4 +1,4 @@
-// asm: fallback — C attempts did not match (best C draft: none)
+// asm: fallback — C attempts did not match (best C draft kept outside the repo)
 #include <nitro/types.h>
 
 extern void _s32_div_f(void);

@@ -6,8 +6,8 @@
 //   xrefs.csv      from,to,type
 //   strings.csv    address,length,value
 //
-// tools/analysis/compare_ghidra.py diffs functions.csv against dsd symbols.
-// STATUS: not yet executed in this project (see docs/research/0007-ghidra.md).
+// STATUS: used with Ghidra 12.2 via tools/ghidra/import.sh and export.sh
+// (docs/research/0007-ghidra.md).
 //@category SonicRush
 
 import java.io.*;

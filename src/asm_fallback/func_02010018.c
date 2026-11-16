@@ -1,4 +1,4 @@
-// asm: fallback - C (w_lead/nearC/func_02010018.c) matches bytes but CW folds the OS_IrqHandler (ITCM) relocation into a raw constant
+// asm: fallback - C matches bytes but CW folds the OS_IrqHandler (ITCM) relocation into a raw constant
 #include <nitro/types.h>
 
 extern void DC_InvalidateRange(void);

@@ -1,4 +1,3 @@
-// cc: 1.2/sp2p3
 #include <nitro/types.h>
 
 typedef struct { u8 pad[0x3c]; u8 h; } UnkStruct_0201bde0;

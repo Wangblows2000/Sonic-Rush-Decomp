@@ -17,28 +17,33 @@
    engineering knowledge. Their code may suggest how a shared-engine function
    looks; it counts only after it matches Sonic Rush's bytes.
 
-## Workflow (dsd)
+## Workflow
 
-1. Pick a function or small translation unit (`python tools/project.py functions`
-   writes `build/eur/reports/functions.csv`). Prefer small leaf functions and
-   known SDK code first (PLAN.md, milestone 6).
-2. Add a translation unit to the module's `delinks.txt`:
+Almost all functions are already matched (STATUS.md). Open work is listed in
+PLAN.md: converting `src/asm_fallback/` back to C, naming, source
+reorganisation and data. For a function:
 
-   ```
-   src/sdk/os/os_spinlock.c:
-       .text start:0x02012340 end:0x020123f0
-   ```
-
-3. `ninja delink` regenerates objects; `ninja verify` must still pass (the gap
-   objects plus the new TU object must relink to the original bytes).
-4. Write `src/...c`, build with `ninja`, and compare in objdiff
-   (`ninja objdiff` writes `objdiff.json`).
-5. When it matches, mark the unit complete and record any naming evidence.
+1. Write C in `src/<your-dir>/<symbol>.c`, one function per file, named exactly
+   as in `config/eur/arm9/**/symbols.txt`. `docs/agents/AGENT_BRIEF.md` has the
+   conventions (headers, `extern` data, Thumb pragmas, `asm` functions).
+2. Verify: `python3 tools/matching/match.py src/<your-dir>/<symbol>.c` must
+   exit 0 and print an `OK` line. The compiler is CW for NDS 1.2/sp2 with the
+   default flags in `config/eur/compilers.yaml`; a per-file `// flags: ...`
+   first line overrides them.
+3. Integration is done by one writer only (`tools/matching/integrate.py`, run
+   by `tools/utilities/checkpoint.sh`). It adds the TU to the module's
+   `delinks.txt`, rebuilds, checks the ROM SHA-1 and the GNU relink
+   (`ninja verify`), and refreshes the objdiff report. A function counts only
+   when all of these pass (CLAUDE.md §5).
+4. Record naming evidence in `config/eur/symbol_evidence.yaml`; apply renames
+   with `tools/analysis/rename.py`.
 
 ## Style
 
 - C (C99) for game code unless evidence shows C++ (vtables, mangled names).
 - Types from `include/nitro/types.h` (`u8`, `s32`, `fx32`, …).
+- `asm` only where the original was assembly (runtime routines) or C cannot
+  match; line 1 of such a file must say why (`// asm: ...`).
 - Names: `PascalCase_Function` for SDK-style APIs (match the NitroSDK names),
   `camelCase` locals; game names follow evidence, not invention.
 - Python tools: standard library + `tools/requirements.txt`; deterministic
@@ -47,4 +52,5 @@
 ## Commits
 
 Small and descriptive (`ov001: match func_ov001_022c5c80`,
-`tools: detect unsigned Thumb jump tables`). Run `ninja verify` before pushing.
+`tools: detect unsigned Thumb jump tables`). Never commit a build that fails
+the ROM SHA-1; `checkpoint.sh` enforces this. Run `ninja verify` before pushing.

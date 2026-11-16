@@ -8,11 +8,11 @@
       "module": "main",
       "start": "0x02000800",
       "end": "0x0201c000",
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:55Z",
       "claimed_at": null,
-      "done_at": null,
+      "done_at": "2026-11-16 10:37:21Z",
       "notes": [
         {
           "time": "2026-11-15 20:37:57Z",
@@ -57,6 +57,10 @@
         {
           "time": "2026-11-16 06:55:54Z",
           "text": "main_c2 working main 0x02000800-0x02038000 (shared with main-mid)"
+        },
+        {
+          "time": "2026-11-16 10:37:21Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
         }
       ]
     },
@@ -67,11 +71,11 @@
       "module": "main",
       "start": "0x0201c000",
       "end": "0x02038000",
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:55Z",
       "claimed_at": null,
-      "done_at": null,
+      "done_at": "2026-11-16 10:37:21Z",
       "notes": [
         {
           "time": "2026-11-15 20:37:57Z",
@@ -140,6 +144,10 @@
         {
           "time": "2026-11-16 09:18:31Z",
           "text": "released by main_d3: main_d3 done for now"
+        },
+        {
+          "time": "2026-11-16 10:37:21Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
         }
       ]
     },
@@ -150,11 +158,11 @@
       "module": "main",
       "start": "0x02038000",
       "end": "0x0206e470",
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:55Z",
       "claimed_at": null,
-      "done_at": null,
+      "done_at": "2026-11-16 10:37:21Z",
       "notes": [
         {
           "time": "2026-11-15 20:37:57Z",
@@ -211,6 +219,10 @@
         {
           "time": "2026-11-16 09:06:50Z",
           "text": "main_d1: OK func_0205e378 (split loop vars tmpp/a2 + decl order) and func_0206aa38 (affine sibling of b244; key: ((s32)(cell[0]<<24)>>24) instead of (s8)cell[0]; ctx= first stmt). func_0206b244 near-miss 85 diff /home/claude/w_main_d1/near_func_0206b244.c (stack slots shift/tile swapped, count/eng regs, tw temp reg) - stuck. func_020648c4 not improved (b4 draft 2363 diff; ax/bx spill choice swapped; opt_common_subs off gives right size but wrong CSE)."
+        },
+        {
+          "time": "2026-11-16 10:37:21Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
         }
       ]
     },
@@ -221,11 +233,11 @@
       "module": "ov000",
       "start": "0x022c5c80",
       "end": "0x02310000",
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:56Z",
       "claimed_at": null,
-      "done_at": null,
+      "done_at": "2026-11-16 10:37:21Z",
       "notes": [
         {
           "time": "2026-11-15 20:37:57Z",
@@ -274,6 +286,10 @@
         {
           "time": "2026-11-16 08:09:33Z",
           "text": "ov000_t working remaining ov000 todo (final push)"
+        },
+        {
+          "time": "2026-11-16 10:37:21Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
         }
       ]
     },
@@ -284,11 +300,11 @@
       "module": "ov000",
       "start": "0x02310000",
       "end": "0x02362b58",
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:56Z",
       "claimed_at": null,
-      "done_at": null,
+      "done_at": "2026-11-16 10:37:21Z",
       "notes": [
         {
           "time": "2026-11-15 20:37:57Z",
@@ -397,6 +413,10 @@
         {
           "time": "2026-11-16 10:09:06Z",
           "text": "released by ov000_t: ov000_t session end"
+        },
+        {
+          "time": "2026-11-16 10:37:21Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
         }
       ]
     },
@@ -407,11 +427,11 @@
       "module": "ov001",
       "start": "0x022c5c80",
       "end": "0x022ed000",
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:56Z",
       "claimed_at": null,
-      "done_at": null,
+      "done_at": "2026-11-16 10:37:21Z",
       "notes": [
         {
           "time": "2026-11-15 20:46:26Z",
@@ -484,6 +504,10 @@
         {
           "time": "2026-11-16 08:09:34Z",
           "text": "ov001_j working remaining ov001 todo (arm list)"
+        },
+        {
+          "time": "2026-11-16 10:37:21Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
         }
       ]
     },
@@ -494,11 +518,11 @@
       "module": "ov001",
       "start": "0x022ed000",
       "end": "0x02315eb4",
-      "status": "claimed",
+      "status": "done",
       "agent": "ov001_j",
       "created": "2026-11-15 20:37:56Z",
       "claimed_at": "2026-11-16 08:09:34Z",
-      "done_at": null,
+      "done_at": "2026-11-16 10:37:21Z",
       "notes": [
         {
           "time": "2026-11-15 20:37:57Z",
@@ -575,6 +599,10 @@
         {
           "time": "2026-11-16 09:39:38Z",
           "text": "ov001_j: 8 OK (022fd268 022cdfdc 022dfa3c 022dfb48 02314214 02307398 022e4b5c 022c8bc0). Levers: global struct base for camera vecs (data_02084d38.pos etc), inline helper in call args, natural index SR (p->grp[i]) fixes spill-slot order, opt_propagation off + do-while. Near: 022e519c (e1 form only spill slots), 02303494/022c8480/0230e78c 4B, 022fdbc0/023099ec 14B regswap. Scratch /home/claude/w_ov001j (ddiff.py normalizes pool offsets)."
+        },
+        {
+          "time": "2026-11-16 10:37:21Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
         }
       ]
     },
@@ -585,12 +613,17 @@
       "module": "itcm",
       "start": null,
       "end": null,
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:56Z",
       "claimed_at": null,
-      "done_at": null,
-      "notes": []
+      "done_at": "2026-11-16 10:37:21Z",
+      "notes": [
+        {
+          "time": "2026-11-16 10:37:21Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
+        }
+      ]
     },
     {
       "id": "r-arm7",
@@ -617,11 +650,15 @@
       "agent": null,
       "created": "2026-11-15 20:37:56Z",
       "claimed_at": null,
-      "done_at": "2026-11-16 03:45:17Z",
+      "done_at": "2026-11-16 10:37:22Z",
       "notes": [
         {
           "time": "2026-11-16 03:45:17Z",
           "text": "done: Ghidra 12.2 + JDK25 working; drafts in build/eur/ghidra/<module>/decomp (docs/research/0007)"
+        },
+        {
+          "time": "2026-11-16 10:37:22Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
         }
       ]
     },
@@ -646,12 +683,17 @@
       "module": null,
       "start": null,
       "end": null,
-      "status": "open",
+      "status": "done",
       "agent": null,
       "created": "2026-11-15 20:37:56Z",
       "claimed_at": null,
-      "done_at": null,
-      "notes": []
+      "done_at": "2026-11-16 10:37:22Z",
+      "notes": [
+        {
+          "time": "2026-11-16 10:37:22Z",
+          "text": "done: 100% matched / resolved (2026-11-16)"
+        }
+      ]
     },
     {
       "id": "r-crt0",
@@ -665,7 +707,12 @@
       "created": "2026-11-15 20:37:57Z",
       "claimed_at": null,
       "done_at": null,
-      "notes": []
+      "notes": [
+        {
+          "time": "2026-11-16 10:37:22Z",
+          "text": "Remaining: 18 BIOS SWI stubs (76 B) in secure area, 9 halfword-aligned; kept as original bytes (see PLAN.md)"
+        }
+      ]
     },
     {
       "id": "r-data",
@@ -677,6 +724,34 @@
       "status": "open",
       "agent": null,
       "created": "2026-11-15 20:37:57Z",
+      "claimed_at": null,
+      "done_at": null,
+      "notes": []
+    },
+    {
+      "id": "naming",
+      "title": "Naming refactor: game-behaviour names for all functions",
+      "kind": "research",
+      "module": null,
+      "start": null,
+      "end": null,
+      "status": "open",
+      "agent": null,
+      "created": "2026-11-16 10:37:22Z",
+      "claimed_at": null,
+      "done_at": null,
+      "notes": []
+    },
+    {
+      "id": "asm-to-c",
+      "title": "Convert src/asm_fallback functions back to C",
+      "kind": "research",
+      "module": null,
+      "start": null,
+      "end": null,
+      "status": "open",
+      "agent": null,
+      "created": "2026-11-16 10:37:22Z",
       "claimed_at": null,
       "done_at": null,
       "notes": []

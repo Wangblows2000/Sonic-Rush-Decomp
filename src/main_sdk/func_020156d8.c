@@ -1,4 +1,3 @@
-// cc: 1.2/sp2p3
 #include <nitro/types.h>
 
 void func_020168ec(u32 a, u32 b, void *c);

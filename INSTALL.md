@@ -27,17 +27,29 @@ This builds, at pinned versions, into `tools/bin/`:
 | objdiff-cli | v3.8.3 | per-function diffs and progress reports |
 | wibo | 1.2.0 | runs the Windows Metrowerks tools on Linux |
 
-The dsd patch adds recognition of Sonic Rush's Thumb `switch` jump tables. Without
-it, analysis of overlay 1 misses ~1,500 functions
-(docs/research/0008-dsd-thumb-jumptables.md).
+The patches in `tools/patches/` make dsd handle this ROM:
+
+- `ds-decomp-v0.12.1-thumb-unsigned-jumptable.patch`: recognises Sonic Rush's
+  unsigned Thumb `switch` jump tables. Without it, analysis of overlay 1 misses
+  ~1,500 functions (docs/research/0008-dsd-thumb-jumptables.md).
+- `ds-decomp-v0.12.1-asm-entry-points.patch`: three fixes needed by
+  hand-written assembly TUs. Functions defined in the config may start with a
+  conditional instruction (secondary entry points). An ARM-branch relocation
+  keeps its condition code when dsd blanks it. Data symbols inside `.text` get
+  a `$d` mapping symbol so they are not disassembled as code.
 
 ## 3. Metrowerks CodeWarrior for NINTENDO DS (matching builds only)
 
 Matching requires the original compiler (`mwccarm.exe`, `mwldarm.exe`). It is
 proprietary and not distributed here. Place it as
-`tools/mwccarm/<version>/mwccarm.exe`, e.g. `tools/mwccarm/1.2/sp3/`. The
-version Sonic Rush used is **not established yet**
-(config/eur/compilers.yaml, docs/research/0004-compiler.md).
+`tools/mwccarm/<version>/mwccarm.exe`. Sonic Rush uses compiler **1.2/sp2**
+(`tools/mwccarm/1.2/sp2/`) and links with **1.2/sp3**
+(`tools/mwccarm/1.2/sp3/`); see config/eur/compilers.yaml and
+docs/research/0004-compiler.md. wibo runs both on Linux.
+
+`tools/bootstrap_session.sh` fetches the community bundle that zeldaret/ph
+uses and checks its SHA-256. That bundle is an unlicensed redistribution;
+use it only if you accept that (docs/research/0004).
 
 ## 4. Base ROM
 
@@ -55,17 +67,24 @@ python tools/project.py extract eur   # extract/eur/ (gitignored)
 python tools/configure.py eur         # writes build.ninja
 ninja verify                          # delink + GNU relink byte check
 ninja                                 # full ROM build + SHA-1 (needs Metrowerks)
+ninja report                          # objdiff report -> build/eur/report.json
+python tools/project.py progress      # matched code bytes per module
 ```
+
+`bash tools/bootstrap_session.sh /path/to/rom.nds` runs sections 1–5 in one
+step on a fresh Linux machine.
 
 `ninja` without the compiler defaults to `verify`.
 
 ## 6. Ghidra (optional)
 
-Install Ghidra 11.x and a JDK 21, then:
+Install Ghidra 12.2 and a JDK 25 (12.2 rejects JDK 21), then:
 
 ```sh
-export GHIDRA_INSTALL_DIR=/path/to/ghidra
-python tools/project.py ghidra eur
+export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
+export GHIDRA_INSTALL_DIR=/path/to/ghidra_12.2_PUBLIC
+bash tools/ghidra/import.sh eur       # or: python tools/project.py ghidra eur
 ```
 
-See docs/research/0007-ghidra.md.
+Per-function decompiler drafts are written to
+`build/eur/ghidra/<module>/decomp/`. See docs/research/0007-ghidra.md.

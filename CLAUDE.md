@@ -2,6 +2,8 @@
 
 Sonic Rush (EUR `ASCP`) matching decompilation. Goal: C that rebuilds the ROM
 byte for byte. Progress = verified matched code bytes, nothing else.
+State (2026-11-16): 99.99 % verified; only 18 secure-area BIOS stubs (76 B)
+remain (PLAN.md). Full project guide: **AGENTS.md**.
 
 ## 1. Resume
 
@@ -18,7 +20,7 @@ agent's `OK` lines are not yet in the objdiff report, then the next open tasks.
 Fresh machine / fresh clone (no `build/`, no compiler):
 `bash tools/bootstrap_session.sh /path/to/baserom.nds` (deps, dsd/objdiff/wibo,
 Metrowerks bundle, extract, full build, verify, report). `build/` is gitignored:
-agent reports and `docs/agents/AGENT_BRIEF.md` do not survive a fresh clone;
+agent reports (`build/agents/`) do not survive a fresh clone;
 the rules below are sufficient on their own.
 
 Ghidra: `export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
@@ -60,7 +62,8 @@ relink → objdiff report → commit + push):
 ```sh
 bash tools/utilities/checkpoint.sh            # prints the `total` progress line
 python3 tools/project.py dashboard            # docs/progress/dashboard.md, history.jsonl, README block
-git add README.md state CLAUDE.md .claude && git commit -m "..."   # checkpoint.sh only adds config include tools docs + src TUs
+# checkpoint.sh also adds state, nearmiss, README/STATUS/PLAN/CLAUDE/AGENTS.md, .claude
+# Renames: python3 tools/analysis/rename.py names.csv   (CSV module,old,new,evidence; see AGENTS.md)
 ```
 
 ## 5. Verification rules (never relax)
