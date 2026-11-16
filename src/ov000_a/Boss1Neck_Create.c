@@ -80,24 +80,24 @@ void StageObj_Main(void);
 void Boss1Neck_Destructor(void);
 void Boss1Neck_State_Idle(void);
 void Boss1Neck_Draw(void);
-void func_ov000_022ca0a8(void);
+void Boss1Neck_NodeCallback_NeckHam(void);
 void Boss1Hammer_State_Idle(void);
 void Boss1Hammer_Draw(void);
 void Boss1Hammer_Collide(void);
 void Boss1Hammer_OnHit_Damage(void);
 void Boss1Hammer_OnHit_PushPlayer(void);
-void func_ov000_022c72f8(void);
+void Boss1Hammer_NodeCallback_Hammer(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_02021310(void *ctx, void *a, void *b);
-void *func_02021264(void *ctx, u32 id);
-void func_020212e0(void *ctx);
+void NNS_FndMountArchive(void *ctx, void *a, void *b);
+void *NNS_FndGetArchiveFileByIndex(void *ctx, u32 id);
+void NNS_FndUnmountArchive(void *ctx);
 BOOL func_ov000_022cc6d4(void);
 void MapObject_Init(UnkStruct_022ccc38 *s, s32 a, s32 x, s32 y);
 void ObjRect_SetBox3D(UnkStruct_022ccc38_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void ObjRect_SetAtkDefFlags(UnkStruct_022ccc38_h *h, s32 a, s32 b);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
     MIi_CpuClear16(*(volatile u16 *)&data, dest, size);
@@ -111,14 +111,14 @@ UnkStruct_022ccc38 *Boss1Neck_Create(s32 a, s32 x, s32 y) {
     s = Task_Create(StageObj_Main, Boss1Neck_Destructor, 0, 0x501, 2, 0x360)->unk10;
     MI_CpuFill16(s, 0, 0x360);
     s->unk68 = Boss1Neck_State_Idle;
-    func_02021310(ctx, data_ov000_0236505c, gZoneActArchive);
+    NNS_FndMountArchive(ctx, data_ov000_0236505c, gZoneActArchive);
     if (func_ov000_022cc6d4()) {
-        s->unk220 = func_02021264(ctx, 8);
-        s->unk224 = func_02021264(ctx, 9);
+        s->unk220 = NNS_FndGetArchiveFileByIndex(ctx, 8);
+        s->unk224 = NNS_FndGetArchiveFileByIndex(ctx, 9);
     } else {
-        s->unk220 = func_02021264(ctx, 8);
+        s->unk220 = NNS_FndGetArchiveFileByIndex(ctx, 8);
     }
-    func_020212e0(ctx);
+    NNS_FndUnmountArchive(ctx);
     s->unk21C = data_ov000_02369ad0.unk4;
     MapObject_Init(s, a, x, y);
     s->unk70 = Boss1Neck_Draw;
@@ -131,7 +131,7 @@ UnkStruct_022ccc38 *Boss1Neck_Create(s32 a, s32 x, s32 y) {
     p = &s->unk228;
     Model_Init(p, 0);
     Model_SetResource(p, s->unk21C, 0);
-    func_02021c38(p->unk90, func_ov000_022ca0a8, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(p->unk90, Boss1Neck_NodeCallback_NeckHam, 0, 6, 3);
     p->unk48 = g->unk10 << 4;
     p->unk4C = -(g->unk14 << 4);
     p->unk50 = (g->unk18 - 0x8e00) << 4;

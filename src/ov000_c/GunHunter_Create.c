@@ -14,7 +14,7 @@ extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_0236635c[], data_ov000_02369d9c[];
 
 void MapObject_Destructor(void);
-void GunHunter_State_Unk_ov000_022fbe14(void);
+void GunHunter_State_CheckGround(void);
 void func_ov000_022faf48(UnkStruct_022fbe80 *w, s32 a);
 
 static inline u16 FrameRand(void) {
@@ -49,6 +49,6 @@ UnkStruct_022fbe80 *GunHunter_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x110;
     w->base.unk5C |= 0x100;
     w->base.unk5C |= 4;
-    w->base.unk68 = GunHunter_State_Unk_ov000_022fbe14;
+    w->base.unk68 = GunHunter_State_CheckGround;
     return w;
 }

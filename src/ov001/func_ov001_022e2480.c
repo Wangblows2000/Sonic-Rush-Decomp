@@ -2,8 +2,8 @@
 
 void func_ov001_022e23b0(s32 a);
 void func_ov001_022e22d0(s32 a);
-void func_0204ed24(void);
-void func_0205a4ec(void (*f)(void));
+void SaveData_StoreLives(void);
+void SaveData_CommitOrShowError(void (*f)(void));
 
 #pragma thumb on
 void func_ov001_022e2480(s32 *p) {
@@ -12,7 +12,7 @@ void func_ov001_022e2480(s32 *p) {
     } else {
         func_ov001_022e22d0(p[2]);
     }
-    func_0204ed24();
-    func_0205a4ec(NULL);
+    SaveData_StoreLives();
+    SaveData_CommitOrShowError(NULL);
 }
 #pragma thumb reset

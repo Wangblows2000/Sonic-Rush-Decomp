@@ -17,7 +17,7 @@ typedef struct {
 extern void *data_ov000_02367b38[];
 
 UnkStruct_023295a4 *BossEffect_Create(void *a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_ov000_022c5e80(s32 a, s32 b, s32 x, s32 *ox, s32 *oz, u16 *ang);
+void BossArena_ArcToCirclePos(s32 a, s32 b, s32 x, s32 *ox, s32 *oz, u16 *ang);
 void func_ov000_0232957c(void);
 
 UnkStruct_023295a4 *func_ov000_023295a4(UnkStruct_023295a4 *p, s32 dx, s32 b, s32 c, u16 k, s32 d, s32 e) {
@@ -32,7 +32,7 @@ UnkStruct_023295a4 *func_ov000_023295a4(UnkStruct_023295a4 *p, s32 dx, s32 b, s3
     o->unk54 |= 2;
     o->unk2B0 = b;
     o->unk68 = func_ov000_0232957c;
-    func_ov000_022c5e80(d, e, o->unk10 << 4, &ox, &oz, &ang);
+    BossArena_ArcToCirclePos(d, e, o->unk10 << 4, &ox, &oz, &ang);
     o->unk10 = ox >> 4;
     o->unk18 = oz >> 4;
     return o;

@@ -77,18 +77,18 @@ void Boss1Hammer_Draw(void);
 void Boss1Hammer_Collide(void);
 void Boss1Hammer_OnHit_Damage(void);
 void Boss1Hammer_OnHit_PushPlayer(void);
-void func_ov000_022c72f8(void);
+void Boss1Hammer_NodeCallback_Hammer(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_02021310(void *ctx, void *a, void *b);
-void *func_02021264(void *ctx, u32 id);
-void func_020212e0(void *ctx);
+void NNS_FndMountArchive(void *ctx, void *a, void *b);
+void *NNS_FndGetArchiveFileByIndex(void *ctx, u32 id);
+void NNS_FndUnmountArchive(void *ctx);
 BOOL func_ov000_022cc6d4(void);
 void MapObject_Init(UnkStruct_022cc8cc *s, s32 a, s32 x, s32 y);
 void ObjRect_SetBox3D(UnkStruct_022cc8cc_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void ObjRect_SetAtkDefFlags(UnkStruct_022cc8cc_h *h, s32 a, s32 b);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
     MIi_CpuClear16(*(volatile u16 *)&data, dest, size);
@@ -102,14 +102,14 @@ UnkStruct_022cc8cc *Boss1Hammer_Create(s32 a, s32 x, s32 y) {
     s = Task_Create(StageObj_Main, Boss1Hammer_Destructor, 0, 0x502, 2, 0x444)->unk10;
     MI_CpuFill16(s, 0, 0x444);
     s->unk68 = Boss1Hammer_State_Idle;
-    func_02021310(ctx, data_ov000_02365058, gZoneActArchive);
+    NNS_FndMountArchive(ctx, data_ov000_02365058, gZoneActArchive);
     if (func_ov000_022cc6d4()) {
-        s->unk304 = func_02021264(ctx, 8);
-        s->unk308 = func_02021264(ctx, 9);
+        s->unk304 = NNS_FndGetArchiveFileByIndex(ctx, 8);
+        s->unk308 = NNS_FndGetArchiveFileByIndex(ctx, 9);
     } else {
-        s->unk304 = func_02021264(ctx, 8);
+        s->unk304 = NNS_FndGetArchiveFileByIndex(ctx, 8);
     }
-    func_020212e0(ctx);
+    NNS_FndUnmountArchive(ctx);
     s->unk300 = data_ov000_02369ad0.unk8;
     MapObject_Init(s, a, x, y);
     s->unk70 = Boss1Hammer_Draw;
@@ -148,7 +148,7 @@ UnkStruct_022cc8cc *Boss1Hammer_Create(s32 a, s32 x, s32 y) {
     p = &s->unk30C;
     Model_Init(p, 0);
     Model_SetResource(p, s->unk300, 0);
-    func_02021c38(p->unk90, func_ov000_022c72f8, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(p->unk90, Boss1Hammer_NodeCallback_Hammer, 0, 6, 3);
     p->unk18 = p->unk1C = p->unk20 = 0x34cc;
     p->unk8 = 0x1e;
     p->unkA = 4;

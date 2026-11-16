@@ -2,11 +2,11 @@
 
 extern s32 gSaveDataBusy;
 extern u32 gSystemFlags;
-void func_ov001_022cf43c(void);
+void PostStaffRoll_Begin(void);
 
 #pragma thumb on
 void PostStaffRoll_Start(void) {
-    func_ov001_022cf43c();
+    PostStaffRoll_Begin();
     gSaveDataBusy = 0;
     gSystemFlags &= ~0x10;
 }

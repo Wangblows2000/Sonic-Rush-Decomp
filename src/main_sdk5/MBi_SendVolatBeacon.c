@@ -45,7 +45,7 @@ extern void (*data_02080e70)(u32 ggid);
 void MBi_InitSendVolatBeacon(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
-u16 func_02017994(const void *p, u32 size);
+u16 MBi_calc_cksum(const void *p, u32 size);
 s32 WM_SetGameInfo(void *cb, const void *data, u32 size, u32 a, u32 b, u8 c);
 
 void MBi_SendVolatBeacon(u32 a, u32 b, u8 flags)
@@ -94,7 +94,7 @@ void MBi_SendVolatBeacon(u32 a, u32 b, u8 flags)
         data_02080eb0[n].aid = 0;
     }
     data_02080ea0.sum = 0;
-    data_02080ea0.sum = func_02017994(&data_02080ea8, 0x68);
+    data_02080ea0.sum = MBi_calc_cksum(&data_02080ea8, 0x68);
     if (*(u16 *)(data_02080e74.obj + 0x4b0) == *(u16 *)(data_02080e74.obj + 0x35a)) {
         data_02080e74.state = 1;
     }

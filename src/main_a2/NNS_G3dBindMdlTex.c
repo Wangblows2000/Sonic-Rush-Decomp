@@ -6,7 +6,7 @@ typedef struct { u8 unk0[8]; u32 ofs; } UnkRes_020217e4;
 typedef struct { u8 unk0[0x3C]; u8 unk3C[4]; } UnkObj_020217e4;
 
 void *NNS_G3dGetResDataByName(void *p, const void *name);
-void func_02021928(void *blk, void *entry, UnkObj_020217e4 *obj, void *r);
+void bindMdlTex_Internal_(void *blk, void *entry, UnkObj_020217e4 *obj, void *r);
 
 BOOL NNS_G3dBindMdlTex(UnkRes_020217e4 *res, UnkObj_020217e4 *obj) {
     u8 *blk = (u8 *)res + res->ofs;
@@ -19,7 +19,7 @@ BOOL NNS_G3dBindMdlTex(UnkRes_020217e4 *res, UnkObj_020217e4 *obj) {
         if (r != NULL) {
             UnkDictEntry_020217e4 *e2 = (UnkDictEntry_020217e4 *)((u8 *)dict + dict->ofsEntry);
             u8 *data = e2->data + e2->sizeUnit * i;
-            if (!(data[3] & 1)) func_02021928(blk, data, obj, r);
+            if (!(data[3] & 1)) bindMdlTex_Internal_(blk, data, obj, r);
         } else {
             ok = FALSE;
         }

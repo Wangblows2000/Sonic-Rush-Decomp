@@ -23,7 +23,7 @@ typedef struct {
 extern UnkStruct_023340f0_Sys gGameState;
 extern UnkStruct_023340f0_Stage gCamera;
 
-void *func_ov000_02333bec(void *a, s32 b, s32 c, s32 d, s32 e, u16 f);
+void *EffSpinSmoke2_Spawn3D(void *a, s32 b, s32 c, s32 d, s32 e, u16 f);
 void *EffSpinSmoke2_3D_Create(void *a, s32 b, s32 c, u16 d);
 void *EffSpinSmoke2_Create(void *a, s32 b, s32 c, u16 d);
 
@@ -38,7 +38,7 @@ void EffSpinSmoke2_Spawn(UnkStruct_023340f0 *p) {
         return;
     if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
         if (Stage_Busy())
-            func_ov000_02333bec(p, -10, 0xe, gCamera.unkE0, gCamera.unkE4, p->unk324);
+            EffSpinSmoke2_Spawn3D(p, -10, 0xe, gCamera.unkE0, gCamera.unkE4, p->unk324);
         else
             EffSpinSmoke2_3D_Create(p, -10, 0xe, p->unk324);
     } else {

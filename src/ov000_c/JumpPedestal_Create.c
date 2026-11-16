@@ -13,7 +13,7 @@ extern u8 data_ov000_02366c40[];
 
 void JumpPedestal_Destructor(void);
 void ObjData_Load(void *a, void *b, void *c);
-void JumpPedestal_Action_Unk_ov000_0230ecc8(UnkStruct_0230ed60 *w);
+void JumpPedestal_Action_Init(UnkStruct_0230ed60 *w);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 
 UnkStruct_0230ed60 *JumpPedestal_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -55,7 +55,7 @@ UnkStruct_0230ed60 *JumpPedestal_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk1DA = 4;
     w->base.unk1D4 = -0x18;
     w->base.unk1D6 = -0x14;
-    JumpPedestal_Action_Unk_ov000_0230ecc8(w);
+    JumpPedestal_Action_Init(w);
     if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14)) {
         w->base.unk5C |= 2;
         w->base.unk5 = 0x80;

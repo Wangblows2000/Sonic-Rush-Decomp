@@ -23,7 +23,7 @@ typedef struct UnkStruct_022c6db4_2 {
 extern UnkStruct_022c6db4_2 *gTaskCurrent;
 
 void StageObj_HandleCollider(UnkStruct_022c6db4 *o, UnkStruct_022c6db4_3 *c);
-void func_02067d58(void *p);
+void ObjCollisionMap_Register(void *p);
 
 void Boss1Hammer_Collide(void) {
     UnkStruct_022c6db4 *o = gTaskCurrent->unk10;
@@ -38,5 +38,5 @@ void Boss1Hammer_Collide(void) {
     if (o->unk20C[3].unk18 != NULL)
         StageObj_HandleCollider(o, &o->unk20C[3]);
     if (o->unk1B8 != NULL)
-        func_02067d58(&o->unk1B8);
+        ObjCollisionMap_Register(&o->unk1B8);
 }

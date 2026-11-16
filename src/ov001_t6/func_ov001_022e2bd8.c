@@ -6,8 +6,8 @@ typedef struct {
 
 void G3i_OrthoW_(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 scaleW, BOOL draw, UnkMtx44_022e2bd8 *mtx);
 void NNS_G3dGeBufferOP_N(u32 op, const void *args, u32 n);
-void func_ov001_022e2bbc(void);
-void func_ov001_022e2ba4(BOOL a);
+void ZoneMap_DisableTexture(void);
+void ZoneMap_EnableBlend(BOOL a);
 
 #pragma thumb on
 void func_ov001_022e2bd8(s32 a, s32 b, s32 c, s32 d, u16 color) {
@@ -47,12 +47,12 @@ void func_ov001_022e2bd8(s32 a, s32 b, s32 c, s32 d, u16 color) {
     mode1 = 1;
     NNS_G3dGeBufferOP_N(0x10, &mode1, 1);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
-    func_ov001_022e2bbc();
+    ZoneMap_DisableTexture();
     *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 8;
     *(vu16 *)0x4000060 &= 0xcffb;
     col = color;
     NNS_G3dGeBufferOP_N(0x20, &col, 1);
-    func_ov001_022e2ba4(1);
+    ZoneMap_EnableBlend(1);
     for (; c != d + step; c += step) {
         if (c > 0) {
             attr = (c << 16) | 0xc0;

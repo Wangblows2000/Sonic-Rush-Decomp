@@ -87,7 +87,7 @@ extern u32 gRandSeed;
 extern s16 data_0206e470[];
 extern u16 data_ov000_023631d8[][9];
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void Boss3PartCC_State_Unk_ov000_022d87c0(UnkStruct_022d81ac *s);
 void Boss3PartCC_State_Unk_ov000_022d8890(UnkStruct_022d81ac *s);
 void Boss3PartCC_State_Unk_ov000_022d8398(UnkStruct_022d81ac *s);
@@ -117,7 +117,7 @@ void Boss3PartCC_State_Unk_ov000_022d81ac(UnkStruct_022d81ac *s) {
     s16 d;
     if (s->unk25A & 1) {
         r = Rand();
-        m = FX_Mul(func_0200225c((0x3c - s->unk25A) << 12, 0x3c000), 0x8000);
+        m = FX_Mul(FX_Div((0x3c - s->unk25A) << 12, 0x3c000), 0x8000);
         s->unk20C = FX_Mul(m, data_0206e470[((r & 0xffff) >> 4) * 2 + 1]);
         s->unk214 = FX_Mul(m, data_0206e470[((r & 0xffff) >> 4) * 2]);
     }

@@ -40,15 +40,15 @@ void ExtraBossPlayer_Action_Defeat(void);
 void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 void func_ov001_02304e80(void);
 void func_ov001_022f7224(s32 a);
-void func_ov001_02300db4(void);
+void ExtraBossObj_UpdateMotionAll(void);
 void func_ov001_02302658(void);
 void func_ov001_02304410(void);
 void func_ov001_023063a0(void);
 void ExtraBoss_Shutdown(void);
 void GameOverSeq_StartGameOver(void);
-void func_ov001_023010e0(void);
-void func_ov001_0230109c(void);
-void func_ov001_02300fe8(void);
+void ExtraBossObj_DestroyPlayer(void);
+void ExtraBossObj_DestroyKind1(void);
+void ExtraBossObj_DestroyKind2And3(void);
 void func_ov001_02303c54(void);
 void ExtraBoss_LoadPlayerModel(s32 idx);
 void ExtraBoss_ResetRound(void);
@@ -95,7 +95,7 @@ void ExtraBoss_State_Battle(void) {
     }
     func_ov001_02304e80();
     func_ov001_022f7224(G->unk4);
-    func_ov001_02300db4();
+    ExtraBossObj_UpdateMotionAll();
     func_ov001_02302658();
     func_ov001_02304410();
     f = G->unk0;
@@ -110,9 +110,9 @@ void ExtraBoss_State_Battle(void) {
             return;
         }
         G->unk40 = FX_DivS32(G->unk40, 2) * 2;
-        func_ov001_023010e0();
-        func_ov001_0230109c();
-        func_ov001_02300fe8();
+        ExtraBossObj_DestroyPlayer();
+        ExtraBossObj_DestroyKind1();
+        ExtraBossObj_DestroyKind2And3();
         func_ov001_02303c54();
         ExtraBoss_LoadPlayerModel(0);
         G->unk3C = 0;

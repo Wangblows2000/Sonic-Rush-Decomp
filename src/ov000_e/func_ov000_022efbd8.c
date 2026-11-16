@@ -42,8 +42,8 @@ extern UnkStruct_0236a48c data_ov000_0236a48c;
 extern UnkStruct_Player *gPlayers;
 extern UnkStruct_02369ac0 gBossStatus;
 
-void func_ov000_022f4ce4(UnkStruct_022efbd8 *s, s32 a, s32 b, s32 c);
-void func_ov000_022f9044(UnkStruct_022efbd8 *s);
+void BossFPartD8_SetAnimation(UnkStruct_022efbd8 *s, s32 a, s32 b, s32 c);
+void BossFPartD8_InitHitboxes(UnkStruct_022efbd8 *s);
 void func_ov000_022f4cbc(UnkStruct_022efbd8 *s);
 void Player_Action_Blank(UnkStruct_Player *p);
 void Player_SetAnimation(UnkStruct_Player *p, s32 a);
@@ -55,8 +55,8 @@ void func_ov000_022efbd8(UnkStruct_022efbd8 *s) {
     UnkStruct_Player *p;
     UnkStruct_0236a48c *c;
 
-    func_ov000_022f4ce4(s, 0x23, 0x1000, 0);
-    func_ov000_022f9044(s);
+    BossFPartD8_SetAnimation(s, 0x23, 0x1000, 0);
+    BossFPartD8_InitHitboxes(s);
     func_ov000_022f4cbc(s);
     s->base.unk1B8 = NULL;
     c = (UnkStruct_0236a48c *)(u32)&data_ov000_0236a48c;

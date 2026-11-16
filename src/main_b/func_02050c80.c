@@ -2,7 +2,7 @@
 
 #pragma thumb on
 
-void func_02051838(void);
-void func_02050c80(void) { func_02051838(); }
+void WirelessSession_ForceStop(void);
+void func_02050c80(void) { WirelessSession_ForceStop(); }
 
 #pragma thumb reset

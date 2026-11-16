@@ -16,16 +16,16 @@ typedef struct {
 extern UnkStruct_02340a4c gCamera;
 extern UnkStruct_02340a4c data_ov000_0236ab3c;
 
-UnkStruct_02340a4c *func_ov000_0233b62c(void);
-UnkStruct_02340a4c *func_ov000_0233b610(void);
+UnkStruct_02340a4c *Camera_GetBySwapState(void);
+UnkStruct_02340a4c *Camera_GetOtherBySwapState(void);
 
 void func_ov000_02340a4c(void) {
     UnkStruct_02340a4c *a;
     UnkStruct_02340a4c *b;
 
     if (gCamera.flags & 1) {
-        a = func_ov000_0233b62c();
-        b = func_ov000_0233b610();
+        a = Camera_GetBySwapState();
+        b = Camera_GetOtherBySwapState();
         if (a->unk34 & 1) {
             return;
         }

@@ -5,7 +5,7 @@ extern u32 data_02080600;
 
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
-void func_02015530(s32 a);
+void WBT_SetOwnAid(s32 a);
 void func_0201557c(u32 a);
 UnkMbCtx *func_02015640(void);
 void func_0201559c(UnkMbParam *p);
@@ -24,7 +24,7 @@ void WBT_End(void)
         return;
     }
     data_02080600 = 0;
-    func_02015530(-1);
+    WBT_SetOwnAid(-1);
     func_0201557c(0);
     ctx = func_02015640();
     ctx->unk0 = 0;

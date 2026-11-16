@@ -3,7 +3,7 @@
 
 extern u8 gTaskCurrent[];
 s32 func_ov000_022f53d0();
-s32 func_02067d58();
+s32 ObjCollisionMap_Register();
 
 void BossFPartD8_Collide(void) {
     if ((*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x54) & 0xc) != 0) {
@@ -20,5 +20,5 @@ void BossFPartD8_Collide(void) {
     if (*(u32 *)((u8 *)t0 + 0x1b8) == 0) {
         return;
     }
-    func_02067d58((t0 + 0x1b8));
+    ObjCollisionMap_Register((t0 + 0x1b8));
 }

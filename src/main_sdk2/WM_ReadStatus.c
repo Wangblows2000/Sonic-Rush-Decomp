@@ -6,8 +6,8 @@ void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 
 s32 WM_ReadStatus(void *dst)
 {
-    UnkWmWork *w = func_02010b70();
-    s32 r = func_02010b54();
+    UnkWmWork *w = WMi_GetSystemWork();
+    s32 r = WMi_CheckInitialized();
     if (r != 0) {
         return r;
     }

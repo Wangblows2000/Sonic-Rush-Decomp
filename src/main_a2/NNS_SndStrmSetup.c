@@ -20,7 +20,7 @@ typedef struct {
     u8 ids[1];
 } UnkStruct_0201c4e4;
 
-void func_0201c458(UnkStruct_0201c4e4 *s);
+void NNS_SndStrmStop(UnkStruct_0201c4e4 *s);
 u32 _u32_div_f(u32 a, u32 b);
 s32 NNS_SndAllocAlarm(void);
 void SND_SetupChannelPcm(s32 ch, s32 format, u32 data, s32 loop, s32 loopStart, s32 loopLen, s32 volume, s32 shift, s32 timer, s32 pan);
@@ -38,7 +38,7 @@ BOOL NNS_SndStrmSetup(UnkStruct_0201c4e4 *s, s32 format, u32 data, u32 rate, s32
     s32 en;
     u8 id;
 
-    if (s->unk24_0) func_0201c458(s);
+    if (s->unk24_0) NNS_SndStrmStop(s);
     size = _u32_div_f(rate, s->count * (arg5 << 5));
     s->unk28 = (size * arg5) << 5;
     size = s->unk28;

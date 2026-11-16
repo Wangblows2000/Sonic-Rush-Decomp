@@ -5,7 +5,7 @@ void DC_InvalidateRange(void *p, u32 size);
 
 s32 WM_Disconnect(void *cb, u16 aid)
 {
-    UnkWmWork *w = func_02010b70();
+    UnkWmWork *w = WMi_GetSystemWork();
     s32 r = WMi_CheckStateEx(5, 7, 9, 8, 10, 11);
     u16 state;
     if (r != 0) {
@@ -25,8 +25,8 @@ s32 WM_Disconnect(void *cb, u16 aid)
             return 6;
         }
     }
-    func_02010cd4(0xd, cb);
-    r = func_02010b80(0xd, 1, 1 << aid);
+    WMi_SetCallbackTable(0xd, cb);
+    r = WMi_SendCommand(0xd, 1, 1 << aid);
     if (r == 0) {
         r = 2;
     }

@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-s32 *func_ov001_0230d1e4(void);
+s32 *SpecialStageMap_AllocSegment(void);
 
 void SpecialStageMap_AddSegment(s32 v) {
-    *func_ov001_0230d1e4() = v;
+    *SpecialStageMap_AllocSegment() = v;
 }

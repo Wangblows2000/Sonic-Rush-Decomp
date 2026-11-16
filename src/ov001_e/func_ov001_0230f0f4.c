@@ -17,15 +17,15 @@ typedef struct UnkStruct_0230f0f4 {
 } UnkStruct_0230f0f4;
 
 void *SpecialStage_GetPlayer(void);
-s32 func_ov001_02310248(void *a, UnkStruct_0230f0f4 *p);
-UnkStruct_0230f0f4 *func_ov001_023070fc(s32 type, s32 x, s32 y, s32 z);
+s32 SpecialStageObj_IsInReach(void *a, UnkStruct_0230f0f4 *p);
+UnkStruct_0230f0f4 *SpecialStageActObj_SpawnAt(s32 type, s32 x, s32 y, s32 z);
 
 void func_ov001_0230f0f4(UnkStruct_0230f0f4 *p) {
     UnkStruct_0230f0f4 *r;
 
     if (p->unkC4 != 0) {
-        if (func_ov001_02310248(SpecialStage_GetPlayer(), p) == 1) {
-            if (!(p->unk62 & 1) && (r = func_ov001_023070fc(5, 0, 0, 0)) != NULL) {
+        if (SpecialStageObj_IsInReach(SpecialStage_GetPlayer(), p) == 1) {
+            if (!(p->unk62 & 1) && (r = SpecialStageActObj_SpawnAt(5, 0, 0, 0)) != NULL) {
                 r->unkD4 = p;
                 r->unkD8 = p->unkD8;
                 r->unk64 |= 2;

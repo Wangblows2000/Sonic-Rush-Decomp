@@ -35,7 +35,7 @@ void Boss4PartD1_Collide(void);
 void MI_CpuFill8(void *p, s32 v, u32 n);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
-void func_ov000_022db7ec(UnkStruct_Vec *v, UnkStruct_022df094 *w);
+void Boss4_ArenaToStagePos(UnkStruct_Vec *v, UnkStruct_022df094 *w);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022dc2ec(UnkStruct_022df094 *w);
 
@@ -60,7 +60,7 @@ UnkStruct_022df094 *Boss4PartD1_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     Model_SetResource(sub, data_ov000_02369b30[5], 0);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     sub->unk48 = boss->unkBAC;
-    func_ov000_022db7ec(&sub->unk48, w);
+    Boss4_ArenaToStagePos(&sub->unk48, w);
     w->unk34C = 0;
     Sound_PlaySeqArc(0, 0, 0x8a);
     func_ov000_022dc2ec(w);

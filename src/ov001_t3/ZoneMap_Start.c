@@ -28,7 +28,7 @@ extern UnkStruct_022c4680 gSaveData;
 extern s32 gSaveDataBusy;
 extern u32 gSystemFlags;
 
-void func_0204ec40(void);
+void StoryProgress_RestoreFromSave(void);
 UnkWork_022e8a24 *ZoneMap_Create(void);
 void ZoneMap_LoadAssets(void);
 void ZoneMap_InitDisplay(UnkWork_022e8a24 *w);
@@ -39,7 +39,7 @@ s32 func_ov001_022e33c0(s32 a, s32 b);
 UnkRes_022e8a24 *func_ov001_022e8090(UnkWork_022e8a24 *w, s32 a, s32 b);
 void func_02063f50(void);
 void Touch_Enable(void);
-void func_02052168(s32 a);
+void SysSound_PlayBGM(s32 a);
 
 #pragma thumb on
 void ZoneMap_Start(s32 a, s32 b) {
@@ -48,7 +48,7 @@ void ZoneMap_Start(s32 a, s32 b) {
     s32 i;
     BOOL flag;
 
-    func_0204ec40();
+    StoryProgress_RestoreFromSave();
     w = ZoneMap_Create();
     ZoneMap_LoadAssets();
     ZoneMap_InitDisplay(w);
@@ -71,9 +71,9 @@ void ZoneMap_Start(s32 a, s32 b) {
     }
     if (gSaveData.flags & 0x1000) flag = FALSE;
     if (flag) {
-        func_02052168(5);
+        SysSound_PlayBGM(5);
     } else {
-        func_02052168(4);
+        SysSound_PlayBGM(4);
     }
     gSaveDataBusy = 0;
     gSystemFlags &= ~0x10;

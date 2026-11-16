@@ -63,8 +63,8 @@ extern UnkTask_022d602c *gTaskCurrent;
 extern UnkStruct_022d602c_b *gBoss3;
 extern s16 data_0206e470[];
 
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
-void func_ov000_022c5e1c(s32 a, s32 b, s32 x, s32 z, s32 *out);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void BossArena_CirclePosToArc(s32 a, s32 b, s32 x, s32 z, s32 *out);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *c);
@@ -91,7 +91,7 @@ void Boss3PartCD_Draw(void) {
                 o->unk10 += 0x5fe43;
             else if (o->unk10 > 0x63e43)
                 o->unk10 -= 0x5fe43;
-            func_ov000_022c5e80(0xf42f8, 0x5fe435, o->unk10 << 4, &a->unk24.t.x, &a->unk24.t.z, &ang);
+            BossArena_ArcToCirclePos(0xf42f8, 0x5fe435, o->unk10 << 4, &a->unk24.t.x, &a->unk24.t.z, &ang);
             a->unk24.t.y = -o->unk14 << 4;
             if (!(o->unk5C & 0x10))
                 o->unk210 -= o->unk2E;
@@ -103,9 +103,9 @@ void Boss3PartCD_Draw(void) {
         a->unkA = 3;
         a->unkB = 0;
         a->unk24 = gBoss3->unk214->unk228;
-        func_ov000_022c5e1c(0xf42f8, 0x5fe435, a->unk24.t.x, a->unk24.t.z, &o->unk10);
+        BossArena_CirclePosToArc(0xf42f8, 0x5fe435, a->unk24.t.x, a->unk24.t.z, &o->unk10);
         o->unk10 >>= 4;
-        func_ov000_022c5e80(0xf42f8, 0x5fe435, o->unk10 << 4, NULL, NULL, &ang);
+        BossArena_ArcToCirclePos(0xf42f8, 0x5fe435, o->unk10 << 4, NULL, NULL, &ang);
         MTX_RotZ33_(&a->unk24, data_0206e470[((o->unk210 & 0xffff) >> 4) * 2], data_0206e470[((o->unk210 & 0xffff) >> 4) * 2 + 1]);
         MTX_RotY33_(&m2, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
         MTX_Concat33(&a->unk24, &m2, &a->unk24);

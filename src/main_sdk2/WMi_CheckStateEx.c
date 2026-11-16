@@ -8,14 +8,14 @@ typedef struct {
 
 extern UnkWmSys_02010a50 *data_0207faec;
 
-s32 func_02010b54(void);
+s32 WMi_CheckInitialized(void);
 void DC_InvalidateRange(void *p, u32 size);
 
 s32 WMi_CheckStateEx(s32 num, ...)
 {
     va_list ap;
     u16 state;
-    s32 r = func_02010b54();
+    s32 r = WMi_CheckInitialized();
     if (r != 0) {
         return r;
     }

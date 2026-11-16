@@ -25,18 +25,18 @@ extern void *gMainHeap;
 
 void PaletteTransfer_Clear(void);
 void func_ov001_022f7274(void);
-void func_ov001_02301668(void);
+void ExtraBossPlayerManager_Destroy(void);
 void func_ov001_023030dc(void);
 void func_ov001_023053cc(void);
 void func_ov001_02304568(void);
 void func_ov001_022fdb04(void);
 void func_ov001_022fd610(void);
 void func_ov001_02306674(void);
-void func_ov001_022ff8ac(void);
+void ExtraBoss_ReleaseAssets(void);
 void Task_Destroy(void *t);
 void NNS_SndHandleReleaseSeq(void *p);
-void func_02059838(s32 a, s32 b);
-s32 func_0205a4ec(s32 p0);
+void SaveData_SetLivesBoth(s32 a, s32 b);
+s32 SaveData_CommitOrShowError(s32 p0);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -49,22 +49,22 @@ void ExtraBoss_Shutdown(void) {
 
     PaletteTransfer_Clear();
     func_ov001_022f7274();
-    func_ov001_02301668();
+    ExtraBossPlayerManager_Destroy();
     func_ov001_023030dc();
     func_ov001_023053cc();
     func_ov001_02304568();
     func_ov001_022fdb04();
     func_ov001_022fd610();
     func_ov001_02306674();
-    func_ov001_022ff8ac();
+    ExtraBoss_ReleaseAssets();
     Task_Destroy(gExtraBossWork->task8);
     Task_Destroy(gExtraBossWork->taskC);
     Task_Destroy(gExtraBossWork->task10);
     if (gExtraBossWork->task14 != NULL)
         Task_Destroy(gExtraBossWork->task14);
     NNS_SndHandleReleaseSeq(gExtraBossWork->unk33C);
-    func_02059838(gExtraBossWork->unk60, gExtraBossWork->unk61);
-    func_0205a4ec(0);
+    SaveData_SetLivesBoth(gExtraBossWork->unk60, gExtraBossWork->unk61);
+    SaveData_CommitOrShowError(0);
     p = (u8 *)gExtraBossWork;
     size = gExtraBossWork->unk61;
     if (size > 99)

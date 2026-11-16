@@ -28,8 +28,8 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-s32 func_ov001_022ce664(void *p);
-u32 func_ov001_022ce658(void *p);
+s32 Options_GetCompressionType(void *p);
+u32 Options_GetUncompressedSize(void *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
@@ -75,7 +75,7 @@ void func_ov001_022ce4cc(UnkWork_022ce4cc *w) {
 
     f = (u8 *)w->res + w->res->unk8;
     buf = Alloc_022ce4cc(((*(u32 *)f >> 8) + 0x43) & ~0x1f);
-    switch (func_ov001_022ce664(f)) {
+    switch (Options_GetCompressionType(f)) {
     case 0x10:
         MI_UncompressLZ16(f, buf);
         break;
@@ -86,10 +86,10 @@ void func_ov001_022ce4cc(UnkWork_022ce4cc *w) {
         MI_UncompressRL16(f, buf);
         break;
     default:
-        Mem_Copy(Compress_GetData(f), buf, func_ov001_022ce658(f));
+        Mem_Copy(Compress_GetData(f), buf, Options_GetUncompressedSize(f));
         break;
     }
-    DC_StoreRange(buf, func_ov001_022ce658(f));
+    DC_StoreRange(buf, Options_GetUncompressedSize(f));
     n = gGameLanguage.count;
     i = 0;
     c = data_02072cbc;

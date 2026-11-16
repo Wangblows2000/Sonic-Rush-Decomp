@@ -19,8 +19,8 @@ typedef int code();
 #define true 1
 #define false 0
 
-int func_ov000_0233b178();
-int func_ov000_0233b158();
+int Camera_UnlockX();
+int Camera_UnlockY();
 int Player_Action_GimmickLaunch();
 int Sound_PlaySeqArcEx();
 
@@ -29,8 +29,8 @@ void Player_Action_DashRing(int param_1,int param_2,int param_3,int param_4,shor
 {
   *(uint *)(param_1 + 0x330) = *(uint *)(param_1 + 0x330) & 0xffffffaf;
   *(uint *)(param_1 + 0x330) = *(uint *)(param_1 + 0x330) & 0xffffff5f;
-  func_ov000_0233b178(*(undefined1 *)(param_1 + 0x327));
-  func_ov000_0233b158(*(undefined1 *)(param_1 + 0x327));
+  Camera_UnlockX(*(undefined1 *)(param_1 + 0x327));
+  Camera_UnlockY(*(undefined1 *)(param_1 + 0x327));
   *(undefined1 *)(param_1 + 1) = 0;
   if (param_2 != 0) {
     *(int *)(param_1 + 0x10) = param_2;

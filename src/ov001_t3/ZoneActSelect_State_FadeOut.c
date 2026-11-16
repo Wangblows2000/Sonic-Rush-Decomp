@@ -25,7 +25,7 @@ extern s32 data_ov001_0231c3ec;
 extern s32 gZoneActSelectResult;
 void Task_Destroy(UnkTask_022e114c *t);
 
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
 void func_ov001_022e08e0(UnkWork_022e114c *w);
 void func_ov001_022e09d0(UnkWork_022e114c *w);
@@ -63,7 +63,7 @@ void ZoneActSelect_State_FadeOut(void) {
     b = target << 12;
     if (a >= 0) a += 0x800; else a -= 0x800;
     if (b >= 0) b += 0x800; else b -= 0x800;
-    v = (a + func_0200225c(FX_Mul_022e114c(w->timer << 12, b - a), 30 << 12)) >> 12;
+    v = (a + FX_Div(FX_Mul_022e114c(w->timer << 12, b - a), 30 << 12)) >> 12;
     if (v < -0x10) v = -0x10;
     if (v > 0x10) v = 0x10;
     data_0208926c.bright = v;

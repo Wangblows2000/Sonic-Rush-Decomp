@@ -35,7 +35,7 @@ void StageObj_SetOAMOrder(UnkWork_0204da44 *w, s32 a);
 void StageObj_SetOAMPriority(UnkWork_0204da44 *w, s32 a);
 void StageObj_Main(void);
 void StageObj_Destructor(void);
-void GameOver_State_Unk_0204d854(void);
+void GameOver_State_Animate(void);
 
 void GameOver_Create(s32 a, s32 b, s32 x, s32 y, u16 d, s16 e) {
     UnkTask_0204da44 *t;
@@ -65,5 +65,5 @@ void GameOver_Create(s32 a, s32 b, s32 x, s32 y, u16 d, s16 e) {
     w->unk5c |= 0x80;
     w->unk54 |= 2;
     w->unk54 |= 0x10;
-    w->unk68 = GameOver_State_Unk_0204d854;
+    w->unk68 = GameOver_State_Animate;
 }

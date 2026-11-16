@@ -9,11 +9,11 @@ extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 
 UnkTex_020257f8 *NNS_G3dGetTex(u32 *res);
 void *NNS_G3dGetMdlSet(u32 *res);
-u32 func_02021c18(UnkTex_020257f8 *tex);
-u32 func_02021c0c(UnkTex_020257f8 *tex);
-u32 func_02021ad8(UnkTex_020257f8 *tex);
+u32 NNS_G3dTexGetRequiredSize(UnkTex_020257f8 *tex);
+u32 NNS_G3dTex4x4GetRequiredSize(UnkTex_020257f8 *tex);
+u32 NNS_G3dPlttGetRequiredSize(UnkTex_020257f8 *tex);
 void NNS_G3dTexSetTexKey(UnkTex_020257f8 *tex, u32 key, u32 key4x4);
-void func_02021ad0(UnkTex_020257f8 *tex, u32 key);
+void NNS_G3dPlttSetPlttKey(UnkTex_020257f8 *tex, u32 key);
 void NNS_G3dTexLoad(UnkTex_020257f8 *tex, BOOL lock);
 void NNS_G3dPlttLoad(UnkTex_020257f8 *tex, BOOL lock);
 void NNS_G3dBindMdlSet(void *mdlSet, UnkTex_020257f8 *tex);
@@ -34,9 +34,9 @@ BOOL NNS_G3dResDefaultSetup(u32 *res) {
         okPltt = TRUE;
         tex = NNS_G3dGetTex(res);
         if (tex != NULL) {
-            tex1 = func_02021c18(tex);
-            tex4 = func_02021c0c(tex);
-            pltt = func_02021ad8(tex);
+            tex1 = NNS_G3dTexGetRequiredSize(tex);
+            tex4 = NNS_G3dTex4x4GetRequiredSize(tex);
+            pltt = NNS_G3dPlttGetRequiredSize(tex);
             if (tex1 != 0) {
                 tex1 = NNS_GfdDefaultFuncAllocTexVram(tex1, FALSE, 0);
                 if (tex1 == 0) okTex = FALSE;
@@ -62,7 +62,7 @@ BOOL NNS_G3dResDefaultSetup(u32 *res) {
                 return FALSE;
             }
             NNS_G3dTexSetTexKey(tex, tex1, tex4);
-            func_02021ad0(tex, pltt);
+            NNS_G3dPlttSetPlttKey(tex, pltt);
             NNS_G3dTexLoad(tex, TRUE);
             NNS_G3dPlttLoad(tex, TRUE);
         }

@@ -24,12 +24,12 @@ typedef struct UnkStruct_022f0ad0_c {
 
 extern UnkStruct_022f0ad0_c data_ov000_0236a48c;
 
-void func_ov000_022f4ce4(UnkStruct_022f0ad0 *s, s32 a, s32 b, s32 c);
+void BossFPartD8_SetAnimation(UnkStruct_022f0ad0 *s, s32 a, s32 b, s32 c);
 void BossFPartD8_State_Unk_ov000_022f09fc(UnkStruct_022f0ad0 *s);
 
 void BossFPartD8_State_Unk_ov000_022f0ad0(UnkStruct_022f0ad0 *s) {
     UnkStruct_022f0ad0_c *c;
-    func_ov000_022f4ce4(s, 0x20, 0x1000, 0);
+    BossFPartD8_SetAnimation(s, 0x20, 0x1000, 0);
     s->unk440 = s->unk10 << 4;
     s->unk444 = s->unk14 << 4;
     s->unk448 = s->unk18 << 4;

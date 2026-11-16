@@ -16,7 +16,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 void Model_Release(void *o);
-void func_0202566c(void *res);
+void NNS_G3dResDefaultRelease(void *res);
 
 static inline void Free_0230f8b4(void *p) {
     u32 size;
@@ -40,7 +40,7 @@ void SpecialStage_ReleaseGimmickModels(void) {
     for (i = 0; i < 9; i++)
         Model_Release(g->objs[i]);
     for (i = 0; i < 5; i++) {
-        func_0202566c(g->res[i]);
+        NNS_G3dResDefaultRelease(g->res[i]);
         Model_Release(g->anims[i]);
         Free_0230f8b4(g->res[i]);
     }

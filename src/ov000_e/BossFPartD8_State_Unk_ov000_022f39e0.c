@@ -46,7 +46,7 @@ extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_02369ac0 gBossStatus;
 extern u8 data_ov000_02363e9c[][8];
 
-void func_ov000_022f8fa0(u16 *p, s32 a, s32 b);
+void BossF_UpdateCameraShake(u16 *p, s32 a, s32 b);
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, u16 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void BossEffect_CreateImpactSl(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -60,7 +60,7 @@ void BossFPartD8_State_Unk_ov000_022f39e0(UnkStruct_022f39e0 *s) {
     s32 i;
     u16 fl;
 
-    func_ov000_022f8fa0(&s->unk43A, 2, 6);
+    BossF_UpdateCameraShake(&s->unk43A, 2, 6);
     p = s->unk434 ? &s->unk3D0 : &s->unk400;
     h = s->unk434 ? &s->unk238 : &s->unk2BC;
     if (p->unk28 < -0x200000)

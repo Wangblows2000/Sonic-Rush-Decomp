@@ -20,7 +20,7 @@ void GmkSpecial_Destructor(void);
 void GmkSpecial_Draw(void);
 void GmkSpecial_OnHit(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void func_ov000_023165b0(UnkStruct_02316698 *w);
+void GmkSpecial_Action_Init(UnkStruct_02316698 *w);
 
 UnkStruct_02316698 *GmkSpecial_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -58,6 +58,6 @@ UnkStruct_02316698 *GmkSpecial_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->base.unk5C |= 2;
         w->base.unk5 = 0x80;
     }
-    func_ov000_023165b0(w);
+    GmkSpecial_Action_Init(w);
     return w;
 }

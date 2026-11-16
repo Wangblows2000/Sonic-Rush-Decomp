@@ -15,7 +15,7 @@ s32 Records_CreateFadeTask();
 void func_ov001_022ec964();
 s32 Task_Create();
 s32 SysSound_Init();
-s32 func_02052168();
+s32 SysSound_PlayBGM();
 
 void Records_Start(void) {
     s32 t0 = Records_Create();
@@ -28,7 +28,7 @@ void Records_Start(void) {
     Records_CreateFadeTask(*(s16 *)((u8 *)data_0208926c + 8), 0, 0x10, 0);
     Task_Create((u32)func_ov001_022ec964, 0, 0, 0x2000, 0x1000, 0);
     SysSound_Init();
-    func_02052168(0);
+    SysSound_PlayBGM(0);
 }
 
 #pragma thumb reset

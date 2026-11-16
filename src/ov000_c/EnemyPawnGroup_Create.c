@@ -86,7 +86,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         MIi_CpuClear16(zero2, w, 0x240);
     }
     MapObject_Init(w, (s32)p, b, c);
-    func_02068e40(w, -8, -10, 8, -3);
+    StageObj_SetMapHitbox(w, -8, -10, 8, -3);
     switch (w->base.unk1E0->unk2) {
     case 20:
         w->base.unk4E = -0x100;
@@ -161,7 +161,7 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     case 15:
         StageObj_Load2dBAC(w, data_ov000_02366528, 0xffff, data_ov000_02369d8c, data_ov000_02369ba0);
         StageObj_AllocSpritePalette(w, 0, 0x37);
-        func_02068e40(w, -8, -10, 8, 0x20);
+        StageObj_SetMapHitbox(w, -8, -10, 8, 0x20);
         break;
     }
     StageObj_SetOAMOrder(w, 0x14);

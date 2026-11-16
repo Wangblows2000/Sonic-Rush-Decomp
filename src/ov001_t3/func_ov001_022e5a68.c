@@ -26,7 +26,7 @@ extern UnkStruct_022c46e0 data_022c46e0;
 
 s32 func_02064828(void);
 void func_02064740(u16 a);
-void func_0205a4ec(s32 a);
+void SaveData_CommitOrShowError(s32 a);
 
 #pragma thumb on
 BOOL func_ov001_022e5a68(UnkWork_022e5a68 *w) {
@@ -86,7 +86,7 @@ BOOL func_ov001_022e5a68(UnkWork_022e5a68 *w) {
     w->unk9c = found;
     w->unka0 = r;
     if (found) func_02064740(idx);
-    if (save == TRUE) func_0205a4ec(0);
+    if (save == TRUE) SaveData_CommitOrShowError(0);
     return TRUE;
 }
 #pragma thumb reset

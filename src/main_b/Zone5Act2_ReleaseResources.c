@@ -1,9 +1,9 @@
 #include <nitro/types.h>
 
-void *func_02021264(void *f, s32 i);
-void func_020212e0(void *f);
-void func_02021310(void *f, void *path, void *arc);
-void func_0202566c(void *p);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
+void NNS_FndUnmountArchive(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void NNS_G3dResDefaultRelease(void *p);
 extern void *gZoneActArchive;
 extern u8 data_0207a024;
-void Zone5Act2_ReleaseResources(void) { u8 f[0x5c]; if (gZoneActArchive == NULL) return; func_02021310(f, &data_0207a024, gZoneActArchive); func_0202566c(func_02021264(f, 0)); func_020212e0(f); }
+void Zone5Act2_ReleaseResources(void) { u8 f[0x5c]; if (gZoneActArchive == NULL) return; NNS_FndMountArchive(f, &data_0207a024, gZoneActArchive); NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByIndex(f, 0)); NNS_FndUnmountArchive(f); }

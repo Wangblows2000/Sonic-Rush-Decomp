@@ -15,11 +15,11 @@ typedef struct UnkStruct_02314a98_e {
 
 extern UnkStruct_02314a98_e *gSpecialStageCameraList;
 
-void func_ov001_02314f70(UnkStruct_02314a98_e *e);
+void SpecialStageCamera_UpdateOrbitAngles(UnkStruct_02314a98_e *e);
 
 void SpecialStageCamera_SetTarget(s32 idx, UnkStruct_02314a98_v v) {
     UnkStruct_02314a98_e *e = &gSpecialStageCameraList[idx];
 
     e->target = v;
-    func_ov001_02314f70(e);
+    SpecialStageCamera_UpdateOrbitAngles(e);
 }

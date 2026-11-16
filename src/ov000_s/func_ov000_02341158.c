@@ -16,8 +16,8 @@ typedef struct {
 extern UnkPlayers_02341158 gCamera;
 extern UnkPlayer_02341158 data_ov000_0236ab3c;
 
-UnkPlayer_02341158 *func_ov000_0233b62c(void);
-UnkPlayer_02341158 *func_ov000_0233b610(void);
+UnkPlayer_02341158 *Camera_GetBySwapState(void);
+UnkPlayer_02341158 *Camera_GetOtherBySwapState(void);
 void func_ov000_0233f67c(void);
 void func_ov000_0233f6f4(void);
 void Task_Create(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
@@ -27,10 +27,10 @@ void func_ov000_02341158(void) {
     UnkPlayer_02341158 *p;
 
     if (gCamera.flags & 1) {
-        p = func_ov000_0233b62c();
+        p = Camera_GetBySwapState();
         p->x = 0;
         p->y = 0;
-        p = func_ov000_0233b610();
+        p = Camera_GetOtherBySwapState();
         p->x = 0;
         p->y = 0x10000;
     } else {

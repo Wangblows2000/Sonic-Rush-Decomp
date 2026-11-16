@@ -8,7 +8,7 @@ s32 func_ov001_022da70c();
 s32 MsgBox_IsClosed();
 s32 func_ov001_022da41c();
 s32 MsgBox_GetResult();
-s32 func_02051838();
+s32 WirelessSession_ForceStop();
 s32 func_ov001_022daaa8();
 s32 func_ov001_022da33c();
 void func_ov001_022dd1ec();
@@ -25,7 +25,7 @@ void func_ov001_022dd190(void) {
         func_ov001_022da41c(t0);
         s32 t3 = MsgBox_GetResult();
         if (t3 == 0) {
-            func_02051838();
+            WirelessSession_ForceStop();
             func_ov001_022daaa8(t0);
             return;
         }

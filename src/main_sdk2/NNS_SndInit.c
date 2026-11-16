@@ -18,7 +18,7 @@ void EndSleep(void *arg);
 void PM_PrependPreSleepCallback(UnkPMCallback *cb);
 void PM_AppendPostSleepCallback(UnkPMCallback *cb);
 void NNSi_SndInitResourceMgr(void);
-void func_0201cee4(void);
+void NNSi_SndCaptureInit(void);
 void NNSi_SndPlayerInit(void);
 
 static inline void func_0201b3d4_SetCb(UnkPMCallback *cb, void (*func)(void *), void *arg)
@@ -39,7 +39,7 @@ void NNS_SndInit(void)
     PM_PrependPreSleepCallback(&data_02081050);
     PM_AppendPostSleepCallback(&data_0208105c);
     NNSi_SndInitResourceMgr();
-    func_0201cee4();
+    NNSi_SndCaptureInit();
     NNSi_SndPlayerInit();
     data_02081040 = -1;
     data_02081044 = 1;

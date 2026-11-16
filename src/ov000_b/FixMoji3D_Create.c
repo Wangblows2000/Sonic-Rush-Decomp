@@ -15,10 +15,10 @@ typedef struct {
 extern void *gZoneActArchive;
 extern u8 data_ov000_02367f90[];
 
-void func_ov000_0232a660(void);
+void FixMoji3D_State_FollowParent(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_0232a9d0_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 void Model_Animate(UnkStruct_0232a9d0_Sub *s);
-void func_ov000_022c5e80(s32 a, s32 b, s32 c, s32 *d, s32 *e, s16 *f);
+void BossArena_ArcToCirclePos(s32 a, s32 b, s32 c, s32 *d, s32 *e, s16 *f);
 
 UnkStruct_0232a9d0 *FixMoji3D_Create(UnkStruct_StageObj *arg, s32 x, s32 y, u32 idx, s32 a, s32 b) {
     UnkStruct_Task *task;
@@ -49,12 +49,12 @@ UnkStruct_0232a9d0 *FixMoji3D_Create(UnkStruct_StageObj *arg, s32 x, s32 y, u32 
     w->base.unk10 = arg->unk10 + w->base.unk2E;
     w->base.unk14 = arg->unk14 + w->base.unk30;
     w->base.unk88 = arg;
-    w->base.unk68 = func_ov000_0232a660;
+    w->base.unk68 = FixMoji3D_State_FollowParent;
     w->base.unkC = 0;
     w->base.unk8 = 0;
     w->base.unk58 |= 0x2100;
     w->base.unk54 |= 2;
-    func_ov000_022c5e80(a, b, w->base.unk10 << 4, &o10, &o14, &o0C);
+    BossArena_ArcToCirclePos(a, b, w->base.unk10 << 4, &o10, &o14, &o0C);
     w->base.unk10 = o10 >> 4;
     w->base.unk18 = o14 >> 4;
     return w;

@@ -76,9 +76,9 @@ void Boss7PartD5_Draw(void);
 void Boss7PartD5_Collide(void);
 void Boss7PartD5_OnHit_Unk_ov000_022eb5fc(void);
 void Pad_Reset(void *p, s32 a, s32 b);
-void func_02021310(void *f, void *path, void *arc);
-void *func_02021264(void *f, s32 i);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
+void NNS_FndUnmountArchive(void *f);
 void StageObj_LoadModel(void *w, void *s, void *a, s32 b, void *c, void *d);
 void StageObj_LoadMotion(void *w, void *s, void *a, void *b, void *c);
 void AnimatorSprite_Init(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, u32 h);
@@ -101,10 +101,10 @@ UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e98d8;
     w->unk452 = Rand() & 3;
     Pad_Reset(w->unk3D8, 0, 0);
-    func_02021310(ctx, data_ov000_02365aec, gZoneActArchive);
-    w->unk4CC = func_02021264(ctx, 8);
-    w->unk4D0 = func_02021264(ctx, 9);
-    func_020212e0(ctx);
+    NNS_FndMountArchive(ctx, data_ov000_02365aec, gZoneActArchive);
+    w->unk4CC = NNS_FndGetArchiveFileByIndex(ctx, 8);
+    w->unk4D0 = NNS_FndGetArchiveFileByIndex(ctx, 9);
+    NNS_FndUnmountArchive(ctx);
     if (gGameState.unk0 == 0) {
         w->unk3D0 = 1;
         StageObj_LoadModel(w, &w->unk20C, data_ov000_02365af0, 0, data_ov000_0236ac58, data_ov000_0236ac28);

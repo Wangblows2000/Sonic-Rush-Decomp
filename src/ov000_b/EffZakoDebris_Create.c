@@ -5,7 +5,7 @@ extern u8 data_ov000_02368100[], data_ov000_0236aa00[];
 extern u8 data_ov000_0236aa38[], data_ov000_0236aa48[], data_ov000_0236aa58[], data_ov000_0236aa68[];
 
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_0232dec0(UnkStruct_EffObj *w);
+void EffZakoDebris_Action_Init(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *EffZakoDebris_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s16 vx, s16 vy, u8 type) {
     UnkStruct_Task *task;
@@ -83,10 +83,10 @@ UnkStruct_EffObj *EffZakoDebris_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s1
     w->unk42 = 0xf00;
     if (arg->unk54 & 1)
         w->unk54 |= 1;
-    func_02068e40(w, -2, -4, 2, 4);
+    StageObj_SetMapHitbox(w, -2, -4, 2, 4);
     w->unk58 |= 0x280;
     w->unk54 |= 2;
     w->unk5C |= 0x100;
-    func_ov000_0232dec0(w);
+    EffZakoDebris_Action_Init(w);
     return w;
 }

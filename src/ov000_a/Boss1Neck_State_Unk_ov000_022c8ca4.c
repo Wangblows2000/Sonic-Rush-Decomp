@@ -59,8 +59,8 @@ struct UnkStruct_022c8ca4 {
 
 extern UnkStruct_022c8ca4_2 *gBoss1;
 
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cc06c(void *p, s32 a, s32 b);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 
 void func_ov000_022c9f7c(UnkStruct_022c8ca4 *s, s32 x);
 void func_ov000_022c8c50(UnkStruct_022c8ca4 *s);

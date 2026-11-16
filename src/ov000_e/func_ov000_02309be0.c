@@ -23,7 +23,7 @@ typedef struct {
 extern UnkStruct_0236aad8 gCamera;
 extern UnkStruct_StageObj *gPlayers[];
 
-void MapObj70_State_Unk_ov000_02309bdc(void);
+void MapObj70_State_Idle(void);
 
 void func_ov000_02309be0(UnkStruct_02309be0 *w) {
     u8 i;
@@ -49,5 +49,5 @@ void func_ov000_02309be0(UnkStruct_02309be0 *w) {
             }
         }
     }
-    w->base.unk68 = MapObj70_State_Unk_ov000_02309bdc;
+    w->base.unk68 = MapObj70_State_Idle;
 }

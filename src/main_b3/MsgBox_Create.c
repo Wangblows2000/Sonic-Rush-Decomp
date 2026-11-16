@@ -50,9 +50,9 @@ UnkTask_02050078 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s3
 void MIi_CpuClear32(u32 v, void *dst, u32 size);
 void MsgBox_Main(void);
 void MsgBox_Destructor(void);
-s32 MsgBox_Unk_0204f17c(s32 a, s32 b);
-s32 MsgBox_Unk_0204f0c8(s32 a, s32 b);
-void MsgBox_Unk_0204f2fc(UnkWork_02050078 *w, s32 a);
+s32 MsgBox_GetBgVOfsReg(s32 a, s32 b);
+s32 MsgBox_GetBgPriority(s32 a, s32 b);
+void MsgBox_SetBgVisible(UnkWork_02050078 *w, s32 a);
 BOOL SysSound_IsInit(void);
 void SysSound_Init(void);
 
@@ -165,11 +165,11 @@ void MsgBox_Create(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a
     }
     w->unk584 = 0;
     w->unk14 = 0;
-    w->unk354 = MsgBox_Unk_0204f17c(w->unk28, w->unk2C);
-    w->unk30 = MsgBox_Unk_0204f0c8(w->unk28, w->unk2C);
+    w->unk354 = MsgBox_GetBgVOfsReg(w->unk28, w->unk2C);
+    w->unk30 = MsgBox_GetBgPriority(w->unk28, w->unk2C);
     w->unk358 = data_02074bf0[w->unk44];
     w->unk35C = data_02074bdc[w->unk44];
-    MsgBox_Unk_0204f2fc(w, 0);
+    MsgBox_SetBgVisible(w, 0);
     MsgBox_Main();
     if (!SysSound_IsInit()) {
         SysSound_Init();

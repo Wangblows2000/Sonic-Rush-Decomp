@@ -95,22 +95,22 @@ extern UnkStruct_022ca63c_c data_ov000_0236a48c;
 extern UnkStruct_022ca63c_pl *gPlayers;
 extern UnkStruct_022ca63c_5 gDisplayMain;
 
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void MTX_Identity33_(void *m);
 void StageObj_ClearPause(void);
 BOOL func_ov000_022cc6d4(void);
 void BossEffect_CreateBlast5(s32 a, s32 x, s32 y, s32 z);
 u8 *BossEffect_CreateBlast1(s32 a, s32 x, s32 y, s32 z);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss1_State_Unk_ov000_022ca574(UnkStruct_022ca63c *s);
 
 void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
     u32 v;
     UnkStruct_022ca63c_c *c;
-    func_ov000_022cc00c(s->unk210->unk228, s->unk210->unk220, 0x1f, 0x1000, 0);
-    func_ov000_022cc00c(s->unk214->unk30C, s->unk214->unk304, 0xc, 0x1000, 0);
+    Boss1_SetPartAnimation(s->unk210->unk228, s->unk210->unk220, 0x1f, 0x1000, 0);
+    Boss1_SetPartAnimation(s->unk214->unk30C, s->unk214->unk304, 0xc, 0x1000, 0);
     s->unk20C |= 1;
     MTX_Identity33_(s->unk214->unk330);
     data_ov000_0236a444.unkDC = 2;
@@ -146,8 +146,8 @@ void func_ov000_022ca63c(UnkStruct_022ca63c *s) {
         u8 *obj = BossEffect_CreateBlast1(0, 0xe100, 0x20000, 0);
         *(s32 *)(obj + 0x248) = 0x800;
     }
-    func_020537b4(0xd);
-    func_020533e0(0x13, 0xf0);
+    NaviMsg_SetFaceAnim(0xd);
+    NaviMsg_ShowMessage(0x13, 0xf0);
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7d);
     s->unk220 = 0;

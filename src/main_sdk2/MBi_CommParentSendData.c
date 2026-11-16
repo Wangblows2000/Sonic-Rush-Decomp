@@ -2,7 +2,7 @@
 #include <main_sdk2/wh.h>
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-s32 func_02015e28(u32 type, u16 bitmap);
+s32 MBi_CommParentSendMsg(u32 type, u16 bitmap);
 s32 MBi_CommParentSendDLFileInfo(void);
 s32 MBi_CommParentSendBlock(void);
 
@@ -35,19 +35,19 @@ void MBi_CommParentSendData(void)
         }
     }
     if (m[3] != 0) {
-        r = func_02015e28(5, m[3]);
+        r = MBi_CommParentSendMsg(5, m[3]);
     } else if (m[0] != 0) {
-        r = func_02015e28(1, m[0]);
+        r = MBi_CommParentSendMsg(1, m[0]);
     } else if (m[4] != 0) {
-        r = func_02015e28(6, m[4]);
+        r = MBi_CommParentSendMsg(6, m[4]);
     } else if (m[2] != 0) {
-        r = func_02015e28(2, m[2]);
+        r = MBi_CommParentSendMsg(2, m[2]);
     } else if (m[1] != 0) {
         r = MBi_CommParentSendDLFileInfo();
     } else {
         r = MBi_CommParentSendBlock();
     }
     if (r == 0x15) {
-        func_02015e28(0, 0xffff);
+        MBi_CommParentSendMsg(0, 0xffff);
     }
 }

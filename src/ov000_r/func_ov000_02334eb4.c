@@ -25,7 +25,7 @@ typedef struct {
 
 typedef void (*UnkFunc_02334eb4)(void *a, u16 x, u16 y, UnkStruct_02334eb4_R *r, UnkStruct_02334eb4_R *o, u32 f);
 
-UnkStruct_02334eb4_O *func_ov000_0233b62c(void);
+UnkStruct_02334eb4_O *Camera_GetBySwapState(void);
 extern UnkStruct_02334eb4_M data_ov000_0236abd8;
 extern UnkFunc_02334eb4 data_ov000_0236aa98;
 extern u16 *data_ov000_02364d54[];
@@ -34,7 +34,7 @@ extern UnkFunc_02334eb4 data_ov000_023687d4[];
 void func_ov000_02334eb4(void *a, s32 idx, u32 flags) {
     u16 ww = data_ov000_0236abd8.unkE;
     u16 hh = data_ov000_0236abd8.unk10;
-    UnkStruct_02334eb4_O *o = func_ov000_0233b62c();
+    UnkStruct_02334eb4_O *o = Camera_GetBySwapState();
     UnkStruct_02334eb4_R rc;
     UnkStruct_02334eb4_R base;
     u8 i;

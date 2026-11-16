@@ -14,13 +14,13 @@ typedef struct {
 
 extern u8 data_ov000_02363e48[];
 
-void func_ov000_022f8fa0(void *p, s32 a, s32 b);
+void BossF_UpdateCameraShake(void *p, s32 a, s32 b);
 void func_ov000_022f499c(UnkStruct_022f35e4 *s, s32 a);
 void func_ov000_022f898c(void);
 void BossFPartD8_State_Unk_ov000_022f3d48(void);
 
 void BossFPartD8_State_Unk_ov000_022f35e4(UnkStruct_022f35e4 *s) {
-    func_ov000_022f8fa0(s->unk43A, 2, 6);
+    BossF_UpdateCameraShake(s->unk43A, 2, 6);
     if (s->unk438 < data_ov000_02363e48[s->unk458])
         func_ov000_022f499c(s, s->unk434 == 0);
     if (!(s->unk57C & 2))

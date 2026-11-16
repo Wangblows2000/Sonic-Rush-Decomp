@@ -7,7 +7,7 @@ typedef struct { u8 unk0[2]; u16 ofsDict; } UnkBlk_02021634;
 typedef struct { u8 unk0[0x34]; u16 ofsDict; } UnkObj_02021634;
 
 void *NNS_G3dGetResDataByName(void *p, const void *name);
-void func_020216e4(void *blk, void *entry, UnkObj_02021634 *obj, void *r);
+void bindMdlPltt_Internal_(void *blk, void *entry, UnkObj_02021634 *obj, void *r);
 
 BOOL NNS_G3dBindMdlPltt(UnkRes_02021634 *res, UnkObj_02021634 *obj) {
     UnkBlk_02021634 *blk = (UnkBlk_02021634 *)((u8 *)res + res->ofs);
@@ -20,7 +20,7 @@ BOOL NNS_G3dBindMdlPltt(UnkRes_02021634 *res, UnkObj_02021634 *obj) {
         if (r != NULL) {
             UnkDictEntry_02021634 *e2 = (UnkDictEntry_02021634 *)((u8 *)dict + dict->ofsEntry);
             u8 *data = e2->data + e2->sizeUnit * i;
-            if (!(data[3] & 1)) func_020216e4(blk, data, obj, r);
+            if (!(data[3] & 1)) bindMdlPltt_Internal_(blk, data, obj, r);
         } else {
             ok = FALSE;
         }

@@ -41,7 +41,7 @@ extern void CARDi_SetTask(void (*fn)(UnkCardCommon_0200f8b8 *));
 extern void CARD_CheckEnabled(void);
 extern void CARDi_IdentifyBackupCore(u32 id);
 extern BOOL CARDi_Request(UnkCardCommon_0200f8b8 *p, u32 req, u32 retry);
-extern void func_0200fcb8(UnkCardCommon_0200f8b8 *p);
+extern void CARDi_EndTask(UnkCardCommon_0200f8b8 *p);
 
 BOOL CARD_IdentifyBackup(u32 id)
 {
@@ -63,6 +63,6 @@ BOOL CARD_IdentifyBackup(u32 id)
     p->cmd->dst = (u32)p->buf;
     p->cmd->len = 1;
     CARDi_Request(p, 6, 1);
-    func_0200fcb8(p);
+    CARDi_EndTask(p);
     return p->cmd->result == 0;
 }

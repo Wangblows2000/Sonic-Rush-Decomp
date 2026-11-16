@@ -39,21 +39,21 @@ void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-u32 func_ov000_0235ffc4(void *res);
-u32 func_ov000_0235ffb8(void *res);
+u32 TimeSelectMenu_GetCompressionType(void *res);
+u32 TimeSelectMenu_GetCompressedSize(void *res);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *res);
 void Mem_Copy(void *src, void *dst, u32 size);
-void func_02021310(void *buf, void *a, void *b);
-void *func_02021264(void *buf, s32 a);
+void NNS_FndMountArchive(void *buf, void *a, void *b);
+void *NNS_FndGetArchiveFileByIndex(void *buf, s32 a);
 void NNS_G3dResDefaultSetup(void);
-void func_020212e0(void *buf);
+void NNS_FndUnmountArchive(void *buf);
 void Model_Init(UnkStruct_MdlRender *r, s32 a);
 void Model_SetResource(UnkStruct_MdlRender *r, void *mdl, s32 a);
 void G3X_SetEdgeColorTable(void *p);
-void func_02022270(s32 idx, u16 val);
+void NNS_G3dGlbLightColor(s32 idx, u16 val);
 
 static inline void *UnkAlloc_02360408(u32 size, s32 align) {
     u8 *p;
@@ -105,7 +105,7 @@ void TimeSelectMenu_LoadArchives(UnkStruct_02360408 *w) {
         res = File_Load(data_ov000_02369a88, (void *)-1);
         w->unkDF8 = UnkAlloc_02360408(*(u32 *)res >> 8, 0x20);
         dst = w->unkDF8;
-        switch (func_ov000_0235ffc4(res)) {
+        switch (TimeSelectMenu_GetCompressionType(res)) {
         case 0x10:
             MI_UncompressLZ16(res, dst);
             break;
@@ -116,23 +116,23 @@ void TimeSelectMenu_LoadArchives(UnkStruct_02360408 *w) {
             MI_UncompressRL16(res, dst);
             break;
         default:
-            Mem_Copy(Compress_GetData(res), dst, func_ov000_0235ffb8(res));
+            Mem_Copy(Compress_GetData(res), dst, TimeSelectMenu_GetCompressedSize(res));
             break;
         }
-        DC_StoreRange(dst, func_ov000_0235ffb8(res));
+        DC_StoreRange(dst, TimeSelectMenu_GetCompressedSize(res));
         UnkFree_02360408(res);
-        func_02021310(buf, data_ov000_02369aa0, w->unkDF8);
-        func_02021264(buf, 0);
+        NNS_FndMountArchive(buf, data_ov000_02369aa0, w->unkDF8);
+        NNS_FndGetArchiveFileByIndex(buf, 0);
         NNS_G3dResDefaultSetup();
-        w->slot[0].mdl = func_02021264(buf, 0);
-        w->slot[0].anm0 = func_02021264(buf, 1);
-        w->slot[0].anm1 = func_02021264(buf, 2);
-        func_02021264(buf, 3);
+        w->slot[0].mdl = NNS_FndGetArchiveFileByIndex(buf, 0);
+        w->slot[0].anm0 = NNS_FndGetArchiveFileByIndex(buf, 1);
+        w->slot[0].anm1 = NNS_FndGetArchiveFileByIndex(buf, 2);
+        NNS_FndGetArchiveFileByIndex(buf, 3);
         NNS_G3dResDefaultSetup();
-        w->slot[1].mdl = func_02021264(buf, 3);
-        w->slot[1].anm0 = func_02021264(buf, 1);
-        w->slot[1].anm1 = func_02021264(buf, 2);
-        func_020212e0(buf);
+        w->slot[1].mdl = NNS_FndGetArchiveFileByIndex(buf, 3);
+        w->slot[1].anm0 = NNS_FndGetArchiveFileByIndex(buf, 1);
+        w->slot[1].anm1 = NNS_FndGetArchiveFileByIndex(buf, 2);
+        NNS_FndUnmountArchive(buf);
     }
     Model_Init(&w->slot[0].r, 0);
     Model_SetResource(&w->slot[0].r, w->slot[0].mdl, 0);
@@ -145,9 +145,9 @@ void TimeSelectMenu_LoadArchives(UnkStruct_02360408 *w) {
     w->slot[0].flag |= 4;
     w->slot[1].flag |= 4;
     G3X_SetEdgeColorTable(data_ov000_02364ee8);
-    func_02022270(0, data_ov000_02364ee0[0]);
-    func_02022270(1, data_ov000_02364ee0[1]);
-    func_02022270(2, data_ov000_02364ee0[2]);
+    NNS_G3dGlbLightColor(0, data_ov000_02364ee0[0]);
+    NNS_G3dGlbLightColor(1, data_ov000_02364ee0[1]);
+    NNS_G3dGlbLightColor(2, data_ov000_02364ee0[2]);
 }
 
 #pragma thumb reset

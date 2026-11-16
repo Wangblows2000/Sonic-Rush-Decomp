@@ -17,7 +17,7 @@ typedef struct {
 } UnkStruct_0233d588;
 
 extern UnkPlayer_0233d588 gCamera[2];
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 void func_ov000_0233d588(UnkStruct_0233d588 *w) {
     UnkPlayer_0233d588 *p;
@@ -34,7 +34,7 @@ void func_ov000_0233d588(UnkStruct_0233d588 *w) {
                 w->state[i] = 0;
             } else if (p->unk8 < top) {
                 w->state[i] = 1;
-                w->ratio[i] = func_0200225c((p->unk62 << 8) - p->unk8, p->unk20) >> 12;
+                w->ratio[i] = FX_Div((p->unk62 << 8) - p->unk8, p->unk20) >> 12;
             } else {
                 w->state[i] = 2;
             }

@@ -37,7 +37,7 @@ extern UnkStruct_02084db8 data_02084db8;
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void G3i_LookAt_(UnkVec_020474f8 *pos, UnkVec_020474f8 *up, UnkVec_020474f8 *at, s32 a, void *mtx);
 void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, void *mtx);
 void MTX_RotY33_(void *mtx, s32 s, s32 c);
@@ -50,7 +50,7 @@ void Model_Draw(void *p);
 void ClearDemo_DrawModel(UnkWork_020474f8 *w) {
     UnkCam_020474f8 *cam = &w->cam;
 
-    *(s32 *)((u8 *)w + 0x36c) = func_0200225c(COS(w->unk350), SIN(w->unk350)) * 0x60;
+    *(s32 *)((u8 *)w + 0x36c) = FX_Div(COS(w->unk350), SIN(w->unk350)) * 0x60;
     data_02084f78 = *W_VEC(w, 0x364);
     data_02084f84 = *W_VEC(w, 0x37c);
     data_02084f90 = *W_VEC(w, 0x370);

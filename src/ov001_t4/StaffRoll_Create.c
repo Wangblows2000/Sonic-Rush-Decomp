@@ -58,7 +58,7 @@ void StaffRoll_InitDisplay(UnkWork_022d2e3c *w);
 void StaffRoll_LoadAssets(UnkWork_022d2e3c *w);
 void StaffRoll_InitSprites(UnkWork_022d2e3c *w);
 void Background_Draw(void *bg);
-void func_02020230(void *p, s32 a, s32 b);
+void NNS_SndArcStrmStart(void *p, s32 a, s32 b);
 void StaffRoll_Main(void);
 void StaffRoll_Destructor(void);
 void StaffRoll_PictureState_SonicStart(void);
@@ -114,9 +114,9 @@ void StaffRoll_Create(s32 mode) {
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1f00;
     *(vu32 *)0x4001000 = (*(vu32 *)0x4001000 & ~0x1f00) | 0x1f00;
     if (w->mode == 2) {
-        func_02020230(w->unkc, 1, 0);
+        NNS_SndArcStrmStart(w->unkc, 1, 0);
         return;
     }
-    func_02020230(w->unkc, 0, 0);
+    NNS_SndArcStrmStart(w->unkc, 0, 0);
 }
 #pragma thumb reset

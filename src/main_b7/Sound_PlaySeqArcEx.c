@@ -4,7 +4,7 @@ extern void *gSESoundHandle;
 extern u8 gSEVolume;
 void NNS_SndHandleReleaseSeq(void *a);
 void NNS_SndHandleInit(void *a);
-void func_0201e9cc(void *a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void NNS_SndArcPlayerStartSeqArcEx(void *a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void NNS_SndPlayerSetVolume(void *a, s32 v);
 
 void Sound_PlaySeqArcEx(void **a, s32 b, s32 c) {
@@ -13,6 +13,6 @@ void Sound_PlaySeqArcEx(void **a, s32 b, s32 c) {
     if (gSESoundHandle != 0)
         NNS_SndHandleReleaseSeq(&gSESoundHandle);
     NNS_SndHandleInit(a);
-    func_0201e9cc(a, -1, -1, -1, b, c);
+    NNS_SndArcPlayerStartSeqArcEx(a, -1, -1, -1, b, c);
     NNS_SndPlayerSetVolume(a, gSEVolume);
 }

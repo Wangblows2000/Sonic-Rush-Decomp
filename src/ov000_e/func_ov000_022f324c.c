@@ -19,8 +19,8 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 extern s16 data_ov000_02363e54[][3];
 
-void func_ov000_022f4ce4(UnkStruct_022f324c *s, s32 a, s32 b, s32 c);
-void func_ov000_022f9188(void);
+void BossFPartD8_SetAnimation(UnkStruct_022f324c *s, s32 a, s32 b, s32 c);
+void BossF_InitCamera(void);
 void func_ov000_022f3080(void);
 
 static inline s32 GetIdxB(void) {
@@ -34,7 +34,7 @@ static inline s32 GetIdxB(void) {
 
 void func_ov000_022f324c(UnkStruct_022f324c *s) {
     s->base.unk2E = 0;
-    func_ov000_022f4ce4(s, 0x12, data_ov000_02363e54[GetIdxB()][s->unk458], 0);
-    func_ov000_022f9188();
+    BossFPartD8_SetAnimation(s, 0x12, data_ov000_02363e54[GetIdxB()][s->unk458], 0);
+    BossF_InitCamera();
     s->base.unk68 = func_ov000_022f3080;
 }

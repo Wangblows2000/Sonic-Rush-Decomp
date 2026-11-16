@@ -17,7 +17,7 @@ extern UnkStruct_0201ce34 data_02083e10;
 
 void NNSi_SndFaderUpdate(NNSSndFader *f);
 BOOL NNSi_SndFaderIsFinished(NNSSndFader *f);
-s32 func_02020564(NNSSndFader *f);
+s32 NNSi_SndFaderGet(NNSSndFader *f);
 void NNSi_SndCaptureStop(void);
 void SND_SetChannelVolume(u32 mask, s32 vol, s32 shift);
 
@@ -33,7 +33,7 @@ void NNSi_SndCaptureMain(void) {
         NNSi_SndCaptureStop();
         return;
     }
-    vol = func_02020564(f) >> 8;
+    vol = NNSi_SndFaderGet(f) >> 8;
     if (vol == p->volume) return;
     SND_SetChannelVolume(p->outCh, vol, 0);
     p->volume = vol;

@@ -76,12 +76,12 @@ extern UnkWork_02015924 *data_02080f1c;
 
 #define ENTRY_02015924(k) (((UnkWork_02015924 *)((u8 *)data_02080f1c + (k) * sizeof(UnkEntry_02015924)))->entry[0])
 
-void func_02015728(s32 k);
+void MBi_calc_sendblock(s32 k);
 BOOL MBi_get_blockinfo(UnkMbSegPos_02015924 *out, UnkMbSegInfo_02015924 *info, u32 idx, void *h);
 u8 *MBi_MakeParentSendBuffer(const UnkPacket_02015924 *pkt, void *dst);
 BOOL MBi_TryLoadCache(UnkCache_02015924 *s, u32 addr, void *dest, u32 size);
 s32 MBi_BlockHeaderEnd(u32 a, u16 bitmap, void *p);
-BOOL func_0201a478(UnkTask_02015924 *t);
+BOOL MBi_IsTaskBusy(UnkTask_02015924 *t);
 void OS_Terminate(void);
 void MBi_SetTask(UnkTask_02015924 *task, void (*func)(UnkTask_02015924 *), void (*done)(UnkTask_02015924 *), u32 priority);
 void MBi_ReloadCache(UnkTask_02015924 *t);
@@ -107,7 +107,7 @@ s32 MBi_CommParentSendBlock(void)
     if (i == 16) {
         return 0x15;
     }
-    func_02015728(data_02080f1c->unk1525);
+    MBi_calc_sendblock(data_02080f1c->unk1525);
     {
         UnkWork_02015924 *w = data_02080f1c;
         u8 k = w->unk1525;
@@ -123,7 +123,7 @@ s32 MBi_CommParentSendBlock(void)
     cache = ENTRY_02015924(data_02080f1c->unk1525).cache;
     if (!MBi_TryLoadCache(cache, addr, p, pos.size)) {
         UnkTask_02015924 *task = &data_02080f1c->task;
-        if (!func_0201a478(task) && cache->unk0) {
+        if (!MBi_IsTaskBusy(task) && cache->unk0) {
             UnkBlock_02015924 *blocks = cache->blocks;
             UnkBlock_02015924 *best = NULL;
             s32 j;

@@ -2,7 +2,7 @@
 #include <main_sdk2/blkinfo.h>
 
 s32 func_0201567c(void);
-u32 func_020154a4(s32 size);
+u32 WBT_CalcPacketbitmapSize(s32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
 
 void func_020141fc(UnkBlockInfo *info, s32 size, u32 *bits, u8 *base)
@@ -15,5 +15,5 @@ void func_020141fc(UnkBlockInfo *info, s32 size, u32 *bits, u8 *base)
     info->count = size / blk + (size % blk != 0 ? 1 : 0);
     info->bits = bits;
     info->base = base;
-    MI_CpuFill8(bits, 0, func_020154a4(size));
+    MI_CpuFill8(bits, 0, WBT_CalcPacketbitmapSize(size));
 }

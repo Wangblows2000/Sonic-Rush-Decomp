@@ -13,7 +13,7 @@ extern void *gActComArchive;
 extern UnkStruct_Task *data_ov000_0236a980;
 extern u8 data_ov000_02367fe4[];
 
-void func_ov000_0232b870(void);
+void ScorePopup_Destructor(void);
 void func_ov000_0232b598(void);
 void func_ov000_0232b740(void);
 s32 func_ov000_0233766c(s32 a);
@@ -29,7 +29,7 @@ void ScorePopup_Create(UnkStruct_StageObj *arg, s32 n) {
     if (data_ov000_0236a980 == NULL) {
         if (n == 0)
             return;
-        task = Task_Create(StageObj_Main, func_ov000_0232b870, 0, 0xa00, 4, sizeof(UnkStruct_0232b898));
+        task = Task_Create(StageObj_Main, ScorePopup_Destructor, 0, 0xa00, 4, sizeof(UnkStruct_0232b898));
         if (task == OS_GetArenaLo(0))
             return;
         data_ov000_0236a980 = task;

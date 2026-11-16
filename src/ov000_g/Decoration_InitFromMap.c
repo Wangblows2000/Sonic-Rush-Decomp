@@ -47,7 +47,7 @@ void Decoration_InitFromMap(UnkStruct_02326638 *w, UnkStruct_ObjParam *p, s32 x,
     w->unk42 = 0xf00;
     w->unk54 |= 1;
     w->unk58 |= 0x200;
-    func_02068e40(w, -2, -6, 2, 0);
+    StageObj_SetMapHitbox(w, -2, -6, 2, 0);
     w->unk5C |= 1;
     w->unk134.unk28 = 0x12;
     ObjRect_SetAtkDefFlags(&w->unk134, 0, 10);

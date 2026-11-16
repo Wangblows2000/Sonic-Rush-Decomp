@@ -8,7 +8,7 @@ extern u8 data_ov000_023670c4[], data_ov000_0236a2ac[], data_ov000_023670dc[], d
 void Switch_Destructor(void);
 void ObjData_Load(void **out, void *a, void *b);
 void Switch_CreatePart(UnkStruct_StageObj *w, s32 a);
-void func_ov000_023192cc(UnkStruct_StageObj *w);
+void Switch_Action_Init(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Switch_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -54,6 +54,6 @@ UnkStruct_StageObj *Switch_Create(s32 a, s32 b, s32 c) {
         Switch_CreatePart(w, 1);
     }
     w->unk58 |= 0x100;
-    func_ov000_023192cc(w);
+    Switch_Action_Init(w);
     return w;
 }

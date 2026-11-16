@@ -1,4 +1,4 @@
-/* paramclone of func_ov000_02359cd8 (src/ov000_d/func_ov000_02359cd8.c); immediates and relocations remapped. */
+/* paramclone of PlayerSelectMenu_ReleaseSprites (src/ov000_d/PlayerSelectMenu_ReleaseSprites.c); immediates and relocations remapped. */
 #include <nitro/types.h>
 
 typedef struct {

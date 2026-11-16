@@ -73,13 +73,13 @@ typedef struct UnkStruct_022d7908_p {
 extern UnkStruct_022d7908_p *gPlayers;
 extern s16 data_0206e470[];
 
-u16 func_ov000_022c5e10(s32 x, s32 z);
-u16 func_ov000_022da88c(u16 a, u16 b, s32 c);
+u16 Boss_Atan2(s32 x, s32 z);
+u16 Boss3_StepAngleToward(u16 a, u16 b, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov000_022d7844(UnkStruct_022d7908 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d7908(UnkStruct_022d7908 *s) {
-    s->unk224 = func_ov000_022da88c(s->unk224, (u16)(func_ov000_022c5e10(gPlayers->unk17C, gPlayers->unk184) + 0x8000), 0x400);
+    s->unk224 = Boss3_StepAngleToward(s->unk224, (u16)(Boss_Atan2(gPlayers->unk17C, gPlayers->unk184) + 0x8000), 0x400);
     MTX_RotY33_(s->unk2C4.unk24, data_0206e470[((s->unk224 & 0xffff) >> 4) * 2], data_0206e470[((s->unk224 & 0xffff) >> 4) * 2 + 1]);
     if (s->unk2C4.unk10C & 2)
         s->func = func_ov000_022d7844;

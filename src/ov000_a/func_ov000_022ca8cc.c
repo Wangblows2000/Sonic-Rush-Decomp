@@ -99,7 +99,7 @@ extern UnkStruct_022ca8cc_c data_ov000_0236a48c;
 extern UnkStruct_022ca8cc_pl *gPlayers;
 extern UnkStruct_022ca8cc_5 gDisplayMain;
 
-void func_ov000_022c5c80(u32 id);
+void Boss_DrawExcBackground(u32 id);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss1_State_Unk_ov000_022ca890(UnkStruct_022ca8cc *s);
 
@@ -120,7 +120,7 @@ void func_ov000_022ca8cc(UnkStruct_022ca8cc *s) {
     c->unk8C = 0x1000;
     c->unk8E = 0;
     c->unk92 = 0x1000;
-    func_ov000_022c5c80(6);
+    Boss_DrawExcBackground(6);
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
     s->unk220 = 0;

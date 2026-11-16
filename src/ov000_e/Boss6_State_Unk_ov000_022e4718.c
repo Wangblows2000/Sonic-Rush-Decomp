@@ -20,7 +20,7 @@ typedef struct {
 void func_ov000_022e03f4(UnkStruct_Boss *w);
 void func_ov000_022e035c(UnkStruct_Boss *w);
 void func_ov000_022df9d4(s32 a);
-void func_ov000_022e1b48(s32 a);
+void Boss6_SelectNextAttack(s32 a);
 
 void Boss6_State_Unk_ov000_022e4718(UnkStruct_Boss *w) {
     UnkStruct_Mdl960 *m = &w->unk960;
@@ -33,7 +33,7 @@ void Boss6_State_Unk_ov000_022e4718(UnkStruct_Boss *w) {
         w->unkD5E ^= 1;
         w->unk20C &= ~4;
         func_ov000_022df9d4(4);
-        func_ov000_022e1b48(2);
+        Boss6_SelectNextAttack(2);
         return;
     }
     w->unk1118++;

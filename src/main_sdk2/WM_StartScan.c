@@ -32,8 +32,8 @@ s32 WM_StartScan(void *cb, UnkScanParam_020117b8 *param)
     if (param->channel < 1 || param->channel > 14) {
         return 6;
     }
-    func_02010cd4(0xa, cb);
-    cmd = (UnkWmCmd_020117b8 *)((UnkWmWork *)func_02010b70())->unkC;
+    WMi_SetCallbackTable(0xa, cb);
+    cmd = (UnkWmCmd_020117b8 *)((UnkWmWork *)WMi_GetSystemWork())->unkC;
     cmd->apiid = 0xa;
     cmd->channel = param->channel;
     cmd->scanBuf = param->scanBuf;
@@ -44,7 +44,7 @@ s32 WM_StartScan(void *cb, UnkScanParam_020117b8 *param)
     cmd->bssid[3] = param->bssid[3];
     cmd->bssid[4] = param->bssid[4];
     cmd->bssid[5] = param->bssid[5];
-    r = func_02010b80(0xa, 0);
+    r = WMi_SendCommand(0xa, 0);
     if (r == 0) {
         r = 2;
     }

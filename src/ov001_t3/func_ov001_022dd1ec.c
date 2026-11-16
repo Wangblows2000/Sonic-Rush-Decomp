@@ -22,7 +22,7 @@ extern UnkTask_022dd1ec *gTaskCurrent;
 void func_ov001_022da70c(UnkWork_022dd1ec *w);
 BOOL func_ov001_022da52c(void);
 void func_ov001_022da304(UnkWork_022dd1ec *w);
-void func_02051f20(void);
+void SysSound_PlayCancelSE(void);
 BOOL func_ov001_022da4d4(void);
 s32 func_02050dec(void);
 void func_ov001_022da450(UnkWork_022dd1ec *w);
@@ -50,10 +50,10 @@ void func_ov001_022dd1ec(void) {
     if (func_ov001_022da52c()) {
         func_ov001_022da304(w);
         a = TRUE;
-        func_02051f20();
+        SysSound_PlayCancelSE();
     } else if (func_ov001_022da4d4()) {
         a = TRUE;
-        func_02051f20();
+        SysSound_PlayCancelSE();
     } else if (func_02050dec() > 0) {
         b = TRUE;
     }

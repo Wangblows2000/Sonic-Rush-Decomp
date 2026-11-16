@@ -3,8 +3,8 @@
 
 #pragma thumb on
 
-extern u8 data_ov001_0231be10[];
-s32 func_02051838();
+extern u8 gVsMenuCancelled[];
+s32 WirelessSession_ForceStop();
 s32 func_ov001_022dd774();
 s32 func_ov001_022dd770();
 s32 VsMenu_ReleaseSprites();
@@ -13,9 +13,9 @@ extern u8 gVsMenuTask[];
 
 void VsMenu_Destructor(u8 *p0) {
     u32 t0 = *(u32 *)((u8 *)p0 + 0x10);
-    u32 t1 = *(u32 *)data_ov001_0231be10;
+    u32 t1 = *(u32 *)gVsMenuCancelled;
     if (t1 != 0) {
-        func_02051838(t1);
+        WirelessSession_ForceStop(t1);
     }
     func_ov001_022dd774(t0);
     func_ov001_022dd770(t0);

@@ -7,8 +7,8 @@ extern u32 data_020766a4;
 extern u32 data_0207c3a0;
 extern u32 gPlayerDemoId;
 extern void G3X_SetEdgeColorTable(void);
-extern void func_02022270(void);
-extern void func_02022284(void);
+extern void NNS_G3dGlbLightColor(void);
+extern void NNS_G3dGlbLightVector(void);
 extern void func_02056ec8(void);
 extern void func_02056f50(void);
 
@@ -37,13 +37,13 @@ asm void func_02055eb4(void)
     add r4, r0, #0
     mov r0, #0
     ldrh r1, [r4]
-    bl func_02022270
+    bl NNS_G3dGlbLightColor
     mov r0, #1
     ldrh r1, [r4, #2]
-    bl func_02022270
+    bl NNS_G3dGlbLightColor
     mov r0, #2
     ldrh r1, [r4, #4]
-    bl func_02022270
+    bl NNS_G3dGlbLightColor
     ldr r0, [sp, #4]
     ldr r1, [sp, #8]
     bl func_02056f50
@@ -60,7 +60,7 @@ _52:
     ldrsh r1, [r4, r1]
     ldrsh r2, [r3, r7]
     ldrsh r3, [r3, r6]
-    bl func_02022284
+    bl NNS_G3dGlbLightVector
     add r0, r5, #1
     lsl r0, r0, #0x18
     lsr r5, r0, #0x18

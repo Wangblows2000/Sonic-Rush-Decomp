@@ -73,14 +73,14 @@ extern UnkStruct_02343d80_Tbl data_ov000_02368ba6[];
 
 void Player_AddTension(UnkStruct_02343d80 *w, s16 v);
 void func_ov000_0235bafc(UnkStruct_02343d80 *w);
-void func_ov000_02345aa8(UnkStruct_02343d80 *w);
-void func_ov000_023458cc(UnkStruct_02343d80 *w);
+void Player_UpdateCamera(UnkStruct_02343d80 *w);
+void Player_UpdateCameraLead(UnkStruct_02343d80 *w);
 BOOL BrightnessFade_IsDone(void);
 void StageShutdown_Create(void (*fn)(void));
 void StageExit_Create(void (*fn)(void), s32 a);
-void func_ov000_0234cfc8(void);
+void Stage_ExitAfterFail(void);
 void Player_ExitToSpecialStage(void);
-void func_02022270(s32 a, u16 b);
+void NNS_G3dGlbLightColor(s32 a, u16 b);
 s32 ObjSpd_DownSet(s32 v, s32 a);
 void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
 void func_ov000_023526cc(UnkStruct_02343d80 *w, UnkStruct_02343d80_Obj *o);
@@ -103,8 +103,8 @@ void Player_Last(void) {
     if (w->unk32C & 0x20000000) {
         func_ov000_0235bafc(w);
     }
-    func_ov000_02345aa8(w);
-    func_ov000_023458cc(w);
+    Player_UpdateCamera(w);
+    Player_UpdateCameraLead(w);
     if ((w->unk58 & 4) && !(w->unk58 & 0x4000)) {
         w->unk352 = 0;
     }
@@ -113,12 +113,12 @@ void Player_Last(void) {
     }
     if (gGameState.unk10 == 1 && w->unk325 == 0 && gGameState.unk20 >= 0x8c9f && BrightnessFade_IsDone() &&
         data_022c4590.unk40 >= 3) {
-        StageShutdown_Create(func_ov000_0234cfc8);
+        StageShutdown_Create(Stage_ExitAfterFail);
         return;
     }
     f = w->unk32C;
     if (f & 0x800000) {
-        StageExit_Create(func_ov000_0234cfc8, 3);
+        StageExit_Create(Stage_ExitAfterFail, 3);
         return;
     }
     if (f & 0x40000000) {
@@ -127,9 +127,9 @@ void Player_Last(void) {
         return;
     }
     if (f & 0x4000000) {
-        func_02022270(0, data_02074960[gGameState.unk1C][gGameState.unk1D].v);
-        func_02022270(1, data_02074962[gGameState.unk1C][gGameState.unk1D].v);
-        func_02022270(2, data_02074964[gGameState.unk1C][gGameState.unk1D].v);
+        NNS_G3dGlbLightColor(0, data_02074960[gGameState.unk1C][gGameState.unk1D].v);
+        NNS_G3dGlbLightColor(1, data_02074962[gGameState.unk1C][gGameState.unk1D].v);
+        NNS_G3dGlbLightColor(2, data_02074964[gGameState.unk1C][gGameState.unk1D].v);
     }
     f = w->unk330;
     if (f & 0x1000) {

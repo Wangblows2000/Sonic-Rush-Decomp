@@ -35,7 +35,7 @@ struct UnkStruct_022d57b8 {
     UnkStruct_022d57b8_v unk2D8;
 };
 
-void func_ov000_022c5e1c(s32 a, s32 b, s32 x, s32 z, s32 *out);
+void BossArena_CirclePosToArc(s32 a, s32 b, s32 x, s32 z, s32 *out);
 void BossEffect_CreateShootBomb(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss3PartCD_State_Unk_ov000_022d575c(UnkStruct_022d57b8 *s);
@@ -45,7 +45,7 @@ void func_ov000_022d57b8(UnkStruct_022d57b8 *s) {
     s->unk16A |= 4;
     s->unk20C |= 0x10;
     s->unk5C |= 0x20;
-    func_ov000_022c5e1c(0xf42f8, 0x5fe435, s->unk2D8.x, s->unk2D8.z, &s->unk10);
+    BossArena_CirclePosToArc(0xf42f8, 0x5fe435, s->unk2D8.x, s->unk2D8.z, &s->unk10);
     s->unk10 >>= 4;
     s->unk14 = 0x1e000;
     s->unk20C &= ~2;

@@ -9,6 +9,6 @@ MIi_DmaSetParams_wait_noInt kind:function(arm,size=0x60) addr:0x01ff84c0
 MIi_DmaSetParams_noInt kind:function(arm,size=0x38) addr:0x01ff8520
 MIi_DmaSetParams_wait kind:function(arm,size=0x74) addr:0x01ff8558
 MIi_DmaSetParams kind:function(arm,size=0x50) addr:0x01ff85cc
-func_01ff861c kind:function(arm,size=0x128) addr:0x01ff861c
+System_VBlankIrq kind:function(arm,size=0x128) addr:0x01ff861c
 func_01fff760 kind:function(arm,size=0x64) addr:0x01fff760
 func_01fff7c4 kind:function(arm,size=0x68) addr:0x01fff7c4

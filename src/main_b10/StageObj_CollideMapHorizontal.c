@@ -26,8 +26,8 @@ typedef struct {
 } UnkPlayer_020657dc;
 
 u8 StageObj_GetMapProbeFlags(UnkPlayer_020657dc *p);
-BOOL func_02065624(UnkPlayer_020657dc *p);
-s32 func_02066010(UnkPlayer_020657dc *p, s32 x, s32 y, u8 layer, u8 dir, u8 *angle, u8 *attr);
+BOOL StageObj_CheckCeiling(UnkPlayer_020657dc *p);
+s32 StageObj_ProbeCollision(UnkPlayer_020657dc *p, s32 x, s32 y, u8 layer, u8 dir, u8 *angle, u8 *attr);
 
 void StageObj_CollideMapHorizontal(UnkPlayer_020657dc *p, BOOL noMove, s32 spd) {
     u8 ang;
@@ -76,7 +76,7 @@ void StageObj_CollideMapHorizontal(UnkPlayer_020657dc *p, BOOL noMove, s32 spd) 
         flip ^= 1;
     if (!(p->flags & 0x10))
         ang += a1;
-    if (func_02065624(p))
+    if (StageObj_CheckCeiling(p))
         extra = 6;
 
     switch (((ang + 0x20) & 0xc0) >> 6) {
@@ -117,8 +117,8 @@ void StageObj_CollideMapHorizontal(UnkPlayer_020657dc *p, BOOL noMove, s32 spd) 
         }
         break;
     }
-    d = (s8)func_02066010(p, x + dx1, y + dy1, layer | 0x80, dir, NULL, NULL);
-    d2 = (s8)func_02066010(p, x + dx2, y + dy2, layer | 0x80, dir, NULL, NULL);
+    d = (s8)StageObj_ProbeCollision(p, x + dx1, y + dy1, layer | 0x80, dir, NULL, NULL);
+    d2 = (s8)StageObj_ProbeCollision(p, x + dx2, y + dy2, layer | 0x80, dir, NULL, NULL);
     if (d >= d2)
         d = d2;
     if (d <= 0) {
@@ -195,8 +195,8 @@ void StageObj_CollideMapHorizontal(UnkPlayer_020657dc *p, BOOL noMove, s32 spd) 
         }
         break;
     }
-    e = (s8)func_02066010(p, x + dx1, y + dy1, (u32)layer | 0x80, dir, NULL, NULL);
-    e2 = (s8)func_02066010(p, x + dx2, y + dy2, (u32)layer | 0x80, dir, NULL, NULL);
+    e = (s8)StageObj_ProbeCollision(p, x + dx1, y + dy1, (u32)layer | 0x80, dir, NULL, NULL);
+    e2 = (s8)StageObj_ProbeCollision(p, x + dx2, y + dy2, (u32)layer | 0x80, dir, NULL, NULL);
     if (e >= e2)
         e = e2;
     if (e <= 0) {

@@ -27,7 +27,7 @@ void func_ov001_022da154(UnkWork_022dcc10 *w, s32 a);
 void KeyframeAnim_SetAnim(UnkAnim_022dcc10 *a, s32 id);
 void func_ov001_022d6dc0(void);
 void func_ov001_022d97a8(s32 a, s32 b, s32 c, s32 d);
-void func_02051db0(s32 a, s32 b, s32 c, s32 d);
+void SysSound_PlaySEDelayed(s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022dc998(void);
 
 #pragma thumb on
@@ -50,7 +50,7 @@ void func_ov001_022dcc10(void) {
         KeyframeAnim_SetAnim(&w->anims[5], 0x13);
         func_ov001_022d6dc0();
         func_ov001_022d97a8(0, 0x10, 0x10, 0xc);
-        func_02051db0(2, 0xc, 0x3000, 0);
+        SysSound_PlaySEDelayed(2, 0xc, 0x3000, 0);
         gTaskCurrent->func = func_ov001_022dc998;
     }
 }

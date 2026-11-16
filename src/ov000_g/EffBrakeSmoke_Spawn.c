@@ -23,7 +23,7 @@ typedef struct {
 extern UnkStruct_02333934_Sys gGameState;
 extern UnkStruct_02333934_Stage gCamera;
 
-void *func_ov000_02333428(void *a, s32 b, s32 c, s32 d, s32 e);
+void *EffBrakeSmoke_Spawn3D(void *a, s32 b, s32 c, s32 d, s32 e);
 void *EffBrakeSmoke3D_Create(void *a, s32 b, s32 c);
 void *EffBrakeSmoke_Create(void *a, s32 b, s32 c);
 
@@ -38,7 +38,7 @@ void EffBrakeSmoke_Spawn(UnkStruct_02333934 *p) {
         return;
     if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
         if (Stage_Busy())
-            func_ov000_02333428(p, 10, 0xe, gCamera.unkE0, gCamera.unkE4);
+            EffBrakeSmoke_Spawn3D(p, 10, 0xe, gCamera.unkE0, gCamera.unkE4);
         else
             EffBrakeSmoke3D_Create(p, 10, 0xe);
     } else if (p->unk330 & 0x1000) {

@@ -47,19 +47,19 @@ struct UnkStruct_022d0614 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
-void func_02021c24(void *p);
-void func_ov000_022d4654(s32 a);
+void NNS_G3dRenderObjResetCallBack(void *p);
+void Boss2_SelectNextAttack(s32 a);
 
 void Boss2_State_Unk_ov000_022d0614(UnkStruct_022d0614 *s) {
     if (!(s->unkA9C.unk10C & 2))
         return;
-    func_02021c24(s->unkD0C.unk90);
+    NNS_G3dRenderObjResetCallBack(s->unkD0C.unk90);
     s->unk20C &= ~2;
     s->unk1304 = s->unk145C;
     s->unk10 = s->unk1460;
-    func_ov000_022d4654(3);
+    Boss2_SelectNextAttack(3);
     s->unkF84[8].unkA &= ~4;
     s->unkF84[8].unkA |= 0x1000;
 }

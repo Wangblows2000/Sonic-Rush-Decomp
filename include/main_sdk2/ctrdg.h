@@ -46,8 +46,8 @@ typedef struct {
 
 extern UnkCtrdgWork data_02080f54;
 
-void func_0201aa68(u16 lockId, UnkCtrdgLock *lock);
-void func_0201aa40(u16 lockId, UnkCtrdgLock *lock);
+void CTRDGi_LockByProcessor(u16 lockId, UnkCtrdgLock *lock);
+void CTRDGi_UnlockByProcessor(u16 lockId, UnkCtrdgLock *lock);
 void CTRDGi_ChangeLatestAccessCycle(UnkCtrdgRomCycle *c);
 void CTRDGi_RestoreAccessCycle(UnkCtrdgRomCycle *c);
 #endif

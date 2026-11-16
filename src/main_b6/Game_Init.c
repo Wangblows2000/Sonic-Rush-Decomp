@@ -14,7 +14,7 @@ void GX_SetGraphicsMode(s32 a, s32 b, s32 c);
 void GX_DispOn(void);
 BOOL func_0204ed94(void);
 BOOL func_0204ed68(void);
-s32 func_0205a37c(void (*fn)(void));
+s32 SaveData_LoadOrShowError(void (*fn)(void));
 void SceneChange_ToSegaLogo(void);
 void SceneChange_ToTitleScreen(void);
 
@@ -39,7 +39,7 @@ void Game_Init(void) {
         if (!func_0204ed68())
             return;
     }
-    if (!func_0205a37c(SceneChange_ToSegaLogo))
+    if (!SaveData_LoadOrShowError(SceneChange_ToSegaLogo))
         return;
     if ((data_02087cc0 & 0x80000000) == 0)
         SceneChange_ToSegaLogo();

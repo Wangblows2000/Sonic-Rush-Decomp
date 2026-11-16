@@ -63,12 +63,12 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void AnimatorSprite_Init(UnkSpr_02044d44 *spr, UnkRes_02044d44 *res, u16 anim, u32 flags, s32 d, s32 e, u32 pal, s32 g, u32 h);
 void AnimatorSprite_ProcessAnimation(UnkSpr_02044d44 *spr, s32 a, s32 b);
 u32 ObjVram_Alloc(s32 a, u32 b);
-u32 func_0204e6e8(u8 zone);
+u32 StoryProgress_GetZoneIndex(u8 zone);
 void Oam_Upload(u32 engine);
 void NaviB_Main(void);
 void NaviB_Destructor(void);
-void func_02044c10(void);
-void func_02044ad0(void);
+void NaviB_Main_HealthSprite(void);
+void NaviB_Main_Health(void);
 
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
 
@@ -126,7 +126,7 @@ void NaviB_Create(void) {
 
     spr = &w->spr[15];
     res = gNaviBSprite;
-    r = func_0204e6e8(gGameState.zone);
+    r = StoryProgress_GetZoneIndex(gGameState.zone);
     AnimatorSprite_Init(spr, gNaviBSprite, r + 0xf, 0x4060, 1, 0, ObjVram_Alloc(1, AnimPal_02044d44(res, gGameState.zone + 0xf)), 0, 0x05000600);
     spr->unk4 = spr->unk6 = 0;
     spr->prio = 6;
@@ -143,13 +143,13 @@ void NaviB_Create(void) {
     tmp.prio = 8;
     AnimatorSprite_ProcessAnimation(&tmp, 0, 0);
 
-    w->task4 = Task_Create(func_02044c10, 0, 0, 0x4000, 2, 0xc);
+    w->task4 = Task_Create(NaviB_Main_HealthSprite, 0, 0, 0x4000, 2, 0xc);
     sub = w->task4->work;
     MI_CpuClear16_(sub, 0xc);
     sub->owner = w;
     sub->unk8 = gBossStatus.unk8;
 
-    w->task8 = Task_Create(func_02044ad0, 0, 0, 0x4000, 2, 0x10);
+    w->task8 = Task_Create(NaviB_Main_Health, 0, 0, 0x4000, 2, 0x10);
     sub = w->task8->work;
     MI_CpuClear16_(sub, 0x10);
     sub->owner = w;

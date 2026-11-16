@@ -55,8 +55,8 @@ struct UnkStruct_022c85e8 {
 
 extern UnkStruct_022c85e8_2 *gBoss1;
 
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cc06c(void *p, s32 a, s32 b);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss1Neck_State_Unk_ov000_022c8428(UnkStruct_022c85e8 *s);
@@ -64,8 +64,8 @@ void Boss1Neck_State_Unk_ov000_022c8428(UnkStruct_022c85e8 *s);
 void Boss1Neck_State_Unk_ov000_022c85e8(UnkStruct_022c85e8 *s) {
     UnkStruct_022c85e8_3 *p = gBoss1->unk214;
     if (s->unk210 == 0) {
-        func_ov000_022cc00c(s->unk228, s->unk220, 0x10, 0x1000, 0);
-        func_ov000_022cc00c(p->unk30C, p->unk304, 3, 0x1000, 0);
+        Boss1_SetPartAnimation(s->unk228, s->unk220, 0x10, 0x1000, 0);
+        Boss1_SetPartAnimation(p->unk30C, p->unk304, 3, 0x1000, 0);
     } else {
         s->unk33C = 0x1000;
         s->unk334 &= ~1;

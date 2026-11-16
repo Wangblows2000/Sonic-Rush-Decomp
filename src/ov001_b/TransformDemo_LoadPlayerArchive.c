@@ -37,17 +37,17 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 u8 *File_Load(void *p, s32 v);
-u32 func_ov001_022de6f8(u32 *p);
-u32 func_ov001_022de6ec(u32 *p);
+u32 TransformDemo_GetCompressionType(u32 *p);
+u32 TransformDemo_GetUncompressedSize(u32 *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
 u32 *Compress_GetData(void *s);
 void Mem_Copy(void *a, void *b, u32 c);
 void Heap_Free(void *heap, void *p);
-BOOL func_02021310(void *arc, const char *name, void *narc);
-void *func_02021264(void *arc, u32 idx);
-BOOL func_020212e0(void *arc);
+BOOL NNS_FndMountArchive(void *arc, const char *name, void *narc);
+void *NNS_FndGetArchiveFileByIndex(void *arc, u32 idx);
+BOOL NNS_FndUnmountArchive(void *arc);
 void Model_Init(void *s, u32 a);
 void NNS_G3dResDefaultSetup(void *p);
 void Model_SetResource(void *s, void *res, u32 idx);
@@ -82,7 +82,7 @@ void TransformDemo_LoadPlayerArchive(UnkStruct_022de388_c *c, UnkStruct_022de388
     }
     s->unk0 = blk;
     dst = s->unk0;
-    switch (func_ov001_022de6f8((u32 *)res)) {
+    switch (TransformDemo_GetCompressionType((u32 *)res)) {
     case 0x10:
         MI_UncompressLZ16(res, dst);
         break;
@@ -93,10 +93,10 @@ void TransformDemo_LoadPlayerArchive(UnkStruct_022de388_c *c, UnkStruct_022de388
         MI_UncompressRL16(res, dst);
         break;
     default:
-        Mem_Copy(Compress_GetData(res), dst, func_ov001_022de6ec((u32 *)res));
+        Mem_Copy(Compress_GetData(res), dst, TransformDemo_GetUncompressedSize((u32 *)res));
         break;
     }
-    DC_StoreRange(dst, func_ov001_022de6ec((u32 *)res));
+    DC_StoreRange(dst, TransformDemo_GetUncompressedSize((u32 *)res));
     if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
@@ -107,10 +107,10 @@ void TransformDemo_LoadPlayerArchive(UnkStruct_022de388_c *c, UnkStruct_022de388
         }
     }
     Heap_Free(gMainHeap, res);
-    func_02021310(&arc, data_ov001_0231c3c8, s->unk0);
+    NNS_FndMountArchive(&arc, data_ov001_0231c3c8, s->unk0);
     for (i = 0; i < 5; i++)
-        s->unk4[i] = func_02021264(&arc, i);
-    func_020212e0(&arc);
+        s->unk4[i] = NNS_FndGetArchiveFileByIndex(&arc, i);
+    NNS_FndUnmountArchive(&arc);
     tbl = data_ov001_02316244[c->unk10].v;
     for (i = 0; i < 6; i++) {
         if (tbl[i] != -1)

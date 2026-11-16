@@ -9,7 +9,7 @@ extern u16 data_ov000_0236306c[];
 u8 *NNS_G3dGetMdlSet(s32 p);
 void NNS_G3dGlbMaterialColorSpecEmi(s32 a, s32 b, s32 c);
 void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
-void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
+void Boss_LoadModelPalettes(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 
 void func_ov000_022dad70(s32 k, BOOL f) {
     u8 *r = NNS_G3dGetMdlSet(data_ov000_02369b18[2]);
@@ -23,5 +23,5 @@ void func_ov000_022dad70(s32 k, BOOL f) {
         NNSi_G3dModifyMatFlag(q, 1, 0x400);
         t = &data_ov000_02363074[k];
     }
-    func_ov000_022c5d4c(data_ov000_02369b18[2], data_ov000_02365414, t, data_ov000_0236306c, 1);
+    Boss_LoadModelPalettes(data_ov000_02369b18[2], data_ov000_02365414, t, data_ov000_0236306c, 1);
 }

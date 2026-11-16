@@ -33,73 +33,73 @@ extern const char data_02078028[];
 extern const char data_0207802c[];
 extern const char data_02078030[];
 
-void func_0202d0fc(UnkDecimal_0202cd1c *d, const char *s, s16 exp);
+void __str2dec(UnkDecimal_0202cd1c *d, const char *s, s16 exp);
 void __timesdec(UnkDecimal_0202cd1c *result, const UnkDecimal_0202cd1c *x, const UnkDecimal_0202cd1c *y);
 
 void __two_exp(UnkDecimal_0202cd1c *result, s32 n) {
     switch (n) {
     case -64:
-        func_0202d0fc(result, data_02077f60, -20);
+        __str2dec(result, data_02077f60, -20);
         return;
     case -53:
-        func_0202d0fc(result, data_02077f90, -16);
+        __str2dec(result, data_02077f90, -16);
         return;
     case -32:
-        func_0202d0fc(result, data_02077fb8, -10);
+        __str2dec(result, data_02077fb8, -10);
         return;
     case -16:
-        func_0202d0fc(result, data_02077fd0, -5);
+        __str2dec(result, data_02077fd0, -5);
         return;
     case -8:
-        func_0202d0fc(result, data_02077fe0, -3);
+        __str2dec(result, data_02077fe0, -3);
         return;
     case -7:
-        func_0202d0fc(result, data_02077fe8, -3);
+        __str2dec(result, data_02077fe8, -3);
         return;
     case -6:
-        func_0202d0fc(result, data_02077ff0, -2);
+        __str2dec(result, data_02077ff0, -2);
         return;
     case -5:
-        func_0202d0fc(result, data_02077ff8, -2);
+        __str2dec(result, data_02077ff8, -2);
         return;
     case -4:
-        func_0202d0fc(result, data_02078000, -2);
+        __str2dec(result, data_02078000, -2);
         return;
     case -3:
-        func_0202d0fc(result, data_02078004, -1);
+        __str2dec(result, data_02078004, -1);
         return;
     case -2:
-        func_0202d0fc(result, data_02078008, -1);
+        __str2dec(result, data_02078008, -1);
         return;
     case -1:
-        func_0202d0fc(result, data_0207800c, -1);
+        __str2dec(result, data_0207800c, -1);
         return;
     case 0:
-        func_0202d0fc(result, data_02078010, 0);
+        __str2dec(result, data_02078010, 0);
         return;
     case 1:
-        func_0202d0fc(result, data_02078014, 0);
+        __str2dec(result, data_02078014, 0);
         return;
     case 2:
-        func_0202d0fc(result, data_02078018, 0);
+        __str2dec(result, data_02078018, 0);
         return;
     case 3:
-        func_0202d0fc(result, data_0207801c, 0);
+        __str2dec(result, data_0207801c, 0);
         return;
     case 4:
-        func_0202d0fc(result, data_02078020, 1);
+        __str2dec(result, data_02078020, 1);
         return;
     case 5:
-        func_0202d0fc(result, data_02078024, 1);
+        __str2dec(result, data_02078024, 1);
         return;
     case 6:
-        func_0202d0fc(result, data_02078028, 1);
+        __str2dec(result, data_02078028, 1);
         return;
     case 7:
-        func_0202d0fc(result, data_0207802c, 2);
+        __str2dec(result, data_0207802c, 2);
         return;
     case 8:
-        func_0202d0fc(result, data_02078030, 2);
+        __str2dec(result, data_02078030, 2);
         return;
     }
     {
@@ -110,9 +110,9 @@ void __two_exp(UnkDecimal_0202cd1c *result, s32 n) {
         if (n & 1) {
             y = *result;
             if (n > 0) {
-                func_0202d0fc(&x, data_02078014, 0);
+                __str2dec(&x, data_02078014, 0);
             } else {
-                func_0202d0fc(&x, data_0207800c, -1);
+                __str2dec(&x, data_0207800c, -1);
             }
             __timesdec(result, &y, &x);
         }

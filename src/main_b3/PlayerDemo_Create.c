@@ -16,8 +16,8 @@ void PlayerDemo_Destructor(void);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void PlayerDemo_State_Load(UnkWork_02058364 *w);
-void PlayerDemo_Unk_020574d8(UnkWork_02058364 *w);
-void PlayerDemo_Unk_02058034(UnkWork_02058364 *w);
+void PlayerDemo_InitSkippable(UnkWork_02058364 *w);
+void PlayerDemo_InitDisplay(UnkWork_02058364 *w);
 
 #pragma thumb on
 void PlayerDemo_Create(void) {
@@ -47,8 +47,8 @@ void PlayerDemo_Create(void) {
         }
         w->unk10 = lang;
         w->fn = PlayerDemo_State_Load;
-        PlayerDemo_Unk_020574d8(w);
-        PlayerDemo_Unk_02058034(w);
+        PlayerDemo_InitSkippable(w);
+        PlayerDemo_InitDisplay(w);
     }
 }
 #pragma thumb reset

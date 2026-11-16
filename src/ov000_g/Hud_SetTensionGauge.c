@@ -30,7 +30,7 @@ typedef struct {
 
 extern UnkStruct_02336050_Task *gHudTask;
 
-s32 func_ov000_02336014(s16 d);
+s32 Hud_TensionToGaugeValue(s16 d);
 
 void Hud_SetTensionGauge(s32 v, s32 mode) {
     UnkStruct_02336050_S *s;
@@ -51,13 +51,13 @@ void Hud_SetTensionGauge(s32 v, s32 mode) {
         s->unk272 = s->unk270;
         s->unk270 = v;
         s->unk274 = s->unk276 = 0;
-        s->unk278[4] = func_ov000_02336014(s->unk270 - s->unk272);
+        s->unk278[4] = Hud_TensionToGaugeValue(s->unk270 - s->unk272);
         return;
     }
     if (s->unk270 > s->unk272) {
         if (s->unk270 <= v) {
             s->unk270 = v;
-            v = func_ov000_02336014(s->unk270 - s->unk272);
+            v = Hud_TensionToGaugeValue(s->unk270 - s->unk272);
             if (s->unk278[4] < v)
                 s->unk278[4] = v;
             return;
@@ -83,7 +83,7 @@ void Hud_SetTensionGauge(s32 v, s32 mode) {
         for (i = 0; i < 4; i++)
             s->unk278[i] = 0x1000;
     } else if (s->unk270 < v) {
-        s->unk278[4] = func_ov000_02336014(v - s->unk270);
+        s->unk278[4] = Hud_TensionToGaugeValue(v - s->unk270);
     } else {
         s->unk278[4] = 0;
     }

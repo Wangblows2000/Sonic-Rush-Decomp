@@ -92,14 +92,14 @@ extern UnkStruct_02345278_4590 data_022c4590;
 extern UnkStruct_02345278_Cam gCamera;
 extern UnkStruct_02345278 *volatile gPlayers[];
 
-void func_0206c95c(void);
-UnkStruct_02345278_Frame *func_0206c938(s32 a, u8 b);
-void func_ov000_0233b1b8(u8 a);
-void func_ov000_0233b198(u8 a);
+void NetPacket_ResetRead(void);
+UnkStruct_02345278_Frame *NetPacket_FindNextData(s32 a, u8 b);
+void Camera_LockX(u8 a);
+void Camera_LockY(u8 a);
 void Player_SetAnimation(UnkStruct_02345278 *w, u8 state);
 s32 ObjRect_HitCenterX(void *a, void *b);
 s32 ObjRect_HitCenterY(void *a, void *b);
-void func_ov000_0232ff6c(s32 a, s32 b);
+void EffVs_Create(s32 a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void Player_ApplyNetState(UnkStruct_02345278 *w) {
@@ -113,8 +113,8 @@ void Player_ApplyNetState(UnkStruct_02345278 *w) {
     if (w->unk325 == 0) {
         return;
     }
-    func_0206c95c();
-    f = func_0206c938(1, w->unk326);
+    NetPacket_ResetRead();
+    f = NetPacket_FindNextData(1, w->unk326);
     if (f == NULL) {
         return;
     }
@@ -124,8 +124,8 @@ void Player_ApplyNetState(UnkStruct_02345278 *w) {
     w->x = f->x;
     w->y = f->y;
     w->z = f->z;
-    func_ov000_0233b1b8(w->unk327);
-    func_ov000_0233b198(w->unk327);
+    Camera_LockX(w->unk327);
+    Camera_LockY(w->unk327);
     if (w->unk328 != f->unk10) {
         w->unk5C &= ~0x400;
         Player_SetAnimation(w, f->unk10);
@@ -183,7 +183,7 @@ void Player_ApplyNetState(UnkStruct_02345278 *w) {
         }
         gPlayers[0]->unk62 = 0x44;
         a = ObjRect_HitCenterX(w->unk2A0, gPlayers[0]->unk2A0);
-        func_ov000_0232ff6c(a, ObjRect_HitCenterY(w->unk2A0, gPlayers[0]->unk2A0));
+        EffVs_Create(a, ObjRect_HitCenterY(w->unk2A0, gPlayers[0]->unk2A0));
         Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
     }
     if (gCamera.x - 0x2000 < w->x && gCamera.x + 0x12000 > w->x &&

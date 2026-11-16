@@ -47,7 +47,7 @@ s32 FX_DivS32(s32 a, s32 b);
 void MIi_CpuCopy16(void *a, void *b, s32 c);
 void Player_Action_ReachGoal(UnkStruct_Player *p, void *a);
 void func_ov000_022fa9e8(void *a, UnkStruct_Player *p, s32 b);
-void func_ov000_023422e4(UnkStruct_Player *p);
+void Camera_DisableSwapForPlayer(UnkStruct_Player *p);
 
 void func_ov000_0230ad04(void *a, UnkStruct_Player *p) {
     s32 v;
@@ -91,5 +91,5 @@ void func_ov000_0230ad04(void *a, UnkStruct_Player *p) {
             func_ov000_022fa9e8(a, p, 3);
         }
     }
-    func_ov000_023422e4(p);
+    Camera_DisableSwapForPlayer(p);
 }

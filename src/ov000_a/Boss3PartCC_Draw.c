@@ -91,7 +91,7 @@ extern UnkTask_022d8fec *gTaskCurrent;
 extern UnkStruct_022d8fec_b *gBoss3;
 extern s16 data_0206e470[];
 
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void Model_Animate(UnkStruct_022d8fec_a *a);
 void Model_Draw(UnkStruct_022d8fec_a *a);
@@ -110,7 +110,7 @@ void Boss3PartCC_Draw(void) {
             s->unk10 += 0x5fe43;
         else if (s->unk10 > 0x63e43)
             s->unk10 -= 0x5fe43;
-        func_ov000_022c5e80(0xf42f8, 0x5fe435, s->unk10 << 4, &a->unk48, &a->unk50, &ang);
+        BossArena_ArcToCirclePos(0xf42f8, 0x5fe435, s->unk10 << 4, &a->unk48, &a->unk50, &ang);
         a->unk4C = -s->unk14 << 4;
         {
             u16 r;

@@ -6,7 +6,7 @@ typedef struct { u32 flags; u8 pad4[4]; s32 count; s32 length; s32 offset; } Unk
 
 void KeyframeAnim_DefaultPosition(void *out);
 void KeyframeAnim_LerpPosition(UnkKey_02040b14 *k0, UnkKey_02040b14 *k1, s32 ratio, void *out, u32 flags);
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 #pragma thumb on
 void KeyframeAnim_EvalPosition(UnkAnim_02040b14 *a, UnkTrack_02040b14 *tr, void *out) {
@@ -130,7 +130,7 @@ void KeyframeAnim_EvalPosition(UnkAnim_02040b14 *a, UnkTrack_02040b14 *tr, void 
         fr = f1;
     if (f0 > fr)
         f0 = fr;
-    KeyframeAnim_LerpPosition(k0, kn, func_0200225c(fr - f0, f1 - f0), out, *(u32 *)&a->flags);
+    KeyframeAnim_LerpPosition(k0, kn, FX_Div(fr - f0, f1 - f0), out, *(u32 *)&a->flags);
     a->cur = i;
 }
 #pragma thumb reset

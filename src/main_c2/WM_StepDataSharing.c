@@ -5,15 +5,15 @@
 
 void DC_InvalidateRange(void *p, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
-s32 func_02011c44(void *cb, void *arg, void *data, u16 size, u16 dest, u16 port, u16 prio);
-void func_02011ff4(UnkDS *ds, BOOL force);
+s32 WM_SetMPDataToPortEx(void *cb, void *arg, void *data, u16 size, u16 dest, u16 port, u16 prio);
+void WmDataSharingSendDataSet(UnkDS *ds, BOOL force);
 void WmDataSharingReceiveData(UnkDS *ds, u16 aid, const void *src);
-void func_020124d0(void *cb);
+void WmDataSharingSetDataCallback(void *cb);
 
 s32 WM_StepDataSharing(UnkDS *ds, const u16 *send, u16 *recvSet)
 {
     u16 childBitmap;
-    u8 *p = ((UnkWmWork *)func_02010b70())->unk4;
+    u8 *p = ((UnkWmWork *)WMi_GetSystemWork())->unk4;
     s32 r = WMi_CheckStateEx(2, 9, 10);
     BOOL ok;
     u16 state;
@@ -58,7 +58,7 @@ s32 WM_StepDataSharing(UnkDS *ds, const u16 *send, u16 *recvSet)
         if (state == 4) {
             ds->state = 1;
             idx = (ds->writeIdx + 3) & 3;
-            r = func_02011c44(func_020124d0, ds, &ds->buf[idx], ds->setLength, ds->aidBitmap & childBitmap, ds->port,
+            r = WM_SetMPDataToPortEx(WmDataSharingSetDataCallback, ds, &ds->buf[idx], ds->setLength, ds->aidBitmap & childBitmap, ds->port,
                               1);
             if (r == 7) {
                 ds->seq[idx] = 0xffff;
@@ -81,11 +81,11 @@ s32 WM_StepDataSharing(UnkDS *ds, const u16 *send, u16 *recvSet)
                 force = FALSE;
             }
         }
-        func_02011ff4(ds, FALSE);
+        WmDataSharingSendDataSet(ds, FALSE);
         if (ok) {
             WmDataSharingReceiveData(ds, 0, send);
             if (ds->doubleMode == 0) {
-                func_02011ff4(ds, force);
+                WmDataSharingSendDataSet(ds, force);
             }
         }
     } else {
@@ -107,7 +107,7 @@ s32 WM_StepDataSharing(UnkDS *ds, const u16 *send, u16 *recvSet)
         if (ok) {
             u8 *dst = (u8 *)&ds->buf[ds->readIdx] + 0x20;
             MIi_CpuCopy16(send, dst, ds->dataLength);
-            r = func_02011c44(func_020124d0, ds, dst, ds->dataLength, ds->aidBitmap, ds->port, 1);
+            r = WM_SetMPDataToPortEx(WmDataSharingSetDataCallback, ds, dst, ds->dataLength, ds->aidBitmap, ds->port, 1);
             ds->readIdx = (ds->readIdx + 1) & 3;
             if (r != 2 && r != 0) {
                 ds->state = 5;

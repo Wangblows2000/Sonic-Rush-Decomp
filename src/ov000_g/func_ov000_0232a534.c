@@ -29,7 +29,7 @@ typedef struct {
 
 extern UnkStruct_0232a534_S gCamera;
 
-void func_ov000_022c5e80(s32 a, s32 b, s32 x, s32 *ox, s32 *oz, u16 *ang);
+void BossArena_ArcToCirclePos(s32 a, s32 b, s32 x, s32 *ox, s32 *oz, u16 *ang);
 
 void func_ov000_0232a534(UnkStruct_0232a534 *w) {
     u16 ang;
@@ -39,7 +39,7 @@ void func_ov000_0232a534(UnkStruct_0232a534 *w) {
     if (w->unk88 != NULL) {
         w->unk10 = w->unk88->unk10 + w->unk2E;
         w->unk14 = w->unk88->unk14 + w->unk30;
-        func_ov000_022c5e80(gCamera.unkE0, gCamera.unkE4, w->unk10 << 4, &ox, &oz, &ang);
+        BossArena_ArcToCirclePos(gCamera.unkE0, gCamera.unkE4, w->unk10 << 4, &ox, &oz, &ang);
         w->unk10 = ox >> 4;
         w->unk18 = oz >> 4;
     }

@@ -57,7 +57,7 @@ void WBT_InitParent(u32 a, u32 b, void (*cb)(void));
 void WFSi_OnParentSystemCallback(void);
 void WFSi_LoadTables(s32 a, s32 b);
 void WBT_RegisterBlock(void *p, u32 size, void *a, u32 b, u32 c, s32 d);
-void func_0203d9d0(void);
+void WFSi_CreateTaskThread(void);
 
 void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u32 e, s32 f, s32 g) {
     s32 save;
@@ -114,5 +114,5 @@ void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u32 e, s32 f, s32 g) 
     MI_CpuFill8(p, 0, sizeof(UnkEntry_0203c5cc));
     WBT_RegisterBlock(p->unk4, 0x20000, data_02073214, m->unk20, data_022b8be0.unk24, 0);
     m->unkc = 1;
-    func_0203d9d0();
+    WFSi_CreateTaskThread();
 }

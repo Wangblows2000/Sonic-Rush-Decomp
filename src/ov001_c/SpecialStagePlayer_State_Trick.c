@@ -23,9 +23,9 @@ void NNS_SndPlayerStopSeqBySeqArcIdx(s32 a, s32 b, s32 c);
 void SpecialStageCamera_SetMode(s32 v);
 void SpecialStagePlayer_ChangeState(UnkStruct_023113f8 *p, s32 v);
 void SpecialStageMap_SetScrollSpeed(s32 v);
-void func_ov001_023098b4(void);
+void SpecialStageHud_EndTrickRating(void);
 void *SpecialStage_GetGimmickManager(void);
-void func_ov001_0230f4c8(void *g, s32 x, s32 y, s32 z);
+void SpecialStageGimmick_SpawnTrickReward(void *g, s32 x, s32 y, s32 z);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -40,7 +40,7 @@ void SpecialStagePlayer_State_Trick(UnkStruct_023113f8 *p) {
             p->unk150 = p->unk152;
             p->unk128 = 0;
             SpecialStagePlayer_ChangeState(p, 0xf);
-            func_ov001_023098b4();
+            SpecialStageHud_EndTrickRating();
         } else {
             SpecialStageCamera_SetMode(0);
             SpecialStagePlayer_ChangeState(p, 0xe);
@@ -51,6 +51,6 @@ void SpecialStagePlayer_State_Trick(UnkStruct_023113f8 *p) {
     }
     if (p->unk154 <= 0)
         return;
-    func_ov001_0230f4c8(SpecialStage_GetGimmickManager(), p->x + (Rand() % 100 - 0x32) * 0x1000, p->y + (Rand() % 100 - 0x32) * 0x1000, p->z + (Rand() % 100 - 0x32) * 0x1000);
+    SpecialStageGimmick_SpawnTrickReward(SpecialStage_GetGimmickManager(), p->x + (Rand() % 100 - 0x32) * 0x1000, p->y + (Rand() % 100 - 0x32) * 0x1000, p->z + (Rand() % 100 - 0x32) * 0x1000);
     p->unk154--;
 }

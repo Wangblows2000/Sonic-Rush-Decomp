@@ -15,19 +15,19 @@ typedef struct { u8 pad0[0x10]; UnkWork_0204fe60 *work; } UnkTask_0204fe60;
 extern void *gMsgBoxTask;
 extern s32 gMsgBoxResult;
 
-void MsgBox_Unk_0204efa8(UnkWork_0204fe60 *w);
+void MsgBox_StopLineScroll(UnkWork_0204fe60 *w);
 void SysSound_Release(void);
 void ObjVram_Free(s32 a, void *b);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
-void MsgBox_Unk_0204f454(UnkWork_0204fe60 *w, s32 i);
-void MsgBox_Unk_0204f2fc(UnkWork_0204fe60 *w, s32 a);
+void MsgBox_FreeFile(UnkWork_0204fe60 *w, s32 i);
+void MsgBox_SetBgVisible(UnkWork_0204fe60 *w, s32 a);
 
 #pragma thumb on
 void MsgBox_Destructor(UnkTask_0204fe60 *t) {
     UnkWork_0204fe60 *w = t->work;
     s32 i;
 
-    MsgBox_Unk_0204efa8(w);
+    MsgBox_StopLineScroll(w);
     if (w->unk4C)
         SysSound_Release();
     for (i = 0; i < 5; i++) {
@@ -38,8 +38,8 @@ void MsgBox_Destructor(UnkTask_0204fe60 *t) {
         MIi_CpuClear16(zero, &w->spr[i], sizeof(UnkSpr_0204fe60));
     }
     for (i = 0; i < 0xd; i++)
-        MsgBox_Unk_0204f454(w, i);
-    MsgBox_Unk_0204f2fc(w, 0);
+        MsgBox_FreeFile(w, i);
+    MsgBox_SetBgVisible(w, 0);
     gMsgBoxTask = NULL;
     switch (w->unk24) {
     case 0:

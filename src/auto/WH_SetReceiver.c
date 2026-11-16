@@ -3,14 +3,14 @@
 
 extern u8 data_022c1970[];
 void WH_PortReceiveCallback();
-s32 func_020114f0();
+s32 WM_SetPortCallback();
 s32 WH_ChangeSysState();
 extern u8 sTraceFunc[];
 extern u8 data_02078708[];
 
 void WH_SetReceiver(s32 p0) {
     *(u32 *)data_022c1970 = p0;
-    s32 t0 = func_020114f0(0xe, (u32)WH_PortReceiveCallback, 0);
+    s32 t0 = WM_SetPortCallback(0xe, (u32)WH_PortReceiveCallback, 0);
     if (t0 == 0) {
         return;
     }

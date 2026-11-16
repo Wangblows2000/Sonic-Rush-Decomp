@@ -85,8 +85,8 @@ extern u16 data_022c4ef8;
 void func_ov000_0233c00c(void);
 void StageRestart_Create(void);
 void ModelPalette_ShiftColor(UnkStruct_0234d0bc_Pal *p, s32 a, s32 b, s32 c);
-void func_ov000_0233b178(u8 a);
-void func_ov000_0233b158(u8 a);
+void Camera_UnlockX(u8 a);
+void Camera_UnlockY(u8 a);
 void Player_InitState(UnkStruct_0234d0bc *w);
 
 void Player_Respawn(UnkStruct_0234d0bc *w) {
@@ -152,8 +152,8 @@ void Player_Respawn(UnkStruct_0234d0bc *w) {
     w->unk330 &= ~0x4000;
     w->unk330 &= ~0xa0;
     w->unk330 &= ~0x50;
-    func_ov000_0233b178(w->unk327);
-    func_ov000_0233b158(w->unk327);
+    Camera_UnlockX(w->unk327);
+    Camera_UnlockY(w->unk327);
     w->unk400 = 0;
     w->unk404 = 0;
     w->unk3B8 = 0;

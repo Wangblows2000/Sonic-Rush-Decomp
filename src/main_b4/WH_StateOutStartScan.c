@@ -37,7 +37,7 @@ void WH_ChangeSysState(s32 a);
 BOOL WH_StateInEndScan(void);
 BOOL WH_StateInStartScan(void);
 void DC_InvalidateRange(void *p, u32 size);
-BOOL func_0201b0e8(void *p);
+BOOL CHT_IsPictochatParent(void *p);
 
 void WH_StateOutStartScan(UnkRes_0203f5a0 *r) {
     if (r->unk2 != 0) {
@@ -56,7 +56,7 @@ void WH_StateOutStartScan(UnkRes_0203f5a0 *r) {
         if (sTraceFunc != NULL)
             sTraceFunc(data_0207893c, r->mac[0], r->mac[1], r->mac[2], r->mac[3], r->mac[4], r->mac[5]);
         DC_InvalidateRange(data_022c1ae0, 0xc0);
-        if (data_022c1974 != 0 && func_0201b0e8(data_022c1ae0)) {
+        if (data_022c1974 != 0 && CHT_IsPictochatParent(data_022c1ae0)) {
             if (sTraceFunc != NULL)
                 sTraceFunc(data_02078974);
             if (data_022c1968 != NULL)

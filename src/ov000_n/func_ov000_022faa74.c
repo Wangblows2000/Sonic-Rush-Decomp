@@ -15,8 +15,8 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 extern u8 *gPlayers[];
 
-void func_0206c95c(void);
-UnkStruct_Ev *func_0206c938(s32 a, s32 b);
+void NetPacket_ResetRead(void);
+UnkStruct_Ev *NetPacket_FindNextData(s32 a, s32 b);
 u8 *func_ov000_023355d0(void);
 void MapObject_OnHit_Default(UnkStruct_Coll *a, void *b);
 
@@ -31,12 +31,12 @@ void func_ov000_022faa74(UnkStruct_StageObj *s) {
     prm->unk4 &= ~0x2000;
     if (!(gGameState.unk18 & 0x20))
         return;
-    func_0206c95c();
+    NetPacket_ResetRead();
     for (i = 0; i < 2; i++) {
         if (i == gPlayers[0][0x326])
             continue;
         for (;;) {
-            o = func_0206c938(2, i);
+            o = NetPacket_FindNextData(2, i);
             if (o == NULL)
                 break;
             b = (u32)o->unk2 + (u32)func_ov000_023355d0();

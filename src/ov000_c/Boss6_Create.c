@@ -78,18 +78,18 @@ void Boss6_Draw(void);
 void Boss6_State_WaitForStart(void);
 void func_ov000_022e62fc(void);
 u16 Boss_GetStartHealth(void);
-void func_02021310(void *f, void *path, void *arc);
-void *func_02021264(void *f, s32 i);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
 void NNS_G3dResDefaultSetup(void *p);
-void *func_0202128c(void *a);
-void func_020212e0(void *f);
+void *NNS_FndGetArchiveFileByName(void *a);
+void NNS_FndUnmountArchive(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 u8 *NNS_G3dGetMdlSet(void *p);
 void NNS_G3dMdlSetMdlAlphaAll(void *p, s32 a);
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov000_022e671c(UnkStruct_022e6c0c *w);
-void func_ov000_022c5d4c(void *a, void *b, void *c, void *d, s32 e);
+void Boss_LoadModelPalettes(void *a, void *b, void *c, void *d, s32 e);
 
 UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u8 ctx[0x5c];
@@ -120,25 +120,25 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk5C |= 0x20;
     w->base.unk54 |= 0x12;
     w->base.unk58 |= 0xa300;
-    func_02021310(ctx, data_ov000_02365968, gZoneActArchive);
-    w->unkD08 = func_02021264(ctx, 8);
+    NNS_FndMountArchive(ctx, data_ov000_02365968, gZoneActArchive);
+    w->unkD08 = NNS_FndGetArchiveFileByIndex(ctx, 8);
     for (i = 0; i < 4; i++) {
         if (data_ov000_02363864[i][0] != -1) {
-            w->unkD0C[i] = func_02021264(ctx, data_ov000_02363864[i][0]);
+            w->unkD0C[i] = NNS_FndGetArchiveFileByIndex(ctx, data_ov000_02363864[i][0]);
             NNS_G3dResDefaultSetup(w->unkD0C[i]);
         }
         if (data_ov000_02363864[i][1] != -1)
-            w->unkD1C[i] = func_02021264(ctx, data_ov000_02363864[i][1]);
+            w->unkD1C[i] = NNS_FndGetArchiveFileByIndex(ctx, data_ov000_02363864[i][1]);
         if (data_ov000_02363864[i][2] != -1)
-            w->unkD2C[i] = func_02021264(ctx, data_ov000_02363864[i][2]);
+            w->unkD2C[i] = NNS_FndGetArchiveFileByIndex(ctx, data_ov000_02363864[i][2]);
         if (data_ov000_02363864[i][3] != -1)
-            w->unkD3C[i] = func_02021264(ctx, data_ov000_02363864[i][3]);
+            w->unkD3C[i] = NNS_FndGetArchiveFileByIndex(ctx, data_ov000_02363864[i][3]);
     }
-    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_0236596c));
-    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365980));
-    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365994));
-    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_023659b0));
-    func_020212e0(ctx);
+    NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_0236596c));
+    NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365980));
+    NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365994));
+    NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023659b0));
+    NNS_FndUnmountArchive(ctx);
     sub = w->unk210;
     for (i = 0; i < 9; i++) {
         Model_Init(sub, 0);
@@ -174,7 +174,7 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     sub->unk48 = 0x1a0000;
     sub->unk4C = -0x200000;
     sub->unk50 = 0;
-    func_02021c38(sub->unk90, func_ov000_022e62fc, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(sub->unk90, func_ov000_022e62fc, 0, 6, 3);
     sub->unkA = 4;
     sub = &w->unk210[7];
     sub->unk48 = 0;
@@ -207,9 +207,9 @@ UnkStruct_022e6c0c *Boss6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk1108 = &data_ov000_02363700[idx];
     w->unk110C = &data_ov000_02363704[idx];
     w->unk1110 = &data_ov000_023636fc[idx];
-    func_ov000_022c5d4c(data_ov000_02369b50[6], data_ov000_023658e4, gBoss6->unk10F4, data_ov000_0236377c, 8);
-    func_ov000_022c5d4c(data_ov000_02369b50[7], data_ov000_023657e8, gBoss6->unk10FC, data_ov000_023636e8, 1);
-    func_ov000_022c5d4c(data_ov000_02369b50[8], data_ov000_023657ec, gBoss6->unk1104, data_ov000_023636f0, 1);
-    func_ov000_022c5d4c(data_ov000_02369b50[9], data_ov000_023657e4, gBoss6->unk10F0, data_ov000_023636ec, 1);
+    Boss_LoadModelPalettes(data_ov000_02369b50[6], data_ov000_023658e4, gBoss6->unk10F4, data_ov000_0236377c, 8);
+    Boss_LoadModelPalettes(data_ov000_02369b50[7], data_ov000_023657e8, gBoss6->unk10FC, data_ov000_023636e8, 1);
+    Boss_LoadModelPalettes(data_ov000_02369b50[8], data_ov000_023657ec, gBoss6->unk1104, data_ov000_023636f0, 1);
+    Boss_LoadModelPalettes(data_ov000_02369b50[9], data_ov000_023657e4, gBoss6->unk10F0, data_ov000_023636ec, 1);
     return w;
 }

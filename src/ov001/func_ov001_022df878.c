@@ -5,8 +5,8 @@ extern u16 data_ov001_023161fe[];
 extern u16 data_ov001_02316204[];
 extern UnkStruct_022df878 data_ov001_0231621e[];
 extern UnkStruct_022df878 data_ov001_02316230[];
-void func_02022270(s32 i, u16 v);
-void func_02022284(s32 i, s32 x, s32 y, s32 z);
+void NNS_G3dGlbLightColor(s32 i, u16 v);
+void NNS_G3dGlbLightVector(s32 i, s32 x, s32 y, s32 z);
 
 void func_ov001_022df878(u8 *p) {
     u16 *a;
@@ -28,10 +28,10 @@ void func_ov001_022df878(u8 *p) {
         a = data_ov001_02316204;
         c = data_ov001_02316230;
     }
-    func_02022270(0, a[0]);
-    func_02022270(1, a[1]);
-    func_02022270(2, a[2]);
+    NNS_G3dGlbLightColor(0, a[0]);
+    NNS_G3dGlbLightColor(1, a[1]);
+    NNS_G3dGlbLightColor(2, a[2]);
     for (i = 0; i < 3; i++) {
-        func_02022284(i, c[i].x, c[i].y, c[i].z);
+        NNS_G3dGlbLightVector(i, c[i].x, c[i].y, c[i].z);
     }
 }

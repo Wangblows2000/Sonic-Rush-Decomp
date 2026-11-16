@@ -45,7 +45,7 @@ src/main_sdk2/MIi_DmaSetParams.c:
     complete
     .text       start:0x01ff85cc end:0x01ff861c
 
-src/main_sdk2/func_01ff861c.c:
+src/main_sdk2/System_VBlankIrq.c:
     complete
     .text       start:0x01ff861c end:0x01ff8744
 

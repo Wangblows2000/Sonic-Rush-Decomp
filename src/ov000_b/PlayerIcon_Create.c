@@ -17,7 +17,7 @@ extern void *gActComArchive;
 extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02368254[], data_ov000_0236a9b0[];
 
-void func_ov000_0232fda4(void);
+void PlayerIcon_State_FollowPlayer(void);
 
 void PlayerIcon_Create(UnkStruct_0232fde0_Arg *arg) {
     UnkStruct_Task *task;
@@ -51,5 +51,5 @@ void PlayerIcon_Create(UnkStruct_0232fde0_Arg *arg) {
     w->unk54 |= 2;
     w->unk54 |= 0x10;
     w->unk5C |= 0x20;
-    w->unk68 = func_ov000_0232fda4;
+    w->unk68 = PlayerIcon_State_FollowPlayer;
 }

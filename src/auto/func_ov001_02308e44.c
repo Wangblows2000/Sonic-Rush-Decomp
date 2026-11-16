@@ -3,7 +3,7 @@
 
 extern u8 gSpecialStageHud[];
 s32 AnimatorSprite_Draw();
-s32 func_ov001_02308430();
+s32 SpecialStageHud_DrawRingCounterScaled();
 s32 func_ov001_02308600();
 
 void func_ov001_02308e44(void) {
@@ -14,6 +14,6 @@ void func_ov001_02308e44(void) {
             AnimatorSprite_Draw((t1 + 0x7c8));
         }
     }
-    func_ov001_02308430((*(u32 *)((u8 *)t1 + 0xbcc) - 0x1));
+    SpecialStageHud_DrawRingCounterScaled((*(u32 *)((u8 *)t1 + 0xbcc) - 0x1));
     func_ov001_02308600();
 }

@@ -40,8 +40,8 @@ extern UnkStruct_02369ac0 gBossStatus;
 
 void Boss4_Action_Defeat(UnkStruct_Boss *b);
 void Boss4_Action_Hurt(UnkStruct_Boss *b);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void Sound_PlaySeq(s32 a, s32 b);
 void BossEffect_CreateHit(s32 a, s32 x, s32 y, s32 z);
 void Boss4_Action_Clash(UnkStruct_Boss *b);
@@ -66,12 +66,12 @@ void Boss4_OnHit_Damage(UnkStruct_Hit *a, UnkStruct_Hit *h) {
         }
         Boss4_Action_Hurt(b);
         if (gBossStatus.unk8 == 2) {
-            func_020537b4(0xb);
-            func_020533e0(0x12, 0xf0);
+            NaviMsg_SetFaceAnim(0xb);
+            NaviMsg_ShowMessage(0x12, 0xf0);
             Sound_PlaySeq(0, 0xf);
         } else {
-            func_020537b4(0xb);
-            func_020533e0(0x10, 0xf0);
+            NaviMsg_SetFaceAnim(0xb);
+            NaviMsg_ShowMessage(0x10, 0xf0);
         }
         BossEffect_CreateHit(1, p->unk17C >> 4, -p->unk180 >> 4, p->unk184 >> 4);
     } else {

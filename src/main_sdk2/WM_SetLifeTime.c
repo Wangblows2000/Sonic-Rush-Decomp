@@ -7,8 +7,8 @@ s32 WM_SetLifeTime(void *cb, u32 a, u32 b, u32 c, u16 d)
     if (r != 0) {
         return r;
     }
-    func_02010cd4(0x1d, cb);
-    r = func_02010b80(0x1d, 4, a, b, c, d);
+    WMi_SetCallbackTable(0x1d, cb);
+    r = WMi_SendCommand(0x1d, 4, a, b, c, d);
     if (r == 0) {
         r = 2;
     }

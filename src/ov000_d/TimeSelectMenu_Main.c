@@ -19,7 +19,7 @@ void func_ov000_02360974(UnkStruct_MenuO *w, s32 x, s32 y);
 void func_ov000_02360950(UnkStruct_MenuO *w, s32 x, s32 y);
 void func_ov000_02360870(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
 void func_ov000_02360790(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
-void func_ov000_0235fc48(UnkStruct_MenuO *w, s32 x, s32 y, s32 row);
+void TimeSelectMenu_DrawPlayerName(UnkStruct_MenuO *w, s32 x, s32 y, s32 row);
 void func_ov000_02360748(UnkStruct_MenuO *w, s32 x, s32 y);
 void func_ov000_02360724(UnkStruct_MenuO *w, s32 x, s32 y);
 void func_ov000_023606c4(UnkStruct_MenuO *w, s32 x, s32 y, s32 scale);
@@ -27,8 +27,8 @@ void func_ov000_02360268(UnkStruct_MenuO *w);
 void func_ov000_0236011c(UnkStruct_MenuO *w, s32 x, s32 y, BOOL flip);
 void func_ov000_0235ffd0(UnkStruct_MenuO *w, s32 x, s32 y, BOOL flip);
 void func_ov000_02360264(UnkStruct_MenuO *w);
-void func_ov000_02361bf0(void);
-void func_ov000_02361804(void);
+void TimeSelectMenu_State_Select(void);
+void TimeSelectMenu_State_FollowChooser(void);
 
 #pragma thumb on
 
@@ -94,10 +94,10 @@ void TimeSelectMenu_Main(void) {
         func_ov000_02360870(w, p->x, p->y, p->unk4);
     }
     p = &w->pos[12];
-    func_ov000_0235fc48(w, p->x, p->y, 0);
+    TimeSelectMenu_DrawPlayerName(w, p->x, p->y, 0);
     func_ov000_02360748(w, p->x, p->y);
     p = &w->pos[13];
-    func_ov000_0235fc48(w, p->x, p->y, 1);
+    TimeSelectMenu_DrawPlayerName(w, p->x, p->y, 1);
     func_ov000_02360748(w, p->x, p->y);
     p = &w->pos[14];
     func_ov000_02360724(w, p->x, p->y);
@@ -122,13 +122,13 @@ void TimeSelectMenu_Main(void) {
         w->unk0 = 0;
         if (w->unk4) {
             w->unk18 = 0;
-            gTaskCurrent->unk8 = func_ov000_02361bf0;
+            gTaskCurrent->unk8 = TimeSelectMenu_State_Select;
             return;
         }
         KeyframeAnim_SetAnim(&w->pos[0], 6);
         w->unkC = 0;
         w->unk10 = 0;
-        gTaskCurrent->unk8 = func_ov000_02361804;
+        gTaskCurrent->unk8 = TimeSelectMenu_State_FollowChooser;
     }
 }
 

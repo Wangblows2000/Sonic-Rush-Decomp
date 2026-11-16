@@ -37,8 +37,8 @@ typedef struct {
 extern UnkStruct_02340154_Pl gCamera[];
 extern UnkStruct_02340154_abd8 data_ov000_0236abd8;
 
-UnkStruct_02340154_Pl *func_ov000_0233b62c(void);
-s32 func_0200225c(s32 a, s32 b);
+UnkStruct_02340154_Pl *Camera_GetBySwapState(void);
+s32 FX_Div(s32 a, s32 b);
 
 void func_ov000_02340154(UnkStruct_02340154 *w, s32 idx) {
     u8 *out;
@@ -48,7 +48,7 @@ void func_ov000_02340154(UnkStruct_02340154 *w, s32 idx) {
 
     if (gCamera[2].flags & 1) {
         idx = 0;
-        p = func_ov000_0233b62c();
+        p = Camera_GetBySwapState();
         out = &w->n2[0];
     } else {
         p = &gCamera[idx];
@@ -61,12 +61,12 @@ void func_ov000_02340154(UnkStruct_02340154 *w, s32 idx) {
         return;
 
     p->unk2C = 0;
-    p->unk30 = func_0200225c(p->unk8 * 0x22, (data_ov000_0236abd8.unk10 - 0xC0) << 8) >> 4;
+    p->unk30 = FX_Div(p->unk8 * 0x22, (data_ov000_0236abd8.unk10 - 0xC0) << 8) >> 4;
     w->a[idx].x = 0;
-    w->a[idx].y = func_0200225c(p->unk8 * 0x22, (data_ov000_0236abd8.unk10 - 0xC0) << 8) >> 4;
+    w->a[idx].y = FX_Div(p->unk8 * 0x22, (data_ov000_0236abd8.unk10 - 0xC0) << 8) >> 4;
 
     if (p->flags & 0x1000000) {
-        h = func_0200225c((p->unk62 << 8) - p->unk8, p->unk20) >> 4;
+        h = FX_Div((p->unk62 << 8) - p->unk8, p->unk20) >> 4;
         h = (h << 8) >> 16;
         if (h <= 0) {
             w->b[idx].x = (p->unk4 >> 4) & 0xFFFF;

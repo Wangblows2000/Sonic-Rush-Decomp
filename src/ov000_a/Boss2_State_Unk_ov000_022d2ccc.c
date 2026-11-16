@@ -85,9 +85,9 @@ struct UnkStruct_022d2ccc {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
-void func_ov000_022d2920(UnkStruct_022d2ccc *s, s32 mode);
+void Boss2_UpdateArenaSpeed(UnkStruct_022d2ccc *s, s32 mode);
 void Boss2_State_Unk_ov000_022d2afc(UnkStruct_022d2ccc *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -106,7 +106,7 @@ static inline s32 Decay(s32 t) {
 }
 
 void Boss2_State_Unk_ov000_022d2ccc(UnkStruct_022d2ccc *s) {
-    func_ov000_022d2920(s, 0);
+    Boss2_UpdateArenaSpeed(s, 0);
     s->unk146C += 0x5b;
     s->unk146C = (s->unk146C >= 0x1000) ? 0x1000 : s->unk146C;
     s->unk14 = Decay(s->unk146C) + 0x20000;

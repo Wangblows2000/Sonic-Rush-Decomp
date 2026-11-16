@@ -12,8 +12,8 @@ s32 PlayerDemo_Unk_0205708c();
 s32 PlayerDemoBg_Create();
 s32 PlayerDemoModel_Create();
 s32 PolyDemoUnder2_Create();
-s32 PlayerDemo_Unk_02057668();
-void PlayerDemo_Unk_02058194();
+s32 PlayerDemo_LoadSound();
+void PlayerDemo_State_RunScript();
 
 void PlayerDemo_State_Load(u8 *p0) {
     s32 t0 = PlayerDemo_LoadData(*(s16 *)((u8 *)gPlayerDemoId + 0), gPlayerDemoId);
@@ -29,9 +29,9 @@ void PlayerDemo_State_Load(u8 *p0) {
     PlayerDemoBg_Create();
     PlayerDemoModel_Create();
     PolyDemoUnder2_Create();
-    PlayerDemo_Unk_02057668(p0);
+    PlayerDemo_LoadSound(p0);
     *(u32 *)((u8 *)p0 + 0x4) = (*(u32 *)((u8 *)p0 + 0x4) | 1);
-    *(u32 *)p0 = (u32)PlayerDemo_Unk_02058194;
+    *(u32 *)p0 = (u32)PlayerDemo_State_RunScript;
 }
 
 #pragma thumb reset

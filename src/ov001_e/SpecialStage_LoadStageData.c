@@ -18,8 +18,8 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
-s32 func_ov001_02314204(s32 a);
-void func_ov001_023141cc(s32 a);
+s32 SpecialStage_LoadStageDataFile(s32 a);
+void SpecialStage_RelocateSstHeader(s32 a);
 
 static inline u8 *Alloc(u32 sz) {
     u32 size = sz;
@@ -43,6 +43,6 @@ void SpecialStage_LoadStageData(s32 idx) {
     g = gSpecialStageData;
     g->idx = idx;
     g->unk8 = 4;
-    g->unk14 = func_ov001_02314204(gSpecialStageFileTable[g->idx]);
-    func_ov001_023141cc(g->unk14);
+    g->unk14 = SpecialStage_LoadStageDataFile(gSpecialStageFileTable[g->idx]);
+    SpecialStage_RelocateSstHeader(g->unk14);
 }

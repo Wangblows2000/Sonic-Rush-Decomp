@@ -21,7 +21,7 @@ extern u32 data_ov000_02364f9c[];
 extern u32 data_ov000_02364fac[];
 
 BOOL func_ov000_022cc6d4(void);
-void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
+void Boss_LoadModelPalettes(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 
 void func_ov000_022cc3e8(s32 idx, s32 flag) {
     u16 *t1;
@@ -43,6 +43,6 @@ void func_ov000_022cc3e8(s32 idx, s32 flag) {
             t2 = data_ov000_02362c24[idx];
         }
     }
-    func_ov000_022c5d4c(data_ov000_02369ad0.unk4, data_ov000_02364f9c, t1, data_ov000_02362b74, 4);
-    func_ov000_022c5d4c(data_ov000_02369ad0.unk8, data_ov000_02364fac, t2, data_ov000_02362b7c, 4);
+    Boss_LoadModelPalettes(data_ov000_02369ad0.unk4, data_ov000_02364f9c, t1, data_ov000_02362b74, 4);
+    Boss_LoadModelPalettes(data_ov000_02369ad0.unk8, data_ov000_02364fac, t2, data_ov000_02362b7c, 4);
 }

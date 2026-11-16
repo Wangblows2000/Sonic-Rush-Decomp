@@ -22,7 +22,7 @@ extern UnkTask_022c89c8 *gTaskCurrent;
 extern UnkBright_022c89c8 data_02087d44;
 extern UnkBright_022c89c8 data_0208926c;
 
-fx32 func_0200225c(fx32 a, fx32 b);
+fx32 FX_Div(fx32 a, fx32 b);
 void Task_Destroy(UnkTask_022c89c8 *t);
 
 #define FX_MUL(a, b) ((fx32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -51,7 +51,7 @@ void func_ov001_022d96d0(void) {
     } else {
         b -= 0x800;
     }
-    v = (a + func_0200225c(FX_MUL((fx32)((w->t - w->delay) << 12), b - a), w->dur << 12)) >> 12;
+    v = (a + FX_Div(FX_MUL((fx32)((w->t - w->delay) << 12), b - a), w->dur << 12)) >> 12;
     if (v < -16) v = -16;
     if (v > 16) v = 16;
     data_02087d44.bright = v;

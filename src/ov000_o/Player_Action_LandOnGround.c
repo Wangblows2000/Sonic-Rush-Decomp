@@ -49,7 +49,7 @@ extern s16 data_0206e470[];
 #define COS_0234a064(a) data_0206e470[(u32)((IDX_0234a064(a) << 1) + 1)]
 
 void Player_LoadPhysicsParams(UnkStruct_0234a064 *w);
-BOOL func_020693d4(u8 a);
+BOOL ObjAngle_IsUpsideDown(u8 a);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
 
@@ -80,7 +80,7 @@ void Player_Action_LandOnGround(UnkStruct_0234a064 *w, u8 ang) {
     if (ang != 0) {
         w->unk34 += (s16)((w->unk28 * COS_0234a064((u16)(ang << 8))) >> 12);
         w->unk34 += (s16)((w->unk2A * SIN_0234a064((u16)(ang << 8))) >> 12);
-        if (func_020693d4(w->unk5)) {
+        if (ObjAngle_IsUpsideDown(w->unk5)) {
             w->unk34 = -w->unk34;
         }
     } else {

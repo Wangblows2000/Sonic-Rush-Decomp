@@ -11,7 +11,7 @@ typedef struct {
     u8 unk450[4];
 } UnkStruct_022f02c0;
 
-void func_ov000_022f8fa0(void *p, s32 a, s32 b);
+void BossF_UpdateCameraShake(void *p, s32 a, s32 b);
 void func_ov000_022f0fdc(UnkStruct_022f02c0 *w, s32 a);
 void func_ov000_022f02a4(void);
 
@@ -20,7 +20,7 @@ static inline s32 FX_Mul(s32 a, s32 b) {
 }
 
 void func_ov000_022f02c0(UnkStruct_022f02c0 *w) {
-    func_ov000_022f8fa0(w->unk450, 4, 8);
+    BossF_UpdateCameraShake(w->unk450, 4, 8);
     func_ov000_022f0fdc(w, 8);
     w->unk44C += 0x2d;
     if (w->unk44C >= 0x1000) {

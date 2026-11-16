@@ -27,7 +27,7 @@ void DemoScript_Main(void);
 void DemoScript_Destructor(void);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
-BOOL func_0204eb7c(void);
+BOOL StoryProgress_IsStageNew(void);
 void Task_Destroy(UnkTask_02048734 *t);
 void DemoScript_ScheduleNext(UnkWork_02048734 *w);
 
@@ -54,7 +54,7 @@ void DemoScript_Create(s32 mode) {
                 id = 0x20;
             if (gGameState.unk0 == 1)
                 id += 0x10;
-            if (!func_0204eb7c())
+            if (!StoryProgress_IsStageNew())
                 id += 8;
             id += stage;
             break;

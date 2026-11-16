@@ -12,7 +12,7 @@ extern u8 data_ov000_02366d94[], data_ov000_0236a1ac[], data_ov000_02366dac[];
 void MapObject_Destructor(void);
 void GmkRail_OnHit(void);
 s32 FX_Atan2(s32 y, s32 x);
-void GmkRail_Action_Unk_ov000_02313310(UnkStruct_StageObj *w);
+void GmkRail_Action_Init(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *GmkRail_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -44,6 +44,6 @@ UnkStruct_StageObj *GmkRail_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk58 |= 0x100;
     w->unk8 = (w->unk1E8 + (p->unk8 + (p->unk6 << 6))) << 8;
     w->unkC = FX_Atan2(p->unk9 + (p->unk7 << 6), p->unk8 + (p->unk6 << 6)) << 8;
-    GmkRail_Action_Unk_ov000_02313310(w);
+    GmkRail_Action_Init(w);
     return w;
 }

@@ -67,12 +67,12 @@ extern UnkStruct_022d7228_b *gBoss3;
 extern UnkStruct_022d7228_c data_ov000_0236a444;
 extern s16 data_0206e470[];
 
-u16 func_ov000_022da88c(u16 a, u16 b, s32 c);
+u16 Boss3_StepAngleToward(u16 a, u16 b, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void Boss3PartCC_State_Unk_ov000_022d7224(UnkStruct_022d7228 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d7228(UnkStruct_022d7228 *s) {
-    s->unk224 = func_ov000_022da88c(s->unk224, s->unk258, 0x200);
+    s->unk224 = Boss3_StepAngleToward(s->unk224, s->unk258, 0x200);
     MTX_RotY33_(s->unk2C4.unk24, data_0206e470[((s->unk224 & 0xffff) >> 4) * 2], data_0206e470[((s->unk224 & 0xffff) >> 4) * 2 + 1]);
     if (s->unk224 != s->unk258)
         return;

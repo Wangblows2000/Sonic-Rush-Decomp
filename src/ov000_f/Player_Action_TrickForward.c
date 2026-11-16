@@ -40,13 +40,13 @@ extern u32 gRandSeed;
 
 #define SIN_02349b84(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 
-BOOL func_ov000_0232bb20(void);
+BOOL ScorePopup_IsActive(void);
 void Player_SetAnimation(UnkStruct_02349b84 *w, s32 state);
 void Player_State_InAir(UnkStruct_02349b84 *w);
 void EffBoostJet_Spawn(UnkStruct_02349b84 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void ObjRect_SetAtkDefFlags(void *p, s32 a, s32 b);
-void func_ov000_02331398(UnkStruct_02349b84 *w, s32 a, s32 b);
+void EffTrickForwardBoost_Create(UnkStruct_02349b84 *w, s32 a, s32 b);
 void Player_AddTrickScore(UnkStruct_02349b84 *w, s32 a);
 
 static inline u16 Rand_02349b84(void) {
@@ -59,7 +59,7 @@ void Player_Action_TrickForward(UnkStruct_02349b84 *w) {
     s32 t;
     s32 a;
 
-    if (!func_ov000_0232bb20()) {
+    if (!ScorePopup_IsActive()) {
         w->unk3CF = 0;
     }
     Player_SetAnimation(w, 0x37);
@@ -84,7 +84,7 @@ void Player_Action_TrickForward(UnkStruct_02349b84 *w) {
         }
         w->unk2E += t;
         ObjRect_SetAtkDefFlags(w->unk2CC, 0x13, 0);
-        func_ov000_02331398(w, 0, 0);
+        EffTrickForwardBoost_Create(w, 0, 0);
         Sound_PlaySeqArcEx(w->unk384, 0, 0x10);
         Sound_PlaySeqArcEx(w->unk384, 0, (Rand_02349b84() & 3) + 0x1d);
         w->unk352 = 0xc;

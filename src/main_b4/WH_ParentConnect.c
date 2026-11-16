@@ -30,7 +30,7 @@ extern char data_02078764[];
 
 void OS_Terminate(void);
 void WH_ChangeSysState(s32 a);
-u16 func_02011098(void);
+u16 WM_GetDispersionBeaconPeriod(void);
 void WH_Alloc(void);
 void WFS_InitParent(s32 a, s32 b, void (*cb)(void), s32 d, u16 e, s32 f, s32 g);
 void WFS_SetDebugMode(s32 a);
@@ -62,7 +62,7 @@ BOOL WH_ParentConnect(s32 mode, u16 a, u16 b) {
     WH_ChangeSysState(3);
     sParentParam.unkc = a;
     sParentParam.unk32 = b;
-    sParentParam.unk18 = func_02011098();
+    sParentParam.unk18 = WM_GetDispersionBeaconPeriod();
     if (mode == 6) {
         sParentParam.unk34 = sParentPacketSize;
         sParentParam.unk36 = sChildPacketSize;

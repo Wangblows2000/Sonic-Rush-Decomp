@@ -94,7 +94,7 @@ typedef struct UnkStruct_022f0b70_p {
 
 void func_ov001_022f0b40(void);
 UnkStruct_022f0b70_t *ExtraBoss_GetPlayer(void);
-void func_ov001_02301dd4(void);
+void ExtraBossPlayer_Action_Hurt(void);
 
 void func_ov001_022f0b70(UnkStruct_022f0b70_p *p) {
     UnkStruct_022f0b70_s2 *s;
@@ -122,7 +122,7 @@ void func_ov001_022f0b70(UnkStruct_022f0b70_p *p) {
     p->unk74 = func_ov001_022f0b40;
     r->unkA = 3;
     r->unkB = 0;
-    func_ov001_02301dd4();
+    ExtraBossPlayer_Action_Hurt();
     p->unk160 |= 0x200;
     s->unk16 = 0;
 }

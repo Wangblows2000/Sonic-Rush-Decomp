@@ -1,4 +1,4 @@
-/* paramclone of func_ov000_0235ec2c (src/ov000_d/func_ov000_0235ec2c.c); immediates and relocations remapped. */
+/* paramclone of ResultsScreen_ReleaseSprites (src/ov000_d/ResultsScreen_ReleaseSprites.c); immediates and relocations remapped. */
 #include <nitro/types.h>
 
 typedef struct {

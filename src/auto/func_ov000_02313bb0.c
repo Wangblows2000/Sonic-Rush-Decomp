@@ -3,7 +3,7 @@
 
 s32 NNS_SndPlayerStopSeq();
 s32 Sound_PlaySeqArcEx();
-s32 func_ov000_0232e2f0();
+s32 EffZakoBomb_Create();
 s32 EffZakoDebris_Create();
 s32 ScreenShake_Start();
 s32 ScreenFlash_Create();
@@ -15,7 +15,7 @@ void func_ov000_02313bb0(u8 *p0) {
     }
     NNS_SndPlayerStopSeq(*(u32 *)((u8 *)p0 + 0x1dc), 0);
     Sound_PlaySeqArcEx(0, 0, 0x64);
-    func_ov000_0232e2f0(p0, 0, 0);
+    EffZakoBomb_Create(p0, 0, 0);
     EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 4);
     EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 5);
     EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 6);

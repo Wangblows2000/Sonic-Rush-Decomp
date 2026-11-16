@@ -14,7 +14,7 @@ extern u8 data_022c1ae0[];
 void OS_Terminate(void);
 u32 WM_GetAllowedChannel(void);
 void WH_SetError(s32 v);
-u16 func_02010ff4(void);
+u16 WM_GetDispersionScanPeriod(void);
 s32 WM_StartScan(void (*cb)(void), UnkScan_0203f7f8 *param);
 void WH_StateOutStartScan(void);
 
@@ -42,7 +42,7 @@ s32 WH_StateInStartScan(void) {
     } else {
         data_022c19e0.ch = data_022c194c;
     }
-    data_022c19e0.unk6 = func_02010ff4();
+    data_022c19e0.unk6 = WM_GetDispersionScanPeriod();
     data_022c19e0.buf = data_022c1ae0;
     r = WM_StartScan(WH_StateOutStartScan, &data_022c19e0);
     if (r == 2)

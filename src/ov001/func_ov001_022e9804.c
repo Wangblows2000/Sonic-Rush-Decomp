@@ -1,9 +1,9 @@
 #include <nitro/types.h>
 
-void func_ov001_022e9778(void);
+void TimeAttackMenu_ResetDisplay(void);
 
 #pragma thumb on
 void func_ov001_022e9804(void) {
-    func_ov001_022e9778();
+    TimeAttackMenu_ResetDisplay();
 }
 #pragma thumb reset

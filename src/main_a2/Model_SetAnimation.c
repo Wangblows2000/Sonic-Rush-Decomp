@@ -15,7 +15,7 @@ typedef struct {
 extern u8 gSystemHeapAllocator[];
 
 void NNS_G3dRenderObjRemoveAnmObj(void *renderObj, void *anm);
-void func_02025b38(void *alloc, void *anm);
+void NNS_G3dFreeAnmObj(void *alloc, void *anm);
 void *NNS_G3dGetAnmByIdx(void *res, u32 idx);
 UnkAnmObj_02031a68 *NNS_G3dAllocAnmObj(void *alloc, void *anm, void *mdl);
 void NNS_G3dAnmObjInit(UnkAnmObj_02031a68 *obj, void *res, void *mdl, void *tex);
@@ -25,7 +25,7 @@ void Model_SetAnimation(UnkObj_02031a68 *o, u32 slot, void *res, u32 idx, void *
     void *a;
     if (o->anm2[slot] != NULL) {
         NNS_G3dRenderObjRemoveAnmObj(o->renderObj, o->anm2[slot]);
-        func_02025b38(gSystemHeapAllocator, o->anm2[slot]);
+        NNS_G3dFreeAnmObj(gSystemHeapAllocator, o->anm2[slot]);
         o->anm2[slot] = NULL;
     }
     switch (slot) {
@@ -42,7 +42,7 @@ void Model_SetAnimation(UnkObj_02031a68 *o, u32 slot, void *res, u32 idx, void *
     case 3:
         if (o->anm[slot] != NULL) {
             NNS_G3dRenderObjRemoveAnmObj(o->renderObj, o->anm[slot]);
-            func_02025b38(gSystemHeapAllocator, o->anm[slot]);
+            NNS_G3dFreeAnmObj(gSystemHeapAllocator, o->anm[slot]);
             o->anm[slot] = NULL;
         }
         break;

@@ -6,7 +6,7 @@ extern u8 data_ov000_02366efc[], data_ov000_0236a234[], data_ov000_023661c0[];
 void MapObject_Destructor(void);
 void SandSlider_OnHit(void);
 void SandSlider_CreatePart(UnkStruct_StageObj *w);
-void func_ov000_02315410(UnkStruct_StageObj *w);
+void SandSlider_Action_Idle(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *SandSlider_Create(UnkStruct_ObjParam *a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -43,6 +43,6 @@ UnkStruct_StageObj *SandSlider_Create(UnkStruct_ObjParam *a, s32 b, s32 c) {
     w->coll0.unk1C = SandSlider_OnHit;
     w->coll0.unkA |= 0x800;
     w->unk58 |= 0x2100;
-    func_ov000_02315410(w);
+    SandSlider_Action_Idle(w);
     return w;
 }

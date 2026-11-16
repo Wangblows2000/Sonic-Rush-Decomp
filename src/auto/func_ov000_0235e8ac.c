@@ -13,7 +13,7 @@ s32 func_ov000_0235c9f8();
 s32 func_ov000_0235ce3c();
 s32 func_ov000_0235ddac();
 s32 func_ov000_0235cf88();
-void func_ov000_0235e79c();
+void ResultsScreen_State_Choose();
 void func_ov000_0235e61c();
 
 void func_ov000_0235e8ac(void) {
@@ -35,7 +35,7 @@ void func_ov000_0235e8ac(void) {
         *(u32 *)((u8 *)t0 + 0x8) = 0;
         func_ov000_0235cf88(t0, 0);
         if (*(u32 *)((u8 *)t0 + 0x10) != 0) {
-            *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov000_0235e79c;
+            *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ResultsScreen_State_Choose;
             return;
         }
         *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov000_0235e61c;

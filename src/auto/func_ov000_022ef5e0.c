@@ -22,7 +22,7 @@ typedef int code();
 extern unsigned char data_ov000_0236a48c[];
 extern unsigned char gDisplayMain[];
 int BossFPartD8_State_Unk_ov000_022ef5a4();
-int func_ov000_022c5c80();
+int Boss_DrawExcBackground();
 int Sound_PlaySeqArc();
 
 void func_ov000_022ef5e0(int param_1)
@@ -38,7 +38,7 @@ void func_ov000_022ef5e0(int param_1)
   *(undefined2 *)(iVar1 + 0x8c) = 0x1000;
   *(undefined2 *)(iVar1 + 0x8e) = 0xe000;
   *(undefined2 *)(iVar1 + 0x92) = 0x1000;
-  func_ov000_022c5c80(7);
+  Boss_DrawExcBackground(7);
   *(undefined2 *)(((int)gDisplayMain) + 0x48) = 0x10;
   Sound_PlaySeqArc(0,0,0x7c);
   uVar2 = ((int)BossFPartD8_State_Unk_ov000_022ef5a4);

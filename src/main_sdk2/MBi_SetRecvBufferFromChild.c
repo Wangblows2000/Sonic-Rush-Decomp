@@ -2,8 +2,8 @@
 #include <main_sdk2/blk2.h>
 
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
-BOOL func_0201a660(u16 aid);
-u8 *func_0201a6c0(UnkPacket_0201a770 *packet, u16 aid);
+BOOL MB_IsGetAllRequestData(u16 aid);
+u8 *MBi_ReceiveRequestDataPiece(UnkPacket_0201a770 *packet, u16 aid);
 
 void *MBi_SetRecvBufferFromChild(const u8 *src, UnkPacket_0201a770 *pkt, u16 aid)
 {
@@ -12,7 +12,7 @@ void *MBi_SetRecvBufferFromChild(const u8 *src, UnkPacket_0201a770 *pkt, u16 aid
     pkt->type = src[0];
     switch (pkt->type) {
     case 7:
-        if (func_0201a660(aid)) {
+        if (MB_IsGetAllRequestData(aid)) {
             return data_02080f44->data[aid - 1];
         }
         pkt->u.s.seq = src[1];
@@ -20,7 +20,7 @@ void *MBi_SetRecvBufferFromChild(const u8 *src, UnkPacket_0201a770 *pkt, u16 aid
             return NULL;
         }
         MI_CpuCopy8(src + 2, pkt->u.s.data, data_02080f48.size);
-        ret = func_0201a6c0(pkt, aid);
+        ret = MBi_ReceiveRequestDataPiece(pkt, aid);
         break;
     case 8:
         pkt->u.h.val = (u16)(src[1] & 0x00ff);

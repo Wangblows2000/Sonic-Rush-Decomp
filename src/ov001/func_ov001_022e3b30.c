@@ -11,10 +11,10 @@ void Heap_Free(void *heap, void *p);
 typedef struct { u8 data[0x5c]; } UnkStruct_023029d4;
 extern u8 data_ov001_0231c578[];
 void Model_Release(void *p);
-void func_02021310(UnkStruct_023029d4 *a, void *b, void *c);
-void *func_02021264(UnkStruct_023029d4 *a, s32 i);
-void func_020212e0(UnkStruct_023029d4 *a);
-void func_0202566c(void *p);
+void NNS_FndMountArchive(UnkStruct_023029d4 *a, void *b, void *c);
+void *NNS_FndGetArchiveFileByIndex(UnkStruct_023029d4 *a, s32 i);
+void NNS_FndUnmountArchive(UnkStruct_023029d4 *a);
+void NNS_G3dResDefaultRelease(void *p);
 BOOL ZoneMap_IsBlaze(void);
 
 #pragma thumb on
@@ -24,13 +24,13 @@ void func_ov001_022e3b30(u8 *p) {
     if (*(void **)(p + 0x15c) != NULL) {
         u8 *blk;
         Model_Release(p + 0x24);
-        func_02021310(&arc, data_ov001_0231c578, *(void **)(p + 0x15c));
+        NNS_FndMountArchive(&arc, data_ov001_0231c578, *(void **)(p + 0x15c));
         if (!ZoneMap_IsBlaze()) {
-            func_0202566c(func_02021264(&arc, 0));
+            NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByIndex(&arc, 0));
         } else {
-            func_0202566c(func_02021264(&arc, 3));
+            NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByIndex(&arc, 3));
         }
-        func_020212e0(&arc);
+        NNS_FndUnmountArchive(&arc);
         blk = *(u8 **)(p + 0x15c);
         if ((u8 *)OS_GetArenaLo(0) != blk) {
             u32 size;

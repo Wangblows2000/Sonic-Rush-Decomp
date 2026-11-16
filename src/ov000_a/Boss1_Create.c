@@ -102,11 +102,11 @@ void StageObj_Main(void);
 void Boss1_Destructor(void);
 void Boss1_State_WaitForStart(void);
 void Boss1_Draw(void);
-void func_ov000_022cbb7c(void);
+void Boss1_NodeCallback_Batteries(void);
 u16 Boss_GetStartHealth(void);
 void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022cc3e8(s32 idx, s32 flag);
-void *func_0202128c(void *a);
+void *NNS_FndGetArchiveFileByName(void *a);
 void NNS_G3dResDefaultSetup(void *a);
 
 static inline u16 Rand(void) {
@@ -118,18 +118,18 @@ void Boss1Hammer_Draw(void);
 void Boss1Hammer_Collide(void);
 void Boss1Hammer_OnHit_Damage(void);
 void Boss1Hammer_OnHit_PushPlayer(void);
-void func_ov000_022c72f8(void);
+void Boss1Hammer_NodeCallback_Hammer(void);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-void func_02021310(void *ctx, void *a, void *b);
-void *func_02021264(void *ctx, u32 id);
-void func_020212e0(void *ctx);
+void NNS_FndMountArchive(void *ctx, void *a, void *b);
+void *NNS_FndGetArchiveFileByIndex(void *ctx, u32 id);
+void NNS_FndUnmountArchive(void *ctx);
 BOOL func_ov000_022cc6d4(void);
 void MapObject_Init(UnkStruct_022cce24 *s, s32 a, s32 x, s32 y);
 void ObjRect_SetBox3D(UnkStruct_022cce24_h *h, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void ObjRect_SetAtkDefFlags(UnkStruct_022cce24_h *h, s32 a, s32 b);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
     MIi_CpuClear16(*(volatile u16 *)&data, dest, size);
@@ -152,14 +152,14 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     gBossStatus.unk4 = 1;
     gBossStatus.unk8 = Boss_GetStartHealth();
     gBossStatus.unkA = Boss_GetStartHealth();
-    func_02021310(ctx, data_ov000_02365060, gZoneActArchive);
+    NNS_FndMountArchive(ctx, data_ov000_02365060, gZoneActArchive);
     if (func_ov000_022cc6d4()) {
-        s->unk230 = func_02021264(ctx, 8);
-        s->unk234 = func_02021264(ctx, 9);
+        s->unk230 = NNS_FndGetArchiveFileByIndex(ctx, 8);
+        s->unk234 = NNS_FndGetArchiveFileByIndex(ctx, 9);
     } else {
-        s->unk230 = func_02021264(ctx, 8);
+        s->unk230 = NNS_FndGetArchiveFileByIndex(ctx, 8);
     }
-    func_020212e0(ctx);
+    NNS_FndUnmountArchive(ctx);
     s->unk22C = data_ov000_02369ad0.unk0;
     s->unk238 = data_ov000_02369ad0.unkC;
     MapObject_Init(s, (s32)a, x, y);
@@ -174,7 +174,7 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     Model_Init(p, 0);
     Model_SetResource(p, s->unk22C, 0);
     if (func_ov000_022cc6d4())
-        func_02021c38(p->unk90, func_ov000_022cbb7c, 0, 6, 3);
+        NNS_G3dRenderObjSetCallBack(p->unk90, Boss1_NodeCallback_Batteries, 0, 6, 3);
     p->unk48 = s->unk10 << 4;
     p->unk4C = -(s->unk14 << 4);
     p->unk50 = s->unk18 << 4;
@@ -182,15 +182,15 @@ UnkStruct_022cce24 *Boss1_Create(u8 *a, s32 x, s32 y) {
     s->unk210 = MapObject_Spawn(0xca, 0, 0, 0, 0, 0, 0, 0, 0);
     s->unk214 = MapObject_Spawn(0xcb, 0, 0, 0, 0, 0, 0, 0, 0);
     func_ov000_022cc3e8(gGameState.unk0, 0);
-    func_02021310(ctx2, data_ov000_02365064, gZoneActArchive);
-    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365068));
-    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_0236507c));
-    NNS_G3dResDefaultSetup(func_0202128c(data_ov000_02365098));
+    NNS_FndMountArchive(ctx2, data_ov000_02365064, gZoneActArchive);
+    NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365068));
+    NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_0236507c));
+    NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365098));
     if (func_ov000_022cc6d4()) {
-        NNS_G3dResDefaultSetup(func_0202128c(data_ov000_023650b4));
-        NNS_G3dResDefaultSetup(func_0202128c(data_ov000_023650cc));
-        NNS_G3dResDefaultSetup(func_0202128c(data_ov000_023650e4));
+        NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023650b4));
+        NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023650cc));
+        NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023650e4));
     }
-    func_020212e0(ctx2);
+    NNS_FndUnmountArchive(ctx2);
     return s;
 }

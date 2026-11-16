@@ -22,7 +22,7 @@ BOOL func_02050dec(void);
 void func_ov001_022d96c4(void);
 BOOL func_ov001_022da52c(void);
 void func_ov001_022da304(UnkWork_022dcdbc *w);
-void func_02051f20(void);
+void SysSound_PlayCancelSE(void);
 BOOL func_ov001_022da4d4(void);
 void func_ov001_022da450(UnkWork_022dcdbc *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
@@ -55,10 +55,10 @@ void func_ov001_022dcdbc(void) {
     } else if (func_ov001_022da52c()) {
         func_ov001_022da304(w);
         a = TRUE;
-        func_02051f20();
+        SysSound_PlayCancelSE();
     } else if (func_ov001_022da4d4()) {
         a = TRUE;
-        func_02051f20();
+        SysSound_PlayCancelSE();
     }
     w->timer++;
     if (a) {

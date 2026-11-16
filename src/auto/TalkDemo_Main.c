@@ -4,12 +4,12 @@
 #pragma thumb on
 
 extern u8 gTaskCurrent[];
-s32 func_02060564();
+s32 TalkDemo_CheckSkip();
 s32 Task_Destroy();
 
 void TalkDemo_Main(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
-    func_02060564(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
+    TalkDemo_CheckSkip(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
     s32 t1 = *(u32 *)t0;
     if (t1 != 0) {
         ((s32 (*)())t1)(t0, t1);

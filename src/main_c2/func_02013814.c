@@ -10,7 +10,7 @@ typedef struct {
     u32 unk10;
 } UnkEntry_02013748;
 
-s32 func_0201541c(void);
+s32 WBT_NumOfRegisteredBlock(void);
 u32 func_0201566c(void);
 u32 func_0201567c(void);
 s32 func_020148e8(void *buf, u16 bitmap, u8 c, s16 d, u32 e, u32 f);
@@ -22,7 +22,7 @@ s32 func_02013814(u8 *ctx, s32 idx, void *buf)
     u16 bit = 1 << idx;
 
     if (e->state == 2 && e->type == 2) {
-        ret = func_020148e8(buf, bit, e->unk2, (s16)func_0201541c(), func_0201566c(), func_0201567c());
+        ret = func_020148e8(buf, bit, e->unk2, (s16)WBT_NumOfRegisteredBlock(), func_0201566c(), func_0201567c());
         e->state = 1;
     }
     return ret;

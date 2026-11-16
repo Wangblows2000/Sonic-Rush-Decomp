@@ -27,7 +27,7 @@ extern u32 gBossStatus;
 extern u32 data_ov000_0236a448;
 extern u32 gCamera;
 extern void G3X_SetEdgeColorTable(void);
-extern void func_02022270(void);
+extern void NNS_G3dGlbLightColor(void);
 extern void Task_Create(void);
 extern void WH_GetCurrentAid(void);
 extern void BrightnessFade_Create(void);
@@ -37,17 +37,17 @@ extern void Stage_Destructor(void);
 extern void Stage_Main(void);
 extern void func_0204ba84(void);
 extern void Stage_InitMapCollision(void);
-extern void func_0204cdc0(void);
-extern void func_02053b04(void);
+extern void Stage_InitBlend(void);
+extern void NaviMsg_SetVisible(void);
 extern void NaviMsg_Create(void);
-extern void func_0205f25c(void);
-extern void func_02067cc8(void);
-extern void func_0206cd40(void);
+extern void StageTitleCard_Create(void);
+extern void ObjCollisionMap_CommitFrame(void);
+extern void NetPacket_FindSlot(void);
 extern void ObjDraw_SetManagedRows(void);
 extern void ObjDraw_InitRows(void);
 extern void ObjRect_CheckInit(void);
-extern void func_ov000_0231f5d0(void);
-extern void func_ov000_0231fc1c(void);
+extern void BossCamera_Create(void);
+extern void StageZoneScript_Create(void);
 extern void func_ov000_0232c7b0(void);
 extern void WirelessIcon_Create(void);
 extern void FixVsHud_Create(void);
@@ -56,7 +56,7 @@ extern void func_ov000_02335db0(void);
 extern void Hud_SetFlags(void);
 extern void Hud_GetFlags(void);
 extern void Hud_Create(void);
-extern void func_ov000_0233c100(void);
+extern void Camera_Create(void);
 extern void Player_Create(void);
 extern void RingManager_Create(void);
 
@@ -98,7 +98,7 @@ asm void Stage_Create(void)
     mul r1, r2, r1
     ldrh r1, [r1, r0]
     mov r0, #0
-    bl func_02022270
+    bl NNS_G3dGlbLightColor
     ldr r0, [pc, #0x504]
     ldr r2, [pc, #0x508]
     ldrb r4, [r0, #0x1c]
@@ -109,7 +109,7 @@ asm void Stage_Create(void)
     mul r1, r3, r1
     ldrh r1, [r1, r2]
     mov r0, #1
-    bl func_02022270
+    bl NNS_G3dGlbLightColor
     ldr r1, [pc, #0x4d8]
     ldr r4, [pc, #0x4e0]
     ldrb r5, [r1, #0x1c]
@@ -120,7 +120,7 @@ asm void Stage_Create(void)
     mul r2, r3, r2
     ldrh r1, [r2, r1]
     mov r0, #2
-    bl func_02022270
+    bl NNS_G3dGlbLightColor
     ldr r0, [pc, #0x4ac]
     mov r1, #0
     ldrb r6, [r0, #0x1c]
@@ -204,7 +204,7 @@ _1d4:
     bl ObjDraw_SetManagedRows
     bl func_ov000_02335db0
     bl func_ov000_02335704
-    bl func_ov000_0233c100
+    bl Camera_Create
     bl Stage_InitMapCollision
     ldr r1, [pc, #0x364]
     ldr r2, [pc, #0x3b0]
@@ -257,7 +257,7 @@ _2d4:
     beq _374
     bl WirelessIcon_Create
     bl WH_GetCurrentAid
-    bl func_0206cd40
+    bl NetPacket_FindSlot
     ldr r2, [pc, #0x2a8]
     mov r1, r0
     ldr r0, [r2]
@@ -271,7 +271,7 @@ _310:
     cmp r5, r0
     beq _33c
     mov r0, r5
-    bl func_0206cd40
+    bl NetPacket_FindSlot
     add r1, r4, r5, lsl #2
     ldr r2, [r1, #4]
     mov r1, r0
@@ -353,23 +353,23 @@ _430:
     orr r0, r0, #0x10
     bl Hud_SetFlags
 _450:
-    bl func_ov000_0231fc1c
+    bl StageZoneScript_Create
     ldr r0, [pc, #0x144]
     ldrb r0, [r0, #0x1d]
     cmp r0, #2
     movne r0, #0
     moveq r0, #2
-    bl func_ov000_0231f5d0
+    bl BossCamera_Create
     ldr r1, [pc, #0x190]
     ldr r0, [pc, #0x190]
     str r1, [r0]
-    bl func_02067cc8
-    bl func_02067cc8
+    bl ObjCollisionMap_CommitFrame
+    bl ObjCollisionMap_CommitFrame
     ldr r0, [pc, #0x118]
     ldr r1, [r0, #0x18]
     bic r1, r1, #1
     str r1, [r0, #0x18]
-    bl func_0204cdc0
+    bl Stage_InitBlend
     ldr r1, [pc, #0x170]
     ldr r0, [pc, #0x100]
     ldr r2, [r1]
@@ -402,7 +402,7 @@ _4f4:
     bne _514
     ands r0, r1, #0x40
     bne _514
-    bl func_0205f25c
+    bl StageTitleCard_Create
     b _55c
 _514:
     cmp r3, #9
@@ -414,7 +414,7 @@ _514:
 _52c:
     bl NaviMsg_Create
     mov r0, #1
-    bl func_02053b04
+    bl NaviMsg_SetVisible
     bl NaviB_Create
     ldr r0, [pc, #0x5c]
     ldr r1, [r0, #0x18]

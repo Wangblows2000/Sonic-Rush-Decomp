@@ -5,8 +5,8 @@ typedef struct UnkStruct_02321d90 {
     void *unk18;
 } UnkStruct_02321d90;
 
-void func_ov000_02321cb8(void *a, void *b);
+void DecBird_Action_FlyAway(void *a, void *b);
 
 void DecBird_OnHit(UnkStruct_02321d90 *a, UnkStruct_02321d90 *b) {
-    func_ov000_02321cb8(a->unk18, b->unk18);
+    DecBird_Action_FlyAway(a->unk18, b->unk18);
 }

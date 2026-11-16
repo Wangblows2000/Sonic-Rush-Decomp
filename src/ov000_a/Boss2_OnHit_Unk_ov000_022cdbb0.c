@@ -61,13 +61,13 @@ extern s32 data_ov000_02362e14[];
 void Boss2_Action_Defeat(void);
 void Boss2_State_Unk_ov000_022d14e8(UnkStruct_022cdbb0 *s);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
-void func_ov000_022cedd8(UnkStruct_022cdbb0 *s);
+void Boss2_SetPalettes(u32 flags);
+void Boss2_SetTargetAngle(UnkStruct_022cdbb0 *s);
 void BossEffect_CreateHit(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Player_Action_AttackBounce(UnkStruct_022cdbb0_2 *p);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void Sound_PlaySeq(s32 a, s32 b);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 
@@ -103,7 +103,7 @@ void Boss2_OnHit_Unk_ov000_022cdbb0(UnkStruct_022cdbb0_c *a, UnkStruct_022cdbb0_
     x->unk114 = 0x1000;
     y->unk114 = 0x1000;
     z->unk114 = 0x1000;
-    func_ov000_022cd1b0(0);
+    Boss2_SetPalettes(0);
     s->unk1474 = 0;
     gBossStatus.unk4 = 0xb;
     BossEffect_CreateHit(0, s->unk139C >> 4, (-s->unk13A0 >> 4) - 0x3200, s->unk13A4 >> 4);
@@ -111,12 +111,12 @@ void Boss2_OnHit_Unk_ov000_022cdbb0(UnkStruct_022cdbb0_c *a, UnkStruct_022cdbb0_
     if (p != NULL && p->unk0 == 1)
         Player_Action_AttackBounce(p);
     if (gBossStatus.unk8 == 2) {
-        func_020537b4(0xb);
-        func_020533e0(0x12, 0xf0);
+        NaviMsg_SetFaceAnim(0xb);
+        NaviMsg_ShowMessage(0x12, 0xf0);
         Sound_PlaySeq(0, 0xf);
     } else {
-        func_020537b4(0xb);
-        func_020533e0(0x10, 0xf0);
+        NaviMsg_SetFaceAnim(0xb);
+        NaviMsg_ShowMessage(0x10, 0xf0);
     }
     Sound_PlaySeqArc(0, 0, 0x7b);
     Sound_PlayVoice(0, 0, data_ov000_02362e14[Rand() & 1]);

@@ -50,9 +50,9 @@ extern u8 data_ov000_02365ae8[];
 void Boss7PartD6_Destructor(void);
 void Boss7PartD6_State_Unk_ov000_022ec364(void);
 void Boss7PartD6_Draw(void);
-void func_02021310(void *f, void *path, void *arc);
-void *func_02021264(void *f, s32 i);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
+void NNS_FndUnmountArchive(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 
@@ -72,25 +72,25 @@ UnkStruct_022ee654 *Boss7PartD6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk378 = par->unk3D0;
     w->unk37C = par->unk42E;
     w->unk384 = Sound_AllocHandle();
-    func_02021310(ctx, data_ov000_02365ae8, gZoneActArchive);
+    NNS_FndMountArchive(ctx, data_ov000_02365ae8, gZoneActArchive);
     if (w->unk378 == 0) {
-        w->unk388 = func_02021264(ctx, 0x12);
-        w->unk38C = func_02021264(ctx, 0x13);
-        w->unk390 = func_02021264(ctx, 0x15);
-        w->unk394 = func_02021264(ctx, 0x17);
-        w->unk398 = func_02021264(ctx, 0x14);
-        w->unk39C = func_02021264(ctx, 0x16);
-        w->unk3A0 = func_02021264(ctx, 0x18);
+        w->unk388 = NNS_FndGetArchiveFileByIndex(ctx, 0x12);
+        w->unk38C = NNS_FndGetArchiveFileByIndex(ctx, 0x13);
+        w->unk390 = NNS_FndGetArchiveFileByIndex(ctx, 0x15);
+        w->unk394 = NNS_FndGetArchiveFileByIndex(ctx, 0x17);
+        w->unk398 = NNS_FndGetArchiveFileByIndex(ctx, 0x14);
+        w->unk39C = NNS_FndGetArchiveFileByIndex(ctx, 0x16);
+        w->unk3A0 = NNS_FndGetArchiveFileByIndex(ctx, 0x18);
     } else {
-        w->unk388 = func_02021264(ctx, 0x19);
-        w->unk38C = func_02021264(ctx, 0x1a);
-        w->unk390 = func_02021264(ctx, 0x1c);
-        w->unk394 = func_02021264(ctx, 0x1e);
-        w->unk398 = func_02021264(ctx, 0x1b);
-        w->unk39C = func_02021264(ctx, 0x1d);
-        w->unk3A0 = func_02021264(ctx, 0x1f);
+        w->unk388 = NNS_FndGetArchiveFileByIndex(ctx, 0x19);
+        w->unk38C = NNS_FndGetArchiveFileByIndex(ctx, 0x1a);
+        w->unk390 = NNS_FndGetArchiveFileByIndex(ctx, 0x1c);
+        w->unk394 = NNS_FndGetArchiveFileByIndex(ctx, 0x1e);
+        w->unk398 = NNS_FndGetArchiveFileByIndex(ctx, 0x1b);
+        w->unk39C = NNS_FndGetArchiveFileByIndex(ctx, 0x1d);
+        w->unk3A0 = NNS_FndGetArchiveFileByIndex(ctx, 0x1f);
     }
-    func_020212e0(ctx);
+    NNS_FndUnmountArchive(ctx);
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk70 = Boss7PartD6_Draw;
     w->base.unk54 |= 0x10;

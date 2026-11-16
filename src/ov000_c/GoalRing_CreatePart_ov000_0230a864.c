@@ -10,7 +10,7 @@ extern void *data_ov000_02369ba0;
 extern UnkStruct_022c4560 gGameState;
 extern u8 data_ov000_02366930[], data_ov000_02369f54[];
 
-void GoalRingPart_Action_Unk_ov000_0230a840(UnkStruct_EffObj *w);
+void GoalRingPart_Action_Sparkle(UnkStruct_EffObj *w);
 
 void GoalRing_CreatePart_ov000_0230a864(UnkStruct_StageObj *par, s32 dx, s32 dy, s16 vx, s16 vy) {
     UnkStruct_Task *task;
@@ -49,5 +49,5 @@ void GoalRing_CreatePart_ov000_0230a864(UnkStruct_StageObj *par, s32 dx, s32 dy,
         w->unk40 = 4;
         w->unk42 = 0x100;
     }
-    GoalRingPart_Action_Unk_ov000_0230a840(w);
+    GoalRingPart_Action_Sparkle(w);
 }

@@ -35,15 +35,15 @@ void BossFPartD8_Draw(void);
 void BossFPartD8_Collide(void);
 void BossFPartD8_OnHit_Unk_ov000_022f50b0(void);
 void BossFPartD8_OnHit_Unk_ov000_022f4ec8(void);
-void func_ov000_022f4d40(void);
-void func_02021310(void *f, void *path, void *arc);
-void *func_02021264(void *f, s32 i);
-void func_020212e0(void *f);
+void BossFPartD8_NodeCallback_Body(void);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
+void NNS_FndUnmountArchive(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
-void func_ov000_022f9044(UnkStruct_022fa128 *w);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void BossFPartD8_InitHitboxes(UnkStruct_022fa128 *w);
 
 UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     u32 ctx[0x17];
@@ -57,11 +57,11 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022fa128));
     w->base.unk68 = BossFPartD8_State_Idle;
-    func_02021310(ctx, data_ov000_02366060, gZoneActArchive);
-    w->unk46C = func_02021264(ctx, 8);
-    w->unk460 = func_02021264(ctx, 0xc);
-    w->unk464 = func_02021264(ctx, 0xd);
-    func_020212e0(ctx);
+    NNS_FndMountArchive(ctx, data_ov000_02366060, gZoneActArchive);
+    w->unk46C = NNS_FndGetArchiveFileByIndex(ctx, 8);
+    w->unk460 = NNS_FndGetArchiveFileByIndex(ctx, 0xc);
+    w->unk464 = NNS_FndGetArchiveFileByIndex(ctx, 0xd);
+    NNS_FndUnmountArchive(ctx);
     w->unk468 = data_ov000_02369b88[1];
     MapObject_Init(w, (s32)p, b, cc);
     w->base.unk70 = BossFPartD8_Draw;
@@ -111,7 +111,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     c->unk18 = w;
     c->unk1C = BossFPartD8_OnHit_Unk_ov000_022f4ec8;
     c->unkA &= ~4;
-    func_ov000_022f9044(w);
+    BossFPartD8_InitHitboxes(w);
     w->base.unk1C8 = w->unk460;
     w->base.unk1CC = (s32)w->unk464;
     w->base.unk1B8 = NULL;
@@ -124,7 +124,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     Model_SetResource(sub, w->unk468, 0);
     Model_SetAnimation(sub, 0, w->unk46C, 6, 0);
     sub->unk10C |= 4;
-    func_02021c38(sub->unk90, func_ov000_022f4d40, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(sub->unk90, BossFPartD8_NodeCallback_Body, 0, 6, 3);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     sub->unkA = 4;
     return w;

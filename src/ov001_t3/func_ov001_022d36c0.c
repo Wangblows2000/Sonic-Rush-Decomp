@@ -25,7 +25,7 @@ extern u16 *data_02087ce0[];
 extern u32 gSystemFlags;
 extern UnkScroll_022d36c0 gDisplaySub;
 
-s32 func_ov001_022d35f8(s32 from, s32 to, s32 len, s32 cur, s32 e);
+s32 TryAgain_Interpolate(s32 from, s32 to, s32 len, s32 cur, s32 e);
 
 #pragma thumb on
 void func_ov001_022d36c0(UnkStruct_022d36c0 *p) {
@@ -50,7 +50,7 @@ void func_ov001_022d36c0(UnkStruct_022d36c0 *p) {
         p->reg = NULL;
         return;
     }
-    r = func_ov001_022d35f8(0, 0x60, 0x60, v, 0);
+    r = TryAgain_Interpolate(0, 0x60, 0x60, v, 0);
     a = r - 0x60;
     b = 0x60 - r;
     for (i = 0; i < 0x60; i++) {

@@ -31,10 +31,10 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-BOOL func_02021310(void *arc, const char *name, void *narc);
-u32 func_02021264(void *arc, u32 idx);
-void func_0202566c(u32 p);
-BOOL func_020212e0(void *arc);
+BOOL NNS_FndMountArchive(void *arc, const char *name, void *narc);
+u32 NNS_FndGetArchiveFileByIndex(void *arc, u32 idx);
+void NNS_G3dResDefaultRelease(u32 p);
+BOOL NNS_FndUnmountArchive(void *arc);
 void SpecialStageObjList_Destroy(void *p);
 
 static inline void Free(void *ptr) {
@@ -61,10 +61,10 @@ void SpecialStage_ReleaseActArchive(void) {
         Model_Release(&g->objs[i]);
     for (i = 0; i < 0x20; i++)
         Model_Release(&g->anims[i]);
-    func_02021310(&arc, data_ov001_0231df78, g->unk4680);
-    func_0202566c(func_02021264(&arc, 0));
-    func_0202566c(func_02021264(&arc, 3));
-    func_020212e0(&arc);
+    NNS_FndMountArchive(&arc, data_ov001_0231df78, g->unk4680);
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByIndex(&arc, 0));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByIndex(&arc, 3));
+    NNS_FndUnmountArchive(&arc);
     Free(g->unk4680);
     g->unk4680 = NULL;
     SpecialStageObjList_Destroy(g->unk46A0);

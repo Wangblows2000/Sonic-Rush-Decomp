@@ -35,7 +35,7 @@ void SpecialStageCamera_SetupMode(UnkStruct_023159b4 *c);
 void VEC_Subtract(const UnkStruct_023159b4_v *a, const UnkStruct_023159b4_v *b, UnkStruct_023159b4_v *c);
 void VEC_Add(const UnkStruct_023159b4_v *a, const UnkStruct_023159b4_v *b, UnkStruct_023159b4_v *c);
 s32 VEC_Mag(const UnkStruct_023159b4_v *a);
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 void SpecialStageCamera_Orbit(s32 h, s32 a, s32 b);
 void SpecialStageCamera_SetPosition(s32 h, UnkStruct_023159b4_v v);
 void SpecialStageCamera_SetTarget(s32 h, UnkStruct_023159b4_v v);
@@ -74,9 +74,9 @@ void SpecialStageCamera_Update(void) {
     if (c->unk8 == 0) {
         if (c->unk30 < lp && lp > c->unk2C) {
             if (lp > c->unk28) {
-                dp.x = func_0200225c(dp.x, lp);
-                dp.y = func_0200225c(dp.y, lp);
-                dp.z = func_0200225c(dp.z, lp);
+                dp.x = FX_Div(dp.x, lp);
+                dp.y = FX_Div(dp.y, lp);
+                dp.z = FX_Div(dp.z, lp);
                 dp.x = FX_Mul(dp.x, c->unk28);
                 dp.y = FX_Mul(dp.y, c->unk28);
                 dp.z = FX_Mul(dp.z, c->unk28);
@@ -86,9 +86,9 @@ void SpecialStageCamera_Update(void) {
         }
         if (c->unk30 < lt && lt > c->unk2C) {
             if (lt > c->unk28) {
-                dt.x = func_0200225c(dt.x, lt);
-                dt.y = func_0200225c(dt.y, lt);
-                dt.z = func_0200225c(dt.z, lt);
+                dt.x = FX_Div(dt.x, lt);
+                dt.y = FX_Div(dt.y, lt);
+                dt.z = FX_Div(dt.z, lt);
                 dt.x = FX_Mul(dt.x, c->unk28);
                 dt.y = FX_Mul(dt.y, c->unk28);
                 dt.z = FX_Mul(dt.z, c->unk28);

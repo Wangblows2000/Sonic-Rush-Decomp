@@ -7,5 +7,5 @@ extern u32 data_ov000_02369ba0;
 void NNS_SndStopSoundAll(void);
 void NNS_SndStopChannelAll(void);
 void func_ov000_0233bc3c(void);
-void func_ov000_023357e0(void);
-void Stage_ReleaseZoneResources(void) { NNS_SndStopSoundAll(); NNS_SndStopChannelAll(); gStageZoneReleaseFuncTable[gGameState.unk1C][gGameState.unk1D](); func_ov000_0233bc3c(); func_ov000_023357e0(); data_ov000_02369ba0 = 0; }
+void Stage_FreeEventResources(void);
+void Stage_ReleaseZoneResources(void) { NNS_SndStopSoundAll(); NNS_SndStopChannelAll(); gStageZoneReleaseFuncTable[gGameState.unk1C][gGameState.unk1D](); func_ov000_0233bc3c(); Stage_FreeEventResources(); data_ov000_02369ba0 = 0; }

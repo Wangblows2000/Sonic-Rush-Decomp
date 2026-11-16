@@ -37,17 +37,17 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void TimeAttackMenu_State_Enter(void);
 void TimeAttackMenu_Destructor(void);
-s32 func_0204e6e8(u8 a);
+s32 StoryProgress_GetZoneIndex(u8 a);
 void TimeAttackMenu_InitDisplay(void);
 void TimeAttackMenu_LoadAssets(UnkWork_022ec1e4 *w);
-void func_ov001_022ebfd4(UnkWork_022ec1e4 *w);
-void func_ov001_022ebecc(UnkWork_022ec1e4 *w);
+void TimeAttackMenu_InitBackgrounds(UnkWork_022ec1e4 *w);
+void TimeAttackMenu_InitSprites(UnkWork_022ec1e4 *w);
 void TimeAttackMenu_CreateBgScrollTask(void);
 void TimeAttackMenu_CreateFadeTask(s32 a, s32 b, s32 c, s32 d);
 void Touch_Enable(void);
 void func_ov001_022ebc98(UnkTask_022ec1e4 *t);
 void SysSound_Init(void);
-void func_02052168(s32 a);
+void SysSound_PlayBGM(s32 a);
 void Pad_Reset(void *p, s32 a, void *b);
 
 #pragma thumb on
@@ -78,10 +78,10 @@ void TimeAttackMenu_Create(s32 mode) {
     }
     switch (w->mode) {
     case 0:
-        w->sel = gGameState.unk1d + func_0204e6e8(gGameState.unk1c) * 2;
+        w->sel = gGameState.unk1d + StoryProgress_GetZoneIndex(gGameState.unk1c) * 2;
         break;
     case 1:
-        w->sel = func_0204e6e8(gGameState.unk1c);
+        w->sel = StoryProgress_GetZoneIndex(gGameState.unk1c);
         break;
     }
     if (w->sel >= w->max) {
@@ -89,8 +89,8 @@ void TimeAttackMenu_Create(s32 mode) {
     }
     TimeAttackMenu_InitDisplay();
     TimeAttackMenu_LoadAssets(w);
-    func_ov001_022ebfd4(w);
-    func_ov001_022ebecc(w);
+    TimeAttackMenu_InitBackgrounds(w);
+    TimeAttackMenu_InitSprites(w);
     TimeAttackMenu_CreateBgScrollTask();
     if (data_0208926c.bright >= 0) {
         data_0208926c.bright = 0x10;
@@ -101,7 +101,7 @@ void TimeAttackMenu_Create(s32 mode) {
     Touch_Enable();
     func_ov001_022ebc98(t);
     SysSound_Init();
-    func_02052168(0);
+    SysSound_PlayBGM(0);
     gSaveDataBusy = 0;
     gSystemFlags &= ~0x10;
     fill = 4;

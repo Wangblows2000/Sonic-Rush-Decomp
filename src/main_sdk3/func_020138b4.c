@@ -28,7 +28,7 @@ typedef struct {
 } UnkCtx_020138b4;
 
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
-s32 func_02015520(void);
+s32 WBT_GetOwnAid(void);
 void func_0201564c(s32 a);
 void func_0201565c(s32 a);
 void func_02013e7c(UnkCtx_020138b4 *ctx, u32 type, s32 idx);
@@ -39,7 +39,7 @@ void func_020141a8(void *info, u32 a);
 
 static inline BOOL func_020138b4_IsMine(u16 bm)
 {
-    return func_02015520() == -1 ? FALSE : (bm & (1 << func_02015520())) ? TRUE : FALSE;
+    return WBT_GetOwnAid() == -1 ? FALSE : (bm & (1 << WBT_GetOwnAid())) ? TRUE : FALSE;
 }
 
 s32 func_020138b4(UnkCtx_020138b4 *ctx, s32 idx, u8 *buf, s32 len)
@@ -125,7 +125,7 @@ s32 func_020138b4(UnkCtx_020138b4 *ctx, s32 idx, u8 *buf, s32 len)
         case 5:
             MI_CpuCopy8(buf, &e->unk6, 2);
             MI_CpuCopy8(buf + 2, &e->unk4, 2);
-            if (func_02015520()) {
+            if (WBT_GetOwnAid()) {
                 func_0201564c(e->unk4);
                 func_0201565c(e->unk6);
             }

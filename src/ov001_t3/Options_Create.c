@@ -32,7 +32,7 @@ void Options_LoadSettingsFromSave(void *p);
 s32 func_ov001_022c8b5c(void);
 s32 func_ov001_022c8b58(void);
 s32 func_ov001_022c8b54(void);
-s32 func_ov001_022c8b38(void);
+s32 Options_IsSoundTestUnlocked(void);
 s32 func_ov001_022c8b34(void);
 s32 func_ov001_022c8b30(void);
 s32 func_ov001_022c8b14(void);
@@ -47,9 +47,9 @@ void func_ov001_022ce6f8(UnkWork_022cecb8 *w);
 void func_ov001_022ce4cc(UnkWork_022cecb8 *w);
 void Pad_Reset(void *p, s32 a, s32 b);
 void Touch_Enable(void);
-void func_ov001_022c8994(void);
+void Options_CreateBgScrollTask(void);
 void SysSound_Init(void);
-void func_02052168(s32 a);
+void SysSound_PlayBGM(s32 a);
 
 #pragma thumb on
 static inline u8 *Alloc_022cecb8(u32 size) {
@@ -78,7 +78,7 @@ UnkWork_022cecb8 *Options_Create(void) {
     w->unk18 = func_ov001_022c8b5c();
     w->unk1c = func_ov001_022c8b58();
     w->unk20 = func_ov001_022c8b54();
-    w->unk24 = func_ov001_022c8b38();
+    w->unk24 = Options_IsSoundTestUnlocked();
     w->unk28 = func_ov001_022c8b34();
     w->unk2c = func_ov001_022c8b30();
     w->unk14 = func_ov001_022c8b14();
@@ -90,9 +90,9 @@ UnkWork_022cecb8 *Options_Create(void) {
     func_ov001_022ce4cc(w);
     Pad_Reset(gPad, 0, 0);
     Touch_Enable();
-    func_ov001_022c8994();
+    Options_CreateBgScrollTask();
     SysSound_Init();
-    func_02052168(0);
+    SysSound_PlayBGM(0);
     return w;
 }
 #pragma thumb reset

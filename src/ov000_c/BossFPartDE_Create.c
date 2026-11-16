@@ -52,9 +52,9 @@ void BossFPartDE_State_Unk_ov000_022f6834(void);
 void func_ov000_022f5c78(void);
 void BossFPartDE_Draw(void);
 void BossFPartDE_OnHit(void);
-void func_02021310(void *f, void *path, void *arc);
-void *func_02021264(void *f, s32 i);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
+void NNS_FndUnmountArchive(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
@@ -84,10 +84,10 @@ UnkStruct_022f92dc *BossFPartDE_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         break;
     }
     boss->unk218->unk438++;
-    func_02021310(ctx, data_ov000_02366048, gZoneActArchive);
-    w->unk4CC = func_02021264(ctx, 0x72);
-    w->unk4D0 = func_02021264(ctx, 0x73);
-    func_020212e0(ctx);
+    NNS_FndMountArchive(ctx, data_ov000_02366048, gZoneActArchive);
+    w->unk4CC = NNS_FndGetArchiveFileByIndex(ctx, 0x72);
+    w->unk4D0 = NNS_FndGetArchiveFileByIndex(ctx, 0x73);
+    NNS_FndUnmountArchive(ctx);
     w->unk4C8 = data_ov000_02369b88[2];
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk70 = BossFPartDE_Draw;

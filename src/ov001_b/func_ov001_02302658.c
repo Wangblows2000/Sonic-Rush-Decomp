@@ -38,7 +38,7 @@ extern u32 gRandSeed;
 UnkStruct_02302658_q *ExtraBoss_GetWork(void);
 UnkStruct_02302658_o *ExtraBoss_GetPlayer(void);
 s32 FX_ModS32(s32 n, s32 d);
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -90,8 +90,8 @@ void func_ov001_02302658(void) {
         dy = o->unk1C - q->unk310;
         adx = Abs(dx);
         ady = Abs(dy);
-        sx = func_0200225c(FX_Mul(adx, 0x3000) + FX_Mul(0xc0000 - adx, 0x5000), 0xc0000);
-        sy = func_0200225c(FX_Mul(ady, 0x6000) + FX_Mul(0x180000 - ady, 0x6800), 0x180000);
+        sx = FX_Div(FX_Mul(adx, 0x3000) + FX_Mul(0xc0000 - adx, 0x5000), 0xc0000);
+        sy = FX_Div(FX_Mul(ady, 0x6000) + FX_Mul(0x180000 - ady, 0x6800), 0x180000);
         if (dx < 0) {
             if (adx < sx)
                 o->unk18 = 0xc0000;

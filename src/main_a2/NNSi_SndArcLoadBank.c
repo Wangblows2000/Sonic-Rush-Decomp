@@ -6,7 +6,7 @@ typedef struct { u32 fileId; u16 waveArc[4]; } UnkBankInfo_0201e3a0;
 UnkBankInfo_0201e3a0 *NNS_SndArcGetBankInfo(s32 idx);
 UnkInfo_0201e3a0 *NNS_SndArcGetWaveArcInfo(s32 idx);
 void *LoadBank(u32 fileId, void *heap, BOOL cache);
-void *func_0201d0f8(u32 fileId);
+void *NNS_SndArcGetFileAddress(u32 fileId);
 s32 NNSi_SndArcLoadWaveArc(s32 idx, u32 flags, void *heap, BOOL cache, void **out);
 BOOL LoadSingleWaves(void *wa, void *bank, u32 waveArc, u32 fileId, void *heap);
 void SND_AssignWaveArc(void *bank, s32 i, void *wa);
@@ -25,7 +25,7 @@ s32 NNSi_SndArcLoadBank(s32 idx, u32 flags, void *heap, BOOL cache, void **out) 
         bank = LoadBank(info->fileId, heap, cache);
         if (bank == NULL) return 8;
     } else {
-        bank = func_0201d0f8(info->fileId);
+        bank = NNS_SndArcGetFileAddress(info->fileId);
     }
     for (i = 0; i < 4; i++) {
         if (info->waveArc[i] == 0xFFFF) continue;

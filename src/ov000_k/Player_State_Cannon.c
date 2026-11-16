@@ -55,7 +55,7 @@ extern s16 data_0206e470[];
 s32 ObjSpd_UpSet(s32 v, s32 a, s32 max);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Math_RotateVec2S16(s16 *vx, s16 *vy, u8 a);
-void func_ov000_0232e48c(UnkStruct_02350d3c *w, s32 vx, s32 vy);
+void EffZakoBombPuff_Create(UnkStruct_02350d3c *w, s32 vx, s32 vy);
 void Player_StartHighSpeed(UnkStruct_02350d3c *w);
 void Player_Action_GimmickLaunch(UnkStruct_02350d3c *w, s32 vx, s32 vy);
 void Player_SetAnimation(UnkStruct_02350d3c *w, s32 state);
@@ -106,7 +106,7 @@ void Player_State_Cannon(UnkStruct_02350d3c *w) {
         sx = (s16)((COS_02350d3c((u16)(w->unk1 << 8)) * t) >> 12);
         sy = (s16)((SIN_02350d3c((u16)(w->unk1 << 8)) * t) >> 12);
         Math_RotateVec2S16(&vx, &vy, w->unk1 + w->unk5);
-        func_ov000_0232e48c(w, vx, vy);
+        EffZakoBombPuff_Create(w, vx, vy);
     }
     w->unk3 = 0;
     w->unk3E8 = NULL;

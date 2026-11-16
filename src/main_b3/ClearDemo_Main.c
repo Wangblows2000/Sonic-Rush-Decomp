@@ -25,16 +25,16 @@ extern UnkTask_02047ecc *gTaskCurrent;
 typedef struct { u8 pad0[0x10]; s32 unk10; } UnkStruct_022c4560;
 extern UnkStruct_022c4560 gGameState;
 
-void ClearDemo_Unk_02045d10(UnkWork_02047ecc *w);
-void ClearDemo_Unk_02047e68(UnkWork_02047ecc *w);
-void ClearDemo_Unk_02047e20(UnkWork_02047ecc *w);
-void func_0204528c(UnkWork_02047ecc *w);
-void ClearDemo_Unk_02045ec0(UnkWork_02047ecc *w);
-void ClearDemo_Unk_02047664(UnkWork_02047ecc *w);
+void ClearDemo_State_FadeIn(UnkWork_02047ecc *w);
+void ClearDemo_SkipParts(UnkWork_02047ecc *w);
+void ClearDemo_SkipToRank(UnkWork_02047ecc *w);
+void ClearDemoTA_Draw(UnkWork_02047ecc *w);
+void ClearDemoScore_Draw(UnkWork_02047ecc *w);
+void ClearDemoName_Draw(UnkWork_02047ecc *w);
 void ClearDemo_DrawModel(UnkWork_02047ecc *w);
-void ClearDemo_Unk_0204749c(UnkWork_02047ecc *w);
-void ClearDemo_Unk_02045d98(UnkWork_02047ecc *w);
-void ClearDemo_Unk_02047458(UnkWork_02047ecc *w);
+void ClearDemoActText_Draw(UnkWork_02047ecc *w);
+void ClearDemoBars_Draw(UnkWork_02047ecc *w);
+void ClearDemoBg_Draw(UnkWork_02047ecc *w);
 void Task_Destroy(UnkTask_02047ecc *t);
 void NNS_SndStopSoundAll(void);
 void ClearDemo_Finish(void);
@@ -47,11 +47,11 @@ void ClearDemo_Main(void) {
     w->state(w);
     flags = w->flags;
     if (!(flags & 0x80000000)) {
-        if ((gPad.trg & 1) && w->state != ClearDemo_Unk_02045d10) {
+        if ((gPad.trg & 1) && w->state != ClearDemo_State_FadeIn) {
             if (!(flags & 0x400000) && !(flags & 0x100000))
-                ClearDemo_Unk_02047e68(w);
+                ClearDemo_SkipParts(w);
             else if (!(flags & 0x800000) && !(flags & 0x200000))
-                ClearDemo_Unk_02047e20(w);
+                ClearDemo_SkipToRank(w);
         }
         if (w->flags & 8)
             w->obj0(w, &w->obj0);
@@ -67,19 +67,19 @@ void ClearDemo_Main(void) {
             w->obj330(w, &w->obj330);
         if (w->flags & 0x2000) {
             if (gGameState.unk10 == 2)
-                func_0204528c(w);
+                ClearDemoTA_Draw(w);
             else
-                ClearDemo_Unk_02045ec0(w);
+                ClearDemoScore_Draw(w);
         }
         if (w->flags & 1)
-            ClearDemo_Unk_02047664(w);
+            ClearDemoName_Draw(w);
         if (w->flags & 2)
             ClearDemo_DrawModel(w);
         if (w->flags & 4)
-            ClearDemo_Unk_0204749c(w);
+            ClearDemoActText_Draw(w);
         if (w->flags & 0x40000)
-            ClearDemo_Unk_02045d98(w);
-        ClearDemo_Unk_02047458(w);
+            ClearDemoBars_Draw(w);
+        ClearDemoBg_Draw(w);
     } else {
         Task_Destroy(gTaskCurrent);
         NNS_SndStopSoundAll();

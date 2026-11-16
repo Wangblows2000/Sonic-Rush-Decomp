@@ -64,8 +64,8 @@ void Vram_SetBankForSubBGExtPltt(s32 a);
 void ObjVram_Reset(s32 i);
 void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
-void func_02022270(u32 index, u32 value);
-void func_02022284(u32 idx, s32 x, s32 y, s32 z);
+void NNS_G3dGlbLightColor(u32 index, u32 value);
+void NNS_G3dGlbLightVector(u32 idx, s32 x, s32 y, s32 z);
 
 void ExtraBoss_InitDisplay(void) {
     u16 c;
@@ -162,10 +162,10 @@ void ExtraBoss_InitDisplay(void) {
     Vram_ResetTexAndPltt();
     VramPltt_Reset();
     c = data_02074960.unk9C;
-    func_02022270(0, c);
-    func_02022270(1, c);
-    func_02022270(2, c);
-    func_02022284(0, data_020748bc.v[0], data_020748bc.v[1], data_020748bc.v[2]);
-    func_02022284(1, data_020748bc.v[3], data_020748bc.v[4], data_020748bc.v[5]);
-    func_02022284(2, data_020748bc.v[6], data_020748bc.v[7], data_020748bc.v[8]);
+    NNS_G3dGlbLightColor(0, c);
+    NNS_G3dGlbLightColor(1, c);
+    NNS_G3dGlbLightColor(2, c);
+    NNS_G3dGlbLightVector(0, data_020748bc.v[0], data_020748bc.v[1], data_020748bc.v[2]);
+    NNS_G3dGlbLightVector(1, data_020748bc.v[3], data_020748bc.v[4], data_020748bc.v[5]);
+    NNS_G3dGlbLightVector(2, data_020748bc.v[6], data_020748bc.v[7], data_020748bc.v[8]);
 }

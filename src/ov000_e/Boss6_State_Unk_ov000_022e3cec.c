@@ -22,18 +22,18 @@ typedef struct {
     s32 unk1118;
 } UnkStruct_Boss;
 
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e62fc(void);
-void Boss6_State_Unk_ov000_022e3cb4(void);
+void Boss6_State_WaitSelectAttack3(void);
 
 void Boss6_State_Unk_ov000_022e3cec(UnkStruct_Boss *w) {
     UnkStruct_Mdl960 *m = &w->unk960;
 
     if (!(m->unk10C & 2))
         return;
-    func_02021c38(m->unk90, func_ov000_022e62fc, 0, 6, 3);
-    w->base.unk68 = Boss6_State_Unk_ov000_022e3cb4;
+    NNS_G3dRenderObjSetCallBack(m->unk90, func_ov000_022e62fc, 0, 6, 3);
+    w->base.unk68 = Boss6_State_WaitSelectAttack3;
     Model_SetAnimation(m, 0, w->unkD08, 0xc, 0);
     m->unk114 = 0x1000;
     w->unkF68 = 0x549f;

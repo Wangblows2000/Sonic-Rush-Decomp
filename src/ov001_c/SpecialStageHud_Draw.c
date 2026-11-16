@@ -40,7 +40,7 @@ void func_ov001_023091a0(void);
 void func_ov001_02308fc8(void);
 void func_ov001_02308e44(void);
 void func_ov001_02308d40(void);
-void func_ov001_02308720(void);
+void SpecialStageHud_DrawRingCounter(void);
 void func_ov001_02308600(void);
 
 void SpecialStageHud_Draw(void) {
@@ -96,7 +96,7 @@ void SpecialStageHud_Draw(void) {
     }
     if (g->unkBD0 >= 0)
         func_ov001_02308d40();
-    func_ov001_02308720();
+    SpecialStageHud_DrawRingCounter();
     func_ov001_02308600();
     if (g->unkAE0 >= 0x17c && g->unkAE0 < 0x258)
         AnimatorSprite_Draw(&g->objs[34]);

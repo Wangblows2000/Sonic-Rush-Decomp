@@ -51,7 +51,7 @@ typedef struct UnkStruct_0231066c_c {
 
 extern s16 data_0206e470[];
 
-void func_ov001_023102ec(UnkStruct_0231066c *w);
+void SpecialStageObj_MarkDestroyed(UnkStruct_0231066c *w);
 void Model_Animate(void *p);
 s32 func_ov001_02310144(UnkStruct_0231066c *w);
 void func_ov001_0230d28c(void *a, void *b, s32 c, s32 d, u16 e, s32 f, s32 g);
@@ -74,7 +74,7 @@ void func_ov001_0231066c(UnkStruct_0231066c_c *c, UnkStruct_0231066c *w) {
     if (w->unk60 & 2)
         return;
     if (w->unk70 == 0) {
-        func_ov001_023102ec(w);
+        SpecialStageObj_MarkDestroyed(w);
         return;
     }
     if (c != NULL && c->unk1D8 != NULL)
@@ -136,7 +136,7 @@ void func_ov001_0231066c(UnkStruct_0231066c_c *c, UnkStruct_0231066c *w) {
     w->unkD0++;
     w->unk70--;
     if (w->unk78 != NULL && (w->unk78->unk34 & 1))
-        func_ov001_023102ec(w);
+        SpecialStageObj_MarkDestroyed(w);
     if (w->unk60 & 0x20)
         return;
     if (w->unk78 != NULL) {

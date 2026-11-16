@@ -32,10 +32,10 @@ extern char data_ov000_02365934[];
 extern char data_ov000_02365950[];
 extern void *gBoss6;
 
-BOOL func_02021310(UnkArc_022e6410 *arc, const char *name, void *narc);
-void *func_0202128c(const char *path);
-void func_0202566c(void *p);
-BOOL func_020212e0(UnkArc_022e6410 *arc);
+BOOL NNS_FndMountArchive(UnkArc_022e6410 *arc, const char *name, void *narc);
+void *NNS_FndGetArchiveFileByName(const char *path);
+void NNS_G3dResDefaultRelease(void *p);
+BOOL NNS_FndUnmountArchive(UnkArc_022e6410 *arc);
 void Model_Release(void *a);
 void MapObject_Destructor(UnkStruct_022e6410 *t);
 
@@ -48,14 +48,14 @@ void Boss6_Destructor(UnkStruct_022e6410 *t) {
         Model_Release(&s->mdl[i]);
     for (i = 0; i < 4; i++) {
         if (data_ov000_02363864[i].unk0 != -1)
-            func_0202566c(s->unkD0C[i]);
+            NNS_G3dResDefaultRelease(s->unkD0C[i]);
     }
-    func_02021310(&arc, data_ov000_02365908, gZoneActArchive);
-    func_0202566c(func_0202128c(data_ov000_0236590c));
-    func_0202566c(func_0202128c(data_ov000_02365920));
-    func_0202566c(func_0202128c(data_ov000_02365934));
-    func_0202566c(func_0202128c(data_ov000_02365950));
-    func_020212e0(&arc);
+    NNS_FndMountArchive(&arc, data_ov000_02365908, gZoneActArchive);
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_0236590c));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365920));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365934));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365950));
+    NNS_FndUnmountArchive(&arc);
     MapObject_Destructor(t);
     gBoss6 = NULL;
 }

@@ -124,7 +124,7 @@ extern s32 data_ov000_023658d4[][3];
 extern u32 data_ov000_023657e0[];
 extern u16 data_ov000_023636f4[];
 
-void Boss6_State_Unk_ov000_022e213c(UnkStruct_022e2470 *s);
+void Boss6_State_Defeat(UnkStruct_022e2470 *s);
 void NNS_SndPlayerStopSeqAll(s32 a);
 void StageObj_SetPause(void);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -135,7 +135,7 @@ u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
 void func_ov000_022e237c(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022c5d4c(s32 a, u32 *p1, s32 p2, u16 *p3, u16 n);
+void Boss_LoadModelPalettes(s32 a, u32 *p1, s32 p2, u16 *p3, u16 n);
 
 void Boss6_Action_Defeat(void) {
     UnkStruct_022e2470 *s = gBoss6;
@@ -143,7 +143,7 @@ void Boss6_Action_Defeat(void) {
     UnkStruct_022e2470_c *c;
     s32 i;
     u32 v;
-    s->func = Boss6_State_Unk_ov000_022e213c;
+    s->func = Boss6_State_Defeat;
     x = &s->unk960;
     c = (UnkStruct_022e2470_c *)(u32)&data_ov000_0236a48c;
     NNS_SndPlayerStopSeqAll(0);
@@ -206,6 +206,6 @@ void Boss6_Action_Defeat(void) {
     c->unk92 = 0x1000;
     c->unk30 = 0x1000;
     Sound_PlaySeqArc(0, 0, 0x7c);
-    func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
+    Boss_LoadModelPalettes(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
     s->unk1114 = 0;
 }

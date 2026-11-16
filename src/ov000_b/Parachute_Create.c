@@ -5,7 +5,7 @@ extern u8 data_ov000_02366d30[], data_ov000_0236a15c[];
 
 void MapObject_Destructor(void);
 void Parachute_OnHit(void);
-void Parachute_Action_Unk_ov000_02312070(UnkStruct_StageObj *w);
+void Parachute_Action_Idle(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Parachute_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -31,6 +31,6 @@ UnkStruct_StageObj *Parachute_Create(s32 a, s32 b, s32 c) {
     if (w->unk1E0->unk4 & 1)
         w->unk5C ^= 1;
     w->unk58 |= 0x2100;
-    Parachute_Action_Unk_ov000_02312070(w);
+    Parachute_Action_Idle(w);
     return w;
 }

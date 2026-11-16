@@ -96,16 +96,16 @@ extern UnkPersp_0206a0ac *data_022c4ef4;
 extern NNSG3dGlb_0206a0ac NNS_G3dGlb;
 extern s16 data_0207cf7c;
 
-void func_02022284(u32 i, s16 x, s16 y, s16 z);
-void *func_ov000_0233b654(void);
-void func_ov000_0233b2e0(void *a, s32 x, s32 y, s16 *ox, s16 *oy);
+void NNS_G3dGlbLightVector(u32 i, s16 x, s16 y, s16 z);
+void *Camera_GetPrimary(void);
+void Camera_WorldToScreen(void *a, s32 x, s32 y, s16 *ox, s16 *oy);
 void MTX_Identity33_(MtxFx33_0206a0ac *m);
 void MTX_RotY33_(MtxFx33_0206a0ac *m, s32 s, s32 c);
 void MTX_RotX33_(MtxFx33_0206a0ac *m, s32 s, s32 c);
 void MTX_RotZ33_(MtxFx33_0206a0ac *m, s32 s, s32 c);
 void MTX_Scale33_(MtxFx33_0206a0ac *m, s32 x, s32 y, s32 z);
 void MTX_Concat33(MtxFx33_0206a0ac *a, MtxFx33_0206a0ac *b, MtxFx33_0206a0ac *ab);
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void G3i_FrustumW_(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 s, s32 g, MtxFx44_0206a0ac *m);
 void Model_Animate(UnkMdl_0206a0ac *m);
 void Model_Draw(UnkMdl_0206a0ac *m);
@@ -173,20 +173,20 @@ void StageObj_Draw3DEx(s32 x, s32 y, s32 z, u32 rotZ, UnkObj_0206a0ac *obj, UnkM
     if (flags & 0x800) {
         if (flags & 1) {
             for (i = 0; i < data_022c4ee8; i++)
-                func_02022284(i, data_022c4efc[i].x, data_022c4efc[i].y, data_022c4efc[i].z);
+                NNS_G3dGlbLightVector(i, data_022c4efc[i].x, data_022c4efc[i].y, data_022c4efc[i].z);
         } else {
             for (i = 0; i < data_022c4ee8; i++)
-                func_02022284(i, -data_022c4efc[i].x, data_022c4efc[i].y, data_022c4efc[i].z);
+                NNS_G3dGlbLightVector(i, -data_022c4efc[i].x, data_022c4efc[i].y, data_022c4efc[i].z);
         }
     } else {
         for (i = 0; i < data_022c4ee8; i++)
-            func_02022284(i, data_022c4efc[i].x, data_022c4efc[i].y, data_022c4efc[i].z);
+            NNS_G3dGlbLightVector(i, data_022c4efc[i].x, data_022c4efc[i].y, data_022c4efc[i].z);
     }
     if (!(flags & 0x2000)) {
         sx = 0;
         sy = 0;
         if ((gObjManagerFlags & 4) && !(flags & 0x80)) {
-            func_ov000_0233b2e0(func_ov000_0233b654(), x, y, &sx, &sy);
+            Camera_WorldToScreen(Camera_GetPrimary(), x, y, &sx, &sy);
         } else {
             sx = x >> 8;
             sy = y >> 8;
@@ -240,9 +240,9 @@ void StageObj_Draw3DEx(s32 x, s32 y, s32 z, u32 rotZ, UnkObj_0206a0ac *obj, UnkM
     if (flags & 0x200) {
         UnkPersp_0206a0ac *p = data_022c4ef4;
         s32 nearZ = p->nearZ;
-        s32 h = FX_Mul_0206a0ac(func_0200225c(SIN_0206a0ac(p->angle), COS_0206a0ac(p->angle)), nearZ);
+        s32 h = FX_Mul_0206a0ac(FX_Div(SIN_0206a0ac(p->angle), COS_0206a0ac(p->angle)), nearZ);
         s32 w = FX_Mul_0206a0ac(h, p->aspect);
-        s32 d = func_0200225c(p->nearZ, data_022c4ef4->unk1c);
+        s32 d = FX_Div(p->nearZ, data_022c4ef4->unk1c);
         s32 a = FX_Mul_0206a0ac(d, mdl->trans.y + 0x60000);
         s32 old = mdl->trans.x;
         s32 b;

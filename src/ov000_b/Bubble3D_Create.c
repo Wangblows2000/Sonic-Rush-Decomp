@@ -32,9 +32,9 @@ extern u8 data_ov000_0236aa08[];
 extern u8 data_ov000_02367f44[];
 extern u16 data_ov000_023645c0[];
 
-void func_ov000_02329be0(void);
+void Bubble3D_State_Rise(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_02329d38_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_ov000_022c5e80(s32 a, s32 b, s32 c, s32 *d, s32 *e, s16 *f);
+void BossArena_ArcToCirclePos(s32 a, s32 b, s32 c, s32 *d, s32 *e, s16 *f);
 
 
 UnkStruct_02329d38 *Bubble3D_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type, s32 unused, s32 a, s32 b) {
@@ -63,8 +63,8 @@ UnkStruct_02329d38 *Bubble3D_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 t
     w->unk8 = 0x2bf - (Rand() & 0xfe);
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    w->unk68 = func_ov000_02329be0;
-    func_ov000_022c5e80(a, b, w->unk10 << 4, &o10, &o14, &o0C);
+    w->unk68 = Bubble3D_State_Rise;
+    BossArena_ArcToCirclePos(a, b, w->unk10 << 4, &o10, &o14, &o0C);
     w->unk10 = o10 >> 4;
     w->unk18 = o14 >> 4;
     return w;

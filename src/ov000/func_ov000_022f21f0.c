@@ -23,14 +23,14 @@ extern UnkStruct_022f21f0_3 gGameState;
 extern UnkStruct_022f21f0_4 gBossStatus;
 extern u16 data_ov000_02363f9c[][8];
 
-void func_ov000_022f4ce4(UnkStruct_022f21f0 *s, s32 a, s32 b, s32 c);
+void BossFPartD8_SetAnimation(UnkStruct_022f21f0 *s, s32 a, s32 b, s32 c);
 void BossHelp_Create(s32 a);
 void BossFPartD8_State_Unk_ov000_022f216c(UnkStruct_022f21f0 *s);
 
 void func_ov000_022f21f0(UnkStruct_022f21f0 *s) {
     BOOL b;
     s32 i;
-    func_ov000_022f4ce4(s, 0x1d, 0x1000, 1);
+    BossFPartD8_SetAnimation(s, 0x1d, 0x1000, 1);
     b = TRUE;
     if (gGameState.unk10 != 2 && gGameState.unk10 != 3)
         b = FALSE;

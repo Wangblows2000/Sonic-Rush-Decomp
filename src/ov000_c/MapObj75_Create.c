@@ -9,7 +9,7 @@ extern void *data_ov000_02369ba0;
 
 void func_ov000_02303548();
 void MapObj75_Destructor();
-void func_ov000_02342780();
+void Camera_AddAreaObject();
 
 UnkStruct_023036d4 *MapObj75_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -26,6 +26,6 @@ UnkStruct_023036d4 *MapObj75_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x20;
     func_ov000_02303548(w);
-    func_ov000_02342780();
+    Camera_AddAreaObject();
     return w;
 }

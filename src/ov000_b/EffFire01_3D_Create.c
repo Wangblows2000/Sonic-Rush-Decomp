@@ -18,7 +18,7 @@ extern void *gZoneActArchive;
 extern u8 data_ov000_02367c14[];
 
 void StageObj_Load3dBAC(void *w, UnkStruct_023279a0_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_ov000_02327988(void);
+void EffFire01_3D_State_DestroyWhenDone(void);
 
 UnkStruct_023279a0 *EffFire01_3D_Create(UnkStruct_StageObj *arg, s32 x, s32 y, s32 z) {
     UnkStruct_Task *task;
@@ -53,6 +53,6 @@ UnkStruct_023279a0 *EffFire01_3D_Create(UnkStruct_StageObj *arg, s32 x, s32 y, s
     w->base.unk18 += z << 8;
     w->base.unk58 |= 0x100;
     w->base.unk54 |= 2;
-    w->base.unk68 = func_ov000_02327988;
+    w->base.unk68 = EffFire01_3D_State_DestroyWhenDone;
     return w;
 }

@@ -22,7 +22,7 @@ extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void DC_FlushRange(const void *p, u32 size);
 extern void DC_WaitWriteBufferEmpty(void);
 extern BOOL CARDi_Request(UnkCardCommon_0200fbfc *p, u32 req, u32 retry);
-extern void func_0200fcb8(UnkCardCommon_0200fbfc *p);
+extern void CARDi_EndTask(UnkCardCommon_0200fbfc *p);
 
 void func_0200fbfc(UnkCardCommon_0200fbfc *p)
 {
@@ -46,5 +46,5 @@ void func_0200fbfc(UnkCardCommon_0200fbfc *p)
         p->dst = p->dst + len;
         p->len = p->len - len;
     } while (p->len != 0);
-    func_0200fcb8(p);
+    CARDi_EndTask(p);
 }

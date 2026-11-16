@@ -78,10 +78,10 @@ struct UnkStruct_022d1624 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
-void Boss2_State_Unk_ov000_022d15f4(UnkStruct_022d1624 *s);
+void Boss2_State_WaitAnimThenSelectMode2(UnkStruct_022d1624 *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -93,7 +93,7 @@ void Boss2_State_Unk_ov000_022d1624(UnkStruct_022d1624 *s) {
     UnkStruct_022d1624_a *z;
     if (!(s->unkA9C.unk10C & 2))
         return;
-    s->func = Boss2_State_Unk_ov000_022d15f4;
+    s->func = Boss2_State_WaitAnimThenSelectMode2;
     x = &s->unkA9C;
     y = &s->unkBD4;
     z = &s->unkD0C;

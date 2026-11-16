@@ -75,10 +75,10 @@ void NNS_G3dResDefaultSetup(void *p);
 u32 Asset3D_GetResourceSize(void *p);
 void Asset3D_CopyResource(void *src, void *dst);
 void Heap_Free(void *heap, void *p);
-UnkStruct_02302be8_o *func_ov001_023014f4(s32 a, s32 b);
+UnkStruct_02302be8_o *ExtraBossObj_Create(s32 a, s32 b);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
-void func_ov001_0230236c(void);
+void ExtraBossPlayer_State_None(void);
 void func_ov001_02301a88(void);
 void func_ov001_022fe8d4(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void ExtraBossPlayer_ChangeState(UnkStruct_02302be8_o *o, s32 a);
@@ -151,7 +151,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     }
     Heap_Free(gMainHeap, res);
 
-    o = func_ov001_023014f4(0, 0x3000);
+    o = ExtraBossObj_Create(0, 0x3000);
     a = (UnkStruct_02302be8_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
     if ((void *)OS_GetArenaLo(0) != a) {
         fill5 = 0xcccccccc;
@@ -179,7 +179,7 @@ void ExtraBoss_LoadPlayerModel(s32 idx) {
     Model_SetResource(a, data_ov001_0231f538, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x34cc;
     o->unk8C = a;
-    o->unk74 = func_ov001_0230236c;
+    o->unk74 = ExtraBossPlayer_State_None;
     o->unk14 |= 0x1b0020;
     d = (UnkStruct_02302be8_d *)Heap_Alloc(gMainHeap, 0x40, 0x20);
     if ((void *)OS_GetArenaLo(0) != d) {

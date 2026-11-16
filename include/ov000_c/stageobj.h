@@ -180,12 +180,12 @@ void StageObj_SetOAMPriority(void *w, s32 a);
 void ObjAction_Load2dBAC(UnkStruct_Spr *a, UnkStruct_Spr *b, void *c, s32 d, void *e, void *f);
 void AnimatorSprite_SetAnimation(UnkStruct_Spr *a, s32 b);
 void SpritePair_SetOAMOrder(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c);
-void func_02069e68(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c, void *d);
+void StageObj_AcquireSpriteVramPair(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c, void *d);
 void SpritePair_SetOAMPriority(UnkStruct_Spr *a, UnkStruct_Spr *b, s32 c);
 void ObjRect_SetBox2D(UnkStruct_Coll *c, s16 a, s16 b, s16 d, s16 e);
 void ObjRect_SetAtkDefFlags(UnkStruct_Coll *c, s32 a, s32 b);
 void StageObj_SetAnimation(void *w, s32 a);
-void func_02068e40(void *w, s32 a, s32 b, s32 c, s32 d);
+void StageObj_SetMapHitbox(void *w, s32 a, s32 b, s32 c, s32 d);
 void StageObj_SetSharedSpriteVram(void *w, s32 a, void *b);
 s32 Sound_AllocHandle(void);
 

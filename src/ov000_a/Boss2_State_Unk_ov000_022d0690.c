@@ -49,13 +49,13 @@ struct UnkStruct_022d0690 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 extern s16 data_0206e470[];
 
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
-void func_ov000_022cedd8(UnkStruct_022d0690 *s, s32 a);
+void Boss2_SetTargetAngle(UnkStruct_022d0690 *s, s32 a);
 void Boss2_State_Unk_ov000_022d0614(UnkStruct_022d0690 *s);
 
 void Boss2_State_Unk_ov000_022d0690(UnkStruct_022d0690 *s) {
@@ -85,7 +85,7 @@ void Boss2_State_Unk_ov000_022d0690(UnkStruct_022d0690 *s) {
         x->unk114 = 0x1000;
         y->unk114 = 0x1000;
         z->unk114 = 0x1000;
-        func_ov000_022cedd8(s, 0);
+        Boss2_SetTargetAngle(s, 0);
         s->unkF84[5].unkA &= ~4;
         s->unkF84[5].unkA |= 0x1000;
         s->unkF84[9].unkA &= ~4;

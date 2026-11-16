@@ -35,11 +35,11 @@ typedef struct UnkStruct_0230d964_t {
 } UnkStruct_0230d964_t;
 
 extern UnkStruct_0230d964 *gSpecialStageMap;
-extern UnkStruct_0230d964_t data_ov001_02317224[];
+extern UnkStruct_0230d964_t gSpecialStageMapSegmentTypeTable[];
 extern UnkStruct_0230d964_t data_ov001_02317228[];
 
 BOOL SpecialStageMap_IsSegmentListEmpty(void);
-void func_ov001_0230d17c(UnkStruct_0230d964_e *e);
+void SpecialStageMap_FreeSegment(UnkStruct_0230d964_e *e);
 void SpecialStageData_AddStep(void);
 void MTX_Identity43_(UnkStruct_0230d964_m *m);
 void Model_Animate(void *o);
@@ -57,10 +57,10 @@ void SpecialStageMap_Update(void) {
         return;
     for (e = g->head; e != (UnkStruct_0230d964_e *)g->sentinel; e = e->next) {
         if (e->flags & 1)
-            func_ov001_0230d17c(e);
+            SpecialStageMap_FreeSegment(e);
     }
     e2 = g->head;
-    d = data_ov001_02317224[e2->type].fn0();
+    d = gSpecialStageMapSegmentTypeTable[e2->type].fn0();
     if (g->time > d) {
         g->type = e2->type;
         g->time -= d;
@@ -80,8 +80,8 @@ void SpecialStageMap_Update(void) {
         if (e3->flags & 1)
             continue;
         e3->mtx = m;
-        data_ov001_02317224[e3->type].fnC(&m);
-        data_ov001_02317224[e3->type].fn10(&m);
+        gSpecialStageMapSegmentTypeTable[e3->type].fnC(&m);
+        gSpecialStageMapSegmentTypeTable[e3->type].fn10(&m);
     }
     Model_Animate(g->obj8C4);
 }

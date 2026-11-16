@@ -7,8 +7,8 @@ s32 WMi_StartParentEx(void *cb, u32 a)
     if (r != 0) {
         return r;
     }
-    func_02010cd4(8, cb);
-    r = func_02010b80(8, 1, a);
+    WMi_SetCallbackTable(8, cb);
+    r = WMi_SendCommand(8, 1, a);
     if (r == 0) {
         r = 2;
     }

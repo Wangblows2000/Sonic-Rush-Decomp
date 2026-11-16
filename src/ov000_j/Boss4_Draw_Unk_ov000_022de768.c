@@ -25,7 +25,7 @@ extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern s16 data_0206e470[];
 
-void func_ov000_022db6c8(void *a);
+void Boss4_WrapArenaX(void *a);
 void func_ov000_022db7d4(void *a, u16 *b, void *c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov000_022de370(void);
@@ -39,7 +39,7 @@ void Boss4_Draw_Unk_ov000_022de768(void) {
     p = gPlayers;
     if (p->unk5C & 0x20)
         return;
-    func_ov000_022db6c8(p->unk10);
+    Boss4_WrapArenaX(p->unk10);
     func_ov000_022db7d4(p->unk17C, ang, p);
     if (p->unk5C & 1)
         off = 0xc000;

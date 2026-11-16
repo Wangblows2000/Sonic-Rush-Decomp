@@ -10,7 +10,7 @@ extern u8 data_ov000_02367274[], data_ov000_0236a3b8[], data_ov000_0236726c[], d
 
 void MapObject_Destructor(void);
 void Wheel2D_OnHit(void);
-void func_ov000_0231d594(UnkStruct_0231d5a4 *w);
+void Wheel2D_Action_Init(UnkStruct_0231d5a4 *w);
 
 UnkStruct_0231d5a4 *Wheel2D_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -40,6 +40,6 @@ UnkStruct_0231d5a4 *Wheel2D_Create(s32 a, s32 b, s32 c) {
     w->base.coll0.unk18 = w;
     w->base.unk58 |= 0x2100;
     w->base.unk204 = 0;
-    func_ov000_0231d594(w);
+    Wheel2D_Action_Init(w);
     return w;
 }

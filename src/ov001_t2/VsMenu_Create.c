@@ -21,7 +21,7 @@ typedef struct UnkTask_022ddcd4 {
 } UnkTask_022ddcd4;
 
 extern UnkTask_022ddcd4 *gVsMenuTask;
-extern s32 data_ov001_0231be10;
+extern s32 gVsMenuCancelled;
 extern s32 gSaveDataBusy;
 extern u32 gSystemFlags;
 
@@ -50,7 +50,7 @@ void VsMenu_Create(s32 a, s32 b, s32 c) {
     w->unkdb0 = b;
     w->unkdb4 = c;
     w->unk18 = 0;
-    data_ov001_0231be10 = 1;
+    gVsMenuCancelled = 1;
     gSaveDataBusy = 1;
     gSystemFlags |= 0x10;
     func_020518b8();

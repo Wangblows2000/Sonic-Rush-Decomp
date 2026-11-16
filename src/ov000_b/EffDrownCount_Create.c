@@ -3,7 +3,7 @@
 extern void *gZoneActArchive;
 extern u8 data_ov000_02367f78[], data_ov000_0236aa20[];
 
-void func_ov000_0232a5f8(void);
+void EffDrownCount_State_FollowPlayer(void);
 
 void EffDrownCount_Create(UnkStruct_StageObj *arg, s32 x, s32 y, s32 idx) {
     UnkStruct_Task *task;
@@ -31,7 +31,7 @@ void EffDrownCount_Create(UnkStruct_StageObj *arg, s32 x, s32 y, s32 idx) {
     w->unk10 = arg->unk10 + w->unk2E;
     w->unk14 = arg->unk14 + w->unk30;
     w->unk88 = arg;
-    w->unk68 = func_ov000_0232a5f8;
+    w->unk68 = EffDrownCount_State_FollowPlayer;
     w->unkC = 0;
     w->unk8 = 0;
     w->unk58 |= 0x2100;

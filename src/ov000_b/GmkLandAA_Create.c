@@ -13,7 +13,7 @@ extern u8 data_ov000_02364434[];
 void MapObject_Destructor(void);
 void PaletteAnim_Create(s32 a, void *b, u32 c, s32 d);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void GmkLandAA_Action_Unk_ov000_02312c70(UnkStruct_StageObj *w);
+void GmkLandAA_Action_Init(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *GmkLandAA_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -37,7 +37,7 @@ UnkStruct_StageObj *GmkLandAA_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk1DA = 6;
     w->unk1D4 = -0x17;
     w->unk1D6 = -0x17;
-    func_02068e40(w, -0x15, -0x17, 0x15, 0x17);
+    StageObj_SetMapHitbox(w, -0x15, -0x17, 0x15, 0x17);
     w->unk58 |= 0x4000080;
     w->unk54 |= 2;
     w->unk58 |= 0x20040;
@@ -45,7 +45,7 @@ UnkStruct_StageObj *GmkLandAA_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         PaletteAnim_Create(w->spr0.unk44, data_ov000_02364434, *(u32 *)data_ov000_0236a194, 0);
         w->unk54 |= 0x800;
     }
-    GmkLandAA_Action_Unk_ov000_02312c70(w);
+    GmkLandAA_Action_Init(w);
     if (Stage_IsGravityFlipped(w->unk10, w->unk14)) {
         w->unk5C |= 2;
         w->unk5 = 0x80;

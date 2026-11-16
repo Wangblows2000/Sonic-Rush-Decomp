@@ -19,7 +19,7 @@ void WirelessMgr_StopWfs(s32 a);
 void WirelessMgr_GetHostInfo_02042a70(void *p);
 void WirelessMgr_StopDownloadPlay(void);
 void Task_Destroy(UnkTask_020516b4 *t);
-void func_020508a8(s32 a, s32 b);
+void WirelessSession_RequestStop(s32 a, s32 b);
 void WirelessMgr_GetJoinInfo_0204319c(void *p);
 void WirelessMgr_GetJoinInfo(void *p);
 void func_02042a20(void *p, s32 a);
@@ -58,7 +58,7 @@ void WirelessSession_Stop(void) {
         default:
             return;
         }
-        func_020508a8(0x18, 0x20);
+        WirelessSession_RequestStop(0x18, 0x20);
         break;
     case 2:
     case 3:
@@ -85,7 +85,7 @@ void WirelessSession_Stop(void) {
         default:
             return;
         }
-        func_020508a8(0, 0x20);
+        WirelessSession_RequestStop(0, 0x20);
         break;
     }
 }

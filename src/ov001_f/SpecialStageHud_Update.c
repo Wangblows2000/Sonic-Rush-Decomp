@@ -69,12 +69,12 @@ void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void AnimatorSprite_ProcessAnimation(UnkSpr_02309e3c *s, s32 a, s32 b);
 BOOL func_0202e5e4(f32 a, f32 b);
 void func_ov001_02309228(void);
-void func_ov001_0230903c(void);
-void func_ov001_02308ccc(void);
-void func_ov001_02308e90(void);
+void SpecialStageHud_UpdateCheckpoint(void);
+void SpecialStageHud_AnimateSprites(void);
+void SpecialStageHud_UpdateGoal(void);
 void SpecialStageHud_UpdateFail(void);
-void func_ov001_02308790(void);
-void func_ov001_02308630(void);
+void SpecialStageHud_UpdateRingCounter(void);
+void SpecialStageHud_UpdateQuotaCounter(void);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -171,23 +171,23 @@ void SpecialStageHud_Update(void) {
     if (w->unkBC4 >= 0)
         func_ov001_02309228();
     if (w->unkBC8 >= 0) {
-        func_ov001_0230903c();
-        func_ov001_02308ccc();
+        SpecialStageHud_UpdateCheckpoint();
+        SpecialStageHud_AnimateSprites();
         return;
     }
     if (w->unkBCC >= 0) {
-        func_ov001_02308e90();
-        func_ov001_02308ccc();
+        SpecialStageHud_UpdateGoal();
+        SpecialStageHud_AnimateSprites();
         return;
     }
     if (w->unkBD0 >= 0)
         SpecialStageHud_UpdateFail();
-    func_ov001_02308790();
-    func_ov001_02308630();
+    SpecialStageHud_UpdateRingCounter();
+    SpecialStageHud_UpdateQuotaCounter();
     if (w->unkAE0 >= 0x17c && w->unkAE0 < 0x258) {
         w->sprC.x = 0x80;
         w->sprC.y = 0x6e;
         AnimatorSprite_ProcessAnimation(&w->sprC, 0, 0);
     }
-    func_ov001_02308ccc();
+    SpecialStageHud_AnimateSprites();
 }

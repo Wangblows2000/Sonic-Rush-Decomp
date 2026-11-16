@@ -11,7 +11,7 @@ extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366690[], data_ov000_02369e34[], data_ov000_023666b0[], data_ov000_02369e2c[];
 
 void MapObject_Destructor(void);
-void func_ov000_02301488(void);
+void Kuragen_OnDetect(void);
 void func_ov000_02301390(UnkStruct_023018cc *w);
 void Kuragen_Action_Unk_ov000_0230187c(UnkStruct_023018cc *w);
 
@@ -27,7 +27,7 @@ UnkStruct_023018cc *Kuragen_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_023018cc));
     MapObject_Init(w, (s32)p, b, c);
-    func_02068e40(w, 0xc, -12, 0xc, 0x14);
+    StageObj_SetMapHitbox(w, 0xc, -12, 0xc, 0x14);
     switch (w->base.unk1E0->unk2) {
     case 5:
         StageObj_Load2dBAC(w, data_ov000_02366690, 0x12, data_ov000_02369e34, data_ov000_02369ba0);
@@ -43,7 +43,7 @@ UnkStruct_023018cc *Kuragen_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk20C.unkA |= 0xc0;
     ObjRect_SetAtkDefFlags(&w->unk20C, 0, -16);
     w->unk20C.unk28 = 0x12;
-    w->unk20C.unk1C = func_ov000_02301488;
+    w->unk20C.unk1C = Kuragen_OnDetect;
     w->unk20C.unk18 = w;
     if (w->base.unk1E0->unk2 == 5) {
         w->unk238 |= 1;

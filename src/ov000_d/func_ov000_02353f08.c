@@ -28,7 +28,7 @@ extern UnkStruct_02353f08_4560 gGameState;
 extern s16 data_0206e470[];
 
 s16 ObjSpd_UpSet(s16 v, s32 a, s32 b);
-void func_ov000_02328e6c(UnkStruct_02353f08 *w, s32 a, s32 b);
+void EffWaterGmk_Create(UnkStruct_02353f08 *w, s32 a, s32 b);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
 void Player_LoadPhysicsParams(UnkStruct_02353f08 *w);
@@ -56,7 +56,7 @@ void func_ov000_02353f08(UnkStruct_02353f08 *w) {
         w->unk34 = ObjSpd_UpSet(w->unk34, 0x10, 0x100);
     }
     if ((w->unk58 & 1) && !(gGameState.unk20 & 7)) {
-        func_ov000_02328e6c(w, 0, 0xc);
+        EffWaterGmk_Create(w, 0, 0xc);
     }
     if (w->unk58 & 0x10) {
         if (!(w->unk58 & 1)) {

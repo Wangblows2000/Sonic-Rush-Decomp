@@ -23,9 +23,9 @@ typedef struct {
     s32 unkF50;
 } UnkStruct_Boss;
 
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022e5f58(void);
+void Boss6_NodeCallback_PelvisAndPro(void);
 void Boss6_State_Unk_ov000_022e40a8(void);
 
 void Boss6_State_Unk_ov000_022e41d0(UnkStruct_Boss *w) {
@@ -34,7 +34,7 @@ void Boss6_State_Unk_ov000_022e41d0(UnkStruct_Boss *w) {
     w->unkF50--;
     if (w->unkF50 > 0)
         return;
-    func_02021c38(m->unk90, func_ov000_022e5f58, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(m->unk90, Boss6_NodeCallback_PelvisAndPro, 0, 6, 3);
     w->base.unk68 = Boss6_State_Unk_ov000_022e40a8;
     Model_SetAnimation(m, 0, w->unkD08, 8, 0);
     m->unk114 = 0x1000;

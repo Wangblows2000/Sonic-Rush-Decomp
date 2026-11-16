@@ -3,7 +3,7 @@
 
 extern u8 gGameState[];
 s32 func_ov000_023355d0();
-s32 func_0206cb84();
+s32 NetPacket_Queue();
 
 void func_ov000_022fa9e8(u8 *p0, u8 *p1, s32 p2) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x1e0);
@@ -24,5 +24,5 @@ void func_ov000_022fa9e8(u8 *p0, u8 *p1, s32 p2) {
     *(u8 *)((u8 *)p0 + 0x208) = p2;
     s32 t2 = func_ov000_023355d0(t1, p1, p2, t0);
     *(u16 *)((u8 *)p0 + 0x20a) = (*(u32 *)((u8 *)p0 + 0x1e0) - t2);
-    func_0206cb84(((u8 *)p0 + 0x208), 2, 0, 4);
+    NetPacket_Queue(((u8 *)p0 + 0x208), 2, 0, 4);
 }

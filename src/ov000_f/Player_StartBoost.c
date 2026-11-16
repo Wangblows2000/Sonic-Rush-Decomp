@@ -38,8 +38,8 @@ void func_ov000_02326f48(UnkStruct_02346b10 *w, s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void ScreenShake_Start(s32 a);
-void func_ov000_02332448(UnkStruct_02346b10 *w, s32 a, s32 b);
-void func_ov000_02331f5c(UnkStruct_02346b10 *w, s32 a, s32 b);
+void EffBoostBurst_Create(UnkStruct_02346b10 *w, s32 a, s32 b);
+void EffBoostAura_Create(UnkStruct_02346b10 *w, s32 a, s32 b);
 void AttackHitbox_Create(UnkStruct_02346b10 *w, s32 l, s32 t, s32 r, s32 b, s32 c);
 void AttackHitbox_SetBoostState(void);
 void Player_AddTension(UnkStruct_02346b10 *w, s32 a);
@@ -68,8 +68,8 @@ void Player_StartBoost(UnkStruct_02346b10 *w) {
         } else if (w->unk420 & 0x10) {
             w->unk5C &= ~1;
         }
-        func_ov000_02332448(w, 0, 0);
-        func_ov000_02331f5c(w, 0, 0);
+        EffBoostBurst_Create(w, 0, 0);
+        EffBoostAura_Create(w, 0, 0);
         if (w->unk58 & 0x10) {
             if (ABS(w->unk2E) < w->unk368) {
                 if (w->unk5C & 1) {

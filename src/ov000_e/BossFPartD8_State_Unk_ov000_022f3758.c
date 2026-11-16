@@ -11,7 +11,7 @@ typedef struct {
     u16 unk43E;
 } UnkStruct_022f3758;
 
-void func_ov000_022f8fa0(void *p, s32 a, s32 b);
+void BossF_UpdateCameraShake(void *p, s32 a, s32 b);
 extern u32 gGameState;
 void func_ov000_022f8c28(u32 a, s32 b);
 void func_ov000_022f8bc8(u32 a, s32 b);
@@ -19,7 +19,7 @@ void func_ov000_022f4cbc(UnkStruct_022f3758 *s);
 void BossFPartD8_State_Unk_ov000_022f369c(void);
 
 void BossFPartD8_State_Unk_ov000_022f3758(UnkStruct_022f3758 *s) {
-    func_ov000_022f8fa0(s->unk43A, 2, 6);
+    BossF_UpdateCameraShake(s->unk43A, 2, 6);
     s->unk43E++;
     if ((s->unk43E & 3) == 0) {
         if (s->unk43E & 0x8000) {

@@ -83,7 +83,7 @@ struct UnkStruct_022d2070 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d2070_pl {
     u8 pad[0x10];
@@ -92,7 +92,7 @@ typedef struct UnkStruct_022d2070_pl {
 
 extern UnkStruct_022d2070_pl *gPlayers;
 
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 UnkStruct_022d2070_o *BossEffect_CreateSuction2(s32 a, s32 x, s32 y, s32 z);
 void Boss2_State_Unk_ov000_022d1dec(UnkStruct_022d2070 *s);
 
@@ -115,7 +115,7 @@ void Boss2_State_Unk_ov000_022d2070(UnkStruct_022d2070 *s) {
     UnkStruct_022d2070_a *x;
     UnkStruct_022d2070_a *y;
     UnkStruct_022d2070_a *z;
-    func_ov000_022c5e80(0x1152f0, 0x6cd988, gPlayers->unk10 << 4, NULL, NULL, &ang);
+    BossArena_ArcToCirclePos(0x1152f0, 0x6cd988, gPlayers->unk10 << 4, NULL, NULL, &ang);
     if (s->unk145C >= 0x8000) {
         if ((u16)(ang - s->unk1304 + 0x71c) < 0x4000) {
             s->unk145C += s->unk1464 >> 3;

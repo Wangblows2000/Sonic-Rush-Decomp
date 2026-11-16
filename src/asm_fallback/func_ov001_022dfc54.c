@@ -5,7 +5,7 @@ extern void MIi_CpuClear16(void);
 extern u32 data_0206e470;
 extern u32 NNS_G3dGlb;
 extern u32 data_02084d40;
-extern void func_0200225c(void);
+extern void FX_Div(void);
 extern void G3i_PerspectiveW_(void);
 
 asm void func_ov001_022dfc54(void)
@@ -83,7 +83,7 @@ asm void func_ov001_022dfc54(void)
     mov r1, r0, lsl #1
     ldrsh r0, [r2, r3]
     ldrsh r1, [r2, r1]
-    bl func_0200225c
+    bl FX_Div
     ldr r1, [pc, #0x78]
     ldr r2, [pc, #0x7c]
     add r1, r1, r5, lsr #17
@@ -100,7 +100,7 @@ asm void func_ov001_022dfc54(void)
     mov r1, r1, lsl #1
     ldrsh r0, [r2, r0]
     ldrsh r1, [r2, r1]
-    bl func_0200225c
+    bl FX_Div
     mov r1, #0x19000
     mov r3, #0
     umull r12, r5, r0, r1

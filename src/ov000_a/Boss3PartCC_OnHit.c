@@ -51,8 +51,8 @@ UnkStruct_022d8db0_q *BossEffect_CreateHit(s32 a, s32 b, s32 c, s32 d);
 void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *c);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void Sound_PlaySeq(s32 a, s32 b);
 
 static inline u16 Rand(void) {
@@ -93,13 +93,13 @@ void Boss3PartCC_OnHit(UnkStruct_022d8db0_h *a, UnkStruct_022d8db0_h *b) {
         MTX_RotY33_(mtx, data_0206e470[((ang & 0xffff) >> 4) * 2], data_0206e470[((ang & 0xffff) >> 4) * 2 + 1]);
         MTX_Concat33(q->unk158, mtx, q->unk158);
         if (gBossStatus.unk8 == 2) {
-            func_020537b4(0xb);
-            func_020533e0(0x12, 0xf0);
+            NaviMsg_SetFaceAnim(0xb);
+            NaviMsg_ShowMessage(0x12, 0xf0);
             Sound_PlaySeq(0, 0xf);
             gBoss3->unk20C |= 1;
         } else {
-            func_020537b4(0xb);
-            func_020533e0(0x10, 0xf0);
+            NaviMsg_SetFaceAnim(0xb);
+            NaviMsg_ShowMessage(0x10, 0xf0);
         }
     } else {
         Boss3_Action_DefeatAll();

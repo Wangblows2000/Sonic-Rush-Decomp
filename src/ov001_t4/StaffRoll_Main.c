@@ -64,11 +64,11 @@ void AnimatorSprite_ProcessAnimation(UnkSpr_022d2460 *s, s32 a, s32 b);
 void AnimatorSprite_Draw(UnkSpr_022d2460 *s);
 void AnimatorSprite_SetAnimation(UnkSpr_022d2460 *s, u16 anim);
 s32 StaffRoll_HitTestSprite(UnkSpr_022d2460 *s, u16 x, u16 y);
-void func_02020204(void *p, s32 a);
+void NNS_SndArcStrmStop(void *p, s32 a);
 void func_ov001_022d019c(UnkWork_022d2460 *w);
-void func_ov001_022d1428(UnkWork_022d2460 *w, s32 a);
+void StaffRoll_DrawPictureSprites(UnkWork_022d2460 *w, s32 a);
 void StaffRoll_SetState(UnkWork_022d2460 *w, void (*f)(void));
-void func_ov001_022d1c20(void);
+void StaffRoll_State_Skip(void);
 
 #pragma thumb on
 void StaffRoll_Main(void) {
@@ -96,7 +96,7 @@ void StaffRoll_Main(void) {
             w->unkbb8 = 0x3c;
             AnimatorSprite_SetAnimation(&w->spr930, 1);
             AnimatorSprite_SetAnimation(&w->spr978, 0x25);
-            func_02020204(w->unkc, 0x12c);
+            NNS_SndArcStrmStop(w->unkc, 0x12c);
         }
     }
     w->func10(w);
@@ -109,7 +109,7 @@ void StaffRoll_Main(void) {
     }
     w->funcbd8(w);
     func_ov001_022d019c(w);
-    func_ov001_022d1428(w, 1);
+    StaffRoll_DrawPictureSprites(w, 1);
     if (w->unkbb4 != 0) {
         w->unkbb8--;
         if (w->unkbb8 % 3 == 0) {
@@ -123,7 +123,7 @@ void StaffRoll_Main(void) {
             data_02087d44.brightness = -16;
         }
         if (w->unkbb8 <= 0 && data_0208926c.brightness == -16 && data_02087d44.brightness == -16) {
-            StaffRoll_SetState(w, func_ov001_022d1c20);
+            StaffRoll_SetState(w, StaffRoll_State_Skip);
         }
     }
 }

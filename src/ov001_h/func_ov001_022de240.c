@@ -10,7 +10,7 @@ typedef struct UnkStruct_022de240_b {
 extern void *gMainHeap;
 
 void Model_Release(void *o);
-void func_0202566c(void *r);
+void NNS_G3dResDefaultRelease(void *r);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -36,7 +36,7 @@ void func_ov001_022de240(void *w, UnkStruct_022de240_b *b) {
     for (i = 0; i < 6; i++) {
         Model_Release(b->objs[i]);
         if (b->res[i] != NULL) {
-            func_0202566c(b->res[i]);
+            NNS_G3dResDefaultRelease(b->res[i]);
             Free_022de240(b->res[i]);
         }
         b->res[i] = NULL;

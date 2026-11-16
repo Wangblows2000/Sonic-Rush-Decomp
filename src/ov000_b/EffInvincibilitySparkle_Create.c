@@ -3,7 +3,7 @@
 extern void *gActComArchive;
 extern u8 data_ov000_023682b4[], data_ov000_0236aa18[];
 
-void func_ov000_023304d4(void);
+void EffInvincibilitySparkle_State_Orbit(void);
 
 void EffInvincibilitySparkle_Create(s32 x, s32 y, s32 t) {
     UnkStruct_Task *task;
@@ -26,5 +26,5 @@ void EffInvincibilitySparkle_Create(s32 x, s32 y, s32 t) {
     w->unkC = t;
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    w->unk68 = func_ov000_023304d4;
+    w->unk68 = EffInvincibilitySparkle_State_Orbit;
 }

@@ -35,13 +35,13 @@ UnkStruct_023629cc_Task *Task_Create(void (*f)(void), void (*g)(void), s32 b, s3
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void TimeSelectMenu_Main(void);
 void TimeSelectMenu_Destructor(void);
-void func_ov000_0235f8cc(void);
-void func_ov000_02362124(void);
-void func_ov000_0235f364(void);
+void TimeSelectMenu_ScrollBg_Main(void);
+void TimeSelectMenu_State_Sync(void);
+void TimeSelectMenu_InitDisplay(void);
 void TimeSelectMenu_LoadAssets(UnkStruct_023629cc *w);
-void func_ov000_023626a4(UnkStruct_023629cc *w);
-void func_ov000_02362518(UnkStruct_023629cc *w);
-void func_ov000_023623e0(UnkStruct_023629cc *w);
+void TimeSelectMenu_InitSprites(UnkStruct_023629cc *w);
+void TimeSelectMenu_InitBackgrounds(UnkStruct_023629cc *w);
+void TimeSelectMenu_InitKeyframeAnims(UnkStruct_023629cc *w);
 void TimeSelectMenu_LoadArchives(UnkStruct_023629cc *w);
 void func_ov000_02361174(UnkStruct_023629cc *w);
 void func_ov000_02360f18(UnkStruct_023629cc *w, s32 a);
@@ -55,10 +55,10 @@ void func_ov000_02360b9c(UnkStruct_023629cc *w);
 void func_ov000_02360b64(UnkStruct_023629cc *w);
 void func_ov000_02360b2c(UnkStruct_023629cc *w);
 void func_ov000_02360af4(UnkStruct_023629cc *w);
-void func_ov000_0235fd2c(UnkStruct_023629cc *w);
+void TimeSelectMenu_LoadPlayerNames(UnkStruct_023629cc *w);
 UnkStruct_023629cc_Pad *func_020514e4(void);
 UnkStruct_023629cc_Pad *func_02051474(void);
-void func_ov000_0235f740(void *p);
+void TimeSelectMenu_CreateLinkIcon(void *p);
 void Touch_Enable(void);
 
 #pragma thumb on
@@ -94,11 +94,11 @@ void TimeSelectMenu_Create(s32 a, s32 b) {
         }
     }
     w->unkC = 0;
-    func_ov000_0235f364();
+    TimeSelectMenu_InitDisplay();
     TimeSelectMenu_LoadAssets(w);
-    func_ov000_023626a4(w);
-    func_ov000_02362518(w);
-    func_ov000_023623e0(w);
+    TimeSelectMenu_InitSprites(w);
+    TimeSelectMenu_InitBackgrounds(w);
+    TimeSelectMenu_InitKeyframeAnims(w);
     TimeSelectMenu_LoadArchives(w);
     func_ov000_02361174(w);
     func_ov000_02360f18(w, 0);
@@ -112,7 +112,7 @@ void TimeSelectMenu_Create(s32 a, s32 b) {
     func_ov000_02360b64(w);
     func_ov000_02360b2c(w);
     func_ov000_02360af4(w);
-    func_ov000_0235fd2c(w);
+    TimeSelectMenu_LoadPlayerNames(w);
     p = func_020514e4();
     p->unk0 = 0;
     p->unk1 = 0;
@@ -127,12 +127,12 @@ void TimeSelectMenu_Create(s32 a, s32 b) {
     p->unk3 = 0;
     p->unk4 = 0;
     p->unk6 = 0;
-    Task_Create(func_ov000_0235f8cc, NULL, 0, 0x3000, 0x1000, 0);
+    Task_Create(TimeSelectMenu_ScrollBg_Main, NULL, 0, 0x3000, 0x1000, 0);
     gSaveDataBusy = 1;
     gSystemFlags |= 0x10;
-    func_ov000_0235f740(w->unk6A8);
+    TimeSelectMenu_CreateLinkIcon(w->unk6A8);
     Touch_Enable();
-    task->unk8 = func_ov000_02362124;
+    task->unk8 = TimeSelectMenu_State_Sync;
 }
 
 #pragma thumb reset

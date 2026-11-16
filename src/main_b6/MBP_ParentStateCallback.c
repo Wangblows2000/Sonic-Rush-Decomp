@@ -39,7 +39,7 @@ void MBP_KickChild(u32 n);
 void MBP_AcceptChild(u32 n);
 void *MB_CommGetChildUser(u32 n);
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
-void func_020186f8(void);
+void MB_End(void);
 void MBP_StartDownload(u32 n);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -123,7 +123,7 @@ void MBP_ParentStateCallback(u32 n, u32 type, UnkArg_0203b0ac *arg) {
         sMbpState.unkc |= 1 << n;
         sMbpState.unka &= ~(1 << n);
         if (sMbpState.unk2 == sMbpState.unkc)
-            func_020186f8();
+            MB_End();
         break;
     case 12:
         if (MBP_GetState() == 4)

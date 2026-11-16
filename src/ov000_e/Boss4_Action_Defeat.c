@@ -65,7 +65,7 @@ void func_ov000_022dbab4(s32 a);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022c5c80(s32 a);
+void Boss_DrawExcBackground(s32 a);
 void Player_Action_Blank(UnkStruct_Player *p);
 void Player_SetAnimation(UnkStruct_Player *p, s32 a);
 
@@ -91,7 +91,7 @@ void Boss4_Action_Defeat(UnkStruct_022dd748 *s) {
     func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7c);
-    func_ov000_022c5c80(6);
+    Boss_DrawExcBackground(6);
     Player_Action_Blank(gPlayers);
     Player_SetAnimation(gPlayers, 0x30);
     gPlayers->unk3B2 = 0;

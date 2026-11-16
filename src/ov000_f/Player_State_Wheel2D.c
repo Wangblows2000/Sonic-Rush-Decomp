@@ -81,7 +81,7 @@ extern UnkStruct_023530c0_aad8 gCamera;
 #define SIN_023530c0(a) data_0206e470[(u32)(IDX_023530c0(a) << 1)]
 #define COS_023530c0(a) data_0206e470[(u32)((IDX_023530c0(a) << 1) + 1)]
 
-void func_ov000_02329984(UnkStruct_023530c0 *w, s32 x, s32 y, s32 a, s32 b, u16 c);
+void EffGmkBubble_Create(UnkStruct_023530c0 *w, s32 x, s32 y, s32 a, s32 b, u16 c);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Player_SetAnimation(UnkStruct_023530c0 *w, s32 state);
 
@@ -125,7 +125,7 @@ void Player_State_Wheel2D(UnkStruct_023530c0 *w) {
         return;
     }
     if (!(gGameState.unk20 & 3) && !(Rand_023530c0() & 3)) {
-        func_ov000_02329984(w, w->unk3E8->x, w->unk3E8->y, 0, 0, gCamera.unk62);
+        EffGmkBubble_Create(w, w->unk3E8->x, w->unk3E8->y, 0, 0, gCamera.unk62);
     }
     if (w->unk34 < 0x40) {
         w->unk34 = 0x40;

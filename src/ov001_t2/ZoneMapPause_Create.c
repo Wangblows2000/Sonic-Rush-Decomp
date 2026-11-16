@@ -18,7 +18,7 @@ struct UnkTask_022e95b8 {
 extern UnkWork_022e95b8 *gZoneMapPauseWork;
 
 void func_ov001_022e9584(void);
-void func_ov001_022e9510(void);
+void ZoneMapPause_InitDisplay(void);
 UnkTask_022e95b8 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void ZoneMapPause_LoadAssets(UnkWork_022e95b8 *w);
@@ -41,7 +41,7 @@ void ZoneMapPause_Create(BOOL flag) {
     UnkWork_022e95b8 *w;
 
     func_ov001_022e9584();
-    func_ov001_022e9510();
+    ZoneMapPause_InitDisplay();
     t = Task_Create(ZoneMapPause_State_Open, ZoneMapPause_Destructor, 0, 0x8000, 0x1000, 0x194);
     w = t->work;
     gZoneMapPauseWork = w;

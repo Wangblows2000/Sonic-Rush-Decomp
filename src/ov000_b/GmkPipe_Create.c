@@ -6,7 +6,7 @@ extern u8 data_ov000_02366d4c[], data_ov000_0236a164[], data_ov000_023661c0[];
 void MapObject_Destructor(void);
 void GmkPipe_OnHit(void);
 void GmkPipe_OnHit_Box1(void);
-void GmkPipe_Action_Unk_ov000_02312304(UnkStruct_StageObj *w);
+void GmkPipe_Action_Init(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *GmkPipe_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -80,6 +80,6 @@ UnkStruct_StageObj *GmkPipe_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->unk1D6 = -8;
     }
     w->unk58 |= 0x2100;
-    GmkPipe_Action_Unk_ov000_02312304(w);
+    GmkPipe_Action_Init(w);
     return w;
 }

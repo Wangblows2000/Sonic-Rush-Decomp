@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-fx32 func_0200225c(fx32 a, fx32 b);
+fx32 FX_Div(fx32 a, fx32 b);
 
 
 #pragma thumb on
@@ -17,7 +17,7 @@ s32 func_ov001_022ec72c(s32 from, s32 to, s32 n, s32 i, fx32 ease) {
     if (i == 0) return from;
     if (i == n - 1) return to;
     if (n <= 1) return from;
-    t = func_0200225c(i << 12, (n - 1) << 12);
+    t = FX_Div(i << 12, (n - 1) << 12);
     t = FX_Mul_022ec72c(t, ease) + FX_Mul_022ec72c(FX_Mul_022ec72c(t, t), 0x1000 - ease);
     return from + ((FX_Mul_022ec72c((to - from) << 12, t) + 0x800) >> 12);
 }

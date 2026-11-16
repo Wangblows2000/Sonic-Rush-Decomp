@@ -67,7 +67,7 @@ void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
 s32 StageObj_ViewOutCheck(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d, s32 e);
 void Player_AddRings(void *p, s32 a);
 void func_ov000_0235b2c4(UnkStruct_0235bd10_P *p);
-void func_ov000_0235b644(UnkStruct_0235bd10_P *p);
+void RingManager_CollideMap(UnkStruct_0235bd10_P *p);
 
 void RingManager_Main(void) {
     UnkStruct_0235bd10 *w;
@@ -90,7 +90,7 @@ void RingManager_Main(void) {
             w->cb10 = func_ov000_0235b2c4;
         } else {
             SpritePair_SetOAMPriority(w->spr0, w->spr1, 2);
-            w->cb10 = func_ov000_0235b644;
+            w->cb10 = RingManager_CollideMap;
         }
     }
 

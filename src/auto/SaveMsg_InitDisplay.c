@@ -1,0 +1,76 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+s32 GX_DisableBankForBG();
+s32 GX_DisableBankForOBJ();
+s32 GX_DisableBankForBGExtPltt();
+s32 GX_DisableBankForOBJExtPltt();
+s32 GX_DisableBankForTex();
+s32 GX_DisableBankForTexPltt();
+s32 GX_DisableBankForClearImage();
+s32 GX_DisableBankForSubBG();
+s32 GX_DisableBankForSubOBJ();
+s32 GX_DisableBankForSubBGExtPltt();
+s32 GX_DisableBankForSubOBJExtPltt();
+s32 GX_DisableBankForARM7();
+s32 GX_DisableBankForLCDC();
+s32 Vram_SetBankForOBJ();
+s32 ObjVram_Reset();
+s32 Vram_SetBankForBG();
+s32 Vram_SetBankForBGExtPltt();
+s32 Vram_SetBankForTex();
+s32 Vram_ResetTexAndPltt();
+s32 Vram_SetBankForTexPltt();
+s32 VramPltt_Reset();
+s32 GX_SetGraphicsMode();
+extern u8 gDisplayMain[];
+s32 GXx_SetMasterBrightness_();
+extern u8 gDisplaySub[];
+
+void SaveMsg_InitDisplay(void) {
+    u16 t0 = *(volatile u16 *)0x4000304;
+    *(volatile u16 *)0x4000304 = ((t0 & -527) | 0x20e);
+    u16 t1 = *(volatile u16 *)0x4000304;
+    *(volatile u16 *)0x4000304 = (t1 | 0x8000);
+    GX_DisableBankForBG((t1 | 0x8000), 0x20e, t0, 0x4000304);
+    GX_DisableBankForOBJ();
+    GX_DisableBankForBGExtPltt();
+    GX_DisableBankForOBJExtPltt();
+    GX_DisableBankForTex();
+    GX_DisableBankForTexPltt();
+    GX_DisableBankForClearImage();
+    GX_DisableBankForSubBG();
+    GX_DisableBankForSubOBJ();
+    GX_DisableBankForSubBGExtPltt();
+    GX_DisableBankForSubOBJExtPltt();
+    GX_DisableBankForARM7();
+    GX_DisableBankForLCDC();
+    Vram_SetBankForOBJ(0x10, 0x100010, 0x40, 0, 0x400);
+    ObjVram_Reset(0);
+    Vram_SetBankForBG(2);
+    Vram_SetBankForBGExtPltt(0x40);
+    Vram_SetBankForTex(1);
+    Vram_ResetTexAndPltt();
+    Vram_SetBankForTexPltt(0x20);
+    VramPltt_Reset();
+    GX_SetGraphicsMode(1, 5, 1);
+    u32 t2 = *(volatile u32 *)0x4000000;
+    *(volatile u32 *)0x4000000 = (t2 & ~0x38000000);
+    u32 t3 = *(volatile u32 *)0x4000000;
+    *(volatile u32 *)0x4000000 = (t3 & ~0x7000000);
+    u16 t4 = *(volatile u16 *)0x400000a;
+    *(volatile u16 *)0x400000a = ((t4 & 0x43) | 0x2084);
+    u16 t5 = *(volatile u16 *)0x400000a;
+    *(volatile u16 *)0x400000a = (t5 & ~3);
+    *(u16 *)((u8 *)gDisplayMain + 0x48) = 0;
+    s16 t6 = *(s16 *)((u8 *)gDisplayMain + 0x48);
+    GXx_SetMasterBrightness_(0x400006c, t6, 0, (t5 & ~3));
+    u32 t7 = *(volatile u32 *)0x4000000;
+    *(volatile u32 *)0x4000000 = ((t7 & ~0x1f00) | 0x1200);
+    *(volatile u16 *)0x5000000 = 0;
+    *(u16 *)((u8 *)gDisplaySub + 0x6) = 0;
+    u16 t8 = *(u16 *)((u8 *)gDisplaySub + 0x6);
+    *(u16 *)((u8 *)gDisplaySub + 0x4) = t8;
+    u32 t9 = *(volatile u32 *)0x4001000;
+    *(volatile u32 *)0x4001000 = (t9 & ~0x1f00);
+}

@@ -30,7 +30,7 @@ void func_ov001_022d9ab4(UnkWork_022dbe3c *w, s32 a, s32 b, s32 c, s32 d);
 BOOL func_ov001_022da52c(void);
 void func_ov001_022da304(UnkWork_022dbe3c *w);
 void MsgBox_RequestClose(void);
-void func_02051f20(void);
+void SysSound_PlayCancelSE(void);
 BOOL func_ov001_022da4d4(void);
 s32 func_02050f60(void);
 void func_ov001_022dab54(UnkWork_022dbe3c *w);
@@ -57,11 +57,11 @@ void func_ov001_022dbe3c(void) {
         func_ov001_022da304(w);
         MsgBox_RequestClose();
         w->unk1c = 1;
-        func_02051f20();
+        SysSound_PlayCancelSE();
     } else if (func_ov001_022da4d4()) {
         MsgBox_RequestClose();
         w->unk1c = 1;
-        func_02051f20();
+        SysSound_PlayCancelSE();
     } else if (func_02050f60() >= 1) {
         MsgBox_RequestClose();
         w->unk14 = func_02050f60();

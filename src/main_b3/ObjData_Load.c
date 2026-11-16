@@ -11,9 +11,9 @@ extern u32 gSystemFlags;
 extern u32 data_02087cc4;
 
 char *strcat(char *dst, const char *src);
-BOOL func_02021310(UnkArc_020687b8 *arc, const char *name, void *narc);
-void *func_0202128c(const char *path);
-BOOL func_020212e0(UnkArc_020687b8 *arc);
+BOOL NNS_FndMountArchive(UnkArc_020687b8 *arc, const char *name, void *narc);
+void *NNS_FndGetArchiveFileByName(const char *path);
+BOOL NNS_FndUnmountArchive(UnkArc_020687b8 *arc);
 void *File_Load(const char *path, s32 b);
 void VBlankIntrWait(void);
 
@@ -26,9 +26,9 @@ void *ObjData_Load(UnkRef_020687b8 *ref, const char *name, void *narc) {
             UnkArc_020687b8 arc;
             strcat(path, data_0207cf98);
             strcat(path, name);
-            func_02021310(&arc, data_0207cfa0, narc);
-            p = func_0202128c(path);
-            func_020212e0(&arc);
+            NNS_FndMountArchive(&arc, data_0207cfa0, narc);
+            p = NNS_FndGetArchiveFileByName(path);
+            NNS_FndUnmountArchive(&arc);
         } else {
             p = File_Load(name, 0);
         }
@@ -39,9 +39,9 @@ void *ObjData_Load(UnkRef_020687b8 *ref, const char *name, void *narc) {
             UnkArc_020687b8 arc;
             strcat(path, data_0207cfa4);
             strcat(path, name);
-            func_02021310(&arc, data_0207cfac, narc);
-            ref->ptr = func_0202128c(path);
-            func_020212e0(&arc);
+            NNS_FndMountArchive(&arc, data_0207cfac, narc);
+            ref->ptr = NNS_FndGetArchiveFileByName(path);
+            NNS_FndUnmountArchive(&arc);
             if (ref->ptr == NULL)
                 return NULL;
             ref->count++;

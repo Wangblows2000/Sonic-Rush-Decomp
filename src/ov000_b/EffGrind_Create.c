@@ -12,7 +12,7 @@ extern u8 data_ov000_0236a9e0[];
 
 BOOL func_ov000_023270d8(UnkStruct_StageObj *a);
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_02330240(void);
+void EffGrind_State_FollowParent(void);
 
 UnkStruct_EffObj *EffGrind_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unused) {
     UnkStruct_Task *task;
@@ -50,6 +50,6 @@ UnkStruct_EffObj *EffGrind_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 unu
     w->unk54 |= 2;
     w->unk5C |= 0x100;
     w->unk5C |= 4;
-    w->unk68 = func_ov000_02330240;
+    w->unk68 = EffGrind_State_FollowParent;
     return w;
 }

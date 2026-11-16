@@ -28,9 +28,9 @@ extern u8 data_ov000_02365ae4[];
 void Boss7PartD7_Destructor(void);
 void Boss7PartD7_State_Unk_ov000_022ebfac(void);
 void Boss7PartD7_Draw(void);
-void func_02021310(void *f, void *path, void *arc);
-void *func_02021264(void *f, s32 i);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
+void NNS_FndUnmountArchive(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 
@@ -45,25 +45,25 @@ UnkStruct_022ee43c *Boss7PartD7_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022ee43c));
     w->base.unk68 = Boss7PartD7_State_Unk_ov000_022ebfac;
     w->unk344 = p->unk4;
-    func_02021310(ctx, data_ov000_02365ae4, gZoneActArchive);
+    NNS_FndMountArchive(ctx, data_ov000_02365ae4, gZoneActArchive);
     if (p->unk4 == 0) {
-        w->unk34C = func_02021264(ctx, 0x20);
-        w->unk350 = func_02021264(ctx, 0x21);
-        w->unk35C = func_02021264(ctx, 0x22);
-        w->unk354 = func_02021264(ctx, 0x23);
-        w->unk360 = func_02021264(ctx, 0x24);
-        w->unk358 = func_02021264(ctx, 0x25);
-        w->unk364 = func_02021264(ctx, 0x26);
+        w->unk34C = NNS_FndGetArchiveFileByIndex(ctx, 0x20);
+        w->unk350 = NNS_FndGetArchiveFileByIndex(ctx, 0x21);
+        w->unk35C = NNS_FndGetArchiveFileByIndex(ctx, 0x22);
+        w->unk354 = NNS_FndGetArchiveFileByIndex(ctx, 0x23);
+        w->unk360 = NNS_FndGetArchiveFileByIndex(ctx, 0x24);
+        w->unk358 = NNS_FndGetArchiveFileByIndex(ctx, 0x25);
+        w->unk364 = NNS_FndGetArchiveFileByIndex(ctx, 0x26);
     } else {
-        w->unk34C = func_02021264(ctx, 0x27);
-        w->unk350 = func_02021264(ctx, 0x28);
-        w->unk35C = func_02021264(ctx, 0x29);
-        w->unk354 = func_02021264(ctx, 0x2a);
-        w->unk360 = func_02021264(ctx, 0x2b);
-        w->unk358 = func_02021264(ctx, 0x2c);
-        w->unk364 = func_02021264(ctx, 0x2d);
+        w->unk34C = NNS_FndGetArchiveFileByIndex(ctx, 0x27);
+        w->unk350 = NNS_FndGetArchiveFileByIndex(ctx, 0x28);
+        w->unk35C = NNS_FndGetArchiveFileByIndex(ctx, 0x29);
+        w->unk354 = NNS_FndGetArchiveFileByIndex(ctx, 0x2a);
+        w->unk360 = NNS_FndGetArchiveFileByIndex(ctx, 0x2b);
+        w->unk358 = NNS_FndGetArchiveFileByIndex(ctx, 0x2c);
+        w->unk364 = NNS_FndGetArchiveFileByIndex(ctx, 0x2d);
     }
-    func_020212e0(ctx);
+    NNS_FndUnmountArchive(ctx);
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk70 = Boss7PartD7_Draw;
     w->base.unk54 |= 0x10;

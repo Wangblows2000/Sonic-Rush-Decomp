@@ -37,11 +37,11 @@ typedef struct {
 
 extern UnkTask_02053090 *gNaviMsgTask;
 
-void func_02052bb0(UnkWork_02053090 *w);
+void NaviMsg_UpdateFaceAnim(UnkWork_02053090 *w);
 void Background_Draw(UnkBg_02053090 *bg);
-void func_02052638(void *src, u32 a, u16 *dst, s32 b, u16 c, u16 d, s32 e);
-void func_02052568(u32 a, UnkBg_02053090 *bg, s32 b);
-void func_02052d18(UnkWork_02053090 *w);
+void NaviMsg_CopyTileRect(void *src, u32 a, u16 *dst, s32 b, u16 c, u16 d, s32 e);
+void NaviMsg_ReadFaceFrameChr(u32 a, UnkBg_02053090 *bg, s32 b);
+void NaviMsg_State_HideTimer(UnkWork_02053090 *w);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void Sound_PlayVoice(void *a, u32 b, s32 c);
 
@@ -55,27 +55,27 @@ void NaviMsg_Main(void) {
             w->fndc(w);
         if (w->fne0 != NULL)
             w->fne0(w);
-        func_02052bb0(w);
+        NaviMsg_UpdateFaceAnim(w);
         if (w->flags & 0x40000) {
             if (w->flags & 0x10000)
                 Background_Draw(&w->bg[0]);
             else
-                func_02052638(w->bg[1].unk38 + 4, w->bg[1].unk2c * 2, (u16 *)0x6205000 + (w->bg[1].unk28 + (w->bg[1].unk2a << 8) / 8), 0x40, w->bg[1].unk2c, w->bg[1].unk3e, 0x100);
+                NaviMsg_CopyTileRect(w->bg[1].unk38 + 4, w->bg[1].unk2c * 2, (u16 *)0x6205000 + (w->bg[1].unk28 + (w->bg[1].unk2a << 8) / 8), 0x40, w->bg[1].unk2c, w->bg[1].unk3e, 0x100);
             w->flags &= ~0x40000;
             w->flags |= 0x80000;
         } else if (w->flags & 0x80000) {
-            func_02052568(w->unkc, &w->bg[(w->flags & 0x10000) ? 0 : 1], 0);
+            NaviMsg_ReadFaceFrameChr(w->unkc, &w->bg[(w->flags & 0x10000) ? 0 : 1], 0);
             w->flags &= ~0x80000;
             w->flags |= 0x100000;
         } else if (w->flags & 0x100000) {
-            func_02052568(w->unkc, &w->bg[(w->flags & 0x10000) ? 0 : 1], 1);
+            NaviMsg_ReadFaceFrameChr(w->unkc, &w->bg[(w->flags & 0x10000) ? 0 : 1], 1);
             w->flags &= ~0x100000;
             w->flags |= 0x20000;
         } else if (w->flags & 0x200000) {
             Background_Draw(&w->bg94);
             w->flags &= ~0x200000;
             w->flags |= 0x400000;
-            w->fne0 = func_02052d18;
+            w->fne0 = NaviMsg_State_HideTimer;
         }
     }
     if (w->unk108 == -1)

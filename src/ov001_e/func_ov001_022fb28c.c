@@ -36,7 +36,7 @@ typedef struct UnkStruct_022fb28c_c {
 extern UnkStruct_022c4560 gGameState;
 extern s32 data_ov001_0231d664[][5];
 
-BOOL func_ov001_02300b84(s32 x, s32 y, s32 w, s32 h);
+BOOL ExtraBossObj_IsOutOfArena(s32 x, s32 y, s32 w, s32 h);
 UnkStruct_022fb28c_c *ExtraBoss_GetWork(void);
 void func_ov001_022fb17c(UnkStruct_022fb28c *p);
 
@@ -52,7 +52,7 @@ static inline s32 GetLevel(void) {
 void func_ov001_022fb28c(UnkStruct_022fb28c *p) {
     UnkStruct_022fb28c_o *t = p->target;
 
-    if (func_ov001_02300b84(p->x, p->y, 0x30000, 0x30000)) {
+    if (ExtraBossObj_IsOutOfArena(p->x, p->y, 0x30000, 0x30000)) {
         p->flags |= 8;
         return;
     }

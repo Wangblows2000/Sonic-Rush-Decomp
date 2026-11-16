@@ -43,7 +43,7 @@ extern u32 data_ov000_023657e0[];
 extern u16 data_ov000_023636f4[];
 
 void ObjRect_Register(UnkStruct_022e1078_h *h);
-void func_ov000_022c5d4c(s32 a, u32 *p1, s32 p2, u16 *p3, u16 n);
+void Boss_LoadModelPalettes(s32 a, u32 *p1, s32 p2, u16 *p3, u16 n);
 
 void func_ov000_022e1078(UnkStruct_022e1078 *s) {
     s32 i;
@@ -82,13 +82,13 @@ void func_ov000_022e1078(UnkStruct_022e1078 *s) {
     if (s->unkD60[1].unkA & 4) {
         s->unk1114++;
         if (s->unk1114 == 3) {
-            func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk1110, data_ov000_023636f4, 1);
+            Boss_LoadModelPalettes(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk1110, data_ov000_023636f4, 1);
         } else if (s->unk1114 == 7) {
-            func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
+            Boss_LoadModelPalettes(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
             s->unk1114 = 0;
         }
     } else if (s->unk1114 != 0) {
-        func_ov000_022c5d4c(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
+        Boss_LoadModelPalettes(data_ov000_02369b50.unk18, data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
         s->unk1114 = 0;
     }
 }

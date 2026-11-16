@@ -8,7 +8,7 @@ void MapObject_Destructor(void);
 void Rocket_OnHit(void);
 void Rocket_OnHit_Box1(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void Rocket_Action_Unk_ov000_02313ec8(UnkStruct_StageObj *w);
+void Rocket_Action_Idle(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Rocket_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -28,7 +28,7 @@ UnkStruct_StageObj *Rocket_Create(s32 a, s32 b, s32 c) {
     w->spr1.unk46 = 0x14;
     w->spr0.unk2C |= 0x200;
     w->spr1.unk2C |= 0x200;
-    func_02068e40(w, -0xc, -0xc, 0xc, 0xc);
+    StageObj_SetMapHitbox(w, -0xc, -0xc, 0xc, 0xc);
     ObjRect_SetAtkDefFlags(&w->coll0, 0, -0x10);
     w->coll0.unk1C = Rocket_OnHit;
     w->coll0.unkA |= 0x800;
@@ -45,6 +45,6 @@ UnkStruct_StageObj *Rocket_Create(s32 a, s32 b, s32 c) {
     if (Stage_IsGravityFlipped(w->unk10, w->unk14))
         w->unk5 = 0x80;
     w->unk1DC = Sound_AllocHandle();
-    Rocket_Action_Unk_ov000_02313ec8(w);
+    Rocket_Action_Idle(w);
     return w;
 }

@@ -74,7 +74,7 @@ void MTX_Identity33_(void *m);
 void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *c);
-void *func_ov000_0232e2f0(void *a, s32 b, s32 c);
+void *EffZakoBomb_Create(void *a, s32 b, s32 c);
 void StageObj_SetOAMPriority(void *a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 u8 ObjSpd_DownSet(u8 a, s32 b);
@@ -139,7 +139,7 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
     }
     if (gCamera.unk62 != 0 && gCamera.unk62 != 0xffff) {
         if (!(w->unk364 & 0x80)) {
-            eff = func_ov000_0232e2f0(w, 0, 0);
+            eff = EffZakoBomb_Create(w, 0, 0);
             if (eff != NULL) {
                 StageObj_SetOAMPriority(eff, 1);
             }
@@ -148,7 +148,7 @@ void func_ov000_02319c34(UnkStruct_02319c34 *w) {
             w->unk30 = -0x400;
             w->unk58 |= 0x10;
         } else if (!(gGameState.unk20 & 7)) {
-            eff = func_ov000_0232e2f0(w, 0, 0);
+            eff = EffZakoBomb_Create(w, 0, 0);
             if (eff != NULL) {
                 StageObj_SetOAMPriority(eff, 1);
             }

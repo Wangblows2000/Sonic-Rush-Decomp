@@ -28,7 +28,7 @@ BOOL func_020510f0(void);
 void KeyframeAnim_SetAnim(UnkAnim_022dc324 *a, s32 id);
 void func_ov001_022d6dc0(void);
 void func_ov001_022d97a8(s32 a, s32 b, s32 c, s32 d);
-void func_02051db0(s32 a, s32 b, s32 c, s32 d);
+void SysSound_PlaySEDelayed(s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022dc0b4(void);
 void func_ov001_022da33c(UnkWork_022dc324 *w);
 void func_ov001_022da244(UnkWork_022dc324 *w, s32 a);
@@ -56,7 +56,7 @@ void func_ov001_022dc324(void) {
         KeyframeAnim_SetAnim(&w->anims[5], 0x13);
         func_ov001_022d6dc0();
         func_ov001_022d97a8(0, 0x10, 0x10, 0xc);
-        func_02051db0(2, 0xc, 0x3000, 0);
+        SysSound_PlaySEDelayed(2, 0xc, 0x3000, 0);
         gTaskCurrent->func = func_ov001_022dc0b4;
         return;
     }

@@ -87,13 +87,13 @@ extern UnkStruct_022d7c74_p *gPlayers;
 extern u16 data_ov000_02363220[][5];
 extern s16 data_0206e470[];
 
-u16 func_ov000_022c5e10(s32 x, s32 z);
-u16 func_ov000_022da88c(u16 a, u16 b, s32 c);
+u16 Boss_Atan2(s32 x, s32 z);
+u16 Boss3_StepAngleToward(u16 a, u16 b, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov000_022d7c18(UnkStruct_022d7c74 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d7c74(UnkStruct_022d7c74 *s) {
-    s->unk224 = func_ov000_022da88c(s->unk224, (u16)(func_ov000_022c5e10(gPlayers->unk17C, gPlayers->unk184) + 0x8000), 0x400);
+    s->unk224 = Boss3_StepAngleToward(s->unk224, (u16)(Boss_Atan2(gPlayers->unk17C, gPlayers->unk184) + 0x8000), 0x400);
     MTX_RotY33_(s->unk2C4.unk24, data_0206e470[((s->unk224 & 0xffff) >> 4) * 2], data_0206e470[((s->unk224 & 0xffff) >> 4) * 2 + 1]);
     if (data_ov000_02363220[gBoss3->unk222][gBoss3->unk214->unk25E] < s->unk258++)
         s->func = func_ov000_022d7c18;

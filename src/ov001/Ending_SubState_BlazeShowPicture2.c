@@ -6,7 +6,7 @@ BOOL Ending_FadeOut(void *p, s32 a, s32 b, s32 c, s32 d);
 void Ending_SetSubState(void *p, void (*f)(void));
 void Task_Create(void (*f)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void Ending_SubState_BlazeNextPicture3(void);
-void func_ov001_022c6bd4(void);
+void EndingBgLayersShow_Main(void);
 
 void Ending_SubState_BlazeShowPicture2(u8 *p) {
     if (*(s32 *)(p + 0xc) >= 5) {
@@ -21,5 +21,5 @@ void Ending_SubState_BlazeShowPicture2(u8 *p) {
     }
     gDisplayMain[4] = 0;
     gDisplayMain[5] = 0;
-    Task_Create(func_ov001_022c6bd4, 0, 0, 0xf400, 0x1173, 0);
+    Task_Create(EndingBgLayersShow_Main, 0, 0, 0xf400, 0x1173, 0);
 }

@@ -19,9 +19,9 @@ extern void *gZoneActArchive;
 extern u8 data_ov000_023689a4[];
 extern u8 data_ov000_023689a8[];
 
-void func_02021310(void *f, void *path, void *arc);
-void *func_0202128c(void *path);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByName(void *path);
+void NNS_FndUnmountArchive(void *f);
 void *ObjVram_Alloc(u32 a, u32 b);
 void AnimatorSprite_Init(UnkStruct_0233cc34_Spr *s, void *res, u32 idx, u32 c, u32 d, u32 e, void *f, u32 g, u32 h);
 u16 ObjDraw_AllocSpritePalette(void *res, u32 a, u32 b);
@@ -33,9 +33,9 @@ void func_ov000_0233cc34(UnkStruct_0233cc34 *w) {
     UnkStruct_0233cc34_Spr *s;
     u32 pal;
 
-    func_02021310(f, data_ov000_023689a4, gZoneActArchive);
-    w->res = func_0202128c(data_ov000_023689a8);
-    func_020212e0(f);
+    NNS_FndMountArchive(f, data_ov000_023689a4, gZoneActArchive);
+    w->res = NNS_FndGetArchiveFileByName(data_ov000_023689a8);
+    NNS_FndUnmountArchive(f);
     for (i = 0; i < 2; i++) {
         s = (UnkStruct_0233cc34_Spr *)((u8 *)w + 0x8BC) + i;
         if (i == 0) {

@@ -8,11 +8,11 @@ extern u8 data_ov001_023161ed[];
 UnkStruct_022e05f0 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
-BOOL func_0204eb7c(void);
+BOOL StoryProgress_IsStageNew(void);
 void TransformDemo_Main(void);
 void TransformDemo_Destructor(void);
 void TransformDemo_State_Init(void);
-void func_ov001_022de184(void *p, void *q);
+void TransformDemo_FadeState_Init(void *p, void *q);
 void TransformDemo_LoadSound(void *p, void *q);
 
 void TransformDemo_Create(void) {
@@ -29,9 +29,9 @@ void TransformDemo_Create(void) {
     *(s32 *)(w + 0xbd4) = data_ov001_023161ec[gTransformDemoId * 2];
     *(s32 *)(w + 0x10) = data_ov001_023161ed[gTransformDemoId * 2];
     *(void (**)(void))w = TransformDemo_State_Init;
-    if (!func_0204eb7c()) {
+    if (!StoryProgress_IsStageNew()) {
         *(u32 *)(w + 4) |= 0x100;
     }
-    func_ov001_022de184(w, w + 0xea0);
+    TransformDemo_FadeState_Init(w, w + 0xea0);
     TransformDemo_LoadSound(w, w + 0xea8);
 }

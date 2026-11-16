@@ -11,7 +11,7 @@ s32 TitleDemo_ReleaseModels();
 s32 func_ov001_022d6734();
 s32 TitleDemo_ReleaseSprites();
 s32 TitleDemo_ReleaseAssets();
-s32 func_ov001_022d4ff0();
+s32 TitleDemo_ResetDisplay();
 
 void TitleDemo_Destructor(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x10);
@@ -23,7 +23,7 @@ void TitleDemo_Destructor(u8 *p0) {
     func_ov001_022d6734(t0);
     TitleDemo_ReleaseSprites(t0);
     TitleDemo_ReleaseAssets(t0);
-    func_ov001_022d4ff0();
+    TitleDemo_ResetDisplay();
 }
 
 #pragma thumb reset

@@ -8,9 +8,9 @@ s32 Task_Destroy();
 void ClearDemo_Create();
 s32 Player_LoadArchive();
 extern u8 gGameState[];
-s32 func_02059bdc();
-s32 func_02059bcc();
-s32 func_0204ed24();
+s32 SaveData_SetSonicProgress();
+s32 SaveData_SetBlazeProgress();
+s32 SaveData_StoreLives();
 
 void DemoScript_Main(void) {
     u32 t0 = *(u32 *)gTaskCurrent;
@@ -31,11 +31,11 @@ void DemoScript_Main(void) {
         if ((t3 & 1) != 0) {
             u32 t7 = *(u32 *)gGameState;
             if (t7 != 1) {
-                func_02059bdc(t5);
+                SaveData_SetSonicProgress(t5);
             } else {
-                func_02059bcc(t5);
+                SaveData_SetBlazeProgress(t5);
             }
-            func_0204ed24();
+            SaveData_StoreLives();
             ((s32 (*)())t4)();
             return;
         }

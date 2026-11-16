@@ -37,8 +37,8 @@ void Model_TransposeRot(void *a, void *o);
 void VEC_Normalize(void *a, void *o);
 void SpecialStageCamera_Apply(void);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
-void func_ov001_02314058(void *w);
-void func_ov001_0231402c(void);
+void SpecialStage_SetPolygonAlpha(void *w);
+void SpecialStage_DisableTexture(void);
 
 void SpecialStage_DrawFadeQuad(void *w) {
     u32 color;
@@ -79,8 +79,8 @@ void SpecialStage_DrawFadeQuad(void *w) {
     d.z += a.z;
     SpecialStageCamera_Apply();
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
-    func_ov001_02314058(w);
-    func_ov001_0231402c();
+    SpecialStage_SetPolygonAlpha(w);
+    SpecialStage_DisableTexture();
     color = 0x7fff;
     NNS_G3dGeBufferOP_N(0x20, &color, 1);
     tr[0] = d.x;

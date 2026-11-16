@@ -35,10 +35,10 @@ extern UnkStruct_0208922c gDisplayMain;
 extern u8 data_ov000_02365f38[];
 extern u8 data_ov000_02365f3c[], data_ov000_02365f50[], data_ov000_02365f68[], data_ov000_02365f80[], data_ov000_02365f98[], data_ov000_02365fb0[], data_ov000_02365fc8[], data_ov000_02365fe0[], data_ov000_02365ff8[], data_ov000_02366014[], data_ov000_0236602c[];
 
-void func_02021310(void *f, void *path, void *arc);
-void *func_0202128c(void *a);
-void func_0202566c(void *p);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByName(void *a);
+void NNS_G3dResDefaultRelease(void *p);
+void NNS_FndUnmountArchive(void *f);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 n);
 void Heap_Free(void *heap, void *p);
@@ -69,31 +69,31 @@ void BossF_Destructor(UnkStruct_022f84fc_Task *t) {
     s32 i;
     UnkStruct_022f84fc_Sub *sub;
 
-    func_02021310(ctx, data_ov000_02365f38, gZoneActArchive);
-    func_0202566c(func_0202128c(data_ov000_02365f3c));
-    func_0202566c(func_0202128c(data_ov000_02365f50));
-    func_0202566c(func_0202128c(data_ov000_02365f68));
-    func_0202566c(func_0202128c(data_ov000_02365f80));
-    func_0202566c(func_0202128c(data_ov000_02365f98));
-    func_0202566c(func_0202128c(data_ov000_02365fb0));
-    func_0202566c(func_0202128c(data_ov000_02365fc8));
-    func_0202566c(func_0202128c(data_ov000_02365fe0));
-    func_0202566c(func_0202128c(data_ov000_02365ff8));
-    func_0202566c(func_0202128c(data_ov000_02366014));
-    func_0202566c(func_0202128c(data_ov000_0236602c));
-    func_020212e0(ctx);
+    NNS_FndMountArchive(ctx, data_ov000_02365f38, gZoneActArchive);
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365f3c));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365f50));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365f68));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365f80));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365f98));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365fb0));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365fc8));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365fe0));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02365ff8));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_02366014));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByName(data_ov000_0236602c));
+    NNS_FndUnmountArchive(ctx);
     if (w->unk238 != NULL) {
-        func_0202566c(w->unk238);
+        NNS_G3dResDefaultRelease(w->unk238);
         FreeRes(w->unk238);
         w->unk238 = NULL;
     }
     if (w->unk23C != NULL) {
-        func_0202566c(w->unk23C);
+        NNS_G3dResDefaultRelease(w->unk23C);
         FreeRes(w->unk23C);
         w->unk23C = NULL;
     }
     if (w->unk240 != NULL) {
-        func_0202566c(w->unk240);
+        NNS_G3dResDefaultRelease(w->unk240);
         FreeRes(w->unk240);
         w->unk240 = NULL;
     }

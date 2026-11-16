@@ -68,18 +68,18 @@ u32 VramPltt_Alloc(u16 a, s32 b);
 void Model_InitSprite3D(UnkObj_02307398 *o, UnkRes_02307398 *res, s32 a, s32 b, u32 c, u32 d, s32 e, s32 f);
 void Model_Init(UnkObj2_02307398 *o, s32 a);
 u8 *File_Load(void *p, s32 v);
-u32 func_ov001_0230776c(u8 *p);
-u32 func_ov001_02307760(u8 *p);
+u32 SpecialStageActArchive_GetCompressionType(u8 *p);
+u32 SpecialStageActArchive_GetUncompressedSize(u8 *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
 u32 *Compress_GetData(void *s);
 void Mem_Copy(void *a, void *b, u32 c);
 void Heap_Free(void *heap, void *p);
-BOOL func_02021310(UnkArc_02307398 *arc, const char *name, void *data);
-u32 func_02021264(UnkArc_02307398 *arc, u32 idx);
+BOOL NNS_FndMountArchive(UnkArc_02307398 *arc, const char *name, void *data);
+u32 NNS_FndGetArchiveFileByIndex(UnkArc_02307398 *arc, u32 idx);
 void NNS_G3dResDefaultSetup(u32 p);
-BOOL func_020212e0(UnkArc_02307398 *arc);
+BOOL NNS_FndUnmountArchive(UnkArc_02307398 *arc);
 UnkTask_02307398 *SpecialStageObjList_Create(s32 a);
 void func_ov001_02306d04(void);
 void func_ov001_02306a20(void);
@@ -134,7 +134,7 @@ void SpecialStage_LoadActArchive(void) {
     }
     w->data = blk;
     d = w->data;
-    switch (func_ov001_0230776c(res)) {
+    switch (SpecialStageActArchive_GetCompressionType(res)) {
     case 0x10:
         MI_UncompressLZ16(res, d);
         break;
@@ -145,10 +145,10 @@ void SpecialStage_LoadActArchive(void) {
         MI_UncompressRL16(res, d);
         break;
     default:
-        Mem_Copy(Compress_GetData(res), d, func_ov001_02307760(res));
+        Mem_Copy(Compress_GetData(res), d, SpecialStageActArchive_GetUncompressedSize(res));
         break;
     }
-    DC_StoreRange(d, func_ov001_02307760(res));
+    DC_StoreRange(d, SpecialStageActArchive_GetUncompressedSize(res));
     if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
@@ -159,17 +159,17 @@ void SpecialStage_LoadActArchive(void) {
         }
     }
     Heap_Free(gMainHeap, res);
-    func_02021310(&arc, data_ov001_0231df94, w->data);
-    w->res0 = func_02021264(&arc, 0);
-    w->res1 = func_02021264(&arc, 1);
-    w->res2 = func_02021264(&arc, 2);
-    w->res3 = func_02021264(&arc, 3);
-    w->res4 = func_02021264(&arc, 4);
-    w->res5 = func_02021264(&arc, 5);
-    w->res6 = func_02021264(&arc, 6);
+    NNS_FndMountArchive(&arc, data_ov001_0231df94, w->data);
+    w->res0 = NNS_FndGetArchiveFileByIndex(&arc, 0);
+    w->res1 = NNS_FndGetArchiveFileByIndex(&arc, 1);
+    w->res2 = NNS_FndGetArchiveFileByIndex(&arc, 2);
+    w->res3 = NNS_FndGetArchiveFileByIndex(&arc, 3);
+    w->res4 = NNS_FndGetArchiveFileByIndex(&arc, 4);
+    w->res5 = NNS_FndGetArchiveFileByIndex(&arc, 5);
+    w->res6 = NNS_FndGetArchiveFileByIndex(&arc, 6);
     NNS_G3dResDefaultSetup(w->res0);
     NNS_G3dResDefaultSetup(w->res3);
-    func_020212e0(&arc);
+    NNS_FndUnmountArchive(&arc);
     w->task = SpecialStageObjList_Create(0x20);
     w->task->unk1DC = func_ov001_02306d04;
     w->task->unk1E0 = func_ov001_02306a20;

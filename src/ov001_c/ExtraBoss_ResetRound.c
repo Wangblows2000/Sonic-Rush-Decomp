@@ -28,12 +28,12 @@ extern u8 data_020748bc[];
 extern u8 data_02074ba4[];
 
 void ExtraBoss_Main(void);
-void func_ov001_02302370(void);
+void ExtraBossPlayer_Action_LockControl(void);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 b);
-void func_02022270(u32 index, u32 value);
-void func_02022284(u32 idx, s32 x, s32 y, s32 z);
+void NNS_G3dGlbLightColor(u32 index, u32 value);
+void NNS_G3dGlbLightVector(u32 idx, s32 x, s32 y, s32 z);
 void G3X_SetEdgeColorTable(const void *src);
-void func_0205ef48(void);
+void StageTitleCard_CreateExtraBoss(void);
 void Sound_PlaySeq(u32 *p, u32 a);
 
 void ExtraBoss_ResetRound(void) {
@@ -45,7 +45,7 @@ void ExtraBoss_ResetRound(void) {
     gExtraBossWork->task8->fn = ExtraBoss_Main;
     gExtraBossWork->taskC->fn = 0;
     gExtraBossWork->task10->fn = 0;
-    func_ov001_02302370();
+    ExtraBossPlayer_Action_LockControl();
     gExtraBossWork->unk4C = 0x32;
     gExtraBossWork->unk4 = 0;
     gExtraBossWork->unk44 = 0;
@@ -57,14 +57,14 @@ void ExtraBoss_ResetRound(void) {
     *(vu16 *)0x4000008 = (*(vu16 *)0x4000008 & ~3) | 2;
     *(vu16 *)0x400000c = *(vu16 *)0x400000c & ~3;
     col = *(u16 *)(data_02074960 + 0x9c);
-    func_02022270(0, col);
-    func_02022270(1, col);
-    func_02022270(2, col);
-    func_02022284(0, *(s16 *)(data_020748bc + 0x90), *(s16 *)(data_020748bc + 0x92), *(s16 *)(data_020748bc + 0x94));
-    func_02022284(1, *(s16 *)(data_020748bc + 0x96), *(s16 *)(data_020748bc + 0x98), *(s16 *)(data_020748bc + 0x9a));
-    func_02022284(2, *(s16 *)(data_020748bc + 0x9c), *(s16 *)(data_020748bc + 0x9e), *(s16 *)(data_020748bc + 0xa0));
+    NNS_G3dGlbLightColor(0, col);
+    NNS_G3dGlbLightColor(1, col);
+    NNS_G3dGlbLightColor(2, col);
+    NNS_G3dGlbLightVector(0, *(s16 *)(data_020748bc + 0x90), *(s16 *)(data_020748bc + 0x92), *(s16 *)(data_020748bc + 0x94));
+    NNS_G3dGlbLightVector(1, *(s16 *)(data_020748bc + 0x96), *(s16 *)(data_020748bc + 0x98), *(s16 *)(data_020748bc + 0x9a));
+    NNS_G3dGlbLightVector(2, *(s16 *)(data_020748bc + 0x9c), *(s16 *)(data_020748bc + 0x9e), *(s16 *)(data_020748bc + 0xa0));
     G3X_SetEdgeColorTable(data_02074ba4);
-    func_0205ef48();
+    StageTitleCard_CreateExtraBoss();
     if (gExtraBossWork->unk40 < 3)
         Sound_PlaySeq(0, 0x14);
     else

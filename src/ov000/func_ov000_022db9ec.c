@@ -7,7 +7,7 @@ extern u16 data_ov000_0236350c[];
 extern void *data_ov000_02369b30[];
 extern u8 data_ov000_023655e8;
 
-void func_ov000_022c5d4c(void *a, void *b, void *c, void *d, s32 e);
+void Boss_LoadModelPalettes(void *a, void *b, void *c, void *d, s32 e);
 
 void func_ov000_022db9ec(BOOL flag) {
     s32 i = gGameState[0];
@@ -16,5 +16,5 @@ void func_ov000_022db9ec(BOOL flag) {
         p = &data_ov000_02363514[i];
     else
         p = &data_ov000_0236350c[i];
-    func_ov000_022c5d4c(data_ov000_02369b30[0x14 / 4], &data_ov000_023655e8, p, &data_ov000_02363504, 1);
+    Boss_LoadModelPalettes(data_ov000_02369b30[0x14 / 4], &data_ov000_023655e8, p, &data_ov000_02363504, 1);
 }

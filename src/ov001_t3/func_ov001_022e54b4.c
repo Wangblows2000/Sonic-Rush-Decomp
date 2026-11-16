@@ -33,7 +33,7 @@ extern UnkEntry_022e54b4 data_ov001_0231639c[];
 extern u8 data_02089264[];
 
 void MTX_Identity22_(UnkMtx22_022e54b4 *m);
-void func_ov001_022e2ba4(s32 a);
+void ZoneMap_EnableBlend(s32 a);
 void func_ov001_022e519c(s32 x, s32 y, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f, u16 g, u16 h, u16 i, s32 j);
 void G2x_SetBGyAffine_(void *dst, UnkMtx22_022e54b4 *m, s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022e2bd8(u16 a, u16 b, u16 c, u16 d, u16 e);
@@ -46,7 +46,7 @@ void func_ov001_022e54b4(UnkStruct_022e54b4 *p) {
     UnkMtx22_022e54b4 m;
 
     MTX_Identity22_(&m);
-    func_ov001_022e2ba4(1);
+    ZoneMap_EnableBlend(1);
     if (p->idx > 0) {
         t = &data_ov001_0231639c[p->idx - 1];
         if (p->unk64 != 0) {

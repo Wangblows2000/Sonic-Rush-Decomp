@@ -69,7 +69,7 @@ UnkStruct_0231e324 *DecAnimal_Create(void *p, s32 a, s32 b) {
     StageObj_Load2dBAC(w, buf, 0xffff, &data_ov000_0236a3c4[n], gZoneActArchive);
     StageObj_AllocSpritePalette(w, 0, 0x12);
     StageObj_SetOAMOrder(w, 0x12);
-    func_02068e40(w, -4, -8, 4, -1);
+    StageObj_SetMapHitbox(w, -4, -8, 4, -1);
     ObjRect_SetBox2D(&w->coll0, -0xc, -0x14, 0xc, 6);
     w->unk58 |= 0x80;
     w->unk54 |= 2;

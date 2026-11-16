@@ -8,7 +8,7 @@ typedef struct {
 extern void *gActComArchive;
 extern u8 data_ov000_023681e0[], data_ov000_0236a9b8[];
 
-void func_ov000_0232f384(void);
+void EffVsSlowdown_State_FollowPlayer(void);
 
 void EffVsSlowdown_Create(UnkStruct_0232f3ec *arg) {
     UnkStruct_Task *task;
@@ -35,5 +35,5 @@ void EffVsSlowdown_Create(UnkStruct_0232f3ec *arg) {
     w->unk58 |= 0x2000;
     w->unk54 |= 2;
     w->unk54 |= 0x10;
-    w->unk68 = func_ov000_0232f384;
+    w->unk68 = EffVsSlowdown_State_FollowPlayer;
 }

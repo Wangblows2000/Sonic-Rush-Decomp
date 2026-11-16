@@ -7,7 +7,7 @@ typedef struct {
 
 extern UnkStruct_022e22d0 data_022c46c0;
 
-void func_02059bcc(s32 id);
+void SaveData_SetBlazeProgress(s32 id);
 
 #pragma thumb on
 void func_ov001_022e22d0(u32 a) {
@@ -82,6 +82,6 @@ void func_ov001_022e22d0(u32 a) {
     default:
         return;
     }
-    func_02059bcc(id);
+    SaveData_SetBlazeProgress(id);
 }
 #pragma thumb reset

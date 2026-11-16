@@ -10,7 +10,7 @@ typedef struct {
     u8 pad18[0x68 - 0x18];
 } UnkEntry_020134b4;
 
-BOOL func_02015520(void);
+BOOL WBT_GetOwnAid(void);
 u32 func_02014288(u32 a, u32 b);
 u32 func_0201566c(void);
 s32 func_02014630(void *buf, u32 bitmap, u8 c, u32 a, u32 b, u32 d, u32 e);
@@ -23,7 +23,7 @@ s32 func_020134b4(u8 *ctx, s32 idx, void *buf)
     u32 x;
 
     if (e->state == 2) {
-        bitmap = func_02015520() == 0 ? 0xffff : 1;
+        bitmap = WBT_GetOwnAid() == 0 ? 0xffff : 1;
         if (e->type == 6) {
             x = func_02014288(e->unk10, e->unk14);
             ret = func_02014630(buf, bitmap, e->unk2, e->unk10, e->unk14, x, func_0201566c());

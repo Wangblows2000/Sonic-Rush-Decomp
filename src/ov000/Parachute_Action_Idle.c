@@ -1,0 +1,12 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_02312070 {
+    u8 pad[0x68];
+    void (*func)(void);
+} UnkStruct_02312070;
+
+void Parachute_State_Idle(void);
+
+void Parachute_Action_Idle(UnkStruct_02312070 *s) {
+    s->func = Parachute_State_Idle;
+}

@@ -6,7 +6,7 @@ extern u8 data_ov000_02366e5c[], data_ov000_0236a20c[];
 void MapObject_Destructor(void);
 void Rope_Draw(void);
 void Rope_OnHit(void);
-void func_ov000_0231478c(UnkStruct_StageObj *w);
+void Rope_Action_Init(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Rope_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -34,6 +34,6 @@ UnkStruct_StageObj *Rope_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk58 |= 0x2100;
     w->unk5C |= 1;
     w->unk204 = 0;
-    func_ov000_0231478c(w);
+    Rope_Action_Init(w);
     return w;
 }

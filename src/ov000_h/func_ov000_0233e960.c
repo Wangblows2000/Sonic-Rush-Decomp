@@ -16,14 +16,14 @@ typedef struct {
     u32 unk34;
 } UnkPlayer_0233e960;
 
-UnkPlayer_0233e960 *func_ov000_0233b62c(void);
-UnkPlayer_0233e960 *func_ov000_0233b610(void);
+UnkPlayer_0233e960 *Camera_GetBySwapState(void);
+UnkPlayer_0233e960 *Camera_GetOtherBySwapState(void);
 
 void func_ov000_0233e960(UnkStruct_0233e960 *w) {
     UnkPlayer_0233e960 *q;
 
-    func_ov000_0233b62c();
-    q = func_ov000_0233b610();
+    Camera_GetBySwapState();
+    q = Camera_GetOtherBySwapState();
     if (q->unk34 & 1) {
         return;
     }

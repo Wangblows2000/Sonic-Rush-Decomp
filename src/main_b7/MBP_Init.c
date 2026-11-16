@@ -33,7 +33,7 @@ u32 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 *OS_GetArenaLo(u32 a);
 void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void DC_StoreRange(void *p, u32 size);
-s32 func_02018c64(void *work, UnkStruct_0203bb94 *param, u32 a, u32 b, u32 c);
+s32 MB_Init(void *work, UnkStruct_0203bb94 *param, u32 a, u32 b, u32 c);
 void OS_Terminate(void);
 void MB_SetParentCommParam(u32 a, u32 b);
 void MB_CommSetParentStateCallback(void (*cb)(void));
@@ -70,7 +70,7 @@ void MBP_Init(u32 a, u32 b) {
         work += 8;
     }
     sMbpCWork.work = work;
-    if (func_02018c64(sMbpCWork.work, &param, a, b, 2) != 0)
+    if (MB_Init(sMbpCWork.work, &param, a, b, 2) != 0)
         OS_Terminate();
     MB_SetParentCommParam(0x100, 0xf);
     MB_CommSetParentStateCallback(MBP_ParentStateCallback);

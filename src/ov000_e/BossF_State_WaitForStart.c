@@ -67,13 +67,13 @@ extern void *gBossF;
 
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
-void func_ov000_022f9188(void);
+void BossF_InitCamera(void);
 void Model_SetAnimation(void *s, s32 a, s32 b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
 void func_ov000_022f898c(void);
 void BossF_Action_Unk_ov000_022f8310(void *p);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 
 void BossF_State_WaitForStart(UnkStruct_022f8320 *s) {
     UnkStruct_022f8320_a *a;
@@ -94,7 +94,7 @@ void BossF_State_WaitForStart(UnkStruct_022f8320 *s) {
     a->unk114 = 0x800;
     a->unk18 = a->unk1C = a->unk20 = 0x1355b50;
     c = (UnkStruct_022f8320_c *)(u32)&data_ov000_0236a48c;
-    func_ov000_022f9188();
+    BossF_InitCamera();
     c->unk24.x = 0x180000;
     c->unk24.y = -0x2e8000;
     c->unk24.z = 0x1c2000;
@@ -104,8 +104,8 @@ void BossF_State_WaitForStart(UnkStruct_022f8320 *s) {
     c->unk60.z = 0;
     c->unk54 = c->unk60;
     s->unk21C = gPlayers->unk70;
-    func_020537b4(9);
-    func_020533e0(0xf, 0xf0);
+    NaviMsg_SetFaceAnim(9);
+    NaviMsg_ShowMessage(0xf, 0xf0);
     ScreenShake_Start(0xc);
     func_ov000_022f898c();
     BossF_Action_Unk_ov000_022f8310(gBossF);

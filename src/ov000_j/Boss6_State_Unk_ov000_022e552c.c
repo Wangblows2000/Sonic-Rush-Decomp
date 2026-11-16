@@ -49,7 +49,7 @@ void MTX_MultVec33(VecFx32_022e552c *a, void *m, VecFx32_022e552c *out);
 void ObjRect_SetBox3D(void *b, s16 x1, s16 y1, s16 x2, s16 y2, s16 z1, s16 z2);
 u8 *func_ov000_022dfd80(s32 a, s32 x, s32 y, s32 z);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022e1b48(s32 a);
+void Boss6_SelectNextAttack(s32 a);
 
 void Boss6_State_Unk_ov000_022e552c(UnkStruct_022e552c *p) {
     VecFx32_022e552c v1;
@@ -120,5 +120,5 @@ void Boss6_State_Unk_ov000_022e552c(UnkStruct_022e552c *p) {
     p->unk1118++;
     if (p->unk1118 < 0x1c2)
         return;
-    func_ov000_022e1b48(1);
+    Boss6_SelectNextAttack(1);
 }

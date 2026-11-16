@@ -9,7 +9,7 @@ typedef struct UnkStruct_0235b2c4 {
     u16 flags;
 } UnkStruct_0235b2c4;
 
-s32 func_02067a28(s32 x, s32 y, u8 flag, s32 dir, s32 a, s32 b);
+s32 ObjCollisionMap_ProbeDistance(s32 x, s32 y, u8 flag, s32 dir, s32 a, s32 b);
 
 void func_ov000_0235b2c4(UnkStruct_0235b2c4 *s) {
     s32 r = 0;
@@ -21,7 +21,7 @@ void func_ov000_0235b2c4(UnkStruct_0235b2c4 *s) {
     flag = (s->flags & 0x10) ? 1 : 0;
 
     if (vy > 0) {
-        r = func_02067a28(s->x >> 8, s->y >> 8, flag, 2, 0, 0);
+        r = ObjCollisionMap_ProbeDistance(s->x >> 8, s->y >> 8, flag, 2, 0, 0);
         if (r < 0) {
             if (s->flags & 0x8000)
                 s->y -= r << 8;
@@ -29,7 +29,7 @@ void func_ov000_0235b2c4(UnkStruct_0235b2c4 *s) {
                 s->y += r << 8;
         }
     } else if (vy < 0) {
-        r = func_02067a28(s->x >> 8, s->y >> 8, flag, 3, 0, 0);
+        r = ObjCollisionMap_ProbeDistance(s->x >> 8, s->y >> 8, flag, 3, 0, 0);
         if (r < 0) {
             if (s->flags & 0x8000)
                 s->y += r << 8;
@@ -44,11 +44,11 @@ void func_ov000_0235b2c4(UnkStruct_0235b2c4 *s) {
 
     r = 0;
     if (s->vx > 0) {
-        r = func_02067a28(s->x >> 8, s->y >> 8, flag, 0, 0, 0);
+        r = ObjCollisionMap_ProbeDistance(s->x >> 8, s->y >> 8, flag, 0, 0, 0);
         if (r < 0)
             s->x += r << 8;
     } else if (s->vx < 0) {
-        r = func_02067a28(s->x >> 8, s->y >> 8, flag, 1, 0, 0);
+        r = ObjCollisionMap_ProbeDistance(s->x >> 8, s->y >> 8, flag, 1, 0, 0);
         if (r < 0)
             s->x -= r << 8;
     }

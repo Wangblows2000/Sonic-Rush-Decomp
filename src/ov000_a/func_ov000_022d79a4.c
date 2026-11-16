@@ -99,7 +99,7 @@ extern UnkStruct_022d79a4_p *gPlayers;
 extern s32 data_ov000_0236327c[][5];
 extern u32 gRandSeed;
 
-u16 func_ov000_022c5e10(s32 x, s32 z);
+u16 Boss_Atan2(s32 x, s32 z);
 s32 FX_Inv(s32 a);
 void func_ov000_022da9c0(u16 ang, s32 v);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -120,7 +120,7 @@ void func_ov000_022d79a4(UnkStruct_022d79a4 *s) {
     s->unk2C4.unk114 = 0x1000;
     v = data_ov000_0236327c[gBoss3->unk222][gBoss3->unk214->unk25E];
     gBoss3->unk218->unk20C |= 3;
-    ang = func_ov000_022c5e10(gPlayers->unk17C, gPlayers->unk184);
+    ang = Boss_Atan2(gPlayers->unk17C, gPlayers->unk184);
     switch (gBoss3->unk222) {
     case 3:
     case 4:

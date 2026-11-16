@@ -51,7 +51,7 @@ extern UnkStruct_0231f794_Ctx *gBoss7;
 extern UnkStruct_0231f794_Obj2 *gPlayers;
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 #define ABS(x) ((x) < 0 ? -(x) : (x))
@@ -84,7 +84,7 @@ void func_ov000_0231f794(void) {
             p->unk20 = 0x96000;
         if (p->unk20 > 0xc8000)
             p->unk20 = 0xc8000;
-        t = FX_MUL(func_0200225c(p->unk20 - 0x96000, 0x32000), 0x30000);
+        t = FX_MUL(FX_Div(p->unk20 - 0x96000, 0x32000), 0x30000);
         p->unk58 += t;
         p->unk1C += t;
         break;
@@ -97,7 +97,7 @@ void func_ov000_0231f794(void) {
         p->unk18 = 0xa0000;
         p->unk1C = -0x1d0000;
         p->unk20 = 0xc8000;
-        t = FX_MUL(func_0200225c(p->unk20 - 0x96000, 0x32000), 0x30000);
+        t = FX_MUL(FX_Div(p->unk20 - 0x96000, 0x32000), 0x30000);
         p->unk58 += t;
         p->unk1C += t;
         break;
@@ -111,10 +111,10 @@ void func_ov000_0231f794(void) {
             p->unk78 = 0x50000;
         if (p->unk78 > 0xc8000)
             p->unk78 = 0xc8000;
-        p->unk58 += FX_MUL(func_0200225c(0x78000 - (p->unk78 - 0x50000), 0x78000), -0x10000);
+        p->unk58 += FX_MUL(FX_Div(0x78000 - (p->unk78 - 0x50000), 0x78000), -0x10000);
         p->unk84 = 0x4000;
-        p->unk84 += FX_MUL(func_0200225c(0x78000 - (p->unk78 - 0x50000), 0x78000), 0xc000);
-        p->unk8E = (-func_0200225c(ctx->unk384 << 12, 0x4000000) * 0x2000) >> 12;
+        p->unk84 += FX_MUL(FX_Div(0x78000 - (p->unk78 - 0x50000), 0x78000), 0xc000);
+        p->unk8E = (-FX_Div(ctx->unk384 << 12, 0x4000000) * 0x2000) >> 12;
         break;
     }
 }

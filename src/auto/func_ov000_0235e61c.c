@@ -4,8 +4,8 @@
 #pragma thumb on
 
 extern u8 gTaskCurrent[];
-s32 func_ov000_0235cde0();
-s32 func_ov000_0235cdc0();
+s32 ResultsScreen_GetPartnerChoice();
+s32 ResultsScreen_HasPartnerDecided();
 s32 func_ov000_0235e124();
 s32 func_ov000_0235e068();
 s32 func_ov000_0235e018();
@@ -20,9 +20,9 @@ void func_ov000_0235e5b4();
 
 void func_ov000_0235e61c(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
-    s32 t1 = func_ov000_0235cde0(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
+    s32 t1 = ResultsScreen_GetPartnerChoice(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
     *(u32 *)((u8 *)t0 + 0x8) = t1;
-    s32 t2 = func_ov000_0235cdc0(t0);
+    s32 t2 = ResultsScreen_HasPartnerDecided(t0);
     func_ov000_0235e124(t0);
     func_ov000_0235e068(t0);
     func_ov000_0235e018(t0);

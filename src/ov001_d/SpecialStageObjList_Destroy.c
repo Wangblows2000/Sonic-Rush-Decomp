@@ -17,7 +17,7 @@ typedef struct UnkStruct_02310bf4 {
 
 extern void *gMainHeap;
 
-void func_ov001_0230ffd4(UnkStruct_02310bf4 *g, UnkStruct_02310bf4_n *n);
+void SpecialStageObjList_Free(UnkStruct_02310bf4 *g, UnkStruct_02310bf4_n *n);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -32,7 +32,7 @@ void SpecialStageObjList_Destroy(UnkStruct_02310bf4 *g) {
     u32 size;
 
     for (n = g->head; n != &g->sentinel; n = n->next)
-        func_ov001_0230ffd4(g, n);
+        SpecialStageObjList_Free(g, n);
     p = g->unkC;
     if ((u8 *)OS_GetArenaLo(0) != p) {
         p -= 0x20;

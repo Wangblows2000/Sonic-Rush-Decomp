@@ -47,8 +47,8 @@ void func_ov000_022f8ce8(s32 x, s32 y, s32 z);
 void func_ov000_022f87d8(void);
 void func_ov000_022f87bc(void);
 void func_ov000_022f87f4(void);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 
 void BossFPartD8_OnHit_Unk_ov000_022f50b0(UnkStruct_022f50b0_Coll *a, UnkStruct_022f50b0_Coll *b) {
     UnkStruct_022f50b0_Pl *pl = b->unk18;
@@ -83,12 +83,12 @@ void BossFPartD8_OnHit_Unk_ov000_022f50b0(UnkStruct_022f50b0_Coll *a, UnkStruct_
         if (gBossStatus.unk8 <= 1) {
             if (gBossF->unk20C & 1)
                 return;
-            func_020537b4(0xb);
-            func_020533e0(0x12, 0xf0);
+            NaviMsg_SetFaceAnim(0xb);
+            NaviMsg_ShowMessage(0x12, 0xf0);
             return;
         }
-        func_020537b4(0xb);
-        func_020533e0(0x10, 0xf0);
+        NaviMsg_SetFaceAnim(0xb);
+        NaviMsg_ShowMessage(0x10, 0xf0);
         return;
     }
     if (w->unk5C & 1) {

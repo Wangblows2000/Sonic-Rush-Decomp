@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 StageObj_SetOAMOrder();
-s32 func_ov000_0232e48c();
+s32 EffZakoBombPuff_Create();
 
 void func_ov000_022fc398(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0xc);
@@ -20,6 +20,6 @@ void func_ov000_022fc398(u8 *p0) {
             return;
         }
     }
-    func_ov000_0232e48c(p0, 0, 0);
+    EffZakoBombPuff_Create(p0, 0, 0);
     *(u32 *)((u8 *)p0 + 0x54) = (*(u32 *)((u8 *)p0 + 0x54) | 4);
 }

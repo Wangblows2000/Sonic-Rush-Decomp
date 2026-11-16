@@ -19,7 +19,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 void Model_Release(void *o);
-void func_0202566c(void *res);
+void NNS_G3dResDefaultRelease(void *res);
 
 static inline void Free_0230db5c(void *p) {
     u32 size;
@@ -46,7 +46,7 @@ void SpecialStage_ReleaseMapModels(void) {
         Model_Release(gSpecialStageMap->objs[i]);
     Model_Release(gSpecialStageMap->obj8C4);
     for (i = 0; i < 4; i++) {
-        func_0202566c(gSpecialStageMap->res[i]);
+        NNS_G3dResDefaultRelease(gSpecialStageMap->res[i]);
         Free_0230db5c(gSpecialStageMap->res[i]);
         gSpecialStageMap->res[i] = 0;
     }

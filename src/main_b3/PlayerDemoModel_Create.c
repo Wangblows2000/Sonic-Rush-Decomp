@@ -18,7 +18,7 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void *PlayerDemo_GetWork(void);
 void Task_Destroy(UnkTask_02056a00 *t);
-void PlayerDemoModel_Unk_02056988(UnkWork_02056a00 *w);
+void PlayerDemoModel_State_Init(UnkWork_02056a00 *w);
 
 #pragma thumb on
 void PlayerDemoModel_Create(void) {
@@ -36,7 +36,7 @@ void PlayerDemoModel_Create(void) {
             return;
         }
         w->unk8 = gPlayerDemoId;
-        w->fn = PlayerDemoModel_Unk_02056988;
+        w->fn = PlayerDemoModel_State_Init;
     }
 }
 #pragma thumb reset

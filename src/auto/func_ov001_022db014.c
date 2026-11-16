@@ -34,7 +34,7 @@ int func_ov001_022da288();
 int KeyframeAnim_SetAnim();
 int func_ov001_022d6dc0();
 int func_ov001_022d97a8();
-int func_02051db0();
+int SysSound_PlaySEDelayed();
 int MsgBox_IsClosed();
 int MsgBox_GetResult();
 int func_02050e70();
@@ -73,7 +73,7 @@ void func_ov001_022db014(void)
     KeyframeAnim_SetAnim((int)piVar2 + 0xc20,0x13);
     func_ov001_022d6dc0();
     func_ov001_022d97a8(0,0x10,0x10,0xc);
-    func_02051db0(2,0xc,0x3000,0);
+    SysSound_PlaySEDelayed(2,0xc,0x3000,0);
     *(undefined4 *)(*((int *)gTaskCurrent) + 8) = ((int)func_ov001_022dac0c);
     return;
   }

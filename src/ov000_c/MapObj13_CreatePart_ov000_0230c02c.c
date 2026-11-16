@@ -16,7 +16,7 @@ extern u8 data_ov000_02366a04[], data_ov000_02369f84[], data_ov000_02369fcc[], d
 extern u8 data_ov000_02366a1c[], data_ov000_02369ffc[];
 
 void MapObj13Part_Destructor_ov000_0230bfdc(void);
-void MapObj13Part_State_Unk_ov000_0230bff8(void);
+void MapObj13Part_State_DestroyWhenIdle2(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_0230c02c_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 void StageObj_AcquireSharedTexture(UnkStruct_0230c02c_Sub *s, void *a, s32 b, s32 c);
 
@@ -46,6 +46,6 @@ UnkStruct_0230c02c *MapObj13_CreatePart_ov000_0230c02c(void) {
     w->base.unk5C |= 4;
     w->base.unk54 |= 0x10;
     w->base.unkC = 1;
-    w->base.unk68 = MapObj13Part_State_Unk_ov000_0230bff8;
+    w->base.unk68 = MapObj13Part_State_DestroyWhenIdle2;
     return w;
 }

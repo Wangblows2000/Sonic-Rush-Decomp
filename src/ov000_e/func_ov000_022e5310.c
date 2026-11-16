@@ -15,7 +15,7 @@ typedef struct {
 extern UnkStruct_StageObj *gPlayers;
 extern UnkStruct_Boss *gBoss6;
 
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov000_022e60a4(void);
 void Boss6_State_Unk_ov000_022e5078(void);
 void Boss6_State_Unk_ov000_022e51a4(void);
@@ -24,7 +24,7 @@ void func_ov000_022e5310(void) {
     UnkStruct_Boss *w = gBoss6;
     s32 x = gPlayers->unk10;
 
-    func_02021c38(w->unk9F0, func_ov000_022e60a4, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(w->unk9F0, func_ov000_022e60a4, 0, 6, 3);
     if (x < w->base.unk10 + 0x3200 && x > w->base.unk10 - 0x3200) {
         w->base.unk68 = Boss6_State_Unk_ov000_022e5078;
         if (w->unkF54 >= 0) {

@@ -59,7 +59,7 @@ void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *c);
 UnkStruct_0230063c_c *func_ov001_022f71f4(void);
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 void G3i_FrustumW_(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, void *m);
 void Model_Animate(void *p);
 void Model_Draw(void *p);
@@ -105,9 +105,9 @@ void func_ov001_0230063c(UnkStruct_0230063c *w, UnkStruct_0230063c_a *a) {
     cam = fl & 1;
     if (cam) {
         c = func_ov001_022f71f4();
-        x = FX_Mul(func_0200225c(SIN(c->unk0), COS(c->unk0)), c->unk4);
+        x = FX_Mul(FX_Div(SIN(c->unk0), COS(c->unk0)), c->unk4);
         y = FX_Mul(x, c->unkC);
-        d = func_0200225c(c->unk4, c->unk1C);
+        d = FX_Div(c->unk4, c->unk1C);
         dy = FX_Mul(d, c->unk18 - a->unk4C);
         dx = FX_Mul(d, c->unk14 - a->unk48);
         a->unk48 = c->unk14;

@@ -32,7 +32,7 @@ UnkStruct_0231a66c *Steam_Create(s32 a, s32 b, s32 c) {
     w->base.spr1.unk46 = 0x12;
     ObjRect_SetAtkDefFlags(&w->base.coll0, 0, -0x10);
     w->base.unk58 |= 0x100;
-    func_02068e40(w, -2, -2, 2, 2);
+    StageObj_SetMapHitbox(w, -2, -2, 2, 2);
     w->base.coll0.unk1C = NULL;
     w->base.spr0.unk2C &= ~0x60000;
     w->base.spr1.unk2C &= ~0x60000;

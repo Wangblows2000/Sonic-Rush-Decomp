@@ -14,7 +14,7 @@ typedef struct UnkStruct_022f3e00 {
 extern u32 gRandSeed;
 extern s32 gBossStatus[];
 
-void func_ov000_022f9044(UnkStruct_022f3e00 *s);
+void BossFPartD8_InitHitboxes(UnkStruct_022f3e00 *s);
 void func_ov000_022f4cbc(UnkStruct_022f3e00 *s);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void BossFPartD8_State_Unk_ov000_022f3dd4(void);
@@ -26,7 +26,7 @@ static inline u16 Rand(void) {
 
 void func_ov000_022f3e00(UnkStruct_022f3e00 *s) {
     s->unk2E = 0;
-    func_ov000_022f9044(s);
+    BossFPartD8_InitHitboxes(s);
     func_ov000_022f4cbc(s);
     s->unk434 = (Rand() & 1) ? 1 : 0;
     s->unk438 = 0;

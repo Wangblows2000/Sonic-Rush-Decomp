@@ -19,26 +19,26 @@ UnkStruct_SceneTask *Task_Create(void (*f)(void), void (*g)(UnkStruct_SceneTask 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void PlayerSelectMenu_Main(void);
 void PlayerSelectMenu_Destructor(UnkStruct_SceneTask *t);
-BOOL func_ov000_02356408(void);
+BOOL PlayerSelectMenu_IsFullyUnlocked(void);
 BOOL func_020513a8(void);
-void func_ov000_02356054(BOOL a);
+void PlayerSelectMenu_InitDisplay(BOOL a);
 void PlayerSelectMenu_LoadAssets(UnkStruct_Scene *w);
-void func_ov000_0235a0a4(UnkStruct_Scene *w);
-void func_ov000_02359e30(UnkStruct_Scene *w);
+void PlayerSelectMenu_InitBackgrounds(UnkStruct_Scene *w);
+void PlayerSelectMenu_InitSprites(UnkStruct_Scene *w);
 void PlayerSelectMenu_LoadModels(UnkStruct_Mdl *m);
 void PlayerSelectMenu_LoadArchives(UnkStruct_Mdl *m, BOOL flag);
-void func_ov000_02356494(void *p);
+void PlayerSelectMenu_CreateLinkIcon(void *p);
 void Touch_Enable(void);
-void func_ov000_02357dbc(void *a, void *b);
+void PlayerSelectMenu_CreatePaletteAnim(void *a, void *b);
 void SysSound_Init(void);
 UnkStruct_0235a2e8_Sync *func_020514e4(void);
-void func_ov000_02358524(void);
-void func_02052168(s32 a);
-BOOL func_ov000_023563d0(void);
-void func_02052128(s32 a);
-void func_02051e0c(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void func_ov000_02359c0c(UnkStruct_SceneTask *t);
-void func_ov000_023563b4(void);
+void PlayerSelectMenu_State_StartSync(void);
+void SysSound_PlayBGM(s32 a);
+BOOL PlayerSelectMenu_ShouldShowUnlockNotice(void);
+void SysSound_PlayBGMAlt(s32 a);
+void SysSound_FadeBGMVolume(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+void PlayerSelectMenu_Action_Opening(UnkStruct_SceneTask *t);
+void PlayerSelectMenu_MarkUnlockNoticeShown(void);
 
 #pragma thumb on
 
@@ -62,7 +62,7 @@ void PlayerSelectMenu_Create(s32 mode) {
     w->unk24 = 4;
     switch (mode) {
     case 0:
-        if (func_ov000_02356408()) {
+        if (PlayerSelectMenu_IsFullyUnlocked()) {
             w->unk10 = 3;
         } else {
             w->unk10 = 2;
@@ -99,20 +99,20 @@ void PlayerSelectMenu_Create(s32 mode) {
         }
         break;
     }
-    func_ov000_02356054(fade);
+    PlayerSelectMenu_InitDisplay(fade);
     PlayerSelectMenu_LoadAssets(w);
-    func_ov000_0235a0a4(w);
-    func_ov000_02359e30(w);
+    PlayerSelectMenu_InitBackgrounds(w);
+    PlayerSelectMenu_InitSprites(w);
     if ((w->unkC == 1 || w->unkC == 2) && func_020513a8()) {
         PlayerSelectMenu_LoadModels(&w->mdl);
     } else {
-        PlayerSelectMenu_LoadArchives(&w->mdl, func_ov000_02356408());
+        PlayerSelectMenu_LoadArchives(&w->mdl, PlayerSelectMenu_IsFullyUnlocked());
     }
     if (w->unkC == 1 || w->unkC == 2) {
-        func_ov000_02356494(w->unkAD4);
+        PlayerSelectMenu_CreateLinkIcon(w->unkAD4);
     }
     Touch_Enable();
-    func_ov000_02357dbc(w->unk4C4, w->unk504);
+    PlayerSelectMenu_CreatePaletteAnim(w->unk4C4, w->unk504);
     SysSound_Init();
     if (w->unkC == 1) {
         s = func_020514e4();
@@ -129,7 +129,7 @@ void PlayerSelectMenu_Create(s32 mode) {
     }
     if (w->unkC == 1 || w->unkC == 2) {
         w->unk0 = 0;
-        t->unk8 = func_ov000_02358524;
+        t->unk8 = PlayerSelectMenu_State_StartSync;
         return;
     }
     if (data_0208926c.unk8 >= 0) {
@@ -139,27 +139,27 @@ void PlayerSelectMenu_Create(s32 mode) {
         data_02087d44.unk8 = -0x10;
         data_0208926c.unk8 = data_02087d44.unk8;
     }
-    func_ov000_02356694(data_0208926c.unk8, 0, 0x10, 0);
+    PlayerSelectMenu_StartBrightnessFade(data_0208926c.unk8, 0, 0x10, 0);
     flag = FALSE;
     if (w->unkC == 1 || w->unkC == 2) {
-        func_02052168(2);
-    } else if (w->unkC == 0 && func_ov000_02356408()) {
-        func_02052168(flag);
-        if (func_ov000_023563d0()) {
+        SysSound_PlayBGM(2);
+    } else if (w->unkC == 0 && PlayerSelectMenu_IsFullyUnlocked()) {
+        SysSound_PlayBGM(flag);
+        if (PlayerSelectMenu_ShouldShowUnlockNotice()) {
             flag = TRUE;
-            func_02052128(flag);
+            SysSound_PlayBGMAlt(flag);
             w->unk14 = 2;
-            func_02051e0c(0, 0x7f, 0x12c, 0x80, 0x5000, 0x1000);
+            SysSound_FadeBGMVolume(0, 0x7f, 0x12c, 0x80, 0x5000, 0x1000);
         }
     } else {
-        func_02052168(0);
+        SysSound_PlayBGM(0);
     }
     if (w->unkC != 1 && !flag) {
-        func_020520e0(0);
+        SysSound_PlayMenuVoice(0);
     }
-    func_ov000_02359c0c(t);
+    PlayerSelectMenu_Action_Opening(t);
     if (flag) {
-        func_ov000_023563b4();
+        PlayerSelectMenu_MarkUnlockNoticeShown();
     }
 }
 

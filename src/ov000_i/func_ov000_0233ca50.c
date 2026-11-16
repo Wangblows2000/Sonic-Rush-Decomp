@@ -19,7 +19,7 @@ typedef struct {
 
 extern UnkPlayer_0233ca50 gCamera[2];
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
 void AnimatorSprite_Draw(void *p);
 
@@ -40,7 +40,7 @@ void func_ov000_0233ca50(u8 *w) {
     for (i = 0; i < 2; i++) {
         p = &gCamera[i];
         if ((p->flags & 0x1000000) && !(p->flags & 0x2000000)) {
-            v = func_0200225c((p->unk62 << 8) - p->unk8, p->unk20);
+            v = FX_Div((p->unk62 << 8) - p->unk8, p->unk20);
             y = (s16)((u32)(v >> 4) >> 8);
             if (y >= -3 && y <= 0xc3) {
                 sp = &((UnkSpr_0233ca50 *)(w + 0x8bc))[i];

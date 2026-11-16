@@ -60,7 +60,7 @@ struct UnkStruct_022d73cc {
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
-void func_ov000_022c5e1c(s32 a, s32 b, s32 x, s32 z, s32 *out);
+void BossArena_CirclePosToArc(s32 a, s32 b, s32 x, s32 z, s32 *out);
 void func_ov000_022daa78(void);
 void BossEffect_CreateJump(s32 a, s32 b, s32 c, s32 d);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
@@ -69,7 +69,7 @@ void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss3PartCC_State_Unk_ov000_022d7384(UnkStruct_022d73cc *s);
 
 void func_ov000_022d73cc(UnkStruct_022d73cc *s) {
-    func_ov000_022c5e1c(0xf42f8, 0x5fe435, s->unk218, s->unk220, &s->unk10);
+    BossArena_CirclePosToArc(0xf42f8, 0x5fe435, s->unk218, s->unk220, &s->unk10);
     s->unk10 >>= 4;
     s->unk13E |= 4;
     s->unk16A |= 4;

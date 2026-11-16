@@ -45,7 +45,7 @@ extern UnkStruct_0208922c gDisplayMain;
 extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_Mgr *gBossF;
 
-void func_ov000_022f9188(void);
+void BossF_InitCamera(void);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022eff30(void);
 
@@ -53,7 +53,7 @@ void func_ov000_022f0078(UnkStruct_022f0078 *w) {
     w->base.unk32 = 0;
     w->unk454 = 0;
     w->unk456 = 0;
-    func_ov000_022f9188();
+    BossF_InitCamera();
     w->unk434->unk54 |= 8;
     w->unk57C |= 1;
     w->unk450 = 0x100;

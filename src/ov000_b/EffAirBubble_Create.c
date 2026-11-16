@@ -22,7 +22,7 @@ extern void *gZoneActArchive;
 extern u8 data_ov000_0236aa08[];
 extern u8 data_ov000_02367f60[];
 
-void func_ov000_02329c90(void);
+void EffAirBubble_State_Rise(void);
 
 
 void EffAirBubble_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type, s32 t) {
@@ -49,5 +49,5 @@ void EffAirBubble_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type, s32 t)
     w->unk8 = 0x2bf - (Rand() & 0xfe);
     w->unk58 |= 0x100;
     w->unk54 |= 2;
-    w->unk68 = func_ov000_02329c90;
+    w->unk68 = EffAirBubble_State_Rise;
 }

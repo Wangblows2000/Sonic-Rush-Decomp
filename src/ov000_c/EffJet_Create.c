@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366b88[], data_ov000_0236a034[];
 
-void EffJet_State_Unk_ov000_0230e030(void);
+void EffJet_State_FollowParent(void);
 
 void EffJet_Create(UnkStruct_StageObj *par) {
     UnkStruct_Task *task;
@@ -33,5 +33,5 @@ void EffJet_Create(UnkStruct_StageObj *par) {
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
     w->unk54 |= 0x10;
-    w->unk68 = EffJet_State_Unk_ov000_0230e030;
+    w->unk68 = EffJet_State_FollowParent;
 }

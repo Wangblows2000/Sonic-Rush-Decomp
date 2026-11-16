@@ -35,8 +35,8 @@ void getTransDataEx_(fx32 *out, fx32 frame, const u32 *info, const UnkJntAnm_020
 void getTransData_(fx32 *out, fx32 frame, const u32 *info, const UnkJntAnm_02027290 *anm);
 void getRotDataEx_(fx32 *out, fx32 frame, const u32 *info, const UnkJntAnm_02027290 *anm);
 void getRotData_(fx32 *out, fx32 frame, const u32 *info, const UnkJntAnm_02027290 *anm);
-void func_02026ba0(fx32 *out, fx32 frame, const u32 *info, const UnkJntAnm_02027290 *anm);
-void func_02026d58(fx32 *out, fx32 frame, const u32 *info, const UnkJntAnm_02027290 *anm);
+void getScaleDataEx_(fx32 *out, fx32 frame, const u32 *info, const UnkJntAnm_02027290 *anm);
+void getScaleData_(fx32 *out, fx32 frame, const u32 *info, const UnkJntAnm_02027290 *anm);
 BOOL getRotDataByIdx_(fx32 *m, const void *rot3, const void *rot5, u32 info);
 void getMdlTrans_(UnkJnt_02027290 *jnt);
 void getMdlRot_(UnkJnt_02027290 *jnt);
@@ -128,9 +128,9 @@ void getJntSRTAnmResult_(const UnkJntAnm_02027290 *anm, u32 node, fx32 frame, Un
     if (!(tag & 0x600)) {
         if (!(tag & 0x800)) {
             if (interp)
-                func_02026ba0(tmp[0], frame, p, anm);
+                getScaleDataEx_(tmp[0], frame, p, anm);
             else
-                func_02026d58(tmp[0], frame, p, anm);
+                getScaleData_(tmp[0], frame, p, anm);
             sc.s.x = tmp[0][0];
             sc.inv.x = tmp[0][1];
         } else {
@@ -139,9 +139,9 @@ void getJntSRTAnmResult_(const UnkJntAnm_02027290 *anm, u32 node, fx32 frame, Un
         }
         if (!(tag & 0x1000)) {
             if (interp)
-                func_02026ba0(tmp[1], frame, p + 2, anm);
+                getScaleDataEx_(tmp[1], frame, p + 2, anm);
             else
-                func_02026d58(tmp[1], frame, p + 2, anm);
+                getScaleData_(tmp[1], frame, p + 2, anm);
             sc.s.y = tmp[1][0];
             sc.inv.y = tmp[1][1];
         } else {
@@ -150,9 +150,9 @@ void getJntSRTAnmResult_(const UnkJntAnm_02027290 *anm, u32 node, fx32 frame, Un
         }
         if (!(tag & 0x2000)) {
             if (interp)
-                func_02026ba0(tmp[2], frame, p + 4, anm);
+                getScaleDataEx_(tmp[2], frame, p + 4, anm);
             else
-                func_02026d58(tmp[2], frame, p + 4, anm);
+                getScaleData_(tmp[2], frame, p + 4, anm);
             sc.s.z = tmp[2][0];
             sc.inv.z = tmp[2][1];
         } else {

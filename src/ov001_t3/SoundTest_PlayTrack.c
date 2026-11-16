@@ -25,13 +25,13 @@ typedef struct {
 extern UnkEntry_022c9314 *data_ov001_0231f048;
 
 BOOL func_ov001_022c9310(UnkStruct_022c9314 *p);
-void func_0201cf04(void);
+void NNS_SndCaptureStopSampling(void);
 void NNS_SndStopSoundAll(void);
-void func_02020230(void *a, u16 id, s32 b);
+void NNS_SndArcStrmStart(void *a, u16 id, s32 b);
 void Sound_PlaySeq(s32 a, u16 id);
 void Sound_PlaySeqArc(s32 a, u8 b, u16 id);
 void Sound_PlayVoice(s32 a, u8 b, u16 id);
-void func_0201cf4c(s32 a, s32 b, s32 c, s32 d, s32 e, void (*fn)(void *), void *arg);
+void NNS_SndCaptureStartSampling(s32 a, s32 b, s32 c, s32 d, s32 e, void (*fn)(void *), void *arg);
 void SoundTest_SamplingCallback(void *p);
 
 #pragma thumb on
@@ -39,13 +39,13 @@ void SoundTest_PlayTrack(UnkStruct_022c9314 *p) {
     UnkEntry_022c9314 *e;
 
     if (!func_ov001_022c9310(p)) return;
-    func_0201cf04();
+    NNS_SndCaptureStopSampling();
     e = &data_ov001_0231f048[p->idx];
     NNS_SndStopSoundAll();
     switch (e->type) {
     case 0:
         if (e->unk29 == 0 && e->unk2b == 0xe) {
-            func_02020230(p->unk1a4, e->id, 0);
+            NNS_SndArcStrmStart(p->unk1a4, e->id, 0);
             p->unk4 = 1;
         } else {
             Sound_PlaySeq(0, e->id);
@@ -62,7 +62,7 @@ void SoundTest_PlayTrack(UnkStruct_022c9314 *p) {
         break;
     }
     if (p->unk8 != 0) {
-        func_0201cf4c(p->unk180, 0x80, 1, 0x1f40, 2, SoundTest_SamplingCallback, p);
+        NNS_SndCaptureStartSampling(p->unk180, 0x80, 1, 0x1f40, 2, SoundTest_SamplingCallback, p);
     }
 }
 #pragma thumb reset

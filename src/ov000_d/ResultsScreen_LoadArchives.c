@@ -25,21 +25,21 @@ void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-u32 func_ov000_0235d43c(void *res);
-u32 func_ov000_0235d430(void *res);
+u32 ResultsScreen_GetCompressionType(void *res);
+u32 ResultsScreen_GetCompressedSize(void *res);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *res);
 void Mem_Copy(void *src, void *dst, u32 size);
-void func_02021310(void *buf, void *a, void *b);
-void *func_02021264(void *buf, s32 a);
+void NNS_FndMountArchive(void *buf, void *a, void *b);
+void *NNS_FndGetArchiveFileByIndex(void *buf, s32 a);
 void NNS_G3dResDefaultSetup(void);
-void func_020212e0(void *buf);
+void NNS_FndUnmountArchive(void *buf);
 void Model_Init(UnkStruct_MdlRender *r, s32 a);
 void Model_SetResource(UnkStruct_MdlRender *r, void *mdl, s32 a);
 void G3X_SetEdgeColorTable(void *p);
-void func_02022270(s32 idx, u16 val);
+void NNS_G3dGlbLightColor(s32 idx, u16 val);
 
 static inline void *UnkAlloc_0235dab4(u32 size, s32 align) {
     u8 *p;
@@ -80,19 +80,19 @@ void ResultsScreen_LoadArchives(UnkStruct_Mdl2 *w) {
 
     w->unk90C = File_Load(data_ov000_023692f8, (void *)-1);
     if (func_020513a8()) {
-        func_02021310(buf1, data_ov000_02369308, w->unk90C);
+        NNS_FndMountArchive(buf1, data_ov000_02369308, w->unk90C);
         w->mdl8F0 = data_ov000_0236ac50.unk0;
         w->mdl8F4 = data_ov000_0236ac50.unk8;
         w->anm8F8 = data_ov000_0236ac40;
         w->anm8FC = data_ov000_0236ac48;
-        w->anm900 = func_02021264(buf1, 0);
-        w->anm904 = func_02021264(buf1, 1);
-        func_020212e0(buf1);
+        w->anm900 = NNS_FndGetArchiveFileByIndex(buf1, 0);
+        w->anm904 = NNS_FndGetArchiveFileByIndex(buf1, 1);
+        NNS_FndUnmountArchive(buf1);
     } else {
         res = File_Load(data_ov000_0236930c, (void *)-1);
         w->unk908 = UnkAlloc_0235dab4(*(u32 *)res >> 8, 0x20);
         dst = w->unk908;
-        switch (func_ov000_0235d43c(res)) {
+        switch (ResultsScreen_GetCompressionType(res)) {
         case 0x10:
             MI_UncompressLZ16(res, dst);
             break;
@@ -103,25 +103,25 @@ void ResultsScreen_LoadArchives(UnkStruct_Mdl2 *w) {
             MI_UncompressRL16(res, dst);
             break;
         default:
-            Mem_Copy(Compress_GetData(res), dst, func_ov000_0235d430(res));
+            Mem_Copy(Compress_GetData(res), dst, ResultsScreen_GetCompressedSize(res));
             break;
         }
-        DC_StoreRange(dst, func_ov000_0235d430(res));
+        DC_StoreRange(dst, ResultsScreen_GetCompressedSize(res));
         UnkFree_0235dab4(res);
-        func_02021310(buf0, data_ov000_02369324, w->unk908);
-        func_02021310(buf1, data_ov000_02369328, w->unk90C);
-        func_02021264(buf0, 0);
+        NNS_FndMountArchive(buf0, data_ov000_02369324, w->unk908);
+        NNS_FndMountArchive(buf1, data_ov000_02369328, w->unk90C);
+        NNS_FndGetArchiveFileByIndex(buf0, 0);
         NNS_G3dResDefaultSetup();
-        w->mdl8F0 = func_02021264(buf0, 0);
-        w->anm8F8 = func_02021264(buf0, 1);
-        w->anm8FC = func_02021264(buf0, 2);
-        w->anm900 = func_02021264(buf1, 0);
-        w->anm904 = func_02021264(buf1, 1);
-        func_02021264(buf0, 3);
+        w->mdl8F0 = NNS_FndGetArchiveFileByIndex(buf0, 0);
+        w->anm8F8 = NNS_FndGetArchiveFileByIndex(buf0, 1);
+        w->anm8FC = NNS_FndGetArchiveFileByIndex(buf0, 2);
+        w->anm900 = NNS_FndGetArchiveFileByIndex(buf1, 0);
+        w->anm904 = NNS_FndGetArchiveFileByIndex(buf1, 1);
+        NNS_FndGetArchiveFileByIndex(buf0, 3);
         NNS_G3dResDefaultSetup();
-        w->mdl8F4 = func_02021264(buf0, 3);
-        func_020212e0(buf1);
-        func_020212e0(buf0);
+        w->mdl8F4 = NNS_FndGetArchiveFileByIndex(buf0, 3);
+        NNS_FndUnmountArchive(buf1);
+        NNS_FndUnmountArchive(buf0);
     }
     Model_Init(&w->rA, 0);
     Model_SetResource(&w->rA, w->mdl8F0, 0);
@@ -134,9 +134,9 @@ void ResultsScreen_LoadArchives(UnkStruct_Mdl2 *w) {
     w->flagA |= 4;
     w->flagB |= 4;
     G3X_SetEdgeColorTable(data_ov000_02364ed0);
-    func_02022270(0, data_ov000_02364ec8[0]);
-    func_02022270(1, data_ov000_02364ec8[1]);
-    func_02022270(2, data_ov000_02364ec8[2]);
+    NNS_G3dGlbLightColor(0, data_ov000_02364ec8[0]);
+    NNS_G3dGlbLightColor(1, data_ov000_02364ec8[1]);
+    NNS_G3dGlbLightColor(2, data_ov000_02364ec8[2]);
 }
 
 #pragma thumb reset

@@ -1,10 +1,10 @@
 #include <ov000_d/player.h>
 
-BOOL func_ov000_0232bb20(void);
+BOOL ScorePopup_IsActive(void);
 void func_ov000_0232be64(s32 a);
 
 void Player_Action_TrickCombo(UnkStruct_Player *w) {
-    if (!func_ov000_0232bb20()) {
+    if (!ScorePopup_IsActive()) {
         w->unk3CF = 0;
     }
     if (w->unk3E4 != NULL) {

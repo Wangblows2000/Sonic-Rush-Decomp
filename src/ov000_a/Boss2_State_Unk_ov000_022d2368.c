@@ -81,7 +81,7 @@ struct UnkStruct_022d2368 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d2368_7 {
     u8 pad[8];
@@ -93,10 +93,10 @@ extern UnkStruct_022d2368_7 gBossStatus;
 
 s32 FX_DivS32(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
-void func_02021c24(void *p);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjResetCallBack(void *p);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
-void func_ov000_022d4bc8(void);
+void Boss2_NodeCallback_Head(void);
 void Boss2_State_Unk_ov000_022d2070(UnkStruct_022d2368 *s);
 void Boss2_State_Unk_ov000_022d1624(UnkStruct_022d2368 *s);
 
@@ -111,7 +111,7 @@ void Boss2_State_Unk_ov000_022d2368(UnkStruct_022d2368 *s) {
     if (!(s->unkA9C.unk10C & 2))
         return;
     s->func = Boss2_State_Unk_ov000_022d2070;
-    func_02021c38(s->unkD0C.unk90, func_ov000_022d4bc8, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(s->unkD0C.unk90, Boss2_NodeCallback_Head, 0, 6, 3);
     x = &s->unkA9C;
     y = &s->unkBD4;
     z = &s->unkD0C;

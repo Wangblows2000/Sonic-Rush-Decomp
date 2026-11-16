@@ -1,12 +1,12 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_022f4ce4();
+s32 BossFPartD8_SetAnimation();
 extern u8 data_ov000_0236a444[];
 void func_ov000_022f02c0();
 
 void func_ov000_022f03b4(u8 *p0) {
-    func_ov000_022f4ce4(p0, 0x20, 0x1000, 0);
+    BossFPartD8_SetAnimation(p0, 0x20, 0x1000, 0);
     *(u32 *)((u8 *)p0 + 0x440) = (*(u32 *)((u8 *)p0 + 0x10) << 4);
     *(u32 *)((u8 *)p0 + 0x444) = (*(u32 *)((u8 *)p0 + 0x14) << 4);
     s32 t0 = (*(u32 *)((u8 *)p0 + 0x18) << 4);

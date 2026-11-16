@@ -38,15 +38,15 @@ struct UnkStruct_022c9640 {
 
 extern UnkStruct_022c9640_2 *gBoss1;
 
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cc06c(void *p, s32 a, s32 b);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 
 void Boss1Neck_State_Unk_ov000_022c95f4(UnkStruct_022c9640 *s);
 
 void Boss1Neck_State_Unk_ov000_022c9640(UnkStruct_022c9640 *s) {
     UnkStruct_022c9640_3 *p = gBoss1->unk214;
-    func_ov000_022cc00c(s->unk228, s->unk220, 0x12, 0x1000, 0);
-    func_ov000_022cc00c(p->unk30C, p->unk304, 5, 0x1000, 0);
+    Boss1_SetPartAnimation(s->unk228, s->unk220, 0x12, 0x1000, 0);
+    Boss1_SetPartAnimation(p->unk30C, p->unk304, 5, 0x1000, 0);
     s->unk20C = 0;
     s->func = Boss1Neck_State_Unk_ov000_022c95f4;
 }

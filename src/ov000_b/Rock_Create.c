@@ -58,7 +58,7 @@ UnkStruct_023142f4 *Rock_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     StageObj_AcquireSharedTexture(&w->unk20C, data_ov000_0236a1fc, 0x200, 0x10);
     w->unk20C.unkA = 4;
     w->unk20C.unkB = 0;
-    func_02068e40(w, -8, 0, 8, 0xc);
+    StageObj_SetMapHitbox(w, -8, 0, 8, 0xc);
     if (w->base.unk1E0->unk7 < 0x28)
         w->base.unk18 = -(w->base.unk1E0->unk7 << 8);
     w->base.unk58 |= 0x2100;

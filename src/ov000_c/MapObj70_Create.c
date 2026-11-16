@@ -20,8 +20,8 @@ extern UnkStruct_0236aad8 gCamera;
 
 void MapObj70_Destructor(void);
 void func_ov000_02309be0(UnkStruct_02309e9c *w);
-void MapObj70_Action_Unk_ov000_02309e40(UnkStruct_02309e9c *w);
-void func_ov000_02342780(void);
+void MapObj70_Action_Init(UnkStruct_02309e9c *w);
+void Camera_AddAreaObject(void);
 
 UnkStruct_02309e9c *MapObj70_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -53,7 +53,7 @@ UnkStruct_02309e9c *MapObj70_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     if (p->unk4 & 0x40)
         func_ov000_02309be0(w);
     else
-        MapObj70_Action_Unk_ov000_02309e40(w);
-    func_ov000_02342780();
+        MapObj70_Action_Init(w);
+    Camera_AddAreaObject();
     return w;
 }

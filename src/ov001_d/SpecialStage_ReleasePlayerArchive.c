@@ -18,10 +18,10 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-BOOL func_02021310(void *arc, const char *name, void *narc);
-u32 func_02021264(void *arc, u32 idx);
-void func_0202566c(u32 p);
-BOOL func_020212e0(void *arc);
+BOOL NNS_FndMountArchive(void *arc, const char *name, void *narc);
+u32 NNS_FndGetArchiveFileByIndex(void *arc, u32 idx);
+void NNS_G3dResDefaultRelease(u32 p);
+BOOL NNS_FndUnmountArchive(void *arc);
 
 void SpecialStage_ReleasePlayerArchive(void) {
     vu32 fill1;
@@ -32,9 +32,9 @@ void SpecialStage_ReleasePlayerArchive(void) {
 
     if (gSpecialStagePlayerResources->res != NULL) {
         Model_Release(gSpecialStagePlayerResources->obj);
-        func_02021310(&arc, data_ov001_0231eef0, gSpecialStagePlayerResources->res);
-        func_0202566c(func_02021264(&arc, 0));
-        func_020212e0(&arc);
+        NNS_FndMountArchive(&arc, data_ov001_0231eef0, gSpecialStagePlayerResources->res);
+        NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByIndex(&arc, 0));
+        NNS_FndUnmountArchive(&arc);
         p = gSpecialStagePlayerResources->res;
         if ((u8 *)OS_GetArenaLo(0) != p) {
             p -= 0x20;

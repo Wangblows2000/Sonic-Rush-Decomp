@@ -52,7 +52,7 @@ extern UnkStruct_022cc224_cam data_ov000_0236a444;
 extern UnkStruct_022cc224_c data_ov000_0236a48c;
 extern UnkStruct_022cc224_pl *gPlayers;
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 void func_ov000_022cc224(void) {
     UnkStruct_022cc224_c *c;
@@ -60,7 +60,7 @@ void func_ov000_022cc224(void) {
     data_ov000_0236a444.unkDC = 2;
     data_ov000_0236a444.unkC = 0x1a66000;
     c = (UnkStruct_022cc224_c *)(u32)&data_ov000_0236a48c;
-    data_ov000_0236a444.unk14 = func_0200225c(0x1000, 0x34cc);
+    data_ov000_0236a444.unk14 = FX_Div(0x1000, 0x34cc);
     c->unk0 = c->unk4 = c->unk8 = 0;
     c->unkC = c->unk10 = c->unk14 = 0;
     c->unk30 = 0x200;

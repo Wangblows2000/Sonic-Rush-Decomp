@@ -61,7 +61,7 @@ void EffWaterSplash_Spawn(UnkStruct_023461f0 *w);
 void func_ov000_023294c8(UnkStruct_023461f0 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void EffDrownCount_Spawn(UnkStruct_023461f0 *w, s32 a, s32 b, s32 c);
-void func_ov000_02342a74(UnkStruct_023461f0 *w, s32 a);
+void StageJingle_Create(UnkStruct_023461f0 *w, s32 a);
 void Player_Action_Die(UnkStruct_023461f0 *w);
 
 static inline u16 Rand_023461f0(void) {
@@ -145,7 +145,7 @@ void Player_UpdateUnderwater(UnkStruct_023461f0 *w) {
         EffDrownCount_Spawn(w, 0, -0x18, 4);
         break;
     case 0x2a8:
-        func_ov000_02342a74(w, 0x17);
+        StageJingle_Create(w, 0x17);
         break;
     case 0x2d0:
         EffDrownCount_Spawn(w, 0, -0x18, 5);

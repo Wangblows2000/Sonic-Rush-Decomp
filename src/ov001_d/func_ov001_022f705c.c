@@ -35,7 +35,7 @@ extern UnkStruct_022f705c_d38 NNS_G3dGlb;
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
 
 void VEC_Add(const UnkStruct_022f705c_v *a, const UnkStruct_022f705c_v *b, UnkStruct_022f705c_v *c);
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
 void G3i_LookAt_(void *a, void *b, void *c, s32 d, void *e);
 
@@ -44,7 +44,7 @@ void func_ov001_022f705c(UnkStruct_022f705c *p) {
     UnkStruct_022f705c_v up;
 
     VEC_Add(&p->v20, &p->v38, &up);
-    p->v14.z = func_0200225c(COS(p->ang), SIN(p->ang)) * 0x60 + p->v20.z;
+    p->v14.z = FX_Div(COS(p->ang), SIN(p->ang)) * 0x60 + p->v20.z;
     VEC_Add(&p->v14, &p->v38, &pos);
     G3i_PerspectiveW_(SIN(p->ang), COS(p->ang), p->unkC, p->unk4, p->unk8, p->unk10, 0, data_02084d40);
     NNS_G3dGlb.unkFC &= ~0x50;

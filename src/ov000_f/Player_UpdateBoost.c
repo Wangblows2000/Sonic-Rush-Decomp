@@ -61,7 +61,7 @@ extern UnkStruct_023466e8 *gPlayers[];
 
 s32 ObjRect_HitCenterX(void *a, void *b);
 s32 ObjRect_HitCenterY(void *a, void *b);
-void func_ov000_0232ff6c(s32 a, s32 b);
+void EffVs_Create(s32 a, s32 b);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Player_State_InAir(UnkStruct_023466e8 *w);
 void Player_StartBoost(UnkStruct_023466e8 *w);
@@ -94,7 +94,7 @@ void Player_UpdateBoost(UnkStruct_023466e8 *w) {
         return;
     }
     if ((w->unk32C & 0x10000) && (w->unk422 & 0x100)) {
-        func_ov000_0232ff6c(ObjRect_HitCenterX(gPlayers[0]->unk2A0, gPlayers[1]->unk2A0),
+        EffVs_Create(ObjRect_HitCenterX(gPlayers[0]->unk2A0, gPlayers[1]->unk2A0),
                             ObjRect_HitCenterY(gPlayers[0]->unk2A0, gPlayers[1]->unk2A0));
         Sound_PlaySeqArcEx(w->unk384, 0, 0x40);
         w->unk3BE = 0x10;

@@ -2,7 +2,7 @@
 
 extern const s16 data_02072470[];
 
-fx32 func_0200225c(fx32 numer, fx32 denom);
+fx32 FX_Div(fx32 numer, fx32 denom);
 
 u16 FX_Atan2(fx32 y, fx32 x)
 {
@@ -88,8 +88,8 @@ u16 FX_Atan2(fx32 y, fx32 x)
         return 0;
     }
     if (positive) {
-        return (u16)(c + data_02072470[func_0200225c(a, b) >> 5]);
+        return (u16)(c + data_02072470[FX_Div(a, b) >> 5]);
     } else {
-        return (u16)(c - data_02072470[func_0200225c(a, b) >> 5]);
+        return (u16)(c - data_02072470[FX_Div(a, b) >> 5]);
     }
 }

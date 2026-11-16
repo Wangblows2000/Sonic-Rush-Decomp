@@ -68,7 +68,7 @@ void G3i_LookAt_(UnkVec_0231e850 *pos, UnkVec_0231e850 *up, UnkVec_0231e850 *at,
 void VEC_Subtract(const UnkVec_0231e850 *a, const UnkVec_0231e850 *b, UnkVec_0231e850 *ab);
 void VEC_Add(const UnkVec_0231e850 *a, const UnkVec_0231e850 *b, UnkVec_0231e850 *ab);
 s32 VEC_Mag(const UnkVec_0231e850 *v);
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 static inline s32 FX_MUL(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -108,9 +108,9 @@ void func_ov000_0231e850(void) {
         if (mag <= 4) {
             d.x = d.y = d.z = 0;
         } else {
-            d.x = func_0200225c(d.x, mag);
-            d.y = func_0200225c(d.y, mag);
-            d.z = func_0200225c(d.z, mag);
+            d.x = FX_Div(d.x, mag);
+            d.y = FX_Div(d.y, mag);
+            d.z = FX_Div(d.z, mag);
         }
         if (w->unk70 < mag)
             w->unk70 += w->unk38;
@@ -165,9 +165,9 @@ void func_ov000_0231e850(void) {
         if (mag <= 4) {
             d.x = d.y = d.z = 0;
         } else {
-            d.x = func_0200225c(d.x, mag);
-            d.y = func_0200225c(d.y, mag);
-            d.z = func_0200225c(d.z, mag);
+            d.x = FX_Div(d.x, mag);
+            d.y = FX_Div(d.y, mag);
+            d.z = FX_Div(d.z, mag);
         }
         if (w->unk34 < mag)
             w->unk34 += w->unk38;

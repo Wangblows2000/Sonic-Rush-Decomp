@@ -15,8 +15,8 @@ extern void *gMainHeap;
 extern char data_0207cf8c[];
 extern char data_0207cf90[];
 
-void func_02021310(void *f, void *path, void *arc);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void NNS_FndUnmountArchive(void *f);
 void *ObjData_Load(UnkRef_02068598 *s, const char *name, void *arc);
 void strcat(char *dst, const char *src);
 u32 File_GetSize(const char *path);
@@ -44,7 +44,7 @@ void func_02068598(UnkRef_02068598 *s, const char *name, void *arc) {
 
     if (s->ref != 0)
         return;
-    func_02021310(f, data_0207cf8c, arc);
+    NNS_FndMountArchive(f, data_0207cf8c, arc);
     src = ObjData_Load(s, name, arc);
     strcat(path, data_0207cf90);
     strcat(path, name);
@@ -52,5 +52,5 @@ void func_02068598(UnkRef_02068598 *s, const char *name, void *arc) {
     s->buf = Alloc_02068598((size + 0x43) & ~0x1f);
     s->ref &= ~0x8000;
     MIi_CpuCopy32(src, s->buf, size);
-    func_020212e0(f);
+    NNS_FndUnmountArchive(f);
 }

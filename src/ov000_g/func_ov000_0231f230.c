@@ -38,7 +38,7 @@ extern s16 data_0206e470[];
 void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 b, s32 d, s32 e, s32 f, void *mtx);
 void G3i_LookAt_(UnkVec_0231f230 *pos, UnkVec_0231f230 *up, UnkVec_0231f230 *at, s32 a, void *mtx);
 void VEC_Add(const UnkVec_0231f230 *a, const UnkVec_0231f230 *b, UnkVec_0231f230 *ab);
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
 #define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
@@ -65,7 +65,7 @@ void func_ov000_0231f230(void) {
     VEC_Add(&data_ov000_0236a444.unk24, &data_ov000_0236a444.unk3C, &at);
     data_ov000_0236a444.unk18.x = 0x80000;
     data_ov000_0236a444.unk18.y = -0x60000;
-    data_ov000_0236a444.unk18.z = func_0200225c(COS(data_ov000_0236a444.unk4), SIN(data_ov000_0236a444.unk4)) * 0x60;
+    data_ov000_0236a444.unk18.z = FX_Div(COS(data_ov000_0236a444.unk4), SIN(data_ov000_0236a444.unk4)) * 0x60;
     VEC_Add(&data_ov000_0236a444.unk18, &data_ov000_0236a444.unk3C, &pos);
     LookAt_0231f230(&pos, &data_ov000_0236a444.unk30, &at);
 }

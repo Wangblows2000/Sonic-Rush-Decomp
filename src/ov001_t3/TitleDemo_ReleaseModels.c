@@ -20,10 +20,10 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 void Model_Release(void *o);
-BOOL func_02021310(UnkArc_022d6738 *arc, const char *name, void *narc);
-void *func_02021264(UnkArc_022d6738 *arc, u32 idx);
-void func_0202566c(void *res);
-BOOL func_020212e0(UnkArc_022d6738 *arc);
+BOOL NNS_FndMountArchive(UnkArc_022d6738 *arc, const char *name, void *narc);
+void *NNS_FndGetArchiveFileByIndex(UnkArc_022d6738 *arc, u32 idx);
+void NNS_G3dResDefaultRelease(void *res);
+BOOL NNS_FndUnmountArchive(UnkArc_022d6738 *arc);
 
 #pragma thumb on
 static inline void Free_022d6738(void *p) {
@@ -46,10 +46,10 @@ void TitleDemo_ReleaseModels(UnkStruct_022d6738 *p) {
     if (p->res0 == NULL) return;
     Model_Release(p->obj14);
     Model_Release(p->obj14c);
-    func_02021310(&arc, data_ov001_0231b7f8, p->res0);
-    func_0202566c(func_02021264(&arc, 0));
-    func_0202566c(func_02021264(&arc, 3));
-    func_020212e0(&arc);
+    NNS_FndMountArchive(&arc, data_ov001_0231b7f8, p->res0);
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByIndex(&arc, 0));
+    NNS_G3dResDefaultRelease(NNS_FndGetArchiveFileByIndex(&arc, 3));
+    NNS_FndUnmountArchive(&arc);
     Free_022d6738(p->res0);
     p->res0 = NULL;
     Free_022d6738(p->res1);

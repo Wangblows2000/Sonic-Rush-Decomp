@@ -5,7 +5,7 @@
 
 s32 ZoneActSelect_IsFinished();
 s32 ZoneActSelect_GetResult();
-s32 func_ov001_022c5fdc();
+s32 ZoneActSelectMode_Shutdown();
 extern u8 gTaskCurrent[];
 s32 Task_Destroy();
 s32 ZoneActSelectMode_ExitToTitleMenu();
@@ -15,7 +15,7 @@ void ZoneActSelectMode_Main(void) {
     s32 t0 = ZoneActSelect_IsFinished();
     if (t0 != 0) {
         s32 t1 = ZoneActSelect_GetResult();
-        func_ov001_022c5fdc();
+        ZoneActSelectMode_Shutdown();
         Task_Destroy(*(u32 *)gTaskCurrent);
         if (t1 < 0) {
             ZoneActSelectMode_ExitToTitleMenu();

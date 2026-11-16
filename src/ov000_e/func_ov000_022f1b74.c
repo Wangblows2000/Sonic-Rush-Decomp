@@ -39,8 +39,8 @@ extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_Player *gPlayers;
 extern UnkStruct_Mgr *gBossF;
 
-void func_ov000_022f4ce4(UnkStruct_022f1b74 *s, s32 a, s32 b, s32 c);
-void func_ov000_022f8b70(u32 a, s32 b);
+void BossFPartD8_SetAnimation(UnkStruct_022f1b74 *s, s32 a, s32 b, s32 c);
+void BossF_LoadPalette(u32 a, s32 b);
 s32 FX_Atan2(s32 y, s32 x);
 s32 FX_Sqrt(s32 a);
 BOOL func_ov000_022f8f78(void);
@@ -58,8 +58,8 @@ void func_ov000_022f1b74(UnkStruct_022f1b74 *s) {
     s32 dx;
     s32 dy;
 
-    func_ov000_022f4ce4(s, 0x1e, 0x1000, 0);
-    func_ov000_022f8b70(gGameState.unk0, 0);
+    BossFPartD8_SetAnimation(s, 0x1e, 0x1000, 0);
+    BossF_LoadPalette(gGameState.unk0, 0);
     dx = s->unk3C4 - s->unk424;
     dy = s->unk3C8 - s->unk428;
     s->unk438 = FX_Atan2(dy, dx) + 0x8000;

@@ -1,0 +1,34 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_022c72f8_2 {
+    u8 pad[4];
+    u8 *unk4;
+} UnkStruct_022c72f8_2;
+
+typedef struct UnkStruct_022ca0a8 {
+    u8 pad[4];
+    UnkStruct_022c72f8_2 *unk4;
+    u32 unk8;
+    u8 pad1[0x24 - 0xc];
+    s32 unk24;
+    u8 pad2[0x92 - 0x28];
+    u8 unk92;
+    u8 pad3[0xae - 0x93];
+    u8 unkAE;
+} UnkStruct_022ca0a8;
+
+extern u8 data_ov000_02362c54;
+
+s32 NNS_G3dGetResDictIdxByName(void *p, void *q);
+void NNS_G3dGeBufferOP_N(s32 a, void *b, s32 c);
+
+void Boss1Neck_NodeCallback_NeckHam(UnkStruct_022ca0a8 *s) {
+    s32 buf;
+    s32 v = NNS_G3dGetResDictIdxByName(s->unk4->unk4 + 0x40, &data_ov000_02362c54);
+    if (v != ((s->unk8 & 0x10) ? s->unkAE : -1))
+        return;
+    buf = 0x1e;
+    NNS_G3dGeBufferOP_N(0x13, &buf, 1);
+    s->unk24 = 0;
+    s->unk92 = 0;
+}

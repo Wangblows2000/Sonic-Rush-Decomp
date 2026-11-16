@@ -3,7 +3,7 @@
 
 s32 BossEffect_CreateTackle();
 s32 Sound_PlayVoice();
-s32 func_ov000_022f4ce4();
+s32 BossFPartD8_SetAnimation();
 s32 Sound_PlaySeqArc();
 void func_ov000_022f0158();
 
@@ -14,7 +14,7 @@ void func_ov000_022f01f8(u8 *p0) {
     s32 t1 = *(u32 *)((u8 *)p0 + 0x434);
     *(u32 *)((u8 *)t1 + 0xc) = 0x270f;
     Sound_PlayVoice(0, 0, 0xd2, t1);
-    func_ov000_022f4ce4(p0, 0x21, 0x1000, 1);
+    BossFPartD8_SetAnimation(p0, 0x21, 0x1000, 1);
     Sound_PlaySeqArc(0, 0, 0xc7);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)func_ov000_022f0158;
 }

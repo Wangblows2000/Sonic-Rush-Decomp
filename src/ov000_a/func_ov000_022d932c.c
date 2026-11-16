@@ -90,8 +90,8 @@ extern UnkStruct_022d932c_g gDisplayMain;
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void StageObj_ClearPause(void);
 UnkStruct_022d932c_q *BossEffect_CreateBlast3(s32 a, s32 b, s32 c, s32 d);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss3_State_Unk_ov000_022d9264(UnkStruct_022d932c *s);
 
@@ -142,8 +142,8 @@ void func_ov000_022d932c(UnkStruct_022d932c *s) {
     q->unk13F = 3;
     q->unk140 = 0;
     q->unk248 = 0x800;
-    func_020537b4(0xd);
-    func_020533e0(0x13, 0xf0);
+    NaviMsg_SetFaceAnim(0xd);
+    NaviMsg_ShowMessage(0x13, 0xf0);
     gDisplayMain.unk48 = 0x10;
     Sound_PlaySeqArc(0, 0, 0x7d);
     s->unk224 = 0;

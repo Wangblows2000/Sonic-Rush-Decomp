@@ -22,10 +22,10 @@ extern UnkStruct_022c4560 gGameState;
 extern u16 data_ov000_02363dd4[];
 
 void func_ov000_022f0fdc(UnkStruct_022eff30 *s, s32 a);
-void func_ov000_022f8fa0(u16 *p, s32 a, s32 b);
-void func_ov000_022f9044(UnkStruct_022eff30 *s);
+void BossF_UpdateCameraShake(u16 *p, s32 a, s32 b);
+void BossFPartD8_InitHitboxes(UnkStruct_022eff30 *s);
 void func_ov000_022f4cbc(UnkStruct_022eff30 *s);
-void func_ov000_022f8b70(u32 a, s32 b);
+void BossF_LoadPalette(u32 a, s32 b);
 void func_ov000_022efdf0(void);
 
 static inline s32 GetIdxB(void) {
@@ -40,19 +40,19 @@ static inline s32 GetIdxB(void) {
 void func_ov000_022eff30(UnkStruct_022eff30 *s) {
     func_ov000_022f0fdc(s, 0x10);
     s->unk450 = 0x100;
-    func_ov000_022f8fa0(&s->unk450, 4, 8);
+    BossF_UpdateCameraShake(&s->unk450, 4, 8);
     if (s->unk454 > 0xb4) {
         if (!(s->unk216 & 4)) {
-            func_ov000_022f9044(s);
+            BossFPartD8_InitHitboxes(s);
             func_ov000_022f4cbc(s);
             s->unk216 |= 4;
         }
         s->unk456++;
         if (!(s->unk456 & 3)) {
             if (s->unk456 & 0x8000)
-                func_ov000_022f8b70(gGameState.unk0, 0);
+                BossF_LoadPalette(gGameState.unk0, 0);
             else
-                func_ov000_022f8b70(gGameState.unk0, 1);
+                BossF_LoadPalette(gGameState.unk0, 1);
             s->unk456 &= ~3;
             s->unk456 ^= 0x8000;
         }

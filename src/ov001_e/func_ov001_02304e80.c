@@ -37,7 +37,7 @@ typedef struct UnkStruct_02304e80_q {
 extern UnkStruct_02304e80 *data_ov001_0231f54c;
 extern UnkStruct_02304e80_p *data_ov001_0231f550[];
 
-BOOL func_ov001_02300c68(void);
+BOOL ExtraBoss_IsPlayerSpawned(void);
 UnkStruct_02304e80_q *ExtraBoss_GetPlayer(void);
 void PaletteTransfer_QueueCopy(void *src, u32 size, u32 offset, void *dst);
 
@@ -51,7 +51,7 @@ void func_ov001_02304e80(void) {
         return;
     }
     s = data_ov001_0231f54c->unk590;
-    if (func_ov001_02300c68() && ExtraBoss_GetPlayer()->work->type == 5)
+    if (ExtraBoss_IsPlayerSpawned() && ExtraBoss_GetPlayer()->work->type == 5)
         s >>= 1;
     data_ov001_0231f54c->unk588 += s;
     data_ov001_0231f54c->unk594 = s;

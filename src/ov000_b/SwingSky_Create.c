@@ -79,11 +79,11 @@ void StageObj_SetOAMPriority(UnkStruct_023185b4 *w, s32 a);
 void ObjAction_Load2dBAC(UnkStruct_023185b4_Spr *a, UnkStruct_023185b4_Spr *b, void *c, s32 d, void *e, void *f);
 void AnimatorSprite_SetAnimation(UnkStruct_023185b4_Spr *a, s32 b);
 void SpritePair_SetOAMOrder(UnkStruct_023185b4_Spr *a, UnkStruct_023185b4_Spr *b, s32 c);
-void func_02069e68(UnkStruct_023185b4_Spr *a, UnkStruct_023185b4_Spr *b, s32 c, void *d);
+void StageObj_AcquireSpriteVramPair(UnkStruct_023185b4_Spr *a, UnkStruct_023185b4_Spr *b, s32 c, void *d);
 void SpritePair_SetOAMPriority(UnkStruct_023185b4_Spr *a, UnkStruct_023185b4_Spr *b, s32 c);
 void ObjRect_SetBox2D(UnkStruct_023185b4_Coll *c, s32 a, s32 b, s32 d, s32 e);
 void ObjRect_SetAtkDefFlags(UnkStruct_023185b4_Coll *c, s32 a, s32 b);
-void func_ov000_02318080(UnkStruct_023185b4 *w);
+void SwingSky_Action_Init(UnkStruct_023185b4 *w);
 
 UnkStruct_023185b4 *SwingSky_Create(s32 a, s32 b, s32 c) {
     UnkStruct_023185b4_Task *task;
@@ -111,7 +111,7 @@ UnkStruct_023185b4 *SwingSky_Create(s32 a, s32 b, s32 c) {
     SpritePair_SetOAMOrder(&w->s0, &w->s1, 0x14);
     w->s0.unk44 = w->spr0.unk44;
     w->s1.unk44 = w->spr0.unk44;
-    func_02069e68(&w->s0, &w->s1, 1, data_ov000_0236a274);
+    StageObj_AcquireSpriteVramPair(&w->s0, &w->s1, 1, data_ov000_0236a274);
 
     ObjAction_Load2dBAC(&w->s2, &w->s3, data_ov000_02367058, 0, data_ov000_0236a26c, data_ov000_02369ba0);
     AnimatorSprite_SetAnimation(&w->s2, 2);
@@ -119,7 +119,7 @@ UnkStruct_023185b4 *SwingSky_Create(s32 a, s32 b, s32 c) {
     SpritePair_SetOAMOrder(&w->s2, &w->s3, 0x14);
     w->s2.unk44 = w->spr0.unk44;
     w->s3.unk44 = w->spr0.unk44;
-    func_02069e68(&w->s2, &w->s3, 1, data_ov000_0236a284);
+    StageObj_AcquireSpriteVramPair(&w->s2, &w->s3, 1, data_ov000_0236a284);
 
     ObjAction_Load2dBAC(&w->s4, &w->s5, data_ov000_02367074, 0, data_ov000_0236a26c, data_ov000_02369ba0);
     AnimatorSprite_SetAnimation(&w->s4, 4);
@@ -127,7 +127,7 @@ UnkStruct_023185b4 *SwingSky_Create(s32 a, s32 b, s32 c) {
     SpritePair_SetOAMOrder(&w->s4, &w->s5, 0x13);
     w->s4.unk44 = w->spr0.unk44;
     w->s5.unk44 = w->spr0.unk44;
-    func_02069e68(&w->s4, &w->s5, 8, data_ov000_0236a294);
+    StageObj_AcquireSpriteVramPair(&w->s4, &w->s5, 8, data_ov000_0236a294);
     w->s4.unk2C |= 0x200;
     w->s5.unk2C |= 0x200;
 
@@ -154,6 +154,6 @@ UnkStruct_023185b4 *SwingSky_Create(s32 a, s32 b, s32 c) {
     if (w->unk1E0->unk8 == 0)
         w->unk1E0->unk8 = 0xd0;
     w->unk4A4 = 0x38e38e38;
-    func_ov000_02318080(w);
+    SwingSky_Action_Init(w);
     return w;
 }

@@ -6,7 +6,7 @@ extern UnkWork_02051ca4 *gSysSound;
 extern UnkStruct_022c4560 gGameState;
 extern void *gSoundHeap;
 
-void func_02052000(void);
+void SysSound_StopAll(void);
 void NNS_SndArcLoadGroup(s32 id, void *p);
 
 #pragma thumb on
@@ -28,7 +28,7 @@ void SysSound_LoadSEGroup(s32 stage) {
         return;
     if (grp == gSysSound->unk0)
         return;
-    func_02052000();
+    SysSound_StopAll();
     gSysSound->unk4 = 7;
     switch (grp) {
     case 0:

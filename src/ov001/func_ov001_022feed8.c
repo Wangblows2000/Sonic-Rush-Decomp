@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-void func_ov001_02300ca8(void);
+void ExtraBossObj_DrawAll(void);
 
 void func_ov001_022feed8(void) {
-    func_ov001_02300ca8();
+    ExtraBossObj_DrawAll();
 }

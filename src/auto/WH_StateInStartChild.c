@@ -9,7 +9,7 @@ extern u8 data_022c1994[];
 extern u8 data_022c1ae0[];
 extern u8 data_022c19b4[];
 void WH_StateOutStartChild();
-s32 func_020116a0();
+s32 WM_StartConnectEx();
 s32 WH_SetError();
 
 s32 WH_StateInStartChild(void) {
@@ -21,7 +21,7 @@ s32 WH_StateInStartChild(void) {
         return 1;
     }
     WH_ChangeSysState(3);
-    s32 t1 = func_020116a0((u32)WH_StateOutStartChild, data_022c1ae0, data_022c19b4, 1, ((u32)((*(u32 *)data_022c1994 != 0) << 0x10) >> 0x10));
+    s32 t1 = WM_StartConnectEx((u32)WH_StateOutStartChild, data_022c1ae0, data_022c19b4, 1, ((u32)((*(u32 *)data_022c1994 != 0) << 0x10) >> 0x10));
     if (t1 == 2) {
         return 1;
     }

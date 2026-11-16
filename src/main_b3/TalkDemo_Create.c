@@ -15,10 +15,10 @@ void TalkDemo_Main(void);
 void TalkDemo_Destructor(void);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
-void func_02060d00(UnkWork_02060f40 *w);
+void TalkDemo_State_Load(UnkWork_02060f40 *w);
 void System_Freeze(s32 a, s32 b, s32 c);
-void func_0206069c(UnkWork_02060f40 *w);
-void func_02060ab0(UnkWork_02060f40 *w);
+void TalkDemo_InitSkippable(UnkWork_02060f40 *w);
+void TalkDemo_InitDisplay(UnkWork_02060f40 *w);
 
 #pragma thumb on
 void TalkDemo_Create(void) {
@@ -47,10 +47,10 @@ void TalkDemo_Create(void) {
             break;
         }
         w->unk20 = lang;
-        w->fn = func_02060d00;
+        w->fn = TalkDemo_State_Load;
         System_Freeze(1, 1, 1);
-        func_0206069c(w);
-        func_02060ab0(w);
+        TalkDemo_InitSkippable(w);
+        TalkDemo_InitDisplay(w);
     }
 }
 #pragma thumb reset

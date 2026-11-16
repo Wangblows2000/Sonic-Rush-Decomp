@@ -65,7 +65,7 @@ void ObjVram_Reset(s32 a);
 void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
 void G3X_SetClearColor(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_ov001_022e9778(void);
+void TimeAttackMenu_ResetDisplay(void);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MTX_Identity22_(UnkStruct_022c5d1c_Mtx *m);
 void G2x_SetBGyAffine_(void *a, UnkStruct_022c5d1c_Mtx *m, s32 c, s32 d, s32 e, s32 f);

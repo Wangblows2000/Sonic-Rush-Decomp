@@ -57,7 +57,7 @@ extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_02074960 data_02074960[][3];
 
 void Player_State_HomingAttack(void);
-void func_02022270(s32 idx, s32 color);
+void NNS_G3dGlbLightColor(s32 idx, s32 color);
 void StageObj_Draw3DEx(s32 x, s32 y, s32 z, s32 a, UnkStruct_0234360c *s, void *b);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
@@ -73,13 +73,13 @@ void Player_Draw(void) {
 
     if (s->unk3C4 != 0 || ((s->unk68 == Player_State_HomingAttack || (s->unk32C & 0x100)) && !(s->unk32C & 0x80))) {
         if (s->unk324 != 1) {
-            func_02022270(0, 0x6182);
-            func_02022270(1, 0x6182);
-            func_02022270(2, 0x6182);
+            NNS_G3dGlbLightColor(0, 0x6182);
+            NNS_G3dGlbLightColor(1, 0x6182);
+            NNS_G3dGlbLightColor(2, 0x6182);
         } else {
-            func_02022270(0, 0x1a98);
-            func_02022270(1, 0x1a98);
-            func_02022270(2, 0x1a98);
+            NNS_G3dGlbLightColor(0, 0x1a98);
+            NNS_G3dGlbLightColor(1, 0x1a98);
+            NNS_G3dGlbLightColor(2, 0x1a98);
         }
         s->unk5C |= 0x1010;
         if (s->unk32C & 0x80000000) {
@@ -98,9 +98,9 @@ void Player_Draw(void) {
             if (ABS(s->unk10 - s->unk1C) >= 0x200 || ABS(s->unk14 - s->unk20) >= 0x200)
                 StageObj_Draw3DEx(s->unk1C, s->unk20, s->unk24, s->unk1, s, s->unk134);
         }
-        func_02022270(0, data_02074960[gGameState.unk1C][gGameState.unk1D].x);
-        func_02022270(1, data_02074960[gGameState.unk1C][gGameState.unk1D].y);
-        func_02022270(2, data_02074960[gGameState.unk1C][gGameState.unk1D].z);
+        NNS_G3dGlbLightColor(0, data_02074960[gGameState.unk1C][gGameState.unk1D].x);
+        NNS_G3dGlbLightColor(1, data_02074960[gGameState.unk1C][gGameState.unk1D].y);
+        NNS_G3dGlbLightColor(2, data_02074960[gGameState.unk1C][gGameState.unk1D].z);
         s->unk5C = saved;
     }
 
@@ -111,8 +111,8 @@ void Player_Draw(void) {
     s->unk398 = s->unk20;
     s->unk39C = s->unk24;
     if (s->unk32C & 0x4000000) {
-        func_02022270(0, 0x7ef5);
-        func_02022270(1, 0x4548);
-        func_02022270(2, 0x2040);
+        NNS_G3dGlbLightColor(0, 0x7ef5);
+        NNS_G3dGlbLightColor(1, 0x4548);
+        NNS_G3dGlbLightColor(2, 0x2040);
     }
 }

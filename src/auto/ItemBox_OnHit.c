@@ -3,7 +3,7 @@
 
 s32 ObjRect_FuncNoHit();
 s32 Sound_PlaySeqArcEx();
-s32 func_ov000_0232e628();
+s32 EffZakoBombBurst_Create();
 s32 Player_Action_AttackBounce();
 s32 func_ov000_0230da90();
 s32 ItemBox_CreatePart_ov000_0230d5d4();
@@ -23,7 +23,7 @@ void ItemBox_OnHit(u8 *p0, u8 *p1) {
         return;
     }
     Sound_PlaySeqArcEx(0, 0, 0x34);
-    func_ov000_0232e628(t0, 0, 0);
+    EffZakoBombBurst_Create(t0, 0, 0);
     *(u32 *)((u8 *)t0 + 0x54) = (*(u32 *)((u8 *)t0 + 0x54) | 8);
     *(u32 *)((u8 *)t0 + 0x54) = (*(u32 *)((u8 *)t0 + 0x54) | 2);
     *(u32 *)((u8 *)t0 + 0x1f4) = (*(u32 *)((u8 *)t0 + 0x1f4) | 0x10);

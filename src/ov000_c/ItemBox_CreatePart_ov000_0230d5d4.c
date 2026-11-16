@@ -5,7 +5,7 @@ extern UnkStruct_Task *data_ov000_0236a018;
 extern u8 data_ov000_02366b4c[], data_ov000_0236a01c[];
 
 void ItemBoxPart_Destructor_ov000_0230d5b8(void);
-void ItemBoxPart_State_Unk_ov000_0230d544(void);
+void ItemBoxPart_State_FadeOut(void);
 void ObjDraw_ReleaseSpritePalette(s32 a);
 
 void ItemBox_CreatePart_ov000_0230d5d4(s32 a, s32 b, s32 c, u32 k) {
@@ -52,5 +52,5 @@ void ItemBox_CreatePart_ov000_0230d5d4(s32 a, s32 b, s32 c, u32 k) {
     w->unk58 |= 0x100;
     w->unk54 |= 0x12;
     w->unk5C |= 0x80;
-    w->unk68 = ItemBoxPart_State_Unk_ov000_0230d544;
+    w->unk68 = ItemBoxPart_State_FadeOut;
 }

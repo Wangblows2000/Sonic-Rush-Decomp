@@ -5,7 +5,7 @@ extern u8 data_0207f2c0[];
 s32 MI_StopDma();
 s32 OS_DisableIrqMask();
 s32 OS_ResetRequestIrqMask();
-s32 func_020102d8();
+s32 CARDi_ReadEnd();
 s32 CARDi_SetCardDma();
 
 void CARDi_OnReadCard(void) {
@@ -19,7 +19,7 @@ void CARDi_OnReadCard(void) {
     if (t2 == 0) {
         OS_DisableIrqMask(0x80000, t2, t1, t0);
         OS_ResetRequestIrqMask(0x80000);
-        func_020102d8();
+        CARDi_ReadEnd();
         return;
     }
     CARDi_SetCardDma();

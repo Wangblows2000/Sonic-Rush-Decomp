@@ -23,14 +23,14 @@ extern UnkStruct_Boss *gBoss6;
 extern UnkStruct_02369ac0 gBossStatus;
 extern s32 data_ov000_02363824[];
 
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov000_022e5df0(void);
 void Boss6_State_Unk_ov000_022e3674(void);
 
 void func_ov000_022e3718(void) {
     UnkStruct_Boss *w = gBoss6;
 
-    func_02021c38(w->unk9F0, func_ov000_022e5df0, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(w->unk9F0, func_ov000_022e5df0, 0, 6, 3);
     if (w->unkF54 >= 0) {
         if (w->unkF58 > 0) {
             w->unkF54 = -w->unkF54;

@@ -9,7 +9,7 @@ void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 extern u8 *gSpecialStageData;
-void func_ov001_0231414c(void *p);
+void SpecialStage_FreeStageDataBlock(void *p);
 
 void SpecialStage_ReleaseStageData(void) {
     u8 *blk = gSpecialStageData;
@@ -17,7 +17,7 @@ void SpecialStage_ReleaseStageData(void) {
         return;
     }
     if (*(void **)(blk + 0x14) != NULL) {
-        func_ov001_0231414c(*(void **)(blk + 0x14));
+        SpecialStage_FreeStageDataBlock(*(void **)(blk + 0x14));
         *(void **)(blk + 0x14) = NULL;
     }
     if ((u8 *)OS_GetArenaLo(0) != blk) {

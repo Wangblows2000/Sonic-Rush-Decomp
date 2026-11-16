@@ -101,7 +101,7 @@ extern UnkStruct_022d7fd4_c data_ov000_0236a48c;
 void func_ov000_022daa78(void);
 void func_ov000_022daa5c(void);
 void func_ov000_022da6b4(void);
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void BossEffect_CreateJump(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss3PartCC_State_Unk_ov000_022d7f40(UnkStruct_022d7fd4 *s);
@@ -118,7 +118,7 @@ void Boss3PartCC_State_Unk_ov000_022d7fd4(UnkStruct_022d7fd4 *s) {
     s->unk13E &= ~4;
     s->unk16A &= ~4;
     func_ov000_022daa5c();
-    func_ov000_022c5e80(0xf42f8, 0x5fe435, s->unk10 << 4, NULL, NULL, &s->unk258);
+    BossArena_ArcToCirclePos(0xf42f8, 0x5fe435, s->unk10 << 4, NULL, NULL, &s->unk258);
     c = (UnkStruct_022d7fd4_c *)(u32)&data_ov000_0236a48c;
     if (s->unk5C & 1)
         s->unk224 = s->unk258 - 0x4000;

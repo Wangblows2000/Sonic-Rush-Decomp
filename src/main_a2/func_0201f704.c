@@ -11,7 +11,7 @@ void *NNS_FndGetNextListObject(void *list, void *obj);
 void MI_CpuFill8(void *dst, u8 val, u32 size);
 void NNS_FndRemoveListObject(void *list, void *obj);
 void FreeCommandBuffer(UnkNode_0201f704 *n);
-UnkNode_0201f704 *func_0201f93c(void);
+UnkNode_0201f704 *AllocCommandBuffer(void);
 void NNS_FndAppendListObject(void *list, void *obj);
 void OS_WakeupThread(void *q);
 
@@ -30,7 +30,7 @@ void func_0201f704(s32 type, s32 count, void **bufs, u32 size, u32 unused, UnkSt
         s->unk118--;
         FreeCommandBuffer(n);
     }
-    n = func_0201f93c();
+    n = AllocCommandBuffer();
     n->strm = s;
     n->type = type;
     n->count = count;

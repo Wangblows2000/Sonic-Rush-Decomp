@@ -22,9 +22,9 @@ void StageExit_Create(void (*f)(void), s32 a);
 void SceneChange_ToTryAgain(void);
 void SceneChange_ToExtraEnding(void);
 void SceneChange_ToEnding(void);
-void func_0204e4b8(void);
-void func_0204e498(void);
-void func_02054378(void);
+void Game_AdvanceAct(void);
+void Game_AdvanceActWithDemo(void);
+void NaviMsg_CloseFiles(void);
 void NaviB_Release(void);
 void DemoScript_StartScript4(void);
 void SceneChange_ToZoneMap_1_0(void);
@@ -51,19 +51,19 @@ void ClearDemo_GoToNextScene(void) {
         data_022c45f8 &= ~1;
         switch (gGameState.unk1d) {
         case 0:
-            StageExit_Create(func_0204e4b8, 3);
+            StageExit_Create(Game_AdvanceAct, 3);
             return;
         case 1:
-            StageExit_Create(func_0204e498, 3);
+            StageExit_Create(Game_AdvanceActWithDemo, 3);
             return;
         case 2:
             if (mode == 6) {
-                func_02054378();
+                NaviMsg_CloseFiles();
                 NaviB_Release();
                 StageExit_Create(DemoScript_StartScript4, 1);
                 return;
             }
-            func_02054378();
+            NaviMsg_CloseFiles();
             NaviB_Release();
             StageExit_Create(SceneChange_ToZoneMap_1_0, 1);
             return;
@@ -79,7 +79,7 @@ void ClearDemo_GoToNextScene(void) {
             StageExit_Create(SceneChange_ToZoneMap_1_1, 3);
             return;
         case 2:
-            func_02054378();
+            NaviMsg_CloseFiles();
             NaviB_Release();
             StageExit_Create(SceneChange_ToZoneMap_1_1, 1);
             return;

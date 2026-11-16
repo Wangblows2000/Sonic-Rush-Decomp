@@ -15,7 +15,7 @@ extern u8 data_ov000_02369f04[], data_ov000_02369ed4[], data_ov000_02369f14[], d
 
 void DashC_Destructor(void);
 void DashC_OnHit(void);
-void func_ov000_02306e74(UnkStruct_02307380 *w);
+void DashC_Action_Init(UnkStruct_02307380 *w);
 s32 ObjVramRef_Acquire(void *pal, s32 a, s32 n);
 void AnimatorSprite_Init(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, u32 h);
 
@@ -143,6 +143,6 @@ UnkStruct_02307380 *DashC_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         }
         break;
     }
-    func_ov000_02306e74(w);
+    DashC_Action_Init(w);
     return w;
 }

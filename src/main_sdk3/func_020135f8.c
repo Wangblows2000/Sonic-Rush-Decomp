@@ -23,7 +23,7 @@ typedef struct {
     u16 unk32;
 } UnkInfo_020135f8;
 
-BOOL func_02015520(void);
+BOOL WBT_GetOwnAid(void);
 UnkInfo_020135f8 *func_02015540(u32 a);
 s32 func_02014320(u32 a, u32 b);
 u32 func_02014288(u32 a, u32 b);
@@ -41,7 +41,7 @@ s32 func_020135f8(u8 *ctx, s32 idx, void *buf)
     s32 x;
 
     if (e->state == 2) {
-        bitmap = func_02015520() == 0 ? 0xfffe : 1;
+        bitmap = WBT_GetOwnAid() == 0 ? 0xfffe : 1;
         if (e->type == 4) {
             info = func_02015540(e->unk10);
             if (info != NULL) {

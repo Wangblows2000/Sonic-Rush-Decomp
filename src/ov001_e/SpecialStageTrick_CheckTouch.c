@@ -34,7 +34,7 @@ extern UnkStruct_023146b4_g *gSpecialStageTrick;
 extern UnkStruct_023146b4_tp gTouchState;
 extern u8 data_ov001_02317e80[];
 
-BOOL func_ov001_0230adcc(void *a, UnkStruct_023146b4_v *v, s32 x, s32 y);
+BOOL SpecialStage_IsPointInCircle(void *a, UnkStruct_023146b4_v *v, s32 x, s32 y);
 
 s32 SpecialStageTrick_CheckTouch(s32 idx, s32 n, s32 cur) {
     UnkStruct_023146b4_e *e = &gSpecialStageTrick->entries[idx];
@@ -47,7 +47,7 @@ s32 SpecialStageTrick_CheckTouch(s32 idx, s32 n, s32 cur) {
         for (i = cur; i < e->count; i++) {
             v.x = e->pts[i].x << 12;
             v.y = e->pts[i].y << 12;
-            if (func_ov001_0230adcc(data_ov001_02317e80, &v, gTouchState.x << 12, gTouchState.y << 12)) {
+            if (SpecialStage_IsPointInCircle(data_ov001_02317e80, &v, gTouchState.x << 12, gTouchState.y << 12)) {
                 if (i == cur)
                     return cur < e->count - 1 ? cur + 1 : 0x1234;
                 return -1;

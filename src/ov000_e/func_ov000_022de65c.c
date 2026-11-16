@@ -56,14 +56,14 @@ extern UnkStruct_022de65c_b *gBoss3;
 extern UnkStruct_022de65c_d data_ov000_0236a444;
 extern UnkStruct_022de65c_c data_ov000_0236a48c;
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 void func_ov000_022de65c(void) {
     UnkStruct_022de65c_c *c;
     data_ov000_0236a444.unkDC = 2;
     data_ov000_0236a444.unkC = 0x1a66000;
     c = (UnkStruct_022de65c_c *)(u32)&data_ov000_0236a48c;
-    data_ov000_0236a444.unk14 = func_0200225c(0x1000, 0x34cc);
+    data_ov000_0236a444.unk14 = FX_Div(0x1000, 0x34cc);
     data_ov000_0236a444.unk4 = 0x1555;
     c->unk8 = 0;
     c->unk4 = c->unk8;

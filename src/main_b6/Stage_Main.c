@@ -44,9 +44,9 @@ s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 void ObjDraw_SetGlobalOffset(s32 a, s32 b);
 void ObjRect_CheckAllGroup(void);
-void func_02067cc8(void);
+void ObjCollisionMap_CommitFrame(void);
 void PauseMenu_Create(s32 mode);
-void func_0206c970(void);
+void NetPacket_BuildSendBuffer(void);
 
 void Stage_Main(void) {
     func_ov000_023375f8(data_022c4590.unk14);
@@ -64,9 +64,9 @@ void Stage_Main(void) {
         gCamera.unk7e = gCamera.unk1a;
     }
     ObjRect_CheckAllGroup();
-    func_02067cc8();
+    ObjCollisionMap_CommitFrame();
     if (gPad[2] & 8)
         PauseMenu_Create(0);
     if (gGameState.flags & 0x20)
-        func_0206c970();
+        NetPacket_BuildSendBuffer();
 }

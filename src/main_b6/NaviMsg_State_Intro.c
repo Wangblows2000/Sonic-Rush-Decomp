@@ -1,0 +1,41 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u32 pad0;
+    s32 idx;
+    u8 pad8[0xd4];
+    void (*fndc)(void);
+    u8 pade0[0x1c];
+    s32 cnt;
+} UnkWork_02052e7c;
+
+typedef struct {
+    u8 pad0[0x20];
+    u16 blendCnt;
+    u16 blendAlpha;
+} UnkDisp_02052e7c;
+
+extern UnkDisp_02052e7c *gDisplayTable[];
+extern s32 data_02075664[];
+extern u32 data_0207566c[];
+
+void NaviMsgFace_Play(UnkWork_02052e7c *w, s32 n);
+void NaviMsg_LoadPanel(UnkWork_02052e7c *w, s32 idx, s32 v);
+void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
+
+void NaviMsg_State_Intro(UnkWork_02052e7c *w) {
+    s32 v;
+
+    w->cnt++;
+    if (w->cnt >= 60) {
+        gDisplayTable[1]->blendCnt = 0x40;
+        gDisplayTable[1]->blendAlpha = 0x1f00;
+        w->fndc = NULL;
+        NaviMsgFace_Play(w, 2);
+        NaviMsg_LoadPanel(w, data_02075664[w->idx], 0xf0);
+        Sound_PlaySeqArc(0, data_0207566c[w->idx], 9);
+    } else {
+        v = (w->cnt * 31 / 60) & 0x1f;
+        gDisplayTable[1]->blendAlpha = v | ((31 - v) << 8);
+    }
+}

@@ -6,7 +6,7 @@ extern void FX_InvAsync(void);
 extern u32 data_02084d40;
 extern u32 data_02084d84;
 extern void MTX_MultVec43(void);
-extern void func_0202205c(void);
+extern void NNS_G3dGlbGetViewPort(void);
 
 asm void NNS_G3dWorldPosToScrPos(void)
 {
@@ -91,7 +91,7 @@ _12c:
     add r1, sp, #4
     add r2, sp, #8
     add r3, sp, #0xc
-    bl func_0202205c
+    bl NNS_G3dGlbGetViewPort
     ldr r2, [sp]
     ldr r0, [sp, #8]
     ldr r12, [sp, #0xc]

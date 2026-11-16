@@ -27,22 +27,22 @@ typedef struct UnkStruct_02306d04 {
 
 extern UnkStruct_02306d04_t data_ov001_02316ff6[];
 
-void func_ov001_023070f0(UnkStruct_02306d04 *p);
+void SpecialStageActObj_Destroy(UnkStruct_02306d04 *p);
 
 void func_ov001_02306d04(UnkStruct_02306d04 *p) {
     if (data_ov001_02316ff6[p->type].unk0 <= 0) {
         if (p->unkB0 != NULL && (p->unkB0->flags & 2)) {
-            func_ov001_023070f0(p);
+            SpecialStageActObj_Destroy(p);
             return;
         }
         if (p->unkAC == NULL)
             return;
         if (!(p->unkAC->unk10C & 2))
             return;
-        func_ov001_023070f0(p);
+        SpecialStageActObj_Destroy(p);
         return;
     }
     if (p->unk70 > 1)
         return;
-    func_ov001_023070f0(p);
+    SpecialStageActObj_Destroy(p);
 }

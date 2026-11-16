@@ -42,7 +42,7 @@ extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
 extern s32 data_ov001_02316820[];
 extern s32 data_ov001_0231f070;
-extern void *data_ov001_0231f528;
+extern void *gExtraBossArchive;
 extern s32 data_ov001_0231d518[];
 extern u16 data_ov001_02316930[];
 extern u16 data_ov001_02316918[];
@@ -83,8 +83,8 @@ void func_ov001_022f4a50(UnkStruct_022f4a50 *p) {
     }
     p->unk1C8++;
     if ((p->unk1C8 & 7) == 1) {
-        func_ov001_022ffb9c(data_ov001_0231f070, data_ov001_0231f528, data_ov001_0231d518, data_ov001_02316930, data_ov001_02316924, 5);
+        func_ov001_022ffb9c(data_ov001_0231f070, gExtraBossArchive, data_ov001_0231d518, data_ov001_02316930, data_ov001_02316924, 5);
     } else if ((p->unk1C8 & 7) == 5) {
-        func_ov001_022ffb9c(data_ov001_0231f070, data_ov001_0231f528, data_ov001_0231d518, data_ov001_02316918, data_ov001_02316924, 5);
+        func_ov001_022ffb9c(data_ov001_0231f070, gExtraBossArchive, data_ov001_0231d518, data_ov001_02316918, data_ov001_02316924, 5);
     }
 }

@@ -21,13 +21,13 @@ extern UnkTask_022cf688 *gTaskCurrent;
 extern UnkBright_022cf688 data_0208926c;
 extern UnkBright_022cf688 data_02087d44;
 
-s32 func_ov001_022cf4f0(s32 from, s32 to, s32 n, s32 i, fx32 ease);
+s32 SegaLogo_Interpolate(s32 from, s32 to, s32 n, s32 i, fx32 ease);
 void SegaLogo_State_Wait(void);
 
 #pragma thumb on
 void SegaLogo_State_FadeIn(void) {
     UnkWork_022cf688 *w = gTaskCurrent->work;
-    s16 v = func_ov001_022cf4f0(w->unk4, 0, 0x20, w->t, 0x1000);
+    s16 v = SegaLogo_Interpolate(w->unk4, 0, 0x20, w->t, 0x1000);
 
     data_0208926c.bright = v;
     data_02087d44.bright = v;

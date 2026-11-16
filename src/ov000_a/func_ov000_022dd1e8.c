@@ -77,12 +77,12 @@ extern UnkStruct_022dd1e8_p *gPlayers;
 extern UnkStruct_022dd1e8_g gDisplayMain;
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
-void func_02021c24(void *p);
+void NNS_G3dRenderObjResetCallBack(void *p);
 void MTX_Identity33_(void *m);
 void StageObj_ClearPause(void);
 UnkStruct_022dd1e8_q *BossEffect_CreateBlast4(s32 a, s32 b, s32 c, s32 d);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss4_State_Unk_ov000_022dd12c(UnkStruct_022dd1e8 *t);
 
@@ -109,14 +109,14 @@ void func_ov000_022dd1e8(UnkStruct_022dd1e8 *t) {
     w->unkBBC = 0;
     a = &w->unk228[2];
     Model_SetAnimation(a, 0, w->unkAB0, 1, 0);
-    func_02021c24(a->unk90);
+    NNS_G3dRenderObjResetCallBack(a->unk90);
     a = &w->unk228[1];
     Model_SetAnimation(a, 0, w->unkAB0, 3, 0);
-    func_02021c24(a->unk90);
+    NNS_G3dRenderObjResetCallBack(a->unk90);
     a = &w->unk228[4];
     Model_SetAnimation(a, 0, w->unkAB0, 2, 0);
     a->unk118 = 0x1000;
-    func_02021c24(a->unk90);
+    NNS_G3dRenderObjResetCallBack(a->unk90);
     a->unk4C = -0x200000;
     MTX_Identity33_(&w->unkAF8);
     w->unkAF8.x = 0;
@@ -133,8 +133,8 @@ void func_ov000_022dd1e8(UnkStruct_022dd1e8 *t) {
     gPlayers->unk32C |= 0x200000;
     BossEffect_CreateBlast4(0, 0, 0x1ce00, 0xfa00)->unk248 = 0x800;
     gDisplayMain.unk48 = 0x10;
-    func_020537b4(0xd);
-    func_020533e0(0x13, 0xf0);
+    NaviMsg_SetFaceAnim(0xd);
+    NaviMsg_ShowMessage(0x13, 0xf0);
     Sound_PlaySeqArc(0, 0, 0x7d);
     for (i = 0; i < 7; i++)
         w->unk228[i].unk4 &= ~2;

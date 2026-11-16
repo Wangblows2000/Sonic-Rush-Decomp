@@ -58,7 +58,7 @@ static inline void VecSet(UnkStruct_0231039c_v *d, s32 x, s32 y, s32 z) {
 }
 
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
-s32 func_ov001_02310054(UnkStruct_0231039c_e *e);
+s32 SpecialStageObjList_IsCulled(UnkStruct_0231039c_e *e);
 void MTX_RotY33_(UnkStruct_0231039c_m *m, s32 s, s32 c);
 void MTX_RotX33_(UnkStruct_0231039c_m *m, s32 s, s32 c);
 void MTX_RotZ33_(UnkStruct_0231039c_m *m, s32 s, s32 c);
@@ -79,7 +79,7 @@ void SpecialStageObjList_Draw(UnkStruct_0231039c *p) {
             continue;
         if (e->unk60 & 4)
             continue;
-        if (func_ov001_02310054(e) == 1)
+        if (SpecialStageObjList_IsCulled(e) == 1)
             continue;
         if (e->unkAC) {
             if (!(e->unk60 & 0x40)) {

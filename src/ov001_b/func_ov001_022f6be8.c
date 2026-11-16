@@ -70,7 +70,7 @@ extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
 extern u16 data_ov001_02316840[];
 
-UnkStruct_022f6be8_o *func_ov001_023014f4(s32 a, s32 b);
+UnkStruct_022f6be8_o *ExtraBossObj_Create(s32 a, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -79,7 +79,7 @@ void DC_StoreRange(void *p, u32 size);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
-void func_02021c38(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
+void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
 void func_ov001_022ee784(void);
 void func_ov001_022ee73c(void);
 void func_ov001_022f3164(void);
@@ -118,7 +118,7 @@ UnkStruct_022f6be8_o *func_ov001_022f6be8(void) {
     s32 r;
 
     q = ExtraBoss_GetWork();
-    o = func_ov001_023014f4(2, 0x2f00);
+    o = ExtraBossObj_Create(2, 0x2f00);
     data_ov001_0231f06c = o;
     d = (UnkStruct_022f6be8_d *)Heap_Alloc(gMainHeap, 0x1a0, 0x20);
     if ((void *)OS_GetArenaLo(0) != d) {
@@ -149,7 +149,7 @@ UnkStruct_022f6be8_o *func_ov001_022f6be8(void) {
     a->unk10C |= 4;
     a->unk114 = 0x1000;
     o->unk14 |= 0x40000;
-    func_02021c38(a->unk90, func_ov001_022ee874, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(a->unk90, func_ov001_022ee874, 0, 6, 3);
     a->unkA = 4;
     o->unk78 = func_ov001_022f687c;
     func_ov001_022f63dc(o);

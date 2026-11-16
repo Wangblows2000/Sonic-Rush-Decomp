@@ -26,7 +26,7 @@ extern UnkStruct_0236aad8 gCamera;
 void MapObj8C_Destructor(void);
 u8 func_ov000_02307e84(UnkStruct_023099e8 *w);
 void func_ov000_023423a4(s32 a, UnkStruct_023099e8 *w, u8 b);
-void MapObj8C_Action_Unk_ov000_023099b0(UnkStruct_023099e8 *w);
+void MapObj8C_Action_Init(UnkStruct_023099e8 *w);
 
 UnkStruct_023099e8 *MapObj8C_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -59,6 +59,6 @@ UnkStruct_023099e8 *MapObj8C_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->unk211 = -1;
     w->unk214 = func_ov000_02307e84(w);
     func_ov000_023423a4(1, w, w->unk214);
-    MapObj8C_Action_Unk_ov000_023099b0(w);
+    MapObj8C_Action_Init(w);
     return w;
 }

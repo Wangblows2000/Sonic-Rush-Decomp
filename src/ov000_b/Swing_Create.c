@@ -18,7 +18,7 @@ void Swing_Destructor(void);
 void Swing_Draw(void);
 void Swing_OnHit(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void func_ov000_0231797c(UnkStruct_02317ac8 *w);
+void Swing_Action_Init(UnkStruct_02317ac8 *w);
 
 UnkStruct_02317ac8 *Swing_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -76,6 +76,6 @@ UnkStruct_02317ac8 *Swing_Create(s32 a, s32 b, s32 c) {
     w->base.unk5C |= 0x100;
     if (Stage_IsGravityFlipped(w->base.unk10, w->base.unk14))
         w->base.unk5 = 0x80;
-    func_ov000_0231797c(w);
+    Swing_Action_Init(w);
     return w;
 }

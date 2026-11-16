@@ -1,0 +1,80 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x38];
+    u8 file38[0x44];
+    s32 unk7c;
+    u8 pad80[8];
+    u32 unk88;
+    u32 unk8c;
+    u32 unk90;
+    s32 unk94;
+    s32 unk98;
+    s32 unk9c;
+    s32 unka0[2];
+    u8 pada8[0x18];
+    u8 bufc0[2][0x400];
+} UnkNode_0203da24;
+
+typedef struct {
+    u8 pad0[0x8408];
+    UnkNode_0203da24 *head;
+} UnkData_0203da24;
+
+typedef struct {
+    u8 pad0[0xc];
+    s32 unkc;
+} UnkCtx_0203da24;
+
+extern u8 data_0207806c[];
+extern UnkCtx_0203da24 data_022b8be0;
+extern UnkData_0203da24 data_022b9020;
+
+void *FS_FindArchive(void *name, s32 a);
+u32 OS_DisableInterrupts(void);
+void OS_RestoreInterrupts(u32 e);
+void OS_SleepThread(s32 a);
+BOOL FS_OpenFileDirect(void *f, void *arc, u32 top, u32 bottom, u32 id);
+s32 FS_ReadFile(void *f, void *buf, u32 size);
+BOOL FS_CloseFile(void *f);
+void WFSi_SendOpenAck(UnkData_0203da24 *d, UnkNode_0203da24 *n, s32 a);
+void WFSi_FromBusyToFree(UnkData_0203da24 *d, UnkNode_0203da24 *n);
+
+void WFSi_TaskThread(void)
+{
+    void *arc;
+    u32 e;
+    s32 i;
+    UnkNode_0203da24 *n;
+    arc = FS_FindArchive(data_0207806c, 3);
+
+    for (;;) {
+        e = OS_DisableInterrupts();
+        while ((n = ((UnkData_0203da24 *)((u32)&data_022b9020 | 0))->head) == NULL) {
+            if (data_022b8be0.unkc == 0) {
+                OS_RestoreInterrupts(e);
+                return;
+            }
+            OS_SleepThread(0);
+        }
+        OS_RestoreInterrupts(e);
+        if (n->unk7c == 1) {
+            FS_OpenFileDirect(n->file38, arc, n->unk8c, n->unk8c + n->unk90, n->unk88);
+            for (i = 0; i < 2; i++) {
+                n->unka0[i] = i * 0x400;
+                FS_ReadFile(n->file38, n->bufc0[i], 0x400);
+            }
+            n->unk94 = 0;
+            n->unk9c = 1;
+            n->unk98 = 2;
+            e = OS_DisableInterrupts();
+            WFSi_SendOpenAck(&data_022b9020, n, 1);
+            OS_RestoreInterrupts(e);
+        } else {
+            FS_CloseFile(n->file38);
+            e = OS_DisableInterrupts();
+            WFSi_FromBusyToFree(&data_022b9020, n);
+            OS_RestoreInterrupts(e);
+        }
+    }
+}

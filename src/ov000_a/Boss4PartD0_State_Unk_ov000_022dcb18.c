@@ -39,7 +39,7 @@ typedef struct UnkStruct_022dcb18_7 {
 extern UnkTask_022dcb18 *gTaskCurrent;
 extern UnkStruct_022dcb18_7 gBossStatus;
 
-void func_ov000_022db6c8(s32 *p);
+void Boss4_WrapArenaX(s32 *p);
 void func_ov000_022db7d4(void *a, u16 *ang, UnkStruct_022dcb18 *s);
 
 void Boss4PartD0_State_Unk_ov000_022dcb18(void) {
@@ -54,7 +54,7 @@ void Boss4PartD0_State_Unk_ov000_022dcb18(void) {
     s->unk48C++;
     if (s->unk488 != NULL)
         s->unk488(s);
-    func_ov000_022db6c8(&s->unk10);
+    Boss4_WrapArenaX(&s->unk10);
     func_ov000_022db7d4(&s->unk254, &ang, s);
     if (s->unk480 != 0) {
         if (s->unk450 & 2)

@@ -25,8 +25,8 @@ void func_ov001_022dfb48(UnkStruct_022e023c *w, void *cam);
 void func_ov001_022dfa3c(UnkStruct_022e023c *w, void *cam);
 void TransformDemo_SpawnEffect(UnkStruct_022e023c *w);
 void func_ov001_022de1e0(UnkStruct_022e023c *w, void *a);
-void func_ov001_022df3d8(UnkStruct_022e023c *w, void *a);
-void func_ov001_022df3a4(UnkStruct_022e023c *w, void *a);
+void TransformDemo_UpdatePlayerModels(UnkStruct_022e023c *w, void *a);
+void TransformDemo_DrawPlayerModels(UnkStruct_022e023c *w, void *a);
 void func_ov001_022df474(UnkStruct_022e023c *w);
 
 void func_ov001_022e023c(UnkStruct_022e023c *w) {
@@ -46,7 +46,7 @@ void func_ov001_022e023c(UnkStruct_022e023c *w) {
             TransformDemo_SpawnEffect(w);
     }
     func_ov001_022de1e0(w, w->unk454);
-    func_ov001_022df3d8(w, &w->unkBD4);
-    func_ov001_022df3a4(w, w->unkBD4.unk0);
+    TransformDemo_UpdatePlayerModels(w, &w->unkBD4);
+    TransformDemo_DrawPlayerModels(w, w->unkBD4.unk0);
     func_ov001_022df474(w);
 }

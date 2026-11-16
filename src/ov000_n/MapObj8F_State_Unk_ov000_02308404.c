@@ -36,9 +36,9 @@ extern UnkStruct_Plr gCamera[];
 void *func_ov000_02307e84(void);
 UnkStruct_Ctl *func_ov000_0234237c(s32 a, void *b);
 BOOL func_ov000_02307dfc(UnkStruct_Ctl *a, s32 b);
-UnkStruct_Plr *func_ov000_0233b62c(void);
-UnkStruct_Plr *func_ov000_0233b610(void);
-void func_ov000_0233b374(void);
+UnkStruct_Plr *Camera_GetBySwapState(void);
+UnkStruct_Plr *Camera_GetOtherBySwapState(void);
+void Camera_TrySwitchScreen(void);
 void MapObj8F_Action_Unk_ov000_02308370(UnkStruct_02308404 *s);
 
 void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
@@ -76,7 +76,7 @@ void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
                 }
                 m = 0x40000 << i;
                 if (!(o->unk20C & m)) {
-                    q = (gCamera[2].unk0 & 1) ? func_ov000_0233b62c() : p;
+                    q = (gCamera[2].unk0 & 1) ? Camera_GetBySwapState() : p;
                     v = q->unk8 + 0x1000;
                     if (v < s->base.unk14) {
                         p->unk50 = v;
@@ -98,7 +98,7 @@ void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
                 }
                 m = 0x400000 << i;
                 if (!(o->unk20C & m)) {
-                    q = (gCamera[2].unk0 & 1) ? func_ov000_0233b610() : p;
+                    q = (gCamera[2].unk0 & 1) ? Camera_GetOtherBySwapState() : p;
                     v = q->unk8 + q->unk20 * 0xc0 - 0x1000;
                     if (v <= s->base.unk14) {
                         p->unk58 = s->unk210;
@@ -111,7 +111,7 @@ void MapObj8F_State_Unk_ov000_02308404(UnkStruct_02308404 *s) {
         }
     }
     if ((gCamera[2].unk0 & 1) && !(((UnkStruct_Pad *)s->base.unk1E0)->unk4 & 2))
-        func_ov000_0233b374();
+        Camera_TrySwitchScreen();
     if (o->unk20C & 0x1000000)
         MapObj8F_Action_Unk_ov000_02308370(s);
 }

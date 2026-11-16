@@ -13,8 +13,8 @@ extern u8 data_ov000_02366cac[], data_ov000_0236a0cc[];
 void MapObject_Destructor(void);
 void Marker_OnHit(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void func_ov000_023106b8(UnkStruct_StageObj *w);
-void Marker_Action_Unk_ov000_023107c4(UnkStruct_StageObj *w);
+void Marker_Action_InitPassCheck(UnkStruct_StageObj *w);
+void Marker_Action_Init(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Marker_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -42,8 +42,8 @@ UnkStruct_StageObj *Marker_Create(s32 a, s32 b, s32 c) {
     if (gGameState.unk1C >= 7 && gGameState.unk1C < 9 && gGameState.unk1D < 2)
         flag = TRUE;
     if (flag)
-        func_ov000_023106b8(w);
+        Marker_Action_InitPassCheck(w);
     else
-        Marker_Action_Unk_ov000_023107c4(w);
+        Marker_Action_Init(w);
     return w;
 }

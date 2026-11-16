@@ -11,7 +11,7 @@ extern u8 data_ov000_02369f3c[];
 extern u8 data_ov000_02369f44[];
 
 void MapObject_Destructor();
-void func_ov000_02308e94();
+void GmkWall_Action_Init();
 
 UnkStruct_02308eb8 *GmkWall_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -42,6 +42,6 @@ UnkStruct_02308eb8 *GmkWall_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk1D6 = -0x20;
     w->base.unk58 |= 0x2100;
     w->base.unk8 = w->base.unk14;
-    func_ov000_02308e94(w);
+    GmkWall_Action_Init(w);
     return w;
 }

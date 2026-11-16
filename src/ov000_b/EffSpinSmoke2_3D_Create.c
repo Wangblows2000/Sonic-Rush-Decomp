@@ -20,7 +20,7 @@ extern u8 data_ov000_0236a9d0[];
 
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
 void StageObj_Load3dBAC(void *w, UnkStruct_02333cf8_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
-void func_ov000_02333bd0(UnkStruct_02333cf8 *w);
+void EffSpinSmoke2_Action_Init(UnkStruct_02333cf8 *w);
 
 UnkStruct_02333cf8 *EffSpinSmoke2_3D_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
     UnkStruct_Task *task;
@@ -62,6 +62,6 @@ UnkStruct_02333cf8 *EffSpinSmoke2_3D_Create(UnkStruct_StageObj *arg, s16 x, s16 
     w->base.unk58 |= 0x2000;
     w->base.unk54 |= 2;
     w->base.unk5C |= 0x100;
-    func_ov000_02333bd0(w);
+    EffSpinSmoke2_Action_Init(w);
     return w;
 }

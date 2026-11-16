@@ -21,7 +21,7 @@ typedef struct {
 
 void Player_State_ParachuteRelease(void);
 void Player_SetAnimation(UnkStruct_0234f320 *w, s32 a);
-void func_ov000_02311eac(UnkStruct_0234f320 *w);
+void ParachuteReleased_Create(UnkStruct_0234f320 *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 
 void Player_Action_ParachuteRelease(UnkStruct_0234f320 *w) {
@@ -37,5 +37,5 @@ void Player_Action_ParachuteRelease(UnkStruct_0234f320 *w) {
     w->unk8 = 0;
     w->unkC = 0;
     Sound_PlaySeqArcEx(w->unk384, 0, 0x42);
-    func_ov000_02311eac(w);
+    ParachuteReleased_Create(w);
 }

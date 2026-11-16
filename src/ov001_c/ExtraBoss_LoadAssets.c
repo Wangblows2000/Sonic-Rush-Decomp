@@ -3,7 +3,7 @@
 extern void *gMainHeap;
 extern u8 data_ov001_0231d9b0[];
 extern u8 data_ov001_0231d9cc[];
-extern u8 *data_ov001_0231f528;
+extern u8 *gExtraBossArchive;
 extern void *gSoundHeap;
 extern void *gZoneSoundData;
 
@@ -12,8 +12,8 @@ u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-u32 func_ov001_022ffb90(u32 *p);
-u32 func_ov001_022ffb84(u32 *p);
+u32 ExtraBoss_GetCompressionType(u32 *p);
+u32 ExtraBoss_GetUncompressedSize(u32 *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
@@ -27,7 +27,7 @@ void func_ov001_02304518(void);
 void func_ov001_022fdab4(void);
 void func_ov001_022fd564(void);
 void func_ov001_023065f8(void);
-void *func_0201d9b4(void *p);
+void *NNS_SndHeapGetFreeSize(void *p);
 void *NNS_SndHeapAlloc(void *s, u32 size, u32 a, u32 b, u32 c);
 void Sound_LoadSoundArchiveFromMemory(void *a);
 
@@ -49,8 +49,8 @@ void ExtraBoss_LoadAssets(void) {
         DC_StoreRange(blk, size);
         blk += 0x20;
     }
-    data_ov001_0231f528 = blk;
-    switch (func_ov001_022ffb90((u32 *)res)) {
+    gExtraBossArchive = blk;
+    switch (ExtraBoss_GetCompressionType((u32 *)res)) {
     case 0x10:
         MI_UncompressLZ16(res, blk);
         break;
@@ -61,10 +61,10 @@ void ExtraBoss_LoadAssets(void) {
         MI_UncompressRL16(res, blk);
         break;
     default:
-        Mem_Copy(Compress_GetData(res), blk, func_ov001_022ffb84((u32 *)res));
+        Mem_Copy(Compress_GetData(res), blk, ExtraBoss_GetUncompressedSize((u32 *)res));
         break;
     }
-    DC_StoreRange(blk, func_ov001_022ffb84((u32 *)res));
+    DC_StoreRange(blk, ExtraBoss_GetUncompressedSize((u32 *)res));
     if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
@@ -82,7 +82,7 @@ void ExtraBoss_LoadAssets(void) {
     func_ov001_022fdab4();
     func_ov001_022fd564();
     func_ov001_023065f8();
-    gZoneSoundData = func_0201d9b4(gSoundHeap);
+    gZoneSoundData = NNS_SndHeapGetFreeSize(gSoundHeap);
     gZoneSoundData = NNS_SndHeapAlloc(gSoundHeap, 0x60400, 0, 0, 0);
     File_Load(data_ov001_0231d9cc, gZoneSoundData);
     Sound_LoadSoundArchiveFromMemory(gZoneSoundData);

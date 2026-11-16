@@ -62,13 +62,13 @@ void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 extern s16 data_0206e470[];
 
-u16 func_ov000_022da88c(u16 a, u16 b, s32 c);
+u16 Boss3_StepAngleToward(u16 a, u16 b, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov000_022d756c(UnkStruct_022d7630 *s);
 
 void Boss3PartCC_State_Unk_ov000_022d7630(UnkStruct_022d7630 *s) {
     s32 d;
-    s->unk224 = func_ov000_022da88c(s->unk224, s->unk258, 0x200);
+    s->unk224 = Boss3_StepAngleToward(s->unk224, s->unk258, 0x200);
     MTX_RotY33_(s->unk2C4.unk24, data_0206e470[((s->unk224 & 0xffff) >> 4) * 2], data_0206e470[((s->unk224 & 0xffff) >> 4) * 2 + 1]);
     d = s->unk224 - s->unk258;
     if (d < 0)

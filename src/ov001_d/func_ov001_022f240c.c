@@ -90,7 +90,7 @@ typedef struct UnkStruct_022f240c_p {
 void func_ov001_022f22ac(void);
 UnkStruct_022f240c_g *ExtraBoss_GetWork(void);
 s32 FX_DivS32(s32 n, s32 d);
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 void func_ov001_022fa990(s32 a, s32 b, s32 c, s32 d, s16 e);
 
 void func_ov001_022f240c(UnkStruct_022f240c_p *p) {
@@ -109,6 +109,6 @@ void func_ov001_022f240c(UnkStruct_022f240c_p *p) {
     b->unk114 = a->unk114;
     p->unk1CC = p->unk18;
     p->unk1D0 = 0;
-    p->unk1D4 = func_0200225c(0x88, a->unk114);
+    p->unk1D4 = FX_Div(0x88, a->unk114);
     func_ov001_022fa990(0, p->unk18 - 0x46000, p->unk1C, 0x28000, 0);
 }

@@ -11,7 +11,7 @@ extern u8 data_ov000_02368590[];
 extern u8 data_ov000_0236a9d0[];
 
 void Math_RotateVec2S16(s16 *x, s16 *y, u8 a);
-void func_ov000_02333bd0(UnkStruct_EffObj *w);
+void EffSpinSmoke2_Action_Init(UnkStruct_EffObj *w);
 
 void EffSpinSmoke2_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
     UnkStruct_Task *task;
@@ -54,5 +54,5 @@ void EffSpinSmoke2_Create(UnkStruct_StageObj *arg, s16 x, s16 y, s32 type) {
     w->unk58 |= 0x2000;
     w->unk54 |= 2;
     w->unk5C |= 0x100;
-    func_ov000_02333bd0(w);
+    EffSpinSmoke2_Action_Init(w);
 }

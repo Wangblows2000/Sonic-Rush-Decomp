@@ -11,11 +11,11 @@ void Heap_Free(void *heap, void *p);
 extern u8 *data_ov001_0231f070;
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
-void func_0202566c(void *p);
+void NNS_G3dResDefaultRelease(void *p);
 
 void func_ov001_022ee9f8(void) {
     u8 *blk;
-    func_0202566c(data_ov001_0231f070);
+    NNS_G3dResDefaultRelease(data_ov001_0231f070);
     blk = data_ov001_0231f070;
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;

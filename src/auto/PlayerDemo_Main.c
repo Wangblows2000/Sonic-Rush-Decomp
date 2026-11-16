@@ -5,7 +5,7 @@
 
 extern u8 gTaskCurrent[];
 s32 Task_Destroy();
-s32 PlayerDemo_Unk_02057458();
+s32 PlayerDemo_CheckSkip();
 
 void PlayerDemo_Main(void) {
     s32 t0 = *(u32 *)gTaskCurrent;
@@ -20,7 +20,7 @@ void PlayerDemo_Main(void) {
     if (t3 != 0) {
         *(u16 *)((u8 *)t1 + 0x20) = (*(u16 *)((u8 *)t1 + 0x20) + 0x1);
     }
-    PlayerDemo_Unk_02057458(t1, t3);
+    PlayerDemo_CheckSkip(t1, t3);
     s32 t4 = *(u32 *)t1;
     if (t4 != 0) {
         ((s32 (*)())t4)(t1, t4);

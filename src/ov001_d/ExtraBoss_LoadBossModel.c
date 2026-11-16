@@ -6,7 +6,7 @@ typedef struct UnkStruct_022eeab0_arc {
 
 extern void *gMainHeap;
 extern u8 *data_ov001_0231f070;
-extern void *data_ov001_0231f528;
+extern void *gExtraBossArchive;
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
 extern char data_ov001_023167a8[];
@@ -21,9 +21,9 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Asset3D_CopyResource(void *src, void *dst);
 void Heap_Free(void *heap, void *p);
-BOOL func_02021310(void *arc, const char *name, void *narc);
-void *func_02021264(void *arc, u32 idx);
-BOOL func_020212e0(void *arc);
+BOOL NNS_FndMountArchive(void *arc, const char *name, void *narc);
+void *NNS_FndGetArchiveFileByIndex(void *arc, u32 idx);
+BOOL NNS_FndUnmountArchive(void *arc);
 
 void ExtraBoss_LoadBossModel(void) {
     vu32 fill1;
@@ -57,8 +57,8 @@ void ExtraBoss_LoadBossModel(void) {
         }
     }
     Heap_Free(gMainHeap, res);
-    func_02021310(&arc, data_ov001_0231d450, data_ov001_0231f528);
-    data_ov001_0231f068 = func_02021264(&arc, 0x28);
-    data_ov001_0231f074 = func_02021264(&arc, 0x29);
-    func_020212e0(&arc);
+    NNS_FndMountArchive(&arc, data_ov001_0231d450, gExtraBossArchive);
+    data_ov001_0231f068 = NNS_FndGetArchiveFileByIndex(&arc, 0x28);
+    data_ov001_0231f074 = NNS_FndGetArchiveFileByIndex(&arc, 0x29);
+    NNS_FndUnmountArchive(&arc);
 }

@@ -12,7 +12,7 @@ extern u8 data_ov000_023684a8[];
 extern u8 data_ov000_0236a9f8[];
 
 BOOL func_ov000_023270d8(UnkStruct_StageObj *a);
-void func_ov000_02331f4c(UnkStruct_EffObj *w);
+void EffBoost_SetFollowState(UnkStruct_EffObj *w);
 
 void EffHighSpeedStart_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
     UnkStruct_Task *task;
@@ -66,5 +66,5 @@ void EffHighSpeedStart_Create(UnkStruct_StageObj *arg, s32 x, s32 y) {
         w->unkC = 8;
     else
         w->unkC = 0x40;
-    func_ov000_02331f4c(w);
+    EffBoost_SetFollowState(w);
 }

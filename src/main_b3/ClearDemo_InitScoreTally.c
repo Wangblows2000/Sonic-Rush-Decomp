@@ -24,9 +24,9 @@ typedef struct {
 } UnkObj_02046738;
 
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
-u32 ClearDemo_Unk_02045b00(void);
-u32 ClearDemo_Unk_02045ab4(void);
-s32 func_020480a0(u32 v);
+u32 ClearDemo_GetTimeBonus(void);
+u32 ClearDemo_GetScoreBonus(void);
+s32 ClearDemo_GetRank(u32 v);
 
 #pragma thumb on
 void ClearDemo_InitScoreTally(UnkObj_02046738 *s) {
@@ -60,13 +60,13 @@ void ClearDemo_InitScoreTally(UnkObj_02046738 *s) {
     if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
         vals[0] = -1;
         vals[1] = -1;
-        vals[2] = ClearDemo_Unk_02045b00();
+        vals[2] = ClearDemo_GetTimeBonus();
         vals[3] = data_022c4590.unk10;
         vals[4] = 0;
         vals[5] = vals[2] + vals[3];
     } else {
-        vals[0] = ClearDemo_Unk_02045b00();
-        vals[1] = ClearDemo_Unk_02045ab4();
+        vals[0] = ClearDemo_GetTimeBonus();
+        vals[1] = ClearDemo_GetScoreBonus();
         vals[2] = data_022c4590.unk10;
         vals[3] = data_022c4590.unk8;
         vals[4] = 0;
@@ -76,7 +76,7 @@ void ClearDemo_InitScoreTally(UnkObj_02046738 *s) {
         if (vals[i] > 999999)
             vals[i] = 999999;
     }
-    s->unk9C = func_020480a0(vals[5]) + 0x23;
+    s->unk9C = ClearDemo_GetRank(vals[5]) + 0x23;
     data_022c4590.unk0 = vals[5];
     for (i = 0; i < 6; i++) {
         if (vals[i] != (u32)-1) {

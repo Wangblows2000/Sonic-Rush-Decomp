@@ -87,13 +87,13 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 void System_Freeze(s32 a, s32 b, s32 c);
-BOOL func_0204eb7c(void);
+BOOL StoryProgress_IsStageNew(void);
 u32 SpecialStage_GetEmeraldFlags(void);
 u32 SpecialStage_GetStageIndex(void);
 void ObjAction_Load2dBAC(void *bgA, void *bgB, void *name, u32 pal, void *s, void *arc);
 void AnimatorSprite_SetAnimation(void *s, u16 a);
 void AnimatorSprite_ProcessAnimation(void *s, void *a, void *b);
-void func_020551b0(UnkWork_02055918 *w);
+void PauseMenu_HighlightSelection(UnkWork_02055918 *w);
 void NNS_SndPlayerPauseByPlayerNo(s32 a, s32 b);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 
@@ -142,7 +142,7 @@ void PauseMenu_Create(BOOL alt) {
     if (!(gSystemFlags & 8))
         System_Freeze(1, 1, 1);
     gPad.unk4 = 0;
-    if (!func_0204eb7c() || gGameState.unk10 == 2)
+    if (!StoryProgress_IsStageNew() || gGameState.unk10 == 2)
         w->unk4 |= 2;
     if (alt) {
         w->unk4 &= ~2;
@@ -197,7 +197,7 @@ void PauseMenu_Create(BOOL alt) {
         w->unk2 = 1;
         MIi_CpuCopy16(w->spr[2].unk34, w->pal0, 0x200);
         MIi_CpuCopy16(w->spr[3].unk34, w->pal1, 0x200);
-        func_020551b0(w);
+        PauseMenu_HighlightSelection(w);
     } else {
         w->unk148 = 0x6000;
         w->unk14C = 0x5800;

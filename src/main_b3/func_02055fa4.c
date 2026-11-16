@@ -13,7 +13,7 @@ typedef struct {
 } UnkB_02055fa4;
 
 void func_020560d0(UnkA_02055fa4 *a, UnkB_02055fa4 *b);
-void func_02022270(s32 i, u16 v);
+void NNS_G3dGlbLightColor(s32 i, u16 v);
 
 #pragma thumb on
 void func_02055fa4(UnkA_02055fa4 *a, UnkB_02055fa4 *b) {
@@ -31,14 +31,14 @@ void func_02055fa4(UnkA_02055fa4 *a, UnkB_02055fa4 *b) {
         b->unk8 ^= 1;
         if (b->unk8 & 1) {
             c = b->col1;
-            func_02022270(0, c[0]);
-            func_02022270(1, c[1]);
-            func_02022270(2, c[2]);
+            NNS_G3dGlbLightColor(0, c[0]);
+            NNS_G3dGlbLightColor(1, c[1]);
+            NNS_G3dGlbLightColor(2, c[2]);
         } else {
             c = b->col0;
-            func_02022270(0, c[0]);
-            func_02022270(1, c[1]);
-            func_02022270(2, c[2]);
+            NNS_G3dGlbLightColor(0, c[0]);
+            NNS_G3dGlbLightColor(1, c[1]);
+            NNS_G3dGlbLightColor(2, c[2]);
         }
     }
 }

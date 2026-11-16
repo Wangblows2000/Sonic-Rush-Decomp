@@ -35,8 +35,8 @@ extern UnkStruct_StageObj *gPlayers[];
 void *func_ov000_02307e84(void);
 void *func_ov000_0234237c(s32 a, void *b);
 BOOL func_ov000_02307dfc(void *a, s32 b);
-s32 func_ov000_0233b078(s32 x);
-void func_ov000_0233b374(void);
+s32 Stage_GetSplitLineY(s32 x);
+void Camera_TrySwitchScreen(void);
 
 void MapObj8F_State_Unk_ov000_02307e9c(UnkStruct_02307e9c *s) {
     void *o;
@@ -62,14 +62,14 @@ void MapObj8F_State_Unk_ov000_02307e9c(UnkStruct_02307e9c *s) {
     if (P[2].unk0 & 1) {
         q = gPlayers[P[0].unk3A];
         y = q->unk14;
-        v = func_ov000_0233b078(q->unk10);
+        v = Stage_GetSplitLineY(q->unk10);
         f = gCamera[2].unk0;
         if (!(f & 2) && y >= v) {
             P[0].unk8 -= 0x1000;
-            func_ov000_0233b374();
+            Camera_TrySwitchScreen();
         } else if ((f & 2) && y <= v) {
             P[0].unk8 += 0x1000;
-            func_ov000_0233b374();
+            Camera_TrySwitchScreen();
         } else {
             P[0].unk0 &= ~0x200;
             gCamera[2].unk0 &= ~4;

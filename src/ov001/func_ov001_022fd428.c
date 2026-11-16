@@ -1,11 +1,11 @@
 #include <nitro/types.h>
 
-void *func_ov001_023014f4(s32 a, s32 b);
+void *ExtraBossObj_Create(s32 a, s32 b);
 void *func_ov001_022fd2dc(s32 a, s32 b);
 void func_ov001_022fd220(void);
 
 u8 *func_ov001_022fd428(s32 kind, void *parent, s32 x, s32 y, s32 z) {
-    u8 *t = func_ov001_023014f4(1, 0x3200);
+    u8 *t = ExtraBossObj_Create(1, 0x3200);
     if (t == NULL) {
         return NULL;
     }

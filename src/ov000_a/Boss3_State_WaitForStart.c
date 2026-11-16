@@ -58,8 +58,8 @@ void Boss3_Draw_Unk_ov000_022da4b4(void);
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
 void func_ov000_022da6b4(void);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void func_ov000_022dac60(void);
 
 void Boss3_State_WaitForStart(UnkStruct_022da24c *s) {
@@ -95,7 +95,7 @@ void Boss3_State_WaitForStart(UnkStruct_022da24c *s) {
     c->unk60.y = -0x200000;
     c->unk60.z = 0;
     c->unk54 = c->unk60;
-    func_020537b4(9);
-    func_020533e0(0xf, 0xf0);
+    NaviMsg_SetFaceAnim(9);
+    NaviMsg_ShowMessage(0xf, 0xf0);
     func_ov000_022dac60();
 }

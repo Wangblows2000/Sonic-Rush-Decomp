@@ -36,7 +36,7 @@ extern u16 data_ov000_02363160[][6];
 extern u16 data_ov000_023630ac[];
 
 void func_ov000_022dac94(u16 *p, s32 a, s32 b);
-void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
+void Boss_LoadModelPalettes(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 void func_ov000_022da6b4(void);
 void Boss3PartCC_State_Unk_ov000_022d63f0(UnkStruct_022d63f4 *s);
 
@@ -48,9 +48,9 @@ void Boss3PartCC_State_Unk_ov000_022d63f4(UnkStruct_022d63f4 *s) {
         s->unk258++;
         if (!(s->unk258 & 1)) {
             if (s->unk258 & 0x8000)
-                func_ov000_022c5d4c(data_ov000_02369b18[1], data_ov000_02365488, data_ov000_02363148[gGameState], data_ov000_023630ac, 6);
+                Boss_LoadModelPalettes(data_ov000_02369b18[1], data_ov000_02365488, data_ov000_02363148[gGameState], data_ov000_023630ac, 6);
             else
-                func_ov000_022c5d4c(data_ov000_02369b18[1], data_ov000_02365488, data_ov000_02363160[gGameState], data_ov000_023630ac, 6);
+                Boss_LoadModelPalettes(data_ov000_02369b18[1], data_ov000_02365488, data_ov000_02363160[gGameState], data_ov000_023630ac, 6);
             s->unk258 &= ~1;
             s->unk258 ^= 0x8000;
         }

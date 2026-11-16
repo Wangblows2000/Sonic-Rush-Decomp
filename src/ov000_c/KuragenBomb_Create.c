@@ -24,7 +24,7 @@ UnkStruct_02301258 *KuragenBomb_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02301258));
     MapObject_Init(w, (s32)p, b, c);
-    func_02068e40(w, -6, -4, 6, 4);
+    StageObj_SetMapHitbox(w, -6, -4, 6, 4);
     StageObj_Load2dBAC(w, data_ov000_02366670, 2, data_ov000_02369e3c, data_ov000_02369ba0);
     StageObj_AllocSpritePalette(w, 0, 0x1a);
     StageObj_SetOAMOrder(w, 0x15);

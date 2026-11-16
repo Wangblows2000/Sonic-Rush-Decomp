@@ -54,7 +54,7 @@ extern UnkGfx_022d2cbc gDisplaySub;
 
 void Task_Destroy(void *t);
 void ObjVram_Free(s32 a, void *p);
-void func_ov001_022d289c(UnkWork_022d2cbc *w);
+void StaffRoll_ReleaseAssets(UnkWork_022d2cbc *w);
 
 #pragma thumb on
 void StaffRoll_Destructor(void) {
@@ -92,6 +92,6 @@ void StaffRoll_Destructor(void) {
             ObjVram_Free(0, w->d[i].p);
         }
     }
-    func_ov001_022d289c(w);
+    StaffRoll_ReleaseAssets(w);
 }
 #pragma thumb reset

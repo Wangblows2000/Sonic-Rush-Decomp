@@ -16,7 +16,7 @@ extern u8 data_ov000_02369f54[];
 
 void MapObject_Destructor();
 void GoalRing_OnHit();
-void GoalRing_Action_Unk_ov000_0230b320();
+void GoalRing_Action_Idle();
 
 UnkStruct_0230b344 *GoalRing_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -39,6 +39,6 @@ UnkStruct_0230b344 *GoalRing_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll0.unk1C = GoalRing_OnHit;
     w->base.unk58 |= 0x2100;
     w->base.unk1DC = Sound_AllocHandle();
-    GoalRing_Action_Unk_ov000_0230b320(w);
+    GoalRing_Action_Idle(w);
     return w;
 }

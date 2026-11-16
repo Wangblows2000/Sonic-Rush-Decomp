@@ -5,8 +5,8 @@ void DC_InvalidateRange(void *p, u32 size);
 
 u16 WM_GetLinkLevel(void)
 {
-    UnkWmWork *w = func_02010b70();
-    if (func_02010b54() != 0) {
+    UnkWmWork *w = WMi_GetSystemWork();
+    if (WMi_CheckInitialized() != 0) {
         return 0;
     }
     DC_InvalidateRange(w->unk4, 2);

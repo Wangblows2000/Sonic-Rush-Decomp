@@ -9,7 +9,7 @@ void Heap_Free(void *heap, void *p);
 extern void *gMainHeap;
 extern u8 *data_ov000_02369b88[];
 
-void func_0202566c(void *p);
+void NNS_G3dResDefaultRelease(void *p);
 
 static inline void Free_02049c98(u8 *p) {
     if ((u8 *)OS_GetArenaLo(0) != p) {
@@ -30,7 +30,7 @@ void BossStageF_FreeModels(void) {
 
     for (i = 0; i < 6; i++) {
         if (data_ov000_02369b88[i] != NULL) {
-            func_0202566c(data_ov000_02369b88[i]);
+            NNS_G3dResDefaultRelease(data_ov000_02369b88[i]);
             Free_02049c98(data_ov000_02369b88[i]);
             data_ov000_02369b88[i] = NULL;
         }

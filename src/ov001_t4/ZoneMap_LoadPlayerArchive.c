@@ -40,22 +40,22 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-s32 func_ov001_022e3ecc(void *p);
-u32 func_ov001_022e3ec0(void *p);
+s32 ZoneMap_GetCompressionType(void *p);
+u32 ZoneMap_GetUncompressedSize(void *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
 void *Compress_GetData(void *p);
 void Mem_Copy(void *src, void *dst, u32 size);
-BOOL func_02021310(UnkArc_022e3bec *arc, const char *name, void *narc);
-void *func_02021264(UnkArc_022e3bec *arc, s32 i);
-BOOL func_020212e0(UnkArc_022e3bec *arc);
+BOOL NNS_FndMountArchive(UnkArc_022e3bec *arc, const char *name, void *narc);
+void *NNS_FndGetArchiveFileByIndex(UnkArc_022e3bec *arc, s32 i);
+BOOL NNS_FndUnmountArchive(UnkArc_022e3bec *arc);
 void NNS_G3dResDefaultSetup(void *res);
 void Model_Init(void *o, s32 a);
 void Model_SetResource(void *o, void *res, s32 a);
 void Model_SetAnimation(void *o, s32 a, void *b, void *c, s32 d);
 void G3X_SetEdgeColorTable(void *p);
-void func_02022270(u32 index, u32 value);
+void NNS_G3dGlbLightColor(u32 index, u32 value);
 
 #pragma thumb on
 static inline u8 *Alloc_022e3bec(u32 size) {
@@ -95,7 +95,7 @@ void ZoneMap_LoadPlayerArchive(UnkWork_022e3bec *w, s32 mode, void *narc) {
     f = File_Load(data_ov001_023162e0, -1);
     w->buf = Alloc_022e3bec(((*(u32 *)f >> 8) + 0x43) & ~0x1f);
     p = w->buf;
-    switch (func_ov001_022e3ecc(f)) {
+    switch (ZoneMap_GetCompressionType(f)) {
     case 0x10:
         MI_UncompressLZ16(f, p);
         break;
@@ -106,30 +106,30 @@ void ZoneMap_LoadPlayerArchive(UnkWork_022e3bec *w, s32 mode, void *narc) {
         MI_UncompressRL16(f, p);
         break;
     default:
-        Mem_Copy(Compress_GetData(f), p, func_ov001_022e3ec0(f));
+        Mem_Copy(Compress_GetData(f), p, ZoneMap_GetUncompressedSize(f));
         break;
     }
-    DC_StoreRange(p, func_ov001_022e3ec0(f));
+    DC_StoreRange(p, ZoneMap_GetUncompressedSize(f));
     Free_022e3bec(f);
     if (mode == 0) {
-        func_02021310(&arc, data_ov001_0231c57c, w->buf);
-        NNS_G3dResDefaultSetup(func_02021264(&arc, 0));
-        w->res160 = func_02021264(&arc, 0);
-        w->res164 = func_02021264(&arc, 1);
-        w->res168 = func_02021264(&arc, 2);
-        func_020212e0(&arc);
+        NNS_FndMountArchive(&arc, data_ov001_0231c57c, w->buf);
+        NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByIndex(&arc, 0));
+        w->res160 = NNS_FndGetArchiveFileByIndex(&arc, 0);
+        w->res164 = NNS_FndGetArchiveFileByIndex(&arc, 1);
+        w->res168 = NNS_FndGetArchiveFileByIndex(&arc, 2);
+        NNS_FndUnmountArchive(&arc);
     } else {
-        func_02021310(&arc, data_ov001_0231c580, w->buf);
-        NNS_G3dResDefaultSetup(func_02021264(&arc, 3));
-        w->res160 = func_02021264(&arc, 3);
-        w->res164 = func_02021264(&arc, 1);
-        w->res168 = func_02021264(&arc, 2);
-        func_020212e0(&arc);
+        NNS_FndMountArchive(&arc, data_ov001_0231c580, w->buf);
+        NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByIndex(&arc, 3));
+        w->res160 = NNS_FndGetArchiveFileByIndex(&arc, 3);
+        w->res164 = NNS_FndGetArchiveFileByIndex(&arc, 1);
+        w->res168 = NNS_FndGetArchiveFileByIndex(&arc, 2);
+        NNS_FndUnmountArchive(&arc);
     }
-    func_02021310(&arc, data_ov001_0231c584, narc);
-    w->res16c = func_02021264(&arc, 0);
-    w->res170 = func_02021264(&arc, 1);
-    func_020212e0(&arc);
+    NNS_FndMountArchive(&arc, data_ov001_0231c584, narc);
+    w->res16c = NNS_FndGetArchiveFileByIndex(&arc, 0);
+    w->res170 = NNS_FndGetArchiveFileByIndex(&arc, 1);
+    NNS_FndUnmountArchive(&arc);
     Model_Init(w->obj, 0);
     w->flags130 |= 4;
     if (mode == 0) {
@@ -146,8 +146,8 @@ void ZoneMap_LoadPlayerArchive(UnkWork_022e3bec *w, s32 mode, void *narc) {
     w->unk138 = 0x1000;
     w->unk18 = 0x1f;
     G3X_SetEdgeColorTable(data_ov001_023162d0);
-    func_02022270(0, data_ov001_0231628c[0]);
-    func_02022270(1, data_ov001_0231628c[1]);
-    func_02022270(2, data_ov001_0231628c[2]);
+    NNS_G3dGlbLightColor(0, data_ov001_0231628c[0]);
+    NNS_G3dGlbLightColor(1, data_ov001_0231628c[1]);
+    NNS_G3dGlbLightColor(2, data_ov001_0231628c[2]);
 }
 #pragma thumb reset

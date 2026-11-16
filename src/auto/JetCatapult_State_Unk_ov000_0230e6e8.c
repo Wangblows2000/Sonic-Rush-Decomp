@@ -3,7 +3,7 @@
 
 extern u8 gGameState[];
 extern u8 data_02077944[];
-s32 func_ov000_0230e5dc();
+s32 JetCatapult_Action_Launch();
 s32 ObjSpd_UpSet();
 
 void JetCatapult_State_Unk_ov000_0230e6e8(u8 *p0) {
@@ -19,7 +19,7 @@ void JetCatapult_State_Unk_ov000_0230e6e8(u8 *p0) {
         v1 = t3;
     }
     if ((*(u32 *)((u8 *)p0 + 0x58) & 4) != 0) {
-        func_ov000_0230e5dc(p0, v1);
+        JetCatapult_Action_Launch(p0, v1);
         return;
     }
     s32 t4 = ObjSpd_UpSet(*(s16 *)((u8 *)p0 + 0x34), 0x18, 0xf00);

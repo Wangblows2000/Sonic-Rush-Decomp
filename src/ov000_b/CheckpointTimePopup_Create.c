@@ -4,7 +4,7 @@ extern void *gActComArchive;
 extern UnkStruct_EffObj *data_ov000_0236a978;
 extern u8 data_ov000_02367fd0[];
 
-void func_ov000_0232b3a4(void);
+void CheckpointTimePopup_Destructor(void);
 void func_ov000_0232b1cc(void);
 void func_ov000_0232b348(void);
 s32 func_ov000_0233766c(s32 a);
@@ -16,7 +16,7 @@ void CheckpointTimePopup_Create(s32 unused, s32 n) {
     UnkStruct_EffObj *w;
     vu16 zero;
 
-    task = Task_Create(StageObj_Main, func_ov000_0232b3a4, 0, 0xff, 4, sizeof(UnkStruct_EffObj));
+    task = Task_Create(StageObj_Main, CheckpointTimePopup_Destructor, 0, 0xff, 4, sizeof(UnkStruct_EffObj));
     if (task == OS_GetArenaLo(0))
         return;
     w = task->work;

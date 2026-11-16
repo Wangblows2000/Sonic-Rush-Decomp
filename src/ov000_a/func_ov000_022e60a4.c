@@ -11,28 +11,28 @@ extern UnkStruct_022e60a4 *gBoss6;
 extern u32 data_ov000_023658bc[];
 extern u8 data_ov000_023638c4[];
 
-BOOL func_ov000_022e5d84(u8 *p, u32 v, s32 k);
+BOOL Boss6_StoreNodeMatrix(u8 *p, u32 v, s32 k);
 void G3_MultMtx33(void *m);
 
 void func_ov000_022e60a4(u8 *p) {
     switch (gBoss6->state) {
     case 1:
-        if (!func_ov000_022e5d84(p, 0x1c, data_ov000_023658bc[2]))
+        if (!Boss6_StoreNodeMatrix(p, 0x1c, data_ov000_023658bc[2]))
             return;
         gBoss6->state++;
         return;
     case 2:
-        if (!func_ov000_022e5d84(p, 0x1d, data_ov000_023658bc[1]))
+        if (!Boss6_StoreNodeMatrix(p, 0x1d, data_ov000_023658bc[1]))
             return;
         gBoss6->state++;
         return;
     case 3:
-        if (!func_ov000_022e5d84(p, 0x1b, data_ov000_023658bc[3]))
+        if (!Boss6_StoreNodeMatrix(p, 0x1b, data_ov000_023658bc[3]))
             return;
         gBoss6->state++;
         return;
     case 4:
-        if (!func_ov000_022e5d84(p, 0x1e, data_ov000_023658bc[0]))
+        if (!Boss6_StoreNodeMatrix(p, 0x1e, data_ov000_023658bc[0]))
             return;
         gBoss6->state = 0;
         *(u32 *)(p + 0x24) = 0;

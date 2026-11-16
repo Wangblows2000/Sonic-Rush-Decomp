@@ -58,12 +58,12 @@ extern u16 data_ov001_02316840[];
 
 void ExtraBoss_StartCharacterSwitch(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_02021c24(void *s);
+void NNS_G3dRenderObjResetCallBack(void *s);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
 void func_ov001_022ef0a0(void);
 void func_ov001_022ef10c(void);
 void func_ov001_022eef90(void);
-UnkStruct_022ef11c_o *func_ov001_023014f4(s32 a, s32 b);
+UnkStruct_022ef11c_o *ExtraBossObj_Create(s32 a, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -92,7 +92,7 @@ void func_ov001_022ef11c(UnkStruct_022ef11c_o *w) {
     a2 = o2->unk84;
     ExtraBoss_StartCharacterSwitch();
     BrightnessLerp_Create(0x20, 0x10, 0, 3, 0);
-    func_02021c24(a2->unk90);
+    NNS_G3dRenderObjResetCallBack(a2->unk90);
     d->unk14 = d->unk16 = 0;
     o2->unk14 |= 0x30000;
     w->unk18 = w->unk1C = w->unk20 = 0;
@@ -116,7 +116,7 @@ void func_ov001_022ef11c(UnkStruct_022ef11c_o *w) {
     o2->unk74 = func_ov001_022ef10c;
     w->unk1C8 = 0xb4;
 
-    o1 = func_ov001_023014f4(2, 0x2f01);
+    o1 = ExtraBossObj_Create(2, 0x2f01);
     na1 = (UnkStruct_022ef11c_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
     if ((void *)OS_GetArenaLo(0) != na1) {
         fill1 = 0xcccccccc;
@@ -132,7 +132,7 @@ void func_ov001_022ef11c(UnkStruct_022ef11c_o *w) {
     o1->unk84 = na1;
     o1->unk74 = func_ov001_022ef10c;
 
-    o = func_ov001_023014f4(2, 0x2f01);
+    o = ExtraBossObj_Create(2, 0x2f01);
     na = (UnkStruct_022ef11c_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
     if ((void *)OS_GetArenaLo(0) != na) {
         fill2 = 0xcccccccc;
@@ -149,7 +149,7 @@ void func_ov001_022ef11c(UnkStruct_022ef11c_o *w) {
     o->unk74 = func_ov001_022ef10c;
     o->unk14 |= 0x30000;
 
-    o3 = func_ov001_023014f4(2, 0x2f01);
+    o3 = ExtraBossObj_Create(2, 0x2f01);
     na3 = (UnkStruct_022ef11c_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
     if ((void *)OS_GetArenaLo(0) != na3) {
         fill3 = 0xcccccccc;

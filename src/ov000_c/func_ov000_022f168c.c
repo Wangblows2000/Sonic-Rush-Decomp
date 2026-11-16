@@ -23,7 +23,7 @@ extern u16 data_ov000_02365e20[][0x18];
 extern s32 data_ov000_02365e60[][3][8];
 extern s16 data_ov000_02365da0[][3][8];
 
-void func_ov000_022f4ce4(UnkStruct_022f168c *w, s32 a, s32 b, s32 c);
+void BossFPartD8_SetAnimation(UnkStruct_022f168c *w, s32 a, s32 b, s32 c);
 void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_022f784c(void *o, s32 a, s32 b, s32 c);
 void BossFPartD8_State_Unk_ov000_022f14a8(void);
@@ -41,7 +41,7 @@ void func_ov000_022f168c(UnkStruct_022f168c *w) {
     void *o;
     s32 x, y, wd;
 
-    func_ov000_022f4ce4(w, 0x27, 0x1000, 1);
+    BossFPartD8_SetAnimation(w, 0x27, 0x1000, 1);
     w->unk442 = 0;
     p = 0;
     if (w->unk458 == 2) {

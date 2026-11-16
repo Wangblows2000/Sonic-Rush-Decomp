@@ -20,7 +20,7 @@ typedef struct {
 
 extern UnkStruct_0234307c_4560 gGameState;
 
-void func_ov000_0232ecac(s32 a, s32 b);
+void TensionSound_Create(s32 a, s32 b);
 void EffVsTensionMax_Create(UnkStruct_0234307c *w);
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void ModelPalette_ShiftColor(void *p, s32 a, s32 b, s32 c);
@@ -30,7 +30,7 @@ void Player_AddTension(UnkStruct_0234307c *w, s16 v) {
 
     if ((gGameState.unk18 & 0x20) && v == 0x12c0) {
         if (w->unk325 == 0) {
-            func_ov000_0232ecac(0x2f, 0x80);
+            TensionSound_Create(0x2f, 0x80);
         }
         EffVsTensionMax_Create(w);
     }

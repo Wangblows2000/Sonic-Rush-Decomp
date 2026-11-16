@@ -21,7 +21,7 @@ void WH_ChangeSysState(s32 a);
 void WH_Reset(void);
 void WH_Finalize(void);
 BOOL WH_StateInStartChildKeyShare(void);
-s32 func_02012a58(void *buf, s32 a, u16 mask, u16 b, s32 c);
+s32 WM_StartDataSharing(void *buf, s32 a, u16 mask, u16 b, s32 c);
 void WH_CallbackForWFS(UnkRes_0203ee8c *r);
 
 void WH_StateOutStartChildMP(UnkRes_0203ee8c *r) {
@@ -52,7 +52,7 @@ void WH_StateOutStartChildMP(UnkRes_0203ee8c *r) {
                 return;
             }
         } else if (sConnectMode == 5) {
-            ret = func_02012a58(data_022c2440, 0xd, (1 << (gWHMaxChildCount + 1)) - 1, gWHPacketSize, 1);
+            ret = WM_StartDataSharing(data_022c2440, 0xd, (1 << (gWHMaxChildCount + 1)) - 1, gWHPacketSize, 1);
             if (ret != 0) {
                 WH_SetError(ret);
                 WH_Finalize();

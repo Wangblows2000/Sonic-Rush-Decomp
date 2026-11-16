@@ -21,18 +21,18 @@ typedef struct {
 extern UnkStruct_02369ac0 gBossStatus;
 extern UnkStruct_022c4534 gStageMapCollision;
 
-void func_ov000_022f4ce4(UnkStruct_022f3ed4 *s, s32 a, s32 b, s32 c);
-void func_ov000_022f9044(UnkStruct_022f3ed4 *s);
+void BossFPartD8_SetAnimation(UnkStruct_022f3ed4 *s, s32 a, s32 b, s32 c);
+void BossFPartD8_InitHitboxes(UnkStruct_022f3ed4 *s);
 void func_ov000_022f4cbc(UnkStruct_022f3ed4 *s);
-void func_ov000_022f9188(void);
+void BossF_InitCamera(void);
 void BossFPartD8_State_Unk_ov000_022f3e9c(void);
 
 void func_ov000_022f3ed4(UnkStruct_022f3ed4 *s) {
-    func_ov000_022f4ce4(s, 6, 0x1000, 1);
-    func_ov000_022f9044(s);
+    BossFPartD8_SetAnimation(s, 6, 0x1000, 1);
+    BossFPartD8_InitHitboxes(s);
     func_ov000_022f4cbc(s);
     s->base.unk5C |= 1;
-    func_ov000_022f9188();
+    BossF_InitCamera();
     gStageMapCollision.unk1C = 0;
     gStageMapCollision.unk24 = 0x340;
     s->unk434 = (Rand() & 0x3f) + 0x1e;

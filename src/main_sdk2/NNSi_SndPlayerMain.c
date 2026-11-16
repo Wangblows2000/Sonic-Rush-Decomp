@@ -8,7 +8,7 @@ u32 SND_GetPlayerStatus(void);
 BOOL SND_IsFinishedCommandTag(u32 id);
 void ShutdownPlayer(UnkSndPlayer *p);
 void NNSi_SndFaderUpdate(UnkSndFader *f);
-s32 func_02020564(UnkSndFader *f);
+s32 NNSi_SndFaderGet(UnkSndFader *f);
 void SND_SetPlayerVolume(u32 player, s32 vol);
 BOOL NNSi_SndFaderIsFinished(UnkSndFader *f);
 void ForceStopSeq(UnkSndPlayer *p);
@@ -42,7 +42,7 @@ void NNSi_SndPlayerMain(void)
             v2 = data_020725e0[p->volume2];
             v1 = data_020725e0[p->volume1];
             v0 = data_020725e0[p->info->volume];
-            vol = data_020725e0[func_02020564(&p->fader) >> 8];
+            vol = data_020725e0[NNSi_SndFaderGet(&p->fader) >> 8];
             vol += v1 + v2 + v0;
             if (vol < -723) {
                 vol = -723;

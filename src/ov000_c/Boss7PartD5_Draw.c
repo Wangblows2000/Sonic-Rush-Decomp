@@ -48,7 +48,7 @@ extern u16 data_02074964[][3][3];
 extern s16 data_02071470[];
 extern s16 data_0206f470[];
 
-void func_02022270(s32 a, u32 b);
+void NNS_G3dGlbLightColor(s32 a, u32 b);
 void Model_Draw(void *s);
 void Model_Animate(void *s);
 void MTX_RotY33_(void *m, s32 s, s32 c);
@@ -69,19 +69,19 @@ void Boss7PartD5_Draw(void) {
     if (mgr->unk20C & 0x10) {
         i = (w->unk4BC + (mgr->unk220 & 1)) & 3;
         if (w->unk3D0 == 0) {
-            func_02022270(0, 0x6182);
-            func_02022270(1, 0x6182);
-            func_02022270(2, 0x6182);
+            NNS_G3dGlbLightColor(0, 0x6182);
+            NNS_G3dGlbLightColor(1, 0x6182);
+            NNS_G3dGlbLightColor(2, 0x6182);
         } else {
-            func_02022270(0, 0x1a98);
-            func_02022270(1, 0x1a98);
-            func_02022270(2, 0x1a98);
+            NNS_G3dGlbLightColor(0, 0x1a98);
+            NNS_G3dGlbLightColor(1, 0x1a98);
+            NNS_G3dGlbLightColor(2, 0x1a98);
         }
         sub->unk48 = w->unk48C[i];
         Model_Draw(sub);
-        func_02022270(0, data_02074960[gGameState.unk1C][gGameState.unk1D][0]);
-        func_02022270(1, data_02074962[gGameState.unk1C][gGameState.unk1D][0]);
-        func_02022270(2, data_02074964[gGameState.unk1C][gGameState.unk1D][0]);
+        NNS_G3dGlbLightColor(0, data_02074960[gGameState.unk1C][gGameState.unk1D][0]);
+        NNS_G3dGlbLightColor(1, data_02074962[gGameState.unk1C][gGameState.unk1D][0]);
+        NNS_G3dGlbLightColor(2, data_02074964[gGameState.unk1C][gGameState.unk1D][0]);
     }
     w->base.unk5C &= ~8;
     if (w->base.unk5C & 4) {

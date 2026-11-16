@@ -25,17 +25,17 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
 u8 *File_Load(void *p, s32 v);
-u32 func_ov001_02314020(u32 *p);
-u32 func_ov001_02314014(u32 *p);
+u32 SpecialStagePlayerArchive_GetCompressionType(u32 *p);
+u32 SpecialStagePlayerArchive_GetUncompressedSize(u32 *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
 u32 *Compress_GetData(void *s);
 void Mem_Copy(void *a, void *b, u32 c);
 void Heap_Free(void *heap, void *p);
-BOOL func_02021310(void *arc, const char *name, void *narc);
-void *func_02021264(void *arc, u32 idx);
-BOOL func_020212e0(void *arc);
+BOOL NNS_FndMountArchive(void *arc, const char *name, void *narc);
+void *NNS_FndGetArchiveFileByIndex(void *arc, u32 idx);
+BOOL NNS_FndUnmountArchive(void *arc);
 void NNS_G3dResDefaultSetup(void *p);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
@@ -81,7 +81,7 @@ void SpecialStage_LoadPlayerArchive(void) {
     }
     G->unk0 = blk;
     dst = G->unk0;
-    switch (func_ov001_02314020((u32 *)res)) {
+    switch (SpecialStagePlayerArchive_GetCompressionType((u32 *)res)) {
     case 0x10:
         MI_UncompressLZ16(res, dst);
         break;
@@ -92,10 +92,10 @@ void SpecialStage_LoadPlayerArchive(void) {
         MI_UncompressRL16(res, dst);
         break;
     default:
-        Mem_Copy(Compress_GetData(res), dst, func_ov001_02314014((u32 *)res));
+        Mem_Copy(Compress_GetData(res), dst, SpecialStagePlayerArchive_GetUncompressedSize((u32 *)res));
         break;
     }
-    DC_StoreRange(dst, func_ov001_02314014((u32 *)res));
+    DC_StoreRange(dst, SpecialStagePlayerArchive_GetUncompressedSize((u32 *)res));
     if ((u8 *)OS_GetArenaLo(0) != res) {
         res -= 0x20;
         size = *(u32 *)res;
@@ -106,12 +106,12 @@ void SpecialStage_LoadPlayerArchive(void) {
         }
     }
     Heap_Free(gMainHeap, res);
-    func_02021310(&arc, data_ov001_0231ef0c, G->unk0);
-    NNS_G3dResDefaultSetup(func_02021264(&arc, 0));
-    G->unk13C = func_02021264(&arc, 0);
-    G->unk140 = func_02021264(&arc, 1);
-    G->unk144 = func_02021264(&arc, 2);
-    func_020212e0(&arc);
+    NNS_FndMountArchive(&arc, data_ov001_0231ef0c, G->unk0);
+    NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByIndex(&arc, 0));
+    G->unk13C = NNS_FndGetArchiveFileByIndex(&arc, 0);
+    G->unk140 = NNS_FndGetArchiveFileByIndex(&arc, 1);
+    G->unk144 = NNS_FndGetArchiveFileByIndex(&arc, 2);
+    NNS_FndUnmountArchive(&arc);
     Model_Init(G->anim, 0);
     G->unk110 |= 4;
     Model_SetResource(G->anim, G->unk13C, 0);

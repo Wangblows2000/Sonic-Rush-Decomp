@@ -3,7 +3,7 @@
 extern void *gMainHeap;
 extern void *data_ov000_0236aabc[];
 
-void *func_02021264(void *arc, s32 idx);
+void *NNS_FndGetArchiveFileByIndex(void *arc, s32 idx);
 void *Heap_Alloc(void *heap, u32 size, s32 align);
 void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -41,7 +41,7 @@ void func_ov000_0233a4c8(void *arc) {
     void *res;
     u8 *dst;
 
-    res = func_02021264(arc, 4);
+    res = NNS_FndGetArchiveFileByIndex(arc, 4);
     dst = UnkAlloc_0233a4c8(*(u32 *)res >> 8, 0x20);
     data_ov000_0236aabc[0] = dst;
     switch (func_ov000_0233ac84(res)) {
@@ -59,7 +59,7 @@ void func_ov000_0233a4c8(void *arc) {
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
-    res = func_02021264(arc, 0);
+    res = NNS_FndGetArchiveFileByIndex(arc, 0);
     dst = UnkAlloc_0233a4c8(*(u32 *)res >> 8, 0x20);
     data_ov000_0236aabc[1] = dst;
     switch (func_ov000_0233ac84(res)) {
@@ -77,7 +77,7 @@ void func_ov000_0233a4c8(void *arc) {
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
-    res = func_02021264(arc, 5);
+    res = NNS_FndGetArchiveFileByIndex(arc, 5);
     dst = UnkAlloc_0233a4c8(*(u32 *)res >> 8, 0x20);
     data_ov000_0236aabc[2] = dst;
     switch (func_ov000_0233ac84(res)) {
@@ -95,7 +95,7 @@ void func_ov000_0233a4c8(void *arc) {
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
-    res = func_02021264(arc, 1);
+    res = NNS_FndGetArchiveFileByIndex(arc, 1);
     dst = UnkAlloc_0233a4c8(*(u32 *)res >> 8, 0x20);
     data_ov000_0236aabc[3] = dst;
     switch (func_ov000_0233ac84(res)) {
@@ -113,7 +113,7 @@ void func_ov000_0233a4c8(void *arc) {
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
-    res = func_02021264(arc, 7);
+    res = NNS_FndGetArchiveFileByIndex(arc, 7);
     dst = UnkAlloc_0233a4c8(*(u32 *)res >> 8, 0x20);
     data_ov000_0236aabc[4] = dst;
     switch (func_ov000_0233ac84(res)) {
@@ -131,7 +131,7 @@ void func_ov000_0233a4c8(void *arc) {
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
-    res = func_02021264(arc, 8);
+    res = NNS_FndGetArchiveFileByIndex(arc, 8);
     dst = UnkAlloc_0233a4c8(*(u32 *)res >> 8, 0x20);
     data_ov000_0236aabc[5] = dst;
     switch (func_ov000_0233ac84(res)) {
@@ -149,7 +149,7 @@ void func_ov000_0233a4c8(void *arc) {
         break;
     }
     DC_StoreRange(dst, func_ov000_0233ac78(res));
-    res = func_02021264(arc, 2);
+    res = NNS_FndGetArchiveFileByIndex(arc, 2);
     size = ((*(u32 *)res >> 8) + 0x43) & ~0x1f;
     dst = Heap_Alloc(gMainHeap, size, 0x20);
     if ((u8 *)OS_GetArenaLo(0) != dst) {

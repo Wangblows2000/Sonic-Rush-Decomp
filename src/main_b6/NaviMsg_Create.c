@@ -73,7 +73,7 @@ extern UnkFile_02053c58 *data_022c466c;
 extern UnkFile_02053c58 *data_022c4664;
 extern void *gMainHeap;
 
-void func_02052874(s32 p0);
+void NaviMsg_InitSubDisplay(s32 p0);
 void *File_Load(void *a, s32 b);
 void Background_InitEx(void *b, void *res, u32 a, u32 idx, u8 e, u32 v14, u32 base, u32 v1c, u32 v20, u16 v24, u16 v26, u16 v28, u16 v2a, u16 v2c, u16 v2e);
 void Background_Draw(void *buf);
@@ -85,12 +85,12 @@ void Heap_Free(void *heap, void *p);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 void *Task_Create(void (*func)(void), void *dtor, u16 prio, u16 id, u16 unk1a, u32 workSize);
 s32 FS_ReadFile(void *f, void *buf, u32 size);
-void func_02052e1c(UnkWork_02053c58 *w);
-void func_02052d90(UnkWork_02053c58 *w, s32 n);
+void NaviMsgFace_StartIdle(UnkWork_02053c58 *w);
+void NaviMsgFace_Play(UnkWork_02053c58 *w, s32 n);
 void NNS_SndHandleInit(void *p);
 void NaviMsg_Main(void);
 void NaviMsg_Destructor(void);
-void func_020529d8(void);
+void NaviMsg_VBlankMain(void);
 
 #define REG_DB_DISPCNT (*(vu32 *)0x04001000)
 
@@ -155,7 +155,7 @@ void NaviMsg_Create(void) {
     if (data_0207b894 == 1 && gGameState.unk10 == 0
         && ((gGameState.unk0 == 0 && gSaveData.unkc < 3)
             || (gGameState.unk0 == 1 && (gSaveData.unk64 < 4 || (gSaveData.unk64 >= 0x1b && gSaveData.unk64 < 0x1c))))) {
-        func_02052874(data_0207b894);
+        NaviMsg_InitSubDisplay(data_0207b894);
         res = File_Load(data_0207b8e4[data_0207b8a4][data_0207b894], -1);
         Background_InitEx(&bg, res, 0xe, 1, 2, 0, 0x05000400, 0x06211600, 0xc, 0, 8, 0, 0, res->w18, res->w1a);
         Background_Draw(&bg);
@@ -171,7 +171,7 @@ void NaviMsg_Create(void) {
     MIi_CpuClear16(z16, w, 0x11c);
     w->mode = data_0207b894;
     w->idx = data_0207b8a4;
-    func_02052874(w->mode);
+    NaviMsg_InitSubDisplay(w->mode);
     z1 = 0;
     MIi_CpuClear32(z1, (void *)0x06203800, 0x800);
     z2 = 0;
@@ -209,12 +209,12 @@ void NaviMsg_Create(void) {
     Free_02053c58((u8 *)res);
 
     if (w->mode == 0)
-        func_02052e1c(w);
+        NaviMsgFace_StartIdle(w);
     else
-        func_02052d90(w, 10);
+        NaviMsgFace_Play(w, 10);
     SetPlane_02053c58();
     w->flags |= 2;
-    Task_Create(func_020529d8, 0, 0, 0xf100, 3, 0);
+    Task_Create(NaviMsg_VBlankMain, 0, 0, 0xf100, 3, 0);
     w->unk108 = -1;
     w->unk10c = 0;
     NNS_SndHandleInit(&w->unk118);

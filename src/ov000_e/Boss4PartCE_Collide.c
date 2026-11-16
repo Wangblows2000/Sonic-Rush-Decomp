@@ -34,7 +34,7 @@ typedef struct {
 extern UnkStruct_022de964_M *gBoss4;
 extern UnkStruct_02369ac0 gBossStatus;
 
-void func_ov000_022db7ec(void *v, UnkStruct_022de964_O *o);
+void Boss4_ArenaToStagePos(void *v, UnkStruct_022de964_O *o);
 void ObjRect_SetBox2D(UnkStruct_022de964_C *c, s16 a, s16 b, s16 d, s16 e);
 void StageObj_HandleCollider(void *w, void *a);
 void func_ov000_022db894(UnkStruct_022de964_C *h, UnkStruct_022de964_C *out);
@@ -45,7 +45,7 @@ void Boss4PartCE_Collide(void) {
     UnkStruct_022de964_O *o = m->unk20C;
     UnkStruct_022de964_C *c;
 
-    func_ov000_022db7ec(m->unk3A8, o);
+    Boss4_ArenaToStagePos(m->unk3A8, o);
     if (gBossStatus.unk4 == 0x18)
         return;
     c = &o->coll0;

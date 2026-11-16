@@ -25,7 +25,7 @@ BOOL func_02050dec(void);
 void func_ov001_022d96c4(void);
 BOOL func_ov001_022da52c(void);
 void func_ov001_022da304(UnkWork_022dc580 *w);
-void func_02051f20(void);
+void SysSound_PlayCancelSE(void);
 BOOL func_ov001_022da4d4(void);
 void func_ov001_022da450(UnkWork_022dc580 *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
@@ -40,7 +40,7 @@ void func_ov001_022d9a54(void *p, u8 *buf, u16 len);
 void func_ov001_022d9cd4(UnkWork_022dc580 *w, s32 a, s32 b);
 BOOL func_ov001_022da500(void);
 void func_ov001_022d9fe4(UnkWork_022dc580 *w);
-void func_02051f90(void);
+void SysSound_PlayDecideSE(void);
 BOOL func_ov001_022da4bc(void);
 void func_ov001_022da064(UnkWork_022dc580 *w, s32 a);
 void func_ov001_022dcc10(void);
@@ -67,20 +67,20 @@ void func_ov001_022dc580(void) {
         if (func_ov001_022da52c()) {
             func_ov001_022da304(w);
             a = TRUE;
-            func_02051f20();
+            SysSound_PlayCancelSE();
         } else if (func_ov001_022da4d4()) {
             a = TRUE;
-            func_02051f20();
+            SysSound_PlayCancelSE();
         }
         if (func_ov001_022da500()) {
             func_ov001_022d9fe4(w);
             w->unk1c = 1;
             w->unk4 = 0;
-            func_02051f90();
+            SysSound_PlayDecideSE();
         } else if (func_ov001_022da4bc()) {
             w->unk1c = 1;
             w->unk4 = 0x10;
-            func_02051f90();
+            SysSound_PlayDecideSE();
         } else if (func_02051130()) {
             c = TRUE;
         }

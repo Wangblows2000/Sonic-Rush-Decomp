@@ -24,14 +24,14 @@ extern UnkWork_022e190c *gZoneActSelectWork;
 extern s32 data_ov001_0231c3ec;
 extern s32 gZoneActSelectResult;
 
-void func_ov001_022e1900(void);
+void ZoneActSelect_IsActive(void);
 UnkTask_022e190c *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void ZoneActSelect_State_FadeIn(void);
 void ZoneActSelect_Destructor(void);
 void func_ov001_022e0784(UnkWork_022e190c *w);
 void func_ov001_022e06e4(UnkWork_022e190c *w);
-void func_ov001_022e17fc(void);
+void ZoneActSelect_InitDisplay(void);
 void ZoneActSelect_LoadAssets(UnkWork_022e190c *w);
 void func_ov001_022e153c(UnkWork_022e190c *w);
 void func_ov001_022e0e98(void);
@@ -42,7 +42,7 @@ void ZoneActSelect_Create(s32 a, s32 b, s32 c) {
     UnkTask_022e190c *t;
     UnkWork_022e190c *w;
 
-    func_ov001_022e1900();
+    ZoneActSelect_IsActive();
     t = Task_Create(ZoneActSelect_State_FadeIn, ZoneActSelect_Destructor, 0, 0x8000, 0, sizeof(UnkWork_022e190c));
     w = t->work;
     gZoneActSelectWork = w;
@@ -58,7 +58,7 @@ void ZoneActSelect_Create(s32 a, s32 b, s32 c) {
     gZoneActSelectResult = 0;
     func_ov001_022e0784(gZoneActSelectWork);
     func_ov001_022e06e4(gZoneActSelectWork);
-    func_ov001_022e17fc();
+    ZoneActSelect_InitDisplay();
     ZoneActSelect_LoadAssets(gZoneActSelectWork);
     func_ov001_022e153c(gZoneActSelectWork);
     func_ov001_022e0e98();

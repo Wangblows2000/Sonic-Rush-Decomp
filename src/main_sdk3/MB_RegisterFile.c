@@ -43,11 +43,11 @@ u32 OS_RestoreInterrupts(u32 state);
 BOOL MBi_IsStarted(void);
 void MBi_MakeDownloadFileInfo(void *dst, u8 *rom);
 BOOL MBi_MakeBlockInfoTable(void *a, void *b);
-void func_020181dc(void *a, void *info, void *c);
-void func_02018038(void *a);
+void MBi_MakeGameInfo(void *a, void *info, void *c);
+void MB_AddGameInfo(void *a);
 BOOL MBi_IsTaskAvailable(void);
-void func_0201a490(void *p);
-void func_0201a4c0(void *p, u32 size);
+void MBi_InitTaskInfo(void *p);
+void MBi_InitTaskThread(void *p, u32 size);
 
 BOOL MB_RegisterFile(void *info, u8 *rom)
 {
@@ -85,17 +85,17 @@ BOOL MB_RegisterFile(void *info, u8 *rom)
         OS_RestoreInterrupts(enabled);
         return FALSE;
     }
-    func_020181dc(data_02080f1c->entry[k].unkE4, info, data_02080f1c->unk1300);
+    MBi_MakeGameInfo(data_02080f1c->entry[k].unkE4, info, data_02080f1c->unk1300);
     data_02080f1c->entry[k].unk599 = k;
-    func_02018038(data_02080f1c->entry[k].unkE4);
+    MB_AddGameInfo(data_02080f1c->entry[k].unkE4);
     data_02080f1c->entry[k].unk597 = data_02080e68++;
     data_02080f1c->entry[k].unk5c6 = 1;
     data_02080f1c->entry[k].unk5bc = rom;
     data_02080f1c->entry[k].unk5cc = (UnkMbFileHdr_02017148 *)(rom + 0x1e8);
     data_02080f1c->entry[k].unk5d0 = rom + 0x258;
     if (data_02080f1c->entry[k].unk5cc->unk6c != 0 && !MBi_IsTaskAvailable()) {
-        func_0201a490(data_02080f1c->unk7ce0);
-        func_0201a4c0(data_02080f1c->unk74e0, 0x800);
+        MBi_InitTaskInfo(data_02080f1c->unk7ce0);
+        MBi_InitTaskThread(data_02080f1c->unk74e0, 0x800);
     }
     data_02080f1c->entry[k].unk5ca = 1;
     data_02080f1c->unk1524++;

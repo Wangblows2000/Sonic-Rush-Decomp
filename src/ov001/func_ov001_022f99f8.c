@@ -10,13 +10,13 @@ void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 extern u8 *data_ov001_0231f084;
 extern u8 *data_ov001_0231f088;
-void func_0202566c(void *p);
+void NNS_G3dResDefaultRelease(void *p);
 void Sound_ResetHeap(void);
 
 void func_ov001_022f99f8(void) {
     u8 *blk;
-    func_0202566c(*(void **)(data_ov001_0231f084 + 0xc));
-    func_0202566c(*(void **)(data_ov001_0231f084 + 8));
+    NNS_G3dResDefaultRelease(*(void **)(data_ov001_0231f084 + 0xc));
+    NNS_G3dResDefaultRelease(*(void **)(data_ov001_0231f084 + 8));
     blk = data_ov001_0231f088;
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;

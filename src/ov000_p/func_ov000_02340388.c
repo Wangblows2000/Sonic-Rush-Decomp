@@ -48,8 +48,8 @@ extern u16 *data_02087cf4[];
 #define SIN_02340388(a) data_0206e470[(u32)(IDX_02340388(a) << 1)]
 #define COS_02340388(a) data_0206e470[(u32)((IDX_02340388(a) << 1) + 1)]
 
-UnkPlayer_02340388 *func_ov000_0233b62c(void);
-UnkPlayer_02340388 *func_ov000_0233b610(void);
+UnkPlayer_02340388 *Camera_GetBySwapState(void);
+UnkPlayer_02340388 *Camera_GetOtherBySwapState(void);
 void func_ov000_0233e8ac(UnkWave_02340388 *wave, s32 v, u32 z);
 
 void func_ov000_02340388(UnkStruct_02340388 *w) {
@@ -68,8 +68,8 @@ void func_ov000_02340388(UnkStruct_02340388 *w) {
     } else {
         tbl = data_02087cf4[data_02087cdc.unk24];
     }
-    p = func_ov000_0233b62c();
-    q = func_ov000_0233b610();
+    p = Camera_GetBySwapState();
+    q = Camera_GetOtherBySwapState();
     if (w->unk40 == 0) {
         v = (p->unk20 * 0x110 << 8) >> 16;
     } else if (w->unk40 < 0xc0) {

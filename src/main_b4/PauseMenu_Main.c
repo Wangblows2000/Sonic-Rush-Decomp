@@ -40,10 +40,10 @@ extern UnkPad_020556a4 gPad;
 extern UnkStruct_022c4560 gGameState;
 
 void Sound_PlaySeqArcEx(s32 a, void *b, void *c);
-void func_020551b0(UnkWork_020556a4 *w);
-void func_020552bc(UnkWork_020556a4 *w);
+void PauseMenu_HighlightSelection(UnkWork_020556a4 *w);
+void PauseMenu_Draw(UnkWork_020556a4 *w);
 void BrightnessFade_Create(s32 a, s32 b);
-void func_0205557c(void);
+void PauseMenu_Main_Quit(void);
 void Task_Destroy(UnkTask_020556a4 *t);
 
 void PauseMenu_Main(void) {
@@ -72,9 +72,9 @@ void PauseMenu_Main(void) {
         Sound_PlaySeqArcEx(0, w->unk164, w->unk16c);
         w->mark[w->sel] = 2;
         if (moved)
-            func_020551b0(w);
+            PauseMenu_HighlightSelection(w);
     }
-    func_020552bc(w);
+    PauseMenu_Draw(w);
     if (w->trig & 1) {
         switch (w->sel) {
         case 0:
@@ -85,7 +85,7 @@ void PauseMenu_Main(void) {
                 BrightnessFade_Create(4, 0x100);
             else
                 BrightnessFade_Create(5, 0x100);
-            gTaskCurrent->fn = func_0205557c;
+            gTaskCurrent->fn = PauseMenu_Main_Quit;
             return;
         }
     }

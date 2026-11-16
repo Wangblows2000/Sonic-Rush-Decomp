@@ -46,9 +46,9 @@ extern u8 gSoundArchive[];
 
 UnkStruct_0230ea6c_o2 *SpecialStage_GetPlayer(void);
 void MTX_Identity33_(void *m);
-void func_0201d568(void *p);
+void NNS_SndArcSetCurrent(void *p);
 void Sound_PlaySeqArc(u32 *p, u32 a, u32 b);
-s32 func_ov001_023070fc(s32 p0, s32 p1, s32 p2, s32 p3);
+s32 SpecialStageActObj_SpawnAt(s32 p0, s32 p1, s32 p2, s32 p3);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -73,17 +73,17 @@ void func_ov001_0230ea6c(UnkStruct_0230ea6c *s) {
         s->unkAC->unk54 = -0x18d2;
         s->unkAC->unk58 = -0x7fd;
         s->unkAC->unk5C = -0x5f1;
-        func_0201d568(data_ov001_0231f5c8);
+        NNS_SndArcSetCurrent(data_ov001_0231f5c8);
         Sound_PlaySeqArc(0, 9, 0);
-        func_0201d568(gSoundArchive);
+        NNS_SndArcSetCurrent(gSoundArchive);
     }
     if (s->unkD0 > 0x2a) {
         if (s->unkD0 % 17 == 1) {
-            func_ov001_023070fc(2, o->unk1F8.m[9] + Rand() % 0x4000 - 0x2000, o->unk1F8.m[10] + Rand() % 0x5000 - 0x1000, o->unk1F8.m[11] + Rand() % 0x4000 - 0x2000);
+            SpecialStageActObj_SpawnAt(2, o->unk1F8.m[9] + Rand() % 0x4000 - 0x2000, o->unk1F8.m[10] + Rand() % 0x5000 - 0x1000, o->unk1F8.m[11] + Rand() % 0x4000 - 0x2000);
         }
     } else {
         if (s->unkD0 % 17 == 1) {
-            func_ov001_023070fc(2, s->unk20 + Rand() % 0x4000 - 0x2000, s->unk24 + Rand() % 0x4000 - 0x2000, s->unk28 + Rand() % 0x4000 - 0x2000);
+            SpecialStageActObj_SpawnAt(2, s->unk20 + Rand() % 0x4000 - 0x2000, s->unk24 + Rand() % 0x4000 - 0x2000, s->unk28 + Rand() % 0x4000 - 0x2000);
         }
     }
 }

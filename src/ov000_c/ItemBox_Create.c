@@ -17,7 +17,7 @@ void MapObject_Destructor(void);
 void ItemBox_OnHit(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void ItemBox_CreatePart_ov000_0230d930(UnkStruct_0230de00 *w, s32 a, s32 b, u16 c);
-void ItemBox_Action_Unk_ov000_0230ddf0(UnkStruct_0230de00 *w);
+void ItemBox_Action_Init(UnkStruct_0230de00 *w);
 
 UnkStruct_0230de00 *ItemBox_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -71,6 +71,6 @@ UnkStruct_0230de00 *ItemBox_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         StageObj_SetAnimation(w, 1);
         w->base.unk5C |= 4;
     }
-    ItemBox_Action_Unk_ov000_0230ddf0(w);
+    ItemBox_Action_Init(w);
     return w;
 }

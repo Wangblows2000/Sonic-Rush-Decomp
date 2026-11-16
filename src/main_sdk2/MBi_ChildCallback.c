@@ -10,18 +10,18 @@ extern u16 data_02080f10;
 extern UnkScanParam_wh data_02080f20;
 
 void MBi_ChildCallback(UnkCallback_wh *arg);
-void func_02019744(void *arg);
+void MBi_ChildPortCallback(void *arg);
 s32 WM_SetLifeTime(void (*cb)(UnkCallback_wh *), u16 a, u16 b, u16 c, u16 d);
 void MBi_CheckWmErrcode(u16 id, s32 result);
 s32 WM_StartScan(void (*cb)(UnkCallback_wh *), UnkScanParam_wh *param);
 void DC_InvalidateRange(void *p, u32 size);
 void MI_DmaCopy16(u32 dma, const void *src, void *dst, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);
-BOOL func_0201a0f0(UnkScanParam_wh *param);
+BOOL changeScanChannel(UnkScanParam_wh *param);
 void MBi_CommEnd(void);
-s32 func_020116a0(void (*cb)(UnkCallback_wh *), u32 a, u32 b, u32 c, u32 d);
-s32 func_020114f0(u16 port, void (*cb)(void *), void *arg);
-s32 func_02011dcc(void (*cb)(UnkCallback_wh *), void *recvBuf, u16 recvBufSize, void *sendBuf, u16 sendBufSize,
+s32 WM_StartConnectEx(void (*cb)(UnkCallback_wh *), u32 a, u32 b, u32 c, u32 d);
+s32 WM_SetPortCallback(u16 port, void (*cb)(void *), void *arg);
+s32 WM_StartMP(void (*cb)(UnkCallback_wh *), void *recvBuf, u16 recvBufSize, void *sendBuf, u16 sendBufSize,
                   u16 mpFreq, u16 retry, BOOL a, BOOL b, BOOL c, BOOL d);
 BOOL MBi_IsSendEnabled(void);
 s32 WM_End(void (*cb)(UnkCallback_wh *));
@@ -98,7 +98,7 @@ void MBi_ChildCallback(UnkCallback_wh *arg)
             if (work->unk5e4 == 0) {
                 return;
             }
-            if (work->unk5e8 != 0 && !func_0201a0f0(&data_02080f20)) {
+            if (work->unk5e8 != 0 && !changeScanChannel(&data_02080f20)) {
                 MBi_CommEnd();
             }
             MBi_CheckWmErrcode(0xa, WM_StartScan(MBi_ChildCallback, &data_02080f20));
@@ -108,7 +108,7 @@ void MBi_ChildCallback(UnkCallback_wh *arg)
             if (work->unk5e4 == 0) {
                 return;
             }
-            if (work->unk5e8 != 0 && !func_0201a0f0(&data_02080f20)) {
+            if (work->unk5e8 != 0 && !changeScanChannel(&data_02080f20)) {
                 MBi_CommEnd();
             }
             MBi_CheckWmErrcode(0xa, WM_StartScan(MBi_ChildCallback, &data_02080f20));
@@ -122,7 +122,7 @@ void MBi_ChildCallback(UnkCallback_wh *arg)
             work->callback(0x100, arg);
             return;
         }
-        MBi_CheckWmErrcode(0xc, func_020116a0(MBi_ChildCallback, work->unk520, 0, 1, 0));
+        MBi_CheckWmErrcode(0xc, WM_StartConnectEx(MBi_ChildCallback, work->unk520, 0, 1, 0));
         return;
     case 12:
         if (arg->errcode != 0) {
@@ -139,10 +139,10 @@ void MBi_ChildCallback(UnkCallback_wh *arg)
             work->aid = arg->connAid;
             work->callback(6, arg);
             work->unk52a = 1;
-            if (func_020114f0(1, func_02019744, 0) != 0) {
+            if (WM_SetPortCallback(1, MBi_ChildPortCallback, 0) != 0) {
                 return;
             }
-            MBi_CheckWmErrcode(0xe, func_02011dcc(MBi_ChildCallback, work->recvBuf, work->recvBufSize, work->sendBuf,
+            MBi_CheckWmErrcode(0xe, WM_StartMP(MBi_ChildCallback, work->recvBuf, work->recvBufSize, work->sendBuf,
                                              work->sendBufSize, work->unk52c == 0, 0, 0, 0, 1, 1));
             return;
         case 9:

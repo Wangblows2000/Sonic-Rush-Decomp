@@ -48,7 +48,7 @@ UnkStruct_0230506c *Cargo_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     SpritePair_SetOAMPriority(&w->sprA, &w->sprB, 0);
     w->sprA.unk44 = w->base.spr0.unk44;
     w->sprB.unk44 = w->base.spr0.unk44;
-    func_02069e68(&w->sprA, &w->sprB, 2, data_ov000_02369e74);
+    StageObj_AcquireSpriteVramPair(&w->sprA, &w->sprB, 2, data_ov000_02369e74);
     ObjAction_Load2dBAC(&w->sprC, &w->sprD, data_ov000_023667a8, 0, data_ov000_02369e64, data_ov000_02369ba0);
     AnimatorSprite_SetAnimation(&w->sprC, 2);
     AnimatorSprite_SetAnimation(&w->sprD, 2);
@@ -56,7 +56,7 @@ UnkStruct_0230506c *Cargo_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->sprD.unk46 = 0x14;
     w->sprC.unk44 = w->base.spr0.unk44;
     w->sprD.unk44 = w->base.spr0.unk44;
-    func_02069e68(&w->sprC, &w->sprD, 0x20, data_ov000_02369e84);
+    StageObj_AcquireSpriteVramPair(&w->sprC, &w->sprD, 0x20, data_ov000_02369e84);
     ObjData_Load(&data_ov000_02369e6c, data_ov000_023667c0, data_ov000_02369ba0);
     w->base.unk1C8 = data_ov000_02369e6c;
     w->base.unk1B8 = w;

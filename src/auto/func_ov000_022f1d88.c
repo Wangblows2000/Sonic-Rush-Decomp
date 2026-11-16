@@ -21,7 +21,7 @@ typedef int code();
 
 extern unsigned char data_ov000_0236a48c[];
 int func_ov000_022f1d20();
-int func_ov000_022f4ce4();
+int BossFPartD8_SetAnimation();
 
 void func_ov000_022f1d88(int param_1)
 
@@ -29,7 +29,7 @@ void func_ov000_022f1d88(int param_1)
   int iVar1;
   undefined4 uVar2;
   
-  func_ov000_022f4ce4(param_1,0x1c,0x1000,0);
+  BossFPartD8_SetAnimation(param_1,0x1c,0x1000,0);
   iVar1 = ((int)data_ov000_0236a48c);
   *(undefined4 *)(((int)data_ov000_0236a48c) + 0x48) = 0x14000;
   *(undefined4 *)(iVar1 + 0x4c) = 0x32000;

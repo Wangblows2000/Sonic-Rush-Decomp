@@ -3,21 +3,21 @@
 
 #pragma thumb on
 
-s32 func_02054b50();
+s32 WirelessError_InitDisplay();
 s32 Touch_Enable();
 s32 SysSound_Init();
 s32 SysSound_PlaySE();
 s32 MsgBox_Create();
-void func_02054d3c();
+void WirelessError_Main_WaitClose();
 s32 Task_Create();
 
 void WirelessError_Start(void) {
-    func_02054b50();
+    WirelessError_InitDisplay();
     Touch_Enable();
     SysSound_Init();
     SysSound_PlaySE(6);
     MsgBox_Create(0xb, 1, 2, 0, 0, 0, 0, 0x200010);
-    Task_Create((u32)func_02054d3c, 0, 0, 0, 0, 4);
+    Task_Create((u32)WirelessError_Main_WaitClose, 0, 0, 0, 0, 4);
 }
 
 #pragma thumb reset

@@ -39,7 +39,7 @@ extern s32 gZoneActSelectResult;
 s32 func_ov001_022e0820(s32 x, s32 y);
 s32 func_ov001_022e07e8(s32 x, s32 y);
 BOOL func_ov001_022e07d0(s32 x, s32 y);
-void func_02051ebc(void);
+void SysSound_PlayCursorSE(void);
 void func_ov001_022e08e0(UnkWork_022e0f94 *w);
 void func_ov001_022e0968(UnkWork_022e0f94 *w);
 void func_ov001_022e09d0(UnkWork_022e0f94 *w);
@@ -88,7 +88,7 @@ void ZoneActSelect_State_Select(void) {
     }
     if (sel >= 0) {
         if (data_ov001_0231c3ec != sel) {
-            func_02051ebc();
+            SysSound_PlayCursorSE();
         }
         data_ov001_0231c3ec = sel;
     }
@@ -97,12 +97,12 @@ void ZoneActSelect_State_Select(void) {
         if (gPad.trg & 0x40) {
             if (gZoneActSelectResult > 0) {
                 sel = gZoneActSelectResult - 1;
-                func_02051ebc();
+                SysSound_PlayCursorSE();
             }
         } else if (gPad.trg & 0x80) {
             if (gZoneActSelectResult < 2) {
                 sel = gZoneActSelectResult + 1;
-                func_02051ebc();
+                SysSound_PlayCursorSE();
             }
         }
     } else {

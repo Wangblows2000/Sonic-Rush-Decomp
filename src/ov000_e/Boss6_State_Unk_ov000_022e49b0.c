@@ -50,7 +50,7 @@ extern s32 data_ov000_02363a18[][8][4];
 
 s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void BossEffect_CreatePick(s32 a, s32 b, s32 c, s32 d);
 void BossEffect_CreateParts(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -65,10 +65,10 @@ void Boss6_State_Unk_ov000_022e49b0(UnkStruct_Boss *w) {
     s32 d;
 
     k = w->unkF50 << 12;
-    data_ov000_0236a444.unk3C = func_0200225c(k * ScreenShake_GetOffsetX(), 0x1e000);
+    data_ov000_0236a444.unk3C = FX_Div(k * ScreenShake_GetOffsetX(), 0x1e000);
     data_ov000_0236a444.unk3C = data_ov000_0236a444.unk3C << 14;
     data_ov000_0236a444.unk3C = data_ov000_0236a444.unk3C >> 12;
-    data_ov000_0236a444.unk40 = func_0200225c(k * ScreenShake_GetOffsetY(), 0x1e000);
+    data_ov000_0236a444.unk40 = FX_Div(k * ScreenShake_GetOffsetY(), 0x1e000);
     data_ov000_0236a444.unk40 = data_ov000_0236a444.unk40 << 14;
     data_ov000_0236a444.unk40 = data_ov000_0236a444.unk3C >> 12;
     w->unkF50--;

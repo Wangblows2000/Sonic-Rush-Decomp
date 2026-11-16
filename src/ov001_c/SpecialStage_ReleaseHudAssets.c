@@ -19,10 +19,10 @@ void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-void func_ov001_0230b09c(u8 *blk);
+void SpecialStage_FreeHudBlock(u8 *blk);
 void NNS_SndStopSoundAll(void);
 void NNS_SndHeapClear(void *h);
-void func_0201db14(void *h);
+void NNS_SndHeapDestroy(void *h);
 void Sound_ResetHeap(void);
 
 static inline void Free_0230bcc4(void *p) {
@@ -51,11 +51,11 @@ void SpecialStage_ReleaseHudAssets(UnkStruct_0230bcc4_o *o) {
         Free_0230bcc4(o->res2[i]);
         o->res2[i] = NULL;
     }
-    func_ov001_0230b09c(o->unk2C);
+    SpecialStage_FreeHudBlock(o->unk2C);
     o->unk2C = NULL;
     NNS_SndStopSoundAll();
     NNS_SndHeapClear(g->heap);
-    func_0201db14(g->heap);
+    NNS_SndHeapDestroy(g->heap);
     Free_0230bcc4(g->mem);
     Sound_ResetHeap();
 }

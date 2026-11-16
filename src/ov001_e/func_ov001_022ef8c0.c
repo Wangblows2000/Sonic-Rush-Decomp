@@ -20,7 +20,7 @@ typedef struct UnkStruct_022ef8c0 {
 } UnkStruct_022ef8c0;
 
 extern s32 data_ov001_0231f070;
-extern void *data_ov001_0231f528;
+extern void *gExtraBossArchive;
 extern s32 data_ov001_0231d4ac[];
 extern u16 data_ov001_02316804[];
 extern u16 data_ov001_023167f8[];
@@ -35,13 +35,13 @@ void func_ov001_022ef8c0(UnkStruct_022ef8c0 *p) {
         p->oA4.flags &= ~0x200;
         p->oDC.flags &= ~0x200;
         func_ov001_022f2ca8(p);
-        func_ov001_022ffb9c(data_ov001_0231f070, data_ov001_0231f528, data_ov001_0231d4ac, data_ov001_02316804, data_ov001_023167f8, 6);
+        func_ov001_022ffb9c(data_ov001_0231f070, gExtraBossArchive, data_ov001_0231d4ac, data_ov001_02316804, data_ov001_023167f8, 6);
         p->vx = p->vy = 0;
         return;
     }
     p->unk1C8++;
     if ((p->unk1C8 & 7) == 1)
-        func_ov001_022ffb9c(data_ov001_0231f070, data_ov001_0231f528, data_ov001_0231d4ac, data_ov001_023167ec, data_ov001_023167f8, 6);
+        func_ov001_022ffb9c(data_ov001_0231f070, gExtraBossArchive, data_ov001_0231d4ac, data_ov001_023167ec, data_ov001_023167f8, 6);
     else if ((p->unk1C8 & 7) == 5)
-        func_ov001_022ffb9c(data_ov001_0231f070, data_ov001_0231f528, data_ov001_0231d4ac, data_ov001_02316804, data_ov001_023167f8, 6);
+        func_ov001_022ffb9c(data_ov001_0231f070, gExtraBossArchive, data_ov001_0231d4ac, data_ov001_02316804, data_ov001_023167f8, 6);
 }

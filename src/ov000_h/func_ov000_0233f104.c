@@ -60,8 +60,8 @@ extern UnkLimit_0233f104 data_ov000_0236ab10[];
 extern UnkStruct_0233f104_4560 gGameState;
 extern UnkStruct_0233f104_abd8 data_ov000_0236abd8;
 
-UnkPlayer_0233f104 *func_ov000_0233b62c(void);
-s32 func_0200225c(s32 a, s32 b);
+UnkPlayer_0233f104 *Camera_GetBySwapState(void);
+s32 FX_Div(s32 a, s32 b);
 
 void func_ov000_0233f104(UnkStruct_0233f104 *bg, s32 idx) {
     UnkPlayer_0233f104 *p;
@@ -74,23 +74,23 @@ void func_ov000_0233f104(UnkStruct_0233f104 *bg, s32 idx) {
         p = &gCamera.p[idx];
     } else {
         idx = 0;
-        p = func_ov000_0233b62c();
+        p = Camera_GetBySwapState();
     }
     if (data_ov000_0236ab0c[idx].unk0 & 0x10) {
         lim = data_ov000_0236ab10[idx].unk0;
     } else {
         lim = 0x7fff;
     }
-    h = (s16)((u32)(func_0200225c((lim << 8) - p->unk8, p->unk20) >> 4) >> 8);
+    h = (s16)((u32)(FX_Div((lim << 8) - p->unk8, p->unk20) >> 4) >> 8);
     if (p->unk34 & 1) {
         return;
     }
     p->unk2C = 0;
-    p->unk30 = func_0200225c(p->unk8 << 5, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4;
+    p->unk30 = FX_Div(p->unk8 << 5, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4;
     bg->a[idx].x = 0;
     bg->a[idx].y = 0;
     bg->b[idx].x = (p->unk4 / 28) & 0x1ffff;
-    bg->b[idx].y = func_0200225c(p->unk8 << 5, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4;
+    bg->b[idx].y = FX_Div(p->unk8 << 5, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4;
     if (h + (bg->b[idx].y >> 8) < 0xb0) {
         bg->top[idx] = h > 0 ? h : 0;
         bg->b[idx].y = (0xb0 - h) << 8;

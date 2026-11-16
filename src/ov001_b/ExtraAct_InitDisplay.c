@@ -66,8 +66,8 @@ void Vram_SetBankForSubBGExtPltt(s32 a);
 void ObjVram_Reset(s32 i);
 void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
-void func_02022270(u32 index, u32 value);
-void func_02022284(u32 idx, s32 x, s32 y, s32 z);
+void NNS_G3dGlbLightColor(u32 index, u32 value);
+void NNS_G3dGlbLightVector(u32 idx, s32 x, s32 y, s32 z);
 
 void ExtraAct_InitDisplay(void) {
     GX_DispOff();
@@ -152,10 +152,10 @@ void ExtraAct_InitDisplay(void) {
     ObjVram_Reset(1);
     Vram_ResetTexAndPltt();
     VramPltt_Reset();
-    func_02022270(0, 0x7fff);
-    func_02022270(1, 0x4631);
-    func_02022270(2, 0x2108);
-    func_02022284(0, 0x4a0, -0x4a0, 0);
-    func_02022284(1, 0, -0x617, -0xecd);
-    func_02022284(2, 0xec7, 0x620, 0);
+    NNS_G3dGlbLightColor(0, 0x7fff);
+    NNS_G3dGlbLightColor(1, 0x4631);
+    NNS_G3dGlbLightColor(2, 0x2108);
+    NNS_G3dGlbLightVector(0, 0x4a0, -0x4a0, 0);
+    NNS_G3dGlbLightVector(1, 0, -0x617, -0xecd);
+    NNS_G3dGlbLightVector(2, 0xec7, 0x620, 0);
 }

@@ -31,8 +31,8 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-s32 func_ov001_022e3ecc(void *p);
-u32 func_ov001_022e3ec0(void *p);
+s32 ZoneMap_GetCompressionType(void *p);
+u32 ZoneMap_GetUncompressedSize(void *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
@@ -75,7 +75,7 @@ void func_ov001_022e5684(UnkWork_022e5684 *w, UnkRes_022e5684 *res) {
     w->buf = Alloc_022e5684(((*(u32 *)((u8 *)res + res->unkc) >> 8) + 0x43) & ~0x1f);
     p = w->buf;
     res = (UnkRes_022e5684 *)((u8 *)res + res->unkc);
-    switch (func_ov001_022e3ecc(res)) {
+    switch (ZoneMap_GetCompressionType(res)) {
     case 0x10:
         MI_UncompressLZ16(res, p);
         break;
@@ -86,10 +86,10 @@ void func_ov001_022e5684(UnkWork_022e5684 *w, UnkRes_022e5684 *res) {
         MI_UncompressRL16(res, p);
         break;
     default:
-        Mem_Copy(Compress_GetData(res), p, func_ov001_022e3ec0(res));
+        Mem_Copy(Compress_GetData(res), p, ZoneMap_GetUncompressedSize(res));
         break;
     }
-    DC_StoreRange(p, func_ov001_022e3ec0(res));
+    DC_StoreRange(p, ZoneMap_GetUncompressedSize(res));
     func_ov001_022e833c(w);
 }
 #pragma thumb reset

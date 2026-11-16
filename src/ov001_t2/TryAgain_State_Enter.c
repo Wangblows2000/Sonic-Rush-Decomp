@@ -27,7 +27,7 @@ typedef struct {
 extern UnkTask_022d3cd0 *gTaskCurrent;
 
 void func_ov001_022d36c0(UnkWork_022d3cd0 *w);
-s16 func_ov001_022d35f8(s32 a, s32 b, s32 c, s32 t, s32 e);
+s16 TryAgain_Interpolate(s32 a, s32 b, s32 c, s32 t, s32 e);
 BOOL func_ov001_022d36ac(UnkWork_022d3cd0 *w);
 void AnimatorSprite_SetAnimation(UnkSpr_022d3cd0 *s, u16 anim);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022d3cd0 *s, u32 a, u32 b);
@@ -46,7 +46,7 @@ void TryAgain_State_Enter(void) {
         w->anim = 0;
     }
     s->flags &= ~4;
-    s->x = func_ov001_022d35f8(-0xa0, 0, 0xc, w->timer, 0x2000);
+    s->x = TryAgain_Interpolate(-0xa0, 0, 0xc, w->timer, 0x2000);
     s->y = 0;
     AnimatorSprite_ProcessAnimation(s, 0, 0);
     AnimatorSprite_Draw(s);

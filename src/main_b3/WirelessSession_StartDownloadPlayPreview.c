@@ -9,11 +9,11 @@ extern s32 data_022c463c;
 extern UnkStruct_0207ad9c gWirelessSession;
 
 void Wireless_EnableErrorCallback(s32 a);
-void func_02051838(void);
-void func_0206cd7c(s32 a);
+void WirelessSession_ForceStop(void);
+void NetPacket_Init(s32 a);
 UnkTask_02050c88 *Task_Create(void (*f)(void), void (*g)(void), s32 b, s32 c, s32 d, s32 e);
-void func_02050344(void);
-void func_02050900(void);
+void WirelessLobbyPreview_Main(void);
+void WirelessLobbyDownloadPlay_Destructor(void);
 void DownloadPlay_GetSonicPreview(UnkCfg_02050c88 *c);
 void DownloadPlay_GetBlazePreview(UnkCfg_02050c88 *c);
 void WirelessMgr_StartDownloadPlayParent(UnkCfg_02050c88 *c, s32 a);
@@ -24,10 +24,10 @@ void WirelessSession_StartDownloadPlayPreview(s32 mode) {
     UnkCfg_02050c88 cfg;
 
     Wireless_EnableErrorCallback(0);
-    func_02051838();
-    func_0206cd7c(0);
+    WirelessSession_ForceStop();
+    NetPacket_Init(0);
     data_022c463c = 0;
-    data_022c4638 = Task_Create(func_02050344, func_02050900, 0, 0x1000, 0, sizeof(UnkWork_02050c88));
+    data_022c4638 = Task_Create(WirelessLobbyPreview_Main, WirelessLobbyDownloadPlay_Destructor, 0, 0x1000, 0, sizeof(UnkWork_02050c88));
     w = data_022c4638->work;
     w->unk0 = 2;
     w->unk4 = 1;

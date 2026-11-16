@@ -6,7 +6,7 @@ void PM_DeletePostSleepCallback(void *p);
 u32 SND_GetCurrentCommandTag(void);
 void SND_FlushCommand(u32 a);
 void SND_WaitForCommandProc(u32 a);
-void func_0201c2ec(void *s);
+void ShutdownStrm(void *s);
 
 typedef struct { u8 unk0[8]; u8 unk8[0xC]; u8 unk14[0x10]; u32 unk24_0 : 1; s32 unk24_1 : 1; u32 pad : 30; u8 unk28[0x18]; u32 unk40; u32 unk44; } UnkStruct_0201c320;
 
@@ -21,5 +21,5 @@ void func_0201c320(UnkStruct_0201c320 *s) {
         SND_FlushCommand(1);
         SND_WaitForCommandProc(x);
     }
-    func_0201c2ec(s);
+    ShutdownStrm(s);
 }

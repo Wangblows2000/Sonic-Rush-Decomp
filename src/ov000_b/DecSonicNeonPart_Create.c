@@ -13,7 +13,7 @@ extern u8 data_ov000_023672d8[], data_ov000_0236a740[];
 
 s32 ObjVram_Alloc(s32 a, s32 b);
 void StageObj_Draw2D(void *w, UnkStruct_Spr *a, UnkStruct_Spr *b);
-void func_ov000_023202f8(void);
+void DecSonicNeonPart_State_FollowParentMask(void);
 
 
 UnkStruct_EffObj *DecSonicNeonPart_Create(UnkStruct_StageObj *arg, u16 idx) {
@@ -50,6 +50,6 @@ UnkStruct_EffObj *DecSonicNeonPart_Create(UnkStruct_StageObj *arg, u16 idx) {
     w->unk5C |= 1;
     w->unk58 |= 0x2100;
     w->unk54 |= 0x12;
-    w->unk68 = func_ov000_023202f8;
+    w->unk68 = DecSonicNeonPart_State_FollowParentMask;
     return w;
 }

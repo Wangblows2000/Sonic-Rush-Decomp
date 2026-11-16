@@ -29,9 +29,9 @@ extern UnkTask_0204bc90 *gTaskCurrent;
 extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_022c4590 data_022c4590;
 void Stage_DestroyTasks(void);
-void func_0204ca68(void);
-void func_0204c964(void);
-void func_0204cb10(void);
+void Stage_SaveEventState(void);
+void Stage_SaveRestartCamera(void);
+void Stage_FreeEventStateBuffers(void);
 void Stage_ReleaseZoneResources(void);
 void Stage_ReleaseCommonResources(void);
 void Stage_FreeZoneFiles(void);
@@ -52,10 +52,10 @@ void StageExit_Main(void) {
     Stage_DestroyTasks();
     if (gGameState.unk10 == 0) {
         if (gGameState.flags & 0x40) {
-            func_0204ca68();
-            func_0204c964();
+            Stage_SaveEventState();
+            Stage_SaveRestartCamera();
         } else {
-            func_0204cb10();
+            Stage_FreeEventStateBuffers();
         }
     }
     Stage_ReleaseZoneResources();

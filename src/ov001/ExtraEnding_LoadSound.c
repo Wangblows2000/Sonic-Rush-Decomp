@@ -12,7 +12,7 @@ extern u8 data_ov001_02317ea0[];
 void *NNS_SndHeapCreate(void *p, u32 size);
 void *NNS_SndHeapAlloc(void *h, u32 size, s32 a, s32 b, s32 c);
 void *File_Load(void *p, void *q);
-void func_0201d580(void *p, void *q);
+void NNS_SndArcInitOnMemory(void *p, void *q);
 void NNS_SndArcPlayerSetup(void *h);
 void Sound_PlaySeq(s32 a, s32 b);
 
@@ -31,7 +31,7 @@ void ExtraEnding_LoadSound(u8 *p) {
     *(void **)(p + 0xc) = NNS_SndHeapCreate(*(void **)(p + 0x10), 0x7d000);
     r = NNS_SndHeapAlloc(*(void **)(p + 0xc), 0x64000, 0, 0, 0);
     File_Load(data_ov001_02317ea0, r);
-    func_0201d580(p + 0x14, r);
+    NNS_SndArcInitOnMemory(p + 0x14, r);
     NNS_SndArcPlayerSetup(*(void **)(p + 0xc));
     Sound_PlaySeq(0, 0);
 }

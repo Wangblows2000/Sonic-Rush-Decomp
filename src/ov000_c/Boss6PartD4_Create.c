@@ -35,9 +35,9 @@ void Boss6PartD4_Destructor(void);
 void Boss6PartD4_Draw(void);
 void Boss6PartD4_State_Unk_ov000_022e5408(void);
 void Boss6PartD4_OnHit(void);
-void func_02021310(void *f, void *path, void *arc);
-void *func_02021264(void *f, s32 i);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
+void NNS_FndUnmountArchive(void *f);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 
@@ -56,9 +56,9 @@ UnkStruct_022e6500 *Boss6PartD4_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk5C |= 0x20;
     w->base.unk54 |= 0x10;
     w->base.unk58 |= 0xa300;
-    func_02021310(ctx, data_ov000_02365964, gZoneActArchive);
-    w->unk344 = func_02021264(ctx, 8);
-    func_020212e0(ctx);
+    NNS_FndMountArchive(ctx, data_ov000_02365964, gZoneActArchive);
+    w->unk344 = NNS_FndGetArchiveFileByIndex(ctx, 8);
+    NNS_FndUnmountArchive(ctx);
     sub = &w->unk20C;
     Model_Init(sub, 0);
     Model_SetResource(sub, data_ov000_02369b50[9], 0);

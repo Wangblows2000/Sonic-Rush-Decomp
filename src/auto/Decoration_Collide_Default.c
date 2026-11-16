@@ -3,7 +3,7 @@
 
 extern u8 gTaskCurrent[];
 s32 StageObj_HandleCollider();
-s32 func_02067d58();
+s32 ObjCollisionMap_Register();
 
 void Decoration_Collide_Default(void) {
     if ((*(u32 *)((u8 *)*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10) + 0x54) & 0xc) != 0) {
@@ -16,5 +16,5 @@ void Decoration_Collide_Default(void) {
     if (*(u32 *)((u8 *)t0 + 0x160) == 0) {
         return;
     }
-    func_02067d58((t0 + 0x160));
+    ObjCollisionMap_Register((t0 + 0x160));
 }

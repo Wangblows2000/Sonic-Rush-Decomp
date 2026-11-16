@@ -43,10 +43,10 @@ extern UnkCfg_022e7504 gGameState;
 void func_ov001_022e3840(void *p, s32 a);
 void func_ov001_022e3844(void *p, s32 a);
 void SysSound_Release(void);
-BOOL func_020538a8(void);
+BOOL NaviMsg_IsVisible(void);
 void func_ov001_022e1aac(s32 a);
-void func_ov001_022e1a30(s32 a);
-void func_02060ea0(void);
+void ZoneMap_SelectTalkDemo(s32 a);
+void TalkDemo_CreateForZoneMap(void);
 void func_ov001_022e6dec(UnkWork_022e7504 *w);
 BOOL TalkDemo_IsActive(void);
 void func_ov001_022e5618(void *p);
@@ -54,7 +54,7 @@ BOOL func_ov001_022e2f00(s32 a);
 BOOL func_ov001_022e2ee8(s32 a);
 void func_ov001_022e3180(s32 a, s32 b);
 void SysSound_Init(void);
-void func_02052168(s32 a);
+void SysSound_PlayBGM(s32 a);
 void func_ov001_022e6870(void);
 
 #pragma thumb on
@@ -75,7 +75,7 @@ void func_ov001_022e7504(void) {
         w->map->unk5c = 0;
         SysSound_Release();
     }
-    if (w->unk88 == 0 && (u32)w->unk74 >= 0x10 && !func_020538a8()) {
+    if (w->unk88 == 0 && (u32)w->unk74 >= 0x10 && !NaviMsg_IsVisible()) {
         w->unk84 = 1;
     }
     if (w->unk84 == 1 && w->unk88 == 0) {
@@ -85,10 +85,10 @@ void func_ov001_022e7504(void) {
             func_ov001_022e1aac(w->unk4);
             break;
         case 1:
-            func_ov001_022e1a30(w->unk8);
+            ZoneMap_SelectTalkDemo(w->unk8);
             break;
         }
-        func_02060ea0();
+        TalkDemo_CreateForZoneMap();
         w->unk88 = 1;
     }
     func_ov001_022e6dec(w);
@@ -133,9 +133,9 @@ void func_ov001_022e7504(void) {
                 alt = TRUE;
             }
             if (alt) {
-                func_02052168(5);
+                SysSound_PlayBGM(5);
             } else {
-                func_02052168(4);
+                SysSound_PlayBGM(4);
             }
             func_ov001_022e6870();
         }

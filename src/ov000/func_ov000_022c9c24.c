@@ -28,14 +28,14 @@ struct UnkStruct_022c9c24 {
 
 extern UnkStruct_022c87d8_2 *gBoss1;
 
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Boss1Neck_State_Unk_ov000_022c9b00(UnkStruct_022c9c24 *s);
 
 void func_ov000_022c9c24(UnkStruct_022c9c24 *s) {
     UnkStruct_022c87d8_3 *p = gBoss1->unk214;
-    func_ov000_022cc00c(s->unk228, s->unk220, 0xf, 0x1000, 0);
+    Boss1_SetPartAnimation(s->unk228, s->unk220, 0xf, 0x1000, 0);
     s->unk334 |= 1;
-    func_ov000_022cc00c(p->unk30C, p->unk304, 2, 0x1000, 0);
+    Boss1_SetPartAnimation(p->unk30C, p->unk304, 2, 0x1000, 0);
     p->unk418 |= 1;
     s->unk20C = 0;
     s->func = Boss1Neck_State_Unk_ov000_022c9b00;

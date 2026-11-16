@@ -8,7 +8,7 @@ typedef struct {
 extern void *gActComArchive;
 extern u8 data_ov000_023681cc[], data_ov000_0236a9b8[];
 
-void func_ov000_0232f1cc(void);
+void EffVsConfusion_State_FollowPlayer(void);
 
 void EffVsConfusion_Create(UnkStruct_0232f234 *arg) {
     UnkStruct_Task *task;
@@ -35,5 +35,5 @@ void EffVsConfusion_Create(UnkStruct_0232f234 *arg) {
     w->unk58 |= 0x2000;
     w->unk54 |= 2;
     w->unk54 |= 0x10;
-    w->unk68 = func_ov000_0232f1cc;
+    w->unk68 = EffVsConfusion_State_FollowPlayer;
 }

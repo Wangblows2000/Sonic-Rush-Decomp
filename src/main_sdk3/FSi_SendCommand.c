@@ -23,7 +23,7 @@ u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 state);
 void OS_SleepThread(void *queue);
 void FSi_ReleaseCommand(UnkFSFile_0200b384 *f, s32 ret);
-void func_0200bed4(UnkFSFile_0200b384 *f, void *list);
+void FSi_AppendToList(UnkFSFile_0200b384 *f, void *list);
 void FSi_ExecuteAsyncCommand(UnkFSFile_0200b384 *f);
 BOOL FSi_ExecuteSyncCommand(UnkFSFile_0200b384 *f);
 
@@ -60,7 +60,7 @@ BOOL FSi_SendCommand(UnkFSFile_0200b384 *p_file, u32 command)
         if ((bit & 0x1fc) != 0) {
             p_file->stat |= 4;
         }
-        func_0200bed4(p_file, p_arc->list);
+        FSi_AppendToList(p_file, p_arc->list);
         if (func_0200b384_IsSuspended(p_arc) == FALSE && func_0200b384_IsRunning(p_arc) == FALSE) {
             p_arc->flag |= 0x10;
             (void)OS_RestoreInterrupts(bak_psr);

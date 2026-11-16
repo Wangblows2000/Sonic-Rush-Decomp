@@ -94,7 +94,7 @@ struct UnkStruct_022d49e4 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d49e4_7 {
     u32 unk0;
@@ -139,16 +139,16 @@ extern UnkStruct_022d49e4_9 gCamera;
 
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, void *a, s32 b);
-void func_ov000_022cd5e4(void);
+void Boss2_InitCamera(void);
 u8 *NNS_G3dGetMdlSet(void *p);
 void NNS_G3dMdlSetMdlDiffAll(void *s, u32 v);
 void NNS_G3dMdlSetMdlAmbAll(void *s, u32 v);
 void NNS_G3dMdlSetMdlEmiAll(void *s, u32 v);
-void func_ov000_022d43f8(void);
+void Boss2_Action_Idle(void);
 void Boss2_Draw_Unk_ov000_022cebc8(void);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
-void Boss2_CreatePart_ov000_022cf8b0(UnkStruct_022d49e4 *s);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
+void Boss2_CreateWaterController(UnkStruct_022d49e4 *s);
 
 void Boss2_State_WaitForStart(UnkStruct_022d49e4 *s) {
     UnkStruct_022d49e4_m *m;
@@ -167,7 +167,7 @@ void Boss2_State_WaitForStart(UnkStruct_022d49e4 *s) {
     m->unk20 = 0x1355b50;
     m->unk1C = m->unk20;
     m->unk18 = m->unk1C;
-    func_ov000_022cd5e4();
+    Boss2_InitCamera();
     s->unk20C |= 0x20;
     for (i = 0; i < 11; i++) {
         r = NNS_G3dGetMdlSet(gBossStage2Models[i]);
@@ -176,11 +176,11 @@ void Boss2_State_WaitForStart(UnkStruct_022d49e4 *s) {
         NNS_G3dMdlSetMdlAmbAll(q, gBoss2ModelColorsDefault[i].unk2);
         NNS_G3dMdlSetMdlEmiAll(q, gBoss2ModelColorsDefault[i].unk4);
     }
-    func_ov000_022d43f8();
+    Boss2_Action_Idle();
     gPlayers->unk70 = Boss2_Draw_Unk_ov000_022cebc8;
     gPlayers->unk5C |= 0x2040;
-    func_020537b4(9);
-    func_020533e0(0xf, 0xf0);
-    Boss2_CreatePart_ov000_022cf8b0(s);
+    NaviMsg_SetFaceAnim(9);
+    NaviMsg_ShowMessage(0xf, 0xf0);
+    Boss2_CreateWaterController(s);
     gCamera.unk62 = 0x19a;
 }

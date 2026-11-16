@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 
 #pragma thumb on
 static inline fx32 FX_Mul_022e4a10(fx32 a, fx32 b) {
@@ -14,7 +14,7 @@ s32 func_ov001_022e4a10(s32 a, s32 b, s32 n, s32 m, s32 t) {
     if (t < 0) t = 0;
     if (t > 0x2000) t = 0x2000;
     if (m > n) m = n;
-    r = func_0200225c(m << 12, n << 12);
+    r = FX_Div(m << 12, n << 12);
     r = FX_Mul_022e4a10(r, t) + FX_Mul_022e4a10(FX_Mul_022e4a10(r, r), 0x1000 - t);
     return a + (FX_Mul_022e4a10((b - a) << 12, r) >> 12);
 }

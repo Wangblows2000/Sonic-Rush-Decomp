@@ -18,8 +18,8 @@ s32 WM_SetWEPKey(void *cb, u32 n, void *p)
         }
         DC_StoreRange(p, 0x50);
     }
-    func_02010cd4(0x14, cb);
-    r = func_02010b80(0x14, 2, n, p);
+    WMi_SetCallbackTable(0x14, cb);
+    r = WMi_SendCommand(0x14, 2, n, p);
     if (r == 0) {
         r = 2;
     }

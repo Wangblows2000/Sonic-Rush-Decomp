@@ -86,8 +86,8 @@ extern u16 data_ov001_02316a88[];
 void ExtraAct_InitDisplay(void);
 void G3i_PerspectiveW_(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
 void G3i_LookAt_(void *a, void *b, void *c, s32 d, void *e);
-void func_02022270(u32 index, u32 value);
-void func_02022284(u32 idx, s32 x, s32 y, s32 z);
+void NNS_G3dGlbLightColor(u32 index, u32 value);
+void NNS_G3dGlbLightVector(u32 idx, s32 x, s32 y, s32 z);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -100,7 +100,7 @@ void ExtraAct_LoadAssets(void);
 u32 ObjVram_Alloc(u32 a, u32 b);
 void AnimatorSprite_Init(void *s, void *h, u16 idx, u32 d, u32 e, u32 f, u32 g, u32 hh, u32 i);
 void AnimatorSprite_ProcessAnimation(void *s, u32 a, u32 b);
-s32 func_020480a0(s32 a);
+s32 ClearDemo_GetRank(s32 a);
 void Model_Init(void *s, u32 a);
 void Model_SetResource(void *s, void *res, u32 idx);
 u32 NNS_G3dGetTex(void *h);
@@ -153,12 +153,12 @@ void ExtraAct_Start(void) {
     NNS_G3dGlb.up = b;
     G3i_LookAt_(&a, &c, &b, 0, NNS_G3dGlb.unk4C);
     NNS_G3dGlb.unkFC &= ~0xe8;
-    func_02022270(0, 0x7fff);
-    func_02022270(1, 0x4631);
-    func_02022270(2, 0x2108);
-    func_02022284(0, 0x4a0, -0x4a0, 0);
-    func_02022284(1, 0, -0x617, -0xecd);
-    func_02022284(2, 0xec7, 0x620, 0);
+    NNS_G3dGlbLightColor(0, 0x7fff);
+    NNS_G3dGlbLightColor(1, 0x4631);
+    NNS_G3dGlbLightColor(2, 0x2108);
+    NNS_G3dGlbLightVector(0, 0x4a0, -0x4a0, 0);
+    NNS_G3dGlbLightVector(1, 0, -0x617, -0xecd);
+    NNS_G3dGlbLightVector(2, 0xec7, 0x620, 0);
     blk = Heap_Alloc(gMainHeap, 0xee0, 0x20);
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill = 0xcccccccc;
@@ -190,7 +190,7 @@ void ExtraAct_Start(void) {
         o->unk44 = data_ov001_02316b4c[i];
         AnimatorSprite_ProcessAnimation(o, 0, 0);
     }
-    data_ov001_0231f084->unkE30 = func_020480a0(data_ov001_0231f084->unkE2C);
+    data_ov001_0231f084->unkE30 = ClearDemo_GetRank(data_ov001_0231f084->unkE2C);
     o = (UnkStruct_022f9eb4_o *)((u8 *)data_ov001_0231f084 + 0xb10);
     r = ObjVram_Alloc(0, ENTRY1E(h, (u16)(data_ov001_0231f084->unkE30 + 0x23)));
     AnimatorSprite_Init(o, h, (u16)(data_ov001_0231f084->unkE30 + 0x23), 0x60, 0, 0, r, 0, 0x5000200);

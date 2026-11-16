@@ -65,7 +65,7 @@ void ObjVram_Reset(s32 a);
 void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
 void G3X_SetClearColor(s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_ov001_022e9778(void);
+void TimeAttackMenu_ResetDisplay(void);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MTX_Identity22_(UnkStruct_022e980c_Mtx *m);
 void G2x_SetBGyAffine_(void *a, UnkStruct_022e980c_Mtx *m, s32 c, s32 d, s32 e, s32 f);
@@ -140,7 +140,7 @@ void TimeAttackMenu_InitDisplay(void) {
     REG16(0x400100a) = (REG16(0x400100a) & ~3) | 1;
     REG16(0x400100c) = (REG16(0x400100c) & ~3) | 2;
     REG16(0x400100e) = (REG16(0x400100e) & ~3) | 3;
-    func_ov001_022e9778();
+    TimeAttackMenu_ResetDisplay();
     gDisplayMain.ofs[1].x = 0;
     gDisplayMain.ofs[2].x = 0;
     z0 = 0;

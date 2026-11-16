@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_022f8fa0();
+s32 BossF_UpdateCameraShake();
 extern u8 gGameState[];
 s32 func_ov000_022f8c28();
 s32 func_ov000_022f8bc8();
@@ -9,7 +9,7 @@ s32 func_ov000_022f4cbc();
 void func_ov000_022f2ee0();
 
 void func_ov000_022f2f0c(u8 *p0) {
-    func_ov000_022f8fa0(((u8 *)p0 + 0x436), 3, 7);
+    BossF_UpdateCameraShake(((u8 *)p0 + 0x436), 3, 7);
     *(u16 *)((u8 *)p0 + 0x43e) = (*(u16 *)((u8 *)p0 + 0x43e) + 0x1);
     if ((*(u16 *)((u8 *)p0 + 0x43e) & 3) == 0) {
         if ((*(u16 *)((u8 *)p0 + 0x43a) & 0x8000) != 0) {

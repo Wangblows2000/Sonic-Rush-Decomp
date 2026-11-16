@@ -8,7 +8,7 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
-void func_ov001_023145d8(void);
+void SpecialStageTrick_Reset(void);
 void Touch_Enable(void);
 
 static inline u8 *Alloc(u32 sz) {
@@ -30,6 +30,6 @@ void SpecialStageTrick_Init(void) {
 
     gSpecialStageTrick = p;
     MI_CpuFill8(p, 0, 0x114);
-    func_ov001_023145d8();
+    SpecialStageTrick_Reset();
     Touch_Enable();
 }

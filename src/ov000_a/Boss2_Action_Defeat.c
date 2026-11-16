@@ -133,7 +133,7 @@ extern s32 data_ov000_02365200[][3];
 extern u32 data_ov000_0236510c[];
 extern u16 data_ov000_02362dcc[];
 
-void Boss2_State_Unk_ov000_022cfb90(UnkStruct_022cff50 *s);
+void Boss2_State_Defeat(UnkStruct_022cff50 *s);
 void NNS_SndPlayerStopSeqAll(s32 a);
 void StageObj_SetPause(void);
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -142,10 +142,10 @@ void Player_SetAnimation(UnkStruct_022cff50_pl *p, s32 a);
 void ScreenShake_Start(s32 a);
 u32 func_ov000_0235b0a8(void);
 void func_ov000_0235b08c(u32 a);
-void func_ov000_022cfe5c(s32 a, s32 b);
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void Boss2_DrawDefeatBackground(s32 a, s32 b);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
+void Boss_LoadModelPalettes(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 
 void Boss2_Action_Defeat(void) {
     UnkStruct_022cff50_a *x;
@@ -155,7 +155,7 @@ void Boss2_Action_Defeat(void) {
     u32 v;
     UnkStruct_022cff50_a *z;
     UnkStruct_022cff50_c *c;
-    s->func = Boss2_State_Unk_ov000_022cfb90;
+    s->func = Boss2_State_Defeat;
     x = &s->unkA9C;
     y = &s->unkBD4;
     z = &s->unkD0C;
@@ -226,14 +226,14 @@ void Boss2_Action_Defeat(void) {
     *(vu32 *)0x4000018 = 0;
     gDisplayMain.unk8 = 0;
     gDisplayMain.unkA = 0;
-    func_ov000_022cfe5c(s->unk1460, 0);
+    Boss2_DrawDefeatBackground(s->unk1460, 0);
     v = (*(vu32 *)0x4000000 & 0x1f00) >> 8;
     *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | ((v | 4) << 8);
     data_ov000_0236a444.unkDC = 2;
     s->unk20C &= ~0x20;
     c->unk3C = c->unk40 = c->unk44 = 0;
     c->unk48 = c->unk4C = c->unk50 = 0;
-    func_ov000_022c5e80(0x1152f0, 0x6cd988, data_ov000_023651f8[s->unk1460][0] << 12, &c->unk60, &c->unk68, NULL);
+    BossArena_ArcToCirclePos(0x1152f0, 0x6cd988, data_ov000_023651f8[s->unk1460][0] << 12, &c->unk60, &c->unk68, NULL);
     c->unk54 = c->unk60;
     c->unk58 = c->unk64 = -data_ov000_023651fc[s->unk1460][0] << 12;
     c->unk5C = c->unk68;
@@ -243,5 +243,5 @@ void Boss2_Action_Defeat(void) {
     c->unk92 = 0x1000;
     c->unk30 = 0x1000;
     Sound_PlaySeqArc(0, 0, 0x7c);
-    func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
+    Boss_LoadModelPalettes(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
 }

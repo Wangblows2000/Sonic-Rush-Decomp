@@ -54,7 +54,7 @@ void AnimatorSprite_Draw(void *s);
 s32 Ending_HitTestSprite(void *s, u16 x, u16 y);
 void NNS_SndPlayerStopSeq(void *p, s32 a);
 void AnimatorSprite_SetAnimation(void *s, s32 a);
-void func_ov001_022c7a44(UnkStruct_022c7ac8 *w);
+void Ending_DrawSprites(UnkStruct_022c7ac8 *w);
 void Ending_CheckTimedBg0Picture(UnkStruct_022c7ac8 *w);
 void Ending_SetSubState(UnkStruct_022c7ac8 *w, s32 a);
 void Ending_State_GoToStaffRoll(void);
@@ -87,7 +87,7 @@ void Ending_Main(void) {
             AnimatorSprite_SetAnimation(w->spr5B4, 3);
         }
     }
-    func_ov001_022c7a44(w);
+    Ending_DrawSprites(w);
     Ending_CheckTimedBg0Picture(w);
     if (w->unk8 != NULL)
         w->unk8(w);

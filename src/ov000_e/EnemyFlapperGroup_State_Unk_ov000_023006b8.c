@@ -2,7 +2,7 @@
 
 s16 ObjSpd_UpSet(s32 v, s32 a, s32 m);
 void EnemyFlapperGroup_Action_Unk_ov000_02300688(UnkStruct_StageObj *w);
-void func_ov000_0230023c(UnkStruct_StageObj *w);
+void EnemyFlapperGroup_UpdateHover(UnkStruct_StageObj *w);
 
 void EnemyFlapperGroup_State_Unk_ov000_023006b8(UnkStruct_StageObj *w) {
     s16 a = 10;
@@ -38,5 +38,5 @@ void EnemyFlapperGroup_State_Unk_ov000_023006b8(UnkStruct_StageObj *w) {
             w->coll2.unkA |= 4;
     }
     if (w->unk1E0->unk2 == 0x10)
-        func_ov000_0230023c(w);
+        EnemyFlapperGroup_UpdateHover(w);
 }

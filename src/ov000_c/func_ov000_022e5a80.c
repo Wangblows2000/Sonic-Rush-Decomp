@@ -36,7 +36,7 @@ extern UnkStruct_Boss *gBoss6;
 extern UnkStruct_StageObj *gPlayers;
 extern u32 data_ov000_023637ac[];
 
-void func_02021c38(void *a, void (*f)(void), s32 b, s32 c, s32 d);
+void NNS_G3dRenderObjSetCallBack(void *a, void (*f)(void), s32 b, s32 c, s32 d);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void func_ov000_022e62fc(void);
 void Boss6_State_Unk_ov000_022e5980(void);
@@ -46,7 +46,7 @@ void func_ov000_022e5a80(void) {
     UnkStruct_Mdl960 *m = &w->unk960;
     s32 i;
 
-    func_02021c38(m->unk90, func_ov000_022e62fc, 0, 6, 3);
+    NNS_G3dRenderObjSetCallBack(m->unk90, func_ov000_022e62fc, 0, 6, 3);
     Model_SetAnimation(m, 0, w->unkD08, 0, 0);
     m->unk10C |= 4;
     m->unk114 = 0x1000;

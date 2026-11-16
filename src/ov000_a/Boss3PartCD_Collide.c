@@ -35,7 +35,7 @@ typedef struct UnkTask_022d5f38 {
 extern UnkTask_022d5f38 *gTaskCurrent;
 
 void StageObj_HandleCollider(UnkStruct_022d5f38 *o, UnkStruct_022d5f38_h *h);
-void func_02067d58(s32 *p);
+void ObjCollisionMap_Register(s32 *p);
 
 void Boss3PartCD_Collide(void) {
     UnkStruct_022d5f38 *o = gTaskCurrent->unk10;
@@ -55,5 +55,5 @@ void Boss3PartCD_Collide(void) {
         }
     }
     if (o->unk1B8 != 0)
-        func_02067d58(&o->unk1B8);
+        ObjCollisionMap_Register(&o->unk1B8);
 }

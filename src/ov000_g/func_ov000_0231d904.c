@@ -16,7 +16,7 @@ typedef struct {
     s16 unk198;
 } UnkStruct_0231d904;
 
-s32 func_0206825c(void *w, void *a);
+s32 StageObj_IsTouched(void *w, void *a);
 void func_ov000_0231d81c(UnkStruct_0231d904 *w);
 
 void func_ov000_0231d904(UnkStruct_0231d904 *w) {
@@ -26,7 +26,7 @@ void func_ov000_0231d904(UnkStruct_0231d904 *w) {
         if (w->unk30 < -0x80)
             return;
     }
-    if (func_0206825c(w, w->unk134) == 0)
+    if (StageObj_IsTouched(w, w->unk134) == 0)
         return;
     if (w->unk198 > 10 || !(Rand() & (0xfff >> w->unk198))) {
         func_ov000_0231d81c(w);

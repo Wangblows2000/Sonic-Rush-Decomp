@@ -13,7 +13,7 @@ typedef struct {
 
 extern u16 data_ov000_02364248[][6];
 
-void func_ov000_022f8fa0(void *p, s32 a, s32 b);
+void BossF_UpdateCameraShake(void *p, s32 a, s32 b);
 void func_ov000_022f49f4(UnkStruct_022f3c84 *s);
 void func_ov000_022f499c(UnkStruct_022f3c84 *s, s32 a);
 void BossFPartD8_State_Unk_ov000_022f3bb8(void);
@@ -21,7 +21,7 @@ void BossFPartD8_State_Unk_ov000_022f3bb8(void);
 void func_ov000_022f3c84(UnkStruct_022f3c84 *s) {
     u16 t;
 
-    func_ov000_022f8fa0(s->unk43A, 2, 6);
+    BossF_UpdateCameraShake(s->unk43A, 2, 6);
     t = data_ov000_02364248[s->unk458][s->unk438];
     if (s->unk458 >= 6 && s->unk458 <= 8)
         func_ov000_022f49f4(s);

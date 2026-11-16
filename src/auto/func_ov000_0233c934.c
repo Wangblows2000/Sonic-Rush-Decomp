@@ -21,9 +21,9 @@ typedef int code();
 
 extern unsigned char data_ov000_023689a0[];
 extern unsigned char data_ov000_0236aa8c[];
-int func_02021310();
-int func_02021264();
-int func_020212e0();
+int NNS_FndMountArchive();
+int NNS_FndGetArchiveFileByIndex();
+int NNS_FndUnmountArchive();
 
 void func_ov000_0233c934(int *param_1,undefined1 *param_2)
 
@@ -31,10 +31,10 @@ void func_ov000_0233c934(int *param_1,undefined1 *param_2)
   int iVar1;
   undefined1 auStack_68 [92];
   
-  func_02021310(auStack_68,((int *)data_ov000_023689a0),*((int *)data_ov000_0236aa8c));
-  iVar1 = func_02021264(auStack_68,param_2[1]);
+  NNS_FndMountArchive(auStack_68,((int *)data_ov000_023689a0),*((int *)data_ov000_0236aa8c));
+  iVar1 = NNS_FndGetArchiveFileByIndex(auStack_68,param_2[1]);
   *param_1 = iVar1 + *(int *)(iVar1 + 0x10) + 4;
-  func_020212e0(auStack_68);
+  NNS_FndUnmountArchive(auStack_68);
   param_1[1] = (int)param_2;
   *(undefined1 *)(param_1 + 2) = *param_2;
   *(undefined2 *)((int)param_1 + 10) = *(undefined2 *)(param_2 + 6);

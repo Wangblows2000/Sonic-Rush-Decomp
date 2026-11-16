@@ -24,7 +24,7 @@ extern UnkTask_022e2054 *gTaskCurrent;
 extern UnkBright_022e2054 data_02087d44;
 extern UnkBright_022e2054 data_0208926c;
 
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 void Task_Destroy(UnkTask_022e2054 *t);
 
 #pragma thumb on
@@ -49,7 +49,7 @@ void ZoneMapFadeTask_Main(void) {
     b = w->to << 12;
     if (a >= 0) a += 0x800; else a -= 0x800;
     if (b >= 0) b += 0x800; else b -= 0x800;
-    v = (a + func_0200225c(FX_Mul_022e2054((w->timer - w->delay) << 12, b - a), w->duration << 12)) >> 12;
+    v = (a + FX_Div(FX_Mul_022e2054((w->timer - w->delay) << 12, b - a), w->duration << 12)) >> 12;
     if (v < -16) v = -16;
     if (v > 16) v = 16;
     if (w->sub != 0) data_0208926c.bright = v;

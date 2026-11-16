@@ -36,8 +36,8 @@ u8 *BossEffect_CreateHit(s32 a, s32 b, s32 c, s32 d);
 void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_Concat33(void *a, void *b, void *c);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void Sound_PlaySeq(s32 a, s32 b);
 void Player_Action_AttackBounce(UnkStruct_022c6bc0_2 *p);
 
@@ -64,13 +64,13 @@ void Boss1Hammer_OnHit_Damage(void *a, UnkStruct_022c6bc0 *b) {
         MTX_Concat33(obj + 0x158, &mtx, obj + 0x158);
         *(s32 *)(obj + 0x248) = 0x1000;
         if (gBossStatus.unk8 == 2) {
-            func_020537b4(0xb);
-            func_020533e0(0x12, 0xf0);
+            NaviMsg_SetFaceAnim(0xb);
+            NaviMsg_ShowMessage(0x12, 0xf0);
             Sound_PlaySeq(0, 0xf);
             gBoss1->unk20C |= 2;
         } else {
-            func_020537b4(0xb);
-            func_020533e0(0x10, 0xf0);
+            NaviMsg_SetFaceAnim(0xb);
+            NaviMsg_ShowMessage(0x10, 0xf0);
         }
         if (p == NULL)
             return;

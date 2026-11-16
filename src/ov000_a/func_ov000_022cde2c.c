@@ -45,9 +45,9 @@ extern u16 data_ov000_02362dec[];
 extern u32 data_ov000_0236510c[];
 extern u16 data_ov000_02362dcc[];
 
-void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
+void BossArena_CirclePosToArc(s32 unused, s32 len, s32 x, s32 y, s32 *out);
 void ObjRect_Register(UnkStruct_022cde2c_h *h);
-void func_ov000_022c5d4c(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
+void Boss_LoadModelPalettes(s32 a, u32 *p1, u16 *p2, u16 *p3, u16 n);
 
 void func_ov000_022cde2c(UnkStruct_022cde2c *s) {
     s32 out;
@@ -58,7 +58,7 @@ void func_ov000_022cde2c(UnkStruct_022cde2c *s) {
     s16 xb;
     s16 y;
     s16 z;
-    func_ov000_022c5e1c(0x1152f0, 0x6cd988, s->unk1348, s->unk1350, &out);
+    BossArena_CirclePosToArc(0x1152f0, 0x6cd988, s->unk1348, s->unk1350, &out);
     {
         s16 x1;
         s16 xb1;
@@ -86,7 +86,7 @@ void func_ov000_022cde2c(UnkStruct_022cde2c *s) {
         ObjRect_Register(h2);
         }
     }
-    func_ov000_022c5e1c(0x1152f0, 0x6cd988, s->unk139C, s->unk13A4, &out);
+    BossArena_CirclePosToArc(0x1152f0, 0x6cd988, s->unk139C, s->unk13A4, &out);
     z = 0;
     x = out >> 12;
     y = -(s->unk13A0 >> 12);
@@ -115,13 +115,13 @@ void func_ov000_022cde2c(UnkStruct_022cde2c *s) {
     if (s->unkF84[5].unkA & 4) {
         s->unk144C++;
         if (s->unk144C == 3) {
-            func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1448, data_ov000_02362dcc, 1);
+            Boss_LoadModelPalettes(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1448, data_ov000_02362dcc, 1);
         } else if (s->unk144C == 7) {
-            func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
+            Boss_LoadModelPalettes(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
             s->unk144C = 0;
         }
     } else if (s->unk144C != 0) {
-        func_ov000_022c5d4c(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
+        Boss_LoadModelPalettes(gBossStage2Models.unk24, data_ov000_0236510c, gBoss2->unk1444, data_ov000_02362dcc, 1);
         s->unk144C = 0;
     }
 }

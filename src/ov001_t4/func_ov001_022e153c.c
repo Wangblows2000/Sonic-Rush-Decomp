@@ -28,8 +28,8 @@ typedef struct {
 
 void Background_Init(void *bg, UnkRes_022e153c *res, s32 a, s32 b, s32 c, u16 w, u16 h);
 void Background_Draw(void *bg);
-s32 func_ov001_022e17bc(void *p);
-u32 func_ov001_022e17b0(void *p);
+s32 ZoneActSelect_GetCompressionType(void *p);
+u32 ZoneActSelect_GetUncompressedSize(void *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
@@ -50,7 +50,7 @@ void func_ov001_022e153c(UnkWork_022e153c *w) {
     Background_Init(w->bg1, res, 0x38, 0, 2, res->w, res->h);
     Background_Draw(w->bg1);
     res = (UnkRes_022e153c *)((u8 *)res + res->unk10);
-    switch (func_ov001_022e17bc(res)) {
+    switch (ZoneActSelect_GetCompressionType(res)) {
     case 0x10:
         MI_UncompressLZ16(res, w->buf);
         break;
@@ -61,10 +61,10 @@ void func_ov001_022e153c(UnkWork_022e153c *w) {
         MI_UncompressRL16(res, w->buf);
         break;
     default:
-        Mem_Copy(Compress_GetData(res), w->buf, func_ov001_022e17b0(res));
+        Mem_Copy(Compress_GetData(res), w->buf, ZoneActSelect_GetUncompressedSize(res));
         break;
     }
-    DC_StoreRange(w->buf, func_ov001_022e17b0(res));
+    DC_StoreRange(w->buf, ZoneActSelect_GetUncompressedSize(res));
     res = w->res2;
     func_ov001_022e14dc(&w->sprites[0], res, 0, 1, 1);
     func_ov001_022e14dc(&w->sprites[1], res, 1, 1, 1);

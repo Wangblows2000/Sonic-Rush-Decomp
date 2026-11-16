@@ -58,7 +58,7 @@ struct UnkStruct_022d0864 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d0864_7 {
     u8 pad[8];
@@ -72,8 +72,8 @@ extern s16 data_02071470[];
 
 s32 FX_DivS32(s32 a, s32 b);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
-void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void BossArena_CirclePosToArc(s32 unused, s32 len, s32 x, s32 y, s32 *out);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 u8 *BossEffect_CreateCatch(s32 a, s32 x, s32 y, s32 z);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
 void Boss2_State_Unk_ov000_022d0690(UnkStruct_022d0864 *s);
@@ -130,7 +130,7 @@ void Boss2_State_Unk_ov000_022d0864(UnkStruct_022d0864 *s) {
         s32 b;
         u8 *obj;
         s->unk20C |= 0x40;
-        func_ov000_022c5e1c(0x1152f0, 0x6cd988, s->unk139C, s->unk13A4, &a);
+        BossArena_CirclePosToArc(0x1152f0, 0x6cd988, s->unk139C, s->unk13A4, &a);
         if (s->unk145C == 0)
             a -= 0x50000;
         else
@@ -139,7 +139,7 @@ void Boss2_State_Unk_ov000_022d0864(UnkStruct_022d0864 *s) {
             a = 0x70d988 - (0x40000 - a);
         else if (a > 0x70d988)
             a += -0x6cd988;
-        func_ov000_022c5e80(0x1152f0, 0x6cd988, a, &a, &b, NULL);
+        BossArena_ArcToCirclePos(0x1152f0, 0x6cd988, a, &a, &b, NULL);
         obj = BossEffect_CreateCatch(1, a >> 4, -s->unk13A0 >> 4, b >> 4);
         if (s->unk145C == 0)
             MTX_RotZ33_(obj + 0x158, data_0206f470[0], data_0206f470[1]);

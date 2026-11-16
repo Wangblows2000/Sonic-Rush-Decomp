@@ -54,8 +54,8 @@ extern u8 data_ov000_02367ae8[];
 extern u8 data_02084df4[];
 extern UnkStruct_02084d38 NNS_G3dGlb;
 
-void func_ov000_0233b2e0(void *m, s32 x, s32 y, s16 *ox, s16 *oy);
-void *func_ov000_0233b654(void);
+void Camera_WorldToScreen(void *m, s32 x, s32 y, s16 *ox, s16 *oy);
+void *Camera_GetPrimary(void);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
 void NNS_G3dGlbSetBaseScale(const fx32 *v);
 void NNS_G3dGlbSetBaseTrans(const fx32 *v);
@@ -103,7 +103,7 @@ void func_ov000_02326744(void) {
         return;
 
     node = w->unk29c;
-    func_ov000_0233b2e0(func_ov000_0233b654(), node->b.x, node->b.y, &v[0], &v[1]);
+    Camera_WorldToScreen(Camera_GetPrimary(), node->b.x, node->b.y, &v[0], &v[1]);
     v[2] = 0;
     arg = 2;
     NNS_G3dGeBufferOP_N(0x10, &arg, 1);
@@ -158,7 +158,7 @@ void func_ov000_02326744(void) {
         p = pts;
         for (j = 0; j < 4; j++) {
             REG_COLOR = col;
-            func_ov000_0233b2e0(func_ov000_0233b654(), p->x, p->y, &sx, &sy);
+            Camera_WorldToScreen(Camera_GetPrimary(), p->x, p->y, &sx, &sy);
             sx += dx;
             sy += dy;
             VtxXY(sx, -sy);

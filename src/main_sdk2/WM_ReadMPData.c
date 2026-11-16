@@ -18,11 +18,11 @@ typedef struct {
 
 UnkMpRecvData *WM_ReadMPData(UnkMpRecvHeader *hdr, u16 aid)
 {
-    UnkWmWork *w = func_02010b70();
+    UnkWmWork *w = WMi_GetSystemWork();
     UnkMpRecvData *ptrs[16];
     int i;
 
-    if (func_02010b54() != 0) {
+    if (WMi_CheckInitialized() != 0) {
         return NULL;
     }
     if (aid < 1 || aid > 15) {

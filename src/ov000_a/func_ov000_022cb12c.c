@@ -70,7 +70,7 @@ typedef struct UnkStruct_022cb12c_6 {
 extern UnkStruct_022cb12c_6 gBossStatus;
 extern u32 gRandSeed;
 
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cc224(void);
 void Boss1_State_Unk_ov000_022cb0f4(UnkStruct_022cb12c *s);
 
@@ -81,8 +81,8 @@ static inline u16 Rand(void) {
 
 void func_ov000_022cb12c(UnkStruct_022cb12c *s) {
     UnkStruct_022cb12c_4 *p = s->unk214;
-    func_ov000_022cc00c(s->unk210->unk228, s->unk210->unk220, 0xd, 0x1000, 1);
-    func_ov000_022cc00c(p->unk30C, p->unk304, 0, 0x1000, 1);
+    Boss1_SetPartAnimation(s->unk210->unk228, s->unk210->unk220, 0xd, 0x1000, 1);
+    Boss1_SetPartAnimation(p->unk30C, p->unk304, 0, 0x1000, 1);
     s->unk220 = (Rand() & 0x3f) + 0x1e;
     func_ov000_022cc224();
     p->unk216 &= ~4;

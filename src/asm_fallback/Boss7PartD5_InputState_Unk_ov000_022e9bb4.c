@@ -6,7 +6,7 @@ extern u32 gRandSeed;
 extern u32 gGameState;
 extern u32 data_ov000_02363b18;
 extern u32 gBoss7;
-extern void func_0200225c(void);
+extern void FX_Div(void);
 
 asm void Boss7PartD5_InputState_Unk_ov000_022e9bb4(void)
 {
@@ -45,7 +45,7 @@ _3c:
     mov r1, #0x8000000
     add r0, r0, #0x4000
     mov r0, r0, lsl #0xc
-    bl func_0200225c
+    bl FX_Div
     ldr r3, [r7, #0x444]
     ldr r1, [pc, #0x148]
     ldr r2, [pc, #0x148]

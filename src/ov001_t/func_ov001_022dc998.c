@@ -24,7 +24,7 @@ extern UnkTask_022dc998 *gTaskCurrent;
 
 void KeyframeAnim_Update(UnkAnim_022dc998 *a);
 BOOL KeyframeAnim_IsFinished(UnkAnim_022dc998 *a);
-extern s32 data_ov001_0231be10;
+extern s32 gVsMenuCancelled;
 void func_02050d2c(void);
 void func_ov001_022dc970(void);
 void func_ov001_022d9e50(UnkWork_022dc998 *w, s16 x, s16 y);
@@ -67,7 +67,7 @@ void func_ov001_022dc998(void) {
     if (done) {
         w->step = 0;
         w->unk4 = 0;
-        data_ov001_0231be10 = 0;
+        gVsMenuCancelled = 0;
         func_02050d2c();
         gTaskCurrent->func = func_ov001_022dc970;
     }

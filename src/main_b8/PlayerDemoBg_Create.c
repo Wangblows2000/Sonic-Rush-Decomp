@@ -25,7 +25,7 @@ UnkRes_02056e04 *PlayerDemo_GetWork(void);
 void Task_Destroy(UnkTask_02056e04 *t);
 void PlayerDemoBg_Main(void);
 void PlayerDemoBg_Destructor(void);
-void PlayerDemoBg_Unk_02056d8c(void);
+void PlayerDemoBg_State_Init(void);
 
 #pragma thumb on
 void PlayerDemoBg_Create(void) {
@@ -45,6 +45,6 @@ void PlayerDemoBg_Create(void) {
         return;
     }
     w->unk8 = w->res->unk10;
-    w->state = PlayerDemoBg_Unk_02056d8c;
+    w->state = PlayerDemoBg_State_Init;
 }
 #pragma thumb reset

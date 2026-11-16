@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 func_ov000_0230023c();
+s32 EnemyFlapperGroup_UpdateHover();
 
 void EnemyFlapperGroup_State_Unk_ov000_02300844(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x8);
@@ -21,5 +21,5 @@ void EnemyFlapperGroup_State_Unk_ov000_02300844(u8 *p0) {
     if (t5 != 0x10) {
         return;
     }
-    func_ov000_0230023c(p0, t5, v1);
+    EnemyFlapperGroup_UpdateHover(p0, t5, v1);
 }

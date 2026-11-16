@@ -1,4 +1,4 @@
 #include <nitro/types.h>
 
-void func_0201c8d0(void);
-void EndSleep(void) { func_0201c8d0(); }
+void NNSi_SndCaptureEndSleep(void);
+void EndSleep(void) { NNSi_SndCaptureEndSleep(); }

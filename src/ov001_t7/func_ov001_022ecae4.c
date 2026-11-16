@@ -41,8 +41,8 @@ void *OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-u32 func_ov001_022ecdc0(void *p);
-u32 func_ov001_022ecdb4(void *p);
+u32 Records_GetCompressionType(void *p);
+u32 Records_GetUncompressedSize(void *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
@@ -102,7 +102,7 @@ void func_ov001_022ecae4(UnkStruct_022ecae4 *p) {
         DC_StoreRange(blk, size);
         blk += 0x20;
     }
-    switch (func_ov001_022ecdc0(hdr)) {
+    switch (Records_GetCompressionType(hdr)) {
     case 0x10:
         MI_UncompressLZ16(hdr, blk);
         break;
@@ -113,10 +113,10 @@ void func_ov001_022ecae4(UnkStruct_022ecae4 *p) {
         MI_UncompressRL16(hdr, blk);
         break;
     default:
-        Mem_Copy(Compress_GetData(hdr), blk, func_ov001_022ecdb4(hdr));
+        Mem_Copy(Compress_GetData(hdr), blk, Records_GetUncompressedSize(hdr));
         break;
     }
-    DC_StoreRange(blk, func_ov001_022ecdb4(hdr));
+    DC_StoreRange(blk, Records_GetUncompressedSize(hdr));
     for (i = 0; i < p->n + 1; i++) {
         for (j = 0; j < 7; j++) {
             MIi_CpuCopy32(blk + tbl[i][j] * 0x20, p->chr[i][j], 0x20);

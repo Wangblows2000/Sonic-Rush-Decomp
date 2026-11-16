@@ -3,7 +3,7 @@
 
 extern u8 gExtraBossWork[];
 s32 func_ov001_022fd744();
-s32 func_ov001_02300ca8();
+s32 ExtraBossObj_DrawAll();
 s32 func_ov001_02304028();
 
 void func_ov001_022feee4(void) {
@@ -11,6 +11,6 @@ void func_ov001_022feee4(void) {
     if (t0 != 0) {
         func_ov001_022fd744(t0);
     }
-    func_ov001_02300ca8();
+    ExtraBossObj_DrawAll();
     func_ov001_02304028();
 }

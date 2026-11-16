@@ -19,7 +19,7 @@ typedef struct {
 
 extern UnkHeap_0201b63c data_020838a4[];
 
-void func_0201db14(void *p);
+void NNS_SndHeapDestroy(void *p);
 void NNS_FndRemoveListObject(void *list, void *obj);
 
 void PlayerHeapDisposeCallback(UnkObj_0201b63c *x)
@@ -27,7 +27,7 @@ void PlayerHeapDisposeCallback(UnkObj_0201b63c *x)
     if (x->unk8 == NULL) {
         return;
     }
-    func_0201db14(x->unk8);
+    NNS_SndHeapDestroy(x->unk8);
     if (x->unkC != NULL) {
         x->unkC->unk8 = NULL;
         return;

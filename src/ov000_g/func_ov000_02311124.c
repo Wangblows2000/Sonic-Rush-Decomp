@@ -16,7 +16,7 @@ extern s16 gSwitchTimers[];
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Sound_SetPositional(void *a, void *b, void *c);
 void func_ov000_02311684(UnkStruct_02311124 *w);
-void func_02067d58(void *a);
+void ObjCollisionMap_Register(void *a);
 
 void func_ov000_02311124(UnkStruct_02311124 *w) {
     UnkStruct_ObjParam *p;
@@ -91,7 +91,7 @@ void func_ov000_02311124(UnkStruct_02311124 *w) {
     if (w->base.unk1E0->unk2 != 0xc0 && w->base.unk1E0->unk7 <= 0)
         return;
     if (w->unk20C != 0) {
-        func_02067d58(&w->unk20C);
+        ObjCollisionMap_Register(&w->unk20C);
         if ((u32)w->base.unk8 < w->base.unk1E0->unk9 * 2 - 1) {
             w->unk22E = 2;
         } else {

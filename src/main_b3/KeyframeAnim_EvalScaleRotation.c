@@ -6,7 +6,7 @@ typedef struct { u32 flags; u8 pad4[0x10]; s32 count; s32 length; s32 offset; } 
 
 void KeyframeAnim_DefaultScaleRotation(void *out);
 void KeyframeAnim_LerpScaleRotation(UnkKey_02040934 *k0, UnkKey_02040934 *k1, s32 ratio, void *out, u32 flags);
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 #pragma thumb on
 void KeyframeAnim_EvalScaleRotation(UnkAnim_02040934 *a, UnkTrack_02040934 *tr, void *out) {
@@ -130,7 +130,7 @@ void KeyframeAnim_EvalScaleRotation(UnkAnim_02040934 *a, UnkTrack_02040934 *tr, 
         fr = f1;
     if (f0 > fr)
         f0 = fr;
-    KeyframeAnim_LerpScaleRotation(k0, kn, func_0200225c(fr - f0, f1 - f0), out, *(u32 *)&a->flags);
+    KeyframeAnim_LerpScaleRotation(k0, kn, FX_Div(fr - f0, f1 - f0), out, *(u32 *)&a->flags);
     a->cur = i;
 }
 #pragma thumb reset

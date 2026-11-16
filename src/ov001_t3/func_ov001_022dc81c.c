@@ -31,7 +31,7 @@ void func_ov001_022d9d64(UnkWork_022dc81c *w, s32 i, s32 x, s32 y);
 void func_ov001_022da154(UnkWork_022dc81c *w, s32 a);
 void func_ov001_022da244(UnkWork_022dc81c *w, s32 a);
 void func_ov001_022da1cc(UnkWork_022dc81c *w, s32 a);
-void func_020511d0(s32 a);
+void WirelessLobby_StartParent(s32 a);
 void func_ov001_022dc734(void);
 
 #pragma thumb on
@@ -73,7 +73,7 @@ void func_ov001_022dc81c(void) {
         func_ov001_022da154(w, 0);
         func_ov001_022da244(w, 1);
         func_ov001_022da1cc(w, 1);
-        func_020511d0(0);
+        WirelessLobby_StartParent(0);
         gTaskCurrent->func = func_ov001_022dc734;
     }
 }

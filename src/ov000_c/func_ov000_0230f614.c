@@ -16,7 +16,7 @@ extern UnkStruct_Plr gCamera[];
 extern s32 data_ov000_0236a060;
 
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void GmkLand_State_Unk_ov000_0230f590(void);
+void GmkLand_State_SpawnPeriodic(void);
 
 void func_ov000_0230f614(UnkStruct_StageObj *w) {
     u32 n;
@@ -53,5 +53,5 @@ void func_ov000_0230f614(UnkStruct_StageObj *w) {
     }
     w->unk1B8 = NULL;
     w->unk5C |= 0x20;
-    w->unk68 = GmkLand_State_Unk_ov000_0230f590;
+    w->unk68 = GmkLand_State_SpawnPeriodic;
 }

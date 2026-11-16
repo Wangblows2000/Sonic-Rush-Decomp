@@ -2,7 +2,7 @@
 
 extern u8 *gSpecialStageHud;
 void AnimatorSprite_Draw(void *p);
-void func_ov001_02308430(s32 a);
+void SpecialStageHud_DrawRingCounterScaled(s32 a);
 void func_ov001_023081d8(s32 a);
 
 void func_ov001_02308fc8(void) {
@@ -12,6 +12,6 @@ void func_ov001_02308fc8(void) {
     } else if (*(s32 *)(g + 0xbc8) >= 0xf0 && *(s32 *)(g + 0xbc8) < 0x168) {
         AnimatorSprite_Draw(g + 0x780);
     }
-    func_ov001_02308430(*(s32 *)(g + 0xbc8) - 1);
+    SpecialStageHud_DrawRingCounterScaled(*(s32 *)(g + 0xbc8) - 1);
     func_ov001_023081d8(*(s32 *)(g + 0xbc8) - 0xb4);
 }

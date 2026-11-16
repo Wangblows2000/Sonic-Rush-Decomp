@@ -9,9 +9,9 @@ extern u32 data_ov000_02367c48;
 extern u32 data_ov000_02367c50;
 extern u32 data_ov000_02367c54;
 extern void OS_GetArenaLo(void);
-extern void func_0202128c(void);
-extern void func_020212e0(void);
-extern void func_02021310(void);
+extern void NNS_FndGetArchiveFileByName(void);
+extern void NNS_FndUnmountArchive(void);
+extern void NNS_FndMountArchive(void);
 extern void strcat(void);
 extern void strcpy(void);
 extern void Model_SetAnimation(void);
@@ -91,7 +91,7 @@ asm void BossEffect_Create(void)
     ldrb r3, [r5, #4]
     strb r3, [r6, #4]
     ldr r2, [r2]
-    bl func_02021310
+    bl NNS_FndMountArchive
     add r0, sp, #0x12
     mov r1, r10
     bl strcpy
@@ -99,7 +99,7 @@ asm void BossEffect_Create(void)
     add r0, sp, #0x12
     bl strcat
     mov r0, r6
-    bl func_0202128c
+    bl NNS_FndGetArchiveFileByName
     str r0, [r8, #0x2a8]
     ldr r0, [r8, #0x2a0]
     ands r0, r0, #1
@@ -126,7 +126,7 @@ _15c:
     cmp r7, #2
     beq _1b0
     mov r0, r11
-    bl func_0202128c
+    bl NNS_FndGetArchiveFileByName
     str r4, [sp]
     mov r2, r0
     add r0, r8, #0x134
@@ -136,14 +136,14 @@ _15c:
     b _1bc
 _1b0:
     mov r0, r11
-    bl func_0202128c
+    bl NNS_FndGetArchiveFileByName
     str r0, [r8, #0x2ac]
 _1bc:
     add r7, r7, #1
     cmp r7, #5
     blo _15c
     add r0, sp, #0x30
-    bl func_020212e0
+    bl NNS_FndUnmountArchive
     ldr r0, [sp, #8]
     ldr r2, [sp, #0xb0]
     str r0, [r8, #0x10]

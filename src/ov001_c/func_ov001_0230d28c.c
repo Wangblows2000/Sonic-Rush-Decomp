@@ -13,9 +13,9 @@ void MTX_Identity43_(UnkStruct_0230d28c_m *m);
 void MTX_RotZ43_(UnkStruct_0230d28c_m *m, s32 s, s32 c);
 void MTX_Concat43(const UnkStruct_0230d28c_m *a, const UnkStruct_0230d28c_m *b, UnkStruct_0230d28c_m *ab);
 void MTX_TransApply43(const UnkStruct_0230d28c_m *a, UnkStruct_0230d28c_m *b, s32 x, s32 y, s32 z);
-u16 func_ov001_0230d650(s32 a, s32 b);
-void func_ov001_0230d5bc(UnkStruct_0230d28c_m *m, s32 a, u16 b);
-void func_ov001_0230d528(UnkStruct_0230d28c_m *m, s32 a, u16 b);
+u16 SpecialStage_ArcLengthToAngle(s32 a, s32 b);
+void SpecialStage_RotateMtxYAroundPivot(UnkStruct_0230d28c_m *m, s32 a, u16 b);
+void SpecialStage_RotateMtxXAroundPivot(UnkStruct_0230d28c_m *m, s32 a, u16 b);
 
 void func_ov001_0230d28c(UnkStruct_0230d28c_m *m, s32 mode, s32 flag, s32 force, u32 ang, s32 y, s32 z) {
     UnkStruct_0230d28c_m t;
@@ -44,22 +44,22 @@ void func_ov001_0230d28c(UnkStruct_0230d28c_m *m, s32 mode, s32 flag, s32 force,
         break;
     case 1:
         MTX_Identity43_(&t2);
-        func_ov001_0230d5bc(&t2, -0xbf000, func_ov001_0230d650(0xbf000, z));
+        SpecialStage_RotateMtxYAroundPivot(&t2, -0xbf000, SpecialStage_ArcLengthToAngle(0xbf000, z));
         MTX_Concat43(m, &t2, m);
         break;
     case 2:
         MTX_Identity43_(&t2);
-        func_ov001_0230d5bc(&t2, 0xbf000, -func_ov001_0230d650(0xbf000, z));
+        SpecialStage_RotateMtxYAroundPivot(&t2, 0xbf000, -SpecialStage_ArcLengthToAngle(0xbf000, z));
         MTX_Concat43(m, &t2, m);
         break;
     case 3:
         MTX_Identity43_(&t2);
-        func_ov001_0230d528(&t2, 0xbf000, func_ov001_0230d650(0xbf000, z));
+        SpecialStage_RotateMtxXAroundPivot(&t2, 0xbf000, SpecialStage_ArcLengthToAngle(0xbf000, z));
         MTX_Concat43(m, &t2, m);
         break;
     case 4:
         MTX_Identity43_(&t2);
-        func_ov001_0230d528(&t2, -0xbf000, -func_ov001_0230d650(0xbf000, z));
+        SpecialStage_RotateMtxXAroundPivot(&t2, -0xbf000, -SpecialStage_ArcLengthToAngle(0xbf000, z));
         MTX_Concat43(m, &t2, m);
         break;
     }

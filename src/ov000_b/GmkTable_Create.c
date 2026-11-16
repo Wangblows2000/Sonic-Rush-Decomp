@@ -15,7 +15,7 @@ extern u8 data_ov000_02367150[];
 extern u8 data_ov000_023661c0[];
 
 void GmkTable_Destructor(void);
-void func_ov000_0231a0a0(UnkStruct_0231a0f0 *w);
+void GmkTable_Action_Init(UnkStruct_0231a0f0 *w);
 
 UnkStruct_0231a0f0 *GmkTable_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -38,7 +38,7 @@ UnkStruct_0231a0f0 *GmkTable_Create(s32 a, s32 b, s32 c) {
     Obj_SetVec(&w->base.unk128->unk18, 0x34cc, 0x34cc, 0x34cc);
     w->base.spr0.unk46 = 0x14;
     w->base.spr1.unk46 = 0x14;
-    func_02068e40(w, -8, -10, 8, 0xc);
+    StageObj_SetMapHitbox(w, -8, -10, 8, 0xc);
     w->base.unk1B8 = w;
     w->base.unk1C8 = data_ov000_023661c0;
     w->base.unk1D8 = 0x20;
@@ -56,6 +56,6 @@ UnkStruct_0231a0f0 *GmkTable_Create(s32 a, s32 b, s32 c) {
     w->base.unk3E = 0x300;
     w->base.unk204 = 0;
     w->base.unk1DC = Sound_AllocHandle();
-    func_ov000_0231a0a0(w);
+    GmkTable_Action_Init(w);
     return w;
 }

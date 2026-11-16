@@ -35,7 +35,7 @@ typedef struct UnkStruct_0230d708_t {
 } UnkStruct_0230d708_t;
 
 extern UnkStruct_0230d708 *gSpecialStageMap;
-extern UnkStruct_0230d708_t data_ov001_02317224[];
+extern UnkStruct_0230d708_t gSpecialStageMapSegmentTypeTable[];
 extern UnkStruct_0230d708_t data_ov001_0231722c[];
 extern UnkStruct_0230d708_t data_ov001_02317238[];
 
@@ -70,13 +70,13 @@ void SpecialStageMap_Draw(void) {
         if (e->flags & 1)
             continue;
         m2 = e->mtx;
-        data_ov001_02317224[e->type].fnC(&m2);
+        gSpecialStageMapSegmentTypeTable[e->type].fnC(&m2);
         NNS_G3dGeBufferOP_N(0x15, 0, 0);
         NNS_G3dGeBufferOP_N(0x11, 0, 0);
         NNS_G3dGeBufferOP_N(0x19, (u32 *)&m2, 0xc);
         b = 0x1e;
         NNS_G3dGeBufferOP_N(0x13, &b, 1);
-        data_ov001_02317224[e->type].fn8(e);
+        gSpecialStageMapSegmentTypeTable[e->type].fn8(e);
         one2 = 1;
         NNS_G3dGeBufferOP_N(0x12, &one2, 1);
     }

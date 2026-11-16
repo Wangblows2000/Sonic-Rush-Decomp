@@ -47,14 +47,14 @@ extern u16 data_ov000_02364eb0[];
 
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void *File_Load(void *a, s32 b);
-void func_02021310(void *f, void *name, void *heap);
-void *func_02021264(void *f, s32 idx);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *name, void *heap);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 idx);
+void NNS_FndUnmountArchive(void *f);
 void Model_Init(void *o, s32 a);
 void Model_SetResource(void *o, void *r, s32 a);
 void Model_SetAnimation(void *o, s32 a, void *r, s32 b, s32 c);
 void G3X_SetEdgeColorTable(void *a);
-void func_02022270(s32 a, u16 b);
+void NNS_G3dGlbLightColor(s32 a, u16 b);
 
 #pragma thumb on
 
@@ -65,14 +65,14 @@ void PlayerSelectMenu_LoadModels(UnkStruct_02357148 *w) {
     zero = 0;
     MIi_CpuClear32(zero, w, sizeof(UnkStruct_02357148));
     w->unk2FC = File_Load(data_ov000_02368dfc, -1);
-    func_02021310(file, data_ov000_023690d0, w->unk2FC);
+    NNS_FndMountArchive(file, data_ov000_023690d0, w->unk2FC);
     w->unk184 = data_ov000_0236ac50[0];
-    w->unk188 = func_02021264(file, 0);
-    w->unk18C = func_02021264(file, 1);
+    w->unk188 = NNS_FndGetArchiveFileByIndex(file, 0);
+    w->unk18C = NNS_FndGetArchiveFileByIndex(file, 1);
     w->unk2E4 = data_ov000_0236ac50[2];
-    w->unk2E8 = func_02021264(file, 0);
-    w->unk2EC = func_02021264(file, 1);
-    func_020212e0(file);
+    w->unk2E8 = NNS_FndGetArchiveFileByIndex(file, 0);
+    w->unk2EC = NNS_FndGetArchiveFileByIndex(file, 1);
+    NNS_FndUnmountArchive(file);
     Model_Init(w->unk4C, 0);
     Model_SetResource(w->unk4C, w->unk184, 0);
     Model_SetAnimation(w->unk4C, 0, w->unk188, 0, 0);
@@ -103,9 +103,9 @@ void PlayerSelectMenu_LoadModels(UnkStruct_02357148 *w) {
     w->unk2B8 |= 4;
     w->unk2B8 |= 4;
     G3X_SetEdgeColorTable(data_ov000_02364eb8);
-    func_02022270(0, data_ov000_02364eb0[0]);
-    func_02022270(1, data_ov000_02364eb0[1]);
-    func_02022270(2, data_ov000_02364eb0[2]);
+    NNS_G3dGlbLightColor(0, data_ov000_02364eb0[0]);
+    NNS_G3dGlbLightColor(1, data_ov000_02364eb0[1]);
+    NNS_G3dGlbLightColor(2, data_ov000_02364eb0[2]);
 }
 
 #pragma thumb reset

@@ -39,7 +39,7 @@ typedef struct UnkStruct_022ee594_g {
 
 extern void *gMainHeap;
 
-UnkStruct_022ee594_p *func_ov001_023014f4(s32 a, s32 b);
+UnkStruct_022ee594_p *ExtraBossObj_Create(s32 a, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -58,7 +58,7 @@ void func_ov001_022ee594(s32 arg) {
     u8 *blk;
     s32 i;
 
-    p = func_ov001_023014f4(1, 0x2f80);
+    p = ExtraBossObj_Create(1, 0x2f80);
     blk = Heap_Alloc(gMainHeap, 0x300, 0x20);
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         fill = 0xcccccccc;

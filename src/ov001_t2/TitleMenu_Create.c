@@ -18,14 +18,14 @@ UnkTask_022d94b4 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void TitleMenu_Main(void);
 void TitleMenu_Destructor(void);
-s32 func_ov001_022d8e58(void);
+s32 TitleMenu_IsPlayerSelectPageUnlocked(void);
 void TitleMenu_LoadAssets(UnkWork_022d94b4 *w);
 void TitleMenu_InitDisplay(void);
-void func_ov001_022d8e74(UnkWork_022d94b4 *w);
+void TitleMenu_InitSprites(UnkWork_022d94b4 *w);
 void Touch_Enable(void);
 void Pad_Reset(void *p, s32 a, s32 b);
 void SysSound_Init(void);
-void func_02052168(s32 a);
+void SysSound_PlayBGM(s32 a);
 
 #pragma thumb on
 UnkWork_022d94b4 *TitleMenu_Create(void) {
@@ -36,14 +36,14 @@ UnkWork_022d94b4 *TitleMenu_Create(void) {
     }
     w->state = 9;
     w->unk4 = 0;
-    w->unk8 = func_ov001_022d8e58();
+    w->unk8 = TitleMenu_IsPlayerSelectPageUnlocked();
     TitleMenu_LoadAssets(w);
     TitleMenu_InitDisplay();
-    func_ov001_022d8e74(w);
+    TitleMenu_InitSprites(w);
     Touch_Enable();
     Pad_Reset(gPad, 0, 0);
     SysSound_Init();
-    func_02052168(0);
+    SysSound_PlayBGM(0);
     return w;
 }
 #pragma thumb reset

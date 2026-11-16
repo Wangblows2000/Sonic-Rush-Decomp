@@ -21,7 +21,7 @@ typedef int code();
 
 extern unsigned char gRandSeed[];
 int func_ov000_022f1df0();
-int func_ov000_022f4ce4();
+int BossFPartD8_SetAnimation();
 
 void func_ov000_022f1ef8(int param_1)
 
@@ -29,7 +29,7 @@ void func_ov000_022f1ef8(int param_1)
   undefined4 uVar1;
   int iVar2;
   
-  func_ov000_022f4ce4(param_1,0x1b,0x1000,1);
+  BossFPartD8_SetAnimation(param_1,0x1b,0x1000,1);
   iVar2 = *((int *)gRandSeed) * 0x196225 + 0x3c6ef35f;
   *((int *)gRandSeed) = iVar2;
   uVar1 = ((int)func_ov000_022f1df0);

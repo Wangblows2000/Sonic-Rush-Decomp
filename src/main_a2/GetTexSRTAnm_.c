@@ -14,8 +14,8 @@ typedef struct {
     fx32 transT;
 } UnkTexSRT_02027ec8;
 
-s32 func_020280d4(UnkResAnm_02027ec8 *anm, u32 info, u32 data, s32 frame);
-u32 func_02027fc8(UnkResAnm_02027ec8 *anm, u32 info, u32 data, s32 frame);
+s32 GetTexSRTAnmVectorVal_(UnkResAnm_02027ec8 *anm, u32 info, u32 data, s32 frame);
+u32 GetTexSRTAnmSinCosVal_(UnkResAnm_02027ec8 *anm, u32 info, u32 data, s32 frame);
 
 static inline void *GetData_02027ec8(UnkDict_02027ec8 *dict, u32 idx) {
     UnkDictEntry_02027ec8 *e = (UnkDictEntry_02027ec8 *)((u8 *)dict + dict->ofsEntry);
@@ -28,8 +28,8 @@ void GetTexSRTAnm_(UnkResAnm_02027ec8 *anm, u16 idx, s32 frame, UnkTexSRT_02027e
     s32 a;
     s32 b;
     u32 rot;
-    a = func_020280d4(anm, data[6], data[7], frame);
-    b = func_020280d4(anm, data[8], data[9], frame);
+    a = GetTexSRTAnmVectorVal_(anm, data[6], data[7], frame);
+    b = GetTexSRTAnmVectorVal_(anm, data[8], data[9], frame);
     if (a == 0 && b == 0) {
         flag |= 4;
     } else {
@@ -37,7 +37,7 @@ void GetTexSRTAnm_(UnkResAnm_02027ec8 *anm, u16 idx, s32 frame, UnkTexSRT_02027e
         res->transT = b;
         flag &= ~4;
     }
-    rot = func_02027fc8(anm, data[4], data[5], frame);
+    rot = GetTexSRTAnmSinCosVal_(anm, data[4], data[5], frame);
     if (rot == 0x10000000) {
         flag |= 2;
     } else {
@@ -45,8 +45,8 @@ void GetTexSRTAnm_(UnkResAnm_02027ec8 *anm, u16 idx, s32 frame, UnkTexSRT_02027e
         res->cosR = rot >> 16;
         flag &= ~2;
     }
-    a = func_020280d4(anm, data[0], data[1], frame);
-    b = func_020280d4(anm, data[2], data[3], frame);
+    a = GetTexSRTAnmVectorVal_(anm, data[0], data[1], frame);
+    b = GetTexSRTAnmVectorVal_(anm, data[2], data[3], frame);
     if (a == 0x1000 && b == 0x1000) {
         flag |= 1;
     } else {

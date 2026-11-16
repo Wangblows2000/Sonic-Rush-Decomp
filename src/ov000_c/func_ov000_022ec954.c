@@ -76,8 +76,8 @@ void Boss7_State_Unk_ov000_022ec7b4(void);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 u8 *NNS_G3dGetMdlSet(void *p);
 void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 
 static inline u32 GetVisiblePlane(void) {
     return (*(vu32 *)0x4000000 & 0x1f00) >> 8;
@@ -136,8 +136,8 @@ void func_ov000_022ec954(UnkStruct_022ec954 *w) {
     res = NNS_G3dGetMdlSet(w->unk248);
     NNSi_G3dModifyMatFlag(res + *(u32 *)(res + *(u16 *)(res + 0xe) + 0xc), 1, 0x80);
     gDisplayMain.unk48 = 0x10;
-    func_020537b4(0xd);
-    func_020533e0(0x13, 0xf0);
+    NaviMsg_SetFaceAnim(0xd);
+    NaviMsg_ShowMessage(0x13, 0xf0);
     w->unk230 = 0;
     w->base.unk68 = Boss7_State_Unk_ov000_022ec7b4;
 }

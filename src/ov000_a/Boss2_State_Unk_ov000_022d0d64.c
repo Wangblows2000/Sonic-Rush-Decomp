@@ -54,7 +54,7 @@ struct UnkStruct_022d0d64 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d0d64_7 {
     u8 pad[8];
@@ -64,7 +64,7 @@ typedef struct UnkStruct_022d0d64_7 {
 
 extern UnkStruct_022d0d64_7 gBossStatus;
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 s32 FX_DivS32(s32 a, s32 b);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void Boss2_State_Unk_ov000_022d0c30(UnkStruct_022d0d64 *s);
@@ -84,6 +84,6 @@ void Boss2_State_Unk_ov000_022d0d64(UnkStruct_022d0d64 *s) {
     s->unk12F4 = FX_DivS32(v * 300, 0x51a326);
     if (300 - (FX_DivS32(gBossStatus.unk8 * 8 + (gBossStatus.unkA - gBossStatus.unk8) * 4, gBossStatus.unkA) + (*y->unkE4 >> 12)) < s->unk12F4)
         s->unk12F4 = 300 - (FX_DivS32(gBossStatus.unk8 * 8 + (gBossStatus.unkA - gBossStatus.unk8) * 4, gBossStatus.unkA) + (*y->unkE4 >> 12));
-    s->unk12F4 = func_0200225c(s->unk12F4, y->unk114);
+    s->unk12F4 = FX_Div(s->unk12F4, y->unk114);
     Sound_PlayVoice(0, 0, 0xd2);
 }

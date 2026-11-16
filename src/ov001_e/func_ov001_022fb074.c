@@ -18,7 +18,7 @@ typedef struct UnkStruct_022fb074 {
     s16 t;
 } UnkStruct_022fb074;
 
-BOOL func_ov001_02300b84(s32 x, s32 y, s32 w, s32 h);
+BOOL ExtraBossObj_IsOutOfArena(s32 x, s32 y, s32 w, s32 h);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -41,6 +41,6 @@ void func_ov001_022fb074(UnkStruct_022fb074 *p) {
         p->unk84->unk1C = Lerp(p->t, 0x34cc, 0x6998);
         p->unk104 = Lerp(p->t, 0x8000, 0x10000);
     }
-    if (func_ov001_02300b84(p->x, p->y, 0x30000, 0x30000))
+    if (ExtraBossObj_IsOutOfArena(p->x, p->y, 0x30000, 0x30000))
         p->flags |= 8;
 }

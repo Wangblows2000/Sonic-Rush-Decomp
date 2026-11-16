@@ -21,7 +21,7 @@ typedef int code();
 
 extern unsigned char data_ov000_0236a48c[];
 int BossFPartD8_State_Unk_ov000_022f33d0();
-int func_ov000_022f4ce4();
+int BossFPartD8_SetAnimation();
 int Sound_PlayVoice();
 
 void BossFPartD8_State_Unk_ov000_022f33f8(int param_1)
@@ -29,7 +29,7 @@ void BossFPartD8_State_Unk_ov000_022f33f8(int param_1)
 {
   int iVar1;
   
-  func_ov000_022f4ce4(param_1,0x11,0x1000,0);
+  BossFPartD8_SetAnimation(param_1,0x11,0x1000,0);
   iVar1 = ((int)data_ov000_0236a48c);
   *(undefined4 *)(((int)data_ov000_0236a48c) + 0x78) = 0x12c000;
   *(undefined2 *)(iVar1 + 0x80) = 0x40;

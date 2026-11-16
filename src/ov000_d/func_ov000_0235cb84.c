@@ -2,7 +2,7 @@
 
 s32 func_02051300(void *buf, s32 n);
 BOOL func_ov000_0235cbd8(void);
-void func_0205961c(s32 a, void *buf, u8 len, s32 b);
+void SaveData_RecordVsResult(s32 a, void *buf, u8 len, s32 b);
 
 #pragma thumb on
 
@@ -30,7 +30,7 @@ void func_ov000_0235cb84(s32 mode, s32 arg) {
         v = 2;
         break;
     }
-    func_0205961c(v, buf, len, arg);
+    SaveData_RecordVsResult(v, buf, len, arg);
 }
 
 #pragma thumb reset

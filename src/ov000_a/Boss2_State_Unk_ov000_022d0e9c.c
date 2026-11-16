@@ -58,7 +58,7 @@ struct UnkStruct_022d0e9c {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d0e9c_7 {
     u8 pad[8];
@@ -77,7 +77,7 @@ extern UnkStruct_022d0e9c_pl *gPlayers;
 s32 FX_DivS32(s32 a, s32 b);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
-void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
+void BossArena_CirclePosToArc(s32 unused, s32 len, s32 x, s32 y, s32 *out);
 void Boss2_State_Unk_ov000_022d0864(UnkStruct_022d0e9c *s);
 void Boss2_State_Unk_ov000_022d0d64(UnkStruct_022d0e9c *s);
 
@@ -107,7 +107,7 @@ void Boss2_State_Unk_ov000_022d0e9c(UnkStruct_022d0e9c *s) {
         *(u32 *)(s->unk131C + 0x54) |= 4;
         return;
     }
-    func_ov000_022c5e1c(0x1152f0, 0x6cd988, s->unk139C, s->unk13A4, &a);
+    BossArena_CirclePosToArc(0x1152f0, 0x6cd988, s->unk139C, s->unk13A4, &a);
     p = gPlayers->unk10 << 4;
     if (p < a) {
         d1 = a - p;

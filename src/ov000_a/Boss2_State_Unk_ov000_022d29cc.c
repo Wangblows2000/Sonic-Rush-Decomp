@@ -84,16 +84,16 @@ struct UnkStruct_022d29cc {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
-void func_ov000_022d2920(UnkStruct_022d29cc *s, s32 mode);
-void func_ov000_022d4654(s32 a);
+void Boss2_UpdateArenaSpeed(UnkStruct_022d29cc *s, s32 mode);
+void Boss2_SelectNextAttack(s32 a);
 
 void Boss2_State_Unk_ov000_022d29cc(UnkStruct_022d29cc *s) {
     UnkStruct_022d29cc_a *x = &s->unkA9C;
     UnkStruct_022d29cc_a *y;
     UnkStruct_022d29cc_a *z;
-    func_ov000_022d2920(s, 1);
+    Boss2_UpdateArenaSpeed(s, 1);
     if (s->unk1470 == 0 && (x->unk10C & 2)) {
         y = &s->unkBD4;
         z = &s->unkD0C;
@@ -109,5 +109,5 @@ void Boss2_State_Unk_ov000_022d29cc(UnkStruct_022d29cc *s) {
         s->unk1470 = 1;
     }
     if (s->unk145C == 0 && (x->unk10C & 2) && s->unk1470 != 0)
-        func_ov000_022d4654(1);
+        Boss2_SelectNextAttack(1);
 }

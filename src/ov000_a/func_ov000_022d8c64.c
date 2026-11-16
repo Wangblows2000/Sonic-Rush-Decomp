@@ -98,7 +98,7 @@ extern UnkStruct_022d8c64_c data_ov000_0236a48c;
 extern UnkStruct_022d8c64_d data_ov000_0236a444;
 
 s32 func_ov000_022da7c8(s32 a, s32 b, s32 c);
-void func_ov000_022c5e1c(s32 a, s32 b, s32 x, s32 z, s32 *out);
+void BossArena_CirclePosToArc(s32 a, s32 b, s32 x, s32 z, s32 *out);
 
 BOOL func_ov000_022d8c64(UnkStruct_022d8c64 *s) {
     s32 v;
@@ -113,7 +113,7 @@ BOOL func_ov000_022d8c64(UnkStruct_022d8c64 *s) {
             c->unk8 = gBoss3->unk218;
         }
     }
-    func_ov000_022c5e1c(0xf42f8, 0x5fe435, s->unk24C, s->unk254, &v);
+    BossArena_CirclePosToArc(0xf42f8, 0x5fe435, s->unk24C, s->unk254, &v);
     v >>= 4;
     if (func_ov000_022da7c8(v, gBoss3->unk218->unk10, !(s->unk5C & 1)) < 0x800) {
         if (s->unk5C & 1) {

@@ -1,0 +1,45 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x48];
+    s16 brightness;
+} UnkDisp_0205b008;
+
+typedef struct {
+    u8 pad0[0x474];
+    void (*fn)(void);
+    u8 pad478[0x488 - 0x478];
+    u32 unk488;
+    u8 pad48C[0x8ce - 0x48c];
+    s16 t;  /* 0x8ce */
+} UnkWork_0205b008;
+typedef struct { u8 pad0[0x1c]; u8 unk1C; u8 unk1D; } UnkStruct_022c4560;
+
+extern UnkStruct_022c4560 gGameState;
+extern UnkDisp_0205b008 gDisplaySub;
+extern UnkDisp_0205b008 gDisplayMain;
+
+void StageTitleCard_State_ToStartStage(void);
+
+static inline s32 FX_Mul_0205b008(s32 a, s32 b) {
+    return (s32)(((s64)a * b + 0x800) >> 12);
+}
+
+void StageTitleCard_State_Exit(UnkWork_0205b008 *w) {
+    BOOL flag;
+    w->t += 0xa3;
+    if (w->t >= 0x1000) {
+        w->t = 0x1000;
+        if (w->unk488 & 0x400000)
+            w->fn = StageTitleCard_State_ToStartStage;
+    }
+    gDisplaySub.brightness = FX_Mul_0205b008(0x10000, w->t) >> 12;
+    flag = FALSE;
+    if (gGameState.unk1C == 8 && gGameState.unk1D == 2)
+        flag = TRUE;
+    if (flag)
+        return;
+    if (gGameState.unk1C < 9 && gGameState.unk1D < 2)
+        return;
+    gDisplayMain.brightness = FX_Mul_0205b008(0x10000, w->t) >> 12;
+}

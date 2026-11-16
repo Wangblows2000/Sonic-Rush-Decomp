@@ -85,7 +85,7 @@ struct UnkStruct_022d2e14 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d2e14_c {
     u8 pad[0x3c];
@@ -98,8 +98,8 @@ extern UnkStruct_022d2e14_c data_ov000_0236a444;
 s32 ScreenShake_GetOffsetX(void);
 s32 ScreenShake_GetOffsetY(void);
 void ScreenShake_Start(s32 a);
-s32 func_0200225c(s32 a, s32 b);
-void Boss2_State_Unk_ov000_022d2de4(UnkStruct_022d2e14 *s);
+s32 FX_Div(s32 a, s32 b);
+void Boss2_State_WaitAnimThenSelectMode1(UnkStruct_022d2e14 *s);
 
 void Boss2_State_Unk_ov000_022d2e14(UnkStruct_022d2e14 *s) {
     UnkStruct_022d2e14_a *x = &s->unkA9C;
@@ -108,17 +108,17 @@ void Boss2_State_Unk_ov000_022d2e14(UnkStruct_022d2e14 *s) {
     s32 k;
     if (s->unk12F4 >= 0) {
         k = s->unk12F4 << 12;
-        data_ov000_0236a444.unk3C = func_0200225c(k * ScreenShake_GetOffsetX(), 0xf000);
+        data_ov000_0236a444.unk3C = FX_Div(k * ScreenShake_GetOffsetX(), 0xf000);
         data_ov000_0236a444.unk3C = data_ov000_0236a444.unk3C << 12;
         data_ov000_0236a444.unk3C = data_ov000_0236a444.unk3C >> 12;
-        data_ov000_0236a444.unk40 = func_0200225c(k * ScreenShake_GetOffsetY(), 0xf000);
+        data_ov000_0236a444.unk40 = FX_Div(k * ScreenShake_GetOffsetY(), 0xf000);
         data_ov000_0236a444.unk40 = data_ov000_0236a444.unk40 << 12;
         data_ov000_0236a444.unk40 = data_ov000_0236a444.unk3C >> 12;
         s->unk12F4--;
     }
     if (!(x->unk10C & 2))
         return;
-    s->func = Boss2_State_Unk_ov000_022d2de4;
+    s->func = Boss2_State_WaitAnimThenSelectMode1;
     Model_SetAnimation(x, 0, s->unkF7C, 0x21, 0);
     Model_SetAnimation(y, 0, s->unkF7C, 0x3d, 0);
     Model_SetAnimation(z, 0, s->unkF7C, 0x5d, 0);

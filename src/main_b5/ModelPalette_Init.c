@@ -18,7 +18,7 @@ extern u32 data_0208a764[];
 u32 GX_ResetBankForTexPltt(void);
 void GX_SetBankForTexPltt(u32 e);
 void *NNS_G3dGetTex(void *a);
-u32 func_02021ad8(void *res);
+u32 NNS_G3dPlttGetRequiredSize(void *res);
 u32 Asset3D_GetPaletteKeyByIndex(void *res, s32 a);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 
@@ -43,10 +43,10 @@ void ModelPalette_Init(void *a, UnkPal_0206cf8c *p) {
 
     e = GX_ResetBankForTexPltt();
     p->res = NNS_G3dGetTex(a);
-    p->dst = (u16 *)Alloc_0206cf8c((func_02021ad8(p->res) + 0x43) & ~0x1f);
-    p->src = (u16 *)Alloc_0206cf8c((func_02021ad8(p->res) + 0x43) & ~0x1f);
+    p->dst = (u16 *)Alloc_0206cf8c((NNS_G3dPlttGetRequiredSize(p->res) + 0x43) & ~0x1f);
+    p->src = (u16 *)Alloc_0206cf8c((NNS_G3dPlttGetRequiredSize(p->res) + 0x43) & ~0x1f);
     bank = Asset3D_GetPaletteKeyByIndex(p->res, 0) >> 14;
     addr = (void *)(data_0208a764[bank] + Asset3D_GetPaletteKeyByIndex(p->res, 0) - (bank << 14));
-    MIi_CpuCopy16(addr, p->src, func_02021ad8(p->res));
+    MIi_CpuCopy16(addr, p->src, NNS_G3dPlttGetRequiredSize(p->res));
     GX_SetBankForTexPltt(e);
 }

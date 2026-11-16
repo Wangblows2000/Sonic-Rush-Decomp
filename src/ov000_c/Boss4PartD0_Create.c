@@ -36,7 +36,7 @@ void MI_CpuFill8(void *p, s32 v, u32 n);
 void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022db7ec(UnkStruct_Vec *v, UnkStruct_022df200 *w);
+void Boss4_ArenaToStagePos(UnkStruct_Vec *v, UnkStruct_022df200 *w);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov000_022dc82c(UnkStruct_022df200 *w);
 
@@ -58,7 +58,7 @@ UnkStruct_022df200 *Boss4PartD0_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     Model_SetResource(sub, boss->unkAB0[3], 0);
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     sub->unk48 = boss->unkB7C;
-    func_ov000_022db7ec(&sub->unk48, w);
+    Boss4_ArenaToStagePos(&sub->unk48, w);
     sub = &w->unk344;
     Model_Init(sub, 0);
     Model_SetResource(sub, boss->unkAB0[9], 0);

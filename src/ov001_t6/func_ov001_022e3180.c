@@ -9,10 +9,10 @@ typedef struct {
     s32 unk14;
 } UnkBgm_022e3180;
 
-void func_020533e0(s32 track, s32 a);
-void func_020537b4(s32 mode);
-void func_02053998(void);
-void func_02053b04(void);
+void NaviMsg_ShowMessage(s32 track, s32 a);
+void NaviMsg_SetFaceAnim(s32 mode);
+void NaviMsg_FadeVisible(void);
+void NaviMsg_SetVisible(void);
 
 #pragma thumb on
 #pragma opt_propagation off
@@ -205,23 +205,23 @@ void func_ov001_022e3180(UnkBgm_022e3180 *b, s32 id) {
     }
     if (play) {
         if (fade) {
-            func_020533e0(track, time);
+            NaviMsg_ShowMessage(track, time);
         }
-        func_020537b4(mode);
+        NaviMsg_SetFaceAnim(mode);
         if (b->unk4 == 0) {
             b->unk4 = 1;
             if (id == 1) {
-                func_02053998();
+                NaviMsg_FadeVisible();
             } else {
-                func_02053b04();
+                NaviMsg_SetVisible();
             }
         }
     } else if (b->unk4 != 0) {
         b->unk4 = 0;
         if (id == 2) {
-            func_02053998();
+            NaviMsg_FadeVisible();
         } else {
-            func_02053b04();
+            NaviMsg_SetVisible();
         }
     }
 }

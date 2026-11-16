@@ -8,7 +8,7 @@ typedef struct {
 
 extern UnkStruct_02359624_Pad gPad;
 
-void func_ov000_02359af4(s32 a);
+void PlayerSelectMenu_Action_Intro(s32 a);
 
 #pragma thumb on
 
@@ -25,7 +25,7 @@ void PlayerSelectMenu_Main(void) {
         KeyframeAnim_SetToLastFrame(q);
     }
     KeyframeAnim_Update(q);
-    func_ov000_02358410(w, q->unk4);
+    PlayerSelectMenu_SetBgScale(w, q->unk4);
     if (w->unk0 >= 0x26) {
         w->unk330 += 0x20;
     }
@@ -40,8 +40,8 @@ void PlayerSelectMenu_Main(void) {
     func_ov000_02358224(w, x, 0x1000);
     w->unk0++;
     if (KeyframeAnim_IsFinished(q)) {
-        func_ov000_02358410(w, 0x1000);
-        func_ov000_02359af4(0);
+        PlayerSelectMenu_SetBgScale(w, 0x1000);
+        PlayerSelectMenu_Action_Intro(0);
     }
 }
 

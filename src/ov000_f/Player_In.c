@@ -108,7 +108,7 @@ extern UnkStruct_0234419c_Tbl data_ov000_02368b92[];
 void Player_RecordReplayFrame(UnkStruct_0234419c *w);
 void Player_ApplyNetState(UnkStruct_0234419c *w);
 void Player_PlayReplayFrame(UnkStruct_0234419c *w);
-s32 func_ov000_0233b078(s32 x);
+s32 Stage_GetSplitLineY(s32 x);
 void func_ov000_023355e0(u16 a, u16 b, u16 c, u16 d);
 void Player_UpdateGimmickStageBounds(UnkStruct_0234419c *w);
 void Player_UpdateGravityFlip(UnkStruct_0234419c *w);
@@ -121,7 +121,7 @@ void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
 void Player_Action_Die(UnkStruct_0234419c *w);
 void Player_UpdateUnderwater(UnkStruct_0234419c *w);
 void Player_FindHomingTarget(UnkStruct_0234419c *w);
-void func_ov000_02346f34(UnkStruct_0234419c *w);
+void Player_HandleSurfaceLanding(UnkStruct_0234419c *w);
 void Player_UpdateBoost(UnkStruct_0234419c *w);
 void Player_CheckStartGrind(UnkStruct_0234419c *w);
 void Player_DrainBoostTension(UnkStruct_0234419c *w);
@@ -148,7 +148,7 @@ void Player_In(void) {
     Player_PlayReplayFrame(w);
     if (w->unk330 & 0x200000) {
         w->unk330 &= ~0x200000;
-        if (w->y > func_ov000_0233b078(w->x)) {
+        if (w->y > Stage_GetSplitLineY(w->x)) {
             left = (w->x >> 8) - 0x100;
             top = (w->y >> 8) - 0x1e0;
             right = (w->x >> 8) + 0x100;
@@ -314,7 +314,7 @@ void Player_In(void) {
     }
     Player_UpdateUnderwater(w);
     Player_FindHomingTarget(w);
-    func_ov000_02346f34(w);
+    Player_HandleSurfaceLanding(w);
     Player_UpdateBoost(w);
     Player_CheckStartGrind(w);
     Player_DrainBoostTension(w);

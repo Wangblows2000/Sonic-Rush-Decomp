@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366b04[], data_ov000_0236a010[];
 
-void IronBallPart_Action_Unk_ov000_0230ccd4(UnkStruct_EffObj *w);
+void IronBallPart_Action_Follow(UnkStruct_EffObj *w);
 
 UnkStruct_EffObj *IronBall_CreatePart_ov000_0230cd00(UnkStruct_StageObj *par) {
     UnkStruct_Task *task;
@@ -27,6 +27,6 @@ UnkStruct_EffObj *IronBall_CreatePart_ov000_0230cd00(UnkStruct_StageObj *par) {
     w->unk5C |= 0x100;
     w->unk54 |= 2;
     w->unk54 |= 0x10;
-    IronBallPart_Action_Unk_ov000_0230ccd4(w);
+    IronBallPart_Action_Follow(w);
     return w;
 }

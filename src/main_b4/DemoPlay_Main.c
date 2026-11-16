@@ -50,7 +50,7 @@ void func_02053bec(s32 a);
 void StageExit_Create(void (*f)(void), s32 a);
 void SceneChange_ToTitleScreen(void);
 void SceneChange_ToSegaLogo(void);
-BOOL func_ov000_0233b660(void);
+BOOL Display_IsMainScreenOnBottom(void);
 void AnimatorSpriteDS_Draw(UnkSpr_02048898 *s);
 
 void DemoPlay_Main(void) {
@@ -85,7 +85,7 @@ void DemoPlay_Main(void) {
         }
     }
     if (w->timer & 0x40) {
-        if (func_ov000_0233b660()) {
+        if (Display_IsMainScreenOnBottom()) {
             w->spr0.flags &= ~2;
             w->spr0.flags |= 1;
             w->spr1.flags |= 2;

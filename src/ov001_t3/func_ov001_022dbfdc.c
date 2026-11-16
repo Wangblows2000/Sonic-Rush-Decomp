@@ -25,7 +25,7 @@ void KeyframeAnim_Update(UnkAnim_022dbfdc *a);
 BOOL KeyframeAnim_IsFinished(UnkAnim_022dbfdc *a);
 void func_ov001_022d9e50(UnkWork_022dbfdc *w, s32 x, s32 y);
 void func_ov001_022d9e2c(UnkWork_022dbfdc *w, s32 x, s32 y);
-void func_02051080(void);
+void WirelessLobby_StartChild(void);
 void func_ov001_022da450(UnkWork_022dbfdc *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov001_022dbe3c(void);
@@ -49,7 +49,7 @@ void func_ov001_022dbfdc(void) {
     w->timer++;
     if (done) {
         w->timer = 0;
-        func_02051080();
+        WirelessLobby_StartChild();
         func_ov001_022da450(w);
         MsgBox_Create(4, 3, 5, 1, 2, 0, 0xe, 0x200010);
         gTaskCurrent->func = func_ov001_022dbe3c;

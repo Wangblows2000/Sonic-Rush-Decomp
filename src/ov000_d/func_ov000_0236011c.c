@@ -10,8 +10,8 @@ typedef struct {
 void Model_Animate(UnkStruct_MdlRender *r);
 void NNS_G3dGlbPolygonAttr(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 void VEC_Fx16Normalize(s16 *a, s16 *b);
-void func_02022284(s32 idx, s32 x, s32 y, s32 z);
-void func_02022270(s32 idx, s32 col);
+void NNS_G3dGlbLightVector(s32 idx, s32 x, s32 y, s32 z);
+void NNS_G3dGlbLightColor(s32 idx, s32 col);
 void NNS_G3dGlbMaterialColorDiffAmb(s32 a, s32 b, s32 c);
 void NNSi_G3dModifyPolygonAttrMask(void *m, s32 a, s32 b);
 void NNSi_G3dModifyMatFlag(void *m, s32 a, s32 b);
@@ -49,8 +49,8 @@ void func_ov000_0236011c(UnkStruct_0236011c *w, s32 x, s32 y, BOOL flip) {
     v[1] = -0x1000;
     v[2] = -0x2000;
     VEC_Fx16Normalize(v, v);
-    func_02022284(0, v[0], v[1], v[2]);
-    func_02022270(0, 0x7fff);
+    NNS_G3dGlbLightVector(0, v[0], v[1], v[2]);
+    NNS_G3dGlbLightColor(0, 0x7fff);
     NNS_G3dGlbMaterialColorDiffAmb(0x7fff, 0x6f7b, 1);
     NNSi_G3dModifyPolygonAttrMask(m, 0, 0xf);
     NNSi_G3dModifyMatFlag(m, 0, 0x40);

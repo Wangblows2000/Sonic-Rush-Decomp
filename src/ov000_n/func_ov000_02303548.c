@@ -38,7 +38,7 @@ typedef struct {
 extern UnkStruct_Plr gCamera[];
 
 void func_ov000_02303310(void);
-void MapObj75_State_Unk_ov000_023034f8(void);
+void MapObj75_State_Main(void);
 
 void func_ov000_02303548(UnkStruct_02303548 *s) {
 #define P ((UnkStruct_Plr *)(u32)gCamera)
@@ -66,5 +66,5 @@ void func_ov000_02303548(UnkStruct_02303548 *s) {
             s->unk214[i].y1 = s->base.unk14 + p->unk20 * (q->unk7 + q->unk9);}
         }
     }
-    s->base.unk68 = MapObj75_State_Unk_ov000_023034f8;
+    s->base.unk68 = MapObj75_State_Main;
 }

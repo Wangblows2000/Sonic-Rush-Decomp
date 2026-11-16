@@ -63,7 +63,7 @@ void *FS_FindArchive(const char *name, u32 len);
 BOOL FS_OpenFileDirect(UnkFSFile_020174a4 *f, void *arc, u32 top, u32 bottom, s32 id);
 void FS_CloseFile(UnkFSFile_020174a4 *f);
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
-void func_0201a280(void *p);
+void MBi_InitCache(void *p);
 void MBi_AttachCacheBuffer(UnkSegInfo_020174a4 *s, u32 base, u32 size, void *ptr, u32 state);
 void MBi_ReadSegmentHeader(UnkBuf_020174a4 *b, u32 start, u32 end, BOOL clear);
 void DC_FlushRange(void *p, u32 size);
@@ -125,7 +125,7 @@ BOOL MB_ReadSegment(UnkFSFile_020174a4 *file, UnkRomHeader_020174a4 *buf, u32 le
             char *name;
             s32 i;
             seg = (UnkSegInfo_020174a4 *)p;
-            func_0201a280(p);
+            MBi_InitCache(p);
             p += 0x70;
             rest -= 0x70;
             MBi_AttachCacheBuffer(seg, 0, 0x160, buf, 3);

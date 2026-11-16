@@ -11,8 +11,8 @@ typedef struct {
 extern void *gPaletteTransferHead;
 extern void *gPaletteTransferTail;
 
-s32 func_ov001_022ea270(void *src);
-u32 func_ov001_022ea264(void *src);
+s32 TimeAttackMenu_GetCompressionType(void *src);
+u32 TimeAttackMenu_GetUncompressedSize(void *src);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
@@ -38,7 +38,7 @@ void func_ov001_022ea1b8(UnkStruct_022ea1b8 *p, s32 start, s32 end) {
     void *src = p->src;
     u16 buf[0x100];
 
-    switch (func_ov001_022ea270(src)) {
+    switch (TimeAttackMenu_GetCompressionType(src)) {
     case 0x10:
         MI_UncompressLZ16(src, buf);
         break;
@@ -49,10 +49,10 @@ void func_ov001_022ea1b8(UnkStruct_022ea1b8 *p, s32 start, s32 end) {
         MI_UncompressRL16(src, buf);
         break;
     default:
-        Mem_Copy(Compress_GetData(src), buf, func_ov001_022ea264(src));
+        Mem_Copy(Compress_GetData(src), buf, TimeAttackMenu_GetUncompressedSize(src));
         break;
     }
-    DC_StoreRange(buf, func_ov001_022ea264(src));
+    DC_StoreRange(buf, TimeAttackMenu_GetUncompressedSize(src));
     LoadPal_022ea1b8(&buf[start], end - start + 1, p->unk14, p->unk18);
 }
 #pragma thumb reset

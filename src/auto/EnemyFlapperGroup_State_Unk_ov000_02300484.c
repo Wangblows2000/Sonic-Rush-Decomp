@@ -4,7 +4,7 @@
 s32 Sound_PlaySeqArcEx();
 extern u8 gPlayers[];
 s32 Sound_SetPositional();
-s32 func_ov000_022ffa58();
+s32 EnemyFlapperGroup_FireShot();
 extern u8 gSaveData[];
 extern u8 gGameState[];
 s32 EnemyFlapperGroup_Action_Unk_ov000_023008a0();
@@ -15,7 +15,7 @@ void EnemyFlapperGroup_State_Unk_ov000_02300484(u8 *p0) {
         if ((*(u32 *)((u8 *)p0 + 0x1f4) & 1) == 0) {
             Sound_PlaySeqArcEx(*(u32 *)((u8 *)p0 + 0x1dc), 0, 0x77);
             Sound_SetPositional(*(u32 *)((u8 *)p0 + 0x1dc), p0, *(u32 *)gPlayers);
-            func_ov000_022ffa58(p0, 0, 0);
+            EnemyFlapperGroup_FireShot(p0, 0, 0);
         }
         *(u32 *)((u8 *)p0 + 0x1f4) = (*(u32 *)((u8 *)p0 + 0x1f4) | 1);
     }

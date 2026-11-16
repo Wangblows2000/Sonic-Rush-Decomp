@@ -75,7 +75,7 @@ void func_ov000_022e4568(UnkStruct_022e1684 *w);
 void func_ov000_022e1474(UnkStruct_022e1684 *w);
 void func_ov000_022e1308(UnkStruct_022e1684 *w);
 void func_ov000_022e1078(UnkStruct_022e1684 *w);
-void func_ov000_022c5d4c(void *a, void *b, void *c, void *d, s32 e);
+void Boss_LoadModelPalettes(void *a, void *b, void *c, void *d, s32 e);
 
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 #define COS_IDX(i) data_0206e470[(u32)(((i) << 1) + 1)]
@@ -180,6 +180,6 @@ void Boss6_Draw(void) {
     }
     if (w->unk1114 == 0)
         return;
-    func_ov000_022c5d4c(data_ov000_02369b50[6], data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
+    Boss_LoadModelPalettes(data_ov000_02369b50[6], data_ov000_023657e0, gBoss6->unk110C, data_ov000_023636f4, 1);
     w->unk1114 = 0;
 }

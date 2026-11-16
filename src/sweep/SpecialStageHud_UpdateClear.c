@@ -53,7 +53,7 @@ void AnimatorSprite_SetAnimation(UnkSpr_02307d30 *s, u16 anim);
 void func_ov001_02307890(s32 i, s32 t);
 void func_ov001_02307778(s32 a, f32 f, s16 *x, s16 *y);
 BOOL func_0202e5e4(f32 a, f32 b);
-void func_0201d568(void *p);
+void NNS_SndArcSetCurrent(void *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void func_ov001_02307990(s32 i);
 void SpecialStage_RequestExit(s32 a);
@@ -116,9 +116,9 @@ void SpecialStageHud_UpdateClear(void) {
     if (w->unkBD4 == 0xfc) {
         AnimatorSprite_SetAnimation(sp, data_ov001_02317114[k] + 1);
         sp->unk46 = 3;
-        func_0201d568(data_ov001_0231f5c8);
+        NNS_SndArcSetCurrent(data_ov001_0231f5c8);
         Sound_PlaySeqArc(0, 0xe, 3);
-        func_0201d568(gSoundArchive);
+        NNS_SndArcSetCurrent(gSoundArchive);
     } else if (w->unkBD4 > 0xfc && (sp->flags & 2)) {
         AnimatorSprite_SetAnimation(sp, data_ov001_02317114[k]);
     }

@@ -28,7 +28,7 @@ struct UnkAnmObj_0202269c {
 };
 
 void MIi_CpuClearFast(u32 data, void *dst, u32 size);
-fx32 func_0200225c(fx32 a, fx32 b);
+fx32 FX_Div(fx32 a, fx32 b);
 void blendScaleVec_(UnkVec_0202269c *dst, const UnkVec_0202269c *src, fx32 w, u32 flag);
 void VEC_CrossProduct(const fx32 *a, const fx32 *b, fx32 *axb);
 void VEC_Normalize(const fx32 *src, fx32 *dst);
@@ -78,7 +78,7 @@ BOOL NNSi_G3dAnmBlendJnt(UnkJntResult_0202269c *res, UnkAnmObj_0202269c *obj, u3
             if (sum == 0x1000)
                 w = obj->ratio;
             else
-                w = func_0200225c(obj->ratio, sum);
+                w = FX_Div(obj->ratio, sum);
             blendScaleVec_(&res->scale, &r.scale, w, r.flag & 1);
             blendScaleVec_(&res->scaleEx0, &r.scaleEx0, w, r.flag & 8);
             blendScaleVec_(&res->scaleEx1, &r.scaleEx1, w, r.flag & 0x10);

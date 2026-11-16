@@ -29,12 +29,12 @@ UnkStruct_02308884_o *SpecialStage_GetPlayer(void);
 UnkStruct_02308884_d *SpecialStageTrick_GetSequence(s32 a);
 float _ffltu(u32 v);
 void AnimatorSprite_Draw(void *p);
-void func_ov001_02315714(void);
+void SpecialStageCamera_PushOrtho(void);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
-void func_ov001_0231402c(void);
-void func_ov001_02314058(s32 a);
+void SpecialStage_DisableTexture(void);
+void SpecialStage_SetPolygonAlpha(s32 a);
 s32 SpecialStageTrick_GetRating(s32 a, u16 b);
-void func_ov001_023156a8(void);
+void SpecialStageCamera_PopOrtho(void);
 
 void func_ov001_02308884(void) {
     UnkStruct_02308884 *g = gSpecialStageHud;
@@ -66,10 +66,10 @@ void func_ov001_02308884(void) {
     f = 1.0f - _ffltu(o->unk14E) / _ffltu(d->unk20);
     for (i = 0; i < d->unk22; i++)
         AnimatorSprite_Draw(g->objs[i]);
-    func_ov001_02315714();
+    SpecialStageCamera_PushOrtho();
     NNS_G3dGeBufferOP_N(0x11, 0, 0);
-    func_ov001_0231402c();
-    func_ov001_02314058(0x1f);
+    SpecialStage_DisableTexture();
+    SpecialStage_SetPolygonAlpha(0x1f);
     a0 = 0;
     NNS_G3dGeBufferOP_N(0x20, &a0, 1);
     a1 = 1;
@@ -111,6 +111,6 @@ void func_ov001_02308884(void) {
     NNS_G3dGeBufferOP_N(0x41, 0, 0);
     a13 = 1;
     NNS_G3dGeBufferOP_N(0x12, &a13, 1);
-    func_ov001_023156a8();
+    SpecialStageCamera_PopOrtho();
     AnimatorSprite_Draw(g->objA50);
 }

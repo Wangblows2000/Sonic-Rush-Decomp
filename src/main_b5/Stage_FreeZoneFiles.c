@@ -17,10 +17,10 @@ extern u8 *gZoneActArchive;
 extern UnkStruct_022c4560 gGameState;
 extern void (*gStageZoneFreeFuncTable[][3])(void);
 
-void func_ov000_0233bc44(void);
+void Stage_FreeMapInfo(void);
 void func_ov000_02335d0c(void);
 void Stage_FreeZoneSoundData(void);
-void func_02054378(void);
+void NaviMsg_CloseFiles(void);
 void NaviB_Release(void);
 
 static inline void Free_0204b528(u8 *p) {
@@ -39,7 +39,7 @@ static inline void Free_0204b528(u8 *p) {
 
 void Stage_FreeZoneFiles(void) {
     gStageZoneFreeFuncTable[gGameState.stage][gGameState.act]();
-    func_ov000_0233bc44();
+    Stage_FreeMapInfo();
     func_ov000_02335d0c();
     if (gZoneActArchive != NULL) {
         Free_0204b528(gZoneActArchive);
@@ -48,6 +48,6 @@ void Stage_FreeZoneFiles(void) {
     Stage_FreeZoneSoundData();
     if (gGameState.stage < 9 && gGameState.act < 2)
         return;
-    func_02054378();
+    NaviMsg_CloseFiles();
     NaviB_Release();
 }

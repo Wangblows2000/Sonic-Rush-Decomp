@@ -36,7 +36,7 @@ extern UnkTask_022e7dd8 *gTaskCurrent;
 
 void func_ov001_022e5164(void *a, s32 x, s32 y, s32 *ox, s32 *oy);
 fx32 FX_Sqrt(fx32 a);
-fx32 func_0200225c(fx32 a, fx32 b);
+fx32 FX_Div(fx32 a, fx32 b);
 void func_ov001_022e6dec(UnkWork_022e7dd8 *w);
 void func_ov001_022e7c50(void);
 
@@ -68,8 +68,8 @@ void func_ov001_022e7dd8(void) {
     speed = w->speed;
     len = FX_Sqrt(FX_Mul_022e7dd8(dx, dx) + FX_Mul_022e7dd8(dy, dy));
     if (len != 0) {
-        dx = func_0200225c(FX_Mul_022e7dd8(dx, speed), len);
-        dy = func_0200225c(FX_Mul_022e7dd8(dy, speed), len);
+        dx = FX_Div(FX_Mul_022e7dd8(dx, speed), len);
+        dy = FX_Div(FX_Mul_022e7dd8(dy, speed), len);
         w->x += dx;
         w->y += dy;
         w->dispX = w->x >> 12;

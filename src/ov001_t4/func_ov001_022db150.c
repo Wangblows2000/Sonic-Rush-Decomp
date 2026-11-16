@@ -28,7 +28,7 @@ BOOL func_02050e50(void);
 BOOL func_02050e80(void);
 void func_ov001_022d96c4(void);
 void func_ov001_022da304(UnkWork_022db150 *w);
-void func_02051f20(void);
+void SysSound_PlayCancelSE(void);
 void func_ov001_022da450(UnkWork_022db150 *w);
 void MsgBox_Create(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 void func_ov001_022da374(UnkWork_022db150 *w);
@@ -38,7 +38,7 @@ void func_ov001_022da288(UnkWork_022db150 *w, s32 i);
 void KeyframeAnim_SetAnim(UnkAnim_022db150 *a, s32 id);
 void func_ov001_022d6dc0(void);
 void func_ov001_022d97a8(s32 a, s32 b, s32 c, s32 d);
-void func_02051db0(s32 a, s32 b, s32 c, s32 d);
+void SysSound_PlaySEDelayed(s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022db014(void);
 void func_ov001_022dac0c(void);
 void func_ov001_022dafdc(void);
@@ -58,10 +58,10 @@ void func_ov001_022db150(void) {
     if (func_ov001_022da52c()) {
         func_ov001_022da304(w);
         cancel = TRUE;
-        func_02051f20();
+        SysSound_PlayCancelSE();
     } else if (func_ov001_022da4d4()) {
         cancel = TRUE;
-        func_02051f20();
+        SysSound_PlayCancelSE();
     } else if (func_02050e50()) {
         ok = TRUE;
     } else if (func_02050e80()) {
@@ -94,7 +94,7 @@ void func_ov001_022db150(void) {
         KeyframeAnim_SetAnim(&w->anims[5], 0x13);
         func_ov001_022d6dc0();
         func_ov001_022d97a8(0, 0x10, 0x10, 0xc);
-        func_02051db0(2, 0xc, 0x3000, 0);
+        SysSound_PlaySEDelayed(2, 0xc, 0x3000, 0);
         gTaskCurrent->func = func_ov001_022dac0c;
         return;
     }

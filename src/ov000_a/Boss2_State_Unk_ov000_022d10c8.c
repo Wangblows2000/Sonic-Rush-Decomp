@@ -76,7 +76,7 @@ struct UnkStruct_022d10c8 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d10c8_7 {
     u8 pad[8];

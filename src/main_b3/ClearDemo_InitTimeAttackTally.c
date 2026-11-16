@@ -29,7 +29,7 @@ typedef struct {
 void MIi_CpuClear16(u16 v, void *dst, u32 size);
 s32 FX_DivS32(s32 n, s32 d);
 s32 FX_ModS32(s32 n, s32 d);
-s16 func_02059a50(u8 a, u8 b, u16 c);
+s16 SaveData_GetTimeRank(u8 a, u8 b, u16 c);
 
 #pragma thumb on
 void ClearDemo_InitTimeAttackTally(UnkObj_0204594c *o) {
@@ -68,7 +68,7 @@ void ClearDemo_InitTimeAttackTally(UnkObj_0204594c *o) {
         o->unkB6 = 0x1c;
         o->unkB8 = 0x1c;
     }
-    o->unk9C = func_02059a50(gGameState.unk1C, gGameState.unk1D, gGameState.unk20);
+    o->unk9C = SaveData_GetTimeRank(gGameState.unk1C, gGameState.unk1D, gGameState.unk20);
     if (o->unk9C > 5)
         o->unk9C = 5;
     o->unk9C = o->unk9C * 2;

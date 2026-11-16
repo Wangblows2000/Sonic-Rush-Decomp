@@ -51,26 +51,26 @@ extern u8 data_ov000_023690e8[], data_ov000_023690ec[], data_ov000_02369100[];
 
 void RingManager_Main(void);
 void RingManager_Destructor(void);
-void func_ov000_0235a818(void);
-void func_ov000_0235a760(void);
-void func_ov000_0235a6a8(void);
-void func_ov000_0235a5f8(void);
+void RingManager_BoxCheck(void);
+void RingManager_BoxCheckArena1(void);
+void RingManager_BoxCheckArena2(void);
+void RingManager_BoxCheckArena3(void);
 void func_ov000_0235b484(void);
-void func_ov000_0235b644(void);
-void func_ov000_0235a9e8(void);
-void func_ov000_0235a848(void);
-void func_ov000_0235aa4c(void);
-void func_ov000_0235a8b0(void);
-void func_ov000_0235aab0(void);
-void func_ov000_0235a918(void);
-void func_ov000_0235ab14(void);
-void func_ov000_0235a980(void);
-void func_ov000_0235ab48(void);
-void func_ov000_0235a9b4(void);
+void RingManager_CollideMap(void);
+void RingManager_DrawRingArena3(void);
+void RingManager_SpawnEffectArena3(void);
+void RingManager_DrawRingArena2(void);
+void RingManager_SpawnEffectArena2(void);
+void RingManager_DrawRingArena1(void);
+void RingManager_SpawnEffectArena1(void);
+void RingManager_DrawRing3D(void);
+void RingManager_SpawnEffect3D(void);
+void RingManager_DrawRing2D(void);
+void RingManager_SpawnEffect2D(void);
 
-void func_02021310(void *f, void *name, void *heap);
-void *func_02021264(void *f, s32 idx);
-void func_020212e0(void *f);
+void NNS_FndMountArchive(void *f, void *name, void *heap);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 idx);
+void NNS_FndUnmountArchive(void *f);
 s32 VramTex_Alloc(u32 a, s32 b);
 s32 VramPltt_Alloc(u16 a, s32 b);
 void Model_InitSprite3D(void *s, void *res, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
@@ -107,36 +107,36 @@ UnkStruct_0235c238 *RingManager_Create(void) {
     w->unk9D6 = 1;
     if (gGameState.unk18 & 0x20)
         w->unk9D6 = 2;
-    w->unkC = func_ov000_0235a818;
+    w->unkC = RingManager_BoxCheck;
     if (!func_ov000_0235c238_IsNormal()) {
         if (gGameState.unk1C == 1)
-            w->unkC = func_ov000_0235a760;
+            w->unkC = RingManager_BoxCheckArena1;
         else if (gGameState.unk1C == 2)
-            w->unkC = func_ov000_0235a6a8;
+            w->unkC = RingManager_BoxCheckArena2;
         else if (gGameState.unk1C == 3)
-            w->unkC = func_ov000_0235a5f8;
+            w->unkC = RingManager_BoxCheckArena3;
     }
     if (!func_ov000_0235c238_IsNormal() && gGameState.unk1C == 7)
         w->unk10 = func_ov000_0235b484;
     else
-        w->unk10 = func_ov000_0235b644;
+        w->unk10 = RingManager_CollideMap;
     if (!func_ov000_0235c238_IsNormal()) {
         if (gGameState.unk1C == 3) {
-            w->unk4 = func_ov000_0235a9e8;
-            w->unk8 = func_ov000_0235a848;
+            w->unk4 = RingManager_DrawRingArena3;
+            w->unk8 = RingManager_SpawnEffectArena3;
         } else if (gGameState.unk1C == 2) {
-            w->unk4 = func_ov000_0235aa4c;
-            w->unk8 = func_ov000_0235a8b0;
+            w->unk4 = RingManager_DrawRingArena2;
+            w->unk8 = RingManager_SpawnEffectArena2;
         } else if (gGameState.unk1C == 1) {
-            w->unk4 = func_ov000_0235aab0;
-            w->unk8 = func_ov000_0235a918;
+            w->unk4 = RingManager_DrawRingArena1;
+            w->unk8 = RingManager_SpawnEffectArena1;
         } else {
-            w->unk4 = func_ov000_0235ab14;
-            w->unk8 = func_ov000_0235a980;
+            w->unk4 = RingManager_DrawRing3D;
+            w->unk8 = RingManager_SpawnEffect3D;
         }
-        func_02021310(file, data_ov000_023690e8, gZoneActArchive);
-        res = func_02021264(file, 0);
-        func_020212e0(file);
+        NNS_FndMountArchive(file, data_ov000_023690e8, gZoneActArchive);
+        res = NNS_FndGetArchiveFileByIndex(file, 0);
+        NNS_FndUnmountArchive(file);
         hdr = (UnkStruct_0235c238_ResHdr *)((u8 *)res + res->unk18);
         a = VramTex_Alloc(hdr->unk2C, 0);
         Model_InitSprite3D(w->unkA4, res, 0, 0, a, VramPltt_Alloc(hdr->unk2A, 0), 0, 0);
@@ -151,8 +151,8 @@ UnkStruct_0235c238 *RingManager_Create(void) {
         ObjDraw_LoadPaletteRow(mdl, 0, 2, 0);
         ObjDraw_LoadPaletteRow(mdl, 0, 2, 1);
     } else {
-        w->unk4 = func_ov000_0235ab48;
-        w->unk8 = func_ov000_0235a9b4;
+        w->unk4 = RingManager_DrawRing2D;
+        w->unk8 = RingManager_SpawnEffect2D;
         mdl = ObjData_Load(0, data_ov000_02369100, gActComArchive);
         AnimatorSprite_Init(&w->spr0, mdl, 0, 0, 0, 0, ObjVram_Alloc(0, 2), 0, 0x5000200);
         AnimatorSprite_Init(&w->spr1, mdl, 0, 0, 1, 0, ObjVram_Alloc(1, 2), 0, 0x5000600);

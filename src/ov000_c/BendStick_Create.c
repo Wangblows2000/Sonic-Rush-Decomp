@@ -9,7 +9,7 @@ extern u8 data_ov000_023666e4[], data_ov000_02369e4c[], data_ov000_023661c0[], d
 
 void MapObject_Destructor(void);
 void BendStick_OnHit(void);
-void BendStick_Action_Unk_ov000_02301fc0(UnkStruct_02301fe4 *w);
+void BendStick_Action_Init(UnkStruct_02301fe4 *w);
 
 UnkStruct_02301fe4 *BendStick_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -40,6 +40,6 @@ UnkStruct_02301fe4 *BendStick_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x2100;
     if (w->base.unk1E0->unk2 == 0x57)
         w->base.unk5C &= ~1;
-    BendStick_Action_Unk_ov000_02301fc0(w);
+    BendStick_Action_Init(w);
     return w;
 }

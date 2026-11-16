@@ -88,7 +88,7 @@ struct UnkStruct_022d32c0 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d32c0_p {
     u8 pad[0x2e];
@@ -111,7 +111,7 @@ extern UnkStruct_022d32c0_7 gBossStatus;
 s32 FX_DivS32(s32 a, s32 b);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
-void func_ov000_022d2920(UnkStruct_022d32c0 *s, s32 mode);
+void Boss2_UpdateArenaSpeed(UnkStruct_022d32c0 *s, s32 mode);
 void Boss2_State_Unk_ov000_022d31c4(UnkStruct_022d32c0 *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -153,7 +153,7 @@ void Boss2_State_Unk_ov000_022d32c0(UnkStruct_022d32c0 *s) {
             t = 0;
     }
     s->unk1468 = t;
-    func_ov000_022d2920(s, 1);
+    Boss2_UpdateArenaSpeed(s, 1);
     s->unk146C += 0xcc;
     s->unk146C = (s->unk146C >= 0x1000) ? 0x1000 : s->unk146C;
     s->unk14 = Ease(s->unk146C) + 0x20000;

@@ -35,7 +35,7 @@ extern UnkStruct_022dfb48_v data_02084f90;
 extern u8 data_02084d84[];
 extern UnkStruct_022dfb48_d38 NNS_G3dGlb;
 
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 void G3i_LookAt_(void *a, void *b, void *c, s32 d, void *e);
 
 void func_ov001_022dfb48(UnkStruct_022dfb48_w *w, UnkStruct_022dfb48_c *c) {
@@ -45,8 +45,8 @@ void func_ov001_022dfb48(UnkStruct_022dfb48_w *w, UnkStruct_022dfb48_c *c) {
     s32 a;
     s32 b;
 
-    a = func_0200225c((s32)((v * k + 0x800) >> 12), 0x19000);
-    b = func_0200225c(v - (s32)((k * 0x19000 + 0x800) >> 12), a + 0x1000);
+    a = FX_Div((s32)((v * k + 0x800) >> 12), 0x19000);
+    b = FX_Div(v - (s32)((k * 0x19000 + 0x800) >> 12), a + 0x1000);
     if (v > lim) {
         c->up.y = b;
     } else if (v > -lim) {

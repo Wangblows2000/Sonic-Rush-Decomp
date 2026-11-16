@@ -12,7 +12,7 @@ typedef struct {
 } UnkStruct_023425f4;
 
 extern UnkStruct_023425f4 gCamera[];
-UnkStruct_023425f4 *func_ov000_0233b62c(void);
+UnkStruct_023425f4 *Camera_GetBySwapState(void);
 
 u8 func_ov000_023425f4(s32 x, s32 y) {
     UnkStruct_023425f4 *p;
@@ -22,7 +22,7 @@ u8 func_ov000_023425f4(s32 x, s32 y) {
     u8 i;
 
     if (gCamera[2].flags & 1) {
-        p = func_ov000_0233b62c();
+        p = Camera_GetBySwapState();
         if (x >= p->x - 0x10000 && x <= p->x + (p->w << 8) + 0x10000 &&
             y >= p->y - 0x10000 && y <= p->y + p->h * 0x1d0 + 0x10000)
             h0 = TRUE;

@@ -19,7 +19,7 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 extern s16 data_ov000_02364020[][9];
 
-void func_ov000_022f4ce4(UnkStruct_022f3bb8 *s, s32 a, s32 b, s32 c);
+void BossFPartD8_SetAnimation(UnkStruct_022f3bb8 *s, s32 a, s32 b, s32 c);
 void BossFPartD8_State_Unk_ov000_022f39e0(UnkStruct_022f3bb8 *s);
 
 static inline s32 GetIdxB(void) {
@@ -46,7 +46,7 @@ void BossFPartD8_State_Unk_ov000_022f3bb8(UnkStruct_022f3bb8 *s) {
         else
             a = 9;
     }
-    func_ov000_022f4ce4(s, a, data_ov000_02364020[GetIdxB()][s->unk458], 0);
+    BossFPartD8_SetAnimation(s, a, data_ov000_02364020[GetIdxB()][s->unk458], 0);
     s->base.unk68 = BossFPartD8_State_Unk_ov000_022f39e0;
     ((void (*)(UnkStruct_022f3bb8 *))s->base.unk68)(s);
 }

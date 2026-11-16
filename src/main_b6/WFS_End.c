@@ -32,9 +32,9 @@ extern s32 data_022b8bc0;
 u32 OS_DisableInterrupts(void);
 void OS_RestoreInterrupts(u32 e);
 void FS_NotifyArchiveAsyncEnd(u32 a, s32 b);
-void func_0203d984(void);
+void WFSi_EndTaskThread(void);
 void WBT_End(void);
-void func_020114f0(u16 a, s32 b, s32 c);
+void WM_SetPortCallback(u16 a, s32 b, s32 c);
 
 static inline void Free_0203c350(UnkCtx_0203c350 *cp, void *p) {
     if (p != NULL) {
@@ -65,10 +65,10 @@ void WFS_End(void) {
             }
             Free_0203c350(&data_022b8be0, d->unkaf8);
         } else {
-            func_0203d984();
+            WFSi_EndTaskThread();
         }
         WBT_End();
-        func_020114f0(data_022b8be0.unk30, 0, 0);
+        WM_SetPortCallback(data_022b8be0.unk30, 0, 0);
         data_022b8bc0 = 0;
     }
     OS_RestoreInterrupts(e);

@@ -5,7 +5,7 @@ extern void *gWirelessMgrTask;
 extern u8 gWirelessSendBuffer[];
 extern u8 data_022501a0[];
 
-BOOL func_02010b54(void);
+BOOL WMi_CheckInitialized(void);
 void WH_SetReceiver(void (*fn)(void));
 u32 WH_GetSystemState(void);
 void WH_End(void);
@@ -27,7 +27,7 @@ void WirelessMgr_StopDataSharing(s32 mode) {
     case 0:
         cnt = 0;
         gSystemFlags &= ~0x100;
-        if (!func_02010b54())
+        if (!WMi_CheckInitialized())
             WH_SetReceiver(NULL);
         do {
             switch (WH_GetSystemState()) {
@@ -63,7 +63,7 @@ void WirelessMgr_StopDataSharing(s32 mode) {
         gSystemFlags &= ~0x100;
         break;
     case 1:
-        if (!func_02010b54())
+        if (!WMi_CheckInitialized())
             WH_SetReceiver(NULL);
         break;
     }

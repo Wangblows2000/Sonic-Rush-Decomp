@@ -7,7 +7,7 @@ typedef struct {
 extern void *data_ov000_02369ba0;
 
 void MapObject_Destructor();
-void func_ov000_023092cc();
+void MapObj8D_Action_Init();
 
 UnkStruct_023092e4 *MapObj8D_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -29,6 +29,6 @@ UnkStruct_023092e4 *MapObj8D_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk4A = 0x300;
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x20;
-    func_ov000_023092cc(w);
+    MapObj8D_Action_Init(w);
     return w;
 }

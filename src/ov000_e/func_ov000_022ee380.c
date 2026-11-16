@@ -29,7 +29,7 @@ typedef struct {
 extern UnkStruct_0236a444 data_ov000_0236a444;
 extern UnkStruct_Cam data_ov000_0236a48c;
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 void func_ov000_022ee380(void) {
     UnkStruct_Cam *cam;
@@ -38,7 +38,7 @@ void func_ov000_022ee380(void) {
     data_ov000_0236a444.unkDC = 1;
     data_ov000_0236a444.unkC = 0x1a66000;
     cam = (UnkStruct_Cam *)(u32)&data_ov000_0236a48c;
-    data_ov000_0236a444.unk14 = func_0200225c(0x1000, 0x34cc);
+    data_ov000_0236a444.unk14 = FX_Div(0x1000, 0x34cc);
     cam->unk0 = cam->unk4 = cam->unk8 = 0;
     cam->unk30 = 0x200;
     cam->unk38 = 0x400;

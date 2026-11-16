@@ -61,7 +61,7 @@ void ObjDraw_ReleaseSpritePalette(s32 i);
 void ObjData_Release(void *p);
 void StageObj_ReleaseSpriteVram(UnkWork_0206bef4 *w);
 void Model_Release(void *p);
-void func_0202566c(void *p);
+void NNS_G3dResDefaultRelease(void *p);
 void StageObj_ReleaseSharedTexture(void *p);
 
 static inline void Free_0206bef4(u8 *blk) {
@@ -98,22 +98,22 @@ void StageObj_Destructor(UnkTask_0206bef4 *task) {
         Model_Release(work->unk124);
         if (work->unk124->unk150 != NULL) {
             if (work->unk124->unk150->unk4 == 1)
-                func_0202566c(work->unk124->unk138);
+                NNS_G3dResDefaultRelease(work->unk124->unk138);
             ObjData_Release(work->unk124->unk150);
             work->unk124->unk138 = NULL;
         } else if (work->unk124->unk138 != NULL && !(work->unk124->unk168 & 1)) {
-            func_0202566c(work->unk124->unk138);
+            NNS_G3dResDefaultRelease(work->unk124->unk138);
             Free_0206bef4(work->unk124->unk138);
             work->unk124->unk138 = NULL;
         }
         for (i = 0; i < 5; i++) {
             if (work->unk124->unk154[i] != NULL) {
                 if (work->unk124->unk154[i]->unk4 == 1)
-                    func_0202566c(work->unk124->unk154[i]);
+                    NNS_G3dResDefaultRelease(work->unk124->unk154[i]);
                 ObjData_Release(work->unk124->unk154[i]);
                 work->unk124->unk13C[i] = NULL;
             } else if (work->unk124->unk13C[i] != NULL && !(work->unk124->unk168 & (2 << i))) {
-                func_0202566c(work->unk124->unk154[i]);
+                NNS_G3dResDefaultRelease(work->unk124->unk154[i]);
                 Free_0206bef4(work->unk124->unk13C[i]);
                 work->unk124->unk13C[i] = NULL;
             }
@@ -124,11 +124,11 @@ void StageObj_Destructor(UnkTask_0206bef4 *task) {
         Model_Release(node);
         if (node->unkA4 != NULL) {
             if (node->unkA4->unk4 == 1)
-                func_0202566c(node->unkA0);
+                NNS_G3dResDefaultRelease(node->unkA0);
             ObjData_Release(node->unkA4);
             node->unkA0 = NULL;
         } else if (node->unkA0 != NULL && !(node->unkA8 & 1)) {
-            func_0202566c(node->unkA0);
+            NNS_G3dResDefaultRelease(node->unkA0);
             Free_0206bef4(node->unkA0);
             node->unkA0 = NULL;
         }

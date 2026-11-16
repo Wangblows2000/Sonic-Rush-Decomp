@@ -13,13 +13,13 @@ struct UnkStruct_022c7514 {
     u8 unk228[4];
 };
 
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_022cc224(void);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
 void func_ov000_022c74fc(UnkStruct_022c7514 *s);
 
 void func_ov000_022c7514(UnkStruct_022c7514 *s) {
-    func_ov000_022cc00c(s->unk228, s->unk224, 5, 0x1000, 0);
+    Boss1_SetPartAnimation(s->unk228, s->unk224, 5, 0x1000, 0);
     s->unk10 = 0xe100;
     s->unk14 = 0x20000;
     s->unk18 = -0x8e00;

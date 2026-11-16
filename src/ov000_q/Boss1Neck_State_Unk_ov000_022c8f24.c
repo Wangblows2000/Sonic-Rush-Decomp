@@ -76,7 +76,7 @@ extern s32 gPlayers;
 extern UnkStruct_0236a444 data_ov000_0236a444;
 
 BOOL func_ov000_022cc6d4(void);
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
 void Boss1Neck_State_Unk_ov000_022c8e64(UnkStruct_022c8f24 *s);
 
 void Boss1Neck_State_Unk_ov000_022c8f24(UnkStruct_022c8f24 *s) {
@@ -105,8 +105,8 @@ void Boss1Neck_State_Unk_ov000_022c8f24(UnkStruct_022c8f24 *s) {
             i = gGameState.unk14;
         v = data_ov000_02362ce4[i][gBossStatus.unk8 - 1];
     }
-    func_ov000_022cc00c(s->unk228, s->unk220, 0x16, v, 0);
-    func_ov000_022cc00c(p->unk30C, p->unk304, 9, v, 0);
+    Boss1_SetPartAnimation(s->unk228, s->unk220, 0x16, v, 0);
+    Boss1_SetPartAnimation(p->unk30C, p->unk304, 9, v, 0);
     p->unk216 |= 4;
     p->unk29A |= 4;
     p->unk26E &= ~4;

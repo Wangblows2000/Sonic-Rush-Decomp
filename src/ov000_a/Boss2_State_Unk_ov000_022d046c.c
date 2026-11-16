@@ -47,7 +47,7 @@ struct UnkStruct_022d046c {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 extern s16 data_0206e470[];
 
@@ -82,10 +82,10 @@ void Boss2_State_Unk_ov000_022d046c(UnkStruct_022d046c *s) {
         x->unk114 = 0x1000;
         y->unk114 = 0x1000;
         z->unk114 = 0x1000;
-        func_ov000_022cd1b0(4);
+        Boss2_SetPalettes(4);
         NNS_SndPlayerStopSeq(s->unk1458, 0);
     } else {
         s->unk1474++;
-        func_ov000_022cd1b0(s->unk1474);
+        Boss2_SetPalettes(s->unk1474);
     }
 }

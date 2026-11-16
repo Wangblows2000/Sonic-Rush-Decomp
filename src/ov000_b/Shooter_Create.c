@@ -6,7 +6,7 @@ extern u8 data_ov000_02366fc0[], data_ov000_0236a25c[], data_ov000_023661c0[];
 void MapObject_Destructor(void);
 void Shooter_CreatePart2(UnkStruct_StageObj *w, s32 a);
 void Shooter_CreatePart1(UnkStruct_StageObj *w, s32 a);
-void func_ov000_023174e4(UnkStruct_StageObj *w);
+void Shooter_Action_Init(UnkStruct_StageObj *w);
 
 UnkStruct_StageObj *Shooter_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -50,6 +50,6 @@ UnkStruct_StageObj *Shooter_Create(s32 a, s32 b, s32 c) {
     w->unk58 |= 0x100;
     w->unk54 |= 2;
     w->unk1DC = Sound_AllocHandle();
-    func_ov000_023174e4(w);
+    Shooter_Action_Init(w);
     return w;
 }

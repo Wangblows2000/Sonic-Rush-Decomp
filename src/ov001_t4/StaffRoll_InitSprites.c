@@ -44,8 +44,8 @@ void func_ov001_022cfcf8(UnkSpr_022d2704 *s, void *res, u16 a);
 void func_ov001_022cfc60(UnkObj_022d2704 *o, void *res, u16 a);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022d2704 *s, s32 a, s32 b);
 void AnimatorSpriteDS_ProcessAnimation(UnkObj_022d2704 *o, s32 a, s32 b);
-void func_020203bc(s32 a, s32 b);
-void func_020201b0(void *p);
+void NNS_SndArcStrmInit(s32 a, s32 b);
+void NNS_SndStrmHandleInit(void *p);
 
 #pragma thumb on
 void StaffRoll_InitSprites(UnkWork_022d2704 *w) {
@@ -115,7 +115,7 @@ void StaffRoll_InitSprites(UnkWork_022d2704 *w) {
             t++;
         }
     }
-    func_020203bc(10, gSoundHeap);
-    func_020201b0(w->unkc);
+    NNS_SndArcStrmInit(10, gSoundHeap);
+    NNS_SndStrmHandleInit(w->unkc);
 }
 #pragma thumb reset

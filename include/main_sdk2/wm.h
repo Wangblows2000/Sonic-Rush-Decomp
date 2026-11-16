@@ -6,11 +6,11 @@ u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
 s32 WMi_CheckStateEx(u32 num, ...);
 s32 WMi_CheckIdle(void);
-s32 func_02010b54(void);
+s32 WMi_CheckInitialized(void);
 struct UnkWmWork_;
-void *func_02010b70(void);
-void func_02010cd4(u32 apiid, void *cb);
-s32 func_02010b80(u32 apiid, u32 paramNum, ...);
+void *WMi_GetSystemWork(void);
+void WMi_SetCallbackTable(u32 apiid, void *cb);
+s32 WMi_SendCommand(u32 apiid, u32 paramNum, ...);
 #endif
 
 #ifndef MAIN_SDK2_WM_WORK

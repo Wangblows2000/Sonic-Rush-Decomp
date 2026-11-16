@@ -5,7 +5,7 @@ void DC_InvalidateRange(void *p, u32 size);
 
 s32 WM_GetMPReceiveBufferSize(void)
 {
-    UnkWmWork *w = func_02010b70();
+    UnkWmWork *w = WMi_GetSystemWork();
     u8 *p;
     BOOL isParent;
     u16 size;

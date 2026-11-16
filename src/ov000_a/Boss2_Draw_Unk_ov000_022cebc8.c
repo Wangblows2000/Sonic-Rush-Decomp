@@ -53,10 +53,10 @@ extern UnkStruct_022cebc8_v data_ov000_02362ef8[];
 extern u16 data_02074960[][3][3];
 extern UnkStruct_022cebc8_v data_020748bc[][3];
 
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void MTX_RotY33_(void *m, s32 s, s32 c);
-void func_02022270(s32 i, u16 a);
-void func_02022284(s32 i, s32 x, s32 y, s32 z);
+void NNS_G3dGlbLightColor(s32 i, u16 a);
+void NNS_G3dGlbLightVector(s32 i, s32 x, s32 y, s32 z);
 
 void Boss2_Draw_Unk_ov000_022cebc8(void) {
     UnkStruct_022cebc8 *p = gPlayers;
@@ -69,7 +69,7 @@ void Boss2_Draw_Unk_ov000_022cebc8(void) {
         p->unk10 += 0x6cd98;
     else if (p->unk10 > 0x70d98)
         p->unk10 -= 0x6cd98;
-    func_ov000_022c5e80(0x1152f0, 0x6cd988, p->unk10 << 4, &p->unk17C, &p->unk184, &ang);
+    BossArena_ArcToCirclePos(0x1152f0, 0x6cd988, p->unk10 << 4, &p->unk17C, &p->unk184, &ang);
     p->unk180 = -p->unk14 << 4;
     if (p->unk5C & 1)
         off = 0xc000;
@@ -80,13 +80,13 @@ void Boss2_Draw_Unk_ov000_022cebc8(void) {
         data_ov000_0236a444.unkD6 = ang;
     if ((gCamera.unk62 << 12) > -data_ov000_0236a444.unk70) {
         for (i = 0; i <= 2; i++) {
-            func_02022270(i, data_ov000_02362df4[i]);
-            func_02022284(i, data_ov000_02362ef8[i].x, data_ov000_02362ef8[i].y, data_ov000_02362ef8[i].z);
+            NNS_G3dGlbLightColor(i, data_ov000_02362df4[i]);
+            NNS_G3dGlbLightVector(i, data_ov000_02362ef8[i].x, data_ov000_02362ef8[i].y, data_ov000_02362ef8[i].z);
         }
         return;
     }
     for (i = 0; i <= 2; i++) {
-        func_02022270(i, data_02074960[gGameState.unk1C][gGameState.unk1D][i]);
-        func_02022284(i, data_020748bc[gGameState.unk1C][i].x, data_020748bc[gGameState.unk1C][i].y, data_020748bc[gGameState.unk1C][i].z);
+        NNS_G3dGlbLightColor(i, data_02074960[gGameState.unk1C][gGameState.unk1D][i]);
+        NNS_G3dGlbLightVector(i, data_020748bc[gGameState.unk1C][i].x, data_020748bc[gGameState.unk1C][i].y, data_020748bc[gGameState.unk1C][i].z);
     }
 }

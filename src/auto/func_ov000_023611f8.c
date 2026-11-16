@@ -8,7 +8,7 @@ s32 func_ov000_02360974();
 s32 func_ov000_02360950();
 s32 func_ov000_02360870();
 s32 func_ov000_02360790();
-s32 func_ov000_0235fc48();
+s32 TimeSelectMenu_DrawPlayerName();
 s32 func_ov000_02360748();
 s32 func_ov000_02360724();
 s32 func_ov000_023606c4();
@@ -31,9 +31,9 @@ void func_ov000_023611f8(u8 *p0) {
         func_ov000_02360790(p0, 0x38, 0x58, 0x1000);
         func_ov000_02360870(p0, 0xc8, 0x58, 0x1000);
     }
-    func_ov000_0235fc48(p0, 8, 0, 0);
+    TimeSelectMenu_DrawPlayerName(p0, 8, 0, 0);
     func_ov000_02360748(p0, 8, 0);
-    func_ov000_0235fc48(p0, 0x98, 0, 1);
+    TimeSelectMenu_DrawPlayerName(p0, 0x98, 0, 1);
     func_ov000_02360748(p0, 0x98, 0);
     func_ov000_02360724(p0, 0x80, 0x58);
     func_ov000_023606c4(p0, 0x80, 0x58, 0x1000);

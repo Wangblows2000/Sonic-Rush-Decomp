@@ -31,7 +31,7 @@ void func_ov001_022d9d64(UnkWork_022dd2d4 *w, s32 i, s32 x, s32 y);
 void func_ov001_022da154(UnkWork_022dd2d4 *w, s32 a);
 void func_ov001_022da244(UnkWork_022dd2d4 *w, s32 a);
 void func_ov001_022da1cc(UnkWork_022dd2d4 *w, s32 a);
-void func_02050e0c(s32 a);
+void WirelessSession_RestartDownloadPlay(s32 a);
 void func_ov001_022dd1ec(void);
 
 #pragma thumb on
@@ -73,7 +73,7 @@ void func_ov001_022dd2d4(void) {
         func_ov001_022da154(w, 0);
         func_ov001_022da244(w, 1);
         func_ov001_022da1cc(w, 1);
-        func_02050e0c(0);
+        WirelessSession_RestartDownloadPlay(0);
         gTaskCurrent->func = func_ov001_022dd1ec;
     }
 }

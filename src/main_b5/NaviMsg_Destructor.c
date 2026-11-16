@@ -26,7 +26,7 @@ typedef struct {
 extern void *gMainHeap;
 extern u32 gNaviMsgTask;
 
-void func_02052724(BOOL a);
+void NaviMsg_RestoreSubDisplay(BOOL a);
 void NNS_SndHandleReleaseSeq(void *p);
 
 static inline void Free_020532b0(u8 *p) {
@@ -51,7 +51,7 @@ void NaviMsg_Destructor(UnkTask_020532b0 *t) {
     Free_020532b0(w->buf8);
     Free_020532b0(w->buf10);
     if (w->mode == 1)
-        func_02052724((w->unkd4 & 0x1000000) ? TRUE : FALSE);
+        NaviMsg_RestoreSubDisplay((w->unkd4 & 0x1000000) ? TRUE : FALSE);
     NNS_SndHandleReleaseSeq(w->unk118);
     REG_DB_DISPCNT &= ~0x1f00;
     gNaviMsgTask = 0;

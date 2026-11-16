@@ -45,8 +45,8 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuCopy32(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-s32 func_ov001_022ddac0(void *p);
-u32 func_ov001_022ddab4(void *p);
+s32 VsMenu_GetCompressionType(void *p);
+u32 VsMenu_GetUncompressedSize(void *p);
 void MI_UncompressLZ16(void *src, void *dst);
 void MI_UncompressHuffman(void *src, void *dst);
 void MI_UncompressRL16(void *src, void *dst);
@@ -81,7 +81,7 @@ void func_ov001_022dd93c(UnkWork_022dd93c *w) {
     f = (u8 *)w->res + w->res->unk8;
     w->buf = Alloc_022dd93c(((*(u32 *)f >> 8) + 0x43) & ~0x1f);
     p = w->buf;
-    switch (func_ov001_022ddac0(f)) {
+    switch (VsMenu_GetCompressionType(f)) {
     case 0x10:
         MI_UncompressLZ16(f, p);
         break;
@@ -92,10 +92,10 @@ void func_ov001_022dd93c(UnkWork_022dd93c *w) {
         MI_UncompressRL16(f, p);
         break;
     default:
-        Mem_Copy(Compress_GetData(f), p, func_ov001_022ddab4(f));
+        Mem_Copy(Compress_GetData(f), p, VsMenu_GetUncompressedSize(f));
         break;
     }
-    DC_StoreRange(p, func_ov001_022ddab4(f));
+    DC_StoreRange(p, VsMenu_GetUncompressedSize(f));
     func_ov001_022d9a14(w, 0);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {

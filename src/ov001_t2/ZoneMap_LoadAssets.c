@@ -9,7 +9,7 @@ extern u8 gGameLanguage;
 extern const char **gZoneMapFileTable[];
 
 void *File_Load(const char *path, void *dst);
-void func_0204ff50(s32 a, s32 b, s32 c);
+void MsgBox_PreloadFiles(s32 a, s32 b, s32 c);
 
 #pragma thumb on
 void ZoneMap_LoadAssets(UnkStruct_022e89b4 *p) {
@@ -34,7 +34,7 @@ void ZoneMap_LoadAssets(UnkStruct_022e89b4 *p) {
     for (i = 0; i < 6; i++) {
         p->files[i] = File_Load(tbl[i], NULL);
     }
-    func_0204ff50(0x11, 3, 2);
-    func_0204ff50(0x12, 3, 1);
+    MsgBox_PreloadFiles(0x11, 3, 2);
+    MsgBox_PreloadFiles(0x12, 3, 1);
 }
 #pragma thumb reset

@@ -15,7 +15,7 @@ extern u8 data_ov000_02366ad4[], data_ov000_02369f94[], data_ov000_02369f9c[], d
 
 void MapObject_Destructor(void);
 void Glider_OnHit(void);
-void Glider_Action_Unk_ov000_0230ca40(UnkStruct_0230ca50 *w);
+void Glider_Action_Carry(UnkStruct_0230ca50 *w);
 
 UnkStruct_0230ca50 *Glider_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_0230ca50_Tbl tbl = data_ov000_023669b0;
@@ -48,6 +48,6 @@ UnkStruct_0230ca50 *Glider_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll0.unk18 = w;
     w->base.unk58 |= 0x2100;
     w->base.unk204 = 0;
-    Glider_Action_Unk_ov000_0230ca40(w);
+    Glider_Action_Carry(w);
     return w;
 }

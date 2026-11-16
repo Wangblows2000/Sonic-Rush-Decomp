@@ -26,7 +26,7 @@ struct UnkStruct_022c61ec {
 extern UnkStruct_022c61ec_2 *gBoss1;
 
 void func_ov000_022c71d8(s16 a);
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void Boss1Hammer_State_Unk_ov000_022c5fe4(UnkStruct_022c61ec *s);
 
 void func_ov000_022c61ec(UnkStruct_022c61ec *s) {
@@ -40,7 +40,7 @@ void func_ov000_022c61ec(UnkStruct_022c61ec *s) {
     v = (s16)s->unk2E;
     if (v < 0)
         v = -v;
-    s->unk2C2 = func_0200225c(v << 4, 0x78000);
+    s->unk2C2 = FX_Div(v << 4, 0x78000);
     s->unk2C2 >>= 1;
     s->func = Boss1Hammer_State_Unk_ov000_022c5fe4;
     s->func(s);

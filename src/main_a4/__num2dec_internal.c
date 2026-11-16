@@ -20,7 +20,7 @@ double frexp(double x, s32 *exp);
 s32 func_0202d55c(u32 x);
 void __two_exp(UnkDecimal_0202cac4 *d, s32 exp);
 double ldexp(double x, int n);
-u64 func_0202d994(double x);
+u64 _ll_ufrom_d(double x);
 void __ull2dec(UnkDecimal_0202cac4 *d, u64 x);
 void __timesdec(UnkDecimal_0202cac4 *d, const UnkDecimal_0202cac4 *a, const UnkDecimal_0202cac4 *b);
 
@@ -77,7 +77,7 @@ void __num2dec_internal(UnkDecimal_0202cac4 *d, double x)
         UnkDecimal_0202cac4 intD, pow2D;
 
         __two_exp(&pow2D, exp - bits);
-        __ull2dec(&intD, func_0202d994(ldexp(frac, bits)));
+        __ull2dec(&intD, _ll_ufrom_d(ldexp(frac, bits)));
         __timesdec(d, &intD, &pow2D);
         d->sign = sign;
     }

@@ -13,7 +13,7 @@ extern s16 gDisplaySub[];
 
 void SpecialStageMap_SetScrollSpeed(s32 v);
 void *SpecialStage_GetPlayer(void);
-void func_ov001_02312de0(void *p);
+void SpecialStagePlayer_Action_Fail(void *p);
 void SpecialStage_RequestExit(s32 v);
 
 void SpecialStageHud_UpdateFail(void) {
@@ -32,7 +32,7 @@ void SpecialStageHud_UpdateFail(void) {
         SpecialStageMap_SetScrollSpeed(12288.0f * (1.0f - g->timer / 60.0f));
     switch (g->timer) {
     case 1:
-        func_ov001_02312de0(SpecialStage_GetPlayer());
+        SpecialStagePlayer_Action_Fail(SpecialStage_GetPlayer());
         g->unkBBC = 0;
         return;
     case 200:

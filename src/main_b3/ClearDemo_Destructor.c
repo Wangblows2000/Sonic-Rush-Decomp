@@ -29,8 +29,8 @@ void NNS_SndHandleReleaseSeq(void *p);
 void func_02053bec(s32 a);
 void NaviMsg_Destroy(void);
 void NaviB_Destroy(void);
-void func_0205a3f0(void);
-void func_0205a4ec(s32 a);
+void SaveData_StoreStageResult(void);
+void SaveData_CommitOrShowError(s32 a);
 void NNS_SndStopSoundAll(void);
 void Sound_ResetHeap(void);
 
@@ -70,8 +70,8 @@ void ClearDemo_Destructor(UnkTask_02047d2c *t) {
         NaviB_Destroy();
     }
     if (gGameState.unk10 != 2)
-        func_0205a3f0();
-    func_0205a4ec(0);
+        SaveData_StoreStageResult();
+    SaveData_CommitOrShowError(0);
     NNS_SndStopSoundAll();
     Sound_ResetHeap();
 }

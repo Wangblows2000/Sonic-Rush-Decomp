@@ -81,10 +81,10 @@ struct UnkStruct_022d255c {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
-void func_ov000_022d2920(UnkStruct_022d255c *s, s32 a);
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void Boss2_UpdateArenaSpeed(UnkStruct_022d255c *s, s32 a);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void Boss2_State_Unk_ov000_022d2368(UnkStruct_022d255c *s);
 
 void Boss2_State_Unk_ov000_022d255c(UnkStruct_022d255c *s) {
@@ -92,11 +92,11 @@ void Boss2_State_Unk_ov000_022d255c(UnkStruct_022d255c *s) {
     UnkStruct_022d255c_a *y;
     UnkStruct_022d255c_a *z;
     u16 ang;
-    func_ov000_022d2920(s, 0);
+    Boss2_UpdateArenaSpeed(s, 0);
     if (!(s->unkA9C.unk10C & 2))
         return;
     s->func = Boss2_State_Unk_ov000_022d2368;
-    func_ov000_022c5e80(0x1152f0, 0x6cd988, s->unk10 << 4, NULL, NULL, &ang);
+    BossArena_ArcToCirclePos(0x1152f0, 0x6cd988, s->unk10 << 4, NULL, NULL, &ang);
     s->unk1304 = ang + 0x4000;
     x = &s->unkA9C;
     s->unk20C |= 2;

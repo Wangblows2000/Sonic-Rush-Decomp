@@ -9,7 +9,7 @@ extern u32 data_02087ce0;
 extern u32 data_02089264;
 extern u32 data_ov001_02316318;
 extern void MTX_Identity22_(void);
-extern void func_0200225c(void);
+extern void FX_Div(void);
 extern void G2x_SetBGyAffine_(void);
 
 #pragma thumb on
@@ -94,32 +94,32 @@ _80:
     ldr r0, [sp, #0x7c]
     lsl r0, r0, #0xc
     ldr r1, [pc, #0x268]
-    bl func_0200225c
+    bl FX_Div
     add r5, r0, #0
     ldr r0, [sp, #0x80]
     lsl r0, r0, #0xc
     ldr r1, [pc, #0x25c]
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x14]
     ldr r0, [sp, #0x84]
     lsl r0, r0, #0xc
     ldr r1, [pc, #0x250]
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x18]
     ldr r0, [pc, #0x248]
     ldr r1, [sp, #0x88]
     lsl r1, r1, #0xc
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x1c]
     ldr r0, [pc, #0x23c]
     ldr r1, [sp, #0x8c]
     lsl r1, r1, #0xc
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x20]
     ldr r0, [pc, #0x230]
     ldr r1, [sp, #0x90]
     lsl r1, r1, #0xc
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x24]
     ldr r0, [pc, #0x228]
     ldr r0, [r0, #0x10]
@@ -175,13 +175,13 @@ _11e:
     ldr r0, [sp, #0x14]
     sub r0, r0, r5
     ldr r1, [sp, #0x44]
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x28]
     ldr r1, [sp, #0x20]
     ldr r0, [sp, #0x1c]
     sub r0, r1, r0
     ldr r1, [sp, #0x44]
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x2c]
     ldr r1, [sp, #0x1c]
     str r1, [sp, #0x30]
@@ -276,13 +276,13 @@ _1e4:
     ldr r0, [sp, #0x14]
     sub r0, r1, r0
     add r1, r7, #0
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x48]
     ldr r1, [sp, #0x24]
     ldr r0, [sp, #0x20]
     sub r0, r1, r0
     add r1, r7, #0
-    bl func_0200225c
+    bl FX_Div
     str r0, [sp, #0x4c]
     ldr r1, [sp, #0x20]
     str r1, [sp, #0x34]

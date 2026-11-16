@@ -9,8 +9,8 @@ extern u32 data_ov000_0236a524;
 extern u32 gPlayers;
 extern void Model_SetResource(void);
 extern void Model_Init(void);
-extern void func_020533e0(void);
-extern void func_020537b4(void);
+extern void NaviMsg_ShowMessage(void);
+extern void NaviMsg_SetFaceAnim(void);
 extern void func_ov000_022dcf20(void);
 extern void func_ov000_022de304(void);
 extern void func_ov000_022de65c(void);
@@ -89,10 +89,10 @@ asm void Boss4_State_WaitForStart(void)
     mov r0, r4
     bl func_ov000_022dcf20
     mov r0, #9
-    bl func_020537b4
+    bl NaviMsg_SetFaceAnim
     mov r0, #0xf
     mov r1, #0xf0
-    bl func_020533e0
+    bl NaviMsg_ShowMessage
     ldr r1, [pc, #0x34]
     mov r0, r4
     str r1, [r6, #0x68]

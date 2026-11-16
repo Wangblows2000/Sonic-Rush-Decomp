@@ -4,7 +4,7 @@
 extern u8 gTaskCurrent[];
 s32 StageObj_HandleCollider();
 s32 StageObj_ViewOutCheck();
-s32 func_02067d58();
+s32 ObjCollisionMap_Register();
 
 void MapObject_Collide_Default(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
@@ -27,5 +27,5 @@ void MapObject_Collide_Default(void) {
     if (t1 != 0) {
         return;
     }
-    func_02067d58((t0 + 0x1b8));
+    ObjCollisionMap_Register((t0 + 0x1b8));
 }

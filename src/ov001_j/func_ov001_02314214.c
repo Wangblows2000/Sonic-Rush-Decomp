@@ -18,7 +18,7 @@ extern UnkStruct_02314214 *gSpecialStageData;
 
 s32 SpecialStageMap_GetScrollDistance(void);
 s32 *SpecialStageMap_GetCurrentSegment(void);
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 BOOL func_0202e564(float a, float b);
 
 s32 func_ov001_02314214(void) {
@@ -27,7 +27,7 @@ s32 func_ov001_02314214(void) {
     s32 n;
     s32 r;
 
-    v = (float)g->unkC + (float)func_0200225c(SpecialStageMap_GetScrollDistance(), 0x12c000) / 4096.0f;
+    v = (float)g->unkC + (float)FX_Div(SpecialStageMap_GetScrollDistance(), 0x12c000) / 4096.0f;
     if (func_0202e564(v, 2.0f))
         return 0;
     if (*SpecialStageMap_GetCurrentSegment() == 5)

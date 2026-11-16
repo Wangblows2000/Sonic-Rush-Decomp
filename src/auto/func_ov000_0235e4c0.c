@@ -14,9 +14,9 @@ s32 func_ov000_0235ce3c();
 s32 func_ov000_0235ddac();
 s32 func_ov000_0235cec8();
 s32 MsgBox_Create();
-void func_ov000_0235e6b0();
-void func_ov000_0235e340();
-void func_ov000_0235e430();
+void ResultsScreen_State_QuitPrompt();
+void ResultsScreen_State_FadeOutExit();
+void ResultsScreen_State_WaitPartner();
 
 void func_ov000_0235e4c0(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
@@ -39,17 +39,17 @@ void func_ov000_0235e4c0(void) {
         if (*(u32 *)((u8 *)t0 + 0x10) != 0) {
             if (*(u32 *)((u8 *)t0 + 0x8) == 2) {
                 MsgBox_Create(9, 3, 1, 1, 0, 0, 0xe, 0x200010);
-                *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov000_0235e6b0;
+                *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ResultsScreen_State_QuitPrompt;
                 return;
             }
-            *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov000_0235e340;
+            *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ResultsScreen_State_FadeOutExit;
             return;
         }
         if (*(u32 *)((u8 *)t0 + 0x8) == 2) {
-            *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov000_0235e430;
+            *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ResultsScreen_State_WaitPartner;
             return;
         }
-        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)func_ov000_0235e340;
+        *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)ResultsScreen_State_FadeOutExit;
     }
 }
 

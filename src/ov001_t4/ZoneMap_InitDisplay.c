@@ -66,7 +66,7 @@ void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
 void G3X_SetClearColor(s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov001_022e85c8(void);
-void func_ov001_022e2ba4(s32 a);
+void ZoneMap_EnableBlend(s32 a);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MTX_Identity22_(UnkStruct_022e8784_Mtx *m);
 void G2x_SetBGyAffine_(void *a, UnkStruct_022e8784_Mtx *m, s32 c, s32 d, s32 e, s32 f);
@@ -124,7 +124,7 @@ void ZoneMap_InitDisplay(void) {
     REG16(0x400100a) = (REG16(0x400100a) & ~3) | 1;
     REG16(0x400100c) = (REG16(0x400100c) & ~3) | 2;
     REG16(0x400100e) = (REG16(0x400100e) & ~3) | 3;
-    func_ov001_022e2ba4(1);
+    ZoneMap_EnableBlend(1);
     data_02087d44.brightness = 0x10;
     data_0208926c.brightness = data_02087d44.brightness;
     GXx_SetMasterBrightness_((vu16 *)0x400006c, data_0208926c.brightness);

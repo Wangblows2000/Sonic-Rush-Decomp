@@ -5,13 +5,13 @@ extern u32 data_020779d4;
 
 void MBi_ParentCallback(UnkCallback_wh *arg);
 void MBi_CheckWmErrcode(u16 id, s32 result);
-void func_0201a014(void);
+void MBi_OnInitializeDone(void);
 s32 WM_SetParentParameter(void (*cb)(UnkCallback_wh *), u32 a);
 s32 WM_SetBeaconIndication(void (*cb)(UnkCallback_wh *), u32 a);
 s32 WMi_StartParentEx(void (*cb)(UnkCallback_wh *), u32 a);
-s32 func_020114f0(u16 port, void (*cb)(void *), void *arg);
+s32 WM_SetPortCallback(u16 port, void (*cb)(void *), void *arg);
 void WM_SetIndCallback(u32 a);
-s32 func_02011dcc(void (*cb)(UnkCallback_wh *), void *recvBuf, u16 recvBufSize, void *sendBuf, u16 sendBufSize,
+s32 WM_StartMP(void (*cb)(UnkCallback_wh *), void *recvBuf, u16 recvBufSize, void *sendBuf, u16 sendBufSize,
                   u16 mpFreq, u16 retry, BOOL a, BOOL b, BOOL c, BOOL d);
 BOOL MBi_IsSendEnabled(void);
 s32 WM_End(void (*cb)(UnkCallback_wh *));
@@ -26,7 +26,7 @@ void MBi_ParentCallback(UnkCallback_wh *arg)
             data_02080f18->callback(0x100, arg);
             return;
         }
-        func_0201a014();
+        MBi_OnInitializeDone();
         return;
     case 0x1d:
         if (arg->errcode != 0) {
@@ -64,7 +64,7 @@ void MBi_ParentCallback(UnkCallback_wh *arg)
             data_02080f18->callback(0, arg);
             if (data_02080f18->unk528 == 0 && data_02080f1c->unk131c == 0) {
                 data_02080f1c->unk131c = 1;
-                MBi_CheckWmErrcode(0xe, func_02011dcc(MBi_ParentCallback, data_02080f18->recvBuf, data_02080f18->recvBufSize,
+                MBi_CheckWmErrcode(0xe, WM_StartMP(MBi_ParentCallback, data_02080f18->recvBuf, data_02080f18->recvBufSize,
                                                  data_02080f18->sendBuf, data_02080f18->sendBufSize,
                                                  data_02080f18->unk52c ? 0 : 1, 0, 0, 0, 1, 1));
                 return;
@@ -143,7 +143,7 @@ void MBi_ParentCallback(UnkCallback_wh *arg)
             MBi_CheckWmErrcode(2, WM_End(MBi_ParentCallback));
             return;
         }
-        func_020114f0(1, 0, 0);
+        WM_SetPortCallback(1, 0, 0);
         WM_SetIndCallback(0);
     case 2:
         if (arg->errcode != 0) {

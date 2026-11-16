@@ -5,7 +5,7 @@ u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-void func_0204ff38(void);
+void MsgBox_ReleaseCache(void);
 
 #pragma thumb on
 void ZoneMap_ReleaseAssets(u8 *p) {
@@ -30,6 +30,6 @@ void ZoneMap_ReleaseAssets(u8 *p) {
         }
         p += 4;
     }
-    func_0204ff38();
+    MsgBox_ReleaseCache();
 }
 #pragma thumb reset

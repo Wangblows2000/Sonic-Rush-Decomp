@@ -20,7 +20,7 @@ void NaviMsg_Create(void);
 void func_0206488c(void);
 UnkTask_022e33c0 *Task_Create(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
-void func_02053b04(s32 a);
+void NaviMsg_SetVisible(s32 a);
 void func_ov001_022e3150(void);
 
 #pragma thumb on
@@ -51,7 +51,7 @@ UnkWork_022e33c0 *func_ov001_022e33c0(s32 mode, s32 keep) {
     w->unkc = 0;
     w->mode = mode;
     w->unk4 = 0;
-    func_02053b04(0);
+    NaviMsg_SetVisible(0);
     return w;
 }
 #pragma thumb reset

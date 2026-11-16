@@ -34,7 +34,7 @@ typedef struct {
 } UnkStruct_Boss;
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void func_ov000_022e015c(UnkStruct_Boss *w, s32 a);
+void Boss6_SetCameraAngle(UnkStruct_Boss *w, s32 a);
 void Boss6_State_Unk_ov000_022e342c(void);
 
 void Boss6_State_Unk_ov000_022e3510(UnkStruct_Boss *w) {
@@ -70,5 +70,5 @@ void Boss6_State_Unk_ov000_022e3510(UnkStruct_Boss *w) {
     w->unkEF6 |= 4;
     w->unkEF6 &= ~0x1000;
     w->unk20C |= 0x10;
-    func_ov000_022e015c(w, w->unkF4C);
+    Boss6_SetCameraAngle(w, w->unkF4C);
 }

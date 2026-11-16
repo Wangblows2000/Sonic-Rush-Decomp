@@ -80,7 +80,7 @@ src/ov001/StaffRoll_PictureState_None.c:
     complete
     .text       start:0x022d0198 end:0x022d019c
 
-src/ov001/func_ov001_022d02a8.c:
+src/ov001/StaffRoll_PictureState_BlazeEnd.c:
     complete
     .text       start:0x022d02a8 end:0x022d02ac
 
@@ -180,11 +180,11 @@ src/ov001/func_ov001_022f2ca4.c:
     complete
     .text       start:0x022f2ca4 end:0x022f2ca8
 
-src/ov001/func_ov001_02301d10.c:
+src/ov001/ExtraBossPlayer_State_Defeat.c:
     complete
     .text       start:0x02301d10 end:0x02301d14
 
-src/ov001/func_ov001_0230236c.c:
+src/ov001/ExtraBossPlayer_State_None.c:
     complete
     .text       start:0x0230236c end:0x02302370
 
@@ -208,11 +208,11 @@ src/ov001/func_ov001_0230b098.c:
     complete
     .text       start:0x0230b098 end:0x0230b09c
 
-src/ov001/func_ov001_0230cde0.c:
+src/ov001/SpecialStageMap_StraightPivotOffset.c:
     complete
     .text       start:0x0230cde0 end:0x0230cde4
 
-src/ov001/func_ov001_0230d148.c:
+src/ov001/SpecialStageMap_GetStraightLength.c:
     complete
     .text       start:0x0230d148 end:0x0230d150
 
@@ -276,7 +276,7 @@ src/ov001/Options_ExitToTitleMenu.c:
     complete
     .text       start:0x022c88c8 end:0x022c88d8
 
-src/ov001/func_ov001_022c88d8.c:
+src/ov001/Options_IsExtraStoryCleared.c:
     complete
     .text       start:0x022c88d8 end:0x022c88f4
 
@@ -284,7 +284,7 @@ src/ov001/func_ov001_022c8b14.c:
     complete
     .text       start:0x022c8b14 end:0x022c8b30
 
-src/ov001/func_ov001_022c8b38.c:
+src/ov001/Options_IsSoundTestUnlocked.c:
     complete
     .text       start:0x022c8b38 end:0x022c8b54
 
@@ -340,11 +340,11 @@ src/ov001/func_ov001_022cdc8c.c:
     complete
     .text       start:0x022cdc8c end:0x022cdca4
 
-src/ov001/func_ov001_022ce658.c:
+src/ov001/Options_GetUncompressedSize.c:
     complete
     .text       start:0x022ce658 end:0x022ce664
 
-src/ov001/func_ov001_022ce664.c:
+src/ov001/Options_GetCompressionType.c:
     complete
     .text       start:0x022ce664 end:0x022ce670
 
@@ -356,15 +356,15 @@ src/ov001/func_ov001_022cfc50.c:
     complete
     .text       start:0x022cfc50 end:0x022cfc5c
 
-src/ov001/func_ov001_022d0030.c:
+src/ov001/StaffRoll_SetSubBrightness.c:
     complete
     .text       start:0x022d0030 end:0x022d0050
 
-src/ov001/func_ov001_022d0050.c:
+src/ov001/StaffRoll_SetMainBrightness.c:
     complete
     .text       start:0x022d0050 end:0x022d0070
 
-src/ov001/func_ov001_022d0c64.c:
+src/ov001/StaffRoll_PictureState_Blaze2.c:
     complete
     .text       start:0x022d0c64 end:0x022d0c84
 
@@ -372,19 +372,19 @@ src/ov001/StaffRoll_PictureState_BlazeStart.c:
     complete
     .text       start:0x022d0d34 end:0x022d0d44
 
-src/ov001/func_ov001_022d0ed0.c:
+src/ov001/StaffRoll_PictureState_Sonic12.c:
     complete
     .text       start:0x022d0ed0 end:0x022d0ef0
 
-src/ov001/func_ov001_022d0f78.c:
+src/ov001/StaffRoll_PictureState_Sonic10.c:
     complete
     .text       start:0x022d0f78 end:0x022d0f98
 
-src/ov001/func_ov001_022d1028.c:
+src/ov001/StaffRoll_PictureState_Sonic8.c:
     complete
     .text       start:0x022d1028 end:0x022d1048
 
-src/ov001/func_ov001_022d1330.c:
+src/ov001/StaffRoll_PictureState_Sonic2.c:
     complete
     .text       start:0x022d1330 end:0x022d1350
 
@@ -392,15 +392,15 @@ src/ov001/StaffRoll_PictureState_SonicStart.c:
     complete
     .text       start:0x022d13f4 end:0x022d1404
 
-src/ov001/func_ov001_022d1a04.c:
+src/ov001/StaffRoll_State_SkipExtra.c:
     complete
     .text       start:0x022d1a04 end:0x022d1a24
 
-src/ov001/func_ov001_022d1cc4.c:
+src/ov001/StaffRoll_State_WaitEnd.c:
     complete
     .text       start:0x022d1cc4 end:0x022d1ce0
 
-src/ov001/func_ov001_022d1fd4.c:
+src/ov001/StaffRoll_State_WaitFinalCredit.c:
     complete
     .text       start:0x022d1fd4 end:0x022d1ff4
 
@@ -412,7 +412,7 @@ src/ov001/StaffRoll_StartExtra.c:
     complete
     .text       start:0x022d3010 end:0x022d301c
 
-src/ov001/func_ov001_022d3434.c:
+src/ov001/TryAgain_ExitToRetry.c:
     complete
     .text       start:0x022d3434 end:0x022d344c
 
@@ -432,7 +432,7 @@ src/ov001/TitleScreen_StartAttractDemo.c:
     complete
     .text       start:0x022d41c4 end:0x022d41e4
 
-src/ov001/func_ov001_022d44d4.c:
+src/ov001/TitleScreen_PlayTitleVoice.c:
     complete
     .text       start:0x022d44d4 end:0x022d44e4
 
@@ -464,11 +464,11 @@ src/ov001/TitleDemo_PlayMusic.c:
     complete
     .text       start:0x022d587c end:0x022d5888
 
-src/ov001/func_ov001_022d6b44.c:
+src/ov001/TitleDemo_GetUncompressedSize.c:
     complete
     .text       start:0x022d6b44 end:0x022d6b50
 
-src/ov001/func_ov001_022d6b50.c:
+src/ov001/TitleDemo_GetCompressionType.c:
     complete
     .text       start:0x022d6b50 end:0x022d6b5c
 
@@ -508,7 +508,7 @@ src/ov001/func_ov001_022d7340.c:
     complete
     .text       start:0x022d7340 end:0x022d7360
 
-src/ov001/func_ov001_022d8e58.c:
+src/ov001/TitleMenu_IsPlayerSelectPageUnlocked.c:
     complete
     .text       start:0x022d8e58 end:0x022d8e74
 
@@ -540,23 +540,23 @@ src/ov001/func_ov001_022da4ec.c:
     complete
     .text       start:0x022da4ec end:0x022da500
 
-src/ov001/func_ov001_022ddab4.c:
+src/ov001/VsMenu_GetUncompressedSize.c:
     complete
     .text       start:0x022ddab4 end:0x022ddac0
 
-src/ov001/func_ov001_022ddac0.c:
+src/ov001/VsMenu_GetCompressionType.c:
     complete
     .text       start:0x022ddac0 end:0x022ddacc
 
-src/ov001/func_ov001_022ddd70.c:
+src/ov001/VsMenu_WasCancelledForMode2.c:
     complete
     .text       start:0x022ddd70 end:0x022ddd7c
 
-src/ov001/func_ov001_022ddd7c.c:
+src/ov001/VsMenu_WasCancelledForMode1.c:
     complete
     .text       start:0x022ddd7c end:0x022ddd88
 
-src/ov001/func_ov001_022ddd88.c:
+src/ov001/VsMenu_WasCancelledForMode0.c:
     complete
     .text       start:0x022ddd88 end:0x022ddd94
 
@@ -588,19 +588,19 @@ src/ov001/TransformDemo_ReleaseSound.c:
     complete
     .text       start:0x022ddfa4 end:0x022ddfc4
 
-src/ov001/func_ov001_022de178.c:
+src/ov001/TransformDemo_DestroyFade.c:
     complete
     .text       start:0x022de178 end:0x022de184
 
-src/ov001/func_ov001_022de6ec.c:
+src/ov001/TransformDemo_GetUncompressedSize.c:
     complete
     .text       start:0x022de6ec end:0x022de6f8
 
-src/ov001/func_ov001_022de6f8.c:
+src/ov001/TransformDemo_GetCompressionType.c:
     complete
     .text       start:0x022de6f8 end:0x022de704
 
-src/ov001/func_ov001_022dedd4.c:
+src/ov001/TransformDemo_DrawPlayerModel.c:
     complete
     .text       start:0x022dedd4 end:0x022dedf4
 
@@ -612,11 +612,11 @@ src/ov001/func_ov001_022e07d0.c:
     complete
     .text       start:0x022e07d0 end:0x022e07e8
 
-src/ov001/func_ov001_022e17b0.c:
+src/ov001/ZoneActSelect_GetUncompressedSize.c:
     complete
     .text       start:0x022e17b0 end:0x022e17bc
 
-src/ov001/func_ov001_022e17bc.c:
+src/ov001/ZoneActSelect_GetCompressionType.c:
     complete
     .text       start:0x022e17bc end:0x022e17c8
 
@@ -624,7 +624,7 @@ src/ov001/ZoneActSelect_IsFinished.c:
     complete
     .text       start:0x022e18ec end:0x022e1900
 
-src/ov001/func_ov001_022e19bc.c:
+src/ov001/ZoneMap_StartStoryStage.c:
     complete
     .text       start:0x022e19bc end:0x022e19d0
 
@@ -632,7 +632,7 @@ src/ov001/ZoneMap_IsBlaze.c:
     complete
     .text       start:0x022e2ad8 end:0x022e2af8
 
-src/ov001/func_ov001_022e2ba4.c:
+src/ov001/ZoneMap_EnableBlend.c:
     complete
     .text       start:0x022e2ba4 end:0x022e2bbc
 
@@ -652,11 +652,11 @@ src/ov001/func_ov001_022e3b24.c:
     complete
     .text       start:0x022e3b24 end:0x022e3b30
 
-src/ov001/func_ov001_022e3ec0.c:
+src/ov001/ZoneMap_GetUncompressedSize.c:
     complete
     .text       start:0x022e3ec0 end:0x022e3ecc
 
-src/ov001/func_ov001_022e3ecc.c:
+src/ov001/ZoneMap_GetCompressionType.c:
     complete
     .text       start:0x022e3ecc end:0x022e3ed8
 
@@ -692,11 +692,11 @@ src/ov001/ZoneMapPause_IsClosed.c:
     complete
     .text       start:0x022e9570 end:0x022e9584
 
-src/ov001/func_ov001_022ea264.c:
+src/ov001/TimeAttackMenu_GetUncompressedSize.c:
     complete
     .text       start:0x022ea264 end:0x022ea270
 
-src/ov001/func_ov001_022ea270.c:
+src/ov001/TimeAttackMenu_GetCompressionType.c:
     complete
     .text       start:0x022ea270 end:0x022ea27c
 
@@ -720,11 +720,11 @@ src/ov001/TimeAttackMenu_StartMode0.c:
     complete
     .text       start:0x022ec380 end:0x022ec38c
 
-src/ov001/func_ov001_022ecdb4.c:
+src/ov001/Records_GetUncompressedSize.c:
     complete
     .text       start:0x022ecdb4 end:0x022ecdc0
 
-src/ov001/func_ov001_022ecdc0.c:
+src/ov001/Records_GetCompressionType.c:
     complete
     .text       start:0x022ecdc0 end:0x022ecdcc
 
@@ -748,11 +748,11 @@ src/ov001/func_ov001_022f41b4.c:
     complete
     .text       start:0x022f41b4 end:0x022f41c4
 
-src/ov001/func_ov001_022f9d08.c:
+src/ov001/ExtraAct_GetUncompressedSize.c:
     complete
     .text       start:0x022f9d08 end:0x022f9d14
 
-src/ov001/func_ov001_022f9d14.c:
+src/ov001/ExtraAct_GetCompressionType.c:
     complete
     .text       start:0x022f9d14 end:0x022f9d20
 
@@ -772,11 +772,11 @@ src/ov001/func_ov001_022feed8.c:
     complete
     .text       start:0x022feed8 end:0x022feee4
 
-src/ov001/func_ov001_022ffb84.c:
+src/ov001/ExtraBoss_GetUncompressedSize.c:
     complete
     .text       start:0x022ffb84 end:0x022ffb90
 
-src/ov001/func_ov001_022ffb90.c:
+src/ov001/ExtraBoss_GetCompressionType.c:
     complete
     .text       start:0x022ffb90 end:0x022ffb9c
 
@@ -800,15 +800,15 @@ src/ov001/func_ov001_02304504.c:
     complete
     .text       start:0x02304504 end:0x02304518
 
-src/ov001/func_ov001_023070f0.c:
+src/ov001/SpecialStageActObj_Destroy.c:
     complete
     .text       start:0x023070f0 end:0x023070fc
 
-src/ov001/func_ov001_02307760.c:
+src/ov001/SpecialStageActArchive_GetUncompressedSize.c:
     complete
     .text       start:0x02307760 end:0x0230776c
 
-src/ov001/func_ov001_0230776c.c:
+src/ov001/SpecialStageActArchive_GetCompressionType.c:
     complete
     .text       start:0x0230776c end:0x02307778
 
@@ -816,7 +816,7 @@ src/ov001/func_ov001_023085f4.c:
     complete
     .text       start:0x023085f4 end:0x02308600
 
-src/ov001/func_ov001_023098b4.c:
+src/ov001/SpecialStageHud_EndTrickRating.c:
     complete
     .text       start:0x023098b4 end:0x023098cc
 
@@ -824,7 +824,7 @@ src/ov001/func_ov001_0230ae34.c:
     complete
     .text       start:0x0230ae34 end:0x0230ae4c
 
-src/ov001/func_ov001_0230b154.c:
+src/ov001/SpecialStage_LoadHudFile.c:
     complete
     .text       start:0x0230b154 end:0x0230b164
 
@@ -844,7 +844,7 @@ src/ov001/SpecialStage_GetStageIndex.c:
     complete
     .text       start:0x0230c0cc end:0x0230c0e0
 
-src/ov001/func_ov001_0230d134.c:
+src/ov001/SpecialStageMap_GetCurveLength.c:
     complete
     .text       start:0x0230d134 end:0x0230d148
 
@@ -872,15 +872,15 @@ src/ov001/SpecialStageGimmick_Draw.c:
     complete
     .text       start:0x0230f438 end:0x0230f448
 
-src/ov001/func_ov001_0230f4bc.c:
+src/ov001/SpecialStageGimmick_Destroy.c:
     complete
     .text       start:0x0230f4bc end:0x0230f4c8
 
-src/ov001/func_ov001_023102ec.c:
+src/ov001/SpecialStageObj_MarkDestroyed.c:
     complete
     .text       start:0x023102ec end:0x023102fc
 
-src/ov001/func_ov001_02311b28.c:
+src/ov001/SpecialStagePlayer_State_EdgeLand.c:
     complete
     .text       start:0x02311b28 end:0x02311b38
 
@@ -888,15 +888,15 @@ src/ov001/SpecialStagePlayer_Action_Start.c:
     complete
     .text       start:0x02312e74 end:0x02312e84
 
-src/ov001/func_ov001_02314014.c:
+src/ov001/SpecialStagePlayerArchive_GetUncompressedSize.c:
     complete
     .text       start:0x02314014 end:0x02314020
 
-src/ov001/func_ov001_02314020.c:
+src/ov001/SpecialStagePlayerArchive_GetCompressionType.c:
     complete
     .text       start:0x02314020 end:0x0231402c
 
-src/ov001/func_ov001_02314204.c:
+src/ov001/SpecialStage_LoadStageDataFile.c:
     complete
     .text       start:0x02314204 end:0x02314214
 
@@ -924,11 +924,11 @@ src/ov001/Ending_DrawNextPicture.c:
     complete
     .text       start:0x022c6878 end:0x022c689c
 
-src/ov001/func_ov001_022c7218.c:
+src/ov001/Ending_SubState_BlazeFadeIn.c:
     complete
     .text       start:0x022c7218 end:0x022c723c
 
-src/ov001/func_ov001_022c79d4.c:
+src/ov001/Ending_SubState_SonicFadeIn.c:
     complete
     .text       start:0x022c79d4 end:0x022c79f8
 
@@ -972,7 +972,7 @@ src/ov001/func_ov001_022cdfb4.c:
     complete
     .text       start:0x022cdfb4 end:0x022cdfdc
 
-src/ov001/func_ov001_022cf4a0.c:
+src/ov001/PostStaffRoll_ShowUnlockNotices.c:
     complete
     .text       start:0x022cf4a0 end:0x022cf4c8
 
@@ -984,11 +984,11 @@ src/ov001/SegaLogo_State_Wait.c:
     complete
     .text       start:0x022cf660 end:0x022cf688
 
-src/ov001/func_ov001_022d0908.c:
+src/ov001/StaffRoll_PictureState_Blaze9.c:
     complete
     .text       start:0x022d0908 end:0x022d0930
 
-src/ov001/func_ov001_022d0e10.c:
+src/ov001/StaffRoll_PictureState_Sonic14.c:
     complete
     .text       start:0x022d0e10 end:0x022d0e38
 
@@ -996,11 +996,11 @@ src/ov001/StaffRoll_SetPictureState.c:
     complete
     .text       start:0x022d1404 end:0x022d1428
 
-src/ov001/func_ov001_022d1ff4.c:
+src/ov001/StaffRoll_State_StartFinalCredit.c:
     complete
     .text       start:0x022d1ff4 end:0x022d2018
 
-src/ov001/func_ov001_022d2e14.c:
+src/ov001/StaffRoll_State_ReleasePictures.c:
     complete
     .text       start:0x022d2e14 end:0x022d2e3c
 
@@ -1032,7 +1032,7 @@ src/ov001/ZoneActSelect_Destructor.c:
     complete
     .text       start:0x022e0ee0 end:0x022e0f08
 
-src/ov001/func_ov001_022e14b8.c:
+src/ov001/ZoneActSelect_ReleaseSprites.c:
     complete
     .text       start:0x022e14b8 end:0x022e14dc
 
@@ -1120,19 +1120,19 @@ src/ov001/func_ov001_022fef1c.c:
     complete
     .text       start:0x022fef1c end:0x022fef3c
 
-src/ov001/func_ov001_02300be4.c:
+src/ov001/ExtraBossObj_IsAlive.c:
     complete
     .text       start:0x02300be4 end:0x02300c04
 
-src/ov001/func_ov001_02302320.c:
+src/ov001/ExtraBossPlayer_State_Idle.c:
     complete
     .text       start:0x02302320 end:0x02302348
 
-src/ov001/func_ov001_02302348.c:
+src/ov001/ExtraBossPlayer_Action_UnlockControl.c:
     complete
     .text       start:0x02302348 end:0x0230236c
 
-src/ov001/func_ov001_02302370.c:
+src/ov001/ExtraBossPlayer_Action_LockControl.c:
     complete
     .text       start:0x02302370 end:0x02302398
 
@@ -1196,11 +1196,11 @@ src/ov001/SpecialStage_Start.c:
     complete
     .text       start:0x0230c9f4 end:0x0230ca1c
 
-src/ov001/func_ov001_0230cd64.c:
+src/ov001/SpecialStageMap_Curve3PivotOffset.c:
     complete
     .text       start:0x0230cd64 end:0x0230cd8c
 
-src/ov001/func_ov001_0230cd8c.c:
+src/ov001/SpecialStageMap_Curve2PivotOffset.c:
     complete
     .text       start:0x0230cd8c end:0x0230cdb4
 
@@ -1208,23 +1208,23 @@ src/ov001/func_ov001_023102c4.c:
     complete
     .text       start:0x023102c4 end:0x023102ec
 
-src/ov001/func_ov001_02311098.c:
+src/ov001/SpecialStagePlayer_GetSpeedAnimRate.c:
     complete
     .text       start:0x02311098 end:0x023110bc
 
-src/ov001/func_ov001_023120c8.c:
+src/ov001/SpecialStagePlayer_EndDash.c:
     complete
     .text       start:0x023120c8 end:0x023120ec
 
-src/ov001/func_ov001_02312aac.c:
+src/ov001/SpecialStagePlayer_UpdateAngleFromX.c:
     complete
     .text       start:0x02312aac end:0x02312ac8
 
-src/ov001/func_ov001_02312de0.c:
+src/ov001/SpecialStagePlayer_Action_Fail.c:
     complete
     .text       start:0x02312de0 end:0x02312e04
 
-src/ov001/func_ov001_0231314c.c:
+src/ov001/SpecialStagePlayer_OnAttackHit.c:
     complete
     .text       start:0x0231314c end:0x0231316c
 
@@ -1232,7 +1232,7 @@ src/ov001/func_ov001_02314694.c:
     complete
     .text       start:0x02314694 end:0x023146b4
 
-src/ov001/func_ov001_02314c64.c:
+src/ov001/SpecialStageCamera_Unregister.c:
     complete
     .text       start:0x02314c64 end:0x02314c84
 
@@ -1260,7 +1260,7 @@ src/ov001/Ending_CreateBg0PictureTask.c:
     complete
     .text       start:0x022c6944 end:0x022c69ac
 
-src/ov001/func_ov001_022c6bd4.c:
+src/ov001/EndingBgLayersShow_Main.c:
     complete
     .text       start:0x022c6bd4 end:0x022c6c00
 
@@ -1292,7 +1292,7 @@ src/ov001/Ending_SubState_SonicShowPicture0.c:
     complete
     .text       start:0x022c7940 end:0x022c79d4
 
-src/ov001/func_ov001_022c7a44.c:
+src/ov001/Ending_DrawSprites.c:
     complete
     .text       start:0x022c7a44 end:0x022c7ac8
 
@@ -1336,7 +1336,7 @@ src/ov001/OptionsMenu_Action_EraseData.c:
     complete
     .text       start:0x022cddc4 end:0x022cddf0
 
-src/ov001/func_ov001_022cf2a8.c:
+src/ov001/PostStaffRoll_State_TalkDemo.c:
     complete
     .text       start:0x022cf2a8 end:0x022cf2d4
 
@@ -1344,19 +1344,19 @@ src/ov001/SegaLogo_Start.c:
     complete
     .text       start:0x022cfb18 end:0x022cfb44
 
-src/ov001/func_ov001_022cfb90.c:
+src/ov001/StaffRoll_GetSpriteFrameSize.c:
     complete
     .text       start:0x022cfb90 end:0x022cfbc4
 
-src/ov001/func_ov001_022d0af0.c:
+src/ov001/StaffRoll_PictureState_Blaze4.c:
     complete
     .text       start:0x022d0af0 end:0x022d0b1c
 
-src/ov001/func_ov001_022d0d44.c:
+src/ov001/StaffRoll_PictureState_Sonic16.c:
     complete
     .text       start:0x022d0d44 end:0x022d0d78
 
-src/ov001/func_ov001_022d21d4.c:
+src/ov001/StaffRoll_State_BeginFadeIn.c:
     complete
     .text       start:0x022d21d4 end:0x022d2200
 
@@ -1396,27 +1396,27 @@ src/ov001/func_ov001_022ddacc.c:
     complete
     .text       start:0x022ddacc end:0x022ddb00
 
-src/ov001/func_ov001_022de04c.c:
+src/ov001/TransformDemo_FadeState_WaitEnd.c:
     complete
     .text       start:0x022de04c end:0x022de0b4
 
-src/ov001/func_ov001_022de14c.c:
+src/ov001/TransformDemo_RunFadeState.c:
     complete
     .text       start:0x022de14c end:0x022de178
 
-src/ov001/func_ov001_022df3a4.c:
+src/ov001/TransformDemo_DrawPlayerModels.c:
     complete
     .text       start:0x022df3a4 end:0x022df3d8
 
-src/ov001/func_ov001_022df3d8.c:
+src/ov001/TransformDemo_UpdatePlayerModels.c:
     complete
     .text       start:0x022df3d8 end:0x022df40c
 
-src/ov001/func_ov001_022df40c.c:
+src/ov001/TransformDemo_ReleasePlayerModels.c:
     complete
     .text       start:0x022df40c end:0x022df440
 
-src/ov001/func_ov001_022df440.c:
+src/ov001/TransformDemo_LoadPlayerModels.c:
     complete
     .text       start:0x022df440 end:0x022df474
 
@@ -1612,23 +1612,23 @@ src/ov001/func_ov001_022ffc4c.c:
     complete
     .text       start:0x022ffc4c end:0x022ffcb8
 
-src/ov001/func_ov001_02300a64.c:
+src/ov001/ExtraBossObj_Draw_Default.c:
     complete
     .text       start:0x02300a64 end:0x02300ac8
 
-src/ov001/func_ov001_02300c68.c:
+src/ov001/ExtraBoss_IsPlayerSpawned.c:
     complete
     .text       start:0x02300c68 end:0x02300c94
 
-src/ov001/func_ov001_02300ca8.c:
+src/ov001/ExtraBossObj_DrawAll.c:
     complete
     .text       start:0x02300ca8 end:0x02300d14
 
-src/ov001/func_ov001_02300d14.c:
+src/ov001/ExtraBossObj_PropagateParentDestroy.c:
     complete
     .text       start:0x02300d14 end:0x02300db4
 
-src/ov001/func_ov001_02300fe8.c:
+src/ov001/ExtraBossObj_DestroyKind2And3.c:
     complete
     .text       start:0x02300fe8 end:0x02301058
 
@@ -1640,15 +1640,15 @@ src/ov001/func_ov001_02303468.c:
     complete
     .text       start:0x02303468 end:0x02303494
 
-src/ov001/func_ov001_0230cb74.c:
+src/ov001/SpecialStageMap_StraightDrawOffset.c:
     complete
     .text       start:0x0230cb74 end:0x0230cba0
 
-src/ov001/func_ov001_0230cd38.c:
+src/ov001/SpecialStageMap_Curve4PivotOffset.c:
     complete
     .text       start:0x0230cd38 end:0x0230cd64
 
-src/ov001/func_ov001_0230cdb4.c:
+src/ov001/SpecialStageMap_Curve1PivotOffset.c:
     complete
     .text       start:0x0230cdb4 end:0x0230cde0
 
@@ -1660,11 +1660,11 @@ src/ov001/SpecialStagePlayer_SlowDownMap.c:
     complete
     .text       start:0x02310f54 end:0x02310f80
 
-src/ov001/func_ov001_02311afc.c:
+src/ov001/SpecialStagePlayer_State_AttackFall.c:
     complete
     .text       start:0x02311afc end:0x02311b28
 
-src/ov001/func_ov001_0231402c.c:
+src/ov001/SpecialStage_DisableTexture.c:
     complete
     .text       start:0x0231402c end:0x02314058
 
@@ -1676,35 +1676,35 @@ src/clones/SpecialStageCamera_FreeList.c:
     complete
     .text       start:0x02314de8 end:0x02314e7c
 
-src/ov001/func_ov001_02301728.c:
+src/ov001/ExtraBossPlayerManager_Create.c:
     complete
     .text       start:0x02301728 end:0x023017c8
 
-src/ov001/func_ov001_023019f8.c:
+src/ov001/ExtraBossPlayer_OnDashHit.c:
     complete
     .text       start:0x023019f8 end:0x02301a88
 
-src/ov001/func_ov001_02301bac.c:
+src/ov001/ExtraBossPlayer_State_SpecialEnd.c:
     complete
     .text       start:0x02301bac end:0x02301c10
 
-src/ov001/func_ov001_02301c50.c:
+src/ov001/ExtraBossPlayer_State_SpecialCharge.c:
     complete
     .text       start:0x02301c50 end:0x02301cc8
 
-src/ov001/func_ov001_02301d70.c:
+src/ov001/ExtraBossPlayer_State_Hurt.c:
     complete
     .text       start:0x02301d70 end:0x02301dd4
 
-src/ov001/func_ov001_02301dd4.c:
+src/ov001/ExtraBossPlayer_Action_Hurt.c:
     complete
     .text       start:0x02301dd4 end:0x02301e78
 
-src/ov001/func_ov001_02302298.c:
+src/ov001/ExtraBossPlayer_State_Move.c:
     complete
     .text       start:0x02302298 end:0x02302320
 
-src/ov001/func_ov001_02302398.c:
+src/ov001/ExtraBossPlayer_UpdateInvincibility.c:
     complete
     .text       start:0x02302398 end:0x02302408
 
@@ -1760,19 +1760,19 @@ src/ov001/func_ov001_02307ad0.c:
     complete
     .text       start:0x02307ad0 end:0x02307b44
 
-src/ov001/func_ov001_02308720.c:
+src/ov001/SpecialStageHud_DrawRingCounter.c:
     complete
     .text       start:0x02308720 end:0x02308790
 
-src/ov001/func_ov001_02308ccc.c:
+src/ov001/SpecialStageHud_AnimateSprites.c:
     complete
     .text       start:0x02308ccc end:0x02308d40
 
-src/ov001/func_ov001_022c5fdc.c:
+src/ov001/ZoneActSelectMode_Shutdown.c:
     complete
     .text       start:0x022c5fdc end:0x022c6004
 
-src/ov001/func_ov001_022c60e0.c:
+src/ov001/ExtraEnding_State_PlayDemo.c:
     complete
     .text       start:0x022c60e0 end:0x022c6110
 
@@ -1828,11 +1828,11 @@ src/ov001/func_ov001_022c8924.c:
     complete
     .text       start:0x022c8924 end:0x022c8958
 
-src/ov001/func_ov001_022c8994.c:
+src/ov001/Options_CreateBgScrollTask.c:
     complete
     .text       start:0x022c8994 end:0x022c89c8
 
-src/ov001/func_ov001_022c9260.c:
+src/ov001/SoundTest_ReleaseTrack.c:
     complete
     .text       start:0x022c9260 end:0x022c9310
 
@@ -1848,7 +1848,7 @@ src/ov001/PostStaffRoll_State_GoToSegaLogo.c:
     complete
     .text       start:0x022cf0b4 end:0x022cf0e4
 
-src/ov001/func_ov001_022cf0e4.c:
+src/ov001/PostStaffRoll_State_Wait.c:
     complete
     .text       start:0x022cf0e4 end:0x022cf110
 
@@ -1868,11 +1868,11 @@ src/ov001/func_ov001_022d0070.c:
     complete
     .text       start:0x022d0070 end:0x022d0094
 
-src/ov001/func_ov001_022d0128.c:
+src/ov001/StaffRoll_DestroyCreditTask.c:
     complete
     .text       start:0x022d0128 end:0x022d0158
 
-src/ov001/func_ov001_022d1c9c.c:
+src/ov001/StaffRoll_State_End.c:
     complete
     .text       start:0x022d1c9c end:0x022d1cc4
 
@@ -1880,7 +1880,7 @@ src/ov001/TryAgain_ExitToTitleScreen.c:
     complete
     .text       start:0x022d33ec end:0x022d3400
 
-src/ov001/func_ov001_022d3410.c:
+src/ov001/TryAgain_ExitToPlayerSelect.c:
     complete
     .text       start:0x022d3410 end:0x022d3434
 
@@ -1968,11 +1968,11 @@ src/ov001/VsMenu_ReleaseAssets.c:
     complete
     .text       start:0x022dd6b4 end:0x022dd728
 
-src/ov001/func_ov001_022deb20.c:
+src/ov001/TransformDemo_ReleaseTransModels.c:
     complete
     .text       start:0x022deb20 end:0x022debf0
 
-src/ov001/func_ov001_022df008.c:
+src/ov001/TransformDemo_ReleasePlayerNarc.c:
     complete
     .text       start:0x022df008 end:0x022df0b4
 
@@ -2028,11 +2028,11 @@ src/ov001/func_ov001_022e2480.c:
     complete
     .text       start:0x022e2480 end:0x022e24a8
 
-src/ov001/func_ov001_022e2bbc.c:
+src/ov001/ZoneMap_DisableTexture.c:
     complete
     .text       start:0x022e2bbc end:0x022e2bd8
 
-src/ov001/func_ov001_022e3398.c:
+src/ov001/ZoneMap_Shutdown.c:
     complete
     .text       start:0x022e3398 end:0x022e33c0
 
@@ -2180,7 +2180,7 @@ src/ov001/func_ov001_022fdb04.c:
     complete
     .text       start:0x022fdb04 end:0x022fdbc0
 
-src/ov001/func_ov001_022ff8ac.c:
+src/ov001/ExtraBoss_ReleaseAssets.c:
     complete
     .text       start:0x022ff8ac end:0x022ff970
 
@@ -2204,11 +2204,11 @@ src/ov001/func_ov001_02300978.c:
     complete
     .text       start:0x02300978 end:0x02300a64
 
-src/ov001/func_ov001_02301668.c:
+src/ov001/ExtraBossPlayerManager_Destroy.c:
     complete
     .text       start:0x02301668 end:0x02301728
 
-src/ov001/func_ov001_02302408.c:
+src/ov001/ExtraBossPlayer_CheckActionInput.c:
     complete
     .text       start:0x02302408 end:0x023024d0
 
@@ -2252,11 +2252,11 @@ src/ov001/func_ov001_0230956c.c:
     complete
     .text       start:0x0230956c end:0x023095e0
 
-src/ov001/func_ov001_0230adcc.c:
+src/ov001/SpecialStage_IsPointInCircle.c:
     complete
     .text       start:0x0230adcc end:0x0230ae34
 
-src/ov001/func_ov001_0230b09c.c:
+src/ov001/SpecialStage_FreeHudBlock.c:
     complete
     .text       start:0x0230b09c end:0x0230b11c
 
@@ -2264,15 +2264,15 @@ src/ov001/SpecialStage_State_PlayUpdate.c:
     complete
     .text       start:0x0230bbd8 end:0x0230bc70
 
-src/ov001/func_ov001_0230d17c.c:
+src/ov001/SpecialStageMap_FreeSegment.c:
     complete
     .text       start:0x0230d17c end:0x0230d1e4
 
-src/ov001/func_ov001_0230d1e4.c:
+src/ov001/SpecialStageMap_AllocSegment.c:
     complete
     .text       start:0x0230d1e4 end:0x0230d28c
 
-src/ov001/func_ov001_0230d650.c:
+src/ov001/SpecialStage_ArcLengthToAngle.c:
     complete
     .text       start:0x0230d650 end:0x0230d6b8
 
@@ -2284,7 +2284,7 @@ src/ov001/func_ov001_0230e710.c:
     complete
     .text       start:0x0230e710 end:0x0230e78c
 
-src/ov001/func_ov001_0230f1dc.c:
+src/ov001/SpecialStageGimmick_OnAttacked.c:
     complete
     .text       start:0x0230f1dc end:0x0230f284
 
@@ -2292,7 +2292,7 @@ src/ov001/SpecialStageGimmick_Update.c:
     complete
     .text       start:0x0230f448 end:0x0230f4bc
 
-src/ov001/func_ov001_0230f4c8.c:
+src/ov001/SpecialStageGimmick_SpawnTrickReward.c:
     complete
     .text       start:0x0230f4c8 end:0x0230f550
 
@@ -2300,11 +2300,11 @@ src/ov001/SpecialStageGimmick_DestroyManager.c:
     complete
     .text       start:0x0230f77c end:0x0230f804
 
-src/ov001/func_ov001_0230ffd4.c:
+src/ov001/SpecialStageObjList_Free.c:
     complete
     .text       start:0x0230ffd4 end:0x02310054
 
-src/ov001/func_ov001_02310248.c:
+src/ov001/SpecialStageObj_IsInReach.c:
     complete
     .text       start:0x02310248 end:0x023102c4
 
@@ -2312,35 +2312,35 @@ src/ov001/SpecialStageObjList_Alloc.c:
     complete
     .text       start:0x023102fc end:0x0231039c
 
-src/ov001/func_ov001_02310fe8.c:
+src/ov001/SpecialStagePlayer_State_CelebrateSpin.c:
     complete
     .text       start:0x02310fe8 end:0x02311064
 
-src/ov001/func_ov001_023110bc.c:
+src/ov001/SpecialStagePlayer_State_Fail3.c:
     complete
     .text       start:0x023110bc end:0x02311130
 
-src/ov001/func_ov001_023112e8.c:
+src/ov001/SpecialStagePlayer_State_TrickChain.c:
     complete
     .text       start:0x023112e8 end:0x02311380
 
-src/ov001/func_ov001_02311380.c:
+src/ov001/SpecialStagePlayer_State_TrickEnd.c:
     complete
     .text       start:0x02311380 end:0x023113f8
 
-src/ov001/func_ov001_0231184c.c:
+src/ov001/SpecialStagePlayer_State_AttackRebound.c:
     complete
     .text       start:0x0231184c end:0x023118d4
 
-src/ov001/func_ov001_023118d4.c:
+src/ov001/SpecialStagePlayer_State_TargetAttack.c:
     complete
     .text       start:0x023118d4 end:0x02311968
 
-src/ov001/func_ov001_02311d94.c:
+src/ov001/SpecialStagePlayer_State_Start1.c:
     complete
     .text       start:0x02311d94 end:0x02311dfc
 
-src/ov001/func_ov001_02311dfc.c:
+src/ov001/SpecialStagePlayer_State_Start0.c:
     complete
     .text       start:0x02311dfc end:0x02311e64
 
@@ -2348,19 +2348,19 @@ src/ov001/func_ov001_02311e64.c:
     complete
     .text       start:0x02311e64 end:0x02311ec8
 
-src/ov001/func_ov001_02312258.c:
+src/ov001/SpecialStagePlayer_CheckTouchTarget.c:
     complete
     .text       start:0x02312258 end:0x023122d8
 
-src/ov001/func_ov001_02312ac8.c:
+src/ov001/SpecialStage_PipeXToAngle.c:
     complete
     .text       start:0x02312ac8 end:0x02312b30
 
-src/ov001/func_ov001_02312e04.c:
+src/ov001/SpecialStagePlayer_Action_Celebrate.c:
     complete
     .text       start:0x02312e04 end:0x02312e74
 
-src/ov001/func_ov001_02312e84.c:
+src/ov001/SpecialStagePlayer_OnHurt.c:
     complete
     .text       start:0x02312e84 end:0x02312f24
 
@@ -2368,7 +2368,7 @@ src/ov001/SpecialStagePlayer_Destroy.c:
     complete
     .text       start:0x02313900 end:0x0231398c
 
-src/ov001/func_ov001_0231414c.c:
+src/ov001/SpecialStage_FreeStageDataBlock.c:
     complete
     .text       start:0x0231414c end:0x023141cc
 
@@ -2432,7 +2432,7 @@ src/auto/Ending_SubState_SonicStart.c:
     complete
     .text       start:0x022c79f8 end:0x022c7a34
 
-src/auto/func_ov001_022c8958.c:
+src/auto/OptionsBgScroll_Main.c:
     complete
     .text       start:0x022c8958 end:0x022c8994
 
@@ -2464,11 +2464,11 @@ src/auto/func_ov001_022cfcf8.c:
     complete
     .text       start:0x022cfcf8 end:0x022cfd34
 
-src/auto/func_ov001_022d0158.c:
+src/auto/StaffRoll_CreateCreditTask.c:
     complete
     .text       start:0x022d0158 end:0x022d0198
 
-src/auto/func_ov001_022d1bec.c:
+src/auto/StaffRoll_State_SkipSonic.c:
     complete
     .text       start:0x022d1bec end:0x022d1c20
 
@@ -2552,27 +2552,27 @@ src/auto/func_ov001_02308600.c:
     complete
     .text       start:0x02308600 end:0x02308630
 
-src/auto/func_ov001_0230cd08.c:
+src/auto/SpecialStageMap_StraightAdvance.c:
     complete
     .text       start:0x0230cd08 end:0x0230cd38
 
-src/auto/func_ov001_0230d010.c:
+src/auto/SpecialStageMap_ScrollCurve4.c:
     complete
     .text       start:0x0230d010 end:0x0230d048
 
-src/auto/func_ov001_0230d084.c:
+src/auto/SpecialStageMap_ScrollCurve2.c:
     complete
     .text       start:0x0230d084 end:0x0230d0b8
 
-src/auto/func_ov001_0230d0f8.c:
+src/auto/SpecialStageMap_ScrollStraight.c:
     complete
     .text       start:0x0230d0f8 end:0x0230d134
 
-src/auto/func_ov001_02311a80.c:
+src/auto/SpecialStagePlayer_State_Land.c:
     complete
     .text       start:0x02311a80 end:0x02311abc
 
-src/auto/func_ov001_023145d8.c:
+src/auto/SpecialStageTrick_Reset.c:
     complete
     .text       start:0x023145d8 end:0x02314614
 
@@ -2592,11 +2592,11 @@ src/auto/func_ov001_022ed104.c:
     complete
     .text       start:0x022ed104 end:0x022ed14c
 
-src/auto/func_ov001_0230ea24.c:
+src/auto/SpecialStageGimmick_OnDestroyGiveRings.c:
     complete
     .text       start:0x0230ea24 end:0x0230ea6c
 
-src/auto/func_ov001_02311968.c:
+src/auto/SpecialStagePlayer_State_HurtRecover.c:
     complete
     .text       start:0x02311968 end:0x023119ac
 
@@ -2604,7 +2604,7 @@ src/auto/ZoneActSelectMode_Main.c:
     complete
     .text       start:0x022c5fa0 end:0x022c5fdc
 
-src/auto/func_ov001_022c6110.c:
+src/auto/ExtraEnding_State_StartDemo.c:
     complete
     .text       start:0x022c6110 end:0x022c6160
 
@@ -2660,19 +2660,19 @@ src/auto/func_ov001_022ce304.c:
     complete
     .text       start:0x022ce304 end:0x022ce374
 
-src/auto/func_ov001_022cf190.c:
+src/auto/PostStaffRoll_State_SoundTestUnlockNotice.c:
     complete
     .text       start:0x022cf190 end:0x022cf21c
 
-src/auto/func_ov001_022cf21c.c:
+src/auto/PostStaffRoll_State_PlayerSelectUnlockNotice.c:
     complete
     .text       start:0x022cf21c end:0x022cf2a8
 
-src/auto/func_ov001_022cf2d4.c:
+src/auto/PostStaffRoll_CreateFadeTask.c:
     complete
     .text       start:0x022cf2d4 end:0x022cf324
 
-src/auto/func_ov001_022cf43c.c:
+src/auto/PostStaffRoll_Begin.c:
     complete
     .text       start:0x022cf43c end:0x022cf4a0
 
@@ -2680,63 +2680,63 @@ src/auto/SegaLogo_ShowBackgrounds.c:
     complete
     .text       start:0x022cf8b4 end:0x022cf90c
 
-src/auto/func_ov001_022cffdc.c:
+src/auto/StaffRoll_CalcStopMotion.c:
     complete
     .text       start:0x022cffdc end:0x022d0030
 
-src/auto/func_ov001_022d06c4.c:
+src/auto/StaffRoll_PictureState_Blaze12.c:
     complete
     .text       start:0x022d06c4 end:0x022d0760
 
-src/auto/func_ov001_022d0930.c:
+src/auto/StaffRoll_PictureState_Blaze8.c:
     complete
     .text       start:0x022d0930 end:0x022d0974
 
-src/auto/func_ov001_022d0974.c:
+src/auto/StaffRoll_PictureState_Blaze7.c:
     complete
     .text       start:0x022d0974 end:0x022d0a00
 
-src/auto/func_ov001_022d0a5c.c:
+src/auto/StaffRoll_PictureState_Blaze5.c:
     complete
     .text       start:0x022d0a5c end:0x022d0af0
 
-src/auto/func_ov001_022d0d78.c:
+src/auto/StaffRoll_PictureState_Sonic15.c:
     complete
     .text       start:0x022d0d78 end:0x022d0e10
 
-src/auto/func_ov001_022d0e38.c:
+src/auto/StaffRoll_PictureState_Sonic13.c:
     complete
     .text       start:0x022d0e38 end:0x022d0ed0
 
-src/auto/func_ov001_022d0ef0.c:
+src/auto/StaffRoll_PictureState_Sonic11.c:
     complete
     .text       start:0x022d0ef0 end:0x022d0f78
 
-src/auto/func_ov001_022d0f98.c:
+src/auto/StaffRoll_PictureState_Sonic9.c:
     complete
     .text       start:0x022d0f98 end:0x022d1028
 
-src/auto/func_ov001_022d1048.c:
+src/auto/StaffRoll_PictureState_Sonic7.c:
     complete
     .text       start:0x022d1048 end:0x022d10d8
 
-src/auto/func_ov001_022d12a8.c:
+src/auto/StaffRoll_PictureState_Sonic3.c:
     complete
     .text       start:0x022d12a8 end:0x022d1330
 
-src/auto/func_ov001_022d1350.c:
+src/auto/StaffRoll_PictureState_Sonic1.c:
     complete
     .text       start:0x022d1350 end:0x022d13f4
 
-src/auto/func_ov001_022d2018.c:
+src/auto/StaffRoll_ResetBgScroll.c:
     complete
     .text       start:0x022d2018 end:0x022d2060
 
-src/auto/func_ov001_022d20e4.c:
+src/auto/StaffRoll_State_FadeInFromBlack.c:
     complete
     .text       start:0x022d20e4 end:0x022d215c
 
-src/auto/func_ov001_022d215c.c:
+src/auto/StaffRoll_State_FadeInFromWhite.c:
     complete
     .text       start:0x022d215c end:0x022d21d4
 
@@ -2752,11 +2752,11 @@ src/auto/TitleScreen_State_Init.c:
     complete
     .text       start:0x022d4c28 end:0x022d4cb8
 
-src/auto/func_ov001_022d4e4c.c:
+src/auto/TitleScreen_InitBackgrounds.c:
     complete
     .text       start:0x022d4e4c end:0x022d4ed4
 
-src/auto/func_ov001_022d6b5c.c:
+src/auto/TitleDemo_InitBackgrounds.c:
     complete
     .text       start:0x022d6b5c end:0x022d6bf0
 
@@ -2860,15 +2860,15 @@ src/auto/VsMenu_Destructor.c:
     complete
     .text       start:0x022dd854 end:0x022dd890
 
-src/auto/func_ov001_022ddffc.c:
+src/auto/TransformDemo_FadeState_FadeOut.c:
     complete
     .text       start:0x022ddffc end:0x022de04c
 
-src/auto/func_ov001_022de0b4.c:
+src/auto/TransformDemo_FadeState_FadeIn.c:
     complete
     .text       start:0x022de0b4 end:0x022de0f0
 
-src/auto/func_ov001_022de0f0.c:
+src/auto/TransformDemo_FadeState_WaitStart.c:
     complete
     .text       start:0x022de0f0 end:0x022de14c
 
@@ -3100,15 +3100,15 @@ src/auto/ExtraBoss_Main.c:
     complete
     .text       start:0x022ff3a4 end:0x022ff3dc
 
-src/auto/func_ov001_023010e0.c:
+src/auto/ExtraBossObj_DestroyPlayer.c:
     complete
     .text       start:0x023010e0 end:0x02301118
 
-src/auto/func_ov001_02301c10.c:
+src/auto/ExtraBossPlayer_State_SpecialFire.c:
     complete
     .text       start:0x02301c10 end:0x02301c50
 
-src/auto/func_ov001_02301cc8.c:
+src/auto/ExtraBossPlayer_State_SpecialStart.c:
     complete
     .text       start:0x02301cc8 end:0x02301d10
 
@@ -3136,7 +3136,7 @@ src/auto/func_ov001_02305c84.c:
     complete
     .text       start:0x02305c84 end:0x02305cd8
 
-src/auto/func_ov001_023070fc.c:
+src/auto/SpecialStageActObj_SpawnAt.c:
     complete
     .text       start:0x023070fc end:0x02307148
 
@@ -3164,11 +3164,11 @@ src/auto/SpecialStagePlayer_State_Brake.c:
     complete
     .text       start:0x02310f84 end:0x02310fb4
 
-src/auto/func_ov001_02310fb4.c:
+src/auto/SpecialStagePlayer_State_GoalSlowDown.c:
     complete
     .text       start:0x02310fb4 end:0x02310fe8
 
-src/auto/func_ov001_02311064.c:
+src/auto/SpecialStagePlayer_State_Celebrate.c:
     complete
     .text       start:0x02311064 end:0x02311098
 
@@ -3176,11 +3176,11 @@ src/auto/func_ov001_02311abc.c:
     complete
     .text       start:0x02311abc end:0x02311afc
 
-src/auto/func_ov001_02311b38.c:
+src/auto/SpecialStagePlayer_State_EdgeJump.c:
     complete
     .text       start:0x02311b38 end:0x02311b74
 
-src/auto/func_ov001_02311b74.c:
+src/auto/SpecialStagePlayer_UpdateTurn.c:
     complete
     .text       start:0x02311b74 end:0x02311bcc
 
@@ -3188,11 +3188,11 @@ src/auto/func_ov001_02311ec8.c:
     complete
     .text       start:0x02311ec8 end:0x02311efc
 
-src/auto/func_ov001_023120ec.c:
+src/auto/SpecialStagePlayer_StartDash.c:
     complete
     .text       start:0x023120ec end:0x02312138
 
-src/auto/func_ov001_02312a0c.c:
+src/auto/SpecialStagePlayer_Action_StartTrick.c:
     complete
     .text       start:0x02312a0c end:0x02312a5c
 
@@ -3200,11 +3200,11 @@ src/auto/func_ov001_022cc8ec.c:
     complete
     .text       start:0x022cc8ec end:0x022cc998
 
-src/auto/func_ov001_022d1ce0.c:
+src/auto/StaffRoll_State_FadeOut.c:
     complete
     .text       start:0x022d1ce0 end:0x022d1d88
 
-src/auto/func_ov001_022d3f10.c:
+src/auto/TryAgain_InitBackgrounds.c:
     complete
     .text       start:0x022d3f10 end:0x022d3fc8
 
@@ -3224,7 +3224,7 @@ src/auto/func_ov001_022daaa8.c:
     complete
     .text       start:0x022daaa8 end:0x022dab54
 
-src/auto/func_ov001_022e17fc.c:
+src/auto/ZoneActSelect_InitDisplay.c:
     complete
     .text       start:0x022e17fc end:0x022e18a4
 
@@ -3236,19 +3236,19 @@ src/auto/func_ov001_023062f0.c:
     complete
     .text       start:0x023062f0 end:0x023063a0
 
-src/clones/func_ov001_022d35f8.c:
+src/clones/TryAgain_Interpolate.c:
     complete
     .text       start:0x022d35f8 end:0x022d36ac
 
-src/clones/func_ov001_022e9778.c:
+src/clones/TimeAttackMenu_ResetDisplay.c:
     complete
     .text       start:0x022e9778 end:0x022e9804
 
-src/auto/func_ov001_022d0c84.c:
+src/auto/StaffRoll_PictureState_Blaze1.c:
     complete
     .text       start:0x022d0c84 end:0x022d0d34
 
-src/auto/func_ov001_022d1acc.c:
+src/auto/StaffRoll_State_SkipBlaze.c:
     complete
     .text       start:0x022d1acc end:0x022d1bec
 
@@ -3320,27 +3320,27 @@ src/auto/ExtraBoss_StartCharacterSwitch.c:
     complete
     .text       start:0x022ffd2c end:0x022ffe04
 
-src/auto/func_ov001_02311130.c:
+src/auto/SpecialStagePlayer_State_Fail2.c:
     complete
     .text       start:0x02311130 end:0x0231120c
 
-src/auto/func_ov001_0231120c.c:
+src/auto/SpecialStagePlayer_State_Fail.c:
     complete
     .text       start:0x0231120c end:0x023112e8
 
-src/auto/func_ov001_022d0544.c:
+src/auto/StaffRoll_PictureState_Blaze16.c:
     complete
     .text       start:0x022d0544 end:0x022d0588
 
-src/auto/func_ov001_022d1710.c:
+src/auto/StaffRoll_State_ExtraFadeOut.c:
     complete
     .text       start:0x022d1710 end:0x022d177c
 
-src/auto/func_ov001_022d17bc.c:
+src/auto/StaffRoll_State_ExtraPictureFadeOut.c:
     complete
     .text       start:0x022d17bc end:0x022d1840
 
-src/auto/func_ov001_022d1888.c:
+src/auto/StaffRoll_State_ExtraPictureFadeIn.c:
     complete
     .text       start:0x022d1888 end:0x022d1904
 
@@ -3380,7 +3380,7 @@ src/auto/func_ov001_022eb994.c:
     complete
     .text       start:0x022eb994 end:0x022eba08
 
-src/clones/func_ov001_022d3e4c.c:
+src/clones/TryAgain_InitSubSprite.c:
     complete
     .text       start:0x022d3e4c end:0x022d3eb0
 
@@ -3412,31 +3412,31 @@ src/auto/OptionsMenu_State_EnterItem.c:
     complete
     .text       start:0x022cda20 end:0x022cdabc
 
-src/auto/func_ov001_022d02ac.c:
+src/auto/StaffRoll_PictureState_BlazeExit3.c:
     complete
     .text       start:0x022d02ac end:0x022d02f4
 
-src/auto/func_ov001_022d02f4.c:
+src/auto/StaffRoll_PictureState_BlazeExit2.c:
     complete
     .text       start:0x022d02f4 end:0x022d0344
 
-src/auto/func_ov001_022d0344.c:
+src/auto/StaffRoll_PictureState_BlazeExit1.c:
     complete
     .text       start:0x022d0344 end:0x022d03f8
 
-src/auto/func_ov001_022d0a00.c:
+src/auto/StaffRoll_PictureState_Blaze6.c:
     complete
     .text       start:0x022d0a00 end:0x022d0a5c
 
-src/auto/func_ov001_022d10d8.c:
+src/auto/StaffRoll_PictureState_Sonic6.c:
     complete
     .text       start:0x022d10d8 end:0x022d1110
 
-src/auto/func_ov001_022d1a24.c:
+src/auto/StaffRoll_State_SkipFadeIn.c:
     complete
     .text       start:0x022d1a24 end:0x022d1acc
 
-src/auto/func_ov001_022d1e00.c:
+src/auto/StaffRoll_State_ShowEndPicture.c:
     complete
     .text       start:0x022d1e00 end:0x022d1ec8
 
@@ -3504,7 +3504,7 @@ src/auto/func_ov001_022f8f70.c:
     complete
     .text       start:0x022f8f70 end:0x022f904c
 
-src/auto/func_ov001_02300b84.c:
+src/auto/ExtraBossObj_IsOutOfArena.c:
     complete
     .text       start:0x02300b84 end:0x02300be4
 
@@ -3536,31 +3536,31 @@ src/auto/func_ov001_023057b4.c:
     complete
     .text       start:0x023057b4 end:0x023057f4
 
-src/auto/func_ov001_0230cde4.c:
+src/auto/SpecialStageMap_DrawSegmentType4.c:
     complete
     .text       start:0x0230cde4 end:0x0230ce38
 
-src/auto/func_ov001_0230ce38.c:
+src/auto/SpecialStageMap_DrawSegmentType3.c:
     complete
     .text       start:0x0230ce38 end:0x0230ce84
 
-src/auto/func_ov001_0230ce84.c:
+src/auto/SpecialStageMap_DrawSegmentType2.c:
     complete
     .text       start:0x0230ce84 end:0x0230ced0
 
-src/auto/func_ov001_0230ced0.c:
+src/auto/SpecialStageMap_DrawSegmentType1.c:
     complete
     .text       start:0x0230ced0 end:0x0230cf1c
 
-src/auto/func_ov001_0230cf1c.c:
+src/auto/SpecialStageMap_DrawSegmentType6.c:
     complete
     .text       start:0x0230cf1c end:0x0230cf70
 
-src/auto/func_ov001_0230cf70.c:
+src/auto/SpecialStageMap_DrawSegmentType5.c:
     complete
     .text       start:0x0230cf70 end:0x0230cfc4
 
-src/auto/func_ov001_0230cfc4.c:
+src/auto/SpecialStageMap_DrawSegmentType0.c:
     complete
     .text       start:0x0230cfc4 end:0x0230d010
 
@@ -3636,7 +3636,7 @@ src/ov001_b/func_ov001_0230063c.c:
     complete
     .text       start:0x0230063c end:0x02300978
 
-src/ov001_b/func_ov001_02301118.c:
+src/ov001_b/ExtraBossObj_Destroy.c:
     complete
     .text       start:0x02301118 end:0x023014f4
 
@@ -3784,11 +3784,11 @@ src/ov001_c/ExtraBoss_Start.c:
     complete
     .text       start:0x02300378 end:0x0230063c
 
-src/ov001_c/func_ov001_02300db4.c:
+src/ov001_c/ExtraBossObj_UpdateMotionAll.c:
     complete
     .text       start:0x02300db4 end:0x02300fe8
 
-src/ov001_c/func_ov001_023017c8.c:
+src/ov001_c/ExtraBossPlayer_Action_Dash.c:
     complete
     .text       start:0x023017c8 end:0x023019f8
 
@@ -3812,7 +3812,7 @@ src/ov001_c/func_ov001_02307b44.c:
     complete
     .text       start:0x02307b44 end:0x02307d30
 
-src/ov001_c/func_ov001_02308430.c:
+src/ov001_c/SpecialStageHud_DrawRingCounterScaled.c:
     complete
     .text       start:0x02308430 end:0x023085f4
 
@@ -3900,7 +3900,7 @@ src/ov001_c/SpecialStagePlayer_State_Trick.c:
     complete
     .text       start:0x023113f8 end:0x023115a4
 
-src/ov001_c/func_ov001_02311bcc.c:
+src/ov001_c/SpecialStagePlayer_State_Run.c:
     complete
     .text       start:0x02311bcc end:0x02311d94
 
@@ -3908,7 +3908,7 @@ src/ov001_c/func_ov001_02311efc.c:
     complete
     .text       start:0x02311efc end:0x023120c8
 
-src/ov001_c/func_ov001_02312f24.c:
+src/ov001_c/SpecialStagePlayer_OnTouchGimmick.c:
     complete
     .text       start:0x02312f24 end:0x0231314c
 
@@ -3932,7 +3932,7 @@ src/ov001_d/func_ov001_022f18e4.c:
     complete
     .text       start:0x022f18e4 end:0x022f1a90
 
-src/ov001_t/func_ov001_022c5c9c.c:
+src/ov001_t/ZoneActSelectMode_ResetDisplay.c:
     complete
     .text       start:0x022c5c9c end:0x022c5d1c
 
@@ -4072,7 +4072,7 @@ src/ov001_t/func_ov001_022cd558.c:
     complete
     .text       start:0x022cd558 end:0x022cd6e8
 
-src/ov001_t/func_ov001_022cf324.c:
+src/ov001_t/PostStaffRoll_ShowSoundTestUnlockNotice.c:
     complete
     .text       start:0x022cf324 end:0x022cf3b0
 
@@ -4084,7 +4084,7 @@ src/ov001_t/SegaLogo_State_FadeIn.c:
     complete
     .text       start:0x022cf688 end:0x022cf6e8
 
-src/ov001_t/func_ov001_022d05f8.c:
+src/ov001_t/StaffRoll_PictureState_Blaze14.c:
     complete
     .text       start:0x022d05f8 end:0x022d0658
 
@@ -4096,7 +4096,7 @@ src/ov001_t/TryAgainFadeTask_Main.c:
     complete
     .text       start:0x022d3460 end:0x022d3538
 
-src/ov001_t/func_ov001_022d3eb0.c:
+src/ov001_t/TryAgain_InitMainSprite.c:
     complete
     .text       start:0x022d3eb0 end:0x022d3f10
 
@@ -4120,11 +4120,11 @@ src/ov001_t/TitleScreen_LoadAssets.c:
     complete
     .text       start:0x022d4ed4 end:0x022d4f30
 
-src/ov001_t/func_ov001_022d59a8.c:
+src/ov001_t/TitleDemo_ShowBg3At.c:
     complete
     .text       start:0x022d59a8 end:0x022d59e0
 
-src/ov001_t/func_ov001_022d59e0.c:
+src/ov001_t/TitleDemo_ShowBg2At.c:
     complete
     .text       start:0x022d59e0 end:0x022d5a18
 
@@ -4312,7 +4312,7 @@ src/ov001_t/func_ov001_022e19d0.c:
     complete
     .text       start:0x022e19d0 end:0x022e1a30
 
-src/ov001_t/func_ov001_022e1a30.c:
+src/ov001_t/ZoneMap_SelectTalkDemo.c:
     complete
     .text       start:0x022e1a30 end:0x022e1aac
 
@@ -4512,7 +4512,7 @@ src/ov001_d/func_ov001_022f1fd8.c:
     complete
     .text       start:0x022f1fd8 end:0x022f2138
 
-src/ov001_t/func_ov001_022ebfd4.c:
+src/ov001_t/TimeAttackMenu_InitBackgrounds.c:
     complete
     .text       start:0x022ebfd4 end:0x022ec16c
 
@@ -4616,7 +4616,7 @@ src/ov001_t2/Options_StartFromTitleMenu.c:
     complete
     .text       start:0x022cee8c end:0x022ceef4
 
-src/ov001_t2/func_ov001_022cf110.c:
+src/ov001_t2/PostStaffRollFade_Main.c:
     complete
     .text       start:0x022cf110 end:0x022cf190
 
@@ -4628,7 +4628,7 @@ src/ov001_t2/func_ov001_022cff74.c:
     complete
     .text       start:0x022cff74 end:0x022cffdc
 
-src/ov001_t2/func_ov001_022d0094.c:
+src/ov001_t2/StaffRollCredit_Main.c:
     complete
     .text       start:0x022d0094 end:0x022d0128
 
@@ -4640,31 +4640,31 @@ src/ov001_t2/func_ov001_022d0220.c:
     complete
     .text       start:0x022d0220 end:0x022d02a8
 
-src/ov001_t2/func_ov001_022d0588.c:
+src/ov001_t2/StaffRoll_PictureState_Blaze15.c:
     complete
     .text       start:0x022d0588 end:0x022d05f8
 
-src/ov001_t2/func_ov001_022d0658.c:
+src/ov001_t2/StaffRoll_PictureState_Blaze13.c:
     complete
     .text       start:0x022d0658 end:0x022d06c4
 
-src/ov001_t2/func_ov001_022d0760.c:
+src/ov001_t2/StaffRoll_PictureState_Blaze11.c:
     complete
     .text       start:0x022d0760 end:0x022d07cc
 
-src/ov001_t2/func_ov001_022d1238.c:
+src/ov001_t2/StaffRoll_PictureState_Sonic4.c:
     complete
     .text       start:0x022d1238 end:0x022d12a8
 
-src/ov001_t2/func_ov001_022d1428.c:
+src/ov001_t2/StaffRoll_DrawPictureSprites.c:
     complete
     .text       start:0x022d1428 end:0x022d1494
 
-src/ov001_t2/func_ov001_022d1c20.c:
+src/ov001_t2/StaffRoll_State_Skip.c:
     complete
     .text       start:0x022d1c20 end:0x022d1c9c
 
-src/ov001_t2/func_ov001_022d2060.c:
+src/ov001_t2/StaffRoll_State_ScrollCredits.c:
     complete
     .text       start:0x022d2060 end:0x022d20e4
 
@@ -4696,7 +4696,7 @@ src/ov001_t2/func_ov001_022d5a7c.c:
     complete
     .text       start:0x022d5a7c end:0x022d5af0
 
-src/ov001_t2/func_ov001_022d6864.c:
+src/ov001_t2/TitleDemo_InitSubSprite.c:
     complete
     .text       start:0x022d6864 end:0x022d68d4
 
@@ -4804,7 +4804,7 @@ src/ov001_t2/func_ov001_022e14dc.c:
     complete
     .text       start:0x022e14dc end:0x022e153c
 
-src/ov001_t2/func_ov001_022e1fb8.c:
+src/ov001_t2/ZoneMap_BuildLinePath.c:
     complete
     .text       start:0x022e1fb8 end:0x022e2054
 
@@ -4960,11 +4960,11 @@ src/ov001_d/ExtraBoss_Shutdown.c:
     complete
     .text       start:0x02300214 end:0x02300378
 
-src/ov001_d/func_ov001_023014f4.c:
+src/ov001_d/ExtraBossObj_Create.c:
     complete
     .text       start:0x023014f4 end:0x02301668
 
-src/ov001_d/func_ov001_02301e78.c:
+src/ov001_d/ExtraBossPlayer_State_Dash.c:
     complete
     .text       start:0x02301e78 end:0x02301ff4
 
@@ -5004,7 +5004,7 @@ src/ov001_d/SpecialStagePlayer_State_TrickInput.c:
     complete
     .text       start:0x023115a4 end:0x02311700
 
-src/ov001_d/func_ov001_02312c18.c:
+src/ov001_d/SpecialStagePlayer_MoveToTarget.c:
     complete
     .text       start:0x02312c18 end:0x02312d7c
 
@@ -5024,11 +5024,11 @@ src/ov001_e/func_ov001_022f83c0.c:
     complete
     .text       start:0x022f83c0 end:0x022f8508
 
-src/ov001_e/func_ov001_02301ff4.c:
+src/ov001_e/ExtraBossPlayer_ApplyMoveInputHalf.c:
     complete
     .text       start:0x02301ff4 end:0x02302140
 
-src/ov001_e/func_ov001_02302140.c:
+src/ov001_e/ExtraBossPlayer_ApplyMoveInput.c:
     complete
     .text       start:0x02302140 end:0x02302298
 
@@ -5056,11 +5056,11 @@ src/ov001_e/SpecialStageHud_Destroy.c:
     complete
     .text       start:0x0230a438 end:0x0230a58c
 
-src/ov001_e/func_ov001_02311700.c:
+src/ov001_e/SpecialStagePlayer_State_TrickJump.c:
     complete
     .text       start:0x02311700 end:0x0231184c
 
-src/ov001_t2/func_ov001_022c8d7c.c:
+src/ov001_t2/SoundTest_GetChannelLevels.c:
     complete
     .text       start:0x022c8d7c end:0x022c8e1c
 
@@ -5092,7 +5092,7 @@ src/ov001_t2/func_ov001_022dbf30.c:
     complete
     .text       start:0x022dbf30 end:0x022dbfdc
 
-src/ov001_t2/func_ov001_022e1b4c.c:
+src/ov001_t2/ZoneMap_GetDirectionAngle.c:
     complete
     .text       start:0x022e1b4c end:0x022e1bec
 
@@ -5132,7 +5132,7 @@ src/ov001_e/SpecialStage_State_PlayDraw.c:
     complete
     .text       start:0x0230ba9c end:0x0230bbd8
 
-src/ov001_t3/func_ov001_022d6bf0.c:
+src/ov001_t3/TitleDemo_InitSprites.c:
     complete
     .text       start:0x022d6bf0 end:0x022d6c98
 
@@ -5200,7 +5200,7 @@ src/ov001_e/func_ov001_022f8508.c:
     complete
     .text       start:0x022f8508 end:0x022f8608
 
-src/ov001_e/func_ov001_022f9d20.c:
+src/ov001_e/ExtraAct_ReleaseAssets.c:
     complete
     .text       start:0x022f9d20 end:0x022f9e58
 
@@ -5280,19 +5280,19 @@ src/ov001_e/ExtraBoss_InitPadMap.c:
     complete
     .text       start:0x022ffcb8 end:0x022ffce8
 
-src/ov001_e/func_ov001_02300ac8.c:
+src/ov001_e/ExtraBossObj_Main.c:
     complete
     .text       start:0x02300ac8 end:0x02300b84
 
-src/ov001_e/func_ov001_02300c04.c:
+src/ov001_e/ExtraBossObj_DestroyFlagged.c:
     complete
     .text       start:0x02300c04 end:0x02300c54
 
-src/ov001_e/func_ov001_02301058.c:
+src/ov001_e/ExtraBossObj_DestroyKind2.c:
     complete
     .text       start:0x02301058 end:0x0230109c
 
-src/ov001_e/func_ov001_0230109c.c:
+src/ov001_e/ExtraBossObj_DestroyKind1.c:
     complete
     .text       start:0x0230109c end:0x023010e0
 
@@ -5372,11 +5372,11 @@ src/ov001_e/func_ov001_0230832c.c:
     complete
     .text       start:0x0230832c end:0x02308430
 
-src/ov001_e/func_ov001_02308630.c:
+src/ov001_e/SpecialStageHud_UpdateQuotaCounter.c:
     complete
     .text       start:0x02308630 end:0x02308720
 
-src/ov001_e/func_ov001_02308790.c:
+src/ov001_e/SpecialStageHud_UpdateRingCounter.c:
     complete
     .text       start:0x02308790 end:0x02308884
 
@@ -5384,11 +5384,11 @@ src/ov001_e/SpecialStageHud_UpdateFail.c:
     complete
     .text       start:0x02308d64 end:0x02308e44
 
-src/ov001_e/func_ov001_02308e90.c:
+src/ov001_e/SpecialStageHud_UpdateGoal.c:
     complete
     .text       start:0x02308e90 end:0x02308fc8
 
-src/ov001_e/func_ov001_0230903c.c:
+src/ov001_e/SpecialStageHud_UpdateCheckpoint.c:
     complete
     .text       start:0x0230903c end:0x023091a0
 
@@ -5396,7 +5396,7 @@ src/ov001_e/SpecialStageHud_ShowTrickRating.c:
     complete
     .text       start:0x023098cc end:0x02309994
 
-src/ov001_e/func_ov001_0230b11c.c:
+src/ov001_e/SpecialStage_RelocateSsdHeader.c:
     complete
     .text       start:0x0230b11c end:0x0230b154
 
@@ -5412,59 +5412,59 @@ src/ov001_e/SpecialStage_State_IntroDraw.c:
     complete
     .text       start:0x0230b594 end:0x0230b658
 
-src/ov001_e/func_ov001_0230ca1c.c:
+src/ov001_e/SpecialStageMap_Curve4DrawOffset.c:
     complete
     .text       start:0x0230ca1c end:0x0230ca74
 
-src/ov001_e/func_ov001_0230ca74.c:
+src/ov001_e/SpecialStageMap_Curve3DrawOffset.c:
     complete
     .text       start:0x0230ca74 end:0x0230cac8
 
-src/ov001_e/func_ov001_0230cac8.c:
+src/ov001_e/SpecialStageMap_Curve2DrawOffset.c:
     complete
     .text       start:0x0230cac8 end:0x0230cb1c
 
-src/ov001_e/func_ov001_0230cb1c.c:
+src/ov001_e/SpecialStageMap_Curve1DrawOffset.c:
     complete
     .text       start:0x0230cb1c end:0x0230cb74
 
-src/ov001_e/func_ov001_0230cba0.c:
+src/ov001_e/SpecialStageMap_Curve4Advance.c:
     complete
     .text       start:0x0230cba0 end:0x0230cbf8
 
-src/ov001_e/func_ov001_0230cbf8.c:
+src/ov001_e/SpecialStageMap_Curve3Advance.c:
     complete
     .text       start:0x0230cbf8 end:0x0230cc54
 
-src/ov001_e/func_ov001_0230cc54.c:
+src/ov001_e/SpecialStageMap_Curve2Advance.c:
     complete
     .text       start:0x0230cc54 end:0x0230ccb0
 
-src/ov001_e/func_ov001_0230ccb0.c:
+src/ov001_e/SpecialStageMap_Curve1Advance.c:
     complete
     .text       start:0x0230ccb0 end:0x0230cd08
 
-src/ov001_e/func_ov001_0230d048.c:
+src/ov001_e/SpecialStageMap_ScrollCurve3.c:
     complete
     .text       start:0x0230d048 end:0x0230d084
 
-src/ov001_e/func_ov001_0230d0b8.c:
+src/ov001_e/SpecialStageMap_ScrollCurve1.c:
     complete
     .text       start:0x0230d0b8 end:0x0230d0f8
 
-src/ov001_e/func_ov001_0230d528.c:
+src/ov001_e/SpecialStage_RotateMtxXAroundPivot.c:
     complete
     .text       start:0x0230d528 end:0x0230d5bc
 
-src/ov001_e/func_ov001_0230d5bc.c:
+src/ov001_e/SpecialStage_RotateMtxYAroundPivot.c:
     complete
     .text       start:0x0230d5bc end:0x0230d650
 
-src/ov001_e/func_ov001_0230e554.c:
+src/ov001_e/SpecialStageGimmick_SwayX.c:
     complete
     .text       start:0x0230e554 end:0x0230e5c0
 
-src/ov001_e/func_ov001_0230e5c0.c:
+src/ov001_e/SpecialStageGimmick_SwayRotation.c:
     complete
     .text       start:0x0230e5c0 end:0x0230e634
 
@@ -5484,7 +5484,7 @@ src/ov001_e/func_ov001_0230ef9c.c:
     complete
     .text       start:0x0230ef9c end:0x0230efd4
 
-src/ov001_e/func_ov001_0230efd4.c:
+src/ov001_e/SpecialStageTrickReward_Update.c:
     complete
     .text       start:0x0230efd4 end:0x0230f0f4
 
@@ -5496,7 +5496,7 @@ src/ov001_e/SpecialStageGimmick_CreateManager.c:
     complete
     .text       start:0x0230f804 end:0x0230f8b4
 
-src/ov001_e/func_ov001_02310054.c:
+src/ov001_e/SpecialStageObjList_IsCulled.c:
     complete
     .text       start:0x02310054 end:0x02310144
 
@@ -5504,15 +5504,15 @@ src/ov001_e/func_ov001_02310144.c:
     complete
     .text       start:0x02310144 end:0x02310174
 
-src/ov001_e/func_ov001_02310174.c:
+src/ov001_e/SpecialStageGimmick_FindTouched.c:
     complete
     .text       start:0x02310174 end:0x02310248
 
-src/ov001_e/func_ov001_023119ac.c:
+src/ov001_e/SpecialStagePlayer_State_Hurt.c:
     complete
     .text       start:0x023119ac end:0x02311a80
 
-src/ov001_e/func_ov001_02312138.c:
+src/ov001_e/SpecialStagePlayer_IsGrounded.c:
     complete
     .text       start:0x02312138 end:0x023121f0
 
@@ -5520,19 +5520,19 @@ src/ov001_e/func_ov001_023121f0.c:
     complete
     .text       start:0x023121f0 end:0x02312250
 
-src/ov001_e/func_ov001_0231293c.c:
+src/ov001_e/SpecialStage_TouchToPipeAngle.c:
     complete
     .text       start:0x0231293c end:0x02312a0c
 
-src/ov001_e/func_ov001_02312a5c.c:
+src/ov001_e/SpecialStage_PipeAngleToX.c:
     complete
     .text       start:0x02312a5c end:0x02312aac
 
-src/ov001_e/func_ov001_02312b30.c:
+src/ov001_e/SpecialStagePlayer_UpdateTouchSteer.c:
     complete
     .text       start:0x02312b30 end:0x02312bcc
 
-src/ov001_e/func_ov001_02312bcc.c:
+src/ov001_e/SpecialStagePlayer_TurnTowards.c:
     complete
     .text       start:0x02312bcc end:0x02312c18
 
@@ -5544,7 +5544,7 @@ src/ov001_e/SpecialStagePlayer_Draw.c:
     complete
     .text       start:0x0231316c end:0x0231323c
 
-src/ov001_e/func_ov001_02314058.c:
+src/ov001_e/SpecialStage_SetPolygonAlpha.c:
     complete
     .text       start:0x02314058 end:0x02314088
 
@@ -5552,7 +5552,7 @@ src/ov001_e/SpecialStageData_RunCommand.c:
     complete
     .text       start:0x02314088 end:0x0231414c
 
-src/ov001_e/func_ov001_023141cc.c:
+src/ov001_e/SpecialStage_RelocateSstHeader.c:
     complete
     .text       start:0x023141cc end:0x02314204
 
@@ -5612,15 +5612,15 @@ src/ov001_e/SpecialStageCamera_CreateList.c:
     complete
     .text       start:0x02314e7c end:0x02314f70
 
-src/ov001_e/func_ov001_02314f70.c:
+src/ov001_e/SpecialStageCamera_UpdateOrbitAngles.c:
     complete
     .text       start:0x02314f70 end:0x02315020
 
-src/ov001_e/func_ov001_023156a8.c:
+src/ov001_e/SpecialStageCamera_PopOrtho.c:
     complete
     .text       start:0x023156a8 end:0x02315714
 
-src/ov001_e/func_ov001_02315714.c:
+src/ov001_e/SpecialStageCamera_PushOrtho.c:
     complete
     .text       start:0x02315714 end:0x023157d8
 
@@ -5628,7 +5628,7 @@ src/ov001_e/SpecialStageCamera_GetVectors.c:
     complete
     .text       start:0x02315900 end:0x0231599c
 
-src/ov001_t3/func_ov001_022c8e1c.c:
+src/ov001_t3/SoundTest_UpdateLevelMeter.c:
     complete
     .text       start:0x022c8e1c end:0x022c8f30
 
@@ -5672,11 +5672,11 @@ src/ov001_t3/Options_Create.c:
     complete
     .text       start:0x022cecb8 end:0x022cedc0
 
-src/ov001_t3/func_ov001_022cf3b0.c:
+src/ov001_t3/PostStaffRoll_ShowPlayerSelectUnlockNotice.c:
     complete
     .text       start:0x022cf3b0 end:0x022cf43c
 
-src/ov001_t3/func_ov001_022cf4f0.c:
+src/ov001_t3/SegaLogo_Interpolate.c:
     complete
     .text       start:0x022cf4f0 end:0x022cf5d4
 
@@ -5684,19 +5684,19 @@ src/ov001_t3/SegaLogo_ResetDisplay.c:
     complete
     .text       start:0x022cf724 end:0x022cf820
 
-src/ov001_t3/func_ov001_022cfbc4.c:
+src/ov001_t3/StaffRoll_SetCreditSpritePos.c:
     complete
     .text       start:0x022cfbc4 end:0x022cfc50
 
-src/ov001_t3/func_ov001_022d15e8.c:
+src/ov001_t3/StaffRoll_State_ExtraShowFinalPicture.c:
     complete
     .text       start:0x022d15e8 end:0x022d1710
 
-src/ov001_t3/func_ov001_022d1904.c:
+src/ov001_t3/StaffRoll_State_ExtraShowPicture.c:
     complete
     .text       start:0x022d1904 end:0x022d1a00
 
-src/ov001_t3/func_ov001_022d1ec8.c:
+src/ov001_t3/StaffRoll_State_RevealBanner.c:
     complete
     .text       start:0x022d1ec8 end:0x022d1fd4
 
@@ -5704,7 +5704,7 @@ src/ov001_t3/func_ov001_022d2650.c:
     complete
     .text       start:0x022d2650 end:0x022d2704
 
-src/ov001_t3/func_ov001_022d289c.c:
+src/ov001_t3/StaffRoll_ReleaseAssets.c:
     complete
     .text       start:0x022d289c end:0x022d2978
 
@@ -5728,15 +5728,15 @@ src/ov001_t3/func_ov001_022d46f4.c:
     complete
     .text       start:0x022d46f4 end:0x022d4814
 
-src/ov001_t3/func_ov001_022d4d94.c:
+src/ov001_t3/TitleScreen_InitSprites.c:
     complete
     .text       start:0x022d4d94 end:0x022d4e4c
 
-src/ov001_t3/func_ov001_022d4ff0.c:
+src/ov001_t3/TitleDemo_ResetDisplay.c:
     complete
     .text       start:0x022d4ff0 end:0x022d5114
 
-src/ov001_t3/func_ov001_022d5550.c:
+src/ov001_t3/TitleDemo_Interpolate.c:
     complete
     .text       start:0x022d5550 end:0x022d5634
 
@@ -5912,7 +5912,7 @@ src/ov001_t3/func_ov001_022ea458.c:
     complete
     .text       start:0x022ea458 end:0x022ea504
 
-src/ov001_t3/func_ov001_022ebecc.c:
+src/ov001_t3/TimeAttackMenu_InitSprites.c:
     complete
     .text       start:0x022ebecc end:0x022ebfd4
 
@@ -6056,7 +6056,7 @@ src/ov001_t4/TitleDemo_InitDisplay.c:
     complete
     .text       start:0x022d5114 end:0x022d5550
 
-src/ov001_t4/func_ov001_022d8e74.c:
+src/ov001_t4/TitleMenu_InitSprites.c:
     complete
     .text       start:0x022d8e74 end:0x022d91c4
 
@@ -6176,7 +6176,7 @@ src/ov001_t4/ZoneActSelect_State_Select.c:
     complete
     .text       start:0x022e0f94 end:0x022e114c
 
-src/ov001_t4/func_ov001_022e1400.c:
+src/ov001_t4/ZoneActSelect_ResetDisplay.c:
     complete
     .text       start:0x022e1400 end:0x022e1444
 
@@ -6208,11 +6208,11 @@ src/ov001_t4/ZoneMap_InitDisplay.c:
     complete
     .text       start:0x022e8784 end:0x022e89b4
 
-src/ov001_t4/func_ov001_022e92b4.c:
+src/ov001_t4/ZoneMapPause_ResetDisplay.c:
     complete
     .text       start:0x022e92b4 end:0x022e9304
 
-src/ov001_t4/func_ov001_022e9510.c:
+src/ov001_t4/ZoneMapPause_InitDisplay.c:
     complete
     .text       start:0x022e9510 end:0x022e955c
 
@@ -6228,27 +6228,27 @@ src/ov001_t5/SoundTest_LoadTrack.c:
     complete
     .text       start:0x022c93e0 end:0x022c9570
 
-src/ov001_t5/func_ov001_022d03f8.c:
+src/ov001_t5/StaffRoll_PictureState_BlazeRepeat.c:
     complete
     .text       start:0x022d03f8 end:0x022d0544
 
-src/ov001_t5/func_ov001_022d07cc.c:
+src/ov001_t5/StaffRoll_PictureState_Blaze10.c:
     complete
     .text       start:0x022d07cc end:0x022d0908
 
-src/ov001_t5/func_ov001_022d0b1c.c:
+src/ov001_t5/StaffRoll_PictureState_Blaze3.c:
     complete
     .text       start:0x022d0b1c end:0x022d0c64
 
-src/ov001_t5/func_ov001_022d1110.c:
+src/ov001_t5/StaffRoll_PictureState_Sonic5.c:
     complete
     .text       start:0x022d1110 end:0x022d1238
 
-src/ov001_t5/func_ov001_022d1494.c:
+src/ov001_t5/StaffRoll_State_ExtraFinalPictureFadeIn.c:
     complete
     .text       start:0x022d1494 end:0x022d15e8
 
-src/ov001_t5/func_ov001_022d1d88.c:
+src/ov001_t5/StaffRoll_State_EndPictureHold.c:
     complete
     .text       start:0x022d1d88 end:0x022d1e00
 
@@ -6316,15 +6316,15 @@ src/ov001_t5/func_ov001_022cfd34.c:
     complete
     .text       start:0x022cfd34 end:0x022cfd7c
 
-src/ov001_t5/func_ov001_022d177c.c:
+src/ov001_t5/StaffRoll_State_ExtraNextPicture.c:
     complete
     .text       start:0x022d177c end:0x022d17bc
 
-src/ov001_t5/func_ov001_022d1840.c:
+src/ov001_t5/StaffRoll_State_ExtraPictureHold.c:
     complete
     .text       start:0x022d1840 end:0x022d1888
 
-src/ov001_t5/func_ov001_022d2db8.c:
+src/ov001_t5/StaffRoll_State_Finish.c:
     complete
     .text       start:0x022d2db8 end:0x022d2e14
 
@@ -6340,7 +6340,7 @@ src/ov001_t5/TitleScreen_Start.c:
     complete
     .text       start:0x022d4fa0 end:0x022d4ff0
 
-src/ov001_t5/func_ov001_022d57b4.c:
+src/ov001_t5/TitleDemo_SetOrthoProjection.c:
     complete
     .text       start:0x022d57b4 end:0x022d5808
 
@@ -6424,7 +6424,7 @@ src/ov001_t5/func_ov001_022e0ad0.c:
     complete
     .text       start:0x022e0ad0 end:0x022e0c5c
 
-src/ov001_t5/func_ov001_022e1e98.c:
+src/ov001_t5/ZoneMap_BuildSplinePath.c:
     complete
     .text       start:0x022e1e98 end:0x022e1fb8
 
@@ -6544,7 +6544,7 @@ src/ov001_t6/func_ov001_022d3af0.c:
     complete
     .text       start:0x022d3af0 end:0x022d3cd0
 
-src/ov001_t6/func_ov001_022e1ce8.c:
+src/ov001_t6/ZoneMap_SplineSolve.c:
     complete
     .text       start:0x022e1ce8 end:0x022e1e98
 
@@ -6556,7 +6556,7 @@ src/ov001_t6/func_ov001_022e397c.c:
     complete
     .text       start:0x022e397c end:0x022e3b24
 
-src/sweep/func_ov001_022e1900.c:
+src/sweep/ZoneActSelect_IsActive.c:
     complete
     .text       start:0x022e1900 end:0x022e190c
 
@@ -6584,7 +6584,7 @@ src/ov001_t7/func_ov001_022ecae4.c:
     complete
     .text       start:0x022ecae4 end:0x022ecdb4
 
-src/sweep/func_ov001_022e1bec.c:
+src/sweep/ZoneMap_SplineEval.c:
     complete
     .text       start:0x022e1bec end:0x022e1ce8
 
@@ -6660,7 +6660,7 @@ src/lead/func_ov001_022d224c.c:
     complete
     .text       start:0x022d224c end:0x022d2460
 
-src/ov001_h/func_ov001_022c6094.c:
+src/ov001_h/ExtraEnding_State_End.c:
     complete
     .text       start:0x022c6094 end:0x022c60e0
 
@@ -6720,7 +6720,7 @@ src/ov001_h/Ending_Destructor.c:
     complete
     .text       start:0x022c8404 end:0x022c8458
 
-src/ov001_h/func_ov001_022cfd7c.c:
+src/ov001_h/StaffRoll_FadeSpritePalette.c:
     complete
     .text       start:0x022cfd7c end:0x022cfe58
 
@@ -6728,7 +6728,7 @@ src/ov001_h/func_ov001_022dde00.c:
     complete
     .text       start:0x022dde00 end:0x022ddfa4
 
-src/ov001_h/func_ov001_022de184.c:
+src/ov001_h/TransformDemo_FadeState_Init.c:
     complete
     .text       start:0x022de184 end:0x022de1e0
 
@@ -6740,7 +6740,7 @@ src/ov001_h/func_ov001_022de240.c:
     complete
     .text       start:0x022de240 end:0x022de388
 
-src/ov001_h/func_ov001_022de704.c:
+src/ov001_h/TransformDemo_DrawTransModels.c:
     complete
     .text       start:0x022de704 end:0x022de774
 
@@ -6768,7 +6768,7 @@ src/ov001_h/func_ov001_022e023c.c:
     complete
     .text       start:0x022e023c end:0x022e034c
 
-src/ov001_h/func_ov001_022cfecc.c:
+src/ov001_h/StaffRoll_FadePalette.c:
     complete
     .text       start:0x022cfecc end:0x022cff74
 
@@ -6796,7 +6796,7 @@ src/asm_fallback/func_ov001_022cb5ac.c:
     complete
     .text       start:0x022cb5ac end:0x022cb6d8
 
-src/asm_fallback/func_ov001_022d3fc8.c:
+src/asm_fallback/TryAgain_InitSprites.c:
     complete
     .text       start:0x022d3fc8 end:0x022d4048
 

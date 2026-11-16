@@ -26,8 +26,8 @@ typedef struct {
 
 extern UnkStruct_0233f6f8_4560 gGameState;
 
-UnkPlayer_0233f6f8 *func_ov000_0233b62c(void);
-UnkPlayer_0233f6f8 *func_ov000_0233b610(void);
+UnkPlayer_0233f6f8 *Camera_GetBySwapState(void);
+UnkPlayer_0233f6f8 *Camera_GetOtherBySwapState(void);
 u8 func_ov000_023427bc(s32 idx);
 
 static inline BOOL IsMode_0233f6f8(void) {
@@ -39,8 +39,8 @@ static inline BOOL IsMode_0233f6f8(void) {
 }
 
 void func_ov000_0233f6f8(UnkStruct_0233f6f8 *w) {
-    UnkPlayer_0233f6f8 *p = func_ov000_0233b62c();
-    UnkPlayer_0233f6f8 *q = func_ov000_0233b610();
+    UnkPlayer_0233f6f8 *p = Camera_GetBySwapState();
+    UnkPlayer_0233f6f8 *q = Camera_GetOtherBySwapState();
 
     if (!(q->unk34 & 1)) {
         if (IsMode_0233f6f8()) {

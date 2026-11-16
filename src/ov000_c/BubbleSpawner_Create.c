@@ -11,7 +11,7 @@ extern u8 data_ov000_02369e54[];
 
 void MapObject_Destructor();
 void BubbleSpawner_OnHit_Box1();
-void BubbleSpawner_Action_Unk_ov000_02302c78();
+void BubbleSpawner_Action_Init();
 
 UnkStruct_02302cb4 *BubbleSpawner_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -25,7 +25,7 @@ UnkStruct_02302cb4 *BubbleSpawner_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_02302cb4));
     MapObject_Init(w, (s32)p, b, c);
-    func_02068e40(w, -6, -6, 6, 6);
+    StageObj_SetMapHitbox(w, -6, -6, 6, 6);
     StageObj_Load2dBAC(w, data_ov000_02366718, 8, data_ov000_02369e54, data_ov000_02369ba0);
     StageObj_AllocSpritePalette(w, 0, 0x1c);
     w->base.spr0.unk46 = 0x14;
@@ -38,6 +38,6 @@ UnkStruct_02302cb4 *BubbleSpawner_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.coll1.unk1C = BubbleSpawner_OnHit_Box1;
     w->base.coll1.unk18 = w;
     w->base.unk58 |= 0x100;
-    BubbleSpawner_Action_Unk_ov000_02302c78(w);
+    BubbleSpawner_Action_Init(w);
     return w;
 }

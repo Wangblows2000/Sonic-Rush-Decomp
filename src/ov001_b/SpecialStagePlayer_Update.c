@@ -72,10 +72,10 @@ extern UnkStruct_0231323c_t data_ov001_0231790a[];
 extern UnkStruct_0231323c_t2 data_ov001_02317918[];
 extern u8 *gSpecialStagePlayerResources;
 
-void func_ov001_023120c8(UnkStruct_0231323c *w);
-BOOL func_ov001_02310248(UnkStruct_0231323c *w, UnkStruct_0231323c_p *p);
+void SpecialStagePlayer_EndDash(UnkStruct_0231323c *w);
+BOOL SpecialStageObj_IsInReach(UnkStruct_0231323c *w, UnkStruct_0231323c_p *p);
 s32 SpecialStageMap_GetScrollSpeed(void);
-void func_ov001_02312c18(UnkStruct_0231323c *w);
+void SpecialStagePlayer_MoveToTarget(UnkStruct_0231323c *w);
 void MTX_RotX33_(void *m, s32 s, s32 c);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
@@ -113,13 +113,13 @@ void SpecialStagePlayer_Update(UnkStruct_0231323c *w) {
     if (w->unk144 > 0) {
         w->unk144--;
         if (w->unk144 == 0)
-            func_ov001_023120c8(w);
+            SpecialStagePlayer_EndDash(w);
     }
     p = w->unk118;
     if (p != NULL) {
         if (p->unk60 & 1)
             w->unk118 = NULL;
-        else if (!func_ov001_02310248(w, p))
+        else if (!SpecialStageObj_IsInReach(w, p))
             w->unk118 = NULL;
     }
     if (w->unk74 > 0)
@@ -161,7 +161,7 @@ void SpecialStagePlayer_Update(UnkStruct_0231323c *w) {
             w->unk18 = 0;
     } else {
         if (data_ov001_02317918[w->unk228].unk0 == 3 && w->unk118 != NULL) {
-            func_ov001_02312c18(w);
+            SpecialStagePlayer_MoveToTarget(w);
         } else {
             w->vel.x += w->acc.x;
             w->vel.y += w->acc.y;

@@ -7,7 +7,7 @@ typedef struct {
 
 extern UnkStruct_022e23b0 gSaveData;
 
-void func_02059bdc(s32 id);
+void SaveData_SetSonicProgress(s32 id);
 
 #pragma thumb on
 void func_ov001_022e23b0(u32 a) {
@@ -70,6 +70,6 @@ void func_ov001_022e23b0(u32 a) {
     default:
         return;
     }
-    func_02059bdc(id);
+    SaveData_SetSonicProgress(id);
 }
 #pragma thumb reset

@@ -25,7 +25,7 @@ extern UnkBright_022e129c data_02087d44;
 extern s32 data_ov001_0231c3ec;
 extern UnkWork_022e129c *gZoneActSelectWork;
 
-s32 func_0200225c(s32 n, s32 d);
+s32 FX_Div(s32 n, s32 d);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
 void func_ov001_022e08e0(UnkWork_022e129c *w);
 void func_ov001_022e09d0(UnkWork_022e129c *w);
@@ -49,7 +49,7 @@ void ZoneActSelect_State_FadeIn(void) {
     s32 v;
 
     w = gTaskCurrent->work;
-    v = (func_0200225c(FX_Mul_022e129c(w->timer << 12, -0x10000), 0x1e000) + 0x10000 + 0x800) >> 12;
+    v = (FX_Div(FX_Mul_022e129c(w->timer << 12, -0x10000), 0x1e000) + 0x10000 + 0x800) >> 12;
     if (v < -0x10) v = -0x10;
     if (v > 0x10) v = 0x10;
     data_0208926c.bright = v;

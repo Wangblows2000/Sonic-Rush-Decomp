@@ -6,7 +6,7 @@ typedef struct {
 
 s64 FX_GetDivResultFx64c(void);
 fx32 FX_GetDivResult(void);
-fx32 func_0200225c(fx32 numer, fx32 denom);
+fx32 FX_Div(fx32 numer, fx32 denom);
 
 #define REG_MTX_MODE (*(vu32 *)0x04000440)
 #define REG_MTX_LOAD_4x4 (*(vu32 *)0x04000458)
@@ -43,7 +43,7 @@ void G3i_PerspectiveW_(fx32 fovySin, fx32 fovyCos, fx32 aspect, fx32 n, fx32 f, 
     fx32 x0, x1;
     vu32 *load;
 
-    fovyCot = func_0200225c(fovyCos, fovySin);
+    fovyCot = FX_Div(fovyCos, fovySin);
     if (scaleW != 0x1000) {
         fovyCot = (fovyCot * scaleW) / 0x1000;
     }

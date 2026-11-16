@@ -25,8 +25,8 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void TryAgain_State_Enter(void);
 void TryAgain_Destructor(void);
 BOOL func_ov001_022d344c(void);
-void func_ov001_022d3434(void);
-void func_ov001_022d3410(void);
+void TryAgain_ExitToRetry(void);
+void TryAgain_ExitToPlayerSelect(void);
 void TryAgain_ExitToTimeAttackMenuMode0(void);
 void TryAgain_ExitToTimeAttackMenuMode1(void);
 void TryAgain_ExitToTitleScreen(void);
@@ -50,8 +50,8 @@ UnkWork_022d40a4 *TryAgain_Create(void) {
         w->unk5fc = 10;
     }
     w->unk600 = 0xd;
-    w->fn604 = func_ov001_022d3434;
-    w->fn608 = func_ov001_022d3410;
+    w->fn604 = TryAgain_ExitToRetry;
+    w->fn608 = TryAgain_ExitToPlayerSelect;
     if (func_ov001_022d344c()) {
         w->fn60c = TryAgain_ExitToTimeAttackMenuMode0;
     } else {

@@ -46,7 +46,7 @@ extern UnkStruct_022e3954_pad gPad;
 extern u16 data_ov000_02363710[];
 extern UnkStruct_022e3954_4 gGameState;
 
-s32 func_0200225c(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void Player_Action_KnockbackIntangible(UnkStruct_022e3954_pl *p, s32 a, s32 b);
 
 void func_ov000_022e3954(UnkStruct_022e3954 *s) {
@@ -104,7 +104,7 @@ void func_ov000_022e3954(UnkStruct_022e3954 *s) {
         d = x - 0x2200;
     if (d < 0)
         d = 0;
-    v = func_0200225c(((-((0x2fc00 - d) << 8)) / 0x2fc00 - 0x400) * s->unkF68, 0x549f) >> 12;
+    v = FX_Div(((-((0x2fc00 - d) << 8)) / 0x2fc00 - 0x400) * s->unkF68, 0x549f) >> 12;
     gPlayers->unk34 = s->unk111C * 0x500 / 0x2000;
     if (s->unk20C & 0x100) {
         v *= -1;

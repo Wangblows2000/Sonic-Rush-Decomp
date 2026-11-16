@@ -7,7 +7,7 @@ void SysSound_Release(void);
 void NNS_SndStopSoundAll(void);
 void Sound_ResetHeap(void);
 void WirelessMgr_StopDataSharing(s32 mode);
-void func_02054a04(void);
+void WirelessError_ResetSystem(void);
 void Sound_Init(void);
 void Overlay_Request(u32 overlayId, void (*fn)(void));
 void WirelessError_Start(void);
@@ -19,7 +19,7 @@ void Wireless_OnError(void) {
     Sound_ResetHeap();
     gWirelessErrorCallback = 0;
     WirelessMgr_StopDataSharing(0);
-    func_02054a04();
+    WirelessError_ResetSystem();
     Sound_Init();
     Overlay_Request(FS_OVERLAY_ID(ov001), WirelessError_Start);
 }

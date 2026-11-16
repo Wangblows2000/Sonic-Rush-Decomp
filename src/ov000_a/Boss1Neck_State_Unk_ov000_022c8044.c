@@ -17,13 +17,13 @@ struct UnkStruct_022c8044 {
 
 extern UnkStruct_022c8044_2 gGameState;
 
-void func_ov000_022cc06c(void *p, s32 a, s32 b);
+void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 void func_ov000_022cc35c(s32 a, s32 b);
 void ScreenShake_Start(s32 a);
 void Boss1Neck_State_Unk_ov000_022c7fcc(UnkStruct_022c8044 *s);
 
 void Boss1Neck_State_Unk_ov000_022c8044(UnkStruct_022c8044 *s) {
-    func_ov000_022cc06c(s->unk20C, 2, 6);
+    Boss1_UpdateCameraShake(s->unk20C, 2, 6);
     s->unk218++;
     if ((s->unk218 & 3) == 0) {
         if (s->unk218 & 0x8000)

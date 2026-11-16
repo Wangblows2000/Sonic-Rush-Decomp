@@ -61,8 +61,8 @@ extern UnkLimit_0233f8a0 data_ov000_0236ab10[];
 extern UnkStruct_0233f8a0_4560 gGameState;
 extern UnkStruct_0233f8a0_abd8 data_ov000_0236abd8;
 
-UnkPlayer_0233f8a0 *func_ov000_0233b62c(void);
-s32 func_0200225c(s32 a, s32 b);
+UnkPlayer_0233f8a0 *Camera_GetBySwapState(void);
+s32 FX_Div(s32 a, s32 b);
 u8 func_ov000_023427bc(s32 idx);
 
 static inline BOOL IsMode_0233f8a0(void) {
@@ -84,33 +84,33 @@ void func_ov000_0233f8a0(UnkStruct_0233f8a0 *bg, s32 idx) {
         p = &gCamera.p[idx];
     } else {
         idx = 0;
-        p = func_ov000_0233b62c();
+        p = Camera_GetBySwapState();
     }
     if (data_ov000_0236ab0c[idx].unk0 & 0x10) {
         lim = data_ov000_0236ab10[idx].unk0;
     } else {
         lim = 0x7fff;
     }
-    h = (s16)((u32)(func_0200225c((lim << 8) - p->unk8, p->unk20) >> 4) >> 8);
+    h = (s16)((u32)(FX_Div((lim << 8) - p->unk8, p->unk20) >> 4) >> 8);
     if (!(p->unk34 & 1)) {
         if (IsMode_0233f8a0()) {
             p->unk2C = 0;
         } else {
             p->unk2C = p->unk4 / 28;
         }
-        p->unk30 = (func_0200225c(p->unk8 * 5, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4) + 0x900;
+        p->unk30 = (FX_Div(p->unk8 * 5, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4) + 0x900;
         if (IsMode_0233f8a0()) {
             bg->a[idx].x = 0;
         } else {
             bg->a[idx].x = p->unk4 / 28;
         }
-        bg->a[idx].y = (func_0200225c(p->unk8 * 5, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4) + 0x900;
+        bg->a[idx].y = (FX_Div(p->unk8 * 5, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4) + 0x900;
         if (IsMode_0233f8a0()) {
             bg->b[idx].x = 0;
         } else {
             bg->b[idx].x = (p->unk4 / 28) & 0x1ffff;
         }
-        bg->b[idx].y = (func_0200225c(p->unk8 << 4, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4) + 0x1000;
+        bg->b[idx].y = (FX_Div(p->unk8 << 4, (data_ov000_0236abd8.unk10 - 0xc0) << 8) >> 4) + 0x1000;
         bg->top[idx] = 0xc1 - (bg->b[idx].y >> 8);
         if (h + (bg->b[idx].y >> 8) < 0xc1) {
             bg->top[idx] = h > 0 ? h : 0;

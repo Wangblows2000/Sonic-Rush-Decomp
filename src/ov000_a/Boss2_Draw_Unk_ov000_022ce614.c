@@ -79,7 +79,7 @@ extern s16 data_0206e470[];
 
 void Model_Animate(void *p);
 void Model_Draw(void *p);
-void func_ov000_022c5e80(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_RotZ33_(void *m, s32 s, s32 c);
 void NNS_G3dGeBufferOP_N(s32 a, void *p, s32 n);
@@ -87,7 +87,7 @@ void NNS_G3dGetCurrentMtx(void *a, void *b);
 void func_ov000_022ce474(UnkStruct_022ce614 *s);
 void func_ov000_022ce194(UnkStruct_022ce614 *s);
 void func_ov000_022cde2c(UnkStruct_022ce614 *s);
-void func_ov000_022c5e1c(s32 unused, s32 len, s32 x, s32 y, s32 *out);
+void BossArena_CirclePosToArc(s32 unused, s32 len, s32 x, s32 y, s32 *out);
 void ObjRect_Register(UnkStruct_022ce614_h *h);
 
 void Boss2_Draw_Unk_ov000_022ce614(void) {
@@ -119,7 +119,7 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
             s->unk10 += 0x6cd98;
         else if (s->unk10 > 0x70d98)
             s->unk10 -= 0x6cd98;
-        func_ov000_022c5e80(0x1152f0, 0x6cd988, s->unk10 << 4, &a->unk48, &a->unk50, &ang);
+        BossArena_ArcToCirclePos(0x1152f0, 0x6cd988, s->unk10 << 4, &a->unk48, &a->unk50, &ang);
         a->unk4C = -s->unk14 << 4;
         MTX_RotY33_(&a->unk24, data_0206e470[(((u16)(ang + 0xc000 + s->unk1304) & 0xffff) >> 4) * 2], data_0206e470[(((u16)(ang + 0xc000 + s->unk1304) & 0xffff) >> 4) * 2 + 1]);
     } else {
@@ -198,7 +198,7 @@ void Boss2_Draw_Unk_ov000_022ce614(void) {
         if (gBossStatus.unk4 != 10)
             return;
     }
-    func_ov000_022c5e1c(0x1152f0, 0x6cd988, s->unk13F0, s->unk13F8, &out);
+    BossArena_CirclePosToArc(0x1152f0, 0x6cd988, s->unk13F0, s->unk13F8, &out);
     x = out >> 12;
     y = -(s->unk13F4 >> 12);
     if (x < 0x366)

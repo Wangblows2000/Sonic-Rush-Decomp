@@ -39,10 +39,10 @@ UnkStruct_0230ae4c_l **SpecialStage_GetGimmickManager(void);
 UnkStruct_0230ae4c *SpecialStage_GetPlayer(void);
 BOOL SpecialStage_TestCollision(void *a, void *b, u16 c, void *d, void *e, u16 f);
 void func_ov001_0230f284(UnkStruct_0230ae4c_e *e, UnkStruct_0230ae4c *p);
-void func_ov001_02312f24(UnkStruct_0230ae4c *p, UnkStruct_0230ae4c_e *e);
-void func_ov001_0230f1dc(UnkStruct_0230ae4c_e *e, UnkStruct_0230ae4c *p);
-void func_ov001_0231314c(UnkStruct_0230ae4c *p, UnkStruct_0230ae4c_e *e);
-void func_ov001_02312e84(UnkStruct_0230ae4c *p, UnkStruct_0230ae4c_e *e);
+void SpecialStagePlayer_OnTouchGimmick(UnkStruct_0230ae4c *p, UnkStruct_0230ae4c_e *e);
+void SpecialStageGimmick_OnAttacked(UnkStruct_0230ae4c_e *e, UnkStruct_0230ae4c *p);
+void SpecialStagePlayer_OnAttackHit(UnkStruct_0230ae4c *p, UnkStruct_0230ae4c_e *e);
+void SpecialStagePlayer_OnHurt(UnkStruct_0230ae4c *p, UnkStruct_0230ae4c_e *e);
 
 void SpecialStage_CheckGimmickCollisions(void) {
     UnkStruct_0230ae4c_l **w = SpecialStage_GetGimmickManager();
@@ -67,7 +67,7 @@ void SpecialStage_CheckGimmickCollisions(void) {
                 ang = e->unk16;
             if (SpecialStage_TestCollision(p->unk12C, p->unk20, p->unk16, e->unkBC, e->unk20, ang)) {
                 func_ov001_0230f284(e, p);
-                func_ov001_02312f24(p, e);
+                SpecialStagePlayer_OnTouchGimmick(p, e);
             }
         }
     }
@@ -85,8 +85,8 @@ void SpecialStage_CheckGimmickCollisions(void) {
             if ((e2->unk64 & 0x2000) && !(e2->unk64 & 0x4000))
                 ang2 = e2->unk16;
             if (SpecialStage_TestCollision(p->unkB4, p->unk20, p->unk16, e2->unkBC, e2->unk20, ang2)) {
-                func_ov001_0230f1dc(e2, p);
-                func_ov001_0231314c(p, e2);
+                SpecialStageGimmick_OnAttacked(e2, p);
+                SpecialStagePlayer_OnAttackHit(p, e2);
             }
         }
     }
@@ -102,7 +102,7 @@ void SpecialStage_CheckGimmickCollisions(void) {
             if ((e3->unk64 & 0x2000) && !(e3->unk64 & 0x4000))
                 ang3 = e3->unk16;
             if (SpecialStage_TestCollision(p->unkBC, p->unk20, p->unk16, e3->unkB4, e3->unk20, ang3)) {
-                func_ov001_02312e84(p, e3);
+                SpecialStagePlayer_OnHurt(p, e3);
             }
         }
     }

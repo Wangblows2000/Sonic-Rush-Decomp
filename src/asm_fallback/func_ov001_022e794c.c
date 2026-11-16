@@ -5,8 +5,8 @@ extern void _s32_div_f(void);
 extern void _u32_div_f(void);
 extern u32 gTaskCurrent;
 extern void SysSound_PlaySE(void);
-extern void func_02053874(void);
-extern void func_ov001_022e1b4c(void);
+extern void NaviMsg_HidePanel(void);
+extern void ZoneMap_GetDirectionAngle(void);
 extern void func_ov001_022e2f0c(void);
 extern void func_ov001_022e3840(void);
 extern void func_ov001_022e3844(void);
@@ -216,13 +216,13 @@ _132:
     ldr r1, [sp, #0x14]
     add r2, r7, #0
     ldr r3, [sp, #0x18]
-    bl func_ov001_022e1b4c
+    bl ZoneMap_GetDirectionAngle
     add r4, r0, #0
     add r0, r7, #0
     ldr r1, [sp, #0x18]
     ldr r2, [sp, #0x1c]
     ldr r3, [sp, #0x20]
-    bl func_ov001_022e1b4c
+    bl ZoneMap_GetDirectionAngle
     cmp r4, r0
     blo _1bc
     sub r1, r4, r0
@@ -378,7 +378,7 @@ _248:
     bl func_ov001_022e2f0c
     b _2dc
 _2cc:
-    bl func_02053874
+    bl NaviMsg_HidePanel
     mov r2, #0x20
     add r5, #0xa4
     ldr r1, [r5]

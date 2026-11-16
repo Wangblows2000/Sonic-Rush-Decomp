@@ -31,7 +31,7 @@ UnkStruct_StageObj *Saucer_Create(s32 a, s32 b, s32 c) {
     w->unk1D4 = -0x13;
     w->unk1D6 = 0xa;
     w->unk1C4 |= 1;
-    func_02068e40(w, -0x15, -0x17, 0x15, 0x14);
+    StageObj_SetMapHitbox(w, -0x15, -0x17, 0x15, 0x14);
     w->unk58 |= 0x2000;
     w->unk58 |= 0x40;
     w->unk58 |= 0x8000;

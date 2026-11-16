@@ -86,8 +86,8 @@ extern u32 data_ov001_023178e4[];
 
 void Model_SetResource(void *s, void *res, u32 idx);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
-void func_ov001_02312aac(UnkStruct_023122d8 *w);
-void func_ov001_023120c8(UnkStruct_023122d8 *w);
+void SpecialStagePlayer_UpdateAngleFromX(UnkStruct_023122d8 *w);
+void SpecialStagePlayer_EndDash(UnkStruct_023122d8 *w);
 void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
 
 #define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
@@ -236,10 +236,10 @@ void SpecialStagePlayer_ChangeState(UnkStruct_023122d8 *w, s32 state) {
         w->unk16 = 0;
         w->unk18 = 0;
         w->unk1C = 0;
-        func_ov001_02312aac(w);
+        SpecialStagePlayer_UpdateAngleFromX(w);
     }
     if (!(e->unk6 & 0x800) && w->unk144 > 0)
-        func_ov001_023120c8(w);
+        SpecialStagePlayer_EndDash(w);
     if (e->unk6 & 0x1000)
         w->unk1F0 = 1;
     else

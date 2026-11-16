@@ -3,7 +3,7 @@
 
 extern u8 gGameState[];
 extern u8 gCamera[];
-s32 func_0206cb84();
+s32 NetPacket_Queue();
 
 void Player_SendNetState(u8 *p0) {
     if ((*(u32 *)((u8 *)gGameState + 0x18) & 0x20) == 0) {
@@ -34,5 +34,5 @@ void Player_SendNetState(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x4b0) = *(u32 *)((u8 *)gCamera + 0x4);
     *(u32 *)((u8 *)p0 + 0x4b4) = *(u32 *)((u8 *)gCamera + 0x8);
     *(u32 *)((u8 *)p0 + 0x4b8) = *(u32 *)((u8 *)gGameState + 0x20);
-    func_0206cb84(((u8 *)p0 + 0x48c), 1, 3, 0x30);
+    NetPacket_Queue(((u8 *)p0 + 0x48c), 1, 3, 0x30);
 }

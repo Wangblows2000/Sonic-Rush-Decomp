@@ -36,7 +36,7 @@ void NNS_SndPlayerStopSeq(void *p, s32 a);
 void NNS_SndHandleReleaseSeq(void *p);
 void Player_LoadPhysicsParams(UnkStruct_02353568 *w);
 void Player_Action_LandOnGround(UnkStruct_02353568 *w, u8 ang);
-void func_ov000_02328e6c(UnkStruct_02353568 *w, s32 a, s32 b);
+void EffWaterGmk_Create(UnkStruct_02353568 *w, s32 a, s32 b);
 void Player_ApplyAutoRunAcceleration(UnkStruct_02353568 *w);
 void StageObj_Move(UnkStruct_02353568 *w);
 
@@ -64,7 +64,7 @@ void func_ov000_02353568(UnkStruct_02353568 *w) {
         return;
     }
     if (!(gGameState.unk20 & 7)) {
-        func_ov000_02328e6c(w, 0, 0xc);
+        EffWaterGmk_Create(w, 0, 0xc);
     }
     if (w->unk5C & 1) {
         w->unk1 = 0xf6;

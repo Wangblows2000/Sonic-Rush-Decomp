@@ -5,7 +5,7 @@ typedef struct { u32 fileId; u16 bankNo; } UnkSeqInfo_0201e570;
 UnkSeqInfo_0201e570 *NNS_SndArcGetSeqInfo(s32 idx);
 s32 NNSi_SndArcLoadBank(s32 idx, u32 flags, void *heap, BOOL cache, void **out);
 void *LoadSeq(u32 fileId, void *heap, BOOL cache);
-void *func_0201d0f8(u32 fileId);
+void *NNS_SndArcGetFileAddress(u32 fileId);
 
 s32 NNSi_SndArcLoadSeq(s32 idx, u32 flags, void *heap, BOOL cache, void **out) {
     UnkSeqInfo_0201e570 *info;
@@ -19,7 +19,7 @@ s32 NNSi_SndArcLoadSeq(s32 idx, u32 flags, void *heap, BOOL cache, void **out) {
         p = LoadSeq(info->fileId, heap, cache);
         if (p == NULL) return 6;
     } else {
-        p = func_0201d0f8(info->fileId);
+        p = NNS_SndArcGetFileAddress(info->fileId);
     }
     if (out != NULL) *out = p;
     return 0;

@@ -6,7 +6,7 @@
 extern u8 gTaskCurrent[];
 s32 VsMenu_IsClosedForMode1();
 s32 Task_Destroy();
-s32 func_ov001_022ddd7c();
+s32 VsMenu_WasCancelledForMode1();
 extern u8 gSaveDataBusy[];
 extern u8 gSystemFlags[];
 s32 func_ov001_022d731c();
@@ -17,7 +17,7 @@ void TitleMenuVsMode1Wait_Main(void) {
     s32 t1 = VsMenu_IsClosedForMode1(*(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10));
     if (t1 != 0) {
         Task_Destroy(*(u32 *)gTaskCurrent);
-        s32 t2 = func_ov001_022ddd7c();
+        s32 t2 = VsMenu_WasCancelledForMode1();
         if (t2 != 0) {
             *(u32 *)gSaveDataBusy = 0;
             s32 t3 = (*(u32 *)gSystemFlags & ~0x10);

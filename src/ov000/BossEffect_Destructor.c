@@ -12,12 +12,12 @@ typedef struct UnkStruct_02327ef4 {
     UnkStruct_02327ef4_2 *unk10;
 } UnkStruct_02327ef4;
 
-void func_0202566c(void *p);
+void NNS_G3dResDefaultRelease(void *p);
 void StageObj_Destructor(UnkStruct_02327ef4 *s);
 
 void BossEffect_Destructor(UnkStruct_02327ef4 *s) {
     UnkStruct_02327ef4_2 *p = s->unk10;
     if (!(p->unk2A0 & 1))
-        func_0202566c(p->unk2A8);
+        NNS_G3dResDefaultRelease(p->unk2A8);
     StageObj_Destructor(s);
 }

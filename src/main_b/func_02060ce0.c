@@ -1,9 +1,0 @@
-#include <nitro/types.h>
-
-#pragma thumb on
-
-u32 TalkDemo_GetFlags(s32 i);
-void func_02060cc4(void);
-void func_02060ce0(void (**p)(void)) { if (TalkDemo_GetFlags(1) & 4) *p = func_02060cc4; }
-
-#pragma thumb reset

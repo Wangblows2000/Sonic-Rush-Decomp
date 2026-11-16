@@ -4,7 +4,7 @@ extern void *data_ov001_0231f540;
 extern void *data_ov001_0231f538;
 extern void *gMainHeap;
 
-void func_0202566c(void *p);
+void NNS_G3dResDefaultRelease(void *p);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
@@ -26,10 +26,10 @@ static inline void Free(void *p) {
 }
 
 void func_ov001_02302ac8(void) {
-    func_0202566c(data_ov001_0231f540);
+    NNS_G3dResDefaultRelease(data_ov001_0231f540);
     Free(data_ov001_0231f540);
     data_ov001_0231f540 = NULL;
-    func_0202566c(data_ov001_0231f538);
+    NNS_G3dResDefaultRelease(data_ov001_0231f538);
     Free(data_ov001_0231f538);
     data_ov001_0231f538 = NULL;
 }

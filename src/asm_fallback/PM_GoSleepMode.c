@@ -19,7 +19,7 @@ extern void PM_ForceToPowerOff(void);
 extern void PM_SetBackLight(void);
 extern void PMi_SetLED(void);
 extern void PMi_SendSleepStart(void);
-extern void func_0201ab64(void);
+extern void CTRDG_IsExisting(void);
 
 asm void PM_GoSleepMode(void)
 {
@@ -58,7 +58,7 @@ asm void PM_GoSleepMode(void)
 _80:
     ands r0, r10, #0x10
     beq _94
-    bl func_0201ab64
+    bl CTRDG_IsExisting
     cmp r0, #0
     biceq r10, r10, #0x10
 _94:

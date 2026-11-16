@@ -15,16 +15,16 @@ typedef struct {
     s8 unk67;
 } UnkStruct_0234be10;
 
-s32 func_02066638(s32 x, s32 y, u8 a, s32 b, s32 c, s32 d);
+s32 MapCollision_ProbeDistanceLong(s32 x, s32 y, u8 a, s32 b, s32 c, s32 d);
 void Player_SetAnimation(UnkStruct_0234be10 *w, s32 a);
 
 BOOL Player_CheckLedgeBalance(UnkStruct_0234be10 *w, BOOL set) {
     s32 l;
     s32 r;
 
-    if (func_02066638(w->unk10 >> 8, (w->unk14 >> 8) + w->unk67, w->unk54 & 1, 2, 0, 0) > 0) {
-        l = func_02066638((w->unk10 >> 8) + w->unk64 - 2, (w->unk14 >> 8) + w->unk67, w->unk54 & 1, 2, 0, 0);
-        r = func_02066638((w->unk10 >> 8) + w->unk66 + 2, (w->unk14 >> 8) + w->unk67, w->unk54 & 1, 2, 0, 0);
+    if (MapCollision_ProbeDistanceLong(w->unk10 >> 8, (w->unk14 >> 8) + w->unk67, w->unk54 & 1, 2, 0, 0) > 0) {
+        l = MapCollision_ProbeDistanceLong((w->unk10 >> 8) + w->unk64 - 2, (w->unk14 >> 8) + w->unk67, w->unk54 & 1, 2, 0, 0);
+        r = MapCollision_ProbeDistanceLong((w->unk10 >> 8) + w->unk66 + 2, (w->unk14 >> 8) + w->unk67, w->unk54 & 1, 2, 0, 0);
         if (l <= 0 && r >= 0x10) {
             if (set) {
                 w->unk5C &= ~0x400;

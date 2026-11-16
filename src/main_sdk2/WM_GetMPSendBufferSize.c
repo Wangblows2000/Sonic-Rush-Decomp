@@ -5,7 +5,7 @@ void DC_InvalidateRange(void *p, u32 size);
 
 s32 WM_GetMPSendBufferSize(void)
 {
-    UnkWmWork *w = func_02010b70();
+    UnkWmWork *w = WMi_GetSystemWork();
     u8 *p;
     if (WMi_CheckStateEx(2, 7, 8) != 0) {
         return 0;

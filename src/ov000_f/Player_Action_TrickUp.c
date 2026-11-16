@@ -42,7 +42,7 @@ struct UnkStruct_02349e24 {
 
 extern u32 gRandSeed;
 
-BOOL func_ov000_0232bb20(void);
+BOOL ScorePopup_IsActive(void);
 void Player_SetAnimation(UnkStruct_02349e24 *w, s32 state);
 void Player_State_InAir(UnkStruct_02349e24 *w);
 void EffBoostJet_Spawn(UnkStruct_02349e24 *w);
@@ -60,7 +60,7 @@ void Player_Action_TrickUp(UnkStruct_02349e24 *w) {
     s32 v;
     u16 f;
 
-    if (!func_ov000_0232bb20()) {
+    if (!ScorePopup_IsActive()) {
         w->unk3CF = 0;
     }
     Player_SetAnimation(w, 0x35);

@@ -34,7 +34,7 @@ void func_ov001_022e5c58(void);
 void func_ov001_022e5e28(s32 a, s32 b, s32 c);
 void func_ov001_022e5db0(s32 a);
 void func_ov001_022e3180(s32 a, s32 b);
-void func_020538d8(void);
+void NaviMsg_StartIntro(void);
 void func_ov001_022e7f64(void);
 
 #pragma thumb on
@@ -48,7 +48,7 @@ void func_ov001_022e6538(void) {
         break;
     case 1:
         w->unk94 = 3;
-        func_020538d8();
+        NaviMsg_StartIntro();
         func_ov001_022e5a48(0xf0);
         break;
     case 3:

@@ -27,7 +27,7 @@ extern UnkStruct_02369ac0 gBossStatus;
 extern u8 data_ov000_02363edc[][8];
 extern u16 data_ov000_02363fdc[][8];
 
-void func_ov000_022f8fa0(u16 *p, s32 a, s32 b);
+void BossF_UpdateCameraShake(u16 *p, s32 a, s32 b);
 void func_ov000_022f8bc8(u32 a, s32 b);
 void func_ov000_022f89f4(void);
 void func_ov000_022f2680(void);
@@ -42,7 +42,7 @@ static inline s32 GetIdxB(void) {
 }
 
 void BossFPartD8_State_Unk_ov000_022f2724(UnkStruct_022f2724 *s) {
-    func_ov000_022f8fa0(&s->unk436, 2, 6);
+    BossF_UpdateCameraShake(&s->unk436, 2, 6);
     s->unk43A++;
     if (!(s->unk43A & 3)) {
         if (s->unk43A & 0x8000)

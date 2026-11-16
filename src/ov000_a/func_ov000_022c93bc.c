@@ -62,8 +62,8 @@ struct UnkStruct_022c93bc {
 
 extern UnkStruct_022c93bc_2 *gBoss1;
 
-void func_ov000_022cc00c(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cc06c(void *p, s32 a, s32 b);
+void Boss1_SetPartAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
+void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 
 typedef struct UnkStruct_022c93bc_cam {
     u8 pad[0x48];
@@ -96,8 +96,8 @@ void func_ov000_022c93bc(UnkStruct_022c93bc *s) {
     UnkStruct_022c93bc_3 *p = gBoss1->unk214;
     if (!func_ov000_022cc6d4())
         s->unk2E = 0;
-    func_ov000_022cc00c(s->unk228, s->unk220, 0x14, 0x1000, 0);
-    func_ov000_022cc00c(p->unk30C, p->unk304, 7, 0x1000, 0);
+    Boss1_SetPartAnimation(s->unk228, s->unk220, 0x14, 0x1000, 0);
+    Boss1_SetPartAnimation(p->unk30C, p->unk304, 7, 0x1000, 0);
     data_ov000_0236a444.unk64 = -0x210000;
     data_ov000_0236a444.unk94 = 0x180000;
     data_ov000_0236a444.unk68 -= 0x50000;

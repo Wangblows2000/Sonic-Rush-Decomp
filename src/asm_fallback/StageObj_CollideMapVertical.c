@@ -3,10 +3,10 @@
 
 extern u32 data_0206e470;
 extern void StageObj_GetMapProbeFlags(void);
-extern void func_02066010(void);
+extern void StageObj_ProbeCollision(void);
 extern void func_020660b0(void);
 extern void MapCollision_ProbeDistance(void);
-extern void func_02067670(void);
+extern void ObjCollisionMap_ProbeForObj(void);
 extern void ObjAngle_MoveToward8(void);
 
 asm void StageObj_CollideMapVertical(void)
@@ -190,7 +190,7 @@ _270:
     add r1, r7, r1
     add r2, r6, r2
     and r3, r3, #0xff
-    bl func_02066010
+    bl StageObj_ProbeCollision
     ldr r2, [sp, #0x24]
     ldr r1, [sp, #0x1c]
     add r2, r2, r4
@@ -206,7 +206,7 @@ _270:
     add r2, r6, r2
     and r3, r3, #0xff
     mov r0, r9
-    bl func_02066010
+    bl StageObj_ProbeCollision
     mov r0, r0, lsl #0x18
     mov r0, r0, asr #0x18
     cmp r4, r0
@@ -255,7 +255,7 @@ _35c:
     mov r0, r9
     add r2, r6, r2
     mov r3, r10
-    bl func_02066010
+    bl StageObj_ProbeCollision
     mov r0, r0, lsl #0x18
     mov r8, r0, asr #0x18
     ldrb r1, [sp, #0x67]
@@ -276,7 +276,7 @@ _35c:
     ldr r2, [sp, #0x4c]
     mov r0, r9
     mov r3, r10
-    bl func_02066010
+    bl StageObj_ProbeCollision
     mov r0, r0, lsl #0x18
     mov r0, r0, asr #0x18
     str r0, [sp, #0x58]
@@ -316,7 +316,7 @@ _46c:
     mov r0, r9
     add r1, r4, r1
     mov r3, r10
-    bl func_02067670
+    bl ObjCollisionMap_ProbeForObj
     mov r0, r0, lsl #0x18
     mov r0, r0, asr #0x18
     cmp r0, r8
@@ -354,7 +354,7 @@ _4fc:
     mov r0, r9
     add r1, r4, r1
     mov r3, r10
-    bl func_02067670
+    bl ObjCollisionMap_ProbeForObj
     mov r0, r0, lsl #0x18
     mov r0, r0, asr #0x18
     cmp r0, r8
@@ -386,7 +386,7 @@ _554:
     ldr r2, [sp, #0x4c]
     mov r0, r9
     mov r3, r10
-    bl func_02066010
+    bl StageObj_ProbeCollision
     b _5ec
 _5a8:
     cmp r0, #0
@@ -405,7 +405,7 @@ _5a8:
     ldr r2, [sp, #0x4c]
     mov r0, r9
     mov r3, r10
-    bl func_02066010
+    bl StageObj_ProbeCollision
 _5ec:
     mov r0, r9
     ldrb r1, [sp, #0x67]
@@ -673,7 +673,7 @@ _95c:
     add r1, r7, r11
     add r2, r6, r2
     mov r3, r10
-    bl func_02067670
+    bl ObjCollisionMap_ProbeForObj
     ldr r1, [sp, #0x1c]
     ldr r2, [sp, #0x24]
     str r5, [sp]
@@ -684,7 +684,7 @@ _95c:
     add r1, r7, r1
     add r2, r6, r2
     mov r3, r10
-    bl func_02067670
+    bl ObjCollisionMap_ProbeForObj
     b _a08
 _9d4:
     ldr r0, [r9, #0x58]
@@ -863,7 +863,7 @@ _c28:
     add r1, r7, r11
     add r2, r6, r2
     and r3, r5, #0xff
-    bl func_02066010
+    bl StageObj_ProbeCollision
     mov r1, r0, lsl #0x18
     mov r8, r1, asr #0x18
     ldr r1, [sp, #0x1c]
@@ -876,7 +876,7 @@ _c28:
     add r2, r6, r2
     and r3, r5, #0xff
     mov r0, r9
-    bl func_02066010
+    bl StageObj_ProbeCollision
     mov r0, r0, lsl #0x18
     mov r0, r0, asr #0x18
     cmp r8, r0

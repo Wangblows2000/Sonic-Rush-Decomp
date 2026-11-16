@@ -11,7 +11,7 @@ extern u8 data_ov000_02366eb0[], data_ov000_0236a22c[], data_ov000_0236a214[], d
 void MapObject_Destructor(void);
 void RopeC_OnHit(void);
 void RopeC_SpawnParts(UnkStruct_0231507c *w);
-void func_ov000_0231506c(UnkStruct_0231507c *w);
+void RopeC_Action_Init(UnkStruct_0231507c *w);
 
 UnkStruct_0231507c *RopeC_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -43,6 +43,6 @@ UnkStruct_0231507c *RopeC_Create(s32 a, s32 b, s32 c) {
     w->base.unk58 |= 0x2100;
     w->base.unk204 = 0;
     RopeC_SpawnParts(w);
-    func_ov000_0231506c(w);
+    RopeC_Action_Init(w);
     return w;
 }

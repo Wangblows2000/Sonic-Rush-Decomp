@@ -3,7 +3,7 @@
 
 s32 func_ov000_022ee198();
 s32 func_ov000_022e9b70();
-s32 func_ov000_023273f8();
+s32 EffKemuriSpin3D_Create();
 s32 Sound_PlaySeqArc();
 extern u8 gBossStatus[];
 void Boss7PartD5_MoveState_Unk_ov000_022e9038();
@@ -17,7 +17,7 @@ void func_ov000_022e908c(u8 *p0) {
     *(u16 *)((u8 *)p0 + 0xbe) = 0x80;
     *(u16 *)((u8 *)p0 + 0x106) = 0x80;
     *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x124) + 0x114) = 0x8000;
-    s32 t0 = func_ov000_023273f8(p0, *(u32 *)((u8 *)p0 + 0x3d0), -10, 0xe, 0);
+    s32 t0 = EffKemuriSpin3D_Create(p0, *(u32 *)((u8 *)p0 + 0x3d0), -10, 0xe, 0);
     *(u32 *)((u8 *)p0 + 0x484) = t0;
     if (*(u32 *)((u8 *)p0 + 0x3d0) == 0) {
         Sound_PlaySeqArc(0, 0, 0);

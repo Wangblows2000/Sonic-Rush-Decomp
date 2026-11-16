@@ -16,7 +16,7 @@ typedef struct {
 extern void *gZoneActArchive;
 extern u8 data_ov000_02367c2c[];
 
-void func_ov000_02327b3c(void);
+void EffPebble_State_Lifetime(void);
 
 UnkStruct_02327b5c *EffPebble_Create(s32 x, s32 y, s32 z, s16 a, s16 b, s16 c, s32 d) {
     UnkStruct_Task *task;
@@ -44,6 +44,6 @@ UnkStruct_02327b5c *EffPebble_Create(s32 x, s32 y, s32 z, s16 a, s16 b, s16 c, s
     w->blk.unk18 = w->blk.unk1C = w->blk.unk20 = 0x34cc;
     w->base.unk58 |= 0x180;
     w->base.unk54 |= 2;
-    w->base.unk68 = func_ov000_02327b3c;
+    w->base.unk68 = EffPebble_State_Lifetime;
     return w;
 }

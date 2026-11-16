@@ -21,12 +21,12 @@ s32 WM_SetParentParameter(void *cb, UnkParentParam_wh *pp)
         return 6;
     }
     WmCheckParentParameter(pp);
-    func_02010cd4(7, cb);
+    WMi_SetCallbackTable(7, cb);
     DC_StoreRange(pp, sizeof(UnkParentParam_wh));
     if (pp->userGameInfoLength != 0) {
         DC_StoreRange(pp->userGameInfo, pp->userGameInfoLength);
     }
-    r = func_02010b80(7, 1, pp);
+    r = WMi_SendCommand(7, 1, pp);
     if (r == 0) {
         r = 2;
     }

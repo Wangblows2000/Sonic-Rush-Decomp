@@ -45,7 +45,7 @@ void func_ov001_022d7968(s32 a, s32 b);
 void func_ov001_022d78f4(s32 a, s32 b);
 void func_ov001_022d7e60(void *p, void *sw);
 void func_ov001_022d76c4(void *sw, void *a, void *b);
-void func_02051db0(s32 a, s32 b, s32 c, s32 d);
+void SysSound_PlaySEDelayed(s32 a, s32 b, s32 c, s32 d);
 void func_ov001_022d8938(void);
 void func_ov001_022d85d0(void);
 
@@ -120,7 +120,7 @@ void func_ov001_022d8798(void) {
         func_ov001_022d7e60(w->obj10, w->sw);
         func_ov001_022d76c4(w->sw, w->res18c, w->res194[w->sel]);
         if (snd) {
-            func_02051db0(2, 0x14, 0x5000, 0x1000);
+            SysSound_PlaySEDelayed(2, 0x14, 0x5000, 0x1000);
         }
         gTaskCurrent->func = func_ov001_022d85d0;
     }

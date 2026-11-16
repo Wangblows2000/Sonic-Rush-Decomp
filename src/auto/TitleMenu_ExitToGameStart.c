@@ -5,7 +5,7 @@
 
 extern u8 gSaveData[];
 extern u8 gGameState[];
-s32 func_0204ec40();
+s32 StoryProgress_RestoreFromSave();
 s32 func_0206488c();
 s32 SysSound_Release();
 s32 Game_StartStoryStage();
@@ -16,7 +16,7 @@ s32 SceneChange_ToPlayerSelectMenuMode0();
 void TitleMenu_ExitToGameStart(void) {
     s32 t0 = *(u16 *)((u8 *)gSaveData + 0xc);
     *(u32 *)gGameState = 0;
-    func_0204ec40(gGameState, 0);
+    StoryProgress_RestoreFromSave(gGameState, 0);
     func_0206488c();
     if (t0 == 0) {
         SysSound_Release();

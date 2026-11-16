@@ -46,7 +46,7 @@ BOOL Player_CheckFallOffGround(UnkStruct_0234bfa0 *w);
 void Player_Action_Fall(UnkStruct_0234bfa0 *w);
 void Player_ApplySlopeForce(UnkStruct_0234bfa0 *w, s32 a);
 void Player_ApplyVerticalInput(UnkStruct_0234bfa0 *w);
-BOOL func_0206825c(UnkStruct_0234bfa0 *w, void *p);
+BOOL StageObj_IsTouched(UnkStruct_0234bfa0 *w, void *p);
 
 void Player_State_GroundIdle(UnkStruct_0234bfa0 *w) {
     u16 f;
@@ -110,7 +110,7 @@ void Player_State_GroundIdle(UnkStruct_0234bfa0 *w) {
         w->unk338(w);
         return;
     }
-    if (func_0206825c(w, w->unk2A0)) {
+    if (StageObj_IsTouched(w, w->unk2A0)) {
         Player_SetAnimation(w, 0x45);
         w->unkC = 0;
         if (w->unk324 != 0) {

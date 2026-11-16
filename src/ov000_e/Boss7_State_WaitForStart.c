@@ -64,14 +64,14 @@ extern void *gBossF;
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
 void func_ov000_022ee380(void);
-void func_ov000_022ee17c(void);
+void Boss7_StartPartD5AI(void);
 void Boss7_State_Unk_ov000_022edcd8(UnkStruct_022edd80 *s);
 void Model_SetAnimation(void *s, s32 a, s32 b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
 void func_ov000_022f898c(void);
 void BossF_Action_Unk_ov000_022f8310(void *p);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 
 void Boss7_State_WaitForStart(UnkStruct_022edd80 *s) {
     UnkStruct_022edd80_a *a;
@@ -98,8 +98,8 @@ void Boss7_State_WaitForStart(UnkStruct_022edd80 *s) {
     c->unk60.y = -0x1a8000;
     c->unk60.z = 0;
     c->unk54 = c->unk60;
-    func_020537b4(9);
-    func_020533e0(0xf, 0xf0);
-    func_ov000_022ee17c();
+    NaviMsg_SetFaceAnim(9);
+    NaviMsg_ShowMessage(0xf, 0xf0);
+    Boss7_StartPartD5AI();
     s->func = Boss7_State_Unk_ov000_022edcd8;
 }

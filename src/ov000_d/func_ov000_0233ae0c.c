@@ -5,9 +5,9 @@ extern u8 data_ov000_02368808[];
 extern u32 gPaletteTransferHead;
 extern u32 gPaletteTransferTail;
 
-void func_02021310(void *buf, void *a, void *b);
-void *func_02021264(void *buf, s32 a);
-void func_020212e0(void *buf);
+void NNS_FndMountArchive(void *buf, void *a, void *b);
+void *NNS_FndGetArchiveFileByIndex(void *buf, s32 a);
+void NNS_FndUnmountArchive(void *buf);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 u32 func_ov000_0233ac84(void *res);
@@ -48,16 +48,16 @@ void func_ov000_0233ae0c(void) {
     u32 sa;
     u32 sb;
 
-    func_02021310(buf, data_ov000_02368808, data_ov000_0236aab8);
+    NNS_FndMountArchive(buf, data_ov000_02368808, data_ov000_0236aab8);
     z0 = 0;
     MIi_CpuClear32(z0, (void *)0x6010000, 0x10000);
     z1 = 0;
     MIi_CpuClear32(z1, (void *)0x6210000, 0x10000);
-    res = func_02021264(buf, 3);
+    res = NNS_FndGetArchiveFileByIndex(buf, 3);
     UnkDecomp_0233ae0c(res, (void *)0x6010000);
     UnkDecomp_0233ae0c(res, (void *)0x6210000);
     VBlankIntrWait();
-    res = func_02021264(buf, 6);
+    res = NNS_FndGetArchiveFileByIndex(buf, 6);
     sa = gPaletteTransferHead;
     sb = gPaletteTransferTail;
     gPaletteTransferHead = 0;
@@ -79,5 +79,5 @@ void func_ov000_0233ae0c(void) {
     gPaletteTransferHead = sa;
     gPaletteTransferTail = sb;
     func_ov000_0233a4c8(buf);
-    func_020212e0(buf);
+    NNS_FndUnmountArchive(buf);
 }

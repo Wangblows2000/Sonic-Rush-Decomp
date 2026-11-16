@@ -26,7 +26,7 @@ typedef struct UnkStruct_02311efc {
     s32 unk228;
 } UnkStruct_02311efc;
 
-void func_02022270(u32 index, u32 value);
+void NNS_G3dGlbLightColor(u32 index, u32 value);
 void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 n);
 void Model_Draw(void *o);
 
@@ -42,9 +42,9 @@ void func_ov001_02311efc(UnkStruct_02311efc *p) {
     s32 i;
     s32 k;
 
-    func_02022270(0, 0x6182);
-    func_02022270(1, 0x6182);
-    func_02022270(2, 0x6182);
+    NNS_G3dGlbLightColor(0, 0x6182);
+    NNS_G3dGlbLightColor(1, 0x6182);
+    NNS_G3dGlbLightColor(2, 0x6182);
     if (p->unk228 == 0x12 || p->unk228 == 0x13) {
         if (p->flags & 1) {
             for (i = 0; i < 3; i++) {
@@ -70,7 +70,7 @@ void func_ov001_02311efc(UnkStruct_02311efc *p) {
         one2 = 1;
         NNS_G3dGeBufferOP_N(0x12, &one2, 1);
     }
-    func_02022270(0, 0x7fff);
-    func_02022270(1, 0x4631);
-    func_02022270(2, 0x2108);
+    NNS_G3dGlbLightColor(0, 0x7fff);
+    NNS_G3dGlbLightColor(1, 0x4631);
+    NNS_G3dGlbLightColor(2, 0x2108);
 }

@@ -49,10 +49,10 @@ extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_Player *gPlayers;
 extern UnkStruct_0208922c gDisplayMain;
 
-void func_ov000_022f9044(UnkStruct_022ef7b0 *s);
+void BossFPartD8_InitHitboxes(UnkStruct_022ef7b0 *s);
 void func_ov000_022f4cbc(UnkStruct_022ef7b0 *s);
 void StageObj_SetPause(void);
-void func_ov000_022f8b70(u32 a, s32 b);
+void BossF_LoadPalette(u32 a, s32 b);
 void Player_Action_Blank(UnkStruct_Player *p);
 void Player_SetAnimation(UnkStruct_Player *p, s32 a);
 u32 func_ov000_0235b0a8(void);
@@ -65,7 +65,7 @@ void func_ov000_022ef7b0(UnkStruct_022ef7b0 *s) {
     UnkStruct_Boss *b = gBossF;
 
     gBossStatus.unk4 = 0x3b;
-    func_ov000_022f9044(s);
+    BossFPartD8_InitHitboxes(s);
     func_ov000_022f4cbc(s);
     s->base.unk1B8 = NULL;
     b->base.unk54 |= 0x20;
@@ -73,7 +73,7 @@ void func_ov000_022ef7b0(UnkStruct_022ef7b0 *s) {
     b->unk358 = 0;
     s->unk584 = 0;
     StageObj_SetPause();
-    func_ov000_022f8b70(gGameState.unk0, 0);
+    BossF_LoadPalette(gGameState.unk0, 0);
     gGameState.unk18 &= ~1;
     Player_Action_Blank(gPlayers);
     Player_SetAnimation(gPlayers, 0x30);

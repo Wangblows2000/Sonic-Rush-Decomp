@@ -4,11 +4,11 @@
 void MBi_CommChangeParentState(u16 aid, u32 type, void *arg);
 void MI_CpuFill8(void *dest, u8 data, u32 size);
 void MBi_ClearParentPieceBuffer(u16 aid);
-void func_02015e6c(void *arg);
+void MBi_CommParentRecvData(void *arg);
 void MBi_CommParentSendData(void);
 void MB_UpdateGameInfoMember(void *a, void *b, u16 c, u16 d);
-u32 func_020183d4(void);
-u32 func_020183c0(void);
+u32 MBi_GetGgid(void);
+u32 MBi_GetTgid(void);
 u8 MBi_GetAttribute(void);
 void MB_SendGameInfoBeacon(u32 a, u32 b, u8 c);
 void MBi_CommCallParentError(u32 a, u32 b);
@@ -56,7 +56,7 @@ void MBi_CommParentCallback(s32 code, UnkCallback_wh *arg)
         }
         break;
     case 3:
-        func_02015e6c(arg);
+        MBi_CommParentRecvData(arg);
         break;
     case 0x19:
         MBi_CommParentSendData();
@@ -70,7 +70,7 @@ void MBi_CommParentCallback(s32 code, UnkCallback_wh *arg)
                 data_02080f1c->unk1788[i].unk5c8 = 0;
             }
         }
-        MB_SendGameInfoBeacon(func_020183d4(), func_020183c0(), MBi_GetAttribute());
+        MB_SendGameInfoBeacon(MBi_GetGgid(), MBi_GetTgid(), MBi_GetAttribute());
         break;
     }
     case 0xff:

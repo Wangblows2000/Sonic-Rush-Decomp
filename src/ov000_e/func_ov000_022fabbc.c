@@ -26,8 +26,8 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 extern UnkStruct_Player *gPlayers;
 
-void func_0206c95c(void);
-UnkStruct_Ev *func_0206c938(s32 a, s32 b);
+void NetPacket_ResetRead(void);
+UnkStruct_Ev *NetPacket_FindNextData(s32 a, s32 b);
 u8 *func_ov000_023355d0(void);
 void Sound_PlaySeqArcEx(s32 a, s32 b, s32 c);
 void Player_ApplySlowdown(UnkStruct_Player *p);
@@ -44,12 +44,12 @@ void func_ov000_022fabbc(void) {
 
     if (!(gGameState.unk18 & 0x20))
         return;
-    func_0206c95c();
+    NetPacket_ResetRead();
     for (i = 0; i < 2; i++) {
         if (i == gPlayers->unk326)
             continue;
         for (;;) {
-            o = func_0206c938(2, i);
+            o = NetPacket_FindNextData(2, i);
             if (o == NULL)
                 break;
             base = func_ov000_023355d0();

@@ -4,7 +4,7 @@
 s32 func_ov000_022f4cbc();
 extern u8 data_ov000_02363e48[];
 void BossFPartD8_State_Unk_ov000_022f3bb8();
-s32 func_ov000_022f4ce4();
+s32 BossFPartD8_SetAnimation();
 void BossFPartD8_State_Unk_ov000_022f35e4();
 
 void BossFPartD8_State_Unk_ov000_022f369c(u8 *p0) {
@@ -22,7 +22,7 @@ void BossFPartD8_State_Unk_ov000_022f369c(u8 *p0) {
     } else {
         v1 = ((*(u32 *)((u8 *)p0 + 0x434) != 0) ? 0xc : 0xd);
     }
-    func_ov000_022f4ce4(p0, v1, 0x1000, 0);
+    BossFPartD8_SetAnimation(p0, v1, 0x1000, 0);
     *(u32 *)((u8 *)p0 + 0x68) = (u32)BossFPartD8_State_Unk_ov000_022f35e4;
     ((s32 (*)())*(u32 *)((u8 *)p0 + 0x68))(p0, *(u32 *)((u8 *)p0 + 0x68));
 }

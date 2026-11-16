@@ -38,7 +38,7 @@ extern UnkTask_022dc568 *gTaskCurrent;
 extern UnkStruct_022dc568_7 gBossStatus;
 extern s16 data_0206e470[];
 
-void func_ov000_022db6c8(s32 *p);
+void Boss4_WrapArenaX(s32 *p);
 void func_ov000_022db7d4(void *a, u16 *ang, UnkStruct_022dc568 *s);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 
@@ -65,7 +65,7 @@ void Boss4PartD1_State_Unk_ov000_022dc568(void) {
     s->unk14 += s->unk3B4;
     if (s->unk3C0 != NULL)
         s->unk3C0(s);
-    func_ov000_022db6c8(&s->unk10);
+    Boss4_WrapArenaX(&s->unk10);
     func_ov000_022db7d4(s->unk254, &ang, s);
     {
         u16 r = s->unk34C + ang;

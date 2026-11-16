@@ -1,5 +1,5 @@
 #include <nitro/types.h>
 
-BOOL func_02010b54(void);
+BOOL WMi_CheckInitialized(void);
 s32 WM_GetLinkLevel(void);
-s32 Wireless_GetLinkLevel(void) { if (func_02010b54()) return 0; return WM_GetLinkLevel(); }
+s32 Wireless_GetLinkLevel(void) { if (WMi_CheckInitialized()) return 0; return WM_GetLinkLevel(); }

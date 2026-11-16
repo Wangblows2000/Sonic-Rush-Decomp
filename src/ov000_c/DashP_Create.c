@@ -10,7 +10,7 @@ extern u8 data_ov000_02366900[], data_ov000_02369f34[];
 void MapObject_Destructor(void);
 void DashP_OnHit(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void DashP_Action_Unk_ov000_02307aa4(UnkStruct_02307adc *w);
+void DashP_Action_Init(UnkStruct_02307adc *w);
 
 UnkStruct_02307adc *DashP_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -91,6 +91,6 @@ UnkStruct_02307adc *DashP_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->base.unk8 = 3;
         break;
     }
-    DashP_Action_Unk_ov000_02307aa4(w);
+    DashP_Action_Init(w);
     return w;
 }

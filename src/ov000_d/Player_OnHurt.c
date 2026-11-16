@@ -56,8 +56,8 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 
 void Sound_PlaySeqArcEx(void *p, s32 a, s32 b);
-void func_020537b4(s32 a);
-void func_020533e0(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
 void Player_AddTension(UnkStruct_023492f0_Player *w, s32 a);
 void Hud_SetTensionGauge(u32 a, s32 b);
 void RingManager_ScatterRings(UnkStruct_023492f0_Player *w);
@@ -85,8 +85,8 @@ void Player_OnHurt(UnkStruct_023492f0 *o, UnkStruct_023492f0_Arg *arg) {
         Sound_PlaySeqArcEx(w->unk384, 0, 0x43);
     }
     if (gGameState.unk1C >= 9 || gGameState.unk1D >= 2) {
-        func_020537b4(0xc);
-        func_020533e0(0x11, 0x96);
+        NaviMsg_SetFaceAnim(0xc);
+        NaviMsg_ShowMessage(0x11, 0x96);
     }
     if (!(w->unk32C & 0x10000000)) {
         Player_AddTension(w, -0x4b0);

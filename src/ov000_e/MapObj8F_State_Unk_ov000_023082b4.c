@@ -15,7 +15,7 @@ extern UnkStruct_0236aad8 gCamera;
 void *func_ov000_02307e84(void);
 UnkStruct_023082b4_T *func_ov000_0234237c(s32 a, void *b);
 BOOL func_ov000_02307dfc(void *a, s32 b);
-void func_ov000_0233b374(void);
+void Camera_TrySwitchScreen(void);
 void func_ov000_02308110(UnkStruct_StageObj *s);
 
 void MapObj8F_State_Unk_ov000_023082b4(UnkStruct_StageObj *s) {
@@ -31,7 +31,7 @@ void MapObj8F_State_Unk_ov000_023082b4(UnkStruct_StageObj *s) {
         return;
     }
     if ((gCamera.unkC8 & 1) && !(s->unk1E0->unk4 & 2))
-        func_ov000_0233b374();
+        Camera_TrySwitchScreen();
     if (t->unk20C & 0x2000)
         func_ov000_02308110(s);
 }

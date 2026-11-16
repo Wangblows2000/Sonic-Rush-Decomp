@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 Sound_PlaySeqArcEx();
-s32 func_ov000_0232e2f0();
+s32 EffZakoBomb_Create();
 s32 EffZakoDebris_Create();
 s32 ScreenShake_Start();
 s32 ScreenFlash_Create();
@@ -13,7 +13,7 @@ void Mine_Explode(u8 *p0) {
         return;
     }
     Sound_PlaySeqArcEx(0, 0, 0x59);
-    func_ov000_0232e2f0(p0, 0, 0);
+    EffZakoBomb_Create(p0, 0, 0);
     EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 4);
     EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 5);
     EffZakoDebris_Create(p0, 0, -24, 0, -0x200, 6);

@@ -64,7 +64,7 @@ extern UnkStruct_022dbfb4_w *gBoss4;
 extern s16 data_0206e470[];
 extern s16 data_02070470[];
 
-void func_ov000_022db6c8(s32 *p);
+void Boss4_WrapArenaX(s32 *p);
 void func_ov000_022db758(s32 *v, u16 *ang, s32 x, s32 y);
 
 void Boss4PartD2_State_Unk_ov000_022dbfb4(void) {
@@ -78,8 +78,8 @@ void Boss4PartD2_State_Unk_ov000_022dbfb4(void) {
     s->unk4F4++;
     if (s->unk4F0 != NULL)
         s->unk4F0(s);
-    func_ov000_022db6c8(&s->unk4E0);
-    func_ov000_022db6c8(&s->unk4E4);
+    Boss4_WrapArenaX(&s->unk4E0);
+    Boss4_WrapArenaX(&s->unk4E4);
     func_ov000_022db758(NULL, &s->unk4EA, s->unk4E0, 0);
     func_ov000_022db758(NULL, &s->unk4EC, s->unk4E4, 0);
     if (s->unk4D8 == 0) {

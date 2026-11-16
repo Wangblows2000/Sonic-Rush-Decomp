@@ -88,7 +88,7 @@ struct UnkStruct_022d3070 {
 };
 
 void Model_SetAnimation(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_022cd1b0(u32 flags);
+void Boss2_SetPalettes(u32 flags);
 
 typedef struct UnkStruct_022d3070_p {
     u8 pad[0x10];
@@ -98,7 +98,7 @@ typedef struct UnkStruct_022d3070_p {
 extern UnkStruct_022d3070_p *gPlayers;
 
 s32 FX_DivS32(s32 a, s32 b);
-void func_ov000_022d2920(UnkStruct_022d3070 *s, s32 mode);
+void Boss2_UpdateArenaSpeed(UnkStruct_022d3070 *s, s32 mode);
 void Boss2_State_Unk_ov000_022d2f4c(UnkStruct_022d3070 *s);
 
 void Boss2_State_Unk_ov000_022d3070(UnkStruct_022d3070 *s) {
@@ -108,7 +108,7 @@ void Boss2_State_Unk_ov000_022d3070(UnkStruct_022d3070 *s) {
     s32 a;
     s32 b;
     s32 d;
-    func_ov000_022d2920(s, 1);
+    Boss2_UpdateArenaSpeed(s, 1);
     if (!(x->unk10C & 2))
         return;
     s->func = Boss2_State_Unk_ov000_022d2f4c;

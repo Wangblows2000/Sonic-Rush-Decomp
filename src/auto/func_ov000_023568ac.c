@@ -5,8 +5,8 @@
 
 s32 NNS_G3dGlbPolygonAttr();
 s32 VEC_Fx16Normalize();
-s32 func_02022284();
-s32 func_02022270();
+s32 NNS_G3dGlbLightVector();
+s32 NNS_G3dGlbLightColor();
 s32 NNS_G3dGlbMaterialColorDiffAmb();
 s32 NNSi_G3dModifyPolygonAttrMask();
 s32 NNSi_G3dModifyMatFlag();
@@ -14,8 +14,8 @@ s32 NNSi_G3dModifyMatFlag();
 void func_ov000_023568ac(s32 p0, s32 p1, s32 p2) {
     NNS_G3dGlbPolygonAttr(1, 0, p1, 0, 0x1f, 0);
     VEC_Fx16Normalize(p2, p2);
-    func_02022284(0, *(s16 *)((u8 *)p2 + 0), *(s16 *)((u8 *)p2 + 2), *(s16 *)((u8 *)p2 + 4));
-    func_02022270(0, 0x7fff);
+    NNS_G3dGlbLightVector(0, *(s16 *)((u8 *)p2 + 0), *(s16 *)((u8 *)p2 + 2), *(s16 *)((u8 *)p2 + 4));
+    NNS_G3dGlbLightColor(0, 0x7fff);
     NNS_G3dGlbMaterialColorDiffAmb(0x7fff, 0x6f7b, 1);
     NNSi_G3dModifyPolygonAttrMask(p0, 0, 0xf);
     NNSi_G3dModifyMatFlag(p0, 0, 0x40);

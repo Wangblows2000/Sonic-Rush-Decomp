@@ -15,7 +15,7 @@ typedef struct {
 extern UnkStruct_StageObj *gPlayers;
 
 void func_ov000_022e5c1c(UnkStruct_Boss *w);
-void func_ov000_022e1b48(s32 a);
+void Boss6_SelectNextAttack(s32 a);
 
 void Boss6_State_Unk_ov000_022e5980(UnkStruct_Boss *w) {
     s32 d;
@@ -41,5 +41,5 @@ void Boss6_State_Unk_ov000_022e5980(UnkStruct_Boss *w) {
     w->base.unk10 += w->unkF58;
     if (w->unkF50 > 0)
         return;
-    func_ov000_022e1b48(0);
+    Boss6_SelectNextAttack(0);
 }
