@@ -11148,7 +11148,7 @@ src/asm_fallback/BossEffect_Create.c:
     complete
     .text       start:0x02327ca4 end:0x02327ef4
 
-src/asm_fallback/EffTrickSparkle_Create.c:
+src/c_ov0002/EffTrickSparkle_Create.c:
     complete
     .text       start:0x0232c7b0 end:0x0232cbf4
 

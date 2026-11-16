@@ -6804,7 +6804,7 @@ src/c_ov001/TransformDemo_InitCaptureOam.c:
     complete
     .text       start:0x022df490 end:0x022df530
 
-src/asm_fallback/TransformDemo_Unk_ov001_022dfc54.c:
+src/agentF/TransformDemo_Unk_ov001_022dfc54.c:
     complete
     .text       start:0x022dfc54 end:0x022dfe20
 
@@ -6828,7 +6828,7 @@ src/asm_fallback/ZoneMap_Unk_ov001_022e794c.c:
     complete
     .text       start:0x022e794c end:0x022e7c50
 
-src/asm_fallback/ExtraBossObj_State_BeamUnitActive.c:
+src/agentG/ExtraBossObj_State_BeamUnitActive.c:
     complete
     .text       start:0x022fbbc8 end:0x022fbfcc
 
