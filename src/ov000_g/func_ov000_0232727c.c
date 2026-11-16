@@ -1,0 +1,46 @@
+#include <ov000_b/stageobj.h>
+
+typedef struct {
+    u8 pad0[8];
+    s32 unk8;
+    u32 unkC;
+    u8 pad10[0x28 - 0x10];
+    s16 unk28;
+    s16 unk2A;
+    s16 unk2C;
+    u8 pad2E[2];
+    s16 unk30;
+    u8 pad32[0x54 - 0x32];
+    u32 unk54;
+    u32 unk58;
+    u8 pad5C[0x68 - 0x5C];
+    void *unk68;
+} UnkStruct_0232727c;
+
+typedef struct {
+    u8 pad0[0x20];
+    u32 unk20;
+} UnkStruct_0232727c_Sys;
+
+extern UnkStruct_0232727c_Sys data_022c4560;
+
+UnkStruct_0232727c *func_ov000_023279a0(void *p, s16 a, s16 b, s16 c);
+void func_ov000_02327104(void);
+
+void func_ov000_0232727c(void *p, s16 a, s16 b, s16 c) {
+    UnkStruct_0232727c *e;
+
+    a += 3 - (Rand() & 6);
+    b += 3 - (Rand() & 6);
+    c += 3 - (Rand() & 6);
+    e = func_ov000_023279a0(p, a, b, c);
+    e->unk30 = -0x80;
+    e->unkC = (data_022c4560.unk20 & 0xf) << 12;
+    e->unk28 = a;
+    e->unk2A = b;
+    e->unk2C = c;
+    e->unk8 = 0x200;
+    e->unk58 |= 0x2100;
+    e->unk54 |= 2;
+    e->unk68 = func_ov000_02327104;
+}

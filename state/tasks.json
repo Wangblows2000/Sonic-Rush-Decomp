@@ -143,6 +143,14 @@
         {
           "time": "2026-11-16 04:32:49Z",
           "text": "claimed by main_b7"
+        },
+        {
+          "time": "2026-11-16 05:24:19Z",
+          "text": "main_b8 done: 56 OK files in src/main_b8 (0x02053000-0x0206e470); near-misses in /home/claude/w_main_b8/near_func_*.c; report build/agents/main_b8.txt"
+        },
+        {
+          "time": "2026-11-16 05:29:34Z",
+          "text": "main_b9 working 0x02053000-0x0206e470"
         }
       ]
     },
@@ -153,10 +161,10 @@
       "module": "ov000",
       "start": "0x022c5c80",
       "end": "0x02310000",
-      "status": "claimed",
-      "agent": "ov000_e",
+      "status": "open",
+      "agent": null,
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 01:43:49Z",
+      "claimed_at": null,
       "done_at": null,
       "notes": [
         {
@@ -170,6 +178,18 @@
         {
           "time": "2026-11-16 01:43:49Z",
           "text": "claimed by ov000_e"
+        },
+        {
+          "time": "2026-11-16 04:51:15Z",
+          "text": "claimed by ov000_j"
+        },
+        {
+          "time": "2026-11-16 05:29:36Z",
+          "text": "ov000_j: 76 OK (10688 B) in src/ov000_j, all reloc-checked; 022dd9e8 fixed (use src/ov000_j copy, drop ov000_e copy). All untried fns done except parked near-misses /home/claude/w_ov000j/near_*.c: 022f8224 (switch tree pivot), 022f4850+022e004c (const hoist/ac60 reload), 02301390 (orr #0), 023045c0/022ddd4c/022f6978/022fc6e8/022ee198/022eae84/022faa74/02303c58 (regalloc/sched). Idioms: default-first switch, local struct ptr stops pool reloads, SIN via ((u16)x&0xffff)>>4 inline."
+        },
+        {
+          "time": "2026-11-16 05:29:36Z",
+          "text": "released by ov000_j: ov000_j session end"
         }
       ]
     },
@@ -181,9 +201,9 @@
       "start": "0x02310000",
       "end": "0x02362b58",
       "status": "claimed",
-      "agent": "ov000_g",
+      "agent": "ov000_l",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 03:45:24Z",
+      "claimed_at": "2026-11-16 05:19:53Z",
       "done_at": null,
       "notes": [
         {
@@ -221,6 +241,30 @@
         {
           "time": "2026-11-16 04:24:08Z",
           "text": "ov000_i working 0x02338000-0x02362b58"
+        },
+        {
+          "time": "2026-11-16 04:51:15Z",
+          "text": "ov000_k working 0x0234d000-0x02362b58"
+        },
+        {
+          "time": "2026-11-16 05:09:59Z",
+          "text": "ov000_i: 94 OK (18844 B) in src/ov000_i (incl. 02354de4 reloc fix, 0234a288 fix). Near-misses /home/claude/w_ov000i/near_*.c; f near 02344a74 4B, 02348350, 0234739c, 0233a4c8 remain."
+        },
+        {
+          "time": "2026-11-16 05:10:04Z",
+          "text": "ov000_g: 81 OK (33264 B) in src/ov000_g (0x02310000-0x02338000). Near-misses in /home/claude/w_ov000g/near_*.c; list in build/agents/ov000_g.txt. Skipped: 023376c4 (3648), 0233624c (1376, unrolled loops+HW div), 02326744/023369bc (G3)."
+        },
+        {
+          "time": "2026-11-16 05:19:52Z",
+          "text": "ov000_m working 0x02338000-0x0234d000"
+        },
+        {
+          "time": "2026-11-16 05:19:53Z",
+          "text": "claimed by ov000_l"
+        },
+        {
+          "time": "2026-11-16 05:23:44Z",
+          "text": "ov000_k: 23 OK in src/ov000_k (6108 B), range 0x0234d000-0x02362b58 now fully covered except 02354de4/0235b1a4 (in src/ov000_i). Tricks: sin/cos '(v*T<<4)>>16' must be written '(s16)((v*T) >> 12)' (fixes regalloc near-misses); thumb bool return via switch(x){case 0: return 0; default: return 1;}; '+1+0x80' unfolded via (u32)(FX+1)+0x80."
         }
       ]
     },
@@ -232,9 +276,9 @@
       "start": "0x022c5c80",
       "end": "0x022ed000",
       "status": "claimed",
-      "agent": "ov001_t6",
+      "agent": "ov001_t7",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 04:32:41Z",
+      "claimed_at": "2026-11-16 05:29:34Z",
       "done_at": null,
       "notes": [
         {
@@ -276,6 +320,22 @@
         {
           "time": "2026-11-16 04:32:41Z",
           "text": "claimed by ov001_t6"
+        },
+        {
+          "time": "2026-11-16 04:56:48Z",
+          "text": "ov001_t5: 72 OK (9016 B) Thumb <=400B in src/ov001_t5, reloc-checked; 17 fns left <=400B (near-misses in /home/claude/w_ov001t5/near, notes in build/agents/ov001_t5.txt)"
+        },
+        {
+          "time": "2026-11-16 05:22:19Z",
+          "text": "ov001_t6: 9 OK (4524 B, >400B Thumb) in src/ov001_t6, all reloc-checked; near-misses /home/claude/w_ov001t6/near (d224c byte-exact but needs f8 table symbol, ecae4 1B, e519c 8B); left: e4b5c e794c"
+        },
+        {
+          "time": "2026-11-16 05:22:19Z",
+          "text": "released by ov001_t6: ov001_t6 session end"
+        },
+        {
+          "time": "2026-11-16 05:29:34Z",
+          "text": "claimed by ov001_t7"
         }
       ]
     },

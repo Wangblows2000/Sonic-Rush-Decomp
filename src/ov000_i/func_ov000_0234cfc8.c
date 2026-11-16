@@ -1,0 +1,61 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u32 unk0;
+    u8 pad4[0x10 - 4];
+    s32 unk10;
+    u8 pad14[0x20 - 0x14];
+    u32 unk20;
+    u8 pad24[0x28 - 0x24];
+    u16 unk28;
+} UnkCfg_0234cfc8;
+
+typedef struct {
+    u8 pad0[0x14];
+    u8 unk14;
+    u8 pad15[0x24 - 0x15];
+    u32 unk24;
+} UnkCfg2_0234cfc8;
+
+typedef struct {
+    u8 pad0[8];
+    u32 unk8;
+} UnkCfg3_0234cfc8;
+
+extern UnkCfg_0234cfc8 data_022c4560;
+extern UnkCfg2_0234cfc8 data_022c4590;
+extern UnkCfg3_0234cfc8 data_022c4680;
+
+void func_ov000_0235f254(void);
+void func_02054df8(void);
+void func_02059884(u8 a, u8 b, s32 c);
+u16 func_02059874(void);
+void func_0205a4ec(s32 a);
+void func_0204dce8(void);
+void func_0204e0c0(void);
+
+void func_ov000_0234cfc8(void) {
+    switch (data_022c4560.unk10) {
+    case 1:
+        data_022c4590.unk24 &= ~1;
+        data_022c4590.unk24 &= ~2;
+        func_ov000_0235f254();
+        return;
+    case 2:
+        func_02054df8();
+        return;
+    case 0:
+        func_02059884(data_022c4560.unk0, data_022c4590.unk14, 1);
+        data_022c4560.unk28 = func_02059874();
+        func_0205a4ec(0);
+        if (!(data_022c4680.unk8 & 2) && data_022c4560.unk20 > 0x8c9f) {
+            func_0204dce8();
+            return;
+        }
+        func_0204e0c0();
+        return;
+    default:
+        func_0204e0c0();
+        return;
+    }
+}

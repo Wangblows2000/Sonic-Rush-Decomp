@@ -1,0 +1,72 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x1c];
+    u8 zone;
+    u8 act;
+} UnkState_0205a728;
+
+typedef struct {
+    u8 pad0[0x20];
+    u16 unk20;
+    u8 pad22[0x26];
+    s16 unk48;
+} UnkGfx_0205a728;
+
+typedef struct {
+    u8 pad0[0x474];
+    void (*state)(void *);
+    u8 pad478[0x60];
+    s16 unk4d8;
+    u8 pad4da[0x3f4];
+    s16 unk8ce;
+} UnkWork_0205a728;
+
+extern UnkState_0205a728 data_022c4560;
+extern UnkGfx_0205a728 data_0208922c;
+extern UnkGfx_0205a728 data_02087d04;
+extern u16 data_02074960[][3][3];
+extern u16 data_02074962[][3][3];
+extern u16 data_02074964[][3][3];
+extern u16 data_02074a04[][3][8];
+
+void func_0205a654(void *w);
+u16 func_0205de50(s32 a, u16 b, s32 c);
+void func_02022270(s32 a, u16 b);
+void func_02004084(u16 *p);
+
+#define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
+
+void func_0205a728(UnkWork_0205a728 *w) {
+    BOOL flag;
+    u32 i;
+    u16 buf[8];
+
+    w->unk8ce += 0xa3;
+    if (w->unk8ce >= 0x1000) {
+        w->unk8ce = 0x1000;
+        data_0208922c.unk20 &= ~0xc0;
+        w->state = (void (*)(void *))func_0205a654;
+    }
+    flag = FALSE;
+    if (data_022c4560.zone == 8 && data_022c4560.act == 2)
+        flag = TRUE;
+    if (flag) {
+        data_02087d04.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
+        w->unk4d8 = (FX_MUL(w->unk8ce, -0x1f000) + 0x1f000) >> 12;
+    } else if (data_022c4560.zone >= 9 || data_022c4560.act >= 2) {
+        data_02087d04.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
+        data_0208922c.unk48 = data_02087d04.unk48;
+    } else {
+        data_02087d04.unk48 = (FX_MUL(w->unk8ce, -0x10000) + 0x10000) >> 12;
+        w->unk4d8 = (FX_MUL(w->unk8ce, -0x1f000) + 0x1f000) >> 12;
+    }
+    func_02022270(0, func_0205de50(0, data_02074960[data_022c4560.zone][data_022c4560.act][0], w->unk8ce));
+    func_02022270(1, func_0205de50(0, data_02074962[data_022c4560.zone][data_022c4560.act][0], w->unk8ce));
+    func_02022270(2, func_0205de50(0, data_02074964[data_022c4560.zone][data_022c4560.act][0], w->unk8ce));
+    if (data_022c4560.zone == 8 && data_022c4560.act == 2)
+        return;
+    for (i = 0; i < 8; i++)
+        buf[i] = func_0205de50(0, data_02074a04[data_022c4560.zone][data_022c4560.act][i], w->unk8ce);
+    func_02004084(buf);
+}

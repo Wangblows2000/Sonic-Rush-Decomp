@@ -1,0 +1,25 @@
+#include <ov000_c/stageobj.h>
+
+void func_02069818(void *w, s32 a);
+void func_ov000_0230ab48(UnkStruct_StageObj *w);
+void func_ov000_0230aed8(void);
+
+void func_ov000_0230b134(UnkStruct_StageObj *w, s32 v) {
+    s16 a = (v >> 4) < 0 ? -(v >> 4) : (v >> 4);
+
+    if (a <= 0x10)
+        a = 0x10;
+    if (a >= 0xc0)
+        a = 0xc0;
+    if (v > 0)
+        func_02069818(w, 1);
+    else
+        func_02069818(w, 4);
+    w->unk5C |= 4;
+    w->unkC = a;
+    w->spr0.unk2A = a;
+    w->spr1.unk2A = a;
+    w->unk68 = func_ov000_0230aed8;
+    func_ov000_0230ab48(w);
+    w->unk8 = 0;
+}

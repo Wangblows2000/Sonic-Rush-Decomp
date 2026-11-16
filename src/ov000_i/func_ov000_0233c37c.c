@@ -1,0 +1,33 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x3a];
+    s8 unk3A;
+    u8 pad3B[0x64 - 0x3b];
+} UnkPlayer_0233c37c;
+
+extern UnkPlayer_0233c37c data_ov000_0236aad8[];
+extern void *data_ov000_0236ac60[];
+
+u8 func_ov000_0233c37c(void *obj) {
+    u8 i;
+    u8 r;
+    s8 a, b;
+
+    if (obj == NULL)
+        return 0;
+    a = data_ov000_0236aad8[0].unk3A;
+    b = data_ov000_0236aad8[1].unk3A;
+    for (i = 0; i < 8; i++) {
+        if (data_ov000_0236ac60[i] == obj) {
+            r = 0;
+            if (a == i)
+                r |= 1;
+            if (b == i)
+                r |= 2;
+            if (r != 0)
+                return r;
+        }
+    }
+    return 0;
+}
