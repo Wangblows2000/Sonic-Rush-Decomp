@@ -11007,3 +11007,87 @@ src/main_c1/func_0202ec4c.c:
 src/sweep/func_020332c4.c:
     complete
     .text       start:0x020332c4 end:0x0203344c
+
+src/main_b9/func_02055918.c:
+    complete
+    .text       start:0x02055918 end:0x02055e48
+
+src/main_b9/func_02057ea4.c:
+    complete
+    .text       start:0x02057ea4 end:0x02057ef4
+
+src/main_b9/func_020598bc.c:
+    complete
+    .text       start:0x020598bc end:0x02059a50
+
+src/main_b9/func_0205fac0.c:
+    complete
+    .text       start:0x0205fac0 end:0x0205fad0
+
+src/main_b9/func_0205feb8.c:
+    complete
+    .text       start:0x0205feb8 end:0x0205fee4
+
+src/main_b9/func_0205ff2c.c:
+    complete
+    .text       start:0x0205ff2c end:0x0205fff8
+
+src/main_b9/func_020600e0.c:
+    complete
+    .text       start:0x020600e0 end:0x0206010c
+
+src/main_b9/func_02060154.c:
+    complete
+    .text       start:0x02060154 end:0x02060220
+
+src/main_b9/func_02061d68.c:
+    complete
+    .text       start:0x02061d68 end:0x02061eac
+
+src/main_b9/func_0206825c.c:
+    complete
+    .text       start:0x0206825c end:0x020682f0
+
+src/main_b9/func_0206d7c8.c:
+    complete
+    .text       start:0x0206d7c8 end:0x0206d8bc
+
+src/main_c1/func_02038694.c:
+    complete
+    .text       start:0x02038694 end:0x0203879c
+
+src/main_c1/func_0203e844.c:
+    complete
+    .text       start:0x0203e844 end:0x0203e924
+
+src/main_c1/func_02040df8.c:
+    complete
+    .text       start:0x02040df8 end:0x02040e48
+
+src/main_c1/func_02042364.c:
+    complete
+    .text       start:0x02042364 end:0x02042384
+
+src/main_c1/func_0204c8e8.c:
+    complete
+    .text       start:0x0204c8e8 end:0x0204c964
+
+src/main_c1/func_020509a0.c:
+    complete
+    .text       start:0x020509a0 end:0x02050a7c
+
+src/main_c1/func_02050a7c.c:
+    complete
+    .text       start:0x02050a7c end:0x02050b58
+
+src/main_c1/func_02050b58.c:
+    complete
+    .text       start:0x02050b58 end:0x02050c30
+
+src/main_c1/func_020524d4.c:
+    complete
+    .text       start:0x020524d4 end:0x02052568
+
+src/main_b9/func_02066638.c:
+    complete
+    .text       start:0x02066638 end:0x02066a9c

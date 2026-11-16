@@ -198,6 +198,10 @@
         {
           "time": "2026-11-16 05:39:39Z",
           "text": "claimed by ov000_n"
+        },
+        {
+          "time": "2026-11-16 06:37:46Z",
+          "text": "ov000_n: +11 OK (3544 B). Still open <0x02310000: 02303c58/930/ac4/79c family (regalloc s/i colored late, ~50 diff), 022e9bb4, 02308110 (13 diff: hoist reg swap, w_ov000n/near_02308110.c), 02304064(12), 02302e2c(14), 022c8f24(11), 022deab4(20, a524 load scheduled early), 022fcb24(36), 023045c0(3), 022ddd4c(8), 022ee198(8), 022f8224 (switch pivot 8 vs 4 unexplained)."
         }
       ]
     },
@@ -281,6 +285,14 @@
         {
           "time": "2026-11-16 05:58:57Z",
           "text": "ov000_o working 0x02338000-0x02362b58"
+        },
+        {
+          "time": "2026-11-16 06:29:09Z",
+          "text": "ov000_o: 8 OK (3036 B) in src/ov000_o: 0233b660 0233deec 02348350 0234a064 0233b078 0233c5d0 0233c6ac 0234a878, reloc-checked. Levers in build/agents/ov000_o.txt. Near-misses /home/claude/w_ov000o/near/ (0233c00c 24 regalloc only, 02344a74, 02340388, 10dc family, 0234739c, 02341ebc, 02347190, 0233a010)."
+        },
+        {
+          "time": "2026-11-16 06:36:55Z",
+          "text": "ov000_p working 0x02338000-0x02362b58"
         }
       ]
     },
@@ -360,6 +372,10 @@
         {
           "time": "2026-11-16 05:51:40Z",
           "text": "released by ov001_t7: ov001_t7 done"
+        },
+        {
+          "time": "2026-11-16 06:27:32Z",
+          "text": "ov001_h (claimed via ov001-arm) covers ov001 Thumb functions too"
         }
       ]
     },
@@ -371,9 +387,9 @@
       "start": "0x022ed000",
       "end": "0x02315eb4",
       "status": "claimed",
-      "agent": "ov001_g",
+      "agent": "ov001_h",
       "created": "2026-11-15 20:37:56Z",
-      "claimed_at": "2026-11-16 05:39:40Z",
+      "claimed_at": "2026-11-16 06:27:32Z",
       "done_at": null,
       "notes": [
         {
@@ -423,6 +439,14 @@
         {
           "time": "2026-11-16 05:39:40Z",
           "text": "claimed by ov001_g"
+        },
+        {
+          "time": "2026-11-16 06:17:49Z",
+          "text": "ov001_g: 16 OK (3306 B) incl. 10 Thumb >=0x022ED000 (022ed19c..022edd28, orphaned from t7 range). Levers that worked: '#pragma opt_propagation off' (022f8e7c, 02306244); 'extern T *volatile' ptr for 0230611c; contiguous globals as one struct (02315de8 f6ac+0x10/0x1c, 022f6f40 camera f78/f84/f90); stmt perm (0230b164 bitfields). Near: 02303494 4B (add operand order, w_ov001g/near_02303494.c), 023157d8 9B (prop off, regalloc), 0230e78c 4B, 022fd268 6B, 02307398/02304fb4/022fbbc8/023099ec/02314214 unchanged."
+        },
+        {
+          "time": "2026-11-16 06:27:32Z",
+          "text": "claimed by ov001_h"
         }
       ]
     },

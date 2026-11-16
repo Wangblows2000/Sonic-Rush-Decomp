@@ -27,21 +27,21 @@ USA (`ASCE`) and Japan (`ASCJ`) are not configured yet.
 
 <!-- dashboard:start -->
 
-_Verified progress, updated 2026-11-16 06:14:24Z ([full dashboard](docs/progress/dashboard.md))._
+_Verified progress, updated 2026-11-16 06:46:17Z ([full dashboard](docs/progress/dashboard.md))._
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
-| main | `██████████████████░░` 87.92% | 395,252 / 449,566 | 2,741 / 2,856 | 115 |
+| main | `██████████████████░░` 89.18% | 400,942 / 449,566 | 2,762 / 2,856 | 94 |
 | itcm | `████████████████████` 100.00% | 2,064 / 2,064 | 14 / 14 | 0 |
-| ov000 | `███████████████████░` 94.03% | 604,372 / 642,724 | 2,657 / 2,799 | 142 |
-| ov001 | `██████████████████░░` 91.99% | 301,842 / 328,118 | 1,647 / 1,723 | 76 |
-| **ARM9 total** | `██████████████████░░` 91.64% | 1,303,530 / 1,422,472 | 7,059 / 7,392 | 333 |
+| ov000 | `███████████████████░` 94.79% | 609,208 / 642,724 | 2,672 / 2,799 | 127 |
+| ov001 | `███████████████████░` 93.00% | 305,148 / 328,118 | 1,663 / 1,723 | 60 |
+| **ARM9 total** | `███████████████████░` 92.61% | 1,317,362 / 1,422,472 | 7,111 / 7,392 | 281 |
 
-Next milestone: **100%** matched code — 118,942 more bytes (currently 91.64%).
+Next milestone: **100%** matched code — 105,110 more bytes (currently 92.61%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 06:10:45Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 06:14:17Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 06:14:22Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 06:43:36Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 06:46:12Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 06:46:16Z
 
 <!-- dashboard:end -->
 
