@@ -96,7 +96,7 @@ void PlayerSelectMenu_SetSprite69CAnim6(UnkStruct_Scene *w);
 void PlayerSelectMenu_SetSprite6E4Anim7(UnkStruct_Scene *w);
 void PlayerSelectMenu_SetSprite9B4Anim(UnkStruct_Scene *w);
 void PlayerSelectMenu_SetSprite9FCAnim1D(UnkStruct_Scene *w);
-void PlayerSelectMenu_Unk_ov000_02357aa8(UnkStruct_Scene *w, s32 i);
+void PlayerSelectMenu_SetSlotSpriteNop(UnkStruct_Scene *w, s32 i);
 void PlayerSelectMenu_SetSprite5C4Anim2(UnkStruct_Scene *w);
 void PlayerSelectMenu_SetSprite5C4Anim1(UnkStruct_Scene *w);
 void KeyframeAnim_SetAnim(UnkStruct_ScenePos *p, s32 n);

@@ -2,8 +2,8 @@
 
 Sonic Rush (EUR `ASCP`) matching decompilation. Goal: C that rebuilds the ROM
 byte for byte. Progress = verified matched code bytes, nothing else.
-State (2026-11-16): 99.99 % verified; only 18 secure-area BIOS stubs (76 B)
-remain (PLAN.md). Full project guide: **AGENTS.md**.
+State (2026-11-16): 100 % of ARM9 code verified, every function named;
+next steps in PLAN.md, handoff in HANDOFF.md. Full project guide: **AGENTS.md**.
 
 ## 1. Resume
 

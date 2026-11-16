@@ -377,8 +377,9 @@ Upgrade the name when the behaviour is proven.
 | 2 | 1,575 | MB/WFS, wireless manager, stage flow, scene changes, player state machine, bosses, special stage |
 | 3 | 1,626 | final sweep plus `_Unk_` upgrades |
 | 4 | 2,305 | every remaining function: bosses/part chains, per-zone hooks, menus, library statics, audit fixes |
+| 5–6 | ~1,670 | `_Unk_` upgrades to behaviour names; repeated-static scheme; `_fgr`/`_fgeq`, FS overlay and NNS audit fixes |
 
-**All 7,408 functions are named**; ~2,140 of them are subsystem-level
+**All 7,408 functions are named**; 468 of them are subsystem-level
 `_Unk_` names (`tentative` in the evidence log) awaiting behaviour names. Every
 batch was applied with `tools/analysis/rename.py` and verified with
 `tools/utilities/verify_all.sh` (SHA-1, GNU relink, objdiff unchanged).

@@ -23,27 +23,28 @@ USA (`ASCE`) and Japan (`ASCJ`) are not configured yet.
   function code. An independent GNU-ld relink of those objects reproduces every
   section byte for byte.
 - The full ROM builds from source with CodeWarrior for NDS 1.2/sp2 (linker
-  1.2/sp3) and has the original SHA-1. Almost all ARM9 code is matched C; the
-  block below is regenerated from the objdiff report by
+  1.2/sp3) and has the original SHA-1. **100 % of ARM9 code is matched** (all
+  7,408 functions) and every function has an evidence-backed name; the block
+  below is regenerated from the objdiff report by
   `python3 tools/project.py dashboard`.
 
 <!-- dashboard:start -->
 
-_Verified progress, updated 2026-11-16 10:36:20Z ([full dashboard](docs/progress/dashboard.md))._
+_Verified progress, updated 2026-11-16 15:31:28Z ([full dashboard](docs/progress/dashboard.md))._
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
-| main | `████████████████████` 99.98% | 449,490 / 449,566 | 2,854 / 2,872 | 18 |
+| main | `████████████████████` 100.00% | 449,566 / 449,566 | 2,872 / 2,872 | 0 |
 | itcm | `████████████████████` 100.00% | 2,064 / 2,064 | 14 / 14 | 0 |
 | ov000 | `████████████████████` 100.00% | 642,724 / 642,724 | 2,799 / 2,799 | 0 |
 | ov001 | `████████████████████` 100.00% | 328,118 / 328,118 | 1,723 / 1,723 | 0 |
-| **ARM9 total** | `████████████████████` 99.99% | 1,422,396 / 1,422,472 | 7,390 / 7,408 | 18 |
+| **ARM9 total** | `████████████████████` 100.00% | 1,422,472 / 1,422,472 | 7,408 / 7,408 | 0 |
 
-Next milestone: **100%** matched code — 76 more bytes (currently 99.99%).
+Next milestone: **100%** matched code — 0 more bytes (currently 100.00%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 10:35:32Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 10:36:19Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 10:36:20Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 15:28:00Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 15:28:40Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 15:28:41Z
 
 <!-- dashboard:end -->
 
@@ -67,6 +68,17 @@ build/             all build output and reports (gitignored)
 ```
 
 ## Quick start
+
+Easiest (Linux): copy your own Sonic Rush (Europe) ROM into the repository
+directory and run
+
+```sh
+bash build.sh            # checks the ROM, sets up tools on first run, builds,
+                         # verifies SHA-1; writes sonic_rush_eur_rebuilt.nds
+bash build.sh --verify   # also runs the GNU relink check and objdiff report
+```
+
+Manual steps:
 
 ```sh
 python -m pip install -r tools/requirements.txt

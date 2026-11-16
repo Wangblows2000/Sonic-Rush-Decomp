@@ -11164,11 +11164,11 @@ src/c_mainA/GX_SetBankForSubBG.c:
     complete
     .text       start:0x0200330c end:0x020033b8
 
-src/asm/OS_InitThread.c:
+src/c_mainA2/OS_InitThread.c:
     complete
     .text       start:0x02005e64 end:0x02005fe4
 
-src/asm/OS_GetInitArenaHi.c:
+src/c_mainA2/OS_GetInitArenaHi.c:
     complete
     .text       start:0x02006990 end:0x02006abc
 

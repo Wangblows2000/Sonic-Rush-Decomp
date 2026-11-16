@@ -2,68 +2,59 @@
 
 Measured state of the EUR (`ASCP`) build. Figures come from
 `python3 tools/project.py progress`, which reads only `build/eur/report.json`
-(objdiff) and `symbols.txt`. The README dashboard block is regenerated from the
-same report by `python3 tools/project.py dashboard`; when the two disagree, the
-newer report wins.
+(objdiff) and `symbols.txt`. Run `bash tools/utilities/verify_all.sh` to
+reproduce every line below.
 
 ## Measured output
 
 | Check | Result | Command |
 | ----- | ------ | ------- |
-| Base ROM | EUR `ASCP` rev 0, SHA-1 `52e5024e…` verified | `project.py doctor` |
-| ROM extract → rebuild | SHA-1 identical | `project.py verify eur` |
-| Matching ROM build (mwccarm + mwldarm) | SHA-1 identical (`build/eur/rush_eur.sha1.ok`) | `ninja` |
-| Delinked objects → GNU ld relink | 11/11 sections byte-identical | `ninja verify` |
-| Functions | 7,408 (main 2,872 · itcm 14 · ov000 2,799 · ov001 1,723) | `project.py functions` |
-| Matched functions (objdiff 100 %) | **7,389 / 7,408** | `ninja report && project.py progress` |
-| Matched code bytes | **1,422,056 / 1,422,472 (99.97 %)** | `project.py progress` |
-| Named functions (not progress) | 180; 164 evidence entries | `project.py symbols` |
-
-Per module: itcm, ov000 and ov001 are at 100 %. All 416 remaining bytes are in
-main:
-
-- 18 BIOS SWI stubs in the secure area, 76 bytes in total (see PLAN.md for why
-  they are not TUs).
-- `func_02010018` (340 B), reported at 99.94 % by the last objdiff report. Its
-  TU has since been replaced by `src/asm_fallback/func_02010018.c`. The C
-  version matches the bytes, but CW folds the `OS_IrqHandler` (ITCM)
-  relocation into a raw constant. The new TU counts only after the next
-  checkpoint.
+| Base ROM | EUR `ASCP` rev 0, SHA-1 `52e5024e…` | `project.py doctor` |
+| Matching ROM build (mwccarm + mwldarm) | **SHA-1 identical** | `ninja` / `bash build.sh` |
+| Delinked objects → GNU ld relink | all sections byte-identical | `ninja verify` |
+| Functions matched (objdiff 100 %) | **7,408 / 7,408** | `ninja report && project.py progress` |
+| Code bytes matched | **1,422,472 / 1,422,472 (100.00 %)** | `project.py progress` |
+| Symbol/evidence consistency | 0 errors, 0 warnings | `tools/analysis/check_symbols.py` |
+| Functions named | **7,408 / 7,408**; 468 are subsystem-level `<Subsystem>_Unk_<addr>` | `check_symbols.py`, `symbols.txt` |
 
 ## How the source is written
 
-- 7,371 translation units are registered in `config/eur/arm9/**/delinks.txt`,
-  almost all one function per file, compiled with CodeWarrior for NDS 1.2/sp2.
-- C is the default. Assembly (CodeWarrior `asm` functions) is used only for:
-  - hand-written runtime routines (CP15/PSR access, SWI, `stm` copy loops,
-    soft-float and 64-bit helpers), which sit in the agents' directories next
-    to C;
-  - `src/asm/` (6 files, 3,524 B): cases that C cannot express, such as
-    linker constants in a pool with no relocations, two symbols at one address,
-    or a switch-table layout no CW 1.2 build emits;
-  - `src/asm_fallback/` (90 files, 44,082 B): functions whose C attempts did
-    not match. Line 1 of each file says why.
-- Files are still grouped by the agent that wrote them (`src/<agent>/`), plus
-  `src/auto/` (1,008 TUs from the automatic template, clone and Ghidra tiers),
-  `src/clones/`, `src/sweep/`, `src/pragma/` and `src/lead/`.
+- 7,373 translation units in `config/eur/arm9/**/delinks.txt`, almost all one
+  function per file, CodeWarrior for NDS 1.2/sp2 (linker 1.2/sp3) under wibo.
+- C is the default. CodeWarrior `asm` is used for hand-written runtime routines
+  (soft-float/64-bit helpers with secondary entry points, CP15/SWI/copy loops)
+  and for the remaining `src/asm_fallback/` functions whose C does not yet
+  match (each says why on line 1); `src/asm/__pformatter.c` (MSL printf: the
+  switch-table clustering no CW 1.2 build reproduces).
+- `src/secure/secure_area.s` (GNU as) covers the secure area 0x02000000–
+  0x02000800: the 18 BIOS SWI stubs as Thumb functions at their exact
+  (halfword) offsets, the filler pulled by `.incbin` from the user's own
+  extracted binary at build time (docs/research/0012-secure-area.md).
+- NitroSDK linker constants (`SDK_SYS_STACKSIZE`, `SDK_IRQ_STACKSIZE`,
+  `SDK_SECTION_ARENA_DTCM_START`) are `link_time_const(NAME=VALUE)` entries in
+  `relocs.txt`, defined in the LCF by `tools/utilities/lcf_consts.py`.
 
 ## Toolchain
 
-| Tool | Version | Notes |
-| ---- | ------- | ----- |
-| mwccarm (compiler) | CW for NDS 1.2/sp2 | community bundle run via wibo; never committed (docs/research/0004) |
-| mwldarm (linker) | CW for NDS 1.2/sp3 | reproduces the ROM SHA-1 |
-| dsd (ds-decomp) | v0.12.1 + patches in `tools/patches/` | built from source (docs/research/0008) |
-| objdiff-cli | v3.8.3 | built from source |
-| wibo | 1.2.0 | built from source |
-| arm-none-eabi binutils | 2.42 | GNU relink check |
-| Ghidra | 12.2 + OpenJDK 25 | headless drafts in `build/eur/ghidra/` (docs/research/0007) |
+| Component | Version / note |
+| --------- | -------------- |
+| Compiler | CW for NDS 1.2/sp2 (`config/eur/compilers.yaml`) |
+| Linker | CW 1.2/sp3 |
+| dsd | ds-decomp v0.12.1 + `tools/patches/*.patch` (Thumb unsigned jump tables; asm entry points / conditional `arm_branch` / `$d` for data in `.text` / named link-time constants) |
+| objdiff | 3.8.3 |
+| wibo | 1.2.0 |
+| GNU binutils | arm-none-eabi 2.42 (relink check, `secure_area.s`) |
+| Ghidra | 12.2 + JDK 25 (decompiler drafts, optional) |
 
-## Process
+## Recent changes (this session)
 
-A single writer integrates (`tools/utilities/checkpoint.sh`). Parallel
-matching agents write `src/<agent>/` and report to `build/agents/<agent>.txt`.
-Partitions and notes are in `state/tasks.json` (`python3 tools/tasks.py brief`).
-The rules for counting a function are in CLAUDE.md §5.
-
-Remaining work: [PLAN.md](PLAN.md).
+- Secure-area stubs matched → 100.00 %.
+- 54 asm functions converted to C (incl. FS_StartOverlay, GX_SetBankForSubBG,
+  OS_GetInitArenaHi, OS_InitThread, the MapObj73 family, NNS G3D/sound code).
+- Naming: every function named (rounds 1–6, ~9,300 renames incl. upgrades),
+  audit corrections (FS_UnloadOverlayImage, FS_LoadOverlayImage,
+  NNS_SndPlayerCountPlayingSeqBySeqArcIdx, _fgr/_fgeq), repeated library
+  statics named `<Official>_<file stem>`.
+- Tools: `check_symbols.py`, `verify_all.sh`, `swap_fallback.py`,
+  `lcf_consts.py`, `build.sh`; `rename.py` safeguards (case-only collisions,
+  repeated statics, evidence replacement, post-checks).

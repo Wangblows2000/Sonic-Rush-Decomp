@@ -15,6 +15,24 @@ index d40c580..8e52c90 100644
                  || matches!(
                      symbol.kind,
                      SymbolKind::Function(_) | SymbolKind::Label(_) | SymbolKind::PoolConstant
+diff --git a/cli/src/cmd/lcf.rs b/cli/src/cmd/lcf.rs
+index 3736258..61af01d 100644
+--- a/cli/src/cmd/lcf.rs
++++ b/cli/src/cmd/lcf.rs
+@@ -151,9 +151,13 @@ impl Lcf {
+                     LinkTimeConst::Arm9CtorStart => return None, // ARM9_CTOR_START already exists
+                     LinkTimeConst::ExceptionTableStart => return None, // __exception_table_start__
+                     LinkTimeConst::ExceptionTableEnd => return None, // __exception_table_end__
++                    LinkTimeConst::Named(_) => return None, // emitted below
+                 };
+                 Some(LcfVariable::new(var.to_string(), value))
+             })
++            .chain(ds_decomp::config::link_time_const::named_consts()
++                .into_iter()
++                .map(|(n, v)| LcfVariable::new(n, format!("{v:#x}"))))
+             .collect()
+     }
+ 
 diff --git a/cli/src/config/section.rs b/cli/src/config/section.rs
 index fc97134..b746bd2 100644
 --- a/cli/src/config/section.rs
@@ -48,3 +66,94 @@ index 9f90a08..324e40a 100644
              return Err(FunctionAnalysisError::IntoFunction {
                  source: InvalidStartSnafu { address, ins }.build().into(),
              });
+diff --git a/lib/src/config/link_time_const.rs b/lib/src/config/link_time_const.rs
+index a3ae1b2..9a1d0e8 100644
+--- a/lib/src/config/link_time_const.rs
++++ b/lib/src/config/link_time_const.rs
+@@ -15,6 +15,31 @@ pub enum LinkTimeConst {
+     Arm9CtorStart,
+     ExceptionTableStart,
+     ExceptionTableEnd,
++    /// Project-defined absolute linker symbol (`link_time_const(NAME=0xVALUE)` in
++    /// relocs.txt), e.g. NitroSDK's SDK_SYS_STACKSIZE. Index into [`named_consts`].
++    Named(u16),
++}
++
++static NAMED: std::sync::Mutex<Vec<(String, u32)>> = std::sync::Mutex::new(Vec::new());
++
++/// All project-defined linker constants seen so far (name, value).
++pub fn named_consts() -> Vec<(String, u32)> {
++    NAMED.lock().unwrap().clone()
++}
++
++fn register_named(name: &str, value: u32) -> u16 {
++    let mut v = NAMED.lock().unwrap();
++    if let Some(i) = v.iter().position(|(n, _)| n == name) {
++        return i as u16;
++    }
++    v.push((name.to_string(), value));
++    (v.len() - 1) as u16
++}
++
++impl Default for LinkTimeConst {
++    fn default() -> Self {
++        Self::DtcmLo
++    }
+ }
+ 
+ #[derive(Debug, Snafu)]
+@@ -40,7 +65,20 @@ impl LinkTimeConst {
+             "ARM9_CTOR_START" => Ok(Self::Arm9CtorStart),
+             "__exception_table_start__" => Ok(Self::ExceptionTableStart),
+             "__exception_table_end__" => Ok(Self::ExceptionTableEnd),
+-            _ => UnknownKindSnafu { context, value }.fail(),
++            _ => {
++                if let Some((name, val)) = value.split_once('=') {
++                    let val = val.trim();
++                    let parsed = if let Some(h) = val.strip_prefix("0x") {
++                        u32::from_str_radix(h, 16).ok()
++                    } else {
++                        val.parse::<u32>().ok()
++                    };
++                    if let Some(v) = parsed {
++                        return Ok(Self::Named(register_named(name.trim(), v)));
++                    }
++                }
++                UnknownKindSnafu { context, value }.fail()
++            }
+         }
+     }
+ }
+@@ -55,6 +93,13 @@ impl Display for LinkTimeConst {
+             LinkTimeConst::Arm9CtorStart => write!(f, "ARM9_CTOR_START"),
+             LinkTimeConst::ExceptionTableStart => write!(f, "__exception_table_start__"),
+             LinkTimeConst::ExceptionTableEnd => write!(f, "__exception_table_end__"),
++            LinkTimeConst::Named(i) => {
++                let v = NAMED.lock().unwrap();
++                match v.get(*i as usize) {
++                    Some((n, _)) => write!(f, "{n}"),
++                    None => write!(f, "__unknown_link_time_const_{i}"),
++                }
++            }
+         }
+     }
+ }
+diff --git a/lib/src/config/relocations.rs b/lib/src/config/relocations.rs
+index 3e5bb87..f71e4fc 100644
+--- a/lib/src/config/relocations.rs
++++ b/lib/src/config/relocations.rs
+@@ -482,6 +482,14 @@ impl Display for RelocationKind {
+             Self::ArmBranch => write!(f, "arm_branch"),
+             Self::Load => write!(f, "load"),
+             Self::OverlayId => write!(f, "overlay_id"),
++            Self::LinkTimeConst(link_time_const @ super::link_time_const::LinkTimeConst::Named(i)) => {
++                // round-trip the value so relocs.txt can be rewritten losslessly
++                let v = super::link_time_const::named_consts();
++                match v.get(*i as usize) {
++                    Some((n, val)) => write!(f, "link_time_const({n}={val:#x})"),
++                    None => write!(f, "link_time_const({link_time_const})"),
++                }
++            }
+             Self::LinkTimeConst(link_time_const) => write!(f, "link_time_const({link_time_const})"),
+         }
+     }

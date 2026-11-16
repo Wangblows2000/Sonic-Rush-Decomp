@@ -143,7 +143,7 @@ def main() -> int:
         n.newline()
         n.rule("extract", f"{py} tools/project.py extract {ver}", description="EXTRACT $in")
         n.rule("delink", f"{dsd} delink --config-path $config && touch $out", description="DELINK")
-        n.rule("lcf", f"{dsd} lcf -c $config", description="LCF")
+        n.rule("lcf", f"{dsd} lcf -c $config && {py} tools/utilities/lcf_consts.py $lcfpath config/{ver}", description="LCF")
         n.rule("relink_check", f"{py} tools/matching/gnu_relink.py --version {ver} --json $out",
                description="RELINK-CHECK (GNU ld)")
         n.rule("objdiff_cfg", f"{dsd} objdiff --config-path $config --custom-make ninja",
@@ -203,7 +203,7 @@ def main() -> int:
                 "cflags": flags + " -i include -i libs/include"})
         lcf = dj["arm9_lcf_file"] if dj else f"{b}/arm9.lcf"
         objects_txt = dj["arm9_objects_file"] if dj else f"{b}/objects.txt"
-        n.build([lcf, objects_txt], "lcf", [f"{b}/delinks.stamp"], variables={"config": cfg})
+        n.build([lcf, objects_txt], "lcf", [f"{b}/delinks.stamp"], implicit=["tools/utilities/lcf_consts.py"], variables={"config": cfg, "lcfpath": lcf})
         ld = cc_cfg["linker"]
         n.build(f"{b}/arm9.o", "mwld", [lcf, objects_txt], implicit=objs, variables={
             "ld": f"{args.compiler.as_posix()}/{ld['version']}/mwldarm.exe",

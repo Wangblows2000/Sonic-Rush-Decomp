@@ -82,21 +82,43 @@ Verified on 2026-11-16 (`python3 tools/project.py progress`; run
 
 | Module | Matched bytes | Functions |
 | ------ | ------------- | --------- |
-| main | 449,490 / 449,566 (99.98 %) | 2,854 / 2,872 |
+| main | 449,566 / 449,566 (100 %) | 2,872 / 2,872 |
 | itcm | 2,064 / 2,064 (100 %) | 14 / 14 |
 | ov000 | 642,724 / 642,724 (100 %) | 2,799 / 2,799 |
 | ov001 | 328,118 / 328,118 (100 %) | 1,723 / 1,723 |
-| **ARM9 total** | **1,422,396 / 1,422,472 (99.99 %)** | **7,390 / 7,408** |
+| **ARM9 total** | **1,422,472 / 1,422,472 (100 %)** | **7,408 / 7,408** |
 
-The 76 remaining bytes are 18 BIOS SWI wrapper stubs (4 to 6 bytes each:
-`WaitByLoop`, `IsDebugger`, `CpuFastSet`, ..., `GetCRC16`) in the secure area
-0x02000000–0x02000800, which the build keeps as original bytes (see §3 and
-PLAN.md: 9 of them are halfword-aligned, which per-function TUs under the
-LCF's `ALIGNALL(4)` cannot reproduce).
+The 18 BIOS SWI stubs in the secure area (0x02000000–0x02000800) are matched
+by one GNU-as TU, `src/secure/secure_area.s` (Thumb stubs; the non-code filler
+is `.incbin` from the extracted `arm9.bin`, so no ROM bytes are committed).
+One TU is needed because the LCF's `ALIGNALL(4)` cannot place halfword-aligned
+per-function TUs. See docs/research/0012-secure-area.md.
 
-Of the matched functions, those in `src/asm/` and `src/asm_fallback/` are
-CodeWarrior `asm` functions rather than C (see §9); converting the
-`asm_fallback` set back to C is open work.
+Every function is named (468 are still subsystem-level `_Unk_` names, logged
+`tentative` in `config/eur/symbol_evidence.yaml`).
+
+The 34 functions in `src/asm_fallback/` and `__pformatter` in `src/asm/` are
+CodeWarrior `asm` functions rather than C (see §9); converting them is open
+work (HANDOFF.md lists the blocking reasons).
+
+### Tools added in the 100 % session
+
+- `bash build.sh [rom.nds] [--verify]`: one-step local Linux build from a
+  user-supplied EUR ROM; checks the SHA-1 first and refuses other revisions.
+- `tools/utilities/verify_all.sh`: check_symbols, configure, ninja, SHA-1,
+  `ninja verify`, objdiff report, progress. Run after every batch.
+- `tools/analysis/check_symbols.py [--strict]`: duplicate and case-only
+  symbol/file collisions (wibo/mwld match object names case-insensitively),
+  missing TUs, stale references, evidence consistency.
+- `tools/analysis/rename.py`: rejects case collisions and bare repeated-static
+  names (`<OfficialName>_<file stem>` scheme, naming-conventions §6).
+- `tools/matching/swap_fallback.py`: swaps a verified C file in for an
+  `asm_fallback` entry in delinks.
+- `link_time_const(NAME=0xVALUE)` relocs (patched dsd) plus
+  `tools/utilities/lcf_consts.py`, which writes the named constants into the
+  generated LCF (`SDK_SYS_STACKSIZE`, `SDK_IRQ_STACKSIZE`,
+  `SDK_SECTION_ARENA_DTCM_START`).
+- `.s` sources build with GNU `arm-none-eabi-as` (`gas` rule in configure.py).
 
 DTCM (0x027E0000) contains data only. It has no functions and no TUs.
 

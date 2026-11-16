@@ -17,3 +17,4 @@ notes for history and are marked as such.
 | [0009](0009-sonic-rush-prior-work.md) | Prior Rush RE? | web | no public Rush code decomp; SRA decomp exists; asset formats partly known | M | — | asset tools licence | done |
 | [0010](0010-sdk-identification.md) | Which functions are NitroSDK? | pokediamond SDK, call graph | 5 manual + 102 automatic SDK names (sdk_ident.py) | H | instruction / masked byte compare | naming refactor (PLAN.md) | done |
 | [0011](0011-mwccarm-levers.md) | Which source changes move mwccarm codegen? | SM64DS notes, probes | lever catalogue checked on CW 1.2/sp2 (pragmas, ordering, types) | M | probes | — | done (living note) |
+| [0012](0012-secure-area.md) | How to match the secure-area BIOS stubs? | ROM bytes, LCF | one GNU-as TU with `.incbin` filler; `$t` mapping symbols | M | SHA-1 + relink | — | done |

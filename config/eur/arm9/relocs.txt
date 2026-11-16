@@ -13510,3 +13510,9 @@ from:0x0202f6b8 kind:arm_branch to:0x0202f6c4 module:main
 from:0x0202f6d8 kind:arm_branch to:0x0202f77c module:main
 from:0x0202f704 kind:arm_branch to:0x0202f718 module:main
 from:0x0202f770 kind:arm_branch to:0x0202f77c module:main
+from:0x02005fb4 kind:link_time_const(SDK_SYS_STACKSIZE=0x0)
+from:0x02005fc0 kind:link_time_const(SDK_SECTION_ARENA_DTCM_START=0x027e2060)
+from:0x02005fc8 kind:link_time_const(SDK_IRQ_STACKSIZE=0x800)
+from:0x02006aa8 kind:link_time_const(SDK_SYS_STACKSIZE=0x0)
+from:0x02006aac kind:link_time_const(SDK_IRQ_STACKSIZE=0x800)
+from:0x02006ab0 kind:link_time_const(SDK_SECTION_ARENA_DTCM_START=0x027e2060)
