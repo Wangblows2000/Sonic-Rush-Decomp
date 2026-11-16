@@ -31,7 +31,7 @@ typedef struct UnkStruct_02301a88_c {
 } UnkStruct_02301a88_c;
 
 UnkStruct_02301a88_c *ExtraBoss_GetWork(void);
-void ExtraBoss_Unk_ov001_02303e60(s32 x, s32 y, s32 n);
+void ExtraBoss_ScatterPlayerRings(s32 x, s32 y, s32 n);
 void ExtraBossPlayer_ChangeState(UnkStruct_02301a88_o *o, s32 state);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Sound_PlayVoice(s32 a, s32 b, s32 c);
@@ -41,7 +41,7 @@ void ExtraBoss_PlayerOnHurt(UnkStruct_02301a88_h *self, UnkStruct_02301a88_h *ot
     UnkStruct_02301a88_w *w = o->work;
 
     if (self->flags & 0x10) {
-        ExtraBoss_Unk_ov001_02303e60(o->x, o->y, ExtraBoss_GetWork()->unk40 <= 2 ? 5 : 10);
+        ExtraBoss_ScatterPlayerRings(o->x, o->y, ExtraBoss_GetWork()->unk40 <= 2 ? 5 : 10);
         Sound_PlaySeqArc(0, 0, 5);
     }
     if (self->flags & 0x20) {

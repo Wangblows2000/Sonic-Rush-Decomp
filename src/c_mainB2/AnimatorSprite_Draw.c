@@ -62,7 +62,7 @@ u16 *Oam_AllocObj(s32 engine, u16 prio);
 void AnimatorSprite_Draw(UnkSprite_02032d2c *spr)
 {
     s32 idx;
-    UnkFrame_02032d2c *frame;
+    u32 i;
     UnkEngine_02032d2c *e;
     s32 xmin;
     u16 attr0;
@@ -71,15 +71,15 @@ void AnimatorSprite_Draw(UnkSprite_02032d2c *spr)
     u32 shift;
     u32 mode;
     s32 right;
-    UnkAnim_02032d2c *anim;
     s32 bottom;
+    UnkAnim_02032d2c *anim;
     s32 x;
     s32 left;
     u32 chr;
     u16 *src;
     s32 top;
     s32 y;
-    u32 i;
+    UnkFrame_02032d2c *frame;
     u32 unit;
     s32 eng;
     UnkObjSize_02032d2c *sz;
@@ -111,13 +111,13 @@ void AnimatorSprite_Draw(UnkSprite_02032d2c *spr)
         y += e->ofsY;
     }
     if (spr->flags & 0x80) {
-        xmin = -right;
         attr1 |= 0x1000;
+        xmin = -right;
         right = -left;
     }
     if (spr->flags & 0x100) {
-        ymin = -bottom;
         attr1 |= 0x2000;
+        ymin = -bottom;
         bottom = -top;
     }
     if (spr->flags & 0x1000)
@@ -145,7 +145,7 @@ void AnimatorSprite_Draw(UnkSprite_02032d2c *spr)
         mode = 0;
     } else {
         shift = e->shift1d;
-        if (*(u16 *)((u32)anim + anim->seqOfs + spr->seq * 8 + 8) == 0)
+        if (((u16 *)((u32)anim + anim->seqOfs))[spr->seq * 4 + 4] == 0)
             mode = 0;
         else
             mode = 1;

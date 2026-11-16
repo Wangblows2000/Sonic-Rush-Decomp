@@ -2,8 +2,8 @@
 
 u8 *ExtraBoss_GetPlayer(void);
 void ExtraBossPlayer_Action_UnlockControl(void *p);
-void ExtraBoss_Unk_ov001_022fd138(void *p);
-void ExtraBoss_Unk_ov001_022ee594(void *p);
+void ExtraBoss_SpawnPlayerFlyFx(void *p);
+void ExtraBoss_CreatePlayerTrail(void *p);
 
 void ExtraBoss_ResetPlayerForBattle(void) {
     u8 *p = ExtraBoss_GetPlayer();
@@ -18,6 +18,6 @@ void ExtraBoss_ResetPlayerForBattle(void) {
     *(s32 *)(p + 0x2c) = 0;
     *(s32 *)(p + 0x20) = *(s32 *)(p + 0x2c);
     *(u8 **)(p + 0x9c) = p + 0xb0;
-    ExtraBoss_Unk_ov001_022fd138(p);
-    ExtraBoss_Unk_ov001_022ee594(p);
+    ExtraBoss_SpawnPlayerFlyFx(p);
+    ExtraBoss_CreatePlayerTrail(p);
 }

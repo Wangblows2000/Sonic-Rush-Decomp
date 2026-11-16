@@ -9,10 +9,10 @@ s32 Records_Unk_ov001_022ed490();
 s32 Records_Unk_ov001_022ed3e0();
 s32 Records_DrawBackButton();
 s32 Records_Unk_ov001_022ed19c();
-s32 Records_Unk_ov001_022ed188();
-s32 Records_Unk_ov001_022ed14c();
-s32 Records_Unk_ov001_022ed104();
-s32 Records_Unk_ov001_022ed08c();
+s32 Records_DrawHeaderName();
+s32 Records_DrawRecordNames();
+s32 Records_DrawHeaderTime();
+s32 Records_DrawRecordTimes();
 void Records_State_Unk_ov001_022ed6c4();
 
 void Records_State_Enter(void) {
@@ -26,10 +26,10 @@ void Records_State_Enter(void) {
     Records_Unk_ov001_022ed3e0(t0);
     Records_DrawBackButton(t0, 0);
     Records_Unk_ov001_022ed19c(t0);
-    Records_Unk_ov001_022ed188(t0);
-    Records_Unk_ov001_022ed14c(t0);
-    Records_Unk_ov001_022ed104(t0);
-    Records_Unk_ov001_022ed08c(t0);
+    Records_DrawHeaderName(t0);
+    Records_DrawRecordNames(t0);
+    Records_DrawHeaderTime(t0);
+    Records_DrawRecordTimes(t0);
     *(u32 *)t0 = (*(u32 *)t0 + 0x1);
     if ((u32)*(u32 *)t0 >= (u32)0x10) {
         *(u32 *)t0 = 0;

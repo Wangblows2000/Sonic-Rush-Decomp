@@ -6,8 +6,8 @@
 s32 Records_Create();
 s32 Records_InitDisplay();
 s32 Records_LoadAssets();
-s32 Records_Unk_ov001_022edb3c();
-s32 Records_Unk_ov001_022eda54();
+s32 Records_InitSprites();
+s32 Records_InitBackgrounds();
 s32 Records_Unk_ov001_022ecae4();
 s32 Touch_Enable();
 extern u8 data_0208926c[];
@@ -21,8 +21,8 @@ void Records_Start(void) {
     s32 t0 = Records_Create();
     Records_InitDisplay();
     Records_LoadAssets(t0);
-    Records_Unk_ov001_022edb3c(t0);
-    Records_Unk_ov001_022eda54(t0);
+    Records_InitSprites(t0);
+    Records_InitBackgrounds(t0);
     Records_Unk_ov001_022ecae4(t0);
     Touch_Enable();
     Records_CreateFadeTask(*(s16 *)((u8 *)data_0208926c + 8), 0, 0x10, 0);

@@ -26,9 +26,9 @@ typedef struct {
 
 extern UnkTask_022d3cd0 *gTaskCurrent;
 
-void TryAgain_Unk_ov001_022d36c0(UnkWork_022d3cd0 *w);
+void TryAgain_UpdateSplitScroll(UnkWork_022d3cd0 *w);
 s16 TryAgain_Interpolate(s32 a, s32 b, s32 c, s32 t, s32 e);
-BOOL TryAgain_Unk_ov001_022d36ac(UnkWork_022d3cd0 *w);
+BOOL TryAgain_IsSplitScrollDone(UnkWork_022d3cd0 *w);
 void AnimatorSprite_SetAnimation(UnkSpr_022d3cd0 *s, u16 anim);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022d3cd0 *s, u32 a, u32 b);
 void AnimatorSprite_Draw(UnkSpr_022d3cd0 *s);
@@ -39,7 +39,7 @@ void TryAgain_State_Enter(void) {
     UnkWork_022d3cd0 *w = gTaskCurrent->work;
     UnkSpr_022d3cd0 *s;
 
-    TryAgain_Unk_ov001_022d36c0(w);
+    TryAgain_UpdateSplitScroll(w);
     s = &w->spr;
     if (w->anim != 0) {
         AnimatorSprite_SetAnimation(s, 0);
@@ -51,7 +51,7 @@ void TryAgain_State_Enter(void) {
     AnimatorSprite_ProcessAnimation(s, 0, 0);
     AnimatorSprite_Draw(s);
     w->timer++;
-    if (TryAgain_Unk_ov001_022d36ac(w)) {
+    if (TryAgain_IsSplitScrollDone(w)) {
         w->timer = 0;
         w->unk4 = 0;
         w->unk8 = 7;

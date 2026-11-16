@@ -11,8 +11,8 @@ extern s32 data_ov001_0231f520;
 extern u32 gRandSeed;
 
 s32 FX_ModS32(s32 n, s32 d);
-void ExtraBoss_Unk_ov001_022fc89c(s32 a, s32 x, s32 y, s32 b);
-void ExtraBoss_Unk_ov001_022fc8bc(s32 a, s32 x, s32 y, s32 b);
+void ExtraBoss_SpawnMeteorR(s32 a, s32 x, s32 y, s32 b);
+void ExtraBoss_SpawnMeteor(s32 a, s32 x, s32 y, s32 b);
 
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
@@ -32,9 +32,9 @@ void ExtraBoss_UpdateSpawnTimer(void) {
     y = y + 0x10000 + (s & ~0x1f);
     if (data_ov001_0231f54c->count >= 10) {
         data_ov001_0231f54c->count = 0;
-        ExtraBoss_Unk_ov001_022fc89c(0, 0x108000, y, 0);
+        ExtraBoss_SpawnMeteorR(0, 0x108000, y, 0);
     } else {
-        ExtraBoss_Unk_ov001_022fc8bc(0, 0x108000, y, 0);
+        ExtraBoss_SpawnMeteor(0, 0x108000, y, 0);
     }
     data_ov001_0231f54c->timer = (Rand() & 0x1f) + 0x14;
 }

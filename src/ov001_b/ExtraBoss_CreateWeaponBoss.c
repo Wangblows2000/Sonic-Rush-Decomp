@@ -68,7 +68,7 @@ extern UnkStruct_022f6be8_o *data_ov001_0231f078[];
 extern void *data_ov001_0231f070;
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
-extern u16 data_ov001_02316840[];
+extern u16 gExtraBossHandBossAnimTable[];
 
 UnkStruct_022f6be8_o *ExtraBossObj_Create(s32 a, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
@@ -83,15 +83,15 @@ void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c)
 void ExtraBoss_HandNodeCallback(void);
 void ExtraBoss_HandCatchNodeCallback(void);
 void ExtraBossObj_Draw_HandBoss(void);
-void ExtraBossObj_Draw_Unk_ov001_022f2f14(void);
+void ExtraBossObj_Draw_HandCatch(void);
 void ExtraBoss_HandBoss_OnHit(void);
 void ExtraBoss_Unk_ov001_022eed0c(void);
-void ExtraBoss_Unk_ov001_022eed64(void);
+void ExtraBoss_HandCatch_OnGrabPlayer(void);
 UnkStruct_022f6be8_p *ExtraBoss_GetPlayer(void);
 void ExtraBoss_InitCollider(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 void ExtraBoss_WeaponNodeCallback(void);
 void ExtraBossObj_Draw_WeaponBoss(void);
-void ExtraBoss_Unk_ov001_022f63dc(UnkStruct_022f6be8_o *o);
+void ExtraBoss_WeaponBoss_Action_Enter(UnkStruct_022f6be8_o *o);
 void ExtraBoss_WeaponBoss_OnHit(void);
 extern u32 gRandSeed;
 extern UnkStruct_022f6be8_o *data_ov001_0231f06c;
@@ -152,7 +152,7 @@ UnkStruct_022f6be8_o *ExtraBoss_CreateWeaponBoss(void) {
     NNS_G3dRenderObjSetCallBack(a->unk90, ExtraBoss_WeaponNodeCallback, 0, 6, 3);
     a->unkA = 4;
     o->unk78 = ExtraBossObj_Draw_WeaponBoss;
-    ExtraBoss_Unk_ov001_022f63dc(o);
+    ExtraBoss_WeaponBoss_Action_Enter(o);
     d->unk8 = -1;
     d->unk4 = 4;
     d->unkC = 3;

@@ -8061,9 +8061,6 @@ PlayerDemo_IsActive:
 PlayerDemo_Start:
   confidence: strong
   evidence: "strong E6: tail call to PlayerDemo_Create; called by DemoScript_Op_PlayerDemo (was func_02057364, main, 2026-11-16)"
-PlayerDemo_Unk_020574d0:
-  confidence: strong
-  evidence: "strong E6,E7: referenced only from PlayerDemo functions (reloc closure of PlayerDemo_Create/Main/Destructor/State_Load in 0x02056e7c-0x02058364) (was func_020574d0, main, 2026-11-16)"
 PolyDemoUnder2_DrawSprites:
   confidence: strong
   evidence: "strong E6: only caller PolyDemoUnder2_Main; AnimatorSprite_ProcessAnimation + AnimatorSprite_Draw of the poly_demo_under2 sprites (was func_020576dc, main, 2026-11-16)"
@@ -15086,9 +15083,6 @@ OptionsWfsHost_Destroy:
 OptionsWfsHost_Create:
   confidence: strong
   evidence: "strong E6,E7: destroys previous host task, Task_Create(main=OptionsWfsHost_State_WaitWfsReady, dtor=OptionsWfsHost_Destructor) stored in gOptionsWfsHostTask, then WirelessMgr_StartWfsParent; only reached from OptionsMenu chain (was func_ov001_022c8820, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c8924:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cd558 (all Options); chain anchored at OptionsMenu_State_EnterItem; role unproven (was func_ov001_022c8924, ov001, 2026-11-16)"
 Options_IsPlayerSelectUnlocked:
   confidence: strong
   evidence: "strong E7: returns gSaveData[2] & 0x100, same flag as TitleMenu_IsPlayerSelectPageUnlocked; stored in Options work by Options_Create next to Options_IsSoundTestUnlocked (was func_ov001_022c8b14, ov001, 2026-11-16)"
@@ -15110,15 +15104,6 @@ Options_Unk_ov001_022c8b5c:
 Options_Unk_ov001_022c8bc0:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022cdabc (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c8bc0, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c8d0c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cc4a0 (all Options); chain anchored at OptionsMenu_State_EnterItem; role unproven (was func_ov001_022c8d0c, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c8d44:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cc4a0 (all Options); chain anchored at OptionsMenu_State_EnterItem; role unproven (was func_ov001_022c8d44, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c8d4c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cc588 (all Options); chain anchored at OptionsMenu_State_EnterItem; role unproven (was func_ov001_022c8d4c, ov001, 2026-11-16)"
 OptionsMenu_Unk_ov001_022c90a8:
   confidence: tentative
   evidence: "tentative E6: only called from OptionsMenu_State_SoundTest, func_ov001_022cc044 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c90a8, ov001, 2026-11-16)"
@@ -15380,15 +15365,6 @@ Options_Unk_ov001_022ce960:
 TryAgain_Unk_ov001_022d344c:
   confidence: tentative
   evidence: "tentative E6: only called from TryAgain_Create (all TryAgain); chain anchored at TryAgain_Create; role unproven (was func_ov001_022d344c, ov001, 2026-11-16)"
-TryAgain_Unk_ov001_022d36ac:
-  confidence: tentative
-  evidence: "tentative E6: only called from TryAgain_State_Enter (all TryAgain); chain anchored at TryAgain_State_Enter; role unproven (was func_ov001_022d36ac, ov001, 2026-11-16)"
-TryAgain_Unk_ov001_022d36c0:
-  confidence: tentative
-  evidence: "tentative E6: only called from TryAgain_State_Enter (all TryAgain); chain anchored at TryAgain_State_Enter; role unproven (was func_ov001_022d36c0, ov001, 2026-11-16)"
-TryAgain_Unk_ov001_022d37ac:
-  confidence: tentative
-  evidence: "tentative E6: only called from TryAgain_Start (all TryAgain); chain anchored at TryAgain_Start; role unproven (was func_ov001_022d37ac, ov001, 2026-11-16)"
 TryAgain_State_Unk_ov001_022d3864:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022d39ac (all TryAgain); caller chain anchored at TryAgain_State_Enter proves TryAgain subsystem (was func_ov001_022d3864, ov001, 2026-11-16)"
@@ -15812,30 +15788,9 @@ ZoneMap_Unk_ov001_022e1aac:
 ZoneMap_Unk_ov001_022e21b8:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e5de0 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e21b8, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e21ec:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7c50 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e21ec, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e22d0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e2480 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e22d0, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e23b0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e2480 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e23b0, ov001, 2026-11-16)"
 ZoneMap_SaveProgress:
   confidence: strong
   evidence: "strong E7: stores story progress (func_ov001_022e23b0 / 022e22d0 by character), SaveData_StoreLives, SaveData_CommitOrShowError(NULL) (was func_ov001_022e2480, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e24a8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7428 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e24a8, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e252c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7428 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e252c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e25b0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e612c (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e25b0, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e2640:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e612c (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e2640, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e26d0:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e8090 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e26d0, ov001, 2026-11-16)"
@@ -16139,27 +16094,9 @@ TimeAttackMenu_Unk_ov001_022ebc98:
 Records_Unk_ov001_022ecae4:
   confidence: tentative
   evidence: "tentative E6: only called from Records_Start (all Records); chain anchored at Records_Start; role unproven (was func_ov001_022ecae4, ov001, 2026-11-16)"
-Records_Unk_ov001_022ece30:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ece98 (all Records); chain anchored at Records_State_Enter; role unproven (was func_ov001_022ece30, ov001, 2026-11-16)"
-Records_Unk_ov001_022ece98:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ed6c4 (all Records); chain anchored at Records_State_Enter; role unproven (was func_ov001_022ece98, ov001, 2026-11-16)"
 Records_IsBPressed:
   confidence: strong
   evidence: "strong E7: returns gPad.trg (u16 [2], Pad_Update trigger) & 2 (B) (was func_ov001_022ecec0, ov001, 2026-11-16)"
-Records_Unk_ov001_022ed08c:
-  confidence: tentative
-  evidence: "tentative E6: only called from Records_State_Enter, Records_State_ExitToOptions, func_ov001_022ed548 ... (all Records); chain anchored at Records_State_Enter, Records_State_ExitToOptions; role unproven (was func_ov001_022ed08c, ov001, 2026-11-16)"
-Records_Unk_ov001_022ed104:
-  confidence: tentative
-  evidence: "tentative E6: only called from Records_State_Enter, Records_State_ExitToOptions, func_ov001_022ed548 ... (all Records); chain anchored at Records_State_Enter, Records_State_ExitToOptions; role unproven (was func_ov001_022ed104, ov001, 2026-11-16)"
-Records_Unk_ov001_022ed14c:
-  confidence: tentative
-  evidence: "tentative E6: only called from Records_State_Enter, Records_State_ExitToOptions, func_ov001_022ed548 ... (all Records); chain anchored at Records_State_Enter, Records_State_ExitToOptions; role unproven (was func_ov001_022ed14c, ov001, 2026-11-16)"
-Records_Unk_ov001_022ed188:
-  confidence: tentative
-  evidence: "tentative E6: only called from Records_State_Enter, Records_State_ExitToOptions, func_ov001_022ed548 ... (all Records); chain anchored at Records_State_Enter, Records_State_ExitToOptions; role unproven (was func_ov001_022ed188, ov001, 2026-11-16)"
 Records_Unk_ov001_022ed19c:
   confidence: tentative
   evidence: "tentative E6: only called from Records_State_Enter, Records_State_ExitToOptions, func_ov001_022ed548 ... (all Records); chain anchored at Records_State_Enter, Records_State_ExitToOptions; role unproven (was func_ov001_022ed19c, ov001, 2026-11-16)"
@@ -16178,300 +16115,9 @@ Records_State_Unk_ov001_022ed614:
 Records_State_Unk_ov001_022ed6c4:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by Records_State_Enter, func_ov001_022ed548, func_ov001_022ed614 (all Records); caller chain anchored at Records_State_Enter proves Records subsystem (was func_ov001_022ed6c4, ov001, 2026-11-16)"
-Records_Unk_ov001_022ed960:
-  confidence: tentative
-  evidence: "tentative E6: only called from Records_Destructor (all Records); chain anchored at Records_Destructor; role unproven (was func_ov001_022ed960, ov001, 2026-11-16)"
-Records_Unk_ov001_022ed990:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022edb3c (all Records); chain anchored at Records_Start; role unproven (was func_ov001_022ed990, ov001, 2026-11-16)"
-Records_Unk_ov001_022ed9f4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022edb3c (all Records); chain anchored at Records_Start; role unproven (was func_ov001_022ed9f4, ov001, 2026-11-16)"
-Records_Unk_ov001_022eda54:
-  confidence: tentative
-  evidence: "tentative E6: only called from Records_Start (all Records); chain anchored at Records_Start; role unproven (was func_ov001_022eda54, ov001, 2026-11-16)"
-Records_Unk_ov001_022edb3c:
-  confidence: tentative
-  evidence: "tentative E6: only called from Records_Start (all Records); chain anchored at Records_Start; role unproven (was func_ov001_022edb3c, ov001, 2026-11-16)"
-ExtraBossObj_Draw_Unk_ov001_022ede0c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj draw slot +0x78 (called by ExtraBossObj_Main) by func_ov001_022ee594; chain anchored at ExtraBoss_StartBattle (was func_ov001_022ede0c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022ee100:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ee2b0, func_ov001_022ee354, func_ov001_022ee41c ... (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022ee100, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022ee2b0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022ee354; chain anchored at ExtraBoss_StartBattle (was func_ov001_022ee2b0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022ee354:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022ee41c, func_ov001_022ee4c4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022ee354, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022ee41c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022ee4c4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022ee41c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022ee4c4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022ee2b0, func_ov001_022ee354, func_ov001_022ee594; chain anchored at ExtraBoss_StartBattle (was func_ov001_022ee4c4, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022ee594:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02302a3c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022ee594, ov001, 2026-11-16)"
 ExtraBoss_Unk_ov001_022eed0c:
   confidence: tentative
   evidence: "tentative E6: referenced from func_ov001_022f3530 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022eed0c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022eed64:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022f3530 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022eed64, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022eef90:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022ef11c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022eef90, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022eefc0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022ef008; chain anchored at ExtraBoss_StartBattle (was func_ov001_022eefc0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022ef008:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022ef0a0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022ef008, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022ef0a0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022ef11c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022ef0a0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022efe50:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022efea0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022efe50, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022efea0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022efff4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022efea0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022efff4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f011c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022efff4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f011c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f0234; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f011c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f0234:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f034c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f0234, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f034c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f0548; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f034c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f0548:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f06c4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f0548, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f06c4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f0840; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f06c4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f0840:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f0988; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f0840, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f0988:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f2ca8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f0988, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f0b40:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f0b70; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f0b40, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f0b70:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f0cbc, func_ov001_022f0e4c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f0b70, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f0cbc:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f0e4c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f0cbc, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f0e4c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022eed64; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f0e4c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f10d0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f1130, func_ov001_022f12c0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f10d0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1130:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f12c0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1130, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f12c0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f1660; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f12c0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1438:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f1550; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1438, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1550:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f167c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1550, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1660:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022eed64, func_ov001_022f167c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1660, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f167c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f18e4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f167c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f18e4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f1a90; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f18e4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1a90:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f1c0c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1a90, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f1c0c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f2ca8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f1c0c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1d24:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f1d54; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1d24, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1d54:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f1ea0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1d54, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1ea0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f1fd8; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1ea0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f1fd8:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f2138; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f1fd8, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f2138:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f22ac; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f2138, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f22ac:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f240c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f22ac, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f240c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f2580; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f240c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f2580:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f2780; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f2580, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f2780:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f2ca8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f2780, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f2858:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f2898; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f2858, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f2898:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f2ca8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f2898, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f2a8c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f2b78; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f2a8c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f2b78:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f3530 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f2b78, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f2ca4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f0988, func_ov001_022f0cbc, func_ov001_022f0e4c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f2ca4, ov001, 2026-11-16)"
-ExtraBossObj_Draw_Unk_ov001_022f2f14:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj draw slot +0x78 (called by ExtraBossObj_Main) by func_ov001_022f3530; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f2f14, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f4028:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f41c4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f4028, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f4068:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f40b0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f4068, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f40b0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f4148; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f40b0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f4148:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f41c4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f4148, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f41b4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f41c4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f41b4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f4cd0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f4d04; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f4cd0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f4d04:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f4d74; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f4d04, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f4d74:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f4e88; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f4d74, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f4e88:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f4f54; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f4e88, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f4f54:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f4fac; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f4f54, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f4fac:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f6450 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f4fac, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f5090:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f5108; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f5090, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f5108:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f524c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f5108, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f51a8:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f524c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f51a8, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f524c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f51a8, func_ov001_022f52e0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f524c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f52e0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f5090, func_ov001_022f5384; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f52e0, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f5384:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f6450 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f5384, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f53f0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f54dc; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f53f0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f5424:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f54dc; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f5424, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f54dc:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f55e4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f54dc, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f55e4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f56f8; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f55e4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f56f8:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f57a8; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f56f8, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f57a8:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f5424, func_ov001_022f589c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f57a8, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f589c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f6450 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f589c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f5954:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f5984, func_ov001_022f5a24; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f5954, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f5984:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f5a24; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f5984, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f5a24:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f5da0, func_ov001_022f5eb4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f5a24, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f5da0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f5a24, func_ov001_022f5eb4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f5da0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f5eb4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f60a4, func_ov001_022f612c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f5eb4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f60a4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f612c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f60a4, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f612c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f6450 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f612c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f61ec:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f622c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f61ec, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022f62f0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022f63dc; chain anchored at ExtraBoss_StartBattle (was func_ov001_022f62f0, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f63dc:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f6be8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022f63dc, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022f705c:
-  confidence: tentative
-  evidence: "tentative E6: referenced via table data_ov001_0231d52c used by func_ov001_022f7224, func_ov001_022f7308 (all ExtraBoss); chain anchored at ExtraBoss_Start, ExtraBoss_State_Battle ...; role unproven (was func_ov001_022f705c, ov001, 2026-11-16)"
-ExtraAct_Unk_ov001_022f73cc:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraAct_Start (all ExtraAct); chain anchored at ExtraAct_Start; role unproven (was func_ov001_022f73cc, ov001, 2026-11-16)"
-ExtraAct_State_Unk_ov001_022f741c:
-  confidence: tentative
-  evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022f7448, func_ov001_022f75c8 (all ExtraAct); caller chain anchored at ExtraAct_Main proves ExtraAct subsystem (was func_ov001_022f741c, ov001, 2026-11-16)"
-ExtraAct_State_Unk_ov001_022f7448:
-  confidence: tentative
-  evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022f75c8 (all ExtraAct); caller chain anchored at ExtraAct_Main proves ExtraAct subsystem (was func_ov001_022f7448, ov001, 2026-11-16)"
-ExtraAct_State_Unk_ov001_022f75c8:
-  confidence: tentative
-  evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022f7700 (all ExtraAct); caller chain anchored at ExtraAct_Main proves ExtraAct subsystem (was func_ov001_022f75c8, ov001, 2026-11-16)"
-ExtraAct_Unk_ov001_022f7700:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022f7740 (all ExtraAct); chain anchored at ExtraAct_Main; role unproven (was func_ov001_022f7700, ov001, 2026-11-16)"
-ExtraAct_Unk_ov001_022f7740:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraAct_Main (all ExtraAct); chain anchored at ExtraAct_Main; role unproven (was func_ov001_022f7740, ov001, 2026-11-16)"
 ExtraAct_Unk_ov001_022f7790:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022f7880, func_ov001_022f7924, func_ov001_022f7b94 ... (all ExtraAct); chain anchored at ExtraAct_Main; role unproven (was func_ov001_022f7790, ov001, 2026-11-16)"
@@ -16490,9 +16136,6 @@ ExtraAct_State_Unk_ov001_022f7d64:
 ExtraAct_Unk_ov001_022f7e20:
   confidence: tentative
   evidence: "tentative E6: referenced from func_ov001_022f8110 (all ExtraAct); chain anchored at ExtraAct_Main; role unproven (was func_ov001_022f7e20, ov001, 2026-11-16)"
-ExtraAct_Unk_ov001_022f8110:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraAct_Main (all ExtraAct); chain anchored at ExtraAct_Main; role unproven (was func_ov001_022f8110, ov001, 2026-11-16)"
 ExtraAct_State_Unk_ov001_022f8330:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022f83c0, func_ov001_022f8508, func_ov001_022f8608 (all ExtraAct); caller chain anchored at ExtraAct_Main proves ExtraAct subsystem (was func_ov001_022f8330, ov001, 2026-11-16)"
@@ -16538,216 +16181,12 @@ ExtraAct_Unk_ov001_022f904c:
 ExtraAct_Unk_ov001_022f9134:
   confidence: tentative
   evidence: "tentative E6: only called from ExtraAct_Main (all ExtraAct); chain anchored at ExtraAct_Main; role unproven (was func_ov001_022f9134, ov001, 2026-11-16)"
-ExtraBossObj_Unk_ov001_022fa574:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fc34c, func_ov001_022fc5f0, func_ov001_022fcb08 ... (all ExtraBoss); chain anchored at ExtraBossObj_Destroy, ExtraBoss_StartBattle; role unproven (was func_ov001_022fa574, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fa5c8:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fa5f4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fa5c8, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fa5f4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fa768 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fa5f4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fa664:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fa6e8; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fa664, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fa6e8:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fa768; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fa6e8, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fa768:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fa830; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fa768, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fa830:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f034c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fa830, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fa908:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022eed64 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fa908, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fa94c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f167c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fa94c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fa990:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f2138, func_ov001_022f240c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fa990, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022faa3c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fac54; chain anchored at ExtraBoss_StartBattle (was func_ov001_022faa3c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fac54:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fad38; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fac54, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fad38:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f4d74, func_ov001_022f4e88 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fad38, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022faf00:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022fb3c8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022faf00, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fb074:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fb17c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fb074, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fb17c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fb28c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fb17c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fb28c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fb3c8; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fb28c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fb3c8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f51a8, func_ov001_022f52e0 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fb3c8, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fb590:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fb678; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fb590, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fb5d4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f3c60 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fb5d4, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fb5ec:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f55e4, func_ov001_022f56f8, func_ov001_022f57a8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fb5ec, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fb678:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f5424, func_ov001_022f589c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fb678, ov001, 2026-11-16)"
-ExtraBossPlayer_Unk_ov001_022fb764:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBossPlayer_OnDashHit (all ExtraBoss); chain anchored at ExtraBossPlayer_OnDashHit; role unproven (was func_ov001_022fb764, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fb7b0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fb7f0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fb7b0, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fb7f0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fbb5c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fb7f0, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fb918:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022fc09c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fb918, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fb974:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022fc09c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fb974, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fba78:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fb974; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fba78, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fbaf0:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fbb5c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fbaf0, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fbb5c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fbaf0; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fbb5c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fbbc8:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fbaf0, func_ov001_022fbfcc; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fbbc8, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fbfcc:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fc09c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fbfcc, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fc09c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f5a24, func_ov001_022f5da0, func_ov001_022f5eb4 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fc09c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fc318:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fc34c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fc318, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fc34c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fc440; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fc34c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fc440:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fc494; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fc440, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fc494:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fc4d4; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fc494, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fc4d4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_0230494c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fc4d4, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fc5f0:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022fc708 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fc5f0, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fc708:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fc89c, func_ov001_022fc8bc (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fc708, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fc89c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02304834 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fc89c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fc8bc:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02304834 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fc8bc, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fc8dc:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022eee68, func_ov001_022f3c60 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fc8dc, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fc934:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022faa3c, func_ov001_022fbbc8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fc934, ov001, 2026-11-16)"
-ExtraBossPlayer_Unk_ov001_022fcaa4:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBossPlayer_State_SpecialCharge (all ExtraBoss); chain anchored at ExtraBossPlayer_State_SpecialCharge; role unproven (was func_ov001_022fcaa4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fcbd4:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fcd44, func_ov001_022fce7c, func_ov001_022fd000; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fcbd4, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fcd44:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fce7c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fcd44, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fce7c:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fcbd4, func_ov001_022fcd44, func_ov001_022fd000; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fce7c, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fd000:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fcbd4, func_ov001_022fcd44, func_ov001_022fce7c; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fd000, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fd138:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02302a3c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fd138, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fd1c8:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fa990; chain anchored at ExtraBoss_StartBattle (was func_ov001_022fd1c8, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fd1ec:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022faf00, func_ov001_022fc708, func_ov001_022fc9e4; chain anchored at ExtraBossPlayer_State_SpecialCharge, ExtraBoss_StartBattle (was func_ov001_022fd1ec, ov001, 2026-11-16)"
-ExtraBossObj_State_Unk_ov001_022fd220:
-  confidence: tentative
-  evidence: "tentative E6,E7: stored to ExtraBossObj state slot +0x74 (called each frame by ExtraBossObj_Main) by func_ov001_022fc5f0, func_ov001_022fd428; chain anchored at ExtraBossPlayer_OnDashHit, ExtraBossPlayer_State_SpecialCharge ... (was func_ov001_022fd220, ov001, 2026-11-16)"
-ExtraBossPlayer_Unk_ov001_022fd2dc:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fc34c, func_ov001_022fc5f0, func_ov001_022fcb08 ... (all ExtraBoss); chain anchored at ExtraBossPlayer_OnDashHit, ExtraBossPlayer_State_SpecialCharge ...; role unproven (was func_ov001_022fd2dc, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fd4ac:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022f60a4, func_ov001_022f612c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fd4ac, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fd4d4:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBoss_StartBattle (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fd4d4, ov001, 2026-11-16)"
-ExtraBossObj_Unk_ov001_022fd4f4:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBossObj_Destroy (all ExtraBoss); chain anchored at ExtraBossObj_Destroy; role unproven (was func_ov001_022fd4f4, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fd744:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022feee4 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fd744, ov001, 2026-11-16)"
 ExtraBoss_Unk_ov001_022fdbc0:
   confidence: tentative
   evidence: "tentative E6: only called from ExtraBoss_Start (all ExtraBoss); chain anchored at ExtraBoss_Start; role unproven (was func_ov001_022fdbc0, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fde54:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fe6b8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fde54, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fe550:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fe6b8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fe550, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fe6b8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fe710 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fe6b8, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fe710:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fea6c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fe710, ov001, 2026-11-16)"
-ExtraBossObj_Unk_ov001_022fe92c:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBossObj_Main (all ExtraBoss); chain anchored at ExtraBossObj_Main; role unproven (was func_ov001_022fe92c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fea6c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fef3c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_022fea6c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022fea98:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBoss_State_Battle, ExtraBoss_State_CharacterSwitch (all ExtraBoss); chain anchored at ExtraBoss_State_Battle, ExtraBoss_State_CharacterSwitch; role unproven (was func_ov001_022fea98, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_022feac8:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_02300128 (all ExtraBoss); chain anchored at ExtraBoss_StartCharacterSwitch; role unproven (was func_ov001_022feac8, ov001, 2026-11-16)"
 ExtraBoss_Unk_ov001_022ffcf8:
   confidence: tentative
   evidence: "tentative E6: only called from ExtraBoss_State_CharacterSwitch (all ExtraBoss); chain anchored at ExtraBoss_State_CharacterSwitch; role unproven (was func_ov001_022ffcf8, ov001, 2026-11-16)"
-ExtraBossObj_Unk_ov001_0230063c:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBossObj_Draw_Default (all ExtraBoss); chain anchored at ExtraBossObj_Draw_Default; role unproven (was func_ov001_0230063c, ov001, 2026-11-16)"
-ExtraBossObj_Unk_ov001_02300978:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBossObj_Draw_Default (all ExtraBoss); chain anchored at ExtraBossObj_Draw_Default; role unproven (was func_ov001_02300978, ov001, 2026-11-16)"
 ExtraBoss_Unk_ov001_02300c54:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_02305564 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02300c54, ov001, 2026-11-16)"
@@ -16757,81 +16196,12 @@ ExtraBossPlayer_State_Unk_ov001_02301ba0:
 ExtraBoss_Unk_ov001_02302658:
   confidence: tentative
   evidence: "tentative E6: only called from ExtraBoss_State_Battle (all ExtraBoss); chain anchored at ExtraBoss_State_Battle; role unproven (was func_ov001_02302658, ov001, 2026-11-16)"
-ExtraBossObj_Unk_ov001_02302ac8:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBossObj_Destroy (all ExtraBoss); chain anchored at ExtraBossObj_Destroy; role unproven (was func_ov001_02302ac8, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_0230319c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02303594, func_ov001_02303af8, func_ov001_02303c54 ... (all ExtraBoss); chain anchored at ExtraBoss_StartBattle, ExtraBoss_StartCharacterSwitch ...; role unproven (was func_ov001_0230319c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_023031e4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02303594 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_023031e4, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303244:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02303594, func_ov001_02303934, func_ov001_02303c54 ... (all ExtraBoss); chain anchored at ExtraBoss_Start, ExtraBoss_StartBattle ...; role unproven (was func_ov001_02303244, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_0230328c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02303af8, func_ov001_02303d28, func_ov001_02303e60 (all ExtraBoss); chain anchored at ExtraBoss_LoadPlayerModel, ExtraBoss_StartBattle; role unproven (was func_ov001_0230328c, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_023032ec:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02303594, func_ov001_02303934, func_ov001_02303c54 (all ExtraBoss); chain anchored at ExtraBoss_Start, ExtraBoss_StartBattle ...; role unproven (was func_ov001_023032ec, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303334:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02303594, func_ov001_023041a8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02303334, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303394:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02303594, func_ov001_02303934, func_ov001_02303c54 ... (all ExtraBoss); chain anchored at ExtraBoss_Start, ExtraBoss_StartBattle ...; role unproven (was func_ov001_02303394, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_023033dc:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02303fd4 (all ExtraBoss); chain anchored at ExtraBoss_State_Battle; role unproven (was func_ov001_023033dc, ov001, 2026-11-16)"
 ExtraBoss_StackPush:
   confidence: strong
   evidence: "strong E7: decrements data_ov001_0231f548->sp and stores the value at stack[sp] (pairs with ExtraBoss_StackPop) (was func_ov001_0230343c, ov001, 2026-11-16)"
 ExtraBoss_StackPop:
   confidence: strong
   evidence: "strong E7: returns 0 if sp >= 0x64 (empty), else stack[sp] and sp++ on data_ov001_0231f548 (was func_ov001_02303468, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303494:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_023041a8 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02303494, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303594:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_02303c38 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02303594, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303934:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_02303af8, func_ov001_02304460, func_ov001_02304624 (all ExtraBoss); chain anchored at ExtraBoss_Start, ExtraBoss_StartBattle; role unproven (was func_ov001_02303934, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303a80:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ef6c4, func_ov001_022f47d4 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02303a80, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303af8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fa664 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02303af8, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303c38:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fa768 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02303c38, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303d28:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fc5f0 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02303d28, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02303e60:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_02301a88 (all ExtraBoss); chain anchored at ExtraBoss_LoadPlayerModel; role unproven (was func_ov001_02303e60, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02304028:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022feee4 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02304028, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_023041a8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fef3c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_023041a8, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02304624:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBoss_Start (all ExtraBoss); chain anchored at ExtraBoss_Start; role unproven (was func_ov001_02304624, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02304a00:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022eed0c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02304a00, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02304a24:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022fef1c, func_ov001_022fef3c (all ExtraBoss); chain anchored at ExtraBoss_StartBattle, ExtraBoss_StartCharacterSwitch; role unproven (was func_ov001_02304a24, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02304e80:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBoss_State_Battle, ExtraBoss_State_CharacterSwitch (all ExtraBoss); chain anchored at ExtraBoss_State_Battle, ExtraBoss_State_CharacterSwitch; role unproven (was func_ov001_02304e80, ov001, 2026-11-16)"
 ExtraBoss_Unk_ov001_02304fb4:
   confidence: tentative
   evidence: "tentative E6: only called from ExtraBoss_StartBattle (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02304fb4, ov001, 2026-11-16)"
@@ -16880,18 +16250,9 @@ ExtraBoss_Unk_ov001_02306244:
 ExtraBoss_Unk_ov001_023062f0:
   confidence: tentative
   evidence: "tentative E6: referenced from func_ov001_02306424 (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_023062f0, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_023063a0:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBoss_StartCharacterSwitch, ExtraBoss_State_Battle, func_ov001_02306674 (all ExtraBoss); chain anchored at ExtraBoss_Shutdown, ExtraBoss_StartCharacterSwitch ...; role unproven (was func_ov001_023063a0, ov001, 2026-11-16)"
 ExtraBoss_Unk_ov001_02306424:
   confidence: tentative
   evidence: "tentative E6: only called from ExtraBoss_StartBattle (all ExtraBoss); chain anchored at ExtraBoss_StartBattle; role unproven (was func_ov001_02306424, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02306674:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBoss_Shutdown (all ExtraBoss); chain anchored at ExtraBoss_Shutdown; role unproven (was func_ov001_02306674, ov001, 2026-11-16)"
-ExtraBoss_Unk_ov001_02306738:
-  confidence: tentative
-  evidence: "tentative E6: only called from ExtraBoss_Start (all ExtraBoss); chain anchored at ExtraBoss_Start; role unproven (was func_ov001_02306738, ov001, 2026-11-16)"
 SpecialStage_DrawObjects:
   confidence: strong
   evidence: "strong E7: SpecialStageObjList_Draw(special-stage work +0x46a0 object list) (was func_ov001_023070b0, ov001, 2026-11-16)"
@@ -16997,9 +16358,6 @@ SpecialStageHud_Unk_ov001_02314214:
 SpecialStageHud_Unk_ov001_02314368:
   confidence: tentative
   evidence: "tentative E6: only called from SpecialStageHud_UpdateCheckpoint, SpecialStageHud_UpdateGoal, func_ov001_0230832c (all SpecialStage); chain anchored at SpecialStageHud_UpdateCheckpoint, SpecialStageHud_UpdateGoal; role unproven (was func_ov001_02314368, ov001, 2026-11-16)"
-SpecialStage_Unk_ov001_02314380:
-  confidence: tentative
-  evidence: "tentative E6: only called from SpecialStageHud_UpdateCheckpoint, func_ov001_023099ec (all SpecialStage); chain anchored at SpecialStageHud_UpdateCheckpoint, SpecialStage_StartPlay; role unproven (was func_ov001_02314380, ov001, 2026-11-16)"
 SpecialStagePlayer_Unk_ov001_02314694:
   confidence: tentative
   evidence: "tentative E6: only called from SpecialStagePlayer_State_TrickInput (all SpecialStage); chain anchored at SpecialStagePlayer_State_TrickInput; role unproven (was func_ov001_02314694, ov001, 2026-11-16)"
@@ -17312,12 +16670,6 @@ DGT_Unk_0200ca3c:
 DGT_Unk_0200cb88:
   confidence: tentative
   evidence: "tentative E6: callers DGT_Hash2SetSource and DGT_Unk_0200ca3c only (SHA-1 block transform, constants at 0x0207798c..0x02077998); inside dgt_hash2 cluster (was func_0200cb88, main, 2026-11-16)"
-CARD_Unk_0200f9a0:
-  confidence: tentative
-  evidence: "tentative E6,E7: NitroSDK CARD backup helper between CARD_IdentifyBackup and CARDi_EndTask; uses cardi_common (busy flag 4 / OS_SleepThread loop), CARDi_SetTask, CARDi_EndTask; fb40 = PROGRAM_BACKUP(8) loop via 0x100 buffer, fbfc = READ_BACKUP(6) loop; f9a0/fa70 are their request front-ends; SDK 2.x name not provable (was func_0200f9a0, main, 2026-11-16)"
-CARD_Unk_0200fa70:
-  confidence: tentative
-  evidence: "tentative E6,E7: NitroSDK CARD backup helper between CARD_IdentifyBackup and CARDi_EndTask; uses cardi_common (busy flag 4 / OS_SleepThread loop), CARDi_SetTask, CARDi_EndTask; fb40 = PROGRAM_BACKUP(8) loop via 0x100 buffer, fbfc = READ_BACKUP(6) loop; f9a0/fa70 are their request front-ends; SDK 2.x name not provable (was func_0200fa70, main, 2026-11-16)"
 CARD_Unk_0200fb40:
   confidence: tentative
   evidence: "tentative E6,E7: NitroSDK CARD backup helper between CARD_IdentifyBackup and CARDi_EndTask; uses cardi_common (busy flag 4 / OS_SleepThread loop), CARDi_SetTask, CARDi_EndTask; fb40 = PROGRAM_BACKUP(8) loop via 0x100 buffer, fbfc = READ_BACKUP(6) loop; f9a0/fa70 are their request front-ends; SDK 2.x name not provable (was func_0200fb40, main, 2026-11-16)"
@@ -17330,24 +16682,12 @@ MB_Unk_0201882c:
 MSL_Unk_0202d55c:
   confidence: tentative
   evidence: "tentative E6: sole caller __num2dec_internal (MSL ansi_fp.c); counts trailing zero bits of a word by walking bytes (sm64ds also leaves its copy unnamed) (was func_0202d55c, main, 2026-11-16)"
-Runtime_Unk_0202e3e8:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e3e8, main, 2026-11-16)"
 Runtime_Unk_0202e3f0:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e3f0, main, 2026-11-16)"
 Runtime_Unk_0202e438:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e438, main, 2026-11-16)"
-Runtime_Unk_0202e4f0:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e4f0, main, 2026-11-16)"
-Runtime_Unk_0202e5a0:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e5a0, main, 2026-11-16)"
-Runtime_Unk_0202e65c:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e65c, main, 2026-11-16)"
 Runtime_Unk_0202e698:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e698, main, 2026-11-16)"
@@ -17360,24 +16700,6 @@ Runtime_Unk_0202e6e0:
 Runtime_Unk_0202e770:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e770, main, 2026-11-16)"
-Runtime_Unk_0202e910:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e910, main, 2026-11-16)"
-Runtime_Unk_0202e990:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e990, main, 2026-11-16)"
-Runtime_Unk_0202eaa4:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202eaa4, main, 2026-11-16)"
-Runtime_Unk_0202eb38:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202eb38, main, 2026-11-16)"
-Runtime_Unk_0202ec4c:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202ec4c, main, 2026-11-16)"
-Runtime_Unk_0202ece0:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202ece0, main, 2026-11-16)"
 Runtime_Unk_0202ece4:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202ece4, main, 2026-11-16)"
@@ -17390,9 +16712,6 @@ Runtime_Unk_0202fccc:
 Runtime_Unk_0202fcd4:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202fcd4, main, 2026-11-16)"
-AnimatorSprite_Unk_02033544:
-  confidence: tentative
-  evidence: "tentative E6: forwards all 4 args to AnimatorSprite_SetAnimation; immediately precedes it; 11 ov000 call sites (was func_02033544, main, 2026-11-16)"
 WirelessMgr_GetMBParentHostInfo:
   confidence: strong
   evidence: "strong E5,E6: if boot type (0x027ffc40) == 2 (OS_BOOTTYPE_DOWNLOAD_MB) uses the MB parent WMBssDesc at 0x027ffc42: out[0]=channel(+0x36), out[1]=arg+1, copies bssid(+4,6 bytes); same output shape as WirelessMgr_GetHostInfo; caller WirelessSession_Stop (was func_02042a20, main, 2026-11-16)"
@@ -17459,9 +16778,6 @@ WirelessLobbyChild_IsBeforeConnect:
 WirelessLobbyChild_SelectParent:
   confidence: strong
   evidence: "strong E7: in state 3 stores the index to work+0x36 and sets work+0x10; WirelessLobbyChild_Main then calls WirelessMgr_SelectParent(work+0x36) (was func_02050ea0, main, 2026-11-16)"
-WirelessLobbyChild_Unk_02050ec0:
-  confidence: tentative
-  evidence: "tentative E7: returns work+0x108[i] (u16 copied from each scan result by WirelessLobbyChild_RefreshParentList) if i < parent count (was func_02050ec0, main, 2026-11-16)"
 WirelessLobbyChild_GetParentName:
   confidence: strong
   evidence: "strong E7: copies names[idx] (work+0x38, filled from WirelessMgr_GetScanResult names) to dst, len<=10, pads with spaces when idx >= count (was func_02050f04, main, 2026-11-16)"
@@ -21317,33 +20633,6 @@ ShutdownPlayer_snd_player:
 StrmCallback_stream:
   confidence: strong
   evidence: "strong E4: 0x0201c224 token-identical (1.00) to NitroSystem snd/stream.c static StrmCallback; between BeginSleep_stream and AlarmCallback_stream as in stream.c (was StrmCallback, main, 2026-11-16)"
-Runtime_Unk_0202e924:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202e924 inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202e910_e14, main, 2026-11-16)"
-Runtime_Unk_0202e950:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202e950 inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202e910_e40, main, 2026-11-16)"
-Runtime_Unk_0202e974:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202e974 inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202e910_e64, main, 2026-11-16)"
-Runtime_Unk_0202eab8:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202eab8 inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202eaa4_e14, main, 2026-11-16)"
-Runtime_Unk_0202eae8:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202eae8 inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202eaa4_e44, main, 2026-11-16)"
-Runtime_Unk_0202eb14:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202eb14 inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202eaa4_e70, main, 2026-11-16)"
-Runtime_Unk_0202ec60:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202ec60 inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202ec4c_e14, main, 2026-11-16)"
-Runtime_Unk_0202ec90:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202ec90 inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202ec4c_e44, main, 2026-11-16)"
-Runtime_Unk_0202ecbc:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime double-compare helper at 0x0202ecbc inside the _deq/_dls/_dleq/_dgr/_dgeq block; no official name in our references (was func_0202ec4c_e70, main, 2026-11-16)"
 Boss1Hammer_State_Idle_ov000_022c5f90:
   confidence: strong
   evidence: "strong E7,E6: empty per-frame state; only set by Boss1Hammer_Action_Idle_ov000_022c5f94, which Boss1_Action_StartMissileAttack runs on the hammer while the neck attacks (was Boss1Hammer_State_Unk_ov000_022c5f90, ov000, 2026-11-16)"
@@ -22790,3 +22079,741 @@ gNaviMCounterPending:
 gNaviMSavedStep:
   confidence: strong
   evidence: "strong E7: map step snapshot (gGameState+0xe) written by NaviM_SaveStep/NaviM_ResetPending and compared by NaviM_CheckStepAdvanced (was data_022c4db4, main, 2026-11-16)"
+_fcmpeq:
+  confidence: strong
+  evidence: "strong E4,E6: flag-returning float equality compare (NaN -> movs r2,#1 so Z=0; +0/-0 -> Z=1; else cmp a,b); _fcmpeq/_fcmple/_fcmpge are the only flag-style float compare helpers named in the CW 1.2/sp2 mwccarm.exe helper table (strings); placed after _fneq/_feq exactly as each group in this runtime block ends with its flag compare (_dneq,_deq,0x0202e910; _dls,_dleq,0x0202eaa4; _dgr,_dgeq,0x0202ec4c). Uncalled in ROM, so no compile test possible (default-flag C never emits it) (was Runtime_Unk_0202e4f0, main, 2026-11-16)"
+_fcmple:
+  confidence: strong
+  evidence: "strong E4,E6: flag-returning float compare for </<= (NaN -> adds 0xff000000+0x10000000 gives C=1,Z=0 so lo/ls fail; both zero -> Z=1,C=1; negatives compared reversed); member of CW 1.2/sp2 helper table (_fcmpeq/_fcmple/_fcmpge); sits after _fls/_fleq like _dcmple after _dls/_dleq (was Runtime_Unk_0202e5a0, main, 2026-11-16)"
+_fcmpge:
+  confidence: strong
+  evidence: "strong E4,E6: flag-returning float compare for >/>= (NaN exit leaves C=0,Z=0 so hi/hs fail; both zero -> Z=1,C=1); member of CW 1.2/sp2 helper table; sits after _fgr/_fgeq like _dcmpge after _dgr/_dgeq (was Runtime_Unk_0202e65c, main, 2026-11-16)"
+_dcmpeq:
+  confidence: strong
+  evidence: "strong E4,E6: double version of _fcmpeq (NaN via cmn 0x200000,hi<<1 -> movs r12,#1 so Z=0; cmp hi then cmpeq lo); entry falls into 0x0202e924; CW 1.2/sp2 helper table names _dcmpeq/_dcmple/_dcmpge; follows _dneq/_deq (was Runtime_Unk_0202e910, main, 2026-11-16)"
+_dcmpeq_e14:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmpeq (0x0202e910+0x14, fall-through target and branch target of its NaN paths); existing split-label convention _dadd_e10/_fadd_ec (was Runtime_Unk_0202e924, main, 2026-11-16)"
+_dcmpeq_e40:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmpeq (0x0202e910+0x40, first-operand NaN/Inf path, only reached by bhs from 0x0202e910) (was Runtime_Unk_0202e950, main, 2026-11-16)"
+_dcmpeq_e64:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmpeq (0x0202e910+0x64, second-operand NaN/Inf path) (was Runtime_Unk_0202e974, main, 2026-11-16)"
+_dcmpeq_e80:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmpeq (0x0202e910+0x80, final b to _dcmpeq_e14 closing the routine before _dls) (was Runtime_Unk_0202e990, main, 2026-11-16)"
+_dcmple:
+  confidence: strong
+  evidence: "strong E4,E6: double flag compare for </<= (NaN -> adds 0xff000000+0x10000000, C=1 Z=0; both zero -> cmpeq r1,r1 Z=1 C=1); CW 1.2/sp2 helper table; follows _dls/_dleq (was Runtime_Unk_0202eaa4, main, 2026-11-16)"
+_dcmple_e14:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmple (0x0202eaa4+0x14) (was Runtime_Unk_0202eab8, main, 2026-11-16)"
+_dcmple_e44:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmple (0x0202eaa4+0x44, first-operand NaN/Inf path) (was Runtime_Unk_0202eae8, main, 2026-11-16)"
+_dcmple_e70:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmple (0x0202eaa4+0x70, second-operand NaN/Inf path) (was Runtime_Unk_0202eb14, main, 2026-11-16)"
+_dcmple_e94:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmple (0x0202eaa4+0x94, final b to _dcmple_e14 before _dgr) (was Runtime_Unk_0202eb38, main, 2026-11-16)"
+_dcmpge:
+  confidence: strong
+  evidence: "strong E4,E6: double flag compare for >/>= (NaN -> mov r12,#0; adds r12,#0 gives C=0 so hi/hs fail); CW 1.2/sp2 helper table; follows _dgr/_dgeq (was Runtime_Unk_0202ec4c, main, 2026-11-16)"
+_dcmpge_e14:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmpge (0x0202ec4c+0x14) (was Runtime_Unk_0202ec60, main, 2026-11-16)"
+_dcmpge_e44:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmpge (0x0202ec4c+0x44, first-operand NaN/Inf path) (was Runtime_Unk_0202ec90, main, 2026-11-16)"
+_dcmpge_e70:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmpge (0x0202ec4c+0x70, second-operand NaN/Inf path) (was Runtime_Unk_0202ecbc, main, 2026-11-16)"
+_dcmpge_e94:
+  confidence: strong
+  evidence: "strong E6: interior label of _dcmpge (0x0202ec4c+0x94, final b to _dcmpge_e14) (was Runtime_Unk_0202ece0, main, 2026-11-16)"
+_fadd_e21c:
+  confidence: strong
+  evidence: "strong E4,E6: last block of the f_add object (_fadd 0x0202e1cc+0x21c, ends where _fadd_ec stops): mvn r0,#0x80000000; bx lr, identical to the unreferenced final label 0x020EAB9C of pokediamond RUNTIME_f_add.s which follows the same mov/orr and mvn blocks; split-label convention _fadd_ec (was Runtime_Unk_0202e3e8, main, 2026-11-16)"
+CARDi_ProgramBackup:
+  confidence: strong
+  evidence: "strong E4,E7: argument shape (dst backup offset, src RAM, len, callback, arg, is_async) of NitroSDK CARDi_ProgramBackup; locks cardi_common busy flag 4, stores src/dst/len/callback/arg and runs (or CARDi_SetTask's) 0x0200fb40 which loops CARDi_Request(p, 8=CARD_REQ_PROGRAM_BACKUP, 10=CARD_RETRY_COUNT_MAX) in 0x100 chunks, as SDK 3.x inline CARDi_ProgramBackup does via CARDi_RequestStreamCommand(PROGRAM_BACKUP, CARD_RETRY_COUNT_MAX); callers SaveData_WriteSlot/SaveData_WriteSignature (write RAM to backup) (was CARD_Unk_0200f9a0, main, 2026-11-16)"
+CARDi_ReadBackup:
+  confidence: strong
+  evidence: "strong E4,E7: argument shape (src backup offset, dst RAM, len, callback, arg, is_async) of NitroSDK CARDi_ReadBackup; runs 0x0200fbfc which loops CARDi_Request(p, 6=CARD_REQ_READ_BACKUP, retry 1) into the 0x100 page buffer then copies to dst, matching SDK inline CARDi_ReadBackup (READ_BACKUP, retry 1); callers SaveData_ReadSlot/SaveData_CheckSignature (was CARD_Unk_0200fa70, main, 2026-11-16)"
+AnimatorSpriteDS_SetAnimation:
+  confidence: strong
+  evidence: "strong E7,E8: tail-call veneer to AnimatorSprite_SetAnimation with unchanged args (ldr ip,=0x02033550; bx ip), immediately before AnimatorSpriteDS_Init; all 11 ov000 callers (Hud_Create/Hud_DrawRings/Hud_DrawLives/Hud_DrawTensionGauge) pass AnimatorSpriteDS objects they also give to AnimatorSpriteDS_Init/_ProcessAnimation/_Draw; SRA AnimatorSpriteDS__SetAnimation is exactly SetAnimation(&ds->work, id) with work at offset 0 (was AnimatorSprite_Unk_02033544, main, 2026-11-16)"
+PlayerDemo_ReleaseSkippable:
+  confidence: strong
+  evidence: "strong E7: only body is PlayerDemo_DisableTouch() (undoes the PlayerDemo_EnableTouch done by PlayerDemo_InitSkippable, which directly follows at 0x020574d8); only caller PlayerDemo_Destructor (was PlayerDemo_Unk_020574d0, main, 2026-11-16)"
+WirelessLobbyChild_GetParentState:
+  confidence: strong
+  evidence: "strong E7: returns work+0x108[i] (0 if i >= parent count work+0x34), the u16 that WirelessLobbyChild_RefreshParentList copies from scan result user-game-info word 0xb; parents publish that word as 1 in WirelessLobby_CreateParent (msg.flag) and 2 once WirelessLobby_GetFirstChild succeeds (WirelessLobbyParent_Main), i.e. open/occupied; sibling of GetParentLinkLevel/GetParentName, used by VsMenu_RefreshParentList (was WirelessLobbyChild_Unk_02050ec0, main, 2026-11-16)"
+ExtraBossPlayer_SetupFxModel:
+  confidence: strong
+  evidence: "strong E6,E7: allocs 0x160 Model if NULL, Model_SetResource from fx resource table data_ov001_0231f098[kind] and binds up to 5 anims; called by ExtraBossPlayer_CreateFxObj/ExtraBoss_SwapObjModel (was ExtraBossPlayer_Unk_ov001_022fd2dc, ov001, 2026-11-16)"
+ExtraBossObj_State_DestroyAfterTimer:
+  confidence: strong
+  evidence: "strong E6,E7: decrements +0x1cc and sets destroy flag 8 (consumed by ExtraBossObj_DestroyFlagged) at 0 (was ExtraBossObj_State_Unk_ov001_022fd1c8, ov001, 2026-11-16)"
+ExtraBossObj_State_DestroyWhenOutOfArena:
+  confidence: strong
+  evidence: "strong E6,E7: sets destroy flag 8 when ExtraBossObj_IsOutOfArena(x,y,0x30000,0x30000) (was ExtraBossObj_State_Unk_ov001_022fd1ec, ov001, 2026-11-16)"
+ExtraBossObj_State_DestroyWhenAnimsDone:
+  confidence: strong
+  evidence: "strong E6,E7: sets destroy flag 8 once all 5 model anims have finished flag bit1; default state of ExtraBossPlayer_CreateFxObj (was ExtraBossObj_State_Unk_ov001_022fd220, ov001, 2026-11-16)"
+ExtraBoss_SpawnSuctionFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0x15 = fx table data_ov001_0231d6b4[0x15] -> extra_act.narc eff_suction3.nsbmd/nsbta; spawned by the spaceb state (was ExtraBoss_Unk_ov001_022fa5f4, ov001, 2026-11-16)"
+ExtraBossObj_State_SuctionFx:
+  confidence: strong
+  evidence: "strong E6,E7: suction fx state: follows camera X, destroyed (flag 8) when work flag 0x40 (suction active) clears (was ExtraBossObj_State_Unk_ov001_022fa5c8, ov001, 2026-11-16)"
+ExtraBoss_SpawnSpacebFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0x14 -> eff_spaceb.nsbmd (extra_act.narc, table data_ov001_0231d6b4); spawned in hand-boss bse_nb_sb05 state (was ExtraBoss_Unk_ov001_022fa830, ov001, 2026-11-16)"
+ExtraBossObj_State_SpacebStart:
+  confidence: strong
+  evidence: "strong E7: waits anim 0 end, switches to anim 1, sets work flag 0x40 + ring suction (ExtraBoss_StartRingSuction), spawns suction fx, timer 300 (was ExtraBossObj_State_Unk_ov001_022fa768, ov001, 2026-11-16)"
+ExtraBossObj_State_SpacebActive:
+  confidence: strong
+  evidence: "strong E7: 300-frame countdown of the active spaceb fx then anim 2 (end) and 10-frame timer (was ExtraBossObj_State_Unk_ov001_022fa6e8, ov001, 2026-11-16)"
+ExtraBossObj_State_SpacebEnd:
+  confidence: strong
+  evidence: "strong E7: on end anim done clears work flag 0x40, ExtraBoss_EndRingSuction, destroys itself (was ExtraBossObj_State_Unk_ov001_022fa664, ov001, 2026-11-16)"
+ExtraBoss_SpawnCatchFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0x13 -> eff_catch.nsbmd; called when the catch hand grabs the player (was ExtraBoss_Unk_ov001_022fa908, ov001, 2026-11-16)"
+ExtraBoss_SpawnJumpFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0x12 -> eff_jump.nsbmd; called when the catch hand is launched (was ExtraBoss_Unk_ov001_022fa94c, ov001, 2026-11-16)"
+ExtraBoss_SpawnClawFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0x10/0x11 -> eff_claw01/eff_claw02.nsbmd, 60-frame lifetime, sfx 0xb2; called by hand-boss bse_nb_dc02/dc04 states (was ExtraBoss_Unk_ov001_022fa990, ov001, 2026-11-16)"
+ExtraBoss_SpawnHomingMissile:
+  confidence: strong
+  evidence: "strong E8,E7: CreateFxObj kind 0xe -> eff_missile_hmg.nsbmd; launch velocity from angle, later steers toward player (MissileHoming); sfx 0xb0 (was ExtraBoss_Unk_ov001_022fad38, ov001, 2026-11-16)"
+ExtraBossObj_State_MissileLaunch:
+  confidence: strong
+  evidence: "strong E7: eases missile velocity for 0x1000/0x44 frames then switches to ExtraBossObj_State_MissileHoming (was ExtraBossObj_State_Unk_ov001_022fac54, ov001, 2026-11-16)"
+ExtraBossObj_State_MissileHoming:
+  confidence: strong
+  evidence: "strong E7: FX_Atan2 toward ExtraBoss_GetPlayer, sets velocity/rotation; on z>=0 destroys and spawns eff_bomb_wide explosion (sfx 0xb1) (was ExtraBossObj_State_Unk_ov001_022faa3c, ov001, 2026-11-16)"
+ExtraBoss_SpawnBombFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0xd -> eff_bomb_wide.nsbmd with damage collider; spawned when missiles/beam units explode (was ExtraBoss_Unk_ov001_022fc934, ov001, 2026-11-16)"
+ExtraBoss_SpawnHomingBeam:
+  confidence: strong
+  evidence: "strong E8,E7: CreateFxObj kind 0xf -> eff_beam_hmg.nsbmd; state tracks player X then fires toward player Y; sfx 0xae (was ExtraBoss_Unk_ov001_022fb3c8, ov001, 2026-11-16)"
+ExtraBossObj_State_HomingBeamApproach:
+  confidence: strong
+  evidence: "strong E7: moves beam until player x within +-0xa000, then 10-frame aim state (was ExtraBossObj_State_Unk_ov001_022fb28c, ov001, 2026-11-16)"
+ExtraBossObj_State_HomingBeamAim:
+  confidence: strong
+  evidence: "strong E7: after timer sets vertical speed toward player y (table data_ov001_0231d5ec), sfx 0xaf, then fire state (was ExtraBossObj_State_Unk_ov001_022fb17c, ov001, 2026-11-16)"
+ExtraBossObj_State_HomingBeamFire:
+  confidence: strong
+  evidence: "strong E7: stretches beam scale 0x34cc->0x6998, destroys when ExtraBossObj_IsOutOfArena (was ExtraBossObj_State_Unk_ov001_022fb074, ov001, 2026-11-16)"
+ExtraBoss_HomingBeam_OnHit:
+  confidence: strong
+  evidence: "strong E6,E7: collider callback of the hmg beam (set at +0xb4): reverses beam away from attacker (FX_Atan2), new collider, state DestroyWhenOutOfArena, sfx 0xa9 (was ExtraBoss_Unk_ov001_022faf00, ov001, 2026-11-16)"
+ExtraBoss_SpawnSwordFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0xc -> eff_sword.nsbmd with large collider; called from weapon-boss bse_pb_bsl/bsr sword states (was ExtraBoss_Unk_ov001_022fb678, ov001, 2026-11-16)"
+ExtraBossObj_State_SwordFx:
+  confidence: strong
+  evidence: "strong E7: destroys sword fx when step 3 anim done or cancel flag data_ov001_0231f094[1] set (was ExtraBossObj_State_Unk_ov001_022fb590, ov001, 2026-11-16)"
+ExtraBoss_CancelSwordFx:
+  confidence: strong
+  evidence: "strong E6,E7: sets data_ov001_0231f094[1]=1, which ExtraBossObj_State_SwordFx treats as destroy; called from ExtraBoss_WeaponBoss_OnHit (was ExtraBoss_Unk_ov001_022fb5d4, ov001, 2026-11-16)"
+ExtraBoss_AdvanceSwordFxStep:
+  confidence: strong
+  evidence: "strong E7: increments sword fx step +0x1d0 and sets its model anims 0/1/0 toggling collider bit 0x200; called by sword-swing states (was ExtraBoss_Unk_ov001_022fb5ec, ov001, 2026-11-16)"
+ExtraBossPlayer_SpawnClashFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0xb -> eff_clash.nsbmd; called from ExtraBossPlayer_OnDashHit (was ExtraBossPlayer_Unk_ov001_022fb764, ov001, 2026-11-16)"
+ExtraBoss_SpawnSmallBeam:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0xa -> eff_beam_small.nsbmd with cross colliders and lifetime n; sfx 0xab; fired by beam units (was ExtraBoss_Unk_ov001_022fb7f0, ov001, 2026-11-16)"
+ExtraBossObj_State_SmallBeam:
+  confidence: strong
+  evidence: "strong E7: destroys small beam when lifetime ends or parent beam unit enters BeamUnitDeflected state (was ExtraBossObj_State_Unk_ov001_022fb7b0, ov001, 2026-11-16)"
+ExtraBoss_SpawnBeamUnit:
+  confidence: strong
+  evidence: "strong E8,E7: CreateFxObj kind 8/9 -> eff_beam_unit0/1.nsbmd, marks slot bit in data_ov001_0231f094[0]; sfx 0xaa (was ExtraBoss_Unk_ov001_022fc09c, ov001, 2026-11-16)"
+ExtraBoss_BeamUnit_OnHit:
+  confidence: strong
+  evidence: "strong E6,E7: beam unit collider callback: knocked away from attacker (FX_Atan2), state BeamUnitDeflected, sfx 0xa9 (was ExtraBoss_Unk_ov001_022fb974, ov001, 2026-11-16)"
+ExtraBoss_BeamUnit_OnContact:
+  confidence: strong
+  evidence: "strong E6,E7: beam unit second collider callback: when other collider type 2 destroys unit and clears its slot bit (8->bit0, 9->bit1) (was ExtraBoss_Unk_ov001_022fb918, ov001, 2026-11-16)"
+ExtraBossObj_State_BeamUnitDeflected:
+  confidence: strong
+  evidence: "strong E7: destroys beam unit and clears its slot bit when out of arena (was ExtraBossObj_State_Unk_ov001_022fba78, ov001, 2026-11-16)"
+ExtraBossObj_State_BeamUnitDeploy:
+  confidence: strong
+  evidence: "strong E7: blinks while timer, waits until |vx|+|vy|<=0x1000 then enters active state with 600-frame lifetime (was ExtraBossObj_State_Unk_ov001_022fbfcc, ov001, 2026-11-16)"
+ExtraBossObj_State_BeamUnitCharge:
+  confidence: strong
+  evidence: "strong E7: counts down then spawns ExtraBoss_SpawnSmallBeam and switches to BeamUnitFiring (was ExtraBossObj_State_Unk_ov001_022fbb5c, ov001, 2026-11-16)"
+ExtraBossObj_State_BeamUnitFiring:
+  confidence: strong
+  evidence: "strong E7: after beam timer decrements shot count; more shots -> BeamUnitCharge, else back to active (0x78 timer) (was ExtraBossObj_State_Unk_ov001_022fbaf0, ov001, 2026-11-16)"
+ExtraBossObj_State_BeamUnitActive:
+  confidence: strong
+  evidence: "strong E7: beam unit main state: lifetime +0x1d4 countdown, on expiry destroys, clears slot bit and spawns eff_bomb_wide (sfx 0xac) (was ExtraBossObj_State_Unk_ov001_022fbbc8, ov001, 2026-11-16)"
+ExtraBoss_CountActiveBeamUnits:
+  confidence: strong
+  evidence: "strong E7: counts set bits 0/1 of data_ov001_0231f094[0] (set by ExtraBoss_SpawnBeamUnit); weapon-boss beam-unit attack waits until 0 (was ExtraBoss_Unk_ov001_022fd4ac, ov001, 2026-11-16)"
+ExtraBoss_ResetFxFlags:
+  confidence: strong
+  evidence: "strong E7: clears data_ov001_0231f094[0] (beam unit slots) and [1] (sword cancel); called from ExtraBoss_StartBattle (was ExtraBoss_Unk_ov001_022fd4d4, ov001, 2026-11-16)"
+ExtraBoss_SpawnBigBeam:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 6 -> eff_beam_big00.nsbmd with wide collider, sfx 0xa8; called from ExtraBoss_State_ScrollSpawn (was ExtraBoss_Unk_ov001_022fc4d4, ov001, 2026-11-16)"
+ExtraBossObj_State_BigBeamDelay:
+  confidence: strong
+  evidence: "strong E7: hidden (flag 0x10000) for 0x10/0x18 frames then shows beam and goes to BigBeamStart (was ExtraBossObj_State_Unk_ov001_022fc494, ov001, 2026-11-16)"
+ExtraBossObj_State_BigBeamStart:
+  confidence: strong
+  evidence: "strong E7: when start anim done enables collider (clears 0x200), 60-frame fire timer (was ExtraBossObj_State_Unk_ov001_022fc440, ov001, 2026-11-16)"
+ExtraBossObj_State_BigBeamFire:
+  confidence: strong
+  evidence: "strong E7: after 60 frames swaps model to kind 7 (eff_beam_big01) and disables collider (was ExtraBossObj_State_Unk_ov001_022fc34c, ov001, 2026-11-16)"
+ExtraBossObj_State_BigBeamEnd:
+  confidence: strong
+  evidence: "strong E7: follows camera X and destroys when eff_beam_big01 anim done (was ExtraBossObj_State_Unk_ov001_022fc318, ov001, 2026-11-16)"
+ExtraBoss_SpawnMeteorOfKind:
+  confidence: strong
+  evidence: "strong E8,E7: CreateFxObj kind 2/4 (eff_meteo/eff_meteo_r) drifting -x with random spin, hit callback ExtraBoss_Meteor_OnHit (was ExtraBoss_Unk_ov001_022fc708, ov001, 2026-11-16)"
+ExtraBoss_SpawnMeteorR:
+  confidence: strong
+  evidence: "strong E8,E6: ExtraBoss_SpawnMeteorOfKind(...,4) = eff_meteo_r; called from ExtraBoss_UpdateSpawnTimer (was ExtraBoss_Unk_ov001_022fc89c, ov001, 2026-11-16)"
+ExtraBoss_SpawnMeteor:
+  confidence: strong
+  evidence: "strong E8,E6: ExtraBoss_SpawnMeteorOfKind(...,2) = eff_meteo; called from ExtraBoss_UpdateSpawnTimer (was ExtraBoss_Unk_ov001_022fc8bc, ov001, 2026-11-16)"
+ExtraBoss_Meteor_OnHit:
+  confidence: strong
+  evidence: "strong E8,E7: meteor collider callback: swaps model to kind 3/5 (eff_meteo_brk/_brk_r), red meteor bursts 5 rings, sfx 0xa7 (was ExtraBoss_Unk_ov001_022fc5f0, ov001, 2026-11-16)"
+ExtraBoss_SpawnDamageFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0x16 -> eff_dmg_ex.nsbmd; called from HandBoss/WeaponBoss OnHit (was ExtraBoss_Unk_ov001_022fc8dc, ov001, 2026-11-16)"
+ExtraBossPlayer_SpawnBlzShotFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 1 -> eff_blz_shot.nsbmd; called from ExtraBossPlayer_State_SpecialCharge (was ExtraBossPlayer_Unk_ov001_022fcaa4, ov001, 2026-11-16)"
+ExtraBoss_SpawnPlayerFlyFx:
+  confidence: strong
+  evidence: "strong E8,E6: CreateFxObj kind 0x17/0x19 (eff_son_fly / eff_blz_fly by character work+0x3c) attached to player; called by ExtraBoss_ResetPlayerForBattle (was ExtraBoss_Unk_ov001_022fd138, ov001, 2026-11-16)"
+ExtraBossObj_State_PlayerFlyFx:
+  confidence: strong
+  evidence: "strong E8,E7: follows player; player state 3/4 swaps to dash model 0x18/0x1a (eff_son_dash/eff_blz_dash), 5/6/0xc hides (was ExtraBossObj_State_Unk_ov001_022fd000, ov001, 2026-11-16)"
+ExtraBossObj_State_PlayerDashFx:
+  confidence: strong
+  evidence: "strong E8,E7: dash-model fx following player rotation; on leaving states 3/4 returns to fly model (0x19) or dash-end anim (was ExtraBossObj_State_Unk_ov001_022fce7c, ov001, 2026-11-16)"
+ExtraBossObj_State_PlayerDashFxEnd:
+  confidence: strong
+  evidence: "strong E8,E7: waits dash-end anim then swaps back to eff_son_fly (0x17); re-enters dash on state 3/4 (was ExtraBossObj_State_Unk_ov001_022fcd44, ov001, 2026-11-16)"
+ExtraBossObj_State_PlayerFxHidden:
+  confidence: strong
+  evidence: "strong E7: while player state 5/6/0xc stays hidden; otherwise unhides and picks fly or dash model per character (was ExtraBossObj_State_Unk_ov001_022fcbd4, ov001, 2026-11-16)"
+ExtraBossObj_ReleaseFxModelRes:
+  confidence: strong
+  evidence: "strong E7: NNS_G3dResDefaultRelease of fx resource data_ov001_0231f098[kind] unless table flag 1 (persistent) set (was ExtraBossObj_Unk_ov001_022fa574, ov001, 2026-11-16)"
+ExtraBossObj_ReleaseFxModelResThunk:
+  confidence: strong
+  evidence: "strong E6: body is only ExtraBossObj_ReleaseFxModelRes(); called from ExtraBossObj_Destroy (was ExtraBossObj_Unk_ov001_022fd4f4, ov001, 2026-11-16)"
+ExtraBoss_InitRings:
+  confidence: strong
+  evidence: "strong E8,E7: allocs ring work data_ov001_0231f548 (100-entry pool) and 2 sprites from data_ov001_0231f544 = extra_act.narc file 0x27 ac_itm_ring.bac (was ExtraBoss_Unk_ov001_02304624, ov001, 2026-11-16)"
+ExtraBoss_CollectRings:
+  confidence: strong
+  evidence: "strong E7: moves rings touching the player to the collected list, ring count work+0x4c++ capped 999, sfx 4 (was ExtraBoss_Unk_ov001_023041a8, ov001, 2026-11-16)"
+ExtraBoss_DrawRings:
+  confidence: strong
+  evidence: "strong E7: AnimatorSprite_Draw of ring sprite for each ring in placed/loose/attracted lists and sparkle sprite for collected list (was ExtraBoss_Unk_ov001_02304028, ov001, 2026-11-16)"
+ExtraBoss_UpdateRings:
+  confidence: strong
+  evidence: "strong E7: default ring update (work +0x90): scroll placed rings -x, integrate loose rings, age collected sparkles; frees out-of-field rings (was ExtraBoss_Unk_ov001_02303934, ov001, 2026-11-16)"
+ExtraBoss_UpdateRingsSuction:
+  confidence: strong
+  evidence: "strong E7: ring update while suction active: rings near camera are redirected toward suction point (0xc0000, work+0x310) and absorbed (was ExtraBoss_Unk_ov001_02303594, ov001, 2026-11-16)"
+ExtraBoss_StartRingSuction:
+  confidence: strong
+  evidence: "strong E6,E7: sets ring update callback (+0x90) to ExtraBoss_UpdateRingsSuction; called when spaceb fx becomes active (was ExtraBoss_Unk_ov001_02303c38, ov001, 2026-11-16)"
+ExtraBoss_EndRingSuction:
+  confidence: strong
+  evidence: "strong E6,E7: restores ExtraBoss_UpdateRings and turns attracted rings into loose bouncing rings; called from SpacebEnd (was ExtraBoss_Unk_ov001_02303af8, ov001, 2026-11-16)"
+ExtraBoss_SpawnRingBurst:
+  confidence: strong
+  evidence: "strong E7: pops count ring entries from the pool and launches them in a fan into the loose-ring list; called with 5 by red meteor break (was ExtraBoss_Unk_ov001_02303d28, ov001, 2026-11-16)"
+ExtraBoss_ScatterPlayerRings:
+  confidence: strong
+  evidence: "strong E6,E7: subtracts n from ring count work+0x4c and scatters that many loose rings; called from ExtraBoss_PlayerOnHurt (was ExtraBoss_Unk_ov001_02303e60, ov001, 2026-11-16)"
+ExtraBoss_IsRingTouchingPlayer:
+  confidence: strong
+  evidence: "strong E7: box overlap of ring (x+-0x8000, y-0x10000..y) against player collider at +0xb0; used by ExtraBoss_CollectRings (was ExtraBoss_Unk_ov001_02303494, ov001, 2026-11-16)"
+ExtraBoss_SetRingPickupEnabled:
+  confidence: strong
+  evidence: "strong E7: sets/clears bit 2 of ring work +0x94, which gates ExtraBoss_CollectRings; called from boss Action_Defeat (was ExtraBoss_Unk_ov001_02303a80, ov001, 2026-11-16)"
+ExtraBoss_RingList_AddPlaced:
+  confidence: strong
+  evidence: "strong E7: appends ring to list +0x98/+0x9c (placed rings drawn by ExtraBoss_DrawRings); called from ExtraBoss_PushScrollEntry (was ExtraBoss_Unk_ov001_023033dc, ov001, 2026-11-16)"
+ExtraBoss_RingList_RemovePlaced:
+  confidence: strong
+  evidence: "strong E7: unlinks ring from list +0x98/+0x9c (placed rings) (was ExtraBoss_Unk_ov001_02303394, ov001, 2026-11-16)"
+ExtraBoss_RingList_AddLoose:
+  confidence: strong
+  evidence: "strong E7: appends ring to list +0xa8/+0xac (loose rings with velocity/gravity, ExtraBoss_UpdateRings) (was ExtraBoss_Unk_ov001_0230328c, ov001, 2026-11-16)"
+ExtraBoss_RingList_RemoveLoose:
+  confidence: strong
+  evidence: "strong E7: unlinks ring from list +0xa8/+0xac (loose rings) (was ExtraBoss_Unk_ov001_02303244, ov001, 2026-11-16)"
+ExtraBoss_RingList_AddCollected:
+  confidence: strong
+  evidence: "strong E7: appends ring to list +0xa0/+0xa4 (collected sparkles, 15-frame timer); used by ExtraBoss_CollectRings (was ExtraBoss_Unk_ov001_02303334, ov001, 2026-11-16)"
+ExtraBoss_RingList_RemoveCollected:
+  confidence: strong
+  evidence: "strong E7: unlinks ring from list +0xa0/+0xa4 (collected sparkles) (was ExtraBoss_Unk_ov001_023032ec, ov001, 2026-11-16)"
+ExtraBoss_RingList_AddAttracted:
+  confidence: strong
+  evidence: "strong E7: appends ring to list +0xb0/+0xb4 (rings pulled by suction in ExtraBoss_UpdateRingsSuction) (was ExtraBoss_Unk_ov001_023031e4, ov001, 2026-11-16)"
+ExtraBoss_RingList_RemoveAttracted:
+  confidence: strong
+  evidence: "strong E7: unlinks ring from list +0xb0/+0xb4 (attracted rings) (was ExtraBoss_Unk_ov001_0230319c, ov001, 2026-11-16)"
+ExtraBoss_UpdateBgWaveScroll:
+  confidence: strong
+  evidence: "strong E7: builds per-scanline BG x offsets from a sine wave table into double-buffered hdma[], applies random shake while +0xb4c>0, sets gDisplayMain[3] (was ExtraBoss_Unk_ov001_02304a24, ov001, 2026-11-16)"
+ExtraBoss_StartBgShake:
+  confidence: strong
+  evidence: "strong E7: sets shake timer +0xb4c and amplitude 2n+1 (+0xb50) consumed by ExtraBoss_UpdateBgWaveScroll (was ExtraBoss_Unk_ov001_02304a00, ov001, 2026-11-16)"
+ExtraBoss_CreatePlayerTrail:
+  confidence: strong
+  evidence: "strong E7: ExtraBossObj_Create + 21-node circular ring buffer of trail points, colours by character, draw ExtraBossObj_Draw_PlayerTrail; called by ExtraBoss_ResetPlayerForBattle (was ExtraBoss_Unk_ov001_022ee594, ov001, 2026-11-16)"
+ExtraBoss_UpdatePlayerTrailNode:
+  confidence: strong
+  evidence: "strong E7: computes the two edge points of the current trail node from the followed object's movement angle (MTX_RotZ33_) and scrolls older nodes (was ExtraBoss_Unk_ov001_022ee100, ov001, 2026-11-16)"
+ExtraBossObj_Draw_PlayerTrail:
+  confidence: strong
+  evidence: "strong E6,E7: draw callback stored by ExtraBoss_CreatePlayerTrail; renders trail strip with Math_LerpRGB555 gradient (was ExtraBossObj_Draw_Unk_ov001_022ede0c, ov001, 2026-11-16)"
+ExtraBossObj_State_PlayerTrailGrow:
+  confidence: strong
+  evidence: "strong E7: advances trail node, length +0x2a8++ up to max +0x2ac then TrailFull; player state 5/6/0xc -> TrailShrink (was ExtraBossObj_State_Unk_ov001_022ee4c4, ov001, 2026-11-16)"
+ExtraBossObj_State_PlayerTrailFull:
+  confidence: strong
+  evidence: "strong E7: advances trail at full length; player state 5/6/0xc -> TrailShrink (was ExtraBossObj_State_Unk_ov001_022ee41c, ov001, 2026-11-16)"
+ExtraBossObj_State_PlayerTrailShrink:
+  confidence: strong
+  evidence: "strong E7: decrements trail length, hides (flag 0x20000) at 0 -> TrailHidden; regrows when player leaves state 5/6/0xc (was ExtraBossObj_State_Unk_ov001_022ee354, ov001, 2026-11-16)"
+ExtraBossObj_State_PlayerTrailHidden:
+  confidence: strong
+  evidence: "strong E7: trail hidden while player state 5/6/0xc, else unhides and restarts TrailGrow (was ExtraBossObj_State_Unk_ov001_022ee2b0, ov001, 2026-11-16)"
+ExtraBoss_ApplyScreenFitCamera:
+  confidence: strong
+  evidence: "strong E4,E7: camera table data_ov001_0231d52c slot 0: eye z = cot(fov)*96 + target z, G3i_PerspectiveW_ + G3i_LookAt_ into NNS_G3dGlb (was ExtraBoss_Unk_ov001_022f705c, ov001, 2026-11-16)"
+ExtraBossObj_Draw_HandCatch:
+  confidence: strong
+  evidence: "strong E6: draw callback stored on the catch-hand object (second obj, ExtraBoss_HandCatchNodeCallback) by ExtraBoss_CreateHandBoss (was ExtraBossObj_Draw_Unk_ov001_022f2f14, ov001, 2026-11-16)"
+ExtraBossObj_State_None:
+  confidence: strong
+  evidence: "strong E6: empty state; assigned to the catch hand whenever it is idle/attached (was ExtraBossObj_State_Unk_ov001_022f2ca4, ov001, 2026-11-16)"
+ExtraBoss_HandBoss_Action_Enter:
+  confidence: strong
+  evidence: "strong E6,E7: called from ExtraBoss_CreateHandBoss, sets bse_nb_fw/bse_nh_fw and state HandBossEnter (was ExtraBoss_Unk_ov001_022f2b78, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossEnter:
+  confidence: strong
+  evidence: "strong E7: lerps boss x 0x1c0000->0xdc000 then ExtraBoss_HandBoss_SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f2a8c, ov001, 2026-11-16)"
+ExtraBoss_HandBoss_Action_Wait:
+  confidence: strong
+  evidence: "strong E7: bse_nb_fw/nh_fw idle anims, random timer from data_ov001_02316810, state HandBossWait; same shape as ExtraBoss_WeaponBoss_Action_Wait (was ExtraBoss_Unk_ov001_022f2898, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossWait:
+  confidence: strong
+  evidence: "strong E7: drifts via ExtraBoss_StepXTowardRightEdge until timer ends then SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f2858, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossWait:
+  confidence: strong
+  evidence: "strong E6,E7: state set by ExtraBoss_WeaponBoss_Action_Wait; steps toward camera target until timer ends then SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f61ec, ov001, 2026-11-16)"
+ExtraBoss_HandBoss_Action_ClawAttack:
+  confidence: strong
+  evidence: "strong E7,E8: SelectNextAttack case 4; random delay then the bse_nb_dc01..dc07 claw sequence that spawns eff_claw01/02 (was ExtraBoss_Unk_ov001_022f2780, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossClawDelay:
+  confidence: strong
+  evidence: "strong E7,E8: waits random timer drifting right, then plays bse_nb_dc01/nh_dc01 (anim table data_ov001_02316840 +0x28) (was ExtraBossObj_State_Unk_ov001_022f2580, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossClawWindUp:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_nb_dc01 end plays dc02 and spawns eff_claw01 (ExtraBoss_SpawnClawFx) (was ExtraBossObj_State_Unk_ov001_022f240c, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossClawSwipe1:
+  confidence: strong
+  evidence: "strong E7,E8: eases x toward 0xc8000 during bse_nb_dc02, then plays dc03 (was ExtraBossObj_State_Unk_ov001_022f22ac, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossClawWindUp2:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_nb_dc03 end plays dc04 and spawns eff_claw02 (was ExtraBossObj_State_Unk_ov001_022f2138, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossClawSwipe2:
+  confidence: strong
+  evidence: "strong E7,E8: eases x toward 0x8c000 during bse_nb_dc04, then plays dc05 (was ExtraBossObj_State_Unk_ov001_022f1fd8, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossClawRecover:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_nb_dc05 end plays dc06 and moves right (vx 0x5000) (was ExtraBossObj_State_Unk_ov001_022f1ea0, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossClawReturn:
+  confidence: strong
+  evidence: "strong E7,E8: when x reaches 0x153000 stops and plays bse_nb_dc07 (was ExtraBossObj_State_Unk_ov001_022f1d54, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossClawEnd:
+  confidence: strong
+  evidence: "strong E7,E8: waits bse_nb_dc07 end then ExtraBoss_HandBoss_SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f1d24, ov001, 2026-11-16)"
+ExtraBoss_HandBoss_Action_CatchAttack:
+  confidence: strong
+  evidence: "strong E7: SelectNextAttack case 5; moves boss to launch point (0x162000,0xc0000) for the rocket-catch (bse_nb_rc*) sequence (was ExtraBoss_Unk_ov001_022f1c0c, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossCatchMove:
+  confidence: strong
+  evidence: "strong E7,E8: on reaching x 0x162000 stops and plays bse_nb_rc01/nh_rc01 (was ExtraBossObj_State_Unk_ov001_022f1a90, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossCatchReady:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_nb_rc01 end plays rc02, random aim time, sfx 0xb3 and voice 0xd1 (was ExtraBossObj_State_Unk_ov001_022f18e4, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossCatchAim:
+  confidence: strong
+  evidence: "strong E7: rotates arm toward player (FX_Atan2), then launches the catch hand (HandCatchFlyOut) and spawns eff_jump, sfx 0xb4 (was ExtraBossObj_State_Unk_ov001_022f167c, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossCatchWaitHand:
+  confidence: strong
+  evidence: "strong E7: waits until hand-launched flag (work +0x14) clears, then HandBossCatchResetArm (was ExtraBossObj_State_Unk_ov001_022f1660, ov001, 2026-11-16)"
+ExtraBossObj_State_HandCatchFlyOut:
+  confidence: strong
+  evidence: "strong E7: catch hand interpolates out to target (t += 0x5b) then HandCatchReturn (was ExtraBossObj_State_Unk_ov001_022f1550, ov001, 2026-11-16)"
+ExtraBossObj_State_HandCatchReturn:
+  confidence: strong
+  evidence: "strong E7: catch hand interpolates back to arm (t -= 0x16), clears launched flag, state None (was ExtraBossObj_State_Unk_ov001_022f1438, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossCatchResetArm:
+  confidence: strong
+  evidence: "strong E7,E8: if arm angle != 0xb4000 rotates back (CatchTurnArm) else replays bse_nb_rc01 reversed (CatchRewind) (was ExtraBossObj_State_Unk_ov001_022f12c0, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossCatchTurnArm:
+  confidence: strong
+  evidence: "strong E7: rotates arm by +-0x4000 toward 0xb4000 then starts CatchRewind (was ExtraBossObj_State_Unk_ov001_022f1130, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossCatchRewind:
+  confidence: strong
+  evidence: "strong E7: decrements anim frame by 0x1000 per frame (rc01 played backwards) then SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f10d0, ov001, 2026-11-16)"
+ExtraBoss_HandCatch_OnGrabPlayer:
+  confidence: strong
+  evidence: "strong E6,E7: catch-hand collider callback (+0x120 slot, CreateHandBoss): pins player, sets hand state HandCatchPullPlayer, spawns eff_catch, sfx 0xb5 (was ExtraBoss_Unk_ov001_022eed64, ov001, 2026-11-16)"
+ExtraBossObj_State_HandCatchPullPlayer:
+  confidence: strong
+  evidence: "strong E7,E8: catch hand returns with the player; then body turns arm (GrabTurnArm) or plays bse_nb_rc04 hold (GrabHold) (was ExtraBossObj_State_Unk_ov001_022f0e4c, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossGrabTurnArm:
+  confidence: strong
+  evidence: "strong E7,E8: rotates arm to 0xb4000 then plays bse_nb_rc04 and GrabHold (was ExtraBossObj_State_Unk_ov001_022f0cbc, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossGrabHold:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_nb_rc04 end plays rc05 and calls ExtraBossPlayer_Action_Hurt on the held player (was ExtraBossObj_State_Unk_ov001_022f0b70, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossGrabEnd:
+  confidence: strong
+  evidence: "strong E7,E8: waits bse_nb_rc05 end then ExtraBoss_HandBoss_SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f0b40, ov001, 2026-11-16)"
+ExtraBoss_HandBoss_Action_SuctionAttack:
+  confidence: strong
+  evidence: "strong E7,E8: SelectNextAttack case 6; bse_nb_sb01 and moves off left; sequence spawns eff_spaceb (suction) (was ExtraBoss_Unk_ov001_022f0988, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionExit:
+  confidence: strong
+  evidence: "strong E7,E8: when x <= -0xc8000 plays bse_nb_sb02 and starts re-entry (was ExtraBossObj_State_Unk_ov001_022f0840, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionEnter:
+  confidence: strong
+  evidence: "strong E7,E8: eases boss back on screen then bse_nb_sb03 (was ExtraBossObj_State_Unk_ov001_022f06c4, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionReady:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_nb_sb03 end plays sb04 and random aim time (was ExtraBossObj_State_Unk_ov001_022f0548, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionAim:
+  confidence: strong
+  evidence: "strong E7,E8: tracks player y, at timer end plays bse_nb_sb05 and spawns eff_spaceb (ExtraBoss_SpawnSpacebFx), sfx 0xb7 voice 0xd2 (was ExtraBossObj_State_Unk_ov001_022f034c, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionFire:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_nb_sb05 end plays sb06 (was ExtraBossObj_State_Unk_ov001_022f0234, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionHold:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_nb_sb06 end plays sb07 (was ExtraBossObj_State_Unk_ov001_022f011c, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionWaitEnd:
+  confidence: strong
+  evidence: "strong E7,E8: waits work flag 0x40 (suction) clear, then bse_nb_sb08 and moves right (was ExtraBossObj_State_Unk_ov001_022efff4, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionLeave:
+  confidence: strong
+  evidence: "strong E7,E8: when x >= 0x248000 plays bse_nb_sb09 and moves back left (was ExtraBossObj_State_Unk_ov001_022efea0, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossSuctionReturn:
+  confidence: strong
+  evidence: "strong E7: when x reaches 0x153000 stops and SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022efe50, ov001, 2026-11-16)"
+ExtraBoss_WeaponBoss_Action_MissileAttack:
+  confidence: strong
+  evidence: "strong E7,E8: plays bse_pb_hm01 (bsex_ca idx 0x13), missile count from data_ov001_0231694c, sfx 0xa5 (was ExtraBoss_Unk_ov001_022f4fac, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossMissileWindUp:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_pb_hm01 end plays hm02 (was ExtraBossObj_State_Unk_ov001_022f4f54, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossMissileReady:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_pb_hm02 end plays hm03 and fires first ExtraBoss_SpawnHomingMissile, voice 0xd2 (was ExtraBossObj_State_Unk_ov001_022f4e88, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossMissileFire:
+  confidence: strong
+  evidence: "strong E7,E8: fires remaining homing missiles (hm03 per shot) then bse_pb_hm04 (was ExtraBossObj_State_Unk_ov001_022f4d74, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossMissileRecover:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_pb_hm04 end plays hm05 (was ExtraBossObj_State_Unk_ov001_022f4d04, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossMissileEnd:
+  confidence: strong
+  evidence: "strong E7,E8: waits bse_pb_hm05 end then ExtraBoss_WeaponBoss_SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f4cd0, ov001, 2026-11-16)"
+ExtraBoss_WeaponBoss_Action_HomingBeamAttack:
+  confidence: strong
+  evidence: "strong E7,E8: plays bse_pb_hb01 (idx 0x10), state WeaponBossBeamCharge (was ExtraBoss_Unk_ov001_022f5384, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamCharge:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_pb_hb01 end plays hb02 and fires ExtraBoss_SpawnHomingBeam (was ExtraBossObj_State_Unk_ov001_022f52e0, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamRefire:
+  confidence: strong
+  evidence: "strong E7,E8: after short timer replays bse_pb_hb02 and fires another homing beam (was ExtraBossObj_State_Unk_ov001_022f51a8, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamFire:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_pb_hb02 end refires while shots remain, else plays hb03 (was ExtraBossObj_State_Unk_ov001_022f524c, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamRecover:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_pb_hb03 end SelectNextAttack when volleys done, else idle pause (was ExtraBossObj_State_Unk_ov001_022f5108, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamPause:
+  confidence: strong
+  evidence: "strong E7,E8: 40-frame idle (bse_pb_fw) then bse_pb_hb01 again (was ExtraBossObj_State_Unk_ov001_022f5090, ov001, 2026-11-16)"
+ExtraBoss_WeaponBoss_Action_SwordAttack:
+  confidence: strong
+  evidence: "strong E7,E8: plays bse_pb_bsl01 (data_ov001_0231d4c0 -> 8) and spawns eff_sword (ExtraBoss_SpawnSwordFx) (was ExtraBoss_Unk_ov001_022f589c, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossSwordWindUp:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_pb_bs?01 end plays bs?02, lunges and advances sword fx (was ExtraBossObj_State_Unk_ov001_022f57a8, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossSwordSlash:
+  confidence: strong
+  evidence: "strong E7,E8: on bs?02 end plays bs?03, advances sword fx, sfx 0xad voice 0xd0 (was ExtraBossObj_State_Unk_ov001_022f56f8, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossSwordFollowThrough:
+  confidence: strong
+  evidence: "strong E7,E8: on bs?03 end plays bs?04 and advances sword fx (was ExtraBossObj_State_Unk_ov001_022f55e4, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossSwordRecover:
+  confidence: strong
+  evidence: "strong E7,E8: on bs?04 end either next swing (bsr) after random delay or 90-frame end wait (was ExtraBossObj_State_Unk_ov001_022f54dc, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossSwordNextSwing:
+  confidence: strong
+  evidence: "strong E7,E8: after delay plays next bse_pb_bs?01 and spawns new eff_sword (was ExtraBossObj_State_Unk_ov001_022f5424, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossSwordEnd:
+  confidence: strong
+  evidence: "strong E7: waits timer then ExtraBoss_WeaponBoss_SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f53f0, ov001, 2026-11-16)"
+ExtraBoss_WeaponBoss_Action_BeamUnitAttack:
+  confidence: strong
+  evidence: "strong E7,E8: waits while ExtraBoss_CountActiveBeamUnits()!=0, else plays bse_pb_bu01 (idx 5) (was ExtraBoss_Unk_ov001_022f612c, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamUnitWaitClear:
+  confidence: strong
+  evidence: "strong E7,E8: idles until no beam units remain, then bse_pb_bu01 (was ExtraBossObj_State_Unk_ov001_022f60a4, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamUnitAim:
+  confidence: strong
+  evidence: "strong E7,E8: on bse_pb_bu01 end plays bu02 and aims arm at player; launches unit or turns arm (was ExtraBossObj_State_Unk_ov001_022f5eb4, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamUnitTurnArm:
+  confidence: strong
+  evidence: "strong E7: rotates arm to target angle then ExtraBoss_SpawnBeamUnit (was ExtraBossObj_State_Unk_ov001_022f5da0, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamUnitLaunch:
+  confidence: strong
+  evidence: "strong E7,E8: after launching a beam unit aims/launches the next or resets arm (bse_pb_bu03) (was ExtraBossObj_State_Unk_ov001_022f5a24, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamUnitResetArm:
+  confidence: strong
+  evidence: "strong E7,E8: rotates arm back to 0x64000 then plays bse_pb_bu03 (was ExtraBossObj_State_Unk_ov001_022f5984, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossBeamUnitEnd:
+  confidence: strong
+  evidence: "strong E7,E8: waits bse_pb_bu03 end then ExtraBoss_WeaponBoss_SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f5954, ov001, 2026-11-16)"
+ExtraBoss_WeaponBoss_Action_Enter:
+  confidence: strong
+  evidence: "strong E6,E7: called from ExtraBoss_CreateWeaponBoss, sets bse_pb_fw and state WeaponBossEnter (was ExtraBoss_Unk_ov001_022f63dc, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossEnter:
+  confidence: strong
+  evidence: "strong E7: interpolates boss on screen (t up to 0x1000) then ExtraBoss_WeaponBoss_SelectNextAttack (was ExtraBossObj_State_Unk_ov001_022f62f0, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossDefeatWaitAnim:
+  confidence: strong
+  evidence: "strong E6,E7: blinks (flags ^0x30000), voice 0x2d, on anim end 253-frame DefeatFadeOut; set by ExtraBoss_HandBoss_FinishDefeat (was ExtraBossObj_State_Unk_ov001_022ef0a0, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossDefeatFadeOut:
+  confidence: strong
+  evidence: "strong E7: blinks, voice at 0xc1, at 0 BrightnessLerp_Create fade then DefeatFinish (was ExtraBossObj_State_Unk_ov001_022ef008, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossDefeatFinish:
+  confidence: strong
+  evidence: "strong E7: blinks until brightness lerp done, then sets work flag 0x400 and clears its state (was ExtraBossObj_State_Unk_ov001_022eefc0, ov001, 2026-11-16)"
+ExtraBossObj_State_HandBossDefeatPartBlink:
+  confidence: strong
+  evidence: "strong E6,E7: blinks part object (flags ^0x30000), after timer sets its anim speed 0x2000; set by HandBoss_FinishDefeat (was ExtraBossObj_State_Unk_ov001_022eef90, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossDefeatWaitAnim:
+  confidence: strong
+  evidence: "strong E6,E7: blinks, voice 0x23, on anim end 253-frame DefeatFadeOut; set by ExtraBoss_WeaponBoss_FinishDefeat (was ExtraBossObj_State_Unk_ov001_022f4148, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossDefeatFadeOut:
+  confidence: strong
+  evidence: "strong E7: blinks, voice 0x2c at 0xc1, at 0 BrightnessLerp_Create then DefeatFinish (was ExtraBossObj_State_Unk_ov001_022f40b0, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossDefeatFinish:
+  confidence: strong
+  evidence: "strong E7: waits brightness lerp, sets work flag 0x400, clears state (was ExtraBossObj_State_Unk_ov001_022f4068, ov001, 2026-11-16)"
+ExtraBossObj_State_WeaponBossDefeatPartBlink:
+  confidence: strong
+  evidence: "strong E6,E7: blinks part, after timer sets anim speed 0x2000 on it and its parent; set by WeaponBoss_FinishDefeat (was ExtraBossObj_State_Unk_ov001_022f4028, ov001, 2026-11-16)"
+ExtraBossObj_State_Blink2:
+  confidence: strong
+  evidence: "strong E6,E7: body flags ^= 0x30000 only, identical to ExtraBossObj_State_Blink; set on debris by WeaponBoss_FinishDefeat (was ExtraBossObj_State_Unk_ov001_022f41b4, ov001, 2026-11-16)"
+ExtraBossObj_RegisterColliders:
+  confidence: strong
+  evidence: "strong E6,E7: per-frame from ExtraBossObj_Main: for each active collider group bit 0-2 syncs collider pos/rot to owner and appends it to the attack/defend lists (max 20) used by ExtraBoss_CheckCollisionGroup (was ExtraBossObj_Unk_ov001_022fe92c, ov001, 2026-11-16)"
+ExtraBoss_ClearColliderLists:
+  confidence: strong
+  evidence: "strong E7: zeroes the 3 per-group collider counts data_ov001_0231f328/0231f334 filled by ExtraBossObj_RegisterColliders (was ExtraBoss_Unk_ov001_022fea98, ov001, 2026-11-16)"
+ExtraBoss_CheckAllCollisions:
+  confidence: strong
+  evidence: "strong E7: ExtraBoss_CheckCollisionGroup(1), (2), (0); called from ExtraBoss_PostUpdate_Battle (was ExtraBoss_Unk_ov001_022fea6c, ov001, 2026-11-16)"
+ExtraBoss_CheckCollisionGroup:
+  confidence: strong
+  evidence: "strong E7: tests every pair of the group's two collider lists (skipping disabled/destroyed), calls collider callbacks or decrements owner hp (+0x98), destroy at 0 (was ExtraBoss_Unk_ov001_022fe710, ov001, 2026-11-16)"
+ExtraBoss_TestColliderOverlap:
+  confidence: strong
+  evidence: "strong E7: if both colliders have zero rotation (+0x24/+0x34) uses ExtraBoss_TestColliderBoxes else the rotated test (was ExtraBoss_Unk_ov001_022fe6b8, ov001, 2026-11-16)"
+ExtraBoss_TestColliderBoxes:
+  confidence: strong
+  evidence: "strong E7: axis-aligned box overlap on x/y/z of two colliders (centre +0x14.., half size +0x20.., offset +0x30..) (was ExtraBoss_Unk_ov001_022fe550, ov001, 2026-11-16)"
+ExtraBoss_TestColliderRotatedBoxes:
+  confidence: strong
+  evidence: "strong E7: rotated collider overlap (same AABB prefilter then FX_Sqrt based oriented test); chosen by ExtraBoss_TestColliderOverlap when a rotation is set (was ExtraBoss_Unk_ov001_022fde54, ov001, 2026-11-16)"
+ExtraBossObj_ReleasePlayerModel:
+  confidence: strong
+  evidence: "strong E7: releases/frees the two model resources data_ov001_0231f540/0231f538 allocated by ExtraBoss_LoadPlayerModel; called from ExtraBossObj_Destroy (was ExtraBossObj_Unk_ov001_02302ac8, ov001, 2026-11-16)"
+ExtraBossObj_DrawModel:
+  confidence: strong
+  evidence: "strong E6,E7: 3D path of ExtraBossObj_Draw_Default: builds model matrix from obj rotation +0x3c/+0x3e/+0x40 and camera offset, Model_Animate/Model_Draw (was ExtraBossObj_Unk_ov001_0230063c, ov001, 2026-11-16)"
+ExtraBossObj_DrawSprite:
+  confidence: strong
+  evidence: "strong E6,E7: 2D path of ExtraBossObj_Draw_Default: screen pos from obj+camera, AnimatorSprite_ProcessAnimation and Draw/DrawRotScale when scaled or rotated (was ExtraBossObj_Unk_ov001_02300978, ov001, 2026-11-16)"
+ExtraBoss_UpdateBgScrollPalette:
+  confidence: strong
+  evidence: "strong E7: advances BG scroll +0x588 by speed (halved while player state 5), steps palette-animation frames queuing palette copies to 0x05000000 (was ExtraBoss_Unk_ov001_02304e80, ov001, 2026-11-16)"
+ZoneMap_SetBlazeProgressFromStep:
+  confidence: strong
+  evidence: "strong E6,E7: maps story step to progress id and SaveData_SetBlazeProgress (gSaveData+0x64); Blaze branch of ZoneMap_SaveProgress (was ZoneMap_Unk_ov001_022e22d0, ov001, 2026-11-16)"
+ZoneMap_SetSonicProgressFromStep:
+  confidence: strong
+  evidence: "strong E6,E7: maps story step to progress id and SaveData_SetSonicProgress (gSaveData+0xc); Sonic branch of ZoneMap_SaveProgress (was ZoneMap_Unk_ov001_022e23b0, ov001, 2026-11-16)"
+ZoneMap_GetSonicMaxSelectableZone:
+  confidence: strong
+  evidence: "strong E6,E7: returns -1..6 from Sonic progress gSaveData+0xc; passed as max zone to ZoneActSelect_Create in Sonic mode (was ZoneMap_Unk_ov001_022e252c, ov001, 2026-11-16)"
+ZoneMap_GetBlazeMaxSelectableZone:
+  confidence: strong
+  evidence: "strong E6,E7: returns -1..6 from Blaze progress gSaveData+0x64; passed as max zone to ZoneActSelect_Create in Blaze mode (was ZoneMap_Unk_ov001_022e24a8, ov001, 2026-11-16)"
+ZoneMap_IsSonicZoneSelectable:
+  confidence: strong
+  evidence: "strong E7: zone <= max computed from Sonic progress gSaveData+0xc (same table as ZoneMap_GetSonicMaxSelectableZone) (was ZoneMap_Unk_ov001_022e2640, ov001, 2026-11-16)"
+ZoneMap_IsBlazeZoneSelectable:
+  confidence: strong
+  evidence: "strong E7: zone <= max computed from Blaze progress gSaveData+0x64 (same table as ZoneMap_GetBlazeMaxSelectableZone) (was ZoneMap_Unk_ov001_022e25b0, ov001, 2026-11-16)"
+ZoneMap_SaveProgressOnPathArrival:
+  confidence: strong
+  evidence: "strong E6,E7: from ZoneMap_State_MoveAlongPath: when the path target step (+0x94 Sonic/+0x98 Blaze) is a save step, temporarily sets it as current step and ZoneMap_SaveProgress (was ZoneMap_Unk_ov001_022e21ec, ov001, 2026-11-16)"
+OptionsMenu_SetDifficultyChoice:
+  confidence: strong
+  evidence: "strong E6,E7: stores choice at +8 when changed and calls SaveData_SetDifficulty(1) for choice 0 / (0) for choice 1 (was OptionsMenu_Unk_ov001_022c8924, ov001, 2026-11-16)"
+OptionsMenu_CheckWfsHostFinished:
+  confidence: strong
+  evidence: "strong E6: body is only OptionsWfsHost_IsFinished() (was OptionsMenu_Unk_ov001_022c8d0c, ov001, 2026-11-16)"
+OptionsMenu_CheckWirelessLobbyGone:
+  confidence: strong
+  evidence: "strong E6: body is only WirelessLobby_IsGone() (was OptionsMenu_Unk_ov001_022c8d44, ov001, 2026-11-16)"
+OptionsMenu_RequestLobbyPreviewStart:
+  confidence: strong
+  evidence: "strong E6: body is only WirelessLobbyPreview_RequestStart() (was OptionsMenu_Unk_ov001_022c8d4c, ov001, 2026-11-16)"
+ExtraBoss_DrawHud:
+  confidence: strong
+  evidence: "strong E6,E7: from ExtraBoss_Draw_Battle: draws 3-digit ring count (work+0x4c clamped 0..999, blinking alt digits when <=10) and the other HUD counters (was ExtraBoss_Unk_ov001_022fd744, ov001, 2026-11-16)"
+ExtraBoss_UpdateDualScreen3D:
+  confidence: strong
+  evidence: "strong E5,E6: callback installed by ExtraBoss_SetupSubDisplay; alternates POWCNT 0x04000304 bit15 LCD swap, DISPCAPCNT 0x04000064 and sub BG/OBJ VRAM banks each frame (same scheme as TransformDemo_UpdateDualScreen3D) (was ExtraBoss_Unk_ov001_022feac8, ov001, 2026-11-16)"
+ExtraBoss_StopSubScreenTasks:
+  confidence: strong
+  evidence: "strong E7: destroys up to 5 sub-screen effect tasks in data_ov001_0231f5a8, clears sub DISPCNT BG bits 0x04001000 and HDMA flag 0x400 (was ExtraBoss_Unk_ov001_023063a0, ov001, 2026-11-16)"
+ExtraBoss_FreeSubScreenWork:
+  confidence: strong
+  evidence: "strong E6,E7: from ExtraBoss_Shutdown: ExtraBoss_StopSubScreenTasks, ObjVram_Free of 8 sprites and guarded free of data_ov001_0231f5a8 (was ExtraBoss_Unk_ov001_02306674, ov001, 2026-11-16)"
+ExtraBoss_AllocSubScreenWork:
+  confidence: strong
+  evidence: "strong E6,E7: from ExtraBoss_Start: allocates 0x620 work data_ov001_0231f5a8, Background_Init for 2 sub BGs and sub OBJ sprite init (ObjVram_Alloc(1,..)) (was ExtraBoss_Unk_ov001_02306738, ov001, 2026-11-16)"
+Records_IsTouchOnScrollThumb:
+  confidence: strong
+  evidence: "strong E7: touch held (gTouchState 0x10) inside x 0xd8..0xee and the scroll-thumb y range computed from scroll +0x30 and range +0x34 (was Records_Unk_ov001_022ece30, ov001, 2026-11-16)"
+Records_IsScrollThumbTouchStarted:
+  confidence: strong
+  evidence: "strong E7: new touch (gTouchState flag 0x40) and Records_IsTouchOnScrollThumb (was Records_Unk_ov001_022ece98, ov001, 2026-11-16)"
+Records_DrawRecordTimes:
+  confidence: strong
+  evidence: "strong E7: for each record row (count +0x28) draws three Records_DrawTwoDigits fields at x 0x68/0x90/0xb8, y offset by list scroll +0x30, clipped 0x28..0x78 (was Records_Unk_ov001_022ed08c, ov001, 2026-11-16)"
+Records_DrawHeaderTime:
+  confidence: strong
+  evidence: "strong E7: Records_DrawTwoDigits of bytes +0x38/+0x39/+0x3a at x 0x68/0x90/0xb8, y 0x26 (fixed top row) (was Records_Unk_ov001_022ed104, ov001, 2026-11-16)"
+Records_DrawRecordNames:
+  confidence: strong
+  evidence: "strong E7: Records_DrawName for each record row at y 0x3d+16*i minus scroll +0x30, clipped 0x2d..0x7d (was Records_Unk_ov001_022ed14c, ov001, 2026-11-16)"
+Records_DrawHeaderName:
+  confidence: strong
+  evidence: "strong E7: Records_DrawName(p, 0x18, 0x2b, 0) for the fixed top row (was Records_Unk_ov001_022ed188, ov001, 2026-11-16)"
+Records_DestructorDummy:
+  confidence: strong
+  evidence: "strong E6: empty body; only caller Records_Destructor (was Records_Unk_ov001_022ed960, ov001, 2026-11-16)"
+Records_InitSpriteSub:
+  confidence: strong
+  evidence: "strong E7: ObjVram_Alloc(1,..) + AnimatorSprite_Init with sub OBJ palette 0x05000600, sets priority and position; caller Records init sprites (was Records_Unk_ov001_022ed990, ov001, 2026-11-16)"
+Records_InitSpriteMain:
+  confidence: strong
+  evidence: "strong E7: ObjVram_Alloc(0,..) + AnimatorSprite_Init with main OBJ palette 0x05000200, sets priority and position (was Records_Unk_ov001_022ed9f4, ov001, 2026-11-16)"
+Records_InitBackgrounds:
+  confidence: strong
+  evidence: "strong E6,E7: from Records_Start: Background_Init + Background_Draw for 5 BG layers on both engines (was Records_Unk_ov001_022eda54, ov001, 2026-11-16)"
+Records_InitSprites:
+  confidence: strong
+  evidence: "strong E6,E7: from Records_Start: initialises the menu sprites via Records_InitSpriteSub / Records_InitSpriteMain (was Records_Unk_ov001_022edb3c, ov001, 2026-11-16)"
+TryAgain_InitSplitScroll:
+  confidence: strong
+  evidence: "strong E5,E7: per-line scroll buffers (-0x60 for top 96 lines, +0x60 below) fed by HDMA to sub BG reg 0x04001012, sub DISPCNT BG bits, gSystemFlags 0x400 (was TryAgain_Unk_ov001_022d37ac, ov001, 2026-11-16)"
+TryAgain_UpdateSplitScroll:
+  confidence: strong
+  evidence: "strong E5,E7: interpolates the per-line split offsets toward 0 over 0x60 steps, then clears HDMA flag and the register pointer (was TryAgain_Unk_ov001_022d36c0, ov001, 2026-11-16)"
+TryAgain_IsSplitScrollDone:
+  confidence: strong
+  evidence: "strong E7: returns TRUE when the split-scroll register pointer +0x5d4 was cleared by TryAgain_UpdateSplitScroll (was TryAgain_Unk_ov001_022d36ac, ov001, 2026-11-16)"
+SpecialStage_GetRingQuota:
+  confidence: strong
+  evidence: "strong E7: returns current stage data ->a; SpecialStageHud_UpdateCheckpoint compares it with player ring count (+0x148) to pass the checkpoint (was SpecialStage_Unk_ov001_02314380, ov001, 2026-11-16)"
+ExtraAct_GetTimeBonus:
+  confidence: strong
+  evidence: "strong E8,E6: first threshold in data_ov001_0231d578 (16200,16800,...frames) >= time gives bonus from data_ov001_0231d550 (45000..0); ExtraAct_Start stores it next to rings*100 and their sum (was ExtraAct_Unk_ov001_022f73cc, ov001, 2026-11-16)"
+ExtraAct_StartRankStamp:
+  confidence: strong
+  evidence: "strong E6,E7: from ExtraAct_Main phase 0x4000: creates the rank-sprite task (obj +0xb10, initialised in ExtraAct_Start with ClearDemo_GetRank result +0x23) with 60-frame delay (was ExtraAct_Unk_ov001_022f7740, ov001, 2026-11-16)"
+ExtraAct_RankStampDelay:
+  confidence: strong
+  evidence: "strong E7: rank task: counts down +0xe9c then switches to ExtraAct_State_RankStampZoom (was ExtraAct_Unk_ov001_022f7700, ov001, 2026-11-16)"
+ExtraAct_State_RankStampZoom:
+  confidence: strong
+  evidence: "strong E7: draws rank sprite (+0xb10) at 0x50,0x8a with DrawRotScale easing 2.0->1.0, then sfx (arc 8, 3) and RankStampShake (was ExtraAct_State_Unk_ov001_022f75c8, ov001, 2026-11-16)"
+ExtraAct_State_RankStampShake:
+  confidence: strong
+  evidence: "strong E7: draws rank sprite with decaying random offset around 0x50,0x8a for 16 frames, then RankStampShow (was ExtraAct_State_Unk_ov001_022f7448, ov001, 2026-11-16)"
+ExtraAct_State_RankStampShow:
+  confidence: strong
+  evidence: "strong E7: draws rank sprite +0xb10 fixed at 0x50,0x8a (was ExtraAct_State_Unk_ov001_022f741c, ov001, 2026-11-16)"
+ExtraAct_StartScoreTally:
+  confidence: strong
+  evidence: "strong E6,E7: from ExtraAct_Main phase 0x1000: loads digit displays with ring bonus +0xe28 and total +0xe2c, creates the tally task ExtraAct_Unk_ov001_022f7e20 (was ExtraAct_Unk_ov001_022f8110, ov001, 2026-11-16)"
+gExtraBossResultTime:
+  confidence: strong
+  evidence: "strong E7: clamped 0..0x8c9f by ExtraBoss_SetTimeAndRings; ExtraAct_Start converts it with ExtraAct_GetTimeBonus (was data_ov001_0231f08c, ov001, 2026-11-16)"
+gExtraBossResultRings:
+  confidence: strong
+  evidence: "strong E7: clamped 0..999 by ExtraBoss_SetTimeAndRings; ExtraAct_Start multiplies it by 100 as ring bonus (was data_ov001_0231f090, ov001, 2026-11-16)"
+gExtraActTimeBonusThresholds:
+  confidence: strong
+  evidence: "strong E8,E7: 10 u32 frame limits 16200..28800,-1 scanned by ExtraAct_GetTimeBonus (was data_ov001_0231d578, ov001, 2026-11-16)"
+gExtraActTimeBonusTable:
+  confidence: strong
+  evidence: "strong E8,E7: 10 s32 bonuses 45000..0 returned by ExtraAct_GetTimeBonus (was data_ov001_0231d550, ov001, 2026-11-16)"
+gExtraBossFxResTable:
+  confidence: confirmed
+  evidence: "confirmed E8: 0x1b entries {flags, 6 file ids}; ids decode to extra_act.narc eff_* model/anim files (0=eff_blz_bullet ... 0x1a=eff_blz_dash); read by ExtraBoss_LoadObjResources (was data_ov001_0231d6b4, ov001, 2026-11-16)"
+gExtraBossFxRes:
+  confidence: strong
+  evidence: "strong E7: 0x1b x 6 resource pointers filled from gExtraBossFxResTable by ExtraBoss_LoadObjResources; used by ExtraBossPlayer_SetupFxModel (was data_ov001_0231f098, ov001, 2026-11-16)"
+gExtraBossRingWork:
+  confidence: strong
+  evidence: "strong E7: ring work allocated by ExtraBoss_InitRings: 100-entry ring pool/stack, placed/collected/loose/attracted lists at +0x98..+0xb4, update callback +0x90 (was data_ov001_0231f548, ov001, 2026-11-16)"
+gExtraBossRingSprite:
+  confidence: strong
+  evidence: "strong E8,E7: extra_act.narc file 0x27 = ac_itm_ring.bac (ExtraBoss_LoadArchiveFile27); sprite source of ExtraBoss_InitRings (was data_ov001_0231f544, ov001, 2026-11-16)"
+gExtraBossHandBossAnimTable:
+  confidence: strong
+  evidence: "strong E8,E7: u16 groups {body ca, body va, hand ca, hand va}; ca values index bsex_ca.nsbca (24=bse_nb_fw, 29..35 bse_nb_dc01..07, 36.. rc, 40..48 sb01..09) (was data_ov001_02316840, ov001, 2026-11-16)"

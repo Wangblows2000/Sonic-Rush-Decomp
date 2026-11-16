@@ -50,7 +50,7 @@ typedef struct UnkStruct_022efcdc {
 
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
-extern u16 data_ov001_02316840[];
+extern u16 gExtraBossHandBossAnimTable[];
 extern u32 gRandSeed;
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
@@ -105,15 +105,15 @@ void ExtraBoss_HandBoss_Action_Hurt(UnkStruct_022efcdc_p *p) {
     s->unk0 = 2;
     p->unk74 = ExtraBossObj_State_HandBossHurt;
     a->unk10C |= 0x40;
-    Model_SetAnimation(a, 0, data_ov001_0231f068, data_ov001_02316840[4], 0);
-    Model_SetAnimation(a, 4, data_ov001_0231f074, data_ov001_02316840[5], 0);
+    Model_SetAnimation(a, 0, data_ov001_0231f068, gExtraBossHandBossAnimTable[4], 0);
+    Model_SetAnimation(a, 4, data_ov001_0231f074, gExtraBossHandBossAnimTable[5], 0);
     a->unk12C = 0x400;
     a->unk10C &= ~4;
     a->unk110 &= ~4;
     a->unk114 = 0x1000;
     b->unk10C |= 0x40;
-    Model_SetAnimation(b, 0, data_ov001_0231f068, data_ov001_02316840[6], 0);
-    Model_SetAnimation(b, 4, data_ov001_0231f074, data_ov001_02316840[7], 0);
+    Model_SetAnimation(b, 0, data_ov001_0231f068, gExtraBossHandBossAnimTable[6], 0);
+    Model_SetAnimation(b, 4, data_ov001_0231f074, gExtraBossHandBossAnimTable[7], 0);
     b->unk12C = 0x400;
     b->unk10C &= ~4;
     b->unk110 &= ~4;

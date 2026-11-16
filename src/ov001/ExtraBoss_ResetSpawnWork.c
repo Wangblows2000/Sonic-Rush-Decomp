@@ -1,21 +1,21 @@
 #include <nitro/types.h>
 
-extern u8 *data_ov001_0231f548;
+extern u8 *gExtraBossRingWork;
 extern u8 data_ov001_02316cac[];
 extern u8 data_ov001_02316b9c[];
 void ExtraBoss_ClearSpawnLists(void);
 u8 *ExtraBoss_GetWork(void);
-void ExtraBoss_Unk_ov001_02303934(void);
+void ExtraBoss_UpdateRings(void);
 
 void ExtraBoss_ResetSpawnWork(void) {
     ExtraBoss_ClearSpawnLists();
-    *(s32 *)(data_ov001_0231f548 + 0x137c) = 0;
-    *(s32 *)(data_ov001_0231f548 + 0x1380) = *(s32 *)(data_ov001_0231f548 + 0x137c);
+    *(s32 *)(gExtraBossRingWork + 0x137c) = 0;
+    *(s32 *)(gExtraBossRingWork + 0x1380) = *(s32 *)(gExtraBossRingWork + 0x137c);
     if (*(s32 *)(ExtraBoss_GetWork() + 0x40) == 4) {
-        *(void **)(data_ov001_0231f548 + 0x1384) = data_ov001_02316b9c;
+        *(void **)(gExtraBossRingWork + 0x1384) = data_ov001_02316b9c;
     } else {
-        *(void **)(data_ov001_0231f548 + 0x1384) = data_ov001_02316cac;
+        *(void **)(gExtraBossRingWork + 0x1384) = data_ov001_02316cac;
     }
-    *(void (**)(void))(data_ov001_0231f548 + 0x90) = ExtraBoss_Unk_ov001_02303934;
-    *(u32 *)(data_ov001_0231f548 + 0x94) |= 3;
+    *(void (**)(void))(gExtraBossRingWork + 0x90) = ExtraBoss_UpdateRings;
+    *(u32 *)(gExtraBossRingWork + 0x94) |= 3;
 }

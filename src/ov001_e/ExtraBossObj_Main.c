@@ -19,7 +19,7 @@ extern UnkStruct_02300ac8_t *gTaskCurrent;
 
 BOOL ExtraBossObj_IsAlive(UnkStruct_02300ac8 *p);
 void ExtraBossObj_Draw_Default(UnkStruct_02300ac8 *p);
-void ExtraBossObj_Unk_ov001_022fe92c(void *c);
+void ExtraBossObj_RegisterColliders(void *c);
 
 void ExtraBossObj_Main(void) {
     UnkStruct_02300ac8 *p = gTaskCurrent->work;
@@ -40,6 +40,6 @@ void ExtraBossObj_Main(void) {
         return;
     for (i = 0; i < 5; i++) {
         if (p->colliders[i] != NULL)
-            ExtraBossObj_Unk_ov001_022fe92c(p->colliders[i]);
+            ExtraBossObj_RegisterColliders(p->colliders[i]);
     }
 }

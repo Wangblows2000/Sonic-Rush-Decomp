@@ -788,7 +788,7 @@ src/main_a/fabs.c:
     complete
     .text       start:0x0202c634 end:0x0202c658
 
-src/main_a/Runtime_Unk_0202e3e8.c:
+src/main_a/_fadd_e21c.c:
     complete
     .text       start:0x0202e3e8 end:0x0202e3f0
 
@@ -924,7 +924,7 @@ src/main_a/AnimatorSprite_AnimateManual.c:
     complete
     .text       start:0x020332a8 end:0x020332c4
 
-src/main_a/AnimatorSprite_Unk_02033544.c:
+src/main_a/AnimatorSpriteDS_SetAnimation.c:
     complete
     .text       start:0x02033544 end:0x02033550
 
@@ -1504,7 +1504,7 @@ src/main_b/PlayerDemo_Start.c:
     complete
     .text       start:0x02057364 end:0x0205736c
 
-src/main_b/PlayerDemo_Unk_020574d0.c:
+src/main_b/PlayerDemo_ReleaseSkippable.c:
     complete
     .text       start:0x020574d0 end:0x020574d8
 
@@ -3416,7 +3416,7 @@ src/main_b/WirelessLobbyChild_SelectParent.c:
     complete
     .text       start:0x02050ea0 end:0x02050ec0
 
-src/main_b/WirelessLobbyChild_Unk_02050ec0.c:
+src/main_b/WirelessLobbyChild_GetParentState.c:
     complete
     .text       start:0x02050ec0 end:0x02050ee4
 
@@ -6004,7 +6004,7 @@ src/main_a2/_feq.c:
     complete
     .text       start:0x0202e4b4 end:0x0202e4f0
 
-src/main_a2/Runtime_Unk_0202e4f0.c:
+src/main_a2/_fcmpeq.c:
     complete
     .text       start:0x0202e4f0 end:0x0202e528
 
@@ -6016,7 +6016,7 @@ src/main_a2/_fleq.c:
     complete
     .text       start:0x0202e564 end:0x0202e5a0
 
-src/main_a2/Runtime_Unk_0202e5a0.c:
+src/main_a2/_fcmple.c:
     complete
     .text       start:0x0202e5a0 end:0x0202e5e4
 
@@ -6028,7 +6028,7 @@ src/main_a2/func_0202e620.c:
     complete
     .text       start:0x0202e620 end:0x0202e65c
 
-src/main_a2/Runtime_Unk_0202e65c.c:
+src/main_a2/_fcmpge.c:
     complete
     .text       start:0x0202e65c end:0x0202e698
 
@@ -9380,11 +9380,11 @@ src/main_sdk3/CARD_IdentifyBackup.c:
     complete
     .text       start:0x0200f8b8 end:0x0200f9a0
 
-src/main_sdk3/CARD_Unk_0200f9a0.c:
+src/main_sdk3/CARDi_ProgramBackup.c:
     complete
     .text       start:0x0200f9a0 end:0x0200fa70
 
-src/main_sdk3/CARD_Unk_0200fa70.c:
+src/main_sdk3/CARDi_ReadBackup.c:
     complete
     .text       start:0x0200fa70 end:0x0200fb40
 
@@ -10984,15 +10984,15 @@ src/main_b9/StageObj_Destructor.c:
     complete
     .text       start:0x0206bef4 end:0x0206c35c
 
-src/main_c1/Runtime_Unk_0202e910.c:
+src/main_c1/_dcmpeq.c:
     complete
     .text       start:0x0202e910 end:0x0202e994
 
-src/main_c1/Runtime_Unk_0202eaa4.c:
+src/main_c1/_dcmple.c:
     complete
     .text       start:0x0202eaa4 end:0x0202eb3c
 
-src/main_c1/Runtime_Unk_0202ec4c.c:
+src/main_c1/_dcmpge.c:
     complete
     .text       start:0x0202ec4c end:0x0202ece4
 
@@ -11212,35 +11212,35 @@ src/asm_fallback/CARDi_IdentifyBackupCore.c:
     complete
     .text       start:0x0200f6e0 end:0x0200f8b8
 
-src/asm_fallback/CARDi_ReadCard.c:
+src/c_mainB2/CARDi_ReadCard.c:
     complete
     .text       start:0x0200ff18 end:0x02010018
 
-src/asm_fallback/NNSi_SndCaptureStart.c:
+src/c_mainA2/NNSi_SndCaptureStart.c:
     complete
     .text       start:0x0201cacc end:0x0201ce34
 
-src/asm_fallback/MakeWaveData.c:
+src/c_mainB2/MakeWaveData.c:
     complete
     .text       start:0x0201ed04 end:0x0201f5b8
 
-src/asm_fallback/NNS_G3dWorldPosToScrPos.c:
+src/c_mainA2/NNS_G3dWorldPosToScrPos.c:
     complete
     .text       start:0x020254d4 end:0x0202566c
 
-src/asm_fallback/getScaleData_.c:
+src/c_mainB2/getScaleData_.c:
     complete
     .text       start:0x02026d58 end:0x02026f88
 
-src/asm_fallback/getTransDataEx_.c:
+src/c_mainB2/getTransDataEx_.c:
     complete
     .text       start:0x02026f88 end:0x02027104
 
-src/asm_fallback/GetTexSRTAnmSinCosVal_.c:
+src/c_mainB2/GetTexSRTAnmSinCosVal_.c:
     complete
     .text       start:0x02027fc8 end:0x020280d4
 
-src/asm_fallback/texmtxCalc_flag_xsi.c:
+src/c_mainB2/texmtxCalc_flag_xsi.c:
     complete
     .text       start:0x02029f0c end:0x0202a06c
 
@@ -11264,7 +11264,7 @@ src/c_mainA/WFSi_PortCallback.c:
     complete
     .text       start:0x0203d038 end:0x0203d150
 
-src/asm_fallback/Math_LerpRGB555.c:
+src/c_mainB2/Math_LerpRGB555.c:
     complete
     .text       start:0x020490b8 end:0x020491f4
 
@@ -11276,7 +11276,7 @@ src/c_mainA/StoryProgress_RestoreFromSave.c:
     complete
     .text       start:0x0204ec40 end:0x0204ed24
 
-src/asm_fallback/PauseMenu_HighlightSelection.c:
+src/c_mainB2/PauseMenu_HighlightSelection.c:
     complete
     .text       start:0x020551b0 end:0x020552bc
 
@@ -11284,7 +11284,7 @@ src/c_mainB/PlayerDemoLight_Apply.c:
     complete
     .text       start:0x02055eb4 end:0x02055fa4
 
-src/asm_fallback/PlayerDemoBg_LoadImageRes.c:
+src/c_mainB2/PlayerDemoBg_LoadImageRes.c:
     complete
     .text       start:0x02056fa4 end:0x02057014
 

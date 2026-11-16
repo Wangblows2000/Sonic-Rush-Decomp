@@ -40,15 +40,15 @@ src/ov001/Options_Unk_ov001_022c8b5c.c:
     complete
     .text       start:0x022c8b5c end:0x022c8b60
 
-src/ov001/OptionsMenu_Unk_ov001_022c8d0c.c:
+src/ov001/OptionsMenu_CheckWfsHostFinished.c:
     complete
     .text       start:0x022c8d0c end:0x022c8d14
 
-src/ov001/OptionsMenu_Unk_ov001_022c8d44.c:
+src/ov001/OptionsMenu_CheckWirelessLobbyGone.c:
     complete
     .text       start:0x022c8d44 end:0x022c8d4c
 
-src/ov001/OptionsMenu_Unk_ov001_022c8d4c.c:
+src/ov001/OptionsMenu_RequestLobbyPreviewStart.c:
     complete
     .text       start:0x022c8d4c end:0x022c8d54
 
@@ -172,11 +172,11 @@ src/ov001/TimeAttackMenu_Dummy.c:
     complete
     .text       start:0x022ebe4c end:0x022ebe50
 
-src/ov001/Records_Unk_ov001_022ed960.c:
+src/ov001/Records_DestructorDummy.c:
     complete
     .text       start:0x022ed960 end:0x022ed964
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f2ca4.c:
+src/ov001/ExtraBossObj_State_None.c:
     complete
     .text       start:0x022f2ca4 end:0x022f2ca8
 
@@ -424,7 +424,7 @@ src/ov001/TryAgainBgScroll_Main.c:
     complete
     .text       start:0x022d35b4 end:0x022d35d0
 
-src/ov001/TryAgain_Unk_ov001_022d36ac.c:
+src/ov001/TryAgain_IsSplitScrollDone.c:
     complete
     .text       start:0x022d36ac end:0x022d36c0
 
@@ -732,7 +732,7 @@ src/ov001/Records_IsBPressed.c:
     complete
     .text       start:0x022ecec0 end:0x022eced8
 
-src/ov001/Records_Unk_ov001_022ed188.c:
+src/ov001/Records_DrawHeaderName.c:
     complete
     .text       start:0x022ed188 end:0x022ed19c
 
@@ -744,7 +744,7 @@ src/ov001/ExtraBossObj_State_Blink.c:
     complete
     .text       start:0x022ef10c end:0x022ef11c
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f41b4.c:
+src/ov001/ExtraBossObj_State_Blink2.c:
     complete
     .text       start:0x022f41b4 end:0x022f41c4
 
@@ -756,11 +756,11 @@ src/ov001/ExtraAct_GetCompressionType.c:
     complete
     .text       start:0x022f9d14 end:0x022f9d20
 
-src/ov001/ExtraBoss_Unk_ov001_022fb5d4.c:
+src/ov001/ExtraBoss_CancelSwordFx.c:
     complete
     .text       start:0x022fb5d4 end:0x022fb5ec
 
-src/ov001/ExtraBossObj_Unk_ov001_022fd4f4.c:
+src/ov001/ExtraBossObj_ReleaseFxModelResThunk.c:
     complete
     .text       start:0x022fd4f4 end:0x022fd500
 
@@ -904,7 +904,7 @@ src/ov001/SpecialStageHud_Unk_ov001_02314368.c:
     complete
     .text       start:0x02314368 end:0x02314380
 
-src/ov001/SpecialStage_Unk_ov001_02314380.c:
+src/ov001/SpecialStage_GetRingQuota.c:
     complete
     .text       start:0x02314380 end:0x02314398
 
@@ -1076,11 +1076,11 @@ src/ov001/Records_ScrollBg_Main.c:
     complete
     .text       start:0x022ec964 end:0x022ec980
 
-src/ov001/Records_Unk_ov001_022ece98.c:
+src/ov001/Records_IsScrollThumbTouchStarted.c:
     complete
     .text       start:0x022ece98 end:0x022ecec0
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f1660.c:
+src/ov001/ExtraBossObj_State_HandBossCatchWaitHand.c:
     complete
     .text       start:0x022f1660 end:0x022f167c
 
@@ -1092,11 +1092,11 @@ src/ov001/ExtraBoss_SnapObjToCameraX.c:
     complete
     .text       start:0x022fa558 end:0x022fa574
 
-src/ov001/ExtraBoss_Unk_ov001_022fc89c.c:
+src/ov001/ExtraBoss_SpawnMeteorR.c:
     complete
     .text       start:0x022fc89c end:0x022fc8bc
 
-src/ov001/ExtraBoss_Unk_ov001_022fc8bc.c:
+src/ov001/ExtraBoss_SpawnMeteor.c:
     complete
     .text       start:0x022fc8bc end:0x022fc8dc
 
@@ -1104,15 +1104,15 @@ src/ov001/ExtraBoss_CopyParentPosition.c:
     complete
     .text       start:0x022fcae8 end:0x022fcb08
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022fd1c8.c:
+src/ov001/ExtraBossObj_State_DestroyAfterTimer.c:
     complete
     .text       start:0x022fd1c8 end:0x022fd1ec
 
-src/ov001/ExtraBoss_Unk_ov001_022fd4ac.c:
+src/ov001/ExtraBoss_CountActiveBeamUnits.c:
     complete
     .text       start:0x022fd4ac end:0x022fd4d4
 
-src/ov001/ExtraBoss_Unk_ov001_022fd4d4.c:
+src/ov001/ExtraBoss_ResetFxFlags.c:
     complete
     .text       start:0x022fd4d4 end:0x022fd4f4
 
@@ -1140,11 +1140,11 @@ src/ov001/ExtraBoss_ReleaseArchiveFiles24_25.c:
     complete
     .text       start:0x023029b4 end:0x023029d4
 
-src/ov001/ExtraBoss_Unk_ov001_02303c38.c:
+src/ov001/ExtraBoss_StartRingSuction.c:
     complete
     .text       start:0x02303c38 end:0x02303c54
 
-src/ov001/ExtraBoss_Unk_ov001_02304a00.c:
+src/ov001/ExtraBoss_StartBgShake.c:
     complete
     .text       start:0x02304a00 end:0x02304a24
 
@@ -1448,11 +1448,11 @@ src/ov001/Records_IsBackButtonTouched.c:
     complete
     .text       start:0x022eced8 end:0x022ecf04
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022ee2b0.c:
+src/ov001/ExtraBossObj_State_PlayerTrailHidden.c:
     complete
     .text       start:0x022ee2b0 end:0x022ee354
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022ee41c.c:
+src/ov001/ExtraBossObj_State_PlayerTrailFull.c:
     complete
     .text       start:0x022ee41c end:0x022ee4c4
 
@@ -1464,59 +1464,59 @@ src/ov001/ExtraBoss_StepXTowardRightEdge.c:
     complete
     .text       start:0x022eec34 end:0x022eecdc
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022ef008.c:
+src/ov001/ExtraBossObj_State_HandBossDefeatFadeOut.c:
     complete
     .text       start:0x022ef008 end:0x022ef0a0
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022ef0a0.c:
+src/ov001/ExtraBossObj_State_HandBossDefeatWaitAnim.c:
     complete
     .text       start:0x022ef0a0 end:0x022ef10c
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f40b0.c:
+src/ov001/ExtraBossObj_State_WeaponBossDefeatFadeOut.c:
     complete
     .text       start:0x022f40b0 end:0x022f4148
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f4148.c:
+src/ov001/ExtraBossObj_State_WeaponBossDefeatWaitAnim.c:
     complete
     .text       start:0x022f4148 end:0x022f41b4
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f4d04.c:
+src/ov001/ExtraBossObj_State_WeaponBossMissileRecover.c:
     complete
     .text       start:0x022f4d04 end:0x022f4d74
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f5090.c:
+src/ov001/ExtraBossObj_State_WeaponBossBeamPause.c:
     complete
     .text       start:0x022f5090 end:0x022f5108
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f5108.c:
+src/ov001/ExtraBossObj_State_WeaponBossBeamRecover.c:
     complete
     .text       start:0x022f5108 end:0x022f51a8
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f51a8.c:
+src/ov001/ExtraBossObj_State_WeaponBossBeamRefire.c:
     complete
     .text       start:0x022f51a8 end:0x022f524c
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f524c.c:
+src/ov001/ExtraBossObj_State_WeaponBossBeamFire.c:
     complete
     .text       start:0x022f524c end:0x022f52e0
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f52e0.c:
+src/ov001/ExtraBossObj_State_WeaponBossBeamCharge.c:
     complete
     .text       start:0x022f52e0 end:0x022f5384
 
-src/ov001/ExtraBoss_Unk_ov001_022f5384.c:
+src/ov001/ExtraBoss_WeaponBoss_Action_HomingBeamAttack.c:
     complete
     .text       start:0x022f5384 end:0x022f53f0
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f5984.c:
+src/ov001/ExtraBossObj_State_WeaponBossBeamUnitResetArm.c:
     complete
     .text       start:0x022f5984 end:0x022f5a24
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f60a4.c:
+src/ov001/ExtraBossObj_State_WeaponBossBeamUnitWaitClear.c:
     complete
     .text       start:0x022f60a4 end:0x022f612c
 
-src/ov001/ExtraBoss_Unk_ov001_022f63dc.c:
+src/ov001/ExtraBoss_WeaponBoss_Action_Enter.c:
     complete
     .text       start:0x022f63dc end:0x022f6450
 
@@ -1524,7 +1524,7 @@ src/ov001/ExtraBoss_FreeCharacterSlots.c:
     complete
     .text       start:0x022f7274 end:0x022f7308
 
-src/ov001/ExtraAct_State_Unk_ov001_022f741c.c:
+src/ov001/ExtraAct_State_RankStampShow.c:
     complete
     .text       start:0x022f741c end:0x022f7448
 
@@ -1544,39 +1544,39 @@ src/ov001/ExtraAct_State_Unk_ov001_022f8a98.c:
     complete
     .text       start:0x022f8a98 end:0x022f8b04
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022fa5c8.c:
+src/ov001/ExtraBossObj_State_SuctionFx.c:
     complete
     .text       start:0x022fa5c8 end:0x022fa5f4
 
-src/ov001/ExtraBoss_Unk_ov001_022fa5f4.c:
+src/ov001/ExtraBoss_SpawnSuctionFx.c:
     complete
     .text       start:0x022fa5f4 end:0x022fa664
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022fa664.c:
+src/ov001/ExtraBossObj_State_SpacebEnd.c:
     complete
     .text       start:0x022fa664 end:0x022fa6e8
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022fa6e8.c:
+src/ov001/ExtraBossObj_State_SpacebActive.c:
     complete
     .text       start:0x022fa6e8 end:0x022fa768
 
-src/ov001/ExtraBoss_Unk_ov001_022fb5ec.c:
+src/ov001/ExtraBoss_AdvanceSwordFxStep.c:
     complete
     .text       start:0x022fb5ec end:0x022fb678
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022fba78.c:
+src/ov001/ExtraBossObj_State_BeamUnitDeflected.c:
     complete
     .text       start:0x022fba78 end:0x022fbaf0
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022fbaf0.c:
+src/ov001/ExtraBossObj_State_BeamUnitFiring.c:
     complete
     .text       start:0x022fbaf0 end:0x022fbb5c
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022fbb5c.c:
+src/ov001/ExtraBossObj_State_BeamUnitCharge.c:
     complete
     .text       start:0x022fbb5c end:0x022fbbc8
 
-src/ov001/ExtraBoss_Unk_ov001_022fd138.c:
+src/ov001/ExtraBoss_SpawnPlayerFlyFx.c:
     complete
     .text       start:0x022fd138 end:0x022fd1c8
 
@@ -1596,7 +1596,7 @@ src/ov001/ExtraBoss_AllocFlagBlock.c:
     complete
     .text       start:0x022fd6a4 end:0x022fd744
 
-src/ov001/ExtraBoss_Unk_ov001_022fea6c.c:
+src/ov001/ExtraBoss_CheckAllCollisions.c:
     complete
     .text       start:0x022fea6c end:0x022fea98
 
@@ -1736,7 +1736,7 @@ src/ov001/ExtraBoss_Unk_ov001_023061b0.c:
     complete
     .text       start:0x023061b0 end:0x02306244
 
-src/ov001/ExtraBoss_Unk_ov001_023063a0.c:
+src/ov001/ExtraBoss_StopSubScreenTasks.c:
     complete
     .text       start:0x023063a0 end:0x02306424
 
@@ -1824,7 +1824,7 @@ src/ov001/Options_SetTimeLimit.c:
     complete
     .text       start:0x022c890c end:0x022c8924
 
-src/ov001/OptionsMenu_Unk_ov001_022c8924.c:
+src/ov001/OptionsMenu_SetDifficultyChoice.c:
     complete
     .text       start:0x022c8924 end:0x022c8958
 
@@ -2076,11 +2076,11 @@ src/ov001/Records_Destructor.c:
     complete
     .text       start:0x022ed964 end:0x022ed990
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022ee354.c:
+src/ov001/ExtraBossObj_State_PlayerTrailShrink.c:
     complete
     .text       start:0x022ee354 end:0x022ee41c
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022ee4c4.c:
+src/ov001/ExtraBossObj_State_PlayerTrailGrow.c:
     complete
     .text       start:0x022ee4c4 end:0x022ee594
 
@@ -2088,11 +2088,11 @@ src/ov001/ExtraBoss_ReleaseModelRes.c:
     complete
     .text       start:0x022ee9f8 end:0x022eeab0
 
-src/ov001/ExtraBoss_Unk_ov001_022eed64.c:
+src/ov001/ExtraBoss_HandCatch_OnGrabPlayer.c:
     complete
     .text       start:0x022eed64 end:0x022eee68
 
-src/ov001/ExtraBoss_Unk_ov001_022f2780.c:
+src/ov001/ExtraBoss_HandBoss_Action_ClawAttack.c:
     complete
     .text       start:0x022f2780 end:0x022f2858
 
@@ -2104,31 +2104,31 @@ src/ov001/ExtraBoss_WeaponBoss_Action_Hurt.c:
     complete
     .text       start:0x022f4c04 end:0x022f4cd0
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f4e88.c:
+src/ov001/ExtraBossObj_State_WeaponBossMissileReady.c:
     complete
     .text       start:0x022f4e88 end:0x022f4f54
 
-src/ov001/ExtraBoss_Unk_ov001_022f4fac.c:
+src/ov001/ExtraBoss_WeaponBoss_Action_MissileAttack.c:
     complete
     .text       start:0x022f4fac end:0x022f5090
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f5424.c:
+src/ov001/ExtraBossObj_State_WeaponBossSwordNextSwing.c:
     complete
     .text       start:0x022f5424 end:0x022f54dc
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f56f8.c:
+src/ov001/ExtraBossObj_State_WeaponBossSwordSlash.c:
     complete
     .text       start:0x022f56f8 end:0x022f57a8
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022f57a8.c:
+src/ov001/ExtraBossObj_State_WeaponBossSwordWindUp.c:
     complete
     .text       start:0x022f57a8 end:0x022f589c
 
-src/ov001/ExtraBoss_Unk_ov001_022f589c.c:
+src/ov001/ExtraBoss_WeaponBoss_Action_SwordAttack.c:
     complete
     .text       start:0x022f589c end:0x022f5954
 
-src/ov001/ExtraBoss_Unk_ov001_022f612c.c:
+src/ov001/ExtraBoss_WeaponBoss_Action_BeamUnitAttack.c:
     complete
     .text       start:0x022f612c end:0x022f61ec
 
@@ -2148,23 +2148,23 @@ src/ov001/ExtraAct_ReleaseModelRes.c:
     complete
     .text       start:0x022f99f8 end:0x022f9ab4
 
-src/ov001/ExtraBossObj_State_Unk_ov001_022fa768.c:
+src/ov001/ExtraBossObj_State_SpacebStart.c:
     complete
     .text       start:0x022fa768 end:0x022fa830
 
-src/ov001/ExtraBoss_Unk_ov001_022fa830.c:
+src/ov001/ExtraBoss_SpawnSpacebFx.c:
     complete
     .text       start:0x022fa830 end:0x022fa908
 
-src/ov001/ExtraBoss_Unk_ov001_022fa990.c:
+src/ov001/ExtraBoss_SpawnClawFx.c:
     complete
     .text       start:0x022fa990 end:0x022faa3c
 
-src/ov001/ExtraBoss_Unk_ov001_022fb678.c:
+src/ov001/ExtraBoss_SpawnSwordFx.c:
     complete
     .text       start:0x022fb678 end:0x022fb764
 
-src/ov001/ExtraBoss_Unk_ov001_022fc934.c:
+src/ov001/ExtraBoss_SpawnBombFx.c:
     complete
     .text       start:0x022fc934 end:0x022fc9e4
 
@@ -2200,7 +2200,7 @@ src/ov001/ExtraBoss_SetupSubDisplay.c:
     complete
     .text       start:0x02300128 end:0x02300214
 
-src/ov001/ExtraBossObj_Unk_ov001_02300978.c:
+src/ov001/ExtraBossObj_DrawSprite.c:
     complete
     .text       start:0x02300978 end:0x02300a64
 
@@ -2236,7 +2236,7 @@ src/ov001/ExtraBoss_Unk_ov001_02305f08.c:
     complete
     .text       start:0x02305f08 end:0x02305fbc
 
-src/ov001/ExtraBoss_Unk_ov001_02306674.c:
+src/ov001/ExtraBoss_FreeSubScreenWork.c:
     complete
     .text       start:0x02306674 end:0x02306738
 
@@ -2540,7 +2540,7 @@ src/auto/ExtraBoss_Unk_ov001_022ffcf8.c:
     complete
     .text       start:0x022ffcf8 end:0x022ffd2c
 
-src/auto/ExtraBoss_Unk_ov001_02303a80.c:
+src/auto/ExtraBoss_SetRingPickupEnabled.c:
     complete
     .text       start:0x02303a80 end:0x02303abc
 
@@ -2588,7 +2588,7 @@ src/auto/TimeAttackMenu_Unk_ov001_022ea7c4.c:
     complete
     .text       start:0x022ea7c4 end:0x022ea80c
 
-src/auto/Records_Unk_ov001_022ed104.c:
+src/auto/Records_DrawHeaderTime.c:
     complete
     .text       start:0x022ed104 end:0x022ed14c
 
@@ -2968,55 +2968,55 @@ src/auto/ExtraBoss_Unk_ov001_022eed0c.c:
     complete
     .text       start:0x022eed0c end:0x022eed64
 
-src/auto/ExtraBossObj_State_Unk_ov001_022eef90.c:
+src/auto/ExtraBossObj_State_HandBossDefeatPartBlink.c:
     complete
     .text       start:0x022eef90 end:0x022eefc0
 
-src/auto/ExtraBossObj_State_Unk_ov001_022eefc0.c:
+src/auto/ExtraBossObj_State_HandBossDefeatFinish.c:
     complete
     .text       start:0x022eefc0 end:0x022ef008
 
-src/auto/ExtraBossObj_State_Unk_ov001_022efe50.c:
+src/auto/ExtraBossObj_State_HandBossSuctionReturn.c:
     complete
     .text       start:0x022efe50 end:0x022efea0
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f0b40.c:
+src/auto/ExtraBossObj_State_HandBossGrabEnd.c:
     complete
     .text       start:0x022f0b40 end:0x022f0b70
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f10d0.c:
+src/auto/ExtraBossObj_State_HandBossCatchRewind.c:
     complete
     .text       start:0x022f10d0 end:0x022f1130
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f1d24.c:
+src/auto/ExtraBossObj_State_HandBossClawEnd.c:
     complete
     .text       start:0x022f1d24 end:0x022f1d54
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f2858.c:
+src/auto/ExtraBossObj_State_HandBossWait.c:
     complete
     .text       start:0x022f2858 end:0x022f2898
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f4068.c:
+src/auto/ExtraBossObj_State_WeaponBossDefeatFinish.c:
     complete
     .text       start:0x022f4068 end:0x022f40b0
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f4cd0.c:
+src/auto/ExtraBossObj_State_WeaponBossMissileEnd.c:
     complete
     .text       start:0x022f4cd0 end:0x022f4d04
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f4f54.c:
+src/auto/ExtraBossObj_State_WeaponBossMissileWindUp.c:
     complete
     .text       start:0x022f4f54 end:0x022f4fac
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f53f0.c:
+src/auto/ExtraBossObj_State_WeaponBossSwordEnd.c:
     complete
     .text       start:0x022f53f0 end:0x022f5424
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f5954.c:
+src/auto/ExtraBossObj_State_WeaponBossBeamUnitEnd.c:
     complete
     .text       start:0x022f5954 end:0x022f5984
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f61ec.c:
+src/auto/ExtraBossObj_State_WeaponBossWait.c:
     complete
     .text       start:0x022f61ec end:0x022f622c
 
@@ -3024,11 +3024,11 @@ src/auto/ExtraBoss_InitCharacterSlot.c:
     complete
     .text       start:0x022f7224 end:0x022f7274
 
-src/auto/ExtraAct_Unk_ov001_022f7700.c:
+src/auto/ExtraAct_RankStampDelay.c:
     complete
     .text       start:0x022f7700 end:0x022f7740
 
-src/auto/ExtraAct_Unk_ov001_022f7740.c:
+src/auto/ExtraAct_StartRankStamp.c:
     complete
     .text       start:0x022f7740 end:0x022f7790
 
@@ -3048,47 +3048,47 @@ src/auto/ExtraBoss_SetTimeAndRings.c:
     complete
     .text       start:0x022f9e58 end:0x022f9eb4
 
-src/auto/ExtraBossObj_Unk_ov001_022fa574.c:
+src/auto/ExtraBossObj_ReleaseFxModelRes.c:
     complete
     .text       start:0x022fa574 end:0x022fa5c8
 
-src/auto/ExtraBoss_Unk_ov001_022fa908.c:
+src/auto/ExtraBoss_SpawnCatchFx.c:
     complete
     .text       start:0x022fa908 end:0x022fa94c
 
-src/auto/ExtraBoss_Unk_ov001_022fa94c.c:
+src/auto/ExtraBoss_SpawnJumpFx.c:
     complete
     .text       start:0x022fa94c end:0x022fa990
 
-src/auto/ExtraBossPlayer_Unk_ov001_022fb764.c:
+src/auto/ExtraBossPlayer_SpawnClashFx.c:
     complete
     .text       start:0x022fb764 end:0x022fb7b0
 
-src/auto/ExtraBossObj_State_Unk_ov001_022fc318.c:
+src/auto/ExtraBossObj_State_BigBeamEnd.c:
     complete
     .text       start:0x022fc318 end:0x022fc34c
 
-src/auto/ExtraBossObj_State_Unk_ov001_022fc440.c:
+src/auto/ExtraBossObj_State_BigBeamStart.c:
     complete
     .text       start:0x022fc440 end:0x022fc494
 
-src/auto/ExtraBossObj_State_Unk_ov001_022fc494.c:
+src/auto/ExtraBossObj_State_BigBeamDelay.c:
     complete
     .text       start:0x022fc494 end:0x022fc4d4
 
-src/auto/ExtraBoss_Unk_ov001_022fc8dc.c:
+src/auto/ExtraBoss_SpawnDamageFx.c:
     complete
     .text       start:0x022fc8dc end:0x022fc934
 
-src/auto/ExtraBossPlayer_Unk_ov001_022fcaa4.c:
+src/auto/ExtraBossPlayer_SpawnBlzShotFx.c:
     complete
     .text       start:0x022fcaa4 end:0x022fcae8
 
-src/auto/ExtraBossObj_State_Unk_ov001_022fd1ec.c:
+src/auto/ExtraBossObj_State_DestroyWhenOutOfArena.c:
     complete
     .text       start:0x022fd1ec end:0x022fd220
 
-src/auto/ExtraBoss_Unk_ov001_022fe6b8.c:
+src/auto/ExtraBoss_TestColliderOverlap.c:
     complete
     .text       start:0x022fe6b8 end:0x022fe710
 
@@ -3268,7 +3268,7 @@ src/auto/ZoneMap_Unk_ov001_022e85c8.c:
     complete
     .text       start:0x022e85c8 end:0x022e870c
 
-src/auto/Records_Unk_ov001_022eda54.c:
+src/auto/Records_InitBackgrounds.c:
     complete
     .text       start:0x022eda54 end:0x022edb3c
 
@@ -3280,27 +3280,27 @@ src/auto/ExtraBoss_HandBoss_Action_Defeat.c:
     complete
     .text       start:0x022ef6c4 end:0x022ef8c0
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f011c.c:
+src/auto/ExtraBossObj_State_HandBossSuctionHold.c:
     complete
     .text       start:0x022f011c end:0x022f0234
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f0234.c:
+src/auto/ExtraBossObj_State_HandBossSuctionFire.c:
     complete
     .text       start:0x022f0234 end:0x022f034c
 
-src/auto/ExtraBoss_Unk_ov001_022f0988.c:
+src/auto/ExtraBoss_HandBoss_Action_SuctionAttack.c:
     complete
     .text       start:0x022f0988 end:0x022f0b40
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f1ea0.c:
+src/auto/ExtraBossObj_State_HandBossClawRecover.c:
     complete
     .text       start:0x022f1ea0 end:0x022f1fd8
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f2580.c:
+src/auto/ExtraBossObj_State_HandBossClawDelay.c:
     complete
     .text       start:0x022f2580 end:0x022f2780
 
-src/auto/ExtraBoss_Unk_ov001_022f2b78.c:
+src/auto/ExtraBoss_HandBoss_Action_Enter.c:
     complete
     .text       start:0x022f2b78 end:0x022f2ca4
 
@@ -3308,7 +3308,7 @@ src/auto/ExtraBoss_WeaponBoss_Action_Defeat.c:
     complete
     .text       start:0x022f47d4 end:0x022f4910
 
-src/auto/ExtraBossObj_State_Unk_ov001_022f55e4.c:
+src/auto/ExtraBossObj_State_WeaponBossSwordFollowThrough.c:
     complete
     .text       start:0x022f55e4 end:0x022f56f8
 
@@ -3396,7 +3396,7 @@ src/clones/Records_CreateFadeTask.c:
     complete
     .text       start:0x022ec8e8 end:0x022ec964
 
-src/clones/Records_Unk_ov001_022ed990.c:
+src/clones/Records_InitSpriteSub.c:
     complete
     .text       start:0x022ed990 end:0x022ed9f4
 
@@ -3480,15 +3480,15 @@ src/auto/TimeAttackMenu_Unk_ov001_022ebc3c.c:
     complete
     .text       start:0x022ebc3c end:0x022ebc98
 
-src/auto/Records_Unk_ov001_022ed08c.c:
+src/auto/Records_DrawRecordTimes.c:
     complete
     .text       start:0x022ed08c end:0x022ed104
 
-src/auto/Records_Unk_ov001_022ed14c.c:
+src/auto/Records_DrawRecordNames.c:
     complete
     .text       start:0x022ed14c end:0x022ed188
 
-src/auto/Records_Unk_ov001_022ed9f4.c:
+src/auto/Records_InitSpriteMain.c:
     complete
     .text       start:0x022ed9f4 end:0x022eda54
 
@@ -3508,19 +3508,19 @@ src/auto/ExtraBossObj_IsOutOfArena.c:
     complete
     .text       start:0x02300b84 end:0x02300be4
 
-src/auto/ExtraBoss_Unk_ov001_0230319c.c:
+src/auto/ExtraBoss_RingList_RemoveAttracted.c:
     complete
     .text       start:0x0230319c end:0x023031e4
 
-src/auto/ExtraBoss_Unk_ov001_02303244.c:
+src/auto/ExtraBoss_RingList_RemoveLoose.c:
     complete
     .text       start:0x02303244 end:0x0230328c
 
-src/auto/ExtraBoss_Unk_ov001_023032ec.c:
+src/auto/ExtraBoss_RingList_RemoveCollected.c:
     complete
     .text       start:0x023032ec end:0x02303334
 
-src/auto/ExtraBoss_Unk_ov001_02303394.c:
+src/auto/ExtraBoss_RingList_RemovePlaced.c:
     complete
     .text       start:0x02303394 end:0x023033dc
 
@@ -3592,7 +3592,7 @@ src/ov001_b/ExtraBoss_WeaponBoss_FinishDefeat.c:
     complete
     .text       start:0x022f41c4 end:0x022f4634
 
-src/ov001_b/ExtraBossObj_State_Unk_ov001_022f5a24.c:
+src/ov001_b/ExtraBossObj_State_WeaponBossBeamUnitLaunch.c:
     complete
     .text       start:0x022f5a24 end:0x022f5da0
 
@@ -3620,7 +3620,7 @@ src/ov001_b/ExtraAct_InitDisplay.c:
     complete
     .text       start:0x022f95ec end:0x022f99f8
 
-src/ov001_b/ExtraBoss_Unk_ov001_022fd744.c:
+src/ov001_b/ExtraBoss_DrawHud.c:
     complete
     .text       start:0x022fd744 end:0x022fdaa0
 
@@ -3632,7 +3632,7 @@ src/ov001_b/ExtraBoss_InitDisplay.c:
     complete
     .text       start:0x022ff3dc end:0x022ff8ac
 
-src/ov001_b/ExtraBossObj_Unk_ov001_0230063c.c:
+src/ov001_b/ExtraBossObj_DrawModel.c:
     complete
     .text       start:0x0230063c end:0x02300978
 
@@ -3644,11 +3644,11 @@ src/ov001_b/ExtraBoss_Unk_ov001_02302658.c:
     complete
     .text       start:0x02302658 end:0x023029b4
 
-src/ov001_b/ExtraBoss_Unk_ov001_02303594.c:
+src/ov001_b/ExtraBoss_UpdateRingsSuction.c:
     complete
     .text       start:0x02303594 end:0x02303934
 
-src/ov001_b/ExtraBoss_Unk_ov001_02306738.c:
+src/ov001_b/ExtraBoss_AllocSubScreenWork.c:
     complete
     .text       start:0x02306738 end:0x02306a20
 
@@ -3668,7 +3668,7 @@ src/ov001_b/SpecialStage_LoadPlayerArchive.c:
     complete
     .text       start:0x02313cb4 end:0x02314014
 
-src/ov001_c/ExtraBoss_Unk_ov001_022ee100.c:
+src/ov001_c/ExtraBoss_UpdatePlayerTrailNode.c:
     complete
     .text       start:0x022ee100 end:0x022ee2b0
 
@@ -3676,19 +3676,19 @@ src/ov001_c/ExtraBossObj_State_HandBossHurt.c:
     complete
     .text       start:0x022efa00 end:0x022efcdc
 
-src/ov001_c/ExtraBossObj_State_Unk_ov001_022f034c.c:
+src/ov001_c/ExtraBossObj_State_HandBossSuctionAim.c:
     complete
     .text       start:0x022f034c end:0x022f0548
 
-src/ov001_c/ExtraBossObj_State_Unk_ov001_022f0e4c.c:
+src/ov001_c/ExtraBossObj_State_HandCatchPullPlayer.c:
     complete
     .text       start:0x022f0e4c end:0x022f10d0
 
-src/ov001_c/ExtraBossObj_State_Unk_ov001_022f167c.c:
+src/ov001_c/ExtraBossObj_State_HandBossCatchAim.c:
     complete
     .text       start:0x022f167c end:0x022f18e4
 
-src/ov001_c/ExtraBoss_Unk_ov001_022f2898.c:
+src/ov001_c/ExtraBoss_HandBoss_Action_Wait.c:
     complete
     .text       start:0x022f2898 end:0x022f2a8c
 
@@ -3696,7 +3696,7 @@ src/ov001_c/ExtraBoss_HandBoss_SelectNextAttack.c:
     complete
     .text       start:0x022f2ca8 end:0x022f2f14
 
-src/ov001_c/ExtraBossObj_Draw_Unk_ov001_022f2f14.c:
+src/ov001_c/ExtraBossObj_Draw_HandCatch.c:
     complete
     .text       start:0x022f2f14 end:0x022f3164
 
@@ -3708,7 +3708,7 @@ src/ov001_c/ExtraBossObj_State_WeaponBossHurt.c:
     complete
     .text       start:0x022f4a50 end:0x022f4c04
 
-src/ov001_c/ExtraBossObj_State_Unk_ov001_022f5eb4.c:
+src/ov001_c/ExtraBossObj_State_WeaponBossBeamUnitAim.c:
     complete
     .text       start:0x022f5eb4 end:0x022f60a4
 
@@ -3736,23 +3736,23 @@ src/ov001_c/ExtraAct_Start.c:
     complete
     .text       start:0x022f9eb4 end:0x022fa558
 
-src/ov001_c/ExtraBossObj_State_Unk_ov001_022faa3c.c:
+src/ov001_c/ExtraBossObj_State_MissileHoming.c:
     complete
     .text       start:0x022faa3c end:0x022fac54
 
-src/ov001_c/ExtraBoss_Unk_ov001_022fad38.c:
+src/ov001_c/ExtraBoss_SpawnHomingMissile.c:
     complete
     .text       start:0x022fad38 end:0x022faf00
 
-src/ov001_c/ExtraBoss_Unk_ov001_022fb3c8.c:
+src/ov001_c/ExtraBoss_SpawnHomingBeam.c:
     complete
     .text       start:0x022fb3c8 end:0x022fb590
 
-src/ov001_c/ExtraBoss_Unk_ov001_022fc09c.c:
+src/ov001_c/ExtraBoss_SpawnBeamUnit.c:
     complete
     .text       start:0x022fc09c end:0x022fc318
 
-src/ov001_c/ExtraBoss_Unk_ov001_022fe710.c:
+src/ov001_c/ExtraBoss_CheckCollisionGroup.c:
     complete
     .text       start:0x022fe710 end:0x022fe8d4
 
@@ -3760,7 +3760,7 @@ src/auto/VsMenu_State_Unk_ov001_022db014.c:
     complete
     .text       start:0x022db014 end:0x022db150
 
-src/ov001_c/ExtraBoss_Unk_ov001_022feac8.c:
+src/ov001_c/ExtraBoss_UpdateDualScreen3D.c:
     complete
     .text       start:0x022feac8 end:0x022fecb0
 
@@ -3792,15 +3792,15 @@ src/ov001_c/ExtraBossPlayer_Action_Dash.c:
     complete
     .text       start:0x023017c8 end:0x023019f8
 
-src/ov001_c/ExtraBoss_Unk_ov001_023041a8.c:
+src/ov001_c/ExtraBoss_CollectRings.c:
     complete
     .text       start:0x023041a8 end:0x02304410
 
-src/ov001_c/ExtraBoss_Unk_ov001_02304624.c:
+src/ov001_c/ExtraBoss_InitRings.c:
     complete
     .text       start:0x02304624 end:0x02304834
 
-src/ov001_c/ExtraBoss_Unk_ov001_02304a24.c:
+src/ov001_c/ExtraBoss_UpdateBgWaveScroll.c:
     complete
     .text       start:0x02304a24 end:0x02304e80
 
@@ -3920,15 +3920,15 @@ src/ov001_c/SpecialStageCamera_Update.c:
     complete
     .text       start:0x023159b4 end:0x02315dc0
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f0cbc.c:
+src/ov001_d/ExtraBossObj_State_HandBossGrabTurnArm.c:
     complete
     .text       start:0x022f0cbc end:0x022f0e4c
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f1130.c:
+src/ov001_d/ExtraBossObj_State_HandBossCatchTurnArm.c:
     complete
     .text       start:0x022f1130 end:0x022f12c0
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f18e4.c:
+src/ov001_d/ExtraBossObj_State_HandBossCatchReady.c:
     complete
     .text       start:0x022f18e4 end:0x022f1a90
 
@@ -4316,27 +4316,27 @@ src/ov001_t/ZoneMap_SelectTalkDemo.c:
     complete
     .text       start:0x022e1a30 end:0x022e1aac
 
-src/ov001_t/ZoneMap_Unk_ov001_022e22d0.c:
+src/ov001_t/ZoneMap_SetBlazeProgressFromStep.c:
     complete
     .text       start:0x022e22d0 end:0x022e23b0
 
-src/ov001_t/ZoneMap_Unk_ov001_022e23b0.c:
+src/ov001_t/ZoneMap_SetSonicProgressFromStep.c:
     complete
     .text       start:0x022e23b0 end:0x022e2480
 
-src/ov001_t/ZoneMap_Unk_ov001_022e24a8.c:
+src/ov001_t/ZoneMap_GetBlazeMaxSelectableZone.c:
     complete
     .text       start:0x022e24a8 end:0x022e252c
 
-src/ov001_t/ZoneMap_Unk_ov001_022e252c.c:
+src/ov001_t/ZoneMap_GetSonicMaxSelectableZone.c:
     complete
     .text       start:0x022e252c end:0x022e25b0
 
-src/ov001_t/ZoneMap_Unk_ov001_022e25b0.c:
+src/ov001_t/ZoneMap_IsBlazeZoneSelectable.c:
     complete
     .text       start:0x022e25b0 end:0x022e2640
 
-src/ov001_t/ZoneMap_Unk_ov001_022e2640.c:
+src/ov001_t/ZoneMap_IsSonicZoneSelectable.c:
     complete
     .text       start:0x022e2640 end:0x022e26d0
 
@@ -4412,7 +4412,7 @@ src/ov001_t/ZoneMap_Unk_ov001_022e6c90.c:
     complete
     .text       start:0x022e6c90 end:0x022e6dec
 
-src/ov001_d/ExtraBoss_Unk_ov001_022ee594.c:
+src/ov001_d/ExtraBoss_CreatePlayerTrail.c:
     complete
     .text       start:0x022ee594 end:0x022ee73c
 
@@ -4428,11 +4428,11 @@ src/ov001_t/ZoneMapPause_Unk_ov001_022e8be0.c:
     complete
     .text       start:0x022e8be0 end:0x022e8d44
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022efea0.c:
+src/ov001_d/ExtraBossObj_State_HandBossSuctionLeave.c:
     complete
     .text       start:0x022efea0 end:0x022efff4
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022efff4.c:
+src/ov001_d/ExtraBossObj_State_HandBossSuctionWaitEnd.c:
     complete
     .text       start:0x022efff4 end:0x022f011c
 
@@ -4440,7 +4440,7 @@ src/ov001_t/ZoneMapPause_Action_CloseB.c:
     complete
     .text       start:0x022e90f4 end:0x022e9128
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f0548.c:
+src/ov001_d/ExtraBossObj_State_HandBossSuctionReady.c:
     complete
     .text       start:0x022f0548 end:0x022f06c4
 
@@ -4448,7 +4448,7 @@ src/ov001_t/ZoneMapPause_Action_ConfirmB.c:
     complete
     .text       start:0x022e9128 end:0x022e915c
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f06c4.c:
+src/ov001_d/ExtraBossObj_State_HandBossSuctionEnter.c:
     complete
     .text       start:0x022f06c4 end:0x022f0840
 
@@ -4460,11 +4460,11 @@ src/ov001_t/ZoneMapPause_Action_CloseA.c:
     complete
     .text       start:0x022e91cc end:0x022e9200
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f0840.c:
+src/ov001_d/ExtraBossObj_State_HandBossSuctionExit.c:
     complete
     .text       start:0x022f0840 end:0x022f0988
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f0b70.c:
+src/ov001_d/ExtraBossObj_State_HandBossGrabHold.c:
     complete
     .text       start:0x022f0b70 end:0x022f0cbc
 
@@ -4480,7 +4480,7 @@ src/ov001_t/TimeAttackMenuFadeTask_Main.c:
     complete
     .text       start:0x022e9ad0 end:0x022e9ba8
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f12c0.c:
+src/ov001_d/ExtraBossObj_State_HandBossCatchResetArm.c:
     complete
     .text       start:0x022f12c0 end:0x022f1438
 
@@ -4492,7 +4492,7 @@ src/ov001_t/TimeAttackMenu_IsRightPressed.c:
     complete
     .text       start:0x022e9df0 end:0x022e9e30
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f1a90.c:
+src/ov001_d/ExtraBossObj_State_HandBossCatchMove.c:
     complete
     .text       start:0x022f1a90 end:0x022f1c0c
 
@@ -4500,7 +4500,7 @@ src/ov001_t/TimeAttackMenu_IsLeftPressed.c:
     complete
     .text       start:0x022e9e30 end:0x022e9e70
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f1d54.c:
+src/ov001_d/ExtraBossObj_State_HandBossClawReturn.c:
     complete
     .text       start:0x022f1d54 end:0x022f1ea0
 
@@ -4508,7 +4508,7 @@ src/ov001_t/TimeAttackMenu_Unk_ov001_022e9fe4.c:
     complete
     .text       start:0x022e9fe4 end:0x022ea1b8
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f1fd8.c:
+src/ov001_d/ExtraBossObj_State_HandBossClawSwipe2.c:
     complete
     .text       start:0x022f1fd8 end:0x022f2138
 
@@ -4516,7 +4516,7 @@ src/ov001_t/TimeAttackMenu_InitBackgrounds.c:
     complete
     .text       start:0x022ebfd4 end:0x022ec16c
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f2138.c:
+src/ov001_d/ExtraBossObj_State_HandBossClawWindUp2.c:
     complete
     .text       start:0x022f2138 end:0x022f22ac
 
@@ -4524,7 +4524,7 @@ src/ov001_t/Records_ResetDisplay.c:
     complete
     .text       start:0x022ec41c end:0x022ec49c
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f22ac.c:
+src/ov001_d/ExtraBossObj_State_HandBossClawSwipe1.c:
     complete
     .text       start:0x022f22ac end:0x022f240c
 
@@ -4532,7 +4532,7 @@ src/ov001_t/RecordsFadeTask_Main.c:
     complete
     .text       start:0x022ec810 end:0x022ec8e8
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f240c.c:
+src/ov001_d/ExtraBossObj_State_HandBossClawWindUp.c:
     complete
     .text       start:0x022f240c end:0x022f2580
 
@@ -4540,7 +4540,7 @@ src/ov001_t/Records_BuildNameGlyphs.c:
     complete
     .text       start:0x022ec980 end:0x022ec9e0
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f4d74.c:
+src/ov001_d/ExtraBossObj_State_WeaponBossMissileFire.c:
     complete
     .text       start:0x022f4d74 end:0x022f4e88
 
@@ -4548,7 +4548,7 @@ src/ov001_t2/ZoneActSelectMode_Start.c:
     complete
     .text       start:0x022c6004 end:0x022c6090
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022f54dc.c:
+src/ov001_d/ExtraBossObj_State_WeaponBossSwordRecover.c:
     complete
     .text       start:0x022f54dc end:0x022f55e4
 
@@ -4556,7 +4556,7 @@ src/ov001_t2/Options_CreateFadeTask.c:
     complete
     .text       start:0x022c8aa0 end:0x022c8b14
 
-src/ov001_d/ExtraBoss_Unk_ov001_022fc708.c:
+src/ov001_d/ExtraBoss_SpawnMeteorOfKind.c:
     complete
     .text       start:0x022fc708 end:0x022fc89c
 
@@ -4568,7 +4568,7 @@ src/ov001_t2/OptionsMenu_Unk_ov001_022ca248.c:
     complete
     .text       start:0x022ca248 end:0x022ca2d4
 
-src/ov001_d/ExtraBossPlayer_Unk_ov001_022fd2dc.c:
+src/ov001_d/ExtraBossPlayer_SetupFxModel.c:
     complete
     .text       start:0x022fd2dc end:0x022fd428
 
@@ -4884,7 +4884,7 @@ src/ov001_t2/Records_LoadFromSave.c:
     complete
     .text       start:0x022ec38c end:0x022ec41c
 
-src/ov001_t2/Records_Unk_ov001_022ece30.c:
+src/ov001_t2/Records_IsTouchOnScrollThumb.c:
     complete
     .text       start:0x022ece30 end:0x022ece98
 
@@ -4920,11 +4920,11 @@ src/ov001_d/ExtraBoss_LoadBossModel.c:
     complete
     .text       start:0x022eeab0 end:0x022eec20
 
-src/ov001_d/ExtraBoss_Unk_ov001_022f705c.c:
+src/ov001_d/ExtraBoss_ApplyScreenFitCamera.c:
     complete
     .text       start:0x022f705c end:0x022f71b8
 
-src/ov001_d/ExtraAct_State_Unk_ov001_022f7448.c:
+src/ov001_d/ExtraAct_State_RankStampShake.c:
     complete
     .text       start:0x022f7448 end:0x022f75c8
 
@@ -4936,23 +4936,23 @@ src/ov001_d/ExtraAct_State_Unk_ov001_022f8b04.c:
     complete
     .text       start:0x022f8b04 end:0x022f8c78
 
-src/ov001_d/ExtraBoss_Unk_ov001_022faf00.c:
+src/ov001_d/ExtraBoss_HomingBeam_OnHit.c:
     complete
     .text       start:0x022faf00 end:0x022fb074
 
-src/ov001_d/ExtraBoss_Unk_ov001_022fb7f0.c:
+src/ov001_d/ExtraBoss_SpawnSmallBeam.c:
     complete
     .text       start:0x022fb7f0 end:0x022fb918
 
-src/ov001_d/ExtraBoss_Unk_ov001_022fc4d4.c:
+src/ov001_d/ExtraBoss_SpawnBigBeam.c:
     complete
     .text       start:0x022fc4d4 end:0x022fc5f0
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022fcbd4.c:
+src/ov001_d/ExtraBossObj_State_PlayerFxHidden.c:
     complete
     .text       start:0x022fcbd4 end:0x022fcd44
 
-src/ov001_d/ExtraBossObj_State_Unk_ov001_022fce7c.c:
+src/ov001_d/ExtraBossObj_State_PlayerDashFx.c:
     complete
     .text       start:0x022fce7c end:0x022fd000
 
@@ -4968,11 +4968,11 @@ src/ov001_d/ExtraBossPlayer_State_Dash.c:
     complete
     .text       start:0x02301e78 end:0x02301ff4
 
-src/ov001_d/ExtraBoss_Unk_ov001_02303e60.c:
+src/ov001_d/ExtraBoss_ScatterPlayerRings.c:
     complete
     .text       start:0x02303e60 end:0x02303fd4
 
-src/ov001_d/ExtraBoss_Unk_ov001_02304028.c:
+src/ov001_d/ExtraBoss_DrawRings.c:
     complete
     .text       start:0x02304028 end:0x023041a8
 
@@ -5016,7 +5016,7 @@ src/ov001_d/SpecialStageCamera_Register.c:
     complete
     .text       start:0x02314c84 end:0x02314de8
 
-src/ov001_e/ExtraAct_Unk_ov001_022f8110.c:
+src/ov001_e/ExtraAct_StartScoreTally.c:
     complete
     .text       start:0x022f8110 end:0x022f8330
 
@@ -5032,7 +5032,7 @@ src/ov001_e/ExtraBossPlayer_ApplyMoveInput.c:
     complete
     .text       start:0x02302140 end:0x02302298
 
-src/ov001_e/ExtraBoss_Unk_ov001_02303934.c:
+src/ov001_e/ExtraBoss_UpdateRings.c:
     complete
     .text       start:0x02303934 end:0x02303a80
 
@@ -5120,11 +5120,11 @@ src/ov001_e/ExtraBossObj_State_WeaponBossHurtRecover.c:
     complete
     .text       start:0x022f4910 end:0x022f4a50
 
-src/ov001_e/ExtraBossObj_Unk_ov001_022fe92c.c:
+src/ov001_e/ExtraBossObj_RegisterColliders.c:
     complete
     .text       start:0x022fe92c end:0x022fea6c
 
-src/ov001_e/ExtraBoss_Unk_ov001_02303af8.c:
+src/ov001_e/ExtraBoss_EndRingSuction.c:
     complete
     .text       start:0x02303af8 end:0x02303c38
 
@@ -5152,19 +5152,19 @@ src/ov001_e/ExtraBoss_HandBoss_OnHit.c:
     complete
     .text       start:0x022eee68 end:0x022eef90
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022f1438.c:
+src/ov001_e/ExtraBossObj_State_HandCatchReturn.c:
     complete
     .text       start:0x022f1438 end:0x022f1550
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022f1550.c:
+src/ov001_e/ExtraBossObj_State_HandCatchFlyOut.c:
     complete
     .text       start:0x022f1550 end:0x022f1660
 
-src/ov001_e/ExtraBoss_Unk_ov001_022f1c0c.c:
+src/ov001_e/ExtraBoss_HandBoss_Action_CatchAttack.c:
     complete
     .text       start:0x022f1c0c end:0x022f1d24
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022f2a8c.c:
+src/ov001_e/ExtraBossObj_State_HandBossEnter.c:
     complete
     .text       start:0x022f2a8c end:0x022f2b78
 
@@ -5172,23 +5172,23 @@ src/ov001_e/ExtraBoss_WeaponBoss_OnHit.c:
     complete
     .text       start:0x022f3c60 end:0x022f3d6c
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022f4028.c:
+src/ov001_e/ExtraBossObj_State_WeaponBossDefeatPartBlink.c:
     complete
     .text       start:0x022f4028 end:0x022f4068
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022f5da0.c:
+src/ov001_e/ExtraBossObj_State_WeaponBossBeamUnitTurnArm.c:
     complete
     .text       start:0x022f5da0 end:0x022f5eb4
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022f62f0.c:
+src/ov001_e/ExtraBossObj_State_WeaponBossEnter.c:
     complete
     .text       start:0x022f62f0 end:0x022f63dc
 
-src/ov001_e/ExtraAct_Unk_ov001_022f73cc.c:
+src/ov001_e/ExtraAct_GetTimeBonus.c:
     complete
     .text       start:0x022f73cc end:0x022f741c
 
-src/ov001_e/ExtraAct_State_Unk_ov001_022f75c8.c:
+src/ov001_e/ExtraAct_State_RankStampZoom.c:
     complete
     .text       start:0x022f75c8 end:0x022f7700
 
@@ -5204,43 +5204,43 @@ src/ov001_e/ExtraAct_ReleaseAssets.c:
     complete
     .text       start:0x022f9d20 end:0x022f9e58
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb074.c:
+src/ov001_e/ExtraBossObj_State_HomingBeamFire.c:
     complete
     .text       start:0x022fb074 end:0x022fb17c
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb17c.c:
+src/ov001_e/ExtraBossObj_State_HomingBeamAim.c:
     complete
     .text       start:0x022fb17c end:0x022fb28c
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb28c.c:
+src/ov001_e/ExtraBossObj_State_HomingBeamApproach.c:
     complete
     .text       start:0x022fb28c end:0x022fb3c8
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb590.c:
+src/ov001_e/ExtraBossObj_State_SwordFx.c:
     complete
     .text       start:0x022fb590 end:0x022fb5d4
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fb7b0.c:
+src/ov001_e/ExtraBossObj_State_SmallBeam.c:
     complete
     .text       start:0x022fb7b0 end:0x022fb7f0
 
-src/ov001_e/ExtraBoss_Unk_ov001_022fb918.c:
+src/ov001_e/ExtraBoss_BeamUnit_OnContact.c:
     complete
     .text       start:0x022fb918 end:0x022fb974
 
-src/ov001_e/ExtraBoss_Unk_ov001_022fb974.c:
+src/ov001_e/ExtraBoss_BeamUnit_OnHit.c:
     complete
     .text       start:0x022fb974 end:0x022fba78
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fbfcc.c:
+src/ov001_e/ExtraBossObj_State_BeamUnitDeploy.c:
     complete
     .text       start:0x022fbfcc end:0x022fc09c
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fc34c.c:
+src/ov001_e/ExtraBossObj_State_BigBeamFire.c:
     complete
     .text       start:0x022fc34c end:0x022fc440
 
-src/ov001_e/ExtraBoss_Unk_ov001_022fc5f0.c:
+src/ov001_e/ExtraBoss_Meteor_OnHit.c:
     complete
     .text       start:0x022fc5f0 end:0x022fc708
 
@@ -5248,15 +5248,15 @@ src/ov001_e/ExtraBoss_SwapObjModel.c:
     complete
     .text       start:0x022fcb08 end:0x022fcbd4
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fcd44.c:
+src/ov001_e/ExtraBossObj_State_PlayerDashFxEnd.c:
     complete
     .text       start:0x022fcd44 end:0x022fce7c
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fd000.c:
+src/ov001_e/ExtraBossObj_State_PlayerFlyFx.c:
     complete
     .text       start:0x022fd000 end:0x022fd138
 
-src/ov001_e/ExtraBossObj_State_Unk_ov001_022fd220.c:
+src/ov001_e/ExtraBossObj_State_DestroyWhenAnimsDone.c:
     complete
     .text       start:0x022fd220 end:0x022fd268
 
@@ -5268,7 +5268,7 @@ src/ov001_e/ExtraBoss_InitCollider.c:
     complete
     .text       start:0x022fe8d4 end:0x022fe92c
 
-src/ov001_e/ExtraBoss_Unk_ov001_022fea98.c:
+src/ov001_e/ExtraBoss_ClearColliderLists.c:
     complete
     .text       start:0x022fea98 end:0x022feac8
 
@@ -5300,27 +5300,27 @@ src/ov001_e/ExtraBoss_PlayerOnHurt.c:
     complete
     .text       start:0x02301a88 end:0x02301ba0
 
-src/ov001_e/ExtraBossObj_Unk_ov001_02302ac8.c:
+src/ov001_e/ExtraBossObj_ReleasePlayerModel.c:
     complete
     .text       start:0x02302ac8 end:0x02302be8
 
-src/ov001_e/ExtraBoss_Unk_ov001_023031e4.c:
+src/ov001_e/ExtraBoss_RingList_AddAttracted.c:
     complete
     .text       start:0x023031e4 end:0x02303244
 
-src/ov001_e/ExtraBoss_Unk_ov001_0230328c.c:
+src/ov001_e/ExtraBoss_RingList_AddLoose.c:
     complete
     .text       start:0x0230328c end:0x023032ec
 
-src/ov001_e/ExtraBoss_Unk_ov001_02303334.c:
+src/ov001_e/ExtraBoss_RingList_AddCollected.c:
     complete
     .text       start:0x02303334 end:0x02303394
 
-src/ov001_e/ExtraBoss_Unk_ov001_023033dc.c:
+src/ov001_e/ExtraBoss_RingList_AddPlaced.c:
     complete
     .text       start:0x023033dc end:0x0230343c
 
-src/ov001_e/ExtraBoss_Unk_ov001_02303d28.c:
+src/ov001_e/ExtraBoss_SpawnRingBurst.c:
     complete
     .text       start:0x02303d28 end:0x02303e60
 
@@ -5328,7 +5328,7 @@ src/ov001_e/ExtraBoss_LoadArchiveFile27.c:
     complete
     .text       start:0x02304518 end:0x02304568
 
-src/ov001_e/ExtraBoss_Unk_ov001_02304e80.c:
+src/ov001_e/ExtraBoss_UpdateBgScrollPalette.c:
     complete
     .text       start:0x02304e80 end:0x02304fb4
 
@@ -5712,11 +5712,11 @@ src/ov001_t3/StaffRoll_Destructor.c:
     complete
     .text       start:0x022d2cbc end:0x022d2db8
 
-src/ov001_t3/TryAgain_Unk_ov001_022d36c0.c:
+src/ov001_t3/TryAgain_UpdateSplitScroll.c:
     complete
     .text       start:0x022d36c0 end:0x022d37ac
 
-src/ov001_t3/TryAgain_Unk_ov001_022d37ac.c:
+src/ov001_t3/TryAgain_InitSplitScroll.c:
     complete
     .text       start:0x022d37ac end:0x022d3864
 
@@ -5944,7 +5944,7 @@ src/ov001_t3/ZoneMap_State_SelectNode.c:
     complete
     .text       start:0x022e7f64 end:0x022e8090
 
-src/ov001_f/ExtraBossObj_Draw_Unk_ov001_022ede0c.c:
+src/ov001_f/ExtraBossObj_Draw_PlayerTrail.c:
     complete
     .text       start:0x022ede0c end:0x022ee100
 
@@ -6560,11 +6560,11 @@ src/sweep/ZoneActSelect_IsActive.c:
     complete
     .text       start:0x022e1900 end:0x022e190c
 
-src/sweep/ZoneMap_Unk_ov001_022e21ec.c:
+src/sweep/ZoneMap_SaveProgressOnPathArrival.c:
     complete
     .text       start:0x022e21ec end:0x022e22d0
 
-src/sweep/ExtraBossObj_State_Unk_ov001_022fac54.c:
+src/sweep/ExtraBossObj_State_MissileLaunch.c:
     complete
     .text       start:0x022fac54 end:0x022fad38
 
@@ -6624,7 +6624,7 @@ src/ov001_g/Records_ReleaseSprites.c:
     complete
     .text       start:0x022ed924 end:0x022ed960
 
-src/ov001_g/Records_Unk_ov001_022edb3c.c:
+src/ov001_g/Records_InitSprites.c:
     complete
     .text       start:0x022edb3c end:0x022edcb0
 
@@ -6780,7 +6780,7 @@ src/ov001_j/ExtraBoss_SetObjModelAnims.c:
     complete
     .text       start:0x022fd268 end:0x022fd2dc
 
-src/asm_fallback/Ending_Create.c:
+src/c_mainB2/Ending_Create.c:
     complete
     .text       start:0x022c8480 end:0x022c8640
 
@@ -6828,7 +6828,7 @@ src/asm_fallback/ZoneMap_Unk_ov001_022e794c.c:
     complete
     .text       start:0x022e794c end:0x022e7c50
 
-src/asm_fallback/ExtraBossObj_State_Unk_ov001_022fbbc8.c:
+src/asm_fallback/ExtraBossObj_State_BeamUnitActive.c:
     complete
     .text       start:0x022fbbc8 end:0x022fbfcc
 
@@ -6836,15 +6836,15 @@ src/asm_fallback/ExtraBoss_Unk_ov001_022fdbc0.c:
     complete
     .text       start:0x022fdbc0 end:0x022fde54
 
-src/asm_fallback/ExtraBoss_Unk_ov001_022fde54.c:
+src/asm_fallback/ExtraBoss_TestColliderRotatedBoxes.c:
     complete
     .text       start:0x022fde54 end:0x022fe550
 
-src/asm_fallback/ExtraBoss_Unk_ov001_022fe550.c:
+src/asm_fallback/ExtraBoss_TestColliderBoxes.c:
     complete
     .text       start:0x022fe550 end:0x022fe6b8
 
-src/asm_fallback/ExtraBoss_Unk_ov001_02303494.c:
+src/asm_fallback/ExtraBoss_IsRingTouchingPlayer.c:
     complete
     .text       start:0x02303494 end:0x02303554
 

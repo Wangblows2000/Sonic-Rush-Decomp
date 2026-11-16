@@ -45,7 +45,7 @@ void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
 void AnimatorSpriteDS_DrawRotScale(UnkDual *d, s32 scale, s32 b, s32 c);
 void AnimatorSpriteDS_Draw(UnkDual *d);
 void AnimatorSpriteDS_ProcessAnimation(UnkDual *d, s32 a, s32 b);
-void AnimatorSprite_Unk_02033544(UnkDual *d, u16 idx);
+void AnimatorSpriteDS_SetAnimation(UnkDual *d, u16 idx);
 
 static inline void CP_SetDiv32_32(u32 numer, u32 denom) {
     REG_DIVCNT = 0;
@@ -160,7 +160,7 @@ void Hud_DrawTensionGauge(UnkWork_0233624c *work) {
     if (q == 2 && n == 20) {
         v = gPlayers->unk3b6;
         if (d->sub.unk8 != 0x26)
-            AnimatorSprite_Unk_02033544(d, 0x26);
+            AnimatorSpriteDS_SetAnimation(d, 0x26);
         if (v > 0) {
             d->sub.unk2a = v >> 2;
             if (d->sub.unk2a < 8)
@@ -169,19 +169,19 @@ void Hud_DrawTensionGauge(UnkWork_0233624c *work) {
         }
     } else if (q == 2) {
         if (d->sub.unk8 != 0x25) {
-            AnimatorSprite_Unk_02033544(d, 0x25);
+            AnimatorSpriteDS_SetAnimation(d, 0x25);
             d->sub.unk2a = 0x10;
         }
         d->sub.flags &= ~1;
     } else if (q == 1) {
         if (d->sub.unk8 != 0x24) {
-            AnimatorSprite_Unk_02033544(d, 0x24);
+            AnimatorSpriteDS_SetAnimation(d, 0x24);
             d->sub.unk2a = 0x10;
         }
         d->sub.flags &= ~1;
     } else {
         if (d->sub.unk8 != 0x23) {
-            AnimatorSprite_Unk_02033544(d, 0x23);
+            AnimatorSpriteDS_SetAnimation(d, 0x23);
             d->sub.unk2a = 0x10;
         }
         d->sub.flags &= ~1;

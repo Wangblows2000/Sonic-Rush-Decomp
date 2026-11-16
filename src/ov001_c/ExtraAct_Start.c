@@ -76,8 +76,8 @@ extern UnkStruct_022f9eb4_v data_02084f90;
 extern u8 data_02084d84[];
 extern void *gMainHeap;
 extern UnkStruct_022f9eb4_b *data_ov001_0231f084;
-extern s32 data_ov001_0231f08c;
-extern s32 data_ov001_0231f090;
+extern s32 gExtraBossResultTime;
+extern s32 gExtraBossResultRings;
 extern u16 data_ov001_02316afc[];
 extern u16 data_ov001_02316b4c[];
 extern u16 data_ov001_02316a94[];
@@ -94,7 +94,7 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuClearFast(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
-s32 ExtraAct_Unk_ov001_022f73cc(s32 a);
+s32 ExtraAct_GetTimeBonus(s32 a);
 void NNS_SndHandleInit(void *p);
 void ExtraAct_LoadAssets(void);
 u32 ObjVram_Alloc(u32 a, u32 b);
@@ -173,8 +173,8 @@ void ExtraAct_Start(void) {
         data_ov001_0231f084 = (UnkStruct_022f9eb4_b *)blk;
         MIi_CpuClear16(zero, blk, 0xea4);
     }
-    data_ov001_0231f084->unkE24 = ExtraAct_Unk_ov001_022f73cc(data_ov001_0231f08c);
-    data_ov001_0231f084->unkE28 = data_ov001_0231f090 * 100;
+    data_ov001_0231f084->unkE24 = ExtraAct_GetTimeBonus(gExtraBossResultTime);
+    data_ov001_0231f084->unkE28 = gExtraBossResultRings * 100;
     data_ov001_0231f084->unkE2C = data_ov001_0231f084->unkE24 + data_ov001_0231f084->unkE28;
     if (data_ov001_0231f084->unkE2C > 999999)
         data_ov001_0231f084->unkE2C = 999999;

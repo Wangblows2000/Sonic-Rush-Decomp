@@ -17,7 +17,7 @@ typedef struct {
 void WirelessLobbyChild_RefreshParentList(void);
 s32 WirelessLobbyChild_GetParentCount(void);
 s32 WirelessLobbyChild_GetParentLinkLevel(s32 i);
-s32 WirelessLobbyChild_Unk_02050ec0(s32 i);
+s32 WirelessLobbyChild_GetParentState(s32 i);
 s32 WirelessLobbyChild_GetParentName(s32 i, u8 *buf, s32 n);
 void VsMenu_BuildGlyphString(void *p, u8 *buf, u16 n);
 void VsMenu_ClearNameSlot(UnkStruct_022dab54 *p, s32 i);
@@ -33,7 +33,7 @@ BOOL VsMenu_RefreshParentList(UnkStruct_022dab54 *p) {
     for (i = 0; i < 8; i++) {
         if (i < n) {
             p->ent[i].unk90 = WirelessLobbyChild_GetParentLinkLevel(i);
-            p->ent[i].unk98 = WirelessLobbyChild_Unk_02050ec0(i);
+            p->ent[i].unk98 = WirelessLobbyChild_GetParentState(i);
             p->ent[i].unk94 = 2;
             p->ent[i].idx = i;
             VsMenu_BuildGlyphString(p->ent[i].sub, buf, WirelessLobbyChild_GetParentName(i, buf, 7));

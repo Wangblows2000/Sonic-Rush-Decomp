@@ -33,17 +33,17 @@ extern UnkStruct_022ff008_4680 gSaveData;
 
 void PauseMenu_Create(s32 a);
 u16 ExtraBoss_RemapPadBits(u16 k);
-void ExtraBoss_Unk_ov001_022fea98(void);
+void ExtraBoss_ClearColliderLists(void);
 s32 FX_ModS32(s32 n, s32 d);
 s32 FX_DivS32(s32 n, s32 d);
 void ExtraBossPlayer_Action_Defeat(void);
 void Sound_PlaySeqArc(u32 a, u32 b, u32 c);
-void ExtraBoss_Unk_ov001_02304e80(void);
+void ExtraBoss_UpdateBgScrollPalette(void);
 void ExtraBoss_InitCharacterSlot(s32 a);
 void ExtraBossObj_UpdateMotionAll(void);
 void ExtraBoss_Unk_ov001_02302658(void);
 void ExtraBoss_UpdateSpawnWork(void);
-void ExtraBoss_Unk_ov001_023063a0(void);
+void ExtraBoss_StopSubScreenTasks(void);
 void ExtraBoss_Shutdown(void);
 void GameOverSeq_StartGameOver(void);
 void ExtraBossObj_DestroyPlayer(void);
@@ -73,7 +73,7 @@ void ExtraBoss_State_Battle(void) {
     G->unk1C = ExtraBoss_RemapPadBits(gPad[2]);
     G->unk1E = ExtraBoss_RemapPadBits(gPad[3]);
     G->unk20 = ExtraBoss_RemapPadBits(gPad[4]);
-    ExtraBoss_Unk_ov001_022fea98();
+    ExtraBoss_ClearColliderLists();
     if (!(G->unk0 & 2)) {
         G->unk44++;
         if (!(G->unk0 & 0x10) && FX_ModS32(G->unk44, 0x3c) == 0) {
@@ -93,7 +93,7 @@ void ExtraBoss_State_Battle(void) {
             Sound_PlaySeqArc(0, 0, 6);
         }
     }
-    ExtraBoss_Unk_ov001_02304e80();
+    ExtraBoss_UpdateBgScrollPalette();
     ExtraBoss_InitCharacterSlot(G->unk4);
     ExtraBossObj_UpdateMotionAll();
     ExtraBoss_Unk_ov001_02302658();
@@ -103,7 +103,7 @@ void ExtraBoss_State_Battle(void) {
         if (G->unk316 == 0)
             return;
         G->unk60[G->unk3C]--;
-        ExtraBoss_Unk_ov001_023063a0();
+        ExtraBoss_StopSubScreenTasks();
         if (G->unk60[G->unk3C] < 0) {
             ExtraBoss_Shutdown();
             GameOverSeq_StartGameOver();

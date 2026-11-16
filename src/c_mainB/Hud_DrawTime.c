@@ -33,7 +33,7 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 
 void AnimatorSpriteDS_ProcessAnimation(UnkDual *d, s32 a, s32 b);
-void AnimatorSprite_Unk_02033544(UnkDual *d, u16 idx);
+void AnimatorSpriteDS_SetAnimation(UnkDual *d, u16 idx);
 void AnimatorSpriteDS_Draw(UnkDual *d);
 
 void Hud_DrawTime(UnkWork_023369bc *work) {
@@ -67,7 +67,7 @@ void Hud_DrawTime(UnkWork_023369bc *work) {
         off -= 10;
         d = &sub->d1f4[i];
         px -= 10;
-        AnimatorSprite_Unk_02033544(d, dig);
+        AnimatorSpriteDS_SetAnimation(d, dig);
         d->unk5c[0] = vb + dig * 0x80;
         d->unk5c[1] = va + dig * 0x80;
         AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
@@ -91,7 +91,7 @@ void Hud_DrawTime(UnkWork_023369bc *work) {
         off -= 10;
         d = &sub->dfc[i];
         pq -= 10;
-        AnimatorSprite_Unk_02033544(d, dig2);
+        AnimatorSpriteDS_SetAnimation(d, dig2);
         d->unk5c[0] = vb + dig2 * 0x80;
         d->unk5c[1] = va + dig2 * 0x80;
         AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
@@ -111,7 +111,7 @@ void Hud_DrawTime(UnkWork_023369bc *work) {
     dig = (u16)((sub->digits >> 16) & 0xf);
     px2 = x + (s16)(off - 6);
     d = &sub->d80;
-    AnimatorSprite_Unk_02033544(d, dig);
+    AnimatorSpriteDS_SetAnimation(d, dig);
     d->unk5c[0] = vb + dig * 0x80;
     d->unk5c[1] = va + dig * 0x80;
     AnimatorSpriteDS_ProcessAnimation(d, 0, 0);

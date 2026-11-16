@@ -12,7 +12,7 @@ s32 Touch_Enable();
 s32 TryAgain_CreateBgScrollTask();
 extern u8 data_0208926c[];
 s32 TryAgain_CreateFadeTask();
-s32 TryAgain_Unk_ov001_022d37ac();
+s32 TryAgain_InitSplitScroll();
 s32 SysSound_Init();
 s32 SysSound_PlayBGM();
 
@@ -25,7 +25,7 @@ void TryAgain_Start(void) {
     Touch_Enable();
     TryAgain_CreateBgScrollTask();
     TryAgain_CreateFadeTask(*(s16 *)((u8 *)data_0208926c + 8), 0, 0x10, 2);
-    TryAgain_Unk_ov001_022d37ac(t0);
+    TryAgain_InitSplitScroll(t0);
     SysSound_Init();
     SysSound_PlayBGM(0);
 }

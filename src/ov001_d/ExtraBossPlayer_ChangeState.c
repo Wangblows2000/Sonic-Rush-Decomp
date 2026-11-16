@@ -50,7 +50,7 @@ typedef struct UnkStruct_023024d0 {
 
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
-extern u16 data_ov001_02316840[];
+extern u16 gExtraBossHandBossAnimTable[];
 extern u32 gRandSeed;
 
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);

@@ -33,7 +33,7 @@ extern UnkStruct_0230903c *gSpecialStageHud;
 
 void SpecialStageHud_UpdateRingCounterThunk(s32 t);
 void SpecialStageHud_SetDigitAnims(s32 t);
-u16 SpecialStage_Unk_ov001_02314380(void);
+u16 SpecialStage_GetRingQuota(void);
 UnkStruct_0230903c_t *SpecialStage_GetPlayer(void);
 void AnimatorSprite_SetAnimation(UnkStruct_0230903c_o *s, u16 index);
 void SpecialStageCamera_SetMode(s32 v);
@@ -52,7 +52,7 @@ void SpecialStageHud_UpdateCheckpoint(void) {
     case 1:
         g->objB.x = 0x80;
         g->objB.y = 0x2a;
-        n = SpecialStage_Unk_ov001_02314380();
+        n = SpecialStage_GetRingQuota();
         if (n <= SpecialStage_GetPlayer()->unk148) {
             AnimatorSprite_SetAnimation(&g->objB, 3);
             SpecialStageCamera_SetMode(4);

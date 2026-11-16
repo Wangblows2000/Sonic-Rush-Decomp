@@ -37,7 +37,7 @@ void ExtraBoss_Draw_Battle(void);
 void ExtraBoss_ResetPlayerForBattle(void);
 void ExtraBoss_Unk_ov001_02304fb4(void);
 void ExtraBoss_ResetSpawnWork(void);
-void ExtraBoss_Unk_ov001_022fd4d4(void);
+void ExtraBoss_ResetFxFlags(void);
 void ExtraBoss_ResetCamera(void);
 void ExtraBoss_UpdateCamera(void);
 void ExtraBoss_SpawnBoss(void);
@@ -64,7 +64,7 @@ void ExtraBoss_StartBattle(void) {
     ExtraBoss_ResetPlayerForBattle();
     ExtraBoss_Unk_ov001_02304fb4();
     ExtraBoss_ResetSpawnWork();
-    ExtraBoss_Unk_ov001_022fd4d4();
+    ExtraBoss_ResetFxFlags();
     if (IsMulti_022ffeb0()) {
         gExtraBossWork->unk50 = 0;
         gExtraBossWork->unk54 = 0;

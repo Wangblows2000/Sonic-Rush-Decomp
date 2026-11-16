@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
-extern s32 data_ov001_0231f544;
+extern s32 gExtraBossRingSprite;
 
 void ExtraBoss_ReleaseArchiveFile27(void) {
-    data_ov001_0231f544 = 0;
+    gExtraBossRingSprite = 0;
 }

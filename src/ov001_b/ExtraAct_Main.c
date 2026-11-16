@@ -31,8 +31,8 @@ void ExtraAct_Unk_ov001_022f9134(void);
 void ExtraAct_Unk_ov001_022f8e7c(void);
 void ExtraAct_Unk_ov001_022f8a40(void);
 void ExtraAct_Unk_ov001_022f8774(void);
-void ExtraAct_Unk_ov001_022f8110(void);
-void ExtraAct_Unk_ov001_022f7740(void);
+void ExtraAct_StartScoreTally(void);
+void ExtraAct_StartRankStamp(void);
 void ExtraAct_ReleaseAssets(void);
 void SceneChange_ToExtraEnding(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, void *e);
@@ -65,14 +65,14 @@ void ExtraAct_Main(void) {
                 G->unkE38 |= 0x2000;
             }
             if (!(G->unkE38 & 0xc000) && G->unkE1C == 0) {
-                ExtraAct_Unk_ov001_022f8110();
+                ExtraAct_StartScoreTally();
                 G->unkE38 &= ~0x4000;
                 G->unkE38 |= 0x8000;
             }
         } else if (!(G->unkE38 & 2)) {
             G->unkE38 |= 2;
             if (!(G->unkE38 & 0x30000) && G->unkE20 == 0) {
-                ExtraAct_Unk_ov001_022f7740();
+                ExtraAct_StartRankStamp();
                 G->unkE38 &= ~0x10000;
                 G->unkE38 |= 0x20000;
             }
@@ -97,11 +97,11 @@ void ExtraAct_Main(void) {
     } else if (G->unkE38 & 0x1000) {
         G->unkE38 &= ~0x1000;
         G->unkE38 |= 0x2000;
-        ExtraAct_Unk_ov001_022f8110();
+        ExtraAct_StartScoreTally();
     } else if (G->unkE38 & 0x4000) {
         G->unkE38 &= ~0x4000;
         G->unkE38 |= 0x8000;
-        ExtraAct_Unk_ov001_022f7740();
+        ExtraAct_StartRankStamp();
     } else if (G->unkE38 & 0x10000) {
         G->unkE38 &= ~0x10000;
         G->unkE38 |= 0x20002;

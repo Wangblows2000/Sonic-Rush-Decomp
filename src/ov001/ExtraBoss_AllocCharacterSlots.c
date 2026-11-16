@@ -10,7 +10,7 @@ void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
 extern u8 *data_ov001_0231f080;
 extern u8 data_ov001_023169b4[];
-void ExtraBoss_Unk_ov001_022f705c(void *p);
+void ExtraBoss_ApplyScreenFitCamera(void *p);
 
 void ExtraBoss_AllocCharacterSlots(void) {
     vu16 zero;
@@ -27,5 +27,5 @@ void ExtraBoss_AllocCharacterSlots(void) {
     data_ov001_0231f080 = blk;
     MIi_CpuClear16(zero, blk, 0xcc);
     MIi_CpuCopy16(data_ov001_023169b4, data_ov001_0231f080, 0xcc);
-    ExtraBoss_Unk_ov001_022f705c(data_ov001_0231f080);
+    ExtraBoss_ApplyScreenFitCamera(data_ov001_0231f080);
 }

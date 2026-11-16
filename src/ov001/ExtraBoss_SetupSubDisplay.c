@@ -8,7 +8,7 @@ void GX_ResetBankForSubOBJ(void);
 void GX_ResetBankForSubBG(void);
 void GXS_SetGraphicsMode(s32 a);
 void *Task_Create(void (*f)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
-void ExtraBoss_Unk_ov001_022feac8(void);
+void ExtraBoss_UpdateDualScreen3D(void);
 
 void ExtraBoss_SetupSubDisplay(BOOL on) {
     Vram_SetBankForSubBG(4);
@@ -24,6 +24,6 @@ void ExtraBoss_SetupSubDisplay(BOOL on) {
     }
     GXS_SetGraphicsMode(5);
     *(vu32 *)0x04001000 &= ~0x1f00;
-    gExtraBossWork->task = Task_Create(ExtraBoss_Unk_ov001_022feac8, 0, 0, 0xf000, 0, 0);
+    gExtraBossWork->task = Task_Create(ExtraBoss_UpdateDualScreen3D, 0, 0, 0xf000, 0, 0);
     gExtraBossWork->flags |= 1;
 }

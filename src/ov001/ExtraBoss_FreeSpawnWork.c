@@ -8,14 +8,14 @@ void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-extern u8 *data_ov001_0231f548;
+extern u8 *gExtraBossRingWork;
 void ObjVram_Free(void *a, void *b);
 
 void ExtraBoss_FreeSpawnWork(void) {
     u8 *blk;
-    ObjVram_Free(*(void **)data_ov001_0231f548, *(void **)(data_ov001_0231f548 + 0x34));
-    ObjVram_Free(*(void **)(data_ov001_0231f548 + 0x48), *(void **)(data_ov001_0231f548 + 0x7c));
-    blk = data_ov001_0231f548;
+    ObjVram_Free(*(void **)gExtraBossRingWork, *(void **)(gExtraBossRingWork + 0x34));
+    ObjVram_Free(*(void **)(gExtraBossRingWork + 0x48), *(void **)(gExtraBossRingWork + 0x7c));
+    blk = gExtraBossRingWork;
     if ((u8 *)OS_GetArenaLo(0) != blk) {
         u32 size;
         blk -= 0x20;
@@ -27,5 +27,5 @@ void ExtraBoss_FreeSpawnWork(void) {
         }
     }
     Heap_Free(gMainHeap, blk);
-    data_ov001_0231f548 = NULL;
+    gExtraBossRingWork = NULL;
 }

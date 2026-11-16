@@ -74,7 +74,7 @@ void NNS_FndUnmountArchive(void *f);
 u32 ObjVram_Alloc(s32 a, u16 n);
 void AnimatorSpriteDS_Init(UnkDual *d, void *res, u16 idx, u32 mask, u32 flags, u32 a0, u32 a1, u32 b0, u32 b1, u32 c0, u32 c1, u32 e0, u32 e1);
 void AnimatorSpriteDS_ProcessAnimation(UnkDual *d, s32 a, s32 b);
-void AnimatorSprite_Unk_02033544(UnkDual *d, u16 idx);
+void AnimatorSpriteDS_SetAnimation(UnkDual *d, u16 idx);
 void PaletteTransfer_QueueCopy(void *p, s32 a, s32 b, u32 c);
 void ObjDraw_LoadPaletteRow(void *res, u16 id, u8 a, s32 b);
 void Hud_Main(void);
@@ -95,7 +95,7 @@ static inline void InitDigits(UnkWork_023376c4 *work, UnkDual *d, u16 idx, u32 *
     d->unk74[1] = 1;
     for (i = 0; i < 10; i++) {
         AnimatorSpriteDS_ProcessAnimation(d, 0, 0);
-        AnimatorSprite_Unk_02033544(d, d->sub.unk8 + 1);
+        AnimatorSpriteDS_SetAnimation(d, d->sub.unk8 + 1);
         d->unk5c[0] += 0x80;
         d->unk5c[1] += 0x80;
     }

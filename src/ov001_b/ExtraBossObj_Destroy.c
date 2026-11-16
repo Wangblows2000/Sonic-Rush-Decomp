@@ -26,8 +26,8 @@ typedef struct UnkStruct_02301118 {
 extern u8 *gExtraBossPlayerManager;
 extern void *gMainHeap;
 
-void ExtraBossObj_Unk_ov001_02302ac8(UnkStruct_02301118 *w);
-void ExtraBossObj_Unk_ov001_022fd4f4(UnkStruct_02301118 *w);
+void ExtraBossObj_ReleasePlayerModel(UnkStruct_02301118 *w);
+void ExtraBossObj_ReleaseFxModelResThunk(UnkStruct_02301118 *w);
 u8 *ExtraBoss_GetWork(void);
 void ObjVram_Free(s32 i, u32 addr);
 u32 OS_GetArenaLo(s32 i);
@@ -53,11 +53,11 @@ void ExtraBossObj_Destroy(UnkStruct_02301118 *w) {
     switch (w->unk4) {
     case 0:
         ARR(4, w->unkA) = 0;
-        ExtraBossObj_Unk_ov001_02302ac8(w);
+        ExtraBossObj_ReleasePlayerModel(w);
         break;
     case 1:
         ARR(0x44, w->unkA) = 0;
-        ExtraBossObj_Unk_ov001_022fd4f4(w);
+        ExtraBossObj_ReleaseFxModelResThunk(w);
         break;
     case 2:
         ARR(8, w->unkA) = 0;

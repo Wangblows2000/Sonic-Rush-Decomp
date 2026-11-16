@@ -21,15 +21,15 @@ typedef struct UnkStruct_022fcb08 {
 
 extern void *gMainHeap;
 
-void ExtraBoss_Unk_ov001_02303d28(s32 x, s32 y, s32 count);
+void ExtraBoss_SpawnRingBurst(s32 x, s32 y, s32 count);
 void Model_Release(void *p);
 u32 OS_GetArenaLo(s32 i);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void DC_StoreRange(void *p, u32 size);
 void Heap_Free(void *heap, void *p);
-void ExtraBossObj_Unk_ov001_022fa574(UnkStruct_022fcb08 *p);
-void *ExtraBossPlayer_Unk_ov001_022fd2dc(s32 a, s32 b);
-void ExtraBossObj_State_Unk_ov001_022fd220(UnkStruct_022fcb08 *p);
+void ExtraBossObj_ReleaseFxModelRes(UnkStruct_022fcb08 *p);
+void *ExtraBossPlayer_SetupFxModel(s32 a, s32 b);
+void ExtraBossObj_State_DestroyWhenAnimsDone(UnkStruct_022fcb08 *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 static inline void Free(void *p) {
@@ -53,9 +53,9 @@ void ExtraBoss_SwapObjModel(UnkStruct_022fcb08 *p, s32 n) {
     Model_Release(p->unk84);
     if (!(p->flags & 0x20000000))
         Free(p->unk84);
-    ExtraBossObj_Unk_ov001_022fa574(p);
+    ExtraBossObj_ReleaseFxModelRes(p);
     {
-        void *r = ExtraBossPlayer_Unk_ov001_022fd2dc(0, n);
+        void *r = ExtraBossPlayer_SetupFxModel(0, n);
         p->unk1C8 = n;
         p->unk84 = r;
     }

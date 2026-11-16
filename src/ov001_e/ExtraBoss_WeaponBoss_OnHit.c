@@ -29,8 +29,8 @@ extern u32 gRandSeed;
 extern s32 data_ov001_02316910[];
 
 UnkStruct_022f3c60_c *ExtraBoss_GetWork(void);
-void ExtraBoss_Unk_ov001_022fc8dc(s32 a, s32 x, s32 y, s32 b);
-void ExtraBoss_Unk_ov001_022fb5d4(void);
+void ExtraBoss_SpawnDamageFx(s32 a, s32 x, s32 y, s32 b);
+void ExtraBoss_CancelSwordFx(void);
 void ExtraBoss_WeaponBoss_Action_Hurt(UnkStruct_022f3c60_o *p);
 void ExtraBoss_WeaponBoss_Action_Defeat(UnkStruct_022f3c60_o *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -51,10 +51,10 @@ void ExtraBoss_WeaponBoss_OnHit(UnkStruct_022f3c60_o **self, UnkStruct_022f3c60_
     p->flagsB8 |= 0x200;
     p->flagsF0 |= 0x200;
     p->work->unkC = 0;
-    ExtraBoss_Unk_ov001_022fc8dc(0, s->x, s->y, 0);
+    ExtraBoss_SpawnDamageFx(0, s->x, s->y, 0);
     w->unk164 = 0;
     if (w->type == 5)
-        ExtraBoss_Unk_ov001_022fb5d4();
+        ExtraBoss_CancelSwordFx();
     if (c->lives > 0) {
         ExtraBoss_WeaponBoss_Action_Hurt(p);
         Sound_PlaySeqArc(0, 0, 0x7b);

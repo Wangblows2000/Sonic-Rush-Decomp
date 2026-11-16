@@ -5,7 +5,7 @@ extern u8 gSaveSignature[];
 
 void CARD_LockBackup(u16 id);
 void CARD_UnlockBackup(u16 id);
-s32 CARD_Unk_0200fa70(s32 a, void *buf, u32 size, s32 b, s32 c, s32 d);
+s32 CARDi_ReadBackup(s32 a, void *buf, u32 size, s32 b, s32 c, s32 d);
 s32 memcmp(const void *a, const void *b, u32 n);
 
 BOOL SaveData_CheckSignature(void) {
@@ -13,7 +13,7 @@ BOOL SaveData_CheckSignature(void) {
     u8 buf[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     CARD_LockBackup(id);
-    if (CARD_Unk_0200fa70(0, buf, 12, 0, 0, 0) == 0) {
+    if (CARDi_ReadBackup(0, buf, 12, 0, 0, 0) == 0) {
         CARD_UnlockBackup(id);
         return FALSE;
     }

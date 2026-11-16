@@ -8,7 +8,7 @@ extern void AnimatorSprite_ProcessAnimation(void);
 extern void AnimatorSprite_Init(void);
 extern void Background_Draw(void);
 extern void ObjVram_Alloc(void);
-extern void SpecialStage_Unk_ov001_02314380(void);
+extern void SpecialStage_GetRingQuota(void);
 
 asm void SpecialStage_Unk_ov001_023099ec(void)
 {
@@ -141,7 +141,7 @@ _130:
     bl Background_Draw
     add r0, r6, #0x48
     bl Background_Draw
-    bl SpecialStage_Unk_ov001_02314380
+    bl SpecialStage_GetRingQuota
     str r0, [r6, #0xae4]
     add sp, sp, #0x1c
     ldmia sp!, {r4, r5, r6, r7, r8, r9, r10, r11, lr}

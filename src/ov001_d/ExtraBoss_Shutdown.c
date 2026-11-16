@@ -31,7 +31,7 @@ void ExtraBoss_FreeBgWork(void);
 void ExtraBoss_FreeSpawnWork(void);
 void ExtraBoss_FreeObjVramSlots(void);
 void ExtraBoss_FreeFlagBlock(void);
-void ExtraBoss_Unk_ov001_02306674(void);
+void ExtraBoss_FreeSubScreenWork(void);
 void ExtraBoss_ReleaseAssets(void);
 void Task_Destroy(void *t);
 void NNS_SndHandleReleaseSeq(void *p);
@@ -55,7 +55,7 @@ void ExtraBoss_Shutdown(void) {
     ExtraBoss_FreeSpawnWork();
     ExtraBoss_FreeObjVramSlots();
     ExtraBoss_FreeFlagBlock();
-    ExtraBoss_Unk_ov001_02306674();
+    ExtraBoss_FreeSubScreenWork();
     ExtraBoss_ReleaseAssets();
     Task_Destroy(gExtraBossWork->task8);
     Task_Destroy(gExtraBossWork->taskC);

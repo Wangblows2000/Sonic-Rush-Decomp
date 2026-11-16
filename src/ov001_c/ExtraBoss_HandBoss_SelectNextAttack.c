@@ -27,10 +27,10 @@ typedef struct UnkStruct_022f2ca8 {
 } UnkStruct_022f2ca8;
 
 UnkStruct_022f2ca8_g *ExtraBoss_GetWork(void);
-void ExtraBoss_Unk_ov001_022f2780(UnkStruct_022f2ca8 *p);
-void ExtraBoss_Unk_ov001_022f1c0c(UnkStruct_022f2ca8 *p);
-void ExtraBoss_Unk_ov001_022f0988(UnkStruct_022f2ca8 *p);
-void ExtraBoss_Unk_ov001_022f2898(UnkStruct_022f2ca8 *p);
+void ExtraBoss_HandBoss_Action_ClawAttack(UnkStruct_022f2ca8 *p);
+void ExtraBoss_HandBoss_Action_CatchAttack(UnkStruct_022f2ca8 *p);
+void ExtraBoss_HandBoss_Action_SuctionAttack(UnkStruct_022f2ca8 *p);
+void ExtraBoss_HandBoss_Action_Wait(UnkStruct_022f2ca8 *p);
 
 void ExtraBoss_HandBoss_SelectNextAttack(UnkStruct_022f2ca8 *p) {
     UnkStruct_022f2ca8_g *g = ExtraBoss_GetWork();
@@ -48,15 +48,15 @@ void ExtraBoss_HandBoss_SelectNextAttack(UnkStruct_022f2ca8 *p) {
         case 1:
             switch (s->next) {
             case 4:
-                ExtraBoss_Unk_ov001_022f2780(p);
+                ExtraBoss_HandBoss_Action_ClawAttack(p);
                 s->state = 4;
                 break;
             case 5:
-                ExtraBoss_Unk_ov001_022f1c0c(p);
+                ExtraBoss_HandBoss_Action_CatchAttack(p);
                 s->state = 5;
                 break;
             case 6:
-                ExtraBoss_Unk_ov001_022f0988(p);
+                ExtraBoss_HandBoss_Action_SuctionAttack(p);
                 s->state = 6;
                 break;
             }
@@ -70,21 +70,21 @@ void ExtraBoss_HandBoss_SelectNextAttack(UnkStruct_022f2ca8 *p) {
                 s->next = 6;
             else
                 s->next = 5;
-            ExtraBoss_Unk_ov001_022f2898(p);
+            ExtraBoss_HandBoss_Action_Wait(p);
             s->state = 1;
             break;
         case 5:
             s->unk10 = 2;
             s->count = s->unk10;
             s->next = 4;
-            ExtraBoss_Unk_ov001_022f2898(p);
+            ExtraBoss_HandBoss_Action_Wait(p);
             s->state = 1;
             break;
         case 6:
             s->unk10 = 1;
             s->count = s->unk10;
             s->next = 4;
-            ExtraBoss_Unk_ov001_022f2898(p);
+            ExtraBoss_HandBoss_Action_Wait(p);
             s->state = 1;
             break;
         }
@@ -94,15 +94,15 @@ void ExtraBoss_HandBoss_SelectNextAttack(UnkStruct_022f2ca8 *p) {
         case 1:
             switch (s->next) {
             case 4:
-                ExtraBoss_Unk_ov001_022f2780(p);
+                ExtraBoss_HandBoss_Action_ClawAttack(p);
                 s->state = 4;
                 break;
             case 5:
-                ExtraBoss_Unk_ov001_022f1c0c(p);
+                ExtraBoss_HandBoss_Action_CatchAttack(p);
                 s->state = 5;
                 break;
             case 6:
-                ExtraBoss_Unk_ov001_022f0988(p);
+                ExtraBoss_HandBoss_Action_SuctionAttack(p);
                 s->state = 6;
                 break;
             }
@@ -111,7 +111,7 @@ void ExtraBoss_HandBoss_SelectNextAttack(UnkStruct_022f2ca8 *p) {
         case 4:
         case 5:
             s->next = 6;
-            ExtraBoss_Unk_ov001_022f2898(p);
+            ExtraBoss_HandBoss_Action_Wait(p);
             s->state = 1;
             break;
         case 6:
@@ -119,7 +119,7 @@ void ExtraBoss_HandBoss_SelectNextAttack(UnkStruct_022f2ca8 *p) {
                 s->next = 5;
             else
                 s->next = 4;
-            ExtraBoss_Unk_ov001_022f2898(p);
+            ExtraBoss_HandBoss_Action_Wait(p);
             s->state = 1;
             break;
         }

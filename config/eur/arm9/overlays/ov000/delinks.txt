@@ -11096,11 +11096,11 @@ src/asm_fallback/Boss7PartD5_InputState_Unk_ov000_022e9bb4.c:
     complete
     .text       start:0x022e9bb4 end:0x022e9db8
 
-src/asm_fallback/Boss7_Unk_ov000_022ee198.c:
+src/c_ov000/Boss7_Unk_ov000_022ee198.c:
     complete
     .text       start:0x022ee198 end:0x022ee380
 
-src/asm_fallback/EnemyPawnGroup_Action_Unk_ov000_022fcb24.c:
+src/c_ov000/EnemyPawnGroup_Action_Unk_ov000_022fcb24.c:
     complete
     .text       start:0x022fcb24 end:0x022fcc1c
 
@@ -11124,11 +11124,11 @@ src/asm_fallback/MapObj73_Unk_ov000_02303c58.c:
     complete
     .text       start:0x02303c58 end:0x02303dec
 
-src/asm_fallback/MapObj74_IsPlayerInArea.c:
+src/c_mainB2/MapObj74_IsPlayerInArea.c:
     complete
     .text       start:0x02304064 end:0x023040fc
 
-src/asm_fallback/Cannon_Unk_ov000_023045c0.c:
+src/c_ov000/Cannon_Unk_ov000_023045c0.c:
     complete
     .text       start:0x023045c0 end:0x023046c0
 
@@ -11156,11 +11156,11 @@ src/asm_fallback/EffInvincibility_Main.c:
     complete
     .text       start:0x02330670 end:0x02330774
 
-src/asm_fallback/StageEvent_SpawnDecorationsInBlock.c:
+src/c_ov000/StageEvent_SpawnDecorationsInBlock.c:
     complete
     .text       start:0x023348f0 end:0x02334b34
 
-src/asm_fallback/StageEvent_SpawnMapObjectsInBlock.c:
+src/c_ov000/StageEvent_SpawnMapObjectsInBlock.c:
     complete
     .text       start:0x02334c18 end:0x02334eb4
 
@@ -11192,7 +11192,7 @@ src/ov000_t/Hud_DrawRings.c:
     complete
     .text       start:0x02336da8 end:0x02336f28
 
-src/asm_fallback/Bubble_Unk_ov000_02302164.c:
+src/c_ov000/Bubble_Unk_ov000_02302164.c:
     complete
     .text       start:0x02302164 end:0x02302350
 

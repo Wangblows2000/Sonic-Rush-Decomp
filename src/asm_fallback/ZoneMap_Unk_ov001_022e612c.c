@@ -3,8 +3,8 @@
 
 extern u32 gTaskCurrent;
 extern void SysSound_PlaySE(void);
-extern void ZoneMap_Unk_ov001_022e25b0(void);
-extern void ZoneMap_Unk_ov001_022e2640(void);
+extern void ZoneMap_IsBlazeZoneSelectable(void);
+extern void ZoneMap_IsSonicZoneSelectable(void);
 extern void ZoneMap_Action_FadeOut(void);
 extern void ZoneMap_Action_ShowMsgBox12(void);
 extern void ZoneMap_Unk_ov001_022e5f80(void);
@@ -89,11 +89,11 @@ _82:
     b _9e
 _90:
     ldr r0, [r2, #4]
-    bl ZoneMap_Unk_ov001_022e2640
+    bl ZoneMap_IsSonicZoneSelectable
     b _9e
 _98:
     ldr r0, [r2, #8]
-    bl ZoneMap_Unk_ov001_022e25b0
+    bl ZoneMap_IsBlazeZoneSelectable
 _9e:
     cmp r0, #0
     beq _b2

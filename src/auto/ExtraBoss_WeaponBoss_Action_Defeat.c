@@ -7,7 +7,7 @@ extern u8 data_ov001_0231f068[];
 s32 Model_SetAnimation();
 s32 ExtraBoss_GetPlayer();
 s32 ExtraBoss_SetScrollSpawnEnabled();
-s32 ExtraBoss_Unk_ov001_02303a80();
+s32 ExtraBoss_SetRingPickupEnabled();
 
 void ExtraBoss_WeaponBoss_Action_Defeat(u8 *p0) {
     s32 t0 = *(u32 *)((u8 *)p0 + 0x1dc);
@@ -44,5 +44,5 @@ void ExtraBoss_WeaponBoss_Action_Defeat(u8 *p0) {
     s32 t9 = (*(u32 *)t8 | 2);
     *(u32 *)t8 = t9;
     ExtraBoss_SetScrollSpawnEnabled(0, t9);
-    ExtraBoss_Unk_ov001_02303a80(0);
+    ExtraBoss_SetRingPickupEnabled(0);
 }

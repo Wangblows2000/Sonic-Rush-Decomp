@@ -21,8 +21,8 @@ typedef struct {
 extern UnkTask_022e7428 *gTaskCurrent;
 
 void ZoneMap_UpdateView(UnkWork_022e7428 *w);
-s32 ZoneMap_Unk_ov001_022e252c(s32 a);
-s32 ZoneMap_Unk_ov001_022e24a8(s32 a);
+s32 ZoneMap_GetSonicMaxSelectableZone(s32 a);
+s32 ZoneMap_GetBlazeMaxSelectableZone(s32 a);
 BOOL ZoneMap_Unk_ov001_022e2f00(s32 a);
 BOOL ZoneMap_Unk_ov001_022e2ee8(s32 a);
 void ZoneActSelect_Create(s32 a, s32 b, u32 c);
@@ -68,10 +68,10 @@ void ZoneMap_State_Unk_ov001_022e7428(void) {
         }
         switch (w->mode) {
         case 0:
-            n = ZoneMap_Unk_ov001_022e252c(w->unk4);
+            n = ZoneMap_GetSonicMaxSelectableZone(w->unk4);
             break;
         case 1:
-            n = ZoneMap_Unk_ov001_022e24a8(w->unk8);
+            n = ZoneMap_GetBlazeMaxSelectableZone(w->unk8);
             break;
         }
         if (w->mode == 0) {

@@ -30,10 +30,10 @@ typedef struct UnkStruct_022f6450_p {
 extern u32 gRandSeed;
 
 UnkStruct_022f6450_p *ExtraBoss_GetWork(void);
-void ExtraBoss_Unk_ov001_022f612c(UnkStruct_022f6450 *w);
-void ExtraBoss_Unk_ov001_022f589c(UnkStruct_022f6450 *w);
-void ExtraBoss_Unk_ov001_022f5384(UnkStruct_022f6450 *w);
-void ExtraBoss_Unk_ov001_022f4fac(UnkStruct_022f6450 *w);
+void ExtraBoss_WeaponBoss_Action_BeamUnitAttack(UnkStruct_022f6450 *w);
+void ExtraBoss_WeaponBoss_Action_SwordAttack(UnkStruct_022f6450 *w);
+void ExtraBoss_WeaponBoss_Action_HomingBeamAttack(UnkStruct_022f6450 *w);
+void ExtraBoss_WeaponBoss_Action_MissileAttack(UnkStruct_022f6450 *w);
 void ExtraBoss_WeaponBoss_Action_Wait(UnkStruct_022f6450 *w);
 
 static inline u16 Rand(void) {
@@ -57,19 +57,19 @@ void ExtraBoss_WeaponBoss_SelectNextAttack(UnkStruct_022f6450 *w) {
         case 1:
             switch (s->unk4) {
             case 4:
-                ExtraBoss_Unk_ov001_022f612c(w);
+                ExtraBoss_WeaponBoss_Action_BeamUnitAttack(w);
                 s->unk0 = 4;
                 break;
             case 5:
-                ExtraBoss_Unk_ov001_022f589c(w);
+                ExtraBoss_WeaponBoss_Action_SwordAttack(w);
                 s->unk0 = 5;
                 break;
             case 6:
-                ExtraBoss_Unk_ov001_022f5384(w);
+                ExtraBoss_WeaponBoss_Action_HomingBeamAttack(w);
                 s->unk0 = 6;
                 break;
             case 7:
-                ExtraBoss_Unk_ov001_022f4fac(w);
+                ExtraBoss_WeaponBoss_Action_MissileAttack(w);
                 s->unk0 = 7;
                 break;
             }
@@ -123,19 +123,19 @@ void ExtraBoss_WeaponBoss_SelectNextAttack(UnkStruct_022f6450 *w) {
         case 1:
             switch (s->unk4) {
             case 4:
-                ExtraBoss_Unk_ov001_022f612c(w);
+                ExtraBoss_WeaponBoss_Action_BeamUnitAttack(w);
                 s->unk0 = 4;
                 break;
             case 5:
-                ExtraBoss_Unk_ov001_022f589c(w);
+                ExtraBoss_WeaponBoss_Action_SwordAttack(w);
                 s->unk0 = 5;
                 break;
             case 6:
-                ExtraBoss_Unk_ov001_022f5384(w);
+                ExtraBoss_WeaponBoss_Action_HomingBeamAttack(w);
                 s->unk0 = 6;
                 break;
             case 7:
-                ExtraBoss_Unk_ov001_022f4fac(w);
+                ExtraBoss_WeaponBoss_Action_MissileAttack(w);
                 s->unk0 = 7;
                 break;
             }

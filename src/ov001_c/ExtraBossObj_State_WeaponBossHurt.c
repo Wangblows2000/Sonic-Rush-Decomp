@@ -37,7 +37,7 @@ typedef struct UnkStruct_022f4a50 {
     UnkStruct_022f4a50_l *unk1DC;
 } UnkStruct_022f4a50;
 
-extern u16 data_ov001_02316840[];
+extern u16 gExtraBossHandBossAnimTable[];
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
 extern s32 data_ov001_02316820[];

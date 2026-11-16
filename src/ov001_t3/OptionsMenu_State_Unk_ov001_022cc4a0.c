@@ -28,8 +28,8 @@ extern UnkTask_022cc4a0 *gTaskCurrent;
 
 void OptionsMenu_UpdateAnims(UnkWork_022cc4a0 *w);
 void OptionsMenu_DrawItems(UnkWork_022cc4a0 *w);
-s32 OptionsMenu_Unk_ov001_022c8d44(UnkSub_022cc4a0 *s);
-s32 OptionsMenu_Unk_ov001_022c8d0c(UnkSub_022cc4a0 *s);
+s32 OptionsMenu_CheckWirelessLobbyGone(UnkSub_022cc4a0 *s);
+s32 OptionsMenu_CheckWfsHostFinished(UnkSub_022cc4a0 *s);
 BOOL OptionsMenu_HasWirelessError(UnkSub_022cc4a0 *s);
 void OptionsMenu_CreateWfsHost(UnkSub_022cc4a0 *s);
 void OptionsMenu_StopWireless(UnkSub_022cc4a0 *s);
@@ -54,7 +54,7 @@ void OptionsMenu_State_Unk_ov001_022cc4a0(void) {
     done = FALSE;
     ok = FALSE;
     if (sub->unk10 == 0) {
-        sub->unk10 = OptionsMenu_Unk_ov001_022c8d44(sub);
+        sub->unk10 = OptionsMenu_CheckWirelessLobbyGone(sub);
         if (sub->unk10 != 0) {
             if (OptionsMenu_HasWirelessError(sub)) {
                 ok = TRUE;
@@ -63,7 +63,7 @@ void OptionsMenu_State_Unk_ov001_022cc4a0(void) {
             }
         }
     } else if (sub->unk14 == 0) {
-        sub->unk14 = OptionsMenu_Unk_ov001_022c8d0c(sub);
+        sub->unk14 = OptionsMenu_CheckWfsHostFinished(sub);
         if (sub->unk14 != 0) {
             if (OptionsMenu_HasWirelessError(sub)) {
                 ok = TRUE;

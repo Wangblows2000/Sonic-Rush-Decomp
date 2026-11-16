@@ -35,7 +35,7 @@ extern u32 gRandSeed;
 extern s32 data_ov001_023167e4[];
 
 UnkStruct_022eee68_c *ExtraBoss_GetWork(void);
-void ExtraBoss_Unk_ov001_022fc8dc(s32 a, s32 x, s32 y, s32 b);
+void ExtraBoss_SpawnDamageFx(s32 a, s32 x, s32 y, s32 b);
 void ExtraBoss_HandBoss_Action_Hurt(UnkStruct_022eee68_o *p);
 void ExtraBoss_HandBoss_Action_Defeat(UnkStruct_022eee68_o *p);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -62,7 +62,7 @@ void ExtraBoss_HandBoss_OnHit(UnkStruct_022eee68_o **self, UnkStruct_022eee68_o 
     o->flags128 |= 0x200;
     w->unkC = 0;
     w->unk16 = 0;
-    ExtraBoss_Unk_ov001_022fc8dc(0, s->x, s->y, 0);
+    ExtraBoss_SpawnDamageFx(0, s->x, s->y, 0);
     w->unk1C0 = 0;
     if (c->lives > 0) {
         ExtraBoss_HandBoss_Action_Hurt(p);

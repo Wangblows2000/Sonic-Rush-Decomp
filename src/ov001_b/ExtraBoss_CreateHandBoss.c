@@ -68,7 +68,7 @@ extern UnkStruct_022f3530_o *data_ov001_0231f078[];
 extern void *data_ov001_0231f070;
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f074;
-extern u16 data_ov001_02316840[];
+extern u16 gExtraBossHandBossAnimTable[];
 
 s32 ExtraBoss_GetWork(void);
 UnkStruct_022f3530_o *ExtraBossObj_Create(s32 a, s32 b);
@@ -84,13 +84,13 @@ void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c)
 void ExtraBoss_HandNodeCallback(void);
 void ExtraBoss_HandCatchNodeCallback(void);
 void ExtraBossObj_Draw_HandBoss(void);
-void ExtraBossObj_Draw_Unk_ov001_022f2f14(void);
+void ExtraBossObj_Draw_HandCatch(void);
 void ExtraBoss_HandBoss_OnHit(void);
 void ExtraBoss_Unk_ov001_022eed0c(void);
-void ExtraBoss_Unk_ov001_022eed64(void);
+void ExtraBoss_HandCatch_OnGrabPlayer(void);
 UnkStruct_022f3530_p *ExtraBoss_GetPlayer(void);
 void ExtraBoss_InitCollider(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
-void ExtraBoss_Unk_ov001_022f2b78(UnkStruct_022f3530_o *o);
+void ExtraBoss_HandBoss_Action_Enter(UnkStruct_022f3530_o *o);
 
 UnkStruct_022f3530_o *ExtraBoss_CreateHandBoss(void) {
     vu16 zero;
@@ -131,8 +131,8 @@ UnkStruct_022f3530_o *ExtraBoss_CreateHandBoss(void) {
     Model_SetResource(a, data_ov001_0231f070, 2);
     a->unk18 = a->unk1C = a->unk20 = 0x34cc;
     o->unk84 = a;
-    Model_SetAnimation(a, 0, data_ov001_0231f068, data_ov001_02316840[0], 0);
-    Model_SetAnimation(a, 4, data_ov001_0231f074, data_ov001_02316840[1], 0);
+    Model_SetAnimation(a, 0, data_ov001_0231f068, gExtraBossHandBossAnimTable[0], 0);
+    Model_SetAnimation(a, 4, data_ov001_0231f074, gExtraBossHandBossAnimTable[1], 0);
     a->unk10C |= 4;
     a->unk110 |= 4;
     a->unk114 = 0x1000;
@@ -177,14 +177,14 @@ UnkStruct_022f3530_o *ExtraBoss_CreateHandBoss(void) {
     Model_SetResource(a2, data_ov001_0231f070, 3);
     a2->unk18 = a2->unk1C = a2->unk20 = 0x34cc;
     o2->unk84 = a2;
-    Model_SetAnimation(a2, 0, data_ov001_0231f068, data_ov001_02316840[2], 0);
-    Model_SetAnimation(a2, 4, data_ov001_0231f074, data_ov001_02316840[3], 0);
+    Model_SetAnimation(a2, 0, data_ov001_0231f068, gExtraBossHandBossAnimTable[2], 0);
+    Model_SetAnimation(a2, 4, data_ov001_0231f074, gExtraBossHandBossAnimTable[3], 0);
     a2->unk10C |= 4;
     a2->unk110 |= 4;
     a2->unk114 = 0x1000;
     NNS_G3dRenderObjSetCallBack(a2->unk90, ExtraBoss_HandCatchNodeCallback, 0, 6, 3);
     a2->unkA = 4;
-    o2->unk78 = ExtraBossObj_Draw_Unk_ov001_022f2f14;
+    o2->unk78 = ExtraBossObj_Draw_HandCatch;
     o2->unk7C = data_ov001_0231f078[0];
     d->unk18 = o2;
     o2->unk14 |= 0x40000;
@@ -193,10 +193,10 @@ UnkStruct_022f3530_o *ExtraBoss_CreateHandBoss(void) {
     o2->subE8.unk8 |= 0x3200;
     o2->unkA0 = &o2->subE8;
     ExtraBoss_InitCollider(&o2->sub120, o2, 1, 1, 0xf000, 0xf000, 0x20000, 0, 0, 0, 0);
-    o2->sub120.unk4 = ExtraBoss_Unk_ov001_022eed64;
+    o2->sub120.unk4 = ExtraBoss_HandCatch_OnGrabPlayer;
     o2->sub120.unk8 |= 0x3220;
     o2->unkA4 = &o2->sub120;
-    ExtraBoss_Unk_ov001_022f2b78(data_ov001_0231f078[0]);
+    ExtraBoss_HandBoss_Action_Enter(data_ov001_0231f078[0]);
     d->unk8 = -1;
     d->unk4 = 4;
     d->unkC = d->unk10 = 2;

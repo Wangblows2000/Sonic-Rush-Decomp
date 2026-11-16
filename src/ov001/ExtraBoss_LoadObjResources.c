@@ -5,8 +5,8 @@ typedef struct { u32 flags; s32 ids[6]; } UnkStruct_0231d6b4;
 typedef struct { void *res[6]; } UnkStruct_0231f098;
 extern void *gExtraBossArchive;
 extern u8 data_ov001_0231d9a8[];
-extern UnkStruct_0231d6b4 data_ov001_0231d6b4[];
-extern UnkStruct_0231f098 data_ov001_0231f098[];
+extern UnkStruct_0231d6b4 gExtraBossFxResTable[];
+extern UnkStruct_0231f098 gExtraBossFxRes[];
 void NNS_FndMountArchive(UnkStruct_023029d4 *a, void *b, void *c);
 void *NNS_FndGetArchiveFileByIndex(UnkStruct_023029d4 *a, s32 i);
 void NNS_FndUnmountArchive(UnkStruct_023029d4 *a);
@@ -18,8 +18,8 @@ void ExtraBoss_LoadObjResources(void) {
     UnkStruct_0231d6b4 *d;
     UnkStruct_0231f098 *r;
     NNS_FndMountArchive(&arc, data_ov001_0231d9a8, gExtraBossArchive);
-    d = data_ov001_0231d6b4;
-    r = data_ov001_0231f098;
+    d = gExtraBossFxResTable;
+    r = gExtraBossFxRes;
     for (i = 0; i < 0x1b; i++) {
         for (j = 0; j < 6; j++) {
             if (d->ids[j] != -1) {

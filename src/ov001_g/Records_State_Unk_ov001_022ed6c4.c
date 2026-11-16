@@ -35,13 +35,13 @@ void Records_Unk_ov001_022ed490(UnkWork_022ed6c4 *w, s16 x, s16 y);
 void Records_Unk_ov001_022ed3e0(UnkWork_022ed6c4 *w);
 void Records_DrawBackButton(UnkWork_022ed6c4 *w, s32 flag);
 void Records_Unk_ov001_022ed19c(UnkWork_022ed6c4 *w);
-void Records_Unk_ov001_022ed188(UnkWork_022ed6c4 *w);
-void Records_Unk_ov001_022ed14c(UnkWork_022ed6c4 *w);
-void Records_Unk_ov001_022ed104(UnkWork_022ed6c4 *w);
-void Records_Unk_ov001_022ed08c(UnkWork_022ed6c4 *w);
+void Records_DrawHeaderName(UnkWork_022ed6c4 *w);
+void Records_DrawRecordNames(UnkWork_022ed6c4 *w);
+void Records_DrawHeaderTime(UnkWork_022ed6c4 *w);
+void Records_DrawRecordTimes(UnkWork_022ed6c4 *w);
 BOOL Records_IsBackButtonTouched(UnkWork_022ed6c4 *w);
 BOOL Records_IsBPressed(UnkWork_022ed6c4 *w);
-BOOL Records_Unk_ov001_022ece98(UnkWork_022ed6c4 *w);
+BOOL Records_IsScrollThumbTouchStarted(UnkWork_022ed6c4 *w);
 BOOL Records_IsUpArrowTouched(UnkWork_022ed6c4 *w);
 BOOL Records_IsDownArrowTouched(UnkWork_022ed6c4 *w);
 s32 Records_PrevPageStart(UnkWork_022ed6c4 *w, s32 v);
@@ -61,10 +61,10 @@ void Records_State_Unk_ov001_022ed6c4(void) {
     Records_Unk_ov001_022ed3e0(w);
     Records_DrawBackButton(w, 0);
     Records_Unk_ov001_022ed19c(w);
-    Records_Unk_ov001_022ed188(w);
-    Records_Unk_ov001_022ed14c(w);
-    Records_Unk_ov001_022ed104(w);
-    Records_Unk_ov001_022ed08c(w);
+    Records_DrawHeaderName(w);
+    Records_DrawRecordNames(w);
+    Records_DrawHeaderTime(w);
+    Records_DrawRecordTimes(w);
     f1 = FALSE;
     f2 = FALSE;
     f3 = FALSE;
@@ -74,7 +74,7 @@ void Records_State_Unk_ov001_022ed6c4(void) {
     } else if (Records_IsBPressed(w)) {
         w->unk24 = 0;
         f1 = TRUE;
-    } else if (Records_Unk_ov001_022ece98(w)) {
+    } else if (Records_IsScrollThumbTouchStarted(w)) {
         f2 = TRUE;
         w->unk4 = 4;
         w->unk8 = 4;

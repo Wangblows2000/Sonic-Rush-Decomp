@@ -32,10 +32,10 @@ void Records_Unk_ov001_022ed490(UnkWork_022ed548 *w, s16 x, s16 y);
 void Records_Unk_ov001_022ed3e0(UnkWork_022ed548 *w);
 void Records_DrawBackButton(UnkWork_022ed548 *w, s32 flag);
 void Records_Unk_ov001_022ed19c(UnkWork_022ed548 *w);
-void Records_Unk_ov001_022ed188(UnkWork_022ed548 *w);
-void Records_Unk_ov001_022ed14c(UnkWork_022ed548 *w);
-void Records_Unk_ov001_022ed104(UnkWork_022ed548 *w);
-void Records_Unk_ov001_022ed08c(UnkWork_022ed548 *w);
+void Records_DrawHeaderName(UnkWork_022ed548 *w);
+void Records_DrawRecordNames(UnkWork_022ed548 *w);
+void Records_DrawHeaderTime(UnkWork_022ed548 *w);
+void Records_DrawRecordTimes(UnkWork_022ed548 *w);
 void Records_State_Unk_ov001_022ed6c4(void);
 
 #pragma thumb on
@@ -48,10 +48,10 @@ void Records_State_Unk_ov001_022ed548(void) {
     Records_Unk_ov001_022ed3e0(w);
     Records_DrawBackButton(w, 0);
     Records_Unk_ov001_022ed19c(w);
-    Records_Unk_ov001_022ed188(w);
-    Records_Unk_ov001_022ed14c(w);
-    Records_Unk_ov001_022ed104(w);
-    Records_Unk_ov001_022ed08c(w);
+    Records_DrawHeaderName(w);
+    Records_DrawRecordNames(w);
+    Records_DrawHeaderTime(w);
+    Records_DrawRecordTimes(w);
     if (gTouchState.flags & 0x10) {
         v = (gTouchState.y - w->unk10) * 2;
         v += w->unk14;

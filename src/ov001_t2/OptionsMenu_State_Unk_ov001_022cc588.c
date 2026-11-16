@@ -26,7 +26,7 @@ extern UnkTask_022cc588 *gTaskCurrent;
 void OptionsMenu_UpdateAnims(UnkWork_022cc588 *w);
 void OptionsMenu_DrawItems(UnkWork_022cc588 *w);
 s32 OptionsMenu_GetChildCount(UnkSub_022cc588 *s);
-void OptionsMenu_Unk_ov001_022c8d4c(UnkSub_022cc588 *s);
+void OptionsMenu_RequestLobbyPreviewStart(UnkSub_022cc588 *s);
 void MsgBox_RequestClose(void);
 BOOL MsgBox_IsClosed(void);
 BOOL MsgBox_GetResult(void);
@@ -54,7 +54,7 @@ void OptionsMenu_State_Unk_ov001_022cc588(void) {
             w->unk18 = 0;
             s->unk4 = 8;
             gTaskCurrent->fn = OptionsMenu_State_Unk_ov001_022cc4a0;
-            OptionsMenu_Unk_ov001_022c8d4c(s);
+            OptionsMenu_RequestLobbyPreviewStart(s);
             return;
         }
         s->unk4 = 5;

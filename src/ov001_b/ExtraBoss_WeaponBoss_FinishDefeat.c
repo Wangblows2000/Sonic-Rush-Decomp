@@ -46,10 +46,10 @@ void ExtraBoss_StartCharacterSwitch(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, s32 e);
 void NNS_G3dRenderObjResetCallBack(void *s);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
-void ExtraBossObj_State_Unk_ov001_022f4148(void);
-void ExtraBossObj_State_Unk_ov001_022f41b4(void);
+void ExtraBossObj_State_WeaponBossDefeatWaitAnim(void);
+void ExtraBossObj_State_Blink2(void);
 void ExtraBoss_HandNodeCallback(void);
-void ExtraBossObj_State_Unk_ov001_022f4028(void);
+void ExtraBossObj_State_WeaponBossDefeatPartBlink(void);
 void ExtraBossObj_Draw_WeaponBossDebris(void);
 UnkStruct_022f41c4_o *ExtraBossObj_Create(s32 a, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
@@ -79,7 +79,7 @@ void ExtraBoss_WeaponBoss_FinishDefeat(UnkStruct_022f41c4_o *w) {
     Model_SetAnimation(a, 0, data_ov001_0231f068, 3, 0);
     a->unk10C &= ~4;
     a->unk114 = 0x2000;
-    w->unk74 = ExtraBossObj_State_Unk_ov001_022f4148;
+    w->unk74 = ExtraBossObj_State_WeaponBossDefeatWaitAnim;
     w->unk1C8 = 0xb4;
 
     o = ExtraBossObj_Create(2, 0x2f01);
@@ -96,7 +96,7 @@ void ExtraBoss_WeaponBoss_FinishDefeat(UnkStruct_022f41c4_o *w) {
     Model_SetResource(a, data_ov001_0231f070, 1);
     a->unk18 = a->unk1C = a->unk20 = 0x34cc;
     o->unk84 = a;
-    o->unk74 = ExtraBossObj_State_Unk_ov001_022f41b4;
+    o->unk74 = ExtraBossObj_State_Blink2;
     o->unk14 |= 0x30000;
 
     o = ExtraBossObj_Create(2, 0x2f01);
@@ -113,7 +113,7 @@ void ExtraBoss_WeaponBoss_FinishDefeat(UnkStruct_022f41c4_o *w) {
     Model_SetResource(a, data_ov001_0231f070, 4);
     a->unk18 = a->unk1C = a->unk20 = 0x34cc;
     o->unk84 = a;
-    o->unk74 = ExtraBossObj_State_Unk_ov001_022f41b4;
+    o->unk74 = ExtraBossObj_State_Blink2;
 
     o3 = ExtraBossObj_Create(2, 0x2f01);
     a = (UnkStruct_022f41c4_a *)Heap_Alloc(gMainHeap, 0x160, 0x20);
@@ -156,7 +156,7 @@ void ExtraBoss_WeaponBoss_FinishDefeat(UnkStruct_022f41c4_o *w) {
     Model_SetAnimation(a, 0, data_ov001_0231f068, 0x35, 0);
     a->unk10C &= ~4;
     a->unk114 = 0;
-    o->unk74 = ExtraBossObj_State_Unk_ov001_022f4028;
+    o->unk74 = ExtraBossObj_State_WeaponBossDefeatPartBlink;
     o->unk1C8 = 0x119;
     o->unk78 = ExtraBossObj_Draw_WeaponBossDebris;
     o->unk7C = o3;

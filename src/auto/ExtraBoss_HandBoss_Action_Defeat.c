@@ -3,13 +3,13 @@
 
 s32 ExtraBoss_GetWork();
 void ExtraBossObj_State_HandBossDefeat();
-extern u8 data_ov001_02316840[];
+extern u8 gExtraBossHandBossAnimTable[];
 extern u8 data_ov001_0231f068[];
 s32 Model_SetAnimation();
 extern u8 data_ov001_0231f074[];
 s32 ExtraBoss_GetPlayer();
 s32 ExtraBoss_SetScrollSpawnEnabled();
-s32 ExtraBoss_Unk_ov001_02303a80();
+s32 ExtraBoss_SetRingPickupEnabled();
 
 void ExtraBoss_HandBoss_Action_Defeat(u8 *p0) {
     u32 t0 = *(u32 *)((u8 *)p0 + 0x1dc);
@@ -23,10 +23,10 @@ void ExtraBoss_HandBoss_Action_Defeat(u8 *p0) {
     *(u32 *)((u8 *)p0 + 0x74) = (u32)ExtraBossObj_State_HandBossDefeat;
     u8 t6 = *(u8 *)((u8 *)t4 + 0x10c);
     *(u8 *)((u8 *)t4 + 0x10c) = (t6 | 0x40);
-    u16 t7 = *(u16 *)((u8 *)data_ov001_02316840 + 0x10);
+    u16 t7 = *(u16 *)((u8 *)gExtraBossHandBossAnimTable + 0x10);
     u32 t8 = *(u32 *)data_ov001_0231f068;
     Model_SetAnimation(t4, 0, t8, t7, 0);
-    u16 t9 = *(u16 *)((u8 *)data_ov001_02316840 + 0x12);
+    u16 t9 = *(u16 *)((u8 *)gExtraBossHandBossAnimTable + 0x12);
     u32 t10 = *(u32 *)data_ov001_0231f074;
     Model_SetAnimation(t4, 4, t10, t9, 0);
     *(u16 *)((u8 *)(t4 + 0x100) + 0x2c) = 0x400;
@@ -38,10 +38,10 @@ void ExtraBoss_HandBoss_Action_Defeat(u8 *p0) {
     u8 t13 = *(u8 *)((u8 *)t3 + 0x10c);
     *(u8 *)((u8 *)t3 + 0x10c) = (t13 | 0x40);
     u32 t14 = *(u32 *)data_ov001_0231f068;
-    u16 t15 = *(u16 *)((u8 *)data_ov001_02316840 + 0x14);
+    u16 t15 = *(u16 *)((u8 *)gExtraBossHandBossAnimTable + 0x14);
     Model_SetAnimation(t3, 0, t14, t15, 0);
     u32 t16 = *(u32 *)data_ov001_0231f074;
-    u16 t17 = *(u16 *)((u8 *)data_ov001_02316840 + 0x16);
+    u16 t17 = *(u16 *)((u8 *)gExtraBossHandBossAnimTable + 0x16);
     Model_SetAnimation(t3, 4, t16, t17, 0);
     *(u16 *)((u8 *)(t3 + 0x100) + 0x2c) = 0x400;
     u8 t18 = *(u8 *)((u8 *)t3 + 0x10c);
@@ -76,5 +76,5 @@ void ExtraBoss_HandBoss_Action_Defeat(u8 *p0) {
     u32 t30 = *(u32 *)t29;
     *(u32 *)t29 = (t30 | 2);
     ExtraBoss_SetScrollSpawnEnabled(0, (t30 | 2));
-    ExtraBoss_Unk_ov001_02303a80(0);
+    ExtraBoss_SetRingPickupEnabled(0);
 }

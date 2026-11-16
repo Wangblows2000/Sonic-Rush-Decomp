@@ -12,7 +12,7 @@ extern u16 gSaveState;
 void SaveData_SetDefaults(u8 *buf);
 void CARD_LockBackup(u16 card);
 void CARD_UnlockBackup(u16 card);
-s32 CARD_Unk_0200f9a0(u32 ofs, void *buf, u32 size, s32 a, s32 b, s32 c);
+s32 CARDi_ProgramBackup(u32 ofs, void *buf, u32 size, s32 a, s32 b, s32 c);
 
 static inline void Free_02058bbc(u8 *p) {
     if ((u8 *)OS_GetArenaLo(0) != p) {
@@ -50,7 +50,7 @@ BOOL SaveData_FormatSlot(s32 idx) {
     MIi_CpuClear32(z, buf, 0x314);
     SaveData_SetDefaults(buf);
     CARD_LockBackup(card);
-    r = CARD_Unk_0200f9a0(idx * 0x320 + 0xc, buf, 0x314, 0, 0, 0);
+    r = CARDi_ProgramBackup(idx * 0x320 + 0xc, buf, 0x314, 0, 0, 0);
     CARD_UnlockBackup(card);
     Free_02058bbc(buf);
     return r ? TRUE : FALSE;

@@ -40,7 +40,7 @@ void OptionsMenu_UpdateAnims(UnkWork_022cd558 *w);
 void OptionsMenu_DrawItems(UnkWork_022cd558 *w);
 void OptionsMenu_Unk_ov001_022cdd28(void);
 void SysSound_PlaySE(s32 se);
-void OptionsMenu_Unk_ov001_022c8924(void *p, s32 a);
+void OptionsMenu_SetDifficultyChoice(void *p, s32 a);
 BOOL OptionsMenu_IsBackButtonTouched(u32 x, u32 y);
 
 #pragma thumb on
@@ -83,10 +83,10 @@ void OptionsMenu_State_Unk_ov001_022cd558(void) {
         w->unk18 = 0;
         switch (w->sel) {
         case 0:
-            OptionsMenu_Unk_ov001_022c8924(w->unk3ac, 0);
+            OptionsMenu_SetDifficultyChoice(w->unk3ac, 0);
             break;
         case 1:
-            OptionsMenu_Unk_ov001_022c8924(w->unk3ac, 1);
+            OptionsMenu_SetDifficultyChoice(w->unk3ac, 1);
             break;
         }
         SysSound_PlaySE(0);
@@ -109,14 +109,14 @@ void OptionsMenu_State_Unk_ov001_022cd558(void) {
                 w->sel = 0;
                 w->chosen = w->sel;
                 w->unk18 = 0;
-                OptionsMenu_Unk_ov001_022c8924(w->unk3ac, 0);
+                OptionsMenu_SetDifficultyChoice(w->unk3ac, 0);
                 SysSound_PlaySE(0);
             }
             if (x >= 0x88 && x < 0xe2 && y >= 0x50 && y < 0x70) {
                 w->sel = 1;
                 w->chosen = w->sel;
                 w->unk18 = 0;
-                OptionsMenu_Unk_ov001_022c8924(w->unk3ac, 1);
+                OptionsMenu_SetDifficultyChoice(w->unk3ac, 1);
                 SysSound_PlaySE(0);
             }
         }

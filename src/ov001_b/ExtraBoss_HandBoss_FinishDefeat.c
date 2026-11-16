@@ -54,15 +54,15 @@ extern void *gMainHeap;
 extern void *data_ov001_0231f068;
 extern void *data_ov001_0231f070;
 extern void *data_ov001_0231f074;
-extern u16 data_ov001_02316840[];
+extern u16 gExtraBossHandBossAnimTable[];
 
 void ExtraBoss_StartCharacterSwitch(void);
 void BrightnessLerp_Create(s32 a, s32 b, s32 c, s32 d, s32 e);
 void NNS_G3dRenderObjResetCallBack(void *s);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, u32 d);
-void ExtraBossObj_State_Unk_ov001_022ef0a0(void);
+void ExtraBossObj_State_HandBossDefeatWaitAnim(void);
 void ExtraBossObj_State_Blink(void);
-void ExtraBossObj_State_Unk_ov001_022eef90(void);
+void ExtraBossObj_State_HandBossDefeatPartBlink(void);
 UnkStruct_022ef11c_o *ExtraBossObj_Create(s32 a, s32 b);
 u8 *Heap_Alloc(void *heap, u32 size, s32 align);
 u32 OS_GetArenaLo(s32 i);
@@ -99,20 +99,20 @@ void ExtraBoss_HandBoss_FinishDefeat(UnkStruct_022ef11c_o *w) {
     w->unk50 = w->unk54 = w->unk58 = 0;
     w->unk5C = w->unk60 = w->unk64 = 0;
     a->unk10C |= 0x40;
-    Model_SetAnimation(a, 0, data_ov001_0231f068, data_ov001_02316840[0xc], 0);
-    Model_SetAnimation(a, 4, data_ov001_0231f074, data_ov001_02316840[0xd], 0);
+    Model_SetAnimation(a, 0, data_ov001_0231f068, gExtraBossHandBossAnimTable[0xc], 0);
+    Model_SetAnimation(a, 4, data_ov001_0231f074, gExtraBossHandBossAnimTable[0xd], 0);
     a->unk12C = 0x400;
     a->unk10C &= ~4;
     a->unk110 &= ~4;
     a->unk114 = 0x2000;
     a2->unk10C |= 0x40;
-    Model_SetAnimation(a2, 0, data_ov001_0231f068, data_ov001_02316840[0xe], 0);
-    Model_SetAnimation(a2, 4, data_ov001_0231f074, data_ov001_02316840[0xf], 0);
+    Model_SetAnimation(a2, 0, data_ov001_0231f068, gExtraBossHandBossAnimTable[0xe], 0);
+    Model_SetAnimation(a2, 4, data_ov001_0231f074, gExtraBossHandBossAnimTable[0xf], 0);
     a2->unk12C = 0x400;
     a2->unk10C &= ~4;
     a2->unk110 &= ~4;
     a2->unk114 = 0x2000;
-    w->unk74 = ExtraBossObj_State_Unk_ov001_022ef0a0;
+    w->unk74 = ExtraBossObj_State_HandBossDefeatWaitAnim;
     o2->unk74 = ExtraBossObj_State_Blink;
     w->unk1C8 = 0xb4;
 
@@ -167,6 +167,6 @@ void ExtraBoss_HandBoss_FinishDefeat(UnkStruct_022ef11c_o *w) {
     Model_SetAnimation(na3, 0, data_ov001_0231f068, 4, 0);
     na3->unk10C &= ~4;
     na3->unk114 = 0;
-    o3->unk74 = ExtraBossObj_State_Unk_ov001_022eef90;
+    o3->unk74 = ExtraBossObj_State_HandBossDefeatPartBlink;
     o3->unk1C8 = 0x119;
 }
