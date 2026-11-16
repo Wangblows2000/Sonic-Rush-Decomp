@@ -1,12 +1,12 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 Boss1Neck_Unk_ov000_022c7274();
+s32 Boss1Neck_UpdateSlamHitboxes();
 void Boss1Neck_State_BigSlamDone();
 
 void Boss1Neck_State_BigSlamRecoverWait(u8 *p0) {
     if (*(u16 *)((u8 *)p0 + 0x20c) == 0) {
-        s32 t0 = Boss1Neck_Unk_ov000_022c7274(9);
+        s32 t0 = Boss1Neck_UpdateSlamHitboxes(9);
         if (t0 == 0) {
             *(u16 *)((u8 *)p0 + 0x20c) = 1;
         }

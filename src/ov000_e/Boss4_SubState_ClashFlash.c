@@ -17,7 +17,7 @@ typedef struct {
 } UnkStruct_022de0d0;
 
 void Boss4_Action_StartSpin(UnkStruct_022de0d0 *s);
-void Boss4_Unk_ov000_022dbbe0(s32 a);
+void Boss4_LoadModelPalettes1Clash(s32 a);
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 BOOL Boss4_IsTiltPastLimits(UnkStruct_022de0d0 *s);
 
@@ -29,7 +29,7 @@ void Boss4_SubState_ClashFlash(UnkStruct_022de0d0 *s) {
     if (s->unk224 > lim) {
         Boss4_Action_StartSpin(s);
         s->unk21C &= ~2;
-        Boss4_Unk_ov000_022dbbe0(0);
+        Boss4_LoadModelPalettes1Clash(0);
         return;
     }
     if (s->unk224 == 10 && s->unkBDC < 1)
@@ -38,10 +38,10 @@ void Boss4_SubState_ClashFlash(UnkStruct_022de0d0 *s) {
     s->unkBBC += s->unkBC4;
     if (s->unk224 & 4) {
         s->unk21C &= ~2;
-        Boss4_Unk_ov000_022dbbe0(0);
+        Boss4_LoadModelPalettes1Clash(0);
     } else {
         s->unk21C |= 2;
-        Boss4_Unk_ov000_022dbbe0(1);
+        Boss4_LoadModelPalettes1Clash(1);
     }
     if (!Boss4_IsTiltPastLimits(s))
         return;

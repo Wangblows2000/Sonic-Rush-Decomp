@@ -88,7 +88,7 @@ typedef struct {
 extern UnkStruct_0236a48c data_ov000_0236a48c;
 extern UnkStruct_Pl2 *gPlayers;
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
-void Boss6_Unk_ov000_022e04a8(UnkStruct_Boss *w);
+void Boss6_SetCameraPickPullOut(UnkStruct_Boss *w);
 
 void Boss6_State_LandShake(UnkStruct_Boss *w) {
     UnkStruct_Mdl960 *m = &w->unk960;

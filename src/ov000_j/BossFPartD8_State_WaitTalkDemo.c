@@ -18,7 +18,7 @@ extern u16 gTalkDemoId;
 
 void Sound_PlaySeq(s32 a, s32 b);
 void TalkDemo_Create(void);
-void BossFPartD8_State_Unk_ov000_022f0ad0(UnkStruct_022f0b44 *p);
+void BossFPartD8_State_SkyChargeStartRetreat(UnkStruct_022f0b44 *p);
 
 void BossFPartD8_State_WaitTalkDemo(UnkStruct_022f0b44 *p) {
     if (p->unk454++ <= 0x78)
@@ -30,5 +30,5 @@ void BossFPartD8_State_WaitTalkDemo(UnkStruct_022f0b44 *p) {
     else
         gTalkDemoId = 0x10;
     TalkDemo_Create();
-    p->unk68 = BossFPartD8_State_Unk_ov000_022f0ad0;
+    p->unk68 = BossFPartD8_State_SkyChargeStartRetreat;
 }

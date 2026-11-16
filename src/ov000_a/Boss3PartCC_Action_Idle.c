@@ -82,8 +82,8 @@ typedef struct UnkStruct_022d8bf8_b {
 
 extern UnkStruct_022d8bf8_b *gBoss3;
 
-void Boss3_Unk_ov000_022daa78(void);
-void Boss3_Unk_ov000_022daa94(void);
+void Boss3_MakeBallHarmful(void);
+void Boss3_MakeBallHittable(void);
 void Boss3PartCC_State_StartIdle(UnkStruct_022d8bf8 *s);
 
 void Boss3PartCC_Action_Idle(UnkStruct_022d8bf8 *s) {
@@ -92,9 +92,9 @@ void Boss3PartCC_Action_Idle(UnkStruct_022d8bf8 *s) {
     s->unk16A |= 4;
     if (r != NULL) {
         if (r->unk20C & 0x10)
-            Boss3_Unk_ov000_022daa78();
+            Boss3_MakeBallHarmful();
         else
-            Boss3_Unk_ov000_022daa94();
+            Boss3_MakeBallHittable();
     }
     s->func = Boss3PartCC_State_StartIdle;
 }

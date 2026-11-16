@@ -1,0 +1,14 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x320];
+    s32 unk320;
+} UnkStruct_022edb50;
+
+s32 FX_Div(s32 a, s32 b);
+
+void Boss7_SetPartD7ScaleFromPower(UnkStruct_022edb50 *p, s32 a) {
+    s32 v = FX_Div(a << 12, 0x80000);
+
+    p->unk320 = (s32)(((s64)v * 0x1000 + 0x800) >> 12) + 0x800;
+}

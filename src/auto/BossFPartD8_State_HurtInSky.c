@@ -1,0 +1,32 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+extern u8 gGameState[];
+s32 BossF_LoadModelPalettesAll();
+s32 BossF_StartNextAttack();
+
+void BossFPartD8_State_HurtInSky(u8 *p0) {
+    *(u16 *)((u8 *)p0 + 0x434) = (*(u16 *)((u8 *)p0 + 0x434) + 0x1);
+    s32 t0 = *(u16 *)((u8 *)p0 + 0x434);
+    if ((*(u16 *)((u8 *)p0 + 0x434) & 1) == 0) {
+        if ((t0 & 0x8000) != 0) {
+            BossF_LoadModelPalettesAll(*(u32 *)gGameState, 0);
+        } else {
+            BossF_LoadModelPalettesAll(*(u32 *)gGameState, 1);
+        }
+        *(u16 *)((u8 *)p0 + 0x434) = (*(u16 *)((u8 *)p0 + 0x434) & ~1);
+        *(u16 *)((u8 *)p0 + 0x434) = (*(u16 *)((u8 *)p0 + 0x434) ^ 0x8000);
+    }
+    *(u32 *)((u8 *)p0 + 0x18) = (*(u32 *)((u8 *)p0 + 0x18) - 0x200);
+    s32 t1 = *(u32 *)((u8 *)p0 + 0x18);
+    if (t1 < -0x1f400) {
+        *(u32 *)((u8 *)p0 + 0x18) = -0x1f400;
+    }
+    if ((*(u8 *)((u8 *)p0 + 0x57c) & 2) == 0) {
+        return;
+    }
+    if ((*(u16 *)((u8 *)p0 + 0x434) & 0x8000) != 0) {
+        return;
+    }
+    BossF_StartNextAttack((*(u16 *)((u8 *)p0 + 0x434) & 0x8000), t1);
+}

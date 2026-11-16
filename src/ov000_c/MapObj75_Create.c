@@ -7,7 +7,7 @@ typedef struct {
 
 extern void *data_ov000_02369ba0;
 
-void MapObj75_Action_Unk_ov000_02303548();
+void MapObj75_Action_Init();
 void MapObj75_Destructor();
 void Camera_AddAreaObject();
 
@@ -25,7 +25,7 @@ UnkStruct_023036d4 *MapObj75_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk58 |= 0x2100;
     w->base.unk5C |= 0x20;
-    MapObj75_Action_Unk_ov000_02303548(w);
+    MapObj75_Action_Init(w);
     Camera_AddAreaObject();
     return w;
 }

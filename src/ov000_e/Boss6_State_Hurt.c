@@ -28,7 +28,7 @@ typedef struct {
 
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void Boss6_UpdateFlashPalettes(s32 a);
-void Boss6_Unk_ov000_022dff1c(UnkStruct_Boss *w);
+void Boss6_SetCameraFollowPlayer(UnkStruct_Boss *w);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss6_State_HurtRecover(void);
 
@@ -40,7 +40,7 @@ void Boss6_State_Hurt(UnkStruct_Boss *w) {
         Model_SetAnimation(m, 0, w->unkD08, 0x16, 0);
         m->unk10C &= ~4;
         m->unk114 = 0x1000;
-        Boss6_Unk_ov000_022dff1c(w);
+        Boss6_SetCameraFollowPlayer(w);
         Sound_PlaySeqArc(0, 0, 0x84);
     }
     w->unk1118++;

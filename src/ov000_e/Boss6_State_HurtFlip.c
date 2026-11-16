@@ -17,8 +17,8 @@ typedef struct {
     s32 unk111C;
 } UnkStruct_Boss;
 
-void Boss6_Unk_ov000_022e03f4(UnkStruct_Boss *w);
-void Boss6_Unk_ov000_022e035c(UnkStruct_Boss *w);
+void Boss6_SetCameraSideShot(UnkStruct_Boss *w);
+void Boss6_SetCameraAfterFlip(UnkStruct_Boss *w);
 void Boss6_UpdateFlashPalettes(s32 a);
 void Boss6_SelectNextAttack(s32 a);
 
@@ -27,9 +27,9 @@ void Boss6_State_HurtFlip(UnkStruct_Boss *w) {
 
     w->unk111C--;
     if (w->unk111C == 0)
-        Boss6_Unk_ov000_022e03f4(w);
+        Boss6_SetCameraSideShot(w);
     if (m->unk10C & 2) {
-        Boss6_Unk_ov000_022e035c(w);
+        Boss6_SetCameraAfterFlip(w);
         w->unkD5E ^= 1;
         w->unk20C &= ~4;
         Boss6_UpdateFlashPalettes(4);

@@ -1,0 +1,10 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+s32 MapObject_Spawn();
+s32 Sound_PlaySeqArc();
+
+void BossFPartD8_SpawnPartD9(void) {
+    MapObject_Spawn(0xd9, 0x52600, 0x1a000, 1, 0, 0, 0, 0, 0);
+    Sound_PlaySeqArc(0, 0, 0xc7);
+}

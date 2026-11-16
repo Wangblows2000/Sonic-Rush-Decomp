@@ -18,7 +18,7 @@ extern s16 data_0206e470[];
 
 #define SIN_IDX(i) data_0206e470[(u32)((i) << 1)]
 
-u32 Bubble_Unk_ov000_02302164(UnkStruct_023024b0 *w);
+u32 Bubble_ProbeCorners(UnkStruct_023024b0 *w);
 
 static inline u16 FrameRand(void) {
     return (u16)(((gGameState.unk20 << 16) * 0x196225 + 0x3c6ef35f) >> 16);
@@ -55,7 +55,7 @@ void Bubble_State_Float(UnkStruct_023024b0 *w) {
         w->base.unk54 |= 4;
         return;
     }
-    r = Bubble_Unk_ov000_02302164(w);
+    r = Bubble_ProbeCorners(w);
     if (r & 2) {
         w->base.unk54 |= 4;
         return;

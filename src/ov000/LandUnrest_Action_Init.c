@@ -8,10 +8,10 @@ typedef struct UnkStruct_02310114 {
     void (*func)(void);
 } UnkStruct_02310114;
 
-void LandUnrest_State_Unk_ov000_0230fe50(void);
+void LandUnrest_State_Tilt(void);
 
 void LandUnrest_Action_Init(UnkStruct_02310114 *s) {
-    s->func = LandUnrest_State_Unk_ov000_0230fe50;
+    s->func = LandUnrest_State_Tilt;
     s->unk8 = 0;
     s->unkC = 0;
 }

@@ -21,8 +21,8 @@ extern UnkStruct_0236aad8 gCamera;
 extern UnkStruct_022c4560 gGameState;
 
 void EnemyPawnGroup_Action_Turn(UnkStruct_022fe350 *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fe204(UnkStruct_022fe350 *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fdfd4(UnkStruct_022fe350 *w);
+void EnemyPawnGroup_Action_LongAttack(UnkStruct_022fe350 *w);
+void EnemyPawnGroup_Action_Attack(UnkStruct_022fe350 *w);
 s16 ObjSpd_DownSet(s32 a, s32 b);
 s16 ObjSpd_UpSet(s32 a, s32 b, s32 c);
 void StageObj_HandleCollider(void *w, void *a);
@@ -81,12 +81,12 @@ void EnemyPawnGroup_State_Walk(UnkStruct_022fe350 *w) {
         case 0xd:
         case 0x15:
             if (w->unk23C <= 200 && w->base.unk8 == 0) {
-                EnemyPawnGroup_Action_Unk_ov000_022fe204(w);
+                EnemyPawnGroup_Action_LongAttack(w);
                 return;
             }
             break;
         case 0xa:
-            EnemyPawnGroup_Action_Unk_ov000_022fdfd4(w);
+            EnemyPawnGroup_Action_Attack(w);
             return;
         case 0xe:
         case 0xf:

@@ -6,9 +6,9 @@ typedef struct UnkStruct_02301fc0 {
 } UnkStruct_02301fc0;
 
 void StageObj_SetAnimation(UnkStruct_02301fc0 *s, s32 a);
-void BendStick_State_Unk_ov000_02301e54(void);
+void BendStick_State_Wobble(void);
 
 void BendStick_Action_Init(UnkStruct_02301fc0 *s) {
     StageObj_SetAnimation(s, 0);
-    s->func = BendStick_State_Unk_ov000_02301e54;
+    s->func = BendStick_State_Wobble;
 }

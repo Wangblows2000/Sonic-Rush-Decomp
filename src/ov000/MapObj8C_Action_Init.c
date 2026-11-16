@@ -5,8 +5,8 @@ typedef struct UnkStruct_023099b0 {
     void (*func)(void);
 } UnkStruct_023099b0;
 
-void MapObj8C_State_Unk_ov000_02309850(void);
+void MapObj8C_State_WaitPlayerEnter(void);
 
 void MapObj8C_Action_Init(UnkStruct_023099b0 *s) {
-    s->func = MapObj8C_State_Unk_ov000_02309850;
+    s->func = MapObj8C_State_WaitPlayerEnter;
 }

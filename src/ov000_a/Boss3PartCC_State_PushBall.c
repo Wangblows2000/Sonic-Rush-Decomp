@@ -95,8 +95,8 @@ extern u8 data_ov000_023633e4[][9][16];
 
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 void Boss3_UpdateCameraShake(u16 *p, s32 a, s32 b);
-void Boss3_Unk_ov000_022daa78(void);
-void Boss3_Unk_ov000_022daa94(void);
+void Boss3_MakeBallHarmful(void);
+void Boss3_MakeBallHittable(void);
 void Boss3PartCC_State_PushEnd(UnkStruct_022d8408 *s);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -151,9 +151,9 @@ void Boss3PartCC_State_PushBall(UnkStruct_022d8408 *s) {
         if (s->unk25A != k) {
             s->unk25A = k;
             if (s->unk25A != 0)
-                Boss3_Unk_ov000_022daa78();
+                Boss3_MakeBallHarmful();
             else
-                Boss3_Unk_ov000_022daa94();
+                Boss3_MakeBallHittable();
         }
     }
     if (data_ov000_023631d8[GetIdx()][gBoss3->unk222] < s->unk258++)

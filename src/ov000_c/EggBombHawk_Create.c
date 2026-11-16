@@ -9,7 +9,7 @@ extern u8 data_ov000_02366564[];
 extern u8 data_ov000_02369e04[];
 
 void MapObject_Destructor();
-void EggBombHawk_State_Unk_ov000_022ff770();
+void EggBombHawk_State_ExplodeOnContact();
 
 UnkStruct_022ff7dc *EggBombHawk_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -33,6 +33,6 @@ UnkStruct_022ff7dc *EggBombHawk_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x90;
     w->base.unk5C |= 0x100;
     w->base.unk1DC = Sound_AllocHandle();
-    w->base.unk68 = EggBombHawk_State_Unk_ov000_022ff770;
+    w->base.unk68 = EggBombHawk_State_ExplodeOnContact;
     return w;
 }

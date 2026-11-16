@@ -17,10 +17,10 @@ typedef struct {
 } UnkStruct_022ddedc;
 
 void Boss4_Action_StartSpin(UnkStruct_022ddedc *s);
-void Boss4_Unk_ov000_022dbc4c(s32 a);
-void Boss4_Unk_ov000_022dbb7c(s32 a);
-void Boss4_Unk_ov000_022dba50(s32 a);
-void Boss4_Unk_ov000_022dbab4(s32 a);
+void Boss4_LoadModelPalettes1(s32 a);
+void Boss4_LoadModelPalettes2(s32 a);
+void Boss4_LoadModelPalettes4(s32 a);
+void Boss4_LoadModelPalettes3(s32 a);
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 BOOL Boss4_IsTiltPastLimits(UnkStruct_022ddedc *s);
 
@@ -30,26 +30,26 @@ void Boss4_SubState_HurtFlash(UnkStruct_022ddedc *s) {
     if (s->unk224 > 0x3c) {
         Boss4_Action_StartSpin(s);
         s->unk21C &= ~2;
-        Boss4_Unk_ov000_022dbc4c(0);
-        Boss4_Unk_ov000_022dbb7c(0);
-        Boss4_Unk_ov000_022dba50(0);
-        Boss4_Unk_ov000_022dbab4(0);
+        Boss4_LoadModelPalettes1(0);
+        Boss4_LoadModelPalettes2(0);
+        Boss4_LoadModelPalettes4(0);
+        Boss4_LoadModelPalettes3(0);
         return;
     }
     s->unkBB8 += s->unkBC0;
     s->unkBBC += s->unkBC4;
     if (s->unk224 & 2) {
         s->unk21C &= ~2;
-        Boss4_Unk_ov000_022dbc4c(0);
-        Boss4_Unk_ov000_022dbb7c(0);
-        Boss4_Unk_ov000_022dba50(0);
-        Boss4_Unk_ov000_022dbab4(0);
+        Boss4_LoadModelPalettes1(0);
+        Boss4_LoadModelPalettes2(0);
+        Boss4_LoadModelPalettes4(0);
+        Boss4_LoadModelPalettes3(0);
     } else {
         s->unk21C |= 2;
-        Boss4_Unk_ov000_022dbc4c(1);
-        Boss4_Unk_ov000_022dbb7c(1);
-        Boss4_Unk_ov000_022dba50(1);
-        Boss4_Unk_ov000_022dbab4(1);
+        Boss4_LoadModelPalettes1(1);
+        Boss4_LoadModelPalettes2(1);
+        Boss4_LoadModelPalettes4(1);
+        Boss4_LoadModelPalettes3(1);
     }
     if (!Boss4_IsTiltPastLimits(s))
         return;

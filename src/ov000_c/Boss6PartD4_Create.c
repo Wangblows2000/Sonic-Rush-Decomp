@@ -33,7 +33,7 @@ extern u8 data_ov000_02365964[];
 
 void Boss6PartD4_Destructor(void);
 void Boss6PartD4_Draw(void);
-void Boss6PartD4_State_Unk_ov000_022e5408(void);
+void Boss6PartD4_State_Fly(void);
 void Boss6PartD4_OnHit(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
@@ -52,7 +52,7 @@ UnkStruct_022e6500 *Boss6PartD4_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022e6500));
     MapObject_Init(w, (s32)p, b, c);
     w->base.unk70 = Boss6PartD4_Draw;
-    w->base.unk68 = Boss6PartD4_State_Unk_ov000_022e5408;
+    w->base.unk68 = Boss6PartD4_State_Fly;
     w->base.unk5C |= 0x20;
     w->base.unk54 |= 0x10;
     w->base.unk58 |= 0xa300;

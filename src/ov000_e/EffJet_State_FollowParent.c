@@ -1,7 +1,7 @@
 #include <ov000_c/stageobj.h>
 
 void StageObj_SetAnimation(void *w, s32 a);
-void JetCatapult_State_Unk_ov000_0230e6e8(void);
+void JetCatapult_State_Blastoff(void);
 
 void EffJet_State_FollowParent(UnkStruct_StageObj *w) {
     UnkStruct_StageObj *p = w->unk88;
@@ -17,7 +17,7 @@ void EffJet_State_FollowParent(UnkStruct_StageObj *w) {
     w->unk14 = ((UnkStruct_StageObj *)w->unk88)->unk14;
     if (w->unkC != 0)
         return;
-    if (((UnkStruct_StageObj *)w->unk88)->unk68 != JetCatapult_State_Unk_ov000_0230e6e8)
+    if (((UnkStruct_StageObj *)w->unk88)->unk68 != JetCatapult_State_Blastoff)
         return;
     w->unkC = 1;
     StageObj_SetAnimation(w, 1);

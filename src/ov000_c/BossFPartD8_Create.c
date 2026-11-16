@@ -33,8 +33,8 @@ void BossFPartD8_Destructor(void);
 void BossFPartD8_State_Idle(void);
 void BossFPartD8_Draw(void);
 void BossFPartD8_Collide(void);
-void BossFPartD8_OnHit_Unk_ov000_022f50b0(void);
-void BossFPartD8_OnHit_Unk_ov000_022f4ec8(void);
+void BossFPartD8_OnHitBody(void);
+void BossFPartD8_OnHitHand(void);
 void BossFPartD8_NodeCallback_Body(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
@@ -77,7 +77,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
-    c->unk1C = BossFPartD8_OnHit_Unk_ov000_022f50b0;
+    c->unk1C = BossFPartD8_OnHitBody;
     c->unkA &= ~4;
     c = &w->coll[1];
     *c = w->base.coll1;
@@ -93,7 +93,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
-    c->unk1C = BossFPartD8_OnHit_Unk_ov000_022f4ec8;
+    c->unk1C = BossFPartD8_OnHitHand;
     c->unkA &= ~4;
     c = &w->coll[4];
     *c = w->base.coll1;
@@ -109,7 +109,7 @@ UnkStruct_022fa128 *BossFPartD8_Create(UnkStruct_ObjParam *p, s32 b, s32 cc) {
     ObjRect_SetAtkDefFlags(c, 0x11, 0);
     c->unkA |= 0x40;
     c->unk18 = w;
-    c->unk1C = BossFPartD8_OnHit_Unk_ov000_022f4ec8;
+    c->unk1C = BossFPartD8_OnHitHand;
     c->unkA &= ~4;
     BossFPartD8_InitHitboxes(w);
     w->base.unk1C8 = w->unk460;

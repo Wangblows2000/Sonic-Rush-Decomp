@@ -1,0 +1,13 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+s32 BossF_UpdateCameraShake();
+s32 BossFPartD8_TriggerReturnHome();
+
+void BossFPartD8_State_PartDAThrowEndWait(u8 *p0) {
+    BossF_UpdateCameraShake(((u8 *)p0 + 0x436), 2, 6);
+    if ((*(u8 *)((u8 *)p0 + 0x57c) & 2) == 0) {
+        return;
+    }
+    BossFPartD8_TriggerReturnHome((*(u8 *)((u8 *)p0 + 0x57c) & 2));
+}

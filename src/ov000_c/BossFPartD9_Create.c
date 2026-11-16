@@ -56,7 +56,7 @@ extern s16 data_ov000_02363fbc[][8];
 extern u8 data_ov000_0236605c[];
 
 void BossFPartD9_Destructor(void);
-void BossFPartD9_State_Unk_ov000_022f7f80(UnkStruct_022f9e14 *w);
+void BossFPartD9_State_Init(UnkStruct_022f9e14 *w);
 void BossFPartD9_Draw(void);
 void BossFPartD9_OnHit(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
@@ -86,7 +86,7 @@ UnkStruct_022f9e14 *BossFPartD9_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w = Task_Create(StageObj_Main, BossFPartD9_Destructor, 0, 0x501, 2, sizeof(UnkStruct_022f9e14))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022f9e14));
-    w->base.unk68 = BossFPartD9_State_Unk_ov000_022f7f80;
+    w->base.unk68 = BossFPartD9_State_Init;
     w->unk20E = 0xe000;
     w->unk210 = r->unk24 - 0x30000;
     w->unk214 = r->unk28 + 0x18000;

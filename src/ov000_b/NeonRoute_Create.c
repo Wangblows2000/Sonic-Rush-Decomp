@@ -23,7 +23,7 @@ extern u8 data_ov000_0236a13c[], data_ov000_0236a14c[], data_ov000_023661c0[], d
 
 void MapObject_Destructor(void);
 void NeonRoute_Draw(void);
-void NeonRoute_Action_Unk_ov000_02311500(UnkStruct_02311900 *w);
+void NeonRoute_Action_StartMove(UnkStruct_02311900 *w);
 
 UnkStruct_02311900 *NeonRoute_Create(s32 a, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -109,6 +109,6 @@ UnkStruct_02311900 *NeonRoute_Create(s32 a, s32 b, s32 c) {
     w->base.unk58 |= 0x100;
     w->base.unk54 |= 2;
     w->base.unk1DC = Sound_AllocHandle();
-    NeonRoute_Action_Unk_ov000_02311500(w);
+    NeonRoute_Action_StartMove(w);
     return w;
 }

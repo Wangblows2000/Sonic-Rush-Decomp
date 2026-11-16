@@ -63,13 +63,13 @@ extern void *gBossF;
 
 void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, s32 a, s32 b);
-void Boss7_Unk_ov000_022ee380(void);
+void Boss7_InitCamera(void);
 void Boss7_StartPartD5AI(void);
-void Boss7_State_Unk_ov000_022edcd8(UnkStruct_022edd80 *s);
+void Boss7_State_Fight(UnkStruct_022edd80 *s);
 void Model_SetAnimation(void *s, s32 a, s32 b, s32 c, s32 d);
 void ScreenShake_Start(s32 a);
-void BossF_Unk_ov000_022f898c(void);
-void BossF_Action_Unk_ov000_022f8310(void *p);
+void BossF_StartNextAttack(void);
+void BossF_Action_StartLaserFinEffects(void *p);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
 
@@ -88,7 +88,7 @@ void Boss7_State_WaitForStart(UnkStruct_022edd80 *s) {
     Model_SetResource(a, s->unk248, 0);
     a->unk18 = a->unk1C = a->unk20 = 0x1355b50;
     c = (UnkStruct_022edd80_c *)(u32)&data_ov000_0236a48c;
-    Boss7_Unk_ov000_022ee380();
+    Boss7_InitCamera();
     s->unk210 = 1;
     c->unk24.x = 0x9b800;
     c->unk24.y = -0x1a0000;
@@ -101,5 +101,5 @@ void Boss7_State_WaitForStart(UnkStruct_022edd80 *s) {
     NaviMsg_SetFaceAnim(9);
     NaviMsg_ShowMessage(0xf, 0xf0);
     Boss7_StartPartD5AI();
-    s->func = Boss7_State_Unk_ov000_022edcd8;
+    s->func = Boss7_State_Fight;
 }

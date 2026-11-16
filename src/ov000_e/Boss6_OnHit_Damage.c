@@ -39,7 +39,7 @@ extern UnkStruct_02369ac0 gBossStatus;
 extern s32 data_ov000_02363718[];
 
 void Boss6_Action_Defeat(void);
-void Boss6_Unk_ov000_022e04a8(UnkStruct_Boss *w);
+void Boss6_SetCameraPickPullOut(UnkStruct_Boss *w);
 void Boss6_UpdateFlashPalettes(s32 a);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void BossEffect_CreateHit(s32 a, s32 x, s32 y, s32 z);

@@ -2,12 +2,12 @@
 
 void *Gimmick_GetRoomIndex(void);
 void *EnemyRoom_Get(s32 a, void *b);
-BOOL Gimmick_Unk_ov000_02307dfc(void *a, s32 b);
+BOOL Gimmick_CheckRoomResetOnDeath(void *a, s32 b);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void GmkWall_Action_Unk_ov000_02308c20(UnkStruct_StageObj *s);
+void GmkWall_Action_Closed(UnkStruct_StageObj *s);
 
 void GmkWall_State_MoveDown(UnkStruct_StageObj *s) {
-    if (Gimmick_Unk_ov000_02307dfc(EnemyRoom_Get(1, Gimmick_GetRoomIndex()), 0)) {
+    if (Gimmick_CheckRoomResetOnDeath(EnemyRoom_Get(1, Gimmick_GetRoomIndex()), 0)) {
         s->unk1F4 &= ~0x10;
         s->unk54 |= 4;
         return;
@@ -21,5 +21,5 @@ void GmkWall_State_MoveDown(UnkStruct_StageObj *s) {
         s->unk1D6 = (s8)(-0x20 - (s->unkC << 6) / 40);
     }
     if (s->unkC == 0)
-        GmkWall_Action_Unk_ov000_02308c20(s);
+        GmkWall_Action_Closed(s);
 }

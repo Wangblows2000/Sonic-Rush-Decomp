@@ -1,0 +1,12 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+s32 BossFPartD8_SetAnimation();
+void BossFPartD8_State_HandSlamHurtWait();
+
+void BossFPartD8_State_HandSlamHurt(u8 *p0) {
+    *(u8 *)((u8 *)p0 + 0x57c) = (*(u8 *)((u8 *)p0 + 0x57c) | 0x40);
+    BossFPartD8_SetAnimation(p0, 0x10, 0x1000, 0);
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)BossFPartD8_State_HandSlamHurtWait;
+    ((s32 (*)())*(u32 *)((u8 *)p0 + 0x68))(p0, *(u32 *)((u8 *)p0 + 0x68));
+}

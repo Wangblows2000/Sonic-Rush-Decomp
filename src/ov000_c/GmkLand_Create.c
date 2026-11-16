@@ -24,10 +24,10 @@ extern u8 data_ov000_0236a0a4[], data_ov000_023661c0[], data_ov000_023661a4[];
 void GmkLand_Destructor(void);
 void PaletteAnim_Create(s32 a, void *b, void *c, s32 d);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void GmkLand_Unk_ov000_0230f0bc(UnkStruct_0230fa74 *w);
-void GmkLand_Action_Unk_ov000_0230f9cc(UnkStruct_0230fa74 *w);
-void GmkLand_Action_Unk_ov000_0230f874(UnkStruct_0230fa74 *w);
-void GmkLand_Action_Unk_ov000_0230f614(UnkStruct_0230fa74 *w);
+void GmkLand_InitOscillation(UnkStruct_0230fa74 *w);
+void GmkLand_Action_InitOscillating(UnkStruct_0230fa74 *w);
+void GmkLand_Action_InitCrumbling(UnkStruct_0230fa74 *w);
+void GmkLand_Action_InitSpawner(UnkStruct_0230fa74 *w);
 void GmkLand_Action_Unk_ov000_0230f4fc(UnkStruct_0230fa74 *w);
 
 UnkStruct_0230fa74 *GmkLand_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -104,14 +104,14 @@ UnkStruct_0230fa74 *GmkLand_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk54 |= 2;
     switch (w->base.unk1E0->unk2) {
     default:
-        GmkLand_Unk_ov000_0230f0bc(w);
-        GmkLand_Action_Unk_ov000_0230f9cc(w);
+        GmkLand_InitOscillation(w);
+        GmkLand_Action_InitOscillating(w);
         break;
     case 0x76:
-        GmkLand_Action_Unk_ov000_0230f874(w);
+        GmkLand_Action_InitCrumbling(w);
         break;
     case 0xaf:
-        GmkLand_Action_Unk_ov000_0230f614(w);
+        GmkLand_Action_InitSpawner(w);
         w->base.unk4A += 0x100;
         break;
     case 0xef:

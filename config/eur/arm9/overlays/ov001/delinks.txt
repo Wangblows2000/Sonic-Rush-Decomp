@@ -6840,7 +6840,7 @@ src/asm_fallback/ExtraBoss_TestColliderRotatedBoxes.c:
     complete
     .text       start:0x022fde54 end:0x022fe550
 
-src/asm_fallback/ExtraBoss_TestColliderBoxes.c:
+src/c_ov001/ExtraBoss_TestColliderBoxes.c:
     complete
     .text       start:0x022fe550 end:0x022fe6b8
 

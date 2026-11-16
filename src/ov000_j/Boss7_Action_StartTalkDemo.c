@@ -9,7 +9,7 @@ extern s32 gGameState;
 extern u16 gTalkDemoId;
 
 void TalkDemo_Create(void);
-void Boss7_State_Unk_ov000_022edbec(UnkStruct_022edc24 *p);
+void Boss7_State_ClashFadeOutBGM(UnkStruct_022edc24 *p);
 
 void Boss7_Action_StartTalkDemo(UnkStruct_022edc24 *p) {
     if (gGameState == 0)
@@ -17,5 +17,5 @@ void Boss7_Action_StartTalkDemo(UnkStruct_022edc24 *p) {
     else
         gTalkDemoId = 0xb;
     TalkDemo_Create();
-    p->unk68 = Boss7_State_Unk_ov000_022edbec;
+    p->unk68 = Boss7_State_ClashFadeOutBGM;
 }

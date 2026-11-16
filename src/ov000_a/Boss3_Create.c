@@ -86,7 +86,7 @@ void Model_SetResource(void *p, s32 a, s32 b);
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 void *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 void Boss3_LoadPalettes(s32 k, BOOL f);
-void Boss3_Unk_ov000_022dad70(s32 k, BOOL f);
+void Boss3_LoadBallPalette(s32 k, BOOL f);
 void ScreenShake_Start(s32 a);
 
 static inline void MI_CpuFill16(void *dest, u16 data, u32 size) {
@@ -140,7 +140,7 @@ UnkStruct_022db390 *Boss3_Create(u8 *a, s32 x, s32 y) {
     p->unk18 = p->unk1C;
     s->unk214 = MapObject_Spawn(0xcc, x, 0, 0, 0, 0, 0, 0, 0);
     Boss3_LoadPalettes(gGameState, 0);
-    Boss3_Unk_ov000_022dad70(gGameState, 0);
+    Boss3_LoadBallPalette(gGameState, 0);
     NNS_FndMountArchive(&arc2, data_ov000_02365550, gZoneActArchive);
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365554));
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02365568));

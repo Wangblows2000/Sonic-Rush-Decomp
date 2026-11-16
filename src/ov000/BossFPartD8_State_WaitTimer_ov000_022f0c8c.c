@@ -7,9 +7,9 @@ typedef struct UnkStruct_022f0c8c {
     u16 unk454;
 } UnkStruct_022f0c8c;
 
-void BossFPartD8_State_Unk_ov000_022f0c70(void);
+void BossFPartD8_State_SkyChargeStartFadeIn(void);
 
 void BossFPartD8_State_WaitTimer_ov000_022f0c8c(UnkStruct_022f0c8c *s) {
     if (s->unk454++ > 0x78)
-        s->func = BossFPartD8_State_Unk_ov000_022f0c70;
+        s->func = BossFPartD8_State_SkyChargeStartFadeIn;
 }

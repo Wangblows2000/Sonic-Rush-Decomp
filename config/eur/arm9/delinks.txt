@@ -11208,7 +11208,7 @@ src/c_mainB/PM_GoSleepMode.c:
     complete
     .text       start:0x0200e098 end:0x0200e2d0
 
-src/asm_fallback/CARDi_IdentifyBackupCore.c:
+src/c_mainA2/CARDi_IdentifyBackupCore.c:
     complete
     .text       start:0x0200f6e0 end:0x0200f8b8
 
@@ -11308,7 +11308,7 @@ src/c_mainB/ObjCollisionMap_ProbeDistance.c:
     complete
     .text       start:0x02067a28 end:0x02067c6c
 
-src/asm_fallback/StageObj_ViewOutCheck.c:
+src/c_mainA2/StageObj_ViewOutCheck.c:
     complete
     .text       start:0x02068e58 end:0x02069090
 

@@ -82,7 +82,7 @@ void Model_Init(void *s, s32 a);
 void Model_SetResource(void *s, void *res, s32 idx);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 s32 MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void BossF_Unk_ov000_022f8c88(s32 a, s32 b);
+void BossF_LoadModelPalettesAll(s32 a, s32 b);
 void *File_Load(void *a, s32 b);
 
 UnkStruct_022fa548 *BossF_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -139,7 +139,7 @@ UnkStruct_022fa548 *BossF_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     sub->unk50 = w->base.unk18 << 4;
     sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
     w->unk218 = MapObject_Spawn(0xd8, 0, 0, 0, 0, 0, 0, 0, 0);
-    BossF_Unk_ov000_022f8c88(gGameState.unk0, 0);
+    BossF_LoadModelPalettesAll(gGameState.unk0, 0);
     NNS_FndMountArchive(ctx2, data_ov000_02366068, gZoneActArchive);
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_0236606c));
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_02366080));

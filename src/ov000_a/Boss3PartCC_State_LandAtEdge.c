@@ -61,7 +61,7 @@ struct UnkStruct_022d73cc {
 void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 void BossArena_CirclePosToArc(s32 a, s32 b, s32 x, s32 z, s32 *out);
-void Boss3_Unk_ov000_022daa78(void);
+void Boss3_MakeBallHarmful(void);
 void BossEffect_CreateJump(s32 a, s32 b, s32 c, s32 d);
 void NNS_SndPlayerStopSeq(s32 a, s32 b);
 void NNS_SndHandleReleaseSeq(s32 a);
@@ -73,7 +73,7 @@ void Boss3PartCC_State_LandAtEdge(UnkStruct_022d73cc *s) {
     s->unk10 >>= 4;
     s->unk13E |= 4;
     s->unk16A |= 4;
-    Boss3_Unk_ov000_022daa78();
+    Boss3_MakeBallHarmful();
     Model_SetAnimation(&s->unk2C4, 0, s->unk434, 0x11, 0);
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;

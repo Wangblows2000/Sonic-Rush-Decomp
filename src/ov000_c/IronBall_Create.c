@@ -10,7 +10,7 @@ extern u8 data_ov000_02366b20[], data_ov000_0236a010[];
 
 void IronBall_Destructor(void);
 void IronBall_OnHit_Unk_ov000_0230ce24(void);
-void IronBall_OnHit_Unk_ov000_0230ce4c(void);
+void IronBall_OnHitStartRoll(void);
 void IronBall_Action_Idle(UnkStruct_0230d2a0 *w);
 void IronBall_CreatePart_ov000_0230cd00(UnkStruct_0230d2a0 *w);
 
@@ -42,7 +42,7 @@ UnkStruct_0230d2a0 *IronBall_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     ObjRect_SetBox2D(&w->base.coll0, p->unk6, p->unk7, p->unk8 + p->unk6, p->unk9 + p->unk7);
     ObjRect_SetAtkDefFlags(&w->base.coll0, 0, -16);
     w->base.coll0.unkA |= 0xc0;
-    w->base.coll0.unk1C = IronBall_OnHit_Unk_ov000_0230ce4c;
+    w->base.coll0.unk1C = IronBall_OnHitStartRoll;
     w->base.coll0.unk18 = w;
     w->base.coll1.unkA |= 0x1000;
     if (p->unk4 & 1)

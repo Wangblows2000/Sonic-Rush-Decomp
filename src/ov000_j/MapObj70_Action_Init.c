@@ -19,7 +19,7 @@ typedef struct {
 
 extern UnkStruct_0236aad8 gCamera;
 
-void MapObj70_State_Unk_ov000_02309ca4(UnkStruct_02309e40 *p);
+void MapObj70_State_SetCameraLimitBySide(UnkStruct_02309e40 *p);
 
 void MapObj70_Action_Init(UnkStruct_02309e40 *p) {
     if (gCamera.unkC8 & 1) {
@@ -29,5 +29,5 @@ void MapObj70_Action_Init(UnkStruct_02309e40 *p) {
         p->unk214 = gCamera.unk3A;
         p->unk215 = gCamera.unk9E;
     }
-    p->unk68 = MapObj70_State_Unk_ov000_02309ca4;
+    p->unk68 = MapObj70_State_SetCameraLimitBySide;
 }

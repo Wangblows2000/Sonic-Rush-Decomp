@@ -17,12 +17,12 @@ typedef struct {
 
 extern UnkStruct_02369ac0 gBossStatus;
 
-void Boss7_Unk_ov000_022ee198(UnkStruct_022e726c *p, s32 a);
+void Boss7_SetRivalAnimation(UnkStruct_022e726c *p, s32 a);
 void Boss7PartD5_MoveState_DefeatExit(UnkStruct_022e726c *p);
 
 void Boss7PartD5_MoveState_StartDefeatExit(UnkStruct_022e726c *p) {
     gBossStatus.unk4 = 0x2d;
-    Boss7_Unk_ov000_022ee198(p, 0xf);
+    Boss7_SetRivalAnimation(p, 0xf);
     p->unk58 |= 0x190;
     p->unk58 &= ~1;
     p->unk2E = 0x300;

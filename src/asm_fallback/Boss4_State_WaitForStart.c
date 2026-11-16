@@ -11,7 +11,7 @@ extern void Model_SetResource(void);
 extern void Model_Init(void);
 extern void NaviMsg_ShowMessage(void);
 extern void NaviMsg_SetFaceAnim(void);
-extern void Boss4_Unk_ov000_022dcf20(void);
+extern void Boss4_StartAuxModelCycle(void);
 extern void Boss4_Action_StartSpin(void);
 extern void Boss4_ResetCamera(void);
 extern void Boss4_Draw_PlayerOnArena(void);
@@ -87,7 +87,7 @@ asm void Boss4_State_WaitForStart(void)
     bl MapObject_Spawn
     str r0, [r4, #0x210]
     mov r0, r4
-    bl Boss4_Unk_ov000_022dcf20
+    bl Boss4_StartAuxModelCycle
     mov r0, #9
     bl NaviMsg_SetFaceAnim
     mov r0, #0xf

@@ -64,7 +64,7 @@ void Boss1_UpdateCameraShake(void *p, s32 a, s32 b);
 
 BOOL Boss1_Unk_ov000_022cc6d4(void);
 void Boss1Neck_TrackPlayerSlow(UnkStruct_022c90e8 *s);
-BOOL Boss1Neck_Unk_ov000_022c7274(u32 mask);
+BOOL Boss1Neck_UpdateSlamHitboxes(u32 mask);
 void ScreenShake_Start(s32 a);
 u8 *BossEffect_CreateImpactBig(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -80,7 +80,7 @@ void Boss1Neck_State_BigSlamDown(UnkStruct_022c90e8 *s) {
             Boss1Neck_TrackPlayerSlow(s);
     }
     if (s->unk20C == 0) {
-        if (Boss1Neck_Unk_ov000_022c7274(4))
+        if (Boss1Neck_UpdateSlamHitboxes(4))
             s->unk20C = 1;
     }
     if (!(s->unk334 & 2))

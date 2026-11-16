@@ -98,8 +98,8 @@ typedef struct UnkStruct_022d7fd4_c {
 extern UnkStruct_022d7fd4_b *gBoss3;
 extern UnkStruct_022d7fd4_c data_ov000_0236a48c;
 
-void Boss3_Unk_ov000_022daa78(void);
-void Boss3PartCC_Unk_ov000_022daa5c(void);
+void Boss3_MakeBallHarmful(void);
+void Boss3PartCC_MakeBallInert(void);
 void Boss3_ResetCamera(void);
 void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
 void BossEffect_CreateJump(s32 a, s32 b, s32 c, s32 d);
@@ -113,11 +113,11 @@ void Boss3PartCC_State_ThrowAttackJump(UnkStruct_022d7fd4 *s) {
     s->unk2C4.unk10C &= ~4;
     s->unk2C4.unk114 = 0x1000;
     gBoss3->unk20C |= 2;
-    Boss3_Unk_ov000_022daa78();
+    Boss3_MakeBallHarmful();
     r->unk20C &= ~8;
     s->unk13E &= ~4;
     s->unk16A &= ~4;
-    Boss3PartCC_Unk_ov000_022daa5c();
+    Boss3PartCC_MakeBallInert();
     BossArena_ArcToCirclePos(0xf42f8, 0x5fe435, s->unk10 << 4, NULL, NULL, &s->unk258);
     c = (UnkStruct_022d7fd4_c *)(u32)&data_ov000_0236a48c;
     if (s->unk5C & 1)

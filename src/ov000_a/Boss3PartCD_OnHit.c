@@ -66,7 +66,7 @@ extern UnkStruct_022d5d78_b *gBoss3;
 extern UnkStruct_022d5d78_p *gPlayers;
 
 void Boss3PartCC_State_StartStagger(void);
-void Boss3_Unk_ov000_022daa94(UnkStruct_022d5d78_o *o);
+void Boss3_MakeBallHittable(UnkStruct_022d5d78_o *o);
 void Player_Action_AttackBounce(UnkStruct_022d5d78_p *p);
 void BossEffect_CreateClash(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -91,7 +91,7 @@ void Boss3PartCD_OnHit(UnkStruct_022d5d78_h *a, UnkStruct_022d5d78_h *b) {
                 else
                     o->unk2E = 0x600;
                 o->unk20C &= ~8;
-                Boss3_Unk_ov000_022daa94(o);
+                Boss3_MakeBallHittable(o);
                 gPlayers->unk32C |= 0x200000;
                 gPlayers->unk424 = 0;
                 gPlayers->unk422 = gPlayers->unk424;

@@ -66,7 +66,7 @@ extern UnkStruct_022d72dc_c data_ov000_0236a48c;
 extern void *gPlayers;
 
 void Boss3_ResetCamera(void);
-BOOL Boss3PartCC_Unk_ov000_022da804(UnkStruct_022d72dc *s, void *p);
+BOOL Boss3PartCC_IsOtherOnNegativeSide(UnkStruct_022d72dc *s, void *p);
 void Boss3PartCC_State_TurnToSide(UnkStruct_022d72dc *s);
 
 void Boss3PartCC_State_FacePlayerSide(UnkStruct_022d72dc *s) {
@@ -75,7 +75,7 @@ void Boss3PartCC_State_FacePlayerSide(UnkStruct_022d72dc *s) {
     c->unk74 = 0xccc;
     c->unk30 = 0x80;
     c->unk38 = 0x4cc;
-    if (!Boss3PartCC_Unk_ov000_022da804(s, gPlayers)) {
+    if (!Boss3PartCC_IsOtherOnNegativeSide(s, gPlayers)) {
         s->unk5C |= 1;
         s->unk258 = s->unk224 - 0x4000;
     } else {

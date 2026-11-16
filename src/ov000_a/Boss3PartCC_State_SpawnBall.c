@@ -76,7 +76,7 @@ typedef struct UnkStruct_022d7844_b {
 extern UnkStruct_022d7844_b *gBoss3;
 
 UnkStruct_022d7844_r *MapObject_Spawn(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-void Boss3PartCC_Unk_ov000_022daa5c(void);
+void Boss3PartCC_MakeBallInert(void);
 void BossEffect_CreatePop(s32 a, s32 b, s32 c, s32 d);
 void Boss3PartCC_State_WaitBallSpawned(UnkStruct_022d7844 *s);
 
@@ -86,7 +86,7 @@ void Boss3PartCC_State_SpawnBall(UnkStruct_022d7844 *s) {
     s->unk2C4.unk114 = 0x1000;
     gBoss3->unk218 = MapObject_Spawn(0xcd, 0, 0, 0, 0, 0, 0, 0, 0);
     gBoss3->unk218->unk5C &= ~0x20;
-    Boss3PartCC_Unk_ov000_022daa5c();
+    Boss3PartCC_MakeBallInert();
     BossEffect_CreatePop(1, s->unk24C >> 4, -s->unk250 >> 4, s->unk254 >> 4);
     s->func = Boss3PartCC_State_WaitBallSpawned;
 }

@@ -1,0 +1,19 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+s32 Sound_PlaySeqArcEx();
+
+void CranePartED_NotifyParentArrived(u8 *p0) {
+    if ((s32)p0 == 0) {
+        return;
+    }
+    if ((*(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x1e0) + 0x4) & 8) != 0) {
+        return;
+    }
+    if ((*(u32 *)((u8 *)p0 + 0x54) & 0x1000) != 0) {
+        return;
+    }
+    *(u32 *)((u8 *)p0 + 0x1f4) = (*(u32 *)((u8 *)p0 + 0x1f4) | 1);
+    *(u16 *)((u8 *)p0 + 0x5c) = (*(u16 *)((u8 *)p0 + 0x5c) & ~0x200);
+    Sound_PlaySeqArcEx(0, 0, 0x6a);
+}

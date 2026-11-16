@@ -9,7 +9,7 @@ extern u8 data_ov000_023663ac[];
 extern u8 data_ov000_02369ddc[];
 
 void MapObject_Destructor();
-void Enemy_Unk_ov000_022fc418();
+void Enemy_Action_StartPopOnContact();
 
 UnkStruct_022fc450 *EggPawnM_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -37,6 +37,6 @@ UnkStruct_022fc450 *EggPawnM_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
         w->base.unk2E = (w->base.unk2E * (((k >> 2) << 7) + 0x100)) >> 8;
     w->base.unk58 |= 0x10;
     w->base.unk5C |= 0x100;
-    Enemy_Unk_ov000_022fc418(w);
+    Enemy_Action_StartPopOnContact(w);
     return w;
 }

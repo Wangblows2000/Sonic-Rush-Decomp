@@ -42,7 +42,7 @@ extern s16 data_ov000_02364044[][9];
 extern u8 data_ov000_02366054[];
 
 void BossFPartDB_Destructor(void);
-void BossFPartDB_State_Unk_ov000_022f7a84(void);
+void BossFPartDB_State_Move(void);
 void BossFPartDB_Draw(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
@@ -70,7 +70,7 @@ UnkStruct_022f9988 *BossFPartDB_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w = Task_Create(StageObj_Main, BossFPartDB_Destructor, 0, 0x501, 2, sizeof(UnkStruct_022f9988))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022f9988));
-    w->base.unk68 = BossFPartDB_State_Unk_ov000_022f7a84;
+    w->base.unk68 = BossFPartDB_State_Move;
     NNS_FndMountArchive(ctx, data_ov000_02366054, gZoneActArchive);
     w->unk210 = NNS_FndGetArchiveFileByIndex(ctx, 8);
     NNS_FndUnmountArchive(ctx);

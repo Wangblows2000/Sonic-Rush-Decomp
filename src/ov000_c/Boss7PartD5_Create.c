@@ -71,10 +71,10 @@ extern s16 data_ov000_02368ba6[][0x18];
 void Boss7PartD5_Destructor(void);
 void Boss7PartD5_State_Idle(void);
 void Boss7PartD5_InputState_None(void);
-void Boss7PartD5_MoveState_Unk_ov000_022e98d8(void);
+void Boss7PartD5_MoveState_StartIdle(void);
 void Boss7PartD5_Draw(void);
 void Boss7PartD5_Collide(void);
-void Boss7PartD5_OnHit_Unk_ov000_022eb5fc(void);
+void Boss7PartD5_OnHit(void);
 void Pad_Reset(void *p, s32 a, s32 b);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
@@ -82,7 +82,7 @@ void NNS_FndUnmountArchive(void *f);
 void StageObj_LoadModel(void *w, void *s, void *a, s32 b, void *c, void *d);
 void StageObj_LoadMotion(void *w, void *s, void *a, void *b, void *c);
 void AnimatorSprite_Init(UnkStruct_Spr *s, void *a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, u32 h);
-void Boss7_Unk_ov000_022ee198(UnkStruct_022ee950 *w, s32 a);
+void Boss7_SetRivalAnimation(UnkStruct_022ee950 *w, s32 a);
 
 UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
@@ -98,7 +98,7 @@ UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     mgr->unk214 = w;
     w->base.unk68 = Boss7PartD5_State_Idle;
     w->unk43C = Boss7PartD5_InputState_None;
-    w->unk440 = Boss7PartD5_MoveState_Unk_ov000_022e98d8;
+    w->unk440 = Boss7PartD5_MoveState_StartIdle;
     w->unk452 = Rand() & 3;
     Pad_Reset(w->unk3D8, 0, 0);
     NNS_FndMountArchive(ctx, data_ov000_02365aec, gZoneActArchive);
@@ -144,7 +144,7 @@ UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     *coll = w->base.coll0;
     ObjRect_SetAtkDefFlags(coll, 0x11, 0);
     coll->unkA |= 0x40;
-    coll->unk1C = Boss7PartD5_OnHit_Unk_ov000_022eb5fc;
+    coll->unk1C = Boss7PartD5_OnHit;
     coll->unk18 = w;
     coll = &w->unk3A4;
     *coll = w->base.coll1;
@@ -156,7 +156,7 @@ UnkStruct_022ee950 *Boss7PartD5_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     sub->unkB = 1;
     sub->unkC = 0xf;
     AnimatorSprite_Init(&w->base.spr0, w->unk4D4, 0, 0x18, 0, 0, 0, 0, 0);
-    Boss7_Unk_ov000_022ee198(w, 0x3c);
+    Boss7_SetRivalAnimation(w, 0x3c);
     w->base.unk5C |= 4;
     return w;
 }

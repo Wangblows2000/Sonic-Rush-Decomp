@@ -19,8 +19,8 @@ void MapObject_Destructor(void);
 void EnemyFlapperGroup_OnHit_Box2(void);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
 void EffEntrance_Create(UnkStruct_StageObj *w, s32 a, s32 b);
-void EnemyFlapperGroup_Action_Unk_ov000_023008a0(UnkStruct_StageObj *w);
-void EnemyFlapperGroup_Action_Unk_ov000_02300808(UnkStruct_StageObj *w);
+void EnemyFlapperGroup_Action_Hover(UnkStruct_StageObj *w);
+void EnemyFlapperGroup_Action_Patrol(UnkStruct_StageObj *w);
 
 typedef struct {
     UnkStruct_StageObj base;
@@ -131,9 +131,9 @@ UnkStruct_023008d0 *EnemyFlapperGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c
         EffEntrance_Create(&w->base, 0, -16);
     }
     if (w->base.unk1E0->unk6 == 0 && w->base.unk1E0->unk8 == 0)
-        EnemyFlapperGroup_Action_Unk_ov000_023008a0(&w->base);
+        EnemyFlapperGroup_Action_Hover(&w->base);
     else
-        EnemyFlapperGroup_Action_Unk_ov000_02300808(&w->base);
+        EnemyFlapperGroup_Action_Patrol(&w->base);
     w->base.unk1DC = Sound_AllocHandle();
     return w;
 }

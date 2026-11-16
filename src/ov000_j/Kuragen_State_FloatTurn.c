@@ -1,0 +1,32 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[4];
+    u16 unk4;
+} UnkStruct_023016c4_1e0;
+
+typedef struct {
+    u8 pad0[0x30];
+    s16 unk30;
+    u8 pad32[0x1e0 - 0x32];
+    UnkStruct_023016c4_1e0 *unk1E0;
+    u8 pad1E4[0x238 - 0x1e4];
+    u32 unk238;
+} UnkStruct_023016c4;
+
+s16 ObjSpd_DownSet(s32 a, s32 b);
+void Kuragen_Action_Float(UnkStruct_023016c4 *p);
+
+void Kuragen_State_FloatTurn(UnkStruct_023016c4 *p) {
+    s16 spd;
+    s32 v;
+
+    spd = 0x100;
+    v = p->unk1E0->unk4 & 0xc;
+    if (v)
+        spd += (v >> 2) << 7;
+    p->unk30 = ObjSpd_DownSet(p->unk30, (spd << 5) >> 8);
+    p->unk238 ^= 0x10;
+    p->unk238 |= 0x10000;
+    Kuragen_Action_Float(p);
+}

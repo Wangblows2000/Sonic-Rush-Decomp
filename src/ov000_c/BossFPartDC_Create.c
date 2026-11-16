@@ -43,8 +43,8 @@ extern u8 data_ov000_02366050[];
 
 void BossFPartDC_Destructor(void);
 void BossFPartDC_Draw(void);
-void BossFPartDC_State_Unk_ov000_022f7180(void);
-void BossFPartDC_State_Unk_ov000_022f75d8(void);
+void BossFPartDC_State_ChasePlayer(void);
+void BossFPartDC_State_SweepPath(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
 void NNS_FndUnmountArchive(void *f);
@@ -72,10 +72,10 @@ UnkStruct_022f978c *BossFPartDC_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     if (p->unk4 & 1) {
         w->unk20C = 2;
         w->base.unkC = p->unk4 >> 1;
-        w->base.unk68 = BossFPartDC_State_Unk_ov000_022f7180;
+        w->base.unk68 = BossFPartDC_State_ChasePlayer;
         Sound_PlaySeqArc(0, 0, 0xe0);
     } else {
-        w->base.unk68 = BossFPartDC_State_Unk_ov000_022f75d8;
+        w->base.unk68 = BossFPartDC_State_SweepPath;
         Sound_PlaySeqArc(0, 0, 0xe0);
     }
     w->base.unk10 = b;

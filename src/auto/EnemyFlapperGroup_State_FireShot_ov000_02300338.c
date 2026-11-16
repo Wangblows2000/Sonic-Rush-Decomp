@@ -7,8 +7,8 @@ s32 Sound_SetPositional();
 s32 EnemyFlapperGroup_FireShot();
 extern u8 gSaveData[];
 extern u8 gGameState[];
-s32 EnemyFlapperGroup_Action_Unk_ov000_023008a0();
-s32 EnemyFlapperGroup_Action_Unk_ov000_02300808();
+s32 EnemyFlapperGroup_Action_Hover();
+s32 EnemyFlapperGroup_Action_Patrol();
 
 void EnemyFlapperGroup_State_FireShot_ov000_02300338(u8 *p0) {
     if (((s32)*(s16 *)((u8 *)p0 + 0xa2) >> 4) == 0xc) {
@@ -33,11 +33,11 @@ void EnemyFlapperGroup_State_FireShot_ov000_02300338(u8 *p0) {
         s32 t2 = *(u32 *)((u8 *)p0 + 0x1e0);
         if (*(s8 *)((u8 *)*(u32 *)((u8 *)p0 + 0x1e0) + 0x6) == 0) {
             if (*(u8 *)((u8 *)t2 + 0x8) == 0) {
-                EnemyFlapperGroup_Action_Unk_ov000_023008a0(p0, t2);
+                EnemyFlapperGroup_Action_Hover(p0, t2);
                 return;
             }
         }
-        EnemyFlapperGroup_Action_Unk_ov000_02300808(p0);
+        EnemyFlapperGroup_Action_Patrol(p0);
         return;
     }
     *(u32 *)((u8 *)p0 + 0x8) = (t0 - 0x1);

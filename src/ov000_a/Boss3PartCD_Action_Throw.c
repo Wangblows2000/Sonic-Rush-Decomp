@@ -54,7 +54,7 @@ extern UnkStruct_022d59fc_p *gBoss3;
 extern s32 data_ov000_02363330[][5];
 
 void BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
-void Boss3PartCD_State_Unk_ov000_022d59e0(UnkStruct_022d59fc *s);
+void Boss3PartCD_State_ThrowStart(UnkStruct_022d59fc *s);
 void Boss3PartCD_State_Fly(UnkStruct_022d59fc *s);
 
 void Boss3PartCD_Action_Throw(UnkStruct_022d59fc *s) {
@@ -63,7 +63,7 @@ void Boss3PartCD_Action_Throw(UnkStruct_022d59fc *s) {
     BossArena_ArcToCirclePos(0xf42f8, 0x5fe435, s->unk10 << 4, NULL, NULL, &s->unk220);
     s->unk22E = 0;
     if (!(s->unk20C & 4))
-        s->func = Boss3PartCD_State_Unk_ov000_022d59e0;
+        s->func = Boss3PartCD_State_ThrowStart;
     else
         s->func = Boss3PartCD_State_Fly;
 }

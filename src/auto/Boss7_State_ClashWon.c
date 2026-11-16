@@ -1,0 +1,33 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+s32 ScreenShake_Start();
+s32 StageObj_SetPause();
+s32 Boss7_SetRivalAnimation();
+extern u8 gGameState[];
+void Boss7_State_WinCut1();
+
+s32 Boss7_State_ClashWon(u8 *p0) {
+    *(u32 *)((u8 *)p0 + 0x210) = 0;
+    ScreenShake_Start(0);
+    *(u32 *)((u8 *)p0 + 0x54) = (*(u32 *)((u8 *)p0 + 0x54) | 0x20);
+    *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x54) = (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x54) | 0x20);
+    s32 t0 = *(u32 *)((u8 *)p0 + 0x21c);
+    *(u32 *)((u8 *)t0 + 0x54) = (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x21c) + 0x54) | 0x20);
+    *(u32 *)((u8 *)p0 + 0x360) = 0;
+    *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x320) = 0;
+    s32 t1 = *(u32 *)((u8 *)p0 + 0x21c);
+    *(u32 *)((u8 *)t1 + 0x320) = 0;
+    StageObj_SetPause(t1, 0, t0);
+    s32 t2 = *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x124);
+    Boss7_SetRivalAnimation(*(u32 *)((u8 *)p0 + 0x214), 0xf);
+    *(u32 *)*(u32 *)((u8 *)t2 + 0xe4) = ((s32)(*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)t2 + 0xe4) + 0x8) + 0x4) << 0xc) >> 1);
+    *(u32 *)*(u32 *)((u8 *)t2 + 0xf4) = ((s32)(*(u16 *)((u8 *)*(u32 *)((u8 *)*(u32 *)((u8 *)t2 + 0xf4) + 0x8) + 0x4) << 0xc) >> 1);
+    *(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x5c) = (*(u16 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x5c) | 0x10);
+    *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x10) = (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x10) + 0x1800);
+    *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x14) = (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x14) - 0x1000);
+    *(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x58) = (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x214) + 0x58) & ~0x80);
+    *(u32 *)((u8 *)gGameState + 0x18) = (*(u32 *)((u8 *)gGameState + 0x18) & ~1);
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)Boss7_State_WinCut1;
+    return (s32)gGameState;
+}

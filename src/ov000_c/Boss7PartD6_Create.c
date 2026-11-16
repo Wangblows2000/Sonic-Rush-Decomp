@@ -48,7 +48,7 @@ extern void *gZoneActArchive;
 extern u8 data_ov000_02365ae8[];
 
 void Boss7PartD6_Destructor(void);
-void Boss7PartD6_State_Unk_ov000_022ec364(void);
+void Boss7PartD6_State_Appear(void);
 void Boss7PartD6_Draw(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
@@ -68,7 +68,7 @@ UnkStruct_022ee654 *Boss7PartD6_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w = Task_Create(StageObj_Main, Boss7PartD6_Destructor, 0, 0x502, 2, sizeof(UnkStruct_022ee654))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022ee654));
-    w->base.unk68 = Boss7PartD6_State_Unk_ov000_022ec364;
+    w->base.unk68 = Boss7PartD6_State_Appear;
     w->unk378 = par->unk3D0;
     w->unk37C = par->unk42E;
     w->unk384 = Sound_AllocHandle();

@@ -7,12 +7,12 @@ typedef struct UnkStruct_022eb394 {
     void (*func2)(void);
 } UnkStruct_022eb394;
 
-void Boss7_Unk_ov000_022ee380(UnkStruct_022eb394 *s);
-void Boss7PartD5_InputState_Unk_ov000_022ea798(void);
+void Boss7_InitCamera(UnkStruct_022eb394 *s);
+void Boss7PartD5_InputState_Decide(void);
 void Boss7PartD5_State_RunAI(void);
 
 void Boss7PartD5_Action_StartAI(UnkStruct_022eb394 *s) {
-    Boss7_Unk_ov000_022ee380(s);
-    s->func2 = Boss7PartD5_InputState_Unk_ov000_022ea798;
+    Boss7_InitCamera(s);
+    s->func2 = Boss7PartD5_InputState_Decide;
     s->func = Boss7PartD5_State_RunAI;
 }

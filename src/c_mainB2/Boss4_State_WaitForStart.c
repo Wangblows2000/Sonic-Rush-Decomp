@@ -45,7 +45,7 @@ void Model_Init(void *p, s32 a);
 void Model_SetResource(void *p, void *a, s32 b);
 void Boss4_ResetCamera(void);
 void *MapObject_Spawn(s32 type, s32 x, s32 y, s16 d, s8 e, s8 f, u8 g, u8 h, u8 i);
-void Boss4_Unk_ov000_022dcf20(UnkStruct_Boss *b);
+void Boss4_StartAuxModelCycle(UnkStruct_Boss *b);
 void NaviMsg_SetFaceAnim(s32 a);
 void NaviMsg_ShowMessage(s32 a, s32 b);
 void Boss4_State_Fight(UnkStruct_022deab4 *s);
@@ -73,7 +73,7 @@ void Boss4_State_WaitForStart(UnkStruct_022deab4 *s) {
     Boss4_ResetCamera();
     b->unk20C = MapObject_Spawn(0xce, 0, 0, 0, 0, 0, 0, 0, 0);
     b->unk210 = MapObject_Spawn(0xcf, 0, 0, 0, 0, 0, 0, 0, 0);
-    Boss4_Unk_ov000_022dcf20(b);
+    Boss4_StartAuxModelCycle(b);
     NaviMsg_SetFaceAnim(9);
     NaviMsg_ShowMessage(0xf, 0xf0);
     s->func = Boss4_State_Fight;

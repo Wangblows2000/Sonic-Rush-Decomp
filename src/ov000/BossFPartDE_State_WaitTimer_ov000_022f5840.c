@@ -7,9 +7,9 @@ typedef struct UnkStruct_022f5840 {
     void (*func)(void);
 } UnkStruct_022f5840;
 
-void BossFPartDE_State_Unk_ov000_022f57f8(void);
+void BossFPartDE_State_ChainActivate(void);
 
 void BossFPartDE_State_WaitTimer_ov000_022f5840(UnkStruct_022f5840 *s) {
     if (s->unkC++ > 0)
-        s->func = BossFPartDE_State_Unk_ov000_022f57f8;
+        s->func = BossFPartDE_State_ChainActivate;
 }

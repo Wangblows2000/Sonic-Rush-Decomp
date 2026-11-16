@@ -1,0 +1,44 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct UnkStruct_022e8644 {
+    UnkStruct_StageObj base;
+    u8 pad20C[0x3D0 - 0x20C];
+    s32 unk3D0;
+    u8 pad3D4[0x3D8 - 0x3D4];
+    u16 unk3D8;
+    u8 pad3DA[0x440 - 0x3DA];
+    void (*unk440)(struct UnkStruct_022e8644 *);
+} UnkStruct_022e8644;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u8 pad20C[0x220 - 0x20C];
+    u32 unk220;
+} UnkStruct_Boss;
+
+typedef struct {
+    u8 pad[0x114];
+    s32 unk114;
+} UnkStruct_124;
+
+extern UnkStruct_Boss *gBoss7;
+
+void BossEffect_CreateHoming(s32 a, s32 x, s32 y, s32 z);
+void Boss7PartD5_SpawnFireParticle(UnkStruct_022e8644 *w);
+void Boss7PartD5_MoveState_Idle(UnkStruct_022e8644 *w);
+void Boss7PartD5_MoveState_StartIdle(UnkStruct_022e8644 *w);
+
+void Boss7PartD5_MoveState_DashSkid(UnkStruct_022e8644 *w) {
+    UnkStruct_Boss *b = gBoss7;
+
+    if (w->unk3D0 == 0) {
+        if ((b->unk220 & 0x1f) == 0)
+            BossEffect_CreateHoming(1, w->base.unk10, w->base.unk14, w->base.unk18 + 8);
+    } else {
+        if ((b->unk220 & 7) == 0)
+            Boss7PartD5_SpawnFireParticle(w);
+    }
+    Boss7PartD5_MoveState_Idle(w);
+    if (w->base.unk2E == 0)
+        w->unk440 = Boss7PartD5_MoveState_StartIdle;
+}

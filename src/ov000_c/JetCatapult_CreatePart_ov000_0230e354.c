@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366b9c[], data_ov000_0236a02c[];
 
-void JetCatapultPart_State_Unk_ov000_0230e238(void);
+void JetCatapultPart_State_Countdown(void);
 
 void JetCatapult_CreatePart_ov000_0230e354(void *par, s32 x, s32 y) {
     UnkStruct_Task *task;
@@ -28,5 +28,5 @@ void JetCatapult_CreatePart_ov000_0230e354(void *par, s32 x, s32 y) {
     w->unk58 |= 0x2100;
     w->unk54 |= 2;
     w->unk54 |= 0x10;
-    w->unk68 = JetCatapultPart_State_Unk_ov000_0230e238;
+    w->unk68 = JetCatapultPart_State_Countdown;
 }

@@ -3,7 +3,7 @@
 extern void *data_ov000_02369ba0;
 extern u8 data_ov000_02366b60[], data_ov000_0236a01c[];
 
-void ItemBoxPart_State_Unk_ov000_0230d804(void);
+void ItemBoxPart_State_FollowBox(void);
 
 void ItemBox_CreatePart_ov000_0230d930(UnkStruct_StageObj *par, s32 vx, s32 vy, u32 k) {
     UnkStruct_Task *task;
@@ -32,5 +32,5 @@ void ItemBox_CreatePart_ov000_0230d930(UnkStruct_StageObj *par, s32 vx, s32 vy, 
     w->unk30 = vy;
     w->unk58 |= 0x2100;
     w->unk54 |= 0x12;
-    w->unk68 = ItemBoxPart_State_Unk_ov000_0230d804;
+    w->unk68 = ItemBoxPart_State_FollowBox;
 }

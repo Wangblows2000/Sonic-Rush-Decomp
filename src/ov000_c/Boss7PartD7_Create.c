@@ -26,7 +26,7 @@ extern void *gZoneActArchive;
 extern u8 data_ov000_02365ae4[];
 
 void Boss7PartD7_Destructor(void);
-void Boss7PartD7_State_Unk_ov000_022ebfac(void);
+void Boss7PartD7_State_Hide(void);
 void Boss7PartD7_Draw(void);
 void NNS_FndMountArchive(void *f, void *path, void *arc);
 void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
@@ -43,7 +43,7 @@ UnkStruct_022ee43c *Boss7PartD7_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w = Task_Create(StageObj_Main, Boss7PartD7_Destructor, 0, 0x502, 2, sizeof(UnkStruct_022ee43c))->work;
     zero = 0;
     MIi_CpuClear16(zero, w, sizeof(UnkStruct_022ee43c));
-    w->base.unk68 = Boss7PartD7_State_Unk_ov000_022ebfac;
+    w->base.unk68 = Boss7PartD7_State_Hide;
     w->unk344 = p->unk4;
     NNS_FndMountArchive(ctx, data_ov000_02365ae4, gZoneActArchive);
     if (p->unk4 == 0) {

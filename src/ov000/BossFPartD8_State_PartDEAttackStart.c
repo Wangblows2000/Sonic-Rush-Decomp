@@ -1,0 +1,14 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_022f1264 {
+    u8 pad[0x68];
+    void (*func)(void);
+} UnkStruct_022f1264;
+
+void BossFPartD8_SetAnimation(UnkStruct_022f1264 *s, s32 a, s32 b, s32 c);
+void BossFPartD8_State_PartDEAttackWindup(void);
+
+void BossFPartD8_State_PartDEAttackStart(UnkStruct_022f1264 *s) {
+    BossFPartD8_SetAnimation(s, 0x29, 0x1000, 0);
+    s->func = BossFPartD8_State_PartDEAttackWindup;
+}

@@ -19,7 +19,7 @@ typedef struct {
 extern UnkStruct_0236aad8 gCamera;
 
 void MapObj70_Destructor(void);
-void MapObj70_Action_Unk_ov000_02309be0(UnkStruct_02309e9c *w);
+void MapObj70_Action_ApplyInitialCameraLimit(UnkStruct_02309e9c *w);
 void MapObj70_Action_Init(UnkStruct_02309e9c *w);
 void Camera_AddAreaObject(void);
 
@@ -51,7 +51,7 @@ UnkStruct_02309e9c *MapObj70_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk5C |= 0x20;
     w->unk212 = (u8)p->unk6 * 10000 + (u8)p->unk7 * 100 + p->unk8;
     if (p->unk4 & 0x40)
-        MapObj70_Action_Unk_ov000_02309be0(w);
+        MapObj70_Action_ApplyInitialCameraLimit(w);
     else
         MapObj70_Action_Init(w);
     Camera_AddAreaObject();

@@ -10,7 +10,7 @@ typedef struct {
 extern UnkStruct_022c4560 gGameState;
 
 void EffBrakeSmoke_Create(UnkStruct_StageObj *w, s16 x, s16 y);
-void EnemyPawnGroup_Action_Unk_ov000_022fcef4(UnkStruct_StageObj *w);
+void EnemyPawnGroup_Action_Dash(UnkStruct_StageObj *w);
 
 void EnemyPawnGroup_State_Brake(UnkStruct_StageObj *w) {
     if ((gGameState.unk20 & 7) == 0 && (gGameState.unk18 & 1))
@@ -19,5 +19,5 @@ void EnemyPawnGroup_State_Brake(UnkStruct_StageObj *w) {
         w->unkC--;
         return;
     }
-    EnemyPawnGroup_Action_Unk_ov000_022fcef4(w);
+    EnemyPawnGroup_Action_Dash(w);
 }

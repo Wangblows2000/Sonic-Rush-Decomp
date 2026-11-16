@@ -13,14 +13,14 @@ typedef struct UnkStruct_022de224 {
 extern s32 gBossStatus[];
 
 void Boss4_SubState_ClashFlash(void);
-void Boss4_Unk_ov000_022db900(UnkStruct_022de224 *s, s32 a);
+void Boss4_SetSpinSpeed(UnkStruct_022de224 *s, s32 a);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
 
 void Boss4_Action_Clash(UnkStruct_022de224 *s) {
     gBossStatus[1] = 0x15;
     s->func = Boss4_SubState_ClashFlash;
     s->unk224 = 0;
-    Boss4_Unk_ov000_022db900(s, 0x20);
+    Boss4_SetSpinSpeed(s, 0x20);
     s->unkBC4 = 0x180;
     s->unkBC8 = 0xd80;
     s->unkBCC = 0x900;

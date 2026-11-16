@@ -65,11 +65,11 @@ void Model_SetResource(void *s, void *res, s32 idx);
 s32 NNS_G3dGetTex(void *p);
 void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
 void NNS_G3dRenderObjSetCallBack(void *p, void (*fn)(void), s32 a, s32 b, s32 c);
-void Boss4_Unk_ov000_022dbc4c(s32 a);
-void Boss4_Unk_ov000_022dbb7c(s32 a);
-void Boss4_Unk_ov000_022dba50(s32 a);
-void Boss4_Unk_ov000_022dbab4(s32 a);
-void Boss4_Unk_ov000_022db9ec(s32 a);
+void Boss4_LoadModelPalettes1(s32 a);
+void Boss4_LoadModelPalettes2(s32 a);
+void Boss4_LoadModelPalettes4(s32 a);
+void Boss4_LoadModelPalettes3(s32 a);
+void Boss4_LoadModelPalettes5(s32 a);
 
 UnkStruct_022df55c *Boss4_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     u32 ctx[0x17];
@@ -148,10 +148,10 @@ UnkStruct_022df55c *Boss4_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023657a8));
     NNS_G3dResDefaultSetup(NNS_FndGetArchiveFileByName(data_ov000_023657c4));
     NNS_FndUnmountArchive(ctx2);
-    Boss4_Unk_ov000_022dbc4c(0);
-    Boss4_Unk_ov000_022dbb7c(0);
-    Boss4_Unk_ov000_022dba50(0);
-    Boss4_Unk_ov000_022dbab4(0);
-    Boss4_Unk_ov000_022db9ec(0);
+    Boss4_LoadModelPalettes1(0);
+    Boss4_LoadModelPalettes2(0);
+    Boss4_LoadModelPalettes4(0);
+    Boss4_LoadModelPalettes3(0);
+    Boss4_LoadModelPalettes5(0);
     return w;
 }

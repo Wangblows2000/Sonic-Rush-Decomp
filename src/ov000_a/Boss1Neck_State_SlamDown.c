@@ -76,7 +76,7 @@ extern u16 data_ov000_02362d24[][8];
 
 BOOL Boss1_Unk_ov000_022cc6d4(void);
 void Boss1Neck_TrackPlayerMedium(UnkStruct_022c98d0 *s);
-BOOL Boss1Neck_Unk_ov000_022c7274(u32 mask);
+BOOL Boss1Neck_UpdateSlamHitboxes(u32 mask);
 void ScreenShake_Start(s32 a);
 u8 *BossEffect_CreateImpactSmall(s32 a, s32 b, s32 c, s32 d);
 void Sound_PlaySeqArc(s32 a, s32 b, s32 c);
@@ -113,7 +113,7 @@ void Boss1Neck_State_SlamDown(UnkStruct_022c98d0 *s) {
     else
         Boss1Neck_TrackPlayerMedium(s);
     if (s->unk20C == 0) {
-        if (Boss1Neck_Unk_ov000_022c7274(2))
+        if (Boss1Neck_UpdateSlamHitboxes(2))
             s->unk20C = 1;
     }
     if (!(s->unk334 & 2))

@@ -11,11 +11,11 @@ typedef struct UnkStruct_0230e868 {
     void (*func)(void);
 } UnkStruct_0230e868;
 
-void JetCatapult_State_Unk_ov000_0230e7ec(void);
+void JetCatapult_State_Countdown(void);
 void EffJet_Create(UnkStruct_0230e868 *s);
 
 void JetCatapult_Action_Ignite(UnkStruct_0230e868 *s) {
-    s->func = JetCatapult_State_Unk_ov000_0230e7ec;
+    s->func = JetCatapult_State_Countdown;
     s->unk54 |= 2;
     s->unkC = 0xb6;
     s->unk30 = 0x100;

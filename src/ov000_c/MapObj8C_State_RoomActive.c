@@ -1,0 +1,62 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    u32 unk0;
+    u8 pad4[0x34 - 4];
+    u32 unk34;
+    u8 pad38[0x64 - 0x38];
+} UnkStruct_Plr;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u32 unk20C;
+    u8 pad210[2];
+    s8 unk212;
+    s8 unk213;
+    u8 unk214;
+} UnkStruct_023094f0;
+
+extern UnkStruct_Plr gCamera[];
+
+BOOL Gimmick_CheckRoomResetOnDeath(UnkStruct_023094f0 *w, s32 a);
+void EnemyRoom_ClearActive(s32 a);
+void MapObj8C_Action_RoomCleared(UnkStruct_023094f0 *w);
+
+void MapObj8C_State_RoomActive(UnkStruct_023094f0 *w) {
+    u8 i;
+    BOOL all;
+    u32 f;
+
+    if (Gimmick_CheckRoomResetOnDeath(w, 1)) {
+        if (gCamera[2].unk0 & 1) {
+            gCamera[0].unk34 &= ~0x10000;
+            gCamera[1].unk34 &= ~0x10000;
+        } else {
+            if (w->unk20C & 2)
+                gCamera[0].unk34 &= ~0x10000;
+            if (w->unk20C & 4)
+                gCamera[1].unk34 &= ~0x10000;
+        }
+        EnemyRoom_ClearActive(w->unk214);
+        w->base.unk1F4 &= ~0x10;
+        w->base.unk54 |= 4;
+        return;
+    }
+    f = w->unk20C;
+    if (!(f & 0x1000000)) {
+        all = TRUE;
+        for (i = 0; i < 2; i = (u8)(i + 1)) {
+            if ((f & (2 << i)) && (0x550000 << i) != (f & (0x550000 << i))) {
+                all = FALSE;
+                break;
+            }
+        }
+        if (all)
+            w->unk20C |= 0x1000000;
+    }
+    if ((w->unk20C & 0x1000020) == 0x1000020)
+        w->unk20C |= 0x100;
+    if (w->unk213 < w->unk212)
+        return;
+    MapObj8C_Action_RoomCleared(w);
+}

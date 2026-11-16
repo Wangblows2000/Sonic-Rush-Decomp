@@ -72,12 +72,12 @@ void Model_SetAnimation(void *p, s32 a, void *b, s32 c, s32 d);
 
 extern void *gPlayers;
 
-BOOL Boss3PartCC_Unk_ov000_022da804(UnkStruct_022d8890 *s, void *p);
+BOOL Boss3PartCC_IsOtherOnNegativeSide(UnkStruct_022d8890 *s, void *p);
 void Boss3PartCC_State_StartPushBall(UnkStruct_022d8890 *s);
 void Boss3PartCC_State_PushTurn(UnkStruct_022d8890 *s);
 
 void Boss3PartCC_State_PushSelectDirection(UnkStruct_022d8890 *s) {
-    BOOL f = Boss3PartCC_Unk_ov000_022da804(s, gPlayers) == 0;
+    BOOL f = Boss3PartCC_IsOtherOnNegativeSide(s, gPlayers) == 0;
     if (((s->unk5C & 1) && f) || (!(s->unk5C & 1) && !f)) {
         s->func = Boss3PartCC_State_StartPushBall;
         return;

@@ -1,0 +1,25 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+extern u8 gCamera[];
+s32 Gimmick_GetRoomIndex();
+s32 EnemyRoom_Get();
+void MapObj8F_State_CameraLocked();
+
+void MapObj8F_Action_CameraLocked(u8 *p0) {
+    s32 t0 = (*(u32 *)((u8 *)gCamera + 0xc8) & 1);
+    if (t0 != 0) {
+        s32 t1 = Gimmick_GetRoomIndex(p0, t0);
+        s32 t2 = EnemyRoom_Get(1, t1);
+        if (t2 == 0) {
+            *(u32 *)((u8 *)p0 + 0x1f4) = (*(u32 *)((u8 *)p0 + 0x1f4) | 0x10);
+            *(u32 *)((u8 *)p0 + 0x54) = (*(u32 *)((u8 *)p0 + 0x54) | 4);
+            return;
+        }
+        s32 t3 = (*(u32 *)((u8 *)gCamera + 0xc8) & ~4);
+        *(u32 *)((u8 *)gCamera + 0xc8) = t3;
+        *(u32 *)((u8 *)gCamera + 0xc8) = (t3 | 8);
+        *(u32 *)((u8 *)gCamera + 0xdc) = ((s32)(*(u32 *)((u8 *)t2 + 0x224) + *(u32 *)((u8 *)t2 + 0x22c)) >> 1);
+    }
+    *(u32 *)((u8 *)p0 + 0x68) = (u32)MapObj8F_State_CameraLocked;
+}

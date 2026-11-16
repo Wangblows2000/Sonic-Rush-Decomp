@@ -148,6 +148,13 @@ def write_script(mods: list[Module], order: list[str], delinks_root: Path, norm:
     if "itcm" in by:
         consts["__ITCM_HI"] = max(s.end for s in by["itcm"].sections)
     consts["__OVERLAY_COUNT"] = sum(1 for m in mods if m.name.startswith("ov"))
+    # Project-defined absolute linker symbols: `link_time_const(NAME=0xVALUE)`
+    # (dsd asm-entry-points patch), e.g. NitroSDK's SDK_SYS_STACKSIZE.
+    import re as _re
+    for rel in (ROOT / "config").rglob("relocs.txt"):
+        for name, val in _re.findall(r"link_time_const\(([A-Za-z_]\w*)=(0x[0-9a-fA-F]+|\d+)\)",
+                                     rel.read_text()):
+            consts[name] = int(val, 0)
     for k, v in consts.items():
         lines.append(f"{k} = 0x{v:08x};")
     out.write_text("\n".join(lines) + "\n")

@@ -10,7 +10,7 @@ extern u8 data_ov000_02366378[];
 extern u8 data_ov000_02369dcc[];
 
 void MapObject_Destructor();
-void EggBishop_Action_Unk_ov000_022fc084();
+void EggBishop_Action_Spawned();
 
 UnkStruct_022fc0bc *EggBishop_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     UnkStruct_Task *task;
@@ -39,6 +39,6 @@ UnkStruct_022fc0bc *EggBishop_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     w->base.unk58 |= 0x10;
     w->base.unk58 |= 0x100;
     w->base.unk5C |= 0x100;
-    EggBishop_Action_Unk_ov000_022fc084(w);
+    EggBishop_Action_Spawned(w);
     return w;
 }

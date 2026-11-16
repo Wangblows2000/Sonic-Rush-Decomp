@@ -48,8 +48,8 @@ void EnemyPawnGroup_OnHit_Box2_Bounce(void);
 void EnemyPawnGroup_OnDetect(void);
 void StageObj_Load3dBAC(void *w, UnkStruct_022fecf4_Sub *s, void *a, s32 b, s32 c, void *d, void *e);
 BOOL Stage_IsGravityFlipped(s32 x, s32 y);
-void EnemyPawnGroup_Action_Unk_ov000_022fe9b4(UnkStruct_022fecf4 *w);
-void EnemyPawnGroup_Action_Unk_ov000_022fec38(UnkStruct_022fecf4 *w);
+void EnemyPawnGroup_Action_StartDropIn(UnkStruct_022fecf4 *w);
+void EnemyPawnGroup_Action_StartEntrance(UnkStruct_022fecf4 *w);
 void EnemyPawnGroup_Action_Walk(UnkStruct_022fecf4 *w);
 
 UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
@@ -184,9 +184,9 @@ UnkStruct_022fecf4 *EnemyPawnGroup_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
     }
     w->base.unkC = 200;
     if (w->base.unk1E0->unk9 != 0) {
-        EnemyPawnGroup_Action_Unk_ov000_022fe9b4(w);
+        EnemyPawnGroup_Action_StartDropIn(w);
     } else if (p->unk4 & 0x40) {
-        EnemyPawnGroup_Action_Unk_ov000_022fec38(w);
+        EnemyPawnGroup_Action_StartEntrance(w);
         w->base.unk1F4 |= 0x40;
     } else {
         w->base.unk58 |= 0x80;

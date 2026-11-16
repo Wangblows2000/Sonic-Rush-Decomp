@@ -1,7 +1,7 @@
 /* templates.py: lifted from the ROM instruction stream, verified by match.py. */
 #include <nitro/types.h>
 
-s32 GmkRail_Unk_ov000_02312f70();
+s32 GmkRail_StartFromPlayerSpeed();
 s32 Player_Action_AttachToObject();
 s32 Sound_PlaySeqArcEx();
 
@@ -28,7 +28,7 @@ void GmkRail_OnHit(u8 *p0, u8 *p1) {
             return;
         }
     }
-    GmkRail_Unk_ov000_02312f70(t0, t1);
+    GmkRail_StartFromPlayerSpeed(t0, t1);
     Player_Action_AttachToObject(t1, t0, 0, 0x28);
     Sound_PlaySeqArcEx((t1 + 0x388), 0, 0x5a);
     *(u32 *)((u8 *)t1 + 0x32c) = (*(u32 *)((u8 *)t1 + 0x32c) | 1);

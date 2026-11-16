@@ -2,7 +2,7 @@
 #include <nitro/types.h>
 
 s32 ObjShift_Set();
-void StageObj_Unk_ov000_022fea7c();
+void StageObj_State_EntranceDrop();
 
 void EffEntrance_State_ScaleInOut(u8 *p0) {
     if (*(u32 *)((u8 *)p0 + 0x88) != 0) {
@@ -11,7 +11,7 @@ void EffEntrance_State_ScaleInOut(u8 *p0) {
         s32 t1 = ObjShift_Set(*(s16 *)((u8 *)p0 + 0x46), 0x100, 2, 0, 8);
         *(u16 *)((u8 *)p0 + 0x46) = t1;
         if (*(s16 *)((u8 *)p0 + 0x44) == 0x100) {
-            if (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x88) + 0x68) != (s32)(u32)StageObj_Unk_ov000_022fea7c) {
+            if (*(u32 *)((u8 *)*(u32 *)((u8 *)p0 + 0x88) + 0x68) != (s32)(u32)StageObj_State_EntranceDrop) {
                 *(u32 *)((u8 *)p0 + 0x88) = 0;
             }
         }
