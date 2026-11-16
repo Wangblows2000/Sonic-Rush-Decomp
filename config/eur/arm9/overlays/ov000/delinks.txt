@@ -11191,3 +11191,11 @@ src/ov000_t/func_ov000_023263c0.c:
 src/ov000_t/func_ov000_02336da8.c:
     complete
     .text       start:0x02336da8 end:0x02336f28
+
+src/asm_fallback/func_ov000_02302164.c:
+    complete
+    .text       start:0x02302164 end:0x02302350
+
+src/asm_fallback/func_ov000_0234c4a4.c:
+    complete
+    .text       start:0x0234c4a4 end:0x0234c644

@@ -3,6 +3,7 @@
 typedef struct { void *alloc; void *free; } UnkFuncs_02034b18;
 typedef struct { UnkFuncs_02034b18 *funcs; void *heap; u32 align; u32 unkC; } UnkAllocator_02034b18;
 
+extern u8 data_027e0060[];
 extern void *data_0208fe74;
 extern UnkAllocator_02034b18 data_0208feb4;
 extern UnkFuncs_02034b18 data_0208fe9c;
@@ -14,7 +15,7 @@ void func_0203498c(void);
 
 void func_02034b18(void) {
     vu32 z0, z1;
-    data_0208fe74 = func_02020a14((void *)0x027E0060, 0x2000, 0);
+    data_0208fe74 = func_02020a14((void *)data_027e0060, 0x2000, 0);
     func_02020960(data_0208fe74, 1);
     z0 = 0;
     MIi_CpuClear32(z0, &data_0208feb4, sizeof(UnkAllocator_02034b18));

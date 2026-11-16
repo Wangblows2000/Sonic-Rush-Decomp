@@ -1,6 +1,6 @@
 # Progress dashboard
 
-Last updated: **2026-11-16 10:17:39Z** · version `eur` · regenerate with `python tools/project.py dashboard`
+Last updated: **2026-11-16 10:27:13Z** · version `eur` · regenerate with `python tools/project.py dashboard`
 
 Numbers come only from the objdiff report (100 % matched functions in non-generated units) and `symbols.txt` sizes. Nothing estimated, nothing unverified.
 
@@ -8,17 +8,17 @@ Numbers come only from the objdiff report (100 % matched functions in non-genera
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
-| main | `████████████████████` 99.87% | 448,982 / 449,566 | 2,852 / 2,872 | 20 |
+| main | `████████████████████` 99.91% | 449,150 / 449,566 | 2,853 / 2,872 | 19 |
 | itcm | `████████████████████` 100.00% | 2,064 / 2,064 | 14 / 14 | 0 |
-| ov000 | `████████████████████` 99.86% | 641,816 / 642,724 | 2,797 / 2,799 | 2 |
+| ov000 | `████████████████████` 100.00% | 642,724 / 642,724 | 2,799 / 2,799 | 0 |
 | ov001 | `████████████████████` 100.00% | 328,118 / 328,118 | 1,723 / 1,723 | 0 |
-| **ARM9 total** | `████████████████████` 99.90% | 1,420,980 / 1,422,472 | 7,386 / 7,408 | 22 |
+| **ARM9 total** | `████████████████████` 99.97% | 1,422,056 / 1,422,472 | 7,389 / 7,408 | 19 |
 
-Next milestone: **100%** matched code — 1,492 more bytes (currently 99.90%).
+Next milestone: **100%** matched code — 416 more bytes (currently 99.97%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 10:16:46Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 10:17:38Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 10:17:39Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 10:26:23Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 10:27:11Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 10:27:12Z
 
 ## Task board
 
@@ -30,10 +30,11 @@ Next milestone: **100%** matched code — 1,492 more bytes (currently 99.90%).
 
 ## History
 
-Matched bytes trend: ▁▁▅▅▆▆▇▇▇▇▇▇▇▇▇█  (16 changes, 17 runs)
+Matched bytes trend: ▁▁▅▅▆▆▇▇▇▇▇▇▇▇▇▇█  (17 changes, 18 runs)
 
 | UTC | Matched bytes | % code | Functions |
 | --- | ------------- | ------ | --------- |
+| 2026-11-16 10:27:13Z | 1,422,056 | 99.97% | 7,389 |
 | 2026-11-16 10:17:39Z | 1,420,980 | 99.90% | 7,386 |
 | 2026-11-16 09:51:06Z | 1,408,712 | 99.03% | 7,357 |
 | 2026-11-16 09:39:54Z | 1,372,122 | 96.46% | 7,292 |
@@ -43,4 +44,3 @@ Matched bytes trend: ▁▁▅▅▆▆▇▇▇▇▇▇▇▇▇█  (16 chang
 | 2026-11-16 07:36:16Z | 1,346,618 | 94.67% | 7,232 |
 | 2026-11-16 06:46:17Z | 1,317,362 | 92.61% | 7,111 |
 | 2026-11-16 06:14:24Z | 1,303,530 | 91.64% | 7,059 |
-| 2026-11-16 05:36:01Z | 1,267,512 | 89.11% | 6,879 |
