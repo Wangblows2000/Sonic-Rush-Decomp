@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202d8f0(void)
+asm void _dfix(void)
 {
     bic r3, r1, #0x80000000
     ldr r2, [pc, #0x3c]

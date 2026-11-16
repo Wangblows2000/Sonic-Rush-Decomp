@@ -1,0 +1,94 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u8 pad20C[0xD60 - 0x20C];
+    UnkStruct_Coll coll[11];
+} UnkStruct_022e671c;
+
+void func_ov000_022e0e7c(void);
+void func_ov000_022e0c94(void);
+void func_ov000_022e0ba8(void);
+void func_ov000_022e0af8(void);
+void func_ov000_022e0998(void);
+void func_ov000_022e08b0(void);
+void func_0206e2d8(UnkStruct_Coll *c, s32 a, s32 b, s32 d, s32 e, s32 f, s32 g);
+
+void func_ov000_022e671c(UnkStruct_022e671c *w) {
+    UnkStruct_Coll *c;
+
+    w->base.unk10 = 0x1a000;
+    w->base.unk14 = 0x20000;
+    w->base.unk18 = 0;
+    c = &w->coll[0];
+    *c = w->base.coll0;
+    func_0206e2d8(c, -13, -10, 13, 12, -0x7d00, 0x7d00);
+    c->unk18 = w;
+    c->unk1C = func_ov000_022e0e7c;
+    c->unkA &= ~4;
+    c = &w->coll[1];
+    *c = w->base.coll0;
+    func_0206e2d8(c, -28, -10, 18, 12, -0x7d00, 0x7d00);
+    c->unk18 = w;
+    c->unk1C = func_ov000_022e0c94;
+    c->unkA &= ~4;
+    c = &w->coll[2];
+    *c = w->base.coll1;
+    func_0206e2d8(c, -20, 0, 20, 48, -0x7d00, 0x7d00);
+    c->unk18 = w;
+    c->unkA &= ~4;
+    c = &w->coll[3];
+    *c = w->base.coll1;
+    func_0206e2d8(c, -60, -20, 60, 48, -0x7d00, 0x7d00);
+    c->unk18 = w;
+    c->unkA &= ~4;
+    c = &w->coll[4];
+    *c = w->base.coll1;
+    func_0206e2d8(c, -28, 30, 48, 100, -0x7d00, 0x7d00);
+    c->unk18 = w;
+    c->unkA &= ~4;
+    c = &w->coll[5];
+    *c = w->base.coll1;
+    func_0206e2d8(c, -40, 6, 28, 28, -0x7d00, 0x7d00);
+    c->unk18 = w;
+    c->unkA &= ~4;
+    c = &w->coll[6];
+    *c = w->base.coll1;
+    func_0206e2d8(c, -30, 0, 48, 112, -0x7d00, 0x7d00);
+    c->unk20 |= 0x20;
+    c->unk18 = w;
+    c->unkA &= ~4;
+    c = &w->coll[7];
+    func_0206e2d8(c, -18, 8, 18, 50, -0x7d00, 0x7d00);
+    func_0206e2b4(c, 0, -16);
+    c->unkA |= 0xc0;
+    c->unk28 = 0x12;
+    c->unk18 = w;
+    c->unk1C = func_ov000_022e0ba8;
+    c->unkA &= ~4;
+    c = &w->coll[8];
+    func_0206e2d8(c, -35, -16, -20, 92, -0x7d00, 0x7d00);
+    func_0206e2b4(c, 0, -16);
+    c->unkA |= 0xc0;
+    c->unk28 = 0x12;
+    c->unk18 = w;
+    c->unk1C = func_ov000_022e0af8;
+    c->unkA &= ~4;
+    c = &w->coll[9];
+    func_0206e2d8(c, -28, -30, 48, 55, -0x7d00, 0x7d00);
+    func_0206e2b4(c, 0, -16);
+    c->unkA |= 0xc0;
+    c->unk28 = 0x12;
+    c->unk18 = w;
+    c->unk1C = func_ov000_022e0998;
+    c->unkA &= ~4;
+    c = &w->coll[10];
+    func_0206e2d8(c, -45, 5, 30, 24, -0x7d00, 0x7d00);
+    func_0206e2b4(c, 0, -16);
+    c->unkA |= 0xc0;
+    c->unk28 = 0x12;
+    c->unk18 = w;
+    c->unk1C = func_ov000_022e08b0;
+    c->unkA &= ~4;
+    w->base.unk78 = 0;
+}

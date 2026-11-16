@@ -1,0 +1,32 @@
+#include <ov000_d/menuo.h>
+
+#pragma thumb on
+
+void func_ov000_02360dac(UnkStruct_MenuO *w) {
+    UnkStruct_MenuOSpr *spr;
+    s32 *cur;
+
+    spr = &w->spr[3];
+    cur = &w->anim[3];
+    if (*cur != 5) {
+        func_02033550(spr, 5);
+        *cur = 5;
+    }
+    spr->unk2C &= ~4;
+    spr = &w->spr[4];
+    cur = &w->anim[4];
+    if (*cur != 1) {
+        func_02033550(spr, 1);
+        *cur = 1;
+    }
+    spr->unk2C &= ~4;
+    spr = &w->spr[5];
+    cur = &w->anim[5];
+    if (*cur != 2) {
+        func_02033550(spr, 2);
+        *cur = 2;
+    }
+    spr->unk2C |= 4;
+}
+
+#pragma thumb reset

@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202f148(void)
+asm void _ffix(void)
 {
     bic r1, r0, #0x80000000
     mov r2, #0x9e

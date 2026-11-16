@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202da9c(void)
+asm void _dmul(void)
 {
     stmfd sp!, {r4, r5, r6, r7, lr}
     eor lr, r1, r3

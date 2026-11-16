@@ -11,7 +11,7 @@ void func_ov001_022e349c(s32 p0) {
     *(u16 *)((u8 *)t0 + 0x178) = 8;
     *(u16 *)((u8 *)t0 + 0x17a) = 0x98;
     func_0203344c((t0 + 0x174), 0, 0);
-    s32 t1 = func_02032d2c((t0 + 0x174));
+    func_02032d2c((t0 + 0x174));
 }
 
 #pragma thumb reset

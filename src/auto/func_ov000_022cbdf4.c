@@ -9,5 +9,5 @@ s32 func_ov000_022c5f80();
 void func_ov000_022cbdf4(void) {
     func_ov000_022cae4c(*(u32 *)data_ov000_02369acc);
     func_ov000_022c74e8(*(u32 *)((u8 *)*(u32 *)data_ov000_02369acc + 0x210));
-    s32 t0 = func_ov000_022c5f80(*(u32 *)((u8 *)*(u32 *)data_ov000_02369acc + 0x214));
+    func_ov000_022c5f80(*(u32 *)((u8 *)*(u32 *)data_ov000_02369acc + 0x214));
 }

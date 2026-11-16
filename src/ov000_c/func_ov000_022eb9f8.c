@@ -1,0 +1,110 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    u8 pad0[0x24];
+    u8 unk24[0x48 - 0x24];
+    UnkStruct_Vec unk48;
+    u8 pad54[0x10C - 0x54];
+    u8 unk10C;
+    u8 pad10D[3];
+    u8 unk110;
+    u8 pad111[0x138 - 0x111];
+} UnkStruct_022eb9f8_Sub;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    UnkStruct_022eb9f8_Sub unk20C;
+    u8 pad344[0x3D0 - 0x344];
+    s32 unk3D0;
+    u8 pad3D4[0x48C - 0x3D4];
+    UnkStruct_Vec unk48C[4];
+    u16 unk4BC;
+} UnkStruct_022eb9f8;
+
+typedef struct {
+    u8 pad0[0x10];
+    UnkStruct_022eb9f8 *work;
+} UnkStruct_022eb9f8_Task;
+
+typedef struct {
+    u8 pad0[0x20C];
+    u32 unk20C;
+    u8 pad210[0x220 - 0x210];
+    u32 unk220;
+} UnkStruct_02369b78;
+
+typedef struct {
+    u8 pad0[0x1C];
+    u8 unk1C;
+    u8 unk1D;
+} UnkStruct_022c4560;
+
+extern UnkStruct_022eb9f8_Task *data_022b4574;
+extern UnkStruct_02369b78 *data_ov000_02369b78;
+extern UnkStruct_022c4560 data_022c4560;
+extern u16 data_02074960[][3][3];
+extern u16 data_02074962[][3][3];
+extern u16 data_02074964[][3][3];
+extern s16 data_02071470[];
+extern s16 data_0206f470[];
+
+void func_02022270(s32 a, u32 b);
+void func_020315e0(void *s);
+void func_020316f4(void *s);
+void MTX_RotY33_(void *m, s32 s, s32 c);
+void func_0203344c(UnkStruct_Spr *s, void (*fn)(void), void *w);
+void func_ov000_022ebccc(void);
+
+void func_ov000_022eb9f8(void) {
+    UnkStruct_022eb9f8 *w = data_022b4574->work;
+    UnkStruct_02369b78 *mgr = data_ov000_02369b78;
+    UnkStruct_022eb9f8_Sub *sub = &w->unk20C;
+    u16 i;
+
+    if (w->base.unk5C & 0x20)
+        return;
+    w->unk4BC++;
+    w->unk4BC &= 3;
+    w->unk48C[w->unk4BC] = sub->unk48;
+    if (mgr->unk20C & 0x10) {
+        i = (w->unk4BC + (mgr->unk220 & 1)) & 3;
+        if (w->unk3D0 == 0) {
+            func_02022270(0, 0x6182);
+            func_02022270(1, 0x6182);
+            func_02022270(2, 0x6182);
+        } else {
+            func_02022270(0, 0x1a98);
+            func_02022270(1, 0x1a98);
+            func_02022270(2, 0x1a98);
+        }
+        sub->unk48 = w->unk48C[i];
+        func_020315e0(sub);
+        func_02022270(0, data_02074960[data_022c4560.unk1C][data_022c4560.unk1D][0]);
+        func_02022270(1, data_02074962[data_022c4560.unk1C][data_022c4560.unk1D][0]);
+        func_02022270(2, data_02074964[data_022c4560.unk1C][data_022c4560.unk1D][0]);
+    }
+    w->base.unk5C &= ~8;
+    if (w->base.unk5C & 4) {
+        sub->unk10C |= 4;
+        sub->unk110 |= 4;
+    } else {
+        sub->unk10C &= ~4;
+        sub->unk110 &= ~4;
+    }
+    if (w->base.unk5C & 1)
+        MTX_RotY33_(sub->unk24, data_02071470[0], data_02071470[1]);
+    else
+        MTX_RotY33_(sub->unk24, data_0206f470[0], data_0206f470[1]);
+    sub->unk48.x = w->base.unk10 << 4;
+    sub->unk48.y = -(w->base.unk14 << 4);
+    sub->unk48.z = w->base.unk18 << 4;
+    if (!(w->base.unk5C & 0x10)) {
+        func_0203344c(&w->base.spr0, func_ov000_022ebccc, w);
+        func_020316f4(sub);
+    }
+    func_020315e0(sub);
+    if (sub->unk10C & 2)
+        w->base.unk5C |= 8;
+    if (w->base.spr0.unk2C & 2)
+        w->base.unk5C |= 8;
+}

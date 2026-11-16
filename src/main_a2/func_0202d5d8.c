@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202d5d8(void)
+asm void _dadd(void)
 {
     stmfd sp!, {r4, lr}
     eors r12, r1, r3

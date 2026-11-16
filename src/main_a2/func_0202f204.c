@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202f204(void)
+asm void _fflt(void)
 {
     ands r2, r0, #0x80000000
     rsbmi r0, r0, #0

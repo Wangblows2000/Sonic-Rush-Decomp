@@ -1,0 +1,243 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_022f9eb4_v {
+    s32 x, y, z;
+} UnkStruct_022f9eb4_v;
+
+typedef struct UnkStruct_022f9eb4_e {
+    u8 pad[0x1e];
+    u16 unk1E;
+    u8 pad20[0x14 - 0x20 + 0x0c];
+} UnkStruct_022f9eb4_e_unused;
+
+typedef struct UnkStruct_022f9eb4_h {
+    u8 pad[0x18];
+    u32 unk18;
+} UnkStruct_022f9eb4_h;
+
+typedef struct UnkStruct_022f9eb4_o {
+    u8 pad[0x44];
+    u16 unk44;
+    u8 pad46[2];
+} UnkStruct_022f9eb4_o;
+
+typedef struct UnkStruct_022f9eb4_a {
+    u8 pad[0x18];
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    u8 pad24[0x114 - 0x24];
+    s32 unk114;
+} UnkStruct_022f9eb4_a;
+
+typedef struct UnkStruct_022f9eb4_r {
+    u8 pad[0x18];
+    u16 unk18;
+    u16 unk1A;
+} UnkStruct_022f9eb4_r;
+
+typedef struct UnkStruct_022f9eb4_b {
+    UnkStruct_022f9eb4_h *unk0;
+    UnkStruct_022f9eb4_r *unk4;
+    void *unk8;
+    void *unkC;
+    void *unk10;
+    void *unk14;
+    UnkStruct_022f9eb4_o objs[0x27];
+    u8 padB10[0xb3c - (0x18 + 0x48 * 0x27)];
+    u32 unkB3C;
+    u8 padB40[0xe08 - 0xb40];
+    void *unkE08;
+    u8 padE0C[0xe24 - 0xe0c];
+    s32 unkE24;
+    s32 unkE28;
+    s32 unkE2C;
+    s32 unkE30;
+} UnkStruct_022f9eb4_b;
+
+typedef struct UnkStruct_022f9eb4_d38 {
+    u8 pad[0x4c];
+    u8 unk4C[0xfc - 0x4c];
+    u32 unkFC;
+    u8 pad100[0x240 - 0x100];
+    UnkStruct_022f9eb4_v pos;
+    UnkStruct_022f9eb4_v target;
+    UnkStruct_022f9eb4_v up;
+} UnkStruct_022f9eb4_d38;
+
+extern UnkStruct_022f9eb4_v data_ov001_0231d544;
+extern UnkStruct_022f9eb4_v data_ov001_0231d538;
+extern u8 data_02084d40[];
+extern s16 data_0206e470[];
+extern UnkStruct_022f9eb4_d38 data_02084d38;
+extern UnkStruct_022f9eb4_v data_02084f78;
+extern UnkStruct_022f9eb4_v data_02084f84;
+extern UnkStruct_022f9eb4_v data_02084f90;
+extern u8 data_02084d84[];
+extern void *data_0208fe80;
+extern UnkStruct_022f9eb4_b *data_ov001_0231f084;
+extern s32 data_ov001_0231f08c;
+extern s32 data_ov001_0231f090;
+extern u16 data_ov001_02316afc[];
+extern u16 data_ov001_02316b4c[];
+extern u16 data_ov001_02316a94[];
+extern u16 data_ov001_02316a88[];
+
+void func_ov001_022f95ec(void);
+void func_02004988(s32 s, s32 c, s32 a, s32 n, s32 f, s32 g, s32 h, void *m);
+void func_020044f4(void *a, void *b, void *c, s32 d, void *e);
+void func_02022270(u32 index, u32 value);
+void func_02022284(u32 idx, s32 x, s32 y, s32 z);
+u8 *func_02034a40(void *heap, u32 size, s32 align);
+u32 func_02006abc(s32 i);
+void MIi_CpuClear32(u32 data, void *dest, u32 size);
+void MIi_CpuClear16(u16 data, void *dest, u32 size);
+void MIi_CpuClearFast(u32 data, void *dest, u32 size);
+void DC_StoreRange(void *p, u32 size);
+s32 func_ov001_022f73cc(s32 a);
+void func_0201bf34(void *p);
+void func_ov001_022f9ab4(void);
+u32 func_02039c18(u32 a, u32 b);
+void func_0203363c(void *s, void *h, u16 idx, u32 d, u32 e, u32 f, u32 g, u32 hh, u32 i);
+void func_0203344c(void *s, u32 a, u32 b);
+s32 func_020480a0(s32 a);
+void func_02031c1c(void *s, u32 a);
+void func_02031bd0(void *s, void *res, u32 idx);
+u32 func_02025e8c(void *h);
+void func_02031a68(void *p, s32 a, void *b, s32 c, u32 d);
+void func_0203473c(void *a, void *b, s32 c, s32 d, s32 e, u32 f, u32 g);
+void func_0203438c(void *a);
+void func_ov001_022f9188(void);
+void *func_020372d0(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
+void func_02048fdc(s32 a, s32 b, s32 c, s32 d, void *e);
+
+#define SIN(a) data_0206e470[(((a) & 0xffff) >> 4) * 2]
+#define COS(a) data_0206e470[(((a) & 0xffff) >> 4) * 2 + 1]
+
+typedef struct UnkStruct_022f9eb4_ent {
+    u8 pad[0x1e];
+    u16 unk1E;
+} UnkStruct_022f9eb4_ent;
+typedef struct { u8 pad[0x12]; u16 unk12; } E14;
+typedef struct { u8 hdr[0xc]; E14 e[1]; } T14;
+static inline u16 GetEnt1E(UnkStruct_022f9eb4_h *h, u16 idx) {
+    T14 *t = (T14 *)((u8 *)h + h->unk18); return t->e[idx].unk12;
+}
+#define ENTRY1E(h, idx) GetEnt1E(h, idx)
+
+void func_ov001_022f9eb4(void) {
+    vu16 zero;
+    vu32 f1;
+    vu32 f2;
+    vu32 f3;
+    vu32 f4;
+    vu32 fill;
+    s32 i;
+    UnkStruct_022f9eb4_h *h;
+    UnkStruct_022f9eb4_a *an;
+    u8 *blk;
+    UnkStruct_022f9eb4_o *o;
+    u32 r;
+    u16 idx;
+
+    func_ov001_022f95ec();
+    {
+    UnkStruct_022f9eb4_v a = data_ov001_0231d544;
+    UnkStruct_022f9eb4_v b = {0, 0, 0};
+    UnkStruct_022f9eb4_v c = data_ov001_0231d538;
+    UnkStruct_022f9eb4_o loc;
+    func_02004988(SIN(0x1555), COS(0x1555), 0x1555, 0x1000, 0x800000, 0x1000, 0, data_02084d40);
+    data_02084d38.unkFC &= ~0x50;
+    data_02084d38.pos = a;
+    data_02084d38.target = c;
+    data_02084d38.up = b;
+    func_020044f4(&a, &c, &b, 0, data_02084d38.unk4C);
+    data_02084d38.unkFC &= ~0xe8;
+    func_02022270(0, 0x7fff);
+    func_02022270(1, 0x4631);
+    func_02022270(2, 0x2108);
+    func_02022284(0, 0x4a0, -0x4a0, 0);
+    func_02022284(1, 0, -0x617, -0xecd);
+    func_02022284(2, 0xec7, 0x620, 0);
+    blk = func_02034a40(data_0208fe80, 0xee0, 0x20);
+    if ((u8 *)func_02006abc(0) != blk) {
+        fill = 0xcccccccc;
+        MIi_CpuClear32(fill, blk, 0xee0);
+        *(u32 *)blk = 0xee0;
+        *(u32 *)(blk + 0xedc) = 0x02467531;
+        DC_StoreRange(blk, 0xee0);
+        blk += 0x20;
+    }
+    {
+        zero = 0;
+        data_ov001_0231f084 = (UnkStruct_022f9eb4_b *)blk;
+        MIi_CpuClear16(zero, blk, 0xea4);
+    }
+    data_ov001_0231f084->unkE24 = func_ov001_022f73cc(data_ov001_0231f08c);
+    data_ov001_0231f084->unkE28 = data_ov001_0231f090 * 100;
+    data_ov001_0231f084->unkE2C = data_ov001_0231f084->unkE24 + data_ov001_0231f084->unkE28;
+    if (data_ov001_0231f084->unkE2C > 999999)
+        data_ov001_0231f084->unkE2C = 999999;
+    func_0201bf34((u8 *)data_ov001_0231f084 + 0xea0);
+    func_ov001_022f9ab4();
+
+    h = data_ov001_0231f084->unk0;
+    o = data_ov001_0231f084->objs;
+    for (i = 0; i < 0x27; i++, o++) {
+        idx = data_ov001_02316afc[i];
+        r = func_02039c18(0, ENTRY1E(h, idx));
+        func_0203363c(o, h, idx, 0x30, 0, 0, r, 0, 0x5000200);
+        o->unk44 = data_ov001_02316b4c[i];
+        func_0203344c(o, 0, 0);
+    }
+    data_ov001_0231f084->unkE30 = func_020480a0(data_ov001_0231f084->unkE2C);
+    o = (UnkStruct_022f9eb4_o *)((u8 *)data_ov001_0231f084 + 0xb10);
+    r = func_02039c18(0, ENTRY1E(h, (u16)(data_ov001_0231f084->unkE30 + 0x23)));
+    func_0203363c(o, h, (u16)(data_ov001_0231f084->unkE30 + 0x23), 0x60, 0, 0, r, 0, 0x5000200);
+    o->unk44 = 3;
+    func_0203344c(o, 0, 0);
+    for (i = 0; i < 5; i++) {
+        func_0203363c(&loc, h, data_ov001_02316a94[i], 0x48, 0, 0, 0, 0, 0x5000200);
+        loc.unk44 = data_ov001_02316a88[i];
+        func_0203344c(&loc, 0, 0);
+    }
+    data_ov001_0231f084->unkB3C |= 0x200;
+
+    an = (UnkStruct_022f9eb4_a *)((u8 *)data_ov001_0231f084 + 0xc90);
+    func_02031c1c(an, 0);
+    func_02031bd0(an, data_ov001_0231f084->unkC, 0);
+    an->unk18 = an->unk1C = an->unk20 = 0x1000;
+    r = func_02025e8c(data_ov001_0231f084->unkC);
+    func_02031a68(an, 0, data_ov001_0231f084->unk10, 0, r);
+    func_02031a68(an, 1, data_ov001_0231f084->unk14, 0, r);
+    an->unk114 = 0x1000;
+
+    an = (UnkStruct_022f9eb4_a *)((u8 *)data_ov001_0231f084 + 0xb58);
+    func_02031c1c(an, 0);
+    func_02031bd0(an, data_ov001_0231f084->unk8, 0);
+    an->unk18 = an->unk1C = an->unk20 = 0x1000;
+
+    func_0203473c((u8 *)data_ov001_0231f084 + 0xdc8, data_ov001_0231f084->unk4, 0xe, 0, 1,
+                  data_ov001_0231f084->unk4->unk18, data_ov001_0231f084->unk4->unk1A);
+    func_0203438c((u8 *)data_ov001_0231f084 + 0xdc8);
+    {
+        f1 = 0x02020202;
+        MIi_CpuClearFast(f1, (void *)0x6004000, 0x40);
+    }
+    {
+        f2 = 0x12121212;
+        MIi_CpuClearFast(f2, (void *)0x6004040, 0x40);
+    }
+    {
+        f3 = 0;
+        MIi_CpuClearFast(f3, (void *)0x6000800, 0x300);
+    }
+    {
+        f4 = 0x10001;
+        MIi_CpuClearFast(f4, (void *)0x6000b00, 0x300);
+    }
+    *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | 0x1100;
+    data_ov001_0231f084->unkE08 = func_020372d0(func_ov001_022f9188, 0, 0, 0x1000, 0, 0);
+    func_02048fdc(0x10, 0x10, 0, 3, (u8 *)data_ov001_0231f084 + 0xe3c);
+    }
+}

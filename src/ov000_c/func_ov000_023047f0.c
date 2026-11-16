@@ -1,0 +1,59 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    UnkStruct_StageObj base;
+    UnkStruct_Spr sprA;
+    UnkStruct_Spr sprB;
+    UnkStruct_Spr sprC;
+    UnkStruct_Spr sprD;
+} UnkStruct_023047f0;
+
+extern void *data_ov000_02369ba0;
+extern u8 data_ov000_02366730[], data_ov000_02369e5c[], data_ov000_02366748[], data_ov000_02366760[];
+
+void func_ov000_02304768(void);
+void func_ov000_02304704(void);
+void func_ov000_02304374(void);
+void func_ov000_023046c0(UnkStruct_023047f0 *w);
+
+UnkStruct_023047f0 *func_ov000_023047f0(UnkStruct_ObjParam *p, s32 b, s32 c) {
+    UnkStruct_Task *task;
+    UnkStruct_023047f0 *w;
+    vu16 zero;
+
+    task = func_020372d0(func_0206c3d0, func_ov000_02304768, 0, 0x500, 2, sizeof(UnkStruct_023047f0));
+    if (task == func_02006abc(0))
+        return NULL;
+    w = task->work;
+    zero = 0;
+    MIi_CpuClear16(zero, w, sizeof(UnkStruct_023047f0));
+    func_ov000_022fba50(w, (s32)p, b, c);
+    func_02069f1c(w, data_ov000_02366730, 0xffff, data_ov000_02369e5c, data_ov000_02369ba0);
+    func_0206a054(w, 0, 0x2b);
+    func_02069818(w, 0);
+    w->base.spr0.unk46 = 0x14;
+    w->base.spr1.unk46 = 0x14;
+    func_02069d38(&w->sprC, &w->sprD, data_ov000_02366748, 0xffff, data_ov000_02369e5c, data_ov000_02369ba0);
+    func_02033550(&w->sprC, 1);
+    func_02033550(&w->sprD, 1);
+    w->sprC.unk46 = 0x15;
+    w->sprD.unk46 = 0x15;
+    w->sprC.unk44 = w->base.spr0.unk44;
+    w->sprD.unk44 = w->base.spr0.unk44;
+    w->sprC.unk2C |= 0x200;
+    w->sprD.unk2C |= 0x200;
+    func_02069d38(&w->sprA, &w->sprB, data_ov000_02366760, 0xffff, data_ov000_02369e5c, data_ov000_02369ba0);
+    func_02033550(&w->sprA, 2);
+    func_02033550(&w->sprB, 2);
+    w->sprA.unk46 = 0x16;
+    w->sprB.unk46 = 0x16;
+    w->sprA.unk44 = w->base.spr0.unk44;
+    w->sprB.unk44 = w->base.spr0.unk44;
+    w->base.unk70 = func_ov000_02304704;
+    func_0206e2b4(&w->base.coll0, 0, -16);
+    w->base.coll0.unk1C = func_ov000_02304374;
+    w->base.coll0.unkA |= 0x800;
+    w->base.unk58 |= 0x2100;
+    func_ov000_023046c0(w);
+    return w;
+}

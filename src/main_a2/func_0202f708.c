@@ -2,7 +2,7 @@
 
 extern void _s32_div_f(void);
 
-asm void func_0202f708(void)
+asm void _ll_sdiv(void)
 {
     stmfd sp!, {r4, r5, r6, r7, r11, r12, lr}
     eor r4, r1, r3

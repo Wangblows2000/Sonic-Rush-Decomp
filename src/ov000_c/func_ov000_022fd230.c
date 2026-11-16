@@ -1,0 +1,49 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    u8 pad0[0x10];
+    s32 unk10;
+    s32 unk14;
+} UnkStruct_022c4560;
+
+typedef struct {
+    u8 pad0[8];
+    u32 unk8;
+} UnkStruct_022c4680;
+
+extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022c4680 data_022c4680;
+extern UnkStruct_StageObj *data_ov000_0236ac60;
+
+void func_0204b7ec(s32 a, s32 b, s32 c);
+void func_02068204(s32 a, UnkStruct_StageObj *w, UnkStruct_StageObj *p);
+void func_ov000_022fc5b8(UnkStruct_StageObj *w, s32 a, s32 b, s32 c);
+void func_ov000_022fe7e8(UnkStruct_StageObj *w);
+
+void func_ov000_022fd230(UnkStruct_StageObj *w) {
+    if ((w->spr0.unkE >> 4) == 6) {
+        if (!(w->unk1F4 & 4)) {
+            func_0204b7ec(w->unk1DC, 0, 0x77);
+            func_02068204(w->unk1DC, w, data_ov000_0236ac60);
+            func_ov000_022fc5b8(w, 0xe6, 0x1c, -0x20);
+        }
+        w->unk1F4 |= 4;
+    }
+    if ((w->unk5C & 0x10) && w->unkC != 0) {
+        w->unkC--;
+        if (w->unkC == 0) {
+            w->unk5C &= ~0x10;
+            w->unk1F4 |= 1;
+            w->unkC = 0x20;
+            if ((data_022c4680.unk8 & 1) && data_022c4560.unk10 != 2 && data_022c4560.unk10 != 3)
+                w->unkC += w->unkC >> 1;
+        }
+    }
+    if (!(w->unk5C & 8))
+        return;
+    w->unkC--;
+    if (w->unkC == 0) {
+        w->unk1F4 &= ~5;
+        func_ov000_022fe7e8(w);
+    }
+}

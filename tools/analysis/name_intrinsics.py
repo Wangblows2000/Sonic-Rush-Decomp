@@ -59,7 +59,9 @@ def main() -> int:
                             dest = relocs.get(rom)
                             if dest is not None and (dest & ~1) in addrsym:
                                 m, old = addrsym[dest & ~1]
-                                if re.match(r"^func_", old):
+                                # runtime helpers live in main and are ARM; a Thumb stub in an
+                                # overlay is a linker veneer to the helper, not the helper itself
+                                if m["name"] == "main" and not dest & 1 and re.match(r"^func_", old):
                                     renames[old] = (tgt.name, m, dest, fn.name)
     for old, (new, m, dest, via) in renames.items():
         p = m["symbols_path"]

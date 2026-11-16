@@ -1,0 +1,21 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+extern u8 data_ov000_0236ac60[];
+void func_ov000_022e4474();
+s32 func_ov000_0234c4a4();
+
+void func_ov000_022e450c(s32 p0) {
+    u32 t0 = *(u32 *)data_ov000_0236ac60;
+    *(u16 *)((u8 *)(t0 + 0x400) + 0x34) = 0;
+    *(u16 *)((u8 *)(t0 + 0x400) + 0x36) = 0;
+    *(u16 *)((u8 *)(t0 + 0x400) + 0x30) = 0;
+    *(u16 *)((u8 *)(t0 + 0x400) + 0x32) = 0;
+    *(u16 *)((u8 *)(t0 + 0x400) + 0x2c) = 0;
+    *(u16 *)((u8 *)(t0 + 0x400) + 0x2e) = 0;
+    *(u16 *)((u8 *)t0 + 0x34) = 0;
+    u32 t1 = *(u32 *)((u8 *)t0 + 0x68);
+    *(u32 *)((u8 *)p0 + 0x111c) = t1;
+    *(u32 *)((u8 *)t0 + 0x68) = (u32)func_ov000_022e4474;
+    func_ov000_0234c4a4(t0, 0xf, (u32)func_ov000_022e4474, t0);
+}

@@ -30,6 +30,18 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-build", action="store_true")
     args = ap.parse_args()
+    # prune TU entries whose source file disappeared (e.g. an agent removed a duplicate)
+    import re as _re
+    pruned = 0
+    for dl in (ROOT / "config").rglob("delinks.txt"):
+        t = dl.read_text()
+        for f in _re.findall(r"^(src/\S+\.c):$", t, _re.M):
+            if not (ROOT / f).exists():
+                t = _re.sub(rf"\n*^{_re.escape(f)}:\n(?:    .*\n?)*", "\n", t, flags=_re.M)
+                pruned += 1
+        dl.write_text(t.rstrip("\n") + "\n")
+    if pruned:
+        print(f"pruned {pruned} TU entries whose files no longer exist")
     have = listed()
     new = [p for p in sorted((ROOT / "src").rglob("*.c")) if p.relative_to(ROOT).as_posix() not in have]
     ok, bad = 0, []

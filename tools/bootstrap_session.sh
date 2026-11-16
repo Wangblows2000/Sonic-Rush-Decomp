@@ -39,3 +39,14 @@ ninja
 ninja verify
 ninja report
 python3 tools/project.py progress
+
+# Optional: Ghidra 12.2 (official release) + JDK 25 for decompiler drafts (docs/research/0007-ghidra.md)
+if [ "${WITH_GHIDRA:-1}" = 1 ] && [ ! -x "$HOME/ghidra_12.2_PUBLIC/support/analyzeHeadless" ]; then
+  (command -v apt-get >/dev/null && ${sudo_cmd:-} apt-get install -y -q openjdk-25-jdk-headless) || true
+  g="$(mktemp -d)"
+  curl -sSL --max-time 900 -o "$g/ghidra.zip" \
+    https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_12.2_build/ghidra_12.2_PUBLIC_20261016.zip
+  echo "2c2cd776db3c1f6a097ba418922378ac3649cadd5e844a6f5f088ae628a7be67  $g/ghidra.zip" | sha256sum -c - \
+    && unzip -q -o "$g/ghidra.zip" -d "$HOME/"
+  rm -rf "$g"
+fi

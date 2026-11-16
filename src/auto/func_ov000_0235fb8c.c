@@ -7,8 +7,8 @@ s32 func_0204b718();
 s32 func_0204b6cc();
 
 void func_ov000_0235fb8c(void) {
-    s32 t0 = func_0204b718(1);
-    s32 t1 = func_0204b6cc();
+    func_0204b718(1);
+    func_0204b6cc();
 }
 
 #pragma thumb reset

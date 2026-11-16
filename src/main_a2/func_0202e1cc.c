@@ -1,10 +1,10 @@
 #include <nitro/types.h>
 
-asm void func_0202e1cc(void)
+asm void _fadd(void)
 {
     eors r2, r0, r1
     eormi r1, r1, #0x80000000
-    dcd 0x4a00049a  // bmi func_0202f438+0xc (mid-function entry; no symbol, raw encoding)
+    dcd 0x4a00049a  // bmi _fsub+0xc (mid-function entry; no symbol, raw encoding)
     subs r12, r0, r1
     subcc r0, r0, r12
     addcc r1, r1, r12

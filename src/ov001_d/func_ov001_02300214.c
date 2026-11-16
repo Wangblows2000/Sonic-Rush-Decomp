@@ -1,0 +1,87 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_02300214 {
+    u8 pad0[8];
+    void *task8;
+    void *taskC;
+    void *task10;
+    void *task14;
+    u8 pad18[0x60 - 0x18];
+    s8 unk60;
+    s8 unk61;
+    u8 pad62[0x33c - 0x62];
+    u8 unk33C[4];
+} UnkStruct_02300214;
+
+typedef struct UnkStruct_02300214_s {
+    u8 pad0[0x14];
+    u8 unk14;
+} UnkStruct_02300214_s;
+
+extern UnkStruct_02300214 *data_ov001_0231f52c;
+extern UnkStruct_02300214_s data_022c4590;
+extern s32 data_022c4560;
+extern void *data_0208fe80;
+
+void func_02035368(void);
+void func_ov001_022f7274(void);
+void func_ov001_02301668(void);
+void func_ov001_023030dc(void);
+void func_ov001_023053cc(void);
+void func_ov001_02304568(void);
+void func_ov001_022fdb04(void);
+void func_ov001_022fd610(void);
+void func_ov001_02306674(void);
+void func_ov001_022ff8ac(void);
+void func_020371c8(void *t);
+void func_0201bf1c(void *p);
+void func_02059838(s32 a, s32 b);
+s32 func_0205a4ec(s32 p0);
+u32 func_02006abc(s32 i);
+void MIi_CpuClear32(u32 data, void *dest, u32 size);
+void DC_StoreRange(void *p, u32 size);
+void func_020349b8(void *heap, void *p);
+
+void func_ov001_02300214(void) {
+    vu32 fill;
+    u8 *p;
+    s32 size;
+
+    func_02035368();
+    func_ov001_022f7274();
+    func_ov001_02301668();
+    func_ov001_023030dc();
+    func_ov001_023053cc();
+    func_ov001_02304568();
+    func_ov001_022fdb04();
+    func_ov001_022fd610();
+    func_ov001_02306674();
+    func_ov001_022ff8ac();
+    func_020371c8(data_ov001_0231f52c->task8);
+    func_020371c8(data_ov001_0231f52c->taskC);
+    func_020371c8(data_ov001_0231f52c->task10);
+    if (data_ov001_0231f52c->task14 != NULL)
+        func_020371c8(data_ov001_0231f52c->task14);
+    func_0201bf1c(data_ov001_0231f52c->unk33C);
+    func_02059838(data_ov001_0231f52c->unk60, data_ov001_0231f52c->unk61);
+    func_0205a4ec(0);
+    p = (u8 *)data_ov001_0231f52c;
+    size = data_ov001_0231f52c->unk61;
+    if (size > 99)
+        size = 99;
+    else if (size < 2)
+        size = 2;
+    data_022c4560 = 1;
+    data_022c4590.unk14 = size;
+    if ((u8 *)func_02006abc(0) != p) {
+        p -= 0x20;
+        size = *(s32 *)p;
+        if (*(u32 *)(p + size - 4) == 0x02467531) {
+            fill = 0xcccccccc;
+            MIi_CpuClear32(fill, p, size);
+            DC_StoreRange(p, size);
+        }
+    }
+    func_020349b8(data_0208fe80, p);
+    data_ov001_0231f52c = NULL;
+}

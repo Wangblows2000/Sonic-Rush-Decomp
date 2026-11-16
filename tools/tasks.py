@@ -226,7 +226,7 @@ def cmd_brief(a) -> int:
         extra = f" [{scope_progress(t, data)}]" if t.get("module") else ""
         print(f"  {t['id']:13s} {scope(t):32s} {t['title']}{extra}")
     done = sum(t["status"] == "done" for t in board["tasks"])
-    print(f"\ndone: {done}. Protocol: CLAUDE.md · agent brief: build/agents/AGENT_BRIEF.md · "
+    print(f"\ndone: {done}. Protocol: CLAUDE.md · agent brief: docs/agents/AGENT_BRIEF.md · "
           "integrate+commit: bash tools/utilities/checkpoint.sh (lead only)")
     return 0
 

@@ -1,0 +1,68 @@
+#include <nitro/types.h>
+
+typedef struct UnkStruct_022f7448_spr {
+    u8 pad0[4];
+    s16 x;
+    s16 y;
+} UnkStruct_022f7448_spr;
+
+typedef struct UnkStruct_022f7448 {
+    u8 pad0[0xb10];
+    UnkStruct_022f7448_spr spr;
+    u8 padB18[0xe38 - 0xb18];
+    u32 flags;
+    u8 padE3C[0xe9c - 0xe3c];
+    s32 timer;
+} UnkStruct_022f7448;
+
+typedef struct UnkStruct_022f7448_t {
+    u8 pad0[8];
+    void (*unk8)(void);
+} UnkStruct_022f7448_t;
+
+extern UnkStruct_022f7448 *data_ov001_0231f084;
+extern UnkStruct_022f7448_t *data_022b4574;
+extern u32 data_0208fe70;
+
+void func_ov001_022f741c(void);
+s32 func_02002094(s32 n, s32 d);
+s32 func_0200203c(s32 n, s32 d);
+void func_02032d2c(void *p);
+
+static inline u16 Rand(void) {
+    data_0208fe70 = data_0208fe70 * 0x196225 + 0x3c6ef35f;
+    return data_0208fe70 >> 16;
+}
+
+void func_ov001_022f7448(void) {
+    s32 r;
+    s32 x;
+    s32 y;
+    UnkStruct_022f7448_spr *spr;
+
+    if (data_ov001_0231f084->flags & 2) {
+        data_022b4574->unk8 = func_ov001_022f741c;
+        func_ov001_022f741c();
+        data_ov001_0231f084->flags &= ~0x10000;
+        data_ov001_0231f084->flags |= 0x20000;
+        return;
+    }
+    data_ov001_0231f084->timer--;
+    if (data_ov001_0231f084->timer <= 0) {
+        data_022b4574->unk8 = func_ov001_022f741c;
+        data_ov001_0231f084->flags |= 2;
+        data_ov001_0231f084->flags |= 0x10000;
+    }
+    r = func_02002094(0x5000, data_ov001_0231f084->timer << 4);
+    if (r == 0) {
+        x = 0x50000;
+        y = 0x8a000;
+    } else {
+        x = func_0200203c(Rand(), r) + 0x50000 - (r >> 1);
+        y = func_0200203c(Rand(), r) + 0x8a000 - (r >> 1);
+    }
+    spr = &data_ov001_0231f084->spr;
+    spr->x = x >> 12;
+    spr->y = y >> 12;
+    func_02032d2c(spr);
+}

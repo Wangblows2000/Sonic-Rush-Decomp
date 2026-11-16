@@ -5,7 +5,7 @@ asm void _ddiv(void)
     stmfd sp!, {r4, lr}
     eors r12, r1, r3
     eormi r3, r3, #0x80000000
-    dcd 0x4afffdef  // bmi func_0202d5d8+0x10 (mid-function entry; no symbol, raw encoding)
+    dcd 0x4afffdef  // bmi _dadd+0x10 (mid-function entry; no symbol, raw encoding)
     subs r12, r0, r2
     sbcs lr, r1, r3
     bcs _30

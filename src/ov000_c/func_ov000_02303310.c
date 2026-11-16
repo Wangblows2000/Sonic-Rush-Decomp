@@ -1,0 +1,52 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    u32 unk0;
+    u8 pad4[0x4C - 4];
+    s32 unk4C[4];
+    s8 unk5C[4];
+    u8 pad60[0x64 - 0x60];
+} UnkStruct_Plr;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u32 unk20C[10];
+    void *unk234[2];
+} UnkStruct_02303310;
+
+extern UnkStruct_Plr data_ov000_0236aad8[];
+
+void func_ov000_023032d4(void);
+
+void func_ov000_02303310(UnkStruct_02303310 *w, s32 i) {
+    if (w->unk20C[i] & 4) {
+        if (--data_ov000_0236aad8[i].unk5C[0] == 0) {
+            data_ov000_0236aad8[i].unk4C[0] = data_ov000_0236aad8[2].unk4C[0];
+            data_ov000_0236aad8[i].unk0 &= ~0x10;
+            w->unk20C[i] &= ~4;
+        }
+    }
+    if (w->unk20C[i] & 8) {
+        if (--data_ov000_0236aad8[i].unk5C[1] == 0) {
+            data_ov000_0236aad8[i].unk4C[1] = data_ov000_0236aad8[2].unk4C[1];
+            data_ov000_0236aad8[i].unk0 &= ~0x20;
+            w->unk20C[i] &= ~8;
+        }
+    }
+    if (w->unk20C[i] & 0x10) {
+        if (--data_ov000_0236aad8[i].unk5C[2] == 0) {
+            data_ov000_0236aad8[i].unk4C[2] = data_ov000_0236aad8[2].unk4C[2];
+            data_ov000_0236aad8[i].unk0 &= ~0x10;
+            w->unk20C[i] &= ~0x10;
+        }
+    }
+    if (w->unk20C[i] & 0x20) {
+        if (--data_ov000_0236aad8[i].unk5C[3] == 0) {
+            data_ov000_0236aad8[i].unk4C[3] = data_ov000_0236aad8[2].unk4C[3];
+            data_ov000_0236aad8[i].unk0 &= ~0x20;
+            w->unk20C[i] &= ~0x20;
+        }
+    }
+    w->unk20C[i] &= ~2;
+    w->unk234[i] = func_ov000_023032d4;
+}

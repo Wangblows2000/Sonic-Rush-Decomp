@@ -1,0 +1,76 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+s32 func_02002f60();
+s32 func_02002f4c();
+s32 func_02002f28();
+s32 func_02002f04();
+s32 func_02002ef0();
+s32 func_02002edc();
+s32 func_02002ec8();
+s32 func_02002e8c();
+s32 func_02002e78();
+s32 func_02002e50();
+s32 func_02002e28();
+s32 func_02002eb4();
+s32 func_02002ea0();
+s32 func_0203a6bc();
+s32 func_02039d08();
+s32 func_0203a9d0();
+s32 func_0203a590();
+s32 func_02039ef8();
+s32 func_02039b48();
+s32 func_02039d40();
+s32 func_020395f4();
+s32 func_02002ab0();
+extern u8 data_0208922c[];
+s32 GXx_SetMasterBrightness_();
+extern u8 data_02087d04[];
+
+void func_02059bec(void) {
+    u16 t0 = *(volatile u16 *)0x4000304;
+    *(volatile u16 *)0x4000304 = ((t0 & -527) | 0x20e);
+    u16 t1 = *(volatile u16 *)0x4000304;
+    *(volatile u16 *)0x4000304 = (t1 | 0x8000);
+    func_02002f60((t1 | 0x8000), 0x20e, t0, 0x4000304);
+    func_02002f4c();
+    func_02002f28();
+    func_02002f04();
+    func_02002ef0();
+    func_02002edc();
+    func_02002ec8();
+    func_02002e8c();
+    func_02002e78();
+    func_02002e50();
+    func_02002e28();
+    func_02002eb4();
+    func_02002ea0();
+    func_0203a6bc(0x10, 0x100010, 0x40, 0, 0x400);
+    func_02039d08(0);
+    func_0203a9d0(2);
+    func_0203a590(0x40);
+    func_02039ef8(1);
+    func_02039b48();
+    func_02039d40(0x20);
+    func_020395f4();
+    func_02002ab0(1, 5, 1);
+    u32 t2 = *(volatile u32 *)0x4000000;
+    *(volatile u32 *)0x4000000 = (t2 & ~0x38000000);
+    u32 t3 = *(volatile u32 *)0x4000000;
+    *(volatile u32 *)0x4000000 = (t3 & ~0x7000000);
+    u16 t4 = *(volatile u16 *)0x400000a;
+    *(volatile u16 *)0x400000a = ((t4 & 0x43) | 0x2084);
+    u16 t5 = *(volatile u16 *)0x400000a;
+    *(volatile u16 *)0x400000a = (t5 & ~3);
+    *(u16 *)((u8 *)data_0208922c + 0x48) = 0;
+    s16 t6 = *(s16 *)((u8 *)data_0208922c + 0x48);
+    GXx_SetMasterBrightness_(0x400006c, t6, 0, (t5 & ~3));
+    u32 t7 = *(volatile u32 *)0x4000000;
+    *(volatile u32 *)0x4000000 = ((t7 & ~0x1f00) | 0x1200);
+    *(volatile u16 *)0x5000000 = 0;
+    *(u16 *)((u8 *)data_02087d04 + 0x6) = 0;
+    u16 t8 = *(u16 *)((u8 *)data_02087d04 + 0x6);
+    *(u16 *)((u8 *)data_02087d04 + 0x4) = t8;
+    u32 t9 = *(volatile u32 *)0x4001000;
+    *(volatile u32 *)0x4001000 = (t9 & ~0x1f00);
+}

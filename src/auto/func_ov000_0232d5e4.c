@@ -10,5 +10,5 @@ void func_ov000_0232d5e4(s32 p0) {
     *(u32 *)data_ov000_0236a988 = 0;
     func_020686dc(data_ov000_0236a990, data_ov000_0236a988, 0);
     func_020686dc(data_ov000_0236a990);
-    s32 t0 = func_0206bef4(p0);
+    func_0206bef4(p0);
 }

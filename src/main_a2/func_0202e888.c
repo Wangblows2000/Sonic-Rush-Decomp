@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202e888(void)
+asm void _deq(void)
 {
     mov r12, #0x200000
     cmn r12, r1, lsl #1

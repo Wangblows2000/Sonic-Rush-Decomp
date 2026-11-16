@@ -91,14 +91,50 @@ def main() -> int:
     # Only translation units registered in a delinks.txt are built; other files
     # under src/ are work in progress and must not affect the ROM.
     registered = set()
+    import re as _re0
+    for dl in (ROOT / f"config/{ver}").rglob("delinks.txt"):
+        # prune TUs whose source vanished (agents may delete their own files)
+        t0 = dl.read_text()
+        t1 = t0
+        for f in _re0.findall(r"^(src/\S+\.c):$", t0, _re0.M):
+            if not (ROOT / f).exists():
+                t1 = _re0.sub(rf"\n*^{_re0.escape(f)}:\n(?:    .*\n?)*", "\n", t1, flags=_re0.M)
+                print(f"pruned missing TU {f}", file=sys.stderr)
+        if t1 != t0:
+            dl.write_text(t1.rstrip("\n") + "\n")
     for dl in (ROOT / f"config/{ver}").rglob("delinks.txt"):
         for line in dl.read_text().splitlines():
             if line and not line[0].isspace() and line.endswith(":"):
                 registered.add(line[:-1])
     sources = sorted(p for p in registered if (ROOT / p).suffix in (".c", ".cpp", ".s"))
 
-    headers = sorted(p.relative_to(ROOT).as_posix() for d in ("include", "libs")
-                     for p in (ROOT / d).rglob("*.h"))
+    import re as _re
+    inc_re = _re.compile(r'^\s*#\s*include\s*[<"]([^>"]+)[>"]', _re.M)
+    inc_dirs = [ROOT / "include", ROOT / "libs" / "include"]
+    _cache: dict[Path, set[str]] = {}
+
+    def deps_of(path: Path, seen: set | None = None) -> set[str]:
+        """Headers a source includes, recursively (only those inside this repo)."""
+        if path in _cache:
+            return _cache[path]
+        seen = seen if seen is not None else set()
+        out: set[str] = set()
+        try:
+            text = path.read_text(errors="replace")
+        except OSError:
+            return out
+        for name in inc_re.findall(text):
+            for base in [path.parent, *inc_dirs]:
+                h = (base / name)
+                if h.is_file():
+                    rel = h.resolve().relative_to(ROOT).as_posix()
+                    if rel not in seen:
+                        seen.add(rel)
+                        out.add(rel)
+                        out |= deps_of(h.resolve(), seen)
+                    break
+        _cache[path] = out
+        return out
 
     with (ROOT / "build.ninja").open("w") as fh:
         n = ninja_syntax.Writer(fh, width=120)
@@ -152,7 +188,7 @@ def main() -> int:
                 flags += " -Cpp_exceptions off"
             o = f"{b}/{Path(src).with_suffix('.o').as_posix()}"
             objs.append(o)
-            n.build(o, "mwcc", src, implicit=headers, variables={
+            n.build(o, "mwcc", src, implicit=sorted(deps_of(ROOT / src)), variables={
                 "cc": f"{args.compiler.as_posix()}/{c['version']}/mwccarm.exe",
                 "cflags": flags + " -i include -i libs/include"})
         lcf = dj["arm9_lcf_file"] if dj else f"{b}/arm9.lcf"

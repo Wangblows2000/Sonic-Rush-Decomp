@@ -10,7 +10,7 @@ asm void _ull_mod(void)
     bx lr
 _18:
     orrs r5, r1, r3
-    dcd 0x1a000027  // bne func_0202f708+0x74 (mid-function entry; no symbol, raw encoding)
+    dcd 0x1a000027  // bne _ll_sdiv+0x74 (mid-function entry; no symbol, raw encoding)
     mov r1, r2
     dcd 0xeb000101  // bl _u32_div_f+0x8 (mid-function entry; no symbol, raw encoding)
     cmp r4, #0
@@ -21,5 +21,5 @@ _18:
     stmfd sp!, {r4, r5, r6, r7, r11, r12, lr}
     mov r4, r1
     orr r4, r4, #1
-    dcd 0xea000003  // b func_0202f708+0x10 (mid-function entry; no symbol, raw encoding)
+    dcd 0xea000003  // b _ll_sdiv+0x10 (mid-function entry; no symbol, raw encoding)
 }

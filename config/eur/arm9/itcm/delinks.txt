@@ -48,3 +48,11 @@ src/main_sdk2/func_01ff85cc.c:
 src/main_sdk2/func_01ff861c.c:
     complete
     .text       start:0x01ff861c end:0x01ff8744
+
+src/auto/func_01fff760.c:
+    complete
+    .text       start:0x01fff760 end:0x01fff7c4
+
+src/auto/func_01fff7c4.c:
+    complete
+    .text       start:0x01fff7c4 end:0x01fff82c

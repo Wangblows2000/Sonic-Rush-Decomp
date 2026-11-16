@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202f24c(void)
+asm void _fmul(void)
 {
     eor r2, r0, r1
     and r2, r2, #0x80000000

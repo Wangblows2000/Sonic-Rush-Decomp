@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202d93c(void)
+asm void _dfixu(void)
 {
     tst r1, #0x80000000
     bne _38

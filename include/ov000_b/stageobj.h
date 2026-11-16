@@ -76,7 +76,8 @@ typedef struct {
     s16 unk3E;
     u8 pad40[0x48 - 0x40];
     s16 unk48;
-    u8 pad4A[4];
+    s16 unk4A;
+    u8 pad4C[2];
     s16 unk4E;
     u8 pad50[4];
     u32 unk54;
@@ -107,13 +108,16 @@ typedef struct {
     void *unk1D0;
     s16 unk1D4;
     s16 unk1D6;
-    s16 unk1D8;
-    s16 unk1DA;
+    u16 unk1D8;
+    u16 unk1DA;
     s32 unk1DC;
     UnkStruct_ObjParam *unk1E0;
-    u8 pad1E4[4];
+    u8 unk1E4;
+    u8 pad1E5[3];
     s32 unk1E8;
-    u8 pad1EC[0x1F8 - 0x1EC];
+    s32 unk1EC;
+    u8 pad1F0[4];
+    u32 unk1F4;
     s16 unk1F8;
     u8 pad1FA[0x204 - 0x1FA];
     s32 unk204;
@@ -159,7 +163,8 @@ void func_02069a34(void *w, UnkStruct_Blk *blk, void *tbl, s32 a, s32 b, s32 c, 
 typedef struct {
     u8 unk0;
     u8 unk1;
-    u8 pad2[2];
+    u8 unk2;
+    u8 unk3;
     u8 unk4;
     u8 unk5;
     u8 pad6[2];
@@ -176,7 +181,8 @@ typedef struct {
     u8 pad2C[2];
     s16 unk2E;
     s16 unk30;
-    u8 pad32[0x40 - 0x32];
+    s16 unk32;
+    u8 pad34[0x40 - 0x34];
     s16 unk40;
     s16 unk42;
     s16 unk44;

@@ -22,11 +22,14 @@ there are per-shape regexes over ARM; this is a generic lifter covering ARM and 
 
     python tools/matching/templates.py [--max 0x80] [--module ov000] [--dry-run] [-j 2]
     python tools/matching/templates.py --show func_ov000_022f18f4   # print variants
+Closest failing variant per function -> build/eur/reports/templates_nearmiss.jsonl
+(a lifted C draft + masked diff bytes: a starting point for an agent).
 """
 from __future__ import annotations
 
 import argparse
 import itertools
+import json
 import re
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -53,7 +56,7 @@ class Bail(Exception):
     pass
 
 
-VARIANT_BAILS = {"missing stack arg", "no return value"}
+VARIANT_BAILS = {"missing stack arg", "no return value", "merge retries"}
 
 
 REGN = {}
@@ -117,7 +120,7 @@ def num(v: V) -> str:
     """value as an integer expression"""
     if v.kind == "addr":
         return f"(s32){v.c()}"
-    if v.kind == "sym" or v.ptr:
+    if v.kind in ("sym", "param") or v.ptr:
         return f"(s32){v.c()}"
     return v.c()
 
@@ -131,8 +134,9 @@ class Block:
 
 
 class Lifter:
-    def __init__(self, c: Corpus, f, nparams: int, arity: dict, ret: str, bind_all: bool):
+    def __init__(self, c: Corpus, f, nparams: int, arity: dict, ret: str, bind_all: bool, kinds=None):
         self.c, self.f = c, f
+        self.kinds = kinds if kinds is not None else (analyse_regs(f, c) or [None] * 4)[3] or {}
         self.md = mdd(f.thumb)
         self.np, self.arity, self.ret, self.bind_all = nparams, arity, ret, bind_all
         self.regs: dict[str, V] = {}
@@ -147,6 +151,8 @@ class Lifter:
         self.flags = None          # (lhs V, rhs V) the flags compare
         self.pool = pool_words(f)
         self.blocks: list[Block] = []
+        self.hints: dict[int, set] = {}
+        self.cur_k = -1
 
     # helpers
     def emit(self, s):
@@ -233,7 +239,9 @@ class Lifter:
             if off not in (0, 1):
                 raise Bail("mid-function pointer")
             self.externs.setdefault(name, f"void {name}();")
-            return V("sym", text=f"(u32){name}")
+            v = V("sym", text=f"(u32){name}")
+            v.fname = name
+            return v
         self.externs[name] = f"extern u8 {name}[];"
         base = V("sym", text=name, ptr=True)
         return addr_of(base, off) if off else base
@@ -250,7 +258,7 @@ class Lifter:
                 if self.flags:
                     self.flags = tuple(nv if x is v else x for x in self.flags)
 
-    def call(self, name, idx, live_after):
+    def call(self, name, idx, live_after, callee=None):
         n = self.arity.get(idx, 0)
         args = []
         for k in range(min(n, 4)):
@@ -261,8 +269,10 @@ class Lifter:
                 raise Bail("missing stack arg")
             args.append(self.stack_args[off].c())
         self.stack_args = {}
-        self.externs[name] = f"s32 {name}();"
-        callexpr = f"{name}({', '.join(args)})"
+        if callee is None:
+            self.externs[name] = f"s32 {name}();"
+            callee = name
+        callexpr = f"{callee}({', '.join(args)})"
         for rn in ("r0", "r1", "r2", "r3", "ip", "lr"):
             self.regs.pop(rn, None)
         self.side_effect(live_after - {"r0"})
@@ -308,12 +318,34 @@ class Lifter:
     def open_block(self, cc, end):
         self.side_effect(self.cur_live)
         cond = self.cond_text(cc)
+        vars_ = {}
+        for rn in sorted(self.hints.get(self.cur_k, ())):
+            name = f"v{self.ntemp}"
+            self.ntemp += 1
+            cur = self.regs.get(rn)
+            self.emit(f"s32 {name} = {num(cur)};" if cur is not None else f"s32 {name};")
+            var = V("expr", text=name)
+            var.temp = True
+            self.regs[rn] = var
+            vars_[rn] = var
         self.emit(f"if {cond} {{")
         self.depth += 1
-        self.blocks.append(Block(end, dict(self.regs)))
+        b = Block(end, dict(self.regs))
+        b.open_k, b.vars = self.cur_k, vars_
+        self.blocks.append(b)
 
-    def merge(self, states, live):
-        """Join register states; a live register that differs between paths is unsupported."""
+    def assign_vars(self, b):
+        for rn, var in b.vars.items():
+            cur = self.regs.get(rn)
+            if cur is None:
+                raise Bail("var undefined at arm end")
+            if cur is not var:
+                self.emit(f"{var.text} = {num(cur)};")
+                self.regs[rn] = var
+
+    def merge(self, states, live, b=None):
+        """Join register states; a live register that differs between paths needs a variable
+        (raises Bail('merge <open_k> <reg>') so variants() retries with that hint)."""
         out = {}
         for rn in set().union(*[s.keys() for s in states]):
             vs = [s.get(rn) for s in states]
@@ -321,12 +353,15 @@ class Lifter:
                 if vs[0] is not None:
                     out[rn] = vs[0]
             elif rn in live:
-                raise Bail("merge of live register " + rn)
+                raise Bail(f"merge {b.open_k if b is not None else -1} {rn}")
         return out
 
     def close_blocks(self, addr, live):
         while self.blocks and self.blocks[-1].end == addr:
-            b = self.blocks.pop()
+            b = self.blocks[-1]
+            if not b.returned:
+                self.assign_vars(b)
+            self.blocks.pop()
             self.depth -= 1
             self.emit("}")
             states = [b.saved] if b.kind == "if" else []
@@ -338,7 +373,7 @@ class Lifter:
                 pass
             if not states:
                 raise Bail("both arms return")
-            self.regs = self.merge(states, live)
+            self.regs = self.merge(states, live, b)
             self.flags = None
             self.dead = False
 
@@ -357,7 +392,7 @@ class Lifter:
             off += i.size
         index = {i.address: k for k, i in enumerate(insns)}
         live = liveness(self.md, insns, index, f.relocs, {"r0"} if self.ret != "void" else set(),
-                        self.arity)
+                        self.arity, self.kinds)
         self.dead = False           # after a return at the current nesting level
         finished = False
         k = 0
@@ -365,6 +400,7 @@ class Lifter:
         while k < len(insns):
             i = insns[k]
             self.cur_live = live[k]
+            self.cur_k = k
             if self.blocks and self.blocks[-1].end < i.address:
                 raise Bail("block overlap")
             self.close_blocks(i.address, live[k])
@@ -440,6 +476,23 @@ class Lifter:
                 if not is_ret:
                     k += 1
                     continue
+            if self.kinds.get(k) == "tail":
+                v = self.reg(ops[0].reg)
+                if getattr(v, "fname", None) is None or cc or self.blocks:
+                    raise Bail("tail call shape")
+                self.call(v.fname, k, set(live[-1]) | ({"r0"} if self.ret != "void" else set()))
+                if self.ret != "void":
+                    self.emit(f"return {self.regs['r0'].c()};")
+                finished = True
+                k += 1
+                continue
+            if self.kinds.get(k) == "indirect":
+                if cc:
+                    raise Bail("cond indirect call")
+                v = self.reg(ops[0].reg)
+                self.call(None, k, la, callee=f"((s32 (*)()){num(v)})")
+                k += 1
+                continue
             if base == "bx":
                 is_ret = True
             if is_ret:
@@ -525,6 +578,7 @@ class Lifter:
                 b = self.blocks[-1]
                 if tgt <= b.end:
                     raise Bail("goto")
+                self.assign_vars(b)
                 b.kind, b.then_regs = "else", dict(self.regs)
                 self.stmts.append("    " * (self.depth - 1) + "} else {")
                 b.end = tgt
@@ -682,7 +736,15 @@ class Lifter:
         out.append("}")
         if f.thumb:
             out += ["", "#pragma thumb reset"]
-        return "\n".join(out) + "\n"
+        return tidy("\n".join(out) + "\n")
+
+
+def tidy(src: str) -> str:
+    """Cosmetic: `s32 tN = call(...);` with tN never used -> `call(...);`."""
+    for m in list(re.finditer(r"^(\s*)s32 (t\d+) = (\w+\(.*\));$", src, re.M)):
+        if len(re.findall(rf"\b{m.group(2)}\b", src)) == 1:
+            src = src.replace(m.group(0), f"{m.group(1)}{m.group(3)};", 1)
+    return src
 
 
 THUMB_BASE = {"bics": "bic", "orrs": "orr", "movs": "mov", "adds": "add", "subs": "sub",
@@ -691,7 +753,7 @@ THUMB_BASE = {"bics": "bic", "orrs": "orr", "movs": "mov", "adds": "add", "subs"
 ARM_S = ("add", "sub", "mov", "and", "orr", "eor", "bic", "rsb", "mvn", "lsl", "lsr", "asr", "mul")
 
 
-def liveness(md, insns, index=None, relocs=None, ret_live=frozenset({"r0"}), arity=None):
+def liveness(md, insns, index=None, relocs=None, ret_live=frozenset({"r0"}), arity=None, kinds=None):
     """live[k] = registers possibly read at/after instruction k before being written
     (forward branches follow both edges)."""
     n = len(insns)
@@ -708,12 +770,15 @@ def liveness(md, insns, index=None, relocs=None, ret_live=frozenset({"r0"}), ari
         wrs = {canon(md.reg_name(r)) for r in wr}
         nxt = set(live[k + 1])
         cond = i.cc not in (A.ARM_CC_AL, A.ARM_CC_INVALID)
-        if is_branch(i.mnemonic) and i.address in relocs:
+        kinds = kinds or {}
+        if (is_branch(i.mnemonic) and i.address in relocs) or k in kinds:
             n_ = 4 if arity is None else min(arity.get(k, 4), 4)
             rds |= {f"r{x}" for x in range(n_)}
             wrs |= {"r0", "r1", "r2", "r3", "ip"}
-            if i.mnemonic == "b":
+            if i.mnemonic == "b" or kinds.get(k) == "tail":
                 nxt = set(ret_live)
+            live[k] = ((nxt - wrs) | rds) - {"sp", "pc", "lr"}
+            continue
         elif is_branch(i.mnemonic) and i.operands and i.operands[0].type == A.ARM_OP_IMM:
             t = index.get(i.operands[0].imm)
             tl = live[t] if t is not None and t > k else set()
@@ -734,15 +799,18 @@ def canon(n):
 
 
 # ----------------------------------------------------------------------------- variants
-def analyse_regs(f):
-    """(read-before-write arg regs, per-call (min arity, max arity))."""
+def analyse_regs(f, c=None):
+    """(insns, read-before-write arg regs, calls {k: [min arity, 4, 0]}, callkinds {k: kind}).
+    kind: 'direct' (reloc bl/blx/b), 'indirect' (blx rN), 'tail' (bx rN holding a pooled
+    function address: ARM far tail call `ldr ip,=f; bx ip`)."""
     md = mdd(f.thumb)
     pool = pool_words(f)
     defined = set()
     rbw = set()
-    calls = {}
+    calls, kinds = {}, {}
     written_since = set()
-    off, k = 0, 0
+    funcregs = set()
+    off = 0
     insns = []
     while off < f.size:
         if off in pool:
@@ -760,13 +828,31 @@ def analyse_regs(f):
             return None
         rds = {canon(md.reg_name(r)) for r in rd}
         wrs = {canon(md.reg_name(r)) for r in wr}
+        kind = None
         if i.address in f.relocs and is_branch(i.mnemonic):
+            kind = "direct"
+        elif i.mnemonic.startswith("blx") and i.operands and i.operands[0].type == A.ARM_OP_REG:
+            kind = "indirect"
+        elif i.mnemonic == "bx" and i.operands and canon(md.reg_name(i.operands[0].reg)) in funcregs:
+            kind = "tail"
+        if kind:
             hi = max([int(r[1]) + 1 for r in written_since if r in ("r0", "r1", "r2", "r3")] or [0])
-            nstack = 0
-            calls[k] = [hi, 4, nstack]
+            calls[k] = [hi, 4, 0]
+            kinds[k] = kind
             written_since = set()
             defined |= {"r0"}
+            funcregs -= {"r0", "r1", "r2", "r3", "ip"}
             continue
+        if i.mnemonic.startswith("ldr") and "[pc" in i.op_str and c is not None:
+            t_ = (((i.address + 4) & ~3) if f.thumb else i.address + 8) + i.operands[1].mem.disp
+            r_ = f.relocs.get(t_)
+            nm = c.resolve(r_[2], r_[1]) if r_ else None
+            if nm and c.sym_kind.get(nm[0]) == "function":
+                funcregs |= wrs
+            else:
+                funcregs -= wrs
+        else:
+            funcregs -= wrs
         if i.mnemonic in ("push", "stmdb", "pop", "bx") or i.mnemonic.startswith("ldm"):
             continue
         for r in sorted(rds):
@@ -774,7 +860,7 @@ def analyse_regs(f):
                 rbw.add(r)
         defined |= wrs
         written_since |= wrs
-    return insns, rbw, calls
+    return insns, rbw, calls, kinds
 
 
 def stack_arg_counts(f, insns, calls):
@@ -793,10 +879,10 @@ def stack_arg_counts(f, insns, calls):
 
 
 def variants(c, f, max_variants=24):
-    a = analyse_regs(f)
+    a = analyse_regs(f, c)
     if a is None:
         return []
-    insns, rbw, calls = a
+    insns, rbw, calls, kinds = a
     np_min = max([int(r[1]) + 1 for r in rbw] or [0])
     sargs = stack_arg_counts(f, insns, calls)
     out = []
@@ -826,7 +912,20 @@ def variants(c, f, max_variants=24):
     srcs = []
     for np_, ar, ret, bind in out:
         try:
-            s = Lifter(c, f, np_, ar, ret, bind).source()
+            hints = {}
+            for _ in range(4):
+                try:
+                    lf = Lifter(c, f, np_, ar, ret, bind, kinds)
+                    lf.hints = hints
+                    s = lf.source()
+                    break
+                except Bail as e:
+                    m = re.match(r"merge (\d+) (\w+)$", str(e))
+                    if not m:
+                        raise
+                    hints.setdefault(int(m.group(1)), set()).add(m.group(2))
+            else:
+                raise Bail("merge retries")
         except Bail as e:
             if str(e) not in VARIANT_BAILS and not str(e).startswith("read undefined"):
                 break            # structural: no variant can lift it
@@ -881,17 +980,25 @@ def main() -> int:
             dst.write_text("/* templates.py: lifted from the ROM instruction stream, verified by match.py. */\n" + s)
             ok, res, _ = run_match(dst)
             if ok and set(res) == {f.name}:
-                return f
+                return f, None
             d = res.get(f.name)
             if d and (best is None or d[0] < best[0]):
                 best = (d[0], s)
         dst.unlink(missing_ok=True)
-        return None
+        return None, (f, best) if best else None
 
     made = 0
     by_mod = {}
+    nm_path = ROOT / "build" / "eur" / "reports" / "templates_nearmiss.jsonl"
+    nm_path.parent.mkdir(parents=True, exist_ok=True)
+    nm = nm_path.open("a")   # append across runs; last row per symbol wins
     with ThreadPoolExecutor(args.j) as ex:
-        for r in ex.map(work, lifted):
+        for r, miss in ex.map(work, lifted):
+            if miss:
+                mf, (d, s) = miss
+                nm.write(json.dumps({"symbol": mf.name, "module": mf.mod, "addr": f"0x{mf.addr:08x}",
+                                     "size": mf.size, "diff": d, "source": s}) + "\n")
+                nm.flush()
             if r:
                 made += 1
                 by_mod[r.mod] = by_mod.get(r.mod, 0) + 1

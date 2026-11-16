@@ -55,7 +55,8 @@ public class ExportAnalysis extends GhidraScript {
         }
         try (PrintWriter w = new PrintWriter(new File(out, "strings.csv"))) {
             w.println("address,length,value");
-            for (Data d : DefinedDataIterator.definedStrings(currentProgram)) {
+            for (Data d : currentProgram.getListing().getDefinedData(true)) {
+                if (!StringDataInstance.isString(d)) continue;
                 StringDataInstance s = StringDataInstance.getStringDataInstance(d);
                 String v = s.getStringValue();
                 if (v == null) continue;

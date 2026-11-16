@@ -1,0 +1,168 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    s32 unk0;
+    s32 unk4;
+    u8 pad8[4];
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    u8 pad12[0x18 - 0x12];
+    void *unk18;
+} UnkStruct_022eb5fc_Coll;
+
+typedef struct {
+    u8 pad0[0x10];
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
+    u8 pad1C[0x2E - 0x1C];
+    s16 unk2E;
+    u8 pad30[0x34 - 0x30];
+    s16 unk34;
+    s16 unk36;
+    u8 pad38[0x58 - 0x38];
+    u32 unk58;
+    u8 pad5C[0x328 - 0x5C];
+    s16 unk328;
+    u8 pad32A[2];
+    u32 unk32C;
+    u8 pad330[0x3B2 - 0x330];
+    s16 unk3B2;
+    u8 pad3B4[0x420 - 0x3B4];
+    s16 unk420;
+    s16 unk422;
+    s16 unk424;
+} UnkStruct_022eb5fc_Pl;
+
+typedef struct {
+    u8 pad0[0x10];
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
+    u8 pad1C[0x2E - 0x1C];
+    s16 unk2E;
+    u8 pad30[0x36 - 0x30];
+    s16 unk36;
+    u8 pad38[0x43C - 0x38];
+    void *unk43C;
+    void *unk440;
+    u8 pad444[4];
+    u32 unk448;
+} UnkStruct_022eb5fc;
+
+typedef struct {
+    u8 pad0[0x220];
+    u32 unk220;
+} UnkStruct_02369b78;
+
+typedef struct {
+    u32 unk0;
+    s32 unk4;
+    u16 unk8;
+    u16 unkA;
+} UnkStruct_02369ac0;
+
+typedef struct {
+    u8 pad0[0x18];
+    u32 unk18;
+} UnkStruct_022c4560;
+
+extern UnkStruct_02369ac0 data_ov000_02369ac0;
+extern UnkStruct_02369b78 *data_ov000_02369b78;
+extern UnkStruct_022c4560 data_022c4560;
+extern UnkStruct_022eb5fc_Pl *data_ov000_0236ac60;
+
+void func_ov000_022eb574(UnkStruct_022eb5fc *w, UnkStruct_022eb5fc_Pl *pl);
+void func_ov000_022ee014(s32 x, s32 y, s32 z);
+void func_02036754(s32 a, s32 b, s32 c);
+void func_ov000_023492f0(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b);
+s32 func_ov000_0235b0a8(void);
+void func_ov000_0235b08c(s32 a);
+void func_020537b4(s32 a);
+void func_020533e0(s32 a, s32 b);
+void func_ov000_022e9de8(void);
+void func_ov000_022e72ec(void);
+void func_ov000_0234aa80(UnkStruct_022eb5fc_Pl *pl);
+void func_ov000_022ee06c(s32 x, s32 y, s32 z);
+
+static inline void Hit(UnkStruct_02369b78 *mgr, UnkStruct_022eb5fc *w, UnkStruct_022eb5fc_Pl *pl) {
+    u32 v = mgr->unk220;
+    if (v - w->unk448 < 4)
+        return;
+    w->unk448 = v;
+    func_ov000_022eb574(w, pl);
+    func_ov000_022ee014((w->unk10 + pl->unk10) >> 1, (w->unk14 + pl->unk14) >> 1, (w->unk18 + pl->unk18) >> 1);
+    func_02036754(0, 0, 0xcb);
+}
+
+void func_ov000_022eb5fc(UnkStruct_022eb5fc_Coll *a, UnkStruct_022eb5fc_Coll *b) {
+    UnkStruct_02369b78 *mgr = data_ov000_02369b78;
+    UnkStruct_022eb5fc *w = a->unk18;
+    UnkStruct_022eb5fc_Pl *pl = b->unk18;
+    u16 hp = data_ov000_02369ac0.unk8;
+    s32 spd;
+
+    if (hp == 1)
+        return;
+    if (data_ov000_02369ac0.unk4 == 0x29) {
+        if (pl->unk3B2 > 0)
+            return;
+        if ((u16)(s16)(pl->unk328 - 0x30) <= 1) {
+            Hit(mgr, w, pl);
+            return;
+        }
+        if (pl->unk3B2 > 0)
+            return;
+        func_ov000_023492f0(b, a);
+        return;
+    }
+    if (data_ov000_02369ac0.unk4 == 0x28) {
+        if (pl->unk328 == 0x30) {
+            Hit(mgr, w, pl);
+            return;
+        }
+        if (pl->unk3B2 > 0)
+            return;
+        func_ov000_023492f0(b, a);
+        return;
+    }
+    if ((u16)(s16)(pl->unk328 - 0x30) <= 1) {
+        data_ov000_02369ac0.unk8 = hp - 1;
+        if (data_ov000_02369ac0.unk8 <= 1) {
+            data_ov000_02369ac0.unk8 = 1;
+            data_022c4560.unk18 &= ~1;
+            data_ov000_0236ac60->unk32C |= 0x200000;
+            data_ov000_0236ac60->unk420 = 0;
+            data_ov000_0236ac60->unk422 = 0;
+            data_ov000_0236ac60->unk424 = 0;
+            func_ov000_0235b08c(func_ov000_0235b0a8() | 1);
+            func_020537b4(0xb);
+            func_020533e0(0x12, 0xf0);
+            w->unk43C = func_ov000_022e9de8;
+        } else {
+            func_020537b4(0xb);
+            func_020533e0(0x10, 0xf0);
+        }
+        w->unk440 = func_ov000_022e72ec;
+        func_ov000_0234aa80(data_ov000_0236ac60);
+        func_ov000_022ee06c(b->unk0 << 8, b->unk4 << 8, 0);
+        return;
+    }
+    if (pl->unk3B2 > 0)
+        return;
+    if (w->unk10 < pl->unk10) {
+        pl->unk36 = (((a->unk0 + a->unk10) - b->unkC) << 8) - pl->unk10;
+        spd = 0x400;
+    } else {
+        pl->unk36 = (((a->unk0 + a->unkC) - b->unk10) << 8) - pl->unk10;
+        spd = -0x400;
+    }
+    pl->unk36 >>= 1;
+    w->unk36 = -pl->unk36;
+    if (pl->unk58 & 0x8000)
+        pl->unk2E = spd;
+    else
+        pl->unk34 = spd;
+    w->unk2E = -spd;
+}

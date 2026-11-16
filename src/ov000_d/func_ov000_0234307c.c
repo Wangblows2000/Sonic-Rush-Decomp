@@ -1,0 +1,64 @@
+#include <nitro/types.h>
+
+typedef struct {
+    u8 pad0[0x18];
+    u32 unk18;
+} UnkStruct_0234307c_4560;
+
+typedef struct {
+    u8 pad0[0x325];
+    u8 unk325;
+    u8 pad326[0x32C - 0x326];
+    u32 unk32C;
+    u8 pad330[0x350 - 0x330];
+    s16 unk350;
+    u8 pad352[0x3B6 - 0x352];
+    s16 unk3B6;
+    u8 pad3B8[0x414 - 0x3B8];
+    u8 unk414[4];
+} UnkStruct_0234307c;
+
+extern UnkStruct_0234307c_4560 data_022c4560;
+
+void func_ov000_0232ecac(s32 a, s32 b);
+void func_ov000_0232f064(UnkStruct_0234307c *w);
+void func_0204b7ec(void *p, s32 a, s32 b);
+void func_0206cdf4(void *p, s32 a, s32 b, s32 c);
+
+void func_ov000_0234307c(UnkStruct_0234307c *w, s16 v) {
+    s16 t;
+
+    if ((data_022c4560.unk18 & 0x20) && v == 0x12c0) {
+        if (w->unk325 == 0) {
+            func_ov000_0232ecac(0x2f, 0x80);
+        }
+        func_ov000_0232f064(w);
+    }
+    if (w->unk32C & 0x400000) {
+        return;
+    }
+    if (v < 0) {
+        if (w->unk3B6 != 0) {
+            func_0204b7ec(NULL, 0, 0x3c);
+            func_0206cdf4(w->unk414, 0, 0, 0);
+        }
+        w->unk3B6 = 0;
+    }
+    w->unk350 += v;
+    if (w->unk3B6 == 0) {
+        if (w->unk350 >= 0x12c0) {
+            w->unk3B6 = 0x140;
+            func_0204b7ec(NULL, 0, 0x3a);
+        }
+    } else if (v > 0) {
+        w->unk3B6 = 0x140;
+        func_0204b7ec(NULL, 0, 0x3b);
+    }
+    t = w->unk350;
+    if (t < 0) {
+        t = 0;
+    } else if (t > 0x12c0) {
+        t = 0x12c0;
+    }
+    w->unk350 = t;
+}

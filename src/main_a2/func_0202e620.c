@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202e620(void)
+asm void _fgr(void)
 {
     mov r3, #0xff000000
     cmp r3, r0, lsl #1

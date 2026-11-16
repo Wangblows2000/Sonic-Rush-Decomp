@@ -8,7 +8,7 @@ s32 func_02032d2c();
 
 void func_ov000_02357970(s32 p0) {
     func_0203344c(((u8 *)p0 + 0x9fc), 0, 0);
-    s32 t0 = func_02032d2c(((u8 *)p0 + 0x9fc));
+    func_02032d2c(((u8 *)p0 + 0x9fc));
 }
 
 #pragma thumb reset

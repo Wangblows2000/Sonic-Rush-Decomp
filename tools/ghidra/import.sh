@@ -32,7 +32,8 @@ import_module() {  # name file base symbols extra-blocks...
     -loader-blockName "$name" -processor ARM:LE:32:v5t -cspec default \
     -scriptPath "$root/tools/ghidra" \
     -preScript ApplyDsdSymbols.java "$syms" "$@" \
-    -postScript ExportAnalysis.java "$root/build/$ver/ghidra/$name"
+    -postScript ExportAnalysis.java "$root/build/$ver/ghidra/$name" \
+    -postScript ExportDecomp.java "$root/build/$ver/ghidra/$name/decomp" 30
 }
 
 import_module main "$main_bin" 0x02000000 "$cfg/symbols.txt" "$itcm" "$dtcm"

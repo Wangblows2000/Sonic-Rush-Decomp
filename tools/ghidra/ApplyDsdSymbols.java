@@ -41,7 +41,26 @@ public class ApplyDsdSymbols extends GhidraScript {
 
         Register tmode = currentProgram.getRegister("TMode");
         int funcs = 0, labels = 0, failed = 0;
-        for (String line : Files.readAllLines(Paths.get(args[0]))) {
+        java.util.List<String> lines = Files.readAllLines(Paths.get(args[0]));
+        // Pass 1: set Thumb/ARM context over every function range before any
+        // disassembly, so auto-flow from earlier functions cannot lock in ARM.
+        if (tmode != null) {
+            for (String line : lines) {
+                Matcher m = SYM.matcher(line);
+                if (!m.find() || !m.group(2).equals("function")) continue;
+                String opts = m.group(3) == null ? "" : m.group(3);
+                Address a = toAddr(Long.parseLong(m.group(4), 16));
+                if (currentProgram.getMemory().getBlock(a) == null) continue;
+                long size = 2;
+                Matcher sm = Pattern.compile("size=0x([0-9a-fA-F]+)").matcher(opts);
+                if (sm.find()) size = Long.parseLong(sm.group(1), 16);
+                try {
+                    currentProgram.getProgramContext().setValue(tmode, a, a.add(Math.max(size, 2) - 1),
+                        opts.contains("thumb") ? BigInteger.ONE : BigInteger.ZERO);
+                } catch (Exception e) { /* reported in pass 2 */ }
+            }
+        }
+        for (String line : lines) {
             Matcher m = SYM.matcher(line);
             if (!m.find()) continue;
             String name = m.group(1), kind = m.group(2);
@@ -58,11 +77,6 @@ public class ApplyDsdSymbols extends GhidraScript {
                     long size = 2;
                     Matcher sm = Pattern.compile("size=0x([0-9a-fA-F]+)").matcher(opts);
                     if (sm.find()) size = Long.parseLong(sm.group(1), 16);
-                    if (tmode != null) {
-                        currentProgram.getProgramContext().setValue(tmode, a,
-                            a.add(Math.max(size, 2) - 1),
-                            thumb ? BigInteger.ONE : BigInteger.ZERO);
-                    }
                     disassemble(a);
                     Function f = getFunctionAt(a);
                     if (f == null) f = createFunction(a, name);

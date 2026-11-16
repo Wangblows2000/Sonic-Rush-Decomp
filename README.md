@@ -22,9 +22,28 @@ USA (`ASCE`) and Japan (`ASCJ`) are not configured yet.
   ELF objects for ARM9 main, ITCM, DTCM and both overlays: **7,391 functions**,
   ~1.42 MB of ARM9 function code. An independent GNU-ld relink of those objects
   reproduces **every section byte for byte**.
-- **0 functions decompiled/matched so far.** The Metrowerks compiler could not
-  be run in the environment that set this project up; see
-  [STATUS.md](STATUS.md#blockers).
+- Matching decompilation is under way with CodeWarrior for NDS 1.2; the block
+  below is regenerated from the objdiff report by `python tools/project.py dashboard`.
+
+<!-- dashboard:start -->
+
+_Verified progress, updated 2026-11-16 03:05:06Z ([full dashboard](docs/progress/dashboard.md))._
+
+| Module | Matched code | Bytes | Functions | Remaining |
+| ------ | ------------ | ----- | --------- | --------- |
+| main | `██████████████░░░░░░` 70.56% | 317,200 / 449,566 | 2,440 / 2,856 | 416 |
+| itcm | `████████████████████` 100.00% | 2,064 / 2,064 | 14 / 14 | 0 |
+| ov000 | `█████████████░░░░░░░` 65.39% | 420,296 / 642,724 | 2,056 / 2,799 | 743 |
+| ov001 | `█████████████░░░░░░░` 62.93% | 206,474 / 328,118 | 1,283 / 1,723 | 440 |
+| **ARM9 total** | `█████████████░░░░░░░` 66.51% | 946,034 / 1,422,472 | 5,793 / 7,392 | 1,599 |
+
+Next milestone: **70%** matched code — 49,697 more bytes (currently 66.51%).
+
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 02:59:13Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 03:05:04Z
+- objdiff report: `build/eur/report.json` — 2026-11-16 03:05:06Z
+
+<!-- dashboard:end -->
 
 ## Layout
 

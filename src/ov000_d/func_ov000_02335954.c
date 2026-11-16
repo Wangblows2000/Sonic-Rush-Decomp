@@ -1,0 +1,70 @@
+#include <nitro/types.h>
+
+extern void *data_0208fe80;
+extern void *data_ov000_0236aa8c;
+extern u8 data_ov000_023687e0[];
+extern void *data_ov000_0236aa9c[];
+
+void func_02021310(void *buf, void *a, void *b);
+void *func_02021264(void *buf, s32 a);
+void func_020212e0(void *buf);
+void *func_02034a40(void *heap, u32 size, s32 align);
+void *func_02006abc(s32 i);
+void MIi_CpuClear32(u32 data, void *dest, u32 size);
+void DC_StoreRange(void *p, u32 size);
+u32 func_ov000_02335d00(void *res);
+u32 func_ov000_02335cf4(void *res);
+void func_02008648(void *src, void *dst);
+void func_02008720(void *src, void *dst);
+void func_020087f8(void *src, void *dst);
+void *func_02033a54(void *res);
+void func_02033a68(void *src, void *dst, u32 size);
+void func_ov000_02342178(void *res, s32 a, s32 b);
+
+static inline void *UnkAlloc_02335954(u32 size, s32 align) {
+    u32 sz = (size + 0x43) & ~0x1f;
+    u8 *p = func_02034a40(data_0208fe80, sz, align);
+    if (func_02006abc(0) != p) {
+        vu32 fill = 0xcccccccc;
+        MIi_CpuClear32(fill, p, sz);
+        *(u32 *)p = sz;
+        *(u32 *)(p + sz - 4) = 0x2467531;
+        DC_StoreRange(p, sz);
+        p += 0x20;
+    }
+    return p;
+}
+
+static inline void UnkLoad_02335954(void *arc, s32 idx, void **slot) {
+    void *res = func_02021264(arc, idx);
+    void *dst;
+    *slot = UnkAlloc_02335954(*(u32 *)res >> 8, 0x20);
+    dst = *slot;
+    switch (func_ov000_02335d00(res)) {
+    case 0x10:
+        func_02008648(res, dst);
+        break;
+    case 0x20:
+        func_02008720(res, dst);
+        break;
+    case 0x30:
+        func_020087f8(res, dst);
+        break;
+    default:
+        func_02033a68(func_02033a54(res), dst, func_ov000_02335cf4(res));
+        break;
+    }
+    DC_StoreRange(dst, func_ov000_02335cf4(res));
+}
+
+void func_ov000_02335954(void) {
+    u8 buf[0x60];
+    void **tbl = data_ov000_0236aa9c;
+
+    func_02021310(buf, data_ov000_023687e0, data_ov000_0236aa8c);
+    UnkLoad_02335954(buf, 1, &tbl[0]);
+    UnkLoad_02335954(buf, 2, &tbl[1]);
+    UnkLoad_02335954(buf, 0, &tbl[2]);
+    func_ov000_02342178(func_02021264(buf, 3), 2, 0xff);
+    func_020212e0(buf);
+}

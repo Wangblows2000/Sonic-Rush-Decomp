@@ -1,0 +1,67 @@
+/* paramclone of func_ov001_022c89c8 (src/ov001_t/func_ov001_022c89c8.c); immediates and relocations remapped. */
+#include <nitro/types.h>
+
+typedef struct {
+    u32 t;
+    s16 from;
+    s16 to;
+    u32 dur;
+    u32 delay;
+} UnkWork_0235f778;
+
+typedef struct {
+    u8 pad[0x10];
+    UnkWork_0235f778 *work;
+} UnkTask_0235f778;
+
+typedef struct {
+    u8 pad[8];
+    s16 bright;
+} UnkBright_0235f778;
+
+extern UnkTask_0235f778 *data_022b4574;
+extern UnkBright_0235f778 data_02087d44;
+extern UnkBright_0235f778 data_0208926c;
+
+fx32 func_0200225c(fx32 a, fx32 b);
+void func_020371c8(UnkTask_0235f778 *t);
+
+#define FX_MUL(a, b) ((fx32)(((s64)(a) * (b) + 0x800) >> 12))
+
+#pragma thumb on
+void func_ov000_0235f778(void) {
+    UnkWork_0235f778 *w = data_022b4574->work;
+    fx32 a, b;
+    s32 v;
+
+    if (w->t < w->delay) {
+        w->t++;
+        data_02087d44.bright = w->from;
+        data_0208926c.bright = data_02087d44.bright;
+        return;
+    }
+    a = w->from << 12;
+    b = w->to << 12;
+    if (a >= 0) {
+        a += 0x800;
+    } else {
+        a -= 0x800;
+    }
+    if (b >= 0) {
+        b += 0x800;
+    } else {
+        b -= 0x800;
+    }
+    v = (a + func_0200225c(FX_MUL((fx32)((w->t - w->delay) << 12), b - a), w->dur << 12)) >> 12;
+    if (v < -16) v = -16;
+    if (v > 16) v = 16;
+    data_02087d44.bright = v;
+    data_0208926c.bright = data_02087d44.bright;
+    w->t++;
+    if (w->t - w->delay >= w->dur) {
+        data_02087d44.bright = w->to;
+        data_0208926c.bright = data_02087d44.bright;
+        func_020371c8(data_022b4574);
+    }
+}
+#pragma thumb reset

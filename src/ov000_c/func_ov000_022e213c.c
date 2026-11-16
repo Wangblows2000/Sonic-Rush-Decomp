@@ -1,0 +1,120 @@
+#include <ov000_c/stageobj.h>
+
+typedef struct {
+    u8 pad0[0x48];
+    s16 unk48;
+} UnkStruct_0208922c;
+
+typedef struct {
+    u8 pad0[0x54];
+    s32 unk54;
+    s32 unk58;
+    s32 unk5C;
+    u8 pad60[0x78 - 0x60];
+    s32 unk78;
+    s32 unk7C;
+    u8 pad80[0x84 - 0x80];
+    s32 unk84;
+    s32 unk88;
+    u8 pad8C[0x8E - 0x8C];
+    u16 unk8E;
+    u16 unk90;
+} UnkStruct_Cam;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u8 pad20C[0x32C - 0x20C];
+    u32 unk32C;
+} UnkStruct_Player;
+
+typedef struct {
+    u8 pad0[0x10C];
+    u8 unk10C;
+    u8 pad10D[0x114 - 0x10D];
+    s32 unk114;
+} UnkStruct_Mdl960;
+
+typedef struct {
+    u8 pad0[0x248];
+    s32 unk248;
+} UnkStruct_Fx;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u8 pad20C[0x960 - 0x20C];
+    UnkStruct_Mdl960 unk960;
+    u8 pad[0xD08 - 0x960 - sizeof(UnkStruct_Mdl960)];
+    void *unkD08;
+    u8 padD0C[0xF50 - 0xD0C];
+    s32 unkF50;
+    u8 padF54[0x1118 - 0xF54];
+    s32 unk1118;
+    s32 unk111C;
+} UnkStruct_Boss;
+
+extern UnkStruct_0208922c data_0208922c;
+extern UnkStruct_Cam data_ov000_0236a48c;
+extern UnkStruct_Player *data_ov000_0236ac60;
+extern s32 data_ov000_023658cc[][3];
+extern s32 data_ov000_023658d0[][3];
+extern s32 data_ov000_023658d4[][3];
+
+void func_02031a68(void *s, s32 a, void *b, s32 c, s32 d);
+void func_ov000_022e237c(s32 a, s32 b);
+void func_02036754(s32 a, s32 b, s32 c);
+void func_0206c7c0(void);
+UnkStruct_Fx *func_ov000_02328860(s32 a, s32 x, s32 y, s32 z);
+void func_020537b4(s32 a);
+void func_020533e0(s32 a, s32 b);
+void func_ov000_022e20b0(void);
+
+static inline u32 GetVisiblePlane(void) {
+    return (*(vu32 *)0x4000000 & 0x1f00) >> 8;
+}
+
+static inline void SetVisiblePlane(u32 p) {
+    *(vu32 *)0x4000000 = (*(vu32 *)0x4000000 & ~0x1f00) | (p << 8);
+}
+
+void func_ov000_022e213c(UnkStruct_Boss *w) {
+    UnkStruct_Mdl960 *m = &w->unk960;
+    UnkStruct_Cam *cam;
+    UnkStruct_Fx *fx;
+
+    w->unkF50--;
+    if (data_0208922c.unk48 > 0)
+        data_0208922c.unk48 -= 2;
+    if (w->unkF50 > 0)
+        return;
+    w->unk1118++;
+    if (w->unk1118 >= 3) {
+        w->base.unk68 = func_ov000_022e20b0;
+        SetVisiblePlane(GetVisiblePlane() & ~4);
+        cam = (UnkStruct_Cam *)(u32)&data_ov000_0236a48c;
+        func_02031a68(m, 0, w->unkD08, 0x19, 0);
+        m->unk10C &= ~4;
+        m->unk114 = 0x1000;
+        func_0206c7c0();
+        w->base.unk54 &= ~0x20;
+        data_ov000_0236ac60->base.unk5C |= 0x20;
+        data_ov000_0236ac60->unk32C |= 0x200000;
+        data_0208922c.unk48 = 0x10;
+        cam->unk54 = data_ov000_023658cc[w->unk111C][0] << 12;
+        cam->unk58 = -data_ov000_023658d0[w->unk111C][0] << 12;
+        cam->unk5C = data_ov000_023658d4[w->unk111C][0] << 12;
+        cam->unk78 = cam->unk7C = 0x12c000;
+        cam->unk84 = cam->unk88 = -0x80000;
+        cam->unk8E = cam->unk90 = 0;
+        fx = func_ov000_02328860(0, data_ov000_023658cc[w->unk111C][0] << 8, data_ov000_023658d0[w->unk111C][0] << 8, data_ov000_023658d4[w->unk111C][0] << 8);
+        fx->unk248 = 0x800;
+        func_02036754(0, 0, 0x7d);
+        w->unkF50 = 300;
+        func_020537b4(0xd);
+        func_020533e0(0x13, 0xf0);
+    } else {
+        w->unkF50 = 0x1e;
+        func_ov000_022e237c(w->unk111C, w->unk1118);
+        data_0208922c.unk48 = 0x10;
+        func_02036754(0, 0, 0x7c);
+    }
+}

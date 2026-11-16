@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-asm void func_0202ed90(void)
+asm void _fdiv(void)
 {
     stmdb sp!, {lr}
     mov r12, #0xff

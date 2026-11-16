@@ -1,0 +1,27 @@
+/* templates.py: lifted from the ROM instruction stream, verified by match.py. */
+#include <nitro/types.h>
+
+#pragma thumb on
+
+s32 func_02050c30();
+s32 func_ov001_022c87d0();
+
+s32 func_ov001_022c8cd4(u8 *p0) {
+    s32 t0 = *(u32 *)((u8 *)p0 + 0x10);
+    if (t0 != 0) {
+        s32 t1 = func_02050c30(t0);
+        if (t1 != 0) {
+            return 1;
+        }
+    }
+    s32 t2 = *(u32 *)((u8 *)p0 + 0x14);
+    if (t2 != 0) {
+        s32 t3 = func_ov001_022c87d0(t2);
+        if (t3 != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+#pragma thumb reset

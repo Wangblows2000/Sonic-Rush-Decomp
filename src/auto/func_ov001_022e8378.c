@@ -19,9 +19,9 @@ void func_ov001_022e8378(u8 *p0) {
     func_ov001_022e8528(t0, 0);
     func_ov001_022e8514(t0);
     func_ov001_022e849c(t0);
-    s32 t1 = func_020351d8(data_022503e0, 0, 0);
-    s32 t2 = func_02037d40();
-    s32 t3 = func_020521b4();
+    func_020351d8(data_022503e0, 0, 0);
+    func_02037d40();
+    func_020521b4();
 }
 
 #pragma thumb reset

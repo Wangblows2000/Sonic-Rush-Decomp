@@ -1,7 +1,13 @@
 # 0007 — Ghidra workflow
 
-**Status.** Scripts written; **not executed yet** (no Ghidra in the setup
-environment, and downloaded prebuilt binaries could not be run there).
+**Status (2026-11-15, session 2).** Working: Ghidra 12.2
+(`ghidra_12.2_PUBLIC_20261016.zip`, official NSA release, SHA-256
+`2c2cd776db3c1f6a097ba418922378ac3649cadd5e844a6f5f088ae628a7be67`) with
+OpenJDK 25 (`openjdk-25-jdk-headless`; 12.2 rejects JDK 21). Headless import of
+main/ov000/ov001 applies dsd symbols; `ExportDecomp.java` writes per-function
+decompiler drafts to `build/eur/ghidra/<module>/decomp/` for matching agents.
+Fix applied: Thumb context is set for all functions before any disassembly
+(single-pass caused 531 ov000 / 986 main "context conflicts"; ov001 went to 0).
 
 ## Setup
 

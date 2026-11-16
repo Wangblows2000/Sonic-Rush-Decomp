@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-double func_0202da9c(double a, double b);
+double _dmul(double a, double b);
 
 double func_0202c658(double x, s32 *eptr) {
     s32 hx = *(1 + (s32 *)&x);
@@ -9,7 +9,7 @@ double func_0202c658(double x, s32 *eptr) {
     *eptr = 0;
     if (ix >= 0x7FF00000 || (ix | lx) == 0) return x;
     if (ix < 0x00100000) {
-        x = func_0202da9c(x, 18014398509481984.0);
+        x = _dmul(x, 18014398509481984.0);
         hx = *(1 + (s32 *)&x);
         ix = hx & 0x7FFFFFFF;
         *eptr = -54;
