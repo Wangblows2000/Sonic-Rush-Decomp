@@ -44,7 +44,16 @@ mkdir -p extract
 cp -f "$rom" extract/baserom_rush_eur.nds
 
 export PATH="$root/tools/bin:$PATH"
-if ! command -v dsd >/dev/null || ! command -v wibo >/dev/null || [ ! -f tools/mwccarm/1.2/sp2/mwccarm.exe ]; then
+export WITH_GHIDRA=0   # Ghidra is a research tool, not needed to build
+
+missing=()
+for b in git curl unzip python3 cargo; do command -v "$b" >/dev/null || missing+=("$b"); done
+if [ ${#missing[@]} -gt 0 ] && [ ! -x tools/bin/dsd ]; then
+  echo "build.sh: missing prerequisites: ${missing[*]}" >&2
+  echo "  Debian/Ubuntu: sudo apt install git curl unzip python3 python3-pip; Rust >= 1.85 from https://rustup.rs" >&2
+  exit 1
+fi
+if [ ! -x tools/bin/dsd ] || [ ! -x tools/bin/wibo ] || [ ! -x tools/bin/objdiff-cli ] || [ ! -f tools/mwccarm/1.2/sp2/mwccarm.exe ]; then
   echo "== first run: installing toolchain (tools/bootstrap_session.sh)"
   bash tools/bootstrap_session.sh "$root/extract/baserom_rush_eur.nds"
 fi

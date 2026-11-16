@@ -25,7 +25,9 @@ clone() { [ -d "$src/$2" ] || git clone -q --depth 1 --branch "$3" "https://gith
 clone AetiasHax/ds-decomp ds-decomp "$DSD_TAG"
 ( cd "$src/ds-decomp"
   for p in "$root"/tools/patches/ds-decomp-"$DSD_TAG"-*.patch; do
-    git apply --check "$p" 2>/dev/null && git apply "$p" || echo "patch already applied: $(basename "$p")"
+    if git apply --check "$p" 2>/dev/null; then git apply "$p"
+    elif git apply --reverse --check "$p" 2>/dev/null; then echo "patch already applied: $(basename "$p")"
+    else echo "ERROR: patch does not apply: $(basename "$p")" >&2; exit 1; fi
   done
   cargo build --release -p ds-decomp-cli )
 cp "$src/ds-decomp/target/release/dsd" "$bin/dsd"
