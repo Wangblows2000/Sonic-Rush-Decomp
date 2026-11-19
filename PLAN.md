@@ -14,15 +14,12 @@ full matching ROM build, 100 % of ARM9 code bytes matched and every function nam
 
 - [x] 54 converted this session (`tools/matching/swap_fallback.py` swaps a
   verified C file in for its asm TU).
-- [ ] 34 functions still in `src/asm_fallback/` plus `src/asm/__pformatter.c`.
+- [ ] 34 functions still in `src/asm_fallback/`. __pformatter is unconvertable, ignore.
   Exact blockers per function are the `FAIL` lines in `build/agents/c_*.txt`
   of the session that produced them (not in git); typical: callee-saved
   register rotation, one instruction scheduled differently, Thumb stack-slot
   order. Best lever found: port the analogous Sonic Rush Adventure / SDK
   source shape literally.
-- [ ] `__pformatter`: CW 1.2 clusters the conversion switch differently (no
-  case set reproduces the d..u table); try an if/goto compare tree as done
-  for GX_SetBankForSubBG.
 
 ## 3. Naming
 
@@ -58,7 +55,6 @@ full matching ROM build, 100 % of ARM9 code bytes matched and every function nam
 
 - [ ] ARM7: identify the NitroSDK component and version (task `r-arm7`).
 - [ ] Download Play children (`/mb/contest.srl`, `/mb/preview.srl`).
-- [ ] USA (`ASCE`) and Japan (`ASCJ`) versions.
 - [ ] CI workflow for `ninja verify`.
 - [ ] Upstream the dsd patches (jump tables, asm entry points, ELF symtab /
   Thumb bit / ABS32 fixes from docs/research/0006) and the ds-rom zero-length
