@@ -6856,7 +6856,7 @@ src/r2d/ExtraBoss_Unk_ov001_02304fb4.c:
     complete
     .text       start:0x02304fb4 end:0x02305344
 
-src/asm_fallback/SpecialStage_Unk_ov001_023099ec.c:
+src/r4b/SpecialStage_Unk_ov001_023099ec.c:
     complete
     .text       start:0x023099ec end:0x02309c14
 
