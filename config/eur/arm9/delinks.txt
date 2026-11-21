@@ -11248,7 +11248,7 @@ src/asm_fallback/AnimatorSprite_DrawRotScale.c:
     complete
     .text       start:0x02032480 end:0x02032c8c
 
-src/asm_fallback/AnimatorSprite_Draw.c:
+src/c_mainB2/AnimatorSprite_Draw.c:
     complete
     .text       start:0x02032d2c end:0x020331f8
 
