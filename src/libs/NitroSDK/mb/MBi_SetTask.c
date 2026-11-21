@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/task.h>
+#include <NitroSDK/task.h>
 
 BOOL MBi_IsTaskAvailable(void);
 void OS_Terminate(void);

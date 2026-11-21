@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/mbctx.h>
+#include <NitroSDK/mbctx.h>
 
 extern u32 data_02080600;
 

@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/expheap.h>
+#include <NitroSystem/expheap.h>
 
 UnkMBlock *RemoveMBlock(UnkMBlockList *list, UnkMBlock *block);
 UnkMBlock *InitMBlock(const UnkMemRegion *region, u16 signature);

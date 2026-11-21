@@ -1,0 +1,38 @@
+#include <game/Stage/stageobj.h>
+
+typedef struct {
+    u8 pad[0x20C];
+    u32 unk20C;
+} UnkStruct_Mgr;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u8 pad20C[0x434 - 0x20C];
+    u16 unk434;
+    u8 pad436[0x458 - 0x436];
+    s32 unk458;
+} UnkStruct_022f2680;
+
+extern UnkStruct_Mgr *gBossF;
+extern u8 data_ov000_02363df0[];
+extern s16 data_ov000_0236415c[][5];
+
+void BossFPartD8_DisableHitboxes(UnkStruct_022f2680 *s);
+void BossFPartD8_SetAnimation(UnkStruct_022f2680 *s, s32 a, s32 b, s32 c);
+void BossFPartD8_State_PartDAThrowFollowThroughWait(UnkStruct_022f2680 *s);
+
+void BossFPartD8_State_PartDAThrowFollowThrough(UnkStruct_022f2680 *s) {
+    UnkStruct_Mgr *m = gBossF;
+    s32 v;
+
+    BossFPartD8_DisableHitboxes(s);
+    if (s->unk434 + 1 < data_ov000_02363df0[s->unk458])
+        v = data_ov000_0236415c[s->unk458][s->unk434];
+    else
+        v = 0x1000;
+    BossFPartD8_SetAnimation(s, 0x17, v, 0);
+    m->unk20C &= ~0x40;
+    s->base.unk1B8 = NULL;
+    s->base.unk68 = BossFPartD8_State_PartDAThrowFollowThroughWait;
+    ((void (*)(UnkStruct_022f2680 *))s->base.unk68)(s);
+}

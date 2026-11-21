@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/g3drs.h>
+#include <NitroSystem/g3drs.h>
 
 typedef BOOL (*UnkVisCb_02024b18)(BOOL *pVisible, void *arg, u32 node);
 typedef struct { u8 unk0[0x18]; void *cbArg; UnkVisCb_02024b18 cb; u8 unk20[0x2C]; u32 mask[1]; } UnkObj_02024b18;

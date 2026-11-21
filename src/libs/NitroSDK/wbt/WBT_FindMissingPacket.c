@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/blkinfo.h>
+#include <NitroSDK/blkinfo.h>
 
 s32 WBT_FindMissingPacket(UnkBlockInfo *info)
 {

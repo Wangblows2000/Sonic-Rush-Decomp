@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/b1dc.h>
+#include <NitroSystem/b1dc.h>
 
 BOOL SND_IsFinishedCommandTag(u32 a);
 void SND_ReadDriverInfo(void *p);

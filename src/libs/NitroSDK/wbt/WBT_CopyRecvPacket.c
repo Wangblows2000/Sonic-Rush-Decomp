@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/blkinfo.h>
+#include <NitroSDK/blkinfo.h>
 
 s32 WBT_GetPeerDataPacketSize(void);
 void MI_CpuCopy8(const void *src, void *dest, u32 size);

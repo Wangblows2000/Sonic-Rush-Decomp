@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wm.h>
 
 s32 WM_MeasureChannel(void *cb, u16 a, u16 b, u16 c, u16 d)
 {

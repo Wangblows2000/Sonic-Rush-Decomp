@@ -36,8 +36,8 @@ objdiff.json (dsd objdiff) ─▶ objdiff-cli report ─▶ project.py progress
 | `config/eur/arm9/` | dsd module configs (main, itcm, dtcm, overlays/ov000, ov001) |
 | `config/eur/compilers.yaml` | per-path compiler version/flags + status |
 | `config/eur/symbol_evidence.yaml` | naming evidence |
-| `src/` | one TU per function: `libs/NitroSDK/<lib>`, `libs/NitroSystem/<lib>`, `libs/MSL`, `libs/Runtime`, `game/<module>/<Subsystem>/`, plus `asm/`, `asm_fallback/`, `secure/` |
-| `include/` | shared headers (`nitro/`) and per-agent struct headers |
+| `src/` | one TU per function: `libs/NitroSDK/<lib>`, `libs/NitroSystem/<lib>`, `libs/MSL`, `libs/Runtime`, `game/` by gameplay system and zone (docs/source-organization.md), plus `asm/`, `asm_fallback/`, `secure/` |
+| `include/` | `nitro/` types plus struct headers under `NitroSDK/`, `NitroSystem/`, `MSL/`, `game/<System>/` |
 | `nearmiss/` | near-miss C drafts (`db.jsonl`, `tools/matching/nearmiss.py`) |
 | `state/` | task board (`tasks.json`, `tools/tasks.py`) |
 | `tools/` | `project.py`, `configure.py`, `tasks.py`, `ndslib/`, `extraction/`, `matching/`, `analysis/`, `ghidra/`, `patches/`, `utilities/` |

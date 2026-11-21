@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/expheap.h>
+#include <NitroSystem/expheap.h>
 
 void GetRegionOfMBlock(UnkMemRegion *region, UnkMBlock *block);
 UnkMBlock *RemoveMBlock(UnkMBlockList *list, UnkMBlock *block);

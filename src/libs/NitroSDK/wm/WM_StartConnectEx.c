@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wm.h>
 
 void DC_StoreRange(void *p, u32 size);
 void MI_CpuCopy8(const void *src, void *dest, u32 size);

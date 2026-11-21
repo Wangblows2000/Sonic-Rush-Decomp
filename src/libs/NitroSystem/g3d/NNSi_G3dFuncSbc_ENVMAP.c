@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/g3drs.h>
+#include <NitroSystem/g3drs.h>
 
 typedef struct { u8 unk0[0x10]; u32 prmTexImage; u8 unk14[0x18]; u16 origW; u16 origH; } UnkMatAnm_02022e00;
 typedef struct { u8 unk0[0x1E]; u16 flag; } UnkMatData_02022e00;

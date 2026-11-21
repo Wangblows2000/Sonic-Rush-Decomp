@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wm.h>
 
 s32 WM_SetLifeTime(void *cb, u32 a, u32 b, u32 c, u16 d)
 {

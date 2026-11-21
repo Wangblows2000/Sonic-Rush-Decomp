@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/osthread.h>
+#include <NitroSDK/osthread.h>
 
 void OSi_InsertThreadToList(UnkOSThread *t);
 void OSi_RescheduleThread(void);

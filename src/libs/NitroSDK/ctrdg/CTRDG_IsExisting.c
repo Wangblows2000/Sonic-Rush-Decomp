@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/ctrdg.h>
+#include <NitroSDK/ctrdg.h>
 
 BOOL CTRDG_IsExisting(void)
 {

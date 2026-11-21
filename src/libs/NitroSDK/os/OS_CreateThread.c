@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/osthread.h>
+#include <NitroSDK/osthread.h>
 
 s32 OSi_GetUnusedThreadId(void);
 void OSi_InsertThreadToList(UnkOSThread *t);

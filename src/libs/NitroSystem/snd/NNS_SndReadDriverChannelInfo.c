@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/b1dc.h>
+#include <NitroSystem/b1dc.h>
 
 s32 SND_ReadChannelInfo(void *p, u32 a, u32 b);
 

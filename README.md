@@ -55,9 +55,10 @@ config/            versions.yaml, per-version dsd configs, compiler map, symbol 
   eur/arm9/        dsd symbols.txt / relocs.txt / delinks.txt per module
 src/               matched translation units, one function per file:
                    libs/{NitroSDK,NitroSystem,MSL,Runtime}/ for library code,
-                   game/<module>/<Subsystem>/ for game code; asm/ and
+                   game/ by gameplay system and game/Zone/<Zone>/ for zone
+                   code (docs/source-organization.md); asm/ and
                    asm_fallback/ hold functions written in asm instead of C
-include/           nitro/ (types, overlay ids) plus per-agent struct headers
+include/           nitro/ (types, overlay ids), NitroSDK/ NitroSystem/ MSL/ game/ struct headers
 nearmiss/          near-miss C drafts (db.jsonl)
 state/             task board (tasks.json)
 tools/             project CLI, configure.py, matching/analysis/extraction tools, Ghidra scripts

@@ -1,0 +1,119 @@
+#include <game/Stage/stageobj.h>
+
+typedef struct {
+    u8 pad0[0x18];
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    u8 pad24[0x10E - 0x24];
+    u8 unk10E;
+    u8 pad10F[0x144 - 0x10F];
+} UnkStruct_022f92dc_Sub2;
+
+typedef struct {
+    u8 pad0[0x18];
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    u8 pad24[0x138 - 0x24];
+} UnkStruct_022f92dc_Sub;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    s32 unk20C;
+    u8 pad210[4];
+    s16 unk214;
+    u8 pad216[0x224 - 0x216];
+    UnkStruct_022f92dc_Sub2 unk224[2];
+    u8 pad4AC[0x4C8 - 0x4AC];
+    void *unk4C8;
+    void *unk4CC;
+    void *unk4D0;
+    UnkStruct_022f92dc_Sub unk4D4;
+} UnkStruct_022f92dc;
+
+typedef struct {
+    u8 pad0[0x438];
+    u16 unk438;
+} UnkStruct_022f92dc_Ref;
+
+typedef struct {
+    u8 pad0[0x218];
+    UnkStruct_022f92dc_Ref *unk218;
+} UnkStruct_02369b84;
+
+extern UnkStruct_02369b84 *gBossF;
+extern void *data_ov000_02369b88[];
+extern void *gZoneActArchive;
+extern u8 data_ov000_02366048[];
+
+void BossFPartDE_Destructor(void);
+void BossFPartDE_State_Start(void);
+void BossFPartDE_StartChainRise(void);
+void BossFPartDE_Draw(void);
+void BossFPartDE_OnHit(void);
+void NNS_FndMountArchive(void *f, void *path, void *arc);
+void *NNS_FndGetArchiveFileByIndex(void *f, s32 i);
+void NNS_FndUnmountArchive(void *f);
+void Model_Init(void *s, s32 a);
+void Model_SetResource(void *s, void *res, s32 idx);
+void Model_SetAnimation(void *s, s32 a, void *b, s32 c, s32 d);
+s32 NNS_G3dGetTex(void *p);
+
+UnkStruct_022f92dc *BossFPartDE_Create(UnkStruct_ObjParam *p, s32 b, s32 c) {
+    u32 ctx[0x17];
+    UnkStruct_02369b84 *boss = gBossF;
+    UnkStruct_022f92dc *w;
+    UnkStruct_Coll *coll;
+    UnkStruct_022f92dc_Sub *sub;
+    u16 i;
+    UnkStruct_022f92dc_Sub2 *s;
+    vu16 zero;
+
+    w = Task_Create(StageObj_Main, BossFPartDE_Destructor, 0, 0x501, 2, sizeof(UnkStruct_022f92dc))->work;
+    zero = 0;
+    MIi_CpuClear16(zero, w, sizeof(UnkStruct_022f92dc));
+    w->unk20C = p->unk4 & 0xf;
+    w->unk214 = p->unk4 >> 4;
+    switch (w->unk20C) {
+    case 0:
+        w->base.unk68 = BossFPartDE_State_Start;
+        break;
+    case 1:
+        w->base.unk68 = BossFPartDE_StartChainRise;
+        break;
+    }
+    boss->unk218->unk438++;
+    NNS_FndMountArchive(ctx, data_ov000_02366048, gZoneActArchive);
+    w->unk4CC = NNS_FndGetArchiveFileByIndex(ctx, 0x72);
+    w->unk4D0 = NNS_FndGetArchiveFileByIndex(ctx, 0x73);
+    NNS_FndUnmountArchive(ctx);
+    w->unk4C8 = data_ov000_02369b88[2];
+    MapObject_Init(w, (s32)p, b, c);
+    w->base.unk70 = BossFPartDE_Draw;
+    w->base.unk54 |= 0x10;
+    w->base.unk58 |= 0x8200;
+    w->base.unk10 = b;
+    w->base.unk14 = c;
+    w->base.unk18 = 0;
+    coll = &w->base.coll0;
+    ObjRect_SetBox2D(coll, -0x400, -0x400, 0x400, 0x400);
+    ObjRect_SetAtkDefFlags(coll, 0x11, 0);
+    coll->unkA |= 0x40;
+    coll->unk1C = BossFPartDE_OnHit;
+    coll->unk18 = w;
+    coll->unkA &= ~4;
+    sub = &w->unk4D4;
+    Model_Init(sub, 0);
+    Model_SetResource(sub, w->unk4C8, 0);
+    sub->unk18 = sub->unk1C = sub->unk20 = 0x34cc;
+    for (i = 0; i < 2; i++) {
+        s = &w->unk224[i];
+        Model_Init(s, 0);
+        Model_SetResource(s, w->unk4CC, 0);
+        Model_SetAnimation(s, 2, w->unk4D0, 0, NNS_G3dGetTex(w->unk4CC));
+        s->unk10E |= 4;
+        s->unk18 = s->unk1C = s->unk20 = 0x34cc;
+    }
+    return w;
+}

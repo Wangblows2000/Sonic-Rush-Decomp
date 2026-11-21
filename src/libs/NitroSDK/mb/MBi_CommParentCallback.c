@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wh.h>
+#include <NitroSDK/wh.h>
 
 void MBi_CommChangeParentState(u16 aid, u32 type, void *arg);
 void MI_CpuFill8(void *dest, u8 data, u32 size);

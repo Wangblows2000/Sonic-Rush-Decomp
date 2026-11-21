@@ -1,7 +1,7 @@
 #pragma opt_common_subs off
 #include <nitro/types.h>
-#include <main_sdk2/wmds.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wmds.h>
+#include <NitroSDK/wm.h>
 
 void DC_InvalidateRange(void *p, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);

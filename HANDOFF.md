@@ -64,10 +64,10 @@ ROMs (`*.nds`) are gitignored.
    initialised from a shift, correct struct offsets. To swap in a match: write
    `OK <sym> <path>` to `build/agents/<agent>.txt`, run
    `python3 tools/matching/swap_fallback.py build/agents/<agent>.txt`, then
-   `verify_all.sh`; move the file with `tools/utilities/reorg_layout.py`.
+   `verify_all.sh`; move the file into its system directory (docs/source-organization.md).
 2. **Naming (task `naming`).** 284 `_Unk_` names left (blockers in PLAN.md 3);
    zone titles, `UnkStruct_*` and shared headers not started.
-3. **Source layout.** Done (PLAN.md 4). TU merging not started.
+3. **Source layout.** Done: by gameplay system and zone (docs/source-organization.md). TU merging not started; `include/game/Stage/stageobj.h` vs `stageobj_alt.h` still to unify.
 4. **Data (`r-data`).** Data-TU path proven with `OS_IRQTable`;
    strategy in docs/research/0013-data-ownership.md.
 5. Also open: ARM7 (`r-arm7`), SRA library sources (`r-sra-lib`).

@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wh.h>
+#include <NitroSDK/wh.h>
 
 void MBi_ChildCallback(UnkCallback_wh *arg);
 s32 MBi_SetMPData(void (*cb)(UnkCallback_wh *), void *data, u16 size, u16 timeout, u16 port);

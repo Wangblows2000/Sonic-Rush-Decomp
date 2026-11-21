@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wmds.h>
+#include <NitroSDK/wmds.h>
 
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);

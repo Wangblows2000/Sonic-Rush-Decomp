@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wm.h>
 
 s32 WM_Init(void *buf, u16 dma);
 

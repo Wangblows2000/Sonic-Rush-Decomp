@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/strm.h>
+#include <NitroSystem/strm.h>
 
 extern UnkStrm data_020847b8[];
 extern s16 data_020725e0[];

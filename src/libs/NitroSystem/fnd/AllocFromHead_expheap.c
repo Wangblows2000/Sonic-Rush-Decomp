@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/expheap.h>
+#include <NitroSystem/expheap.h>
 
 void *AllocUsedBlockFromFreeBlock(UnkExpHeap *eh, UnkMBlock *freeBlock, void *mem, u32 size, u16 dir);
 

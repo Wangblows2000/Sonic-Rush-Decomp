@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/blk2.h>
+#include <NitroSDK/blk2.h>
 
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
 BOOL MB_IsGetAllRequestData(u16 aid);

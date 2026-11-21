@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/sndp.h>
+#include <NitroSystem/sndp.h>
 
 extern u8 data_02083458[];
 extern s16 data_020725e0[];

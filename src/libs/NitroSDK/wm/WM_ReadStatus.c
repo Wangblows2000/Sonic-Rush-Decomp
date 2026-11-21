@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wm.h>
 
 void DC_InvalidateRange(void *p, u32 size);
 void MIi_CpuCopyFast(const void *src, void *dst, u32 size);

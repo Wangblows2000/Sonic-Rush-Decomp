@@ -44,7 +44,11 @@ full matching ROM build, 100 % of ARM9 code bytes matched and every function nam
   meaning is not proven (sprite-slot setters, gGameState +4/+8/+0x1C/+0x1D,
   gCamera +0x3C..+0x48, HUD timers); identical or constant-only Runtime/System
   helpers cannot get distinct names.
-- [ ] Tie zone numbers (ZoneN_*) to the in-game zone titles.
+- [x] Zone numbers tied to titles (docs/research/0014-zones.md: 1 Leaf Storm …
+  7 Dead Line, 8/act 3 = Final Zone boss, 9/act 3 = Extra Zone); the source tree
+  uses the titles. Symbol names keep `ZoneN` numbering.
+- [ ] Rename `Zone8Act3_*` (Final Zone) and `Zone9Act3_*` (Extra Zone) and
+  decide what zone 8/9 acts 1–2 (looping copies of zones 1/3/4/5) are.
 - [ ] Name struct types (`UnkStruct_<addr>`) and move shared declarations into
   `include/` headers instead of per-file `extern` prototypes.
 
@@ -52,9 +56,11 @@ full matching ROM build, 100 % of ARM9 code bytes matched and every function nam
 
 - [x] TUs moved out of the per-agent directories into
   `src/libs/{NitroSDK/<lib>,NitroSDK/demolib,NitroSystem/<lib>,MSL,Runtime}` and
-  `src/game/<module>/<Subsystem>/` (`tools/utilities/reorg_layout.py`, address
-  ranges from docs/naming-conventions.md 3.1). `asm/`, `asm_fallback/`,
-  `secure/` unchanged.
+  game code by gameplay system and zone (`src/game/{Player,Camera,Stage,Objects,
+  Enemies,Effects,Boss,UI,Menus,Cutscenes,SpecialStage,...}`,
+  `src/game/Zone/<Zone_Name>/`), headers likewise under `include/`. Conventions:
+  docs/source-organization.md; zone evidence: docs/research/0014-zones.md.
+  `asm/`, `asm_fallback/`, `secure/` unchanged.
 - [ ] Merge adjacent one-function TUs back into original translation units
   where the evidence supports it (library objects link contiguously). Not
   started: needs original object boundaries, which also decide data ownership

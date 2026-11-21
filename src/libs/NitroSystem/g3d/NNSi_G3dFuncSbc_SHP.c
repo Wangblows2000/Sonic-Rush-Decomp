@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include "main_a2/g3drs.h"
+#include "NitroSystem/g3drs.h"
 
 typedef void (*UnkShpFn_02024400)(UnkRS *rs, u32 opt, void *shp, u32 idx);
 

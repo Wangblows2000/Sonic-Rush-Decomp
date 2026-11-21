@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wh.h>
+#include <NitroSDK/wh.h>
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 s32 MBi_CommParentSendMsg(u32 type, u16 bitmap);

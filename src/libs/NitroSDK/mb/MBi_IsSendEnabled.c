@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wh.h>
+#include <NitroSDK/wh.h>
 
 static inline BOOL func_0201a088_a(void)
 {

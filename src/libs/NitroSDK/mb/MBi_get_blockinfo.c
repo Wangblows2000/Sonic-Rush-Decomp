@@ -1,6 +1,6 @@
 #include <nitro/types.h>
-#include <main_sdk2/wh.h>
-#include <main_sdk2/mbseg.h>
+#include <NitroSDK/wh.h>
+#include <NitroSDK/mbseg.h>
 
 BOOL MBi_get_blockinfo(UnkMbSegPos *out, UnkMbSegInfo *info, u32 idx, UnkMbHeader *h)
 {

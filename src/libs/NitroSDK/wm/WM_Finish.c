@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wmsys.h>
+#include <NitroSDK/wmsys.h>
 
 extern u16 data_0207fae8;
 

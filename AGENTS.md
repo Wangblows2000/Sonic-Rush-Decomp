@@ -137,7 +137,7 @@ Sources: `config/eur/arm9/**/delinks.txt` (module section headers),
 | ----- | ---------------- | ----- |
 | 0x01FF8000–0x01FFF82C | ITCM `.text` | 14 functions, then a 0x701C-byte zero buffer from 0x01FF8744. `.bss` is empty at 0x01FFF840. |
 | 0x02000000–0x02000800 | main, secure area | BIOS SWI wrapper stubs and data. **Kept as original bytes.** Do not create TUs here. |
-| 0x02000800 | `Entry` | crt0. The ROM header gives the ARM9 entry point. Matched as `src/main_sdk2/Entry.c`. |
+| 0x02000800 | `Entry` | crt0. The ROM header gives the ARM9 entry point. Matched as `src/libs/NitroSDK/init/Entry.c`. |
 | 0x02000B00–0x02000B20 | `BuildInfo` | NitroSDK module parameters (SDK version 0x02017532), matched as an `asm` data block in `src/lead/`. |
 | 0x02000000–0x0206E470 | main `.text` | ARM and Thumb code. |
 | 0x0206E470–0x02077958 | main `.rodata` | |
@@ -181,8 +181,8 @@ any main TU that starts below 0x02000800.
 | `config/eur/arm9/overlays/ov000/`, `ov001/` | yes | Overlays. |
 | `include/nitro/types.h` | yes | `u8`…`s64`, `vu*`, `fx32` (20.12), `fx16` (4.12), `BOOL`, `TRUE`/`FALSE`, `NULL`. |
 | `include/nitro/fs_overlay.h` | yes | `FS_OVERLAY_ID(ov000)`, which maps to the dsd LCF symbols `OVERLAY_0_ID` and `OVERLAY_1_ID`. |
-| `include/<agent>/` | yes | Shared struct headers written by agents (`main_a2/task.h`, `main_sdk2/task.h`, `ov000_b/stageobj.h`, `ov000_d/player.h`, …). |
-| `src/libs/`, `src/game/` | yes (registered TUs only) | One function per `.c` file. Library code under `libs/{NitroSDK/<lib>,NitroSystem/<lib>,MSL,Runtime}`, game code under `game/<module>/<Subsystem>/` (`tools/utilities/reorg_layout.py`). Agents still write new work to `src/<agent>/`; the lead moves it with `reorg_layout.py` after integration. |
+| `include/{NitroSDK,NitroSystem,MSL}/`, `include/game/<System>/` | yes | Shared struct headers, grouped like `src/` (`game/GameSystem/task.h`, `NitroSDK/task.h`, `game/Stage/stageobj.h`, `game/Player/player.h`, …). See docs/source-organization.md. |
+| `src/libs/`, `src/game/` | yes (registered TUs only) | One function per `.c` file. Library code under `libs/{NitroSDK/<lib>,NitroSystem/<lib>,MSL,Runtime}`, game code by system and zone under `game/` (docs/source-organization.md). Agents still write new work to `src/<agent>/`; the lead moves it into place after integration. |
 | `nearmiss/db.jsonl` | yes | Closest attempt per unmatched symbol (C source text plus diff stats), kept by `tools/matching/nearmiss.py`. |
 | `state/tasks.json` | yes | Task board (§14). |
 | `docs/agents/AGENT_BRIEF.md` | yes | Brief for matching workers. |
@@ -443,7 +443,7 @@ function name is exactly the `symbols.txt` name. There are two exceptions:
   in `symbols.txt`; otherwise `match.py` reports `?  name: not in symbols.txt`
   and fails.
 - A file can keep an old dsd name after `name_intrinsics.py` renamed its
-  symbol. For example, `src/main_a2/func_0202e1cc.c` defines `_fadd` and
+  symbol. For example, `src/libs/Runtime/func_0202e1cc.c` defines `_fadd` and
   `_fadd_ec`. The name inside the file is what counts.
 
 **Directory = producing agent.** `main`, `ov000`, `ov001` hold the first
@@ -920,7 +920,7 @@ internal compare entry instead of `_fgr`.
 
 The SDK version word is 0x02017532 (`BuildInfo`; NitroSDK 2.1 era). The main
 block 0x02000800–0x0201C000 (task `main-sdk`) holds the following
-(`src/main_sdk*`, `include/main_sdk2/`):
+(`src/libs/NitroSDK/`, `include/NitroSDK/`):
 
 - `Entry`/crt0, `OS_IrqHandler` (ITCM 0x01FF8000);
 - OS threads and messages;
@@ -937,7 +937,7 @@ NitroSystem names that are present include `NNS_FndInitList`,
 **NNS 3D globals.** `NNS_G3dGlb` lives at `data_02084d38`. Camera functions
 need its fields accessed as struct members (camPos/up/target copies, then
 `flag &= ~0xe8`), and an inline LookAt. The G3D render-state struct used by
-the NNS callbacks is `include/main_a2/g3drs.h` (`UnkRS`: callback table
+the NNS callbacks is `include/NitroSystem/g3drs.h` (`UnkRS`: callback table
 `cb[0x20]`, `timing[0x20]`, current node and material, mat/jnt animation
 pointers, resMat/resShp). NNS callbacks take extra arguments (§11.4).
 
@@ -945,19 +945,19 @@ pointers, resMat/resShp). NNS callbacks take extra arguments (§11.4).
 
 Two linked-task structures are reconstructed:
 
-- `include/main_a2/task.h`, `UnkTask`: a doubly linked list
+- `include/game/GameSystem/task.h`, `UnkTask`: a doubly linked list
   (`prev`, `next`), `func`, `dtor(UnkTask*)`, `work`, `flags`, `prio`, `id`.
   This is the game task. Stage objects are created through task constructors
   such as `func_020372d0(f, g, b, c, d, e)` and `func_02006abc(i)`, which
-  return `UnkStruct_Task *` (`include/ov000_b/stageobj.h`).
-- `include/main_sdk2/task.h`, `UnkTask_0201a2e8`: a singly linked `next`,
+  return `UnkStruct_Task *` (`include/game/Stage/stageobj_alt.h`).
+- `include/NitroSDK/task.h`, `UnkTask_0201a2e8`: a singly linked `next`,
   `busy:1`/`priority:31` bitfields, `func`, `done`. It sits in a context with
   a 0x94-byte thread, a `volatile` list head and an idle task. The context
   pointer is `data_02080f40`. This is an SDK-side thread task queue.
 
 ### 15.4 Stage objects (ov000)
 
-`include/ov000_b/stageobj.h` defines the common **0x20C-byte stage object
+`include/game/Stage/stageobj_alt.h` defines the common **0x20C-byte stage object
 header** `UnkStruct_StageObj`. It contains:
 
 - position and velocity words;
@@ -968,9 +968,9 @@ header** `UnkStruct_StageObj`. It contains:
 
 The same header declares the sprite and collision setup helpers in main
 (`func_02069d38`, `func_0206990c`, `func_0206e3c0`, `func_0206e2b4`, …).
-`include/ov000_b/blkobj.h` describes a 0x76C-byte nine-block object. Other
+`include/game/Effects/blkobj.h` describes a 0x76C-byte nine-block object. Other
 headers cover the camera, model, player, scene and sprite objects:
-`include/ov000_d/{bgcam,mdl,mdl2,menuo,player,scene,sprobj}.h`. A task note
+`include/game/Menus/{mdl,mdl2,menuo,scene,sprobj}.h, include/game/Player/player.h, include/game/Camera/bgcam.h`. A task note
 records `data_0236aad8` as a stage entry array with stride 0x64.
 
 Whether ov000 is gameplay and ov001 front-end is a hypothesis

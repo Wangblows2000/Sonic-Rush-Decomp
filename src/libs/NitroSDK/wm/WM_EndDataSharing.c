@@ -1,6 +1,6 @@
 #include <nitro/types.h>
-#include <main_sdk2/wmds.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wmds.h>
+#include <NitroSDK/wm.h>
 
 void WmDataSharingReceiveCallback_Parent(void *cb);
 void WmDataSharingReceiveCallback_Child(void *cb);

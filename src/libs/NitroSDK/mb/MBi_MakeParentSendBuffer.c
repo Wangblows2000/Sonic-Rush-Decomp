@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/blk2.h>
+#include <NitroSDK/blk2.h>
 
 u8 *MBi_MakeParentSendBuffer(const UnkPacket_0201a770 *pkt, u8 *dst)
 {

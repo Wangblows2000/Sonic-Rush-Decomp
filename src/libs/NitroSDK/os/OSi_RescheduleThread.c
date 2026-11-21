@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/osthread.h>
+#include <NitroSDK/osthread.h>
 
 extern u32 data_0207d080;
 extern void (*data_0207d08c)(UnkOSThread *from, UnkOSThread *to);

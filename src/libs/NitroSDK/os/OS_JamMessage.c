@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/osmsg.h>
+#include <NitroSDK/osmsg.h>
 
 BOOL OS_JamMessage(UnkOSMessageQueue *q, void *msg, s32 flags)
 {

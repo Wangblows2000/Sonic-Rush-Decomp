@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/g3drs.h>
+#include <NitroSystem/g3drs.h>
 
 void NNS_G3dGeBufferOP_N(u32 op, const void *args, u32 n);
 

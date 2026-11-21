@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/strm.h>
+#include <NitroSystem/strm.h>
 
 typedef struct { u8 count; u8 ch[1]; } UnkChInfo_020202e0;
 

@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/mbseg.h>
+#include <NitroSDK/mbseg.h>
 
 extern u32 data_02072a18[];
 

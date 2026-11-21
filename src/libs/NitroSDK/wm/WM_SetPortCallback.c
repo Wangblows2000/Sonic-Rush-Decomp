@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wm.h>
 
 s32 WM_SetPortCallback(u16 port, void *cb, void *arg)
 {

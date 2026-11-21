@@ -51,8 +51,9 @@ reproduce every line below.
 - asm to C: 15 more `asm_fallback` functions converted (20 left plus
   `__pformatter`, which stays asm).
 - Naming: 184 `_Unk_` names upgraded (284 left).
-- Source layout: `src/libs/{NitroSDK,NitroSystem,MSL,Runtime}` and
-  `src/game/<module>/<Subsystem>/`.
+- Source layout: `src/libs/{NitroSDK,NitroSystem,MSL,Runtime}`; game code by
+  gameplay system and zone (`src/game/Zone/<Zone_Name>/`), headers likewise
+  (docs/source-organization.md, zone evidence docs/research/0014-zones.md).
 - First data TU: `OS_IRQTable` in DTCM (docs/research/0013).
 
 ## Earlier changes (2026-11-16)

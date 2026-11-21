@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/ctrdg.h>
+#include <NitroSDK/ctrdg.h>
 
 extern u32 data_02080f58;
 extern u32 data_02080f80[];

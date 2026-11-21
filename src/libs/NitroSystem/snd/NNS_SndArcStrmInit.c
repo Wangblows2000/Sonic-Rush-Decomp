@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/strm.h>
+#include <NitroSystem/strm.h>
 
 typedef struct { u8 unk0[0x30]; } UnkNode_020203bc;
 

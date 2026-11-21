@@ -1,0 +1,29 @@
+#include <game/Menus/scene.h>
+
+void Touch_Disable(UnkStruct_SceneTask *t);
+BOOL WirelessSession_IsDownloadPlay(void);
+void PlayerSelectMenu_ReleaseModels(UnkStruct_Mdl *m);
+void PlayerSelectMenu_ReleaseArchives(UnkStruct_Mdl *m);
+void PlayerSelectMenu_ReleaseSprites(UnkStruct_Scene *w);
+void PlayerSelectMenu_ReleaseNop(UnkStruct_Scene *w);
+void PlayerSelectMenu_FreeBuffers(UnkStruct_Scene *w);
+void PlayerSelectMenu_ReleaseDisplay(void);
+
+#pragma thumb on
+
+void PlayerSelectMenu_Destructor(UnkStruct_SceneTask *t) {
+    UnkStruct_Scene *w = t->work;
+
+    Touch_Disable(t);
+    if ((w->unkC == 1 || w->unkC == 2) && WirelessSession_IsDownloadPlay()) {
+        PlayerSelectMenu_ReleaseModels(&w->mdl);
+    } else {
+        PlayerSelectMenu_ReleaseArchives(&w->mdl);
+    }
+    PlayerSelectMenu_ReleaseSprites(w);
+    PlayerSelectMenu_ReleaseNop(w);
+    PlayerSelectMenu_FreeBuffers(w);
+    PlayerSelectMenu_ReleaseDisplay();
+}
+
+#pragma thumb reset

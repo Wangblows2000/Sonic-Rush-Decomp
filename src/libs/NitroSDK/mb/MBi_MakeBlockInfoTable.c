@@ -1,6 +1,6 @@
 #include <nitro/types.h>
-#include <main_sdk2/wh.h>
-#include <main_sdk2/mbseg.h>
+#include <NitroSDK/wh.h>
+#include <NitroSDK/mbseg.h>
 
 BOOL MB_IsAbleToLoad(s32 i, u32 addr, u32 size);
 

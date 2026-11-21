@@ -77,7 +77,7 @@ about a third of the game is **Thumb**, so every lever below is tagged:
 - mwccarm **silently ignores unknown pragmas**: a typo reads as "inert".
 - match.py appends `-Cpp_exceptions off`; never compare C++ with exceptions on.
 - Hand-written SDK asm primitives are matched as `asm` functions (see
-  src/main_sdk2/DC_StoreRange.c); guard functions with early returns are plain C.
+  src/libs/NitroSDK/os/DC_StoreRange.c); guard functions with early returns are plain C.
 
 ## 4. Not applicable / not yet relevant here
 

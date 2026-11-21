@@ -1,0 +1,23 @@
+#include <game/Stage/stageobj.h>
+
+typedef struct {
+    u8 pad[0x20];
+    u32 unk20;
+} UnkStruct_022c4560;
+
+extern UnkStruct_022c4560 gGameState;
+
+s32 ObjShift_Set(s32 cur, s32 target, s32 a, s32 b, s32 step);
+
+void EnemyFlapperGroup_UpdateHover(UnkStruct_StageObj *w) {
+    if ((gGameState.unk20 & 3) == 0) {
+        w->unkC = Rand() & 0x1ff;
+        if (Rand() & 1)
+            w->unkC = -w->unkC;
+        if (w->unk14 > (w->unk1EC + 8) << 8 && w->unk30 > 0)
+            w->unk30 = -0x1ff;
+        if (w->unk14 < (w->unk1EC - 8) << 8 && w->unk30 < 0)
+            w->unk30 = 0x1ff;
+    }
+    w->unk30 = ObjShift_Set(w->unk30, w->unkC, 1, 0, 0x40);
+}

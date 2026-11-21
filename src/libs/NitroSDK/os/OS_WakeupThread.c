@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/osthread.h>
+#include <NitroSDK/osthread.h>
 
 void OSi_RescheduleThread(void);
 u32 OS_DisableInterrupts(void);

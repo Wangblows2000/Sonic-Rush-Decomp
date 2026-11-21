@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/stdarg.h>
+#include <MSL/stdarg.h>
 
 int vsnprintf(char *s, u32 n, const char *fmt, va_list args);
 

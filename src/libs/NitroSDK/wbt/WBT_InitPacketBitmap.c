@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/blkinfo.h>
+#include <NitroSDK/blkinfo.h>
 
 s32 WBT_GetPeerDataPacketSize(void);
 u32 WBT_CalcPacketbitmapSize(s32 size);

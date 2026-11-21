@@ -1,0 +1,56 @@
+#include <game/Stage/stageobj.h>
+
+typedef struct {
+    u8 pad[0x18];
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+} UnkStruct_0236a524;
+
+typedef struct {
+    u32 unk0;
+} UnkStruct_Flags;
+
+typedef struct {
+    u8 pad[0x14];
+    s32 unk14;
+} UnkStruct_02369b50;
+
+typedef struct {
+    UnkStruct_StageObj base;
+    u32 unk20C;
+    u8 pad210[0xF50 - 0x210];
+    s32 unkF50;
+} UnkStruct_Boss;
+
+extern UnkStruct_Flags gBossStatus;
+extern UnkStruct_Flags data_ov000_0236a444;
+extern UnkStruct_0236a524 data_ov000_0236a524;
+extern UnkStruct_02369b50 data_ov000_02369b50;
+
+void Model_Init(void *p, s32 a);
+void Model_SetResource(void *p, s32 a, s32 b);
+void Boss6_ResetCamera(void);
+void Boss6_Action_StartMove(void);
+void NaviMsg_SetFaceAnim(s32 a);
+void NaviMsg_ShowMessage(s32 a, s32 b);
+
+void Boss6_State_WaitForStart(UnkStruct_Boss *w) {
+    UnkStruct_0236a524 *a;
+
+    if (!(gBossStatus.unk0 & 1))
+        return;
+    a = (UnkStruct_0236a524 *)(u32)&data_ov000_0236a524;
+    w->base.unk5C &= ~0x20;
+    w->unk20C &= ~1;
+    *(vu16 *)0x4000304 |= 0x8000;
+    data_ov000_0236a444.unk0 |= 1;
+    Model_Init(a, 0);
+    Model_SetResource(a, data_ov000_02369b50.unk14, 0);
+    a->unk18 = a->unk1C = a->unk20 = 0x1355b50;
+    Boss6_ResetCamera();
+    Boss6_Action_StartMove();
+    w->unkF50 = 0xb4;
+    NaviMsg_SetFaceAnim(9);
+    NaviMsg_ShowMessage(0xf, 0xf0);
+}

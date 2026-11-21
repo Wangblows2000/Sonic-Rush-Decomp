@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/expheap.h>
+#include <NitroSystem/expheap.h>
 
 void NNSi_FndInitHeapHead(UnkHeapHead *heap, u32 signature, void *start, void *end, u16 opt);
 UnkMBlock *InitMBlock(const UnkMemRegion *region, u16 signature);

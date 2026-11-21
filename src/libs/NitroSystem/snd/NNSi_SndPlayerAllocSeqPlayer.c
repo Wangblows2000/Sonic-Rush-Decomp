@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/sndp.h>
+#include <NitroSystem/sndp.h>
 
 extern UnkSndPlayerHeap data_020838a4[];
 

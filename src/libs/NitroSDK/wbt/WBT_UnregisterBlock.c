@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/mbnode.h>
+#include <NitroSDK/mbnode.h>
 
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);

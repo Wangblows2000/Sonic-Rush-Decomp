@@ -1,6 +1,6 @@
 #include <nitro/types.h>
-#include <main_sdk2/wh.h>
-#include <main_sdk2/blk2.h>
+#include <NitroSDK/wh.h>
+#include <NitroSDK/blk2.h>
 
 typedef struct {
     u32 ggid;

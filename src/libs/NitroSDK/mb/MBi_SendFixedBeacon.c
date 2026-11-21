@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/mbbeacon.h>
+#include <NitroSDK/mbbeacon.h>
 
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void MIi_CpuCopy16(const void *src, void *dst, u32 size);

@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/stdarg.h>
+#include <MSL/stdarg.h>
 
 typedef struct {
     u8 pad0[0xc];

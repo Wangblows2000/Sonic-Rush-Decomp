@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wh.h>
+#include <NitroSDK/wh.h>
 
 void MBi_ParentCallback(UnkCallback_wh *arg);
 s32 WM_Disconnect(void (*cb)(UnkCallback_wh *), u16 aid);

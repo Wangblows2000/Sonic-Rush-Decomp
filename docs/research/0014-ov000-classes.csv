@@ -1,0 +1,253 @@
+dir,category,zone,evidence
+AttackHitbox,Player,shared,"Player-attached boost/jet-catapult hitbox; created by Player, Mine, Rocket, KuragenBomb, EggBombHawk; no assets."
+Barrier,Effects,shared,Shield model mod/eff_barrier.nsbmd from act_com narc; created by Player.
+BendStick,Objects,1,Loads ac_gmk_bend_stick.bac (only in z11/z12/z81 act narcs); obj types 86/87 placed only in z11/z12/z81 .ev.
+Boss,Boss-shared,shared,"Generic boss helpers (exc background, palettes, start health) called by Boss1-4/6/7/F and BossArena."
+Boss1,Boss,1,"Egg Hammer main (obj 63 in z13.ev); NOTE also obj 59 = Boss1_Create in z53.ev and Boss1_Unk_022cc6d4 checks zone index 4, loading z53-only eff_missile/eff_launch/eff_bomb_up: drives zone-5 boss too."
+Boss1Hammer,Boss,1,Boss1 part (obj 203) using bs1 model; spawned via Boss1 which also serves zone-5 boss (z53); calls EffPebble (z13/z53 only).
+Boss1Neck,Boss,1,"Boss1 part (obj 202, neck_ham/bs1); spawns Boss5PartD3 missiles in zone-5 variant, so shared by zone-1 and zone-5 bosses."
+Boss2,Boss,2,"Egg Turtle main, obj 62 placed only in z23.ev; uses bs2: effects (eff_ripple/splash/suction2 only in z23 narc)."
+Boss2Water,Boss,2,Created only by Boss2; spawns EffWater3D/EffRipple3D/EffSplash3D (z23-only assets).
+Boss2WaterLight,Boss,2,Created only by Boss2Water.
+Boss3,Boss,3,"Egg Scarab main, obj 61 placed only in z33.ev; bs3/exc effects (eff_pop only in z33)."
+Boss3PartCC,Boss,3,"Boss3 part (obj 204, body_ball/bs3 palettes)."
+Boss3PartCD,Boss,3,"Boss3 part (obj 205, bs3)."
+Boss4,Boss,4,"Egg Libra main, obj 60 placed only in z43.ev; arm_gun/rod_body, bs4 effects."
+Boss4PartCE,Boss,4,"Boss4 part (obj 206), only referenced via Boss4 / create table."
+Boss4PartCF,Boss,4,Boss4 part (obj 207).
+Boss4PartD0,Boss,4,Boss4 part (obj 208).
+Boss4PartD1,Boss,4,Boss4 part (obj 209).
+Boss4PartD2,Boss,4,Boss4 part (obj 210).
+Boss5PartD3,Boss,5,"Missile part (obj 211) spawned by Boss1Neck; loads gZoneActArchive indices 0x3d,0x41-0x45 = eff_missile/eff_bomb_up in z53 narc (z13 has only 60 files); refs bs5."
+Boss6,Boss,6,Main boss obj 58 placed only in z63.ev; bs6 effects (eff_parts/eff_pick only in z63).
+Boss6PartD4,Boss,6,"Boss6 part (obj 212, bs6)."
+Boss7,Boss,7,Main boss obj 57 placed only in z73.ev; exc effects (aura/strike/tornado) only in z73 narc.
+Boss7FrameCounter,Boss,7,Only called from Boss7.
+Boss7PartD5,Boss,7,Boss7 part (obj 213) loading son/blz player models; spawns EffBoostA/A2/EffFire01 (z73-only assets).
+Boss7PartD6,Boss,7,"Boss7 part (obj 214, bs7)."
+Boss7PartD7,Boss,7,"Boss7 part (obj 215, bs7)."
+BossArena,Boss-shared,shared,Circle-arena coordinate helpers used by Boss2/3/4 and the 3D effects/RingManager.
+BossCamera,Boss-shared,shared,Boss camera modes via gBossCameraModeTable; created from Stage_Create; no zone check.
+BossEffect,Boss-shared,shared,Builds exc:eff_*.nsb* names for all bosses (eff_ripple z23 ... eff_beam_fin zf3); called by Boss1-7/F parts.
+BossF,Boss,F,"Main boss obj 56 placed only in zf3.ev; loads bsf models and zf3-only effects (eff_beam_fin, eff_produce)."
+BossFPartD8,Boss,F,"BossF part (obj 216): body_fist/bsf_sky_b, f_xx_1p palettes."
+BossFPartD9,Boss,F,"BossF part (obj 217, bsf)."
+BossFPartDA,Boss,F,"BossF part (obj 218, bsf)."
+BossFPartDB,Boss,F,"BossF part (obj 219, bsf)."
+BossFPartDC,Boss,F,"BossF part (obj 220, bsf)."
+BossFPartDD,Boss,F,"BossF part (obj 221, bsf)."
+BossFPartDE,Boss,F,"BossF part (obj 222, bsf)."
+BossHelp,UI,shared,"Boss help overlay /act/ac_fix_bosshelp.bac (loose file); created by Boss6, Boss7 and BossFPartD8."
+Bubble,Objects,2,Loads ac_gmk_bubble.bac (only z21/z22 narcs); obj 232-234 spawned at runtime.
+Bubble3D,Objects,2,"Loads ac_gmk_bubble_3d.bac, present only in z23 narc; spawned by EffAirBubble."
+BubbleSpawner,Objects,2,obj 132 placed only in z21/z22 .ev; ac_gmk_bubble.bac only in z21/z22.
+Camera,Camera,shared,"Stage camera; used by Player, StageEvent, ZoneBg and camera-bound MapObjs."
+Cannon,Objects,7,ac_gmk_cannon.bac only in z71/z72 narcs; obj 149 placed only in z71/z72.
+Cargo,Objects,3,ac_gmk_cargo.bac/gmk_cargo.df only in z31/z32/z82; obj 137 placed only in z31/z32.
+CheckpointTimePopup,UI,shared,Checkpoint time popup from ac_fix_moji.bac (act_com); created by Marker.
+CorkscrewTrigger,Objects,1,"Invisible trigger, obj 104/105 placed only in z11/z12 .ev."
+Crane,Objects,5,ac_gmk_crane.bac/gmk_crane.nsbmd only in z51/z92; obj 168 placed only in z51/z52.
+CranePartED,Objects,5,Crane child (obj 237) using ac_gmk_crane.bac (z51/z92 only).
+CranePartEE,Objects,5,Crane child (obj 238) using ac_gmk_crane.bac (z51/z92 only).
+CraneSlide,Objects,4,ac_gmk_crane_slide.bac/gmk_slide.nsbmd only in z41/z91; obj 174 placed only in z41/z42.
+DashC,Objects,shared,ac_gmk_dash_c.bac in all 2D act narcs; types 99-109 placed in zones 1/3/4/5/7.
+DashCT,Objects,shared,ac_gmk_dash_ct.bac in all 2D act narcs; created by DashC.
+DashP,Objects,shared,ac_gmk_dash_p.bac in all 2D act narcs; placed in zones 1-7.
+DecAnimal,Decorations,shared,Freed animals ac_dec_animal%02d.bac; spawned per zone via MapObject_SpawnFreedAnimal table (not placed in .dc).
+DecArrow,Decorations,7,ac_dec_arrow.bac only in z71/z72; dec types 136-143 placed only in z71/z72 .dc.
+DecBird,Decorations,1,ac_dec_bird.bac only in z11/z12/z81; dec 55-57 only in z11/z12/z81 .dc.
+DecCloudSpawner,Decorations,6,obj 199 placed only in z61/z62 and Create checks zone index == 5; spawns DecCloudW.
+DecCloudW,Decorations,6,ac_dec_cloud_w.bac only in z61 narc; created only by DecCloudSpawner.
+DecFishPart,Decorations,2,ac_dec_fish.bac only in z21/z22; created by DecGroup41.
+DecGroup0F,Decorations,1,bird_nest/flower/vine sprites only in z11/z12/z81; dec types placed only in z11/z12/z81 .dc.
+DecGroup35,Decorations,shared,"Types 53/54 (ac_dec_leaf, z1) placed in z11/z12/z81 and types 81/82 placed in z21/z22; also calls EffWaterGmk."
+DecGroup35Piece,Decorations,1,"Child of DecGroup35 loading ac_dec_leaf.bac, which exists only in z11/z12/z81."
+DecGroup41,Decorations,2,algae/coral/fish/fountain sprites only in z21/z22; all its dec types placed only in z21/z22 .dc.
+DecGroup45,Decorations,3,bed/statue/torch/sand sprites only in z31/z32/z82; types placed only in z31/z32 .dc.
+DecGroup4D,Decorations,shared,"Wheel sprites (z21/z22, dec 77/78) and crane_slide sprites (z41/z91, dec 207): zones 2 and 4."
+DecGroup67,Decorations,5,pipe/plane sprites only in z51/z92; types placed only in z51/z52/z92 .dc.
+DecGroup95,Decorations,shared,Mostly zone-6 sprites (cloud/propeller/jet in z61 only) but dec 229-231 also placed in z71 and ac_dec_laser is in z61/z71/z72.
+DecGroupAF,Decorations,4,neon sprites only in z41/z91; all its dec types placed only in z41/z42/z91 .dc.
+DecGroupAFChild,Decorations,4,Created only by DecGroupAF.
+DecShared,Decorations,shared,"Helper child created by DecGroup41 (z2), DecGroup45 (z3) and DecGroup95 (z6)."
+DecSonicNeon,Decorations,4,Created only by DecGroupAF; drives DecSonicNeonPart.
+DecSonicNeonPart,Decorations,4,ac_dec_sonic_neon.bac only in z41/z91 narcs.
+DecVine,Decorations,1,ac_dec_vine.bac only in z11/z12/z81; dec 49-52 only in z11/z12/z81 .dc.
+Decoration,Decorations,shared,Decoration framework/base used by every Dec* group and MapObject.
+Display,Other,shared,Display_IsMainScreenOnBottom screen-layout query used by Player.
+Duct,Objects,7,ac_gmk_duct.bac only in z71/z72; obj 151 placed only in z71/z72.
+EffAirBubble,Effects,2,ac_gmk_bubble.bac only in z21/z22 (gZoneActArchive); spawned by Player/BubbleSpawner.
+EffBlazeBoostFlame,Effects,shared,ac_eff_boost.bac in act_com narc; created by Player.
+EffBlazeRunFlame,Effects,shared,ac_eff_boost.bac in act_com narc; created by Player.
+EffBlazeSpinFlame,Effects,shared,ac_eff_boost.bac in act_com narc; created by Player.
+EffBlazeTrickFlame,Effects,shared,ac_eff_boost.bac in act_com narc; created by Player.
+EffBoost,Effects,shared,ac_eff_boost.bac in act_com narc; created by Player.
+EffBoostA,Effects,7,eff_sb_boost_a_3d.bac exists only in z73 narc; created only by Boss7PartD5.
+EffBoostA2,Effects,7,eff_sb/bb_boost_a2_3d.bac exist only in z73 narc; created only by Boss7PartD5.
+EffBoostAura,Effects,shared,ac_eff_boost.bac in act_com; created by Player.
+EffBoostBurst,Effects,shared,ac_eff_boost.bac in act_com; created by Player.
+EffBoostJet,Effects,shared,ac_eff_boost.bac in act_com; created by Player.
+EffBoostJet3D,Effects,shared,"eff_b_jet_3d.bac present in every boss act narc (z13..z73, zf3)."
+EffBrakeSmoke,Effects,shared,ac_eff_kemuri_brake.bac in act_com; created by Player/EnemyPawnGroup/DecAnimal.
+EffBrakeSmoke3D,Effects,shared,ac_eff_kemuri_brake3d.bac in every boss act narc.
+EffDebrisSpawner,Effects,7,State_Spawn returns unless zone index == 6; spawns EffHahenZako (obj 200 not placed in any .ev).
+EffDrownCount,Effects,2,ac_eff_water.bac only in z21/z22 narcs; created by Player.
+EffDrownCount3D,Effects,2,"Created only by EffDrownCount (3D boss variant, with FixMoji3D which is z23-only)."
+EffEnemyRoomFix,UI,shared,ac_eff_enemyroom_fix.bac in z31/z32/z51/z71/z72/z82/zf3; created by BossFPartD8.
+EffEntrance,Effects,shared,ac_eff_entrance.bac in z31/z32/z51/z71/z72/z82; spawned by enemy groups.
+EffFire01,Effects,7,ac_eff_fire_01_3d.bac only in z73 narc; created only by Boss7PartD5.
+EffFound,Effects,shared,ac_eff_found.bac in act_com; enemy-noticed mark from enemy groups/Kuragen.
+EffGmkBubble,Effects,2,ac_gmk_bubble.bac only in z21/z22.
+EffGrind,Effects,shared,ac_eff_graind.bac in act_com; created by Player.
+EffHahenZako,Effects,shared,ac_eff_hahen_zako.bac in act_com.
+EffHighSpeedStart,Effects,shared,ac_eff_boost.bac in act_com.
+EffInvincibility,Effects,shared,"Player invincibility effect, no zone-specific asset."
+EffInvincibilitySparkle,Effects,shared,ac_eff_trick.bac in act_com.
+EffJet,Effects,5,ac_eff_jet.bac only in z51/z92; created only by JetCatapult.
+EffKemuriSpin3D,Effects,shared,ac_eff_kemuri_spin02_3d.bac in every boss act narc; created by Boss7PartD5.
+EffPebble,Effects,1,eff_pebble.nsbmd only in z13/z53 narcs; created only by Boss1Hammer (zone-1 and zone-5 boss).
+EffRipple3D,Effects,2,eff_ripple_* only in z23 narc; created by Boss2/Boss2Water/Player.
+EffSand,Effects,3,ac_eff_sand.bac only in z31/z32/z82; created by MapObj40.
+EffSandSlide,Effects,3,ac_eff_sand.bac only in z31/z32/z82; created by Player.
+EffShadow,Effects,3,ac_eff_shadow.bac only in z31/z32/z82.
+EffSpecial,Effects,shared,ac_eff_special.bac in act_com.
+EffSpinSmoke1,Effects,shared,2D sprite in act_com plus 3D variant in all boss narcs.
+EffSpinSmoke2,Effects,shared,2D sprite in act_com plus 3D variant in all boss narcs.
+EffSplash3D,Effects,2,eff_splash_b/s only in z23 narc; created by Boss2/Boss2Water/EffWaterSplash.
+EffTrail,Effects,shared,Trail effect used by Player and Boss7PartD5; no asset.
+EffTrick,Effects,shared,ac_eff_trick.bac in act_com.
+EffTrickCombo,Effects,shared,Created by Player; spawns EffTrickComboPart.
+EffTrickComboPart,Effects,shared,ac_eff_trick.bac in act_com.
+EffTrickForwardBoost,Effects,shared,ac_eff_boost.bac in act_com.
+EffTrickSparkle,Effects,shared,ac_eff_trick.bac in act_com.
+EffVitality,Effects,shared,ac_eff_vitality.bac in act_com.
+EffVs,VsMode,shared,ac_eff_vs.bac (act_com) Vs item effect.
+EffVsConfusion,VsMode,shared,ac_eff_vs.bac (act_com).
+EffVsSlowdown,VsMode,shared,ac_eff_vs.bac (act_com).
+EffVsTensionDrain,VsMode,shared,ac_eff_vs.bac (act_com).
+EffVsTensionMax,VsMode,shared,ac_eff_vs.bac (act_com).
+EffWater3D,Effects,2,ac_eff_water_3d.bac only in z23 narc; created only by Boss2Water.
+EffWaterGmk,Effects,2,ac_eff_water_gmk.bac only in z21/z22.
+EffWaterRunSplash,Effects,2,ac_eff_water.bac only in z21/z22 (loaded from gZoneActArchive).
+EffWaterSplash,Effects,2,ac_eff_water.bac only in z21/z22 (loaded from gZoneActArchive).
+EffZakoBomb,Effects,shared,ac_eff_zako_bomb.bac in act_com.
+EffZakoBombBurst,Effects,shared,ac_eff_zako_bomb.bac in act_com.
+EffZakoBombPuff,Effects,shared,ac_eff_zako_bomb.bac in act_com.
+EffZakoDebris,Effects,shared,ac_eff_hahen_zako.bac in act_com.
+Effect,Effects,shared,Generic effect follow/move states used by most Eff* classes.
+EggBishop,Enemies,3,"ac_ene_egg_bishop.bac only in z31/z32/z82 narcs (obj 228, runtime-spawned)."
+EggBombHawk,Enemies,unknown,"Path /act/ac_ene_egg_bomb_hawk.bac exists in no narc or loose dir; obj 235 not placed in any .ev (name suggests zone 5, cf. ac_ene_bomb_hawk in z51/z92)."
+EggFlapperLaser,Enemies,7,ac_ene_egg_flapper_laser.bac only in z71/z72.
+EggPawnM,Enemies,1,ac_ene_eggpawn_m.bac only in z11/z12/z81.
+EggSf,Enemies,7,ac_ene_egg_sf.bac only in z71/z72.
+Enemy,Enemies,shared,Generic enemy helpers used by many enemy classes.
+EnemyFlapperGroup,Enemies,shared,"Flying-enemy family (types 2,4,11,12,16-18) placed in zones 1,2,4,5,6,7."
+EnemyPawnGroup,Enemies,shared,"Ground-enemy family (types 0,1,3,7-10,13-15,20,21) placed in zones 1,2,3,4,5,7."
+EnemyRoom,Objects,shared,"Enemy-room registry used by MapObj8C/8D/8F and GmkWall (zones 3,5,7)."
+EnemyRoomHud,UI,shared,ac_eff_enemyroom_fix.bac (z3/z5/z7/zF narcs); created by MapObj8C.
+FixInformation,UI,shared,ac_fix_information.bac in z41/z71/z72 narcs; created by Player.
+FixMoji3D,UI,2,ac_fix_moji3d.bac exists only in z23 narc; created by EffDrownCount.
+FixVs,VsMode,shared,ac_fix_vs.bac (act_com).
+FixVsHud,VsMode,shared,ac_fix_vs.bac (act_com); created from Stage_Create.
+FixVsPushIcon,VsMode,shared,ac_fix_vs.bac (act_com).
+FlapperCannon,Enemies,6,ac_ene_flapper_cannon.bac only in z61 narc.
+Gimmick,Objects,shared,Room-index helpers used by GmkWall and MapObj8C/8D/8F.
+Glider,Objects,6,ac_gmk_glider.bac/gmk_glider.nsbmd only in z61; obj 181 placed only in z61/z62.
+GmkAir,Objects,7,ac_gmk_air.bac only in z71/z72; obj 148 placed only in z71/z72.
+GmkLand,Objects,shared,"Platforms (types 81-84,118,175,239) placed in zones 1-6 plus z82/z91."
+GmkLandAA,Objects,shared,"obj 170 placed in z21,z22,z32,z41,z42,z52,z71,z72,z82."
+GmkPipe,Objects,5,ac_gmk_pipe.bac only in z51/z92; types placed only in z51/z52/z92.
+GmkRail,Objects,shared,ac_gmk_rail.bac (z3) and ac_gmk_rail6.bac (z6); obj 136 placed in z31/z32/z61/z62.
+GmkSpecial,Objects,shared,ac_gmk_special.bac in all 2D act narcs; obj 158 in zones 1-7.
+GmkTable,Objects,3,gmk_table.nsbmd only in z31/z32/z82; obj 139 only in z31/z32.
+GmkWall,Objects,shared,ac_gmk_wall.bac in z31/z32/z51/z71/z72/z82/z92; created by MapObj8C.
+GoalRing,Objects,shared,ac_gmk_goalring.bac in every 2D act narc; obj 113 placed in zones 1-7.
+GoalRingPart,Objects,shared,Created only by GoalRing.
+GunHunter,Enemies,5,ac_ene_gun_hunter.bac only in z51/z92.
+Hand2d,Objects,3,ac_gmk_hand2d.bac/gmk_hand.nsbmd only in z31/z32/z82; obj 138 only in z31/z32.
+Hud,UI,shared,Stage HUD (com archive) used by Player and popups.
+IronBall,Objects,shared,ac_gmk_iron_ball.bac in z11/z12/z41/z81/z91; obj 120/121 placed in z12/z41/z42.
+IronBallPart,Objects,shared,Created only by IronBall (zones 1 and 4).
+ItemBox,Objects,shared,ac_itm_box.bac in all 2D act narcs; placed in every 2D act.
+ItemBoxPart,Objects,shared,Created only by ItemBox.
+JetCatapult,Objects,5,ac_gmk_jet_catapult.bac/gmk_jet.df only in z51/z92; obj 167 only in z51/z52.
+JetCatapultPart,Objects,5,Created only by JetCatapult.
+JumpPedestal,Objects,shared,ac_gmk_jump_pedestal.bac in all 2D act narcs; obj 103 in zones 1-7.
+Kuragen,Enemies,2,ac_ene_kuragen_blitz/bomb.bac only in z21/z22; obj 5/6 only in z21/z22.
+KuragenBomb,Enemies,2,ac_ene_kuragen_bomb.bac only in z21/z22.
+LandUnrest,Objects,2,ac_gmk_land_unrest.bac only in z21/z22; obj 129 only in z21/z22.
+LaunchZone,Objects,2,"Trigger (Player_Action_ZoneLaunch), obj 131 placed only in z21/z22."
+Magnet,Effects,shared,Magnet shield model mod/eff_magnet.nsbmd in act_com; created by Player.
+MapObj13,Objects,6,Ring/cloud object using ac_gmk_cloud_3/ac_itm_ring_graider (z61 only); types 19/184-186 placed only in z61/z62.
+MapObj13Part,Objects,6,Created only by MapObj13.
+MapObj40,Objects,shared,"Generic trigger/hitbox for many types (64-66,89-91,126,157,...) placed in all zones."
+MapObj70,Objects,shared,"Camera-limit trigger, obj 112 placed in z31/z32/z51/z52."
+MapObj73,Objects,shared,"Camera-area object, obj 115 placed in z12/z41/z42."
+MapObj74,Objects,unknown,"Camera-lock area, obj 116 not placed in any zone .ev."
+MapObj75,Objects,shared,"Camera-bounds area, obj 117 placed in z11/z12/z21/z22."
+MapObj7D,Objects,2,Spawns EffWaterGmk; obj 125 placed only in z21/z22.
+MapObj80,Objects,2,Player trigger (Player_Action_MapObj80); obj 128 placed only in z21/z22.
+MapObj8C,Objects,shared,"Enemy-room controller, types 140-143 placed in z31/z32/z51/z52/z72."
+MapObj8D,Objects,shared,Enemy-room spawner child created only by MapObj8C.
+MapObj8F,Objects,shared,Enemy-room camera bound child created only by MapObj8C.
+MapObj9C,Objects,7,"3D-box trigger, obj 156 placed only in z71/z72."
+MapObjC2,Objects,unknown,"StageEvent_SpawnInRect trigger, obj 194 not placed in any zone .ev."
+MapObject,Stage-core,shared,"MapObject framework (spawn, freed-animal table, common init)."
+Marker,Objects,shared,ac_gmk_marker.bac in all 2D act narcs; checkpoint placed in every 2D act.
+MarkerTimeList,UI,shared,ac_fix_moji.bac (act_com); created by Marker.
+Mine,Objects,2,ac_gmk_mine.bac only in z21/z22; obj 127 only in z21/z22.
+MineDigit,Objects,2,"Countdown digits (ac_fix_moji.bac, act_com) created only by Mine."
+Needle,Objects,shared,ac_gmk_needle.bac in all 2D act narcs; placed in zones 1-7.
+NeedleG,Objects,6,ac_gmk_needle_g.bac only in z61; obj 177/178 placed only in z62.
+NeonRoute,Objects,4,ac_gmk_neon_route.bac only in z41/z91; obj 192/193 only in z41/z42/z91.
+Parachute,Objects,6,ac_gmk_Parachute.bac only in z61 narc; obj 180 only in z61/z62.
+ParachuteReleased,Objects,6,Uses ac_gmk_parachute.bac (only z61 narc); created by Player.
+Piston,Objects,5,ac_gmk_piston.bac only in z51/z92; obj 160/161 only in z51/z52/z92.
+Player,Player,shared,Player character (son/blz models from player narc).
+PlayerIcon,UI,shared,ac_fix_player_icon.bac (act_com); created by Player when multiplayer flag (gGameState+0x18 & 0x20) or w+0x325 set.
+PlayerSelectMenu,Menus,shared,"Character select menu (mnu_psel*, menu.narc)."
+PlayerStart,Stage-core,shared,obj 114 present in every zone .ev including boss acts.
+ResultsScreen,Menus,shared,"Results screen (mnu_conf_result*, menu.narc)."
+Ring,Objects,shared,Ring placement object (obj 201).
+RingEffect2D,Effects,shared,Ring sparkle created by RingManager.
+RingEffect3D,Effects,shared,3D ring sparkle created by RingManager.
+RingManager,Objects,shared,"Ring system (ac_itm_ring.bac in act_com) used by Player, StageEvent and all bosses."
+Rock,Objects,3,ac_gmk_rock(_3).bac only in z31/z32/z82; obj 146 only in z31/z32.
+RockBreak,Objects,1,ac_gmk_rock_break.bac only in z11/z12/z81; obj 111 only in z11/z12.
+RockBreakPart,Objects,1,Created only by RockBreak.
+Rocket,Objects,7,ac_gmk_rocket.bac only in z71/z72; obj 147 only in z71/z72.
+Rope,Objects,shared,ac_gmk_rope.bac in z11/z12/z61/z81; obj 88 placed in z11/z12/z61/z62.
+RopeC,Objects,1,ac_gmk_rope_c.bac/gmk_rope_c.nsbmd only in z11/z12/z81; obj 122 only in z11/z12.
+RopeCLand,Objects,1,ac_gmk_rope_c_land.bac only in z11/z12/z81.
+RopeCSpring,Objects,1,ac_gmk_rope_c_spring.bac only in z11/z12/z81.
+SandSlider,Objects,3,ac_gmk_sand_slider.bac only in z31/z32/z82; obj 144/145 only in z31/z32.
+SandSliderPart,Objects,3,Created only by SandSlider.
+Saucer,Objects,6,ac_gmk_saucer.bac only in z61; obj 179 only in z61/z62.
+ScorePopup,UI,shared,ac_fix_moji.bac (act_com); created by Player.
+Shooter,Objects,4,ac_gmk_shooter.bac only in z41/z91; obj 187/188 only in z41/z42/z91.
+ShooterPart1,Objects,4,Created only by Shooter.
+Spring,Objects,shared,ac_gmk_spring.bac in every 2D act narc; placed in all zones.
+Stage,Stage-core,shared,Stage lifecycle/event resources.
+StageClear,Stage-core,shared,Goal-reached handler called by GoalRing/Marker.
+StageEvent,Stage-core,shared,Object/decoration/ring spawner from zone .ev/.dc files.
+StageJingle,Other,shared,Stage music jingle task created by Player (audio).
+StageLoader,Stage-core,shared,Map/zone graphics loader with per-zone boss loaders.
+StageObj,Stage-core,shared,Common stage-object main/entrance helpers.
+StageZoneScript,Stage-core,shared,Per-zone/act script via gStageZoneScriptTable[zone][act].
+Steam,Objects,5,"ac_eff_steam.bac only in z51/z92 (obj 241, runtime-spawned)."
+Swing,Objects,7,ac_gmk_swing.bac only in z71/z72; obj 150 only in z71/z72.
+SwingSky,Objects,4,ac_gmk_swing_sky.bac only in z41/z91; obj 189 only in z41/z42.
+Switch,Objects,4,"ac_gmk_switch.bac only in z41/z91, gmk_switch*.df only in z41; obj 190/191 only in z41/z42/z91."
+SwitchTimer,Objects,4,Created only by Switch.
+TensionSound,Other,shared,Tension-gauge sound task created by Player (audio).
+TimeSelectMenu,Menus,shared,"Time/zone select menu (mnu_time_select, mnu_conf_zsel)."
+Trampoline,Objects,1,ac_gmk_trampoline.bac only in z11/z12/z81; obj 85 only in z11/z12/z81.
+Valve,Objects,5,ac_gmk_valve.bac/ac_eff_steam.bac only in z51/z92; obj 162-165 only in z51/z52.
+WallBreak,Objects,shared,"ac_gmk_wall_braek01.bac in most 2D act narcs; obj 119 placed in zones 1,3,4,5,6,7."
+WaterJet,Objects,2,ac_gmk_water_jet.bac only in z21/z22; obj 133-135 only in z21/z22.
+WaterLevelTrigger,Objects,shared,obj 124 placed in z21/z22 and z32.
+WaterRunTrigger,Objects,2,Player_Action_WaterRun trigger; obj 123 placed only in z21/z22.
+Wheel2D,Objects,2,ac_gmk_wheel2d.bac/gmk_wheel.nsbmd only in z21/z22; obj 130 only in z21/z22.
+WirelessIcon,VsMode,shared,"ac_fix_wireless_icon.bac (act_com); created in Stage_Create only when gGameState+0x18 & 0x20, followed by WH_GetCurrentAid."
+ZoneBg,Stage-core,shared,Per-zone background dispatch via gZoneBg*Table[zone][act].
+ZoneFx,Stage-core,shared,Per-zone effects dispatch via gZoneFx*Table[zone][act].

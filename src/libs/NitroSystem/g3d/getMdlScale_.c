@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include "main_a2/g3drs.h"
+#include "NitroSystem/g3drs.h"
 
 typedef void (*UnkJntCb_020277d8)(void *jnt, const s16 *p, const u8 *cmd, u32 flag);
 

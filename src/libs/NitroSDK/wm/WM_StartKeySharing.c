@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wm.h>
+#include <NitroSDK/wm.h>
 
 void DC_InvalidateRange(void *p, u32 size);
 s32 WM_StartDataSharing(void *ds, u16 port, u16 bitmap, u16 size, BOOL doubleMode);

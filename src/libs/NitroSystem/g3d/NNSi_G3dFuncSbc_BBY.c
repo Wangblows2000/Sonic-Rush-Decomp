@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_a2/g3drs.h>
+#include <NitroSystem/g3drs.h>
 
 typedef struct { fx32 m[4][4]; } UnkMtx44_020238e8;
 typedef struct { fx32 x, y, z; } UnkVec_020238e8;

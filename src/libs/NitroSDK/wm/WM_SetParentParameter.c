@@ -1,6 +1,6 @@
 #include <nitro/types.h>
-#include <main_sdk2/wm.h>
-#include <main_sdk2/wh.h>
+#include <NitroSDK/wm.h>
+#include <NitroSDK/wh.h>
 
 void DC_StoreRange(void *p, u32 size);
 void WmCheckParentParameter(UnkParentParam_wh *pp);

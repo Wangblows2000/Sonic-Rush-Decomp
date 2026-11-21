@@ -1,5 +1,5 @@
 #include <nitro/types.h>
-#include <main_sdk2/wmsys.h>
+#include <NitroSDK/wmsys.h>
 
 s32 WMi_CheckInitialized(void);
 void DC_InvalidateRange(void *p, u32 size);
