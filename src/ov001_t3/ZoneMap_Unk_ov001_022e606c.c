@@ -29,8 +29,8 @@ typedef struct {
 extern UnkTask_022e606c *gTaskCurrent;
 
 void ZoneMap_State_Unk_ov001_022e7114(void);
-void ZoneMap_Unk_ov001_022e3180(s32 a, s32 b);
-void ZoneMap_Unk_ov001_022e5f04(void);
+void ZoneMap_SetNaviMessage(s32 a, s32 b);
+void ZoneMap_Action_PlayTalkDemoSonic(void);
 
 #pragma thumb on
 void ZoneMap_Unk_ov001_022e606c(void) {
@@ -50,17 +50,17 @@ void ZoneMap_Unk_ov001_022e606c(void) {
         gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7114;
         return;
     case 15:
-        ZoneMap_Unk_ov001_022e3180(w->sub->unk1cc4, 0xd);
+        ZoneMap_SetNaviMessage(w->sub->unk1cc4, 0xd);
         return;
     case 16:
-        ZoneMap_Unk_ov001_022e3180(w->sub->unk1cc4, 0xf);
+        ZoneMap_SetNaviMessage(w->sub->unk1cc4, 0xf);
         return;
     case 7:
         if (w->unk4 == 0x13) {
             w->unk74 = 0;
             w->unk90 = 0;
             w->unk94 = 0x14;
-            ZoneMap_Unk_ov001_022e5f04();
+            ZoneMap_Action_PlayTalkDemoSonic();
             return;
         }
         break;
@@ -69,7 +69,7 @@ void ZoneMap_Unk_ov001_022e606c(void) {
             w->unk74 = 0;
             w->unk90 = 0;
             w->unk94 = 0x19;
-            ZoneMap_Unk_ov001_022e5f04();
+            ZoneMap_Action_PlayTalkDemoSonic();
         }
         break;
     }

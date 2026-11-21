@@ -41,10 +41,10 @@ void TimeAttackMenu_Unk_ov001_022ea644(UnkWork_022eba70 *w);
 void TimeAttackMenu_IndexToGrid(UnkWork_022eba70 *w, s32 a, s32 *x, s32 *y);
 void TimeAttackMenu_Unk_ov001_022ea5a8(UnkWork_022eba70 *w, s32 x);
 void TimeAttackMenu_Unk_ov001_022ea504(UnkWork_022eba70 *w, s32 x, s32 y);
-void TimeAttackMenu_Unk_ov001_022e9c24(s32 x, s32 y, UnkItem_022eba70 *items);
+void TimeAttackMenu_GetRecordTimes(s32 x, s32 y, UnkItem_022eba70 *items);
 void TimeAttackMenu_StartBg1HOfsHdma(UnkWork_022eba70 *w);
 void TimeAttackMenu_FillHdmaBuffer(UnkWork_022eba70 *w);
-void TimeAttackMenu_Unk_ov001_022eb294(void);
+void TimeAttackMenu_State_Select(void);
 void TimeAttackMenu_State_Unk_ov001_022eae98(void);
 
 #pragma thumb on
@@ -71,7 +71,7 @@ void TimeAttackMenu_Unk_ov001_022eba70(UnkTask_022eba70 *t) {
         }
     }
     if (w->unkd0 == w->unkd4) {
-        t->func = TimeAttackMenu_Unk_ov001_022eb294;
+        t->func = TimeAttackMenu_State_Select;
         return;
     }
     SysSound_PlaySE(4);
@@ -107,7 +107,7 @@ void TimeAttackMenu_Unk_ov001_022eba70(UnkTask_022eba70 *t) {
     TimeAttackMenu_IndexToGrid(w, w->unkd4, &x, &y);
     TimeAttackMenu_Unk_ov001_022ea5a8(w, x);
     TimeAttackMenu_Unk_ov001_022ea504(w, x, y);
-    TimeAttackMenu_Unk_ov001_022e9c24(x, y, w->items);
+    TimeAttackMenu_GetRecordTimes(x, y, w->items);
     for (i = 0; i < 5; i++) {
         w->items[i].a = 0x100;
         w->items[i].b = 0x100;

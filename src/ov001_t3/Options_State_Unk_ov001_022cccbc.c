@@ -39,7 +39,7 @@ void OptionsMenu_DrawItemSprite(UnkObj_022cccbc *o, s32 id, s32 x, s32 y, s32 se
 void OptionsMenu_UpdatePage(UnkStruct_022cccbc *p, s32 x, s32 y);
 void OptionsMenu_SetSubScroll(UnkObj_022cccbc *o, s32 x, s32 y);
 void OptionsMenu_Unk_ov001_022cbe50(UnkObj_022cccbc *o, s32 x, s32 y);
-void OptionsMenu_Unk_ov001_022cbdf0(UnkObj_022cccbc *o, s32 x, s32 y, s32 a);
+void OptionsMenu_DrawListBackButton(UnkObj_022cccbc *o, s32 x, s32 y, s32 a);
 void OptionsMenu_UpdateAnims(UnkStruct_022cccbc *p);
 void Options_Action_Exit(void);
 
@@ -76,7 +76,7 @@ void Options_State_Unk_ov001_022cccbc(void) {
     OptionsMenu_UpdatePage(p, p->ax, p->ay);
     OptionsMenu_SetSubScroll(p->obj, p->ax, p->ay);
     OptionsMenu_Unk_ov001_022cbe50(p->obj, p->bx, p->by);
-    OptionsMenu_Unk_ov001_022cbdf0(p->obj, p->cx, p->cy, 1);
+    OptionsMenu_DrawListBackButton(p->obj, p->cx, p->cy, 1);
     p->timer++;
     if (p->timer >= 10) {
         Options_Action_Exit();

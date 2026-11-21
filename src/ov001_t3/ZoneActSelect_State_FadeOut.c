@@ -28,12 +28,12 @@ void Task_Destroy(UnkTask_022e114c *t);
 s32 FX_Div(s32 n, s32 d);
 void GXx_SetMasterBrightness_(vu16 *reg, s32 v);
 void ZoneActSelect_Unk_ov001_022e08e0(UnkWork_022e114c *w);
-void ZoneActSelect_Unk_ov001_022e09d0(UnkWork_022e114c *w);
-void ZoneActSelect_Unk_ov001_022e0ad0(UnkWork_022e114c *w);
-void ZoneActSelect_Unk_ov001_022e0c5c(UnkWork_022e114c *w);
+void ZoneActSelect_DrawRecordRanks(UnkWork_022e114c *w);
+void ZoneActSelect_DrawRecordScores(UnkWork_022e114c *w);
+void ZoneActSelect_DrawActLabels(UnkWork_022e114c *w);
 void ZoneActSelect_UpdateTabOffsets(UnkWork_022e114c *w);
 void ZoneActSelect_DrawZoneTabs(UnkWork_022e114c *w);
-void ZoneActSelect_Unk_ov001_022e0884(UnkWork_022e114c *w);
+void ZoneActSelect_DrawBackButton(UnkWork_022e114c *w);
 void ZoneActSelect_LoadZonePalette(UnkWork_022e114c *w, s32 a);
 void NaviM_StartEmeraldAppear(void);
 void NaviM_StartCounter(void);
@@ -73,12 +73,12 @@ void ZoneActSelect_State_FadeOut(void) {
     w->timer++;
     if (w->timer < 0x1e) {
         ZoneActSelect_Unk_ov001_022e08e0(w);
-        ZoneActSelect_Unk_ov001_022e09d0(w);
-        ZoneActSelect_Unk_ov001_022e0ad0(w);
-        ZoneActSelect_Unk_ov001_022e0c5c(w);
+        ZoneActSelect_DrawRecordRanks(w);
+        ZoneActSelect_DrawRecordScores(w);
+        ZoneActSelect_DrawActLabels(w);
         ZoneActSelect_UpdateTabOffsets(w);
         ZoneActSelect_DrawZoneTabs(w);
-        ZoneActSelect_Unk_ov001_022e0884(w);
+        ZoneActSelect_DrawBackButton(w);
         ZoneActSelect_LoadZonePalette(w, data_ov001_0231c3ec);
     }
     if (w->timer >= 0x1e) {

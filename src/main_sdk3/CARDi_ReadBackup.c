@@ -32,7 +32,7 @@ extern u32 OS_DisableInterrupts(void);
 extern u32 OS_RestoreInterrupts(u32 state);
 extern void OS_SleepThread(void *queue);
 extern void CARDi_SetTask(void (*fn)(UnkCardCommon_0200fa70 *));
-extern void CARD_Unk_0200fbfc(UnkCardCommon_0200fa70 *p);
+extern void CARD_ReadBackupTask(UnkCardCommon_0200fa70 *p);
 
 BOOL CARDi_ReadBackup(u32 src, u32 dst, u32 len, void *callback, void *arg, BOOL is_async)
 {
@@ -49,11 +49,11 @@ BOOL CARDi_ReadBackup(u32 src, u32 dst, u32 len, void *callback, void *arg, BOOL
     p->callback = callback;
     p->arg = arg;
     if (is_async) {
-        CARDi_SetTask(CARD_Unk_0200fbfc);
+        CARDi_SetTask(CARD_ReadBackupTask);
         return TRUE;
     } else {
         data_0207f2c0.priority = data_0207d090.f8;
-        CARD_Unk_0200fbfc(p);
+        CARD_ReadBackupTask(p);
         return p->cmd->result == 0;
     }
 }

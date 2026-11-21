@@ -30,10 +30,10 @@ void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void ZoneActSelect_State_FadeIn(void);
 void ZoneActSelect_Destructor(void);
 void ZoneActSelect_LoadRecords(UnkWork_022e190c *w);
-void ZoneActSelect_Unk_ov001_022e06e4(UnkWork_022e190c *w);
+void ZoneActSelect_CalcRecordRanks(UnkWork_022e190c *w);
 void ZoneActSelect_InitDisplay(void);
 void ZoneActSelect_LoadAssets(UnkWork_022e190c *w);
-void ZoneActSelect_Unk_ov001_022e153c(UnkWork_022e190c *w);
+void ZoneActSelect_InitBackgroundsAndSprites(UnkWork_022e190c *w);
 void ZoneActSelect_ShowIntroNaviMessage(void);
 
 #pragma thumb on
@@ -57,10 +57,10 @@ void ZoneActSelect_Create(s32 a, s32 b, s32 c) {
     data_ov001_0231c3ec = a;
     gZoneActSelectResult = 0;
     ZoneActSelect_LoadRecords(gZoneActSelectWork);
-    ZoneActSelect_Unk_ov001_022e06e4(gZoneActSelectWork);
+    ZoneActSelect_CalcRecordRanks(gZoneActSelectWork);
     ZoneActSelect_InitDisplay();
     ZoneActSelect_LoadAssets(gZoneActSelectWork);
-    ZoneActSelect_Unk_ov001_022e153c(gZoneActSelectWork);
+    ZoneActSelect_InitBackgroundsAndSprites(gZoneActSelectWork);
     ZoneActSelect_ShowIntroNaviMessage();
 }
 #pragma thumb reset

@@ -40,12 +40,12 @@ typedef struct {
 void AnimatorSprite_SetAnimation(UnkSpr_022ca710 *s, u16 anim);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022ca710 *s, u32 a, u32 b);
 void AnimatorSprite_Draw(UnkSpr_022ca710 *s);
-void OptionsMenu_Unk_ov001_022ca2d4(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a);
+void OptionsMenu_DrawPageBackButton(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a);
 void OptionsMenu_Unk_ov001_022c9f54(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a, s32 b);
 void OptionsMenu_Unk_ov001_022c9d58(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a, s32 b);
 void OptionsMenu_Unk_ov001_022c9b78(UnkStruct_022ca710 *p, s16 x, s16 y);
-void OptionsMenu_Unk_ov001_022c9a2c(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a);
-void OptionsMenu_Unk_ov001_022c9c0c(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a);
+void OptionsMenu_DrawSoundTestTrackName(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a);
+void OptionsMenu_DrawSoundTestTrackNumber(UnkStruct_022ca710 *p, s16 x, s16 y, s32 a);
 
 #pragma thumb on
 void OptionsMenu_DrawPage3(UnkStruct_022ca710 *p, s16 x, s16 y) {
@@ -76,11 +76,11 @@ void OptionsMenu_DrawPage3(UnkStruct_022ca710 *p, s16 x, s16 y) {
         AnimatorSprite_ProcessAnimation(s, 0, 0);
         AnimatorSprite_Draw(s);
         if (sub->unk0 != 0) {
-            OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 2);
+            OptionsMenu_DrawPageBackButton(p, x, y, 2);
         } else if (p->unk1c >= 0) {
-            OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 1);
+            OptionsMenu_DrawPageBackButton(p, x, y, 1);
         } else {
-            OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 0);
+            OptionsMenu_DrawPageBackButton(p, x, y, 0);
         }
         if (sub->unk0 != 0) {
             if (sub->unk30 < sub->unk28) {
@@ -118,8 +118,8 @@ void OptionsMenu_DrawPage3(UnkStruct_022ca710 *p, s16 x, s16 y) {
         }
         OptionsMenu_Unk_ov001_022c9d58(p, x + 0xca, ty, sub->unk34, sub->unk34);
         OptionsMenu_Unk_ov001_022c9b78(p, x, y);
-        OptionsMenu_Unk_ov001_022c9a2c(p, x + 0x80, y + 0x49, sub->unk1c);
-        OptionsMenu_Unk_ov001_022c9c0c(p, x + 0x68, y + 0x4c, sub->unk14);
+        OptionsMenu_DrawSoundTestTrackName(p, x + 0x80, y + 0x49, sub->unk1c);
+        OptionsMenu_DrawSoundTestTrackNumber(p, x + 0x68, y + 0x4c, sub->unk14);
         s3 = &w->sprites[3];
         f3 = &s3->flags;
         if (w->ids[3] != 4) {

@@ -12,7 +12,7 @@ typedef struct {
 } UnkMbParam_02015168;
 
 void MI_CpuCopy8(const void *src, void *dest, u32 size);
-BOOL WBT_Unk_0201559c(UnkMbParam_02015168 *p);
+BOOL WBT_QueueCommand(UnkMbParam_02015168 *p);
 
 BOOL WBT_PutUserData(u16 bitmap, const void *src, s32 size, u32 d)
 {
@@ -25,5 +25,5 @@ BOOL WBT_PutUserData(u16 bitmap, const void *src, s32 size, u32 d)
     p.unk10 = d;
     MI_CpuCopy8(src, p.data, size);
     p.size = size;
-    return WBT_Unk_0201559c(&p);
+    return WBT_QueueCommand(&p);
 }

@@ -7,7 +7,7 @@ s32 TitleMenu_Create();
 s32 TitleMenu_OpenPlayerSelectPage();
 s32 TitleMenu_OpenRootPage();
 s32 TitleMenu_CreateFadeTask();
-s32 TitleMenu_Unk_ov001_022d74dc();
+s32 TitleMenu_CreateBgSlideTaskAtMidpoint();
 
 void TitleMenu_StartAtPlayerSelectItem1(void) {
     s32 t0 = TitleMenu_Create();
@@ -17,7 +17,7 @@ void TitleMenu_StartAtPlayerSelectItem1(void) {
         TitleMenu_OpenRootPage(t0, 0, 0);
     }
     TitleMenu_CreateFadeTask(8, 0);
-    TitleMenu_Unk_ov001_022d74dc(t0, 0);
+    TitleMenu_CreateBgSlideTaskAtMidpoint(t0, 0);
     *(volatile u32 *)0x4000000 = ((*(volatile u32 *)0x4000000 & -7937) | 0x1f00);
     *(volatile u32 *)0x4001000 = ((*(volatile u32 *)0x4001000 & -7937) | 0x1f00);
 }

@@ -40,8 +40,8 @@ typedef struct {
 UnkTask_022ce164 *Task_Create(void (*fn)(void), void (*dtor)(void), s32 b, s32 c, s32 d, s32 size);
 void MIi_CpuClear16(u16 data, void *dest, u32 size);
 void Options_State_WaitOpenAnims(void);
-void Options_Unk_ov001_022cc044(UnkWork_022ce164 *w);
-void Options_Unk_ov001_022cbc2c(UnkWork_022ce164 *w);
+void Options_ResetItemPageState(UnkWork_022ce164 *w);
+void Options_InitOpenAnims(UnkWork_022ce164 *w);
 
 #pragma thumb on
 void Options_CreateMenuTask(UnkStruct_022ce164 *p) {
@@ -73,7 +73,7 @@ void Options_CreateMenuTask(UnkStruct_022ce164 *p) {
     for (; n < 6; n++) {
         w->items[n].id = 7;
     }
-    Options_Unk_ov001_022cc044(w);
-    Options_Unk_ov001_022cbc2c(w);
+    Options_ResetItemPageState(w);
+    Options_InitOpenAnims(w);
 }
 #pragma thumb reset

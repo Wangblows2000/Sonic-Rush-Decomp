@@ -9,10 +9,10 @@ void MI_CpuFill8(void *dest, u8 data, u32 size);
 BOOL WBT_RegisterBlock(UnkMbNode *node, u32 id, const void *name, u8 *data, u32 size, u16 x)
 {
     u32 e = OS_DisableInterrupts();
-    if (WBT_Unk_0201558c() == NULL) {
-        WBT_Unk_0201557c(node);
+    if (WBT_GetBlockListHead() == NULL) {
+        WBT_SetBlockListHead(node);
     } else {
-        UnkMbNode *n = WBT_Unk_0201558c();
+        UnkMbNode *n = WBT_GetBlockListHead();
         while (n->next != NULL) {
             n = n->next;
         }

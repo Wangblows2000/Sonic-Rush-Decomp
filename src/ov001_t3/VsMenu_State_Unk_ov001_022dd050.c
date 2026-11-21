@@ -35,7 +35,7 @@ void VsMenu_State_Unk_ov001_022dcf94(void);
 s32 WirelessLobbyDownloadPlay_GetChildName(s32 a, u8 *buf, s32 n);
 void VsMenu_BuildGlyphString(void *p, u8 *buf, u16 len);
 void VsMenu_Unk_ov001_022d9cd4(UnkWork_022dd050 *w, s32 a, s32 b);
-BOOL VsMenu_Unk_ov001_022da500(void);
+BOOL VsMenu_IsStartButtonTouched(void);
 void VsMenu_Unk_ov001_022d9fe4(UnkWork_022dd050 *w);
 void SysSound_PlayDecideSE(void);
 BOOL VsMenu_IsStartPressed(void);
@@ -72,7 +72,7 @@ void VsMenu_State_Unk_ov001_022dd050(void) {
         a = TRUE;
         SysSound_PlayCancelSE();
     }
-    if (VsMenu_Unk_ov001_022da500()) {
+    if (VsMenu_IsStartButtonTouched()) {
         VsMenu_Unk_ov001_022d9fe4(w);
         b = TRUE;
         w->unk4 = 0;

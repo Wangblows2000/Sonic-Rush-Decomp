@@ -46,7 +46,7 @@ extern UnkTask_022eb5d0 *gTaskCurrent;
 void KeyframeAnim_Update(UnkAnim_022eb5d0 *a);
 BOOL KeyframeAnim_IsFinished(UnkAnim_022eb5d0 *a);
 void TimeAttackMenu_Unk_ov001_022ea360(UnkWork_022eb5d0 *w, s32 i, s32 v);
-void TimeAttackMenu_Unk_ov001_022e9fe4(UnkWork_022eb5d0 *w, s32 i);
+void TimeAttackMenu_DrawRecordTime(UnkWork_022eb5d0 *w, s32 i);
 void TimeAttackMenu_Unk_ov001_022e9fa8(UnkWork_022eb5d0 *w, s32 i);
 void TimeAttackMenu_FillHdmaBuffer(UnkWork_022eb5d0 *w);
 void AnimatorSprite_ProcessAnimation(void *p, s32 a, s32 b);
@@ -86,7 +86,7 @@ void TimeAttackMenu_State_Enter(void) {
         TimeAttackMenu_Unk_ov001_022ea360(w, i, an->x);
         it->unk8 = 8;
         it->unk8 += i * 0x18;
-        TimeAttackMenu_Unk_ov001_022e9fe4(w, i);
+        TimeAttackMenu_DrawRecordTime(w, i);
         TimeAttackMenu_Unk_ov001_022e9fa8(w, i);
         it++;
         an++;

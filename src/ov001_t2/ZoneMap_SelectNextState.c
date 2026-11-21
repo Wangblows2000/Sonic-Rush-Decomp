@@ -25,8 +25,8 @@ extern UnkTask_022e6870 *gTaskCurrent;
 
 void ZoneMap_State_WaitNaviMessage(void);
 void ZoneMap_State_SelectNode(void);
-void ZoneMap_Unk_ov001_022e6538(void);
-void ZoneMap_Unk_ov001_022e61f4(void);
+void ZoneMap_RunSonicStoryStep(void);
+void ZoneMap_RunBlazeStoryStep(void);
 
 #pragma thumb on
 void ZoneMap_SelectNextState(void) {
@@ -47,14 +47,14 @@ void ZoneMap_SelectNextState(void) {
             w->unk4 = w->unk94;
             w->unk94 = 0x24;
         }
-        ZoneMap_Unk_ov001_022e6538();
+        ZoneMap_RunSonicStoryStep();
         break;
     case 1:
         if (w->unk98 != 0x23) {
             w->unk8 = w->unk98;
             w->unk98 = 0x23;
         }
-        ZoneMap_Unk_ov001_022e61f4();
+        ZoneMap_RunBlazeStoryStep();
         break;
     }
 }

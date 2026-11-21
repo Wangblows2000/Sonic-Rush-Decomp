@@ -8,7 +8,7 @@ s32 ZoneMap_UpdateView();
 s32 ZoneMapPause_IsClosed();
 s32 ZoneMap_Unk_ov001_022e955c();
 s32 ZoneMap_SelectNextState();
-s32 ZoneMap_Unk_ov001_022e5d08();
+s32 ZoneMap_Action_FadeOutExit();
 
 void ZoneMap_State_WaitPauseClosed(void) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
@@ -22,7 +22,7 @@ void ZoneMap_State_WaitPauseClosed(void) {
             ZoneMap_SelectNextState();
             return;
         }
-        ZoneMap_Unk_ov001_022e5d08();
+        ZoneMap_Action_FadeOutExit();
     }
 }
 

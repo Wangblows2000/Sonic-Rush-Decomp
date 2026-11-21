@@ -65,7 +65,7 @@ extern s32 gVoiceSoundHandle;
 void OptionsMenu_UpdateAnims(UnkWork_022cd05c *w);
 void SoundTest_UpdateLevelMeter(UnkSub_022cd05c *s);
 void OptionsMenu_DrawItems(UnkWork_022cd05c *w);
-void OptionsMenu_Unk_ov001_022cdd28(void);
+void OptionsMenu_Action_Back(void);
 BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
 void SoundTest_ReleaseTrack(UnkSub_022cd05c *s);
 void SysSound_Init(void);
@@ -76,7 +76,7 @@ void NNS_SndPlayerStopSeqBySeqArcIdx(u8 a, u16 b, s32 c);
 BOOL Options_IsExtraStoryCleared(void);
 void SoundTest_PlayTrack(UnkSub_022cd05c *s);
 void SoundTest_LoadTrack(UnkSub_022cd05c *s, s32 a);
-void OptionsMenu_Unk_ov001_022c90a8(UnkSub_022cd05c *s, s32 a, s32 b);
+void SoundTest_BuildTrackNameText(UnkSub_022cd05c *s, s32 a, s32 b);
 
 #pragma thumb on
 void OptionsMenu_State_SoundTest(void) {
@@ -105,7 +105,7 @@ void OptionsMenu_State_SoundTest(void) {
     if (w->unk1c >= 0) {
         w->unk1c++;
         if (w->unk1c > 10) {
-            OptionsMenu_Unk_ov001_022cdd28();
+            OptionsMenu_Action_Back();
         }
     }
     if (w->unk1c >= 0) {
@@ -189,7 +189,7 @@ void OptionsMenu_State_SoundTest(void) {
                 SoundTest_ReleaseTrack(sub);
             }
             SoundTest_LoadTrack(sub, sub->cur);
-            OptionsMenu_Unk_ov001_022c90a8(sub, sub->cur, sub->sel);
+            SoundTest_BuildTrackNameText(sub, sub->cur, sub->sel);
         }
         sub->unk20 = 0;
         return;
@@ -205,7 +205,7 @@ void OptionsMenu_State_SoundTest(void) {
             return;
         } else {
             SoundTest_ReleaseTrack(sub);
-            OptionsMenu_Unk_ov001_022cdd28();
+            OptionsMenu_Action_Back();
             SysSound_Init();
             SysSound_PlayBGM(0);
             SysSound_PlaySE(1);
@@ -220,7 +220,7 @@ void OptionsMenu_State_SoundTest(void) {
             }
         } while (!busy && data_ov001_0231f048[sub->cur].unk2d == 1);
         sub->unk1c = 0;
-        OptionsMenu_Unk_ov001_022c90a8(sub, sub->cur, sub->sel);
+        SoundTest_BuildTrackNameText(sub, sub->cur, sub->sel);
         if (sub->unk0 == 0) {
             sub->sel = sub->cur;
             sub->unk24 = 0;
@@ -235,7 +235,7 @@ void OptionsMenu_State_SoundTest(void) {
             }
         } while (!busy && data_ov001_0231f048[sub->cur].unk2d == 1);
         sub->unk1c = 0;
-        OptionsMenu_Unk_ov001_022c90a8(sub, sub->cur, sub->sel);
+        SoundTest_BuildTrackNameText(sub, sub->cur, sub->sel);
         if (sub->unk0 == 0) {
             sub->sel = sub->cur;
             sub->unk24 = 0;

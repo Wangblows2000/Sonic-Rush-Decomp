@@ -52,7 +52,7 @@ extern UnkBr_022cce10 data_02087d44;
 
 void OptionsMenu_UpdateAnims(UnkWork_022cce10 *w);
 void OptionsMenu_DrawItems(UnkWork_022cce10 *w);
-void OptionsMenu_Unk_ov001_022cdd28(void);
+void OptionsMenu_Action_Back(void);
 BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
 void SysSound_PlaySE(s32 a);
 void Options_EraseSaveData(UnkInfo_022cce10 *info);
@@ -102,7 +102,7 @@ void OptionsMenu_State_EraseData(void) {
     if (w->unk1c >= 0) {
         w->unk1c++;
         if (w->unk1c > 10) {
-            OptionsMenu_Unk_ov001_022cdd28();
+            OptionsMenu_Action_Back();
         }
     }
     if (w->unk1c >= 0) {
@@ -123,7 +123,7 @@ void OptionsMenu_State_EraseData(void) {
                     w->unk30 = 1;
                     break;
                 case 1:
-                    OptionsMenu_Unk_ov001_022cdd28();
+                    OptionsMenu_Action_Back();
                     break;
                 }
                 break;
@@ -134,7 +134,7 @@ void OptionsMenu_State_EraseData(void) {
                     w->unk28 = 0;
                     break;
                 case 1:
-                    OptionsMenu_Unk_ov001_022cdd28();
+                    OptionsMenu_Action_Back();
                     break;
                 }
                 break;
@@ -165,7 +165,7 @@ void OptionsMenu_State_EraseData(void) {
     }
     if (gPad.trg & 2) {
         SysSound_PlaySE(1);
-        OptionsMenu_Unk_ov001_022cdd28();
+        OptionsMenu_Action_Back();
         return;
     }
     if (gTouchState.flags & 0x40) {

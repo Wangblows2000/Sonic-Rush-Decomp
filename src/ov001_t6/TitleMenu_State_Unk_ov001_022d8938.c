@@ -51,16 +51,16 @@ extern UnkTask_022d8798 *gTaskCurrent;
 extern UnkPad_022d8938 gPad;
 extern UnkTouch_022d8938 gTouchState;
 
-void TitleMenu_Unk_ov001_022d7b7c(s32 x, s32 y, s32 a, s32 b);
+void TitleMenu_DrawBackButton(s32 x, s32 y, s32 a, s32 b);
 void TitleMenu_Unk_ov001_022d7ac4(s32 id, s32 x, s32 y);
-void TitleMenu_Unk_ov001_022d7c04(s32 idx, s16 x, s16 y, s32 mode, u32 t);
+void TitleMenu_DrawItemButton(s32 idx, s16 x, s16 y, s32 mode, u32 t);
 void SysSound_PlaySE(s32 a);
 void TitleMenu_Unk_ov001_022d7dbc(void *p, void *sw);
-void TitleMenu_Unk_ov001_022d75dc(void *sw, void *a, void *b);
+void TitleMenu_CreateBgSlideTaskReverse(void *sw, void *a, void *b);
 s32 TitleMenu_GetTouchedItem(u32 x, u32 y, s32 y0);
 BOOL TitleMenu_IsBackButtonTouched(u32 x, u32 y);
-void TitleMenu_Unk_ov001_022d7968(s32 a, s32 b);
-void TitleMenu_Unk_ov001_022d78f4(s32 a, s32 b);
+void TitleMenu_StartFadeToWhite(s32 a, s32 b);
+void TitleMenu_StartFadeToBlack(s32 a, s32 b);
 void TitleMenu_State_Unk_ov001_022d8798(void);
 void TitleMenu_State_Unk_ov001_022d85d0(void);
 void TitleMenu_State_Unk_ov001_022d86b0(void);
@@ -84,14 +84,14 @@ void TitleMenu_State_Unk_ov001_022d8938(void) {
     for (; i < 6; i++) {
         if (it->id != 0x14) {
             if (i == 4) {
-                TitleMenu_Unk_ov001_022d7b7c(it->x, it->y, 0, 0);
+                TitleMenu_DrawBackButton(it->x, it->y, 0, 0);
             } else if (i == 5) {
                 TitleMenu_Unk_ov001_022d7ac4(it->id, it->x, it->y);
             } else {
                 if (w->sel == i) {
-                    TitleMenu_Unk_ov001_022d7c04(it->id, it->x, y, 1, w->timer);
+                    TitleMenu_DrawItemButton(it->id, it->x, y, 1, w->timer);
                 } else {
-                    TitleMenu_Unk_ov001_022d7c04(it->id, it->x, y, 0, 0);
+                    TitleMenu_DrawItemButton(it->id, it->x, y, 0, 0);
                 }
                 y += w->dy;
             }
@@ -127,14 +127,14 @@ void TitleMenu_State_Unk_ov001_022d8938(void) {
         w->sel = 4;
         w->timer = 0;
         TitleMenu_Unk_ov001_022d7dbc(w->obj10, w->sw);
-        TitleMenu_Unk_ov001_022d75dc(w->sw, w->res18c, w->res190);
+        TitleMenu_CreateBgSlideTaskReverse(w->sw, w->res18c, w->res190);
         SysSound_PlaySE(1);
         gTaskCurrent->func = TitleMenu_State_Unk_ov001_022d85d0;
         if (w->items[4].flags & 1) {
-            TitleMenu_Unk_ov001_022d7968(8, 0x14);
+            TitleMenu_StartFadeToWhite(8, 0x14);
         }
         if (w->items[4].flags & 2) {
-            TitleMenu_Unk_ov001_022d78f4(8, 0x14);
+            TitleMenu_StartFadeToBlack(8, 0x14);
         }
     } else if (gTouchState.flags & 0x40) {
         tx = gTouchState.x;

@@ -28,7 +28,7 @@ void VsMenu_Unk_ov001_022d9f6c(UnkWork_022db8d0 *w);
 void VsMenu_Unk_ov001_022d9f2c(UnkWork_022db8d0 *w);
 void KeyframeAnim_SetAnim(UnkAnim_022db8d0 *a, s32 idx);
 void KeyframeAnim_PlayReverse(UnkAnim_022db8d0 *a);
-void TitleMenu_Unk_ov001_022d6dac(void);
+void TitleMenu_StartVsBgSlideReverse(void);
 void VsMenu_State_Unk_ov001_022db6ec(void);
 
 #pragma thumb on
@@ -56,7 +56,7 @@ void VsMenu_State_Unk_ov001_022db8d0(void) {
         KeyframeAnim_SetAnim(a, i + 6);
         KeyframeAnim_PlayReverse(a);
     }
-    TitleMenu_Unk_ov001_022d6dac();
+    TitleMenu_StartVsBgSlideReverse();
     gTaskCurrent->fn = VsMenu_State_Unk_ov001_022db6ec;
 }
 #pragma thumb reset

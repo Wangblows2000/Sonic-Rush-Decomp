@@ -41,13 +41,13 @@ s32 ZoneActSelect_GetTouchedAct(s32 x, s32 y);
 BOOL ZoneActSelect_IsBackButtonTouched(s32 x, s32 y);
 void SysSound_PlayCursorSE(void);
 void ZoneActSelect_Unk_ov001_022e08e0(UnkWork_022e0f94 *w);
-void ZoneActSelect_Unk_ov001_022e0968(UnkWork_022e0f94 *w);
-void ZoneActSelect_Unk_ov001_022e09d0(UnkWork_022e0f94 *w);
-void ZoneActSelect_Unk_ov001_022e0ad0(UnkWork_022e0f94 *w);
-void ZoneActSelect_Unk_ov001_022e0c5c(UnkWork_022e0f94 *w);
+void ZoneActSelect_DrawActCursor(UnkWork_022e0f94 *w);
+void ZoneActSelect_DrawRecordRanks(UnkWork_022e0f94 *w);
+void ZoneActSelect_DrawRecordScores(UnkWork_022e0f94 *w);
+void ZoneActSelect_DrawActLabels(UnkWork_022e0f94 *w);
 void ZoneActSelect_UpdateTabOffsets(UnkWork_022e0f94 *w);
 void ZoneActSelect_DrawZoneTabs(UnkWork_022e0f94 *w);
-void ZoneActSelect_Unk_ov001_022e0884(UnkWork_022e0f94 *w);
+void ZoneActSelect_DrawBackButton(UnkWork_022e0f94 *w);
 void ZoneActSelect_LoadZonePalette(UnkWork_022e0f94 *w, s32 a);
 void SysSound_PlaySE(s32 a);
 void ZoneActSelect_ShowNaviMessage4(void);
@@ -124,13 +124,13 @@ void ZoneActSelect_State_Select(void) {
         }
     }
     ZoneActSelect_Unk_ov001_022e08e0(w);
-    ZoneActSelect_Unk_ov001_022e0968(w);
-    ZoneActSelect_Unk_ov001_022e09d0(w);
-    ZoneActSelect_Unk_ov001_022e0ad0(w);
-    ZoneActSelect_Unk_ov001_022e0c5c(w);
+    ZoneActSelect_DrawActCursor(w);
+    ZoneActSelect_DrawRecordRanks(w);
+    ZoneActSelect_DrawRecordScores(w);
+    ZoneActSelect_DrawActLabels(w);
     ZoneActSelect_UpdateTabOffsets(w);
     ZoneActSelect_DrawZoneTabs(w);
-    ZoneActSelect_Unk_ov001_022e0884(w);
+    ZoneActSelect_DrawBackButton(w);
     ZoneActSelect_LoadZonePalette(w, data_ov001_0231c3ec);
     w->unk0++;
     w->unk4++;

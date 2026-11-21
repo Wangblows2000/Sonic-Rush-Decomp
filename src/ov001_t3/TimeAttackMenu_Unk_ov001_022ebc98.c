@@ -37,7 +37,7 @@ void TimeAttackMenu_Unk_ov001_022ea5a8(UnkWork_022ebc98 *w, s32 x);
 void TimeAttackMenu_Unk_ov001_022ea504(UnkWork_022ebc98 *w, s32 x, s32 y);
 void TimeAttackMenu_Unk_ov001_022ea41c(UnkWork_022ebc98 *w);
 void TimeAttackMenu_Unk_ov001_022ea37c(UnkWork_022ebc98 *w);
-void TimeAttackMenu_Unk_ov001_022e9c24(s32 x, s32 y, UnkItem_022ebc98 *items);
+void TimeAttackMenu_GetRecordTimes(s32 x, s32 y, UnkItem_022ebc98 *items);
 void TimeAttackMenu_StartBg1HOfsHdma(UnkWork_022ebc98 *w);
 void TimeAttackMenu_FillHdmaBuffer(UnkWork_022ebc98 *w);
 void TimeAttackMenu_State_Enter(void);
@@ -74,7 +74,7 @@ void TimeAttackMenu_Unk_ov001_022ebc98(UnkTask_022ebc98 *t) {
     TimeAttackMenu_Unk_ov001_022ea504(w, x, y);
     TimeAttackMenu_Unk_ov001_022ea41c(w);
     TimeAttackMenu_Unk_ov001_022ea37c(w);
-    TimeAttackMenu_Unk_ov001_022e9c24(x, y, w->items);
+    TimeAttackMenu_GetRecordTimes(x, y, w->items);
     for (i = 0; i < 5; i++) {
         w->items[i].a = 0x100;
         w->items[i].b = 0x100;

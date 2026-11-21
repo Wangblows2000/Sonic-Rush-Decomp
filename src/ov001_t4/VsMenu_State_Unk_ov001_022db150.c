@@ -36,7 +36,7 @@ void VsMenu_Unk_ov001_022da33c(UnkWork_022db150 *w);
 void VsMenu_Unk_ov001_022da2cc(UnkWork_022db150 *w, s32 i);
 void VsMenu_Unk_ov001_022da288(UnkWork_022db150 *w, s32 i);
 void KeyframeAnim_SetAnim(UnkAnim_022db150 *a, s32 id);
-void TitleMenu_Unk_ov001_022d6dc0(void);
+void TitleMenu_StartVsBgSlideForward(void);
 void VsMenu_CreateBrightnessFade(s32 a, s32 b, s32 c, s32 d);
 void SysSound_PlaySEDelayed(s32 a, s32 b, s32 c, s32 d);
 void VsMenu_State_Unk_ov001_022db014(void);
@@ -92,7 +92,7 @@ void VsMenu_State_Unk_ov001_022db150(void) {
         KeyframeAnim_SetAnim(&w->anims[3], 0x11);
         KeyframeAnim_SetAnim(&w->anims[4], 0x12);
         KeyframeAnim_SetAnim(&w->anims[5], 0x13);
-        TitleMenu_Unk_ov001_022d6dc0();
+        TitleMenu_StartVsBgSlideForward();
         VsMenu_CreateBrightnessFade(0, 0x10, 0x10, 0xc);
         SysSound_PlaySEDelayed(2, 0xc, 0x3000, 0);
         gTaskCurrent->func = VsMenu_State_Unk_ov001_022dac0c;

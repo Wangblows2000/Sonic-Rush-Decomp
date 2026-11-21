@@ -31,8 +31,8 @@ typedef struct {
 extern UnkTask_022e5f80 *gTaskCurrent;
 
 void ZoneMap_State_Unk_ov001_022e7114(void);
-void ZoneMap_Unk_ov001_022e3180(s32 a, s32 b);
-void ZoneMap_Unk_ov001_022e5e98(void);
+void ZoneMap_SetNaviMessage(s32 a, s32 b);
+void ZoneMap_Action_PlayTalkDemoBlaze(void);
 
 #pragma thumb on
 void ZoneMap_Unk_ov001_022e5f80(void) {
@@ -52,14 +52,14 @@ void ZoneMap_Unk_ov001_022e5f80(void) {
         gTaskCurrent->func = ZoneMap_State_Unk_ov001_022e7114;
         return;
     case 16:
-        ZoneMap_Unk_ov001_022e3180(w->sub->unk1cc4, 0xf);
+        ZoneMap_SetNaviMessage(w->sub->unk1cc4, 0xf);
         return;
     case 4:
         if (w->unk8 == 0xf) {
             w->unk74 = 0;
             w->unk90 = 0;
             w->unk98 = 0x10;
-            ZoneMap_Unk_ov001_022e5e98();
+            ZoneMap_Action_PlayTalkDemoBlaze();
             return;
         }
         break;
@@ -68,7 +68,7 @@ void ZoneMap_Unk_ov001_022e5f80(void) {
             w->unk74 = 0;
             w->unk90 = 0;
             w->unk98 = 0x14;
-            ZoneMap_Unk_ov001_022e5e98();
+            ZoneMap_Action_PlayTalkDemoBlaze();
             return;
         }
         break;
@@ -77,7 +77,7 @@ void ZoneMap_Unk_ov001_022e5f80(void) {
             w->unk74 = 0;
             w->unk90 = 0;
             w->unk98 = 0x18;
-            ZoneMap_Unk_ov001_022e5e98();
+            ZoneMap_Action_PlayTalkDemoBlaze();
             return;
         }
         break;
@@ -86,7 +86,7 @@ void ZoneMap_Unk_ov001_022e5f80(void) {
             w->unk74 = 0;
             w->unk90 = 0;
             w->unk98 = 0x1c;
-            ZoneMap_Unk_ov001_022e5e98();
+            ZoneMap_Action_PlayTalkDemoBlaze();
         }
         break;
     }

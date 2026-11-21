@@ -20,7 +20,7 @@ typedef int code();
 #define false 0
 
 extern unsigned char gTaskCurrent[];
-int TimeAttackMenu_Unk_ov001_022eb294();
+int TimeAttackMenu_State_Select();
 int TimeAttackMenu_IndexToGrid();
 int TimeAttackMenu_Unk_ov001_022ea850();
 int TimeAttackMenu_Unk_ov001_022ea5a8();
@@ -48,7 +48,7 @@ void TimeAttackMenu_Unk_ov001_022ebc3c(int param_1)
   TimeAttackMenu_Unk_ov001_022ea504(puVar1,local_18,local_14[0]);
   TimeAttackMenu_Unk_ov001_022ea41c(puVar1);
   TimeAttackMenu_StopHdma(puVar1);
-  *(undefined4 *)(param_1 + 8) = ((int)TimeAttackMenu_Unk_ov001_022eb294);
+  *(undefined4 *)(param_1 + 8) = ((int)TimeAttackMenu_State_Select);
   return;
 }
 

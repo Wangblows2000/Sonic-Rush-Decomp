@@ -11,7 +11,7 @@ extern UnkTask_022cddf0 *gTaskCurrent;
 extern u8 gPad[];
 
 void SysSound_Release(void);
-void OptionsMenu_Unk_ov001_022cb770(void *w);
+void OptionsMenu_InitEnterItemAnims(void *w);
 void Pad_Reset(void *a, s32 b, u16 *c);
 void OptionsMenu_State_SoundTest(void);
 
@@ -23,7 +23,7 @@ void OptionsMenu_Action_SoundTest(void) {
 
     w = gTaskCurrent->work;
     SysSound_Release();
-    OptionsMenu_Unk_ov001_022cb770(w);
+    OptionsMenu_InitEnterItemAnims(w);
     for (i = 0; i < 12; i++) {
         buf[i] = 4;
     }

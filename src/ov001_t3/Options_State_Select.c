@@ -35,12 +35,12 @@ extern UnkTouch_022cdabc gTouchState;
 
 void OptionsMenu_UpdateAnims(UnkWork_022cdabc *w);
 void OptionsMenu_DrawItems(UnkWork_022cdabc *w);
-void Options_Unk_ov001_022cb708(UnkWork_022cdabc *w, s32 a, s32 b);
+void Options_InitCursorMoveAnims(UnkWork_022cdabc *w, s32 a, s32 b);
 void SysSound_PlaySE(s32 a);
 void Options_Action_Exit(void);
-s32 Options_Unk_ov001_022c8bc0(UnkWork_022cdabc *w, u16 x, u16 y);
-void Options_Unk_ov001_022cdd7c(void);
-void Options_Unk_ov001_022cdf20(s32 a, s32 b);
+s32 Options_GetTouchedItem(UnkWork_022cdabc *w, u16 x, u16 y);
+void Options_Action_BackTouched(void);
+void Options_Action_EnterItem(s32 a, s32 b);
 
 #pragma thumb on
 void Options_State_Select(void) {
@@ -61,13 +61,13 @@ void Options_State_Select(void) {
         w->sel = old - 1;
         if (w->sel < 0) w->sel = w->count - 1;
         w->timer = 0;
-        Options_Unk_ov001_022cb708(w, w->sel, old);
+        Options_InitCursorMoveAnims(w, w->sel, old);
         SysSound_PlaySE(4);
     } else if (gPad.rep & 0x80) {
         w->sel = old + 1;
         if (w->sel >= w->count) w->sel = 0;
         w->timer = 0;
-        Options_Unk_ov001_022cb708(w, w->sel, old);
+        Options_InitCursorMoveAnims(w, w->sel, old);
         SysSound_PlaySE(4);
     }
     if (gPad.trg & 1) {
@@ -80,7 +80,7 @@ void Options_State_Select(void) {
         x = gTouchState.x;
         y = gTouchState.y;
         if (x < 0x100 && y < 0xc0) {
-            r = Options_Unk_ov001_022c8bc0(w, x, y);
+            r = Options_GetTouchedItem(w, x, y);
             if (r < 6) {
                 old = w->sel;
                 if (old != r) {
@@ -90,12 +90,12 @@ void Options_State_Select(void) {
                 ok = TRUE;
             } else if (r == 6) {
                 SysSound_PlaySE(1);
-                Options_Unk_ov001_022cdd7c();
+                Options_Action_BackTouched();
             }
         }
     }
     if (ok) {
-        Options_Unk_ov001_022cdf20(w->sel, old);
+        Options_Action_EnterItem(w->sel, old);
     }
 }
 #pragma thumb reset

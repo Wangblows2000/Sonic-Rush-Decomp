@@ -23,7 +23,7 @@ extern UnkTask_022e8f6c *gTaskCurrent;
 extern UnkStruct_0208922c gDisplayMain;
 
 void ZoneMapPause_Unk_ov001_022e8b5c(UnkWork_022e8f6c *w);
-void ZoneMapPause_Unk_ov001_022e8be0(UnkWork_022e8f6c *w, s32 n);
+void ZoneMapPause_DrawItem(UnkWork_022e8f6c *w, s32 n);
 void ZoneMapPause_Action_OpenB(s32 a);
 void ZoneMapPause_Finish(s32 a);
 
@@ -41,12 +41,12 @@ void ZoneMapPause_State_Close(void) {
     ZoneMapPause_Unk_ov001_022e8b5c(w);
     switch (w->mode) {
     case 4:
-        ZoneMapPause_Unk_ov001_022e8be0(w, 0);
-        ZoneMapPause_Unk_ov001_022e8be0(w, 1);
+        ZoneMapPause_DrawItem(w, 0);
+        ZoneMapPause_DrawItem(w, 1);
         break;
     case 8:
-        ZoneMapPause_Unk_ov001_022e8be0(w, 2);
-        ZoneMapPause_Unk_ov001_022e8be0(w, 3);
+        ZoneMapPause_DrawItem(w, 2);
+        ZoneMapPause_DrawItem(w, 3);
         break;
     }
     w->timer++;

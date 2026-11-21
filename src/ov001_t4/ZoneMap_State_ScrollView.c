@@ -59,18 +59,18 @@ extern UnkTouch_022e7728 gTouchState;
 extern UnkPad_022e7728 gPad;
 
 void ZoneMap_SetScrollArrowMode(void *p, s32 a);
-void ZoneMap_Unk_ov001_022e35c4(void *p, s32 a);
-void ZoneMap_Unk_ov001_022e34dc(UnkWork_022e7728 *w);
-void ZoneMap_Unk_ov001_022e345c(UnkWork_022e7728 *w);
+void ZoneMap_SetScrollArrowBlink(void *p, s32 a);
+void ZoneMap_RestartBackButtonAnim(UnkWork_022e7728 *w);
+void ZoneMap_DrawBackButton(UnkWork_022e7728 *w);
 void ZoneMap_UpdateScrollArrows(UnkWork_022e7728 *w);
 void ZoneMap_UpdateView(UnkWork_022e7728 *w);
 u32 ZoneMap_GetTouchedArrow(u16 a, u16 b);
 BOOL ZoneMap_IsCornerButtonOrBPressed(void);
 BOOL ZoneMap_IsPointOnNode(UnkWork_022e7728 *w, s32 i, s32 x, s32 y);
-void ZoneMap_Unk_ov001_022e2f0c(UnkWork_022e7728 *w, s32 i);
-void ZoneMap_Unk_ov001_022e3180(s32 a, s32 b);
+void ZoneMap_SetNodeNaviMessage(UnkWork_022e7728 *w, s32 i);
+void ZoneMap_SetNaviMessage(s32 a, s32 b);
 void ZoneMap_CalcClampedScroll(void *p, s32 x, s32 y, s32 *a, s32 *b);
-void ZoneMap_Unk_ov001_022e5d7c(s32 x, s32 y, s32 a);
+void ZoneMap_Action_ScrollToPos(s32 x, s32 y, s32 a);
 
 #pragma thumb on
 void ZoneMap_State_ScrollView(void) {
@@ -83,11 +83,11 @@ void ZoneMap_State_ScrollView(void) {
     s32 i;
 
     ZoneMap_SetScrollArrowMode(w->map->obj1b08, 1);
-    ZoneMap_Unk_ov001_022e35c4(w->map->obj1b08, 0);
+    ZoneMap_SetScrollArrowBlink(w->map->obj1b08, 0);
     if (w->unk74 == 0) {
-        ZoneMap_Unk_ov001_022e34dc(w);
+        ZoneMap_RestartBackButtonAnim(w);
     }
-    ZoneMap_Unk_ov001_022e345c(w);
+    ZoneMap_DrawBackButton(w);
     ZoneMap_UpdateScrollArrows(w);
     ZoneMap_UpdateView(w);
     dir = 0;
@@ -148,9 +148,9 @@ void ZoneMap_State_ScrollView(void) {
             if (ZoneMap_IsPointOnNode(w, i, tx, ty)) {
                 s32 t = w->map->nodes[i].type;
                 if (t == 0) {
-                    ZoneMap_Unk_ov001_022e2f0c(w, i);
+                    ZoneMap_SetNodeNaviMessage(w, i);
                 } else if (t == 1 || t == 3) {
-                    ZoneMap_Unk_ov001_022e3180(w->map->unk1cc4, 0x17);
+                    ZoneMap_SetNaviMessage(w->map->unk1cc4, 0x17);
                 }
                 break;
             }
@@ -162,9 +162,9 @@ void ZoneMap_State_ScrollView(void) {
     w->unk74++;
     if (done) {
         ZoneMap_SetScrollArrowMode(w->map->obj1b08, 0);
-        ZoneMap_Unk_ov001_022e35c4(w->map->obj1b08, 0);
+        ZoneMap_SetScrollArrowBlink(w->map->obj1b08, 0);
         ZoneMap_CalcClampedScroll(sub, w->map->nodes[w->unk14].x, w->map->nodes[w->unk14].y, &x, &y);
-        ZoneMap_Unk_ov001_022e5d7c(x, y, 0x5000);
+        ZoneMap_Action_ScrollToPos(x, y, 0x5000);
     }
 }
 #pragma thumb reset

@@ -220,15 +220,15 @@ src/main_b/StoryProgress_GetActIndex.c:
     complete
     .text       start:0x0204e6e4 end:0x0204e6e8
 
-src/main_b/WirelessLobbyDownloadPlay_Unk_02050d2c.c:
+src/main_b/WirelessLobbyDownloadPlay_Dummy.c:
     complete
     .text       start:0x02050d2c end:0x02050d30
 
-src/main_b/WirelessLobbyChild_Unk_02050e4c.c:
+src/main_b/WirelessLobbyChild_Dummy.c:
     complete
     .text       start:0x02050e4c end:0x02050e50
 
-src/main_b/WirelessLobbyParent_Unk_020510bc.c:
+src/main_b/WirelessLobbyParent_Dummy.c:
     complete
     .text       start:0x020510bc end:0x020510c0
 
@@ -276,11 +276,11 @@ src/main_b/TalkDemo_GetScriptHeader.c:
     complete
     .text       start:0x0206047c end:0x02060480
 
-src/main_b/TalkDemo_Unk_02061fc4.c:
+src/main_b/TalkDemo_DestructorDummy.c:
     complete
     .text       start:0x02061fc4 end:0x02061fc8
 
-src/main_b/TalkDemo_Unk_02061fc8.c:
+src/main_b/TalkDemo_LoadMessageBgFailDummy.c:
     complete
     .text       start:0x02061fc8 end:0x02061fcc
 
@@ -2580,7 +2580,7 @@ src/main_sdk/WmGetSharedDataAddress.c:
     complete
     .text       start:0x02011f4c end:0x02011f88
 
-src/main_sdk/WBT_Unk_020141a8.c:
+src/main_sdk/WBT_MarkPacketReceived.c:
     complete
     .text       start:0x020141a8 end:0x020141d8
 
@@ -2592,11 +2592,11 @@ src/main_sdk/WBT_MpParentSendHook.c:
     complete
     .text       start:0x02014b74 end:0x02014bac
 
-src/main_sdk/WBT_Unk_02014f2c.c:
+src/main_sdk/WBT_ParseChildRecvPacket.c:
     complete
     .text       start:0x02014f2c end:0x02014f5c
 
-src/main_sdk/WBT_Unk_02014f5c.c:
+src/main_sdk/WBT_ParseParentRecvPacket.c:
     complete
     .text       start:0x02014f5c end:0x02014f94
 
@@ -2620,51 +2620,51 @@ src/main_sdk/WBT_SetOwnAid.c:
     complete
     .text       start:0x02015530 end:0x02015540
 
-src/main_sdk/WBT_Unk_02015540.c:
+src/main_sdk/WBT_FindBlockById.c:
     complete
     .text       start:0x02015540 end:0x0201557c
 
-src/main_sdk/WBT_Unk_0201557c.c:
+src/main_sdk/WBT_SetBlockListHead.c:
     complete
     .text       start:0x0201557c end:0x0201558c
 
-src/main_sdk/WBT_Unk_0201558c.c:
+src/main_sdk/WBT_GetBlockListHead.c:
     complete
     .text       start:0x0201558c end:0x0201559c
 
-src/main_sdk/WBT_Unk_02015634.c:
+src/main_sdk/WBT_GetQueuedCommand.c:
     complete
     .text       start:0x02015634 end:0x02015640
 
-src/main_sdk/WBT_Unk_02015640.c:
+src/main_sdk/WBT_GetWork.c:
     complete
     .text       start:0x02015640 end:0x0201564c
 
-src/main_sdk/WBT_Unk_0201564c.c:
+src/main_sdk/WBT_SetMyDataPacketSize.c:
     complete
     .text       start:0x0201564c end:0x0201565c
 
-src/main_sdk/WBT_Unk_0201565c.c:
+src/main_sdk/WBT_SetPeerDataPacketSize.c:
     complete
     .text       start:0x0201565c end:0x0201566c
 
-src/main_sdk/WBT_Unk_0201566c.c:
+src/main_sdk/WBT_GetMyDataPacketSize.c:
     complete
     .text       start:0x0201566c end:0x0201567c
 
-src/main_sdk/WBT_Unk_0201567c.c:
+src/main_sdk/WBT_GetPeerDataPacketSize.c:
     complete
     .text       start:0x0201567c end:0x0201568c
 
-src/main_sdk/WBT_Unk_0201568c.c:
+src/main_sdk/WBT_ResetCommandCounter.c:
     complete
     .text       start:0x0201568c end:0x020156a0
 
-src/main_sdk/WBT_Unk_020156a0.c:
+src/main_sdk/WBT_IncCommandCounter.c:
     complete
     .text       start:0x020156a0 end:0x020156c8
 
-src/main_sdk/WBT_Unk_020156c8.c:
+src/main_sdk/WBT_GetCommandCounter.c:
     complete
     .text       start:0x020156c8 end:0x020156d8
 
@@ -5948,7 +5948,7 @@ src/main_a2/__must_round.c:
     complete
     .text       start:0x0202d4ec end:0x0202d55c
 
-src/main_a2/MSL_Unk_0202d55c.c:
+src/main_a2/__count_trailing_zerol.c:
     complete
     .text       start:0x0202d55c end:0x0202d5d8
 
@@ -6032,11 +6032,11 @@ src/main_a2/_fcmpge.c:
     complete
     .text       start:0x0202e65c end:0x0202e698
 
-src/main_a2/Runtime_Unk_0202e698.c:
+src/main_a2/Runtime_FloatIsUnordered.c:
     complete
     .text       start:0x0202e698 end:0x0202e6bc
 
-src/main_a2/Runtime_Unk_0202e6bc.c:
+src/main_a2/Runtime_FloatIsOrdered.c:
     complete
     .text       start:0x0202e6bc end:0x0202e6e0
 
@@ -6072,11 +6072,11 @@ src/main_a2/func_0202ebc4.c:
     complete
     .text       start:0x0202ebc4 end:0x0202ec4c
 
-src/main_a2/Runtime_Unk_0202ece4.c:
+src/main_a2/Runtime_DoubleIsUnordered.c:
     complete
     .text       start:0x0202ece4 end:0x0202ed34
 
-src/main_a2/Runtime_Unk_0202ed34.c:
+src/main_a2/Runtime_DoubleIsOrdered.c:
     complete
     .text       start:0x0202ed34 end:0x0202ed84
 
@@ -6268,7 +6268,7 @@ src/main_a2/NNS_SndArcStrmSetupPlayer.c:
     complete
     .text       start:0x020202e0 end:0x020203bc
 
-src/main_sdk2/MB_Unk_0201882c.c:
+src/main_sdk2/MBi_StartParentCore.c:
     complete
     .text       start:0x0201882c end:0x02018a50
 
@@ -6652,11 +6652,11 @@ src/main_b3/ObjData_Load.c:
     complete
     .text       start:0x020687b8 end:0x0206896c
 
-src/main_sdk2/WBT_Unk_020130e8.c:
+src/main_sdk2/WBT_StartQueuedCommand.c:
     complete
     .text       start:0x020130e8 end:0x02013350
 
-src/main_sdk2/WBT_Unk_02013350.c:
+src/main_sdk2/WBT_MakeCurrentCommandPacket.c:
     complete
     .text       start:0x02013350 end:0x020134b4
 
@@ -6664,15 +6664,15 @@ src/main_sdk2/WBT_Unk_020134b4.c:
     complete
     .text       start:0x020134b4 end:0x02013554
 
-src/main_sdk2/WBT_Unk_02013554.c:
+src/main_sdk2/WBT_RespondGetBlockInfo.c:
     complete
     .text       start:0x02013554 end:0x020135f8
 
-src/main_sdk2/WBT_Unk_02013748.c:
+src/main_sdk2/WBT_RespondUserData.c:
     complete
     .text       start:0x02013748 end:0x020137ac
 
-src/main_sdk2/WBT_Unk_020137ac.c:
+src/main_sdk2/WBT_RespondGetBlockDone.c:
     complete
     .text       start:0x020137ac end:0x02013814
 
@@ -7476,7 +7476,7 @@ src/auto/CARDi_PulledOutCallback.c:
     complete
     .text       start:0x020105f0 end:0x0201065c
 
-src/auto/WBT_Unk_020141d8.c:
+src/auto/WBT_IsPacketReceived.c:
     complete
     .text       start:0x020141d8 end:0x020141fc
 
@@ -8548,75 +8548,75 @@ src/main_sdk2/OS_SendMessage.c:
     complete
     .text       start:0x020064a0 end:0x02006548
 
-src/main_sdk2/WBT_Unk_02013e7c.c:
+src/main_sdk2/WBT_NotifyCommandDone.c:
     complete
     .text       start:0x02013e7c end:0x02013f58
 
-src/main_sdk2/WBT_Unk_02013f58.c:
+src/main_sdk2/WBT_NotifySystemCallback.c:
     complete
     .text       start:0x02013f58 end:0x02014078
 
-src/main_sdk2/WBT_Unk_02014078.c:
+src/main_sdk2/WBT_CopyRecvPacket.c:
     complete
     .text       start:0x02014078 end:0x02014110
 
-src/main_sdk2/WBT_Unk_02014110.c:
+src/main_sdk2/WBT_FindMissingPacket.c:
     complete
     .text       start:0x02014110 end:0x020141a8
 
-src/main_sdk2/WBT_Unk_020141fc.c:
+src/main_sdk2/WBT_InitPacketBitmap.c:
     complete
     .text       start:0x020141fc end:0x02014288
 
-src/main_sdk2/WBT_Unk_02014288.c:
+src/main_sdk2/WBT_GetBlockPacketData.c:
     complete
     .text       start:0x02014288 end:0x02014320
 
-src/main_sdk2/WBT_Unk_02014320.c:
+src/main_sdk2/WBT_PickBlockPacketIndex.c:
     complete
     .text       start:0x02014320 end:0x0201442c
 
-src/main_sdk2/WBT_Unk_0201442c.c:
+src/main_sdk2/WBT_MakeResUserDataPacket.c:
     complete
     .text       start:0x0201442c end:0x02014498
 
-src/main_sdk2/WBT_Unk_02014498.c:
+src/main_sdk2/WBT_MakeReqUserDataPacket.c:
     complete
     .text       start:0x02014498 end:0x02014530
 
-src/main_sdk2/WBT_Unk_02014530.c:
+src/main_sdk2/WBT_MakeResGetBlockDonePacket.c:
     complete
     .text       start:0x02014530 end:0x020145b0
 
-src/main_sdk2/WBT_Unk_020145b0.c:
+src/main_sdk2/WBT_MakeReqGetBlockDonePacket.c:
     complete
     .text       start:0x020145b0 end:0x02014630
 
-src/main_sdk2/WBT_Unk_02014630.c:
+src/main_sdk2/WBT_MakeResGetBlockInfoPacket.c:
     complete
     .text       start:0x02014630 end:0x020146f8
 
-src/main_sdk2/WBT_Unk_020146f8.c:
+src/main_sdk2/WBT_MakeReqGetBlockInfoPacket.c:
     complete
     .text       start:0x020146f8 end:0x0201478c
 
-src/main_sdk2/WBT_Unk_0201478c.c:
+src/main_sdk2/WBT_MakeResGetBlockPacket.c:
     complete
     .text       start:0x0201478c end:0x02014854
 
-src/main_sdk2/WBT_Unk_02014854.c:
+src/main_sdk2/WBT_MakeReqGetBlockPacket.c:
     complete
     .text       start:0x02014854 end:0x020148e8
 
-src/main_sdk2/WBT_Unk_020148e8.c:
+src/main_sdk2/WBT_MakeResSyncPacket.c:
     complete
     .text       start:0x020148e8 end:0x02014990
 
-src/main_sdk2/WBT_Unk_02014990.c:
+src/main_sdk2/WBT_MakeReqSyncPacket.c:
     complete
     .text       start:0x02014990 end:0x02014a24
 
-src/main_sdk2/WBT_Unk_02014a24.c:
+src/main_sdk2/WBT_MakeWaitPacket.c:
     complete
     .text       start:0x02014a24 end:0x02014a8c
 
@@ -8636,11 +8636,11 @@ src/main_sdk2/WBT_InitParent.c:
     complete
     .text       start:0x02014d38 end:0x02014e08
 
-src/main_sdk2/WBT_Unk_02014e08.c:
+src/main_sdk2/WBT_MakeChildSendPacket.c:
     complete
     .text       start:0x02014e08 end:0x02014f2c
 
-src/main_sdk2/WBT_Unk_02014f94.c:
+src/main_sdk2/WBT_MakeParentSendPacket.c:
     complete
     .text       start:0x02014f94 end:0x02015168
 
@@ -8656,7 +8656,7 @@ src/main_sdk2/WBT_RegisterBlock.c:
     complete
     .text       start:0x02015354 end:0x0201541c
 
-src/main_sdk2/WBT_Unk_0201559c.c:
+src/main_sdk2/WBT_QueueCommand.c:
     complete
     .text       start:0x0201559c end:0x02015634
 
@@ -9276,7 +9276,7 @@ src/main_sdk3/DGT_Hash2CalcHmac.c:
     complete
     .text       start:0x0200c8b0 end:0x0200ca3c
 
-src/main_sdk3/DGT_Unk_0200ca3c.c:
+src/main_sdk3/SHA1PadMessage.c:
     complete
     .text       start:0x0200ca3c end:0x0200cb88
 
@@ -9388,11 +9388,11 @@ src/main_sdk3/CARDi_ReadBackup.c:
     complete
     .text       start:0x0200fa70 end:0x0200fb40
 
-src/main_sdk3/CARD_Unk_0200fb40.c:
+src/main_sdk3/CARD_ProgramBackupTask.c:
     complete
     .text       start:0x0200fb40 end:0x0200fbfc
 
-src/main_sdk3/CARD_Unk_0200fbfc.c:
+src/main_sdk3/CARD_ReadBackupTask.c:
     complete
     .text       start:0x0200fbfc end:0x0200fcb8
 
@@ -9428,11 +9428,11 @@ src/main_sdk3/WmInitCore.c:
     complete
     .text       start:0x02010d60 end:0x02010f48
 
-src/main_sdk3/WBT_Unk_020135f8.c:
+src/main_sdk3/WBT_RespondGetBlock.c:
     complete
     .text       start:0x020135f8 end:0x02013748
 
-src/main_sdk3/WBT_Unk_020138b4.c:
+src/main_sdk3/WBT_ParseRecvPacket.c:
     complete
     .text       start:0x020138b4 end:0x02013e7c
 
@@ -9788,7 +9788,7 @@ src/main_b5/ModelPalette_Release.c:
     complete
     .text       start:0x0206ce90 end:0x0206cf8c
 
-src/main_sdk5/DGT_Unk_0200cb88.c:
+src/main_sdk5/SHA1ProcessMessageBlock.c:
     complete
     .text       start:0x0200cb88 end:0x0200ce88
 
@@ -11144,7 +11144,7 @@ src/main_c2/WM_StepDataSharing.c:
     complete
     .text       start:0x020125d8 end:0x0201299c
 
-src/main_c2/WBT_Unk_02013814.c:
+src/main_c2/WBT_RespondSync.c:
     complete
     .text       start:0x02013814 end:0x020138b4
 

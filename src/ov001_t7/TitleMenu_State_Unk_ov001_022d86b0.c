@@ -41,13 +41,13 @@ typedef struct {
 
 extern UnkTask_022d86b0 *gTaskCurrent;
 
-void TitleMenu_Unk_ov001_022d7b7c(s32 x, s32 y, s32 a, s32 b);
+void TitleMenu_DrawBackButton(s32 x, s32 y, s32 a, s32 b);
 void TitleMenu_Unk_ov001_022d7ac4(s32 idx, s16 x, s16 y);
-void TitleMenu_Unk_ov001_022d7c04(s32 id, s32 x, s32 y, s32 mode, s32 e);
-void TitleMenu_Unk_ov001_022d7968(s32 a, s32 b);
-void TitleMenu_Unk_ov001_022d78f4(s32 a, s32 b);
+void TitleMenu_DrawItemButton(s32 id, s32 x, s32 y, s32 mode, s32 e);
+void TitleMenu_StartFadeToWhite(s32 a, s32 b);
+void TitleMenu_StartFadeToBlack(s32 a, s32 b);
 void TitleMenu_Unk_ov001_022d7dbc(void *p, UnkObj_022d86b0 *obj);
-void TitleMenu_Unk_ov001_022d75dc(UnkObj_022d86b0 *obj, s32 a, s32 b);
+void TitleMenu_CreateBgSlideTaskReverse(UnkObj_022d86b0 *obj, s32 a, s32 b);
 void TitleMenu_State_Unk_ov001_022d85d0(void);
 
 #pragma thumb on
@@ -64,11 +64,11 @@ void TitleMenu_State_Unk_ov001_022d86b0(void) {
     for (i = 0, it = w->items; i < 6; it++, i++) {
         if (it->id == 0x14) continue;
         if (i == 4) {
-            TitleMenu_Unk_ov001_022d7b7c(it->anim.x, it->anim.y, 2, t);
+            TitleMenu_DrawBackButton(it->anim.x, it->anim.y, 2, t);
         } else if (i == 5) {
             TitleMenu_Unk_ov001_022d7ac4(it->id, it->anim.x, it->anim.y);
         } else {
-            TitleMenu_Unk_ov001_022d7c04(it->id, it->anim.x, y, 0, 0);
+            TitleMenu_DrawItemButton(it->id, it->anim.x, y, 0, 0);
             y += w->dy;
         }
     }
@@ -76,13 +76,13 @@ void TitleMenu_State_Unk_ov001_022d86b0(void) {
     if (t >= 8) {
         it = &w->items[w->sel];
         if (it->flags & 1) {
-            TitleMenu_Unk_ov001_022d7968(8, 0x14);
+            TitleMenu_StartFadeToWhite(8, 0x14);
         }
         if (it->flags & 2) {
-            TitleMenu_Unk_ov001_022d78f4(8, 0x14);
+            TitleMenu_StartFadeToBlack(8, 0x14);
         }
         TitleMenu_Unk_ov001_022d7dbc(w->unk10, w->obj);
-        TitleMenu_Unk_ov001_022d75dc(w->obj, w->a, w->b);
+        TitleMenu_CreateBgSlideTaskReverse(w->obj, w->a, w->b);
         gTaskCurrent->func = TitleMenu_State_Unk_ov001_022d85d0;
     }
 }

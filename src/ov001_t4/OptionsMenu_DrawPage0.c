@@ -35,7 +35,7 @@ typedef struct {
 void AnimatorSprite_SetAnimation(UnkSpr_022cadbc *s, u16 anim);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022cadbc *s, u32 a, u32 b);
 void AnimatorSprite_Draw(UnkSpr_022cadbc *s);
-void OptionsMenu_Unk_ov001_022ca2d4(UnkStruct_022cadbc *p, s16 x, s16 y, s32 a);
+void OptionsMenu_DrawPageBackButton(UnkStruct_022cadbc *p, s16 x, s16 y, s32 a);
 void OptionsMenu_Unk_ov001_022ca1cc(UnkStruct_022cadbc *p, s32 x, s32 y, s32 a);
 void OptionsMenu_Unk_ov001_022ca150(UnkStruct_022cadbc *p, s32 x, s32 y, s32 a);
 
@@ -60,9 +60,9 @@ void OptionsMenu_DrawPage0(UnkStruct_022cadbc *p, s16 x, s16 y) {
         AnimatorSprite_ProcessAnimation(s, 0, 0);
         AnimatorSprite_Draw(s);
         if (p->unk1c >= 0) {
-            OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 1);
+            OptionsMenu_DrawPageBackButton(p, x, y, 1);
         } else {
-            OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 0);
+            OptionsMenu_DrawPageBackButton(p, x, y, 0);
         }
         s = &w->sprites[3];
         anim = 0x1c;

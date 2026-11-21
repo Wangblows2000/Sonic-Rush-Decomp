@@ -31,7 +31,7 @@ extern UnkPad_022e8e04 gPad;
 extern UnkTouch_022e8e04 gTouchState;
 
 void ZoneMapPause_Unk_ov001_022e8b5c(UnkWork_022e8e04 *w);
-void ZoneMapPause_Unk_ov001_022e8be0(UnkWork_022e8e04 *w, s32 n);
+void ZoneMapPause_DrawItem(UnkWork_022e8e04 *w, s32 n);
 void SysSound_PlaySE(s32 a);
 BOOL ZoneMapPause_IsTouchOnItem(u16 x, u16 y, s32 n);
 void ZoneMapPause_Action_CloseA(s32 a);
@@ -53,12 +53,12 @@ void ZoneMapPause_State_Select(void) {
     ZoneMapPause_Unk_ov001_022e8b5c(w);
     switch (w->mode) {
     case 2:
-        ZoneMapPause_Unk_ov001_022e8be0(w, 0);
-        ZoneMapPause_Unk_ov001_022e8be0(w, 1);
+        ZoneMapPause_DrawItem(w, 0);
+        ZoneMapPause_DrawItem(w, 1);
         break;
     case 6:
-        ZoneMapPause_Unk_ov001_022e8be0(w, 2);
-        ZoneMapPause_Unk_ov001_022e8be0(w, 3);
+        ZoneMapPause_DrawItem(w, 2);
+        ZoneMapPause_DrawItem(w, 3);
         break;
     }
     w->timer++;

@@ -6,12 +6,12 @@ extern u32 data_02080600;
 u32 OS_DisableInterrupts(void);
 u32 OS_RestoreInterrupts(u32 e);
 void WBT_SetOwnAid(s32 a);
-void WBT_Unk_0201557c(u32 a);
-UnkMbCtx *WBT_Unk_02015640(void);
-void WBT_Unk_0201559c(UnkMbParam *p);
-void WBT_Unk_0201568c(void);
-void WBT_Unk_0201564c(s32 a);
-void WBT_Unk_0201565c(s32 a);
+void WBT_SetBlockListHead(u32 a);
+UnkMbCtx *WBT_GetWork(void);
+void WBT_QueueCommand(UnkMbParam *p);
+void WBT_ResetCommandCounter(void);
+void WBT_SetMyDataPacketSize(s32 a);
+void WBT_SetPeerDataPacketSize(s32 a);
 
 void WBT_InitChild(u32 arg)
 {
@@ -25,8 +25,8 @@ void WBT_InitChild(u32 arg)
     }
     data_02080600 = 1;
     WBT_SetOwnAid(-1);
-    WBT_Unk_0201557c(0);
-    ctx = WBT_Unk_02015640();
+    WBT_SetBlockListHead(0);
+    ctx = WBT_GetWork();
     ctx->unk0 = 0;
     ctx->unk8 = 0;
     ctx->unkA = 0;
@@ -39,9 +39,9 @@ void WBT_InitChild(u32 arg)
         ctx->entries[i].unk3 = 0;
     }
     param.type = 0;
-    WBT_Unk_0201559c(&param);
-    WBT_Unk_0201568c();
-    WBT_Unk_0201564c(0);
-    WBT_Unk_0201565c(0);
+    WBT_QueueCommand(&param);
+    WBT_ResetCommandCounter();
+    WBT_SetMyDataPacketSize(0);
+    WBT_SetPeerDataPacketSize(0);
     OS_RestoreInterrupts(e);
 }

@@ -45,9 +45,9 @@ extern UnkTask_022d85d0 *gTaskCurrent;
 
 void KeyframeAnim_Update(UnkAnim_022d85d0 *a);
 BOOL KeyframeAnim_IsFinished(UnkAnim_022d85d0 *a);
-void TitleMenu_Unk_ov001_022d7b7c(s32 x, s32 y, s32 a, s32 b);
+void TitleMenu_DrawBackButton(s32 x, s32 y, s32 a, s32 b);
 void TitleMenu_Unk_ov001_022d7ac4(s32 idx, s16 x, s16 y);
-void TitleMenu_Unk_ov001_022d7c04(s32 id, s32 x, s32 y, s32 mode, s32 e);
+void TitleMenu_DrawItemButton(s32 id, s32 x, s32 y, s32 mode, s32 e);
 void Task_Destroy(UnkTask_022d85d0 *t);
 
 #pragma thumb on
@@ -66,14 +66,14 @@ void TitleMenu_State_Unk_ov001_022d85d0(void) {
         KeyframeAnim_Update(&it->anim);
         if (!KeyframeAnim_IsFinished(&it->anim)) done = FALSE;
         if (i == 4) {
-            TitleMenu_Unk_ov001_022d7b7c(it->anim.x, it->anim.y, 0, 0);
+            TitleMenu_DrawBackButton(it->anim.x, it->anim.y, 0, 0);
         } else if (i == 5) {
             TitleMenu_Unk_ov001_022d7ac4(it->id, it->anim.x, it->anim.y);
         } else {
             if (w->sel != i) {
-                TitleMenu_Unk_ov001_022d7c04(it->id, it->anim.x, y, 0, 0);
+                TitleMenu_DrawItemButton(it->id, it->anim.x, y, 0, 0);
             } else {
-                TitleMenu_Unk_ov001_022d7c04(it->id, it->anim.x, y, 3, 0);
+                TitleMenu_DrawItemButton(it->id, it->anim.x, y, 3, 0);
             }
             y += w->dy;
         }

@@ -33,7 +33,7 @@ extern u32 OS_DisableInterrupts(void);
 extern u32 OS_RestoreInterrupts(u32 state);
 extern void OS_SleepThread(void *queue);
 extern void CARDi_SetTask(void (*fn)(UnkCardCommon_0200f63c *));
-extern void CARD_Unk_0200fb40(UnkCardCommon_0200f63c *p);
+extern void CARD_ProgramBackupTask(UnkCardCommon_0200f63c *p);
 
 void CARDi_TaskThread(void)
 {

@@ -32,7 +32,7 @@ void VsMenu_ClearNameSlot2(UnkWork_022dcec8 *w, s32 a);
 BOOL MsgBox_GetResult(void);
 void WirelessLobbyDownloadPlay_RequestStart(void);
 void VsMenu_Unk_ov001_022da0dc(UnkWork_022dcec8 *w, s32 a);
-void VsMenu_Unk_ov001_022daaa8(UnkWork_022dcec8 *w);
+void VsMenu_Action_DownloadPlayStop(UnkWork_022dcec8 *w);
 void VsMenu_State_Unk_ov001_022dd1ec(void);
 void VsMenu_State_Unk_ov001_022dcdbc(void);
 
@@ -73,7 +73,7 @@ void VsMenu_State_Unk_ov001_022dcec8(void) {
             gTaskCurrent->func = VsMenu_State_Unk_ov001_022dcdbc;
             return;
         }
-        VsMenu_Unk_ov001_022daaa8(w);
+        VsMenu_Action_DownloadPlayStop(w);
     }
 }
 #pragma thumb reset

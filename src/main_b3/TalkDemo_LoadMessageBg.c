@@ -5,7 +5,7 @@ typedef struct UnkNode_0206200c UnkNode_0206200c;
 extern UnkNode_0206200c *gPaletteTransferHead;
 extern UnkNode_0206200c *gPaletteTransferTail;
 
-void TalkDemo_Unk_02061fc8(void);
+void TalkDemo_LoadMessageBgFailDummy(void);
 s32 TalkDemo_GetCompressionType(void *p);
 u32 TalkDemo_GetUncompressedSize(void *p);
 void MI_UncompressLZ16(void *src, void *dst);
@@ -26,7 +26,7 @@ void TalkDemo_LoadMessageBg(UnkRes_0206200c *res) {
     u8 *p;
 
     if (res == NULL) {
-        TalkDemo_Unk_02061fc8();
+        TalkDemo_LoadMessageBgFailDummy();
         return;
     }
     while ((s32)*(vu16 *)0x04000006 < 0xc0)

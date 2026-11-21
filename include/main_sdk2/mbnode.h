@@ -12,6 +12,6 @@ typedef struct UnkMbNode {
     u16 unk32;               /* 0x32 */
 } UnkMbNode;
 
-UnkMbNode *WBT_Unk_0201558c(void);
-void WBT_Unk_0201557c(UnkMbNode *n);
+UnkMbNode *WBT_GetBlockListHead(void);
+void WBT_SetBlockListHead(UnkMbNode *n);
 #endif

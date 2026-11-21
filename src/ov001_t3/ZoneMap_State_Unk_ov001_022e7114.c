@@ -36,11 +36,11 @@ extern UnkTask_022e7114 *gTaskCurrent;
 extern UnkBright_022e7114 data_0208926c;
 extern UnkBright_022e7114 data_02087d44;
 
-BOOL ZoneMap_Unk_ov001_022e2f00(s32 a);
-BOOL ZoneMap_Unk_ov001_022e2ee8(s32 a);
-void ZoneMap_Unk_ov001_022e3180(s32 a, s32 b);
-void ZoneMap_Unk_ov001_022e3840(void *c, s32 a);
-void ZoneMap_Unk_ov001_022e3844(void *c, s32 a);
+BOOL ZoneMap_IsSonicNaviAvailable(s32 a);
+BOOL ZoneMap_IsBlazeNaviAvailable(s32 a);
+void ZoneMap_SetNaviMessage(s32 a, s32 b);
+void ZoneMap_SetCharModelRotY(void *c, s32 a);
+void ZoneMap_SetCharModelAnim(void *c, s32 a);
 void ZoneMap_UpdateView(UnkWork_022e7114 *w);
 void SysSound_StopBGM(s32 a);
 
@@ -82,17 +82,17 @@ void ZoneMap_State_Unk_ov001_022e7114(void) {
         ok = FALSE;
         switch (w->mode) {
         case 0:
-            if (ZoneMap_Unk_ov001_022e2f00(w->unk4)) ok = TRUE;
+            if (ZoneMap_IsSonicNaviAvailable(w->unk4)) ok = TRUE;
             break;
         case 1:
-            if (ZoneMap_Unk_ov001_022e2ee8(w->unk8)) ok = TRUE;
+            if (ZoneMap_IsBlazeNaviAvailable(w->unk8)) ok = TRUE;
             break;
         }
         if (ok) {
-            ZoneMap_Unk_ov001_022e3180(w->sub->unk1cc4, 0x1c);
+            ZoneMap_SetNaviMessage(w->sub->unk1cc4, 0x1c);
         }
-        ZoneMap_Unk_ov001_022e3840(w->sub->c, 0x4000);
-        ZoneMap_Unk_ov001_022e3844(w->sub->c, 2);
+        ZoneMap_SetCharModelRotY(w->sub->c, 0x4000);
+        ZoneMap_SetCharModelAnim(w->sub->c, 2);
     }
     ZoneMap_UpdateView(w);
     w->timer++;

@@ -38,7 +38,7 @@ extern UnkTouch_022cd558 gTouchState;
 
 void OptionsMenu_UpdateAnims(UnkWork_022cd558 *w);
 void OptionsMenu_DrawItems(UnkWork_022cd558 *w);
-void OptionsMenu_Unk_ov001_022cdd28(void);
+void OptionsMenu_Action_Back(void);
 void SysSound_PlaySE(s32 se);
 void Options_SetTimeLimit(void *p, s32 a);
 BOOL OptionsMenu_IsBackButtonTouched(u32 x, u32 y);
@@ -55,13 +55,13 @@ void OptionsMenu_State_TimeLimit(void) {
     if (w->unk1c >= 0) {
         w->unk1c++;
         if (w->unk1c > 10) {
-            OptionsMenu_Unk_ov001_022cdd28();
+            OptionsMenu_Action_Back();
         }
     }
     if (w->unk1c >= 0) return;
     if (w->chosen != -1) {
         if (w->unk18 < 0x10) return;
-        OptionsMenu_Unk_ov001_022cdd28();
+        OptionsMenu_Action_Back();
         w->chosen = -1;
         return;
     }
@@ -94,7 +94,7 @@ void OptionsMenu_State_TimeLimit(void) {
     }
     if (gPad.trg & 2) {
         SysSound_PlaySE(1);
-        OptionsMenu_Unk_ov001_022cdd28();
+        OptionsMenu_Action_Back();
         return;
     }
     if (gTouchState.flags & 0x40) {

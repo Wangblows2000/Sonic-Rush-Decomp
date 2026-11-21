@@ -42,8 +42,8 @@ extern UnkTouch_022cd6e8 gTouchState;
 
 void OptionsMenu_UpdateAnims(UnkWork_022cd6e8 *w);
 void OptionsMenu_DrawItems(UnkWork_022cd6e8 *w);
-void OptionsMenu_Unk_ov001_022cdd28(void);
-void OptionsMenu_Unk_ov001_022cdca4(void);
+void OptionsMenu_Action_Back(void);
+void OptionsMenu_Action_ExitOptions(void);
 BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
 void SysSound_PlaySE(s32 a);
 
@@ -65,7 +65,7 @@ void OptionsMenu_State_Unk_ov001_022cd6e8(void) {
     if (w->unk1c >= 0) {
         w->unk1c++;
         if (w->unk1c > 10) {
-            OptionsMenu_Unk_ov001_022cdd28();
+            OptionsMenu_Action_Back();
         }
     }
     if (w->unk1c >= 0) {
@@ -77,7 +77,7 @@ void OptionsMenu_State_Unk_ov001_022cd6e8(void) {
             switch (w->unk30) {
             case 0:
                 if (w->unk18 >= 30) {
-                    OptionsMenu_Unk_ov001_022cdca4();
+                    OptionsMenu_Action_ExitOptions();
                     w->unk34 = -1;
                 }
                 return;
@@ -92,13 +92,13 @@ void OptionsMenu_State_Unk_ov001_022cd6e8(void) {
             switch (w->unk30) {
             case 0:
                 if (w->unk18 >= 30) {
-                    OptionsMenu_Unk_ov001_022cdca4();
+                    OptionsMenu_Action_ExitOptions();
                     w->unk34 = -1;
                 }
                 return;
             case 1:
                 if (w->unk18 >= 30) {
-                    OptionsMenu_Unk_ov001_022cdca4();
+                    OptionsMenu_Action_ExitOptions();
                     w->unk34 = -1;
                 }
                 return;
@@ -152,7 +152,7 @@ void OptionsMenu_State_Unk_ov001_022cd6e8(void) {
         switch (w->unk2c) {
         case 0:
             SysSound_PlaySE(1);
-            OptionsMenu_Unk_ov001_022cdd28();
+            OptionsMenu_Action_Back();
             return;
         case 1:
             w->unk2c = 0;

@@ -27,7 +27,7 @@ void TransformDemo_SpawnEffect(UnkStruct_022e023c *w);
 void TransformDemo_DrawModels(UnkStruct_022e023c *w, void *a);
 void TransformDemo_UpdatePlayerModels(UnkStruct_022e023c *w, void *a);
 void TransformDemo_DrawPlayerModels(UnkStruct_022e023c *w, void *a);
-void TransformDemo_Unk_ov001_022df474(UnkStruct_022e023c *w);
+void TransformDemo_CopyCaptureOam(UnkStruct_022e023c *w);
 
 void TransformDemo_UpdateDualScreen3D(UnkStruct_022e023c *w) {
     if (w->unk4 & 1) {
@@ -48,5 +48,5 @@ void TransformDemo_UpdateDualScreen3D(UnkStruct_022e023c *w) {
     TransformDemo_DrawModels(w, w->unk454);
     TransformDemo_UpdatePlayerModels(w, &w->unkBD4);
     TransformDemo_DrawPlayerModels(w, w->unkBD4.unk0);
-    TransformDemo_Unk_ov001_022df474(w);
+    TransformDemo_CopyCaptureOam(w);
 }

@@ -65,7 +65,7 @@ void ObjVram_Reset(s32 a);
 void Vram_ResetTexAndPltt(void);
 void VramPltt_Reset(void);
 void G3X_SetClearColor(s32 a, s32 b, s32 c, s32 d, s32 e);
-void ZoneMap_Unk_ov001_022e85c8(void);
+void ZoneMap_ResetDisplay(void);
 void ZoneMap_EnableBlend(s32 a);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 void MTX_Identity22_(UnkStruct_022e8784_Mtx *m);
@@ -77,7 +77,7 @@ void GXx_SetMasterBrightness_(vu16 *reg, s32 brightness);
 void ZoneMap_InitDisplay(void) {
     vu32 z0;
 
-    ZoneMap_Unk_ov001_022e85c8();
+    ZoneMap_ResetDisplay();
     Vram_SetBankForOBJ(0x10, 0x100010, 0x40, 0, 0x400);
     Vram_SetBankForOBJExtPltt(0);
     ObjVram_Reset(0);

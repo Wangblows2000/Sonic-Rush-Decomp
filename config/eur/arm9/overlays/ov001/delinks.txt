@@ -20,19 +20,19 @@ src/ov001/ExtraEnding_Dummy.c:
     complete
     .text       start:0x022c61c4 end:0x022c61c8
 
-src/ov001/Options_Unk_ov001_022c8b30.c:
+src/ov001/Options_IsDownloadPlayAvailable.c:
     complete
     .text       start:0x022c8b30 end:0x022c8b34
 
-src/ov001/Options_Unk_ov001_022c8b34.c:
+src/ov001/Options_IsEraseDataAvailable.c:
     complete
     .text       start:0x022c8b34 end:0x022c8b38
 
-src/ov001/Options_Unk_ov001_022c8b54.c:
+src/ov001/Options_IsTimeLimitAvailable.c:
     complete
     .text       start:0x022c8b54 end:0x022c8b58
 
-src/ov001/Options_Unk_ov001_022c8b58.c:
+src/ov001/Options_IsDifficultyAvailable.c:
     complete
     .text       start:0x022c8b58 end:0x022c8b5c
 
@@ -148,7 +148,7 @@ src/ov001/VsMenu_Dummy.c:
     complete
     .text       start:0x022dd770 end:0x022dd774
 
-src/ov001/ZoneMap_Unk_ov001_022e3840.c:
+src/ov001/ZoneMap_SetCharModelRotY.c:
     complete
     .text       start:0x022e3840 end:0x022e3844
 
@@ -156,7 +156,7 @@ src/ov001/ZoneMap_Unk_ov001_022e5618.c:
     complete
     .text       start:0x022e5618 end:0x022e561c
 
-src/ov001/ZoneMap_Unk_ov001_022e561c.c:
+src/ov001/ZoneMap_SetMapBgIndex.c:
     complete
     .text       start:0x022e561c end:0x022e5620
 
@@ -472,11 +472,11 @@ src/ov001/TitleDemo_GetCompressionType.c:
     complete
     .text       start:0x022d6b50 end:0x022d6b5c
 
-src/ov001/TitleMenu_Unk_ov001_022d6dac.c:
+src/ov001/TitleMenu_StartVsBgSlideReverse.c:
     complete
     .text       start:0x022d6dac end:0x022d6dc0
 
-src/ov001/TitleMenu_Unk_ov001_022d6dc0.c:
+src/ov001/TitleMenu_StartVsBgSlideForward.c:
     complete
     .text       start:0x022d6dc0 end:0x022d6dd4
 
@@ -604,7 +604,7 @@ src/ov001/TransformDemo_DrawPlayerModel.c:
     complete
     .text       start:0x022dedd4 end:0x022dedf4
 
-src/ov001/TransformDemo_Unk_ov001_022df474.c:
+src/ov001/TransformDemo_CopyCaptureOam.c:
     complete
     .text       start:0x022df474 end:0x022df490
 
@@ -636,15 +636,15 @@ src/ov001/ZoneMap_EnableBlend.c:
     complete
     .text       start:0x022e2ba4 end:0x022e2bbc
 
-src/ov001/ZoneMap_Unk_ov001_022e2ee8.c:
+src/ov001/ZoneMap_IsBlazeNaviAvailable.c:
     complete
     .text       start:0x022e2ee8 end:0x022e2f00
 
-src/ov001/ZoneMap_Unk_ov001_022e2f00.c:
+src/ov001/ZoneMap_IsSonicNaviAvailable.c:
     complete
     .text       start:0x022e2f00 end:0x022e2f0c
 
-src/ov001/ZoneMap_Unk_ov001_022e35c4.c:
+src/ov001/ZoneMap_SetScrollArrowBlink.c:
     complete
     .text       start:0x022e35c4 end:0x022e35d4
 
@@ -668,7 +668,7 @@ src/ov001/ZoneMap_StopHdma.c:
     complete
     .text       start:0x022e8328 end:0x022e833c
 
-src/ov001/ZoneMap_Unk_ov001_022e8514.c:
+src/ov001/ZoneMap_ReleaseDisplay.c:
     complete
     .text       start:0x022e8514 end:0x022e8528
 
@@ -936,11 +936,11 @@ src/ov001/Ending_State_GoToStaffRoll.c:
     complete
     .text       start:0x022c8458 end:0x022c8480
 
-src/ov001/Options_Unk_ov001_022cdd7c.c:
+src/ov001/Options_Action_BackTouched.c:
     complete
     .text       start:0x022cdd7c end:0x022cdda0
 
-src/ov001/OptionsMenu_Unk_ov001_022cdda0.c:
+src/ov001/OptionsMenu_Action_DownloadPlay.c:
     complete
     .text       start:0x022cdda0 end:0x022cddc4
 
@@ -948,7 +948,7 @@ src/ov001/OptionsMenu_Action_TimeLimit.c:
     complete
     .text       start:0x022cde3c end:0x022cde60
 
-src/ov001/OptionsMenu_Unk_ov001_022cde60.c:
+src/ov001/OptionsMenu_Action_Difficulty.c:
     complete
     .text       start:0x022cde60 end:0x022cde84
 
@@ -1052,11 +1052,11 @@ src/ov001/ZoneMap_UpdateScrollArrows.c:
     complete
     .text       start:0x022e3544 end:0x022e3564
 
-src/ov001/ZoneMap_Unk_ov001_022e5a20.c:
+src/ov001/ZoneMap_RevealNodesForStory.c:
     complete
     .text       start:0x022e5a20 end:0x022e5a48
 
-src/ov001/ZoneMap_Unk_ov001_022e5a48.c:
+src/ov001/ZoneMap_Action_WaitTimer.c:
     complete
     .text       start:0x022e5a48 end:0x022e5a68
 
@@ -1384,7 +1384,7 @@ src/ov001/VsMenu_RestoreAfterMsgBox.c:
     complete
     .text       start:0x022da41c end:0x022da450
 
-src/ov001/VsMenu_Unk_ov001_022da500.c:
+src/ov001/VsMenu_IsStartButtonTouched.c:
     complete
     .text       start:0x022da500 end:0x022da52c
 
@@ -1432,7 +1432,7 @@ src/ov001/ZoneMap_DelayedCall_Main.c:
     complete
     .text       start:0x022e3150 end:0x022e3180
 
-src/ov001/ZoneMap_Unk_ov001_022e57a4.c:
+src/ov001/ZoneMap_SetPathDotsType.c:
     complete
     .text       start:0x022e57a4 end:0x022e57d4
 
@@ -1980,7 +1980,7 @@ src/ov001/TransformDemoEffect_Main.c:
     complete
     .text       start:0x022df530 end:0x022df5f0
 
-src/ov001/TransformDemo_Unk_ov001_022df878.c:
+src/ov001/TransformDemo_UpdateLightFlash.c:
     complete
     .text       start:0x022df878 end:0x022df950
 
@@ -2040,7 +2040,7 @@ src/ov001/ZoneMap_ReleaseCharModel.c:
     complete
     .text       start:0x022e3b30 end:0x022e3bec
 
-src/ov001/ZoneMap_Unk_ov001_022e5620.c:
+src/ov001/ZoneMap_ReleaseMapBg.c:
     complete
     .text       start:0x022e5620 end:0x022e5684
 
@@ -2488,7 +2488,7 @@ src/auto/VsMenu_Unk_ov001_022da2cc.c:
     complete
     .text       start:0x022da2cc end:0x022da304
 
-src/auto/VsMenu_Unk_ov001_022dd534.c:
+src/auto/VsMenu_Action_ChildOpen.c:
     complete
     .text       start:0x022dd534 end:0x022dd574
 
@@ -2496,23 +2496,23 @@ src/auto/TransformDemo_LoadSound.c:
     complete
     .text       start:0x022ddfc4 end:0x022ddffc
 
-src/auto/ZoneMap_Unk_ov001_022e345c.c:
+src/auto/ZoneMap_DrawBackButton.c:
     complete
     .text       start:0x022e345c end:0x022e349c
 
-src/auto/ZoneMap_Unk_ov001_022e349c.c:
+src/auto/ZoneMap_DrawScrollButton.c:
     complete
     .text       start:0x022e349c end:0x022e34dc
 
-src/auto/ZoneMap_Unk_ov001_022e5d7c.c:
+src/auto/ZoneMap_Action_ScrollToPos.c:
     complete
     .text       start:0x022e5d7c end:0x022e5db0
 
-src/auto/ZoneMap_Unk_ov001_022e5db0.c:
+src/auto/ZoneMap_Action_MoveToNode.c:
     complete
     .text       start:0x022e5db0 end:0x022e5de0
 
-src/auto/ZoneMap_Unk_ov001_022e5e28.c:
+src/auto/ZoneMap_Action_ScrollToPathStart.c:
     complete
     .text       start:0x022e5e28 end:0x022e5e60
 
@@ -2652,7 +2652,7 @@ src/auto/Options_State_Exit.c:
     complete
     .text       start:0x022ccc6c end:0x022cccbc
 
-src/auto/OptionsMenu_Unk_ov001_022cdca4.c:
+src/auto/OptionsMenu_Action_ExitOptions.c:
     complete
     .text       start:0x022cdca4 end:0x022cdcf4
 
@@ -2848,11 +2848,11 @@ src/auto/VsMenu_State_DownloadPlayConfirmStop.c:
     complete
     .text       start:0x022dd190 end:0x022dd1ec
 
-src/auto/VsMenu_Unk_ov001_022dd574.c:
+src/auto/VsMenu_Action_ParentOpen.c:
     complete
     .text       start:0x022dd574 end:0x022dd614
 
-src/auto/VsMenu_Unk_ov001_022dd614.c:
+src/auto/VsMenu_Action_DownloadPlayOpen.c:
     complete
     .text       start:0x022dd614 end:0x022dd6b4
 
@@ -2880,7 +2880,7 @@ src/auto/ZoneActSelect_State_Unk_ov001_022e0f08.c:
     complete
     .text       start:0x022e0f08 end:0x022e0f94
 
-src/auto/ZoneMap_Unk_ov001_022e3844.c:
+src/auto/ZoneMap_SetCharModelAnim.c:
     complete
     .text       start:0x022e3844 end:0x022e38b8
 
@@ -2888,11 +2888,11 @@ src/auto/ZoneMap_Action_OpenPause.c:
     complete
     .text       start:0x022e5e60 end:0x022e5e98
 
-src/auto/ZoneMap_Unk_ov001_022e5e98.c:
+src/auto/ZoneMap_Action_PlayTalkDemoBlaze.c:
     complete
     .text       start:0x022e5e98 end:0x022e5f04
 
-src/auto/ZoneMap_Unk_ov001_022e5f04.c:
+src/auto/ZoneMap_Action_PlayTalkDemoSonic.c:
     complete
     .text       start:0x022e5f04 end:0x022e5f80
 
@@ -3216,11 +3216,11 @@ src/auto/VsMenu_Unk_ov001_022da850.c:
     complete
     .text       start:0x022da850 end:0x022da91c
 
-src/auto/VsMenu_Unk_ov001_022da9fc.c:
+src/auto/VsMenu_Action_ParentCancel.c:
     complete
     .text       start:0x022da9fc end:0x022daaa8
 
-src/auto/VsMenu_Unk_ov001_022daaa8.c:
+src/auto/VsMenu_Action_DownloadPlayStop.c:
     complete
     .text       start:0x022daaa8 end:0x022dab54
 
@@ -3260,11 +3260,11 @@ src/auto/ZoneMap_GetNodeForStoryStep.c:
     complete
     .text       start:0x022e28ac end:0x022e299c
 
-src/auto/ZoneMap_Unk_ov001_022e5928.c:
+src/auto/ZoneMap_RevealSonicNodes.c:
     complete
     .text       start:0x022e5928 end:0x022e5a20
 
-src/auto/ZoneMap_Unk_ov001_022e85c8.c:
+src/auto/ZoneMap_ResetDisplay.c:
     complete
     .text       start:0x022e85c8 end:0x022e870c
 
@@ -3356,7 +3356,7 @@ src/auto/VsMenu_InitSpriteMain.c:
     complete
     .text       start:0x022dd8d8 end:0x022dd93c
 
-src/auto/ZoneMap_Unk_ov001_022e5d08.c:
+src/auto/ZoneMap_Action_FadeOutExit.c:
     complete
     .text       start:0x022e5d08 end:0x022e5d7c
 
@@ -3376,7 +3376,7 @@ src/auto/TimeAttackMenu_Unk_ov001_022e9fa8.c:
     complete
     .text       start:0x022e9fa8 end:0x022e9fe4
 
-src/auto/TimeAttackMenu_Unk_ov001_022eb994.c:
+src/auto/TimeAttackMenu_Action_Back.c:
     complete
     .text       start:0x022eb994 end:0x022eba08
 
@@ -3956,15 +3956,15 @@ src/ov001_t/OptionsFadeTask_Main.c:
     complete
     .text       start:0x022c89c8 end:0x022c8aa0
 
-src/ov001_t/OptionsMenu_Unk_ov001_022c90a8.c:
+src/ov001_t/SoundTest_BuildTrackNameText.c:
     complete
     .text       start:0x022c90a8 end:0x022c9260
 
-src/ov001_t/OptionsMenu_Unk_ov001_022c9570.c:
+src/ov001_t/OptionsMenu_DrawDownloadPlayChoiceRight.c:
     complete
     .text       start:0x022c9570 end:0x022c970c
 
-src/ov001_t/OptionsMenu_Unk_ov001_022c970c.c:
+src/ov001_t/OptionsMenu_DrawDownloadPlayChoiceLeft.c:
     complete
     .text       start:0x022c970c end:0x022c98a4
 
@@ -3972,7 +3972,7 @@ src/ov001_t/OptionsMenu_Unk_ov001_022c98a4.c:
     complete
     .text       start:0x022c98a4 end:0x022c9924
 
-src/ov001_t/OptionsMenu_Unk_ov001_022c9c0c.c:
+src/ov001_t/OptionsMenu_DrawSoundTestTrackNumber.c:
     complete
     .text       start:0x022c9c0c end:0x022c9d58
 
@@ -4032,35 +4032,35 @@ src/ov001_t/OptionsMenu_OpenPage0.c:
     complete
     .text       start:0x022cb438 end:0x022cb4d8
 
-src/ov001_t/OptionsMenu_Unk_ov001_022cb770.c:
+src/ov001_t/OptionsMenu_InitEnterItemAnims.c:
     complete
     .text       start:0x022cb770 end:0x022cb834
 
-src/ov001_t/Options_Unk_ov001_022cb834.c:
+src/ov001_t/Options_InitExitAnims.c:
     complete
     .text       start:0x022cb834 end:0x022cb96c
 
-src/ov001_t/Options_Unk_ov001_022cb96c.c:
+src/ov001_t/Options_InitBackTouchedAnims.c:
     complete
     .text       start:0x022cb96c end:0x022cba1c
 
-src/ov001_t/OptionsMenu_Unk_ov001_022cba1c.c:
+src/ov001_t/OptionsMenu_InitBackAnims.c:
     complete
     .text       start:0x022cba1c end:0x022cbac0
 
-src/ov001_t/Options_Unk_ov001_022cbac0.c:
+src/ov001_t/Options_InitEnterItemAnims.c:
     complete
     .text       start:0x022cbac0 end:0x022cbb7c
 
-src/ov001_t/Options_Unk_ov001_022cbb7c.c:
+src/ov001_t/Options_InitSelectAnims.c:
     complete
     .text       start:0x022cbb7c end:0x022cbc2c
 
-src/ov001_t/Options_Unk_ov001_022cbc2c.c:
+src/ov001_t/Options_InitOpenAnims.c:
     complete
     .text       start:0x022cbc2c end:0x022cbcec
 
-src/ov001_t/Options_Unk_ov001_022cc044.c:
+src/ov001_t/Options_ResetItemPageState.c:
     complete
     .text       start:0x022cc044 end:0x022cc17c
 
@@ -4184,7 +4184,7 @@ src/ov001_t/TitleMenu_SetupSubDisplayForMsgBox.c:
     complete
     .text       start:0x022d7454 end:0x022d74dc
 
-src/ov001_t/TitleMenu_Unk_ov001_022d77a8.c:
+src/ov001_t/TitleMenu_ApplyBgSlideLayers.c:
     complete
     .text       start:0x022d77a8 end:0x022d78f4
 
@@ -4308,7 +4308,7 @@ src/ov001_t/VsMenu_Unk_ov001_022ddb00.c:
     complete
     .text       start:0x022ddb00 end:0x022ddc3c
 
-src/ov001_t/ZoneMap_Unk_ov001_022e19d0.c:
+src/ov001_t/ZoneMap_RestoreGraphics.c:
     complete
     .text       start:0x022e19d0 end:0x022e1a30
 
@@ -4352,11 +4352,11 @@ src/ov001_t/ZoneMap_GetSonicStoryStep.c:
     complete
     .text       start:0x022e2a44 end:0x022e2ad8
 
-src/ov001_t/ZoneMap_Unk_ov001_022e34dc.c:
+src/ov001_t/ZoneMap_RestartBackButtonAnim.c:
     complete
     .text       start:0x022e34dc end:0x022e3510
 
-src/ov001_t/ZoneMap_Unk_ov001_022e3510.c:
+src/ov001_t/ZoneMap_RestartScrollButtonAnim.c:
     complete
     .text       start:0x022e3510 end:0x022e3544
 
@@ -4368,11 +4368,11 @@ src/ov001_t/ZoneMap_IsCornerButtonOrBPressed.c:
     complete
     .text       start:0x022e37bc end:0x022e37fc
 
-src/ov001_t/ZoneMap_Unk_ov001_022e4000.c:
+src/ov001_t/ZoneMap_InitBlazePaths.c:
     complete
     .text       start:0x022e4000 end:0x022e4198
 
-src/ov001_t/ZoneMap_Unk_ov001_022e4198.c:
+src/ov001_t/ZoneMap_InitSonicPaths.c:
     complete
     .text       start:0x022e4198 end:0x022e432c
 
@@ -4380,19 +4380,19 @@ src/ov001_t/ZoneMap_Unk_ov001_022e432c.c:
     complete
     .text       start:0x022e432c end:0x022e4494
 
-src/ov001_t/ZoneMap_Unk_ov001_022e4494.c:
+src/ov001_t/ZoneMap_InitBlazeNodes.c:
     complete
     .text       start:0x022e4494 end:0x022e4748
 
-src/ov001_t/ZoneMap_Unk_ov001_022e4748.c:
+src/ov001_t/ZoneMap_InitSonicNodes.c:
     complete
     .text       start:0x022e4748 end:0x022e49c8
 
-src/ov001_t/ZoneMap_Unk_ov001_022e4eb8.c:
+src/ov001_t/ZoneMap_InitNodeLayer.c:
     complete
     .text       start:0x022e4eb8 end:0x022e5164
 
-src/ov001_t/ZoneMap_Unk_ov001_022e57d4.c:
+src/ov001_t/ZoneMap_RevealBlazeNodes.c:
     complete
     .text       start:0x022e57d4 end:0x022e5928
 
@@ -4400,7 +4400,7 @@ src/ov001_t/ZoneMap_IsPointOnNode.c:
     complete
     .text       start:0x022e690c end:0x022e6998
 
-src/ov001_t/ZoneMap_Unk_ov001_022e6998.c:
+src/ov001_t/ZoneMap_GetPathIndex.c:
     complete
     .text       start:0x022e6998 end:0x022e6bb4
 
@@ -4408,7 +4408,7 @@ src/ov001_t/ZoneMap_GetNextNodeFromPad.c:
     complete
     .text       start:0x022e6bb4 end:0x022e6c90
 
-src/ov001_t/ZoneMap_Unk_ov001_022e6c90.c:
+src/ov001_t/ZoneMap_GetNextNodeFromTouch.c:
     complete
     .text       start:0x022e6c90 end:0x022e6dec
 
@@ -4424,7 +4424,7 @@ src/ov001_d/ExtraBoss_HandBoss_Action_Hurt.c:
     complete
     .text       start:0x022efcdc end:0x022efe50
 
-src/ov001_t/ZoneMapPause_Unk_ov001_022e8be0.c:
+src/ov001_t/ZoneMapPause_DrawItem.c:
     complete
     .text       start:0x022e8be0 end:0x022e8d44
 
@@ -4484,7 +4484,7 @@ src/ov001_d/ExtraBossObj_State_HandBossCatchResetArm.c:
     complete
     .text       start:0x022f12c0 end:0x022f1438
 
-src/ov001_t/TimeAttackMenu_Unk_ov001_022e9c24.c:
+src/ov001_t/TimeAttackMenu_GetRecordTimes.c:
     complete
     .text       start:0x022e9c24 end:0x022e9dac
 
@@ -4504,7 +4504,7 @@ src/ov001_d/ExtraBossObj_State_HandBossClawReturn.c:
     complete
     .text       start:0x022f1d54 end:0x022f1ea0
 
-src/ov001_t/TimeAttackMenu_Unk_ov001_022e9fe4.c:
+src/ov001_t/TimeAttackMenu_DrawRecordTime.c:
     complete
     .text       start:0x022e9fe4 end:0x022ea1b8
 
@@ -4572,7 +4572,7 @@ src/ov001_d/ExtraBossPlayer_SetupFxModel.c:
     complete
     .text       start:0x022fd2dc end:0x022fd428
 
-src/ov001_t2/OptionsMenu_Unk_ov001_022ca2d4.c:
+src/ov001_t2/OptionsMenu_DrawPageBackButton.c:
     complete
     .text       start:0x022ca2d4 end:0x022ca364
 
@@ -4588,7 +4588,7 @@ src/ov001_t2/OptionsMenu_DrawItemLabel1.c:
     complete
     .text       start:0x022cb540 end:0x022cb5ac
 
-src/ov001_t2/Options_Unk_ov001_022cb708.c:
+src/ov001_t2/Options_InitCursorMoveAnims.c:
     complete
     .text       start:0x022cb708 end:0x022cb770
 
@@ -4684,11 +4684,11 @@ src/ov001_t2/TitleDemo_SetupCamera.c:
     complete
     .text       start:0x022d5738 end:0x022d57b4
 
-src/ov001_t2/TitleDemo_Unk_ov001_022d58ac.c:
+src/ov001_t2/TitleDemo_DrawBlazeModel.c:
     complete
     .text       start:0x022d58ac end:0x022d592c
 
-src/ov001_t2/TitleDemo_Unk_ov001_022d592c.c:
+src/ov001_t2/TitleDemo_DrawSonicModel.c:
     complete
     .text       start:0x022d592c end:0x022d59a8
 
@@ -4700,11 +4700,11 @@ src/ov001_t2/TitleDemo_InitSubSprite.c:
     complete
     .text       start:0x022d6864 end:0x022d68d4
 
-src/ov001_t2/TitleMenu_Unk_ov001_022d78f4.c:
+src/ov001_t2/TitleMenu_StartFadeToBlack.c:
     complete
     .text       start:0x022d78f4 end:0x022d7968
 
-src/ov001_t2/TitleMenu_Unk_ov001_022d7968.c:
+src/ov001_t2/TitleMenu_StartFadeToWhite.c:
     complete
     .text       start:0x022d7968 end:0x022d79d8
 
@@ -4712,7 +4712,7 @@ src/ov001_t2/TitleMenu_CreateFadeTask.c:
     complete
     .text       start:0x022d79d8 end:0x022d7a60
 
-src/ov001_t2/TitleMenu_Unk_ov001_022d7b7c.c:
+src/ov001_t2/TitleMenu_DrawBackButton.c:
     complete
     .text       start:0x022d7b7c end:0x022d7c04
 
@@ -4748,7 +4748,7 @@ src/ov001_t2/VsMenu_DrawParentList.c:
     complete
     .text       start:0x022da614 end:0x022da694
 
-src/ov001_t2/VsMenu_Unk_ov001_022da91c.c:
+src/ov001_t2/VsMenu_Action_ChildCancel.c:
     complete
     .text       start:0x022da91c end:0x022da9a8
 
@@ -4784,7 +4784,7 @@ src/ov001_t2/VsMenu_Create.c:
     complete
     .text       start:0x022ddcd4 end:0x022ddd70
 
-src/ov001_t2/ZoneActSelect_Unk_ov001_022e06e4.c:
+src/ov001_t2/ZoneActSelect_CalcRecordRanks.c:
     complete
     .text       start:0x022e06e4 end:0x022e0784
 
@@ -4792,7 +4792,7 @@ src/ov001_t2/ZoneActSelect_Unk_ov001_022e08e0.c:
     complete
     .text       start:0x022e08e0 end:0x022e0968
 
-src/ov001_t2/ZoneActSelect_Unk_ov001_022e0968.c:
+src/ov001_t2/ZoneActSelect_DrawActCursor.c:
     complete
     .text       start:0x022e0968 end:0x022e09d0
 
@@ -4868,7 +4868,7 @@ src/ov001_t2/TimeAttackMenu_FillHdmaBuffer.c:
     complete
     .text       start:0x022ea2f0 end:0x022ea360
 
-src/ov001_t2/TimeAttackMenu_Unk_ov001_022eba08.c:
+src/ov001_t2/TimeAttackMenu_Action_Confirm.c:
     complete
     .text       start:0x022eba08 end:0x022eba70
 
@@ -5068,7 +5068,7 @@ src/ov001_t2/OptionsMenu_State_Unk_ov001_022cc588.c:
     complete
     .text       start:0x022cc588 end:0x022cc628
 
-src/ov001_t2/Options_Unk_ov001_022cdf20.c:
+src/ov001_t2/Options_Action_EnterItem.c:
     complete
     .text       start:0x022cdf20 end:0x022cdfb4
 
@@ -5104,7 +5104,7 @@ src/ov001_t2/ZoneMapPause_Create.c:
     complete
     .text       start:0x022e95b8 end:0x022e9664
 
-src/ov001_t2/TimeAttackMenu_Unk_ov001_022ea1b8.c:
+src/ov001_t2/TimeAttackMenu_LoadBgPaletteRange.c:
     complete
     .text       start:0x022ea1b8 end:0x022ea264
 
@@ -5752,15 +5752,15 @@ src/ov001_t3/TitleDemo_ReleaseModels.c:
     complete
     .text       start:0x022d6738 end:0x022d682c
 
-src/ov001_t3/TitleMenu_Unk_ov001_022d74dc.c:
+src/ov001_t3/TitleMenu_CreateBgSlideTaskAtMidpoint.c:
     complete
     .text       start:0x022d74dc end:0x022d75dc
 
-src/ov001_t3/TitleMenu_Unk_ov001_022d75dc.c:
+src/ov001_t3/TitleMenu_CreateBgSlideTaskReverse.c:
     complete
     .text       start:0x022d75dc end:0x022d76c4
 
-src/ov001_t3/TitleMenu_Unk_ov001_022d76c4.c:
+src/ov001_t3/TitleMenu_CreateBgSlideTaskForward.c:
     complete
     .text       start:0x022d76c4 end:0x022d77a8
 
@@ -5768,7 +5768,7 @@ src/ov001_t3/TitleMenu_Unk_ov001_022d7ac4.c:
     complete
     .text       start:0x022d7ac4 end:0x022d7b7c
 
-src/ov001_t3/TitleMenu_Unk_ov001_022d83fc.c:
+src/ov001_t3/TitleMenuBgSlideTask_Main.c:
     complete
     .text       start:0x022d83fc end:0x022d84f8
 
@@ -5776,7 +5776,7 @@ src/ov001_t3/TitleMenu_State_Unk_ov001_022d85d0.c:
     complete
     .text       start:0x022d85d0 end:0x022d86b0
 
-src/ov001_t3/TitleMenu_Unk_ov001_022d8b54.c:
+src/ov001_t3/TitleMenu_State_WaitOpenAnims.c:
     complete
     .text       start:0x022d8b54 end:0x022d8c30
 
@@ -5804,7 +5804,7 @@ src/ov001_t3/VsMenu_State_Unk_ov001_022dbe3c.c:
     complete
     .text       start:0x022dbe3c end:0x022dbf30
 
-src/ov001_t3/VsMenu_Unk_ov001_022dbfdc.c:
+src/ov001_t3/VsMenu_State_ChildOpen.c:
     complete
     .text       start:0x022dbfdc end:0x022dc08c
 
@@ -5836,11 +5836,11 @@ src/ov001_t3/VsMenu_FreeSpriteVram.c:
     complete
     .text       start:0x022dd774 end:0x022dd854
 
-src/ov001_t3/ZoneActSelect_Unk_ov001_022e09d0.c:
+src/ov001_t3/ZoneActSelect_DrawRecordRanks.c:
     complete
     .text       start:0x022e09d0 end:0x022e0ad0
 
-src/ov001_t3/ZoneActSelect_Unk_ov001_022e0c5c.c:
+src/ov001_t3/ZoneActSelect_DrawActLabels.c:
     complete
     .text       start:0x022e0c5c end:0x022e0d30
 
@@ -5860,7 +5860,7 @@ src/ov001_t3/ZoneMap_InitScrollArrows.c:
     complete
     .text       start:0x022e36fc end:0x022e37bc
 
-src/ov001_t3/ZoneMap_Unk_ov001_022e3f18.c:
+src/ov001_t3/ZoneMap_InitPath.c:
     complete
     .text       start:0x022e3f18 end:0x022e4000
 
@@ -5868,7 +5868,7 @@ src/ov001_t3/ZoneMap_EaseInterp.c:
     complete
     .text       start:0x022e4a10 end:0x022e4ac4
 
-src/ov001_t3/ZoneMap_Unk_ov001_022e5a68.c:
+src/ov001_t3/ZoneMap_CheckNewEmerald.c:
     complete
     .text       start:0x022e5a68 end:0x022e5b6c
 
@@ -5968,11 +5968,11 @@ src/ov001_t3/OptionsMenu_State_Unk_ov001_022cca00.c:
     complete
     .text       start:0x022cca00 end:0x022ccb5c
 
-src/ov001_t3/TryAgain_State_Unk_ov001_022d3864.c:
+src/ov001_t3/TryAgain_State_FadeOut.c:
     complete
     .text       start:0x022d3864 end:0x022d39ac
 
-src/ov001_t3/TryAgain_State_Unk_ov001_022d39ac.c:
+src/ov001_t3/TryAgain_State_Confirm.c:
     complete
     .text       start:0x022d39ac end:0x022d3af0
 
@@ -6000,7 +6000,7 @@ src/ov001_t3/VsMenu_State_Unk_ov001_022dc580.c:
     complete
     .text       start:0x022dc580 end:0x022dc6d8
 
-src/ov001_t3/VsMenu_Unk_ov001_022dc81c.c:
+src/ov001_t3/VsMenu_State_ParentOpen.c:
     complete
     .text       start:0x022dc81c end:0x022dc970
 
@@ -6008,7 +6008,7 @@ src/ov001_t3/VsMenu_State_Unk_ov001_022dd050.c:
     complete
     .text       start:0x022dd050 end:0x022dd190
 
-src/ov001_t3/VsMenu_Unk_ov001_022dd2d4.c:
+src/ov001_t3/VsMenu_State_DownloadPlayOpen.c:
     complete
     .text       start:0x022dd2d4 end:0x022dd428
 
@@ -6016,7 +6016,7 @@ src/ov001_t3/ZoneActSelect_State_FadeOut.c:
     complete
     .text       start:0x022e114c end:0x022e129c
 
-src/ov001_t3/ZoneMap_Unk_ov001_022e54b4.c:
+src/ov001_t3/ZoneMap_UpdateMapBg.c:
     complete
     .text       start:0x022e54b4 end:0x022e560c
 
@@ -6060,11 +6060,11 @@ src/ov001_t4/TitleMenu_InitSprites.c:
     complete
     .text       start:0x022d8e74 end:0x022d91c4
 
-src/ov001_t4/ZoneMap_Unk_ov001_022e61f4.c:
+src/ov001_t4/ZoneMap_RunBlazeStoryStep.c:
     complete
     .text       start:0x022e61f4 end:0x022e6538
 
-src/ov001_t4/ZoneMap_Unk_ov001_022e6538.c:
+src/ov001_t4/ZoneMap_RunSonicStoryStep.c:
     complete
     .text       start:0x022e6538 end:0x022e6870
 
@@ -6080,7 +6080,7 @@ src/ov001_t4/TimeAttackMenu_State_Unk_ov001_022eae98.c:
     complete
     .text       start:0x022eae98 end:0x022eb294
 
-src/ov001_t4/TimeAttackMenu_Unk_ov001_022eb294.c:
+src/ov001_t4/TimeAttackMenu_State_Select.c:
     complete
     .text       start:0x022eb294 end:0x022eb5d0
 
@@ -6148,11 +6148,11 @@ src/ov001_t4/TitleDemo_LoadArchives.c:
     complete
     .text       start:0x022d68d4 end:0x022d6b44
 
-src/ov001_t4/TitleMenu_Unk_ov001_022d7c04.c:
+src/ov001_t4/TitleMenu_DrawItemButton.c:
     complete
     .text       start:0x022d7c04 end:0x022d7dbc
 
-src/ov001_t4/TitleMenu_Unk_ov001_022d8c78.c:
+src/ov001_t4/TitleMenu_ReleaseAssets.c:
     complete
     .text       start:0x022d8c78 end:0x022d8e58
 
@@ -6168,7 +6168,7 @@ src/ov001_t4/VsMenu_State_Unk_ov001_022db9d8.c:
     complete
     .text       start:0x022db9d8 end:0x022dbbd4
 
-src/ov001_t4/VsMenu_Unk_ov001_022dd93c.c:
+src/ov001_t4/VsMenu_InitNameSlots.c:
     complete
     .text       start:0x022dd93c end:0x022ddab4
 
@@ -6180,7 +6180,7 @@ src/ov001_t4/ZoneActSelect_ResetDisplay.c:
     complete
     .text       start:0x022e1400 end:0x022e1444
 
-src/ov001_t4/ZoneActSelect_Unk_ov001_022e153c.c:
+src/ov001_t4/ZoneActSelect_InitBackgroundsAndSprites.c:
     complete
     .text       start:0x022e153c end:0x022e17b0
 
@@ -6256,7 +6256,7 @@ src/ov001_t5/ZoneMap_State_MoveAlongPath.c:
     complete
     .text       start:0x022e7c50 end:0x022e7dd8
 
-src/ov001_t5/ZoneMap_Unk_ov001_022e7dd8.c:
+src/ov001_t5/ZoneMap_State_ScrollToPathStart.c:
     complete
     .text       start:0x022e7dd8 end:0x022e7f64
 
@@ -6268,7 +6268,7 @@ src/ov001_t4/VsMenu_Unk_ov001_022d9864.c:
     complete
     .text       start:0x022d9864 end:0x022d9a14
 
-src/ov001_t5/OptionsMenu_Unk_ov001_022cbdf0.c:
+src/ov001_t5/OptionsMenu_DrawListBackButton.c:
     complete
     .text       start:0x022cbdf0 end:0x022cbe50
 
@@ -6280,7 +6280,7 @@ src/ov001_t5/OptionsMenu_DrawItemSprite.c:
     complete
     .text       start:0x022cbecc end:0x022cbf30
 
-src/ov001_t5/OptionsMenu_Unk_ov001_022cdd28.c:
+src/ov001_t5/OptionsMenu_Action_Back.c:
     complete
     .text       start:0x022cdd28 end:0x022cdd7c
 
@@ -6416,11 +6416,11 @@ src/ov001_t5/ZoneActSelect_GetTouchedZoneTab.c:
     complete
     .text       start:0x022e0820 end:0x022e0858
 
-src/ov001_t5/ZoneActSelect_Unk_ov001_022e0884.c:
+src/ov001_t5/ZoneActSelect_DrawBackButton.c:
     complete
     .text       start:0x022e0884 end:0x022e08e0
 
-src/ov001_t5/ZoneActSelect_Unk_ov001_022e0ad0.c:
+src/ov001_t5/ZoneActSelect_DrawRecordScores.c:
     complete
     .text       start:0x022e0ad0 end:0x022e0c5c
 
@@ -6452,11 +6452,11 @@ src/ov001_t5/ZoneMap_IsCornerButtonOrXPressed.c:
     complete
     .text       start:0x022e37fc end:0x022e3840
 
-src/ov001_t5/ZoneMap_Unk_ov001_022e3ed8.c:
+src/ov001_t5/ZoneMap_ClearPath.c:
     complete
     .text       start:0x022e3ed8 end:0x022e3f18
 
-src/ov001_t5/ZoneMap_Unk_ov001_022e49c8.c:
+src/ov001_t5/ZoneMap_InitNodesAndPaths.c:
     complete
     .text       start:0x022e49c8 end:0x022e4a10
 
@@ -6468,7 +6468,7 @@ src/ov001_t5/ZoneMap_CalcClampedScroll.c:
     complete
     .text       start:0x022e5164 end:0x022e519c
 
-src/ov001_t5/ZoneMap_Unk_ov001_022e6fbc.c:
+src/ov001_t5/ZoneMap_State_ScrollToPos.c:
     complete
     .text       start:0x022e6fbc end:0x022e7114
 
@@ -6532,15 +6532,15 @@ src/ov001_t6/TitleMenu_State_Unk_ov001_022d8938.c:
     complete
     .text       start:0x022d8938 end:0x022d8b54
 
-src/ov001_t6/ZoneMap_Unk_ov001_022e2f0c.c:
+src/ov001_t6/ZoneMap_SetNodeNaviMessage.c:
     complete
     .text       start:0x022e2f0c end:0x022e3150
 
-src/ov001_t6/ZoneMap_Unk_ov001_022e3180.c:
+src/ov001_t6/ZoneMap_SetNaviMessage.c:
     complete
     .text       start:0x022e3180 end:0x022e3398
 
-src/ov001_t6/TryAgain_State_Unk_ov001_022d3af0.c:
+src/ov001_t6/TryAgain_State_Select.c:
     complete
     .text       start:0x022d3af0 end:0x022d3cd0
 
@@ -6548,11 +6548,11 @@ src/ov001_t6/ZoneMap_SplineSolve.c:
     complete
     .text       start:0x022e1ce8 end:0x022e1e98
 
-src/ov001_t6/ZoneMap_Unk_ov001_022e2bd8.c:
+src/ov001_t6/ZoneMap_DrawAlphaGradient.c:
     complete
     .text       start:0x022e2bd8 end:0x022e2dcc
 
-src/ov001_t6/ZoneMap_Unk_ov001_022e397c.c:
+src/ov001_t6/ZoneMap_DrawCharModel.c:
     complete
     .text       start:0x022e397c end:0x022e3b24
 
@@ -6580,7 +6580,7 @@ src/ov001_t7/VsMenu_InitSpriteSub.c:
     complete
     .text       start:0x022dd890 end:0x022dd8d8
 
-src/ov001_t7/Records_Unk_ov001_022ecae4.c:
+src/ov001_t7/Records_LoadNameGlyphs.c:
     complete
     .text       start:0x022ecae4 end:0x022ecdb4
 
@@ -6724,7 +6724,7 @@ src/ov001_h/StaffRoll_FadeSpritePalette.c:
     complete
     .text       start:0x022cfd7c end:0x022cfe58
 
-src/ov001_h/TransformDemo_Unk_ov001_022dde00.c:
+src/ov001_h/TransformDemo_UpdateSound.c:
     complete
     .text       start:0x022dde00 end:0x022ddfa4
 
@@ -6736,7 +6736,7 @@ src/ov001_h/TransformDemo_DrawModels.c:
     complete
     .text       start:0x022de1e0 end:0x022de240
 
-src/ov001_h/TransformDemo_Unk_ov001_022de240.c:
+src/ov001_h/TransformDemo_ReleaseModels.c:
     complete
     .text       start:0x022de240 end:0x022de388
 
@@ -6788,7 +6788,7 @@ src/r2e/SoundTest_SamplingCallback.c:
     complete
     .text       start:0x022c8f30 end:0x022c90a8
 
-src/r3a/OptionsMenu_Unk_ov001_022c9a2c.c:
+src/r3a/OptionsMenu_DrawSoundTestTrackName.c:
     complete
     .text       start:0x022c9a2c end:0x022c9b78
 
@@ -6804,7 +6804,7 @@ src/c_ov001/TransformDemo_InitCaptureOam.c:
     complete
     .text       start:0x022df490 end:0x022df530
 
-src/agentF/TransformDemo_Unk_ov001_022dfc54.c:
+src/agentF/TransformDemo_InitCamera.c:
     complete
     .text       start:0x022dfc54 end:0x022dfe20
 
@@ -6820,11 +6820,11 @@ src/asm_fallback/ZoneMap_Unk_ov001_022e519c.c:
     complete
     .text       start:0x022e519c end:0x022e54b4
 
-src/asm_fallback/ZoneMap_Unk_ov001_022e612c.c:
+src/asm_fallback/ZoneMap_ConfirmNode.c:
     complete
     .text       start:0x022e612c end:0x022e61f4
 
-src/asm_fallback/ZoneMap_Unk_ov001_022e794c.c:
+src/asm_fallback/ZoneMap_State_MoveToNode.c:
     complete
     .text       start:0x022e794c end:0x022e7c50
 
@@ -6872,7 +6872,7 @@ src/c_mainA/SpecialStageCamera_Apply.c:
     complete
     .text       start:0x023157d8 end:0x02315900
 
-src/ov001_j/Options_Unk_ov001_022c8bc0.c:
+src/ov001_j/Options_GetTouchedItem.c:
     complete
     .text       start:0x022c8bc0 end:0x022c8cc0
 
@@ -6884,7 +6884,7 @@ src/ov001_j/TransformDemo_SetCameraFrameB.c:
     complete
     .text       start:0x022dfb48 end:0x022dfc54
 
-src/ov001_j/ZoneMap_Unk_ov001_022e4b5c.c:
+src/ov001_j/ZoneMap_DrawNodeLayer.c:
     complete
     .text       start:0x022e4b5c end:0x022e4e64
 

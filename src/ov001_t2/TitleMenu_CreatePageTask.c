@@ -28,11 +28,11 @@ typedef struct {
 
 UnkTask_022d81c4 *Task_Create(void (*fn)(void), s32 a, s32 b, s32 c, s32 d, s32 e);
 void MIi_CpuCopy16(const void *src, void *dest, u32 size);
-void TitleMenu_Unk_ov001_022d8b54(void);
+void TitleMenu_State_WaitOpenAnims(void);
 
 #pragma thumb on
 void TitleMenu_CreatePageTask(const void *src, UnkParam_022d81c4 *param, s32 n) {
-    UnkWork_022d81c4 *w = Task_Create(TitleMenu_Unk_ov001_022d8b54, 0, 0, 0x2000, 0x1000, 0x1a8)->work;
+    UnkWork_022d81c4 *w = Task_Create(TitleMenu_State_WaitOpenAnims, 0, 0, 0x2000, 0x1000, 0x1a8)->work;
     s32 i;
 
     MIi_CpuCopy16(src, w->ent, 0x194);

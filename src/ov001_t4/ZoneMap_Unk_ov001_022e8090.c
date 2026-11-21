@@ -67,19 +67,19 @@ s32 ZoneMap_GetBlazeStoryStep(void);
 s32 ZoneMap_Unk_ov001_022e26d0(void);
 s32 ZoneMap_GetNodeForCurrentZone(void);
 s32 ZoneMap_GetNodeForStoryStep(void);
-void ZoneMap_Unk_ov001_022e5a20(UnkWork_022e8090 *w);
-void ZoneMap_Unk_ov001_022e3840(void *p, s32 a);
+void ZoneMap_RevealNodesForStory(UnkWork_022e8090 *w);
+void ZoneMap_SetCharModelRotY(void *p, s32 a);
 void ZoneMap_CalcClampedScroll(void *p, s32 x, s32 y, s32 *a, s32 *b);
-void ZoneMap_Unk_ov001_022e561c(void *p, s32 a);
-BOOL ZoneMap_Unk_ov001_022e2f00(s32 a);
+void ZoneMap_SetMapBgIndex(void *p, s32 a);
+BOOL ZoneMap_IsSonicNaviAvailable(s32 a);
 BOOL ZoneMap_Unk_ov001_022e2e9c(s32 a);
 BOOL ZoneMap_Unk_ov001_022e2df0(s32 a);
-BOOL ZoneMap_Unk_ov001_022e2ee8(s32 a);
+BOOL ZoneMap_IsBlazeNaviAvailable(s32 a);
 BOOL ZoneMap_Unk_ov001_022e2e40(s32 a);
 BOOL ZoneMap_Unk_ov001_022e2dcc(s32 a);
-void ZoneMap_Unk_ov001_022e3180(s32 a, s32 b);
+void ZoneMap_SetNaviMessage(s32 a, s32 b);
 void ZoneMap_CreateFadeTask(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
-void ZoneMap_Unk_ov001_022e5a68(UnkWork_022e8090 *w);
+void ZoneMap_CheckNewEmerald(UnkWork_022e8090 *w);
 
 #pragma thumb on
 UnkWork_022e8090 *ZoneMap_Unk_ov001_022e8090(UnkMap_022e8090 *map, s32 alt, s32 mode) {
@@ -128,49 +128,49 @@ UnkWork_022e8090 *ZoneMap_Unk_ov001_022e8090(UnkMap_022e8090 *map, s32 alt, s32 
         w->flags |= 1;
         w->flags |= 4;
     }
-    ZoneMap_Unk_ov001_022e5a20(w);
+    ZoneMap_RevealNodesForStory(w);
     w->unk64 = map->nodes[w->unk14].x << 12;
     w->unk68 = map->nodes[w->unk14].y << 12;
-    ZoneMap_Unk_ov001_022e3840(map->obj1994, 0x1000);
+    ZoneMap_SetCharModelRotY(map->obj1994, 0x1000);
     ZoneMap_CalcClampedScroll(map->sub, w->unk64 >> 12, w->unk68 >> 12, &w->unk6c, &w->unk70);
-    ZoneMap_Unk_ov001_022e561c(map->sub, w->unkc);
+    ZoneMap_SetMapBgIndex(map->sub, w->unkc);
     switch (w->unk0) {
     case 0:
-        if (ZoneMap_Unk_ov001_022e2f00(w->unk4)) {
+        if (ZoneMap_IsSonicNaviAvailable(w->unk4)) {
             if (alt != 0) {
                 if (ZoneMap_Unk_ov001_022e2e9c(w->unk4)) {
-                    ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 0x1b);
+                    ZoneMap_SetNaviMessage(map->unk1cc4, 0x1b);
                 } else {
-                    ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 3);
+                    ZoneMap_SetNaviMessage(map->unk1cc4, 3);
                 }
             } else {
                 if (ZoneMap_Unk_ov001_022e2df0(w->unk4)) {
-                    ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 3);
+                    ZoneMap_SetNaviMessage(map->unk1cc4, 3);
                 } else {
-                    ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 0x1a);
+                    ZoneMap_SetNaviMessage(map->unk1cc4, 0x1a);
                 }
             }
         } else {
-            ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 0);
+            ZoneMap_SetNaviMessage(map->unk1cc4, 0);
         }
         break;
     case 1:
-        if (ZoneMap_Unk_ov001_022e2ee8(w->unk8)) {
+        if (ZoneMap_IsBlazeNaviAvailable(w->unk8)) {
             if (alt != 0) {
                 if (ZoneMap_Unk_ov001_022e2e40(w->unk8)) {
-                    ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 0x1b);
+                    ZoneMap_SetNaviMessage(map->unk1cc4, 0x1b);
                 } else {
-                    ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 3);
+                    ZoneMap_SetNaviMessage(map->unk1cc4, 3);
                 }
             } else {
                 if (ZoneMap_Unk_ov001_022e2dcc(w->unk8)) {
-                    ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 3);
+                    ZoneMap_SetNaviMessage(map->unk1cc4, 3);
                 } else {
-                    ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 0x1a);
+                    ZoneMap_SetNaviMessage(map->unk1cc4, 0x1a);
                 }
             }
         } else {
-            ZoneMap_Unk_ov001_022e3180(map->unk1cc4, 0);
+            ZoneMap_SetNaviMessage(map->unk1cc4, 0);
         }
         break;
     }
@@ -179,7 +179,7 @@ UnkWork_022e8090 *ZoneMap_Unk_ov001_022e8090(UnkMap_022e8090 *map, s32 alt, s32 
     } else {
         w->unk74 = 0x10;
     }
-    ZoneMap_Unk_ov001_022e5a68(w);
+    ZoneMap_CheckNewEmerald(w);
     if (mode != 0) {
         if (w->unk9c != 0) {
             w->flags |= 8;

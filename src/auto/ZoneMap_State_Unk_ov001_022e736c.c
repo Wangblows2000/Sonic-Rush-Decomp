@@ -23,11 +23,11 @@ extern unsigned char gTaskCurrent[];
 int ZoneActSelect_IsFinished();
 int ZoneActSelect_GetSelectedZone();
 int ZoneActSelect_GetResult();
-int ZoneMap_Unk_ov001_022e19d0();
-int ZoneMap_Unk_ov001_022e3840();
-int ZoneMap_Unk_ov001_022e3844();
+int ZoneMap_RestoreGraphics();
+int ZoneMap_SetCharModelRotY();
+int ZoneMap_SetCharModelAnim();
 int ZoneMap_CreateFadeTask();
-int ZoneMap_Unk_ov001_022e5a48();
+int ZoneMap_Action_WaitTimer();
 
 #pragma thumb on
 
@@ -45,11 +45,11 @@ void ZoneMap_State_Unk_ov001_022e736c(void)
     iVar1 = ZoneActSelect_GetSelectedZone();
     iVar2 = ZoneActSelect_GetResult();
     if ((iVar1 < 0) || (iVar2 < 0)) {
-      ZoneMap_Unk_ov001_022e19d0(puVar3[0x29]);
-      ZoneMap_Unk_ov001_022e3840(puVar3[0x29] + 0x1994,0x1000);
-      ZoneMap_Unk_ov001_022e3844(puVar3[0x29] + 0x1994,0);
+      ZoneMap_RestoreGraphics(puVar3[0x29]);
+      ZoneMap_SetCharModelRotY(puVar3[0x29] + 0x1994,0x1000);
+      ZoneMap_SetCharModelAnim(puVar3[0x29] + 0x1994,0);
       ZoneMap_CreateFadeTask(0x10,0,8,0,1,0);
-      ZoneMap_Unk_ov001_022e5a48(8);
+      ZoneMap_Action_WaitTimer(8);
       return;
     }
     *(undefined4 *)(puVar3[0x29] + 0x1cc8) = *puVar3;

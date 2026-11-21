@@ -9,7 +9,7 @@ s32 VsMenu_Unk_ov001_022da2cc();
 s32 VsMenu_Unk_ov001_022da288();
 s32 KeyframeAnim_SetAnim();
 s32 KeyframeAnim_PlayReverse();
-s32 TitleMenu_Unk_ov001_022d6dac();
+s32 TitleMenu_StartVsBgSlideReverse();
 void VsMenu_State_Unk_ov001_022daea0();
 extern u8 gTaskCurrent[];
 
@@ -32,7 +32,7 @@ void VsMenu_Unk_ov001_022da850(s32 p0) {
     KeyframeAnim_PlayReverse(((u8 *)p0 + 0xbc8));
     KeyframeAnim_PlayReverse(((u8 *)p0 + 0xbf4));
     KeyframeAnim_PlayReverse(((u8 *)p0 + 0xc20));
-    TitleMenu_Unk_ov001_022d6dac();
+    TitleMenu_StartVsBgSlideReverse();
     *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x8) = (u32)VsMenu_State_Unk_ov001_022daea0;
 }
 

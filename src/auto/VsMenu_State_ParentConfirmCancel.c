@@ -9,7 +9,7 @@ s32 MsgBox_IsClosed();
 s32 VsMenu_RestoreAfterMsgBox();
 s32 MsgBox_GetResult();
 s32 WirelessLobbyParent_RequestCancel();
-s32 VsMenu_Unk_ov001_022da9fc();
+s32 VsMenu_Action_ParentCancel();
 s32 VsMenu_Unk_ov001_022da33c();
 void VsMenu_State_Unk_ov001_022dc734();
 
@@ -26,7 +26,7 @@ void VsMenu_State_ParentConfirmCancel(void) {
         s32 t3 = MsgBox_GetResult();
         if (t3 == 0) {
             WirelessLobbyParent_RequestCancel();
-            VsMenu_Unk_ov001_022da9fc(t0);
+            VsMenu_Action_ParentCancel(t0);
             return;
         }
         VsMenu_Unk_ov001_022da33c(t0);

@@ -32,7 +32,7 @@ BOOL TryAgain_IsSplitScrollDone(UnkWork_022d3cd0 *w);
 void AnimatorSprite_SetAnimation(UnkSpr_022d3cd0 *s, u16 anim);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022d3cd0 *s, u32 a, u32 b);
 void AnimatorSprite_Draw(UnkSpr_022d3cd0 *s);
-void TryAgain_State_Unk_ov001_022d3af0(void);
+void TryAgain_State_Select(void);
 
 #pragma thumb on
 void TryAgain_State_Enter(void) {
@@ -55,7 +55,7 @@ void TryAgain_State_Enter(void) {
         w->timer = 0;
         w->unk4 = 0;
         w->unk8 = 7;
-        gTaskCurrent->fn = TryAgain_State_Unk_ov001_022d3af0;
+        gTaskCurrent->fn = TryAgain_State_Select;
     }
 }
 #pragma thumb reset

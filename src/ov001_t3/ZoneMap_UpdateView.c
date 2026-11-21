@@ -46,11 +46,11 @@ typedef struct {
     UnkSub_022e6dec *sub;
 } UnkStruct_022e6dec;
 
-void ZoneMap_Unk_ov001_022e54b4(UnkA_022e6dec *a);
+void ZoneMap_UpdateMapBg(UnkA_022e6dec *a);
 void ZoneMap_Unk_ov001_022e560c(UnkA_022e6dec *a);
-void ZoneMap_Unk_ov001_022e4b5c(UnkB_022e6dec *b);
+void ZoneMap_DrawNodeLayer(UnkB_022e6dec *b);
 void ZoneMap_AnimateCharModel(UnkC_022e6dec *c);
-void ZoneMap_Unk_ov001_022e397c(UnkC_022e6dec *c);
+void ZoneMap_DrawCharModel(UnkC_022e6dec *c);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022e6dec *s, s32 a, s32 b);
 void AnimatorSprite_Draw(UnkSpr_022e6dec *s);
 
@@ -70,13 +70,13 @@ void ZoneMap_UpdateView(UnkStruct_022e6dec *p) {
     c->y = p->unk68 - (p->unk70 << 12);
     sub->a.x = p->unk6c;
     a->y = p->unk70;
-    ZoneMap_Unk_ov001_022e54b4(a);
+    ZoneMap_UpdateMapBg(a);
     ZoneMap_Unk_ov001_022e560c(a);
-    ZoneMap_Unk_ov001_022e4b5c(b);
+    ZoneMap_DrawNodeLayer(b);
     ZoneMap_AnimateCharModel(c);
     if (p->unk0 == 1 && p->unk8 < 2) {
         if (p->unk8 == 1 && p->unk8c == 1) {
-            ZoneMap_Unk_ov001_022e397c(c);
+            ZoneMap_DrawCharModel(c);
             return;
         }
         s = &b->spr;
@@ -86,6 +86,6 @@ void ZoneMap_UpdateView(UnkStruct_022e6dec *p) {
         AnimatorSprite_Draw(s);
         return;
     }
-    ZoneMap_Unk_ov001_022e397c(c);
+    ZoneMap_DrawCharModel(c);
 }
 #pragma thumb reset

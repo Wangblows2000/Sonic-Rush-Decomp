@@ -7,7 +7,7 @@ void TransformDemo_SetupDualScreenFrameA(void);
 void TransformDemo_SetCameraFrameB(void *p, void *q);
 void TransformDemo_SetCameraFrameA(void *p, void *q);
 void TransformDemo_SpawnEffect(void *p);
-void TransformDemo_Unk_ov001_022df474(void *p);
+void TransformDemo_CopyCaptureOam(void *p);
 static inline u16 Rand(void) {
     gRandSeed = gRandSeed * 0x196225 + 0x3c6ef35f;
     return gRandSeed >> 16;
@@ -36,5 +36,5 @@ void TransformDemo_UpdateDualScreen3DIntro(u8 *p) {
             TransformDemo_SpawnEffect(p);
         }
     }
-    TransformDemo_Unk_ov001_022df474(p);
+    TransformDemo_CopyCaptureOam(p);
 }

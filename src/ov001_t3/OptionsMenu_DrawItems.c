@@ -37,7 +37,7 @@ void OptionsMenu_DrawItemSprite(UnkObj_022cbf30 *o, s32 id, s32 x, s32 y, s32 se
 void OptionsMenu_UpdatePage(UnkStruct_022cbf30 *p, s32 x, s32 y);
 void OptionsMenu_SetSubScroll(UnkObj_022cbf30 *o, s32 x, s32 y);
 void OptionsMenu_Unk_ov001_022cbe50(UnkObj_022cbf30 *o, s32 x, s32 y);
-void OptionsMenu_Unk_ov001_022cbdf0(UnkObj_022cbf30 *o, s32 x, s32 y, s32 a);
+void OptionsMenu_DrawListBackButton(UnkObj_022cbf30 *o, s32 x, s32 y, s32 a);
 
 #pragma thumb on
 void OptionsMenu_DrawItems(UnkStruct_022cbf30 *p) {
@@ -65,6 +65,6 @@ void OptionsMenu_DrawItems(UnkStruct_022cbf30 *p) {
     OptionsMenu_UpdatePage(p, p->ax, p->ay);
     OptionsMenu_SetSubScroll(p->obj, p->ax, p->ay);
     OptionsMenu_Unk_ov001_022cbe50(p->obj, p->bx, p->by);
-    OptionsMenu_Unk_ov001_022cbdf0(p->obj, p->cx, p->cy, 0);
+    OptionsMenu_DrawListBackButton(p->obj, p->cx, p->cy, 0);
 }
 #pragma thumb reset

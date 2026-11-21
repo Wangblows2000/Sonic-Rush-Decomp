@@ -13,7 +13,7 @@ typedef struct {
 } UnkStruct_0201521c;
 
 void MIi_CpuCopy32(const void *src, void *dst, u32 size);
-void WBT_Unk_0201559c(UnkStruct_0201521c *p);
+void WBT_QueueCommand(UnkStruct_0201521c *p);
 
 void WBT_GetBlockInfo(u16 id, u32 arg1, const void *src, u32 arg3)
 {
@@ -24,5 +24,5 @@ void WBT_GetBlockInfo(u16 id, u32 arg1, const void *src, u32 arg3)
     s.arg1 = arg1;
     s.size = 0x28;
     MIi_CpuCopy32(src, s.data, 0x40);
-    WBT_Unk_0201559c(&s);
+    WBT_QueueCommand(&s);
 }

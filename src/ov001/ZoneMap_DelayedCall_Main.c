@@ -3,7 +3,7 @@
 typedef struct { u8 pad[8]; u32 count; u32 limit; s32 arg; } UnkStruct_022e3150;
 typedef struct { u8 pad[0x10]; UnkStruct_022e3150 *p; } UnkStruct_022b4574;
 extern UnkStruct_022b4574 *gTaskCurrent;
-void ZoneMap_Unk_ov001_022e3180(void *p, s32 a);
+void ZoneMap_SetNaviMessage(void *p, s32 a);
 
 #pragma thumb on
 void ZoneMap_DelayedCall_Main(void) {
@@ -11,7 +11,7 @@ void ZoneMap_DelayedCall_Main(void) {
     if (t->limit != 0) {
         t->count++;
         if (t->count >= t->limit) {
-            ZoneMap_Unk_ov001_022e3180(t, t->arg);
+            ZoneMap_SetNaviMessage(t, t->arg);
         }
     }
 }

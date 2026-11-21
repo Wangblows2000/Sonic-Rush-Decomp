@@ -49,7 +49,7 @@ void SysSound_PlaySE(s32 a);
 BOOL OptionsMenu_IsBackButtonTouched(u16 x, u16 y);
 s32 OptionsMenu_GetChildCount(UnkSub_022cca00 *s);
 void OptionsMenu_State_Unk_ov001_022cc33c(void);
-void OptionsMenu_Unk_ov001_022cdd28(void);
+void OptionsMenu_Action_Back(void);
 void OptionsMenu_State_Unk_ov001_022cc998(void);
 BOOL OptionsMenu_IsLeftChoiceTouched(u16 x, u16 y);
 BOOL OptionsMenu_IsRightChoiceTouched(u16 x, u16 y);
@@ -76,14 +76,14 @@ void OptionsMenu_State_Unk_ov001_022cca00(void) {
         w->unk1c++;
         if (w->unk1c > 10) {
             w->unk1c = -1;
-            OptionsMenu_Unk_ov001_022cdd28();
+            OptionsMenu_Action_Back();
         }
     }
     if (w->unk1c < 0) {
         ok = FALSE;
         if (gPad.trg & 2) {
             SysSound_PlaySE(1);
-            OptionsMenu_Unk_ov001_022cdd28();
+            OptionsMenu_Action_Back();
         } else if (gTouchState.flags & 0x40) {
             x = gTouchState.x;
             y = gTouchState.y;

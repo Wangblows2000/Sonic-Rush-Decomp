@@ -32,8 +32,8 @@ void TitleDemo_Unk_ov001_022d5a18(UnkWork_022d5e78 *w);
 void TitleDemo_PlaySeq4(UnkWork_022d5e78 *w);
 void TitleDemo_SetOrthoProjection(UnkWork_022d5e78 *w);
 void TitleDemo_SetupCamera(UnkWork_022d5e78 *w);
-void TitleDemo_Unk_ov001_022d592c(UnkWork_022d5e78 *w, s32 a, s32 b);
-void TitleDemo_Unk_ov001_022d58ac(UnkWork_022d5e78 *w, s32 a, s32 b);
+void TitleDemo_DrawSonicModel(UnkWork_022d5e78 *w, s32 a, s32 b);
+void TitleDemo_DrawBlazeModel(UnkWork_022d5e78 *w, s32 a, s32 b);
 
 #pragma thumb on
 void TitleDemo_State_Scene4(void) {
@@ -65,8 +65,8 @@ void TitleDemo_State_Scene4(void) {
         v = TitleDemo_Interpolate(0x80, 0x28, 0x20, w->timer, 0x2000);
         TitleDemo_SetOrthoProjection(w);
         TitleDemo_SetupCamera(w);
-        TitleDemo_Unk_ov001_022d592c(w, v, -0x40);
-        TitleDemo_Unk_ov001_022d58ac(w, -v, -0x40);
+        TitleDemo_DrawSonicModel(w, v, -0x40);
+        TitleDemo_DrawBlazeModel(w, -v, -0x40);
     }
     if (w->state == 0 && TitleDemo_CheckSkipInput()) {
         w->state = 1;

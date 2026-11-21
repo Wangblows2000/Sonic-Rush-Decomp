@@ -15,11 +15,11 @@ extern UnkTask_022dd42c *gTaskCurrent;
 
 void VsMenu_InitSprites(UnkWork_022dd42c *w);
 void VsMenu_Unk_ov001_022ddb00(UnkWork_022dd42c *w);
-void VsMenu_Unk_ov001_022dd93c(UnkWork_022dd42c *w);
+void VsMenu_InitNameSlots(UnkWork_022dd42c *w);
 void VsMenu_InitKeyframeAnims(UnkWork_022dd42c *w);
-void VsMenu_Unk_ov001_022dd614(UnkTask_022dd42c *t);
-void VsMenu_Unk_ov001_022dd574(UnkTask_022dd42c *t);
-void VsMenu_Unk_ov001_022dd534(UnkTask_022dd42c *t);
+void VsMenu_Action_DownloadPlayOpen(UnkTask_022dd42c *t);
+void VsMenu_Action_ParentOpen(UnkTask_022dd42c *t);
+void VsMenu_Action_ChildOpen(UnkTask_022dd42c *t);
 
 #pragma thumb on
 void VsMenu_State_Init(void) {
@@ -30,7 +30,7 @@ void VsMenu_State_Init(void) {
     } else if (w->step == 1) {
         VsMenu_Unk_ov001_022ddb00(w);
     } else if (w->step == 2) {
-        VsMenu_Unk_ov001_022dd93c(w);
+        VsMenu_InitNameSlots(w);
     } else if (w->step == 3) {
         VsMenu_InitKeyframeAnims(w);
     }
@@ -39,13 +39,13 @@ void VsMenu_State_Init(void) {
         w->step = 0;
         switch (w->mode) {
         case 0:
-            VsMenu_Unk_ov001_022dd614(gTaskCurrent);
+            VsMenu_Action_DownloadPlayOpen(gTaskCurrent);
             break;
         case 1:
-            VsMenu_Unk_ov001_022dd574(gTaskCurrent);
+            VsMenu_Action_ParentOpen(gTaskCurrent);
             break;
         case 2:
-            VsMenu_Unk_ov001_022dd534(gTaskCurrent);
+            VsMenu_Action_ChildOpen(gTaskCurrent);
             break;
         }
     }

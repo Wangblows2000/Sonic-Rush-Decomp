@@ -23,8 +23,8 @@ extern UnkTask_022e7428 *gTaskCurrent;
 void ZoneMap_UpdateView(UnkWork_022e7428 *w);
 s32 ZoneMap_GetSonicMaxSelectableZone(s32 a);
 s32 ZoneMap_GetBlazeMaxSelectableZone(s32 a);
-BOOL ZoneMap_Unk_ov001_022e2f00(s32 a);
-BOOL ZoneMap_Unk_ov001_022e2ee8(s32 a);
+BOOL ZoneMap_IsSonicNaviAvailable(s32 a);
+BOOL ZoneMap_IsBlazeNaviAvailable(s32 a);
 void ZoneActSelect_Create(s32 a, s32 b, u32 c);
 void ZoneMap_State_Unk_ov001_022e736c(void);
 
@@ -75,11 +75,11 @@ void ZoneMap_State_Unk_ov001_022e7428(void) {
             break;
         }
         if (w->mode == 0) {
-            if (!ZoneMap_Unk_ov001_022e2f00(w->unk4)) {
+            if (!ZoneMap_IsSonicNaviAvailable(w->unk4)) {
                 w->flags |= 2;
             }
         } else {
-            if (!ZoneMap_Unk_ov001_022e2ee8(w->unk8)) {
+            if (!ZoneMap_IsBlazeNaviAvailable(w->unk8)) {
                 w->flags |= 2;
             }
         }

@@ -37,7 +37,7 @@ typedef struct {
 void AnimatorSprite_SetAnimation(UnkSpr_022ca508 *s, u16 anim);
 void AnimatorSprite_ProcessAnimation(UnkSpr_022ca508 *s, u32 a, u32 b);
 void AnimatorSprite_Draw(UnkSpr_022ca508 *s);
-void OptionsMenu_Unk_ov001_022ca2d4(UnkStruct_022ca508 *p, s32 x, s32 y, s32 a);
+void OptionsMenu_DrawPageBackButton(UnkStruct_022ca508 *p, s32 x, s32 y, s32 a);
 void OptionsMenu_Unk_ov001_022ca248(UnkStruct_022ca508 *p, s32 x, s32 y, s32 m);
 
 #pragma thumb on
@@ -53,9 +53,9 @@ void OptionsMenu_DrawPage4(UnkStruct_022ca508 *p, s32 x, s32 y) {
     if (x >= 0x100) return;
     w = p->work;
     if (p->unk1c >= 0) {
-        OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 1);
+        OptionsMenu_DrawPageBackButton(p, x, y, 1);
     } else {
-        OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 0);
+        OptionsMenu_DrawPageBackButton(p, x, y, 0);
     }
     spr = &w->spr[0];
     switch (p->unk2c) {

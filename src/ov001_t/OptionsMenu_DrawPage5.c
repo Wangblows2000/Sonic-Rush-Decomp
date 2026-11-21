@@ -17,13 +17,13 @@ typedef struct {
 
 extern u8 gGameLanguage;
 
-void OptionsMenu_Unk_ov001_022ca2d4(UnkStruct_022ca3c4 *p, s16 x, s16 y, s32 a);
+void OptionsMenu_DrawPageBackButton(UnkStruct_022ca3c4 *p, s16 x, s16 y, s32 a);
 void OptionsMenu_DrawSprite(UnkStruct_022ca3c4 *p, s16 x, s16 y, s32 a, u16 b);
 void OptionsMenu_DrawLinkLevelIcon(void *w, s16 x, s16 y);
 void OptionsMenu_Unk_ov001_022c9924(UnkStruct_022ca3c4 *p, s16 x, s16 y);
 void OptionsMenu_Unk_ov001_022c98a4(UnkStruct_022ca3c4 *p, s16 x, s16 y);
-void OptionsMenu_Unk_ov001_022c970c(UnkStruct_022ca3c4 *p, s16 x, s16 y);
-void OptionsMenu_Unk_ov001_022c9570(UnkStruct_022ca3c4 *p, s16 x, s16 y);
+void OptionsMenu_DrawDownloadPlayChoiceLeft(UnkStruct_022ca3c4 *p, s16 x, s16 y);
+void OptionsMenu_DrawDownloadPlayChoiceRight(UnkStruct_022ca3c4 *p, s16 x, s16 y);
 
 #pragma thumb on
 static inline u32 GetLang_022ca3c4(void) {
@@ -53,9 +53,9 @@ void OptionsMenu_DrawPage5(UnkStruct_022ca3c4 *p, s16 x, s16 y) {
     s = &p->sub;
     if (s->state != 8) {
         if (p->unk1c >= 0) {
-            OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 1);
+            OptionsMenu_DrawPageBackButton(p, x, y, 1);
         } else {
-            OptionsMenu_Unk_ov001_022ca2d4(p, x, y, 0);
+            OptionsMenu_DrawPageBackButton(p, x, y, 0);
         }
     }
     OptionsMenu_DrawSprite(p, x + 0x18, y + 0x18, 0, 0x1b);
@@ -70,7 +70,7 @@ void OptionsMenu_DrawPage5(UnkStruct_022ca3c4 *p, s16 x, s16 y) {
     OptionsMenu_DrawSprite(p, x, y, 3, 1);
     OptionsMenu_Unk_ov001_022c9924(p, x, y);
     OptionsMenu_Unk_ov001_022c98a4(p, x, y);
-    OptionsMenu_Unk_ov001_022c970c(p, x, y);
-    OptionsMenu_Unk_ov001_022c9570(p, x, y);
+    OptionsMenu_DrawDownloadPlayChoiceLeft(p, x, y);
+    OptionsMenu_DrawDownloadPlayChoiceRight(p, x, y);
 }
 #pragma thumb reset

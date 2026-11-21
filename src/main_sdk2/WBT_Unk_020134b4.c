@@ -11,9 +11,9 @@ typedef struct {
 } UnkEntry_020134b4;
 
 BOOL WBT_GetOwnAid(void);
-u32 WBT_Unk_02014288(u32 a, u32 b);
-u32 WBT_Unk_0201566c(void);
-s32 WBT_Unk_02014630(void *buf, u32 bitmap, u8 c, u32 a, u32 b, u32 d, u32 e);
+u32 WBT_GetBlockPacketData(u32 a, u32 b);
+u32 WBT_GetMyDataPacketSize(void);
+s32 WBT_MakeResGetBlockInfoPacket(void *buf, u32 bitmap, u8 c, u32 a, u32 b, u32 d, u32 e);
 
 s32 WBT_Unk_020134b4(u8 *ctx, s32 idx, void *buf)
 {
@@ -25,8 +25,8 @@ s32 WBT_Unk_020134b4(u8 *ctx, s32 idx, void *buf)
     if (e->state == 2) {
         bitmap = WBT_GetOwnAid() == 0 ? 0xffff : 1;
         if (e->type == 6) {
-            x = WBT_Unk_02014288(e->unk10, e->unk14);
-            ret = WBT_Unk_02014630(buf, bitmap, e->unk2, e->unk10, e->unk14, x, WBT_Unk_0201566c());
+            x = WBT_GetBlockPacketData(e->unk10, e->unk14);
+            ret = WBT_MakeResGetBlockInfoPacket(buf, bitmap, e->unk2, e->unk10, e->unk14, x, WBT_GetMyDataPacketSize());
             e->state = 1;
         }
     }

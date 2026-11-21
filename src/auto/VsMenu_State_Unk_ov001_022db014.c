@@ -32,7 +32,7 @@ int VsMenu_Unk_ov001_022da33c();
 int VsMenu_Unk_ov001_022da2cc();
 int VsMenu_Unk_ov001_022da288();
 int KeyframeAnim_SetAnim();
-int TitleMenu_Unk_ov001_022d6dc0();
+int TitleMenu_StartVsBgSlideForward();
 int VsMenu_CreateBrightnessFade();
 int SysSound_PlaySEDelayed();
 int MsgBox_IsClosed();
@@ -71,7 +71,7 @@ void VsMenu_State_Unk_ov001_022db014(void)
     KeyframeAnim_SetAnim((int)piVar2 + 0xbc8,0x11);
     KeyframeAnim_SetAnim((int)piVar2 + 0xbf4,0x12);
     KeyframeAnim_SetAnim((int)piVar2 + 0xc20,0x13);
-    TitleMenu_Unk_ov001_022d6dc0();
+    TitleMenu_StartVsBgSlideForward();
     VsMenu_CreateBrightnessFade(0,0x10,0x10,0xc);
     SysSound_PlaySEDelayed(2,0xc,0x3000,0);
     *(undefined4 *)(*((int *)gTaskCurrent) + 8) = ((int)VsMenu_State_Unk_ov001_022dac0c);

@@ -5,7 +5,7 @@
 
 extern u8 gTaskCurrent[];
 s32 ZoneMap_Unk_ov001_022e21b8();
-s32 ZoneMap_Unk_ov001_022e5a48();
+s32 ZoneMap_Action_WaitTimer();
 
 void ZoneMap_Unk_ov001_022e5de0(s32 p0, s32 p1) {
     s32 t0 = *(u32 *)((u8 *)*(u32 *)gTaskCurrent + 0x10);
@@ -22,7 +22,7 @@ void ZoneMap_Unk_ov001_022e5de0(s32 p0, s32 p1) {
         *(u32 *)((u8 *)v3 + 0xc) = 5;
     }
     ZoneMap_Unk_ov001_022e21b8(t0, v3, t0, t1);
-    ZoneMap_Unk_ov001_022e5a48(0xa);
+    ZoneMap_Action_WaitTimer(0xa);
 }
 
 #pragma thumb reset

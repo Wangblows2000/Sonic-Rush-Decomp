@@ -32,7 +32,7 @@ void VsMenu_Unk_ov001_022da33c(UnkWork_022db810 *w);
 void VsMenu_Unk_ov001_022d9f6c(UnkWork_022db810 *w);
 void VsMenu_Unk_ov001_022d9f2c(UnkWork_022db810 *w);
 void KeyframeAnim_SetAnim(UnkAnim_022db810 *a, s32 id);
-void TitleMenu_Unk_ov001_022d6dc0(void);
+void TitleMenu_StartVsBgSlideForward(void);
 void VsMenu_State_Unk_ov001_022db458(void);
 void VsMenu_State_Unk_ov001_022db9d8(void);
 
@@ -59,7 +59,7 @@ void VsMenu_State_ChildConfirmJoin(void) {
             for (i = 0; i < 8; i++) {
                 KeyframeAnim_SetAnim(&w->anims[6 + i], i + 0x14);
             }
-            TitleMenu_Unk_ov001_022d6dc0();
+            TitleMenu_StartVsBgSlideForward();
             gTaskCurrent->func = VsMenu_State_Unk_ov001_022db458;
             return;
         }

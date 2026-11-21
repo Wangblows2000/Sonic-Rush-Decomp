@@ -40,8 +40,8 @@ typedef struct {
 extern UnkTask_022e7504 *gTaskCurrent;
 extern UnkCfg_022e7504 gGameState;
 
-void ZoneMap_Unk_ov001_022e3840(void *p, s32 a);
-void ZoneMap_Unk_ov001_022e3844(void *p, s32 a);
+void ZoneMap_SetCharModelRotY(void *p, s32 a);
+void ZoneMap_SetCharModelAnim(void *p, s32 a);
 void SysSound_Release(void);
 BOOL NaviMsg_IsVisible(void);
 void ZoneMap_Unk_ov001_022e1aac(s32 a);
@@ -50,9 +50,9 @@ void TalkDemo_CreateForZoneMap(void);
 void ZoneMap_UpdateView(UnkWork_022e7504 *w);
 BOOL TalkDemo_IsActive(void);
 void ZoneMap_Unk_ov001_022e5618(void *p);
-BOOL ZoneMap_Unk_ov001_022e2f00(s32 a);
-BOOL ZoneMap_Unk_ov001_022e2ee8(s32 a);
-void ZoneMap_Unk_ov001_022e3180(s32 a, s32 b);
+BOOL ZoneMap_IsSonicNaviAvailable(s32 a);
+BOOL ZoneMap_IsBlazeNaviAvailable(s32 a);
+void ZoneMap_SetNaviMessage(s32 a, s32 b);
 void SysSound_Init(void);
 void SysSound_PlayBGM(s32 a);
 void ZoneMap_SelectNextState(void);
@@ -64,8 +64,8 @@ void ZoneMap_State_PlayTalkDemo(void) {
     BOOL ok;
 
     if (w->unk74 == 0) {
-        ZoneMap_Unk_ov001_022e3840(w->map->obj1994, 0x1000);
-        ZoneMap_Unk_ov001_022e3844(w->map->obj1994, 0);
+        ZoneMap_SetCharModelRotY(w->map->obj1994, 0x1000);
+        ZoneMap_SetCharModelAnim(w->map->obj1994, 0);
     }
     if ((u32)w->unk74 < 0x10) {
         w->map->unk19ac = ((0x10 - w->unk74) * 0x20) / 0x10;
@@ -103,14 +103,14 @@ void ZoneMap_State_PlayTalkDemo(void) {
             w->map->unk1998 = 1;
             switch (w->unk0) {
             case 0:
-                ok = ZoneMap_Unk_ov001_022e2f00(w->unk4);
+                ok = ZoneMap_IsSonicNaviAvailable(w->unk4);
                 break;
             case 1:
-                ok = ZoneMap_Unk_ov001_022e2ee8(w->unk8);
+                ok = ZoneMap_IsBlazeNaviAvailable(w->unk8);
                 break;
             }
             if (ok) {
-                ZoneMap_Unk_ov001_022e3180(w->map->unk1cc4, 1);
+                ZoneMap_SetNaviMessage(w->map->unk1cc4, 1);
             }
         }
         d = w->unk74 - w->unk78;

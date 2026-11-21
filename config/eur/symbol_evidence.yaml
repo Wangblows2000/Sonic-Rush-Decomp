@@ -13445,51 +13445,21 @@ OptionsWfsHost_Create:
 Options_IsPlayerSelectUnlocked:
   confidence: strong
   evidence: "strong E7: returns gSaveData[2] & 0x100, same flag as TitleMenu_IsPlayerSelectPageUnlocked; stored in Options work by Options_Create next to Options_IsSoundTestUnlocked (was func_ov001_022c8b14, ov001, 2026-11-16)"
-Options_Unk_ov001_022c8b30:
-  confidence: tentative
-  evidence: "tentative E6: only called from Options_Create (all Options); chain anchored at Options_Create; role unproven (was func_ov001_022c8b30, ov001, 2026-11-16)"
-Options_Unk_ov001_022c8b34:
-  confidence: tentative
-  evidence: "tentative E6: only called from Options_Create (all Options); chain anchored at Options_Create; role unproven (was func_ov001_022c8b34, ov001, 2026-11-16)"
-Options_Unk_ov001_022c8b54:
-  confidence: tentative
-  evidence: "tentative E6: only called from Options_Create (all Options); chain anchored at Options_Create; role unproven (was func_ov001_022c8b54, ov001, 2026-11-16)"
-Options_Unk_ov001_022c8b58:
-  confidence: tentative
-  evidence: "tentative E6: only called from Options_Create (all Options); chain anchored at Options_Create; role unproven (was func_ov001_022c8b58, ov001, 2026-11-16)"
 Options_Unk_ov001_022c8b5c:
   confidence: tentative
   evidence: "tentative E6: only called from Options_Create (all Options); chain anchored at Options_Create; role unproven (was func_ov001_022c8b5c, ov001, 2026-11-16)"
-Options_Unk_ov001_022c8bc0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdabc (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c8bc0, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c90a8:
-  confidence: tentative
-  evidence: "tentative E6: only called from OptionsMenu_State_SoundTest, func_ov001_022cc044 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c90a8, ov001, 2026-11-16)"
 SoundTest_Unk_ov001_022c9310:
   confidence: tentative
   evidence: "tentative E6: only called from SoundTest_PlayTrack and OptionsMenu_State_SoundTest; returns *p (was func_ov001_022c9310, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c9570:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ca3c4 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c9570, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c970c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ca3c4 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c970c, ov001, 2026-11-16)"
 OptionsMenu_Unk_ov001_022c98a4:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022ca3c4 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c98a4, ov001, 2026-11-16)"
 OptionsMenu_Unk_ov001_022c9924:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022ca3c4 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c9924, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c9a2c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ca710 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c9a2c, ov001, 2026-11-16)"
 OptionsMenu_Unk_ov001_022c9b78:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022ca710 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c9b78, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022c9c0c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ca710 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c9c0c, ov001, 2026-11-16)"
 OptionsMenu_Unk_ov001_022c9d58:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022ca710 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022c9d58, ov001, 2026-11-16)"
@@ -13505,9 +13475,6 @@ OptionsMenu_Unk_ov001_022ca1cc:
 OptionsMenu_Unk_ov001_022ca248:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022ca508, func_ov001_022ca9f4, func_ov001_022cabd8 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022ca248, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022ca2d4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ca3c4, func_ov001_022ca508, func_ov001_022ca710 ... (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022ca2d4, ov001, 2026-11-16)"
 OptionsMenu_DrawSprite:
   confidence: strong
   evidence: "strong E7: (menu,x,y,slot,anim): sprite = work+0x1838+slot*0x48, AnimatorSprite_SetAnimation if anim id changed, set pos, ProcessAnimation + Draw (was func_ov001_022ca364, ov001, 2026-11-16)"
@@ -13574,39 +13541,12 @@ OptionsMenu_DrawItemLabel1:
 OptionsMenu_DrawItemLabel0:
   confidence: strong
   evidence: "strong E7,E8: entry 0 of item-label drawer table data_ov001_0231a65c, called by OptionsMenu_DrawItems with (menu,x,y,selected) for item id 0; draws one AnimatorSprite (was func_ov001_022cb5ac, ov001, 2026-11-16)"
-Options_Unk_ov001_022cb708:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdabc (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cb708, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022cb770:
-  confidence: tentative
-  evidence: "tentative E6: only called from OptionsMenu_Action_EraseData, OptionsMenu_Action_SoundTest, OptionsMenu_Action_TimeLimit ... (all Options); chain anchored at OptionsMenu_Action_EraseData, OptionsMenu_Action_SoundTest ...; role unproven (was func_ov001_022cb770, ov001, 2026-11-16)"
-Options_Unk_ov001_022cb834:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdcf4 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cb834, ov001, 2026-11-16)"
-Options_Unk_ov001_022cb96c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdd7c (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cb96c, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022cba1c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdd28 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cba1c, ov001, 2026-11-16)"
-Options_Unk_ov001_022cbac0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdf20 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cbac0, ov001, 2026-11-16)"
-Options_Unk_ov001_022cbb7c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdfb4 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cbb7c, ov001, 2026-11-16)"
-Options_Unk_ov001_022cbc2c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022ce164 (all Options); chain anchored at Options_StartFromTitleMenu; role unproven (was func_ov001_022cbc2c, ov001, 2026-11-16)"
 OptionsMenu_UpdatePage:
   confidence: strong
   evidence: "strong E7,E8: if next!=cur calls close-table[old type] and open-table[new type], then page-draw table data_ov001_0231a674[type](p,x,y) (was func_ov001_022cbcec, ov001, 2026-11-16)"
 OptionsMenu_DrawLinkLevelIcon:
   confidence: strong
   evidence: "strong E7: maps Wireless_GetLinkLevel() 0..3 to anim 1..4 and draws that sprite; called from OptionsMenu_DrawPage5 (was func_ov001_022cbd60, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022cbdf0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cbf30, func_ov001_022cccbc (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cbdf0, ov001, 2026-11-16)"
 OptionsMenu_Unk_ov001_022cbe50:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022cbf30, func_ov001_022cccbc (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cbe50, ov001, 2026-11-16)"
@@ -13616,9 +13556,6 @@ OptionsMenu_DrawItemSprite:
 OptionsMenu_DrawItems:
   confidence: strong
   evidence: "strong E6,E7: called by every OptionsMenu state; loops the 6 menu items drawing label table data_ov001_0231a65c[id](sel=i==cur), then OptionsMenu_UpdatePage and three overlay drawers (was func_ov001_022cbf30, ov001, 2026-11-16)"
-Options_Unk_ov001_022cc044:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cb708, func_ov001_022cdf20, func_ov001_022ce164 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cc044, ov001, 2026-11-16)"
 OptionsMenu_UpdateAnims:
   confidence: strong
   evidence: "strong E7: KeyframeAnim_Update on every item anim (type!=7) and the menu anims, returns TRUE only when all KeyframeAnim_IsFinished; called first by every OptionsMenu state (was func_ov001_022cc17c, ov001, 2026-11-16)"
@@ -13688,27 +13625,9 @@ Options_Unk_ov001_022cdc74:
 Options_Unk_ov001_022cdc8c:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022cdf20 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cdc8c, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022cdca4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cd6e8 (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem; role unproven (was func_ov001_022cdca4, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022cdd28:
-  confidence: tentative
-  evidence: "tentative E6: only called from OptionsMenu_State_EraseData, OptionsMenu_State_SoundTest, OptionsMenu_State_TimeLimit ... (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cdd28, ov001, 2026-11-16)"
-Options_Unk_ov001_022cdd7c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdabc (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cdd7c, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022cdda0:
-  confidence: tentative
-  evidence: "tentative E6: only called from OptionsMenu_State_EnterItem (all Options); chain anchored at OptionsMenu_State_EnterItem; role unproven (was func_ov001_022cdda0, ov001, 2026-11-16)"
-OptionsMenu_Unk_ov001_022cde60:
-  confidence: tentative
-  evidence: "tentative E6: only called from OptionsMenu_State_EnterItem (all Options); chain anchored at OptionsMenu_State_EnterItem; role unproven (was func_ov001_022cde60, ov001, 2026-11-16)"
 OptionsMenu_Unk_ov001_022cde84:
   confidence: tentative
   evidence: "tentative E6: only called from OptionsMenu_Main, OptionsMenu_State_EnterItem (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem; role unproven (was func_ov001_022cde84, ov001, 2026-11-16)"
-Options_Unk_ov001_022cdf20:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022cdabc (all Options); chain anchored at OptionsMenu_Main, OptionsMenu_State_EnterItem ...; role unproven (was func_ov001_022cdf20, ov001, 2026-11-16)"
 Options_ReleaseSprite:
   confidence: strong
   evidence: "strong E7: ObjVram_Free(sprite[0], sprite[13]) if allocated then MIi_CpuClear16 of the 0x48-byte AnimatorSprite (was func_ov001_022ce374, ov001, 2026-11-16)"
@@ -13724,21 +13643,6 @@ Options_Unk_ov001_022ce960:
 TryAgain_Unk_ov001_022d344c:
   confidence: tentative
   evidence: "tentative E6: only called from TryAgain_Create (all TryAgain); chain anchored at TryAgain_Create; role unproven (was func_ov001_022d344c, ov001, 2026-11-16)"
-TryAgain_State_Unk_ov001_022d3864:
-  confidence: tentative
-  evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022d39ac (all TryAgain); caller chain anchored at TryAgain_State_Enter proves TryAgain subsystem (was func_ov001_022d3864, ov001, 2026-11-16)"
-TryAgain_State_Unk_ov001_022d39ac:
-  confidence: tentative
-  evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022d3af0 (all TryAgain); caller chain anchored at TryAgain_State_Enter proves TryAgain subsystem (was func_ov001_022d39ac, ov001, 2026-11-16)"
-TryAgain_State_Unk_ov001_022d3af0:
-  confidence: tentative
-  evidence: "tentative E6,E7: installed as task main (state) by TryAgain_State_Enter (all TryAgain); caller chain anchored at TryAgain_State_Enter proves TryAgain subsystem (was func_ov001_022d3af0, ov001, 2026-11-16)"
-TitleDemo_Unk_ov001_022d58ac:
-  confidence: tentative
-  evidence: "tentative E6: only called from TitleDemo_State_Scene4, TitleDemo_State_Scene5, TitleDemo_State_Scene6 (all TitleDemo); chain anchored at TitleDemo_State_Scene4, TitleDemo_State_Scene5 ...; role unproven (was func_ov001_022d58ac, ov001, 2026-11-16)"
-TitleDemo_Unk_ov001_022d592c:
-  confidence: tentative
-  evidence: "tentative E6: only called from TitleDemo_State_Scene4, TitleDemo_State_Scene5, TitleDemo_State_Scene6 (all TitleDemo); chain anchored at TitleDemo_State_Scene4, TitleDemo_State_Scene5 ...; role unproven (was func_ov001_022d592c, ov001, 2026-11-16)"
 TitleDemo_Unk_ov001_022d5a18:
   confidence: tentative
   evidence: "tentative E6: only called from TitleDemo_State_Scene5 (all TitleDemo); chain anchored at TitleDemo_State_Scene5; role unproven (was func_ov001_022d5a18, ov001, 2026-11-16)"
@@ -13754,45 +13658,15 @@ TitleDemo_Unk_ov001_022d5b94:
 TitleDemo_Unk_ov001_022d5be4:
   confidence: tentative
   evidence: "tentative E6: only called from TitleDemo_State_Scene1, TitleDemo_State_Scene2, TitleDemo_State_Scene3 ... (all TitleDemo); chain anchored at TitleDemo_State_Scene1, TitleDemo_State_Scene2 ...; role unproven (was func_ov001_022d5be4, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d6dac:
-  confidence: tentative
-  evidence: "tentative E6,E7: TitleMenu-side helper operating on the TitleMenu work (gTitleMenuVsMenuOwner set by TitleMenu_AttachVsMenu) or called from TitleMenu functions; reached from TitleMenu and VS menu callers (was func_ov001_022d6dac, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d6dc0:
-  confidence: tentative
-  evidence: "tentative E6,E7: TitleMenu-side helper operating on the TitleMenu work (gTitleMenuVsMenuOwner set by TitleMenu_AttachVsMenu) or called from TitleMenu functions; reached from TitleMenu and VS menu callers (was func_ov001_022d6dc0, ov001, 2026-11-16)"
 TitleMenu_DetachVsMenu:
   confidence: strong
   evidence: "strong E6,E7: called only by TitleMenuVsMode0/1/2Wait_Main on VS cancel; restores BG3CNT and clears gTitleMenuVsMenuOwner (was func_ov001_022d731c, ov001, 2026-11-16)"
 TitleMenu_AttachVsMenu:
   confidence: strong
   evidence: "strong E6,E7: called only by TitleMenu_SelectVsMode0/1/2 with the TitleMenu work; stores it in gTitleMenuVsMenuOwner and sets BG3CNT (0x0400000e) (was func_ov001_022d7340, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d74dc:
-  confidence: tentative
-  evidence: "tentative E6: only called from TitleMenu_Start, TitleMenu_StartAtPlayerSelectItem0, TitleMenu_StartAtPlayerSelectItem1 ... (all TitleMenu); chain anchored at TitleMenu_Start, TitleMenu_StartAtPlayerSelectItem0 ...; role unproven (was func_ov001_022d74dc, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d75dc:
-  confidence: tentative
-  evidence: "tentative E6,E7: TitleMenu-side helper operating on the TitleMenu work (gTitleMenuVsMenuOwner set by TitleMenu_AttachVsMenu) or called from TitleMenu functions; reached from TitleMenu and VS menu callers (was func_ov001_022d75dc, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d76c4:
-  confidence: tentative
-  evidence: "tentative E6,E7: TitleMenu-side helper operating on the TitleMenu work (gTitleMenuVsMenuOwner set by TitleMenu_AttachVsMenu) or called from TitleMenu functions; reached from TitleMenu and VS menu callers (was func_ov001_022d76c4, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d77a8:
-  confidence: tentative
-  evidence: "tentative E6,E7: TitleMenu-side helper operating on the TitleMenu work (gTitleMenuVsMenuOwner set by TitleMenu_AttachVsMenu) or called from TitleMenu functions; reached from TitleMenu and VS menu callers (was func_ov001_022d77a8, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d78f4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022d86b0, func_ov001_022d8798, func_ov001_022d8938 (all TitleMenu); chain anchored at TitleMenu_CreatePageTask; role unproven (was func_ov001_022d78f4, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d7968:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022d86b0, func_ov001_022d8798, func_ov001_022d8938 (all TitleMenu); chain anchored at TitleMenu_CreatePageTask; role unproven (was func_ov001_022d7968, ov001, 2026-11-16)"
 TitleMenu_Unk_ov001_022d7ac4:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022d85d0, func_ov001_022d86b0, func_ov001_022d8798 ... (all TitleMenu); chain anchored at TitleMenu_CreatePageTask; role unproven (was func_ov001_022d7ac4, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d7b7c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022d85d0, func_ov001_022d86b0, func_ov001_022d8798 ... (all TitleMenu); chain anchored at TitleMenu_CreatePageTask; role unproven (was func_ov001_022d7b7c, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d7c04:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022d85d0, func_ov001_022d86b0, func_ov001_022d8798 ... (all TitleMenu); chain anchored at TitleMenu_CreatePageTask; role unproven (was func_ov001_022d7c04, ov001, 2026-11-16)"
 TitleMenu_Unk_ov001_022d7dbc:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022d86b0, func_ov001_022d8938 (all TitleMenu); chain anchored at TitleMenu_CreatePageTask; role unproven (was func_ov001_022d7dbc, ov001, 2026-11-16)"
@@ -13805,9 +13679,6 @@ TitleMenu_Unk_ov001_022d7ee8:
 TitleMenu_Unk_ov001_022d8060:
   confidence: tentative
   evidence: "tentative E6: only called from TitleMenu_OpenPlayerSelectPage, TitleMenu_OpenRootPage, TitleMenu_OpenVsPage ... (all TitleMenu); chain anchored at TitleMenu_OpenPlayerSelectPage, TitleMenu_OpenRootPage ...; role unproven (was func_ov001_022d8060, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d83fc:
-  confidence: tentative
-  evidence: "tentative E6,E7: TitleMenu-side helper operating on the TitleMenu work (gTitleMenuVsMenuOwner set by TitleMenu_AttachVsMenu) or called from TitleMenu functions; reached from TitleMenu and VS menu callers (was func_ov001_022d83fc, ov001, 2026-11-16)"
 TitleMenu_State_Unk_ov001_022d85d0:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022d86b0, func_ov001_022d8798, func_ov001_022d8938 (all TitleMenu); caller chain anchored at TitleMenu_CreatePageTask proves TitleMenu subsystem (was func_ov001_022d85d0, ov001, 2026-11-16)"
@@ -13820,12 +13691,6 @@ TitleMenu_State_Unk_ov001_022d8798:
 TitleMenu_State_Unk_ov001_022d8938:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022d8798, func_ov001_022d8b54 (all TitleMenu); caller chain anchored at TitleMenu_CreatePageTask proves TitleMenu subsystem (was func_ov001_022d8938, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d8b54:
-  confidence: tentative
-  evidence: "tentative E6: referenced from TitleMenu_CreatePageTask (all TitleMenu); chain anchored at TitleMenu_CreatePageTask; role unproven (was func_ov001_022d8b54, ov001, 2026-11-16)"
-TitleMenu_Unk_ov001_022d8c78:
-  confidence: tentative
-  evidence: "tentative E6: only called from TitleMenu_Destructor (all TitleMenu); chain anchored at TitleMenu_Destructor; role unproven (was func_ov001_022d8c78, ov001, 2026-11-16)"
 VsMenu_PlayDecideSE:
   confidence: strong
   evidence: "strong E7: body SysSound_PlaySE(0); SE 0 is the decide SE (SysSound_PlayDecideSE plays 0) (was func_ov001_022d96b8, ov001, 2026-11-16)"
@@ -13946,9 +13811,6 @@ VsMenu_IsBPressed:
 VsMenu_IsAPressed:
   confidence: strong
   evidence: "strong E7: returns gPad.trg (u16 [2], Pad_Update trigger) & 1 (A) (was func_ov001_022da4ec, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022da500:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022dc580, func_ov001_022dd050 (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022da500, ov001, 2026-11-16)"
 VsMenu_GetTouchedListRow:
   confidence: strong
   evidence: "strong E7: if touch down (gTouchState.flags&0x40) returns row i of 8 rows x 0x38..0xc0, y 0x20+0x11*i (16 px high), else -1; same row geometry as the 8-entry list draw (was func_ov001_022da558, ov001, 2026-11-16)"
@@ -13961,18 +13823,9 @@ VsMenu_Unk_ov001_022da784:
 VsMenu_Unk_ov001_022da850:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022db014 (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022da850, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022da91c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022db97c (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022da91c, ov001, 2026-11-16)"
 VsMenu_Unk_ov001_022da9a8:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022dbe3c (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022da9a8, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022da9fc:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022dc6d8 (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022da9fc, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022daaa8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022dcec8, func_ov001_022dcfec, func_ov001_022dd190 (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022daaa8, ov001, 2026-11-16)"
 VsMenu_State_Unk_ov001_022dac0c:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022db014, func_ov001_022db150 (all VsMenu); caller chain anchored at VsMenu_State_Init proves VsMenu subsystem (was func_ov001_022dac0c, ov001, 2026-11-16)"
@@ -14024,9 +13877,6 @@ VsMenu_State_Unk_ov001_022dbe3c:
 VsMenu_State_Unk_ov001_022dbf30:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022dad40, func_ov001_022db6ec (all VsMenu); caller chain anchored at VsMenu_State_Init proves VsMenu subsystem (was func_ov001_022dbf30, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022dbfdc:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022dd534 (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022dbfdc, ov001, 2026-11-16)"
 VsMenu_State_Unk_ov001_022dc0b4:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022dc324 (all VsMenu); caller chain anchored at VsMenu_State_Init proves VsMenu subsystem (was func_ov001_022dc0b4, ov001, 2026-11-16)"
@@ -14042,9 +13892,6 @@ VsMenu_State_Unk_ov001_022dc580:
 VsMenu_State_Unk_ov001_022dc734:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022dc324, func_ov001_022dc410, func_ov001_022dc498 (all VsMenu); caller chain anchored at VsMenu_State_Init proves VsMenu subsystem (was func_ov001_022dc734, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022dc81c:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022dd574 (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022dc81c, ov001, 2026-11-16)"
 VsMenu_State_Unk_ov001_022dc998:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022dcc10 (all VsMenu); caller chain anchored at VsMenu_State_Init proves VsMenu subsystem (was func_ov001_022dc998, ov001, 2026-11-16)"
@@ -14072,75 +13919,21 @@ VsMenu_State_Unk_ov001_022dd050:
 VsMenu_State_Unk_ov001_022dd1ec:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022dccc8, func_ov001_022dcd24, func_ov001_022dcec8 (all VsMenu); caller chain anchored at VsMenu_State_Init proves VsMenu subsystem (was func_ov001_022dd1ec, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022dd2d4:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022dd614 (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022dd2d4, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022dd534:
-  confidence: tentative
-  evidence: "tentative E6: only called from VsMenu_State_Init (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022dd534, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022dd574:
-  confidence: tentative
-  evidence: "tentative E6: only called from VsMenu_State_Init (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022dd574, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022dd614:
-  confidence: tentative
-  evidence: "tentative E6: only called from VsMenu_State_Init (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022dd614, ov001, 2026-11-16)"
-VsMenu_Unk_ov001_022dd93c:
-  confidence: tentative
-  evidence: "tentative E6: only called from VsMenu_State_Init (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022dd93c, ov001, 2026-11-16)"
 VsMenu_Unk_ov001_022ddb00:
   confidence: tentative
   evidence: "tentative E6: only called from VsMenu_State_Init (all VsMenu); chain anchored at VsMenu_State_Init; role unproven (was func_ov001_022ddb00, ov001, 2026-11-16)"
-TransformDemo_Unk_ov001_022dde00:
-  confidence: tentative
-  evidence: "tentative E6: only called from TransformDemo_Main (all TransformDemo); chain anchored at TransformDemo_Main; role unproven (was func_ov001_022dde00, ov001, 2026-11-16)"
-TransformDemo_Unk_ov001_022de240:
-  confidence: tentative
-  evidence: "tentative E6: only called from TransformDemo_Destructor (all TransformDemo); chain anchored at TransformDemo_Destructor; role unproven (was func_ov001_022de240, ov001, 2026-11-16)"
 TransformDemo_Unk_ov001_022de774:
   confidence: tentative
   evidence: "tentative E6: only called from TransformDemo_UpdatePlayerModels (all TransformDemo); chain anchored at TransformDemo_UpdatePlayerModels; role unproven (was func_ov001_022de774, ov001, 2026-11-16)"
 TransformDemo_Unk_ov001_022dedf4:
   confidence: tentative
   evidence: "tentative E6: only called from TransformDemo_UpdatePlayerModels (all TransformDemo); chain anchored at TransformDemo_UpdatePlayerModels; role unproven (was func_ov001_022dedf4, ov001, 2026-11-16)"
-TransformDemo_Unk_ov001_022df474:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e023c, func_ov001_022e034c (all TransformDemo); chain anchored at TransformDemo_State_Init; role unproven (was func_ov001_022df474, ov001, 2026-11-16)"
-TransformDemo_Unk_ov001_022df878:
-  confidence: tentative
-  evidence: "tentative E6: only called from TransformDemo_Main (all TransformDemo); chain anchored at TransformDemo_Main; role unproven (was func_ov001_022df878, ov001, 2026-11-16)"
-TransformDemo_Unk_ov001_022dfc54:
-  confidence: tentative
-  evidence: "tentative E6: only called from TransformDemo_State_Init (all TransformDemo); chain anchored at TransformDemo_State_Init; role unproven (was func_ov001_022dfc54, ov001, 2026-11-16)"
-ZoneActSelect_Unk_ov001_022e06e4:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneActSelect_Create (all ZoneActSelect); chain anchored at ZoneActSelect_Create; role unproven (was func_ov001_022e06e4, ov001, 2026-11-16)"
-ZoneActSelect_Unk_ov001_022e0884:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut, ZoneActSelect_State_Select ... (all ZoneActSelect); chain anchored at ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut ...; role unproven (was func_ov001_022e0884, ov001, 2026-11-16)"
 ZoneActSelect_Unk_ov001_022e08e0:
   confidence: tentative
   evidence: "tentative E6: only called from ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut, ZoneActSelect_State_Select ... (all ZoneActSelect); chain anchored at ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut ...; role unproven (was func_ov001_022e08e0, ov001, 2026-11-16)"
-ZoneActSelect_Unk_ov001_022e0968:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneActSelect_State_Select, func_ov001_022e0f08 (all ZoneActSelect); chain anchored at ZoneActSelect_State_Select; role unproven (was func_ov001_022e0968, ov001, 2026-11-16)"
-ZoneActSelect_Unk_ov001_022e09d0:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut, ZoneActSelect_State_Select ... (all ZoneActSelect); chain anchored at ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut ...; role unproven (was func_ov001_022e09d0, ov001, 2026-11-16)"
-ZoneActSelect_Unk_ov001_022e0ad0:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut, ZoneActSelect_State_Select ... (all ZoneActSelect); chain anchored at ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut ...; role unproven (was func_ov001_022e0ad0, ov001, 2026-11-16)"
-ZoneActSelect_Unk_ov001_022e0c5c:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut, ZoneActSelect_State_Select ... (all ZoneActSelect); chain anchored at ZoneActSelect_State_FadeIn, ZoneActSelect_State_FadeOut ...; role unproven (was func_ov001_022e0c5c, ov001, 2026-11-16)"
 ZoneActSelect_State_Unk_ov001_022e0f08:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by ZoneActSelect_State_Select (all ZoneActSelect); caller chain anchored at ZoneActSelect_State_Select proves ZoneActSelect subsystem (was func_ov001_022e0f08, ov001, 2026-11-16)"
-ZoneActSelect_Unk_ov001_022e153c:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneActSelect_Create (all ZoneActSelect); chain anchored at ZoneActSelect_Create; role unproven (was func_ov001_022e153c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e19d0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e736c (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e19d0, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e1aac:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e7504 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e1aac, ov001, 2026-11-16)"
@@ -14156,9 +13949,6 @@ ZoneMap_Unk_ov001_022e26d0:
 ZoneMap_SetOrthoProjection:
   confidence: strong
   evidence: "strong E7: G3i_OrthoW_(t,b,l,r,n,f,0x1000,FALSE,data_02084d40) from a frustum struct and clears flags 0x50 in data_02084db8, same pattern as TitleDemo_SetOrthoProjection (was func_ov001_022e2b60, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e2bd8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e54b4 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e2bd8, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e2dcc:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e8090 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e2dcc, ov001, 2026-11-16)"
@@ -14171,162 +13961,36 @@ ZoneMap_Unk_ov001_022e2e40:
 ZoneMap_Unk_ov001_022e2e9c:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e8090 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e2e9c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e2ee8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e2f0c, func_ov001_022e5d08, func_ov001_022e5e60 ... (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e2ee8, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e2f00:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e2f0c, func_ov001_022e5d08, func_ov001_022e5e60 ... (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e2f00, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e2f0c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7728, func_ov001_022e794c (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e2f0c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e3180:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e2f0c, func_ov001_022e3150, func_ov001_022e5d08 ... (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e3180, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e345c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7728 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e345c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e349c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7f64 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e349c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e34dc:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7728 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e34dc, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e3510:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7f64 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e3510, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e35c4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7728 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e35c4, ov001, 2026-11-16)"
 ZoneMap_IsCornerButtonOrBPressed:
   confidence: strong
   evidence: "strong E7: TRUE when touch is inside 8..0x28 x 0x98..0xb8 (the sprite drawn at (8,0x98) by the ZoneMap corner-button drawers) or gPad.trg & 2 (B) (was func_ov001_022e37bc, ov001, 2026-11-16)"
 ZoneMap_IsCornerButtonOrXPressed:
   confidence: strong
   evidence: "strong E7: TRUE when touch is inside 8..0x28 x 0x98..0xb8 or gPad.trg & 0x400 (X) (was func_ov001_022e37fc, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e3840:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e5d08, func_ov001_022e7114, func_ov001_022e736c ... (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e3840, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e3844:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e5d08, func_ov001_022e7114, func_ov001_022e736c ... (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e3844, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e397c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e6dec (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e397c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e3ed8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e4000, func_ov001_022e4198 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e3ed8, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e3f18:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e4000, func_ov001_022e4198 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e3f18, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e4000:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e49c8 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e4000, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e4198:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e49c8 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e4198, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e432c:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e49c8 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e432c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e4494:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e49c8 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e4494, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e4748:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e49c8 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e4748, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e49c8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e4eb8 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e49c8, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e4b5c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e6dec (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e4b5c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e4eb8:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e870c (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e4eb8, ov001, 2026-11-16)"
 ZoneMap_CalcClampedScroll:
   confidence: strong
   evidence: "strong E7: scroll = (x-0x80, y-0x60) i.e. point centred on the 256x192 screen, clamped to [8, w-0x108] x [0, h-0xc0] of the map size, written to *ox/*oy (was func_ov001_022e5164, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e519c:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e54b4 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e519c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e54b4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e6dec (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e54b4, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e560c:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e6dec (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e560c, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e5618:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e5f04, func_ov001_022e7504, func_ov001_022e870c (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5618, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e561c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e8090 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e561c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5620:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e8528 (all ZoneMap); chain anchored at ZoneMap_Destructor; role unproven (was func_ov001_022e5620, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e57a4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e57d4, func_ov001_022e5928 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e57a4, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e57d4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e5a20 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e57d4, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5928:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e5a20 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5928, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5a20:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e8090 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5a20, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5a48:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e5de0, func_ov001_022e61f4, func_ov001_022e6538 ... (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5a48, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5a68:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e8090 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5a68, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5d08:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e76ec (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5d08, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5d7c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7728, func_ov001_022e7c50 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5d7c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5db0:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e61f4, func_ov001_022e6538 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5db0, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e5de0:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e61f4 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5de0, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5e28:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e61f4, func_ov001_022e6538 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5e28, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5e98:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e5f80, func_ov001_022e61f4 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5e98, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e5f04:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e606c, func_ov001_022e6538 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5f04, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e5f80:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e612c, func_ov001_022e7274 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e5f80, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e606c:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e612c, func_ov001_022e7274 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e606c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e612c:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e7f64 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e612c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e61f4:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e6870 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e61f4, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e6538:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e6870 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e6538, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e6998:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e5db0, func_ov001_022e7f64 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e6998, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e6c90:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022e6c90, func_ov001_022e7f64 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e6c90, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e6fbc:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022e5d7c (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e6fbc, ov001, 2026-11-16)"
 ZoneMap_State_Unk_ov001_022e7114:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022e5f80, func_ov001_022e606c (all ZoneMap); caller chain anchored at ZoneMap_Start proves ZoneMap subsystem (was func_ov001_022e7114, ov001, 2026-11-16)"
@@ -14336,48 +14000,24 @@ ZoneMap_State_Unk_ov001_022e736c:
 ZoneMap_State_Unk_ov001_022e7428:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022e5b6c (all ZoneMap); caller chain anchored at ZoneMap_Start proves ZoneMap subsystem (was func_ov001_022e7428, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e794c:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022e5db0, func_ov001_022e7f64 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e794c, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e7dd8:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022e5e28 (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e7dd8, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e8090:
   confidence: tentative
   evidence: "tentative E6: only called from ZoneMap_Start (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e8090, ov001, 2026-11-16)"
 ZoneMap_ReleaseSprite:
   confidence: strong
   evidence: "strong E7: ObjVram_Free(sprite[0], sprite[13]) if allocated, then MIi_CpuClear16 of the 0x48-byte AnimatorSprite (same body as Options_ReleaseSprite) (was func_ov001_022e8470, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e8514:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneMap_Destructor (all ZoneMap); chain anchored at ZoneMap_Destructor; role unproven (was func_ov001_022e8514, ov001, 2026-11-16)"
-ZoneMap_Unk_ov001_022e85c8:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneMap_InitDisplay, func_ov001_022e8514 (all ZoneMap); chain anchored at ZoneMap_Destructor, ZoneMap_InitDisplay; role unproven (was func_ov001_022e85c8, ov001, 2026-11-16)"
 ZoneMapPause_Unk_ov001_022e8b5c:
   confidence: tentative
   evidence: "tentative E6: only called from ZoneMapPause_State_Open, func_ov001_022e8d88, func_ov001_022e8e04 ... (all ZoneMap); chain anchored at ZoneMapPause_State_Open; role unproven (was func_ov001_022e8b5c, ov001, 2026-11-16)"
-ZoneMapPause_Unk_ov001_022e8be0:
-  confidence: tentative
-  evidence: "tentative E6: only called from ZoneMapPause_State_Open, func_ov001_022e8d88, func_ov001_022e8e04 ... (all ZoneMap); chain anchored at ZoneMapPause_State_Open; role unproven (was func_ov001_022e8be0, ov001, 2026-11-16)"
 ZoneMap_Unk_ov001_022e955c:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022e76ec (all ZoneMap); chain anchored at ZoneMap_Start; role unproven (was func_ov001_022e955c, ov001, 2026-11-16)"
 ZoneMapPause_Destroy:
   confidence: strong
   evidence: "strong E7: if gZoneMapPauseWork set, Task_Destroy(work->task), clear gZoneMapPauseWork and set result 3 (was func_ov001_022e9584, ov001, 2026-11-16)"
-TimeAttackMenu_Unk_ov001_022e9c24:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022eba70, func_ov001_022ebc98 (all TimeAttackMenu); chain anchored at TimeAttackMenu_Create, TimeAttackMenu_State_Enter; role unproven (was func_ov001_022e9c24, ov001, 2026-11-16)"
 TimeAttackMenu_Unk_ov001_022e9fa8:
   confidence: tentative
   evidence: "tentative E6: only called from TimeAttackMenu_State_Enter, func_ov001_022ea894, func_ov001_022eab78 ... (all TimeAttackMenu); chain anchored at TimeAttackMenu_State_Enter; role unproven (was func_ov001_022e9fa8, ov001, 2026-11-16)"
-TimeAttackMenu_Unk_ov001_022e9fe4:
-  confidence: tentative
-  evidence: "tentative E6: only called from TimeAttackMenu_State_Enter, func_ov001_022ea894, func_ov001_022eab78 ... (all TimeAttackMenu); chain anchored at TimeAttackMenu_State_Enter; role unproven (was func_ov001_022e9fe4, ov001, 2026-11-16)"
-TimeAttackMenu_Unk_ov001_022ea1b8:
-  confidence: tentative
-  evidence: "tentative E6: only called from TimeAttackMenu_InitBackgrounds (all TimeAttackMenu); chain anchored at TimeAttackMenu_InitBackgrounds; role unproven (was func_ov001_022ea1b8, ov001, 2026-11-16)"
 TimeAttackMenu_Unk_ov001_022ea360:
   confidence: tentative
   evidence: "tentative E6: only called from TimeAttackMenu_State_Enter, func_ov001_022ea894, func_ov001_022eab78 ... (all TimeAttackMenu); chain anchored at TimeAttackMenu_State_Enter; role unproven (was func_ov001_022ea360, ov001, 2026-11-16)"
@@ -14432,15 +14072,6 @@ TimeAttackMenu_Unk_ov001_022eab78:
 TimeAttackMenu_State_Unk_ov001_022eae98:
   confidence: tentative
   evidence: "tentative E6,E7: installed as task main (state) by func_ov001_022eba70 (all TimeAttackMenu); caller chain anchored at TimeAttackMenu_State_Enter proves TimeAttackMenu subsystem (was func_ov001_022eae98, ov001, 2026-11-16)"
-TimeAttackMenu_Unk_ov001_022eb294:
-  confidence: tentative
-  evidence: "tentative E6: referenced from func_ov001_022eba70, func_ov001_022ebc3c (all TimeAttackMenu); chain anchored at TimeAttackMenu_State_Enter; role unproven (was func_ov001_022eb294, ov001, 2026-11-16)"
-TimeAttackMenu_Unk_ov001_022eb994:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022eb294 (all TimeAttackMenu); chain anchored at TimeAttackMenu_State_Enter; role unproven (was func_ov001_022eb994, ov001, 2026-11-16)"
-TimeAttackMenu_Unk_ov001_022eba08:
-  confidence: tentative
-  evidence: "tentative E6: only called from func_ov001_022eb294 (all TimeAttackMenu); chain anchored at TimeAttackMenu_State_Enter; role unproven (was func_ov001_022eba08, ov001, 2026-11-16)"
 TimeAttackMenu_Unk_ov001_022eba70:
   confidence: tentative
   evidence: "tentative E6: only called from func_ov001_022eae98, func_ov001_022eb294 (all TimeAttackMenu); chain anchored at TimeAttackMenu_State_Enter; role unproven (was func_ov001_022eba70, ov001, 2026-11-16)"
@@ -14450,9 +14081,6 @@ TimeAttackMenu_Unk_ov001_022ebc3c:
 TimeAttackMenu_Unk_ov001_022ebc98:
   confidence: tentative
   evidence: "tentative E6: only called from TimeAttackMenu_Create (all TimeAttackMenu); chain anchored at TimeAttackMenu_Create; role unproven (was func_ov001_022ebc98, ov001, 2026-11-16)"
-Records_Unk_ov001_022ecae4:
-  confidence: tentative
-  evidence: "tentative E6: only called from Records_Start (all Records); chain anchored at Records_Start; role unproven (was func_ov001_022ecae4, ov001, 2026-11-16)"
 Records_IsBPressed:
   confidence: strong
   evidence: "strong E7: returns gPad.trg (u16 [2], Pad_Update trigger) & 2 (B) (was func_ov001_022ecec0, ov001, 2026-11-16)"
@@ -14885,186 +14513,21 @@ AllocPlttVram_:
 FreePlttVram_:
   confidence: confirmed
   evidence: "confirmed E8,E4: initial value of NNS_GfdDefaultFuncFreePlttVram (data_02077d4c = 0x0202a07c); body returns -1 = gfd_PlttVramMan.c static FreePlttVram_ (was func_0202a07c, main, 2026-11-16)"
-WBT_Unk_020130e8:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020130e8, main, 2026-11-16)"
-WBT_Unk_02013350:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02013350, main, 2026-11-16)"
 WBT_Unk_020134b4:
   confidence: tentative
   evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020134b4, main, 2026-11-16)"
-WBT_Unk_02013554:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02013554, main, 2026-11-16)"
-WBT_Unk_020135f8:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020135f8, main, 2026-11-16)"
-WBT_Unk_02013748:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02013748, main, 2026-11-16)"
-WBT_Unk_020137ac:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020137ac, main, 2026-11-16)"
-WBT_Unk_02013814:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02013814, main, 2026-11-16)"
-WBT_Unk_020138b4:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020138b4, main, 2026-11-16)"
-WBT_Unk_02013e7c:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02013e7c, main, 2026-11-16)"
-WBT_Unk_02013f58:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02013f58, main, 2026-11-16)"
-WBT_Unk_02014078:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014078, main, 2026-11-16)"
-WBT_Unk_02014110:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014110, main, 2026-11-16)"
-WBT_Unk_020141a8:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020141a8, main, 2026-11-16)"
-WBT_Unk_020141d8:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020141d8, main, 2026-11-16)"
-WBT_Unk_020141fc:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020141fc, main, 2026-11-16)"
-WBT_Unk_02014288:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014288, main, 2026-11-16)"
-WBT_Unk_02014320:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014320, main, 2026-11-16)"
-WBT_Unk_0201442c:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_0201442c, main, 2026-11-16)"
-WBT_Unk_02014498:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014498, main, 2026-11-16)"
-WBT_Unk_02014530:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014530, main, 2026-11-16)"
-WBT_Unk_020145b0:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020145b0, main, 2026-11-16)"
-WBT_Unk_02014630:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014630, main, 2026-11-16)"
-WBT_Unk_020146f8:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020146f8, main, 2026-11-16)"
-WBT_Unk_0201478c:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_0201478c, main, 2026-11-16)"
-WBT_Unk_02014854:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014854, main, 2026-11-16)"
-WBT_Unk_020148e8:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_020148e8, main, 2026-11-16)"
-WBT_Unk_02014990:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014990, main, 2026-11-16)"
-WBT_Unk_02014a24:
-  confidence: tentative
-  evidence: "tentative E6: NitroSDK WBT static helper; only reachable from WBT_MpChildSendHook/WBT_MpParentSendHook/WBT_MpChildRecvHook/WBT_MpParentRecvHook via func_02014e08/02014f94/02014f2c/02014f5c (call closure, no other callers); official static name not provable (SRA leaves them sub_) (was func_02014a24, main, 2026-11-16)"
-WBT_Unk_02014e08:
-  confidence: tentative
-  evidence: "tentative E6: sole caller WBT_MpChildSendHook; dispatches the WBT child-send command builders (WBT_Unk_020130e8..02014a24) (was func_02014e08, main, 2026-11-16)"
-WBT_Unk_02014f94:
-  confidence: tentative
-  evidence: "tentative E6: sole caller WBT_MpParentSendHook; dispatches the same WBT command builders as WBT_Unk_02014e08 (was func_02014f94, main, 2026-11-16)"
-WBT_Unk_02014f2c:
-  confidence: tentative
-  evidence: "tentative E6: sole caller WBT_MpChildRecvHook; calls the WBT receive parser WBT_Unk_020138b4 (was func_02014f2c, main, 2026-11-16)"
-WBT_Unk_02014f5c:
-  confidence: tentative
-  evidence: "tentative E6: sole caller WBT_MpParentRecvHook; calls the WBT receive parser WBT_Unk_020138b4 (was func_02014f5c, main, 2026-11-16)"
-WBT_Unk_02015540:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_Unk_020135f8; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_02015540, main, 2026-11-16)"
-WBT_Unk_0201557c:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_End/WBT_InitChild/WBT_InitParent/WBT_RegisterBlock/WBT_UnregisterBlock; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_0201557c, main, 2026-11-16)"
-WBT_Unk_0201558c:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_NumOfRegisteredBlock/WBT_RegisterBlock/WBT_UnregisterBlock; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_0201558c, main, 2026-11-16)"
-WBT_Unk_0201559c:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_End/WBT_GetBlock/WBT_GetBlockInfo/WBT_InitChild/WBT_InitParent/WBT_PutUserData/WBT_RequestSync; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_0201559c, main, 2026-11-16)"
-WBT_Unk_02015634:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_Unk_0201559c; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_02015634, main, 2026-11-16)"
-WBT_Unk_02015640:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_End/WBT_InitChild/WBT_InitParent/WBT_SetPacketSize; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_02015640, main, 2026-11-16)"
-WBT_Unk_0201564c:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_End/WBT_InitChild/WBT_InitParent/WBT_SetPacketSize; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_0201564c, main, 2026-11-16)"
-WBT_Unk_0201565c:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_End/WBT_InitChild/WBT_InitParent/WBT_SetPacketSize; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_0201565c, main, 2026-11-16)"
-WBT_Unk_0201566c:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT command builders; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_0201566c, main, 2026-11-16)"
-WBT_Unk_0201567c:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_CalcPacketbitmapSize and WBT command builders; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_0201567c, main, 2026-11-16)"
-WBT_Unk_0201568c:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_End/WBT_InitChild/WBT_InitParent; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_0201568c, main, 2026-11-16)"
-WBT_Unk_020156a0:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_Unk_020130e8; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_020156a0, main, 2026-11-16)"
-WBT_Unk_020156c8:
-  confidence: tentative
-  evidence: "tentative E6,E7: callers only WBT_Unk_020130e8; accesses the WBT work globals 0x02080600-0x02080610 shared with WBT_*; between WBT_SetOwnAid and the MB code (was func_020156c8, main, 2026-11-16)"
-DGT_Unk_0200ca3c:
-  confidence: tentative
-  evidence: "tentative E6: sole caller DGT_Hash2GetDigest; calls the SHA-1 block routine DGT_Unk_0200cb88; inside dgt_hash2 cluster (DGT_Hash2CalcHmac..DGT_Hash2Reset) (was func_0200ca3c, main, 2026-11-16)"
-DGT_Unk_0200cb88:
-  confidence: tentative
-  evidence: "tentative E6: callers DGT_Hash2SetSource and DGT_Unk_0200ca3c only (SHA-1 block transform, constants at 0x0207798c..0x02077998); inside dgt_hash2 cluster (was func_0200cb88, main, 2026-11-16)"
-CARD_Unk_0200fb40:
-  confidence: tentative
-  evidence: "tentative E6,E7: NitroSDK CARD backup helper between CARD_IdentifyBackup and CARDi_EndTask; uses cardi_common (busy flag 4 / OS_SleepThread loop), CARDi_SetTask, CARDi_EndTask; fb40 = PROGRAM_BACKUP(8) loop via 0x100 buffer, fbfc = READ_BACKUP(6) loop; f9a0/fa70 are their request front-ends; SDK 2.x name not provable (was func_0200fb40, main, 2026-11-16)"
-CARD_Unk_0200fbfc:
-  confidence: tentative
-  evidence: "tentative E6,E7: NitroSDK CARD backup helper between CARD_IdentifyBackup and CARDi_EndTask; uses cardi_common (busy flag 4 / OS_SleepThread loop), CARDi_SetTask, CARDi_EndTask; fb40 = PROGRAM_BACKUP(8) loop via 0x100 buffer, fbfc = READ_BACKUP(6) loop; f9a0/fa70 are their request front-ends; SDK 2.x name not provable (was func_0200fbfc, main, 2026-11-16)"
-MB_Unk_0201882c:
-  confidence: tentative
-  evidence: "tentative E6: tail target of MB_StartParent (pool 0x02018828); calls MBi_StartCommon, MB_InitSendGameInfoStatus, MBi_SetParentPieceBuffer, MB_CommSetParentStateCallback (parent start core; SDK static name not provable) (was func_0201882c, main, 2026-11-16)"
-MSL_Unk_0202d55c:
-  confidence: tentative
-  evidence: "tentative E6: sole caller __num2dec_internal (MSL ansi_fp.c); counts trailing zero bits of a word by walking bytes (sm64ds also leaves its copy unnamed) (was func_0202d55c, main, 2026-11-16)"
 Runtime_Unk_0202e3f0:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e3f0, main, 2026-11-16)"
 Runtime_Unk_0202e438:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e438, main, 2026-11-16)"
-Runtime_Unk_0202e698:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e698, main, 2026-11-16)"
-Runtime_Unk_0202e6bc:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e6bc, main, 2026-11-16)"
 Runtime_Unk_0202e6e0:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e6e0, main, 2026-11-16)"
 Runtime_Unk_0202e770:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202e770, main, 2026-11-16)"
-Runtime_Unk_0202ece4:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202ece4, main, 2026-11-16)"
-Runtime_Unk_0202ed34:
-  confidence: tentative
-  evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202ed34, main, 2026-11-16)"
 Runtime_Unk_0202fccc:
   confidence: tentative
   evidence: "tentative E6,E8: CW ARM runtime soft-float helper inside the runtime block (_fadd 0x0202e1cc .. _fdiv 0x0202ed90 / _fp_init..__call_static_initializers); float/double compare bodies (NaN test via 0xff000000/0x200000 masks) with no official name in our references (was func_0202fccc, main, 2026-11-16)"
@@ -15101,9 +14564,6 @@ WirelessLobby_ForceStop:
 WirelessLobbyDownloadPlay_IsGone:
   confidence: strong
   evidence: "strong E7: returns TRUE when the lobby state (work+0xC, 8 if gWirelessLobbyTask==NULL) >= 8; default 8 is the WirelessLobbyDownloadPlay_Main convention (child/parent use 7) (was func_02050d0c, main, 2026-11-16)"
-WirelessLobbyDownloadPlay_Unk_02050d2c:
-  confidence: tentative
-  evidence: "tentative E6: empty function in the download-play lobby accessor block (0x02050d0c-0x02050dfc, between WirelessSession_StartDownloadPlayPreview and WirelessSession_RestartDownloadPlay) (was func_02050d2c, main, 2026-11-16)"
 WirelessLobbyDownloadPlay_IsFinished:
   confidence: strong
   evidence: "strong E7: TRUE when lobby state > 4 (default 8); WirelessLobbyDownloadPlay_Main enters states 5..7 only after the children connected and WirelessSession_Stop (was func_02050d30, main, 2026-11-16)"
@@ -15122,9 +14582,6 @@ WirelessLobbyDownloadPlay_RequestRestart:
 WirelessLobbyChild_IsGone:
   confidence: strong
   evidence: "strong E7: TRUE when lobby state (default 7 when gWirelessLobbyTask==NULL) >= 7; in the child accessor block before WirelessLobby_StartChild; WirelessLobbyChild_Main uses states 0..6 (was func_02050e2c, main, 2026-11-16)"
-WirelessLobbyChild_Unk_02050e4c:
-  confidence: tentative
-  evidence: "tentative E6: empty function in the child lobby accessor block (0x02050e2c-0x02051070) (was func_02050e4c, main, 2026-11-16)"
 WirelessLobbyChild_IsFinished:
   confidence: strong
   evidence: "strong E7: TRUE when state >= 6; WirelessLobbyChild_Main reaches 6 after connecting (status 6) and WirelessSession_Stop (was func_02050e50, main, 2026-11-16)"
@@ -15152,9 +14609,6 @@ WirelessLobbyChild_RequestCancel:
 WirelessLobbyParent_IsGone:
   confidence: strong
   evidence: "strong E7: TRUE when state (default 7 when no task) >= 7; parent accessor block before WirelessLobby_StartParent (was func_0205109c, main, 2026-11-16)"
-WirelessLobbyParent_Unk_020510bc:
-  confidence: tentative
-  evidence: "tentative E6: empty function in the parent lobby accessor block (0x0205109c-0x020511c0) (was func_020510bc, main, 2026-11-16)"
 WirelessLobbyParent_IsFinished:
   confidence: strong
   evidence: "strong E7: TRUE when state >= 6; WirelessLobbyParent_Main reaches 6 after status 6 and WirelessSession_Stop (was func_020510c0, main, 2026-11-16)"
@@ -15278,12 +14732,6 @@ StageTitleCard_HoldPlayerNone:
 StageTitleCardPart20_State_Idle:
   confidence: strong
   evidence: "strong E7: empty state stored to o->fn and called by StageTitleCardPart20_State_Init (was func_0205c704, main, 2026-11-16)"
-TalkDemo_Unk_02061fc4:
-  confidence: tentative
-  evidence: "tentative E6: empty function; sole caller TalkDemoScene_Destructor; in the TalkDemo cluster (was func_02061fc4, main, 2026-11-16)"
-TalkDemo_Unk_02061fc8:
-  confidence: tentative
-  evidence: "tentative E6: empty function; sole caller TalkDemo_LoadMessageBg; in the TalkDemo cluster (was func_02061fc8, main, 2026-11-16)"
 gNaviMTask:
   confidence: strong
   evidence: "strong E7: NaviM_Create stores Task_Create(NaviM_Main, NaviM_Destructor, ...) into it; NaviM_Destructor clears it; NaviM_Destroy destroys it (was data_022c4dc4, main, 2026-11-16)"
@@ -22817,3 +22265,555 @@ GmkLand_State_Oscillate:
 GmkLand_Action_InitSpawner:
   confidence: strong
   evidence: "strong E7: Create variant: computes period from params and global timer, spawns MapObject 0xef at the current phase -> State_SpawnPeriodic (was GmkLand_Action_Unk_ov000_0230f614, ov000, 2026-11-16)"
+ZoneActSelect_CalcRecordRanks:
+  confidence: tentative
+  evidence: "E7/E6: for 7 zones maps each of the 3 values loaded by ZoneActSelect_LoadRecords to a 0-3 grade via threshold tables data_ov001_0231c3f4/0231c404, stored at +0x68 and drawn by 022e09d0; only caller ZoneActSelect_Create (was ZoneActSelect_Unk_ov001_022e06e4, ov001, 2026-11-21)"
+ZoneActSelect_DrawBackButton:
+  confidence: tentative
+  evidence: "E7: draws a sprite at (0xd8,0x98), the exact hitbox of ZoneActSelect_IsBackButtonTouched, using anim 1 when +0xdc is set (set by State_Select on back-button touch) (was ZoneActSelect_Unk_ov001_022e0884, ov001, 2026-11-21)"
+ZoneActSelect_DrawActCursor:
+  confidence: tentative
+  evidence: "E7: draws one blinking sprite at y = gZoneActSelectResult*32+0x38 (the selected act row); called from State_Select (was ZoneActSelect_Unk_ov001_022e0968, ov001, 2026-11-21)"
+ZoneActSelect_DrawRecordRanks:
+  confidence: tentative
+  evidence: "E7: for the 3 acts sets sprite anim = grade[zone][i]*3+0x1a from the table written by 022e06e4, highlighted when i == gZoneActSelectResult (was ZoneActSelect_Unk_ov001_022e09d0, ov001, 2026-11-21)"
+ZoneActSelect_DrawRecordScores:
+  confidence: tentative
+  evidence: "E7: splits record[zone][i] (from ZoneActSelect_LoadRecords) into 7 decimal digits with leading-zero suppression and draws them per act row, highlighting the selected act (was ZoneActSelect_Unk_ov001_022e0ad0, ov001, 2026-11-21)"
+ZoneActSelect_DrawActLabels:
+  confidence: tentative
+  evidence: "E7: draws 3 act sprites (anim i*3+0xf) with highlight/priority when i == gZoneActSelectResult; called from every ZoneActSelect state (was ZoneActSelect_Unk_ov001_022e0c5c, ov001, 2026-11-21)"
+ZoneActSelect_InitBackgroundsAndSprites:
+  confidence: tentative
+  evidence: "E6: Background_Init/Draw on two BGs, decompresses resource data into work buffer, then ZoneActSelect_InitSprite for all 38 sprites; called once from ZoneActSelect_Create after LoadAssets (cf. Ending_InitBackgroundsAndSprites) (was ZoneActSelect_Unk_ov001_022e153c, ov001, 2026-11-21)"
+ZoneMap_RestoreGraphics:
+  confidence: tentative
+  evidence: "E6/E7: Background_Draw on map BG and re-applies AnimatorSprite_SetAnimation(cur anim) to all 32 node-layer sprites; only caller restores the map after ZoneActSelect is cancelled (State_022e736c) (was ZoneMap_Unk_ov001_022e19d0, ov001, 2026-11-21)"
+ZoneMap_DrawAlphaGradient:
+  confidence: tentative
+  evidence: "E5/E4: G3 ortho, DISP3DCNT blend on, then per step emits a full-width quad with POLYGON_ATTR alpha = loop counter (c..d) across rows a..b: alpha gradient (was ZoneMap_Unk_ov001_022e2bd8, ov001, 2026-11-21)"
+ZoneMap_IsBlazeNaviAvailable:
+  confidence: tentative
+  evidence: "E6: gate on Blaze story step (w+8) before every ZoneMap navi message call (8090, 2f0c, 5d08, 5e98); false path calls 022e3180(0) which hides the navi (was ZoneMap_Unk_ov001_022e2ee8, ov001, 2026-11-21)"
+ZoneMap_IsSonicNaviAvailable:
+  confidence: tentative
+  evidence: "E6: gate on Sonic story step (w+4) before every ZoneMap navi message call (8090, 2f0c, 5d08, 5f04); false path calls 022e3180(0) which hides the navi (was ZoneMap_Unk_ov001_022e2f00, ov001, 2026-11-21)"
+ZoneMap_SetNodeNaviMessage:
+  confidence: tentative
+  evidence: "E6: called with the node index hit by ZoneMap_IsPointOnNode in State_ScrollView; per character mode maps node to a message id passed to 022e3180 (navi message) (was ZoneMap_Unk_ov001_022e2f0c, ov001, 2026-11-21)"
+ZoneMap_SetNaviMessage:
+  confidence: tentative
+  evidence: "E6/E7: operates on the ZoneMap_InitNavi work (map+0x1cc4); per message id calls NaviMsg_ShowMessage(track,time), NaviMsg_SetFaceAnim, NaviMsg_FadeVisible/SetVisible; id 0/2 hide it (was ZoneMap_Unk_ov001_022e3180, ov001, 2026-11-21)"
+ZoneMap_DrawBackButton:
+  confidence: tentative
+  evidence: "E7: draws scroll-arrow obj sprite[4] at (8,0x98), the hitbox of ZoneMap_IsCornerButtonOrBPressed, in State_ScrollView where that button exits (was ZoneMap_Unk_ov001_022e345c, ov001, 2026-11-21)"
+ZoneMap_RestartBackButtonAnim:
+  confidence: tentative
+  evidence: "E7: AnimatorSprite_SetAnimation(sprite[4] of scroll-arrow obj, 0) on first frame of State_ScrollView; same sprite drawn by 022e345c (was ZoneMap_Unk_ov001_022e34dc, ov001, 2026-11-21)"
+ZoneMap_DrawScrollButton:
+  confidence: tentative
+  evidence: "E7: draws scroll-arrow obj sprite[5] at (8,0x98), the hitbox of ZoneMap_IsCornerButtonOrXPressed, in State_SelectNode where that button enters State_ScrollView (was ZoneMap_Unk_ov001_022e349c, ov001, 2026-11-21)"
+ZoneMap_RestartScrollButtonAnim:
+  confidence: tentative
+  evidence: "E7: AnimatorSprite_SetAnimation(sprite[5] of scroll-arrow obj, 4) on first frame of State_SelectNode; same sprite drawn by 022e349c (was ZoneMap_Unk_ov001_022e3510, ov001, 2026-11-21)"
+ZoneMap_SetScrollArrowBlink:
+  confidence: tentative
+  evidence: "E7: sets scroll-arrow obj +8 and resets timer +0; +8 gates the timer in AnimateScrollArrows and the timer%24 blink in DrawScrollArrows (was ZoneMap_Unk_ov001_022e35c4, ov001, 2026-11-21)"
+ZoneMap_SetCharModelRotY:
+  confidence: tentative
+  evidence: "E7: stores to char-model +0x10, the field 022e397c feeds to MTX_RotY33_ via FX_SinCosTable_ (was ZoneMap_Unk_ov001_022e3840, ov001, 2026-11-21)"
+ZoneMap_SetCharModelAnim:
+  confidence: tentative
+  evidence: "E7: sets char-model current anim +0x1c (saving previous at +0x20); 022e397c calls Model_SetAnimation when cur != prev (was ZoneMap_Unk_ov001_022e3844, ov001, 2026-11-21)"
+ZoneMap_DrawCharModel:
+  confidence: tentative
+  evidence: "E4/E6: sets lighting/ortho/look-at, builds RotY*RotX matrix, switches model animation, then Model_Draw on the char model at map+0x1994; called from ZoneMap_UpdateView (was ZoneMap_Unk_ov001_022e397c, ov001, 2026-11-21)"
+ZoneMap_ClearPath:
+  confidence: tentative
+  evidence: "E7: zeroes path[idx] point count and positions and sets all 8 dot types to 2 (the type ZoneMap DrawNodeLayer skips) (was ZoneMap_Unk_ov001_022e3ed8, ov001, 2026-11-21)"
+ZoneMap_InitPath:
+  confidence: tentative
+  evidence: "E7: builds path[idx] from node i0 to node i3 via ZoneMap_BuildSplinePath/BuildLinePath with KeyframeAnim control points, sets count and dot types (was ZoneMap_Unk_ov001_022e3f18, ov001, 2026-11-21)"
+ZoneMap_InitBlazePaths:
+  confidence: tentative
+  evidence: "E6/E7: builds paths 11..21 and clears 0..10; called from 022e49c8 when ZoneMap_IsBlaze; 11..21 are the mode-1 indices returned by 022e6998 (was ZoneMap_Unk_ov001_022e4000, ov001, 2026-11-21)"
+ZoneMap_InitSonicPaths:
+  confidence: tentative
+  evidence: "E6/E7: builds paths 0..10 and clears 11..21; called from 022e49c8 when !ZoneMap_IsBlaze; 0..10 are the mode-0 indices returned by 022e6998 (was ZoneMap_Unk_ov001_022e4198, ov001, 2026-11-21)"
+ZoneMap_InitBlazeNodes:
+  confidence: tentative
+  evidence: "E6/E7: fills node table {x,y,id,type} from KeyframeAnim positions; called from 022e49c8 only when ZoneMap_IsBlaze (was ZoneMap_Unk_ov001_022e4494, ov001, 2026-11-21)"
+ZoneMap_InitSonicNodes:
+  confidence: tentative
+  evidence: "E6/E7: fills node table {x,y,id,type} from KeyframeAnim positions; called from 022e49c8 only when !ZoneMap_IsBlaze (was ZoneMap_Unk_ov001_022e4748, ov001, 2026-11-21)"
+ZoneMap_InitNodesAndPaths:
+  confidence: tentative
+  evidence: "E6: ZoneMap_IsBlaze ? (Blaze node table + Blaze paths) : (Sonic node table + Sonic paths), then 022e432c (was ZoneMap_Unk_ov001_022e49c8, ov001, 2026-11-21)"
+ZoneMap_DrawNodeLayer:
+  confidence: tentative
+  evidence: "E7: draws node sprites (by node type), path dots (by dot type), and ZoneMap_DrawNodeIcons, all offset by camera; called from ZoneMap_UpdateView; same struct as ZoneMap_ReleaseNodeSprites (was ZoneMap_Unk_ov001_022e4b5c, ov001, 2026-11-21)"
+ZoneMap_InitNodeLayer:
+  confidence: tentative
+  evidence: "E7: clears the map+0x674 node struct, stores camera ptr, calls 022e49c8 (nodes+paths) and ZoneMap_InitSprite for the 32 sprites ZoneMap_ReleaseNodeSprites frees; called from ZoneMap_InitWork (was ZoneMap_Unk_ov001_022e4eb8, ov001, 2026-11-21)"
+ZoneMap_UpdateMapBg:
+  confidence: tentative
+  evidence: "E5/E7: per frame on map BG work (map+4): G2x_SetBGyAffine_ scroll or HDMA table (022e519c), alpha gradients, ScreenTransfer_QueueRectRaw when x crosses an 8px column; called from ZoneMap_UpdateView (was ZoneMap_Unk_ov001_022e54b4, ov001, 2026-11-21)"
+ZoneMap_SetMapBgIndex:
+  confidence: tentative
+  evidence: "E7: stores map BG +0x54, the index 022e54b4 uses to select data_ov001_0231639c[idx-1] (was ZoneMap_Unk_ov001_022e561c, ov001, 2026-11-21)"
+ZoneMap_ReleaseMapBg:
+  confidence: tentative
+  evidence: "E7: ZoneMap_StopHdma and Heap_Free of map BG buffer +0x50 allocated by ZoneMap_InitMapBg (which also starts the HDMA); called from ZoneMap_ReleaseWork (was ZoneMap_Unk_ov001_022e5620, ov001, 2026-11-21)"
+ZoneMap_SetPathDotsType:
+  confidence: tentative
+  evidence: "E7: sets every dot type of path[i] (node struct +0x110) to v; type 2 hidden, 0/1 select sprite in node draw (was ZoneMap_Unk_ov001_022e57a4, ov001, 2026-11-21)"
+ZoneMap_RevealBlazeNodes:
+  confidence: tentative
+  evidence: "E7: by Blaze story step (w+8) sets node types to 0/1/5 and path dots visible; called by 022e5a20 when mode == 1 (was ZoneMap_Unk_ov001_022e57d4, ov001, 2026-11-21)"
+ZoneMap_RevealSonicNodes:
+  confidence: tentative
+  evidence: "E7: by Sonic story step (w+4) sets node types and path dots visible; called by 022e5a20 when mode == 0 (was ZoneMap_Unk_ov001_022e5928, ov001, 2026-11-21)"
+ZoneMap_RevealNodesForStory:
+  confidence: tentative
+  evidence: "E6: switch on w->mode (ZoneMap_IsBlaze): 0 -> 022e5928 (Sonic), 1 -> 022e57d4 (Blaze); called from 022e8090 init (was ZoneMap_Unk_ov001_022e5a20, ov001, 2026-11-21)"
+ZoneMap_Action_WaitTimer:
+  confidence: tentative
+  evidence: "E7: sets timer +0x74 = 0, duration +0x80 = arg and state ZoneMap_State_WaitTimer, which compares +0x74 against +0x80 (was ZoneMap_Unk_ov001_022e5a48, ov001, 2026-11-21)"
+ZoneMap_CheckNewEmerald:
+  confidence: tentative
+  evidence: "E6: compares save emerald bits (gSaveData+0xf vs seen copy) or story step to find a newly gained emerald, calls NaviM_SetNewEmerald and SaveData_CommitOrShowError (was ZoneMap_Unk_ov001_022e5a68, ov001, 2026-11-21)"
+ZoneMap_Action_FadeOutExit:
+  confidence: tentative
+  evidence: "E7: sets navi message 0x1e, resets char model, then gTaskCurrent->func = ZoneMap_State_FadeOutExit; called from State_WaitPauseClosed (was ZoneMap_Unk_ov001_022e5d08, ov001, 2026-11-21)"
+ZoneMap_Action_ScrollToPos:
+  confidence: tentative
+  evidence: "E7: stores current scroll<<12, target (x,y) and speed, sets state 022e6fbc which moves scroll toward the target; called after ZoneMap_CalcClampedScroll (was ZoneMap_Unk_ov001_022e5d7c, ov001, 2026-11-21)"
+ZoneMap_Action_MoveToNode:
+  confidence: tentative
+  evidence: "E7: sets next node +0x18, path +0x1c = 022e6998(mode,cur,next) and state 022e794c, same sequence State_SelectNode uses on node choice (was ZoneMap_Unk_ov001_022e5db0, ov001, 2026-11-21)"
+ZoneMap_Action_ScrollToPathStart:
+  confidence: tentative
+  evidence: "E7: stores path idx/target node/next node and speed 0x3000, sets state 022e7dd8 which scrolls to node[target] then enters ZoneMap_State_MoveAlongPath (was ZoneMap_Unk_ov001_022e5e28, ov001, 2026-11-21)"
+ZoneMap_Action_PlayTalkDemoBlaze:
+  confidence: tentative
+  evidence: "E7: gates navi on Blaze step (022e2ee8), clears demo fields, SysSound_StopBGM, sets state ZoneMap_State_PlayTalkDemo (was ZoneMap_Unk_ov001_022e5e98, ov001, 2026-11-21)"
+ZoneMap_Action_PlayTalkDemoSonic:
+  confidence: tentative
+  evidence: "E7: gates navi on Sonic step (022e2f00), clears demo fields, SysSound_StopBGM, sets state ZoneMap_State_PlayTalkDemo (was ZoneMap_Unk_ov001_022e5f04, ov001, 2026-11-21)"
+ZoneMap_ConfirmNode:
+  confidence: tentative
+  evidence: "E6 (asm): on A or touch of current node in State_SelectNode maps node to zone, checks ZoneMap_IsSonic/BlazeZoneSelectable, then ZoneMap_Action_FadeOut+SE 0xd or ZoneMap_Action_ShowMsgBox12+SE 0xb (was ZoneMap_Unk_ov001_022e612c, ov001, 2026-11-21)"
+ZoneMap_RunBlazeStoryStep:
+  confidence: tentative
+  evidence: "E6: called by ZoneMap_SelectNextState for mode 1; switch on Blaze story step (w+8) chooses the next action and writes next step to +0x98 (was ZoneMap_Unk_ov001_022e61f4, ov001, 2026-11-21)"
+ZoneMap_RunSonicStoryStep:
+  confidence: tentative
+  evidence: "E6: called by ZoneMap_SelectNextState for mode 0; switch on Sonic story step (w+4) chooses the next action and writes next step to +0x94 (was ZoneMap_Unk_ov001_022e6538, ov001, 2026-11-21)"
+ZoneMap_GetPathIndex:
+  confidence: tentative
+  evidence: "E7: (mode, from node, to node) -> path index, 0..10 for mode 0 and 11+ for mode 1, matching the paths built by 022e4198/022e4000 (was ZoneMap_Unk_ov001_022e6998, ov001, 2026-11-21)"
+ZoneMap_GetNextNodeFromTouch:
+  confidence: tentative
+  evidence: "E7: touch counterpart of ZoneMap_GetNextNodeFromPad: uses gTouchState + scroll with ZoneMap_IsPointOnNode over adjacency table data_ov001_0231649c; returns 0x12 for none (was ZoneMap_Unk_ov001_022e6c90, ov001, 2026-11-21)"
+ZoneMap_State_ScrollToPos:
+  confidence: tentative
+  evidence: "E7: moves scroll (+0x50/+0x54) toward target (+0x5c/+0x60) at speed +0x58 with FX_Sqrt normalisation, then ZoneMap_SelectNextState on arrival (was ZoneMap_Unk_ov001_022e6fbc, ov001, 2026-11-21)"
+ZoneMap_State_MoveToNode:
+  confidence: tentative
+  evidence: "E6 (asm): state set after choosing next node/path (State_SelectNode, 022e5db0); uses ZoneMap_GetDirectionAngle and char-model anim/rot setters, ends with node navi message and ZoneMap_SelectNextState (was ZoneMap_Unk_ov001_022e794c, ov001, 2026-11-21)"
+ZoneMap_State_ScrollToPathStart:
+  confidence: tentative
+  evidence: "E7: moves scroll toward clamped node[target] position with FX_Sqrt normalisation, then sets ZoneMap_State_MoveAlongPath (was ZoneMap_Unk_ov001_022e7dd8, ov001, 2026-11-21)"
+ZoneMap_ReleaseDisplay:
+  confidence: tentative
+  evidence: "E6: calls 022e85c8 then ZoneMap_EnableBlend(FALSE); only caller ZoneMap_Destructor (was ZoneMap_Unk_ov001_022e8514, ov001, 2026-11-21)"
+ZoneMap_ResetDisplay:
+  confidence: tentative
+  evidence: "E5: backdrop palettes, DISPCNT mode clear, POWCNT, all GX_DisableBankFor* and Vram_SetBankFor*(0), Vram reset, clears gDisplayMain/Sub; called from ZoneMap_InitDisplay (was ZoneMap_Unk_ov001_022e85c8, ov001, 2026-11-21)"
+ZoneMapPause_DrawItem:
+  confidence: tentative
+  evidence: "E7: draws menu item n (0..3) with highlight when w->sel matches plus blinking cursor sprite; State_Select calls it for items 0,1 or 2,3; ZoneMapPause_IsTouchOnItem uses the same items (was ZoneMapPause_Unk_ov001_022e8be0, ov001, 2026-11-21)"
+Options_GetTouchedItem:
+  confidence: tentative
+  evidence: "E6,E7: touch hit-test returning list item index 0-5 by row (y=0x18+0x18*i), 6 for the 0x20 box at +0x260 (back), 7 for none; Options_State_Select enters the item on <6 and plays SE 1 + back action on 6 (was Options_Unk_ov001_022c8bc0, ov001, 2026-11-21)"
+Options_InitCursorMoveAnims:
+  confidence: tentative
+  evidence: "E6: only caller Options_State_Select on up/down repeat; KeyframeAnim_Init new/old item anims (old played reverse) then Options_ResetItemPageState (was Options_Unk_ov001_022cb708, ov001, 2026-11-21)"
+Options_InitExitAnims:
+  confidence: tentative
+  evidence: "E6: only caller Options_Action_Exit; sets the exit keyframe anims of the list items and frame parts (was Options_Unk_ov001_022cb834, ov001, 2026-11-21)"
+Options_InitBackTouchedAnims:
+  confidence: tentative
+  evidence: "E6: only caller Options_Action_BackTouched (touch on back button); sets the back keyframe anims (was Options_Unk_ov001_022cb96c, ov001, 2026-11-21)"
+Options_InitEnterItemAnims:
+  confidence: tentative
+  evidence: "E6: only caller Options_Action_EnterItem; KeyframeAnim_Init item anims (cur tbl[4], previous tbl[6], others) and frame parts (was Options_Unk_ov001_022cbac0, ov001, 2026-11-21)"
+Options_InitSelectAnims:
+  confidence: tentative
+  evidence: "E6: only caller Options_Action_Select (enters Options_State_Select); sets the list selection keyframe anims (was Options_Unk_ov001_022cbb7c, ov001, 2026-11-21)"
+Options_InitOpenAnims:
+  confidence: tentative
+  evidence: "E6: only caller Options_CreateMenuTask, whose task starts in Options_State_WaitOpenAnims; sets the opening keyframe anims (was Options_Unk_ov001_022cbc2c, ov001, 2026-11-21)"
+Options_ResetItemPageState:
+  confidence: tentative
+  evidence: "E7: switch on items[cur].type (0-5) resets that page's choice fields (difficulty from cfg+8, time limit from cfg+0xc, sound-test track text via SoundTest_BuildTrackNameText) and sets sub DISPCNT BG layers (0x1a00 for sound test) (was Options_Unk_ov001_022cc044, ov001, 2026-11-21)"
+Options_Action_BackTouched:
+  confidence: tentative
+  evidence: "E6: called by Options_State_Select when Options_GetTouchedItem returns 6 (after SE 1); inits back anims and sets state Options_State_Unk_ov001_022cccbc, which draws the back button pressed and calls Options_Action_Exit after 10 frames (was Options_Unk_ov001_022cdd7c, ov001, 2026-11-21)"
+Options_Action_EnterItem:
+  confidence: tentative
+  evidence: "E6: called by Options_State_Select on confirm with (sel, old); resets per-item page data by sel, SysSound_PlaySE(0), sets gTaskCurrent func = OptionsMenu_State_EnterItem (was Options_Unk_ov001_022cdf20, ov001, 2026-11-21)"
+Options_IsTimeLimitAvailable:
+  confidence: tentative
+  evidence: "E6,E7: returns 1; Options_Create stores it in work+0x20 = item ptr slot 2, and item type 2 dispatches OptionsMenu_Action_TimeLimit in OptionsMenu_State_EnterItem (slot 3 is Options_IsSoundTestUnlocked) (was Options_Unk_ov001_022c8b54, ov001, 2026-11-21)"
+Options_IsDifficultyAvailable:
+  confidence: tentative
+  evidence: "E6,E7: returns 1; Options_Create stores it in item ptr slot 1 (work+0x1c); item type 1 enters the state that calls OptionsMenu_SetDifficultyChoice (was Options_Unk_ov001_022c8b58, ov001, 2026-11-21)"
+Options_IsEraseDataAvailable:
+  confidence: tentative
+  evidence: "E6,E7: returns 1; Options_Create stores it in item ptr slot 4 (work+0x28); item type 4 dispatches OptionsMenu_Action_EraseData (was Options_Unk_ov001_022c8b34, ov001, 2026-11-21)"
+Options_IsDownloadPlayAvailable:
+  confidence: tentative
+  evidence: "E6,E7: returns 1; Options_Create stores it in item ptr slot 5 (work+0x2c); item type 5 leads to the confirm state calling OptionsMenu_StartDownloadPlayPreview (was Options_Unk_ov001_022c8b30, ov001, 2026-11-21)"
+OptionsMenu_InitEnterItemAnims:
+  confidence: tentative
+  evidence: "E6: called by every OptionsMenu item action (Action_TimeLimit and siblings) before entering the item state; sets item anims tbl[4]/tbl[5] to last frame, cfg state 4 (was OptionsMenu_Unk_ov001_022cb770, ov001, 2026-11-21)"
+OptionsMenu_InitBackAnims:
+  confidence: tentative
+  evidence: "E6: only caller OptionsMenu_Action_Back; starts item anims tbl[7]/tbl[8], cfg state 5 (was OptionsMenu_Unk_ov001_022cba1c, ov001, 2026-11-21)"
+OptionsMenu_Action_Back:
+  confidence: tentative
+  evidence: "E6: called from every OptionsMenu item state on B/back; resets choice fields, OptionsMenu_InitBackAnims, Pad_Reset, func = OptionsMenu_State_WaitOpenAnims, clears gSaveDataBusy and gSystemFlags bit 0x10 (was OptionsMenu_Unk_ov001_022cdd28, ov001, 2026-11-21)"
+OptionsMenu_Action_Difficulty:
+  confidence: tentative
+  evidence: "E6: OptionsMenu_State_EnterItem case 1; same body as OptionsMenu_Action_TimeLimit but sets the state that calls OptionsMenu_SetDifficultyChoice (was OptionsMenu_Unk_ov001_022cde60, ov001, 2026-11-21)"
+OptionsMenu_Action_DownloadPlay:
+  confidence: tentative
+  evidence: "E6: OptionsMenu_State_EnterItem case 5; sets state 0x022ccb5c whose chain ends in OptionsMenu_StopWireless + OptionsMenu_StartDownloadPlayPreview on msgbox confirm (was OptionsMenu_Unk_ov001_022cdda0, ov001, 2026-11-21)"
+OptionsMenu_Action_ExitOptions:
+  confidence: tentative
+  evidence: "E6,E7: sets parent state 8, Options_CreateFadeTask(0,-16,8,8), delayed SE, func = state 0x022ccbe0 which after 30 frames sets parent state 10 + exit selection consumed by Options_Main (ExitToRecords/TimeAttackMenu...) (was OptionsMenu_Unk_ov001_022cdca4, ov001, 2026-11-21)"
+OptionsMenu_DrawListBackButton:
+  confidence: tentative
+  evidence: "E7: draws sprite at work+0x260/+0x262, the 0x20 box Options_GetTouchedItem reports as 6 (back); anim 1 (pressed) only in the back-touched state Options_State_Unk_ov001_022cccbc (was OptionsMenu_Unk_ov001_022cbdf0, ov001, 2026-11-21)"
+OptionsMenu_DrawPageBackButton:
+  confidence: tentative
+  evidence: "E7: drawn by every OptionsMenu_DrawPage0-5 at (x+0xd8,y+0x90), the exact rect of OptionsMenu_IsBackButtonTouched; mode 1 when the back-press timer unk1c >= 0 (was OptionsMenu_Unk_ov001_022ca2d4, ov001, 2026-11-21)"
+SoundTest_BuildTrackNameText:
+  confidence: tentative
+  evidence: "E7: converts the 0x30-byte entry [track] of data_ov001_0231f048 (A-Z, 0-9, punctuation) to 0x29 glyph indices; called after SoundTest_LoadTrack(sub, cur) in OptionsMenu_State_SoundTest (was OptionsMenu_Unk_ov001_022c90a8, ov001, 2026-11-21)"
+OptionsMenu_DrawSoundTestTrackName:
+  confidence: tentative
+  evidence: "E7: OptionsMenu_DrawPage3 (sound-test page) draws the two 41-glyph text buffers that SoundTest_BuildTrackNameText fills, with scroll offset (was OptionsMenu_Unk_ov001_022c9a2c, ov001, 2026-11-21)"
+OptionsMenu_DrawSoundTestTrackNumber:
+  confidence: tentative
+  evidence: "E7: OptionsMenu_DrawPage3 passes the current track (work+0x4c, the index given to SoundTest_BuildTrackNameText); draws 3 decimal digit sprites of n+1 (was OptionsMenu_Unk_ov001_022c9c0c, ov001, 2026-11-21)"
+OptionsMenu_DrawDownloadPlayChoiceLeft:
+  confidence: tentative
+  evidence: "E7: OptionsMenu_DrawPage5 (item 5 download play); highlighted when choice==0 with cursor at x+0x38,y+0x77 = OptionsMenu_IsLeftChoiceTouched rect, which sets choice 0 in the download-play state (was OptionsMenu_Unk_ov001_022c970c, ov001, 2026-11-21)"
+OptionsMenu_DrawDownloadPlayChoiceRight:
+  confidence: tentative
+  evidence: "E7: OptionsMenu_DrawPage5; highlighted when choice==1 with cursor at x+0x80,y+0x77 = OptionsMenu_IsRightChoiceTouched rect, which sets choice 1 (was OptionsMenu_Unk_ov001_022c9570, ov001, 2026-11-21)"
+TitleMenuBgSlideTask_Main:
+  confidence: tentative
+  evidence: "E7: task main (tag 0x3000) updates 6 keyframe anims, collects up to 3 on-screen x (-0x100..0x100) and applies them via TitleMenu_ApplyBgSlideLayers; on finish sets parent+0x258=1 and destroys itself (was TitleMenu_Unk_ov001_022d83fc, ov001, 2026-11-21)"
+TitleMenu_ApplyBgSlideLayers:
+  confidence: tentative
+  evidence: "E7: sorts 3 layers by priority, queues their palette copies and writes 512-wrapped scroll x/y to gDisplayMain[i]/gDisplaySub[i]; only caller TitleMenuBgSlideTask_Main (was TitleMenu_Unk_ov001_022d77a8, ov001, 2026-11-21)"
+TitleMenu_CreateBgSlideTaskAtMidpoint:
+  confidence: tentative
+  evidence: "E7: Task_Create(TitleMenuBgSlideTask_Main) with anims set to half duration and start/end from table data_ov001_0231616c[b]; called by TitleMenu_Start* entry points (was TitleMenu_Unk_ov001_022d74dc, ov001, 2026-11-21)"
+TitleMenu_CreateBgSlideTaskReverse:
+  confidence: tentative
+  evidence: "E7: Task_Create(TitleMenuBgSlideTask_Main) with KeyframeAnim_PlayReverse on all 6 anims, from layout b to a (was TitleMenu_Unk_ov001_022d75dc, ov001, 2026-11-21)"
+TitleMenu_CreateBgSlideTaskForward:
+  confidence: tentative
+  evidence: "E7: Task_Create(TitleMenuBgSlideTask_Main) with forward anims, from layout a to b (was TitleMenu_Unk_ov001_022d76c4, ov001, 2026-11-21)"
+TitleMenu_StartVsBgSlideReverse:
+  confidence: tentative
+  evidence: "E6: body TitleMenu_CreateBgSlideTaskReverse(gTitleMenuVsMenuOwner,0,0); called by the VsMenu close actions (was TitleMenu_Unk_ov001_022d6dac, ov001, 2026-11-21)"
+TitleMenu_StartVsBgSlideForward:
+  confidence: tentative
+  evidence: "E6: body TitleMenu_CreateBgSlideTaskForward(gTitleMenuVsMenuOwner,0,0); called by VsMenu states (was TitleMenu_Unk_ov001_022d6dc0, ov001, 2026-11-21)"
+TitleMenu_StartFadeToBlack:
+  confidence: tentative
+  evidence: "E7: replaces tag-0x4000 task with TitleMenuFadeTask_Main {from 0, to -16, dur a, delay b}; chosen in TitleMenu state when items[4].flags & 2 (was TitleMenu_Unk_ov001_022d78f4, ov001, 2026-11-21)"
+TitleMenu_StartFadeToWhite:
+  confidence: tentative
+  evidence: "E7: same as TitleMenu_StartFadeToBlack but to +16 brightness; chosen when items[4].flags & 1 (was TitleMenu_Unk_ov001_022d7968, ov001, 2026-11-21)"
+TitleMenu_DrawBackButton:
+  confidence: tentative
+  evidence: "E6,E7: draws page entry 4; TitleMenu_IsBackButtonTouched sets sel=4 and enters state 0x022d86b0, which draws it with mode 2 (pressed) (was TitleMenu_Unk_ov001_022d7b7c, ov001, 2026-11-21)"
+TitleMenu_DrawItemButton:
+  confidence: tentative
+  evidence: "E6: page tasks draw entries 0-3 (the selectable items) with it, mode 3 when i == sel (was TitleMenu_Unk_ov001_022d7c04, ov001, 2026-11-21)"
+TitleMenu_State_WaitOpenAnims:
+  confidence: tentative
+  evidence: "E6: initial func of TitleMenu_CreatePageTask; updates item anims and when all finished and the BG slide flag (+0x258) is set switches to the input state 0x022d8938 (was TitleMenu_Unk_ov001_022d8b54, ov001, 2026-11-21)"
+TitleMenu_ReleaseAssets:
+  confidence: tentative
+  evidence: "E6: only caller TitleMenu_Destructor; ObjVram_Free of 19 sprites, frees 9 resources, clears palettes/DISPCNT layers, Vram_DisableAllBanks, zeroes BG offsets (was TitleMenu_Unk_ov001_022d8c78, ov001, 2026-11-21)"
+TitleDemo_DrawBlazeModel:
+  confidence: tentative
+  evidence: "E7,E8: draws the model at work+0x14c, which TitleDemo_LoadArchives builds from ply archive file 3 = blz.nsbmd (narc/player_lz7.narc) (was TitleDemo_Unk_ov001_022d58ac, ov001, 2026-11-21)"
+TitleDemo_DrawSonicModel:
+  confidence: tentative
+  evidence: "E7,E8: draws the model at work+0x14, built from ply archive file 0 = son.nsbmd (narc/player_lz7.narc), mirrored x scale (was TitleDemo_Unk_ov001_022d592c, ov001, 2026-11-21)"
+VsMenu_IsStartButtonTouched:
+  confidence: tentative
+  evidence: "E6: touch-down in rect (0x10-0xc0,0x90-0xa8); both callers test it as the touch alternative to VsMenu_IsStartPressed and play the decide SE (was VsMenu_Unk_ov001_022da500, ov001, 2026-11-21)"
+VsMenu_InitNameSlots:
+  confidence: tentative
+  evidence: "E6: VsMenu_State_Init step 2; decompresses the font resource, ObjVram_Alloc per name slot and VsMenu_ClearNameSlot/ClearNameSlot2 for 8+2 slots (was VsMenu_Unk_ov001_022dd93c, ov001, 2026-11-21)"
+VsMenu_Action_ChildOpen:
+  confidence: tentative
+  evidence: "E6: VsMenu_State_Init mode 2; sets anims 0x1c/0x1d and func = VsMenu_State_ChildOpen (was VsMenu_Unk_ov001_022dd534, ov001, 2026-11-21)"
+VsMenu_State_ChildOpen:
+  confidence: tentative
+  evidence: "E6: after opening anims finish calls WirelessLobby_StartChild, shows MsgBox and enters the parent-search state (was VsMenu_Unk_ov001_022dbfdc, ov001, 2026-11-21)"
+VsMenu_Action_ParentOpen:
+  confidence: tentative
+  evidence: "E6: VsMenu_State_Init mode 1; sets anims 0-5 and func = VsMenu_State_ParentOpen (was VsMenu_Unk_ov001_022dd574, ov001, 2026-11-21)"
+VsMenu_State_ParentOpen:
+  confidence: tentative
+  evidence: "E6: after opening anims finish calls WirelessLobby_StartParent(0) and enters state 0x022dc734 (was VsMenu_Unk_ov001_022dc81c, ov001, 2026-11-21)"
+VsMenu_Action_DownloadPlayOpen:
+  confidence: tentative
+  evidence: "E6: VsMenu_State_Init mode 0; sets anims 0-5 and func = VsMenu_State_DownloadPlayOpen (was VsMenu_Unk_ov001_022dd614, ov001, 2026-11-21)"
+VsMenu_State_DownloadPlayOpen:
+  confidence: tentative
+  evidence: "E6: after opening anims finish calls WirelessSession_RestartDownloadPlay(0) and enters state 0x022dd1ec (was VsMenu_Unk_ov001_022dd2d4, ov001, 2026-11-21)"
+VsMenu_Action_ParentCancel:
+  confidence: tentative
+  evidence: "E6: only caller VsMenu_State_ParentConfirmCancel; reverses anims 0-5, clears name slot, TitleMenu_StartVsBgSlideReverse, func = state 0x022dc1e8 (was VsMenu_Unk_ov001_022da9fc, ov001, 2026-11-21)"
+VsMenu_Action_ChildCancel:
+  confidence: tentative
+  evidence: "E6: only caller VsMenu_State_ChildConfirmCancel; reverses list anims, TitleMenu_StartVsBgSlideReverse, func = state 0x022db5f4 (was VsMenu_Unk_ov001_022da91c, ov001, 2026-11-21)"
+VsMenu_Action_DownloadPlayStop:
+  confidence: tentative
+  evidence: "E6: called by VsMenu_State_DownloadPlayConfirmStop and two download-play states; reverses anims 0-5, TitleMenu_StartVsBgSlideReverse, func = state 0x022dcad4 (was VsMenu_Unk_ov001_022daaa8, ov001, 2026-11-21)"
+WirelessLobbyChild_Dummy:
+  confidence: tentative
+  evidence: "E6: empty function in the WirelessLobbyChild accessor block; only caller a VsMenu state just before func = VsMenu_State_WaitLobbyChildGone (same Dummy style as VsMenu_Dummy) (was WirelessLobbyChild_Unk_02050e4c, main, 2026-11-21)"
+WirelessLobbyParent_Dummy:
+  confidence: tentative
+  evidence: "E6: empty function in the WirelessLobbyParent accessor block; only caller a VsMenu state just before func = VsMenu_State_WaitLobbyParentGone (was WirelessLobbyParent_Unk_020510bc, main, 2026-11-21)"
+WirelessLobbyDownloadPlay_Dummy:
+  confidence: tentative
+  evidence: "E6: empty function in the download-play lobby accessor block; only caller a VsMenu state just before func = VsMenu_State_WaitDownloadPlayGone (was WirelessLobbyDownloadPlay_Unk_02050d2c, main, 2026-11-21)"
+TalkDemo_DestructorDummy:
+  confidence: tentative
+  evidence: "E6: empty function; only caller TalkDemoScene_Destructor (same style as Records_DestructorDummy) (was TalkDemo_Unk_02061fc4, main, 2026-11-21)"
+TalkDemo_LoadMessageBgFailDummy:
+  confidence: tentative
+  evidence: "E6: empty function; only caller TalkDemo_LoadMessageBg, on the res == NULL early-return path (was TalkDemo_Unk_02061fc8, main, 2026-11-21)"
+TimeAttackMenu_GetRecordTimes:
+  confidence: tentative
+  evidence: "E7: for zone (via char-specific table) and act, or boss (a>=7), reads 5 ranked frame times and clear bits from save data_022c473c and splits each into min/10s/s/centisecond digits (3600/600/60 frames), 10s when > 0x8c9f (was TimeAttackMenu_Unk_ov001_022e9c24, ov001, 2026-11-21)"
+TimeAttackMenu_DrawRecordTime:
+  confidence: tentative
+  evidence: "E7: draws entry i's 5 time digits (placeholder sprite 17 when invalid) plus the two separators at x+0xc0/0xd8 and rank sprites (was TimeAttackMenu_Unk_ov001_022e9fe4, ov001, 2026-11-21)"
+TimeAttackMenu_LoadBgPaletteRange:
+  confidence: tentative
+  evidence: "E7: decompresses the BG palette resource (LZ/Huff/RL) and immediately flushes entries start..end via PaletteTransfer; TimeAttackMenu_InitBackgrounds calls it with 0-0xf / 0x10-0x1f (was TimeAttackMenu_Unk_ov001_022ea1b8, ov001, 2026-11-21)"
+TimeAttackMenu_Action_Back:
+  confidence: tentative
+  evidence: "E6: called when TimeAttackMenu_IsBackPressed; fade task, SysSound_PlaySE(1), switches func (was TimeAttackMenu_Unk_ov001_022eb994, ov001, 2026-11-21)"
+TimeAttackMenu_Action_Confirm:
+  confidence: tentative
+  evidence: "E6: called when TimeAttackMenu_IsConfirmPressed; fade to +16, SysSound_PlaySE(0), switches func (was TimeAttackMenu_Unk_ov001_022eba08, ov001, 2026-11-21)"
+TimeAttackMenu_State_Select:
+  confidence: tentative
+  evidence: "E6: task func set by the TimeAttackMenu enter paths; polls IsLeft/Right/Confirm/BackPressed and calls TimeAttackMenu_Action_Confirm/Back (was TimeAttackMenu_Unk_ov001_022eb294, ov001, 2026-11-21)"
+TransformDemo_UpdateSound:
+  confidence: tentative
+  evidence: "E6: called every frame from TransformDemo_Main; Sound_PlaySeqArc at frame 0x1e, Sound_PlayVoice at fixed frames, NNS_SndPlayerStopSeq on skip/end (was TransformDemo_Unk_ov001_022dde00, ov001, 2026-11-21)"
+TransformDemo_ReleaseModels:
+  confidence: tentative
+  evidence: "E6: only caller TransformDemo_Destructor; Model_Release of 6 models, NNS_G3dResDefaultRelease + free of their resources and the archive buffer (was TransformDemo_Unk_ov001_022de240, ov001, 2026-11-21)"
+TransformDemo_CopyCaptureOam:
+  confidence: tentative
+  evidence: "E7: MIi_CpuCopy32 of the 0x80-entry OAM table at work+0x54 (built by TransformDemo_InitCaptureOam) to data_020885ac (0x400 bytes) (was TransformDemo_Unk_ov001_022df474, ov001, 2026-11-21)"
+TransformDemo_UpdateLightFlash:
+  confidence: tentative
+  evidence: "E6: called every frame from TransformDemo_Main; in mode 2 every 6 frames toggles between two NNS_G3dGlbLightColor/LightVector sets (was TransformDemo_Unk_ov001_022df878, ov001, 2026-11-21)"
+TransformDemo_InitCamera:
+  confidence: tentative
+  evidence: "E4,E6: only caller TransformDemo_State_Init; fills camera (fovy 0x888, near/far, aspect) and calls G3i_PerspectiveW_, then sets camera pos/target/up (was TransformDemo_Unk_ov001_022dfc54, ov001, 2026-11-21)"
+Records_LoadNameGlyphs:
+  confidence: tentative
+  evidence: "E7: Records_BuildNameGlyphs for the own name and up to 10 stored names, copies the 7 glyph tiles per name from the decompressed font, ObjVram_Alloc and VRAM-transfers them; called by Records_Start (was Records_Unk_ov001_022ecae4, ov001, 2026-11-21)"
+__count_trailing_zerol:
+  confidence: tentative
+  evidence: "E4: takes one u32 and returns its trailing-zero bit count (32 for 0); its only caller __num2dec_internal inlines MSL ansi_fp.c __count_trailing_zero exactly (low word if nonzero, else 32 + ctz(high word | 0x00100000)), whose callee is __count_trailing_zerol (was MSL_Unk_0202d55c, main, 2026-11-21)"
+SHA1PadMessage:
+  confidence: tentative
+  evidence: "E4,E6: line-for-line RFC 3174 SHA1PadMessage (0x80 terminator, zero-fill to 56 with extra block when index > 55, big-endian Length_High/Length_Low at 56..63, then process block) on the RFC field layout; sole caller DGT_Hash2GetDigest; same-era SM64DS DGT copy is identified with the same RFC function (was DGT_Unk_0200ca3c, main, 2026-11-21)"
+SHA1ProcessMessageBlock:
+  confidence: tentative
+  evidence: "E4,E8: RFC 3174 SHA1ProcessMessageBlock (W[80] expansion with SHA1CircularShift(1), four 20-round groups with K table 0x0207798c, adds into Intermediate_Hash, resets Message_Block_Index); callers DGT_Hash2SetSource and the pad routine only (was DGT_Unk_0200cb88, main, 2026-11-21)"
+CARD_ProgramBackupTask:
+  confidence: tentative
+  evidence: "E6,E7: the task CARDi_ProgramBackup runs directly or via CARDi_SetTask; loops 0x100-byte chunks copying src into backup_cache_page_buf, DC_FlushRange, then CARDi_Request(p, 8=CARD_REQ_PROGRAM_BACKUP, 10 retries), ends with CARDi_EndTask (SDK 2.x static name unknown, descriptive) (was CARD_Unk_0200fb40, main, 2026-11-21)"
+CARD_ReadBackupTask:
+  confidence: tentative
+  evidence: "E6,E7: the task CARDi_ReadBackup runs directly or via CARDi_SetTask; loops 0x100-byte chunks CARDi_Request(p, 6=CARD_REQ_READ_BACKUP, 1 retry) into the page buffer then MI_CpuCopy8 to dst, ends with CARDi_EndTask (SDK 2.x static name unknown, descriptive) (was CARD_Unk_0200fbfc, main, 2026-11-21)"
+MBi_StartParentCore:
+  confidence: tentative
+  evidence: "E4,E6: line-for-line NitroSDK mb_wm_base.c MBi_StartParentCore (sets parentParam.channel, aligns wmBuf, saves/restores parent state callback around a clear, MBi_SetChildMPMaxSize, MBi_SetParentPieceBuffer, per-child state/fileid -1 loop, callback=MBi_CommParentCallback/MBi_ParentCallback, send/recv buf sizes, MB_InitSendGameInfoStatus, MBi_StartCommon, PXI_IsCallbackReady(WVR)); MB_StartParent clears is_started_ex then tail-calls it exactly as the SDK (was MB_Unk_0201882c, main, 2026-11-21)"
+Runtime_FloatIsUnordered:
+  confidence: tentative
+  evidence: "E8: body returns 1 if either float argument is NaN ((x<<1) > 0xff000000) else 0; uncalled CW soft-float helper between _fcmpge and the double compares (official name unknown, descriptive) (was Runtime_Unk_0202e698, main, 2026-11-21)"
+Runtime_FloatIsOrdered:
+  confidence: tentative
+  evidence: "E8: body returns 0 if either float argument is NaN ((x<<1) > 0xff000000) else 1; companion of Runtime_FloatIsUnordered in the CW soft-float block (official name unknown, descriptive) (was Runtime_Unk_0202e6bc, main, 2026-11-21)"
+Runtime_DoubleIsUnordered:
+  confidence: tentative
+  evidence: "E8: body returns 1 if either double argument (r0:r1, r2:r3) is NaN (exponent all ones via cmn 0x200000,hi<<1 and nonzero mantissa) else 0; sits after _dcmpge in the CW soft-float block (official name unknown, descriptive) (was Runtime_Unk_0202ece4, main, 2026-11-21)"
+Runtime_DoubleIsOrdered:
+  confidence: tentative
+  evidence: "E8: body returns 0 if either double argument is NaN (same 0x200000 exponent test) else 1; companion of Runtime_DoubleIsUnordered (official name unknown, descriptive) (was Runtime_Unk_0202ed34, main, 2026-11-21)"
+WBT_StartQueuedCommand:
+  confidence: tentative
+  evidence: "E6,E7: when no command is running and the queued command (work+0x9c) is set, bumps the command counter, copies it into the running slot (work+0), inits per-peer packet bitmaps for GET_BLOCK(4)/GET_BLOCKINFO(6), builds the first REQ_SYNC/REQ_GET_BLOCK/REQ_GET_BLOCKINFO/REQ_USER_DATA packet and clears the queue; offered the buffer by both send-packet builders right after WBT_MakeCurrentCommandPacket (was WBT_Unk_020130e8, main, 2026-11-21)"
+WBT_MakeCurrentCommandPacket:
+  confidence: tentative
+  evidence: "E6,E7: switches on the running command type (2 SYNC, 4 GET_BLOCK, 6 GET_BLOCKINFO, 10 USER_DATA) and writes its request packet (REQ_SYNC with packet sizes, next missing packet via the bitmap search or REQ_GET_BLOCK_DONE, REQ_USER_DATA); called by both send-packet builders before the queued command (was WBT_Unk_02013350, main, 2026-11-21)"
+WBT_RespondGetBlockInfo:
+  confidence: tentative
+  evidence: "E6,E7: for a peer record complete (state 2) with command 6 (WBT_GetBlockInfo's REQ_GET_BLOCKINFO) whose block-info packet exists, writes a RES_GET_BLOCKINFO (type 7) packet with the data and resets the record; offered the send buffer by both send-packet builders (was WBT_Unk_02013554, main, 2026-11-21)"
+WBT_RespondGetBlock:
+  confidence: tentative
+  evidence: "E6,E7: for a complete peer record with command 4 (REQ_GET_BLOCK) finds the block by id, picks the packet index, and writes RES_GET_BLOCK (type 5) from the registered data or, for user blocks, after raising system callback 13 (PREPARE_SEND_DATA) (was WBT_Unk_020135f8, main, 2026-11-21)"
+WBT_RespondUserData:
+  confidence: tentative
+  evidence: "E6,E7: for a complete peer record with command 10 (REQ_USER_DATA, WBT_PutUserData's type) writes a RES_USER_DATA (type 11) packet to that peer and resets the record (was WBT_Unk_02013748, main, 2026-11-21)"
+WBT_RespondGetBlockDone:
+  confidence: tentative
+  evidence: "E6,E7: for a complete peer record with command 8 (REQ_GET_BLOCK_DONE) writes RES_GET_BLOCK_DONE (type 9) carrying the block id and resets the record (was WBT_Unk_020137ac, main, 2026-11-21)"
+WBT_RespondSync:
+  confidence: tentative
+  evidence: "E6,E7: for a complete peer record with command 2 (REQ_SYNC, WBT_RequestSync's type) writes RES_SYNC (type 3) with WBT_NumOfRegisteredBlock and both data packet sizes, then resets the record (was WBT_Unk_02013814, main, 2026-11-21)"
+WBT_ParseRecvPacket:
+  confidence: tentative
+  evidence: "E6,E7: byte-wise parser of one received WBT packet into the peer record (work+0x1d4+aid*0x68): command, target bitmap (drops packets not addressed to us), counter, then per-command fields; completes running commands and raises system callbacks; called by both receive-hook wrappers (was WBT_Unk_020138b4, main, 2026-11-21)"
+WBT_NotifyCommandDone:
+  confidence: tentative
+  evidence: "E7: on a response whose counter matches the running command, clears that peer from the command's target bitmap, stores the event, calls the command callback, and marks the running command free when the bitmap is empty (cf. SDK WBTi_NotifyCompletionCallback) (was WBT_Unk_02013e7c, main, 2026-11-21)"
+WBT_NotifySystemCallback:
+  confidence: tentative
+  evidence: "E7: fills the system command block (work+0x138) with command 12 (WBT_CMD_SYSTEM_CALLBACK), peer bit, counter and the event's payload (block id, sync sizes, user data), dedups by peer counter, then calls its callback (cf. SDK WBTi_NotifySystemCallback) (was WBT_Unk_02013f58, main, 2026-11-21)"
+WBT_CopyRecvPacket:
+  confidence: tentative
+  evidence: "E7: copies one received packet into the receive buffer at index * peer data packet size (short last packet = size % packet size), FALSE when the index is past the packet count; called from WBT_ParseRecvPacket for RES_GET_BLOCK/RES_GET_BLOCKINFO (was WBT_Unk_02014078, main, 2026-11-21)"
+WBT_FindMissingPacket:
+  confidence: tentative
+  evidence: "E7: scans the packet bitmap circularly from cursor+1 for the first clear bit, stores and returns its index, -1 when all packets are received (same algorithm as SDK WBTi_FindBitmapIndex) (was WBT_Unk_02014110, main, 2026-11-21)"
+WBT_MarkPacketReceived:
+  confidence: tentative
+  evidence: "E7: sets bit n in the packet bitmap, increments the received count and records n as the last index; called right after WBT_CopyRecvPacket succeeds (was WBT_Unk_020141a8, main, 2026-11-21)"
+WBT_IsPacketReceived:
+  confidence: tentative
+  evidence: "E7: returns whether bit n of the packet bitmap (+0x14) is set; WBT_ParseRecvPacket checks it before copying a packet (was WBT_Unk_020141d8, main, 2026-11-21)"
+WBT_InitPacketBitmap:
+  confidence: tentative
+  evidence: "E7: initialises a packet bitmap: length, packet count = ceil(length / peer packet size), cursors and count zero, bitmap and buffer pointers, clears WBT_CalcPacketbitmapSize(length) bytes (cf. SDK WBTi_InitBitmap) (was WBT_Unk_020141fc, main, 2026-11-21)"
+WBT_GetBlockPacketData:
+  confidence: tentative
+  evidence: "E7: returns the address of packet idx of a block (idx * my data packet size) - block-info entries by list position for ids < 1000, registered block data by id otherwise; feeds RES_GET_BLOCK/RES_GET_BLOCKINFO (was WBT_Unk_02014288, main, 2026-11-21)"
+WBT_PickBlockPacketIndex:
+  confidence: tentative
+  evidence: "E7: chooses the packet index to send for a block id, skipping the two indices sent last for the same id (globals 0x020779a0/a8/a4), and returns -1 for an unregistered id; used only by WBT_RespondGetBlock (was WBT_Unk_02014320, main, 2026-11-21)"
+WBT_MakeResUserDataPacket:
+  confidence: tentative
+  evidence: "E7: writes packet header (cmd 11 = WBT_CMD_RES_USER_DATA, u16 target bitmap, u8 counter) and returns its length (was WBT_Unk_0201442c, main, 2026-11-21)"
+WBT_MakeReqUserDataPacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 10 (WBT_CMD_REQ_USER_DATA, WBT_PutUserData's command), size byte and the 9-byte user data, returns the length (was WBT_Unk_02014498, main, 2026-11-21)"
+WBT_MakeResGetBlockDonePacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 9 (WBT_CMD_RES_GET_BLOCK_DONE) plus the u32 block id, returns the length (was WBT_Unk_02014530, main, 2026-11-21)"
+WBT_MakeReqGetBlockDonePacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 8 (WBT_CMD_REQ_GET_BLOCK_DONE) plus the u32 block id, returns the length; sent when the bitmap search finds no missing packet (was WBT_Unk_020145b0, main, 2026-11-21)"
+WBT_MakeResGetBlockInfoPacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 7 (WBT_CMD_RES_GET_BLOCKINFO), u32 block id, u32 packet index and one packet of data (zero-filled when none), returns the length (was WBT_Unk_02014630, main, 2026-11-21)"
+WBT_MakeReqGetBlockInfoPacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 6 (WBT_CMD_REQ_GET_BLOCKINFO, WBT_GetBlockInfo's command), u32 block id and u32 packet index, returns the length (was WBT_Unk_020146f8, main, 2026-11-21)"
+WBT_MakeResGetBlockPacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 5 (WBT_CMD_RES_GET_BLOCK), u32 block id, u32 packet index and one packet of data (zero-filled when none), returns the length (was WBT_Unk_0201478c, main, 2026-11-21)"
+WBT_MakeReqGetBlockPacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 4 (WBT_CMD_REQ_GET_BLOCK, WBT_GetBlock's command), u32 block id and u32 packet index, returns the length (was WBT_Unk_02014854, main, 2026-11-21)"
+WBT_MakeResSyncPacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 3 (WBT_CMD_RES_SYNC) plus u16 block count and both u16 data packet sizes, returns the length (was WBT_Unk_020148e8, main, 2026-11-21)"
+WBT_MakeReqSyncPacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 2 (WBT_CMD_REQ_SYNC, WBT_RequestSync's command) plus both u16 data packet sizes, returns the length (was WBT_Unk_02014990, main, 2026-11-21)"
+WBT_MakeWaitPacket:
+  confidence: tentative
+  evidence: "E7: writes header cmd 1 (WBT_CMD_REQ_WAIT) only; the fallback packet both send-packet builders emit when nothing else was written (was WBT_Unk_02014a24, main, 2026-11-21)"
+WBT_MakeChildSendPacket:
+  confidence: tentative
+  evidence: "E6: sole callee of WBT_MpChildSendHook; offers the buffer to the aid-0 responders, the running command and the queued command, else writes a WAIT packet to 0xffff (was WBT_Unk_02014e08, main, 2026-11-21)"
+WBT_ParseChildRecvPacket:
+  confidence: tentative
+  evidence: "E6: sole callee of WBT_MpChildRecvHook; runs WBT_ParseRecvPacket on the work area for aid 0 (the parent) (was WBT_Unk_02014f2c, main, 2026-11-21)"
+WBT_ParseParentRecvPacket:
+  confidence: tentative
+  evidence: "E6: sole callee of WBT_MpParentRecvHook; runs WBT_ParseRecvPacket on the work area for the sending child's aid when size > 0 (was WBT_Unk_02014f5c, main, 2026-11-21)"
+WBT_MakeParentSendPacket:
+  confidence: tentative
+  evidence: "E6: sole callee of WBT_MpParentSendHook; round-robins children 1..15 through the user-data/sync/block-info/block-done responders, then the running and queued commands, then the GET_BLOCK responder per child, else writes a WAIT packet to 0xfffe (was WBT_Unk_02014f94, main, 2026-11-21)"
+WBT_FindBlockById:
+  confidence: tentative
+  evidence: "E7: walks the registered block list (head from WBT_GetBlockListHead, next at +0x28) and returns the node whose id matches, NULL otherwise (was WBT_Unk_02015540, main, 2026-11-21)"
+WBT_SetBlockListHead:
+  confidence: tentative
+  evidence: "E7: stores the registered block list head (0x02080610); WBT_RegisterBlock sets the first node and WBT_UnregisterBlock relinks through it, WBT_InitParent clears it (was WBT_Unk_0201557c, main, 2026-11-21)"
+WBT_GetBlockListHead:
+  confidence: tentative
+  evidence: "E7: returns the registered block list head (0x02080610) that WBT_NumOfRegisteredBlock, WBT_RegisterBlock and WBT_UnregisterBlock walk (was WBT_Unk_0201558c, main, 2026-11-21)"
+WBT_QueueCommand:
+  confidence: tentative
+  evidence: "E6,E7: with interrupts off, copies a 0x9c-byte command into the queued slot (0x020806b0) when WBT is initialised (0x02080600 == 1, set by WBT_InitParent/WBT_InitChild, cleared by WBT_End) and the slot is free; WBT_RequestSync/GetBlock/GetBlockInfo/PutUserData pass commands 2/4/6/10 (was WBT_Unk_0201559c, main, 2026-11-21)"
+WBT_GetQueuedCommand:
+  confidence: tentative
+  evidence: "E7: returns the queued command slot 0x020806b0 (= work 0x02080614 + 0x9c) that WBT_QueueCommand fills and WBT_StartQueuedCommand consumes (was WBT_Unk_02015634, main, 2026-11-21)"
+WBT_GetWork:
+  confidence: tentative
+  evidence: "E7: returns the WBT work area 0x02080614 (running command +0, queued +0x9c, system +0x138, peer records +0x1d4) that every WBT routine takes (was WBT_Unk_02015640, main, 2026-11-21)"
+WBT_SetMyDataPacketSize:
+  confidence: tentative
+  evidence: "E4,E7: WBT_InitParent and WBT_SetPacketSize pass send_packet_size - 14 (SDK WBT_SetPacketLength stores my_data_packet_size = own - WBT_PACKET_SIZE_MIN); child takes it from RES_SYNC (was WBT_Unk_0201564c, main, 2026-11-21)"
+WBT_SetPeerDataPacketSize:
+  confidence: tentative
+  evidence: "E4,E7: WBT_InitParent and WBT_SetPacketSize pass recv_packet_size - 14 (SDK peer_data_packet_size = peer - WBT_PACKET_SIZE_MIN); child takes it from RES_SYNC (was WBT_Unk_0201565c, main, 2026-11-21)"
+WBT_GetMyDataPacketSize:
+  confidence: tentative
+  evidence: "E7: returns the size set by WBT_SetMyDataPacketSize; used as the outgoing packet stride in WBT_GetBlockPacketData and the RES_GET_BLOCK/RES_GET_BLOCKINFO payload length (was WBT_Unk_0201566c, main, 2026-11-21)"
+WBT_GetPeerDataPacketSize:
+  confidence: tentative
+  evidence: "E7: returns the size set by WBT_SetPeerDataPacketSize; used as the receive stride in WBT_CopyRecvPacket and the packet count in WBT_InitPacketBitmap (was WBT_Unk_0201567c, main, 2026-11-21)"
+WBT_ResetCommandCounter:
+  confidence: tentative
+  evidence: "E7: zeroes the u8 command counter 0x02080604; called by WBT_InitParent (was WBT_Unk_0201568c, main, 2026-11-21)"
+WBT_IncCommandCounter:
+  confidence: tentative
+  evidence: "E4,E7: increments the u8 command counter 0x02080604 skipping 0 (as SDK my_command_counter); WBT_StartQueuedCommand calls it before stamping a new command (was WBT_Unk_020156a0, main, 2026-11-21)"
+WBT_GetCommandCounter:
+  confidence: tentative
+  evidence: "E7: returns the u8 command counter 0x02080604 that WBT_StartQueuedCommand writes into the command and packet headers (was WBT_Unk_020156c8, main, 2026-11-21)"
+TryAgain_State_Select:
+  confidence: tentative
+  evidence: "E6,E7: installed by TryAgain_State_Enter; moves the 4-item cursor on pad up/down (SE 4), confirms on A or a touch inside an item row (SE 0) and switches to TryAgain_State_Confirm (was TryAgain_State_Unk_ov001_022d3af0, ov001, 2026-11-21)"
+TryAgain_State_Confirm:
+  confidence: tentative
+  evidence: "E6,E7: installed by TryAgain_State_Select on confirm; keeps drawing the highlighted choice for 0x20 frames, then starts the fade (TryAgain_CreateFadeTask) and switches to TryAgain_State_FadeOut (was TryAgain_State_Unk_ov001_022d39ac, ov001, 2026-11-21)"
+TryAgain_State_FadeOut:
+  confidence: tentative
+  evidence: "E6,E7: installed by TryAgain_State_Confirm; after 0x10 frames destroys tag-0x1000 tasks and calls the selected exit handler from the TryAgain_Create table (Retry/PlayerSelect/TimeAttackMenu/TitleScreen) (was TryAgain_State_Unk_ov001_022d3864, ov001, 2026-11-21)"

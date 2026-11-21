@@ -1,6 +1,6 @@
 #include <nitro/types.h>
 
-void WBT_Unk_02014f5c(void *c, void *a, u16 b);
+void WBT_ParseParentRecvPacket(void *c, void *a, u16 b);
 
 void WBT_MpParentRecvHook(void *a, u16 b, void *c)
 {
@@ -13,5 +13,5 @@ void WBT_MpParentRecvHook(void *a, u16 b, void *c)
     if (b == 0xffff) {
         return;
     }
-    WBT_Unk_02014f5c(c, a, b);
+    WBT_ParseParentRecvPacket(c, a, b);
 }

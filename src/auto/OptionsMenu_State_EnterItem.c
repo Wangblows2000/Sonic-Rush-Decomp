@@ -23,11 +23,11 @@ extern unsigned char gTaskCurrent[];
 int OptionsMenu_UpdateAnims();
 int OptionsMenu_DrawItems();
 int OptionsMenu_Unk_ov001_022cde84();
-int OptionsMenu_Unk_ov001_022cde60();
+int OptionsMenu_Action_Difficulty();
 int OptionsMenu_Action_TimeLimit();
 int OptionsMenu_Action_SoundTest();
 int OptionsMenu_Action_EraseData();
-int OptionsMenu_Unk_ov001_022cdda0();
+int OptionsMenu_Action_DownloadPlay();
 
 #pragma thumb on
 
@@ -48,7 +48,7 @@ void OptionsMenu_State_EnterItem(void)
       OptionsMenu_Unk_ov001_022cde84();
       return;
     case 1:
-      OptionsMenu_Unk_ov001_022cde60();
+      OptionsMenu_Action_Difficulty();
       return;
     case 2:
       OptionsMenu_Action_TimeLimit();
@@ -60,7 +60,7 @@ void OptionsMenu_State_EnterItem(void)
       OptionsMenu_Action_EraseData();
       return;
     case 5:
-      OptionsMenu_Unk_ov001_022cdda0();
+      OptionsMenu_Action_DownloadPlay();
     }
   }
   return;

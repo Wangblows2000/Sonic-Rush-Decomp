@@ -14,7 +14,7 @@ typedef struct {
 extern UnkTask_022e8d88 *gTaskCurrent;
 
 void ZoneMapPause_Unk_ov001_022e8b5c(UnkWork_022e8d88 *w);
-void ZoneMapPause_Unk_ov001_022e8be0(UnkWork_022e8d88 *w, s32 i);
+void ZoneMapPause_DrawItem(UnkWork_022e8d88 *w, s32 i);
 void ZoneMapPause_Action_CloseA(void *t);
 void ZoneMapPause_Action_CloseB(void *t);
 
@@ -25,12 +25,12 @@ void ZoneMapPause_State_ConfirmFlash(void) {
     ZoneMapPause_Unk_ov001_022e8b5c(w);
     switch (w->mode) {
     case 3:
-        ZoneMapPause_Unk_ov001_022e8be0(w, 0);
-        ZoneMapPause_Unk_ov001_022e8be0(w, 1);
+        ZoneMapPause_DrawItem(w, 0);
+        ZoneMapPause_DrawItem(w, 1);
         break;
     case 7:
-        ZoneMapPause_Unk_ov001_022e8be0(w, 2);
-        ZoneMapPause_Unk_ov001_022e8be0(w, 3);
+        ZoneMapPause_DrawItem(w, 2);
+        ZoneMapPause_DrawItem(w, 3);
         break;
     }
     w->timer++;

@@ -45,7 +45,7 @@ extern UnkTask_022e7c50 *gTaskCurrent;
 void ZoneMap_CalcClampedScroll(void *a, s32 x, s32 y, s32 *ox, s32 *oy);
 void SysSound_PlaySE(s32 se);
 void ZoneMap_UpdateView(UnkWork_022e7c50 *w);
-void ZoneMap_Unk_ov001_022e5d7c(s32 x, s32 y, s32 z);
+void ZoneMap_Action_ScrollToPos(s32 x, s32 y, s32 z);
 void ZoneMap_SaveProgressOnPathArrival(UnkWork_022e7c50 *w);
 
 #pragma thumb on
@@ -108,7 +108,7 @@ void ZoneMap_State_MoveAlongPath(void) {
         x2 = w->sub->pos[w->cur].x;
         y2 = w->sub->pos[w->cur].y;
         ZoneMap_CalcClampedScroll((u8 *)w->sub + 4, x2, y2, &x2, &y2);
-        ZoneMap_Unk_ov001_022e5d7c(x2, y2, 0x3000);
+        ZoneMap_Action_ScrollToPos(x2, y2, 0x3000);
         ZoneMap_SaveProgressOnPathArrival(w);
     }
 }
