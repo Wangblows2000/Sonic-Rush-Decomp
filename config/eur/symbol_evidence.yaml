@@ -22817,3 +22817,6 @@ TryAgain_State_Confirm:
 TryAgain_State_FadeOut:
   confidence: tentative
   evidence: "E6,E7: installed by TryAgain_State_Confirm; after 0x10 frames destroys tag-0x1000 tasks and calls the selected exit handler from the TryAgain_Create table (Retry/PlayerSelect/TimeAttackMenu/TitleScreen) (was TryAgain_State_Unk_ov001_022d3864, ov001, 2026-11-21)"
+OS_IRQTable:
+  confidence: tentative
+  evidence: "22-entry handler table at DTCM+4 holding OS_IrqDummy and OSi_IrqTimer0-3/OSi_IrqDma0-3 in IE-bit order; indexed by OS_SetIrqFunction/OS_GetIrqFunction/OS_IrqHandler (NitroSDK os_irqTable.c) (was data_027e0004, dtcm, 2026-11-21)"

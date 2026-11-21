@@ -1,7 +1,7 @@
 #include <nitro/types.h>
 
 extern u32 data_027e0000;
-extern u32 data_027e0021;
+extern void INIT_CP15_PR2_DTCM(void);
 
 asm void init_cp15(void)
 {
@@ -17,7 +17,7 @@ asm void init_cp15(void)
     mcr p15, 0, r0, c6, c0, 0
     ldr r0, =0x200002d
     mcr p15, 0, r0, c6, c1, 0
-    ldr r0, =data_027e0021
+    ldr r0, =INIT_CP15_PR2_DTCM
     mcr p15, 0, r0, c6, c2, 0
     ldr r0, =0x8000035
     mcr p15, 0, r0, c6, c3, 0

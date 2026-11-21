@@ -10,12 +10,12 @@ extern UnkIrqCbInfo data_0207d01c[];
 
 typedef void (*UnkIrqFunc)(void);
 
-extern UnkIrqFunc data_027e0004[];
+extern UnkIrqFunc OS_IRQTable[];
 
 UnkIrqFunc OS_GetIrqFunction(u32 intrBit)
 {
     s32 i;
-    UnkIrqFunc *funcPtr = data_027e0004;
+    UnkIrqFunc *funcPtr = OS_IRQTable;
 
     for (i = 0; i < 22; i++) {
         if (intrBit & 1) {

@@ -10,7 +10,7 @@ from:0x020008cc kind:arm_call to:0x0202fcdc module:main
 from:0x020008dc kind:load to:0x027e0000 module:dtcm
 from:0x020008f4 kind:load to:0x01ff8000 module:itcm
 from:0x020008f8 kind:load to:0x02000b24 module:main
-from:0x02000ad8 kind:load to:0x027e0021 module:dtcm
+from:0x02000ad8 kind:link_time_const(INIT_CP15_PR2_DTCM=0x027e0021)
 from:0x02000ae0 kind:load to:0x027e0000 module:dtcm
 from:0x02000b00 kind:load to:0x02086880 module:main
 from:0x02000b04 kind:load to:0x02086898 module:main

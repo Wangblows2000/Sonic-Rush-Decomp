@@ -10,7 +10,7 @@ extern UnkIrqCbInfo data_0207d01c[];
 
 typedef void (*UnkIrqFunc)(void);
 
-extern UnkIrqFunc data_027e0004[];
+extern UnkIrqFunc OS_IRQTable[];
 
 void OS_SetIrqFunction(u32 intrBit, UnkIrqFunc function)
 {
@@ -25,7 +25,7 @@ void OS_SetIrqFunction(u32 intrBit, UnkIrqFunc function)
             } else if (3 <= i && i <= 6) {
                 info = &data_0207d01c[(u32)(i - 3 + 4)];
             } else {
-                data_027e0004[i] = function;
+                OS_IRQTable[i] = function;
             }
             if (info) {
                 info->func = (void (*)(void *))function;
