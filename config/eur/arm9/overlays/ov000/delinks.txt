@@ -11136,7 +11136,7 @@ src/asm_fallback/MapObj8F_Action_StartCameraRelease.c:
     complete
     .text       start:0x02308110 end:0x023082b4
 
-src/asm_fallback/Valve_State_Active.c:
+src/r4c/Valve_State_Active.c:
     complete
     .text       start:0x0231ac3c end:0x0231ad60
 
