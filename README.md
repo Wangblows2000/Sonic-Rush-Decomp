@@ -53,9 +53,10 @@ _Verified progress, updated 2026-11-16 15:31:28Z ([full dashboard](docs/progress
 ```
 config/            versions.yaml, per-version dsd configs, compiler map, symbol evidence
   eur/arm9/        dsd symbols.txt / relocs.txt / delinks.txt per module
-src/               matched translation units, one function per file (grouped by
-                   the agent that wrote them for now; asm/ and asm_fallback/
-                   hold functions written in asm instead of C)
+src/               matched translation units, one function per file:
+                   libs/{NitroSDK,NitroSystem,MSL,Runtime}/ for library code,
+                   game/<module>/<Subsystem>/ for game code; asm/ and
+                   asm_fallback/ hold functions written in asm instead of C
 include/           nitro/ (types, overlay ids) plus per-agent struct headers
 nearmiss/          near-miss C drafts (db.jsonl)
 state/             task board (tasks.json)

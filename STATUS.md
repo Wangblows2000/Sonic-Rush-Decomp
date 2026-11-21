@@ -1,4 +1,4 @@
-# Status — 2026-11-16
+# Status — 2026-11-21
 
 Measured state of the EUR (`ASCP`) build. Figures come from
 `python3 tools/project.py progress`, which reads only `build/eur/report.json`
@@ -15,7 +15,7 @@ reproduce every line below.
 | Functions matched (objdiff 100 %) | **7,408 / 7,408** | `ninja report && project.py progress` |
 | Code bytes matched | **1,422,472 / 1,422,472 (100.00 %)** | `project.py progress` |
 | Symbol/evidence consistency | 0 errors, 0 warnings | `tools/analysis/check_symbols.py` |
-| Functions named | **7,408 / 7,408**; 468 are subsystem-level `<Subsystem>_Unk_<addr>` | `check_symbols.py`, `symbols.txt` |
+| Functions named | **7,408 / 7,408**; 284 are subsystem-level `<Subsystem>_Unk_<addr>` | `check_symbols.py`, `symbols.txt` |
 
 ## How the source is written
 
@@ -46,7 +46,16 @@ reproduce every line below.
 | GNU binutils | arm-none-eabi 2.42 (relink check, `secure_area.s`) |
 | Ghidra | 12.2 + JDK 25 (decompiler drafts, optional) |
 
-## Recent changes (this session)
+## Recent changes (2026-11-21)
+
+- asm to C: 15 more `asm_fallback` functions converted (20 left plus
+  `__pformatter`, which stays asm).
+- Naming: 184 `_Unk_` names upgraded (284 left).
+- Source layout: `src/libs/{NitroSDK,NitroSystem,MSL,Runtime}` and
+  `src/game/<module>/<Subsystem>/`.
+- First data TU: `OS_IRQTable` in DTCM (docs/research/0013).
+
+## Earlier changes (2026-11-16)
 
 - Secure-area stubs matched → 100.00 %.
 - 54 asm functions converted to C (incl. FS_StartOverlay, GX_SetBankForSubBG,

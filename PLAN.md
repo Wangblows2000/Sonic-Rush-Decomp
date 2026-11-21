@@ -14,51 +14,70 @@ full matching ROM build, 100 % of ARM9 code bytes matched and every function nam
 
 - [x] 54 converted this session (`tools/matching/swap_fallback.py` swaps a
   verified C file in for its asm TU).
-- [ ] 34 functions still in `src/asm_fallback/` plus `src/asm/__pformatter.c`.
+- [x] 2026-11-16/21: 15 more converted (TransformDemo_Unk_ov001_022dfc54,
+  ExtraBossObj_State_BeamUnitActive, EffTrickSparkle_Create, Mine_State_Main,
+  OptionsMenu_DrawItemLabel0, SoundTest_SamplingCallback,
+  ExtraBoss_Unk_ov001_02304fb4, StageEvent_SpawnInView,
+  OptionsMenu_Unk_ov001_022c9a2c, ExtraBoss_IsRingTouchingPlayer,
+  AnimatorSprite_Draw, TryAgain_InitSprites, Valve_State_Active,
+  SpecialStage_Unk_ov001_023099ec). Levers that worked: unsigned arithmetic
+  `(s32)((u32)a + (u32)b)` (changes IR operand order), user induction
+  variables, `#pragma opt_propagation off` (no `reset` after the function),
+  locals initialised from a shift, correct struct offsets.
+- [ ] 20 functions still in `src/asm_fallback/`. __pformatter is unconvertable, ignore.
+  Best drafts and per-function blockers are in `nearmiss/db.jsonl`
+  (`python3 tools/matching/nearmiss.py list`).
   Exact blockers per function are the `FAIL` lines in `build/agents/c_*.txt`
   of the session that produced them (not in git); typical: callee-saved
   register rotation, one instruction scheduled differently, Thumb stack-slot
   order. Best lever found: port the analogous Sonic Rush Adventure / SDK
   source shape literally.
-- [ ] `__pformatter`: CW 1.2 clusters the conversion switch differently (no
-  case set reproduces the d..u table); try an if/goto compare tree as done
-  for GX_SetBankForSubBG.
 
 ## 3. Naming
 
 - [x] Every function named; evidence for each in
   `config/eur/symbol_evidence.yaml`; conventions and audit in
   docs/naming-conventions.md.
-- [ ] Upgrade the 468 subsystem-level `<Subsystem>_Unk_<addr>` names to
-  behaviour names (all `tentative`).
+- [x] 184 of the 468 `<Subsystem>_Unk_<addr>` names upgraded to behaviour
+  names (2026-11-21, evidence per row, `tentative`).
+- [ ] 284 `_Unk_` names left: the remaining ones depend on struct fields whose
+  meaning is not proven (sprite-slot setters, gGameState +4/+8/+0x1C/+0x1D,
+  gCamera +0x3C..+0x48, HUD timers); identical or constant-only Runtime/System
+  helpers cannot get distinct names.
 - [ ] Tie zone numbers (ZoneN_*) to the in-game zone titles.
 - [ ] Name struct types (`UnkStruct_<addr>`) and move shared declarations into
   `include/` headers instead of per-file `extern` prototypes.
 
 ## 4. Source reorganisation
 
-- [ ] Move TUs out of the per-agent directories (`src/<agent>/`, `src/auto/`,
-  `src/clones/`, …) into a subsystem layout: `libs/NitroSDK`,
-  `libs/NitroSystem`, `libs/MSL`, game code by module and subsystem.
+- [x] TUs moved out of the per-agent directories into
+  `src/libs/{NitroSDK/<lib>,NitroSDK/demolib,NitroSystem/<lib>,MSL,Runtime}` and
+  `src/game/<module>/<Subsystem>/` (`tools/utilities/reorg_layout.py`, address
+  ranges from docs/naming-conventions.md 3.1). `asm/`, `asm_fallback/`,
+  `secure/` unchanged.
 - [ ] Merge adjacent one-function TUs back into original translation units
-  where the evidence supports it (library objects link contiguously).
-- [ ] Remove the 80 unregistered `.c` files under `src/` (duplicates and
-  leftovers that are not in any `delinks.txt`) once they are confirmed
-  redundant.
+  where the evidence supports it (library objects link contiguously). Not
+  started: needs original object boundaries, which also decide data ownership
+  (docs/research/0013).
+- [x] Unregistered `.c` files: only 3 were tracked (the 80 were build-local
+  leftovers). One was a matching `AnimatorSprite_Draw` (now integrated); the
+  two non-matching drafts were removed.
 
 ## 5. Data and rodata
 
-- [ ] Decompile `.rodata`, `.data` and `.bss` into TUs: strings, tables and
+- [x] Data-TU path proven: `OS_IRQTable` (DTCM 0x027e0004–0x027e005c) is owned
+  by `src/libs/NitroSDK/os/OS_IRQTable.c` (docs/research/0013-data-ownership.md).
+- [ ] Decompile the rest of `.rodata`, `.data` and `.bss` into TUs: strings, tables and
   float constants. Today every TU only declares `extern` data, and all data
   comes from dsd's delinked gap objects. Needs a strategy for which data
   belongs to which TU (task `r-data`).
-- [ ] DTCM (0x2060 bytes of data, no functions).
+- [ ] DTCM: 0x60 bytes non-zero (word 0, `OS_IRQTable` done, word 0x5c), the
+  rest is the zero SDK work area (docs/research/0013).
 
 ## 6. Beyond ARM9 EUR
 
 - [ ] ARM7: identify the NitroSDK component and version (task `r-arm7`).
 - [ ] Download Play children (`/mb/contest.srl`, `/mb/preview.srl`).
-- [ ] USA (`ASCE`) and Japan (`ASCJ`) versions.
 - [ ] CI workflow for `ninja verify`.
 - [ ] Upstream the dsd patches (jump tables, asm entry points, ELF symtab /
   Thumb bit / ABS32 fixes from docs/research/0006) and the ds-rom zero-length

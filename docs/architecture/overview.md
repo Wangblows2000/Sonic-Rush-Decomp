@@ -36,7 +36,7 @@ objdiff.json (dsd objdiff) ─▶ objdiff-cli report ─▶ project.py progress
 | `config/eur/arm9/` | dsd module configs (main, itcm, dtcm, overlays/ov000, ov001) |
 | `config/eur/compilers.yaml` | per-path compiler version/flags + status |
 | `config/eur/symbol_evidence.yaml` | naming evidence |
-| `src/` | one TU per function, grouped by the agent that wrote it (`src/<agent>/`, `src/auto/`, `src/asm/`, `src/asm_fallback/`); a subsystem layout with `libs/NitroSDK`, `libs/NitroSystem` is planned (PLAN.md) |
+| `src/` | one TU per function: `libs/NitroSDK/<lib>`, `libs/NitroSystem/<lib>`, `libs/MSL`, `libs/Runtime`, `game/<module>/<Subsystem>/`, plus `asm/`, `asm_fallback/`, `secure/` |
 | `include/` | shared headers (`nitro/`) and per-agent struct headers |
 | `nearmiss/` | near-miss C drafts (`db.jsonl`, `tools/matching/nearmiss.py`) |
 | `state/` | task board (`tasks.json`, `tools/tasks.py`) |

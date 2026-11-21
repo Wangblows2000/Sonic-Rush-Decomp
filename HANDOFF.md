@@ -1,11 +1,11 @@
-# Handoff (2026-11-16)
+# Handoff (2026-11-21)
 
 ## State (verified with `tools/utilities/verify_all.sh`, exit 0)
 
 - ARM9: **7,408 / 7,408 functions, 1,422,472 / 1,422,472 code bytes (100.00 %)**.
 - ROM SHA-1 `52e5024efcf7617a820fa23789b37e5168c3c4fc`. The GNU relink check
   reports "all sections match".
-- Every function is named. 468 names are subsystem-level `_Unk_` names, logged
+- Every function is named. 284 names are subsystem-level `_Unk_` names, logged
   as `tentative` in `config/eur/symbol_evidence.yaml`.
 - `check_symbols.py`: 0 errors, 0 warnings.
 - The `refactor/function-naming` branch was merged into main and kept.
@@ -50,68 +50,27 @@ ROMs (`*.nds`) are gitignored.
     evidence confidence;
   - `build.sh`.
 
-## Remaining work
+## Remaining work (updated 2026-11-21)
 
-1. **asm to C (task `asm-to-c`).** 34 files remain in `src/asm_fallback/`,
-   plus `__pformatter` in `src/asm/`. All of them are register-colouring or
-   scheduling near misses. The bytes after each name are the distance from a
-   match.
-   - Callee-saved permutations:
-     - `EffInvincibility_Main` 25
-     - `Valve_State_Active` 21
-     - `SpecialStage_Unk_ov001_023099ec` 14
-     - `TryAgain_InitSprites` 10
-     - `StageObj_DrawSpriteAlt` 132
-   - Scheduling only:
-     - `Boss4_State_WaitForStart` 20
-     - `Boss4_SubState_SlamStopSpin` 8
-     - `StageEvent_SpawnInView` 51
-     - `StageEvent_SpawnInRect` 22
-     - `SpecialStageGimmick_Unk_ov001_0230e78c` 4
-     - `SpecialStageGimmick_Unk_ov001_0230e94c` 10
-   - Scratch registers or temporaries:
-     - `Player_SetAnimation` 8
-     - `Mine_State_Main` 36
-     - `BossEffect_Create` 17
-     - `ExtraBoss_Unk_ov001_022fdbc0` 14
-     - `ExtraBoss_Unk_ov001_02304fb4` 35
-     - `ZoneMap_Unk_ov001_022e612c` 19
-     - `ZoneMap_Unk_ov001_022e519c` 8 (spill slots)
-     - `Stage_Create` 33
-   - Switch clustering. CW 1.2 groups the cases differently from the target;
-     this may be impossible in C:
-     - `ZoneMap_Unk_ov001_022e1aac` 47
-     - `__pformatter` 32
-   - Large functions, not reworked:
-     - `StageObj_CollideMapVertical` (3,424 B)
-     - `ExtraBoss_TestColliderRotatedBoxes`
-     - `AnimatorSprite_Draw`
-     - `AnimatorSprite_DrawRotScale`
-     - `SoundTest_SamplingCallback`
-     - `OptionsMenu_DrawItemLabel0`
-     - `OptionsMenu_Unk_ov001_022c9a2c`
-     - `ZoneMap_Unk_ov001_022e794c`
-     - `TransformDemo_Unk_ov001_022dfc54`
-   - Others:
-     - `EffTrickSparkle_Create` 10
-     - `ExtraBossObj_State_BeamUnitActive` 36
-     - `ExtraBoss_IsRingTouchingPlayer` 4
-     - `Boss7PartD5_InputState_ClashMash` 172
-     - `MapObj8F_Action_StartCameraRelease` 13
-   - Drafts are in `nearmiss/db.jsonl` (`tools/matching/nearmiss.py`).
-     Unfinished drafts for `Stage_Create` and `OptionsMenu_DrawItemLabel0`
-     are in `build/agents/wip/`. That folder is not committed.
-   - To swap in a file that matches, write `OK <sym> <path>` to
-     `build/agents/<agent>.txt`, then run `python3 tools/matching/swap_fallback.py`
-     and `verify_all.sh`.
-2. **Naming (task `naming`).** Give the 468 `_Unk_` names behaviour names,
-   using `tools/analysis/rename.py names.csv`. Evidence is required.
-3. Also open:
-   - zone-specific titles;
-   - struct recovery (`UnkStruct_*`);
-   - data/rodata decompilation (`r-data`);
-   - ARM7 (`r-arm7`);
-   - SRA library sources (`r-sra-lib`).
+1. **asm to C (task `asm-to-c`).** 20 files remain in `src/asm_fallback/`;
+   `__pformatter` in `src/asm/` stays asm (switch clustering; SM64DS keeps it
+   asm too). Best drafts and per-function blockers: `python3
+   tools/matching/nearmiss.py list`. Closest: SpecialStageGimmick_Unk_ov001_0230e78c
+   (4, first /20 emits asr before lsr), Player_SetAnimation (7),
+   Boss4_SubState_SlamStopSpin (8), SpecialStageGimmick_Unk_ov001_0230e94c (10).
+   No draft yet: ExtraBoss_TestColliderRotatedBoxes, StageObj_CollideMapVertical.
+   Levers that matched this round: `(s32)((u32)a + (u32)b)`, user induction
+   variables, `#pragma opt_propagation off` (no `reset` after it), locals
+   initialised from a shift, correct struct offsets. To swap in a match: write
+   `OK <sym> <path>` to `build/agents/<agent>.txt`, run
+   `python3 tools/matching/swap_fallback.py build/agents/<agent>.txt`, then
+   `verify_all.sh`; move the file with `tools/utilities/reorg_layout.py`.
+2. **Naming (task `naming`).** 284 `_Unk_` names left (blockers in PLAN.md 3);
+   zone titles, `UnkStruct_*` and shared headers not started.
+3. **Source layout.** Done (PLAN.md 4). TU merging not started.
+4. **Data (`r-data`).** Data-TU path proven with `OS_IRQTable`;
+   strategy in docs/research/0013-data-ownership.md.
+5. Also open: ARM7 (`r-arm7`), SRA library sources (`r-sra-lib`).
 
 ## Resume
 

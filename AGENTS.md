@@ -94,10 +94,10 @@ is `.incbin` from the extracted `arm9.bin`, so no ROM bytes are committed).
 One TU is needed because the LCF's `ALIGNALL(4)` cannot place halfword-aligned
 per-function TUs. See docs/research/0012-secure-area.md.
 
-Every function is named (468 are still subsystem-level `_Unk_` names, logged
+Every function is named (284 are still subsystem-level `_Unk_` names, logged
 `tentative` in `config/eur/symbol_evidence.yaml`).
 
-The 34 functions in `src/asm_fallback/` and `__pformatter` in `src/asm/` are
+The 20 functions in `src/asm_fallback/` and `__pformatter` in `src/asm/` are
 CodeWarrior `asm` functions rather than C (see §9); converting them is open
 work (HANDOFF.md lists the blocking reasons).
 
@@ -182,7 +182,7 @@ any main TU that starts below 0x02000800.
 | `include/nitro/types.h` | yes | `u8`…`s64`, `vu*`, `fx32` (20.12), `fx16` (4.12), `BOOL`, `TRUE`/`FALSE`, `NULL`. |
 | `include/nitro/fs_overlay.h` | yes | `FS_OVERLAY_ID(ov000)`, which maps to the dsd LCF symbols `OVERLAY_0_ID` and `OVERLAY_1_ID`. |
 | `include/<agent>/` | yes | Shared struct headers written by agents (`main_a2/task.h`, `main_sdk2/task.h`, `ov000_b/stageobj.h`, `ov000_d/player.h`, …). |
-| `src/<agent>/` | yes (registered TUs only) | One function per `.c` file. Directory = name of the agent that produced it (§9). |
+| `src/libs/`, `src/game/` | yes (registered TUs only) | One function per `.c` file. Library code under `libs/{NitroSDK/<lib>,NitroSystem/<lib>,MSL,Runtime}`, game code under `game/<module>/<Subsystem>/` (`tools/utilities/reorg_layout.py`). Agents still write new work to `src/<agent>/`; the lead moves it with `reorg_layout.py` after integration. |
 | `nearmiss/db.jsonl` | yes | Closest attempt per unmatched symbol (C source text plus diff stats), kept by `tools/matching/nearmiss.py`. |
 | `state/tasks.json` | yes | Task board (§14). |
 | `docs/agents/AGENT_BRIEF.md` | yes | Brief for matching workers. |
