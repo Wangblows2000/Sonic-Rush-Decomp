@@ -38,7 +38,7 @@ def main() -> int:
             sym, cpath = m[1], m[2]
             c = ROOT / cpath
             if not c.exists():
-                c = next(iter(ROOT.glob(f"src/*/{sym}.c")), None)
+                c = next(iter(ROOT.glob(f"src/**/{sym}.c")), None)
                 if c is None or c.parts[-2] in ("asm_fallback", "asm"):
                     print(f"skip {sym}: C file missing")
                     continue
