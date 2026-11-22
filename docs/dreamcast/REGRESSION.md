@@ -198,3 +198,112 @@ slides, hands, cargo, neon routes, swings, switches, cranes, pistons, pipes, gli
 saucer, cannons, ducts, rockets) keep the activation checks of `test_zones`; their OnHit / Player_Action
 functions were compared with the decompilation side by side (WaterJet, LaunchZone, Wheel2D,
 SandSlider, Cannon, Rocket, Saucer_Action_Ridden, Parachute, GmkPipe) and match.
+
+## 10. R/L pad bits, gimmick exact values, trick volume, palette shift, Blaze (2026-11-22)
+
+Pad mapping. `ui_pad_bits` (ui/ui_state.c) and the demo recorder / player (`demo_input_to_keys`,
+`demo_keys_to_input`) now carry R (0x100) and L (0x200) like the stage pad. The UI screens of the
+original (pause, results, game over) read only A / B / Start / the d-pad, so this changes no menu
+behaviour. Check: `demo` host test "R / L map to DS 0x100 / 0x200 both ways".
+
+Gimmick exact values (`objects/test/test_zones.c`, every zone stage). Each check recomputes the
+original formula from the state before the frame and compares after it:
+
+| class | original | check |
+|---|---|---|
+| raft 0x81 | LandUnrest_State_Tilt | angle = ObjAngle_MoveToward8(angle, rot3, 2), w8 from the angle, ridden frames |
+| hand 0x8a | Player_State_Hand2D | g3F4 -= (hand z >> 4) + 0x470, rot3 = (g3F4 & 0xffff) >> 8; released at the saved g3F0 |
+| sand ship 0x8b | GmkTable_State_Main / _UpdateBob | wheel u41C and distance u420 step by max(speed, 0x100); released bob (z32) |
+| neon route 0xc0 / 0xc1 | NeonRoute_State_Move | 12-px segment count, wrap after p8 * 12 (the test runs before the move) |
+| switch 0xbe / 0xbf | Switch_State_* | timer = (p8 + p9) * 2 while pressed, then -1 per frame |
+| swing sky 0xbd | Player_State_SwingSky | player at the hang point, angle - 0x40, speed = swing displacement |
+| swing 0x96 | Player_State_Swing | A mid-swing: angle 0, speed 0, act_jump: vel (0, -jump) |
+| crane slide 0xae | CraneSlide_State | speed ObjSpd_DownSet 10 per frame, move clamped to +-0x800 (153 frames) |
+| piston 0xa0 / 0xa1 | Piston_UpdateOscillation | y = (centre + (p9 / 2) * sin(t << 6) >> 12) << 8 per frame |
+| glider 0xb5 | Player_State_Glider | timer + 1, vel_y +-0x10 per frame (max 0x80) by timer & 0x10, release at 0x168 |
+| duct 0x97 | Duct_State_CheckPlayer | sucked rings gone, sound flag 0x10 re-armed |
+| shooter 0xbb / 0xbc | Shooter_State_Main | charge w8 (max 0x40), launch -(w8 << 6) up / +-(w8 << 6) side |
+
+No port deviation was found in these classes. The first runs failed on three test assumptions, not on
+the port: the shooter and the piston run before the player task (so the shooter still sees Down held
+once, and the piston uses the frame counter before the step), and the neon route tests its segment
+before it moves.
+
+Trick sound volume. Player_Action_TrickCombo calls NNS_SndPlayerSetVolume(handle, 0x7f >> combo
+level) after each combo sound: @384 (voice) for B (0x39 / 0x3a), @390 (trick) for A (0x3b). New hook
+`DcpHooks.sfx_volume`. The sound side (hk_sfx_volume -> NNS_SndPlayerSetVolume) is in
+sound/sound_hooks.c (patch player/patches/trick_volume_sound_hook.patch, applied). The ARM register
+shift gives 0 from level 32 on; `TRICK_SHR` keeps that for the tension and the volume (C would wrap the
+count). Check: player host test `[trick]`, levels 0 / 1 / 3 / 6 / 40 -> 127 / 63 / 15 / 1 / 0 on the
+right handles.
+
+Model palette shift. Player_In calls ModelPalette_ShiftColor on the player's palette: tension max
+(a, a / 2, -a / 2) with a = (frame >> 1) & 0x1f rising while frame & 0x40 (else 0x1f - that); the
+invincibility flash white (0x1f each) when !(frame & 0xe); none at the goal. The DC textures are direct
+colour, so `dcm_set_color_shift` applies it per vertex: the positive part as the PVR offset colour
+(specular bit in the header), the negative part by scaling that channel of the vertex colour.
+`dcp_model_palette_shift` computes the shift; `dcp_model_draw` sets it around `dcm_draw`. Checks:
+model test `[palette]` (256 frames of the formula, the flash, the pause and goal cases, the draw:
+blue x16/31 on every vertex at a = 0x1f, colours unchanged after the timer).
+
+Blaze. Compared with the decompilation: Player_Action_Hover / Player_State_Hover (act_air), the
+TrickForward / TrickUp / TrickCombo Blaze branches, Player_StartBoost / Player_UpdateBoost (boost
+flame, voice 0x17), Player_State_InAir (spin flames 0x30, trick flames 0x35 / 0x36, the 0x37 air lock),
+Player_Action_GrindTrick, the ground-move run flames and the Blaze voices. Two deviations fixed:
+- **Blaze's spin jump ran at normal speed**: Player_Action_Jump sets `w->unk124->unk114 = 0x4000`
+  (the 3D animation speed, x4) for Blaze. New hook `DcpHooks.model_speed`, installed by
+  `dcp_model_attach`.
+- **Underwater jump and brake skipped a Player_Rand draw**: Player_Action_Jump and the brake smoke of
+  Player_State_GroundMove draw Player_Rand under water and spawn EffAirBubble_Spawn on half of them.
+  The port skipped the draw (the shared seed drifted under water) and the bubble.
+  DCP_FX_AIR_BUBBLE now reaches EffAirBubble_Spawn (also from Player_Action_Launch and the gimmick
+  launch).
+Checks (player host test): `[blaze] hover` (anim 0x34, gravity 8, fall 0x220, acc 0x30, dec 0x60,
+boost 0x38 / 0x60, one budget frame per frame from 0x78, release -> Fall with the physics reloaded, the
+budget not refilled in the air, refilled on landing, Sonic keeps the homing attack); `[jump]` (Blaze
+model speed 0x4000, Sonic untouched; under water one rand draw and a bubble on odd draws, none on land);
+model test "Blaze spin jump: blz_screw at speed 4.0".
+
+Flycast play pass: see section 11.
+
+## 11. Flycast pass, every zone act 1 / act 2, Sonic and Blaze (2026-11-22)
+
+Scratch test disc (HEAD b4873e22 for zones 1-6, 9e462f7d for zone 7 with the Dead Line gravity flip
+wired), debug start per act and character, live pad from `xdotool` (Right held, jumps, boost / air
+action on Y, which the scratch build also maps to DS R). Save states: each act is booted once and
+saved with F5 (`btn_quick_save`) into its own slot, under a private HOME and
+`config:Dreamcast.SavestatePath`; every stretch then starts from the state with
+`AutoLoadState` (state loaded about 1 s after launch, against about 30 s for a cold boot).
+
+| act | Sonic | Blaze |
+|---|---|---|
+| z11 Leaf Storm 1 | runs to x 5734, loops, vines, boost after-images | to x 5640, rails (0x1a), hover |
+| z12 Leaf Storm 2 | to x 4936 | to x 4806, wall-run, trick score |
+| z21 Water Palace 1 | to x 3766, slopes, water entry | to x 3514 |
+| z22 Water Palace 2 | to x 2997, under water (tint, bubbles) | to x 2992 |
+| z31 Mirage Road 1 | to x 3107, pit death and respawn | to x 3200, pit death and respawn |
+| z32 Mirage Road 2 | to x 2806 (wall: needs a route) | to x 2364 |
+| z41 Night Carnival 1 | to x 3760 | to x 4352, shooter, swing |
+| z42 Night Carnival 2 | to x 4959, death and respawn | to x 4470: holds Right into a side shooter 0xbc (it fires only on release, as in Shooter_State_Main) |
+| z51 Huge Crisis 1 | to x 4315, grind, crane, pipe | to x 4098 |
+| z52 Huge Crisis 2 | to x 4150 | to x 2998 (pushing a wall) |
+| z61 Altitude Limit 1 | rails (0x1a) to x 2937, fall, stage restart at the act start | same route and fall |
+| z62 Altitude Limit 2 | to x 2742, climbs from y 1906 to 383 | to x 2742 |
+| z71 Dead Line 1 | to x 3495; from (8448, 2032) below the split line: flipped (upside down), cannon | to x 1445 (a side spring on the slope sends her back while Right is held); flipped start runs to x 10673 |
+| z72 Dead Line 2 | pit deaths and respawns; from (16400, 864) above the split line: flipped, to x 18486 | flipped start, ceiling run, back to normal gravity below the line |
+
+Seen and checked against the original, not defects: the white puff at the feet when the high speed
+starts (EffHighSpeedStart), Blaze turning orange in tension max (the Player_In palette shift,
+section 10), Blaze held against a side shooter.
+
+No new movement, animation or object deviation was found in the play. The pass found one test-tool
+fault (the scratch keys.txt override zeroed the live pad when the file was empty; Flycast lost held
+keys when the window was re-focused) and nothing in the game.
+
+Gravity flip (host): `test_zones` on z71 / z72 now checks Player_UpdateGravityFlip with a split-line
+stand-in (1856 / 1344 px), both characters: flipped at a ring on the flipped side (grav_rot 0x80,
+remap left 0x10 / right 0x20), stays flipped there while Right moves the player, and crossing back
+negates the velocity, turns the angle by 0x80 and restores the remap. A scratch run with the camera
+module's Stage_GetSplitLineY (z71 from 8448 / 14528 / 26320, z72 from 5664 / 16400 / 24736, 1200
+frames each, both characters) kept grav_rot equal to Stage_IsGravityFlipped on every frame; the z72
+top pit (y <= 0x1a) and bottom pit kill as in Player_In.

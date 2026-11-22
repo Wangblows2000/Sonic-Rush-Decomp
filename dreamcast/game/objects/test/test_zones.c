@@ -1858,6 +1858,63 @@ static void test_duct(void) {
         CHECK(d && (d->h.disp_flags & 0x10) && n < 120, "duct 0x97 exact: sucked rings gone and the sound re-armed after %d frames", n);
     }
 }
+/* Dead Line gravity flip (main.c: g_dcp_hooks.gravity_flipped = Stage_IsGravityFlipped): act 1 flips
+ * below the split line, act 2 above it. The camera module owns Stage_GetSplitLineY; z71 / z72 keep it
+ * at 1856 / 1344 px over most of the act, which this stand-in uses. */
+static dcp_bool zt_gravity(void *ctx, s32 x, s32 y) {
+    s32 line = (W.act == 0 ? 1856 : 1344) << 8;
+    (void)ctx, (void)x;
+    if (W.zone == 6 && W.act < 2)
+        return W.act == 1 ? y < line : y > line;
+    return DCP_FALSE;
+}
+static void test_gravity_flip(void) {
+    const rlvl_ring_t *r = (const rlvl_ring_t *)rlvl_section(g_level, RLVL_SEC_RINGS, NULL);
+    dcp_bool (*prev)(void *, s32, s32) = g_dcp_hooks.gravity_flipped;
+    u32 i, nr = g_hdr->num_rings;
+    int ch, k;
+    s32 fx = -1, fy = 0;
+    for (i = 0; i < nr && fx < 0; i++)
+        if (r[i].x > 4000 && r[i].x < 30000 && zt_gravity(NULL, r[i].x << 8, r[i].y << 8))
+            fx = r[i].x, fy = r[i].y;
+    if (fx < 0)
+        return;
+    g_dcp_hooks.gravity_flipped = zt_gravity;
+    for (ch = 0; ch < 2; ch++) {
+        /* Player_UpdateGravityFlip: entering the flipped side negates the velocity, turns the angle
+         * by 0x80 and swaps the left / right remap (left 0x10, right 0x20); leaving undoes it */
+        s16 vx, vy;
+        u8 a;
+        int moved = 0, flipped = 1;
+        s32 x0;
+        place_player(fx, fy);
+        P.chara = (u8)ch;
+        frames(2, 0);
+        CHECK(P.grav_rot == 0x80 && P.map_left == 0x10 && P.map_right == 0x20,
+              "z7%d gravity: flipped at the ring (%d,%d): grav_rot %#x, remap L %#x R %#x", W.act + 1, fx, fy, P.grav_rot, P.map_left,
+              P.map_right);
+        x0 = P.x;
+        for (k = 0; k < 120; k++) {
+            frame(DCP_KEY_RIGHT);
+            flipped &= P.grav_rot == 0x80 || !zt_gravity(NULL, P.x, P.y);
+        }
+        moved = P.x != x0;
+        CHECK(flipped && moved, "%s z7%d flipped: stays flipped on its side, Right moves it (%d px)", ch ? "Blaze" : "Sonic", W.act + 1,
+              (P.x - x0) >> 8);
+        /* back across the line: one frame of the unflip */
+        P.vel_x = 0x123, P.vel_y = -0x45;
+        P.angle = 0x90;
+        vx = P.vel_x, vy = P.vel_y, a = P.angle;
+        teleport(P.x >> 8, (W.act == 0 ? 1856 - 64 : 1344 + 64));
+        dcp_update_gravity_flip(&P);
+        CHECK(P.grav_rot == 0 && P.vel_x == -vx && P.vel_y == -vy && P.angle == (u8)(a + 0x80) && P.map_left == 0x20 &&
+                  P.map_right == 0x10,
+              "%s z7%d unflip: vel (%d,%d) -> (%d,%d), angle %#x -> %#x, remap L %#x R %#x", ch ? "Blaze" : "Sonic", W.act + 1, vx, vy,
+              P.vel_x, P.vel_y, a, P.angle, P.map_left, P.map_right);
+    }
+    g_dcp_hooks.gravity_flipped = prev;
+    frames(2, 0);
+}
 static void test_9c(void) {
     const rlvl_object_t *o;
     int i, k, ok = 0, z = 0, cnt = 0;
@@ -2281,6 +2338,8 @@ int main(int argc, char **argv) {
         test_swing();
         test_duct();
         test_9c();
+        if (g_hdr->zone == 6)
+            test_gravity_flip();
         /* enemies */
         test_enemy(0x09, "egg pawn");
         test_enemy(0x0a, "egg pawn");

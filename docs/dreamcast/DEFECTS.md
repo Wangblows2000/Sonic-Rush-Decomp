@@ -19,6 +19,23 @@ Host = `make -C dreamcast/game/menus story-test` (whole story, model of main.c),
 | F7 | medium | Story game over kept the lives of the save (e.g. 12) instead of the DS rule | `Stage_ExitAfterFail` (SaveData_SetLives(.., lives, 1) = at least 2, emeralds from the save, commit) was not done by the port | mn_main.c: `MENU_EXIT_GAME_OVER` in story mode does it (not for the Extra boss) | story test: lives 12 -> game over -> 2, survives a reload |
 | F8 | critical | Extra boss: START freezes the fight for good | `boss_extra` sets `paused` (PauseMenu_Create(0)) and waits for `boss_extra_resume`, which main.c never called | main.c patch: START or A resumes | code path; Flycast extra run (see below) |
 | F9 | low | Extra boss pause has no "quit" entry | the pause menu is not drawn outside stages | open (UI pause outside a stage) | - |
+| F10 | critical | Special ring: Sonic circles, boosts 0xc0 frames, flies up (Player_State_GmkSpecialEnter) and then hangs invisible forever; no special stage (HEAD b4873e22, z11 ring at 12608,2368; serial trace: `gimmick 0x0 ... timer 50`, `despawned` +1) | the ring object is despawned while Sonic flies up, `obj_free_player_refs` clears `p->gimmick`, and GmkSpecialEnter returns early on a NULL gimmick. main.c gives the objects the DC window (`camera_get_view`) as view 0 and the DS's other screen as view 1; the DS spawns for its two screens gCamera[0]/[1]. In this state gCamera[0] is locked on the ring (pf2 0x30, @0x3EE), the DC window is 160 px higher, so the ring leaves both views | OPEN, owners camera / objects / main.c. Verified fix candidate (private build): view 0 = `camera_layer(0)` (gCamera[0]) -> the special stage starts, clears, the act reloads 280 px below the ring. Without dropping the DC window: OBJ_MAX_VIEWS 3 (gCamera[0], gCamera[1], DC window) | Flycast: bug reproduced 3 times; with view 0 = gCamera[0]: special stage 0 entered, result 1 emerald 0x01, act reload, emerald saved at the act clear |
+| F11 | low (test) | A save state reloaded with a disc whose `/cd/debug` files differ still sees the old files | KOS keeps the ISO directory in RAM: the state carries it | change debug switches only with a fresh boot; a state only goes with the disc it was saved from | Flycast: `spquota.txt` still found after a reload on a disc without it |
+
+## Flycast verification (HEAD 2e79caa5 / b4873e22 + the patches, own HOME and display :96)
+
+Test discs with the switches below; input from xdotool (`/tmp/flow/driver.py`, rules per run), serial trace.
+
+| run | what | result |
+|---|---|---|
+| Sonic, new save (twice: 07a1f85c and 2e79caa5) | title, GAME START, z11..z73, script 0 before / script 1 after each boss, the nine map talks 0x15..0x1d, DemoScript 4, map BGM, zf3, ending, staff roll 0, PostStaffRoll talk 0x37 (emeralds missing), unlock notices, SEGA logo | pass (27 min with autoclear 200) |
+| Blaze (preset Sonic 26) | player select (autopilot b), z41 first, order 3 0 2 1 5 4 6 7, talks 0x28..0x2f, DemoScript 4, zf3, ending, staff roll 1, notices already set -> fade -> SEGA logo; progress 28 saved | pass |
+| VMU round trip + Extra | reboot on the Blaze run's VMU file: `boot save progress 26/28 flags 0x300`; + emerald preset 0x7f: player select shows the extra story, script 3, Extra boss (autoclear), script 2, ExtraAct, extra ending, staff roll 2, SEGA logo | pass |
+| special stage | z11 special ring, boost while circling (key held), clear (quota switch) and fail (no input): result 1 emerald 0x01 / result 2 none, act reload 280 px below the ring, emerald saved at the act clear | pass only with the F10 fix candidate |
+| time attack | title menu -> player-select page -> TIME ATTACK -> Sonic -> z11: clear -> record 1500 -> TryAgain -> retry -> pause GO BACK -> exit 5, record unchanged -> TryAgain -> quit -> title | pass |
+| game over / continue, pause quit to the map | see below | see below |
+
+Not verified in Flycast: the mid-fight boss talks (Boss7 0xa/0xb, BossF 0xf/0x10) and their save flags: autoclear skips the fights.
 
 ## Test switches added (test discs only; nothing happens without the files)
 
@@ -47,3 +64,21 @@ Host = `make -C dreamcast/game/menus story-test` (whole story, model of main.c),
   stage packs / preload list need rebuilding (make -C dreamcast/game/objects data preload).
 - NOTE trick sound volume (NNS_SndPlayerSetVolume 0x7f >> combo level) and the tension-max model
   palette shift (ModelPalette_ShiftColor) are not translated.
+- FIXED (player/sound) the NOTE above: the trick sound volume (NNS_SndPlayerSetVolume 0x7f >> combo
+  level on @384 / @390, `DcpHooks.sfx_volume`, sound_hooks.c) and the model palette shift of Player_In
+  (tension-max glow, invincibility flash; `dcm_set_color_shift`, offset colour) are translated.
+- FIXED (ui/demo) the R / L pad bits (0x100 / 0x200) are carried by ui_pad_bits and the demo key
+  mapping both ways (the original UI never reads them).
+- FIXED (player) Blaze's spin jump animation ran at 1x: Player_Action_Jump sets the 3D animation
+  speed 0x4000 (x4) for Blaze (`DcpHooks.model_speed`).
+- FIXED (player/objects) under water, Player_Action_Jump and the brake smoke skipped their
+  Player_Rand draw (shared seed drift) and the EffAirBubble_Spawn; DCP_FX_AIR_BUBBLE now spawns the
+  bubbles (also Player_Action_Launch and the gimmick launch).
+- FIXED (player) 0x280 / 400 / 0x7f >> combo level: the ARM shift gives 0 from level 32 on, C
+  wrapped the count (TRICK_SHR).
+- NOTE (player, VS / pf2 0x400000 only) Player_Respawn's no-restart branch sets pf2 0x200000 and
+  Player_In then calls StageEvent_SpawnInRect around the player (taller toward the split line);
+  the port relies on the view spawner there (objects_spawn_rect has no caller).
+- CHECKED (player/objects) Dead Line gravity flip with the hook wired (1364f08f): Player_UpdateGravityFlip
+  (velocity, angle, remap), the z72 top pit and the Flycast play of z71 / z72 for both characters
+  match the original; test_zones has a gravity-flip check on z71 / z72.
