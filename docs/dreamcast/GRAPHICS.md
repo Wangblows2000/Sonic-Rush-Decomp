@@ -37,8 +37,11 @@ What is resident during a stage:
 `tools/dreamcast/vram_budget.py` computes the table from the converted files with the rules
 above (objects: the resources `objects/test/test_coverage` with `COV_RES=1` reports after
 creating every placed object and decoration of the stage; no resource is loaded later).
-"Before" = every sprite page ARGB1555 (the loaders up to commit d1248d81); "after" = the
-PAL4 atlases of section 3. KB = 1024 bytes, all pages counted with their allocation chunk.
+"Before" = every sprite page ARGB1555 with the old shelf packer (the loaders up to commit
+d1248d81); "PAL4" = the PAL4 atlases of section 3 (commit 7da1f648); "repacked" = PAL4 with
+the MaxRects packer (SPRITES.md section 4) and the objects' current preload list (it now
+includes the player effects of `obj_peffect.c`, about 75 KB). "Total now" / palette rows
+are for "repacked". KB = 1024 bytes, all pages counted with their allocation chunk.
 UI = ui_init's resources + the title-card background of the stage (+ the navigator and the
 face texture on boss acts; before: + the 256x256 ARGB1555 variant cache the HUD tension
 gauge allocates on its first frame). Palette rows: of 64 (section 3.2).
@@ -47,47 +50,48 @@ gauge allocates on its first frame). Palette rows: of 64 (section 3.2).
 python3 tools/dreamcast/vram_budget.py [--res res.txt] [--json out.json]
 ```
 
-| stage | level | objects before | objects after | UI before | UI after | player | boss | total before | free before | total after | free after | palette rows after |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| z11 | 2304 | 1562 | 391 | 1120 | 248 | 136 | 0 | 5122 | 381 | 3080 | 2424 | 45 |
-| z12 | 2304 | 1622 | 406 | 1120 | 248 | 136 | 0 | 5182 | 321 | 3095 | 2409 | 46 |
-| z13 | 256 | 316 | 79 | 1280 | 312 | 136 | 566 | 2555 | 2949 | 1350 | 4154 | 13 |
-| z21 | 2176 | 2047 | 513 | 1120 | 248 | 136 | 0 | 5480 | 24 | 3073 | 2430 | 43 |
-| z22 | 1920 | 2095 | 525 | 1120 | 248 | 136 | 0 | 5272 | 232 | 2829 | 2674 | 45 |
-| z23 | 256 | 452 | 113 | 1280 | 312 | 136 | 721 | 2846 | 2657 | 1539 | 3964 | 16 |
-| z31 | 2816 | 2154 | 540 | 1120 | 248 | 136 | 0 | 6227 | **-723** | 3740 | 1763 | 48 |
-| z32 | 2304 | 2186 | 548 | 1120 | 248 | 136 | 0 | 5747 | **-243** | 3236 | 2267 | 48 |
-| z33 | 256 | 316 | 79 | 1280 | 312 | 136 | 583 | 2572 | 2932 | 1367 | 4137 | 13 |
-| z41 | 2304 | 2165 | 542 | 1120 | 248 | 136 | 0 | 5726 | **-222** | 3231 | 2273 | 62 |
-| z42 | 2304 | 2105 | 527 | 1120 | 248 | 136 | 0 | 5666 | **-162** | 3216 | 2288 | 61 |
-| z43 | 256 | 308 | 77 | 1280 | 312 | 136 | 551 | 2532 | 2972 | 1333 | 4171 | 13 |
-| z51 | 1408 | 2449 | 613 | 1120 | 248 | 136 | 0 | 5114 | 390 | 2406 | 3098 | 50 |
-| z52 | 1408 | 2433 | 609 | 1120 | 248 | 136 | 0 | 5098 | 406 | 2402 | 3102 | 50 |
-| z53 | 256 | 308 | 77 | 1280 | 312 | 136 | 560 | 2541 | 2963 | 1342 | 4162 | 13 |
-| z61 | 1152 | 1590 | 398 | 1120 | 248 | 136 | 0 | 3998 | 1505 | 1935 | 3569 | 50 |
-| z62 | 896 | 1598 | 400 | 1120 | 248 | 136 | 0 | 3750 | 1753 | 1681 | 3823 | 52 |
-| z63 | 256 | 308 | 77 | 1280 | 312 | 136 | 656 | 2637 | 2867 | 1438 | 4066 | 13 |
-| z71 | 2432 | 1645 | 412 | 1120 | 248 | 136 | 0 | 5334 | 170 | 3229 | 2275 | 56 |
-| z72 | 1920 | 2253 | 564 | 1120 | 248 | 136 | 0 | 5430 | 74 | 2869 | 2635 | 58 |
-| z73 | 256 | 300 | 75 | 1280 | 312 | 136 | 649 | 2622 | 2882 | 1429 | 4075 | 13 |
-| z81 | 768 | 698 | 175 | 1120 | 248 | 136 | 0 | 2723 | 2781 | 1328 | 4176 | 34 |
-| z82 | 1024 | 504 | 126 | 1120 | 248 | 136 | 0 | 2785 | 2719 | 1535 | 3969 | 34 |
-| zf3 | 256 | 292 | 73 | 1280 | 312 | 136 | 1024 | 2989 | 2515 | 1802 | 3702 | 13 |
-| z91 | 1024 | 865 | 217 | 1120 | 248 | 136 | 0 | 3145 | 2359 | 1625 | 3879 | 42 |
-| z92 | 896 | 708 | 177 | 1120 | 248 | 136 | 0 | 2861 | 2643 | 1458 | 4046 | 37 |
+| stage | level | objects: before / PAL4 / PAL4 repacked | UI: before / PAL4 / repacked | player | boss | total before (free) | total now (free) | palette rows |
+|---|---|---|---|---|---|---|---|---|
+| z11 | 2304 | 1562 / 391 / 335 | 1120 / 248 / 145 | 136 | 0 | 5122 (381) | 2921 (2583) | 45 |
+| z12 | 2304 | 1622 / 406 / 344 | 1120 / 248 / 145 | 136 | 0 | 5182 (321) | 2930 (2574) | 46 |
+| z13 | 256 | 316 / 79 / 47 | 1280 / 312 / 209 | 136 | 585 | 2555 (2949) | 1233 (4271) | 13 |
+| z21 | 2176 | 2047 / 513 / 411 | 1120 / 248 / 145 | 136 | 0 | 5480 (24) | 2868 (2636) | 44 |
+| z22 | 1920 | 2095 / 525 / 420 | 1120 / 248 / 145 | 136 | 0 | 5272 (232) | 2621 (2883) | 45 |
+| z23 | 256 | 452 / 113 / 67 | 1280 / 312 / 209 | 136 | 741 | 2846 (2657) | 1409 (4095) | 16 |
+| z31 | 2816 | 2154 / 540 / 454 | 1120 / 248 / 145 | 136 | 0 | 6227 (**-723**) | 3551 (1952) | 48 |
+| z32 | 2304 | 2186 / 548 / 460 | 1120 / 248 / 145 | 136 | 0 | 5747 (**-243**) | 3045 (2458) | 48 |
+| z33 | 256 | 316 / 79 / 48 | 1280 / 312 / 209 | 136 | 619 | 2572 (2932) | 1268 (4236) | 13 |
+| z41 | 2304 | 2165 / 542 / 445 | 1120 / 248 / 145 | 136 | 0 | 5726 (**-222**) | 3030 (2473) | 64 |
+| z42 | 2304 | 2105 / 527 / 437 | 1120 / 248 / 145 | 136 | 0 | 5666 (**-162**) | 3022 (2481) | 62 |
+| z43 | 256 | 308 / 77 / 47 | 1280 / 312 / 209 | 136 | 730 | 2532 (2972) | 1378 (4126) | 13 |
+| z51 | 1408 | 2449 / 613 / 503 | 1120 / 248 / 145 | 136 | 0 | 5114 (390) | 2193 (3311) | 50 |
+| z52 | 1408 | 2433 / 609 / 502 | 1120 / 248 / 145 | 136 | 0 | 5098 (406) | 2192 (3312) | 51 |
+| z53 | 256 | 308 / 77 / 47 | 1280 / 312 / 209 | 136 | 595 | 2541 (2963) | 1243 (4261) | 13 |
+| z61 | 1152 | 1590 / 398 / 363 | 1120 / 248 / 145 | 136 | 0 | 3998 (1505) | 1796 (3708) | 50 |
+| z62 | 896 | 1598 / 400 / 365 | 1120 / 248 / 145 | 136 | 0 | 3750 (1753) | 1542 (3962) | 52 |
+| z63 | 256 | 308 / 77 / 47 | 1280 / 312 / 209 | 136 | 691 | 2637 (2867) | 1339 (4165) | 13 |
+| z71 | 2432 | 1645 / 412 / 344 | 1120 / 248 / 145 | 136 | 0 | 5334 (170) | 3058 (2446) | 57 |
+| z72 | 1920 | 2253 / 564 / 446 | 1120 / 248 / 145 | 136 | 0 | 5430 (74) | 2648 (2856) | 59 |
+| z73 | 256 | 300 / 75 / 43 | 1280 / 312 / 209 | 136 | 734 | 2622 (2882) | 1378 (4125) | 13 |
+| z81 | 768 | 698 / 175 / 181 | 1120 / 248 / 145 | 136 | 0 | 2723 (2781) | 1230 (4274) | 34 |
+| z82 | 1024 | 504 / 126 / 151 | 1120 / 248 / 145 | 136 | 0 | 2785 (2719) | 1456 (4047) | 34 |
+| zf3 | 256 | 292 / 73 / 42 | 1280 / 312 / 209 | 136 | 1087 | 2989 (2515) | 1731 (3773) | 13 |
+| z91 | 1024 | 865 / 217 / 219 | 1120 / 248 / 145 | 136 | 0 | 3145 (2359) | 1524 (3980) | 44 |
+| z92 | 896 | 708 / 177 / 198 | 1120 / 248 / 145 | 136 | 0 | 2861 (2643) | 1375 (4129) | 38 |
 
-- Extra Zone boss (no level): models 981 KB, `boss/extra` sprites 80 KB (ARGB1555; the boss
-  module's own loader), UI 216 KB, player 136 KB = 1,413 KB, 4,091 KB free.
+- Extra Zone boss (no level): models 1,002 KB, `boss/extra` sprites 18 KB (PAL4, was 80 KB
+  ARGB1555), UI 113 KB, player 136 KB = 1,270 KB, 4,234 KB free.
 - Cutscenes (`/cd/cutscene`, run between stages or as boss-talk overlays): all 17 sprite
-  sets together 909 KB before, 252 KB after (`ac_sf` 512 -> 128 KB, `ac_sf_logo` 96 -> 48 KB
+  sets together 909 KB before, 173 KB now (`ac_sf` 512 -> 80 KB, `ac_sf_logo` 96 -> 37 KB
   (one page keeps 16+ colour images), `poly_demo_under2` 64 -> 16 KB). A scene loads only
   its own sets.
 - Before, a negative "free" means allocations failed: on z31/z32/z41/z42 the last object
   atlases, the title-card background, the variant cache and effects had no texture.
   At `objects_init` z41 had 34,600 bytes left (measured; the model gives 34.9 KB, the
   remaining title-card BG and variant cache then failed).
-- After, the largest stage (z31) keeps 1.7 MB free; every stage keeps more than 1.7 MB.
-  No page falls back to ARGB1555 for want of palette rows (the most: z41, 62 of 64 rows).
+- Now every stage keeps at least 1.9 MB free (z31). No page falls back to ARGB1555 for
+  want of palette rows, but z41 now uses all 64 rows at `objects_init` (z42 62, z72 59):
+  the UI rows taken later (title card, pause) reuse idle rows or expand a page (section 3.2).
 
 ## 3. Paletted sprite atlases
 
@@ -193,13 +197,50 @@ HUD and sprites draw from PAL4 pages.
   freeing the previous one (139 KB of VRAM and the file buffers per switch).
 - boss: boss acts return to the baseline (Flycast, z13/z23/z33).
 
-## 6. Gaps
+## 6. Stage loading I/O
+
+Measured in Flycast (main-thread `fs_open` / `fs_read` counted with a link-time wrapper in a
+test build; stage cycle z11 -> z92, 60 frames each, from a debug start; emulated time).
+
+What a stage load opened before (HEAD c49a9e18): z11 = 13 opens / 470 reads, of which
+`objects_init` 169 opens / 402 reads (frames.bin, .hbx, palettes.bin and the pages of each
+of the ~40 sprite resources, plus `objdata.bin` read by stdio in 1 KB requests). Every open
+is an ISO 9660 walk of a directory with hundreds of entries (~25-30 ms), every request
+several ms; while the zone music streams, the two readers seek against each other and the
+same requests take seconds (z12 `level_load` 7.1 s against 0.16 s for z11, whose music had
+not started yet).
+
+Changes (engine/pak.c, tools/dreamcast/mkpak.py, objects):
+- `/cd/data.pak`: the small files of `/cd/sprites`, `/cd/objects` (hit boxes, objdata.bin,
+  palanim.bin), `/cd/ui/res`, special-stage and Extra-boss sprites (and `/cd/models`, see the
+  wiring) in one file, opened once, a hash index in RAM (12 bytes per file), files in load
+  order (frames.bin, hit box, palettes.bin, pages) and a 64 KB read-ahead so a resource's
+  small files come from one request. The ARGB1555 copies of PAL4 pages are left out (391
+  files): the disc gets smaller. A directory in the pack is authoritative: a missing file
+  costs no disc lookup.
+- `/cd/objects/stageNN.pak`: per stage, the files `objects_init` loads (from
+  `make -C objects preload`, the test_coverage list) in load order, read whole in one
+  request (`pak_stage_begin` / `pak_stage_end` around the preload; 160-740 KB of RAM during
+  `objects_init` only).
+- All module file loaders (objects, UI, menus, cutscene, special stage, Extra boss, sprite
+  atlases) ask `pak_load` first; reads go through `loading_read` (the ring keeps turning).
+
+| stage | before: total ms (objects_init ms, opens) | after: total ms (objects_init ms, opens) |
+|---|---|---|
+LOADTABLE
+
+"After" = data.pak + stage packs + models in the pack + the zone music stopped before the
+load and started after it (see the wiring). The rest of an "after" load is the level
+(130-210 ms), the sound bank (50-150 ms, or 1.2-1.3 s when its 4 opens in `/cd/sound`
+are slow: the remaining variance) and boss models (0.3-0.9 s).
+
+## 7. Gaps
 
 - Blaze palette reload of the results glyphs (ClearDemo_InitSprites: palette data at
   +0xcc instead of +4) is not done; it would be one more palette per glyph sprite.
-- The boss module (`boss_extra_draw.c`: `boss/extra/sprites`, 80 KB) still uploads
-  ARGB1555 pages; it can use `spr_atlas_load` like the others.
 - The BG alternate palettes of zones 4/5/7 (`rbgd_header_t.num_palettes`) are not used
   by level.c; with the allocator they would be more PAL8 rows of the same bank.
-- Shelf packing leaves pages about half empty; a better packer would cut another part.
-- Not measured in Flycast: the Extra boss, cutscene overlays during boss acts, the front end.
+- Power-of-two pages are still a third empty on average.
+- z41 uses all 64 palette rows at `objects_init`: one more palette there and a page goes
+  ARGB1555.
+- Not measured in Flycast: the Extra boss, cutscene overlays during boss acts.

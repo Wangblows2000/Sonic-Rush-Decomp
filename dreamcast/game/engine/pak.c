@@ -74,13 +74,72 @@ bad:
     return 0;
 }
 
+/* stage pack: read whole at pak_stage_begin, served from RAM until pak_stage_end */
+static uint8_t *s_stage;
+static uint32_t s_stage_size;
+
+static const PakEntry *find(const PakEntry *ix, uint32_t n, uint32_t h)
+{
+    uint32_t lo = 0, hi = n;
+    while(lo < hi) {   /* index sorted by hash */
+        uint32_t m = (lo + hi) / 2;
+        if(ix[m].hash < h) lo = m + 1; else hi = m;
+    }
+    return lo < n && ix[lo].hash == h ? &ix[lo] : NULL;
+}
+
+int pak_stage_begin(const char *path)
+{
+    file_t f;
+    uint32_t n;
+    pak_stage_end();
+    f = fs_open(path, O_RDONLY);
+    if(f == FILEHND_INVALID) return -1;
+    n = fs_total(f);
+    s_stage = memalign(32, n + 4);
+    if(s_stage && loading_read(f, s_stage, n) == (ssize_t)n && n >= 16 && !memcmp(s_stage, "SPAK", 4) &&
+       16 + 64 * ((uint32_t *)s_stage)[3] + 12 * ((uint32_t *)s_stage)[2] <= n) {
+        s_stage_size = n;
+        s_reads++;
+    } else {
+        free(s_stage);
+        s_stage = NULL;
+    }
+    fs_close(f);
+    return s_stage ? 0 : -1;
+}
+
+void pak_stage_end(void)
+{
+    free(s_stage);
+    s_stage = NULL;
+    s_stage_size = 0;
+}
+
+static int stage_load(const char *key, void **out, uint32_t *size)
+{
+    const uint32_t *h32 = (const uint32_t *)s_stage;
+    const PakEntry *e = find((const PakEntry *)(s_stage + 16 + 64 * h32[3]), h32[2], fnv1a(key));
+    if(!e || e->offset + e->size > s_stage_size) return 0;
+    *out = memalign(32, e->size + 32);
+    if(!*out) return 0;
+    memcpy(*out, s_stage + e->offset, e->size);
+    memset((uint8_t *)*out + e->size, 0, 32);
+    if(size) *size = e->size;
+    s_files++;
+    s_bytes += e->size;
+    return 1;
+}
+
 int pak_load(const char *path, void **out, uint32_t *size)
 {
     const char *key;
     uint32_t h, lo = 0, hi, i;
     int covered = 0;
     *out = NULL;
-    if(strncmp(path, "/cd/", 4) != 0 || !pak_init()) return PAK_NONE;
+    if(strncmp(path, "/cd/", 4) != 0) return PAK_NONE;
+    if(s_stage && stage_load(path + 4, out, size)) return PAK_FOUND;
+    if(!pak_init()) return PAK_NONE;
     key = path + 4;
     for(i = 0; i < s_ndirs && !covered; i++)
         covered = strncmp(key, s_dirs[i], strnlen(s_dirs[i], 64)) == 0;

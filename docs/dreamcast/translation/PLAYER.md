@@ -583,10 +583,11 @@ All of these are listed here. There are no silent changes.
    (`ModelPalette_ShiftColor`) and volume changes are dropped.
 2. **Animation**: `dcp_set_anim` stores the id in `anim` (@328, the raw id,
    before the Blaze offset of 0x1b*chara), and clears `ANIM_DONE` (8),
-   `LOOP` (4) and, after the hook, the blend request bit 0x400. The
-   renderer must set `DCP_DF_ANIM_DONE` when a non-looping animation ends,
-   because several transitions wait for it (skid, spin dash, balance, die,
-   trick poses). The host test never sets it.
+   `LOOP` (4) and, after the hook, the blend request bit 0x400. The model
+   part of Player_SetAnimation and the animation clock live in
+   `dcp_model.c` (section 8): `DCP_DF_ANIM_DONE` is raised there from the
+   joint animation, as StageObj_Draw3DEx does. The host physics test never
+   sets it; `test_model.c` checks the timing.
 3. **Inputs**: `dcp_player_frame(held, pressed, released)` replaces `gPad`.
    The remap (`Player_RemapButtons`) and its place in `Player_In` (after the
    gravity flip) are unchanged.
@@ -682,3 +683,43 @@ Not verified:
   environment).
 - Object collision (`obj_probe`) is untested, because no object module
   exists yet.
+
+## 8. Model presentation (`dcp_model.c`, 2026-11-22)
+
+`dcp_model.c` / `dcp_model.h` translate the model half of the player's draw:
+Player_SetAnimation (model part), Model_SetResource / Model_SetAnimation /
+Model_AnimateMdl, StageObj_Draw3DEx for the player, the model's own matrix ops
+from Player_Create, Player_Draw (after-image) and StageTitleCardPlayer_Draw.
+
+Root causes it replaces (all in the old `draw_player_model` of main.c):
+
+| defect | old code | original |
+|---|---|---|
+| model above the ground (F) | model origin (feet) at the player centre | Player_Create: `w->unk18C = -0x10000` is the Translate2 vector of the model (`cb` = FlushVP, Identity, RotateTranslate2Scale): v * S(0x34cc) * T(0, -16, 0) * R + pos. The feet sit 16 px below the centre and the rotation pivots on the centre (slopes, loops) |
+| left/right mirrored, spinning (A) | facing from `pf & DCP_PF_FACE_L` (@0x32C bit 0, the "no jump cut" flag of the air states) | facing is `disp_flags & 1` (@0x5C), RotY(0xC000 / 0x4000) |
+| ball animations broken (B) | only table 0x02368bdc used; every animation played on the body model | 0x02368c44 selects the model resource (1 = son_ball / blz_spin for ids 0x30..0x34 and Blaze 0x4b/0x4c), 0x02368cac the visibility animation (0 = keep, none on the ball); ids >= 0x30 + 0x1b for Blaze |
+| restarts, stuck one-shots (A, B) | restart only when the joint index changed; +1 frame per frame; ANIM_DONE from son.bac sprite timing | every Player_SetAnimation restarts at frame 0 with speed 1.0; fx32 frame += speed * per-slot speed * timescale (Player_SetAnimSpeedFromVelocity: speed = s << 8); loop / clamp at numFrames; the ended bit raises ANIM_DONE (8) every frame the joint animation is at its end, once per cycle when looping; hit-stop / pause freeze the frame and keep 0x5C; 8-frame cross-fade (blend speed 0x200) on request 0x400 |
+| no blink | hidden flag ignored | 0x5C & 0x20 hides the model (invulnerability blink) |
+| no visibility animation | `dca_visibility(vis, 0, 0)` (the "dummy" set, frame 0) | com_gen00.. per the table, advanced with the joint clock |
+
+Use from main.c (player/patches/main.c.patch): `dcp_model_load(&g_dcp_model,
+chara, "/cd/player", 1)`, `dcp_model_attach` before `objects_init` (chains the
+anim / anim_speed hooks), `objects_set_player_anim_done(!model_ok)`,
+`dcp_model_step` once per world frame after `dcp_player_frame`,
+`dcp_model_matrix` / `_matrix_ext` / `_lights` / `_afterimage` /
+`_titlecard_view` / `_draw` in `draw_player_model`. Data: `son_ball.dcm`,
+`blz_spin.dcm` and `animtab.bin` (the four ov000 tables, written by
+`tools/extract_physics.py`) on the disc (player/patches/build_disc.sh.patch);
+without `animtab.bin` the module derives the resource from the animation's
+joint count.
+
+Host test: `make model-test` (30 checks: table selection for Sonic and Blaze,
+ball resource, one-shot / loop timing, ANIM_DONE pulses, restart, hit-stop,
+blend, feet 16 px below the centre, slope pivot, a z11 run for both
+characters with no wrong facing and no per-frame restarts).
+
+Deviations: sampling uses the integer NNS frame (no interpolation, as the DS);
+the blend renormalises rows 0/1 and rebuilds row 2; the light colours of the
+zone table (data_02074960) are not used (white / half grey as before), only the
+after-image (0x6182 Sonic, 0x1a98 Blaze) and underwater colours are applied.
+

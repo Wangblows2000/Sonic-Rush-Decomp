@@ -12,6 +12,11 @@
  * look on the disc), PAK_NONE (not a packed directory, or no pack: use the file system). */
 enum { PAK_NONE = 0, PAK_FOUND = 1, PAK_MISSING = 2 };
 int pak_load(const char *path, void **out, uint32_t *size);
+/* A stage's own pack (tools/dreamcast/mkpak.py --stage-packs: what objects_init loads, in
+ * load order) read whole in one request; pak_load serves from it until pak_stage_end.
+ * Returns 0, or -1 without the file (pak_load then reads data.pak / the disc). */
+int pak_stage_begin(const char *path);
+void pak_stage_end(void);
 /* statistics for the load profile: packed files served, their bytes, GD-ROM reads made */
 void pak_stats(uint32_t *files, uint32_t *bytes, uint32_t *reads);
 #endif

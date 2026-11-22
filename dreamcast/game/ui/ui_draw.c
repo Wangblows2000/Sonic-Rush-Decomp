@@ -311,6 +311,10 @@ void ui_draw_tr(void) {
     int i, n = sort_quads();
     float z = 100.0f;
     s16 b;
+    /* StageTitleCardPlayer_Draw: the player close-up (3D BG0) lies between the title card BG
+     * and the title card sprites; it is drawn in the opaque lists with depth in (UI_TC_MODEL_Z0,
+     * UI_TC_MODEL_Z1), so the title layers and everything above them move up by UI_TC_GAP */
+    int gap = ui_titlecard_player_draw(NULL, NULL, NULL, NULL, NULL, NULL);
     pt1 = timer_us_gettime64(); s_prof[0] += pt1 - pt0; s_prof_q += n;
     for (i = 0; i < n; i++, z += 0.01f) {
         const UiQuad *q = sorted[i];
@@ -318,6 +322,10 @@ void ui_draw_tr(void) {
         const Texture *t;
         SprAtlas *a;
         int bank;
+        if (gap && q->layer >= UI_LAYER_TITLE) {
+            z += UI_TC_GAP;
+            gap = 0;
+        }
         if (q->tex < 0) {
             draw_rect_screen(NULL, PVR_LIST_TR_POLY, q->x, q->y, q->w, q->h, 0, 0, 0, 0, z, q->argb);
             continue;
@@ -376,7 +384,7 @@ void ui_draw_tr(void) {
         u32 a = (u32)((b < 0 ? -b : b) * 255 / 16);
         if (a > 255)
             a = 255;
-        draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 200.0f,
+        draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 200.0f + UI_TC_GAP,
                          a << 24 | (b > 0 ? 0xffffff : 0));
     }
 }

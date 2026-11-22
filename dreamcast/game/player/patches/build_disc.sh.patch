@@ -1,0 +1,13 @@
+--- a/dreamcast/game/build_disc.sh
++++ b/dreamcast/game/build_disc.sh
+@@ -18,6 +18,10 @@
+ cp "$M/mod__blz__blz.dcm" "$OUT/disc/player/blz.dcm"
+ cp "$M/narc__player_lz7__son.dca" "$OUT/disc/player/son.dca"
+ cp "$M/narc__player_lz7__son.dcv" "$OUT/disc/player/son.dcv"
++# ball models (Model_SetResource 1) and the four Player_SetAnimation tables (player/tools/extract_physics.py)
++cp "$M/mod__son__son_ball.dcm" "$OUT/disc/player/son_ball.dcm"
++cp "$M/mod__blz__blz_spin.dcm" "$OUT/disc/player/blz_spin.dcm"
++cp "$ROOT/build/dreamcast/player/animtab.bin" "$OUT/disc/player/"
+ # Player_SetAnimation model-animation table (ov000 0x02368bdc, 0x68 bytes) from YOUR ROM
+ python3 -c "import sys;d=open(sys.argv[1],'rb').read();o=0x02368bdc-0x022C5C80;open(sys.argv[2],'wb').write(d[o:o+0x68])" \
+     "$ROOT/extract/eur/arm9_overlays/ov000.bin" "$OUT/disc/player/animmap.bin"

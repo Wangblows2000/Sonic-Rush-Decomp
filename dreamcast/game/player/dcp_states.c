@@ -497,6 +497,8 @@ void dcp_update_boost(DcPlayer *w) {
             if (b + a > 0x200 && !(w->pf & 0x80) && (w->pf & 0x100) && (w->move_flags & 1))
                 fx(w, DCP_FX_BOOST, -0xd, (w->pf2 & 0x1000) ? 0 : 0xd);
         }
+        if (!(W.frame & 3) && (W.flags & 1) && w->chara == 1 && (w->pf & 0x80))
+            fx(w, DCP_FX_BLAZE_FLAME, 4, 0); /* EffBlazeBoostFlame_Create (a: 0 run, 1 spin, 2 jump, 3 trick, 4 boost) */
     }
     if (w->boost_cool != 0)
         w->boost_cool--;

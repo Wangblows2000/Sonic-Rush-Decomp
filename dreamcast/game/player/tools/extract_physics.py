@@ -9,6 +9,10 @@ Writes build/dreamcast/player/:
                table (data_02072470).  Both are COMPUTED here and then
                verified byte for byte against the owner's arm9.bin.
   tables.json  decoded physics values (for the docs / debugging).
+  animtab.bin  the four Player_SetAnimation tables (ov000 0x02368bdc, 4 x 0x68
+               bytes: joint animation, model resource 0 body / 1 ball,
+               visibility animation, son.bac sprite animation), copied from
+               the owner's overlay; read by dcp_model.c.
 
 Usage: extract_physics.py [--extract extract/eur] [--out build/dreamcast/player]
 """
@@ -44,6 +48,9 @@ def gen_atan():
     return t + [0]  # entry 128 is never indexed (a/b < 1); the ROM has 0 there
 
 
+ANIMTAB_ADDR = 0x02368BDC  # Player_SetAnimation tables (ov000)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--extract", default="extract/eur")
@@ -73,7 +80,14 @@ def main():
     if bad_sc or bad_at:
         sys.exit("generated trig tables differ from ROM: sincos %d, atan %d" % (bad_sc, bad_at))
 
+    toff = ANIMTAB_ADDR - OV_BASE
+    animtab = ov[toff:toff + 4 * 0x68]
+    # sanity: the resource table holds only 0/1 and marks the ball ids 0x30..0x34
+    if len(animtab) != 4 * 0x68 or any(b > 1 for b in animtab[0x68:0xd0]) or animtab[0x68 + 0x31] != 1:
+        sys.exit("ov000.bin: Player_SetAnimation tables not found")
+
     os.makedirs(a.out, exist_ok=True)
+    open(os.path.join(a.out, "animtab.bin"), "wb").write(animtab)
     open(os.path.join(a.out, "physics.bin"), "wb").write(phys)
     open(os.path.join(a.out, "trig.bin"), "wb").write(struct.pack("<8192h", *sc) + struct.pack("<129h", *at))
     json.dump({"chars": ["sonic", "blaze"], "physics": rows}, open(os.path.join(a.out, "tables.json"), "w"), indent=1)

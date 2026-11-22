@@ -58,6 +58,7 @@ substantially rewritten or new.
 | `obj_draw.c` | KOS only: atlas upload and quad drawing with `render.h`; rot-scale quads, rope multi-draw, piece offsets |
 | `obj_fx.c` | NitroSDK MTX_Identity33_/RotX/Y/Z33_/Concat33/MultVec33, FX_DivS32, ObjShift_Set, ObjShift_SetFromRef |
 | `obj_effects2.c` | EffZakoBombPuff, EffFound (+ Effect_State_FollowParent), EffBrakeSmoke |
+| `obj_peffect.c` | player effects for `g_dcp_hooks.effect` (DCP_FX_*): EffBoost (+ _State_FollowPlayer), EffBoostAura, EffBoostBurst (+ mirrored second draw), EffHighSpeedStart, EffBlazeBoostFlame, EffBoostJet_Spawn, EffSpinSmoke1/2 (_Spawn), EffBrakeSmoke_Spawn |
 | `obj_leafstorm.c` | Trampoline, BendStick, CorkscrewTrigger, RockBreak (+Part), RopeC (+Land, +Spring), EggPawnM (+ Enemy pop-on-contact) |
 | `obj_shared.c` | Rope, JumpPedestal, PlayerStart, WallBreak, IronBall (+Part), GmkSpecial, GmkLand, GmkLandAA, MapObj73, MapObj75, MapObj70, WaterLevelTrigger, camera mirror, ScreenShake, model views |
 | `obj_flapper.c` | EnemyFlapperGroup (types 2 and 4: hover / patrol) |
@@ -160,6 +161,21 @@ render_begin_list(PVR_LIST_PT_POLY); ...level layers...; objects_draw(); render_
   its own Player_In, call `objects_set_grind_check(0)` so it does not run twice.
 - **Pool**: 384 objects (decorations share it; z12 peaks below 200).
   bss of `obj_manager.o` is 382 KB.
+
+- **Player effects** (obj_peffect.c, 2026-11-22): the player module's effect hook
+  (DCP_FX_BOOST, _BOOST_BURST, _HIGHSPEED, _BLAZE_FLAME a = 4, _BOOST_JET,
+  _SPIN_SMOKE1/2, _BRAKE_SMOKE) now creates the original 2D effect objects from
+  `act_com` ac_eff_boost.bac / ac_eff_kemuri_spin01/02.bac / ac_eff_kemuri_brake.bac
+  (slots OBJ_BAC_EFF_BOOST, _EFF_SPIN1, _EFF_SPIN2, preloaded in 2D acts).
+  DCP_FX_BOOST_BURST creates EffBoostBurst and EffBoostAura, as Player_StartBoost
+  does. Sprites with AnimatorSprite flag 0x400 (OAM semi-transparent) are drawn
+  only by `obj_draw(PVR_LIST_TR_POLY)` / `objects_draw_tr()` with vertex alpha
+  0xa0; main.c must call it inside the TR list (player/patches/main.c.patch).
+  Not translated: EffTrail (Sonic's boost ribbon), the Blaze run / spin / jump /
+  trick flames (DCP_FX_BLAZE_FLAME a = 0..3), the 3D variants of boss acts.
+- **Boost defence**: obj_player_collide applies Player_UpdateBoost's
+  `w->unk2C4 |= 5` while boosting and Player_StopBoost's `= 2` (when not
+  invulnerable / invincible) to the hurt box (`ObjPlayerCtx.prev_boost`).
 
 ### 2.2 Player-module changes requested (integrator applies them)
 

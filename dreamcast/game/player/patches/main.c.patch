@@ -1,0 +1,196 @@
+--- a/dreamcast/game/src/main.c	2026-11-22 13:39:02.966228393 +0000
++++ b/dreamcast/game/src/main.c	2026-11-22 14:11:44.323455796 +0000
+@@ -10,6 +10,7 @@
+ #include "../engine/audio.h"
+ #include "../player/dcp_player.h"
+ #include "../model/model.h"
++#include "../player/dcp_model.h"
+ #include "../objects/objects.h"
+ #include "../ui/ui.h"
+ #include "../sound/sound.h"
+@@ -37,15 +38,7 @@
+ 
+ static DcPlayer g_player;
+ /* Player 3D model (son.nsbmd from the owner's ROM, converted by nsbmd2dc.py). */
+-static dcm_model_t g_pmodel;
+-static dca_set_t g_panims, g_pvis;
+-static uint8_t g_animmap[0x68];       /* Player_SetAnimation table ov000 0x02368bdc */
+ static int g_model_ok;
+-static float g_anim_frame;
+-static int g_anim_cur = -1;
+-static dcm_local_t g_locals[DCM_MAX_JOINTS];
+-static dcm_mtx_t g_palette[DCM_MAX_PALETTE];
+-static uint8_t g_visbits[DCM_MAX_JOINTS];
+ static rlvl_map_t g_map;
+ static int g_player_ok;
+ static int g_chara;   /* 0 Sonic, 1 Blaze (hold Y while booting until the menus exist) */
+@@ -124,12 +117,14 @@
+     memset(&g_player, 0, sizeof(g_player));
+     dcp_player_create(&g_player, g_chara, 0, sx, sy);
+     objects_shutdown();
++    if(g_model_ok) dcp_model_attach(&g_dcp_model, &g_player);   /* anim hooks, chained before the objects' */
+     g_obj_ok = objects_init(&g_map, lv->data) == 0;
+     if(g_obj_ok) {
+         if(g_ss.active && objects_restore_event_state) objects_restore_event_state();
+         objects_add_player(&g_player); objects_set_view_count(2); objects_respawn_view();
+-        /* son.bac timing ends non-looping animations (sets DCP_DF_ANIM_DONE), as on the DS. */
+-        objects_set_player_anim_done(1);
++        /* DCP_DF_ANIM_DONE comes from the model's joint animation (StageObj_Draw3DEx);
++         * son.bac timing stands in only when the model is missing */
++        objects_set_player_anim_done(!g_model_ok);
+     }
+     printf("objects: vram free after objects_init %lu\n", (unsigned long)render_vram_free());
+     sound_load_bank(sound_stage_sdat(g_dcp_world.zone, g_dcp_world.act, g_chara));
+@@ -169,63 +164,64 @@
+ static void load_player_model(void)
+ {
+     if(g_model_ok && g_model_chara == g_chara) return;
+-    if(g_model_ok) dcm_model_free(&g_pmodel);   /* Sonic <-> Blaze: give the VRAM back */
+-    g_model_ok = 0; g_model_chara = g_chara;
+-    uint32_t sz;
+-    void *m = load_file(g_chara ? "/cd/player/blz.dcm" : "/cd/player/son.dcm", &sz);
+-    void *a, *v, *t;
+-    uint32_t asz, vsz, tsz;
+-    a = load_file("/cd/player/son.dca", &asz);
+-    v = load_file("/cd/player/son.dcv", &vsz);
+-    t = load_file("/cd/player/animmap.bin", &tsz);
+-    if(m && a && t && tsz == sizeof(g_animmap) && dcm_model_load(&g_pmodel, m, sz, 1) == 0 &&
+-       dca_set_load(&g_panims, a, asz) == 0) {
+-        memcpy(g_animmap, t, sizeof(g_animmap));
+-        if(v) dca_set_load(&g_pvis, v, vsz);
+-        g_model_ok = 1;
+-    }
++    g_model_chara = g_chara;
++    /* body + ball model of the character, son.dca / son.dcv, Player_SetAnimation tables
++     * (dcp_model_load frees the previous character's textures first) */
++    g_model_ok = dcp_model_load(&g_dcp_model, g_chara, "/cd/player", 1) == 0;
+     printf("player model: %s (vram free %lu)\n", g_model_ok ? "ok" : "MISSING", (unsigned long)render_vram_free());
+ }
+ 
+-static void draw_player_model(pvr_list_t list)
++/* StageObj_Draw3DEx for the player: (x, y, z) in DS 1/256 px */
++static void place_player_model(s32 x, s32 y, s32 z, dcm_camera_t *cam, dcm_mtx_t *mdl, dcm_lights_t *lights, int ghost)
+ {
+-    dcm_camera_t cam;
+-    dcm_mtx_t mdl;
+-    dcm_lights_t lights;
+-    dcm_draw_opts_t opts;
+-    float tx = g_player.x / 256.0f - g_cam_x, ty = -(g_player.y / 256.0f - g_cam_y);
+-    int a = g_animmap[(uint16_t)g_player.anim < sizeof(g_animmap) ? g_player.anim : 0];
+-    int left = g_player.pf & DCP_PF_FACE_L;
+-    if(a != g_anim_cur) { g_anim_cur = a; g_anim_frame = 0; }
+-    dca_sample(&g_panims, a, g_anim_frame, &g_pmodel, g_locals);
+-    dcm_pose(&g_pmodel, g_locals, g_palette);
+-    if(g_pvis.hdr) dca_visibility(&g_pvis, 0, 0, &g_pmodel, g_visbits);
+     if(g_is_boss) {
+         s32 bt[3], br[9];
+         /* boss arenas are 3D: the player is placed in world space under the boss camera */
+-        boss_camera(&cam);
++        boss_camera(cam);
+         if(boss_player_model(bt, br)) {
+             /* circular arenas (Boss2+): the boss module builds the player transform */
+             int i;
+-            dcm_mtx_t rot;
++            dcm_mtx_t ry, rot;
+             for(i = 0; i < 9; i++) rot.m[i / 3][i % 3] = br[i] / 4096.0f;
+             rot.m[3][0] = bt[0] / 4096.0f; rot.m[3][1] = bt[1] / 4096.0f; rot.m[3][2] = bt[2] / 4096.0f;
+-            dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, 0x4000, 0, 0, 0, 0);
+-            dcm_mtx_mul(&mdl, &mdl, &rot);
+-            if(!boss_lights(&lights)) dcm_lights_stage(&lights, left);   /* Boss3+: stage lights */
+-            goto draw;
++            dcm_stage_model_matrix(&ry, 1.0f, 0x4000, 0, 0, 0, 0);
++            dcm_mtx_mul(&ry, &ry, &rot);
++            dcp_model_matrix_ext(&ry, mdl);
++            if(!boss_lights(lights)) dcp_model_lights(&g_player, ghost, lights);   /* Boss3+: stage lights */
++            return;
+         }
+-        dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, left ? 0xC000 : 0x4000, g_player.angle,
+-                               g_player.x / 256.0f, -g_player.y / 256.0f, g_player.z / 256.0f);
++        dcp_model_matrix(&g_player, x / 256.0f, -y / 256.0f, z / 256.0f, mdl);
+     } else {
+-        dcm_camera_stage(&cam);
+-        dcm_camera_stage_offaxis(&cam, &tx, &ty);
+-        dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, left ? 0xC000 : 0x4000, g_player.angle, tx, ty, 0);
+-    }
+-    dcm_lights_stage(&lights, left);
+-draw:
+-    opts.list = list; opts.pt_list = PVR_LIST_PT_POLY; opts.alpha_scale = 255;
+-    dcm_draw(&g_pmodel, g_palette, &mdl, &cam, g_pvis.hdr ? g_visbits : NULL, &lights, &opts);
++        float tx = x / 256.0f - g_cam_x, ty = -(y / 256.0f - g_cam_y);
++        dcm_camera_stage(cam);
++        dcm_camera_stage_offaxis(cam, &tx, &ty);
++        dcp_model_matrix(&g_player, tx, ty, 0, mdl);
++    }
++    dcp_model_lights(&g_player, ghost, lights);
++}
++
++static void draw_player_model(pvr_list_t list)
++{
++    dcm_camera_t cam;
++    dcm_mtx_t mdl;
++    dcm_lights_t lights;
++    s32 ax, ay, az, tsp, teye[3], tat[3];
++    int tzoom;
++    /* StageTitleCardPlayer_Draw replaces the player's draw during the title card: close-up camera,
++     * depth between the title card BG and its sprites (UI_TC_MODEL_Z0..Z1) */
++    if(ui_titlecard_player_draw(&tsp, teye, tat, &ax, &ay, &tzoom)) {
++        dcp_model_titlecard_view(&g_player, teye, tat, ax, ay, tzoom, UI_TC_MODEL_Z0, UI_TC_MODEL_Z1, &cam, &mdl);
++        dcp_model_lights(&g_player, 0, &lights);
++        dcp_model_draw(&g_dcp_model, &g_player, list, &mdl, &cam, &lights);
++        return;
++    }
++    /* Player_Draw: high-speed / homing after-image at the previous position */
++    if(!g_is_boss && dcp_model_afterimage(&g_player, &ax, &ay, &az)) {
++        place_player_model(ax, ay, az, &cam, &mdl, &lights, 1);
++        dcp_model_draw(&g_dcp_model, &g_player, list, &mdl, &cam, &lights);
++    }
++    place_player_model(g_player.x, g_player.y, g_player.z, &cam, &mdl, &lights, 0);
++    dcp_model_draw(&g_dcp_model, &g_player, list, &mdl, &cam, &lights);
+ }
+ 
+ static void start_zone_music(char zone)
+@@ -712,6 +708,12 @@
+             { uint64_t t0 = timer_us_gettime64();
+               dcp_player_frame(&g_player, pad_held, pad_pressed, pad_released);
+               g_prof[1] += timer_us_gettime64() - t0; }
++            if(g_model_ok) {
++                s32 tsp = 0x1000;   /* title card close-up: obj unk24C slot speeds (slow motion) */
++                ui_titlecard_player_draw(&tsp, NULL, NULL, NULL, NULL, NULL);
++                dcp_model_set_slot_speed(&g_dcp_model, tsp);
++                dcp_model_step(&g_dcp_model, &g_player, 0);   /* animation, ANIM_DONE, pose */
++            }
+             { uint64_t t0 = timer_us_gettime64(); if(g_obj_ok) objects_update(&g_player); g_prof[0] += timer_us_gettime64() - t0; }
+             if(g_is_boss) boss_update(&g_player);
+             /* Continuous camera (CAMERA.md): the DS screen-sized window follows the
+@@ -732,6 +734,10 @@
+         }
+         if(ok && g_player_ok && g_special_pending) { run_special_stage(&lv, stage); continue; }
+         if(ok && g_player_ok) ui_post_update(&g_player);
++        if(ok && g_player_ok && ui_titlecard_active()) {
++            /* StageTitleCard_HoldPlayerX / Y move the player after the world update and snap gCamera */
++            g_cam_x = g_player.x / 256.0f - VIEW_W / 2; g_cam_y = g_player.y / 256.0f - VIEW_H * 0.55f;
++        }
+         sound_update();
+         if(ok) {
+             if(g_cam_x > level_width_px(&lv) - VIEW_W) g_cam_x = level_width_px(&lv) - VIEW_W;
+@@ -760,12 +766,6 @@
+             last = now_f;
+         }
+         render_begin_frame();
+-        if(ok && g_player_ok && g_model_ok) {
+-            g_anim_frame += 1.0f;
+-            if(g_anim_cur >= 0 && g_anim_frame >= g_panims.anims[g_anim_cur].num_frames)
+-                /* a non-looping animation holds its last pose once son.bac timing has ended it */
+-                g_anim_frame = (g_player.disp_flags & DCP_DF_ANIM_DONE) ? g_panims.anims[g_anim_cur].num_frames - 1 : 0;
+-        }
+         /* PVR lists must be opened in order OP, PT, TR (each once per frame).
+          * Depth (1/w style, bigger = nearer): bg 0.0005 < layer B 0.001 < player model (~0.006) < layer A 10. */
+         render_begin_list(PVR_LIST_OP_POLY);
+@@ -781,6 +781,7 @@
+         render_end_list();
+         render_begin_list(PVR_LIST_TR_POLY);
+         if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY);
++        if(ok && g_obj_ok) obj_draw(PVR_LIST_TR_POLY);   /* AnimatorSprite 0x400 (semi-transparent OBJ) */
+         if(g_is_boss) boss_draw(PVR_LIST_TR_POLY);
+         if(g_is_boss) {
+             s32 bm = 0, evy = 0;

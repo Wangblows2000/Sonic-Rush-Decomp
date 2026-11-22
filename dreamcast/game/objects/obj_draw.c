@@ -50,10 +50,12 @@ u32 objects_vram_used(void) {
 }
 
 static const float k_zbase[4] = { 4.5f, 3.5f, 2.5f, 1.5f };
+/* semi-transparent OBJ: the stage's BLDALPHA blend (EVA ~ EVB) as vertex alpha */
+#define OBJ_SEMITRANS_ARGB 0xa0ffffffu
 
 /* a textured quad with free corners (rot-scale OAM), screen coordinates */
 static void quad4(const Texture *t, int bank, pvr_list_t list, const float *xs, const float *ys, float u0, float v0,
-                  float u1, float v1, float z) {
+                  float u1, float v1, float z, uint32_t argb) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
     pvr_vertex_t v;
@@ -61,7 +63,7 @@ static void quad4(const Texture *t, int bank, pvr_list_t list, const float *xs, 
     pvr_poly_compile(&hdr, &cxt);
     pvr_prim(&hdr, sizeof(hdr));
     u0 /= t->w; u1 /= t->w; v0 /= t->h; v1 /= t->h;
-    v.flags = PVR_CMD_VERTEX; v.argb = 0xffffffff; v.oargb = 0; v.z = z;
+    v.flags = PVR_CMD_VERTEX; v.argb = argb; v.oargb = 0; v.z = z;
     v.x = xs[3]; v.y = ys[3]; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v)); /* bottom left  */
     v.x = xs[0]; v.y = ys[0]; v.u = u0; v.v = v0; pvr_prim(&v, sizeof(v)); /* top left     */
     v.x = xs[2]; v.y = ys[2]; v.u = u1; v.v = v1; pvr_prim(&v, sizeof(v)); /* bottom right */
@@ -75,7 +77,11 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
     SprAtlas *a;
     int hf, vf, prio, order, bank, pal = -1, im;
     float x, y, x0, y0, z, u0, v0, u1, v1, tmp;
-    if (img == NULL || s->hidden)
+    /* AnimatorSprite flag 0x400 = OAM semi-transparent (attr0 mode 1): those sprites go to the
+     * translucent list (obj_draw(PVR_LIST_TR_POLY)), all others to the punch-through list */
+    int semi = (s->flags & 0x400) != 0;
+    uint32_t argb = semi ? OBJ_SEMITRANS_ARGB : 0xffffffff;
+    if (img == NULL || s->hidden || semi != (list == PVR_LIST_TR_POLY))
         return;
     a = (SprAtlas *)s->res->atlas;
     if (a == NULL || img->page >= a->n_pages)
@@ -121,7 +127,7 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
         u0 = (float)img->x; v0 = (float)img->y; u1 = (float)(img->x + img->w); v1 = (float)(img->y + img->h);
         if (hf) { tmp = u0; u0 = u1; u1 = tmp; }
         if (vf) { tmp = v0; v0 = v1; v1 = tmp; }
-        quad4(t, bank, list, xs, ys, u0, v0, u1, v1, z);
+        quad4(t, bank, list, xs, ys, u0, v0, u1, v1, z, argb);
         return;
     }
     if (s->ppos != NULL) { /* StageObj_DrawSpriteAlt: piece 0 offset (one-piece frames) */
@@ -129,7 +135,7 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
         y0 += (float)(s->ppos[0][1] >> 8);
     }
     draw_sprite_world_pal(t, bank, list, x0, y0, (float)img->w, (float)img->h, (float)img->x, (float)img->y,
-                          (float)(img->x + img->w), (float)(img->y + img->h), hf | (vf << 1), z, 0xffffffff);
+                          (float)(img->x + img->w), (float)(img->y + img->h), hf | (vf << 1), z, argb);
 }
 static void draw_spr(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vflip_extra) {
     int i;
@@ -191,3 +197,5 @@ void obj_draw(int list) {
 }
 
 void objects_draw(void) { obj_draw(PVR_LIST_PT_POLY); }
+/* the semi-transparent sprites (player effects): call inside the translucent list */
+void objects_draw_tr(void) { obj_draw(PVR_LIST_TR_POLY); }

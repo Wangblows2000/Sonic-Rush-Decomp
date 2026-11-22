@@ -116,6 +116,11 @@ int ui_titlecard_active(void);
  * the normal player draw; speed = per-slot animation speed (fx32), eye/at = LookAt (fx32 DS
  * units, y up), x/y = model translation (20.12), zoom = off-axis frustum phase */
 int ui_titlecard_player_draw(s32 *speed, s32 eye[3], s32 at[3], s32 *x, s32 *y, int *zoom);
+/* depth band for that close-up (PVR 1/w): above the title card BG quads (z 100 + 0.01 per quad),
+ * below the title card sprites, which ui_draw_tr moves up by UI_TC_GAP while the close-up shows */
+#define UI_TC_GAP 2000.0f
+#define UI_TC_MODEL_Z0 400.0f
+#define UI_TC_MODEL_Z1 1900.0f
 
 /* ----------------------------------------------------- event hooks */
 /* ScorePopup_Create(obj, n) + data_022c4590.unk4 += n (enemy kill, trick, ...).

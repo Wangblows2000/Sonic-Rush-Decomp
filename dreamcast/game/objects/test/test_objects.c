@@ -856,6 +856,87 @@ static void test_sweep(void) {
     CHECK(st->rings_collected > s0.rings_collected && st->dec_spawned > s0.dec_spawned, "sweep collects rings, spawns decorations");
 }
 
+
+/* ------------------------------------------------------------ player effects + loop */
+static int count_boost_fx(u16 anim) {
+    Obj *q;
+    int n = 0;
+    for (q = g_obj.head; q; q = q->next)
+        if (q->used && q->has_spr && !(q->h.obj_flags & 4) && q->spr.res == &g_obj.res[OBJ_BAC_EFF_BOOST] &&
+            (anim == 0xffff || q->spr.anim == anim))
+            n++;
+    return n;
+}
+static void test_player_fx(void) {
+    const rlvl_object_t *ps = find_obj(0x72, 0);
+    ObjPlayerCtx *pc;
+    int n, aura = 0, burst = 0, hs = 0, dust = 0, def_ok = 0, semi = 1, boost_frames = 0;
+    Obj *q;
+    printf("[player fx] Player_StartBoost / _UpdateBoost / _StartHighSpeed effects, boost hurt-box defence\n");
+    if (ps == NULL)
+        return;
+    place_on_floor(ps->x, ps->y);
+    g_dcp_world.flags |= 1; /* stage timer running (an earlier part may have reached the goal) */
+    pc = obj_player_ctx(&P);
+    for (n = 0; n < 20; n++)
+        frame(0);
+    P.tension = 0x12c0;
+    for (n = 0; n < 50; n++) {
+        frame((u16)(DCP_KEY_RIGHT | (n >= 10 ? DCP_KEY_X : 0)));
+        if (P.pf & 0x80) {
+            boost_frames++;
+            aura += count_boost_fx(4) > 0;
+            burst += count_boost_fx(5) > 0;
+            hs += count_boost_fx(3) > 0;
+            if (pc && (pc->body.def & 5) == 5)
+                def_ok++;
+        }
+        for (q = g_obj.head; q; q = q->next)
+            if (q->used && q->has_spr && q->spr.res == &g_obj.res[OBJ_BAC_EFF_BOOST] && q->spr.anim >= 3 && q->spr.anim <= 5 &&
+                !(q->spr.flags & 0x400))
+                semi = 0;
+    }
+    /* (Player_StartBoost sets pf 0x80 before Player_StartHighSpeed, so no EffHighSpeedStart then) */
+    printf("  boosting %d frames: aura on %d, burst on %d, high-speed start on %d, hurt box def&5 on %d\n", boost_frames, aura,
+           burst, hs, def_ok);
+    CHECK(boost_frames > 30 && aura == boost_frames, "EffBoostAura follows the whole boost (%d of %d)", aura, boost_frames);
+    CHECK(burst > 0 && burst < boost_frames, "EffBoostBurst plays once at the start and ends with its animation");
+    CHECK(def_ok == boost_frames, "boosting makes the hurt box invulnerable (Player_UpdateBoost 2C4 |= 5)");
+    CHECK(semi, "aura / burst / high-speed sprites are semi-transparent (AnimatorSprite 0x400)");
+    for (n = 0; n < 4; n++)
+        frame(DCP_KEY_RIGHT);
+    CHECK(!(P.pf & 0x80) && count_boost_fx(4) == 0, "releasing boost ends the aura (EffBoost_State_FollowPlayer)");
+    CHECK(pc == NULL || pc->body.def == 2, "Player_StopBoost restores the hurt box (def %x)", pc ? pc->body.def : 0);
+    /* high-speed mode without boost: dust puffs every 8 frames (EffBoost_Create) */
+    for (n = 0; n < 60; n++) {
+        frame(DCP_KEY_RIGHT);
+        dust += count_boost_fx(0) > 0;
+    }
+    printf("  high-speed run after the boost: dust on %d of 60 frames (pf 0x100 %d)\n", dust, (P.pf & 0x100) != 0);
+    CHECK(!(P.pf & 0x100) || dust > 0, "EffBoost dust puffs in high-speed mode");
+}
+/* Leaf Storm act 1, first loop (x 5380..5700): the MapObj40 0x41 / 0x42 layer switches take the
+ * player in on layer A and out on layer B, from a standing start on layer B */
+static void test_loop(void) {
+    const rlvl_header_t *h = (const rlvl_header_t *)g_level;
+    int n, top = 0, maxx = 0;
+    if (h->stage != 0)
+        return;
+    printf("[loop] z11 first loop from x 5100 (layer B; the spring below throws the player in)\n");
+    place_on_floor(5100, 2034);
+    for (n = 0; n < 3; n++)
+        frame(0);
+    for (n = 0; n < 420; n++) {
+        frame(DCP_KEY_RIGHT);
+        if ((P.move_flags & 1) && P.angle >= 0x70 && P.angle <= 0x90)
+            top++;
+        if ((P.x >> 8) > maxx)
+            maxx = P.x >> 8;
+    }
+    printf("  frames on the loop ceiling %d, max x %d, layer %d\n", top, maxx, (int)(P.obj_flags & 1));
+    CHECK(top > 0 && maxx > 5900, "the player runs around the loop and leaves it to the right");
+}
+
 static void test_respawn(void) {
     const rlvl_header_t *h = (const rlvl_header_t *)g_level;
     u32 i, collected = 0, placed = 0, n;
@@ -957,6 +1038,8 @@ int main(int argc, char **argv) {
     test_v2();
     test_sweep();
     test_respawn();
+    test_player_fx();
+    test_loop();
     printf("%d checks, %d failed\n", g_checks, g_fail);
     objects_shutdown();
     return g_fail ? 1 : 0;

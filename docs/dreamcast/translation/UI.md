@@ -143,10 +143,22 @@ Required changes in main.c (not done here, main.c is not in this area):
   title card with `gGameState.unk18 |= 2`, so the player is not held) and then
   chains to main.c's restart hook. That hook must reset the level and objects
   (`objects_respawn_view`), as StageRestart reloads the stage on the DS.
-- The player model close-up of the title card is not drawn
-  (StageTitleCardPlayer_Draw). `ui_titlecard_player_view(&scale, &x, &y)`
-  returns the original values: model scale 0x199..0x1000 and screen position
-  (20.12, DS screen). A model renderer can use them.
+- The player model close-up of the title card (StageTitleCardPlayer_Draw) is
+  drawn by the player model module (player/dcp_model.c,
+  `dcp_model_titlecard_view`). `ui_titlecard_player_draw(&speed, eye, at, &x, &y,
+  &zoom)` returns 1 while the close-up replaces the player's own draw
+  (StageTitleCardPlayer_State_Init .. _Finish / StartStage) and gives the
+  per-slot animation speed (obj unk24C, 0x199 .. 0x1000: the slow-motion run),
+  the LookAt eye / target (v4b4 / v4c0) and, in the zoom phase (flags2 0x400),
+  the model translation for the off-axis frustum. The zoom ends at the stage
+  camera distance (`cam_h` = FX_Div(cos, sin) * 0x60 of angle 0x1555 =
+  0x1bb6 * 0x60; it was 0x3c000 before, which ended the zoom 2.7x too close).
+  Layering: the DS shows 3D BG0 between the title card BG and the title card
+  sprites. While the close-up shows, `ui_draw_tr` moves the title card sprites
+  and every later layer up by `UI_TC_GAP` (2000) and the model is drawn in the
+  opaque lists with its PVR depth scaled into (`UI_TC_MODEL_Z0`,
+  `UI_TC_MODEL_Z1`) = (400, 1900); the brightness overlay is at 2200.
+  `ui_titlecard_player_view` stays for compatibility.
 
 ## 3. Assets the disc needs
 
@@ -445,8 +457,7 @@ only; **not translated** = see section 6.
 
 ## 6. Gaps and assumptions (honest list)
 
-- **Not drawn**: the player model close-up of the title card and the results
-  model. The title card palette lerps (StageTitleCard_LerpColor /
+- **Not drawn**: the results model (the title card close-up is drawn, section 2). The title card palette lerps (StageTitleCard_LerpColor /
   RestoreColors light and edge colours) are not applied to the BG art.
 - **Not translated**: time-attack tally (ClearDemoTA_*: time attack uses the
   score tally), CheckpointTimePopup / MarkerTimeList (time attack), VS results

@@ -181,6 +181,7 @@ dcp_bool obj_is_attack_hitbox(const DcPlayer *h) { return h->type == 5; }
 static void hook_effect(void *ctx, DcPlayer *p, s32 fx, s32 a, s32 b) {
     Obj *o;
     (void)ctx;
+    obj_player_effect(p, fx, a, b); /* Eff* sprites (obj_peffect.c) */
     if (fx == DCP_FX_ATTACK_HITBOX_BOOST) {
         /* Player_StartBoost: AttackHitbox_Create(w, -0x20, -0x20, 0x20, 0x20, 0) + SetBoostState */
         o = AttackHitbox_Create(p, -0x20, -0x20, 0x20, 0x20, 0);
@@ -288,6 +289,13 @@ void obj_player_collide(ObjPlayerCtx *pc) {
         pc->body.atk = 10;
         pc->body.def = 2;
     }
+    /* Player_UpdateBoost: while boosting w->unk2C4 |= 5; Player_StopBoost: = 2 unless
+     * invulnerable or invincible */
+    if (p->pf & 0x80)
+        pc->body.def |= 5;
+    else if (pc->prev_boost && p->invuln == 0 && p->invinc == 0)
+        pc->body.def = 2;
+    pc->prev_boost = (p->pf & 0x80) != 0;
     pc->prev_invuln = p->invuln;
     pc->prev_invinc = p->invinc;
     /* sprite timing (draw step of StageObj_Main: speed 0 during hit-stop/pause) */

@@ -42,6 +42,7 @@ typedef struct ObjPlayerCtx {          /* per player: the player's ObjRects + sp
     ObjBox atk;                        /* @0x2CC coll2CC (attack box)             */
     ObjSprite spr;                     /* @0x94 son.bac timing (hit box events)   */
     s16 prev_invuln, prev_invinc;
+    u8 prev_boost;                     /* native: pf & 0x80 last frame (Player_StopBoost resets the hurt box) */
     /* player work the player module does not keep (gimmick states, objects/obj_pgimmick.c) */
     s16 g3EC, g3EE;                    /* @0x3EC @0x3EE (GmkTable: camera look offsets) */
     s32 g3F0, g3F4, g3F8, g3FC;        /* @0x3F0..@0x3FC */
@@ -250,6 +251,7 @@ dcp_bool Player_CheckStartGrind(DcPlayer *w);
 void Player_FindHomingTarget(DcPlayer *w);
 void Player_GiveMagnet(DcPlayer *w);
 void Player_Action_GimmickLaunch(DcPlayer *w, s16 vx, s16 vy);
+void obj_player_effect(DcPlayer *p, s32 fx, s32 a, s32 b);              /* obj_peffect.c: Eff* for DCP_FX_* */
 void obj_player_effect_hook(DcPlayer *p, s32 fx, s32 a, s32 b);           /* AttackHitbox_Create (boost) */
 void RingManager_AttractRings(DcPlayer *src);
 void *rect_regist_get(u32 mask, s16 idx);                                /* ObjRect_RegistGet */

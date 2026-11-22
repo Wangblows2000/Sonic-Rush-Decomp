@@ -200,6 +200,14 @@ SLOTS_V4 = [
     ("FALCO", "zone", "act/ac_ene_falco.bac", "act/ac_ene_falco.bac"),
 ]
 SLOTS += SLOTS_V4
+# player effects (src/game/Effects: EffBoost*, EffHighSpeedStart, EffBlazeBoostFlame, EffBoostJet,
+# EffSpinSmoke1/2): act_com /act/ac_eff_boost.bac (data_ov000_02368460..02368520),
+# ac_eff_kemuri_spin01/02.bac
+SLOTS += [
+    ("EFF_BOOST", "act_com", "act/ac_eff_boost.bac", "act/ac_eff_boost.bac"),
+    ("EFF_SPIN1", "act_com", "act/ac_eff_kemuri_spin01.bac", "act/ac_eff_kemuri_spin01.bac"),
+    ("EFF_SPIN2", "act_com", "act/ac_eff_kemuri_spin02.bac", "act/ac_eff_kemuri_spin02.bac"),
+]
 ID_LEN = 48
 N_STAGES = 27
 

@@ -11,6 +11,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "obj_internal.h"
+#ifdef _arch_dreamcast
+#include "../engine/pak.h"   /* per-stage resource pack */
+#endif
 
 ObjGlobals g_obj;
 ObjHooks g_obj_hooks;
@@ -915,6 +918,13 @@ static void preload_resources(const rlvl_header_t *h) {
     memset(seen, 0, sizeof(seen));
     for (i = 0; i < sizeof(always); i++)
         obj_res_ensure(always[i]);
+    if (h->zone < 9 && h->act < 2) {
+        /* the player's effects (obj_peffect.c): created mid-run, so no disc read then */
+        obj_res_ensure(OBJ_BAC_EFF_BOOST);
+        obj_res_ensure(OBJ_BAC_EFF_SPIN1);
+        obj_res_ensure(OBJ_BAC_EFF_SPIN2);
+        obj_res_ensure(OBJ_BAC_EFF_BRAKE);
+    }
     for (i = 0; i < h->num_objects; i++) {
         u16 t = g_obj.lv_obj[i].type;
         if (t >= 0x100 || seen[t])
@@ -1095,7 +1105,17 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
         g_obj.ring_state[i] = (u8)(g_obj.lv_ring[i].x & 0xff);
     if (dec_init_level(level_data) != 0)
         return -3;
+#ifdef _arch_dreamcast
+    {   /* the stage's resources in one read (objects/stageNN.pak, tools/dreamcast/mkpak.py) */
+        char pk[96];
+        snprintf(pk, sizeof(pk), "%s/stage%02d.pak", g_obj.obj_dir, h->stage);
+        pak_stage_begin(pk);
+    }
+#endif
     preload_resources(h);
+#ifdef _arch_dreamcast
+    pak_stage_end();
+#endif
     for (s = 0; s < OBJ_BAC_COUNT; s++)
         if (g_obj.res[s].loaded)
             loaded++;

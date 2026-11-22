@@ -137,6 +137,7 @@ void objects_update(DcPlayer *p);
 /* Rendering (obj_draw.c, KOS only): draw every visible object, ring and
  * effect into the current list (PVR_LIST_PT_POLY). obj_draw takes the list. */
 void objects_draw(void);
+void objects_draw_tr(void);   /* semi-transparent sprites (player effects): inside the TR list */
 void obj_draw(int pvr_list);
 
 /* rings currently alive in the ring manager (placed + scattered) */
