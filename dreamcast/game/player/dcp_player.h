@@ -301,6 +301,15 @@ u8 dcp_angle_toward8(u8 cur, u8 tgt, u8 step); /* ObjAngle_MoveToward8 */
 dcp_bool dcp_angle_upside_down(u32 a);     /* ObjAngle_IsUpsideDown */
 void dcp_rotate_vec(s16 *x, s16 *y, s32 angle8); /* Math_RotateVec2S16 */
 u16 dcp_rand(void);                        /* gRandSeed LCG */
+/* (s32)(v * d) with IEEE double rounding, d = mant * 2^-shift (exact double) */
+typedef struct { u64 mant; u32 shift; } DcpDouble;
+s32 dcp_mul_double(s32 v, DcpDouble d);
+/* exact binary values of the double literals used by Player_LoadPhysicsParams */
+#define DCP_D_0_15 ((DcpDouble){ 0x13333333333333ull, 55 }) /* 0x1.3333333333333p-3 */
+#define DCP_D_0_3 ((DcpDouble){ 0x13333333333333ull, 54 })  /* 0x1.3333333333333p-2 */
+#define DCP_D_0_5 ((DcpDouble){ 0x10000000000000ull, 53 })  /* 0x1.0p-1 */
+#define DCP_D_0_7 ((DcpDouble){ 0x16666666666666ull, 53 })  /* 0x1.6666666666666p-1 */
+#define DCP_D_0_9 ((DcpDouble){ 0x1ccccccccccccdull, 53 })  /* 0x1.ccccccccccccdp-1 */
 
 /* ------------------------------------------- object core (dcp_object.c) */
 void dcp_obj_move(DcPlayer *p);            /* StageObj_Move */

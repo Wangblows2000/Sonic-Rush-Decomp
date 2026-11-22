@@ -119,6 +119,42 @@ u16 dcp_rand(void) {
     return (u16)(g_dcp_world.rand_seed >> 16);
 }
 
+/* (s32)(v * d) exactly as an IEEE double multiply (round to nearest even of
+ * the 53-bit product) followed by truncation toward zero, for |v| < 2^16 and
+ * 0 < d < 1. */
+s32 dcp_mul_double(s32 v, DcpDouble d) {
+    u64 av = (u64)(v < 0 ? -v : v);
+    u64 a = av * (d.mant >> 32);          /* < 2^37 */
+    u64 b = av * (d.mant & 0xffffffffu);  /* < 2^48 */
+    u64 top = a + (b >> 32);              /* P = top * 2^32 + low */
+    u64 low = b & 0xffffffffu;
+    u64 r;
+    u32 len = 0, s;
+    u64 t;
+    s32 res;
+    for (t = top; t; t >>= 1)
+        len++;
+    if (top)
+        len += 32;
+    else
+        for (t = low; t; t >>= 1)
+            len++;
+    if (len <= 53) {
+        r = (top << 32) | low;
+        s = 0;
+    } else {
+        u64 rem, half;
+        s = len - 53; /* 1..16 */
+        r = (top << (32 - s)) | (low >> s);
+        rem = low & ((1ull << s) - 1);
+        half = 1ull << (s - 1);
+        if (rem > half || (rem == half && (r & 1)))
+            r++;
+    }
+    res = (s32)(r >> (d.shift - s));
+    return v < 0 ? -res : res;
+}
+
 /* FX_Div: hardware divider (numer << 32) / denom, result rounded to 20.12 */
 static s32 fx_div(s32 a, s32 b) {
     s64 q = ((s64)a << 32) / (s64)b;

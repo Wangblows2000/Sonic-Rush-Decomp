@@ -9,7 +9,8 @@ ROOT=$(cd "$HERE/../.." && pwd)
 OUT=$ROOT/build/dreamcast/game
 . /opt/toolchains/dc/kos/environ.sh
 make -C "$HERE"
-rm -rf "$OUT/disc"; mkdir -p "$OUT/disc/stages"
+rm -rf "$OUT/disc"; mkdir -p "$OUT/disc/stages" "$OUT/disc/player"
+cp "$ROOT/build/dreamcast/player/physics.bin" "$ROOT/build/dreamcast/player/trig.bin" "$OUT/disc/player/"
 sh-elf-objcopy -R .stack -O binary "$HERE/srdc.elf" "$OUT/srdc.bin"
 "$KOS_BASE/utils/scramble/scramble" "$OUT/srdc.bin" "$OUT/disc/1ST_READ.BIN"
 for d in "$ROOT"/build/dreamcast/stages/z*/; do

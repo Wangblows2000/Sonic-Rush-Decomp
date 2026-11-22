@@ -52,12 +52,14 @@ void dcp_player_load_physics(DcPlayer *w) {
     w->p374 = t->p1a;
     w->invuln_len = t->invuln_len;
     w->fall_grace = (u8)t->fall_grace;
-    /* the original multiplies by double constants and truncates */
-    w->run_thr[0] = (s16)(w->top * 0.15);
-    w->run_thr[1] = (s16)(w->top * 0.3);
-    w->run_thr[2] = (s16)(w->top * 0.5);
-    w->run_thr[3] = (s16)(w->top * 0.7);
-    w->run_thr[4] = (s16)(w->top * 0.9);
+    /* the original computes (s16)(top * 0.15 / 0.3 / 0.5 / 0.7 / 0.9) in
+     * double precision; dcp_mul_double reproduces that bit-exactly with
+     * integers (SH-4 KOS builds use -m4-single-only, where double == float) */
+    w->run_thr[0] = (s16)dcp_mul_double(w->top, DCP_D_0_15);
+    w->run_thr[1] = (s16)dcp_mul_double(w->top, DCP_D_0_3);
+    w->run_thr[2] = (s16)dcp_mul_double(w->top, DCP_D_0_5);
+    w->run_thr[3] = (s16)dcp_mul_double(w->top, DCP_D_0_7);
+    w->run_thr[4] = (s16)dcp_mul_double(w->top, DCP_D_0_9);
     w->slope_lim = 0x1c;
     w->slope_acc = t->slope_acc;
     w->gnd_max = t->gnd_max;

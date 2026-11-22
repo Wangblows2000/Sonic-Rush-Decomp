@@ -168,7 +168,7 @@ u8 dcp_probe_flags(DcPlayer *p) {
 s32 dcp_probe_obj(DcPlayer *p, s32 x, s32 y, u32 flags, u32 dir, u8 *angle, u8 *attr) {
     if (g_dcp_col.obj_probe == NULL)
         return 0x18;
-    return g_dcp_col.obj_probe(g_dcp_col.ctx, p, x, y, flags, dir, angle, attr);
+    return g_dcp_col.obj_probe(g_dcp_col.obj_ctx, p, x, y, flags, dir, angle, attr);
 }
 
 s32 dcp_probe(DcPlayer *p, s32 x, s32 y, u32 flags, u32 dir, u8 *angle, u8 *attr) {
@@ -370,7 +370,7 @@ void dcp_collide_horizontal(DcPlayer *p, dcp_bool noMove, s32 spd) {
         }
     }
 
-    set_wall_probe(p, (((u8)(ang + 0x80)) + 0x20 & 0xc0) >> 6, flip, extra, 1, &dx1, &dy1, &dx2, &dy2, &dir);
+    set_wall_probe(p, ((((u8)(ang + 0x80)) + 0x20) & 0xc0) >> 6, flip, extra, 1, &dx1, &dy1, &dx2, &dy2, &dir);
     e = (s8)dcp_probe(p, x + dx1, y + dy1, (u32)layer | 0x80, dir, NULL, NULL);
     e2 = (s8)dcp_probe(p, x + dx2, y + dy2, (u32)layer | 0x80, dir, NULL, NULL);
     if (e >= e2)
