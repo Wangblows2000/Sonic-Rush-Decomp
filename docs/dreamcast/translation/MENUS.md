@@ -645,3 +645,34 @@ ZoneActSelect_ShowIntroNaviMessage (create), ShowNaviMessage4 (act chosen) and,
 at the end of its fade-in, NaviM_StartEmeraldAppear / StartCounter (flags 8 /
 0x10 from ZoneMap_CreateState). The act select keeps the navigator pieces in
 its composition.
+
+## 15. Test-build switches and Flycast results (2026-11-22)
+
+Files in `/cd/debug/` (only test discs have them; nothing happens without them):
+
+- `menutrace.txt`: serial trace of the menus (scene changes, requests,
+  navigator panel / face / region count).
+- `menusave.txt` "flags sonic_progress blaze_progress": ORed / raised into the
+  save after boot (for example `256 5 0` unlocks the time-attack page and puts
+  Sonic's story at step 5, where the navigator is unlocked).
+- `demolead.txt` "N": attract-demo lead frames, plus a serial trace of the player
+  (position every 30 frames, lives).
+
+Flycast (own display :96, own home so the VMU is private), serial traces only:
+
+- Title idle → attract demo 1 → START skips it after 125 frames → title screen.
+  Demos 1 and 2 run to their frame limit and exit to the SEGA logo.
+- Zone map (story step 5): navigator tasks up, face fades in after the talk
+  demo, map message panel 21 shown for 180 frames and hidden, the NaviM panel
+  region present.
+- Title menu → time attack → PlayerSelect → TimeAttackMenu → A: stage request
+  zone 0 act 0 mode 2, stage loads. The stage could not be finished from a
+  scripted keyboard, so TryAgain was not reached in Flycast (host test only).
+- ExtraAct needs the whole extra story; host test only.
+
+DEMO_LEAD_FRAMES: a sweep of 0, 8, 16 and 32 lead frames gives the same result
+for demo 1 (Leaf Storm act 1 from x 17048): the player reaches x ≈ 18200 and
+then rolls back and forth between x ≈ 17400 and 18200 until the frame limit,
+while the recording holds right and boost from frame 815. Since the lead value
+does not change this, the drift is in the stage (player physics or a missing
+object near x 18200, y 3150-3250), not in the replay timing. DEMO_LEAD_FRAMES stays 0.

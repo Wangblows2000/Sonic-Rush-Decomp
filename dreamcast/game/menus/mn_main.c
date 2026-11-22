@@ -39,6 +39,27 @@ int menus_init(void) {
     }
     /* Game_StartupSaveDataOnBoot */
     save_load();
+    {
+        /* test builds: <menus dir>/../debug/menusave.txt "flags sonic_progress blaze_progress"
+         * ORs gSaveData.unk8 and raises the story progress (unlocks for Flycast runs) */
+        char p[160];
+        const char *slash = strrchr(g_mn_dir, '/');
+        FILE *f;
+        unsigned fl = 0, sp = 0, bp = 0;
+        snprintf(p, sizeof(p), "%.*s/debug/menusave.txt", slash ? (int)(slash - g_mn_dir) : 0, g_mn_dir);
+        f = fopen(p, "rb");
+        if (f) {
+            if (fscanf(f, "%u %u %u", &fl, &sp, &bp) >= 1) {
+                gSaveData.unk8 |= (u16)fl;
+                if (sp > gSaveData.unkC)
+                    gSaveData.unkC = (u16)sp;
+                if (bp > gSaveData.unk64)
+                    gSaveData.unk64 = (u16)bp;
+                printf("menus: debug save preset flags %#x progress %u/%u\n", fl, gSaveData.unkC, gSaveData.unk64);
+            }
+            fclose(f);
+        }
+    }
     memset(&gGameState, 0, sizeof(gGameState));
     Pad_Reset(&gPad, NULL, NULL);
     BRIGHT_MAIN = BRIGHT_SUB = -16;
