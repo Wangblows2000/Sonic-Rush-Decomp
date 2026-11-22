@@ -6,9 +6,11 @@
 set -e
 HERE=$(cd "$(dirname "$0")" && pwd)
 ROOT=$(cd "$HERE/../.." && pwd)
-OUT=$ROOT/build/dreamcast/game
-. /opt/toolchains/dc/kos/environ.sh
-make -C "$HERE"
+OUT=${SRDC_OUT:-$ROOT/build/dreamcast/game}
+if [ -z "$SRDC_PREBUILT" ]; then
+    . /opt/toolchains/dc/kos/environ.sh
+    make -C "$HERE"
+fi
 rm -rf "$OUT/disc"; mkdir -p "$OUT/disc/stages" "$OUT/disc/player"
 cp "$ROOT/build/dreamcast/player/physics.bin" "$ROOT/build/dreamcast/player/trig.bin" "$OUT/disc/player/"
 M=$ROOT/build/dreamcast/models
@@ -59,8 +61,12 @@ for e in ents:
         out.append('%s %d %d'%(e['sdat'][1], e.get('loop_start',0) if e.get('loop') else 0, e.get('loop_end',0) if e.get('loop') else 0))
 open(sys.argv[2],'w').write('\\n'.join(sorted(out))+'\\n')
 " "$A/manifest.json" "$OUT/disc/music/loops.txt"
-sh-elf-objcopy -R .stack -O binary "$HERE/srdc.elf" "$OUT/srdc.bin"
-"$KOS_BASE/utils/scramble/scramble" "$OUT/srdc.bin" "$OUT/disc/1ST_READ.BIN"
+if [ -n "$SRDC_PREBUILT" ]; then
+    cp "$SRDC_PREBUILT/1ST_READ.BIN" "$OUT/disc/"
+else
+    sh-elf-objcopy -R .stack -O binary "$HERE/srdc.elf" "$OUT/srdc.bin"
+    "$KOS_BASE/utils/scramble/scramble" "$OUT/srdc.bin" "$OUT/disc/1ST_READ.BIN"
+fi
 for d in "$ROOT"/build/dreamcast/stages/z*/; do
     id=$(basename "$d")
     [ -f "$d/level.bin" ] || continue
@@ -68,9 +74,12 @@ for d in "$ROOT"/build/dreamcast/stages/z*/; do
     cp "$d/level.bin" "$d/blocktex.bin" "$OUT/disc/stages/$id/"
     [ -f "$d/bg.bin" ] && cp "$d/bg.bin" "$OUT/disc/stages/$id/"
 done
+# test builds: SRDC_START=<stage index> writes /cd/debug/start.txt (story index into k_stages)
+if [ -n "$SRDC_START" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_START" > "$OUT/disc/debug/start.txt"; fi
 cd "$OUT"
 rm -f IP.BIN
-"$KOS_BASE/utils/makeip/makeip" -g "SONIC RUSH DC" -c "PORT" "$OUT/IP.BIN" >/dev/null
+if [ -n "$SRDC_PREBUILT" ]; then cp "$SRDC_PREBUILT/IP.BIN" "$OUT/IP.BIN"; else
+"$KOS_BASE/utils/makeip/makeip" -g "SONIC RUSH DC" -c "PORT" "$OUT/IP.BIN" >/dev/null; fi
 genisoimage -quiet -C 0,11702 -V SRDC -G IP.BIN -r -J -l -o "$OUT/srdc.iso" "$OUT/disc"
 ${CDI4DC:-cdi4dc} "$OUT/srdc.iso" "$OUT/srdc.cdi" >/dev/null
 echo "built $OUT/srdc.cdi ($(du -h "$OUT/srdc.cdi" | cut -f1))"

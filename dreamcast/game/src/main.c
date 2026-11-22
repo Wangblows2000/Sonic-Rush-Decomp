@@ -223,6 +223,12 @@ int main(int argc, char **argv)
         printf("character: %s\n", g_chara ? "Blaze" : "Sonic");
         load_player_model();
     }
+    {
+        /* test builds only: /cd/debug/start.txt holds the story index to start at */
+        uint32_t dsz;
+        char *d = load_file("/cd/debug/start.txt", &dsz);
+        if(d) { int v = atoi(d); if(v >= 0 && v < (int)NUM_STAGES) stage = v; free(d); printf("debug start stage %d\n", stage); }
+    }
     ok = load_stage(&lv, stage) == 0;
     g_cam_x = 0; g_cam_y = 0;
     if(ok && g_player_ok) spawn_player(&lv);
