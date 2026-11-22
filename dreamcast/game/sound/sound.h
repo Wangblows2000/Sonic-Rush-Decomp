@@ -77,6 +77,7 @@ void Sound_SetPositional(SoundHandle *snd, int32_t ax, int32_t ay, int32_t bx, i
  * alt = 1 for SysSound_PlayMenuVoiceAlt (second voice handle). Each call
  * stops the previous sound on its handle (StopSeq 0 + release), as the original. */
 void SysSound_StartSE(int32_t n, int chara);
+void SysSound_StartSEArc(int32_t arc, int32_t seq);   /* same, (SSAR, sequence) already resolved */
 void SysSound_StartVoice(int32_t n, int alt);
 
 #endif

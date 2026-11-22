@@ -127,7 +127,7 @@ class Converter:
         self.tables.write_bytes(tables + dblin)
         self.manifest = {"tool": "tools/dreamcast/audio/sdat2dc.py", "renderer": "tools/dreamcast/audio/sseqrender.c",
                          "interpolation": "linear" if a.interp else "none (DS-like)",
-                         "encoder": f"KOS wav2adpcm ({a.wav2adpcm})", "driver_tables": tinfo,
+                         "encoder": f"KOS wav2adpcm ({a.wav2adpcm}); music: sseqrender aicaenc (same bytes + exact loop-seam state)", "driver_tables": tinfo,
                          "music_rate": 32728, "mix_gain_tl": MIX_GAIN_TL,
                          "mix_gain_db": round(-MIX_GAIN_TL * 20 * 0.0188144, 2), "entries": []}
         self.seen = {}          # pcm hash -> output relpath
@@ -185,8 +185,24 @@ class Converter:
             self.count(f"{kind}_duplicate")
             return e
         self.seen[h] = rel
-        pad_even(pcm)
-        size = encode(self.a.wav2adpcm, pcm, self.out / rel, interleaved=(chans == 2 and interleaved_stereo))
+        if kind == "music":
+            # sseqrender aicaenc: same quantiser / bytes as wav2adpcm -i -t, plus a loop
+            # seam whose decoder state at loop_end equals the state at loop_start
+            # (the snd_stream long-stream decoder is never reset on the wrap)
+            (self.out / rel).parent.mkdir(parents=True, exist_ok=True)
+            cmd = [str(self.renderer), "aicaenc", str(pcm), str(self.out / rel)]
+            if loop:
+                cmd += ["--loop", f"{st['loop_start']},{st['loop_end']}"]
+            r = subprocess.run(cmd, capture_output=True, text=True, check=True)
+            enc = json.loads(r.stdout)
+            e["adpcm_loop"] = enc["ch"]
+            if loop:
+                ok = all(c.get("joined") and c.get("tail_samples_changed") == 0 for c in enc["ch"])
+                self.count("music_loop_seam_exact" if ok else "music_loop_seam_NOT_exact")
+            size = (self.out / rel).stat().st_size
+        else:
+            pad_even(pcm)
+            size = encode(self.a.wav2adpcm, pcm, self.out / rel, interleaved=(chans == 2 and interleaved_stereo))
         e.update(status="ok", output=rel, adpcm_bytes=size, pcm16_bytes=st["samples"] * chans * 2,
                  format="0x20 interleaved stereo" if chans == 2 and interleaved_stereo else
                  ("0x14 non-interleaved stereo" if chans == 2 else "0x14 mono"))

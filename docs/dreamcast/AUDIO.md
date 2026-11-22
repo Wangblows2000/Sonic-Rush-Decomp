@@ -264,8 +264,9 @@ match against a render).
 7. Faithful quirk kept: `NNS_SndHandleInit` only clears `handle->player`;
    if a handle is reused while its sound plays, the old sound's shutdown
    later clears the handle even though it then points at the new sound.
-8. No sys-SDAT bank (menus/title/cutscenes need group loading like
-   `SysSound_LoadSEGroup`: the sys SDAT waves are 4.2 MB).
+8. The sys-SDAT bank holds only the title / menu / zone-map / staff-roll
+   sounds (section 11); cutscene / clear-demo / special-stage archives of the
+   sys SDAT are not in it.
 
 ### 9. Mapping table (original → native → status)
 
@@ -413,14 +414,86 @@ music), 0 underruns, ring low-water 65,664 B.
   also marks "load over" for the deferred music start. Starting the music after
   the stage load (end of `load_stage`) and reading big files in chunks would
   shorten the start delay; not required.
-- The front end calls `sound_load_bank("sys")`: no `sys.srb` exists (section
-  8, item 8), so menu effects are silent ("sys sound bank missing").
+- `sys.srb` now exists (section 11).
 
 ### 10.5 Remaining known issues
 
-- Music loop seam: the ADPCM encoder state at loop end differs slightly from
-  that at loop start (z1: 55 / 26 LSB), so each loop adds that much DC
-  (~0.2 % FS per 98 s loop). Fix would be in the encoder (state-matched loop).
+- ~~Music loop seam DC~~ fixed (section 12).
 - Real hardware not tested; Flycast's GD-ROM is slow (~120 KB/s measured
   for 16 KB reads), real drives are faster, so starvation there is less
   likely, but the ring is still the safe design.
+
+---
+
+## 11. Sys bank (`sys.srb`, menus / title / zone map)
+
+`sfxbank.py` builds `sys.srb` with a selection (`SELECT["sys"]`) instead of all
+19 SSARs (4.2 MB of waves): SSAR 0 ARC_TITLE (6 seqs: TitleScreen_PlayStartSound
+0, TitleDemo_PlaySeq1-4, TitleScreen_PlayTitleVoice 5), 1 ARC_MENU (12),
+0x11 ARC_DL_PLAY (5), 2 / 3 ARC_ZONE_MAP_S / _B (seqs 0-8, 0x10), 0xa
+ARC_STAFF_ROLL (0-2) = the arcs of `SysSound_StartSE` / `SysSound_StartVoice`;
+other records are written empty (offset 0xffffffff, so their banks are left
+out). 46 ids, banks 0/1/3/4/18/25, 196 waves: **1,254,816 B sound RAM**
+(free with the music stream 1,831,040 -> 576,224 B), 16.5 KB main RAM,
+file 1.27 MB. The runtime needed no change: `snd_bank_seq_info` /
+`snd_bank_seq_data` and `NNS_SndArcPlayerStartSeqArc(Ex)` take any SSAR index
+(stage banks only ever used SSAR 0).
+
+Translated game layer (`sound.c`, src/game/Sound):
+
+| original | native | status |
+|---|---|---|
+| `SysSound_StartSE(n)` | `SysSound_StartSE(n, chara)` (chara = `gGameState.unk0`) | modified (gSysSound->snd[2] -> static handle) |
+| — (its tail) | `SysSound_StartSEArc(arc, seq)`: StopSeq(0) + release previous SE, `Sound_PlaySeqArc` | new |
+| `SysSound_StartVoice(n)` | `SysSound_StartVoice(n, alt)` (alt = `gSysSound->unk2C`, 1 only inside `SysSound_PlayMenuVoiceAlt`) | modified |
+| `SysSound_LoadSEGroup` / `LoadVoiceGroup` / `NNS_SndArcLoadGroup` | `sound_load_bank("sys")` (everything resident) | rewritten |
+
+Hooks for the front end:
+- se: `SysSound_StartSEArc(arc, seq)` (the original stops the previous menu SE
+  on its handle; `Sound_PlaySeqArc(NULL, ...)` lets them overlap).
+- voice: `SysSound_PlayMenuVoice(i)` -> `SysSound_StartVoice(i, 0)`;
+  `SysSound_PlayMenuVoiceAlt(i)` -> `SysSound_StartVoice(i, 1)` (PlayerSelect
+  confirm plays voice 4 then Alt 5: both must sound). The title voice is not a
+  menu voice: `TitleScreen_PlayTitleVoice` = `Sound_PlayVoice(NULL, 0, 5)`.
+
+Verified: host test `test_sys` (all 23 SE ids x 2 characters, 8 voices,
+6 title sounds start a channel; voice + Alt voice both on), render vs offline
+46 ids SNR median 14.2 dB; Flycast front-end capture with trace
+(`build/dreamcast/audio/validation/captures/frontend_sys.png`): no "sys sound
+bank missing", calls `0:0` (title start), `1:5` cursor and `1:0` decide every
+3 s; SE_M_Cursol found in the recording by correlation with its render at
+every press (normalised correlation 0.58-0.70 vs 0.07 elsewhere), no clipping.
+
+## 12. Music loop seam (encoder)
+
+The snd_stream "long stream" ADPCM decoder keeps its state (previous sample,
+step) across the loop jump. The plain encoder (wav2adpcm) encodes the loop body
+for the state reached after the intro, but on the jump the decoder brings the
+state reached at loop_end: the difference stays (no leak) and, because the
+step differs too, grows during the pass. Measured on the old encoding of all
+77 looping tracks (`sseqrender aicadec --loop LS,LE --passes 3`): mean offset
+of pass 3 vs pass 1 median 359 LSB, max 21,927 (sys SEQ_SS_GAME); z1
+SEQ_1sonic L channel +15,836 LSB (~half full scale) from the first wrap on,
+i.e. ~112 s into the stage.
+
+Fix: `sseqrender aicaenc IN OUT --loop LS,LE` (used by `sdat2dc.py` for all
+music; same quantiser and bytes as `wav2adpcm -i -t`, checked byte-identical
+without --loop):
+1. the renderer's loop crossfade (2048 samples) now ends with
+   `LOOP_TAIL_EXACT` = 1024 samples that equal the 1024 samples before
+   loop_start;
+2. the file is encoded normally (intro and first pass untouched);
+3. in that tail the loop-end trajectory is joined onto the trajectory that
+   leads into loop_start: first sample where both states are equal, else an
+   exact meet-in-the-middle search (2+2 .. 4+4 replaced codes, inverse step
+   update, hash match, least sample error), else a step chase then the same
+   search; from the join on the tail uses the loop-start codes, so the state at
+   loop_end equals the state at loop_start exactly.
+
+Result: 77 / 77 looping tracks exact (`music_loop_seam_exact` in the manifest
+counts, per-channel report in `adpcm_loop`); decoding 3 passes gives pass 2 and
+3 bit-identical to pass 1 for all 77 (max difference 0). Cost: up to ~6 replaced
+codes in the 23 ms before the wrap (z1 tail SNR 26.1 -> 26.1 dB, z4s 16.7 ->
+16.6); one channel (z2s SEQ_2sonic R) needed the step chase, tail SNR 21.6 ->
+18.3 dB. ADPCM SNR of the music unchanged (median 22.3 dB), validate_audio all
+checks as before. `aicadec` gained `--loop LS,LE --passes N` for this check.

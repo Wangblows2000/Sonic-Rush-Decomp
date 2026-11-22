@@ -37,6 +37,8 @@ typedef struct {
     void (*bgm)(int seq);                   /* Sound_PlaySeq / SysSound_PlayBGM */
     void (*se)(int arc, int id);            /* Sound_PlaySeqArc / SysSound_PlaySE (arc -1) */
     void (*voice)(int id);                  /* Sound_PlayVoice / SysSound_PlayMenuVoice */
+    void (*voice_alt)(int id);              /* SysSound_PlayMenuVoiceAlt (second voice handle) */
+    void (*voice_arc)(int arc, int id);     /* Sound_PlayVoice(NULL, arc, id) (title voice: SSAR 0 seq 5) */
     void (*stop_all)(void);                 /* NNS_SndStopSoundAll */
     /* sound test: entry index of sound_test.sld and its fields (archive,
      * type 0 BGM/1 SE/2 voice, group, sequence archive or bank, id) */

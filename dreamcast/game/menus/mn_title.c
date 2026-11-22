@@ -437,7 +437,7 @@ static void TitleScreen_State_Init(void) {
         /* the same BBG is on both engines here: one image, one cycle is enough
          * for the colours; the sub engine scroll is driven separately */
         TitleScreen_CreatePaletteCycle(w->bg168, 1, 3, 1, 0x11, 4, 0x1e0);
-        Sound_PlayVoice(0);   /* TitleScreen_PlayTitleVoice: Sound_PlayVoice(0, 0, 5) */
+        Sound_PlayVoiceArc(0, 5);   /* TitleScreen_PlayTitleVoice: Sound_PlayVoice(0, 0, 5) */
         w->timer = 0;
         gTaskCurrent->func = TitleScreen_State_WaitForStart;
     }

@@ -57,10 +57,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <limits.h>
 
 #define FRAME_SAMPLES_X2 341 /* 170.5 samples per frame */
 #define OUT_RATE 32728
 #define AMPL_MIN (-92544)
+#define LOOP_TAIL_EXACT 1024 /* = JOIN_M of the ADPCM encoder */
 #define HOLD_FADE_NNS_FRAMES 10 /* held-SFX stop: NNS fade length in 60 Hz frames (assumption, ~0.17 s) */
 
 static int16_t tblDecibelSq[128];
@@ -1002,9 +1004,13 @@ static int cmd_render(int argc, char **argv) {
        Crossfade the last XF samples before loop end into the audio that precedes
        loop start, so the wrap from loop_end to loop_start is continuous. */
     if (lsSamp >= 0 && !fullOut) {
-        long xf = 1024; if (xf > lsSamp) xf = lsSamp;
+        /* 2048-sample crossfade whose last LOOP_TAIL_EXACT samples are exactly the
+           audio before loop start (weight 1): the ADPCM encoder (aicaenc) joins
+           its state trajectory there, see adpcm_encode_channel */
+        long xf = 2048, ramp; if (xf > lsSamp) xf = lsSamp;
+        ramp = xf > LOOP_TAIL_EXACT ? xf - LOOP_TAIL_EXACT : xf;
         for (long k = 0; k < xf; k++) {
-            float w = (float)(k + 1) / (float)(xf + 1);
+            float w = k >= ramp ? 1.0f : (float)(k + 1) / (float)(ramp + 1);
             for (int c = 0; c < 2; c++) {
                 long a = 2 * (leSamp - xf + k) + c, b = 2 * (lsSamp - xf + k) + c;
                 mixbuf[a] = mixbuf[a] * (1 - w) + mixbuf[b] * w;
@@ -1137,8 +1143,49 @@ static void aica_decode(const uint8_t *src, long nsamp, int stride, int16_t *dst
         dst[i * dstStride] = (int16_t)hist;
     }
 }
+static const int ENC_STEP[8] = {230, 230, 230, 230, 307, 409, 512, 614};
+/* aicadec ... --loop LS,LE --passes N (stereo fmt 0x20 only): decode like the
+   snd_stream long-stream player: intro, then N passes of [LS, LE) without
+   resetting the decoder; prints the per-pass state at LE and, per pass, the
+   max / mean difference to the first pass (loop-seam drift check) */
+static int aicadec_loop(const uint8_t *data, long ns, long ls, long le, int passes, const char *outp, uint32_t rate) {
+    long L = le - ls, total = ls + L * passes;
+    int16_t *out = calloc(total * 2, 2);
+    int hist[2] = {0, 0}, step[2] = {127, 127};
+    (void)ns;
+    printf("{\"passes\":[");
+    for (int ps = 0; ps <= passes; ps++) {
+        long a = ps == 0 ? 0 : ls, b = ps == 0 ? ls : le, o = ps == 0 ? 0 : ls + L * (ps - 1);
+        for (long i = a; i < b; i++) for (int c = 0; c < 2; c++) {
+            int nib = c == 0 ? (data[i] >> 4) & 15 : data[i] & 15;
+            int dd = nib & 7, diff = ((1 + (dd << 1)) * step[c]) >> 3;
+            hist[c] = (nib & 8) ? hist[c] - diff : hist[c] + diff;
+            if (hist[c] > 32767) hist[c] = 32767; else if (hist[c] < -32768) hist[c] = -32768;
+            step[c] = (ENC_STEP[dd] * step[c]) >> 8; if (step[c] < 127) step[c] = 127; else if (step[c] > 24576) step[c] = 24576;
+            out[2 * (o + i - a) + c] = (int16_t)hist[c];
+        }
+        if (ps >= 1) {
+            double mx = 0, mean[2] = {0, 0};
+            for (long i = 0; i < L; i++) for (int c = 0; c < 2; c++) {
+                double dlt = out[2 * (ls + L * (ps - 1) + i) + c] - out[2 * (ls + i) + c];
+                if (fabs(dlt) > mx) mx = fabs(dlt);
+                mean[c] += dlt / L;
+            }
+            printf("%s{\"pass\":%d,\"end_state\":[[%d,%d],[%d,%d]],\"max_diff_vs_pass1\":%.0f,\"mean_diff_vs_pass1\":[%.1f,%.1f]}",
+                   ps > 1 ? "," : "", ps, hist[0], step[0], hist[1], step[1], mx, mean[0], mean[1]);
+        }
+    }
+    printf("]}\n");
+    write_wav(outp, out, total, 2, rate);
+    return 0;
+}
 static int cmd_aicadec(int argc, char **argv) {
     if (argc < 4) die("aicadec IN OUT");
+    long lls = -1, lle = -1; int passes = 0;
+    for (int i = 4; i < argc; i++) {
+        if (!strcmp(argv[i], "--loop") && i + 1 < argc) sscanf(argv[++i], "%ld,%ld", &lls, &lle);
+        else if (!strcmp(argv[i], "--passes") && i + 1 < argc) passes = atoi(argv[++i]);
+    }
     FILE *f = fopen(argv[2], "rb"); if (!f) die("open in");
     fseek(f, 0, SEEK_END); long n = ftell(f); fseek(f, 0, SEEK_SET);
     uint8_t *d = malloc(n); if (fread(d, 1, n, f) != (size_t)n) die("read"); fclose(f);
@@ -1147,6 +1194,7 @@ static int cmd_aicadec(int argc, char **argv) {
     while (p + 8 <= n) { uint32_t cs = rd32(d + p + 4); if (!memcmp(d + p, "data", 4)) { data = d + p + 8; dsz = cs; break; } p += 8 + cs + (cs & 1); }
     if (!data) die("no data chunk");
     long ns = (chans == 2) ? dsz : dsz * 2; /* samples per channel */
+    if (passes > 0) { if (chans != 2 || fmt != 0x20) die("--passes: stereo fmt 0x20 only"); return aicadec_loop(data, ns, lls, lle, passes, argv[3], rate); }
     int16_t *out = calloc(ns * chans, 2);
     if (chans == 1) aica_decode(data, ns, 1, out, 1);
     else if (fmt == 0x14) { aica_decode(data, ns, 1, out, 2); aica_decode(data + dsz / 2, ns, 1, out + 1, 2); }
@@ -1169,11 +1217,214 @@ static int cmd_aicadec(int argc, char **argv) {
     return 0;
 }
 
+/* ---------------- AICA ADPCM encoder with a loop-consistent state ----------------
+ * Same quantiser as KOS utils/wav2adpcm (pcm2adpcm: (x & -8) - history, code =
+ * |d| / step, Yamaha step update; byte layout of `wav2adpcm -t` (fmt 0x14 mono,
+ * low nibble first) and `-i` (fmt 0x20 stereo: byte = L nibble << 4 | R nibble)).
+ * The AICA "long stream" decoder (snd_stream) and Flycast keep the decoder state
+ * (previous sample, step) across the ring buffer and never reset it, so when the
+ * player jumps from loop_end back to loop_start the decoder enters the loop body
+ * with the state reached at loop_end; a plain encoder produced the loop body for
+ * the state reached at loop_start after the intro, so every pass added the
+ * difference as a lasting DC step (z1: 55 / 26 LSB per pass).
+ * Here the tail of the loop body is joined onto the trajectory that leads into
+ * loop_start (see adpcm_encode_channel), so the decoder state at loop_end equals
+ * the state at loop_start exactly and every pass decodes like the first. */
+typedef struct { int hist, step; } AdpcmState;
+static inline void adpcm_apply(AdpcmState *s, int code) {
+    int d = code & 7, diff = ((1 + (d << 1)) * s->step) >> 3;
+    if (diff > 32767) diff = 32767;
+    int v = (code & 8) ? s->hist - diff : s->hist + diff;
+    s->hist = v > 32767 ? 32767 : v < -32768 ? -32768 : v;
+    int ns = (ENC_STEP[d] * s->step) >> 8;
+    s->step = ns < 127 ? 127 : ns > 24576 ? 24576 : ns;
+}
+static inline int adpcm_code(const AdpcmState *s, int x) {
+    int d = (x & -8) - s->hist;
+    unsigned c = ((unsigned)abs(d) << 16) / ((unsigned)s->step << 14);
+    if (c > 7) c = 7;
+    return (int)c | (d < 0 ? 8 : 0);
+}
+static AdpcmState adpcm_encode(AdpcmState s, const int16_t *x, long stride, long n, uint8_t *codes) {
+    for (long i = 0; i < n; i++) { int c = adpcm_code(&s, x[i * stride]); codes[i] = (uint8_t)c; adpcm_apply(&s, c); }
+    return s;
+}
+/* one channel: codes[0..n), loop [ls, le) (ls < 0: no loop).
+   Loop join: the last JOIN_M samples before le are set equal to the JOIN_M
+   samples before ls (the renderer already crossfades this region towards
+   them), the file is encoded normally (pass 1 and the intro are untouched),
+   then inside that tail the encoder trajectory B (towards le) is steered with
+   k replaced codes onto trajectory A (towards ls) at some sample; from there B
+   uses A's codes, so the state at le equals the state at ls exactly and every
+   loop pass decodes like the first. x is modified in place (tail copy). */
+#define JOIN_M LOOP_TAIL_EXACT
+static void adpcm_encode_channel(int16_t *x, long stride, long n, long ls, long le, uint8_t *codes, char *rep, size_t repLen) {
+    AdpcmState s0 = {0, 127};
+    if (ls < 0 || ls >= le || le > n) { adpcm_encode(s0, x, stride, n, codes); snprintf(rep, repLen, "\"noloop\""); return; }
+    long M = JOIN_M;
+    if (M > ls) M = ls;
+    if (M > le - ls) M = le - ls;
+    long changed = 0;
+    for (long i = 0; i < M; i++) {
+        int16_t v = x[(ls - M + i) * stride];
+        if (x[(le - M + i) * stride] != v) changed++;
+        x[(le - M + i) * stride] = v;
+    }
+    adpcm_encode(s0, x, stride, n, codes);
+    /* states after each sample of A = [ls-M, ls) and B = [le-M, le) */
+    AdpcmState *A = malloc(sizeof(AdpcmState) * (M + 1)), *B = malloc(sizeof(AdpcmState) * (M + 1));
+    AdpcmState s = s0;
+    for (long i = 0; i < ls - M; i++) adpcm_apply(&s, codes[i]);
+    A[0] = s; for (long i = 0; i < M; i++) { adpcm_apply(&s, codes[ls - M + i]); A[i + 1] = s; }
+    s = s0;
+    for (long i = 0; i < le - M; i++) adpcm_apply(&s, codes[i]);
+    B[0] = s; for (long i = 0; i < M; i++) { adpcm_apply(&s, codes[le - M + i]); B[i + 1] = s; }
+    /* join B onto A: first sample where B's natural state already equals A's;
+       else a meet-in-the-middle search: at tail sample jj replace K = KF + KB
+       codes so that B lands exactly on A's state K samples later (KF codes
+       forward from B, KB codes backward from A's state through the inverse step
+       update, matched in a hash table); the hit with the smallest sample error
+       over the tail wins. From the join on, B uses A's codes. */
+    long joinAt = -1, steered = 0; double steerErr = 0;
+    for (long jj = 0; jj <= M; jj++) if (B[jj].hist == A[jj].hist && B[jj].step == A[jj].step) { joinAt = jj; break; }
+    for (int attempt = 0; attempt < 2 && joinAt < 0; attempt++) {
+    if (attempt == 1) {
+        /* step chase: the step only moves x0.9 .. x2.4 per code, so B first
+           drives its step towards A's (code magnitude chosen for the step, sign
+           and magnitude among those for the signal); once the steps are within
+           ~10 % it encodes normally. B[] / codes then hold this trajectory. */
+        AdpcmState b = B[0];
+        for (long jj = 0; jj < M; jj++) {
+            int c = adpcm_code(&b, x[(le - M + jj) * stride]);
+            double ratio = log((double)b.step / A[jj].step);
+            if (fabs(ratio) > 0.1) {
+                int best = c; double bestScore = 1e300;
+                for (int cc = 0; cc < 16; cc++) {
+                    AdpcmState t = b; adpcm_apply(&t, cc);
+                    double sr = fabs(log((double)t.step / A[jj + 1].step));
+                    double he = fabs((double)t.hist - x[(le - M + jj) * stride]) / A[jj + 1].step;
+                    double score = sr * 8 + he;
+                    if (score < bestScore) { bestScore = score; best = cc; }
+                }
+                if (best != c) { steered++; }
+                c = best;
+            }
+            codes[le - M + jj] = (uint8_t)c; adpcm_apply(&b, c); B[jj + 1] = b;
+            if (b.hist == A[jj + 1].hist && b.step == A[jj + 1].step) { joinAt = jj + 1; break; }
+        }
+    }
+    if (joinAt < 0) {
+        static const int KF_TAB[3] = {2, 3, 4}, KB_TAB[3] = {2, 3, 4};
+        const long HS = 1L << 18;
+        int32_t *hk = malloc(sizeof(int32_t) * HS * 2); uint16_t *hc = malloc(sizeof(uint16_t) * HS);
+        uint32_t *ep = calloc(HS, sizeof(uint32_t)), epoch = 0;
+        double bestE = 1e300; long bestJ = -1; int bestKF = 0, bestKB = 0; long bestF = 0, bestB = 0;
+        for (int pass = 0; pass < 3 && bestJ < 0; pass++) {
+            int KF = KF_TAB[pass], KB = KB_TAB[pass], K = KF + KB;
+            for (long jj = 0; jj + K <= M; jj += 1) {
+                /* backward set from A[jj+K] */
+                epoch++;
+                long nb = 1L << (4 * KB);
+                for (long m = 0; m < nb; m++) {
+                    /* walk back KB codes: code q applies at sample jj+K-1-q */
+                    int hist = A[jj + K].hist, step = A[jj + K].step, okb = 1; long mm = m;
+                    for (int q = 0; q < KB && okb; q++) {
+                        int c = (int)(mm & 15); mm >>= 4;
+                        int d = c & 7, sp = -1;
+                        /* predecessor step: clamp(floor(ENC_STEP[d]*sp/256)) == step; take the smallest */
+                        long lo = ((long)step * 256 + ENC_STEP[d] - 1) / ENC_STEP[d];
+                        if (lo < 127) lo = 127;
+                        for (long t = lo; t <= 24576 && t < lo + 4; t++) {
+                            long ns2 = (ENC_STEP[d] * t) >> 8; if (ns2 < 127) ns2 = 127; if (ns2 > 24576) ns2 = 24576;
+                            if (ns2 == step) { sp = (int)t; break; }
+                        }
+                        if (sp < 0) { okb = 0; break; }
+                        int diff = ((1 + (d << 1)) * sp) >> 3; if (diff > 32767) diff = 32767;
+                        int hp = (c & 8) ? hist + diff : hist - diff;
+                        if (hp > 32767 || hp < -32768) { okb = 0; break; }
+                        hist = hp; step = sp;
+                    }
+                    if (!okb) continue;
+                    unsigned long key = ((unsigned long)(uint32_t)hist * 2654435761u ^ (unsigned long)step * 40503u) & (HS - 1);
+                    while (ep[key] == epoch && !(hk[2 * key] == hist && hk[2 * key + 1] == step)) key = (key + 1) & (HS - 1);
+                    ep[key] = epoch; hk[2 * key] = hist; hk[2 * key + 1] = step; hc[key] = (uint16_t)m;
+                }
+                long nf = 1L << (4 * KF);
+                for (long m = 0; m < nf; m++) {
+                    AdpcmState t = B[jj]; long mm = m; double err = 0;
+                    for (int q = 0; q < KF; q++) { adpcm_apply(&t, (int)(mm & 15)); mm >>= 4; double ee = t.hist - x[(le - M + jj + q) * stride]; err += ee * ee; }
+                    unsigned long key = ((unsigned long)(uint32_t)t.hist * 2654435761u ^ (unsigned long)t.step * 40503u) & (HS - 1);
+                    while (ep[key] == epoch && !(hk[2 * key] == t.hist && hk[2 * key + 1] == t.step)) key = (key + 1) & (HS - 1);
+                    if (ep[key] != epoch) continue;
+                    /* forward-check the backward half (exact) and add its error */
+                    AdpcmState u = t; long mb = hc[key]; int cb[8];
+                    for (int q = 0; q < KB; q++) { cb[KB - 1 - q] = (int)(mb & 15); mb >>= 4; }
+                    for (int q = 0; q < KB; q++) { adpcm_apply(&u, cb[q]); double ee = u.hist - x[(le - M + jj + KF + q) * stride]; err += ee * ee; }
+                    if (u.hist != A[jj + K].hist || u.step != A[jj + K].step) continue;
+                    if (err < bestE) { bestE = err; bestJ = jj; bestKF = KF; bestKB = KB; bestF = m; bestB = hc[key]; }
+                }
+            }
+        }
+        if (bestJ >= 0) {
+            long mm = bestF;
+            for (int q = 0; q < bestKF; q++) { codes[le - M + bestJ + q] = (uint8_t)(mm & 15); mm >>= 4; }
+            mm = bestB;
+            for (int q = 0; q < bestKB; q++) { codes[le - M + bestJ + bestKF + bestKB - 1 - q] = (uint8_t)(mm & 15); mm >>= 4; }
+            joinAt = bestJ + bestKF + bestKB; steered += bestKF + bestKB; steerErr = bestE;
+        }
+        free(hk); free(hc); free(ep);
+    }
+    }
+    if (joinAt >= 0) for (long ii = joinAt; ii < M; ii++) codes[le - M + ii] = codes[ls - M + ii];
+    /* verify: state at le after the loop body entered with the state at ls */
+    AdpcmState sl = A[M], e = sl;
+    for (long i = ls; i < le; i++) adpcm_apply(&e, codes[i]);
+    snprintf(rep, repLen, "{\"joined\":%s,\"join_sample\":%ld,\"steer_codes\":%ld,\"steer_rms\":%.0f,\"tail_samples_changed\":%ld,\"seam_mismatch\":[%d,%d]}",
+             (e.hist == sl.hist && e.step == sl.step) ? "true" : "false", joinAt, steered,
+             steered ? sqrt(steerErr / steered) : 0.0, changed, e.hist - sl.hist, e.step - sl.step);
+    free(A); free(B);
+}
+static void write_wav_fmt(const char *path, const uint8_t *data, uint32_t bytes, int chans, int rate, int fmt) {
+    FILE *f = fopen(path, "wb"); if (!f) die("cannot write wav");
+    uint8_t h[44]; memcpy(h, "RIFF", 4); uint32_t v = 36 + bytes; memcpy(h + 4, &v, 4); memcpy(h + 8, "WAVEfmt ", 8);
+    v = 16; memcpy(h + 16, &v, 4); uint16_t s = (uint16_t)fmt; memcpy(h + 20, &s, 2); s = (uint16_t)chans; memcpy(h + 22, &s, 2);
+    v = rate; memcpy(h + 24, &v, 4); v = rate * chans / 2; memcpy(h + 28, &v, 4); s = (uint16_t)(chans == 2 ? 1 : 1); memcpy(h + 32, &s, 2);
+    s = 4; memcpy(h + 34, &s, 2); memcpy(h + 36, "data", 4); memcpy(h + 40, &bytes, 4);
+    fwrite(h, 1, 44, f); fwrite(data, 1, bytes, f); fclose(f);
+}
+/* aicaenc IN.wav OUT.wav [--loop LS,LE]: PCM16 mono/stereo -> AICA ADPCM
+   (mono fmt 0x14, stereo fmt 0x20 interleaved); prints JSON per channel */
+static int cmd_aicaenc(int argc, char **argv) {
+    if (argc < 4) die("aicaenc IN OUT [--loop LS,LE]");
+    long ls = -1, le = -1;
+    for (int i = 4; i < argc; i++) if (!strcmp(argv[i], "--loop") && i + 1 < argc) { sscanf(argv[++i], "%ld,%ld", &ls, &le); }
+    FILE *f = fopen(argv[2], "rb"); if (!f) die("open in");
+    fseek(f, 0, SEEK_END); long n = ftell(f); fseek(f, 0, SEEK_SET);
+    uint8_t *d = malloc(n); if (fread(d, 1, n, f) != (size_t)n) die("read"); fclose(f);
+    int chans = rd16(d + 22); uint32_t rate = rd32(d + 24);
+    if (rd16(d + 20) != 1 || rd16(d + 34) != 16) die("aicaenc needs PCM16");
+    long p = 12; uint32_t dsz = 0; int16_t *pcm = NULL;
+    while (p + 8 <= n) { uint32_t cs = rd32(d + p + 4); if (!memcmp(d + p, "data", 4)) { pcm = (int16_t *)(d + p + 8); dsz = cs; break; } p += 8 + cs + (cs & 1); }
+    if (!pcm) die("no data chunk");
+    long ns = dsz / 2 / chans;
+    long nsEven = (ns + 1) & ~1L;
+    uint8_t *codes[2] = {calloc(nsEven + 1, 1), calloc(nsEven + 1, 1)};
+    char rep[2][512];
+    for (int c = 0; c < chans; c++) adpcm_encode_channel(pcm + c, chans, ns, ls, le, codes[c], rep[c], sizeof rep[c]);
+    uint32_t bytes; uint8_t *out;
+    if (chans == 1) { bytes = nsEven / 2; out = calloc(bytes, 1); for (long i = 0; i < nsEven; i += 2) out[i / 2] = (uint8_t)(codes[0][i] | codes[0][i + 1] << 4); }
+    else { bytes = ns; out = calloc(bytes, 1); for (long i = 0; i < ns; i++) out[i] = (uint8_t)(codes[0][i] << 4 | codes[1][i]); }
+    write_wav_fmt(argv[3], out, bytes, chans, rate, chans == 2 ? 0x20 : 0x14);
+    printf("{\"samples\":%ld,\"channels\":%d,\"bytes\":%u,\"ch\":[%s%s%s]}\n", ns, chans, bytes, rep[0], chans == 2 ? "," : "", chans == 2 ? rep[1] : "");
+    return 0;
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) die("usage: sseqrender render|swar ...");
     if (!strcmp(argv[1], "render")) return cmd_render(argc, argv);
     if (!strcmp(argv[1], "swar")) return cmd_swar(argc, argv);
     if (!strcmp(argv[1], "aicadec")) return cmd_aicadec(argc, argv);
+    if (!strcmp(argv[1], "aicaenc")) return cmd_aicaenc(argc, argv);
     if (!strcmp(argv[1], "strm")) return cmd_strm(argc, argv);
     die("unknown command");
     return 1;

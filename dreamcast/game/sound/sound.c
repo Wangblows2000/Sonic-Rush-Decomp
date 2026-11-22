@@ -80,6 +80,7 @@ void Sound_PlaySeqArcEx(SoundHandle *a, int32_t b, int32_t c) {
 }
 
 void Sound_PlaySeqArc(SoundHandle *p, uint32_t a, uint32_t b) {
+    if (g_sound_trace) printf("snd f%lu playarc %lu:%lu h%p\n", (unsigned long)g_sound_frame, (unsigned long)a, (unsigned long)b, (void *)p);
     if (p == NULL) p = &gSESoundHandle;
     if (gSESoundHandle.player != 0) NNS_SndHandleReleaseSeq(&gSESoundHandle);
     NNS_SndHandleInit(p);
@@ -96,6 +97,7 @@ void Sound_PlaySeqArcBankPrio(SoundHandle *a, int32_t b, int32_t c, int32_t d, i
 }
 
 void Sound_PlayVoice(SoundHandle *p, uint32_t a, uint32_t b) {
+    if (g_sound_trace) printf("snd f%lu voice %lu:%lu h%p\n", (unsigned long)g_sound_frame, (unsigned long)a, (unsigned long)b, (void *)p);
     if (p == NULL) p = &gVoiceSoundHandle;
     if (gVoiceSoundHandle.player != 0) NNS_SndHandleReleaseSeq(&gVoiceSoundHandle);
     NNS_SndHandleInit(p);
@@ -131,6 +133,7 @@ void Sound_SetPositional(SoundHandle *snd, int32_t ax, int32_t ay, int32_t bx, i
 /* ------------------------------------------------ src/game/Sound SysSound_* (sys bank) */
 /* gSysSound->snd[2] (SE), snd[3] / snd[4] (voice, normal / Alt) */
 static SoundHandle s_sys_se, s_sys_voice[2];
+void SysSound_StartSEArc(int32_t arc, int32_t seq);
 
 /* SysSound_StartSE(n): n 0..22; chara = gGameState.unk0 (0 Sonic -> SSAR 2
  * ARC_ZONE_MAP_S, else 3 ARC_ZONE_MAP_B). Needs the "sys" bank. */
@@ -162,11 +165,17 @@ void SysSound_StartSE(int32_t n, int chara) {
     case 22: a = 0xa; b = 2; break;
     default: return;
     }
+    SysSound_StartSEArc(a, b);
+}
+
+/* tail of SysSound_StartSE for callers that already resolved (SSAR, sequence):
+   stop + release the previous SE on gSysSound->snd[2], then Sound_PlaySeqArc */
+void SysSound_StartSEArc(int32_t arc, int32_t seq) {
     if (s_sys_se.player != NULL) {
         NNS_SndPlayerStopSeq(&s_sys_se, 0);
         NNS_SndHandleReleaseSeq(&s_sys_se);
     }
-    Sound_PlaySeqArc(&s_sys_se, (uint32_t)a, (uint32_t)b);
+    Sound_PlaySeqArc(&s_sys_se, (uint32_t)arc, (uint32_t)seq);
 }
 
 /* SysSound_StartVoice(n): n 0..7; alt = gSysSound->unk2C (1 inside

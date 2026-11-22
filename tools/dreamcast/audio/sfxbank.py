@@ -121,14 +121,15 @@ def noise_wave():
 
 # sys SDAT (menus / zone map / staff roll): only the sequences the game plays
 # from it, from src/game/Sound: SysSound_StartSE (SSAR 1 seqs 0-5, 0xb, 4;
-# 0x11 seqs 0-2; 2/3 = ARC_ZONE_MAP_S/_B seqs 0-8, 0x10; 0xa seqs 0-2) and
-# SysSound_StartVoice (SSAR 1 seqs 5-0xa; 0x11 seqs 3-4). Whole SSARs 1 and
-# 0x11 are kept (12 / 5 records). The other 14 SSARs (and their banks / waves:
+# 0x11 seqs 0-2; 2/3 = ARC_ZONE_MAP_S/_B seqs 0-8, 0x10; 0xa seqs 0-2),
+# SysSound_StartVoice (SSAR 1 seqs 5-0xa; 0x11 seqs 3-4) and the title screen
+# (SSAR 0 ARC_TITLE: TitleScreen_PlayStartSound seq 0, TitleDemo_PlaySeq1-4,
+# TitleScreen_PlayTitleVoice seq 5). Whole SSARs 0, 1 and 0x11 are kept. The other 14 SSARs (and their banks / waves:
 # the full sys SDAT has 4.2 MB of waves) are left out (n_seq 0). Groups the
 # original loads for these: 1, 0x15, 2 / 3, 0xe (SysSound_LoadSEGroup /
 # SysSound_LoadVoiceGroup).
 SELECT = {
-    "sys": {1: None, 0x11: None, 2: list(range(9)) + [0x10], 3: list(range(9)) + [0x10], 0xA: [0, 1, 2]},
+    "sys": {0: None, 1: None, 0x11: None, 2: list(range(9)) + [0x10], 3: list(range(9)) + [0x10], 0xA: [0, 1, 2]},
 }
 
 

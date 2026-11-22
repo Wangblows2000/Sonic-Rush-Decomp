@@ -395,6 +395,15 @@ static void test_sys(void) {
             if (!g_host_out.starts) { silent++; printf("  sys %s %d (chara %d): no channel started\n", pass < 2 ? "SE" : "voice", n, pass); }
         }
     }
+    /* title screen: SSAR 0 ARC_TITLE seqs 0-5 (TitleScreen_PlayStartSound / TitleDemo_PlaySeq* / PlayTitleVoice) */
+    for (int n = 0; n < 6; n++) {
+        sound_stop_all(); frames(2);
+        g_host_out.starts = 0;
+        if (n == 5) Sound_PlayVoice(NULL, 0, 5); else Sound_PlaySeqArc(NULL, 0, (uint32_t)n);
+        frames(6);
+        total++;
+        if (!g_host_out.starts) { silent++; printf("  sys title 0:%d: no channel started\n", n); }
+    }
     /* the Alt voice keeps the first voice playing */
     sound_stop_all(); frames(2);
     SysSound_StartVoice(0, 0); frames(2);

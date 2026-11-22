@@ -314,7 +314,7 @@ static void PlayerSelectMenu_Action_Confirm(void) {
         break;
     case 2:
         Sound_PlayVoice(4);
-        Sound_PlayVoice(5);
+        Sound_PlayVoiceAlt(5);   /* SysSound_PlayMenuVoiceAlt */
         break;
     }
     w->unk334 = 0;

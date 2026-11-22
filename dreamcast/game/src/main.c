@@ -236,7 +236,10 @@ static void menu_bgm(int seq)
     snprintf(path, sizeof(path), "/cd/music/s%02d.wav", seq);
     if(audio_music_play(path, ls, le) != 0) printf("menu bgm %s FAILED\n", path);
 }
-static void menu_se(int arc, int id) { Sound_PlaySeqArc(NULL, (uint32_t)arc, (uint32_t)id); }
+static void menu_se(int arc, int id) { SysSound_StartSEArc(arc, id); }   /* cuts the previous menu SE */
+static void menu_voice(int id) { SysSound_StartVoice(id, 0); }
+static void menu_voice_alt(int id) { SysSound_StartVoice(id, 1); }
+static void menu_voice_arc(int arc, int id) { Sound_PlayVoice(NULL, (uint32_t)arc, (uint32_t)id); }
 static void menu_stop_all(void) { sound_stop_all(); audio_music_stop(); }
 static void enter_front_end(void)
 {
@@ -326,7 +329,8 @@ int main(int argc, char **argv)
     g_boss_hooks.navi = ui_boss_navi;
     g_ui_hooks.voice = ui_voice_hook;
     g_ui_hooks.stage_new = ui_stage_new_hook;
-    g_menu_hooks.bgm = menu_bgm; g_menu_hooks.se = menu_se; g_menu_hooks.stop_all = menu_stop_all;
+    g_menu_hooks.bgm = menu_bgm; g_menu_hooks.se = menu_se; g_menu_hooks.voice = menu_voice;
+    g_menu_hooks.voice_alt = menu_voice_alt; g_menu_hooks.voice_arc = menu_voice_arc; g_menu_hooks.stop_all = menu_stop_all;
     g_ui_game.save_lives[0] = g_ui_game.save_lives[1] = 3;
     printf("Sonic Rush DC: %dx%d\n", vid_mode->width, vid_mode->height);
     {

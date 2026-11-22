@@ -190,6 +190,14 @@ void Sound_PlayVoice(s32 id) {
     if (g_menu_hooks.voice)
         g_menu_hooks.voice(id);
 }
+void Sound_PlayVoiceAlt(s32 id) {
+    if (g_menu_hooks.voice_alt)
+        g_menu_hooks.voice_alt(id);
+}
+void Sound_PlayVoiceArc(s32 arc, s32 id) {
+    if (g_menu_hooks.voice_arc)
+        g_menu_hooks.voice_arc(arc, id);
+}
 void NNS_SndStopSoundAll(void) {
     if (g_menu_hooks.stop_all)
         g_menu_hooks.stop_all();

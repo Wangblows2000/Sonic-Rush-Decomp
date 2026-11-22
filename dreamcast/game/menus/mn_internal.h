@@ -264,6 +264,8 @@ u8 StoryProgress_GetZoneAt(u32 i);
 #define StoryProgress_GetZoneIndex MnStoryProgress_GetZoneIndex
 #define Sound_PlaySeqArc MnSound_PlaySeqArc
 #define Sound_PlayVoice MnSound_PlayVoice
+#define Sound_PlayVoiceAlt MnSound_PlayVoiceAlt
+#define Sound_PlayVoiceArc MnSound_PlayVoiceArc
 u8 StoryProgress_GetZoneIndex(u8 v);
 u8 StoryProgress_GetActIndex(u8 act);
 u8 StoryProgress_GetActAt(u8 act);
@@ -284,6 +286,8 @@ void SysSound_PlayBGM(s32 id);
 void Sound_PlaySeq(s32 seq);
 void Sound_PlaySeqArc(s32 arc, s32 id);
 void Sound_PlayVoice(s32 id);
+void Sound_PlayVoiceAlt(s32 id);
+void Sound_PlayVoiceArc(s32 arc, s32 id);
 void NNS_SndStopSoundAll(void);
 
 /* scenes */
