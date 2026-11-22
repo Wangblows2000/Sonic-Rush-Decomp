@@ -5,9 +5,11 @@ Reads the owner's extracted ROM (extract/eur) and the sprite converter output
 (build/dreamcast/sprites, tools/dreamcast/sprites/bac2dc.py) and writes
 build/dreamcast/objects/:
 
-  objdata.bin   "ROBJ" v1: small ROM tables the object code reads at runtime
-                (copied from extract/eur/arm9_overlays/ov000.bin), plus the
-                resolved sprite id of every object BAC slot for every stage.
+  objdata.bin   "ROBJ" v2: small ROM tables the object code reads at runtime
+                (copied from extract/eur/arm9_overlays/ov000.bin), the
+                resolved sprite id of every object BAC slot for every stage,
+                and per stage the /dat/gmk/*.df collision maps (ObjData_Load:
+                zone archive first, then the loose file).
   hbx/<id>.hbx  "HBOX" v1: the BAC collision-box commands (command 7,
                 Player_SpriteCallback / MapObject_SpriteCallback_Default) of
                 every frame, in frames.bin frame order.  frames.bin (DSPR v1)
@@ -35,10 +37,18 @@ TABLES = [
     ("itembox_rings", 0x02366B44, 8),    # data_ov000_02366b44: random ring item amounts
     ("itembox_vs", 0x02366B3C, 8),       # data_ov000_02366b3c: VS item cycle
     ("player_spr_anim", 0x02368D14, 0x68),  # data_ov000_02368d14: Player_SetAnimation sprite anim map
-    ("needle_shape", 0x023661C0, 12 * 8),   # data_ov000_023661c0: needle collision tiles (w*h)[8]
+    ("solid", 0x023661C0, 48 * 8),       # data_ov000_023661c0: all-solid collision tiles (Needle: first 12)
     ("animal", 0x023661A8, 24),          # data_ov000_023661a8: freed animal kinds per zone [8][3]
     ("shake", 0x02077944, 16),           # data_02077944 (arm9): StageObj_Main hit-stop shake offsets (s8)
+    # v2
+    ("col_attr", 0x023661A4, 4),         # data_ov000_023661a4: collision map attribute (top-solid)
+    ("bend_wobble", 0x023643D4, 28),     # data_ov000_023643d4/_d8/_dc: BendStick wobble offsets (s8)
+    ("pedestal", 0x02364400, 48),        # data_ov000_02364400: JumpPedestal launch speeds s16[4][6]
+    ("dec_margin", 0x023685EC, 0xF2),    # data_ov000_023685ec: per decoration type spawn margin
 ]
+# /dat/gmk/*.df collision maps (ObjData_Load with gZoneActArchive)
+DF_FILES = ["gmk_jump30.df", "gmk_jump45.df", "gmk_jump60.df", "gmk_cargo.df", "gmk_jet.df",
+            "gmk_switch.df", "gmk_switch_tate.df"]
 ARM9_BASE = 0x02000000
 
 # Object BAC slots. Order == enum ObjBac in obj_types.h.
@@ -59,7 +69,32 @@ SLOTS = [
     ("ZAKO_BOMB", "act_com", "act/ac_eff_zako_bomb.bac", "act/ac_eff_zako_bomb.bac"),
     ("HAHEN_ZAKO", "act_com", "act/ac_eff_hahen_zako.bac", "act/ac_eff_hahen_zako.bac"),
     ("PLAYER", "player", "act/son.bac", None),                    # hitboxes only (data-only BAC)
-]
+    # v2: Leaf Storm + shared objects, decorations, effects (string table near data_ov000_02366bf0..)
+    ("TRAMPOLINE", "zone", "act/ac_gmk_trampoline.bac", "act/ac_gmk_trampoline.bac"),
+    ("BEND_STICK", "zone", "act/ac_gmk_bend_stick.bac", "act/ac_gmk_bend_stick.bac"),
+    ("ROCK_BREAK", "zone", "act/ac_gmk_rock_break.bac", "act/ac_gmk_rock_break.bac"),
+    ("ROPE", "zone", "act/ac_gmk_rope.bac", "act/ac_gmk_rope.bac"),
+    ("ROPE_C_LAND", "zone", "act/ac_gmk_rope_c_land.bac", "act/ac_gmk_rope_c_land.bac"),
+    ("ROPE_C_SPRING", "zone", "act/ac_gmk_rope_c_spring.bac", "act/ac_gmk_rope_c_spring.bac"),
+    ("ROPE_C", "zone", "act/ac_gmk_rope_c.bac", "act/ac_gmk_rope_c.bac"),
+    ("JUMP_PEDESTAL", "zone", "act/ac_gmk_jump_pedestal.bac", "act/ac_gmk_jump_pedestal.bac"),
+    ("FLOOR_BREAK", "zone", "act/ac_gmk_floor_braek01.bac", "act/ac_gmk_floor_braek01.bac"),
+    ("LAND", "zone", "act/ac_gmk_land.bac", "act/ac_gmk_land.bac"),
+    ("WALL_BREAK", "zone", "act/ac_gmk_wall_braek01.bac", "act/ac_gmk_wall_braek01.bac"),
+    ("IRON_BALL", "zone", "act/ac_gmk_iron_ball.bac", "act/ac_gmk_iron_ball.bac"),
+    ("SPECIAL", "zone", "act/ac_gmk_special.bac", "act/ac_gmk_special.bac"),
+    ("CARGO", "zone", "act/ac_gmk_cargo.bac", "act/ac_gmk_cargo.bac"),
+    ("FLAPPER", "zone", "act/ac_ene_flapper.bac", "act/ac_ene_flapper.bac"),
+    ("EGG_DIVER", "zone", "act/ac_ene_egg_diver.bac", "act/ac_ene_egg_diver.bac"),
+    ("DEC_FLOWER", "zone", "act/ac_dec_flower.bac", "act/ac_dec_flower.bac"),
+    ("DEC_VINE", "zone", "act/ac_dec_vine.bac", "act/ac_dec_vine.bac"),
+    ("DEC_BIRD_NEST", "zone", "act/ac_dec_bird_nest.bac", "act/ac_dec_bird_nest.bac"),
+    ("DEC_BIRD", "zone", "act/ac_dec_bird.bac", "act/ac_dec_bird.bac"),
+    ("DEC_LEAF", "zone", "act/ac_dec_leaf.bac", "act/ac_dec_leaf.bac"),
+    ("EFF_FOUND", "act_com", "act/ac_eff_found.bac", "act/ac_eff_found.bac"),
+    ("EFF_BRAKE", "act_com", "act/ac_eff_kemuri_brake.bac", "act/ac_eff_kemuri_brake.bac"),
+] + [("ANIMAL%02d" % n, "zone", "act/ac_dec_animal%02d.bac" % n, "act/ac_dec_animal%02d.bac" % n)
+     for n in range(1, 17)]                                       # DecAnimal: data_ov000_023672a0
 ID_LEN = 48
 N_STAGES = 27
 
@@ -134,7 +169,7 @@ def main():
 
     os.makedirs(os.path.join(a.out, "hbx"), exist_ok=True)
     blob = bytearray(b"ROBJ")
-    blob += struct.pack("<HHHH", 1, len(SLOTS), N_STAGES, ID_LEN)
+    blob += struct.pack("<HHHH", 2, len(SLOTS), N_STAGES, ID_LEN)
     for name, addr, size in TABLES:
         if addr < OV_BASE:
             data = arm9[addr - ARM9_BASE:addr - ARM9_BASE + size]
@@ -163,6 +198,35 @@ def main():
                 raise SystemExit("id too long: %s" % sid)
             blob += enc + b"\0" * (ID_LEN - len(enc))
         per_stage[st] = ids
+    # per stage .df blobs: u32 offsets[stages + 1] (absolute), then records
+    # {char name[24]; u32 size; data padded to 4}
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../tools/dreamcast/sprites"))
+    import nds_archive  # noqa: E402  (converter helper: NARC + LZ decoding)
+    dir_off = len(blob)
+    blob += b"\0" * (4 * (N_STAGES + 1))
+    df_report = {}
+    for s_ in range(N_STAGES):
+        struct.pack_into("<I", blob, dir_off + 4 * s_, len(blob))
+        st = stage_name(s_)
+        files = {}
+        if st:
+            narc_path = os.path.join(a.extract, "files/narc/%s_act_lz7.narc" % st)
+            if os.path.exists(narc_path):
+                for name, data in nds_archive.open_narc(narc_path).files:
+                    if name.startswith("dat/gmk/") and name[8:] in DF_FILES:
+                        files[name[8:]] = data
+            for n in DF_FILES:
+                lp = os.path.join(a.extract, "files/dat/gmk", n)
+                if n not in files and os.path.exists(lp):
+                    files[n] = open(lp, "rb").read()
+        for n in DF_FILES:
+            if n in files:
+                d = files[n]
+                blob += n.encode().ljust(24, b"\0") + struct.pack("<I", len(d)) + d
+                while len(blob) % 4:
+                    blob += b"\0"
+                df_report[n] = df_report.get(n, 0) + 1
+    struct.pack_into("<I", blob, dir_off + 4 * N_STAGES, len(blob))
     with open(os.path.join(a.out, "objdata.bin"), "wb") as f:
         f.write(blob)
 
@@ -183,6 +247,7 @@ def main():
             f.write("%s\t%s\n" % (sid, " ".join(sorted(needed[sid]))))
     print("objdata.bin: %d bytes, %d slots x %d stages, %d unresolved (stage, slot) pairs"
           % (len(blob), len(SLOTS), N_STAGES, missing))
+    print("df files per stage: %s" % ", ".join("%s x%d" % kv for kv in sorted(df_report.items())))
     for line in report:
         print("hbx " + line)
     return 0

@@ -13,6 +13,7 @@ rm -rf "$OUT/disc"; mkdir -p "$OUT/disc/stages" "$OUT/disc/player"
 cp "$ROOT/build/dreamcast/player/physics.bin" "$ROOT/build/dreamcast/player/trig.bin" "$OUT/disc/player/"
 M=$ROOT/build/dreamcast/models
 cp "$M/mod__son__son.dcm" "$OUT/disc/player/son.dcm"
+cp "$M/mod__blz__blz.dcm" "$OUT/disc/player/blz.dcm"
 cp "$M/narc__player_lz7__son.dca" "$OUT/disc/player/son.dca"
 cp "$M/narc__player_lz7__son.dcv" "$OUT/disc/player/son.dcv"
 # Player_SetAnimation model-animation table (ov000 0x02368bdc, 0x68 bytes) from YOUR ROM
@@ -26,6 +27,22 @@ grep -v '^#' "$ROOT/build/dreamcast/objects/sprites.txt" | cut -f1 | while read 
     mkdir -p "$OUT/disc/sprites/$sp"
     cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"
     for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+done
+# UI (HUD, title card, pause, results, game over)
+mkdir -p "$OUT/disc/ui"; cp "$ROOT/build/dreamcast/ui/uidata.bin" "$OUT/disc/ui/"
+for sp in act__ac_fix_moji act__dm_stdm act__dm_stdm_eng act__dm_cldm act__ac_fix_pause act__ac_fix_pause_frame act__ac_fix_gameover; do
+    S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
+    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+done
+# sound effect banks (SSAR/SBNK/SWAR per stage SDAT, run by the native sequencer)
+mkdir -p "$OUT/disc/sound"; cp "$ROOT"/build/dreamcast/audio/sfxbank/*.srb "$OUT/disc/sound/"
+# bosses: data + models listed by the boss module
+mkdir -p "$OUT/disc/boss" "$OUT/disc/models"; cp "$ROOT/build/dreamcast/boss/bossdata.bin" "$OUT/disc/boss/"
+grep -v '^#' "$ROOT/build/dreamcast/boss/assets.txt" | grep -E '\.(dcm|dca|dcv)$' | while read -r f; do
+    b=$(basename "$f"); [ -f "$ROOT/build/dreamcast/models/$b" ] && cp "$ROOT/build/dreamcast/models/$b" "$OUT/disc/models/"
+done
+for f in mod__gmk_rope_c__gmk_rope_c01.dcm mod__gmk_rope_c__gmk_rope_c02.dcm; do
+    [ -f "$ROOT/build/dreamcast/models/$f" ] && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"
 done
 mkdir -p "$OUT/disc/music"
 A=$ROOT/build/dreamcast/audio

@@ -96,6 +96,7 @@ void obj_stageobj_dtor(Obj *o) { (void)o; }
 
 /* StageObj_Load2dBAC: the sprite pair (spr1 = other DS screen is not kept) */
 void obj_load_bac(Obj *o, int bac) {
+    obj_res_ensure(bac);
     spr_init(&o->spr, &g_obj.res[bac], 0, 0x40000);
     o->spr.order = 0;
     o->has_spr = 1;
@@ -370,6 +371,8 @@ static void obj_main(Obj *o) {
 ObjCreateFn obj_create_fn(u16 t) {
     if (t <= 0x01 || t == 0x03 || (t >= 0x07 && t <= 0x0a) || (t >= 0x0d && t <= 0x0f) || t == 0x14 || t == 0x15)
         return pawn_create;          /* EnemyPawnGroup_Create */
+    if (t == 0x02 || t == 0x04 || t == 0x0b || t == 0x0c || (t >= 0x10 && t <= 0x12))
+        return EnemyFlapperGroup_Create;
     if (t >= 0x2b && t <= 0x31)
         return itembox_create;       /* ItemBox_Create */
     if ((t >= 0x43 && t <= 0x4c) || t == 0xe0)
@@ -387,7 +390,61 @@ ObjCreateFn obj_create_fn(u16 t) {
     if ((t >= 0x40 && t <= 0x42) || (t >= 0x59 && t <= 0x5b) || t == 0x7e || t == 0x9d || t == 0x9f ||
         t == 0xa9 || t == 0xb0 || t == 0xb6 || t == 0xb7 || (t >= 0xc3 && t <= 0xc6))
         return mapobj40_create;      /* MapObj40_Create */
+    switch (t) {
+    case 0x51: case 0x52: case 0x53: case 0x54: case 0x76: case 0xaf: case 0xef:
+        return GmkLand_Create;
+    case 0x55: return Trampoline_Create;
+    case 0x56: case 0x57: return BendStick_Create;
+    case 0x58: return Rope_Create;
+    case 0x67: return JumpPedestal_Create;
+    case 0x68: case 0x69: return CorkscrewTrigger_Create;
+    case 0x6f: return RockBreak_Create;
+    case 0x72: return PlayerStart_Create;
+    case 0x73: return MapObj73_Create;
+    case 0x75: return MapObj75_Create;
+    case 0x77: return WallBreak_Create;
+    case 0x78: case 0x79: return IronBall_Create;
+    case 0x7a: return RopeC_Create;
+    case 0x9e: return GmkSpecial_Create;
+    case 0xdf: return EggPawnM_Create;
+    case 0xe1: return RopeCSpring_Create;
+    case 0xe2: return RopeCLand_Create;
+    case 0xaa: return GmkLandAA_Create;
+    case 0x7c: return WaterLevelTrigger_Create;
+    case 0x70: return MapObj70_Create;
+    }
     return NULL;                     /* not translated (OBJECTS.md) */
+}
+
+/* BAC slots a placed object type loads (for the preload at objects_init;
+ * anything missed is loaded on first use, see obj_res_ensure) */
+static int type_slots(u16 t, u8 *o) {
+    int n = 0;
+    ObjCreateFn f = obj_create_fn(t);
+    if (f == NULL)
+        return 0;
+    if (f == pawn_create) { o[n++] = OBJ_BAC_EGGPAWN; o[n++] = OBJ_BAC_EGGPAWN_M; o[n++] = OBJ_BAC_EFF_FOUND; }
+    else if (f == EnemyFlapperGroup_Create) { o[n++] = t == 4 ? OBJ_BAC_EGG_DIVER : OBJ_BAC_FLAPPER; o[n++] = OBJ_BAC_EFF_FOUND; }
+    else if (f == itembox_create) o[n++] = OBJ_BAC_ITEMBOX;
+    else if (f == spring_create) o[n++] = OBJ_BAC_SPRING;
+    else if (f == needle_create) o[n++] = OBJ_BAC_NEEDLE;
+    else if (f == dashp_create) o[n++] = OBJ_BAC_DASH_P;
+    else if (f == dashc_create_by_type) { o[n++] = OBJ_BAC_DASH_C; o[n++] = OBJ_BAC_DASH_CT; }
+    else if (f == marker_create) o[n++] = OBJ_BAC_MARKER;
+    else if (f == goalring_create) o[n++] = OBJ_BAC_GOALRING;
+    else if (f == GmkLand_Create) o[n++] = t == 0x76 ? OBJ_BAC_FLOOR_BREAK : OBJ_BAC_LAND;
+    else if (f == Trampoline_Create) o[n++] = OBJ_BAC_TRAMPOLINE;
+    else if (f == BendStick_Create) o[n++] = OBJ_BAC_BEND_STICK;
+    else if (f == Rope_Create) o[n++] = OBJ_BAC_ROPE;
+    else if (f == JumpPedestal_Create) o[n++] = OBJ_BAC_JUMP_PEDESTAL;
+    else if (f == RockBreak_Create) o[n++] = OBJ_BAC_ROCK_BREAK;
+    else if (f == WallBreak_Create) o[n++] = OBJ_BAC_WALL_BREAK;
+    else if (f == IronBall_Create) o[n++] = OBJ_BAC_IRON_BALL;
+    else if (f == RopeC_Create) { o[n++] = OBJ_BAC_ROPE_C; o[n++] = OBJ_BAC_ROPE_C_LAND; o[n++] = OBJ_BAC_ROPE_C_SPRING; o[n++] = OBJ_BAC_SPRING; }
+    else if (f == GmkSpecial_Create) { o[n++] = OBJ_BAC_SPECIAL; o[n++] = OBJ_BAC_CARGO; }
+    else if (f == EggPawnM_Create) o[n++] = OBJ_BAC_EGGPAWN_M;
+    else if (f == GmkLandAA_Create) o[n++] = OBJ_BAC_LAND;
+    return n;
 }
 
 /* ------------------------------------------------- StageEvent spawners */
@@ -461,7 +518,8 @@ static void spawner(int i, u16 x, u16 y, const URect *rc, const URect *o, u32 f)
         spawn_objects_in_block(x, y, rc, o, f);
     else if (i == 1)
         spawn_rings_in_block(x, y, rc);
-    /* i == 2: StageEvent_SpawnDecorationsInBlock (decorations, not in this module) */
+    else if (g_obj.lv_dec != NULL)
+        spawn_decorations_in_block(x, y, rc, o, f); /* StageEvent_SpawnDecorationsInBlock */
 }
 
 /* StageEvent_SpawnInView (dual-screen variant: one view per DS screen) */
@@ -542,11 +600,17 @@ static void stage_event_main(void) {
         g_obj.ev_last[i] = g_obj.view[i];
 }
 
+static u32 rd32(const u8 *p) { return (u32)p[0] | (u32)p[1] << 8 | (u32)p[2] << 16 | (u32)p[3] << 24; }
+void dec_preload(const rlvl_header_t *h);
+int dec_init_level(const uint8_t *level_data);
+void camera_init(void);
+
 /* ------------------------------------------------------------- API */
 const ObjStats *objects_stats(void) { return &g_obj.stats; }
 int objects_ring_count(void) { return ring_count(); }
 u8 *objects_ring_scatter_level(void) { return ring_scatter_level(); }
 void objects_set_player_anim_done(int on) { g_obj.anim_done_flag = on; }
+void objects_set_grind_check(int on) { g_obj.no_grind_check = !on; }
 
 void objects_set_paths(const char *obj_dir, const char *sprite_dir) {
     strncpy(g_obj.obj_dir, obj_dir, sizeof(g_obj.obj_dir) - 1);
@@ -560,6 +624,12 @@ void objects_set_view(int idx, s32 x, s32 y) {
     g_obj.view[idx].y = y;
     g_obj.view[idx].w = 0x100;
     g_obj.view[idx].h = 0x100;
+    g_obj_camera[idx].x = x;
+    g_obj_camera[idx].y = y;
+    if (idx == 0 && g_obj.n_views == 1) { /* one DC view: camera 1 follows camera 0 */
+        g_obj_camera[1].x = x;
+        g_obj_camera[1].y = y;
+    }
 }
 /* StageEvent_InitialSpawn again on the next objects_frame_begin (after a
  * respawn / teleport the DS restarts the stage, which does the same) */
@@ -569,17 +639,18 @@ void objects_respawn_view(void) {
 }
 void objects_set_view_count(int n) { g_obj.n_views = n < 1 ? 1 : (n > OBJ_MAX_VIEWS ? OBJ_MAX_VIEWS : n); }
 
+/* objdata.bin "ROBJ" v2 (tools/objdata.py) */
 static int load_objdata(int stage) {
     char path[160];
     u8 *b;
-    u32 size, off = 12, nslots, nstages, idlen;
+    u32 size, off = 12, nslots, nstages, idlen, i, n, dsz, pos;
     ObjData *d = &g_obj.data;
     int s;
 #define TAKE(dst, n) do { memcpy((dst), b + off, (n)); off += (n); off = (off + 3) & ~3u; } while (0)
     snprintf(path, sizeof(path), "%s/objdata.bin", g_obj.obj_dir);
     if (obj_load_file(path, &b, &size) != 0)
         return -1;
-    if (size < 516 || memcmp(b, "ROBJ", 4) || (b[4] | b[5] << 8) != 1) {
+    if (size < 1024 || memcmp(b, "ROBJ", 4) || (b[4] | b[5] << 8) != 2) {
         free(b);
         return -1;
     }
@@ -591,11 +662,15 @@ static int load_objdata(int stage) {
     TAKE(d->itembox_rings, 8);
     TAKE(d->itembox_vs, 8);
     TAKE(d->player_spr_anim, 0x68);
-    TAKE(d->needle_shape, 96);
+    TAKE(d->solid, 384);
     TAKE(d->animal, 24);
     TAKE(d->shake, 16);
+    TAKE(d->col_attr, 4);
+    TAKE(d->bend_wobble, 28);
+    TAKE(d->pedestal, 48);
+    TAKE(d->dec_margin, 0xf2);
 #undef TAKE
-    if (nslots != OBJ_BAC_COUNT || idlen != 48 || (u32)stage >= nstages || size != off + nstages * nslots * idlen) {
+    if (nslots != OBJ_BAC_COUNT || idlen != 48 || (u32)stage >= nstages || size < off + nstages * nslots * idlen) {
         free(b);
         return -1;
     }
@@ -603,15 +678,93 @@ static int load_objdata(int stage) {
         memcpy(d->ids[s], b + off + (stage * nslots + s) * idlen, 48);
         d->ids[s][47] = 0;
     }
+    off += nstages * nslots * idlen;
+    /* per stage .df blobs: u32 offset table [stages + 1], then {char name[24]; u32 size; data (4-aligned)} */
+    if (size >= off + (nstages + 1) * 4) {
+        u32 o0 = rd32(b + off + stage * 4), o1 = rd32(b + off + (stage + 1) * 4);
+        if (o1 >= o0 && o1 <= size) {
+            d->df_buf = (u8 *)malloc(o1 - o0 + 1);
+            if (d->df_buf) {
+                memcpy(d->df_buf, b + o0, o1 - o0);
+                for (pos = 0, i = 0; pos + 28 <= o1 - o0 && i < 8; i++) {
+                    memcpy(d->df[i].name, d->df_buf + pos, 24);
+                    d->df[i].name[23] = 0;
+                    dsz = rd32(d->df_buf + pos + 24);
+                    d->df[i].size = dsz;
+                    d->df[i].data = d->df_buf + pos + 28;
+                    n = (28 + dsz + 3) & ~3u;
+                    pos += n;
+                }
+                d->n_df = (int)i;
+            }
+        }
+    }
     free(b);
     return 0;
+}
+
+/* ObjData_Load of a /dat/gmk/<name> file (resolved offline per stage) */
+const u8 *obj_df(const char *name, u32 *size) {
+    int i;
+    for (i = 0; i < g_obj.data.n_df; i++)
+        if (!strcmp(g_obj.data.df[i].name, name)) {
+            if (size)
+                *size = g_obj.data.df[i].size;
+            return g_obj.data.df[i].data;
+        }
+    return NULL;
+}
+
+/* resources are loaded at objects_init for the placed types (preload) or on
+ * first use; a slot that does not resolve on this stage stays empty */
+int obj_res_ensure(int bac) {
+    ObjRes *r;
+    if (bac < 0 || bac >= OBJ_BAC_COUNT)
+        return -1;
+    r = &g_obj.res[bac];
+    if (r->loaded)
+        return 0;
+    if (r->id[0] == 1) /* tried before */
+        return -1;
+    if (!g_obj.data.ids[bac][0] || obj_res_load(r, g_obj.spr_dir, g_obj.obj_dir, g_obj.data.ids[bac]) != 0) {
+        memset(r, 0, sizeof(*r));
+        r->id[0] = 1;
+        return -1;
+    }
+    if (g_obj.preloaded)
+        g_obj.lazy_loads++;
+    return 0;
+}
+
+static void preload_resources(const rlvl_header_t *h) {
+    static const u8 always[] = { OBJ_BAC_RING, OBJ_BAC_ZAKO_BOMB, OBJ_BAC_HAHEN, OBJ_BAC_PLAYER, OBJ_BAC_EFF_FOUND };
+    u8 seen[0x100], sl[8];
+    u32 i;
+    int k, n;
+    memset(seen, 0, sizeof(seen));
+    for (i = 0; i < sizeof(always); i++)
+        obj_res_ensure(always[i]);
+    for (i = 0; i < h->num_objects; i++) {
+        u16 t = g_obj.lv_obj[i].type;
+        if (t >= 0x100 || seen[t])
+            continue;
+        seen[t] = 1;
+        n = type_slots(t, sl);
+        for (k = 0; k < n; k++)
+            obj_res_ensure(sl[k]);
+    }
+    dec_preload(h);
+    if (W.zone < 8) /* freed animals of this zone (MapObject_SpawnFreedAnimal) */
+        for (k = 0; k < 3; k++)
+            obj_res_ensure(OBJ_BAC_ANIMAL01 + g_obj.data.animal[W.zone][k]);
+    g_obj.preloaded = 1;
 }
 
 int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     const rlvl_header_t *h = (const rlvl_header_t *)level_data;
     char od[64], sd[64];
     u32 i;
-    int s, missing = 0;
+    int s, loaded = 0;
     DcPlayer *keep[2];
     int nkeep = g_obj.n_players;
     for (s = 0; s < nkeep && s < 2; s++)
@@ -638,9 +791,6 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     g_obj.lv_ring_region = (const uint32_t *)rlvl_section(level_data, RLVL_SEC_RING_REGION, NULL);
     if (load_objdata(h->stage) != 0)
         return -2;
-    for (s = 0; s < OBJ_BAC_COUNT; s++)
-        if (obj_res_load(&g_obj.res[s], g_obj.spr_dir, g_obj.obj_dir, g_obj.data.ids[s]) != 0)
-            missing++;
     g_obj.prm = (ObjParam *)calloc(h->num_objects ? h->num_objects : 1, sizeof(ObjParam));
     g_obj.ring_state = (u8 *)calloc(h->num_rings ? h->num_rings : 1, 1);
     if (!g_obj.prm || !g_obj.ring_state)
@@ -661,8 +811,15 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     }
     for (i = 0; i < h->num_rings; i++)
         g_obj.ring_state[i] = (u8)(g_obj.lv_ring[i].x & 0xff);
+    if (dec_init_level(level_data) != 0)
+        return -3;
+    preload_resources(h);
+    for (s = 0; s < OBJ_BAC_COUNT; s++)
+        if (g_obj.res[s].loaded)
+            loaded++;
     if (g_obj.n_views == 0)
         g_obj.n_views = 1;
+    camera_init();
     for (s = 0; s < OBJ_MAX_VIEWS; s++)
         objects_set_view(s, 0, 0);
     W.objmgr |= 0x1c; /* view-out, map collision and hit boxes on (Stage_Create) */
@@ -673,7 +830,7 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     obj_player_install_hooks();
     spawn_all_map_objects();
     ring_init();
-    obj_log("init_missing_sprites", missing, h->stage);
+    obj_log("init_resources", loaded, h->stage);
     return 0;
 }
 
@@ -689,8 +846,13 @@ void objects_shutdown(void) {
             obj_res_free(&g_obj.res[s]);
     free(g_obj.prm);
     free(g_obj.ring_state);
+    free(g_obj.dprm);
+    free(g_obj.data.df_buf);
     g_obj.prm = NULL;
     g_obj.ring_state = NULL;
+    g_obj.dprm = NULL;
+    g_obj.data.df_buf = NULL;
+    g_obj.data.n_df = 0;
     if (g_dcp_col.obj_probe != NULL && g_obj.hdr != NULL) {
         g_dcp_col.obj_probe = NULL;
         g_dcp_hooks = g_obj.prev_hooks;
@@ -700,11 +862,28 @@ void objects_shutdown(void) {
 
 /* Stage_Main (hit boxes, solid objects), then StageEvent_Main */
 void objects_frame_begin(void) {
+    int i;
     if (!g_obj.hdr)
         return;
+    Obj *o, *nxt;
     rect_check_all();
     colmap_commit();
     stage_event_main();
+    /* tasks that run before the player (id < 0x100: GmkLand, GmkLandAA,
+     * WallBreak use 0xf6, so platforms move before the player rides them) */
+    for (o = g_obj.head; o && o->prio < OBJ_PRIO_PLAYER; o = nxt) {
+        obj_main(o);
+        nxt = o->next;
+    }
+    /* Player_In parts the player module leaves to the objects (they read
+     * the hit box lists just swapped by Stage_Main): Player_FindHomingTarget
+     * and Player_CheckStartGrind (see OBJECTS.md, player-module changes) */
+    for (i = 0; i < g_obj.n_players; i++) {
+        DcPlayer *p = g_obj.players[i].p;
+        Player_FindHomingTarget(p);
+        if (!g_obj.no_grind_check)
+            Player_CheckStartGrind(p);
+    }
 }
 
 /* everything that runs after the player task */
@@ -714,9 +893,15 @@ void objects_update(DcPlayer *p) {
     (void)p;
     if (!g_obj.hdr)
         return;
-    for (i = 0; i < g_obj.n_players; i++)
+    for (i = 0; i < g_obj.n_players; i++) {
+        DcPlayer *pl = g_obj.players[i].p;
         obj_player_collide(&g_obj.players[i]); /* Player_Collide (player task, id 0x100) */
-    for (o = g_obj.head; o; o = nxt) {
+        if (pl->pf & 0x20000000)
+            RingManager_AttractRings(pl); /* Player_Last: magnet barrier */
+    }
+    for (o = g_obj.head; o && o->prio < OBJ_PRIO_PLAYER; o = o->next)
+        ; /* ran in objects_frame_begin */
+    for (; o; o = nxt) {
         if (o->prio >= OBJ_PRIO_RING)
             break;
         obj_main(o);

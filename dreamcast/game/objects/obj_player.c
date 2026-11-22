@@ -83,6 +83,89 @@ static void hook_spawn_ring(void *ctx, DcPlayer *p, s32 x, s32 y, s16 vx, s16 vy
     if (g_obj.prev_hooks.spawn_ring)
         g_obj.prev_hooks.spawn_ring(g_obj.prev_hooks.ctx, p, x, y, vx, vy, flags);
 }
+/* ------------------------------------------- AttackHitbox (src/game/Player) */
+static void AttackHitbox_State_Follow(Obj *o) {
+    if (o->wC != 0) {
+        o->wC--;
+        if (o->wC == 0) {
+            o->h.obj_flags |= 4;
+            return;
+        }
+        obj_handle_collider(&o->h, o, OBJ_OWNER_OBJECT, &o->coll[1], 0);
+        return;
+    }
+    if (o->k.atk.par != NULL) {
+        o->h.x = o->k.atk.par->x;
+        o->h.y = o->k.atk.par->y;
+        o->h.disp_flags &= ~1;
+        if (o->k.atk.par->disp_flags & 1)
+            o->h.disp_flags |= 1;
+        obj_handle_collider(&o->h, o, OBJ_OWNER_OBJECT, &o->coll[1], 0);
+        return;
+    }
+    o->h.obj_flags |= 4;
+}
+static void AttackHitbox_State_Boost(Obj *o) {
+    DcPlayer *p;
+    if (o->coll[1].flags & 0x200) {
+        obj_screen_shake(4);
+        o->coll[1].flags &= ~0x200;
+    }
+    p = o->k.atk.par;
+    if (p != NULL) {
+        o->h.x = p->x;
+        o->h.y = p->y;
+        o->h.disp_flags &= ~1;
+        if (p->disp_flags & 1)
+            o->h.disp_flags |= 1;
+        if (!(p->pf & 0x80))
+            o->h.obj_flags |= 4;
+        obj_handle_collider(&o->h, o, OBJ_OWNER_OBJECT, &o->coll[1], 0);
+        return;
+    }
+    o->h.obj_flags |= 4;
+}
+static Obj *AttackHitbox_Create(DcPlayer *parent, s16 a, s16 b, s16 c, s16 d, s16 e) {
+    Obj *w = obj_alloc(0x101, obj_stageobj_dtor);
+    if (w == NULL)
+        return NULL;
+    w->kind = OBJK_ATTACK;
+    w->h.type = 5;
+    w->h.obj_flags |= 0x10;
+    w->h.x = parent->x;
+    w->h.y = parent->y;
+    w->h.z = parent->z;
+    w->k.atk.par = parent;
+    w->h.move_flags |= 0x100;
+    w->h.move_flags |= 0x2000;
+    w->h.obj_flags |= 0x200;
+    w->coll[1].mask = parent->type == 1 ? 0x21 : 0x12;
+    w->coll[1].cb = NULL;
+    w->coll[1].flags |= 0x20;
+    rect_set_atkdef(&w->coll[1], 0x13, 0xffff);
+    rect_set_box2d(&w->coll[1], a, b, c, d);
+    if (parent->disp_flags & 1)
+        w->h.disp_flags |= 1;
+    w->state = AttackHitbox_State_Follow;
+    w->wC = e;
+    return w;
+}
+dcp_bool obj_is_attack_hitbox(const DcPlayer *h) { return h->type == 5; }
+
+/* g_dcp_hooks.effect: the effects the object system owns */
+static void hook_effect(void *ctx, DcPlayer *p, s32 fx, s32 a, s32 b) {
+    Obj *o;
+    (void)ctx;
+    if (fx == DCP_FX_ATTACK_HITBOX_BOOST) {
+        /* Player_StartBoost: AttackHitbox_Create(w, -0x20, -0x20, 0x20, 0x20, 0) + SetBoostState */
+        o = AttackHitbox_Create(p, -0x20, -0x20, 0x20, 0x20, 0);
+        if (o != NULL)
+            o->state = AttackHitbox_State_Boost;
+    }
+    if (g_obj.prev_hooks.effect)
+        g_obj.prev_hooks.effect(g_obj.prev_hooks.ctx, p, fx, a, b);
+}
+
 static s32 hook_obj_probe(void *ctx, DcPlayer *p, s32 x, s32 y, u32 flags, u32 dir, u8 *angle, u8 *attr) {
     (void)ctx;
     return colmap_probe_for_obj(p, x, y, flags, dir, angle, attr);
@@ -94,6 +177,7 @@ void obj_player_install_hooks(void) {
     H.anim_speed = hook_anim_speed;
     H.atkdef = hook_atkdef;
     H.spawn_ring = hook_spawn_ring;
+    H.effect = hook_effect;
     g_dcp_col.obj_ctx = NULL;
     g_dcp_col.obj_probe = hook_obj_probe;
 }
@@ -231,7 +315,7 @@ void obj_player_attack_recoil(DcPlayer *w) {
 }
 
 /* ------------------------------------------ Player_Action_GimmickLaunch */
-static void gimmick_launch(DcPlayer *w, s16 vx, s16 vy) {
+void Player_Action_GimmickLaunch(DcPlayer *w, s16 vx, s16 vy) {
     dcp_reset_gimmick_state(w);
     if (w->move_flags & 1)
         w->vel_x = w->gnd_vel;
@@ -292,7 +376,7 @@ void obj_player_dash_ring(DcPlayer *w, s32 x, s32 y, s16 vx, s16 vy) {
         w->x = x;
     if (y != 0)
         w->y = y;
-    gimmick_launch(w, vx, vy);
+    Player_Action_GimmickLaunch(w, vx, vy);
     if (vx == 0)
         w->vel_x = 0;
     w->dash_timer = 0x1e;

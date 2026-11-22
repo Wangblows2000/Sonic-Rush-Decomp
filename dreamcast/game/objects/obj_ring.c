@@ -301,3 +301,45 @@ int ring_fx_get(int i, const ObjSprite **s) {
     return 1;
 }
 int ring_fx_max(void) { return RING_FX_MAX; }
+
+/* RingManager_AttractRings (copied): magnet barrier, called from Player_Last
+ * (objects_update, after Player_Collide) while pf & 0x20000000 */
+void RingManager_AttractRings(DcPlayer *src) {
+    ObjBox r;
+    RingPart *p;
+    u8 left, i;
+    s32 ang, v;
+    if (!R.active)
+        return;
+    memset(&r, 0, sizeof(r));
+    R.flags |= 4;
+    r.x = src->x >> 8;
+    r.y = src->y >> 8;
+    rect_set_box2d(&r, -0x48, -0x48, 0x48, 0x48);
+    left = R.count;
+    for (i = 0; i < 64; i++) {
+        if (left == 0)
+            return;
+        p = &R.parts[i];
+        if (p->timer == 0)
+            continue;
+        left--;
+        if (!(p->flags & 0x2000)) {
+            if (rect_box_check(&r, p->x >> 8, p->y >> 8, -6, -16, 0x14, 0x10)) {
+                p->flags |= 0x200;
+                p->flags |= 0x400;
+                p->flags |= 0x800;
+                p->flags |= 0x2000;
+                p->vx = 0;
+                g_obj.stats.rings_attracted++;
+            }
+        }
+        if (p->flags & 0x2000) {
+            ang = dcp_atan2(r.y - (p->y >> 8), r.x - (p->x >> 8));
+            p->vx = (s16)dcp_spd_up(p->vx, 0x40, 0x1F00);
+            v = p->vx;
+            p->x += (s16)((v * dcp_cos((u16)ang)) >> 12);
+            p->y += (s16)((v * dcp_sin((u16)ang)) >> 12);
+        }
+    }
+}

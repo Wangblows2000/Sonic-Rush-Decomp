@@ -1,0 +1,156 @@
+/*
+ * Native in-stage presentation and flow (Dreamcast port of Sonic Rush) - public API.
+ *
+ * Translated from the decompiled DS code (see docs/dreamcast/translation/UI.md):
+ *   src/game/UI/Hud (Hud_*, ScorePopup_*), src/game/UI/TitleCard (StageTitleCard*),
+ *   src/game/UI/GameOver (GameOverSeq_*, GameOver_*), src/game/Menus/Pause (PauseMenu_*),
+ *   src/game/Cutscenes/ClearDemo (act results: ClearDemo*, ClearDemoScore_*),
+ *   src/game/Graphics/Screen (BrightnessFade_*), and the score/time/lives parts of
+ *   Stage_Main, Stage_ResetProgress, Player_AddLives, Player_AddTrickScore,
+ *   Player_CheckTimeOver, Player_Last (game over / time over exit), Stage_ExitAfterFail.
+ *
+ * Frame order (main.c):
+ *
+ *     input_poll(&in);
+ *     ui_update(&in, &player);        // Stage_Main (HUD feed, timer, START -> pause),
+ *                                     // pause menu / results / game over tasks
+ *     if (!ui_is_paused() && !ui_world_frozen()) {
+ *         objects_frame_begin(); dcp_player_frame(...); objects_update(&player);
+ *     }
+ *     ui_post_update(&player);        // every frame: time over, Player_Last exits,
+ *                                     // ScorePopup, HUD, fade, title card
+ *     ... render OP/PT lists ...
+ *     render_begin_list(PVR_LIST_TR_POLY); ...; ui_draw_tr(); render_end_list();
+ *
+ * Game state: gGameState / data_022c4590 fields live in g_dcp_world (zone, act, mode,
+ * flags, frame = stage timer, lives) and g_obj_stage (speed/ring bonus), plus UiGame
+ * below for the fields no other module owns (score, character, total, fail flags).
+ */
+#ifndef SRDC_UI_H
+#define SRDC_UI_H
+
+#include <stdint.h>
+#include "../player/dcp_player.h"
+#include "../engine/input.h"
+
+/* ui_state() */
+enum {
+    UI_PLAYING = 0,   /* stage running (title card may be on screen)             */
+    UI_RESULTS = 1,   /* act clear tally (ClearDemo) on screen                    */
+    UI_GAMEOVER = 2,  /* GAME OVER / TIME'S UP sequence on screen                 */
+    UI_EXIT = 3       /* stage finished: read ui_exit_kind(), load the next scene */
+};
+/* ui_exit_kind(): which scene the original would change to */
+enum {
+    UI_EXIT_NONE = 0,
+    UI_EXIT_NEXT_ACT = 1,    /* ClearDemo_GoToNextScene (act clear)                 */
+    UI_EXIT_QUIT = 2,        /* PauseMenu "GO BACK"/"QUIT": PauseMenu_QuitToMap     */
+    UI_EXIT_GAME_OVER = 3,   /* GameOverSeq_Main -> SceneChange_ToSegaLogo          */
+    UI_EXIT_TRY_AGAIN = 4,   /* time attack: SceneChange_ToTryAgain                 */
+    UI_EXIT_VS_RESULTS = 5   /* VS mode: ResultsScreen_Create (not translated here) */
+};
+/* gGameState.unk10 */
+enum { UI_MODE_STORY = 0, UI_MODE_VS = 1, UI_MODE_TIME_ATTACK = 2 };
+
+typedef struct UiGame {
+    u32 character;      /* gGameState.unk0  (0 Sonic, 1 Blaze)                          */
+    u32 total;          /* data_022c4590.unk0  (tally total, written by the results)    */
+    u32 score;          /* data_022c4590.unk4  (trick / popup score)                    */
+    u32 fail_flags;     /* data_022c4590.unk24 (1/2: progress initialised, 4: time over) */
+    u32 frame24;        /* gGameState.unk24 (frames since stage start)                  */
+    u32 save_flags;     /* gSaveData.unk8 (bit 1: no time limit option)                 */
+    u8 stage_new;       /* StoryProgress_IsStageNew(): 1 = pause menu shows no entries  */
+    u8 language;        /* gGameLanguage (0 jpn, 1 eng, 2 deu, 3 fra, 4 spa, 5 ita)     */
+    u8 save_lives[2];   /* gSaveData.unkE / unk66: lives restored on stage entry.
+                           Native default 3 (the save-file default was not traced). */
+} UiGame;
+extern UiGame g_ui_game;
+
+/* Where uidata.bin and the converted sprite directories live
+ * (defaults "/cd/ui" and "/cd/sprites"). Call before ui_init. */
+void ui_set_paths(const char *ui_dir, const char *sprite_dir);
+/* Load uidata.bin and the UI sprite resources (atlases go to PVR VRAM on KOS).
+ * Returns 0 when everything loaded; the module still runs (draws nothing missing)
+ * otherwise. Call once. */
+int ui_init(void);
+void ui_shutdown(void);
+
+/* gPlayers[0]: the player the HUD, title card and timer rules read. */
+void ui_bind_player(DcPlayer *p);
+/* Stage_Create / Stage_ResetProgress / Player_Create part: reset timer, flags and
+ * score, set zone/act/character, create the HUD and the stage title card.
+ * zone/act are gGameState.unk1C/unk1D (Leaf Storm = zone 0; act 0, 1, boss 2).
+ * Call after dcp_player_create and objects_init (it installs hooks). */
+void ui_stage_start(int zone, int act, int character);
+/* Same, after a death: Player_Respawn keeps time/score; the DS restarts the stage
+ * task list (StageRestart) without a new title card in story mode. */
+void ui_stage_restart(void);
+
+/* One DS frame of the presentation (title card, HUD, pause, results, game over,
+ * fades). input = this frame's pad state. */
+void ui_update(const InputState *in, DcPlayer *player);
+/* The UI tasks that run after the world on the DS (Player_CheckTimeOver,
+ * Player_Last exits, ScorePopup, Hud_Main, BrightnessFade, StageTitleCard).
+ * Call every frame after the world update, also while paused. */
+void ui_post_update(DcPlayer *player);
+void ui_player_last(DcPlayer *player);   /* = ui_post_update */
+/* Screen-space quads for everything above, into the open TR list (KOS only; the
+ * host build records the quads for tests). */
+void ui_draw_tr(void);
+
+int ui_is_paused(void);       /* pause menu open: skip the world update           */
+int ui_world_frozen(void);    /* results / game over / exit: skip the world update */
+int ui_state(void);           /* UI_PLAYING / UI_RESULTS / UI_GAMEOVER / UI_EXIT   */
+int ui_exit_kind(void);       /* valid when ui_state() == UI_EXIT                  */
+int ui_titlecard_active(void);
+
+/* ----------------------------------------------------- event hooks */
+/* ScorePopup_Create(obj, n) + data_022c4590.unk4 += n (enemy kill, trick, ...).
+ * x/y = 24.8 world position the popup follows (the object). */
+void ui_add_score(s32 x, s32 y, s32 points);
+/* Player_AddLives */
+void ui_add_lives(s32 n);
+/* Hud_SetTensionGauge(v, mode) (Player_StartBoost / DrainTension / OnHurt pass mode 1) */
+void ui_tension_event(s32 v, s32 mode);
+/* BrightnessFade_Create / BrightnessFade_IsDone (the player/object fade hooks) */
+void ui_fade(s32 kind, s32 speed);
+int ui_fade_done(void);
+/* StageShutdown_Create(...) from the goal: OBJ_EXIT_RESULTS / OBJ_EXIT_CLEAR_DEMO */
+void ui_stage_exit(s32 kind);
+
+/* Sound requests (all optional). arc/id are the DS sound archive group / sequence
+ * numbers of the original calls (see UI.md for the list). */
+typedef struct UiHooks {
+    void *ctx;
+    void (*sfx)(void *ctx, s32 arc, s32 id);   /* Sound_PlaySeqArc / _PlaySeqArcEx */
+    void (*voice)(void *ctx, s32 arc, s32 id); /* Sound_PlayVoice */
+    void (*music)(void *ctx, s32 id);          /* Sound_PlaySeq(0, id); -1 = NNS_SndStopSoundAll */
+    void (*music_pause)(void *ctx, int on);    /* pause menu: NNS_SndPlayerPauseByPlayerNo(3..9) */
+} UiHooks;
+extern UiHooks g_ui_hooks;
+
+/* Install the UI's implementations into g_dcp_hooks (score, score_active,
+ * add_life, tension_hud, fade, fade_done, restart) and g_obj_hooks (fade,
+ * stage_exit), chaining to the previous ones. ui_stage_start calls it; call it
+ * again after objects_init if objects_shutdown restored older hooks. */
+void ui_install_hooks(void);
+
+/* HUD layout (DC redesign, see UI.md): integer scale of the HUD art and the
+ * 4:3 safe area (default 2x, safe area 32,24 .. 608,456). */
+void ui_hud_layout(int scale, int safe_x0, int safe_y0, int safe_x1, int safe_y1);
+/* ScorePopups are drawn in world space: set the camera (top-left of the 256x192
+ * world window, world px) once per frame before ui_draw_tr (main.c: g_cam_x/y). */
+void ui_set_camera(float x, float y);
+
+/* ------------------------------------------------ host test access */
+typedef struct UiQuad {
+    float x, y, w, h;      /* 640x480 screen */
+    float u0, v0, u1, v1;  /* texels (flipped when u0 > u1) */
+    u32 argb;
+    int tex;               /* resource index, -1 flat */
+    int image;
+    int variant;
+    int layer;
+} UiQuad;
+int ui_debug_quads(const UiQuad **out);
+#endif

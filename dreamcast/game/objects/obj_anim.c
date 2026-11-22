@@ -230,6 +230,16 @@ void obj_draw2d_ex(s32 x, s32 y, Obj *o, ObjSprite *s) {
         spr_process(s, o ? o->spr_cb : NULL, o);
     s->speed = save;
     s->hidden = (u8)((f & 0x20) != 0);
+    /* rot-scale size: data_0207cf80 (0x100) << 4, scaled by obj @0x44/@0x46 */
+    s->sx = 0x1000;
+    s->sy = 0x1000;
+    if (o != NULL) {
+        if (o->scale_x != 0)
+            s->sx = (s16)((s->sx * o->scale_x) >> 8);
+        if (o->scale_y != 0)
+            s->sy = (s16)((s->sy * o->scale_y) >> 8);
+    }
+    s->rotscale = (u8)(((f & 0x100) && s->rot != 0) || s->sx != 0x1000 || s->sy != 0x1000);
     if (o == NULL)
         return;
     if (s->flags & SPR_ENDED)

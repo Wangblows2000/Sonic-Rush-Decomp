@@ -48,10 +48,11 @@ reproduce every line below.
 
 ## Dreamcast port (branch `dreamcast-port`, 2026-11-22)
 
-Vertical slice: native stage loading/rendering, translated player physics with
-the 3D player model, translated core objects and enemies, streamed zone music
-(emulator-tested only). Most of the game is not ported yet. Details:
-docs/dreamcast/KNOWN-ISSUES.md.
+Leaf Storm (acts 1-2 + Egg Hammer boss) playable path: translated player,
+objects, enemies, gimmicks, HUD/title card/pause/results/game over, native SE
+sequencer, streamed music, Boss1; act-clear progression. Emulator-tested only;
+zones 2-7 content, bosses 2+, menus, save, cutscenes, special stages missing.
+Details: docs/dreamcast/KNOWN-ISSUES.md, docs/dreamcast/translation/.
 
 ## Recent changes (2026-11-21)
 

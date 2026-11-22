@@ -26,7 +26,16 @@
  * (all optional).  Each sits where the original call was. */
 enum {
     OBJ_EXIT_RESULTS = 0,   /* StageShutdown_Create(ResultsScreen_Create) */
-    OBJ_EXIT_CLEAR_DEMO = 1 /* StageShutdown_Create(ClearDemo_Create)     */
+    OBJ_EXIT_CLEAR_DEMO = 1,/* StageShutdown_Create(ClearDemo_Create)     */
+    OBJ_EXIT_SPECIAL_STAGE = 2 /* special ring entered (pf |= 0x40000000; Player_Last starts it) */
+};
+enum {                      /* g_obj_hooks.effect kinds: effects without a module yet */
+    OBJ_FX_TRICK_AT = 1,    /* EffTrick_CreateAtOffset(p, a, b)               */
+    OBJ_FX_SPECIAL,         /* EffSpecial_Create(p)                           */
+    OBJ_FX_GRIND,           /* EffGrind_Create(p, a, b)                       */
+    OBJ_FX_TRICK_SPARKLE,   /* EffTrickSparkle_Create(a)                      */
+    OBJ_FX_ENTRANCE,        /* EffEntrance_Create(obj, a, b) (p = NULL)       */
+    OBJ_FX_WATER_SPLASH     /* EffWaterGmk_CreateSplash (p = the toucher)     */
 };
 enum {                      /* ItemBox_GiveItem kinds the player module lacks */
     OBJ_ITEM_INVINCIBLE = 5, OBJ_ITEM_BARRIER = 6, OBJ_ITEM_MAGNET = 7,
@@ -41,6 +50,8 @@ typedef struct ObjHooks {
     void (*item)(void *ctx, DcPlayer *p, s32 item);       /* Player_GiveInvincibility/Barrier/Magnet, VS items */
     void (*checkpoint_popup)(void *ctx, DcPlayer *p, u32 time); /* CheckpointTimePopup_Create (time attack) */
     void (*log)(void *ctx, const char *event, s32 a, s32 b);    /* native: test/debug trace */
+    void (*effect)(void *ctx, DcPlayer *p, s32 kind, s32 a, s32 b); /* OBJ_FX_* */
+    void (*shake)(void *ctx, s32 strength);               /* ScreenShake_Start (falls back to g_dcp_hooks.shake) */
 } ObjHooks;
 extern ObjHooks g_obj_hooks;
 
@@ -99,11 +110,56 @@ u8 *objects_ring_scatter_level(void);
  * 3D model may own this flag instead). */
 void objects_set_player_anim_done(int on);
 
+/* ------------------------------------------------- camera mirror */
+/* The gCamera fields the camera-area objects (MapObj73 / MapObj75) and the
+ * view checks write (src/game/Camera).  The DC camera module (not written
+ * yet, CAMERA.md) reads bound[] / lock[] / flags / ofs_* from here.
+ * g_obj_camera[2] is gCamera[2]: flags bit0 = single-screen mode, bound[] =
+ * the stage default bounds.  objects_set_view() fills x/y of [0] (and [1]
+ * when one view is used). */
+typedef struct ObjCamera {
+    u32 flags;             /* @0x00 0x10/0x20 bound pushed out (x / y), 0x1000/0x2000 offset
+                              override (MapObj73), 0x4000000 an area object is in view */
+    s32 x, y;              /* @0x04 @0x08 */
+    s16 w, h;              /* @0x1E @0x20 view size (0x100, 0xc0) */
+    u32 flags34;           /* @0x34 0x10 camera limit on (MapObj70), 0x20 limit object in view */
+    u16 limit;             /* @0x38 camera limit value (MapObj70: p6 * 10000 + p7 * 100 + p8) */
+    s8 player;             /* @0x3A player index */
+    s32 ofs_x, ofs_y;      /* @0x3C @0x40 camera offset target */
+    s32 def_ofs_x, def_ofs_y; /* @0x44 @0x48 default offset */
+    s32 bound[4];          /* @0x4C left, top, right, bottom (24.8) */
+    s8 lock[4];            /* @0x5C bound reference counts */
+    s8 area_objs;          /* @0x60 Camera_AddAreaObject count */
+    u16 water;             /* @0x62 water level (WaterLevelTrigger; flags 0x1000000 on, 0x2000000) */
+} ObjCamera;
+extern ObjCamera g_obj_camera[3];
+
+/* 3D models of objects (RopeC: mod/gmk_rope_c.nsbmd, two shapes).  The
+ * object module keeps the transform; the integrator draws them with the
+ * model runtime (dcm_*), see OBJECTS.md section 2. */
+typedef struct ObjModelView {
+    const char *model;     /* converted model id, e.g. "mod__gmk_rope_c__gmk_rope_c01" */
+    s32 x, y, z;           /* position (24.8 px) */
+    const s32 *mtx;        /* 3x3 rotation, 4.12 fixed point, row-major */
+    const s32 *scale;      /* x, y, z scale, 4.12 */
+    int visible;
+} ObjModelView;
+int objects_model_count(void);
+int objects_model_get(int i, ObjModelView *out);
+
+/* Player_CheckStartGrind runs in objects_frame_begin (default on). Turn it
+ * off when the player module calls it in Player_In itself (OBJECTS.md). */
+void objects_set_grind_check(int on);
+
 /* statistics for tests */
 typedef struct ObjStats {
     u32 spawned, despawned, destroyed, live;
     u32 rings_placed, rings_collected, rings_scattered, rings_scatter_collected;
     u32 springs, dash_panels, dash_rings, item_boxes, hurts, enemies_destroyed, checkpoints, goals;
+    /* objdata v2 */
+    u32 gimmicks;          /* gimmick triggers (trampoline, ropes, bend stick, pedestal, corkscrew, ...) */
+    u32 dec_spawned, dec_despawned; /* decorations */
+    u32 walls_broken, rocks_broken, knock_aways, grinds, homing_targets, rings_attracted;
 } ObjStats;
 const ObjStats *objects_stats(void);
 

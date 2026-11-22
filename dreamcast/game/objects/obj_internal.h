@@ -15,11 +15,21 @@ typedef struct ObjData {               /* objdata.bin (tools/objdata.py) */
     u8 itembox_rings[8];               /* data_ov000_02366b44 */
     u8 itembox_vs[8];                  /* data_ov000_02366b3c */
     u8 player_spr_anim[0x68];          /* data_ov000_02368d14 */
-    u8 needle_shape[12][8];            /* data_ov000_023661c0 */
+    u8 solid[48][8];                   /* data_ov000_023661c0: all-solid collision tiles
+                                          (Needle uses the first 12 as needle_shape) */
     u8 animal[8][3];                   /* data_ov000_023661a8 */
     s8 shake[16];                      /* data_02077944 */
+    /* objdata v2 */
+    u8 col_attr[4];                    /* data_ov000_023661a4: top-solid attribute (1) */
+    s8 bend_wobble[28];                /* data_ov000_023643d4 / _023643d8 / _023643dc */
+    s16 pedestal[4][6];                /* data_ov000_02364400: JumpPedestal launch speeds */
+    u8 dec_margin[0xf2];               /* data_ov000_023685ec: decoration spawn margin */
     char ids[OBJ_BAC_COUNT][48];       /* resolved sprite ids of this stage */
+    struct { char name[24]; u32 size; const u8 *data; } df[8]; /* the .df files (dat/gmk) of this stage */
+    int n_df;
+    u8 *df_buf;
 } ObjData;
+#define needle_shape solid
 
 typedef struct ObjPlayerCtx {          /* per player: the player's ObjRects + sprite timing */
     DcPlayer *p;
@@ -27,6 +37,9 @@ typedef struct ObjPlayerCtx {          /* per player: the player's ObjRects + sp
     ObjBox atk;                        /* @0x2CC coll2CC (attack box)             */
     ObjSprite spr;                     /* @0x94 son.bac timing (hit box events)   */
     s16 prev_invuln, prev_invinc;
+    /* player work the player module does not keep (gimmick states, objects/obj_pgimmick.c) */
+    s16 g3EE;                          /* @0x3EE */
+    s32 g3F0, g3F4, g3F8, g3FC;        /* @0x3F0..@0x3FC */
 } ObjPlayerCtx;
 
 typedef struct ObjGlobals {
@@ -55,6 +68,20 @@ typedef struct ObjGlobals {
     ObjStats stats;
     DcpHooks prev_hooks;               /* chained player hooks */
     s32 map_w, map_h;                  /* data_ov000_0236abd8.unkE / unk10 (px) */
+    /* decorations (StageEvent spawner 2, Decoration_*) */
+    const rlvl_decor_t *lv_dec;
+    const uint32_t *lv_dec_region;
+    ObjParam *dprm;                    /* mutable copy of the .dc entries (x0 = 0xff: spawned) */
+    ObjParam dec_slots[OBJ_DEC_SLOTS]; /* gDecorationSlots */
+    u32 dec_mask;                      /* gDecorationSlotMask */
+    u16 dec_animal_count;              /* gDecAnimalCount */
+    /* object globals of the v2 kinds */
+    s32 ironball_flag;                 /* data_ov000_0236a00c */
+    s16 land_spawners;                 /* data_ov000_0236a05c */
+    s32 land_base;                     /* data_ov000_0236a060 */
+    int lazy_loads;                    /* resources loaded after objects_init (late) */
+    int preloaded;
+    int no_grind_check;                /* the player module does Player_CheckStartGrind itself */
 } ObjGlobals;
 extern ObjGlobals g_obj;
 
@@ -147,6 +174,75 @@ Obj *goalring_create(ObjParam *p, s32 x, s32 y);
 Obj *marker_create(ObjParam *p, s32 x, s32 y);
 Obj *pawn_create(ObjParam *p, s32 x, s32 y);
 Obj *mapobj40_create(ObjParam *p, s32 x, s32 y);
+/* objdata v2 kinds (obj_leafstorm.c, obj_shared.c, obj_flapper.c, obj_decor.c) */
+Obj *Trampoline_Create(ObjParam *p, s32 x, s32 y);
+Obj *BendStick_Create(ObjParam *p, s32 x, s32 y);
+Obj *CorkscrewTrigger_Create(ObjParam *p, s32 x, s32 y);
+Obj *RockBreak_Create(ObjParam *p, s32 x, s32 y);
+Obj *RopeC_Create(ObjParam *p, s32 x, s32 y);
+Obj *RopeCLand_Create(ObjParam *p, s32 x, s32 y);
+Obj *RopeCSpring_Create(ObjParam *p, s32 x, s32 y);
+Obj *EggPawnM_Create(ObjParam *p, s32 x, s32 y);
+Obj *Rope_Create(ObjParam *p, s32 x, s32 y);
+Obj *JumpPedestal_Create(ObjParam *p, s32 x, s32 y);
+Obj *PlayerStart_Create(ObjParam *p, s32 x, s32 y);
+Obj *WallBreak_Create(ObjParam *p, s32 x, s32 y);
+Obj *IronBall_Create(ObjParam *p, s32 x, s32 y);
+Obj *GmkSpecial_Create(ObjParam *p, s32 x, s32 y);
+Obj *GmkLand_Create(ObjParam *p, s32 x, s32 y);
+Obj *MapObj73_Create(ObjParam *p, s32 x, s32 y);
+Obj *MapObj75_Create(ObjParam *p, s32 x, s32 y);
+Obj *EnemyFlapperGroup_Create(ObjParam *p, s32 x, s32 y);
+Obj *GmkLandAA_Create(ObjParam *p, s32 x, s32 y);
+Obj *WaterLevelTrigger_Create(ObjParam *p, s32 x, s32 y);
+Obj *MapObj70_Create(ObjParam *p, s32 x, s32 y);
+Obj *EffZakoBombPuff_Create(Obj *arg, s16 x, s16 y);
+Obj *EffFound_Create(Obj *arg, s16 x, s16 y);
+Obj *EffBrakeSmoke_Create(Obj *arg, s16 x, s16 y);
+/* decorations (obj_decor.c) */
+typedef Obj *(*ObjDecCreateFn)(ObjParam *p, s32 x, s32 y);
+ObjDecCreateFn obj_dec_create_fn(u16 type);                              /* gDecorationCreateTable */
+Obj *Decoration_Spawn(s32 type, s32 x, s32 y);
+void dec_init(void);
+void spawn_decorations_in_block(u16 x, u16 y, const void *rc, const void *o, u32 f); /* StageEvent_SpawnDecorationsInBlock */
+/* lazy resources */
+int obj_res_ensure(int bac);                                             /* load a BAC slot if needed */
+const u8 *obj_df(const char *name, u32 *size);                           /* ObjData_Load of a .df */
+/* fixed-point helpers (obj_fx.c): NitroSDK MTX_* / FX_*, ObjShift_* */
+typedef struct { s32 m[3][3]; } ObjMtx33;
+typedef struct { s32 x, y, z; } ObjVec;
+void MTX_Identity33_(ObjMtx33 *m);
+void MTX_RotX33_(ObjMtx33 *m, s32 sn, s32 cs);
+void MTX_RotY33_(ObjMtx33 *m, s32 sn, s32 cs);
+void MTX_RotZ33_(ObjMtx33 *m, s32 sn, s32 cs);
+void MTX_Concat33(const ObjMtx33 *a, const ObjMtx33 *b, ObjMtx33 *ab);
+void MTX_MultVec33(const ObjVec *v, const ObjMtx33 *m, ObjVec *dst);
+s32 ObjShift_Set(s32 cur, s32 target, s32 shift, s32 max_step, s32 min_step);
+s32 ObjShift_SetFromRef(s32 cur, s32 target, s32 ref, s32 shift, u16 max_step, s32 min_step);
+s32 FX_DivS32(s32 n, s32 d);
+s16 obj_sin(u16 a);                                                      /* data_0206e470 sine */
+s16 obj_cos(u16 a);
+/* player gimmick states (obj_pgimmick.c) */
+void Player_Action_Rope(DcPlayer *w, Obj *parent, s32 tx, s32 ty);
+void Player_Action_RopeC(DcPlayer *w, Obj *parent, s32 len);
+void Player_Action_BendStick(DcPlayer *w, s32 a, s32 b);
+void Player_Action_CorkscrewPath(DcPlayer *w, s32 x, s32 y, s32 flags);
+void Player_Action_GmkSpecial(DcPlayer *w, Obj *o);
+void Player_Action_PedestalLaunch(DcPlayer *w, s16 x, s16 y);
+void Player_Action_Grind(DcPlayer *w);
+dcp_bool Player_CheckStartGrind(DcPlayer *w);
+void Player_FindHomingTarget(DcPlayer *w);
+void Player_GiveMagnet(DcPlayer *w);
+void Player_Action_GimmickLaunch(DcPlayer *w, s16 vx, s16 vy);
+void obj_player_effect_hook(DcPlayer *p, s32 fx, s32 a, s32 b);           /* AttackHitbox_Create (boost) */
+void RingManager_AttractRings(DcPlayer *src);
+void *rect_regist_get(u32 mask, s16 idx);                                /* ObjRect_RegistGet */
+dcp_bool obj_is_attack_hitbox(const DcPlayer *h);
+/* camera mirror helpers (obj_shared.c) */
+u8 Camera_CheckPosInView(s32 x, s32 y);
+void Camera_AddAreaObject(void);
+void Camera_RemoveAreaObject(void);
+void obj_screen_shake(s32 s);                                            /* ScreenShake_Start */
 /* effects (obj_effects.c) */
 void mapobject_on_hit_default(ObjBox *a, ObjBox *b);                     /* MapObject_OnHit_Default */
 void mapobject_knock_away(Obj *o, DcPlayer *p);                         /* MapObject_Action_KnockAway */
@@ -158,6 +254,7 @@ void eff_set_move_until_anim_end(Obj *o);                               /* Effec
 
 /* kinds (Obj.kind), for draw / debug */
 enum { OBJK_NONE, OBJK_SPRING, OBJK_DASHP, OBJK_DASHC, OBJK_ITEMBOX, OBJK_ITEMPART, OBJK_NEEDLE,
-       OBJK_GOAL, OBJK_GOALPART, OBJK_MARKER, OBJK_PAWN, OBJK_EFFECT, OBJK_TRIGGER };
+       OBJK_GOAL, OBJK_GOALPART, OBJK_MARKER, OBJK_PAWN, OBJK_EFFECT, OBJK_TRIGGER,
+       OBJK_GIMMICK, OBJK_ENEMY, OBJK_DECOR, OBJK_ATTACK, OBJK_CAMERA };
 
 #endif

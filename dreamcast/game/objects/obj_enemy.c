@@ -158,18 +158,30 @@ void mapobject_spawn_destroy_burst(Obj *w) {
         o->h.move_flags |= 0x100;
 }
 
-/* MapObject_SpawnFreedAnimal: the animal is a decoration (Decoration_Spawn),
- * which belongs to the decoration system (not in this module).  The random
- * draws are kept so the shared gRandSeed sequence stays the same. */
+/* MapObject_SpawnFreedAnimal: the freed animal is a decoration (DecAnimal) */
 void mapobject_spawn_freed_animal(Obj *w) {
+    s16 dy;
     u8 kind;
+    Obj *o;
     if (w->f1F4 & 0x20)
         return;
     if (W.zone < 8)
         kind = g_obj.data.animal[W.zone][RAND() % 3];
     else
         kind = (u8)(RAND() & 0xf);
+    dy = 0x800;
+    dcp_rotate_vec(NULL, &dy, w->h.grav_rot);
+    o = Decoration_Spawn(kind, w->h.x, w->h.y - dy);
     obj_log("freed_animal", kind, w->h.x >> 8);
+    if (o == NULL)
+        return;
+    o->h.grav_rot = w->h.grav_rot;
+    if (!(w->h.move_flags & 0x1000) && !(w->f1F4 & 0x40))
+        return;
+    if (w->f1F4 & 0x40)
+        o->w8 = 1;
+    else
+        o->h.move_flags |= 0x100;
 }
 
 /* MapObject_State_KnockedAway */
@@ -235,10 +247,25 @@ void mapobject_on_hit_default(ObjBox *a, ObjBox *b) {
             w->coll[1].flags |= 0x1000;
             w->coll[2].flags |= 0x1000;
         }
-        if (pl != NULL && pl->type == 1)
+        if (pl != NULL && pl->type == 1) {
             obj_player_add_tension_combo(pl, 400);
-        /* (pl->unk88 != NULL: attacker is the boost AttackHitbox task ->
-         *  MapObject_Action_KnockAway; AttackHitbox is not translated) */
+        } else if (b->owner_kind == OBJ_OWNER_OBJECT && b->owner != NULL &&
+                   ((Obj *)b->owner)->h.type == 5 && ((Obj *)b->owner)->k.atk.par != NULL) {
+            /* attacker = AttackHitbox task: pl = pl->unk88 (the player) */
+            pl = ((Obj *)b->owner)->k.atk.par;
+            if (pl->type == 1) {
+                obj_player_add_tension_combo(pl, 400);
+                mapobject_knock_away(w, pl);
+                if (pl->pf & 0x80) {
+                    pl->hitstop = 0x44;
+                    w->h.hitstop = 0x44;
+                }
+                g_obj.stats.enemies_destroyed++;
+                g_obj.stats.knock_aways++;
+                obj_log("enemy_knocked_away", w->prm->type, w->h.x >> 8);
+                return;
+            }
+        }
         mapobject_spawn_destroy_burst(w);
         mapobject_spawn_freed_animal(w);
         w->h.obj_flags |= 8;
@@ -524,7 +551,7 @@ static void pawn_on_detect(ObjBox *a, ObjBox *b) {
     if (w->h.obj_flags & 2)
         return;
     obj_sfx(0x79);
-    /* EffFound_Create ("!" effect): not translated */
+    EffFound_Create(w, 0, -0x40);
     w->target = o;
     if (w->h.x > o->x)
         w->h.disp_flags |= 1;

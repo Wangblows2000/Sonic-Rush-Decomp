@@ -19,7 +19,9 @@
 #include "../player/dcp_player.h"
 
 /* ------------------------------------------------------------ limits */
-#define OBJ_MAX 128            /* object pool (DS: task heap)              */
+#define OBJ_MAX 384            /* object pool (DS: task heap); decorations
+                                  share it (up to ~170 alive on z12)       */
+#define OBJ_DEC_SLOTS 32       /* gDecorationSlots / gDecorationSlotMask    */
 #define OBJ_SPAWN_ENTRIES 0x28 /* gMapObjectSpawnEntries                    */
 #define OBJ_RECT_PER_LIST 0x30 /* gObjRectNextList[4][0x30]                 */
 #define OBJ_COLMAP_MAX 0x20    /* data_022c4de4[0x20]                       */
@@ -51,6 +53,32 @@ enum ObjBac {
     OBJ_BAC_ZAKO_BOMB, /* act/ac_eff_zako_bomb.bac (act_com) */
     OBJ_BAC_HAHEN,     /* act/ac_eff_hahen_zako.bac (act_com) */
     OBJ_BAC_PLAYER,    /* act/son.bac (player_lz7): hit boxes only */
+    /* objdata v2: Leaf Storm + shared objects, decorations, effects */
+    OBJ_BAC_TRAMPOLINE,   /* ac_gmk_trampoline.bac   */
+    OBJ_BAC_BEND_STICK,   /* ac_gmk_bend_stick.bac   */
+    OBJ_BAC_ROCK_BREAK,   /* ac_gmk_rock_break.bac   */
+    OBJ_BAC_ROPE,         /* ac_gmk_rope.bac         */
+    OBJ_BAC_ROPE_C_LAND,  /* ac_gmk_rope_c_land.bac  */
+    OBJ_BAC_ROPE_C_SPRING,/* ac_gmk_rope_c_spring.bac */
+    OBJ_BAC_ROPE_C,       /* ac_gmk_rope_c.bac       */
+    OBJ_BAC_JUMP_PEDESTAL,/* ac_gmk_jump_pedestal.bac */
+    OBJ_BAC_FLOOR_BREAK,  /* ac_gmk_floor_braek01.bac */
+    OBJ_BAC_LAND,         /* ac_gmk_land.bac         */
+    OBJ_BAC_WALL_BREAK,   /* ac_gmk_wall_braek01.bac */
+    OBJ_BAC_IRON_BALL,    /* ac_gmk_iron_ball.bac    */
+    OBJ_BAC_SPECIAL,      /* ac_gmk_special.bac      */
+    OBJ_BAC_CARGO,        /* ac_gmk_cargo.bac (GmkSpecial second sprite, as the ROM names it) */
+    OBJ_BAC_FLAPPER,      /* ac_ene_flapper.bac      */
+    OBJ_BAC_EGG_DIVER,    /* ac_ene_egg_diver.bac    */
+    OBJ_BAC_DEC_FLOWER,   /* ac_dec_flower.bac       */
+    OBJ_BAC_DEC_VINE,     /* ac_dec_vine.bac         */
+    OBJ_BAC_DEC_BIRD_NEST,/* ac_dec_bird_nest.bac    */
+    OBJ_BAC_DEC_BIRD,     /* ac_dec_bird.bac         */
+    OBJ_BAC_DEC_LEAF,     /* ac_dec_leaf.bac         */
+    OBJ_BAC_EFF_FOUND,    /* ac_eff_found.bac (act_com) */
+    OBJ_BAC_EFF_BRAKE,    /* ac_eff_kemuri_brake.bac (act_com) */
+    OBJ_BAC_ANIMAL01,     /* ac_dec_animal%02d.bac, 01..16 (DecAnimal) */
+    OBJ_BAC_ANIMAL16 = OBJ_BAC_ANIMAL01 + 15,
     OBJ_BAC_COUNT
 };
 
@@ -104,7 +132,15 @@ typedef struct ObjSprite {
     u8 valid;           /* a frame has been reached                  */
     u8 screen;          /* x,y are screen coordinates (obj 5C & 0x80) */
     u8 hidden;          /* obj 5C & 0x20 at the last draw step        */
-    u8 rot;             /* rotation (obj angle + grav_rot), not drawn  */
+    u8 rot;             /* rotation (obj angle + grav_rot)             */
+    u8 rotscale;        /* drawn as rot-scale OAM (obj 5C & 0x100, rot != 0, or scale) */
+    s16 sx, sy;         /* rot-scale size (0x1000 = 1.0), from obj @0x44/@0x46 */
+    /* StageObj_Draw2DEx with a piece-offset table (StageObj_DrawSpriteAlt):
+     * per-piece offsets in pixels, read at draw time (WallBreak, GmkLand) */
+    const s32 (*ppos)[2]; /* [16][2] 24.8 offsets (the object's own array)  */
+    /* the same frame drawn again at more positions (Rope_Draw) */
+    const s16 (*multi)[2];
+    u8 n_multi;
 } ObjSprite;
 
 /* ------------------------------------------------------ ObjRect */
@@ -198,6 +234,19 @@ struct Obj {
     s16 u23A, u23C;     /* EnemyPawnGroup @0x23A @0x23C */
     u32 u2A0;           /* DashC/DashCT @0x2A0 (bit0: DashCT) */
     s32 u2A4;           /* DashC/DashCT @0x2A4 direction 0..7 */
+    /* work beyond @0x20C of the kinds added in objdata v2 (original offsets) */
+    union {
+        struct { s32 pos[16][2]; s16 vel[16][2]; } brk;  /* WallBreak / GmkLand @0x20C pos, @0x28C vel */
+        struct { u32 f20C[2]; s32 r214[2][4]; void (*pstate[2])(Obj *, s32); s8 pidx[2]; } mo75; /* MapObj75 */
+        struct { s32 u210, u214, u218; s8 pidx[2]; u8 n; } mo73;  /* MapObj73 @0x210..@0x21E */
+        struct { s8 pidx[2]; u16 value; } cam;           /* WaterLevelTrigger @0x20C/@0x20E, MapObj70 @0x214/@0x212 */
+        struct { s16 pts[8][2]; } rope;                  /* Rope_Draw points (native) */
+        struct { s32 mtx[9]; s32 scale[3]; u8 shape; } mdl; /* RopeC model @0x128 (matrix, scale, shape) */
+        struct { s16 touch; } ani;                       /* DecAnimal @0x198 */
+        struct { u8 playing; } snd;                      /* IronBall: looping sound state (native) */
+        struct { DcPlayer *par; } atk;                   /* AttackHitbox @0x88 parent (a player) */
+    } k;
+    u8 is_dec;          /* decoration (Decoration_InitFromMap): prm is a .dc entry */
     /* native bookkeeping */
     u16 prio;           /* task id */
     u8 used;

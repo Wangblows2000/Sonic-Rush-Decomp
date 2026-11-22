@@ -91,6 +91,19 @@ void rect_check_init(void) {
     memset(s_next_group, 0, sizeof(s_next_group));
 }
 
+/* ObjRect_RegistGet (copied): the idx-th box of the current lists in mask */
+void *rect_regist_get(u32 mask, s16 idx) {
+    s16 i;
+    for (i = 0; i < 4; i++) {
+        if (mask & (1u << i)) {
+            if (idx < s_cur_count[i])
+                return s_cur[i][idx];
+            idx -= s_cur_count[i];
+        }
+    }
+    return NULL;
+}
+
 /* ObjRect_CheckFuncCall */
 static u16 check_func_call(ObjBox *a, ObjBox *b) {
     u16 ret = 0;

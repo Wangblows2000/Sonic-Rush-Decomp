@@ -53,8 +53,10 @@ ROMs (`*.nds`) are gitignored.
 ## Dreamcast port (branch `dreamcast-port`)
 
 State and next steps: docs/dreamcast/ (start with PORTING-REPORT.md §6 and
-KNOWN-ISSUES.md). Next task: Milestone 3 asset converters (SWAR, BAC, BBG,
-NARC/LZ77, NSBMD) and the NitroSDK/NNS platform shim.
+KNOWN-ISSUES.md). Next tasks (in order): investigate the clipping seen in the Flycast audio
+capture; play-test z12/z13 (boss) in Flycast; fix the sseqrender dB table and
+re-render music; zone 2 objects/enemies/gimmicks + Boss2; menus/zone map/VMU
+save; cutscenes; special stages. Reuse-first: adapt the decompiled C.
 
 ## Remaining work (updated 2026-11-21)
 

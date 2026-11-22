@@ -1,14 +1,27 @@
 # Native stage objects (Dreamcast port): translation notes
 
-Status: the object system and the core shared objects are translated and
-tested on the host on the real Leaf Storm act 1 level (44/44 checks). The
-module compiles with `kos-cc` (sh-elf-gcc, `-Werror`), and a test ELF that
-calls the whole API links against the player module and `engine/render.c`.
-It has never run on SH-4 hardware or in an emulator, and the drawing code
+Status (objdata v2, 2026-11-22): every object and decoration placed in Leaf
+Storm acts 1 and 2 (z11, z12) and in z81/z82 is translated (coverage table in
+section 8). The player-side gimmick states they need (ropes, bend stick,
+corkscrew, grind rails, special ring, pedestal) live in the module
+(`obj_pgimmick.c`), together with the boost attack hit box, the magnet
+barrier and the homing target search. Shared objects that other zones also
+use are in (GmkLand, GmkLandAA, WallBreak, IronBall, JumpPedestal, Rope,
+GmkSpecial, camera-area objects, WaterLevelTrigger, MapObj70, Flapper types 2
+and 4). The host test runs on the real z11 and z12 levels (61 and 60 checks,
+0 failed). The module compiles with `kos-cc -Werror` and a test ELF links;
+it has never run on SH-4 hardware or in an emulator, and the drawing code
 (`obj_draw.c`) has never been seen on screen.
 
+Reuse-first rule (from the coordinator): new code is the decompiled C copied
+from `src/` and adapted: DS offset structs become named `Obj` / `DcPlayer`
+fields (offsets kept in comments), DS services (VRAM, OAM, palettes, sound
+handles) are dropped or sent to hooks, and the original function names are
+kept. Section 5b classifies every new function as reused-as-is, modified,
+substantially rewritten or new.
+
 - Code: `dreamcast/game/objects/` (`obj_*.c/h`, `objects.h`, `Makefile`,
-  `test/test_objects.c`, `tools/objdata.py`)
+  `test/test_objects.c`, `test/test_coverage.c`, `tools/objdata.py`)
 - Source of truth: `src/game/Stage/StageEvent_*`,
   `src/game/Stage/ObjectSystem/` (`MapObject_*`, `ObjRect_*`,
   `ObjCollisionMap_*`, `StageObj_Main` and helpers),
@@ -33,7 +46,15 @@ It has never run on SH-4 hardware or in an emulator, and the drawing code
 | `obj_ring.c` | RingManager (placed and scattered rings) and RingEffect2D (collect sparkle) |
 | `obj_gimmicks.c` | Spring, DashP, DashC/DashCT, ItemBox (+ icon and popup), Needle, GoalRing (+ parts), Marker, MapObj40, StageClear_HandleGoalReached score part |
 | `obj_enemy.c` | EnemyPawnGroup (Egg Pawn), MapObject_OnHit_Default, destruction (burst, debris, knock-away) |
-| `obj_draw.c` | KOS only: atlas upload and quad drawing with `render.h` |
+| `obj_draw.c` | KOS only: atlas upload and quad drawing with `render.h`; rot-scale quads, rope multi-draw, piece offsets |
+| `obj_fx.c` | NitroSDK MTX_Identity33_/RotX/Y/Z33_/Concat33/MultVec33, FX_DivS32, ObjShift_Set, ObjShift_SetFromRef |
+| `obj_effects2.c` | EffZakoBombPuff, EffFound (+ Effect_State_FollowParent), EffBrakeSmoke |
+| `obj_leafstorm.c` | Trampoline, BendStick, CorkscrewTrigger, RockBreak (+Part), RopeC (+Land, +Spring), EggPawnM (+ Enemy pop-on-contact) |
+| `obj_shared.c` | Rope, JumpPedestal, PlayerStart, WallBreak, IronBall (+Part), GmkSpecial, GmkLand, GmkLandAA, MapObj73, MapObj75, MapObj70, WaterLevelTrigger, camera mirror, ScreenShake, model views |
+| `obj_flapper.c` | EnemyFlapperGroup (types 2 and 4: hover / patrol) |
+| `obj_decor.c` | StageEvent_SpawnDecorationsInBlock, Decoration framework, DecGroup0F, DecVine, DecBird, DecGroup35 (+Piece, debris), DecAnimal |
+| `obj_pgimmick.c` | player gimmick states (Rope, RopeC, BendStick, CorkscrewPath, GmkSpecial, PedestalLaunch, Grind), Player_FindHomingTarget, Player_CheckStartGrind, Player_GiveMagnet |
+| `test/test_coverage.c` | creates every placed object / decoration of every stage, prints the coverage table |
 | `tools/objdata.py` | BYOR converter: `objdata.bin`, `hbx/<id>.hbx`, `sprites.txt` |
 
 ## 2. Integration
@@ -75,50 +96,120 @@ render_begin_list(PVR_LIST_PT_POLY); ...level layers...; objects_draw(); render_
   the son.bac timing ends an animation. It is off by default, because the 3D model
   renderer may own that flag.
 
+### 2.1 What changed with objdata v2 (integrator checklist)
+
+- **Frame order inside `objects_frame_begin`**: after Stage_Main and
+  StageEvent it now runs the tasks with an id below the player's (0xf6:
+  GmkLand, GmkLandAA, WallBreak), so platforms move before the player rides
+  them, as on the DS. Then, for each player, the two Player_In parts the
+  player module leaves out: `Player_FindHomingTarget` (sets `p->homing`) and
+  `Player_CheckStartGrind`. Keep calling `objects_frame_begin()` right before
+  `dcp_player_frame()`.
+- **`objects_update`**: after Player_Collide it calls
+  `RingManager_AttractRings` while `p->pf & 0x20000000` (magnet barrier,
+  Player_Last). The boost attack hit box is created through
+  `g_dcp_hooks.effect` (`DCP_FX_ATTACK_HITBOX_BOOST`); the module chains that
+  hook like the others (set yours before `objects_init`).
+- **New hooks** in `g_obj_hooks` (all optional): `effect(ctx, p, kind, a, b)`
+  for the effects that have no module yet (`OBJ_FX_TRICK_AT`, `OBJ_FX_SPECIAL`,
+  `OBJ_FX_GRIND`, `OBJ_FX_TRICK_SPARKLE`, `OBJ_FX_ENTRANCE`,
+  `OBJ_FX_WATER_SPLASH`), `shake(ctx, strength)` for ScreenShake_Start (falls
+  back to `g_dcp_hooks.shake`). `stage_exit` gets the new kind
+  `OBJ_EXIT_SPECIAL_STAGE` when the special ring sequence ends
+  (`p->pf |= 0x40000000`). `item(p, OBJ_ITEM_MAGNET)` is now called by
+  Player_GiveMagnet for the model (Magnet_Create); the magnet flags themselves
+  are set by the module.
+- **Camera mirror** `g_obj_camera[3]` (objects.h): the gCamera fields that the
+  camera-area objects write. MapObj75 pushes `bound[0..3]` (24.8, left, top,
+  right, bottom) with reference counts `lock[]`; MapObj73 sets the offset
+  target `ofs_x/ofs_y` and flags 0x1000/0x2000; MapObj70 sets `flags34 & 0x10`
+  + `limit`; WaterLevelTrigger sets `flags & 0x1000000` + `water`. The camera
+  module (not written yet, CAMERA.md) should read these; `g_obj_camera[2]`
+  holds the stage defaults (initialised to the map size by `objects_init`).
+  `objects_set_view` fills `x/y`.
+- **Model views**: `objects_model_count()` / `objects_model_get(i, &view)`
+  give the 3D models of objects (RopeC: `mod/gmk_rope_c.nsbmd`, converted ids
+  `mod__gmk_rope_c__gmk_rope_c01` / `_c02`, the shape it switches to), with
+  position, 3x3 matrix (4.12) and scale. Draw them with `dcm_draw` in the
+  object pass; the module does not draw models.
+- **Grind start**: if the player module ever calls Player_CheckStartGrind in
+  its own Player_In, call `objects_set_grind_check(0)` so it does not run twice.
+- **Pool**: 384 objects (decorations share it; z12 peaks below 200).
+  bss of `obj_manager.o` is 382 KB.
+
+### 2.2 Player-module changes requested (integrator applies them)
+
+1. `Player_In`: call `Player_FindHomingTarget` and `Player_CheckStartGrind`
+   at their original places (after Player_UpdateUnderwater /
+   Player_UpdateBoost). Until then the object module runs them at the end of
+   `objects_frame_begin`, which is one call earlier inside the frame (before
+   the whole of Player_In instead of in the middle of it).
+2. `Player_Last`: `if (pf & 0x20000000) RingManager_AttractRings(p)` (now in
+   `objects_update`, same position in the frame).
+3. Export `Player_SetAnimSpeedFromVelocity` (`anim_speed` is static in
+   dcp_states.c; obj_pgimmick.c carries an identical copy).
+4. Keep the player work @0x3EE..@0x3FC in DcPlayer (now in
+   `ObjPlayerCtx.g3EE..g3FC`), so other modules can see the gimmick state.
+5. `dcp_states.c` passes two `dcp_rand()` calls as arguments of one call
+   (`fx(w, DCP_FX_TRICK, 0xf - (dcp_rand() & 0x1e), 0xf - (dcp_rand() & 0x1e))`).
+   C leaves the order open; MWCC evaluates call arguments right to left
+   (checked in the matched object of DecGroup35_SpawnPieceBurst). Draw them
+   into temporaries in that order to keep gRandSeed identical.
+6. `dcp_on_hurt`: pass `objects_ring_scatter_level()` (section 6, item 6).
+
 ## 3. Data (bring your own ROM)
 
 `make data` (= `python3 dreamcast/game/objects/tools/objdata.py`) reads
 `extract/eur` and the sprite converter output `build/dreamcast/sprites/` and
 writes `build/dreamcast/objects/`:
 
-- `objdata.bin` "ROBJ" v1. Header: `char[4] "ROBJ"; u16 version 1, slots (14),
-  stages (27), id_len (48)`. Then these tables, each padded to 4 bytes, copied
-  from the owner's ROM:
-  `margin[0xf2]` (data_ov000_023686e0, spawn/despawn margin per type),
-  `s16 ring_gravity` (data_ov000_023690e4 = 18), `itembox_rings[8]`
-  (data_ov000_02366b44), `itembox_vs[8]` (data_ov000_02366b3c),
-  `player_spr_anim[0x68]` (data_ov000_02368d14, Player_SetAnimation sprite
-  index), `needle_shape[12][8]` (data_ov000_023661c0), `animal[8][3]`
-  (data_ov000_023661a8), `s8 shake[16]` (arm9 data_02077944). After them comes
-  `char id[stages][slots][48]`: the sprite id each BAC slot resolves to on each stage.
-  This follows ObjData_Load: the zone archive `z??_act_lz7.narc` first, then the loose
-  `/act/` file; act_com and player_lz7 for the shared files. The resolution uses
-  `build/dreamcast/sprites/manifest.json`.
-- `hbx/<id>.hbx` "HBOX" v1. It holds the BAC command 7 collision boxes per frame. `frames.bin`
-  has no events, so they come from `frames.json`. Header:
-  `char[4] "HBOX"; u16 version 1, anims, frames, events; u32 0`, then anims
-  `{u16 first_frame, count}`, frames `{u16 first_event, count}` (frames.bin
-  order; the tool checks that the counts match frames.bin), and events
-  `{u8 slot, pad; u16 flags; s16 l, t, r, b}`.
-- `sprites.txt`: the sprite directories each stage uses.
+- `objdata.bin` "ROBJ" **v2** (116 208 bytes). Header: `char[4] "ROBJ"; u16
+  version 2, slots (53), stages (27), id_len (48)`. Then these tables, each
+  padded to 4 bytes, copied from the owner's ROM:
+  `margin[0xf2]` (data_ov000_023686e0), `s16 ring_gravity` (data_ov000_023690e4),
+  `itembox_rings[8]` (data_ov000_02366b44), `itembox_vs[8]` (data_ov000_02366b3c),
+  `player_spr_anim[0x68]` (data_ov000_02368d14), `solid[48][8]`
+  (data_ov000_023661c0, the all-solid collision tiles; Needle uses the first
+  12), `animal[8][3]` (data_ov000_023661a8), `s8 shake[16]` (arm9
+  data_02077944), `col_attr[4]` (data_ov000_023661a4), `s8 bend_wobble[28]`
+  (data_ov000_023643d4/_d8/_dc), `s16 pedestal[4][6]` (data_ov000_02364400),
+  `dec_margin[0xf2]` (data_ov000_023685ec). After them `char
+  id[stages][slots][48]`: the sprite id each BAC slot resolves to on each
+  stage (zone archive first, then the loose `/act/` file, as ObjData_Load).
+  Last, per stage, the `/dat/gmk/*.df` collision maps (JumpPedestal and later
+  Cargo/JetCatapult/Switch): `u32 offset[stages + 1]` then records
+  `{char name[24]; u32 size; data}`, taken from the zone archive or the loose
+  `dat/gmk/` directory.
+- `hbx/<id>.hbx` "HBOX" v1 (67 files, 272 KB): the BAC command 7 boxes per
+  frame (format unchanged).
+- `sprites.txt`: the sprite directories and the stages that can use them.
+
+Sprite slots (enum ObjBac, order == `SLOTS` in objdata.py): the 14 of v1
+plus TRAMPOLINE, BEND_STICK, ROCK_BREAK, ROPE, ROPE_C_LAND, ROPE_C_SPRING,
+ROPE_C, JUMP_PEDESTAL, FLOOR_BREAK, LAND, WALL_BREAK, IRON_BALL, SPECIAL,
+CARGO, FLAPPER, EGG_DIVER, DEC_FLOWER, DEC_VINE, DEC_BIRD_NEST, DEC_BIRD,
+DEC_LEAF, EFF_FOUND, EFF_BRAKE and ANIMAL01..ANIMAL16. Resources are no longer
+all loaded at `objects_init`: the module preloads the slots of the object and
+decoration types placed on the stage, the zone's three freed animals and the
+always-used effects; anything else loads on first use (`obj_res_ensure`,
+counted in `g_obj.lazy_loads`; 0 on z11/z12). z11 and z12 preload 38 slots,
+1.60 / 1.66 MB of atlas data (PVR VRAM).
 
 **Disc layout needed** (integrator; build_disc.sh is not mine):
 
 ```
-/cd/objects/objdata.bin
-/cd/objects/hbx/<id>.hbx                         (15 files, 4 KB total)
+/cd/objects/objdata.bin                          (116 KB)
+/cd/objects/hbx/<id>.hbx                         (67 files, 272 KB)
 /cd/sprites/<id>/frames.bin + atlas0.argb1555    (from build/dreamcast/sprites/bac/<id>/)
 ```
 
-with `<id>` =
-`act__ac_itm_ring, act__ac_gmk_spring, act__ac_gmk_dash_p, act__ac_gmk_dash_c,
-act__ac_gmk_dash_ct, act__ac_itm_box, act__ac_gmk_needle, act__ac_gmk_goalring,
-act__ac_gmk_marker, act__ac_ene_eggpawn, act__ac_ene_eggpawn_m,
-act__ac_eff_zako_bomb, act__ac_eff_hahen_zako, act__ac_sonic` (frames.bin
-only, this BAC has no atlas), and `narc__z41_act_lz7__act__ac_gmk_spring` (z41 and z91 springs).
-The atlases of one stage take about 1.0 MB of PVR VRAM (all 14 slots are loaded at
-`objects_init`; the largest is zako_bomb, 256 KB). The id names are up to 38
-characters long, so the ISO needs Rock Ridge/Joliet names (build_disc.sh already uses `-r -J`).
+with `<id>` = every id in `build/dreamcast/objects/sprites.txt` (67 ids, 2.36 MB
+of frames.bin + atlases). For Leaf Storm alone the 38 ids printed by the host
+test (`objects_init ... preloaded sprites:`) are enough. Ids are up to 46
+characters long (`narc__z41_act_lz7__act__ac_gmk_wall_braek01`), so the ISO
+needs Rock Ridge/Joliet names (build_disc.sh uses `-r -J`; Joliet allows 64).
+The RopeC model needs `build/dreamcast/models/mod__gmk_rope_c__gmk_rope_c01.dcm`
+and `_c02.dcm` if the integrator draws the model views.
 
 ## 4. How the original works, and how it is mapped
 
@@ -142,7 +233,7 @@ struct:
   The ids are map objects 0x500, effects 0xa00, ring manager and sparkles 0x3000.
   A task created while the list runs runs in the same frame if it sits after
   the current one, as on the DS.
-- Objects come from a fixed pool of 128 (the DS uses the task heap). If the pool is full,
+- Objects come from a fixed pool of 384 (the DS uses the task heap; v2 decorations share it). If the pool is full,
   creation returns NULL, like `task == OS_GetArenaLo(0)`.
 
 ### 4.2 Spawning (StageEvent)
@@ -154,8 +245,8 @@ struct:
   Rings keep one byte per entry (`.rg` byte 0).
 - `StageEvent_Main`: on the first frame InitialSpawn runs (flags 1: spawn everything in
   view + margin). After that, UpdateDualScreen runs (flags 5) only when the view moved.
-  The spawn rect is view ± margin (objects 0x100, rings 0x10; decorations 0x100
-  are another module). It is clamped to the map, and each clamped side clears the
+  The spawn rect is view ± margin (objects 0x100, rings 0x10, decorations 0x100;
+  decorations use their own margin table data_ov000_023685ec). It is clamped to the map, and each clamped side clears the
   per-type margin (flags 0x10..0x80). An object spawns if it lies inside
   `rect - margin[type]`, and with flag 4 only if it lies outside
   `view ± (0x100 - margin[type]) / 3`. The arithmetic is unsigned 32-bit as in the
@@ -270,7 +361,7 @@ when it ends). Player_OnHurt → `dcp_scatter_rings` → `g_dcp_hooks.spawn_ring
 
 Status: `translated` (line-by-line), `reused` (the player module translation is used), `partial` (see notes), `assumed`, `replaced` (native data instead), `not needed` / `not used` (no caller in this port), `not here` (other module), `not translated`.
 
-Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, partial 10, replaced 2, reused 5, translated 156
+Counts (v1 tables below, updated where v2 changed a row): see the rows; the v2 additions are in section 5b.
 
 ### StageEvent (src/game/Stage)
 
@@ -285,7 +376,7 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 | `StageEvent_Reset` | `objects_init / objects_shutdown` | translated |  |
 | `StageEvent_SpawnAll` | `spawn_all` | translated | boss stages |
 | `StageEvent_SpawnAllMapObjects` | `spawn_all_map_objects` | translated |  |
-| `StageEvent_SpawnDecorationsInBlock` | - | not here | decorations are another module (spawner 2 skipped) |
+| `StageEvent_SpawnDecorationsInBlock` | `spawn_decorations_in_block` (obj_decor.c) | translated | v2 |
 | `StageEvent_SpawnInView` | `spawn_in_view` | translated |  |
 | `StageEvent_SpawnInViewSingleScreen` | - | not used | DC uses the dual-screen variant with n views |
 | `StageEvent_SpawnMapObjectsInBlock` | `spawn_objects_in_block` | translated |  |
@@ -299,7 +390,7 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 
 | original | translated | status | notes |
 |---|---|---|---|
-| `MapObject_Action_KnockAway` | `mapobject_knock_away` | translated | unreachable: only the boost AttackHitbox (not translated) calls it |
+| `MapObject_Action_KnockAway` | `mapobject_knock_away` | translated | reached through the boost AttackHitbox (v2) |
 | `MapObject_AllocSpawnEntry` | `spawn_entry_alloc` | translated |  |
 | `MapObject_Collide_Default` | `obj_mapobject_collide_default` | translated |  |
 | `MapObject_Destructor` | `obj_mapobject_dtor` | translated | sound handle release dropped |
@@ -308,10 +399,10 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 | `MapObject_Init` | `obj_mapobject_init` | translated | @0x130 ride link not kept |
 | `MapObject_NetReceiveHits` | - | not translated | wireless play |
 | `MapObject_NetSendEvent` | - | not translated | wireless play |
-| `MapObject_OnHit_Default` | `mapobject_on_hit_default` | translated | EffVs/EffVitality effects dropped (RNG draws kept); AttackHitbox branch absent |
+| `MapObject_OnHit_Default` | `mapobject_on_hit_default` | translated | EffVs/EffVitality effects dropped (RNG draws kept); AttackHitbox branch (knock-away, hit-stop 0x44 while boosting) restored in v2 |
 | `MapObject_Spawn` | `obj_mapobject_spawn` | translated |  |
 | `MapObject_SpawnDestroyBurst` | `mapobject_spawn_destroy_burst` | translated |  |
-| `MapObject_SpawnFreedAnimal` | `mapobject_spawn_freed_animal` | partial | kind chosen (RNG kept), Decoration_Spawn not called (decoration module) |
+| `MapObject_SpawnFreedAnimal` | `mapobject_spawn_freed_animal` | translated | v2: Decoration_Spawn(DecAnimal) |
 | `MapObject_SpriteCallback_Default` | `obj_sprite_cb_default` | translated |  |
 | `MapObject_State_KnockedAway` | `mapobject_state_knocked_away` | translated |  |
 | `ObjCollisionMap_CommitFrame` | `colmap_commit` | translated |  |
@@ -324,8 +415,8 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 | `ObjCollisionMap_ProbeForObj` | `colmap_probe_for_obj = g_dcp_col.obj_probe` | translated |  |
 | `ObjCollisionMap_Register` | `colmap_register` | translated |  |
 | `ObjRect_BoxCheck` | `rect_box_check` | translated |  |
-| `ObjRect_CenterX` | - | not needed | no caller in the translated objects |
-| `ObjRect_CenterY` | - | not needed | no caller in the translated objects |
+| `ObjRect_CenterX` | inline in `Rope_OnHit` | translated | v2 |
+| `ObjRect_CenterY` | inline in `Rope_OnHit` | translated | v2 |
 | `ObjRect_CheckAllGroup` | `rect_check_all` | translated |  |
 | `ObjRect_CheckFuncCall` | `check_func_call` | translated |  |
 | `ObjRect_CheckGroup` | `check_group` | translated |  |
@@ -336,7 +427,7 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 | `ObjRect_HitCenterX` | `rect_hit_center_x` | translated |  |
 | `ObjRect_HitCenterY` | `rect_hit_center_y` | translated |  |
 | `ObjRect_PointCheck` | - | not needed | no caller in the translated objects |
-| `ObjRect_RegistGet` | - | not needed | no caller in the translated objects |
+| `ObjRect_RegistGet` | `rect_regist_get` | translated | v2 (homing target search) |
 | `ObjRect_Register` | `rect_register` | translated |  |
 | `ObjRect_SetAtkDefFlags` | `rect_set_atkdef` | translated |  |
 | `ObjRect_SetBox2D` | `rect_set_box2d` | translated |  |
@@ -355,7 +446,7 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 | `StageObj_SetOAMPriority` | `sprite flags bits 17-18` | translated |  |
 | `StageObj_AllocSpritePalette` | - | not needed | atlases carry their colours |
 | `StageObj_SetSharedSpriteVram` | - | not needed |  |
-| `StageObj_IsTouched` | - | not translated |  |
+| `StageObj_IsTouched` | `StageObj_IsTouched` (obj_decor.c) | replaced | DS touch screen: always FALSE on the DC |
 | `StageObj_Move` | `dcp_obj_move (player module)` | reused |  |
 | `StageObj_Collision` | `dcp_obj_collision (player module)` | reused |  |
 | `StageObj_HandleRide` | `dcp_handle_ride (player module)` | reused |  |
@@ -375,7 +466,7 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 
 | original | translated | status | notes |
 |---|---|---|---|
-| `RingManager_AttractRings` | - | not translated | magnet barrier (Player_GiveMagnet not translated) |
+| `RingManager_AttractRings` | `RingManager_AttractRings` (obj_ring.c) | translated | v2, called from objects_update while pf & 0x20000000 |
 | `RingManager_BoxCheck` | `rect_box_check` | translated |  |
 | `RingManager_BoxCheckArena1` | - | not translated | 3D boss arenas |
 | `RingManager_BoxCheckArena2` | - | not translated | 3D boss arenas |
@@ -496,13 +587,13 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 | `EnemyPawnGroup_Action_Walk` | `pawn_action_walk` | translated |  |
 | `EnemyPawnGroup_Create` | `pawn_create` | partial | types 0x00/0x14/0x01 with p9 == 0 and no 0x40 entrance flag; other types return NULL |
 | `EnemyPawnGroup_Destructor` | `obj_mapobject_dtor` | translated |  |
-| `EnemyPawnGroup_OnDetect` | `pawn_on_detect` | partial | EffFound_Create ("!") dropped; actions of untranslated types absent |
+| `EnemyPawnGroup_OnDetect` | `pawn_on_detect` | partial | EffFound_Create now created (v2); actions of untranslated types absent |
 | `EnemyPawnGroup_OnHit_Box2_Bounce` | - | not translated | other Egg Pawn types |
 | `EnemyPawnGroup_OnHit_Box2_PushPlayer` | - | not translated | other Egg Pawn types |
 | `EnemyPawnGroup_SpawnChild` | `pawn_spawn_child` | partial | p9 parent link part not translated |
 | `EnemyPawnGroup_State_Attack` | - | not translated | other Egg Pawn types |
 | `EnemyPawnGroup_State_AttackSpawnEggBishop` | - | not translated | other Egg Pawn types |
-| `EnemyPawnGroup_State_AttackSpawnEggPawnM` | `pawn_state_attack_spawn_m` | translated | the child (type 0xdf EggPawnM_Create) is not translated, so no child appears |
+| `EnemyPawnGroup_State_AttackSpawnEggPawnM` | `pawn_state_attack_spawn_m` | translated | the child (type 0xdf EggPawnM_Create) is translated in v2 |
 | `EnemyPawnGroup_State_AttackSpawnEggSf` | - | not translated | other Egg Pawn types |
 | `EnemyPawnGroup_State_AttackSpawnGunHunter` | - | not translated | other Egg Pawn types |
 | `EnemyPawnGroup_State_Bounced` | - | not translated | other Egg Pawn types |
@@ -521,7 +612,7 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 | `EnemyPawnGroup_State_Walk` | `pawn_state_walk` | partial | LongAttack/Attack branches (types 7/0xa/0xd/0x15) and the moving-parent offset (@0x23A) not translated |
 | `Enemy_DisableCollidersSetAnim` | `obj_disable_colliders_set_anim` | translated |  |
 | `EffZakoBombBurst_Create` | `eff_zako_bomb_burst` | translated |  |
-| `EffZakoBombPuff_Create` | - | not needed |  |
+| `EffZakoBombPuff_Create` | `EffZakoBombPuff_Create` (obj_effects2.c) | translated | v2 |
 | `EffZakoBomb_Create` | - | not needed | no caller in the translated objects |
 | `EffZakoDebris_Action_Init` | `eff_zako_debris` | translated |  |
 | `EffZakoDebris_Create` | `eff_zako_debris` | translated |  |
@@ -545,6 +636,68 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
 | `Player_StartLaunchTrick` | `obj_player_start_launch_trick` | translated |  |
 | `Player_SetSourceMapObject` | `obj_player_set_source` | translated |  |
 | `Player_Action_SpringLaunchAlt` | `dcp_act_launch + sound 0x72` | assumed | called without velocity arguments: r1/r2 still hold the spring velocity |
+
+### 5b. objdata v2 additions (reuse classification)
+
+Classification: reused-as-is (copied, only types renamed), modified (copied; offset structs -> named fields, DS calls -> native/hook), substantially rewritten (same logic, restructured), new (native code without an original).
+
+| area | original | translated | classification | notes |
+|---|---|---|---|---|
+| NitroSDK fx | `MTX_Identity33_, MTX_RotX33_, MTX_RotY33_, MTX_RotZ33_` | obj_fx.c | substantially rewritten | SDK asm (stores) written as C stores |
+| NitroSDK fx | `MTX_Concat33, MTX_MultVec33` | obj_fx.c | reused-as-is | copied |
+| NitroSDK fx | `FX_DivS32` | obj_fx.c | substantially rewritten | hardware divider -> C division (same truncation) |
+| ObjectSystem | `ObjShift_Set, ObjShift_SetFromRef` | obj_fx.c | reused-as-is | copied |
+| ObjectSystem | `ObjRect_RegistGet` | obj_rect.c rect_regist_get | modified |  |
+| ObjectSystem | `ObjRect_CenterX, ObjRect_CenterY` | inline in Rope_OnHit | modified |  |
+| ObjectSystem | `MapObject_SpawnFreedAnimal` | obj_enemy.c | modified | now spawns the DecAnimal |
+| ObjectSystem | `MapObject_OnHit_Default (AttackHitbox branch)` | obj_enemy.c | modified | branch restored |
+| ObjectSystem | `StageObj_Draw2DEx (rot-scale, piece table)` | obj_anim.c + obj_draw.c | substantially rewritten | deviations 14, 15 |
+| ObjectSystem | `StageObj_IsTouched` | obj_decor.c | substantially rewritten | always FALSE (no touch screen) |
+| Stage | `StageEvent_SpawnDecorationsInBlock` | obj_decor.c spawn_decorations_in_block | modified |  |
+| Stage | `PlayerStart_Create` | obj_shared.c | modified | writes g_obj_stage / g_dcp_world check_x/y |
+| Camera | `Camera_CheckPosInView, Camera_CheckPosInViewLatched, Camera_AddAreaObject, Camera_RemoveAreaObject` | obj_shared.c | modified | on g_obj_camera; dual-screen branch only |
+| Decorations | `Decoration_AllocSlot, Decoration_FreeSlot, Decoration_Spawn, Decoration_InitFromMap, Decoration_In_Default, Decoration_SpriteCallback_Default, Decoration_Collide_Default, Decoration_Destructor` | obj_decor.c | modified |  |
+| Decorations | `DecGroup0F_Create` | obj_decor.c | modified | palette rows dropped (deviation 16) |
+| Decorations | `DecVine_Create, DecVine_OnHit` | obj_decor.c | modified |  |
+| Decorations | `DecBird_Create, DecBird_OnHit, DecBird_Action_FlyAway, DecBird_State_FlyAway` | obj_decor.c | modified |  |
+| Decorations | `DecGroup35_Create, DecGroup35_OnHit, DecGroup35_State_Main, DecGroup35_CreateFallingDebris, DecGroup35Piece_Create, DecGroup35Piece_State_Flutter` | obj_decor.c | modified | EffWaterGmk splash (0x51/0x52) -> effect hook |
+| Decorations | `DecGroup35_SpawnPieceBurst` | obj_decor.c | substantially rewritten | four calls as a loop; RNG drawn right to left |
+| Decorations | `DecAnimal_Create, _Destructor, _Action_Idle, _Action_Move, _Action_Leave, _State_Idle, _State_Move, _State_Leave, _ChooseNextAction, _CheckTouch, _UpdateMove, _UpdateLeaveTimer` | obj_decor.c | modified | sprintf("ac_dec_animal%02d") -> slot ANIMAL01 + n |
+| Effects | `EffZakoBombPuff_Create, EffFound_Create, Effect_SetFollowParentState, Effect_State_FollowParent, EffBrakeSmoke_Create` | obj_effects2.c | modified | second-screen sprite dropped |
+| Enemies | `EggPawnM_Create, Enemy_Action_StartPopOnContact, Enemy_State_PopOnContact` | obj_leafstorm.c | modified |  |
+| Enemies | `EnemyFlapperGroup_Create, _Action_Hover, _State_Hover, _Action_Patrol, _State_Patrol, _Action_PatrolTurn, _State_PatrolTurn, _UpdateHover` | obj_flapper.c | modified | types 2 and 4; Create returns NULL for 0x0b/0x0c/0x10..0x12 |
+| Enemies | `EnemyFlapperGroup_FireShot*, _StartSwoop, _SwoopOut/Return, _OnHit_Box2` | - | not translated | shooting / swooping types |
+| Leaf Storm | `Trampoline_Create, _OnHit, _Action_Idle, _State_Idle, _Action_Bounce, _State_Bounce` | obj_leafstorm.c | modified | NULL test moved before the read of t->unk2A |
+| Leaf Storm | `BendStick_Create, _OnHit, _Action_Init, _State_Wobble` | obj_leafstorm.c | modified |  |
+| Leaf Storm | `CorkscrewTrigger_Create, _OnHit` | obj_leafstorm.c | modified |  |
+| Leaf Storm | `RockBreak_Create, _OnHit, _Action_Idle, _State_Idle, _CreatePart_ov000_023136ec, RockBreakPart_Action_Fly, _State_Fly` | obj_leafstorm.c | modified |  |
+| Leaf Storm | `RopeC_Create, _OnHit, _SpawnParts, _Action_Init, _State_Main` | obj_leafstorm.c | modified | model -> objects_model_get (deviation 17) |
+| Leaf Storm | `RopeCLand_Create, _Action_Idle, _State_Idle, RopeCSpring_Create, _Action_Idle, _State_Idle, _Action_Active, _State_Active` | obj_leafstorm.c | modified |  |
+| Objects | `Rope_Create, _OnHit, _Action_Init, _State_Attached` | obj_shared.c | modified |  |
+| Objects | `Rope_Draw` | obj_shared.c | substantially rewritten | points recorded for the multi-draw (ObjSprite.multi) |
+| Objects | `JumpPedestal_Create, _Destructor, _Action_Init, _State_WaitPlayer, _CheckLaunch` | obj_shared.c | modified | ObjData_Load(.df) -> obj_df |
+| Objects | `WallBreak_Create, _OnHit, _Action_Idle, _State_Idle, _Action_Break, _State_Broken, _DrawBroken` | obj_shared.c | modified | DrawBroken via the piece table (deviation 14) |
+| Objects | `IronBall_Create, _Destructor, _Action_Idle, _State_Idle, _Action_StartRoll, _OnHitStartRoll, _OnHit_Unk_ov000_0230ce24, _State_Roll, _CreatePart_ov000_0230cd00, IronBallPart_Action_Follow, _State_FollowParent` | obj_shared.c | modified | looping sound simplified |
+| Objects | `GmkSpecial_Create, _Destructor, _Draw, _OnHit, _Action_Init, _State_Main` | obj_shared.c | modified | OnHit requires a player (the original's NULL test is inverted) |
+| Objects | `GmkLand_Create, _Destructor, _Draw, _InitOscillation, _UpdateOscillation, _Action_InitOscillating, _State_Oscillate, _Action_InitCrumbling, _State_WaitCrumble, _Action_StartCrumble, _State_Crumble, _Action_InitSpawner, _State_SpawnPeriodic, _Action_Unk_ov000_0230f4fc, _State_Unk_ov000_0230f4c8` | obj_shared.c | modified | unk24 frame counter (deviation 19) |
+| Objects | `GmkLandAA_Create, _Action_Init, _State_Decelerate` | obj_shared.c | modified |  |
+| Objects | `WaterLevelTrigger_Create, _Destructor, _Action_InitBySide, _State_SetBySide, _State_ApplyOnce, _State_Idle` | obj_shared.c | modified | on g_obj_camera |
+| Objects | `MapObj70_Create, _Destructor, _Action_Init, _Action_ApplyInitialCameraLimit, _State_SetCameraLimitBySide, _State_Idle` | obj_shared.c | modified | on g_obj_camera |
+| Objects | `MapObj73_Create, _Destructor, _OnHit, _Action_Init, _State_Main` | obj_shared.c | modified |  |
+| Objects | `MapObj73_Unk_ov000_0230379c, _02303930, _02303ac4, _02303c58` | obj_shared.c mo73_dir | substantially rewritten | four mirrored copies -> one function with (vertical, far side) |
+| Objects | `MapObj75_Create, _Destructor, _Action_Init, _IsPlayerInArea, _ApplyCameraBounds, _PlayerState_ReleaseBounds, _PlayerState_WaitEnter, _PlayerState_WaitExit, _State_Main` | obj_shared.c | modified | on g_obj_camera |
+| Objects | `RingManager_AttractRings` | obj_ring.c | modified |  |
+| Objects | `RingManager_SuckScatteredRings` | - | not translated | Duct (zone 7) |
+| Player | `AttackHitbox_Create, _SetBoostState, _State_Boost, _State_Follow` | obj_player.c | modified | via g_dcp_hooks.effect (DCP_FX_ATTACK_HITBOX_BOOST) |
+| Player | `AttackHitbox_SetJetCatapultState, _State_JetCatapult` | - | not translated | JetCatapult (zone 5) |
+| Player | `Player_Action_Rope, Player_State_Rope, Player_Action_RopeC, Player_State_RopeC` | obj_pgimmick.c | modified |  |
+| Player | `Player_Action_BendStick, Player_State_BendStick, Player_Action_BendStickLaunch` | obj_pgimmick.c | modified |  |
+| Player | `Player_Action_CorkscrewPath, Player_State_CorkscrewPath, Player_MoveAlongCorkscrew, Player_MoveAlongCorkscrewPath` | obj_pgimmick.c | modified |  |
+| Player | `Player_Action_GmkSpecial, Player_State_GmkSpecial, Player_Action_GmkSpecialEnter, Player_State_GmkSpecialEnter` | obj_pgimmick.c | modified | EffSpecial/EffTrick -> effect hook; special-stage start -> stage_exit hook |
+| Player | `Player_Action_PedestalLaunch, Player_Action_GimmickLaunch (exported)` | obj_pgimmick.c / obj_player.c | modified |  |
+| Player | `Player_Action_Grind, Player_State_Grind, Player_Action_GrindTrick, Player_CheckStartGrind` | obj_pgimmick.c | modified | EffGrind/EffTrickSparkle -> effect hook |
+| Player | `Player_FindHomingTarget, Player_GiveMagnet` | obj_pgimmick.c | modified | Magnet_Create -> item hook; ItemBox_GiveItem kind 7 now calls Player_GiveMagnet |
+| native | `obj_res_ensure, preload_resources, type_slots, dec_preload, obj_df, load_objdata v2, camera_init, objects_model_count/get, objects_set_grind_check, obj_screen_shake, quad4 / draw_spr_at` | obj_manager.c, obj_decor.c, obj_shared.c, obj_draw.c | new |  |
 
 ## 6. Deviations (all of them)
 
@@ -584,72 +737,218 @@ Counts: assumed 1, not here 1, not needed 10, not translated 52, not used 2, par
    without arguments. The spring velocity is still in r1/r2, so it is modelled
    as `dcp_act_launch(p, vx, vy)` + sound 0x72. This is an assumption; it was not checked on hardware.
 9. **Dropped side effects** (no module for them yet, or not needed): sound
-   handles (positional sound, tempo), EffFound ("!"), EffVs/EffVitality, the
-   freed animal (Decoration_Spawn; its random draws are kept so `gRandSeed` stays
-   in step), EffAirBubble, Camera_UnlockX/Y, HUD popups (only a hook),
-   VRAM/palette allocation, wireless play (MapObject_Net*).
-10. **Pool limits**: 128 objects (DS: heap). There is a guard on the solid-object list
+   handles (positional sound, tempo, pan, looping: IronBall plays 0x50 once
+   per ground contact), EffVs/EffVitality, EffAirBubble, Camera_UnlockX/Y,
+   HUD popups (only a hook), VRAM/palette allocation, PaletteAnim_Create
+   (zone 4 walls/platforms), wireless play (MapObject_Net*). Effects without a
+   module go to `g_obj_hooks.effect` (section 2.1).
+10. **Pool limits**: 384 objects (DS: heap). There is a guard on the solid-object list
     (0x20), which the DS would overrun.
 11. **Goal ring** reports the stage exit once (`stage_exit` hook) instead of
     calling StageShutdown_Create every frame until the stage ends.
-12. Everything listed as `not translated` in section 5. The main items: other
-    Egg Pawn types (lancer, bishop, hammer, ...) and their drop-in/entrance variants, the
-    EggPawnM child (type 0xdf), Flapper and Kuragen enemies, the magnet barrier attraction,
-    boss-arena rings, and all other gimmicks (MapObj40 cases that need
-    untranslated player actions are logged).
+12. Everything listed as `not translated` in sections 5 and 5b and in the
+    coverage table (section 8).
+
+v2 deviations:
+
+13. **Pre-player tasks** (id 0xf6) run at the end of `objects_frame_begin`;
+    **Player_FindHomingTarget / Player_CheckStartGrind** run there too, i.e.
+    before the whole of Player_In instead of at their place inside it
+    (section 2.2). Magnet attraction runs in `objects_update` after
+    Player_Collide, which is where Player_Last runs in the player task.
+14. **Composed sprites vs OAM pieces**: frames.bin holds each frame as one
+    composed image. StageObj_Draw2DEx with a piece table (WallBreak and
+    crumbling GmkLand pieces) offsets each OAM piece; the DC draws the whole
+    image moved by piece 0. The wall frames are one piece each (exact); the
+    crumbling floor (several pieces) falls as one block (visual only: the
+    collision follows the original piece timing).
+15. **Rot-scale OAM** is now drawn (obj_draw.c, `quad4`): rotation `angle +
+    grav_rot` when `disp_flags & 0x100`, scale from `@0x44/@0x46` (RopeCSpring).
+    Rotation direction and scale centre are not checked on hardware.
+16. **Palette rows**: StageObj_AllocSpritePalette(w, row, ...) selects a BAC
+    palette row; the converted atlases are rendered with the BAC's own palette,
+    so objects that pick another row (DecGroup0F vines 0x3b..0x40 use row 8,
+    DecVine 0x33/0x34 row 7) may show other colours. Not checked against the DS.
+17. **3D model of RopeC** is not drawn by the module: `objects_model_get` hands
+    the transform to the integrator.
+18. **Touch screen**: StageObj_IsTouched (animals react to the stylus) is always
+    FALSE.
+19. **gGameState.unk24** (GmkLand oscillation phase) is taken from
+    `g_dcp_world.frame` like unk20; if the two DS counters differ (unk24 may run
+    during pause) the platform phase differs, not its path.
+20. **Camera**: no camera module exists; the camera-area objects write the
+    `g_obj_camera` mirror, which nothing reads yet. The DC runs the dual-screen
+    branches (`g_obj_camera[2].flags & 1` = 0) with camera 1 mirroring camera 0.
+21. **Argument evaluation order**: where the original passes several `Rand()`
+    calls as arguments of one call, the module draws them right to left (MWCC
+    order, checked in the matched object code of DecGroup35_SpawnPieceBurst).
+22. **Unchecked flapper / pawn variants**: EnemyFlapperGroup_Create returns NULL
+    for types 0x0b, 0x0c, 0x10, 0x11, 0x12 (shooting / swooping);
+    EnemyPawnGroup_Create still only builds types 0x00/0x14/0x01 walking
+    (p9 == 0, no entrance flag).
 
 ## 7. Build and test
 
 ```sh
 cd dreamcast/game/objects
 make data        # BYOR: build/dreamcast/objects/{objdata.bin,hbx/,sprites.txt}
-make host-test   # gcc -std=c99 -Wall -Wextra -Werror -fwrapv; real z11 level + player tables + sprites
+make host-test   # gcc -std=c99 -Wall -Wextra -Werror -fwrapv; real z11 and z12 levels + player tables + sprites
+make coverage    # create every placed object / decoration of every stage, print the table of section 8
 make dc          # kos-cc -O2 -fwrapv -Wall -Wextra -Werror, objects in build/dreamcast/objects/dc/
 ```
 
 `make host-test` needs `build/dreamcast/player/{physics,trig}.bin` (player
-module `make tables`), `build/dreamcast/stages/z11/level.bin` and
-`build/dreamcast/sprites/bac/`. `test_objects ... -v` also prints every ring pickup.
+module `make tables`), `build/dreamcast/stages/z11|z12/level.bin` and
+`build/dreamcast/sprites/bac/`. `test_objects ... -v` also prints every ring
+pickup and the quiet events (camera bounds, decorations).
 
-Results (2026-11-22, host; data generated into /tmp/objects/data, the same
-tool as `make data`):
+The test (unchanged parts: section 4 checks) now also has:
+
+- `[v2 targets]`: the player is put at the first reachable instance of each
+  new kind and the expected interaction is checked: trampoline launch
+  (-0xc00..-0x780), bend stick (anim 0x31 then launch anim 0x30), rope (anim
+  0x24, release), jump pedestal, corkscrew path, rock break, wall break (pieces
+  fly), rope C (anim 0x25, swing, A releases), special ring (boosted 0xc0
+  frames -> enter -> `OBJ_EXIT_SPECIAL_STAGE`), riding a platform, crumbling
+  floor, iron ball roll (z12), flapper kill, Egg Pawn M child, boost
+  knock-away, homing target search + homing attack kill, magnet attraction,
+  decoration counts. The rope and the special ring float off the floor, so the
+  test puts the player into their grab boxes with the speed / state their
+  OnHit checks require.
+- `[sweep]`: from every 25th placed ring (reachable spots over the whole act)
+  the player runs right for 240 frames with jumps and boosts; pickups, kills
+  and gimmick triggers are reported.
+
+Results (2026-11-22, host, `make data` output in build/dreamcast/objects):
 
 ```
-objects_init: 0; stage 0; all 14 sprite resources loaded
-[unit] ObjRect_FlagCheck table (9 cases), AnimatorSprite timing:
-  spring anim 1: frame calls 2 4 2 4 (last held), end flag at call 15, stopped on frame 5
-  ring anim 0 (loop): first wrap at call 33, 2 wraps in 70 calls
-  eggpawn / son.bac boxes loaded from .hbx
+z11
+objects_init: 0; stage 0; preloaded sprites: (38 ids)
+  38 of 53 slots preloaded, 0 failed, PlayerStart respawn point (128,768)
 [run] PlayerStart, hold right, jump every 50 frames, 1500 frames
-  f  223 spring 0x43  player (1566,810)
-  f  364..577  13 ring pickups (1968,1008) (1944,1008) (2576,1240) ... (3392,1968)
-  f  677 spring 0x43  player (5106,2354)
-  max x 5704 (3525 before MapObj40: the layer switches now take the player out of the loop)
-  rings placed 53 collected 13; objects spawned 31, despawned 29 (mostly layer-switch triggers)
+  max x 5703, rings 21, live objects 11, spawned 57, despawned 51, destroyed 0
+  gimmick triggers 0 (grinds 1, walls 0, rocks 0), decorations spawned 86; events: init_resources=1 spring=3 grind=1 ring=21 leaf_burst=4 bird_fly=2 camera_bounds=10
 [targets]
-  spring 0x43 (1576,832), p6 = 2: launch (0, -0xa80) = -0x780 - 2*0x180, after 20 frames
-  spring 0x46 (18304,1072), p6 = 1: launch (+0x900, 0) from the right side
-  dash panel 0x5f (16664,1280): gnd 2304 (= top), dash timer 0x80 - 1
-  dash ring 0x6b (6016,1416): launch (0x800, 0) (angle 0 * 0x800)
-  item box 0x30 item 1 (10200,640): broken, +5 rings (+1 ring picked up on the way)
-  spikes 0x4d (1776,1216): hurt on landing, 10 rings scattered, 9 collected back
-  marker 0x6e index 2 (11656,1344): respawn point (11656, 1344 - 14)
-  egg pawn (17392,1024): detected, chased, destroyed by a jump; player bounces (vy -0x300)
-  egg pawn (6568,1472): standing player is detected, chased and hurt
-  goal ring (20736,1616): reached once, spin, 8 sparkles, stage exit after 165 frames
-[respawn] the first spring (despawned earlier) is spawned again when the view returns;
-          collected rings stay collected
-44 checks, 0 failed
+[v2 targets] stage 0 (zone 0 act 0)
+  trampoline 0x55        ok    (8648,2480) after 28 frames vel_y -1878 (+0x2a gravity)
+  bend stick 0x56        ok    (14336,2112) after 20 frames anim 0x31, launch after 10 more: anim 0x30 vel 0,-1520
+  rope 0x58              ok    (9792,1472) caught after 3 frames (anim 0x24), released after 59: vel 0,42
+  jump pedestal 0x67     ok    (15392,1592) flags 0 after 89 frames vel 1814,-1376
+  corkscrew 0x68/0x69    ok    (16064,1280) flags 0x80 after 35 frames, then 60 frames: moved 622 px
+  rock break 0x6f        ok    (6720,1456) after 18 frames, player vel_y -726
+  wall break 0x77        ok    (17584,992) mode 0 after 22 frames; 20 frames later piece 0 at +3,-5 px
+  rope C 0x7a            ok    (17856,944) after 3 frames anim 0x25, rope length 0x7c72 after 40 frames, released by A: gimmick NULL anim 0x30
+    model views 1: mod__gmk_rope_c__gmk_rope_c02 scale 0x34cc 0x34cc 0x290a visible 1
+  special ring 0x9e      ok    (18656,512) entered after 5 frames, boost 0, exit kind 2 after 257 more frames
+  platform 0x51          ok    (10088,696) p8 0 p9 0: riding 1, player moved +0,+271 px in 60 frames
+  crumbling floor 0x76   ok    (6440,1512) crumbles 45 frames after landing; 80 frames later player y 1771 (floor 1512)
+  flapper 0x02           ok    (17984,184) destroyed after 7 frames, animals now 1
+  egg pawn M 0x01        ok    (18120,688) child spawned after 63 frames
+  boost knock-away       ok    1 enemies knocked away by the boost hit box
+  homing attack          ok    target found 1, enemy destroyed by the homing attack 1
+  magnet barrier         ok    2 rings attracted (pf 0x30000000)
+  decorations: spawned 402 despawned 398, live: flowers/vines 4, vines(hang) 0, leaves 0, birds 0, animals 0; bird fly-aways 10, leaf bursts 9, freed animals 5
+  v2 targets: 16 of 16 interactions seen; pool live 5 of 384; late sprite loads 0
+[sweep] 16 segments x 240 frames: rings 74, item boxes 1, springs 13, dash panels 9, dash rings 2, enemies 0 (knocked away 0), hurts 0, checkpoints 0, gimmicks 4, grinds 4, walls 0, rocks 0, decorations 303, homing targets 0
+61 checks, 0 failed
+z12
+objects_init: 0; stage 1; preloaded sprites: (38 ids)
+  38 of 53 slots preloaded, 0 failed, PlayerStart respawn point (128,1216)
+[run] PlayerStart, hold right, jump every 50 frames, 1500 frames
+  max x 3653, rings 25, live objects 7, spawned 22, despawned 14, destroyed 1
+  gimmick triggers 1 (grinds 0, walls 0, rocks 0), decorations spawned 65; events: init_resources=1 spring=3 ring=20 bird_fly=8 pedestal=1 dash_ring=1 item_box=1
+[targets]
+[v2 targets] stage 1 (zone 0 act 1)
+  trampoline 0x55        ok    (4520,1392) after 28 frames vel_y -1878 (+0x2a gravity)
+  bend stick 0x56        ok    (4096,1960) after 20 frames anim 0x31, launch after 10 more: anim 0x30 vel 0,-1520
+  rope 0x58              ok    (5056,896) caught after 3 frames (anim 0x24), released after 59: vel 0,42
+  jump pedestal 0x67     ok    (2336,632) flags 0 after 89 frames vel 1814,-1376
+  corkscrew 0x68/0x69    ok    (10624,2560) flags 0x2 after 38 frames, then 60 frames: moved 66 px
+  rock break 0x6f        ok    (2584,240) after 18 frames, player vel_y -726
+  wall break 0x77        ok    (14352,1952) mode 0 after 30 frames; 20 frames later piece 0 at -107,-71 px
+  rope C 0x7a            ok    (8704,2416) after 3 frames anim 0x25, rope length 0x7c72 after 40 frames, released by A: gimmick NULL anim 0x30
+    model views 1: mod__gmk_rope_c__gmk_rope_c02 scale 0x34cc 0x34cc 0x290a visible 1
+  special ring 0x9e      ok    (4264,2184) entered after 6 frames, boost 0, exit kind 2 after 260 more frames
+  platform 0x51          ok    (2736,248) p8 192 p9 0: riding 1, player moved -22,+0 px in 60 frames
+  iron ball 0x78         ok    (21568,1864) rolls after 3 frames, moved +18 px in 78 frames
+  flapper 0x02           ok    (5056,552) destroyed after 7 frames, animals now 1
+  egg pawn M 0x01        ok    (11248,1200) child spawned after 63 frames
+  boost knock-away       ok    1 enemies knocked away by the boost hit box
+  homing attack          ok    target found 1, enemy destroyed by the homing attack 1
+  magnet barrier         ok    6 rings attracted (pf 0x30000000)
+  decorations: spawned 772 despawned 772, live: flowers/vines 0, vines(hang) 0, leaves 0, birds 0, animals 0; bird fly-aways 10, leaf bursts 30, freed animals 8
+  v2 targets: 16 of 16 interactions seen; pool live 1 of 384; late sprite loads 0
+[sweep] 23 segments x 240 frames: rings 101, item boxes 3, springs 9, dash panels 6, dash rings 1, enemies 1 (knocked away 1), hurts 1, checkpoints 0, gimmicks 6, grinds 10, walls 1, rocks 0, decorations 721, homing targets 0
+60 checks, 0 failed
 ```
 
-KOS: `make dc` builds all 9 files with `-Werror` (text: about 37 KB; bss 98 KB,
-mostly the 128-object pool). A test `main` that calls every API function links
-with the player module and `engine/render.c` into an ELF (`kos-cc`).
+KOS: `make dc` builds all 16 files with `-Werror` (text about 87 KB; bss
+about 390 KB, mostly the 384-object pool). A test `main` calling every API
+function (incl. `objects_model_get`, `objects_set_grind_check`,
+`g_obj_camera`) links with the player module and `engine/render.c` into an
+ELF with `kos-cc`.
 
 Not verified:
 
 - No frame-by-frame comparison with the DS game (no emulator traces).
-- The SH-4 build was never run, and `obj_draw.c` was never seen on screen.
+- The SH-4 build was never run, and `obj_draw.c` (including the new rot-scale
+  quads) was never seen on screen.
 - Interactions are checked by events and values derived from the decompiled
-  code, not against recordings.
-- Only z11 was exercised; the other stages only had their sprite ids resolved.
+  code, not against recordings. Some targets place the player by hand
+  (rope, special ring, flapper, homing) instead of reaching them by play.
+- Only z11 and z12 were run frame by frame; other stages only had every
+  placed entry created once by `make coverage`.
+
+## 8. Coverage
+
+Placed object / decoration types and entries that come up as translated
+objects (`make coverage`; MapObj40 cases that need untranslated code count
+as missing; PlayerStart and the load-time forms of MapObj70 /
+WaterLevelTrigger count as translated):
+
+| stage | object types | object entries | decoration types | decoration entries |
+|---|---|---|---|---|
+| z11 | 42/42 | 280/280 | 36/36 | 915/915 |
+| z12 | 47/47 | 411/411 | 37/37 | 2151/2151 |
+| z13 | 1/2 | 1/2 | 0/0 | 0/0 |
+| z21 | 30/43 | 230/328 | 2/21 | 35/402 |
+| z22 | 29/42 | 268/377 | 2/22 | 45/408 |
+| z23 | 1/2 | 1/2 | 0/0 | 0/0 |
+| z31 | 37/53 | 262/419 | 0/27 | 0/328 |
+| z32 | 40/56 | 339/515 | 0/26 | 0/398 |
+| z33 | 1/2 | 1/2 | 0/0 | 0/0 |
+| z41 | 29/38 | 168/233 | 0/21 | 0/567 |
+| z42 | 33/46 | 298/407 | 0/26 | 0/533 |
+| z43 | 1/2 | 1/2 | 0/0 | 0/0 |
+| z51 | 33/48 | 258/369 | 0/29 | 0/185 |
+| z52 | 30/49 | 232/410 | 0/32 | 0/275 |
+| z53 | 1/2 | 1/2 | 0/0 | 0/0 |
+| z61 | 31/44 | 466/729 | 0/23 | 0/681 |
+| z62 | 29/44 | 417/653 | 0/17 | 0/455 |
+| z63 | 1/2 | 1/2 | 0/0 | 0/0 |
+| z71 | 38/47 | 643/771 | 0/7 | 0/96 |
+| z72 | 34/47 | 440/616 | 0/2 | 0/41 |
+| z73 | 1/2 | 1/2 | 0/0 | 0/0 |
+| z81 | 9/9 | 28/28 | 23/23 | 100/100 |
+| z82 | 11/11 | 43/43 | 0/0 | 0/0 |
+| z91 | 10/14 | 23/33 | 0/5 | 0/14 |
+| z92 | 9/12 | 29/36 | 0/12 | 0/47 |
+| zf3 | 1/2 | 1/2 | 0/0 | 0/0 |
+not translated (entries over all stages):
+  objects: 0x3:18 0x5:20 0x6:7 0x7:19 0x8:2 0x9:22 0xa:25 0xb:12 0xc:35 0xd:45 0xe:7 0xf:43 0x10:35 0x11:22 0x12:40 0x13:31 0x14:18 0x15:12 0x38:1 0x39:1 0x3a:1 0x3b:1 0x3c:1 0x3d:1 0x3e:1 0x3f:1 0x7b:5 0x7d:24 0x7e:16 0x7f:10 0x80:44 0x81:17 0x82:4 0x83:23 0x84:11 0x85:8 0x88:16 0x89:18 0x8a:12 0x8b:2 0x8c:25 0x8d:128 0x8e:45 0x8f:100 0x90:7 0x91:7 0x92:45 0x93:21 0x94:49 0x95:14 0x96:12 0x97:29 0x9c:87 0xa0:10 0xa1:13 0xa2:6 0xa3:5 0xa4:3 0xa5:1 0xa6:10 0xa7:7 0xa8:14 0xa9:39 0xab:8 0xac:3 0xad:10 0xae:4 0xb1:77 0xb2:4 0xb3:6 0xb4:6 0xb5:2 0xb6:2 0xb7:2 0xb8:102 0xb9:185 0xba:8 0xbb:10 0xbc:1 0xbd:17 0xbe:24 0xbf:8 0xc0:15 0xc1:4 0xc3:3 0xc4:3 0xc5:17 0xc7:2
+  decorations: 0x41:10 0x42:219 0x44:84 0x45:116 0x46:6 0x47:12 0x48:12 0x49:6 0x4a:81 0x4b:80 0x4c:6 0x4d:22 0x4e:22 0x4f:5 0x50:9 0x53:157 0x54:7 0x55:7 0x56:69 0x57:22 0x58:3 0x59:4 0x5a:4 0x5b:3 0x5c:4 0x5d:3 0x5e:5 0x5f:23 0x60:16 0x61:12 0x62:21 0x63:10 0x64:12 0x65:12 0x66:13 0x67:5 0x68:6 0x69:5 0x6a:5 0x6b:4 0x6c:4 0x6d:4 0x6e:5 0x6f:6 0x70:5 0x71:5 0x72:8 0x73:8 0x74:8 0x79:1 0x7a:1 0x7b:1 0x7c:7 0x7d:7 0x7e:7 0x7f:8 0x80:10 0x81:10 0x82:10 0x83:66 0x84:46 0x85:90 0x86:73 0x88:17 0x89:65 0x8e:4 0x8f:7 0x90:35 0x91:33 0x92:33 0x93:13 0x94:13 0x95:20 0x97:40 0x9c:80 0x9d:101 0xa5:35 0xa6:25 0xa7:13 0xa8:28 0xa9:24 0xaa:10 0xab:14 0xac:15 0xad:14 0xae:18 0xaf:2 0xb0:1 0xb1:43 0xb2:30 0xb7:17 0xb8:19 0xb9:39 0xba:34 0xbb:2 0xbc:4 0xbd:6 0xbe:8 0xc3:170 0xc4:14 0xc5:29 0xc6:25 0xc7:170 0xc8:8 0xca:8 0xcc:10 0xcd:22 0xce:10 0xcf:86 0xd0:15 0xd1:11 0xd2:16 0xd6:70 0xd7:20 0xd8:25 0xd9:13 0xda:2 0xdd:33 0xde:19 0xdf:8 0xe0:3 0xe2:2 0xe3:25 0xe5:42 0xe6:42 0xe7:479 0xe8:8 0xe9:321 0xea:212 0xeb:11 0xec:2 0xed:10 0xee:3 0xef:5 0xf1:27
+
+The missing entries by type id (object table `gMapObjectCreateTable`):
+other Egg Pawn types (3, 7..0x0f, 0x14 drop-in, 0x15) and Flapper types
+(0x0b, 0x0c, 0x10..0x12), Kuragen (5, 6), Water Palace gimmicks (0x7b WaterRunTrigger,
+0x7d MapObj7D, 0x7f Mine, 0x80 MapObj80, 0x81 LandUnrest, 0x82 Wheel2D, 0x83
+LaunchZone, 0x84 BubbleSpawner, 0x85..0x87 WaterJet), zone 3..7
+gimmicks (GmkRail, Cargo, Hand2d, GmkTable, SandSlider, Rock, enemy rooms
+MapObj8C..8F, CraneSlide, NeonRoute, Shooter, SwingSky, Switch, Crane,
+GmkPipe, JetCatapult, Piston, Valve, Glider, MapObj13, NeedleG, Parachute,
+Saucer, Cannon, Duct, GmkAir, MapObj9C, Rocket, Swing), the bosses, the
+MapObj40 cases 0x7e/0xa9/0xb6/0xb7/0xc3..0xc5, and all decoration groups of
+zones 2..7 (DecGroup41, 45, 4D, 67, 95, AF, DecArrow, DecCloudSpawner).
+Next in order: Water Palace (z21/z22) enemies Kuragen and the water
+gimmicks with their player states (WaterRun, ZoneLaunch, Wheel2D, MapObj80),
+DecGroup41/4D, then the remaining EnemyPawnGroup / EnemyFlapperGroup types.

@@ -454,8 +454,11 @@ static void itembox_give(Obj *a, DcPlayer *p, s32 k) {
         if (g_dcp_hooks.add_life) g_dcp_hooks.add_life(g_dcp_hooks.ctx, p, 1);
         else W.lives++;
         break;
-    case 5: case 6: case 7:
+    case 5: case 6:
         if (g_obj_hooks.item) g_obj_hooks.item(g_obj_hooks.ctx, p, k);
+        break;
+    case 7:
+        Player_GiveMagnet(p); /* v2: flags + attraction here, Magnet_Create via the item hook */
         break;
     case 8: case 9: case 10: case 11:
         obj_sfx(0xdf);
