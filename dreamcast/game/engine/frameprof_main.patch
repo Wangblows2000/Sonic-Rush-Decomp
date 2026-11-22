@@ -1,0 +1,310 @@
+diff -ru a4/Makefile b4/Makefile
+--- a/Makefile	2026-11-22 21:17:26.845062978 +0000
++++ b/Makefile	2026-11-22 21:17:26.890987190 +0000
+@@ -1,6 +1,6 @@
+ # Sonic Rush DC game. Needs: . /opt/toolchains/dc/kos/environ.sh
+ TARGET = srdc.elf
+-OBJS = src/main.o engine/render.o engine/input.o engine/audio.o engine/level.o engine/loading.o engine/pak.o \
++OBJS = src/main.o engine/render.o engine/input.o engine/audio.o engine/level.o engine/loading.o engine/pak.o engine/frameprof.o \
+        $(patsubst %.c,%.o,$(wildcard player/dcp_*.c)) model/model.o \
+        $(patsubst %.c,%.o,$(wildcard objects/obj_*.c)) \
+        $(patsubst %.c,%.o,$(wildcard ui/ui_*.c)) \
+diff -ru a4/src/main.c b4/src/main.c
+--- a/src/main.c	2026-11-22 21:17:26.794163822 +0000
++++ b/src/main.c	2026-11-22 21:17:42.535569212 +0000
+@@ -26,11 +26,20 @@
+ #include "../boss/boss7.h"
+ #include "../demo/demo.h"
+ #include "../engine/loading.h"
++#include "../engine/frameprof.h"
+ #include "../menus/extraact.h"
+ #include "../camera/camera.h"
+ #include "../zonefx/zonefx.h"
+ #include <stdlib.h>
+ 
++/* test builds (/cd/debug/frameprof.txt): frame pacing in RAM, summaries at scene changes */
++#define FRAME_BEGIN() do { frameprof_work_end(); render_begin_frame(); frameprof_frame(); } while(0)
++/* test builds (/cd/debug/sweep.txt = frames per act, boss acts twice): every act in story order, the
++ * special stage after each act 2 of zone 1, the Extra Zone after zf3, again and again; A pressed
++ * every 30 frames in the cutscene / special-stage / Extra loops, 99 lives */
++static int g_sweep, g_sweep_tick;
++static void sweep_input(InputState *in) { if(g_sweep && ++g_sweep_tick % 30 == 0) in->pressed |= IN_JUMP; }
++
+ /* Story order (Sonic): zone N acts 1, 2 and the boss act 3. */
+ static const char *k_stages[] = { "z11", "z12", "z13", "z21", "z22", "z23", "z31", "z32", "z33",
+                                   "z41", "z42", "z43", "z51", "z52", "z53", "z61", "z62", "z63",
+@@ -278,6 +287,11 @@
+     uint64_t t0 = timer_ms_gettime64();
+     int r;
+     snprintf(dir, sizeof(dir), "/cd/stages/%s", k_stages[idx]);
++    {   /* frame pacing: one scene per act (and character) */
++        char sn[24];
++        snprintf(sn, sizeof(sn), "%s %s", k_stages[idx], g_chara ? "blaze" : "sonic");
++        frameprof_scene(sn, 1);
++    }
+     r = level_load(lv, dir);
+     if(r == 0) {
+         /* gGameState.unk1C / unk1D: stage id = zone * 3 + act (0, 1, 2 = boss) */
+@@ -287,6 +301,7 @@
+     /* Stage_SetupZoneResources -> Stage_PlayBGM(0): act / boss music of the zone SDAT,
+      * character and act (sound/bgm.c, /cd/music/streams.txt); jingles preloaded here */
+     if(r == 0) bgm_stage_start(g_dcp_world.zone, g_dcp_world.act, g_chara, &g_player);
++    if(g_sweep) { g_dcp_world.lives = 99; g_ui_game.save_lives[0] = g_ui_game.save_lives[1] = 99; }
+     printf("stage %s: load %d in %llu ms, %dx%d px, %d block pages, vram used %lu, vram free %lu\n",
+            k_stages[idx], r, (unsigned long long)(timer_ms_gettime64() - t0),
+            r == 0 ? level_width_px(lv) : 0, r == 0 ? level_height_px(lv) : 0, lv->num_pages,
+@@ -305,6 +320,7 @@
+ static void menu_stop_all(void) { bgm_stop_sound_all(); }
+ static void enter_front_end(void)
+ {
++    frameprof_scene("front end", 0);
+     g_frontend = 1;
+     bgm_stage_end();
+     bgm_set_context("sys");
+@@ -402,14 +418,23 @@
+     if(cutscene_start(kind, id, g_chara) != 0) { loading_end(); audio_load_end(); printf("cutscene %d/%d: missing data\n", kind, id); return CS_NEXT_NONE; }
+     loading_end(); audio_load_end();
+     printf("cutscene %d/%d start\n", kind, id);
+-    for(;;) {
+-        int done;
+-        input_poll(&in);
+-        done = cutscene_run_frame(&in);
+-        sound_update();
+-        render_begin_frame(); cutscene_draw(); render_end_frame();
+-        audio_update();
+-        if(done) break;
++    {
++        int pg;
++        char prev[32], sn[24];
++        snprintf(prev, sizeof(prev), "%s", frameprof_scene_name(&pg));
++        snprintf(sn, sizeof(sn), "cutscene %d/%d", kind, id);
++        frameprof_scene(sn, 0);
++        for(;;) {
++            int done;
++            input_poll(&in);
++            sweep_input(&in);
++            done = cutscene_run_frame(&in);
++            sound_update();
++            FRAME_BEGIN(); cutscene_draw(); render_end_frame();
++            audio_update();
++            if(done) break;
++        }
++        frameprof_scene(prev, pg);   /* back to the scene that started it */
+     }
+     {
+         CsNext n = cs_finish();
+@@ -461,9 +486,13 @@
+     loading_end(); audio_load_end();
+     if(r == 0) {
+         r = BOSS_EXTRA_FAILED;
++        frameprof_scene(g_chara ? "extra boss blaze" : "extra boss sonic", 1);
++        int ef = 0;
+         int fight = 0;
+         for(;;) {
+             input_poll(&in);
++            sweep_input(&in);
++            if(g_sweep && ++ef > 2 * g_sweep) { r = BOSS_EXTRA_FAILED; break; }
+             /* PauseMenu_Create(0) is not drawn here: START or A continues (no quit entry) */
+             if(boss_extra_paused() && (in.pressed & (IN_START | IN_JUMP))) { boss_extra_resume(); in.pressed = 0; }
+             r = boss_extra_run_frame(&in);
+@@ -472,7 +501,7 @@
+                 r = BOSS_EXTRA_CLEARED;
+             }
+             sound_update();
+-            render_begin_frame();
++            FRAME_BEGIN();
+             render_begin_list(PVR_LIST_OP_POLY); boss_extra_draw(PVR_LIST_OP_POLY); render_end_list();
+             render_begin_list(PVR_LIST_PT_POLY); boss_extra_draw(PVR_LIST_PT_POLY); render_end_list();
+             render_begin_list(PVR_LIST_TR_POLY); boss_extra_draw(PVR_LIST_TR_POLY); render_end_list();
+@@ -492,12 +521,14 @@
+     if(r == BOSS_EXTRA_CLEARED) {
+         run_cutscene(CS_SCRIPT, 2, 8, NULL);   /* DemoScript_StartAfterBoss -> SceneChange_ToExtraAct */
+         if(extraact_start((uint32_t)res.time, (uint32_t)res.rings, g_chara) == 0) {   /* the Extra Zone results */
++            frameprof_scene("extraact", 0);
+             for(;;) {
+                 int done;
+                 input_poll(&in);
++                sweep_input(&in);
+                 done = extraact_run_frame(&in);
+                 sound_update();
+-                render_begin_frame(); extraact_draw(); render_end_frame();
++                FRAME_BEGIN(); extraact_draw(); render_end_frame();
+                 audio_update();
+                 if(done) break;
+             }
+@@ -538,10 +569,14 @@
+     audio_load_end();
+     printf("special stage %d: init %d\n", g_dcp_world.zone, r);
+     if(r == 0) {
++        char sn[24];
++        snprintf(sn, sizeof(sn), "special %d %s", g_dcp_world.zone, g_chara ? "blaze" : "sonic");
++        frameprof_scene(sn, 1);
+         for(;;) {
+             input_poll(&in);
++            sweep_input(&in);
+             r = special_run_frame(&in);
+-            render_begin_frame(); special_draw(); render_end_frame();
++            FRAME_BEGIN(); special_draw(); render_end_frame();
+             sound_update(); audio_update();
+             if(r) break;
+         }
+@@ -639,6 +674,7 @@
+         }
+         load_player_model();
+     }
++    frameprof_init();   /* test builds: /cd/debug/frameprof.txt */
+     {
+         /* test builds only: /cd/debug/start.txt holds the story index to start at */
+         uint32_t dsz;
+@@ -655,6 +691,10 @@
+         char *spos = d ? load_file("/cd/debug/startpos.txt", &dsz) : NULL;   /* "x y" px: replaces PlayerStart */
+         if(spos) { spos = realloc(spos, dsz + 1); spos[dsz] = 0; g_dbg_pos_set = sscanf(spos, "%d %d", &g_dbg_pos_x, &g_dbg_pos_y) == 2; free(spos); }
+         if(sp) { g_dbg_special = atoi(sp) > 0 ? atoi(sp) : 300; free(sp); }
++        {
++            char *sw = d ? load_file("/cd/debug/sweep.txt", &dsz) : NULL;
++            if(sw) { g_sweep = atoi(sw) > 0 ? atoi(sw) : 600; free(sw); printf("sweep: %d frames per act\n", g_sweep); }
++        }
+         if(d) { int v = atoi(d); if(v >= 0 && v < (int)NUM_STAGES) stage = v; free(d); dbg_start = 1; printf("debug start stage %d\n", stage); }
+     }
+     if(dbg_start) {
+@@ -678,7 +718,7 @@
+             r = menus_run_frame(&in);
+             overlay_cutscene_frame(&in);   /* zone-map TalkDemo */
+             sound_update();
+-            render_begin_frame();
++            FRAME_BEGIN();
+             render_begin_list(PVR_LIST_OP_POLY); render_end_list();
+             render_begin_list(PVR_LIST_PT_POLY); render_end_list();
+             render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); if(cutscene_active()) cutscene_draw_list(PVR_LIST_TR_POLY); render_end_list();
+@@ -772,14 +812,15 @@
+             { uint64_t t0 = timer_us_gettime64();
+               dcp_player_frame(&g_player, pad_held, pad_pressed, pad_released);
+               camera_player_last(&g_player);   /* Player_Last: Player_UpdateCamera + Player_UpdateCameraLead */
+-              g_prof[1] += timer_us_gettime64() - t0; }
++              g_prof[1] += timer_us_gettime64() - t0; frameprof_add(FP_PLAYER, (uint32_t)(timer_us_gettime64() - t0)); }
+             if(g_model_ok) {
+                 s32 tsp = 0x1000;   /* title card close-up: obj unk24C slot speeds (slow motion) */
+                 ui_titlecard_player_draw(&tsp, NULL, NULL, NULL, NULL, NULL);
+                 dcp_model_set_slot_speed(&g_dcp_model, tsp);
+                 dcp_model_step(&g_dcp_model, &g_player, 0);   /* animation, ANIM_DONE, pose */
+             }
+-            { uint64_t t0 = timer_us_gettime64(); if(g_obj_ok) objects_update(&g_player); g_prof[0] += timer_us_gettime64() - t0; }
++            { uint64_t t0 = timer_us_gettime64(); if(g_obj_ok) objects_update(&g_player); g_prof[0] += timer_us_gettime64() - t0;
++              frameprof_add(FP_OBJECTS, (uint32_t)(timer_us_gettime64() - t0)); }
+             if(g_is_boss) boss_update(&g_player);
+             camera_frame_end();   /* ScreenShake_Main */
+         }
+@@ -822,6 +863,26 @@
+             continue;
+         }
+         if(ok && g_player_ok && g_special_pending) { run_special_stage(&lv, stage); continue; }
++        if(g_sweep && ok) {   /* test builds: next act */
++            static int n, sp_done;
++            if(++n >= (g_dcp_world.act == 2 ? 2 * g_sweep : g_sweep)) {
++                int next = (stage + 1) % (int)NUM_STAGES;
++                n = 0;
++                if(stage == 1 && !sp_done) { sp_done = 1; run_special_stage(&lv, stage); continue; }   /* round trip */
++                sp_done = 0;
++                if(g_obj_ok) { objects_shutdown(); objects_models_free(); }
++                boss_shutdown(); g_is_boss = 0;
++                ui_stage_end();
++                zonefx_shutdown(); camera_destroy();
++                level_free(&lv); ok = 0;
++                if(!strcmp(k_stages[stage], "zf3")) { run_extra_zone(); }
++                if(k_stages[next][2] == '3') run_cutscene(CS_SCRIPT, 0, k_stages[next][1] == 'f' ? 7 : k_stages[next][1] - '1', NULL);
++                stage = next;
++                ok = load_stage(&lv, stage) == 0;
++                if(ok && g_player_ok) spawn_player(&lv);
++                continue;
++            }
++        }
+         if(ok && g_player_ok) ui_post_update(&g_player);
+         /* StageTitleCard_HoldPlayerX / Y move the player after the world update and snap gCamera */
+         if(ok && g_player_ok && ui_titlecard_active()) camera_snap_to_player(&g_player);
+@@ -829,10 +890,13 @@
+         if(ok) camera_apply();   /* g_cam_x / g_cam_y: the DC window + the screen shake */
+         ui_set_camera(g_cam_x, g_cam_y);
+ 
+-        if(ok && g_obj_ok) objects_models_prepare();   /* object model / 3D BAC loads, texture uploads, outside the lists */
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok) objects_models_prepare(); frameprof_add(FP_D_OMODEL, (uint32_t)(timer_us_gettime64() - t0)); }   /* object model / 3D BAC loads, texture uploads, outside the lists */
++        frameprof_work_end();
+         { uint64_t tw = timer_us_gettime64(); pvr_wait_ready(); g_prof[3] += timer_us_gettime64() - tw; }   /* vblank / TA wait */
++        frameprof_frame();
+         /* zone palettes at the frame start: zonefx waits for the render in progress before a write */
+-        if(ok && !g_is_boss) zonefx_commit_palettes();
++        { uint64_t tz = timer_us_gettime64(); if(ok && !g_is_boss) zonefx_commit_palettes();
++          frameprof_add(FP_WAIT, (uint32_t)(timer_us_gettime64() - tz)); }   /* may wait for the render in progress */
+         uint64_t t_draw0 = timer_us_gettime64();
+         {   /* frame interval: worst and over-budget count (a 60 Hz frame is 16.68 ms) */
+             static uint64_t last;
+@@ -846,23 +910,23 @@
+          * (player and object models ~0.0035..0.03) < OBJ prio 1 (2..2.64) < layer A 10 < OBJ prio 0 (11..11.64) < HUD 100.
+          * The OBJ bands are obj_draw.c's (Stage_InitDisplay BG priorities: A 0, 3D 1, B 2, zone BG 3). */
+         render_begin_list(PVR_LIST_OP_POLY);
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) zonefx_draw_bg(0.0005f); g_dprof[0] += timer_us_gettime64() - t0; }
+-        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_OP_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
+-        if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_OP_POLY);   /* object models, 3D layer */
++        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) zonefx_draw_bg(0.0005f); g_dprof[0] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 0, (uint32_t)(timer_us_gettime64() - t0)); }
++        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_OP_POLY); g_dprof[5] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 5, (uint32_t)(timer_us_gettime64() - t0)); }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY); g_dprof[2] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 2, (uint32_t)(timer_us_gettime64() - t0)); }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_OP_POLY); frameprof_add(FP_D_OMODEL, (uint32_t)(timer_us_gettime64() - t0)); }   /* object models, 3D layer */
+         render_end_list();
+         render_begin_list(PVR_LIST_PT_POLY);
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { zonefx_draw_layer(1, PVR_LIST_PT_POLY, 0.001f); zonefx_draw_layer(0, PVR_LIST_PT_POLY, 10.0f); } g_dprof[1] += timer_us_gettime64() - t0; }
+-        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_PT_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
+-        if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_PT_POLY);   /* object models, 3D layer */
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok) obj_draw(PVR_LIST_PT_POLY); g_dprof[3] += timer_us_gettime64() - t0; }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { zonefx_draw_layer(1, PVR_LIST_PT_POLY, 0.001f); zonefx_draw_layer(0, PVR_LIST_PT_POLY, 10.0f); } g_dprof[1] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 1, (uint32_t)(timer_us_gettime64() - t0)); }
++        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_PT_POLY); g_dprof[5] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 5, (uint32_t)(timer_us_gettime64() - t0)); }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY); g_dprof[2] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 2, (uint32_t)(timer_us_gettime64() - t0)); }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_PT_POLY); frameprof_add(FP_D_OMODEL, (uint32_t)(timer_us_gettime64() - t0)); }   /* object models, 3D layer */
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok) obj_draw(PVR_LIST_PT_POLY); g_dprof[3] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 3, (uint32_t)(timer_us_gettime64() - t0)); }
+         render_end_list();
+         render_begin_list(PVR_LIST_TR_POLY);
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
+-        if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_TR_POLY);   /* object models, 3D layer */
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY); g_dprof[2] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 2, (uint32_t)(timer_us_gettime64() - t0)); }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_TR_POLY); frameprof_add(FP_D_OMODEL, (uint32_t)(timer_us_gettime64() - t0)); }   /* object models, 3D layer */
+         if(ok && g_obj_ok) obj_draw(PVR_LIST_TR_POLY);   /* AnimatorSprite 0x400 (semi-transparent OBJ) */
+-        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_TR_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
++        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_TR_POLY); g_dprof[5] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 5, (uint32_t)(timer_us_gettime64() - t0)); }
+         if(g_is_boss) {
+             s32 bm = 0, evy = 0;
+             bossf_blend(&bm, &evy);   /* BossF white-out of the 3D layer (BLDY) */
+@@ -876,13 +940,14 @@
+                              ((uint32_t)(g_flash * 15) << 24) | 0xffffff);
+             if(!ui_is_paused()) g_flash--;
+         }
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok) ui_draw_tr(); g_dprof[4] += timer_us_gettime64() - t0; }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok) ui_draw_tr(); g_dprof[4] += timer_us_gettime64() - t0; frameprof_add(FP_D_BG + 4, (uint32_t)(timer_us_gettime64() - t0)); }
+         if(cutscene_active() && !cutscene_is_fullscreen()) cutscene_draw_list(PVR_LIST_TR_POLY);
+         if(ok && g_player_ok && !g_model_ok)
+             draw_sprite_world(NULL, PVR_LIST_TR_POLY, g_player.x / 256.0f - 8, g_player.y / 256.0f - 28, 16, 28, 0, 0, 0, 0, 0, 3.0f, 0xc02060ff);
+         render_end_list();
+         g_prof[2] += timer_us_gettime64() - t_draw0;
+-        { uint64_t t1 = timer_us_gettime64(); render_end_frame(); g_prof[2] += timer_us_gettime64() - t1; }
++        { uint64_t t1 = timer_us_gettime64(); render_end_frame(); g_prof[2] += timer_us_gettime64() - t1;
++          frameprof_add(FP_DRAW, (uint32_t)(timer_us_gettime64() - t_draw0)); }
+         audio_update();
+         if(ok && g_demo) {
+             int dk = demo_play_frame(&real_in);   /* DemoPlay_Main */
+@@ -916,7 +981,7 @@
+                 r = menus_stage_exit(MENU_EXIT_QUIT, total, g_dcp_world.lives, g_emeralds, 0);
+             else
+                 r = menus_stage_exit(MENU_EXIT_GAME_OVER, 0, 0, g_emeralds, 0);
+-            if(dbg_start && k == UI_EXIT_NEXT_ACT && r.kind != MENU_REQ_STAGE) {
++            if(dbg_start && (k == UI_EXIT_NEXT_ACT || g_sweep) && r.kind != MENU_REQ_STAGE) {   /* sweep: past a game over too */
+                 /* test builds without menus: continue in story order */
+                 const char *nx = k_stages[(stage + 1) % NUM_STAGES];
+                 r.kind = MENU_REQ_STAGE; r.zone = nx[1] == 'f' ? 7 : nx[1] - '1';
+@@ -945,7 +1010,7 @@
+                 }
+             }
+         }
+-        if(++frame % 120 == 0 && dbg_start) {   /* frame log: test builds only (each serial line costs ms) */
++        if(++frame % 120 == 0 && dbg_start && !frameprof_enabled()) {   /* frame log: test builds only (each serial line costs ms) */
+             uint64_t now = timer_ms_gettime64();
+             if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
+             printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f; worst frame %.2f ms, %d of 120 over 17.5 ms\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0, g_fmax / 1000.0, g_fslow);

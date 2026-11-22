@@ -11,6 +11,8 @@
 #include "cs_internal.h"
 #ifdef _arch_dreamcast
 #include "../engine/pak.h"   /* /cd/data.pak: per-stage files without a directory walk each */
+#include <kos/fs.h>
+#include <malloc.h>
 #endif
 #ifdef _arch_dreamcast
 #include "../engine/render.h"
@@ -228,14 +230,192 @@ int cs_pic_load(CsPic *p, const char *name) {
 }
 /* one entry of a CSP1 pack read from the file (TalkDemo_ReadMessage /
  * File_LoadArchiveEntry read one entry the same way) */
+/* Packs cs_pack_read keeps open while the cutscene runs: a TalkDemo reads a portrait (talk/img.csp,
+ * 650 KB) and a message image (talk/msg_<lang>.csp, 4.5-4.9 MB) per page; opening, seeking and
+ * sizing the files per page held the frame for 100-175 ms in Flycast.  A slot keeps the pack's offset
+ * table and the open file: one seek + read per entry, same bytes.  (Reading img.csp whole instead
+ * once took 5.45 s in a long Flycast session, the read contending with the music reader thread.)
+ * The portraits repeat from page to page: a slot of a pack up to 1 MB also keeps copies of its last
+ * PACK_KEEP entries (each up to 96 KB), so a repeated portrait costs no disc read.
+ * On the DC an entry is read from its sector start into a 32-byte aligned buffer: fs_iso9660 then
+ * streams it with one CD command; the unaligned fread went sector by sector through the block cache
+ * (one command per 2 KB: a 7 KB message 45-65 ms, a 15 KB portrait 128 ms in Flycast). */
+#define PACK_SLOTS 2
+#define PACK_KEEP 8
+#define PACK_KEEP_PACK_MAX (1024 * 1024)
+#define PACK_KEEP_ENTRY_MAX (96 * 1024)
+typedef struct {
+    char path[200];
+#ifdef _arch_dreamcast
+    file_t fd;        /* the open file ... */
+    int open;
+#else
+    FILE *f;          /* the open file ... */
+#endif
+    u32 *ofs, n;      /* ... and its offset table */
+    u32 size;
+    u32 used;
+    struct {
+        u8 *b;        /* copy of entry idx, or NULL */
+        u32 idx, size, used;
+    } keep[PACK_KEEP];
+} PackSlot;
+static PackSlot s_pk[PACK_SLOTS];
+static u32 s_pk_clock;
+
+static void pack_slot_free(PackSlot *k) {
+    int j;
+    for (j = 0; j < PACK_KEEP; j++)
+        free(k->keep[j].b);
+    free(k->ofs);
+#ifdef _arch_dreamcast
+    if (k->open)
+        fs_close(k->fd);
+#else
+    if (k->f)
+        fclose(k->f);
+#endif
+    memset(k, 0, sizeof(*k));
+}
+
+/* size bytes of the pack at off */
+static int pack_bytes(PackSlot *k, u32 off, void *dst, u32 size) {
+#ifdef _arch_dreamcast
+    u32 a = off & ~2047u, len = (off + size - a + 31) & ~31u;
+    u8 *t;
+    if (a + len > k->size)
+        len = k->size - a;
+    t = (u8 *)memalign(32, len ? len : 32);
+    if (!t)
+        return -1;
+    if (fs_seek(k->fd, (off_t)a, SEEK_SET) != (off_t)a || fs_read(k->fd, t, len) != (ssize_t)len) {
+        free(t);
+        return -1;
+    }
+    memcpy(dst, t + (off - a), size);
+    free(t);
+    return 0;
+#else
+    return fseek(k->f, (long)off, SEEK_SET) == 0 && fread(dst, 1, size, k->f) == size ? 0 : -1;
+#endif
+}
+
+void cs_pack_cache_drop(void) {
+    int i;
+    for (i = 0; i < PACK_SLOTS; i++)
+        pack_slot_free(&s_pk[i]);
+}
+
+static PackSlot *pack_open(const char *path) {
+    PackSlot *k = NULL;
+    u8 h[4];
+    long end;
+    int i;
+    for (i = 0; i < PACK_SLOTS; i++)
+        if (s_pk[i].path[0] && !strcmp(s_pk[i].path, path)) {
+            s_pk[i].used = ++s_pk_clock;
+            return &s_pk[i];
+        }
+    for (i = 0; i < PACK_SLOTS; i++)
+        if (!k || s_pk[i].used < k->used)
+            k = &s_pk[i];
+    pack_slot_free(k);
+#ifdef _arch_dreamcast
+    k->fd = fs_open(path, O_RDONLY);
+    if (k->fd == FILEHND_INVALID)
+        return NULL;
+    k->open = 1;
+    end = (long)fs_total(k->fd);
+#else
+    k->f = fopen(path, "rb");
+    if (!k->f)
+        return NULL;
+    fseek(k->f, 0, SEEK_END);
+    end = ftell(k->f);
+#endif
+    k->size = end > 0 ? (u32)end : 0;
+    if (k->size < 4 || pack_bytes(k, 0, h, 4) != 0) {
+        pack_slot_free(k);
+        return NULL;
+    }
+    k->n = rd32(h);
+    k->ofs = (u32 *)malloc(4 * (size_t)(k->n ? k->n : 1));
+    if (!k->ofs || (uint64_t)4 + 4 * (uint64_t)k->n > k->size || pack_bytes(k, 4, k->ofs, 4 * k->n) != 0) {
+        pack_slot_free(k);
+        return NULL;
+    }
+    for (i = 0; i < (int)k->n; i++)
+        k->ofs[i] = rd32((const u8 *)&k->ofs[i]);
+    snprintf(k->path, sizeof(k->path), "%s", path);
+    k->used = ++s_pk_clock;
+    return k;
+}
+
 int cs_pack_read(CsPic *p, const char *path, int i) {
     FILE *f;
     u8 h[8];
     u32 n, off, next, size;
     long end;
+    PackSlot *k;
     memset(p, 0, sizeof(*p));
     if (i < 0)
         return -1;
+    k = pack_open(path);
+    if (k) {
+        /* the entry the file path below reads: offset i up to the next non-zero offset, else the file end */
+        int i0 = i;
+        n = k->n;
+        if ((u32)i >= n)
+            return -1;
+        off = k->ofs[i];
+        next = 0;
+        while (!next && (u32)++i < n)
+            next = k->ofs[i];
+        if (!next)
+            next = k->size;
+        if (!off || next <= off || next > k->size)
+            return -1;
+        size = next - off;
+        p->blob = (u8 *)malloc(size);
+        if (!p->blob)
+            return -1;
+        {
+            int j, kj = -1, hit = 0;
+            u32 idx = (u32)i0;
+            for (j = 0; j < PACK_KEEP && !hit; j++)
+                if (k->keep[j].b && k->keep[j].idx == idx && k->keep[j].size == size) {
+                    memcpy(p->blob, k->keep[j].b, size);
+                    k->keep[j].used = ++s_pk_clock;
+                    hit = 1;
+                }
+            if (!hit) {
+                if (pack_bytes(k, off, p->blob, size) != 0) {
+                    free(p->blob);
+                    p->blob = NULL;
+                    return -1;
+                }
+                if (k->size <= PACK_KEEP_PACK_MAX && size <= PACK_KEEP_ENTRY_MAX) {
+                    for (j = 0; j < PACK_KEEP; j++)
+                        if (kj < 0 || k->keep[j].used < k->keep[kj].used)
+                            kj = j;
+                    free(k->keep[kj].b);
+                    k->keep[kj].b = (u8 *)malloc(size);
+                    if (k->keep[kj].b) {
+                        memcpy(k->keep[kj].b, p->blob, size);
+                        k->keep[kj].idx = idx;
+                        k->keep[kj].size = size;
+                        k->keep[kj].used = ++s_pk_clock;
+                    }
+                }
+            }
+        }
+        if (cs_img_parse(&p->img, p->blob, size) != 0) {
+            free(p->blob);
+            p->blob = NULL;
+            return -1;
+        }
+        return 0;
+    }
     f = fopen(path, "rb");
     if (!f) {
         printf("cutscene: missing %s\n", path);
@@ -657,9 +837,11 @@ typedef struct {
     s16 step;
     s16 delay;
     int active;
+    int group;   /* task priority group: 7 when made while frozen (gSystemFlags & 8), else 0 */
 } CsFade;
 static CsFade s_fade;
 s16 g_cs_bright_sub;
+int g_cs_freeze, g_cs_frozen;
 
 static void BrightnessFade_Apply(CsFade *w) {
     s16 b = w->bright > 0x1000 ? 0x10 : (s16)(w->bright >> 8);
@@ -680,6 +862,7 @@ void BrightnessFade_Create(u16 flags, u16 v) {
     if (!exists)
         memset(&s_fade, 0, sizeof(s_fade));
     s_fade.active = 1;
+    s_fade.group |= g_cs_freeze ? 7 : 0;
     s_fade.step = (s16)v;
     s_fade.flags = flags;
     s_fade.delay = 0;
@@ -692,7 +875,7 @@ BOOL BrightnessFade_IsDone(void) { return !s_fade.active || (s_fade.flags & 0x20
 void BrightnessFade_Destroy(void) { s_fade.active = 0; }
 void BrightnessFade_Main(void) {
     CsFade *w = &s_fade;
-    if (!w->active)
+    if (!w->active || (g_cs_frozen && !w->group))
         return;
     if (w->flags & 2) {
         if (w->bright <= 0) {

@@ -92,6 +92,31 @@ void ui_palmap_set(int n, int res, int src_image, int dst_image) {
         }
 }
 
+void ui_palmap_set_pal(int n, int res, int from_pal, int to_pal) {
+    const UiRes *r = &g_ui_res[res];
+    int k, j;
+    if (n < 0 || n >= 4)
+        return;
+    s_palmap[n].n = 0;
+    s_palmap[n].res = res;
+    s_palmap[n].src = s_palmap[n].dst = -1;
+    if (!r->pal.blob || from_pal < 0 || to_pal < 0 || from_pal >= r->pal.n_pal || to_pal >= r->pal.n_pal)
+        return;
+    for (k = 1; k < 16; k++) {
+        u16 f = r->pal.pal[16 * from_pal + k], t = r->pal.pal[16 * to_pal + k];
+        if (!(f & 0x8000))
+            continue;
+        for (j = 0; j < s_palmap[n].n; j++)
+            if (s_palmap[n].from[j] == f)
+                break;
+        if (j == s_palmap[n].n) {
+            s_palmap[n].from[j] = f;
+            s_palmap[n].to[j] = t;
+            s_palmap[n].n++;
+        }
+    }
+}
+
 /* Painter's order. Within a layer the DS OAM rule applies: the sprite drawn
  * first (lowest OAM index) is in front, so textured quads go back to front in
  * reverse call order; flat quads stand for BG fills and go first. */
@@ -305,9 +330,7 @@ void ui_face_release(void) {
     s_face_cur = -1;
 }
 
-static uint64_t s_prof[3]; static int s_prof_n, s_prof_q, s_prof_v, s_prof_f;
 void ui_draw_tr(void) {
-    uint64_t pt0 = timer_us_gettime64(), pt1;
     int i, n = sort_quads();
     float z = 100.0f;
     s16 b;
@@ -315,14 +338,17 @@ void ui_draw_tr(void) {
      * and the title card sprites; it is drawn in the opaque lists with depth in (UI_TC_MODEL_Z0,
      * UI_TC_MODEL_Z1), so the title layers and everything above them move up by UI_TC_GAP */
     int gap = ui_titlecard_player_draw(NULL, NULL, NULL, NULL, NULL, NULL);
-    pt1 = timer_us_gettime64(); s_prof[0] += pt1 - pt0; s_prof_q += n;
+    /* ClearDemo_DrawModel: the results model lies between the results BG and the tally */
+    int gap_layer = gap ? UI_LAYER_TITLE : UI_LAYER_RESULTS;
+    if (!gap)
+        gap = ui_results_model(NULL, NULL, NULL, NULL, NULL, NULL);
     for (i = 0; i < n; i++, z += 0.01f) {
         const UiQuad *q = sorted[i];
         const UiRes *r;
         const Texture *t;
         SprAtlas *a;
         int bank;
-        if (gap && q->layer >= UI_LAYER_TITLE) {
+        if (gap && q->layer >= gap_layer) {
             z += UI_TC_GAP;
             gap = 0;
         }
@@ -331,7 +357,6 @@ void ui_draw_tr(void) {
             continue;
         }
         if (q->tex == UI_TEX_FACE) {
-            s_prof_f++;
             t = face_tex(q->image);
             if (t)
                 draw_rect_screen(t, PVR_LIST_TR_POLY, q->x, q->y, q->w, q->h, q->u0, q->v0, q->u1, q->v1, z, q->argb);
@@ -344,7 +369,6 @@ void ui_draw_tr(void) {
         if (q->variant != 0 && a->pal4[r->images[q->image].page]) {
             /* palette effect = another bank for the same texels */
             int vb = variant_bank(r, q->image, q->variant);
-            s_prof_v++;
             if (vb >= 0) {
                 draw_rect_screen_pal(&a->tex[r->images[q->image].page], vb, PVR_LIST_TR_POLY, q->x, q->y, q->w,
                                      q->h, q->u0, q->v0, q->u1, q->v1, z, q->argb);
@@ -354,10 +378,7 @@ void ui_draw_tr(void) {
         if (q->variant != 0) {
             u16 vx, vy;
             const UiImage *im = &r->images[q->image];
-            uint64_t vt0 = timer_us_gettime64();
             int hit = vc_find(r, q->image, q->variant, &vx, &vy);
-            s_prof[2] += timer_us_gettime64() - vt0;
-            s_prof_v++;
             if (hit) {
                 float du = (float)vx - im->x, dv = (float)vy - im->y;
                 draw_rect_screen(&s_vc_tex, PVR_LIST_TR_POLY, q->x, q->y, q->w, q->h, q->u0 + du,
@@ -373,12 +394,6 @@ void ui_draw_tr(void) {
     }
     /* master brightness of the main screen (the frame); sub-screen quads took
      * gDisplaySub's in sort_quads */
-    s_prof[1] += timer_us_gettime64() - pt1;
-    if (++s_prof_n == 120) {
-        printf("ui draw: sort %.2f ms, quads %.2f ms (vc_find %.2f, vc entries %d), %d quads/f, %d variant, %d face\n", s_prof[0] / 120000.0,
-               s_prof[1] / 120000.0, s_prof[2] / 120000.0, s_vc_n, s_prof_q / 120, s_prof_v / 120, s_prof_f / 120);
-        s_prof[0] = s_prof[1] = s_prof[2] = 0; s_prof_n = s_prof_q = s_prof_v = s_prof_f = 0;
-    }
     b = g_ui_bright_main;
     if (b != 0) {
         u32 a = (u32)((b < 0 ? -b : b) * 255 / 16);

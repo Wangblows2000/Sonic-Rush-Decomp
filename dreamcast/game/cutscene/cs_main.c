@@ -92,6 +92,7 @@ static void kill_all(void) {
     cs3d_reset();
     cs_quads_reset();
     BrightnessFade_Destroy();
+    g_cs_freeze = g_cs_frozen = 0;
 }
 
 int cutscene_start(CsKind kind, int id, int character) {
@@ -180,15 +181,19 @@ int cutscene_run_frame(const InputState *in) {
     gPad.held = in ? pad_bits(in->held) : 0;
     gPad.trg = in ? pad_bits(in->pressed) : 0;
     cs_quads_reset();
-    cs3d_reset();
-    /* task priority order */
+    if (!g_cs_frozen)
+        cs3d_reset();   /* frozen: DisableSwapBuffersTask keeps the last 3D frame */
+    /* task priority order (Task_RunList: while frozen, only group 7 tasks run) */
     DemoScript_RunFrame();
     BrightnessFade_Main();
     PlayerDemo_RunFrame();
-    TransformDemo_RunFrame();
-    Ending_RunFrame();
+    if (!g_cs_frozen) {
+        TransformDemo_RunFrame();
+        Ending_RunFrame();
+    }
     TalkDemo_RunFrame();
     cs_bgm_update();
+    g_cs_frozen = g_cs_freeze;   /* main loop: gSystemFlags 0x80000000 = flag 8 for the next frame */
     /* draw list of this frame, back to front */
     PlayerDemo_Draw();
     TransformDemo_Draw();
@@ -197,6 +202,7 @@ int cutscene_run_frame(const InputState *in) {
     s_frame++;
     if (!cutscene_active()) {
         s_running = 0;
+        cs_pack_cache_drop();
         cs_log("end kind %d frames %d next %d", s_kind, s_frame, g_cs_result.next);
         return 1;
     }
@@ -205,6 +211,7 @@ int cutscene_run_frame(const InputState *in) {
 
 void cutscene_shutdown(void) {
     kill_all();
+    cs_pack_cache_drop();
     cs_snd_shutdown();
     s_running = 0;
 }

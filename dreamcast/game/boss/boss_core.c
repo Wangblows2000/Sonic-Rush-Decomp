@@ -204,8 +204,17 @@ int boss_anim_lengths(const char *name, const u16 **frames, u32 *count) {
     for (i = 0; p != NULL && i < s_nalens; i++) {
         const BossAnimLen *a = (const BossAnimLen *)p;
         if (!strncmp(a->name, name, sizeof(a->name))) {
+            u32 j;
             *frames = (const u16 *)(p + sizeof(*a));
             *count = a->count;
+            /* a converted material / pattern / SRT set: read it now, with the boss resources, not in the
+             * first boss_model_matstates that uses it (a disc read inside the draw: 10-17 ms each, up to
+             * 45 ms frames in the z43 fight in Flycast) */
+            for (j = 0; j < s_nmatfiles; j++)
+                if (!strncmp(s_matfiles[j].name, a->name, 24) && s_matfiles[j].file[0]) {
+                    boss_matanim_for_frames(*frames);
+                    break;
+                }
             return 0;
         }
         p += sizeof(*a) + ((a->count * 2 + 3) & ~3u);

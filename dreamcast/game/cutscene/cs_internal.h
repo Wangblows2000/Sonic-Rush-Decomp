@@ -88,6 +88,7 @@ typedef struct {
 } CsPic;
 int cs_pic_load(CsPic *p, const char *name);
 int cs_pack_read(CsPic *p, const char *path, int i);
+void cs_pack_cache_drop(void);   /* close the packs cs_pack_read keeps open (at the end of a cutscene) */
 void cs_pic_free(CsPic *p);
 
 /* Texture made from an index buffer + a 256-colour DS palette (index 0 =
@@ -173,6 +174,13 @@ BOOL BrightnessFade_IsDone(void);
 void BrightnessFade_Destroy(void);
 void BrightnessFade_Main(void);
 extern u32 g_cs_backdrop;     /* opaque backdrop for full-screen cutscenes (0 = none) */
+/* System_Freeze / System_Unfreeze (TalkDemo_Create, TalkDemo_Destructor): g_cs_freeze is
+ * gSystemFlags & 8, g_cs_frozen the 0x80000000 latch Task_RunList reads, set at the end of the
+ * frame (main loop).  While frozen only tasks of priority group 7 run (TalkDemo, DemoScript,
+ * PolyDemoUnder2, PlayerDemoRepeatSE, a BrightnessFade made while frozen); PlayerDemo, its model /
+ * BG / camera shake / skip tasks, TransformDemo, Ending / StaffRoll wait, and the last 3D frame
+ * stays on screen (DisableSwapBuffersTask). */
+extern int g_cs_freeze, g_cs_frozen;
 
 /* ---------------------------------------------------------------- 3D */
 typedef struct {

@@ -1,0 +1,54 @@
+diff -ru a/dreamcast/game/build_disc.sh b/dreamcast/game/build_disc.sh
+--- a/dreamcast/game/build_disc.sh	2026-11-22 21:18:41.284650887 +0000
++++ b/dreamcast/game/build_disc.sh	2026-11-22 21:18:41.389895302 +0000
+@@ -124,7 +124,9 @@
+ # one data.pak of the small files (the loose copies are dropped from the disc tree)
+ make -C "$HERE/objects" preload >/dev/null
+ python3 "$ROOT/tools/dreamcast/mkpak.py" --stage-packs "$OUT/disc" "$ROOT/build/dreamcast/objects/preload.txt" "$ROOT/build/dreamcast/stages" "$OUT/disc/objects"
+-python3 "$ROOT/tools/dreamcast/mkpak.py" "$OUT/disc" "$OUT/disc/data.pak" sprites objects ui/res special/sprites boss/extra/sprites models sound --skip-argb-with-pt4 --drop-packed
++# cutscene/ is packed too (csdata.bin 918 ms -> 15 ms, a talk script 92 ms -> 9 ms in Flycast: ISO 9660 walks of
++# a 247-file directory); its .csp packs stay files, cs_pack_read keeps them open and seeks in them
++python3 "$ROOT/tools/dreamcast/mkpak.py" "$OUT/disc" "$OUT/disc/data.pak" sprites objects ui/res special/sprites boss/extra/sprites models sound cutscene --skip-argb-with-pt4 --loose-ext=.csp --drop-packed
+ if [ -n "$SRDC_PREBUILT" ]; then
+     cp "$SRDC_PREBUILT/1ST_READ.BIN" "$OUT/disc/"
+ else
+Only in a/dreamcast/game: build_disc.sh.now
+diff -ru a/tools/dreamcast/mkpak.py b/tools/dreamcast/mkpak.py
+--- a/tools/dreamcast/mkpak.py	2026-11-22 21:18:41.328647824 +0000
++++ b/tools/dreamcast/mkpak.py	2026-11-22 19:47:45.859015766 +0000
+@@ -6,7 +6,7 @@
+ Flycast, 5.3 s for z41's objects). The game opens this pack once and reads each file with a
+ seek and one read.
+ 
+-  mkpak.py DISC_DIR OUT.pak SUBDIR [SUBDIR ...] [--drop-packed] [--skip-argb-with-pt4]
++  mkpak.py DISC_DIR OUT.pak SUBDIR [SUBDIR ...] [--drop-packed] [--skip-argb-with-pt4] [--loose-ext=.A,.B]
+   mkpak.py --stage-packs DISC_DIR PRELOAD.txt STAGES_DIR OUT_DIR
+      (run before the main pack drops the files) per-stage packs of what objects_init loads:
+      PRELOAD.txt = objects/test/test_coverage output with COV_RES=1 (make -C
+@@ -17,6 +17,9 @@
+ --skip-argb-with-pt4: leave out atlas<N>.argb1555 when atlas<N>.pt4 exists (the game draws the
+ PAL4 page; the ARGB1555 file is the host tests' copy). --drop-packed: delete the packed files
+ (and those skipped) from DISC_DIR: the pack is authoritative for its directories.
++--loose-ext=.csp: files with these extensions stay loose files on the disc, outside the pack (the
++cutscene packs that cs_pack_read keeps open and seeks in; pak_load reports them missing, so their
++readers must fopen them directly).
+ 
+ "SPAK" v1, little-endian:
+   header 16 B   char magic[4] = "SPAK"; u32 version = 1; u32 n_files; u32 n_dirs
+@@ -51,6 +54,7 @@
+         return 2
+     disc, out, subdirs = args[0], args[1], args[2:]
+     files, skipped = [], []
++    loose = tuple(e for o in opts if o.startswith("--loose-ext=") for e in o[len("--loose-ext="):].split(",") if e)
+     # data layout = load order, so the read-ahead (engine/pak.c) serves a whole resource from
+     # one read: frames.bin, the object hit boxes of the same id, palettes.bin, the pages
+     first = {"frames.bin": 0, "palettes.bin": 2}
+@@ -63,6 +67,8 @@
+                 rel = os.path.relpath(p, disc).replace(os.sep, "/")
+                 if f.endswith(".pak"):
+                     continue   # the stage packs stay files of their own
++                if loose and f.endswith(loose):
++                    continue   # --loose-ext: stays a file of its own
+                 if "--skip-argb-with-pt4" in opts and f.startswith("atlas") and f.endswith(".argb1555") and \
+                         os.path.exists(os.path.join(dp, f[:-len(".argb1555")] + ".pt4")):
+                     skipped.append(p)

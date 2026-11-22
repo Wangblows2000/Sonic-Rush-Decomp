@@ -124,7 +124,9 @@ cp "$SP/sound/ss.srb" "$OUT/disc/sound/"
 # one data.pak of the small files (the loose copies are dropped from the disc tree)
 make -C "$HERE/objects" preload >/dev/null
 python3 "$ROOT/tools/dreamcast/mkpak.py" --stage-packs "$OUT/disc" "$ROOT/build/dreamcast/objects/preload.txt" "$ROOT/build/dreamcast/stages" "$OUT/disc/objects"
-python3 "$ROOT/tools/dreamcast/mkpak.py" "$OUT/disc" "$OUT/disc/data.pak" sprites objects ui/res special/sprites boss/extra/sprites models sound --skip-argb-with-pt4 --drop-packed
+# cutscene/ is packed too (csdata.bin 918 ms -> 15 ms, a talk script 92 ms -> 9 ms in Flycast: ISO 9660 walks of
+# a 247-file directory); its .csp packs stay files, cs_pack_read keeps them open and seeks in them
+python3 "$ROOT/tools/dreamcast/mkpak.py" "$OUT/disc" "$OUT/disc/data.pak" sprites objects ui/res special/sprites boss/extra/sprites models sound cutscene --skip-argb-with-pt4 --loose-ext=.csp --drop-packed
 if [ -n "$SRDC_PREBUILT" ]; then
     cp "$SRDC_PREBUILT/1ST_READ.BIN" "$OUT/disc/"
 else

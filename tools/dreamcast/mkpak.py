@@ -6,7 +6,7 @@ hit boxes); on the GD-ROM every open is an ISO 9660 directory walk (about 30 ms 
 Flycast, 5.3 s for z41's objects). The game opens this pack once and reads each file with a
 seek and one read.
 
-  mkpak.py DISC_DIR OUT.pak SUBDIR [SUBDIR ...] [--drop-packed] [--skip-argb-with-pt4]
+  mkpak.py DISC_DIR OUT.pak SUBDIR [SUBDIR ...] [--drop-packed] [--skip-argb-with-pt4] [--loose-ext=.A,.B]
   mkpak.py --stage-packs DISC_DIR PRELOAD.txt STAGES_DIR OUT_DIR
      (run before the main pack drops the files) per-stage packs of what objects_init loads:
      PRELOAD.txt = objects/test/test_coverage output with COV_RES=1 (make -C
@@ -17,6 +17,9 @@ boss/extra/sprites; *.pak files are left out). Keys are paths relative to DISC_D
 --skip-argb-with-pt4: leave out atlas<N>.argb1555 when atlas<N>.pt4 exists (the game draws the
 PAL4 page; the ARGB1555 file is the host tests' copy). --drop-packed: delete the packed files
 (and those skipped) from DISC_DIR: the pack is authoritative for its directories.
+--loose-ext=.csp: files with these extensions stay loose files on the disc, outside the pack (the
+cutscene packs that cs_pack_read keeps open and seeks in; pak_load reports them missing, so their
+readers must fopen them directly).
 
 "SPAK" v1, little-endian:
   header 16 B   char magic[4] = "SPAK"; u32 version = 1; u32 n_files; u32 n_dirs
@@ -51,6 +54,7 @@ def main(argv):
         return 2
     disc, out, subdirs = args[0], args[1], args[2:]
     files, skipped = [], []
+    loose = tuple(e for o in opts if o.startswith("--loose-ext=") for e in o[len("--loose-ext="):].split(",") if e)
     # data layout = load order, so the read-ahead (engine/pak.c) serves a whole resource from
     # one read: frames.bin, the object hit boxes of the same id, palettes.bin, the pages
     first = {"frames.bin": 0, "palettes.bin": 2}
@@ -63,6 +67,8 @@ def main(argv):
                 rel = os.path.relpath(p, disc).replace(os.sep, "/")
                 if f.endswith(".pak"):
                     continue   # the stage packs stay files of their own
+                if loose and f.endswith(loose):
+                    continue   # --loose-ext: stays a file of its own
                 if "--skip-argb-with-pt4" in opts and f.startswith("atlas") and f.endswith(".argb1555") and \
                         os.path.exists(os.path.join(dp, f[:-len(".argb1555")] + ".pt4")):
                     skipped.append(p)
