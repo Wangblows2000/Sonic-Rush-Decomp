@@ -14,6 +14,7 @@
 #include "../ui/ui.h"
 #include "../sound/sound.h"
 #include "../boss/boss.h"
+#include "../objects/obj_internal.h"
 #include "../menus/menus.h"
 #include "../save/save.h"
 #include <stdlib.h>
@@ -154,7 +155,7 @@ static void draw_player_model(pvr_list_t list)
             rot.m[3][0] = bt[0] / 4096.0f; rot.m[3][1] = bt[1] / 4096.0f; rot.m[3][2] = bt[2] / 4096.0f;
             dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, 0x4000, 0, 0, 0, 0);
             dcm_mtx_mul(&mdl, &mdl, &rot);
-            boss_lights(&lights);
+            if(!boss_lights(&lights)) dcm_lights_stage(&lights, left);   /* Boss3+: stage lights */
             goto draw;
         }
         dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, left ? 0xC000 : 0x4000, g_player.angle,
@@ -251,6 +252,18 @@ static void obj_effect_hook(void *ctx, DcPlayer *p, s32 kind, s32 a, s32 b)
     }
 }
 
+/* g_boss_hooks.player_box_flags (Boss4_Action_Defeat): the player's hit boxes
+ * belong to the objects module (box 0 = body coll2A0, 1 = attack coll2CC). */
+static void boss_player_box_flags(void *ctx, DcPlayer *p, s32 box, u16 clear, u16 set)
+{
+    ObjPlayerCtx *c = obj_player_ctx(p);
+    ObjBox *b;
+    (void)ctx;
+    if(!c) return;
+    b = box == 0 ? &c->body : &c->atk;
+    b->flags = (u16)((b->flags & ~clear) | set);
+}
+
 /* Water Palace water (OBJECTS.md 2.3): the DS darkens/tints everything below
  * the water line with the BG/OBJ window and a palette effect. Here a
  * translucent tint over the viewport below the line, plus a lighter surface band. */
@@ -298,6 +311,7 @@ int main(int argc, char **argv)
     save_vmu_install();
     menus_set_paths("/cd/menus", "/cd/sprites");
     g_obj_hooks.effect = obj_effect_hook;
+    g_boss_hooks.player_box_flags = boss_player_box_flags;
     g_menu_hooks.bgm = menu_bgm; g_menu_hooks.se = menu_se; g_menu_hooks.stop_all = menu_stop_all;
     g_ui_game.save_lives[0] = g_ui_game.save_lives[1] = 3;
     printf("Sonic Rush DC: %dx%d\n", vid_mode->width, vid_mode->height);

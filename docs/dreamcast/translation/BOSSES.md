@@ -2,19 +2,25 @@
 
 Status (2026-11-22):
 
-- The shared boss framework, Boss1 (Egg Hammer, Leaf Storm act 3, stage `z13`) and Boss2 (Egg Turtle,
-  Water Palace act 3, stage `z23`) are translated.
+- The shared boss framework and four bosses are translated: Boss1 (Egg Hammer, Leaf Storm act 3, stage
+  `z13`), Boss2 (Egg Turtle, Water Palace act 3, `z23`), Boss3 (Mirage Road act 3, `z33`) and Boss4
+  (Night Carnival act 3, `z43`). `boss_init` dispatches on the stage id (2, 5, 8, 11).
 - Boss1 host test: the whole fight runs on the real z13 level with the real player module and ObjRect
   code. Measured: 16/16 checks pass with the default seed; the fight completes for 5 seeds x 2
   difficulties.
 - Boss2 host test: the whole fight runs on the real z23 level (same setup). Measured: 18/18 checks pass
-  for seeds 0x12345678, 1, 2, 3, 0xdeadbeef and 77, each at 6 and 8 hit points (12 runs). Every run
-  visits idle, dash (+ jump), attack-2 strike, attack-3 catch (water drained and raised), hurt and
-  defeat, and reaches the stage-clear request.
-- `kos-cc -O2 -Wall -Wextra -Werror` builds all 6 sources.
+  for seeds 0x12345678, 1, 2, 3, 0xdeadbeef and 77, each at 6 and 8 hit points (12 runs).
+- Boss3 host test (z33): 18/18 checks pass for the same 6 seeds x 2 difficulties (12 runs). Every run
+  visits idle, push, summon, kick, throw attack, hurt and defeat, and reaches the stage-clear request.
+- Boss4 host test (z43): 17/17 checks pass for the same 12 runs. Every run visits spin, clash, hurt,
+  slam, tilt spin and defeat, and reaches the stage-clear request.
+- `kos-cc -O2 -Wall -Wextra -Werror` builds all 8 sources.
 - Not yet run on Dreamcast hardware or in an emulator. Rendering is checked only on the host, by
   projecting vertices through the boss camera.
-- Boss3 (Mirage Road, 153 files, about 8.8k lines) is not started; see "Next".
+- Single screen (user rule): every boss arena renders in one 640x480 view with `boss_camera()`. Nothing
+  in the boss module draws to a second screen. The DS sub-screen information goes to the UI through
+  `boss_health()` / `boss_health_max()` / `boss_phase()` and `g_boss_hooks.navi` (NaviMsg). Boss3 and
+  Boss4 do not write POWCNT (only Boss1/Boss2 did, and those writes are dropped).
 
 ## 1. Files
 
@@ -30,19 +36,25 @@ All files are under `dreamcast/game/boss/`.
 | `boss_effect.c` | BossEffect_Create (from the ARM listing), State_Main, all 35 `BossEffect_Create<Name>` wrappers, EffPebble, and the StageObj_Draw3D step for effects. |
 | `boss1.c` | Boss1, Boss1Neck, Boss1Hammer: all 196 functions of `src/game/Boss/Boss1/`, plus BossStage1 (model load/free). |
 | `boss2.c` | Boss2, Boss2Water, Boss2WaterLight, BossStage2: all 86 functions of `src/game/Zone/Water_Palace/Boss/`, plus EffRipple3D / EffSplash3D (Water Palace effects the boss spawns). |
+| `boss3.c` | Boss3, Boss3PartCC (body), Boss3PartCD (ball), BossStage3: all 153 functions of `src/game/Zone/Mirage_Road/Boss/`. |
+| `boss4.c` | Boss4, Boss4PartCE..D2, BossStage4: all 105 functions of `src/game/Zone/Night_Carnival/Boss/` plus the 2 kept as ARM listings in `src/asm_fallback/` (Boss4_State_WaitForStart, Boss4_SubState_SlamStopSpin). |
 | `tools/bossdata.py` | Converter. It writes `build/dreamcast/boss/bossdata.bin` and `assets.txt`. |
-| `test/test_boss.c`, `test/test_boss2.c`, `test/stubs_objects.c` | Host tests (Boss1 on z13, Boss2 on z23). The stubs are weak definitions for object-module functions that are declared but not yet written. |
-| `Makefile` | `make data`, `make host-test` (both), `make host-test1`, `make host-test2`, `make dc`. |
+| `test/test_boss.c` .. `test/test_boss4.c`, `test/stubs_objects.c` | Host tests (Boss1 on z13, Boss2 on z23, Boss3 on z33, Boss4 on z43). The stubs are weak definitions for object-module functions that are declared but not yet written. |
+| `Makefile` | `make data`, `make host-test` (all four), `make host-test1` .. `host-test4`, `make dc`. |
 
 `bossdata.bin` ("BOSD" v1) contains the following. Nothing from the ROM is compiled into the sources.
 
-- The ROM tables the code reads, keyed by DS address:
+- The ROM tables the code reads, keyed by DS address (10 chunks, 16844 bytes in all):
   - Boss1: `data_ov000_02362b58..02362dc4`;
   - Boss2: `data_ov000_02362dc4..0236306c` (rodata) and `data_ov000_023650fc..02365414` (data: palette and
     node name pointer tables, defeat positions, the hit-box callback table, `gBoss2ModelColorsAlt`);
   - `gEffSplash3DModelNames` / `gEffRipple3DModelNames` (`0x02367b38..02367b9c`);
   - zone lights `data_020748bc` (vectors) / `data_02074960` (colours) (`0x020748bc..02074a04`);
-  - ScreenShake: `data_0207323c`, `data_02073240`, `data_0207324c`.
+  - ScreenShake: `data_0207323c`, `data_02073240`, `data_0207324c`;
+  - Boss3: `data_ov000_0236306c..02363504` (rodata) and `data_ov000_02365414..023655e8` (palette name
+    pointer tables, names);
+  - Boss4: `data_ov000_02363504..023636e8` (rodata, incl. the float spin-scale table `02363668`) and
+    `data_ov000_023655e8..023657e0`.
   - Pointers inside these tables keep their DS value; `ROM_STR(ptr)` resolves them through the same
     chunks. The hit-box callback table holds ROM function addresses; `Boss2_HitCallback` maps them to the
     native functions (the tool checks the table bytes).
@@ -51,11 +63,14 @@ All files are under `dreamcast/game/boss/`.
 - The node indices that the code looks up by name: `bs1_neck:neck_ham` = 10, `bs1_hammer:hammer` = 0.
   These come from the NSBMD node dictionaries (`g3d.py`).
 - The Boss2 node names: `bs2_body:body0` / `body_neck` / `prop`, `bs2_neck:neck_head`, `bs2_head:head_01`.
+- Boss3: `bs3_body:body_ball`. Boss4: `bs4_rod:rod_arm` / `rod_body`, `bs4_arm:arm_gun`, `bs4_body:body_exit`.
 - An effect table: for each boss stage, the converted package of each BossEffect name. There are 49
   entries, 5 of them for z13 and 10 for z23 (incl. `eff_ripple_s/m/b`, `eff_splash_s/b`). Duplicates are
   resolved through `models/manifest.json`.
 - A timing-only animation table: the frame counts of animation files that are not converted
-  (`bs2.nsbta`: 60, 30, 30, 240). `Model_SetAnimation` turns them into animation objects without
+  (`bs2.nsbta`: 60, 30, 30, 240; `bs3.nsbta`: 60; `bs4.nsbma`: 60; `bs4.nsbtp`: 21;
+  `eff_ele_stay.nsbma`: 40; `eff_ele_flash.nsbma`: 8; `eff_wave_disap.nsbma`: 10). The tool reads
+  numFrame from any NNS animation file (SRT0 / MAT0 / PAT0 / JNT0 block). `Model_SetAnimation` turns them into animation objects without
   joint data, so the "ended" bit the Boss2 water states wait on keeps the original timing.
 
 ## 2. API and how to wire it into main.c
@@ -91,6 +106,10 @@ boss_shutdown();            /* leaving the stage */
 g_boss_hooks.sfx_handle = ...;  /* Sound_PlaySeqArc(handle 1..3, 0, id): looping boss sounds */
 g_boss_hooks.sfx_stop = ...;    /* NNS_SndPlayerStopSeq(handle, 0) */
 g_boss_hooks.water_fx = ...;    /* EffWater3D_Create (water spray sprite, not translated) */
+/* Boss4 (optional): */
+g_boss_hooks.player_box_flags = ...; /* Boss4_Action_Defeat: player's hit boxes, box 0 body / 1 attack,
+                                        flags = (flags & ~clear) | set (objects module ObjPlayerCtx) */
+/* tests / debug: boss3_ball(), boss3_arc_x(), boss3_balls_alive(), boss4_info() */
 ```
 
 Integration notes:
@@ -130,8 +149,20 @@ Integration notes:
      (default and the drained-water set). This is done on the loaded `.dcm`, so `boss_draw` shows it.
 7. **Order:** boss_update runs after objects_update. Its ObjRect boxes are checked at the next
    `objects_frame_begin`, as on the DS, where Stage_Main runs first.
+8. **Boss3 (z33).** `boss_init(8, ...)` creates Boss3 from map object 0x3d (the objects module must
+   not create 0x3d, 0xcc or 0xcd). Arena circle radius 0xf42f8, circumference 0x5fe435 fx32 = 1534 px;
+   the player's x is wrapped into 0x40..0x63e px by Boss3_Draw_PlayerOnArena every `boss_update`, and
+   the player model transform comes from `boss_player_model()`, as for Boss2.
+   - The boss locks the player's input (`pf |= 0x200000`) after a reflected ball and drives `held`
+     (0x10 / 0x20) itself until the ball hits or gets away; the player module already honours the lock.
+   - `Boss3PartCD_OnHit` calls `Player_OnHurt` / `Player_Action_AttackBounce` through the objects module.
+9. **Boss4 (z43).** `boss_init(11, ...)` creates Boss4 from map object 0x3c (the objects module must
+   not create 0x3c, 0xce..0xd2). Arena radius 0x128fb8, circumference 0x749fed fx32 = 1865 px; player
+   x wrapped into 0x40..0x789 px. Wire `g_boss_hooks.player_box_flags` to the objects module's player
+   boxes (`obj_player_ctx(p)->body` / `->atk`) so the defeat disarms them.
 
-Disc assets (from `build/dreamcast/boss/assets.txt`: 14 files for z13, 31 for z23):
+Disc assets (from `build/dreamcast/boss/assets.txt`: 14 files for z13, 31 for z23, 22 for z33, 26 for z43;
+93 lines, 0 missing):
 
 - `/cd/boss/bossdata.bin`.
 - `/cd/models/` with:
@@ -144,6 +175,14 @@ Disc assets (from `build/dreamcast/boss/assets.txt`: 14 files for z13, 31 for z2
   (`.dcm` + `.dca`), `narc__z23_act_lz7__eff_suction2__eff_suction2.dcm` (no joint animation),
   `narc__z13_act_lz7__eff_{hit,impact_small}` (identical in z23, deduplicated by the converter),
   `narc__extra_act__eff_catch` (`.dcm` + `.dca`, identical in z23).
+- z33: `mod__bs3_{base,body,ball,thorn,sky}__*.dcm`, `narc__z33_act_lz7__bs3.dca`,
+  `narc__z33_act_lz7__eff_{blast3,pop,land}` (`.dcm` + `.dca`), and the deduplicated
+  `narc__z13_act_lz7__eff_hit`, `narc__extra_act__eff_{catch,clash,jump}`, `narc__ss_act_lz7__eff_shoot_bomb`.
+- z43: `mod__bs4_{base,body,arm,ele,rod,enemy,sky}__*.dcm`, `narc__z43_act_lz7__bs4.dca`,
+  `narc__z43_act_lz7__eff_ele_atk__eff_ele_atk.dcm`, `..eff_ele_stay__eff_ele_stay.dcm`,
+  `..eff_ele_flash__eff_flash.dcm` + `.dca`, `..eff_ele_wave__eff_wave.dcm` + `.dca`,
+  `..eff_wave_disap__eff_wave_disap.dcm` + `.dca`, `..eff_blast4` (`.dcm` + `.dca`), and the deduplicated
+  `eff_hit`, `eff_clash`, `eff_impact_small`, `eff_shoot_bomb` packages.
 - Build them with `python3 tools/dreamcast/models/nsbmd2dc.py batch`, then `make -C dreamcast/game/boss data`.
 
 ## 3. How the translation is built
@@ -276,6 +315,26 @@ into the player module:
     sends them through the camera matrix). Not compared against a DS capture.
   - Display registers (POWCNT swap, BG2 cut-in, master brightness) become `boss_exc_background()` /
     `boss_brightness()` state.
+- **Boss3 specifics:**
+  - Palette swaps (hurt blink, ball palette) and the ball's material flag / emission change
+    (`Boss3_LoadBallPalette`: hittable ball flashes white) are state only (`boss3_palette`,
+    `boss3_ball_white`).
+  - `bs3.nsbta` (arena SRT animation) is timing only.
+  - Balls are a pool of 8 static objects (the DS allocates a task per ball); task order 0x502 is kept
+    by creation order.
+  - `Boss3_Action_Defeat` / `Boss3_Action_DefeatAll` / `Boss3_State_DefeatFinish` skip a NULL ball
+    (the DS would dereference it; it is never NULL on that path in the test runs).
+  - The BossCamera "track the model translation" branch (camera flags 2/4, set by Boss3/Boss4) is now
+    translated: `boss_obj_set_model` registers each part's Model (StageObj.unk124).
+- **Boss4 specifics:**
+  - Node callbacks (Rods / ArmGun / BodyExit) run per joint after the pose; `Boss4_CaptureNodeMatrix`
+    keeps the fx32 scale step. Matrices are rounded from the float joint matrices.
+  - Material / pattern animations (`bs4.nsbma`, `bs4.nsbtp`, `eff_*.nsbma`) are timing only; the
+    D0 shot and the D2 vanish end on them, so their frame counts are in bossdata.bin.
+  - The float easings (SlamTiltUp, SlamRecover, D0 Launch, SetSpinSpeed, Spin) use C float, like the
+    DS softfloat single precision; not compared bit for bit with the DS.
+  - `Player_Action_AttackBounceVel` is copied into boss4.c (the player module lacks it).
+  - D2 draws the wave model twice per frame; the second model matrix is kept in `wave2`.
 - **Not run on Dreamcast hardware or in an emulator.** PVR list classes, culling and the camera
   framing are derived, not observed. The host debug view (`DUMPAT=<frame>`) splats projected
   vertices. It shows the neck and hammer in front of the camera with the player below them, but it
@@ -353,13 +412,52 @@ Phases visited: 7 idle, 8 dash, 9 attack 2, 10 attack 3, 11 hurt, 12 defeat. Che
 player transform on the arena circle (radius 277.2 px), the lights, the camera and the projection of
 all models. All 12 seed / difficulty runs above pass 18/18.
 
+### Boss3 (z33)
+
+```sh
+make -C dreamcast/game/boss host-test3
+SEED=1 LEVEL=1 build/dreamcast/boss/test_boss3 build/dreamcast/stages/z33/level.bin \
+    build/dreamcast/player build/dreamcast/models build/dreamcast/boss [-v|-vv]
+```
+
+The boss is hurt only by its own ball: during a kick the rolling ball alternates harmful / hittable; a
+jumping player (anim 0x30) that touches it while hittable reflects it, and the reflected ball hits the
+body's damage box. Scripted player: [miss] 900 frames standing still; [fight] when the kicked ball is
+hittable for 24+ more frames the player is put on the floor in front of it and jumps ("intercept"); in
+a push he jumps on the hittable ball (the body staggers) or keeps away from the harmful one.
+
+Measured (default seed, 6 hp): hits at f 1936 / 4768 / 9188 / 9769 (pinch) / 13451 / 14232, cleared at
+f 14634. Attacks 41 (push 17, kick 19, throw 5), summons 6, reflects 21 (13 balls caught again by the
+body: a reflected ball that meets the body's front is caught, only the back is the damage box),
+staggers 12, balls 21 spawned / 15 thrown / 15 exploded (2 alive at once). The checks also cover the
+body and the player on the arena circle (radius 244.2 px), the camera and the projection.
+
+### Boss4 (z43)
+
+```sh
+make -C dreamcast/game/boss host-test4
+SEED=1 LEVEL=1 build/dreamcast/boss/test_boss4 build/dreamcast/stages/z43/level.bin \
+    build/dreamcast/player build/dreamcast/models build/dreamcast/boss [-v|-vv]
+```
+
+The seesaw's body rides about 200 px above the floor while it spins. Hitting the arm (not electrified)
+makes it clash: the seesaw tilts the body down (box bottom y 452) and drops an enemy; bouncing on the
+enemy (-0x900) reaches the body even when it is high. Scripted player: [miss] 900 frames; [fight] jumps
+at the arm or at the lowered body (placed on the floor in front of it), and when the body comes round
+towards a grounded enemy it jumps and is put just above the enemy ("assist", as in the Boss2 test),
+then steers under the body; [watch] at 5 hp or less it leaves the body alone until a slam was seen
+(slams are only chosen at 5 hp or less), so every attack kind is covered.
+
+Measured (default seed, 6 hp): hits at f 1042 / 2438 / 2626 / 2834 (pinch) / 3096 / 3250 (3 from a
+normal jump at the lowered body, 3 after an enemy bounce), cleared at f 3649. Attacks 10 (shot bursts 7,
+slam 1, tilt spins 2), shots 21 (2 at once), shock waves 1, clashes 3, enemies 3, bounces 3, assists 3.
+
 ## 6. Next
 
-- **Boss3** (Mirage Road z33, `src/game/Zone/Mirage_Road/Boss/`, 153 files, about 8.8k lines). Arena
-  constants for zone mode 2 (0xf42f8 / 0x5fe435) are already set by `boss_init`.
+- Boss5 (Huge Crisis z53) and later on the same framework.
 - Water surface / underwater handling for the player in z23 (reads `g_obj_camera[0].water`).
-- In the player module: `Player_Action_KnockbackIntangible` / `Player_Action_Blank`, and the
-  boss-stage player draw.
+- In the player module: `Player_Action_KnockbackIntangible` / `Player_Action_Blank` /
+  `Player_Action_AttackBounceVel`, and the boss-stage player draw.
 - In the models converter: palette variants for the hurt/flash palettes.
 
 ## 7. Mapping table
@@ -373,7 +471,9 @@ Status meanings:
   callbacks, palettes, asset loading).
 - **not translated**: see section 4.
 
-Counts: Boss1 + framework: 199 reused, 39 modified, 7 substantially rewritten, 2 not translated, out
+Counts: Boss3: 110 reused, 38 modified, 5 substantially rewritten, 0 not translated, out of 153.
+Boss4: 51 reused, 43 modified, 13 substantially rewritten, 0 not translated, out of 107 (105 C files
++ 2 ARM listings). Boss1 + framework: 199 reused, 39 modified, 7 substantially rewritten, 2 not translated, out
 of 247 original functions. Boss2 (+ the 7 Water Palace 3D effect functions it uses): 55 reused, 32
 modified, 6 substantially rewritten, 2 not translated, out of 95.
 
@@ -742,3 +842,273 @@ New native functions:
 | `EffSplash3D_State_Main` | boss2.c | reused |  |
 | `EffWater3D_Create` | boss2.c | not translated | 3D BAC sprite (ac_eff_water_3d.bac): arena position -> g_boss_hooks.water_fx |
 | `EffWater3D_State_DestroyOnAnimEnd` | boss2.c | not translated | see EffWater3D_Create |
+
+### Boss3 (boss3.c)
+
+| original | native file | status | note |
+|---|---|---|---|
+| `Boss3PartCC_Action_Defeat` | boss3.c | modified | NNS_SndPlayerStopSeq(handle) -> boss_sfx_stop |
+| `Boss3PartCC_Action_Hurt` | boss3.c | modified | same |
+| `Boss3PartCC_Action_Idle` | boss3.c | reused |  |
+| `Boss3PartCC_Action_StartKickBall` | boss3.c | reused |  |
+| `Boss3PartCC_Action_StartPushBall` | boss3.c | reused |  |
+| `Boss3PartCC_Action_StartSummonBall` | boss3.c | reused |  |
+| `Boss3PartCC_Action_StartThrowAttack` | boss3.c | reused |  |
+| `Boss3PartCC_CanCatchBall` | boss3.c | reused | camera track objects = t[0].ox/oz |
+| `Boss3PartCC_Create` | boss3.c | modified | Task_Create -> static part; MapObject_Init subset; Sound_AllocHandle -> handle 1; node callback -> Boss3PartCC_Draw |
+| `Boss3PartCC_Destructor` | boss3.c | modified | resource release, rect_forget |
+| `Boss3PartCC_Draw` | boss3.c | modified | Model_Draw -> boss_model_pose; MTX_RESTORE 0x1e + NNS_G3dGetCurrentMtx -> g_boss_mtx_slot -> unk228 (rounded from float) |
+| `Boss3PartCC_IsOtherOnNegativeSide` | boss3.c | reused |  |
+| `Boss3PartCC_MakeBallInert` | boss3.c | reused |  |
+| `Boss3PartCC_NodeCallback_BodyBall` | boss3.c | substantially rewritten | "body_ball" joint (bossdata.bin) -> boss_model_joint_world into slot 0x1e after the pose |
+| `Boss3PartCC_OnHit` | boss3.c | modified | owner type check -> obj_box_player; NaviMsg / Sound_PlaySeq via hooks |
+| `Boss3PartCC_State_CatchBall` | boss3.c | modified | sound handle via hooks |
+| `Boss3PartCC_State_CatchBallDone` | boss3.c | reused |  |
+| `Boss3PartCC_State_CatchBallWait` | boss3.c | reused |  |
+| `Boss3PartCC_State_Defeated` | boss3.c | reused |  |
+| `Boss3PartCC_State_EndThrows` | boss3.c | reused |  |
+| `Boss3PartCC_State_FacePlayerSide` | boss3.c | reused |  |
+| `Boss3PartCC_State_HurtDone` | boss3.c | reused |  |
+| `Boss3PartCC_State_HurtKnockback` | boss3.c | modified | palette blink -> selection state |
+| `Boss3PartCC_State_Idle` | boss3.c | reused |  |
+| `Boss3PartCC_State_Idle_ov000_022d8bb8` | boss3.c | reused |  |
+| `Boss3PartCC_State_JumpFall` | boss3.c | reused |  |
+| `Boss3PartCC_State_JumpFallStart` | boss3.c | reused |  |
+| `Boss3PartCC_State_JumpLandTurn` | boss3.c | reused |  |
+| `Boss3PartCC_State_JumpOverBall` | boss3.c | reused |  |
+| `Boss3PartCC_State_JumpRise` | boss3.c | reused |  |
+| `Boss3PartCC_State_JumpTakeoff` | boss3.c | reused |  |
+| `Boss3PartCC_State_JumpToEdge` | boss3.c | reused |  |
+| `Boss3PartCC_State_KickBall` | boss3.c | modified | Sound_PlaySeqArc(handle) -> boss_sfx_handle |
+| `Boss3PartCC_State_KickFollowThrough` | boss3.c | reused |  |
+| `Boss3PartCC_State_KickWindUp` | boss3.c | reused |  |
+| `Boss3PartCC_State_KickWindUpWait` | boss3.c | reused |  |
+| `Boss3PartCC_State_LandAtEdge` | boss3.c | modified | sound handle via hooks |
+| `Boss3PartCC_State_LandAtEdgeShake` | boss3.c | reused |  |
+| `Boss3PartCC_State_MoveToCentre` | boss3.c | reused |  |
+| `Boss3PartCC_State_PickEdgeTarget` | boss3.c | modified | same; FX_Atan2 = Boss_Atan2 |
+| `Boss3PartCC_State_PushBall` | boss3.c | reused |  |
+| `Boss3PartCC_State_PushDone` | boss3.c | reused |  |
+| `Boss3PartCC_State_PushEnd` | boss3.c | reused |  |
+| `Boss3PartCC_State_PushSelectDirection` | boss3.c | reused |  |
+| `Boss3PartCC_State_PushTurn` | boss3.c | reused |  |
+| `Boss3PartCC_State_PushTurnWait` | boss3.c | reused |  |
+| `Boss3PartCC_State_ReturnDone` | boss3.c | reused |  |
+| `Boss3PartCC_State_SelectWatchOrCatch` | boss3.c | reused |  |
+| `Boss3PartCC_State_SpawnBall` | boss3.c | modified | MapObject_Spawn(0xcd) -> Boss3PartCD_Create (pool) |
+| `Boss3PartCC_State_Stagger` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartHurt` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartIdle` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartJumpToEdge` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartMoveToCentre` | boss3.c | modified | sound handle via hooks |
+| `Boss3PartCC_State_StartPushBall` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartStagger` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartThrowAim` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartThrows` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartTurn` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartWaitAfterKick` | boss3.c | reused |  |
+| `Boss3PartCC_State_StartWaitCatchBall` | boss3.c | reused |  |
+| `Boss3PartCC_State_SummonBall` | boss3.c | modified | same |
+| `Boss3PartCC_State_SummonBallDone` | boss3.c | reused |  |
+| `Boss3PartCC_State_SummonBallGrow` | boss3.c | reused | same |
+| `Boss3PartCC_State_ThrowAim` | boss3.c | modified | gPlayers->unk17C/unk184 -> g_boss_game.player_trans |
+| `Boss3PartCC_State_ThrowAttackJump` | boss3.c | reused |  |
+| `Boss3PartCC_State_ThrowAttackTurn` | boss3.c | reused |  |
+| `Boss3PartCC_State_ThrowBall` | boss3.c | modified | same |
+| `Boss3PartCC_State_ThrowFollowThrough` | boss3.c | modified | same |
+| `Boss3PartCC_State_ThrowWindUp` | boss3.c | reused |  |
+| `Boss3PartCC_State_ThrowWindUpTurn` | boss3.c | modified | same |
+| `Boss3PartCC_State_Turn` | boss3.c | reused | unkE4 -> anm[0] (numFrames, frame) |
+| `Boss3PartCC_State_TurnToEdgeTarget` | boss3.c | reused |  |
+| `Boss3PartCC_State_TurnToSide` | boss3.c | reused |  |
+| `Boss3PartCC_State_WaitAfterKick` | boss3.c | reused |  |
+| `Boss3PartCC_State_WaitBallSpawned` | boss3.c | reused |  |
+| `Boss3PartCC_State_WaitCatchBall` | boss3.c | reused |  |
+| `Boss3PartCC_State_WaitTimer_ov000_022d7754` | boss3.c | reused |  |
+| `Boss3PartCC_State_WatchBall` | boss3.c | reused |  |
+| `Boss3PartCC_ThrowBall` | boss3.c | reused |  |
+| `Boss3PartCD_Action_Defeat` | boss3.c | reused |  |
+| `Boss3PartCD_Action_Throw` | boss3.c | reused |  |
+| `Boss3PartCD_Collide` | boss3.c | modified | StageObj_HandleCollider = obj_handle_collider |
+| `Boss3PartCD_Create` | boss3.c | modified | Task_Create -> pool of 8 balls (several live during the throw attack) |
+| `Boss3PartCD_Destructor` | boss3.c | modified | resource release, rect_forget; clears gBoss3->unk218 if it points at it |
+| `Boss3PartCD_Draw` | boss3.c | modified | Model_Draw -> boss_model_pose |
+| `Boss3PartCD_OnHit` | boss3.c | modified | owner type check -> obj_box_player; Player_OnHurt / AttackBounce -> objects module |
+| `Boss3PartCD_State_Defeated` | boss3.c | reused |  |
+| `Boss3PartCD_State_Explode` | boss3.c | reused |  |
+| `Boss3PartCD_State_Exploding` | boss3.c | reused |  |
+| `Boss3PartCD_State_Fly` | boss3.c | reused | VEC_Mag as NitroSDK (CP sqrt of 4|v|^2, rounded) |
+| `Boss3PartCD_State_Harmful` | boss3.c | reused |  |
+| `Boss3PartCD_State_Hittable` | boss3.c | reused |  |
+| `Boss3PartCD_State_Idle` | boss3.c | reused |  |
+| `Boss3PartCD_State_Inert` | boss3.c | reused | the ARM code passes the object in r0 |
+| `Boss3PartCD_State_StartHarmful` | boss3.c | reused |  |
+| `Boss3PartCD_State_StartHittable` | boss3.c | reused |  |
+| `Boss3PartCD_State_StartInert` | boss3.c | reused |  |
+| `Boss3PartCD_State_ThrowStart` | boss3.c | reused |  |
+| `Boss3PartCD_UpdateModeCycle` | boss3.c | reused |  |
+| `Boss3_Action_Defeat` | boss3.c | modified | RingManager / StopSeqAll / timer via hooks; NULL ball skipped |
+| `Boss3_Action_DefeatAll` | boss3.c | modified | NULL ball skipped |
+| `Boss3_Action_Hurt` | boss3.c | reused |  |
+| `Boss3_Action_HurtAll` | boss3.c | reused |  |
+| `Boss3_Action_Idle` | boss3.c | reused |  |
+| `Boss3_Action_WaitKickBall` | boss3.c | reused |  |
+| `Boss3_Action_WaitPushBall` | boss3.c | reused |  |
+| `Boss3_Action_WaitSummonBall` | boss3.c | reused |  |
+| `Boss3_Action_WaitThrowAttack` | boss3.c | reused |  |
+| `Boss3_ArenaDistance` | boss3.c | reused |  |
+| `Boss3_Create` | boss3.c | modified | Task_Create/archives -> static part, BossStage3 resources; MapObject_Spawn(0xcc) -> Boss3PartCC_Create; effects via boss_effects_load |
+| `Boss3_Destructor` | boss3.c | modified | resource release |
+| `Boss3_Draw_Model` | boss3.c | modified | Model_Draw -> boss_model_pose |
+| `Boss3_Draw_PlayerOnArena` | boss3.c | modified | player model transform -> g_boss_game (boss_player_model); runs at the start of boss_update |
+| `Boss3_IdleAll` | boss3.c | reused |  |
+| `Boss3_IsHurtDone` | boss3.c | reused |  |
+| `Boss3_IsKickBallDone` | boss3.c | reused |  |
+| `Boss3_IsPushBallDone` | boss3.c | reused |  |
+| `Boss3_IsSummonBallDone` | boss3.c | reused |  |
+| `Boss3_IsThrowAttackDone` | boss3.c | reused |  |
+| `Boss3_LoadBallPalette` | boss3.c | substantially rewritten | NNS_G3dGlbMaterialColorSpecEmi / NNSi_G3dModifyMatFlag / palette -> selection state |
+| `Boss3_LoadPalettes` | boss3.c | substantially rewritten | palette -> selection state |
+| `Boss3_MakeBallHarmful` | boss3.c | reused |  |
+| `Boss3_MakeBallHittable` | boss3.c | reused |  |
+| `Boss3_ResetCamera` | boss3.c | reused | camera offsets -> named BossCamera fields |
+| `Boss3_SelectNextAttack` | boss3.c | reused |  |
+| `Boss3_SetBallHarmful` | boss3.c | reused |  |
+| `Boss3_SetBallHittable` | boss3.c | reused |  |
+| `Boss3_SetBallInert` | boss3.c | reused |  |
+| `Boss3_StartKickBall` | boss3.c | reused |  |
+| `Boss3_StartPushBall` | boss3.c | reused |  |
+| `Boss3_StartSummonBall` | boss3.c | reused |  |
+| `Boss3_StartThrowAttack` | boss3.c | reused |  |
+| `Boss3_State_DefeatCamera1` | boss3.c | modified | BG2 cut-in (file 6) -> Boss_DrawExcBackground; brightness -> g_boss_game.bright |
+| `Boss3_State_DefeatCamera2` | boss3.c | modified | same (file 7) |
+| `Boss3_State_DefeatCamera3` | boss3.c | modified | same (file 6) |
+| `Boss3_State_DefeatExplode` | boss3.c | modified | DISPCNT -> exc_bg = -1 |
+| `Boss3_State_DefeatFade_ov000_022d94fc` | boss3.c | modified | gDisplayMain.unk48 -> g_boss_game.bright |
+| `Boss3_State_DefeatFade_ov000_022d96d8` | boss3.c | modified | same |
+| `Boss3_State_DefeatFade_ov000_022d98b0` | boss3.c | modified | same |
+| `Boss3_State_DefeatFinish` | boss3.c | modified | StageShutdown_Create -> g_boss_hooks.cleared (once); ring bonus -> g_obj_stage |
+| `Boss3_State_Idle` | boss3.c | reused |  |
+| `Boss3_State_StartDefeat` | boss3.c | reused |  |
+| `Boss3_State_WaitForStart` | boss3.c | modified | gPlayers->unk70 -> g_boss_game.draw_player; sky Model on the camera |
+| `Boss3_State_WaitHurt` | boss3.c | reused |  |
+| `Boss3_State_WaitKickBall` | boss3.c | reused |  |
+| `Boss3_State_WaitPushBall` | boss3.c | reused |  |
+| `Boss3_State_WaitSummonBall` | boss3.c | reused |  |
+| `Boss3_State_WaitThrowAttack` | boss3.c | reused |  |
+| `Boss3_StepAngleToward` | boss3.c | reused |  |
+| `Boss3_UpdateCameraShake` | boss3.c | reused |  |
+| `BossStage3_FreeModels` | boss3.c | substantially rewritten | boss3_unload |
+| `BossStage3_OnModelLoaded` | boss3.c | substantially rewritten | boss3_load: 5 .dcm, bs3.dca, bs3.nsbta frame counts; NaviBg/NaviB not here |
+
+### Boss4 (boss4.c)
+
+| original | native file | status | note |
+|---|---|---|---|
+| `Boss4PartCE_Collide` | boss4.c | modified | StageObj_HandleCollider = obj_handle_collider |
+| `Boss4PartCE_Create` | boss4.c | modified | Task_Create -> static part / pool |
+| `Boss4PartCE_Destructor` | boss4.c | modified | resource release, rect_forget |
+| `Boss4PartCE_Draw` | boss4.c | modified | Model_Draw -> boss_model_pose; BodyExit callback |
+| `Boss4PartCF_Collide` | boss4.c | modified | StageObj_HandleCollider = obj_handle_collider |
+| `Boss4PartCF_Create` | boss4.c | modified | Task_Create -> static part / pool |
+| `Boss4PartCF_Destructor` | boss4.c | modified | resource release, rect_forget |
+| `Boss4PartCF_Draw` | boss4.c | modified | Model_Draw -> boss_model_pose; ArmGun callback |
+| `Boss4PartD0_Collide` | boss4.c | modified | StageObj_HandleCollider = obj_handle_collider |
+| `Boss4PartD0_Create` | boss4.c | modified | Task_Create -> static part / pool; Model_SetAnimation of nsbma = timing only |
+| `Boss4PartD0_Destructor` | boss4.c | modified | resource release, rect_forget |
+| `Boss4PartD0_Draw` | boss4.c | modified | Model_Draw -> boss_model_pose |
+| `Boss4PartD0_StartBurst` | boss4.c | reused |  |
+| `Boss4PartD0_StartLaunch` | boss4.c | reused |  |
+| `Boss4PartD0_State_Update` | boss4.c | reused |  |
+| `Boss4PartD0_SubState_DestroyOnAnimEnd` | boss4.c | reused |  |
+| `Boss4PartD0_SubState_Launch` | boss4.c | reused |  |
+| `Boss4PartD1_Collide` | boss4.c | modified | StageObj_HandleCollider = obj_handle_collider |
+| `Boss4PartD1_Create` | boss4.c | modified | Task_Create -> static part / pool |
+| `Boss4PartD1_Destructor` | boss4.c | modified | resource release, rect_forget |
+| `Boss4PartD1_Draw` | boss4.c | modified | Model_Draw -> boss_model_pose |
+| `Boss4PartD1_GetPlayerDirection` | boss4.c | reused |  |
+| `Boss4PartD1_OnHit` | boss4.c | modified | owner type check -> obj_box_player; Player_Action_AttackBounceVel copied into boss4.c |
+| `Boss4PartD1_StartBrake` | boss4.c | reused |  |
+| `Boss4PartD1_StartChase` | boss4.c | reused |  |
+| `Boss4PartD1_StartFall` | boss4.c | reused |  |
+| `Boss4PartD1_StartTurnToPlayer` | boss4.c | reused |  |
+| `Boss4PartD1_State_Update` | boss4.c | reused |  |
+| `Boss4PartD1_SubState_Brake` | boss4.c | reused |  |
+| `Boss4PartD1_SubState_Chase` | boss4.c | reused |  |
+| `Boss4PartD1_SubState_Fall` | boss4.c | reused |  |
+| `Boss4PartD1_SubState_TurnToPlayer` | boss4.c | reused |  |
+| `Boss4PartD2_Collide` | boss4.c | modified | StageObj_HandleCollider = obj_handle_collider |
+| `Boss4PartD2_Create` | boss4.c | modified | Task_Create -> static part / pool; Model_SetAnimation of nsbma = timing only |
+| `Boss4PartD2_Destructor` | boss4.c | modified | resource release, rect_forget |
+| `Boss4PartD2_Draw` | boss4.c | modified | Model_Draw -> boss_model_pose; second Model_Draw kept as wave2 matrix |
+| `Boss4PartD2_StartSpread` | boss4.c | reused |  |
+| `Boss4PartD2_State_Update` | boss4.c | reused |  |
+| `Boss4PartD2_SubState_Spread` | boss4.c | reused |  |
+| `Boss4_Action_Clash` | boss4.c | reused |  |
+| `Boss4_Action_Defeat` | boss4.c | modified | RingManager / StopSeqAll / display via hooks/state; player boxes via g_boss_hooks.player_box_flags |
+| `Boss4_Action_Hurt` | boss4.c | reused |  |
+| `Boss4_Action_StartSlam` | boss4.c | reused |  |
+| `Boss4_Action_StartSpin` | boss4.c | reused |  |
+| `Boss4_Action_StartTiltSpin` | boss4.c | reused |  |
+| `Boss4_ActivateAuxModel` | boss4.c | reused |  |
+| `Boss4_ArenaPosToWorld` | boss4.c | reused |  |
+| `Boss4_ArenaToStagePos` | boss4.c | reused |  |
+| `Boss4_CaptureNodeMatrix` | boss4.c | substantially rewritten | boss_model_joint_world + the same fx32 MTX_Scale43(1/3.3) x MTX_Concat43 |
+| `Boss4_Create` | boss4.c | modified | static part; archive files -> converted packages / timing-only animations; callbacks native |
+| `Boss4_DeactivateAuxModel` | boss4.c | reused |  |
+| `Boss4_Destructor` | boss4.c | modified | resource release |
+| `Boss4_DrawAuxModel` | boss4.c | modified | same |
+| `Boss4_DrawSpinTiltModel` | boss4.c | modified | same + Rods callback |
+| `Boss4_Draw_Body` | boss4.c | modified | Model_Draw -> boss_model_pose |
+| `Boss4_Draw_PlayerOnArena` | boss4.c | modified | player model transform -> g_boss_game |
+| `Boss4_GetHealthSpinScale` | boss4.c | reused | returns the float table entry (the decompilation types it s32) |
+| `Boss4_HandleColliderWrapped` | boss4.c | modified | StageObj_HandleCollider = obj_handle_collider |
+| `Boss4_IsTiltPastLimits` | boss4.c | reused |  |
+| `Boss4_LoadModelPalettes1` | boss4.c | substantially rewritten | palette -> selection state |
+| `Boss4_LoadModelPalettes1Clash` | boss4.c | substantially rewritten | same |
+| `Boss4_LoadModelPalettes2` | boss4.c | substantially rewritten | same |
+| `Boss4_LoadModelPalettes2Warn` | boss4.c | substantially rewritten | same |
+| `Boss4_LoadModelPalettes3` | boss4.c | substantially rewritten | same |
+| `Boss4_LoadModelPalettes4` | boss4.c | substantially rewritten | same |
+| `Boss4_LoadModelPalettes5` | boss4.c | substantially rewritten | same |
+| `Boss4_NodeCallback_ArmGun` | boss4.c | substantially rewritten | joint "arm_gun" |
+| `Boss4_NodeCallback_BodyExit` | boss4.c | substantially rewritten | joint "body_exit" |
+| `Boss4_NodeCallback_Rods` | boss4.c | substantially rewritten | joints "rod_arm"/"rod_body" (bossdata.bin) after the pose |
+| `Boss4_ObjArenaPosToWorld` | boss4.c | reused |  |
+| `Boss4_OnHit_Damage` | boss4.c | modified | owner type check -> obj_box_player; NaviMsg / Sound_PlaySeq via hooks |
+| `Boss4_RandomBitInMask` | boss4.c | reused |  |
+| `Boss4_ResetCamera` | boss4.c | reused | camera offsets -> named BossCamera fields |
+| `Boss4_SetCameraDefaultDistance` | boss4.c | reused | c->unk80 written as u16 (low half of unkC8) |
+| `Boss4_SetCameraZoomOut` | boss4.c | reused | same |
+| `Boss4_SetSpinSpeed` | boss4.c | reused | _ffix(_fmul(_fflt(p), scale)) as C float |
+| `Boss4_SpawnPartD0` | boss4.c | modified | MapObject_Spawn(0xd0) -> pool |
+| `Boss4_StartAttack` | boss4.c | reused |  |
+| `Boss4_StartAuxModelCycle` | boss4.c | reused |  |
+| `Boss4_State_DefeatCamera1` | boss4.c | modified | gPlayers->unk17C -> g_boss_game.player_trans |
+| `Boss4_State_DefeatCamera2` | boss4.c | modified | BG2 cut-in -> Boss_DrawExcBackground; brightness state |
+| `Boss4_State_DefeatCamera3` | boss4.c | modified | same |
+| `Boss4_State_DefeatExplode` | boss4.c | modified | ResetCallBack -> s_cb_off; DISPCNT -> exc_bg = -1 |
+| `Boss4_State_DefeatFade_ov000_022dd410` | boss4.c | modified | gDisplayMain.unk48 -> g_boss_game.bright |
+| `Boss4_State_DefeatFade_ov000_022dd4d0` | boss4.c | modified | same |
+| `Boss4_State_DefeatFade_ov000_022dd590` | boss4.c | modified | same |
+| `Boss4_State_DefeatFinish` | boss4.c | modified | StageShutdown_Create -> g_boss_hooks.cleared (once) |
+| `Boss4_State_Fight` | boss4.c | reused |  |
+| `Boss4_State_WaitForStart` | boss4.c | modified | from the ARM listing (src/asm_fallback); POWCNT not touched; MapObject_Spawn -> part create |
+| `Boss4_StepTiltToward` | boss4.c | reused |  |
+| `Boss4_SubState_ClashFlash` | boss4.c | modified | MapObject_Spawn(0xd1) -> pool |
+| `Boss4_SubState_HurtFlash` | boss4.c | reused |  |
+| `Boss4_SubState_SlamDown` | boss4.c | modified | MapObject_Spawn(0xd2) -> pool |
+| `Boss4_SubState_SlamHold` | boss4.c | reused |  |
+| `Boss4_SubState_SlamRecover` | boss4.c | reused |  |
+| `Boss4_SubState_SlamShake` | boss4.c | reused |  |
+| `Boss4_SubState_SlamStopSpin` | boss4.c | modified | from the ARM listing (src/asm_fallback) |
+| `Boss4_SubState_SlamTiltUp` | boss4.c | reused |  |
+| `Boss4_SubState_SlamWaitAnim` | boss4.c | reused |  |
+| `Boss4_SubState_Spin` | boss4.c | reused |  |
+| `Boss4_SubState_SpinUp` | boss4.c | reused |  |
+| `Boss4_SubState_TiltSpin` | boss4.c | reused |  |
+| `Boss4_UpdateAttackTimer` | boss4.c | reused |  |
+| `Boss4_UpdateAuxModelCycle` | boss4.c | reused |  |
+| `Boss4_WrapArenaX` | boss4.c | reused |  |
+| `BossStage4_FreeModels` | boss4.c | substantially rewritten | boss4_unload |
+| `BossStage4_OnModelLoaded` | boss4.c | substantially rewritten | boss4_load: 7 .dcm, bs4.dca, eff_ele_* packages, nsbma/nsbtp frame counts |

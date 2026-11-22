@@ -97,7 +97,7 @@ void boss_set_paths(const char *model_dir, const char *data_dir);
  * slot used by the palette tables).  Call before boss_init. */
 void boss_set_difficulty(int level_idx);
 /* Stage set-up: stage_id = rlvl_header_t.stage (zone*3 + act; 2 = z13 Boss1,
- * 5 = z23 Boss2).
+ * 5 = z23 Boss2, 8 = z33 Boss3 (map object 0x3d), 11 = z43 Boss4 (0x3c)).
  * level = the whole level.bin (the boss map object, type 0x3f, is taken from
  * it), player = gPlayers[0] (must already be created).  Loads bossdata.bin and
  * the stage's models (BossStage1_OnModelLoaded), creates the boss camera
