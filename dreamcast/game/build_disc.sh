@@ -11,6 +11,28 @@ OUT=$ROOT/build/dreamcast/game
 make -C "$HERE"
 rm -rf "$OUT/disc"; mkdir -p "$OUT/disc/stages" "$OUT/disc/player"
 cp "$ROOT/build/dreamcast/player/physics.bin" "$ROOT/build/dreamcast/player/trig.bin" "$OUT/disc/player/"
+M=$ROOT/build/dreamcast/models
+cp "$M/mod__son__son.dcm" "$OUT/disc/player/son.dcm"
+cp "$M/narc__player_lz7__son.dca" "$OUT/disc/player/son.dca"
+cp "$M/narc__player_lz7__son.dcv" "$OUT/disc/player/son.dcv"
+# Player_SetAnimation model-animation table (ov000 0x02368bdc, 0x68 bytes) from YOUR ROM
+python3 -c "import sys;d=open(sys.argv[1],'rb').read();o=0x02368bdc-0x022C5C80;open(sys.argv[2],'wb').write(d[o:o+0x68])" \
+    "$ROOT/extract/eur/arm9_overlays/ov000.bin" "$OUT/disc/player/animmap.bin"
+mkdir -p "$OUT/disc/music"
+A=$ROOT/build/dreamcast/audio
+for z in 1 2 3 4 5 6 7; do
+    [ -f "$A/music/z${z}s/SEQ_${z}sonic.wav" ] && cp "$A/music/z${z}s/SEQ_${z}sonic.wav" "$OUT/disc/music/z${z}.wav"
+done
+python3 -c "
+import json,sys
+m=json.load(open(sys.argv[1]))
+ents=m.get('entries') or m.get('music') or []
+out=[]
+for e in ents:
+    if e.get('kind')=='music' and e.get('status')=='ok' and e['name'].startswith('SEQ_') and e['name'].endswith('sonic') and e['sdat'] in ['z%ds'%i for i in range(1,8)]:
+        out.append('%s %d %d'%(e['sdat'][1], e.get('loop_start',0) if e.get('loop') else 0, e.get('loop_end',0) if e.get('loop') else 0))
+open(sys.argv[2],'w').write('\\n'.join(sorted(out))+'\\n')
+" "$A/manifest.json" "$OUT/disc/music/loops.txt"
 sh-elf-objcopy -R .stack -O binary "$HERE/srdc.elf" "$OUT/srdc.bin"
 "$KOS_BASE/utils/scramble/scramble" "$OUT/srdc.bin" "$OUT/disc/1ST_READ.BIN"
 for d in "$ROOT"/build/dreamcast/stages/z*/; do

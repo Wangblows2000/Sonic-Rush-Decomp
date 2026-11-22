@@ -5,6 +5,7 @@
 #include <dc/sound/sfxmgr.h>
 #include <string.h>
 #include <stdio.h>
+#include <kos/thread.h>
 
 /* Music: snd_stream in ADPCM mode, fed from a file. AICA ADPCM is 4-bit,
  * 2 samples per byte; WAV data chunk is read directly (no SH-4 decoding). */
@@ -12,6 +13,9 @@ static snd_stream_hnd_t s_hnd = SND_STREAM_INVALID;
 static file_t s_fd = FILEHND_INVALID;
 static uint32_t s_data_off, s_data_len, s_pos, s_loop_start_b, s_loop_end_b;
 static int s_stereo, s_rate;
+static volatile uint32_t s_streamed, s_loops;
+uint32_t audio_stream_bytes(void) { return s_streamed; }
+uint32_t audio_stream_loops(void) { return s_loops; }
 static uint8_t s_buf[SND_STREAM_BUFFER_MAX_ADPCM * 2] __attribute__((aligned(32)));
 
 static int read_wav_header(file_t f, int *rate, int *ch, uint32_t *doff, uint32_t *dlen)
@@ -40,52 +44,83 @@ static int read_wav_header(file_t f, int *rate, int *ch, uint32_t *doff, uint32_
 static void *stream_cb(snd_stream_hnd_t hnd, int req, int *got)
 {
     int done = 0;
+    uint32_t end = s_loop_end_b && s_loop_end_b <= s_data_len ? s_loop_end_b : s_data_len;
+    (void)hnd;
+    if(req > (int)sizeof(s_buf)) req = sizeof(s_buf);
+    req &= ~31;
     while(done < req) {
-        uint32_t end = s_loop_end_b ? s_loop_end_b : s_data_len;
-        int n = req - done;
-        if(s_pos + n > end) n = end - s_pos;
-        fs_seek(s_fd, s_data_off + s_pos, SEEK_SET);
-        n = fs_read(s_fd, s_buf + done, n);
-        if(n <= 0) break;
-        done += n; s_pos += n;
-        if(s_pos >= end) s_pos = s_loop_start_b;
+        int n = req - done, r;
+        if(s_pos >= end) {
+            s_pos = s_loop_start_b < end ? s_loop_start_b : 0;
+            s_loops++;
+            fs_seek(s_fd, s_data_off + s_pos, SEEK_SET);   /* seek only at the loop point */
+        }
+        if((uint32_t)n > end - s_pos) n = end - s_pos;
+        r = fs_read(s_fd, s_buf + done, n);
+        if(r <= 0) break;
+        done += r; s_pos += r;
     }
+    s_streamed += done;
     *got = done;
     return s_buf;
+}
+
+/* Streaming runs on its own thread so disc reads never stall the 60 Hz frame. */
+static volatile int s_thread_run;
+static kthread_t *s_thread;
+static mutex_t s_lock = MUTEX_INITIALIZER;
+
+static void *stream_thread(void *arg)
+{
+    (void)arg;
+    while(s_thread_run) {
+        mutex_lock(&s_lock);
+        if(s_hnd != SND_STREAM_INVALID) snd_stream_poll(s_hnd);
+        mutex_unlock(&s_lock);
+        thd_sleep(10);
+    }
+    return NULL;
 }
 
 void audio_init(void)
 {
     snd_stream_init();
+    s_thread_run = 1;
+    s_thread = thd_create(0, stream_thread, NULL);
 }
 
 int audio_music_play(const char *path, uint32_t loop_start, uint32_t loop_end)
 {
     audio_music_stop();
+    mutex_lock(&s_lock);
     s_fd = fs_open(path, O_RDONLY);
-    if(s_fd == FILEHND_INVALID) return -1;
-    if(read_wav_header(s_fd, &s_rate, &s_stereo, &s_data_off, &s_data_len)) { fs_close(s_fd); s_fd = FILEHND_INVALID; return -1; }
+    if(s_fd == FILEHND_INVALID) { mutex_unlock(&s_lock); return -1; }
+    if(read_wav_header(s_fd, &s_rate, &s_stereo, &s_data_off, &s_data_len)) { fs_close(s_fd); s_fd = FILEHND_INVALID; mutex_unlock(&s_lock); return -1; }
     s_stereo = s_stereo == 2;
     /* 4-bit samples; stereo ADPCM data is stored left block / right block by KOS
      * wav2adpcm per buffer, so loop points are kept on byte boundaries. */
     s_loop_start_b = loop_start / 2 * (s_stereo ? 2 : 1);
     s_loop_end_b = loop_end / 2 * (s_stereo ? 2 : 1);
     s_pos = 0;
+    fs_seek(s_fd, s_data_off, SEEK_SET);
     s_hnd = snd_stream_alloc(stream_cb, SND_STREAM_BUFFER_MAX_ADPCM);
-    if(s_hnd == SND_STREAM_INVALID) return -1;
+    if(s_hnd == SND_STREAM_INVALID) { mutex_unlock(&s_lock); return -1; }
     snd_stream_start_adpcm(s_hnd, s_rate, s_stereo);
+    mutex_unlock(&s_lock);
     return 0;
 }
 
 void audio_music_stop(void)
 {
+    mutex_lock(&s_lock);
     if(s_hnd != SND_STREAM_INVALID) { snd_stream_stop(s_hnd); snd_stream_destroy(s_hnd); s_hnd = SND_STREAM_INVALID; }
     if(s_fd != FILEHND_INVALID) { fs_close(s_fd); s_fd = FILEHND_INVALID; }
+    mutex_unlock(&s_lock);
 }
 
 void audio_update(void)
 {
-    if(s_hnd != SND_STREAM_INVALID) snd_stream_poll(s_hnd);
+    /* polling happens on the stream thread */
 }
 
 int audio_sfx_load(const char *path)

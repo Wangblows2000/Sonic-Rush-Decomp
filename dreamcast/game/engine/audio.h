@@ -10,4 +10,6 @@ void audio_music_stop(void);
 void audio_update(void);            /* call once per frame */
 int  audio_sfx_load(const char *path);  /* returns handle or -1 */
 void audio_sfx_play(int h, int vol, int pan);
+uint32_t audio_stream_bytes(void);  /* bytes handed to the AICA stream so far */
+uint32_t audio_stream_loops(void);
 #endif

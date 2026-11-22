@@ -1,0 +1,208 @@
+/*
+ * Native stage object system (Dreamcast port of Sonic Rush) - internal types.
+ *
+ * Faithful translation of src/game/Stage/ObjectSystem/ (StageObj_*, MapObject_*,
+ * ObjRect_*, ObjCollisionMap_*), src/game/Stage/StageEvent_*, src/game/Objects/
+ * and src/game/Enemies/EnemyPawnGroup_*.  Field comments give the original
+ * work-struct offset ("@0x5C") so each translated line can be compared with the
+ * decompilation.  See docs/dreamcast/translation/OBJECTS.md.
+ *
+ * The StageObj header (position, velocity, flags, map hitbox, ride/touch) of
+ * every object is a DcPlayer (dreamcast/game/player): the player module's
+ * DcPlayer *is* the translated StageObj header, so StageObj_Move /
+ * StageObj_Collision / StageObj_HandleRide are reused (dcp_obj_move,
+ * dcp_obj_collision, dcp_handle_ride) instead of being translated twice.
+ */
+#ifndef OBJ_TYPES_H
+#define OBJ_TYPES_H
+
+#include "../player/dcp_player.h"
+
+/* ------------------------------------------------------------ limits */
+#define OBJ_MAX 128            /* object pool (DS: task heap)              */
+#define OBJ_SPAWN_ENTRIES 0x28 /* gMapObjectSpawnEntries                    */
+#define OBJ_RECT_PER_LIST 0x30 /* gObjRectNextList[4][0x30]                 */
+#define OBJ_COLMAP_MAX 0x20    /* data_022c4de4[0x20]                       */
+#define OBJ_RING_MAX 64        /* RingManager parts[64]                     */
+#define OBJ_MAX_VIEWS 2        /* gCamera[0], gCamera[1]                    */
+
+/* task ids (Task_Create id argument = update order) */
+#define OBJ_PRIO_STAGE 0x0010   /* Stage_Main (ObjRect_CheckAllGroup)       */
+#define OBJ_PRIO_EVENT 0x0090   /* StageEvent manager                       */
+#define OBJ_PRIO_PLAYER 0x0100  /* Player                                   */
+#define OBJ_PRIO_MAPOBJ 0x0500  /* map objects / enemies                    */
+#define OBJ_PRIO_EFFECT 0x0a00  /* effects, item box parts, goal ring parts  */
+#define OBJ_PRIO_RING 0x3000    /* RingManager, RingEffect2D                */
+
+/* ------------------------------------------------------- BAC slots */
+/* order == SLOTS in tools/objdata.py */
+enum ObjBac {
+    OBJ_BAC_RING = 0,  /* ac_itm_ring.bac (act_com)        */
+    OBJ_BAC_SPRING,    /* act/ac_gmk_spring.bac            */
+    OBJ_BAC_DASH_P,    /* act/ac_gmk_dash_p.bac            */
+    OBJ_BAC_DASH_C,    /* act/ac_gmk_dash_c.bac            */
+    OBJ_BAC_DASH_CT,   /* act/ac_gmk_dash_ct.bac           */
+    OBJ_BAC_ITEMBOX,   /* act/ac_itm_box.bac               */
+    OBJ_BAC_NEEDLE,    /* act/ac_gmk_needle.bac            */
+    OBJ_BAC_GOALRING,  /* act/ac_gmk_goalring.bac          */
+    OBJ_BAC_MARKER,    /* act/ac_gmk_marker.bac            */
+    OBJ_BAC_EGGPAWN,   /* act/ac_ene_eggpawn.bac           */
+    OBJ_BAC_EGGPAWN_M, /* act/ac_ene_eggpawn_m.bac         */
+    OBJ_BAC_ZAKO_BOMB, /* act/ac_eff_zako_bomb.bac (act_com) */
+    OBJ_BAC_HAHEN,     /* act/ac_eff_hahen_zako.bac (act_com) */
+    OBJ_BAC_PLAYER,    /* act/son.bac (player_lz7): hit boxes only */
+    OBJ_BAC_COUNT
+};
+
+/* ------------------------------------------------- sprite resources */
+/* DSPR v1 (tools/dreamcast/sprites/bac2dc.py, docs/dreamcast/formats/SPRITES.md) */
+typedef struct { u16 w, h; } DsprPage;
+typedef struct { u8 page, pad; u16 x, y, w, h; s16 origin_x, origin_y; u16 pad2; } DsprImage;
+typedef struct { u16 first_frame, frame_count; s16 loop_frame, next_anim; u8 format, pad; u16 pad2; } DsprAnim;
+typedef struct { u16 image, duration; } DsprFrame;
+/* HBOX v1 (tools/objdata.py): BAC command 7 per frame */
+typedef struct { u16 first_event, count; } HboxFrame;
+typedef struct { u8 slot, pad; u16 flags; s16 l, t, r, b; } HboxEvent;
+
+typedef struct ObjRes {
+    char id[48];
+    int loaded;
+    u8 *dspr;                /* whole frames.bin */
+    u16 n_pages, n_images, n_anims, n_frames;
+    const DsprPage *pages;
+    const DsprImage *images;
+    const DsprAnim *anims;
+    const DsprFrame *frames;
+    u8 *hbx;                 /* whole .hbx (may be NULL) */
+    u16 hbx_frames;
+    const HboxFrame *hframes;
+    const HboxEvent *hevents;
+    void *tex[4];            /* renderer textures (obj_draw.c), one per page */
+} ObjRes;
+
+/* AnimatorSprite (0x48-byte block, src/game/Graphics/Sprite/) */
+#define SPR_STOPPED 0x00000001u  /* flags bit0: non-looping animation ended   */
+#define SPR_ENDED 0x00000002u    /* bit1: last frame's wait ran out this call */
+#define SPR_LOOP 0x00000004u     /* bit2: loop (from obj 5C & 4)              */
+#define SPR_HFLIP 0x00000080u
+#define SPR_VFLIP 0x00000100u
+typedef struct ObjBox ObjBox;
+typedef void (*ObjSprCb)(void *owner, const HboxEvent *ev);
+typedef struct ObjSprite {
+    const ObjRes *res;  /* @0x10 resource                            */
+    u16 anim;           /* @0x08 animation index                     */
+    u16 frame_no;       /* @0x0A EndFrame frameNo (1-based)          */
+    u16 frame_cnt;      /* @0x0C EndFrame frameCount                 */
+    s16 frame_t;        /* @0x0E elapsed ticks (x16)                 */
+    u16 pos;            /* @0x1C command position -> next frame index */
+    u16 cur;            /* frame index shown (absolute in frames[])  */
+    s16 wait;           /* @0x28 */
+    s16 speed;          /* @0x2A 0x10 = one 60 Hz tick per frame     */
+    u32 flags;          /* @0x2C SPR_*, bits 17-18 = OAM priority    */
+    u16 order;          /* @0x46 OAM order                           */
+    s16 x, y;           /* draw position (world px, or screen px)    */
+    u8 valid;           /* a frame has been reached                  */
+    u8 screen;          /* x,y are screen coordinates (obj 5C & 0x80) */
+    u8 hidden;          /* obj 5C & 0x20 at the last draw step        */
+    u8 rot;             /* rotation (obj angle + grav_rot), not drawn  */
+} ObjSprite;
+
+/* ------------------------------------------------------ ObjRect */
+/* 0x2C-byte collision box (ObjRect_*).  flags (@0x0A):
+ *   1 mirror x, 2 mirror y, 4 box set, 8 callback as attacker,
+ *   0x20 stays in the list after a hit, 0x40 touched this frame,
+ *   0x80 in contact, 0x100 was hit, 0x200 has hit, 0x400 hit now,
+ *   0x800 call back on contact start only, 0x1000 disabled */
+enum { OBJ_OWNER_NONE = 0, OBJ_OWNER_PLAYER, OBJ_OWNER_OBJECT };
+struct ObjBox {
+    s32 x, y;           /* @0x00 pixels                              */
+    s16 z;              /* @0x08 */
+    u16 flags;          /* @0x0A */
+    s16 l, t, r, b;     /* @0x0C */
+    s16 zn, zf;         /* @0x14 */
+    void *owner;        /* @0x18 Obj* or DcPlayer*                   */
+    void (*cb)(ObjBox *a, ObjBox *b); /* @0x1C defender callback     */
+    u32 atk;            /* @0x20 */
+    u32 def;            /* @0x24 */
+    u8 mask;            /* @0x28 low nibble: list, high nibble: lists checked */
+    u8 owner_kind;      /* native: OBJ_OWNER_*                        */
+};
+
+/* ------------------------------------------------- ObjCollisionMap */
+typedef struct Obj Obj;
+typedef struct ObjColMap {  /* @0x1B8 in the StageObj header           */
+    Obj *obj;           /* +0x00 */
+    DcPlayer *rider;    /* +0x04 actor standing on it                 */
+    DcPlayer *toucher;  /* +0x08 actor touching it                    */
+    u16 flags;          /* +0x0C bit0: rotate with obj angle          */
+    const u8 (*map)[8]; /* +0x10 per tile: 8 x (height<<4 | width)    */
+    const u8 *angles;   /* +0x14 per tile angle; see angles_ff          */
+    u8 angles_ff;       /* native: angles == (u8*)-1 in the original  */
+    const u8 *attr;     /* +0x18 */
+    s16 ox, oy;         /* +0x1C offset of the tile grid (px)          */
+    u16 w, h;           /* +0x20 size in 8 px tiles                   */
+} ObjColMap;
+
+/* --------------------------------------------- map object parameters */
+/* Mutable copy of one .ev entry (UnkStruct_ObjParam / UnkStruct_ObjSpawn). */
+typedef struct ObjParam {
+    u8 x0;              /* +0 region-local x; 0xff = spawned (MapObject_Init) */
+    u8 y0;              /* +1 */
+    u16 type;           /* +2 gMapObjectCreateTable index */
+    u16 flags;          /* +4 */
+    s8 p6, p7;          /* +6 +7 */
+    u8 p8, p9;          /* +8 +9 */
+    u8 pA, pB;          /* +A +B runtime (B: hits taken) */
+    u16 ax, ay;         /* native: absolute position (px) */
+} ObjParam;
+
+/* --------------------------------------------------------- object */
+typedef void (*ObjFn)(Obj *o);
+struct Obj {
+    DcPlayer h;         /* StageObj header @0x00..@0x8C (see top of file):
+                           type@00 angle@01 grav_rot@05 shake@06 x@10 px@1C
+                           move_x@28 vel_x@2E vel_y@30 gnd_vel@34 push@36
+                           gravity@40 fall_max@42 obj_flags@54 move_flags@58
+                           disp_flags@5C hitstop@62 box@64 ride@80 touch@84 */
+    s32 w8;             /* @0x08 work */
+    s32 wC;             /* @0x0C work */
+    s16 scale_x, scale_y; /* @0x44 @0x46 */
+    s16 out_ofs;        /* @0x4A ViewOutCheck margin                  */
+    s16 out_l, out_t, out_r, out_b; /* @0x4C..@0x52                     */
+    ObjFn state;        /* @0x68 */
+    ObjFn fn_in;        /* @0x6C */
+    ObjFn fn_draw;      /* @0x70 */
+    ObjSprCb spr_cb;    /* @0x74 sprite (hit box) callback              */
+    ObjFn fn_collide;   /* @0x78 */
+    ObjFn fn_last;      /* @0x7C */
+    ObjFn dtor;         /* task destructor                             */
+    Obj *parent;        /* @0x88 */
+    ObjSprite spr;      /* @0x94 spr0 (spr1 = second DS screen, not kept) */
+    ObjSprite sprA;     /* extra sprite pair of DashC/DashCT (@0x20C)   */
+    u8 has_spr, has_sprA;
+    ObjBox coll[3];     /* @0x134 @0x160 @0x18C */
+    ObjColMap cmap;     /* @0x1B8 */
+    u8 has_cmap;        /* @0x1B8 != NULL */
+    u32 snd;            /* @0x1DC sound handle (native: 1 = allocated) */
+    ObjParam *prm;      /* @0x1E0 */
+    u8 saved_x;         /* @0x1E4 */
+    u8 vitality;        /* @0x1E5 */
+    s32 home_x, home_y; /* @0x1E8 @0x1EC spawn position (px) */
+    s16 flash;          /* @0x1F0 */
+    u32 f1F4;           /* @0x1F4 */
+    u16 anim1F8;        /* @0x1F8 */
+    void *target;       /* @0x204 DcPlayer* chased */
+    DcpObjRef ref;      /* what the player module sees in ride/touch/homing */
+    /* per-kind extra work (original offsets beyond @0x20C) */
+    ObjBox detect;      /* EnemyPawnGroup @0x20C */
+    s16 u23A, u23C;     /* EnemyPawnGroup @0x23A @0x23C */
+    u32 u2A0;           /* DashC/DashCT @0x2A0 (bit0: DashCT) */
+    s32 u2A4;           /* DashC/DashCT @0x2A4 direction 0..7 */
+    /* native bookkeeping */
+    u16 prio;           /* task id */
+    u8 used;
+    u8 kind;
+    Obj *next;
+};
+
+#endif

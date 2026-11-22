@@ -9,6 +9,7 @@
 #include "../engine/level.h"
 #include "../engine/audio.h"
 #include "../player/dcp_player.h"
+#include "../model/model.h"
 #include <stdlib.h>
 
 static const char *k_stages[] = { "z11", "z12", "z21", "z22", "z31", "z32", "z41", "z42",
@@ -16,6 +17,16 @@ static const char *k_stages[] = { "z11", "z12", "z21", "z22", "z31", "z32", "z41
 #define NUM_STAGES (sizeof(k_stages) / sizeof(k_stages[0]))
 
 static DcPlayer g_player;
+/* Player 3D model (son.nsbmd from the owner's ROM, converted by nsbmd2dc.py). */
+static dcm_model_t g_pmodel;
+static dca_set_t g_panims, g_pvis;
+static uint8_t g_animmap[0x68];       /* Player_SetAnimation table ov000 0x02368bdc */
+static int g_model_ok;
+static float g_anim_frame;
+static int g_anim_cur = -1;
+static dcm_local_t g_locals[DCM_MAX_JOINTS];
+static dcm_mtx_t g_palette[DCM_MAX_PALETTE];
+static uint8_t g_visbits[DCM_MAX_JOINTS];
 static rlvl_map_t g_map;
 static int g_player_ok;
 
@@ -61,6 +72,64 @@ static void spawn_player(Level *lv)
     printf("player spawned at %d,%d\n", sx, sy);
 }
 
+static void load_player_model(void)
+{
+    uint32_t sz;
+    void *m = load_file("/cd/player/son.dcm", &sz);
+    void *a, *v, *t;
+    uint32_t asz, vsz, tsz;
+    a = load_file("/cd/player/son.dca", &asz);
+    v = load_file("/cd/player/son.dcv", &vsz);
+    t = load_file("/cd/player/animmap.bin", &tsz);
+    if(m && a && t && tsz == sizeof(g_animmap) && dcm_model_load(&g_pmodel, m, sz, 1) == 0 &&
+       dca_set_load(&g_panims, a, asz) == 0) {
+        memcpy(g_animmap, t, sizeof(g_animmap));
+        if(v) dca_set_load(&g_pvis, v, vsz);
+        g_model_ok = 1;
+    }
+    printf("player model: %s (vram free %lu)\n", g_model_ok ? "ok" : "MISSING", (unsigned long)render_vram_free());
+}
+
+static void draw_player_model(pvr_list_t list)
+{
+    dcm_camera_t cam;
+    dcm_mtx_t mdl;
+    dcm_lights_t lights;
+    dcm_draw_opts_t opts;
+    float tx = g_player.x / 256.0f - g_cam_x, ty = -(g_player.y / 256.0f - g_cam_y);
+    int a = g_animmap[(uint16_t)g_player.anim < sizeof(g_animmap) ? g_player.anim : 0];
+    int left = g_player.pf & DCP_PF_FACE_L;
+    if(a != g_anim_cur) { g_anim_cur = a; g_anim_frame = 0; }
+    dca_sample(&g_panims, a, g_anim_frame, &g_pmodel, g_locals);
+    dcm_pose(&g_pmodel, g_locals, g_palette);
+    if(g_pvis.hdr) dca_visibility(&g_pvis, 0, 0, &g_pmodel, g_visbits);
+    dcm_camera_stage(&cam);
+    dcm_camera_stage_offaxis(&cam, &tx, &ty);
+    dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, left ? 0xC000 : 0x4000, g_player.angle, tx, ty, 0);
+    dcm_lights_stage(&lights, left);
+    opts.list = list; opts.pt_list = PVR_LIST_PT_POLY; opts.alpha_scale = 255;
+    dcm_draw(&g_pmodel, g_palette, &mdl, &cam, g_pvis.hdr ? g_visbits : NULL, &lights, &opts);
+}
+
+static void start_zone_music(char zone)
+{
+    char path[48], line[64];
+    uint32_t ls = 0, le = 0, sz;
+    char *txt = load_file("/cd/music/loops.txt", &sz), *p;
+    if(txt) {
+        txt = realloc(txt, sz + 1); txt[sz] = 0;
+        for(p = txt; p && *p; p = strchr(p, '\n') ? strchr(p, '\n') + 1 : NULL) {
+            unsigned a, b; char z;
+            if(sscanf(p, "%c %u %u", &z, &a, &b) == 3 && z == zone) { ls = a; le = b; break; }
+        }
+        free(txt);
+    }
+    (void)line;
+    snprintf(path, sizeof(path), "/cd/music/z%c.wav", zone);
+    printf("music %s loop %lu-%lu: %s\n", path, (unsigned long)ls, (unsigned long)le,
+           audio_music_play(path, ls, le) == 0 ? "streaming" : "FAILED");
+}
+
 static int load_stage(Level *lv, int idx)
 {
     char dir[64];
@@ -68,6 +137,7 @@ static int load_stage(Level *lv, int idx)
     int r;
     snprintf(dir, sizeof(dir), "/cd/stages/%s", k_stages[idx]);
     r = level_load(lv, dir);
+    start_zone_music(k_stages[idx][1]);
     printf("stage %s: load %d in %llu ms, %dx%d px, %d block pages, vram used %lu, vram free %lu\n",
            k_stages[idx], r, (unsigned long long)(timer_ms_gettime64() - t0),
            r == 0 ? level_width_px(lv) : 0, r == 0 ? level_height_px(lv) : 0, lv->num_pages,
@@ -102,6 +172,7 @@ int main(int argc, char **argv)
             g_player_ok = dcp_set_physics(phys, ps) == 2;
         }
         printf("player tables: %s\n", g_player_ok ? "ok" : "MISSING");
+        load_player_model();
     }
     ok = load_stage(&lv, stage) == 0;
     g_cam_x = 0; g_cam_y = 0;
@@ -139,26 +210,32 @@ int main(int argc, char **argv)
         if(g_cam_y < 0) g_cam_y = 0;
 
         render_begin_frame();
+        if(ok && g_player_ok && g_model_ok) {
+            g_anim_frame += 1.0f;
+            if(g_anim_cur >= 0 && g_anim_frame >= g_panims.anims[g_anim_cur].num_frames)
+                g_anim_frame = 0;   /* loop; one-shot ends are not signalled yet */
+        }
+        /* PVR lists must be opened in order OP, PT, TR (each once per frame).
+         * Depth (1/w style, bigger = nearer): bg 0.0005 < layer B 0.001 < player model (~0.006) < layer A 10. */
         render_begin_list(PVR_LIST_OP_POLY);
-        if(ok) level_draw_bg(&lv, 0.25f, 0.125f, 1.0f);
+        if(ok) level_draw_bg(&lv, 0.25f, 0.125f, 0.0005f);
+        if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY);
         render_end_list();
         render_begin_list(PVR_LIST_PT_POLY);
-        if(ok) { level_draw_layer(&lv, 1, PVR_LIST_PT_POLY, 2.0f); level_draw_layer(&lv, 0, PVR_LIST_PT_POLY, 4.0f); }
+        if(ok) { level_draw_layer(&lv, 1, PVR_LIST_PT_POLY, 0.001f); level_draw_layer(&lv, 0, PVR_LIST_PT_POLY, 10.0f); }
+        if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY);
         render_end_list();
-        if(ok && g_player_ok) {
-            /* Placeholder player marker (the 3D player model renderer is not integrated yet). */
-            float px = g_player.x / 256.0f, py = g_player.y / 256.0f;
-            render_begin_list(PVR_LIST_TR_POLY);
-            draw_sprite_world(NULL, PVR_LIST_TR_POLY, px - 8, py - 28, 16, 28, 0, 0, 0, 0, 0, 3.0f, 0xc02060ff);
-            draw_sprite_world(NULL, PVR_LIST_TR_POLY, px - 3, py - 24, 6, 6, 0, 0, 0, 0, 0, 3.1f, 0xffffffff);
-            render_end_list();
-        }
+        render_begin_list(PVR_LIST_TR_POLY);
+        if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY);
+        if(ok && g_player_ok && !g_model_ok)
+            draw_sprite_world(NULL, PVR_LIST_TR_POLY, g_player.x / 256.0f - 8, g_player.y / 256.0f - 28, 16, 28, 0, 0, 0, 0, 0, 3.0f, 0xc02060ff);
+        render_end_list();
         render_end_frame();
         audio_update();
 
         if(++frame % 120 == 0) {
             uint64_t now = timer_ms_gettime64();
-            if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last));
+            if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops());
             t_last = now;
         }
     }
