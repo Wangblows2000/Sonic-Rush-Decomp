@@ -46,6 +46,11 @@ reproduce every line below.
 | GNU binutils | arm-none-eabi 2.42 (relink check, `secure_area.s`) |
 | Ghidra | 12.2 + JDK 25 (decompiler drafts, optional) |
 
+## Dreamcast port (branch `dreamcast-port`, 2026-11-22)
+
+Milestone 1 (porting report) and Milestone 2 (hardware foundation disc) done;
+the game itself does not run on Dreamcast yet. Details: docs/dreamcast/.
+
 ## Recent changes (2026-11-21)
 
 - asm to C: 15 more `asm_fallback` functions converted (20 left plus

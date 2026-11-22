@@ -50,6 +50,12 @@ ROMs (`*.nds`) are gitignored.
     evidence confidence;
   - `build.sh`.
 
+## Dreamcast port (branch `dreamcast-port`)
+
+State and next steps: docs/dreamcast/ (start with PORTING-REPORT.md §6 and
+KNOWN-ISSUES.md). Next task: Milestone 3 asset converters (SWAR, BAC, BBG,
+NARC/LZ77, NSBMD) and the NitroSDK/NNS platform shim.
+
 ## Remaining work (updated 2026-11-21)
 
 1. **asm to C (task `asm-to-c`).** 20 files remain in `src/asm_fallback/`;

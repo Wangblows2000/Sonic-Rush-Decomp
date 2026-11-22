@@ -8,13 +8,13 @@ No converted asset is committed.
 
 Milestone 2/3 coverage:
   sprite.argb4444   banner icon (32x32, 4bpp paletted in the ROM) -> ARGB4444, non-twiddled
-  sample.wav        first N seconds of SDAT STRM #105 (stereo IMA-ADPCM) -> mono PCM16
+  sample.wav        first N seconds (default 1.7 s: KOS snd_sfx one-shots hold at most 65,534 samples; longer audio must be streamed) of SDAT STRM #105 (stereo IMA-ADPCM) -> mono PCM16
                     -> AICA Yamaha ADPCM WAV via KOS utils/wav2adpcm
   strm_<n>.wav      (--all-strm) every STRM in every SDAT, full length, stereo kept
 
 Usage:
   python3 tools/dreamcast/convert_assets.py [--extract extract/eur] [--out build/dreamcast/assets]
-         [--wav2adpcm PATH] [--sample-seconds 6] [--all-strm]
+         [--wav2adpcm PATH] [--sample-seconds 1.7] [--all-strm]
 """
 import argparse
 import hashlib
@@ -106,7 +106,7 @@ def main():
     ap.add_argument("--extract", default="extract/eur")
     ap.add_argument("--out", default="build/dreamcast/assets")
     ap.add_argument("--wav2adpcm", default="wav2adpcm")
-    ap.add_argument("--sample-seconds", type=float, default=6.0)
+    ap.add_argument("--sample-seconds", type=float, default=1.7)  # snd_sfx one-shots are limited to 65534 samples
     ap.add_argument("--all-strm", action="store_true")
     a = ap.parse_args()
     ext, out = Path(a.extract), Path(a.out)

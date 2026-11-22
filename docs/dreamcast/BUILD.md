@@ -30,3 +30,15 @@ analog/D-pad move the sprite, A plays the sample, START exits.
 
 Flycast (built from source, run under Xvfb) boots the CDI with its HLE BIOS.
 Emulator results are not retail-hardware results; see KNOWN-ISSUES.md.
+
+## Results (2026-11-22, Flycast built from source, HLE BIOS, Xvfb, software GL)
+
+| Disc | Result (serial log + screenshot) |
+| --- | --- |
+| `srdc_foundation.cdi` | boots; `KallistiOS v2.3.0`; `vid_set_mode: 640x480IL NTSC`; parallax layers, translucent panel and placeholder sprite drawn; `/cd/tone.wav` loaded into AICA RAM and played |
+| `srdc_foundation_romassets.cdi` (local only) | `sprite: /cd/assets/sprite.argb4444 (owner ROM)`, `sample: /cd/assets/sample.wav (owner ROM) (loaded into AICA RAM)` |
+
+Not tested: retail hardware, VGA box, PAL modes, controller input in the
+emulator (no input injected; the program reads the maple state every frame).
+Audio was not listened to (headless); playback is confirmed only by the
+successful AICA load and `snd_sfx_play` call.

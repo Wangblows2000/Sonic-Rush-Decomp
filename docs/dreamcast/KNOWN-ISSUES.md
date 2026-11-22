@@ -10,3 +10,5 @@
 - Wireless VS / Download Play have no Dreamcast equivalent.
 - Converted assets are generated locally from the owner's ROM and are not
   committed (bring-your-own-ROM).
+- KOS `snd_sfx_load` one-shots hold at most 65,534 samples (warning seen with a
+  6 s sample). The test sample is 1.7 s; music/streams need `snd_stream`.
