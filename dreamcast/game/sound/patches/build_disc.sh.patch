@@ -1,6 +1,6 @@
---- a/dreamcast/game/build_disc.sh	2026-11-22 16:04:26.714250635 +0000
-+++ b/dreamcast/game/build_disc.sh	2026-11-22 16:04:26.716195015 +0000
-@@ -59,19 +59,10 @@
+--- a/dreamcast/game/build_disc.sh	2026-11-22 16:42:24.125895762 +0000
++++ b/dreamcast/game/build_disc.sh	2026-11-22 16:42:24.160932869 +0000
+@@ -63,19 +63,10 @@
  done
  mkdir -p "$OUT/disc/music"
  A=$ROOT/build/dreamcast/audio
@@ -24,7 +24,7 @@
  # front end: menu tables, backgrounds, animations, sound test list, menu sprites (MENUS.md section 4)
  M=$ROOT/build/dreamcast/menus
  mkdir -p "$OUT/disc/menus/bg" "$OUT/disc/menus/ama"
-@@ -90,17 +81,6 @@
+@@ -94,17 +85,6 @@
      S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
      cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
  done
@@ -42,7 +42,7 @@
  # cutscenes (CUTSCENES.md section 2): scripts, talks, PlayerDemo scenes, ending BGs, sprites, models, sound, staff-roll music
  C=$ROOT/build/dreamcast/cutscene
  mkdir -p "$OUT/disc/cutscene"
-@@ -151,6 +131,9 @@
+@@ -155,6 +135,9 @@
  if [ -n "$SRDC_SPECIAL" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPECIAL" > "$OUT/disc/debug/special.txt"; fi
  if [ -n "$SRDC_MENUTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/menutrace.txt"; fi
  if [ -n "$SRDC_MENUSAVE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_MENUSAVE" > "$OUT/disc/debug/menusave.txt"; fi

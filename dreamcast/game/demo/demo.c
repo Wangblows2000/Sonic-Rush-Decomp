@@ -160,6 +160,10 @@ uint16_t demo_input_to_keys(uint32_t b) {
         o |= 0x400;
     if (b & IN_ALT)
         o |= 0x800;
+    if (b & IN_R)
+        o |= 0x100; /* R: tricks / air action in the recordings */
+    if (b & IN_L)
+        o |= 0x200;
     return o;
 }
 uint32_t demo_keys_to_input(uint16_t k) {
@@ -182,6 +186,10 @@ uint32_t demo_keys_to_input(uint16_t k) {
         o |= IN_BOOST;
     if (k & 0x800)
         o |= IN_ALT;
+    if (k & 0x100)
+        o |= IN_R;
+    if (k & 0x200)
+        o |= IN_L;
     return o;
 }
 

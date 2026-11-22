@@ -48,8 +48,9 @@
  * file (32 KB of each layer in turn: one sequential read), each with its own
  * NNS-style volume fader, so a layer switch keeps the track position like the
  * DS. The two streams are keyed on back to back (KOS 2.3 cannot queue two
- * stereo stream starts), 6.3-7.7 ms apart in Flycast: the alternate layer runs
- * that much late (AUDIO.md 14).
+ * stereo stream starts: 6-13 ms apart in Flycast), then layer_resync() keys
+ * all four channels off and on with one sync key-on, so both restart together
+ * from file position 0 (AUDIO.md 14: no measurable offset after it).
  *
  * Jingles (StageJingle_Create: SEQ_muteki / SEQ_brethless, Sound_PlayBGMOnPlayer3:
  * SEQ_1up): short files held in RAM and decoded on the SH-4 into a PCM16

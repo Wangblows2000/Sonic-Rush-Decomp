@@ -23,7 +23,12 @@
 #include "../objects/obj_internal.h"
 void zfx_water_sprite_free(void);
 #endif
+/* the object sprites' underwater tint (objects/obj_draw.c, KOS); weak: absent on the host */
+void objects_set_water_tint(float y, uint32_t argb) __attribute__((weak));
 
+/* the tint as a vertex colour (MODULATE) where no second palette bank was free and for the
+ * object sprites: red * 0.6 and green * 0.97 for ZoneFx_Zone2_TintPalette's r - 10, g - 1 */
+#define ZFX_TINT_ARGB 0xff99f7ffu
 #define CLAMP(v, lo, hi) ((v) < (lo) ? (lo) : ((v) > (hi) ? (hi) : (v)))
 
 /* ------------------------------------------------------------ zonefx.bin */
@@ -522,13 +527,14 @@ static void zone5_alarm(u16 *dst) {
         i++;
     } while (i < 0x100 && k < 5);
 }
-/* ZoneFx_Zone2_TintPalette (r - 10, g - 1) */
+/* ZoneFx_Zone2_TintPalette (r - 10, g - 1); ZoneFx_Zone2_DmaTintedPalettes copies 0x1E0 bytes,
+ * so rows 0..14 are shown tinted and row 15 keeps its normal colours */
 static void zone2_tint(u16 *dst, const u16 *src) {
     int i;
     for (i = 0; i < 256; i++) {
         u16 c = src[i];
         s32 r = R_(c) - 10, g = G_(c) - 1;
-        dst[i] = RGB_(c, CLAMP(r, 0, 0x1f), CLAMP(g, 0, 0x1f), B_(c));
+        dst[i] = i < 0xf0 ? RGB_(c, CLAMP(r, 0, 0x1f), CLAMP(g, 0, 0x1f), B_(c)) : c;
     }
 }
 /* BLDY brightness decrease of BG1..3 (ZoneFx_SetBrightnessBlend: BG1 | BG2 | BG3) */
@@ -608,6 +614,9 @@ static void zone_fx_update(void) {
         s_water_row = camera_window_split_y();
         if (!(g_obj_camera[0].flags & 0x1000000) || (g_obj_camera[0].flags & 0x2000000))
             s_water_row = 192;        /* state 3: no water */
+        /* the OBJ palette rows 2..15 tinted below the line (QueueTintedPalettes: 0x5000240..) */
+        if (objects_set_water_tint)
+            objects_set_water_tint(s_water_row < 192 ? (float)g_obj_camera[0].water : 1e9f, ZFX_TINT_ARGB);
         break;
     }
     default:
@@ -726,6 +735,8 @@ void zonefx_init(struct Level *lv, int zone, int act) {
 }
 
 void zonefx_shutdown(void) {
+    if (objects_set_water_tint)
+        objects_set_water_tint(1e9f, 0xffffffffu);
 #ifdef _arch_dreamcast
     zfx_water_sprite_free();
 #endif
@@ -736,19 +747,26 @@ void zonefx_shutdown(void) {
 
 /* ================================================================ drawing (KOS) */
 #ifdef _arch_dreamcast
-/* no free palette rows for a second bank: the tint as a vertex colour (MODULATE) on the
- * rows below the water line, red * 0.6 and green * 0.97 for ZoneFx_Zone2_TintPalette's
- * r - 10, g - 1 (exact only where a bank was free) */
-#define ZFX_TINT_ARGB 0xff99f7ffu
 
+/* Palette RAM is read while the PVR renders: a write during the render of the previous
+ * frame would show mixed colours. Called at the frame start (after pvr_wait_ready): when a
+ * palette changed, wait for the render in progress to end, then write; the frame being
+ * built (and a queued one that has not started) render with the new colours. */
 void zonefx_commit_palettes(void) {
-    int k;
+    int k, dirty[4] = { 0, 0, 0, 0 }, any = 0;
     if (!s_on || !s_lv)
         return;
     for (k = 0; k < 4; k++) {
         if (k >= 2 && s_fx_kind != 2)
             break;
-        if (s_sent_ok[k] && !memcmp(s_sent[k], s_show[k], 512))
+        dirty[k] = !s_sent_ok[k] || memcmp(s_sent[k], s_show[k], 512) != 0;
+        any |= dirty[k];
+    }
+    if (!any)
+        return;
+    pvr_wait_render_done();
+    for (k = 0; k < 4; k++) {
+        if (!dirty[k])
             continue;
         if (k == 0) level_set_palette(s_lv, 0, s_show[0]);
         else if (k == 1) level_set_bg_palette(s_lv, 0, s_show[1]);

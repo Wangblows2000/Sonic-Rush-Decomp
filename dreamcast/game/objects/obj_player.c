@@ -422,7 +422,7 @@ void Player_Action_GimmickLaunch(DcPlayer *w, s16 vx, s16 vy) {
         return;
     w->vel_x = (s16)((w->vel_x >> 1) + (w->vel_x >> 2));
     w->vel_y = (s16)((w->vel_y >> 1) + (w->vel_y >> 2));
-    /* EffAirBubble_Spawn: effect, not translated */
+    EffAirBubble_Spawn(w, 0, 0, g_obj_camera[0].water); /* gCamera.unk62 */
 }
 
 /* -------------------------------------------- Player_Action_DashRing */

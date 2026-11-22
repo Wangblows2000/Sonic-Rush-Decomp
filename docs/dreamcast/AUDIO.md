@@ -575,3 +575,170 @@ the menu -> stage path (begin before `load_player_model`, end after
 it, not around the playback loop); `enter_front_end` / `run_extra_zone` bank
 loads.
 
+
+## 14. Music selection and in-stage music events (2026-11-22)
+
+### 14.1 How the original selects music (decompilation)
+
+Every track is a sequence of the loaded sound archive, played on one of three handles:
+
+| original | handle | what |
+|---|---|---|
+| `Stage_SetupZoneResources` -> `Stage_PlayBGM(0)` (stage create, each restart after a death, special-stage return) | acts: `gStageBGMHandleB` + `gStageBGMHandleA`; boss acts / zone >= 9: `gBGMSoundHandle` | `data_02074850[zone][act][0 / 1]` in the zone SDAT. Acts start **both** sequences; B = `[0]` for Sonic / `[1]` for Blaze, A = the other one; `Stage_SelectBGMLayer(0 / 1)` only moves their volumes (instant). Boss acts: `Sound_PlaySeq(&gBGMSoundHandle, [zone][2][0])` |
+| `Player_UpdateUnderwater` (Water Palace) / `Player_UpdateGravityFlip` (Dead Line) | stage handles | `Stage_SelectBGMLayer(1)` entering water / flipping, `(0)` leaving, unless invincible |
+| `Boss*_OnHit*` | `gBGMSoundHandle` | `Sound_PlaySeq(0, 0xf)` SEQ_bossW (pinch), Boss7 `0x11` SEQ_boss7W, BossF talk `0x13` SEQ_bossFW, Extra `0x14` / `0x15` SEQ_bossE / SEQ_bossEW (`ExtraBoss_ResetRound` / `_AdvancePhase`, archive `/snd/ze`) |
+| `Player_GiveInvincibility` -> `StageJingle_Create(p, 0x16)` | StageJingle handle | SEQ_muteki; `Stage_FadeBGMLayer(0, 0)`: both stage layers to 0 **while they keep playing**; `StageJingle_Main`: at invincibility 0x5A the jingle fades out over 0x5A frames and the active layer fades back to `127 * 127 >> 7 = 126` over 0x5A frames (at 0: both at once) |
+| `Player_UpdateUnderwater`, air left 0x2a8 frames -> `StageJingle_Create(p, 0x17)` | StageJingle handle | SEQ_brethless (drowning countdown, 11.6 s); paused while the game is frozen; surfacing (`unk3CA == 0`): stop, the layer of the water flag back over 0x3C frames |
+| `Player_AddLives` -> `Sound_PlayBGMOnPlayer3(0, 0x18)` (not in VS / time attack) | `gBGMSoundHandle`, player 3 | SEQ_1up over the stage music (not ducked); in a boss act it replaces the boss music (the boss SDATs have no SEQ_1up: silence) |
+| `ClearDemo_Create` / `ClearDemoTA_*` / `GameOverSeq_*` (sys archive + group loaded first) | `gBGMSoundHandle` | sys 0xf SEQ_ACT_CLEAR, 0x10 SEQ_BOSS_CLEAR, 0x11 SEQ_FINAL_CLEAR, 0xb / 0xd time-attack clears, 0xc / 0xe new record, 0x14 SEQ_GAME_OVER; SE / voices of SSAR 5 (time attack), 6 (act / boss), 7 (final) |
+| `SpecialStage_StartPlay` / `_Init` / goal | `gBGMSoundHandle` | sys 0x1e SEQ_SS_GAME, 0x1f SEQ_SS_END |
+| `PauseMenu_Create` / `_Destructor` | players 3..9 | `NNS_SndPlayerPauseByPlayerNo(3..9)`: effects, voices, SEQ_1up (player 3), SEQ_brethless (player 9) pause; the stage music (player 0 / 2) and SEQ_muteki (player 1) keep playing |
+
+There is no speed-up item in Sonic Rush (item boxes: rings, 1-up, tension, invincibility,
+barrier, magnet, VS items) and no speed-up sequence in any SDAT.
+
+### 14.2 Stream table (`tools/dreamcast/audio/musictab.py`)
+
+```
+python3 tools/dreamcast/audio/sdat2dc.py      # renders (once)
+python3 tools/dreamcast/audio/musictab.py     # -> build/dreamcast/audio/disc_music/ (~40 s)
+```
+
+Output = the disc's `/cd/music/`: `streams.txt` (813 entries
+`sdat seq file loop_start loop_end layer player ram name`; `-` = silent in that SDAT;
+plus `bgmtab zone act s0 s1` = `data_02074850` read from the owner's arm9.bin),
+`st/<sdat>_<seq>.wav` (89 files: canonical renders, duplicates resolved),
+`st/<sdat>_<b>_<a>.lyr` (layer pairs), `sNN.wav` + `sys.txt` (legacy sys names for the
+cutscene / special-stage code, now with the duplicates SEQ_ACT_CLEAR 15, SEQ_BOSS_CLEAR 16,
+SEQ_BOSS_TALK 22 that the old build_disc snippet skipped). 246 MB.
+
+Layer pairs: z2s, z2b (Water Palace) and z7s, z7b (Dead Line) render both layers (same
+SSEQ file, other bank). The renderer had found a different loop start for each layer
+(z2s 633407 / 635794, z7s 12276 / 16368; same loop length), so musictab re-renders them,
+extends the shorter one by its own period (`x[t] = x[t - P]`), encodes both with one loop
+(`aicaenc --loop`, seam exact for all 8 layers) and interleaves 32 KB blocks of each layer
+(`.lyr`, 2048-byte header). All other zones have one audible layer (the other sequence is
+silent in that SDAT, as on the DS).
+
+Stage music (host test `test_bgm`, from the table):
+
+| zone | act 1 / 2 Sonic | Blaze | boss Sonic / Blaze |
+|---|---|---|---|
+| 1 Leaf Storm | z1s_00 (SEQ_1sonic) | z1b_01 (SEQ_1blaze) | z1es_14 / z1eb_14 SEQ_boss |
+| 2 Water Palace | z2s_02_03.lyr (B = layer 0 SEQ_2sonic, underwater = SEQ_2blaze) | z2b_02_03.lyr (B = layer 1 SEQ_2blaze, underwater = SEQ_2sonic) | SEQ_boss (= z1eb_14 render) / z2eb_14 |
+| 3 Mirage Road | z3s_04 | z3b_05 | z3es_14 / z3eb_14 |
+| 4 Night Carnival | z4s_06 | z4b_07 | z4es_14 / z4eb_14 |
+| 5 Huge Crisis | z5s_08 | z5b_09 | SEQ_boss (z3es / z3eb renders) |
+| 6 Altitude Limit | z6s_10 | z6b_11 | z6es_14 / SEQ_boss (z1eb render) |
+| 7 Dead Line | z7s_12_13.lyr (gravity = SEQ_7blaze) | z7b_12_13.lyr | SEQ_boss7 z7eb_16 (both) |
+| 8 (z81 / z82, zf3) | z1s_00 / z3s_04 | z1b_01 / z3b_05 | final boss zfes_18 / zfeb_18 SEQ_bossF |
+| 9 (z91 / z92, Extra boss) | z4s_06 / z5s_08 | z4b_07 / z5b_09 | Extra boss ze_20 SEQ_bossE (pinch ze_21) |
+
+Events: pinch z?es_15 / z?eb_15 (SEQ_bossW), Boss7 0x11 z7eb_17, BossF 0x13 zf?_19,
+muteki / brethless / 1up = seq 22 / 23 / 24 of the zone SDAT (RAM jingles), results:
+sys_11 (act / TA act clear, one render), sys_13 (boss / TA boss clear), sys_17 (final),
+sys_12 / sys_14 (new record), sys_20 (game over), sys_30 / sys_31 (special stage).
+
+### 14.3 Runtime
+
+- `sound/bgm.c` (new): `Stage_PlayBGM`, `Stage_SelectBGMLayer`, `Stage_FadeBGMLayer`,
+  `StageJingle_Create` / `_Main` (from `sound_update`, every frame incl. pause),
+  `Sound_PlayBGMOnPlayer3`, `Player_AddLives` (sound), `Player_GiveInvincibility` (SE 0x3d,
+  jingle, `invinc = 0x3e7`, `unk3CA = 0`; EffInvincibility not translated), the music / SE
+  half of `Player_UpdateGravityFlip` (the player module flips gravity; bgm polls
+  `grav_rot`: layer + SE 0x66 on the voice handle), `bgm_play(sdat, seq)` = Sound_PlaySeq,
+  pause by player number, StopSoundAll, hooks for ui / boss / special / objects.
+  Debug: `/cd/debug/bgmtest.txt` triggers (`frame command arg`: layer, jingle, oneup,
+  invinc, seq, ui, pause, stopall, air, inv) for captures.
+- `sound_hooks.c`: also chains `g_dcp_hooks.add_life` (1-up), `g_dcp_hooks.restart`
+  (Stage_PlayBGM again after a death, not in VS / pf2 & 0x400000) and `g_obj_hooks.item`
+  (OBJ_ITEM_INVINCIBLE).
+- `snd_nns.c` / `snd_drv.c`: `NNSi_SndPlayerPause`, `NNS_SndPlayerPause`,
+  `NNS_SndPlayerPauseByPlayerNo`, `SND_PauseSeq` (channels released at rate 127, the
+  sequence stops ticking).
+- `engine/audio.c`:
+  - disc music: WAV or `.lyr` (2 layers, lockstep reader, per-layer ring 192 KB, per-layer
+    NNS-style fader `audio_music_layer_volume(layer, vol, frames)`, `audio_music_fade_stop`).
+    The two layer streams are keyed on back to back (KOS 2.3 asserts when two stereo
+    stream starts are queued: `snd_stream_start_type` takes the queue mutex that queueing
+    keeps), measured 6.3-12.8 ms apart in Flycast; `layer_resync()` then keys the four
+    channels (predicted with `snd_sfx_chn_alloc`, checked: keyed on, ADPCM long stream)
+    off and on with one sync key-on: both restart from file position 0 together.
+  - RAM jingles: 2 slots; the cache (4 files) is read at stage start inside the load
+    bracket (whole-file sector-aligned read: z2 set 500 KB in 267 ms; the first version
+    read from byte 44 through the one-sector cache and added ~4 s to the z21 load);
+    the reader thread (low priority) decodes ADPCM into a 0.5 s PCM16 ring, the poll
+    thread only copies it to a PCM16 stream (callback max 101 us; decoding in the callback
+    took 4.7 ms per refill). Pause keeps the position (decoder checkpoints every 4096
+    frames); fades, end detection, loop with the exact seam state.
+- Hooks for main.c (patch, 14.5): `g_boss_hooks.music / music_stop`, `g_ui_hooks.music /
+  music_pause / sfx`, `special_hooks.music / music_stop`, `obj_effect_hook` default ->
+  `bgm_obj_effect` (OBJ_FX_BGM_LAYER, OBJ_FX_JINGLE), `bgm_stage_start` in `load_stage`
+  (replaces `start_zone_music`), `bgm_bind_player` in `spawn_player`, `bgm_stage_end` +
+  `bgm_set_context` in `enter_front_end`, `run_special_stage`, `run_extra_zone`, menus'
+  `menu_bgm` -> `bgm_play("sys", seq)`.
+- ClearDemo banks: `sfxbank.py` builds `sys_a05`, `sys_a06`, `sys_a07` (sys SSAR 5 / 6 / 7
+  alone: 161 / 158 / 362 KB sound RAM); `bgm_ui_music_hook` loads the one of the clear
+  music before playing it (as ClearDemo_Create loads its group). Every ClearDemo SE / voice
+  id the ui requests exists (SSAR 6 voice 7 SE_Boss_Watashi is silent in the sys SDAT).
+
+### 14.4 Verification
+
+Host (`make -C dreamcast/game/sound host-test`): test_sound OK (unchanged) and test_bgm
+OK, 0 failures: table above for every zone / act / character; layer switch volumes;
+invincibility (BGM 0 under the jingle while playing, end at 0x5A: jingle fade 90, BGM
+126 over 90; cut short: both at once; item hook); drowning (pause while frozen, resume,
+surfacing with / without the water flag: the right layer back over 60); 1-up (over the
+BGM, paused by the pause menu, boss act: boss music stops, none in time attack); pinch,
+Boss7, BossF, Extra; results / new record / game over / special and the ClearDemo bank
+(SE 6:3 starts); restart after a death; gravity flip (layer, invincible: none); SE pause
+(players 3..9); the trace's silent-id counter (silent id, playing id, start failure).
+
+Flycast (`fcrec.py`, display :94, trace build, `bgmtest.txt`); analysis by correlation
+with the decoded renders (3 kHz low-pass, 0.5-4 s windows):
+
+| case | result |
+|---|---|
+| z11 invincibility (f600) | SEQ_muteki at the render level (-0.0 dB, corr 0.87); stage BGM gain <= 0.1 for 15 s; muteki fades from ~41.1 s, BGM gain 0.16 / 0.48 / 0.70 / 0.81 at +0.4 / +0.9 / +1.4 / +1.9 s; BGM after it at -0.0 dB and at the continued position (lag drift linear 1.2 ms/s across the jingle, no jump) |
+| z11 1-up | SEQ_1up +0.4 dB over the BGM, ends after 2.1 s ("jingle 1 ended") |
+| z11 StopSoundAll + act clear, new record | SEQ_ACT_CLEAR (sys_11) 0.2 s after the stop, -0.0 dB; new record loops |
+| z21 layers (switch every 5 s) | before the re-sync: layer 1 ran 5-6 ms late (key-on skew 7.7 ms / 6.3 ms with a 4 KB second buffer); after: the track lag is continuous over every switch (0.1 ms search step), 0 underruns |
+| SEQ_brethless pause 100 frames | silence 1.688 s (1.667 expected), resumes at 1.664 s into the jingle, 16 ms later still aligned |
+| z13 boss, 122 s | boss music from the top after each death (2 restarts), pinch SEQ_bossW at -0.0 dB, loop wrap at the right position, no seam step, DC <= 36 LSB, peak -8.7 dBFS, 0 underruns |
+| z21 2 layers, 428 s | 413 reads / 27 MB, 0 underruns, ring low 131 KB of 192 KB, poll gap max 22 ms, refill max 23 ms; RMS per 30 s -23.7..-26.5 dBFS (no drift), peak <= -7.5 dBFS, 0 clipped, DC -10..-36 LSB (constant), 3 loop passes continuous |
+| attract demos, 252 s (title -> z12 -> title -> z13 -> title -> z21 Blaze -> z23) | 140 SE / voice requests, 0 "snd MISS"; Blaze entering water switched the z2b layer (real OBJ_FX_BGM_LAYER); load brackets: silence through each load, fade-in ~0.3 s; peak -2.1 dBFS, 0 clipped |
+| frame times | 3-4 of 120 frames over 17.5 ms with music + jingle = the profiling-print baseline (13.1); the first jingle version (decode in the callback) gave 4-7 |
+
+AICA stream rate: every track plays ~0.12 % slow against its nominal 32728 Hz in Flycast
+(lag grows 1.2 ms/s; ~2 cents), the same for both layers.
+
+### 14.5 Integration
+
+- `dreamcast/game/sound/patches/main.c.patch` and `build_disc.sh.patch` (copies
+  `build/dreamcast/audio/disc_music/.` to `/cd/music/`, drops the old z?.wav / loops.txt /
+  sys snippets; `SRDC_SNDTRACE=1` and `SRDC_BGMTEST=<file>` for test discs), made against
+  the tree of 16:45 (camera / zonefx main.c); the game Makefile already lists `sound/bgm.o`.
+  Tested on a private copy of that tree: build, z21 disc, layers re-synced, music plays.
+- `player/patches/trick_volume_sound_hook.patch` (the player agent's `g_dcp_hooks.sfx_volume`
+  for Player_Action_TrickCombo) is applied to `sound_hooks.c`.
+- Before building the disc: `python3 tools/dreamcast/audio/musictab.py` and
+  `python3 tools/dreamcast/audio/sfxbank.py` (sys_a05..07). Delete `sound/*.o` and
+  `engine/audio.o` (no header dependencies in the game Makefile).
+
+### 14.6 Known gaps
+
+- Channel competition is not modelled: on the DS a jingle (SEQ_1up channel priority 70)
+  steals voices from the stage BGM (priority 64) and effects compete with music for the
+  16 channels; here music streams and effects never interfere.
+- The ARM7 driver pause behaviour (release rate 127) is from the SDK sources' behaviour as
+  understood; not compared with a DS capture.
+- `bgm_boss_music_stop_hook` = `NNS_SndPlayerStopSeqAll(0)` (music + effects) as boss.h
+  documents; boss7 maps `NNS_SndPlayerStopSeq(&gBGMSoundHandle, 0x3c)` onto the same hook
+  (the 60-frame fade and the effects' survival are lost there: boss module).
+- Invincibility timers / jingle come from the item hook here; EffInvincibility (graphics)
+  is not translated. TensionSound_* has no caller in the native code.
+- Not played in Flycast: drowning countdown in water (host test only), Blaze gravity
+  layer, ClearDemo via a real goal, Extra boss, special-stage music via the new hook.
+- Real hardware not tested; the layer re-sync relies on KOS allocating stream channels
+  lowest-first in the poll thread (checked at run time; if the check fails the layers
+  stay a few ms apart).

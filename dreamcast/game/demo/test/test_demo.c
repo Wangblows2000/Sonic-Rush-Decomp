@@ -209,6 +209,9 @@ int main(int argc, char **argv) {
         test_playback(argv[1], i, 0);
     test_playback(argv[1], 1, 37);   /* lead frames: the first stage frame gets record frame 37 */
     test_play();
+    /* DS R / L (tricks, air action) survive the key <-> input conversions */
+    CHECK(demo_keys_to_input(0x100) == IN_R && demo_keys_to_input(0x200) == IN_L && demo_input_to_keys(IN_R | IN_L) == 0x300,
+          "R / L map to DS 0x100 / 0x200 both ways");
     printf("%d checks, %d failed\n", g_checks, g_fail);
     return g_fail ? 1 : 0;
 }

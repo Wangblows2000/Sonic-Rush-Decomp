@@ -60,7 +60,7 @@ typedef struct {
     const dcm_texx_t *texx;       /* version 2: texture / palette names, else NULL */
     void *tex_vram[64];           /* pvr_ptr_t per texture (Dreamcast) */
     uint8_t tex_class[64];        /* DCM_CLASS_* derived from texture contents */
-    uint16_t *vref;               /* [num_vertices][2] shared position / normal slot (built by dcm_model_load:
+    uint32_t *vref;               /* [num_vertices][2] shared position / normal slot (built by dcm_model_load:
                                    * the strips repeat vertices; dcm_draw_ex transforms and lights each once) */
     uint16_t num_upos, num_unrm;  /* distinct (palette, position) / (palette, normal) */
     float *pbound;                /* [num_palette][4] bounding sphere (centre, radius < 0: unused) of the
@@ -160,6 +160,9 @@ int dcm_matstate_uv(const dcm_model_t *m, int material, const dcm_matstate_t *st
 /* ---- drawing */
 /* Transform (SH-4) + submit the draws whose class matches opts->list; returns PVR triangles sent.
  * vis may be NULL (SBC defaults), lights NULL (stage defaults). */
+/* ModelPalette_ShiftColor: add (r, g, b) in 5-bit units (-31..31) to the colours of the models drawn
+ * until it is set back to 0, 0, 0 (DC: offset colour / channel scale per vertex) */
+void dcm_set_color_shift(int r, int g, int b);
 int dcm_draw(const dcm_model_t *m, const dcm_mtx_t *palette, const dcm_mtx_t *model_mtx, const dcm_camera_t *cam,
              const uint8_t *vis, const dcm_lights_t *lights, const dcm_draw_opts_t *opts);
 /* Same with animated material states (st[num_materials] from dcm_matstate_init / dcm_matanim_apply;

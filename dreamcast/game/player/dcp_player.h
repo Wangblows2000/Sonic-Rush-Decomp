@@ -281,6 +281,8 @@ typedef struct DcpHooks {
     dcp_bool (*fade_done)(void *ctx);                               /* BrightnessFade_IsDone */
     void (*restart)(void *ctx, DcPlayer *p);                        /* StageRestart_Create / Camera_ResetOnRespawn */
     void (*add_life)(void *ctx, DcPlayer *p, s32 n);                /* Player_AddLives */
+    void (*sfx_volume)(void *ctx, DcPlayer *p, s32 ch, s32 vol);    /* NNS_SndPlayerSetVolume (0..0x7f) */
+    void (*model_speed)(void *ctx, DcPlayer *p, s32 fx);            /* w->unk124->unk114 = fx (3D anim speed, 0x1000 = 1) */
 } DcpHooks;
 
 extern DcpHooks g_dcp_hooks;

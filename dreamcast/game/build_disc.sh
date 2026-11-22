@@ -63,19 +63,10 @@ for f in mod__gmk_rope_c__gmk_rope_c01.dcm mod__gmk_rope_c__gmk_rope_c02.dcm mod
 done
 mkdir -p "$OUT/disc/music"
 A=$ROOT/build/dreamcast/audio
-for z in 1 2 3 4 5 6 7; do
-    [ -f "$A/music/z${z}s/SEQ_${z}sonic.wav" ] && cp "$A/music/z${z}s/SEQ_${z}sonic.wav" "$OUT/disc/music/z${z}.wav"
-done
-python3 -c "
-import json,sys
-m=json.load(open(sys.argv[1]))
-ents=m.get('entries') or m.get('music') or []
-out=[]
-for e in ents:
-    if e.get('kind')=='music' and e.get('status')=='ok' and e['name'].startswith('SEQ_') and e['name'].endswith('sonic') and e['sdat'] in ['z%ds'%i for i in range(1,8)]:
-        out.append('%s %d %d'%(e['sdat'][1], e.get('loop_start',0) if e.get('loop') else 0, e.get('loop_end',0) if e.get('loop') else 0))
-open(sys.argv[2],'w').write('\\n'.join(sorted(out))+'\\n')
-" "$A/manifest.json" "$OUT/disc/music/loops.txt"
+# music: stream table + renders (tools/dreamcast/audio/musictab.py): streams.txt, st/ (stage, boss,
+# jingle and sys sequences, .lyr layer pairs), sNN.wav + sys.txt (sys sequences by id, duplicates included)
+[ -f "$A/disc_music/streams.txt" ] || { echo "run tools/dreamcast/audio/musictab.py first" >&2; exit 1; }
+cp -r "$A/disc_music/." "$OUT/disc/music/"; rm -f "$OUT/disc/music/musictab.json"
 # front end: menu tables, backgrounds, animations, sound test list, menu sprites (MENUS.md section 4)
 M=$ROOT/build/dreamcast/menus
 mkdir -p "$OUT/disc/menus/bg" "$OUT/disc/menus/ama"
@@ -94,17 +85,6 @@ for sp in act__title act__title_eng act__mnu_titl act__mnu_titl_eng act__mnu_pse
     S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
     cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done
-# sys SDAT music (title, menus, zone map, results...) as sNN.wav by sequence id + loop table
-python3 -c "
-import json,sys,shutil,re
-m=json.load(open(sys.argv[1])); A=sys.argv[2]; D=sys.argv[3]; out=[]
-for e in m.get('entries',[]):
-    if e.get('kind')=='music' and e.get('sdat')=='sys' and e.get('status')=='ok':
-        n=int(re.search(r'SEQ#(\\d+)',e['source']).group(1))
-        shutil.copy(A+'/'+e['output'], '%s/s%02d.wav'%(D,n))
-        out.append('%d %d %d'%(n, e['loop_start'] if e.get('loop') else 0, e['loop_end'] if e.get('loop') else 0))
-open(D+'/sys.txt','w').write('\\n'.join(out)+'\\n')
-" "$A/manifest.json" "$A" "$OUT/disc/music"
 # cutscenes (CUTSCENES.md section 2): scripts, talks, PlayerDemo scenes, ending BGs, sprites, models, sound, staff-roll music
 C=$ROOT/build/dreamcast/cutscene
 mkdir -p "$OUT/disc/cutscene"
@@ -155,6 +135,9 @@ if [ -n "$SRDC_START" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_START" > "
 if [ -n "$SRDC_SPECIAL" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPECIAL" > "$OUT/disc/debug/special.txt"; fi
 if [ -n "$SRDC_MENUTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/menutrace.txt"; fi
 if [ -n "$SRDC_MENUSAVE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_MENUSAVE" > "$OUT/disc/debug/menusave.txt"; fi
+# audio test builds: SRDC_SNDTRACE=1 (serial trace of sound / music / missing effects), SRDC_BGMTEST=<file> (music event triggers, sound/bgm.c)
+if [ -n "$SRDC_SNDTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/sndtrace.txt"; fi
+if [ -n "$SRDC_BGMTEST" ]; then mkdir -p "$OUT/disc/debug"; cp "$SRDC_BGMTEST" "$OUT/disc/debug/bgmtest.txt"; fi
 if [ -n "$SRDC_DEMOLEAD" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_DEMOLEAD" > "$OUT/disc/debug/demolead.txt"; fi
 cd "$OUT"
 rm -f IP.BIN

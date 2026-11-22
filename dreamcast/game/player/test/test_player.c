@@ -492,6 +492,156 @@ static void test_boost_spring_trick(void) {
     }
 }
 
+/* Player_Action_TrickCombo: NNS_SndPlayerSetVolume(handle, 0x7f >> unk3D0) after each combo sound,
+ * on @384 (voice) for B (0x39 / 0x3a) and @390 (trick) for A (0x3b); ASR from 32 on gives 0 */
+static int g_vol_n, g_vol_ch[8], g_vol_v[8];
+static void hk_vol(void *ctx, DcPlayer *p, s32 ch, s32 v) {
+    (void)ctx, (void)p;
+    if (g_vol_n < 8)
+        g_vol_ch[g_vol_n] = ch, g_vol_v[g_vol_n] = v, g_vol_n++;
+}
+static void test_trick_volume(void) {
+    static const int lvls[5] = { 0, 1, 3, 6, 40 };
+    u8 obj[16];
+    int i, ok = 1;
+    printf("[trick] combo sound volume 0x7f >> level\n");
+    g_dcp_hooks.sfx_volume = hk_vol;
+    for (i = 0; i < 5; i++) {
+        int want = lvls[i] >= 32 ? 0 : 0x7f >> lvls[i];
+        reset_world();
+        build_world(f_flat, 0);
+        spawn_settle(1000, GROUND);
+        memset(obj, 0, sizeof obj);
+        obj[0xA] = (u8)lvls[i];
+        P.trick_obj = obj;
+        P.anim = 0x37;
+        g_vol_n = 0;
+        P.trick_input = 2; /* B: 0x39 on the voice handle */
+        dcp_act_trick_combo(&P);
+        P.trick_input = 2; /* B again: 0x3a, pf 0x4000 */
+        dcp_act_trick_combo(&P);
+        P.trick_input = 1; /* A: 0x3b on the trick handle */
+        dcp_act_trick_combo(&P);
+        printf("  level %d: volumes", lvls[i]);
+        {
+            int k;
+            for (k = 0; k < g_vol_n; k++)
+                printf(" ch%d=%d", g_vol_ch[k], g_vol_v[k]);
+        }
+        printf(" (want %d) obj level now %d\n", want, obj[0xA]);
+        if (!(g_vol_n == 3 && g_vol_ch[0] == DCP_CH_VOICE && g_vol_ch[1] == DCP_CH_VOICE && g_vol_ch[2] == DCP_CH_TRICK &&
+              g_vol_v[0] == want && g_vol_v[1] == want && g_vol_v[2] == want && P.anim == 0x3b))
+            ok = 0;
+    }
+    CHECK(ok, "TrickCombo volume 0x7f >> level on voice (0x39, 0x3a) and trick (0x3b) handles, 0 from level 32");
+    g_dcp_hooks.sfx_volume = NULL;
+}
+
+/* Player_Action_Jump: Blaze's spin jump sets the model speed 0x4000; underwater, one Player_Rand draw
+ * and a bubble when it is odd (Sonic and Blaze) */
+static int g_ms_n, g_ms_v, g_fx_bubble;
+static void hk_ms(void *ctx, DcPlayer *p, s32 fx) { (void)ctx, (void)p, g_ms_n++, g_ms_v = fx; }
+static void hk_fx(void *ctx, DcPlayer *p, s32 fx, s32 a, s32 b) {
+    (void)ctx, (void)p, (void)a, (void)b;
+    if (fx == DCP_FX_AIR_BUBBLE)
+        g_fx_bubble++;
+}
+static void test_jump_extras(void) {
+    int ch, k, ok_rng = 1, bubbles = 0, odd = 0;
+    printf("[jump] Blaze model speed, underwater bubble draw\n");
+    g_dcp_hooks.model_speed = hk_ms;
+    g_dcp_hooks.effect = hk_fx;
+    for (ch = 0; ch < 2; ch++) {
+        reset_world();
+        build_world(f_flat, 0);
+        spawn_settle(1000, GROUND);
+        P.chara = (u8)ch;
+        g_ms_n = 0, g_ms_v = 0;
+        dcp_act_jump(&P);
+        CHECK(ch ? (g_ms_n == 1 && g_ms_v == 0x4000) : g_ms_n == 0, "%s jump: model speed %s (%d calls, 0x%x)",
+              ch ? "Blaze" : "Sonic", ch ? "0x4000" : "untouched", g_ms_n, (unsigned)g_ms_v);
+    }
+    for (k = 0; k < 16; k++) {
+        u32 s0, s1;
+        reset_world();
+        build_world(f_flat, 0);
+        spawn_settle(1000, GROUND);
+        g_dcp_world.rand_seed = 0x1234567u * (u32)(k + 1);
+        s0 = g_dcp_world.rand_seed;
+        s1 = s0 * 0x196225 + 0x3c6ef35f;
+        P.pf |= 0x4000000;
+        g_fx_bubble = 0;
+        dcp_act_jump(&P);
+        if (g_dcp_world.rand_seed != s1)
+            ok_rng = 0;
+        odd += (s1 >> 16) & 1;
+        bubbles += g_fx_bubble;
+        if (g_fx_bubble != (int)((s1 >> 16) & 1))
+            ok_rng = 0;
+    }
+    reset_world();
+    build_world(f_flat, 0);
+    spawn_settle(1000, GROUND);
+    {
+        u32 s0 = g_dcp_world.rand_seed;
+        dcp_act_jump(&P);
+        CHECK(ok_rng && g_dcp_world.rand_seed == s0 && bubbles == odd && odd > 0 && odd < 16,
+              "underwater jump: one rand draw, bubble on odd (%d of 16); none on land", bubbles);
+    }
+    g_dcp_hooks.model_speed = NULL;
+    g_dcp_hooks.effect = NULL;
+}
+
+/* Blaze: Player_Action_Hover (act_air) / Player_State_Hover with the exact physics overrides and the
+ * 0x78-frame budget (reset on landing by Player_Action_LandOnGround) */
+static void test_blaze_hover(void) {
+    const DcpPhysics *t = dcp_physics(1);
+    int n, i, ok_timer = 1;
+    printf("[blaze] hover\n");
+    reset_world();
+    build_world(f_flat, 0);
+    dcp_player_create(&P, 1, 0, 1000, GROUND - 1 - 13);
+    for (i = 0; i < 10; i++)
+        frame(0, 0);
+    CHECK(P.act_air == dcp_act_hover && P.hover_timer == 0x78, "Blaze act_air = Player_Action_Hover, budget 0x78");
+    frame(DCP_KEY_A, DCP_KEY_A);
+    for (n = 0; n < 8; n++)
+        frame(DCP_KEY_A, 0);
+    frame(DCP_KEY_A | DCP_KEY_R, DCP_KEY_R);
+    printf("  hover: state %s anim %x grav %d fall %d acc %d dec %d bacc %d bdec %d vy %d timer %d\n",
+           P.state == dcp_state_hover ? "hover" : "?", P.anim, P.gravity, P.fall_max, P.acc, P.dec, P.boost_acc,
+           P.boost_dec, P.vel_y, P.hover_timer);
+    CHECK(P.state == dcp_state_hover && P.anim == 0x34 && P.gravity == 8 && P.fall_max == 0x220 && P.acc == 0x30 &&
+              P.dec == 0x60 && P.boost_acc == 0x38 && P.boost_dec == 0x60 && !(P.pf & 3),
+          "Player_Action_Hover: anim 0x34, gravity 8, fall 0x220, acc 0x30 / dec 0x60, boost 0x38 / 0x60, pf &= ~3");
+    CHECK(P.vel_y >= 0 && P.vel_y <= 8, "hover zeroes vel_y (one gravity step after: %d)", P.vel_y);
+    for (n = 0; n < 20; n++) {
+        s16 h = P.hover_timer;
+        frame(DCP_KEY_R, 0);
+        if (P.hover_timer != h - 1 || P.state != dcp_state_hover || P.vel_y > 0x220)
+            ok_timer = 0;
+    }
+    CHECK(ok_timer && P.hover_timer == 0x78 - 20, "holding R: one budget frame per frame (%d left)", P.hover_timer);
+    frame(0, 0);
+    CHECK(P.state == dcp_state_in_air && P.gravity == t->gravity && P.fall_max == t->fall_max && P.anim == 2,
+          "release R: Player_Action_Fall with the physics reloaded (grav %d, fall %d, anim %x)", P.gravity, P.fall_max, P.anim);
+    /* the budget is not refilled in the air: a second hover runs out after the remaining frames */
+    frame(DCP_KEY_R, DCP_KEY_R);
+    for (n = 0; n < 200 && P.state == dcp_state_hover; n++)
+        frame(DCP_KEY_R, 0);
+    printf("  second hover lasted %d frames (budget %d)\n", n + 1, 0x78 - 21);
+    CHECK(n + 1 == 0x78 - 21 + 1 || (P.move_flags & 1), "second hover in the same jump uses the rest of the budget (%d)", n + 1);
+    frame(DCP_KEY_R, DCP_KEY_R);
+    CHECK(P.state != dcp_state_hover, "budget spent: R does not hover again");
+    for (n = 0; n < 200 && !(P.move_flags & 1); n++)
+        frame(0, 0);
+    frame(0, 0);
+    CHECK(P.hover_timer == 0x78, "landing refills the budget (0x78): %d", P.hover_timer);
+    /* Sonic keeps the homing attack */
+    dcp_player_create(&P, 0, 0, 1000, GROUND - 1 - 13);
+    CHECK(P.act_air == dcp_act_homing, "Sonic act_air = Player_Action_HomingAttack");
+}
+
 static void test_z11(const char *path) {
     long size;
     void *file = load(path, &size);
@@ -583,6 +733,9 @@ int main(int argc, char **argv) {
     test_spindash();
     test_hurt_rings();
     test_boost_spring_trick();
+    test_trick_volume();
+    test_jump_extras();
+    test_blaze_hover();
     if (argc > 2)
         test_z11(argv[2]);
     printf("%d checks, %d failed\n", g_checks, g_fail);

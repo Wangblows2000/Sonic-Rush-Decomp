@@ -196,6 +196,31 @@ static void dump_view(const char *path) {
     printf("  view dumped to %s (player at screen %d,%d)\n", path, x, y);
 }
 
+/* ZoneFx_Zone3Boss_Update stand-in (the game links zonefx.c): the same counter, two known
+ * colour sets, to check the boss module applies them to its lights */
+static u16 s_z3b;
+static int g_light_calls, g_light_changes, g_zs3_seen, g_light_seen;
+int zonefx_boss3_lights(int boss_active, uint16_t out[3]) {
+    static const uint16_t a[3] = { 0x73ff, 0x00c9, 0x1e19 }, b[3] = { 0x73ff, 0x00c9, 0x0d79 };
+    const uint16_t *p;
+    g_light_calls++;
+    if (!boss_active)
+        return 0;
+    s_z3b++;
+    if ((s_z3b & ~0x8000) <= 6)
+        return 0;
+    p = (s_z3b & 0x8000) ? a : b;
+    out[0] = p[0];
+    out[1] = p[1];
+    out[2] = p[2];
+    s_z3b &= 0x8000;
+    s_z3b ^= 0x8000;
+    g_light_changes++;
+    return 1;
+}
+int boss3_zone_script_state(void);
+int boss3_light_state(uint16_t out[3]);
+
 static u16 s_prev;
 static void frame(u16 held) {
     u16 pressed = held & ~s_prev, released = s_prev & ~held;
@@ -204,6 +229,13 @@ static void frame(u16 held) {
     dcp_player_frame(&P, held, pressed, released);
     player_collide();
     boss_update(&P);
+    {
+        uint16_t c[3];
+        if (boss3_zone_script_state() > 0x1e)
+            g_zs3_seen++;
+        if (boss3_light_state(c) && (c[2] == 0x1e19 || c[2] == 0x0d79))
+            g_light_seen++;
+    }
     g_frame++;
 }
 
@@ -476,6 +508,10 @@ int main(int argc, char **argv) {
         tris = boss_draw(0);
         printf("  boss_draw (host: vertices transformed) %d\n", tris);
         CHECK(tris > 0, "boss models pose and project through the boss camera");
+        printf("  StageZoneScript_Zone3Boss: ball camera set in %d frames; ZoneFx_Zone3Boss lights: %d calls, "
+               "%d colour changes, set in %d frames\n", g_zs3_seen, g_light_calls, g_light_changes, g_light_seen);
+        CHECK(g_zs3_seen > 0, "StageZoneScript_Zone3Boss: the camera follows the ball 30 frames after Boss3 unk210 = 1");
+        CHECK(g_light_changes > 10 && g_light_seen > 0, "ZoneFx_Zone3Boss_Update: the light colours alternate in the fight");
     }
     printf("%d checks, %d failed\n", g_checks, g_fail);
     boss_shutdown();

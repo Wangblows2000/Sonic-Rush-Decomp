@@ -1,5 +1,5 @@
---- a/dreamcast/game/src/main.c	2026-11-22 16:04:26.674467987 +0000
-+++ b/dreamcast/game/src/main.c	2026-11-22 16:04:26.678891572 +0000
+--- a/dreamcast/game/src/main.c	2026-11-22 16:42:24.122111158 +0000
++++ b/dreamcast/game/src/main.c	2026-11-22 16:42:24.140422058 +0000
 @@ -14,6 +14,7 @@
  #include "../objects/objects.h"
  #include "../ui/ui.h"
@@ -8,7 +8,7 @@
  #include "../boss/boss.h"
  #include "../boss/boss_final.h"
  #include "../objects/obj_internal.h"
-@@ -129,6 +130,7 @@
+@@ -133,6 +134,7 @@
      printf("objects: vram free after objects_init %lu\n", (unsigned long)render_vram_free());
      sound_load_bank(sound_stage_sdat(g_dcp_world.zone, g_dcp_world.act, g_chara));
      sound_hooks_reset_players();
@@ -16,7 +16,7 @@
      g_is_boss = 0; g_boss_started = 0;
      boss_shutdown();
      if(g_dcp_world.act == 2) {
-@@ -224,25 +226,6 @@
+@@ -231,25 +233,6 @@
      dcp_model_draw(&g_dcp_model, &g_player, list, &mdl, &cam, &lights);
  }
  
@@ -42,7 +42,7 @@
  static int load_stage(Level *lv, int idx)
  {
      loading_begin();   /* spinning ring until spawn_player has finished */
-@@ -258,7 +241,9 @@
+@@ -265,7 +248,9 @@
          g_dcp_world.zone = (u8)(lv->hdr->stage / 3);
          g_dcp_world.act = (u8)(lv->hdr->stage % 3);
      }
@@ -53,7 +53,7 @@
      printf("stage %s: load %d in %llu ms, %dx%d px, %d block pages, vram used %lu, vram free %lu\n",
             k_stages[idx], r, (unsigned long long)(timer_ms_gettime64() - t0),
             r == 0 ? level_width_px(lv) : 0, r == 0 ? level_height_px(lv) : 0, lv->num_pages,
-@@ -269,30 +254,17 @@
+@@ -276,30 +261,17 @@
  /* Menu sound hooks (MenuHooks): sys SDAT music streams as /cd/music/sNN.wav
   * (NN = sequence id, loop points in /cd/music/sys.txt), SE through the
   * native sequencer with the sys bank. */
@@ -88,16 +88,16 @@
      audio_music_stop();
      if(sound_load_bank("sys") != 0) printf("sys sound bank missing\n");
  }
-@@ -307,7 +279,7 @@
-     switch(kind) {
+@@ -315,7 +287,7 @@
      case OBJ_FX_SCREEN_FLASH: g_flash = 16; break;
      case OBJ_FX_ENEMY_ROOM: ui_enemy_room(a, b); break;   /* EnemyRoomHud */
+     case OBJ_FX_ZONE4_BLDY: zonefx_bldy(a, b); break;     /* ZoneFx_Zone4_StartBldy* (dark areas) */
 -    default: break;
 +    default: bgm_obj_effect(p, kind, a); break;          /* OBJ_FX_BGM_LAYER / OBJ_FX_JINGLE */
      }
  }
  static void ui_voice_hook(void *ctx, s32 arc, s32 id) { (void)ctx; Sound_PlayVoice(NULL, (uint32_t)arc, (uint32_t)id); }
-@@ -349,8 +321,6 @@
+@@ -345,8 +317,6 @@
      if(g_dcp_world.mode == UI_MODE_STORY && g_dcp_world.zone != 7) g_after_boss_pending = 1;
      else ui_stage_exit(OBJ_EXIT_CLEAR_DEMO);
  }
@@ -106,7 +106,7 @@
  
  /* g_boss_hooks.help: BossHelp_Create / BossHelp_Destroy drawn by the UI module */
  static void boss_help_hook(void *ctx, s32 kind, s32 a, s32 b)
-@@ -440,6 +410,8 @@
+@@ -436,6 +406,8 @@
      CsNext n = run_cutscene(CS_SCRIPT, 3, 8, NULL);   /* Game_StartDemoScript3AtZone8Act2 */
      (void)n;
      sound_load_bank("ze");
@@ -115,7 +115,7 @@
      boss_extra_set_paths("/cd/models", "/cd/boss/extra");
      boss_extra_set_lives(gSaveData.unkE ? gSaveData.unkE : 3, gSaveData.unk66 ? gSaveData.unk66 : 3);
      boss_extra_set_difficulty(0);   /* gGameState.unk14: 0 normal */
-@@ -498,6 +470,7 @@
+@@ -494,6 +466,7 @@
      g_ss.x = g_player.x >> 8; g_ss.y = (g_player.y >> 8) + 0x118;
      g_ss.frame = g_dcp_world.frame; g_ss.score = g_ui_game.total;
      if(objects_save_event_state) objects_save_event_state();
@@ -123,7 +123,7 @@
      if(g_obj_ok) objects_shutdown();
      g_obj_ok = 0;
      audio_music_stop();
-@@ -578,8 +551,13 @@
+@@ -576,8 +549,13 @@
      cutscene_set_paths("/cd/cutscene", "/cd/sprites", "/cd/models", "/cd/music");
      g_menu_hooks.talk_demo_start = menu_talk_start;
      g_menu_hooks.talk_demo_active = menu_talk_active;

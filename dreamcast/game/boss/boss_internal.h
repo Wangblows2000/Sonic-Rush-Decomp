@@ -366,6 +366,7 @@ void boss3_unload(void);
 void *Boss3_Create(const ObjParam *a, s32 x, s32 y);
 void boss3_update(void);
 int boss3_draw(int list);
+void boss3_zone_script(void);    /* StageZoneScript_Zone3Boss (0x3eff) */
 void boss3_destroy(void);
 const char *boss3_state_name(int part);
 void boss3_body_pos(s32 *x, s32 *y, s32 *z);

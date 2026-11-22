@@ -184,6 +184,7 @@ void dcp_model_set_anim(DcpModel *m, DcPlayer *p, s32 anim) {
 
 void dcp_model_set_speed(DcpModel *m, s32 s) { m->speed = (s << 12) >> 4; }
 void dcp_model_set_slot_speed(DcpModel *m, s32 fx) { m->slot_speed = fx; }
+static void dcp_model_set_slot_speed_main(DcpModel *m, s32 fx) { m->speed = fx; }
 
 static DcpModel *s_hooked;
 static void (*s_prev_anim)(void *ctx, DcPlayer *p, s32 anim);
@@ -202,9 +203,16 @@ static void hook_speed(void *ctx, DcPlayer *p, s32 s) {
         s_prev_speed(s_prev_ctx ? s_prev_ctx : ctx, p, s);
 }
 
+static void hook_model_speed(void *ctx, DcPlayer *p, s32 fx) {
+    (void)ctx;
+    if (s_hooked && s_hooked->p == p)
+        dcp_model_set_slot_speed_main(s_hooked, fx);
+}
+
 void dcp_model_attach(DcpModel *m, const DcPlayer *p) {
     s_hooked = m;
     m->p = p;
+    H.model_speed = hook_model_speed;
     if (H.anim != hook_anim) {
         s_prev_anim = H.anim;
         s_prev_speed = H.anim_speed;
@@ -531,10 +539,36 @@ int dcp_model_afterimage(const DcPlayer *p, s32 *x, s32 *y, s32 *z) {
     return 1;
 }
 
+/* The model palette shifts of Player_In (ModelPalette_ShiftColor on the player's palette):
+ *  tension max (unk3B6): (a, a / 2, -a / 2), a = (frame >> 1) & 0x1f rising while frame & 0x40,
+ *    else 0x1f - that (a 128-frame glow), back to 0 when it runs out;
+ *  invincibility (unk3B4): white (0x1f, 0x1f, 0x1f) when !(frame & 0xe) with the stage running,
+ *    else 0 unless tension max holds its own shift;
+ *  none while the goal is reached (pf 0x1000000: the last shift stays; Player_Action_ReachGoal
+ *  resets it, so 0 here). Player_Action_Die / Player_Respawn / AddTension (< 0) reset it with
+ *  their own state changes. */
+void dcp_model_palette_shift(const DcPlayer *p, int out[3]) {
+    u32 v = W.frame, a, b;
+    out[0] = out[1] = out[2] = 0;
+    if (p->pf & 0x1000000)
+        return;
+    if (p->tension_max != 0) {
+        if (v & 0x40)
+            a = (v >> 1) & 0x1f;
+        else
+            a = 0x1f - ((v >> 1) & 0x1f);
+        b = a >> 1;
+        out[0] = (s8)a, out[1] = (s8)b, out[2] = -(s8)b;
+    }
+    if (p->invinc != 0 && !(W.frame & 0xe) && (W.flags & 1))
+        out[0] = out[1] = out[2] = 0x1f;
+}
+
 int dcp_model_draw(const DcpModel *m, const DcPlayer *p, int list, const dcm_mtx_t *mdl, const dcm_camera_t *cam,
                    const dcm_lights_t *lights) {
     dcm_draw_opts_t o;
     const dcm_model_t *r;
+    int sh[3], n;
     if (!m->ok || !m->posed || (p->disp_flags & 0x20))
         return 0;
     r = &m->res[m->cur_res];
@@ -547,5 +581,9 @@ int dcp_model_draw(const DcpModel *m, const DcPlayer *p, int list, const dcm_mtx
     o.pt_list = 1;
 #endif
     o.alpha_scale = 255;
-    return dcm_draw(r, m->pal, mdl, cam, m->visbits, lights, &o);
+    dcp_model_palette_shift(p, sh);
+    dcm_set_color_shift(sh[0], sh[1], sh[2]);
+    n = dcm_draw(r, m->pal, mdl, cam, m->visbits, lights, &o);
+    dcm_set_color_shift(0, 0, 0);
+    return n;
 }

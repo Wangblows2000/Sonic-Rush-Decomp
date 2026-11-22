@@ -10,6 +10,7 @@
 
 static void sfx(DcPlayer *p, s32 ch, s32 id) { if (H.sfx) H.sfx(H.ctx, p, ch, id); }
 static void sfx_stop(DcPlayer *p, s32 ch) { if (H.sfx_stop) H.sfx_stop(H.ctx, p, ch); }
+static void sfx_volume(DcPlayer *p, s32 ch, s32 v) { if (H.sfx_volume) H.sfx_volume(H.ctx, p, ch, v); }
 static void fx(DcPlayer *p, s32 id, s32 a, s32 b) { if (H.effect) H.effect(H.ctx, p, id, a, b); }
 static void atkdef(DcPlayer *p, s32 box, s32 a, s32 d) { if (H.atkdef) H.atkdef(H.ctx, p, box, a, d); }
 static void shake(s32 s) { if (H.shake) H.shake(H.ctx, s); }
@@ -617,8 +618,13 @@ void dcp_act_jump(DcPlayer *w) {
     w->timer = 0;
     w->trick_input = 0;
     w->charge = 0;
+    if (w->chara == 1 && H.model_speed) /* Blaze's spin jump: w->unk124->unk114 = 0x4000 */
+        H.model_speed(H.ctx, w, 0x4000);
     sfx(w, DCP_CH_VOICE, w->chara != 1 ? 2 : 0x13);
     sfx_stop(w, DCP_CH_TRICK);
+    /* underwater: one bubble on half the jumps (the Player_Rand draw keeps the shared seed in step) */
+    if ((w->pf & 0x4000000) && (dcp_rand() & 1))
+        fx(w, DCP_FX_AIR_BUBBLE, 0, 0);
 }
 
 void dcp_act_fall(DcPlayer *w) {
@@ -860,6 +866,9 @@ void dcp_act_trick_forward(DcPlayer *w) {
     dcp_add_trick_score(w, 200);
 }
 
+/* the ARM register shift (ASR by unk3D0) gives 0 from 32 on; C (and SH4 / x86) would wrap the count */
+#define TRICK_SHR(v, n) ((n) >= 32 ? 0 : (v) >> (n))
+
 void dcp_act_trick_combo(DcPlayer *w) {
     if (!score_active())
         w->trick_cnt = 0;
@@ -874,29 +883,32 @@ void dcp_act_trick_combo(DcPlayer *w) {
         w->pf |= 4;
         if (w->trick_lvl == 0)
             fx(w, DCP_FX_TRICK_COMBO, 0, 0);
-        dcp_add_tension(w, (s16)(0x280 >> w->trick_lvl));
+        dcp_add_tension(w, (s16)TRICK_SHR(0x280, w->trick_lvl));
         if (w->chara != 1)
             sfx(w, DCP_CH_VOICE, (dcp_rand() & 1) ? 0x1f : 0x20);
         else
             sfx(w, DCP_CH_VOICE, (dcp_rand() & 1) ? 0x28 : 0x29);
         sfx_stop(w, DCP_CH_TRICK);
         sfx(w, DCP_CH_TRICK, 0x31);
+        sfx_volume(w, DCP_CH_TRICK, TRICK_SHR(0x7f, w->trick_lvl));
         dcp_add_trick_score(w, 200);
     } else if (w->trick_input & 2) {
         if (w->anim == 0x39) {
             dcp_set_anim(w, 0x3a);
             w->pf |= 0x4000;
-            dcp_add_tension(w, (s16)(400 >> w->trick_lvl));
+            dcp_add_tension(w, (s16)TRICK_SHR(400, w->trick_lvl));
             if (w->chara != 1)
                 sfx(w, DCP_CH_VOICE, (dcp_rand() & 1) ? 0x1e : 0x25);
             else
                 sfx(w, DCP_CH_VOICE, (dcp_rand() & 1) ? 0x27 : 0x2e);
             sfx(w, DCP_CH_VOICE, 0x2f);
+            sfx_volume(w, DCP_CH_VOICE, TRICK_SHR(0x7f, w->trick_lvl));
         } else {
             dcp_set_anim(w, 0x39);
-            dcp_add_tension(w, (s16)(400 >> w->trick_lvl));
+            dcp_add_tension(w, (s16)TRICK_SHR(400, w->trick_lvl));
             sfx(w, DCP_CH_VOICE, w->chara != 1 ? 0x1d : 0x26);
             sfx(w, DCP_CH_VOICE, 0x30);
+            sfx_volume(w, DCP_CH_VOICE, TRICK_SHR(0x7f, w->trick_lvl));
         }
     } else {
         return;
@@ -1273,8 +1285,11 @@ next:
     }
     anim_speed(w, w->gnd_vel);
     if (w->anim >= 5 && w->anim <= 10) {
-        if (!(W.objmgr & 0x100) && !(w->timer & 7))
+        if (!(W.objmgr & 0x100) && !(w->timer & 7)) {
             fx(w, DCP_FX_BRAKE_SMOKE, 0, 0);
+            if ((w->pf & 0x4000000) && !(dcp_rand() & 1))
+                fx(w, DCP_FX_AIR_BUBBLE, 0, 0);
+        }
         w->timer++;
     }
     if (W.objmgr & 0x100)

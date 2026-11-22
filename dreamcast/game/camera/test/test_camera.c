@@ -138,10 +138,11 @@ static void frame(u16 held) {
     camera_frame_checks();
     camera_get_view(&vx, &vy);
     objects_set_view(0, vx, vy);
-    if (getenv("CAMVIEW1_DS"))   /* experiment: view 1 = the DS partner screen (gCamera[1]) */
-        objects_set_view(1, camera_layer(1)->x, camera_layer(1)->y);
-    else
-        objects_set_view(1, vx, vy - 0xC000);   /* main.c convention: 192 px above the window */
+    {   /* main.c: view 1 = the DS partner screen (gCamera[1]) */
+        s32 px2, py2;
+        camera_get_partner_view(&px2, &py2);
+        objects_set_view(1, px2, py2);
+    }
     objects_frame_begin();
     dcp_player_frame(&P, held, pressed, released);
     camera_player_last(&P);
@@ -306,9 +307,7 @@ static void test_ship(void) {
     CHECK(n_lock > 100 && n_far == 0 && maxd <= 24 * 256, "camera locked on the sand ship");
     (void)pawns;
     CHECK(n_steps == 0, "no window jump on the ship");
-    if (!pawns)
-        printf("  [ship] (no drop-in Egg Pawn: they spawn when a view comes within 60 px of them; view 1 is 192 px "
-               "above the window, the DS top screen is 272 px above; CAMVIEW1_DS=1 tries the DS screen)\n");
+    CHECK(pawns, "drop-in Egg Pawns spawn (view 1 = the DS partner screen)");
 }
 
 /* ------------------------------------------------------------ [bg] */

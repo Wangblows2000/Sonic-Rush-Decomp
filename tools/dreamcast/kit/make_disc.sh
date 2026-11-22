@@ -47,6 +47,7 @@ python3 tools/dreamcast/sprites/bac2dc.py --no-preview
 python3 tools/dreamcast/models/nsbmd2dc.py batch
 python3 tools/dreamcast/audio/sdat2dc.py --wav2adpcm "$KIT/bin/wav2adpcm" 2>/dev/null || python3 tools/dreamcast/audio/sdat2dc.py
 python3 tools/dreamcast/audio/sfxbank.py
+python3 tools/dreamcast/audio/musictab.py
 python3 -I dreamcast/game/player/tools/extract_physics.py
 python3 dreamcast/game/objects/tools/objdata.py --out "$KIT/build/dreamcast/objects"
 python3 dreamcast/game/ui/tools/uidata.py --out "$KIT/build/dreamcast/ui"

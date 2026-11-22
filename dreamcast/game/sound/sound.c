@@ -42,6 +42,7 @@ static void miss(int32_t arc, int32_t id, int why) {
 }
 static void seq_end_cb(int32_t arc, int32_t id, int tries, int ok) { if (tries == 0 || ok == 0) miss(arc, id, 1); }
 static void start_check(const SoundHandle *h, int32_t arc, int32_t id) { if (g_sound_trace && h->player == NULL) miss(arc, id, 0); }
+void sound_trace_enable(int on) { g_sound_trace = on; g_snd_seq_end_cb = on ? seq_end_cb : NULL; }
 static uint32_t s_frac;
 static int s_init;
 /* debug trace (serial): enabled when <dir>/../debug/sndtrace.txt exists on

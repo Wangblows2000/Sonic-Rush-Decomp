@@ -63,7 +63,16 @@ const CamStats *camera_stats(void) { return &s_stats; }
 void camera_set_zone_hook(void (*fn)(void)) { s_zone_hook = fn; }
 void camera_get_view(s32 *x, s32 *y) { *x = s_win_x; *y = s_win_y; }
 /* gCamera[1]: the DS's other screen (spawning only; never drawn) */
-void camera_get_partner_view(s32 *x, s32 *y) { *x = C(1).x; *y = C(1).y; }
+void camera_get_partner_view(s32 *x, s32 *y) {
+    /* the private gCamera[1] position (g_obj_camera[1].x/y is the object view itself) */
+    if (!s_inited || (s_g.mode & 4)) {
+        *x = s_win_x;
+        *y = s_win_y - 0xC000;
+        return;
+    }
+    *x = s_l[1].x;
+    *y = s_l[1].y;
+}
 
 
 /* ================================================================ Stage_GetSplitLineY */

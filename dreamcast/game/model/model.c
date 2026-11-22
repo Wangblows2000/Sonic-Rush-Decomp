@@ -23,6 +23,7 @@
 #include "model.h"
 
 #include <math.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -173,7 +174,10 @@ static uint32_t vhash(const uint32_t *w, int n, uint32_t h) {
     return h;
 }
 
-/* vref[2 * i] / vref[2 * i + 1]: slot of vertex i's position / normal (bitwise equal inputs share a slot,
+#define SLOT(type, base, off) ((type *)((uint8_t *)(base) + (off)))
+
+/* vref[2 * i] / vref[2 * i + 1]: byte offset (slot index * 32) of vertex i's position / normal slot (bitwise equal
+ * inputs share a slot,
  * so a shared slot gives exactly the per-vertex result) */
 static int build_vref(dcm_model_t *m) {
     uint32_t n = m->hdr->num_vertices, size = 16, i, pass;
@@ -184,7 +188,7 @@ static int build_vref(dcm_model_t *m) {
         return -1;
     while (size < 2 * n)
         size <<= 1;
-    m->vref = (uint16_t *)malloc(4 * (size_t)n + 16 * (size_t)m->hdr->num_palette);
+    m->vref = (uint32_t *)malloc(8 * (size_t)n + 16 * (size_t)m->hdr->num_palette);
     tab = (uint32_t *)malloc(4 * (size_t)(size > 6u * m->hdr->num_palette ? size : 6u * m->hdr->num_palette));
     if (!m->vref || !tab) {
         free(tab);
@@ -252,7 +256,7 @@ static int build_vref(dcm_model_t *m) {
                 const dcm_vertex_t *o;
                 if (!tab[h]) {
                     tab[h] = i + 1;
-                    m->vref[2 * i + pass] = count++;
+                    m->vref[2 * i + pass] = 32u * count++;
                     break;
                 }
                 o = &m->vertices[tab[h] - 1];
@@ -1156,6 +1160,34 @@ static int state_class(const dcm_model_t *m, const dcm_material_t *mat, const dc
 
 dcm_emit_hook_t dcm_host_emit;
 
+/* ModelPalette_ShiftColor on the DS adds (r, g, b) (5-bit units, clamped) to every palette colour of
+ * the model. The DC textures are direct colour, so the shift is applied per vertex instead: the
+ * positive part as the PVR offset colour (specular / offset enabled in the header), the negative
+ * part by scaling that channel of the vertex colour. 0, 0, 0 = off (the default). */
+static int g_shift_on, g_shift[3];
+static uint32_t g_shift_oargb;
+void dcm_set_color_shift(int r, int g, int b) {
+    int c[3] = {r, g, b}, i;
+    g_shift_on = (r | g | b) != 0;
+    g_shift_oargb = 0;
+    for (i = 0; i < 3; i++) {
+        g_shift[i] = c[i] < -31 ? -31 : c[i] > 31 ? 31 : c[i];
+        if (g_shift[i] > 0)
+            g_shift_oargb |= (uint32_t)(g_shift[i] * 255 / 31) << (16 - 8 * i);
+    }
+}
+static inline uint32_t shift_col(uint32_t col) {
+    int i;
+    if (!g_shift_on)
+        return col;
+    for (i = 0; i < 3; i++)
+        if (g_shift[i] < 0) {
+            uint32_t sh = (uint32_t)(16 - 8 * i), v = (col >> sh) & 0xff;
+            col = (col & ~(0xffu << sh)) | ((v * (uint32_t)(31 + g_shift[i]) / 31) << sh);
+        }
+    return col;
+}
+
 /* one vertex of the strip being built: clip position, uv, colour */
 typedef struct {
     float c[4];
@@ -1178,8 +1210,8 @@ static inline void submit(int material, float x, float y, float z, float u, floa
         pv->z = z;
         pv->u = u;
         pv->v = v;
-        pv->argb = col;
-        pv->oargb = 0;
+        pv->argb = shift_col(col);
+        pv->oargb = g_shift_oargb;
     } else {
         pvr_vertex_t *pv = (pvr_vertex_t *)pvr_dr_target();
         pv->flags = eol ? PVR_CMD_VERTEX_EOL : PVR_CMD_VERTEX;
@@ -1188,8 +1220,8 @@ static inline void submit(int material, float x, float y, float z, float u, floa
         pv->z = z;
         pv->u = u;
         pv->v = v;
-        pv->argb = col;
-        pv->oargb = 0;
+        pv->argb = shift_col(col);
+        pv->oargb = g_shift_oargb;
         pvr_dr_commit(pv);
     }
 #endif
@@ -1201,7 +1233,7 @@ static inline void submit(int material, float x, float y, float z, float u, floa
         o[2] = z;
         o[3] = u;
         o[4] = v;
-        dcm_host_emit(material, o, col, eol);
+        dcm_host_emit(material, o, shift_col(col), eol);
     }
 }
 
@@ -1307,7 +1339,8 @@ static const pvr_poly_hdr_t *material_header(const dcm_model_t *m, const dcm_mat
         cull = PVR_CULLING_CCW;
     else
         cull = PVR_CULLING_NONE;
-    mode = (uint32_t)flip | (uint32_t)clamp << 2 | (uint32_t)cull << 4 | (uint32_t)textured << 8 | 1u << 9;
+    mode = (uint32_t)flip | (uint32_t)clamp << 2 | (uint32_t)cull << 4 | (uint32_t)textured << 8 | 1u << 9 |
+           (uint32_t)(g_shift_on && g_shift_oargb) << 10;
     h = (tex >> 5) ^ (tex >> 11) ^ fmt ^ wh ^ (wh >> 13) ^ mode * 0x9E37u ^ (uint32_t)list * 0x45D9F3Bu;
     h ^= h >> 16;
     e = &g_hdr_cache[h & (HDR_CACHE - 1)];
@@ -1323,6 +1356,8 @@ static const pvr_poly_hdr_t *material_header(const dcm_model_t *m, const dcm_mat
         pvr_poly_cxt_col(&cxt, (pvr_list_t)list);
     }
     cxt.gen.culling = cull;
+    if (mode & (1u << 10))
+        cxt.gen.specular = PVR_SPECULAR_ENABLE; /* offset colour: dcm_set_color_shift */
     pvr_poly_compile(&e->hdr, &cxt);
     PROF(g_prof_hdr++);
     e->list = (uint32_t)list;
@@ -1777,26 +1812,28 @@ uint32_t dcm_dc_capture_n;
 /* All-in strips of one draw straight to the TA (PVR direct render through the store queues), from the
  * slots: screen position, lit colour, uv. */
 typedef struct {
+    /* the asm loop reads the first 16 words (mov.l @(disp,Rn) reaches 60 bytes) */
     const dcm_strip_t *st0, *st1;
     const dcm_vertex_t *verts;
-    const uint16_t *vref;
+    const uint32_t *vref;
+    const actx_t *A;
+    pslot_t *wps;   /* lazy: slots filled during submission */
+    nslot_t *wns;
+    uint32_t sa, flat;
+    float ua, ue, ud, uf;
+    int wrote;
+    uint32_t *outp; /* store-queue address / capture pointer, in and out */
+    float near_w;
     const pslot_t *ps;
     const nslot_t *ns;
     const float (*env)[2];
-    uint32_t sa, flat;
-    float ua, ue, ud, uf, near_w;
     int front;
-    /* lazy (whole model in front): slots filled here instead of in the passes */
-    const actx_t *A;
-    pslot_t *wps;
-    nslot_t *wns;
-    int wrote;
 } emit_t;
 
 #define STF(p, f) __asm__ __volatile__("fmov.s %1,@-%0" : "+r"(p) : "f"(f))
 
 static inline __attribute__((always_inline)) int emit_draw(emit_t *E, const int LIT, const int ENV,
-                                                          const int CAP, const int LAZY) {
+                                                          const int CAP) {
     const dcm_strip_t *st;
     const pslot_t *ps = E->ps;
     const nslot_t *ns = E->ns;
@@ -1806,42 +1843,25 @@ static inline __attribute__((always_inline)) int emit_draw(emit_t *E, const int 
     int sent = 0;
     for (st = E->st0; st < E->st1; st++) {
         const dcm_vertex_t *v = E->verts + st->first_vertex;
-        const uint16_t *vr = E->vref + 2 * st->first_vertex;
+        const uint32_t *vr = E->vref + 2 * st->first_vertex;
         int k, n = st->count < DCM_STRIP_MAX ? st->count : DCM_STRIP_MAX;
         if (!E->front) {
             for (k = 0; k < n; k++)
-                if (ps[vr[2 * k]].c[3] < near_w)
+                if (SLOT(const pslot_t, ps, vr[2 * k])->c[3] < near_w)
                     break;
             if (k < n)
                 break; /* crosses the near plane: the caller clips it, then goes on from the next strip */
         }
         for (k = n; k > 0; k--, v++, vr += 2) {
-            const float *sp = ps[vr[0]].s;
+            const float *sp = SLOT(const pslot_t, ps, vr[0])->s;
             uint32_t col, *pv;
             float tu, tv, sx, sy, sz, *fp;
-            if (LAZY) {
-                pslot_t *P = &E->wps[vr[0]];
-                if (P->stamp != E->A->cs) {
-                    dcm_asm_pslot(E->A, P, v);
-                    PROF(g_prof_xf++);
-                }
-            }
-            if (LIT && (v->flags & DCM_VF_NORMAL)) {
-                if (LAZY) {
-                    nslot_t *N = &E->wns[vr[1]];
-                    uint32_t cid = E->A->cid;
-                    if (N->cid != cid || !cid || N->ep != E->A->pep[v->palette]) {
-                        dcm_asm_lslot(E->A, N, v, 1);
-                        E->wrote = 1;
-                        PROF(g_prof_lit++);
-                    }
-                }
-                col = sa | ns[vr[1]].col;
-            } else {
+            if (LIT && (v->flags & DCM_VF_NORMAL))
+                col = sa | SLOT(const nslot_t, ns, vr[1])->col;
+            else
                 col = sa | unlit_rgb(flat, v);
-            }
             if (ENV) {
-                const float *e = E->env[vr[1]];
+                const float *e = E->env[vr[1] >> 5];
                 tu = 0.5f + 0.5f * e[0];
                 tv = 0.5f - 0.5f * e[1];
             } else {
@@ -1882,20 +1902,850 @@ static inline __attribute__((always_inline)) int emit_draw(emit_t *E, const int 
     return sent;
 }
 
-#define EMIT_FN(name, L, V, C, Z)                                                                                \
-    static int __attribute__((noinline)) name(emit_t *E) { return emit_draw(E, L, V, C, Z); }
-EMIT_FN(emit_u, 0, 0, 0, 0)
-EMIT_FN(emit_l, 1, 0, 0, 0)
-EMIT_FN(emit_ue, 0, 1, 0, 0)
-EMIT_FN(emit_le, 1, 1, 0, 0)
-EMIT_FN(emit_u_c, 0, 0, 1, 0)
-EMIT_FN(emit_l_c, 1, 0, 1, 0)
-EMIT_FN(emit_ue_c, 0, 1, 1, 0)
-EMIT_FN(emit_le_c, 1, 1, 1, 0)
-EMIT_FN(emit_zu, 0, 0, 0, 1)
-EMIT_FN(emit_zl, 1, 0, 0, 1)
-EMIT_FN(emit_zu_c, 0, 0, 1, 1)
-EMIT_FN(emit_zl_c, 1, 0, 1, 1)
+#define EMIT_FN(name, L, V, C)                                                                                   \
+    static int __attribute__((noinline)) name(emit_t *E) { return emit_draw(E, L, V, C); }
+EMIT_FN(emit_u, 0, 0, 0)
+EMIT_FN(emit_l, 1, 0, 0)
+EMIT_FN(emit_ue, 0, 1, 0)
+EMIT_FN(emit_le, 1, 1, 0)
+EMIT_FN(emit_u_c, 0, 0, 1)
+EMIT_FN(emit_l_c, 1, 0, 1)
+EMIT_FN(emit_ue_c, 0, 1, 1)
+EMIT_FN(emit_le_c, 1, 1, 1)
+
+/* The lazy (whole model in front, no envmap) submission loop in SH-4 assembly: per vertex the position slot
+ * (dcm_asm_pslot on a miss), the lit colour slot (dcm_asm_lslot on a miss) or the vertex / flat colour, uv,
+ * then the 32-byte vertex to the store queue (or the capture buffer).  Returns the triangle count. */
+int dcm_asm_emitz_l(emit_t *E);
+int dcm_asm_emitz_u(emit_t *E);
+int dcm_asm_emitz_l_c(emit_t *E);
+int dcm_asm_emitz_u_c(emit_t *E);
+uint32_t dcm_vcol_rgb(const dcm_vertex_t *v);
+uint32_t dcm_vcol_rgb(const dcm_vertex_t *v) { return vcol_rgb(v); }
+typedef char emit_layout_check[(offsetof(emit_t, ua) == 36 && offsetof(emit_t, A) == 16 &&
+                                offsetof(emit_t, wps) == 20 && offsetof(emit_t, wns) == 24 &&
+                                offsetof(emit_t, wrote) == 52 && offsetof(emit_t, outp) == 56 &&
+                                offsetof(emit_t, sa) == 28 && offsetof(emit_t, flat) == 32 &&
+                                offsetof(emit_t, vref) == 12 && offsetof(emit_t, verts) == 8 &&
+                                sizeof(dcm_strip_t) == 8 && sizeof(dcm_vertex_t) == 32 && sizeof(pslot_t) == 32 &&
+                                sizeof(nslot_t) == 32 && offsetof(actx_t, cs) == 8 && offsetof(actx_t, pep) == 12 &&
+                                offsetof(actx_t, cid) == 32 && offsetof(actx_t, ns) == 40)
+                                   ? 1
+                                   : -1];
+__asm__(
+    "    .text\n"
+    "    .align 2\n"
+    "    .global _dcm_asm_emitz_l\n"
+    "_dcm_asm_emitz_l:\n"
+    "    mov.l   r8,@-r15\n"
+    "    mov.l   r9,@-r15\n"
+    "    mov.l   r10,@-r15\n"
+    "    mov.l   r11,@-r15\n"
+    "    mov.l   r12,@-r15\n"
+    "    mov.l   r13,@-r15\n"
+    "    mov.l   r14,@-r15\n"
+    "    fmov.s  fr12,@-r15\n"
+    "    fmov.s  fr13,@-r15\n"
+    "    fmov.s  fr14,@-r15\n"
+    "    fmov.s  fr15,@-r15\n"
+    "    sts.l   pr,@-r15\n"
+    "    add     #-12,r15\n"
+    "    mov     r4,r11\n"
+    "    mov.l   @(16,r11),r13\n"
+    "    mov.l   @(56,r11),r14\n"
+    "    mov     r11,r1\n"
+    "    add     #36,r1\n"
+    "    fmov.s  @r1+,fr12\n"
+    "    fmov.s  @r1+,fr13\n"
+    "    fmov.s  @r1+,fr14\n"
+    "    fmov.s  @r1,fr15\n"
+    "    mov.l   @r11,r12\n"
+    "    mov     #0,r0\n"
+    "    mov.l   r0,@(4,r15)\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "10:\n"
+    "    mov.l   @(4,r11),r1\n"
+    "    cmp/hs  r1,r12\n"
+    "    bf      11f\n"
+    "    bra     90f\n"
+    "    nop\n"
+    "11:\n"
+    "    mov.l   @r12,r1\n"
+    "    mov.w   @(4,r12),r0\n"
+    "    extu.w  r0,r10\n"
+    "    mov.w   95f,r2\n"
+    "    cmp/hi  r2,r10\n"
+    "    bf      16f\n"
+    "    mov     r2,r10\n"
+    "16:\n"
+    "    mov.l   @(4,r15),r2\n"
+    "    add     r10,r2\n"
+    "    add     #-2,r2\n"
+    "    mov.l   r2,@(4,r15)\n"
+    "    mov     r1,r8\n"
+    "    shll2   r8\n"
+    "    shll2   r8\n"
+    "    shll    r8\n"
+    "    mov.l   @(8,r11),r2\n"
+    "    add     r2,r8\n"
+    "    add     #12,r8\n"
+    "    mov     r1,r9\n"
+    "    shll2   r9\n"
+    "    shll    r9\n"
+    "    mov.l   @(12,r11),r2\n"
+    "    add     r2,r9\n"
+    "    tst     r10,r10\n"
+    "    bt      19f\n"
+    "12:\n"
+    "    mov.l   @r9+,r1\n"
+    "    add     r4,r1\n"
+    "    mov.l   @r1,r0\n"
+    "    cmp/eq  r0,r6\n"
+    "    bf      50f\n"
+    "13:\n"
+    "    add     #20,r1\n"
+    "    fmov.s  @r1+,fr4\n"
+    "    fmov.s  @r1+,fr5\n"
+    "    fmov.s  @r1,fr6\n"
+    "    mov.l   @r9+,r2\n"
+    "    mov.b   @(15,r8),r0\n"
+    "    tst     #2,r0\n"
+    "    bt      20f\n"
+    "    add     r5,r2\n"
+    "    mov.l   @(4,r2),r0\n"
+    "    cmp/eq  r0,r3\n"
+    "    bf      54f\n"
+    "    mov.b   @(14,r8),r0\n"
+    "    extu.b  r0,r0\n"
+    "    shll2   r0\n"
+    "    mov.l   @(12,r13),r1\n"
+    "    mov.l   @(r0,r1),r1\n"
+    "    mov.l   @r2,r0\n"
+    "    cmp/eq  r0,r1\n"
+    "    bf      54f\n"
+    "15:\n"
+    "    mov.l   @(8,r2),r0\n"
+    "    bra     30f\n"
+    "    or      r7,r0\n"
+    "20:\n"
+    "    tst     #1,r0\n"
+    "    bf      52f\n"
+    "    mov.l   @(32,r11),r0\n"
+    "    or      r7,r0\n"
+    "30:\n"
+    "    mov     r8,r1\n"
+    "    fmov.s  @r1+,fr0\n"
+    "    fmov.s  @r1,fr1\n"
+    "    fmov    fr13,fr2\n"
+    "    fmac    fr0,fr12,fr2\n"
+    "    fmov    fr15,fr3\n"
+    "    fmov    fr1,fr0\n"
+    "    fmac    fr0,fr14,fr3\n"
+    "    mov     #32,r1\n"
+    "    xor     r1,r14\n"
+    "    mov.l   r0,@(24,r14)\n"
+    "    mov     #0,r0\n"
+    "    mov.l   r0,@(28,r14)\n"
+    "    mov     r10,r0\n"
+    "    cmp/eq  #1,r0\n"
+    "    mov.l   93f,r0\n"
+    "    bf      31f\n"
+    "    mov.l   94f,r0\n"
+    "31:\n"
+    "    mov.l   r0,@r14\n"
+    "    mov     r14,r1\n"
+    "    add     #24,r1\n"
+    "    fmov.s  fr3,@-r1\n"
+    "    fmov.s  fr2,@-r1\n"
+    "    fmov.s  fr6,@-r1\n"
+    "    fmov.s  fr5,@-r1\n"
+    "    fmov.s  fr4,@-r1\n"
+    "    pref    @r14\n"
+    "    dt      r10\n"
+    "    bf/s    12b\n"
+    "    add     #32,r8\n"
+    "19:\n"
+    "    bra     10b\n"
+    "    add     #8,r12\n"
+    "50:\n"
+    "    mov.l   r1,@r15\n"
+    "    mov     r13,r4\n"
+    "    mov     r1,r5\n"
+    "    mov     r8,r6\n"
+    "    add     #-12,r6\n"
+    "    mov.l   96f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov.l   @r15,r1\n"
+    "    bra     13b\n"
+    "    nop\n"
+    "54:\n"
+    "    mov.l   r2,@(8,r15)\n"
+    "    fmov.s  fr4,@-r15\n"
+    "    fmov.s  fr5,@-r15\n"
+    "    fmov.s  fr6,@-r15\n"
+    "    mov     r13,r4\n"
+    "    mov     r2,r5\n"
+    "    mov     r8,r6\n"
+    "    add     #-12,r6\n"
+    "    mov     #1,r7\n"
+    "    mov.l   97f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    fmov.s  @r15+,fr6\n"
+    "    fmov.s  @r15+,fr5\n"
+    "    fmov.s  @r15+,fr4\n"
+    "    mov     #1,r0\n"
+    "    mov.l   r0,@(52,r11)\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov.l   @(8,r15),r2\n"
+    "    bra     15b\n"
+    "    nop\n"
+    "52:\n"
+    "    fmov.s  fr4,@-r15\n"
+    "    fmov.s  fr5,@-r15\n"
+    "    fmov.s  fr6,@-r15\n"
+    "    mov     r8,r4\n"
+    "    add     #-12,r4\n"
+    "    mov.l   98f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    fmov.s  @r15+,fr6\n"
+    "    fmov.s  @r15+,fr5\n"
+    "    fmov.s  @r15+,fr4\n"
+    "    mov     r0,r1\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov     r1,r0\n"
+    "    bra     30b\n"
+    "    or      r7,r0\n"
+    "90:\n"
+    "    mov.l   r14,@(56,r11)\n"
+    "    mov.l   @(4,r15),r0\n"
+    "    add     #12,r15\n"
+    "    lds.l   @r15+,pr\n"
+    "    fmov.s  @r15+,fr15\n"
+    "    fmov.s  @r15+,fr14\n"
+    "    fmov.s  @r15+,fr13\n"
+    "    fmov.s  @r15+,fr12\n"
+    "    mov.l   @r15+,r14\n"
+    "    mov.l   @r15+,r13\n"
+    "    mov.l   @r15+,r12\n"
+    "    mov.l   @r15+,r11\n"
+    "    mov.l   @r15+,r10\n"
+    "    mov.l   @r15+,r9\n"
+    "    rts\n"
+    "    mov.l   @r15+,r8\n"
+    "    .align 2\n"
+    "93:  .long   0xe0000000\n"
+    "94:  .long   0xf0000000\n"
+    "96:  .long   _dcm_asm_pslot\n"
+    "97:  .long   _dcm_asm_lslot\n"
+    "98:  .long   _dcm_vcol_rgb\n"
+    "95:  .short  256\n"
+    "    .align 2\n"
+    "    .align 2\n"
+    "    .global _dcm_asm_emitz_u\n"
+    "_dcm_asm_emitz_u:\n"
+    "    mov.l   r8,@-r15\n"
+    "    mov.l   r9,@-r15\n"
+    "    mov.l   r10,@-r15\n"
+    "    mov.l   r11,@-r15\n"
+    "    mov.l   r12,@-r15\n"
+    "    mov.l   r13,@-r15\n"
+    "    mov.l   r14,@-r15\n"
+    "    fmov.s  fr12,@-r15\n"
+    "    fmov.s  fr13,@-r15\n"
+    "    fmov.s  fr14,@-r15\n"
+    "    fmov.s  fr15,@-r15\n"
+    "    sts.l   pr,@-r15\n"
+    "    add     #-12,r15\n"
+    "    mov     r4,r11\n"
+    "    mov.l   @(16,r11),r13\n"
+    "    mov.l   @(56,r11),r14\n"
+    "    mov     r11,r1\n"
+    "    add     #36,r1\n"
+    "    fmov.s  @r1+,fr12\n"
+    "    fmov.s  @r1+,fr13\n"
+    "    fmov.s  @r1+,fr14\n"
+    "    fmov.s  @r1,fr15\n"
+    "    mov.l   @r11,r12\n"
+    "    mov     #0,r0\n"
+    "    mov.l   r0,@(4,r15)\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "10:\n"
+    "    mov.l   @(4,r11),r1\n"
+    "    cmp/hs  r1,r12\n"
+    "    bf      11f\n"
+    "    bra     90f\n"
+    "    nop\n"
+    "11:\n"
+    "    mov.l   @r12,r1\n"
+    "    mov.w   @(4,r12),r0\n"
+    "    extu.w  r0,r10\n"
+    "    mov.w   95f,r2\n"
+    "    cmp/hi  r2,r10\n"
+    "    bf      16f\n"
+    "    mov     r2,r10\n"
+    "16:\n"
+    "    mov.l   @(4,r15),r2\n"
+    "    add     r10,r2\n"
+    "    add     #-2,r2\n"
+    "    mov.l   r2,@(4,r15)\n"
+    "    mov     r1,r8\n"
+    "    shll2   r8\n"
+    "    shll2   r8\n"
+    "    shll    r8\n"
+    "    mov.l   @(8,r11),r2\n"
+    "    add     r2,r8\n"
+    "    add     #12,r8\n"
+    "    mov     r1,r9\n"
+    "    shll2   r9\n"
+    "    shll    r9\n"
+    "    mov.l   @(12,r11),r2\n"
+    "    add     r2,r9\n"
+    "    tst     r10,r10\n"
+    "    bt      19f\n"
+    "12:\n"
+    "    mov.l   @r9+,r1\n"
+    "    add     r4,r1\n"
+    "    mov.l   @r1,r0\n"
+    "    cmp/eq  r0,r6\n"
+    "    bf      50f\n"
+    "13:\n"
+    "    add     #20,r1\n"
+    "    fmov.s  @r1+,fr4\n"
+    "    fmov.s  @r1+,fr5\n"
+    "    fmov.s  @r1,fr6\n"
+    "    mov.l   @r9+,r2\n"
+    "    mov.b   @(15,r8),r0\n"
+    "    tst     #1,r0\n"
+    "    bf      52f\n"
+    "    mov.l   @(32,r11),r0\n"
+    "    or      r7,r0\n"
+    "30:\n"
+    "    mov     r8,r1\n"
+    "    fmov.s  @r1+,fr0\n"
+    "    fmov.s  @r1,fr1\n"
+    "    fmov    fr13,fr2\n"
+    "    fmac    fr0,fr12,fr2\n"
+    "    fmov    fr15,fr3\n"
+    "    fmov    fr1,fr0\n"
+    "    fmac    fr0,fr14,fr3\n"
+    "    mov     #32,r1\n"
+    "    xor     r1,r14\n"
+    "    mov.l   r0,@(24,r14)\n"
+    "    mov     #0,r0\n"
+    "    mov.l   r0,@(28,r14)\n"
+    "    mov     r10,r0\n"
+    "    cmp/eq  #1,r0\n"
+    "    mov.l   93f,r0\n"
+    "    bf      31f\n"
+    "    mov.l   94f,r0\n"
+    "31:\n"
+    "    mov.l   r0,@r14\n"
+    "    mov     r14,r1\n"
+    "    add     #24,r1\n"
+    "    fmov.s  fr3,@-r1\n"
+    "    fmov.s  fr2,@-r1\n"
+    "    fmov.s  fr6,@-r1\n"
+    "    fmov.s  fr5,@-r1\n"
+    "    fmov.s  fr4,@-r1\n"
+    "    pref    @r14\n"
+    "    dt      r10\n"
+    "    bf/s    12b\n"
+    "    add     #32,r8\n"
+    "19:\n"
+    "    bra     10b\n"
+    "    add     #8,r12\n"
+    "50:\n"
+    "    mov.l   r1,@r15\n"
+    "    mov     r13,r4\n"
+    "    mov     r1,r5\n"
+    "    mov     r8,r6\n"
+    "    add     #-12,r6\n"
+    "    mov.l   96f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov.l   @r15,r1\n"
+    "    bra     13b\n"
+    "    nop\n"
+    "52:\n"
+    "    fmov.s  fr4,@-r15\n"
+    "    fmov.s  fr5,@-r15\n"
+    "    fmov.s  fr6,@-r15\n"
+    "    mov     r8,r4\n"
+    "    add     #-12,r4\n"
+    "    mov.l   98f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    fmov.s  @r15+,fr6\n"
+    "    fmov.s  @r15+,fr5\n"
+    "    fmov.s  @r15+,fr4\n"
+    "    mov     r0,r1\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov     r1,r0\n"
+    "    bra     30b\n"
+    "    or      r7,r0\n"
+    "90:\n"
+    "    mov.l   r14,@(56,r11)\n"
+    "    mov.l   @(4,r15),r0\n"
+    "    add     #12,r15\n"
+    "    lds.l   @r15+,pr\n"
+    "    fmov.s  @r15+,fr15\n"
+    "    fmov.s  @r15+,fr14\n"
+    "    fmov.s  @r15+,fr13\n"
+    "    fmov.s  @r15+,fr12\n"
+    "    mov.l   @r15+,r14\n"
+    "    mov.l   @r15+,r13\n"
+    "    mov.l   @r15+,r12\n"
+    "    mov.l   @r15+,r11\n"
+    "    mov.l   @r15+,r10\n"
+    "    mov.l   @r15+,r9\n"
+    "    rts\n"
+    "    mov.l   @r15+,r8\n"
+    "    .align 2\n"
+    "93:  .long   0xe0000000\n"
+    "94:  .long   0xf0000000\n"
+    "96:  .long   _dcm_asm_pslot\n"
+    "97:  .long   _dcm_asm_lslot\n"
+    "98:  .long   _dcm_vcol_rgb\n"
+    "95:  .short  256\n"
+    "    .align 2\n"
+    "    .align 2\n"
+    "    .global _dcm_asm_emitz_l_c\n"
+    "_dcm_asm_emitz_l_c:\n"
+    "    mov.l   r8,@-r15\n"
+    "    mov.l   r9,@-r15\n"
+    "    mov.l   r10,@-r15\n"
+    "    mov.l   r11,@-r15\n"
+    "    mov.l   r12,@-r15\n"
+    "    mov.l   r13,@-r15\n"
+    "    mov.l   r14,@-r15\n"
+    "    fmov.s  fr12,@-r15\n"
+    "    fmov.s  fr13,@-r15\n"
+    "    fmov.s  fr14,@-r15\n"
+    "    fmov.s  fr15,@-r15\n"
+    "    sts.l   pr,@-r15\n"
+    "    add     #-12,r15\n"
+    "    mov     r4,r11\n"
+    "    mov.l   @(16,r11),r13\n"
+    "    mov.l   @(56,r11),r14\n"
+    "    mov     r11,r1\n"
+    "    add     #36,r1\n"
+    "    fmov.s  @r1+,fr12\n"
+    "    fmov.s  @r1+,fr13\n"
+    "    fmov.s  @r1+,fr14\n"
+    "    fmov.s  @r1,fr15\n"
+    "    mov.l   @r11,r12\n"
+    "    mov     #0,r0\n"
+    "    mov.l   r0,@(4,r15)\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "10:\n"
+    "    mov.l   @(4,r11),r1\n"
+    "    cmp/hs  r1,r12\n"
+    "    bf      11f\n"
+    "    bra     90f\n"
+    "    nop\n"
+    "11:\n"
+    "    mov.l   @r12,r1\n"
+    "    mov.w   @(4,r12),r0\n"
+    "    extu.w  r0,r10\n"
+    "    mov.w   95f,r2\n"
+    "    cmp/hi  r2,r10\n"
+    "    bf      16f\n"
+    "    mov     r2,r10\n"
+    "16:\n"
+    "    mov.l   @(4,r15),r2\n"
+    "    add     r10,r2\n"
+    "    add     #-2,r2\n"
+    "    mov.l   r2,@(4,r15)\n"
+    "    mov     r1,r8\n"
+    "    shll2   r8\n"
+    "    shll2   r8\n"
+    "    shll    r8\n"
+    "    mov.l   @(8,r11),r2\n"
+    "    add     r2,r8\n"
+    "    add     #12,r8\n"
+    "    mov     r1,r9\n"
+    "    shll2   r9\n"
+    "    shll    r9\n"
+    "    mov.l   @(12,r11),r2\n"
+    "    add     r2,r9\n"
+    "    tst     r10,r10\n"
+    "    bt      19f\n"
+    "12:\n"
+    "    mov.l   @r9+,r1\n"
+    "    add     r4,r1\n"
+    "    mov.l   @r1,r0\n"
+    "    cmp/eq  r0,r6\n"
+    "    bf      50f\n"
+    "13:\n"
+    "    add     #20,r1\n"
+    "    fmov.s  @r1+,fr4\n"
+    "    fmov.s  @r1+,fr5\n"
+    "    fmov.s  @r1,fr6\n"
+    "    mov.l   @r9+,r2\n"
+    "    mov.b   @(15,r8),r0\n"
+    "    tst     #2,r0\n"
+    "    bt      20f\n"
+    "    add     r5,r2\n"
+    "    mov.l   @(4,r2),r0\n"
+    "    cmp/eq  r0,r3\n"
+    "    bf      54f\n"
+    "    mov.b   @(14,r8),r0\n"
+    "    extu.b  r0,r0\n"
+    "    shll2   r0\n"
+    "    mov.l   @(12,r13),r1\n"
+    "    mov.l   @(r0,r1),r1\n"
+    "    mov.l   @r2,r0\n"
+    "    cmp/eq  r0,r1\n"
+    "    bf      54f\n"
+    "15:\n"
+    "    mov.l   @(8,r2),r0\n"
+    "    bra     30f\n"
+    "    or      r7,r0\n"
+    "20:\n"
+    "    tst     #1,r0\n"
+    "    bf      52f\n"
+    "    mov.l   @(32,r11),r0\n"
+    "    or      r7,r0\n"
+    "30:\n"
+    "    mov     r8,r1\n"
+    "    fmov.s  @r1+,fr0\n"
+    "    fmov.s  @r1,fr1\n"
+    "    fmov    fr13,fr2\n"
+    "    fmac    fr0,fr12,fr2\n"
+    "    fmov    fr15,fr3\n"
+    "    fmov    fr1,fr0\n"
+    "    fmac    fr0,fr14,fr3\n"
+    "    mov.l   r0,@(24,r14)\n"
+    "    mov     #0,r0\n"
+    "    mov.l   r0,@(28,r14)\n"
+    "    mov     r10,r0\n"
+    "    cmp/eq  #1,r0\n"
+    "    mov.l   93f,r0\n"
+    "    bf      31f\n"
+    "    mov.l   94f,r0\n"
+    "31:\n"
+    "    mov.l   r0,@r14\n"
+    "    mov     r14,r1\n"
+    "    add     #24,r1\n"
+    "    fmov.s  fr3,@-r1\n"
+    "    fmov.s  fr2,@-r1\n"
+    "    fmov.s  fr6,@-r1\n"
+    "    fmov.s  fr5,@-r1\n"
+    "    fmov.s  fr4,@-r1\n"
+    "    add     #32,r14\n"
+    "    dt      r10\n"
+    "    bf/s    12b\n"
+    "    add     #32,r8\n"
+    "19:\n"
+    "    bra     10b\n"
+    "    add     #8,r12\n"
+    "50:\n"
+    "    mov.l   r1,@r15\n"
+    "    mov     r13,r4\n"
+    "    mov     r1,r5\n"
+    "    mov     r8,r6\n"
+    "    add     #-12,r6\n"
+    "    mov.l   96f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov.l   @r15,r1\n"
+    "    bra     13b\n"
+    "    nop\n"
+    "54:\n"
+    "    mov.l   r2,@(8,r15)\n"
+    "    fmov.s  fr4,@-r15\n"
+    "    fmov.s  fr5,@-r15\n"
+    "    fmov.s  fr6,@-r15\n"
+    "    mov     r13,r4\n"
+    "    mov     r2,r5\n"
+    "    mov     r8,r6\n"
+    "    add     #-12,r6\n"
+    "    mov     #1,r7\n"
+    "    mov.l   97f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    fmov.s  @r15+,fr6\n"
+    "    fmov.s  @r15+,fr5\n"
+    "    fmov.s  @r15+,fr4\n"
+    "    mov     #1,r0\n"
+    "    mov.l   r0,@(52,r11)\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov.l   @(8,r15),r2\n"
+    "    bra     15b\n"
+    "    nop\n"
+    "52:\n"
+    "    fmov.s  fr4,@-r15\n"
+    "    fmov.s  fr5,@-r15\n"
+    "    fmov.s  fr6,@-r15\n"
+    "    mov     r8,r4\n"
+    "    add     #-12,r4\n"
+    "    mov.l   98f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    fmov.s  @r15+,fr6\n"
+    "    fmov.s  @r15+,fr5\n"
+    "    fmov.s  @r15+,fr4\n"
+    "    mov     r0,r1\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov     r1,r0\n"
+    "    bra     30b\n"
+    "    or      r7,r0\n"
+    "90:\n"
+    "    mov.l   r14,@(56,r11)\n"
+    "    mov.l   @(4,r15),r0\n"
+    "    add     #12,r15\n"
+    "    lds.l   @r15+,pr\n"
+    "    fmov.s  @r15+,fr15\n"
+    "    fmov.s  @r15+,fr14\n"
+    "    fmov.s  @r15+,fr13\n"
+    "    fmov.s  @r15+,fr12\n"
+    "    mov.l   @r15+,r14\n"
+    "    mov.l   @r15+,r13\n"
+    "    mov.l   @r15+,r12\n"
+    "    mov.l   @r15+,r11\n"
+    "    mov.l   @r15+,r10\n"
+    "    mov.l   @r15+,r9\n"
+    "    rts\n"
+    "    mov.l   @r15+,r8\n"
+    "    .align 2\n"
+    "93:  .long   0xe0000000\n"
+    "94:  .long   0xf0000000\n"
+    "96:  .long   _dcm_asm_pslot\n"
+    "97:  .long   _dcm_asm_lslot\n"
+    "98:  .long   _dcm_vcol_rgb\n"
+    "95:  .short  256\n"
+    "    .align 2\n"
+    "    .align 2\n"
+    "    .global _dcm_asm_emitz_u_c\n"
+    "_dcm_asm_emitz_u_c:\n"
+    "    mov.l   r8,@-r15\n"
+    "    mov.l   r9,@-r15\n"
+    "    mov.l   r10,@-r15\n"
+    "    mov.l   r11,@-r15\n"
+    "    mov.l   r12,@-r15\n"
+    "    mov.l   r13,@-r15\n"
+    "    mov.l   r14,@-r15\n"
+    "    fmov.s  fr12,@-r15\n"
+    "    fmov.s  fr13,@-r15\n"
+    "    fmov.s  fr14,@-r15\n"
+    "    fmov.s  fr15,@-r15\n"
+    "    sts.l   pr,@-r15\n"
+    "    add     #-12,r15\n"
+    "    mov     r4,r11\n"
+    "    mov.l   @(16,r11),r13\n"
+    "    mov.l   @(56,r11),r14\n"
+    "    mov     r11,r1\n"
+    "    add     #36,r1\n"
+    "    fmov.s  @r1+,fr12\n"
+    "    fmov.s  @r1+,fr13\n"
+    "    fmov.s  @r1+,fr14\n"
+    "    fmov.s  @r1,fr15\n"
+    "    mov.l   @r11,r12\n"
+    "    mov     #0,r0\n"
+    "    mov.l   r0,@(4,r15)\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "10:\n"
+    "    mov.l   @(4,r11),r1\n"
+    "    cmp/hs  r1,r12\n"
+    "    bf      11f\n"
+    "    bra     90f\n"
+    "    nop\n"
+    "11:\n"
+    "    mov.l   @r12,r1\n"
+    "    mov.w   @(4,r12),r0\n"
+    "    extu.w  r0,r10\n"
+    "    mov.w   95f,r2\n"
+    "    cmp/hi  r2,r10\n"
+    "    bf      16f\n"
+    "    mov     r2,r10\n"
+    "16:\n"
+    "    mov.l   @(4,r15),r2\n"
+    "    add     r10,r2\n"
+    "    add     #-2,r2\n"
+    "    mov.l   r2,@(4,r15)\n"
+    "    mov     r1,r8\n"
+    "    shll2   r8\n"
+    "    shll2   r8\n"
+    "    shll    r8\n"
+    "    mov.l   @(8,r11),r2\n"
+    "    add     r2,r8\n"
+    "    add     #12,r8\n"
+    "    mov     r1,r9\n"
+    "    shll2   r9\n"
+    "    shll    r9\n"
+    "    mov.l   @(12,r11),r2\n"
+    "    add     r2,r9\n"
+    "    tst     r10,r10\n"
+    "    bt      19f\n"
+    "12:\n"
+    "    mov.l   @r9+,r1\n"
+    "    add     r4,r1\n"
+    "    mov.l   @r1,r0\n"
+    "    cmp/eq  r0,r6\n"
+    "    bf      50f\n"
+    "13:\n"
+    "    add     #20,r1\n"
+    "    fmov.s  @r1+,fr4\n"
+    "    fmov.s  @r1+,fr5\n"
+    "    fmov.s  @r1,fr6\n"
+    "    mov.l   @r9+,r2\n"
+    "    mov.b   @(15,r8),r0\n"
+    "    tst     #1,r0\n"
+    "    bf      52f\n"
+    "    mov.l   @(32,r11),r0\n"
+    "    or      r7,r0\n"
+    "30:\n"
+    "    mov     r8,r1\n"
+    "    fmov.s  @r1+,fr0\n"
+    "    fmov.s  @r1,fr1\n"
+    "    fmov    fr13,fr2\n"
+    "    fmac    fr0,fr12,fr2\n"
+    "    fmov    fr15,fr3\n"
+    "    fmov    fr1,fr0\n"
+    "    fmac    fr0,fr14,fr3\n"
+    "    mov.l   r0,@(24,r14)\n"
+    "    mov     #0,r0\n"
+    "    mov.l   r0,@(28,r14)\n"
+    "    mov     r10,r0\n"
+    "    cmp/eq  #1,r0\n"
+    "    mov.l   93f,r0\n"
+    "    bf      31f\n"
+    "    mov.l   94f,r0\n"
+    "31:\n"
+    "    mov.l   r0,@r14\n"
+    "    mov     r14,r1\n"
+    "    add     #24,r1\n"
+    "    fmov.s  fr3,@-r1\n"
+    "    fmov.s  fr2,@-r1\n"
+    "    fmov.s  fr6,@-r1\n"
+    "    fmov.s  fr5,@-r1\n"
+    "    fmov.s  fr4,@-r1\n"
+    "    add     #32,r14\n"
+    "    dt      r10\n"
+    "    bf/s    12b\n"
+    "    add     #32,r8\n"
+    "19:\n"
+    "    bra     10b\n"
+    "    add     #8,r12\n"
+    "50:\n"
+    "    mov.l   r1,@r15\n"
+    "    mov     r13,r4\n"
+    "    mov     r1,r5\n"
+    "    mov     r8,r6\n"
+    "    add     #-12,r6\n"
+    "    mov.l   96f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov.l   @r15,r1\n"
+    "    bra     13b\n"
+    "    nop\n"
+    "52:\n"
+    "    fmov.s  fr4,@-r15\n"
+    "    fmov.s  fr5,@-r15\n"
+    "    fmov.s  fr6,@-r15\n"
+    "    mov     r8,r4\n"
+    "    add     #-12,r4\n"
+    "    mov.l   98f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    fmov.s  @r15+,fr6\n"
+    "    fmov.s  @r15+,fr5\n"
+    "    fmov.s  @r15+,fr4\n"
+    "    mov     r0,r1\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    mov.l   @(32,r13),r3\n"
+    "    mov     r1,r0\n"
+    "    bra     30b\n"
+    "    or      r7,r0\n"
+    "90:\n"
+    "    mov.l   r14,@(56,r11)\n"
+    "    mov.l   @(4,r15),r0\n"
+    "    add     #12,r15\n"
+    "    lds.l   @r15+,pr\n"
+    "    fmov.s  @r15+,fr15\n"
+    "    fmov.s  @r15+,fr14\n"
+    "    fmov.s  @r15+,fr13\n"
+    "    fmov.s  @r15+,fr12\n"
+    "    mov.l   @r15+,r14\n"
+    "    mov.l   @r15+,r13\n"
+    "    mov.l   @r15+,r12\n"
+    "    mov.l   @r15+,r11\n"
+    "    mov.l   @r15+,r10\n"
+    "    mov.l   @r15+,r9\n"
+    "    rts\n"
+    "    mov.l   @r15+,r8\n"
+    "    .align 2\n"
+    "93:  .long   0xe0000000\n"
+    "94:  .long   0xf0000000\n"
+    "96:  .long   _dcm_asm_pslot\n"
+    "97:  .long   _dcm_asm_lslot\n"
+    "98:  .long   _dcm_vcol_rgb\n"
+    "95:  .short  256\n"
+    "    .align 2\n"
+);
+
 #endif
 
 /* one strip, generic path: all in front -> submitted, else clipped triangle by triangle */
@@ -1903,27 +2753,27 @@ static inline __attribute__((always_inline)) int strip_out(const dctx_t *X, cons
                                                           const int LIT, const int ENV, const int FRONT) {
     static cvert_t sv[DCM_STRIP_MAX];
     const dcm_vertex_t *v = &X->m->vertices[st->first_vertex];
-    const uint16_t *vr = X->m->vref + 2 * st->first_vertex;
+    const uint32_t *vr = X->m->vref + 2 * st->first_vertex;
     const pslot_t *ps = X->ps;
     const nslot_t *ns = X->ns;
     int k, n = st->count < DCM_STRIP_MAX ? st->count : DCM_STRIP_MAX, all_in = 1, sent = 0;
     if (!FRONT) {
         float near_w = X->near_w;
         for (k = 0; k < n; k++)
-            if (ps[vr[2 * k]].c[3] < near_w)
+            if (SLOT(const pslot_t, ps, vr[2 * k])->c[3] < near_w)
                 all_in = 0;
     }
     if (all_in) {
         for (k = 0; k < n; k++, v++, vr += 2) {
-            const float *sp = ps[vr[0]].s;
+            const float *sp = SLOT(const pslot_t, ps, vr[0])->s;
             uint32_t col;
             float tu, tv, sx, sy, sz;
             if (LIT && (v->flags & DCM_VF_NORMAL))
-                col = X->sa | ns[vr[1]].col;
+                col = X->sa | SLOT(const nslot_t, ns, vr[1])->col;
             else
                 col = X->sa | unlit_rgb(X->S->flat, v);
             if (ENV) {
-                const float *e = X->env[vr[1]];
+                const float *e = X->env[vr[1] >> 5];
                 tu = 0.5f + 0.5f * e[0];
                 tv = 0.5f - 0.5f * e[1];
             } else {
@@ -1940,13 +2790,13 @@ static inline __attribute__((always_inline)) int strip_out(const dctx_t *X, cons
     for (k = 0; k < n; k++) {
         const dcm_vertex_t *vk = &v[k];
         cvert_t *o = &sv[k];
-        memcpy(o->c, ps[vr[2 * k]].c, sizeof(o->c));
+        memcpy(o->c, SLOT(const pslot_t, ps, vr[2 * k])->c, sizeof(o->c));
         if (LIT && (vk->flags & DCM_VF_NORMAL))
-            o->col = X->sa | ns[vr[2 * k + 1]].col;
+            o->col = X->sa | SLOT(const nslot_t, ns, vr[2 * k + 1])->col;
         else
             o->col = X->sa | unlit_rgb(X->S->flat, vk);
         if (ENV) {
-            const float *e = X->env[vr[2 * k + 1]];
+            const float *e = X->env[vr[2 * k + 1] >> 5];
             o->u = 0.5f + 0.5f * e[0];
             o->v = 0.5f - 0.5f * e[1];
         } else {
@@ -2015,10 +2865,15 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
         E.wps = ps;
         E.wns = ns;
         E.wrote = 0;
-        if (dcm_dc_capture)
-            sent = LIT ? emit_zl_c(&E) : emit_zu_c(&E);
-        else
-            sent = LIT ? emit_zl(&E) : emit_zu(&E);
+        if (dcm_dc_capture) {
+            E.outp = dcm_dc_capture + 8 * dcm_dc_capture_n;
+            sent = LIT ? dcm_asm_emitz_l_c(&E) : dcm_asm_emitz_u_c(&E);
+            dcm_dc_capture_n = (uint32_t)(E.outp - dcm_dc_capture) / 8;
+        } else {
+            E.outp = (uint32_t *)pvr_dr_addr;
+            sent = LIT ? dcm_asm_emitz_l(&E) : dcm_asm_emitz_u(&E);
+            pvr_dr_addr = (uint32_t)E.outp;
+        }
         D->pgen = cs;
         D->allin = 1;
         if (LIT) {
@@ -2035,7 +2890,7 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
 #define LIT_FILL(N, v) lit_fill(X, N, v)
 #define NSLOT_FILL(N, v) nslot_fill_x(X, N, v)
 #endif
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE)
+#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
     uint64_t pt0 = timer_us_gettime64(), pt1, pt2;
 #endif
     {
@@ -2049,10 +2904,10 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
             int allin = 1;
             for (st = st0; st < st1; st++) {
                 const dcm_vertex_t *v = &m->vertices[st->first_vertex];
-                const uint16_t *vr = m->vref + 2 * st->first_vertex, *ve = vr + 2 * st->count;
-                const uint16_t *vc = vr + 2 * DCM_STRIP_MAX; /* the strip cap of the submission */
+                const uint32_t *vr = m->vref + 2 * st->first_vertex, *ve = vr + 2 * st->count;
+                const uint32_t *vc = vr + 2 * DCM_STRIP_MAX; /* the strip cap of the submission */
                 for (; vr < ve; vr += 2, v++) {
-                    pslot_t *P = &ps[vr[0]];
+                    pslot_t *P = SLOT(pslot_t, ps, vr[0]);
                     if (P->stamp != cs)
                         PSLOT_FILL(P, v);
                     if (P->c[3] < near_w && vr < vc)
@@ -2067,9 +2922,9 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
             const uint32_t *pep = X->pep;
             for (st = st0; st < st1; st++) {
                 const dcm_vertex_t *v = &m->vertices[st->first_vertex];
-                const uint16_t *vr = m->vref + 2 * st->first_vertex, *ve = vr + 2 * st->count;
+                const uint32_t *vr = m->vref + 2 * st->first_vertex, *ve = vr + 2 * st->count;
                 for (; vr < ve; vr += 2, v++) {
-                    nslot_t *N = &ns[vr[1]];
+                    nslot_t *N = SLOT(nslot_t, ns, vr[1]);
                     if (LIT && (v->flags & DCM_VF_NORMAL)) {
                         if (N->cid != cid || !cid || N->ep != pep[v->palette]) {
                             LIT_FILL(N, v);
@@ -2088,11 +2943,11 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
             D->wgen = lc->wgen;
         }
     }
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE)
+#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
     pt1 = timer_us_gettime64();
     g_prof_ph[0] += pt1 - pt0;
 #endif
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE)
+#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
     pt2 = pt1;
 #endif
 #ifdef _arch_dreamcast
@@ -2119,7 +2974,7 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
             else
                 sent += LIT ? (ENV ? emit_le(&E) : emit_l(&E)) : (ENV ? emit_ue(&E) : emit_u(&E));
             if (E.st0 >= st1) {
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE)
+#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
                 g_prof_ph[2] += timer_us_gettime64() - pt2;
 #endif
                 return sent;
@@ -2213,7 +3068,7 @@ int dcm_draw_ex(const dcm_model_t *m, const dcm_mtx_t *pal, const dcm_mtx_t *mod
         if (!built) {
             int lchg, xchg, p, np = m->hdr->num_palette;
             xform_t *xf = (xform_t *)lc->xf;
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE)
+#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
             uint64_t st0 = timer_us_gettime64();
 #endif
             xchg = !lc->kvalid || memcmp(lc->kpal, pal, sizeof(dcm_mtx_t) * np) ||
@@ -2262,7 +3117,7 @@ int dcm_draw_ex(const dcm_model_t *m, const dcm_mtx_t *pal, const dcm_mtx_t *mod
                     lc->pep[p] = lc->gen;
                     lc->lgen++;
                 }
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE)
+#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
             g_prof_ph[3] += timer_us_gettime64() - st0;
 #endif
         }

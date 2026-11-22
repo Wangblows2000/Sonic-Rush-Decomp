@@ -80,6 +80,8 @@ u16 ui_pad_bits(u32 b) {
     if (b & IN_DOWN) o |= 0x080;
     if (b & IN_BOOST) o |= 0x400; /* X */
     if (b & IN_ALT) o |= 0x800;   /* Y */
+    if (b & IN_R) o |= 0x100;     /* R (right trigger) */
+    if (b & IN_L) o |= 0x200;     /* L (left trigger) */
     return o;
 }
 

@@ -111,6 +111,9 @@ void dcp_model_lights(const DcPlayer *p, int ghost, dcm_lights_t *out);
 int dcp_model_afterimage(const DcPlayer *p, s32 *x, s32 *y, s32 *z);
 
 /* Submit the posed model (current resource). Returns triangles sent; 0 when hidden (flag 0x20). */
+/* the ModelPalette_ShiftColor of Player_In for this frame (tension max glow, invincibility flash),
+ * 5-bit units; dcp_model_draw applies it with dcm_set_color_shift */
+void dcp_model_palette_shift(const DcPlayer *p, int out[3]);
 int dcp_model_draw(const DcpModel *m, const DcPlayer *p, int list, const dcm_mtx_t *mdl, const dcm_camera_t *cam,
                    const dcm_lights_t *lights);
 

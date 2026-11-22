@@ -115,6 +115,9 @@ static Boss3PartCC s_cc;
 static Boss3PartCD s_cd[BOSS3_BALLS];
 static u32 s_cd_seq;
 static Boss3 *gBoss3;
+static u16 s_zs3_t;                 /* StageZoneScript_Zone3Boss work +4 */
+static dcm_lights_t s_b3_lights;    /* ZoneFx_Zone3Boss_Update light colours */
+static int s_b3_light_set;
 
 /* BossStage3 resources: data_ov000_02369b18[5] = bs3_base, bs3_body, bs3_ball, bs3_thorn,
  * bs3_sky (data_02074408) and the zone act archive's bs3.nsbca / bs3.nsbta */
@@ -2431,6 +2434,8 @@ void *Boss3_Create(const ObjParam *a, s32 x, s32 y) {
     memset(s, 0, sizeof(*s));  /* MI_CpuFill16(s, 0, 0x374) */
     s->alive = 1;
     gBoss3 = s;
+    s_zs3_t = 0;          /* StageZoneScript_Create: the script work is cleared */
+    s_b3_light_set = 0;
     s->func = Boss3_State_WaitForStart;
     memset(&gBossStatus, 0, sizeof(gBossStatus));
     gBossStatus.unk8 = (u16)Boss_GetStartHealth();
@@ -2524,8 +2529,82 @@ static const BossObjOps s_ops_boss3 = {Boss3_Draw_Model, NULL, Boss3_Destructor}
 static const BossObjOps s_ops_cc = {Boss3PartCC_Draw, Boss3PartCC_Collide, Boss3PartCC_Destructor};
 static const BossObjOps s_ops_cd = {Boss3PartCD_Draw, Boss3PartCD_Collide, Boss3PartCD_Destructor};
 
+/* StageZoneScript_Zone3Boss (src/game/Zone/Mirage_Road/Stage, task 0x3eff, work +4 = frame
+ * counter): 30 frames after Boss3 sets unk210 = 1 the boss camera tracks the ball (eye,
+ * BossCamera t[0] = data_ov000_0236a48c) and the body (target, t[1]) */
+void boss3_zone_script(void) {
+    BossCamTrack *t0 = &CAM.t[0], *t1 = &CAM.t[1];
+    Boss3 *s = gBoss3;
+    if (s == NULL || !s_boss3.alive)
+        return;
+    if (s->unk210 == 1) {
+        if (s_zs3_t >= 0x1e) {
+            if (s_zs3_t == 0x1e) {
+                DcPlayer *ball = s->unk218 ? &s->unk218->h : NULL;
+                DcPlayer *body = s->unk214 ? &s->unk214->h : NULL;
+                CAM.unkDC = 1;
+                t0->ox = ball;
+                t0->oy = ball;
+                t0->oz = ball;
+                t0->offx = 0;
+                t0->offy = 0x20000;
+                t0->offz = 0;
+                t0->lerp = 0x200;
+                t1->ox = body;
+                t1->oy = NULL;
+                t1->oz = body;
+                t1->tgt.y = -0x200000;
+                t1->offx = 0;
+                t1->offy = 0x20000;
+                t1->offz = 0;
+                t1->tgt.x = 0;
+                t1->tgt.y = -0x1c0000;
+                t1->tgt.z = 0;
+                t1->offx = 0;
+                t1->offy = 0x28000;
+                t1->offz = 0;
+                t1->lerp = 0x400;
+                s_zs3_t++;
+            }
+        } else {
+            s_zs3_t++;
+        }
+    } else {
+        s_zs3_t = 0;
+    }
+}
+
+/* ZoneFx_Zone3Boss_Update (task 0x80 of the arena: the camera's ZoneFx_Update): once the
+ * fight runs (gBossStatus & 1) the three global light colours alternate every 7 frames
+ * (NNS_G3dGlbLightColor, the boss, the arena and the player). The counter and the colour
+ * tables are the zone effects' (zonefx_boss3_lights, zonefx.bin); weak: the boss host
+ * tests run without it. */
+int zonefx_boss3_lights(int boss_active, uint16_t out[3]) __attribute__((weak));
+static void boss3_lights_update(void) {
+    uint16_t c[3];
+    int i;
+    if (!zonefx_boss3_lights || !zonefx_boss3_lights((gBossStatus.unk0 & 1) != 0, c))
+        return;
+    dcm_lights_stage(&s_b3_lights, 0);   /* the stage light vectors (Stage_Create) */
+    for (i = 0; i < 3; i++) {
+        s_b3_lights.col[i][0] = (c[i] & 31) / 31.0f;
+        s_b3_lights.col[i][1] = ((c[i] >> 5) & 31) / 31.0f;
+        s_b3_lights.col[i][2] = ((c[i] >> 10) & 31) / 31.0f;
+    }
+    s_b3_light_set = 1;
+}
+int boss3_zone_script_state(void) { return s_zs3_t; }   /* tests: 0x1f = the ball camera was set */
+int boss3_light_state(uint16_t out[3]) {   /* tests: the colours in use, 0 = stage defaults */
+    int i;
+    for (i = 0; i < 3 && s_b3_light_set; i++)
+        out[i] = (uint16_t)((int)(s_b3_lights.col[i][0] * 31 + 0.5f) | (int)(s_b3_lights.col[i][1] * 31 + 0.5f) << 5 |
+                            (int)(s_b3_lights.col[i][2] * 31 + 0.5f) << 10);
+    return s_b3_light_set;
+}
+
 void boss3_update(void) {
     u32 last = 0;
+    boss3_lights_update();
     if (s_boss3.alive)
         boss_obj_main(&s_boss3.h, &s_boss3.func, &s_ops_boss3, &s_boss3, &s_boss3.alive); /* 0x500 */
     if (s_cc.alive)
@@ -2546,6 +2625,7 @@ void boss3_update(void) {
 
 int boss3_draw(int list) {
     int n = 0, i;
+    g_boss_lights = s_b3_light_set ? &s_b3_lights : NULL;
     if (!s_boss3.alive && !s_cc.alive)
         return 0;
     g_boss_debug_color = 0x4080ff;

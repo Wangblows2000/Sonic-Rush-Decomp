@@ -799,6 +799,8 @@ void boss_update(DcPlayer *player) {
         bossf_update();      /* (BossFPartD8 0xf0 if boss_update_pre was not called), BossF 0x500, parts 0x501 */
     boss_effects_update();   /* 0xa00 */
     ScreenShake_Main();      /* 0x3e00 */
+    if (s_boss_kind == 3)
+        boss3_zone_script(); /* StageZoneScript_Zone3Boss 0x3eff */
     if (s_boss_kind == 0xf)
         bossf_zone_script(); /* StageZoneScript_ZoneFBoss 0x3eff */
     BossCamera_Main();       /* 0x3f00 */

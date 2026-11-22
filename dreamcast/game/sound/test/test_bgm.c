@@ -220,6 +220,23 @@ static void test_restart_and_gravity(void) {
     g_dcp_world.mode = 0;
 }
 
+/* trace build: requests that produce no sound are counted (snd MISS lines) */
+static void test_miss_trace(void) {
+    sound_load_bank("z1s");
+    sound_trace_enable(1);
+    uint32_t m0 = g_sound_miss_count;
+    Sound_PlaySeqArcEx(NULL, 0, 0x2c);    /* SE_Nukari: a Blaze voice, silent in the Sonic SDAT z1s */
+    frames(240);
+    CHECK(g_sound_miss_count == m0 + 1, "silent id counted (%u -> %u)", m0, g_sound_miss_count);
+    m0 = g_sound_miss_count;
+    Sound_PlaySeqArcEx(NULL, 0, 0x22);    /* SE_Go: plays */
+    frames(240);
+    CHECK(g_sound_miss_count == m0, "playing id not counted");
+    Sound_PlaySeqArcEx(NULL, 5, 0);       /* no SSAR 5 in a zone SDAT: start fails */
+    CHECK(g_sound_miss_count == m0 + 1, "start failure counted");
+    sound_trace_enable(0);
+}
+
 static void test_pause_se(void) {
     sound_load_bank("z1s");
     Sound_PlaySeqArcEx(NULL, 0, 0x12);   /* an effect on players 3..7 */
@@ -248,6 +265,7 @@ int main(int argc, char **argv) {
     test_boss_and_ui();
     test_restart_and_gravity();
     test_pause_se();
+    test_miss_trace();
     printf("bgm: plays %u, sequences without a stream %u\n", bgm_state()->plays, bgm_state()->misses);
     printf("%s (%d failures)\n", fails ? "FAILED" : "OK", fails);
     return fails != 0;

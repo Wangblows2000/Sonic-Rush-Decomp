@@ -115,6 +115,11 @@ static void test_selection(const char *dir) {
     CHECK(M.cur_res == 1 && !strcmp(anim_name(M.jnt_anim), "blz_screw") &&
               M.jnt.anims[M.jnt_anim].num_joints == M.res[1].hdr->num_joints,
           "Blaze jump 0x30+0x1b -> blz_spin model, blz_screw (%s)", anim_name(M.jnt_anim));
+    /* Player_Action_Jump (Blaze): w->unk124->unk114 = 0x4000 after Player_SetAnimation(0x30) */
+    CHECK(g_dcp_hooks.model_speed != NULL && M.speed == 0x1000, "model_speed hook installed by attach, 0x30 starts at 1.0");
+    if (g_dcp_hooks.model_speed)
+        g_dcp_hooks.model_speed(g_dcp_hooks.ctx, &P, 0x4000);
+    CHECK(M.speed == 0x4000, "Blaze spin jump: blz_screw at speed 4.0 (0x%x)", (unsigned)M.speed);
     dcp_set_anim(&P, 0x0f);
     CHECK(M.cur_res == 0 && !strcmp(anim_name(M.jnt_anim), "com_dmg_b"), "Blaze hurt 0x0f (< 0x30, no offset) -> com_dmg_b (%s)",
           anim_name(M.jnt_anim));
@@ -325,6 +330,100 @@ static void test_run(const char *dir, const char *tables, const char *lvl) {
     free(file);
 }
 
+/* ------------------------------------------------- Player_In palette shifts (ModelPalette_ShiftColor) */
+static uint32_t g_emit_col[4096];
+static int g_emit_n;
+static void emit_hook(int material, const float *o, uint32_t argb, int eol) {
+    (void)material, (void)o, (void)eol;
+    if (g_emit_n < 4096)
+        g_emit_col[g_emit_n++] = argb;
+}
+
+static void test_palette_shift(const char *dir) {
+    int sh[3], f, ok = 1, n0, i, darker = 0, raised = 0;
+    dcm_mtx_t mdl;
+    dcm_camera_t cam;
+    static uint32_t base[4096];
+    printf("[palette] tension max glow / invincibility flash\n");
+    memset(&P, 0, sizeof(P));
+    g_dcp_world.flags |= 1;
+    /* tension max: a = (f >> 1) & 0x1f while f & 0x40, else 0x1f - that; (a, a >> 1, -(a >> 1)) */
+    P.tension_max = 300;
+    for (f = 0; f < 256; f++) {
+        int a = (f & 0x40) ? (f >> 1) & 0x1f : 0x1f - ((f >> 1) & 0x1f);
+        g_dcp_world.frame = (u32)f;
+        dcp_model_palette_shift(&P, sh);
+        if (sh[0] != a || sh[1] != a >> 1 || sh[2] != -(a >> 1))
+            ok = 0;
+    }
+    g_dcp_world.frame = 0x10;
+    dcp_model_palette_shift(&P, sh);
+    CHECK(ok && sh[0] == 0x17 && sh[1] == 0xb && sh[2] == -0xb, "tension max: (a, a/2, -a/2) over 256 frames (f 0x10: %d %d %d)",
+          sh[0], sh[1], sh[2]);
+    g_dcp_world.frame = 0x50;
+    dcp_model_palette_shift(&P, sh);
+    CHECK(sh[0] == 8 && sh[1] == 4 && sh[2] == -4, "f 0x50 (rising half): (8, 4, -4) got %d %d %d", sh[0], sh[1], sh[2]);
+    /* invincibility: white on !(frame & 0xe) frames, stage running; tension keeps its own shift otherwise */
+    P.invinc = 100;
+    g_dcp_world.frame = 0x40;
+    dcp_model_palette_shift(&P, sh);
+    CHECK(sh[0] == 0x1f && sh[1] == 0x1f && sh[2] == 0x1f, "invincible, frame & 0xe == 0: white (%d %d %d)", sh[0], sh[1], sh[2]);
+    g_dcp_world.frame = 0x42;
+    dcp_model_palette_shift(&P, sh);
+    CHECK(sh[0] == 1 && sh[1] == 0 && sh[2] == 0, "invincible off-frame with tension max: tension shift (%d %d %d)", sh[0], sh[1],
+          sh[2]);
+    P.tension_max = 0;
+    dcp_model_palette_shift(&P, sh);
+    CHECK(sh[0] == 0 && sh[1] == 0 && sh[2] == 0, "invincible off-frame, no tension: 0");
+    g_dcp_world.frame = 0x40;
+    g_dcp_world.flags &= ~1u;
+    dcp_model_palette_shift(&P, sh);
+    CHECK(sh[0] == 0, "stage paused (flags & 1 clear): no flash");
+    g_dcp_world.flags |= 1;
+    P.tension_max = 300;
+    P.pf |= 0x1000000;
+    dcp_model_palette_shift(&P, sh);
+    CHECK(sh[0] == 0 && sh[1] == 0 && sh[2] == 0, "goal reached (pf 0x1000000): no shift");
+    P.pf = 0;
+    P.invinc = 0;
+
+    /* the draw: blue lowered on every vertex with tension max (negative part), offset carries the rest */
+    if (dcp_model_load(&M, 0, dir, 0))
+        return;
+    dcp_model_attach(&M, &P);
+    dcp_set_anim(&P, 0x3c);
+    dcp_model_step(&M, &P, 0);
+    dcp_model_matrix(&P, 128.0f, -96.0f, 0.0f, &mdl);
+    dcm_camera_stage(&cam);
+    dcm_host_emit = emit_hook;
+    P.tension_max = 0;
+    g_emit_n = 0;
+    dcp_model_draw(&M, &P, 0, &mdl, &cam, NULL);
+    n0 = g_emit_n;
+    memcpy(base, g_emit_col, sizeof(uint32_t) * (size_t)n0);
+    P.tension_max = 300;
+    g_dcp_world.frame = 0x00; /* a = 0x1f: shift (31, 15, -15) */
+    g_emit_n = 0;
+    dcp_model_draw(&M, &P, 0, &mdl, &cam, NULL);
+    for (i = 0; i < n0 && i < g_emit_n; i++) {
+        uint32_t b0 = base[i] & 0xff, b1 = g_emit_col[i] & 0xff;
+        if (b1 == b0 * 16 / 31)
+            darker++;
+        if ((g_emit_col[i] & 0xffff00) == (base[i] & 0xffff00))
+            raised++;
+    }
+    CHECK(n0 > 0 && g_emit_n == n0 && darker == n0 && raised == n0,
+          "tension max draw: blue x16/31 on all %d vertices, red/green left to the offset colour (%d / %d)", n0, darker, raised);
+    /* the shift is off after the draw */
+    P.tension_max = 0;
+    g_emit_n = 0;
+    dcp_model_draw(&M, &P, 0, &mdl, &cam, NULL);
+    CHECK(g_emit_n == n0 && !memcmp(base, g_emit_col, sizeof(uint32_t) * (size_t)n0), "no shift after the timer: colours as before");
+    dcm_host_emit = NULL;
+    g_dcp_world.frame = 0;
+    dcp_model_free(&M);
+}
+
 int main(int argc, char **argv) {
     if (argc < 3) {
         printf("usage: %s <model dir> <player tables dir> [z11 level.bin]\n", argv[0]);
@@ -333,6 +432,7 @@ int main(int argc, char **argv) {
     test_selection(argv[1]);
     test_timing(argv[1]);
     test_placement(argv[1]);
+    test_palette_shift(argv[1]);
     test_run(argv[1], argv[2], argc > 3 ? argv[3] : NULL);
     printf("%d checks, %d failed\n", g_checks, g_fail);
     return g_fail != 0;

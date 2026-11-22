@@ -30,6 +30,7 @@ static void (*s_prev_obj)(void *, s32);
 static void (*s_prev_add_life)(void *, DcPlayer *, s32);
 static void (*s_prev_restart)(void *, DcPlayer *);
 static void (*s_prev_item)(void *, DcPlayer *, s32);
+static void (*s_prev_vol)(void *, DcPlayer *, s32, s32);
 static int s_installed;
 
 /* Fade used by sfx_stop: the hook carries no fade argument. Most frequent
@@ -60,6 +61,13 @@ static void hk_sfx_stop(void *ctx, DcPlayer *p, s32 ch) {
     if (g_sound_trace) printf("snd f%lu stop ch%ld\n", (unsigned long)g_sound_frame, (long)ch);
     h = ch == DCP_CH_GLOBAL ? &gSESoundHandle : player_handle(p, ch);
     if (h) NNS_SndPlayerStopSeq(h, ch == DCP_CH_GLOBAL ? 0 : s_stop_fade[ch]);
+}
+/* Player_Action_TrickCombo: NNS_SndPlayerSetVolume(&w->unk384 / unk390, 0x7f >> level) */
+static void hk_sfx_volume(void *ctx, DcPlayer *p, s32 ch, s32 vol) {
+    SoundHandle *h;
+    if (s_prev_vol) s_prev_vol(ctx, p, ch, vol);
+    h = ch == DCP_CH_GLOBAL ? &gSESoundHandle : player_handle(p, ch);
+    if (h) NNS_SndPlayerSetVolume(h, vol);
 }
 static void hk_obj_sfx(void *ctx, s32 id) {
     if (s_prev_obj) s_prev_obj(ctx, id);
@@ -98,6 +106,7 @@ void sound_hooks_install(void) {
     if (g_obj_hooks.sfx != hk_obj_sfx) { s_prev_obj = g_obj_hooks.sfx; g_obj_hooks.sfx = hk_obj_sfx; }
     if (g_dcp_hooks.add_life != hk_add_life) { s_prev_add_life = g_dcp_hooks.add_life; g_dcp_hooks.add_life = hk_add_life; }
     if (g_dcp_hooks.restart != hk_restart) { s_prev_restart = g_dcp_hooks.restart; g_dcp_hooks.restart = hk_restart; }
+    if (g_dcp_hooks.sfx_volume != hk_sfx_volume) { s_prev_vol = g_dcp_hooks.sfx_volume; g_dcp_hooks.sfx_volume = hk_sfx_volume; }
     if (g_obj_hooks.item != hk_item) { s_prev_item = g_obj_hooks.item; g_obj_hooks.item = hk_item; }
     s_installed = 1;
 }
