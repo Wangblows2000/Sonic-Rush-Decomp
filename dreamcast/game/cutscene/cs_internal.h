@@ -4,6 +4,19 @@
  * CUTSCENES.md section 2. */
 #ifndef CS_INTERNAL_H
 #define CS_INTERNAL_H
+
+/* Names the menus / UI modules also define: the cutscene copies are renamed so
+ * every module links into one binary. */
+#define AnimatorSprite_Draw cs_AnimatorSprite_Draw
+#define AnimatorSprite_Init cs_AnimatorSprite_Init
+#define AnimatorSprite_ProcessAnimation cs_AnimatorSprite_ProcessAnimation
+#define AnimatorSprite_SetAnimation cs_AnimatorSprite_SetAnimation
+#define BrightnessFade_Create cs_BrightnessFade_Create
+#define BrightnessFade_Destroy cs_BrightnessFade_Destroy
+#define BrightnessFade_IsDone cs_BrightnessFade_IsDone
+#define BrightnessFade_Main cs_BrightnessFade_Main
+#define gPad cs_gPad
+#define gRandSeed cs_gRandSeed
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>

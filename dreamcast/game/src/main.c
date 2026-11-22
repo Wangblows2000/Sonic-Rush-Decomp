@@ -19,6 +19,9 @@
 #include "../menus/menus.h"
 #include "../save/save.h"
 #include "../special/special.h"
+#include "../cutscene/cutscene.h"
+#include "../boss/boss_extra.h"
+#include "../boss/boss7.h"
 #include <stdlib.h>
 
 /* Story order (Sonic): zone N acts 1, 2 and the boss act 3. */
@@ -330,7 +333,15 @@ static void draw_water(int line)
 
 /* g_boss_hooks.cleared: StageShutdown_Create(Stage_OnBossCleared) -> the act
  * results (ClearDemo), handled by the UI like the goal of an act. */
-static void boss_cleared_hook(void *ctx) { (void)ctx; ui_stage_exit(OBJ_EXIT_CLEAR_DEMO); }
+static int g_after_boss_pending;
+static void boss_cleared_hook(void *ctx)
+{
+    (void)ctx;
+    /* Stage_OnBossCleared: story bosses of zones 0..6 run DemoScript_StartAfterBoss
+     * first; the final zone (7) and time attack go straight to ClearDemo */
+    if(g_dcp_world.mode == UI_MODE_STORY && g_dcp_world.zone != 7) g_after_boss_pending = 1;
+    else ui_stage_exit(OBJ_EXIT_CLEAR_DEMO);
+}
 static void boss_music_stop_hook(void *ctx) { (void)ctx; audio_music_stop(); }
 static void boss_music_hook(void *ctx, s32 seq) { (void)ctx; printf("boss music seq %ld (stage SDAT stream not mapped)\n", (long)seq); }
 
@@ -339,6 +350,115 @@ static void boss_help_hook(void *ctx, s32 kind, s32 a, s32 b)
 {
     (void)ctx; (void)b;
     if(kind == BOSS_HELP_CREATE) BossHelp_Create((u32)a); else BossHelp_Destroy();
+}
+
+/* ---- cutscenes (CUTSCENES.md section 2) ---- */
+int StoryProgress_IsStageNew(void);
+static void cs_story(int zone)
+{
+    CsStory st;
+    memset(&st, 0, sizeof(st));
+    st.character = g_chara; st.zone = zone; st.stage_new = StoryProgress_IsStageNew();
+    st.save_flags = gSaveData.unk8; st.sonic_progress = gSaveData.unkC; st.blaze_progress = gSaveData.unk64;
+    st.language = menus_language(); st.sonic_emeralds = gSaveData.unkF & 0x7f;
+    cutscene_set_story(&st);
+}
+/* DemoScript_Finish / TalkDemo_MarkSeen / StaffRoll_State_Finish -> save */
+static CsNext cs_finish(void)
+{
+    const CsResult *r = cutscene_result();
+    CsNext next = r ? r->next : CS_NEXT_NONE;
+    if(r) {
+        if(r->progress >= 0) {
+            if(g_chara) SaveData_SetBlazeProgress((uint16_t)r->progress); else SaveData_SetSonicProgress((uint16_t)r->progress);
+            SaveData_StoreLives(g_chara, (uint8_t)g_dcp_world.lives, (uint16_t)g_emeralds);
+        }
+        if(r->set_save_flags) SaveData_SetProgressFlags(SaveData_GetProgressFlags() | r->set_save_flags);
+        if(r->set_sonic_progress >= 0) SaveData_SetSonicProgress((uint16_t)r->set_sonic_progress);
+        if(r->set_blaze_progress >= 0) SaveData_SetBlazeProgress((uint16_t)r->set_blaze_progress);
+        if(r->game_cleared) SaveData_SetGameCleared();
+        if(r->progress >= 0 || r->set_save_flags || r->set_sonic_progress >= 0 || r->set_blaze_progress >= 0 || r->game_cleared)
+            SaveData_Commit();
+    }
+    cutscene_shutdown();
+    return next;
+}
+/* full-screen cutscene (PlayerDemo, TransformDemo, DemoScript, Ending, StaffRoll) run to its end */
+static CsNext run_cutscene(CsKind kind, int id, int zone, const char *return_bank)
+{
+    InputState in = {0};
+    cs_story(zone);
+    cutscene_set_return_bank(return_bank);
+    if(cutscene_start(kind, id, g_chara) != 0) { printf("cutscene %d/%d: missing data\n", kind, id); return CS_NEXT_NONE; }
+    printf("cutscene %d/%d start\n", kind, id);
+    for(;;) {
+        int done;
+        input_poll(&in);
+        done = cutscene_run_frame(&in);
+        sound_update();
+        render_begin_frame(); cutscene_draw(); render_end_frame();
+        audio_update();
+        if(done) break;
+    }
+    {
+        CsNext n = cs_finish();
+        printf("cutscene %d/%d end, next %d\n", kind, id, n);
+        return n;
+    }
+}
+/* talk overlays: zone map (menus hook) and boss talks (Boss7 rival, final boss) */
+static int menu_talk_start(int c, int step) { cs_story(0);   /* zone-map talks: the zone is not read */
+    return cutscene_start(CS_TALK_MAP, cutscene_zonemap_talk_id(c, step), c); }
+static int menu_talk_active(void) { return cutscene_active(); }
+static void boss_talk_hook(void *ctx, s32 id)
+{
+    (void)ctx;
+    cs_story(g_dcp_world.zone);
+    cutscene_set_return_bank(NULL);
+    if(cutscene_start(CS_TALK, id, g_chara) != 0) printf("talk %ld: missing data\n", (long)id);
+}
+static void overlay_cutscene_frame(const InputState *in)
+{
+    if(cutscene_active() && !cutscene_is_fullscreen() && cutscene_run_frame(in)) cs_finish();
+}
+
+/* ---- Extra Zone (zone 8 act 2): script 3, the Extra boss, script 2, ExtraAct ---- */
+static MenuRequest run_extra_zone(void)
+{
+    InputState in = {0};
+    BossExtraResult res;
+    int r = BOSS_EXTRA_FAILED;
+    CsNext n = run_cutscene(CS_SCRIPT, 3, 8, NULL);   /* Game_StartDemoScript3AtZone8Act2 */
+    (void)n;
+    sound_load_bank("ze");
+    boss_extra_set_paths("/cd/models", "/cd/boss/extra");
+    boss_extra_set_lives(gSaveData.unkE ? gSaveData.unkE : 3, gSaveData.unk66 ? gSaveData.unk66 : 3);
+    boss_extra_set_difficulty(0);   /* gGameState.unk14: 0 normal */
+    memset(&res, 0, sizeof(res));
+    if(boss_extra_init(g_chara) == 0) {
+        for(;;) {
+            input_poll(&in);
+            r = boss_extra_run_frame(&in);
+            sound_update();
+            render_begin_frame();
+            render_begin_list(PVR_LIST_OP_POLY); boss_extra_draw(PVR_LIST_OP_POLY); render_end_list();
+            render_begin_list(PVR_LIST_PT_POLY); boss_extra_draw(PVR_LIST_PT_POLY); render_end_list();
+            render_begin_list(PVR_LIST_TR_POLY); boss_extra_draw(PVR_LIST_TR_POLY); render_end_list();
+            render_end_frame();
+            audio_update();
+            if(r != BOSS_EXTRA_RUNNING) break;
+        }
+        boss_extra_result(&res);
+        boss_extra_shutdown();
+        SaveData_SetLivesBoth(res.lives_sonic, res.lives_blaze);   /* saved after a game over too, as on the DS */
+    } else printf("extra boss: init failed\n");
+    printf("extra boss result %d, time %ld, rings %ld\n", r, (long)res.time, (long)res.rings);
+    if(r == BOSS_EXTRA_CLEARED) {
+        run_cutscene(CS_SCRIPT, 2, 8, NULL);   /* DemoScript_StartAfterBoss -> SceneChange_ToExtraAct */
+        /* ExtraAct (results) not translated yet: straight to ClearDemo_GoToNextScene (zone 8 -> ExtraEnding) */
+        return menus_stage_exit(MENU_EXIT_CLEARED, (uint32_t)res.rings, res.lives_current, g_emeralds, (uint32_t)res.time);
+    }
+    return menus_stage_exit(MENU_EXIT_GAME_OVER, 0, 0, g_emeralds, 0);
 }
 
 /* SceneChange_ToSpecialStage ... SceneChange_ToStageFromSpecialStage */
@@ -422,6 +542,11 @@ int main(int argc, char **argv)
     g_boss_hooks.navi = ui_boss_navi;
     g_boss_hooks.help = boss_help_hook;
     g_boss_hooks.cleared = boss_cleared_hook;
+    g_boss_hooks.talk = boss_talk_hook;
+    boss7_set_talk_hook(boss_talk_hook, NULL);
+    cutscene_set_paths("/cd/cutscene", "/cd/sprites", "/cd/models", "/cd/music");
+    g_menu_hooks.talk_demo_start = menu_talk_start;
+    g_menu_hooks.talk_demo_active = menu_talk_active;
     g_boss_hooks.music = boss_music_hook;
     g_boss_hooks.music_stop = boss_music_stop_hook;
     g_ui_hooks.voice = ui_voice_hook;
@@ -466,16 +591,28 @@ int main(int argc, char **argv)
             input_poll(&in);
             if(in.pressed) printf("fe pad pressed %08lx\n", (unsigned long)in.pressed);
             r = menus_run_frame(&in);
+            overlay_cutscene_frame(&in);   /* zone-map TalkDemo */
             sound_update();
             render_begin_frame();
             render_begin_list(PVR_LIST_OP_POLY); render_end_list();
             render_begin_list(PVR_LIST_PT_POLY); render_end_list();
-            render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); render_end_list();
+            render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); if(cutscene_active()) cutscene_draw_list(PVR_LIST_TR_POLY); render_end_list();
             render_end_frame();
+            if(r.kind == MENU_REQ_STAGE && r.zone == 8 && r.act == 2) {
+                /* extra story: Game_StartDemoScript3AtZone8Act2 */
+                g_chara = r.character; g_dcp_world.mode = r.mode; g_emeralds = r.emeralds; g_difficulty = r.easy;
+                r = run_extra_zone();
+                enter_front_end();
+                if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding"))
+                    run_cutscene(CS_EXTRA_ENDING, 0, 8, NULL);
+                continue;
+            }
             if(r.kind == MENU_REQ_STAGE) {
                 int idx = stage_index(r.zone, r.act);
                 if(idx < 0) { printf("menus: stage z%d%d not in the port\n", r.zone + 1, r.act + 1); continue; }
+                /* Game_StartStoryStage: the boss act of a story zone starts with DemoScript_StartScript0 */
                 g_chara = r.character;
+                if(r.mode == UI_MODE_STORY && r.act == 2) run_cutscene(CS_SCRIPT, 0, r.zone, NULL);
                 g_dcp_world.mode = r.mode;
                 g_dcp_world.lives = r.lives;
                 g_ui_game.save_lives[r.character] = r.lives;
@@ -486,7 +623,13 @@ int main(int argc, char **argv)
                 stage = idx; g_frontend = 0;
                 ok = load_stage(&lv, stage) == 0;
                 if(ok && g_player_ok) spawn_player(&lv);
-            } else if(r.kind == MENU_REQ_UNAVAILABLE)
+            } else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "Ending"))
+                run_cutscene(CS_ENDING, 0, 7, NULL);        /* SceneChange_ToEnding (+ staff roll, PostStaffRoll) */
+            else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding"))
+                run_cutscene(CS_EXTRA_ENDING, 0, 8, NULL);  /* SceneChange_ToExtraEnding */
+            else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "DemoScript4"))
+                run_cutscene(CS_SCRIPT, 4, 6, NULL);        /* ClearDemo_GoToNextScene zone 6 boss */
+            else if(r.kind == MENU_REQ_UNAVAILABLE)
                 printf("menus: %s not in the port\n", r.scene ? r.scene : "?");
             else if(r.kind == MENU_REQ_DEMO)
                 menus_stage_exit(MENU_EXIT_DEMO_END, 0, 0, g_emeralds, 0);   /* attract demos not ported */
@@ -495,7 +638,8 @@ int main(int argc, char **argv)
         input_poll(&in);
         if(ok && g_player_ok && g_is_boss) ui_set_boss_health(boss_health());
         if(ok && g_player_ok) ui_update(&in, &g_player);
-        if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen()) {
+        if(ok && g_player_ok) overlay_cutscene_frame(&in);   /* boss talks: System_Freeze while active */
+        if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen() && !cutscene_active()) {
             float px, py, tx, ty;
             if(g_is_boss && !g_boss_started && !ui_titlecard_active()) { boss_start(); g_boss_started = 1; }
             if(g_obj_ok) {
@@ -522,6 +666,12 @@ int main(int argc, char **argv)
             else { g_cam_x += (tx - g_cam_x) * 0.25f; g_cam_y += (ty - g_cam_y) * 0.18f; }
         }
         if(ok && g_player_ok && g_dbg_special > 0 && (int)g_dcp_world.frame == g_dbg_special) { g_dbg_special = -1; g_special_pending = 1; }
+        if(ok && g_player_ok && g_after_boss_pending) {
+            g_after_boss_pending = 0;
+            run_cutscene(CS_SCRIPT, 1, g_dcp_world.zone, sound_stage_sdat(g_dcp_world.zone, g_dcp_world.act, g_chara));
+            ui_stage_exit(OBJ_EXIT_CLEAR_DEMO);   /* CS_NEXT_CLEARDEMO: the act results */
+            continue;
+        }
         if(ok && g_player_ok && g_special_pending) { run_special_stage(&lv, stage); continue; }
         if(ok && g_player_ok) ui_post_update(&g_player);
         sound_update();
@@ -582,6 +732,7 @@ int main(int argc, char **argv)
             if(!ui_is_paused()) g_flash--;
         }
         { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok) ui_draw_tr(); g_dprof[4] += timer_us_gettime64() - t0; }
+        if(cutscene_active() && !cutscene_is_fullscreen()) cutscene_draw_list(PVR_LIST_TR_POLY);
         if(ok && g_player_ok && !g_model_ok)
             draw_sprite_world(NULL, PVR_LIST_TR_POLY, g_player.x / 256.0f - 8, g_player.y / 256.0f - 28, 16, 28, 0, 0, 0, 0, 0, 3.0f, 0xc02060ff);
         render_end_list();
@@ -609,13 +760,24 @@ int main(int argc, char **argv)
                 r.act = nx[2] - '1'; r.character = g_chara;
                 r.mode = g_dcp_world.mode; r.lives = g_dcp_world.lives; r.emeralds = g_emeralds; r.easy = 1;
             }
-            if(r.kind == MENU_REQ_STAGE && stage_index(r.zone, r.act) >= 0) {
+            if(r.kind == MENU_REQ_STAGE && r.zone == 8 && r.act == 2) {
+                g_chara = r.character;
+                r = run_extra_zone();
+                if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding"))
+                    run_cutscene(CS_EXTRA_ENDING, 0, 8, NULL);
+                enter_front_end();
+            } else if(r.kind == MENU_REQ_STAGE && stage_index(r.zone, r.act) >= 0) {
                 g_chara = r.character; load_player_model();
+                if(r.mode == UI_MODE_STORY && r.act == 2) run_cutscene(CS_SCRIPT, 0, r.zone, NULL);   /* Game_AdvanceActWithDemo */
                 stage = stage_index(r.zone, r.act);
                 ok = load_stage(&lv, stage) == 0;
                 if(ok && g_player_ok) spawn_player(&lv);
-            } else
+            } else {
+                if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "Ending")) run_cutscene(CS_ENDING, 0, 7, NULL);
+                else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding")) run_cutscene(CS_EXTRA_ENDING, 0, 8, NULL);
+                else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "DemoScript4")) run_cutscene(CS_SCRIPT, 4, 6, NULL);
                 enter_front_end();
+            }
         }
         if(++frame % 120 == 0) {
             uint64_t now = timer_ms_gettime64();

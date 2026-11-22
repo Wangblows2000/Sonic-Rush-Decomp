@@ -89,6 +89,27 @@ for e in m.get('entries',[]):
         out.append('%d %d %d'%(n, e['loop_start'] if e.get('loop') else 0, e['loop_end'] if e.get('loop') else 0))
 open(D+'/sys.txt','w').write('\\n'.join(out)+'\\n')
 " "$A/manifest.json" "$A" "$OUT/disc/music"
+# cutscenes (CUTSCENES.md section 2): scripts, talks, PlayerDemo scenes, ending BGs, sprites, models, sound, staff-roll music
+C=$ROOT/build/dreamcast/cutscene
+mkdir -p "$OUT/disc/cutscene"
+cp "$C/csdata.bin" "$C/seqalias.txt" "$OUT/disc/cutscene/"; cp -r "$C/talk" "$C/pldm" "$C/bg" "$OUT/disc/cutscene/"
+grep -v '^#' "$C/sprites.txt" | while read -r sp; do
+    [ -n "$sp" ] || continue
+    S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
+    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+done
+grep -v '^#' "$C/models.txt" | while read -r f; do [ -n "$f" ] && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"; done
+cp "$C"/sound/sys_a*.srb "$OUT/disc/sound/"
+cp "$A/strm/sys/Final_Roll.wav" "$A/strm/sys/Extra_Roll.wav" "$OUT/disc/music/"
+cp "$A/music/extra_end/SEQ_EXTRA_END.wav" "$OUT/disc/music/extra_end.wav"
+# Extra Zone boss (BOSSES.md "Extra Zone boss"): data, HUD/VS sprites, models
+X=$ROOT/build/dreamcast/boss/extra
+mkdir -p "$OUT/disc/boss/extra"
+cp "$X/bossex.bin" "$X/zex.bin" "$X/vs_son.bin" "$X/vs_blz.bin" "$OUT/disc/boss/extra/"; cp -r "$X/sprites" "$OUT/disc/boss/extra/"
+find "$OUT/disc/boss/extra" -name '*.png' -delete
+grep -v '^#' "$X/assets.txt" | grep -E '\.(dcm|dca|dcv)$' | while read -r f; do
+    b=$(basename "$f"); [ -f "$ROOT/build/dreamcast/models/$b" ] && cp "$ROOT/build/dreamcast/models/$b" "$OUT/disc/models/"
+done
 # special stages (SPECIAL.md section 6): stage data, models, sprites, backgrounds, ss sound bank
 SP=$ROOT/build/dreamcast/special
 mkdir -p "$OUT/disc/special"
