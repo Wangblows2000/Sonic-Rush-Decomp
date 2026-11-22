@@ -32,7 +32,7 @@ dc: $(SRCS) $(HDRS)
 test-elf: dc test/sptest_main.c
 	bash -c 'source /opt/toolchains/dc/kos/environ.sh && kos-cc -std=gnu99 -O2 -fwrapv -Wall -Wextra -Werror -c test/sptest_main.c -o $(OUT)/dc/sptest_main.o && \
 	  kos-cc -std=gnu99 -O2 -fwrapv -c ../model/model.c -o $(OUT)/dc/model.o && \
-	  for f in ../engine/render.c ../engine/input.c ../engine/audio.c ../sound/snd_bank.c ../sound/snd_drv.c ../sound/snd_nns.c ../sound/sound.c ../sound/snd_out_kos.c; do \
+	  for f in ../engine/render.c ../engine/input.c ../engine/audio.c ../engine/pak.c ../engine/loading.c ../sound/snd_bank.c ../sound/snd_drv.c ../sound/snd_nns.c ../sound/sound.c ../sound/snd_out_kos.c; do \
 	    kos-cc -std=gnu99 -O2 -fwrapv -I.. -c $$f -o $(OUT)/dc/x_$$(basename $${f%.c}).o || exit 1; done && \
 	  kos-cc -o $(OUT)/dc/sptest.elf $(OUT)/dc/sptest_main.o $(patsubst %.c,$(OUT)/dc/%.o,$(SRCS)) $(OUT)/dc/model.o $(OUT)/dc/x_*.o -lm'
 

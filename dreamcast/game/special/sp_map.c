@@ -11,6 +11,7 @@ int sp_mdl_load(SpMdlRes *r, const char *file);
 void sp_mdl_free(SpMdlRes *r);
 void sp_mdl_unlit(SpMdlRes *r);
 void sp_anm_timing(SpAnmRes *r, int kind, u16 nframes);
+int sp_anm_load(SpAnmRes *r, const char *file, int kind);
 void sp_anm_free(SpAnmRes *r);
 
 /* gSpecialStageMapModelList[stage][4]: ss_map_all_00 / st_mid / st_gl / sky0N */
@@ -44,13 +45,9 @@ void SpecialStage_LoadMapModels(void) {
     sp_mdl_load(&sl->res[3], sky);
     for (i = 1; i < 4; i++)
         sp_mdl_unlit(&sl->res[i]);
-    /* FP(0xa0c) = ss.nsbta (sky texture scroll) */
-    {
-        u32 n;
-        const u8 *b = (const u8 *)sp_blob("sky_srt", &n);
-        sp_anm_timing(&sl->nsbta, 4, b ? *(const u16 *)b : 1);
-        sl->nsbta.srt = b;
-    }
+    /* FP(0xa0c) = ss.nsbta (sky texture scroll): the converted set */
+    if (sp_anm_load(&sl->nsbta, "mod__ss.dct", 4) != 0)
+        sp_anm_timing(&sl->nsbta, 4, 1);
     for (i = 0; i < 7; i++) {
         s32 idx = sp_rom_s32(0x023171ec + i * 4);
         s32 sub = sp_rom_s32(0x02317208 + i * 4);

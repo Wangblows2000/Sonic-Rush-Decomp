@@ -19,20 +19,10 @@ void sp_anm_free(SpAnmRes *r);
 void sp_anm_timing(SpAnmRes *r, int kind, u16 nframes);
 
 /* ------------------------------------------------------------ resources */
-static int load_pattern(SpAnmRes *r, const char *blob, const char *base, int nvar) {
-    u32 n;
-    const u16 *t = (const u16 *)sp_blob(blob, &n);
-    int i;
-    char fn[160];
-    sp_anm_timing(r, 3, t ? t[0] : 1);
-    r->pat = t;
-    r->variants = (SpMdlRes *)calloc((size_t)nvar, sizeof(SpMdlRes));
-    r->nvariants = nvar;
-    for (i = 0; i < nvar; i++) {
-        snprintf(fn, sizeof(fn), "%s__p%d.dcm", base, i);
-        sp_mdl_load(&r->variants[i], fn);
-    }
-    return 0;
+/* a converted material / pattern / SRT set (missing: an empty timing object of 1 frame) */
+static void load_matanim(SpAnmRes *r, const char *file, int kind) {
+    if (sp_anm_load(r, file, kind) != 0)
+        sp_anm_timing(r, kind, 1);
 }
 
 void SpecialStage_LoadGimmickModels(void) {
@@ -46,7 +36,7 @@ void SpecialStage_LoadGimmickModels(void) {
     gSpecialStageGimmickModels = g;
     g->unk0 = (SpSprRes *)calloc(1, sizeof(SpSprRes));
     sp_sprres_load(g->unk0, "act__ac_spst_gmk");          /* act/ac_spst_gmk.bac */
-    load_pattern(&g->unkEC4, "pat_eme_light", "mod__ss_eme_light__ss_eme_light", 4); /* mod/ss.nsbtp */
+    load_matanim(&g->unkEC4, "mod__ss.dcp", 3); /* mod/ss.nsbtp */
     /* Model_InitSprite3D(&objs[k], gmk, anim): 0:0 1:2 5:7 6:8 3:4 4:3 7:5 8:6 2:1 */
     Model_InitSprite3D(&g->objs[0], g->unk0, 0);
     Model_InitSprite3D(&g->objs[1], g->unk0, 2);
@@ -104,10 +94,9 @@ void SpecialStage_LoadActArchive(void) {
     sp_anm_load(&w->res1, "narc__ss_act_lz7__eff_clash.dca", 0);
     sp_mdl_load(&w->res3, "narc__ss_act_lz7__eff_shoot_bomb__eff_shoot_bomb.dcm");
     sp_anm_load(&w->res4, "narc__ss_act_lz7__eff_shoot_bomb.dca", 0);
-    /* material colour animations (nsbma): timing only, same length as the joint animation */
-    sp_anm_timing(&w->res2, 2, w->res1.loaded ? w->res1.set.anims[0].num_frames : 1);
-    sp_anm_timing(&w->res5, 2, w->res4.loaded ? w->res4.set.anims[0].num_frames : 1);
-    load_pattern(&w->res6, "pat_bomb", "narc__ss_act_lz7__eff_shoot_bomb__eff_shoot_bomb", 9);
+    load_matanim(&w->res2, "narc__ss_act_lz7__eff_clash.dcc", 2);
+    load_matanim(&w->res5, "narc__ss_act_lz7__eff_shoot_bomb.dcc", 2);
+    load_matanim(&w->res6, "narc__ss_act_lz7__eff_shoot_bomb.dcp", 3);
     w->task = SpecialStageObjList_Create(0x20);
     w->task->unk1DC = SpecialStage_ActObjDestroyWhenDone;
     w->task->unk1E0 = SpecialStage_ActObjReleaseSlots;

@@ -391,7 +391,17 @@ All results are from runs in this session.
     - the left tornado fades in and switches texture frames;
     - the sky surrounds the camera without holes (its triangles cross the near plane and are
       clipped) and scrolls;
-    - the moon's diffuse runs to 0 (black disc) as `bsf.nsbma` says.
+    - the moon's diffuse runs to 0 (black disc) as `bsf.nsbma` says. Checked against the DS rules:
+      - The ROM track is step 4 with 900 samples. The diffuse is 0x7fff until anim frame 248,
+        then fades to 0 at frame 327 and stays 0 to frame 3599.
+      - `NNSi_G3dAnmCalcNsBma` keeps bit 15, and the material's diff_amb is 0xffff, so MATERIAL_COLOR0
+        sets the vertex colour to the diffuse.
+      - Lights are off (polygon attr 0x1f0080) and the moon's display list has no COLOR command, so
+        neither emission nor a vertex colour replaces it.
+      - The texture is modulated, so the DS draws it black too. BossF runs the sky at speed 0x800, so
+        this happens about 11 s into the fight. The sky behind it (`bsf.nsbta`, rows 29..221 of
+        `sky_scl`) is still dark at that point.
+      - The port draws the same.
     - The serial log matches the expected frames.
 
 - **Counts (before the material animations).** The batch converted 779 unique resources: 291 BMD0, 134 BCA0, 68 BVA0, 80 BTP0,
@@ -451,9 +461,6 @@ binary formats and from the decompiled NNS code in this repository.
 - Material animations: several anim objects of one kind on one material run in render-object
   order with no blending (`NNSi_G3dAnmBlendMat`). The boss cross-fade applies the fading-out object
   first; the real NNS list order was not checked.
-- The special-stage module (`dreamcast/game/special`) still keeps `ss.nsbta` / `ss.nsbtp` as timing
-  only. The converted `mod__ss.dct` / `.dcp` exist; `sp_map.c` / `sp_draw.c` would apply them the way
-  `boss_model_matstates` does.
 - ENVMAP is approximated with a sphere map from the view-space normal. PRJMAP is not implemented.
   The billboard (BB/BBY) is rebuilt in view space (axis lengths + translation kept), which is the
   intent of `NNSi_G3dFuncSbc_BB`; BBY is an approximation.

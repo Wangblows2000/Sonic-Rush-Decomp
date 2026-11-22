@@ -6,9 +6,9 @@
  * 1 paused, 2 ended, 4 loop, 0x40 cross-fade; speed @0x114).  The state
  * machines read these (player states wait on 0x10C & 2), so the timing code is
  * kept as in the original (same as dreamcast/game/boss/boss_model.c).
- * Texture-pattern (NSBTP) and texture-SRT (NSBTA) animations are timing objects
- * whose frame selects a converted pattern variant / uv offset at draw time;
- * material-colour animations (NSBMA) are timing only.
+ * Material colour (NSBMA), texture pattern (NSBTP) and texture SRT (NSBTA)
+ * animations are converted sets too (.dcc / .dcp / .dct); sp_draw.c applies
+ * slots 1..3 at the draw (dcm_matanim_apply, dcm_draw_ex).
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -76,11 +76,7 @@ int sp_anm_load(SpAnmRes *r, const char *file, int kind) {
 }
 
 void sp_anm_free(SpAnmRes *r) {
-    int i;
     free(r->bytes);
-    for (i = 0; i < r->nvariants; i++)
-        sp_mdl_free(&r->variants[i]);
-    free(r->variants);
     memset(r, 0, sizeof(*r));
 }
 
@@ -96,7 +92,7 @@ static u16 anim_frames(const SpAnmRes *res, u32 idx, int *ok) {
     *ok = 0;
     if (res == NULL || !res->loaded)
         return 0;
-    if (res->kind == 0 || res->kind == 1) {
+    if (res->kind <= 1 || res->set.hdr) {
         if (res->set.hdr && idx < res->set.hdr->num_anims) {
             *ok = 1;
             return res->set.anims[idx].num_frames;

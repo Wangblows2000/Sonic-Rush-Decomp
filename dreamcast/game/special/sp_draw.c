@@ -46,7 +46,6 @@ typedef struct {
     int image;
     const SpSprRes *sres;
     u32 sflags;
-    int srt_frame;
     /* sprite 2D */
     int group, prio, seq;
     float x, y, sx, sy;
@@ -133,20 +132,6 @@ void sp_draw_model(const SpModel *m, int light_mode) {
         c->image = sp_sprite_image(&m->spr);
         c->sres = m->spr.res;
         c->sflags = m->spr.flags;
-    } else {
-        /* texture pattern (slot 2) -> variant model, texture SRT (slot 3) -> frame */
-        if (m->anm[2] && m->anm[2]->res && m->anm[2]->res->kind == 3 && m->anm[2]->res->pat) {
-            const SpAnmRes *pr = m->anm[2]->res;
-            const u16 *t = pr->pat;
-            int fr = m->anm[2]->frame >> 12, i, v = 0;
-            for (i = 0; i < t[1]; i++)
-                if (t[2 + i * 2] <= fr)
-                    v = t[3 + i * 2];
-            if (v < pr->nvariants && pr->variants[v].loaded)
-                c->res = &pr->variants[v];
-        }
-        if (m->anm[3] && m->anm[3]->res && m->anm[3]->res->kind == 4)
-            c->srt_frame = (m->anm[3]->frame >> 12) + 1;
     }
 }
 
@@ -582,30 +567,29 @@ static void project(const dcm_mtx_t *W, float x, float y, float *out) {
     out[2] = cw > 0.001f ? iw : -1.0f;
 }
 
-static void apply_srt(const SpCmd *c) {
-    const u8 *b;
-    u16 nf, nm, i, k;
-    dcm_material_t *mat;
-    if (!c->srt_frame || !c->res || !c->res->loaded)
-        return;
-    b = c->m->anm[3]->res->srt;
-    if (!b)
-        return;
-    memcpy(&nf, b, 2);
-    memcpy(&nm, b + 2, 2);
-    mat = (dcm_material_t *)c->res->mdl.materials;
-    for (i = 0; i < nm && i < c->res->mdl.hdr->num_materials; i++) {
-        const u8 *e = b + 4 + i * (16 + nf * 8);
-        s32 ts, tt;
-        int f = (c->srt_frame - 1) % (nf ? nf : 1);
-        memcpy(&ts, e + 16 + f * 8, 4);
-        memcpy(&tt, e + 16 + f * 8 + 4, 4);
-        for (k = 0; k < c->res->mdl.hdr->num_materials; k++)
-            if (k == i) {
-                mat[k].uv_e = -(ts / 4096.0f);
-                mat[k].uv_f = -(tt / 4096.0f);
+/* the material colour / texture pattern / texture SRT animation objects of slots 1..3 (cross-fade
+ * source first) at their integer frames: the material values NNSi_G3dFuncSbc_MAT_InternalDefault
+ * builds (MODELS.md 4.1); NULL when the model has none */
+u32 g_sp_matanim_draws;   /* draws with material animations (host tests) */
+static const dcm_matstate_t *matstates(const SpModel *m, const dcm_model_t *md) {
+    static dcm_matstate_t st[64];
+    int slot, k, any = 0;
+    if (!md->matx || md->hdr->num_materials > 64)
+        return NULL;
+    for (slot = 1; slot <= 3; slot++)
+        for (k = 0; k < 2; k++) {
+            const SpAnmObj *a = k == 0 ? m->anm2[slot] : m->anm[slot];
+            if (!a || !a->res || !a->res->set.hdr || a->res->set.hdr->kind < DCA_KIND_MATCOL)
+                continue;
+            if (!any) {
+                dcm_matstate_init(md, st);
+                any = 1;
             }
-    }
+            dcm_matanim_apply(&a->res->set, a->idx, (int)(a->frame >> 12), md, st);
+        }
+    if (any)
+        g_sp_matanim_draws++;
+    return any ? st : NULL;
 }
 
 static void draw_model_cmd(const SpCmd *c, int list) {
@@ -616,6 +600,7 @@ static void draw_model_cmd(const SpCmd *c, int list) {
     const dcm_model_t *md;
     dcm_draw_opts_t o;
     const u8 *vp = NULL;
+    const dcm_matstate_t *ms;
     if (!c->res || !c->res->loaded)
         return;
     md = &c->res->mdl;
@@ -628,17 +613,18 @@ static void draw_model_cmd(const SpCmd *c, int list) {
         dca_visibility(&m->anm[4]->res->set, m->anm[4]->idx, (float)(m->anm[4]->frame >> 12), md, vis);
         vp = vis;
     }
-    apply_srt(c);
+    ms = matstates(m, md);
     o.list = list;
     o.pt_list = LIST_PT;
     o.alpha_scale = 255;
 #ifdef _arch_dreamcast
-    dcm_draw(md, pal, &c->world, &s_cam, vp, &s_lights[c->light ? 1 : 0], &o);
+    dcm_draw_ex(md, pal, &c->world, &s_cam, vp, &s_lights[c->light ? 1 : 0], &o, ms);
 #else
     if (list == LIST_OP && g_sp_host_fb) {
         static float xyz[3 * 8192];
         int n = md->hdr->num_vertices < 8192 ? (int)md->hdr->num_vertices : 8192, i;
         (void)vp;
+        (void)ms;
         dcm_transform_vertices(md, pal, &c->world, &s_cam, xyz);
         for (i = 0; i < n; i++) {
             int x = (int)xyz[i * 3], y = (int)xyz[i * 3 + 1];

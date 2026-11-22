@@ -210,6 +210,17 @@ int main(int argc, char **argv) {
         dump_ppm("play_start");
         CHECK(SpecialStage_GetPlayer()->unk228 == 2, "player runs (state 2) after the start sequence");
         CHECK(SpecialStageMap_GetScrollSpeed() == 0x3000, "scroll speed 0x3000");
+        {
+            extern u32 g_sp_matanim_draws;
+            u32 before = g_sp_matanim_draws;
+            special_draw();
+            CHECK(gSpecialStageMap->nsbta.set.hdr && gSpecialStageMap->nsbta.set.hdr->kind == DCA_KIND_TEXSRT &&
+                      gSpecialStageGimmickModels->unkEC4.set.hdr &&
+                      gSpecialStageGimmickModels->unkEC4.set.hdr->kind == DCA_KIND_TEXPAT,
+                  "ss.nsbta / ss.nsbtp converted sets loaded (mod__ss.dct / .dcp)");
+            CHECK(g_sp_matanim_draws > before, "the sky is drawn with its texture SRT animation (%u draws)",
+                  (unsigned)(g_sp_matanim_draws - before));
+        }
         CHECK(SpecialStage_GetPlayer()->unk114 == 1, "steering enabled after START!");
     }
 

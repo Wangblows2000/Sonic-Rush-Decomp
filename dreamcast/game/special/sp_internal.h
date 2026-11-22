@@ -164,15 +164,12 @@ typedef struct SpMdlRes {          /* one converted .dcm (NNSG3dResMdl) */
     dcm_model_t mdl;
     int loaded;
 } SpMdlRes;
-typedef struct SpAnmRes {          /* .dca / .dcv set, or a timing-only resource */
+typedef struct SpAnmRes {          /* converted animation set, or a timing-only resource */
     u8 *bytes;
     dca_set_t set;
-    int kind;                      /* 0 joint, 1 visibility, 2 material colour (timing), 3 pattern, 4 srt */
+    int kind;                      /* 0 joint .dca, 1 visibility .dcv, 2 material colour .dcc, 3 pattern .dcp,
+                                    * 4 texture SRT .dct (MODELS.md 4.1) */
     int loaded;
-    const u16 *pat;                /* pattern key table {nframes, nkeys, {frame, variant}...} */
-    SpMdlRes *variants;            /* pattern variant models */
-    int nvariants;
-    const u8 *srt;                 /* sky_srt blob */
     u16 nframes_fixed;             /* frame count for timing-only resources */
 } SpAnmRes;
 typedef struct SpAnmObj {
@@ -423,7 +420,7 @@ typedef struct SpActWork {
     u32 used1[32];
     SpModel obj2[32];        /* models */
     u32 used2[32];
-    SpMdlRes res0, res3;     /* eff_clash, eff_shoot_bomb (+variants via res6) */
+    SpMdlRes res0, res3;     /* eff_clash, eff_shoot_bomb (its pattern textures are in the model) */
     SpAnmRes res1, res2, res4, res5, res6;
     SpObjList *task;         /* @0x46A0 */
 } SpActWork;

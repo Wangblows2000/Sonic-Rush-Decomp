@@ -213,9 +213,10 @@ tree under `/cd/special/`:
 
 | path | content |
 |---|---|
-| `spdata.bin` | "SPD1" blob table: overlay-1 ROM ranges 0x02316FE0-0x02318010 and 0x0231DF70-0x0231F040 (all tables, vectors, collision circles, file names), arm9 0x0206E470-0x02072572 (FX_SinCosTable_, atan table), the 275 function symbols (address -> name), the sky texture-SRT track (`ss.nsbta`, 241 frames x 4 materials), the texture-pattern key tables (`ss.nsbtp` eme_light, `eff_shoot_bomb.nsbtp`), the node names of son.nsbmd. |
+| `spdata.bin` | "SPD1" blob table: overlay-1 ROM ranges 0x02316FE0-0x02318010 and 0x0231DF70-0x0231F040 (all tables, vectors, collision circles, file names), arm9 0x0206E470-0x02072572 (FX_SinCosTable_, atan table), the 275 function symbols (address -> name), the node names of son.nsbmd. |
 | `ss/ss.ssd`, `ss/ss_1..7.sst` | copied unchanged |
-| `models/*.dcm/.dca/.dcv` | `mod/ss_*.nsbmd` (map: 5 + mid + goal + 7 skies; dash panel, 2 switches, emerald light + 4 pattern variants, 7 emeralds), `narc/ss_player_lz7.narc` (son, son_ball, son.dca 62 anims, son.dcv), `narc/ss_act_lz7.narc` (eff_clash, eff_shoot_bomb + 9 pattern variants). Converted with `tools/dreamcast/models/nsbmd2dc.py`; the vertex/polygon counts match the NNS headers. |
+| `models/*.dcm/.dca/.dcv` | `mod/ss_*.nsbmd` (map: 5 + mid + goal + 7 skies; dash panel, 2 switches, emerald light with its 4 pattern textures, 7 emeralds), `narc/ss_player_lz7.narc` (son, son_ball, son.dca 62 anims, son.dcv), `narc/ss_act_lz7.narc` (eff_clash, eff_shoot_bomb with its 9 pattern textures). Converted with `tools/dreamcast/models/nsbmd2dc.py`; the vertex/polygon counts match the NNS headers. |
+| `models/*.dcc/.dcp/.dct` | Material animations (MODELS.md 4.1): `mod__ss.dct` (`ss.nsbta`: the sky scroll `ss_map_sky`, 241 frames), `mod__ss.dcp` (`ss.nsbtp`: `ss_eme_light`, 25 frames), `narc__ss_act_lz7__eff_clash.dcc`, `eff_shoot_bomb.dcc` / `.dcp`. `sp_draw.c` applies slots 1..3 at the draw (`dcm_draw_ex`). |
 | `sprites/act__ac_spst*/frames.bin + atlas0.argb1555` | `act/ac_spst*.bac` (base, 6 languages, ann, efct, gmk) via `tools/dreamcast/sprites/bac2dc.py` |
 | `bg/sp_*.mnbg` | the 12 `bg/sp_*.bbg` (menus `.mnbg` format, `menus/tools/menubg.py`) |
 | `sound/ss.srb` | sound-effect bank (`tools/dreamcast/audio/sfxbank.py` format): sys SDAT SSAR 9, 14, 16 with banks 17/22/24. 748 KB of sound RAM (budget 1.83 MB), 119 waves. Load it with `sound_set_dir` + `special_init` (or copy it to `/cd/sound/`). |
@@ -476,7 +477,7 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStage_LoadGimmickModels | translated, DS service replaced | converted .dcm + BAC sprites; Model_InitSprite3D anims and flags kept |
 | SpecialStage_LoadHudAssets | translated, DS service replaced | files from build/dreamcast/special (mnbg, DSPR, ss.ssd); the sound-archive set-up is the ss.srb bank |
 | SpecialStage_LoadHudFile | translated, DS service replaced | sp_file_load |
-| SpecialStage_LoadMapModels | translated, DS service replaced | converted .dcm per model; Model set-up (ops 4/2, slot 0x1e, sky ops 0x13/3, scale 50, SRT loop) kept |
+| SpecialStage_LoadMapModels | translated, DS service replaced | converted .dcm per model; Model set-up (ops 4/2, slot 0x1e, sky ops 0x13/3, scale 50, SRT loop) kept; ss.nsbta = converted `mod__ss.dct` |
 | SpecialStage_LoadPlayerArchive | translated, DS service replaced | converted son.dcm/son_ball.dcm/.dca/.dcv instead of the LZ NARC; Model set-up kept |
 | SpecialStage_LoadStageData | translated |  |
 | SpecialStage_LoadStageDataFile | translated, DS service replaced | sp_file_load |
@@ -571,7 +572,9 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
     120-frame white fog at the start is a white overlay with the same density curve.
   - The player animation cross-fade (flags 0x40) changes the timing as in the original, but the pose is
     drawn from the new animation only.
-  - Material-colour animations (`.nsbma` of eff_clash / eff_shoot_bomb) are timing only.
+  - Material colour, texture pattern and texture SRT animations play from the converted sets (sky scroll
+    with the NNS Si3d texture matrix, emerald light and bomb patterns, eff_clash / eff_shoot_bomb colour
+    and alpha).
   - The palette lerp of top-screen OBJ palette slot 8 is drawn as a cross-fade of the big emerald to the
     stage-colour emerald image (anim 0x13 + stage).
   - The top-screen frame art `sp_fix_base` is not drawn: its panels sit behind the top-screen HUD on the
