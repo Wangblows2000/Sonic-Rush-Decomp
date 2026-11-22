@@ -23,6 +23,7 @@
 #include "../boss/boss_extra.h"
 #include "../boss/boss7.h"
 #include "../demo/demo.h"
+#include "../engine/loading.h"
 #include "../menus/extraact.h"
 #include <stdlib.h>
 
@@ -64,7 +65,7 @@ static void *load_file(const char *path, uint32_t *size)
     if(f == FILEHND_INVALID) return NULL;
     *size = fs_total(f);
     b = malloc(*size);
-    if(b && fs_read(f, b, *size) != (ssize_t)*size) { free(b); b = NULL; }
+    if(b && loading_read(f, b, *size) != (ssize_t)*size) { free(b); b = NULL; }
     fs_close(f);
     return b;
 }
@@ -146,6 +147,7 @@ static void spawn_player(Level *lv)
     g_ui_game.difficulty = (u8)g_difficulty;
     g_ui_game.save_progress[0] = gSaveData.unkC; g_ui_game.save_progress[1] = gSaveData.unk64;
     ui_stage_start(g_dcp_world.zone, g_dcp_world.act, g_chara);
+    loading_end();
     if(g_obj_hooks.stage_exit != stage_exit_hook) { g_prev_stage_exit = g_obj_hooks.stage_exit; g_obj_hooks.stage_exit = stage_exit_hook; }
     if(g_ss.active) {
         /* Player_Create with unk18 & 0x40: rings, shield, tension, water flag, blinking invulnerability */
@@ -246,6 +248,7 @@ static void start_zone_music(char zone)
 
 static int load_stage(Level *lv, int idx)
 {
+    loading_begin();   /* spinning ring until spawn_player has finished */
     g_stage_idx = idx;
     char dir[64];
     uint64_t t0 = timer_ms_gettime64();
@@ -395,7 +398,9 @@ static CsNext run_cutscene(CsKind kind, int id, int zone, const char *return_ban
     InputState in = {0};
     cs_story(zone);
     cutscene_set_return_bank(return_bank);
-    if(cutscene_start(kind, id, g_chara) != 0) { printf("cutscene %d/%d: missing data\n", kind, id); return CS_NEXT_NONE; }
+    loading_begin();
+    if(cutscene_start(kind, id, g_chara) != 0) { loading_end(); printf("cutscene %d/%d: missing data\n", kind, id); return CS_NEXT_NONE; }
+    loading_end();
     printf("cutscene %d/%d start\n", kind, id);
     for(;;) {
         int done;
@@ -441,7 +446,11 @@ static MenuRequest run_extra_zone(void)
     boss_extra_set_lives(gSaveData.unkE ? gSaveData.unkE : 3, gSaveData.unk66 ? gSaveData.unk66 : 3);
     boss_extra_set_difficulty(0);   /* gGameState.unk14: 0 normal */
     memset(&res, 0, sizeof(res));
-    if(boss_extra_init(g_chara) == 0) {
+    loading_begin();
+    r = boss_extra_init(g_chara);
+    loading_end();
+    if(r == 0) {
+        r = BOSS_EXTRA_FAILED;
         for(;;) {
             input_poll(&in);
             r = boss_extra_run_frame(&in);
@@ -499,7 +508,9 @@ static void run_special_stage(Level *lv, int stage)
     special_set_language(1);
     special_set_emerald_flags(g_emeralds);
     printf("special: vram free before %lu\n", (unsigned long)render_vram_free());
+    loading_begin();
     r = special_init(g_dcp_world.zone, 0);
+    loading_end();
     printf("special stage %d: init %d\n", g_dcp_world.zone, r);
     if(r == 0) {
         for(;;) {

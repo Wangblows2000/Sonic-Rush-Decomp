@@ -1,4 +1,5 @@
 #include "level.h"
+#include "loading.h"
 #include "render.h"
 #include <kos.h>
 #include <stdlib.h>
@@ -12,7 +13,7 @@ static uint8_t *read_file(const char *path, uint32_t *size)
     if(f == FILEHND_INVALID) return NULL;
     *size = fs_total(f);
     buf = memalign(32, *size);
-    if(buf && fs_read(f, buf, *size) != (ssize_t)*size) { free(buf); buf = NULL; }
+    if(buf && loading_read(f, buf, *size) != (ssize_t)*size) { free(buf); buf = NULL; }
     fs_close(f);
     return buf;
 }
@@ -46,6 +47,7 @@ int level_load(Level *lv, const char *dir)
         lv->pages[i] = pvr_mem_malloc(psz);
         if(!lv->pages[i]) { free(bt); level_free(lv); return -4; }
         pvr_txr_load(bt + th->page_offset + i * psz, lv->pages[i], psz);
+        loading_tick();
         lv->vram_used += psz;
         lv->pal_rows |= pal8_rowmask(bt + th->page_offset + i * psz, psz);
     }

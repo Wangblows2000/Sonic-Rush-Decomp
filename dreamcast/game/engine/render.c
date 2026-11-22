@@ -1,4 +1,5 @@
 #include "render.h"
+#include "loading.h"
 #include <kos.h>
 #include <string.h>
 #include <stdlib.h>
@@ -22,7 +23,7 @@ int tex_load(Texture *t, const char *path)
     t->bytes = t->w * t->h * 2;
     t->twiddled = 0;
     buf = memalign(32, t->bytes);
-    if(!buf || fs_read(f, buf, t->bytes) != (ssize_t)t->bytes) { free(buf); fs_close(f); return -1; }
+    if(!buf || loading_read(f, buf, t->bytes) != (ssize_t)t->bytes) { free(buf); fs_close(f); return -1; }
     fs_close(f);
     t->ptr = pvr_mem_malloc(t->bytes);
     if(!t->ptr) { free(buf); return -1; }
@@ -289,7 +290,7 @@ static uint8_t *read_all(const char *path, uint32_t *size)
     if(f == FILEHND_INVALID) return NULL;
     *size = fs_total(f);
     b = memalign(32, *size ? *size : 4);
-    if(b && fs_read(f, b, *size) != (ssize_t)*size) { free(b); b = NULL; }
+    if(b && loading_read(f, b, *size) != (ssize_t)*size) { free(b); b = NULL; }
     fs_close(f);
     return b;
 }
