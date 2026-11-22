@@ -47,6 +47,12 @@ python3 -I dreamcast/game/player/tools/extract_physics.py
 python3 dreamcast/game/objects/tools/objdata.py --out "$KIT/build/dreamcast/objects"
 python3 dreamcast/game/ui/tools/uidata.py --out "$KIT/build/dreamcast/ui"
 python3 dreamcast/game/boss/tools/bossdata.py --out "$KIT/build/dreamcast/boss"
+python3 dreamcast/game/boss/tools/bossexdata.py --out "$KIT/build/dreamcast/boss/extra"
+python3 dreamcast/game/ui/tools/uibg.py --out "$KIT/build/dreamcast/ui"
+python3 dreamcast/game/menus/tools/menudata.py --out "$KIT/build/dreamcast/menus"
+python3 dreamcast/game/special/tools/spdata.py
+python3 dreamcast/game/cutscene/tools/csdata.py --out "$KIT/build/dreamcast/cutscene"
+python3 dreamcast/game/cutscene/tools/csbank.py --out "$KIT/build/dreamcast/cutscene/sound"
 
 echo "== 5/5 disc image"
 SRDC_PREBUILT="$KIT/prebuilt" SRDC_OUT="$KIT/out" sh dreamcast/game/build_disc.sh

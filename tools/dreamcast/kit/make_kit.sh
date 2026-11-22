@@ -13,7 +13,7 @@ rm "$K/prebuilt/srdc.bin"
 "$KOS_BASE/utils/makeip/makeip" -g "SONIC RUSH DC" -c "PORT" "$K/prebuilt/IP.BIN" >/dev/null
 # tracked source only (git ls-files): converters, translated modules' data tools, docs
 cd "$ROOT"
-git ls-files tools/dreamcast tools/extraction/fix_path_order.py dreamcast/game docs/dreamcast \
+git ls-files tools/dreamcast tools/extraction/fix_path_order.py dreamcast/game docs/dreamcast 'config/eur/arm9/*symbols.txt' \
   | tar -cf - -T - | tar -xf - -C "$K"
 cp tools/dreamcast/kit/make_disc.sh tools/dreamcast/kit/README.txt "$K/"
 cp tools/bin/dsd "$K/bin/"
