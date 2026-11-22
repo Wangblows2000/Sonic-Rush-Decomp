@@ -109,6 +109,19 @@ static void stage_exit_hook(void *ctx, s32 kind)
     if(g_prev_stage_exit) g_prev_stage_exit(ctx, kind);
 }
 
+/* g_dcp_hooks.gravity_flipped = Stage_IsGravityFlipped (src/game/Stage): Dead Line acts flip
+ * below (act 1) / above (act 2) the split line (camera module's Stage_GetSplitLineY) */
+s32 Stage_GetSplitLineY(s32 x);
+static dcp_bool gravity_flipped_hook(void *ctx, s32 x, s32 y)
+{
+    (void)ctx;
+    if(g_dcp_world.zone == 6 && g_dcp_world.act < 2) {
+        if(g_dcp_world.act == 1) { if(y < Stage_GetSplitLineY(x)) return DCP_TRUE; }
+        else if(y > Stage_GetSplitLineY(x)) return DCP_TRUE;
+    }
+    return DCP_FALSE;
+}
+
 static void spawn_player(Level *lv)
 {
     uint32_t i;
@@ -535,6 +548,7 @@ int main(int argc, char **argv)
     audio_init();
     sound_init();
     sound_hooks_install();
+    g_dcp_hooks.gravity_flipped = gravity_flipped_hook;
     ui_set_paths("/cd/ui", "/cd/sprites");
     printf("zonefx: %s\n", zonefx_load_data("/cd/zonefx/zonefx.bin") == 0 ? "ok" : "MISSING");
     printf("ui: %s\n", ui_init() == 0 ? "ok" : "FAILED");
@@ -553,6 +567,8 @@ int main(int argc, char **argv)
     g_menu_hooks.talk_demo_active = menu_talk_active;
     g_boss_hooks.music = bgm_boss_music_hook;          /* pinch 0xf, Boss7 0x11, BossF talk 0x13, Extra 0x14 / 0x15 */
     g_boss_hooks.music_stop = bgm_boss_music_stop_hook;
+    g_boss_hooks.music_fade = bgm_boss_music_fade_hook;     /* Boss7 ClashFadeOutBGM, BossF SkyChargeStartFadeOut: 0x3c */
+    g_boss_hooks.music_volume = bgm_boss_music_volume_hook; /* Boss7 defeat scene: 0x20 over 0xb4 */
     g_ui_hooks.music = bgm_ui_music_hook;              /* ClearDemo / new record / game over (sys) */
     g_ui_hooks.music_pause = bgm_ui_music_pause_hook;  /* pause menu: players 3..9 */
     g_ui_hooks.sfx = bgm_ui_sfx_hook;                  /* results rank SE, pause menu, enemy room */
@@ -575,6 +591,11 @@ int main(int argc, char **argv)
         printf("player tables: %s\n", g_player_ok ? "ok" : "MISSING");
         input_poll(&in);
         g_chara = (in.held & IN_ALT) ? 1 : 0;   /* test builds (debug start) only */
+        {   /* test builds: /cd/debug/chara.txt "1" = Blaze */
+            uint32_t csz;
+            char *c = load_file("/cd/debug/chara.txt", &csz);
+            if(c) { g_chara = atoi(c) ? 1 : 0; free(c); }
+        }
         load_player_model();
     }
     {
@@ -593,6 +614,11 @@ int main(int argc, char **argv)
     } else {
         ok = 0; enter_front_end();
         menus_init();   /* menudata, save_load() from the VMU, SEGA logo */
+        {   /* test builds: /cd/debug/extra.txt = start with the Extra Zone (script 3, Extra boss) */
+            uint32_t esz;
+            char *e = load_file("/cd/debug/extra.txt", &esz);
+            if(e) { free(e); printf("debug start: Extra Zone\n"); run_extra_zone(); enter_front_end(); }
+        }
     }
 
     for(;;) {

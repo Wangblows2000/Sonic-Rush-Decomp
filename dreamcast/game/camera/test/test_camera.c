@@ -486,6 +486,17 @@ static int run_stage(const char *stages, const char *pdir, const char *odir, con
     camera_get_view(&sx, &s_last_wy);
     printf("== %s (zone %d act %d) %dx%d px, start screen %s\n", id, g_hdr->zone + 1, g_hdr->act + 1, M.right, M.bottom,
            (camera_flags2() & 2) ? "lower" : "upper");
+    if (getenv("PROBE")) {   /* PROBE="x y": place the player there, 300 frames idle, print where it rests */
+        s32 px = 0, py = 0;
+        sscanf(getenv("PROBE"), "%d %d", &px, &py);
+        place_player(px, py);
+        for (f = 0; f < 300; f++)
+            frame(0);
+        camera_get_view(&sx, &s_last_wy);
+        printf("probe %s %d,%d: player %d,%d%s window %d,%d\n", id, px, py, P.x >> 8, P.y >> 8,
+               (P.pf & DCP_PF_DEAD) ? " DEAD" : "", sx >> 8, s_last_wy >> 8);
+        return 0;
+    }
     /* [run] */
     for (f = 0; f < 2400; f++) {
         u16 held = (f / 600) == 2 && f % 600 < 200 ? DCP_KEY_LEFT : DCP_KEY_RIGHT;

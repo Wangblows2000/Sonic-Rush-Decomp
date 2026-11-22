@@ -140,6 +140,8 @@ if [ -n "$SRDC_MENUSAVE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_MENUSAV
 # audio test builds: SRDC_SNDTRACE=1 (serial trace of sound / music / missing effects), SRDC_BGMTEST=<file> (music event triggers, sound/bgm.c)
 if [ -n "$SRDC_SNDTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/sndtrace.txt"; fi
 if [ -n "$SRDC_BGMTEST" ]; then mkdir -p "$OUT/disc/debug"; cp "$SRDC_BGMTEST" "$OUT/disc/debug/bgmtest.txt"; fi
+# SRDC_DEBUGDIR=<dir>: its files go to /cd/debug (e.g. chara.txt "1" = Blaze, extra.txt = Extra Zone start: main_audiotest.patch)
+if [ -n "$SRDC_DEBUGDIR" ]; then mkdir -p "$OUT/disc/debug"; cp "$SRDC_DEBUGDIR"/* "$OUT/disc/debug/"; fi
 if [ -n "$SRDC_DEMOLEAD" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_DEMOLEAD" > "$OUT/disc/debug/demolead.txt"; fi
 cd "$OUT"
 rm -f IP.BIN

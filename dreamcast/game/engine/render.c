@@ -40,7 +40,10 @@ void tex_free(Texture *t)
 }
 
 static uint32_t s_frame;   /* palette RAM: frames for the idle-row rule */
-void render_begin_frame(void) { pvr_wait_ready(); pvr_scene_begin(); s_frame++; }
+static void pal_flush(void);
+/* frame start: palette entries queued while the PVR could still read them (pal_put) are
+ * written once the render in progress is done, so no frame shows mixed colours */
+void render_begin_frame(void) { pvr_wait_ready(); pal_flush(); pvr_scene_begin(); s_frame++; }
 void render_end_frame(void) { pvr_scene_finish(); }
 void render_begin_list(pvr_list_t list) { s_list = list; pvr_list_begin(list); }
 void render_end_list(void) { pvr_list_finish(); }
@@ -121,9 +124,39 @@ static struct {
     uint16_t gen;       /* bumped when the row is given back (PalRef check) */
     uint32_t last;      /* frame of the last pal4_use */
     uint8_t used_lazy;  /* pal4_use has drawn with it */
+    uint32_t seen1;     /* 1 + the last frame that may have drawn with the row (0 = never) */
     uint16_t col[16];
 } s_rows[PAL_ROWS];
 static int s_pal_init;
+
+/* Palette RAM writes.  The frame being built (s_frame) and the one the PVR renders
+ * (s_frame - 1) read the palette RAM when they are rendered, so an entry of a row either
+ * of them drew with is "hot": its write is queued and done at the next frame start
+ * (render_begin_frame, after the render in progress).  Rows nobody drew with for 2 frames
+ * are written at once; the allocator below prefers those, so a queued write only happens
+ * when the palette RAM is short of cold rows. */
+static uint16_t s_pq_idx[PAL_ROWS * 16], s_pq_col[PAL_ROWS * 16];
+static int s_pqn;
+static uint32_t s_pal_queued;   /* statistics: writes that waited for the frame start */
+static int row_hot(int r) { return s_rows[r].seen1 && s_frame + 1 - s_rows[r].seen1 < 2; }
+static void row_seen(int r) { s_rows[r].seen1 = s_frame + 1; }
+static void pal_put(int idx, uint16_t c, int hot)
+{
+    int i;
+    if(!hot) { pvr_set_pal_entry(idx, c); return; }
+    for(i = 0; i < s_pqn; i++)
+        if(s_pq_idx[i] == idx) { s_pq_col[i] = c; return; }
+    if(s_pqn < PAL_ROWS * 16) { s_pq_idx[s_pqn] = (uint16_t)idx; s_pq_col[s_pqn++] = c; s_pal_queued++; }
+}
+static void pal_flush(void)
+{
+    int i;
+    if(!s_pqn) return;
+    pvr_wait_render_done();
+    for(i = 0; i < s_pqn; i++) pvr_set_pal_entry(s_pq_idx[i], s_pq_col[i]);
+    s_pqn = 0;
+}
+uint32_t pal_queued_writes(void) { return s_pal_queued; }
 
 static void pal_setup(void)
 {
@@ -140,6 +173,7 @@ static int row_idle(int r)
 }
 static void row_release(int r)
 {
+    if(s_rows[r].kind == ROW_PAL8 || s_rows[r].refs) row_seen(r);   /* static rows: drawn up to now */
     s_rows[r].kind = ROW_FREE;
     s_rows[r].refs = 0;
     s_rows[r].mask = 0;
@@ -155,27 +189,31 @@ uint16_t pal8_rowmask(const uint8_t *texels, uint32_t n)
     return m;
 }
 
-/* pass 0: free rows and idle UI rows; pass 1 (no bank otherwise): any row only
- * pal4_use draws with (the UI takes another row on its next draw) */
+/* pass 0: cold free rows and idle UI rows; pass 1: also free rows drawn with in the last
+ * 2 frames (queued writes); pass 2 (no bank otherwise): any row only pal4_use draws with
+ * (the UI takes another row on its next draw) */
 static int pal8_row_ok(int r, int pass)
 {
-    if(s_rows[r].kind == ROW_FREE || row_idle(r)) return 1;
-    return pass && s_rows[r].kind == ROW_PAL4 && s_rows[r].refs == 0;
+    if(row_idle(r)) return 1;
+    if(s_rows[r].kind == ROW_FREE) return pass || !row_hot(r);
+    return pass > 1 && s_rows[r].kind == ROW_PAL4 && s_rows[r].refs == 0;
 }
 int pal8_alloc(const uint16_t *pal, uint16_t rowmask)
 {
     int b, r, i, pass;
     pal_setup();
-    for(pass = 0; pass < 2; pass++)
+    for(pass = 0; pass < 3; pass++)
     for(b = 0; b < 4; b++) {
         for(r = 0; r < 16; r++)
             if((rowmask >> r & 1) && !pal8_row_ok(b * 16 + r, pass)) break;
         if(r < 16) continue;
         for(r = 0; r < 16; r++) {
+            int hot;
             if(!(rowmask >> r & 1)) continue;
             if(s_rows[b * 16 + r].kind != ROW_FREE) row_release(b * 16 + r);
+            hot = row_hot(b * 16 + r);
             s_rows[b * 16 + r].kind = ROW_PAL8;
-            for(i = 0; i < 16; i++) pvr_set_pal_entry(b * 256 + r * 16 + i, pal[r * 16 + i]);
+            for(i = 0; i < 16; i++) pal_put(b * 256 + r * 16 + i, pal[r * 16 + i], hot);
         }
         return b;
     }
@@ -198,14 +236,16 @@ static int row_fits(int r, const uint16_t *col, uint16_t mask)
         if((both >> k & 1) && s_rows[r].col[k] != col[k]) return 0;
     return 1;
 }
+/* entries the row does not define yet: no texel drawn with the row reads them, except
+ * after the row was given back and taken again (hot: queued) */
 static void row_define(int r, const uint16_t *col, uint16_t mask)
 {
-    int k;
+    int k, hot = row_hot(r);
     uint16_t add = mask & ~s_rows[r].mask & 0xfffe;
     for(k = 1; k < 16; k++)
         if(add >> k & 1) {
             s_rows[r].col[k] = col[k];
-            pvr_set_pal_entry(r * 16 + k, col[k]);
+            pal_put(r * 16 + k, col[k], hot);
         }
     s_rows[r].mask |= add;
 }
@@ -226,18 +266,23 @@ static int row_find(const uint16_t *col, uint16_t mask)
         row_define(best, col, mask);
         return best;
     }
+    /* cold free rows first, then idle UI rows (cold: idle >= 3 frames), then hot free rows */
     for(r = PAL_ROWS - 1; r >= 0; r--)
-        if(s_rows[r].kind == ROW_FREE) break;
+        if(s_rows[r].kind == ROW_FREE && !row_hot(r)) break;
     if(r < 0) {
         for(r = PAL_ROWS - 1; r >= 0; r--)
             if(row_idle(r) && s_rows[r].used_lazy) break;
+        if(r >= 0) row_release(r);
+    }
+    if(r < 0) {
+        for(r = PAL_ROWS - 1; r >= 0; r--)
+            if(s_rows[r].kind == ROW_FREE) break;
         if(r < 0) return -1;
-        row_release(r);
     }
     s_rows[r].kind = ROW_PAL4;
     s_rows[r].mask = 0;
     s_rows[r].col[0] = 0;
-    pvr_set_pal_entry(r * 16, 0);
+    pal_put(r * 16, 0, row_hot(r));
     row_define(r, col, mask);
     return r;
 }
@@ -252,7 +297,10 @@ int pal4_get(const uint16_t col[16], uint16_t mask)
 void pal4_put(int row)
 {
     if(row < 0 || row >= PAL_ROWS || s_rows[row].kind != ROW_PAL4 || s_rows[row].refs == 0) return;
-    if(--s_rows[row].refs == 0 && !s_rows[row].used_lazy) row_release(row);
+    if(--s_rows[row].refs == 0 && !s_rows[row].used_lazy) {
+        row_seen(row);   /* the sprites of this row may have been drawn up to now */
+        row_release(row);
+    }
 }
 
 int pal4_use(PalRef *ref, const uint16_t col[16], uint16_t mask)
@@ -267,6 +315,7 @@ int pal4_use(PalRef *ref, const uint16_t col[16], uint16_t mask)
     }
     s_rows[r].used_lazy = 1;
     s_rows[r].last = s_frame;
+    row_seen(r);
     return r;
 }
 

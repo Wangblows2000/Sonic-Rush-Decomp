@@ -24,6 +24,13 @@ Usage:
            input = xdotool key events to this Flycast window; --press keys are sent every
            --every s of EMULATED time (from the recorded file size). Flycast keyboard:
            arrows = d-pad, x = A (jump), c = B, s = X (boost), d = Y, Return = Start)
+           [--home DIR] [--stop-at EMU_S] [--save-slot N] [--load-slot N]
+           save states (Flycast's own; this build has no Lua): --save-slot N saves slot N when
+           Flycast exits (Dreamcast.AutoSaveState, written by Emulator::unloadGame on SIGTERM);
+           --stop-at ends the run at EMU_S seconds of emulated audio; --load-slot N starts from
+           slot N (Dreamcast.AutoLoadState). States: DIR/.local/share/flycast/<disc>_<N>.state.
+           Use a private --home (other users of /root share the slot files) and the SAME disc
+           image for save and load (the state holds the game's RAM and the stream position).
   fcrec.py wav IN.raw OUT.wav                                   (adds a WAV header)
   fcrec.py onsets IN.raw [--thr 50]                             (10 ms RMS blocks, onset times in ms)
   fcrec.py compare IN.raw ONSET_MS REF.wav                      (envelope + spectrogram match of one
@@ -46,8 +53,25 @@ def load_raw(p):
     return np.fromfile(p, np.int16).astype(np.float64).reshape(-1, 2)
 
 
+def prepare_home(a):
+    """private HOME: Flycast config copied from /root once, Lua script for save states"""
+    home = a.home or os.environ.get("FC_HOME", "/root")
+    if a.home:
+        cfg = os.path.join(home, ".config", "flycast")
+        os.makedirs(cfg, exist_ok=True)
+        os.makedirs(os.path.join(home, ".local", "share", "flycast"), exist_ok=True)
+        src = "/root/.config/flycast/emu.cfg"
+        if not os.path.exists(os.path.join(cfg, "emu.cfg")) and os.path.exists(src):
+            import shutil
+            shutil.copy(src, os.path.join(cfg, "emu.cfg"))
+    elif a.save_slot >= 0 or a.load_slot >= 0:
+        raise SystemExit("--save-slot / --load-slot need --home (a private Flycast home)")
+    return home
+
+
 def cmd_record(a):
-    env = dict(os.environ, HOME=os.environ.get("FC_HOME", "/root"), DISPLAY=a.display, LIBGL_ALWAYS_SOFTWARE="1")
+    home = prepare_home(a)
+    env = dict(os.environ, HOME=home, DISPLAY=a.display, LIBGL_ALWAYS_SOFTWARE="1")
     if not os.path.exists("/tmp/.X11-unix/X" + a.display.lstrip(":")):
         subprocess.Popen(["Xvfb", a.display, "-screen", "0", "1024x768x24"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(1)
@@ -55,10 +79,18 @@ def cmd_record(a):
     if os.path.exists(out):
         os.unlink(out)
     with open(a.log, "w") as log:
+        extra = ["-config", "config:Dreamcast.AutoLoadState=" + ("yes" if a.load_slot >= 0 else "no"),
+                 "-config", "config:Dreamcast.AutoSaveState=" + ("yes" if a.save_slot >= 0 else "no")]
+        if a.load_slot >= 0 and a.save_slot >= 0 and a.load_slot != a.save_slot:
+            raise SystemExit("one SavestateSlot per run: --load-slot and --save-slot must be equal")
+        if a.load_slot >= 0 or a.save_slot >= 0:
+            extra += ["-config", f"config:Dreamcast.SavestateSlot={max(a.load_slot, a.save_slot)}"]
         p = subprocess.Popen([FLYCAST, "-config", "config:Debug.SerialConsoleEnabled=yes", "-config", "audio:backend=alsa",
-                              "-config", f"alsa:device=file:{out},raw", a.disc], stdout=log, stderr=subprocess.STDOUT, env=env)
+                              "-config", f"alsa:device=file:{out},raw"] + extra + [a.disc], stdout=log, stderr=subprocess.STDOUT, env=env)
         win, held, nxt, t0 = None, False, a.every, time.time()
         while time.time() - t0 < a.seconds:
+            if a.stop_at and os.path.exists(out) and os.path.getsize(out) / 4 / RATE >= a.stop_at:
+                break
             if (a.hold or a.press) and not win:
                 r = subprocess.run(["xdotool", "search", "--pid", str(p.pid), "--name", "flycast"],
                                    capture_output=True, text=True, env=env)
@@ -74,7 +106,7 @@ def cmd_record(a):
             time.sleep(0.02)
         p.terminate()
         try:
-            p.wait(3)
+            p.wait(20 if a.save_slot >= 0 else 3)
         except subprocess.TimeoutExpired:
             p.kill()
     n = os.path.getsize(out) // 4 if os.path.exists(out) else 0
@@ -138,6 +170,8 @@ def main():
     p = sp.add_parser("record"); p.add_argument("disc"); p.add_argument("seconds", type=float); p.add_argument("out")
     p.add_argument("--log", default="/tmp/fcrec_serial.log"); p.add_argument("--display", default=":99")
     p.add_argument("--hold", default=""); p.add_argument("--press", default=""); p.add_argument("--every", type=float, default=2.0)
+    p.add_argument("--home", default=""); p.add_argument("--stop-at", type=float, default=0)
+    p.add_argument("--save-slot", type=int, default=-1); p.add_argument("--load-slot", type=int, default=-1)
     p.set_defaults(f=cmd_record)
     p = sp.add_parser("wav"); p.add_argument("inp"); p.add_argument("out"); p.set_defaults(f=cmd_wav)
     p = sp.add_parser("onsets"); p.add_argument("inp"); p.add_argument("--thr", type=float, default=50); p.set_defaults(f=cmd_onsets)

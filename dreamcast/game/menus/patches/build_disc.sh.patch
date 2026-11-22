@@ -1,8 +1,8 @@
---- a/dreamcast/game/build_disc.sh	2026-11-22 16:13:07.734234842 +0000
-+++ b/dreamcast/game/build_disc.sh	2026-11-22 16:13:07.774334193 +0000
-@@ -152,6 +152,16 @@
- if [ -n "$SRDC_MENUTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/menutrace.txt"; fi
- if [ -n "$SRDC_MENUSAVE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_MENUSAVE" > "$OUT/disc/debug/menusave.txt"; fi
+--- a/dreamcast/game/build_disc.sh	2026-11-22 17:53:12.271376616 +0000
++++ b/dreamcast/game/build_disc.sh	2026-11-22 17:53:12.272809954 +0000
+@@ -141,6 +141,16 @@
+ if [ -n "$SRDC_SNDTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/sndtrace.txt"; fi
+ if [ -n "$SRDC_BGMTEST" ]; then mkdir -p "$OUT/disc/debug"; cp "$SRDC_BGMTEST" "$OUT/disc/debug/bgmtest.txt"; fi
  if [ -n "$SRDC_DEMOLEAD" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_DEMOLEAD" > "$OUT/disc/debug/demolead.txt"; fi
 +# flow tests: SRDC_AUTOCLEAR=<frame> clears every act / boss at that stage frame, SRDC_AUTODIE="<frame> <lives>"
 +# kills the player there, SRDC_AUTOMAP=1 lets the zone map walk to the next story node and press A

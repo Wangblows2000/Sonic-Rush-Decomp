@@ -742,3 +742,71 @@ AICA stream rate: every track plays ~0.12 % slow against its nominal 32728 Hz in
 - Real hardware not tested; the layer re-sync relies on KOS allocating stream channels
   lowest-first in the poll thread (checked at run time; if the check fails the layers
   stay a few ms apart).
+
+### 14.7 Boss music fades, more Flycast checks, channel competition (2026-11-22, later)
+
+Boss fades (`boss/boss.h` `music_fade` / `music_volume`, appended to BossHooks):
+
+| original | native | before |
+|---|---|---|
+| `Boss7_State_ClashFadeOutBGM`: `NNS_SndPlayerStopSeq(&gBGMSoundHandle, 0x3c)` | `music_fade(0x3c)` | hard stop of music and effects |
+| `BossFPartD8_State_SkyChargeStartFadeOut`: same, 0x3c | `music_fade(0x3c)` | hard stop |
+| `Boss7PartD5_MoveState_WaitDefeatScene`: `NNS_SndPlayerMoveVolume(&gBGMSoundHandle, 0x20, 0xb4)` | `music_volume(0x20, 0xb4)` | logged only |
+
+All other boss calls are `NNS_SndPlayerStopSeqAll(0)` (the `*_Action_Defeat`, Boss7 ClashEnd)
+or effect handles, so they stay hard stops. `bgm_boss_music_fade_hook` = `bgm_stop(frames)`,
+`bgm_boss_music_volume_hook` = `bgm_move_volume` (the layer / jingle fader of
+gBGMSoundHandle). Wiring: `sound/patches/main_bossfade.patch`. Host: test_boss7
+(both checks, all runs), test_bossf (fade 0x3c), test_bgm (volume 0x20 / 0xb4, fade-stop 0x3c).
+
+Patches in `sound/patches/` (all `git apply --check` clean on b4873e22):
+- `main_bossfade.patch`: the two hooks.
+- `main_gravity.patch`: `g_dcp_hooks.gravity_flipped` = `Stage_IsGravityFlipped` (Dead Line acts:
+  below the split line in act 1, above it in act 2; `Stage_GetSplitLineY` from the camera
+  module). No module set this hook, so gravity never flipped in the port (a gameplay
+  change for the player / objects owners; the audio half is in bgm.c).
+- `main_audiotest.patch` + `build_disc_audiotest.patch` (test builds): `/cd/debug/chara.txt`
+  (`1` = Blaze for a debug start), `/cd/debug/extra.txt` (boot into the Extra Zone),
+  `SRDC_DEBUGDIR=<dir>` copies files to `/cd/debug`.
+
+`bgmtest.txt` test commands added: `warp X Y`, `pin X Y`, `pinw DY` (water line + DY),
+`pins DY` (split line + DY), `release`, `push V` (ground speed every frame).
+
+`fcrec.py record`: `--home DIR` (private Flycast home; config copied from /root),
+`--stop-at EMU_S`, `--save-slot N` (AutoSaveState on exit), `--load-slot N` (AutoLoadState).
+This Flycast has no Lua (CAMERA.md "Flycast save states"). The Extra boss was reached
+from boot in 5 runs of 60-80 s, each loading and re-saving the slot.
+
+Flycast (private tree = HEAD + the four patches):
+
+| case | result |
+|---|---|
+| z21 drowning in real water (`pinw 40`) | the real Player_UpdateUnderwater switched to the underwater layer at f300; StageJingle 0x17 started at f1429 (1129 frames later; 1800 - 0x2a8 = 1120 plus the sinking); SEQ_brethless onset at the render level (-0.0 dB); both BGM layers muted (gain <= 0.15); surfacing (f1700) brought layer B back at once (Stage_SelectBGMLayer, gain 0.83); a second dive drowned the player, and the restart played Stage_PlayBGM again; 0 jingle underruns |
+| z11 real goal ring (`warp 20300 1550`, `push 1536`) | ClearDemo: SEQ_ACT_CLEAR (sys_11) at -0.0 dB, position continuous; rank voice 6:4 from sys_a06; then "stage exit kind 1" and the next act's music |
+| Extra Zone (extra.txt; talks advance with A presses) | `ze seq 20` SEQ_bossE through the boss hook, playing at its continuous position; 0x15 needs three won rounds (not played; host-tested) |
+| special stage (`SRDC_SPECIAL=300`) via the new hook | SpecialStage_Init: sys 0x1f, SpecialStage_StartPlay: sys 0x1e at f663; SEQ_SS_GAME continuous at the render level (-0.0..-0.1 dB) |
+| Blaze, Dead Line z71 (chara.txt, main_gravity, `pins 40 / -40`) | z7b_12_13.lyr; flip at f300 -> layer 7sonic + SE 0x66, back at f600 -> 7blaze, flip at f900; track position continuous over every switch |
+
+Channel competition: measured, and not modelled. Channel priority = player priority + track
+priority (64 unless a track sets it). Renders of the music (sseqrender with a trace of
+the 0xC6 priority command):
+
+| sequence | channel priority | voices (max 16) |
+|---|---|---|
+| stage / boss / sys music | 64 + 64 = 128, no 0xC6 | 16 (they steal among themselves: 18..564 steals) |
+| SEQ_muteki | 64-80 + 64 | 9 |
+| SEQ_1up | 70-90 + 64 | 16 |
+| SEQ_brethless | 80 + 0xC6 80 = 160 | 8 |
+| effects / voices (SSAR) | 96 + 64 = 160 (one id 106) | per id |
+
+`alloc_chan` (DS ExChannel allocator) takes a free channel first, else the lowest priority
+channel (quietest on a tie) if it is not above the new note. Effects (160) therefore always
+take music and jingle channels (128..154) before another effect. With or without the music
+running in the driver, an effect gets a channel exactly when fewer than 16 channels of
+priority >= 160 are busy, so the effects already behave as on the DS. The one exception is
+SEQ_brethless (160, 8 voices): during the drowning countdown a burst of more than 8 effect
+voices would steal from the jingle or the quietest effect on the DS. What the DS really does
+differently is drop music notes (the BGM loses voices to effects, the 1-up and SEQ_muteki
+steal BGM voices); a pre-rendered stream cannot drop notes, so that is not reproducible
+without sequencing the music in real time (16 more channels and every BGM bank in sound
+RAM). Gap, not modelled.

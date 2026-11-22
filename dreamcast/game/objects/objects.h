@@ -213,6 +213,15 @@ void objects_set_model_sprites(int on);
 u32 objects_vram_used(void);
 int objects_model_count(void);
 int objects_model_get(int i, ObjModelView *out);
+/* KOS (obj_draw.c): the model views drawn with the model runtime (dcm_*).
+ * objects_models_prepare: once per frame outside the PVR lists (loads the models of the
+ * views from /cd/models/<id>.dcm, uploads their textures; a new stage frees the old ones).
+ * objects_draw_models(list): inside each of the OP, PT and TR lists, in the 3D layer.
+ * objects_models_free: give the models back (VRAM) before loading another stage. */
+void objects_models_prepare(void);
+void objects_draw_models(int list);
+void objects_models_free(void);
+void objects_models_stats(u32 *views, u32 *tris);
 
 /* Player_CheckStartGrind runs in objects_frame_begin (default on). Turn it
  * off when the player module calls it in Player_In itself (OBJECTS.md). */

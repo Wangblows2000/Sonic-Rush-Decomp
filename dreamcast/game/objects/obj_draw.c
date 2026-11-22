@@ -7,15 +7,23 @@
  * only places the current frame, like AnimatorSprite_Draw:
  *   unflipped  image top-left = position - origin
  *   H-flipped  mirrored about the origin (x = position - (w - origin_x))
- * Layering: OAM priority (sprite flags bits 17-18) against the BG layers
- * (front layer z 4.0 = BG priority 0, back layer z 2.0 = priority 2), then
- * OAM order (lower order in front).
+ * Layering (Stage_InitDisplay priorities: BG2 layer A 0, BG0 3D 1, BG3 layer B 2, BG1 zone
+ * BG 3; an OBJ is in front of a BG of the same priority): OAM priority (sprite flags bits
+ * 17-18) picks a depth band between the layers main.c draws (1/w style, bigger = nearer):
+ *   zone BG 0.0005 < OBJ prio 3 < layer B 0.001 < OBJ prio 2 < 3D layer (player, models,
+ *   3D BACs, trails: ~0.0035..0.03) < OBJ prio 1 < layer A 10 < OBJ prio 0 < HUD (100+)
+ * then OAM order inside the band (lower order in front).  Object models (objects_model_get)
+ * are drawn here too (objects_draw_models), in the 3D layer.
  */
 #include <kos.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../engine/render.h"
+#include "../engine/pak.h"
+#include "../engine/loading.h"
+#include "../model/model.h"
+#include "../player/dcp_model.h"
 #include "obj_internal.h"
 
 /* the pages of a resource: PAL4 twiddled with one PVR palette row per palette
@@ -49,7 +57,13 @@ u32 objects_vram_used(void) {
     return n;
 }
 
-static const float k_zbase[4] = { 4.5f, 3.5f, 2.5f, 1.5f };
+/* depth band per OAM priority: base + (0x40 - order) * step (see the header) */
+static const float k_zbase[4] = { 11.0f, 2.0f, 0.0011f, 0.00055f };
+static const float k_zstep[4] = { 0.01f, 0.01f, 0.00003f, 0.000007f };
+/* 3D BACs (Sprite3D, drawn in BG0 on the DS): about the player model's centre depth */
+#define OBJ_Z_BAC3D 0.0058f
+#define OBJ_ZSTEP_BAC3D 0.000003f
+static int s_bac3d;   /* the object being drawn is a 3D BAC stand-in */
 /* semi-transparent OBJ: the stage's BLDALPHA blend (EVA ~ EVB) as vertex alpha */
 #define OBJ_SEMITRANS_ARGB 0xa0ffffffu
 
@@ -150,7 +164,7 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
     y0 = vf ? y - (img->h - img->origin_y) : y - img->origin_y;
     prio = (int)((s->flags >> 17) & 3);
     order = s->order > 0x3f ? 0x3f : s->order;
-    z = k_zbase[prio] + (0x40 - order) * 0.01f;
+    z = s_bac3d ? OBJ_Z_BAC3D + (0x40 - order) * OBJ_ZSTEP_BAC3D : k_zbase[prio] + (0x40 - order) * k_zstep[prio];
     if (s->rotscale) {
         /* AnimatorSprite_DrawRotScale: rotate / scale about the sprite position */
         float a = (float)s->rot * (6.2831853f / 256.0f), c = fcos(a), sn = fsin(a);
@@ -192,11 +206,15 @@ static void draw_spr(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vf
 
 int g_obj_model_sprites = 1; /* objects_set_model_sprites */
 static int is_model(const Obj *o) { return o->model != NULL || (o->kind == OBJK_GIMMICK && o->prm && o->prm->type == 0x7a); }
-/* the main sprite: stand-ins for a model / 3D BAC are drawn while
- * g_obj_model_sprites; otherwise AnimatorSprite flag 0x80000 hides it */
+static int model_ready(const Obj *o);
+/* the main sprite: the stand-in of a model is drawn while g_obj_model_sprites or when its
+ * model is not loaded; a 3D BAC (no Sprite3D renderer) is always drawn as its 2D BAC, in
+ * the 3D layer; otherwise AnimatorSprite flag 0x80000 hides it */
 static int obj_spr_drawn(const Obj *o) {
-    if (is_model(o) || o->bac3d)
-        return g_obj_model_sprites;
+    if (is_model(o))
+        return g_obj_model_sprites || !model_ready(o);
+    if (o->bac3d)
+        return 1;
     return !(o->spr.flags & 0x80000);
 }
 void objects_set_model_sprites(int on) { g_obj_model_sprites = on; }
@@ -214,8 +232,10 @@ void obj_draw(int list) {
             continue;
         /* the ring sparkles (ring BAC: OBJ rows 0 / 1) and 3D stand-ins stay untinted */
         s_tint_on = s_tint_y < 1e8f && !o->bac3d && !is_model(o) && !(o->has_spr && o->spr.res == &g_obj.res[OBJ_BAC_RING]);
+        s_bac3d = 0;
         if (o->has_sprA)
             draw_spr(&o->sprA, (pvr_list_t)list, o->sprA.x, o->sprA.y, 0);
+        s_bac3d = o->bac3d != 0;
         /* StageObj_Draw2DEx: with a model (@0x124/@0x128, "busy") the main sprite is
          * not drawn; the model view stands for it (objects_model_get) */
         if (o->has_spr && obj_spr_drawn(o))
@@ -233,6 +253,7 @@ void obj_draw(int list) {
             }
         }
     }
+    s_bac3d = 0;
     s_tint_on = 0;   /* rings, ring sparkles, the ribbon: not tinted */
     if (list == PVR_LIST_TR_POLY)
         draw_trails();
@@ -279,3 +300,250 @@ static void draw_trails(void) {
 void objects_draw(void) { obj_draw(PVR_LIST_PT_POLY); }
 /* the semi-transparent sprites (player effects): call inside the translucent list */
 void objects_draw_tr(void) { obj_draw(PVR_LIST_TR_POLY); }
+
+/* ================================================================ object models
+ * StageObj_Draw3DEx + Model_Draw for the objects_model_get views (StageObj_LoadModelSimple
+ * blocks: NNS_G3dDraw1Mat1Shp, one material + one shape each, no node matrices):
+ *   trans = (screen x, -screen y, z) of the object (Camera_WorldToScreen), rot = the
+ *   object's 3x3 matrix, base scale = its scale: v' = v * S * R + T, under the stage camera
+ *   (BossCamera fixed perspective); disp_flags 0x200 = the off-axis frustum centred on the
+ *   object (dcm_camera_stage_offaxis, as for the player).  Lights: the stage vectors
+ *   (Draw3DEx without flag 0x800) and the stage light colours.
+ * The models are read from /cd/models/<id>.dcm by objects_models_prepare (outside the PVR
+ * lists: the texture upload) and kept until the object data changes (next stage). */
+#define OM_MAX 8
+#define OM_MAX_MATS 32
+typedef struct {
+    const char *id;       /* ObjModelView.model (static strings) */
+    int state;            /* 0 empty, 1 loaded, -1 missing */
+    void *data;
+    dcm_model_t m;
+    dcm_mtx_t *pal;       /* bind pose palette (identity joints) */
+} ObjModelSlot;
+static ObjModelSlot s_om[OM_MAX];
+static const void *s_om_hdr;
+static u32 s_om_tris, s_om_views;   /* statistics (objects_models_stats) */
+
+static void om_free_all(void) {
+    int i;
+    for (i = 0; i < OM_MAX; i++) {
+        if (s_om[i].state == 1) {
+            dcm_model_free(&s_om[i].m);
+            free(s_om[i].data);
+            free(s_om[i].pal);
+        }
+        memset(&s_om[i], 0, sizeof(s_om[i]));
+    }
+}
+void objects_models_free(void) {
+    om_free_all();
+    s_om_hdr = NULL;
+}
+
+static ObjModelSlot *om_find(const char *id) {
+    int i;
+    for (i = 0; i < OM_MAX; i++)
+        if (s_om[i].state != 0 && (s_om[i].id == id || strcmp(s_om[i].id, id) == 0))
+            return &s_om[i];
+    return NULL;
+}
+
+static void *om_read(const char *path, uint32_t *size) {
+    void *pb;
+    file_t f;
+    uint8_t *b;
+    switch (pak_load(path, &pb, size)) {
+    case PAK_FOUND: return pb;
+    case PAK_MISSING: return NULL;
+    default: break;
+    }
+    f = fs_open(path, O_RDONLY);
+    if (f == FILEHND_INVALID)
+        return NULL;
+    *size = fs_total(f);
+    b = memalign(32, *size ? *size : 4);
+    if (b && loading_read(f, b, *size) != (ssize_t)*size) {
+        free(b);
+        b = NULL;
+    }
+    fs_close(f);
+    return b;
+}
+
+static ObjModelSlot *om_load(const char *id) {
+    static dcm_local_t loc[DCM_MAX_JOINTS];
+    char path[128];
+    uint32_t size = 0;
+    ObjModelSlot *s = NULL;
+    int i;
+    for (i = 0; i < OM_MAX && s == NULL; i++)
+        if (s_om[i].state == 0)
+            s = &s_om[i];
+    if (s == NULL)
+        return NULL;
+    s->id = id;
+    s->state = -1;
+    snprintf(path, sizeof(path), "/cd/models/%s.dcm", id);
+    s->data = om_read(path, &size);
+    if (s->data == NULL || dcm_model_load(&s->m, s->data, size, 1) != 0) {
+        printf("objects: model %s missing\n", id);
+        free(s->data);
+        s->data = NULL;
+        return s;
+    }
+    s->pal = (dcm_mtx_t *)malloc(sizeof(dcm_mtx_t) * (s->m.hdr->num_palette ? s->m.hdr->num_palette : 1));
+    if (s->pal == NULL || s->m.hdr->num_materials > OM_MAX_MATS || s->m.hdr->num_joints > DCM_MAX_JOINTS) {
+        dcm_model_free(&s->m);
+        free(s->data);
+        free(s->pal);
+        s->data = NULL;
+        s->pal = NULL;
+        return s;
+    }
+    dcm_bind_locals(&s->m, loc);
+    dcm_pose(&s->m, loc, s->pal);
+    s->state = 1;
+    printf("objects: model %s loaded (%u bytes, vram free %lu)\n", id, (unsigned)size, (unsigned long)render_vram_free());
+    return s;
+}
+
+/* call once per frame outside the PVR lists, before objects_draw_models */
+void objects_models_prepare(void) {
+    ObjModelView v;
+    int i, n;
+    if (g_obj.hdr != s_om_hdr) { /* a new stage: the previous stage's models go */
+        om_free_all();
+        s_om_hdr = g_obj.hdr;
+    }
+    if (!g_obj.hdr)
+        return;
+    n = objects_model_count();
+    for (i = 0; i < n; i++)
+        if (objects_model_get(i, &v) && v.model && om_find(v.model) == NULL)
+            om_load(v.model);
+}
+
+static int model_ready(const Obj *o) {
+    const char *id = o->model;
+    ObjModelSlot *s;
+    if (id == NULL) /* RopeC */
+        id = o->k.mdl.shape ? "mod__gmk_rope_c__gmk_rope_c02" : "mod__gmk_rope_c__gmk_rope_c01";
+    s = om_find(id);
+    return s != NULL && s->state == 1;
+}
+
+/* NNS_G3dDraw1Mat1Shp for the blocks in `shapes`: joint visibility + material alpha 0 pick
+ * the converted draws (dcm_draw_t: material, shape, gating joint) of those shapes.
+ * Returns 0 if a draw outside the set cannot be left out that way (drawn anyway). */
+static int om_shape_filter(const dcm_model_t *m, u32 shapes, dcm_matstate_t *st, uint8_t *vis) {
+    int d, nm = m->hdr->num_materials, nj = m->hdr->num_joints, ok = 1;
+    uint8_t mat_on[OM_MAX_MATS];
+    memset(mat_on, 0, sizeof(mat_on));
+    memset(vis, 0, (size_t)nj);
+    dcm_matstate_init(m, st);
+    for (d = 0; d < m->hdr->num_draws; d++) {
+        const dcm_draw_t *dr = &m->draws[d];
+        if (dr->shape >= 32 || !(shapes >> dr->shape & 1))
+            continue;
+        mat_on[dr->material] = 1;
+        if (dr->vis_node != 0xFFFF && dr->vis_node < nj)
+            vis[dr->vis_node] = 1;
+    }
+    for (d = 0; d < nm; d++)
+        if (!mat_on[d])
+            st[d].alpha = 0;
+    for (d = 0; d < m->hdr->num_draws; d++) {
+        const dcm_draw_t *dr = &m->draws[d];
+        int in = dr->shape < 32 && (shapes >> dr->shape & 1);
+        int drawn = mat_on[dr->material] && st[dr->material].alpha != 0 && (dr->vis_node == 0xFFFF || dr->vis_node >= nj || vis[dr->vis_node]);
+        if (!in && drawn)
+            ok = 0;
+    }
+    return ok;
+}
+
+/* the model matrix and camera of one view (rep k), DS screen units; 0 = off screen */
+static int om_place(const ObjModelView *v, const dcm_model_t *m, int k, dcm_mtx_t *mdl, dcm_camera_t *cam) {
+    float sc[3], tx, ty, tz, r = 0.0f;
+    int i, j;
+    for (i = 0; i < 3; i++) {
+        float a = m->hdr->bbox_min[i] < 0 ? -m->hdr->bbox_min[i] : m->hdr->bbox_min[i];
+        float b = m->hdr->bbox_max[i] < 0 ? -m->hdr->bbox_max[i] : m->hdr->bbox_max[i];
+        sc[i] = v->scale ? (float)v->scale[i] / 4096.0f : 1.0f;
+        a = (a > b ? a : b) * (sc[i] < 0 ? -sc[i] : sc[i]);
+        if (a > r)
+            r = a;
+    }
+    r *= 1.7320508f; /* the bounding box's corner */
+    tx = (float)v->x / 256.0f - g_cam_x;
+    ty = (float)(v->y + k * v->rep_dy) / 256.0f - g_cam_y;
+    tz = (float)v->z / 256.0f;
+    if (tx + r < -32.0f || tx - r > 256.0f + 32.0f || ty + r < -32.0f || ty - r > 192.0f + 32.0f)
+        return 0;
+    ty = -ty;
+    for (i = 0; i < 3; i++)
+        for (j = 0; j < 3; j++)
+            mdl->m[i][j] = sc[i] * (v->mtx ? (float)v->mtx[i * 3 + j] / 4096.0f : (i == j ? 1.0f : 0.0f));
+    dcm_camera_stage(cam);
+    if (v->persp)
+        dcm_camera_stage_offaxis(cam, &tx, &ty);
+    mdl->m[3][0] = tx;
+    mdl->m[3][1] = ty;
+    mdl->m[3][2] = tz;
+    return 1;
+}
+
+/* every model view in this PVR list (call in OP, PT and TR, with the player model) */
+void objects_draw_models(int list) {
+    static dcm_matstate_t st[OM_MAX_MATS];
+    static uint8_t vis[DCM_MAX_JOINTS];
+    static int warned;
+    const u16 *lc = dcp_model_stage_lights(g_dcp_world.zone, g_dcp_world.act);
+    dcm_lights_t lights;
+    dcm_draw_opts_t opts;
+    ObjModelView v;
+    int i, k, n;
+    if (!g_obj.hdr || g_obj.hdr != s_om_hdr)
+        return;
+    dcm_lights_stage(&lights, 0);
+    for (i = 0; i < lights.count && i < 3; i++) {
+        lights.col[i][0] = (float)(lc[i] & 31) / 31.0f;
+        lights.col[i][1] = (float)((lc[i] >> 5) & 31) / 31.0f;
+        lights.col[i][2] = (float)((lc[i] >> 10) & 31) / 31.0f;
+    }
+    opts.list = list;
+    opts.pt_list = PVR_LIST_PT_POLY;
+    opts.alpha_scale = 255;
+    if (list == PVR_LIST_OP_POLY)
+        s_om_views = 0;
+    n = objects_model_count();
+    for (i = 0; i < n; i++) {
+        ObjModelSlot *s;
+        if (!objects_model_get(i, &v) || !v.visible || v.model == NULL)
+            continue;
+        s = om_find(v.model);
+        if (s == NULL || s->state != 1)
+            continue;
+        if (!om_shape_filter(&s->m, v.shapes, st, vis) && !warned) {
+            warned = 1;
+            printf("objects: model %s: shapes %08lx not separable\n", v.model, (unsigned long)v.shapes);
+        }
+        for (k = 0; k < (v.reps > 0 ? v.reps : 1); k++) {
+            dcm_mtx_t mdl;
+            dcm_camera_t cam;
+            if (!om_place(&v, &s->m, k, &mdl, &cam))
+                continue;
+            if (list == PVR_LIST_OP_POLY)
+                s_om_views++;
+            s_om_tris += (u32)dcm_draw_ex(&s->m, s->pal, &mdl, &cam, vis, &lights, &opts, st);
+        }
+    }
+}
+
+/* statistics: model views drawn in the last frame, PVR triangles since boot */
+void objects_models_stats(u32 *views, u32 *tris) {
+    if (views)
+        *views = s_om_views;
+    if (tris)
+        *tris = s_om_tris;
+}

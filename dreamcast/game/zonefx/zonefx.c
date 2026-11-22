@@ -822,10 +822,12 @@ static void water_surface(void) {
         return;
     im = (int)(img - s_wspr.res->images);
     bank = spr_atlas_bank(a, im, -1);
+    /* AnimatorSprite_Init(.., 0x4004, ..): OAM priority 0, order 0x15 = the OBJ prio 0 band of
+     * obj_draw.c (11 + (0x40 - 0x15) * 0.01), in front of layer A */
     for (x = -0x20; x < 0x100; x += 0x40)
         draw_sprite_world_pal(&a->tex[img->page], bank, PVR_LIST_TR_POLY, g_cam_x + x - img->origin_x,
                               g_cam_y + y - img->origin_y, (float)img->w, (float)img->h, (float)img->x,
-                              (float)img->y, (float)(img->x + img->w), (float)(img->y + img->h), 0, 10.5f, 0xffffffff);
+                              (float)img->y, (float)(img->x + img->w), (float)(img->y + img->h), 0, 11.43f, 0xffffffff);
 }
 
 void zonefx_draw_tr(void) {
