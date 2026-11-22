@@ -24,6 +24,7 @@
 #include "../engine/loading.h"
 #include "../model/model.h"
 #include "../player/dcp_model.h"
+#include "../boss/boss.h"
 #include "obj_internal.h"
 
 /* the pages of a resource: PAL4 twiddled with one PVR palette row per palette
@@ -130,6 +131,19 @@ static void spr_quad(const Texture *t, int bank, pvr_list_t list, float x0, floa
     }
 }
 
+/* 3D BAC sprites (Model_InitSprite3D / Model_DrawSprite3D, section at the end of the file):
+ * while s_3d.on, draw_spr_at places the frame as a quad in the 3D layer */
+static struct {
+    int on;
+    int boss;           /* boss arena: world coordinates under the boss camera, else the stage camera */
+    int arena;          /* boss arena rings: BossArena_ArcToCirclePos circle (1..3), 0 = plane z */
+    int flip_invert;    /* StageObj_Draw3DEx: a 3D sprite is H-flipped when the object is not (flags ^= 1) */
+    int persp;          /* disp_flags 0x200: off-axis frustum centred on the sprite */
+    s32 z;              /* depth (24.8 px) */
+    float scale;        /* base scale (RingEffect3D 0.5) */
+} s_3d;
+static void spr3d_emit(const Texture *t, int bank, pvr_list_t list, const DsprImage *img, s32 px, s32 py, int hf,
+                       int vf, uint32_t argb);
 static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vflip_extra) {
     const DsprImage *img = spr_image(s);
     const Texture *t;
@@ -158,6 +172,10 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
         return;
     hf = (s->flags & SPR_HFLIP) != 0;
     vf = ((s->flags & SPR_VFLIP) != 0) ^ vflip_extra;
+    if (s_3d.on) { /* Model_DrawSprite3D: the frame as a quad in the 3D layer */
+        spr3d_emit(t, bank, list, img, px, py, hf ^ s_3d.flip_invert, vf, argb);
+        return;
+    }
     x = (float)px;
     y = (float)py;
     if (s->screen) {
@@ -229,6 +247,11 @@ static int obj_spr_drawn(const Obj *o) {
 void objects_set_model_sprites(int on) { g_obj_model_sprites = on; }
 
 static void draw_trails(void);
+static ObjSprite s_ring3d;
+static int s_ring3d_ok;
+static void spr3d_tick(int list);
+static int spr3d_arena(void);
+static void spr3d_draw_fx(int list);
 void obj_draw(int list) {
     Obj *o;
     int i, vf;
@@ -237,6 +260,7 @@ void obj_draw(int list) {
     if (!g_obj.hdr)
         return;
     s_boss = (g_obj.hdr->flags & RLVL_FLAG_BOSS) != 0;
+    spr3d_tick(list); /* once per game frame: the 3D sprites' own animations, statistics */
     for (o = g_obj.head; o; o = o->next) {
         if (!o->used || (o->h.obj_flags & 4))
             continue;
@@ -246,10 +270,20 @@ void obj_draw(int list) {
         if (o->has_sprA)
             draw_spr(&o->sprA, (pvr_list_t)list, o->sprA.x, o->sprA.y, 0);
         s_bac3d = o->bac3d != 0;
+        if (s_bac3d) { /* StageObj_Load3dBAC + StageObj_Draw3DEx: the frame in the 3D layer */
+            s_3d.on = 1;
+            s_3d.boss = s_boss;
+            s_3d.arena = 0;
+            s_3d.flip_invert = 1;
+            s_3d.persp = (o->h.disp_flags & 0x200) != 0;
+            s_3d.z = o->h.z;
+            s_3d.scale = 1.0f;
+        }
         /* StageObj_Draw2DEx: with a model (@0x124/@0x128, "busy") the main sprite is
          * not drawn; the model view stands for it (objects_model_get) */
         if (o->has_spr && obj_spr_drawn(o))
             draw_spr(&o->spr, (pvr_list_t)list, o->spr.x, o->spr.y, 0);
+        s_3d.on = 0;
         for (i = 0; i < o->n_xspr; i++) { /* extra sprite pairs (Mine, Cargo): every recorded point */
             const ObjSprite *xs = o->xspr[i];
             int k;
@@ -268,12 +302,28 @@ void obj_draw(int list) {
     if (list == PVR_LIST_TR_POLY)
         draw_trails();
     s = ring_draw_sprite();
+    if (s_boss) {
+        /* RingManager_DrawRing3D / DrawRingArena1..3: boss-arena rings are 3D sprites
+         * (ac_itm_ring3d animation 0) at (x, -y, 0) or on the arena circle; the sparkles
+         * (RingManager_SpawnEffect3D / Arena: RingEffect3D) likewise */
+        s_3d.on = 1;
+        s_3d.boss = 1;
+        s_3d.arena = spr3d_arena();
+        s_3d.flip_invert = 0;
+        s_3d.persp = 0;
+        s_3d.z = 0;
+        s_3d.scale = 1.0f;
+        if (s_ring3d_ok)
+            s = &s_ring3d;
+    }
     for (i = 0; i < ring_draw_count(); i++)
         if (ring_draw_get(i, &x, &y, &vf))
             draw_spr(s, (pvr_list_t)list, x >> 8, y >> 8, vf);
     for (i = 0; i < ring_fx_max(); i++)
         if (ring_fx_get(i, &s))
             draw_spr(s, (pvr_list_t)list, s->x, s->y, 0);
+    s_3d.on = 0;
+    spr3d_draw_fx(list);
 }
 
 /* EffTrail_Draw: flat-shaded quads at the 3D layer's depth (just behind the player model, ~0.006),
@@ -345,9 +395,11 @@ static void om_free_all(void) {
         memset(&s_om[i], 0, sizeof(s_om[i]));
     }
 }
+static void res3d_free_all(void);
 void objects_models_free(void) {
     om_free_all();
     s_om_hdr = NULL;
+    res3d_free_all(); /* and the 3D BACs (3D sprite section) */
 }
 
 static ObjModelSlot *om_find(const char *id) {
@@ -417,10 +469,13 @@ static ObjModelSlot *om_load(const char *id) {
     return s;
 }
 
-/* call once per frame outside the PVR lists, before objects_draw_models */
+/* call once per frame outside the PVR lists, before objects_draw_models (also on boss
+ * arenas: it loads their 3D BAC sprites) */
+static void spr3d_prepare(void);
 void objects_models_prepare(void) {
     ObjModelView v;
     int i, n;
+    spr3d_prepare();
     if (g_obj.hdr != s_om_hdr) { /* a new stage: the previous stage's models go */
         om_free_all();
         s_om_hdr = g_obj.hdr;
@@ -556,4 +611,261 @@ void objects_models_stats(u32 *views, u32 *tris) {
         *views = s_om_views;
     if (tris)
         *tris = s_om_tris;
+}
+
+/* ================================================================ 3D BAC sprites
+ * Model_InitSprite3D / Model_DrawSprite3D: a BAC frame drawn by the 3D engine. Each OAM piece
+ * is a textured quad in model space (1 unit = 1 px, y up): x from piece x - cell x, y from
+ * cell y - piece y, so the composed frame (bac2dc.py: origin = -(piece - cell)) is one quad
+ * from (-origin_x, origin_y) to (w - origin_x, origin_y - h); flag 0x80 mirrors x, 0x100 y.
+ * Model_Draw places it: v' = v * S(base scale) * R + T, under
+ *   - stages (StageObj_Draw3DEx): T = (screen x, -screen y, z), the stage camera, off-axis
+ *     for disp_flags 0x200; the sprite is H-flipped when the object is not (flags ^= 1);
+ *   - boss arenas: T = world (x, -y, z) under the boss camera (BossCamera); the rings
+ *     (RingManager_DrawRing3D / DrawRingArena1..3) on the arena circle of zones 2..4.
+ * Depth is the 3D layer's 1/w, so these sort with the player and the models. R is the
+ * identity here (no object passes a sprite rotation to the draw side yet). */
+/* BossArena_ArcToCirclePos (boss_core.c, boss_internal.h renames it) */
+void boss_BossArena_ArcToCirclePos(s32 len, s32 b, s32 a, s32 *outX, s32 *outY, u16 *outAng);
+static u32 s_3d_quads, s_3d_quads_last, s_3d_frame;
+
+static void spr3d_emit(const Texture *t, int bank, pvr_list_t list, const DsprImage *img, s32 px, s32 py, int hf,
+                       int vf, uint32_t argb) {
+    static const s32 k_arena[4][2] = { { 0, 0 }, { 0x1152f0, 0x6cd988 }, { 0xf42f8, 0x5fe435 }, { 0x128fb8, 0x749fed } };
+    dcm_camera_t cam;
+    pvr_poly_cxt_t cxt;
+    pvr_poly_hdr_t hdr;
+    pvr_vertex_t v;
+    float tx, ty, tz, sc = s_3d.scale, qx[4], qy[4], qu[4], qv[4], ox[4], oy[4], oz[4];
+    int i;
+    if (s_3d.boss) {
+        if (s_3d.arena > 0 && s_3d.arena < 4) {
+            s32 ax = 0, az = 0;
+            boss_BossArena_ArcToCirclePos(k_arena[s_3d.arena][0], k_arena[s_3d.arena][1], (px << 8) << 4, &ax, &az, NULL);
+            tx = (float)ax / 4096.0f;
+            tz = (float)az / 4096.0f;
+        } else {
+            tx = (float)px;
+            tz = (float)s_3d.z / 256.0f;
+        }
+        ty = -(float)py;
+        boss_camera(&cam);
+    } else {
+        tx = (float)px - g_cam_x;
+        ty = -((float)py - g_cam_y);
+        tz = (float)s_3d.z / 256.0f;
+        dcm_camera_stage(&cam);
+        if (s_3d.persp)
+            dcm_camera_stage_offaxis(&cam, &tx, &ty);
+    }
+    /* corners TL, TR, BL, BR (image order) */
+    qx[0] = qx[2] = (float)-img->origin_x;
+    qx[1] = qx[3] = (float)(img->w - img->origin_x);
+    qy[0] = qy[1] = (float)img->origin_y;
+    qy[2] = qy[3] = (float)(img->origin_y - img->h);
+    qu[0] = qu[2] = (float)img->x / t->w;
+    qu[1] = qu[3] = (float)(img->x + img->w) / t->w;
+    qv[0] = qv[1] = (float)img->y / t->h;
+    qv[2] = qv[3] = (float)(img->y + img->h) / t->h;
+    for (i = 0; i < 4; i++) {
+        float wx = tx + (hf ? -qx[i] : qx[i]) * sc, wy = ty + (vf ? -qy[i] : qy[i]) * sc, wz = tz, e[3], c[4];
+        int k;
+        for (k = 0; k < 3; k++)
+            e[k] = wx * cam.view.m[0][k] + wy * cam.view.m[1][k] + wz * cam.view.m[2][k] + cam.view.m[3][k];
+        for (k = 0; k < 4; k++)
+            c[k] = e[0] * cam.proj[0][k] + e[1] * cam.proj[1][k] + e[2] * cam.proj[2][k] + cam.proj[3][k];
+        if (c[3] < cam.near_w)
+            return; /* behind the near plane: the DS clips, the sprites here are small */
+        ox[i] = cam.vp_x + (c[0] / c[3] + 1.0f) * 0.5f * cam.vp_w;
+        oy[i] = cam.vp_y + (1.0f - c[1] / c[3]) * 0.5f * cam.vp_h;
+        oz[i] = 1.0f / c[3];
+    }
+    if ((ox[0] < -64.0f && ox[1] < -64.0f && ox[2] < -64.0f && ox[3] < -64.0f) ||
+        (ox[0] > 704.0f && ox[1] > 704.0f && ox[2] > 704.0f && ox[3] > 704.0f) ||
+        (oy[0] < -64.0f && oy[1] < -64.0f && oy[2] < -64.0f && oy[3] < -64.0f) ||
+        (oy[0] > 544.0f && oy[1] > 544.0f && oy[2] > 544.0f && oy[3] > 544.0f))
+        return;
+    pvr_poly_cxt_txr(&cxt, list, tex_txr_format(t, bank), t->w, t->h, t->ptr, PVR_FILTER_NONE);
+    cxt.gen.culling = PVR_CULLING_NONE;
+    pvr_poly_compile(&hdr, &cxt);
+    pvr_prim(&hdr, sizeof(hdr));
+    v.argb = argb;
+    v.oargb = 0;
+    { /* strip BL, TL, BR, TR */
+        static const int ord[4] = { 2, 0, 3, 1 };
+        for (i = 0; i < 4; i++) {
+            int k = ord[i];
+            v.flags = i == 3 ? PVR_CMD_VERTEX_EOL : PVR_CMD_VERTEX;
+            v.x = ox[k];
+            v.y = oy[k];
+            v.z = oz[k];
+            v.u = qu[k];
+            v.v = qv[k];
+            pvr_prim(&v, sizeof(v));
+        }
+    }
+    s_3d_quads++;
+}
+
+/* boss arena ring circle (RingManager_Create: zone 2 Arena1, 3 Arena2, 4 Arena3, else plane) */
+static int spr3d_arena(void) {
+    int z = g_dcp_world.zone;
+    return z >= 1 && z <= 3 ? z : 0;
+}
+
+/* ---------------------------------------- 3D effects (task-less pool)
+ * The StageObj_Load3dBAC effects that only play an animation at a point and end with it
+ * (EffWater3D, the boss-arena player effects ...): objects_fx3d_spawn. */
+#define FX3D_MAX 24
+#define FX3D_RES_MAX 8
+static struct {
+    ObjRes res;
+    int st; /* 1 loaded, -1 missing */
+} s_fxres[FX3D_RES_MAX];
+static struct {
+    int used;
+    ObjSprite spr;
+    s32 x, y, z; /* 24.8: world (boss arena) or stage position */
+    int boss, persp;
+    float scale;
+} s_fx3d[FX3D_MAX];
+static ObjRes s_res_ring3d;
+static int s_res_ring3d_st; /* 0 not tried, 1 loaded, -1 missing */
+static const void *s_3d_hdr;
+static u32 s_fx3d_spawned;
+
+static int res3d_load(ObjRes *r, int *st, const char *id) {
+    if (*st == 0) {
+        *st = obj_res_load(r, g_obj.spr_dir, g_obj.obj_dir, id) == 0 && r->atlas ? 1 : -1;
+        printf("objects: 3D BAC %s %s\n", id, *st > 0 ? "loaded" : "missing");
+    }
+    return *st > 0;
+}
+/* a 3D BAC by id, loaded on first use (outside the PVR lists: spawns come from updates) */
+static ObjRes *res3d_get(const char *id) {
+    int i;
+    for (i = 0; i < FX3D_RES_MAX; i++)
+        if (s_fxres[i].st != 0 && !strcmp(s_fxres[i].res.id, id))
+            return s_fxres[i].st > 0 ? &s_fxres[i].res : NULL;
+    for (i = 0; i < FX3D_RES_MAX && s_fxres[i].st != 0; i++)
+        ;
+    if (i == FX3D_RES_MAX)
+        return NULL;
+    res3d_load(&s_fxres[i].res, &s_fxres[i].st, id);
+    if (s_fxres[i].st < 0)
+        strncpy(s_fxres[i].res.id, id, sizeof(s_fxres[i].res.id) - 1); /* remember the miss */
+    return s_fxres[i].st > 0 ? &s_fxres[i].res : NULL;
+}
+static void res3d_free_all(void) {
+    int i;
+    if (s_res_ring3d_st > 0)
+        obj_res_free(&s_res_ring3d);
+    s_res_ring3d_st = 0;
+    s_ring3d_ok = 0;
+    for (i = 0; i < FX3D_RES_MAX; i++)
+        if (s_fxres[i].st > 0)
+            obj_res_free(&s_fxres[i].res);
+    memset(s_fxres, 0, sizeof(s_fxres));
+    memset(s_fx3d, 0, sizeof(s_fx3d));
+}
+
+/* outside the PVR lists, every stage (objects_models_prepare): the 3D BACs of a boss arena */
+static void spr3d_prepare(void) {
+    if (g_obj.hdr != s_3d_hdr) {
+        res3d_free_all();
+        s_3d_hdr = g_obj.hdr;
+    }
+    if (!g_obj.hdr || !(g_obj.hdr->flags & RLVL_FLAG_BOSS))
+        return;
+    if (!s_ring3d_ok && res3d_load(&s_res_ring3d, &s_res_ring3d_st, "act__ac_itm_ring3d")) {
+        /* Model_InitSprite3D(w->unkA4, res, 0, 0, ..); the ring manager keeps it spinning (loop) */
+        spr_init(&s_ring3d, &s_res_ring3d, 0, SPR_LOOP);
+        s_ring3d_ok = 1;
+    }
+    if (g_dcp_world.zone == 1) /* Water Palace boss: EffWater3D, loaded before the fight */
+        res3d_get("act__ac_eff_water_3d");
+}
+
+int objects_fx3d_spawn(const char *bac_id, int anim, s32 x, s32 y, s32 z, u32 flags, s32 scale) {
+    ObjRes *r = res3d_get(bac_id);
+    int i;
+    if (r == NULL || anim >= r->n_anims)
+        return -1;
+    for (i = 0; i < FX3D_MAX && s_fx3d[i].used; i++)
+        ;
+    if (i == FX3D_MAX)
+        return -1;
+    memset(&s_fx3d[i], 0, sizeof(s_fx3d[i]));
+    s_fx3d[i].used = 1;
+    spr_init(&s_fx3d[i].spr, r, (u16)anim, 0);
+    if (flags & OBJ_FX3D_FACE_RIGHT)
+        s_fx3d[i].spr.flags |= SPR_HFLIP;
+    s_fx3d[i].x = x;
+    s_fx3d[i].y = y;
+    s_fx3d[i].z = z;
+    s_fx3d[i].boss = (flags & OBJ_FX3D_WORLD) != 0;
+    s_fx3d[i].persp = (flags & OBJ_FX3D_PERSP) != 0;
+    s_fx3d[i].scale = scale ? (float)scale / 4096.0f : 1.0f;
+    s_fx3d_spawned++;
+    return i;
+}
+
+/* g_boss_hooks.water_fx: EffWater3D_Create (Boss2Water_Main). x, z = the arena circle position,
+ * y = the water spray's y (24.8). Animation 2 of ac_eff_water_3d, destroyed at its end
+ * (EffWater3D_State_DestroyOnAnimEnd); the object takes the player's facing (disp 1). */
+void objects_fx3d_water(void *ctx, s32 x, s32 y, s32 z) {
+    u32 f = OBJ_FX3D_WORLD;
+    (void)ctx;
+    if (g_obj.n_players > 0 && g_obj.players[0].p && (g_obj.players[0].p->disp_flags & 1))
+        f |= OBJ_FX3D_FACE_RIGHT;
+    objects_fx3d_spawn("act__ac_eff_water_3d", 2, x, y, z, f, 0);
+}
+
+/* once per game frame (the punch-through list call; not while the game is paused) */
+static void spr3d_tick(int list) {
+    int i;
+    if (list != PVR_LIST_PT_POLY || g_dcp_world.frame == s_3d_frame)
+        return;
+    s_3d_frame = g_dcp_world.frame;
+    s_3d_quads_last = s_3d_quads;
+    s_3d_quads = 0;
+    if (s_ring3d_ok)
+        spr_process(&s_ring3d, NULL, NULL);
+    for (i = 0; i < FX3D_MAX; i++) {
+        if (!s_fx3d[i].used)
+            continue;
+        spr_process(&s_fx3d[i].spr, NULL, NULL);
+        if (s_fx3d[i].spr.flags & SPR_STOPPED)
+            s_fx3d[i].used = 0;
+    }
+}
+
+static void spr3d_draw_fx(int list) {
+    int i;
+    for (i = 0; i < FX3D_MAX; i++) {
+        if (!s_fx3d[i].used)
+            continue;
+        s_3d.on = 1;
+        s_3d.boss = s_fx3d[i].boss;
+        s_3d.arena = 0;
+        s_3d.flip_invert = 1;
+        s_3d.persp = s_fx3d[i].persp;
+        s_3d.z = s_fx3d[i].z;
+        s_3d.scale = s_fx3d[i].scale;
+        draw_spr_at(&s_fx3d[i].spr, (pvr_list_t)list, s_fx3d[i].x >> 8, s_fx3d[i].y >> 8, 0);
+    }
+    s_3d.on = 0;
+}
+
+/* statistics: 3D sprite quads drawn in the last frame, live 3D effects, effects spawned */
+void objects_spr3d_stats(u32 *quads, u32 *fx_live, u32 *fx_spawned) {
+    int i, n = 0;
+    for (i = 0; i < FX3D_MAX; i++)
+        n += s_fx3d[i].used;
+    if (quads)
+        *quads = s_3d_quads_last;
+    if (fx_live)
+        *fx_live = (u32)n;
+    if (fx_spawned)
+        *fx_spawned = s_fx3d_spawned;
 }

@@ -427,3 +427,48 @@ on the slope, player on it, explosion sprite behind it), z32 hand (claws; reache
 z +128 px, magnified as on the DS), z42 crane slide, z51 crane (arm, housing, chain reps,
 hook), z61 glider (wing and frame, player hanging). 0.2-0.8 ms draw per frame, up to 420
 PVR triangles per view, 58.7-59.3 fps.
+
+3D BAC sprites (StageObj_Load3dBAC / Model_InitSprite3D, drawn by Model_DrawSprite3D) are
+BAC frames drawn by the 3D engine, one textured quad per OAM piece in model space (1 unit
+= 1 px, y up: x = piece x - cell x, y = cell y - piece y). The converted frame image has
+the same origin (bac2dc.py subtracts the cell centre too), so obj_draw.c draws one quad
+from (-origin_x, origin_y) to (w - origin_x, origin_y - h), H / V mirrored by the sprite
+flags 0x80 / 0x100, through Model_Draw (v * S * R + T) and the camera, with z = 1/w: they
+sort with the player and the models in the 3D layer.
+
+- Stages (StageObj_Draw3DEx): T = (screen x, -screen y, z), the stage camera, off-axis
+  for disp 0x200. Draw3DEx flips a 3D sprite when the object is not flipped (flags ^= 1
+  for model type 2), so the 3D BAC art faces the other way from the 2D art.
+  Objects with `Obj.bac3d`: MapObj13 (Altitude Limit glider sequence: rings
+  ac_itm_ring_graider, clouds ac_gmk_cloud_3, Egg Flappers ac_ene_flapper3d, ring
+  sparkles) and DecGroup4D (z2 wheel axle pieces, z4 crane slide rail).
+- Boss arenas: T = world (x, -y, z) under the boss camera. Rings are ac_itm_ring3d
+  (animation 0, looping) at (x, -y, 0) (RingManager_DrawRing3D), or on the arena circle
+  for zones 2, 3 and 4 (DrawRingArena1..3: BossArena_ArcToCirclePos with the DS constants);
+  the ring sparkles likewise. Other boss-stage sprites keep the 2D bands.
+- 3D effects: `objects_fx3d_spawn(bac id, anim, x, y, z, flags, scale)` plays one
+  animation at a point and ends with it (EffWater3D_State_DestroyOnAnimEnd style).
+  `objects_fx3d_water` is `g_boss_hooks.water_fx` (EffWater3D_Create: ac_eff_water_3d
+  animation 2 at the arena circle position, the player's facing). The sprite faces +z
+  (Draw3DEx disp 0x100 with angle 0 for sprites), as on the DS: seen edge-on when the
+  camera looks along x.
+- `objects_models_prepare` (now on every stage, boss arenas too) loads ac_itm_ring3d on boss
+  arenas and ac_eff_water_3d on the Water Palace boss before the fight; build_disc.sh copies
+  both sprite directories (camera/patches/spr3d.patch).
+
+Flycast (save states): z61 glider sequence: the rings, clouds and Egg Flappers come from
+the distance and grow as they near the camera, 7-13 quads per frame. z42 crane slide rail:
+6 quads. z13 rings in the Boss1 plane, depth-sorted against the boss; z23 / z43 rings on
+the arena circle (z43: standing on the floor ring), ac_itm_ring3d spinning. z23 water
+spray: drawn at the player on the circle (a test build spawned one every 20 frames).
+Cost: obj_draw (punch-through list) 0.19-0.24 ms per frame on z61 with about 50 live objects
+and 7-13 3D quads; 0.05 ms on the boss arenas (2-5 quads). 58.8-59.3 fps.
+
+Not covered here (the objects / boss modules do not create them yet; they can use
+`objects_fx3d_spawn` with the sprite directory added to build_disc.sh): EffShadow, the
+drop-in Egg Pawns and the Egg Bishop in flight (3D BACs drawn as their 2D BACs,
+OBJECTS.md deviation 23), Rock (Mirage Road), the boss-arena Bubble3D and FixMoji3D
+(drown count), the boss-arena player effects (EffBoostJet3D, EffBrakeSmoke3D,
+EffSpinSmoke1/2_3D, EffKemuriSpin3D) and Boss7's EffBoostA_3D / EffBoostA2_3D /
+EffFire01_3D (logged as `fx3d`). EffSplash3D / EffRipple3D are NSBMD models drawn by the
+boss module (z23: 51 ripples in 80 s of the fight).

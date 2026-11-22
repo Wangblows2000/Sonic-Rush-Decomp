@@ -564,6 +564,7 @@ int main(int argc, char **argv)
     g_boss_hooks.help = boss_help_hook;
     g_boss_hooks.cleared = boss_cleared_hook;
     g_boss_hooks.talk = boss_talk_hook;
+    g_boss_hooks.water_fx = objects_fx3d_water;          /* EffWater3D_Create: 3D BAC water spray (Water Palace boss) */
     boss7_set_talk_hook(boss_talk_hook, NULL);
     cutscene_set_paths("/cd/cutscene", "/cd/sprites", "/cd/models", "/cd/music");
     g_menu_hooks.talk_demo_start = menu_talk_start;
@@ -745,7 +746,7 @@ int main(int argc, char **argv)
         if(ok) camera_apply();   /* g_cam_x / g_cam_y: the DC window + the screen shake */
         ui_set_camera(g_cam_x, g_cam_y);
 
-        if(ok && g_obj_ok && !g_is_boss) objects_models_prepare();   /* object model loads / texture uploads, outside the lists */
+        if(ok && g_obj_ok) objects_models_prepare();   /* object model / 3D BAC loads, texture uploads, outside the lists */
         { uint64_t tw = timer_us_gettime64(); pvr_wait_ready(); g_prof[3] += timer_us_gettime64() - tw; }   /* vblank / TA wait */
         /* zone palettes at the frame start: zonefx waits for the render in progress before a write */
         if(ok && !g_is_boss) zonefx_commit_palettes();
@@ -863,7 +864,9 @@ int main(int argc, char **argv)
             if(g_obj_ok) {   /* object models in view, PVR triangles; palette writes that waited for a frame start */
                 u32 mv = 0, mt = 0;
                 objects_models_stats(&mv, &mt);
-                printf("objmodels: views %lu tris %lu; palette queued writes %lu\n", (unsigned long)mv, (unsigned long)mt, (unsigned long)pal_queued_writes());
+                u32 q3 = 0, fl = 0, fs = 0;
+                objects_spr3d_stats(&q3, &fl, &fs);
+                printf("objmodels: views %lu tris %lu; palette queued writes %lu; 3d sprites %lu quads, fx %lu live %lu spawned\n", (unsigned long)mv, (unsigned long)mt, (unsigned long)pal_queued_writes(), (unsigned long)q3, (unsigned long)fl, (unsigned long)fs);
             }
             g_fmax = 0; g_fslow = 0;
             {   /* camera / zone effects: DS pair y (gCamera[0], [1]), swap flag, window, BG row 0 / 191, BLDY, water row */

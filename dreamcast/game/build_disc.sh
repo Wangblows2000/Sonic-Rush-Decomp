@@ -61,6 +61,11 @@ for f in mod__gmk_rope_c__gmk_rope_c01.dcm mod__gmk_rope_c__gmk_rope_c02.dcm mod
          mod__gmk_crane__gmk_crane.dcm mod__gmk_glider__gmk_glider.dcm; do
     [ -f "$ROOT/build/dreamcast/models/$f" ] && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"
 done
+# 3D BAC sprites of the boss arenas (obj_draw.c: rings ac_itm_ring3d, EffWater3D ac_eff_water_3d)
+for sp in act__ac_itm_ring3d act__ac_eff_water_3d; do
+    S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
+    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+done
 mkdir -p "$OUT/disc/music"
 A=$ROOT/build/dreamcast/audio
 # music: stream table + renders (tools/dreamcast/audio/musictab.py): streams.txt, st/ (stage, boss,

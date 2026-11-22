@@ -222,6 +222,24 @@ void objects_models_prepare(void);
 void objects_draw_models(int list);
 void objects_models_free(void);
 void objects_models_stats(u32 *views, u32 *tris);
+/* KOS (obj_draw.c): 3D BAC sprites (Model_DrawSprite3D). The objects with Obj.bac3d, the
+ * boss-arena rings (ac_itm_ring3d) and their sparkles are drawn as quads in the 3D layer by
+ * obj_draw; objects_models_prepare loads a boss arena's 3D BACs (call it on boss stages
+ * too). objects_fx3d_water is a g_boss_hooks.water_fx (EffWater3D_Create, Water Palace
+ * boss): x, z on the arena circle, y (24.8). Statistics: quads drawn in the last frame,
+ * live 3D effects, effects spawned. */
+void objects_fx3d_water(void *ctx, s32 x, s32 y, s32 z);
+/* A StageObj_Load3dBAC effect that plays one animation of a 3D BAC (converted id, e.g.
+ * "act__ac_eff_kemuri_brake3d") at a point and ends with it. x, y, z: 24.8; flags
+ * OBJ_FX3D_WORLD = boss-arena world coordinates (else stage coordinates, z = depth),
+ * OBJ_FX3D_FACE_RIGHT = the spawning object's disp_flags & 1, OBJ_FX3D_PERSP = disp 0x200;
+ * scale 4.12 (0 = 1.0). Call outside the PVR lists (it may load the BAC). Returns the slot
+ * or -1. The BAC's sprite directory must be on the disc (build_disc.sh). */
+#define OBJ_FX3D_WORLD 1u
+#define OBJ_FX3D_FACE_RIGHT 2u
+#define OBJ_FX3D_PERSP 4u
+int objects_fx3d_spawn(const char *bac_id, int anim, s32 x, s32 y, s32 z, u32 flags, s32 scale);
+void objects_spr3d_stats(u32 *quads, u32 *fx_live, u32 *fx_spawned);
 
 /* Player_CheckStartGrind runs in objects_frame_begin (default on). Turn it
  * off when the player module calls it in Player_In itself (OBJECTS.md). */
