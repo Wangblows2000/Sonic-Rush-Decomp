@@ -1,47 +1,95 @@
 --- a/dreamcast/game/src/main.c
 +++ b/dreamcast/game/src/main.c
-@@ -97,7 +97,8 @@
-     u32 frame, score;
- } g_ss;
- static int g_special_pending;
--static int g_demo, g_demo_spawn_x, g_demo_spawn_y;   /* attract demo running (DemoPlay) */
-+static int g_demo, g_demo_spawn_x, g_demo_spawn_y;
-+static int g_dbg_pos_set, g_dbg_pos_x, g_dbg_pos_y;   /* test builds: /cd/debug/startpos.txt, first spawn only */   /* attract demo running (DemoPlay) */
- static uint64_t g_prof[4], g_dprof[6], g_fmax;
- static int g_fslow;   /* draw: bg, layers, player model, objects, ui, boss */   /* us per 120 frames: objects update, player, draw, end_frame wait */
- static int g_dbg_special = -1;   /* test builds: /cd/debug/special.txt = act frame to enter the special stage */
-@@ -117,6 +118,7 @@
-         if(obj[i].type == 114) { sx = obj[i].x; sy = obj[i].y; break; }   /* PlayerStart */
-     if(g_ss.active) { sx = g_ss.x; sy = g_ss.y; }   /* 280 px below the special ring */
-     else if(g_demo_spawn_x || g_demo_spawn_y) { sx = g_demo_spawn_x; sy = g_demo_spawn_y; }   /* DemoPlay start point */
-+    else if(g_dbg_pos_set) { sx = g_dbg_pos_x; sy = g_dbg_pos_y; g_dbg_pos_set = 0; printf("debug start position %d,%d\n", sx, sy); }
-     rlvl_bind(&g_map, lv->data);
+@@ -136,7 +136,7 @@
      dcp_bind_map(&g_map);
      memset(&g_player, 0, sizeof(g_player));
-@@ -580,6 +582,8 @@
-         uint32_t dsz;
-         char *d = load_file("/cd/debug/start.txt", &dsz);
-         char *sp = load_file("/cd/debug/special.txt", &dsz);
-+        char *spos = d ? load_file("/cd/debug/startpos.txt", &dsz) : NULL;   /* "x y" px: replaces PlayerStart */
-+        if(spos) { spos = realloc(spos, dsz + 1); spos[dsz] = 0; g_dbg_pos_set = sscanf(spos, "%d %d", &g_dbg_pos_x, &g_dbg_pos_y) == 2; free(spos); }
-         if(sp) { g_dbg_special = atoi(sp) > 0 ? atoi(sp) : 300; free(sp); }
-         if(d) { int v = atoi(d); if(v >= 0 && v < (int)NUM_STAGES) stage = v; free(d); dbg_start = 1; printf("debug start stage %d\n", stage); }
+     dcp_player_create(&g_player, g_chara, 0, sx, sy);
+-    objects_shutdown();
++    objects_shutdown(); objects_models_free();
+     if(g_model_ok) dcp_model_attach(&g_dcp_model, &g_player);   /* anim hooks, chained before the objects' */
+     g_obj_ok = objects_init(&g_map, lv->data) == 0;
+     if(g_obj_ok) {
+@@ -145,6 +145,9 @@
+         /* DCP_DF_ANIM_DONE comes from the model's joint animation (StageObj_Draw3DEx);
+          * son.bac timing stands in only when the model is missing */
+         objects_set_player_anim_done(!g_model_ok);
++        /* object models (RopeC, Wheel2D, Hand2d, GmkTable, slide, crane, glider) are drawn in the
++         * 3D layer (objects_draw_models); their 2D stand-ins only while a model is not loaded */
++        objects_set_model_sprites(0);
      }
-@@ -713,6 +717,8 @@
+     printf("objects: vram free after objects_init %lu\n", (unsigned long)render_vram_free());
+     sound_load_bank(sound_stage_sdat(g_dcp_world.zone, g_dcp_world.act, g_chara));
+@@ -482,7 +485,7 @@
+     g_ss.frame = g_dcp_world.frame; g_ss.score = g_ui_game.total;
+     if(objects_save_event_state) objects_save_event_state();
+     bgm_stage_end();   /* Stage_DestroyTasks (StageJingle) */
+-    if(g_obj_ok) objects_shutdown();
++    if(g_obj_ok) { objects_shutdown(); objects_models_free(); }
+     g_obj_ok = 0;
+     audio_music_stop();
+     ui_stage_end();
+@@ -742,6 +745,7 @@
+         if(ok) camera_apply();   /* g_cam_x / g_cam_y: the DC window + the screen shake */
          ui_set_camera(g_cam_x, g_cam_y);
  
++        if(ok && g_obj_ok && !g_is_boss) objects_models_prepare();   /* object model loads / texture uploads, outside the lists */
          { uint64_t tw = timer_us_gettime64(); pvr_wait_ready(); g_prof[3] += timer_us_gettime64() - tw; }   /* vblank / TA wait */
-+        /* zone palettes at the frame start: zonefx waits for the render in progress before a write */
-+        if(ok && !g_is_boss) zonefx_commit_palettes();
-         uint64_t t_draw0 = timer_us_gettime64();
-         {   /* frame interval: worst and over-budget count (a 60 Hz frame is 16.68 ms) */
-             static uint64_t last;
-@@ -724,7 +730,7 @@
+         /* zone palettes at the frame start: zonefx waits for the render in progress before a write */
+         if(ok && !g_is_boss) zonefx_commit_palettes();
+@@ -754,20 +758,25 @@
+         }
+         render_begin_frame();
          /* PVR lists must be opened in order OP, PT, TR (each once per frame).
-          * Depth (1/w style, bigger = nearer): bg 0.0005 < layer B 0.001 < player model (~0.006) < layer A 10. */
+-         * Depth (1/w style, bigger = nearer): bg 0.0005 < layer B 0.001 < player model (~0.006) < layer A 10. */
++         * Depth (1/w style, bigger = nearer): bg 0.0005 < OBJ prio 3 < layer B 0.001 < OBJ prio 2 < 3D layer
++         * (player and object models ~0.0035..0.03) < OBJ prio 1 (2..2.64) < layer A 10 < OBJ prio 0 (11..11.64) < HUD 100.
++         * The OBJ bands are obj_draw.c's (Stage_InitDisplay BG priorities: A 0, 3D 1, B 2, zone BG 3). */
          render_begin_list(PVR_LIST_OP_POLY);
--        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { zonefx_commit_palettes(); zonefx_draw_bg(0.0005f); } g_dprof[0] += timer_us_gettime64() - t0; }
-+        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) zonefx_draw_bg(0.0005f); g_dprof[0] += timer_us_gettime64() - t0; }
+         { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) zonefx_draw_bg(0.0005f); g_dprof[0] += timer_us_gettime64() - t0; }
          { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_OP_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
          { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
++        if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_OP_POLY);   /* object models, 3D layer */
          render_end_list();
+         render_begin_list(PVR_LIST_PT_POLY);
+         { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { zonefx_draw_layer(1, PVR_LIST_PT_POLY, 0.001f); zonefx_draw_layer(0, PVR_LIST_PT_POLY, 10.0f); } g_dprof[1] += timer_us_gettime64() - t0; }
+         { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_PT_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
+         { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
++        if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_PT_POLY);   /* object models, 3D layer */
+         { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok) obj_draw(PVR_LIST_PT_POLY); g_dprof[3] += timer_us_gettime64() - t0; }
+         render_end_list();
+         render_begin_list(PVR_LIST_TR_POLY);
+         { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
++        if(ok && g_obj_ok && !g_is_boss) objects_draw_models(PVR_LIST_TR_POLY);   /* object models, 3D layer */
+         if(ok && g_obj_ok) obj_draw(PVR_LIST_TR_POLY);   /* AnimatorSprite 0x400 (semi-transparent OBJ) */
+         { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_TR_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
+         if(g_is_boss) {
+@@ -795,7 +804,7 @@
+             int dk = demo_play_frame(&real_in);   /* DemoPlay_Main */
+             if(dk != DEMO_RUNNING) {
+                 demo_stop(); g_demo = 0; g_demo_spawn_x = g_demo_spawn_y = 0;
+-                if(g_obj_ok) objects_shutdown();
++                if(g_obj_ok) { objects_shutdown(); objects_models_free(); }
+                 boss_shutdown(); g_is_boss = 0;
+                 ui_stage_end();
+                 zonefx_shutdown(); camera_destroy();
+@@ -810,7 +819,7 @@
+             MenuRequest r;
+             uint32_t total = g_ui_game.total;
+             printf("stage exit kind %d\n", k);
+-            if(g_obj_ok) objects_shutdown();
++            if(g_obj_ok) { objects_shutdown(); objects_models_free(); }
+             boss_shutdown(); g_is_boss = 0;
+             ui_stage_end();   /* title-card / results BGs, navigator, face texture */
+             zonefx_shutdown(); camera_destroy();
+@@ -851,6 +860,11 @@
+             uint64_t now = timer_ms_gettime64();
+             if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
+             printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f; worst frame %.2f ms, %d of 120 over 17.5 ms\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0, g_fmax / 1000.0, g_fslow);
++            if(g_obj_ok) {   /* object models in view, PVR triangles; palette writes that waited for a frame start */
++                u32 mv = 0, mt = 0;
++                objects_models_stats(&mv, &mt);
++                printf("objmodels: views %lu tris %lu; palette queued writes %lu\n", (unsigned long)mv, (unsigned long)mt, (unsigned long)pal_queued_writes());
++            }
+             g_fmax = 0; g_fslow = 0;
+             {   /* camera / zone effects: DS pair y (gCamera[0], [1]), swap flag, window, BG row 0 / 191, BLDY, water row */
+                 const CamLayer *c0 = camera_layer(0), *c1 = camera_layer(1);

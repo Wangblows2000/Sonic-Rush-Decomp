@@ -138,6 +138,16 @@ paletted texture, in one format (ARGB1555). `engine/render.c` owns them:
 - If no row is free, the page is expanded to ARGB1555 at load (static) or at its first draw
   (UI/menus keep the texels in RAM): exact, only 4x the VRAM. VQ is not needed: no stage
   runs out (section 2).
+- Write timing: the PVR reads the palette RAM while it renders the previous frame, so a
+  write to a row the frame being built or the frame being rendered drew with ("hot": used
+  by `pal4_use` in the last 2 frames, or given back in the last 2 frames) is queued and
+  done by the next `render_begin_frame`, after `pvr_wait_render_done`. Other writes go
+  straight to the palette RAM. The allocators take cold rows first (free rows, then UI
+  rows idle for 3 frames, then hot free rows), so a queued write only happens when the
+  palette RAM is short of cold rows. This covers the object PaletteAnim rows
+  (`spr_atlas_pal_row`), the UI lazy rows and `pal8_alloc`. Host test:
+  `make -C dreamcast/game/engine/test` (KOS stubs; 14 checks; the previous render.c fails 6,
+  with 30 writes to rows in flight). Flycast z11 / z21 / z32 / z42 / z51 / z61: 0 queued writes.
 
 `spr_atlas_load` / `spr_atlas_adopt` / `spr_atlas_bank` (render.h) wrap this for the
 module loaders; `draw_sprite_world_pal` / `draw_rect_screen_pal` / `tex_txr_format` draw a
@@ -380,13 +390,40 @@ BLDY ramp to 10 and back, flash, the alarm.
 Palette RAM timing: `zonefx_commit_palettes` runs at the frame start (after `pvr_wait_ready`,
 main.c patch); when a palette changed it waits for the render in progress
 (`pvr_wait_render_done`) before writing, so no frame renders with mixed colours. The object
-PaletteAnim rows and the UI's lazy rows (engine/render.c, objects) still write during list
-building.
+PaletteAnim rows and the UI's lazy rows follow the same rule (section 3.2, write timing).
 
 Known limits: the sprite tint is the vertex-colour approximation, not the exact r - 10.
 
-Layering found in the sand-ship run (not zone effects): Stage_InitDisplay sets BG0 (3D:
-player model, table model) priority 1, BG1 (zone BG) 3, BG2 (layer A) 0, BG3 (layer B) 2, so
-OBJ priority 2 / 3 sprites (DecTableWater 0x53, shadows) go behind the player. The DC draws
-every sprite (z 1.5..4.5) in front of the player model (~0.006): on the sand ship the water
-strip hides the player. The mirage-road ship model (GmkTable) is not drawn by main.c.
+Layering (Stage_InitDisplay: BG0 = 3D layer priority 1, BG1 zone BG 3, BG2 layer A 0, BG3
+layer B 2; an OBJ is in front of a BG of the same priority). The DC draws all of them in one
+PVR pass, so each gets a depth band (1/w style, bigger = nearer; obj_draw.c, main.c):
+
+    zone BG 0.0005 < OBJ prio 3 (0.00055..0.001) < layer B 0.001 < OBJ prio 2 (0.0011..0.003)
+    < 3D layer (player, object models, trails, 3D BAC stand-ins: ~0.0035..0.03)
+    < OBJ prio 1 (2..2.64) < layer A 10 < OBJ prio 0 (11..11.64) < HUD (100+)
+
+Inside a band, OAM order (lower order in front, step per order). Map objects default to OAM
+priority 2 (`obj_manager.c`: spr flags 0x40000), so most objects are behind the player;
+enemies (StageObj_SetOAMPriority 1) are in front. The Zone 2 water surface sprites
+(AnimatorSprite_Init 0x4004, order 0x15) are prio 0: z 11.43. The 3D layer's own depth
+comes from the model 1/w: the stage camera (eye 166 px in front of the z = 0 plane) keeps
+models within +-100 px of the plane inside 0.0035..0.03. Boss arenas (RLVL_FLAG_BOSS): the
+whole arena is 3D (sky, floor), so the sprites keep the old bands in front of it
+(4.5 / 3.5 / 2.5 / 1.5 by priority).
+
+Object models (`objects_model_get` views: RopeC, Wheel2D, Hand2d, GmkTable, CraneSlide,
+Crane / CranePartED / EE, Glider) are drawn by `objects_draw_models` (obj_draw.c), in the
+OP / PT / TR lists next to the player model: StageObj_Draw3DEx + Model_Draw with
+NNS_G3dDraw1Mat1Shp blocks. Model matrix v' = v * S(scale) * R(object 3x3) + T, T = (screen
+x, -screen y, z); camera `dcm_camera_stage`, plus `dcm_camera_stage_offaxis` for
+disp_flags 0x200. The block set (`shapes`) maps to joint visibility and material alpha 0
+over the converted draws (all eight models are separable). Lights: stage vectors, stage
+colours (`dcp_model_stage_lights`). `objects_models_prepare` (outside the lists) loads
+`/cd/models/<id>.dcm` and uploads its textures; a new stage frees them
+(`objects_models_free`). A model's 2D stand-in sprite is drawn only while the model is
+not loaded. Flycast (test start positions, save states): z11 rope (thin rope from the post,
+player grabs it), z21 wheel (paddle wheel around the axle post), z32 table (sails, tilts
+on the slope, player on it, explosion sprite behind it), z32 hand (claws; reaches out to
+z +128 px, magnified as on the DS), z42 crane slide, z51 crane (arm, housing, chain reps,
+hook), z61 glider (wing and frame, player hanging). 0.2-0.8 ms draw per frame, up to 420
+PVR triangles per view, 58.7-59.3 fps.

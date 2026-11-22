@@ -126,8 +126,8 @@ table after the title card's run-in): the table sails 1 px/frame from x 18072; t
 on it (window y 4176 = table y − (0x58 + 0x60), x = table − 0x80 − @0x3EC) for 2000+ frames;
 view 1 (DS top screen) at y 3904 spawns the drop-in Egg Pawns (frame log: 2 at frame 1200, 4
 at 1320..1680, landed on the table at y 4342; screenshots show them dropping and the Egg
-Bishops). The player and the table are hidden by the water sprites in that run (layering,
-GRAPHICS.md section 8.3).
+Bishops). With the depth bands and object models (GRAPHICS.md section 8.3) the table model
+sails and tilts under the player, and the priority 2 sprites stay behind them.
 
 ### Flycast save states (play-test speed-up)
 

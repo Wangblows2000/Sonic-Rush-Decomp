@@ -490,11 +490,18 @@ static int run_stage(const char *stages, const char *pdir, const char *odir, con
         s32 px = 0, py = 0;
         sscanf(getenv("PROBE"), "%d %d", &px, &py);
         place_player(px, py);
-        for (f = 0; f < 300; f++)
+        for (f = 0; f < (getenv("PROBEF") ? atoi(getenv("PROBEF")) : 300); f++)
             frame(0);
         camera_get_view(&sx, &s_last_wy);
         printf("probe %s %d,%d: player %d,%d%s window %d,%d\n", id, px, py, P.x >> 8, P.y >> 8,
                (P.pf & DCP_PF_DEAD) ? " DEAD" : "", sx >> 8, s_last_wy >> 8);
+        for (f = 0; f < objects_model_count(); f++) {
+            ObjModelView v;
+            if (objects_model_get(f, &v))
+                printf("  model %s at %d,%d,%d vis %d persp %d shapes %x reps %d mtx %d %d %d / %d %d %d / %d %d %d\n", v.model,
+                       v.x >> 8, v.y >> 8, v.z >> 8, v.visible, v.persp, (unsigned)v.shapes, v.reps, v.mtx[0], v.mtx[1], v.mtx[2],
+                       v.mtx[3], v.mtx[4], v.mtx[5], v.mtx[6], v.mtx[7], v.mtx[8]);
+        }
         return 0;
     }
     /* [run] */

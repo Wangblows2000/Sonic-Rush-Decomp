@@ -64,6 +64,10 @@ static const float k_zstep[4] = { 0.01f, 0.01f, 0.00003f, 0.000007f };
 #define OBJ_Z_BAC3D 0.0058f
 #define OBJ_ZSTEP_BAC3D 0.000003f
 static int s_bac3d;   /* the object being drawn is a 3D BAC stand-in */
+/* boss arenas (RLVL_FLAG_BOSS): the whole arena is the 3D layer (sky, floor models), the
+ * sprites stay in front of it (bands 4.5 / 3.5 / 2.5 / 1.5 by priority) */
+static const float k_zbase_boss[4] = { 4.5f, 3.5f, 2.5f, 1.5f };
+static int s_boss;
 /* semi-transparent OBJ: the stage's BLDALPHA blend (EVA ~ EVB) as vertex alpha */
 #define OBJ_SEMITRANS_ARGB 0xa0ffffffu
 
@@ -164,7 +168,12 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
     y0 = vf ? y - (img->h - img->origin_y) : y - img->origin_y;
     prio = (int)((s->flags >> 17) & 3);
     order = s->order > 0x3f ? 0x3f : s->order;
-    z = s_bac3d ? OBJ_Z_BAC3D + (0x40 - order) * OBJ_ZSTEP_BAC3D : k_zbase[prio] + (0x40 - order) * k_zstep[prio];
+    if (s_boss)
+        z = k_zbase_boss[prio] + (0x40 - order) * 0.01f;
+    else if (s_bac3d)
+        z = OBJ_Z_BAC3D + (0x40 - order) * OBJ_ZSTEP_BAC3D;
+    else
+        z = k_zbase[prio] + (0x40 - order) * k_zstep[prio];
     if (s->rotscale) {
         /* AnimatorSprite_DrawRotScale: rotate / scale about the sprite position */
         float a = (float)s->rot * (6.2831853f / 256.0f), c = fcos(a), sn = fsin(a);
@@ -227,6 +236,7 @@ void obj_draw(int list) {
     const ObjSprite *s;
     if (!g_obj.hdr)
         return;
+    s_boss = (g_obj.hdr->flags & RLVL_FLAG_BOSS) != 0;
     for (o = g_obj.head; o; o = o->next) {
         if (!o->used || (o->h.obj_flags & 4))
             continue;
