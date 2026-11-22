@@ -5,12 +5,14 @@
  *   Hold/FadeOut/Finish, _SkipParts, _SkipToRank, _Finish, _GoToNextScene,
  *   ClearDemo_InitScoreTally, _GetTimeBonus, _GetScoreBonus, _GetRank,
  *   ClearDemoScore_* (SlideIn .. Done, Draw, SkipRows, SkipToRank),
- *   ClearDemoName_*, ClearDemoActText_*, ClearDemoBars_*, and the state timing of
- *   ClearDemoBg_* and ClearDemoModel_* (WaitParts waits for them).
+ *   ClearDemoName_*, ClearDemoActText_*, ClearDemoBars_*, ClearDemoBg_* (window and
+ *   scroll; the BG layers cldm_far / cldm_bg are drawn by ui_bg.c) and the state
+ *   timing of ClearDemoModel_* (WaitParts waits for it).
  *
  * Not translated (UI.md): the time-attack tally (ClearDemoTA_*, gGameState.unk10
- * == 2 uses the score tally here), the BBG backgrounds (cldm_bg.bbg: black
- * backdrop instead), the player model (ClearDemo_DrawModel), the Blaze palette
+ * == 2 uses the score tally here), the player model (ClearDemo_DrawModel), the
+ * NaviMsg / NaviB sub-screen panel of boss results (health 0 of 8, no message:
+ * nothing to show in the one frame), the Blaze palette
  * reload of the glyph sprites, SaveData_StoreStageResult / StoryProgress_Update.
  * The original names were kept even where they read swapped: GetTimeBonus reads
  * the stage timer (gGameState.unk20), GetScoreBonus the trick score
@@ -55,10 +57,12 @@ typedef struct CdBars {      /* 0x330 */
     s16 t;
     s32 unk8, unkC;
 } CdBars;
-typedef struct CdBg {        /* 0x000: timing only */
+typedef struct CdBg {        /* 0x000 */
     void (*fn)(CdWork *w, struct CdBg *o);
-    s32 unk4, unk8;
+    s32 unk4, unk8;          /* BG3 / BG2 y scroll (20.12) */
     s16 v, unkC;
+    u8 win_x2;               /* gDisplayMain.unk10: window 0 right edge */
+    u8 win_on;               /* gDisplayMain.unk1C: window 0 enabled */
 } CdBg;
 typedef struct CdModel {     /* 0x010: timing only */
     void (*fn)(CdWork *w, struct CdModel *o);
@@ -84,7 +88,11 @@ struct CdWork {
 static CdWork s_cd;
 
 int ClearDemo_IsActive(void) { return s_cd.active; }
-void ClearDemo_Destroy(void) { s_cd.active = 0; }
+void ClearDemo_Destroy(void) {
+    if (s_cd.active)
+        ui_cdbg_free();
+    s_cd.active = 0;
+}
 
 static void cd_sfx(s32 arc, s32 id) {
     if (g_ui_hooks.sfx)
@@ -664,6 +672,7 @@ static void ClearDemoBg_State_Slide(CdWork *w, CdBg *o) {
 static void ClearDemoBg_State_BeginSlide(CdWork *a, CdBg *o) {
     o->unk4 = 0xdf000;
     o->unk8 = -0x23000;
+    o->win_on = 0;           /* gDisplayMain.unk1C = 0 */
     o->unkC = 0;
     o->fn = ClearDemoBg_State_Slide;
     o->fn(a, o);
@@ -675,14 +684,22 @@ static void ClearDemoBg_State_Open(CdWork *w, CdBg *s) {
         s->v = 0x1000;
         s->fn = ClearDemoBg_State_BeginSlide;
     }
+    /* gDisplayMain.unk10: window 0 opens from x 1 to 255 */
+    s->win_x2 = (u8)(((s32)(((int64_t)s->v * 0xfe000 + 0x800) >> 12) + 0x1000) >> 12);
 }
 static void ClearDemoBg_State_Init(CdWork *w, CdBg *o) {
     w->flags &= ~0x10u;
     o->unkC = 0;
+    /* window 0: x 0..1, y 0x21..0x23; inside BG0/BG1/OBJ, outside BG2/BG3/OBJ */
+    o->win_x2 = 1;
+    o->win_on = 1;
     o->fn = ClearDemoBg_State_Open;
 }
 static void ClearDemoBg_Skip(CdWork *s) {
     s->flags |= 0x18;
+    s->obj0.win_on = 0;      /* gDisplayMain.unk1C = 0 */
+    s->obj0.unk4 = 0xdf000;
+    s->obj0.unk8 = -0xa0000;
     s->obj0.fn = ClearDemoBg_State_Done;
 }
 
@@ -824,6 +841,11 @@ void ClearDemo_Create(void) {
     w->active = 1;
     w->state = ClearDemo_State_FadeIn;
     w->obj0.fn = ClearDemoBg_State_Init;
+    /* res348 / res34c = act_com 0x1a cldm_bg, 0x1b cldm_far: ClearDemo_InitBg(Boss).
+     * Native assumption: window 0 is taken as on (x 0..0) until ClearDemoBg_State_Init,
+     * so cldm_far is not seen before the line opens */
+    ui_cdbg_load();
+    w->obj0.win_on = 1;
     w->obj16C.fn = ClearDemoName_State_Init;
     w->obj10.fn = ClearDemoModel_State_Init;
     w->obj200.fn = ClearDemoActText_State_Init;
@@ -873,8 +895,12 @@ void ClearDemo_Main(const InputState *in) {
             w->obj274.fn(w, &w->obj274);
         if (w->flags & 0x20000)
             w->obj330.fn(w, &w->obj330);
-        /* the stage is gone (StageShutdown): black backdrop for the missing BG */
+        /* the stage is gone (StageShutdown): black backdrop (DS backdrop colour),
+         * then the BG layers (ClearDemoBg_Draw, ui_bg.c) */
+        g_ui_layer = UI_LAYER_RESULTS_BG;
         ui_emit_flat(UI_SP_SCREEN, 0, 0, 256, 192, 0xff000000);
+        ui_cdbg_draw(w->obj0.unk4, w->obj0.unk8, w->obj0.win_on, w->obj0.win_x2);
+        g_ui_layer = UI_LAYER_RESULTS;
         if (w->flags & 0x2000)
             ClearDemoScore_Draw(w);
         if (w->flags & 1)

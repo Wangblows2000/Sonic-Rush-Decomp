@@ -31,8 +31,11 @@ grep -v '^#' "$ROOT/build/dreamcast/objects/sprites.txt" | cut -f1 | while read 
     for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done
 # UI (HUD, title card, pause, results, game over)
-mkdir -p "$OUT/disc/ui"; cp "$ROOT/build/dreamcast/ui/uidata.bin" "$OUT/disc/ui/"
-for sp in act__ac_fix_moji act__dm_stdm act__dm_stdm_eng act__dm_cldm act__ac_fix_pause act__ac_fix_pause_frame act__ac_fix_gameover; do
+mkdir -p "$OUT/disc/ui/res"; cp "$ROOT/build/dreamcast/ui/uidata.bin" "$ROOT/build/dreamcast/ui/navidata.bin" "$OUT/disc/ui/"
+# navigator, boss panel, title card / results backgrounds (UI.md: res/ without the png previews)
+cp -r "$ROOT/build/dreamcast/ui/res/." "$OUT/disc/ui/res/"; find "$OUT/disc/ui/res" -name '*.png' -delete
+for sp in act__ac_fix_moji act__dm_stdm act__dm_stdm_eng act__dm_cldm act__ac_fix_pause act__ac_fix_pause_frame act__ac_fix_gameover \
+          act__navi_b act__ac_fix_bosshelp act__ac_eff_enemyroom_fix; do
     S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
     cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done

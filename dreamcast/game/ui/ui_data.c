@@ -16,6 +16,8 @@
 
 UiRes g_ui_res[UI_RES_COUNT];
 UiData g_ui_data;
+UiNaviData g_ui_navi;
+int g_ui_screen;
 char g_ui_dir[96] = "/cd/ui";
 char g_ui_sprite_dir[96] = "/cd/sprites";
 
@@ -113,8 +115,29 @@ int ui_data_load(const u8 *buf, u32 size) {
     return e;
 }
 
+/* ----------------------------------------------------------- navidata.bin */
+int ui_navi_data_load(const u8 *buf, u32 size) {
+    UiNaviData *d = &g_ui_navi;
+    int e = 0;
+    memset(d, 0, sizeof(*d));
+    if (size < 8 || memcmp(buf, "RUID", 4) != 0 || rd16(buf + 4) != 1)
+        return -1;
+    e |= sect(buf, size, "seq_t", d->seq[0], sizeof(d->seq[0]));
+    e |= sect(buf, size, "seq_c", d->seq[1], sizeof(d->seq[1]));
+    e |= sect(buf, size, "geo_t", d->geo[0], sizeof(d->geo[0]));
+    e |= sect(buf, size, "geo_c", d->geo[1], sizeof(d->geo[1]));
+    e |= sect(buf, size, "navi_voice", d->voice, sizeof(d->voice));
+    e |= sect(buf, size, "navib_icon", d->navib_icon, sizeof(d->navib_icon));
+    e |= sect(buf, size, "navib_pos", d->navib_pos, sizeof(d->navib_pos));
+    e |= sect(buf, size, "er_shake", d->er_shake, sizeof(d->er_shake));
+    d->ok = e == 0;
+    return e;
+}
+
 /* ---------------------------------------------------------- sprite resources */
-int ui_res_load(int idx, const char *id) {
+int ui_res_load(int idx, const char *id) { return ui_res_load_dir(idx, g_ui_sprite_dir, id); }
+
+int ui_res_load_dir(int idx, const char *dir, const char *id) {
     UiRes *r = &g_ui_res[idx];
     char path[200];
     u8 *b;
@@ -122,7 +145,7 @@ int ui_res_load(int idx, const char *id) {
     int i;
     ui_res_free(idx);
     snprintf(r->id, sizeof(r->id), "%s", id);
-    snprintf(path, sizeof(path), "%s/%s/frames.bin", g_ui_sprite_dir, id);
+    snprintf(path, sizeof(path), "%s/%s/frames.bin", dir, id);
     if (ui_load_file(path, &b, &size) != 0)
         return -1;
     if (size < 16 || memcmp(b, "DSPR", 4) != 0 || rd16(b + 4) != 1) {
@@ -146,7 +169,7 @@ int ui_res_load(int idx, const char *id) {
     for (i = 0; i < r->n_pages; i++) {
         u8 *px;
         u32 psz;
-        snprintf(path, sizeof(path), "%s/%s/atlas%d.argb1555", g_ui_sprite_dir, id, i);
+        snprintf(path, sizeof(path), "%s/%s/atlas%d.argb1555", dir, id, i);
         if (ui_load_file(path, &px, &psz) == 0) {
             if (psz == (u32)r->pages[i].w * r->pages[i].h * 2)
                 r->pixels[i] = (u16 *)px;
@@ -242,6 +265,26 @@ static UiQuad s_quads[UI_MAX_QUADS];
 static int s_nquads;
 static int s_hud_k = 2, s_safe_x0 = 32, s_safe_y0 = 24, s_safe_x1 = 608, s_safe_y1 = 456;
 static float s_cam_x, s_cam_y;
+/* UI_SP_NAVI_B .. UI_SP_NAVI_FACE */
+static struct { float dx, dy, sx, sy, k; } s_space[3];
+
+void ui_space_set(int space, float dst_x, float dst_y, float src_x, float src_y, float k) {
+    int i = space - UI_SP_NAVI_B;
+    if (i < 0 || i >= 3)
+        return;
+    s_space[i].dx = dst_x;
+    s_space[i].dy = dst_y;
+    s_space[i].sx = src_x;
+    s_space[i].sy = src_y;
+    s_space[i].k = k;
+}
+void ui_hud_metrics(int *k, int *x0, int *y0, int *x1, int *y1) {
+    *k = s_hud_k;
+    *x0 = s_safe_x0;
+    *y0 = s_safe_y0;
+    *x1 = s_safe_x1;
+    *y1 = s_safe_y1;
+}
 
 void ui_hud_layout(int scale, int x0, int y0, int x1, int y1) {
     s_hud_k = scale > 0 ? scale : 2;
@@ -271,6 +314,8 @@ int ui_debug_quads(const UiQuad **out) {
     return s_nquads;
 }
 
+static void xform(int space, float x, float y, float *ox, float *oy, float *k);
+void ui_space_map(int space, float x, float y, float *ox, float *oy, float *k) { xform(space, x, y, ox, oy, k); }
 static void xform(int space, float x, float y, float *ox, float *oy, float *k) {
     switch (space) {
     case UI_SP_HUD_TL:
@@ -288,6 +333,26 @@ static void xform(int space, float x, float y, float *ox, float *oy, float *k) {
         *ox = s_safe_x1 - (256.0f - x) * *k;
         *oy = s_safe_y0 + y * *k;
         break;
+    case UI_SP_HUD_BR:
+        *k = (float)s_hud_k;
+        *ox = s_safe_x1 - (256.0f - x) * *k;
+        *oy = s_safe_y1 - (192.0f - y) * *k;
+        break;
+    case UI_SP_HUD_TC:
+        /* DS x 128 = screen centre; DS y 0 = under the HUD's top row (24 DS px) */
+        *k = (float)s_hud_k;
+        *ox = 320.0f + (x - 128.0f) * *k;
+        *oy = s_safe_y0 + (24.0f + y) * *k;
+        break;
+    case UI_SP_NAVI_B:
+    case UI_SP_NAVI_MSG:
+    case UI_SP_NAVI_FACE: {
+        int i = space - UI_SP_NAVI_B;
+        *k = s_space[i].k;
+        *ox = s_space[i].dx + (x - s_space[i].sx) * *k;
+        *oy = s_space[i].dy + (y - s_space[i].sy) * *k;
+        break;
+    }
     case UI_SP_WORLD:
         *k = 2.5f;
         *ox = (x - s_cam_x) * 2.5f;
@@ -337,6 +402,7 @@ void ui_emit(const UiSpr *s, int space, s32 scale_x, s32 scale_y, int flip, u32 
     q->image = idx;
     q->variant = variant;
     q->layer = g_ui_layer;
+    q->screen = g_ui_screen;
 }
 
 void ui_emit_flat(int space, float x, float y, float w, float h, u32 argb) {
@@ -355,4 +421,69 @@ void ui_emit_flat(int space, float x, float y, float w, float h, u32 argb) {
     q->tex = -1;
     q->image = -1;
     q->layer = g_ui_layer;
+    q->screen = g_ui_screen;
+}
+
+/* clipped image quad (BG pieces): destination (x, y, w, h) in space units shows
+ * texels (u0, v0)-(u0 + uw, v0 + vh); clipping keeps the texel mapping */
+static void emit_clipped(int tex, int image, int space, float x, float y, float w, float h, float u0, float v0,
+                         float uw, float vh, float cx0, float cy0, float cx1, float cy1, u32 argb) {
+    UiQuad *q;
+    float l = x, t = y, r = x + w, b = y + h, px, py, k, px1, py1, su, sv;
+    if (w <= 0 || h <= 0)
+        return;
+    su = uw / w;
+    sv = vh / h;
+    if (l < cx0)
+        l = cx0;
+    if (t < cy0)
+        t = cy0;
+    if (r > cx1)
+        r = cx1;
+    if (b > cy1)
+        b = cy1;
+    if (r <= l || b <= t || s_nquads >= UI_MAX_QUADS)
+        return;
+    xform(space, l, t, &px, &py, &k);
+    xform(space, r, b, &px1, &py1, &k);
+    q = &s_quads[s_nquads++];
+    memset(q, 0, sizeof(*q));
+    q->x = px;
+    q->y = py;
+    q->w = px1 - px;
+    q->h = py1 - py;
+    q->u0 = u0 + (l - x) * su;
+    q->v0 = v0 + (t - y) * sv;
+    q->u1 = u0 + (r - x) * su;
+    q->v1 = v0 + (b - y) * sv;
+    q->argb = argb;
+    q->tex = tex;
+    q->image = image;
+    q->layer = g_ui_layer;
+    q->screen = g_ui_screen;
+}
+
+void ui_emit_image(int res, int image, int space, float x, float y, float cx0, float cy0, float cx1, float cy1,
+                   u32 argb) {
+    const UiRes *r = &g_ui_res[res];
+    const UiImage *im;
+    if (!r->blob || image < 0 || image >= r->n_images)
+        return;
+    im = &r->images[image];
+    emit_clipped(res, image, space, x, y, im->w, im->h, im->x, im->y, im->w, im->h, cx0, cy0, cx1, cy1, argb);
+}
+
+void ui_emit_image_part(int res, int image, int space, float x, float y, float w, float h, float su, float sv,
+                        float suw, float svh, float cx0, float cy0, float cx1, float cy1, u32 argb) {
+    const UiRes *r = &g_ui_res[res];
+    const UiImage *im;
+    if (!r->blob || image < 0 || image >= r->n_images)
+        return;
+    im = &r->images[image];
+    emit_clipped(res, image, space, x, y, w, h, im->x + su, im->y + sv, suw, svh, cx0, cy0, cx1, cy1, argb);
+}
+
+void ui_emit_face(int space, float x, float y, int f, int w, int h, u32 argb) {
+    emit_clipped(UI_TEX_FACE, f, space, x, y, (float)w, (float)h, 0, 0, (float)w, (float)h, -1e9f, -1e9f, 1e9f, 1e9f,
+                 argb);
 }

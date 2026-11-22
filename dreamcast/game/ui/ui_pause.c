@@ -72,6 +72,9 @@ void PauseMenu_Create(int alt) {
     w->active = 1;
     if (g_ui_hooks.music_pause)                /* System_Freeze + pause players 3..9 */
         g_ui_hooks.music_pause(g_ui_hooks.ctx, 1);
+    /* StoryProgress_IsStageNew(): the menus module via g_ui_hooks.stage_new */
+    if (g_ui_hooks.stage_new)
+        G.stage_new = (u8)(g_ui_hooks.stage_new(g_ui_hooks.ctx) != 0);
     if (!G.stage_new || W.mode == 2)
         w->flags |= 2;
     if (alt) {

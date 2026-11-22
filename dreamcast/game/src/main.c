@@ -45,6 +45,7 @@ static int g_obj_ok;
 static int g_is_boss, g_boss_started;
 static int g_stage_idx;
 static Level *g_lv;
+static int g_difficulty = 1;   /* gGameState.unk14: 1 normal, 0 easy (options) */
 static int g_frontend;   /* 1: SEGA logo / title / menus / zone map are running */
 static int g_emeralds;
 static int g_model_chara = -1;
@@ -100,11 +101,14 @@ static void spawn_player(Level *lv)
     boss_shutdown();
     if(g_dcp_world.act == 2) {
         boss_set_paths("/cd/models", "/cd/boss");
-        boss_set_difficulty(0);
+        boss_set_difficulty(g_difficulty);
         g_is_boss = boss_init(lv->hdr->stage, lv->data, &g_player, 1) == 0;
         printf("boss: %s\n", g_is_boss ? "ok" : "FAILED");
     }
     ui_bind_player(&g_player);
+    g_ui_game.language = 1;   /* English (gGameLanguage) */
+    g_ui_game.difficulty = (u8)g_difficulty;
+    g_ui_game.save_progress[0] = gSaveData.unkC; g_ui_game.save_progress[1] = gSaveData.unk64;
     ui_stage_start(g_dcp_world.zone, g_dcp_world.act, g_chara);
     ui_set_camera(g_cam_x, g_cam_y);
     printf("objects: %s\n", g_obj_ok ? "ok" : "FAILED");
@@ -243,21 +247,20 @@ static void enter_front_end(void)
 
 /* g_obj_hooks.effect: object effects that belong to the frame compositor.
  * ScreenFlash_Create: full-frame white flash fading over 16 frames.
- * Enemy-room state is kept for the UI (EnemyRoomHud). */
-static int g_flash, g_room_state = -1, g_room_need, g_room_done;
+ * Enemy-room events go to the UI (EnemyRoomHud). */
+static int g_flash;
 static void obj_effect_hook(void *ctx, DcPlayer *p, s32 kind, s32 a, s32 b)
 {
     (void)ctx; (void)p;
     switch(kind) {
     case OBJ_FX_SCREEN_FLASH: g_flash = 16; break;
-    case OBJ_FX_ENEMY_ROOM:
-        if(a == 0) { g_room_state = 0; g_room_need = b; g_room_done = 0; }
-        else if(a == 1) g_room_done = b;
-        else g_room_state = 2;
-        break;
+    case OBJ_FX_ENEMY_ROOM: ui_enemy_room(a, b); break;   /* EnemyRoomHud */
     default: break;
     }
 }
+static void ui_voice_hook(void *ctx, s32 arc, s32 id) { (void)ctx; Sound_PlayVoice(NULL, (uint32_t)arc, (uint32_t)id); }
+int StoryProgress_IsStageNew(void);   /* menus/mn_story.c (BOOL) */
+static int ui_stage_new_hook(void *ctx) { (void)ctx; return StoryProgress_IsStageNew(); }
 
 /* g_boss_hooks.player_box_flags (Boss4_Action_Defeat): the player's hit boxes
  * belong to the objects module (box 0 = body coll2A0, 1 = attack coll2CC). */
@@ -320,6 +323,9 @@ int main(int argc, char **argv)
     menus_set_paths("/cd/menus", "/cd/sprites");
     g_obj_hooks.effect = obj_effect_hook;
     g_boss_hooks.player_box_flags = boss_player_box_flags;
+    g_boss_hooks.navi = ui_boss_navi;
+    g_ui_hooks.voice = ui_voice_hook;
+    g_ui_hooks.stage_new = ui_stage_new_hook;
     g_menu_hooks.bgm = menu_bgm; g_menu_hooks.se = menu_se; g_menu_hooks.stop_all = menu_stop_all;
     g_ui_game.save_lives[0] = g_ui_game.save_lives[1] = 3;
     printf("Sonic Rush DC: %dx%d\n", vid_mode->width, vid_mode->height);
@@ -372,7 +378,7 @@ int main(int argc, char **argv)
                 g_ui_game.save_lives[r.character] = r.lives;
                 g_ui_game.save_flags = gSaveData.unk8;
                 g_emeralds = r.emeralds;
-                boss_set_difficulty(r.easy);
+                g_difficulty = r.easy;
                 load_player_model();
                 stage = idx; g_frontend = 0;
                 ok = load_stage(&lv, stage) == 0;
@@ -384,6 +390,7 @@ int main(int argc, char **argv)
             continue;
         }
         input_poll(&in);
+        if(ok && g_player_ok && g_is_boss) ui_set_boss_health(boss_health());
         if(ok && g_player_ok) ui_update(&in, &g_player);
         if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen()) {
             float px, py, tx, ty;

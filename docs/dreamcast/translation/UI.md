@@ -1,17 +1,20 @@
 # Native in-stage presentation and flow (Dreamcast port): translation notes
 
-Status: HUD, score popup, stage title card, pause menu, act results (score
-tally and rank), game over / time over, brightness fades, and the
-score/time/lives rules are translated. The host test passes (61/61 checks)
-with the real ROM tables and converted sprites. The module compiles with
-`kos-cc -Werror`. A KOS link test (UI + player + objects + `engine/render.c` +
-a stub `main`) links. It has **not** run on SH-4 hardware or in an emulator.
-The screen layout was checked only with a host renderer of the quad list
-(`tools/render_quads.py`), not on a PVR.
+Status: HUD, score popup, stage title card (with its BBG backgrounds), pause
+menu, act results (score tally, rank and BBG backgrounds), game over / time over,
+brightness fades, the score/time/lives rules, and the boss-stage second-screen
+helpers (NaviB boss health panel, NaviMsg navigator messages and face,
+BossHelp) and the enemy-room counter (EnemyRoomHud) are translated. The host test
+passes (93/93 checks) with the real ROM tables and converted assets. All 11
+sources compile with `kos-cc -O2 -fwrapv -Wall -Wextra -Werror`. It has **not**
+run on SH-4 hardware or in Flycast: the screen layout was checked only with the
+host renderer of the quad list (`tools/render_quads.py`), not on a PVR.
 
 - Code: `dreamcast/game/ui/` (`ui.h` public API, `ui_internal.h`, `ui_*.c`,
-  `Makefile`, `test/test_ui.c`, `tools/uidata.py`, `tools/render_quads.py`)
-- Source of truth: `src/game/UI/Hud/` (Hud_*, ScorePopup_*),
+  `Makefile`, `test/test_ui.c`, `tools/uidata.py`, `tools/uibg.py`,
+  `tools/render_quads.py`)
+- Source of truth: `src/game/UI/Hud/` (Hud_*, ScorePopup_*, BossHelp_*,
+  EnemyRoomHud_*), `src/game/UI/Navi/` (NaviB_*, NaviMsg_*, NaviMsgFace_*, NaviBg_Load),
   `src/game/UI/TitleCard/`, `src/game/UI/GameOver/`, `src/game/Menus/Pause/`,
   `src/game/Cutscenes/ClearDemo/` (the act results screen; `Menus/Results/
   ResultsScreen_*` is the **VS** results screen and is not translated),
@@ -35,8 +38,12 @@ The screen layout was checked only with a host renderer of the quad list
 | `ui_pause.c` | PauseMenu_* |
 | `ui_results.c` | ClearDemo_*, ClearDemoScore_*, ClearDemoName_*, ClearDemoActText_*, ClearDemoBars_*, ClearDemoBg/Model state timing |
 | `ui_gameover.c` | GameOverSeq_*, GameOver_*, ScreenShake_* (local copy) |
-| `ui_draw.c` | KOS: atlas upload, palette-effect texture variants, TR-list quads, brightness overlay. Host: stubs |
+| `ui_draw.c` | KOS: atlas upload, palette-effect texture variants and colour maps, streamed navigator face, TR-list quads, per-screen brightness. Host: stubs |
+| `ui_navi.c` | NaviB_* (boss health panel), NaviMsg_* / NaviMsgFace_* (navigator), BossHelp_*, the DC composition of the boss-stage overlays |
+| `ui_enemyroom.c` | EnemyRoomHud_* and the `ui_enemy_room` feed (OBJ_FX_ENEMY_ROOM) |
+| `ui_bg.c` | title card BG layers (StageTitleCardBg_Draw) and results BG layers (ClearDemoBg_Draw) |
 | `tools/uidata.py` | BYOR converter: ROM tables -> `build/dreamcast/ui/uidata.bin` |
+| `tools/uibg.py` | BYOR converter: title card / results BBGs, navigator panels, faces and tables -> `build/dreamcast/ui/res/`, `navidata.bin` (reuses `menus/tools/menubg.py`) |
 | `tools/render_quads.py` | dev tool: renders a quad dump of the host test to PNG |
 
 ## 2. Integration (main.c)
@@ -46,7 +53,7 @@ The screen layout was checked only with a host renderer of the quad list
 
 /* once */
 ui_set_paths("/cd/ui", "/cd/sprites");
-ui_init();                                  /* uidata.bin + 7 sprite sets */
+ui_init();                                  /* uidata.bin, navidata.bin + 10 sprite sets */
 g_ui_hooks.sfx = ...; g_ui_hooks.voice = ...; g_ui_hooks.music = ...; g_ui_hooks.music_pause = ...;
 g_dcp_world.mode = UI_MODE_STORY;           /* gGameState.unk10 */
 g_ui_game.save_lives[0] = g_ui_game.save_lives[1] = 3;   /* see section 6 */
@@ -82,6 +89,28 @@ if (ui_state() == UI_EXIT) {
     case UI_EXIT_VS_RESULTS: ;
     }
 }
+```
+
+Boss stages, enemy rooms and the pause menu (added with the navigator work):
+
+```c
+/* once (with the other hooks) */
+g_boss_hooks.navi = ui_boss_navi;            /* NaviMsg_SetFaceAnim + NaviMsg_ShowMessage */
+g_ui_hooks.voice = ...;                      /* navigator voices: (arc, id), arc 0 */
+g_ui_hooks.stage_new = mn_stage_new;         /* int mn_stage_new(void *c) { return StoryProgress_IsStageNew(); }
+                                                (menus gGameState zone/act/character must be the stage's) */
+/* stage start, before ui_stage_start */
+g_ui_game.language = <gGameLanguage>;        /* 0 jpn 1 eng 2 fra 3 deu 4 ita 5 spa (data_0207b9bc) */
+g_ui_game.difficulty = <gGameState.unk14>;   /* same value as boss_set_difficulty(): NaviB gauge 6 / 8 */
+g_ui_game.save_progress[0] = gSaveData.unkC; /* navigator gate (no Tails before progress 3) */
+g_ui_game.save_progress[1] = gSaveData.unk64;
+/* every frame of a boss stage, before ui_update */
+ui_set_boss_health(boss_health());           /* gBossStatus.unk8 */
+/* g_obj_hooks.effect, case OBJ_FX_ENEMY_ROOM (replaces the g_room_* statics) */
+ui_enemy_room(a, b);                         /* a 0 start (b = enemies), 1 count (b = defeated), 2 cleared */
+/* Player_OnHurt (boss stages): after dcp_on_hurt's 0x40 sound, before the death checks */
+ui_navi_player_hurt();                       /* needs a player-module hook, see section 6 */
+/* Boss6/7/F (when translated): BossHelp_Create(idx) / BossHelp_Destroy() */
 ```
 
 Required changes in main.c (not done here, main.c is not in this area):
@@ -123,8 +152,26 @@ Required changes in main.c (not done here, main.c is not in this area):
 
 ```
 /cd/ui/uidata.bin                                   (4.5 KB, tools/uidata.py)
+/cd/ui/navidata.bin                                 (2.7 KB, tools/uibg.py)
+/cd/ui/res/<dir>/frames.bin + atlas*.argb1555       (tools/uibg.py; not the atlas*.png previews)
+/cd/ui/res/navifaces_t.bin, navifaces_c.bin         (431 KB, 353 KB)
 /cd/sprites/<id>/frames.bin + atlas0.argb1555       (from build/dreamcast/sprites/bac/<id>/)
 ```
+
+`make -C dreamcast/game/ui data` builds both converters. `res/` holds 34
+directories (about 4.4 MB without the PNG previews):
+
+| dir | content | page | loaded |
+|---|---|---|---|
+| `tcbg_6` .. `tcbg_14` | stdm_bg1..7, f, e (256x192) + stdm_zigzag pieces (Sonic / Blaze colours) | 256x256 | title card of a normal act (StageTitleCard_Create) |
+| `tcbg_16` .. `tcbg_24` | stdm_bs_bg* + stdm_bs_zigzag pieces | 256x256 | title card of a boss act |
+| `cldm_0`, `cldm_1` | cldm_far (character colours) + cldm_bg tile | 256x256 | ClearDemo_Create, freed with the results |
+| `navi_<t\|c>_<lang>` | BOSS box of `<c>_b_b`, `b_bal` balloon, messages 15..19, face backing | 256x256 | boss stages (ui_stage_start) |
+
+The three new sprite ids `act__navi_b`, `act__ac_fix_bosshelp` and
+`act__ac_eff_enemyroom_fix` come from `bac2dc.py` like the others (atlases 64 KB,
+32 KB, 64 KB, loaded at `ui_init`). PVR VRAM added: about 128 KB per loaded `res/`
+directory, the 128x128 face texture (32 KB), and the three sprite atlases.
 
 | id | original resource | used by | atlas | VRAM |
 |---|---|---|---|---|
@@ -167,7 +214,12 @@ from the existing `tools/dreamcast/sprites/bac2dc.py` output.
 | gSaveData.unkE / unk66 (lives per character) | `g_ui_game.save_lives[2]` |
 | gSaveData.unk8 bit 1 (no time limit) | `g_ui_game.save_flags` |
 | gGameLanguage | `g_ui_game.language` (default 1, English) |
-| gDisplayMain/Sub master brightness | `g_ui_bright_main/sub` -> one overlay quad (the stronger of the two) |
+| gDisplayMain/Sub master brightness | `g_ui_bright_main` -> frame overlay; `g_ui_bright_sub` -> vertex colour of composed sub-screen quads |
+| gBossStatus.unk8 (boss hit points) | `ui_set_boss_health()` (from `boss_health()`) |
+| gGameState.unk14 (difficulty) | `g_ui_game.difficulty` |
+| gSaveData.unkC / unk64 (story progress, navigator gate) | `g_ui_game.save_progress[2]` (default 0xffff: navigator on) |
+| EnemyRoom_GetActive(1)->unk212 - unk213 | `ui_enemy_room()` need / defeated (objects module, OBJ_FX_ENEMY_ROOM) |
+| data_0207b894 / data_0207b8a4 (navi mode / character) | boss stages: mode 1, `g_ui_game.character` |
 
 ### 4.2 Rules (all from the code)
 
@@ -209,9 +261,64 @@ from the existing `tools/dreamcast/sprites/bac2dc.py` output.
   `Hud_SetFlags(Hud_GetFlags() | 0x40000000)` hides it.
 - Title card, pause menu, results, and game over use DS screen coordinates
   scaled by 2.5 to 640x480 (the same framing as the world view).
+- **One frame, one composition.** The frame is the DS main screen. Everything the
+  DS showed on the second (touch) screen is composed into it, never as a second
+  DS panel and with no dividing line. All art is the original, scaled uniformly
+  (2x for HUD-class overlays, 2.5x for full-frame cards):
+
+```
+ (32,24) safe area                                                     (608,24)
+ +---------------------------------------------------------------------------+
+ | [ring 057] [clock 0:01:01]                                        [score] |  HUD row
+ | +--------------------------------------------+  +----------------------+ |
+ | | balloon (b_bal) + message panel (eng15..19) |  | face over <c>_b_b     | |  navigator,
+ | +--------------------------------------------\  | (104x80 DS, 2x)       | |  timed (boss)
+ |                                                 +----------------------+ |
+ |            [ENEMY 05]  enemy-room counter (HUD_TC, normal acts)   [BossHelp]
+ |                                                 +----------------------+ |
+ |     (player / play area kept clear)             | BOSS box: counter,   | |  boss panel
+ | [lives]                                         | ZONE n, gauge (2x)   | |
+ +---------------------------------------------------------------------------+
+```
+
+  - Boss panel (NaviB): the BOSS box of `<c>_b_b.bbg` (DS sub px (16,79)-(121,135),
+    the frame the NaviB sprites sit in) with its sprites at their original
+    sub-screen offsets, 2x, bottom-right corner of the safe area (398..608,
+    344..456). Present from StageTitleCard_State_StartStage (boss acts) to the
+    stage exit. The "SONIC THE HEDGEHOG" header and the blue backdrop of the sub
+    screen are not drawn.
+  - Navigator message (NaviMsg): a timed overlay under the HUD's top row, only
+    while the DS message plane (sub BG0) is on (`NaviMsg_ShowMessage` time,
+    0xf0 / 0x96 frames), with a 6-frame native fade. The balloon is at 2x
+    (360x96 px, x 32..392, y 64..160), the message panel at its original offset
+    inside it; the face (head and gestures: crop (12,0)-(116,80) of the 128x128
+    frame, over the `<c>_b_b` background of that place) at 2x to its right
+    (x 396..604, y 64..224). On the DS the face stays on the touch screen
+    between messages; here it shows only with a message.
+  - BossHelp: main-screen OBJ at its DS place (bottom right), HUD scale, moved up
+    above the boss panel while the panel exists (500..582, 224..320).
+  - EnemyRoomHud: main-screen StageObj; HUD art in `UI_SP_HUD_TC` (DS x 128 =
+    screen centre, DS y 0 = 24 DS px under the safe top, 2x), so its end
+    position (212,12) lands under the score instead of on it (414..564, 84..140).
+  - Title card: the frame is the main screen with the sub screen's zone art
+    composed in, in the sub screen's own layer order: stage < stdm_zigzag (main
+    BG2, scrolled by StageTitleCardBg) < stdm_bg<zone> (sub BG3) < title card
+    sprites, all 2.5x. Drawn while `flags2 & 1` (from StageTitleCardBg_State_Init
+    to StageTitleCard_State_StartStage). Boss: the zigzag band only inside
+    window 0 (DS x 0x38..0xc0).
+  - Results: cldm_bg (BG2/BG3, one colour) < cldm_far (BG1, revealed by window 0,
+    a 2-px line that opens over 10 frames, then the whole layer) < tally sprites.
+  - Brightness: gDisplayMain's master brightness is the full-frame overlay. The
+    composed sub-screen quads (zone art, navigator, boss panel; `UiQuad.screen`)
+    take gDisplaySub's brightness on their vertex colour: black fades darken
+    them, white fades fade them out over what is behind (a textured quad cannot
+    be brightened to white here). The previous "stronger of the two screens"
+    overlay is gone: at StageTitleCard_State_StartStage the DS turns only the sub
+    screen white, and the frame no longer flashes white with it.
 - Draw order: the DS OAM rule (the first sprite drawn is in front) applies
-  within a layer. Layers: score popups < HUD < title card < results < pause <
-  game over < brightness overlay.
+  within a layer (BG pieces are emitted last, so they are behind). Layers: score
+  popups < HUD < navigator / boss panel / enemy room / BossHelp < title card BG <
+  title card < results BG < results < pause < game over < brightness overlay.
 
 ### 4.4 DS services replaced
 
@@ -228,6 +335,12 @@ from the existing `tools/dreamcast/sprites/bac2dc.py` output.
 | Sound_PlaySeqArc(Ex) / PlayVoice / PlaySeq / NNS_SndStopSoundAll | `g_ui_hooks.sfx/voice/music` with the original ids |
 | StageExit_Create / StageShutdown_Create / SceneChange_* | `ui_state() == UI_EXIT` + `ui_exit_kind()` |
 | Camera_WorldToScreen | `ui_world_to_screen` (camera from `ui_set_camera`) |
+| BBG backgrounds (Background_Init/InitEx/Draw, PaletteTransfer of 16 character colours) | `tools/uibg.py`: BBG -> ARGB1555 pieces with the palette the code builds (tile base from the char VRAM address), drawn as clipped quads; uniform BG fills as one stretched texel (checked by the converter) |
+| BG affine scroll / wrap, window 0 (title card, results) | quad offsets and clip rectangles (`ui_bg.c`) |
+| sub-screen OBJ palette rows 7/8 (NaviB_Create tmp sprites) | colour maps from the anims' own images (`ui_palmap_set`, UI_VAR_MAP0+n) |
+| NaviMsg face streaming (FS_ReadFile of chr/map halves, VBlank BG1CNT swap) | the same 3-frame flag pipeline; the shown frame is expanded from `navifaces_<c>.bin` into one 128x128 texture |
+| sub BG0/BG1 planes, BLDALPHA (NaviB lost icon) | overlay visibility, quad alpha |
+| Sound_PlayVoice(handle, arc, id) (navigator) | `g_ui_hooks.voice(arc, id)` after the original delay |
 
 ## 5. Function mapping
 
@@ -257,33 +370,33 @@ only; **not translated** = see section 6.
 | StageTitleCard_Main | same | modified (lifted template -> structured) |
 | StageTitleCard_InitSprites | same | modified (same anim choices, no VRAM/palette alloc) |
 | StageTitleCard_State_* (Init, StartDelay, BeginFadeIn, FadeIn, BeginShow, ShowDelay, ShowParts, BeginHold, Hold, ShowText, WaitText, BeginHoldText, HoldText, ShowText2, WaitText2, BeginExit, Exit, ToStartStage, WaitStartStage, BeginRestoreColors, RestoreDisplay, FinalDelay, Finish) | same | as-is (brightness registers -> g_ui_bright_*) |
-| StageTitleCard_State_StartStage | same | modified (camera flag writes and BG/DISPCNT setup dropped; NaviMsg for bosses not created) |
+| StageTitleCard_State_StartStage | same | modified (camera flag writes and BG/DISPCNT setup dropped; boss: NaviMsg_Create, NaviMsg_SetVisible(1), NaviB_Create) |
 | StageTitleCard_State_RestoreColors | same | modified (light/edge colour lerps omitted) |
 | StageTitleCard_HoldPlayerNone / X / Y | same | modified (gCamera snap left to main.c) |
 | StageTitleCard_DrawGlyphText | same | as-is |
 | StageTitleCardStrip_*, Part20_*, PartE0_*, Part180_*, Part260_*, Part324_*, Text3E8_*, Text404_*, Part420_* (State functions) | same | as-is |
 | the Part Draw functions | same | modified (AnimatorSprite_Draw -> ui_emit; PartE0 rotation dropped: the art is a disc) |
 | StageTitleCardBg_State_* | same | as-is (state only) |
-| StageTitleCardBg_Draw | - | not translated (BBG) |
+| StageTitleCardBg_Draw | `ui_tcbg_draw` (ui_bg.c) | modified |
 | StageTitleCardPlayer_State_* | same | as-is, except Zoom: modified (Camera_WorldToScreen -> ui_world_to_screen; perspective angle term fixed at 0x3c000) |
 | StageTitleCardPlayer_Draw | `ui_titlecard_player_view` | not translated (values exported) |
-| StageTitleCard_InitBg / InitBgBoss / LerpColor / ReleaseSprites / Destructor / CreateExtraBoss / DrawPlayer2Hidden | - | not translated |
+| StageTitleCard_LerpColor / ReleaseSprites / Destructor / CreateExtraBoss / DrawPlayer2Hidden | - | not translated |
 | PauseMenu_Create | same | modified (System_Freeze -> pause flag; Load2dBAC -> UiSpr; re-entry guard) |
 | PauseMenu_Main / PauseMenu_Draw / PauseMenu_Main_Quit | same | modified (logic as-is) |
 | PauseMenu_HighlightSelection | UI_VAR_DIM in PauseMenu_Draw | rewritten (same LUT on the pixels) |
 | PauseMenu_QuitToMap / QuitToTryAgain | same / `ui_request_exit` | rewritten (save lives, exit kind) |
 | PauseMenu_Destructor | `PauseMenu_Destroy` | modified |
 | ClearDemo_Create | same | modified (no BG/3D/sound archive setup; TA tally not created) |
-| ClearDemo_Main | same | modified (draws a black backdrop for the BG) |
+| ClearDemo_Main | same | modified (black backdrop under the BG layers) |
 | ClearDemo_State_FadeIn / ShowBg / ShowName / ShowModel / WaitParts / Hold / FadeOut / Finish | same | as-is |
 | ClearDemo_SkipParts / ClearDemo_SkipToRank | same | as-is |
 | ClearDemo_Finish / ClearDemo_GoToNextScene | `ClearDemo_GoToNextScene` | rewritten (scene changes -> exit kind) |
 | ClearDemo_InitScoreTally / GetTimeBonus / GetScoreBonus / GetRank | same | as-is (tables from uidata) |
 | ClearDemoScore_State_* / SkipRows / SkipToRank / Draw | same | as-is / Draw modified |
 | ClearDemoName_* / ClearDemoActText_* / ClearDemoBars_* | same | as-is / Draw modified |
-| ClearDemoBg_State_* , ClearDemoBg_Skip | same | modified (timing only, no BG registers) |
+| ClearDemoBg_State_* , ClearDemoBg_Skip | same | modified (window/scroll values kept for `ui_cdbg_draw`, no registers) |
 | ClearDemoModel_State_Init/Delay/Move/Done, ClearDemoModel_Skip | same | modified (timing only, no model) |
-| ClearDemo_InitTimeAttackTally, ClearDemoTA_*, ClearDemo_DrawModel, ClearDemoBg_Draw, ClearDemo_InitBg(Boss), ClearDemo_InitSprites palette part, ClearDemo_Destructor | - | not translated |
+| ClearDemo_InitTimeAttackTally, ClearDemoTA_*, ClearDemo_DrawModel, ClearDemo_InitSprites palette part, ClearDemo_Destructor (NaviMsg / NaviB of boss results) | - | not translated |
 | GameOverSeq_StartGameOver / StartTimeOver | `GameOverSeq_Start` (shared) | modified (DISPCNT -> black backdrop) |
 | GameOverSeq_Main | same | modified (raw KEYINPUT -> held) |
 | GameOverSeq_Destructor | `GameOverSeq_Destroy` | modified |
@@ -302,26 +415,85 @@ only; **not translated** = see section 6.
 | StageExit_Create / StageExit_Main | deferred callback in `ui_update` | rewritten |
 | StageRestart_Create (UI part) | `ui_stage_restart` | rewritten (deferred to ui_post_update) |
 | Math_LerpFx32 / StoryProgress_GetZoneIndex | same | as-is |
+| StageTitleCard_InitBg / InitBgBoss | `ui_tcbg_load` + `tools/uibg.py` | rewritten (BG setup -> converted pieces) |
+| StageTitleCardBg_Draw | `ui_tcbg_draw` | modified (affine scroll -> quad offsets, window -> clip) |
+| ClearDemo_InitBg / InitBgBoss | `ui_cdbg_load` + `tools/uibg.py` | rewritten |
+| ClearDemoBg_Draw, ClearDemoBg_State_Init/Open (window part), ClearDemoBg_Skip | `ui_cdbg_draw`, same | modified (window registers -> win_on / win_x2) |
+| NaviB_Create | same | modified (no VRAM/DISPCNT; palette rows -> colour maps; difficulty from `g_ui_game`) |
+| NaviB_Main, NaviB_DrawIcons, NaviB_Main_Health, _HealthLost, _HealthSprite, _HealthSpriteChange | same (`navib_run`) | as-is / Draw modified (sub OAM -> UI_SP_NAVI_B, BLDALPHA -> quad alpha) |
+| NaviB_Destroy | same | modified |
+| NaviB_Load / NaviB_Release / NaviB_Destructor, NaviBg_Load | `ui_init` (sprites), `ui_navi_stage_start` (panels, faces) | rewritten |
+| NaviMsg_Create (mode 1) | same | modified (BG/VRAM setup dropped; gates and initial panel/face as-is) |
+| NaviMsg_Main, NaviMsg_VBlankMain | same | modified (tile copies -> flag pipeline, BG planes -> overlay flags) |
+| NaviMsg_ShowMessage (mode 1), NaviMsg_LoadPanel, NaviMsg_State_HideTimer, NaviMsg_SetVisible, NaviMsg_IsVisible, NaviMsg_HidePanel, NaviMsg_SetFaceAnim, NaviMsg_StartFaceSeq, NaviMsg_UpdateFaceAnim | same | as-is (file reads -> image indices) |
+| NaviMsgFace_StartIdle / Play / State_Idle / State_Blink / State_Play | same | as-is |
+| NaviMsg_ReadFaceFrameMap / Chr, LoadFacePalette, ParsePanelHeader, CopyTileRect | flag pipeline + `ui_navi_face_expand` | rewritten |
+| NaviMsg_ShowMessage mode 0, NaviMsg_StartIntro, State_Intro, FadeVisible, State_FadeIn/Out, InitSubDisplay, RestoreSubDisplay, SetRestoreSubDisplayFlag, CloseFiles | - | not translated (zone map navigator / DS display restore) |
+| NaviM_* , NaviMPartA/B_* (zone-map lives and emerald panel) | - | not translated (menus area, not in a stage) |
+| BossHelp_Create / Main / Destroy | same | modified (OBJ VRAM/palette alloc dropped) |
+| BossHelp_Destructor | `BossHelp_Destroy` | rewritten |
+| EnemyRoomHud_Create | static, called by `ui_enemy_room(0, n)` | modified (EnemyRoom_GetActive -> the reported counts; StageObj -> UiSpr) |
+| EnemyRoomHud_Action_Appear/Count/Vanish/Finish, _State_Appear/Count/Vanish/Finish, _UpdateDigitScale | same | as-is (palette row load -> converted colours; label unk7 offset not applied) |
+| EnemyRoomHud_Draw / DrawFinish | same | modified (StageObj_Draw2DEx -> ui_emit in UI_SP_HUD_TC) |
+| EnemyRoomHud_Destructor | `EnemyRoomHud_Destroy` | rewritten |
+| EffEnemyRoomFix_* | - | not translated (world-space effect, objects area) |
+| PauseMenu_Create: StoryProgress_IsStageNew() | `g_ui_hooks.stage_new` | modified |
 | ObjShift_Set / ObjShift_SetFromRef | objects module (`obj_fx.c`) | reused |
 
 ## 6. Gaps and assumptions (honest list)
 
-- **Not drawn**: the title card and results backgrounds (`stdm_bg*.bbg`,
-  `cldm_*.bbg`: there is no BBG converter yet. The title card draws over the live
-  stage, and the results draw over black). The player model close-up of the
-  title card and the results model are not drawn either.
+- **Not drawn**: the player model close-up of the title card and the results
+  model. The title card palette lerps (StageTitleCard_LerpColor /
+  RestoreColors light and edge colours) are not applied to the BG art.
 - **Not translated**: time-attack tally (ClearDemoTA_*: time attack uses the
   score tally), CheckpointTimePopup / MarkerTimeList (time attack), VS results
-  (ResultsScreen_*), EnemyRoomHud, BossHelp, NaviM/NaviB/NaviMsg (boss
-  bottom-screen helpers), special-stage pause and exit, extra boss (zone 8 act 2)
-  special cases beyond the brightness ones.
+  (ResultsScreen_*), NaviM / NaviMPart* and the mode-0 (zone map) navigator
+  (menus area), EffEnemyRoomFix (world-space effect: objects area), special-stage
+  pause and exit, extra boss (zone 8 act 2) special cases beyond the brightness
+  ones, and the NaviMsg / NaviB of boss **results** (ClearDemo_Create creates them
+  with health 0 and no message: nothing to show in the one frame).
+- **Second-screen redesign (DC choices, not in the original)**: the navigator
+  face is shown only together with a message (the DS keeps it on the touch
+  screen); the face is cropped to (12,0)-(116,80) of its 128x128 frame; the
+  "SONIC THE HEDGEHOG" header and the blue backdrop of `<c>_b_b` are not drawn;
+  the overlays' positions are a layout choice (section 4.3), checked only in
+  host renders.
+- **Navigator wiring outside this module**: Player_OnHurt's line
+  (`NaviMsg_SetFaceAnim(0xc); NaviMsg_ShowMessage(0x11, 0x96)` in boss stages)
+  has no hook in the player module (`dcp_on_hurt`). `ui_navi_player_hurt()` is
+  the entry: the player owner needs a hook after the `hit_flags & 0x40` sound.
+  Boss4..7/F are not translated: only Boss1..3 call `g_boss_hooks.navi`, and no
+  boss calls BossHelp yet (Boss6/7/F). No normal-stage object calls NaviMsg in
+  the original (the navigator exists in boss stages only).
+- **Brightness of composed sub-screen quads**: white fades fade them out (alpha)
+  instead of whitening them; black fades are exact (vertex colour).
+- **Approximations**: the NaviB lost icon's BLDALPHA (eva v, evb 31 - v over
+  sub BG2) is a plain alpha v/31; the lost icon scales about the sprite origin,
+  not the OBJ centre. EnemyRoomHud's s8 `unk7` (label OAM offset during
+  appear/vanish) is not applied; scale 0 counts as unscaled (as ScorePopup_Draw).
+  Results: window 0 is taken as on (empty) from ClearDemo_Create until
+  ClearDemoBg_State_Init (the DS register state before it was not traced);
+  inside the 2-px window line BG2/BG3 are not hidden.
+- **Link names**: `StoryProgress_GetZoneIndex` (also in menus/mn_story.c) and
+  `NaviMsg_SetFaceAnim` / `NaviMsg_ShowMessage` (also in boss/boss_core.c, where
+  they forward to `g_boss_hooks.navi`) keep their original names in the UI
+  sources but link as `ui_*` (macros in `ui_internal.h`), so the game links with
+  menus and boss.
+- **Host test build**: the test links the objects and player modules, which
+  other workers were editing. `make host-test` passed 93/93 with the whole
+  objects module; in the last run `objects/obj_deadline.c` (new, not yet
+  compiling) was left out and the previously compiled object files were linked.
+- **gGameLanguage order**: `data_0207b9bc` reads jpn, eng, fra, deu, ita, spa;
+  the old comment in ui.h (deu at 2) was wrong and is fixed.
 - The Blaze palette reload of the results glyphs (ClearDemo_InitSprites) is
   not done: Blaze's results use the BAC's own palette.
 - Lives on a new game: `gSaveData.unkE/unk66` come from the save file. The
   save-file default was not traced. `save_lives` defaults to 3 (assumption).
-- `StoryProgress_IsStageNew()` is not modelled. `g_ui_game.stage_new = 0`
-  (default) shows CONTINUE / GO BACK. The original shows only "PAUSE" on a first
-  visit (story) and always shows the entries in time attack.
+- `StoryProgress_IsStageNew()` lives in the menus module (`mn_story.c`).
+  PauseMenu_Create calls `g_ui_hooks.stage_new` when set (main.c wires it, the
+  menus' gGameState must hold the stage's zone/act/character); otherwise
+  `g_ui_game.stage_new` (default 0: CONTINUE / GO BACK). The original shows only
+  "PAUSE" on a first visit (story) and always shows the entries in time attack.
 - The pause menu "GO BACK" leads to the zone map in the original. Here it is
   `UI_EXIT_QUIT`. The original has no "restart" entry, and there is no art for one.
 - Sound: every call site passes its original arc/id to `g_ui_hooks`.
@@ -342,8 +514,15 @@ only; **not translated** = see section 6.
   Spot checks against the decompiled tables: gauge colours `7fff 7e00 031f 001f`,
   time divisors `2160000 .. 60, 10`, rank thresholds `100000/80000/50000/0`,
   first time-bonus threshold table `3599 .. 15599, 0xffffffff`.
-- `make -C dreamcast/game/ui host-test`: 61/61 checks. Measured on the real
-  tables and sprites:
+- `make -C dreamcast/game/ui data` also runs `tools/uibg.py`: 18 title card,
+  2 results and 12 navigator resource directories, `navifaces_t.bin` (50
+  frames), `navifaces_c.bin` (41 frames), `navidata.bin` (9 sections). The
+  converter asserts what the runtime relies on: the stdm_zigzag fill columns are
+  all equal (stretched), cldm_bg is one colour, every page is power-of-two.
+  Voice ids read: Tails 211..216, Cream 217..222, arcs 2 / 3.
+- `make -C dreamcast/game/ui host-test`: 93/93 checks (the 61 earlier ones
+  unchanged, plus the boss / enemy room / background ones below). Measured on
+  the real tables and sprites:
   - digits (ring/time/score conversion, clamp 9'59"99);
   - bonus tables and ranks (85000 time bonus under 1 minute, 10000 trick bonus
     at 20000 points, rank boundaries, boss ranks);
@@ -359,11 +538,36 @@ only; **not translated** = see section 6.
     twice exits 139 frames later;
   - game over: 529 frames to exit, saved lives clamped to 2;
   - time over: kills the player and sets the no-time-bonus flag.
-- `make -C dreamcast/game/ui dc`: all 8 sources compile with `kos-cc -std=gnu99
-  -O2 -Wall -Wextra -Werror`.
+  - boss stage (z1 act 3): zone art 640x480 and the zigzag band inside window
+    0x38..0xc0 on the title card; NaviB created at StartStage; the start
+    message (face 9, panel 0xf) is on screen 238 frames for time 0xf0 (the
+    2-frame load pipeline), its voice plays 1 frame after the call; a hit
+    (health 8 -> 7) shows the lost icon for 10 frames (BLDALPHA reaches 0) and
+    the counter flash for 2 frames; the hurt line plays its voice; the face
+    streams 104x80; BossHelp sits above the panel; Sonic progress 2: panel
+    only, no navigator; normal act: no panel;
+  - enemy room (5 enemies): counter 05 shown with sfx 0xe7, 3 defeated -> 02,
+    cleared -> sfx 0xe8, the finish sprites, gone after 262 frames;
+  - title card BG: 242 frames, off after StartStage; results BG: backdrop,
+    cldm_far and two cldm_bg planes;
+  - pause asks `g_ui_hooks.stage_new`;
+  - every HUD/navigator quad inside the safe area, none as large as a DS screen.
+- `make -C dreamcast/game/ui dc`: all 11 sources compile with `kos-cc -std=gnu99
+  -O2 -fwrapv -Wall -Wextra -Werror`. Their undefined symbols are only KOS/libc,
+  `engine/render.c` (draw_rect_screen, tex_free), the objects module (ObjShift_*,
+  g_obj_stage, g_obj_hooks) and the player module (g_dcp_world, g_dcp_hooks,
+  dcp_act_die). No new KOS link test was run.
 - KOS link test (`/tmp/ui/link`): UI + player + objects + `engine/render.c` + stub main -> `link.elf`
   links with no unresolved symbols.
 - Visual check (host only): `UI_DUMP=dir test_ui ...` then
   `tools/render_quads.py` gives PNGs of the HUD, title card, pause, results and
   game over. They were inspected: layout, digit order, gauge colours, pause dimming, rank
   stamp, letter spacing.
+- Composited 640x480 frames (host renderer over a flat colour standing in for the
+  world, copied to `build/dreamcast/ui/preview/`): `boss_message` (balloon
+  "Good luck Sonic!", face, boss panel 8/8), `boss_hit` ("That's it, Sonic!",
+  gauge 7/8), `boss_help`, `boss_titlecard`, `titlecard_120/240`, `results`,
+  `results_open`, `enemyroom` (ENEMY 05), `enemyroom_clear` (finish sprites).
+  Inspected: text readable at 2x, no overlay on the bottom-centre play area,
+  no second DS panel or dividing line, nothing outside the safe area. The
+  renderer is not a PVR: nearest filtering, no TR sorting effects, no Flycast run.

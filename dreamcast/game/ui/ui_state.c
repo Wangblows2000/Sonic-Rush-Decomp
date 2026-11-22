@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include "ui_internal.h"
 
-UiGame g_ui_game = { 0, 0, 0, 0, 0, 0, 0, 1, { 3, 3 } };
+UiGame g_ui_game = { 0, 0, 0, 0, 0, 0, 0, 1, { 3, 3 }, 1, { 0xffff, 0xffff } };
 int g_ui_layer;
 UiHooks g_ui_hooks;
 u16 g_ui_trig, g_ui_held;
@@ -185,11 +185,18 @@ int ui_init(void) {
     u8 *b;
     u32 size;
     int err = 0, lang;
-    static const char *k_lang[6] = { "jpn", "eng", "deu", "fra", "spa", "ita" };
     char id[48];
     snprintf(path, sizeof(path), "%s/uidata.bin", g_ui_dir);
     if (ui_load_file(path, &b, &size) == 0) {
         if (ui_data_load(b, size) != 0)
+            err = -1;
+        free(b);
+    } else {
+        err = -1;
+    }
+    snprintf(path, sizeof(path), "%s/navidata.bin", g_ui_dir);
+    if (ui_load_file(path, &b, &size) == 0) {
+        if (ui_navi_data_load(b, size) != 0)
             err = -1;
         free(b);
     } else {
@@ -202,11 +209,14 @@ int ui_init(void) {
     err |= ui_res_load(UI_RES_STDM, "act__dm_stdm");
     /* data_02076b74[lang] selects dm_stdm_jpn (3) or dm_stdm_eng (4) */
     snprintf(id, sizeof(id), "act__dm_stdm_%s", (g_ui_data.ok && g_ui_data.tc_lang[lang] == 3) ? "jpn" : "eng");
-    (void)k_lang;
     err |= ui_res_load(UI_RES_STDM_LANG, id);
     err |= ui_res_load(UI_RES_PAUSE, "act__ac_fix_pause");
     err |= ui_res_load(UI_RES_PAUSE_FRAME, "act__ac_fix_pause_frame");
     err |= ui_res_load(UI_RES_GAMEOVER, "act__ac_fix_gameover");
+    /* boss panel (NaviB_Load), boss help, enemy room counter */
+    err |= ui_res_load(UI_RES_NAVIB, "act__navi_b");
+    err |= ui_res_load(UI_RES_BOSSHELP, "act__ac_fix_bosshelp");
+    err |= ui_res_load(UI_RES_ENEMYROOM, "act__ac_eff_enemyroom_fix");
     s_inited = 1;
     return err ? -1 : 0;
 }
@@ -256,6 +266,8 @@ static void Stage_Create_UI(void) {
     }
     Player_Create_InitProgress();
     ScorePopup_Destroy();
+    EnemyRoomHud_Destroy();
+    ui_navi_stage_start();   /* NaviBg_Load / NaviB_Load (Player_LoadArchive, BossStage*_OnModelLoaded) */
     Hud_Create();
     if (!UI_NORMAL_STAGE())
         Hud_SetFlags(Hud_GetFlags() | 4);
@@ -433,6 +445,10 @@ void ui_update(const InputState *in, DcPlayer *p) {
         StageTitleCard_Destroy();
         Hud_Destroy();
         ScorePopup_Destroy();
+        EnemyRoomHud_Destroy();
+        NaviB_Destroy();      /* Stage_FreeZoneFiles: NaviMsg_CloseFiles, NaviB_Release */
+        NaviMsg_Destroy();
+        BossHelp_Destroy();
         if (cb)
             cb();
     }
@@ -501,6 +517,11 @@ void ui_post_update(DcPlayer *p) {
      * runs while frozen (PauseMenu_Main_Quit waits for it) */
     g_ui_layer = UI_LAYER_HUD;
     Hud_Main();
+    /* EnemyRoomHud (StageObj task 0xa00), NaviMsg / NaviB (sub screen), BossHelp:
+     * frozen while paused, still drawn */
+    g_ui_layer = UI_LAYER_NAVI;
+    EnemyRoomHud_Frame(!PauseMenu_IsActive(), p);
+    ui_navi_frame(PauseMenu_IsActive());
     BrightnessFade_Main();
     if (!PauseMenu_IsActive()) {
         g_ui_layer = UI_LAYER_TITLE;

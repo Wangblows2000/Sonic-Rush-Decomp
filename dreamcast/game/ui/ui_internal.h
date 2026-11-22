@@ -9,6 +9,11 @@
 #include "../objects/objects.h"
 
 #define W g_dcp_world   /* gGameState / data_022c4590 fields owned by the player module */
+/* Original names whose global symbols other modules of the game also define
+ * (menus: mn_story.c; boss: boss_core.c's hook forwarders): linked under ui_ names */
+#define StoryProgress_GetZoneIndex ui_StoryProgress_GetZoneIndex
+#define NaviMsg_SetFaceAnim ui_NaviMsg_SetFaceAnim
+#define NaviMsg_ShowMessage ui_NaviMsg_ShowMessage
 #define G g_ui_game     /* the rest */
 
 /* gGameState.unk1C < 9 && gGameState.unk1D < 2 */
@@ -49,6 +54,12 @@ enum {
     UI_RES_PAUSE,       /* /act/ac_fix_pause.bac (PauseMenu_Create)                           */
     UI_RES_PAUSE_FRAME, /* /act/ac_fix_pause_frame.bac                                       */
     UI_RES_GAMEOVER,    /* /act/ac_fix_gameover.bac (GameOver_Create)                         */
+    UI_RES_NAVIB,       /* /act/navi_b.bac (NaviB_Load: boss health panel sprites)           */
+    UI_RES_BOSSHELP,    /* /act/ac_fix_bosshelp.bac (BossHelp_Create)                        */
+    UI_RES_ENEMYROOM,   /* /act/ac_eff_enemyroom_fix.bac (EnemyRoomHud_Create)               */
+    UI_RES_NAVI,        /* res/navi_<t|c>_<lang>: <c>_b_b box, b_bal balloon, boss messages  */
+    UI_RES_TCBG,        /* res/tcbg_<n>: stdm_bg<zone> (+ boss) and the zigzag pieces        */
+    UI_RES_CLDMBG,      /* res/cldm_<chara>: cldm_far and the cldm_bg pattern                */
     UI_RES_COUNT
 };
 typedef struct UiRes {
@@ -86,18 +97,51 @@ enum {
     UI_SP_HUD_TL,   /* HUD art, integer scale, anchored to the safe area's top-left     */
     UI_SP_HUD_BL,   /* ... bottom-left (DS y 192 = safe bottom)                         */
     UI_SP_HUD_TR,   /* ... top-right (DS x 256 = safe right)                            */
-    UI_SP_WORLD     /* world px (ScorePopup), camera from ui_set_camera                  */
+    UI_SP_WORLD,    /* world px (ScorePopup), camera from ui_set_camera                  */
+    UI_SP_HUD_BR,   /* HUD art anchored to the safe area's bottom-right (DS 256,192 = corner), BossHelp */
+    UI_SP_HUD_TC,   /* HUD art, top centre, under the HUD's top row (EnemyRoomHud)       */
+    UI_SP_NAVI_B,   /* DS sub-screen px of the NaviB box -> its DC place (boss panel)    */
+    UI_SP_NAVI_MSG, /* DS sub-screen px of the balloon -> its DC place                   */
+    UI_SP_NAVI_FACE /* DS sub-screen px of the face frame -> its DC place                */
 };
-enum { UI_VAR_NONE = 0, UI_VAR_GAUGE0 = 1 /* .. +6: white -> gauge_pal[i] */, UI_VAR_DIM = 8 };
+/* UI_SP_NAVI_*: DC = dst + (DS - src) * k (ui_space_set) */
+void ui_space_set(int space, float dst_x, float dst_y, float src_x, float src_y, float k);
+void ui_space_map(int space, float x, float y, float *ox, float *oy, float *k);
+/* safe area / HUD scale (ui_hud_layout) */
+void ui_hud_metrics(int *k, int *x0, int *y0, int *x1, int *y1);
+enum { UI_VAR_NONE = 0, UI_VAR_GAUGE0 = 1 /* .. +6: white -> gauge_pal[i] */, UI_VAR_DIM = 8,
+       UI_VAR_MAP0 = 16 /* .. +3: colour maps (ui_palmap_set): OBJ palette row swaps */ };
+/* A palette-row swap as a colour map: the colours of image src (a sprite drawn with
+ * its own row) -> the colours of image dst at the same pixels (the same sprite drawn
+ * with the other row). Built from the atlas pixels (NaviB rows 7 / 8). */
+void ui_palmap_set(int n, int res, int src_image, int dst_image);
+u16 ui_variant_pixel(u16 p, int variant);
+/* pseudo resource for UiQuad.tex: the streamed navigator face (ui_navi.c) */
+enum { UI_TEX_FACE = 100 };
 enum { UI_FLIP_H = 1, UI_FLIP_V = 2 };
 /* AnimatorSprite_Draw / _DrawRotScale: scale 0x1000 = 1.0, about the sprite origin */
 void ui_emit(const UiSpr *s, int space, s32 scale_x, s32 scale_y, int flip, u32 argb, int variant);
 static inline void ui_emit_spr(const UiSpr *s, int space) { ui_emit(s, space, 0x1000, 0x1000, 0, 0xffffffff, 0); }
 /* draw order (stable within a layer): world popups < HUD < title card < results
  * < pause < game over < fade overlay */
-enum { UI_LAYER_POPUP, UI_LAYER_HUD, UI_LAYER_TITLE, UI_LAYER_RESULTS, UI_LAYER_PAUSE,
-       UI_LAYER_GAMEOVER, UI_LAYER_FADE };
+enum { UI_LAYER_POPUP, UI_LAYER_HUD, UI_LAYER_NAVI, UI_LAYER_TITLE_BG, UI_LAYER_TITLE,
+       UI_LAYER_RESULTS_BG, UI_LAYER_RESULTS, UI_LAYER_PAUSE, UI_LAYER_GAMEOVER, UI_LAYER_FADE };
 extern int g_ui_layer;
+/* Which DS screen a quad came from. The frame is the main screen (its master
+ * brightness is the full-frame overlay); quads composed in from the sub screen
+ * (title card zone art, navigator, boss panel) take the sub screen's brightness
+ * on their own vertex colour. */
+extern int g_ui_screen;
+/* one image of a resource, top-left at (x, y) of a space, clipped to the
+ * rectangle (cx0, cy0)-(cx1, cy1) of that space (UVs follow). For BG pieces. */
+void ui_emit_image(int res, int image, int space, float x, float y, float cx0, float cy0, float cx1, float cy1,
+                   u32 argb);
+/* the same with a texel sub-rectangle (su, sv, suw, svh relative to the image) drawn
+ * over (x, y, w, h); a stretched part must be uniform along the stretch (BG fill) */
+void ui_emit_image_part(int res, int image, int space, float x, float y, float w, float h, float su, float sv,
+                        float suw, float svh, float cx0, float cy0, float cx1, float cy1, u32 argb);
+/* streamed face (UI_TEX_FACE): frame f of the face set, w x h texels */
+void ui_emit_face(int space, float x, float y, int f, int w, int h, u32 argb);
 void ui_emit_flat(int space, float x, float y, float w, float h, u32 argb);
 void ui_cmd_reset(void);
 /* quads emitted between these are dropped (sprites hidden behind a BG the DC lacks) */
@@ -137,6 +181,7 @@ int ui_data_load(const u8 *buf, u32 size);   /* parses "RUID" v1 */
 int ui_load_file(const char *path, u8 **out, u32 *size);
 extern char g_ui_dir[96], g_ui_sprite_dir[96];
 int ui_res_load(int idx, const char *id);    /* frames.bin (+ atlas on KOS) */
+int ui_res_load_dir(int idx, const char *dir, const char *id); /* <dir>/<id>/frames.bin */
 void ui_res_free(int idx);
 /* KOS: upload the atlas (ui_draw.c); host: no-op */
 int ui_res_upload(UiRes *r);
@@ -157,6 +202,50 @@ int BrightnessFade_IsDone(void);
 void BrightnessFade_Destroy(void);
 /* gDisplayMain.brightness / gDisplaySub.brightness (-16 black .. +16 white) */
 extern s16 g_ui_bright_main, g_ui_bright_sub;
+
+/* navidata.bin (tools/uibg.py): navigator / NaviB / EnemyRoomHud tables */
+typedef struct UiNaviSeq { u16 count, flags; u8 fr[40][2]; } UiNaviSeq;  /* (duration, face frame) */
+typedef struct UiNaviData {
+    UiNaviSeq seq[2][14];        /* data_0207b8d4[chara][anim] (boss anims only, others count 0) */
+    s16 geo[2][16];              /* panel rect, balloon rect, face rect, face pos, message pos (DS sub px) */
+    s32 voice[2][7];             /* data_0207566c arc, data_0207567c .. data_02075690 voice ids */
+    u16 navib_icon[8];           /* data_02073264 */
+    s16 navib_pos[8][2];         /* data_02073274 */
+    s8 er_shake[4][2];           /* data_02077944 */
+    int ok;
+} UiNaviData;
+extern UiNaviData g_ui_navi;
+int ui_navi_data_load(const u8 *buf, u32 size);
+
+/* --------------------------------------------------------------- navigator / boss panel */
+void NaviB_Create(void);
+void NaviB_Main(void);
+void NaviB_Destroy(void);
+int NaviB_IsActive(void);
+void NaviMsg_Create(void);
+void NaviMsg_Main(void);
+void NaviMsg_Destroy(void);
+void NaviMsg_SetVisible(int on);
+void NaviMsg_SetFaceAnim(s32 face);
+void NaviMsg_ShowMessage(s32 msg, s32 time);
+void BossHelp_Main(void);
+void ui_navi_stage_start(void);   /* load / free the stage's navigator resources */
+void ui_navi_draw(void);          /* the DC overlays (boss panel, message box) */
+void ui_navi_frame(int frozen);   /* NaviMsg task + overlays + BossHelp (frozen: draw only) */
+void NaviMsg_HidePanel(void);
+int ui_navi_face_expand(int f, u16 *dst, int stride, int *w, int *h);
+/* EnemyRoomHud */
+void EnemyRoomHud_Frame(int run, const DcPlayer *p);
+void EnemyRoomHud_Destroy(void);
+/* title card / results backgrounds (ui_bg.c) */
+void ui_tcbg_load(void);
+void ui_tcbg_free(void);
+void ui_tcbg_draw(s32 scroll_x, s32 scroll_y);   /* StageTitleCardBg_Draw: fn78 unk4 / unk8 */
+void ui_cdbg_load(void);
+void ui_cdbg_free(void);
+/* ClearDemoBg_Draw: BG2 y = unk8 >> 12, BG3 y = unk4 >> 12; window 0 (x 0..win_x2,
+ * y 33..35 on the DS) shows cldm_far while win_on */
+void ui_cdbg_draw(s32 unk4, s32 unk8, int win_on, int win_x2);
 
 /* --------------------------------------------------------------- HUD (ui_hud.c) */
 void Hud_Create(void);

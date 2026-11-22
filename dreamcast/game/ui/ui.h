@@ -60,9 +60,12 @@ typedef struct UiGame {
     u32 frame24;        /* gGameState.unk24 (frames since stage start)                  */
     u32 save_flags;     /* gSaveData.unk8 (bit 1: no time limit option)                 */
     u8 stage_new;       /* StoryProgress_IsStageNew(): 1 = pause menu shows no entries  */
-    u8 language;        /* gGameLanguage (0 jpn, 1 eng, 2 deu, 3 fra, 4 spa, 5 ita)     */
+    u8 language;        /* gGameLanguage (0 jpn, 1 eng, 2 fra, 3 deu, 4 ita, 5 spa: data_0207b9bc) */
     u8 save_lives[2];   /* gSaveData.unkE / unk66: lives restored on stage entry.
                            Native default 3 (the save-file default was not traced). */
+    u8 difficulty;      /* gGameState.unk14 (1 = normal: 8 boss hit points, NaviB gauge 0x1a) */
+    u16 save_progress[2]; /* gSaveData.unkC / unk64 (story progress): NaviMsg_Create shows no
+                           navigator before Sonic 3 / Blaze 4 (and Blaze 0x1b). Default 0xffff */
 } UiGame;
 extern UiGame g_ui_game;
 
@@ -126,6 +129,8 @@ typedef struct UiHooks {
     void (*voice)(void *ctx, s32 arc, s32 id); /* Sound_PlayVoice */
     void (*music)(void *ctx, s32 id);          /* Sound_PlaySeq(0, id); -1 = NNS_SndStopSoundAll */
     void (*music_pause)(void *ctx, int on);    /* pause menu: NNS_SndPlayerPauseByPlayerNo(3..9) */
+    /* StoryProgress_IsStageNew (menus module), read by PauseMenu_Create. NULL: g_ui_game.stage_new */
+    int (*stage_new)(void *ctx);
 } UiHooks;
 extern UiHooks g_ui_hooks;
 
@@ -142,6 +147,33 @@ void ui_hud_layout(int scale, int safe_x0, int safe_y0, int safe_x1, int safe_y1
  * world window, world px) once per frame before ui_draw_tr (main.c: g_cam_x/y). */
 void ui_set_camera(float x, float y);
 
+/* ------------------------------------------- boss stages (ui_navi.c) */
+/* gBossStatus.unk8: the boss hit points NaviB shows. Call every frame of a boss
+ * stage before ui_update (main.c: ui_set_boss_health(boss_health())). */
+void ui_set_boss_health(s32 health);
+/* g_boss_hooks.navi: NaviMsg_SetFaceAnim(face) + NaviMsg_ShowMessage(msg, time).
+ * Assign it directly: g_boss_hooks.navi = ui_boss_navi. */
+void ui_boss_navi(void *ctx, s32 face, s32 msg, s32 time);
+/* Player_OnHurt, boss stages: NaviMsg_SetFaceAnim(0xc); NaviMsg_ShowMessage(0x11, 0x96).
+ * The player module has no hook for it: call after dcp_on_hurt (see UI.md). */
+void ui_navi_player_hurt(void);
+/* BossHelp_Create(idx) / BossHelp_Destroy (Boss6_StartTiltCamera, Boss7_State_ClashStart,
+ * BossFPartD8_State_HandRideStartWarn: idx = ac_fix_bosshelp animation 0 / 1) */
+void BossHelp_Create(u32 idx);
+void BossHelp_Destroy(void);
+/* NaviMsg_IsVisible: the navigator message box is on screen */
+int ui_navi_message_visible(void);
+
+/* -------------------------------------- enemy rooms (ui_enemyroom.c) */
+/* OBJ_FX_ENEMY_ROOM (g_obj_hooks.effect, kind OBJ_FX_ENEMY_ROOM, a, b):
+ *   a = 0: EnemyRoomHud_Create, b = enemies to defeat
+ *   a = 1: count, b = enemies defeated so far
+ *   a = 2: room cleared (b = defeated)
+ * main.c calls it from its g_obj_hooks.effect handler (the UI does not install that hook). */
+void ui_enemy_room(s32 a, s32 b);
+/* EnemyRoom_GetActive(1)->unk20C & 1 (the finish sprites swap sides); default 0 */
+void ui_enemy_room_flags(u32 f20c);
+
 /* ------------------------------------------------ host test access */
 typedef struct UiQuad {
     float x, y, w, h;      /* 640x480 screen */
@@ -151,6 +183,7 @@ typedef struct UiQuad {
     int image;
     int variant;
     int layer;
+    int screen;            /* 0 DS main screen, 1 composed in from the sub screen */
 } UiQuad;
 int ui_debug_quads(const UiQuad **out);
 #endif

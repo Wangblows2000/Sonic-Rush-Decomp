@@ -5,15 +5,16 @@
  *   _HoldPlayerNone/X/Y, _DrawGlyphText, StageTitleCardStrip_*, StageTitleCardPart20_*,
  *   StageTitleCardPartE0_*, StageTitleCardPart180_*, StageTitleCardPart260_*,
  *   StageTitleCardPart324_*, StageTitleCardText3E8_*, StageTitleCardText404_*,
- *   StageTitleCardPart420_*, StageTitleCardBg_* (state only), StageTitleCardPlayer_*
- *   (state and camera/zoom values only).
+ *   StageTitleCardPart420_*, StageTitleCardBg_* (state here, drawing in ui_bg.c),
+ *   StageTitleCardPlayer_* (state and camera/zoom values only).
  *
  * Every timer, lerp and flag is the original; positions are DS screen pixels in
  * 20.12 fixed point and are drawn in UI_SP_SCREEN.
- * Not drawn (reported in UI.md): the BBG backgrounds (stdm_bg*.bbg have no DC
- * converter yet) and the player model close-up (StageTitleCardPlayer_Draw: the
- * values are exposed by ui_titlecard_player_view for the model renderer).
- * gDisplaySub/gDisplayMain master brightness -> g_ui_bright_sub/main (overlay).
+ * The BG layers (stdm_zigzag + stdm_bg<zone>, tools/uibg.py) are composed into the
+ * one frame by ui_bg.c.  Not drawn (UI.md): the player model close-up
+ * (StageTitleCardPlayer_Draw: ui_titlecard_player_view exposes the values).
+ * gDisplayMain master brightness -> the frame overlay, gDisplaySub -> the composed
+ * zone art (g_ui_bright_main / g_ui_bright_sub, ui_draw.c).
  */
 #include "ui_internal.h"
 
@@ -772,7 +773,11 @@ static void StageTitleCard_State_StartStage(TcWork *w) {
         g_ui_bright_sub = 0x10;
     } else if (!UI_NORMAL_STAGE()) {
         g_ui_bright_main = 0x10;
-        /* boss: NaviMsg / NaviB bottom-screen helpers (not part of this module) */
+        if (W.zone != 8 || W.act != 2) {
+            NaviMsg_Create();      /* NaviMsg_Create(1, gGameState.unk0) */
+            NaviMsg_SetVisible(1);
+            NaviB_Create();
+        }
     } else {
         g_ui_bright_main = 0;
         g_ui_bright_sub = 0x10;
@@ -932,6 +937,7 @@ void StageTitleCard_Create(DcPlayer *p) {
     }
     W.flags &= ~1u; /* the timer starts at StartStage */
     StageTitleCard_InitSprites(w);
+    ui_tcbg_load();            /* res[2] / res[3]: StageTitleCard_InitBg(Boss) */
     g_ui_bright_main = g_ui_bright_sub = 0x10; /* FadeIn starts from white */
     Hud_SetOamPriority(3);     /* Hud_SetOamPriority3: behind the title card BG */
 }
@@ -992,7 +998,12 @@ void StageTitleCard_Main(void) {
         StageTitleCardPart420_Draw(t0);
     if (t0->flags2 & 2)
         StageTitleCardPart20_Draw(t0);
-    /* flags2 & 1: StageTitleCardBg_Draw (BG affine scroll of stdm_bg*.bbg) */
+    if (t0->flags2 & 1) {      /* StageTitleCardBg_Draw: zigzag scroll, zone art (ui_bg.c) */
+        int layer = g_ui_layer;
+        g_ui_layer = UI_LAYER_TITLE_BG;
+        ui_tcbg_draw(t0->fn78.unk4, t0->fn78.unk8);
+        g_ui_layer = layer;
+    }
 }
 
 int ui_titlecard_player_view(s32 *scale, s32 *x, s32 *y) {

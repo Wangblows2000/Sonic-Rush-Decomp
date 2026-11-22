@@ -55,6 +55,24 @@ static void t_music(void *c, s32 id) {
     (void)c;
     s_music_last = id;
 }
+static int s_voice_n, s_voice_last = -1, s_sfx_last = -1, s_stage_new_calls;
+static void t_voice(void *c, s32 a, s32 i) {
+    (void)c;
+    (void)a;
+    s_voice_n++;
+    s_voice_last = i;
+}
+static void t_sfx2(void *c, s32 a, s32 i) {
+    (void)c;
+    (void)a;
+    s_sfx_n++;
+    s_sfx_last = i;
+}
+static int t_stage_new(void *c) {
+    (void)c;
+    s_stage_new_calls++;
+    return 1;
+}
 
 /* one game frame as main.c runs it (no world update: the player is not stepped) */
 static void frame(u32 pressed, u32 held) {
@@ -67,6 +85,12 @@ static void frame(u32 pressed, u32 held) {
 
 /* UI_DUMP=dir: write the sorted quads of a frame (rendered by tools/render_quads.py) */
 int ui_debug_sorted(const UiQuad ***out);
+int ui_debug_palmap(int n, int *res, int *src, int *dst);
+static const char *tex_id(int tex) {
+    if (tex == UI_TEX_FACE)
+        return G.character == 1 ? "navifaces_c" : "navifaces_t";
+    return tex >= 0 && tex < UI_RES_COUNT ? g_ui_res[tex].id : "-";
+}
 static void dump(const char *name) {
     const char *dir = getenv("UI_DUMP");
     const UiQuad **q;
@@ -80,11 +104,18 @@ static void dump(const char *name) {
     f = fopen(path, "w");
     if (!f)
         return;
-    fprintf(f, "bright %d %d\n", g_ui_bright_main, g_ui_bright_sub);
+    /* the frame overlay is the main screen's brightness only (sub-screen quads carry
+     * theirs in argb) */
+    fprintf(f, "bright %d 0\n", g_ui_bright_main);
+    for (i = 0; i < 4; i++) {
+        int r, a, b;
+        if (ui_debug_palmap(i, &r, &a, &b))
+            fprintf(f, "palmap %d %s %d %d\n", UI_VAR_MAP0 + i, g_ui_res[r].id, a, b);
+    }
     for (i = 0; i < n; i++)
-        fprintf(f, "%s %d %.2f %.2f %.2f %.2f %.1f %.1f %.1f %.1f %08x %d\n",
-                q[i]->tex >= 0 ? g_ui_res[q[i]->tex].id : "-", q[i]->image, q[i]->x, q[i]->y, q[i]->w, q[i]->h,
-                q[i]->u0, q[i]->v0, q[i]->u1, q[i]->v1, (unsigned)q[i]->argb, q[i]->variant);
+        fprintf(f, "%s %d %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f %08x %d\n", tex_id(q[i]->tex), q[i]->image,
+                q[i]->x, q[i]->y, q[i]->w, q[i]->h, q[i]->u0, q[i]->v0, q[i]->u1, q[i]->v1, (unsigned)q[i]->argb,
+                q[i]->variant);
     fclose(f);
 }
 
@@ -300,6 +331,7 @@ static void test_pause(void) {
     CHECK(ui_state() == UI_EXIT && ui_exit_kind() == UI_EXIT_QUIT, "quit to map");
 }
 
+static int layer_box(int layer, int screen, float *x0, float *y0, float *x1, float *y1);
 static void test_results(void) {
     int f;
     ui_stage_start(0, 0, 0);
@@ -315,8 +347,14 @@ static void test_results(void) {
     s_music_last = -99;
     for (f = 0; f < 3000 && ui_state() == UI_RESULTS; f++) {
         frame(0, 0);
-        if (f == 690)
+        if (f == 690) {
+            float x0, y0, x1, y1;
+            int nb = layer_box(UI_LAYER_RESULTS_BG, -1, &x0, &y0, &x1, &y1);
+            CHECK(nb == 4 && x1 - x0 == 640, "results BG: backdrop, cldm_far, 2 cldm_bg planes (%d)", nb);
             dump("results");
+        }
+        if (f == 12)
+            dump("results_open");
     }
     printf("results: total %u, %d frames until exit\n", G.total, f);
     CHECK(G.total == 85000u + 10000u + 570u + 4000u, "tally total %u", G.total);
@@ -369,6 +407,239 @@ static void test_gameover(void) {
     P.pf &= ~DCP_PF_DEAD;
 }
 
+/* quads of one layer: count and bounding box */
+static int layer_box(int layer, int screen, float *x0, float *y0, float *x1, float *y1) {
+    const UiQuad *q;
+    int n = ui_debug_quads(&q), i, c = 0;
+    *x0 = *y0 = 1e9f;
+    *x1 = *y1 = -1e9f;
+    for (i = 0; i < n; i++) {
+        if (q[i].layer != layer || (screen >= 0 && q[i].screen != screen))
+            continue;
+        c++;
+        if (q[i].x < *x0)
+            *x0 = q[i].x;
+        if (q[i].y < *y0)
+            *y0 = q[i].y;
+        if (q[i].x + q[i].w > *x1)
+            *x1 = q[i].x + q[i].w;
+        if (q[i].y + q[i].h > *y1)
+            *y1 = q[i].y + q[i].h;
+    }
+    return c;
+}
+
+/* every quad of the gameplay overlays (HUD + navigator layers) inside the safe area,
+ * and no quad as large as a DS screen (a second-screen panel) */
+static void check_overlays(const char *what) {
+    const UiQuad *q;
+    int n = ui_debug_quads(&q), i, safe = 1, big = 0;
+    for (i = 0; i < n; i++) {
+        if (q[i].layer != UI_LAYER_HUD && q[i].layer != UI_LAYER_NAVI)
+            continue;
+        if (q[i].x < 31.5f || q[i].y < 23.5f || q[i].x + q[i].w > 608.5f || q[i].y + q[i].h > 456.5f)
+            safe = 0;
+        if (q[i].w * q[i].h > 256.0f * 192.0f)
+            big++;
+    }
+    CHECK(safe, "%s: overlays inside the safe area", what);
+    CHECK(big == 0, "%s: no DS-screen-sized panel (%d)", what, big);
+}
+
+static void test_boss_navi(void) {
+    int f, n, msg_frames = 0, lost_seen = 0, flash = 0, v0;
+    float x0, y0, x1, y1;
+    const UiQuad *q;
+    G.character = 0;
+    G.difficulty = 1;
+    ui_set_boss_health(8);
+    ui_stage_start(0, 2, 0);   /* Leaf Storm boss (act 3) */
+    CHECK(StageTitleCard_IsActive(), "boss title card");
+    for (f = 0; f < 60; f++)
+        frame(0, 0);
+    n = layer_box(UI_LAYER_TITLE_BG, 1, &x0, &y0, &x1, &y1);
+    CHECK(n == 1 && x0 == 0 && y0 == 0 && x1 == 640 && y1 == 480, "boss zone art full frame (%d: %.0f,%.0f-%.0f,%.0f)",
+          n, x0, y0, x1, y1);
+    n = layer_box(UI_LAYER_TITLE_BG, 0, &x0, &y0, &x1, &y1);
+    CHECK(n > 0 && x0 >= 0x38 * 2.5f - 0.01f && x1 <= 0xc0 * 2.5f + 0.01f, "boss zigzag inside window 0x38..0xc0 (%d: %.1f..%.1f)",
+          n, x0, x1);
+    dump("boss_titlecard");
+    CHECK(!NaviB_IsActive(), "no boss panel before StartStage");
+    f = run_until_timer(600);
+    CHECK(f > 0 && NaviB_IsActive(), "StartStage creates NaviB (%d)", f);
+    /* g_boss_hooks.navi: Boss1_State_WaitForStart -> face 9, message 0xf for 0xf0 frames */
+    s_voice_n = 0;
+    ui_boss_navi(NULL, 9, 0xf, 0xf0);
+    frame(0, 0);
+    CHECK(s_voice_n == 1 && s_voice_last == g_ui_navi.voice[0][1], "start voice after 1 frame (%d, id %d)", s_voice_n,
+          s_voice_last);
+    for (f = 0; f < 400; f++) {
+        frame(0, 0);
+        if (ui_navi_message_visible())
+            msg_frames++;
+        if (f == 60)
+            dump("boss_message");
+    }
+    printf("navigator message 0xf: on screen %d frames (time 0xf0)\n", msg_frames);
+    CHECK(msg_frames >= 0xf0 - 2 && msg_frames <= 0xf0 + 2, "message time %d", msg_frames);
+    /* a hit: Boss1Hammer_OnHit_Damage -> health 7, face 0xb, message 0x10 */
+    ui_set_boss_health(7);
+    ui_boss_navi(NULL, 0xb, 0x10, 0xf0);
+    for (f = 0; f < 24; f++) {
+        const UiQuad *qq;
+        int i, m = ui_debug_quads(&qq);
+        frame(0, 0);
+        m = ui_debug_quads(&qq);
+        for (i = 0; i < m; i++) {
+            if (qq[i].layer == UI_LAYER_NAVI && qq[i].tex == UI_RES_NAVIB && qq[i].variant == UI_VAR_MAP0 + 1)
+                lost_seen++;
+            if (qq[i].layer == UI_LAYER_NAVI && qq[i].tex == UI_RES_NAVIB && qq[i].image == 14)
+                flash++;
+        }
+        if (f == 8)
+            dump("boss_hit");
+    }
+    printf("boss hit: lost icon %d frames, counter flash %d frames\n", lost_seen, flash);
+    /* BLDALPHA eva = Lerp(0x1f, 0, t, 3) reaches 0 after 10 of the 16 steps */
+    CHECK(lost_seen == 10, "lost icon animation %d", lost_seen);
+    CHECK(flash == 2, "counter flash %d", flash);
+    check_overlays("boss");
+    /* the boss panel: bottom-right corner, 2x of the 105x56 box */
+    n = layer_box(UI_LAYER_NAVI, 1, &x0, &y0, &x1, &y1);
+    CHECK(n > 0 && x1 <= 608.01f && y1 <= 456.01f, "navi overlays in the safe area");
+    /* the hurt line (Player_OnHurt in a boss stage) */
+    s_voice_n = 0;
+    ui_navi_player_hurt();
+    for (f = 0; f < 30; f++)
+        frame(0, 0);
+    CHECK(s_voice_n == 1, "hurt voice (%d)", s_voice_n);
+    /* the navigator face is streamed: one frame expands to 92x72 */
+    {
+        static u16 buf[128 * 128];
+        int w, h;
+        CHECK(ui_navi_face_expand(0, buf, 128, &w, &h) && w == 104 && h == 80, "face frame 0 %dx%d", w, h);
+    }
+    /* BossHelp (Boss6/7/F): above the panel, bottom right */
+    BossHelp_Create(0);
+    frame(0, 0);
+    v0 = 0;
+    {
+        int i, m = ui_debug_quads(&q);
+        for (i = 0; i < m; i++)
+            if (q[i].tex == UI_RES_BOSSHELP) {
+                v0++;
+                CHECK(q[i].x + q[i].w <= 608.01f && q[i].y + q[i].h <= 456.0f - 112.0f, "BossHelp above the panel (%.0f,%.0f)",
+                      q[i].x + q[i].w, q[i].y + q[i].h);
+            }
+    }
+    CHECK(v0 == 1, "BossHelp drawn (%d)", v0);
+    dump("boss_help");
+    BossHelp_Destroy();
+    /* early story: no navigator (Sonic progress < 3), the hurt line keeps its voice */
+    G.save_progress[0] = 2;
+    ui_stage_start(0, 2, 0);
+    run_until_timer(600);
+    s_voice_n = 0;
+    ui_boss_navi(NULL, 9, 0xf, 0xf0);
+    for (f = 0; f < 10; f++)
+        frame(0, 0);
+    CHECK(!ui_navi_message_visible() && s_voice_n == 0 && NaviB_IsActive(), "early story: panel only");
+    G.save_progress[0] = 0xffff;
+    /* normal stage: nothing of it */
+    ui_stage_start(0, 0, 0);
+    frame(0, 0);
+    CHECK(!NaviB_IsActive(), "no boss panel in a normal act");
+}
+
+static void test_enemy_room(void) {
+    int f, appear = -1, counted = 0, gone = -1, finish = 0;
+    float x0, y0, x1, y1;
+    const UiQuad *q;
+    ui_stage_start(4, 0, 0);
+    run_until_timer(600);
+    s_sfx_last = -1;
+    ui_enemy_room(0, 5);
+    for (f = 0; f < 200; f++) {
+        frame(0, 0);
+        if (appear < 0 && f > 10) {
+            int i, m = ui_debug_quads(&q);
+            for (i = 0; i < m; i++)
+                if (q[i].tex == UI_RES_ENEMYROOM && q[i].image == 5 + 1)   /* digit 5 (anim 6) */
+                    appear = f;
+        }
+    }
+    dump("enemyroom");
+    CHECK(appear > 0, "enemy room: count 5 shown (frame %d)", appear);
+    CHECK(s_sfx_last == 0xe7, "enemy room sfx 0xe7 (%d)", s_sfx_last);
+    layer_box(UI_LAYER_NAVI, 0, &x0, &y0, &x1, &y1);
+    CHECK(x0 >= 32 && x1 <= 608 && y0 >= 24 + 40, "enemy room counter under the HUD row (%.0f,%.0f-%.0f,%.0f)", x0, y0,
+          x1, y1);
+    check_overlays("enemy room");
+    ui_enemy_room(1, 3);
+    for (f = 0; f < 20; f++)
+        frame(0, 0);
+    {
+        int i, m = ui_debug_quads(&q);
+        for (i = 0; i < m; i++)
+            if (q[i].tex == UI_RES_ENEMYROOM && q[i].image == 2 + 1)
+                counted = 1;   /* 5 - 3 = 2 */
+    }
+    CHECK(counted, "enemy room: count 2");
+    ui_enemy_room(1, 5);
+    ui_enemy_room(2, 5);
+    for (f = 0; f < 600; f++) {
+        frame(0, 0);
+        if (f == 200)
+            dump("enemyroom_clear");
+        if (layer_box(UI_LAYER_NAVI, 0, &x0, &y0, &x1, &y1) != 0)
+            gone = f + 1;
+        {
+            int i, m = ui_debug_quads(&q);
+            for (i = 0; i < m; i++)
+                if (q[i].tex == UI_RES_ENEMYROOM && q[i].image == 11)
+                    finish++;
+        }
+    }
+    CHECK(finish > 100, "finish sprites shown (%d frames)", finish);
+    printf("enemy room: cleared, counter gone after %d frames (0x50 + vanish + 0x20 + 0x80)\n", gone);
+    CHECK(s_sfx_last == 0xe8, "clear sfx 0xe8 (%d)", s_sfx_last);
+    CHECK(gone > 0x50 + 0x20 + 0x80 && gone < 0x50 + 0x20 + 0x80 + 60, "counter lifetime %d", gone);
+}
+
+static void test_backgrounds(void) {
+    int f, n, tc_frames = 0;
+    float x0, y0, x1, y1;
+    /* title card: zone art (sub BG3) full frame, zigzag (main BG2) behind it until StartStage */
+    ui_stage_start(1, 0, 1);   /* Blaze, zone index 1 */
+    G.character = 1;
+    for (f = 0; f < 40; f++)
+        frame(0, 0);
+    n = layer_box(UI_LAYER_TITLE_BG, 1, &x0, &y0, &x1, &y1);
+    CHECK(n == 1 && x1 - x0 == 640 && y1 - y0 == 480, "title zone art 640x480 (%d)", n);
+    n = layer_box(UI_LAYER_TITLE_BG, 0, &x0, &y0, &x1, &y1);
+    CHECK(n >= 12 && n <= 20, "zigzag quads %d", n);
+    for (f = 0; f < 400 && !(W.flags & 1); f++) {
+        frame(0, 0);
+        if (layer_box(UI_LAYER_TITLE_BG, -1, &x0, &y0, &x1, &y1))
+            tc_frames++;
+    }
+    printf("title card BG: %d frames\n", tc_frames);
+    frame(0, 0);
+    CHECK(layer_box(UI_LAYER_TITLE_BG, -1, &x0, &y0, &x1, &y1) == 0, "title BG off after StartStage");
+    /* stage_new hook (StoryProgress_IsStageNew); the pause needs both brightnesses at 0 */
+    for (f = 0; f < 80; f++)
+        frame(0, 0);
+    G.character = 0;
+    g_ui_hooks.stage_new = t_stage_new;
+    frame(IN_START, 0);
+    CHECK(ui_is_paused() && s_stage_new_calls == 1 && G.stage_new == 1, "pause asks StoryProgress_IsStageNew (%d %d %d)",
+          ui_is_paused(), s_stage_new_calls, G.stage_new);
+    dump("pause_new");
+    frame(IN_START, 0);
+    g_ui_hooks.stage_new = NULL;
+    G.stage_new = 0;
+}
+
 int main(int argc, char **argv) {
     long ts, ps;
     char path[300];
@@ -403,6 +674,11 @@ int main(int argc, char **argv) {
     test_pause();
     test_results();
     test_gameover();
+    g_ui_hooks.voice = t_voice;
+    g_ui_hooks.sfx = t_sfx2;
+    test_boss_navi();
+    test_enemy_room();
+    test_backgrounds();
     printf("%d passed, %d failed\n", s_pass, s_fail);
     return s_fail ? 1 : 0;
 }
