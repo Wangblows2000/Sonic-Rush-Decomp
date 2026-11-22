@@ -61,6 +61,28 @@ for e in ents:
         out.append('%s %d %d'%(e['sdat'][1], e.get('loop_start',0) if e.get('loop') else 0, e.get('loop_end',0) if e.get('loop') else 0))
 open(sys.argv[2],'w').write('\\n'.join(sorted(out))+'\\n')
 " "$A/manifest.json" "$OUT/disc/music/loops.txt"
+# front end: menu tables, backgrounds, animations, sound test list, menu sprites (MENUS.md section 4)
+M=$ROOT/build/dreamcast/menus
+mkdir -p "$OUT/disc/menus/bg" "$OUT/disc/menus/ama"
+cp "$M/menudata.bin" "$M/sound_test.sld" "$OUT/disc/menus/"
+cp "$M"/bg/*.mnbg "$OUT/disc/menus/bg/"; cp "$M"/ama/*.ama "$OUT/disc/menus/ama/"
+for sp in act__title act__title_eng act__mnu_titl act__mnu_titl_eng act__mnu_psel act__mnu_psel_eng \
+          act__mnu_opti_eng act__font_opti_sound act2__zmap__zmap_map_icon act2__zmap__zmap_scroll_arrow \
+          act2__zmap__zmap_act act2__zmap__font_zmap_act_num act2__zmap__zmap_pause act2__zmap__zmap_pause_eng; do
+    S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
+    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+done
+# sys SDAT music (title, menus, zone map, results...) as sNN.wav by sequence id + loop table
+python3 -c "
+import json,sys,shutil,re
+m=json.load(open(sys.argv[1])); A=sys.argv[2]; D=sys.argv[3]; out=[]
+for e in m.get('entries',[]):
+    if e.get('kind')=='music' and e.get('sdat')=='sys' and e.get('status')=='ok':
+        n=int(re.search(r'SEQ#(\\d+)',e['source']).group(1))
+        shutil.copy(A+'/'+e['output'], '%s/s%02d.wav'%(D,n))
+        out.append('%d %d %d'%(n, e['loop_start'] if e.get('loop') else 0, e['loop_end'] if e.get('loop') else 0))
+open(D+'/sys.txt','w').write('\\n'.join(out)+'\\n')
+" "$A/manifest.json" "$A" "$OUT/disc/music"
 if [ -n "$SRDC_PREBUILT" ]; then
     cp "$SRDC_PREBUILT/1ST_READ.BIN" "$OUT/disc/"
 else

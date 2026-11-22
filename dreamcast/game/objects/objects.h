@@ -35,7 +35,13 @@ enum {                      /* g_obj_hooks.effect kinds: effects without a modul
     OBJ_FX_GRIND,           /* EffGrind_Create(p, a, b)                       */
     OBJ_FX_TRICK_SPARKLE,   /* EffTrickSparkle_Create(a)                      */
     OBJ_FX_ENTRANCE,        /* EffEntrance_Create(obj, a, b) (p = NULL)       */
-    OBJ_FX_WATER_SPLASH     /* EffWaterGmk_CreateSplash (p = the toucher)     */
+    OBJ_FX_WATER_SPLASH,    /* EffWaterGmk_CreateSplash (p = the toucher)     */
+    /* objdata v3 (zone 2 / 3): services outside the object system */
+    OBJ_FX_SCREEN_FLASH,    /* ScreenFlash_Create(a) (mine / Kuragen bomb explosion) */
+    OBJ_FX_BGM_LAYER,       /* Stage_SelectBGMLayer(a): 1 = underwater mix, 0 = normal */
+    OBJ_FX_JINGLE,          /* StageJingle_Create(p, a) (0x17: drowning countdown music) */
+    OBJ_FX_RIPPLE3D,        /* EffRipple3D_SpawnForPlayer(p) (3D water surface ripple) */
+    OBJ_FX_ENEMY_ROOM       /* EnemyRoomHud / EffEnemyRoomFix (MapObj8C): a = 0 start, 1 count, 2 cleared */
 };
 enum {                      /* ItemBox_GiveItem kinds the player module lacks */
     OBJ_ITEM_INVINCIBLE = 5, OBJ_ITEM_BARRIER = 6, OBJ_ITEM_MAGNET = 7,
@@ -142,7 +148,12 @@ typedef struct ObjModelView {
     s32 x, y, z;           /* position (24.8 px) */
     const s32 *mtx;        /* 3x3 rotation, 4.12 fixed point, row-major */
     const s32 *scale;      /* x, y, z scale, 4.12 */
-    int visible;
+    int visible;           /* objdata v4: !(disp_flags & 0x20) (before v4: disp_flags & 0x200) */
+    /* objdata v4 */
+    u32 shapes;            /* shapes to draw (dcm_draw_t.shape bit set); 0xffffffff = all.
+                              StageObj_LoadModelSimple blocks hidden by @0xA8 & 0x80 are cleared */
+    int persp;             /* disp_flags & 0x200: StageObj_Draw3DEx draws with the off-axis
+                              frustum (data_022c4ef4) centred on the object, else orthographic */
 } ObjModelView;
 int objects_model_count(void);
 int objects_model_get(int i, ObjModelView *out);
@@ -150,6 +161,10 @@ int objects_model_get(int i, ObjModelView *out);
 /* Player_CheckStartGrind runs in objects_frame_begin (default on). Turn it
  * off when the player module calls it in Player_In itself (OBJECTS.md). */
 void objects_set_grind_check(int on);
+/* Player_UpdateUnderwater (water level, drowning count, air bubbles) runs
+ * in objects_frame_begin (default on). Turn it off when the player module
+ * calls it in Player_In itself (OBJECTS.md section 2.2). */
+void objects_set_underwater_check(int on);
 
 /* statistics for tests */
 typedef struct ObjStats {
@@ -160,6 +175,10 @@ typedef struct ObjStats {
     u32 gimmicks;          /* gimmick triggers (trampoline, ropes, bend stick, pedestal, corkscrew, ...) */
     u32 dec_spawned, dec_despawned; /* decorations */
     u32 walls_broken, rocks_broken, knock_aways, grinds, homing_targets, rings_attracted;
+    /* objdata v3 (zones 2 and 3) */
+    u32 water_entries, water_exits, water_splashes, water_runs, zone_launches, drownings, air_bubbles,
+        bubbles_spawned, mines_exploded, kuragen_drops, fish_flee;
+    u32 sand_slides, cargo_rides, table_rides, rails, rocks_fallen, enemy_rooms, bishops_spawned;
 } ObjStats;
 const ObjStats *objects_stats(void);
 

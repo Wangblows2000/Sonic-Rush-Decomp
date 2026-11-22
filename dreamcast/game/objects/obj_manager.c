@@ -68,6 +68,8 @@ void obj_free_player_refs(Obj *o) {
             p->touch = NULL;
         if (p->homing == &o->ref)
             p->homing = NULL;
+        if (p->gimmick == (void *)o)
+            p->gimmick = NULL; /* (Player_In clears it when the object is destroyed) */
     }
 }
 
@@ -82,6 +84,7 @@ static void obj_destroy(Obj *o) {
     rect_forget(&o->coll[2]);
     rect_forget(&o->detect);
     colmap_forget(&o->cmap);
+    colmap_forget(&o->cmap2);
     for (pp = &g_obj.head; *pp; pp = &(*pp)->next)
         if (*pp == o) {
             *pp = o->next;
@@ -294,6 +297,30 @@ static void obj_update_ref(Obj *o) {
     o->ref.move_flags = o->h.move_flags;
 }
 
+/* StageObj_HandleRide, first part (objdata v4): the object's collision map
+ * link @0x130 (= &@0x1B8 since MapObject_Init).  A toucher that is not the
+ * rider and carries move flag 0x2000000 pushes an object with move flag
+ * 0x4000000 by its displacement (clamped by both @0x48).  The player
+ * module's dcp_handle_ride has only the ride/touch part. */
+static void obj_handle_ride_link(Obj *o) {
+    DcPlayer *t;
+    s32 v;
+    if (o->prm == NULL || o->is_dec)
+        return; /* @0x130 is set by MapObject_Init only */
+    if (o->cmap.rider != NULL && (o->cmap.rider->obj_flags & 4))
+        o->cmap.rider = NULL;
+    t = o->cmap.toucher;
+    if (t != NULL && t != o->cmap.rider) {
+        if ((t->move_flags & 0x2000000) && (o->h.move_flags & 0x4000000)) {
+            v = (t->move_x < -t->ride_max) ? -t->ride_max : ((t->move_x > t->ride_max) ? t->ride_max : t->move_x);
+            v = ((s16)v < -o->h.ride_max) ? -o->h.ride_max : (((s16)v > o->h.ride_max) ? o->h.ride_max : (s16)v);
+            o->h.push_x += (s16)v;
+        }
+        if (o->cmap.toucher->obj_flags & 4)
+            o->cmap.toucher = NULL;
+    }
+}
+
 static void obj_main(Obj *o) {
     u16 saved = 0;
     int restore = 0;
@@ -312,6 +339,7 @@ static void obj_main(Obj *o) {
             o->h.obj_flags |= 4;
         o->parent = NULL;
     }
+    obj_handle_ride_link(o);
     dcp_handle_ride(&o->h);
     if ((!obj_pause_check(o->h.obj_flags) || (o->h.obj_flags & 0x40)) && o->fn_in != NULL)
         o->fn_in(o);
@@ -412,6 +440,28 @@ ObjCreateFn obj_create_fn(u16 t) {
     case 0xaa: return GmkLandAA_Create;
     case 0x7c: return WaterLevelTrigger_Create;
     case 0x70: return MapObj70_Create;
+    /* objdata v3: Water Palace */
+    case 0x05: case 0x06: return Kuragen_Create;
+    case 0x7b: return WaterRunTrigger_Create;
+    case 0x7d: return MapObj7D_Create;
+    case 0x7f: return Mine_Create;
+    case 0x80: return MapObj80_Create;
+    case 0x81: return LandUnrest_Create;
+    case 0x82: return Wheel2D_Create;
+    case 0x83: return LaunchZone_Create;
+    case 0x84: return BubbleSpawner_Create;
+    case 0x85: case 0x86: case 0x87: return WaterJet_Create;
+    case 0xe3: return KuragenBomb_Create;
+    case 0xe8: case 0xe9: case 0xea: return Bubble_Create;
+    /* objdata v3: Mirage Road */
+    case 0x88: return GmkRail_Create;
+    case 0x89: return Cargo_Create;
+    case 0x8a: return Hand2d_Create;
+    case 0x8b: return GmkTable_Create;
+    case 0x8c: case 0x8d: case 0x8e: case 0x8f: return MapObj8C_CreateByType;
+    case 0x90: case 0x91: return SandSlider_Create;
+    case 0x92: return Rock_Create;
+    case 0xe4: return EggBishop_Create;
     }
     return NULL;                     /* not translated (OBJECTS.md) */
 }
@@ -423,7 +473,11 @@ static int type_slots(u16 t, u8 *o) {
     ObjCreateFn f = obj_create_fn(t);
     if (f == NULL)
         return 0;
-    if (f == pawn_create) { o[n++] = OBJ_BAC_EGGPAWN; o[n++] = OBJ_BAC_EGGPAWN_M; o[n++] = OBJ_BAC_EFF_FOUND; }
+    if (f == pawn_create) {
+        o[n++] = t == 3 ? OBJ_BAC_EGG_LANCER : (t == 7 || t == 0x15) ? OBJ_BAC_EGG_BISHOP : t == 8 ? OBJ_BAC_EGG_HAMMER : OBJ_BAC_EGGPAWN;
+        o[n++] = t == 1 ? OBJ_BAC_EGGPAWN_M : OBJ_BAC_EFF_FOUND;
+        if (t == 0x14 || t == 0x15 || t == 7) o[n++] = OBJ_BAC_EFF_SHADOW;
+    }
     else if (f == EnemyFlapperGroup_Create) { o[n++] = t == 4 ? OBJ_BAC_EGG_DIVER : OBJ_BAC_FLAPPER; o[n++] = OBJ_BAC_EFF_FOUND; }
     else if (f == itembox_create) o[n++] = OBJ_BAC_ITEMBOX;
     else if (f == spring_create) o[n++] = OBJ_BAC_SPRING;
@@ -444,6 +498,25 @@ static int type_slots(u16 t, u8 *o) {
     else if (f == GmkSpecial_Create) { o[n++] = OBJ_BAC_SPECIAL; o[n++] = OBJ_BAC_CARGO; }
     else if (f == EggPawnM_Create) o[n++] = OBJ_BAC_EGGPAWN_M;
     else if (f == GmkLandAA_Create) o[n++] = OBJ_BAC_LAND;
+    /* objdata v3: Water Palace */
+    else if (f == Kuragen_Create) { o[n++] = OBJ_BAC_KURAGEN_BOMB; o[n++] = OBJ_BAC_KURAGEN_BLITZ; }
+    else if (f == MapObj7D_Create || f == MapObj80_Create) o[n++] = OBJ_BAC_EFF_WATER_GMK;
+    else if (f == Mine_Create) { o[n++] = OBJ_BAC_MINE; o[n++] = OBJ_BAC_FIX_MOJI; }
+    else if (f == LandUnrest_Create) o[n++] = OBJ_BAC_LAND_UNREST;
+    else if (f == Wheel2D_Create) { o[n++] = OBJ_BAC_WHEEL2D; o[n++] = OBJ_BAC_BUBBLE; }
+    else if (f == BubbleSpawner_Create || f == Bubble_Create) o[n++] = OBJ_BAC_BUBBLE;
+    else if (f == WaterJet_Create) o[n++] = OBJ_BAC_WATER_JET;
+    else if (f == WaterRunTrigger_Create) o[n++] = OBJ_BAC_EFF_WATER;
+    /* objdata v3: Mirage Road */
+    else if (f == GmkRail_Create) o[n++] = W.zone == 5 ? OBJ_BAC_GMK_RAIL6 : OBJ_BAC_GMK_RAIL;
+    else if (f == Cargo_Create) o[n++] = OBJ_BAC_CARGO;
+    else if (f == Hand2d_Create) o[n++] = OBJ_BAC_HAND2D;
+    else if (f == GmkTable_Create) { o[n++] = OBJ_BAC_EFF_SHADOW; o[n++] = OBJ_BAC_ZAKO_BOMB; }
+    else if (f == MapObj8C_CreateByType) { if (t == 0x8e) o[n++] = OBJ_BAC_GMK_WALL; if (t == 0x8d) { o[n++] = OBJ_BAC_EFF_ENTRANCE; o[n++] = OBJ_BAC_EGGPAWN; o[n++] = OBJ_BAC_EGG_HAMMER; } }
+    else if (f == SandSlider_Create) { o[n++] = OBJ_BAC_SAND_SLIDER; o[n++] = OBJ_BAC_EFF_SAND; }
+    else if (f == Rock_Create) { o[n++] = OBJ_BAC_ROCK; o[n++] = OBJ_BAC_EFF_SHADOW; }
+    else if (f == EggBishop_Create) o[n++] = OBJ_BAC_EGG_BISHOP;
+    else if (f == mapobj40_create && t == 0xa9) o[n++] = OBJ_BAC_EFF_SAND;
     return n;
 }
 
@@ -554,6 +627,28 @@ static void spawn_in_view(int idx, u32 flags) {
     }
 }
 
+/* StageEvent_SpawnInRect (src/asm_fallback, translated from the ARM listing):
+ * every block of the rect, all three spawners, flags 0xf0 (no rect / view test) */
+void objects_spawn_rect(s32 l, s32 t, s32 r, s32 b) {
+    s32 mw = g_obj.map_w - 1, mh = g_obj.map_h - 1;
+    URect rc;
+    u16 xx, yy;
+    int i;
+    if (!g_obj.hdr)
+        return;
+    if (l < 0) l = 0; /* (the room objects clamp to 0 before the call) */
+    if (t < 0) t = 0;
+    if (l > mw) l = mw;
+    if (t > mh) t = mh;
+    if (r > mw) r = mw;
+    if (b > mh) b = mh;
+    rc.l = (u32)l; rc.t = (u32)t; rc.r = (u32)r; rc.b = (u32)b;
+    for (i = 0; i < 3; i++)
+        for (yy = (u16)(((u32)t << 8) >> 16); yy <= (u16)(b >> 8); yy++)
+            for (xx = (u16)(((u32)l << 8) >> 16); xx <= (u16)(r >> 8); xx++)
+                spawner(i, xx, yy, &rc, NULL, 0xf0);
+}
+
 /* StageEvent_SpawnAll (boss stages) */
 static void spawn_all(void) {
     URect rc;
@@ -611,6 +706,7 @@ int objects_ring_count(void) { return ring_count(); }
 u8 *objects_ring_scatter_level(void) { return ring_scatter_level(); }
 void objects_set_player_anim_done(int on) { g_obj.anim_done_flag = on; }
 void objects_set_grind_check(int on) { g_obj.no_grind_check = !on; }
+void objects_set_underwater_check(int on) { g_obj.no_underwater = !on; }
 
 void objects_set_paths(const char *obj_dir, const char *sprite_dir) {
     strncpy(g_obj.obj_dir, obj_dir, sizeof(g_obj.obj_dir) - 1);
@@ -650,7 +746,7 @@ static int load_objdata(int stage) {
     snprintf(path, sizeof(path), "%s/objdata.bin", g_obj.obj_dir);
     if (obj_load_file(path, &b, &size) != 0)
         return -1;
-    if (size < 1024 || memcmp(b, "ROBJ", 4) || (b[4] | b[5] << 8) != 2) {
+    if (size < 1024 || memcmp(b, "ROBJ", 4) || (b[4] | b[5] << 8) != 3) {
         free(b);
         return -1;
     }
@@ -754,6 +850,10 @@ static void preload_resources(const rlvl_header_t *h) {
             obj_res_ensure(sl[k]);
     }
     dec_preload(h);
+    if (W.zone == 1) { /* Player_UpdateUnderwater effects (water entry splash, air bubbles, countdown) */
+        obj_res_ensure(OBJ_BAC_EFF_WATER);
+        obj_res_ensure(OBJ_BAC_BUBBLE);
+    }
     if (W.zone < 8) /* freed animals of this zone (MapObject_SpawnFreedAnimal) */
         for (k = 0; k < 3; k++)
             obj_res_ensure(OBJ_BAC_ANIMAL01 + g_obj.data.animal[W.zone][k]);
@@ -774,7 +874,13 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
         objects_set_paths("/cd/objects", "/cd/sprites");
     memcpy(od, g_obj.obj_dir, sizeof(od));
     memcpy(sd, g_obj.spr_dir, sizeof(sd));
+    s = g_obj.no_grind_check | (g_obj.no_underwater << 1) | (g_obj.anim_done_flag << 2) |
+        (g_obj.n_views << 4); /* settings survive the reset */
     memset(&g_obj, 0, sizeof(g_obj));
+    g_obj.n_views = (s >> 4) & 7;
+    g_obj.no_grind_check = s & 1;
+    g_obj.no_underwater = (s >> 1) & 1;
+    g_obj.anim_done_flag = (s >> 2) & 1;
     memcpy(g_obj.obj_dir, od, sizeof(od));
     memcpy(g_obj.spr_dir, sd, sizeof(sd));
     memset(&g_obj_stage, 0, sizeof(g_obj_stage));
@@ -820,6 +926,8 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     if (g_obj.n_views == 0)
         g_obj.n_views = 1;
     camera_init();
+    dec_shared_reset();
+    mirage_reset();
     for (s = 0; s < OBJ_MAX_VIEWS; s++)
         objects_set_view(s, 0, 0);
     W.objmgr |= 0x1c; /* view-out, map collision and hit boxes on (Stage_Create) */
@@ -880,6 +988,9 @@ void objects_frame_begin(void) {
      * and Player_CheckStartGrind (see OBJECTS.md, player-module changes) */
     for (i = 0; i < g_obj.n_players; i++) {
         DcPlayer *p = g_obj.players[i].p;
+        obj_player_check_gimmick(p);
+        if (!g_obj.no_underwater)
+            Player_UpdateUnderwater(p);
         Player_FindHomingTarget(p);
         if (!g_obj.no_grind_check)
             Player_CheckStartGrind(p);

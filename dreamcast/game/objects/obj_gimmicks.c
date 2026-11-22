@@ -1054,8 +1054,18 @@ static void mapobj40_on_hit(ObjBox *a, ObjBox *b) {
             return;
         dcp_act_die(pl);
         return;
-    case 0x7e: /* Player_Action_MapObj40 */
-    case 0xa9: /* EffSand_Create */
+    case 0x7e:
+        if (pl->type != 1)
+            return;
+        Player_Action_MapObj40(pl);
+        return;
+    case 0xa9:
+        if (pl->type != 1)
+            return;
+        if (W.frame & 7)
+            return;
+        EffSand_Create(pl, -2, -12);
+        return;
     case 0xb6: /* Player_Action_GliderSequenceStart */
     case 0xb7: /* Player_Action_GliderSequenceEnd */
     case 0xc3: /* ZoneFx_Zone4_StartBldyRampUp */

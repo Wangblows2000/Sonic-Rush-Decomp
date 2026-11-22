@@ -216,13 +216,14 @@ static void BossCamera_UpdateTrack1(void) {
 static inline void Track(BossCamTrack *t, u32 mask) {
     if (t != NULL) {
         if (CAM.unk0 & mask) {
-            /* follow the object's model translation (unk124->unk48): not used by Boss1 */
-            if (t->ox != NULL)
-                t->tgt.x = (t->ox->x << 4) + t->offx;
-            if (t->oy != NULL)
-                t->tgt.y = t->offy - (t->oy->y << 4);
-            if (t->oz != NULL)
-                t->tgt.z = (t->oz->z << 4) + t->offz;
+            /* follow the object's model translation (unk124->unk48/4C/50; Boss3 sets flags 2|4) */
+            const fx32 *m;
+            if (t->ox != NULL && (m = boss_obj_model_trans(t->ox)) != NULL)
+                t->tgt.x = m[0] + t->offx;
+            if (t->oy != NULL && (m = boss_obj_model_trans(t->oy)) != NULL)
+                t->tgt.y = m[1] + t->offy;
+            if (t->oz != NULL && (m = boss_obj_model_trans(t->oz)) != NULL)
+                t->tgt.z = m[2] + t->offz;
         } else {
             if (t->ox != NULL)
                 t->tgt.x = (t->ox->x << 4) + t->offx;

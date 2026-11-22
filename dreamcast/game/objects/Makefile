@@ -11,7 +11,8 @@ PLAYER_DIR = ../player
 PLAYER_SRCS = $(PLAYER_DIR)/dcp_math.c $(PLAYER_DIR)/dcp_probe.c $(PLAYER_DIR)/dcp_object.c \
               $(PLAYER_DIR)/dcp_player.c $(PLAYER_DIR)/dcp_states.c
 SRCS = obj_anim.c obj_rect.c obj_colmap.c obj_manager.c obj_player.c obj_ring.c obj_gimmicks.c obj_enemy.c \
-       obj_fx.c obj_effects2.c obj_leafstorm.c obj_shared.c obj_flapper.c obj_decor.c obj_pgimmick.c
+       obj_fx.c obj_effects2.c obj_leafstorm.c obj_shared.c obj_flapper.c obj_decor.c obj_pgimmick.c \
+       obj_water.c obj_pwater.c obj_mirage.c obj_pmirage.c
 DC_SRCS = $(SRCS) obj_draw.c
 HDRS = obj_types.h obj_internal.h objects.h $(PLAYER_DIR)/dcp_player.h $(ROOT)/tools/dreamcast/stages/level_format.h
 CFLAGS_HOST = -std=c99 -O2 -Wall -Wextra -Werror -fwrapv
@@ -28,9 +29,24 @@ $(OUT)/test_objects: $(SRCS) $(HDRS) test/test_objects.c $(PLAYER_SRCS)
 	mkdir -p $(OUT)
 	gcc $(CFLAGS_HOST) -o $@ $(SRCS) $(PLAYER_SRCS) test/test_objects.c -lm
 
-host-test: $(OUT)/test_objects
+$(OUT)/test_zones: $(SRCS) $(HDRS) test/test_zones.c $(PLAYER_SRCS)
+	mkdir -p $(OUT)
+	gcc $(CFLAGS_HOST) -o $@ $(SRCS) $(PLAYER_SRCS) test/test_zones.c -lm
+
+STAGES_DIR ?= $(ROOT)/build/dreamcast/stages
+host-test: $(OUT)/test_objects $(OUT)/test_zones
 	$(OUT)/test_objects $(Z11) $(PLAYER_TABLES) $(DATA) $(SPRITES)
 	$(OUT)/test_objects $(Z12) $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	$(OUT)/test_zones $(STAGES_DIR)/z21/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	$(OUT)/test_zones $(STAGES_DIR)/z22/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	$(OUT)/test_zones $(STAGES_DIR)/z31/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	$(OUT)/test_zones $(STAGES_DIR)/z32/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+
+zone-test: $(OUT)/test_zones
+	$(OUT)/test_zones $(STAGES_DIR)/z21/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	$(OUT)/test_zones $(STAGES_DIR)/z22/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	$(OUT)/test_zones $(STAGES_DIR)/z31/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	$(OUT)/test_zones $(STAGES_DIR)/z32/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
 
 STAGES = z11 z12 z13 z21 z22 z23 z31 z32 z33 z41 z42 z43 z51 z52 z53 z61 z62 z63 z71 z72 z73 z81 z82 z91 z92 zf3
 $(OUT)/test_coverage: $(SRCS) $(HDRS) test/test_coverage.c $(PLAYER_SRCS)
@@ -45,6 +61,6 @@ dc: $(DC_SRCS) $(HDRS)
 	bash -c 'source /opt/toolchains/dc/kos/environ.sh && for f in $(DC_SRCS); do kos-cc -std=gnu99 -O2 -fwrapv -Wall -Wextra -Werror -c $$f -o $(OUT)/dc/$${f%.c}.o || exit 1; done && sh-elf-size $(OUT)/dc/*.o'
 
 clean:
-	rm -rf $(OUT)/test_objects $(OUT)/dc
+	rm -rf $(OUT)/test_objects $(OUT)/test_zones $(OUT)/test_coverage $(OUT)/dc
 
-.PHONY: all data host-test coverage dc clean
+.PHONY: all data host-test zone-test coverage dc clean

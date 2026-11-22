@@ -29,6 +29,16 @@ void boss_sfx(s32 id) {
     if (g_boss_hooks.sfx)
         g_boss_hooks.sfx(g_boss_hooks.ctx, id);
 }
+void boss_sfx_handle(u32 handle, s32 id) {
+    if (g_boss_hooks.sfx_handle)
+        g_boss_hooks.sfx_handle(g_boss_hooks.ctx, (s32)handle, id);
+    else
+        boss_sfx(id);
+}
+void boss_sfx_stop(u32 handle) {
+    if (g_boss_hooks.sfx_stop)
+        g_boss_hooks.sfx_stop(g_boss_hooks.ctx, (s32)handle);
+}
 void boss_voice(s32 id) {
     if (g_boss_hooks.voice)
         g_boss_hooks.voice(g_boss_hooks.ctx, id);
@@ -60,6 +70,9 @@ static u32 s_njoints;
 typedef struct { u8 stage, pad[3]; char name[24], model[96], anim[96]; } BossEffFile;
 static const BossEffFile *s_effs;
 static u32 s_neffs;
+typedef struct { char name[24]; u32 count; } BossAnimLen; /* followed by u16 frames[count], padded to 4 */
+static const u8 *s_alens;
+static u32 s_nalens;
 
 static int boss_data_load(void) {
     char path[160];
@@ -103,6 +116,11 @@ static int boss_data_load(void) {
         if (end + 4 <= s_data_size) {
             s_neffs = *(u32 *)(s_data + end);
             s_effs = (const BossEffFile *)(s_data + end + 4);
+            end += 4 + s_neffs * (u32)sizeof(BossEffFile);
+            if (end + 4 <= s_data_size) {
+                s_nalens = *(u32 *)(s_data + end);
+                s_alens = s_data + end + 4;
+            }
         }
     }
     return 0;
@@ -130,6 +148,22 @@ int boss_effect_file(int stage, int i, const char **name, const char **model, co
             *anim = s_effs[k].anim[0] ? s_effs[k].anim : NULL;
             return 0;
         }
+    return -1;
+}
+
+/* frame counts of an animation file that is not converted (timing only) */
+int boss_anim_lengths(const char *name, const u16 **frames, u32 *count) {
+    const u8 *p = s_alens;
+    u32 i;
+    for (i = 0; p != NULL && i < s_nalens; i++) {
+        const BossAnimLen *a = (const BossAnimLen *)p;
+        if (!strncmp(a->name, name, sizeof(a->name))) {
+            *frames = (const u16 *)(p + sizeof(*a));
+            *count = a->count;
+            return 0;
+        }
+        p += sizeof(*a) + ((a->count * 2 + 3) & ~3u);
+    }
     return -1;
 }
 
@@ -375,6 +409,37 @@ void boss_obj_main(DcPlayer *h, BossFn *state, const BossObjOps *ops, void *self
     h->shake_y = 0;
 }
 
+/* ------------------------------------------- StageObj.unk124 registry */
+static struct { const DcPlayer *o; const BossModel *m; } s_objmdl[16];
+void boss_obj_set_model(const DcPlayer *o, const BossModel *m) {
+    int i, fr = -1;
+    for (i = 0; i < 16; i++) {
+        if (s_objmdl[i].o == o) {
+            s_objmdl[i].m = m;
+            if (m == NULL)
+                s_objmdl[i].o = NULL;
+            return;
+        }
+        if (s_objmdl[i].o == NULL && fr < 0)
+            fr = i;
+    }
+    if (m != NULL && fr >= 0) {
+        s_objmdl[fr].o = o;
+        s_objmdl[fr].m = m;
+    }
+}
+const fx32 *boss_obj_model_trans(const DcPlayer *o) {
+    int i;
+    if (o == NULL)
+        return NULL;
+    if (o == g_boss_game.player && g_boss_game.player_trans_valid)
+        return g_boss_game.player_trans; /* gPlayers->unk124 = the player model (unk17C) */
+    for (i = 0; i < 16; i++)
+        if (s_objmdl[i].o == o)
+            return s_objmdl[i].m->trans;
+    return NULL;
+}
+
 /* ------------------------------------------------------------ API */
 static int s_stage = -1, s_boss_kind;
 
@@ -420,9 +485,30 @@ int boss_init(int stage_id, const uint8_t *level, DcPlayer *player, int textures
     g_boss_game.exc_bg = -1;
     g_boss_game.cleared = 0;
     g_boss_upload_textures = textures;
+    g_boss_game.draw_player = NULL;
+    g_boss_game.player_trans_valid = 0;
+    g_boss_lights = NULL;
     if (boss_data_load() != 0)
         return -2;
     s_stage = stage_id;
+    /* Camera_Create: boss arena size for zone modes 1..3 (gCamera.unkE0 / unkE4) */
+    switch (stage_id / 3) {
+    case 3:
+        g_boss_game.arena_len = 0x128fb8;
+        g_boss_game.arena_circ = 0x749fed;
+        break;
+    case 2:
+        g_boss_game.arena_len = 0xf42f8;
+        g_boss_game.arena_circ = 0x5fe435;
+        break;
+    case 1:
+        g_boss_game.arena_len = 0x1152f0;
+        g_boss_game.arena_circ = 0x6cd988;
+        break;
+    default:
+        g_boss_game.arena_len = g_boss_game.arena_circ = 0;
+        break;
+    }
     /* Stage_Create: ScreenShake_Create, BossCamera_Create(act == 2 ? 2 : 0) */
     ScreenShake_Create();
     BossCamera_Create((stage_id % 3) == 2 ? 2 : 0);
@@ -441,6 +527,45 @@ int boss_init(int stage_id, const uint8_t *level, DcPlayer *player, int textures
             return -4;
         s_boss_kind = 1;
         return 0;
+    case 5: /* z23 Water Palace act 3: Egg Turtle (map object 0x3e -> Boss2_Create) */
+        if (boss_effects_load(stage_id) != 0 || boss2_load() != 0)
+            return -3;
+        p = find_boss_object(level, 0x3e, &prm);
+        if (p == NULL) {
+            memset(&prm, 0, sizeof(prm));
+            prm.type = 0x3e;
+            p = &prm;
+        }
+        s_boss_kind = 2;
+        if (Boss2_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
+            return -4;
+        return 0;
+    case 8: /* z33 Mirage Road act 3: map object 0x3d -> Boss3_Create */
+        if (boss_effects_load(stage_id) != 0 || boss3_load() != 0)
+            return -3;
+        p = find_boss_object(level, 0x3d, &prm);
+        if (p == NULL) {
+            memset(&prm, 0, sizeof(prm));
+            prm.type = 0x3d;
+            p = &prm;
+        }
+        s_boss_kind = 3;
+        if (Boss3_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
+            return -4;
+        return 0;
+    case 11: /* z43 Night Carnival act 3: map object 0x3c -> Boss4_Create */
+        if (boss_effects_load(stage_id) != 0 || boss4_load() != 0)
+            return -3;
+        p = find_boss_object(level, 0x3c, &prm);
+        if (p == NULL) {
+            memset(&prm, 0, sizeof(prm));
+            prm.type = 0x3c;
+            p = &prm;
+        }
+        s_boss_kind = 4;
+        if (Boss4_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
+            return -4;
+        return 0;
     default:
         return -1;
     }
@@ -451,6 +576,22 @@ void boss_shutdown(void) {
         boss1_destroy();
         boss1_unload();
     }
+    if (s_boss_kind == 2) {
+        boss2_destroy();
+        boss2_unload();
+    }
+    if (s_boss_kind == 3) {
+        boss3_destroy();
+        boss3_unload();
+    }
+    if (s_boss_kind == 4) {
+        boss4_destroy();
+        boss4_unload();
+    }
+    memset(s_objmdl, 0, sizeof(s_objmdl));
+    g_boss_game.draw_player = NULL;
+    g_boss_game.player_trans_valid = 0;
+    g_boss_lights = NULL;
     boss_effects_shutdown();
     BossCamera_Destructor();
     s_boss_kind = 0;
@@ -461,8 +602,18 @@ void boss_start(void) { gBossStatus.unk0 |= 1; }
 
 void boss_update(DcPlayer *player) {
     g_boss_game.player = player;
+    /* the player's StageObj_Main (task 0x100) ran before: its draw step,
+     * gPlayers->unk70 (Boss2_Draw_PlayerOnArena) */
+    if (g_boss_game.draw_player != NULL && player != NULL)
+        g_boss_game.draw_player();
     if (s_boss_kind == 1)
         boss1_update();      /* 0x500 / 0x501 / 0x502 */
+    if (s_boss_kind == 2)
+        boss2_update();      /* Boss2Water 0x4ff, Boss2 0x500, Boss2WaterLight 0x500 */
+    if (s_boss_kind == 3)
+        boss3_update();      /* Boss3 0x500, Boss3PartCC 0x501, Boss3PartCD 0x502 */
+    if (s_boss_kind == 4)
+        boss4_update();      /* Boss4 0x500, parts 0x501..0x505 */
     boss_effects_update();   /* 0xa00 */
     ScreenShake_Main();      /* 0x3e00 */
     BossCamera_Main();       /* 0x3f00 */
@@ -472,6 +623,12 @@ int boss_draw(int list) {
     int n = 0;
     if (s_boss_kind == 1)
         n += boss1_draw(list);
+    if (s_boss_kind == 2)
+        n += boss2_draw(list);
+    if (s_boss_kind == 3)
+        n += boss3_draw(list);
+    if (s_boss_kind == 4)
+        n += boss4_draw(list);
     n += boss_effects_draw(list);
     if (data_ov000_0236a444.unk0 & 1)
         n += boss_model_draw(&data_ov000_0236a444.unkE0, list);
@@ -481,7 +638,18 @@ int boss_draw(int list) {
 s32 boss_health(void) { return gBossStatus.unk8; }
 s32 boss_health_max(void) { return gBossStatus.unkA; }
 s32 boss_phase(void) { return (s32)gBossStatus.unk4; }
-int boss_defeated(void) { return gBossStatus.unk4 == BOSS_PHASE_DEFEAT; }
+int boss_defeated(void) {
+    switch (s_boss_kind) {
+    case 2:
+        return gBossStatus.unk4 == BOSS2_PHASE_DEFEAT;
+    case 3:
+        return gBossStatus.unk4 == BOSS3_PHASE_DEFEAT;
+    case 4:
+        return gBossStatus.unk4 == BOSS4_PHASE_DEFEAT;
+    default:
+        return gBossStatus.unk4 == BOSS_PHASE_DEFEAT;
+    }
+}
 int boss_cleared(void) { return g_boss_game.cleared; }
 void boss_shake_offset(s32 *x, s32 *y) {
     *x = ScreenShake_GetOffsetX();
@@ -490,11 +658,55 @@ void boss_shake_offset(s32 *x, s32 *y) {
 s32 boss_brightness(void) { return g_boss_game.bright; }
 s32 boss_exc_background(void) { return g_boss_game.exc_bg; }
 const BossStats *boss_stats(void) { return &g_boss_stats; }
-const char *boss_state_name(int part) { return s_boss_kind == 1 ? boss1_state_name(part) : "-"; }
+const char *boss_state_name(int part) {
+    switch (s_boss_kind) {
+    case 1:
+        return boss1_state_name(part);
+    case 2:
+        return boss2_state_name(part);
+    case 3:
+        return boss3_state_name(part);
+    case 4:
+        return boss4_state_name(part);
+    }
+    return "-";
+}
 void boss_hammer_pos(s32 *x, s32 *y, s32 *z) {
     if (s_boss_kind == 1)
         boss1_hammer_pos(x, y, z);
+    else if (s_boss_kind == 2)
+        boss2_body_pos(x, y, z);
+    else if (s_boss_kind == 3)
+        boss3_body_pos(x, y, z);
+    else if (s_boss_kind == 4)
+        boss4_body_pos(x, y, z);
     else
         *x = *y = *z = 0;
 }
-int boss_hammer_box_armed(int box) { return s_boss_kind == 1 ? boss1_hammer_box_armed(box) : 0; }
+int boss_hammer_box_armed(int box) {
+    return s_boss_kind == 1   ? boss1_hammer_box_armed(box)
+           : s_boss_kind == 2 ? boss2_box_armed(box)
+           : s_boss_kind == 3 ? boss3_box_armed(box)
+           : s_boss_kind == 4 ? boss4_box_armed(box)
+                              : 0;
+}
+
+int boss_player_model(s32 trans[3], s32 rot[9]) {
+    int i;
+    if (!g_boss_game.player_trans_valid)
+        return 0;
+    for (i = 0; i < 3; i++)
+        trans[i] = g_boss_game.player_trans[i];
+    for (i = 0; i < 9; i++)
+        rot[i] = g_boss_game.player_rot.m[i];
+    return 1;
+}
+int boss_lights(dcm_lights_t *out) {
+    if (s_boss_kind == 2)
+        boss2_build_lights();
+    if (g_boss_lights == NULL)
+        return 0;
+    *out = *g_boss_lights;
+    return 1;
+}
+s32 boss_water_level(void) { return s_boss_kind == 2 ? (s32)g_obj_camera[0].water : -1; }

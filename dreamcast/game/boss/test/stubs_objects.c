@@ -8,3 +8,5 @@ __attribute__((weak)) void spawn_decorations_in_block(uint16_t x, uint16_t y, co
 }
 __attribute__((weak)) void dec_preload(const void *h) { (void)h; }
 __attribute__((weak)) int dec_init_level(const uint8_t *level_data) { (void)level_data; return 0; }
+/* referenced by obj_enemy.c while its owner adds it */
+__attribute__((weak)) void *EffShadow_Create(void *o) { (void)o; return 0; }

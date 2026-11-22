@@ -176,8 +176,11 @@ void spr_process(ObjSprite *s, ObjSprCb cb, void *owner) {
 }
 
 const DsprImage *spr_image(const ObjSprite *s) {
-    const ObjRes *r = s->res;
+    const ObjRes *r;
     u16 im;
+    if (s->vram != NULL && s->vram->res == s->res && s->vram->valid)
+        s = s->vram; /* shared sprite VRAM: show the driver's frame */
+    r = s->res;
     if (!r || !r->loaded || !s->valid || s->cur >= r->n_frames)
         return NULL;
     im = r->frames[s->cur].image;

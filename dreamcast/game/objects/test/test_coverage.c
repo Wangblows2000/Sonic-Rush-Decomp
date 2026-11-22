@@ -34,7 +34,7 @@ static void *load(const char *path, long *size) {
 }
 
 static int mapobj40_untranslated(u16 t) {
-    return t == 0x7e || t == 0xa9 || t == 0xb6 || t == 0xb7 || (t >= 0xc3 && t <= 0xc5);
+    return t == 0xb6 || t == 0xb7 || (t >= 0xc3 && t <= 0xc5); /* v3: 0x7e and 0xa9 translated */
 }
 
 static void flush(void) {

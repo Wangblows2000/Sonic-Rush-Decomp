@@ -12,4 +12,5 @@ int  audio_sfx_load(const char *path);  /* returns handle or -1 */
 void audio_sfx_play(int h, int vol, int pan);
 uint32_t audio_stream_bytes(void);  /* bytes handed to the AICA stream so far */
 uint32_t audio_stream_loops(void);
+uint32_t audio_stream_underruns(void); /* refills the RAM ring could not cover (0 = clean stream) */
 #endif

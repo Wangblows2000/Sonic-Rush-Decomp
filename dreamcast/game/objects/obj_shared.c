@@ -1273,28 +1273,43 @@ Obj *MapObj73_Create(ObjParam *p, s32 b, s32 c) {
 }
 
 /* ================================================ model views (RopeC) */
+static int is_model_obj(const Obj *o) {
+    if (!o->used || (o->h.obj_flags & 4))
+        return 0;
+    if (o->model != NULL)
+        return 1; /* v3: Wheel2D, Hand2d, GmkTable (StageObj_LoadModelSimple) */
+    return o->kind == OBJK_GIMMICK && o->prm && o->prm->type == 0x7a;
+}
 int objects_model_count(void) {
     Obj *o;
     int n = 0;
     for (o = g_obj.head; o; o = o->next)
-        if (o->used && o->kind == OBJK_GIMMICK && o->prm && o->prm->type == 0x7a)
+        if (is_model_obj(o))
             n++;
     return n;
 }
 int objects_model_get(int i, ObjModelView *out) {
     Obj *o;
     for (o = g_obj.head; o; o = o->next) {
-        if (!(o->used && o->kind == OBJK_GIMMICK && o->prm && o->prm->type == 0x7a))
+        if (!is_model_obj(o))
             continue;
         if (i-- != 0)
             continue;
-        out->model = o->k.mdl.shape ? "mod__gmk_rope_c__gmk_rope_c02" : "mod__gmk_rope_c__gmk_rope_c01";
         out->x = o->h.x;
         out->y = o->h.y;
         out->z = o->h.z;
-        out->mtx = &o->k.mdl.mtx[0];
-        out->scale = o->k.mdl.scale;
-        out->visible = (o->h.disp_flags & 0x200) != 0;
+        if (o->model != NULL) {
+            out->model = o->model;
+            out->mtx = o->mtx;
+            out->scale = o->mscale;
+        } else {
+            out->model = o->k.mdl.shape ? "mod__gmk_rope_c__gmk_rope_c02" : "mod__gmk_rope_c__gmk_rope_c01";
+            out->mtx = &o->k.mdl.mtx[0];
+            out->scale = o->k.mdl.scale;
+        }
+        out->visible = (o->h.disp_flags & 0x20) == 0;
+        out->persp = (o->h.disp_flags & 0x200) != 0;
+        out->shapes = o->shapes != 0 ? o->shapes : 0xffffffffu;
         return 1;
     }
     return 0;

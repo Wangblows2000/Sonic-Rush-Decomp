@@ -46,6 +46,9 @@
 #define StageObj_SetPause boss_StageObj_SetPause
 #define StageObj_ClearPause boss_StageObj_ClearPause
 #define Boss1_Create boss_Boss1_Create
+#define Boss2_Create boss_Boss2_Create
+#define Boss3_Create boss_Boss3_Create
+#define Boss4_Create boss_Boss4_Create
 
 /* Object-system entry points the boss parts use (dreamcast/game/objects,
  * declared here instead of including obj_internal.h). */
@@ -57,6 +60,7 @@ dcp_bool obj_view_out(s32 x, s32 y, s16 ofs, s16 l, s16 t, s16 r, s16 b);    /* 
 dcp_bool obj_pause_check(u32 f);                                             /* StageObj_PauseCheck */
 DcPlayer *obj_box_player(const ObjBox *b);                                   /* box owner if it is a player */
 void obj_player_attack_bounce(DcPlayer *p);                                  /* Player_Action_AttackBounce */
+void rect_register(ObjBox *b);                                               /* ObjRect_Register */
 
 typedef s32 fx32;
 typedef struct { fx32 x, y, z; } BossVec;   /* VecFx32 */
@@ -90,6 +94,11 @@ typedef struct BossAnimRes {
     dca_set_t set;
     void *bytes;
     int loaded;
+    /* timing-only resource (an animation file that is not converted, e.g.
+     * .nsbta): frame count per animation index, from bossdata.bin, so the
+     * "ended" flag protocol of Model_AnimateMdl keeps the original timing */
+    const u16 *nframes;
+    u32 count;
 } BossAnimRes;
 
 /* NNSG3dAnmObj subset: frame @0x00, ratio @0x04, resource @0x08 (numFrame @+4) */
@@ -111,11 +120,14 @@ typedef struct BossModel {
     fx32 scale[3];         /* @0x18 */
     MtxFx33 rot;           /* @0x24 */
     fx32 trans[3];         /* @0x48 */
-    BossAnmObj anm_obj[5];
+    BossAnmObj anm_obj[5][2]; /* storage: NNS_G3dAllocAnmObj (two per slot for the cross-fade) */
     BossAnmObj *anm[5];    /* @0xE4 */
-    u8 flags[5];           /* @0x10C bit0 paused, bit1 ended, bit2 loop */
+    BossAnmObj *anm2[5];   /* @0xF8 cross-fade source (flags 0x40) */
+    u8 flags[5];           /* @0x10C bit0 paused, bit1 ended, bit2 loop, 0x40 cross-fade, 0x80 fade done */
     fx32 speed;            /* @0x114 */
     fx32 speeds[5];        /* @0x118 */
+    s16 blendSpeed;        /* @0x12C */
+    s16 blendSpeeds[5];    /* @0x12E */
     const BossModelRes *res;
     /* native: pose of the last draw step (Model_Draw), used by boss_draw */
     dcm_mtx_t mdl_mtx;
@@ -124,7 +136,15 @@ typedef struct BossModel {
 } BossModel;
 
 enum { MOP_NONE = 0, MOP_IDENTITY, MOP_RESTORE, MOP_FLUSHP, MOP_FLUSHVP, MOP_FLUSHWVP };
+#define MOP_ROTATE 0x0b       /* Model_MatrixOp_Rotate: MTX_MULT_3x3 with the model rot (@0x24) */
 #define MOP_SETCAMERAROT 0x13
+/* geometry-engine matrix stack (MTX_STORE / MTX_RESTORE slots 0..30): the node
+ * callbacks store joint matrices here, models with MOP_RESTORE read slot unk8 */
+extern dcm_mtx_t g_boss_mtx_slot[32];
+/* lights for boss_model_draw (NULL: dcm stage defaults); view space */
+extern const dcm_lights_t *g_boss_lights;
+/* NNS_G3dMdlSetMdlDiffAll / AmbAll / EmiAll on a loaded model (GXRgb colours) */
+void boss_model_set_colors(const BossModelRes *r, u16 diff, u16 amb, u16 emi);
 
 void Model_Init(BossModel *s, u32 a);
 void Model_SetResource(BossModel *s, const BossModelRes *res);
@@ -157,6 +177,7 @@ typedef struct BossStatus {   /* gBossStatus (0xC bytes) */
 } BossStatus;
 extern BossStatus gBossStatus;
 
+typedef void (*BossDrawPlayerFn)(void);
 /* gGameState / gDisplayMain fields the boss code reads or writes */
 typedef struct BossGame {
     s32 unk0;                 /* gGameState.unk0 (palette table index) */
@@ -165,6 +186,12 @@ typedef struct BossGame {
     s32 exc_bg;               /* Boss_DrawExcBackground index shown, -1 = none */
     int cleared;
     DcPlayer *player;         /* gPlayers */
+    s32 arena_len, arena_circ; /* gCamera.unkE0 / unkE4 (Camera_Create: boss arena radius / circumference) */
+    /* gPlayers->unk70 = Boss2_Draw_PlayerOnArena: 3D transform of the player model */
+    BossDrawPlayerFn draw_player;
+    s32 player_trans[3];      /* @0x17C model translation (fx32 px) */
+    MtxFx33 player_rot;       /* @0x158 model rotation */
+    int player_trans_valid;
 } BossGame;
 extern BossGame g_boss_game;
 #define gPlayers (g_boss_game.player)
@@ -230,6 +257,11 @@ typedef struct BossObjOps {
     BossFn dtor;
 } BossObjOps;
 void boss_obj_main(DcPlayer *h, BossFn *state, const BossObjOps *ops, void *self, int *alive);
+/* StageObj.unk124 (the object's Model): BossCamera tracks its translation when camera
+ * flags 2/4 are set.  m = NULL removes the entry.  boss_obj_model_trans returns the
+ * model translation (fx32), the player model transform for gPlayers, or NULL. */
+void boss_obj_set_model(const DcPlayer *o, const struct BossModel *m);
+const fx32 *boss_obj_model_trans(const DcPlayer *o);
 
 /* ----------------------------------------------------- BossEffect */
 typedef struct BossEffRes BossEffRes;
@@ -241,11 +273,14 @@ typedef struct BossEffect {
     u32 unk2A0;               /* @0x2A0 BossEffect_Create flags */
     BossFn unk2A4;            /* @0x2A4 per-frame callback */
     int unk2AC;               /* @0x2AC .nsbtp resource present (pattern animation, not converted) */
+    s32 unk2B0;               /* @0x2B0 EffRipple3D / EffSplash3D: height above the water level */
     const BossEffRes *res;
     int used;
 } BossEffect;
 /* BossEffect_Create(name, animation mask, flags, x, y, z): name as in the ROM ("eff_hit") */
 BossEffect *BossEffect_Create(const char *name, u32 anim_mask, u32 flags, s32 x, s32 y, s32 z);
+#define BossEffect_State_Main boss_BossEffect_State_Main
+void BossEffect_State_Main(void *self);
 #define BOSSEFFECT_WRAPPERS(X) X(BaseDest) X(BeamFinB) X(Blast) X(Blast1) X(Blast3) X(Blast4) X(Blast5) X(BlastF) \
     X(BombBall) X(Boost) X(Catch) X(Clash) X(DmgHand) X(Hit) X(Homing) X(ImpactBig) X(ImpactPr) X(ImpactSl)          \
     X(ImpactSmall) X(ImpactSt) X(Jump) X(Land) X(LaserFinB) X(Launch) X(Parts) X(Pick) X(Pop) X(Produce)             \
@@ -262,6 +297,8 @@ int boss_effects_live(void);
 
 /* --------------------------------------------------------- hooks */
 void boss_sfx(s32 id);
+void boss_sfx_handle(u32 handle, s32 id);   /* Sound_PlaySeqArc(handle, 0, id) */
+void boss_sfx_stop(u32 handle);             /* NNS_SndPlayerStopSeq(handle, 0) */
 void boss_voice(s32 id);
 void boss_log(const char *ev, s32 a, s32 b);
 #define Sound_PlaySeqArc(a, b, id) boss_sfx(id)
@@ -282,5 +319,41 @@ void boss1_destroy(void);
 const char *boss1_state_name(int part);
 void boss1_hammer_pos(s32 *x, s32 *y, s32 *z);
 int boss1_hammer_box_armed(int box);
+
+/* ------------------------------------------------------- Boss2 */
+/* timing-only animation table of bossdata.bin ("bs2.nsbta" -> frame counts) */
+int boss_anim_lengths(const char *name, const u16 **frames, u32 *count);
+int boss2_load(void);
+void boss2_unload(void);
+void *Boss2_Create(const ObjParam *a, s32 x, s32 y);
+void boss2_update(void);
+int boss2_draw(int list);
+void boss2_destroy(void);
+const char *boss2_state_name(int part);
+void boss2_body_pos(s32 *x, s32 *y, s32 *z);
+int boss2_box_armed(int box);
+void boss2_build_lights(void);   /* g_boss_lights from this frame's Boss2 lights + camera */
+
+/* ------------------------------------------------------- Boss3 */
+int boss3_load(void);
+void boss3_unload(void);
+void *Boss3_Create(const ObjParam *a, s32 x, s32 y);
+void boss3_update(void);
+int boss3_draw(int list);
+void boss3_destroy(void);
+const char *boss3_state_name(int part);
+void boss3_body_pos(s32 *x, s32 *y, s32 *z);
+int boss3_box_armed(int box);
+
+/* ------------------------------------------------------- Boss4 */
+int boss4_load(void);
+void boss4_unload(void);
+void *Boss4_Create(const ObjParam *a, s32 x, s32 y);
+void boss4_update(void);
+int boss4_draw(int list);
+void boss4_destroy(void);
+const char *boss4_state_name(int part);
+void boss4_body_pos(s32 *x, s32 *y, s32 *z);
+int boss4_box_armed(int box);
 
 #endif

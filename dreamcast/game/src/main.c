@@ -14,6 +14,8 @@
 #include "../ui/ui.h"
 #include "../sound/sound.h"
 #include "../boss/boss.h"
+#include "../menus/menus.h"
+#include "../save/save.h"
 #include <stdlib.h>
 
 /* Story order (Sonic): zone N acts 1, 2 and the boss act 3. */
@@ -40,6 +42,9 @@ static int g_obj_ok;
 static int g_is_boss, g_boss_started;
 static int g_stage_idx;
 static Level *g_lv;
+static int g_frontend;   /* 1: SEGA logo / title / menus / zone map are running */
+static int g_emeralds;
+static int g_model_chara = -1;
 
 static void *load_file(const char *path, uint32_t *size)
 {
@@ -82,7 +87,7 @@ static void spawn_player(Level *lv)
     objects_shutdown();
     g_obj_ok = objects_init(&g_map, lv->data) == 0;
     if(g_obj_ok) {
-        objects_add_player(&g_player); objects_set_view_count(1); objects_respawn_view();
+        objects_add_player(&g_player); objects_set_view_count(2); objects_respawn_view();
         /* son.bac timing ends non-looping animations (sets DCP_DF_ANIM_DONE), as on the DS. */
         objects_set_player_anim_done(1);
     }
@@ -106,6 +111,8 @@ static void spawn_player(Level *lv)
 
 static void load_player_model(void)
 {
+    if(g_model_ok && g_model_chara == g_chara) return;
+    g_model_ok = 0; g_model_chara = g_chara;
     uint32_t sz;
     void *m = load_file(g_chara ? "/cd/player/blz.dcm" : "/cd/player/son.dcm", &sz);
     void *a, *v, *t;
@@ -136,8 +143,20 @@ static void draw_player_model(pvr_list_t list)
     dcm_pose(&g_pmodel, g_locals, g_palette);
     if(g_pvis.hdr) dca_visibility(&g_pvis, 0, 0, &g_pmodel, g_visbits);
     if(g_is_boss) {
+        s32 bt[3], br[9];
         /* boss arenas are 3D: the player is placed in world space under the boss camera */
         boss_camera(&cam);
+        if(boss_player_model(bt, br)) {
+            /* circular arenas (Boss2+): the boss module builds the player transform */
+            int i;
+            dcm_mtx_t rot;
+            for(i = 0; i < 9; i++) rot.m[i / 3][i % 3] = br[i] / 4096.0f;
+            rot.m[3][0] = bt[0] / 4096.0f; rot.m[3][1] = bt[1] / 4096.0f; rot.m[3][2] = bt[2] / 4096.0f;
+            dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, 0x4000, 0, 0, 0, 0);
+            dcm_mtx_mul(&mdl, &mdl, &rot);
+            boss_lights(&lights);
+            goto draw;
+        }
         dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, left ? 0xC000 : 0x4000, g_player.angle,
                                g_player.x / 256.0f, -g_player.y / 256.0f, g_player.z / 256.0f);
     } else {
@@ -146,6 +165,7 @@ static void draw_player_model(pvr_list_t list)
         dcm_stage_model_matrix(&mdl, 0x34cc / 4096.0f, left ? 0xC000 : 0x4000, g_player.angle, tx, ty, 0);
     }
     dcm_lights_stage(&lights, left);
+draw:
     opts.list = list; opts.pt_list = PVR_LIST_PT_POLY; opts.alpha_scale = 255;
     dcm_draw(&g_pmodel, g_palette, &mdl, &cam, g_pvis.hdr ? g_visbits : NULL, &lights, &opts);
 }
@@ -185,11 +205,79 @@ static int load_stage(Level *lv, int idx)
     return r;
 }
 
+/* Menu sound hooks (MenuHooks): sys SDAT music streams as /cd/music/sNN.wav
+ * (NN = sequence id, loop points in /cd/music/sys.txt), SE through the
+ * native sequencer with the sys bank. */
+static void menu_bgm(int seq)
+{
+    char path[32];
+    uint32_t ls = 0, le = 0, sz;
+    char *txt = load_file("/cd/music/sys.txt", &sz), *p;
+    if(txt) {
+        txt = realloc(txt, sz + 1); txt[sz] = 0;
+        for(p = txt; p && *p; p = strchr(p, '\n') ? strchr(p, '\n') + 1 : NULL) {
+            unsigned id, a, b;
+            if(sscanf(p, "%u %u %u", &id, &a, &b) == 3 && (int)id == seq) { ls = a; le = b; break; }
+        }
+        free(txt);
+    }
+    snprintf(path, sizeof(path), "/cd/music/s%02d.wav", seq);
+    if(audio_music_play(path, ls, le) != 0) printf("menu bgm %s FAILED\n", path);
+}
+static void menu_se(int arc, int id) { Sound_PlaySeqArc(NULL, (uint32_t)arc, (uint32_t)id); }
+static void menu_stop_all(void) { sound_stop_all(); audio_music_stop(); }
+static void enter_front_end(void)
+{
+    g_frontend = 1;
+    audio_music_stop();
+    if(sound_load_bank("sys") != 0) printf("sys sound bank missing\n");
+}
+
+/* g_obj_hooks.effect: object effects that belong to the frame compositor.
+ * ScreenFlash_Create: full-frame white flash fading over 16 frames.
+ * Enemy-room state is kept for the UI (EnemyRoomHud). */
+static int g_flash, g_room_state = -1, g_room_need, g_room_done;
+static void obj_effect_hook(void *ctx, DcPlayer *p, s32 kind, s32 a, s32 b)
+{
+    (void)ctx; (void)p;
+    switch(kind) {
+    case OBJ_FX_SCREEN_FLASH: g_flash = 16; break;
+    case OBJ_FX_ENEMY_ROOM:
+        if(a == 0) { g_room_state = 0; g_room_need = b; g_room_done = 0; }
+        else if(a == 1) g_room_done = b;
+        else g_room_state = 2;
+        break;
+    default: break;
+    }
+}
+
+/* Water Palace water (OBJECTS.md 2.3): the DS darkens/tints everything below
+ * the water line with the BG/OBJ window and a palette effect. Here a
+ * translucent tint over the viewport below the line, plus a lighter surface band. */
+static void draw_water(int line)
+{
+    float y = (line - g_cam_y) * VIEW_SCALE;
+    if(y >= 480.0f) return;
+    if(y < 0) y = 0;
+    draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, y, 640, 480 - y, 0, 0, 0, 0, 9.0f, 0x502060c0);
+    if(y > 0) draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, y - 2 * VIEW_SCALE, 640, 2 * VIEW_SCALE, 0, 0, 0, 0, 9.1f, 0x60c0e0ff);
+}
+
+/* MENU_REQ_STAGE -> index into k_stages (story table), -1 if the stage is not in the port */
+static int stage_index(int zone, int act)
+{
+    char name[8];
+    unsigned i;
+    snprintf(name, sizeof(name), "z%d%d", zone + 1, act + 1);
+    for(i = 0; i < NUM_STAGES; i++) if(!strcmp(k_stages[i], name)) return i;
+    return -1;
+}
+
 int main(int argc, char **argv)
 {
     Level lv;
     InputState in = {0};
-    int stage = 0, frame = 0, ok;
+    int stage = 0, frame = 0, ok, dbg_start = 0;
     uint64_t t_last = 0;
 
     {
@@ -207,6 +295,10 @@ int main(int argc, char **argv)
     ui_set_paths("/cd/ui", "/cd/sprites");
     printf("ui: %s\n", ui_init() == 0 ? "ok" : "FAILED");
     g_dcp_world.mode = UI_MODE_STORY;
+    save_vmu_install();
+    menus_set_paths("/cd/menus", "/cd/sprites");
+    g_obj_hooks.effect = obj_effect_hook;
+    g_menu_hooks.bgm = menu_bgm; g_menu_hooks.se = menu_se; g_menu_hooks.stop_all = menu_stop_all;
     g_ui_game.save_lives[0] = g_ui_game.save_lives[1] = 3;
     printf("Sonic Rush DC: %dx%d\n", vid_mode->width, vid_mode->height);
     {
@@ -219,28 +311,67 @@ int main(int argc, char **argv)
         }
         printf("player tables: %s\n", g_player_ok ? "ok" : "MISSING");
         input_poll(&in);
-        g_chara = (in.held & IN_ALT) ? 1 : 0;
-        printf("character: %s\n", g_chara ? "Blaze" : "Sonic");
+        g_chara = (in.held & IN_ALT) ? 1 : 0;   /* test builds (debug start) only */
         load_player_model();
     }
     {
         /* test builds only: /cd/debug/start.txt holds the story index to start at */
         uint32_t dsz;
         char *d = load_file("/cd/debug/start.txt", &dsz);
-        if(d) { int v = atoi(d); if(v >= 0 && v < (int)NUM_STAGES) stage = v; free(d); printf("debug start stage %d\n", stage); }
+        if(d) { int v = atoi(d); if(v >= 0 && v < (int)NUM_STAGES) stage = v; free(d); dbg_start = 1; printf("debug start stage %d\n", stage); }
     }
-    ok = load_stage(&lv, stage) == 0;
-    g_cam_x = 0; g_cam_y = 0;
-    if(ok && g_player_ok) spawn_player(&lv);
+    if(dbg_start) {
+        ok = load_stage(&lv, stage) == 0;
+        g_cam_x = 0; g_cam_y = 0;
+        if(ok && g_player_ok) spawn_player(&lv);
+    } else {
+        ok = 0; enter_front_end();
+        menus_init();   /* menudata, save_load() from the VMU, SEGA logo */
+    }
 
     for(;;) {
+        if(g_frontend) {
+            MenuRequest r;
+            input_poll(&in);
+            if(in.pressed) printf("fe pad pressed %08lx\n", (unsigned long)in.pressed);
+            r = menus_run_frame(&in);
+            sound_update();
+            render_begin_frame();
+            render_begin_list(PVR_LIST_OP_POLY); render_end_list();
+            render_begin_list(PVR_LIST_PT_POLY); render_end_list();
+            render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); render_end_list();
+            render_end_frame();
+            if(r.kind == MENU_REQ_STAGE) {
+                int idx = stage_index(r.zone, r.act);
+                if(idx < 0) { printf("menus: stage z%d%d not in the port\n", r.zone + 1, r.act + 1); continue; }
+                g_chara = r.character;
+                g_dcp_world.mode = r.mode;
+                g_dcp_world.lives = r.lives;
+                g_ui_game.save_lives[r.character] = r.lives;
+                g_ui_game.save_flags = gSaveData.unk8;
+                g_emeralds = r.emeralds;
+                boss_set_difficulty(r.easy);
+                load_player_model();
+                stage = idx; g_frontend = 0;
+                ok = load_stage(&lv, stage) == 0;
+                if(ok && g_player_ok) spawn_player(&lv);
+            } else if(r.kind == MENU_REQ_UNAVAILABLE)
+                printf("menus: %s not in the port\n", r.scene ? r.scene : "?");
+            else if(r.kind == MENU_REQ_DEMO)
+                menus_stage_exit(MENU_EXIT_DEMO_END, 0, 0, g_emeralds, 0);   /* attract demos not ported */
+            continue;
+        }
         input_poll(&in);
         if(ok && g_player_ok) ui_update(&in, &g_player);
         if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen()) {
             float px, py, tx, ty;
             if(g_is_boss && !g_boss_started && !ui_titlecard_active()) { boss_start(); g_boss_started = 1; }
             if(g_obj_ok) {
+                /* The DS spawns objects for both screens: view 1 is the area the DS
+                 * top screen showed (192 px above). Spawning only; nothing is drawn
+                 * for it (one continuous viewport, CAMERA.md). */
                 objects_set_view(0, (s32)(g_cam_x * 256.0f), (s32)(g_cam_y * 256.0f));
+                objects_set_view(1, (s32)(g_cam_x * 256.0f), (s32)((g_cam_y - 192.0f) * 256.0f));
                 objects_frame_begin();
             }
             dcp_player_frame(&g_player, ds_pad(in.held), ds_pad(in.pressed), ds_pad(in.released));
@@ -260,6 +391,16 @@ int main(int argc, char **argv)
         if(ok) {
             if(g_cam_x > level_width_px(&lv) - VIEW_W) g_cam_x = level_width_px(&lv) - VIEW_W;
             if(g_cam_y > level_height_px(&lv) - VIEW_H) g_cam_y = level_height_px(&lv) - VIEW_H;
+        }
+        if(ok && g_obj_ok && (g_obj_camera[0].flags34 & 0x10000)) {
+            /* enemy room lock (MapObj8C/8F): keep the view inside the room bounds */
+            float l = g_obj_camera[0].bound[0] / 256.0f, r = g_obj_camera[0].bound[2] / 256.0f;
+            float b = g_obj_camera[0].bound[3] / 256.0f;
+            if(r - l >= VIEW_W) {
+                if(g_cam_x < l) g_cam_x = l;
+                if(g_cam_x > r - VIEW_W) g_cam_x = r - VIEW_W;
+            }
+            if(b > VIEW_H && g_cam_y > b - VIEW_H) g_cam_y = b - VIEW_H;
         }
         if(g_cam_x < 0) g_cam_x = 0;
         if(g_cam_y < 0) g_cam_y = 0;
@@ -288,6 +429,13 @@ int main(int argc, char **argv)
         render_begin_list(PVR_LIST_TR_POLY);
         if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY);
         if(g_is_boss) boss_draw(PVR_LIST_TR_POLY);
+        if(ok && g_obj_ok && !g_is_boss && k_stages[g_stage_idx][1] == '2' && (g_obj_camera[0].flags & 0x1000000))
+            draw_water(g_obj_camera[0].water);
+        if(g_flash > 0) {
+            draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 95.0f,
+                             ((uint32_t)(g_flash * 15) << 24) | 0xffffff);
+            if(!ui_is_paused()) g_flash--;
+        }
         if(ok && g_player_ok) ui_draw_tr();
         if(ok && g_player_ok && !g_model_ok)
             draw_sprite_world(NULL, PVR_LIST_TR_POLY, g_player.x / 256.0f - 8, g_player.y / 256.0f - 28, 16, 28, 0, 0, 0, 0, 0, 3.0f, 0xc02060ff);
@@ -296,16 +444,32 @@ int main(int argc, char **argv)
         audio_update();
         if(ok && g_player_ok && ui_state() == UI_EXIT) {
             int k = ui_exit_kind();
+            MenuRequest r;
+            uint32_t total = g_ui_game.total;
             printf("stage exit kind %d\n", k);
             if(g_obj_ok) objects_shutdown();
             boss_shutdown(); g_is_boss = 0;
-            level_free(&lv);
-            if(k == UI_EXIT_NEXT_ACT) stage = (stage + 1) % NUM_STAGES;
-            else if(k == UI_EXIT_GAME_OVER) { stage = 0; g_ui_game.save_lives[0] = g_ui_game.save_lives[1] = 3; }
-            ok = load_stage(&lv, stage) == 0;
-            if(ok && g_player_ok) spawn_player(&lv);
+            level_free(&lv); ok = 0;
+            if(k == UI_EXIT_NEXT_ACT || k == UI_EXIT_TRY_AGAIN)
+                r = menus_stage_exit(MENU_EXIT_CLEARED, total, g_dcp_world.lives, g_emeralds, g_dcp_world.frame);
+            else if(k == UI_EXIT_QUIT)
+                r = menus_stage_exit(MENU_EXIT_QUIT, total, g_dcp_world.lives, g_emeralds, 0);
+            else
+                r = menus_stage_exit(MENU_EXIT_GAME_OVER, 0, 0, g_emeralds, 0);
+            if(dbg_start && k == UI_EXIT_NEXT_ACT && r.kind != MENU_REQ_STAGE) {
+                /* test builds without menus: continue in story order */
+                r.kind = MENU_REQ_STAGE; r.zone = k_stages[(stage + 1) % NUM_STAGES][1] - '1';
+                r.act = k_stages[(stage + 1) % NUM_STAGES][2] - '1'; r.character = g_chara;
+                r.mode = g_dcp_world.mode; r.lives = g_dcp_world.lives; r.emeralds = g_emeralds; r.easy = 1;
+            }
+            if(r.kind == MENU_REQ_STAGE && stage_index(r.zone, r.act) >= 0) {
+                g_chara = r.character; load_player_model();
+                stage = stage_index(r.zone, r.act);
+                ok = load_stage(&lv, stage) == 0;
+                if(ok && g_player_ok) spawn_player(&lv);
+            } else
+                enter_front_end();
         }
-
         if(++frame % 120 == 0) {
             uint64_t now = timer_ms_gettime64();
             if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);

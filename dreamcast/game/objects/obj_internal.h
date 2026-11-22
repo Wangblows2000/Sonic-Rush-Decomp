@@ -38,7 +38,7 @@ typedef struct ObjPlayerCtx {          /* per player: the player's ObjRects + sp
     ObjSprite spr;                     /* @0x94 son.bac timing (hit box events)   */
     s16 prev_invuln, prev_invinc;
     /* player work the player module does not keep (gimmick states, objects/obj_pgimmick.c) */
-    s16 g3EE;                          /* @0x3EE */
+    s16 g3EC, g3EE;                    /* @0x3EC @0x3EE (GmkTable: camera look offsets) */
     s32 g3F0, g3F4, g3F8, g3FC;        /* @0x3F0..@0x3FC */
 } ObjPlayerCtx;
 
@@ -82,6 +82,7 @@ typedef struct ObjGlobals {
     int lazy_loads;                    /* resources loaded after objects_init (late) */
     int preloaded;
     int no_grind_check;                /* the player module does Player_CheckStartGrind itself */
+    int no_underwater;                 /* the player module does Player_UpdateUnderwater itself */
 } ObjGlobals;
 extern ObjGlobals g_obj;
 
@@ -251,6 +252,90 @@ void mapobject_spawn_freed_animal(Obj *o);                              /* MapOb
 Obj *eff_zako_bomb_burst(Obj *src, s16 x, s16 y);                       /* EffZakoBombBurst_Create */
 Obj *eff_zako_debris(Obj *src, s16 x, s16 y, s16 vx, s16 vy, u8 type);  /* EffZakoDebris_Create */
 void eff_set_move_until_anim_end(Obj *o);                               /* Effect_SetMoveUntilAnimEndState */
+
+/* ------------------------------------------- objdata v3 (zones 2 and 3) */
+Obj *AttackHitbox_Create(DcPlayer *parent, s16 a, s16 b, s16 c, s16 d, s16 e); /* obj_player.c */
+void Decoration_InitFromMap(Obj *w, ObjParam *p, s32 x, s32 y);          /* obj_decor.c */
+void Decoration_Destructor(Obj *w);
+/* obj_water.c */
+Obj *EffZakoBomb_Create(DcPlayer *arg, s16 x, s16 y);
+void EffAirBubble_Create(DcPlayer *arg, s16 x, s16 y, s32 type, s32 t);
+void EffAirBubble_Spawn(DcPlayer *a, s32 x, s32 y, s32 c);
+void EffDrownCount_Create(DcPlayer *arg, s32 x, s32 y, s32 idx);
+void EffDrownCount_Spawn(DcPlayer *a, s32 b, s32 c, s32 d);
+void EffGmkBubble_Create(DcPlayer *arg, s32 x, s32 y, s32 dx, s32 unused, s32 t);
+void EffWaterGmk_Create(DcPlayer *arg, s16 x, s16 y);
+Obj *EffWaterGmk_CreateSplash(DcPlayer *arg, s32 x, s32 y);
+void EffWaterRunSplash_Create(DcPlayer *arg, s32 x, s32 y, s32 base);
+void EffWaterSplash_Create(DcPlayer *arg, s32 x, s32 y, s32 base);
+void EffWaterSplash_Spawn(DcPlayer *p);
+void dec_shared_reset(void);
+Obj *dec_shared_create(int bac, s32 anim, u16 slot);                     /* DecShared_Create */
+void dec_shared_ping(Obj *s);                                            /* DecShared_State_PingParent */
+Obj *WaterRunTrigger_Create(ObjParam *p, s32 x, s32 y);
+Obj *MapObj7D_Create(ObjParam *p, s32 x, s32 y);
+Obj *MapObj80_Create(ObjParam *p, s32 x, s32 y);
+Obj *LaunchZone_Create(ObjParam *p, s32 x, s32 y);
+Obj *LandUnrest_Create(ObjParam *p, s32 x, s32 y);
+Obj *Wheel2D_Create(ObjParam *p, s32 x, s32 y);
+Obj *Mine_Create(ObjParam *p, s32 x, s32 y);
+Obj *Bubble_Create(ObjParam *p, s32 x, s32 y);
+Obj *BubbleSpawner_Create(ObjParam *p, s32 x, s32 y);
+Obj *WaterJet_Create(ObjParam *p, s32 x, s32 y);
+Obj *Kuragen_Create(ObjParam *p, s32 x, s32 y);
+Obj *KuragenBomb_Create(ObjParam *p, s32 x, s32 y);
+Obj *DecGroup41_Create(ObjParam *p, s32 x, s32 y);
+Obj *DecGroup4D_Create(ObjParam *p, s32 x, s32 y);
+/* obj_pwater.c (player gimmick states) */
+void Player_ApplyAutoRunAcceleration(DcPlayer *w);
+void Player_Action_WaterRun(DcPlayer *w);
+void Player_Action_ZoneLaunch(DcPlayer *w, s16 x, s16 y);
+void Player_Action_BreatheAirBubble(DcPlayer *w);
+void Player_Action_Wheel2D(DcPlayer *w, Obj *o);
+void Player_Action_MapObj80(DcPlayer *w, Obj *o);
+void Player_Action_MapObj40(DcPlayer *w);
+void Player_Action_AttachToObject(DcPlayer *w, Obj *o, s32 x, s32 y);
+void Player_State_WaterRun(DcPlayer *w);
+void Player_State_ZoneLaunch(DcPlayer *w);
+void Player_State_BreatheAirBubble(DcPlayer *w);
+void Player_State_Wheel2D(DcPlayer *w);
+void Player_State_MapObj80(DcPlayer *w);
+void Player_State_MapObj40(DcPlayer *w);
+void Player_State_AttachedToObject(DcPlayer *w);
+void Player_UpdateUnderwater(DcPlayer *w);
+void obj_player_check_gimmick(DcPlayer *w);
+/* obj_mirage.c */
+void EffSand_Create(DcPlayer *arg, s16 x, s16 y);
+void EffSandSlide_Create(DcPlayer *arg, s16 x, s16 y);
+void EffShadow_Create(DcPlayer *arg);
+void EffEntrance_Create(Obj *par, s32 dx, s32 dy);
+void mirage_reset(void);
+int obj_pawn_in_entrance(const Obj *o);                                  /* obj_enemy.c */
+void objects_spawn_rect(s32 l, s32 t, s32 r, s32 b);                     /* StageEvent_SpawnInRect (obj_manager.c) */
+Obj *Cargo_Create(ObjParam *p, s32 x, s32 y);
+Obj *Hand2d_Create(ObjParam *p, s32 x, s32 y);
+Obj *GmkTable_Create(ObjParam *p, s32 x, s32 y);
+Obj *MapObj8C_CreateByType(ObjParam *p, s32 x, s32 y);
+Obj *SandSlider_Create(ObjParam *p, s32 x, s32 y);
+Obj *Rock_Create(ObjParam *p, s32 x, s32 y);
+Obj *GmkRail_Create(ObjParam *p, s32 x, s32 y);
+Obj *EggBishop_Create(ObjParam *p, s32 x, s32 y);
+Obj *DecGroup45_Create(ObjParam *p, s32 x, s32 y);
+/* obj_pmirage.c (player gimmick states of zone 3) */
+void Player_Action_Cargo(DcPlayer *w, Obj *o, s32 x, s32 y);
+void Player_Action_Hand2D(DcPlayer *w, Obj *o, s32 x, s32 y);
+void Player_Action_SandSlide(DcPlayer *w);
+void Player_Action_SandSlider(DcPlayer *w, Obj *o);
+void Player_Action_SandSlider90(DcPlayer *w, Obj *o);
+void Player_AttachGimmickTable(DcPlayer *w, Obj *o);
+void Player_AttachGimmickTableNoInput(DcPlayer *w, Obj *o);
+void Player_AttachGimmickTableReleased(DcPlayer *w, Obj *o);
+void Player_DetachGimmick(DcPlayer *w, Obj *o);
+void Player_State_Cargo(DcPlayer *w);
+void Player_State_Hand2D(DcPlayer *w);
+void Player_State_SandSlide(DcPlayer *w);
+void Player_State_SandSlider(DcPlayer *w);
+void Player_State_SandSlider90(DcPlayer *w);
 
 /* kinds (Obj.kind), for draw / debug */
 enum { OBJK_NONE, OBJK_SPRING, OBJK_DASHP, OBJK_DASHC, OBJK_ITEMBOX, OBJK_ITEMPART, OBJK_NEEDLE,

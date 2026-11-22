@@ -103,6 +103,16 @@ static void hk_exit(void *ctx, s32 k) { (void)ctx; g_exit_kind = k; g_exit_hook+
 static void camera_follow(int snap) {
     s32 px = P.x >> 8, py = P.y >> 8;
     s32 tx = px - 128, ty = py - 105;
+    /* Player_UpdateCamera (camera module, not in the object module): while a gimmick
+     * locks the camera (pf2 & 0x10 / 0x20) it follows the gimmick object, offset by
+     * @0x3EC + 0x80 / @0x3EE + 0x60 (the special ring keeps it in view this way) */
+    if ((P.pf2 & 0x30) && P.gimmick != NULL && g_obj.n_players) {
+        const Obj *gm = (const Obj *)P.gimmick;
+        if (P.pf2 & 0x10)
+            tx = (gm->h.x >> 8) - (g_obj.players[0].g3EC + 0x80);
+        if (P.pf2 & 0x20)
+            ty = (gm->h.y >> 8) - (g_obj.players[0].g3EE + 0x60);
+    }
     if (snap) {
         g_cam_x = tx;
         g_cam_y = ty;

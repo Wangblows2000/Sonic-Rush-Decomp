@@ -2,15 +2,19 @@
 
 Status (2026-11-22):
 
-- The shared boss framework and Boss1 (Egg Hammer, Leaf Storm act 3, stage `z13`) are translated.
-- Host test: the whole fight runs on the real z13 level with the real player module and ObjRect code.
-  Measured result: 16/16 checks pass with the default seed. The full fight completes (6 or 8 hits,
-  then defeat, then the stage-clear request) for all 5 seeds x 2 difficulties tried.
-- `kos-cc -O2 -Wall -Wextra -Werror` builds all 5 sources.
+- The shared boss framework, Boss1 (Egg Hammer, Leaf Storm act 3, stage `z13`) and Boss2 (Egg Turtle,
+  Water Palace act 3, stage `z23`) are translated.
+- Boss1 host test: the whole fight runs on the real z13 level with the real player module and ObjRect
+  code. Measured: 16/16 checks pass with the default seed; the fight completes for 5 seeds x 2
+  difficulties.
+- Boss2 host test: the whole fight runs on the real z23 level (same setup). Measured: 18/18 checks pass
+  for seeds 0x12345678, 1, 2, 3, 0xdeadbeef and 77, each at 6 and 8 hit points (12 runs). Every run
+  visits idle, dash (+ jump), attack-2 strike, attack-3 catch (water drained and raised), hurt and
+  defeat, and reaches the stage-clear request.
+- `kos-cc -O2 -Wall -Wextra -Werror` builds all 6 sources.
 - Not yet run on Dreamcast hardware or in an emulator. Rendering is checked only on the host, by
   projecting vertices through the boss camera.
-- Boss2 (Water Palace, 86 files, about 8.4k lines of decompiled C) is not started. The framework is
-  ready for it; see "Next".
+- Boss3 (Mirage Road, 153 files, about 8.8k lines) is not started; see "Next".
 
 ## 1. Files
 
@@ -25,21 +29,34 @@ All files are under `dreamcast/game/boss/`.
 | `boss_model.c` | Model runtime: Model_Init, SetResource, SetAnimation, Animate (Model_AnimateMdl copied), the Model_Draw matrix ops as `boss_model_pose`, node matrices, and `dcm_draw` submission. Also the fx32 MTX helpers. |
 | `boss_effect.c` | BossEffect_Create (from the ARM listing), State_Main, all 35 `BossEffect_Create<Name>` wrappers, EffPebble, and the StageObj_Draw3D step for effects. |
 | `boss1.c` | Boss1, Boss1Neck, Boss1Hammer: all 196 functions of `src/game/Boss/Boss1/`, plus BossStage1 (model load/free). |
+| `boss2.c` | Boss2, Boss2Water, Boss2WaterLight, BossStage2: all 86 functions of `src/game/Zone/Water_Palace/Boss/`, plus EffRipple3D / EffSplash3D (Water Palace effects the boss spawns). |
 | `tools/bossdata.py` | Converter. It writes `build/dreamcast/boss/bossdata.bin` and `assets.txt`. |
-| `test/test_boss.c`, `test/stubs_objects.c` | Host test. The stubs are weak definitions for object-module functions that are declared but not yet written. |
-| `Makefile` | `make data`, `make host-test`, `make dc`. |
+| `test/test_boss.c`, `test/test_boss2.c`, `test/stubs_objects.c` | Host tests (Boss1 on z13, Boss2 on z23). The stubs are weak definitions for object-module functions that are declared but not yet written. |
+| `Makefile` | `make data`, `make host-test` (both), `make host-test1`, `make host-test2`, `make dc`. |
 
 `bossdata.bin` ("BOSD" v1) contains the following. Nothing from the ROM is compiled into the sources.
 
 - The ROM tables the code reads, keyed by DS address:
   - Boss1: `data_ov000_02362b58..02362dc4`;
+  - Boss2: `data_ov000_02362dc4..0236306c` (rodata) and `data_ov000_023650fc..02365414` (data: palette and
+    node name pointer tables, defeat positions, the hit-box callback table, `gBoss2ModelColorsAlt`);
+  - `gEffSplash3DModelNames` / `gEffRipple3DModelNames` (`0x02367b38..02367b9c`);
+  - zone lights `data_020748bc` (vectors) / `data_02074960` (colours) (`0x020748bc..02074a04`);
   - ScreenShake: `data_0207323c`, `data_02073240`, `data_0207324c`.
+  - Pointers inside these tables keep their DS value; `ROM_STR(ptr)` resolves them through the same
+    chunks. The hit-box callback table holds ROM function addresses; `Boss2_HitCallback` maps them to the
+    native functions (the tool checks the table bytes).
   - The C code reads them with `BOSS_DATA(0x02362d64, ...)`, so the original symbol stays visible in
     the source.
 - The node indices that the code looks up by name: `bs1_neck:neck_ham` = 10, `bs1_hammer:hammer` = 0.
   These come from the NSBMD node dictionaries (`g3d.py`).
-- An effect table: for each boss stage, the converted package of each BossEffect name. There are 44
-  entries, 5 of them for z13. Duplicates are resolved through `models/manifest.json`.
+- The Boss2 node names: `bs2_body:body0` / `body_neck` / `prop`, `bs2_neck:neck_head`, `bs2_head:head_01`.
+- An effect table: for each boss stage, the converted package of each BossEffect name. There are 49
+  entries, 5 of them for z13 and 10 for z23 (incl. `eff_ripple_s/m/b`, `eff_splash_s/b`). Duplicates are
+  resolved through `models/manifest.json`.
+- A timing-only animation table: the frame counts of animation files that are not converted
+  (`bs2.nsbta`: 60, 30, 30, 240). `Model_SetAnimation` turns them into animation objects without
+  joint data, so the "ended" bit the Boss2 water states wait on keeps the original timing.
 
 ## 2. API and how to wire it into main.c
 
@@ -66,7 +83,14 @@ boss_camera(&cam);          /* the boss-stage 3D camera: use it for the player m
 boss_shake_offset(&sx,&sy); /* ScreenShake (also shakes 2D sprites/HUD on the DS) */
 boss_brightness();          /* gDisplayMain.unk48: 16 = white flash, fades to 0 (defeat) */
 boss_exc_background();      /* 6/7 = concentrated_line_01/02.bbg shown behind the defeat cut-ins, -1 none */
+boss_player_model(tr, rot); /* Boss2: player model transform on the arena circle (fx32), 0 = not overridden */
+boss_lights(&lights);       /* Boss2: this frame's lights in view space (use for the player model too) */
+boss_water_level();         /* Boss2: gCamera.unk62 water level (also written to g_obj_camera[0].water) */
 boss_shutdown();            /* leaving the stage */
+/* Boss2 extra hooks (optional): */
+g_boss_hooks.sfx_handle = ...;  /* Sound_PlaySeqArc(handle 1..3, 0, id): looping boss sounds */
+g_boss_hooks.sfx_stop = ...;    /* NNS_SndPlayerStopSeq(handle, 0) */
+g_boss_hooks.water_fx = ...;    /* EffWater3D_Create (water spray sprite, not translated) */
 ```
 
 Integration notes:
@@ -90,10 +114,24 @@ Integration notes:
 5. **Map object 0x3f (`Boss1_Create`)** must not be created by the objects module.
    `boss_init` creates it from the level's object list. Object types 0xca and 0xcb are the neck and
    the hammer.
-6. **Order:** boss_update runs after objects_update. Its ObjRect boxes are checked at the next
+6. **Boss2 (z23).** `boss_init(5, ...)` creates Boss2 from map object 0x3e (the objects module must
+   not create it). After the title card:
+   - The arena is a circle (radius 0x1152f0, circumference 0x6cd988 fx32 = 1741 px). The player's
+     x is the arc position. Boss2_Draw_PlayerOnArena wraps it into 0x40..0x70d px at the start of
+     every `boss_update` and builds the player model transform: draw the player with
+     `boss_player_model()` and `boss_camera()`, not with `(x, -y, z)`. The 2D level keeps the
+     collision (flat floor at y = 512 over the whole 1856 px map).
+   - The boss writes the water level (`g_obj_camera[0].water`, px; 410 normally, 613 while drained).
+     The player's underwater logic and any water surface drawing must read it. z23 has no
+     WaterLevelTrigger object, so nothing else writes it.
+   - Lights: `boss_lights()` (Boss2_SetLights: the boss lights above the water, the zone lights
+     below). `boss_draw` uses them for the boss models.
+   - Model colours: Boss2 rewrites the material diffuse / ambient / emission of the 11 stage models
+     (default and the drained-water set). This is done on the loaded `.dcm`, so `boss_draw` shows it.
+7. **Order:** boss_update runs after objects_update. Its ObjRect boxes are checked at the next
    `objects_frame_begin`, as on the DS, where Stage_Main runs first.
 
-Disc assets (from `build/dreamcast/boss/assets.txt`, about 1.1 MB for z13):
+Disc assets (from `build/dreamcast/boss/assets.txt`: 14 files for z13, 31 for z23):
 
 - `/cd/boss/bossdata.bin`.
 - `/cd/models/` with:
@@ -101,6 +139,11 @@ Disc assets (from `build/dreamcast/boss/assets.txt`, about 1.1 MB for z13):
   - `narc__z13_act_lz7__bs1.dca`;
   - `narc__z13_act_lz7__eff_{hit,impact_small,impact_big,blast1}` (`.dcm` + `.dca`);
   - `narc__z13_act_lz7__eff_pebble__eff_pebble01.dcm`.
+- z23: `mod__bs2_{base,lotus,water,shower,shower_s,shower_e,sky,body,neck,head,prop}__*.dcm`,
+  `narc__z23_act_lz7__bs2.dca`, `narc__z23_act_lz7__eff_{blast,splash_s,splash_b,ripple_s,ripple_m,ripple_b}`
+  (`.dcm` + `.dca`), `narc__z23_act_lz7__eff_suction2__eff_suction2.dcm` (no joint animation),
+  `narc__z13_act_lz7__eff_{hit,impact_small}` (identical in z23, deduplicated by the converter),
+  `narc__extra_act__eff_catch` (`.dcm` + `.dca`, identical in z23).
 - Build them with `python3 tools/dreamcast/models/nsbmd2dc.py batch`, then `make -C dreamcast/game/boss data`.
 
 ## 3. How the translation is built
@@ -209,11 +252,30 @@ into the player module:
   - NaviMsg (HUD) and BossHelp (`src/game/UI/Hud/BossHelp_*`, used by Boss6/7/F only, not by Boss1).
 - **Order of `Model_AnimateMdl`:** a paused slot reads an uninitialised `d` on the DS. Here it reads
   0, so no "ended" test is made for a paused slot.
+- **The host tests link the object and player modules with `-ffunction-sections` and
+  `--gc-sections`.** Both modules are being extended by their owners; object functions that call
+  player functions not written yet (e.g. `obj_mirage.c` -> `Player_Action_Cargo`) would otherwise break
+  the link. Only the code the boss tests reach is kept.
 - **The host test does not call `objects_init`.** The objects module's `objdata.bin` format is being
   changed by its owner: loader v2, current tool v1. So the test registers the player's two boxes
   itself, with the son.bac boxes of the two poses it uses: standing (-6,-16,6,16), ball body
   (-8,-8,8,8) and attack (-8,-9,8,9). It links the real `obj_rect.c`, `obj_player.c` (Player_OnHurt,
   AttackBounce) and the player module.
+- **Boss2 specifics:**
+  - Palette swaps (hurt blink, flash of the head while its damage box is armed) are state only, as for
+    Boss1 (`boss2_palette()` exposes the selection).
+  - `bs2.nsbta` (water / shower texture scrolling) is not converted: timing only, no texture motion.
+  - `EffWater3D_Create` (a 3D BAC sprite) is not translated; its arena position goes to
+    `g_boss_hooks.water_fx`.
+  - Joint cross-fades (`flags & 0x40`, Model_SetAnimation / Model_AnimateMdl) are copied; the pose
+    blends translation / rotation / scale by the two ratios and re-orthonormalises the rotation. NNS's
+    exact blend function was not compared.
+  - Node matrices read back with NNS_G3dGetCurrentMtx are rounded from the float joint matrices (as for
+    Boss1's hammer).
+  - The light vectors are taken as world space and rotated into view space with the boss camera (NNS
+    sends them through the camera matrix). Not compared against a DS capture.
+  - Display registers (POWCNT swap, BG2 cut-in, master brightness) become `boss_exc_background()` /
+    `boss_brightness()` state.
 - **Not run on Dreamcast hardware or in an emulator.** PVR list classes, culling and the camera
   framing are derived, not observed. The host debug view (`DUMPAT=<frame>`) splats projected
   vertices. It shows the neck and hammer in front of the camera with the player below them, but it
@@ -255,11 +317,47 @@ Seeds 1, 2, 3, 0xdeadbeef and 77, each at 6 and 8 hit points: every fight reache
 with exactly 6 (or 8) hits. With seed 1 at 6 hp, the random attack pattern never picked a big slam,
 so the "big slam chosen" check fails for that seed only.
 
+### Boss2 (z23)
+
+```sh
+make -C dreamcast/game/boss host-test2
+SEED=1 LEVEL=1 build/dreamcast/boss/test_boss2 build/dreamcast/stages/z23/level.bin \
+    build/dreamcast/player build/dreamcast/models build/dreamcast/boss [-v|-vv]
+DUMPAT=1580 DUMPFILE=/tmp/v.ppm build/dreamcast/boss/test_boss2 ...      # host debug view
+```
+
+Scripted player (the level has only PlayerStart 0x72 at (424,496) and the boss 0x3e at (984,512)):
+
+- **[miss]** 900 frames standing at the start: the boss never takes damage.
+- **[fight]** when a head damage box is armed (box 4 after the attack-2 strike, box 5 after the
+  attack-3 catch), the player is put on the floor 40 px before it and does a full jump onto the head
+  (real son.bac attack box vs ObjRect). An "assist" (teleport above the head) exists in the script
+  but was never needed: the armed heads are at y 479..484. On even-numbered dashes the player runs
+  away in the dash direction (the boss then jumps at him); on odd ones he hops over the boss.
+- **[defeat]** runs to the stage-clear request.
+
+Measured log (default seed, 6 hp):
+
+```
+f  284 dash (player hurt)   f  991 attack2   f 1599 hit 5   f 1905 attack2   f 2466 hit 4
+f 2692 water_lower 410 -> f 2812 attack_catch (water 562..613) -> f 2971 hit 3 -> f 3062 water_raise
+f 3342 dash -> f 3428 jump at the fleeing player   f 4140 attack2   f 4669 hit 2 (pinch music)
+f 4975 attack2 -> f 5490 hit 1   f 5796 attack2 -> f 6298 hit 0 -> defeat (3 cut-ins, exc_bg 6/7/6)
+f 6687 cleared (ring bonus 50000)
+stats: attacks 8 (dash 2, jumps 1, strike 5, catch 1), hits 6, player hurts 3
+water: lowers 1 raises 1, level 410..613; ripples 268, splashes 7
+18 checks, 0 failed
+```
+
+Phases visited: 7 idle, 8 dash, 9 attack 2, 10 attack 3, 11 hurt, 12 defeat. Checks also cover the
+player transform on the arena circle (radius 277.2 px), the lights, the camera and the projection of
+all models. All 12 seed / difficulty runs above pass 18/18.
+
 ## 6. Next
 
-- **Boss2** (Water Palace, `src/game/Zone/Water_Palace/Boss/`, 86 files, about 8.4k lines). It uses
-  the same framework: BossCamera, BossModel / Model_AnimateMdl, BossEffect (the effect table already
-  has the z23 packages), `boss_obj_main`, ObjRect, and `bossdata.bin` chunks for its ov000 tables.
+- **Boss3** (Mirage Road z33, `src/game/Zone/Mirage_Road/Boss/`, 153 files, about 8.8k lines). Arena
+  constants for zone mode 2 (0xf42f8 / 0x5fe435) are already set by `boss_init`.
+- Water surface / underwater handling for the player in z23 (reads `g_obj_camera[0].water`).
 - In the player module: `Player_Action_KnockbackIntangible` / `Player_Action_Blank`, and the
   boss-stage player draw.
 - In the models converter: palette variants for the hurt/flash palettes.
@@ -275,8 +373,15 @@ Status meanings:
   callbacks, palettes, asset loading).
 - **not translated**: see section 4.
 
-Counts: 199 reused, 39 modified, 7 substantially rewritten, 2 not translated, out of 247 original
-functions.
+Counts: Boss1 + framework: 199 reused, 39 modified, 7 substantially rewritten, 2 not translated, out
+of 247 original functions. Boss2 (+ the 7 Water Palace 3D effect functions it uses): 55 reused, 32
+modified, 6 substantially rewritten, 2 not translated, out of 95.
+
+Framework changes for Boss2: `Model_SetAnimation` (cross-fade branch copied; timing-only animation
+objects), `Model_AnimateMdl` (cross-fade part copied), `boss_model_pose` (MTX_RESTORE from the matrix
+stack `g_boss_mtx_slot[unk8]`, `Model_MatrixOp_Rotate` after a restore, joint cross-fade), new
+`boss_model_set_colors` (NNS_G3dMdlSetMdlDiffAll / AmbAll / EmiAll), `BossEffect_State_Main` exported,
+`BossEffect.unk2B0`.
 
 New native functions:
 
@@ -537,3 +642,103 @@ New native functions:
 | `EffPebble_State_Lifetime` | boss_effect.c | reused |  |
 | `BossStage1_FreeModels` | boss1.c boss1_unload | substantially rewritten |  |
 | `BossStage1_OnModelLoaded` | boss1.c boss1_load | substantially rewritten | async heap copy -> load the converted .dcm/.dca |
+
+### Boss2 (boss2.c)
+
+| original | native file | status | note |
+|---|---|---|---|
+| `Boss2WaterLight_CreateApplyAlt` | boss2.c | modified | Task_Create -> gBoss2WaterLightTask function pointer run after Boss2 |
+| `Boss2WaterLight_CreateRestore` | boss2.c | modified | same |
+| `Boss2WaterLight_Destructor` | boss2.c | reused |  |
+| `Boss2WaterLight_Main_ApplyAltColors` | boss2.c | modified | NNS_G3dMdlSetMdl*All -> boss_model_set_colors (material colours of the loaded .dcm) |
+| `Boss2WaterLight_Main_RestoreColors` | boss2.c | modified | same |
+| `Boss2Water_Action_StartLower` | boss2.c | modified | Sound_PlaySeqArc(handle) -> boss_sfx_handle |
+| `Boss2Water_Action_StartRaise` | boss2.c | modified | same |
+| `Boss2Water_Destructor` | boss2.c | reused | empty |
+| `Boss2Water_Main` | boss2.c | modified | NNS_G3dGlbLight* -> Boss2_SetLights; gCamera.unk62 -> g_obj_camera[0].water; EffWater3D -> hook |
+| `Boss2Water_State_Lower` | boss2.c | reused |  |
+| `Boss2Water_State_LowerEndShake` | boss2.c | modified | NNS_SndPlayerStopSeq(handle) -> boss_sfx_stop; the unk40 = unk3C >> 12 slip kept |
+| `Boss2Water_State_LowerShake` | boss2.c | reused |  |
+| `Boss2Water_State_LowerWait` | boss2.c | reused |  |
+| `Boss2Water_State_Raise` | boss2.c | reused |  |
+| `Boss2Water_State_RaiseEnd` | boss2.c | modified | same |
+| `Boss2Water_State_RaiseWaitAnim` | boss2.c | reused |  |
+| `Boss2_Action_Attack2` | boss2.c | reused |  |
+| `Boss2_Action_Attack3` | boss2.c | modified | NNS_G3dRenderObjSetCallBack -> s_head_cb |
+| `Boss2_Action_DashAtPlayer` | boss2.c | reused |  |
+| `Boss2_Action_Defeat` | boss2.c | modified | display registers (BG2CNT, DISPCNT, offsets) -> exc_bg; gDisplayMain.unk48 -> bright; StopSeqAll/RingManager -> hooks |
+| `Boss2_Action_Idle` | boss2.c | reused |  |
+| `Boss2_Create` | boss2.c | modified | Task_Create/archives/Model_* -> static part + boss_model; hit callbacks from the ROM table data_ov000_0236521c mapped by address; Sound_AllocHandle -> handles 1..3 |
+| `Boss2_CreateWaterController` | boss2.c | modified | Task_Create(0x4ff) -> static Boss2Water run first in boss2_update |
+| `Boss2_Destructor` | boss2.c | modified | resource release; rect_forget of the 20 boxes; water task stopped |
+| `Boss2_DrawDefeatBackground` | boss2.c | modified | BBG into BG2 -> Boss_DrawExcBackground (boss_exc_background) |
+| `Boss2_Draw_ModelsAndHitboxes` | boss2.c | modified | Model_Draw -> boss_model_pose; MTX_RESTORE + NNS_G3dGetCurrentMtx -> g_boss_mtx_slot -> MtxFx43 (rounded from float) |
+| `Boss2_Draw_PlayerOnArena` | boss2.c | modified | player model transform -> g_boss_game (boss_player_model); lights -> Boss2_SetLights; runs at the start of boss_update |
+| `Boss2_InitCamera` | boss2.c | modified | camera offsets -> named BossCamera fields |
+| `Boss2_NodeCallback_Body` | boss2.c | substantially rewritten | called per joint (NODEDESC order = joint order) after the pose; same unk1320 step logic |
+| `Boss2_NodeCallback_Head` | boss2.c | substantially rewritten | installed/reset state kept as s_head_cb |
+| `Boss2_NodeCallback_NeckHead` | boss2.c | substantially rewritten | same |
+| `Boss2_OnHit_DamageAttack2` | boss2.c | modified | owner check -> obj_box_player; NaviMsg / Sound_PlaySeq via hooks |
+| `Boss2_OnHit_DamageAttack3` | boss2.c | modified | same |
+| `Boss2_OnHit_PushPlayer` | boss2.c | modified | owner check -> obj_box_player |
+| `Boss2_SelectNextAttack` | boss2.c | reused |  |
+| `Boss2_SetPalettes` | boss2.c | modified | Boss_LoadModelPalettes -> selection state only (pre-decoded textures) |
+| `Boss2_SetTargetAngle` | boss2.c | reused |  |
+| `Boss2_State_Attack2Aim` | boss2.c | reused | u16 field views kept through unions; head turn in shared Boss2_AimAtPlayer |
+| `Boss2_State_Attack2AimEnd` | boss2.c | reused | same; suction effect restores matrix slot 0x1a |
+| `Boss2_State_Attack2Charge` | boss2.c | reused |  |
+| `Boss2_State_Attack2End` | boss2.c | reused |  |
+| `Boss2_State_Attack2EnterTurnMode` | boss2.c | reused |  |
+| `Boss2_State_Attack2Hurt` | boss2.c | modified | ResetCallBack -> s_head_cb = 0 |
+| `Boss2_State_Attack2Recover` | boss2.c | modified | same (shared Boss2_StartAim) |
+| `Boss2_State_Attack2StartAim` | boss2.c | modified | same (shared Boss2_StartAim); StopSeq -> hook |
+| `Boss2_State_Attack2Strike` | boss2.c | reused |  |
+| `Boss2_State_Attack2Turn` | boss2.c | reused |  |
+| `Boss2_State_Attack3Catch` | boss2.c | reused |  |
+| `Boss2_State_Attack3Close` | boss2.c | reused |  |
+| `Boss2_State_Attack3End` | boss2.c | modified | same |
+| `Boss2_State_Attack3Hold` | boss2.c | reused |  |
+| `Boss2_State_Attack3Hurt` | boss2.c | reused |  |
+| `Boss2_State_Attack3Recover` | boss2.c | reused |  |
+| `Boss2_State_Attack3Start` | boss2.c | reused |  |
+| `Boss2_State_Attack3Suck` | boss2.c | reused |  |
+| `Boss2_State_Dash` | boss2.c | reused |  |
+| `Boss2_State_DashBrake` | boss2.c | reused |  |
+| `Boss2_State_DashHop` | boss2.c | reused |  |
+| `Boss2_State_DashStart` | boss2.c | reused |  |
+| `Boss2_State_DashStop` | boss2.c | reused |  |
+| `Boss2_State_DashTurn` | boss2.c | reused |  |
+| `Boss2_State_Defeat` | boss2.c | modified | DISPCNT BG2 off -> exc_bg = -1; brightness -> g_boss_game.bright |
+| `Boss2_State_DefeatFinish` | boss2.c | modified | StageShutdown_Create -> g_boss_hooks.cleared (once); data_022c4590.unk10 -> g_obj_stage.ring_bonus |
+| `Boss2_State_IdleAfterRaise` | boss2.c | reused |  |
+| `Boss2_State_IdleAfterRaiseCountdown` | boss2.c | reused |  |
+| `Boss2_State_IdleAfterRaiseFinish` | boss2.c | reused |  |
+| `Boss2_State_IdleAfterRaiseWaitLoop` | boss2.c | reused |  |
+| `Boss2_State_IdleBeforeAttack3` | boss2.c | reused |  |
+| `Boss2_State_IdleBeforeAttack3Countdown` | boss2.c | reused |  |
+| `Boss2_State_IdleBeforeAttack3Finish` | boss2.c | reused |  |
+| `Boss2_State_IdleBeforeAttack3WaitLoop` | boss2.c | reused |  |
+| `Boss2_State_IdleCountdown` | boss2.c | reused |  |
+| `Boss2_State_IdleFinish` | boss2.c | reused |  |
+| `Boss2_State_JumpAirborne` | boss2.c | reused |  |
+| `Boss2_State_JumpFall` | boss2.c | reused |  |
+| `Boss2_State_JumpLandShake` | boss2.c | reused |  |
+| `Boss2_State_JumpRise` | boss2.c | reused |  |
+| `Boss2_State_JumpStartFall` | boss2.c | reused |  |
+| `Boss2_State_WaitAnimThenSelectMode1` | boss2.c | reused |  |
+| `Boss2_State_WaitAnimThenSelectMode2` | boss2.c | reused |  |
+| `Boss2_State_WaitForStart` | boss2.c | modified | POWCNT write dropped; colours -> boss_model_set_colors; gPlayers->unk70 -> g_boss_game.draw_player |
+| `Boss2_StoreNodeMatrix` | boss2.c | substantially rewritten | NNS dictionary lookup + MTX_STORE -> joint index from bossdata.bin + boss_model_joint_world into g_boss_mtx_slot |
+| `Boss2_UpdateArenaSpeed` | boss2.c | reused |  |
+| `Boss2_UpdateAttack2Hitboxes` | boss2.c | modified | FX_Sqrt native; palette swap state only |
+| `Boss2_UpdateAttack3Hitboxes` | boss2.c | modified | palette swap state only |
+| `Boss2_UpdateBodyHitboxes` | boss2.c | modified | palette swap state only |
+| `BossStage2_FreeModels` | boss2.c | substantially rewritten | boss2_unload |
+| `BossStage2_OnModelLoaded` | boss2.c | substantially rewritten | boss2_load: the 11 converted .dcm, bs2.dca, bs2.nsbta frame counts; NaviBg/NaviB load not here |
+| `EffRipple3D_Spawn` | boss2.c | reused | names from gEffRipple3DModelNames (bossdata.bin) |
+| `EffRipple3D_SpawnForPlayer` | boss2.c | reused |  |
+| `EffRipple3D_State_Main` | boss2.c | reused |  |
+| `EffSplash3D_Spawn` | boss2.c | reused | names from gEffSplash3DModelNames |
+| `EffSplash3D_State_Main` | boss2.c | reused |  |
+| `EffWater3D_Create` | boss2.c | not translated | 3D BAC sprite (ac_eff_water_3d.bac): arena position -> g_boss_hooks.water_fx |
+| `EffWater3D_State_DestroyOnAnimEnd` | boss2.c | not translated | see EffWater3D_Create |

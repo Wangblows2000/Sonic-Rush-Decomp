@@ -158,6 +158,18 @@ void obj_draw(int list) {
             draw_spr(&o->sprA, (pvr_list_t)list, o->sprA.x, o->sprA.y, 0);
         if (o->has_spr)
             draw_spr(&o->spr, (pvr_list_t)list, o->spr.x, o->spr.y, 0);
+        for (i = 0; i < o->n_xspr; i++) { /* extra sprite pairs (Mine, Cargo): every recorded point */
+            const ObjSprite *xs = o->xspr[i];
+            int k;
+            if (xs == NULL || xs->res == NULL)
+                continue;
+            if (xs->multi != NULL) {
+                for (k = 0; k < xs->n_multi; k++)
+                    draw_spr_at(xs, (pvr_list_t)list, xs->multi[k][0], xs->multi[k][1], 0);
+            } else {
+                draw_spr_at(xs, (pvr_list_t)list, xs->x, xs->y, 0);
+            }
+        }
     }
     s = ring_draw_sprite();
     for (i = 0; i < ring_draw_count(); i++)

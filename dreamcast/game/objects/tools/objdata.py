@@ -5,7 +5,7 @@ Reads the owner's extracted ROM (extract/eur) and the sprite converter output
 (build/dreamcast/sprites, tools/dreamcast/sprites/bac2dc.py) and writes
 build/dreamcast/objects/:
 
-  objdata.bin   "ROBJ" v2: small ROM tables the object code reads at runtime
+  objdata.bin   "ROBJ" v3: small ROM tables the object code reads at runtime
                 (copied from extract/eur/arm9_overlays/ov000.bin), the
                 resolved sprite id of every object BAC slot for every stage,
                 and per stage the /dat/gmk/*.df collision maps (ObjData_Load:
@@ -94,7 +94,49 @@ SLOTS = [
     ("EFF_FOUND", "act_com", "act/ac_eff_found.bac", "act/ac_eff_found.bac"),
     ("EFF_BRAKE", "act_com", "act/ac_eff_kemuri_brake.bac", "act/ac_eff_kemuri_brake.bac"),
 ] + [("ANIMAL%02d" % n, "zone", "act/ac_dec_animal%02d.bac" % n, "act/ac_dec_animal%02d.bac" % n)
-     for n in range(1, 17)]                                       # DecAnimal: data_ov000_023672a0
+     for n in range(1, 17)                                        # DecAnimal: data_ov000_023672a0
+]
+# objdata v3: Water Palace (zone 2) and Mirage Road (zone 3) (string table data_ov000_02366378..02367fa8)
+SLOTS += [
+    ("LAND_UNREST", "zone", "act/ac_gmk_land_unrest.bac", "act/ac_gmk_land_unrest.bac"),
+    ("WHEEL2D", "zone", "act/ac_gmk_wheel2d.bac", "act/ac_gmk_wheel2d.bac"),
+    ("MINE", "zone", "act/ac_gmk_mine.bac", "act/ac_gmk_mine.bac"),
+    ("BUBBLE", "zone", "act/ac_gmk_bubble.bac", "act/ac_gmk_bubble.bac"),
+    ("WATER_JET", "zone", "act/ac_gmk_water_jet.bac", "act/ac_gmk_water_jet.bac"),
+    ("KURAGEN_BOMB", "zone", "act/ac_ene_kuragen_bomb.bac", "act/ac_ene_kuragen_bomb.bac"),
+    ("KURAGEN_BLITZ", "zone", "act/ac_ene_kuragen_blitz.bac", "act/ac_ene_kuragen_blitz.bac"),
+    ("EGG_LANCER", "zone", "act/ac_ene_egg_lancer.bac", "act/ac_ene_egg_lancer.bac"),
+    ("EFF_WATER", "zone", "act/ac_eff_water.bac", "act/ac_eff_water.bac"),
+    ("EFF_WATER_GMK", "zone", "act/ac_eff_water_gmk.bac", "act/ac_eff_water_gmk.bac"),
+    ("FIX_MOJI", "act_com", "ac_fix_moji.bac", "act/ac_fix_moji.bac"),  # data_ov000_02367fa8 (MineDigit: HUD digits)
+    ("DEC_FOUNTAIN", "zone", "act/ac_dec_fountain.bac", "act/ac_dec_fountain.bac"),
+    ("WATER_FALL", "zone", "act/ac_gmk_water_fall.bac", "act/ac_gmk_water_fall.bac"),
+    ("GMK_WHEEL", "zone", "act/ac_gmk_wheel.bac", "act/ac_gmk_wheel.bac"),
+    ("DEC_ALGAE", "zone", "act/ac_dec_algae.bac", "act/ac_dec_algae.bac"),
+    ("DEC_CORAL", "zone", "act/ac_dec_coral.bac", "act/ac_dec_coral.bac"),
+    ("DEC_FISH", "zone", "act/ac_dec_fish.bac", "act/ac_dec_fish.bac"),
+    ("EGG_BISHOP", "zone", "act/ac_ene_egg_bishop.bac", "act/ac_ene_egg_bishop.bac"),
+    ("EGG_HAMMER", "zone", "act/ac_ene_egg_hammer.bac", "act/ac_ene_egg_hammer.bac"),
+    ("HAND2D", "zone", "act/ac_gmk_hand2d.bac", "act/ac_gmk_hand2d.bac"),
+    ("ROCK", "zone", "act/ac_gmk_rock.bac", "act/ac_gmk_rock.bac"),
+    ("SAND_SLIDER", "zone", "act/ac_gmk_sand_slider.bac", "act/ac_gmk_sand_slider.bac"),
+    ("EFF_SAND", "zone", "act/ac_eff_sand.bac", "act/ac_eff_sand.bac"),
+    ("EFF_SHADOW", "zone", "act/ac_eff_shadow.bac", "act/ac_eff_shadow.bac"),
+    ("GMK_RAIL", "zone", "act/ac_gmk_rail.bac", "act/ac_gmk_rail.bac"),
+    ("GMK_WALL", "zone", "act/ac_gmk_wall.bac", "act/ac_gmk_wall.bac"),
+    ("GMK_HAND", "zone", "act/ac_gmk_hand.bac", "act/ac_gmk_hand.bac"),
+    ("DEC_SAND", "zone", "act/ac_dec_sand.bac", "act/ac_dec_sand.bac"),
+    ("DEC_DECORA", "zone", "act/ac_dec_decora.bac", "act/ac_dec_decora.bac"),
+    ("DEC_RELIEF", "zone", "act/ac_dec_relief.bac", "act/ac_dec_relief.bac"),
+    ("DEC_STATUE", "zone", "act/ac_dec_statue.bac", "act/ac_dec_statue.bac"),
+    ("DEC_TORCH", "zone", "act/ac_dec_torch.bac", "act/ac_dec_torch.bac"),
+    ("DEC_CANOPS", "zone", "act/ac_dec_canops.bac", "act/ac_dec_canops.bac"),
+    ("DEC_BED", "zone", "act/ac_dec_bed.bac", "act/ac_dec_bed.bac"),
+    ("DEC_BOX", "zone", "act/ac_dec_box.bac", "act/ac_dec_box.bac"),
+    ("DEC_TABLE_WATER", "zone", "act/ac_dec_table_water.bac", "act/ac_dec_table_water.bac"),
+    ("EFF_ENTRANCE", "zone", "act/ac_eff_entrance.bac", "act/ac_eff_entrance.bac"),
+    ("GMK_RAIL6", "zone", "act/ac_gmk_rail6.bac", "act/ac_gmk_rail6.bac"),
+]
 ID_LEN = 48
 N_STAGES = 27
 
@@ -169,7 +211,7 @@ def main():
 
     os.makedirs(os.path.join(a.out, "hbx"), exist_ok=True)
     blob = bytearray(b"ROBJ")
-    blob += struct.pack("<HHHH", 2, len(SLOTS), N_STAGES, ID_LEN)
+    blob += struct.pack("<HHHH", 3, len(SLOTS), N_STAGES, ID_LEN)
     for name, addr, size in TABLES:
         if addr < OV_BASE:
             data = arm9[addr - ARM9_BASE:addr - ARM9_BASE + size]

@@ -317,12 +317,23 @@ static void pawn_action_turn(Obj *p) {
     if ((p->f1F4 & 1) == 0)
         p->wC += 0x18;
 }
+static void pawn_action_long_attack(Obj *s);
+static void pawn_action_attack(Obj *s);
 static void pawn_state_walk(Obj *w) {
     s32 y = w->home_x, d;
     s16 spd = 0x100;
     u16 k;
     u32 flags;
-    /* (unk23A != 0: child of a moving parent, not used by these types) */
+    if (w->u23A != 0) {
+        if (g_obj_camera[0].water != 0xffff) {
+            w->h.move_flags &= ~0x100u;
+            w->h.move_flags &= ~0x80u;
+            w->h.vel_y = 0;
+        }
+        if (w->h.ride != NULL)
+            y = (s16)((w->h.ride->x >> 8) + w->u23A);
+        w->u23C++;
+    }
     k = w->prm->type;
     if (k == 7 || k == 0x15)
         spd -= 0x40;
@@ -350,8 +361,20 @@ static void pawn_state_walk(Obj *w) {
         w->wC--;
     } else if (!(frame_rand() & 0x1ff) && k != 8) {
         switch (k) {
-        case 7: case 0xd: case 0x15: case 0xa: case 0xe: case 0xf:
-            break; /* (LongAttack / Attack: types not translated) */
+        case 7:
+        case 0xd:
+        case 0x15:
+            if (w->u23C <= 200 && w->w8 == 0) {
+                pawn_action_long_attack(w);
+                return;
+            }
+            break;
+        case 0xa:
+            pawn_action_attack(w);
+            return;
+        case 0xe:
+        case 0xf:
+            break;
         default:
             w->f1F4 |= 1;
             pawn_action_turn(w);
@@ -500,6 +523,13 @@ static void pawn_spawn_child(Obj *w, s32 type, s16 dx, s16 dy) {
     else
         o->h.x += dx << 8;
     o->h.y += dy << 8;
+    if (w->prm->p9 == 0)
+        return;
+    o->h.ride = w->h.ride;
+    o->h.z = w->h.z;
+    if (o->h.z <= -0x1400)
+        return;
+    o->spr.flags = (o->spr.flags & ~0x60000u) | (1u << 17); /* StageObj_SetOAMPriority(o, 1) */
 }
 static void pawn_state_attack_spawn_m(Obj *p) {
     if ((p->spr.frame_t >> 4) == 6) {
@@ -542,6 +572,315 @@ static void pawn_action_attack_spawn_m(Obj *p) {
     p->w8 += p->wC >> 1;
 }
 
+/* --- objdata v3 variants: Egg Lancer (3), Egg Bishop (7, 0x15), Egg Hammer (8), drop-in (p9) */
+static dcp_bool easy_slow(void) { /* gSaveData.unk8 & 1 (easy) and not time attack / VS modes */
+    return (g_obj_stage.save_flags & 1) && W.mode != 2 && W.mode != 3;
+}
+static s32 pawn_base_x(Obj *w) { /* the patrol origin; relative to the ridden object (@0x23A) */
+    s32 base = w->home_x;
+    if (w->u23A != 0 && w->h.ride != NULL)
+        base = (s16)(w->u23A + (w->h.ride->x >> 8));
+    return base;
+}
+/* EnemyPawnGroup_State_Charge / _Action_StartCharge (Egg Lancer) */
+static void pawn_state_charge(Obj *w) {
+    u16 f;
+    s16 width = 0x180, sp = 0x100;
+    s32 base = pawn_base_x(w);
+    if (w->spr.anim == 2) {
+        if (w->wC != 0 && --w->wC == 0) {
+            if (w->f1F4 & 8) {
+                w->h.disp_flags &= ~0x10;
+                pawn_action_turn(w);
+                return;
+            }
+            w->h.disp_flags &= ~0x10;
+        }
+        if (!(w->h.disp_flags & 8))
+            return;
+        w->wC = 0x30;
+        w->f1F4 |= 8;
+        obj_disable_colliders_set_anim(w, 3);
+        w->h.disp_flags |= 4;
+        return;
+    }
+    f = w->prm->flags;
+    if (f & 3)
+        width = (s16)(width + ((f & 3) << 7));
+    if (f & 3)
+        sp = (s16)(sp + (((f & 0xc) >> 2) << 7));
+    if (w->h.disp_flags & 1)
+        w->h.gnd_vel = (s16)dcp_spd_up(w->h.gnd_vel, -((sp * 0x140) >> 8), (sp << 10) >> 8);
+    else
+        w->h.gnd_vel = (s16)dcp_spd_up(w->h.gnd_vel, (sp * 0x140) >> 8, (sp << 10) >> 8);
+    if (w->h.move_x - w->h.push_x > 0 && w->h.x > width * (w->prm->p6 + w->prm->p8) + (base << 8))
+        w->h.gnd_vel = 0;
+    if (w->h.move_x - w->h.push_x < 0 && w->h.x < w->prm->p6 * width + (base << 8))
+        w->h.gnd_vel = 0;
+    if (w->h.gnd_vel == 0 || (w->h.move_flags & 4)) {
+        obj_disable_colliders_set_anim(w, 2);
+        w->h.disp_flags |= 0x10;
+    }
+}
+static void pawn_action_start_charge(Obj *p) {
+    obj_disable_colliders_set_anim(p, 2);
+    p->h.disp_flags |= 0x10;
+    p->h.move_flags &= ~0x10u;
+    p->f1F4 &= ~8u;
+    p->state = pawn_state_charge;
+    p->h.gnd_vel = 0;
+    p->wC = 0x20;
+    p->w8 = 0x78;
+    if (easy_slow())
+        p->wC += p->wC >> 1;
+}
+/* EnemyPawnGroup_State_Stomp / _Action_StartStomp (Egg Hammer) */
+static void pawn_state_stomp(Obj *p) {
+    u32 t0 = p->f1F4;
+    if (!(p->f1F4 & 1)) {
+        if (p->wC == 0)
+            return;
+        p->wC--;
+        if (p->wC != 0)
+            return;
+        p->h.disp_flags &= ~0x10;
+        p->f1F4 |= 1;
+        p->wC = 0x6d;
+        if (easy_slow())
+            p->wC += p->wC >> 2;
+        return;
+    }
+    if (!(t0 & 4)) {
+        if ((p->spr.frame_t >> 4) == 0x2c) {
+            obj_screen_shake(8);
+            obj_sfx(0x75);
+        }
+        p->wC--;
+        if (p->wC != 0)
+            return;
+        obj_disable_colliders_set_anim(p, 3);
+        p->f1F4 |= 4;
+        return;
+    }
+    if (!(p->h.disp_flags & 8))
+        return;
+    p->f1F4 = t0 & ~5u;
+    pawn_action_walk(p);
+}
+static void pawn_action_start_stomp(Obj *p) {
+    obj_disable_colliders_set_anim(p, 2);
+    p->h.disp_flags |= 0x10;
+    p->state = pawn_state_stomp;
+    p->h.gnd_vel = 0;
+    p->wC = 0x10;
+    p->w8 = 0xb4;
+    p->f1F4 &= ~5u;
+    if (easy_slow())
+        p->wC += p->wC;
+}
+/* EnemyPawnGroup_State_LongAttackSpin / _Action_LongAttack (Egg Bishop spin) */
+static void pawn_state_long_attack_spin(Obj *w) {
+    s16 v = 0x100;
+    if (w->prm->flags & 3)
+        v = (s16)(v + ((w->prm->flags & 0xc) >> 2) * 0x80);
+    w->h.gnd_vel = (s16)dcp_spd_down(w->h.gnd_vel, (v << 6) >> 8);
+    if ((w->spr.frame_t >> 4) == 0xf) {
+        w->h.disp_flags ^= 1;
+        w->h.obj_flags |= 0x1000;
+    }
+    if ((w->spr.frame_t >> 4) == 7 && (w->h.obj_flags & 0x1000)) {
+        obj_disable_colliders_set_anim(w, 1);
+        w->h.obj_flags &= ~0x1000u;
+    }
+    if (w->h.disp_flags & 8) {
+        w->u238--;
+        if (w->u238 == 0) {
+            rect_set_box2d(&w->detect, -0x78, -0x30, -0x10, -0x10);
+            pawn_action_walk(w);
+            return;
+        }
+    }
+    obj_handle_collider(&w->h, w, OBJ_OWNER_OBJECT, &w->detect, 1);
+}
+static void pawn_action_long_attack(Obj *s) {
+    if (s->prm->type == 0xd)
+        return; /* EnemyPawnGroup_Action_LongAttackAlt (Gun Hunter, zone 5): not translated */
+    obj_disable_colliders_set_anim(s, 1);
+    s->h.move_flags &= ~0x10u;
+    s->h.disp_flags |= 4;
+    s->h.obj_flags &= ~0x1000u;
+    s->state = pawn_state_long_attack_spin;
+    s->u238 = 3;
+    rect_set_box2d(&s->detect, -0x78, -0x30, 0x50, -0x10);
+}
+/* EnemyPawnGroup_State_Attack / _Action_Attack (type 0xa) */
+static void pawn_state_attack(Obj *s) {
+    if (s->h.disp_flags & 8) {
+        pawn_action_walk(s);
+        return;
+    }
+    obj_handle_collider(&s->h, s, OBJ_OWNER_OBJECT, &s->detect, 1);
+}
+static void pawn_action_attack(Obj *p) {
+    obj_disable_colliders_set_anim(p, 3);
+    p->h.move_flags &= ~0x10u;
+    p->state = pawn_state_attack;
+    p->h.gnd_vel = 0;
+}
+/* EnemyPawnGroup_State_AttackSpawnEggBishop / _Action_ (throws an Egg Bishop, type 0xe4) */
+static void pawn_state_attack_spawn_bishop(Obj *w) {
+    if ((w->spr.frame_t >> 4) == 0x15) {
+        if (!(w->f1F4 & 4)) {
+            obj_sfx(0x74);
+            pawn_spawn_child(w, 0xe4, 0x30, -0x23);
+            g_obj.stats.bishops_spawned++;
+        }
+        w->f1F4 |= 4;
+    }
+    if (!(w->f1F4 & 1)) {
+        if (w->wC == 0)
+            return;
+        w->wC--;
+        if (w->wC != 0)
+            return;
+        obj_disable_colliders_set_anim(w, 2);
+        w->h.disp_flags |= 4;
+        w->f1F4 |= 1;
+        w->wC = 0x3a;
+        if (easy_slow())
+            w->wC += w->wC >> 1;
+        return;
+    }
+    w->wC--;
+    if (w->wC == 0) {
+        w->f1F4 &= ~5u;
+        pawn_action_walk(w);
+    }
+}
+static void pawn_action_attack_spawn_bishop(Obj *p) {
+    obj_disable_colliders_set_anim(p, 3);
+    p->h.move_flags &= ~0x10u;
+    p->state = pawn_state_attack_spawn_bishop;
+    p->h.gnd_vel = 0;
+    p->wC = 0x10;
+    p->w8 = 0x12c;
+    p->f1F4 &= ~5u;
+    if (easy_slow())
+        p->wC += p->wC;
+}
+/* StageObj_State_EntranceDrop / EnemyPawnGroup_Action_StartEntrance (enemy-room spawn) */
+static void StageObj_State_EntranceDrop(Obj *w) {
+    switch (w->w8) {
+    default:
+        w->wC++;
+        if (w->wC & 2)
+            w->h.disp_flags &= ~0x20;
+        else
+            w->h.disp_flags |= 0x20;
+        if (w->h.move_flags & 1)
+            w->w8++;
+        break;
+    case 0:
+        if (w->wC != 0) {
+            w->wC--;
+        } else {
+            w->scale_x = (s16)ObjShift_SetFromRef(w->scale_x, 0x100, 8, 2, 0, 8);
+            w->scale_y = (s16)ObjShift_SetFromRef(w->scale_y, 0x100, 0x180, 4, 0, 8);
+            w->h.disp_flags &= ~0x20;
+        }
+        if (w->scale_y == 0x100 && w->scale_x == 0x100) {
+            w->w8++;
+            w->wC = 0x14;
+            w->h.hitstop |= 0x80;
+        }
+        break;
+    case 1:
+        w->wC--;
+        if (w->wC == 0) {
+            w->w8++;
+            w->h.move_flags |= 0x80;
+            w->h.move_flags &= ~0x2000u;
+            w->h.move_flags &= ~0x100u;
+        }
+        break;
+    }
+    if (w->w8 == 3) {
+        w->h.disp_flags &= ~0x20;
+        w->spr.flags &= ~0x200u;
+        w->h.obj_flags &= ~2u;
+        w->wC = 200;
+        w->w8 = 0;
+        pawn_action_walk(w);
+    }
+}
+int obj_pawn_in_entrance(const Obj *o) { return o->state == StageObj_State_EntranceDrop; }
+static void pawn_action_start_entrance(Obj *p) {
+    obj_disable_colliders_set_anim(p, 0);
+    p->spr.flags |= 0x200;
+    p->h.disp_flags |= 0x10;
+    p->h.move_flags |= 0x2000;
+    p->h.move_flags &= ~0x80u;
+    p->h.move_flags |= 0x100;
+    p->h.obj_flags |= 2;
+    p->h.disp_flags |= 0x20;
+    p->scale_x = 8;
+    p->scale_y = 0x180;
+    p->wC = 0x18;
+    p->w8 = 0;
+    p->state = StageObj_State_EntranceDrop;
+    EffEntrance_Create(p, 0, -16);
+}
+
+/* EnemyPawnGroup_State_DropIn / _Action_StartDropIn (drop onto the GmkTable, p9 = delay) */
+static void pawn_state_dropin(Obj *w) {
+    if (w->wC != 0) {
+        w->wC--;
+        if (w->wC & 0x10)
+            w->h.vel_y = (s16)dcp_spd_up(w->h.vel_y, -0x10, 0x40);
+        else
+            w->h.vel_y = (s16)dcp_spd_up(w->h.vel_y, 0x10, 0x40);
+        if (w->wC <= 0xc)
+            w->h.vel_y = 0;
+        if (w->wC == 8)
+            w->h.hitstop |= 0x80;
+        return;
+    }
+    w->h.move_flags &= ~0x2000u;
+    w->h.move_flags |= 0x80;
+    w->h.move_flags &= ~0x100u;
+    if (!(w->h.move_flags & 1))
+        return;
+    if (w->w8 == 0xc) {
+        w->h.hitstop |= 0x40;
+        if (w->h.ride != NULL)
+            w->u23A = (s16)((w->h.x - w->h.ride->x) >> 8);
+        if (w->u23A == 0)
+            w->u23A = 1;
+    }
+    if (w->w8 != 0) {
+        w->w8--;
+        return;
+    }
+    w->wC = 200;
+    /* (!(W.flags & 0x20): spr1 |= 0x80008, the second DS screen sprite: not kept) */
+    pawn_action_walk(w);
+}
+static void pawn_action_start_dropin(Obj *p) {
+    obj_disable_colliders_set_anim(p, 0);
+    p->h.obj_flags &= ~1u;
+    p->h.disp_flags |= 0x10;
+    p->h.move_flags &= ~0x80u;
+    p->h.move_flags &= ~0x200u;
+    p->h.move_flags |= 0x1500;
+    if (p->prm->p7 < 0x28)
+        p->h.z = -(p->prm->p7 << 8);
+    p->spr.flags = (p->spr.flags & ~0x60000u) | 0x20000u;
+    p->wC = p->prm->p9;
+    p->w8 = 0xc;
+    p->state = pawn_state_dropin;
+    EffShadow_Create(&p->h);
+}
+
 /* EnemyPawnGroup_OnDetect (detect box @0x20C: a = detect box, b = player body) */
 static void pawn_on_detect(ObjBox *a, ObjBox *b) {
     Obj *w = (Obj *)a->owner;
@@ -569,11 +908,22 @@ static void pawn_on_detect(ObjBox *a, ObjBox *b) {
     case 1:
         pawn_action_attack_spawn_m(w);
         return;
+    case 3:
+        pawn_action_start_charge(w);
+        return;
+    case 7:
+    case 0x15:
+        pawn_action_attack_spawn_bishop(w);
+        return;
+    case 8:
+        pawn_action_start_stomp(w);
+        return;
     }
 }
 
 Obj *pawn_create(ObjParam *p, s32 b, s32 c) {
     Obj *w;
+    int bac;
     if (p->x0 != 0xff || p->y0 != 0xff) {
         if (p->flags & 0x80) {
             if (g_obj_stage.save_flags & 1) {
@@ -582,11 +932,20 @@ Obj *pawn_create(ObjParam *p, s32 b, s32 c) {
             }
         }
     }
-    /* translated: Egg Pawn (0x00, 0x14) and Egg Pawn M spawner (0x01), 2D, walking start */
-    if (p->type != 0 && p->type != 1 && p->type != 0x14)
-        return NULL;
-    if (p->p9 != 0 || (p->flags & 0x40))
-        return NULL; /* drop-in (3D BAC) / entrance variants not translated */
+    /* translated types: Egg Pawn (0x00, 0x14), Egg Pawn M spawner (0x01), Egg Lancer (3),
+     * Egg Bishop (7, 0x15), Egg Hammer (8); the zone 5..7 types return NULL */
+    switch (p->type) {
+    case 0x00: case 0x14: bac = OBJ_BAC_EGGPAWN; break;
+    case 0x01: bac = OBJ_BAC_EGGPAWN_M; break;
+    case 0x03: bac = OBJ_BAC_EGG_LANCER; break;
+    case 0x07: case 0x15: bac = OBJ_BAC_EGG_BISHOP; break;
+    case 0x08: bac = OBJ_BAC_EGG_HAMMER; break;
+    default: return NULL;
+    }
+    if (p->p9 != 0 && (p->type == 0 || (u16)(p->type - 0x14) <= 1)) {
+        if ((b >> 8) < W.map_left + 0xc4)
+            return NULL;
+    }
     w = obj_alloc(OBJ_PRIO_MAPOBJ, obj_mapobject_dtor);
     if (w == NULL)
         return NULL;
@@ -596,9 +955,15 @@ Obj *pawn_create(ObjParam *p, s32 b, s32 c) {
     w->h.box_t = -10;
     w->h.box_r = 8;
     w->h.box_b = -3;
-    if (p->type == 20)
+    if (p->type == 20 || p->type == 21)
         w->out_t = -0x100;
-    obj_load_bac(w, p->type == 1 ? OBJ_BAC_EGGPAWN_M : OBJ_BAC_EGGPAWN);
+    /* drop-in (p9 != 0): the original draws the 3D BAC (eggpawn3d / egg_bishop3d)
+     * and hides the 2D sprite (0x80000); the DC draws the 2D sprite (OBJECTS.md, deviations) */
+    obj_load_bac(w, bac);
+    if (p->type == 8) {
+        w->vitality = 2;
+        w->vitality -= w->prm->pB;
+    }
     w->spr.order = 0x14;
     rect_set_box2d(&w->detect, -0x78, -0x30, -16, -16);
     w->detect.flags |= 0xc0;
@@ -619,8 +984,17 @@ Obj *pawn_create(ObjParam *p, s32 b, s32 c) {
         w->h.disp_flags |= 0x100;
     }
     w->wC = 200;
-    w->h.move_flags |= 0x80;
-    pawn_action_walk(w);
+    if (w->prm->p9 != 0) {
+        pawn_action_start_dropin(w);
+    } else if (p->flags & 0x40) {
+        pawn_action_start_entrance(w); /* spawned by an enemy room (MapObj8D) */
+        w->f1F4 |= 0x40;
+    } else {
+        w->h.move_flags |= 0x80;
+        if (w->prm->type == 7 && (w->prm->flags & 0x20))
+            w->h.move_flags &= ~0x80u;
+        pawn_action_walk(w);
+    }
     w->snd = 1;
     return w;
 }

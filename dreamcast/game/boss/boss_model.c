@@ -156,9 +156,12 @@ void Model_Init(BossModel *s, u32 a) {
     s->cb[0] = MOP_FLUSHP; /* s->unkA = 3 */
     s->scale[0] = s->scale[1] = s->scale[2] = 0x1000;
     MTX_Identity33(&s->rot);
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < 5; i++) {
         s->speeds[i] = 0x1000;
+        s->blendSpeeds[i] = 0x1000;
+    }
     s->speed = 0x1000;
+    s->blendSpeed = 0x1000;
 }
 
 /* Model_SetResource: bind the converted model (the NNS render object) */
@@ -176,26 +179,72 @@ void boss_model_release(BossModel *m) { /* Model_Release */
     m->res = NULL;
 }
 
-/* Model_SetAnimation.  Only slot 0 (joint animation, .nsbca) is converted;
- * material (.nsbma), pattern (.nsbtp), SRT (.nsbta) and visibility slots are
- * accepted but stay empty (MODELS.md section 8).  The 0x40 cross-fade branch
- * is not used by any boss. */
+/* Model_SetAnimation (modified).  Joint animations (.nsbca, slot 0) are
+ * converted (.dca) and drive the pose.  Material / pattern / SRT animations
+ * are not converted (MODELS.md section 8): when bossdata.bin knows their
+ * frame counts (res->nframes) they still run as timing-only animation
+ * objects, so the "ended" bit (flags & 2) that boss state machines wait on
+ * keeps the original timing; otherwise the slot stays empty.
+ * The cross-fade branch (flags & 0x40, slots 0/1/4) is copied: the running
+ * animation moves to anm2 with ratio 0x1000 and the new one starts at 0. */
+static u16 anim_frames(const BossAnimRes *res, u32 idx, int *ok) {
+    *ok = 0;
+    if (res == NULL)
+        return 0;
+    if (res->loaded && res->set.hdr != NULL) {
+        if (idx >= res->set.hdr->num_anims)
+            return 0;
+        *ok = 1;
+        return res->set.anims[idx].num_frames;
+    }
+    if (res->nframes != NULL && idx < res->count) {
+        *ok = 1;
+        return res->nframes[idx];
+    }
+    return 0;
+}
+
 void Model_SetAnimation(BossModel *o, u32 slot, const BossAnimRes *res, u32 idx) {
     BossAnmObj *a;
+    u16 nf;
+    int ok;
     if (slot >= 5)
         return;
-    o->anm[slot] = NULL;
-    if (slot != 0 || res == NULL || !res->loaded || idx >= res->set.hdr->num_anims) {
+    if (o->anm2[slot] != NULL) /* NNS_G3dRenderObjRemoveAnmObj + NNS_G3dFreeAnmObj */
+        o->anm2[slot] = NULL;
+    switch (slot) {
+    case 0:
+    case 1:
+    case 4:
+        if (o->flags[slot] & 0x40) {
+            o->flags[slot] &= ~0x80;
+            o->anm2[slot] = o->anm[slot];
+            o->anm[slot] = NULL;
+            break;
+        }
+        /* fallthrough */
+    case 2:
+    case 3:
+        o->anm[slot] = NULL;
+        break;
+    }
+    nf = anim_frames(res, idx, &ok);
+    if (!ok) {
         o->flags[slot] &= ~3;
         return;
     }
-    a = &o->anm_obj[slot];
+    /* NNS_G3dAllocAnmObj: the storage not used by the cross-fade source */
+    a = (o->anm2[slot] == &o->anm_obj[slot][0]) ? &o->anm_obj[slot][1] : &o->anm_obj[slot][0];
     a->frame = 0;          /* NNS_G3dAnmObjInit */
     a->ratio = 0x1000;
     a->res = res;
     a->idx = (int)idx;
-    a->numFrames = res->set.anims[idx].num_frames;
+    a->numFrames = nf;
     o->anm[slot] = a;
+    if (o->anm2[slot] != NULL) {
+        o->anm[slot]->ratio = 0;
+        o->anm2[slot]->ratio = 0x1000;
+    }
     o->flags[slot] &= ~3;
 }
 
@@ -207,6 +256,19 @@ static void Model_AnimateMdl(BossModel *ctx, BossModel *o) {
     fx32 end;
     for (i = 0; i < 5; i++) {
         o->flags[i] &= ~2;
+        if ((o->flags[i] & 0x40) && o->anm2[i] != NULL) {
+            if (!(o->flags[i] & 0x80)) {
+                d = FX_Mul(o->blendSpeed, o->blendSpeeds[i]);
+                o->anm[i]->ratio += d;
+                o->anm2[i]->ratio -= d;
+            }
+            if (o->anm2[i]->ratio <= 0) {
+                o->anm[i]->ratio = 0x1000;
+                o->flags[i] &= ~0x40;
+                o->flags[i] |= 0x80;
+                o->anm2[i] = NULL; /* NNS_G3dRenderObjRemoveAnmObj + NNS_G3dFreeAnmObj */
+            }
+        }
         if (o->anm[i] != NULL) {
             end = o->anm[i]->numFrames << 12;
             if (!(ctx->flag & 2) && !(o->flags[i] & 1)) {
@@ -242,14 +304,51 @@ void Model_Animate(BossModel *s) {
 
 /* ------------------------------------------------------------ posing */
 static dcm_local_t s_locals[DCM_MAX_JOINTS];
+static dcm_local_t s_locals2[DCM_MAX_JOINTS];
 static dcm_mtx_t s_world[DCM_MAX_JOINTS];
+dcm_mtx_t g_boss_mtx_slot[32];
+const dcm_lights_t *g_boss_lights;
 
 /* camera rotation for Model_MatrixOp_SetCameraRot (boss_camera.c) */
 void boss_camera_view_rot(float r[9]);
 
+static int is_joint_anim(const BossAnmObj *a) {
+    return a != NULL && a->res != NULL && a->res->loaded && a->res->set.hdr != NULL;
+}
+
+/* NNS joint blend of two animation objects (NNSi_G3dAnmBlendJnt): weighted
+ * sum of translation / rotation / scale with the objects' ratios, the
+ * rotation rows re-orthonormalised */
+static void blend_locals(dcm_local_t *a, const dcm_local_t *b, int n, float ra, float rb) {
+    int j, k;
+    for (j = 0; j < n; j++) {
+        float *r = a[j].r;
+        float l;
+        for (k = 0; k < 3; k++) {
+            a[j].t[k] = a[j].t[k] * ra + b[j].t[k] * rb;
+            a[j].s[k] = a[j].s[k] * ra + b[j].s[k] * rb;
+        }
+        for (k = 0; k < 9; k++)
+            r[k] = r[k] * ra + b[j].r[k] * rb;
+        l = sqrtf(r[0] * r[0] + r[1] * r[1] + r[2] * r[2]);
+        if (l > 0) {
+            r[0] /= l; r[1] /= l; r[2] /= l;
+        }
+        l = r[0] * r[3] + r[1] * r[4] + r[2] * r[5];
+        r[3] -= l * r[0]; r[4] -= l * r[1]; r[5] -= l * r[2];
+        l = sqrtf(r[3] * r[3] + r[4] * r[4] + r[5] * r[5]);
+        if (l > 0) {
+            r[3] /= l; r[4] /= l; r[5] /= l;
+        }
+        r[6] = r[1] * r[5] - r[2] * r[4];
+        r[7] = r[2] * r[3] - r[0] * r[5];
+        r[8] = r[0] * r[4] - r[1] * r[3];
+    }
+}
+
 void boss_model_pose(BossModel *m, const dcm_mtx_t *restored) {
     const dcm_model_t *md;
-    int i, r, c, restore = 0, camrot = 0;
+    int i, r, c, restore = 0, camrot = 0, rotate = 0;
     float rot[9];
     if (m->res == NULL || !m->res->loaded)
         return;
@@ -257,12 +356,25 @@ void boss_model_pose(BossModel *m, const dcm_mtx_t *restored) {
     for (i = 0; i < 8 && m->cb[i] != 0; i++) {
         if (m->cb[i] == MOP_RESTORE)
             restore = 1;
+        if (m->cb[i] == MOP_ROTATE && restore)
+            rotate = 1;
         if (m->cb[i] == MOP_SETCAMERAROT || m->cb[i] == MOP_SETCAMERAROT + 1) /* 0x14: billboard variant */
             camrot = 1;
     }
-    if (restore && restored != NULL) {
-        /* Model_MatrixOp_RestoreMtx: the position matrix is replaced by the stored one */
-        m->mdl_mtx = *restored;
+    if (restore) {
+        /* Model_MatrixOp_RestoreMtx: the position matrix is replaced by the stored one
+         * (the caller's matrix, else matrix stack slot unk8) */
+        m->mdl_mtx = restored != NULL ? *restored : g_boss_mtx_slot[m->unk8 & 31];
+        if (rotate) {
+            /* Model_MatrixOp_Rotate after the restore: current = rot x current */
+            dcm_mtx_t R, t;
+            memset(&R, 0, sizeof(R));
+            for (r = 0; r < 3; r++)
+                for (c = 0; c < 3; c++)
+                    R.m[r][c] = m->rot.m[r * 3 + c] / 4096.0f;
+            dcm_mtx_mul(&t, &R, &m->mdl_mtx);
+            m->mdl_mtx = t;
+        }
     } else {
         /* NNS_G3dGlbSetBaseScale/Rot/Trans + Flush: v * S * R * T (world, DS px) */
         if (camrot) {
@@ -277,15 +389,43 @@ void boss_model_pose(BossModel *m, const dcm_mtx_t *restored) {
         for (c = 0; c < 3; c++)
             m->mdl_mtx.m[3][c] = m->trans[c] / 4096.0f;
     }
-    /* joints: integer NNS frame (FX_Whole) of the slot-0 joint animation */
-    if (m->anm[0] != NULL)
+    /* joints: integer NNS frame (FX_Whole) of the slot-0 joint animation,
+     * cross-faded with anm2[0] while flags[0] & 0x40 */
+    if (is_joint_anim(m->anm[0])) {
         dca_sample(&m->anm[0]->res->set, m->anm[0]->idx, (float)(m->anm[0]->frame >> 12), md, s_locals);
-    else
+        if (is_joint_anim(m->anm2[0])) {
+            dca_sample(&m->anm2[0]->res->set, m->anm2[0]->idx, (float)(m->anm2[0]->frame >> 12), md, s_locals2);
+            blend_locals(s_locals, s_locals2, md->hdr->num_joints, m->anm[0]->ratio / 4096.0f,
+                         m->anm2[0]->ratio / 4096.0f);
+        }
+    } else
         dcm_bind_locals(md, s_locals);
     dcm_world(md, s_locals, s_world);
     if (m->palette)
         dcm_pose(md, s_locals, m->palette);
     m->posed = 1;
+}
+
+/* NNS_G3dMdlSetMdlDiffAll / AmbAll / EmiAll: every material of the model
+ * (the package bytes are owned by the boss module) */
+static u32 rgb555_to_argb(u16 c, u32 a) {
+    u32 r = c & 31, g = (c >> 5) & 31, b = (c >> 10) & 31;
+    r = (r << 3) | (r >> 2);
+    g = (g << 3) | (g >> 2);
+    b = (b << 3) | (b >> 2);
+    return (a & 0xff000000u) | (r << 16) | (g << 8) | b;
+}
+void boss_model_set_colors(const BossModelRes *res, u16 diff, u16 amb, u16 emi) {
+    dcm_material_t *mat;
+    u32 i;
+    if (res == NULL || !res->loaded)
+        return;
+    mat = (dcm_material_t *)res->mdl.materials;
+    for (i = 0; i < res->mdl.hdr->num_materials; i++) {
+        mat[i].diffuse = rgb555_to_argb(diff, mat[i].diffuse);
+        mat[i].ambient = rgb555_to_argb(amb, mat[i].ambient);
+        mat[i].emission = rgb555_to_argb(emi, mat[i].emission);
+    }
 }
 
 /* NNS_G3dGetCurrentMtx after MTX_STORE in a timing-C NODEDESC callback:
@@ -308,7 +448,7 @@ int boss_model_draw(const BossModel *m, int list) {
     o.list = list;
     o.pt_list = PVR_LIST_PT_POLY;
     o.alpha_scale = 255;
-    return dcm_draw(&m->res->mdl, m->palette, &m->mdl_mtx, &cam, NULL, NULL, &o);
+    return dcm_draw(&m->res->mdl, m->palette, &m->mdl_mtx, &cam, NULL, g_boss_lights, &o);
 #else
     (void)o;
     if (list != 0)

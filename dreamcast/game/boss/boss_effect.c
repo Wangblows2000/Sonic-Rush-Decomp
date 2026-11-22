@@ -87,7 +87,6 @@ static BossEffect *eff_alloc(void) {
     return NULL;
 }
 
-static void BossEffect_State_Main(void *self);
 
 /* BossEffect_Create (rewritten from the ARM listing; resources by name) */
 BossEffect *BossEffect_Create(const char *name, u32 anim_mask, u32 flags, s32 x, s32 y, s32 z) {
@@ -126,7 +125,7 @@ BossEffect *BossEffect_Create(const char *name, u32 anim_mask, u32 flags, s32 x,
 }
 
 /* BossEffect_State_Main (copied) */
-static void BossEffect_State_Main(void *self) {
+void BossEffect_State_Main(void *self) {
     BossEffect *w = (BossEffect *)self;
     BossModel *m = &w->unk134;
     u32 i;

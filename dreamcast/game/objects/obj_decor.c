@@ -110,7 +110,7 @@ static void Decoration_Collide_Default(Obj *t0) {
         return;
     colmap_register(&t0->cmap);
 }
-static void Decoration_Destructor(Obj *w) {
+void Decoration_Destructor(Obj *w) {
     ObjParam *e = w->prm;
     if (e != NULL && e->x0 == 0xff && e->y0 == 0xff)
         Decoration_FreeSlot(e);
@@ -119,7 +119,7 @@ static void Decoration_Destructor(Obj *w) {
     g_obj.stats.dec_despawned++;
     obj_stageobj_dtor(w);
 }
-static void Decoration_InitFromMap(Obj *w, ObjParam *p, s32 x, s32 y) {
+void Decoration_InitFromMap(Obj *w, ObjParam *p, s32 x, s32 y) {
     w->is_dec = 1;
     w->kind = OBJK_DECOR;
     w->fn_in = Decoration_In_Default;
@@ -889,6 +889,14 @@ ObjDecCreateFn obj_dec_create_fn(u16 t) {
         return DecGroup35_Create;
     if (t >= 0x37 && t <= 0x39)
         return DecBird_Create;
+    /* objdata v3: Water Palace */
+    if ((t >= 0x41 && t <= 0x44) || t == 0x4f || t == 0x50 || t == 0x90 || (t >= 0x9d && t <= 0xae) || t == 0xf1)
+        return DecGroup41_Create;
+    if (t == 0x4d || t == 0x4e)
+        return DecGroup4D_Create;
+    /* objdata v3: Mirage Road */
+    if ((t >= 0x45 && t <= 0x4c) || (t >= 0x53 && t <= 0x66))
+        return DecGroup45_Create;
     return NULL; /* not translated (OBJECTS.md) */
 }
 
@@ -902,6 +910,24 @@ static int dec_type_slots(u16 t, u8 *o) {
     if (t == 0x3a) { o[0] = OBJ_BAC_DEC_BIRD_NEST; return 1; }
     if (t == 0x35 || t == 0x36) { o[0] = OBJ_BAC_DEC_LEAF; return 1; }
     if (t >= 0x37 && t <= 0x39) { o[0] = OBJ_BAC_DEC_BIRD; return 1; }
+    if (t == 0x41) { o[0] = OBJ_BAC_DEC_FOUNTAIN; return 1; }
+    if ((t >= 0x42 && t <= 0x44) || t == 0xf1) { o[0] = OBJ_BAC_WATER_FALL; return 1; }
+    if (t == 0x4d || t == 0x4e) { o[0] = OBJ_BAC_GMK_WHEEL; return 1; }
+    if (t == 0x4f || t == 0x50 || t == 0x90) { o[0] = OBJ_BAC_EFF_WATER_GMK; return 1; }
+    if (t >= 0x9d && t <= 0xa0) { o[0] = OBJ_BAC_DEC_ALGAE; return 1; }
+    if (t >= 0xa1 && t <= 0xa4) { o[0] = OBJ_BAC_DEC_CORAL; return 1; }
+    if (t >= 0xa5 && t <= 0xae) { o[0] = OBJ_BAC_DEC_FISH; return 1; }
+    if (t == 0x54 || t == 0x55 || t == 0x5f || t == 0x60) { o[0] = OBJ_BAC_DEC_STATUE; return 1; }
+    if (t >= 0x64 && t <= 0x66) { o[0] = OBJ_BAC_GMK_HAND; return 1; }
+    if (t == 0x56 || t == 0x57) { o[0] = OBJ_BAC_DEC_RELIEF; return 1; }
+    if (t == 0x58 || t == 0x59) { o[0] = OBJ_BAC_DEC_BED; return 1; }
+    if (t >= 0x5a && t <= 0x5d) { o[0] = OBJ_BAC_DEC_CANOPS; return 1; }
+    if (t == 0x5e) { o[0] = OBJ_BAC_DEC_BOX; return 1; }
+    if (t == 0x61) { o[0] = OBJ_BAC_DEC_TORCH; return 1; }
+    if (t == 0x62 || t == 0x63) { o[0] = OBJ_BAC_DEC_DECORA; return 1; }
+    if (t >= 0x45 && t <= 0x49) { o[0] = OBJ_BAC_GMK_RAIL; return 1; }
+    if (t >= 0x4a && t <= 0x4c) { o[0] = OBJ_BAC_DEC_SAND; return 1; }
+    if (t == 0x53) { o[0] = OBJ_BAC_DEC_TABLE_WATER; return 1; }
     return 0;
 }
 void dec_preload(const rlvl_header_t *h) {

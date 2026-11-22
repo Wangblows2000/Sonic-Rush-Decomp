@@ -79,6 +79,46 @@ enum ObjBac {
     OBJ_BAC_EFF_BRAKE,    /* ac_eff_kemuri_brake.bac (act_com) */
     OBJ_BAC_ANIMAL01,     /* ac_dec_animal%02d.bac, 01..16 (DecAnimal) */
     OBJ_BAC_ANIMAL16 = OBJ_BAC_ANIMAL01 + 15,
+    /* objdata v3: Water Palace (zone 2) */
+    OBJ_BAC_LAND_UNREST,  /* ac_gmk_land_unrest.bac  */
+    OBJ_BAC_WHEEL2D,      /* ac_gmk_wheel2d.bac      */
+    OBJ_BAC_MINE,         /* ac_gmk_mine.bac         */
+    OBJ_BAC_BUBBLE,       /* ac_gmk_bubble.bac       */
+    OBJ_BAC_WATER_JET,    /* ac_gmk_water_jet.bac    */
+    OBJ_BAC_KURAGEN_BOMB, /* ac_ene_kuragen_bomb.bac */
+    OBJ_BAC_KURAGEN_BLITZ,/* ac_ene_kuragen_blitz.bac */
+    OBJ_BAC_EGG_LANCER,   /* ac_ene_egg_lancer.bac   */
+    OBJ_BAC_EFF_WATER,    /* ac_eff_water.bac        */
+    OBJ_BAC_EFF_WATER_GMK,/* ac_eff_water_gmk.bac    */
+    OBJ_BAC_FIX_MOJI,     /* ac_fix_moji.bac (act_com, MineDigit: HUD digit glyphs) */
+    OBJ_BAC_DEC_FOUNTAIN, /* ac_dec_fountain.bac     */
+    OBJ_BAC_WATER_FALL,   /* ac_gmk_water_fall.bac   */
+    OBJ_BAC_GMK_WHEEL,    /* ac_gmk_wheel.bac        */
+    OBJ_BAC_DEC_ALGAE,    /* ac_dec_algae.bac        */
+    OBJ_BAC_DEC_CORAL,    /* ac_dec_coral.bac        */
+    OBJ_BAC_DEC_FISH,     /* ac_dec_fish.bac         */
+    /* objdata v3: Mirage Road (zone 3) */
+    OBJ_BAC_EGG_BISHOP, /* ac_ene_egg_bishop.bac */
+    OBJ_BAC_EGG_HAMMER, /* ac_ene_egg_hammer.bac */
+    OBJ_BAC_HAND2D, /* ac_gmk_hand2d.bac */
+    OBJ_BAC_ROCK, /* ac_gmk_rock.bac */
+    OBJ_BAC_SAND_SLIDER, /* ac_gmk_sand_slider.bac */
+    OBJ_BAC_EFF_SAND, /* ac_eff_sand.bac */
+    OBJ_BAC_EFF_SHADOW, /* ac_eff_shadow.bac */
+    OBJ_BAC_GMK_RAIL, /* ac_gmk_rail.bac */
+    OBJ_BAC_GMK_WALL, /* ac_gmk_wall.bac (GmkWall, enemy room gate) */
+    OBJ_BAC_GMK_HAND, /* ac_gmk_hand.bac (DecGroup45 0x64..0x66) */
+    OBJ_BAC_DEC_SAND, /* ac_dec_sand.bac */
+    OBJ_BAC_DEC_DECORA, /* ac_dec_decora.bac */
+    OBJ_BAC_DEC_RELIEF, /* ac_dec_relief.bac */
+    OBJ_BAC_DEC_STATUE, /* ac_dec_statue.bac */
+    OBJ_BAC_DEC_TORCH, /* ac_dec_torch.bac */
+    OBJ_BAC_DEC_CANOPS, /* ac_dec_canops.bac */
+    OBJ_BAC_DEC_BED, /* ac_dec_bed.bac */
+    OBJ_BAC_DEC_BOX, /* ac_dec_box.bac */
+    OBJ_BAC_DEC_TABLE_WATER, /* ac_dec_table_water.bac */
+    OBJ_BAC_EFF_ENTRANCE, /* ac_eff_entrance.bac (zone archive, EnemyPawnGroup entrance) */
+    OBJ_BAC_GMK_RAIL6, /* ac_gmk_rail6.bac (GmkRail when gGameState.unk1C == 5) */
     OBJ_BAC_COUNT
 };
 
@@ -141,6 +181,9 @@ typedef struct ObjSprite {
     /* the same frame drawn again at more positions (Rope_Draw) */
     const s16 (*multi)[2];
     u8 n_multi;
+    /* StageObj_SetSharedSpriteVram / spr flags 8: the image shown is the
+     * current frame of another sprite (DecShared animation driver) */
+    const struct ObjSprite *vram;
 } ObjSprite;
 
 /* ------------------------------------------------------ ObjRect */
@@ -213,6 +256,7 @@ struct Obj {
     ObjFn fn_last;      /* @0x7C */
     ObjFn dtor;         /* task destructor                             */
     Obj *parent;        /* @0x88 */
+    DcPlayer *ppar;     /* @0x88 when the parent is a player (effects that follow the player) */
     ObjSprite spr;      /* @0x94 spr0 (spr1 = second DS screen, not kept) */
     ObjSprite sprA;     /* extra sprite pair of DashC/DashCT (@0x20C)   */
     u8 has_spr, has_sprA;
@@ -231,7 +275,7 @@ struct Obj {
     DcpObjRef ref;      /* what the player module sees in ride/touch/homing */
     /* per-kind extra work (original offsets beyond @0x20C) */
     ObjBox detect;      /* EnemyPawnGroup @0x20C */
-    s16 u23A, u23C;     /* EnemyPawnGroup @0x23A @0x23C */
+    s16 u238, u23A, u23C; /* EnemyPawnGroup @0x238 (long attack spins) @0x23A (offset to the ridden object) @0x23C */
     u32 u2A0;           /* DashC/DashCT @0x2A0 (bit0: DashCT) */
     s32 u2A4;           /* DashC/DashCT @0x2A4 direction 0..7 */
     /* work beyond @0x20C of the kinds added in objdata v2 (original offsets) */
@@ -245,7 +289,32 @@ struct Obj {
         struct { s16 touch; } ani;                       /* DecAnimal @0x198 */
         struct { u8 playing; } snd;                      /* IronBall: looping sound state (native) */
         struct { DcPlayer *par; } atk;                   /* AttackHitbox @0x88 parent (a player) */
+        /* objdata v3 kinds (Water Palace / Mirage Road), original offsets */
+        struct { u32 u238; s32 u23C; void (*cb)(ObjBox *, ObjBox *); } kur; /* Kuragen @0x238 @0x23C (type 6: saved coll0 callback) */
+        struct { u32 f20C; s32 u210; u16 u214; u8 u216; } bub; /* Bubble / BubbleSpawner / WaterJet @0x20C.. */
+        struct { ObjSprite s0, s2; s16 u32C; s32 pts[16][2]; s16 cnt[16];
+                 s16 mpts[16][2]; u8 n; } mine;          /* Mine @0x20C/@0x29C sprites, @0x32C, @0x330 pts, cnt */
+        struct { ObjSprite a, c; s16 u32C, u32E; s16 pts[5][2]; } cargo; /* Cargo @0x20C/@0x29C, @0x32C */
+        struct { u32 u364; u16 u41C, u41E; s32 u420; s16 u424, u426, u428, u42A; s32 mtx2[9]; } tbl; /* GmkTable */
+        struct { u32 f20C; s8 pidx[2]; s8 need, got; u8 room; u16 b216, b218, b21A, b21C;
+                 s32 c220, c224, c228, c22C; s16 u230; } room; /* MapObj8C (enemy room) @0x20C..@0x230 */
+        struct { s32 u20C, u210; s32 pos[2][2]; u32 u224; } mo8f; /* MapObj8F (room / camera bounds) */
     } k;
+    /* extra sprite pairs drawn after spr (Mine, Cargo, ...): point into k */
+    ObjSprite *xspr[4];
+    u8 n_xspr;
+    /* objdata v4: a second collision map entry inside the work (NeonRoute
+     * @0x20C, ...), registered by the object itself */
+    ObjColMap cmap2;
+    u8 has_cmap2;
+    /* objdata v4: shapes of the model drawn (StageObj_LoadModelSimple blocks
+     * whose @0xA8 & 0x80 is clear); 0 = every shape */
+    u32 shapes;
+    /* 3D model of the object (StageObj_LoadModelSimple @0x128): converted
+     * model id, rotation (4.12, row-major) and scale; see objects_model_get */
+    const char *model;
+    s32 mtx[9];
+    s32 mscale[3];
     u8 is_dec;          /* decoration (Decoration_InitFromMap): prm is a .dc entry */
     /* native bookkeeping */
     u16 prio;           /* task id */

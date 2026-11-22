@@ -125,7 +125,7 @@ static void AttackHitbox_State_Boost(Obj *o) {
     }
     o->h.obj_flags |= 4;
 }
-static Obj *AttackHitbox_Create(DcPlayer *parent, s16 a, s16 b, s16 c, s16 d, s16 e) {
+Obj *AttackHitbox_Create(DcPlayer *parent, s16 a, s16 b, s16 c, s16 d, s16 e) {
     Obj *w = obj_alloc(0x101, obj_stageobj_dtor);
     if (w == NULL)
         return NULL;

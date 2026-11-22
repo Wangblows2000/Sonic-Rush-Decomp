@@ -1,0 +1,72 @@
+/* Native front end (Dreamcast port): SegaLogo, TitleScreen, TitleMenu,
+ * PlayerSelect, ZoneMap (+ act select, map pause), Options, story progression.
+ * Translated from src/game/Menus/ and src/game/GameSystem/StoryProgress_ (files).
+ * See docs/dreamcast/translation/MENUS.md. */
+#ifndef SRDC_MENUS_H
+#define SRDC_MENUS_H
+#include <stdint.h>
+#include "../engine/input.h"
+
+/* What the front end asks main.c to do (the SceneChange_* calls that leave
+ * the menus). */
+typedef enum {
+    MENU_REQ_NONE = 0,     /* stay in the menus */
+    MENU_REQ_STAGE,        /* start zone/act with character (story / time attack) */
+    MENU_REQ_DEMO,         /* attract demo: SceneChange_ToDemoPlay, demo index in .demo */
+    MENU_REQ_UNAVAILABLE   /* a scene the port does not have (VS lobby, ending...): .scene names it */
+} MenuRequestKind;
+
+/* gGameState.unk10 */
+enum { MENU_MODE_STORY = 0, MENU_MODE_VS = 1, MENU_MODE_TIME_ATTACK = 2 };
+
+typedef struct {
+    MenuRequestKind kind;
+    int zone;        /* gGameState.unk1C (0..9; DS zone numbering, 7 = extra/8 final ...) */
+    int act;         /* gGameState.unk1D (0, 1, 2 = boss act / demo script) */
+    int character;   /* gGameState.unk0: 0 Sonic, 1 Blaze */
+    int mode;        /* gGameState.unk10 */
+    int demo;        /* gGameState.unk1E (attract demo 0..3) */
+    int lives;       /* data_022c4590.unk14 (StoryProgress_RestoreFromSave) */
+    int emeralds;    /* gGameState.unk28 */
+    int easy;        /* gGameState.unk14 (difficulty: 1 = normal ... see MENUS.md) */
+    const char *scene;
+} MenuRequest;
+
+/* Sound hooks: original SDAT ids (SysSound_* / Sound_* call sites). NULL = silent. */
+typedef struct {
+    void (*bgm)(int seq);                   /* Sound_PlaySeq / SysSound_PlayBGM */
+    void (*se)(int arc, int id);            /* Sound_PlaySeqArc / SysSound_PlaySE (arc -1) */
+    void (*voice)(int id);                  /* Sound_PlayVoice / SysSound_PlayMenuVoice */
+    void (*stop_all)(void);                 /* NNS_SndStopSoundAll */
+    /* sound test: entry index of sound_test.sld and its fields (archive,
+     * type 0 BGM/1 SE/2 voice, group, sequence archive or bank, id) */
+    void (*sound_test)(int index, int archive, int type, int group, int arc, int id);
+} MenuHooks;
+extern MenuHooks g_menu_hooks;
+
+void menus_set_paths(const char *menus_dir, const char *sprite_dir);
+/* loads menudata.bin, installs the save signature and VMU icon, reads the save
+ * (save_load) and starts SegaLogo. Returns 0 when menudata.bin was found. */
+int menus_init(void);
+/* one frame: input, tasks, then draw commands for menus_draw_tr. */
+MenuRequest menus_run_frame(const InputState *in);
+/* TR list: the scene as one 640x480 composition (MENUS.md section 3) + brightness. */
+void menus_draw_tr(void);
+/* Back from a stage. The front end does what the original does at that exit
+ * (ClearDemo_GoToNextScene, PauseMenu_QuitToMap, Stage_ExitAfterFail, demo
+ * end) and returns the next request: MENU_REQ_STAGE when the original goes
+ * straight to another stage (next act of a new stage, boss act), else
+ * MENU_REQ_NONE and the menus run (zone map, act select, title...). */
+typedef enum {
+    MENU_EXIT_CLEARED = 0,  /* act results done (story: progress + best score saved; time attack: record) */
+    MENU_EXIT_QUIT,         /* pause menu "go back" (PauseMenu_QuitToMap) */
+    MENU_EXIT_GAME_OVER,    /* game over / time over (SceneChange_ToSegaLogo) */
+    MENU_EXIT_DEMO_END      /* attract demo finished or skipped (TitleScreen_StartFromDemo) */
+} MenuExit;
+/* score = data_022c4590.unk4, lives = data_022c4590.unk14, emeralds = gGameState.unk28,
+ * time = gGameState.unk20 (frames, time attack records) */
+MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeralds, uint32_t time);
+void menus_shutdown(void);
+int menus_language(void);          /* gGameLanguage, default 1 (English) */
+void menus_set_language(int lang);
+#endif
