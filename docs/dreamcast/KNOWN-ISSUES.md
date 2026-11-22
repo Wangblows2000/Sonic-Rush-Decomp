@@ -60,3 +60,14 @@ from disc as AICA ADPCM. Everything else in the game is not ported yet.
 
 All converted game data is generated locally from the owner's ROM
 (bring-your-own-ROM) under build/ and is not committed or distributed.
+
+## Boss1 arena (z13): sky not visible
+
+In Flycast the Leaf Storm boss arena shows black behind the arena model, while
+z33, z43 and z53 show their sky. Boss1_State_WaitForStart sets the camera sky
+model (`mod__bs1_sky`, scale 0x1355b50, CAM.unk0 bit 0) the same way Boss3
+does, the file is on the disc, and boss_draw draws CAM.unkE0 when the bit is
+set. Not yet found: check the sky model's texture/material conversion
+(bs1_sky is 67 KB vs bs3_sky 17 KB), far-plane clipping at that scale, and
+whether the DS draws a 2D BG layer of the z13 level behind the 3D arena
+(main.c skips level_draw_bg in boss stages).
