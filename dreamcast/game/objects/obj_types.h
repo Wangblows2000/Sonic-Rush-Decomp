@@ -119,6 +119,60 @@ enum ObjBac {
     OBJ_BAC_DEC_TABLE_WATER, /* ac_dec_table_water.bac */
     OBJ_BAC_EFF_ENTRANCE, /* ac_eff_entrance.bac (zone archive, EnemyPawnGroup entrance) */
     OBJ_BAC_GMK_RAIL6, /* ac_gmk_rail6.bac (GmkRail when gGameState.unk1C == 5) */
+    OBJ_BAC_CRANE_SLIDE, /* ac_gmk_crane_slide.bac */
+    OBJ_BAC_NEON_ROUTE, /* ac_gmk_neon_route.bac */
+    OBJ_BAC_SHOOTER, /* ac_gmk_shooter.bac */
+    OBJ_BAC_SWING_SKY, /* ac_gmk_swing_sky.bac */
+    OBJ_BAC_SWITCH, /* ac_gmk_switch.bac */
+    OBJ_BAC_FIX_INFORMATION, /* ac_fix_information.bac */
+    OBJ_BAC_DEC_SONIC_NEON, /* ac_dec_sonic_neon.bac */
+    OBJ_BAC_DEC_NEON_FLOOR, /* ac_dec_neon_floor.bac */
+    OBJ_BAC_DEC_NEON_LAND, /* ac_dec_neon_land.bac */
+    OBJ_BAC_DEC_SWING_SKY_HANG, /* ac_dec_swing_sky_hang.bac */
+    OBJ_BAC_DEC_NEON_BALL, /* ac_dec_neon_ball.bac */
+    OBJ_BAC_DEC_NEON_PILLAR, /* ac_dec_neon_pillar.bac */
+    OBJ_BAC_DEC_LIGHT4, /* ac_dec_light4.bac */
+    OBJ_BAC_DEC_NEON_BALL2, /* ac_dec_neon_ball2.bac */
+    OBJ_BAC_DEC_NEON_STAR, /* ac_dec_neon_star.bac */
+    OBJ_BAC_GLIDER, /* ac_gmk_glider.bac */
+    OBJ_BAC_NEEDLE_G, /* ac_gmk_needle_g.bac */
+    OBJ_BAC_PARACHUTE, /* ac_gmk_parachute.bac */
+    OBJ_BAC_SAUCER, /* ac_gmk_saucer.bac */
+    OBJ_BAC_CLOUD_3, /* ac_gmk_cloud_3.bac */
+    OBJ_BAC_RING_GRAIDER, /* ac_itm_ring_graider.bac */
+    OBJ_BAC_FLAPPER3D, /* ac_ene_flapper3d.bac */
+    OBJ_BAC_DEC_CLOUD, /* ac_dec_cloud.bac */
+    OBJ_BAC_DEC_CLOUD_W, /* ac_dec_cloud_w.bac */
+    OBJ_BAC_DEC_INNER_PILLAR, /* ac_dec_inner_pillar.bac */
+    OBJ_BAC_DEC_PROPELLER, /* ac_dec_propeller.bac */
+    OBJ_BAC_DEC_JET, /* ac_dec_jet.bac */
+    OBJ_BAC_DEC_LIGHT, /* ac_dec_light.bac */
+    OBJ_BAC_DEC_LASER, /* ac_dec_laser.bac */
+    OBJ_BAC_CRANE, /* ac_gmk_crane.bac */
+    OBJ_BAC_PIPE, /* ac_gmk_pipe.bac */
+    OBJ_BAC_PISTON, /* ac_gmk_piston.bac */
+    OBJ_BAC_VALVE, /* ac_gmk_valve.bac */
+    OBJ_BAC_JET_CATAPULT, /* ac_gmk_jet_catapult.bac */
+    OBJ_BAC_EFF_JET, /* ac_eff_jet.bac */
+    OBJ_BAC_EFF_STEAM, /* ac_eff_steam.bac */
+    OBJ_BAC_DEC_PIPE, /* ac_dec_pipe.bac */
+    OBJ_BAC_DEC_PLANE, /* ac_dec_plane.bac */
+    OBJ_BAC_AIR, /* ac_gmk_air.bac */
+    OBJ_BAC_CANNON, /* ac_gmk_cannon.bac */
+    OBJ_BAC_DUCT, /* ac_gmk_duct.bac */
+    OBJ_BAC_ROCKET, /* ac_gmk_rocket.bac */
+    OBJ_BAC_SWING, /* ac_gmk_swing.bac */
+    OBJ_BAC_DEC_ARROW, /* ac_dec_arrow.bac */
+    OBJ_BAC_EGG_SF, /* ac_ene_egg_sf.bac */
+    OBJ_BAC_EGG_SOLID, /* ac_ene_egg_solid.bac */
+    OBJ_BAC_GUN_HUNTER, /* ac_ene_gun_hunter.bac */
+    OBJ_BAC_RHINO, /* ac_ene_rhino.bac */
+    OBJ_BAC_EGG_BUNNY, /* ac_ene_egg_bunny.bac */
+    OBJ_BAC_EGG_FLAPPER_LASER, /* ac_ene_egg_flapper_laser.bac */
+    OBJ_BAC_BOMB_HAWK, /* ac_ene_bomb_hawk.bac */
+    OBJ_BAC_FLAPPER_BAT, /* ac_ene_flapper_bat.bac */
+    OBJ_BAC_FLAPPER_CANNON, /* ac_ene_flapper_cannon.bac */
+    OBJ_BAC_FALCO, /* ac_ene_falco.bac */
     OBJ_BAC_COUNT
 };
 
@@ -271,6 +325,7 @@ struct Obj {
     s16 flash;          /* @0x1F0 */
     u32 f1F4;           /* @0x1F4 */
     u16 anim1F8;        /* @0x1F8 */
+    s32 u1FC, u200;     /* @0x1FC @0x200 (objdata v4: EnemyFlapperGroup swoop start) */
     void *target;       /* @0x204 DcPlayer* chased */
     DcpObjRef ref;      /* what the player module sees in ride/touch/homing */
     /* per-kind extra work (original offsets beyond @0x20C) */
@@ -299,6 +354,17 @@ struct Obj {
         struct { u32 f20C; s8 pidx[2]; s8 need, got; u8 room; u16 b216, b218, b21A, b21C;
                  s32 c220, c224, c228, c22C; s16 u230; } room; /* MapObj8C (enemy room) @0x20C..@0x230 */
         struct { s32 u20C, u210; s32 pos[2][2]; u32 u224; } mo8f; /* MapObj8F (room / camera bounds) */
+        /* objdata v4 kinds (zones 4..7), original offsets */
+        struct { s16 pts[64][2]; } neon;                 /* NeonRoute_Draw positions (native) */
+        struct { ObjSprite s0, s2, s4, s6; s16 chain[20]; u16 u4A0; s16 u4A2; u32 u4A4;
+                 s16 p0[20][2], p2[20][2]; } sky;        /* SwingSky @0x20C..@0x404 sprites, @0x478 chain, @0x4A0.. */
+        struct { s16 idx; u16 kind; u16 u4, u6; } swt;   /* SwitchTimer work (@0x0 @0x2 @0x4 @0x6) */
+        struct { ObjSprite mirror; } afc;                /* DecGroupAFChild_Draw second (mirrored) draw */
+        struct { ObjSprite a; s16 pts[48][2]; } crane;   /* CranePartED @0x99C chain sprite / CranePartEE / Piston shaft */
+        struct { ObjSprite s; u32 u2A0; s32 u2A4; } valve; /* Valve @0x20C steam sprite, @0x2A4 kind */
+        struct { u32 u2A8; } steam;                      /* Steam @0x2A8 */
+        struct { ObjSprite a, c; } cannon;               /* Cannon @0x20C sprA, @0x29C sprC (barrel) */
+        struct { ObjSprite s0, s2, m0, m2; } swing;      /* Swing @0x20C / @0x29C, + the mirrored draws */
     } k;
     /* extra sprite pairs drawn after spr (Mine, Cargo, ...): point into k */
     ObjSprite *xspr[4];
@@ -310,6 +376,12 @@ struct Obj {
     /* objdata v4: shapes of the model drawn (StageObj_LoadModelSimple blocks
      * whose @0xA8 & 0x80 is clear); 0 = every shape */
     u32 shapes;
+    u8 mreps;           /* the model drawn mreps times (0 = once), each mrep_dy lower (CranePartEE_Draw) */
+    s32 mrep_dy;
+    /* objdata v4: the 2D sprite stands for a 3D BAC (StageObj_Load3dBAC):
+     * drawn at x/y by obj_draw.c as before (deviation 23), listed by
+     * objects_sprite3d_* with its depth z for a 3D draw */
+    u8 bac3d;
     /* 3D model of the object (StageObj_LoadModelSimple @0x128): converted
      * model id, rotation (4.12, row-major) and scale; see objects_model_get */
     const char *model;

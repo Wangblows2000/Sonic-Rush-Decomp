@@ -462,6 +462,41 @@ ObjCreateFn obj_create_fn(u16 t) {
     case 0x90: case 0x91: return SandSlider_Create;
     case 0x92: return Rock_Create;
     case 0xe4: return EggBishop_Create;
+    /* objdata v4: Night Carnival */
+    case 0xae: return CraneSlide_Create;
+    case 0xbb: case 0xbc: return Shooter_Create;
+    case 0xbd: return SwingSky_Create;
+    case 0xbe: case 0xbf: return Switch_Create;
+    case 0xc0: case 0xc1: return NeonRoute_Create;
+    /* objdata v4: Altitude Limit */
+    case 0xb5: return Glider_Create;
+    case 0xb1: case 0xb2: return NeedleG_Create;
+    case 0xb4: return Parachute_Create;
+    case 0xb3: return Saucer_Create;
+    case 0x13: case 0xb8: case 0xb9: case 0xba: return MapObj13_Create;
+    case 0xc7: return DecCloudSpawner_Create;
+    /* objdata v4: Huge Crisis */
+    case 0xa0: case 0xa1: return Piston_Create;
+    case 0xa2: case 0xa3: case 0xa4: case 0xa5: return Valve_Create;
+    case 0xa6: case 0xab: case 0xac: case 0xad: return GmkPipe_Create;
+    case 0xa7: return JetCatapult_Create;
+    case 0xa8: return Crane_Create;
+    case 0xed: return CranePartED_Create;
+    case 0xee: return CranePartEE_Create;
+    case 0xf1: return Steam_Create;
+    /* objdata v4: Dead Line */
+    case 0x93: return Rocket_Create;
+    case 0x94: return GmkAir_Create;
+    case 0x95: return Cannon_Create;
+    case 0x96: return Swing_Create;
+    case 0x97: return Duct_Create;
+    case 0x9c: return MapObj9C_Create;
+    /* objdata v4: enemy shots */
+    case 0xe6: return EggSf_Create;
+    case 0xe7: return EggFlapperLaser_Create;
+    case 0xeb: return EggBombHawk_Create;
+    case 0xec: return GunHunter_Create;
+    case 0xf0: return FlapperCannon_Create;
     }
     return NULL;                     /* not translated (OBJECTS.md) */
 }
@@ -474,11 +509,19 @@ static int type_slots(u16 t, u8 *o) {
     if (f == NULL)
         return 0;
     if (f == pawn_create) {
-        o[n++] = t == 3 ? OBJ_BAC_EGG_LANCER : (t == 7 || t == 0x15) ? OBJ_BAC_EGG_BISHOP : t == 8 ? OBJ_BAC_EGG_HAMMER : OBJ_BAC_EGGPAWN;
+        o[n++] = t == 3 ? OBJ_BAC_EGG_LANCER : (t == 7 || t == 0x15) ? OBJ_BAC_EGG_BISHOP : t == 8 ? OBJ_BAC_EGG_HAMMER :
+                 t == 9 ? OBJ_BAC_EGG_SF : t == 0xa ? OBJ_BAC_EGG_SOLID : t == 0xd ? OBJ_BAC_GUN_HUNTER :
+                 t == 0xe ? OBJ_BAC_RHINO : t == 0xf ? OBJ_BAC_EGG_BUNNY : OBJ_BAC_EGGPAWN;
+        if (t == 0xe) o[n++] = OBJ_BAC_EFF_BRAKE;
         o[n++] = t == 1 ? OBJ_BAC_EGGPAWN_M : OBJ_BAC_EFF_FOUND;
         if (t == 0x14 || t == 0x15 || t == 7) o[n++] = OBJ_BAC_EFF_SHADOW;
     }
-    else if (f == EnemyFlapperGroup_Create) { o[n++] = t == 4 ? OBJ_BAC_EGG_DIVER : OBJ_BAC_FLAPPER; o[n++] = OBJ_BAC_EFF_FOUND; }
+    else if (f == EnemyFlapperGroup_Create) {
+        o[n++] = t == 4 ? OBJ_BAC_EGG_DIVER : t == 0xb ? OBJ_BAC_EGG_FLAPPER_LASER : t == 0xc ? OBJ_BAC_BOMB_HAWK :
+                 t == 0x10 ? OBJ_BAC_FLAPPER_BAT : t == 0x11 ? OBJ_BAC_FLAPPER_CANNON : t == 0x12 ? OBJ_BAC_FALCO : OBJ_BAC_FLAPPER;
+        o[n++] = OBJ_BAC_EFF_FOUND;
+        if (t == 0xc) { o[n++] = OBJ_BAC_ZAKO_BOMB; o[n++] = OBJ_BAC_HAHEN; }
+    }
     else if (f == itembox_create) o[n++] = OBJ_BAC_ITEMBOX;
     else if (f == spring_create) o[n++] = OBJ_BAC_SPRING;
     else if (f == needle_create) o[n++] = OBJ_BAC_NEEDLE;
@@ -517,6 +560,32 @@ static int type_slots(u16 t, u8 *o) {
     else if (f == Rock_Create) { o[n++] = OBJ_BAC_ROCK; o[n++] = OBJ_BAC_EFF_SHADOW; }
     else if (f == EggBishop_Create) o[n++] = OBJ_BAC_EGG_BISHOP;
     else if (f == mapobj40_create && t == 0xa9) o[n++] = OBJ_BAC_EFF_SAND;
+    /* objdata v4: Night Carnival */
+    else if (f == CraneSlide_Create) o[n++] = OBJ_BAC_CRANE_SLIDE;
+    else if (f == Shooter_Create) o[n++] = OBJ_BAC_SHOOTER;
+    else if (f == SwingSky_Create) { o[n++] = OBJ_BAC_SWING_SKY; o[n++] = OBJ_BAC_FIX_INFORMATION; }
+    else if (f == Switch_Create) o[n++] = OBJ_BAC_SWITCH;
+    else if (f == NeonRoute_Create) o[n++] = OBJ_BAC_NEON_ROUTE;
+    /* objdata v4: Altitude Limit */
+    else if (f == Glider_Create) o[n++] = OBJ_BAC_GLIDER;
+    else if (f == NeedleG_Create) o[n++] = OBJ_BAC_NEEDLE_G;
+    else if (f == Parachute_Create) o[n++] = OBJ_BAC_PARACHUTE;
+    else if (f == Saucer_Create) { o[n++] = OBJ_BAC_SAUCER; o[n++] = OBJ_BAC_ZAKO_BOMB; o[n++] = OBJ_BAC_HAHEN; }
+    else if (f == MapObj13_Create) o[n++] = t == 0x13 ? OBJ_BAC_FLAPPER3D : t == 0xb8 ? OBJ_BAC_RING_GRAIDER : OBJ_BAC_CLOUD_3;
+    else if (f == DecCloudSpawner_Create) o[n++] = OBJ_BAC_DEC_CLOUD_W;
+    /* objdata v4: Huge Crisis */
+    else if (f == Piston_Create) o[n++] = OBJ_BAC_PISTON;
+    else if (f == Valve_Create) { o[n++] = OBJ_BAC_VALVE; o[n++] = OBJ_BAC_EFF_STEAM; }
+    else if (f == GmkPipe_Create) o[n++] = OBJ_BAC_PIPE;
+    else if (f == JetCatapult_Create) { o[n++] = OBJ_BAC_JET_CATAPULT; o[n++] = OBJ_BAC_EFF_JET; o[n++] = OBJ_BAC_HAHEN; }
+    else if (f == Crane_Create || f == CranePartED_Create || f == CranePartEE_Create) o[n++] = OBJ_BAC_CRANE;
+    else if (f == Steam_Create) o[n++] = OBJ_BAC_EFF_STEAM;
+    /* objdata v4: Dead Line */
+    else if (f == Rocket_Create) { o[n++] = OBJ_BAC_ROCKET; o[n++] = OBJ_BAC_ZAKO_BOMB; o[n++] = OBJ_BAC_HAHEN; }
+    else if (f == GmkAir_Create) o[n++] = OBJ_BAC_AIR;
+    else if (f == Cannon_Create) { o[n++] = OBJ_BAC_CANNON; o[n++] = OBJ_BAC_ZAKO_BOMB; }
+    else if (f == Swing_Create) { o[n++] = OBJ_BAC_SWING; o[n++] = OBJ_BAC_FIX_INFORMATION; }
+    else if (f == Duct_Create) o[n++] = OBJ_BAC_DUCT;
     return n;
 }
 
@@ -746,7 +815,7 @@ static int load_objdata(int stage) {
     snprintf(path, sizeof(path), "%s/objdata.bin", g_obj.obj_dir);
     if (obj_load_file(path, &b, &size) != 0)
         return -1;
-    if (size < 1024 || memcmp(b, "ROBJ", 4) || (b[4] | b[5] << 8) != 3) {
+    if (size < 1024 || memcmp(b, "ROBJ", 4) || (b[4] | b[5] << 8) != 4) {
         free(b);
         return -1;
     }
@@ -765,6 +834,10 @@ static int load_objdata(int stage) {
     TAKE(d->bend_wobble, 28);
     TAKE(d->pedestal, 48);
     TAKE(d->dec_margin, 0xf2);
+    TAKE(d->valve_ofs, 16);
+    TAKE(d->valve_box, 32);
+    TAKE(d->valve_puff, 32);
+    TAKE(d->valve_anim, 48);
 #undef TAKE
     if (nslots != OBJ_BAC_COUNT || idlen != 48 || (u32)stage >= nstages || size < off + nstages * nslots * idlen) {
         free(b);
@@ -860,6 +933,106 @@ static void preload_resources(const rlvl_header_t *h) {
     g_obj.preloaded = 1;
 }
 
+/* ------------------------------------- Stage_Save/RestoreEventState (unk18 & 0x40) */
+/* data_022c4520 (buf0 / size0: map-object list, buf1 / size1: ring list) and
+ * the data_022c4590 restart camera unk58 / unk5A / unk5C: static, they
+ * outlive the stage like the DS globals */
+static struct {
+    u8 valid, pending, cam_set;
+    u8 stage;
+    u32 n_obj, n_ring;
+    ObjParam *prm;
+    u8 *ring;
+    ObjStage vars;
+    s16 cam_x, cam_y; /* unk58 / unk5A (px) */
+    u32 cam_f;        /* unk5C: gCamera[2] flags & 2 */
+} s_ev;
+static void destroy_tasks(void) { /* Stage_DestroyTasks: object tasks and the ring manager */
+    while (g_obj.head)
+        obj_destroy(g_obj.head);
+    ring_destroy();
+}
+void objects_save_event_state(void) {
+    const rlvl_header_t *h = g_obj.hdr;
+    void *p;
+    if (h == NULL || g_obj.prm == NULL)
+        return;
+    destroy_tasks();
+    p = realloc(s_ev.prm, (h->num_objects ? h->num_objects : 1) * sizeof(ObjParam));
+    if (p == NULL)
+        return;
+    s_ev.prm = (ObjParam *)p;
+    p = realloc(s_ev.ring, h->num_rings ? h->num_rings : 1);
+    if (p == NULL)
+        return;
+    s_ev.ring = (u8 *)p;
+    s_ev.n_obj = h->num_objects;
+    s_ev.n_ring = h->num_rings;
+    s_ev.stage = h->stage;
+    memcpy(s_ev.prm, g_obj.prm, h->num_objects * sizeof(ObjParam)); /* Stage_SaveEventState */
+    memcpy(s_ev.ring, g_obj.ring_state, h->num_rings);
+    s_ev.vars = g_obj_stage;
+    s_ev.cam_x = (s16)(g_obj_camera[0].x >> 8); /* Stage_SaveRestartCamera */
+    s_ev.cam_y = (s16)(g_obj_camera[0].y >> 8);
+    s_ev.cam_f = g_obj_camera[2].flags & 2;
+    s_ev.valid = 1;
+    s_ev.pending = 0;
+    obj_log("save_event_state", (s32)s_ev.n_obj, (s32)s_ev.n_ring);
+}
+/* Stage_RestoreEventState + Stage_RestoreRestartCamera */
+static int apply_event_state(void) {
+    const rlvl_header_t *h = g_obj.hdr;
+    s32 x, y;
+    s_ev.pending = 0;
+    if (!s_ev.valid || h == NULL || h->stage != s_ev.stage || h->num_objects != s_ev.n_obj || h->num_rings != s_ev.n_ring)
+        return 0;
+    s_ev.valid = 0;
+    memcpy(g_obj.prm, s_ev.prm, s_ev.n_obj * sizeof(ObjParam));
+    memcpy(g_obj.ring_state, s_ev.ring, s_ev.n_ring);
+    g_obj_stage = s_ev.vars;
+    y = s_ev.cam_y << 8;
+    g_obj_camera[2].flags |= s_ev.cam_f;
+    x = s_ev.cam_x << 8;
+    g_obj_camera[0].x = x;
+    g_obj_camera[0].y = y;
+    g_obj_camera[1].x = x;
+    if (!(g_obj_camera[2].flags & 2))
+        g_obj_camera[1].y = g_obj_camera[0].y + 0x11000;
+    else
+        g_obj_camera[1].y = g_obj_camera[0].y - 0x11000;
+    s_ev.cam_set = 1;
+    obj_log("restore_event_state", (s32)s_ev.n_obj, (s32)s_ev.n_ring);
+    return 1;
+}
+static void spawn_all_map_objects(void);
+void objects_restore_event_state(void) {
+    if (!s_ev.valid)
+        return;
+    if (g_obj.hdr == NULL) { /* before objects_init: applied at the SetupResources point */
+        s_ev.pending = 1;
+        return;
+    }
+    /* after objects_init: the objects StageStart_State_CreateStage made from
+     * the fresh list go, the list is restored, and they are made again */
+    if (g_obj.hdr->stage != s_ev.stage)
+        return;
+    destroy_tasks();
+    if (!apply_event_state())
+        return;
+    ring_init();
+    spawn_all_map_objects();
+    g_obj.event_state = 0;
+}
+int objects_restart_camera(s32 *x, s32 *y, u32 *flags) {
+    if (x)
+        *x = g_obj_camera[0].x;
+    if (y)
+        *y = g_obj_camera[0].y;
+    if (flags)
+        *flags = g_obj_camera[2].flags & 2;
+    return s_ev.cam_set;
+}
+
 int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     const rlvl_header_t *h = (const rlvl_header_t *)level_data;
     char od[64], sd[64];
@@ -928,6 +1101,9 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     camera_init();
     dec_shared_reset();
     mirage_reset();
+    carnival_reset();
+    altitude_reset();
+    crisis_reset();
     for (s = 0; s < OBJ_MAX_VIEWS; s++)
         objects_set_view(s, 0, 0);
     W.objmgr |= 0x1c; /* view-out, map collision and hit boxes on (Stage_Create) */
@@ -936,6 +1112,9 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     for (s = 0; s < nkeep && s < 2; s++)
         objects_add_player(keep[s]);
     obj_player_install_hooks();
+    s_ev.cam_set = 0;
+    if (s_ev.pending) /* StageStart_State_SetupResources: unk18 & 0x40 */
+        apply_event_state();
     spawn_all_map_objects();
     ring_init();
     obj_log("init_resources", loaded, h->stage);

@@ -45,6 +45,11 @@ TABLES = [
     ("bend_wobble", 0x023643D4, 28),     # data_ov000_023643d4/_d8/_dc: BendStick wobble offsets (s8)
     ("pedestal", 0x02364400, 48),        # data_ov000_02364400: JumpPedestal launch speeds s16[4][6]
     ("dec_margin", 0x023685EC, 0xF2),    # data_ov000_023685ec: per decoration type spawn margin
+    # v4 (zones 4..7)
+    ("valve_ofs", 0x02364444, 16),       # data_ov000_02364444: Valve steam sprite offsets s16[4][2]
+    ("valve_box", 0x02364454, 32),       # data_ov000_02364454: Valve hit box s16[4][4]
+    ("valve_puff", 0x02364474, 32),      # data_ov000_02364474: Valve puff area s16[4][4]
+    ("valve_anim", 0x02364494, 48),      # data_ov000_02364494: Valve steam anim active/end + flags u32[4][3]
 ]
 # /dat/gmk/*.df collision maps (ObjData_Load with gZoneActArchive)
 DF_FILES = ["gmk_jump30.df", "gmk_jump45.df", "gmk_jump60.df", "gmk_cargo.df", "gmk_jet.df",
@@ -137,6 +142,64 @@ SLOTS += [
     ("EFF_ENTRANCE", "zone", "act/ac_eff_entrance.bac", "act/ac_eff_entrance.bac"),
     ("GMK_RAIL6", "zone", "act/ac_gmk_rail6.bac", "act/ac_gmk_rail6.bac"),
 ]
+# objdata v4: zones 4..7 (Night Carnival, Huge Crisis, Altitude Limit, Dead Line)
+SLOTS_V4 = [
+    ("CRANE_SLIDE", "zone", "act/ac_gmk_crane_slide.bac", "act/ac_gmk_crane_slide.bac"),
+    ("NEON_ROUTE", "zone", "act/ac_gmk_neon_route.bac", "act/ac_gmk_neon_route.bac"),
+    ("SHOOTER", "zone", "act/ac_gmk_shooter.bac", "act/ac_gmk_shooter.bac"),
+    ("SWING_SKY", "zone", "act/ac_gmk_swing_sky.bac", "act/ac_gmk_swing_sky.bac"),
+    ("SWITCH", "zone", "act/ac_gmk_switch.bac", "act/ac_gmk_switch.bac"),
+    ("FIX_INFORMATION", "zone", "act/ac_fix_information.bac", "act/ac_fix_information.bac"),
+    ("DEC_SONIC_NEON", "zone", "act/ac_dec_sonic_neon.bac", "act/ac_dec_sonic_neon.bac"),
+    ("DEC_NEON_FLOOR", "zone", "act/ac_dec_neon_floor.bac", "act/ac_dec_neon_floor.bac"),
+    ("DEC_NEON_LAND", "zone", "act/ac_dec_neon_land.bac", "act/ac_dec_neon_land.bac"),
+    ("DEC_SWING_SKY_HANG", "zone", "act/ac_dec_swing_sky_hang.bac", "act/ac_dec_swing_sky_hang.bac"),
+    ("DEC_NEON_BALL", "zone", "act/ac_dec_neon_ball.bac", "act/ac_dec_neon_ball.bac"),
+    ("DEC_NEON_PILLAR", "zone", "act/ac_dec_neon_pillar.bac", "act/ac_dec_neon_pillar.bac"),
+    ("DEC_LIGHT4", "zone", "act/ac_dec_light4.bac", "act/ac_dec_light4.bac"),
+    ("DEC_NEON_BALL2", "zone", "act/ac_dec_neon_ball2.bac", "act/ac_dec_neon_ball2.bac"),
+    ("DEC_NEON_STAR", "zone", "act/ac_dec_neon_star.bac", "act/ac_dec_neon_star.bac"),
+    ("GLIDER", "zone", "act/ac_gmk_glider.bac", "act/ac_gmk_glider.bac"),
+    ("NEEDLE_G", "zone", "act/ac_gmk_needle_g.bac", "act/ac_gmk_needle_g.bac"),
+    ("PARACHUTE", "zone", "act/ac_gmk_parachute.bac", "act/ac_gmk_parachute.bac"),
+    ("SAUCER", "zone", "act/ac_gmk_saucer.bac", "act/ac_gmk_saucer.bac"),
+    ("CLOUD_3", "zone", "act/ac_gmk_cloud_3.bac", "act/ac_gmk_cloud_3.bac"),
+    ("RING_GRAIDER", "zone", "act/ac_itm_ring_graider.bac", "act/ac_itm_ring_graider.bac"),
+    ("FLAPPER3D", "zone", "act/ac_ene_flapper3d.bac", "act/ac_ene_flapper3d.bac"),
+    ("DEC_CLOUD", "zone", "act/ac_dec_cloud.bac", "act/ac_dec_cloud.bac"),
+    ("DEC_CLOUD_W", "zone", "act/ac_dec_cloud_w.bac", "act/ac_dec_cloud_w.bac"),
+    ("DEC_INNER_PILLAR", "zone", "act/ac_dec_inner_pillar.bac", "act/ac_dec_inner_pillar.bac"),
+    ("DEC_PROPELLER", "zone", "act/ac_dec_propeller.bac", "act/ac_dec_propeller.bac"),
+    ("DEC_JET", "zone", "act/ac_dec_jet.bac", "act/ac_dec_jet.bac"),
+    ("DEC_LIGHT", "zone", "act/ac_dec_light.bac", "act/ac_dec_light.bac"),
+    ("DEC_LASER", "zone", "act/ac_dec_laser.bac", "act/ac_dec_laser.bac"),
+    ("CRANE", "zone", "act/ac_gmk_crane.bac", "act/ac_gmk_crane.bac"),
+    ("PIPE", "zone", "act/ac_gmk_pipe.bac", "act/ac_gmk_pipe.bac"),
+    ("PISTON", "zone", "act/ac_gmk_piston.bac", "act/ac_gmk_piston.bac"),
+    ("VALVE", "zone", "act/ac_gmk_valve.bac", "act/ac_gmk_valve.bac"),
+    ("JET_CATAPULT", "zone", "act/ac_gmk_jet_catapult.bac", "act/ac_gmk_jet_catapult.bac"),
+    ("EFF_JET", "zone", "act/ac_eff_jet.bac", "act/ac_eff_jet.bac"),
+    ("EFF_STEAM", "zone", "act/ac_eff_steam.bac", "act/ac_eff_steam.bac"),
+    ("DEC_PIPE", "zone", "act/ac_dec_pipe.bac", "act/ac_dec_pipe.bac"),
+    ("DEC_PLANE", "zone", "act/ac_dec_plane.bac", "act/ac_dec_plane.bac"),
+    ("AIR", "zone", "act/ac_gmk_air.bac", "act/ac_gmk_air.bac"),
+    ("CANNON", "zone", "act/ac_gmk_cannon.bac", "act/ac_gmk_cannon.bac"),
+    ("DUCT", "zone", "act/ac_gmk_duct.bac", "act/ac_gmk_duct.bac"),
+    ("ROCKET", "zone", "act/ac_gmk_rocket.bac", "act/ac_gmk_rocket.bac"),
+    ("SWING", "zone", "act/ac_gmk_swing.bac", "act/ac_gmk_swing.bac"),
+    ("DEC_ARROW", "zone", "act/ac_dec_arrow.bac", "act/ac_dec_arrow.bac"),
+    ("EGG_SF", "zone", "act/ac_ene_egg_sf.bac", "act/ac_ene_egg_sf.bac"),
+    ("EGG_SOLID", "zone", "act/ac_ene_egg_solid.bac", "act/ac_ene_egg_solid.bac"),
+    ("GUN_HUNTER", "zone", "act/ac_ene_gun_hunter.bac", "act/ac_ene_gun_hunter.bac"),
+    ("RHINO", "zone", "act/ac_ene_rhino.bac", "act/ac_ene_rhino.bac"),
+    ("EGG_BUNNY", "zone", "act/ac_ene_egg_bunny.bac", "act/ac_ene_egg_bunny.bac"),
+    ("EGG_FLAPPER_LASER", "zone", "act/ac_ene_egg_flapper_laser.bac", "act/ac_ene_egg_flapper_laser.bac"),
+    ("BOMB_HAWK", "zone", "act/ac_ene_bomb_hawk.bac", "act/ac_ene_bomb_hawk.bac"),
+    ("FLAPPER_BAT", "zone", "act/ac_ene_flapper_bat.bac", "act/ac_ene_flapper_bat.bac"),
+    ("FLAPPER_CANNON", "zone", "act/ac_ene_flapper_cannon.bac", "act/ac_ene_flapper_cannon.bac"),
+    ("FALCO", "zone", "act/ac_ene_falco.bac", "act/ac_ene_falco.bac"),
+]
+SLOTS += SLOTS_V4
 ID_LEN = 48
 N_STAGES = 27
 
@@ -211,7 +274,7 @@ def main():
 
     os.makedirs(os.path.join(a.out, "hbx"), exist_ok=True)
     blob = bytearray(b"ROBJ")
-    blob += struct.pack("<HHHH", 3, len(SLOTS), N_STAGES, ID_LEN)
+    blob += struct.pack("<HHHH", 4, len(SLOTS), N_STAGES, ID_LEN)
     for name, addr, size in TABLES:
         if addr < OV_BASE:
             data = arm9[addr - ARM9_BASE:addr - ARM9_BASE + size]

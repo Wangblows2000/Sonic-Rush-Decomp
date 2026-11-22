@@ -1310,6 +1310,8 @@ int objects_model_get(int i, ObjModelView *out) {
         out->visible = (o->h.disp_flags & 0x20) == 0;
         out->persp = (o->h.disp_flags & 0x200) != 0;
         out->shapes = o->shapes != 0 ? o->shapes : 0xffffffffu;
+        out->reps = o->mreps != 0 ? o->mreps : 1;
+        out->rep_dy = o->mrep_dy;
         return 1;
     }
     return 0;

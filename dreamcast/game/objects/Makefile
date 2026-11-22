@@ -1,6 +1,6 @@
 # Native stage object module (Dreamcast port). Targets:
 #   make data       BYOR: build/dreamcast/objects/{objdata.bin,hbx/,sprites.txt} (needs extract/eur + sprites)
-#   make host-test  build + run the host test on the real z11 and z12 levels
+#   make host-test  build + run the host tests: test_objects on z11/z12, test_zones on $(ZONE_STAGES)
 #   make coverage   create every placed object/decoration of every stage, print the coverage table
 #   make dc         compile all sources with the KOS toolchain (kos-cc) into $(OUT)/dc/
 ROOT ?= ../../..
@@ -12,9 +12,10 @@ PLAYER_SRCS = $(PLAYER_DIR)/dcp_math.c $(PLAYER_DIR)/dcp_probe.c $(PLAYER_DIR)/d
               $(PLAYER_DIR)/dcp_player.c $(PLAYER_DIR)/dcp_states.c
 SRCS = obj_anim.c obj_rect.c obj_colmap.c obj_manager.c obj_player.c obj_ring.c obj_gimmicks.c obj_enemy.c \
        obj_fx.c obj_effects2.c obj_leafstorm.c obj_shared.c obj_flapper.c obj_decor.c obj_pgimmick.c \
-       obj_water.c obj_pwater.c obj_mirage.c obj_pmirage.c
+       obj_water.c obj_pwater.c obj_mirage.c obj_pmirage.c \
+       obj_carnival.c obj_pcarnival.c obj_crisis.c obj_pcrisis.c obj_altitude.c obj_paltitude.c obj_deadline.c obj_pdeadline.c obj_enemy2.c
 DC_SRCS = $(SRCS) obj_draw.c
-HDRS = obj_types.h obj_internal.h objects.h $(PLAYER_DIR)/dcp_player.h $(ROOT)/tools/dreamcast/stages/level_format.h
+HDRS = obj_types.h obj_internal.h obj_zone.h objects.h $(PLAYER_DIR)/dcp_player.h $(ROOT)/tools/dreamcast/stages/level_format.h
 CFLAGS_HOST = -std=c99 -O2 -Wall -Wextra -Werror -fwrapv
 Z11 ?= $(ROOT)/build/dreamcast/stages/z11/level.bin
 Z12 ?= $(ROOT)/build/dreamcast/stages/z12/level.bin
@@ -34,19 +35,14 @@ $(OUT)/test_zones: $(SRCS) $(HDRS) test/test_zones.c $(PLAYER_SRCS)
 	gcc $(CFLAGS_HOST) -o $@ $(SRCS) $(PLAYER_SRCS) test/test_zones.c -lm
 
 STAGES_DIR ?= $(ROOT)/build/dreamcast/stages
+ZONE_STAGES = z21 z22 z31 z32 z41 z42 z51 z52 z61 z62 z71 z72 z91 z92
 host-test: $(OUT)/test_objects $(OUT)/test_zones
 	$(OUT)/test_objects $(Z11) $(PLAYER_TABLES) $(DATA) $(SPRITES)
 	$(OUT)/test_objects $(Z12) $(PLAYER_TABLES) $(DATA) $(SPRITES)
-	$(OUT)/test_zones $(STAGES_DIR)/z21/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
-	$(OUT)/test_zones $(STAGES_DIR)/z22/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
-	$(OUT)/test_zones $(STAGES_DIR)/z31/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
-	$(OUT)/test_zones $(STAGES_DIR)/z32/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	set -e; for s in $(ZONE_STAGES); do $(OUT)/test_zones $(STAGES_DIR)/$$s/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES); done
 
 zone-test: $(OUT)/test_zones
-	$(OUT)/test_zones $(STAGES_DIR)/z21/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
-	$(OUT)/test_zones $(STAGES_DIR)/z22/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
-	$(OUT)/test_zones $(STAGES_DIR)/z31/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
-	$(OUT)/test_zones $(STAGES_DIR)/z32/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES)
+	set -e; for s in $(ZONE_STAGES); do $(OUT)/test_zones $(STAGES_DIR)/$$s/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES); done
 
 STAGES = z11 z12 z13 z21 z22 z23 z31 z32 z33 z41 z42 z43 z51 z52 z53 z61 z62 z63 z71 z72 z73 z81 z82 z91 z92 zf3
 $(OUT)/test_coverage: $(SRCS) $(HDRS) test/test_coverage.c $(PLAYER_SRCS)

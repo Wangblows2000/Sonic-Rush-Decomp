@@ -892,11 +892,24 @@ ObjDecCreateFn obj_dec_create_fn(u16 t) {
     /* objdata v3: Water Palace */
     if ((t >= 0x41 && t <= 0x44) || t == 0x4f || t == 0x50 || t == 0x90 || (t >= 0x9d && t <= 0xae) || t == 0xf1)
         return DecGroup41_Create;
-    if (t == 0x4d || t == 0x4e)
+    if (t == 0x4d || t == 0x4e || t == 0xcf)
         return DecGroup4D_Create;
     /* objdata v3: Mirage Road */
     if ((t >= 0x45 && t <= 0x4c) || (t >= 0x53 && t <= 0x66))
         return DecGroup45_Create;
+    /* objdata v4: Dead Line */
+    if (t >= 0x88 && t <= 0x8f)
+        return DecArrow_Create;
+    /* objdata v4: Huge Crisis */
+    if ((t >= 0x67 && t <= 0x86) || (t >= 0x91 && t <= 0x94))
+        return DecGroup67_Create;
+    /* objdata v4: DecGroup95 (zones 5..7) */
+    if ((t >= 0x95 && t <= 0x9c) || (t >= 0xc5 && t <= 0xce) || (t >= 0xd0 && t <= 0xd7) || (t >= 0xdc && t <= 0xe1) ||
+        (t >= 0xe5 && t <= 0xe7))
+        return DecGroup95_Create;
+    /* objdata v4: Night Carnival */
+    if ((t >= 0xaf && t <= 0xc4) || (t >= 0xd8 && t <= 0xdb) || (t >= 0xe2 && t <= 0xe4) || (t >= 0xe8 && t <= 0xef))
+        return DecGroupAF_Create;
     return NULL; /* not translated (OBJECTS.md) */
 }
 
@@ -928,6 +941,28 @@ static int dec_type_slots(u16 t, u8 *o) {
     if (t >= 0x45 && t <= 0x49) { o[0] = OBJ_BAC_GMK_RAIL; return 1; }
     if (t >= 0x4a && t <= 0x4c) { o[0] = OBJ_BAC_DEC_SAND; return 1; }
     if (t == 0x53) { o[0] = OBJ_BAC_DEC_TABLE_WATER; return 1; }
+    /* objdata v4: Night Carnival (DecGroupAF) */
+    if (t >= 0xaf && t <= 0xc2) { o[0] = OBJ_BAC_DEC_NEON_FLOOR; return 1; }
+    if (t == 0xc3) { o[0] = OBJ_BAC_DEC_NEON_BALL; return 1; }
+    if (t == 0xc4) { o[0] = OBJ_BAC_DEC_NEON_PILLAR; return 1; }
+    if (t == 0xd8) { o[0] = OBJ_BAC_DEC_LIGHT4; return 1; }
+    if ((t >= 0xd9 && t <= 0xdb) || t == 0xe2) { o[0] = OBJ_BAC_DEC_SWING_SKY_HANG; return 1; }
+    if (t == 0xe3 || t == 0xe4) { o[0] = OBJ_BAC_DEC_NEON_LAND; return 1; }
+    if (t == 0xe8) { o[0] = OBJ_BAC_DEC_NEON_BALL2; return 1; }
+    if (t == 0xe9 || t == 0xea) { o[0] = OBJ_BAC_DEC_NEON_STAR; return 1; }
+    if (t >= 0xeb && t <= 0xef) { o[0] = OBJ_BAC_DEC_SONIC_NEON; return 1; }
+    if (t == 0xcf) { o[0] = OBJ_BAC_CRANE_SLIDE; return 1; }
+    /* objdata v4: DecGroup67 / DecGroup95 */
+    if (t >= 0x67 && t <= 0x86) { o[0] = OBJ_BAC_DEC_PIPE; return 1; }
+    if (t >= 0x88 && t <= 0x8f) { o[0] = OBJ_BAC_DEC_ARROW; return 1; }
+    if (t >= 0x91 && t <= 0x94) { o[0] = OBJ_BAC_DEC_PLANE; return 1; }
+    if ((t >= 0x96 && t <= 0x9b) || (t >= 0xdc && t <= 0xe1)) { o[0] = OBJ_BAC_DEC_CLOUD; return 1; }
+    if (t == 0x95) { o[0] = OBJ_BAC_DEC_INNER_PILLAR; return 1; }
+    if (t == 0x9c) { o[0] = OBJ_BAC_DEC_PROPELLER; return 1; }
+    if (t == 0xc5) { o[0] = OBJ_BAC_DEC_JET; return 1; }
+    if ((t >= 0xc6 && t <= 0xce) || t == 0xd6 || t == 0xd7) { o[0] = OBJ_BAC_GMK_RAIL6; return 1; }
+    if (t >= 0xd0 && t <= 0xd5) { o[0] = OBJ_BAC_DEC_LIGHT; return 1; }
+    if (t >= 0xe5 && t <= 0xe7) { o[0] = OBJ_BAC_DEC_LASER; return 1; }
     return 0;
 }
 void dec_preload(const rlvl_header_t *h) {

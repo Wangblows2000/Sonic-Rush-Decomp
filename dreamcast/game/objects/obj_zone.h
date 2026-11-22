@@ -115,6 +115,17 @@ static inline void z_call(DcpFn f, DcPlayer *w) {
     if (f != NULL)
         f(w);
 }
+/* Player_SetAnimSpeedFromVelocity (same code as the player module's) */
+static inline void z_anim_speed(DcPlayer *p, s32 v) {
+    s32 t = (v >> 5) + (v >> 6);
+    s16 s = (s16)ZABS(t);
+    if (s <= 0x10)
+        s = 0x10;
+    if (s >= 0x80)
+        s = 0x80;
+    if (g_dcp_hooks.anim_speed)
+        g_dcp_hooks.anim_speed(g_dcp_hooks.ctx, p, s);
+}
 /* "FrameRand": the LCG step applied to the stage frame counter */
 static inline u16 z_frame_rand(void) { return (u16)((((u32)W.frame << 16) * 0x196225u + 0x3c6ef35fu) >> 16); }
 

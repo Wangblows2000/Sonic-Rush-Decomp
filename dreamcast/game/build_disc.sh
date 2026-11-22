@@ -42,11 +42,14 @@ done
 # sound effect banks (SSAR/SBNK/SWAR per stage SDAT, run by the native sequencer)
 mkdir -p "$OUT/disc/sound"; cp "$ROOT"/build/dreamcast/audio/sfxbank/*.srb "$OUT/disc/sound/"
 # bosses: data + models listed by the boss module
-mkdir -p "$OUT/disc/boss" "$OUT/disc/models"; cp "$ROOT/build/dreamcast/boss/bossdata.bin" "$OUT/disc/boss/"
+mkdir -p "$OUT/disc/boss" "$OUT/disc/models"; cp "$ROOT/build/dreamcast/boss/bossdata.bin" "$ROOT/build/dreamcast/boss/boss7bac.bin" "$OUT/disc/boss/"
 grep -v '^#' "$ROOT/build/dreamcast/boss/assets.txt" | grep -E '\.(dcm|dca|dcv)$' | while read -r f; do
     b=$(basename "$f"); [ -f "$ROOT/build/dreamcast/models/$b" ] && cp "$ROOT/build/dreamcast/models/$b" "$OUT/disc/models/"
 done
-for f in mod__gmk_rope_c__gmk_rope_c01.dcm mod__gmk_rope_c__gmk_rope_c02.dcm; do
+# object models (objects_model_get: RopeC, Wheel2D, Hand2d, GmkTable, slide, crane, glider)
+for f in mod__gmk_rope_c__gmk_rope_c01.dcm mod__gmk_rope_c__gmk_rope_c02.dcm mod__gmk_wheel__gmk_wheel.dcm \
+         mod__gmk_hand__gmk_hand.dcm mod__gmk_table__gmk_table.dcm mod__gmk_slide__gmk_slide.dcm \
+         mod__gmk_crane__gmk_crane.dcm mod__gmk_glider__gmk_glider.dcm; do
     [ -f "$ROOT/build/dreamcast/models/$f" ] && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"
 done
 mkdir -p "$OUT/disc/music"

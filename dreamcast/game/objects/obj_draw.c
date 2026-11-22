@@ -144,6 +144,17 @@ static void draw_spr(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vf
     draw_spr_at(s, list, px, py, vflip_extra);
 }
 
+int g_obj_model_sprites = 1; /* objects_set_model_sprites */
+static int is_model(const Obj *o) { return o->model != NULL || (o->kind == OBJK_GIMMICK && o->prm && o->prm->type == 0x7a); }
+/* the main sprite: stand-ins for a model / 3D BAC are drawn while
+ * g_obj_model_sprites; otherwise AnimatorSprite flag 0x80000 hides it */
+static int obj_spr_drawn(const Obj *o) {
+    if (is_model(o) || o->bac3d)
+        return g_obj_model_sprites;
+    return !(o->spr.flags & 0x80000);
+}
+void objects_set_model_sprites(int on) { g_obj_model_sprites = on; }
+
 void obj_draw(int list) {
     Obj *o;
     int i, vf;
@@ -156,7 +167,9 @@ void obj_draw(int list) {
             continue;
         if (o->has_sprA)
             draw_spr(&o->sprA, (pvr_list_t)list, o->sprA.x, o->sprA.y, 0);
-        if (o->has_spr)
+        /* StageObj_Draw2DEx: with a model (@0x124/@0x128, "busy") the main sprite is
+         * not drawn; the model view stands for it (objects_model_get) */
+        if (o->has_spr && obj_spr_drawn(o))
             draw_spr(&o->spr, (pvr_list_t)list, o->spr.x, o->spr.y, 0);
         for (i = 0; i < o->n_xspr; i++) { /* extra sprite pairs (Mine, Cargo): every recorded point */
             const ObjSprite *xs = o->xspr[i];

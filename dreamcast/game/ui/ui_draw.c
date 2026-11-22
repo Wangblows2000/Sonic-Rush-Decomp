@@ -202,13 +202,17 @@ static int vc_find(const UiRes *r, int image, int variant, u16 *ox, u16 *oy) {
             *oy = s_vc[i].y;
             return 1;
         }
-    if (!s_vc_ok) {
+    if (s_vc_ok <= 0) {
         s_vc_tex.w = s_vc_tex.h = VC_SIZE;
         s_vc_tex.fmt = PVR_TXRFMT_ARGB1555;
         s_vc_tex.bytes = VC_SIZE * VC_SIZE * 2;
+        if (s_vc_ok < 0)
+            return 0;   /* the cache texture could not be allocated: don't retry every quad */
         s_vc_tex.ptr = pvr_mem_malloc(s_vc_tex.bytes);
-        if (!s_vc_tex.ptr)
+        if (!s_vc_tex.ptr) {
+            s_vc_ok = -1;
             return 0;
+        }
         {
             u16 *z = (u16 *)s_vc_tex.ptr;
             for (i = 0; i < VC_SIZE * VC_SIZE; i++)
@@ -271,10 +275,13 @@ static const Texture *face_tex(int f) {
     return &s_face_tex;
 }
 
+static uint64_t s_prof[3]; static int s_prof_n, s_prof_q, s_prof_v, s_prof_f;
 void ui_draw_tr(void) {
+    uint64_t pt0 = timer_us_gettime64(), pt1;
     int i, n = sort_quads();
     float z = 100.0f;
     s16 b;
+    pt1 = timer_us_gettime64(); s_prof[0] += pt1 - pt0; s_prof_q += n;
     for (i = 0; i < n; i++, z += 0.01f) {
         const UiQuad *q = sorted[i];
         const UiRes *r;
@@ -284,6 +291,7 @@ void ui_draw_tr(void) {
             continue;
         }
         if (q->tex == UI_TEX_FACE) {
+            s_prof_f++;
             t = face_tex(q->image);
             if (t)
                 draw_rect_screen(t, PVR_LIST_TR_POLY, q->x, q->y, q->w, q->h, q->u0, q->v0, q->u1, q->v1, z, q->argb);
@@ -293,7 +301,11 @@ void ui_draw_tr(void) {
         if (q->variant != 0) {
             u16 vx, vy;
             const UiImage *im = &r->images[q->image];
-            if (vc_find(r, q->image, q->variant, &vx, &vy)) {
+            uint64_t vt0 = timer_us_gettime64();
+            int hit = vc_find(r, q->image, q->variant, &vx, &vy);
+            s_prof[2] += timer_us_gettime64() - vt0;
+            s_prof_v++;
+            if (hit) {
                 float du = (float)vx - im->x, dv = (float)vy - im->y;
                 draw_rect_screen(&s_vc_tex, PVR_LIST_TR_POLY, q->x, q->y, q->w, q->h, q->u0 + du,
                                  q->v0 + dv, q->u1 + du, q->v1 + dv, z, q->argb);
@@ -307,6 +319,12 @@ void ui_draw_tr(void) {
     }
     /* master brightness of the main screen (the frame); sub-screen quads took
      * gDisplaySub's in sort_quads */
+    s_prof[1] += timer_us_gettime64() - pt1;
+    if (++s_prof_n == 120) {
+        printf("ui draw: sort %.2f ms, quads %.2f ms (vc_find %.2f, vc entries %d), %d quads/f, %d variant, %d face\n", s_prof[0] / 120000.0,
+               s_prof[1] / 120000.0, s_prof[2] / 120000.0, s_vc_n, s_prof_q / 120, s_prof_v / 120, s_prof_f / 120);
+        s_prof[0] = s_prof[1] = s_prof[2] = 0; s_prof_n = s_prof_q = s_prof_v = s_prof_f = 0;
+    }
     b = g_ui_bright_main;
     if (b != 0) {
         u32 a = (u32)((b < 0 ? -b : b) * 255 / 16);

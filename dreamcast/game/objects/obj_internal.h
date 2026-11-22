@@ -24,6 +24,11 @@ typedef struct ObjData {               /* objdata.bin (tools/objdata.py) */
     s8 bend_wobble[28];                /* data_ov000_023643d4 / _023643d8 / _023643dc */
     s16 pedestal[4][6];                /* data_ov000_02364400: JumpPedestal launch speeds */
     u8 dec_margin[0xf2];               /* data_ov000_023685ec: decoration spawn margin */
+    /* objdata v4 */
+    s16 valve_ofs[4][2];               /* data_ov000_02364444 */
+    s16 valve_box[4][4];               /* data_ov000_02364454 */
+    s16 valve_puff[4][4];              /* data_ov000_02364474 */
+    u32 valve_anim[4][3];              /* data_ov000_02364494 */
     char ids[OBJ_BAC_COUNT][48];       /* resolved sprite ids of this stage */
     struct { char name[24]; u32 size; const u8 *data; } df[8]; /* the .df files (dat/gmk) of this stage */
     int n_df;
@@ -40,6 +45,7 @@ typedef struct ObjPlayerCtx {          /* per player: the player's ObjRects + sp
     /* player work the player module does not keep (gimmick states, objects/obj_pgimmick.c) */
     s16 g3EC, g3EE;                    /* @0x3EC @0x3EE (GmkTable: camera look offsets) */
     s32 g3F0, g3F4, g3F8, g3FC;        /* @0x3F0..@0x3FC */
+    s16 g3D2, g3D4;                    /* @0x3D2 @0x3D4 (objdata v4: cleared by Player_Action_ResumeGlider) */
 } ObjPlayerCtx;
 
 typedef struct ObjGlobals {
@@ -153,6 +159,8 @@ void obj_player_set_source(DcPlayer *p, Obj *o);                        /* Playe
 
 /* ------------------------------------------------------- obj_ring.c */
 void ring_init(void);                                                   /* RingManager_Create */
+void ring_destroy(void);
+void obj_init_state(DcPlayer *p); /* Player_InitState: dcp_player_init_state + objects_player_init_state */                                                /* RingManager_Destructor */
 void ring_place(u8 *flag, s32 x, s32 y);                                /* RingManager_PlaceRing */
 void ring_spawn(s32 x, s32 y, s16 vx, s16 vy, u16 flags);               /* RingManager_SpawnRing */
 void ring_main(void);                                                   /* RingManager_Main (+ RingEffect2D) */
@@ -336,6 +344,106 @@ void Player_State_Hand2D(DcPlayer *w);
 void Player_State_SandSlide(DcPlayer *w);
 void Player_State_SandSlider(DcPlayer *w);
 void Player_State_SandSlider90(DcPlayer *w);
+
+/* ------------------------------------------- objdata v4 (zones 4..7) */
+s32 obj_spd_accel_toward(DcPlayer *o, s32 v, s32 accel, s32 decel, s16 max); /* ObjSpd_AccelToward */
+/* obj_carnival.c */
+void carnival_reset(void);
+s16 *obj_switch_timers(void);                                             /* gSwitchTimers */
+Obj *CraneSlide_Create(ObjParam *p, s32 x, s32 y);
+Obj *NeonRoute_Create(ObjParam *p, s32 x, s32 y);
+Obj *Shooter_Create(ObjParam *p, s32 x, s32 y);
+Obj *SwingSky_Create(ObjParam *p, s32 x, s32 y);
+Obj *Switch_Create(ObjParam *p, s32 x, s32 y);
+Obj *DecGroupAF_Create(ObjParam *p, s32 x, s32 y);
+/* obj_pcarnival.c */
+void Player_Action_GrabCraneSlide(DcPlayer *w, Obj *p, s32 a, s32 b);
+void Player_Action_GrabCranePart(DcPlayer *w, Obj *p, s32 a, s32 b);
+void Player_Action_SwingSky(DcPlayer *w, Obj *other, s32 flip);
+void Player_State_SwingSky(DcPlayer *w);
+void FixInformation_CreateSwingSky(DcPlayer *arg);
+void FixInformation_CreateSwing(DcPlayer *arg);
+/* obj_crisis.c */
+void crisis_reset(void);
+Obj *Crane_Create(ObjParam *p, s32 x, s32 y);
+Obj *CranePartED_Create(ObjParam *p, s32 x, s32 y);
+Obj *CranePartEE_Create(ObjParam *p, s32 x, s32 y);
+Obj *GmkPipe_Create(ObjParam *p, s32 x, s32 y);
+Obj *JetCatapult_Create(ObjParam *p, s32 x, s32 y);
+Obj *Piston_Create(ObjParam *p, s32 x, s32 y);
+Obj *Steam_Create(ObjParam *p, s32 x, s32 y);
+Obj *Valve_Create(ObjParam *p, s32 x, s32 y);
+Obj *DecGroup67_Create(ObjParam *p, s32 x, s32 y);
+int obj_jet_catapult_flying(const Obj *o);
+/* obj_pcrisis.c */
+void Player_Action_Pipe(DcPlayer *w, Obj *o, u8 dir);
+void Player_State_Pipe(DcPlayer *w);
+void Player_Action_PipeExit(DcPlayer *w, s16 spd);
+void Player_Action_JetCatapult(DcPlayer *w, Obj *o);
+void Player_State_JetCatapult(DcPlayer *w);
+void Player_Action_JetCatapultLaunch(DcPlayer *w);
+void Player_State_JetCatapultLaunch(DcPlayer *w);
+void AttackHitbox_SetJetCatapultState(Obj *s);                           /* obj_player.c */
+/* obj_altitude.c */
+void altitude_reset(void);
+Obj *Glider_Create(ObjParam *p, s32 x, s32 y);
+Obj *NeedleG_Create(ObjParam *p, s32 x, s32 y);
+Obj *Parachute_Create(ObjParam *p, s32 x, s32 y);
+Obj *Saucer_Create(ObjParam *p, s32 x, s32 y);
+Obj *MapObj13_Create(ObjParam *p, s32 x, s32 y);
+Obj *DecCloudSpawner_Create(ObjParam *p, s32 x, s32 y);
+Obj *DecGroup95_Create(ObjParam *p, s32 x, s32 y);
+void ParachuteReleased_Create(DcPlayer *arg);
+/* obj_paltitude.c */
+void Player_Action_Glider(DcPlayer *w, Obj *o, s32 a, s32 b);
+void Player_State_Glider(DcPlayer *w);
+void Player_Action_ResumeGlider(DcPlayer *w);
+void Player_ClampToGliderArea(DcPlayer *w);
+void Player_Action_GliderSequenceStart(DcPlayer *w, Obj *o);
+void Player_Action_GliderSequenceEnd(DcPlayer *w, Obj *o);
+void Player_State_GliderSequenceIntro(DcPlayer *w);
+void Player_State_GliderSequence(DcPlayer *w);
+void Player_State_GliderSequenceExit(DcPlayer *w);
+void Player_UpdateGliderSequence(DcPlayer *w);
+void Player_OnHit_GliderSequence(ObjBox *a, ObjBox *b);
+void Player_Action_Parachute(DcPlayer *w, Obj *o, s32 v);
+void Player_State_Parachute(DcPlayer *w);
+void Player_Action_ParachuteRelease(DcPlayer *w);
+void Player_State_ParachuteRelease(DcPlayer *w);
+void Player_Action_Saucer(DcPlayer *w, Obj *o);
+void Player_State_Saucer(DcPlayer *w);
+/* obj_pdeadline.c */
+void Player_Action_Swing(DcPlayer *w, Obj *o, s32 unused, s32 r);
+void Player_State_Swing(DcPlayer *w);
+void Player_SwingAroundPivot(DcPlayer *w);
+void Player_SwingAroundPivotRetract(DcPlayer *w);
+void Player_Action_Cannon(DcPlayer *w, Obj *o);
+void Player_State_Cannon(DcPlayer *w);
+void Player_Action_Rocket(DcPlayer *w, Obj *o, s32 x, s32 y);
+void Player_State_Rocket(DcPlayer *w);
+void Player_Action_Air(DcPlayer *w, Obj *o, s32 x0, s32 y, s32 x1);
+void Player_State_Air(DcPlayer *w);
+void Player_Unk_ov000_02350adc(DcPlayer *w, Obj *o);
+/* obj_deadline.c */
+Obj *Cannon_Create(ObjParam *p, s32 x, s32 y);
+Obj *Duct_Create(ObjParam *p, s32 x, s32 y);
+Obj *GmkAir_Create(ObjParam *p, s32 x, s32 y);
+Obj *MapObj9C_Create(ObjParam *p, s32 x, s32 y);
+Obj *Rocket_Create(ObjParam *p, s32 x, s32 y);
+Obj *Swing_Create(ObjParam *p, s32 x, s32 y);
+Obj *DecArrow_Create(ObjParam *p, s32 x, s32 y);
+/* obj_flapper.c / obj_enemy2.c / obj_leafstorm.c (enemies of zones 4..7) */
+Obj *EggFlapperLaser_Create(ObjParam *p, s32 x, s32 y);
+Obj *FlapperCannon_Create(ObjParam *p, s32 x, s32 y);
+Obj *EggBombHawk_Create(ObjParam *p, s32 x, s32 y);
+Obj *EggSf_Create(ObjParam *p, s32 x, s32 y);
+Obj *GunHunter_Create(ObjParam *p, s32 x, s32 y);
+void Enemy_Action_StartPopOnContact(Obj *s);
+/* obj_rect.c / obj_fx.c / obj_ring.c additions */
+dcp_bool rect_point_check(const ObjBox *b, s32 px, s32 py);              /* ObjRect_PointCheck */
+u32 FX_Sqrt(s32 v);
+u16 ObjAngle_MoveToward16(u16 cur, u16 tgt, u16 step);
+dcp_bool RingManager_SuckScatteredRings(const DcPlayer *w);
 
 /* kinds (Obj.kind), for draw / debug */
 enum { OBJK_NONE, OBJK_SPRING, OBJK_DASHP, OBJK_DASHC, OBJK_ITEMBOX, OBJK_ITEMPART, OBJK_NEEDLE,

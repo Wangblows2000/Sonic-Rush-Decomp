@@ -342,3 +342,24 @@ void obj_handle_collider(DcPlayer *o, void *owner, int kind, ObjBox *s, int has_
         s->flags |= 2;
     rect_register(s);
 }
+
+/* ObjRect_PointCheck (objdata v4: MapObj9C) */
+dcp_bool rect_point_check(const ObjBox *b, s32 px, s32 py) {
+    s32 left, top;
+    u16 w, h;
+    if ((b->flags & 4) && !(b->flags & 0x1000)) {
+        if (b->flags & 1)
+            left = b->x - b->r;
+        else
+            left = b->x + b->l;
+        if (b->flags & 2)
+            top = b->y - b->b;
+        else
+            top = b->y + b->t;
+        w = (u16)(b->r - b->l);
+        h = (u16)(b->b - b->t);
+        if (left <= px && left + w >= px && top <= py && top + h >= py)
+            return DCP_TRUE;
+    }
+    return DCP_FALSE;
+}

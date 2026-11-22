@@ -979,6 +979,10 @@ Obj *marker_create(ObjParam *a, s32 b, s32 c) {
 /* ========================================== MapObj40 (invisible triggers) */
 /* MapObj40_OnHit: collision-layer switches (0x41/0x42/0x59/0x5a/0x5b), the
  * "launched" flag area (default), score bonus (0x9d), death zone (0x9f). */
+static void mo40_fx(DcPlayer *pl, s32 a, s32 b) { /* ZoneFx_Zone4_* -> effect hook (objdata v4) */
+    if (g_obj_hooks.effect)
+        g_obj_hooks.effect(g_obj_hooks.ctx, pl, OBJ_FX_ZONE4_BLDY, a, b);
+}
 static void mapobj40_on_hit(ObjBox *a, ObjBox *b) {
     Obj *w = (Obj *)a->owner;
     DcPlayer *pl = obj_box_player(b);
@@ -1005,14 +1009,22 @@ static void mapobj40_on_hit(ObjBox *a, ObjBox *b) {
         if (pl->type == 1)
             pl->layer_set = 0;
         return;
-    case 0xc6: /* gSwitchTimers: switch objects not translated (always 0) */
-        return;
+    case 0xc6: /* objdata v4 (zone 4): layer switch active while gSwitchTimers[0] runs */
+        if (obj_switch_timers()[0] == 0)
+            return;
+        if (pl->type == 1) {
+            pl->obj_flags &= ~1u;
+            pl->pf2 |= 0x10000;
+        }
+        /* fall through */
     case 0x59:
         if (pl->type != 1)
             return;
         if ((pl->layer_ovr & ~0x80) != w->prm->flags + 1 && (pl->anim < 0x1a || pl->anim > 0x20) &&
             !(pl->layer_set & 2)) {
             pl->layer_set = (u8)((pl->obj_flags & 1) | 2);
+            if (w->prm->type == 0xc6)
+                pl->layer_set |= 1;
             pl->layer_ovr = (u8)((w->prm->flags & 0xf) + 1);
             pl->obj_flags &= ~1u;
         }
@@ -1066,12 +1078,45 @@ static void mapobj40_on_hit(ObjBox *a, ObjBox *b) {
             return;
         EffSand_Create(pl, -2, -12);
         return;
-    case 0xb6: /* Player_Action_GliderSequenceStart */
-    case 0xb7: /* Player_Action_GliderSequenceEnd */
-    case 0xc3: /* ZoneFx_Zone4_StartBldyRampUp */
-    case 0xc4: /* ZoneFx_Zone4_StartBldyRampDown */
-    case 0xc5: /* switch timer area */
-        obj_log("mapobj40_untranslated", w->prm->type, pl->x >> 8);
+    case 0xb6: /* objdata v4 (zone 6) */
+        if (pl->type != 1)
+            return;
+        Player_Action_GliderSequenceStart(pl, w);
+        w->h.obj_flags |= 2;
+        return;
+    case 0xb7:
+        if (pl->type != 1)
+            return;
+        Player_Action_GliderSequenceEnd(pl, w);
+        return;
+    case 0xc3: /* objdata v4 (zone 4): dark area entry */
+        if (pl->type != 1)
+            return;
+        if (pl->pf2 & 0x8000)
+            return;
+        mo40_fx(pl, 1, (3 << 8) | 8); /* ZoneFx_Zone4_StartBldyRampUp(3, 8) */
+        pl->pf2 |= 0x8000;
+        return;
+    case 0xc4:
+        if (pl->type != 1)
+            return;
+        if (!(pl->pf2 & 0x8000))
+            return;
+        if (pl->pf2 & 0x4000) {
+            pl->pf2 &= ~0x8000u;
+            return;
+        }
+        mo40_fx(pl, 2, (3 << 8) | 8); /* ZoneFx_Zone4_StartBldyRampDown(3, 8) */
+        pl->pf2 &= ~0x8000u;
+        pl->pf2 &= ~0x4000u;
+        return;
+    case 0xc5:
+        if (obj_switch_timers()[0] == 0) /* (gSwitchTimers[0]) */
+            return;
+        if (pl->type != 1)
+            return;
+        pl->obj_flags &= ~1u;
+        pl->pf2 |= 0x2000;
         return;
     }
 }

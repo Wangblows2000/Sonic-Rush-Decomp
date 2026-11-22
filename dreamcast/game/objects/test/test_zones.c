@@ -74,9 +74,16 @@ static int ev_count(const char *ev) {
     return 0;
 }
 static int g_quiet;
+static s32 g_ring_xy[64][2]; /* collected ring positions (event state test) */
+static int g_n_ring_xy, g_rec_rings;
 static void hk_log(void *ctx, const char *ev, s32 a, s32 b) {
     int i;
     (void)ctx;
+    if (g_rec_rings && !strcmp(ev, "ring") && g_n_ring_xy < 64) {
+        g_ring_xy[g_n_ring_xy][0] = a;
+        g_ring_xy[g_n_ring_xy][1] = b;
+        g_n_ring_xy++;
+    }
     for (i = 0; i < NEV; i++) {
         if (!g_ev[i].name[0])
             strncpy(g_ev[i].name, ev, sizeof(g_ev[i].name) - 1);
@@ -127,13 +134,19 @@ static void camera_follow(int snap) {
     objects_set_view(1, g_cam_x << 8, (g_cam_y - 192) << 8);
 }
 static u16 s_prev;
+static u32 g_peak; /* pool peak (live objects + decorations) */
+static u32 g_pf2_pre, g_of_pre; /* player flags between the box checks and the player task */
 static void frame(u16 held) {
     u16 pressed = held & ~s_prev, released = s_prev & ~held;
     s_prev = held;
     objects_frame_begin();
+    g_pf2_pre = P.pf2;
+    g_of_pre = P.obj_flags;
     dcp_player_frame(&P, held, pressed, released);
     objects_update(&P);
     camera_follow(0);
+    if (objects_stats()->live > g_peak)
+        g_peak = objects_stats()->live;
     g_frame++;
 }
 static void frames(int n, u16 held) {
@@ -144,6 +157,7 @@ static void place_player(s32 x, s32 y) {
     s16 rings = P.rings;
     memset(&P, 0, sizeof(P));
     dcp_player_create(&P, 0, 0, x, y);
+    objects_player_init_state(&P); /* (Player_InitState box part: the player-module hook, OBJECTS.md 2.2) */
     P.rings = rings;
     P.invuln = 0x7fff; /* the checks are about gimmicks: enemies must not interrupt them */
     camera_follow(1);
@@ -859,6 +873,745 @@ static void test_sand_a9(void) {
     result("sand area 0xa9", n > 0, 1, "#%d: EffSand after %d frames", i - 1, k);
 }
 
+/* ============================================================ zones 4..9 (objdata v4) */
+/* trigger search: put the player at offsets around a point (nearest first) until
+ * the gimmick's event fires or the predicate holds.  Reported as "direct". */
+#define M_PUSH 1  /* hold the direction toward the point */
+#define M_DOWN 2  /* hold down */
+#define M_FREE 4  /* teleport on the first frame only */
+#define M_RUN 8   /* on the floor, ground speed toward the point, no teleport */
+#define M_HURT 16 /* not invulnerable */
+#define M_JUMP 32 /* jumping (ball) */
+typedef struct {
+    int i, dx, dy, k;
+    Obj *o;
+    const rlvl_object_t *e;
+} Hit;
+typedef int (*HitPred)(const Hit *h);
+static const rlvl_object_t *s_pe; /* entry under test (predicates) */
+static s16 s_move_x;              /* move_x given to the player while searching (0: none) */
+static int trig_at(s32 cx, s32 cy, const char *ev, HitPred pred, int r, int step, int hold, int mode, Hit *h) {
+    int d, dx, dy, k, e0;
+    for (d = 0; d <= r; d += step)
+        for (dy = -d; dy <= d; dy += step)
+            for (dx = -d; dx <= d; dx += step) {
+                u16 keys = 0;
+                if (DCP_ABS(dx) != d && DCP_ABS(dy) != d)
+                    continue;
+                e0 = ev ? ev_count(ev) : 0;
+                if (mode & M_RUN) {
+                    if (!place_on_floor(cx + dx, cy + dy))
+                        continue;
+                } else
+                    place_player(cx + dx, cy + dy);
+                if (mode & M_HURT) /* (1, not 0: counting down to 0 lets Player_In reset the body defence) */
+                    P.invuln = 1;
+                if (mode & M_PUSH)
+                    keys |= dx <= 0 ? DCP_KEY_RIGHT : DCP_KEY_LEFT;
+                if (mode & M_DOWN)
+                    keys |= DCP_KEY_DOWN;
+                if (mode & M_JUMP)
+                    dcp_act_jump(&P);
+                for (k = 0; k < hold; k++) {
+                    if (!(mode & (M_FREE | M_RUN)) || k == 0)
+                        teleport(cx + dx, (mode & M_RUN) ? P.y >> 8 : cy + dy);
+                    if (mode & M_RUN)
+                        P.gnd_vel = (s16)(dx <= 0 ? 0x400 : -0x400);
+                    if (s_move_x)
+                        P.move_x = s_move_x;
+                    frame(keys);
+                    h->dx = dx;
+                    h->dy = dy;
+                    h->k = k;
+                    if ((ev && ev_count(ev) > e0) || (pred && pred(h)))
+                        return 1;
+                }
+            }
+    return 0;
+}
+static int trig_search(u16 type, const char *ev, HitPred pred, int maxi, int r, int step, int hold, int mode, Hit *h) {
+    const rlvl_object_t *o;
+    int i;
+    memset(h, 0, sizeof(*h));
+    for (i = 0; i < maxi && (o = find_obj(type, i)) != NULL; i++) {
+        s_pe = h->e = o;
+        h->i = i;
+        if (trig_at(o->x, o->y, ev, pred, r, step, hold, mode, h)) {
+            h->o = obj_at(type, o->x, o->y);
+            return 1;
+        }
+    }
+    return 0;
+}
+static Obj *live_entry(void) { return s_pe ? obj_at(s_pe->type, s_pe->x, s_pe->y) : NULL; }
+/* world centre of the first callback box of a live object (coll[0..2], detect) */
+static int box_center(const Obj *w, s32 *x, s32 *y) {
+    const ObjBox *b[4];
+    int i;
+    b[0] = &w->coll[0];
+    b[1] = &w->coll[1];
+    b[2] = &w->coll[2];
+    b[3] = &w->detect;
+    for (i = 0; i < 4; i++)
+        if (b[i]->cb != NULL && b[i]->r > b[i]->l) {
+            /* (box flags 1 / 2: mirrored, as obj_handle_collider sets them) */
+            *x = (b[i]->flags & 1) ? b[i]->x - (b[i]->l + b[i]->r) / 2 : b[i]->x + (b[i]->l + b[i]->r) / 2;
+            *y = (b[i]->flags & 2) ? b[i]->y - (b[i]->t + b[i]->b) / 2 : b[i]->y + (b[i]->t + b[i]->b) / 2;
+            return 1;
+        }
+    return 0;
+}
+/* the same search centred on the live object's callback box (boxes far from
+ * the object origin, or moving with it) */
+static int trig_box(u16 type, const char *ev, int maxi, int r, int step, int hold, int mode, Hit *h) {
+    const rlvl_object_t *o;
+    int i;
+    s32 bx, by;
+    memset(h, 0, sizeof(*h));
+    for (i = 0; i < maxi && (o = find_obj(type, i)) != NULL; i++) {
+        Obj *w;
+        s_pe = h->e = o;
+        h->i = i;
+        place_player(o->x, o->y - 160);
+        frames(2, 0);
+        w = obj_at(type, o->x, o->y);
+        if (!w || !box_center(w, &bx, &by))
+            continue;
+        if (trig_at(bx, by, ev, NULL, r, step, hold, mode, h)) {
+            h->o = obj_at(type, o->x, o->y);
+            return 1;
+        }
+    }
+    return 0;
+}
+/* drop the player onto a solid object from above until it stands on it */
+static int drop_onto(u16 type, int maxi, Hit *h) {
+    static const s8 dxs[] = {0, 8, -8, 16, -16, 24, -24};
+    static const s8 dys[] = {-96, -48}; /* (the second from below a ceiling) */
+    const rlvl_object_t *o;
+    int i, a, b, k;
+    memset(h, 0, sizeof(*h));
+    for (i = 0; i < maxi && (o = find_obj(type, i)) != NULL; i++) {
+        s_pe = h->e = o;
+        h->i = i;
+        for (b = 0; b < 2; b++)
+            for (a = 0; a < 7; a++) {
+                Obj *w;
+                place_player(o->x + dxs[a], o->y + dys[b]);
+                frames(1, 0);
+                w = live_entry();
+                if (!w)
+                    break;
+                for (k = 0; k < 90; k++) {
+                    frame(0);
+                    if ((w->cmap.rider == &P || w->cmap2.rider == &P) && (P.move_flags & 1)) {
+                        h->dx = dxs[a];
+                        h->dy = dys[b];
+                        h->k = k;
+                        h->o = w;
+                        return 1;
+                    }
+                }
+            }
+    }
+    return 0;
+}
+static int count_type(u16 type) {
+    Obj *o;
+    int n = 0;
+    for (o = g_obj.head; o; o = o->next)
+        if (o->used && o->prm && o->prm->type == type && !(o->h.obj_flags & 4))
+            n++;
+    return n;
+}
+static int follow_state(void (*st)(DcPlayer *), int max) { /* frames while the player stays in st */
+    int k;
+    for (k = 0; k < max && P.state == st; k++)
+        frame(0);
+    return k;
+}
+static int rect_center(const rlvl_object_t *o, s32 *x, s32 *y) { /* MapObj40-style area (p0..p3) */
+    *x = o->x + o->p0 + o->p2 / 2;
+    *y = o->y + o->p1 + o->p3 / 2;
+    return 1;
+}
+
+/* ---- enemies (all zones 4..7): detection by play, destroyed by a jump */
+static void test_enemy(u16 type, const char *name) {
+    static const char *evs[] = {"pawn_detect", "pawn_jump_attack", "pawn_push", "pawn_bounce", "flapper_detect", "flapper_shot"};
+    const ObjStats *st = objects_stats();
+    const rlvl_object_t *o;
+    int i, k = 0, j, act = 0, shots0;
+    u32 e0 = st->enemies_destroyed;
+    int ev0[6];
+    char what[32];
+    Obj *w = NULL;
+    Hit h;
+    const char *ev = strstr(name, "flapper") ? "flapper_detect" : "pawn_detect";
+    if (!FIND_PRESENT(type))
+        return;
+    snprintf(what, sizeof(what), "%s 0x%02x", name, type);
+    for (j = 0; j < 6; j++)
+        ev0[j] = ev_count(evs[j]);
+    shots0 = ev_count("flapper_shot");
+    memset(&h, 0, sizeof(h));
+    /* by play: run at it from 0x50 px on either side */
+    for (i = 0; !act && (o = find_obj(type, i)) != NULL && i < 4; i++) {
+        int s;
+        for (s = -1; s <= 1 && !act; s += 2) {
+            if (!place_on_floor(o->x + s * 0x50, o->y))
+                continue;
+            for (k = 0; k < 120 && !act; k++) {
+                frame(s < 0 ? DCP_KEY_RIGHT : DCP_KEY_LEFT);
+                act = ev_count(ev) > ev0[j = (ev[0] == 'f' ? 4 : 0)];
+            }
+        }
+    }
+    h.i = i - 1;
+    if (act)
+        result(what, 1, 0, "#%d noticed the player running at it after %d frames", h.i, k);
+    else {
+        /* direct: hold the player at offsets around it until its detect box fires */
+        act = trig_search(type, ev, NULL, 2, 0x90, 0x18, 12, 0, &h);
+        result(what, act, 1, "#%d noticed the player held at (%+d,%+d)", h.i, h.dx, h.dy);
+    }
+    {
+        static const u16 shots[] = {0xe6, 0xe7, 0xeb, 0xec, 0xf0};
+        int mx[5] = {0}, s;
+        for (k = 0; act && k < 240; k++) {
+            frame(0);
+            for (s = 0; s < 5; s++)
+                if (count_type(shots[s]) > mx[s])
+                    mx[s] = count_type(shots[s]);
+        }
+        for (s = 0; s < 5; s++)
+            if (mx[s])
+                printf("    spawned attack objects 0x%02x: up to %d live\n", shots[s], mx[s]);
+    }
+    printf("    %s events:", what);
+    for (j = 0; j < 6; j++)
+        if (ev_count(evs[j]) > ev0[j])
+            printf(" %s=%d", evs[j], ev_count(evs[j]) - ev0[j]);
+    printf(" (shots fired %d)\n", ev_count("flapper_shot") - shots0);
+    for (i = 0; st->enemies_destroyed == e0 && (o = find_obj(type, i)) != NULL && i < 6; i++) {
+        place_player(o->x - 0x60, o->y);
+        frames(2, 0);
+        w = obj_type_near(type, o->x, o->y, 0x100);
+        if (!w)
+            continue;
+        for (k = 0; k < 160 && st->enemies_destroyed == e0 && w->used; k++) {
+            if (k % 16 == 0) { /* the enemy moves: drop onto it again (Rhino 0xe: vitality 2) */
+                place_player(w->h.x >> 8, (w->h.y >> 8) - 36);
+                dcp_act_jump(&P);
+                P.vel_y = 0x200;
+            }
+            frame(DCP_KEY_A);
+        }
+    }
+    result("  destroyed by a jump", st->enemies_destroyed > e0, 1, "#%d: %u destroyed", i - 1, st->enemies_destroyed - e0);
+}
+
+/* ---- zone 4: Night Carnival (z41, z42; z91) */
+static void test_crane_slide(void) {
+    Hit h;
+    int ok, k = 0;
+    s32 x0 = 0;
+    if (!FIND_PRESENT(0xae))
+        return;
+    s_move_x = (s16)(find_obj(0xae, 0)->p0 >= 0 ? 0x600 : -0x600); /* jumping at it with speed */
+    ok = trig_box(0xae, "crane_slide", 4, 32, 4, 4, M_FREE, &h);
+    s_move_x = 0;
+    if (ok && h.o) {
+        x0 = h.o->h.x;
+        for (k = 0; k < 300 && P.gimmick == h.o; k++)
+            frame(0);
+    }
+    result("crane slide 0xae", ok, 1, "#%d grabbed at (%+d,%+d); slid %d px over %d frames holding on", h.i, h.dx, h.dy,
+           ok && h.o ? (h.o->h.x - x0) >> 8 : 0, k);
+}
+static void test_shooter(void) {
+    Hit h;
+    int ok, k, launched = 0, cam = 0, e0 = ev_count("shooter");
+    if (FIND_PRESENT(0xbb)) {
+        ok = drop_onto(0xbb, 5, &h);
+        if (ok) {
+            for (k = 0; k < 40; k++) {
+                frame(DCP_KEY_DOWN);
+                cam |= (g_obj_camera[2].flags & 0x40000) != 0;
+                if (getenv("OBJDBG"))
+                    printf("    shooter k%d w8 %d wC %d vel_y %d rider %d toucher %d P(%d,%d) vy %d mf %x\n", k, h.o ? h.o->w8 : -1,
+                           h.o ? h.o->wC : 0, h.o ? h.o->h.vel_y : 0, h.o && h.o->cmap.rider == &P,
+                           h.o && h.o->cmap.toucher == &P, P.x >> 8, P.y >> 8, P.vel_y, P.move_flags);
+            }
+            for (k = 0; k < 10 && ev_count("shooter") == e0; k++)
+                frame(0);
+            launched = ev_count("shooter") > e0;
+        }
+        result("shooter 0xbb", launched && P.vel_y < 0, 1, "#%d stood on (%+d,%+d), charged 40 frames: launched %d vel_y %d, camera flag 0x40000 %d",
+               h.i, h.dx, h.dy, launched, P.vel_y, cam);
+        frames(60, 0);
+    }
+    if (FIND_PRESENT(0xbc)) {
+        e0 = ev_count("shooter");
+        ok = 0;
+        {
+            /* charge by pushing, then let go */
+            const rlvl_object_t *o = find_obj(0xbc, 0);
+            int s;
+            for (s = -1; s <= 1 && !ok; s += 2) {
+                place_on_floor(o->x + s * 40, o->y);
+                for (k = 0; k < 60; k++) {
+                    /* the push animation 0xb -> 0xc waits for the animation end flag (disp 8),
+                     * which the player sprite animator sets: no animator in this harness */
+                    if (P.anim == 0xb)
+                        P.disp_flags |= 8;
+                    frame(s < 0 ? DCP_KEY_RIGHT : DCP_KEY_LEFT);
+                }
+                for (k = 0; k < 10; k++)
+                    frame(0);
+                ok = ev_count("shooter") > e0;
+            }
+        }
+        result("shooter 0xbc", ok, 0, "pushed into the side shooter for 60 frames and let go (push anim end flag set by the test): launched %d, gnd_vel %d", ok, P.gnd_vel);
+    }
+}
+static void test_swing_sky(void) {
+    Hit h;
+    int ok, k = 0;
+    if (!FIND_PRESENT(0xbd))
+        return;
+    ok = trig_box(0xbd, "swing_sky", 4, 32, 4, 4, M_FREE, &h);
+    if (ok) {
+        s32 x0 = h.o ? h.o->wC : 0, amp = 0;
+        for (k = 0; k < 150 && P.state == Player_State_SwingSky; k++) {
+            frame(k < 60 ? ((k / 20) & 1 ? DCP_KEY_LEFT : DCP_KEY_RIGHT) : 0); /* pump */
+            if (h.o && DCP_ABS(h.o->wC - x0) > amp)
+                amp = DCP_ABS(h.o->wC - x0);
+        }
+        frame(DCP_KEY_A);
+        frames(2, 0);
+        printf("    swing amplitude %#x, released with A: %d (vel %d,%d)\n", amp, P.state != Player_State_SwingSky, P.vel_x, P.vel_y);
+        ok = ok && P.state != Player_State_SwingSky;
+    }
+    result("swing sky 0xbd", ok && k > 0, 1, "#%d caught at (%+d,%+d); swung %d frames then jumped off", h.i, h.dx, h.dy, k);
+}
+static void test_switch_neon(void) {
+    Hit h;
+    u16 t;
+    int ok, k, moved = 0, n = 0;
+    s16 *tm = obj_switch_timers();
+    for (t = 0xbe; t <= 0xbf; t++) {
+        int tl0 = ev_count("switch_timer");
+        if (!FIND_PRESENT(t))
+            continue;
+        ok = trig_search(t, "switch", NULL, 6, 48, 4, 30, M_PUSH, &h);
+        result(t == 0xbe ? "switch 0xbe" : "switch 0xbf", ok && tm[h.e->p0 & 0x1f] != 0, 1,
+               "#%d pressed at (%+d,%+d): timer[%d] = %d, SwitchTimer %d", h.i, h.dx, h.dy, ok ? h.e->p0 & 0x1f : -1,
+               ok ? tm[h.e->p0 & 0x1f] : 0, ev_count("switch_timer") > tl0);
+    }
+    for (t = 0xc0; t <= 0xc1; t++) {
+        const rlvl_object_t *o = find_obj(t, 0);
+        Obj *w;
+        s32 x0, y0, px0, pw0 = 0, py0 = 0, ppy0 = 0;
+        int carried = 0;
+        if (!o)
+            continue;
+        place_player(o->x, o->y - 60);
+        frames(2, 0);
+        w = obj_at(t, o->x, o->y);
+        if (!w)
+            continue;
+        tm[o->p0 & 0x1f] = 600; /* direct: the switch timer (SwitchTimer counts it down) */
+        x0 = w->h.x;
+        y0 = w->h.y;
+        frames(2, 0);
+        ok = 0;
+        px0 = 0;
+        place_player((w->h.x >> 8) + 8, (w->h.y >> 8) - 64);
+        for (k = 0; k < 90 && w->used; k++) {
+            frame(0);
+            if (!ok && (w->cmap.rider == &P || w->cmap2.rider == &P) && (P.move_flags & 1)) {
+                ok = 1;
+                px0 = P.x;
+                pw0 = w->h.x;
+                py0 = w->h.y;
+                ppy0 = P.y;
+            }
+            n = w->spr.n_multi;
+        }
+        if (ok) /* carried: the player moved with the route */
+            carried = DCP_ABS((P.x - px0) - (w->h.x - pw0)) < 0x400 && DCP_ABS((P.y - ppy0) - (w->h.y - py0)) < 0x400 &&
+                      (w->h.x != pw0 || w->h.y != py0);
+        moved = (w->h.x != x0 || w->h.y != y0);
+        result(t == 0xc0 ? "neon route 0xc0" : "neon route 0xc1", moved, 1,
+               "timer[%d] set: route moved (%d,%d) px, solid %d, stood on %d, carried with it %d, %d segments drawn",
+               o->p0 & 0x1f, (w->h.x - x0) >> 8, (w->h.y - y0) >> 8, w->has_cmap2, ok, carried, n);
+    }
+}
+static void test_dark_area(void) {
+    const rlvl_object_t *o;
+    u16 t;
+    s32 x, y;
+    int f0 = g_fx[OBJ_FX_ZONE4_BLDY], in = 0, out = 0;
+    if ((o = find_obj(0xc3, 0)) != NULL) {
+        rect_center(o, &x, &y);
+        place_player(x, y);
+        frames(3, 0);
+        in = (P.pf2 & 0x8000) != 0;
+        result("dark area in 0xc3", in && g_fx[OBJ_FX_ZONE4_BLDY] > f0, 1, "pf2 0x8000 %d, ZoneFx bldy hook %d", in,
+               g_fx[OBJ_FX_ZONE4_BLDY] - f0);
+    }
+    if ((o = find_obj(0xc4, 0)) != NULL && in) {
+        f0 = g_fx[OBJ_FX_ZONE4_BLDY];
+        rect_center(o, &x, &y);
+        teleport(x, y); /* (not place_player: it would clear pf2) */
+        camera_follow(1);
+        objects_respawn_view();
+        frames(3, 0);
+        out = !(P.pf2 & 0x8000);
+        result("dark area out 0xc4", out && g_fx[OBJ_FX_ZONE4_BLDY] > f0, 1, "pf2 0x8000 cleared %d, ramp-down hook %d", out,
+               g_fx[OBJ_FX_ZONE4_BLDY] - f0);
+    }
+    for (t = 0xc5; t <= 0xc6; t++) {
+        /* layer areas active while gSwitchTimers[0] runs: pf2 0x2000 / 0x10000 is a
+         * one-frame flag set by the box check and consumed by the player task */
+        u32 bit = t == 0xc5 ? 0x2000 : 0x10000;
+        int ok, k, seen;
+        if ((o = find_obj(t, 0)) == NULL)
+            continue;
+        rect_center(o, &x, &y);
+        obj_switch_timers()[0] = 0;
+        place_player(x, y);
+        frames(3, 0);
+        ok = !(g_pf2_pre & bit) && (g_of_pre & 1);
+        obj_switch_timers()[0] = 100;
+        place_player(x, y);
+        for (k = 0, seen = 0; k < 6; k++) {
+            frame(0);
+            seen |= (g_pf2_pre & bit) && !(g_of_pre & 1);
+        }
+        result(t == 0xc5 ? "switch area 0xc5" : "switch layer 0xc6", ok && seen, 1,
+               "inactive while timer[0] = 0 %d; timer set: pf2 %#x + layer bit cleared %d, layer override %d", ok, bit, seen,
+               t == 0xc6 ? P.layer_ovr : 0);
+        obj_switch_timers()[0] = 0;
+    }
+}
+
+/* ---- zone 5: Huge Crisis (z51, z52; z92) */
+static void test_crane(void) {
+    const rlvl_object_t *o;
+    Hit h;
+    int i, ok = 0, k;
+    Obj *ed = NULL;
+    s32 y0 = 0;
+    if (!FIND_PRESENT(0xa8))
+        return;
+    memset(&h, 0, sizeof(h));
+    for (i = 0; !ok && (o = find_obj(0xa8, i)) != NULL && i < 4; i++) {
+        place_player(o->x, o->y + 40);
+        frames(2, 0);
+        s32 bx, by;
+        ed = obj_type_near(0xed, o->x, o->y, 0x200);
+        if (!ed || !box_center(ed, &bx, &by))
+            continue;
+        s_pe = NULL;
+        ok = trig_at(bx, by, "crane", NULL, 24, 4, 3, M_FREE, &h);
+        h.i = i;
+    }
+    if (ok) {
+        y0 = ed->h.y;
+        for (k = 0; k < 60; k++)
+            frame(0);
+        printf("    holding the hook: %d (player gimmick), crane flag f1F4 %#x\n", P.gimmick == ed, ed->parent ? ed->parent->f1F4 : 0);
+    }
+    result("crane 0xa8 / 0xed", ok, 1, "#%d hook (0xed) touched at (%+d,%+d), hook moved %d px in 60 frames; 0xee parts live %d",
+           h.i, h.dx, h.dy, ok ? (ed->h.y - y0) >> 8 : 0, count_type(0xee));
+}
+static void test_pipe(void) {
+    Hit h;
+    u16 t, ts[4] = {0xa6, 0xab, 0xac, 0xad};
+    int ok = 0, k = 0, j;
+    s32 x0 = 0, y0 = 0;
+    memset(&h, 0, sizeof(h));
+    if (!FIND_PRESENT(0xa6) && !FIND_PRESENT(0xab) && !FIND_PRESENT(0xac) && !FIND_PRESENT(0xad))
+        return;
+    for (j = 0; j < 4 && !ok; j++) {
+        t = ts[j];
+        if (!FIND_PRESENT(t))
+            continue;
+        ok = trig_search(t, "pipe", NULL, 4, 32, 4, 3, M_FREE, &h);
+    }
+    if (ok) {
+        x0 = P.x;
+        y0 = P.y;
+        k = follow_state(Player_State_Pipe, 1200);
+    }
+    result("pipe 0xa6/0xab..0xad", ok && k > 0, 1, "0x%02x #%d entered at (%+d,%+d); travelled (%d,%d) px in %d frames, exited %d",
+           ok ? h.e->type : 0, h.i, h.dx, h.dy, (P.x - x0) >> 8, (P.y - y0) >> 8, k, P.state != Player_State_Pipe);
+}
+static void test_jet_catapult(void) {
+    Hit h;
+    int ok, k = 0, l0 = ev_count("jet_catapult_launch");
+    if (!FIND_PRESENT(0xa7))
+        return;
+    ok = trig_search(0xa7, "jet_catapult", NULL, 4, 48, 4, 3, 0, &h);
+    if (ok)
+        for (k = 0; k < 900 && ev_count("jet_catapult_launch") == l0; k++)
+            frame(0);
+    result("jet catapult 0xa7", ok && ev_count("jet_catapult_launch") > l0, 1,
+           "#%d boarded at (%+d,%+d); catapult stopped and launched the player after %d frames (vel %d,%d)", h.i, h.dx, h.dy, k,
+           P.vel_x, P.vel_y);
+}
+static void test_piston(void) {
+    Hit h;
+    u16 t;
+    for (t = 0xa0; t <= 0xa1; t++) {
+        int ok, k, ymin = 1 << 30, ymax = -(1 << 30);
+        if (!FIND_PRESENT(t))
+            continue;
+        ok = drop_onto(t, 4, &h);
+        for (k = 0; ok && k < 120 && h.o->cmap.rider == &P; k++) {
+            frame(0);
+            if (P.y < ymin) ymin = P.y;
+            if (P.y > ymax) ymax = P.y;
+        }
+        result(t == 0xa0 ? "piston 0xa0" : "piston 0xa1", ok, 1, "#%d ridden from (%+d,%+d); player carried over %d px for %d frames",
+               h.i, h.dx, h.dy, ok ? (ymax - ymin) >> 8 : 0, k);
+    }
+}
+static void test_valve(void) {
+    const rlvl_object_t *o;
+    int i, k = 0, ok = 0, steam = 0, e0 = ev_count("valve");
+    if (!FIND_PRESENT(0xa2) && !FIND_PRESENT(0xa3) && !FIND_PRESENT(0xa4) && !FIND_PRESENT(0xa5))
+        return;
+    for (i = 0; !ok && i < 64; i++) {
+        u16 t = (u16)(0xa2 + (i & 3));
+        if ((o = find_obj(t, i >> 2)) == NULL)
+            continue;
+        place_player(o->x - 64, o->y - 32);
+        for (k = 0; k < 700 && !ok; k++) {
+            teleport(o->x - 64, o->y - 32);
+            frame(0);
+            ok = ev_count("valve") > e0;
+        }
+        for (; ok && k < 760; k++) {
+            frame(0);
+            if (count_res_anim(OBJ_BAC_EFF_STEAM, 0, 99) > steam)
+                steam = count_res_anim(OBJ_BAC_EFF_STEAM, 0, 99);
+        }
+    }
+    result("valve 0xa2..0xa5 / steam", ok && steam > 0, 0, "valve opened after its timer (%d frames); steam puffs (0xf1) live %d", k,
+           steam);
+}
+
+/* ---- zone 6: Altitude Limit (z61, z62) */
+/* teleport keeping the player state, spawn around the new spot, return the live
+ * entry's callback-box centre */
+static int goto_box(const rlvl_object_t *o, s32 *bx, s32 *by) {
+    Obj *w;
+    teleport(o->x, o->y);
+    camera_follow(1);
+    objects_respawn_view();
+    frame(0);
+    w = obj_at(o->type, o->x, o->y);
+    return w && box_center(w, bx, by);
+}
+static void test_glider(void) {
+    const rlvl_object_t *b6 = find_obj(0xb6, 0), *b7 = find_obj(0xb7, 0);
+    Hit h;
+    int ok, k = 0, e0 = ev_count("glider_sequence"), e7 = ev_count("glider_sequence_end"), play = 0, intro = 0, seq = 0, maxr = 0, r0;
+    s32 x0 = 0, bx, by;
+    if (!FIND_PRESENT(0xb5))
+        return;
+    ok = trig_search(0xb5, "glider", NULL, 2, 48, 4, 3, M_FREE, &h);
+    if (ok) {
+        x0 = P.x;
+        for (k = 0; k < 900 && P.state == Player_State_Glider && ev_count("glider_sequence") == e0; k++)
+            frame(0);
+        play = ev_count("glider_sequence") > e0;
+    }
+    result("glider 0xb5", ok && P.x != x0, 1, "#%d grabbed at (%+d,%+d); glided %d px in %d frames%s", h.i, h.dx, h.dy,
+           ok ? (P.x - x0) >> 8 : 0, k, play ? ", into the glider sequence area by play" : "");
+    if (!b6)
+        return;
+    if (!play) { /* direct: gliding, put into the 0xb6 area */
+        if (P.state != Player_State_Glider)
+            trig_search(0xb5, "glider", NULL, 2, 48, 4, 3, M_FREE, &h);
+        if (P.state == Player_State_Glider && goto_box(b6, &bx, &by)) {
+            teleport(bx, by);
+            frames(2, 0);
+        }
+    }
+    ok = ev_count("glider_sequence") > e0;
+    x0 = P.x;
+    r0 = ev_count("glider_ring");
+    for (k = 0; ok && k < 3000 && (P.state == Player_State_GliderSequenceIntro || P.state == Player_State_GliderSequence); k++) {
+        frame((k / 40) & 1 ? DCP_KEY_UP : DCP_KEY_DOWN);
+        intro |= P.state == Player_State_GliderSequenceIntro;
+        seq |= P.state == Player_State_GliderSequence;
+        if (count_type(0xb8) > maxr)
+            maxr = count_type(0xb8);
+    }
+    result("glider sequence 0xb6", ok && intro && seq, !play,
+           "started%s: intro %d, sequence %d for %d frames, wind %#x, rings 0xb8 live up to %d, collected %d", play ? " by play" : "",
+           intro, seq, k, W.wind_x, maxr, ev_count("glider_ring") - r0);
+    result("glider ring 0xb8", ev_count("glider_ring") > r0, 0,
+           "%d collected flying the sequence (MapObj13 exists only while the sequence wind blows)", ev_count("glider_ring") - r0);
+    if (b7) {
+        /* flown into by play: the sequence ends at the 0xb7 area (the loop above stops there) */
+        int ex = P.state == Player_State_GliderSequenceExit, endp = ev_count("glider_sequence_end") > e7;
+        for (k = 0; k < 300 && P.state == Player_State_GliderSequenceExit; k++)
+            frame(0);
+        result("glider sequence end 0xb7", endp && ex, 0, "reached the end area flying: exit state %d, left it after %d frames, wind %#x",
+               ex, k, W.wind_x);
+    }
+}
+static void test_parachute(void) {
+    Hit h;
+    int ok, k = 0, rel = 0;
+    if (!FIND_PRESENT(0xb4))
+        return;
+    ok = trig_search(0xb4, "parachute", NULL, 3, 48, 4, 3, M_FREE, &h);
+    if (ok) {
+        for (k = 0; k < 600 && (P.state == Player_State_Parachute || P.state == Player_State_ParachuteRelease); k++) {
+            frame(k > 120 ? DCP_KEY_A : 0);
+            rel |= P.state == Player_State_ParachuteRelease;
+        }
+    }
+    result("parachute 0xb4", ok, 1, "#%d grabbed at (%+d,%+d): floated %d frames, release state %d", h.i, h.dx, h.dy, k, rel);
+}
+static void test_saucer(void) {
+    Hit h;
+    int ok, k = 0, x0 = ev_count("saucer_explode");
+    if (!FIND_PRESENT(0xb3))
+        return;
+    ok = trig_search(0xb3, "saucer", NULL, 3, 48, 4, 3, M_FREE, &h);
+    if (ok)
+        for (k = 0; k < 900 && ev_count("saucer_explode") == x0; k++)
+            frame(0);
+    result("saucer 0xb3", ok, 1, "#%d boarded at (%+d,%+d); exploded %d after %d frames", h.i, h.dx, h.dy,
+           ev_count("saucer_explode") > x0, k);
+}
+static void test_needle_g(void) {
+    const ObjStats *st = objects_stats();
+    Hit h;
+    u16 t;
+    for (t = 0xb1; t <= 0xb2; t++) {
+        u32 h0 = st->hurts;
+        int ok;
+        if (!FIND_PRESENT(t))
+            continue;
+        ok = trig_search(t, "hurt", NULL, 3, 24, 4, 4, M_HURT, &h) || st->hurts > h0;
+        result(t == 0xb1 ? "needle 0xb1" : "needle 0xb2", ok, 1, "#%d hurt the player at (%+d,%+d)", h.i, h.dx, h.dy);
+    }
+}
+static void test_clouds(void) {
+    int n13 = count_type(0x13), n9 = count_type(0xb9), na = count_type(0xba);
+    if (!FIND_PRESENT(0xc7))
+        return;
+    result("cloud spawner 0xc7", ev_count("cloud_spawner") > 0, 0, "spawner created %d; MapObj13 live 0x13 %d, 0xb9 %d, 0xba %d",
+           ev_count("cloud_spawner"), n13, n9, na);
+}
+
+/* ---- zone 7: Dead Line (z71, z72) */
+static void test_rocket(void) {
+    Hit h;
+    int ok, k = 0, x0 = ev_count("rocket_explode");
+    if (!FIND_PRESENT(0x93))
+        return;
+    ok = trig_search(0x93, "rocket", NULL, 4, 48, 4, 3, M_FREE, &h);
+    if (ok)
+        for (k = 0; k < 900 && ev_count("rocket_explode") == x0; k++)
+            frame(0);
+    result("rocket 0x93", ok, 1, "#%d grabbed at (%+d,%+d); exploded %d after %d frames", h.i, h.dx, h.dy,
+           ev_count("rocket_explode") > x0, k);
+}
+static void test_air(void) {
+    Hit h;
+    int ok, k = 0;
+    if (!FIND_PRESENT(0x94))
+        return;
+    ok = trig_search(0x94, "air", NULL, 4, 48, 4, 3, 0, &h);
+    if (ok)
+        k = follow_state(Player_State_Air, 300);
+    result("air 0x94", ok, 1, "#%d blown at (%+d,%+d); Air state %d frames, vel_y %d", h.i, h.dx, h.dy, k, P.vel_y);
+}
+static void test_cannon(void) {
+    Hit h;
+    int ok, k = 0;
+    if (!FIND_PRESENT(0x95))
+        return;
+    ok = trig_search(0x95, "cannon", NULL, 4, 48, 4, 3, M_FREE, &h);
+    if (ok) {
+        for (k = 0; k < 300 && P.state == Player_State_Cannon; k++)
+            frame(k == 60 ? DCP_KEY_A : 0);
+    }
+    result("cannon 0x95", ok && k > 0, 1, "#%d entered at (%+d,%+d); fired after %d frames, vel %d,%d", h.i, h.dx, h.dy, k, P.vel_x,
+           P.vel_y);
+}
+static void test_swing(void) {
+    Hit h;
+    int ok, k = 0;
+    if (!FIND_PRESENT(0x96))
+        return;
+    ok = trig_search(0x96, "swing", NULL, 6, 64, 8, 20, M_RUN, &h);
+    if (ok)
+        k = follow_state(Player_State_Swing, 600);
+    result("swing 0x96", ok && k > 0, 0, "#%d caught running from (%+d,%+d); swung %d frames, released vel %d,%d", h.i, h.dx, h.dy,
+           k, P.vel_x, P.vel_y);
+}
+static void test_duct(void) {
+    const rlvl_object_t *o;
+    int i, k = 0, ok = 0, e0 = ev_count("duct");
+    if (!FIND_PRESENT(0x97))
+        return;
+    for (i = 0; !ok && (o = find_obj(0x97, i)) != NULL && i < 6; i++) {
+        place_player(o->x, o->y);
+        frames(2, 0);
+        P.rings = 20;
+        dcp_scatter_rings(&P, objects_ring_scatter_level());
+        for (k = 0; k < 120 && !ok; k++) {
+            frame(0);
+            ok = ev_count("duct") > e0;
+        }
+    }
+    result("duct 0x97", ok, 1, "#%d: scattered rings beside it, sucked in after %d frames", i - 1, k);
+}
+static void test_9c(void) {
+    const rlvl_object_t *o;
+    int i, k, ok = 0, z = 0, cnt = 0;
+    s32 bx, by;
+    if (!FIND_PRESENT(0x9c))
+        return;
+    for (i = 0; !ok && (o = find_obj(0x9c, i)) != NULL && i < 8; i++) {
+        Obj *w;
+        place_player(o->x, o->y);
+        frames(2, 0);
+        w = obj_at(0x9c, o->x, o->y);
+        if (!w || !box_center(w, &bx, &by))
+            continue;
+        place_player(bx, by);
+        for (k = 0; k < 30; k++) {
+            frame(0);
+            /* pf2 0x1000 (set by the box, turned into 0x80000 by Player_Last) */
+            if (g_pf2_pre & 0x1000)
+                cnt++;
+        }
+        ok = cnt > 0;
+        z = P.z >> 8;
+        if (ok)
+            printf("    lane #%d depth %d: player depth %d, on the lane floor %d\n", i, w->h.z >> 8, z, (P.pf2 & 0x100000) != 0);
+    }
+    result("depth lane 0x9c", ok, 1, "inside the lane %d of 30 frames", cnt);
+}
+static void test_v4_decor(const char *zone) {
+    const ObjStats *st = objects_stats();
+    char what[32];
+    snprintf(what, sizeof(what), "decorations (%s)", zone);
+    result(what, st->dec_spawned > 0, 0, "spawned %u, despawned %u; palette-anim hooks %d", st->dec_spawned, st->dec_despawned,
+           g_fx[OBJ_FX_PALETTE_ANIM]);
+}
+
 /* ============================================================ common */
 static void test_run(int nf) {
     const ObjStats *st = objects_stats();
@@ -877,7 +1630,12 @@ static void test_run(int nf) {
     for (i = 0; i < NEV && g_ev[i].name[0]; i++)
         printf(" %s=%d", g_ev[i].name, g_ev[i].n);
     printf("\n");
-    CHECK(st->spawned > 0 && st->rings_collected > 0, "objects spawned and rings collected along the run");
+    if (st->spawned == 0 && maxx - g_dcp_world.check_x < 200) /* z52: the route from PlayerStart is not "hold right" */
+        printf("  note: the scripted run is blocked %d px from PlayerStart; the targets and the sweep cover the act\n",
+               maxx - g_dcp_world.check_x);
+    else
+        CHECK(st->spawned > 0 && (st->rings_collected > 0 || g_hdr->num_rings == 0),
+              "objects spawned and rings collected along the run");
 }
 static void test_sweep(void) {
     const rlvl_ring_t *rg = (const rlvl_ring_t *)rlvl_section(g_level, RLVL_SEC_RINGS, NULL);
@@ -887,6 +1645,10 @@ static void test_sweep(void) {
     int n, segs = 0, i_ev, ev0[NEV];
     for (i_ev = 0; i_ev < NEV; i_ev++)
         ev0[i_ev] = g_ev[i_ev].n;
+    if (g_hdr->num_rings == 0) {
+        printf("[sweep] no placed rings in this act: skipped\n");
+        return;
+    }
     g_quiet = 1;
     for (i = 0; i < g_hdr->num_rings; i += 25) {
         place_player(rg[i].x, rg[i].y - 8);
@@ -918,6 +1680,153 @@ static void test_sweep(void) {
     printf("\n");
     CHECK(st->rings_collected > s0.rings_collected && st->dec_spawned > s0.dec_spawned, "sweep collects rings, spawns decorations");
     CHECK(st->gimmicks > s0.gimmicks, "the sweep reaches gimmicks by play");
+}
+
+/* ============================================================ special stage round trip */
+static int placed_ring_index(s32 x, s32 y) {
+    u32 i;
+    for (i = 0; i < g_hdr->num_rings; i++)
+        if (g_obj.lv_ring[i].x == x && g_obj.lv_ring[i].y == y)
+            return (int)i;
+    return -1;
+}
+static int is_enemy(u16 t) { return t <= 0x12 && t != 0x04 && t != 0x05; }
+/* rings collected standing still at a spot for n frames */
+static int rings_at(s32 x, s32 y, int n) {
+    s16 r0;
+    int k;
+    place_player(x, y);
+    r0 = P.rings;
+    for (k = 0; k < n; k++) {
+        teleport(x, y);
+        frame(0);
+    }
+    return P.rings - r0;
+}
+static void test_event_state(int restore_after_init) {
+    const ObjStats *st = objects_stats();
+    const rlvl_object_t *o = NULL;
+    int ri[64], nr = 0, i, k, gone_idx = -1, live_idx = -1, ok_rings, ok_enemy, ok_ctl, ok_vars, ok_cam, ctl_ring = -1, again;
+    u32 e0 = st->enemies_destroyed;
+    s32 cx, cy;
+    const char *how = restore_after_init ? "restore after objects_init" : "restore before objects_init";
+    printf("[special stage round trip: %s]\n", how);
+    /* collect rings by play */
+    g_n_ring_xy = 0;
+    g_rec_rings = 1;
+    for (i = 0; nr < 4 && i < (int)g_hdr->num_rings; i += 7) {
+        const rlvl_ring_t *rg = &g_obj.lv_ring[i];
+        place_player(rg->x - 40, rg->y);
+        for (k = 0; k < 40; k++)
+            frame(DCP_KEY_RIGHT);
+        for (; nr < g_n_ring_xy && nr < 64; nr++)
+            ri[nr] = placed_ring_index(g_ring_xy[nr][0], g_ring_xy[nr][1]);
+    }
+    g_rec_rings = 0;
+    /* destroy one enemy (dropped on), remember an untouched one of the same type */
+    for (i = 0; gone_idx < 0 && i < (int)g_hdr->num_objects; i++) {
+        Obj *w;
+        o = &g_obj.lv_obj[i];
+        if (!is_enemy(o->type))
+            continue;
+        place_player(o->x - 0x60, o->y);
+        frames(2, 0);
+        w = obj_at(o->type, o->x, o->y);
+        for (k = 0; w && k < 160 && st->enemies_destroyed == e0 && w->used; k++) {
+            if (k % 16 == 0) {
+                place_player(w->h.x >> 8, (w->h.y >> 8) - 36);
+                dcp_act_jump(&P);
+                P.vel_y = 0x200;
+            }
+            frame(DCP_KEY_A);
+        }
+        if (st->enemies_destroyed > e0)
+            gone_idx = i;
+    }
+    for (i = 0; gone_idx >= 0 && i < (int)g_hdr->num_objects; i++) {
+        const rlvl_object_t *c = &g_obj.lv_obj[i];
+        if (i != gone_idx && c->type == g_obj.lv_obj[gone_idx].type &&
+            (g_obj.prm[i].x0 != 0xff || obj_at(c->type, c->x, c->y) != NULL) && /* (not destroyed earlier) */
+            (DCP_ABS(c->x - g_obj.lv_obj[gone_idx].x) > 600 || DCP_ABS(c->y - g_obj.lv_obj[gone_idx].y) > 400)) {
+            live_idx = i;
+            break;
+        }
+    }
+    /* a ring never collected, away from the collected ones */
+    for (i = (int)g_hdr->num_rings - 1; i >= 0 && ctl_ring < 0; i -= 3) {
+        int j, near = 0;
+        if (g_obj.ring_state[i] == 0xff)
+            continue;
+        for (j = 0; j < nr; j++)
+            if (ri[j] >= 0 && DCP_ABS(g_obj.lv_ring[ri[j]].x - g_obj.lv_ring[i].x) < 600)
+                near = 1;
+        if (!near)
+            ctl_ring = i;
+    }
+    g_obj_stage.check_idx = 3; /* data_022c4590 fields the return keeps */
+    g_obj_stage.check_x = 1234;
+    cx = g_obj_camera[0].x;
+    cy = g_obj_camera[0].y;
+    for (i = 0, k = 0; i < nr; i++)
+        k += ri[i] >= 0;
+    printf("  before: %d rings collected (%d of them placed rings), enemy #%d (type 0x%02x) destroyed, live objects %u\n", nr, k,
+           gone_idx, gone_idx >= 0 ? g_obj.lv_obj[gone_idx].type : 0, st->live);
+    /* main.c: stage_exit(OBJ_EXIT_SPECIAL_STAGE) -> save, shutdown; special stage; reload */
+    objects_save_event_state();
+    CHECK(st->live == 0, "save destroys the object tasks (Stage_DestroyTasks)");
+    objects_shutdown();
+    g_obj_stage.check_idx = 0;
+    if (!restore_after_init)
+        objects_restore_event_state();
+    if (objects_init(&M, g_level) != 0) {
+        CHECK(0, "objects_init after the round trip");
+        return;
+    }
+    if (restore_after_init)
+        objects_restore_event_state();
+    ok_vars = g_obj_stage.check_idx == 3 && g_obj_stage.check_x == 1234;
+    ok_cam = objects_restart_camera(NULL, NULL, NULL) && g_obj_camera[0].x == (cx & ~0xff) && g_obj_camera[0].y == (cy & ~0xff);
+    /* collected rings stay gone, the control ring is still there */
+    ok_rings = 1;
+    for (i = 0; i < nr; i++)
+        if (ri[i] >= 0 && g_obj.ring_state[ri[i]] != 0xff)
+            ok_rings = 0;
+    again = 0;
+    for (i = 0; i < nr && i < 6; i++)
+        if (ri[i] >= 0)
+            again += rings_at(g_obj.lv_ring[ri[i]].x, g_obj.lv_ring[ri[i]].y, 6);
+    ok_ctl = ctl_ring < 0 || rings_at(g_obj.lv_ring[ctl_ring].x, g_obj.lv_ring[ctl_ring].y, 6) > 0;
+    if (g_hdr->num_rings == 0)
+        printf("  (no placed rings in this act)\n");
+    else
+    result("rings stay collected", nr > 0 && ok_rings && again == 0 && ok_ctl, 1,
+           "%d collected before; list entries still collected %d; picked up again at their spots %d; untouched ring #%d still there %d", nr,
+           ok_rings, again, ctl_ring, ok_ctl);
+    ok_enemy = 0;
+    if (gone_idx >= 0) {
+        const rlvl_object_t *g = &g_obj.lv_obj[gone_idx];
+        place_player(g->x - 0x60, g->y - 16);
+        frames(3, 0);
+        ok_enemy = g_obj.prm[gone_idx].x0 == 0xff && obj_at(g->type, g->x, g->y) == NULL;
+        if (live_idx >= 0) {
+            const rlvl_object_t *c = &g_obj.lv_obj[live_idx];
+            place_player(c->x - 0x60, c->y - 16);
+            frames(3, 0);
+            ok_ctl = obj_at(c->type, c->x, c->y) != NULL;
+        } else
+            ok_ctl = 1;
+    }
+    for (i = 0, k = 0; i < (int)g_hdr->num_objects; i++)
+        k |= is_enemy(g_obj.lv_obj[i].type);
+    if (!k)
+        printf("  (no enemies placed in this act)\n");
+    else
+    result("enemy stays destroyed", gone_idx >= 0 && ok_enemy && ok_ctl, 1,
+           "entry #%d not respawned %d; another of its type (#%d) respawns %d", gone_idx, ok_enemy, live_idx, ok_ctl);
+    result("restart camera / stage vars", ok_cam && ok_vars, 1, "camera (%d,%d) restored %d; checkpoint index / position kept %d",
+           g_obj_camera[0].x >> 8, g_obj_camera[0].y >> 8, ok_cam, ok_vars);
+    g_obj_stage.check_idx = 0;
+    g_obj_stage.check_x = 0;
 }
 
 int main(int argc, char **argv) {
@@ -1014,10 +1923,52 @@ int main(int argc, char **argv) {
             const ObjStats *st = objects_stats();
             result("decorations", st->dec_spawned > 0, 0, "spawned %u, despawned %u", st->dec_spawned, st->dec_despawned);
         }
+    } else if (g_hdr->zone >= 3) {
+        printf("[zone %d targets]\n", g_hdr->zone + 1);
+        /* zone 4 (and z91) */
+        test_crane_slide();
+        test_shooter();
+        test_swing_sky();
+        test_switch_neon();
+        test_dark_area();
+        /* zone 5 (and z92) */
+        test_crane();
+        test_pipe();
+        test_jet_catapult();
+        test_piston();
+        test_valve();
+        /* zone 6 */
+        test_glider();
+        test_parachute();
+        test_saucer();
+        test_needle_g();
+        test_clouds();
+        /* zone 7 */
+        test_rocket();
+        test_air();
+        test_cannon();
+        test_swing();
+        test_duct();
+        test_9c();
+        /* enemies */
+        test_enemy(0x09, "egg pawn");
+        test_enemy(0x0a, "egg pawn");
+        test_enemy(0x0b, "flapper");
+        test_enemy(0x0c, "flapper");
+        test_enemy(0x0d, "egg pawn");
+        test_enemy(0x0e, "egg pawn");
+        test_enemy(0x0f, "egg pawn");
+        test_enemy(0x10, "flapper");
+        test_enemy(0x11, "flapper");
+        test_enemy(0x12, "flapper");
+        test_v4_decor(g_hdr->zone == 3 ? "zone 4" : g_hdr->zone == 4 ? "zone 5" : g_hdr->zone == 5 ? "zone 6" : g_hdr->zone == 6 ? "zone 7" : "zone 9");
     }
     printf("  targets: %d of %d interactions seen; pool live %u of %d; late sprite loads %d\n", g_ok, g_n,
            objects_stats()->live, OBJ_MAX, g_obj.lazy_loads);
     test_sweep();
+    test_event_state(0);
+    test_event_state(1);
+    printf("pool peak %u of %d objects\n", g_peak, OBJ_MAX);
     printf("%d checks, %d failed\n", g_checks, g_fail);
     objects_shutdown();
     return g_fail ? 1 : 0;

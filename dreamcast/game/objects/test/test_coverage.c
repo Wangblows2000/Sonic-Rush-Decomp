@@ -34,7 +34,8 @@ static void *load(const char *path, long *size) {
 }
 
 static int mapobj40_untranslated(u16 t) {
-    return t == 0xb6 || t == 0xb7 || (t >= 0xc3 && t <= 0xc5); /* v3: 0x7e and 0xa9 translated */
+    (void)t;
+    return 0; /* v3: 0x7e and 0xa9 translated; v4: 0xb6, 0xb7, 0xc3..0xc5 */
 }
 
 static void flush(void) {
@@ -80,6 +81,9 @@ int main(int argc, char **argv) {
         g_dcp_world.act = h->act;
         g_dcp_world.timescale = 0x100;
         g_dcp_world.objmgr = 0x18;
+        /* MapObj13 (glider-sequence clouds, flappers, rings) exist only while the wind
+         * of Player_State_GliderSequenceIntro blows (data_022c4ef8 = 0x100) */
+        g_dcp_world.wind_x = 0x100;
         objects_set_paths(argv[2], argv[3]);
         if (objects_init(&M, lv) != 0) {
             printf("| %s | objects_init failed | | | |\n", argv[a]);
@@ -111,7 +115,8 @@ int main(int argc, char **argv) {
                 r = fn(&p, e->x << 8, e->y << 8);
             /* PlayerStart and the "apply at load" forms of MapObj70 / WaterLevelTrigger
              * set their state and return no object, as in the original */
-            ok = (r != NULL || e->type == 0x72 || (e->type == 0x70 && (e->flags & 0x10)) ||
+            /* DecCloudSpawner (0xc7) leaves its task alive and returns NULL by design */
+            ok = (r != NULL || e->type == 0x72 || e->type == 0xc7 || (e->type == 0x70 && (e->flags & 0x10)) ||
                   (e->type == 0x7c && (e->flags & 4))) &&
                  !mapobj40_untranslated(e->type);
             /* flapper / pawn variants refused for "save option" reasons do not count as missing */
@@ -155,6 +160,16 @@ int main(int argc, char **argv) {
             }
         }
         printf("| %s | %d/%d | %u/%u | %d/%d | %u/%u |\n", argv[a], nt_ok, nt, oi_ok, oi, nd_ok, nd, di_ok, di);
+        if (getenv("COV_V")) { /* per-stage missing classes */
+            printf("    missing:");
+            for (t = 0; t < 0x100; t++)
+                if (tseen[t] && !tok[t])
+                    printf(" obj%#x", t);
+            for (t = 0; t < 0x100; t++)
+                if (dseen[t] && !dok[t])
+                    printf(" dec%#x", t);
+            printf("\n");
+        }
         objects_shutdown();
         free(lv);
     }

@@ -14,6 +14,7 @@
 #include "../ui/ui.h"
 #include "../sound/sound.h"
 #include "../boss/boss.h"
+#include "../boss/boss_final.h"
 #include "../objects/obj_internal.h"
 #include "../menus/menus.h"
 #include "../save/save.h"
@@ -92,6 +93,7 @@ static struct {
     u32 frame, score;
 } g_ss;
 static int g_special_pending;
+static uint64_t g_prof[4], g_dprof[6];   /* draw: bg, layers, player model, objects, ui, boss */   /* us per 120 frames: objects update, player, draw, end_frame wait */
 static int g_dbg_special = -1;   /* test builds: /cd/debug/special.txt = act frame to enter the special stage */
 static void (*g_prev_stage_exit)(void *ctx, s32 kind);
 static void stage_exit_hook(void *ctx, s32 kind)
@@ -120,6 +122,7 @@ static void spawn_player(Level *lv)
         /* son.bac timing ends non-looping animations (sets DCP_DF_ANIM_DONE), as on the DS. */
         objects_set_player_anim_done(1);
     }
+    printf("objects: vram free after objects_init %lu\n", (unsigned long)render_vram_free());
     sound_load_bank(sound_stage_sdat(g_dcp_world.zone, g_dcp_world.act, g_chara));
     sound_hooks_reset_players();
     g_is_boss = 0; g_boss_started = 0;
@@ -325,6 +328,12 @@ static void draw_water(int line)
     if(y > 0) draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, y - 2 * VIEW_SCALE, 640, 2 * VIEW_SCALE, 0, 0, 0, 0, 9.1f, 0x60c0e0ff);
 }
 
+/* g_boss_hooks.cleared: StageShutdown_Create(Stage_OnBossCleared) -> the act
+ * results (ClearDemo), handled by the UI like the goal of an act. */
+static void boss_cleared_hook(void *ctx) { (void)ctx; ui_stage_exit(OBJ_EXIT_CLEAR_DEMO); }
+static void boss_music_stop_hook(void *ctx) { (void)ctx; audio_music_stop(); }
+static void boss_music_hook(void *ctx, s32 seq) { (void)ctx; printf("boss music seq %ld (stage SDAT stream not mapped)\n", (long)seq); }
+
 /* g_boss_hooks.help: BossHelp_Create / BossHelp_Destroy drawn by the UI module */
 static void boss_help_hook(void *ctx, s32 kind, s32 a, s32 b)
 {
@@ -412,6 +421,9 @@ int main(int argc, char **argv)
     g_boss_hooks.player_box_flags = boss_player_box_flags;
     g_boss_hooks.navi = ui_boss_navi;
     g_boss_hooks.help = boss_help_hook;
+    g_boss_hooks.cleared = boss_cleared_hook;
+    g_boss_hooks.music = boss_music_hook;
+    g_boss_hooks.music_stop = boss_music_stop_hook;
     g_ui_hooks.voice = ui_voice_hook;
     g_ui_hooks.stage_new = ui_stage_new_hook;
     g_menu_hooks.bgm = menu_bgm; g_menu_hooks.se = menu_se; g_menu_hooks.voice = menu_voice;
@@ -494,8 +506,11 @@ int main(int argc, char **argv)
                 objects_set_view(1, (s32)(g_cam_x * 256.0f), (s32)((g_cam_y - 192.0f) * 256.0f));
                 objects_frame_begin();
             }
-            dcp_player_frame(&g_player, ds_pad(in.held), ds_pad(in.pressed), ds_pad(in.released));
-            if(g_obj_ok) objects_update(&g_player);
+            if(g_is_boss) boss_update_pre(&g_player);   /* BossF: arm colmap / ride before the player */
+            { uint64_t t0 = timer_us_gettime64();
+              dcp_player_frame(&g_player, ds_pad(in.held), ds_pad(in.pressed), ds_pad(in.released));
+              g_prof[1] += timer_us_gettime64() - t0; }
+            { uint64_t t0 = timer_us_gettime64(); if(g_obj_ok) objects_update(&g_player); g_prof[0] += timer_us_gettime64() - t0; }
             if(g_is_boss) boss_update(&g_player);
             /* Continuous camera (CAMERA.md): the DS screen-sized window follows the
              * player with damping and a modest velocity look-ahead; render-only.
@@ -528,6 +543,7 @@ int main(int argc, char **argv)
         if(g_cam_y < 0) g_cam_y = 0;
         ui_set_camera(g_cam_x, g_cam_y);
 
+        uint64_t t_draw0 = timer_us_gettime64();
         render_begin_frame();
         if(ok && g_player_ok && g_model_ok) {
             g_anim_frame += 1.0f;
@@ -538,19 +554,26 @@ int main(int argc, char **argv)
         /* PVR lists must be opened in order OP, PT, TR (each once per frame).
          * Depth (1/w style, bigger = nearer): bg 0.0005 < layer B 0.001 < player model (~0.006) < layer A 10. */
         render_begin_list(PVR_LIST_OP_POLY);
-        if(ok && !g_is_boss) level_draw_bg(&lv, 0.25f, 0.125f, 0.0005f);
+        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) level_draw_bg(&lv, 0.25f, 0.125f, 0.0005f); g_dprof[0] += timer_us_gettime64() - t0; }
         if(g_is_boss) boss_draw(PVR_LIST_OP_POLY);
         if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY);
         render_end_list();
         render_begin_list(PVR_LIST_PT_POLY);
-        if(ok && !g_is_boss) { level_draw_layer(&lv, 1, PVR_LIST_PT_POLY, 0.001f); level_draw_layer(&lv, 0, PVR_LIST_PT_POLY, 10.0f); }
+        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { level_draw_layer(&lv, 1, PVR_LIST_PT_POLY, 0.001f); level_draw_layer(&lv, 0, PVR_LIST_PT_POLY, 10.0f); } g_dprof[1] += timer_us_gettime64() - t0; }
         if(g_is_boss) boss_draw(PVR_LIST_PT_POLY);
         if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY);
-        if(ok && g_obj_ok) obj_draw(PVR_LIST_PT_POLY);
+        { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok) obj_draw(PVR_LIST_PT_POLY); g_dprof[3] += timer_us_gettime64() - t0; }
         render_end_list();
         render_begin_list(PVR_LIST_TR_POLY);
         if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY);
         if(g_is_boss) boss_draw(PVR_LIST_TR_POLY);
+        if(g_is_boss) {
+            s32 bm = 0, evy = 0;
+            bossf_blend(&bm, &evy);   /* BossF white-out of the 3D layer (BLDY) */
+            if(bm == 2 && evy > 0)
+                draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 9.5f,
+                                 ((uint32_t)(evy > 16 ? 255 : evy * 255 / 16) << 24) | 0xffffff);
+        }
         if(ok && g_obj_ok && !g_is_boss && k_stages[g_stage_idx][1] == '2' && (g_obj_camera[0].flags & 0x1000000))
             draw_water(g_obj_camera[0].water);
         if(g_flash > 0) {
@@ -558,11 +581,12 @@ int main(int argc, char **argv)
                              ((uint32_t)(g_flash * 15) << 24) | 0xffffff);
             if(!ui_is_paused()) g_flash--;
         }
-        if(ok && g_player_ok) ui_draw_tr();
+        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok) ui_draw_tr(); g_dprof[4] += timer_us_gettime64() - t0; }
         if(ok && g_player_ok && !g_model_ok)
             draw_sprite_world(NULL, PVR_LIST_TR_POLY, g_player.x / 256.0f - 8, g_player.y / 256.0f - 28, 16, 28, 0, 0, 0, 0, 0, 3.0f, 0xc02060ff);
         render_end_list();
-        render_end_frame();
+        g_prof[2] += timer_us_gettime64() - t_draw0;
+        { uint64_t t1 = timer_us_gettime64(); render_end_frame(); g_prof[3] += timer_us_gettime64() - t1; }
         audio_update();
         if(ok && g_player_ok && ui_state() == UI_EXIT) {
             int k = ui_exit_kind();
@@ -596,6 +620,9 @@ int main(int argc, char **argv)
         if(++frame % 120 == 0) {
             uint64_t now = timer_ms_gettime64();
             if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
+            printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0);
+            printf("draw ms/frame: bg %.2f layers %.2f objects %.2f ui %.2f\n", g_dprof[0] / 120000.0, g_dprof[1] / 120000.0, g_dprof[3] / 120000.0, g_dprof[4] / 120000.0);
+            memset(g_prof, 0, sizeof(g_prof)); memset(g_dprof, 0, sizeof(g_dprof));
             t_last = now;
         }
     }

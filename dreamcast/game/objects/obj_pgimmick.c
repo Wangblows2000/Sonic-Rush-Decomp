@@ -185,7 +185,7 @@ void Player_State_Rope(DcPlayer *w) {
 void Player_State_RopeC(DcPlayer *w);
 void Player_Action_RopeC(DcPlayer *w, Obj *parent, s32 len) {
     ObjPlayerCtx *c = ctx(w);
-    dcp_player_init_state(w);
+    obj_init_state(w);
     w->gimmick = parent;
     dcp_set_anim(w, 0x25);
     w->disp_flags |= 4;

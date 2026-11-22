@@ -461,7 +461,7 @@ static void Enemy_State_PopOnContact(Obj *p0) {
     EffZakoBombPuff_Create(p0, 0, 0);
     p0->h.obj_flags |= 4;
 }
-static void Enemy_Action_StartPopOnContact(Obj *s) {
+void Enemy_Action_StartPopOnContact(Obj *s) {
     obj_disable_colliders_set_anim(s, 3);
     s->h.disp_flags |= 4;
     s->state = Enemy_State_PopOnContact;

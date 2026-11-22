@@ -125,6 +125,31 @@ static void AttackHitbox_State_Boost(Obj *o) {
     }
     o->h.obj_flags |= 4;
 }
+/* AttackHitbox_State_JetCatapult / _SetJetCatapultState (objdata v4) */
+static void AttackHitbox_State_JetCatapult(Obj *o) {
+    DcPlayer *p;
+    if (o->coll[1].flags & 0x200) {
+        obj_screen_shake(4);
+        o->coll[1].flags &= ~0x200;
+    }
+    p = o->k.atk.par;
+    if (p != NULL) {
+        o->h.x = p->x;
+        o->h.y = p->y;
+        o->h.disp_flags &= ~1;
+        if (p->disp_flags & 1)
+            o->h.disp_flags |= 1;
+        if (p->state != Player_State_JetCatapult)
+            o->h.obj_flags |= 4;
+        obj_handle_collider(&o->h, o, OBJ_OWNER_OBJECT, &o->coll[1], 0);
+        return;
+    }
+    o->h.obj_flags |= 4;
+}
+void AttackHitbox_SetJetCatapultState(Obj *s) {
+    if (s != NULL)
+        s->state = AttackHitbox_State_JetCatapult;
+}
 Obj *AttackHitbox_Create(DcPlayer *parent, s16 a, s16 b, s16 c, s16 d, s16 e) {
     Obj *w = obj_alloc(0x101, obj_stageobj_dtor);
     if (w == NULL)
@@ -208,6 +233,32 @@ void objects_add_player(DcPlayer *p) {
     player_sprite_anim(pc, p->anim);
 }
 
+/* Player_InitState, collision box part (coll2A0 / coll2CC): the player
+ * module's dcp_player_init_state does the rest.  Called after every
+ * dcp_player_init_state the object code makes (obj_init_state); the
+ * player module's own calls need a hook (OBJECTS.md, player-module changes) */
+void objects_player_init_state(DcPlayer *p) {
+    ObjPlayerCtx *pc = obj_player_ctx(p);
+    if (pc == NULL)
+        return;
+    pc->body.cb = obj_player_on_hurt; /* coll2A0.unk1C = Player_OnHurt */
+    pc->body.mask = 0x21;
+    pc->body.flags &= ~0x300;
+    pc->body.flags |= 0x20;
+    if (p->invuln == 0)
+        rect_set_atkdef(&pc->body, 0xa, 2);
+    pc->atk.mask = 0x21;
+    pc->atk.cb = NULL;
+    pc->atk.flags &= ~8;
+    pc->atk.flags &= ~0x300;
+    pc->atk.flags |= 0x20;
+    rect_set_atkdef(&pc->atk, 0, 0);
+}
+void obj_init_state(DcPlayer *p) {
+    dcp_player_init_state(p);
+    objects_player_init_state(p);
+}
+
 /* Player_SpriteCallback: command 7 slots 0/1 -> coll2A0 / coll2CC */
 static void player_sprite_cb(void *owner, const HboxEvent *ev) {
     ObjPlayerCtx *pc = (ObjPlayerCtx *)owner;
@@ -286,7 +337,7 @@ void obj_player_attack_bounce(DcPlayer *w) {
     if (w->move_flags & 0x10) {
         vx = w->vel_x;
         v = w->gnd_vel;
-        dcp_player_init_state(w);
+        obj_init_state(w);
         dcp_set_anim(w, 2);
         w->disp_flags |= 4;
         w->move_flags |= 0x10;
@@ -307,7 +358,7 @@ void obj_player_attack_bounce(DcPlayer *w) {
 
 /* ------------------------------------------- Player_Action_AttackRecoil */
 void obj_player_attack_recoil(DcPlayer *w) {
-    dcp_player_init_state(w);
+    obj_init_state(w);
     w->move_flags |= 0x10;
     w->vel_x = w->move_x > 0 ? -0x180 : 0x180;
     w->dash_timer = 0x18;

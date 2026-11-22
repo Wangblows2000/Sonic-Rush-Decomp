@@ -177,7 +177,7 @@ void Player_Action_ZoneLaunch(DcPlayer *w, s16 x, s16 y) {
         w->move_flags &= ~0x80u;
         return;
     }
-    dcp_player_init_state(w);
+    obj_init_state(w);
     dcp_set_anim(w, 0x29);
     w->disp_flags |= 4;
     w->state = Player_State_ZoneLaunch;
@@ -266,7 +266,7 @@ void Player_Action_Wheel2D(DcPlayer *w, Obj *o) {
     ObjPlayerCtx *c = ctx(w);
     if (w->state == Player_State_Wheel2D)
         return;
-    dcp_player_init_state(w);
+    obj_init_state(w);
     w->gimmick = o;
     dcp_set_anim(w, 0x28);
     w->disp_flags |= 4;

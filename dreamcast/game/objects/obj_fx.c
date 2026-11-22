@@ -162,3 +162,63 @@ s32 ObjShift_SetFromRef(s32 cur, s32 target, s32 ref, s32 shift, u16 maxStep, s3
     }
     return cur;
 }
+
+/* FX_Sqrt (NitroSDK): hardware 64-bit square root of v << 32, then
+ * FX_GetSqrtResult (r + 0x200) >> 10 (objdata v4: Player_Action_Cannon) */
+u32 FX_Sqrt(s32 v) {
+    u64 n, r = 0, bit;
+    if (v <= 0)
+        return 0;
+    n = (u64)(u32)v << 32;
+    bit = (u64)1 << 62;
+    while (bit > n)
+        bit >>= 2;
+    while (bit != 0) {
+        if (n >= r + bit) {
+            n -= r + bit;
+            r = (r >> 1) + bit;
+        } else {
+            r >>= 1;
+        }
+        bit >>= 2;
+    }
+    return ((u32)r + 0x200) >> 10;
+}
+
+/* ObjAngle_MoveToward16 (objdata v4: Cannon_RotateBarrel) */
+u16 ObjAngle_MoveToward16(u16 cur, u16 tgt, u16 step) {
+    u16 d1, d2;
+    if (tgt == cur)
+        return tgt;
+    d1 = (u16)(cur - tgt < 0 ? -(cur - tgt) : cur - tgt);
+    if (cur > tgt)
+        d2 = (u16)(0x10000 - cur + tgt);
+    else
+        d2 = (u16)(0x10000 - tgt + cur);
+    if (d1 <= d2) {
+        if (cur > tgt) {
+            if (tgt > cur - step)
+                cur = tgt;
+            else
+                cur = (u16)(cur - step);
+        } else if (cur < tgt) {
+            if (tgt < cur + step)
+                cur = tgt;
+            else
+                cur = (u16)(cur + step);
+        }
+    } else {
+        if (cur > tgt) {
+            if (tgt + 0x10000 < cur + step)
+                cur = tgt;
+            else
+                cur = (u16)(cur + step);
+        } else if (cur < tgt) {
+            if (tgt > cur - step + 0x10000)
+                cur = tgt;
+            else
+                cur = (u16)(cur - step);
+        }
+    }
+    return cur;
+}

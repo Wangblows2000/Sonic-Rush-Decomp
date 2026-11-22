@@ -2082,6 +2082,7 @@ Obj *DecGroup4D_Create(ObjParam *p, s32 a, s32 b) {
     case 0x4d:
         obj_load_bac(w, OBJ_BAC_GMK_WHEEL);
         w->spr.flags |= 0x80000;
+        w->bac3d = 1;
         w->spr.order = 0x16;
         obj_set_anim(w, 0);
         w->state = DecGroup4D_State_Main;
@@ -2089,8 +2090,15 @@ Obj *DecGroup4D_Create(ObjParam *p, s32 a, s32 b) {
     case 0x4e:
         obj_load_bac(w, OBJ_BAC_GMK_WHEEL);
         w->spr.flags |= 0x80000;
+        w->bac3d = 1;
         w->spr.order = 0x16;
         obj_set_anim(w, 1);
+        w->state = DecGroup4D_State_Main;
+        break;
+    case 0xcf: /* objdata v4 (zone 4): crane slide decoration; 3D BAC ac_gmk_crane_slide3d drawn as the 2D BAC */
+        obj_load_bac(w, OBJ_BAC_CRANE_SLIDE);
+        w->spr.flags |= 0x80000;
+        w->bac3d = 1;
         w->state = DecGroup4D_State_Main;
         break;
     }

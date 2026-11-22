@@ -41,7 +41,12 @@ enum {                      /* g_obj_hooks.effect kinds: effects without a modul
     OBJ_FX_BGM_LAYER,       /* Stage_SelectBGMLayer(a): 1 = underwater mix, 0 = normal */
     OBJ_FX_JINGLE,          /* StageJingle_Create(p, a) (0x17: drowning countdown music) */
     OBJ_FX_RIPPLE3D,        /* EffRipple3D_SpawnForPlayer(p) (3D water surface ripple) */
-    OBJ_FX_ENEMY_ROOM       /* EnemyRoomHud / EffEnemyRoomFix (MapObj8C): a = 0 start, 1 count, 2 cleared */
+    OBJ_FX_ENEMY_ROOM,      /* EnemyRoomHud / EffEnemyRoomFix (MapObj8C): a = 0 start, 1 count, 2 cleared */
+    /* objdata v4 (zones 4..7) */
+    OBJ_FX_ZONE4_BLDY,      /* ZoneFx_Zone4: a = 0 StartBldyFlash(b), a = 1 StartBldyRampUp, a = 2 StartBldyRampDown (b >> 8, b & 0xff)
+                               (Night Carnival switch darkness, SwitchTimer) */
+    OBJ_FX_PALETTE_ANIM     /* PaletteAnim_Create(a = table id, b = object type): palette cycling of
+                               a decoration (neon); the converted atlases have fixed colours */
 };
 enum {                      /* ItemBox_GiveItem kinds the player module lacks */
     OBJ_ITEM_INVINCIBLE = 5, OBJ_ITEM_BARRIER = 6, OBJ_ITEM_MAGNET = 7,
@@ -73,6 +78,7 @@ typedef struct ObjStage {
     s32 check_x, check_y; /* data_022c4590.unk1C / unk20 respawn point (px)     */
     s32 goal_state;    /* data_022c4590.unk40 (3 = goal touched again, TA mode) */
     u8 goal_reached;   /* native: goal touched                                  */
+    u8 info_shown;     /* data_022c4590.unk45 (objdata v4: SwingSky hint shown once) */
     u32 save_flags;    /* gSaveData.unk8 (bit0: easy option)                    */
 } ObjStage;
 extern ObjStage g_obj_stage;
@@ -88,6 +94,33 @@ void objects_set_paths(const char *obj_dir, const char *sprite_dir);
  * (g_dcp_col.obj_probe).  Returns 0 on success. */
 int objects_init(const rlvl_map_t *map, const uint8_t *level_data);
 void objects_shutdown(void);
+/* Special stage round trip (gGameState.unk18 & 0x40).
+ * objects_save_event_state: StageExit_Main's Stage_DestroyTasks (every object
+ *   destructor and RingManager_Destructor write their spawn state back),
+ *   then Stage_SaveEventState (copy of the map-object list and the ring list:
+ *   destroyed objects and collected rings stay gone) and
+ *   Stage_SaveRestartCamera (gCamera x, y and gCamera[2] flags & 2).  The
+ *   data_022c4590 fields of g_obj_stage (checkpoint index / time / position,
+ *   score tally, hint shown) are kept with it: the DS does not clear them
+ *   for the return.  The copy lives in static storage and survives
+ *   objects_shutdown / objects_init.  Call it on
+ *   stage_exit(OBJ_EXIT_SPECIAL_STAGE), before objects_shutdown.
+ * objects_restore_event_state: StageStart_State_SetupResources with
+ *   unk18 & 0x40 (Stage_RestoreEventState + Stage_RestoreRestartCamera),
+ *   applied before StageStart_State_CreateStage spawns anything.  Call it
+ *   either just before objects_init (it is applied inside objects_init) or
+ *   just after it (the objects objects_init created are recreated from the
+ *   restored list), in both cases before the first objects_frame_begin.  The
+ *   saved state is used once; it is ignored for another stage.
+ * objects_restart_camera: the restored camera (24.8, gCamera[0]) and flag 2,
+ *   1 if a restore set it since the last objects_init, for the camera module. */
+void objects_save_event_state(void);
+/* Player_InitState, collision box part: coll2A0.unk1C = Player_OnHurt (the
+ * glider sequence replaces it), box flags 0x300 cleared, atk/def reset.  The
+ * player module's dcp_player_init_state should call it (OBJECTS.md 2.2) */
+void objects_player_init_state(DcPlayer *p);
+void objects_restore_event_state(void);
+int objects_restart_camera(s32 *x, s32 *y, u32 *flags);
 /* gPlayers[]: the players the objects interact with (max 2). Call after
  * dcp_player_create. */
 void objects_add_player(DcPlayer *p);
@@ -154,7 +187,14 @@ typedef struct ObjModelView {
                               StageObj_LoadModelSimple blocks hidden by @0xA8 & 0x80 are cleared */
     int persp;             /* disp_flags & 0x200: StageObj_Draw3DEx draws with the off-axis
                               frustum (data_022c4ef4) centred on the object, else orthographic */
+    int reps;              /* draw the model reps times (>= 1) ... */
+    s32 rep_dy;            /* ... each one rep_dy (24.8) lower than the one before (CranePartEE) */
 } ObjModelView;
+/* objdata v4: objects with a model view keep drawing their 2D sprite as a
+ * stand-in (default 1).  Call objects_set_model_sprites(0) once the
+ * integrator draws the model views: StageObj_Draw2DEx does not draw the
+ * main sprite of an object that has a model (KOS build, obj_draw.c). */
+void objects_set_model_sprites(int on);
 int objects_model_count(void);
 int objects_model_get(int i, ObjModelView *out);
 

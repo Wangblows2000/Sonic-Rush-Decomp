@@ -8,6 +8,8 @@
 #include <string.h>
 #include "obj_internal.h"
 
+#define ZABS_R(x) ((x) < 0 ? -(x) : (x))
+
 typedef struct RingPart {  /* 0x1C bytes */
     s32 x, y;              /* +0x00 */
     s16 vx, vy;            /* +0x08 */
@@ -18,6 +20,7 @@ typedef struct RingPart {  /* 0x1C bytes */
                               0x8000 gravity flipped */
     s32 unk14;             /* +0x14 */
     u8 *out;               /* +0x18 .rg entry byte 0 */
+    const void *sucker;    /* +0x14 (objdata v4): the duct sucking this ring (RingManager_SuckScatteredRings) */
     u8 drawn;              /* native: drawn this frame (cb4) */
 } RingPart;
 
@@ -56,6 +59,17 @@ void ring_init(void) {
     R.spr.order = 8;
     R.spr.flags |= 2u << 17; /* SpritePair_SetOAMPriority(.., 2) */
     R.active = 1;
+}
+
+/* RingManager_Destructor: live placed rings give their entry back to the
+ * ring list (collected ones were freed with timer 0 and stay 0xff) */
+void ring_destroy(void) {
+    u32 i;
+    RingPart *e = R.parts;
+    for (i = 0; i < OBJ_RING_MAX; i++, e++)
+        if (e->timer != 0 && e->out != NULL)
+            *e->out = (u8)(e->x >> 8);
+    R.active = 0;
 }
 
 static void place_common(RingPart *e, s32 a, s32 b) {
@@ -342,4 +356,60 @@ void RingManager_AttractRings(DcPlayer *src) {
             p->y += (s16)((v * dcp_sin((u16)ang)) >> 12);
         }
     }
+}
+
+/* RingManager_SuckScatteredRings (objdata v4, Duct 0x97): scattered rings
+ * within 0x80 px fly into the duct and vanish (Duct_State_CheckPlayer) */
+dcp_bool RingManager_SuckScatteredRings(const DcPlayer *w) {
+    ObjBox box;
+    RingPart *ring;
+    dcp_bool result = DCP_FALSE;
+    u16 count, i, ang;
+    s32 spd;
+    if (!R.active)
+        return DCP_FALSE;
+    memset(&box, 0, sizeof(box));
+    R.flags |= 4;
+    box.x = w->x >> 8;
+    box.y = w->y >> 8;
+    rect_set_box2d(&box, -0x80, -0x80, 0x80, 0x80);
+    count = R.count;
+    for (i = 0; i < 0x40; i++) {
+        if (count == 0)
+            break;
+        ring = &R.parts[i];
+        if (ring->timer == 0)
+            continue;
+        count--;
+        if ((ring->flags & 0x1000) && !(ring->flags & 0x4000) && ring->timer < 0xd8 &&
+            rect_box_check(&box, ring->x >> 8, ring->y >> 8, -6, -0x10, 0x14, 0x10)) {
+            result = DCP_TRUE;
+            ring->flags |= 0x200;
+            ring->flags |= 0x400;
+            ring->flags |= 0x800;
+            ring->flags |= 0x100;
+            ring->flags |= 0x4000;
+            ring->vx = 0;
+            ring->unkC = 0x100;
+            ring->unkE = 0x100;
+            ring->sucker = w;
+        }
+        if ((ring->flags & 0x4000) && ring->sucker == w) {
+            ang = (u16)dcp_atan2(box.y - (ring->y >> 8), box.x - (ring->x >> 8));
+            ring->vx = (s16)dcp_spd_up(ring->vx, 0x10, 0x800);
+            spd = ring->vx;
+            ring->x += (s16)((spd * dcp_cos((u16)(ang + 0x1000))) >> 12);
+            ring->y += (s16)((spd * dcp_sin((u16)(ang + 0x1000))) >> 12);
+            ring->unkC -= 2;
+            if (ring->unkC < 0x40)
+                ring->unkC = 0x40;
+            ring->unkE -= 2;
+            if (ring->unkE < 0x40)
+                ring->unkE = 0x40;
+            if (ZABS_R(ring->x - w->x) < 0x400 && ZABS_R(ring->y - w->y) < 0x400)
+                ring->timer = 0;
+            result = DCP_TRUE;
+        }
+    }
+    return result;
 }
