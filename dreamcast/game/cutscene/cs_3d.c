@@ -54,6 +54,7 @@ int cs_model_load(CsModel *m, const char *file) {
 }
 
 void cs_model_free(CsModel *m) {
+    cs3d_forget_model(m);   /* drawn this frame before it was released (scene change) */
     if (m->ok)
         dcm_model_free(&m->mdl);
     free(m->blob);
@@ -160,6 +161,16 @@ void cs3d_add(const CsInst *inst) {
         s_inst[s_ninst++] = *inst;
 }
 
+/* a model freed after cs3d_add in the same frame (PlayerDemoModel_NextScene releases the scene
+ * after PlayerDemoModel_DrawModels): its instances are dropped from this frame's list */
+void cs3d_forget_model(const CsModel *m) {
+    int i, n = 0;
+    for (i = 0; i < s_ninst; i++)
+        if (s_inst[i].model != m)
+            s_inst[n++] = s_inst[i];
+    s_ninst = n;
+}
+
 void cs3d_reset(void) {
     s_ninst = 0;
     s_cam_ok = 0;
@@ -218,6 +229,37 @@ int cs3d_joint_pos(const CsInst *in, const char *name, float out[3]) {
     return 1;
 }
 
+/* the instance's material / pattern / SRT animations at its frame (looping over each set's length, as
+ * the archive animations run with the loop flag); pattern and SRT need the model's textures
+ * (NNS_G3dGetTex != NULL in PlayerDemoModel_LoadScene / TransformDemo_Load*) */
+static int s_matanim_draws;   /* instances drawn with material animations (host tests) */
+static const dcm_matstate_t *matstates(const CsInst *in) {
+    static dcm_matstate_t st[128];
+    const dcm_model_t *md = &in->model->mdl;
+    int k, any = 0;
+    if (!md->matx || md->hdr->num_materials > 128 || in->mat_idx < 0)
+        return NULL;
+    for (k = 0; k < 3; k++) {
+        const CsAnimSet *a = in->mat[k];
+        int nf, f;
+        if (!a || !a->set.hdr || in->mat_idx >= a->set.hdr->num_anims || (k > 0 && md->hdr->num_textures == 0))
+            continue;
+        nf = a->set.anims[in->mat_idx].num_frames;
+        f = (int)in->frame;
+        if (nf > 0)
+            f %= nf;
+        if (!any) {
+            dcm_matstate_init(md, st);
+            any = 1;
+        }
+        dcm_matanim_apply(&a->set, in->mat_idx, f, md, st);
+    }
+    if (any)
+        s_matanim_draws++;
+    return any ? st : NULL;
+}
+int cs3d_matanim_draws(void) { return s_matanim_draws; }
+
 void cs3d_draw_list(int list) {
     static dcm_mtx_t pal[DCM_MAX_PALETTE];
     static u8 vis[DCM_MAX_JOINTS];
@@ -238,7 +280,7 @@ void cs3d_draw_list(int list) {
         o.pt_list = 2;
 #endif
         o.alpha_scale = in->alpha ? in->alpha : 255;
-        dcm_draw(&in->model->mdl, pal, &m, &s_cam, vis, &s_lights, &o);
+        dcm_draw_ex(&in->model->mdl, pal, &m, &s_cam, vis, &s_lights, &o, matstates(in));
     }
 }
 

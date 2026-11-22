@@ -148,6 +148,7 @@ static void spawn_player(Level *lv)
     g_ui_game.save_progress[0] = gSaveData.unkC; g_ui_game.save_progress[1] = gSaveData.unk64;
     ui_stage_start(g_dcp_world.zone, g_dcp_world.act, g_chara);
     loading_end();
+    audio_load_end();
     if(g_obj_hooks.stage_exit != stage_exit_hook) { g_prev_stage_exit = g_obj_hooks.stage_exit; g_obj_hooks.stage_exit = stage_exit_hook; }
     if(g_ss.active) {
         /* Player_Create with unk18 & 0x40: rings, shield, tension, water flag, blinking invulnerability */
@@ -249,6 +250,7 @@ static void start_zone_music(char zone)
 static int load_stage(Level *lv, int idx)
 {
     loading_begin();   /* spinning ring until spawn_player has finished */
+    audio_load_begin(); /* music/effects fade out over the load (AUDIO.md 13) */
     g_stage_idx = idx;
     char dir[64];
     uint64_t t0 = timer_ms_gettime64();
@@ -398,9 +400,9 @@ static CsNext run_cutscene(CsKind kind, int id, int zone, const char *return_ban
     InputState in = {0};
     cs_story(zone);
     cutscene_set_return_bank(return_bank);
-    loading_begin();
-    if(cutscene_start(kind, id, g_chara) != 0) { loading_end(); printf("cutscene %d/%d: missing data\n", kind, id); return CS_NEXT_NONE; }
-    loading_end();
+    loading_begin(); audio_load_begin();
+    if(cutscene_start(kind, id, g_chara) != 0) { loading_end(); audio_load_end(); printf("cutscene %d/%d: missing data\n", kind, id); return CS_NEXT_NONE; }
+    loading_end(); audio_load_end();
     printf("cutscene %d/%d start\n", kind, id);
     for(;;) {
         int done;
@@ -446,9 +448,9 @@ static MenuRequest run_extra_zone(void)
     boss_extra_set_lives(gSaveData.unkE ? gSaveData.unkE : 3, gSaveData.unk66 ? gSaveData.unk66 : 3);
     boss_extra_set_difficulty(0);   /* gGameState.unk14: 0 normal */
     memset(&res, 0, sizeof(res));
-    loading_begin();
+    loading_begin(); audio_load_begin();
     r = boss_extra_init(g_chara);
-    loading_end();
+    loading_end(); audio_load_end();
     if(r == 0) {
         r = BOSS_EXTRA_FAILED;
         for(;;) {
@@ -494,6 +496,7 @@ static void run_special_stage(Level *lv, int stage)
     SpecialResult res;
     int r;
     g_special_pending = 0;
+    audio_load_begin();
     g_ss.rings = g_player.rings; g_ss.rings_total = g_player.rings_total; g_ss.tension = g_player.tension;
     g_ss.shield = g_player.pf & 0x30000000; g_ss.water = g_player.pf2 & 0x8000;
     g_ss.x = g_player.x >> 8; g_ss.y = (g_player.y >> 8) + 0x118;
@@ -511,6 +514,7 @@ static void run_special_stage(Level *lv, int stage)
     loading_begin();
     r = special_init(g_dcp_world.zone, 0);
     loading_end();
+    audio_load_end();
     printf("special stage %d: init %d\n", g_dcp_world.zone, r);
     if(r == 0) {
         for(;;) {
@@ -520,6 +524,7 @@ static void run_special_stage(Level *lv, int stage)
             sound_update(); audio_update();
             if(r) break;
         }
+        audio_load_begin();   /* the act reload: fade the special-stage music out */
         special_result(&res);
         g_emeralds = res.emerald_flags;   /* SpecialStage_Shutdown: unk28 |= 1 << stage when cleared */
         printf("special stage result %d, emeralds %02x\n", r, g_emeralds);
@@ -529,6 +534,7 @@ static void run_special_stage(Level *lv, int stage)
     /* StageEntry_StartFromSpecialStage: the act again, title card, saved state */
     g_ss.active = 1;
     if(load_stage(lv, stage) == 0) spawn_player(lv);
+    if(r != 0) audio_load_end();   /* the init failed: no frame-loop bracket was opened */
 }
 
 /* MENU_REQ_STAGE -> index into k_stages (story table), -1 if the stage is not in the port */
@@ -852,7 +858,7 @@ int main(int argc, char **argv)
                 enter_front_end();
             }
         }
-        if(++frame % 120 == 0) {
+        if(++frame % 120 == 0 && dbg_start) {   /* frame log: test builds only (each serial line costs ms) */
             uint64_t now = timer_ms_gettime64();
             if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
             printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f; worst frame %.2f ms, %d of 120 over 17.5 ms\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0, g_fmax / 1000.0, g_fslow);

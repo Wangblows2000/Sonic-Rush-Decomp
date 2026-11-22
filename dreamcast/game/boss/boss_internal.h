@@ -279,7 +279,7 @@ typedef struct BossEffect {
     BossModel unk134;         /* @0x134 model (scale @0x14C, rot @0x158, speed @0x248) */
     u32 unk2A0;               /* @0x2A0 BossEffect_Create flags */
     BossFn unk2A4;            /* @0x2A4 per-frame callback */
-    int unk2AC;               /* @0x2AC .nsbtp resource present (pattern animation, not converted) */
+    int unk2AC;               /* @0x2AC .nsbtp resource present (pattern animation, bound after the delay) */
     s32 unk2B0;               /* @0x2B0 EffRipple3D / EffSplash3D: height above the water level */
     const BossEffRes *res;
     int used;
@@ -341,6 +341,14 @@ int boss5_missiles_alive(void);
 /* ------------------------------------------------------- Boss2 */
 /* timing-only animation table of bossdata.bin ("bs2.nsbta" -> frame counts) */
 int boss_anim_lengths(const char *name, const u16 **frames, u32 *count);
+/* converted material animation of a timing-table entry (see boss_core.c), NULL if none */
+const dca_set_t *boss_matanim_for_frames(const u16 *frames);
+/* converted .dcc / .dcp / .dct of a stage effect (files[0..2], "" if absent); -1 if none */
+int boss_effect_matanims(int stage, const char *name, const char *files[3]);
+/* the material states of a model's slot 1..3 animation objects at their integer frames (static buffer,
+ * valid until the next call), NULL when none is bound: pass to dcm_draw_ex */
+const dcm_matstate_t *boss_model_matstates(const BossModel *m);
+extern u32 g_boss_matanim_draws;   /* draws that had material animations bound (tests) */
 int boss2_load(void);
 void boss2_unload(void);
 void *Boss2_Create(const ObjParam *a, s32 x, s32 y);

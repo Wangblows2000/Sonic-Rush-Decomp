@@ -616,6 +616,8 @@ void snd_drv_frame(void) {
  * gain: headroom for the DS mix, which clamps at the same full scale). */
 static uint8_t panKos[128];
 static uint32_t mixGain = 65536; /* q16 */
+static volatile uint32_t loadFade = 65536; /* q16, audio_load_begin fade-out of the effects (1 = off) */
+void snd_drv_set_fade(uint32_t q16) { loadFade = q16 > 65536 ? 65536 : q16; }
 static uint32_t mix_gain_q16(uint32_t tl) {
     /* round(65536 * 2^(-i/16)), i = 0..15 */
     static const uint16_t frac[16] = {0, 62757, 60097, 57549, 55109, 52773, 50535, 48393,
@@ -653,6 +655,7 @@ static uint32_t timer_to_freq(int timer) { return 16756991u / (uint32_t)(timer ?
 static int out_vol(const HwChan *h) {
     int64_t v = ((int64_t)h->vol * 127 * panGain[h->pan] * 65535) >> 22;
     v = (v * mixGain) >> 16;
+    v = (v * loadFade) >> 16;
     v >>= h->shift;
     return v > 65535 ? 65535 : (int)v;
 }

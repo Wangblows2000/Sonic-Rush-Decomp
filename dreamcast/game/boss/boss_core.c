@@ -93,6 +93,13 @@ static u32 s_neffs;
 typedef struct { char name[24]; u32 count; } BossAnimLen; /* followed by u16 frames[count], padded to 4 */
 static const u8 *s_alens;
 static u32 s_nalens;
+/* converted material animations (bossdata.py sections 5 / 6) */
+typedef struct { char name[24], file[96]; } BossMatAnimFile;
+typedef struct { u8 stage, pad[3]; char name[24], file[3][96]; } BossEffMatFiles;
+static const BossMatAnimFile *s_matfiles;
+static u32 s_nmatfiles;
+static const BossEffMatFiles *s_effmats;
+static u32 s_neffmats;
 
 static int boss_data_load(void) {
     char path[160];
@@ -138,8 +145,27 @@ static int boss_data_load(void) {
             s_effs = (const BossEffFile *)(s_data + end + 4);
             end += 4 + s_neffs * (u32)sizeof(BossEffFile);
             if (end + 4 <= s_data_size) {
+                u32 i;
                 s_nalens = *(u32 *)(s_data + end);
                 s_alens = s_data + end + 4;
+                end += 4;
+                for (i = 0; i < s_nalens && end + sizeof(BossAnimLen) <= s_data_size; i++) {
+                    const BossAnimLen *al = (const BossAnimLen *)(s_data + end);
+                    end += (u32)sizeof(*al) + ((al->count * 2 + 3) & ~3u);
+                }
+                if (end + 4 <= s_data_size) {
+                    s_nmatfiles = *(u32 *)(s_data + end);
+                    s_matfiles = (const BossMatAnimFile *)(s_data + end + 4);
+                    end += 4 + s_nmatfiles * (u32)sizeof(BossMatAnimFile);
+                    if (end + 4 <= s_data_size) {
+                        s_neffmats = *(u32 *)(s_data + end);
+                        s_effmats = (const BossEffMatFiles *)(s_data + end + 4);
+                        if (end + 4 + s_neffmats * (u32)sizeof(BossEffMatFiles) > s_data_size)
+                            s_neffmats = 0;
+                    }
+                    if (end > s_data_size)
+                        s_nmatfiles = 0;
+                }
             }
         }
     }
@@ -184,6 +210,61 @@ int boss_anim_lengths(const char *name, const u16 **frames, u32 *count) {
         }
         p += sizeof(*a) + ((a->count * 2 + 3) & ~3u);
     }
+    return -1;
+}
+
+/* The converted material / pattern / SRT set of a timing-table entry (by its frames pointer, as
+ * boss_anim_lengths returned it), loaded once and kept: Model_SetAnimation stores only the timing
+ * resource, boss_model_matstates finds the values here.  NULL when not converted / not on the disc. */
+const dca_set_t *boss_matanim_for_frames(const u16 *frames) {
+    static struct {
+        const u16 *frames;
+        BossAnimRes res;
+        int tried;
+    } cache[64];
+    static int ncache;
+    const u8 *p = s_alens;
+    u32 i;
+    int k;
+    if (frames == NULL)
+        return NULL;
+    for (k = 0; k < ncache; k++)
+        if (cache[k].frames == frames)
+            return cache[k].res.loaded ? &cache[k].res.set : NULL;
+    for (i = 0; p != NULL && i < s_nalens; i++) {
+        const BossAnimLen *a = (const BossAnimLen *)p;
+        if ((const u16 *)(p + sizeof(*a)) == frames) {
+            u32 j;
+            if (ncache >= 64)
+                return NULL;
+            k = ncache++;
+            cache[k].frames = frames;
+            cache[k].tried = 1;
+            for (j = 0; j < s_nmatfiles; j++)
+                if (!strncmp(s_matfiles[j].name, a->name, 24) && s_matfiles[j].file[0]) {
+                    char f[97];
+                    memcpy(f, s_matfiles[j].file, 96);
+                    f[96] = 0;
+                    boss_res_load_anim(&cache[k].res, f);
+                    break;
+                }
+            return cache[k].res.loaded ? &cache[k].res.set : NULL;
+        }
+        p += sizeof(*a) + ((a->count * 2 + 3) & ~3u);
+    }
+    return NULL;
+}
+
+/* the converted material (0), pattern (1), SRT (2) sets of a stage effect ("" when absent) */
+int boss_effect_matanims(int stage, const char *name, const char *files[3]) {
+    u32 i;
+    for (i = 0; i < s_neffmats; i++)
+        if (s_effmats[i].stage == stage && !strncmp(s_effmats[i].name, name, 24)) {
+            files[0] = s_effmats[i].file[0];
+            files[1] = s_effmats[i].file[1];
+            files[2] = s_effmats[i].file[2];
+            return 0;
+        }
     return -1;
 }
 

@@ -96,7 +96,8 @@ void snd_drv_set_alloc_mask(int player, uint16_t mask); /* SND_SetTrackAllocatab
 void snd_drv_frame(void);                               /* one ARM7 sound frame */
 void snd_drv_flush(void);                               /* push channel registers to the output */
 void snd_drv_stop_all(void);
-uint32_t snd_drv_mix_gain(void);                        /* port mix gain of the loaded bank, q16 */
+uint32_t snd_drv_mix_gain(void);
+void snd_drv_set_fade(uint32_t q16);                    /* extra output fade (loading), q16, 65536 = none */                        /* port mix gain of the loaded bank, q16 */
 
 /* per-channel register state after the last frame (host tests / debug) */
 typedef struct {

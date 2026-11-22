@@ -30,6 +30,7 @@
 #include <math.h>
 #include "../boss.h"
 #include "../boss7.h"
+extern uint32_t g_boss_matanim_draws;   /* boss_model.c */
 #include "../../objects/objects.h"
 
 static int g_fail, g_checks, g_verbose;
@@ -186,6 +187,8 @@ static void frame(u16 held) {
     player_collide();
     boss_update(&P);
     g_frame++;
+    if ((g_frame & 7) == 0)
+        boss_draw(0);   /* the draw step (material animations of the tornado / flame / aura effects) */
     if (boss_exc_background() >= 0 && boss_exc_background() < 8)
         g_exc_seen[boss_exc_background()]++;
     if (boss_brightness() > g_bright_max)
@@ -600,6 +603,8 @@ int main(int argc, char **argv) {
               "clash won: health 0, win cut-ins (exc_bg 6/7), white flashes (bright %d, 3D blend %d)", R.bright, R.blend);
         CHECK(R.cleared && R.cleared_hook == 1 && R.ring_bonus_ok, "the rival jumps away -> Stage_OnBossCleared once, ring bonus");
         CHECK(R.tris > 0 && R.cam_ok, "models pose and project through the boss camera (%d vertices)", R.tris);
+        CHECK(g_boss_matanim_draws > 0, "tornado / flame / aura effects drawn with their material and pattern "
+              "animations (%u draws)", (unsigned)g_boss_matanim_draws);
         printf("== [lose] story character %s: no mashing in the clash\n", c ? "Blaze" : "Sonic");
         run_fight(argv[1], c, 0, &L);
         CHECK(L.clash && L.lost && L.lost_state_none && L.lost_health == 1 && !L.cleared,

@@ -181,10 +181,11 @@ void boss_model_release(BossModel *m) { /* Model_Release */
 
 /* Model_SetAnimation (modified).  Joint animations (.nsbca, slot 0) are
  * converted (.dca) and drive the pose.  Material / pattern / SRT animations
- * are not converted (MODELS.md section 8): when bossdata.bin knows their
- * frame counts (res->nframes) they still run as timing-only animation
- * objects, so the "ended" bit (flags & 2) that boss state machines wait on
- * keeps the original timing; otherwise the slot stays empty.
+ * (slots 1..3) are converted too (.dcc / .dcp / .dct, MODELS.md): a set loaded
+ * with boss_res_load_anim drives them directly; a timing resource (frame
+ * counts of bossdata.bin, res->nframes) keeps the original timing of the
+ * "ended" bit (flags & 2) and finds its converted values at the draw
+ * (boss_model_matstates); otherwise the slot stays empty.
  * The cross-fade branch (flags & 0x40, slots 0/1/4) is copied: the running
  * animation moves to anm2 with ratio 0x1000 and the new one starts at 0. */
 static u16 anim_frames(const BossAnimRes *res, u32 idx, int *ok) {
@@ -461,6 +462,44 @@ void boss_model_set_joint_rot(BossModel *m, int slot, int joint, const MtxFx33 *
         m->jr_n = slot + 1;
 }
 
+/* The material animation objects of slots 1 (colour, .nsbma), 2 (pattern, .nsbtp), 3 (SRT, .nsbta),
+ * cross-fade source first: NNSi_G3dAnmBlendMat runs every bound object in turn (no blending), the
+ * last one written wins.  Timing-only resources find their converted set through bossdata.bin. */
+static const dca_set_t *matanim_set(const BossAnmObj *a) {
+    if (a == NULL || a->res == NULL)
+        return NULL;
+    if (a->res->loaded && a->res->set.hdr != NULL)
+        return a->res->set.hdr->kind >= DCA_KIND_MATCOL && a->res->set.hdr->kind <= DCA_KIND_TEXSRT ? &a->res->set
+                                                                                                     : NULL;
+    return boss_matanim_for_frames(a->res->nframes);
+}
+u32 g_boss_matanim_draws;
+const dcm_matstate_t *boss_model_matstates(const BossModel *m) {
+    static dcm_matstate_t st[128];
+    const dcm_model_t *md;
+    int slot, k, any = 0;
+    if (m == NULL || m->res == NULL || !m->res->loaded)
+        return NULL;
+    md = &m->res->mdl;
+    if (md->matx == NULL || md->hdr->num_materials > 128)
+        return NULL;
+    for (slot = 1; slot <= 3; slot++)
+        for (k = 0; k < 2; k++) {
+            const BossAnmObj *a = k == 0 ? m->anm2[slot] : m->anm[slot];
+            const dca_set_t *s = matanim_set(a);
+            if (s == NULL)
+                continue;
+            if (!any) {
+                dcm_matstate_init(md, st);
+                any = 1;
+            }
+            dcm_matanim_apply(s, a->idx, (int)(a->frame >> 12), md, st);
+        }
+    if (any)
+        g_boss_matanim_draws++;
+    return any ? st : NULL;
+}
+
 int boss_model_draw(const BossModel *m, int list) {
     dcm_camera_t cam;
     dcm_draw_opts_t o;
@@ -471,11 +510,12 @@ int boss_model_draw(const BossModel *m, int list) {
     o.list = list;
     o.pt_list = PVR_LIST_PT_POLY;
     o.alpha_scale = 255;
-    return dcm_draw(&m->res->mdl, m->palette, &m->mdl_mtx, &cam, NULL, g_boss_lights, &o);
+    return dcm_draw_ex(&m->res->mdl, m->palette, &m->mdl_mtx, &cam, NULL, g_boss_lights, &o, boss_model_matstates(m));
 #else
     (void)o;
     if (list != 0)
         return 0;
+    (void)boss_model_matstates(m);   /* host: the material animations are evaluated as on the PVR path */
     {
         static float xyz[3 * 4096];
         int n, i;

@@ -7,11 +7,9 @@
  * BossEffect_Create(name, mask, flags, x, y, z) loads "<name>.nsbmd" from the
  * zone act archive and, for each set bit of mask, the animation
  * <name>{.nsbca,.nsbma,.nsbtp,.nsbta,.nsbva}; .nsbtp is kept for later
- * (@0x2AC) and bound when the 2-frame delay ends.  Only .nsbca (joint
- * animation) is converted for the Dreamcast, so material/pattern/SRT
- * animations show their first state (MODELS.md section 8).  Every converted
- * effect's .nsbca has the same length as its other animations, so the
- * "all animations ended" lifetime test gives the same frame count.
+ * (@0x2AC) and bound when the 2-frame delay ends.  The converted sets are
+ * .dca (joint) and .dcc / .dcp / .dct (material colour / texture pattern /
+ * texture SRT, bossdata.bin section 6); boss_model_draw applies slots 1..3.
  */
 #include <string.h>
 #include "boss_internal.h"
@@ -25,6 +23,7 @@ struct BossEffRes {
     char name[24];
     BossModelRes mdl;
     BossAnimRes anim;
+    BossAnimRes mat[3];    /* slots 1 .nsbma, 2 .nsbtp, 3 .nsbta (converted .dcc / .dcp / .dct) */
 };
 static BossEffRes s_res[BEFF_RES_MAX];
 static int s_nres;
@@ -51,6 +50,14 @@ int boss_effects_load(int stage) {
         r |= boss_res_load_model(&e->mdl, model);
         if (anim)
             r |= boss_res_load_anim(&e->anim, anim);
+        {
+            const char *mf[3];
+            int k;
+            if (boss_effect_matanims(stage, name, mf) == 0)
+                for (k = 0; k < 3; k++)
+                    if (mf[k][0])
+                        r |= boss_res_load_anim(&e->mat[k], mf[k]);
+        }
         s_nres++;
     }
     return r ? -1 : 0;
@@ -62,6 +69,9 @@ void boss_effects_shutdown(void) {
     for (i = 0; i < s_nres; i++) {
         boss_res_free_model(&s_res[i].mdl);
         boss_res_free_anim(&s_res[i].anim);
+        boss_res_free_anim(&s_res[i].mat[0]);
+        boss_res_free_anim(&s_res[i].mat[1]);
+        boss_res_free_anim(&s_res[i].mat[2]);
     }
     s_nres = 0;
 }
@@ -107,7 +117,8 @@ BossEffect *BossEffect_Create(const char *name, u32 anim_mask, u32 flags, s32 x,
     for (i = 0; i < 5; i++) {
         if (anim_mask & (1u << i)) {
             if (i != 2)
-                Model_SetAnimation(&w->unk134, i, i == 0 && res && res->anim.loaded ? &res->anim : NULL, 0);
+                Model_SetAnimation(&w->unk134, i, res == NULL ? NULL : i == 0 ? (res->anim.loaded ? &res->anim : NULL)
+                                                  : (i <= 3 && res->mat[i - 1].loaded ? &res->mat[i - 1] : NULL), 0);
             else
                 w->unk2AC = 1;
         }
@@ -148,7 +159,9 @@ void BossEffect_State_Main(void *self) {
         w->unk8--;
         if (w->unk8 != 0)
             return;
-        /* Model_SetAnimation(m, 2, w->unk2AC, ...): pattern animation not converted */
+        /* Model_SetAnimation(m, 2, w->unk2AC, 0): the pattern animation, bound after the delay */
+        if (w->unk2AC && w->res != NULL && w->res->mat[1].loaded)
+            Model_SetAnimation(m, 2, &w->res->mat[1], 0);
         w->h.disp_flags &= ~0x30;
     }
 }

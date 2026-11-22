@@ -268,7 +268,8 @@ BOSS_ZONES = [1, 2, 3, 4, 5, 6, 7]   # z13 .. z73 (zone index 0..6), stage = zon
 EXTRA_EFFECT_ARCS = [("narc/zf3_act_lz7.narc", 23)]   # BossF: zone 7 act 2 (stage 23)
 
 
-def effect_table(models_dir):
+def manifest_resolver(models_dir):
+    """source -> manifest entry of build/dreamcast/models (following duplicate_of)."""
     import json
     man = json.load(open(os.path.join(models_dir, "manifest.json")))
     by_src = {e["source"]: e for e in man["entries"]}
@@ -278,6 +279,11 @@ def effect_table(models_dir):
         while e is not None and "duplicate_of" in e:
             e = by_src.get(e["duplicate_of"])
         return e
+    return resolve
+
+
+def effect_table(models_dir):
+    resolve = manifest_resolver(models_dir)
 
     out = []
     for z in BOSS_ZONES:
@@ -682,6 +688,40 @@ def main(argv):
             blob += b"\0"
         out += blob
         print("timing-only %s:%s: %d animations, frames %s" % (arc, member, len(frames), frames))
+    # converted material animations (.dcc colour / .dcp texture pattern / .dct texture SRT, nsbmd2dc.py):
+    # section 5 = the timing-table names above -> package, section 6 = the effects' slots 1..3
+    # (BossEffect_Create <name>.nsbma / .nsbtp / .nsbta); boss_core.c reads both, older readers stop before
+    mat_ext = {".nsbma": ".dcc", ".nsbtp": ".dcp", ".nsbta": ".dct"}
+    resolve = manifest_resolver(a.models)
+
+    def converted(src, ext):
+        e = resolve(src)
+        f = [o for o in (e or {}).get("outputs", []) if o.endswith(ext)]
+        return f[0] if f else ""
+
+    def stage_key(arc):
+        return arc.split("/")[1][:3]      # narc/z43_act_lz7.narc -> z43
+    out += struct.pack("<I", len(ANIM_LENGTHS))
+    for arc, member in ANIM_LENGTHS:
+        f = converted("%s:%s" % (arc, member), mat_ext[member[member.rindex("."):]])
+        out += struct.pack("<24s96s", member.encode(), f.encode())
+        if f:
+            ASSETS.setdefault(stage_key(arc), []).append(f)
+    effmats = []
+    for arc, stage in [("narc/z%d3_act_lz7.narc" % z, (z - 1) * 3 + 2) for z in BOSS_ZONES] + EXTRA_EFFECT_ARCS:
+        for name in EFFECTS:
+            if not converted("%s:%s.nsbmd" % (arc, name), ".dcm"):
+                continue
+            fs = [converted("%s:%s%s" % (arc, name, x), mat_ext[x]) for x in (".nsbma", ".nsbtp", ".nsbta")]
+            if any(fs):
+                effmats.append((stage, name, fs))
+                ASSETS.setdefault(stage_key(arc), []).extend(f for f in fs if f)
+    out += struct.pack("<I", len(effmats))
+    for stage, name, fs in effmats:
+        out += struct.pack("<B3x24s96s96s96s", stage, name.encode(), *(f.encode() for f in fs))
+    print("material animations: %d timing-table packages, %d effects with material / pattern / SRT sets" %
+          (sum(1 for arc, m in ANIM_LENGTHS if converted("%s:%s" % (arc, m), mat_ext[m[m.rindex("."):]])),
+           len(effmats)))
     os.makedirs(a.out, exist_ok=True)
     with open(os.path.join(a.out, "bossdata.bin"), "wb") as f:
         f.write(out)

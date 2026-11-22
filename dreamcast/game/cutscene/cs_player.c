@@ -68,6 +68,7 @@ typedef struct {
     const PdScene *ent;
     s8 count, sky;    /* unk20 / unk21 */
     CsAnimSet jnt, vis;
+    CsAnimSet mat[3];      /* the scene archive's mdl.nsbma / .nsbtp / .nsbta (pd_matx) */
     CsModel models[PD_MAX_MODELS];
     CsInst inst[PD_MAX_MODELS];
     u32 mflags[PD_MAX_MODELS];
@@ -258,6 +259,8 @@ static void PlayerDemoModel_ReleaseScene(PdModel *w) {
         cs_model_free(&w->models[i]);
     cs_anim_free(&w->jnt);
     cs_anim_free(&w->vis);
+    for (i = 0; i < 3; i++)
+        cs_anim_free(&w->mat[i]);
     memset(w->inst, 0, sizeof(w->inst));
     memset(w->mflags, 0, sizeof(w->mflags));
     w->count = 0;
@@ -269,6 +272,16 @@ static void PlayerDemoModel_LoadScene(PdModel *w) {
     w->count = (s8)(e->count > PD_MAX_MODELS ? PD_MAX_MODELS : e->count);
     cs_anim_load(&w->jnt, e->dca);
     cs_anim_load(&w->vis, e->dcv);
+    {
+        /* pd_matx parallels pd_scene: archive files 2..4 (data_02075704: slots 1, 2, 3) */
+        const PdScene *sc0 = (const PdScene *)cs_sec("pd_scene", NULL);
+        const char *mx = (const char *)cs_sec("pd_matx", NULL);
+        int k;
+        if (sc0 && mx)
+            for (k = 0; k < 3; k++)
+                if (mx[48 * (3 * (e - sc0) + k)])
+                    cs_anim_load(&w->mat[k], mx + 48 * (3 * (e - sc0) + k));
+    }
     w->sky = -1;
     for (j = 0; j < w->count; j++) {
         CsInst *in = &w->inst[j];
@@ -290,8 +303,15 @@ static void PlayerDemoModel_LoadScene(PdModel *w) {
             in->vis = &w->vis;
             in->jnt_idx = j;
             in->vis_idx = j;
+            if (!(w->mflags[j] & 1)) {   /* flags & 1 (cam / int nodes): joint and visibility only */
+                in->mat[0] = &w->mat[0];
+                in->mat[1] = &w->mat[1];
+                in->mat[2] = &w->mat[2];
+            }
+            in->mat_idx = j;
         } else {
             in->jnt_idx = in->vis_idx = -1;
+            in->mat_idx = -1;
         }
     }
     cs_log("pdemo %d scene %d %s models %d", gPlayerDemoId, w->scene, e->dca, w->count);

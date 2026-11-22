@@ -198,6 +198,8 @@ typedef struct {
     CsModel *model;
     const CsAnimSet *jnt, *vis;
     int jnt_idx, vis_idx;
+    const CsAnimSet *mat[3];   /* Model_SetAnimation slots 1 colour (.dcc), 2 pattern (.dcp), 3 SRT (.dct) */
+    int mat_idx;               /* animation index in them (the model's index in its archive) */
     float frame;           /* Model_Animate frame (loops over the animation) */
     float scale[3], rot[9], trans[3];
     u8 alpha;
@@ -207,6 +209,8 @@ void cs3d_begin(const CsCam *cam, const dcm_lights_t *lights);
 void cs3d_add(const CsInst *inst);  /* records the instance for this frame */
 void cs3d_draw_list(int pvr_list);
 int cs3d_count(void);
+void cs3d_forget_model(const CsModel *m);
+int cs3d_matanim_draws(void);        /* draws that had material / pattern / SRT animations (tests) */
 void cs3d_reset(void);
 /* world matrix of joint `name` (or joint 0) of an instance (camera nodes) */
 int cs3d_joint_pos(const CsInst *inst, const char *name, float out[3]);

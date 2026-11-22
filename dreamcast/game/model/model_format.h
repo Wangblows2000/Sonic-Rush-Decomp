@@ -19,6 +19,7 @@
 
 #define DCM_MAGIC 0x314D4344u /* "DCM1" */
 #define DCA_MAGIC 0x31414344u /* "DCA1" */
+#define DCA_VERSION 1         /* .dca / .dcv / .dcc / .dcp / .dct */
 #define DCM_VERSION 2         /* 2: + material / texture extras (header 148 bytes); 1 is still read */
 
 /* ------------------------------------------------------------------ .dcm (one model) */

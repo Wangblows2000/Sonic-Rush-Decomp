@@ -771,13 +771,14 @@ static int boss7_model_draw(const BossModel *m, const dcm_mtx_t *pal, const dcm_
     o.list = list;
     o.pt_list = PVR_LIST_PT_POLY;
     o.alpha_scale = 255;
-    return dcm_draw(&m->res->mdl, pal, mtx, &cam, vis, lights, &o);
+    return dcm_draw_ex(&m->res->mdl, pal, mtx, &cam, vis, lights, &o, boss_model_matstates(m));
 #else
     (void)o;
     (void)vis;
     (void)lights;
     if (list != 0)
         return 0;
+    (void)boss_model_matstates(m);
     {
         static float xyz[3 * 4096];
         int n, i;

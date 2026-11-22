@@ -427,8 +427,14 @@ def conv_player(o):
     # pd_scene: n x {char dca[48], char dcv[48], char cam[64], char int[64], s32 count,
     #   {char dcm[48], u32 flags} x 16}  (slot 0/1 = cam/int of the archive's mdl.nsbmd)
     sc = b""
+    matx = b""     # pd_matx: n x {char dcc[48], char dcp[48], char dct[48]}: mdl.nsbma / .nsbtp / .nsbta
     for arcname, n, ids in scenes:
         base = arcname
+        for ext, ofmt in ((".nsbma", ".dcc"), (".nsbtp", ".dcp"), (".nsbta", ".dct")):
+            f = [x for x in mod.get(base + ":mdl" + ext, []) if x.endswith(ofmt)]
+            if f:
+                o.models.add(f[0])
+            matx += fixstr(f[0] if f else "", 48)
         dca = mod.get(base + ":mdl.nsbca", [""])
         dcv = mod.get(base + ":mdl.nsbva", [""])
         mdl = mod.get(base + ":mdl.nsbmd", ["", ""])
@@ -450,6 +456,7 @@ def conv_player(o):
                 rec += fixstr("", 48) + struct.pack("<I", 5 if j < 2 else 0)
         sc += rec
     o.sec("pd_scene", sc)
+    o.sec("pd_matx", matx)
     o.report.append("player demo: %d scenes" % len(scenes))
     # lights: data_0207c3a0[demo][act] {s32 vec_alt_idx? ...}: PlayerDemoLight_* tables
     # (colour rows data_02074960 [row][col] 3 x u16, vectors data_020748bc[row] 3 x s16[3],
@@ -519,7 +526,9 @@ def conv_trans(o):
             o.models.add(outs[0])
     o.sec("tr_mlist", b"".join(fixstr(f, 48) for f in files))
     o.sec("tr_models", mem(0x02316244, 3 * 24))   # [kind] s32[6] model list index
-    for f in mod.get("narc/pldm_trans_lz7.narc:mdl.nsbca", []) + mod.get("narc/pldm_trans_lz7.narc:mdl.nsbva", []):
+    for f in (mod.get("narc/pldm_trans_lz7.narc:mdl.nsbca", []) + mod.get("narc/pldm_trans_lz7.narc:mdl.nsbva", []) +
+              mod.get("narc/pldm_trans_lz7.narc:mdl.nsbma", []) + mod.get("narc/pldm_trans_lz7.narc:mdl.nsbtp", []) +
+              mod.get("narc/pldm_trans_lz7.narc:mdl.nsbta", [])):
         o.models.add(f)
     for f in ["narc__player_lz7__son.dca", "narc__player_lz7__son.dcv", "mod__son__son.dcm", "mod__blz__blz.dcm"]:
         o.models.add(f)

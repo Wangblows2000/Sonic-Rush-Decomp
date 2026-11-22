@@ -200,6 +200,8 @@ static void test_player(const char *dir) {
         frames = run(CS_PLAYER, id, 0, press_a, 40000, (id == 1 || id == 21 || id == 30 || id == 40) ? dn : NULL,
                      dumpf, 3);
         CHECK(frames > 0, "pdemo %d did not end", id);
+        if (id == 1)
+            CHECK(cs3d_matanim_draws() > 0, "pdemo 1: models drawn with their material animations");
         /* every command, in order, at its time (relative to its scene) */
         for (i = 0; i < ncmd; i++) {
             const u8 *c = b + 0x14 + 16 * i;

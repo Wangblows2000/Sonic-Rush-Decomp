@@ -56,6 +56,8 @@ typedef struct {
     const dcm_draw_t *draws;
     const dcm_strip_t *strips;
     const dcm_vertex_t *vertices;
+    const dcm_matx_t *matx;       /* version 2 packages: material names + texture SRT inputs, else NULL */
+    const dcm_texx_t *texx;       /* version 2: texture / palette names, else NULL */
     void *tex_vram[64];           /* pvr_ptr_t per texture (Dreamcast) */
     uint8_t tex_class[64];        /* DCM_CLASS_* derived from texture contents */
 } dcm_model_t;
@@ -126,11 +128,44 @@ void dcm_mtx_mul(dcm_mtx_t *out, const dcm_mtx_t *a, const dcm_mtx_t *b); /* out
 /* Default stage lights (Stage_Create / StageTitleCardPlayer_Draw vectors, facing right). */
 void dcm_lights_stage(dcm_lights_t *l, int facing_left);
 
+/* ---- material animations (.dcc colour, .dcp texture pattern, .dct texture SRT; dca_set_load loads them)
+ * The per-draw material values NNSi_G3dFuncSbc_MAT_InternalDefault builds (NNSG3dMatAnmResult):
+ * dcm_matstate_init fills them from the static materials, dcm_matanim_apply runs one animation at an
+ * integer frame (the NNS objects use frame >> 12) over them, dcm_draw_ex draws with them. */
+typedef struct {
+    uint32_t diffuse, ambient, specular, emission; /* 0xAARRGGBB */
+    uint16_t texture;             /* dcm texture index, 0xFFFF = untextured */
+    uint8_t alpha;                /* 0..31; 0 = the material's shapes are not drawn (NNS rs->flag 2) */
+    uint8_t srt_flags;            /* DCM_SRT_* */
+    uint8_t texgen;               /* TEXIMAGE_PARAM >> 30 (a texture SRT animation sets 1) */
+    uint8_t animated;             /* bit 0 colour, 1 pattern, 2 SRT */
+    uint16_t orig_w, orig_h;
+    int32_t scale_s, scale_t, trans_s, trans_t, mag_w, mag_h; /* fx32 */
+} dcm_matstate_t;
+void dcm_matstate_init(const dcm_model_t *m, dcm_matstate_t *st);   /* st[num_materials] */
+/* Animation `anim` of a material-animation set at `frame` (clamped to 0..num_frames-1).  Returns the
+ * number of materials it bound (0 for a joint / visibility set or a model without names). */
+int dcm_matanim_apply(const dca_set_t *s, int anim, int frame, const dcm_model_t *m, dcm_matstate_t *st);
+/* Texture affine of a material state (NNSi_G3dSendTexSRTSi3d, uv normalised to the bound texture):
+ * u' = a * u + e, v' = d * v + f; returns 0 when no texture matrix applies. */
+int dcm_matstate_uv(const dcm_model_t *m, int material, const dcm_matstate_t *st, float *a, float *d, float *e,
+                    float *f);
+
 /* ---- drawing */
 /* Transform (SH-4) + submit the draws whose class matches opts->list; returns PVR triangles sent.
  * vis may be NULL (SBC defaults), lights NULL (stage defaults). */
 int dcm_draw(const dcm_model_t *m, const dcm_mtx_t *palette, const dcm_mtx_t *model_mtx, const dcm_camera_t *cam,
              const uint8_t *vis, const dcm_lights_t *lights, const dcm_draw_opts_t *opts);
+/* Same with animated material states (st[num_materials] from dcm_matstate_init / dcm_matanim_apply;
+ * NULL = the static materials).  Strips crossing the camera's near plane (clip w < near_w) are
+ * clipped there (one PVR strip per clipped triangle), not dropped. */
+int dcm_draw_ex(const dcm_model_t *m, const dcm_mtx_t *palette, const dcm_mtx_t *model_mtx, const dcm_camera_t *cam,
+                const uint8_t *vis, const dcm_lights_t *lights, const dcm_draw_opts_t *opts,
+                const dcm_matstate_t *st);
+/* Host tests: every vertex dcm_draw / dcm_draw_ex would submit (screen x, y, z, u, v, argb, end-of-strip),
+ * with the material index; NULL = off.  Without _arch_dreamcast nothing else is drawn. */
+typedef void (*dcm_emit_hook_t)(int material, const float *xyzuv, uint32_t argb, int eol);
+extern dcm_emit_hook_t dcm_host_emit;
 
 /* Host/test hook: transformed screen position of every vertex (x, y, 1/w), no PVR. */
 int dcm_transform_vertices(const dcm_model_t *m, const dcm_mtx_t *palette, const dcm_mtx_t *model_mtx,

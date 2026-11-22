@@ -52,7 +52,8 @@ from nds_archive import maybe_decompress, open_narc  # noqa: E402
 
 DCM_MAGIC = b"DCM1"
 DCA_MAGIC = b"DCA1"
-VERSION = 2
+VERSION = 2          # .dcm
+DCA_VERSION = 1      # .dca / .dcv / .dcc / .dcp / .dct
 
 PAL_JOINT, PAL_MIX, PAL_BB, PAL_BBY, PAL_IDENTITY = 0, 1, 2, 3, 4
 TEX_ARGB1555, TEX_RGB565, TEX_ARGB4444 = 0, 1, 2
@@ -680,7 +681,7 @@ def anim_locals(model_nodes, sampled, frame):
 
 def write_dca_joint(anims):
     """Joint animation set -> .dca bytes (kind 1). Returns (bytes, report)."""
-    hdr = bytearray(struct.pack("<4sHHIHHI", DCA_MAGIC, VERSION, 1, 0, len(anims), 0, 0))
+    hdr = bytearray(struct.pack("<4sHHIHHI", DCA_MAGIC, DCA_VERSION, 1, 0, len(anims), 0, 0))
     table_pos = len(hdr)
     body = bytearray(32 * len(anims))
     data = bytearray()
@@ -760,7 +761,7 @@ def write_dca_joint(anims):
 
 
 def write_dca_vis(vanims):
-    hdr = bytearray(struct.pack("<4sHHIHHI", DCA_MAGIC, VERSION, 2, 0, len(vanims), 0, 0))
+    hdr = bytearray(struct.pack("<4sHHIHHI", DCA_MAGIC, DCA_VERSION, 2, 0, len(vanims), 0, 0))
     table_pos = len(hdr)
     out = hdr + bytearray(32 * len(vanims))
     max_j = 0

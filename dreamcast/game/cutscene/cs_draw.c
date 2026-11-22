@@ -134,7 +134,8 @@ static int pow2ok(int v) { return v >= 8 && v <= 1024 && (v & (v - 1)) == 0; }
 void cutscene_draw_list(int list) {
     const CsQuad *q = cs_quads();
     int n = cs_quad_count(), i;
-    (void)list;
+    if (list == 0)
+        cs3d_draw_list(0);   /* the 3D submission path without a PVR (material animations, clipping) */
     for (i = 0; i < n; i++)
         if (q[i].kind != CSQ_FLAT && q[i].tex && q[i].tex->argb) {
             assert(pow2ok(q[i].tex->tw) && pow2ok(q[i].tex->th));

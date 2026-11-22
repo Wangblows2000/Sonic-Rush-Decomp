@@ -16,6 +16,7 @@
 #include <string.h>
 #include <math.h>
 #include "../boss.h"
+extern uint32_t g_boss_matanim_draws;   /* boss_model.c */
 #include "../boss_final.h"
 #include "../../objects/objects.h"
 #include "../../player/dcp_collision.h"
@@ -567,6 +568,8 @@ int main(int argc, char **argv) {
               "camera eye (%.0f,%.0f,%.0f) at (%.0f,%.0f,%.0f)", eye[0], eye[1], eye[2], at[0], at[1], at[2]);
         tris = boss_draw(0);
         CHECK(tris > 0, "boss_draw transforms %d vertices", tris);
+        CHECK(g_boss_matanim_draws > 0, "models drawn with their material / SRT animations (bsf sky): %u",
+              (unsigned)g_boss_matanim_draws);
     }
     printf("%d checks, %d failed\n", g_checks, g_fail);
     boss_shutdown();

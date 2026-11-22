@@ -49,6 +49,7 @@ void sound_stop(SoundHandle *h, int fade_frames); /* NNS_SndPlayerStopSeq (fade 
 int sound_is_playing(const SoundHandle *h);
 void sound_release(SoundHandle *h);            /* Sound_FreeHandle (detaches; sound continues) */
 void sound_stop_all(void);
+void sound_set_fade(uint32_t q16);             /* output fade of all effects, q16 (65536 = none); used by audio_load_begin */
 void sound_update(void);                       /* once per 60 Hz game frame */
 
 /* hooks adapter (sound_hooks.c): g_dcp_hooks.sfx / sfx_stop, g_obj_hooks.sfx.

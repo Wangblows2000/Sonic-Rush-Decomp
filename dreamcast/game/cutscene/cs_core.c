@@ -10,6 +10,9 @@
 #include <stdlib.h>
 #include "cs_internal.h"
 #ifdef _arch_dreamcast
+#include "../engine/pak.h"   /* /cd/data.pak: per-stage files without a directory walk each */
+#endif
+#ifdef _arch_dreamcast
 #include "../engine/render.h"
 #endif
 
@@ -38,6 +41,20 @@ void *cs_load_file(const char *path, u32 *size) {
     u8 *b;
 #ifdef _arch_dreamcast
     uint64_t t0 = timer_ms_gettime64();
+#endif
+#ifdef _arch_dreamcast
+    {   /* /cd/data.pak (engine/pak.h) */
+        void *pb;
+        u32 ps;
+        int k = pak_load(path, &pb, &ps);
+        if (k == PAK_FOUND) {
+            if (size)
+                *size = ps;
+            return pb;
+        }
+        if (k == PAK_MISSING)
+            return NULL;
+    }
 #endif
     f = fopen(path, "rb");
     if (!f)

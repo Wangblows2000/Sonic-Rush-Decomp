@@ -14,6 +14,7 @@
 #include "../../player/dcp_player.h"
 
 DcpWorld g_dcp_world;
+DcpHooks g_dcp_hooks;
 static int g_fail, g_checks;
 #define CHECK(c, ...)                                     \
     do {                                                  \

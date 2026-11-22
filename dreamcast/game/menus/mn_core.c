@@ -14,6 +14,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mn_internal.h"
+#ifdef _arch_dreamcast
+#include "../engine/pak.h"   /* /cd/data.pak: per-stage files without a directory walk each */
+#endif
 
 char g_mn_dir[96] = "/cd/menus";
 char g_mn_sprite_dir[96] = "/cd/sprites";
@@ -44,11 +47,26 @@ int mn_lang(void) {
 }
 
 int mn_load_file(const char *path, u8 **out, u32 *size) {
-    FILE *f = fopen(path, "rb");
+    FILE *f;
     long n;
     u8 *b;
     *out = NULL;
     *size = 0;
+#ifdef _arch_dreamcast
+    {   /* /cd/data.pak (engine/pak.h) */
+        void *pb;
+        u32 ps;
+        int k = pak_load(path, &pb, &ps);
+        if (k == PAK_FOUND) {
+            *out = (u8 *)pb;
+            *size = ps;
+            return 0;
+        }
+        if (k == PAK_MISSING)
+            return -1;
+    }
+#endif
+    f = fopen(path, "rb");
     if (!f)
         return -1;
     fseek(f, 0, SEEK_END);

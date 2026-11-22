@@ -16,6 +16,9 @@ Tools and code (all written for this port, no third-party code):
 | `dreamcast/game/model/model_format.h` | Binary layout of `.dcm` / `.dca` / `.dcv`. |
 | `dreamcast/game/model/model.h`, `model.c` | Native runtime: load, sample animation, pose, cameras, SH-4 transform + lighting, PVR submission (`pvr_prim`). |
 | `dreamcast/game/model/tests/model_hosttest.c` | Host harness. It prints the screen-space vertices from `model.c` so they can be compared with `dcm.py`. |
+| `tools/dreamcast/models/matanim.py` | BMA0 / BTP0 / BTA0 → `.dcc` / `.dcp` / `.dct` (exact NNS per-frame evaluation, section 4.1). |
+| `dreamcast/game/model/tests/model_matanim_test.c` | Host test: material animations, v2 extras, near-plane clipping (`gcc -std=c99 -I.. model_matanim_test.c ../model.c -lm`; argument: `build/dreamcast/models`). |
+| `dreamcast/game/model/tests/matanim_dc.c`, `build_matanim_disc.sh` | KOS test disc (`build/dreamcast/model_test/mtest.cdi`): tornado + sky material animations, near-plane clipping. |
 
 `g3d.py` imports `tools/dreamcast/sprites/nds_archive.py` for NARC and LZ77.
 
@@ -256,7 +259,8 @@ See `dreamcast/game/model/model_format.h` for the authoritative structures. All 
 little-endian, all offsets count from the file start, structures are 4-byte aligned and texture
 pixels are 32-byte aligned.
 
-`.dcm` = `dcm_header_t` (140 B), then these arrays:
+`.dcm` = `dcm_header_t` (148 B, version 2; version 1 packages with the 140-byte header still load),
+then these arrays:
 
 | array | entry size |
 |-------|-----------|
@@ -270,8 +274,10 @@ pixels are 32-byte aligned.
 | draws `dcm_draw_t` | 16 B |
 | strips `dcm_strip_t` | 8 B |
 | vertices `dcm_vertex_t` | 32 B |
+| (v2) material extras `dcm_matx_t`: name, texture SRT inputs (flags, scale, trans, origW/H, magW/H), base texture size | 52 B |
+| (v2) texture extras `dcm_texx_t`: TEX0 texture and palette name, DS size, origW/H | 40 B |
 
-The texture pixel data follows the arrays. The header also records:
+The texture pixel data follows the arrays (the v2 extras come after it). The header also records:
 
 - `src_num_vertex/polygon/triangle/quad`, copied from the DS header;
 - `out_vertices/out_polygons/out_pvr_triangles`, decoded by the converter;
@@ -280,6 +286,33 @@ The texture pixel data follows the arrays. The header also records:
 `.dca` / `.dcv` = `dca_header_t` (kind 1 joint / 2 visibility) + `dca_anim_t[]` (32 B; name,
 frames, joints, channel table, data pool), then `dca_channel_t[]` (16 B: modes, flags, offsets) and
 the sample pool.
+
+### 4.1 Material animations: `.dcc` / `.dcp` / `.dct`
+
+`tools/dreamcast/models/matanim.py` converts the three NNS material animation kinds into the same
+container (`dca_header_t` kind 3 / 4 / 5). Each animation is a list of materials bound by **name**,
+as `NNSi_G3dAnmObjInitNsBma/Btp/Bta` bind them. Each material is a `dcx_mat_t` (76 B: name + 5
+`dcx_chan_t` {mode, value, offset}). Every channel is either constant or one sample per integer frame.
+
+The converter evaluates the samples with exact ports of the NNS calc functions (the DS objects use
+`frame >> 12`). The 1/2- and 1/4-rate interpolation and the "past the last interpolated frame" rules
+are kept, so the runtime only indexes.
+
+| kind | source | calc functions | channels |
+|---|---|---|---|
+| 3 `.dcc` | BMA0 | `NNSi_G3dAnmCalcNsBma`, `GetMatColAnmValue_`, `GetMatColAnmuAlphaValue_` | diffuse, ambient, specular, emission (GXRgb), polygon alpha |
+| 4 `.dcp` | BTP0 | `NNSi_G3dAnmCalcNsBtp`, `NNSi_G3dGetTexPatAnmFV` | texture index \| palette index << 8 into the animation's name tables (`dca_anim_t.pad`) |
+| 5 `.dct` | BTA0 | `NNSi_G3dAnmCalcNsBta`, `GetTexSRTAnm_`, `GetTexSRTAnmVectorVal_` / `SinCosVal_` | scaleS, scaleT, sin\|cos, transS, transT (fx32) |
+
+Texture pattern frames name textures and palettes of the model's TEX0. When the batch converts a
+model, it also decodes every (texture, palette) pair of every BTP0 in the ROM that:
+
+- binds to one of the model's materials, and
+- names a texture and palette that the model's TEX0 has.
+
+`dcm_texx_t` records the names. Examples: `eff_tornado` gets 19 pattern textures, `bs4_base` 17
+(from `z43_act_lz7.narc:bs4.nsbtp`). A key without a palette keeps the material's own palette
+(SetPlttParamaters_ is skipped).
 
 ## 5. Runtime API (`dreamcast/game/model/model.h`)
 
@@ -293,7 +326,11 @@ dcm_camera_stage(&cam); dcm_camera_stage_offaxis(&cam, &tx, &ty);   // or dcm_ca
 dcm_stage_model_matrix(&mdl, 0x34cc/4096.f, facing, rotz, tx, ty, tz);
 dcm_lights_stage(&lights, facing_left);
 dcm_draw(&m, palette, &mdl, &cam, visbits, &lights, &opts);  // opts.list = OP / TR / PT
+dcm_matstate_init(&m, st);                            // material animations (v2 packages): static values ...
+dcm_matanim_apply(&dcc_or_dcp_or_dct, idx, frame, &m, st);   // ... overridden per animation, integer frame
+dcm_draw_ex(&m, palette, &mdl, &cam, visbits, &lights, &opts, st);
 dcm_transform_vertices(...);                          // host/test hook
+dcm_host_emit = hook;                                 // host tests: every vertex dcm_draw(_ex) would submit
 ```
 
 Joint maths:
@@ -310,6 +347,16 @@ Joint maths:
 3. Computes DS-style lighting per vertex: emission + sum(diffuse x light x max(0, -L.n) +
    ambient x light). Unlit vertices use COLOR or the material diffuse.
 4. Sends one `pvr_poly_hdr_t` per draw, then `pvr_vertex_t` strips (EOL on each strip's last vertex).
+   - Near plane: a strip with a vertex at clip `w < near_w` is split into its triangles (odd ones
+     rewound). Each triangle is clipped against `w = near_w` (Sutherland–Hodgman; position, uv and
+     colour interpolated) and sent as one 3- or 4-vertex strip. Triangles fully behind are dropped.
+   - Material states (`dcm_draw_ex`), the `NNSG3dMatAnmResult` the MAT command builds:
+     - polygon alpha 0 skips the material's shapes, as NNS does (also for static materials);
+     - the texture comes from the pattern (vertex uv rescaled by base size / frame size);
+     - colours feed the lighting / unlit colour;
+     - the uv affine is `NNSi_G3dSendTexSRTSi3d` (scale, translation, origW/H, magW/H). Si3d texture
+       matrices ignore the rotation, as on the DS; every ROM model is Si3d.
+     - Class: alpha < 31 → TR, else the class of the bound texture.
    - Textures: non-twiddled; nearest filter (like the DS); clamp/flip from the material.
    - Culling: DS back faces are clockwise on screen, so `PVR_CULLING_CW`.
    - Depth: `1/w`.
@@ -324,8 +371,31 @@ compiles without warnings with `-Wall -Wextra`: 8.4 KB text, 51 KB bss (static t
 
 All results are from runs in this session.
 
-- **Counts.** The batch converted 779 unique resources: 291 BMD0, 134 BCA0, 68 BVA0, 80 BTP0 (parsed),
-  79 BTA0 (parsed) and 127 BMA0 (listed). There were 0 failures and 0 warnings.
+- **Material animations and near plane (2026-11-22).**
+  - The batch now converts all 779 unique resources, with 0 failures and 0 warnings. That includes
+    286 material-animation sets (127 `.dcc`, 80 `.dcp`, 79 `.dct`) and 876 textures (+132 pattern
+    textures).
+  - `tests/model_matanim_test.c` passes 5672/5672 checks on the converted packages:
+    - every `.dcm` loads as version 2;
+    - the uv affine that `dcm_matstate_uv` derives from the stored SRT inputs equals the converter's
+      static `uv_a/d/e/f` for all 1451 materials;
+    - `dcm_draw_ex(static states)` submits exactly what `dcm_draw` does;
+    - every set loads and its sample offsets are in range;
+    - `eff_tornado01`: t_grow alpha 0 until frame 17, t_mini_loop alpha 12 at frame 3, pattern
+      t_grow01 → 02 at frame 19 → 04 at 23;
+    - `bsf.nsbta`: transT -2 at frame 1, and the uv moves in t;
+    - a synthetic triangle crossing the near plane gives 4 clipped vertices, none behind the camera.
+  - Flycast, `tests/build_matanim_disc.sh` (`mtest.cdi`): two `eff_tornado` with their
+    `.dcc`/`.dcp`, and `bsf_sky` as a sphere around the eye with `bsf.dct`/`.dcc`, observed in
+    screenshots:
+    - the left tornado fades in and switches texture frames;
+    - the sky surrounds the camera without holes (its triangles cross the near plane and are
+      clipped) and scrolls;
+    - the moon's diffuse runs to 0 (black disc) as `bsf.nsbma` says.
+    - The serial log matches the expected frames.
+
+- **Counts (before the material animations).** The batch converted 779 unique resources: 291 BMD0, 134 BCA0, 68 BVA0, 80 BTP0,
+  79 BTA0 and 127 BMA0. There were 0 failures and 0 warnings.
   - 366 models. For all 366, the decoded vertex, triangle, quad and polygon counts equal the
     `numVertex/numTriangle/numQuad/numPolygon` in their DS headers, and the emitted vertex count
     equals `numVertex` (no shape is drawn twice).
@@ -371,23 +441,27 @@ binary formats and from the decompiled NNS code in this repository.
 
 ## 8. Gaps
 
-- Not yet run on Dreamcast hardware or in an emulator. `model.c` is only compiled with `kos-cc`
-  and tested on the host. The PVR culling direction, uv flip/clamp mapping and list classes are
-  derived, not observed.
-- No near-plane clipper: a strip with any vertex at `w < near_w` is skipped.
+- Not run on Dreamcast hardware. In Flycast, the material animations and the near-plane clipping
+  were observed with `mtest.cdi` (section 6). The PVR culling direction, uv flip/clamp mapping and
+  list classes are derived from the DS rules; they were not checked against the DS.
 - Lighting covers only diffuse, ambient and emission. Not implemented: specular and the shininess
   table, toon/highlight mode, shadow polygons, fog, edge marking, polygon-ID effects.
   `dcm_lights_stage` uses default colours (white key, grey fill); the per-zone light colours that
   `Stage_Create` loads with `NNS_G3dGlbLightColor` are not wired in yet.
-- Texture SRT (BTA0), texture pattern (BTP0) and material colour (BMA0) animations are parsed or
-  listed but not converted. Special-stage and effect models that use them show their first or
-  static state.
+- Material animations: several anim objects of one kind on one material run in render-object
+  order with no blending (`NNSi_G3dAnmBlendMat`). The boss cross-fade applies the fading-out object
+  first; the real NNS list order was not checked.
+- The special-stage module (`dreamcast/game/special`) still keeps `ss.nsbta` / `ss.nsbtp` as timing
+  only. The converted `mod__ss.dct` / `.dcp` exist; `sp_map.c` / `sp_draw.c` would apply them the way
+  `boss_model_matstates` does.
 - ENVMAP is approximated with a sphere map from the view-space normal. PRJMAP is not implemented.
   The billboard (BB/BBY) is rebuilt in view space (axis lengths + translation kept), which is the
   intent of `NNSi_G3dFuncSbc_BB`; BBY is an approximation.
 - NODEMIX (envelope skinning) and 4x4-compressed textures are implemented but not used by any ROM
   resource, so they are tested only with synthetic data (4x4) or not at all (NODEMIX). The Maya
   SSC rule and the non-Si3d texture-matrix modes are not implemented; no ROM model uses them.
-- Not exported: the material "set vertex colour" bit, MAT/SHP option bits and CALLDL.
+- Not exported: the material "set vertex colour" bit, MAT/SHP option bits and CALLDL. Unlit
+  vertices without COLOR always take the (animated) diffuse; every animated ROM material checked
+  (e.g. `bsf_pas_moon`, diffuse 0xffff) has that bit set.
 - Animation packages are per-frame and about 1.5x the DS size (16.9 MB for all sets; 1.08 MB for
   the player set). Keyframe reduction is possible if RAM gets tight.

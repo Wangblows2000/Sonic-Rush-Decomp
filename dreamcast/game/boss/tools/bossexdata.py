@@ -16,10 +16,10 @@ packages (build/dreamcast/models, build/dreamcast/sprites) and writes build/drea
                   joints  { u8 model, u8 pad, u16 node, char name[16] }  NNS_G3dGetResDictIdxByName
                   fx      { u32 flags; char model[96]; char anim[5][96];
                             u16 count[5]; u16 frames[5][8] }   gExtraBossFxResTable (27 kinds):
-                                                        anim[0] joint (.dca), anim[4] visibility (.dcv);
-                                                        slots 1..3 (material / pattern / SRT) are not
-                                                        converted: their numFrame per animation index
-                                                        is kept (timing only)
+                                                        anim[0] joint (.dca), 1 material colour (.dcc),
+                                                        2 texture pattern (.dcp), 3 texture SRT (.dct),
+                                                        4 visibility (.dcv); numFrame per animation
+                                                        index is kept for every slot
   sprites/<id>/{frames.bin,atlas0.argb1555,atlas0.pt4,palettes.bin}   ac_ex_fix_moji (HUD, archive file 0x26),
                                               ac_itm_ring (archive file 0x27) and ac_ex_vs (0x21)
   vs_son.bin / vs_blz.bin   the sub screen's VS splash BGs (extra_vs_bg_son / _blz.bbg, files 0x22 /
@@ -239,11 +239,12 @@ def main(argv):
             fr = anim_frame_counts(maybe_decompress(files[fid][1]))
             counts[s] = len(fr)
             frames[s][:min(8, len(fr))] = fr[:8]
-            if s == 0 or s == 4:
-                f = outputs("%s:%s" % (ARCHIVE, member), ".dca" if s == 0 else ".dcv")
-                if f:
-                    afile[s] = f[0]
-                    assets.append(f[0])
+            # converted animation sets: 0 joint .dca, 1 material colour .dcc, 2 texture pattern .dcp,
+            # 3 texture SRT .dct, 4 visibility .dcv (frame counts kept as well)
+            f = outputs("%s:%s" % (ARCHIVE, member), (".dca", ".dcc", ".dcp", ".dct", ".dcv")[s])
+            if f:
+                afile[s] = f[0]
+                assets.append(f[0])
         out += struct.pack("<I96s", flags, mfile.encode())
         for s in range(5):
             out += struct.pack("<96s", afile[s].encode())

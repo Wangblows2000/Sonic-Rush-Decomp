@@ -44,7 +44,7 @@ done
 mkdir -p "$OUT/disc/sound"; cp "$ROOT"/build/dreamcast/audio/sfxbank/*.srb "$OUT/disc/sound/"
 # bosses: data + models listed by the boss module
 mkdir -p "$OUT/disc/boss" "$OUT/disc/models"; cp "$ROOT/build/dreamcast/boss/bossdata.bin" "$ROOT/build/dreamcast/boss/boss7bac.bin" "$OUT/disc/boss/"
-grep -v '^#' "$ROOT/build/dreamcast/boss/assets.txt" | grep -E '\.(dcm|dca|dcv)$' | while read -r f; do
+grep -v '^#' "$ROOT/build/dreamcast/boss/assets.txt" | grep -E '\.(dcm|dca|dcv|dcc|dcp|dct)$' | while read -r f; do
     b=$(basename "$f"); [ -f "$ROOT/build/dreamcast/models/$b" ] && cp "$ROOT/build/dreamcast/models/$b" "$OUT/disc/models/"
 done
 # object models (objects_model_get: RopeC, Wheel2D, Hand2d, GmkTable, slide, crane, glider)
@@ -74,7 +74,7 @@ mkdir -p "$OUT/disc/menus/bg" "$OUT/disc/menus/ama"
 cp "$M/menudata.bin" "$M/sound_test.sld" "$OUT/disc/menus/"
 # time attack / records / ExtraAct / zone-map navigator (MENUS.md 10-14)
 cp "$M/font8.bin" "$M/extraact.bin" "$OUT/disc/menus/"; [ -d "$M/navi" ] && cp -r "$M/navi" "$OUT/disc/menus/"
-for f in narc__extra_act__eff_dmg_end01__eff_dmg_end01.dcm narc__extra_act__eff_dmg_end02__eff_dmg_end02.dcm narc__extra_act__eff_dmg_end02.dca; do [ -f "$ROOT/build/dreamcast/models/$f" ] && mkdir -p "$OUT/disc/models" && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"; done
+for f in narc__extra_act__eff_dmg_end01__eff_dmg_end01.dcm narc__extra_act__eff_dmg_end02__eff_dmg_end02.dcm narc__extra_act__eff_dmg_end02.dca narc__extra_act__eff_dmg_end02.dcc; do [ -f "$ROOT/build/dreamcast/models/$f" ] && mkdir -p "$OUT/disc/models" && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"; done
 # attract demos (demo/tools/demodata.py)
 D=$ROOT/build/dreamcast/demo
 if [ -f "$D/demotab.bin" ]; then mkdir -p "$OUT/disc/demo"; cp "$D/demotab.bin" "$OUT/disc/demo/"; [ -d "$D/key" ] && cp -r "$D/key" "$OUT/disc/demo/"; fi
@@ -115,7 +115,7 @@ X=$ROOT/build/dreamcast/boss/extra
 mkdir -p "$OUT/disc/boss/extra"
 cp "$X/bossex.bin" "$X/zex.bin" "$X/vs_son.bin" "$X/vs_blz.bin" "$OUT/disc/boss/extra/"; cp -r "$X/sprites" "$OUT/disc/boss/extra/"
 find "$OUT/disc/boss/extra" -name '*.png' -delete
-grep -v '^#' "$X/assets.txt" | grep -E '\.(dcm|dca|dcv)$' | while read -r f; do
+grep -v '^#' "$X/assets.txt" | grep -E '\.(dcm|dca|dcv|dcc|dcp|dct)$' | while read -r f; do
     b=$(basename "$f"); [ -f "$ROOT/build/dreamcast/models/$b" ] && cp "$ROOT/build/dreamcast/models/$b" "$OUT/disc/models/"
 done
 # special stages (SPECIAL.md section 6): stage data, models, sprites, backgrounds, ss sound bank

@@ -5355,7 +5355,8 @@ int bossf_draw(int list) {
             o.list = list;
             o.pt_list = PVR_LIST_PT_POLY;
             o.alpha_scale = s_inst[i].alpha;
-            n += dcm_draw(&m->res->mdl, m->palette, &s_inst[i].mtx, &cam, s_inst[i].vis, g_boss_lights, &o);
+            n += dcm_draw_ex(&m->res->mdl, m->palette, &s_inst[i].mtx, &cam, s_inst[i].vis, g_boss_lights, &o,
+                             boss_model_matstates(m));
         }
 #else
         if (list != 0)
@@ -5365,6 +5366,7 @@ int bossf_draw(int list) {
             int k, c;
             if (m->res->mdl.hdr->num_vertices > 4096)
                 continue;
+            (void)boss_model_matstates(m);
             c = dcm_transform_vertices(&m->res->mdl, m->palette, &s_inst[i].mtx, &cam, xyz);
             if (g_boss_debug_fb)
                 for (k = 0; k < c; k++) {

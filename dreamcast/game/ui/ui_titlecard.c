@@ -12,7 +12,8 @@
  * 20.12 fixed point and are drawn in UI_SP_SCREEN.
  * The BG layers (stdm_zigzag + stdm_bg<zone>, tools/uibg.py) are composed into the
  * one frame by ui_bg.c.  Not drawn (UI.md): the player model close-up
- * (StageTitleCardPlayer_Draw: ui_titlecard_player_view exposes the values).
+ * (StageTitleCardPlayer_Draw: ui_titlecard_player_draw exposes the values; the player
+ * model module draws the close-up).
  * gDisplayMain master brightness -> the frame overlay, gDisplaySub -> the composed
  * zone art (g_ui_bright_main / g_ui_bright_sub, ui_draw.c).
  */
@@ -920,7 +921,9 @@ void StageTitleCard_Create(DcPlayer *p) {
     w->fn1f0.unk68 = 0x10000;  /* unk258: second word 16 px lower */
     w->fn1f0.delay = 0xf;      /* unk25C: ... and 15 frames later */
     w->idx = G.character == 1;
-    w->cam_h = 0x3c000;
+    /* FX_Div(COS, SIN) * 0x60 of data_ov000_0236a444.angle (0x1555: sin 0x800, cos 0xddb):
+     * the stage camera's eye distance, where the zoom ends (StageTitleCardPlayer_State_Zoom) */
+    w->cam_h = 0x1bb6 * 0x60;
     if (p) {
         p->pf |= 0x200000; /* no input */
         p->pf |= 0x400000; /* no tension */
@@ -1005,6 +1008,35 @@ void StageTitleCard_Main(void) {
         ui_tcbg_draw(t0->fn78.unk4, t0->fn78.unk8);
         g_ui_layer = layer;
     }
+}
+
+/* StageTitleCardPlayer_Draw inputs. 1 while the close-up replaces the player's own draw
+ * (StageTitleCardPlayer_State_Init .. _Finish / StageTitleCard_State_StartStage):
+ *  speed  per-slot animation speed (obj unk24C, 0x199 .. 0x1000, fx32);
+ *  eye/at LookAt position and target (v4b4 / v4c0, fx32 DS units, y up, up = (0, 1, 0));
+ *  x, y   model translation (20.12) used with the off-axis frustum when *zoom (flags2 & 0x400). */
+int ui_titlecard_player_draw(s32 *speed, s32 eye[3], s32 at[3], s32 *x, s32 *y, int *zoom) {
+    if (!s_tc.active || !(s_tc.flags & 0x80000) || (s_tc.flags & 0x400000))
+        return 0;
+    if (speed)
+        *speed = s_tc.model_scale;
+    if (eye) {
+        eye[0] = s_tc.v4b4[0];
+        eye[1] = s_tc.v4b4[1];
+        eye[2] = s_tc.v4b4[2];
+    }
+    if (at) {
+        at[0] = s_tc.v4b4[3];
+        at[1] = s_tc.v4b4[4];
+        at[2] = s_tc.v4b4[5];
+    }
+    if (zoom)
+        *zoom = (s_tc.flags2 & 0x400) != 0;
+    if (x)
+        *x = (s_tc.flags2 & 0x400) ? s_tc.model_x : 0x80000;
+    if (y)
+        *y = (s_tc.flags2 & 0x400) ? s_tc.model_y : -0x60000;
+    return 1;
 }
 
 int ui_titlecard_player_view(s32 *scale, s32 *x, s32 *y) {

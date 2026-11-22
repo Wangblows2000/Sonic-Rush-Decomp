@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "boss_extra_int.h"
+#ifdef _arch_dreamcast
+#include "../engine/pak.h"   /* /cd/data.pak: per-stage files without a directory walk each */
+#endif
 
 BossExtraHooks g_boss_extra_hooks;
 BossExStats g_bossex_stats;
@@ -85,9 +88,20 @@ static const ExFxRec *s_fx;
 static u32 s_nfx;
 
 static void *ex_slurp(const char *path, u32 *n) {
-    FILE *f = fopen(path, "rb");
+    FILE *f;
     void *b;
     long sz;
+#ifdef _arch_dreamcast
+    {   /* /cd/data.pak (engine/pak.h) */
+        void *pb;
+        int k = pak_load(path, &pb, n);
+        if (k == PAK_FOUND)
+            return pb;
+        if (k == PAK_MISSING)
+            return NULL;
+    }
+#endif
+    f = fopen(path, "rb");
     if (!f)
         return NULL;
     fseek(f, 0, SEEK_END);

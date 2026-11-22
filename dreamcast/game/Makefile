@@ -1,6 +1,6 @@
 # Sonic Rush DC game. Needs: . /opt/toolchains/dc/kos/environ.sh
 TARGET = srdc.elf
-OBJS = src/main.o engine/render.o engine/input.o engine/audio.o engine/level.o engine/loading.o \
+OBJS = src/main.o engine/render.o engine/input.o engine/audio.o engine/level.o engine/loading.o engine/pak.o \
        $(patsubst %.c,%.o,$(wildcard player/dcp_*.c)) model/model.o \
        $(patsubst %.c,%.o,$(wildcard objects/obj_*.c)) \
        $(patsubst %.c,%.o,$(wildcard ui/ui_*.c)) \

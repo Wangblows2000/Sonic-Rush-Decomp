@@ -33,7 +33,7 @@ dc: $(SRCS) $(HDRS)
 	bash -c 'source /opt/toolchains/dc/kos/environ.sh && for f in $(SRCS); do kos-cc -std=gnu99 -O2 -fwrapv -Wall -Wextra -Werror -c $$f -o $(OUT)/dc/$${f%.c}.o || exit 1; done && sh-elf-size $(OUT)/dc/*.o'
 
 link: dc test/link_main.c
-	bash -c 'source /opt/toolchains/dc/kos/environ.sh && kos-cc -std=gnu99 -O2 -Wall -Werror -c test/link_main.c -o $(OUT)/dc/link_main.o && kos-cc -std=gnu99 -O2 -fwrapv -c ../model/model.c -o $(OUT)/dc/model.o && for f in ../engine/render.c ../engine/input.c ../engine/audio.c ../sound/sound.c ../sound/snd_bank.c ../sound/snd_drv.c ../sound/snd_nns.c ../sound/snd_out_kos.c; do kos-cc -std=gnu99 -O2 -fwrapv -c $$f -o $(OUT)/dc/x_$$(basename $${f%.c}).o || exit 1; done && kos-cc -o $(OUT)/cutscene_test.elf $(OUT)/dc/*.o -lm && sh-elf-size $(OUT)/cutscene_test.elf'
+	bash -c 'source /opt/toolchains/dc/kos/environ.sh && kos-cc -std=gnu99 -O2 -Wall -Werror -c test/link_main.c -o $(OUT)/dc/link_main.o && kos-cc -std=gnu99 -O2 -fwrapv -c ../model/model.c -o $(OUT)/dc/model.o && for f in ../engine/render.c ../engine/input.c ../engine/audio.c ../engine/pak.c ../engine/loading.c ../sound/sound.c ../sound/snd_bank.c ../sound/snd_drv.c ../sound/snd_nns.c ../sound/snd_out_kos.c; do kos-cc -std=gnu99 -O2 -fwrapv -c $$f -o $(OUT)/dc/x_$$(basename $${f%.c}).o || exit 1; done && kos-cc -o $(OUT)/cutscene_test.elf $(OUT)/dc/*.o -lm && sh-elf-size $(OUT)/cutscene_test.elf'
 
 clean:
 	rm -rf $(OUT)/test_cutscene $(OUT)/dc $(OUT)/cutscene_test.elf

@@ -112,6 +112,10 @@ int ui_world_frozen(void);    /* results / game over / exit: skip the world upda
 int ui_state(void);           /* UI_PLAYING / UI_RESULTS / UI_GAMEOVER / UI_EXIT   */
 int ui_exit_kind(void);       /* valid when ui_state() == UI_EXIT                  */
 int ui_titlecard_active(void);
+/* StageTitleCardPlayer_Draw: 1 while the title card's close-up of the player model replaces
+ * the normal player draw; speed = per-slot animation speed (fx32), eye/at = LookAt (fx32 DS
+ * units, y up), x/y = model translation (20.12), zoom = off-axis frustum phase */
+int ui_titlecard_player_draw(s32 *speed, s32 eye[3], s32 at[3], s32 *x, s32 *y, int *zoom);
 
 /* ----------------------------------------------------- event hooks */
 /* ScorePopup_Create(obj, n) + data_022c4590.unk4 += n (enemy kill, trick, ...).

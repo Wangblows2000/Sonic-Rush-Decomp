@@ -1,4 +1,5 @@
 #include "render.h"
+#include "pak.h"
 #include "loading.h"
 #include <kos.h>
 #include <string.h>
@@ -285,8 +286,15 @@ int pal_rows_free(void) { return PAL_ROWS - pal_rows_used(NULL, NULL); }
 /* ------------------------------------------------------------------ sprite atlases */
 static uint8_t *read_all(const char *path, uint32_t *size)
 {
-    file_t f = fs_open(path, O_RDONLY);
+    file_t f;
     uint8_t *b;
+    void *pb;
+    switch(pak_load(path, &pb, size)) {   /* /cd/data.pak (pak.h) */
+    case PAK_FOUND: return pb;
+    case PAK_MISSING: return NULL;
+    default: break;
+    }
+    f = fs_open(path, O_RDONLY);
     if(f == FILEHND_INVALID) return NULL;
     *size = fs_total(f);
     b = memalign(32, *size ? *size : 4);

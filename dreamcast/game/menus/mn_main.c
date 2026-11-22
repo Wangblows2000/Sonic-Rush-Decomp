@@ -47,11 +47,49 @@ int menus_init(void) {
     return ok ? 0 : -1;
 }
 
+/* test builds: <menus dir>/../debug/menutrace.txt turns on a serial trace of the
+ * scene changes, the requests and the navigator state */
+static int s_mn_trace = -1;
+static void mn_trace_frame(void) {
+    static const char *last_scene;
+    static int last_panel = -2, last_face_on = -2;
+    static u32 frame;
+    int panel, alpha, st;
+    if (s_mn_trace < 0) {
+        char p[160];
+        const char *slash = strrchr(g_mn_dir, '/');
+        FILE *f;
+        snprintf(p, sizeof(p), "%.*s/debug/menutrace.txt", slash ? (int)(slash - g_mn_dir) : 0, g_mn_dir);
+        f = fopen(p, "rb");
+        s_mn_trace = f != NULL;
+        if (f)
+            fclose(f);
+    }
+    if (!s_mn_trace)
+        return;
+    frame++;
+    if (g_mn_scene != last_scene) {
+        printf("menus trace %u scene %s\n", (unsigned)frame, g_mn_scene ? g_mn_scene : "-");
+        last_scene = g_mn_scene;
+    }
+    if (g_mn_request.kind != MENU_REQ_NONE)
+        printf("menus trace %u request %d zone %d act %d mode %d\n", (unsigned)frame, (int)g_mn_request.kind,
+               (int)g_mn_request.zone, (int)g_mn_request.act, (int)g_mn_request.mode);
+    st = mn_navi_state(NULL, &panel, &alpha);
+    if (st && (panel != last_panel || (alpha >= 0) != last_face_on)) {
+        printf("menus trace %u navi %d panel %d face %s regions %d\n", (unsigned)frame, st, panel,
+               alpha >= 0 ? "on" : "off", g_mn_comp.n);
+        last_panel = panel;
+        last_face_on = alpha >= 0;
+    }
+}
+
 MenuRequest menus_run_frame(const InputState *in) {
     memset(&g_mn_request, 0, sizeof(g_mn_request));
     Pad_Update(&gPad, mn_pad_from_input(in));
     mn_quads_reset();
     Task_RunAll();
+    mn_trace_frame();
     return g_mn_request;
 }
 

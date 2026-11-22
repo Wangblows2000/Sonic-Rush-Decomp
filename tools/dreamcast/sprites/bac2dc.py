@@ -70,6 +70,8 @@ def pow2(n):
     return p
 
 
+# Converted BACs whose loaders take one page only (special/sp_sprite.c, boss/boss_extra_draw.c)
+SINGLE_PAGE = ("ac_spst", "ac_ex_", "ac_itm_ring")
 MAX_RATIO = 8          # page aspect ratio limit (PVR: any power-of-two pair 8..1024; twiddled blocks)
 PAGE_COST = 1024       # texels an extra page must save to be worth its allocation and draw state
 
@@ -422,6 +424,8 @@ def convert_one(job):
         sel = [(i, im["img"].width + 2 * GUTTER, im["img"].height + 2 * GUTTER)
                for i, im in enumerate(images) if (im["pal"] is not None) == cls]
         npg = 4 - len(pages) - (1 if cls and has_direct else 0)
+        if any(k in ident for k in SINGLE_PAGE):
+            npg = 1
         pages += [(W, H, pos, cls) for W, H, pos in (pack_pages(sel, npg) if sel else [])]
     if len(pages) > 4:
         raise BacError("%d atlas pages (loaders take 4)" % len(pages))

@@ -79,6 +79,16 @@ All files are under `dreamcast/game/boss/`.
   `eff_ele_stay.nsbma`: 40; `eff_ele_flash.nsbma`: 8; `eff_wave_disap.nsbma`: 10). The tool reads
   numFrame from any NNS animation file (SRT0 / MAT0 / PAT0 / JNT0 block). `Model_SetAnimation` turns them into animation objects without
   joint data, so the "ended" bit the Boss2 water states wait on keeps the original timing.
+- Material animations (bossdata.bin sections 5 and 6, appended after the table above; older readers
+  stop before them):
+  - section 5 maps each timing-table name to its converted `.dcc` / `.dcp` / `.dct`;
+  - section 6 lists, per stage effect, its slot 1..3 sets (`<eff>.nsbma` / `.nsbtp` / `.nsbta`).
+  - At draw time, `boss_model_matstates` finds the set of a timing resource through
+    `boss_matanim_for_frames` (loaded once). The boss files that keep the timing resources need no
+    change.
+  - Effects load their sets in `boss_effects_load`. `BossEffect_Create` binds slots 1 / 3, and
+    `BossEffect_State_Main` binds the pattern (slot 2) when the 2-frame delay ends, as on the DS.
+  - `assets.txt` lists the sets (`build_disc.sh` must copy `*.dcc` / `*.dcp` / `*.dct` too).
 
 ## 2. API and how to wire it into main.c
 
@@ -284,9 +294,10 @@ into the player module:
   (impact flash) load `bs1_{ham,neck}_0x_1p[d].nbfp` into the models' texture palettes. The `.dcm`
   textures are pre-decoded ARGB, so only the selection state is kept. A converter option that emits
   the alternate palette textures (or a tint in `dcm_draw`) would be needed.
-- **Material, pattern and SRT animations are not converted** (`.nsbma` / `.nsbtp` / `.nsbta`, see
-  MODELS.md). Effects animate their joints only. Their lifetime is still exact: every converted
-  effect's `.nsbca` has the same length as its other animations.
+- **Material, pattern and SRT animations** (`.nsbma` / `.nsbtp` / `.nsbta`) are converted
+  (MODELS.md 4.1) and drawn: `boss_model_draw`, `boss7_model_draw`, `bossf_draw` and `ex_draw_frame`
+  call `dcm_draw_ex` with `boss_model_matstates`. Objects of one kind are applied in order (cross-fade
+  source first), not blended.
 - **Billboard op 0x14** (`SetCameraRotBillboard`) is treated like 0x13 (`SetCameraRot`). Boss1 does
   not use either.
 - **Zone-5 variant (Boss5, z53)** (`gGameState.unk1C == 4`: battery missiles, `bs5.nsbca` file 9):
@@ -294,7 +305,7 @@ into the player module:
     `Boss1_NodeCallback_Batteries` (substantially rewritten: the DS multiplies RotY into the GE matrix
     at the battery nodes; natively the rotation is applied to the joint's local transform at the pose,
     so it also turns the joint's children; not compared with a DS capture).
-  - The explosion's material / SRT / pattern animations (eff_bomb_up) are timing only.
+  - The explosion's material / SRT / pattern animations (eff_bomb_up) play from the converted sets.
 - **Joint matrices are float** (dcm runtime). The hammer position is rounded from them, where the DS
   uses fx32 GE math: about 0.01 px difference (MODELS.md section 6). Everything else is the
   original fixed-point math.
@@ -316,7 +327,7 @@ into the player module:
 - **Boss2 specifics:**
   - Palette swaps (hurt blink, flash of the head while its damage box is armed) are state only, as for
     Boss1 (`boss2_palette()` exposes the selection).
-  - `bs2.nsbta` (water / shower texture scrolling) is not converted: timing only, no texture motion.
+  - `bs2.nsbta` (water / shower texture scrolling) plays from `bs2.dct`.
   - `EffWater3D_Create` (a 3D BAC sprite) is not translated; its arena position goes to
     `g_boss_hooks.water_fx`.
   - Joint cross-fades (`flags & 0x40`, Model_SetAnimation / Model_AnimateMdl) are copied; the pose
@@ -332,7 +343,7 @@ into the player module:
   - Palette swaps (hurt blink, ball palette) and the ball's material flag / emission change
     (`Boss3_LoadBallPalette`: hittable ball flashes white) are state only (`boss3_palette`,
     `boss3_ball_white`).
-  - `bs3.nsbta` (arena SRT animation) is timing only.
+  - `bs3.nsbta` (arena SRT animation) plays from `bs3.dct`.
   - Balls are a pool of 8 static objects (the DS allocates a task per ball); task order 0x502 is kept
     by creation order.
   - `Boss3_Action_Defeat` / `Boss3_Action_DefeatAll` / `Boss3_State_DefeatFinish` skip a NULL ball
@@ -342,8 +353,9 @@ into the player module:
 - **Boss4 specifics:**
   - Node callbacks (Rods / ArmGun / BodyExit) run per joint after the pose; `Boss4_CaptureNodeMatrix`
     keeps the fx32 scale step. Matrices are rounded from the float joint matrices.
-  - Material / pattern animations (`bs4.nsbma`, `bs4.nsbtp`, `eff_*.nsbma`) are timing only; the
-    D0 shot and the D2 vanish end on them, so their frame counts are in bossdata.bin.
+  - Material / pattern animations (`bs4.nsbma`, `bs4.nsbtp`, `eff_*.nsbma`) play from the converted
+    sets. `bs4_base` carries the 17 pattern textures of `bs4.nsbtp`. The D0 shot and the D2 vanish
+    end on them, so their frame counts are still in bossdata.bin.
   - The float easings (SlamTiltUp, SlamRecover, D0 Launch, SetSpinSpeed, Spin) use C float, like the
     DS softfloat single precision; not compared bit for bit with the DS.
   - `Player_Action_AttackBounceVel` is copied into boss4.c (the player module lacks it).
@@ -565,7 +577,7 @@ New native functions:
 | `BossEffect_CreateSuction2` | boss_effect.c | reused | wrapper (name, mask, ops) |
 | `BossEffect_CreateTackle` | boss_effect.c | reused | wrapper (name, mask, ops) |
 | `BossEffect_Destructor` | boss_effect.c | modified | resource release at boss_shutdown |
-| `BossEffect_State_Main` | boss_effect.c | reused | .nsbtp bind skipped (not converted) |
+| `BossEffect_State_Main` | boss_effect.c | reused | .nsbtp bound after the delay (converted .dcp) |
 | `Boss_Atan2` | boss_core.c | reused | FX_Atan2 -> dcp_atan2 |
 | `Boss_DrawExcBackground` | boss_core.c | substantially rewritten | BG2 load -> boss_exc_background() state |
 | `Boss_GetStartHealth` | boss_core.c | reused |  |
@@ -879,7 +891,7 @@ Counts: 4 reused, 3 modified, 2 substantially rewritten, out of 9 (plus Boss1_No
 | `Boss5PartD3_Create` | boss5.c | modified | Task_Create -> pool of 8; archive files 0x3d, 0x41..0x45 -> converted packages / timing-only animations |
 | `Boss5PartD3_Destructor` | boss5.c | modified | resource release, rect_forget |
 | `Boss5PartD3_Draw` | boss5.c | modified | Model_Draw -> boss_model_pose |
-| `Boss5PartD3_State_Explode` | boss5.c | modified | material / SRT / pattern animations timing only |
+| `Boss5PartD3_State_Explode` | boss5.c | modified | material / SRT / pattern animations: timing resources, values from the converted sets at the draw |
 | `Boss5PartD3_State_Exploding` | boss5.c | reused |  |
 | `Boss5PartD3_State_Fly` | boss5.c | reused |  |
 | `BossStage5_FreeModels` | boss5.c | substantially rewritten | boss1_unload + boss5_unload |

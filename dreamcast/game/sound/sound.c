@@ -9,6 +9,9 @@
 #include "snd_nns.h"
 #include <stdio.h>
 #include <string.h>
+#ifdef _arch_dreamcast
+#include <arch/timer.h>
+#endif
 
 SoundHandle gSESoundHandle, gVoiceSoundHandle, gBGMSoundHandle;
 uint8_t gSEVolume, gVoiceVolume, gBGMVolume;
@@ -268,6 +271,8 @@ void sound_stop(SoundHandle *h, int fade_frames) { if (h) NNS_SndPlayerStopSeq(h
 int sound_is_playing(const SoundHandle *h) { return h && h->player != NULL; }
 void sound_release(SoundHandle *h) { if (h) Sound_FreeHandle(h); }
 
+void sound_set_fade(uint32_t q16) { snd_drv_set_fade(q16); }
+
 void sound_stop_all(void) {
     if (!s_init || !s_bank.meta) return;
     NNS_SndPlayerStopSeqAll(0);
@@ -275,6 +280,26 @@ void sound_stop_all(void) {
 }
 
 void sound_update(void) {
+#ifdef _arch_dreamcast
+    if (g_sound_trace) {   /* debug: game-loop frames longer than 17.5 ms (sound_update runs once per frame);
+                              one summary line per 600 frames, serial output is slow */
+        static uint64_t last;
+        static uint32_t n, slow, worst, at[6];
+        uint64_t now = timer_us_gettime64();
+        if (last) {
+            uint32_t dt = (uint32_t)(now - last);
+            if (dt > worst) worst = dt;
+            if (dt > 17500) { if (slow < 6) at[slow] = (uint32_t)(now / 1000); slow++; }
+            if (++n == 600) {
+                printf("snd frames t%lu: %lu of 600 over 17.5 ms, worst %lu us; at t%lu %lu %lu %lu %lu %lu\n", (unsigned long)(now / 1000),
+                       (unsigned long)slow, (unsigned long)worst, (unsigned long)at[0], (unsigned long)at[1], (unsigned long)at[2],
+                       (unsigned long)at[3], (unsigned long)at[4], (unsigned long)at[5]);
+                n = slow = worst = 0; memset(at, 0, sizeof at);
+            }
+        }
+        last = now;
+    }
+#endif
     if (!s_init || !s_bank.meta) return;
     NNSi_SndPlayerMain();                 /* NNS_SndMain */
     s_frac += SND_FRAME_HZ_X10000;        /* 191.9555 driver frames per second at 60 Hz */

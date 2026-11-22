@@ -497,3 +497,75 @@ codes in the 23 ms before the wrap (z1 tail SNR 26.1 -> 26.1 dB, z4s 16.7 ->
 16.6); one channel (z2s SEQ_2sonic R) needed the step chase, tail SNR 21.6 ->
 18.3 dB. ADPCM SNR of the music unchanged (median 22.3 dB), validate_audio all
 checks as before. `aicadec` gained `--loop LS,LE --passes N` for this check.
+
+## 13. Frame hitches from the music reader; fades around loading
+
+### 13.1 Measurements (Flycast, z11, hold Right; trace build)
+
+Instrumentation (trace builds, `/cd/debug/sndtrace.txt`): `sound_update()`
+measures every game-loop frame interval and prints one line per 600 frames
+("snd frames: N of 600 over 17.5 ms, worst, timestamps"); `engine/audio.c`
+keeps `AudioStats` (`audio_stats()`: reads, read bytes, max read ms, refills,
+max refill CPU us, poll gaps, underruns) and prints one line per 10 s. Per-event
+prints were removed: every serial line costs milliseconds of blocking output in
+Flycast and distorted the measurement.
+
+| build | frames > 17.5 ms | worst | cause |
+|---|---|---|---|
+| reader as before (16 KB `fs_read` at file offset 44 + n) | 6-8 of 120 | 41.5 ms | each read went through fs_iso9660's one-sector cache (one GD-ROM command per 2 KB); ~25-30 ms game-loop stall per read (with 64 KB reads: one 46.8 ms frame per read, at the end of the read) |
+| reader at lower priority only | 3-4 of 120 | 41.3 ms | same stall |
+| sector-aligned 64 KB DMA reads (this fix), main.c profiling prints on | 3 of 120 | 31.9-41.7 ms | the 4 profiling lines main.c / ui_draw.c print every 120 frames (removing them in a test copy removes these frames) |
+| same, prints off | 10-11 of 600 | 19.2-19.4 ms | one ~19.2 ms frame per second |
+| same, prints off, **no music at all** | 10 of 600 | 19.2 ms | baseline |
+| bare KOS `vid_waitvbl` loop, no audio code (`dc_loadtest.c -DLOADTEST_NO_AUDIO`) | 6 of 361 | 19.19 ms | Flycast / KOS timing, once per second |
+
+So the audio no longer adds any frame over 17.5 ms: what remains (one 19.2 ms
+frame per second) is also there without audio, in a bare vblank loop. Zero
+frames over 17.5 ms in Flycast is not reachable while that baseline exists,
+and the 41 ms frames that remain in normal builds come from the periodic
+profiling printf lines (4 lines / 120 frames), not from audio.
+
+Fix in `engine/audio.c`:
+- reads are whole sectors from a sector-aligned file offset into a 32-byte
+  aligned block (`s_blk`, `AUDIO_CHUNK` = 64 KB), copied into the ring: one
+  multi-sector DMA command per read (64 KB ~0.5 s of disc time in Flycast,
+  one read per 2 s of music);
+- reader thread priority `PRIO_DEFAULT + 2` (below the game loop);
+- AICA ring 16 KB per channel (0.5 s halves; refill CPU max ~6 ms in the
+  poll thread). 4 KB and 32 KB were also measured: no effect on frame times.
+
+### 13.2 Loading bracket: `audio_load_begin()` / `audio_load_end()`
+
+- `audio_load_begin()` (game thread): the poll thread ramps the stream volume
+  to 0 (amplitude-linear KOS stream volume, 10 per 10 ms = ~260 ms) while the
+  call fades the effects (`sound_set_fade`, 16 steps, `sound_update()` keeps
+  running at ~60 Hz), then stops the effects and returns. Blocks ~0.33 s.
+  The music stream keeps playing muted (AICA ring serviced by the poll /
+  reader threads, track position advances); `audio_music_play()` inside the
+  bracket starts the new track muted.
+- `audio_load_end()`: ramps the music back to full (~260 ms, non-blocking).
+- Nested pairs count (only the outermost fades). Safety: if the game loop
+  calls `audio_update()` 120 times with the bracket still open, it closes
+  itself (never a permanent mute). Outside the bracket nothing changes.
+
+Verified:
+- `test/dc_loadtest.c` (`sh dreamcast/game/sound/test/build_loadtest.sh OUT`):
+  music + SE_Ring every 0.5 s; every 6 s a bracket around a blocking 2 MB read,
+  400 ms of CPU work, and on odd cycles a music restart. Over 9 cycles: fade-out
+  ~300 ms, silence through the load, fade-in ~300 ms; no click (no 10 ms block
+  with a sample step over 4x the median); RMS 2.8 s before / after each load
+  -24.2…-25.2 / -24.1…-25.2 dBFS (music-content variation, no level change);
+  0 underruns (`captures/loadtest_fades.png`).
+- In game (patched test copy of main.c): z11 -> special stage: zone music
+  fades -27 -> -43 dB in ~0.35 s, silence through the ~22 s special-stage load,
+  special-stage music fades in within ~0.3 s, no clicks
+  (`captures/z11_to_special_fade.png`).
+
+Where to call (main.c): `load_stage` (begin at the top, end before return);
+`run_special_stage` (begin before `objects_save_event_state`, end after
+`special_init`; begin before `special_result`, end after the act reload);
+the menu -> stage path (begin before `load_player_model`, end after
+`spawn_player`); `run_cutscene` (begin before `cutscene_start`, end right after
+it, not around the playback loop); `enter_front_end` / `run_extra_zone` bank
+loads.
+

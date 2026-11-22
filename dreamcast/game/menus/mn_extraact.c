@@ -13,8 +13,8 @@
  * NNS G3D (Model_Init / SetResource /  model/ (dcm_*): the converted packages; camera
  *   SetAnimation / Animate / Draw)    G3i_PerspectiveW(sin, cos of 0x1555, aspect 0x1555,
  *                                     near 1, far 2048) + LookAt (0,0,100) -> (0,0,0); the
- *                                     three lights of ExtraAct_Start. The material
- *                                     animation (eff_dmg_end02.nsbma) is not converted
+ *                                     three lights of ExtraAct_Start; the material
+ *                                     animation eff_dmg_end02.nsbma (.dcc) with the joint one
  * BG1 (ex_cldm_bg_pal: tiles of colour 2 (top half) / 0x12 (bottom half)) outside
  *   WIN0 / WIN1 (data_0208923c)       two flat bands of those colours, rows [0, v) and
  *                                     [0xc0 - v, 0xc0) as the windows give
@@ -51,6 +51,8 @@ typedef struct {
     u8 *blob;
     dca_set_t anims;
     u8 *anim_blob;
+    dca_set_t mats;   /* slot 1: material colour animation (.dcc), same frame as the joint one */
+    u8 *mat_blob;
     float frame;      /* +0xe8: frame of the joint animation */
     s32 speed;        /* +0x114: 0x1000 = 1 frame per frame */
     u32 flags;        /* +0x10c: 2 = the animation ended */
@@ -178,6 +180,7 @@ static void Model_Release(ExModel *m) {
         dcm_model_free(&m->mdl);
     free(m->blob);
     free(m->anim_blob);
+    free(m->mat_blob);
     memset(m, 0, sizeof(*m));
 }
 static float model_frames(const ExModel *m) {
@@ -282,6 +285,16 @@ static void pose(const ExModel *m, dcm_mtx_t *pal) {
         dcm_bind_locals(&m->mdl, loc);
     dcm_pose(&m->mdl, loc, pal);
 }
+#ifdef _arch_dreamcast
+/* the material colour animation at the model's frame (NULL: static materials) */
+static const dcm_matstate_t *matstates(const ExModel *m) {
+    static dcm_matstate_t st[64];
+    if (!m->mat_blob || !m->mats.hdr || m->mdl.hdr->num_materials > 64)
+        return NULL;
+    dcm_matstate_init(&m->mdl, st);
+    return dcm_matanim_apply(&m->mats, 0, (int)m->frame, &m->mdl, st) ? st : NULL;
+}
+#endif
 
 /* ---------------------------------------------------------------- tally */
 static s32 ExtraAct_GetTimeBonus(u32 v) {
@@ -989,6 +1002,16 @@ int extraact_start(uint32_t time, uint32_t rings, int character) {
     G->res = mn_res_load("act/ac_ex_cldm.bac");
     model_load(&G->model_c90, "narc__extra_act__eff_dmg_end02__eff_dmg_end02.dcm", "narc__extra_act__eff_dmg_end02.dca");
     model_load(&G->model_b58, "narc__extra_act__eff_dmg_end01__eff_dmg_end01.dcm", NULL);
+    {   /* file 10: eff_dmg_end02.nsbma (Model_SetAnimation slot 1) */
+        char path[200];
+        u32 size;
+        snprintf(path, sizeof(path), "%s/%s", s_model_dir, "narc__extra_act__eff_dmg_end02.dcc");
+        if (G->model_c90.ok && mn_load_file(path, &G->model_c90.mat_blob, &size) == 0 &&
+            dca_set_load(&G->model_c90.mats, G->model_c90.mat_blob, size) != 0) {
+            free(G->model_c90.mat_blob);
+            G->model_c90.mat_blob = NULL;
+        }
+    }
     for (i = 0; i < 0x27; i++) {
         AnimatorSprite_Init(&G->objs[i], G->res, s_exd.spr[i], 0x30, 0);
         AnimatorSprite_ProcessAnimation(&G->objs[i], 0, 0);
@@ -1074,7 +1097,7 @@ void extraact_draw(void) {
                 o.pt_list = PVR_LIST_PT_POLY;
                 o.alpha_scale = 255;
                 pose(s_draw[i], pal);
-                dcm_draw(&s_draw[i]->mdl, pal, &id, &cam, NULL, &L, &o);
+                dcm_draw_ex(&s_draw[i]->mdl, pal, &id, &cam, NULL, &L, &o, matstates(s_draw[i]));
             }
         if (lists[k] == PVR_LIST_TR_POLY)
             menus_draw_tr();   /* the 2D composition and the brightness overlay */

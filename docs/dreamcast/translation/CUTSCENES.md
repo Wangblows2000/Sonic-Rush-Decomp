@@ -321,9 +321,15 @@ The others, and where their work is:
 ## 8. Gaps and assumptions
 
 - **3D materials**:
-  - Texture-pattern, material-colour and texture-SRT animations (`nsbtp`, `nsbma`, `nsbta`) are not converted by the model converter. Joint and visibility animations are played.
+  - The scene archives' `mdl.nsbma` / `.nsbtp` / `.nsbta` play as converted sets. `csdata.py` writes
+    the `pd_matx` section next to `pd_scene`, and TransformDemo loads the `pldm_trans` sets. They are
+    bound per model index with the archive's flags, as `PlayerDemoModel_LoadScene` /
+    `TransformDemo_Load*` do; pattern and SRT only bind to textured models. Each set loops over its
+    own length.
   - Toon edge colours are not drawn.
-  - Polygons crossing the near plane are dropped by the model renderer, not clipped.
+  - Polygons crossing the near plane are clipped by the model renderer (MODELS.md).
+  - At a PlayerDemo scene change, the old scene's models are not drawn in the frame that releases
+    them (`cs3d_forget_model`). The DS shows them one last time.
 - **BGM fades** stop the stream after the fade time; there is no volume ramp.
 - **PolyDemoUnder2**: the decorative logo panel of the bottom screen is not composed. Only the skip button is.
 - **TransformDemo**: one tracking camera replaces the two-screen capture. Composition differs from the DS by design.

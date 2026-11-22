@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sp_internal.h"
+#ifdef _arch_dreamcast
+#include "../engine/pak.h"   /* /cd/data.pak: per-stage files without a directory walk each */
+#endif
 
 char g_sp_path[128] = "/cd/special";
 int g_sp_language = 1;
@@ -33,6 +36,20 @@ void *sp_file_load(const char *rel, u32 *size) {
     long n;
     u8 *b;
     snprintf(path, sizeof(path), "%s/%s", g_sp_path, rel);
+#ifdef _arch_dreamcast
+    {   /* /cd/data.pak (engine/pak.h) */
+        void *pb;
+        u32 ps;
+        int k = pak_load(path, &pb, &ps);
+        if (k == PAK_FOUND) {
+            if (size)
+                *size = ps;
+            return pb;
+        }
+        if (k == PAK_MISSING)
+            return NULL;
+    }
+#endif
     f = fopen(path, "rb");
     if (!f)
         return NULL;

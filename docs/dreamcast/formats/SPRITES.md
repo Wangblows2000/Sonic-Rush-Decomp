@@ -162,8 +162,14 @@ and no `.bac` (for example `act__ac_ene_eggpawn` or `narc__z82_act_lz7__act__ac_
   16-colour slots. Each frame is composed back to front with the current VRAM and palette,
   with flips and the per-piece palette slot. The result is cropped to its opaque pixels.
   Identical images (pixels and origin) are stored once.
-- **Atlas** `atlas0.png` + `atlas0.argb1555`: power-of-two page, at most 1024×1024 (all
-  BACs fit on one page; the largest is 512×512), 1-pixel transparent gutter, shelf packing.
+- **Atlas** `atlas<N>.png` + `atlas<N>.argb1555`: power-of-two pages, at most 1024×1024 and
+  aspect ratio at most 8:1, 1-pixel transparent gutter, MaxRects packing (best short side fit).
+  The packer picks the page set with the least texels: one page, or a first page filled
+  and the rest on further pages (at most 4 pages, an extra page must save 1024 texels).
+  Pages are 65% full on average (median 65%, quartiles 51%/79%, gutters included); 261
+  BACs use one page, 151 two to four. BACs read by single-page loaders (`ac_spst*`,
+  `ac_ex_*`, `ac_itm_ring`: special stage, Extra boss) stay on one page. Against the old
+  shelf packer: 34% fewer texels over all 412 BACs (18.4 M -> 12.1 M).
   ARGB1555 is lossless for DS colours (BGR555 plus 1-bit alpha). `--format 4444` is optional.
   The raw file is row-major (stride = width) by default. With `--twiddle` it is written in PVR twiddled order
   (y bits even, x bits odd, rectangular pages as square blocks, same as KOS `TWIDOUT`).
@@ -241,5 +247,5 @@ and no `.bac` (for example `act__ac_ene_eggpawn` or `narc__z82_act_lz7__act__ac_
   Texture formats 2, 6–9 raise "not supported". The ROM does not use them.
 - Info-block fields after the four VRAM counts, and the hitbox `flags` u16, are not decoded. They are passed through raw in JSON.
 - Paletted atlases are PAL4 only (no PAL8 pages): the few images with 16+ colours stay ARGB1555.
-- Shelf packing is simple. Pages are about 47% full on average (median 47%, quartiles 37%/58%, including the 1-pixel gutters).
+- Power-of-two pages still leave a third of the page empty on average (section 4).
   A max-rects packer or non-power-of-two strides would shrink VRAM use.

@@ -68,6 +68,9 @@ static int s_sysflag40;                 /* gSystemFlags & 0x40 */
 static int s_limit;
 static u32 s_seed;
 static int s_character;
+static int s_id;                         /* demo index (trace) */
+static void trace_frame(void);
+static void trace_stop(void);
 
 void demo_set_path(const char *dir) {
     if (dir)
@@ -306,6 +309,7 @@ int demo_start(int id, DemoInfo *out) {
     DemoPlayWork *w = &s_play;
     if (s_play_task || s_input_task)
         demo_stop();
+    s_id = id;
     if (!s_tab) {
         snprintf(path, sizeof(path), "%s/demotab.bin", s_dir);
         if (load(path, &s_tab, &s_tab_size) != 0 || s_tab_size < 8 || memcmp(s_tab, "RDMO", 4) != 0) {
@@ -369,6 +373,7 @@ int demo_start(int id, DemoInfo *out) {
 
 /* DemoPlay_Destructor (+ DemoInput_Destructor when its task still runs) */
 void demo_stop(void) {
+    trace_stop();
     if (s_input_task || s_in.unk1c)
         DemoInput_Destructor();
     if (s_play_task) {
@@ -439,14 +444,71 @@ void demo_input_frame(const InputState *real, DemoPad *out) {
 int demo_play_frame(const InputState *real) {
     if (!s_play_task)
         return DEMO_EXIT_TITLE;
+    trace_frame();
     return DemoPlay_Main(real);
 }
 
 /* The frames the DS spends in StageStart_State_* (loading) after DemoPlay_Create: the
  * DemoInput and DemoPlay tasks run, the stage does not exist yet (no timer, no input
  * consumer). gRandSeed: DemoInput_Create set it before the stage was created. */
+/* ------------------------------------------------ test builds: drift trace
+ * /cd/debug/demolead.txt (next to the demo dir) sets the lead
+ * frames and turns on a serial trace of the player (position every 30 frames,
+ * lives), used to tune DEMO_LEAD_FRAMES. The player is found through the
+ * player-module animation hook, which is wrapped while the demo runs. */
+static int s_trace = -1;
+static DcpHooks s_trace_prev;
+static const DcPlayer *s_trace_p;
+static int s_trace_frame;
+static void trace_anim(void *ctx, DcPlayer *p, s32 anim) {
+    s_trace_p = p;
+    if (s_trace_prev.anim)
+        s_trace_prev.anim(ctx, p, anim);
+}
+static void trace_setup(void) {
+    char path[200];
+    FILE *f;
+    if (s_trace < 0) {
+        int v = -1;
+        s_trace = 0;
+        const char *slash = strrchr(s_dir, '/');
+        int n = slash ? (int)(slash - s_dir) : 0;
+        snprintf(path, sizeof(path), "%.*s/debug/demolead.txt", n, s_dir);   /* "/cd/demo" -> /cd/debug */
+        f = fopen(path, "rb");
+        if (f) {
+            if (fscanf(f, "%d", &v) == 1 && v >= 0)
+                s_lead = v;
+            fclose(f);
+            s_trace = 1;
+            printf("demo trace: lead %d\n", s_lead);
+        }
+    }
+    if (s_trace != 1)
+        return;
+    s_trace_prev = g_dcp_hooks;
+    g_dcp_hooks.anim = trace_anim;
+    s_trace_p = NULL;
+    s_trace_frame = 0;
+}
+static void trace_frame(void) {
+    if (s_trace != 1)
+        return;
+    if (s_trace_frame % 30 == 0 && s_trace_p)
+        printf("demo trace %d f %d x %d y %d lives %d\n", (int)s_id, s_trace_frame, (int)(s_trace_p->x >> 8),
+               (int)(s_trace_p->y >> 8), (int)g_dcp_world.lives);
+    s_trace_frame++;
+}
+static void trace_stop(void) {
+    if (s_trace != 1)
+        return;
+    if (g_dcp_hooks.anim == trace_anim)
+        g_dcp_hooks.anim = s_trace_prev.anim;
+    printf("demo trace %d end f %d\n", (int)s_id, s_trace_frame);
+}
+
 void demo_after_stage_load(void) {
     int i;
+    trace_setup();
     g_dcp_world.rand_seed = s_seed;
     for (i = 0; i < s_lead; i++) {
         frame_input(NULL);

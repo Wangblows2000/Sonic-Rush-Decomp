@@ -36,6 +36,7 @@ struct TransformDemo {
     s32 tan, dist;    /* unk38 / unk3c */
     /* unk454: archive models */
     CsAnimSet jnt, vis;
+    CsAnimSet mat[3];          /* pldm_trans mdl.nsbma / .nsbtp / .nsbta (archive files 1..3) */
     CsModel models[6];
     CsInst objs[6];
     s32 tbl[6];
@@ -137,6 +138,15 @@ static void rot_xy(CsInst *in, u16 ax, u16 ay) {
         }
 }
 
+/* Model_SetAnimation(obj, 1..3, archive file 1..3, idx, tex): the material / pattern / SRT sets of the
+ * pldm_trans archive with the same animation index as the joint animation */
+static void bind_mats(CsInst *in, TransformDemo *w, int idx) {
+    in->mat[0] = &w->mat[0];
+    in->mat[1] = &w->mat[1];
+    in->mat[2] = &w->mat[2];
+    in->mat_idx = idx;
+}
+
 static const char *mlist(int i) {
     const char *t = (const char *)cs_sec("tr_mlist", NULL);
     return t && i >= 0 && i < 16 ? t + 48 * i : "";
@@ -147,6 +157,9 @@ static void TransformDemo_LoadPlayerArchive(TransformDemo *w) {
     int i;
     cs_anim_load(&w->jnt, "narc__pldm_trans_lz7__mdl.dca");
     cs_anim_load(&w->vis, "narc__pldm_trans_lz7__mdl.dcv");
+    cs_anim_load(&w->mat[0], "narc__pldm_trans_lz7__mdl.dcc");
+    cs_anim_load(&w->mat[1], "narc__pldm_trans_lz7__mdl.dcp");
+    cs_anim_load(&w->mat[2], "narc__pldm_trans_lz7__mdl.dct");
     for (i = 0; i < 6; i++) {
         s32 e = tbl ? tbl[6 * (w->mode < 0 || w->mode > 2 ? 0 : w->mode) + i] : -1;
         w->tbl[i] = e;
@@ -157,6 +170,7 @@ static void TransformDemo_LoadPlayerArchive(TransformDemo *w) {
         w->objs[i].jnt = &w->jnt;
         w->objs[i].vis = &w->vis;
         w->objs[i].jnt_idx = w->objs[i].vis_idx = e;
+        bind_mats(&w->objs[i], w, e);
     }
     w->objs[0].trans[1] = 0x226000 / 4096.0f;
     w->objs[1].trans[1] = -0x226000 / 4096.0f;
@@ -188,6 +202,7 @@ static void TransformDemo_LoadPlayerModels(TransformDemo *w) {
         s->inst.jnt = &w->jnt;
         s->inst.vis = &w->vis;
         s->inst.jnt_idx = s->inst.vis_idx = i == 0 ? 0xd : 0xe;
+        bind_mats(&s->inst, w, i == 0 ? 0xd : 0xe);
         s->ang[1] = 0x1700;
         s->vel[1] = 0x2000;
         s->pos[1] = -0x190000;
@@ -203,6 +218,8 @@ static void TransformDemo_ReleaseModels(TransformDemo *w) {
         cs_model_free(&w->pmodel[i]);
     cs_anim_free(&w->jnt);
     cs_anim_free(&w->vis);
+    for (i = 0; i < 3; i++)
+        cs_anim_free(&w->mat[i]);
     cs_anim_free(&w->pjnt);
     cs_anim_free(&w->pvis);
     for (i = 0; i < MAX_FX; i++)
@@ -265,6 +282,7 @@ static void TransformDemoEffect_Spawn(TransformDemo *w) {
     o->inst.jnt = &w->jnt;
     o->inst.vis = &w->vis;
     o->inst.jnt_idx = o->inst.vis_idx = k;
+    bind_mats(&o->inst, w, k);
     o->on = 1;
 }
 static void TransformDemoEffect_Main(void) {

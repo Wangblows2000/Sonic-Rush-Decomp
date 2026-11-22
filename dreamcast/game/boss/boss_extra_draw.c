@@ -679,7 +679,8 @@ void ex_draw_frame(int list) {
         o.list = list;
         o.pt_list = PVR_LIST_PT_POLY;
         o.alpha_scale = 255;
-        dcm_draw(&it->m->res->mdl, it->m->palette, &it->mtx, &cam, it->has_vis ? it->vis : NULL, &lights, &o);
+        dcm_draw_ex(&it->m->res->mdl, it->m->palette, &it->mtx, &cam, it->has_vis ? it->vis : NULL, &lights, &o,
+                    boss_model_matstates(it->m));
     }
     if (list == PVR_LIST_TR_POLY) {
         dcm_camera_t cam;

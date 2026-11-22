@@ -264,15 +264,15 @@ def main(argv=None):
                        "total": tot, "free": tex_ram - tot, "expanded_pages": exp,
                        "pal_rows": rows.used() if rows else None, "level_rows": lvrows}
         rows_out.append(r)
-    # Extra Zone boss (no level): its models and HUD / VS sprites (boss/extra, loaded by the
-    # boss module from atlas0.argb1555), and the cutscene sprite sets (/cd/cutscene)
+    # Extra Zone boss (no level): its models and HUD / VS sprites (boss/extra, PAL4 pages),
+    # and the cutscene sprite sets (/cd/cutscene)
     extra = {}
     xa = os.path.join(B, "boss/extra/assets.txt")
     if os.path.exists(xa):
         mdl = sum(dcm_tex(os.path.join(B, f.strip())) for f in sorted(set(open(xa).read().split()))
                   if f.endswith(".dcm"))
         xs = os.path.join(B, "boss/extra/sprites")
-        sp = sum(atlas_cost(os.path.join(xs, d), "before")[0] for d in sorted(os.listdir(xs)))
+        sp = sum(atlas_cost(os.path.join(xs, d), "after")[0] for d in sorted(os.listdir(xs)))
         ui = sum(atlas_cost(os.path.join(spr, i), "after")[0] for i in UI_STATIC)
         extra = {"models": mdl, "sprites": sp, "ui": ui, "player": player,
                  "total": mdl + sp + ui + player, "free": tex_ram - (mdl + sp + ui + player)}
@@ -299,7 +299,7 @@ def main(argv=None):
             K(f["total"]), K(f["free"]), f["pal_rows"],
             " (%d pages ARGB1555)" % f["expanded_pages"] if f["expanded_pages"] else ""))
     if extra:
-        print("\nExtra Zone boss (after): models %s, boss/extra sprites %s (ARGB1555, boss module), UI %s, player %s"
+        print("\nExtra Zone boss (after): models %s, boss/extra sprites %s, UI %s, player %s"
               " = %s KB, free %s KB" % (K(extra["models"]), K(extra["sprites"]), K(extra["ui"]), K(extra["player"]),
                                        K(extra["total"]), K(extra["free"])))
     if cs:
