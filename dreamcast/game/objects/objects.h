@@ -77,6 +77,10 @@ void objects_add_player(DcPlayer *p);
 /* DS gCamera[idx] position (24.8). n views (1 on DC, 2 = DS dual screen). */
 void objects_set_view(int idx, s32 x, s32 y);
 void objects_set_view_count(int n);
+/* Re-run StageEvent_InitialSpawn (spawn everything in view) on the next
+ * objects_frame_begin: call after a respawn or any camera jump.  The normal
+ * update only spawns in the band entering the view, like the DS. */
+void objects_respawn_view(void);
 /* see the frame order above */
 void objects_frame_begin(void);
 void objects_update(DcPlayer *p);

@@ -10,6 +10,7 @@
 #include "../engine/audio.h"
 #include "../player/dcp_player.h"
 #include "../model/model.h"
+#include "../objects/objects.h"
 #include <stdlib.h>
 
 static const char *k_stages[] = { "z11", "z12", "z21", "z22", "z31", "z32", "z41", "z42",
@@ -29,6 +30,7 @@ static dcm_mtx_t g_palette[DCM_MAX_PALETTE];
 static uint8_t g_visbits[DCM_MAX_JOINTS];
 static rlvl_map_t g_map;
 static int g_player_ok;
+static int g_obj_ok;
 
 static void *load_file(const char *path, uint32_t *size)
 {
@@ -68,6 +70,10 @@ static void spawn_player(Level *lv)
     dcp_bind_map(&g_map);
     memset(&g_player, 0, sizeof(g_player));
     dcp_player_create(&g_player, 0, 0, sx, sy);
+    objects_shutdown();
+    g_obj_ok = objects_init(&g_map, lv->data) == 0;
+    if(g_obj_ok) { objects_add_player(&g_player); objects_set_view_count(1); objects_respawn_view(); }
+    printf("objects: %s\n", g_obj_ok ? "ok" : "FAILED");
     g_cam_x = sx - VIEW_W / 2; g_cam_y = sy - VIEW_H * 0.6f;
     printf("player spawned at %d,%d\n", sx, sy);
 }
@@ -190,7 +196,12 @@ int main(int argc, char **argv)
         }
         if(ok && g_player_ok) {
             float px, py, tx, ty;
+            if(g_obj_ok) {
+                objects_set_view(0, (s32)(g_cam_x * 256.0f), (s32)(g_cam_y * 256.0f));
+                objects_frame_begin();
+            }
             dcp_player_frame(&g_player, ds_pad(in.held), ds_pad(in.pressed), ds_pad(in.released));
+            if(g_obj_ok) objects_update(&g_player);
             /* Continuous camera (CAMERA.md): the DS screen-sized window follows the
              * player with damping and a modest velocity look-ahead; render-only. */
             px = g_player.x / 256.0f; py = g_player.y / 256.0f;
@@ -224,6 +235,7 @@ int main(int argc, char **argv)
         render_begin_list(PVR_LIST_PT_POLY);
         if(ok) { level_draw_layer(&lv, 1, PVR_LIST_PT_POLY, 0.001f); level_draw_layer(&lv, 0, PVR_LIST_PT_POLY, 10.0f); }
         if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY);
+        if(ok && g_obj_ok) obj_draw(PVR_LIST_PT_POLY);
         render_end_list();
         render_begin_list(PVR_LIST_TR_POLY);
         if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY);
@@ -235,7 +247,7 @@ int main(int argc, char **argv)
 
         if(++frame % 120 == 0) {
             uint64_t now = timer_ms_gettime64();
-            if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops());
+            if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
             t_last = now;
         }
     }

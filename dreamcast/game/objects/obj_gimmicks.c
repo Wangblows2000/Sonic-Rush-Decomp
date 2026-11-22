@@ -972,3 +972,117 @@ Obj *marker_create(ObjParam *a, s32 b, s32 c) {
     }
     return w;
 }
+
+/* ========================================== MapObj40 (invisible triggers) */
+/* MapObj40_OnHit: collision-layer switches (0x41/0x42/0x59/0x5a/0x5b), the
+ * "launched" flag area (default), score bonus (0x9d), death zone (0x9f). */
+static void mapobj40_on_hit(ObjBox *a, ObjBox *b) {
+    Obj *w = (Obj *)a->owner;
+    DcPlayer *pl = obj_box_player(b);
+    s32 v;
+    if (w == NULL || pl == NULL)
+        return;
+    switch (w->prm->type) {
+    default:
+        if (pl->type != 1)
+            return;
+        if (!(pl->move_flags & 0x10))
+            return;
+        pl->pf2 |= 1;
+        if (w->prm->flags & 0x10)
+            pl->pf2 |= 2;
+        return;
+    case 0x41:
+        pl->obj_flags &= ~1u;
+        if (pl->type == 1)
+            pl->layer_set = 0;
+        return;
+    case 0x42:
+        pl->obj_flags |= 1;
+        if (pl->type == 1)
+            pl->layer_set = 0;
+        return;
+    case 0xc6: /* gSwitchTimers: switch objects not translated (always 0) */
+        return;
+    case 0x59:
+        if (pl->type != 1)
+            return;
+        if ((pl->layer_ovr & ~0x80) != w->prm->flags + 1 && (pl->anim < 0x1a || pl->anim > 0x20) &&
+            !(pl->layer_set & 2)) {
+            pl->layer_set = (u8)((pl->obj_flags & 1) | 2);
+            pl->layer_ovr = (u8)((w->prm->flags & 0xf) + 1);
+            pl->obj_flags &= ~1u;
+        }
+        pl->pf2 |= 4;
+        return;
+    case 0x5a:
+        if (pl->type != 1 || pl->anim < 0x1a)
+            return;
+        if (pl->anim <= 0x20)
+            pl->obj_flags &= ~1u;
+        return;
+    case 0x5b:
+        if (pl->type != 1 || pl->anim < 0x1a)
+            return;
+        if (pl->anim <= 0x20)
+            pl->obj_flags |= 1;
+        return;
+    case 0x9d:
+        if (pl->type != 1)
+            return;
+        if (pl->pf & 0x80) {
+            g_obj_stage.speed_bonus += 10000;
+        } else if (pl->pf & 0x100) {
+            g_obj_stage.speed_bonus += 8000;
+        } else {
+            v = pl->move_x;
+            if (v < 0)
+                v = -v;
+            if (pl->run_thr[2] >= v)
+                g_obj_stage.speed_bonus += 4000;
+        }
+        g_obj_stage.bonus_count++;
+        w->h.obj_flags |= 8;
+        w->coll[0].flags |= 0x1000;
+        w->f1F4 |= 0x10;
+        return;
+    case 0x9f:
+        if (pl->type != 1 || (pl->move_flags & 0x100))
+            return;
+        dcp_act_die(pl);
+        return;
+    case 0x7e: /* Player_Action_MapObj40 */
+    case 0xa9: /* EffSand_Create */
+    case 0xb6: /* Player_Action_GliderSequenceStart */
+    case 0xb7: /* Player_Action_GliderSequenceEnd */
+    case 0xc3: /* ZoneFx_Zone4_StartBldyRampUp */
+    case 0xc4: /* ZoneFx_Zone4_StartBldyRampDown */
+    case 0xc5: /* switch timer area */
+        obj_log("mapobj40_untranslated", w->prm->type, pl->x >> 8);
+        return;
+    }
+}
+Obj *mapobj40_create(ObjParam *p, s32 b, s32 c) {
+    Obj *w = obj_alloc(OBJ_PRIO_MAPOBJ, obj_mapobject_dtor);
+    if (w == NULL)
+        return NULL;
+    obj_mapobject_init(w, p, b, c);
+    w->kind = OBJK_TRIGGER;
+    rect_set_box2d(&w->coll[0], p->p6, p->p7, (s16)(p->p8 + p->p6), (s16)(p->p9 + p->p7));
+    rect_set_atkdef(&w->coll[0], 0, (u32)-16);
+    w->coll[0].flags |= 0xc0;
+    w->coll[0].cb = mapobj40_on_hit;
+    w->coll[0].owner = w;
+    w->coll[0].owner_kind = OBJ_OWNER_OBJECT;
+    w->h.move_flags |= 0x2120;
+    switch (w->prm->type) {
+    case 0xb7:
+        w->h.move_flags |= 0x8000000;
+        /* fall through */
+    case 0xb6:
+        w->h.move_flags &= ~0x2000u;
+        rect_set_box2d(&w->coll[0], 0, -0xc8, 0x28, 0xc8);
+        break;
+    }
+    return w;
+}

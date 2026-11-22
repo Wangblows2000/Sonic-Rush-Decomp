@@ -384,6 +384,9 @@ ObjCreateFn obj_create_fn(u16 t) {
         return marker_create;        /* Marker_Create */
     if (t == 0x71)
         return goalring_create;      /* GoalRing_Create */
+    if ((t >= 0x40 && t <= 0x42) || (t >= 0x59 && t <= 0x5b) || t == 0x7e || t == 0x9d || t == 0x9f ||
+        t == 0xa9 || t == 0xb0 || t == 0xb6 || t == 0xb7 || (t >= 0xc3 && t <= 0xc6))
+        return mapobj40_create;      /* MapObj40_Create */
     return NULL;                     /* not translated (OBJECTS.md) */
 }
 
@@ -557,6 +560,12 @@ void objects_set_view(int idx, s32 x, s32 y) {
     g_obj.view[idx].y = y;
     g_obj.view[idx].w = 0x100;
     g_obj.view[idx].h = 0x100;
+}
+/* StageEvent_InitialSpawn again on the next objects_frame_begin (after a
+ * respawn / teleport the DS restarts the stage, which does the same) */
+void objects_respawn_view(void) {
+    if (g_obj.event_state == 1)
+        g_obj.event_state = 0;
 }
 void objects_set_view_count(int n) { g_obj.n_views = n < 1 ? 1 : (n > OBJ_MAX_VIEWS ? OBJ_MAX_VIEWS : n); }
 

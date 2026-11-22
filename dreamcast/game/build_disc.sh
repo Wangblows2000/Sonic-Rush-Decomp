@@ -18,6 +18,15 @@ cp "$M/narc__player_lz7__son.dcv" "$OUT/disc/player/son.dcv"
 # Player_SetAnimation model-animation table (ov000 0x02368bdc, 0x68 bytes) from YOUR ROM
 python3 -c "import sys;d=open(sys.argv[1],'rb').read();o=0x02368bdc-0x022C5C80;open(sys.argv[2],'wb').write(d[o:o+0x68])" \
     "$ROOT/extract/eur/arm9_overlays/ov000.bin" "$OUT/disc/player/animmap.bin"
+mkdir -p "$OUT/disc/objects" "$OUT/disc/sprites"
+cp -r "$ROOT/build/dreamcast/objects/objdata.bin" "$ROOT/build/dreamcast/objects/hbx" "$OUT/disc/objects/"
+grep -v '^#' "$ROOT/build/dreamcast/objects/sprites.txt" | cut -f1 | while read -r sp; do
+    [ -n "$sp" ] || continue
+    S=$ROOT/build/dreamcast/sprites/bac/$sp
+    mkdir -p "$OUT/disc/sprites/$sp"
+    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"
+    for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+done
 mkdir -p "$OUT/disc/music"
 A=$ROOT/build/dreamcast/audio
 for z in 1 2 3 4 5 6 7; do

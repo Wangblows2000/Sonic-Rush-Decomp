@@ -48,8 +48,10 @@ reproduce every line below.
 
 ## Dreamcast port (branch `dreamcast-port`, 2026-11-22)
 
-Milestone 1 (porting report) and Milestone 2 (hardware foundation disc) done;
-the game itself does not run on Dreamcast yet. Details: docs/dreamcast/.
+Vertical slice: native stage loading/rendering, translated player physics with
+the 3D player model, translated core objects and enemies, streamed zone music
+(emulator-tested only). Most of the game is not ported yet. Details:
+docs/dreamcast/KNOWN-ISSUES.md.
 
 ## Recent changes (2026-11-21)
 

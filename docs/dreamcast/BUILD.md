@@ -42,3 +42,22 @@ Not tested: retail hardware, VGA box, PAL modes, controller input in the
 emulator (no input injected; the program reads the maple state every frame).
 Audio was not listened to (headless); playback is confirmed only by the
 successful AICA load and `snd_sfx_play` call.
+
+## Game disc (vertical slice)
+
+```sh
+export PATH=/path/to/wav2adpcm:/path/to/cdi4dc:$PATH
+python3 tools/dreamcast/stages/stage2dc.py --all
+python3 tools/dreamcast/sprites/bac2dc.py --no-preview
+python3 tools/dreamcast/models/nsbmd2dc.py batch
+python3 tools/dreamcast/audio/sdat2dc.py
+make -C dreamcast/game/player tables
+make -C dreamcast/game/objects data
+sh dreamcast/game/build_disc.sh          # -> build/dreamcast/game/srdc.cdi (~83 MB)
+```
+
+Controls (default keyboard in Flycast: arrows + X/C/S/D): analog/D-pad move,
+A jump, B trick, X boost, Y alt, START quit; B/Y (in the stage viewer path)
+switch stages. Test runs: `fcrun.sh`/`fcplay.sh` (Xvfb + xdotool) in BUILD
+notes; results 2026-11-22: Leaf Storm act 1, 59.8 fps emulated, player
+reaches the first springs/loop area, objects spawn, music streams.

@@ -131,7 +131,11 @@ void ring_main(void);                                                   /* RingM
 int ring_count(void);
 u8 *ring_scatter_level(void);
 void ring_mark_scatter(void);
-void ring_draw(int list);
+int ring_draw_count(void);
+int ring_draw_get(int i, s32 *x, s32 *y, int *vflip);
+const ObjSprite *ring_draw_sprite(void);
+int ring_fx_get(int i, const ObjSprite **s);
+int ring_fx_max(void);
 
 /* ------------------------------------------------------ object kinds */
 Obj *spring_create(ObjParam *p, s32 x, s32 y);
@@ -142,6 +146,7 @@ Obj *needle_create(ObjParam *p, s32 x, s32 y);
 Obj *goalring_create(ObjParam *p, s32 x, s32 y);
 Obj *marker_create(ObjParam *p, s32 x, s32 y);
 Obj *pawn_create(ObjParam *p, s32 x, s32 y);
+Obj *mapobj40_create(ObjParam *p, s32 x, s32 y);
 /* effects (obj_effects.c) */
 void mapobject_on_hit_default(ObjBox *a, ObjBox *b);                     /* MapObject_OnHit_Default */
 void mapobject_knock_away(Obj *o, DcPlayer *p);                         /* MapObject_Action_KnockAway */
@@ -153,6 +158,6 @@ void eff_set_move_until_anim_end(Obj *o);                               /* Effec
 
 /* kinds (Obj.kind), for draw / debug */
 enum { OBJK_NONE, OBJK_SPRING, OBJK_DASHP, OBJK_DASHC, OBJK_ITEMBOX, OBJK_ITEMPART, OBJK_NEEDLE,
-       OBJK_GOAL, OBJK_GOALPART, OBJK_MARKER, OBJK_PAWN, OBJK_EFFECT };
+       OBJK_GOAL, OBJK_GOALPART, OBJK_MARKER, OBJK_PAWN, OBJK_EFFECT, OBJK_TRIGGER };
 
 #endif
