@@ -794,8 +794,10 @@ void objects_set_view(int idx, s32 x, s32 y) {
     g_obj.view[idx].y = y;
     g_obj.view[idx].w = 0x100;
     g_obj.view[idx].h = 0x100;
-    g_obj_camera[idx].x = x;
-    g_obj_camera[idx].y = y;
+    if (idx < 2) {   /* view 2 (the DC window) has no gCamera mirror */
+        g_obj_camera[idx].x = x;
+        g_obj_camera[idx].y = y;
+    }
     if (idx == 0 && g_obj.n_views == 1) { /* one DC view: camera 1 follows camera 0 */
         g_obj_camera[1].x = x;
         g_obj_camera[1].y = y;

@@ -321,6 +321,7 @@ void NaviM_StartEmeraldAppear(void);
 BOOL NaviM_IsCounting(void);
 void ZoneActSelect_Create(s32 a, s32 b, s32 c);
 void mn_navi_compose(void);
+void mn_navi_compose_ex(int actsel);   /* actsel: the act select layout */
 int mn_navi_state(int *face, int *panel, int *alpha);
 int mn_navi_counter(void);
 int mn_navi_face_pixels(void);

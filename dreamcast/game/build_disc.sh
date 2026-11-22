@@ -151,6 +151,16 @@ if [ -n "$SRDC_BGMTEST" ]; then mkdir -p "$OUT/disc/debug"; cp "$SRDC_BGMTEST" "
 # SRDC_DEBUGDIR=<dir>: its files go to /cd/debug (e.g. chara.txt "1" = Blaze, extra.txt = Extra Zone start: main_audiotest.patch)
 if [ -n "$SRDC_DEBUGDIR" ]; then mkdir -p "$OUT/disc/debug"; cp "$SRDC_DEBUGDIR"/* "$OUT/disc/debug/"; fi
 if [ -n "$SRDC_DEMOLEAD" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_DEMOLEAD" > "$OUT/disc/debug/demolead.txt"; fi
+# flow tests: SRDC_AUTOCLEAR=<frame> clears every act / boss at that stage frame, SRDC_AUTODIE="<frame> <lives>"
+# kills the player there, SRDC_AUTOMAP=1 lets the zone map walk to the next story node and press A
+if [ -n "$SRDC_AUTOCLEAR" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTOCLEAR" > "$OUT/disc/debug/autoclear.txt"; fi
+if [ -n "$SRDC_AUTODIE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTODIE" > "$OUT/disc/debug/autodie.txt"; fi
+# SRDC_AUTOMAP=s / b / x: the autopilot also picks Sonic / Blaze / the extra story on the player select
+if [ -n "$SRDC_AUTOMAP" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTOMAP" > "$OUT/disc/debug/automap.txt"; fi
+# SRDC_SPAWN="x y [tension]": the first stage starts the player there (e.g. at a special ring)
+if [ -n "$SRDC_SPAWN" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPAWN" > "$OUT/disc/debug/spawn.txt"; fi
+# SRDC_SPQUOTA=1: special stages keep the rings at the goal quota (cleared without a player)
+if [ -n "$SRDC_SPQUOTA" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/spquota.txt"; fi
 cd "$OUT"
 rm -f IP.BIN
 if [ -n "$SRDC_PREBUILT" ]; then cp "$SRDC_PREBUILT/IP.BIN" "$OUT/IP.BIN"; else

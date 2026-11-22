@@ -232,9 +232,9 @@ static void ZoneActSelect_LoadZonePalette(ActSelWork *p, s32 i) {
 }
 
 static void draw_all(ActSelWork *w, BOOL cursor) {
-    mn_comp_reset(0);   /* the map screen, with the navigator pieces while it is up */
+    mn_comp_reset(0);   /* the act select screen, with the navigator pieces while it is up */
     mn_comp_full(0);
-    mn_navi_compose();
+    mn_navi_compose_ex(1);
     ZoneActSelect_DrawHeader(w);
     if (cursor)
         ZoneActSelect_DrawActCursor(w);

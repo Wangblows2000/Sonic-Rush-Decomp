@@ -26,7 +26,7 @@
 #define OBJ_RECT_PER_LIST 0x30 /* gObjRectNextList[4][0x30]                 */
 #define OBJ_COLMAP_MAX 0x20    /* data_022c4de4[0x20]                       */
 #define OBJ_RING_MAX 64        /* RingManager parts[64]                     */
-#define OBJ_MAX_VIEWS 2        /* gCamera[0], gCamera[1]                    */
+#define OBJ_MAX_VIEWS 3        /* gCamera[0], gCamera[1], + the DC window   */
 
 /* task ids (Task_Create id argument = update order) */
 #define OBJ_PRIO_STAGE 0x0010   /* Stage_Main (ObjRect_CheckAllGroup)       */

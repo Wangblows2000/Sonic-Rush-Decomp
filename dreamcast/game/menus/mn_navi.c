@@ -931,17 +931,30 @@ BOOL NaviM_IsCounting(void) {
  * Scale 1.5 keeps the original pixels square at an integer-friendly size next
  * to the 2.5x map. */
 #define NV_SCALE 1.5f
-void mn_navi_compose(void) {
+void mn_navi_compose(void) { mn_navi_compose_ex(0); }
+/* actsel: the act select (ZoneActSelect) fills the frame with the zone tabs across the top, the
+ * act rows and the back button at the bottom right: the NaviM panel goes to the free strip under
+ * the rows (x 1.25, 20..160 x 406..476) instead of over tabs 6 / 7, and the face to the free
+ * column right of the rows (x 1.0, 512..640 x 196..324) instead of over the back button and the
+ * ranks of the lower rows.  The balloon (shown for a few seconds) stays at the top left. */
+void mn_navi_compose_ex(int actsel) {
     NaviMsgWork *w = gNaviMsgTask ? NMW : NULL;
     if (gNaviMTask) {
         /* the NaviM panel: its piece of the frame BG with the counters and emerald slots */
-        mn_comp_add(1, 16, 72, 128, 128, 640 - 16 - 112 * NV_SCALE, 16, NV_SCALE, (1 << 0) | (1 << 1) | (1 << 3), 0);
+        if (actsel)
+            mn_comp_add(1, 16, 72, 128, 128, 20, 406, 1.25f, (1 << 0) | (1 << 1) | (1 << 3), 0);
+        else
+            mn_comp_add(1, 16, 72, 128, 128, 640 - 16 - 112 * NV_SCALE, 16, NV_SCALE, (1 << 0) | (1 << 1) | (1 << 3), 0);
     }
     if (!w)
         return;
-    if (g_mn_layer[1][1].visible)   /* the face, without the frame behind it */
-        mn_comp_add(1, 128, 48, 256, 176, 640 - 128 * NV_SCALE, 480 - 128 * NV_SCALE, NV_SCALE,
-                    (1 << 0) | (1 << 2) | (1 << 3), 1);
+    if (g_mn_layer[1][1].visible) {   /* the face, without the frame behind it */
+        if (actsel)
+            mn_comp_add(1, 128, 48, 256, 176, 640 - 128, 196, 1.0f, (1 << 0) | (1 << 2) | (1 << 3), 1);
+        else
+            mn_comp_add(1, 128, 48, 256, 176, 640 - 128 * NV_SCALE, 480 - 128 * NV_SCALE, NV_SCALE,
+                        (1 << 0) | (1 << 2) | (1 << 3), 1);
+    }
     if (g_mn_layer[1][0].visible)   /* the balloon and the message panel */
         mn_comp_add(1, 0, 0, 176, 88, 8, 8, NV_SCALE, (1 << 1) | (1 << 2), 1);
 }

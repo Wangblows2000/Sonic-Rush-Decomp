@@ -102,6 +102,19 @@ static int g_dbg_pos_set, g_dbg_pos_x, g_dbg_pos_y;   /* test builds: /cd/debug/
 static uint64_t g_prof[4], g_dprof[6], g_fmax;
 static int g_fslow;   /* draw: bg, layers, player model, objects, ui, boss */   /* us per 120 frames: objects update, player, draw, end_frame wait */
 static int g_dbg_special = -1;   /* test builds: /cd/debug/special.txt = act frame to enter the special stage */
+/* test builds: /cd/debug/autoclear.txt "N": the act is cleared at stage frame N (the goal's
+ * StageShutdown_Create(ClearDemo_Create)); in a boss act Stage_OnBossCleared runs instead (the
+ * fight is skipped), and the Extra boss counts as beaten after N frames of its fight */
+static int g_dbg_autoclear = -1;
+/* test builds: /cd/debug/autodie.txt "N L": at stage frame N the lives are set to L and the
+ * player is put below the map (pit death; L 1: game over) */
+static int g_dbg_autodie = -1, g_dbg_autodie_lives = 1, g_dbg_autodie_armed;   /* once per stage start */
+/* test builds: /cd/debug/spawn.txt "x y [tension]": the first stage starts the player there (px),
+ * with that tension (0..0x12c0), e.g. at a special ring */
+static int g_dbg_spawn_x, g_dbg_spawn_y, g_dbg_spawn_tension = -1;
+static int g_dbg_spawn_late_x, g_dbg_spawn_late_y;   /* the title card moves the player: placed again after it */
+static int g_dbg_spawn_trace;   /* frames left of the player trace after the debug spawn */
+int ui_exit_cleared(void);   /* ui/ui_state.c: the stage ended through the act results */
 static void (*g_prev_stage_exit)(void *ctx, s32 kind);
 static void stage_exit_hook(void *ctx, s32 kind)
 {
@@ -132,16 +145,21 @@ static void spawn_player(Level *lv)
     if(g_ss.active) { sx = g_ss.x; sy = g_ss.y; }   /* 280 px below the special ring */
     else if(g_demo_spawn_x || g_demo_spawn_y) { sx = g_demo_spawn_x; sy = g_demo_spawn_y; }   /* DemoPlay start point */
     else if(g_dbg_pos_set) { sx = g_dbg_pos_x; sy = g_dbg_pos_y; g_dbg_pos_set = 0; printf("debug start position %d,%d\n", sx, sy); }
+    else if(g_dbg_spawn_x || g_dbg_spawn_y) {
+        sx = g_dbg_spawn_late_x = g_dbg_spawn_x; sy = g_dbg_spawn_late_y = g_dbg_spawn_y; g_dbg_spawn_x = g_dbg_spawn_y = 0;
+    }
     rlvl_bind(&g_map, lv->data);
     dcp_bind_map(&g_map);
     memset(&g_player, 0, sizeof(g_player));
     dcp_player_create(&g_player, g_chara, 0, sx, sy);
+    if(g_dbg_spawn_tension >= 0) { g_player.tension = (s16)g_dbg_spawn_tension; g_dbg_spawn_tension = -1; }
+    g_dbg_autodie_armed = 1;
     objects_shutdown(); objects_models_free();
     if(g_model_ok) dcp_model_attach(&g_dcp_model, &g_player);   /* anim hooks, chained before the objects' */
     g_obj_ok = objects_init(&g_map, lv->data) == 0;
     if(g_obj_ok) {
         if(g_ss.active && objects_restore_event_state) objects_restore_event_state();
-        objects_add_player(&g_player); objects_set_view_count(2); objects_respawn_view();
+        objects_add_player(&g_player); objects_set_view_count(3); objects_respawn_view();
         /* DCP_DF_ANIM_DONE comes from the model's joint animation (StageObj_Draw3DEx);
          * son.bac timing stands in only when the model is missing */
         objects_set_player_anim_done(!g_model_ok);
@@ -399,8 +417,16 @@ static CsNext run_cutscene(CsKind kind, int id, int zone, const char *return_ban
         return n;
     }
 }
+/* SceneChange_ToEnding / ToExtraEnding: the ending, the staff roll, PostStaffRoll; then
+ * PostStaffRoll_ShowUnlockNotices (menus) and the SEGA logo */
+static void run_ending(CsKind kind, int zone)
+{
+    CsNext n = run_cutscene(kind, 0, zone, "sys");   /* the menus follow: their bank back */
+    if(n == CS_NEXT_UNLOCK_NOTICES) menus_post_staff_roll();
+}
 /* talk overlays: zone map (menus hook) and boss talks (Boss7 rival, final boss) */
 static int menu_talk_start(int c, int step) { cs_story(0);   /* zone-map talks: the zone is not read */
+    cutscene_set_return_bank("sys");   /* the talk loads sys_a04: the menus' bank afterwards */
     return cutscene_start(CS_TALK_MAP, cutscene_zonemap_talk_id(c, step), c); }
 static int menu_talk_active(void) { return cutscene_active(); }
 static void boss_talk_hook(void *ctx, s32 id)
@@ -435,9 +461,16 @@ static MenuRequest run_extra_zone(void)
     loading_end(); audio_load_end();
     if(r == 0) {
         r = BOSS_EXTRA_FAILED;
+        int fight = 0;
         for(;;) {
             input_poll(&in);
+            /* PauseMenu_Create(0) is not drawn here: START or A continues (no quit entry) */
+            if(boss_extra_paused() && (in.pressed & (IN_START | IN_JUMP))) { boss_extra_resume(); in.pressed = 0; }
             r = boss_extra_run_frame(&in);
+            if(g_dbg_autoclear > 0 && r == BOSS_EXTRA_RUNNING && ++fight >= g_dbg_autoclear) {
+                printf("debug: extra boss cleared at fight frame %d\n", fight);
+                r = BOSS_EXTRA_CLEARED;
+            }
             sound_update();
             render_begin_frame();
             render_begin_list(PVR_LIST_OP_POLY); boss_extra_draw(PVR_LIST_OP_POLY); render_end_list();
@@ -448,6 +481,10 @@ static MenuRequest run_extra_zone(void)
             if(r != BOSS_EXTRA_RUNNING) break;
         }
         boss_extra_result(&res);
+        if(r == BOSS_EXTRA_CLEARED && !res.cleared) {   /* debug autoclear */
+            res.cleared = 1; res.time = boss_extra_time(); res.rings = boss_extra_rings();
+            if(res.lives_current < 2) res.lives_current = 2;
+        }
         boss_extra_shutdown();
         SaveData_SetLivesBoth(res.lives_sonic, res.lives_blaze);   /* saved after a game over too, as on the DS */
     } else printf("extra boss: init failed\n");
@@ -607,6 +644,14 @@ int main(int argc, char **argv)
         uint32_t dsz;
         char *d = load_file("/cd/debug/start.txt", &dsz);
         char *sp = load_file("/cd/debug/special.txt", &dsz);
+        char *ac = load_file("/cd/debug/autoclear.txt", &dsz);
+        char *ad = load_file("/cd/debug/autodie.txt", &dsz);
+        char *sw = load_file("/cd/debug/spawn.txt", &dsz);
+        if(sw) { sw = realloc(sw, dsz + 1); sw[dsz] = 0; sscanf(sw, "%d %d %d", &g_dbg_spawn_x, &g_dbg_spawn_y, &g_dbg_spawn_tension); free(sw);
+                 printf("debug: spawn at %d,%d tension %d\n", g_dbg_spawn_x, g_dbg_spawn_y, g_dbg_spawn_tension); }
+        if(ac) { g_dbg_autoclear = atoi(ac) > 0 ? atoi(ac) : 240; free(ac); printf("debug: autoclear at frame %d\n", g_dbg_autoclear); }
+        if(ad) { ad = realloc(ad, dsz + 1); ad[dsz] = 0; if(sscanf(ad, "%d %d", &g_dbg_autodie, &g_dbg_autodie_lives) < 1) g_dbg_autodie = 300; free(ad);
+                 printf("debug: autodie at frame %d, lives %d\n", g_dbg_autodie, g_dbg_autodie_lives); }
         char *spos = d ? load_file("/cd/debug/startpos.txt", &dsz) : NULL;   /* "x y" px: replaces PlayerStart */
         if(spos) { spos = realloc(spos, dsz + 1); spos[dsz] = 0; g_dbg_pos_set = sscanf(spos, "%d %d", &g_dbg_pos_x, &g_dbg_pos_y) == 2; free(spos); }
         if(sp) { g_dbg_special = atoi(sp) > 0 ? atoi(sp) : 300; free(sp); }
@@ -644,7 +689,7 @@ int main(int argc, char **argv)
                 r = run_extra_zone();
                 enter_front_end();
                 if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding"))
-                    run_cutscene(CS_EXTRA_ENDING, 0, 8, NULL);
+                    run_ending(CS_EXTRA_ENDING, 8);
                 continue;
             }
             if(r.kind == MENU_REQ_STAGE) {
@@ -664,11 +709,13 @@ int main(int argc, char **argv)
                 ok = load_stage(&lv, stage) == 0;
                 if(ok && g_player_ok) spawn_player(&lv);
             } else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "Ending"))
-                run_cutscene(CS_ENDING, 0, 7, NULL);        /* SceneChange_ToEnding (+ staff roll, PostStaffRoll) */
+                run_ending(CS_ENDING, 7);                   /* SceneChange_ToEnding (+ staff roll, PostStaffRoll) */
             else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding"))
-                run_cutscene(CS_EXTRA_ENDING, 0, 8, NULL);  /* SceneChange_ToExtraEnding */
-            else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "DemoScript4"))
-                run_cutscene(CS_SCRIPT, 4, 6, NULL);        /* ClearDemo_GoToNextScene zone 6 boss */
+                run_ending(CS_EXTRA_ENDING, 8);             /* SceneChange_ToExtraEnding */
+            else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "DemoScript4")) {
+                run_cutscene(CS_SCRIPT, 4, 6, "sys");        /* ClearDemo_GoToNextScene zone 6 boss */
+                menus_restart_bgm();                        /* the zone map's BGM after the script's music */
+            }
             else if(r.kind == MENU_REQ_UNAVAILABLE)
                 printf("menus: %s not in the port\n", r.scene ? r.scene : "?");
             else if(r.kind == MENU_REQ_DEMO) {
@@ -712,8 +759,13 @@ int main(int argc, char **argv)
                 s32 vx, vy, px2, py2;
                 camera_get_view(&vx, &vy);
                 camera_get_partner_view(&px2, &py2);   /* the DS's other screen, as the original spawns */
-                objects_set_view(0, vx, vy);
+                /* views 0/1 = the DS screen pair (gCamera[0]/[1]): spawning and the in-view
+                 * checks follow the original (a gimmick held by gCamera[0], e.g. the special
+                 * ring, stays alive: DEFECTS F10); view 2 = the DC window, so nothing visible
+                 * is ever missing */
+                objects_set_view(0, camera_layer(0)->x, camera_layer(0)->y);
                 objects_set_view(1, px2, py2);
+                objects_set_view(2, vx, vy);
                 objects_frame_begin();
             }
             if(g_is_boss) boss_update_pre(&g_player);   /* BossF: arm colmap / ride before the player */
@@ -732,6 +784,37 @@ int main(int argc, char **argv)
             camera_frame_end();   /* ScreenShake_Main */
         }
         if(ok && g_player_ok && g_dbg_special > 0 && (int)g_dcp_world.frame == g_dbg_special) { g_dbg_special = -1; g_special_pending = 1; }
+        if(ok && g_player_ok && !g_demo && ui_state() == UI_PLAYING && !ui_titlecard_active() && !cutscene_active()) {
+            if(g_dbg_spawn_late_x || g_dbg_spawn_late_y) {   /* debug spawn: the place again, the title card is over */
+                g_player.x = g_dbg_spawn_late_x << 8; g_player.y = g_dbg_spawn_late_y << 8;
+                g_player.vel_x = g_player.vel_y = 0; g_player.gnd_vel = 0;
+                camera_snap_to_player(&g_player);   /* the objects of that place spawn now */
+                if(g_obj_ok) objects_respawn_view();
+                printf("debug: player placed at %d,%d after the title card\n", g_dbg_spawn_late_x, g_dbg_spawn_late_y);
+                g_dbg_spawn_late_x = g_dbg_spawn_late_y = 0;
+                g_dbg_spawn_trace = 1200;
+            }
+            if(g_dbg_spawn_trace > 0 && (g_dbg_spawn_trace-- % 30) == 0) {
+                ObjPlayerCtx *pc = obj_player_ctx(&g_player);
+                s32 vx = 0, vy = 0;
+                camera_get_view(&vx, &vy);
+                printf("debug: player %ld,%ld pf %08lx pf2 %08lx gimmick %p held %04x boost frames %d timer %d tension %d view %ld,%ld despawned %lu live %lu\n",
+                       (long)(g_player.x >> 8), (long)(g_player.y >> 8), (unsigned long)g_player.pf, (unsigned long)g_player.pf2,
+                       g_player.gimmick, (unsigned)g_player.held, pc ? (int)pc->g3F4 : -1, (int)g_player.timer, (int)g_player.tension,
+                       (long)(vx >> 8), (long)(vy >> 8), (unsigned long)objects_stats()->despawned, (unsigned long)objects_stats()->live);
+            }
+            if(g_dbg_autoclear > 0 && (int)g_dcp_world.frame == g_dbg_autoclear) {
+                printf("debug: autoclear z%d a%d (%s)\n", g_dcp_world.zone, g_dcp_world.act, g_is_boss ? "boss" : "goal");
+                if(g_is_boss) { if(!boss_cleared()) boss_cleared_hook(NULL); }
+                else if(g_obj_hooks.stage_exit) g_obj_hooks.stage_exit(g_obj_hooks.ctx, OBJ_EXIT_CLEAR_DEMO);
+            }
+            if(g_dbg_autodie > 0 && g_dbg_autodie_armed && (int)g_dcp_world.frame == g_dbg_autodie) {
+                g_dbg_autodie_armed = 0;   /* the timer stops while the player dies */
+                printf("debug: autodie, lives %d\n", g_dbg_autodie_lives);
+                g_dcp_world.lives = (u8)g_dbg_autodie_lives;
+                g_player.y = g_dcp_world.death_y << 8;   /* below the map: the pit death (Player_Main) */
+            }
+        }
         if(ok && g_player_ok && g_after_boss_pending) {
             g_after_boss_pending = 0;
             run_cutscene(CS_SCRIPT, 1, g_dcp_world.zone, sound_stage_sdat(g_dcp_world.zone, g_dcp_world.act, g_chara));
@@ -825,8 +908,10 @@ int main(int argc, char **argv)
             ui_stage_end();   /* title-card / results BGs, navigator, face texture */
             zonefx_shutdown(); camera_destroy();
             level_free(&lv); ok = 0;
-            if(k == UI_EXIT_NEXT_ACT || k == UI_EXIT_TRY_AGAIN)
+            if(k == UI_EXIT_NEXT_ACT || (k == UI_EXIT_TRY_AGAIN && ui_exit_cleared()))
                 r = menus_stage_exit(MENU_EXIT_CLEARED, total, g_dcp_world.lives, g_emeralds, g_dcp_world.frame);
+            else if(k == UI_EXIT_TRY_AGAIN)   /* time attack: pause quit / Stage_ExitAfterFail, no record */
+                r = menus_stage_exit(MENU_EXIT_TRY_AGAIN, total, g_dcp_world.lives, g_emeralds, 0);
             else if(k == UI_EXIT_QUIT)
                 r = menus_stage_exit(MENU_EXIT_QUIT, total, g_dcp_world.lives, g_emeralds, 0);
             else
@@ -841,9 +926,9 @@ int main(int argc, char **argv)
             if(r.kind == MENU_REQ_STAGE && r.zone == 8 && r.act == 2) {
                 g_chara = r.character;
                 r = run_extra_zone();
-                if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding"))
-                    run_cutscene(CS_EXTRA_ENDING, 0, 8, NULL);
                 enter_front_end();
+                if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding"))
+                    run_ending(CS_EXTRA_ENDING, 8);
             } else if(r.kind == MENU_REQ_STAGE && stage_index(r.zone, r.act) >= 0) {
                 g_chara = r.character; load_player_model();
                 if(r.mode == UI_MODE_STORY && r.act == 2) run_cutscene(CS_SCRIPT, 0, r.zone, NULL);   /* Game_AdvanceActWithDemo */
@@ -851,10 +936,13 @@ int main(int argc, char **argv)
                 ok = load_stage(&lv, stage) == 0;
                 if(ok && g_player_ok) spawn_player(&lv);
             } else {
-                if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "Ending")) run_cutscene(CS_ENDING, 0, 7, NULL);
-                else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding")) run_cutscene(CS_EXTRA_ENDING, 0, 8, NULL);
-                else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "DemoScript4")) run_cutscene(CS_SCRIPT, 4, 6, NULL);
                 enter_front_end();
+                if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "Ending")) run_ending(CS_ENDING, 7);
+                else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "ExtraEnding")) run_ending(CS_EXTRA_ENDING, 8);
+                else if(r.kind == MENU_REQ_UNAVAILABLE && r.scene && !strcmp(r.scene, "DemoScript4")) {
+                    run_cutscene(CS_SCRIPT, 4, 6, "sys");
+                    menus_restart_bgm();   /* the zone map's BGM after the script's music */
+                }
             }
         }
         if(++frame % 120 == 0 && dbg_start) {   /* frame log: test builds only (each serial line costs ms) */

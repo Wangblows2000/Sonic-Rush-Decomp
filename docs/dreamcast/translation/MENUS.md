@@ -676,3 +676,24 @@ then rolls back and forth between x ≈ 17400 and 18200 until the frame limit,
 while the recording holds right and boost from frame 815. Since the lead value
 does not change this, the drift is in the stage (player physics or a missing
 object near x 18200, y 3150-3250), not in the replay timing. DEMO_LEAD_FRAMES stays 0.
+
+## 16. Whole-story flow test and fixes (2026-11-22, second pass)
+
+- `make -C dreamcast/game/menus story-test` (`test/test_story.c`): the real menus, save and
+  cutscene modules on the owner's data, driven by a model of main.c's scene flow (with the
+  patches in `menus/patches/`). Every act is cleared at once; the zone map is walked by the
+  test autopilot. It checks: Sonic from a new save through zones 0..6 in order, script 0
+  before and script 1 after every boss, the nine map talks 0x15..0x1d, DemoScript 4, the
+  final zone (zf3, no script 1), the ending, staff roll, PostStaffRoll notices (flags 0x300),
+  then the SEGA logo; Blaze's order 3 0 2 1 5 4 6 7 and talks 0x28..0x2f to progress 28;
+  the extra story (script 3, script 2, ExtraAct, extra ending, flag 0x1000); the zone-map
+  BGM after every return from a stage, talk or script; game over (lives 2 saved), pause
+  quit (lives kept), time attack without a clear (no record). 124/124.
+- Fixes in this module: `SysSound_PlayBGM` restarts after `SysSound_Release` / a stage /
+  `NNS_SndStopSoundAll` (the map was silent after every talk and stage);
+  `menus_restart_bgm()`; PostStaffRoll unlock notices follow the original conditions and
+  exits, `menus_post_staff_roll()`; `MENU_EXIT_TRY_AGAIN`; story game over saves the lives
+  (Stage_ExitAfterFail). Test-only: the zone-map / player-select autopilot
+  (`debug/automap.txt`, `g_mn_automap`), the 4th `menusave.txt` value (Sonic's emeralds),
+  `menus trace boot save`, `menus trace exit` and `time records` lines.
+- Flycast runs and the defect list: `docs/dreamcast/DEFECTS.md`.
