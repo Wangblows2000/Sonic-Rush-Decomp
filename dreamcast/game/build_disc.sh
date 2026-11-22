@@ -128,6 +128,11 @@ mkdir -p "$OUT/disc/special"
 cp "$SP/spdata.bin" "$OUT/disc/special/"; cp -r "$SP/bg" "$SP/models" "$SP/sprites" "$SP/ss" "$OUT/disc/special/"
 find "$OUT/disc/special" -name '*.png' -delete
 cp "$SP/sound/ss.srb" "$OUT/disc/sound/"
+# load-time packs (engine/pak.c, GRAPHICS.md section 6): per-stage object packs first, then
+# one data.pak of the small files (the loose copies are dropped from the disc tree)
+make -C "$HERE/objects" preload >/dev/null
+python3 "$ROOT/tools/dreamcast/mkpak.py" --stage-packs "$OUT/disc" "$ROOT/build/dreamcast/objects/preload.txt" "$ROOT/build/dreamcast/stages" "$OUT/disc/objects"
+python3 "$ROOT/tools/dreamcast/mkpak.py" "$OUT/disc" "$OUT/disc/data.pak" sprites objects ui/res special/sprites boss/extra/sprites models sound --skip-argb-with-pt4 --drop-packed
 if [ -n "$SRDC_PREBUILT" ]; then
     cp "$SRDC_PREBUILT/1ST_READ.BIN" "$OUT/disc/"
 else

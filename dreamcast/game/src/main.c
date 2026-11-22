@@ -770,19 +770,19 @@ int main(int argc, char **argv)
          * Depth (1/w style, bigger = nearer): bg 0.0005 < layer B 0.001 < player model (~0.006) < layer A 10. */
         render_begin_list(PVR_LIST_OP_POLY);
         { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) level_draw_bg(&lv, 0.25f, 0.125f, 0.0005f); g_dprof[0] += timer_us_gettime64() - t0; }
-        if(g_is_boss) boss_draw(PVR_LIST_OP_POLY);
-        if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY);
+        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_OP_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
+        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
         render_end_list();
         render_begin_list(PVR_LIST_PT_POLY);
         { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { level_draw_layer(&lv, 1, PVR_LIST_PT_POLY, 0.001f); level_draw_layer(&lv, 0, PVR_LIST_PT_POLY, 10.0f); } g_dprof[1] += timer_us_gettime64() - t0; }
-        if(g_is_boss) boss_draw(PVR_LIST_PT_POLY);
-        if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY);
+        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_PT_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
+        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
         { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok) obj_draw(PVR_LIST_PT_POLY); g_dprof[3] += timer_us_gettime64() - t0; }
         render_end_list();
         render_begin_list(PVR_LIST_TR_POLY);
-        if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY);
+        { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_TR_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
         if(ok && g_obj_ok) obj_draw(PVR_LIST_TR_POLY);   /* AnimatorSprite 0x400 (semi-transparent OBJ) */
-        if(g_is_boss) boss_draw(PVR_LIST_TR_POLY);
+        { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_TR_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
         if(g_is_boss) {
             s32 bm = 0, evy = 0;
             bossf_blend(&bm, &evy);   /* BossF white-out of the 3D layer (BLDY) */
@@ -864,7 +864,7 @@ int main(int argc, char **argv)
             if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
             printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f; worst frame %.2f ms, %d of 120 over 17.5 ms\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0, g_fmax / 1000.0, g_fslow);
             g_fmax = 0; g_fslow = 0;
-            printf("draw ms/frame: bg %.2f layers %.2f objects %.2f ui %.2f\n", g_dprof[0] / 120000.0, g_dprof[1] / 120000.0, g_dprof[3] / 120000.0, g_dprof[4] / 120000.0);
+            printf("draw ms/frame: bg %.2f layers %.2f player %.2f objects %.2f ui %.2f boss %.2f\n", g_dprof[0] / 120000.0, g_dprof[1] / 120000.0, g_dprof[2] / 120000.0, g_dprof[3] / 120000.0, g_dprof[4] / 120000.0, g_dprof[5] / 120000.0);
             memset(g_prof, 0, sizeof(g_prof)); memset(g_dprof, 0, sizeof(g_dprof));
             t_last = now;
         }

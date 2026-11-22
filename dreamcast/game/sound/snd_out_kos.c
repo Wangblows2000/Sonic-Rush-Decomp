@@ -6,6 +6,8 @@
  * snd_sfx_play_ex uses. Waves live in one snd_mem block per bank.
  * Requires snd_init() (done by snd_stream_init() in engine/audio.c audio_init).
  */
+#include <string.h>
+#include "../engine/pak.h"
 #include "snd_internal.h"
 #include <kos.h>
 #include <dc/sound/sound.h>
@@ -110,9 +112,35 @@ void snd_out_stop(int ch) {
     if (s_chan[ch] >= 0) snd_sfx_stop(s_chan[ch]);
 }
 
+/* A bank file from /cd/data.pak is loaded whole once and its ranges served
+ * from RAM: the loader asks for the size, then several ranges (each was an
+ * ISO 9660 open + seek on the GD-ROM). */
+static char s_pak_path[96];
+static void *s_pak_buf;
+static uint32_t s_pak_size;
+static int pak_cached(const char *path)
+{
+    void *b;
+    uint32_t n;
+    if (s_pak_buf && !strcmp(s_pak_path, path)) return 1;
+    if (pak_load(path, &b, &n) != PAK_FOUND) return 0;
+    free(s_pak_buf);
+    s_pak_buf = b; s_pak_size = n;
+    strncpy(s_pak_path, path, sizeof(s_pak_path) - 1);
+    s_pak_path[sizeof(s_pak_path) - 1] = 0;
+    return 1;
+}
+
 void *snd_out_read_file(const char *path, uint32_t off, uint32_t size) {
-    file_t f = fs_open(path, O_RDONLY);
+    file_t f;
     void *buf;
+    if (pak_cached(path)) {
+        if (off > s_pak_size || size > s_pak_size - off) return NULL;
+        buf = malloc(size ? size : 1);
+        if (buf) memcpy(buf, (uint8_t *)s_pak_buf + off, size);
+        return buf;
+    }
+    f = fs_open(path, O_RDONLY);
     if (f == FILEHND_INVALID) return NULL;
     buf = malloc(size ? size : 1);
     if (!buf || fs_seek(f, off, SEEK_SET) < 0 || fs_read(f, buf, size) != (ssize_t)size) {
@@ -123,8 +151,10 @@ void *snd_out_read_file(const char *path, uint32_t off, uint32_t size) {
 }
 
 int snd_out_file_size(const char *path) {
-    file_t f = fs_open(path, O_RDONLY);
+    file_t f;
     int n;
+    if (pak_cached(path)) return (int)s_pak_size;
+    f = fs_open(path, O_RDONLY);
     if (f == FILEHND_INVALID) return -1;
     n = (int)fs_total(f);
     fs_close(f);

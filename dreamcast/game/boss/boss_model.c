@@ -20,6 +20,7 @@
 
 #ifdef _arch_dreamcast
 #include <dc/pvr.h>
+#include "../engine/pak.h"
 #endif
 
 static char s_model_dir[96] = "/cd/models";
@@ -74,9 +75,23 @@ void MTX_Concat33(const MtxFx33 *a, const MtxFx33 *b, MtxFx33 *ab) {
 
 /* ------------------------------------------------------ resources */
 static void *slurp(const char *path, size_t *n) {
-    FILE *f = fopen(path, "rb");
+    FILE *f;
     void *b;
     long sz;
+#ifdef _arch_dreamcast
+    {   /* /cd/data.pak (engine/pak.h): models are packed too */
+        void *pb;
+        uint32_t pn;
+        int k = pak_load(path, &pb, &pn);
+        if (k == PAK_FOUND) {
+            *n = pn;
+            return pb;
+        }
+        if (k == PAK_MISSING)
+            return NULL;
+    }
+#endif
+    f = fopen(path, "rb");
     if (!f)
         return NULL;
     fseek(f, 0, SEEK_END);

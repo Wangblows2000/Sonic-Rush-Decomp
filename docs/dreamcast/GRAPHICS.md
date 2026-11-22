@@ -183,6 +183,13 @@ Special-stage round trip (z11, entered at frame 300, played to the end): 5,274,8
 again gives 2,514,632 after `objects_init`, the same as the first entry. The special-stage
 HUD and sprites draw from PAL4 pages.
 
+Front end (HEAD d59309c8, 2026-11-22): title -> attract demo (z12) -> title -> main menu
+-> new game -> z11 -> z12 -> DemoScript cutscene -> z13 boss -> zone map with the
+navigator talk. Before every `level_load` VRAM is 5,364,232 (after boot: 5,520,104 minus
+the player model and the loading ring), the same after the demo, after the menus and after
+each act; the front end takes 1-7 palette rows (taken on first draw, given back when idle),
+the zone map 4,562,088 bytes free. No page fell back to ARGB1555 in any run.
+
 ## 5. Teardown and leaks
 
 - objects: `objects_shutdown` frees every resource (pages, palette rows, palanim state).
@@ -225,14 +232,46 @@ Changes (engine/pak.c, tools/dreamcast/mkpak.py, objects):
 - All module file loaders (objects, UI, menus, cutscene, special stage, Extra boss, sprite
   atlases) ask `pak_load` first; reads go through `loading_read` (the ring keeps turning).
 
-| stage | before: total ms (objects_init ms, opens) | after: total ms (objects_init ms, opens) |
-|---|---|---|
-LOADTABLE
+Per stage: total ms from `load_stage` to the end of `spawn_player` (objects_init ms; the
+main thread's opens and read requests during the whole load).
 
-"After" = data.pak + stage packs + models in the pack + the zone music stopped before the
-load and started after it (see the wiring). The rest of an "after" load is the level
-(130-210 ms), the sound bank (50-150 ms, or 1.2-1.3 s when its 4 opens in `/cd/sound`
-are slow: the remaining variance) and boss models (0.3-0.9 s).
+| stage | before (HEAD c49a9e18) | data.pak + stage packs | + models packed, music after the load |
+|---|---|---|---|
+| z11 | 6291 (4144; 199 opens, 546 reads) | 1976 (55; 11 opens, 114 reads) | 1943 (47; 8 opens, 109 reads) |
+| z12 | 6342 (4094; 200 opens, 549 reads) | 1839 (40; 11 opens, 116 reads) | 1804 (31; 8 opens, 111 reads) |
+| z13 | 18536 (2807; 75 opens, 1933 reads) | 21163 (48; 33 opens, 1193 reads) | 1447 (29; 8 opens, 175 reads) |
+| z21 | 6712 (4547; 186 opens, 531 reads) | 1899 (56; 11 opens, 112 reads) | 742 (55; 8 opens, 107 reads) |
+| z22 | 4558 (2688; 189 opens, 526 reads) | 794 (56; 11 opens, 104 reads) | 1914 (54; 8 opens, 99 reads) |
+| z23 | 34158 (2990; 106 opens, 2255 reads) | 20093 (48; 56 opens, 1508 reads) | 1111 (46; 7 opens, 136 reads) |
+| z31 | 7801 (5684; 223 opens, 588 reads) | 861 (57; 11 opens, 134 reads) | 777 (51; 8 opens, 129 reads) |
+| z32 | 8151 (6034; 223 opens, 572 reads) | 811 (57; 11 opens, 119 reads) | 758 (49; 8 opens, 114 reads) |
+| z33 | 28906 (2873; 87 opens, 1902 reads) | 20646 (48; 44 opens, 1161 reads) | 2014 (46; 7 opens, 102 reads) |
+| z41 | 8151 (5901; 210 opens, 559 reads) | 727 (57; 11 opens, 118 reads) | 1797 (48; 8 opens, 113 reads) |
+| z42 | 6362 (4411; 215 opens, 565 reads) | 761 (57; 11 opens, 119 reads) | 677 (48; 8 opens, 114 reads) |
+| z43 | 26550 (2790; 87 opens, 1818 reads) | 16563 (48; 45 opens, 1078 reads) | 1898 (46; 7 opens, 99 reads) |
+| z51 | 7332 (5467; 204 opens, 523 reads) | 711 (57; 11 opens, 90 reads) | 691 (52; 8 opens, 85 reads) |
+| z52 | 6414 (4244; 196 opens, 516 reads) | 1962 (57; 11 opens, 91 reads) | 611 (52; 8 opens, 86 reads) |
+| z53 | 20393 (767; 81 opens, 1964 reads) | 15393 (48; 39 opens, 1224 reads) | 2081 (46; 7 opens, 105 reads) |
+| z61 | 6865 (4914; 194 opens, 509 reads) | 744 (56; 11 opens, 83 reads) | 1864 (50; 8 opens, 78 reads) |
+| z62 | 4424 (2238; 198 opens, 503 reads) | 1931 (56; 11 opens, 73 reads) | 658 (49; 8 opens, 68 reads) |
+| z63 | 34676 (683; 94 opens, 2101 reads) | 29893 (48; 52 opens, 1361 reads) | 2098 (46; 7 opens, 120 reads) |
+| z71 | 6363 (4344; 172 opens, 525 reads) | 1948 (55; 11 opens, 120 reads) | 677 (55; 8 opens, 115 reads) |
+| z72 | 7402 (5415; 185 opens, 522 reads) | 727 (56; 11 opens, 106 reads) | 644 (57; 8 opens, 101 reads) |
+| z73 | 44641 (2807; 91 opens, 2697 reads) | 22283 (48; 53 opens, 1961 reads) | 1931 (46; 8 opens, 138 reads) |
+| z81 | 5109 (3325; 99 opens, 390 reads) | 711 (52; 10 opens, 53 reads) | 661 (51; 8 opens, 52 reads) |
+| z82 | 5844 (3844; 83 opens, 382 reads) | 727 (51; 10 opens, 60 reads) | 1781 (51; 8 opens, 59 reads) |
+| zf3 | 55982 (2708; 101 opens, 2840 reads) | 34627 (48; 67 opens, 2108 reads) | 2231 (45; 7 opens, 148 reads) |
+| z91 | 5829 (4078; 109 opens, 409 reads) | 641 (52; 10 opens, 62 reads) | 594 (53; 8 opens, 61 reads) |
+| z92 | 4488 (3578; 90 opens, 385 reads) | 1898 (54; 10 opens, 57 reads) | 658 (43; 8 opens, 56 reads) |
+
+- Normal acts: 4.4-8.2 s -> 0.6-2.0 s; `objects_init` 2.2-6.0 s -> 31-57 ms (one open).
+- Boss acts stay 15-35 s with the packs alone: the boss models are ~20-60 loose files in
+  `/cd/models` (`boss_model.c` reads them with stdio). With the models in the pack (one
+  hook in `boss/boss_model.c`, see the wiring) they load in 1.1-2.2 s.
+- The rest of a load is the level (130-210 ms) and the sound bank: its 4 opens in
+  `/cd/sound` take 50-150 ms or 1.2-1.3 s (the remaining variance between runs).
+- With the current audio reader (c49a9e18) starting the music after the load changes
+  little; it mattered with the old reader (z12 level 7.1 s).
 
 ## 7. Gaps
 
