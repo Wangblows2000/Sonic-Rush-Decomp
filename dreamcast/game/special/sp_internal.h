@@ -10,6 +10,20 @@
 #ifndef SP_INTERNAL_H
 #define SP_INTERNAL_H
 
+/* Names the menus / objects modules also define: the special-stage copies are
+ * renamed so every module links into one binary. */
+#define AnimatorSprite_Init sp_AnimatorSprite_Init
+#define AnimatorSprite_ProcessAnimation sp_AnimatorSprite_ProcessAnimation
+#define AnimatorSprite_SetAnimation sp_AnimatorSprite_SetAnimation
+#define FX_Sqrt sp_FX_Sqrt
+#define MTX_Concat33 sp_MTX_Concat33
+#define MTX_Identity33_ sp_MTX_Identity33_
+#define MTX_RotX33_ sp_MTX_RotX33_
+#define MTX_RotY33_ sp_MTX_RotY33_
+#define MTX_RotZ33_ sp_MTX_RotZ33_
+#define gPad sp_gPad
+#define gRandSeed sp_gRandSeed
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>

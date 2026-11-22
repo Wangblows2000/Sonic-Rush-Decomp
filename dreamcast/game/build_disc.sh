@@ -86,6 +86,12 @@ for e in m.get('entries',[]):
         out.append('%d %d %d'%(n, e['loop_start'] if e.get('loop') else 0, e['loop_end'] if e.get('loop') else 0))
 open(D+'/sys.txt','w').write('\\n'.join(out)+'\\n')
 " "$A/manifest.json" "$A" "$OUT/disc/music"
+# special stages (SPECIAL.md section 6): stage data, models, sprites, backgrounds, ss sound bank
+SP=$ROOT/build/dreamcast/special
+mkdir -p "$OUT/disc/special"
+cp "$SP/spdata.bin" "$OUT/disc/special/"; cp -r "$SP/bg" "$SP/models" "$SP/sprites" "$SP/ss" "$OUT/disc/special/"
+find "$OUT/disc/special" -name '*.png' -delete
+cp "$SP/sound/ss.srb" "$OUT/disc/sound/"
 if [ -n "$SRDC_PREBUILT" ]; then
     cp "$SRDC_PREBUILT/1ST_READ.BIN" "$OUT/disc/"
 else
@@ -101,6 +107,7 @@ for d in "$ROOT"/build/dreamcast/stages/z*/; do
 done
 # test builds: SRDC_START=<stage index> writes /cd/debug/start.txt (story index into k_stages)
 if [ -n "$SRDC_START" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_START" > "$OUT/disc/debug/start.txt"; fi
+if [ -n "$SRDC_SPECIAL" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPECIAL" > "$OUT/disc/debug/special.txt"; fi
 cd "$OUT"
 rm -f IP.BIN
 if [ -n "$SRDC_PREBUILT" ]; then cp "$SRDC_PREBUILT/IP.BIN" "$OUT/IP.BIN"; else

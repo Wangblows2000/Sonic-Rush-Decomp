@@ -13,6 +13,9 @@ PLAYER_SRCS = $(PLAYER_DIR)/dcp_math.c $(PLAYER_DIR)/dcp_probe.c $(PLAYER_DIR)/d
 # every object-module source except the KOS renderer
 OBJ_SRCS = $(filter-out $(OBJ_DIR)/obj_draw.c,$(wildcard $(OBJ_DIR)/obj_*.c))
 SRCS = boss_core.c boss_camera.c boss_model.c boss_effect.c boss1.c boss2.c boss3.c boss4.c boss5.c
+SRCS += boss6.c
+SRCS += boss7.c
+SRCS += boss_final.c
 HDRS = boss.h boss_internal.h
 CFLAGS_HOST = -std=c99 -O2 -Wall -Wextra -Werror -fwrapv
 Z13 ?= $(ROOT)/build/dreamcast/stages/z13/level.bin
@@ -67,6 +70,48 @@ host-test4: $(OUT)/test_boss4
 
 host-test5: $(OUT)/test_boss
 	$(OUT)/test_boss $(Z53) $(PLAYER_TABLES) $(OBJDATA) $(SPRITES) $(MODELS) $(OUT)
+
+# Boss6 (z63, Altitude Limit)
+Z63 ?= $(ROOT)/build/dreamcast/stages/z63/level.bin
+$(OUT)/test_boss6: $(OUT)/host/lib.stamp test/test_boss6.c
+	gcc $(CFLAGS_HOST) -c test/test_boss6.c -o $(OUT)/host/test_boss6.o
+	gcc -Wl,--gc-sections -o $@ $(OUT)/host/lib/*.o $(OUT)/host/test_boss6.o -lm
+
+host-test6: $(OUT)/test_boss6
+	$(OUT)/test_boss6 $(Z63) $(PLAYER_TABLES) $(MODELS) $(OUT)
+host-test: host-test6
+clean: clean-boss6
+clean-boss6:
+	rm -f $(OUT)/test_boss6
+.PHONY: host-test6 clean-boss6
+
+# Boss7 (z73, Dead Line): the rival fight + clash.  STORY=1: the story character is Blaze (rival Sonic)
+Z73 ?= $(ROOT)/build/dreamcast/stages/z73/level.bin
+$(OUT)/test_boss7: $(OUT)/host/lib.stamp test/test_boss7.c boss7.h
+	gcc $(CFLAGS_HOST) -c test/test_boss7.c -o $(OUT)/host/test_boss7.o
+	gcc -Wl,--gc-sections -o $@ $(OUT)/host/lib/*.o $(OUT)/host/test_boss7.o -lm
+
+host-test7: $(OUT)/test_boss7
+	$(OUT)/test_boss7 $(Z73) $(PLAYER_TABLES) $(MODELS) $(OUT)
+host-test: host-test7
+clean: clean-boss7
+clean-boss7:
+	rm -f $(OUT)/test_boss7
+.PHONY: host-test7 clean-boss7
+
+# BossF (zf3, the final zone boss): STORY=1 plays Blaze
+ZF3 ?= $(ROOT)/build/dreamcast/stages/zf3/level.bin
+$(OUT)/test_bossf: $(OUT)/host/lib.stamp test/test_bossf.c boss_final.h
+	gcc $(CFLAGS_HOST) -c test/test_bossf.c -o $(OUT)/host/test_bossf.o
+	gcc -Wl,--gc-sections -o $@ $(OUT)/host/lib/*.o $(OUT)/host/test_bossf.o -lm
+
+host-testF: $(OUT)/test_bossf
+	$(OUT)/test_bossf $(ZF3) $(PLAYER_TABLES) $(MODELS) $(OUT)
+host-test: host-testF
+clean: clean-bossf
+clean-bossf:
+	rm -f $(OUT)/test_bossf
+.PHONY: host-testF clean-bossf
 
 host-test: host-test1 host-test2 host-test3 host-test4 host-test5
 

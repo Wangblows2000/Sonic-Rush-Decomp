@@ -87,7 +87,17 @@ typedef struct BossHooks {
      * 1 = attack (coll2CC, @0x2D6): flags = (flags & ~clear) | set.  The boxes belong to the objects
      * module (ObjPlayerCtx body / atk). */
     void (*player_box_flags)(void *ctx, DcPlayer *p, s32 box, u16 clear, u16 set);
+    /* BossHelp (src/game/UI/Hud/BossHelp_*: the help prompt sprite, drawn by the UI).
+     * kind BOSS_HELP_CREATE: BossHelp_Create(a = animation index; Boss6 tilt: 0);
+     * kind BOSS_HELP_DESTROY: BossHelp_Destroy (only sent while one is shown; a = the index shown).
+     * b is unused (0).  The current state is also boss_help(). */
+    void (*help)(void *ctx, s32 kind, s32 a, s32 b);
+    /* BossF: TalkDemo_Create (gTalkDemoId = id: 0xf Sonic / 0x10 Blaze story) in the middle of the fight;
+     * the DS freezes the game (System_Freeze) until the talk ends: skip boss_update_pre / boss_update
+     * (and the player) while it runs (cutscene_start(CS_TALK, id, ..) / cutscene_active()). */
+    void (*talk)(void *ctx, s32 id);
 } BossHooks;
+enum { BOSS_HELP_CREATE = 0, BOSS_HELP_DESTROY = 1 };
 extern BossHooks g_boss_hooks;
 
 /* Where the converted packages live (defaults "/cd/models" and "/cd/boss"):
@@ -111,6 +121,10 @@ void boss_shutdown(void);
  * Until then Boss1_State_WaitForStart waits (parts hidden). */
 void boss_start(void);
 void boss_update(DcPlayer *player);
+/* Boss tasks that run before the player (task id < 0x100; BossF's body, 0xf0, whose arm the player
+ * stands on and rides).  Call before dcp_player_frame every frame; a no-op for the other bosses.
+ * Without it boss_update runs them (one frame later relative to the player). */
+void boss_update_pre(DcPlayer *player);
 /* Draw every boss model + effect whose material class matches `list`
  * (PVR_LIST_OP_POLY / PT / TR) with the boss camera. KOS build only
  * (on the host it only counts triangles via dcm_transform_vertices). */
@@ -189,5 +203,41 @@ typedef struct Boss4Info {
     int shots, waves;                 /* Boss4PartD0 / D2 alive */
 } Boss4Info;
 int boss4_info(Boss4Info *out);
+
+/* BossHelp_Create index shown (-1: none); see BossHooks.help */
+s32 boss_help(void);
+
+/* Boss6 (z63, stage 17, map object 0x3a): gBossStatus.unk4 values */
+enum {
+    BOSS6_PHASE_MOVE = 0x1c,     /* Boss6_SelectNextAttack 1/2/3/4: walk */
+    BOSS6_PHASE_BULLETS = 0x1e,  /* Boss6_Action_StartPartD4Attack */
+    BOSS6_PHASE_PICK = 0x1f,     /* Boss6_Action_StartPickAttack */
+    BOSS6_PHASE_TILT = 0x20,     /* Boss6_Action_StartTilt: the deck tilts (mash A / B) */
+    BOSS6_PHASE_EDGEJUMP = 0x21, /* Boss6_Action_StartEdgeJump */
+    BOSS6_PHASE_HURT = 0x22,     /* Boss6_OnHit_Damage / DamageFlip */
+    BOSS6_PHASE_DEFEAT = 0x23    /* Boss6_Action_Defeat */
+};
+/* Boss6 state for tests (positions 24.8 unless noted) */
+typedef struct Boss6Info {
+    s32 x, y;                    /* boss position */
+    int turned;                  /* unkD5E: turned round (camera on the other side) */
+    int tilt_left;               /* unk20C & 0x100 */
+    s32 prop_speed;              /* unkF68 (0x549f flying level, 0 at a tilt start) */
+    s32 core_x, core_y;          /* "body_core" node (px, DS y down) */
+    s32 pelvis_x, pelvis_y;      /* "pelvis" node (px) */
+    ObjBox box[11];              /* unkD60 hit boxes (last registration) */
+    u8 armed[11];
+    int bullets_alive;
+    ObjBox bullet_box[8][2];
+    int pieces_alive;
+    s32 palette_body, palette_core; /* Boss_LoadModelPalettes state (file index) */
+    /* counters */
+    u32 attacks_d4, attacks_pick, attacks_tilt, attacks_jump;
+    u32 hits_pick, hits_jump, turns, tilts, jumps, landings;
+    u32 bullets, bullet_hits, stuns, mash_presses, edge_knockbacks;
+    u32 pieces[4];               /* Boss6_CreatePiece kinds: plate, wind, shoot flash, bomb */
+    int help_shown;
+} Boss6Info;
+int boss6_info(Boss6Info *out);
 
 #endif

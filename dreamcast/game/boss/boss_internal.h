@@ -374,4 +374,50 @@ const char *boss4_state_name(int part);
 void boss4_body_pos(s32 *x, s32 *y, s32 *z);
 int boss4_box_armed(int box);
 
+/* ------------------------------------------------------- Boss6 */
+#define Boss6_Create boss_Boss6_Create
+#define BossHelp_Create boss_BossHelp_Create
+#define BossHelp_Destroy boss_BossHelp_Destroy
+void BossHelp_Create(u32 idx);   /* -> g_boss_hooks.help(BOSS_HELP_CREATE, idx, 0) */
+void BossHelp_Destroy(void);     /* -> g_boss_hooks.help(BOSS_HELP_DESTROY, idx, 0) if one is shown */
+int boss6_load(void);
+void boss6_unload(void);
+void *Boss6_Create(const ObjParam *a, s32 x, s32 y);
+void boss6_update(void);
+int boss6_draw(int list);
+void boss6_destroy(void);
+const char *boss6_state_name(int part);
+void boss6_body_pos(s32 *x, s32 *y, s32 *z);
+int boss6_box_armed(int box);
+
+/* ------------------------------------------------------- Boss7 (boss7.c, public part in boss7.h) */
+#define Boss7_Create boss_Boss7_Create
+const char *boss_data_dir(void); /* boss_set_paths data_dir (boss7bac.bin lives there too) */
+int boss7_load(void);
+void boss7_unload(void);
+void *Boss7_Create(const ObjParam *a, s32 x, s32 y);
+void boss7_update(void);
+int boss7_draw(int list);
+void boss7_destroy(void);
+int boss7_defeated(void);
+const char *boss7_state_name(int part);
+void boss7_body_pos(s32 *x, s32 *y, s32 *z);
+int boss7_box_armed(int box);
+
+/* ------------------------------------------------------- BossF (boss_final.c, public part in boss_final.h) */
+#define BossF_Create boss_BossF_Create
+int bossf_load(void);
+void bossf_unload(void);
+void bossf_init(void);
+void *BossF_Create(const ObjParam *a, s32 x, s32 y);
+void bossf_update_pre(void);     /* BossFPartD8 (task 0xf0) */
+void bossf_update(void);         /* BossF 0x500, parts 0x501, ZoneFx_ZoneFBoss */
+void bossf_zone_script(void);    /* StageZoneScript_ZoneFBoss (0x3eff) */
+int bossf_draw(int list);
+void bossf_destroy(void);
+const char *bossf_state_name(int part);
+void bossf_body_pos(s32 *x, s32 *y, s32 *z);
+int bossf_box_armed(int box);
+void bossf_set_map_width(s32 blocks);
+
 #endif

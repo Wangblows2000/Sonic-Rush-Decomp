@@ -1154,3 +1154,634 @@ Counts: 4 reused, 3 modified, 2 substantially rewritten, out of 9 (plus Boss1_No
 | `Boss4_WrapArenaX` | boss4.c | reused |  |
 | `BossStage4_FreeModels` | boss4.c | substantially rewritten | boss4_unload |
 | `BossStage4_OnModelLoaded` | boss4.c | substantially rewritten | boss4_load: 7 .dcm, bs4.dca, eff_ele_* packages, nsbma/nsbtp frame counts |
+
+## Boss6 (Altitude Limit act 3, z63, stage id 17)
+
+Status (2026-11-22): all 100 functions of `src/game/Zone/Altitude_Limit/Boss/` are translated in
+`dreamcast/game/boss/boss6.c` (Boss6, Boss6PartD4, the Boss6 pieces, BossStage6). None of them is an ARM
+listing. Counts: 58 reused, 34 modified, 8 substantially rewritten, 0 not translated, out of 100.
+Host test: 19/19 checks pass for seeds 0x12345678, 1, 2, 3, 0xdeadbeef and 77 at 6 and 8 hit points
+(12 runs). Every run reaches the stage-clear request with exactly 6 (8) hits.
+`kos-cc -O2 -fwrapv -Wall -Wextra -Werror` builds `boss6.c`: 30.3 KB text, 41 KB bss.
+It has not been run on Dreamcast hardware or in an emulator.
+
+### Boss6: the fight
+
+- **The arena.** The deck is the 2D level (floor y = 512 from x 16 to 815 px). It is drawn by
+  `bs6_base` at (416, -512, 0), with two rotating cloud rings (`bs6_rcloud01/02`) and a scrolling cloud
+  layer (`bs6_tcloud01/02`). The cloud layer's alpha is set by `Boss6_ScrollFadeModel` through
+  NNS_G3dMdlSetMdlAlphaAll. The boss (`bs6_body`) walks on the deck. Its propeller (`bs6_prop01`, or
+  `bs6_prop02` when spinning fast) is drawn twice, at the stored "body_pro_r" and "body_pro_l" node
+  matrices.
+- **Attacks.** After a short walk the boss picks the next attack from `unkF46`. The tables are
+  `data_ov000_02363918` / `02363998` / `023639d8` by health band; mode 2/4 picks bullets with
+  probability 1/2.
+  1. **Bullets (phase 0x1e).** Boss6PartD4 (map object 0xd4) fires every 15 frames for 450 frames. Each
+     bullet's two 2D hit boxes sit beside and above the boss, built from the inverse of the body
+     rotation. A bullet that touches the player spawns piece 3 (`eff_shoot_bomb`).
+  2. **Pick (0x1f).** The boss stops near the player, raises and aims the pick, and swings it into the
+     deck. The swing stuns a grounded player through `Boss6_State_PlayerStunned`, a player state, and
+     the impact zone (box 2) hurts. While the boss pulls the pick out, box 0 at the "body_core" node is
+     the damage box. A hit there (`Boss6_OnHit_DamageFlip`) turns the boss round: `unkD5E` toggles and
+     the camera goes to the other side. The PickTurnAround after an unhit pull-out does the same.
+  3. **Tilt (0x20).** The boss jumps to the middle and lands on one end, and the deck tilts. Each frame
+     `Boss6_ApplyTiltToPlayer` slides the player towards the low end. A/B presses (`gPad.trg`) give him
+     running speed against the slide, through the player's `act_move`. Past x 8 / 824 px,
+     `Player_Action_KnockbackIntangible` flings him off the deck. Plates (piece 0) and wind debris
+     (piece 1) fly past. The BossHelp prompt is shown from the landing to the end of the tilt.
+  4. **Edge jumps (0x21).** The boss leaps to one edge, then hops 3 times at the player. After each
+     landing, box 1 at "body_core" is the damage box (`Boss6_OnHit_Damage`). Box 6 (atk 0x33) kills a
+     player under the landing.
+
+### Boss6: integration (main.c)
+
+```c
+/* boss_init(17, level, &player, 1) creates Boss6 from map object 0x3a (the objects module must
+ * not create 0x3a or 0xd4). Nothing else is needed beyond the generic boss wiring of section 2 above: */
+g_boss_hooks.help = ...;    /* new: BossHelp_Create / BossHelp_Destroy (UI sprite) */
+s32 boss_help(void);        /* new: the BossHelp index shown (Boss6: 0 during a tilt), -1 none */
+```
+
+1. **Player draw.** Draw the player at (x/256, -y/256, z/256) with `boss_camera()`.
+   `boss_player_model()` returns 0 for Boss6, which uses no arena circle. Use `boss_lights()` /
+   `dcm_lights_stage` as for Boss3+.
+2. **Pad.** `Boss6_ApplyTiltToPlayer` reads gPad.trg, the raw pressed keys. Natively it reads
+   `gPlayers->pad_raw[1]`, the `pressed` argument that main.c already passes to `dcp_player_frame`.
+   Nothing new to wire, but `pressed` must be the raw DS-layout key bits (A = 1, B = 2) before the
+   remap.
+3. **The boss controls these player fields:**
+   - The remap `map_right/left/up/down/a/b` (@0x42C..@0x436): all zeroed during the tilt and the
+     stun, and left/right swapped while the boss is turned round. The player module already honours
+     them in `dcp_remap_buttons`.
+   - `held` / `pressed` / `released`.
+   - `gnd_vel` and `x` during the tilt.
+   - `state`: `Boss6_State_PlayerStunned`, and the knockback copied into boss6.c.
+4. **Player module needs.** `Boss6_State_PlayerStunned` ends on `DCP_DF_ANIM_DONE` of anim 0xf (DS:
+   the player model's "ended" bit). main.c already calls `objects_set_player_anim_done(1)`, which sets
+   the flag from son.bac timing. In boss stages the DS uses the 3D animation (com_dmg_b, 56 frames).
+   Two player actions are copied into boss6.c because the player module lacks them:
+   `Player_Action_KnockbackIntangible` (as in boss1.c) and `Player_Action_Blank`. They are candidates
+   to move into the player module. `act_move` (Player_Action_GroundMove) is used through the
+   DcPlayer pointer.
+5. **HUD.** Health and phase come from `boss_health()` / `boss_phase()` (phases 0x1c move, 0x1e
+   bullets, 0x1f pick, 0x20 tilt, 0x21 edge jumps, 0x22 hurt, 0x23 defeat). Messages go through
+   `g_boss_hooks.navi`. The help prompt goes through `g_boss_hooks.help` (kind `BOSS_HELP_CREATE`,
+   a = animation 0 of BossHelp's sprite file; kind `BOSS_HELP_DESTROY`). The prompt is also taken down
+   by `boss_shutdown`. Defeat cut-ins: `boss_exc_background()` 6/7/6, then -1. Flashes:
+   `boss_brightness()`.
+
+Disc assets (`build/dreamcast/boss/assets.txt`, 28 lines for z63, 0 missing):
+- `mod__bs6_{base,rcloud01,rcloud02,tcloud01,tcloud02,sky,body,prop01,prop02,bult}__*.dcm`;
+- `narc__z63_act_lz7__bs6.dca`;
+- `narc__z63_act_lz7__eff_{plate,wind,shoot}__*.dcm`;
+- `narc__z63_act_lz7__eff_{pick,parts}` (`.dcm` + `.dca`);
+- the deduplicated `narc__ss_act_lz7__eff_shoot_bomb`, `narc__z13_act_lz7__eff_{impact_small,hit}`,
+  `narc__z33_act_lz7__eff_land` and `narc__z23_act_lz7__eff_blast` (`.dcm` + `.dca`).
+
+bossdata.bin gets two Boss6 chunks: `data_ov000_023636e8..02363b18` (rodata) and
+`data_ov000_023657e0..023659c4` (data). It also gets the `bs6_body` joints body_pro_r / body_pro_l /
+pelvis / body_core, and the timing-only frame counts of `eff_plate.nsbma` (60), `eff_shoot.nsbma` (5),
+`eff_shoot_bomb.nsbma` (30) and `eff_shoot_bomb.nsbtp` (30). The tool checks the node names, the
+"bs6" archive name, the piece-state ROM addresses (`data_ov000_023658ac`) and the RotY(180) mirror
+matrix (`data_ov000_023638c4`).
+
+### Boss6: how it is translated
+
+- **Merged struct.** Fields keep their offsets: `unk210[9]` models, `unkD60[11]` hit boxes,
+  `unkF4A..unkF6C` walk / lean / propeller, `unk1044` / `unk1098` the stored "pelvis" / "body_core"
+  matrices (`unk1068` / `unk10BC` translations), `unk10EC` node-callback state, `unk1118..unk112C`
+  state work.
+- **Mixed field widths.** Some states access `unk1118` / `unk111C` / `unk1124` as s16 (ldrsh/strh).
+  They keep s32 storage, and those states use (s16) casts. Each state family writes the field before
+  reading it, so the high half never leaks between families.
+- **Node callbacks.** `bs6_body`'s SBC runs NODEDESC for joints 0..25 in index order (checked in the
+  NSBMD). The callback is called once at joint 0 before the pose. A G3_MultMtx33 of the mirror there
+  becomes a joint-0 rotation (`boss_model_set_joint_rot`), so the whole body turns round. The calls
+  for joints 1..25 then store the posed joint world matrices into `g_boss_mtx_slot[0x1b..0x1e]` until
+  the callback clears itself. Boss6_Draw reads slots 0x1b / 0x1c as NNS_G3dGetCurrentMtx did, and the
+  propellers restore 0x1e / 0x1d.
+- **Hit boxes.** The 11 boxes are registered directly from Boss6_Draw (ObjRect_Register), with x/y
+  from the node translations. As on the DS, the boss has no StageObj collide step.
+
+### Boss6: deviations and gaps
+
+- **Palette swaps are state only** (`boss6_info()`: body palette, core flash palette), as for Boss1-4:
+  the hurt blink, the white core flash while a damage box is armed, and the prop palettes.
+- **Material / pattern / SRT animations.** The pieces' (`eff_plate`, `eff_shoot`, `eff_shoot_bomb`)
+  are timing only. eff_pick's `.nsbma` / `.nsbta` are not converted (BossEffect as for the other
+  bosses).
+- **Cloud alpha 0.** NNS_G3dMdlSetMdlAlphaAll(0) draws as wireframe on the DS. Natively the materials
+  become fully transparent (translucent list) at alpha 0. Not compared with a capture.
+- **The mirror is a joint-0 rotation.** It is applied to the root joint's local transform, so it
+  reaches every node, including those whose matrix the SBC restores from the stack. On the DS the
+  multiplication happens after node 0's NODEDESC, so nodes restored from a slot stored before the
+  multiplication could differ. bs6_body's node 0 stores nothing, so the result should be the same.
+  This is derived from the SBC, not compared with a DS capture.
+- **Joint matrices are float.** Node translations (core / pelvis hit-box positions, effect positions)
+  are rounded from them, as for Boss1/2/4.
+- **MTX_Inverse33 / MTX_MultVec33** are written after the NitroSDK fx32 code, not copied from a listing.
+  MTX_Concat33 is the framework's (rounded per product).
+- **The stunned player's saved state.** The DS keeps it in the boss's s32 `unk111C`, which
+  PickPullOut overwrites with 8. A stun still running at that moment would crash the DS. Natively it is
+  a separate pointer, and that moment is logged ("stun_overwritten"). It never happened in the runs.
+  A NULL gBoss6 in `Boss6_State_PlayerStunned` falls back to the ground-idle state, where the DS would
+  dereference NULL.
+- **The pieces (0xa00) and bullets (0x502) are pools** of 24 and 8. A full pool returns a dummy object,
+  as BossEffect does. Neither filled in the runs (at most 3 bullets alive).
+- **StageObj_ViewOutCheck.** Pieces and effects have no 0x10 flag. With `g_dcp_world.objmgr & 4`, a
+  piece outside the 2D view would be removed, as on the DS. The DS 2D camera in boss stages was not
+  checked, same as for the other bosses' effects.
+- **Player-module behaviour seen in the tests (not changed here).** After the copied
+  `Player_Action_KnockbackIntangible`, `dcp_state_hurt` waits while `obj_flags & 2`, and only
+  Player_InitState clears that flag. The edge knockback throws the player off the deck and he dies
+  (`pf & 0x400`) and respawns, as intended by the tilt. Boss1's knockback has the same open question.
+- **Not shown:** the BossHelp sprite (UI module, through the hook) and the NaviBg / NaviB HUD loads.
+
+### Boss6: test (`test/test_boss6.c`)
+
+```sh
+make -C dreamcast/game/boss data host-test6
+SEED=1 LEVEL=1 build/dreamcast/boss/test_boss6 build/dreamcast/stages/z63/level.bin \
+    build/dreamcast/player build/dreamcast/models build/dreamcast/boss [-v|-vv]
+DUMPAT=3100 DUMPFILE=/tmp/v.ppm build/dreamcast/boss/test_boss6 ...      # host debug view
+```
+
+The test registers the player's boxes itself, as test_boss.c does. Non-looping player animations end
+(`DCP_DF_ANIM_DONE`) after their 3D animation length (anim 0xf com_dmg_b: 56 frames, 0x3c: 60, else
+40). Scripted player:
+- **[miss]** 900 frames standing still: no boss damage.
+- **[fight]**
+  - In a pick pull-out, the player is put on the floor 30 px beside the core and jumps into box 0.
+  - After a hop landing, once the core has sunk (box 1 at y >= 445), the player is put 40 px beside it,
+    jumps, and comes down on box 1 from above. Box 5, which hurts, lies below it.
+  - Once a stun was seen, the player jumps away during the pick swing.
+  - During a tilt he mashes A every 4 frames, except in the first tilt, which is left alone.
+- **[defeat]** runs to the stage-clear request.
+
+Measured (default seed, 6 hp):
+
+```
+f  240 bullets   f  700 edge jumps   [miss] 1 hurt, 0 hits   f 1481 hit 5 (landing)
+f 1732 pick -> f 2006 stun   f 2796 tilt (first, not mashed): edge knockback f 3198, death f 3281
+f 4606 hit 4   f 5844 hit 3 (pick, turns round)   f 7939 hit 2 (pinch music)   f 9924 hit 1
+f 12828 hit 0 -> defeat (cut-ins exc_bg 6/7/6) -> f 13217 cleared (ring bonus 50000)
+attacks 20 (bullets 6, pick 6, tilt 4, edge jumps 4); hits 6 (pick 2, landing 4); turns 6
+hops 6, bullets 180 (max 3 alive, 13 hit the player), stuns 1, tilts 4 (360 mash presses; player x
+344..709 in the mashed tilts), pieces plate/wind/shoot/bomb 12/304/180/13, help create/destroy 4/4
+19 checks, 0 failed
+```
+
+All 12 seed / difficulty runs pass 19/19. They visit all phases and attacks, reach the clear with
+6 (8) hits, and finish between f 11089 and f 24250.
+
+The checks cover:
+- the first, unmashed tilt (edge knockback and fall), and mashing keeping the player on the deck;
+- the BossHelp hook (one create / destroy per tilt);
+- bullets hitting the player;
+- pinch music, the defeat hooks and the ring bonus;
+- the camera and the projection of all models.
+
+### Boss6: mapping table (boss6.c)
+
+| original | native file | status | note |
+|---|---|---|---|
+| `Boss6PartD4_Create` | boss6.c | modified | Task_Create -> pool of 8; "bs6" file 8 and bs6_bult from BossStage6 |
+| `Boss6PartD4_Destructor` | boss6.c | modified | Model_Release; MapObject_Destructor -> rect_forget |
+| `Boss6PartD4_Draw` | boss6.c | modified | templates.py pointer code -> field names; Model_Draw -> boss_model_pose |
+| `Boss6PartD4_OnHit` | boss6.c | modified | owner type check -> obj_box_player |
+| `Boss6PartD4_State_Fly` | boss6.c | reused |  |
+| `Boss6_Action_Defeat` | boss6.c | modified | music / ring manager via hooks; BG2 / DISPCNT / brightness -> state |
+| `Boss6_Action_StartEdgeJump` | boss6.c | modified | NNS_G3dRenderObjSetCallBack -> body callback pointer |
+| `Boss6_Action_StartMove` | boss6.c | modified | same |
+| `Boss6_Action_StartPartD4Attack` | boss6.c | modified | same |
+| `Boss6_Action_StartPickAttack` | boss6.c | modified | same |
+| `Boss6_Action_StartTilt` | boss6.c | reused |  |
+| `Boss6_Action_StunPlayer` | boss6.c | modified | the saved player state goes to a native pointer field (the DS keeps it in the s32 unk111C) |
+| `Boss6_ApplyTiltToPlayer` | boss6.c | modified | gPad.trg -> gPlayers->pad_raw[1]; unk338 = act_move; Player_Action_KnockbackIntangible copied into boss6.c |
+| `Boss6_Create` | boss6.c | modified | static object; archive files -> converted packages / timing-only animations; alpha, palettes, callback native |
+| `Boss6_CreatePiece` | boss6.c | modified | Task_Create -> pool of 24; state from the ROM table data_ov000_023658ac (mapped to the native functions) |
+| `Boss6_Destructor` | boss6.c | modified | resources released by boss6_unload / boss_effects_shutdown |
+| `Boss6_Destructor_Piece` | boss6.c | modified | StageObj_Destructor -> Model_Release |
+| `Boss6_Draw` | boss6.c | modified | Model_Draw -> boss_model_pose; MTX_RESTORE + NNS_G3dGetCurrentMtx -> g_boss_mtx_slot; float angle steps in double |
+| `Boss6_EndTiltCamera` | boss6.c | modified | BossHelp_Destroy -> g_boss_hooks.help |
+| `Boss6_InitHitboxes` | boss6.c | modified | native owner_kind on the 11 boxes |
+| `Boss6_NodeCallback_PelvisAndPro` | boss6.c | substantially rewritten | runs per joint after the pose; G3_MultMtx33 -> joint-0 rotation before the pose |
+| `Boss6_NodeCallback_Store2Nodes_ov000_022e620c` | boss6.c | substantially rewritten | same |
+| `Boss6_NodeCallback_Store2Nodes_ov000_022e62fc` | boss6.c | substantially rewritten | same |
+| `Boss6_NodeCallback_Store4Nodes_ov000_022e5df0` | boss6.c | substantially rewritten | same |
+| `Boss6_NodeCallback_Store4Nodes_ov000_022e60a4` | boss6.c | substantially rewritten | same |
+| `Boss6_OnHit_Damage` | boss6.c | modified | owner type check -> obj_box_player; NaviMsg / Sound_PlaySeq via hooks |
+| `Boss6_OnHit_DamageFlip` | boss6.c | modified | same |
+| `Boss6_OnHit_PushPlayer_ov000_022e08b0` | boss6.c | modified | owner type check -> obj_box_player |
+| `Boss6_OnHit_PushPlayer_ov000_022e0998` | boss6.c | modified | same |
+| `Boss6_OnHit_PushPlayer_ov000_022e0af8` | boss6.c | modified | same |
+| `Boss6_OnHit_PushPlayer_ov000_022e0ba8` | boss6.c | modified | same |
+| `Boss6_RegisterHitboxes2` | boss6.c | reused | ObjRect_Register = rect_register; palette = selection state |
+| `Boss6_RegisterHitboxes3x2` | boss6.c | reused | same |
+| `Boss6_RegisterHitboxes4` | boss6.c | reused | same |
+| `Boss6_ResetCamera` | boss6.c | reused | data_ov000_0236a48c offsets -> named BossCamera fields (u16 stores kept) |
+| `Boss6_ScrollFadeModel` | boss6.c | modified | NNS_G3dMdlSetMdlAlphaAll -> material alpha of the .dcm |
+| `Boss6_SelectNextAttack` | boss6.c | reused |  |
+| `Boss6_SetCameraAfterFlip` | boss6.c | reused | camera offsets -> named fields |
+| `Boss6_SetCameraAngle` | boss6.c | reused | same |
+| `Boss6_SetCameraEdgeJump` | boss6.c | reused | same |
+| `Boss6_SetCameraFollowPlayer` | boss6.c | reused | same |
+| `Boss6_SetCameraJump` | boss6.c | reused | same |
+| `Boss6_SetCameraJumpStart` | boss6.c | reused | same |
+| `Boss6_SetCameraPickPullOut` | boss6.c | reused | same |
+| `Boss6_SetCameraPickStart` | boss6.c | reused | same |
+| `Boss6_SetCameraPickSwing` | boss6.c | reused | same |
+| `Boss6_SetCameraSideShot` | boss6.c | reused | same |
+| `Boss6_SetDefeatCameraShot` | boss6.c | modified | Background_Init / Background_Draw of the cut-in BBG -> Boss_DrawExcBackground (6 / 7) |
+| `Boss6_SpawnDebrisTimed` | boss6.c | reused |  |
+| `Boss6_StartTiltCamera` | boss6.c | modified | BossHelp_Create(0) -> g_boss_hooks.help |
+| `Boss6_State_AfterLand` | boss6.c | reused |  |
+| `Boss6_State_Defeat` | boss6.c | modified | DISPCNT BG2 off -> exc_bg -1; gDisplayMain.unk48 -> g_boss_game.bright |
+| `Boss6_State_DefeatFinish` | boss6.c | modified | StageShutdown_Create -> g_boss_hooks.cleared (once) |
+| `Boss6_State_EdgeJumpLand` | boss6.c | reused |  |
+| `Boss6_State_EdgeJumpLeap` | boss6.c | reused |  |
+| `Boss6_State_EdgeJumpRecover` | boss6.c | reused | the camera shake writes unk40 from unk3C, as in the original |
+| `Boss6_State_EdgeJumpStop` | boss6.c | reused |  |
+| `Boss6_State_EndJumps` | boss6.c | reused |  |
+| `Boss6_State_Hurt` | boss6.c | reused |  |
+| `Boss6_State_HurtFlip` | boss6.c | reused |  |
+| `Boss6_State_HurtRecover` | boss6.c | reused |  |
+| `Boss6_State_HurtWaitSelectAttack` | boss6.c | reused |  |
+| `Boss6_State_JumpFall` | boss6.c | reused | unk111C / unk1124 as s16 |
+| `Boss6_State_JumpRise` | boss6.c | reused | same |
+| `Boss6_State_LandShake` | boss6.c | reused |  |
+| `Boss6_State_Move` | boss6.c | reused |  |
+| `Boss6_State_PartD4Attack` | boss6.c | modified | MapObject_Spawn(0xd4) -> pool; MTX_Inverse33 / MTX_MultVec33 written after NitroSDK (fx32) |
+| `Boss6_State_PickAim` | boss6.c | reused | unk1118 as s16 |
+| `Boss6_State_PickApproach` | boss6.c | reused |  |
+| `Boss6_State_PickImpact` | boss6.c | reused |  |
+| `Boss6_State_PickPullOut` | boss6.c | reused |  |
+| `Boss6_State_PickRaise` | boss6.c | reused | unk1118 as s16 |
+| `Boss6_State_PickStop` | boss6.c | reused | unk1118 stored as u16 |
+| `Boss6_State_PickSwing` | boss6.c | reused | unk1118 as s16 |
+| `Boss6_State_PickTurnAround` | boss6.c | reused |  |
+| `Boss6_State_PieceDestroyOnAnimEnd` | boss6.c | reused |  |
+| `Boss6_State_PieceSlide` | boss6.c | reused | unk8 / unkC = StageObj @0x08 / @0x0C |
+| `Boss6_State_PieceSpinFly` | boss6.c | reused |  |
+| `Boss6_State_PieceStartSlide` | boss6.c | reused |  |
+| `Boss6_State_PieceWaitSpinFly` | boss6.c | reused |  |
+| `Boss6_State_PlayerStunned` | boss6.c | modified | player model "ended" bit (unk240 & 2) -> DCP_DF_ANIM_DONE |
+| `Boss6_State_StartJump` | boss6.c | reused |  |
+| `Boss6_State_TiltEnd` | boss6.c | modified | callback |
+| `Boss6_State_TiltJump` | boss6.c | modified | callback |
+| `Boss6_State_TiltLand` | boss6.c | reused | unk420 = held, unk338 = act_move |
+| `Boss6_State_TiltReturn` | boss6.c | reused |  |
+| `Boss6_State_TiltStart` | boss6.c | reused |  |
+| `Boss6_State_TiltStop` | boss6.c | reused |  |
+| `Boss6_State_TiltWaitJump` | boss6.c | reused |  |
+| `Boss6_State_Tilting` | boss6.c | reused |  |
+| `Boss6_State_WaitForStart` | boss6.c | modified | POWCNT screen swap dropped (single screen); sky model from BossStage6 |
+| `Boss6_State_WaitSelectAttack` | boss6.c | reused |  |
+| `Boss6_State_WaitSelectAttack3` | boss6.c | reused |  |
+| `Boss6_StoreNodeMatrix` | boss6.c | substantially rewritten | NNS_G3dGetResDictIdxByName -> bossdata.bin joint table; MTX_STORE -> joint world matrix in g_boss_mtx_slot |
+| `Boss6_Unk_ov000_022e1f10` | boss6.c | reused |  |
+| `Boss6_UpdateAttackHitboxes` | boss6.c | reused |  |
+| `Boss6_UpdateFlashPalettes` | boss6.c | reused | templates.py pointer code -> field names; palette = selection state |
+| `Boss6_UpdateMoveSpeed` | boss6.c | reused |  |
+| `BossStage6_FreeModels` | boss6.c | substantially rewritten | boss6_unload |
+| `BossStage6_OnModelLoaded` | boss6.c | substantially rewritten | boss6_load: 10 .dcm, bs6.dca, piece packages, nsbma / nsbtp frame counts; NaviBg / NaviB not here |
+
+## Boss7 (Dead Line act 3, z73, stage id 20)
+
+The rival fight: Blaze when the story character is Sonic, Sonic when it is Blaze, then the button-mash clash.
+Files: `boss7.c` (all of it), `boss7.h` (Boss7 public part), `test/test_boss7.c`; small additions to `boss_core.c`
+(dispatch, `boss_data_dir()`), `boss_internal.h`, `tools/bossdata.py`, `Makefile` (`host-test7`).
+
+Status (2026-11-22): all 167 C functions of `src/game/Zone/Dead_Line/Boss/` plus the ARM listing
+`src/asm_fallback/Boss7PartD5_InputState_ClashMash.c` (rewritten from the listing) are translated, and the stage
+camera director `StageZoneScript_Zone7Boss` (`src/game/Zone/Dead_Line/Stage`). 168 originals: 122 reused, 43
+modified, 3 substantially rewritten, 0 not translated. Host test: 43/43 checks for 12 seed / difficulty runs; each run
+plays both story characters, a won and a lost clash. `kos-cc -O2 -fwrapv -Wall -Wextra -Werror` builds boss7.c
+(39.5 KB text). Not run on hardware or in an emulator.
+
+### Boss7: the fight
+
+| object | task | map object | role |
+|---|---|---|---|
+| Boss7 | 0x500 | 0x39 | arena `bs7_base` (Eggman's pod for Blaze's story / Nega's pod for Sonic's: `bs7.nsbva` anim 3 / 4), director of the defeat, talk, clash and win cut-ins |
+| Boss7PartD5 | 0x501 | 0xd5 | the rival: a player-like object. Input states (`unk43C`) return DS keys into its own `Pad`, move states (`unk440`) are its copy of the player physics (gPlayerPhysicsTable), map collision on |
+| Boss7PartD6 | 0x502 | 0xd6 | the special's column: Sonic's tornado (pulls the player through `Boss7_State_Fight`, eff_suction) or Blaze's fire pillar; 2D box x -12..12 / -8..8, y -256..0 |
+| Boss7PartD7 | 0x502 | 0xd7 | clash aura (eff_aura_son / eff_aura_blz) following the player or the rival |
+| Boss7FrameCounter | 0x503 | - | `gBoss7->unk220++` |
+
+Health is 6 / 8 (`Boss_GetStartHealth`); the player beats the rival at 1 with a jump (anim 0x30) or roll (0x31) on its
+body box (box 0, atk 0x11, `Boss7PartD5_OnHit`); while it jumps (phase 0x28) or charges a spin dash (0x29) the same
+contact only bounces both (`Boss7PartD5_PushAway`). At 1 the timer stops, the player's input is locked, the rival gets
+up and the defeat scene puts both on their marks, the talk runs (TalkDemo 0xa / 0xb), then the clash: both mash A/B,
+`unk384 += player power - rival power`, `|unk384| >= 0x4000` ends it (`Boss7_UpdateMashPower`: +(0x80 - p)/4 per
+press, x0.969 per frame). Won: health 0, pause, three cut-ins (exc_bg 6/7/6, master brightness 16 -> 0), the rival
+jumps off the arena -> ring bonus and `Stage_OnBossCleared`. Lost: the player is knocked back, Boss7 goes to
+`Boss7_State_None` and the fight stays stopped with health 1 while the stage timer runs again (as on the DS).
+
+gBossStatus.unk4 values: 0x24 idle, 0x25 run, 0x26 back hop, 0x27 crouch, 0x28 jump, 0x29 spin dash charge, 0x2a
+roll, 0x2b air attack, 0x2c special, 0x2d hurt / exit (`boss7.h` BOSS7_PHASE_*). `boss_defeated()` = the clash
+was won.
+
+### Boss7: clash input (Dreamcast controller)
+
+`Boss7_State_ClashStruggle` reads `gPad.trg & 3` (DS A or B, newly pressed). Natively it reads the raw pressed keys
+the player module stored this frame (`DcPlayer.pad_raw[1]`, filled by `dcp_player_frame`), so the existing mapping
+applies: **Dreamcast A or B** (`engine/input.c`: CONT_A -> IN_JUMP -> DS A, CONT_B -> IN_TRICK -> DS B, `main.c`
+`ds_pad`). Each new press counts, holding does not; the player's input lock (pf 0x200000) does not block it, as on
+the DS. The prompt sprite is `BossHelp_Create(0)` (ac_fix_bosshelp.bac animation 0) through `g_boss_hooks.help`.
+
+### Boss7: integration (main.c)
+
+```c
+#include "boss/boss7.h"
+/* stage 20 (z73): the boss module creates map objects 0x39 (Boss7) and 0xd5..0xd7 itself:
+ * the objects module must not create 0x39, 0xd5, 0xd6, 0xd7 */
+boss_init(20, level_bytes, &player, 1);      /* story character: g_boss_game.unk0 if set, else player.chara */
+g_boss_hooks.help = ...;                       /* BossHelp_Create(0) / Destroy around the clash (UI sprite) */
+boss7_set_talk_hook(talk, ctx);                /* TalkDemo_Create(0xa Sonic / 0xb Blaze): freeze the stage
+                                                  (player, objects, boss_update) until the talk ends (cutscene CS_TALK) */
+boss7_blend(&mode, &evy);                      /* mode 2: brighten the 3D layer towards white by evy/16 (clash / dash flash) */
+boss_brightness(); boss_exc_background();      /* win cut-ins (master brightness, concentrated_line_01/02) */
+boss_lights(&l);                               /* zone 7 lights (view space): use them for the player model too */
+Boss7Info bi; boss7_info(&bi);                 /* bi.player_anim_speed: 0x4000 while the player's clash anim 0x42 runs */
+```
+
+- The arena is flat (320 x 896 px level, floor y 512, walls at x 0 / 320): no arena circle. Draw the player at
+  (x, -y, z) with `boss_camera()` as in section 2.
+- The camera is driven by `StageZoneScript_Zone7Boss` (framing both fighters, mode `unk210` 1/2/3) and the cut-in
+  orbit settings; `boss7_update` runs it last, the boss camera follows.
+- Sounds: handle 1 (Boss7: clash hit 0xbc), handle 2 (D6: tornado 0x98 / flame 0x99, stopped on vanish);
+  `music(0x11)` at the clash, `music_stop` before and after it.
+- Disc assets (assets.txt "z73", 35 files, 0 missing): `mod__bs7_base`, `mod__bs7_sky`, `narc__z73_act_lz7__bs7.dca`
+  / `.dcv`, `mod__son__son{,_ball}`, `mod__blz__blz{,_spin}`, `narc__player_lz7__son.dca` / `.dcv`, `eff_tornado`,
+  `eff_flame`, `eff_aura_son` / `_blz` (+ 01..03 .dca), `eff_hit`, `eff_homing`, `eff_boost`, `eff_strike_big` /
+  `_hit` / `_fin`, `eff_clash`, `eff_suction` under `/cd/models`; `bossdata.bin` and **`boss7bac.bin`** under
+  `/cd/boss` (`make -C dreamcast/game/boss data` writes both).
+
+### Boss7: how it is translated
+
+- **The rival's model** is the player model of the other character (son.nsbmd / blz.nsbmd, models 0 and 1 = ball /
+  spin), animated with son.nsbca / son.nsbva by the Player_SetAnimation tables (`data_ov000_02368bdc` joint anim,
+  `02368c44` model, `02368cac` visibility, `02368d14` son.bac anim; index + 0x1b for Blaze from 0x30), or bs7.nsbca /
+  bs7.nsbva for the Blaze specials 0x48..0x4a. Its op list `{FlushVP, Identity, RotateTranslate2Scale}` puts it 16 px
+  lower (`unk58 = -0x10000`, v * S * T2 * R * T); `boss7_pose` adds t2 * R after `boss_model_pose`.
+- **Visibility animations** (slot 4) are drawn: `dca_visibility` per pose, `dcm_draw(.., vis, ..)` in
+  `boss7_model_draw`. `Model_SetResource` re-initialises the NNS render object, so a vis animation set before a model
+  switch no longer applies until the next `Model_SetAnimation(.., 4, ..)` (kept as `vis_on`).
+- **Hit boxes from son.bac**: the rival's AnimatorSprite runs the son.bac timing natively (`spr_process` semantics)
+  on `boss7bac.bin` ("B7BC": 37 animations, 222 frames, 46 command-7 events, written by `bossdata.py` from
+  `player_lz7.narc:act/son.bac`). `Boss7PartD5_SpriteCallback` gets the 16 command bytes as on the DS. The sprite
+  never loops (Init flags 0x18) and its end sets disp 8, as does the model's slot 0.
+- **Its own lights**: `Boss7PartD5_Draw` draws an after-image (an older position) while `gBoss7->unk20C & 0x10`
+  with `NNS_G3dGlbLightColor` 0x6182 (Sonic) / 0x1a98 (Blaze) on lights 0..2, then restores the zone colours
+  `data_02074960[zone][act]`. Natively that pose is kept with its own palette copy and drawn with a second light set
+  (`s_lights_after`, zone vectors, those colours); everything else uses `g_boss_lights` = the zone lights
+  (`data_020748bc` / `data_02074960`, zone 6 act 2) in view space, as Boss2 builds them.
+- **Character branches**: `Boss7_Create` (bs7.nsbva anim 4 for Sonic's story, 3 for Blaze's: which pod is shown),
+  `Boss7PartD5_Create` (rival character `unk3D0`), `Boss7_Action_StartTalkDemo` (0xa / 0xb),
+  `Boss7_State_ClashSpawnPartD7` (the player's aura). gGameState.unk0 is `g_boss_game.unk0` when the integrator set it,
+  else the player's character.
+- **Clash darkening**: `NNSi_G3dModifyMatFlag(.., 0, 0x40 / 0x80)` + `NNS_G3dGlbMaterialColorDiffAmb` -> bs7_base and
+  bs7_sky material diffuse / ambient take the global colour (white, fading to RGB 4/4/4); restored at the rival's exit.
+- **ClashMash** (rewritten from the listing): on odd frames
+  `v = base*6/16 + FX_Mul((base*10/16) * FX_Mul(FX_Mul(ratio, fall + 0x4cc), (sin(f<<6)+0x1000)/2),
+  (sin(unk22E + f<<5)+0x1000)/2) >> 12`, A pressed when `v >= Rand() & 0xff`; base = `data_ov000_02363b18` {0x78,
+  0xa0} by level, ratio = player's lead (0..0x1000), fall = (0x708 - frames) * 0xb33 / 0x708; divisions truncate
+  toward zero like the listing's sign corrections.
+- Pools: one rival, 6 D6, 4 D7 (two per clash). D6 / D7 run at 0x502 in creation order, a part created this frame
+  runs this frame (Task_Create appends after the same priority). The rival runs `MapObject_In_Default` (hurt blink,
+  `unk1F0`) and map collision (`dcp_obj_collision`) in its StageObj_Main step.
+- ROM data in bossdata.bin: `boss7_rodata` 0x02363b18..0x02363da4 and `player_tables` 0x02368b7c..0x02368d7c
+  (physics + the four animation tables), the zone light chunk; timing-only frame counts of eff_tornado01..03 /
+  eff_flame01..03 (.nsbma / .nsbtp) and eff_aura_*01..03.nsbma.
+
+### Boss7: deviations and gaps
+
+- **A DS stall is kept**: a special chosen while the rival is in the air goes through `StartSpecialAirWait` ->
+  `BeginAirAttackCharge`, which does not reset `unk456`; a negative walk counter left there makes
+  `HoldAirAttackCharge` (`unk456-- == 0`, s16) run about 65530 frames: the rival stands idle holding R and can be hit
+  (hits do not change the input state; the defeat does). Seen in 2 of the 24 seed / difficulty / story combinations
+  of the test (LEVEL=1: seed 3 Blaze's story, seed 0xdeadbeef Sonic's story), before any special; the test detects it.
+- **3D BAC sprite effects are not translated**: EffTrail (Sonic's dash trail), EffBoostA_3D / EffBoostA2_3D (boost
+  jets), EffFire01_3D(_CreateFollowing) (Blaze's flames), EffKemuriSpin3D (spin dash smoke). They are logged
+  (`fx3d`) and counted; the fields the Boss7 code writes go to a dummy object.
+- Material / pattern animations of D6 / D7 (eff_tornado / eff_flame / eff_aura .nsbma / .nsbtp) are timing only (frame
+  counts in bossdata.bin); the D6 lifetimes and the aura cycle keep the original timing, the texture motion is not
+  shown. `NNS_G3dGetTex` binds are dropped.
+- `gDisplayMain` BLDCNT / BLDY (3D layer white blend) is state (`boss7_blend`), not drawn by the module.
+  `NNS_SndPlayerSetVolume(SE, 0x30)` and `NNS_SndPlayerMoveVolume(BGM, 0x20, 0xb4)` are dropped (the latter logged).
+  `NNS_SndPlayerStopSeq(&gBGMSoundHandle, 0x3c)` fades on the DS; natively it is `music_stop`.
+- TalkDemo is only a hook; without it the clash starts right after the defeat scene.
+- The player model's animation speed (`gPlayers->unk124->unk114 = 0x4000` at the clash) is reported in
+  `boss7_info.player_anim_speed` while the player's animation is 0x42; the player draw in main.c must apply it.
+- `Boss7_State_PlayerSkidToStop` waits for the player's animation-ended flag (disp 8), which the objects module sets
+  only with `objects_set_player_anim_done(1)`; the stage clear does not depend on it (the rival's exit does it).
+- Joint matrices are float (dcm runtime), as for the other bosses.
+
+### Boss7: test (`test/test_boss7.c`)
+
+```sh
+make -C dreamcast/game/boss data host-test7
+SEED=1 LEVEL=1 STORY=0 build/dreamcast/boss/test_boss7 build/dreamcast/stages/z73/level.bin \
+    build/dreamcast/player build/dreamcast/models build/dreamcast/boss [-v|-vv]
+DUMPAT=1500 DUMPFILE=/tmp/v.ppm ...                  # host debug view (projected vertices)
+```
+
+The level has PlayerStart 0x72 at (48,488) and Boss7 0x39 (rival spawned at (263,498)). For each story character
+(STORY=2, default: both) the test runs a full fight with mashing and a second one without:
+
+- **[miss]** 900 frames standing still: the rival attacks, it takes no damage.
+- **[fight]** when the rival stands / runs / crouches with its body box armed, the player is put on the floor 36 px
+  beside it and jumps at it (A held, steering); after 4 failed tries in a row the jumping player is put just above it
+  ("assist", as in the Boss2/Boss4 tests).
+- **[watch]** at 2 hit points the rival is left alone until it has used its special (unless the AI stalled, above).
+- **[clash]** A every other frame; **[lose]** no presses.
+
+Measured (default seed, 6 hp, Sonic's story / rival Blaze): hits at f 1075 / 1965 / 2285 / 3413 / 4636, talk 0xa at
+f 4918, clash f 5118..5448 (player 158 presses, rival 38, balance +16428), won, cleared at f 5719 (ring bonus 50000).
+AI: 9 table attacks, 12 spin dashes, 4 air attacks, 2 specials (12 fire pillars, 5 at once), 16 evades, 15
+repositions; 17 clash bounces. Blaze's story / rival Sonic: hits at f 1113 .. 4854, talk 0xb, clash won at f 5692,
+tornado pull 1025 frames, after-image 212 frames. Lost clashes end at balance -16404 / -16422 with health 1 and
+Boss7_State_None.
+
+Checks (43): init with all assets, 6/8 hp, title-card wait, the character branch (rival model), [miss], AI coverage
+(spin dash / air attack / special / jump), the special's D6 (pillars, or tornado + pull + after-image), son.bac boxes,
+bs7_base pod visibility (1 of 3 nodes hidden, different node per story), clash darkening and its restore, the
+after-image pose (rival Sonic), hits = hp - 1, phases 0x24..0x2d, defeat scene + talk id, clash (two auras, BossHelp
+0, music 0x11), both mash, the 4x player clash animation, won (exc_bg 6/7, brightness 16, 3D blend 14), cleared once
+with ring bonus, models projected, and per character the lost clash. All 12 runs (seeds 0x12345678, 1, 2, 3,
+0xdeadbeef, 77 x LEVEL 0 / 1) pass; in 2 of them the stall above replaces the special coverage (reported).
+
+### Boss7: mapping table (boss7.c)
+
+| original | native file | status | note |
+|---|---|---|---|
+| `Boss7FrameCounter_Main` | boss7.c | reused |  |
+| `Boss7PartD5_Action_JumpOverPlayer` | boss7.c | reused |  |
+| `Boss7PartD5_Action_StartAI` | boss7.c | reused |  |
+| `Boss7PartD5_CheckCrouch` | boss7.c | reused |  |
+| `Boss7PartD5_CheckJump` | boss7.c | reused |  |
+| `Boss7PartD5_CheckRun` | boss7.c | reused |  |
+| `Boss7PartD5_ChooseAttack` | boss7.c | reused |  |
+| `Boss7PartD5_ChooseEvade` | boss7.c | reused |  |
+| `Boss7PartD5_Collide` | boss7.c | reused | StageObj_HandleCollider = obj_handle_collider |
+| `Boss7PartD5_Create` | boss7.c | modified | StageObj_LoadModel / LoadMotion / Load2dBAC -> converted player packages and the son.bac table (boss7bac.bin); gGameState.unk0 -> story character |
+| `Boss7PartD5_CreateClashEffect` | boss7.c | reused | billboard ops {SetCameraRot, FlushP} |
+| `Boss7PartD5_CreateHitEffect` | boss7.c | reused |  |
+| `Boss7PartD5_Destructor` | boss7.c | modified | Model_Release + rect_forget |
+| `Boss7PartD5_Draw` | boss7.c | modified | Model_Draw -> pose (+ Translate2 op, slot-4 visibility); the after-image pose keeps its own palette and light set (NNS_G3dGlbLightColor) |
+| `Boss7PartD5_HoverBob` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_AirSteer` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_BeginAirAttackCharge` | boss7.c | modified | void in the decompilation; returns the tail-called state's keys (ARM r0) |
+| `Boss7PartD5_InputState_ChargeSpindash` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_CheckCrouched` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_ClashMash` | boss7.c | substantially rewritten | from the ARM listing src/asm_fallback/Boss7PartD5_InputState_ClashMash.c (decoded: odd frames, probability v/256 from the clash balance, a 1800-frame fall-off and two sines) |
+| `Boss7PartD5_InputState_CrouchTowardTarget` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_Decide` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_Defeated` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_HoldAirAttackCharge` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_HoldJump` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_HoldJumpThenAirAttack` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_None` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_RollThenStop` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_SpecialAirWait` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_StartAirAttack` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_StartBackHop` | boss7.c | modified | void; returns the tail-called state's keys (ARM r0) |
+| `Boss7PartD5_InputState_StartClashMash` | boss7.c | modified | void; returns the tail-called state's keys (ARM r0) |
+| `Boss7PartD5_InputState_StartJump` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_StartJumpThenAirAttack` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_StartSpecial` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_StartSpecialAirWait` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_StartSpindash` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_TapBack` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_TapBackAgain` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_TriggerSpecial` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_TurnAround` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_WaitAfterTurn` | boss7.c | reused |  |
+| `Boss7PartD5_InputState_Walk` | boss7.c | reused |  |
+| `Boss7PartD5_IsPlayerJumpAttacking` | boss7.c | reused |  |
+| `Boss7PartD5_IsPlayerRollingToward` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_AirAttackCharge` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_AirDash` | boss7.c | modified | BLDY -> boss7_blend |
+| `Boss7PartD5_MoveState_BackHop` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_BlazeSpecialEnd` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_BlazeSpecialFall` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_BlazeSpecialHover` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_BlazeSpecialHoverDelay` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_BlazeSpecialRise` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_BlazeSpecialSpawnPillar` | boss7.c | modified | MapObject_Spawn(0xd6) -> pool |
+| `Boss7PartD5_MoveState_BlazeSpecialStartHover` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_Crouch` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_DashSkid` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_DefeatExit` | boss7.c | modified | data_022c4590.unk10 -> g_obj_stage.ring_bonus; StageShutdown_Create(Stage_OnBossCleared) -> g_boss_hooks.cleared once |
+| `Boss7PartD5_MoveState_DefeatScene` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_DefeatSceneDone` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_Hurt` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_Idle` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_Jump` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_Roll` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_Run` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialCharge` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialDashToPlayer` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialFall` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialOrbit` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialRise` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialSpinDown` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialSpinUp` | boss7.c | modified | MapObject_Spawn(0xd6) -> pool |
+| `Boss7PartD5_MoveState_SonicSpecialStartCharge` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialStartFall` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialStartOrbit` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SonicSpecialWaitDashAngle` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SpindashCharge` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_SpindashRelease` | boss7.c | modified | EffTrail / EffBoostA_3D not translated |
+| `Boss7PartD5_MoveState_StartAirAttackCharge` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartAirDash` | boss7.c | modified | BLDY -> boss7_blend, EffBoostA2_3D not translated |
+| `Boss7PartD5_MoveState_StartBackHop` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartBlazeSpecial` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartCrouch` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartDashSkid` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartDefeatExit` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartHurt` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartIdle` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartJump` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartRun` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartSonicSpecial` | boss7.c | reused |  |
+| `Boss7PartD5_MoveState_StartSpindashCharge` | boss7.c | modified | EffKemuriSpin3D not translated |
+| `Boss7PartD5_MoveState_WaitDefeatScene` | boss7.c | modified | NNS_SndPlayerMoveVolume(BGM, 0x20, 0xb4) logged |
+| `Boss7PartD5_OnHit` | boss7.c | modified | owner checked to be the player (obj_box_player); Player_OnHurt / Player_Action_AttackBounce -> objects module; NaviMsg / RingManager -> hooks |
+| `Boss7PartD5_PushAway` | boss7.c | reused |  |
+| `Boss7PartD5_SetAnimSpeedFromVelocity` | boss7.c | reused |  |
+| `Boss7PartD5_SpawnFireParticle` | boss7.c | modified | EffFire01_3D_Create not translated |
+| `Boss7PartD5_SpriteCallback` | boss7.c | reused | command 7 of the native son.bac table |
+| `Boss7PartD5_StartSpecialAttack` | boss7.c | reused |  |
+| `Boss7PartD5_State_Idle` | boss7.c | reused |  |
+| `Boss7PartD5_State_RunAI` | boss7.c | reused |  |
+| `Boss7PartD5_TryReposition` | boss7.c | reused |  |
+| `Boss7PartD5_UpdateCircleMotion` | boss7.c | reused |  |
+| `Boss7PartD5_UpdateRunAnimation` | boss7.c | reused |  |
+| `Boss7PartD6_Create` | boss7.c | modified | pool slot, archive files -> converted packages / timing-only animations |
+| `Boss7PartD6_Destructor` | boss7.c | modified | Sound_FreeHandle -> sfx_stop; Model_Release + rect_forget |
+| `Boss7PartD6_Draw` | boss7.c | modified | Model_Draw -> pose |
+| `Boss7PartD6_State_Activate` | boss7.c | reused |  |
+| `Boss7PartD6_State_Active` | boss7.c | reused |  |
+| `Boss7PartD6_State_Appear` | boss7.c | modified | NNS_G3dGetTex for the pattern animation dropped |
+| `Boss7PartD6_State_DestroyOnAnimEnd` | boss7.c | reused |  |
+| `Boss7PartD6_State_Vanish` | boss7.c | modified | NNS_SndPlayerStopSeq(handle, 0x3c) -> sfx_stop |
+| `Boss7PartD6_State_WaitAnimEnd_ov000_022ec34c` | boss7.c | reused |  |
+| `Boss7PartD7_Action_Appear` | boss7.c | reused |  |
+| `Boss7PartD7_Create` | boss7.c | modified | pool slot, archive files -> converted packages |
+| `Boss7PartD7_Destructor` | boss7.c | modified | Model_Release + rect_forget |
+| `Boss7PartD7_Draw` | boss7.c | modified | Model_Draw -> pose |
+| `Boss7PartD7_State_Hidden` | boss7.c | reused |  |
+| `Boss7PartD7_State_Hide` | boss7.c | reused |  |
+| `Boss7PartD7_State_Loop` | boss7.c | reused |  |
+| `Boss7PartD7_State_StartAppear` | boss7.c | reused |  |
+| `Boss7PartD7_State_StartDisappear` | boss7.c | reused |  |
+| `Boss7PartD7_State_StartLoop` | boss7.c | reused |  |
+| `Boss7PartD7_State_WaitAnimEnd_ov000_022ebdc4` | boss7.c | reused |  |
+| `Boss7PartD7_State_WaitAnimEnd_ov000_022ebe64` | boss7.c | reused |  |
+| `Boss7PartD7_State_WaitAnimEnd_ov000_022ebf08` | boss7.c | reused |  |
+| `Boss7_Action_StartTalkDemo` | boss7.c | modified | TalkDemo_Create -> the talk hook |
+| `Boss7_Create` | boss7.c | modified | archive files -> packages loaded by boss7_load; exc: effects -> boss_effects_load; MapObject_Spawn(0xd5) -> the static rival; Sound_AllocHandle -> handle 1 |
+| `Boss7_CreateClashSpark` | boss7.c | reused | x/y/z pass through to BossEffect_CreateStrikeHit |
+| `Boss7_Destructor` | boss7.c | modified | resources released by boss7_unload; gDisplaySub blend register dropped |
+| `Boss7_Draw` | boss7.c | modified | Model_Draw -> pose |
+| `Boss7_InitCamera` | boss7.c | modified | POWCNT LCD swap dropped; u16 writes to the low halves |
+| `Boss7_SetCollidersEnabled` | boss7.c | reused |  |
+| `Boss7_SetPartD7ScaleFromPower` | boss7.c | reused | unk320 = the aura's animation speed |
+| `Boss7_SetRivalAnimation` | boss7.c | modified | Model_SetResource(m, m->unk138, i) -> rival model i (render object reset detaches slot 4); son.nsbca/.nsbva or bs7.nsbca/.nsbva for 0x48..0x4a |
+| `Boss7_SpawnPartD7` | boss7.c | modified | MapObject_Spawn(0xd7, 0, 0, chara) -> pool |
+| `Boss7_StartPartD5AI` | boss7.c | reused |  |
+| `Boss7_State_ClashApproach` | boss7.c | reused |  |
+| `Boss7_State_ClashEnd` | boss7.c | modified | NNS_SndPlayerStopSeqAll -> music_stop |
+| `Boss7_State_ClashFadeOutBGM` | boss7.c | modified | NNS_SndPlayerStopSeq(BGM, 0x3c) -> music_stop |
+| `Boss7_State_ClashFlash` | boss7.c | modified | BLDY -> boss7_blend |
+| `Boss7_State_ClashLost` | boss7.c | reused |  |
+| `Boss7_State_ClashLostRivalSkid` | boss7.c | reused |  |
+| `Boss7_State_ClashResolve` | boss7.c | reused |  |
+| `Boss7_State_ClashSpawnPartD7` | boss7.c | modified | gGameState.unk0 -> story character |
+| `Boss7_State_ClashStart` | boss7.c | modified | BLDCNT/BLDY -> boss7_blend; Sound_PlaySeq(BGM, 0x11) -> music hook; BossHelp_Create -> boss_core.c; player model speed 0x4000 -> boss7_info |
+| `Boss7_State_ClashStartApproach` | boss7.c | reused |  |
+| `Boss7_State_ClashStartFlash` | boss7.c | modified | BLDCNT/BLDY -> boss7_blend, material flags -> colours |
+| `Boss7_State_ClashStruggle` | boss7.c | modified | gPad.trg -> player->pad_raw[1] (DC A / B); BLDY -> boss7_blend; NNS_SndPlayerSetVolume(SE, 0x30) dropped |
+| `Boss7_State_ClashWaitDelay` | boss7.c | reused |  |
+| `Boss7_State_ClashWon` | boss7.c | reused |  |
+| `Boss7_State_EndFight` | boss7.c | reused |  |
+| `Boss7_State_Fight` | boss7.c | reused |  |
+| `Boss7_State_None` | boss7.c | reused |  |
+| `Boss7_State_PlayerSkidToStop` | boss7.c | reused | gDisplayMain.unk48 -> g_boss_game.bright |
+| `Boss7_State_StartEndWait` | boss7.c | reused |  |
+| `Boss7_State_StartRivalExit` | boss7.c | modified | DISPCNT BG2 off -> exc_bg = -1, material flags -> colours |
+| `Boss7_State_WaitForStart` | boss7.c | modified | NNS sky resource -> BossModelRes |
+| `Boss7_State_WaitTimer_ov000_022ed138` | boss7.c | reused |  |
+| `Boss7_State_WaitTimer_ov000_022edc70` | boss7.c | reused |  |
+| `Boss7_State_WinCut1` | boss7.c | modified | gDisplayMain.unk48 -> g_boss_game.bright |
+| `Boss7_State_WinCut2` | boss7.c | modified | gDisplayMain.unk48 -> g_boss_game.bright |
+| `Boss7_State_WinCut3` | boss7.c | modified | gDisplayMain.unk48 -> g_boss_game.bright |
+| `Boss7_State_WinCutWait1` | boss7.c | reused |  |
+| `Boss7_State_WinCutWait2` | boss7.c | reused |  |
+| `Boss7_State_WinCutWait3` | boss7.c | reused |  |
+| `Boss7_UpdateMashPower` | boss7.c | reused |  |
+| `BossStage7_FreeModels` | boss7.c | substantially rewritten | boss7_unload |
+| `BossStage7_OnModelLoaded` | boss7.c | substantially rewritten | boss7_load: bs7_base / bs7_sky (data_02074164) + the archive packages; NaviBg_Load / NaviB_Load dropped |
+| `StageZoneScript_Zone7Boss` (src/game/Zone/Dead_Line/Stage, not in the 167) | boss7.c | reused | run at the end of boss7_update (task 0x3eff); gPlayers->unk17C = x << 4 |

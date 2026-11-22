@@ -17,6 +17,7 @@
 #include "../objects/obj_internal.h"
 #include "../menus/menus.h"
 #include "../save/save.h"
+#include "../special/special.h"
 #include <stdlib.h>
 
 /* Story order (Sonic): zone N acts 1, 2 and the boss act 3. */
@@ -77,6 +78,28 @@ static uint16_t ds_pad(uint32_t b)
     return o;
 }
 
+/* Special stage round trip (SPECIAL.md 5.1/5.2). Player_Destructor with
+ * gGameState.unk18 & 0x40 saves these into data_022c4590; Player_Create
+ * restores them; Stage_SaveEventState keeps collected rings / destroyed
+ * objects (objects module, weak until it provides the API). */
+void objects_save_event_state(void) __attribute__((weak));
+void objects_restore_event_state(void) __attribute__((weak));
+static struct {
+    int active;
+    s16 rings, rings_total, tension;
+    u32 shield, water;
+    int x, y;
+    u32 frame, score;
+} g_ss;
+static int g_special_pending;
+static int g_dbg_special = -1;   /* test builds: /cd/debug/special.txt = act frame to enter the special stage */
+static void (*g_prev_stage_exit)(void *ctx, s32 kind);
+static void stage_exit_hook(void *ctx, s32 kind)
+{
+    if(kind == OBJ_EXIT_SPECIAL_STAGE) { g_special_pending = 1; return; }   /* Player_ExitToSpecialStage */
+    if(g_prev_stage_exit) g_prev_stage_exit(ctx, kind);
+}
+
 static void spawn_player(Level *lv)
 {
     uint32_t i;
@@ -84,6 +107,7 @@ static void spawn_player(Level *lv)
     int sx = 128, sy = 128;
     for(i = 0; i < lv->hdr->num_objects; i++)
         if(obj[i].type == 114) { sx = obj[i].x; sy = obj[i].y; break; }   /* PlayerStart */
+    if(g_ss.active) { sx = g_ss.x; sy = g_ss.y; }   /* 280 px below the special ring */
     rlvl_bind(&g_map, lv->data);
     dcp_bind_map(&g_map);
     memset(&g_player, 0, sizeof(g_player));
@@ -91,6 +115,7 @@ static void spawn_player(Level *lv)
     objects_shutdown();
     g_obj_ok = objects_init(&g_map, lv->data) == 0;
     if(g_obj_ok) {
+        if(g_ss.active && objects_restore_event_state) objects_restore_event_state();
         objects_add_player(&g_player); objects_set_view_count(2); objects_respawn_view();
         /* son.bac timing ends non-looping animations (sets DCP_DF_ANIM_DONE), as on the DS. */
         objects_set_player_anim_done(1);
@@ -110,6 +135,17 @@ static void spawn_player(Level *lv)
     g_ui_game.difficulty = (u8)g_difficulty;
     g_ui_game.save_progress[0] = gSaveData.unkC; g_ui_game.save_progress[1] = gSaveData.unk64;
     ui_stage_start(g_dcp_world.zone, g_dcp_world.act, g_chara);
+    if(g_obj_hooks.stage_exit != stage_exit_hook) { g_prev_stage_exit = g_obj_hooks.stage_exit; g_obj_hooks.stage_exit = stage_exit_hook; }
+    if(g_ss.active) {
+        /* Player_Create with unk18 & 0x40: rings, shield, tension, water flag, blinking invulnerability */
+        g_player.rings = g_ss.rings; g_player.rings_total = g_ss.rings_total; g_player.tension = g_ss.tension;
+        g_player.pf |= g_ss.shield;
+        if(g_ss.water) g_player.pf2 |= 0x8000;
+        g_player.pf2 |= 0x200000;
+        g_player.invuln = g_player.invuln_len;
+        g_dcp_world.frame = g_ss.frame; g_ui_game.total = g_ss.score;
+        g_ss.active = 0;
+    }
     ui_set_camera(g_cam_x, g_cam_y);
     printf("objects: %s\n", g_obj_ok ? "ok" : "FAILED");
     g_cam_x = sx - VIEW_W / 2; g_cam_y = sy - VIEW_H * 0.6f;
@@ -289,6 +325,54 @@ static void draw_water(int line)
     if(y > 0) draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, y - 2 * VIEW_SCALE, 640, 2 * VIEW_SCALE, 0, 0, 0, 0, 9.1f, 0x60c0e0ff);
 }
 
+/* g_boss_hooks.help: BossHelp_Create / BossHelp_Destroy drawn by the UI module */
+static void boss_help_hook(void *ctx, s32 kind, s32 a, s32 b)
+{
+    (void)ctx; (void)b;
+    if(kind == BOSS_HELP_CREATE) BossHelp_Create((u32)a); else BossHelp_Destroy();
+}
+
+/* SceneChange_ToSpecialStage ... SceneChange_ToStageFromSpecialStage */
+static void run_special_stage(Level *lv, int stage)
+{
+    InputState in = {0};
+    SpecialResult res;
+    int r;
+    g_special_pending = 0;
+    g_ss.rings = g_player.rings; g_ss.rings_total = g_player.rings_total; g_ss.tension = g_player.tension;
+    g_ss.shield = g_player.pf & 0x30000000; g_ss.water = g_player.pf2 & 0x8000;
+    g_ss.x = g_player.x >> 8; g_ss.y = (g_player.y >> 8) + 0x118;
+    g_ss.frame = g_dcp_world.frame; g_ss.score = g_ui_game.total;
+    if(objects_save_event_state) objects_save_event_state();
+    if(g_obj_ok) objects_shutdown();
+    g_obj_ok = 0;
+    audio_music_stop();
+    level_free(lv);
+    special_set_path("/cd/special");
+    special_set_language(1);
+    special_set_emerald_flags(g_emeralds);
+    printf("special: vram free before %lu\n", (unsigned long)render_vram_free());
+    r = special_init(g_dcp_world.zone, 0);
+    printf("special stage %d: init %d\n", g_dcp_world.zone, r);
+    if(r == 0) {
+        for(;;) {
+            input_poll(&in);
+            r = special_run_frame(&in);
+            render_begin_frame(); special_draw(); render_end_frame();
+            sound_update(); audio_update();
+            if(r) break;
+        }
+        special_result(&res);
+        g_emeralds = res.emerald_flags;   /* SpecialStage_Shutdown: unk28 |= 1 << stage when cleared */
+        printf("special stage result %d, emeralds %02x\n", r, g_emeralds);
+        special_shutdown();
+        printf("special: vram free after %lu\n", (unsigned long)render_vram_free());
+    }
+    /* StageEntry_StartFromSpecialStage: the act again, title card, saved state */
+    g_ss.active = 1;
+    if(load_stage(lv, stage) == 0) spawn_player(lv);
+}
+
 /* MENU_REQ_STAGE -> index into k_stages (story table), -1 if the stage is not in the port */
 static int stage_index(int zone, int act)
 {
@@ -327,6 +411,7 @@ int main(int argc, char **argv)
     g_obj_hooks.effect = obj_effect_hook;
     g_boss_hooks.player_box_flags = boss_player_box_flags;
     g_boss_hooks.navi = ui_boss_navi;
+    g_boss_hooks.help = boss_help_hook;
     g_ui_hooks.voice = ui_voice_hook;
     g_ui_hooks.stage_new = ui_stage_new_hook;
     g_menu_hooks.bgm = menu_bgm; g_menu_hooks.se = menu_se; g_menu_hooks.voice = menu_voice;
@@ -350,6 +435,8 @@ int main(int argc, char **argv)
         /* test builds only: /cd/debug/start.txt holds the story index to start at */
         uint32_t dsz;
         char *d = load_file("/cd/debug/start.txt", &dsz);
+        char *sp = load_file("/cd/debug/special.txt", &dsz);
+        if(sp) { g_dbg_special = atoi(sp) > 0 ? atoi(sp) : 300; free(sp); }
         if(d) { int v = atoi(d); if(v >= 0 && v < (int)NUM_STAGES) stage = v; free(d); dbg_start = 1; printf("debug start stage %d\n", stage); }
     }
     if(dbg_start) {
@@ -419,6 +506,8 @@ int main(int argc, char **argv)
             if(ui_titlecard_active()) { g_cam_x = tx; g_cam_y = ty; }
             else { g_cam_x += (tx - g_cam_x) * 0.25f; g_cam_y += (ty - g_cam_y) * 0.18f; }
         }
+        if(ok && g_player_ok && g_dbg_special > 0 && (int)g_dcp_world.frame == g_dbg_special) { g_dbg_special = -1; g_special_pending = 1; }
+        if(ok && g_player_ok && g_special_pending) { run_special_stage(&lv, stage); continue; }
         if(ok && g_player_ok) ui_post_update(&g_player);
         sound_update();
         if(ok) {

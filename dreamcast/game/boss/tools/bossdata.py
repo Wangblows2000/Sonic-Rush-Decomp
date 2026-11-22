@@ -82,6 +82,48 @@ CHUNKS = [
     # Boss4 data data_ov000_023655e8 .. 023657e0: palette name pointer tables and the "boss04_xx_pl" names,
     # "exc"/"bs4" archive and effect resource names
     ("boss4_data", 0x023655E8, 0x023657E0 - 0x023655E8),
+    # Boss6 read-only tables data_ov000_023636e8 .. 02363b18: palette slots / indices per player, voices (02363718),
+    # hit box index lists (02363720 / 02363750 / 023637dc), defeat camera tables (0236372c / 02363744 / 023637ec), cut-in
+    # BBG file indices (02363738), plate spawn frames (0236375c), node names "body_pro_r" "pelvis" "body_core"
+    # "body_pro_l", walk times (023637ac), aim speeds (023637bc), aim times / edge jump counts / jump track times per
+    # health (02363804 / 02363824 / 02363844), piece files [4][4] (02363864), body palettes per player (02363884 /
+    # 023638a4), the RotY(180) mirror MtxFx33 (023638c4), plate positions (023638e8), attack patterns [4][8] per health
+    # band (02363918 / 02363998 / 023639d8), landing anim speeds [2][8] (02363958), pull-out speeds [2][8][4] (02363a18)
+    ("boss6_rodata", 0x023636E8, 0x02363B18 - 0x023636E8),
+    # Boss6 data data_ov000_023657e0 .. 023659c4: palette name pointer tables and the "boss06_xx_pl" / "bult00_pl"
+    # names, piece states (023658ac, ROM function addresses), node name pointers (023658bc), defeat player positions
+    # (023658cc), "bs6" archive and effect resource names
+    ("boss6_data", 0x023657E0, 0x023659C4 - 0x023657E0),
+    # Boss7 read-only tables data_ov000_02363b18 .. 02363da4: clash mash base per level (02363b18), special /
+    # air-attack strength picks per health band (02363b1c / b2c / b34 / b4c / b54 / b5c), pillar counts / intervals /
+    # lifetimes (02363b24 / b44 / b6c), orbit counts (02363b3c), flame anim speeds (02363b64), air dash speeds
+    # (02363b74), special chances [2][4] (02363b84 / b94), reposition / rolling / jump-attack checks [2][8] (02363ba4 /
+    # bc4 / be4), tornado lifetimes / pull limits / pull accelerations [4][4] (02363c04 / c24 / c64), attack interval
+    # [2][8] (02363c44), attack tables [4][8] x 9 (02363c84 .. 02363d84)
+    ("boss7_rodata", 0x02363B18, 0x02363DA4 - 0x02363B18),
+    # gPlayerPhysicsTable (0x02368b7c, Sonic / Blaze, the rival reads top / dec / sd_max / jump / gravity / fall_max)
+    # and the Player_SetAnimation tables 02368bdc (joint anim), 02368c44 (model), 02368cac (visibility anim),
+    # 02368d14 (son.bac anim), 0x68 entries each
+    ("player_tables", 0x02368B7C, 0x02368D7C - 0x02368B7C),
+    # BossF (zf3) read-only tables data_ov000_02363da4 .. 023643d4: attack variants / patterns per health band
+    # (02363da4 .. 02363e40, 02363eac .. 02363eec), palette slots / indices per player (02363dac, 02363dd0 / ddc,
+    # 02363de8 / df8, 02363e6c .. e90, 02363f60, 023640b8 / 023640ec), timers per level and health (02363f7c ..
+    # 02364344), wave / ball speeds, beam widths, node names "body_core" "body_sh_l" "body_sh_r" "body_fist_l"
+    # "body_fist_r" (02363efc .. 02363f3c)
+    ("bossf_rodata", 0x02363DA4, 0x023643D4 - 0x02363DA4),
+    # BossF data data_ov000_02365c54 .. 023661a4: laser chase timers (02365c54), volley counts / widths / speeds /
+    # intervals [2][3][8] (02365c5c, 02365da0 .. 02365e60), palette name tables, "/mod/bsf_sky_b.nsbmd",
+    # "bsf" / "exc" archive and effect resource names
+    ("bossf_data", 0x02365C54, 0x023661A4 - 0x02365C54),
+]
+
+# zone archive files the boss code reads as data, stored like the ROM tables at pseudo addresses outside the DS
+# address space: (pseudo address, archive, member)
+ARCHIVE_CHUNKS = [
+    # BossFPartD8_Create: "bsf" files 12 / 13, the arm's ObjCollisionMap (0x56 x 0x28 tiles of 8 x u8 height /
+    # width codes, and the tile angles)
+    (0x7F000000, "narc/zf3_act_lz7.narc", "bsf_st_r.df"),
+    (0x7F010000, "narc/zf3_act_lz7.narc", "bsf_st_r.di"),
 ]
 
 # sanity checks against known contents (decoded once from the ROM, not shipped)
@@ -108,6 +150,25 @@ CHECKS = [
     # Boss2 hitbox callback table data_ov000_0236521c: NULL x4, Boss2_OnHit_DamageAttack2 (022cdbb0),
     # Boss2_OnHit_DamageAttack3 (022cd880), Boss2_OnHit_PushPlayer (022cd738) x4
     (0x0236521C, bytes(16) + bytes.fromhex("b0db2c0280d82c0238d72c0238d72c0238d72c0238d72c02")),
+    (0x0236376C, b"body_pro_r\0"),
+    (0x0236378C, b"pelvis\0"),
+    (0x0236379C, b"body_core\0"),
+    (0x023637CC, b"body_pro_l\0"),
+    (0x02365904, b"bs6\0"),
+    # Boss6 piece states data_ov000_023658ac: Boss6_State_PieceWaitSpinFly (022dfcbc), Boss6_State_PieceStartSlide
+    # (022dfb68), Boss6_State_PieceDestroyOnAnimEnd (022dfd30) x2; the mirror matrix data_ov000_023638c4
+    (0x023658AC, bytes.fromhex("bcfc2d0268fb2d0230fd2d0230fd2d02")),
+    (0x023638C4, bytes.fromhex("00f0ffff0000000000000000000000000010000000000000000000000000000000f0ffff")),
+    # Boss7: the clash mash bases {0x78, 0xa0}, "bs7" archive and the rival's sprite name
+    (0x02363B18, bytes.fromhex("7800a000")),
+    (0x02365B20, b"/act/son.bac"),
+    # BossF: BossFPartD8_NodeCallback_Body node names, BossFPartD8_State_LoadSkyModel file
+    (0x02363EFC, b"body_core\0"),
+    (0x02363F0C, b"body_sh_l\0"),
+    (0x02363F1C, b"body_sh_r\0"),
+    (0x02363F2C, b"body_fist_l\0"),
+    (0x02363F3C, b"body_fist_r\0"),
+    (0x02365F20, b"/mod/bsf_sky_b.nsbmd\0"),
 ]
 
 # (model file under files/mod, node name): Boss1Neck_NodeCallback_NeckHam, Boss1Hammer_NodeCallback_Hammer,
@@ -133,6 +194,17 @@ JOINTS = [
     ("bs4_rod", "rod_body"),
     ("bs4_arm", "arm_gun"),
     ("bs4_body", "body_exit"),
+    # Boss6_StoreNodeMatrix (data_ov000_023658bc)
+    ("bs6_body", "body_pro_r"),
+    ("bs6_body", "body_pro_l"),
+    ("bs6_body", "pelvis"),
+    ("bs6_body", "body_core"),
+    # BossFPartD8_NodeCallback_Body (data_ov000_02363efc .. 02363f3c)
+    ("bsf_body", "body_core"),
+    ("bsf_body", "body_sh_l"),
+    ("bsf_body", "body_sh_r"),
+    ("bsf_body", "body_fist_l"),
+    ("bsf_body", "body_fist_r"),
 ]
 
 # animation files that are not converted but whose frame counts the boss code
@@ -149,6 +221,38 @@ ANIM_LENGTHS = [
     ("narc/z43_act_lz7.narc", "eff_ele_stay.nsbma"),    # Boss4PartD0 (slot 1: the shot ends with it)
     ("narc/z43_act_lz7.narc", "eff_ele_flash.nsbma"),   # Boss4PartD0 flash (slot 1)
     ("narc/z43_act_lz7.narc", "eff_wave_disap.nsbma"),  # Boss4PartD2 vanish (slot 1)
+    ("narc/z63_act_lz7.narc", "eff_plate.nsbma"),       # Boss6 piece 0 (slot 1)
+    ("narc/z63_act_lz7.narc", "eff_shoot.nsbma"),       # Boss6 piece 2 (slot 1: the flash ends with it)
+    ("narc/z63_act_lz7.narc", "eff_shoot_bomb.nsbma"),  # Boss6 piece 3 (slots 1 / 2)
+    ("narc/z63_act_lz7.narc", "eff_shoot_bomb.nsbtp"),
+    # Boss7PartD6 (tornado / fire pillar: slots 1 material, 2 pattern; appear 01, loop 02, vanish 03) and
+    # Boss7PartD7 (clash aura: slot 1 material next to the converted 01/02/03 .nsbca)
+    ("narc/z73_act_lz7.narc", "eff_tornado01.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_tornado02.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_tornado03.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_tornado01.nsbtp"),
+    ("narc/z73_act_lz7.narc", "eff_tornado02.nsbtp"),
+    ("narc/z73_act_lz7.narc", "eff_tornado03.nsbtp"),
+    ("narc/z73_act_lz7.narc", "eff_flame01.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_flame02.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_flame03.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_flame01.nsbtp"),
+    ("narc/z73_act_lz7.narc", "eff_flame02.nsbtp"),
+    ("narc/z73_act_lz7.narc", "eff_flame03.nsbtp"),
+    ("narc/z73_act_lz7.narc", "eff_aura_son01.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_aura_son02.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_aura_son03.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_aura_blz01.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_aura_blz02.nsbma"),
+    ("narc/z73_act_lz7.narc", "eff_aura_blz03.nsbma"),
+    # BossF (zf3): the sky's material / SRT animations (bsf files 11 / 10), BossFPartDD and the laser-fin effect
+    # (eff_laser_fin_b: slot 1 material, slot 2 pattern; DD vanishes when both ended), BossFPartDE beam ends
+    # (eff_beam_fin.nsbtp, looping)
+    ("narc/zf3_act_lz7.narc", "bsf.nsbta"),
+    ("narc/zf3_act_lz7.narc", "bsf.nsbma"),
+    ("narc/zf3_act_lz7.narc", "eff_laser_fin_b.nsbma"),
+    ("narc/zf3_act_lz7.narc", "eff_laser_fin_b.nsbtp"),
+    ("narc/zf3_act_lz7.narc", "eff_beam_fin.nsbtp"),
 ]
 
 # BossEffect_Create<Name> resource names (data_ov000_02367c5c..02367e24) + EffPebble (02367c2c)
@@ -161,6 +265,7 @@ EFFECTS = ["eff_base_dest", "eff_beam_fin_b", "eff_blast", "eff_blast1", "eff_bl
            # Water Palace 3D water effects (gEffSplash3DModelNames / gEffRipple3DModelNames)
            "eff_splash_s", "eff_splash_b", "eff_ripple_s", "eff_ripple_m", "eff_ripple_b"]
 BOSS_ZONES = [1, 2, 3, 4, 5, 6, 7]   # z13 .. z73 (zone index 0..6), stage = zone_index * 3 + 2
+EXTRA_EFFECT_ARCS = [("narc/zf3_act_lz7.narc", 23)]   # BossF: zone 7 act 2 (stage 23)
 
 
 def effect_table(models_dir):
@@ -183,6 +288,13 @@ def effect_table(models_dir):
                 continue
             a = resolve("%s:%s.nsbca" % (arc, name))
             out.append(((z - 1) * 3 + 2, name, m["outputs"][0], a["outputs"][0] if a and a.get("outputs") else ""))
+    for arc, stage in EXTRA_EFFECT_ARCS:
+        for name in EFFECTS:
+            m = resolve("%s:%s.nsbmd" % (arc, name))
+            if m is None or not m.get("outputs"):
+                continue
+            a = resolve("%s:%s.nsbca" % (arc, name))
+            out.append((stage, name, m["outputs"][0], a["outputs"][0] if a and a.get("outputs") else ""))
     return out
 
 
@@ -324,7 +436,161 @@ ASSETS = {
         "narc__ss_act_lz7__eff_shoot_bomb__eff_shoot_bomb.dcm",
         "narc__ss_act_lz7__eff_shoot_bomb.dca",
     ],
+    # BossStage6_OnModelLoaded data_020746c0 (10 models), Boss6_Create "bs6" file 8 (bs6.nsbca), pieces 0x35..0x3d
+    # (eff_plate, eff_wind, eff_shoot, eff_shoot_bomb; their .nsbma / .nsbtp are timing only), BossEffect names of
+    # z63_act_lz7.narc (eff_pick, eff_parts, eff_impact_small, eff_land, eff_hit, eff_blast at the defeat)
+    "z63": [
+        "mod__bs6_base__bs6_base.dcm",
+        "mod__bs6_rcloud01__bs6_rcloud01.dcm",
+        "mod__bs6_rcloud02__bs6_rcloud02.dcm",
+        "mod__bs6_tcloud01__bs6_tcloud01.dcm",
+        "mod__bs6_tcloud02__bs6_tcloud02.dcm",
+        "mod__bs6_sky__bs6_sky.dcm",
+        "mod__bs6_body__bs6_body.dcm",
+        "mod__bs6_prop01__bs6_prop01.dcm",
+        "mod__bs6_prop02__bs6_prop02.dcm",
+        "mod__bs6_bult__bs6_bult.dcm",
+        "narc__z63_act_lz7__bs6.dca",
+        "narc__z63_act_lz7__eff_plate__eff_plate.dcm",
+        "narc__z63_act_lz7__eff_wind__eff_wind.dcm",
+        "narc__z63_act_lz7__eff_shoot__eff_shoot.dcm",
+        "narc__ss_act_lz7__eff_shoot_bomb__eff_shoot_bomb.dcm",
+        "narc__ss_act_lz7__eff_shoot_bomb.dca",
+        "narc__z63_act_lz7__eff_pick__eff_pick.dcm",
+        "narc__z63_act_lz7__eff_pick.dca",
+        "narc__z63_act_lz7__eff_parts__eff_parts.dcm",
+        "narc__z63_act_lz7__eff_parts.dca",
+        "narc__z13_act_lz7__eff_impact_small__eff_impact_small.dcm",
+        "narc__z13_act_lz7__eff_impact_small.dca",
+        "narc__z33_act_lz7__eff_land__eff_land.dcm",
+        "narc__z33_act_lz7__eff_land.dca",
+        "narc__z13_act_lz7__eff_hit__eff_hit.dcm",
+        "narc__z13_act_lz7__eff_hit.dca",
+        "narc__z23_act_lz7__eff_blast__eff_blast.dcm",
+        "narc__z23_act_lz7__eff_blast.dca",
+    ],
+    # BossStage7_OnModelLoaded data_02074164 (bs7_base, bs7_sky), "bs7" files 8 / 9 (bs7.nsbca / bs7.nsbva), the
+    # rival (StageObj_LoadModel / LoadMotion of player_lz7: blz.nsbmd against Sonic, son.nsbmd against Blaze, both
+    # listed; son.nsbca / son.nsbva), D6 0x12 / 0x19 (eff_tornado / eff_flame; .nsbma / .nsbtp timing only), D7
+    # 0x20..0x2d (eff_aura_son / eff_aura_blz + 01..03 .nsbca), BossEffect names of z73_act_lz7.narc (eff_hit,
+    # eff_homing, eff_boost, eff_strike_big / _hit / _fin, eff_clash, eff_suction); boss7bac.bin (son.bac boxes)
+    # is written next to bossdata.bin
+    "z73": [
+        "mod__bs7_base__bs7_base.dcm",
+        "mod__bs7_sky__bs7_sky.dcm",
+        "narc__z73_act_lz7__bs7.dca",
+        "narc__z73_act_lz7__bs7.dcv",
+        "mod__son__son.dcm",
+        "mod__son__son_ball.dcm",
+        "mod__blz__blz.dcm",
+        "mod__blz__blz_spin.dcm",
+        "narc__player_lz7__son.dca",
+        "narc__player_lz7__son.dcv",
+        "narc__z73_act_lz7__eff_tornado__eff_tornado.dcm",
+        "narc__z73_act_lz7__eff_flame__eff_flame.dcm",
+        "narc__z73_act_lz7__eff_aura_son__eff_aura_son.dcm",
+        "narc__z73_act_lz7__eff_aura_son01.dca",
+        "narc__z73_act_lz7__eff_aura_son02.dca",
+        "narc__z73_act_lz7__eff_aura_son03.dca",
+        "narc__z73_act_lz7__eff_aura_blz__eff_aura_blz.dcm",
+        "narc__z73_act_lz7__eff_aura_blz01.dca",
+        "narc__z73_act_lz7__eff_aura_blz02.dca",
+        "narc__z73_act_lz7__eff_aura_blz03.dca",
+        "narc__z13_act_lz7__eff_hit__eff_hit.dcm",
+        "narc__z13_act_lz7__eff_hit.dca",
+        "narc__z73_act_lz7__eff_homing__eff_homing.dcm",
+        "narc__z73_act_lz7__eff_homing.dca",
+        "narc__z73_act_lz7__eff_boost__eff_boost.dcm",
+        "narc__z73_act_lz7__eff_boost.dca",
+        "narc__z73_act_lz7__eff_strike_big__eff_strike_big.dcm",
+        "narc__z73_act_lz7__eff_strike_big.dca",
+        "narc__z73_act_lz7__eff_strike_hit__eff_strike_hit.dcm",
+        "narc__z73_act_lz7__eff_strike_hit.dca",
+        "narc__z73_act_lz7__eff_strike_fin__eff_strike_fin.dcm",
+        "narc__z73_act_lz7__eff_strike_fin.dca",
+        "narc__extra_act__eff_clash__eff_clash.dcm",
+        "narc__extra_act__eff_clash.dca",
+        "narc__z73_act_lz7__eff_suction__eff_suction.dcm",
+    ],
+    # BossStageF_OnModelLoaded data_02074498 (bsf_base, bsf_body, bsf_ball, bsf_shock, bsf_wave_sl, bsf_pas_dust01),
+    # BossF_Create /mod/bsf_sky + /mod/bsf_passage (4 models), BossFPartD8_State_LoadSkyModel /mod/bsf_sky_b, "bsf"
+    # files 8 / 9 (bsf.nsbca / bsf.nsbva; 10 / 11 timing only), 0x6e / 0x6f / 0x72 (eff_laser_fin, eff_laser_fin_b,
+    # eff_beam_fin; their .nsbma / .nsbtp timing only), BossEffect names of zf3_act_lz7.narc; bsf_st_r.df / .di are
+    # in bossdata.bin
+    "zf3": [
+        "mod__bsf_base__bsf_base.dcm",
+        "mod__bsf_body__bsf_body.dcm",
+        "mod__bsf_ball__bsf_ball.dcm",
+        "mod__bsf_shock__bsf_shock.dcm",
+        "mod__bsf_wave_sl__bsf_wave_sl.dcm",
+        "mod__bsf_pas_dust01__bsf_pas_dust01.dcm",
+        "mod__bsf_sky__bsf_sky.dcm",
+        "mod__bsf_sky_b__bsf_sky_b.dcm",
+        "mod__bsf_passage__bsf_pas_sate01.dcm",
+        "mod__bsf_passage__bsf_pas_peel01.dcm",
+        "mod__bsf_passage__bsf_pas_clo00.dcm",
+        "mod__bsf_passage__bsf_pas_clo01.dcm",
+        "narc__zf3_act_lz7__bsf.dca",
+        "narc__zf3_act_lz7__bsf.dcv",
+        "narc__zf3_act_lz7__eff_laser_fin__eff_laser_fin.dcm",
+        "narc__zf3_act_lz7__eff_laser_fin_b__eff_laser_fin_b.dcm",
+        "narc__zf3_act_lz7__eff_beam_fin__eff_beam_fin.dcm",
+        "narc__z13_act_lz7__eff_hit__eff_hit.dcm",
+        "narc__z13_act_lz7__eff_hit.dca",
+        "narc__zf3_act_lz7__eff_impact_sl__eff_impact_sl.dcm",
+        "narc__zf3_act_lz7__eff_impact_sl.dca",
+        "narc__zf3_act_lz7__eff_impact_st__eff_impact_st.dcm",
+        "narc__zf3_act_lz7__eff_impact_st.dca",
+        "narc__zf3_act_lz7__eff_impact_pr__eff_impact_pr.dcm",
+        "narc__zf3_act_lz7__eff_impact_pr.dca",
+        "narc__zf3_act_lz7__eff_dmg_hand__eff_dmg_hand.dcm",
+        "narc__zf3_act_lz7__eff_dmg_hand.dca",
+        "narc__zf3_act_lz7__eff_produce__eff_produce.dcm",
+        "narc__zf3_act_lz7__eff_produce.dca",
+        "narc__zf3_act_lz7__eff_bomb_ball__eff_bomb_ball.dcm",
+        "narc__zf3_act_lz7__eff_bomb_ball.dca",
+        "narc__zf3_act_lz7__eff_tackle__eff_tackle.dcm",
+        "narc__zf3_act_lz7__eff_base_dest__eff_base_dest.dcm",
+        "narc__zf3_act_lz7__eff_base_dest.dca",
+        "narc__zf3_act_lz7__eff_beam_fin_b__eff_beam_fin_b.dcm",
+        "narc__zf3_act_lz7__eff_beam_fin_b.dca",
+        "narc__zf3_act_lz7__eff_blastf__eff_blastf.dcm",
+        "narc__zf3_act_lz7__eff_blastf.dca",
+    ],
 }
+
+
+def write_boss7_bac(extract, out_dir):
+    """boss7bac.bin "B7BC" v1: the son.bac (player_lz7.narc act/son.bac) timing the Boss7 rival's AnimatorSprite
+    needs: per animation {u16 first_frame, u16 frame_count, s16 loop_frame, u16 0}, per frame {u16 duration, u16
+    first_event, u16 count, u16 0}, per command-7 event the 16 command bytes {u16 7, u16 16, u16 slot, u16 flags,
+    s16 l, t, r, b} (Boss7PartD5_SpriteCallback reads them as on the DS).  Header: magic, u16 1, u16 anims,
+    u16 frames, u16 events, u32 0."""
+    import bac_format
+    from nds_archive import open_narc, maybe_decompress
+    files = dict(open_narc(os.path.join(extract, "files", "narc", "player_lz7.narc")).files)
+    bac = bac_format.Bac(maybe_decompress(files["act/son.bac"]))
+    anims, frames, events = [], [], []
+    for an in bac.animations:
+        if an.loop_anim is not None or an.next_anim is not None:
+            raise SystemExit("son.bac anim %d jumps to another animation (not handled)" % an.index)
+        anims.append((len(frames), len(an.frames), an.loop_frame if an.loop_frame is not None else -1))
+        for fr in an.frames:
+            evs = [e for e in fr.events if e.get("kind") == "hitbox"]
+            frames.append((fr.duration, len(events), len(evs)))
+            for e in evs:
+                events.append((e["slot"], e["flags"]) + tuple(e["rect"]))
+    b = struct.pack("<4sHHHHI", b"B7BC", 1, len(anims), len(frames), len(events), 0)
+    for ff, n, lp in anims:
+        b += struct.pack("<HHhH", ff, n, lp, 0)
+    for du, fe, n in frames:
+        b += struct.pack("<HHHH", du, fe, n, 0)
+    for slot, fl, l, t, r, bb in events:
+        b += struct.pack("<HHHHhhhh", 7, 16, slot, fl & 0xFFFF, l, t, r, bb)
+    with open(os.path.join(out_dir, "boss7bac.bin"), "wb") as f:
+        f.write(b)
+    print("boss7bac.bin: son.bac %d animations, %d frames, %d hit box events (%d bytes)" %
+          (len(anims), len(frames), len(events), len(b)))
 
 
 def anim_frame_counts(d):
@@ -360,21 +626,29 @@ def main(argv):
         if got != want:
             print("ROM check failed at %08x: %r != %r (wrong ROM region?)" % (addr, got, want))
             return 1
-    hdr_size = 8 + 12 * len(CHUNKS)
+    arc_blobs = {}
+    if ARCHIVE_CHUNKS:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../tools/dreamcast/sprites"))
+        from nds_archive import open_narc as _open_narc, maybe_decompress as _maybe_decompress
+        for addr, arc, member in ARCHIVE_CHUNKS:
+            files = dict(_open_narc(os.path.join(a.extract, "files", arc)).files)
+            arc_blobs[addr] = _maybe_decompress(files[member])
+    all_chunks = list(CHUNKS) + [(member, addr, len(arc_blobs[addr])) for addr, arc, member in ARCHIVE_CHUNKS]
+    hdr_size = 8 + 12 * len(all_chunks)
     table = []
     data = bytearray()
     off = hdr_size
-    for name, addr, size in CHUNKS:
+    for name, addr, size in all_chunks:
         while (off + len(data)) % 4 != addr % 4:
             data.append(0)
         foff = off + len(data)
-        blob = read_range(arm9, ov000, addr, size)
+        blob = arc_blobs[addr] if addr in arc_blobs else read_range(arm9, ov000, addr, size)
         if len(blob) != size:
             print("short read %s" % name)
             return 1
         data += blob
         table.append((addr, size, foff))
-    out = struct.pack("<4sHH", b"BOSD", 1, len(CHUNKS))
+    out = struct.pack("<4sHH", b"BOSD", 1, len(all_chunks))
     for t in table:
         out += struct.pack("<III", *t)
     out += bytes(data)
@@ -411,6 +685,7 @@ def main(argv):
     os.makedirs(a.out, exist_ok=True)
     with open(os.path.join(a.out, "bossdata.bin"), "wb") as f:
         f.write(out)
+    write_boss7_bac(a.extract, a.out)
     missing = 0
     with open(os.path.join(a.out, "assets.txt"), "w") as f:
         for stage, files in ASSETS.items():

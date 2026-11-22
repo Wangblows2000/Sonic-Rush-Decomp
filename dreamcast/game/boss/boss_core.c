@@ -57,6 +57,26 @@ void NaviMsg_ShowMessage(s32 msg, s32 time) {
 /* StageObj_SetPause / StageObj_ClearPause: gObjManagerFlags bit 0 */
 void StageObj_SetPause(void) { g_dcp_world.objmgr |= 1; }
 void StageObj_ClearPause(void) { g_dcp_world.objmgr &= ~1u; }
+/* BossHelp_Create / BossHelp_Destroy (src/game/UI/Hud/BossHelp_*): the help sprite task
+ * (gBossHelpTask) becomes UI state through g_boss_hooks.help; Destroy does nothing while
+ * none is shown, as on the DS */
+static s32 s_help = -1;
+void BossHelp_Create(u32 idx) {
+    s_help = (s32)idx;
+    if (g_boss_hooks.help)
+        g_boss_hooks.help(g_boss_hooks.ctx, BOSS_HELP_CREATE, (s32)idx, 0);
+    boss_log("help", (s32)idx, 1);
+}
+void BossHelp_Destroy(void) {
+    s32 idx = s_help;
+    if (idx < 0)
+        return;
+    s_help = -1;
+    if (g_boss_hooks.help)
+        g_boss_hooks.help(g_boss_hooks.ctx, BOSS_HELP_DESTROY, idx, 0);
+    boss_log("help", idx, 0);
+}
+s32 boss_help(void) { return s_help; }
 
 /* ------------------------------------------------------- bossdata.bin */
 typedef struct { u32 addr, size, off; } BossChunk;
@@ -447,6 +467,7 @@ void boss_set_paths(const char *model_dir, const char *data_dir) {
     boss_model_set_dir(model_dir);
     strncpy(s_data_dir, data_dir, sizeof(s_data_dir) - 1);
 }
+const char *boss_data_dir(void) { return s_data_dir; }
 void boss_set_difficulty(int level_idx) { g_boss_game.unk14 = level_idx; }
 
 static const ObjParam *find_boss_object(const uint8_t *level, u16 type, ObjParam *out) {
@@ -579,6 +600,48 @@ int boss_init(int stage_id, const uint8_t *level, DcPlayer *player, int textures
         if (Boss4_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
             return -4;
         return 0;
+    case 17: /* z63 Altitude Limit act 3: map object 0x3a -> Boss6_Create (part 0xd4: Boss6PartD4) */
+        if (boss_effects_load(stage_id) != 0 || boss6_load() != 0)
+            return -3;
+        p = find_boss_object(level, 0x3a, &prm);
+        if (p == NULL) {
+            memset(&prm, 0, sizeof(prm));
+            prm.type = 0x3a;
+            p = &prm;
+        }
+        s_boss_kind = 6;
+        if (Boss6_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
+            return -4;
+        return 0;
+    case 20: /* z73 Dead Line act 3: map object 0x39 -> Boss7_Create (the rival 0xd5, parts 0xd6 / 0xd7) */
+        if (boss_effects_load(stage_id) != 0 || boss7_load() != 0)
+            return -3;
+        p = find_boss_object(level, 0x39, &prm);
+        if (p == NULL) {
+            memset(&prm, 0, sizeof(prm));
+            prm.type = 0x39;
+            p = &prm;
+        }
+        s_boss_kind = 7;
+        if (Boss7_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
+            return -4;
+        return 0;
+    case 23: /* zf3 final zone boss (DS zone 7 act 2): map object 0x38 -> BossF_Create (parts 0xd8..0xde) */
+        bossf_init();
+        if (boss_effects_load(stage_id) != 0 || bossf_load() != 0)
+            return -3;
+        if (level != NULL)
+            bossf_set_map_width(((const rlvl_header_t *)level)->width_blocks); /* gStageMapCollision.unk18 */
+        p = find_boss_object(level, 0x38, &prm);
+        if (p == NULL) {
+            memset(&prm, 0, sizeof(prm));
+            prm.type = 0x38;
+            p = &prm;
+        }
+        s_boss_kind = 0xf;
+        if (BossF_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
+            return -4;
+        return 0;
     default:
         return -1;
     }
@@ -601,6 +664,19 @@ void boss_shutdown(void) {
         boss4_destroy();
         boss4_unload();
     }
+    if (s_boss_kind == 6) {
+        boss6_destroy();
+        boss6_unload();
+    }
+    if (s_boss_kind == 7) {
+        boss7_destroy();
+        boss7_unload();
+    }
+    if (s_boss_kind == 0xf) {
+        bossf_destroy();
+        bossf_unload();
+    }
+    BossHelp_Destroy();
     memset(s_objmdl, 0, sizeof(s_objmdl));
     g_boss_game.draw_player = NULL;
     g_boss_game.player_trans_valid = 0;
@@ -612,6 +688,12 @@ void boss_shutdown(void) {
 }
 
 void boss_start(void) { gBossStatus.unk0 |= 1; }
+
+void boss_update_pre(DcPlayer *player) {
+    g_boss_game.player = player;
+    if (s_boss_kind == 0xf)
+        bossf_update_pre();  /* BossFPartD8 0xf0 */
+}
 
 void boss_update(DcPlayer *player) {
     g_boss_game.player = player;
@@ -627,8 +709,17 @@ void boss_update(DcPlayer *player) {
         boss3_update();      /* Boss3 0x500, Boss3PartCC 0x501, Boss3PartCD 0x502 */
     if (s_boss_kind == 4)
         boss4_update();      /* Boss4 0x500, parts 0x501..0x505 */
+    if (s_boss_kind == 6)
+        boss6_update();
+    if (s_boss_kind == 7)
+        boss7_update();      /* Boss7 0x500, Boss7PartD5 0x501, D6 / D7 0x502, frame counter 0x503,
+                                StageZoneScript_Zone7Boss (0x3eff) */      /* Boss6 0x500, Boss6PartD4 0x502, Boss6 pieces 0xa00 */
+    if (s_boss_kind == 0xf)
+        bossf_update();      /* (BossFPartD8 0xf0 if boss_update_pre was not called), BossF 0x500, parts 0x501 */
     boss_effects_update();   /* 0xa00 */
     ScreenShake_Main();      /* 0x3e00 */
+    if (s_boss_kind == 0xf)
+        bossf_zone_script(); /* StageZoneScript_ZoneFBoss 0x3eff */
     BossCamera_Main();       /* 0x3f00 */
 }
 
@@ -642,6 +733,12 @@ int boss_draw(int list) {
         n += boss3_draw(list);
     if (s_boss_kind == 4)
         n += boss4_draw(list);
+    if (s_boss_kind == 6)
+        n += boss6_draw(list);
+    if (s_boss_kind == 7)
+        n += boss7_draw(list);
+    if (s_boss_kind == 0xf)
+        n += bossf_draw(list);
     n += boss_effects_draw(list);
     if (data_ov000_0236a444.unk0 & 1)
         n += boss_model_draw(&data_ov000_0236a444.unkE0, list);
@@ -659,6 +756,12 @@ int boss_defeated(void) {
         return gBossStatus.unk4 == BOSS3_PHASE_DEFEAT;
     case 4:
         return gBossStatus.unk4 == BOSS4_PHASE_DEFEAT;
+    case 6:
+        return gBossStatus.unk4 == BOSS6_PHASE_DEFEAT;
+    case 7:
+        return boss7_defeated(); /* Boss7_State_ClashWon ran */
+    case 0xf:
+        return gBossStatus.unk4 == 0x3b; /* BOSSF_PHASE_DEFEAT */
     default:
         return gBossStatus.unk4 == BOSS_PHASE_DEFEAT;
     }
@@ -681,6 +784,12 @@ const char *boss_state_name(int part) {
         return boss3_state_name(part);
     case 4:
         return boss4_state_name(part);
+    case 6:
+        return boss6_state_name(part);
+    case 7:
+        return boss7_state_name(part);
+    case 0xf:
+        return bossf_state_name(part);
     }
     return "-";
 }
@@ -693,6 +802,12 @@ void boss_hammer_pos(s32 *x, s32 *y, s32 *z) {
         boss3_body_pos(x, y, z);
     else if (s_boss_kind == 4)
         boss4_body_pos(x, y, z);
+    else if (s_boss_kind == 6)
+        boss6_body_pos(x, y, z);
+    else if (s_boss_kind == 7)
+        boss7_body_pos(x, y, z);
+    else if (s_boss_kind == 0xf)
+        bossf_body_pos(x, y, z);
     else
         *x = *y = *z = 0;
 }
@@ -701,6 +816,9 @@ int boss_hammer_box_armed(int box) {
            : s_boss_kind == 2 ? boss2_box_armed(box)
            : s_boss_kind == 3 ? boss3_box_armed(box)
            : s_boss_kind == 4 ? boss4_box_armed(box)
+           : s_boss_kind == 6 ? boss6_box_armed(box)
+           : s_boss_kind == 7 ? boss7_box_armed(box)
+           : s_boss_kind == 0xf ? bossf_box_armed(box)
                               : 0;
 }
 
