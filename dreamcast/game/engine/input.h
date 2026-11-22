@@ -17,7 +17,10 @@ enum {
 typedef struct {
     uint32_t held, pressed, released;
     int ax, ay;          /* analog, -128..127 after dead zone */
+    int lt, rt;          /* analogue triggers 0..255 (IN_L / IN_R are lt / rt >= 128) */
+    uint32_t dpad;       /* IN_LEFT..IN_DOWN from the D-pad alone (held carries the stick too) */
 } InputState;
+#define IN_HAS_RAW 1     /* lt, rt, dpad present (special stages: trigger hysteresis, D-pad-only inputs) */
 
 extern int g_input_deadzone;      /* default 32 */
 extern int g_input_dir_threshold; /* analog magnitude that counts as a direction, default 64 */

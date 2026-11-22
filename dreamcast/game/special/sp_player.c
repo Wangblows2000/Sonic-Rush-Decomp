@@ -358,10 +358,13 @@ BOOL SpecialStagePlayer_IsWithinTouchRadius(s32 x, s32 y) {
     return VEC_Distance(&c, &v) < 0x4b000;
 }
 
+/* controller scheme (sp_input.c): the target comes from the stick / D-pad instead of the
+ * touch point (SpecialStage_TouchToPipeAngle(gTouchState.x, gTouchState.y)); the rest is the
+ * original, including the wall target that arms the edge jump */
 void SpecialStagePlayer_UpdateTouchSteer(SpObj *p) {
-    if (!(gTouchState.flags & 0x10))
+    if (!g_sp_pad.steer)
         return;
-    p->unk134 = SpecialStage_TouchToPipeAngle(gTouchState.x, gTouchState.y);
+    p->unk134 = g_sp_pad.steer_angle;
     p->unk13C = 0;
     p->unk140 = 0;
     p->unk138 = 0x800;
@@ -372,9 +375,10 @@ void SpecialStagePlayer_UpdateTouchSteer(SpObj *p) {
 BOOL SpecialStagePlayer_CheckTouchTarget(SpObj *p) {
     if (p->unk114 == 0)
         return FALSE;
-    if (gTouchState.flags & 0x40) {
-        p->unk118 = SpecialStageGimmick_FindTouched(p, *SpecialStage_GetGimmickManager(), gTouchState.startX,
-                                                    gTouchState.startY);
+    /* controller scheme: A instead of a tap on the gimmick (SpecialStageGimmick_FindTouched at
+     * gTouchState.startX/Y): the nearest gimmick the tap could hit */
+    if (g_sp_pad.attack) {
+        p->unk118 = SpecialStageGimmick_FindAttackTarget(p, *SpecialStage_GetGimmickManager());
         if (p->unk118 != NULL) {
             SpecialStagePlayer_ChangeState(p, 0x12);
             return TRUE;
@@ -480,7 +484,9 @@ void SpecialStagePlayer_State_Run(SpObj *p) {
     else
         p->unk1F0 = 0;
     if (p->unk114 != 0) {
-        if (p->unk144 <= 0 && !SpecialStagePlayer_IsWithinTouchRadius(gTouchState.x, gTouchState.y))
+        /* the DS ignores touches within 75 px of (128, 45) (SpecialStagePlayer_IsWithinTouchRadius):
+         * the touch dead zone; the stick has its own (sp_input.c) */
+        if (p->unk144 <= 0)
             SpecialStagePlayer_UpdateTouchSteer(p);
     } else {
         p->unk134 = 0;

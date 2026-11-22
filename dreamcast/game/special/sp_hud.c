@@ -39,6 +39,8 @@ void SpecialStage_LoadHudAssets(SpRes *o) {
     sp_sprres_load(&o->spr[1], rel);
     sp_sprres_load(&o->spr[2], "act__ac_spst_ann");
     sp_sprres_load(&o->spr[3], "act__ac_spst_efct");
+    /* Dreamcast controller art (tools/padart.py): button targets, PRESS START prompt, legend */
+    sp_sprres_load(&o->spr[4], "act__ac_spst_pad");
     o->unk2C = (u8 *)sp_file_load("ss/ss.ssd", NULL);   /* SpecialStage_LoadHudFile(data_ov001_0231df98) */
     /* the sound archive set-up (NNS_SndArcInit, SeqArc 0xe / 9, banks 0x16 / 0x11, group 0x14) is the
      * ss.srb bank: see sp_audio.c */
@@ -50,7 +52,7 @@ void SpecialStage_ReleaseHudAssets(SpRes *o) {
     sp_audio_stop_all();   /* NNS_SndStopSoundAll */
     for (i = 0; i < 7; i++)
         free(o->bg[i]);
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 5; i++)
         sp_sprres_free(&o->spr[i]);
     free(o->unk2C);
     memset(o, 0, sizeof(*o));
@@ -93,6 +95,8 @@ void SpecialStage_CreateIntroTasks(void) {
     for (i = 0; i < 3; i++) {
         u32 e = 0x023171c8 + i * 12;
         AnimatorSprite_Init(&w->spr[i], &rs->spr[sp_rom_s16(e + 8)], sp_rom_u16(e + 4), 0, (int)sp_rom_u32(e));
+        if (sp_rom_s16(e + 8) == 1 && sp_rom_u16(e + 4) == 0 && rs->spr[4].loaded)
+            w->spr[i].res = &rs->spr[4];   /* "TOUCH THE TOUCH SCREEN TO CONTINUE" -> "PRESS START TO BEGIN" */
         w->spr[i].flags |= 0x20000;
         w->spr[i].flags &= ~0x40u;
     }
@@ -216,7 +220,9 @@ void SpecialStage_Unk_ov001_023099ec(void) {
     hud->spr1.unk46 = 1;
     hud->unkBC0 = 0x1000;
     for (i = 0; i < 10; i++) {
-        AnimatorSprite_Init(&hud->spr2[i], &r->spr[0], sp_rom_u16(0x023170b8 + i * 2), 0, 0);
+        /* targets 1..8: the controller button art (same anims 0x2a..0x39 / 0x3e in ac_spst_pad) */
+        AnimatorSprite_Init(&hud->spr2[i], i < 8 && r->spr[4].loaded ? &r->spr[4] : &r->spr[0],
+                            sp_rom_u16(0x023170b8 + i * 2), 0, 0);
         AnimatorSprite_ProcessAnimation(&hud->spr2[i], 0, 0);
         /* the original sets the flags of the i-th object of the *HUD array* through h (stride 0x48):
          * h->spr2[0] with h advancing = spr2[i] */
@@ -1016,6 +1022,6 @@ void SpecialStageHud_Draw(void) {
         Draw(&g->spr1);   /* SpecialStageHud_Unk_ov001_02308d40 */
     SpecialStageHud_DrawRingCounter();
     SpecialStageHud_DrawDigits();
-    if (g->unkAE0 >= 0x17c && g->unkAE0 < 0x258)
-        Draw(&g->spr2[9]);
+    /* the stylus demonstration (spr2[9], with the sp_fix_touch arc) is replaced by the controller
+     * hint line drawn by sp_draw.c in the same frames (0x17c..0x258) */
 }

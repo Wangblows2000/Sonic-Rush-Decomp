@@ -6,13 +6,19 @@ Status (2026-11-22):
   `dreamcast/game/special/`: 199 translated statement by statement, 74 translated with a DS service
   replaced (loading, VRAM, geometry-engine and register code), 2 rewritten from the asm fallbacks. The
   function table is in section 7.
+- Controls: a native Dreamcast controller scheme (section 4), no stylus or pointer emulation. The
+  original mechanics take the physical inputs where they read the touch screen. The Trick Spring
+  targets show the Dreamcast button of each number, and the intro, pause and legend art is in the
+  stage's own fonts.
 - Data: `dreamcast/game/special/tools/spdata.py` regenerates every asset from the owner's ROM extract
-  into `build/dreamcast/special/` (88 files). Nothing converted is committed.
+  into `build/dreamcast/special/` (103 files). `tools/padart.py` derives the controller art from the
+  converted ROM art. Nothing converted is committed.
 - Host tests: `make -C dreamcast/game/special host-test` runs the original logic headless on the
-  converted data of all 7 stages, driven through the controller mapping. 72/72 checks pass.
+  converted data of all 7 stages, driven through the controller scheme. 120/120 checks pass, and 122/122
+  with the engine patch of section 5.3.
 - `kos-cc -std=gnu99 -O2 -fwrapv -Wall -Wextra -Werror` builds all 13 sources (`make dc`).
-- Flycast was run with a standalone test disc (`make test-disc`; not the game disc, `main.c` is
-  unchanged). See section 8. No real hardware was used.
+- Flycast was run with a standalone test disc (`make test-disc`). See section 8. No real hardware was
+  used.
 - Blaze has no special stages in the original: `GmkSpecial_Create` refuses to create the special ring
   when `gGameState.unk0 == 1`, and the stages load only Sonic (`narc/ss_player_lz7.narc`).
   `special_init(stage, 1)` returns -2.
@@ -33,10 +39,12 @@ Status (2026-11-22):
 | `sp_sprite.c` | AnimatorSprite on the converted BAC frame tables (`frames.bin`). |
 | `sp_math.c` | NitroSDK fixed point, bit-exact: FX_Div / FX_Sqrt / VEC_Mag / VEC_Distance / VEC_Normalize emulate the DS divider and square-root unit. MTX_*, FX_Atan2 (ROM table), G3i_LookAt_. |
 | `sp_data.c` | The `spdata.bin` loader: ROM tables by DS address (`SP_ROM(0x02317904, ...)`) and the address -> function map. |
-| `sp_input.c` | The controller -> `gTouchState` / `gPad` mapping (section 4). |
+| `sp_input.c` | The controller scheme (section 4): steering target, attack, Trick Spring inputs, begin. It also builds `gPad`. |
 | `sp_draw.c` | Draw-command capture and the single-screen composition (section 3). KOS PVR backend; host software rasteriser for tests. |
 | `sp_audio.c` | Sound calls with the original archive/sequence numbers. Hooks or the default DC sound/music. |
 | `tools/spdata.py` | The BYOR converter (section 6). |
+| `tools/padart.py` | Controller art from the converted ROM art (section 6): the button targets, PRESS START TO BEGIN, the legend lines, and the redrawn caption bar. |
+| `patches/engine_input_raw.patch` | For the integrator: raw triggers and D-pad in `InputState` (section 5.3). |
 | `test/test_special.c` | Host tests. |
 | `test/sptest_main.c`, `test/make_test_disc.sh` | Standalone KOS test program and its CDI (special stage only). |
 | `Makefile` | `data`, `host-test`, `dc`, `test-elf`, `test-disc`, `clean`. |
@@ -62,10 +70,14 @@ Status (2026-11-22):
     (type 0x14, `SpecialStageHud_UpdateGoal`).
   - A bomb hit costs 10 rings and drops up to 10 rings (`SpecialStagePlayer_State_Hurt`), then 180
     frames of invulnerability.
-  - Tapping an enemy or bomb in reach starts the homing attack (state 0x12). An enemy that is destroyed
-    gives its ring reward.
-  - Trick ramps lead to the touch-circle sequences of `ss/ss.ssd` (26 sequences, time limit 0xb4/0x78/0x3c
-    frames). The rating thirds give 5/10/15 reward rings.
+  - Tapping an enemy or bomb in reach starts the homing attack (state 0x12). On the Dreamcast this is
+    **A** (section 4). An enemy that is destroyed gives its ring reward.
+  - Trick ramps (Trick Springs) lead to the numbered target sequences of `ss/ss.ssd`:
+    - 26 sequences of 3 to 8 targets (`pts[8]`: the format holds at most 8), time limit 0xb4/0x78/0x3c
+      frames;
+    - the remaining-time thirds rate Nice / Great / Fantastic and give 5 / 10 / 15 reward rings
+      (0x023178cc);
+    - sequences 3, 11, 12, 13, 17, 18, 20, 21, 23 and 25 chain into another one.
   - The goal: Sonic grabs the emerald with the right hand (r_hand node matrix), the clear card shows,
     then `SpecialStage_RequestExit(1)`. The fail path is `SpecialStage_RequestExit(0)` after 200 frames.
   - The original has no timer and no score in the special stage. The clock is the course itself.
@@ -78,7 +90,8 @@ On the DS the special stage uses both screens:
 
 - The **touch screen** shows the 3D half-pipe and its sprites: captions, Go!/START!/GOOD!/BAD, the trick
   circles, the ratings and the stylus pen. Before StartPlay it also shows the intro backdrop, the caption
-  bar and "touch the screen". During play the `sp_fix_touch` steering guide is blended at 4/16.
+  bar and "touch the screen". At the start of play the `sp_fix_touch` steering guide is blended at 4/16
+  under the moving stylus (HUD frames 0x168..0x262).
 - The **top screen** shows the ring counter and quota, the seven emerald slots, the course progress
   bar, the "SPECIAL STAGE" logo of the intro and the results (emerald circle, "SONIC GOT A CHAOS
   EMERALD!").
@@ -102,6 +115,19 @@ The Dreamcast draws one 640x480 view (`sp_draw.c`):
   caption + emerald circle become the full view at x2.5. They fade in with the top screen's brightness.
 - Brightness: the main-screen master brightness is a white overlay. The top-screen brightness whitens
   the top-screen elements (PVR offset colour).
+- Controller art in the same view (section 4):
+  - The Trick Spring targets show the Dreamcast buttons at the size and place of the numbers.
+  - While a sequence is open, the progress bar (top-right) is drawn see-through (alpha 0x50). It
+    lies over the top row of targets.
+  - The stylus demonstration (pen sprite `spr2[9]` + `sp_fix_touch` arc) is not drawn. In its frames
+    (0x17c..0x258) a black card with "[stick] OR [<] [>] : MOVE SONIC" sits where the pen was.
+  - Intro: the prompt in the blue square reads PRESS START TO BEGIN. At the first special stage of
+    the session the legend card is drawn over the dimmed intro.
+  - Pause: the frozen frame dimmed, with the pause card over it (PAUSE, the controls, START OR A :
+    CONTINUE, and B : GO BACK when offered).
+
+  The cards are black with a white rim, in the caption bar's font, at x2. Only the English art is
+  replaced, because the port runs in English (`special_set_language(1)`).
 - PVR lists:
   - **OP**: the intro backdrop and the opaque 3D;
   - **PT**: punch-through 3D, the 3D sprites (rings, enemies, effects) and the intro logo;
@@ -111,20 +137,59 @@ The Dreamcast draws one 640x480 view (`sp_draw.c`):
 Checked in Flycast screenshots (section 8): one view, no screen split, no duplicated view, the HUD at
 the edges.
 
-## 4. Controls (touch screen -> controller)
+## 4. Controls (native Dreamcast controller scheme)
 
-The original reads only the touch screen and START. `sp_input.c` builds the same `gTouchState`
-(Touch_UpdateSingle flags 0x10 held / 0x40 pressed / 0x80 released, current and press positions). The
-original code still does all the work (`SpecialStage_TouchToPipeAngle`, `SpecialStageGimmick_FindTouched`,
-`SpecialStageTrick_CheckTouch`).
+The original reads only the touch screen and START. The port emulates no stylus and no pointer. The
+four places where the original reads `gTouchState` take physical inputs instead (`sp_input.c` ->
+`g_sp_pad`). Everything after them is the original code:
 
-| DS (touch) | Dreamcast |
-|---|---|
-| Touch where Sonic should run: the direction of the touch point from the pipe centre (128, 45) is the angle on the pipe; within 75 px of the centre = no steering | **Analogue stick**: the stick direction is that direction. Down = bottom of the pipe, left/right = the walls, diagonals in between. A virtual stylus is held 100 px from the centre while the stick is pushed. **D-pad LEFT/RIGHT**: the virtual stylus slides along the pipe at 0x500 per frame (90 degrees in 13 frames), starting from Sonic's angle. **D-pad DOWN** brings it back to the bottom. Release = lift the stylus (Sonic keeps his target, as on the DS). Holding against a wall = wall jump, as on the DS. |
-| Tap an enemy/bomb in reach (homing attack) | **A** or **B**: taps the nearest targetable gimmick in reach. This is the one the target cursor (`SpecialStageGimmick_Unk_ov001_0230f0f4`, act object 5) marks. Nothing targetable = no tap. |
-| Tap the numbered trick circles in order | **Flick the stick / press the D-pad toward the next circle**, measured from the previous circle (the first one from the screen centre). Within 45 degrees (+5 tolerance) of the next circle taps it. Within 22.5 degrees of another remaining circle taps that one, which is a miss, as a wrong tap on the DS. Anything else taps nothing. Return to neutral between flicks. A direction counts after 2 stable frames, so D-pad diagonals register. |
-| "Touch the touch screen to continue" (intro) | A, B, X, Y or START |
-| START (pause) | START. The game freezes and the view is dimmed. START or A continues. If this stage's emerald is already owned (the original then shows GO BACK), B quits the stage (`SpecialStage_RequestExit(0)`). |
+- Sonic's movement, turn rate and momentum;
+- the edge jump, collision, the homing attack and enemy defeat;
+- the Trick Spring timer, rating, rewards and chains.
+
+| DS (touch screen) | Dreamcast controller | where |
+|---|---|---|
+| Touch where Sonic should run. `SpecialStage_TouchToPipeAngle` turns the touch point into a target pipe position `r = 0x1e000 * dx / len(d)`: the horizontal component of the direction from (128, 45). Touching level with or above the centre = a wall, which arms the edge jump. | **Analogue stick, horizontal axis**, proportional. The engine dead zone (`g_input_deadzone`, 32) means no input. From its edge to full tilt (abs(x) >= 120) the axis is that horizontal component (`sp_stick_to_angle`): `r = 0x1e000 * (abs(x) - 32) / 88`, then `SpecialStage_PipeXToAngle`. Full tilt = the wall target, so the edge jump comes as on the DS. The stick in its centre targets the bottom of the pipe. The target is set in the frame of the input: no added delay. | `SpecialStagePlayer_UpdateTouchSteer` |
+| (same) | **D-pad LEFT / RIGHT** (digital alternative): the target moves along the pipe at 0x600 per frame (90 degrees in 11 frames) from Sonic's angle while held. On release the target stays, as when the stylus is lifted. **D-pad DOWN**: back to the bottom. | (same) |
+| Touches within 75 px of (128, 45) do not steer (`SpecialStagePlayer_IsWithinTouchRadius`). | Replaced by the stick dead zone. | `SpecialStagePlayer_State_Run` |
+| Tap an enemy / bomb in reach: the homing attack (state 0x12). | **A** attacks the nearest gimmick the tap could hit: not destroyed, with a touch circle, attackable, in reach (`SpecialStageObj_IsInReach`) and on screen. These are the gimmicks the target cursor marks (`SpecialStageGimmick_Unk_ov001_0230f0f4`). Nearest = largest z, then the closest across the pipe (`SpecialStageGimmick_FindAttackTarget`). With nothing attackable A does nothing. Hit points, hit effects, rewards and defeat are the original. | `SpecialStagePlayer_CheckTouchTarget` |
+| Touch the numbered Trick Spring targets in order. Touching the current target advances, touching a later one is a MISS, touching a done target or empty space does nothing. When the time limit runs out it is a MISS (`SpecialStageTrick_CheckTouch`). | Target n = input n, see the table below. The targets show the button. The DS rule is applied to the button **presses** of the frame (`sp_qte_step`): the current target's input advances; the input of a later target is a MISS; inputs of done targets, or of numbers the sequence does not have, do nothing. Two target inputs in the same frame (mashing) are a MISS unless only the current one is among them. The timer, time limits, ratings and rewards are untouched. | `SpecialStageTrick_CheckTouch` |
+| "Touch the touch screen to continue" (intro, the original takes any touch) | **START** or **A**: "PRESS START TO BEGIN". | `SpecialStage_State_IntroUpdate` |
+| START: pause (PauseMenu) | **START**. The frame freezes and dims under the pause card. START or A continues. B goes back (`SpecialStage_RequestExit(0)`) only when this stage's emerald is already owned, which is when the original offers GO BACK. | `special_run_frame` |
+
+Trick Spring inputs:
+
+| number | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| input | A | B | X | Y | L trigger | R trigger | D-pad Up | D-pad Right | D-pad Down | D-pad Left |
+| badge | red A | blue B | yellow X | green Y | silver L | silver R | charcoal up arrow | right arrow | down arrow | left arrow |
+
+- **Press events only.** A held button or direction does not repeat. It registers again only after a
+  release.
+- **Triggers.** An analogue trigger presses at >= 160 (`SP_TRIG_ON`). It is released only after 2
+  consecutive frames at <= 64 (`SP_TRIG_OFF`). This hysteresis plus release debounce makes a half-pulled
+  or wobbling trigger give one press at most.
+  - A trigger held when the stage starts counts only after a release.
+  - Without the engine patch (5.3), the trigger is the engine's digital IN_L / IN_R (threshold 128),
+    through the same edge logic.
+- **Sequence length.** The SSD format holds at most 8 targets (`pts[8]`). The data has 3 to 8 per
+  sequence (sequence 14 has 8). So 9 (Down) and 10 (Left) never appear in the game. They are
+  implemented and host-tested with the rule above, and their badges exist (`ac_spst_pad` anims
+  65..68).
+- **Context.** The target inputs exist only while a sequence is open (player state 0xa with the trick
+  flag @0x128). While one is open there is no steering and A does not attack. Outside a sequence A
+  attacks, the D-pad and stick steer, and B / X / Y / L / R do nothing. START is never a target input.
+  The press that closes the pause is not passed to the game.
+- **Legend.** A card with the controls is drawn at the intro prompt of the first special stage of the
+  session. It is dismissed by the begin press. `special_show_legend(1)` shows it again next time. The
+  pause card shows the same controls.
+- **Captions.** The scrolling caption bar "USE THE STYLUS TO MOVE SONIC" reads "USE STICK OR [<] [>] TO
+  MOVE SONIC". The prompt "TOUCH THE TOUCH SCREEN TO CONTINUE" reads "PRESS START TO BEGIN". Both use
+  the original fonts:
+  - The bar is the caption-bar font of the six languages' captions. K, X, the arrows and "/" are drawn
+    in its 6x12, 2-px-stroke style.
+  - The prompt is the white-plate font of `ac_spst_<lang>` anim 0, letters sliced from the English,
+    French and German art. Its G is the caption font's G in plate colours.
 
 ## 5. API and integration
 
@@ -133,6 +198,7 @@ original code still does all the work (`SpecialStage_TouchToPipeAngle`, `Special
 special_set_path("/cd/special");          /* disc tree of tools/spdata.py */
 special_set_language(1);                  /* gGameLanguage, 1 English (captions, sprites) */
 special_set_emerald_flags(g_emeralds);    /* gGameState.unk28 */
+/* optional: special_show_legend(1) shows the controller legend at the next intro (default: once per boot) */
 int r = special_init(stage, 0);           /* 0 ok, -1 assets missing, -2 not Sonic / bad stage */
 for (;;) {                                /* 60 Hz */
     input_poll(&in);
@@ -176,15 +242,14 @@ not added to anything, and there is no score: `SpecialResult.score` is 0 and `ri
    `Stage_SaveEventState` copies the map-object list and the ring list (collected rings and destroyed
    objects stay gone). `Stage_SaveRestartCamera` saves the camera.
 
-**DC today:** the objects module already runs steps 1-2. It calls
+**DC (HEAD 4845e568):** the objects module runs steps 1-2. It calls
 `g_obj_hooks.stage_exit(ctx, OBJ_EXIT_SPECIAL_STAGE)` and sets `pf |= 0x40000000`
-(`objects/obj_pgimmick.c`). But `ui_stage_exit` (`ui/ui_state.c`) currently treats every kind except
-`OBJ_EXIT_RESULTS` as the act results. **main.c has to intercept `OBJ_EXIT_SPECIAL_STAGE`** before the UI
-hook (or the UI hook must ignore kind 2). It then has to:
+(`objects/obj_pgimmick.c`). `main.c` intercepts the kind (`g_special_pending`), and `run_special_stage`
+then does the rest:
 
-1. save the values of step 3 from `DcPlayer`, `g_dcp_world.frame` and the objects' collected state;
-2. stop the zone music;
-3. run the loop above with `special_init(zone_index, 0)`.
+1. saves the step-3 values (`g_ss`, `objects_save_event_state`);
+2. stops the act;
+3. runs the loop above with `special_init(g_dcp_world.zone, 0)`.
 
 ### 5.2 Returning
 
@@ -198,11 +263,32 @@ hook (or the UI hook must ignore kind 2). It then has to:
 - The act restarts with the title card (`StageStart_Create(3)`).
 - `Stage_ResetProgress` clears `unk18` on the next normal stage start.
 
-The result (cleared or not) changes only the emerald flags. **main.c:** after `special_shutdown()`, set
-`g_emeralds = res.emerald_flags`, reload the act (`sound_load_bank(sound_stage_sdat(...))` again), restore
-the step-3 values, keep the collected objects/rings, put the player at (x, y +- 0x118) with the
-invulnerability, and start the title card. The objects/player/UI modules have no "restore from special
-stage" entry yet. That part is integrator / owner-module work (the original code paths are listed above).
+The result (cleared or not) changes only the emerald flags. `main.c` (`run_special_stage`) stores
+`g_emeralds = res.emerald_flags` and reloads the act with the saved state (`g_ss.active`).
+
+### 5.3 Engine patch (for the integrator): raw triggers and D-pad
+
+`dreamcast/game/special/patches/engine_input_raw.patch` (`git apply`) adds three fields to
+`InputState` and `#define IN_HAS_RAW 1`:
+
+- `lt`, `rt`: the analogue triggers 0..255;
+- `dpad`: the D-pad directions without the stick (`held` merges the stick into IN_LEFT..IN_DOWN).
+
+`engine/input.c` fills them from `cont_state_t`. The fields are appended, so `InputState in = {0}`
+initialisers and all other users are unchanged.
+
+`sp_input.c` uses the fields when `IN_HAS_RAW` is defined. Without the patch it falls back:
+
+- the triggers are the digital IN_L / IN_R, through the same edge logic;
+- a stick flick during an open sequence also counts as a D-pad direction.
+
+The module builds and passes its host tests either way (120/120 without the patch, 122/122 with it).
+No `main.c`, `build_disc.sh` or game Makefile change is needed:
+
+- the loop already passes `InputState`;
+- `build_disc.sh` copies `special/sprites` and `special/bg` whole, and packs `special/sprites` into
+  `data.pak` (the new set has no `.pt4`, so its ARGB1555 page is kept);
+- `special/sp_*.c` has no new file.
 
 ## 6. Data (BYOR) and disc paths
 
@@ -218,13 +304,20 @@ tree under `/cd/special/`:
 | `models/*.dcm/.dca/.dcv` | `mod/ss_*.nsbmd` (map: 5 + mid + goal + 7 skies; dash panel, 2 switches, emerald light with its 4 pattern textures, 7 emeralds), `narc/ss_player_lz7.narc` (son, son_ball, son.dca 62 anims, son.dcv), `narc/ss_act_lz7.narc` (eff_clash, eff_shoot_bomb with its 9 pattern textures). Converted with `tools/dreamcast/models/nsbmd2dc.py`; the vertex/polygon counts match the NNS headers. |
 | `models/*.dcc/.dcp/.dct` | Material animations (MODELS.md 4.1): `mod__ss.dct` (`ss.nsbta`: the sky scroll `ss_map_sky`, 241 frames), `mod__ss.dcp` (`ss.nsbtp`: `ss_eme_light`, 25 frames), `narc__ss_act_lz7__eff_clash.dcc`, `eff_shoot_bomb.dcc` / `.dcp`. `sp_draw.c` applies slots 1..3 at the draw (`dcm_draw_ex`). |
 | `sprites/act__ac_spst*/frames.bin + atlas0.argb1555` | `act/ac_spst*.bac` (base, 6 languages, ann, efct, gmk) via `tools/dreamcast/sprites/bac2dc.py` |
-| `bg/sp_*.mnbg` | the 12 `bg/sp_*.bbg` (menus `.mnbg` format, `menus/tools/menubg.py`) |
+| `sprites/act__ac_spst_pad/` | Controller art (`tools/padart.py`, derived from the converted ROM art), DSPR v1 + `palettes.bin`, one 512x256 ARGB1555 page (66 images; some of them have more than 15 colours, so no PAL4). Contents: <ul><li>anim 0: PRESS START TO BEGIN (92x66, the anchor of `ac_spst_<lang>` anim 0);</li><li>anims 0x2a..0x39: targets 1..8 at the anims of the numbers, plain + lit 4-frame. Each is the target disc with its digit removed (radial fill of the rings), recoloured, with the button glyph outlined like the digits;</li><li>anim 0x3e: the target burst;</li><li>anims 65..68: targets 9 and 10;</li><li>anims 70..79: legend / pause lines.</li></ul> |
+| `bg/sp_*.mnbg` | the 12 `bg/sp_*.bbg` (menus `.mnbg` format, `menus/tools/menubg.py`); `sp_stdm_caption_eng.mnbg` redrawn by `padart.py` (the converted original is kept in `build/dreamcast/special/.padart/`, not on the disc) |
 | `sound/ss.srb` | sound-effect bank (`tools/dreamcast/audio/sfxbank.py` format): sys SDAT SSAR 9, 14, 16 with banks 17/22/24. 748 KB of sound RAM (budget 1.83 MB), 119 waves. Load it with `sound_set_dir` + `special_init` (or copy it to `/cd/sound/`). |
 | `/cd/music/s30.wav`, `s31.wav`, `sys.txt` | SEQ_SS_GAME / SEQ_SS_END (already on the game disc) |
 
-VRAM: about 0.6 MB of model textures at init. The sprite atlases and BGs are uploaded on first use
-(ac_spst 512 KB, the others smaller). In Flycast, `pvr_mem_available()` was 4.99 MB after init. All of it
-is freed by `special_shutdown` (5.64 MB free afterwards).
+VRAM: about 0.6 MB of model textures at init. The sprite atlases and BGs are uploaded on first use;
+the controller set takes 256 KB. In Flycast, `pvr_mem_available()` was 4,514,248 bytes after init
+(HEAD 4845e568 with this change). All of it is freed by `special_shutdown`: 5,635,816 bytes free
+afterwards, the same after every stage.
+
+The converter fix in this change: `sfxbank.Builder.build` takes a `select` argument since HEAD. The
+old way (hiding the other SSARs in a patched SDAT) then fell back to the front-end subset: 9 waves,
+33 KB, and the special-stage sound effects were missing. `spdata.py` now passes
+`select={9: None, 14: None, 16: None}`: 119 waves, 747,712 bytes of sound RAM, as before.
 
 ## 7. Function table
 
@@ -234,6 +327,11 @@ Statuses:
 - **translated, DS service replaced**: the game logic is kept; loading / VRAM / geometry-engine /
   register / task code is replaced as noted.
 - **rewritten from asm**: from the listing in `src/asm_fallback/` (no matching C exists).
+- **translated, controller scheme**: the one statement that reads the touch screen takes the controller
+  input of section 4 (`g_sp_pad`); the rest of the function is the translation. Native helpers of the
+  scheme (not original functions): `sp_stick_to_angle`, `sp_qte_step`, `sp_trigger_step`
+  (`sp_input.c`), `SpecialStageGimmick_FindAttackTarget` (`sp_gimmick.c`) and the overlays in
+  `sp_draw.c` (`draw_controller_overlay`).
 
 Not translated: none of the 275. Outside `src/game/SpecialStage/` the special stage also uses the
 PauseMenu (replaced by the native pause of section 4) and the generic Model/AnimatorSprite/Background
@@ -274,7 +372,7 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStageGimmick_Destroy | translated |  |
 | SpecialStageGimmick_DestroyManager | translated |  |
 | SpecialStageGimmick_Draw | translated, DS service replaced | AnimatorSprite_Draw / Model_Draw -> draw commands (logic kept) |
-| SpecialStageGimmick_FindTouched | translated, DS service replaced | NNS_G3dWorldPosToScrPos -> float projection |
+| SpecialStageGimmick_FindTouched | translated, DS service replaced | NNS_G3dWorldPosToScrPos -> float projection; not called by the controller scheme (FindAttackTarget, sp_gimmick.c) |
 | SpecialStageGimmick_OnAttacked | translated |  |
 | SpecialStageGimmick_OnDestroyGiveRings | translated |  |
 | SpecialStageGimmick_Spawn | translated |  |
@@ -393,7 +491,7 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStagePlayer_Action_Start | translated |  |
 | SpecialStagePlayer_Action_StartTrick | translated |  |
 | SpecialStagePlayer_ChangeState | translated |  |
-| SpecialStagePlayer_CheckTouchTarget | translated |  |
+| SpecialStagePlayer_CheckTouchTarget | translated, controller scheme | the tap -> A + SpecialStageGimmick_FindAttackTarget (section 4) |
 | SpecialStagePlayer_ClampTilt | translated |  |
 | SpecialStagePlayer_Create | translated |  |
 | SpecialStagePlayer_Destroy | translated |  |
@@ -403,7 +501,7 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStagePlayer_GetSpeedAnimRate | translated |  |
 | SpecialStagePlayer_IsAngleWithin90 | translated |  |
 | SpecialStagePlayer_IsGrounded | translated |  |
-| SpecialStagePlayer_IsWithinTouchRadius | translated |  |
+| SpecialStagePlayer_IsWithinTouchRadius | translated | not called: the stick dead zone replaces it (section 4) |
 | SpecialStagePlayer_MoveToTarget | translated |  |
 | SpecialStagePlayer_OnAttackHit | translated |  |
 | SpecialStagePlayer_OnHurt | translated |  |
@@ -426,7 +524,7 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStagePlayer_State_Hurt | translated |  |
 | SpecialStagePlayer_State_HurtRecover | translated |  |
 | SpecialStagePlayer_State_Land | translated |  |
-| SpecialStagePlayer_State_Run | translated |  |
+| SpecialStagePlayer_State_Run | translated, controller scheme | touch-radius test -> stick dead zone |
 | SpecialStagePlayer_State_Start0 | translated |  |
 | SpecialStagePlayer_State_Start1 | translated |  |
 | SpecialStagePlayer_State_Stopped | translated |  |
@@ -442,16 +540,16 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStagePlayer_Unk_ov001_02314694 | translated |  |
 | SpecialStagePlayer_Update | translated |  |
 | SpecialStagePlayer_UpdateAngleFromX | translated |  |
-| SpecialStagePlayer_UpdateTouchSteer | translated |  |
+| SpecialStagePlayer_UpdateTouchSteer | translated, controller scheme | target from the stick / D-pad instead of TouchToPipeAngle(touch point) |
 | SpecialStagePlayer_UpdateTurn | translated |  |
 | SpecialStageTrickReward_Update | translated |  |
-| SpecialStageTrick_CheckTouch | translated |  |
+| SpecialStageTrick_CheckTouch | translated, controller scheme | the same rule on button presses (sp_qte_step) |
 | SpecialStageTrick_GetRating | translated |  |
 | SpecialStageTrick_GetSequence | translated |  |
-| SpecialStageTrick_Init | translated, DS service replaced | Touch_Enable -> sp_input.c |
+| SpecialStageTrick_Init | translated, DS service replaced | Touch_Enable: no touch screen |
 | SpecialStageTrick_Reset | translated |  |
 | SpecialStageTrick_SetSequences | translated |  |
-| SpecialStageTrick_Shutdown | translated, DS service replaced | Touch_Disable -> sp_input.c |
+| SpecialStageTrick_Shutdown | translated, DS service replaced | Touch_Disable: no touch screen |
 | SpecialStage_ActObjBounceMove | translated |  |
 | SpecialStage_ActObjDestroyWhenDone | translated |  |
 | SpecialStage_ActObjFollowParent | translated |  |
@@ -503,11 +601,11 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStage_StartPlay | translated |  |
 | SpecialStage_State_Exit | translated, DS service replaced | SceneChange -> special_run_frame return value (integrator) |
 | SpecialStage_State_IntroDraw | translated, DS service replaced | AnimatorSprite_Draw / Model_Draw -> draw commands (logic kept) |
-| SpecialStage_State_IntroUpdate | translated |  |
+| SpecialStage_State_IntroUpdate | translated, controller scheme | the touch at frame 0x5c -> START / A |
 | SpecialStage_State_PlayDraw | translated, DS service replaced | fog table -> g_sp_fog overlay density |
 | SpecialStage_State_PlayUpdate | translated, DS service replaced | PauseMenu_Create(1) -> native pause (see section 4) |
 | SpecialStage_TestCollision | translated |  |
-| SpecialStage_TouchToPipeAngle | translated |  |
+| SpecialStage_TouchToPipeAngle | translated | not called; its horizontal-component rule is sp_stick_to_angle (section 4) |
 | SpecialStage_Unk_ov001_02309894 | translated |  |
 | SpecialStage_Unk_ov001_023099ec | translated |  |
 | SpecialStage_Unk_ov001_0230e3c8 | translated |  |
@@ -520,74 +618,129 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 
 ## 8. Verification (what was run)
 
-- `python3 dreamcast/game/special/tools/spdata.py`: 88 files (`manifest.txt`).
-- `make -C dreamcast/game/special host-test`: **72/72 checks pass**. Measured on the converted data:
-  - init: Blaze refused; stage 1 quotas 100/200; intro music 0x1f; pipe/touch maths.
-  - intro: it waits at frame 0x5c until A (SE 0x14). Play starts at intro frame 0x12c with music 0x1e.
-    After the start sequence: state 2, scroll speed 0x3000, steering on.
-  - movement: stick right -> target 0x4000 (right wall) reached; stick left -> left side (wall jump,
-    state 6); stick down -> back at the bottom; D-pad left -> the stylus slides to the wall.
-  - all 7 stages with a ring-chasing autopilot through the controller mapping:
-    - stage 1 is cleared (147/100 rings at the checkpoint, 6002 frames);
-    - stages 2-7 fail at the checkpoint (125/140, 68/150, 111/160, 129/170, 84/180, 52/160 rings);
-    - each run picks up rings and reaches the checkpoint, and the outcome matches the quotas.
-  - all 7 stages with the rings kept at the quota: cleared (5997-9160 frames), emerald bit set,
-    SE_Emerald_Light on the card.
-  - no input: stage 1 fails at the checkpoint (40/100: rings on the centre line), no emerald.
-  - bomb: hurt state 0x10, 10 rings lost, SE_Ringlost + explosion.
-  - enemy: A taps the nearest enemy -> TargetAttack -> hit.
-  - tricks: a sequence done by stick flicks -> trick state, rating, reward rings. A flick at a later
-    circle -> MISS and TrickEnd.
-  - results: stage 4 with emeralds 0x5 owned -> 0xd.
-- `make -C dreamcast/game/special dc`: all 13 sources, `kos-cc -Werror`, no warnings.
-- **Flycast** (built from source, software GL, Xvfb, keyboard as the controller), standalone test disc
-  `make test-disc`:
-  - Serial log: stage 1 loads (about 25 s of emulated CD reading) and waits at the prompt.
-  - With the test hook `special_debug_force_quota` it ran to `result 1 cleared 1 rings 234 quota 100/200`
-    after 5899 play frames. The pause GO BACK path returned `result 2`. Stages 2 and 3 then loaded and played (stage 3
-    ran past frame 10800 without input). Each init reported 4,987,464 bytes of PVR memory free, and each
-    shutdown 5,635,816, so nothing leaks between stages.
+- `python3 dreamcast/game/special/tools/spdata.py`: 103 files (`manifest.txt`), sound bank 119 waves /
+  747,712 bytes. The controller art was inspected as contact sheets: badges in all frames, prompt,
+  legend lines, caption bar.
+- `make -C dreamcast/game/special host-test`: **120/120 checks pass**. The same test source built against
+  the engine patch (5.3) passes **122/122**: the two extra checks cover the raw trigger and D-pad. Measured on
+  the converted data:
+  - Intro:
+    - the prompt is the PRESS START TO BEGIN art;
+    - the legend is up at the first stage;
+    - B / X / Y / R do not begin, START begins (SE 0x14) and dismisses the legend;
+    - the start sequence runs (state 2, scroll 0x3000, steering on).
+  - Analogue steering:
+    - |x| <= 32 gives no target; just outside the dead zone, angle 0x51;
+    - the curve is monotonic and symmetric;
+    - |x| >= 120 gives the wall target 0x4000, half tilt 0x151e;
+    - the target follows the stick in the same frame;
+    - half tilt: Sonic settles at 0x151e without an edge jump; quarter tilt left: -2632;
+    - full tilt: the wall and the edge jump (state 6); centred: back to the bottom.
+  - D-pad steering: left moves the target along the pipe; on release Sonic stays on the left; down
+    returns to the bottom; right held: the wall and the edge jump.
+  - Pause: START freezes the stage; B does nothing (emerald not owned); A continues.
+  - Triggers (`sp_trigger_step`):
+    - a press at 160, no repeat while held;
+    - a dip to 100, or one frame at <= 64, is not a release;
+    - two frames at <= 64, then 170: a second press;
+    - a trigger wobbling around 128 never presses.
+  - Trick Spring rule (`sp_qte_step`):
+    - inputs 1..10 in order complete a 10-target sequence;
+    - a later target's input is a MISS;
+    - a repeated press of a done target does nothing;
+    - inputs of numbers the sequence lacks do nothing;
+    - two inputs in one frame are a MISS;
+    - no input: the sequence waits.
+  - Input context:
+    - with a sequence open, each of A B X Y L R Up Right Down Left gives its own target bit;
+    - with a sequence open there is no steering and no attack, a held button is no press, and START
+      is not a target input;
+    - outside a sequence A attacks and the D-pad steers.
+  - Trick Springs in the stages (real ramps, controller presses):
+    - stage 1, 3 targets: pressed 2 frames apart = Fantastic +15 rings; 30 frames apart = Great +10;
+      50 frames apart = Nice +5;
+    - no input: MISS after the 180-frame limit (181 frames);
+    - the last target's input first: MISS;
+    - A held: no repeat; A again after target 1: ignored; then B: target 2;
+    - START pauses during a sequence, and the A that closes the pause is not target 1;
+    - the first sequence of stages 1, 3, 4, 5, 6 and 7 (3 to 7 targets, so up to D-pad Up), pressed
+      promptly: Fantastic, +15 rings each. The test driver reaches no ramp in stage 2 (Flycast did, see
+      below).
+  - Enemies:
+    - no input through stage 2: no enemy is defeated (`attacks` 0);
+    - A with nothing attackable: no attack;
+    - A with an enemy marked: TargetAttack on that enemy, then the hit or the defeat and its rings.
+  - All 7 stages with a ring-chasing autopilot (stick + trick buttons): each picks up rings and reaches
+    the checkpoint, and the outcome matches the quotas. Stage 1 is cleared (147/100 at the checkpoint).
+    Stages 2-7 fall short of the first quota (117/140, 68/150, 110/160, 142/170, 107/180, 53/160): the
+    autopilot is simple.
+  - All 7 stages with the rings kept at the quota: cleared, emerald bit set, SE_Emerald_Light on the card.
+  - Chaos Emerald progression: stages 1..7 in turn, quotas met, emerald flags carried 0 -> 0x7f.
+  - Also: no input on stage 1 fails at the checkpoint (40/100); bomb: hurt, 10 rings lost, SE; stage 4
+    results with emeralds 0x5 -> 0xd.
+  - Frame dumps (`test_special <data> <ppm-dir>`) inspected: legend card, start hint, D-pad steering, pause
+    card over the dimmed frozen frame, the A / B / X targets.
+- `make -C dreamcast/game/special dc` and `test-elf`: `kos-cc -Werror`, no warnings. `sp_input.c` /
+  `sp_core.c` were also built with the patched `input.h`.
+- **Flycast** (built from source, software GL, private Xvfb :88, own HOME with a keyboard mapping):
+  - Key bindings: A/B/X/Y = x/c/s/d, D-pad = arrows, START = Return, L/R triggers = q/w
+    (`btn_trigger_left/right`), analogue stick left/right = j/l (`btn_analog_left/right`).
+  - The keyboard produces axis values (127, -128, and intermediate values while the axis returns).
+    Partial tilts cannot be held from a keyboard; the host tests cover the proportional path.
+  - Standalone test disc: `SPTEST_START="<stage> <flags> <force> <legend>" make test-disc`. A driver
+    script read the serial log and sent the key presses.
   - Screenshots inspected:
-    - the intro (backdrop, caption bar, prompt, logo behind the 3D Sonic);
-    - the white-out;
-    - the START! sequence with the steering guide and the pen;
-    - running and steering (D-pad);
-    - the checkpoint, curves and the goal tunnel;
-    - the emerald grab with sparkles at the hand;
-    - the results card (emerald circle, scrolling caption);
-    - stage 2 with its own sky.
-  - The view is one continuous 640x480 image with the HUD at the edges: no split, no second view.
+    - the legend card at the first intro;
+    - PRESS START TO BEGIN in the blue square (stage 2) and during the white-out;
+    - the scrolling "USE STICK OR [<] [>] TO MOVE SONIC" bar;
+    - the start-sequence hint card;
+    - stick and D-pad steering with edge jumps;
+    - Trick Spring targets A (burst), B (lit), X, Y, L, R with the see-through progress bar;
+    - the pause card over the dimmed frozen frame, with B : GO BACK when the emerald is owned.
+  - Serial log:
+    - stick: x 127 -> target 0x4000; x -94 -> 0xe029; centred -> 0;
+    - Trick Springs: A B X Y L R (triggers from the keyboard) -> OK, Great, 10 rings. Stage 6's chain
+      17 -> 18 -> 19 (60-frame limits) was done twice in a row: ratings Great / Great / Nice,
+      Nice / Great / Great;
+    - A on marked enemies: "enemy defeated" up to 9 times per stage;
+    - pause B with emerald 0x2 owned: result 2.
+  - Two sequences failed where a key press was lost: the driver took a screenshot between keydown and
+    keyup, and Flycast then saw no held frame. This is the test harness, not the game. The other
+    sequences passed.
   - Audio was not checked (null audio backend).
-- Not done: real hardware. A full manual play-through of stages 2-7 in Flycast; trick circles were seen
-  only in the host frame dumps, not in Flycast.
+- Not done: real hardware; a real analogue stick or analogue triggers; a full manual play-through.
 
 ## 9. Gaps and deviations (honest list)
 
-- **Integration not done** (by design): the main.c wiring of section 5.1/5.2 and the act restore after
-  the special stage. `ui_stage_exit` routes `OBJ_EXIT_SPECIAL_STAGE` to the act results today.
-- **Pause menu**: no PAUSE / CONTINUE / GO BACK sprites (`ac_fix_pause`). The frame is dimmed. START/A
-  continue; B quits only when the original would offer GO BACK.
+- **Pause menu**: the original PauseMenu sprites (`ac_fix_pause`) are not in the special-stage data. The
+  pause card in the caption-bar font replaces them.
+- **Controller art** is English only. The six language variants of the prompt and caption bar keep the
+  original touch text. The port calls `special_set_language(1)`.
+- **Trick Spring targets 9 and 10** (D-pad Down / Left) cannot occur: the SSD format holds 8 targets. They
+  are implemented and tested at the rule level only.
+- **Not tested in Flycast:** partial analogue tilts (keyboard axes are full or ramping) and partial
+  trigger pulls. Host tests cover both. Without the engine patch (5.3), a stick flick during an open
+  sequence also counts as a D-pad direction.
+- **Composition**: during a Trick Spring sequence the progress bar is see-through, because it lies over
+  the top row of targets.
 - **Rendering differences**:
   - The DS edge marking (`G3X_SetEdgeColorTable`, outlines) and the DS fog are not rendered. The
     120-frame white fog at the start is a white overlay with the same density curve.
   - The player animation cross-fade (flags 0x40) changes the timing as in the original, but the pose is
     drawn from the new animation only.
-  - Material colour, texture pattern and texture SRT animations play from the converted sets (sky scroll
-    with the NNS Si3d texture matrix, emerald light and bomb patterns, eff_clash / eff_shoot_bomb colour
-    and alpha).
   - The palette lerp of top-screen OBJ palette slot 8 is drawn as a cross-fade of the big emerald to the
     stage-colour emerald image (anim 0x13 + stage).
   - The top-screen frame art `sp_fix_base` is not drawn: its panels sit behind the top-screen HUD on the
     DS, and drawn over the 3D they would cover the view.
   - Main-BG blending uses alpha eva/16 instead of the DS eva/evb sum.
-- **Text on screen** is the original art: the captions say "USE THE STYLUS TO MOVE SONIC" and "TOUCH
-  THE TOUCH SCREEN TO CONTINUE". No replacement art exists in the ROM.
 - **Sound**: the effects use the native SSAR sequencer with the ss bank, music via the sys streams.
   `NNS_SndPlayerStopSeqBySeqArcIdx(0x10, 0xf, 0x5a)` needs `special_hooks.sfx_stop_arc` (no default).
   Nothing was listened to.
 - **Undefined-behaviour guards** where the original reads out of range: `SpecialStageTrick_GetSequence`
   with idx < 0 (the original condition never fires) uses sequence 0. `SpecialStageObjList_Update` does
   not free a node twice (the original could, if both of its rules matched).
-- Load time in Flycast is ~25 s (emulated CD speed). The assets are not packed.
+- Load time in Flycast is ~25 s per stage (emulated CD speed).
 - `SpecialStage_Unk_ov001_0230ea6c` / RHandMtxCallback: the right-hand matrix is computed from the
   sampled pose at the integer frame. The DS takes it from the geometry engine during the draw.
+- Act re-entry after the special stage (`main.c`) is integrator work: see `docs/dreamcast/DEFECTS.md`
+  F10.

@@ -60,6 +60,9 @@ void special_draw(void);
 void special_shutdown(void);
 void special_result(SpecialResult *r);
 int special_paused(void);                     /* START pause (PauseMenu_Create(1)) active */
+/* the controller legend card at the intro prompt: on (default) until the player begins a
+ * special stage once in this session; special_show_legend(1) shows it again next time */
+void special_show_legend(int on);
 /* test builds only: keep the player's rings at the goal quota (reaches the results card unattended) */
 void special_debug_force_quota(int on);
 

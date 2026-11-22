@@ -217,24 +217,12 @@ s32 SpecialStageTrick_GetRating(s32 idx, s32 n) {
 }
 s32 SpecialStageTrick_CheckTouch(s32 idx, s32 n, s32 cur) {
     SpTrickSeq *e = &gSpecialStageTrick->unk10C[idx < 0 ? 0 : idx];
-    s32 i;
-    VecFx32 v;
     if (e->unk20 < n)
         return -1;
-    if (gTouchState.flags & 0x10) {
-        for (i = cur; i < e->count; i++) {
-            v.x = e->pts[i].x << 12;
-            v.y = e->pts[i].y << 12;
-            v.z = 0;
-            if (SpecialStage_IsPointInCircle(SP_ROMN(0x02317e80, s32, 3), &v, gTouchState.x << 12,
-                                             gTouchState.y << 12)) {
-                if (i == cur)
-                    return cur < e->count - 1 ? cur + 1 : 0x1234;
-                return -1;
-            }
-        }
-    }
-    return cur;
+    /* the DS tests the touch point against the targets from `cur` on (circle 0x02317e80, r 0x10):
+     * the current target advances, a later one fails; the controller scheme applies the same
+     * rule to the button presses of this frame (sp_qte_step, sp_input.c) */
+    return sp_qte_step(cur, e->count, g_sp_pad.qte);
 }
 s32 SpecialStagePlayer_Unk_ov001_02314694(s32 i) { return gSpecialStageTrick->unk10C[i < 0 ? 0 : i].unk24; }
 
@@ -332,7 +320,7 @@ void SpecialStage_State_IntroUpdate(void) {
         SpecialStagePlayer_Update(g->unk18);
     SpecialStageCamera_Update();
     if (g->timer == 0x5c) {
-        if (!(gTouchState.flags & 0x40))
+        if (!g_sp_pad.begin)   /* the DS waits for a touch (gTouchState.flags & 0x40) */
             return;
         Sound_PlaySeqArc_SS(0x10, 0x14);
     }
@@ -557,7 +545,6 @@ int special_run_frame(const InputState *in) {
     }
     if (s_force_quota && g->unk18 && g->unk18->unk148 < SpecialStageHud_Unk_ov001_02314368())
         g->unk18->unk148 = SpecialStageHud_Unk_ov001_02314368();
-    sp_draw_reset();
     switch (g->taskC) {
     case 0:
         SpecialStage_State_IntroUpdate();
@@ -569,8 +556,9 @@ int special_run_frame(const InputState *in) {
         SpecialStage_State_Exit();
         return s_result;
     }
-    if (s_paused)
+    if (s_paused)   /* START this frame: the last frame's draw commands stay (the frozen frame) */
         return 0;
+    sp_draw_reset();
     switch (g->task10) {
     case 0:
         SpecialStage_State_IntroDraw();

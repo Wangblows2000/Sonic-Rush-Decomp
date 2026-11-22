@@ -1,0 +1,36 @@
+--- a/dreamcast/game/engine/input.h
++++ b/dreamcast/game/engine/input.h
+@@ -17,7 +17,10 @@
+ typedef struct {
+     uint32_t held, pressed, released;
+     int ax, ay;          /* analog, -128..127 after dead zone */
++    int lt, rt;          /* analogue triggers 0..255 (IN_L / IN_R are lt / rt >= 128) */
++    uint32_t dpad;       /* IN_LEFT..IN_DOWN from the D-pad alone (held carries the stick too) */
+ } InputState;
++#define IN_HAS_RAW 1     /* lt, rt, dpad present (special stages: trigger hysteresis, D-pad-only inputs) */
+ 
+ extern int g_input_deadzone;      /* default 32 */
+ extern int g_input_dir_threshold; /* analog magnitude that counts as a direction, default 64 */
+--- a/dreamcast/game/engine/input.c
++++ b/dreamcast/game/engine/input.c
+@@ -11,6 +11,8 @@
+     uint32_t prev = in->held, h = 0;
+     maple_device_t *dev = maple_enum_type(0, MAPLE_FUNC_CONTROLLER);
+     in->ax = in->ay = 0;
++    in->lt = in->rt = 0;
++    in->dpad = 0;
+     if(dev) {
+         cont_state_t *st = (cont_state_t *)maple_dev_status(dev);
+         if(st) {
+@@ -29,6 +31,11 @@
+             if(st->buttons & CONT_START) h |= IN_START;
+             if(st->rtrig >= 128) h |= IN_R;   /* analog triggers 0..255 */
+             if(st->ltrig >= 128) h |= IN_L;
++            in->lt = st->ltrig; in->rt = st->rtrig;
++            if(st->buttons & CONT_DPAD_LEFT)  in->dpad |= IN_LEFT;
++            if(st->buttons & CONT_DPAD_RIGHT) in->dpad |= IN_RIGHT;
++            if(st->buttons & CONT_DPAD_UP)    in->dpad |= IN_UP;
++            if(st->buttons & CONT_DPAD_DOWN)  in->dpad |= IN_DOWN;
+         }
+     }
+     in->held = h;

@@ -546,6 +546,29 @@ SpObj *SpecialStageGimmick_FindTouched(SpObj *a, SpObjList *list, s32 x, s32 y) 
     return NULL;
 }
 
+/* controller scheme (SpecialStagePlayer_CheckTouchTarget): the gimmick A attacks.  The same
+ * gimmicks FindTouched accepts (not destroyed, with a touch circle, attackable, in reach) and on
+ * screen; of those the nearest one (largest z: the course comes towards the camera), then the
+ * one closest to Sonic across the pipe */
+SpObj *SpecialStageGimmick_FindAttackTarget(SpObj *a, SpObjList *list) {
+    SpObj *o, *best = NULL;
+    s32 sx, sy, dx, bdx = 0;
+    for (o = list->head.next; o != &list->tail; o = o->next) {
+        if ((o->unk60 & 9) != 0 || o->unkC4 == NULL || (o->unk60 & 0x100) != 0 || !SpecialStageObj_IsInReach(a, o))
+            continue;
+        if (NNS_G3dWorldPosToScrPos(&o->pos, &sx, &sy) != 0)
+            continue;
+        dx = o->pos.x - a->pos.x;
+        if (dx < 0)
+            dx = -dx;
+        if (!best || o->pos.z > best->pos.z || (o->pos.z == best->pos.z && dx < bdx)) {
+            best = o;
+            bdx = dx;
+        }
+    }
+    return best;
+}
+
 /* SpecialStageGimmick_Unk_ov001_0230e634: free fall (bomb / enemy defeat) */
 void SpecialStageGimmick_Unk_ov001_0230e634(SpObj *p) {
     VecFx32 *v = &p->mvel, *a = &p->macc;

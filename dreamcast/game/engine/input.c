@@ -11,6 +11,8 @@ void input_poll(InputState *in)
     uint32_t prev = in->held, h = 0;
     maple_device_t *dev = maple_enum_type(0, MAPLE_FUNC_CONTROLLER);
     in->ax = in->ay = 0;
+    in->lt = in->rt = 0;
+    in->dpad = 0;
     if(dev) {
         cont_state_t *st = (cont_state_t *)maple_dev_status(dev);
         if(st) {
@@ -29,6 +31,11 @@ void input_poll(InputState *in)
             if(st->buttons & CONT_START) h |= IN_START;
             if(st->rtrig >= 128) h |= IN_R;   /* analog triggers 0..255 */
             if(st->ltrig >= 128) h |= IN_L;
+            in->lt = st->ltrig; in->rt = st->rtrig;
+            if(st->buttons & CONT_DPAD_LEFT)  in->dpad |= IN_LEFT;
+            if(st->buttons & CONT_DPAD_RIGHT) in->dpad |= IN_RIGHT;
+            if(st->buttons & CONT_DPAD_UP)    in->dpad |= IN_UP;
+            if(st->buttons & CONT_DPAD_DOWN)  in->dpad |= IN_DOWN;
         }
     }
     in->held = h;

@@ -525,7 +525,7 @@ void sp_render_shutdown(void) {
         memset(&s_bgimg[i], 0, sizeof(s_bgimg[i]));
     }
     if (data_ov001_0231f5c4)
-        for (i = 0; i < 4; i++)
+        for (i = 0; i < 5; i++)
             free_sprres_tex(&data_ov001_0231f5c4->spr[i]);
     if (gSpecialStageGimmickModels)
         free_sprres_tex(gSpecialStageGimmickModels->unk0);
@@ -708,8 +708,14 @@ static void draw_sprite2d_cmd(const SpCmd *c, int bright) {
         y0 = y1;
         y1 = t;
     }
-    quad(tex, c->sres->page_w, c->sres->page_h, LIST_TR, x0, y0, x1, y1, im->x, im->y, im->x + im->w, im->y + im->h,
-         s_z, 0xffffffff, white_offset(bright));
+    {
+        /* the course progress bar (top screen) lies over the top row of the Trick Spring targets of
+         * the single view: see-through while a sequence is open */
+        SpObj *p = gSpecialStageWork ? gSpecialStageWork->unk18 : NULL;
+        u32 argb = (c->group == GRP_BAR && p && p->unk128) ? 0x50ffffffu : 0xffffffffu;
+        quad(tex, c->sres->page_w, c->sres->page_h, LIST_TR, x0, y0, x1, y1, im->x, im->y, im->x + im->w,
+             im->y + im->h, s_z, argb, white_offset(bright));
+    }
     s_z += 0.01f;
     if (c->f > 0.0f && gSpecialStageWork) {
         /* palette slot 8 lerp: the emerald in this stage's colour (anim 0x13 + stage) over it */
@@ -776,7 +782,9 @@ static void render_2d(void) {
     qsort(main_s, (size_t)nm, sizeof(main_s[0]), cmp_sprite);
     qsort(sub_s, (size_t)ns, sizeof(sub_s[0]), cmp_sprite);
     /* main BG1 (intro caption / sp_fix_touch steering guide, blended) */
-    if ((gSpDisplayMain.bg_enable & 2) && g_sp_layer_main[1] >= 0) {
+    /* (sp_fix_touch, res 4, is the stylus guide of the start sequence: not drawn with the
+     * controller scheme, see draw_controller_overlay) */
+    if ((gSpDisplayMain.bg_enable & 2) && g_sp_layer_main[1] >= 0 && g_sp_layer_main[1] != 4) {
         float a = 1.0f;
         if (gSpDisplayMain.blend_on && gSpecialStageWork && gSpecialStageWork->taskC != 0)
             a = gSpDisplayMain.eva / 16.0f;
@@ -801,6 +809,101 @@ static void render_2d(void) {
     }
     for (i = 0; i < ns; i++)
         draw_sprite2d_cmd(sub_s[i], card ? 0 : gSpDisplaySub.bright);
+}
+
+/* ------------------------------------------------------------ controller overlays
+ * (Dreamcast controller scheme, SPECIAL.md section 4; art: ac_spst_pad anims 70.., caption-bar
+ * font lines, tools/padart.py)
+ *  - the legend card at the intro prompt of the first special stage of the session;
+ *  - the pause card (the PauseMenu of the original: PAUSE, the controls, CONTINUE, GO BACK
+ *    when this emerald is already owned);
+ *  - the steering hint of the start sequence, where the original shows the stylus over the
+ *    sp_fix_touch arc (HUD frames 0x17c..0x258). */
+enum { PADL_CONTROLS, PADL_MOVE, PADL_ATTACK, PADL_TRICK, PADL_BUTTONS, PADL_PAUSE, PADL_BEGIN, PADL_PAUSED,
+       PADL_CONTINUE, PADL_BACK };
+
+static int pad_line_image(const SpSprRes *r, int line) {
+    int a = 70 + line;
+    u16 im;
+    if (!r || !r->loaded || a >= r->n_anims || r->anims[a].frame_count == 0)
+        return -1;
+    im = r->frametab[r->anims[a].first_frame * 2];
+    return im == 0xffff || im >= r->n_images ? -1 : im;
+}
+
+static float pad_line_w(const SpSprRes *r, int line) {
+    int im = pad_line_image(r, line);
+    return im < 0 ? 0 : r->images[im].w;
+}
+
+static void pad_line(const SpSprRes *r, int line, float cx, float y, float k, float z) {
+    int im = pad_line_image(r, line);
+    const SpDsprImage *i;
+    void *tex;
+    float x0;
+    if (im < 0)
+        return;
+    i = &r->images[im];
+    tex = sprres_tex(r, im);
+    x0 = cx - i->w * k / 2;
+    quad(tex, r->page_w, r->page_h, LIST_TR, x0, y, x0 + i->w * k, y + i->h * k, i->x, i->y, i->x + i->w,
+         i->y + i->h, z, 0xffffffff, 0);
+    s_spr_fmt_clear();
+}
+
+/* black card with a white rim (the caption bar's colours) */
+static void pad_panel(float x0, float y0, float x1, float y1, float z) {
+    quad(NULL, 0, 0, LIST_TR, x0 - 3, y0 - 3, x1 + 3, y1 + 3, 0, 0, 0, 0, z, 0xffffffffu, 0);
+    quad(NULL, 0, 0, LIST_TR, x0, y0, x1, y1, 0, 0, 0, 0, z + 0.5f, 0xff000000u, 0);
+}
+
+static void pad_card(const SpSprRes *r, const int *lines, int n, float z) {
+    const float k = 2.0f, lh = 20 * k, gap = 4;
+    float w = 0, h = n * lh + (n - 1) * gap, y;
+    int i;
+    for (i = 0; i < n; i++)
+        if (pad_line_w(r, lines[i]) > w)
+            w = pad_line_w(r, lines[i]);
+    w = w * k + 48;
+    y = (480 - h) / 2;
+    pad_panel(320 - w / 2, y - 16, 320 + w / 2, y + h + 16, z);
+    for (i = 0; i < n; i++) {
+        pad_line(r, lines[i], 320, y, k, z + 1 + i * 0.01f);
+        y += lh + gap;
+    }
+}
+
+static void draw_controller_overlay(void) {
+    SpWork *g = gSpecialStageWork;
+    SpHud *h = gSpecialStageHud;
+    const SpSprRes *r = data_ov001_0231f5c4 ? &data_ov001_0231f5c4->spr[4] : NULL;
+    if (!g || !r || !r->loaded)
+        return;
+    if (special_paused()) {
+        int lines[8], n = 0;
+        lines[n++] = PADL_PAUSED;
+        lines[n++] = PADL_MOVE;
+        lines[n++] = PADL_ATTACK;
+        lines[n++] = PADL_TRICK;
+        lines[n++] = PADL_BUTTONS;
+        lines[n++] = PADL_CONTINUE;
+        if (g->unk8 & (1u << g->unk4))
+            lines[n++] = PADL_BACK;
+        pad_card(r, lines, n, 810.0f);
+        return;
+    }
+    if (g->taskC == 0 && g->timer == 0x5c && sp_legend_pending()) {
+        static const int lines[7] = {PADL_CONTROLS, PADL_MOVE, PADL_ATTACK, PADL_TRICK, PADL_BUTTONS, PADL_PAUSE,
+                                     PADL_BEGIN};
+        quad(NULL, 0, 0, LIST_TR, 0, 0, 640, 480, 0, 0, 0, 0, 805.0f, 0x80000000u, 0);
+        pad_card(r, lines, 7, 810.0f);
+        return;
+    }
+    if (g->taskC == 1 && h && h->unkBD4 < 0 && h->unkAE0 >= 0x17c && h->unkAE0 < 0x258) {
+        float w = pad_line_w(r, PADL_MOVE) * 2.0f + 24, y = 0x6e * 2.5f - 20;
+        pad_panel(320 - w / 2, y - 6, 320 + w / 2, y + 46, 790.0f);
+        pad_line(r, PADL_MOVE, 320, y, 2.0f, 791.0f);
+    }
 }
 
 /* ------------------------------------------------------------ frame */
@@ -877,8 +980,9 @@ void sp_render_frame(void) {
         }
     }
     render_2d();
-    if (special_paused())   /* the frozen frame, dimmed (PauseMenu sprites are not drawn: SPECIAL.md) */
+    if (special_paused())   /* the frozen frame, dimmed; the pause card (draw_controller_overlay) over it */
         quad(NULL, 0, 0, LIST_TR, 0, 0, 640, 480, 0, 0, 0, 0, 800.0f, 0x80000000u, 0);
+    draw_controller_overlay();
     if (gSpDisplayMain.bright != 0) {
         int b = gSpDisplayMain.bright < 0 ? -gSpDisplayMain.bright : gSpDisplayMain.bright;
         u32 rgb = gSpDisplayMain.bright > 0 ? 0xffffff : 0;

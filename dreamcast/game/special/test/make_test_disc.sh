@@ -1,7 +1,7 @@
 #!/bin/sh
 # Standalone special-stage test disc (not the game disc): sptest.elf + the converted
 # assets of build/dreamcast/special + the two special-stage music streams.
-#   make -C dreamcast/game/special test-disc   [SPTEST_START="<stage 1..7> <emerald flags hex>"]
+#   make -C dreamcast/game/special test-disc   [SPTEST_START="<stage 1..7> <emerald flags hex> [force quota 0|1] [legend 0|1]"]
 set -e
 ROOT=$1
 OUT=$2

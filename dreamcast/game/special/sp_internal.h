@@ -489,7 +489,8 @@ typedef struct SpWork {
 /* resources (data_ov001_0231f5c4) */
 typedef struct SpRes {
     u8 *bg[7];               /* mnbg files (res[7]) */
-    SpSprRes spr[4];         /* ac_spst, ac_spst_<lang>, ac_spst_ann, ac_spst_efct */
+    SpSprRes spr[5];         /* ac_spst, ac_spst_<lang>, ac_spst_ann, ac_spst_efct; [4] ac_spst_pad (DC
+                              * controller art: button targets, PRESS START prompt, legend lines) */
     u8 *unk2C;               /* ss.ssd */
     u32 bgsize[7];
 } SpRes;
@@ -520,18 +521,29 @@ extern SpHud *gSpecialStageHud;
 extern s32 data_ov001_0231f698;
 extern u32 gGameState_unk28;
 
-/* input (sp_input.c): gTouchState emulated from the controller */
-typedef struct SpTouch {
-    u16 x, y;                /* @0x0 current (0xffff released) */
-    u16 lastX, lastY;
-    u16 startX, startY;      /* @0x8 press position */
-    u16 endX, endY;
-    u32 flags;               /* @0x10 0x10 held, 0x20 held last frame, 0x40 pressed, 0x80 released */
-} SpTouch;
-extern SpTouch gTouchState;
-extern u16 gPad[3];          /* gPad[2] = pressed (DS bits) */
+/* input (sp_input.c): the Dreamcast controller scheme (SPECIAL.md section 4).  The original
+ * reads the touch screen (gTouchState); here the mechanics read physical inputs directly:
+ * steering target, homing-attack press, Trick Spring button presses, begin press. */
+typedef struct SpPad {
+    int steer;               /* a steering target this frame (stick out of its dead zone, D-pad, stick release) */
+    s32 steer_angle;         /* its pipe angle, -0x4000 (left wall) .. 0x4000 (right wall) */
+    int attack;              /* A pressed outside a Trick Spring sequence: homing attack */
+    u32 qte;                 /* Trick Spring inputs pressed this frame: bit k = target k+1 (SP_QTE_*) */
+    int begin;               /* intro "PRESS START TO BEGIN": START or A pressed */
+} SpPad;
+extern SpPad g_sp_pad;
+extern u16 gPad[3];          /* gPad[0] held / gPad[2] pressed (DS bits: START pause, A / B pause menu) */
+enum { SP_QTE_COUNT = 10 };  /* 1 A, 2 B, 3 X, 4 Y, 5 L, 6 R, 7 Up, 8 Right, 9 Down, 10 Left */
+extern const char *const sp_qte_names[SP_QTE_COUNT];
+/* analogue trigger: press at >= SP_TRIG_ON, released after 2 frames <= SP_TRIG_OFF */
+enum { SP_TRIG_ON = 160, SP_TRIG_OFF = 64 };
+typedef struct { u8 down, low; } SpTrig;
+int sp_trigger_step(SpTrig *t, int value);           /* 1 = press event */
+s32 sp_stick_to_angle(int ax);                       /* stick x (after the engine dead zone) -> pipe angle */
+s32 sp_qte_step(s32 cur, s32 count, u32 events);      /* SpecialStageTrick_CheckTouch rule on button events */
 void sp_input_update(const InputState *in);
 void sp_input_reset(void);
+int sp_legend_pending(void);                          /* the controller legend shows at the intro prompt */
 /* screen position of a world point through the current camera (NNS_G3dWorldPosToScrPos) */
 BOOL NNS_G3dWorldPosToScrPos(const VecFx32 *v, s32 *x, s32 *y);
 
@@ -614,6 +626,7 @@ void SpecialStageGimmick_Draw(SpObjList **p);
 void SpecialStageGimmick_Destroy(SpObj *p);
 void SpecialStageGimmick_OnAttacked(SpObj *p);
 SpObj *SpecialStageGimmick_FindTouched(SpObj *a, SpObjList *list, s32 x, s32 y);
+SpObj *SpecialStageGimmick_FindAttackTarget(SpObj *a, SpObjList *list);
 void SpecialStageGimmick_SpawnTrickReward(SpObjList **a, s32 x, s32 y, s32 z);
 SpObj *SpecialStageGimmick_SpawnActObjAt(void *parent, s32 type, u16 ang, s32 y, s32 z);
 void SpecialStageGimmick_CalcPipeMatrix(MtxFx43 *m, s32 mode, s32 flag, s32 force, u32 ang, s32 y, s32 z);

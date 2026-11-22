@@ -207,23 +207,18 @@ def main():
                     shutil.copyfile(d / f, sd / d.name / f)
                     files.append("sprites/%s/%s" % (d.name, f))
         shutil.rmtree(out / "sprites_full")
+        # controller art (Trick Spring button targets, PRESS START prompt, legend, caption bar)
+        import padart
+        (out / ".padart/sp_stdm_caption_eng.mnbg").unlink(missing_ok=True)   # menubg just wrote the bar afresh
+        files += padart.main(["--out", str(out)])
     # ---- sound-effect bank: sys SDAT, sequence archives 9 / 14 / 16 only
     if not a.skip_sound:
-        import sdatlib
         import sfxbank
-        keep = {9, 14, 16}
-        orig = sdatlib.SDAT
-
-        class Sub(orig):
-            def __init__(self, *aa, **kk):
-                super().__init__(*aa, **kk)
-                self.info["seqarc"] = [x if i in keep else None for i, x in enumerate(self.info["seqarc"])]
-        sdatlib.SDAT = Sub
         tmp = out / "sound_tmp"
         ns = types.SimpleNamespace(extract=str(ext), audio=a.audio, out=str(tmp), only="sys",
                                    budget=sfxbank.DEFAULT_BUDGET)
-        r = sfxbank.Builder(ns).build("sys")
-        sdatlib.SDAT = orig
+        # whole SSARs 9 / 14 / 16 (select=None would keep all 17, the default the front-end subset)
+        r = sfxbank.Builder(ns).build("sys", select={9: None, 14: None, 16: None})
         (out / "sound").mkdir(exist_ok=True)
         shutil.copyfile(tmp / "sys.srb", out / "sound/ss.srb")
         shutil.rmtree(tmp)
