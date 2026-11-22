@@ -35,6 +35,10 @@ grep -v '^#' "$ROOT/build/dreamcast/objects/sprites.txt" | cut -f1 | while read 
     cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"
     for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done
+# camera shake tables + zone effect tables (dreamcast/game/zonefx/tools/zonefxdata.py, from YOUR ROM)
+mkdir -p "$OUT/disc/zonefx"
+[ -f "$ROOT/build/dreamcast/zonefx/zonefx.bin" ] || python3 "$ROOT/dreamcast/game/zonefx/tools/zonefxdata.py"
+cp "$ROOT/build/dreamcast/zonefx/zonefx.bin" "$OUT/disc/zonefx/"
 # UI (HUD, title card, pause, results, game over)
 mkdir -p "$OUT/disc/ui/res"; cp "$ROOT/build/dreamcast/ui/uidata.bin" "$ROOT/build/dreamcast/ui/navidata.bin" "$OUT/disc/ui/"
 # navigator, boss panel, title card / results backgrounds (UI.md: res/ without the png previews)

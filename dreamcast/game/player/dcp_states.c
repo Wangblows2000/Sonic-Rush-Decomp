@@ -835,7 +835,7 @@ void dcp_act_trick_forward(DcPlayer *w) {
             w->vel_x = 0;
         w->vel_x += (s16)t;
         atkdef(w, 1, 0x13, 0);
-        fx(w, DCP_FX_TRICK, 0, 0);
+        fx(w, DCP_FX_TRICK_FORWARD, 0, 0);
         sfx(w, DCP_CH_VOICE, 0x10);
         sfx(w, DCP_CH_VOICE, (dcp_rand() & 3) + 0x1d);
         w->dash_timer = 0xc;
@@ -903,7 +903,7 @@ void dcp_act_trick_combo(DcPlayer *w) {
     }
     w->move_flags |= 0x10;
     w->move_flags |= 0x8000;
-    fx(w, DCP_FX_TRICK, w->trick_lvl, 1);
+    fx(w, DCP_FX_TRICK_SPARKLE, w->trick_lvl, 0);
     dcp_add_trick_score(w, 200);
     w->trick_input = 0;
     w->charge = 0;
@@ -1062,6 +1062,10 @@ void dcp_act_die(DcPlayer *w) {
  * 0x40 = extra sound). Ring scatter goes through dcp_scatter_rings with the
  * level kept by the caller (ring manager). */
 static u8 s_scatter_level;
+/* RingManager unk9D5: the ring manager owns it and resets it once every scattered ring is gone
+ * (objects_init points this at it); the static stands in without a ring manager */
+u8 *g_dcp_scatter_level;
+#define SCATTER_LEVEL (g_dcp_scatter_level ? g_dcp_scatter_level : &s_scatter_level)
 void dcp_on_hurt(DcPlayer *w, u32 hit_flags) {
     s32 v;
     u32 old;
@@ -1080,7 +1084,7 @@ void dcp_on_hurt(DcPlayer *w, u32 hit_flags) {
     if (hit_flags & 0x20) {
         if (w->rings != 0) {
             sfx(w, DCP_CH_VOICE, 5);
-            dcp_scatter_rings(w, &s_scatter_level);
+            dcp_scatter_rings(w, SCATTER_LEVEL);
         }
         dcp_act_die(w);
         return;
@@ -1095,7 +1099,7 @@ void dcp_on_hurt(DcPlayer *w, u32 hit_flags) {
     dcp_set_anim(w, DCP_ABS(v) >= w->run_thr[2] ? 0x10 : 0xf);
     if (!(w->pf & 0x10000000)) {
         sfx(w, DCP_CH_VOICE, 5);
-        dcp_scatter_rings(w, &s_scatter_level);
+        dcp_scatter_rings(w, SCATTER_LEVEL);
     }
     w->pf &= ~0x30000000;
     shake(3);

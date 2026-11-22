@@ -128,6 +128,9 @@ def noise_wave():
 # the full sys SDAT has 4.2 MB of waves) are left out (n_seq 0). Groups the
 # original loads for these: 1, 0x15, 2 / 3, 0xe (SysSound_LoadSEGroup /
 # SysSound_LoadVoiceGroup).
+# sys SSARs built alone as sys_aNN.srb: ClearDemo_Create loads the sys archive + group
+# 5..9 and plays SE / voices of SSAR w->unk1630 = 5 (time attack), 6 (act / boss), 7 (final zone)
+SYS_ARC_BANKS = [5, 6, 7]
 SELECT = {
     "sys": {0: None, 1: None, 0x11: None, 2: list(range(9)) + [0x10], 3: list(range(9)) + [0x10], 0xA: [0, 1, 2]},
 }
@@ -166,7 +169,10 @@ class Builder:
         rel = e.get("output") or e.get("same_as")
         return read_kos_adpcm_wav(self.audio / rel), e
 
-    def build(self, sdname):
+    def build(self, sdname, select=False, outname=None):
+        """select: None = every SSAR, dict = SSAR -> list of sequences (None = all),
+        False = SELECT[sdname]; outname: file name (default sdname)"""
+        outname = outname or sdname
         sd = sdatlib.SDAT(Path(self.a.extract) / "files" / "snd" / sdname / "sound_data.sdat")
         report = {"sdat": sdname, "missing_waves": [], "ids": {}}
         # players
@@ -178,7 +184,8 @@ class Builder:
         # ssar
         ssars = []
         used_banks = set()
-        select = SELECT.get(sdname)
+        if select is False:
+            select = SELECT.get(sdname)
         for ai, a in enumerate(sd.info["seqarc"]):
             if a is None or (select is not None and ai not in select):
                 ssars.append((0, b"", b""))
@@ -282,12 +289,12 @@ class Builder:
         struct.pack_into("<I", out, 0x44, self.mix_gain_tl)
         outdir = Path(self.a.out)
         outdir.mkdir(parents=True, exist_ok=True)
-        (outdir / f"{sdname}.srb").write_bytes(out)
+        (outdir / f"{outname}.srb").write_bytes(out)
         report.update(file_bytes=len(out), main_ram_bytes=off_wavedata, sound_ram_bytes=len(blob),
                       waves=len(wave_tab), banks=[i for i, b in enumerate(banks) if b],
                       ssar=[{"n_seq": n, "data_bytes": len(d)} for n, _, d in ssars],
                       rendered_sfx_bytes_if_prerendered=self.prerendered_bytes(sdname))
-        (outdir / f"{sdname}.json").write_text(json.dumps(report, indent=1))
+        (outdir / f"{outname}.json").write_text(json.dumps(report, indent=1))
         # plain-text index of the offline renders (sdat2dc.py sfx/) for the host
         # test (dreamcast/game/sound/test): "<ssar> <seq> <status> <samples> <channels> <path|->"
         lines = []
@@ -295,7 +302,7 @@ class Builder:
             if s == sdname and (select is None or (ai in select and (select[ai] is None or si in select[ai]))):
                 rel = e.get("output") or e.get("same_as") or "-"
                 lines.append(f"{ai} {si} {e['status']} {e.get('samples', 0)} {e.get('channels', 0)} {rel}")
-        (outdir / f"{sdname}.rendered.txt").write_text("\n".join(lines) + "\n")
+        (outdir / f"{outname}.rendered.txt").write_text("\n".join(lines) + "\n")
         return report
 
     def prerendered_bytes(self, sdname):
@@ -317,13 +324,19 @@ def main():
     ap.add_argument("--out", default="build/dreamcast/audio/sfxbank")
     ap.add_argument("--only", default="")
     ap.add_argument("--budget", type=int, default=DEFAULT_BUDGET)
+    ap.add_argument("--sys-arcs", default=",".join(map(str, SYS_ARC_BANKS)),
+                    help="also build sys_aNN.srb = sys SDAT SSAR NN alone (ClearDemo 5/6/7: results SE/voices)")
     a = ap.parse_args()
     b = Builder(a)
     names = [x for x in a.only.split(",") if x] or sorted(
         n for n in b.manifest["sdats"] if n != "extra_end")
+    jobs = [(n, False, None) for n in names]
+    if not a.only:
+        jobs += [("sys", {int(x): None}, "sys_a%02d" % int(x)) for x in a.sys_arcs.split(",") if x]
     rows, worst = [], 0
-    for n in names:
-        r = b.build(n)
+    for n, sel, outname in jobs:
+        r = b.build(n, sel, outname)
+        n = outname or n
         worst = max(worst, r["sound_ram_bytes"])
         ok = r["sound_ram_bytes"] <= a.budget
         rows.append({"sdat": n, "sound_ram": r["sound_ram_bytes"], "main_ram": r["main_ram_bytes"],

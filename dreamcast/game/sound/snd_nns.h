@@ -66,5 +66,8 @@ void NNS_SndPlayerSetTrackPan(NNSSndHandle *handle, uint32_t trackMask, int pan)
 void NNS_SndHandleInit(NNSSndHandle *handle);
 void NNS_SndHandleReleaseSeq(NNSSndHandle *handle);
 int NNS_SndPlayerCountPlaying(int playerNo); /* native: playerList.numObjects */
+void NNSi_SndPlayerPause(NNSSndSeqPlayer *p, int flag);
+void NNS_SndPlayerPause(NNSSndHandle *handle, int flag);
+void NNS_SndPlayerPauseByPlayerNo(int playerNo, int flag);
 
 #endif

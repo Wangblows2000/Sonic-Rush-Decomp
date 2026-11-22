@@ -165,18 +165,35 @@ void SysSound_PlaySE(s32 n) {
 }
 /* SysSound_PlayBGM -> SysSound_StartBGM: BGM index -> sys SDAT sequence
  * (0 SEQ_MENU, 1 SEQ_JI_EXTRA, 2 SEQ_DL_SELECT, 3 SEQ_DL_RESULT,
- *  4 SEQ_ZONE_NOR, 5 SEQ_ZONE_LAST); 6 and up stop the BGM. */
+ *  4 SEQ_ZONE_NOR, 5 SEQ_ZONE_LAST); 6 and up stop the BGM.
+ * gSysSound->unk4 (the BGM playing) starts as 7 at SysSound_Init; SysSound_Release
+ * frees gSysSound, so the next scene's SysSound_Init + PlayBGM starts the BGM again
+ * even when it is the same index (zone map -> stage -> zone map, map talks). */
+static const u8 s_bgm_seq[6] = { 1, 2, 0x20, 0x21, 3, 4 };
+static s32 s_bgm_cur = 7;
 void SysSound_PlayBGM(s32 n) {
-    static const u8 seq_tab[6] = { 1, 2, 0x20, 0x21, 3, 4 };
-    static s32 cur = -1;
-    if (n == cur)
+    if (n == s_bgm_cur)
         return;
-    cur = n;
+    s_bgm_cur = n;
     if (n >= 0 && n < 6) {
         if (g_menu_hooks.bgm)
-            g_menu_hooks.bgm(seq_tab[n]);
+            g_menu_hooks.bgm(s_bgm_seq[n]);
     } else if (g_menu_hooks.stop_all)
         g_menu_hooks.stop_all();
+}
+/* SysSound_Release (+ the SysSound_Init that follows it): all sound stopped, no BGM */
+void SysSound_Release(void) {
+    if (g_menu_hooks.stop_all)
+        g_menu_hooks.stop_all();
+    s_bgm_cur = 7;
+}
+/* a stage or a cutscene played its own music: the next PlayBGM starts the BGM again */
+void mn_bgm_forget(void) { s_bgm_cur = 7; }
+void menus_restart_bgm(void) {
+    s32 n = s_bgm_cur;
+    s_bgm_cur = 7;
+    if (n >= 0 && n < 6)
+        SysSound_PlayBGM(n);
 }
 void Sound_PlaySeq(s32 seq) {
     if (g_menu_hooks.bgm)
@@ -201,4 +218,5 @@ void Sound_PlayVoiceArc(s32 arc, s32 id) {
 void NNS_SndStopSoundAll(void) {
     if (g_menu_hooks.stop_all)
         g_menu_hooks.stop_all();
+    s_bgm_cur = 7;   /* the BGM stopped too: the next SysSound_PlayBGM starts it */
 }

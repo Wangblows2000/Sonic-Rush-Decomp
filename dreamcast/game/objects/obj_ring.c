@@ -50,6 +50,7 @@ void ring_mark_scatter(void) { R.flags |= 2; }
 
 /* RingManager_Create (normal 2D stage branch) */
 void ring_init(void) {
+    g_dcp_scatter_level = &R.scatter; /* Player_OnHurt -> RingManager_ScatterRings level */
     memset(&R, 0, sizeof(R));
     R.nplayers = 1;
     if (W.flags & 0x20)
@@ -66,6 +67,7 @@ void ring_init(void) {
 void ring_destroy(void) {
     u32 i;
     RingPart *e = R.parts;
+    g_dcp_scatter_level = NULL;
     for (i = 0; i < OBJ_RING_MAX; i++, e++)
         if (e->timer != 0 && e->out != NULL)
             *e->out = (u8)(e->x >> 8);

@@ -31,6 +31,8 @@ void sound_shutdown(void);
 /* Load <dir>/<sdat>.srb (stops every sound, replaces the previous bank).
  * Returns 0 on success. */
 int sound_load_bank(const char *sdat);
+const char *sound_bank_name(void);             /* name of the loaded bank ("" if none) */
+extern uint32_t g_sound_miss_count;            /* trace builds: effect requests that produced no sound */
 /* SDAT name of a stage: gStageZoneFileListTable[zone][act].entries[3].name
  * with the character letter (StageLoader_SetCharacterSoundPath(8)):
  * zone 0..8 (row), act 0 / 1 / 2 = boss, chara 0 = Sonic, else Blaze.

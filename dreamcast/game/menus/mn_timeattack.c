@@ -808,7 +808,7 @@ static void TimeAttackMenu_StartStage(s32 mode, s32 id, s32 b) {
     switch (mode) {
     case 0:
     case 1:
-        NNS_SndStopSoundAll();   /* SysSound_Release */
+        SysSound_Release();
         if (id < 7)
             id = zone_at(id);
         Game_StartTimeAttackStage(id, b);

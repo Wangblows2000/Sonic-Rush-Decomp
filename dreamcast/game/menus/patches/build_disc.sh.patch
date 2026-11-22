@@ -1,0 +1,19 @@
+--- a/dreamcast/game/build_disc.sh	2026-11-22 16:13:07.734234842 +0000
++++ b/dreamcast/game/build_disc.sh	2026-11-22 16:13:07.774334193 +0000
+@@ -152,6 +152,16 @@
+ if [ -n "$SRDC_MENUTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/menutrace.txt"; fi
+ if [ -n "$SRDC_MENUSAVE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_MENUSAVE" > "$OUT/disc/debug/menusave.txt"; fi
+ if [ -n "$SRDC_DEMOLEAD" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_DEMOLEAD" > "$OUT/disc/debug/demolead.txt"; fi
++# flow tests: SRDC_AUTOCLEAR=<frame> clears every act / boss at that stage frame, SRDC_AUTODIE="<frame> <lives>"
++# kills the player there, SRDC_AUTOMAP=1 lets the zone map walk to the next story node and press A
++if [ -n "$SRDC_AUTOCLEAR" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTOCLEAR" > "$OUT/disc/debug/autoclear.txt"; fi
++if [ -n "$SRDC_AUTODIE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTODIE" > "$OUT/disc/debug/autodie.txt"; fi
++# SRDC_AUTOMAP=s / b / x: the autopilot also picks Sonic / Blaze / the extra story on the player select
++if [ -n "$SRDC_AUTOMAP" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTOMAP" > "$OUT/disc/debug/automap.txt"; fi
++# SRDC_SPAWN="x y [tension]": the first stage starts the player there (e.g. at a special ring)
++if [ -n "$SRDC_SPAWN" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPAWN" > "$OUT/disc/debug/spawn.txt"; fi
++# SRDC_SPQUOTA=1: special stages keep the rings at the goal quota (cleared without a player)
++if [ -n "$SRDC_SPQUOTA" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/spquota.txt"; fi
+ cd "$OUT"
+ rm -f IP.BIN
+ if [ -n "$SRDC_PREBUILT" ]; then cp "$SRDC_PREBUILT/IP.BIN" "$OUT/IP.BIN"; else

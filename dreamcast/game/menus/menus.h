@@ -70,12 +70,21 @@ typedef enum {
     MENU_EXIT_QUIT,         /* pause menu "go back" (PauseMenu_QuitToMap) */
     MENU_EXIT_GAME_OVER,    /* game over / time over (SceneChange_ToSegaLogo) */
     MENU_EXIT_DEMO_END,     /* attract demo skipped with a button (DemoPlay_Main: SceneChange_ToTitleScreen) */
-    MENU_EXIT_DEMO_TIMEOUT  /* attract demo ran to its frame limit (SceneChange_ToSegaLogo) */
+    MENU_EXIT_DEMO_TIMEOUT, /* attract demo ran to its frame limit (SceneChange_ToSegaLogo) */
+    MENU_EXIT_TRY_AGAIN     /* time attack left without a clear (pause quit, Stage_ExitAfterFail):
+                               SceneChange_ToTryAgain, no time record */
 } MenuExit;
 /* score = data_022c4590.unk4, lives = data_022c4590.unk14, emeralds = gGameState.unk28,
  * time = gGameState.unk20 (frames, time attack records) */
 MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeralds, uint32_t time);
 void menus_shutdown(void);
+/* The staff roll ended with CS_NEXT_UNLOCK_NOTICES (PostStaffRoll): show the unlock
+ * notices the save calls for (player-select page, sound test), then the SEGA logo.
+ * Call instead of resuming the scene the menus had before the ending. */
+void menus_post_staff_roll(void);
+/* main.c ran a full-screen cutscene over the front end (DemoScript 4 before the zone
+ * map) or stopped the stream: start the BGM of the current menu scene again. */
+void menus_restart_bgm(void);
 int menus_language(void);          /* gGameLanguage, default 1 (English) */
 /* the owner's nickname shown by Records (the DS firmware's OS owner info; the DC has
  * none): UTF-16, up to 10 characters, default empty */

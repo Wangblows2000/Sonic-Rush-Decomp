@@ -1774,6 +1774,437 @@ static void test_audit_classes(void) {
     }
 }
 
+/* ------------------------------------------------------- core gameplay (tricks, homing, rings,
+ * lives, death): each against the formula of the decompiled function named in the check */
+static struct { s32 a[64]; int n; } g_score;
+static void (*g_prev_score)(void *, DcPlayer *, s32);
+static void hk_score(void *ctx, DcPlayer *p, s32 v) {
+    if (g_prev_score)
+        g_prev_score(ctx, p, v);
+    if (g_score.n < 64)
+        g_score.a[g_score.n++] = v;
+}
+static struct { s16 vx[80], vy[80]; u16 f[80]; int n; } g_rspawn;
+static void (*g_prev_spawn)(void *, DcPlayer *, s32, s32, s16, s16, u16);
+static void hk_spawn(void *ctx, DcPlayer *p, s32 x, s32 y, s16 vx, s16 vy, u16 f) {
+    if (g_prev_spawn)
+        g_prev_spawn(ctx, p, x, y, vx, vy, f);
+    if (g_rspawn.n < 80)
+        g_rspawn.vx[g_rspawn.n] = vx, g_rspawn.vy[g_rspawn.n] = vy, g_rspawn.f[g_rspawn.n] = f, g_rspawn.n++;
+}
+static int g_lives_added;
+static void (*g_prev_life)(void *, DcPlayer *, s32);
+static void hk_life(void *ctx, DcPlayer *p, s32 n) {
+    if (g_prev_life)
+        g_prev_life(ctx, p, n);
+    g_lives_added += n;
+}
+static void gameplay_hooks(void) {
+    if (g_dcp_hooks.score != hk_score)
+        g_prev_score = g_dcp_hooks.score, g_dcp_hooks.score = hk_score;
+    if (g_dcp_hooks.spawn_ring != hk_spawn)
+        g_prev_spawn = g_dcp_hooks.spawn_ring, g_dcp_hooks.spawn_ring = hk_spawn;
+    if (g_dcp_hooks.add_life != hk_life)
+        g_prev_life = g_dcp_hooks.add_life, g_dcp_hooks.add_life = hk_life;
+}
+/* a spring launch to trick from (the first vertical spring of the act) */
+static int spring_launch(void) {
+    const ObjStats *st = objects_stats();
+    Obj *o;
+    s32 cx, cy;
+    u32 c;
+    int n, k;
+    for (k = 0; k < 6; k++) {
+        o = spawn_nth(0x43, k, NULL);
+        if (o == NULL)
+            continue;
+        box_centre(o, &cx, &cy);
+        c = st->springs;
+        o->prm->pA = 0; /* the trick counter of the source object (Player_SetSourceMapObject) */
+        place_player(cx, cy);
+        for (n = 0; n < 30 && st->springs == c; n++)
+            frame(0);
+        if (st->springs != c && (P.pf & 2))
+            return 1;
+    }
+    return 0;
+}
+static void test_tricks(void) {
+    int ch, n;
+    u8 save = g_chara;
+    printf("[tricks] Player_Action_TrickForward / TrickUp / TrickCombo, Player_AddTrickScore, tension\n");
+    gameplay_hooks();
+    for (ch = 0; ch < 2; ch++) {
+        s16 vx0, vx, vy, t0;
+        int ok;
+        g_chara = (u8)ch;
+        if (!spring_launch()) {
+            printf("  no spring launch in this act\n");
+            break;
+        }
+        /* R in the air after a launch (pf & 2): forward trick */
+        g_score.n = 0;
+        vx0 = P.vel_x;
+        frame(DCP_KEY_R);
+        vx = P.vel_x, vy = P.vel_y;
+        if (ch == 0) {
+            /* Sonic: vel_x += (2 * jump * sin(+-0x4000) << 4) >> 16 = +-2 * jump, vel_y 0, dash timer 0xc */
+            s16 t = (s16)(((P.disp_flags & 1) ? -1 : 1) * 2 * P.jump);
+            s16 want = (s16)(((t > 0 && vx0 < 0) || (t < 0 && vx0 > 0) ? 0 : vx0) + t);
+            ok = P.anim == 0x37 && vx == want && vy == P.gravity && (P.pf & 8);
+            printf("  Sonic forward trick: anim %x vel %d,%d (want %d,%d) score %d,%d\n", P.anim, vx, vy, want, P.gravity,
+                   g_score.n > 0 ? g_score.a[0] : -1, g_score.n > 1 ? g_score.a[1] : -1);
+        } else {
+            /* Blaze: vel_x = +-2 * boost_top, frozen in the pose for 0xc frames (air_lock), then vel_x
+             * = the saved speed (or 1/8 of the dash below 0x300) */
+            s16 want = (s16)(((P.disp_flags & 1) ? -1 : 1) * 2 * P.boost_top);
+            ok = P.anim == 0x37 && vx == want && P.air_lock >= 0xa && (P.pf & 8);
+            printf("  Blaze forward trick: anim %x vel %d (want %d) air lock %d score %d,%d\n", P.anim, vx, want, P.air_lock,
+                   g_score.n > 0 ? g_score.a[0] : -1, g_score.n > 1 ? g_score.a[1] : -1);
+        }
+        CHECK(ok && g_score.n == 2 && g_score.a[0] == 0 && g_score.a[1] == (200 >> P.trick_lvl),
+              "%s forward trick: pose 0x37, velocity, pf 8, score 0 + 200 (first trick)", ch ? "Blaze" : "Sonic");
+        /* combo: A after more than 0x18 frames in the pose -> 0x39 (+400 tension), A -> 0x3a (+400),
+         * B (pf 0x4000, input 1) -> 0x3b (+0x280); each trick scores (100 / 200 / 300) >> lvl + 200 >> lvl */
+        {
+            /* (trick_input: B = 2 -> 0x39 / 0x3a, A = 1 with pf 0x4000 -> 0x3b) */
+            static const u16 keys[3] = { DCP_KEY_B, DCP_KEY_B, DCP_KEY_A };
+            static const u8 anims[3] = { 0x39, 0x3a, 0x3b };
+            static const s16 tens[3] = { 400, 400, 0x280 };
+            int step, lvl = P.trick_lvl, got = 0, sp0 = g_spring_n;
+            for (step = 0; step < 3; step++) {
+                s16 before = P.tension;
+                u8 a0 = P.anim;
+                int early = 0;
+                /* press every other frame until the pose changes: not before 0x18 frames in a pose */
+                g_score.n = 0;
+                for (n = 0; n < 0x40 && P.anim == a0 && !(P.move_flags & 1); n++) {
+                    P.invuln = 0x40; /* (no enemy hit in the middle of the combo) */
+                    frame((n & 1) ? keys[step] : 0);
+                    if (P.anim != a0 && n + 1 <= 0x18 && a0 >= 0x37)
+                        early = 1;
+                }
+                if ((P.move_flags & 1) || g_spring_n != sp0)
+                    break; /* (landed, or carried onto another spring: a fresh launch) */
+                lvl = P.trick_lvl;
+                got -= early;
+                t0 = (s16)(P.tension - before);
+                printf("  combo %d: anim %x after %d frames%s, tension +%d (want %d) score", step, P.anim, n, early ? " (early)" : "", t0,
+                       tens[step] >> lvl);
+                for (n = 0; n < g_score.n; n++)
+                    printf(" %d", g_score.a[n]);
+                printf("\n");
+                got += P.anim == anims[step] && (t0 == (tens[step] >> lvl) || P.tension == 0x12c0) && g_score.n >= 2;
+            }
+            if (step < 2)
+                printf("  (%s: no room for a combo after this spring: %d steps)\n", ch ? "Blaze" : "Sonic", step);
+            CHECK(got == step,
+                  "%s trick combo 0x39 -> 0x3a (-> 0x3b) with the TrickCombo tension, timing and scores (%d of %d before landing)",
+                  ch ? "Blaze" : "Sonic", got, step);
+        }
+        /* Up + R: up trick, vel_y = -jump (Blaze: -2 * jump), pose 0x35 */
+        if (spring_launch()) {
+            frame((u16)(DCP_KEY_UP | DCP_KEY_R));
+            vy = P.vel_y;
+            /* (Blaze: hit-stop 0x44 freezes the move in that frame, so no gravity yet) */
+            ok = P.anim == 0x35 && (vy == (s16)((ch ? -2 * P.jump : -P.jump) + P.gravity) || (ch && vy == -2 * P.jump));
+            printf("  %s up trick: anim %x vel_y %d (want %d + gravity)\n", ch ? "Blaze" : "Sonic", P.anim, vy,
+                   ch ? -2 * P.jump : -P.jump);
+            CHECK(ok, "%s up trick: pose 0x35, Player_Action_TrickUp velocity", ch ? "Blaze" : "Sonic");
+        }
+        /* no trick without a launch: R in a plain jump is the air action (air dash / hover) */
+        place_on_floor(find_obj(0x72, 0) ? find_obj(0x72, 0)->x : 200, find_obj(0x72, 0) ? find_obj(0x72, 0)->y : 800);
+        for (n = 0; n < 4; n++)
+            frame(0);
+        frame(DCP_KEY_A);
+        for (n = 0; n < 6; n++)
+            frame(DCP_KEY_A);
+        frame(DCP_KEY_R);
+        CHECK(P.anim < 0x35 || P.anim > 0x3b, "%s: R in a jump is not a trick (anim %x)", ch ? "Blaze" : "Sonic", P.anim);
+    }
+    g_chara = save;
+}
+
+/* Player_FindHomingTarget (nearest type-2 box, no range), Player_Action_HomingAttack (d^2 < 0x8000,
+ * target not above), Player_State_HomingAttack (vel = (cos, sin) >> 1), AttackBounce, and
+ * MapObject_OnHit_Default: Player_AddTensionCombo(400): +400, +600, +800 within 0x60 frames */
+static void test_homing(void) {
+    int i, k, n, kills = 0;
+    s16 t[4];
+    printf("[homing] Player_FindHomingTarget / Action_HomingAttack / AddTensionCombo chain\n");
+    if (g_chara == 1) {
+        printf("  (Blaze has no homing attack: Player_Action_Hover)\n");
+        return;
+    }
+    static const u16 et[] = { 0x00, 0x01, 0x03, 0x07, 0x09, 0x0d, 0x0f, 0x14, 0x02, 0x04, 0x0b, 0x0c, 0x10, 0x11, 0x12 };
+    for (k = 0; k < (int)(sizeof(et) / sizeof(et[0])) * 4 && kills < 3; k++) {
+        const rlvl_object_t *e = find_obj(et[k / 4], k % 4);
+        Obj *q, *best = NULL;
+        s32 bd = 0x7fffffff, d;
+        s16 tb;
+        u32 e0;
+        if (e == NULL)
+            continue;
+        {
+            u16 cb = P.combo, ct = P.combo_timer;
+            place_player(e->x, e->y - 80);
+            P.combo = cb, P.combo_timer = ct;
+        }
+        P.move_flags |= 0x10;
+        if (kills == 0)
+            P.tension = 0, P.combo = 0, P.combo_timer = 0;
+        else
+            P.tension = 0;
+        for (n = 0; n < 2; n++)
+            frame(0);
+        for (q = g_obj.head; q; q = q->next)
+            if (q->used && !q->is_dec && q->h.type == 2 && !(q->h.obj_flags & 4)) {
+                d = DCP_ABS((q->h.x >> 8) - e->x) + DCP_ABS((q->h.y >> 8) - e->y);
+                if (d < bd)
+                    bd = d, best = q;
+            }
+        if (best == NULL || bd > 64)
+            continue;
+        /* 60 px above it, in a jump: the search picks it, the homing attack heads at it */
+        {
+            /* (the chain: Player_AddTensionCombo's count and timer carry over) */
+            u16 cb = P.combo, ct = P.combo_timer;
+            place_player(best->h.x >> 8, (best->h.y >> 8) - 60);
+            P.combo = cb, P.combo_timer = ct;
+        }
+        dcp_act_jump(&P);
+        P.vel_y = 0x100;
+        frame(0);
+        tb = P.tension;
+        e0 = objects_stats()->enemies_destroyed;
+        frame(DCP_KEY_R);
+        frame(0);
+        if (P.state != dcp_state_homing && objects_stats()->enemies_destroyed == e0) {
+            printf("  homing not started at (%d,%d): homing %p\n", e->x, e->y, (void *)P.homing);
+            continue;
+        }
+        {
+            u16 a = (u16)dcp_atan2((best->h.y - P.y) >> 8, (best->h.x - P.x) >> 8);
+            printf("  homing at (%d,%d): vel %d,%d (cos/sin >> 1: %d,%d) anim %x\n", best->h.x >> 8, best->h.y >> 8, P.vel_x,
+                   P.vel_y, dcp_cos(a) >> 1, dcp_sin(a) >> 1, P.anim);
+        }
+        for (n = 0; n < 0x20 && objects_stats()->enemies_destroyed == e0; n++)
+            frame(0);
+        if (objects_stats()->enemies_destroyed == e0)
+            continue;
+        t[kills] = (s16)(P.tension - tb);
+        kills++;
+    }
+    printf("  tension per kill:");
+    for (i = 0; i < kills; i++)
+        printf(" +%d", t[i]);
+    printf("\n");
+    if (kills < 2) {
+        printf("  (fewer than two homing kills set up in this act: chain not checked)\n");
+        return;
+    }
+    CHECK(t[0] == 400 && t[1] == 600 && (kills < 3 || t[2] == 800),
+          "Player_AddTensionCombo chain: +400, +600 (, +800) within 0x60 frames");
+}
+
+/* Player_OnHurt -> RingManager_ScatterRings: min(rings, 64) rings, the arc of the original loop,
+ * level +1 per scatter (max 4), back to 0 once every scattered ring is gone; RingManager_SpawnRing
+ * lifetime 0x100 + (Rand & 0x1f), no pickup while the timer is >= 0xd8, blinking (timer & 2) in the
+ * last 0x20 frames; Player_AddRings: a life at every 100 */
+static void scatter_expect(int nrings, u8 level, s16 *evx, s16 *evy, int *cnt) {
+    s32 ang = 0x488 + (level << 8), sh;
+    s16 vx = 0, vy = 0;
+    int i, n = nrings > 0x40 ? 0x40 : nrings, c = 0;
+    for (i = 0; i < 0x40; i++) {
+        if (ang >= 0) {
+            sh = ang >> 8;
+            if (sh >= 6)
+                sh = 9 - sh;
+            vx = (s16)(dcp_sin((u16)((ang & 0xff) << 8)) >> sh);
+            vy = (s16)(dcp_cos((u16)((ang & 0xff) << 8)) >> sh);
+            vx -= vx / 4;
+            vy -= vy / 4;
+            ang = (ang + 0x10) | 0x80;
+        }
+        evx[c] = vx, evy[c] = vy;
+        ang = -ang;
+        vx = (s16)-vx;
+        c++;
+        if (c >= n)
+            break;
+    }
+    *cnt = c;
+}
+static void test_rings_lives(void) {
+    const rlvl_object_t *ps = find_obj(0x72, 0);
+    s16 evx[64], evy[64];
+    int n, cnt, ok, k, drawn_late = 0, blink = 0, picked_early = 0, max_alive = 0, win = 0;
+    u8 lvl0, lvl1;
+    printf("[rings] Player_OnHurt ring scatter, RingManager_SpawnRing lifetime, Player_AddRings lives\n");
+    gameplay_hooks();
+    if (ps == NULL)
+        return;
+    for (k = 0; k < 2; k++) {
+        int want_n = k == 0 ? 30 : 100;
+        place_on_floor(ps->x, ps->y);
+        for (n = 0; n < 4; n++)
+            frame(0);
+        P.rings = (s16)want_n;
+        P.invuln = 0;
+        lvl0 = *objects_ring_scatter_level();
+        g_rspawn.n = 0;
+        dcp_on_hurt(&P, 0);
+        lvl1 = *objects_ring_scatter_level();
+        scatter_expect(want_n, lvl0, evx, evy, &cnt);
+        ok = g_rspawn.n == cnt && P.rings == 0;
+        for (n = 0; n < cnt && n < g_rspawn.n; n++)
+            ok = ok && g_rspawn.vx[n] == evx[n] && g_rspawn.vy[n] == evy[n] && (g_rspawn.f[n] & 0x1000);
+        printf("  %d rings, level %d: %d spawned (want %d), first (%d,%d) want (%d,%d), level after %d\n", want_n, lvl0,
+               g_rspawn.n, cnt, g_rspawn.n ? g_rspawn.vx[0] : 0, g_rspawn.n ? g_rspawn.vy[0] : 0, evx[0], evy[0], lvl1);
+        CHECK(ok && lvl1 == (lvl0 < 4 ? lvl0 + 1 : 4), "scatter of %d rings: count %d, the RingManager_ScatterRings arc, level +1",
+              want_n, cnt);
+        if (k == 0) {
+            /* lifetime / blink / pickup delay, with the player held where the rings spawned */
+            s32 hx = P.x, hy = P.y;
+            for (n = 0; n < 0x140; n++) {
+                int i, alive = 0, dr = 0;
+                s32 x, y;
+                int vf;
+                if (n < 0x26) {
+                    P.x = hx, P.y = hy, P.invuln = 0x40;
+                }
+                frame(0);
+                for (i = 0; i < ring_draw_count(); i++)
+                    if (ring_draw_get(i, &x, &y, &vf))
+                        dr++;
+                alive = objects_ring_count();
+                if (alive > max_alive)
+                    max_alive = alive;
+                if (n < 0x26 && P.rings > 0)
+                    picked_early = 1;
+                if (n >= 0x100 - 0x20 && n < 0x11f && dr < alive)
+                    blink++;
+                if (n >= 0x100 - 0x20 && n < 0x11f && alive > 0)
+                    win++;
+                if (n >= 0x121)
+                    drawn_late += alive;
+            }
+            printf("  scattered rings: no pickup in the first 0x26 frames %d, blink frames near the end %d, alive after 0x121 "
+                   "frames %d, scatter level now %d\n",
+                   !picked_early, blink, drawn_late, *objects_ring_scatter_level());
+            /* (rings that leave the view end early: RingManager_Main view-out) */
+            CHECK(!picked_early && (blink > 0 || win == 0) && drawn_late == 0,
+                  "scattered rings: pickup delay, blink, lifetime 0x100 + 0..0x1f");
+            /* (RingManager_Main: picking one scattered ring back up clears flag 2, and then the level stays) */
+            CHECK(P.rings > 0 ? *objects_ring_scatter_level() == lvl1 : *objects_ring_scatter_level() == 0,
+                  "scatter level back to 0 once the scattered rings expire uncollected (kept after a pickup: %d rings)",
+                  P.rings);
+        }
+    }
+    /* Player_AddRings: one life when crossing each 100 (story mode), 999 cap */
+    g_lives_added = 0;
+    P.rings = 98;
+    dcp_add_rings(&P, 1);
+    dcp_add_rings(&P, 1);
+    dcp_add_rings(&P, 150);
+    n = g_lives_added;
+    P.rings = 990;
+    dcp_add_rings(&P, 20);
+    printf("  rings 98 -> 100 -> 250: lives +%d; 990 + 20 -> %d\n", n, P.rings);
+    CHECK(n == 2 && P.rings == 999, "Player_AddRings: a life at 100 and at 200, cap 999");
+    /* item box p6 2: Player_AddLives(1) */
+    {
+        Obj *o = NULL;
+        int k2;
+        for (k2 = 0; k2 < 30 && o == NULL; k2++) {
+            const rlvl_object_t *e = find_obj(0x30, k2);
+            Obj *q;
+            if (e == NULL)
+                break;
+            q = spawn_nth(0x30, k2, NULL);
+            if (q && (s8)q->prm->p6 == 2)
+                o = q;
+        }
+        if (o != NULL) {
+            s32 cx, cy;
+            g_lives_added = 0;
+            box_centre(o, &cx, &cy);
+            hold_contact(cx, cy, 0, 0, 20, "item_box");
+            printf("  1-up item box at (%d,%d): lives +%d\n", o->h.x >> 8, o->h.y >> 8, g_lives_added);
+            CHECK(g_lives_added == 1, "ItemBox_GiveItem kind 2: Player_AddLives(1)");
+        } else {
+            printf("  (no 1-up item box in this act)\n");
+        }
+    }
+}
+
+/* Player_In pit line (map height - 0x1a), Player_Action_Die, Player_State_Die (0x3c frames + fade),
+ * Player_Respawn at the marker, lives - 1, game over (pf 0x800000) at 0 lives; Player_CheckCrushed */
+static void test_death(void) {
+    const rlvl_object_t *mk = find_obj(0x6e, 0);
+    int n, died_at = -1, back_at = -1;
+    u8 lives0;
+    printf("[death] pit, Player_State_Die, Player_Respawn, lives, crush\n");
+    if (mk == NULL)
+        return;
+    /* pass the marker for the respawn point */
+    {
+        Obj *o = spawn_nth(0x6e, 0, NULL);
+        s32 cx, cy;
+        if (o != NULL) {
+            box_centre(o, &cx, &cy);
+            hold_contact(cx, cy, 0, 0, 20, "checkpoint");
+        }
+    }
+    lives0 = g_dcp_world.lives = 3;
+    g_dcp_world.mode = 0;
+    if (g_dcp_world.zone == 6 && g_dcp_world.act == 0) {
+        /* Player_In: no pit line in zone 6 act 0 */
+        place_player(mk->x, M.bottom - 0x19);
+        P.move_flags |= 0x10;
+        frame(0);
+        printf("  zone 6 act 0: below the line, state die %d (Player_In skips the pit line here)\n", P.state == dcp_state_die);
+        CHECK(P.state != dcp_state_die, "zone 6 act 0 has no pit line (Player_In)");
+        return;
+    }
+    /* drop below the map: the pit line is the map height - 0x1a (death_y from dcp_bind_map) */
+    place_player(mk->x, M.bottom - 0x19); /* (Player_In checks the line before any collision) */
+    P.move_flags |= 0x10;
+    for (n = 0; n < 0x100 && back_at < 0; n++) {
+        frame(0);
+        if (died_at < 0 && P.state == dcp_state_die)
+            died_at = n;
+        if (died_at >= 0 && P.state != dcp_state_die)
+            back_at = n;
+    }
+    if (died_at < 0)
+        printf("  (not dead: mf %x pf %x zone %d act %d state %p)\n", P.move_flags, P.pf, g_dcp_world.zone, g_dcp_world.act,
+               (void *)P.state);
+    printf("  pit: dead at frame %d (y %d, line %d), back after %d frames at (%d,%d), respawn (%d,%d), lives %d -> %d\n",
+           died_at, P.y >> 8, g_dcp_world.death_y - 0x1a, back_at - died_at, P.x >> 8, P.y >> 8, g_dcp_world.check_x,
+           g_dcp_world.check_y, lives0, g_dcp_world.lives);
+    CHECK(g_dcp_world.death_y == M.bottom, "dcp_bind_map: pit line from the map height (%d)", g_dcp_world.death_y);
+    CHECK(died_at >= 0 && back_at - died_at >= 0x3b && g_dcp_world.lives == lives0 - 1,
+          "Player_State_Die: 0x3c frames, then Player_Respawn, lives - 1");
+    CHECK(DCP_ABS((P.x >> 8) - g_dcp_world.check_x) <= 2 && P.rings == 0, "respawn at the marker with no rings");
+    /* game over: no lives left -> pf 0x800000, no respawn */
+    g_dcp_world.lives = 0;
+    place_player(mk->x, M.bottom - 0x19);
+    P.move_flags |= 0x10;
+    for (n = 0; n < 0x100 && !(P.pf & 0x800000); n++)
+        frame(0);
+    CHECK((P.pf & 0x800000) != 0, "Player_Respawn at 0 lives: game over flag pf 0x800000 for the UI");
+    /* crush: Player_CheckCrushed with pf 0x800 (riding), no touch object, walls on both sides */
+    g_dcp_world.lives = 3;
+    place_on_floor(mk->x, mk->y);
+    frame(0);
+    P.pf |= 0x800;
+    P.move_flags |= 4 | 8;
+    dcp_check_crushed(&P);
+    CHECK(P.state == dcp_state_die, "Player_CheckCrushed: pf 0x800 with both side walls kills");
+    g_dcp_world.lives = 3;
+}
+
 int main(int argc, char **argv) {
     long size;
     char path[512];
@@ -1850,6 +2281,10 @@ int main(int argc, char **argv) {
         /* make audit: the per-class audit on any stage, either character */
         test_audit();
         test_audit_classes();
+        test_tricks();
+        test_homing();
+        test_rings_lives();
+        test_death();
         printf("%d checks, %d failed\n", g_checks, g_fail);
         objects_shutdown();
         return g_fail ? 1 : 0;
@@ -1864,6 +2299,10 @@ int main(int argc, char **argv) {
     test_blaze_flames();
     test_audit();
     test_audit_classes();
+    test_tricks();
+    test_homing();
+    test_rings_lives();
+    test_death();
     test_loop();
     printf("%d checks, %d failed\n", g_checks, g_fail);
     objects_shutdown();

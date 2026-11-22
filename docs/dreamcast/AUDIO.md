@@ -25,7 +25,11 @@ level (6 s test: 224,418 frames, RMS 10,012).
   mix gain for music and effects (section 10).
 - STRM: streamed from disc with `snd_stream` double buffers.
 - Sound effects and voices: **done as a real-time sequenced runtime**, see
-  below. The sys SDAT (menus, title, cutscenes) has no bank yet.
+  below (sys SDAT banks: section 11, cutscene banks `sys_aNN`, ClearDemo banks
+  `sys_a05`..`sys_a07`: section 14).
+- Music selection and in-stage music events (act / character / boss / pinch /
+  jingles / underwater and gravity layers / results / special stage): **done**,
+  section 14 (`sound/bgm.c`, stream table from `musictab.py`).
 
 ---
 
@@ -303,7 +307,9 @@ logic, DS services replaced; **rewritten** = substantially rewritten;
 | ARM7 SND driver (not in the decompilation): `SND_PrepareSeq`, `SND_StartPreparedSeq`, `SND_StopSeq`, `SND_SetPlayerVolume`, `SND_SetPlayerChannelPriority`, `SND_SetTrackPan`, `SND_SetTrackAllocatableChannel`, sequence/track/ExChannel main | `snd_drv.c` (from `sseqrender.c`: `track_step`, `play_note`, `alloc_chan`, `note_on`, `exchannel_main`, `seq_main` reused) | rewritten (multi-player, track pool, extPan, no mixer) |
 | `SND_UpdateExChannel` (hardware) | `update_hw` + `hw_advance` + `snd_drv_flush` | rewritten (AICA output) |
 | — | `snd_out_kos.c`, `sound_hooks.c`, `sound_play*` API | new |
-| `Sound_PlaySeq`, `Sound_PlayBGMEx`, `Sound_PlayBGMOnPlayer3`, `SysSound_*`, `TensionSound_*`, `StageJingle_*`, `Sound_LoadSoundArchive*`, `Sound_ResetHeap` | — | not translated (music is streamed; no sys bank) |
+| `Stage_PlayBGM`, `Stage_SelectBGMLayer`, `Stage_FadeBGMLayer`, `StageJingle_Create` / `_Main` / `_Destructor`, `Sound_PlayBGMOnPlayer3`, `Sound_PlaySeq` / `Sound_PlayBGMEx` (BGM handles), `Player_AddLives` (sound), `Player_GiveInvincibility` (sound + timers), `Player_UpdateGravityFlip` (layer + SE) | `bgm.c` | modified (NNS calls on the BGM handles -> stream engine, section 14) |
+| `NNS_SndPlayerPause` / `NNS_SndPlayerPauseByPlayerNo` / `NNSi_SndPlayerPause`, ARM7 `SND_PauseSeq` | `snd_nns.c`, `snd_drv.c` | as-is / rewritten |
+| `SysSound_PlayBGM*`, `SysSound_FadeBGMVolume`, `TensionSound_*`, `Sound_LoadSoundArchive*`, `Sound_ResetHeap` | — | not translated (menus call `bgm_play`; TensionSound has no native caller) |
 
 ---
 

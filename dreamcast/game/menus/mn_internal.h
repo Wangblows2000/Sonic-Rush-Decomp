@@ -376,6 +376,11 @@ void TimeAttackMenu_StartMode2(void);
 void TimeAttackMenu_StartMode3(void);
 void Game_StartTimeAttackStage(s32 zone, s32 act);   /* -1 keeps gGameState's value */
 void TryAgain_Start(void);
+void SysSound_Release(void);   /* stop all sound; the next SysSound_PlayBGM starts its BGM */
+void mn_bgm_forget(void);
+extern int g_mn_automap;   /* test builds: zone-map autopilot (mn_zonemap.c); -1 = read debug/automap.txt */
+extern int g_mn_automap_char;   /* test builds: the player-select choice of the autopilot (-1 none) */
+int mn_automap_choice(u16 *cur, u16 *trg, s32 sel, u32 frames);
 void Records_Start(void);
 /* host test access */
 int TimeAttackMenu_Selected(void);

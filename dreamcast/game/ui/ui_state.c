@@ -29,6 +29,7 @@ u16 g_ui_trig, g_ui_held;
 
 static int s_state = UI_PLAYING;
 static int s_exit_kind = UI_EXIT_NONE;
+static int s_exit_cleared;   /* ui_exit_cleared() */
 static int s_pending_exit = -1;       /* StageExit_Create: runs next frame */
 static void (*s_pending_cb)(void);
 static u32 s_timer;                   /* gGameState.unk20 as Stage_Main left it */
@@ -316,6 +317,7 @@ void ui_stage_start(int zone, int act, int character) {
     g_ui_bright_main = g_ui_bright_sub = 0;
     s_state = UI_PLAYING;
     s_exit_kind = UI_EXIT_NONE;
+    s_exit_cleared = 0;
     s_pending_exit = -1;
     s_pending_cb = NULL;
     s_pending_restart = 0;
@@ -367,9 +369,16 @@ static void StageExit_Create(void (*cb)(void)) {
     s_pending_exit = 1;
 }
 void ui_request_exit(int kind) {
+    /* the results (ClearDemo) end the stage only after a clear; a time-attack
+     * UI_EXIT_TRY_AGAIN also comes from the pause menu and Stage_ExitAfterFail */
+    s_exit_cleared = s_state == UI_RESULTS;
     s_exit_kind = kind;
     s_state = UI_EXIT;
 }
+/* 1 when the stage ended through the act results (a clear: ClearDemo_GoToNextScene),
+ * 0 for the pause menu, game over, time over and Stage_ExitAfterFail. Valid with
+ * ui_state() == UI_EXIT; main.c passes MENU_EXIT_CLEARED only then. */
+int ui_exit_cleared(void) { return s_state == UI_EXIT && s_exit_cleared; }
 
 /* StageShutdown_Create(ResultsScreen_Create / ClearDemo_Create) from the goal */
 void ui_stage_exit(s32 kind) {
@@ -641,7 +650,16 @@ void ui_install_hooks(void) {
         g_dcp_hooks.restart = h_restart;
     }
     if (g_obj_hooks.stage_exit != h_stage_exit) {
-        s_prev_obj = g_obj_hooks;
+        /* The objects module never restores g_obj_hooks, and main.c wraps stage_exit
+         * after ui_stage_start (its special-stage hook chains to ours). Taking the
+         * current hooks as "previous" again on the next stage would make the two
+         * handlers call each other forever at the goal (2nd act of a session: hang).
+         * So the previous hooks are the ones found the first time only. */
+        static int s_obj_prev_taken;
+        if (!s_obj_prev_taken) {
+            s_prev_obj = g_obj_hooks;
+            s_obj_prev_taken = 1;
+        }
         g_obj_hooks.fade = h_obj_fade;
         g_obj_hooks.stage_exit = h_stage_exit;
         g_obj_hooks.checkpoint_popup = h_checkpoint_popup;

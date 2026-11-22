@@ -28,6 +28,7 @@ int level_load(Level *lv, const char *dir)
 
     memset(lv, 0, sizeof(*lv));
     lv->pal_bank = lv->bg_pal_bank = -1;
+    lv->alt_pal_bank = lv->alt_bg_pal_bank = -1;
     snprintf(path, sizeof(path), "%s/level.bin", dir);
     lv->data = read_file(path, &lv->size);
     if(!lv->data) return -1;
@@ -72,6 +73,12 @@ int level_load(Level *lv, const char *dir)
                 pvr_txr_load(bg + bh->texture_offset, lv->bg_tex, lv->bg_tw * lv->bg_th);
                 lv->vram_used += lv->bg_tw * lv->bg_th;
             }
+            /* every palette stays in RAM for the zone effects (alternate palettes = the
+             * palette animation sources, ZoneFx_InitPaletteAnim) */
+            lv->bg_num_pals = bh->num_palettes ? bh->num_palettes : 1;
+            lv->bg_pals = malloc(lv->bg_num_pals * 512);
+            if(lv->bg_pals) memcpy(lv->bg_pals, bg + bh->palette_offset, lv->bg_num_pals * 512);
+            else lv->bg_num_pals = 0;
             free(bg);
         }
     }
@@ -85,10 +92,14 @@ void level_free(Level *lv)
     if(lv->bg_tex) pvr_mem_free(lv->bg_tex);
     if(lv->pal_bank >= 0) pal8_free(lv->pal_bank, lv->pal_rows);
     if(lv->bg_pal_bank >= 0) pal8_free(lv->bg_pal_bank, lv->bg_pal_rows);
+    if(lv->alt_pal_bank >= 0) pal8_free(lv->alt_pal_bank, lv->pal_rows);
+    if(lv->alt_bg_pal_bank >= 0) pal8_free(lv->alt_bg_pal_bank, lv->bg_pal_rows);
+    free(lv->bg_pals);
     free(lv->pages);
     free(lv->data);
     memset(lv, 0, sizeof(*lv));
     lv->pal_bank = lv->bg_pal_bank = -1;
+    lv->alt_pal_bank = lv->alt_bg_pal_bank = -1;
 }
 
 int level_width_px(const Level *lv) { return lv->hdr->width_blocks * RLVL_BLOCK_PX; }
@@ -150,4 +161,143 @@ void level_draw_bg(const Level *lv, float fx, float fy, float z)
             pal_quad(lv->bg_tex, lv->bg_tw, lv->bg_th, lv->bg_pal_bank, PVR_LIST_OP_POLY,
                      x * VIEW_SCALE, y * VIEW_SCALE, lv->bg_w * VIEW_SCALE, lv->bg_h * VIEW_SCALE,
                      0, 0, (float)lv->bg_w / lv->bg_tw, (float)lv->bg_h / lv->bg_th, z);
+}
+
+/* ------------------------------------------------------------------ zone effects */
+static pvr_poly_hdr_t s_bg_hdr[2];
+
+static void bg_hdr(const Level *lv, int bank, pvr_poly_hdr_t *hdr)
+{
+    pvr_poly_cxt_t cxt;
+    pvr_poly_cxt_txr(&cxt, PVR_LIST_OP_POLY, PVR_TXRFMT_PAL8BPP | PVR_TXRFMT_8BPP_PAL(bank) | PVR_TXRFMT_TWIDDLED,
+                     lv->bg_tw, lv->bg_th, lv->bg_tex, PVR_FILTER_NONE);
+    cxt.txr.uv_clamp = PVR_UVCLAMP_NONE;   /* the BG wraps (DS 512x512 / 256x512 text BG) */
+    pvr_poly_compile(hdr, &cxt);
+}
+
+/* rows [r0, r1) of the window with BG offset (x, y): one quad, the texture repeats */
+static void bg_strip(const Level *lv, int r0, int r1, int x, int y, float z, uint32_t argb)
+{
+    pvr_vertex_t v;
+    float u0 = (float)(x & (lv->bg_w - 1)) / lv->bg_tw;
+    float u1 = u0 + VIEW_W / lv->bg_tw;
+    float v0 = (float)((r0 + y) & (lv->bg_h - 1)) / lv->bg_th;
+    float v1 = v0 + (float)(r1 - r0) / lv->bg_th;
+    float y0 = r0 * VIEW_SCALE, y1 = r1 * VIEW_SCALE;
+    v.flags = PVR_CMD_VERTEX; v.argb = argb; v.oargb = 0; v.z = z;
+    v.x = 0;   v.y = y1; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v));
+    v.x = 0;   v.y = y0; v.u = u0; v.v = v0; pvr_prim(&v, sizeof(v));
+    v.x = 640; v.y = y1; v.u = u1; v.v = v1; pvr_prim(&v, sizeof(v));
+    v.flags = PVR_CMD_VERTEX_EOL;
+    v.x = 640; v.y = y0; v.u = u1; v.v = v0; pvr_prim(&v, sizeof(v));
+}
+
+void level_draw_bg_lines(const Level *lv, const LevelBgLine *lines, int alt_row, uint32_t alt_argb, float z)
+{
+    int r, r0, k, cur = -1;
+    if(!lv->bg_tex || lv->bg_pal_bank < 0) return;
+    if(lv->bg_w != lv->bg_tw || lv->bg_h != lv->bg_th) return;   /* the converter makes them equal */
+    bg_hdr(lv, lv->bg_pal_bank, &s_bg_hdr[0]);
+    if(lv->alt_bg_pal_bank >= 0) bg_hdr(lv, lv->alt_bg_pal_bank, &s_bg_hdr[1]);
+    for(r0 = 0; r0 < 192; r0 = r) {
+        int x = lines[r0].x & 0x1ff, y = lines[r0].y & 0x1ff;
+        k = r0 >= alt_row;
+        /* rows with the same offset; a strip ends where the texture would wrap or the bank changes */
+        for(r = r0 + 1; r < 192; r++) {
+            if((lines[r].x & 0x1ff) != x || (lines[r].y & 0x1ff) != y) break;
+            if((r >= alt_row) != k) break;
+            if(((r + y) & (lv->bg_h - 1)) == 0) break;
+        }
+        /* rows below alt_row: the second bank, or the normal one with the tint colour */
+        if(cur != k) { pvr_prim(&s_bg_hdr[k && lv->alt_bg_pal_bank >= 0], sizeof(pvr_poly_hdr_t)); cur = k; }
+        bg_strip(lv, r0, r, x, y, z, (k && lv->alt_bg_pal_bank < 0) ? alt_argb : 0xffffffff);
+    }
+}
+
+/* pal_quad with a vertex colour (MODULATE): the tint when no second bank was free */
+static void pal_quad_c(pvr_ptr_t tex, int bank, pvr_list_t list, float x, float y, float w, float h,
+                       float u0, float v0, float u1, float v1, float z, uint32_t argb)
+{
+    pvr_poly_cxt_t cxt;
+    pvr_poly_hdr_t hdr;
+    pvr_vertex_t v;
+    pvr_poly_cxt_txr(&cxt, list, PVR_TXRFMT_PAL8BPP | PVR_TXRFMT_8BPP_PAL(bank) | PVR_TXRFMT_TWIDDLED,
+                     512, 512, tex, PVR_FILTER_NONE);
+    pvr_poly_compile(&hdr, &cxt);
+    pvr_prim(&hdr, sizeof(hdr));
+    v.flags = PVR_CMD_VERTEX; v.argb = argb; v.oargb = 0; v.z = z;
+    v.x = x;     v.y = y + h; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v));
+    v.x = x;     v.y = y;     v.u = u0; v.v = v0; pvr_prim(&v, sizeof(v));
+    v.x = x + w; v.y = y + h; v.u = u1; v.v = v1; pvr_prim(&v, sizeof(v));
+    v.flags = PVR_CMD_VERTEX_EOL;
+    v.x = x + w; v.y = y;     v.u = u1; v.v = v0; pvr_prim(&v, sizeof(v));
+}
+
+void level_draw_layer_split(const Level *lv, int layer, pvr_list_t list, float z, float split_y, uint32_t alt_argb)
+{
+    int alt_bank = lv->alt_pal_bank >= 0 ? lv->alt_pal_bank : lv->pal_bank;
+    uint32_t alt_c = lv->alt_pal_bank >= 0 ? 0xffffffff : alt_argb;
+    const float bs = RLVL_BLOCK_PX * VIEW_SCALE;
+    int bx0 = (int)(g_cam_x / RLVL_BLOCK_PX), by0 = (int)(g_cam_y / RLVL_BLOCK_PX);
+    int bx1 = (int)((g_cam_x + VIEW_W) / RLVL_BLOCK_PX), by1 = (int)((g_cam_y + VIEW_H) / RLVL_BLOCK_PX);
+    int bx, by, W = lv->hdr->width_blocks, H = lv->hdr->height_blocks;
+    const float ps = 512.0f, inset = 0.25f;
+    if(split_y >= g_cam_y + VIEW_H || (lv->alt_pal_bank < 0 && alt_argb == 0xffffffff)) { level_draw_layer(lv, layer, list, z); return; }
+    for(by = by0; by <= by1; by++) {
+        float wy0 = by * RLVL_BLOCK_PX, wy1 = wy0 + RLVL_BLOCK_PX;
+        if(by < 0 || by >= H) continue;
+        for(bx = bx0; bx <= bx1; bx++) {
+            int id, page, slot;
+            float u0, v0, sx, sy;
+            if(bx < 0 || bx >= W) continue;
+            id = lv->layer[layer][by * W + bx];
+            if(id == 0 || id >= lv->hdr->num_blocks) continue;
+            page = id / 64; slot = id % 64;
+            if(page >= lv->num_pages) continue;
+            u0 = (slot % 8) * 64.0f; v0 = (slot / 8) * 64.0f;
+            sx = (bx * RLVL_BLOCK_PX - g_cam_x) * VIEW_SCALE;
+            sy = (wy0 - g_cam_y) * VIEW_SCALE;
+            if(wy1 <= split_y) {
+                pal_quad(lv->pages[page], 512, 512, lv->pal_bank, list, sx, sy, bs, bs,
+                         (u0 + inset) / ps, (v0 + inset) / ps, (u0 + 64 - inset) / ps, (v0 + 64 - inset) / ps, z);
+            } else if(wy0 >= split_y) {
+                pal_quad_c(lv->pages[page], alt_bank, list, sx, sy, bs, bs,
+                           (u0 + inset) / ps, (v0 + inset) / ps, (u0 + 64 - inset) / ps, (v0 + 64 - inset) / ps, z, alt_c);
+            } else {
+                /* the block crosses the water line: two parts, the lower one tinted */
+                float h0 = split_y - wy0;
+                pal_quad(lv->pages[page], 512, 512, lv->pal_bank, list, sx, sy, bs, h0 * VIEW_SCALE,
+                         (u0 + inset) / ps, (v0 + inset) / ps, (u0 + 64 - inset) / ps, (v0 + h0) / ps, z);
+                pal_quad_c(lv->pages[page], alt_bank, list, sx, sy + h0 * VIEW_SCALE, bs, (64 - h0) * VIEW_SCALE,
+                           (u0 + inset) / ps, (v0 + h0) / ps, (u0 + 64 - inset) / ps, (v0 + 64 - inset) / ps, z, alt_c);
+            }
+        }
+    }
+}
+
+static void set_rows(int bank, uint16_t rows, const uint16_t *pal)
+{
+    int r, i;
+    if(bank < 0 || !pal) return;
+    for(r = 0; r < 16; r++)
+        if(rows & (1u << r))
+            for(i = 0; i < 16; i++) pvr_set_pal_entry(bank * 256 + r * 16 + i, pal[r * 16 + i]);
+}
+void level_set_palette(const Level *lv, int alt, const uint16_t *pal)
+{
+    set_rows(alt ? lv->alt_pal_bank : lv->pal_bank, lv->pal_rows, pal);
+}
+void level_set_bg_palette(const Level *lv, int alt, const uint16_t *pal)
+{
+    set_rows(alt ? lv->alt_bg_pal_bank : lv->bg_pal_bank, lv->bg_pal_rows, pal);
+}
+int level_alloc_alt_banks(Level *lv, const uint16_t *pal, const uint16_t *bg_pal)
+{
+    if(lv->alt_pal_bank < 0 && lv->pal_rows) lv->alt_pal_bank = pal8_alloc(pal, lv->pal_rows);
+    if(lv->alt_bg_pal_bank < 0 && lv->bg_pal_rows && bg_pal) lv->alt_bg_pal_bank = pal8_alloc(bg_pal, lv->bg_pal_rows);
+    return (lv->alt_pal_bank >= 0 && (lv->alt_bg_pal_bank >= 0 || !lv->bg_pal_rows)) ? 0 : -1;
+}
+const uint16_t *level_palette(const Level *lv)
+{
+    return (const uint16_t *)(lv->data + lv->hdr->sec[RLVL_SEC_PALETTE].offset);
 }

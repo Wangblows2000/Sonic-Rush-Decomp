@@ -7,6 +7,9 @@
  *            -> gSESoundHandle), NNS_SndPlayerStopSeq(handle, fade)
  *   objects Sound_PlaySeqArcEx(NULL, 0, id)  (object handles / positional
  *           volume were dropped by the objects module: plays centred)
+ *   g_dcp_hooks.add_life  Player_AddLives -> Sound_PlayBGMOnPlayer3(0, 0x18) (bgm.c)
+ *   g_dcp_hooks.restart   StageRestart -> Stage_PlayBGM(0) again (bgm.c)
+ *   g_obj_hooks.item      OBJ_ITEM_INVINCIBLE -> Player_GiveInvincibility (bgm.c)
  * Previously installed hooks are chained (called first, same ctx).
  */
 #include "sound.h"
@@ -16,6 +19,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "snd_internal.h"
+#include "bgm.h"
 extern uint32_t g_sound_frame;
 
 #define MAX_PLAYERS 2
@@ -23,6 +27,9 @@ static struct { DcPlayer *p; SoundHandle h[3]; } s_ph[MAX_PLAYERS];
 static void (*s_prev_sfx)(void *, DcPlayer *, s32, s32);
 static void (*s_prev_stop)(void *, DcPlayer *, s32);
 static void (*s_prev_obj)(void *, s32);
+static void (*s_prev_add_life)(void *, DcPlayer *, s32);
+static void (*s_prev_restart)(void *, DcPlayer *);
+static void (*s_prev_item)(void *, DcPlayer *, s32);
 static int s_installed;
 
 /* Fade used by sfx_stop: the hook carries no fade argument. Most frequent
@@ -59,6 +66,27 @@ static void hk_obj_sfx(void *ctx, s32 id) {
     Sound_PlaySeqArcEx(NULL, 0, id);
 }
 
+/* Sound_PlaySeqArcEx on a player handle (bgm.c: the gravity-flip SE) */
+void sound_player_sfx(DcPlayer *p, int ch, int id) {
+    Sound_PlaySeqArcEx(ch == DCP_CH_GLOBAL ? NULL : player_handle(p, ch), 0, id);
+}
+/* Player_AddLives (the ui module counts the life): Sound_PlayBGMOnPlayer3(0, 0x18) */
+static void hk_add_life(void *ctx, DcPlayer *p, s32 n) {
+    if (s_prev_add_life) s_prev_add_life(ctx, p, n);
+    Player_AddLives_Sound(n);
+}
+/* Player_Respawn -> StageRestart_Create (story / time attack; not VS, not pf2 & 0x400000):
+ * the stage is rebuilt and Stage_PlayBGM(0) starts the music again */
+static void hk_restart(void *ctx, DcPlayer *p) {
+    if (s_prev_restart) s_prev_restart(ctx, p);
+    if (g_dcp_world.mode != 1 && !(p->pf2 & 0x400000)) bgm_stage_restart();
+}
+/* ItemBox_GiveItem 5: Player_GiveInvincibility (audio + timers; the effect is not translated) */
+static void hk_item(void *ctx, DcPlayer *p, s32 item) {
+    if (s_prev_item) s_prev_item(ctx, p, item);
+    if (item == OBJ_ITEM_INVINCIBLE) Player_GiveInvincibility(p);
+}
+
 /* Call once at boot BEFORE the first objects_init(): objects_init saves
  * g_dcp_hooks and objects_shutdown restores that copy, so hooks installed
  * before it survive stage changes. Calling it again re-installs whatever was
@@ -68,6 +96,9 @@ void sound_hooks_install(void) {
     if (g_dcp_hooks.sfx != hk_sfx) { s_prev_sfx = g_dcp_hooks.sfx; g_dcp_hooks.sfx = hk_sfx; }
     if (g_dcp_hooks.sfx_stop != hk_sfx_stop) { s_prev_stop = g_dcp_hooks.sfx_stop; g_dcp_hooks.sfx_stop = hk_sfx_stop; }
     if (g_obj_hooks.sfx != hk_obj_sfx) { s_prev_obj = g_obj_hooks.sfx; g_obj_hooks.sfx = hk_obj_sfx; }
+    if (g_dcp_hooks.add_life != hk_add_life) { s_prev_add_life = g_dcp_hooks.add_life; g_dcp_hooks.add_life = hk_add_life; }
+    if (g_dcp_hooks.restart != hk_restart) { s_prev_restart = g_dcp_hooks.restart; g_dcp_hooks.restart = hk_restart; }
+    if (g_obj_hooks.item != hk_item) { s_prev_item = g_obj_hooks.item; g_obj_hooks.item = hk_item; }
     s_installed = 1;
 }
 

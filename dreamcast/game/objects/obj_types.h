@@ -177,6 +177,7 @@ enum ObjBac {
     OBJ_BAC_EFF_BOOST, /* ac_eff_boost.bac (act_com): EffBoost, Aura, Burst, HighSpeedStart, BlazeBoostFlame, BoostJet */
     OBJ_BAC_EFF_SPIN1, /* ac_eff_kemuri_spin01.bac (act_com): EffSpinSmoke1 */
     OBJ_BAC_EFF_SPIN2, /* ac_eff_kemuri_spin02.bac (act_com): EffSpinSmoke2 */
+    OBJ_BAC_EFF_TRICK, /* ac_eff_trick.bac (act_com): EffTrick_CreateAtOffset, EffTrickSparkle, EffTrickComboPart */
     OBJ_BAC_COUNT
 };
 

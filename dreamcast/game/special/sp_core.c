@@ -496,6 +496,21 @@ int special_init(int stage_index, int character) {
     memset(&g_sp_trace, 0, sizeof(g_sp_trace));
     memset(&s_res, 0, sizeof(s_res));
     s_res.stage = stage_index;
+    {
+        /* test builds: <special dir>/../debug/spquota.txt keeps the rings at the goal quota
+         * (special_debug_force_quota): the stage is cleared without a player */
+        extern char g_sp_path[128];
+        char p[160];
+        const char *slash = strrchr(g_sp_path, '/');
+        FILE *f;
+        snprintf(p, sizeof(p), "%.*s/debug/spquota.txt", slash ? (int)(slash - g_sp_path) : 0, g_sp_path);
+        f = fopen(p, "rb");
+        if (f) {
+            s_force_quota = 1;
+            fclose(f);
+            printf("special: debug quota on\n");
+        }
+    }
     s_paused = 0;
     s_result = 0;
     sp_input_reset();

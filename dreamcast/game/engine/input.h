@@ -9,7 +9,9 @@ enum {
     IN_BOOST = 1 << 5,  /* X */
     IN_TRICK = 1 << 6,  /* B */
     IN_ALT = 1 << 7,    /* Y */
-    IN_START = 1 << 8
+    IN_START = 1 << 8,
+    IN_R = 1 << 9,      /* right trigger: DS R (tricks, air dash / homing / hover, grind tricks) */
+    IN_L = 1 << 10      /* left trigger: DS L */
 };
 
 typedef struct {

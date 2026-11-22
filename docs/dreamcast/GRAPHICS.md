@@ -2,7 +2,7 @@
 
 Renderer: `dreamcast/game/engine/render.c` (PVR lists OP, PT, TR; 640x480 RGB565;
 textured quads in world space at 2.5x, CAMERA.md), `engine/level.c` (PAL8 twiddled block
-pages and BG), `model/model.c` (NSBMD meshes), and the module drawers (objects, UI, menus,
+pages and BG; the BG line scroll and palette effects of section 8), `model/model.c` (NSBMD meshes), and the module drawers (objects, UI, menus,
 special stage, cutscenes, bosses).
 
 This file is about PVR texture memory (VRAM): the per-stage budget, the paletted sprite
@@ -277,9 +277,99 @@ main thread's opens and read requests during the whole load).
 
 - Blaze palette reload of the results glyphs (ClearDemo_InitSprites: palette data at
   +0xcc instead of +4) is not done; it would be one more palette per glyph sprite.
-- The BG alternate palettes of zones 4/5/7 (`rbgd_header_t.num_palettes`) are not used
-  by level.c; with the allocator they would be more PAL8 rows of the same bank.
+- The BG alternate palettes of zones 4/5/7 (`rbgd_header_t.num_palettes`) are used: they are
+  the sources of the zone palette animations (section 8), kept in RAM (`Level.bg_pals`), not
+  more PAL8 rows.
+- Water Palace: the tinted copies need a second PAL8 bank; on z21/z22 only the map tiles get
+  one (rows free after `objects_init`), the BG is tinted with a vertex colour (section 8).
 - Power-of-two pages are still a third empty on average.
 - z41 uses all 64 palette rows at `objects_init`: one more palette there and a page goes
   ARGB1555.
 - Not measured in Flycast: the Extra boss, cutscene overlays during boss acts.
+
+## 8. Zone backgrounds and zone effects
+
+Module `dreamcast/game/zonefx/` (zonefx.c, zonefx.h, tools/zonefxdata.py), run from inside
+Camera_Main (`camera_set_zone_hook`), drawn through `engine/level.c`. Translation of
+`src/game/Stage/ZoneBackground` (ZoneBg_*, ZoneFx_*) and `src/game/Zone/<zone>/Background`.
+The DS runs these per DS screen; here every per-screen function runs once on a virtual
+screen = the DC window (camera.h) with gCamera[0]'s flags, flags34, limit and water level.
+
+### 8.1 BG scroll (gZoneBgUpdateTable)
+
+The zone BG is DS BG1 (512x512 or 256x512 text BG, `ZoneBg_SetupBgControl`). Its scroll
+(gCamera @0x2C/@0x30 -> BG1HOFS/VOFS, `ZoneBg_Update`), or the per-line table the line-scroll
+task DMAs into the scroll registers, becomes a 192-row table (`zonefx_lines`).
+`level_draw_bg_lines` draws rows with the same offset as one quad with repeating UVs (the
+texture is the BG image size), so the wrap of the DS BG is kept.
+
+| stage | function | rule |
+|---|---|---|
+| zone 1, z81 (Init only) | ZoneBg_Zone1_Update | x / 14, y * 48 / (map height - 192) |
+| zone 2 | ZoneBg_Zone2_UpdateScreenScroll + BuildLineScroll | sky band (x 0, y * 34 / ...), above the water line - 0x3C the underwater part at x / 16, row 0x11A at the water line, below the line the wave (InitWave: angle frame << 9, speed 0x2000 - 1/10 every 8 rows, amplitude (0x500 - row) / 256 px, y cos wave) |
+| zone 3, z82 (x fixed) | ZoneBg_Zone3_* | heat-haze band (two sine waves per row and frame), the dunes (x / 28), below the limit line (MapObj70) the near layer (x / 12, wrap 0x118) |
+| zone 4, z91 | ZoneBg_Zone4_Update | x / 18, y * 48 / ... |
+| zone 5, z92 | ZoneBg_Zone5_* | fixed sky band, far layer x / 28, near layer x / 14 under the limit line |
+| zone 6 | ZoneBg_Zone6_Update | the clouds drift by 1/60 of the camera motion, y 0x30 |
+| zone 7 | ZoneBg_Zone7_* | as zone 5 with the zone 7 rows (0xB8, 0x48) |
+
+The title card / glider sequence freeze (`flags34 & 1`) is honoured.
+
+### 8.2 Palette effects (gZoneFxUpdateTable)
+
+PaletteTransfer targets map to the two PAL8 banks of `Level`: BG std palette 0x5000000 ->
+`level_set_bg_palette`, ext palettes (slots 0x4000 / 0x6000, the map) -> `level_set_palette`.
+Colours stay ARGB1555 (the DS channel formulas act on the DC channels; the alpha bit of the
+destination is kept). `zonefx_commit_palettes` writes only changed palettes, only the rows
+the texels use.
+
+- **Palette animations** (`ZoneFx_InitPaletteAnim` / `StepPaletteAnim`): the tables
+  data_ov000_02364df0 (Night Carnival, 24), _dd0 (Huge Crisis, 2), _de0 (Dead Line, 2)
+  (`zonefx.bin`); the source of entry e is event-archive file e[1] = bg.bin palette e[1] - 3
+  (the z4pnNN / z5pnNN / z7pnNN `.bbg`).
+- **Rotations** (`ZoneFx_RotatePaletteRange`): Huge Crisis BG 0xCD..0xCF every 8 frames, Dead
+  Line BG 0x9A..0x9C every 12 and map 0xB1..0xB7 (backwards) every 6.
+- **Night Carnival darkness** (BLDY, `ZoneFx_Zone4_StartBldyFlash / RampUp / RampDown`, the
+  effect table, flash table gZoneFxZone4BldyFlashTable): brightness decrease of BG1..BG3 =
+  the BG and map palettes darkened (c - c * evy / 16), not the sprites and the 3D player, as
+  on the DS. Started by `OBJ_FX_ZONE4_BLDY` (main.c -> `zonefx_bldy`).
+- **Huge Crisis alarm** (`ZoneFx_Zone5_UpdatePalettes / ApplyPaletteAdd`): while an enemy
+  room holds the camera (flags34 & 0x10000) the BG entries 0x50..0xCC and 0xD0..0xFF get
+  +0..29 red, stepping every 2 frames.
+- **Water Palace** (`ZoneFx_Zone2_*`): tinted copies (r - 10, g - 1) of the map and BG
+  palettes for the rows below the water line (the DS VAlarm split, states 0..3 of
+  `UpdateScreenStates` = the window's water row); `CyclePalette` rotates map entries
+  0x21..0x25 every 3 frames (normal and tinted); the surface sprites (`act/ac_eff_water.bac`
+  animation 3, every 0x40 px along the line, `DrawSprites`) in the TR list. The tinted
+  palettes go to a second PAL8 bank (`level_alloc_alt_banks`); where no bank is free the rows
+  below the line are drawn with the vertex colour 0x99F7FF (MODULATE: red x 0.6, green x
+  0.97, the tint at mid brightness). z21 / z22: map bank 2 exact, BG vertex colour. main.c's
+  old translucent water rectangle is removed.
+- **Mirage Road boss** (`ZoneFx_Zone3Boss_Update`): `zonefx_boss3_lights` gives the light
+  colour pair it alternates (data_02074990 / data_ov000_02364dbc); not wired into the boss
+  module.
+
+### 8.3 Measurements (Flycast, display :97, debug-start discs)
+
+Per stage: BG draw ms/frame (`draw ms/frame: bg`), palette writes, fps of the frame log.
+
+| stage | BG | BG ms | palette writes / 120 frames | fps |
+|---|---|---|---|---|
+| z11 | parallax x / 14 | 0.04 | 0 | 59.3 |
+| z21 / z22 | line scroll + wave, tint split, shimmer | 0.28 | 80 (shimmer + tinted) | 59.3 |
+| z31 / z32 | haze / dunes / quicksand | 0.04 | 0 | 59.3 |
+| z41 | parallax x / 18, 24 animations | 0.04 | 53 | 59.3 |
+| z51 | bands, rotation + 2 animations | 0.04 | 35 | 59.3 |
+| z61 | cloud drift | 0.04 | 0 | 59.3 |
+| z71 | bands, 2 rotations + 2 animations | 0.04 | 30 | 59.3 |
+| z82 | haze, x fixed | 0.14 | 0 | 59.3 |
+| z91 | as z41 | 0.04 | 53 | 59.3 |
+
+Host test (`make -C dreamcast/game/camera host-test`): BG tables against the formulas
+(zone 1, 4, 6), the zone 2 wave below the water line, the zone 3 haze, palette animations
+step from the alternate palettes (z41 2588 entry changes in 240 frames, z51 18986, z71 960),
+BLDY ramp to 10 and back, flash, the alarm.
+
+Known limits: the sprites (OBJ palettes) are not tinted under water (the objects draw them;
+the DS tints `gObjDrawPalette`); palette RAM is written while the previous frame may still be
+rendering (one frame of mixed colours on a change is possible).

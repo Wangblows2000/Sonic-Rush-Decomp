@@ -185,6 +185,11 @@ render_begin_list(PVR_LIST_PT_POLY); ...level layers...; objects_draw(); render_
   Math_LerpRGB555, polygon alpha 6 -> 0x12 -> 1 with the peak at cnt * 3 / 10);
   obj_draw.c draws them flat in the TR list at z 0.0055 (just behind the player
   model). EffTrail_SetWrapShift (looping boss arenas) is not translated.
+  Trick effects: DCP_FX_TRICK (anim 0x38) EffTrick_CreateAtOffset (ac_eff_trick.bac 0xc),
+  DCP_FX_TRICK_FORWARD EffTrickForwardBoost (ac_eff_boost.bac 0xa, on the player while in 0x37),
+  DCP_FX_TRICK_SPARKLE EffTrickSparkle (12 >> level screen-space sparkles; the first call only
+  creates the task, as on the DS; one object per particle here), DCP_FX_TRICK_COMBO
+  EffTrickCombo_Spawn (eight layouts of EffTrickComboPart, screen space, gravity 0x54).
   Not translated: the 3D variants of boss acts.
 - **Boost defence**: obj_player_collide applies Player_UpdateBoost's
   `w->unk2C4 |= 5` while boosting and Player_StopBoost's `= 2` (when not

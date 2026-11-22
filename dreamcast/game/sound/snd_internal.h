@@ -88,6 +88,10 @@ void snd_drv_init(const SndBank *bank);
 void snd_drv_prepare_seq(int player, const uint8_t *seq, uint32_t seq_len, uint32_t offset, int bank_no);
 void snd_drv_start_prepared(int player);
 void snd_drv_stop_seq(int player);                      /* SND_StopSeq */
+void snd_drv_pause_seq(int player, int flag);           /* SND_PauseSeq */
+void snd_drv_player_notes(int player, int *tries, int *ok); /* notes of the current sequence (trace) */
+/* trace: called when a sequence player ends (arc / id of the request, notes tried / sounding) */
+extern void (*g_snd_seq_end_cb)(int32_t arc, int32_t id, int tries, int ok);
 int  snd_drv_player_active(int player);                 /* SND_GetPlayerStatus bit */
 void snd_drv_set_player_volume(int player, int db);     /* SND_SetPlayerVolume (extFader, 0.1 dB) */
 void snd_drv_set_player_prio(int player, int prio);     /* SND_SetPlayerChannelPriority */

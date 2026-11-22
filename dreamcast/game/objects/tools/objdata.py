@@ -207,6 +207,8 @@ SLOTS += [
     ("EFF_BOOST", "act_com", "act/ac_eff_boost.bac", "act/ac_eff_boost.bac"),
     ("EFF_SPIN1", "act_com", "act/ac_eff_kemuri_spin01.bac", "act/ac_eff_kemuri_spin01.bac"),
     ("EFF_SPIN2", "act_com", "act/ac_eff_kemuri_spin02.bac", "act/ac_eff_kemuri_spin02.bac"),
+    # trick effects: EffTrick_CreateAtOffset, EffTrickSparkle, EffTrickComboPart (data_ov000_02367ff8..02368284)
+    ("EFF_TRICK", "act_com", "act/ac_eff_trick.bac", "act/ac_eff_trick.bac"),
 ]
 ID_LEN = 48
 N_STAGES = 27

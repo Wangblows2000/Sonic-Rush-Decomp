@@ -7,6 +7,7 @@
  */
 #include "sound.h"
 #include "snd_nns.h"
+#include "bgm.h"
 #include <stdio.h>
 #include <string.h>
 #ifdef _arch_dreamcast
@@ -21,6 +22,26 @@ static SoundHandle data_02250460;
 
 static SndBank s_bank;
 static char s_dir[64] = "/cd/sound";
+static char s_bank_name[16];
+const char *sound_bank_name(void) { return s_bank_name; }
+
+/* trace builds: effect requests that produce no sound in the loaded bank, logged
+ * once per (bank, archive, id): no record / player full ("start"), the sequence
+ * ended without one note finding an instrument + wave ("silent") */
+extern uint32_t g_sound_frame;
+static struct { uint16_t arc, id; uint8_t why; } s_miss[256];
+static int s_nmiss;
+uint32_t g_sound_miss_count;
+static void miss(int32_t arc, int32_t id, int why) {
+    int i;
+    g_sound_miss_count++;
+    for (i = 0; i < s_nmiss; i++) if (s_miss[i].arc == arc && s_miss[i].id == id && s_miss[i].why == why) return;
+    if (s_nmiss < 256) { s_miss[s_nmiss].arc = (uint16_t)arc; s_miss[s_nmiss].id = (uint16_t)id; s_miss[s_nmiss].why = (uint8_t)why; s_nmiss++; }
+    printf("snd MISS f%lu bank %s arc %ld id %ld: %s\n", (unsigned long)g_sound_frame, s_bank_name, (long)arc, (long)id,
+           why == 0 ? "start failed (no record / no bank / player full)" : "silent (no note found an instrument / wave)");
+}
+static void seq_end_cb(int32_t arc, int32_t id, int tries, int ok) { if (tries == 0 || ok == 0) miss(arc, id, 1); }
+static void start_check(const SoundHandle *h, int32_t arc, int32_t id) { if (g_sound_trace && h->player == NULL) miss(arc, id, 0); }
 static uint32_t s_frac;
 static int s_init;
 /* debug trace (serial): enabled when <dir>/../debug/sndtrace.txt exists on
@@ -80,6 +101,7 @@ void Sound_PlaySeqArcEx(SoundHandle *a, int32_t b, int32_t c) {
     NNS_SndHandleInit(a);
     NNS_SndArcPlayerStartSeqArcEx(a, -1, -1, -1, b, c);
     NNS_SndPlayerSetVolume(a, gSEVolume);
+    start_check(a, b, c);
 }
 
 void Sound_PlaySeqArc(SoundHandle *p, uint32_t a, uint32_t b) {
@@ -89,6 +111,7 @@ void Sound_PlaySeqArc(SoundHandle *p, uint32_t a, uint32_t b) {
     NNS_SndHandleInit(p);
     NNS_SndArcPlayerStartSeqArc(p, (int32_t)a, (int32_t)b);
     NNS_SndPlayerSetVolume(p, gSEVolume);
+    start_check(p, (int32_t)a, (int32_t)b);
 }
 
 void Sound_PlaySeqArcBankPrio(SoundHandle *a, int32_t b, int32_t c, int32_t d, int32_t e) {
@@ -106,6 +129,7 @@ void Sound_PlayVoice(SoundHandle *p, uint32_t a, uint32_t b) {
     NNS_SndHandleInit(p);
     NNS_SndArcPlayerStartSeqArc(p, (int32_t)a, (int32_t)b);
     NNS_SndPlayerSetVolume(p, gVoiceVolume);
+    start_check(p, (int32_t)a, (int32_t)b);
 }
 
 int32_t Sound_CalcPan(int32_t a, int32_t b) {
@@ -224,8 +248,12 @@ int sound_load_bank(const char *sdat) {
     snd_bank_free(&s_bank);
     snprintf(path, sizeof path, "%s/%s.srb", s_dir, sdat);
     r = snd_bank_load(&s_bank, path);
+    s_bank_name[0] = 0;
     if (r) return r;
+    snprintf(s_bank_name, sizeof s_bank_name, "%s", sdat);
+    s_nmiss = 0;
     g_sound_trace = snd_out_file_size("/cd/debug/sndtrace.txt") >= 0;
+    g_snd_seq_end_cb = g_sound_trace ? seq_end_cb : NULL;
     snd_drv_init(&s_bank);
     NNSi_SndPlayerInit();
     NNS_SndArcPlayerSetup(&s_bank);
@@ -300,6 +328,7 @@ void sound_update(void) {
         last = now;
     }
 #endif
+    bgm_update();                         /* StageJingle_Main, gravity-flip layer (bgm.c) */
     if (!s_init || !s_bank.meta) return;
     NNSi_SndPlayerMain();                 /* NNS_SndMain */
     s_frac += SND_FRAME_HZ_X10000;        /* 191.9555 driver frames per second at 60 Hz */

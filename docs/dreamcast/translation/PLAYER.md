@@ -727,3 +727,14 @@ Player_Draw / Player_Last. Without lights.bin on the disc the common
 0x7fff / 0x4631 / 0x2108 is used. The title card's light fade-in
 (StageTitleCard_State_RestoreColors lerps from 0) is not applied.
 
+
+## 9. Stage bounds, ring scatter level, DS R (2026-11-22)
+
+- `dcp_bind_map` sets `g_dcp_world.death_y` (map height, Player_In pit line) and `map_left` /
+  `map_right` (0 / width); `dcp_player_in` runs Player_UpdateGimmickStageBounds (gimmick-held:
+  +-0x6c px around it, pf2 0x200). The vertical pair (pf2 0x400) has no consumer.
+- Player_OnHurt scatters with `g_dcp_scatter_level` (the ring manager's unk9D5, set by the objects
+  module), falling back to a private level without a ring manager.
+- DCP_FX_TRICK_FORWARD / DCP_FX_TRICK_SPARKLE (appended to the effect enum) separate the trick
+  effects that shared DCP_FX_TRICK.
+- The pad needs DS R (0x100) for tricks and the air action: player/patches/input_r_trigger.patch.

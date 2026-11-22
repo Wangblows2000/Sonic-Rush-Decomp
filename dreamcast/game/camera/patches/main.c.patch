@@ -1,0 +1,207 @@
+--- a/dreamcast/game/src/main.c
++++ b/dreamcast/game/src/main.c
+@@ -26,6 +26,8 @@
+ #include "../demo/demo.h"
+ #include "../engine/loading.h"
+ #include "../menus/extraact.h"
++#include "../camera/camera.h"
++#include "../zonefx/zonefx.h"
+ #include <stdlib.h>
+ 
+ /* Story order (Sonic): zone N acts 1, 2 and the boss act 3. */
+@@ -155,9 +157,12 @@
+         g_dcp_world.frame = g_ss.frame; g_ui_game.total = g_ss.score;
+         g_ss.active = 0;
+     }
+-    ui_set_camera(g_cam_x, g_cam_y);
+     printf("objects: %s\n", g_obj_ok ? "ok" : "FAILED");
+-    g_cam_x = sx - VIEW_W / 2; g_cam_y = sy - VIEW_H * 0.6f;
++    /* Camera_Create (+ ZoneBg_Init / ZoneFx_Init): the DS camera pair and the DC window */
++    camera_create(lv->data, &g_player, g_dcp_world.zone, g_dcp_world.act);
++    zonefx_init(lv, g_dcp_world.zone, g_dcp_world.act);
++    camera_apply();
++    ui_set_camera(g_cam_x, g_cam_y);
+     printf("player spawned at %d,%d\n", sx, sy);
+ }
+ 
+@@ -307,6 +312,7 @@
+     switch(kind) {
+     case OBJ_FX_SCREEN_FLASH: g_flash = 16; break;
+     case OBJ_FX_ENEMY_ROOM: ui_enemy_room(a, b); break;   /* EnemyRoomHud */
++    case OBJ_FX_ZONE4_BLDY: zonefx_bldy(a, b); break;     /* ZoneFx_Zone4_StartBldy* (dark areas) */
+     default: break;
+     }
+ }
+@@ -326,18 +332,6 @@
+     b->flags = (u16)((b->flags & ~clear) | set);
+ }
+ 
+-/* Water Palace water (OBJECTS.md 2.3): the DS darkens/tints everything below
+- * the water line with the BG/OBJ window and a palette effect. Here a
+- * translucent tint over the viewport below the line, plus a lighter surface band. */
+-static void draw_water(int line)
+-{
+-    float y = (line - g_cam_y) * VIEW_SCALE;
+-    if(y >= 480.0f) return;
+-    if(y < 0) y = 0;
+-    draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, y, 640, 480 - y, 0, 0, 0, 0, 9.0f, 0x502060c0);
+-    if(y > 0) draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, y - 2 * VIEW_SCALE, 640, 2 * VIEW_SCALE, 0, 0, 0, 0, 9.1f, 0x60c0e0ff);
+-}
+-
+ /* g_boss_hooks.cleared: StageShutdown_Create(Stage_OnBossCleared) -> the act
+  * results (ClearDemo), handled by the UI like the goal of an act. */
+ static int g_after_boss_pending;
+@@ -502,6 +496,7 @@
+     g_obj_ok = 0;
+     audio_music_stop();
+     ui_stage_end();
++    zonefx_shutdown(); camera_destroy();
+     level_free(lv);
+     special_set_path("/cd/special");
+     special_set_language(1);
+@@ -564,6 +559,7 @@
+     sound_init();
+     sound_hooks_install();
+     ui_set_paths("/cd/ui", "/cd/sprites");
++    printf("zonefx: %s\n", zonefx_load_data("/cd/zonefx/zonefx.bin") == 0 ? "ok" : "MISSING");
+     printf("ui: %s\n", ui_init() == 0 ? "ok" : "FAILED");
+     g_dcp_world.mode = UI_MODE_STORY;
+     save_vmu_install();
+@@ -609,7 +605,6 @@
+     }
+     if(dbg_start) {
+         ok = load_stage(&lv, stage) == 0;
+-        g_cam_x = 0; g_cam_y = 0;
+         if(ok && g_player_ok) spawn_player(&lv);
+     } else {
+         ok = 0; enter_front_end();
+@@ -694,19 +689,22 @@
+         if(ok && g_player_ok) ui_update(&in, &g_player);
+         if(ok && g_player_ok) overlay_cutscene_frame(&in);   /* boss talks: System_Freeze while active */
+         if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen() && !cutscene_active()) {
+-            float px, py, tx, ty;
+             if(g_is_boss && !g_boss_started && !ui_titlecard_active()) { boss_start(); g_boss_started = 1; }
++            camera_update();   /* Camera_Main (task 0x80): the DS screen pair, the DC window, ZoneBg / ZoneFx */
+             if(g_obj_ok) {
+                 /* The DS spawns objects for both screens: view 1 is the area the DS
+                  * top screen showed (192 px above). Spawning only; nothing is drawn
+                  * for it (one continuous viewport, CAMERA.md). */
+-                objects_set_view(0, (s32)(g_cam_x * 256.0f), (s32)(g_cam_y * 256.0f));
+-                objects_set_view(1, (s32)(g_cam_x * 256.0f), (s32)((g_cam_y - 192.0f) * 256.0f));
++                s32 vx, vy;
++                camera_get_view(&vx, &vy);
++                objects_set_view(0, vx, vy);
++                objects_set_view(1, vx, vy - 0xC000);
+                 objects_frame_begin();
+             }
+             if(g_is_boss) boss_update_pre(&g_player);   /* BossF: arm colmap / ride before the player */
+             { uint64_t t0 = timer_us_gettime64();
+               dcp_player_frame(&g_player, pad_held, pad_pressed, pad_released);
++              camera_player_last(&g_player);   /* Player_Last: Player_UpdateCamera + Player_UpdateCameraLead */
+               g_prof[1] += timer_us_gettime64() - t0; }
+             if(g_model_ok) {
+                 s32 tsp = 0x1000;   /* title card close-up: obj unk24C slot speeds (slow motion) */
+@@ -716,14 +714,7 @@
+             }
+             { uint64_t t0 = timer_us_gettime64(); if(g_obj_ok) objects_update(&g_player); g_prof[0] += timer_us_gettime64() - t0; }
+             if(g_is_boss) boss_update(&g_player);
+-            /* Continuous camera (CAMERA.md): the DS screen-sized window follows the
+-             * player with damping and a modest velocity look-ahead; render-only.
+-             * During the title card the DS camera snaps to the player. */
+-            px = g_player.x / 256.0f; py = g_player.y / 256.0f;
+-            tx = px - VIEW_W / 2 + (ui_titlecard_active() ? 0 : g_player.vel_x / 256.0f * 8.0f);
+-            ty = py - VIEW_H * 0.55f;
+-            if(ui_titlecard_active()) { g_cam_x = tx; g_cam_y = ty; }
+-            else { g_cam_x += (tx - g_cam_x) * 0.25f; g_cam_y += (ty - g_cam_y) * 0.18f; }
++            camera_frame_end();   /* ScreenShake_Main */
+         }
+         if(ok && g_player_ok && g_dbg_special > 0 && (int)g_dcp_world.frame == g_dbg_special) { g_dbg_special = -1; g_special_pending = 1; }
+         if(ok && g_player_ok && g_after_boss_pending) {
+@@ -734,27 +725,10 @@
+         }
+         if(ok && g_player_ok && g_special_pending) { run_special_stage(&lv, stage); continue; }
+         if(ok && g_player_ok) ui_post_update(&g_player);
+-        if(ok && g_player_ok && ui_titlecard_active()) {
+-            /* StageTitleCard_HoldPlayerX / Y move the player after the world update and snap gCamera */
+-            g_cam_x = g_player.x / 256.0f - VIEW_W / 2; g_cam_y = g_player.y / 256.0f - VIEW_H * 0.55f;
+-        }
++        /* StageTitleCard_HoldPlayerX / Y move the player after the world update and snap gCamera */
++        if(ok && g_player_ok && ui_titlecard_active()) camera_snap_to_player(&g_player);
+         sound_update();
+-        if(ok) {
+-            if(g_cam_x > level_width_px(&lv) - VIEW_W) g_cam_x = level_width_px(&lv) - VIEW_W;
+-            if(g_cam_y > level_height_px(&lv) - VIEW_H) g_cam_y = level_height_px(&lv) - VIEW_H;
+-        }
+-        if(ok && g_obj_ok && (g_obj_camera[0].flags34 & 0x10000)) {
+-            /* enemy room lock (MapObj8C/8F): keep the view inside the room bounds */
+-            float l = g_obj_camera[0].bound[0] / 256.0f, r = g_obj_camera[0].bound[2] / 256.0f;
+-            float b = g_obj_camera[0].bound[3] / 256.0f;
+-            if(r - l >= VIEW_W) {
+-                if(g_cam_x < l) g_cam_x = l;
+-                if(g_cam_x > r - VIEW_W) g_cam_x = r - VIEW_W;
+-            }
+-            if(b > VIEW_H && g_cam_y > b - VIEW_H) g_cam_y = b - VIEW_H;
+-        }
+-        if(g_cam_x < 0) g_cam_x = 0;
+-        if(g_cam_y < 0) g_cam_y = 0;
++        if(ok) camera_apply();   /* g_cam_x / g_cam_y: the DC window + the screen shake */
+         ui_set_camera(g_cam_x, g_cam_y);
+ 
+         { uint64_t tw = timer_us_gettime64(); pvr_wait_ready(); g_prof[3] += timer_us_gettime64() - tw; }   /* vblank / TA wait */
+@@ -769,12 +743,12 @@
+         /* PVR lists must be opened in order OP, PT, TR (each once per frame).
+          * Depth (1/w style, bigger = nearer): bg 0.0005 < layer B 0.001 < player model (~0.006) < layer A 10. */
+         render_begin_list(PVR_LIST_OP_POLY);
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) level_draw_bg(&lv, 0.25f, 0.125f, 0.0005f); g_dprof[0] += timer_us_gettime64() - t0; }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { zonefx_commit_palettes(); zonefx_draw_bg(0.0005f); } g_dprof[0] += timer_us_gettime64() - t0; }
+         { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_OP_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
+         { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
+         render_end_list();
+         render_begin_list(PVR_LIST_PT_POLY);
+-        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { level_draw_layer(&lv, 1, PVR_LIST_PT_POLY, 0.001f); level_draw_layer(&lv, 0, PVR_LIST_PT_POLY, 10.0f); } g_dprof[1] += timer_us_gettime64() - t0; }
++        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { zonefx_draw_layer(1, PVR_LIST_PT_POLY, 0.001f); zonefx_draw_layer(0, PVR_LIST_PT_POLY, 10.0f); } g_dprof[1] += timer_us_gettime64() - t0; }
+         { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_PT_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
+         { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_PT_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
+         { uint64_t t0 = timer_us_gettime64(); if(ok && g_obj_ok) obj_draw(PVR_LIST_PT_POLY); g_dprof[3] += timer_us_gettime64() - t0; }
+@@ -790,8 +764,7 @@
+                 draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 9.5f,
+                                  ((uint32_t)(evy > 16 ? 255 : evy * 255 / 16) << 24) | 0xffffff);
+         }
+-        if(ok && g_obj_ok && !g_is_boss && k_stages[g_stage_idx][1] == '2' && (g_obj_camera[0].flags & 0x1000000))
+-            draw_water(g_obj_camera[0].water);
++        if(ok && !g_is_boss) zonefx_draw_tr();   /* Water Palace: surface sprites (ZoneFx_Zone2_DrawSprites) */
+         if(g_flash > 0) {
+             draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 95.0f,
+                              ((uint32_t)(g_flash * 15) << 24) | 0xffffff);
+@@ -812,6 +785,7 @@
+                 if(g_obj_ok) objects_shutdown();
+                 boss_shutdown(); g_is_boss = 0;
+                 ui_stage_end();
++                zonefx_shutdown(); camera_destroy();
+                 level_free(&lv); ok = 0;
+                 menus_stage_exit(dk == DEMO_EXIT_TITLE ? MENU_EXIT_DEMO_END : MENU_EXIT_DEMO_TIMEOUT, 0, 0, g_emeralds, 0);
+                 enter_front_end();
+@@ -826,6 +800,7 @@
+             if(g_obj_ok) objects_shutdown();
+             boss_shutdown(); g_is_boss = 0;
+             ui_stage_end();   /* title-card / results BGs, navigator, face texture */
++            zonefx_shutdown(); camera_destroy();
+             level_free(&lv); ok = 0;
+             if(k == UI_EXIT_NEXT_ACT || k == UI_EXIT_TRY_AGAIN)
+                 r = menus_stage_exit(MENU_EXIT_CLEARED, total, g_dcp_world.lives, g_emeralds, g_dcp_world.frame);
+@@ -864,6 +839,15 @@
+             if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
+             printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f; worst frame %.2f ms, %d of 120 over 17.5 ms\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0, g_fmax / 1000.0, g_fslow);
+             g_fmax = 0; g_fslow = 0;
++            {   /* camera / zone effects: DS pair y (gCamera[0], [1]), swap flag, window, BG row 0 / 191, BLDY, water row */
++                const CamLayer *c0 = camera_layer(0), *c1 = camera_layer(1);
++                const CamStats *cs = camera_stats();
++                const ZfxLine *zl = zonefx_lines();
++                printf("cam ds %ld,%ld / %ld swap %d window %.0f,%.0f swaps %lu eased %lu clamps %lu bg %u,%u %u,%u bldy %d water %d pal %lu\n",
++                       (long)(c0->x >> 8), (long)(c0->y >> 8), (long)(c1->y >> 8), (int)((camera_flags2() >> 1) & 1), g_cam_x, g_cam_y,
++                       (unsigned long)cs->swaps, (unsigned long)cs->eased, (unsigned long)cs->clamped_player, zl[0].x, zl[0].y, zl[191].x, zl[191].y,
++                       zonefx_bldy_level(), zonefx_water_row(), (unsigned long)zonefx_palette_updates());
++            }
+             printf("draw ms/frame: bg %.2f layers %.2f player %.2f objects %.2f ui %.2f boss %.2f\n", g_dprof[0] / 120000.0, g_dprof[1] / 120000.0, g_dprof[2] / 120000.0, g_dprof[3] / 120000.0, g_dprof[4] / 120000.0, g_dprof[5] / 120000.0);
+             memset(g_prof, 0, sizeof(g_prof)); memset(g_dprof, 0, sizeof(g_dprof));
+             t_last = now;

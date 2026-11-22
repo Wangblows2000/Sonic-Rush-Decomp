@@ -13,6 +13,7 @@
 void ui_debug_gauge(s16 *target, s16 *shown, u32 *digits_rings, u32 *digits_time);
 void ui_post_update(DcPlayer *p);
 
+int ui_exit_cleared(void);
 static int s_fail, s_pass;
 #define CHECK(c, ...)                                                    \
     do {                                                                 \
@@ -705,8 +706,65 @@ static void test_time_attack(void) {
     CHECK(stamped > 0, "new record: Sound_PlaySeq 0xc at the stamp");
     CHECK(ta_quads == 6, "rank pair + labels + separators drawn (%d)", ta_quads);
     CHECK(ui_state() == UI_EXIT && ui_exit_kind() == UI_EXIT_TRY_AGAIN, "time attack -> TryAgain");
+    CHECK(ui_exit_cleared(), "time attack clear: ui_exit_cleared (the record is saved)");
     CHECK(!g_ui_res[UI_RES_CLDM_TA].blob, "dm_cldm_tatk freed with the results");
     /* digits of the time: 1 / 2 3 / 4 5 -> dm_cldm 0x13 + d */
+    W.mode = 0;
+}
+
+/* main.c wraps g_obj_hooks.stage_exit (special-stage entry) after every ui_stage_start: the goal
+ * of the next act must reach the results once, not loop between the two handlers. */
+static void (*s_wrap_prev)(void *, s32);
+static int s_wrap_calls;
+static void wrap_exit(void *c, s32 k) {
+    if (++s_wrap_calls > 8)
+        return;   /* a cycle: stop it so the test can report */
+    if (s_wrap_prev)
+        s_wrap_prev(c, k);
+}
+static void test_hook_chain(void) {
+    int stage;
+    for (stage = 0; stage < 3; stage++) {
+        ui_stage_start(0, stage, 0);
+        if (g_obj_hooks.stage_exit != wrap_exit) {
+            s_wrap_prev = g_obj_hooks.stage_exit;
+            g_obj_hooks.stage_exit = wrap_exit;
+        }
+        run_until_timer(600);
+        frame(0, 0);
+        s_wrap_calls = 0;
+        g_obj_hooks.stage_exit(g_obj_hooks.ctx, OBJ_EXIT_CLEAR_DEMO);
+        CHECK(s_wrap_calls == 1 && ui_state() == UI_RESULTS, "stage %d goal: results, hook ran %d times", stage,
+              s_wrap_calls);
+        {
+            int f;
+            for (f = 0; f < 3000 && ui_state() == UI_RESULTS; f++)
+                frame(0, 0);
+        }
+        CHECK(ui_state() == UI_EXIT && ui_exit_kind() == UI_EXIT_NEXT_ACT && ui_exit_cleared(), "stage %d: next act", stage);
+    }
+    /* the pause menu's quit is not a clear */
+    W.mode = 2;
+    G.stage_new = 0;
+    ui_stage_start(0, 0, 0);
+    run_until_timer(600);
+    {
+        int f;
+        for (f = 0; f < 200 && (g_ui_bright_main || g_ui_bright_sub); f++)   /* the title card's sub-screen fade */
+            frame(0, 0);
+    }
+    frame(IN_START, 0);
+    {
+        int f;
+        for (f = 0; f < 30; f++)
+            frame(0, 0);
+        frame(IN_DOWN, 0);
+        frame(IN_JUMP, 0);
+        for (f = 0; f < 300 && ui_state() != UI_EXIT; f++)
+            frame(0, 0);
+    }
+    CHECK(ui_state() == UI_EXIT && ui_exit_kind() == UI_EXIT_TRY_AGAIN && !ui_exit_cleared(),
+          "time attack pause quit: TryAgain without a clear");
     W.mode = 0;
 }
 
@@ -820,6 +878,7 @@ int main(int argc, char **argv) {
     test_backgrounds();
     test_time_attack();
     test_demo_stage();
+    test_hook_chain();
     ui_stage_end();   /* stage teardown: only ui_init's resources stay (VRAM baseline) */
     CHECK(!g_ui_res[UI_RES_TCBG].blob && !g_ui_res[UI_RES_CLDMBG].blob && !g_ui_res[UI_RES_NAVI].blob &&
               g_ui_res[UI_RES_MOJI].blob && g_ui_res[UI_RES_NAVIB].blob,

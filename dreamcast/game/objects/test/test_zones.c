@@ -424,11 +424,30 @@ static void test_launch_zone(void) {
     int k;
     if (!o)
         return;
+    s16 mx = 0, my = 0, vx = 0, vy = 0, ex, ey;
+    u16 fl = o->flags;
     place_player(o->x + o->p0 + o->p2 / 2, o->y + o->p1 + o->p3 / 2);
-    for (k = 0; k < 10 && P.state != Player_State_ZoneLaunch; k++)
+    for (k = 0; k < 10 && P.state != Player_State_ZoneLaunch; k++) {
+        mx = P.move_x, my = P.move_y;
         frame(0);
-    result("launch zone 0x83", P.state == Player_State_ZoneLaunch, 1, "flags %#x: launched after %d frames, vel %d,%d",
-           o->flags, k, P.vel_x, P.vel_y);
+    }
+    /* LaunchZone_OnHit: (+-0xa00 unless flags 8, -0xa00 / +0xa00 by flags 2 / 4) * 0xb5 >> 8 unless
+     * flags 8; Player_Action_ZoneLaunch: vel = (move + v) >> 1; Player_State_ZoneLaunch in the same
+     * frame: ObjSpd_DownSet(vel, 0x60), gravity back on (move flag 0x80) before the move */
+    if (!(fl & 8))
+        vx = (fl & 1) ? -0xa00 : 0xa00;
+    if (fl & 2)
+        vy = -0xa00;
+    if (fl & 4)
+        vy = 0xa00;
+    if (!(fl & 8)) {
+        vx = (s16)((vx * 0xb5) >> 8);
+        vy = (s16)((vy * 0xb5) >> 8);
+    }
+    ex = (s16)dcp_spd_down((s16)((mx + vx) >> 1), 0x60);
+    ey = (s16)dcp_spd_down((s16)((my + vy) >> 1), 0x60); /* + one frame of gravity (water: varies) */
+    result("launch zone 0x83", P.state == Player_State_ZoneLaunch && P.vel_x == ex && P.vel_y >= ey && P.vel_y <= ey + 0x2a, 1,
+           "flags %#x: launched after %d frames, vel %d,%d (LaunchZone_OnHit formula %d,%d + gravity)", o->flags, k, P.vel_x, P.vel_y, ex, ey);
     frames(90, 0);
 }
 static void test_wheel(void) {
@@ -540,7 +559,17 @@ static void test_water_jet(void) {
             }
         }
         P.move_flags &= ~0x2000u;
-        ok = P.vel_y <= -0x780;
+        {
+            /* WaterJet_OnHit: v = -0x780 - p6 * 0x180 (0x85 up), Player_Action_SpringLaunch, 3/4 under
+             * water; the player held (move flag 0x2000) so no gravity in that frame */
+            Obj *j = obj_at(o->type, o->x, o->y);
+            s16 v = (s16)(-0x780 - (j ? j->prm->p6 : 0) * 0x180);
+            if (P.pf & 0x4000000)
+                v = (s16)((v >> 1) + (v >> 2));
+            ok = P.vel_y == v || P.vel_y == (s16)(v + P.gravity);
+            if (!ok)
+                printf("    water jet: vel_y %d, WaterJet_OnHit formula %d\n", P.vel_y, v);
+        }
     }
     result("water jet 0x85", ok, 1, "#%d (period %d): launched after %d frames, vel_y %d", i - 1, o ? o->p2 * 100 + o->p3 : 0,
            k, P.vel_y);

@@ -167,7 +167,7 @@ static void spr_set(TryAgainWork *w, s32 i, s32 id) {
 
 /* ------------------------------------------------------------- exits */
 static void TryAgain_ExitToRetry(void) {
-    NNS_SndStopSoundAll();   /* SysSound_Release */
+    SysSound_Release();
     Game_StartTimeAttackStage(-1, -1);
 }
 static void TryAgain_ExitToPlayerSelect(void) {

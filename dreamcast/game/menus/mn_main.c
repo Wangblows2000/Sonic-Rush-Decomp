@@ -21,6 +21,23 @@ void menus_set_paths(const char *menus_dir, const char *sprite_dir) {
 int menus_language(void) { return gGameLanguage; }
 void menus_set_language(int lang) { gGameLanguage = (u8)lang; }
 
+/* test builds: <menus dir>/../debug/menutrace.txt turns on a serial trace of the
+ * scene changes, the requests, the stage exits and the navigator state */
+static int s_mn_trace = -1;
+static int mn_trace_on(void) {
+    if (s_mn_trace < 0) {
+        char p[160];
+        const char *slash = strrchr(g_mn_dir, '/');
+        FILE *f;
+        snprintf(p, sizeof(p), "%.*s/debug/menutrace.txt", slash ? (int)(slash - g_mn_dir) : 0, g_mn_dir);
+        f = fopen(p, "rb");
+        s_mn_trace = f != NULL;
+        if (f)
+            fclose(f);
+    }
+    return s_mn_trace > 0;
+}
+
 int menus_init(void) {
     char path[160];
     u8 *buf;
@@ -40,26 +57,34 @@ int menus_init(void) {
     /* Game_StartupSaveDataOnBoot */
     save_load();
     {
-        /* test builds: <menus dir>/../debug/menusave.txt "flags sonic_progress blaze_progress"
+        /* test builds: <menus dir>/../debug/menusave.txt "flags sonic_progress blaze_progress [sonic_emeralds]"
          * ORs gSaveData.unk8 and raises the story progress (unlocks for Flycast runs) */
         char p[160];
         const char *slash = strrchr(g_mn_dir, '/');
         FILE *f;
-        unsigned fl = 0, sp = 0, bp = 0;
+        unsigned fl = 0, sp = 0, bp = 0, em = 0;
         snprintf(p, sizeof(p), "%.*s/debug/menusave.txt", slash ? (int)(slash - g_mn_dir) : 0, g_mn_dir);
         f = fopen(p, "rb");
         if (f) {
-            if (fscanf(f, "%u %u %u", &fl, &sp, &bp) >= 1) {
-                gSaveData.unk8 |= (u16)fl;
+            int n = fscanf(f, "%u %u %u %u", &fl, &sp, &bp, &em);
+            if (n >= 1) {
+                gSaveData.unk8 |= fl;
+                if (n >= 4)
+                    gSaveData.unkF |= (u8)em;   /* Sonic's Chaos Emeralds (bits 0..6) */
                 if (sp > gSaveData.unkC)
                     gSaveData.unkC = (u16)sp;
                 if (bp > gSaveData.unk64)
                     gSaveData.unk64 = (u16)bp;
-                printf("menus: debug save preset flags %#x progress %u/%u\n", fl, gSaveData.unkC, gSaveData.unk64);
+                printf("menus: debug save preset flags %#x progress %u/%u emeralds %#x\n", fl, gSaveData.unkC, gSaveData.unk64,
+                       gSaveData.unkF);
             }
             fclose(f);
         }
     }
+    if (mn_trace_on())
+        printf("menus trace boot save: error %d, progress %u/%u, lives %u/%u, emeralds %#x, flags %#x, counter %u\n",
+               save_last_error(), (unsigned)gSaveData.unkC, (unsigned)gSaveData.unk64, (unsigned)gSaveData.unkE,
+               (unsigned)gSaveData.unk66, (unsigned)gSaveData.unkF, (unsigned)gSaveData.unk8, (unsigned)gSaveData.unk4);
     memset(&gGameState, 0, sizeof(gGameState));
     Pad_Reset(&gPad, NULL, NULL);
     BRIGHT_MAIN = BRIGHT_SUB = -16;
@@ -68,25 +93,12 @@ int menus_init(void) {
     return ok ? 0 : -1;
 }
 
-/* test builds: <menus dir>/../debug/menutrace.txt turns on a serial trace of the
- * scene changes, the requests and the navigator state */
-static int s_mn_trace = -1;
 static void mn_trace_frame(void) {
     static const char *last_scene;
     static int last_panel = -2, last_face_on = -2;
     static u32 frame;
     int panel, alpha, st;
-    if (s_mn_trace < 0) {
-        char p[160];
-        const char *slash = strrchr(g_mn_dir, '/');
-        FILE *f;
-        snprintf(p, sizeof(p), "%.*s/debug/menutrace.txt", slash ? (int)(slash - g_mn_dir) : 0, g_mn_dir);
-        f = fopen(p, "rb");
-        s_mn_trace = f != NULL;
-        if (f)
-            fclose(f);
-    }
-    if (!s_mn_trace)
+    if (!mn_trace_on())
         return;
     frame++;
     if (g_mn_scene != last_scene) {
@@ -174,6 +186,7 @@ MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeral
     memset(&g_mn_request, 0, sizeof(g_mn_request));
     Task_DestroyAll();
     mn_display_reset();
+    mn_bgm_forget();   /* the stage ran its own music (the DS overlay change: SysSound_Release) */
     gGameState.score = score;
     gGameState.lives = (u8)(lives < 0 ? 0 : lives > 99 ? 99 : lives);
     gGameState.unk28 = (u16)emeralds;
@@ -208,6 +221,23 @@ MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeral
         else
             ZoneMap_StartFromStage();
         break;
+    case MENU_EXIT_TRY_AGAIN:
+        /* PauseMenu_QuitToTryAgain / Stage_ExitAfterFail (time attack): no record */
+        BRIGHT_MAIN = BRIGHT_SUB = 16;
+        TryAgain_Start();
+        break;
+    case MENU_EXIT_GAME_OVER:
+        /* Stage_ExitAfterFail (story): SaveData_SetLives(unk0, lives, 1) (at least 2),
+         * gGameState.unk28 = SaveData_GetSonicEmeralds(), commit; then GameOverSeq ->
+         * SceneChange_ToSegaLogo */
+        if (gGameState.unk10 == MENU_MODE_STORY) {
+            SaveData_SetLives(gGameState.unk0, gGameState.lives, 1);
+            gGameState.unk28 = SaveData_GetSonicEmeralds();
+            SaveData_CommitOrShowError(NULL);
+        }
+        BRIGHT_MAIN = BRIGHT_SUB = -16;
+        SegaLogo_Start();
+        break;
     case MENU_EXIT_DEMO_END:
         /* DemoPlay_Main: a key -> StageExit_Create(SceneChange_ToTitleScreen); the
          * screen faded to white (BrightnessFade 5) */
@@ -226,6 +256,18 @@ MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeral
         SegaLogo_Start();
         break;
     }
+    if (mn_trace_on() && gGameState.unk10 == MENU_MODE_TIME_ATTACK && gGameState.unk1C < 7 && gGameState.unk1D < 3)
+        printf("menus trace time records zone %d act %d: %u %u %u (time %u)\n", (int)gGameState.unk1C,
+               (int)gGameState.unk1D, (unsigned)gSaveData.unkD2[gGameState.unk1C][gGameState.unk1D][0],
+               (unsigned)gSaveData.unkD2[gGameState.unk1C][gGameState.unk1D][1],
+               (unsigned)gSaveData.unkD2[gGameState.unk1C][gGameState.unk1D][2], (unsigned)time);
+    if (mn_trace_on())
+        printf("menus trace exit %d zone %d act %d mode %d -> save progress %u/%u lives %u/%u emeralds %#x flags %#x, "
+               "scene %s, request %d zone %d act %d\n",
+               (int)how, (int)gGameState.unk1C, (int)gGameState.unk1D, (int)gGameState.unk10, (unsigned)gSaveData.unkC,
+               (unsigned)gSaveData.unk64, (unsigned)gSaveData.unkE, (unsigned)gSaveData.unk66, (unsigned)gSaveData.unkF,
+               (unsigned)gSaveData.unk8, g_mn_scene, (int)g_mn_request.kind, (int)g_mn_request.zone,
+               (int)g_mn_request.act);
     return g_mn_request;
 }
 

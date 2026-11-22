@@ -12,8 +12,8 @@ Host tests (all pass):
 |---|---|---|
 | player physics | `make -C dreamcast/game/player host-test` | 128 / 128 |
 | player model presentation | `make -C dreamcast/game/player model-test` | 34 / 34 |
-| objects (z11, z12) + zones | `make -C dreamcast/game/objects host-test` | z11 93 / 93, z12 91 / 91, 14 zone stages all pass, then `make audit` |
-| item-C audit | `make -C dreamcast/game/objects audit` (16 stages x Sonic, Blaze) | 32 runs, 0 failed (section 5) |
+| objects (z11, z12) + zones | `make -C dreamcast/game/objects host-test` | z11 112 / 112, z12 111 / 111, 14 zone stages all pass, then `make audit` |
+| item-C audit + core gameplay | `make -C dreamcast/game/objects audit` (16 stages x Sonic, Blaze) | 32 runs, 0 failed (sections 5, 9) |
 | UI | `make -C dreamcast/game/ui host-test` | 114 / 114 |
 
 Legend: **pass** = checked and matches the decompiled behaviour;
@@ -125,21 +125,76 @@ Flycast (z11, scratch disc with an event trace in the serial log):
 | zone light colours (data_02074960) | pass: lights.bin [9 zones][3 acts][3]; dcp_model_lights uses them (Leaf Storm 0x7fff / 0x4631 / 0x2108; zone 4 boss 0x7fff / 0x75ed / 0x2c39), after-image and under-water colours override as in Player_Draw. Needs the build_disc.sh patch `player/patches/build_disc_lights.patch` (without it: the common 0x7fff / 0x4631 / 0x2108) |
 | boost sound cues | host: voice 0xa (Sonic) / 0x17 (Blaze) and the boost channel stop in the frame pf 0x80 is set. Driver render of the z1s bank: 0x0a SE_Superboast 2 notes, 2.54 s (offline render 83033 samples, driver 83204: one 5.2 ms tick longer), audible 1.91 s, onset 10.4 ms, peak -15.7 dBFS, RMS -24.0 dBFS, SNR vs the offline render 9.2 dB; 0x17 SE_B_Superboast 2.51 s, audible 1.88 s, onset 10.4 ms, peak -17.3 dBFS, RMS -25.5 dBFS, SNR 12.7 dB (bank median 13.1). Not measured in Flycast: the serial trace slowed the emulator so much that the boost press fell inside the title card |
 
-## 8. z12 attract demo 1 desync (rock, AttackBounce, landing)
+## 8. z12 attract demo 1 desync
 
-Host replay of key01.bin from (17048, 3346), frame by frame:
+**Cause found: the demo lead frames.** DemoPlay_Create starts DemoInput before StageStart loads
+the stage, so the DS consumes the first records of key01.bin while no player exists (the frames the
+card reads take); the port's `DEMO_LEAD_FRAMES` is 0. Host replay of every demo with the lead
+swept (`loop` harness, `LEAD=n`):
 
-| frame | port | original code checked |
+| lead | z12 demo 1 (Sonic, 17048, 3346) | z21 demo 3 (Blaze, 306, 2034) |
 |---|---|---|
-| 0..92 | runs right; stops at x 17312 against the rock 0x6f at (17344, 3312): wall probe x + box_r + 2 = 17321, rock solid edge 17322 (MapObject_Init sets 5C & 1, so ObjCollisionMap mirrors the 5 x 4 block: x - 22) | Player_CollideMapHorizontal, ObjCollisionMap_GetOffset, MapObject_Init: match |
-| 93 | jump (anim 0x30); cut at 106 (A released); apex y 3263 | Player_Action_Jump, jump cut: match |
-| 121 | rock breaks while falling: the rock box is x 17324..17362, y 3290..3328 (2 px wider and 6 px taller than the solid part); the son.bac fall box (-16..4) and the standing box only reach it from beside / when airborne inside the 6 px band | RockBreak_OnHit (airborne only), RockBreak_Create box from the BAC frame: match |
-| 121..166 | AttackBounce vel_y -0x300, lands at 166 | Player_Action_AttackBounce: match |
-| 144 | the recording presses boost; the port is still in the bounce, so the boost start is lost and the replay desyncs | - |
+| 0..21 | stalls at the rock (17312), breaks it at frame 121, cycles on the rail (max x 18247), 13 rings | max x 5878, 1 hurt |
+| 22 | max x 23682, 73 rings, 2 hurts | max x 5878, 1 hurt |
+| **23** | **reaches the goal ring (goals 1)**, 63 rings, 1 hurt, rock not touched | **max x 7246, 55 rings, no hurt** |
+| 24 | max x 21138 | max x 7247, no hurt |
+| 26..30 | worse | worse |
 
-Inference: the DS player broke the rock about 22 frames earlier, which needs him at least 4 px nearer
-(x + 8 >= 17324 with the jump box) at frame 93..106. Every routine on that path matches the
-decompilation line by line; the remaining suspects are values the port takes from data (son.bac
-hit boxes per frame, the player's map hit box while jumping) and sub-pixel state carried into the
-demo start (Player_Create at 17048 << 8 with no fraction, DS RNG seed from key01.bin). No DS trace is
-available to tell which. Status: **open**, not a gameplay defect outside the demo.
+With 23 frames of lead the recorded inputs play the act through to the goal ring, so the port's
+physics follow the DS recording. The data candidates were checked and are not the cause: the
+son.bac hit boxes the port uses equal the ROM's (jump 0x30: slot 0 (-8,-8,8,8), slot 1
+(-8,-9,8,9); fall 2: (-6,-16,6,4); stand / run (-6,-16,6,16)); the map box is constant
+(-7,-12,7,13, Player_InitState, no change while jumping); the demo start is Player_Create at
+data_022c4590.unk1C/unk20 << 8 (no fraction, zero velocity), which the port does. Fix:
+`dreamcast/game/player/patches/demo_lead_23.patch` (demo.h `DEMO_LEAD_FRAMES 23`; demo host
+tests 73 / 73 with it). Not run in Flycast (the attract demo needs the title-screen idle; the
+emulator ran at about 5 frames per second under the shared load).
+
+## 9. Core gameplay (tricks, homing, rings, lives, death)
+
+Host checks in `test_objects` (z11, z12 and the 32 audit runs), each against the decompiled function:
+
+| item | original | result |
+|---|---|---|
+| forward trick (R after a launch) | Player_Action_TrickForward: Sonic vel_x += +-2 * jump, vel_y 0, dash timer 0xc; Blaze vel_x = +-2 * boost_top, frozen 0xc frames; pose 0x37; Player_AddTrickScore(200) | pass, Sonic and Blaze |
+| up trick (Up + R) | Player_Action_TrickUp: vel_y = -jump (Blaze -2 * jump, hit-stop 0x44), pose 0x35 | pass |
+| trick combo | Player_State_InAir gate (no new pose within 0x18 frames), Player_Action_TrickCombo: B -> 0x39 (+400 >> lvl tension), B -> 0x3a (+400 >> lvl, pf 0x4000), A -> 0x3b (+0x280 >> lvl, two AddTrickScore); lvl = the source object's counter (ObjParam +0xA) | pass: 0x39 / 0x3a / 0x3b after 25..31 frames, tension +400 / +400 / +640 |
+| trick score | Player_AddTrickScore: (0 / 100 / 200 / 300 by count) >> lvl + 200 >> lvl | pass (score hook pairs) |
+| R in a plain jump | not a trick: the air action (Player_Action_HomingAttack / Hover) | pass |
+| homing attack | Player_FindHomingTarget (nearest type-2 box, no range), Action_HomingAttack (d^2 < 0x8000, target not above), State_HomingAttack vel = (cos, sin) >> 1 | pass (vel 0, 2048 for a target below) |
+| chained kills | no score per enemy in the decompiled code (score comes only from tricks, markers and the goal); MapObject_OnHit_Default: Player_AddTensionCombo(400) = +400, +600, +800 within 0x60 frames | pass |
+| ring loss | RingManager_ScatterRings: min(rings, 64), the arc of the loop, level +1 (max 4) | pass (30 and 100 rings, levels 0 and 1) |
+| scattered ring life | RingManager_SpawnRing 0x100 + (Rand & 0x1f); no pickup while timer >= 0xd8; blink (timer & 2) under 0x20 | pass |
+| scatter level reset | RingManager_Main: back to 0 when every scattered ring expired uncollected (picking one up clears the flag and the level stays) | pass after the fix below |
+| 1-up | Player_AddRings: a life at each 100 (story), cap 999; ItemBox_GiveItem kind 2 | pass (z12 1-up box) |
+| pit death | Player_In: y >= map height - 0x1a (not in zone 6 act 0) | pass after the fix below |
+| die / respawn | Player_Action_Die (0x11), Player_State_Die (0x3c frames + fade), Player_Respawn at the marker, rings 0, lives - 1; 0 lives: pf 0x800000 (game over for the UI) | pass |
+| crush | Player_CheckCrushed: pf 0x800, no touch object, walls both sides | pass |
+| time over | Player_CheckTimeOver | UI module (ui_state.c); not part of this audit |
+
+Fixed port deviations:
+- **Pit death never fired in the game**: `g_dcp_world.death_y` kept its initialiser 0x7fff and
+  `map_right` 0x7fffffff (nothing set them outside the tests). `dcp_bind_map` now sets death_y = map
+  height (StageLoader_OnMapArchiveLoaded) and map_left / map_right = 0 / width, and
+  Player_UpdateGimmickStageBounds is translated (gimmick-held bounds +-0x6c px).
+- **Ring scatter level**: Player_OnHurt used a private level that never reset; it now uses the ring
+  manager's (RingManager unk9D5), reset by RingManager_Main.
+- **No DS R button on the Dreamcast pad**: tricks, the homing attack / air dash / hover and the grind
+  tricks read DS R (0x100), which `ds_pad` never produced. Patch
+  `dreamcast/game/player/patches/input_r_trigger.patch` maps the right trigger to DS R (left to DS L).
+- **Trick effects** were missing: EffTrickForwardBoost, EffTrick_CreateAtOffset, EffTrickSparkle,
+  EffTrickCombo_Spawn / EffTrickComboPart (new slot OBJ_BAC_EFF_TRICK, ac_eff_trick.bac).
+
+Flycast (scratch disc, inputs scripted by stage frame because the emulator ran at about 5 frames
+per second; DS R injected through Y in the scratch build only, the keyboard trigger does not reach
+the guest): spring 0x43 launch (vel_y -2646), R -> 0x37 (vel_x 2560), B -> 0x39 (tension 1600 ->
+2000), B -> 0x3a (-> 2400), landing, A -> jump; a hurt with 0 rings -> die 0x11 / 0x12 -> respawn
+at the start point. Matches the host run of the same inputs.
+
+Zone gimmicks, formula level: water jet 0x85 (WaterJet_OnHit -0x780 - p6 * 0x180, 3/4 under water)
+and launch zone 0x83 (LaunchZone_OnHit +-0xa00 * 0xb5 >> 8, Player_Action_ZoneLaunch (move + v) >> 1,
+ObjSpd_DownSet 0x60) are now exact in `test_zones`. The other zone classes (water wheel, rafts, sand
+slides, hands, cargo, neon routes, swings, switches, cranes, pistons, pipes, glider, parachute,
+saucer, cannons, ducts, rockets) keep the activation checks of `test_zones`; their OnHit / Player_Action
+functions were compared with the decompilation side by side (WaterJet, LaunchZone, Wheel2D,
+SandSlider, Cannon, Rocket, Saucer_Action_Ridden, Parachute, GmkPipe) and match.

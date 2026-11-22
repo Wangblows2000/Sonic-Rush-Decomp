@@ -85,6 +85,7 @@ static void InsertPrioList(NNSSndSeqPlayer *p) {
     }
     NNS_FndInsertListObject(&data_02083458, it, p);
 }
+void (*g_snd_seq_end_cb)(int32_t arc, int32_t id, int tries, int ok);
 static void ShutdownPlayer_snd_player(NNSSndSeqPlayer *p) {
     NNSSndPlayer *heap;
     if (p->handle != NULL) { p->handle->player = NULL; p->handle = NULL; }
@@ -206,6 +207,11 @@ void NNSi_SndPlayerMain(void) {
             if (p->seqId) p->prepared = 1;
         }
         if (p->prepared && !snd_drv_player_active(p->playerNo)) {
+            if (g_snd_seq_end_cb && p->status == 1) {   /* trace: the sequence ended by itself */
+                int tries, ok;
+                snd_drv_player_notes(p->playerNo, &tries, &ok);
+                g_snd_seq_end_cb(p->seqArcNo, p->seqNo, tries, ok);
+            }
             ShutdownPlayer_snd_player(p);
         } else {
             NNSi_SndFaderUpdate(&p->fader);
@@ -287,3 +293,23 @@ void NNS_SndPlayerSetTrackPan(NNSSndHandle *handle, uint32_t trackMask, int pan)
     if (handle->player) snd_drv_set_track_pan(handle->player->playerNo, trackMask, pan);
 }
 int NNS_SndPlayerCountPlaying(int playerNo) { return data_020838a4[playerNo].playerList.numObjects; }
+
+/* NNSi_SndPlayerPause / NNS_SndPlayerPause / NNS_SndPlayerPauseByPlayerNo
+ * (src/libs/NitroSystem/snd): unk2e is the pause flag (+0x2e) */
+void NNSi_SndPlayerPause(NNSSndSeqPlayer *p, int flag) {
+    if (p == NULL) return;
+    if ((uint8_t)flag == p->unk2e) return;
+    snd_drv_pause_seq(p->playerNo, flag);   /* SND_PauseSeq */
+    p->unk2e = (uint8_t)flag;
+}
+void NNS_SndPlayerPause(NNSSndHandle *handle, int flag) { NNSi_SndPlayerPause(handle->player, flag); }
+void NNS_SndPlayerPauseByPlayerNo(int playerNo, int flag) {
+    NNSSndPlayer *heap = &data_020838a4[playerNo];
+    NNSSndSeqPlayer *p = NNS_FndGetNextListObject(&heap->playerList, NULL), *next;
+    if (p == NULL) return;
+    do {
+        next = NNS_FndGetNextListObject(&heap->playerList, p);
+        NNSi_SndPlayerPause(p, flag);
+        p = next;
+    } while (next != NULL);
+}

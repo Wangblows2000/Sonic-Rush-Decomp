@@ -478,6 +478,8 @@ static void PlayerSelectMenu_State_Select(void) {
         DrawSubTitle(w, 0, TRUE);
     }
     w->unk0++;
+    if (w->unkC == 0)
+        mn_automap_choice(&gPad.cur, &gPad.trg, w->unk14, (u32)w->unk0);   /* test builds: debug/automap.txt */
     if (gPad.trg & PAD_A) {   /* PlayerSelectMenu_IsConfirmInput */
         PlayerSelectMenu_Action_Confirm();
         return;

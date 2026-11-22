@@ -1555,8 +1555,7 @@ static void ZoneMap_State_PlayTalkDemo(void) {
         s32 d;
         if (w->unk74 == 0xf) {
             w->map->map.unk5c = 0;
-            if (g_menu_hooks.stop_all)
-                g_menu_hooks.stop_all();   /* SysSound_Release */
+            SysSound_Release();
         }
         if (w->unk88 == 0 && w->unk74 >= 0x10)
             w->unk84 = 1;
@@ -1989,12 +1988,125 @@ static void ZoneMap_ConfirmNode(void) {
     }
 }
 
+/* Test builds only (not in the original): the zone-map autopilot. With
+ * <menus dir>/../debug/automap.txt (or g_mn_automap = 1 from a host test) the
+ * SelectNode state walks along the node graph, with the same rules as
+ * ZoneMap_GetNextNodeFromPad, to the node the story asks for next (the next
+ * story zone, or the talk node of Sonic steps 0x13 / 0x18 and Blaze steps
+ * 0xf / 0x13 / 0x17 / 0x1b) and presses A there. Nothing happens once the
+ * character's story is complete, or without the file. */
+int g_mn_automap = -1;
+int g_mn_automap_char = -1;   /* player select: 0 Sonic, 1 Blaze, 2 extra story (file: s / b / x), -1 none */
+static int automap_enabled(void) {
+    if (g_mn_automap < 0) {
+        char p[160];
+        const char *slash = strrchr(g_mn_dir, '/');
+        FILE *f;
+        snprintf(p, sizeof(p), "%.*s/debug/automap.txt", slash ? (int)(slash - g_mn_dir) : 0, g_mn_dir);
+        f = fopen(p, "rb");
+        g_mn_automap = f != NULL;
+        if (f) {
+            char c = 0;
+            if (fscanf(f, " %c", &c) == 1)   /* s / b / x: Sonic, Blaze, extra story; else no choice */
+                g_mn_automap_char = c == 's' ? 0 : c == 'b' ? 1 : c == 'x' ? 2 : -1;
+            fclose(f);
+        }
+    }
+    return g_mn_automap > 0;
+}
+/* PlayerSelect (mode 0) with the autopilot and a choice: RIGHT until the choice is shown, then A.
+ * Returns 1 when it set the pad. */
+int mn_automap_choice(u16 *cur, u16 *trg, s32 sel, u32 frames) {
+    if (!automap_enabled() || g_mn_automap_char < 0)
+        return 0;
+    *cur = *trg = 0;
+    if (frames < 0x30)
+        return 1;
+    *cur = *trg = sel != g_mn_automap_char ? PAD_RIGHT : PAD_A;
+    return 1;
+}
+static s32 automap_target(ZmState *w) {
+    if (w->mode == 0) {
+        if (gSaveData.unkC >= g_mn_data.story_s[7])
+            return ZM_NONE;
+        if (w->unk4 == 0x13)
+            return 7;
+        if (w->unk4 == 0x18)
+            return 9;
+    } else {
+        if (gSaveData.unk64 >= g_mn_data.story_b[7])
+            return ZM_NONE;
+        switch (w->unk8) {
+        case 0xf: return 4;
+        case 0x13: return 5;
+        case 0x17: return 10;
+        case 0x1b: return 11;
+        }
+    }
+    return ZoneMap_GetNodeForStoryStep();
+}
+/* the node a D-pad direction leads to (ZoneMap_GetNextNodeFromPad without the queue) */
+static s32 automap_step(ZmState *w, s32 cur, s32 dir) {
+    ZmNode *nodes = w->map->nodes.pts;
+    s32 next = g_mn_data.zm_adj[w->mode][cur][dir];
+    u32 t;
+    if (next == ZM_NONE || next < 0 || next > 16)
+        return ZM_NONE;
+    if (nodes[next].type == 5)
+        next++;
+    if (next > 16)
+        return ZM_NONE;
+    t = (u32)nodes[next].type;
+    if (t != 0 && t != 2 && t != 1)
+        return ZM_NONE;
+    return next;
+}
+static void ZoneMap_AutoPad(ZmState *w) {
+    static const u16 dir_pad[4] = { PAD_LEFT, PAD_UP, PAD_RIGHT, PAD_DOWN };
+    s32 target, prev[17], first[17], queue[17], qh = 0, qt = 0, i, d;
+    if (!automap_enabled())
+        return;
+    gPad.cur = gPad.trg = 0;
+    target = automap_target(w);
+    if (target == ZM_NONE || w->unk74 < 30)
+        return;
+    if (target == w->unk14) {
+        gPad.cur = gPad.trg = PAD_A;
+        printf("menus automap: A on node %d (step %d/%d)\n", (int)target, (int)w->unk4, (int)w->unk8);
+        return;
+    }
+    /* breadth-first search from the current node: first[] = the first direction taken */
+    for (i = 0; i < 17; i++)
+        prev[i] = -1;
+    prev[w->unk14] = w->unk14;
+    first[w->unk14] = -1;
+    queue[qt++] = w->unk14;
+    while (qh < qt) {
+        s32 c = queue[qh++];
+        for (d = 0; d < 4; d++) {
+            s32 n = automap_step(w, c, d);
+            if (n == ZM_NONE || prev[n] >= 0)
+                continue;
+            prev[n] = c;
+            first[n] = c == w->unk14 ? d : first[c];
+            if (n == target) {
+                gPad.cur = gPad.trg = dir_pad[first[n]];
+                return;
+            }
+            queue[qt++] = n;
+        }
+    }
+    if (w->unk74 == 30)
+        printf("menus automap: node %d not reachable from %d\n", (int)target, (int)w->unk14);
+}
+
 static void ZoneMap_State_SelectNode(void) {
     ZmState *w = ZS;
     s32 n;
     g_zm_node = w->unk14;
     g_zm_select_ticks++;
     ZoneMap_UpdateView(w);
+    ZoneMap_AutoPad(w);
     if ((gPad.trg & PAD_X) && w->unk74 != 0) {   /* ZoneMap_IsCornerButtonOrXPressed */
         w->unk74 = 0;
         gTaskCurrent->func = ZoneMap_State_ScrollView;

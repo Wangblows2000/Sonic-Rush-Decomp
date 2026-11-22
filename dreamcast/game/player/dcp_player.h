@@ -259,7 +259,9 @@ enum { DCP_CH_VOICE = 0, DCP_CH_BOOST = 1, DCP_CH_TRICK = 2, DCP_CH_GLOBAL = 3 }
 enum {
     DCP_FX_BRAKE_SMOKE, DCP_FX_BOOST, DCP_FX_BOOST_BURST, DCP_FX_HIGHSPEED, DCP_FX_TRAIL,
     DCP_FX_SPIN_SMOKE1, DCP_FX_SPIN_SMOKE2, DCP_FX_TRICK, DCP_FX_TRICK_COMBO,
-    DCP_FX_BOOST_JET, DCP_FX_BLAZE_FLAME, DCP_FX_ATTACK_HITBOX_BOOST, DCP_FX_AIR_BUBBLE
+    DCP_FX_BOOST_JET, DCP_FX_BLAZE_FLAME, DCP_FX_ATTACK_HITBOX_BOOST, DCP_FX_AIR_BUBBLE,
+    DCP_FX_TRICK_FORWARD, /* Player_Action_TrickForward (Sonic): EffTrickForwardBoost_Create(w, 0, 0) */
+    DCP_FX_TRICK_SPARKLE  /* Player_Action_TrickCombo: EffTrickSparkle_Create(a = combo level) */
 };
 typedef struct DcpHooks {
     void *ctx;
@@ -387,6 +389,7 @@ void dcp_add_tension_combo(DcPlayer *p, s16 v);
 void dcp_drain_tension(DcPlayer *p);
 void dcp_add_rings(DcPlayer *p, s16 d);
 void dcp_scatter_rings(DcPlayer *p, u8 *scatter_level); /* RingManager_ScatterRings */
+extern u8 *g_dcp_scatter_level; /* RingManager unk9D5 for Player_OnHurt (set by the ring manager owner) */
 void dcp_add_trick_score(DcPlayer *p, u32 b);
 void dcp_stop_skid(DcPlayer *p);
 void dcp_update_run_anim(DcPlayer *p);

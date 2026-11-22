@@ -924,6 +924,7 @@ static void preload_resources(const rlvl_header_t *h) {
         obj_res_ensure(OBJ_BAC_EFF_SPIN1);
         obj_res_ensure(OBJ_BAC_EFF_SPIN2);
         obj_res_ensure(OBJ_BAC_EFF_BRAKE);
+        obj_res_ensure(OBJ_BAC_EFF_TRICK);
     }
     for (i = 0; i < h->num_objects; i++) {
         u16 t = g_obj.lv_obj[i].type;

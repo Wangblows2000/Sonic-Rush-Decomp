@@ -53,7 +53,7 @@ void demo_set_path(const char *dir);
 /* The DS runs DemoInput during the stage loading (StageStart_State_*: file requests,
  * timed by the card). The port loads the stage between frames, so these frames are
  * consumed by demo_after_stage_load. Default DEMO_LEAD_FRAMES (MENUS.md 10.3). */
-#define DEMO_LEAD_FRAMES 0
+#define DEMO_LEAD_FRAMES 23
 void demo_set_lead_frames(int n);
 int demo_lead_frames(void);
 

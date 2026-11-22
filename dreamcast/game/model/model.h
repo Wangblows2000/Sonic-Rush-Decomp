@@ -60,6 +60,12 @@ typedef struct {
     const dcm_texx_t *texx;       /* version 2: texture / palette names, else NULL */
     void *tex_vram[64];           /* pvr_ptr_t per texture (Dreamcast) */
     uint8_t tex_class[64];        /* DCM_CLASS_* derived from texture contents */
+    uint16_t *vref;               /* [num_vertices][2] shared position / normal slot (built by dcm_model_load:
+                                   * the strips repeat vertices; dcm_draw_ex transforms and lights each once) */
+    uint16_t num_upos, num_unrm;  /* distinct (palette, position) / (palette, normal) */
+    float *pbound;                /* [num_palette][4] bounding sphere (centre, radius < 0: unused) of the
+                                   * vertices of each palette entry: whole-model near-plane test */
+    void *lcache;                 /* lighting kept across draws while normal matrices and lights repeat */
 } dcm_model_t;
 
 typedef struct {
@@ -166,6 +172,13 @@ int dcm_draw_ex(const dcm_model_t *m, const dcm_mtx_t *palette, const dcm_mtx_t 
  * with the material index; NULL = off.  Without _arch_dreamcast nothing else is drawn. */
 typedef void (*dcm_emit_hook_t)(int material, const float *xyzuv, uint32_t argb, int eol);
 extern dcm_emit_hook_t dcm_host_emit;
+
+#ifdef _arch_dreamcast
+/* Test hook: non-NULL = the direct-render vertices (32 bytes each, as the TA receives them) are written here
+ * instead of the store queues; dcm_dc_capture_n counts them.  Only while dcm_host_emit is NULL. */
+extern uint32_t *dcm_dc_capture;
+extern uint32_t dcm_dc_capture_n;
+#endif
 
 /* Host/test hook: transformed screen position of every vertex (x, y, 1/w), no PVR. */
 int dcm_transform_vertices(const dcm_model_t *m, const dcm_mtx_t *palette, const dcm_mtx_t *model_mtx,

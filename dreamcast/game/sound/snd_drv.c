@@ -119,7 +119,8 @@ typedef struct Track {
 } Track;
 
 typedef struct Player {
-    int active, started;
+    int active, started, paused;   /* paused: SND_PauseSeq */
+    int notesTry, notesOk;         /* trace: notes of this sequence that looked up / started a channel */
     const uint8_t *seqData; uint32_t seqLen;
     int bankNo;
     int trackIdx[16];
@@ -275,6 +276,7 @@ static void play_note(Track *t, int key, int vel, int length) {
     if (t->tie && t->chanHead >= 0) { c = t->chanHead; ch[c].key = key; ch[c].velocity = vel; }
     if (c < 0) {
         Inst in;
+        p->notesTry++;
         if (!read_inst(p->bankNo, t->prg, key, &in)) { stats.inst_missing++; return; }
         int allowed;
         switch (in.type) { case 1: case 4: allowed = 0xFFFF; break; case 2: allowed = 0x3F00; break; case 3: allowed = 0xC000; break; default: return; }
@@ -284,7 +286,7 @@ static void play_note(Track *t, int key, int vel, int length) {
         if (c < 0) { stats.alloc_fail++; return; }
         if (!note_on(c, p->bankNo, key, vel, t->tie ? -1 : length, &in)) { stats.wave_missing++; ch[c].prio = 0; ch[c].active = 0; return; }
         ch[c].track = t; ch[c].nextInTrack = t->chanHead; t->chanHead = c;
-        stats.notes++;
+        stats.notes++; p->notesOk++;
     }
     ExChan *e = &ch[c];
     if (t->attack != 0xFF) e->envAttack = attack_coef(t->attack);
@@ -443,7 +445,7 @@ static void player_shutdown(Player *p) {
         t->alloc = 0; t->player = NULL;
         p->trackIdx[i] = -1;
     }
-    p->active = 0; p->started = 0;
+    p->active = 0; p->started = 0; p->paused = 0;
 }
 
 static void player_step_ticks(Player *p) {
@@ -478,7 +480,7 @@ static void track_update_channels(Track *t) {
 static void seq_main(void) {
     for (int k = 0; k < SND_PLAYER_NUM; k++) {
         Player *p = &players[k];
-        if (!p->active || !p->started) continue;
+        if (!p->active || !p->started || p->paused) continue;
         int ticks = 0;
         while (p->tempoCounter >= 240) { p->tempoCounter -= 240; ticks++; }
         for (int i = 0; i < ticks && p->active; i++) player_step_ticks(p);
@@ -710,6 +712,7 @@ void snd_drv_prepare_seq(int player, const uint8_t *seq, uint32_t seq_len, uint3
     Player *p = &players[player];
     if (p->active) player_shutdown(p);
     p->seqData = seq; p->seqLen = seq_len; p->bankNo = bank_no;
+    p->notesTry = p->notesOk = 0;
     p->volume = 127; p->extFader = 0; p->prio = 64; p->tempo = 120; p->tempoRatio = 256; p->tempoCounter = 240;
     if (!p->chanMask) p->chanMask = 0xFFFF;
     for (int i = 0; i < 16; i++) p->vars[i] = -1;
@@ -725,6 +728,20 @@ void snd_drv_prepare_seq(int player, const uint8_t *seq, uint32_t seq_len, uint3
     track_start(&tracks[t0], pc);
     p->active = 1; p->started = 0;
 }
+/* SND_PauseSeq (ARM7 SNDi_PauseSeq): pausing releases every channel of the
+ * player's tracks (release rate 127) and detaches them; the sequence stops
+ * ticking until it is resumed (tracks keep their position and state). */
+void snd_drv_pause_seq(int player, int flag) {
+    Player *p = &players[player];
+    if (!p->active) return;
+    if (flag && !p->paused)
+        for (int i = 0; i < 16; i++) {
+            Track *t = player_track(p, i);
+            if (t) { track_release_all(t, 127); track_free_chans(t); }
+        }
+    p->paused = flag ? 1 : 0;
+}
+void snd_drv_player_notes(int player, int *tries, int *ok) { *tries = players[player].notesTry; *ok = players[player].notesOk; }
 void snd_drv_start_prepared(int player) { if (players[player].active) players[player].started = 1; }
 void snd_drv_stop_seq(int player) { if (players[player].active) player_shutdown(&players[player]); }
 int snd_drv_player_active(int player) { return players[player].active; }

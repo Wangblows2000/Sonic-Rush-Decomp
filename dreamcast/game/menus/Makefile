@@ -33,6 +33,16 @@ host-test: $(OUT)/test_menus $(OUT)/test_flow
 	$(OUT)/test_menus $(OUT) $(SPRITES) $(DUMP)
 	$(OUT)/test_flow $(OUT) $(SPRITES) $(DUMP)
 
+# whole-story flow (menus + save + cutscenes, a model of main.c's scene flow); needs the cutscene data
+CS_SRCS = $(addprefix ../cutscene/,cs_core.c cs_draw.c cs_3d.c cs_sound.c cs_main.c cs_talk.c cs_script.c cs_player.c cs_trans.c cs_ending.c)
+CSDIR ?= $(ROOT)/build/dreamcast/cutscene
+MODELS ?= $(ROOT)/build/dreamcast/models
+$(OUT)/test_story: $(SRCS) $(HDRS) test/test_story.c ../save/save.c $(CS_SRCS) ../cutscene/cutscene.h
+	mkdir -p $(OUT)
+	gcc $(CFLAGS_HOST) -DCS_HOST -o $@ $(SRCS) $(MODEL) ../save/save.c $(CS_SRCS) test/test_story.c -lm
+story-test: $(OUT)/test_story
+	$(OUT)/test_story $(OUT) $(SPRITES) $(CSDIR) $(MODELS)
+
 dc: $(SRCS) $(SAVE) $(HDRS)
 	mkdir -p $(OUT)/dc
 	bash -c 'source /opt/toolchains/dc/kos/environ.sh && for f in $(SRCS) $(SAVE); do kos-cc -std=gnu99 -O2 -fwrapv -Wall -Wextra -Werror -c $$f -o $(OUT)/dc/$$(basename $${f%.c}).o || exit 1; done && sh-elf-size $(OUT)/dc/*.o'
@@ -43,4 +53,4 @@ link: dc test/link_main.c
 clean:
 	rm -rf $(OUT)/test_menus $(OUT)/dc $(OUT)/menus_link.elf
 
-.PHONY: all data host-test dc link clean
+.PHONY: all data host-test story-test dc link clean

@@ -499,7 +499,7 @@ static void TitleScreen_State_WaitForStart(void) {
     }
 }
 
-static void PostStaffRoll_ShowUnlockNotices(void);
+static void PostStaffRoll_ShowUnlockNotices(s32 arg);
 
 static void TitleScreen_State_StartPressed(void) {
     TitleScreenWork *w = TASK_WORK(TitleScreenWork);
@@ -530,7 +530,7 @@ static void TitleScreen_State_StartPressed(void) {
         Task_DestroyAll();
         Pad_Reset(&gPad, NULL, NULL);
         if (!flag) {
-            PostStaffRoll_ShowUnlockNotices();   /* TitleScreen_GoToUnlockNotice */
+            PostStaffRoll_ShowUnlockNotices(1);   /* TitleScreen_GoToUnlockNotice */
             return;
         }
         TitleMenu_Start();   /* TitleScreen_GoToTitleMenu */
@@ -538,18 +538,70 @@ static void TitleScreen_State_StartPressed(void) {
 }
 
 /* ===================================================== unlock notices */
-/* PostStaffRoll_ShowPlayerSelectUnlockNotice / ..SoundTest..: a message box
+/* PostStaffRoll_ShowUnlockNotices(arg) -> ShowPlayerSelectUnlockNotice /
+ * ShowSoundTestUnlockNotice: each notice only when a story is complete (Sonic
+ * progress >= 0x1a or Blaze >= 0x1c) and its flag is not yet set; a message box
  * (MsgBox 0x14 / 0x15) closes at frame 0xf0, then the flag is set and saved.
+ * Then PostStaffRoll_CreateFadeTask(arg): a 16-frame fade, then arg 0 (after the
+ * staff roll) PostStaffRoll_State_GoToSegaLogo (0xb4 frames, SEGA logo), arg 1
+ * (TitleScreen_GoToUnlockNotice) the title menu.
  * The message box text art is not converted: a dark screen stands for it and
  * A/START closes it early (the DS box closes on its own). */
 typedef struct {
     s32 timer;
-    s32 which;   /* 0 player select page, 1 sound test */
+    s32 which;   /* 0 player select page, 1 sound test, 2 fade, 3 SEGA logo wait */
+    s32 arg;     /* 0: then the SEGA logo, 1: then the title menu */
 } UnlockWork;
 
-static void PostStaffRollFade_Main(void);
+static BOOL unlock_story_done(void) { return gSaveData.unkC >= 0x1a || gSaveData.unk64 >= 0x1c; }
+static BOOL unlock_notice_due(s32 which) {
+    if (which == 0)
+        return unlock_story_done() && !(gSaveData.unk8 & 0x100);
+    return unlock_story_done() && !(gSaveData.unk8 & 0x200);
+}
+static void unlock_next(UnlockWork *w, s32 from) {
+    w->timer = 0;
+    if (from <= 0 && unlock_notice_due(0)) {
+        w->which = 0;
+        return;
+    }
+    if (from <= 1 && unlock_notice_due(1)) {
+        w->which = 1;
+        return;
+    }
+    w->which = 2;   /* PostStaffRoll_CreateFadeTask */
+}
+
 static void PostStaffRoll_State_UnlockNotice(void) {
     UnlockWork *w = TASK_WORK(UnlockWork);
+    if (w->which >= 2) {
+        /* PostStaffRollFade_Main: brightness 0 -> 16 over 16 frames, then the exit */
+        if (w->which == 2) {
+            s32 v = w->timer;
+            if (v > 16)
+                v = 16;
+            BRIGHT_MAIN = BRIGHT_SUB = (s16)v;
+            w->timer++;
+            if (w->timer >= 16) {
+                BRIGHT_MAIN = BRIGHT_SUB = 16;
+                if (w->arg) {
+                    Task_Destroy(gTaskCurrent);
+                    TitleMenu_Start();   /* SceneChange_ToTitleMenu */
+                    return;
+                }
+                w->which = 3;
+                w->timer = 0;
+            }
+            return;
+        }
+        /* PostStaffRoll_State_GoToSegaLogo */
+        w->timer++;
+        if (w->timer >= 0xb4) {
+            Task_Destroy(gTaskCurrent);
+            SegaLogo_Start();   /* SceneChange_ToSegaLogo */
+        }
+        return;
+    }
     if (w->timer == 0xa)
         SysSound_PlaySE(0x15);
     if (w->timer == 0x28)
@@ -560,35 +612,33 @@ static void PostStaffRoll_State_UnlockNotice(void) {
         if (w->which == 0) {
             SaveData_UnlockPlayerSelectPage();
             SaveData_CommitOrShowError(NULL);
-            w->which = 1;
-            w->timer = 0;
+            unlock_next(w, 1);
             return;
         }
         SaveData_UnlockSoundTest();
         SaveData_CommitOrShowError(NULL);
-        gTaskCurrent->func = PostStaffRollFade_Main;
-        w->timer = 0;
+        unlock_next(w, 2);
     }
 }
 
-/* PostStaffRoll_State_GoToSegaLogo: 0xb4 frames, then SceneChange_ToSegaLogo */
-static void PostStaffRollFade_Main(void) {
-    UnlockWork *w = TASK_WORK(UnlockWork);
-    BRIGHT_MAIN = BRIGHT_SUB = -16;
-    w->timer++;
-    if (w->timer >= 0xb4) {
-        Task_Destroy(gTaskCurrent);
-        SegaLogo_Start();
-    }
-}
-
-static void PostStaffRoll_ShowUnlockNotices(void) {
+static void PostStaffRoll_ShowUnlockNotices(s32 arg) {
     UnlockWork *w;
     mn_display_reset();
     mn_comp_reset(0);
     g_mn_comp.fill = 0xff000000;
     g_mn_scene = "UnlockNotice";
     w = (UnlockWork *)Task_Create(PostStaffRoll_State_UnlockNotice, NULL, 0, 0x1000, 0, sizeof(UnlockWork))->work;
-    w->which = (gSaveData.unk8 & 0x100) ? 1 : 0;
+    w->arg = arg;
+    unlock_next(w, 0);
     gSaveDataBusy = 0;
+}
+
+/* After the staff roll (cutscene result CS_NEXT_UNLOCK_NOTICES): PostStaffRoll_ShowUnlockNotices(0),
+ * which ends at the SEGA logo. */
+void menus_post_staff_roll(void) {
+    memset(&g_mn_request, 0, sizeof(g_mn_request));
+    Task_DestroyAll();
+    Pad_Reset(&gPad, NULL, NULL);
+    BRIGHT_MAIN = BRIGHT_SUB = -16;
+    PostStaffRoll_ShowUnlockNotices(0);
 }

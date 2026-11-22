@@ -7,6 +7,9 @@
  *   mirrored second draw is a second object), EffHighSpeedStart_Create,
  *   EffBlazeBoostFlame_Create, EffBlazeRunFlame_Spawn / _Create,
  *   EffBlazeSpinFlame_Spawn / _Create / _State_Main, EffBlazeTrickFlame_Create,
+ *   EffTrickForwardBoost_Create / _State_Main, EffTrick_CreateAtOffset,
+ *   EffTrickSparkle_Create / _State_Main (one object per particle), EffTrickCombo_Spawn,
+ *   EffTrickComboPart_Create / _Action_Main / _State_Main,
  *   EffTrail_Create / _State_Init / _State_Wait / _State_Follow / _SetNodeFromOwner / _Draw
  *   (the quads; obj_draw.c draws them), EffBoostJet_Spawn / _Create,
  *   EffSpinSmoke1_Spawn / _Create / _State_FollowParent,
@@ -712,6 +715,255 @@ int objects_trail_quads(ObjTrailQuad *q, int max) {
     return n;
 }
 
+/* ------------------------------------------------------- trick effects */
+/* EffTrickForwardBoost_State_Main: stays on the player while he holds the forward-trick pose */
+static void EffTrickForwardBoost_State_Main(Obj *w) {
+    DcPlayer *p = w->ppar;
+    if (p == NULL)
+        return;
+    w->h.x = p->x;
+    w->h.y = p->y;
+    if (p->disp_flags & 1)
+        w->h.disp_flags |= 1;
+    else
+        w->h.disp_flags &= ~1;
+    if (w->h.disp_flags & 1)
+        w->h.x -= w->h.vel_x * 0x100;
+    else
+        w->h.x += w->h.vel_x * 0x100;
+    w->h.y += w->h.vel_y * 0x100;
+    if (p->anim == 0x37 && !(p->move_flags & 0x2000))
+        return;
+    w->h.obj_flags |= 4;
+}
+/* EffTrickForwardBoost_Create(arg, x, y): ac_eff_boost.bac anim 0xa, semi-transparent, 2D acts,
+ * the player only */
+static Obj *EffTrickForwardBoost_Create(DcPlayer *p, s16 x, s16 y) {
+    Obj *w;
+    if (p->pid != 0 || !stage_2d() || p->type != 1)
+        return NULL;
+    w = peff_new(OBJ_BAC_EFF_BOOST);
+    if (w == NULL)
+        return NULL;
+    obj_set_anim(w, 0xa);
+    peff_oam(w, 1);
+    w->spr.flags |= SPR_SEMITRANS;
+    w->ppar = p;
+    if (p->disp_flags & 1) {
+        w->h.disp_flags |= 1;
+        x = (s16)-x;
+    }
+    w->h.x = p->x;
+    w->h.y = p->y;
+    w->h.grav_rot = p->grav_rot;
+    dcp_rotate_vec(&x, &y, (u8)(p->angle + p->grav_rot));
+    w->h.vel_x = x;
+    w->h.vel_y = y;
+    w->h.x += x << 8;
+    w->h.y += y << 8;
+    w->h.move_flags |= 0x2100;
+    w->h.disp_flags |= 0x100;
+    w->h.disp_flags |= 4;
+    w->h.obj_flags |= 2;
+    w->state = EffTrickForwardBoost_State_Main;
+    return w;
+}
+
+/* EffTrick_CreateAtOffset(arg, x, y): the launch-trick sparkle (anim 0x38, every 8 frames),
+ * ac_eff_trick.bac anim 0xc */
+static Obj *EffTrick_CreateAtOffset(DcPlayer *p, s32 x, s32 y) {
+    Obj *w;
+    if (p->pid != 0)
+        return NULL;
+    w = peff_new(OBJ_BAC_EFF_TRICK);
+    if (w == NULL)
+        return NULL;
+    obj_set_anim(w, 0xc);
+    peff_oam(w, 1);
+    if (p->disp_flags & 1)
+        w->h.disp_flags |= 1;
+    w->h.x = p->x;
+    w->h.y = p->y;
+    w->h.vel_x = 0;
+    w->h.vel_y = 0;
+    if (!(w->h.disp_flags & 1))
+        w->h.x += x << 8;
+    else
+        w->h.x -= x << 8;
+    w->h.y += y << 8;
+    w->h.move_flags |= 0x2100;
+    w->h.obj_flags |= 2;
+    eff_set_move_until_anim_end(w);
+    return w;
+}
+
+/* EffTrickSparkle: screen-space sparkles rising from the bottom edge after a combo trick
+ * (12 >> level of them, none past level 2). The DS keeps one task with 32 particles and the six
+ * sprites ac_eff_trick.bac anims 0..5; here each particle is an object drawn in screen space.
+ * The first call only creates the task (no particles), as on the DS. */
+static Obj *s_spark_task;
+static void EffTrickSparkle_Particle(Obj *w) {
+    /* EffTrickSparkle_State_Main for one particle: pos / vel in 24.8 screen px */
+    w->h.vel_y = (s16)(w->h.vel_y + 0x30);
+    if (w->h.vel_y > 0)
+        w->h.vel_y = (s16)(w->h.vel_y + 0x18);
+    if (!(RAND() & 0x1f))
+        w->h.vel_x = (s16)-w->h.vel_x;
+    if (!(RAND() & 0x1f))
+        w->h.vel_y = 0;
+    w->h.x += w->h.vel_x;
+    w->h.y += w->h.vel_y;
+    /* EffTrickSparkle_Draw: drawn while above y 0xc4 */
+    if ((w->h.y >> 8) < 0xc4)
+        w->h.disp_flags &= ~0x20;
+    else
+        w->h.disp_flags |= 0x20;
+    if ((w->h.y >> 8) > 0xc4 && w->h.vel_y <= 0)
+        w->h.obj_flags |= 4;
+}
+static void EffTrickSparkle_Task(Obj *w) { (void)w; }
+static void EffTrickSparkle_Create(s32 n) {
+    u16 count = 0xc, i;
+    int live = 0;
+    Obj *q;
+    if (n > 2)
+        return;
+    count = (u16)(count >> n);
+    if (s_spark_task == NULL || !s_spark_task->used || s_spark_task->state != EffTrickSparkle_Task) {
+        s_spark_task = obj_alloc(OBJ_PRIO_EFFECT, obj_stageobj_dtor);
+        if (s_spark_task == NULL)
+            return;
+        s_spark_task->kind = OBJK_EFFECT;
+        s_spark_task->h.move_flags |= 0x2100;
+        s_spark_task->h.obj_flags |= 0x12;
+        s_spark_task->state = EffTrickSparkle_Task;
+        return;
+    }
+    for (q = g_obj.head; q; q = q->next)
+        live += q->used && q->state == EffTrickSparkle_Particle && !(q->h.obj_flags & 4);
+    for (i = 0; i < count && live < 32; i++, live++) {
+        Obj *w = peff_new(OBJ_BAC_EFF_TRICK);
+        u16 k;
+        if (w == NULL)
+            return;
+        w->h.x = (RAND() & 0xff) << 8;
+        w->h.y = 0xc000;
+        w->h.vel_x = (s16)(0x3ff - (RAND() & 0x7ff));
+        w->h.vel_y = (s16)((RAND() & 0xff) - 0x780);
+        k = RAND() & 7;
+        if (k == 6)
+            k = RAND() & 3;
+        if (k == 7)
+            k = (u16)((RAND() & 3) + 2);
+        obj_set_anim(w, k);
+        peff_oam(w, -1);
+        w->spr.order = 9;
+        w->h.disp_flags |= 0x80 | 4; /* screen space, looping */
+        w->h.move_flags |= 0x2100;
+        w->h.obj_flags |= 0x12;
+        w->state = EffTrickSparkle_Particle;
+    }
+}
+
+/* EffTrickComboPart_State_Main: rises, turns to its next animation near the top, ends below the
+ * screen; c frames of delay first */
+static void EffTrickComboPart_State_Main(Obj *w) {
+    if (w->wC != 0) {
+        w->wC--;
+        if (w->wC == 0)
+            w->h.move_flags &= ~0x2000;
+    }
+    if (w->h.vel_y >= -0x180 && (w->h.disp_flags & 4))
+        obj_set_anim(w, (u16)(w->spr.anim + 1)); /* (also clears the loop flag) */
+    if (w->h.vel_y <= 0)
+        return;
+    if ((w->h.y >> 8) > 0xe0)
+        w->h.obj_flags |= 4;
+}
+/* EffTrickComboPart_Create(type, x, y, vx, vy, c): ac_eff_trick.bac anim 6 / 8 / 0xa, screen space
+ * from (0x80 + x, 0xc0 + y), gravity 0x54, fall max 0x1e00 */
+static void EffTrickComboPart_Create(s32 type, s32 x, s32 y, s16 vx, s16 vy, s16 c) {
+    Obj *w = peff_new(OBJ_BAC_EFF_TRICK);
+    if (w == NULL)
+        return;
+    obj_set_anim(w, type == 1 ? 8 : type == 2 ? 0xa : 6);
+    peff_oam(w, 0);
+    w->h.disp_flags |= 0x80;
+    w->h.obj_flags |= 0x10;
+    w->h.x = (x + 0x80) << 8;
+    w->h.y = (y + 0xc0) << 8;
+    w->h.move_flags |= 0x180;
+    w->h.obj_flags |= 2;
+    w->h.disp_flags |= 4;
+    w->h.vel_x = vx;
+    w->h.vel_y = vy;
+    w->wC = c;
+    w->h.gravity = 0x54;
+    w->h.fall_max = 0x1e00;
+    /* EffTrickComboPart_Action_Main */
+    w->state = EffTrickComboPart_State_Main;
+    if (w->wC != 0)
+        w->h.move_flags |= 0x2000;
+}
+/* EffTrickCombo_Spawn: the first combo trick's "FANTASTIC"-style burst, one of eight layouts */
+static void EffTrickCombo_Spawn(void) {
+    switch ((u16)(RAND() & 7)) {
+    case 0:
+        EffTrickComboPart_Create(0, -0x30, 0x30, 0, -0x800, 0);
+        EffTrickComboPart_Create(1, 0, 0, 0, -0x800, 0);
+        EffTrickComboPart_Create(2, 0x30, 0x30, 0, -0x800, 0);
+        break;
+    case 1:
+        EffTrickComboPart_Create(0, 0x60, 0x18, 0, -0x700, 0);
+        EffTrickComboPart_Create(1, 0x40, 0x18, 0, -0x700, 4);
+        EffTrickComboPart_Create(2, 0x20, 0x18, 0, -0x700, 8);
+        EffTrickComboPart_Create(0, 0, 0x18, 0, -0x700, 0xc);
+        EffTrickComboPart_Create(1, -0x20, 0x18, 0, -0x700, 0x10);
+        EffTrickComboPart_Create(2, -0x40, 0x18, 0, -0x700, 0x14);
+        EffTrickComboPart_Create(0, -0x60, 0x18, 0, -0x700, 0x18);
+        break;
+    case 2:
+        EffTrickComboPart_Create(0, -0x50, 0x18, 0, -0x780, 0);
+        EffTrickComboPart_Create(1, -0x20, 0x18, 0, -0x780, 8);
+        EffTrickComboPart_Create(2, 0x20, 0x18, 0, -0x780, 8);
+        EffTrickComboPart_Create(0, 0x50, 0x18, 0, -0x780, 0);
+        break;
+    case 3:
+        EffTrickComboPart_Create(0, 0x40, 0x18, 0, -0x780, 4);
+        EffTrickComboPart_Create(2, 0x20, 0x18, 0, -0x780, 0xc);
+        EffTrickComboPart_Create(1, 0, 0x18, 0, -0x800, 0x18);
+        EffTrickComboPart_Create(2, -0x20, 0x18, 0, -0x780, 0x10);
+        EffTrickComboPart_Create(0, -0x40, 0x18, 0, -0x780, 8);
+        break;
+    case 4:
+        EffTrickComboPart_Create(2, -0x50, 0x18, 0x180, -0x780, 0);
+        EffTrickComboPart_Create(1, 0, 0x18, 0, -0x800, 0x10);
+        EffTrickComboPart_Create(2, 0x50, 0x18, -0x180, -0x780, 0);
+        break;
+    case 5:
+        EffTrickComboPart_Create(0, 0x64, 0x18, 0, -0x700, 0);
+        EffTrickComboPart_Create(1, 0x3c, 0x18, 0, -0x780, 8);
+        EffTrickComboPart_Create(2, 0x14, 0x18, 0, -0x800, 0x10);
+        EffTrickComboPart_Create(1, -0x14, 0x18, 0, -0x700, 0);
+        EffTrickComboPart_Create(2, -0x3c, 0x18, 0, -0x780, 8);
+        EffTrickComboPart_Create(0, -0x64, 0x18, 0, -0x800, 0x10);
+        break;
+    case 6:
+        EffTrickComboPart_Create(0, -0x6c, 0x18, 0x500, -0x700, 0);
+        EffTrickComboPart_Create(2, -0x30, 0x18, 0x200, -0x800, 8);
+        EffTrickComboPart_Create(2, 0x30, 0x18, -0x200, -0x800, 8);
+        EffTrickComboPart_Create(0, 0x6c, 0x18, -0x500, -0x700, 0);
+        break;
+    case 7:
+        EffTrickComboPart_Create(1, 0x40, 0x18, 0, -0x780, 0x18);
+        EffTrickComboPart_Create(0, 0x20, 0x18, 0, -0x780, 0xc);
+        EffTrickComboPart_Create(2, 0, 0x18, 0, -0x800, 0);
+        EffTrickComboPart_Create(0, -0x20, 0x18, 0, -0x780, 0xc);
+        EffTrickComboPart_Create(1, -0x40, 0x18, 0, -0x780, 0x18);
+        break;
+    }
+}
+
 /* g_dcp_hooks.effect -> the effect the original creates at that point */
 void obj_player_effect(DcPlayer *p, s32 fx, s32 a, s32 b) {
     switch (fx) {
@@ -738,6 +990,18 @@ void obj_player_effect(DcPlayer *p, s32 fx, s32 a, s32 b) {
         break;
     case DCP_FX_TRAIL:       /* Player_StartBoost: EffTrail_Create(w, 0x18, 0xa, 0x7ca5, 0x7ca5) */
         EffTrail_Create(p, a, b, 0x7ca5, 0x7ca5);
+        break;
+    case DCP_FX_TRICK:         /* Player_State_InAir anim 0x38: EffTrick_CreateAtOffset(w, a, b) */
+        EffTrick_CreateAtOffset(p, a, b);
+        break;
+    case DCP_FX_TRICK_FORWARD: /* Player_Action_TrickForward: EffTrickForwardBoost_Create(w, 0, 0) */
+        EffTrickForwardBoost_Create(p, 0, 0);
+        break;
+    case DCP_FX_TRICK_SPARKLE: /* Player_Action_TrickCombo: EffTrickSparkle_Create(w->unk3D0) */
+        EffTrickSparkle_Create(a);
+        break;
+    case DCP_FX_TRICK_COMBO:   /* Player_Action_TrickCombo, first combo: EffTrickCombo_Spawn() */
+        EffTrickCombo_Spawn();
         break;
     case DCP_FX_BOOST_JET:   /* EffBoostJet_Spawn */
         EffBoostJet_Spawn(p);

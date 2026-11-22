@@ -10,6 +10,7 @@
  * (state part).
  */
 #include "dcp_player.h"
+#include "dcp_collision.h"
 
 #define H g_dcp_hooks
 #define W g_dcp_world
@@ -278,8 +279,32 @@ void dcp_update_ride_max(DcPlayer *w) {
 }
 
 /* ------------------------------------------------------------- Player_In */
+/* Player_UpdateGimmickStageBounds: the horizontal map collision limits follow a gimmick that holds
+ * the player (pf2 0x200: +-0x6c px around it), else 0 .. map width. (The vertical pair, unk20 /
+ * unk28 with pf2 0x400, has no consumer in the port.) */
+static void dcp_update_gimmick_stage_bounds(DcPlayer *w) {
+    s32 width = g_dcp_col.map ? g_dcp_col.map->right : W.map_right;
+    if (w->pid != 0 || W.zone >= 9 || W.act >= 2)
+        return;
+    if (w->pf2 & 0x200) {
+        if (w->gimmick != NULL) {
+            W.map_left = (((const DcPlayer *)w->gimmick)->x >> 8) - 0x6c;
+            W.map_right = (((const DcPlayer *)w->gimmick)->x >> 8) + 0x6c;
+        } else {
+            w->pf2 &= ~0x200;
+            W.map_left = 0;
+            W.map_right = width;
+        }
+    } else {
+        W.map_left = 0;
+        W.map_right = width;
+    }
+    if ((w->pf2 & 0x400) && w->gimmick == NULL)
+        w->pf2 &= ~0x400;
+}
+
 void dcp_player_in(DcPlayer *w) {
-    /* Player_UpdateGimmickStageBounds: gimmick, not translated */
+    dcp_update_gimmick_stage_bounds(w);
     dcp_update_gravity_flip(w);
     /* Player_ReadInput */
     if (!(w->pf & 0x200000) && w->pid == 0) {

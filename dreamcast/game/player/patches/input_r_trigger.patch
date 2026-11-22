@@ -1,0 +1,38 @@
+diff -ru a/dreamcast/game/engine/input.c b/dreamcast/game/engine/input.c
+--- a/dreamcast/game/engine/input.c	2026-11-22 16:02:15.494070906 +0000
++++ b/dreamcast/game/engine/input.c	2026-11-22 16:02:15.606247175 +0000
+@@ -27,6 +27,8 @@
+             if(st->buttons & CONT_B) h |= IN_TRICK;
+             if(st->buttons & CONT_Y) h |= IN_ALT;
+             if(st->buttons & CONT_START) h |= IN_START;
++            if(st->rtrig >= 128) h |= IN_R;   /* analog triggers 0..255 */
++            if(st->ltrig >= 128) h |= IN_L;
+         }
+     }
+     in->held = h;
+diff -ru a/dreamcast/game/engine/input.h b/dreamcast/game/engine/input.h
+--- a/dreamcast/game/engine/input.h	2026-11-22 16:02:15.450165846 +0000
++++ b/dreamcast/game/engine/input.h	2026-11-22 16:02:15.606113808 +0000
+@@ -9,7 +9,9 @@
+     IN_BOOST = 1 << 5,  /* X */
+     IN_TRICK = 1 << 6,  /* B */
+     IN_ALT = 1 << 7,    /* Y */
+-    IN_START = 1 << 8
++    IN_START = 1 << 8,
++    IN_R = 1 << 9,      /* right trigger: DS R (tricks, air dash / homing / hover, grind tricks) */
++    IN_L = 1 << 10      /* left trigger: DS L */
+ };
+ 
+ typedef struct {
+diff -ru a/dreamcast/game/src/main.c b/dreamcast/game/src/main.c
+--- a/dreamcast/game/src/main.c	2026-11-22 16:02:15.518377371 +0000
++++ b/dreamcast/game/src/main.c	2026-11-22 16:02:15.606534234 +0000
+@@ -75,6 +75,8 @@
+     if(b & IN_DOWN) o |= 0x080;
+     if(b & IN_BOOST) o |= 0x400;  /* X */
+     if(b & IN_ALT) o |= 0x800;    /* Y */
++    if(b & IN_R) o |= 0x100;      /* R: Player_State_InAir tricks / air action, grind tricks */
++    if(b & IN_L) o |= 0x200;      /* L */
+     return o;
+ }
+ 
