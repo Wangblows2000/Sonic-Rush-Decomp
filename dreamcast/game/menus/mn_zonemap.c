@@ -1413,9 +1413,54 @@ static void ZoneMap_State_WaitNaviMessage(void) {
     }
 }
 
-/* TalkDemo is not translated: the fade around it is kept, the scene is skipped */
+/* ZoneMap_State_PlayTalkDemo: with the talk_demo hooks (cutscene module) as the
+ * original: SysSound_Release at 0xf, TalkDemo_CreateForZoneMap at 0x10 (the
+ * talk id comes from the map step), wait for TalkDemo_IsActive() == 0, 15 frames,
+ * then SysSound_Init + the map BGM. (The unk19ac BG fade and unk1998 are not
+ * part of the port's map composition.) Without the hooks the scene is skipped
+ * and only the 32-frame fade around it is kept. */
 static void ZoneMap_State_PlayTalkDemo(void) {
     ZmState *w = ZS;
+    if (g_menu_hooks.talk_demo_start && g_menu_hooks.talk_demo_active) {
+        s32 d;
+        if (w->unk74 == 0xf) {
+            w->map->map.unk5c = 0;
+            if (g_menu_hooks.stop_all)
+                g_menu_hooks.stop_all();   /* SysSound_Release */
+        }
+        if (w->unk88 == 0 && w->unk74 >= 0x10)
+            w->unk84 = 1;
+        if (w->unk84 == 1 && w->unk88 == 0) {
+            w->unk78 = 0;
+            /* ZoneMap_Unk_ov001_022e1aac(unk4) / ZoneMap_SelectTalkDemo(unk8), TalkDemo_CreateForZoneMap */
+            if (g_menu_hooks.talk_demo_start(w->mode, w->mode == 0 ? w->unk4 : w->unk8) != 0)
+                w->unk88 = 2;   /* no data: as if it had ended at once */
+            else
+                w->unk88 = 1;
+        }
+        ZoneMap_UpdateView(w);
+        w->unk74++;
+        if (w->unk88 != 0 && (w->unk88 == 2 || !g_menu_hooks.talk_demo_active())) {
+            if (w->unk78 == 0) {
+                w->unk78 = w->unk74;
+                w->unk8c = 1;
+                w->map->map.unk5c = 1;
+                if (w->mode == 0 ? ZoneMap_IsSonicNaviAvailable(w->unk4) : ZoneMap_IsBlazeNaviAvailable(w->unk8))
+                    ZoneMap_SetNaviMessage(&w->map->unk1cc4, 1);
+            }
+            d = w->unk74 - w->unk78;
+            if (d >= 0xf) {
+                w->unk74 = 0;
+                w->unk78 = 0;
+                SysSound_PlayBGM((w->mode == 0 ? (w->unk4 >= 0x1f && w->unk4 <= 0x21)
+                                               : (w->unk8 >= 0x1e && w->unk8 <= 0x20))
+                                     ? 5
+                                     : 4);
+                ZoneMap_SelectNextState();
+            }
+        }
+        return;
+    }
     if (w->unk74 == 0xf)
         w->map->map.unk5c = 0;
     ZoneMap_UpdateView(w);

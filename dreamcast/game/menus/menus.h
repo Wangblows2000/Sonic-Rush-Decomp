@@ -43,6 +43,12 @@ typedef struct {
     /* sound test: entry index of sound_test.sld and its fields (archive,
      * type 0 BGM/1 SE/2 voice, group, sequence archive or bank, id) */
     void (*sound_test)(int index, int archive, int type, int group, int arc, int id);
+    /* ZoneMap_State_PlayTalkDemo (cutscene module, CUTSCENES.md): TalkDemo_CreateForZoneMap
+     * for the story step (gGameState.unk0, map step unk4 / unk8; the talk id is
+     * cutscene_zonemap_talk_id(character, step)); 0 = started. talk_demo_active =
+     * TalkDemo_IsActive. NULL = the scene is skipped (32-frame fade only). */
+    int (*talk_demo_start)(int character, int step);
+    int (*talk_demo_active)(void);
 } MenuHooks;
 extern MenuHooks g_menu_hooks;
 

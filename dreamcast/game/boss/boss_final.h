@@ -39,6 +39,13 @@ enum { BOSS_HELP_ENEMY_ROOM_FIX = 2 };
  * the white-out before the sky phase.  mode 0: off. */
 void bossf_blend(s32 *mode, s32 *evy);
 
+/* Boss_LoadModelPalettes state (the palettes themselves are not swapped natively): set 0 all of bsf_body,
+ * 1 fist L, 2 fist R, 3 one bsf_body palette.  bossf_palette: the first palette index loaded last (-1 none);
+ * bossf_palette_flash: 1 while the flash (hurt blink) palettes are loaded.  An integrator can tint the
+ * body model while bossf_palette_flash(0) is set. */
+s32 bossf_palette(int set);
+int bossf_palette_flash(int set);
+
 /* state for tests / debug */
 typedef struct BossFInfo {
     s32 x, y, z;                 /* BossFPartD8 position (24.8) */

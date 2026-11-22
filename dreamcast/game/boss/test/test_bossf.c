@@ -4,7 +4,8 @@
  * and animations.
  *
  * Usage: test_bossf <zf3/level.bin> <build/dreamcast/player> <models dir> <boss data dir> [-v|-vv]
- *   SEED=n LEVEL=0|1 STORY=0|1 (1: Blaze) BOSSFRAMES=n DUMPAT=frame EXPLORE=1
+ *   SEED=n LEVEL=0|1 STORY=0|1 (1: Blaze) BOSSFRAMES=n EXPLORE=1|2
+ *   NOCROUCH=1: the player stays standing on the arm when the hand swings and must be knocked off
  *
  * As in test_boss.c, objects_init is not called: the test registers the player's two boxes itself and
  * installs the ObjCollisionMap probe (colmap_probe_for_obj) and the per-frame commit that
@@ -231,7 +232,7 @@ int main(int argc, char **argv) {
     const rlvl_object_t *ps;
     s32 sx = 384, sy = 752;
     int r, n, last_phase = -1, last_health = -1, phases_seen[0x40] = {0};
-    int max_frames, start_frame, story, explore, boost, hop;
+    int max_frames, start_frame, story, explore, boost, hop, nocrouch, knock_frame = -1;
     int cooldown = 0, mode = 0, tries = 0, stuck = 0, jump_hold = 0, core_tries = 0, sky_tries = 0;
     s32 last_px = 0;
     s32 tgt_x = 0;
@@ -249,6 +250,7 @@ int main(int argc, char **argv) {
     explore = getenv("EXPLORE") ? atoi(getenv("EXPLORE")) : 0;
     boost = getenv("BOOST") ? atoi(getenv("BOOST")) : 0;
     hop = getenv("HOP") ? atoi(getenv("HOP")) : 0;
+    nocrouch = getenv("NOCROUCH") ? atoi(getenv("NOCROUCH")) : 0;
     snprintf(path, sizeof(path), "%s/trig.bin", argv[2]);
     trig = (s16 *)load(path, &size);
     snprintf(path, sizeof(path), "%s/physics.bin", argv[2]);
@@ -411,7 +413,9 @@ int main(int argc, char **argv) {
             s32 l, t, rr, b, px = P.x >> 8;
             box_px(&bi.box[0], &l, &t, &rr, &b);
             int warn_end = g_help_shown && (!strcmp(boss_state_name(1), "State_HandRideWarn") ? bi.timer <= 40 : 1);
-            if (warn_end || ph == BOSSF_PHASE_RIDE_MOVE) {
+            if (nocrouch && (warn_end || ph == BOSSF_PHASE_RIDE_MOVE)) {
+                jump_hold = 0; /* stand still on the arm */
+            } else if (warn_end || ph == BOSSF_PHASE_RIDE_MOVE) {
                 /* stop, then crouch (holding down while moving rolls) */
                 if ((P.move_flags & DCP_MF_GROUND) && P.gnd_vel > 0x60)
                     keys |= DCP_KEY_LEFT;
@@ -433,7 +437,7 @@ int main(int argc, char **argv) {
             } else {
                 if (px < (l + rr) / 2)
                     keys |= DCP_KEY_RIGHT;
-                if ((P.move_flags & DCP_MF_GROUND) && jump_hold == 0 && cooldown == 0) {
+                if (!nocrouch && (P.move_flags & DCP_MF_GROUND) && jump_hold == 0 && cooldown == 0) {
                     jump_hold = 14;
                     cooldown = 40;
                     core_tries++;
@@ -444,6 +448,17 @@ int main(int argc, char **argv) {
                 jump_hold--;
             }
             last_px = px;
+        }
+        /* [beam] a beam ball waits (BossFPartDE_State_Aim) until the player stands between its ends, which never
+         * reach a player pressed into an arena corner: walk back to the middle as a player would */
+        if (fight && mode == 0 && ph == BOSSF_PHASE_BEAM && ((P.x >> 8) < 160 || (P.x >> 8) > bi.map_right - 160))
+            mode = 2;
+        if (mode == 2) {
+            s32 px = P.x >> 8, mid = bi.map_right / 2;
+            if (abs(px - mid) > 40 && ph == BOSSF_PHASE_BEAM)
+                keys |= px < mid ? DCP_KEY_RIGHT : DCP_KEY_LEFT;
+            else
+                mode = 0;
         }
         /* [sky] the last hit point: the body charges three times, then hangs low in front of the base
          * with its core open: jump at it */
@@ -468,6 +483,10 @@ int main(int argc, char **argv) {
                    boss_state_name(1), bi.timer, P.x >> 8, P.y >> 8, P.vel_x, P.vel_y, P.gnd_vel,
                    (P.move_flags & DCP_MF_GROUND) != 0, bi.riding, P.anim, keys);
         frame(keys);
+        if (nocrouch && knock_frame < 0 && bossf_stats()->knock_offs > 0)
+            knock_frame = g_frame;
+        if (nocrouch && knock_frame >= 0 && (boss_phase() == BOSSF_PHASE_IDLE || g_frame - knock_frame > 6000))
+            break;
     }
     printf("  end f%d: phase %#x health %d cleared %d; state %s\n", g_frame, boss_phase(), boss_health(), boss_cleared(),
            boss_state_name(1));
@@ -488,6 +507,20 @@ int main(int argc, char **argv) {
                max_balls, max_shocks, max_waves, max_lasers, max_flashes, max_beams, blend_max, riding_seen,
                ride_draw_seen, ride_model_ok, g_hand_vel, g_hand_vel_seen, g_obj_stage.ring_bonus, P.rings, g_talk_id,
                g_help_create, g_help_last, g_help_destroy, g_enemy_room, g_music[0x13], g_music_stop, g_ring_flags);
+        if (nocrouch) {
+            BossFInfo bi;
+            bossf_info(&bi);
+            CHECK(knock_frame >= 0 && st->knock_offs >= 1 && st->body_hits == 0,
+                  "[knock-off] standing on the arm while the hand swings knocks the player off (f%d, %u knock-offs)",
+                  knock_frame, st->knock_offs);
+            CHECK(phases_seen[BOSSF_PHASE_RIDE_END] >= 1 && !bi.riding && !bi.ride_draw && boss_health() == health_max,
+                  "the ride ends (phase 0x35 x%d) without damage to the boss, the player is off the hand, back to idle "
+                  "by f%d", phases_seen[BOSSF_PHASE_RIDE_END], g_frame);
+            CHECK(boss_phase() == BOSSF_PHASE_IDLE, "the boss returns to its attack cycle (phase %#x)", boss_phase());
+            printf("%d checks, %d failed\n", g_checks, g_fail);
+            boss_shutdown();
+            return g_fail ? 1 : 0;
+        }
         CHECK(miss_ok == 1, "[miss] no damage to the boss while the player stands still for 900 frames");
         CHECK(boss_cleared() && g_cleared_hook == 1 && boss_defeated() && boss_phase() == BOSSF_PHASE_DEFEAT,
               "[fight] the whole fight runs to the stage clear (defeat phase 0x3b, cleared hook once) by f%d", g_frame);

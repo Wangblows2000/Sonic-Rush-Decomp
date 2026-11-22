@@ -16,7 +16,10 @@ SRCS = boss_core.c boss_camera.c boss_model.c boss_effect.c boss1.c boss2.c boss
 SRCS += boss6.c
 SRCS += boss7.c
 SRCS += boss_final.c
+SRCS += boss_extra.c boss_extra_obj.c boss_extra_player.c boss_extra_weapon.c boss_extra_hand.c \
+        boss_extra_stage.c boss_extra_draw.c
 HDRS = boss.h boss_internal.h
+HDRS += boss_extra.h boss_extra_int.h
 CFLAGS_HOST = -std=c99 -O2 -Wall -Wextra -Werror -fwrapv
 Z13 ?= $(ROOT)/build/dreamcast/stages/z13/level.bin
 PLAYER_TABLES ?= $(ROOT)/build/dreamcast/player
@@ -107,11 +110,30 @@ $(OUT)/test_bossf: $(OUT)/host/lib.stamp test/test_bossf.c boss_final.h
 
 host-testF: $(OUT)/test_bossf
 	$(OUT)/test_bossf $(ZF3) $(PLAYER_TABLES) $(MODELS) $(OUT)
+	STORY=1 LEVEL=1 SEED=77 $(OUT)/test_bossf $(ZF3) $(PLAYER_TABLES) $(MODELS) $(OUT)
+	NOCROUCH=1 $(OUT)/test_bossf $(ZF3) $(PLAYER_TABLES) $(MODELS) $(OUT)
 host-test: host-testF
 clean: clean-bossf
 clean-bossf:
 	rm -f $(OUT)/test_bossf
 .PHONY: host-testF clean-bossf
+
+# Extra Zone boss (stage 26, boss_extra*.c): self-contained mode, no level.bin.
+#   make data-ex      BYOR: build/dreamcast/boss/extra/ (bossex.bin, zex.bin, vs_*.bin, sprites/, assets.txt)
+#   make host-testEX  the whole five-round fight (scripted pad), seeds, game over, pause; frames in /tmp/bossex
+EXTRA_DATA ?= $(OUT)/extra
+data-ex:
+	cd $(ROOT) && python3 dreamcast/game/boss/tools/bossexdata.py --out $(abspath $(EXTRA_DATA))
+$(OUT)/test_bossex: $(OUT)/host/lib.stamp test/test_bossex.c
+	gcc $(CFLAGS_HOST) -c test/test_bossex.c -o $(OUT)/host/test_bossex.o
+	gcc -Wl,--gc-sections -o $@ $(OUT)/host/lib/*.o $(OUT)/host/test_bossex.o -lm
+host-testEX: $(OUT)/test_bossex
+	$(OUT)/test_bossex $(PLAYER_TABLES) $(MODELS) $(EXTRA_DATA)
+host-test: host-testEX
+clean: clean-bossex
+clean-bossex:
+	rm -f $(OUT)/test_bossex
+.PHONY: data-ex host-testEX clean-bossex
 
 host-test: host-test1 host-test2 host-test3 host-test4 host-test5
 

@@ -4570,7 +4570,6 @@ static void BossFPartDE_Draw(void *p_) {
 }
 /* BossFPartDE_Destructor (modified: NNS_SndHandleReleaseSeq: the handle is released, the sound is not stopped) */
 static void BossFPartDE_Destructor(void *p_) {
-    if (getenv("BFDBG")) fprintf(stderr, "f%d DE dtor %p func %p cnt %d\n", g_dcp_world.frame, p_, (void*)((BossFPartDE *)p_)->func, gBossF->unk218->unk438);
     BossFPartDE *s = (BossFPartDE *)p_;
     boss_model_release(&s->unk4D4);
     boss_model_release(&s->e[0].m);
@@ -5016,7 +5015,6 @@ static BossFPartDE *BossFPartDE_Create(const ObjParam *p, s32 b, s32 c) {
         break;
     }
     boss->unk218->unk438++;
-    if (getenv("BFDBG")) fprintf(stderr, "f%d DE create k%d kind %d idx %d cnt %d\n", g_dcp_world.frame, k, w->unk20C, w->unk214, boss->unk218->unk438);
     w->unk4CC = &s_beam_fin; /* 0x72 */
     w->unk4D0 = &s_bf_tp;    /* 0x73 */
     w->unk4C8 = &data_ov000_02369b88[2];
@@ -5334,10 +5332,8 @@ void bossf_update(void) {
         if (s_dd[i].alive)
             boss_obj_main(&s_dd[i].h, &s_dd[i].func, &s_ops_dd, &s_dd[i], &s_dd[i].alive);
     for (i = 0; i < BF_DE; i++)
-        if (s_de[i].alive) {
+        if (s_de[i].alive)
             bf_obj_main_map(&s_de[i].h, &s_de[i].func, &s_ops_de, &s_de[i], &s_de[i].alive);
-            if (getenv("BFDBG") && s_de[i].alive && (g_dcp_world.frame % 30) == 0) fprintf(stderr, "DE%d %p x %x y %x vx %d vy %d t %d c4 %d be %d\n", i, (void*)s_de[i].func, s_de[i].h.x, s_de[i].h.y, s_de[i].h.vel_x, s_de[i].h.vel_y, s_de[i].h.timer, s_de[i].unk4C4, s_de[i].unk4BE);
-        }
     ZoneFx_ZoneFBoss_Update(); /* the stage background task (passage models) */
 }
 /* StageZoneScript (task 0x3eff, between ScreenShake 0x3e00 and BossCamera 0x3f00) */

@@ -1785,3 +1785,746 @@ with ring bonus, models projected, and per character the lost clash. All 12 runs
 | `BossStage7_FreeModels` | boss7.c | substantially rewritten | boss7_unload |
 | `BossStage7_OnModelLoaded` | boss7.c | substantially rewritten | boss7_load: bs7_base / bs7_sky (data_02074164) + the archive packages; NaviBg_Load / NaviB_Load dropped |
 | `StageZoneScript_Zone7Boss` (src/game/Zone/Dead_Line/Stage, not in the 167) | boss7.c | reused | run at the end of boss7_update (task 0x3eff); gPlayers->unk17C = x << 4 |
+
+## BossF (Final zone, zf3, stage id 23)
+
+The final boss: a giant robot (`bsf_body`) standing behind the flying base (`bsf_base`) the player fights on. Files:
+`boss_final.c` (all of it), `boss_final.h` (public part), `test/test_bossf.c`. There are also small additions to
+`boss_core.c` (kind 0xf dispatch, `boss_update_pre`), `boss.h` (`g_boss_hooks.talk`, `boss_update_pre`),
+`boss_internal.h`, `tools/bossdata.py` and the `Makefile` (`host-testF`).
+
+Status (2026-11-22): all 267 functions of `src/game/Zone/Final_Zone/Boss/` are translated, plus the three stage
+functions the fight needs: `StageZoneScript_ZoneFBoss` (Stage) and `ZoneFx_ZoneFBoss_Init` / `_Update` (Background).
+That is 270 originals: 210 reused, 59 modified, 1 substantially rewritten, 0 not translated, 0 asm fallbacks. Host
+test: 18/18 checks in 24 runs (6 seeds x LEVEL 0/1 x Sonic / Blaze), plus a 5-check knock-off run. `kos-cc -O2
+-fwrapv -Wall -Wextra -Werror` builds boss_final.c (55.6 KB text, 96 KB bss). Not run on hardware or in an emulator.
+
+### BossF: the fight
+
+| object | task | map object | role |
+|---|---|---|---|
+| BossF | 0x500 | 0x38 | base model, sky (`bsf_sky`, then `bsf_sky_b`), the laser-fin effects, the passage behind the arena (ZoneFx) |
+| BossFPartD8 | 0xf0 | 0xd8 | the body: the attack state machine; 7 boxes on `body_core` / `body_fist_l` / `body_fist_r`; the arm's collision map `bsf_st_r.df/.di` |
+| BossFPartD9 | 0x501 | 0xd9 | bomb ball thrown from the core during the hand ride (LEVEL 1 only: table 02363edc is 0 at level 0) |
+| BossFPartDA | 0x501 | 0xda | shock wave rolled by the arm (`bsf_shock`) |
+| BossFPartDB | 0x501 | 0xdb | slam waves (`bsf_wave_sl`) |
+| BossFPartDC / DD | 0x501 | 0xdc / 0xdd | laser from the core (`eff_laser_fin`) and its floor impacts (`eff_laser_fin_b`, the harmful part) |
+| BossFPartDE | 0x501 | 0xde | beam ball (`bsf_ball` + two `eff_beam_fin` ends): drops, aims, sweeps a beam between its ends; variant 1: a chain of balls dropped at the player |
+
+Health is 6 / 8. The fight loop:
+- `ChooseAttack` picks by health between the hand slam (0x30), the double press (0x31), the laser volley (0x36) and the
+  beam balls (0x37).
+- A slam or press leaves a fist on the floor with its damage box armed. A jump on it (anim 0x30) is phase 0x39, and
+  then comes the arm throw (0x32): the body moves to x 0x5e8 and the arm lies across the arena as a collision map.
+- Hitting the fist again starts the hand ride (0x33). The player runs up the arm and jumps at the core box. While
+  `BossHelp_Create(1)` (the warning) is shown and the hand swings (0x34), the player must crouch (anim 3/4) or be
+  knocked off. The ride ends at 0x35.
+- A core hit is 0x3a (hurt), followed by ReturnHome.
+- At 1 hp comes the sky charge (0x38): the timer stops, a white-out (`bossf_blend` evy 16) swaps in `bsf_sky_b`, and
+  the talk runs (TalkDemo 0xf Sonic / 0x10 Blaze, music 0x13). There are three charges at the base. After
+  `SkyChargeImpact3` the timer runs again and the core hangs open in front of the base. Hitting it is 0x3b: the
+  timer stops, the music stops, the ring flags are set, the defeat camera and explosions play, and the stage is
+  cleared with ring bonus = rings x 1000.
+- If the sky window is missed, the charge destroys the base and the player falls (the layer change in
+  `SkyChargeDestroyBase`), as on the DS.
+
+`boss_final.h` lists the phases as BOSSF_PHASE_*. `boss_defeated()` is phase 0x3b.
+
+Character, Super forms, time and rings:
+- `BossFPartD8_OnHitHand` branches on the character: during the throw, the bounce sets vel_x to -0x800 (Sonic) or
+  -0xb00 (Blaze).
+- The final zone has no Super Sonic / Burning Blaze code. The Super forms belong to the Extra Zone boss
+  (ExtraBossPlayer).
+- zf3 has no ring drain.
+- The time limit is the generic `Player_CheckTimeOver` (10 minutes, ui module). BossF only stops and restarts the
+  stage timer (`g_dcp_world.flags & 1`) as described above.
+
+### BossF: integration (main.c)
+
+```c
+#include "boss/boss_final.h"
+/* stage 23 (zf3, DS zone 7 act 2).  The boss module creates 0x38 and 0xd8..0xde itself:
+ * the objects module must not create them. */
+boss_init(23, level_bytes, &player, 1);
+g_boss_hooks.help = ...;   /* kind 0/1: BossHelp_Create(a = 1, the hand-ride warning) / Destroy;
+                              kind 2 (BOSS_HELP_ENEMY_ROOM_FIX): EffEnemyRoomFix, two HUD sprites
+                              (ac_eff_enemyroom_fix.bac 0xb / 0xc) at screen (a, 0x30) for b frames */
+g_boss_hooks.talk = ...;   /* TalkDemo 0xf / 0x10: cutscene_start(CS_TALK, id, character); while
+                              cutscene_active() skip boss_update_pre / dcp_player_frame / boss_update
+                              (System_Freeze) and draw the talk with cutscene_draw_list over the stage */
+g_boss_hooks.music = ...;  /* seq 0x13 at the talk */
+/* per frame, in this order: */
+objects_frame_begin();                 /* ObjRect checks + ObjCollisionMap commit (the arm's map) */
+boss_update_pre(&player);              /* BossFPartD8 (task 0xf0) before the player, as on the DS */
+dcp_player_frame(&player, ...);        /* g_dcp_col.obj_probe = colmap_probe_for_obj (objects module) */
+boss_update(&player);
+bossf_blend(&mode, &evy);              /* mode 2: white quad with alpha evy/16 over the 3D layer only (BG0) */
+if (boss_player_model(t, r)) ...       /* riding: draw the player at t with rot r (Draw_RidingPlayer) */
+```
+
+- The arena is flat (1664 x 832 px level, floor y 768, base x 0..0x340). Draw the player at (x, -y, z) with
+  `boss_camera()` unless `boss_player_model()` returns 1 (the hand ride).
+- The camera is `BossF_InitCamera` (follows the player, its own shake) plus `StageZoneScript_ZoneFBoss`. The DS
+  display swap (POWCNT bit 15) is dropped: one 640x480 view.
+- Health / phase go through `boss_health()` / `boss_phase()`. There are no navi messages in this fight.
+- Story flow:
+  - Before the fight, `Game_StartStoryStage` (zone 7, act index 2) calls `DemoScript_StartScript0`. Natively that is
+    `cutscene_start(CS_SCRIPT, 0, character)` with `CsStory.zone = 7`; on `CS_NEXT_STAGE` load stage 23 and call
+    `boss_init`.
+  - After the fight, `g_boss_hooks.cleared` stands for `Stage_OnBossCleared`. For zone 7 that is `ClearDemo_Create`
+    (the results: UI_RESULTS with `g_obj_stage.ring_bonus`), **not** DemoScript_StartAfterBoss.
+  - `ClearDemo_GoToNextScene` with zone 7 calls `SceneChange_ToEnding`, which is `cutscene_start(CS_ENDING, 0,
+    character)`. That chains into Ending -> StaffRoll -> PostStaffRoll (`CS_NEXT_UNLOCK_NOTICES`).
+  - In time attack (mode 2), the results lead to TryAgain.
+- Disc assets: assets.txt "zf3" lists 38 files, 0 missing, under `/cd/models`:
+  - `bsf_base` / `body` / `ball` / `shock` / `wave_sl` / `pas_dust01`, `bsf_sky`, `bsf_sky_b`, the four `bsf_passage`
+    models;
+  - `narc__zf3_act_lz7__bsf.dca` / `.dcv`;
+  - `eff_laser_fin`, `eff_laser_fin_b`, `eff_beam_fin`, and the zf3 effects (`eff_impact_sl/st/pr`, `eff_dmg_hand`,
+    `eff_produce`, `eff_bomb_ball`, `eff_tackle`, `eff_base_dest`, `eff_beam_fin_b`, `eff_blastf`, `eff_hit`).
+
+  `bossdata.bin` goes under `/cd/boss`. It holds the BossF rodata / data chunks, the `bsf_st_r.df` / `.di` archive
+  chunks (ids 0x7f000000 / 0x7f010000), the five `bsf_body` joints and the timing-only lengths of `bsf.nsbta` /
+  `.nsbma`, `eff_laser_fin_b.nsbma` / `.nsbtp` and `eff_beam_fin.nsbtp`. `make -C dreamcast/game/boss data` writes it.
+
+### BossF: how it is translated
+
+- **Work words**: BossFPartD8's 0x434 / 0x438 / 0x43C / 0x440 are read as u16 by some states and as s32 by others.
+  They are unions (`unk434w` = s32, `unk434` / `unk436` = the halves), and each function uses its own file's width.
+- **Node matrices** (the one substantial rewrite): `BossFPartD8_NodeCallback_Body` stores the matrices of 5 nodes
+  in GE slots 0x1e..0x1a during the draw, and the Draw reads them back. Natively, the joint world matrices come from
+  `boss_model_joint_world` after the pose, into the same fields (unk340..unk400, 4x3 fx32).
+- **The arm's collision map**: `ObjCollisionMap_Register` adds the arm to the objects module's colmap list
+  (`obj_colmap.c`). The owner the player's probes see is a proxy `Obj` kept at the part's position and rotation, so
+  the player's ride pointer is that proxy.
+- **Help / talk**: `BossHelp_Create` / `_Destroy` use the shared boss_core functions (help hook kinds 0/1).
+  `EffEnemyRoomFix_Create` is help kind 2. `TalkDemo_Create` is the new `g_boss_hooks.talk`.
+- **Draws**: the base's visibility animation (`bsf.dcv`) is applied with `dca_visibility`. The DC laser and the DE
+  beam ends (DS: wireframe / alpha via NNS_G3dGlbPolygonAttr) are drawn translucent (alpha 96 / 200).
+- **Pools and order**: 8 D9, 8 DA, 12 DB, 4 DC, 24 DD, 12 DE. D8 runs at 0xf0 (before the player) when
+  `boss_update_pre` is called. Then BossF, the parts and ZoneFx run in `boss_update`, and the zone script runs after
+  ScreenShake.
+- **Player control**: the fight uses only the existing player module: knockback, attack bounce, ground idle,
+  on_hurt. `Player_Action_Blank` is copied into boss_final.c (candidate for the player module).
+
+### BossF: deviations and gaps
+
+- Palettes (`Boss_LoadModelPalettes`) are selection state only (`bossf_palette` / `bossf_palette_flash`). The hurt
+  blink is not shown unless the integrator tints the model.
+- Material, SRT and pattern animations (`bsf.nsbta` / `.nsbma`, `eff_laser_fin_b`, `eff_beam_fin`) are timing only.
+- The DC / DE wireframe look is approximated by alpha.
+- `NNS_G3dGlbPolygonAttr` and the DS display swap are dropped. `Task_DestroyByTag(4)` is a no-op.
+- The NaviBg / NaviB loads in `BossStageF_OnModelLoaded` are dropped (HUD).
+- BLDCNT / BLDY is state (`bossf_blend`), not drawn by the module.
+- A beam ball (`BossFPartDE_State_Aim`) waits until the player is on the ground between its two ends. A player
+  pressed into the left corner (x < ~21 px) is never between them, so the attack waits there, as on the DS. The test
+  walks the player back to the middle.
+
+### BossF: test (`test/test_bossf.c`)
+
+```sh
+make -C dreamcast/game/boss data host-testF
+SEED=1 LEVEL=1 STORY=1 build/dreamcast/boss/test_bossf build/dreamcast/stages/zf3/level.bin \
+    build/dreamcast/player build/dreamcast/models build/dreamcast/boss [-v|-vv]
+NOCROUCH=1 ...     # the player stays standing on the arm: knock-off run
+EXPLORE=1|2 ...    # traces of the boxes / the ride
+```
+
+The test runs the real zf3 level, player module, ObjRect and ObjCollisionMap code (`colmap_probe_for_obj` and the
+per-frame commit). Its scripts:
+- **[miss]** 900 frames standing still. The boss attacks and takes no damage.
+- **[fist]** When a fist lies on the floor with its damage box armed, the player is put 56 px beside it and jumps at
+  it.
+- **[ride]** Climb the arm (jump when stuck), brake and crouch from 40 frames before the warning ends and while the
+  hand swings, then jump at the core.
+- **[beam]** Walk back to the middle if pressed into a corner.
+- **[sky]** Stand under the open core and jump.
+
+Measured on the default seed (6 hp, Sonic): ride hits at f 2293 / 4015 / 6921 / 10649 / 15421, talk 0xf at f 16223,
+sky hit and defeat at f 17104, cleared at f 17604 (ring bonus 50000). The run had 19 fist tries, 5 core tries and 37
+player hurts. Spawned: DA 19, DB 18, DC 14, DD 239, DE 25. At LEVEL 1 D9 bombs also spawn (16 in a Blaze run).
+
+Checks (18):
+- init with all assets, and the title-card wait;
+- [miss];
+- the full fight to the stage clear (defeat 0x3b, cleared once), and hits = max health (body hits + 1 sky hit);
+- phases 0x2f..0x3b;
+- help: BossHelp(1) created and destroyed, and help kind 2;
+- talk id by character, music 0x13 / music_stop / ring flags, ring bonus;
+- the white-out (evy 16, mode 2) and `bsf_sky_b`;
+- the timer stopped and restarted in the sky phase;
+- the ride, and the player drawn on the hand with a valid transform;
+- the OnHitHand bounce by character (-0x800 / -0xb00);
+- the parts spawned (D9 at LEVEL 1);
+- the camera, and `boss_draw` vertices.
+
+The knock-off run checks the knock-off, the ride end (0x35) without damage, and the return to idle. All 24 runs
+pass: seeds 0x12345678, 1, 2, 3, 0xdeadbeef, 77 x LEVEL 0 / 1 x STORY 0 / 1, finishing between f 16461 and f 23742.
+
+### BossF: mapping table (boss_final.c)
+
+| original | native file | status | note |
+|---|---|---|---|
+| `BossFPartD8_Action_Defeat` | boss_final.c | modified | Task_DestroyByTag(4) = the parts with tag 4 (none of the translated objects use it); NNS_SndPlayerStopSeqAll -> music_stop |
+| `BossFPartD8_Action_DoublePressHurt` | boss_final.c | reused |  |
+| `BossFPartD8_Action_HandSlamHurt` | boss_final.c | reused |  |
+| `BossFPartD8_Action_Hurt` | boss_final.c | modified | gPlayers->unk70 -> draw_player hook |
+| `BossFPartD8_Action_HurtInSky` | boss_final.c | reused |  |
+| `BossFPartD8_Action_PartDAThrowHurt` | boss_final.c | reused |  |
+| `BossFPartD8_Action_ReturnHome` | boss_final.c | reused |  |
+| `BossFPartD8_Action_StartDoublePress` | boss_final.c | reused |  |
+| `BossFPartD8_Action_StartHandRide` | boss_final.c | modified | EffEnemyRoomFix_Create -> help hook |
+| `BossFPartD8_Action_StartHandSlam` | boss_final.c | reused |  |
+| `BossFPartD8_Action_StartPartDAThrow` | boss_final.c | reused |  |
+| `BossFPartD8_Action_StartPartDCVolley` | boss_final.c | reused |  |
+| `BossFPartD8_Action_StartPartDEAttack` | boss_final.c | reused |  |
+| `BossFPartD8_Action_StartSkyCharge` | boss_final.c | reused |  |
+| `BossFPartD8_BlinkPalette` | boss_final.c | reused |  |
+| `BossFPartD8_CheckKnockOffRider` | boss_final.c | reused |  |
+| `BossFPartD8_ChooseAttack` | boss_final.c | reused |  |
+| `BossFPartD8_Collide` | boss_final.c | modified | ObjCollisionMap_Register -> the objects module's colmap list |
+| `BossFPartD8_Create` | boss_final.c | modified | archive files from BossStageF; the collision map owner is s->cm |
+| `BossFPartD8_CreateHitEffect` | boss_final.c | reused |  |
+| `BossFPartD8_Destructor` | boss_final.c | modified | MapObject_Destructor + releases the colmap registration |
+| `BossFPartD8_DisableHitboxes` | boss_final.c | reused |  |
+| `BossFPartD8_Draw` | boss_final.c | modified | node matrices from BossFPartD8_NodeCallback_Body |
+| `BossFPartD8_Draw_RidingPlayer` | boss_final.c | modified | StageObj_Draw3DEx(x, y, z, rot) -> the player model transform for boss_player_model(); the integrator applies the stage model matrix, RotY(0x4000) and scale, before it |
+| `BossFPartD8_GetRidePosition` | boss_final.c | reused | the point of the hand at radius unk43C from the right shoulder |
+| `BossFPartD8_InitHitboxes` | boss_final.c | reused |  |
+| `BossFPartD8_InitPartDCPath` | boss_final.c | reused |  |
+| `BossFPartD8_IsPlayerCrouching` | boss_final.c | reused |  |
+| `BossFPartD8_IsPlayerRiding` | boss_final.c | modified | the ride pointer is the collision map owner's DcpObjRef |
+| `BossFPartD8_LoadModelPalettesA` | boss_final.c | modified |  |
+| `BossFPartD8_LoadModelPalettesB` | boss_final.c | modified |  |
+| `BossFPartD8_MoveTowardX` | boss_final.c | reused |  |
+| `BossFPartD8_NodeCallback_Body` | boss_final.c | substantially rewritten | the DS stores the matrices of body_core, body_sh_l, body_sh_r, body_fist_l, body_fist_r in GE slots 0x1e..0x1a during the draw and BossFPartD8_Draw reads them back with MTX_RESTORE + NNS_G3dGetCurrentMtx; here the joint world matrices are read after the pose |
+| `BossFPartD8_OnHitBody` | boss_final.c | modified | owner type -> obj_box_player |
+| `BossFPartD8_OnHitHand` | boss_final.c | modified | owner type -> obj_box_player; branches on the character: during the throw the bounce pushes Blaze (unk324 1) further back than Sonic |
+| `BossFPartD8_RollThrowVariant` | boss_final.c | reused |  |
+| `BossFPartD8_SetAnimation` | boss_final.c | reused |  |
+| `BossFPartD8_SetCameraFollowPlayer` | boss_final.c | reused |  |
+| `BossFPartD8_SpawnPartD9` | boss_final.c | reused |  |
+| `BossFPartD8_State_DefeatCamera1` | boss_final.c | modified | BG2 cut-in -> Boss_DrawExcBackground; brightness state |
+| `BossFPartD8_State_DefeatCamera2` | boss_final.c | reused |  |
+| `BossFPartD8_State_DefeatCamera3` | boss_final.c | reused |  |
+| `BossFPartD8_State_DefeatExplode` | boss_final.c | modified | DISPCNT BG2 off -> exc_bg -1 |
+| `BossFPartD8_State_DefeatFade_ov000_022ef4ec` | boss_final.c | reused |  |
+| `BossFPartD8_State_DefeatFade_ov000_022ef5a4` | boss_final.c | reused |  |
+| `BossFPartD8_State_DefeatFade_ov000_022ef664` | boss_final.c | reused |  |
+| `BossFPartD8_State_DefeatFinish` | boss_final.c | modified | StageShutdown_Create(Stage_OnBossCleared) -> cleared hook, once |
+| `BossFPartD8_State_DoublePressEnd` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressEndWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressHurt` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressHurtWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressImpact` | boss_final.c | modified | counters / log |
+| `BossFPartD8_State_DoublePressRaise` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressSetTrack` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressStart` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressStartVulnerable` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressStrike` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressTrack` | boss_final.c | reused |  |
+| `BossFPartD8_State_DoublePressVulnerable` | boss_final.c | reused | the blink period counts @0x43E, the blink phase toggles @0x43A, as in the original |
+| `BossFPartD8_State_HandRideEnd` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideEndWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideHold` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideMove` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideRetract` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideRetractWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideReturn` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideStartHold` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideStartReturn` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideStartWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideStartWarn` | boss_final.c | modified | BossHelp_Create -> help hook |
+| `BossFPartD8_State_HandRideWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandRideWarn` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamHurt` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamHurtWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamImpact` | boss_final.c | modified | counters / log |
+| `BossFPartD8_State_HandSlamLift` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamLiftWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamNext` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamRaise` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamRaiseWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamStartRecover` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamStrike` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamTrack` | boss_final.c | reused |  |
+| `BossFPartD8_State_HandSlamVulnerable` | boss_final.c | reused |  |
+| `BossFPartD8_State_Hurt` | boss_final.c | reused |  |
+| `BossFPartD8_State_HurtInSky` | boss_final.c | reused |  |
+| `BossFPartD8_State_HurtRecover` | boss_final.c | reused |  |
+| `BossFPartD8_State_HurtStartRecover` | boss_final.c | reused |  |
+| `BossFPartD8_State_Idle` | boss_final.c | reused |  |
+| `BossFPartD8_State_LoadSkyModel` | boss_final.c | modified | the sky and passage resources stay loaded until bossf_unload; the pointers are cleared as on the DS, so ZoneFx stops drawing the passage |
+| `BossFPartD8_State_PartDAThrowDelay` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowEnd` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowEndWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowFollowThrough` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowFollowThroughWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowHurt` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowHurtWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowMoveRight` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowMoveToPos` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowRelease` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowSetDelay` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowStart` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowStartVulnerable` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowStartWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowVulnerable` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDAThrowWindup` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleyDelay` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleyEnd` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleyEndWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleyFire` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleyInterval` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleyRaise` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleySetInterval` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleyStart` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDCVolleyStartDelay` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDEAttackDelay` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDEAttackEnd` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDEAttackEndWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDEAttackSpawn` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDEAttackStart` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDEAttackStartDelay` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDEAttackWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_PartDEAttackWindup` | boss_final.c | reused |  |
+| `BossFPartD8_State_ReturnHome` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyCharge1` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyCharge2` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyCharge3` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeAftermath` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeDestroyBase` | boss_final.c | modified | BLDCNT state |
+| `BossFPartD8_State_SkyChargeFadeIn` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeFadeOut` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeImpact1` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeImpact2` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeImpact3` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeRetreat` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeRetreat1` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeRetreat2` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeShake1` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeShake2` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeShake3` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStart1` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStart2` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStart3` | boss_final.c | modified | the effect task pointer kept natively, see s->tackle |
+| `BossFPartD8_State_SkyChargeStartFadeIn` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStartFadeOut` | boss_final.c | modified | BLDCNT/BLDY state; NNS_SndPlayerStopSeq(BGM, 60) -> music_stop |
+| `BossFPartD8_State_SkyChargeStartRetreat` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStartRetreat1` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStartRetreat2` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStartWait` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStartWait1` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStartWait2` | boss_final.c | reused |  |
+| `BossFPartD8_State_SkyChargeStartWait3` | boss_final.c | reused |  |
+| `BossFPartD8_State_StartHandRideMove` | boss_final.c | modified | gPlayers->unk70 -> draw_player hook |
+| `BossFPartD8_State_StartWaitTalkDemo` | boss_final.c | reused |  |
+| `BossFPartD8_State_WaitNextAttack` | boss_final.c | reused |  |
+| `BossFPartD8_State_WaitTalkDemo` | boss_final.c | modified | Sound_PlaySeq -> music hook; TalkDemo_Create -> talk hook |
+| `BossFPartD8_State_WaitTimer_ov000_022f0280` | boss_final.c | reused |  |
+| `BossFPartD8_State_WaitTimer_ov000_022f061c` | boss_final.c | reused |  |
+| `BossFPartD8_State_WaitTimer_ov000_022f09b4` | boss_final.c | reused |  |
+| `BossFPartD8_State_WaitTimer_ov000_022f0c8c` | boss_final.c | reused |  |
+| `BossFPartD8_State_WaitTimer_ov000_022f0f04` | boss_final.c | reused |  |
+| `BossFPartD8_StepFlashFade` | boss_final.c | modified | BLDY state |
+| `BossFPartD8_TrackPlayerX_Far` | boss_final.c | reused |  |
+| `BossFPartD8_TrackPlayerX_Fast` | boss_final.c | reused |  |
+| `BossFPartD8_TrackPlayerX_Near` | boss_final.c | reused |  |
+| `BossFPartD8_TrackPlayerX_NearSlow` | boss_final.c | reused |  |
+| `BossFPartD8_TrackPlayerX_Offset` | boss_final.c | reused |  |
+| `BossFPartD8_TrackPlayerX_Slow` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerDefeat` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerDoublePress` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerDoublePressHurt` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerHandRide` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerHandSlam` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerHandSlamHurt` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerHurt` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerHurtInSky` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerPartDAThrow` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerPartDAThrowHurt` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerPartDCVolley` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerPartDEAttack` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerReturnHome` | boss_final.c | reused |  |
+| `BossFPartD8_TriggerSkyCharge` | boss_final.c | reused |  |
+| `BossFPartD8_Unk_ov000_022f89a8` | boss_final.c | reused | the right map edge follows the player back to 0x340 |
+| `BossFPartD8_Unk_ov000_022f8f78` | boss_final.c | reused |  |
+| `BossFPartD8_UpdateColliderFromNode` | boss_final.c | reused |  |
+| `BossFPartD9_Create` | boss_final.c | modified | resources from BossStageF |
+| `BossFPartD9_Destructor` | boss_final.c | modified | releases the native models |
+| `BossFPartD9_Draw` | boss_final.c | reused |  |
+| `BossFPartD9_OnHit` | boss_final.c | modified | owner type -> obj_box_player |
+| `BossFPartD9_State_Delay` | boss_final.c | reused |  |
+| `BossFPartD9_State_Fly` | boss_final.c | reused | an arc from the core to the arm, then it rolls |
+| `BossFPartD9_State_Init` | boss_final.c | reused |  |
+| `BossFPartD9_State_Roll` | boss_final.c | reused | rolls while in the air or on the arm, and while the arm lies there |
+| `BossFPartD9_State_StartDelay` | boss_final.c | reused |  |
+| `BossFPartD9_State_StartFly` | boss_final.c | reused |  |
+| `BossFPartDA_Create` | boss_final.c | modified | resources from BossStageF |
+| `BossFPartDA_Destructor` | boss_final.c | modified | releases the native models |
+| `BossFPartDA_Draw` | boss_final.c | reused |  |
+| `BossFPartDA_State_Move` | boss_final.c | reused |  |
+| `BossFPartDB_Create` | boss_final.c | modified | resources from BossStageF |
+| `BossFPartDB_Destructor` | boss_final.c | reused | identical to BossFPartDA_Destructor in the original: an alias |
+| `BossFPartDB_Draw` | boss_final.c | reused | identical to BossFPartDA_Draw in the original: an alias |
+| `BossFPartDB_State_Move` | boss_final.c | reused |  |
+| `BossFPartDC_Create` | boss_final.c | modified | resources from the zone archive; NNS_G3dGlbPolygonAttr(alpha 0x10) -> the laser's draw alpha; BLDCNT / BLDY state |
+| `BossFPartDC_Destructor` | boss_final.c | modified | releases the native models |
+| `BossFPartDC_Draw` | boss_final.c | modified | the stretched laser faces the camera; NNSi_G3dModifyPolygonAttrMask(alpha 0) draws it as a wireframe on the DS while it fades (unk20C & 8): drawn at a low alpha here |
+| `BossFPartDC_FollowBossNode` | boss_final.c | reused |  |
+| `BossFPartDC_State_ChasePlayer` | boss_final.c | modified | BLDY state |
+| `BossFPartDC_State_SweepPath` | boss_final.c | modified | BLDY state |
+| `BossFPartDD_Create` | boss_final.c | modified | resources from the zone archive; .nsbma / .nsbtp timing only |
+| `BossFPartDD_Destructor` | boss_final.c | modified | releases the native models |
+| `BossFPartDD_Draw` | boss_final.c | reused |  |
+| `BossFPartDD_State_HitThenVanish` | boss_final.c | reused |  |
+| `BossFPartDE_Create` | boss_final.c | modified | resources from the zone archive; a native sound handle 1..3 |
+| `BossFPartDE_Destructor` | boss_final.c | modified | NNS_SndHandleReleaseSeq: the handle is released, the sound is not stopped |
+| `BossFPartDE_Draw` | boss_final.c | modified | beams drawn see-through while unk4A4 (the DS draws them as wireframes: NNSi_G3dModifyPolygonAttrMask alpha 0) |
+| `BossFPartDE_NarrowEnds` | boss_final.c | reused |  |
+| `BossFPartDE_OnHit` | boss_final.c | modified | owner -> obj_box_player |
+| `BossFPartDE_ShiftEndsTowardX` | boss_final.c | reused |  |
+| `BossFPartDE_SpawnBeamFinEffects` | boss_final.c | reused |  |
+| `BossFPartDE_StartChainRise` | boss_final.c | reused |  |
+| `BossFPartDE_State_Activate` | boss_final.c | modified | the looping beam sound on the object's own handle |
+| `BossFPartDE_State_Aim` | boss_final.c | reused |  |
+| `BossFPartDE_State_ChainActivate` | boss_final.c | modified | looping beam sound on the object's own handle |
+| `BossFPartDE_State_ChainDrop` | boss_final.c | modified | NNS_G3dGlbPolygonAttr -> draw alpha |
+| `BossFPartDE_State_ChainFall` | boss_final.c | reused |  |
+| `BossFPartDE_State_ChainLand` | boss_final.c | reused |  |
+| `BossFPartDE_State_ChainRise` | boss_final.c | reused |  |
+| `BossFPartDE_State_ChainSpawnNext` | boss_final.c | reused |  |
+| `BossFPartDE_State_ChainSpread` | boss_final.c | modified | NNS_SndPlayerStopSeq -> boss_sfx_stop |
+| `BossFPartDE_State_ChainStartWait` | boss_final.c | reused |  |
+| `BossFPartDE_State_Deactivate` | boss_final.c | modified | NNS_SndPlayerStopSeq(handle, 60) -> sfx_stop |
+| `BossFPartDE_State_Drop` | boss_final.c | reused |  |
+| `BossFPartDE_State_Fall` | boss_final.c | reused |  |
+| `BossFPartDE_State_Land` | boss_final.c | reused |  |
+| `BossFPartDE_State_Leave` | boss_final.c | reused |  |
+| `BossFPartDE_State_Patrol` | boss_final.c | reused |  |
+| `BossFPartDE_State_Pause` | boss_final.c | reused |  |
+| `BossFPartDE_State_PickTarget` | boss_final.c | reused |  |
+| `BossFPartDE_State_ResizeToTarget` | boss_final.c | reused |  |
+| `BossFPartDE_State_Rise` | boss_final.c | reused |  |
+| `BossFPartDE_State_Start` | boss_final.c | reused |  |
+| `BossFPartDE_State_StartAim` | boss_final.c | modified | NNS_G3dGlbPolygonAttr -> draw alpha |
+| `BossFPartDE_State_StartPause` | boss_final.c | reused |  |
+| `BossFPartDE_State_StartRise` | boss_final.c | reused |  |
+| `BossFPartDE_State_StartSweep` | boss_final.c | reused | the first test is overwritten by the second, as in the original |
+| `BossFPartDE_State_StartTrack` | boss_final.c | reused |  |
+| `BossFPartDE_State_Sweep` | boss_final.c | reused |  |
+| `BossFPartDE_State_Track` | boss_final.c | reused |  |
+| `BossFPartDE_State_WaitTimer_ov000_022f5840` | boss_final.c | reused |  |
+| `BossFPartDE_TrackPlayerX` | boss_final.c | reused |  |
+| `BossFPartDE_UpdatePatrolSpeed` | boss_final.c | reused |  |
+| `BossF_Action_StartLaserFinEffects` | boss_final.c | reused |  |
+| `BossF_Create` | boss_final.c | modified | resources from BossStageF / the zone archive (bossf_load); the exc:eff_* resources of the BossEffect wrappers are loaded by boss_effects_load |
+| `BossF_Destructor` | boss_final.c | modified | resources are released by bossf_unload; BLDCNT state |
+| `BossF_Draw` | boss_final.c | modified | the base's visibility animation (bsf.nsbva, slot 4) is applied at the draw |
+| `BossF_InitCamera` | boss_final.c | modified | POWCNT display swap dropped, single screen |
+| `BossF_LoadModelPalettesAll` | boss_final.c | modified | palette selection state |
+| `BossF_LoadPalette` | boss_final.c | modified |  |
+| `BossF_PartD8StartWaitNextAttack` | boss_final.c | reused |  |
+| `BossF_SpawnLaserFinEffect` | boss_final.c | modified | the .nsbma of eff_laser_fin_b runs as a timing-only animation, so the effect lives as long as on the DS |
+| `BossF_StartNextAttack` | boss_final.c | reused |  |
+| `BossF_State_SpawnLaserFinEffects` | boss_final.c | reused |  |
+| `BossF_State_WaitForStart` | boss_final.c | modified | sky model from BossStageF, gPlayers->unk70 = draw_player hook |
+| `BossF_UpdateCameraShake` | boss_final.c | reused |  |
+| `BossStageF_FreeModels` | boss_final.c | modified | bossf_unload: frees the converted packages |
+| `BossStageF_OnModelLoaded` | boss_final.c | modified | bossf_load: converted packages (.dcm / .dca / .dcv), timing-only lengths, bsf_st_r.df/.di from bossdata.bin; NaviBg_Load / NaviB_Load dropped (HUD) |
+| `StageZoneScript_ZoneFBoss` (src/game/Zone/Final_Zone/Stage, not in the 267) | boss_final.c | reused | the screen shake moves the boss camera while gBossF->unk20C & 0x10 |
+| `ZoneFx_ZoneFBoss_Init` (src/game/Zone/Final_Zone/Background, not in the 267) | boss_final.c | reused |  |
+| `ZoneFx_ZoneFBoss_Update` (src/game/Zone/Final_Zone/Background, not in the 267) | boss_final.c | reused | the passage behind the arena: satellites, peels, clouds after 0xb40 / 0x1680 frames of stage time, dust always; models drawn twice keep both matrices |
+
+## Extra Zone boss (stage 26, DS zone 8 act 2, overlay ov001)
+
+The Extra Zone fight against the Egg Salamander, with Super Sonic and Burning Blaze. It is a self-contained mode:
+there is no level.bin, no `boss_init`, no `dcp_player` and no objects module. ExtraBoss_Start builds everything
+itself: its own player control (8-way flight, dash, Blaze's fire shot), lights, display set-up, camera, BG, HUD
+and object/task system. It also sets the player slot itself.
+
+| | |
+|---|---|
+| source | `src/game/Zone/Extra_Zone/Boss` (353 functions) + `src/asm_fallback/ExtraBoss_TestColliderRotatedBoxes.c`, `ExtraBoss_Unk_ov001_022fdbc0.c` |
+| native | `boss_extra.h` (API), `boss_extra_int.h`, `boss_extra.c` (core, rounds, camera, lights, resources, API), `boss_extra_obj.c` (tasks, objects, hit boxes, effects and attacks), `boss_extra_player.c` (ExtraBossPlayer), `boss_extra_weapon.c` (weapon boss), `boss_extra_hand.c` (hand boss), `boss_extra_stage.c` (rings, BG, HUD, sub screen), `boss_extra_draw.c` (native renderer: PVR + host rasteriser) |
+| converter | `tools/bossexdata.py` -> `build/dreamcast/boss/extra/` (`make data-ex`) |
+| test | `test/test_bossex.c` (`make host-testEX`) |
+| counts | 355 = 353 C + 2 asm. 353 are translated under their original names, including both asm fallbacks, which are rewritten from the listings. 2 are replaced by the converter: `ExtraBoss_GetCompressionType` and `ExtraBoss_GetUncompressedSize`, the LZ header helpers of the narc load. About 8000 lines of C. |
+
+### Extra: the fight
+
+- **Five rounds** (`work->unk40`). The character is `round % 2`: 0 = Super Sonic, 1 = Burning Blaze.
+  - Rounds 0 and 1 start with the scrolling field (meteors, big beams, rings from the scroll tables). Their
+    boss arrives when the BG scroll ends: the weapon boss in round 0, the hand boss in round 1.
+  - Rounds 2 and 4 are the weapon boss; round 3 is the hand boss. They start with the boss.
+  - Boss hit points come from `023167bc[level][round]`: normal {2,2,2,2,3}, hard {3,3,2,2,4}.
+- **Between rounds**: the defeated boss falls and the next character flies in on the character-switch camera
+  (the DS dual-screen 3D).
+- **Rings and lives**: the rings drain by one a second. When they run out, or time passes 9:59 (`0x8c9f` frames),
+  the player is down: fade out, -1 life, back to the Sonic round of the pair (`round / 2 * 2`).
+  - Losing more lives than the character has is game over. Both characters' lives are counted.
+- **Weapon boss** (Sonic):
+  - Attacks: beam units (they orbit the player, then fire), homing beams, missiles, the sword, the small beam and
+    the big beam.
+  - How to hit it: dash (A or B) into a beam unit or a homing beam. It flies off in the dash direction; when it
+    hits the core, that is a hit.
+- **Hand boss** (Blaze):
+  - Attacks: claws, the catch hand (it grabs the player), suction (eff_spaceb) and the bombs.
+  - How to hit it: Blaze's fire shot (A), which flies right, hits the core.
+- Messages: the fight has no NaviMsg. `g_boss_hooks.navi` is never called.
+- Health and phase are published through `boss_health()` / `boss_phase()` (`gBossStatus`), as with the other bosses:
+  - `boss_health()` = `work->unk308` while a boss is alive, otherwise 0.
+  - `gBossStatus.unkA` = the start hit points.
+  - `boss_phase()` takes these values (the original writes no phase):
+
+  | phase | value | meaning |
+  |---|---|---|
+  | `BOSSEX_PHASE_TITLE` | 0x40 | round intro (title card) |
+  | `BOSSEX_PHASE_SCROLL` | 0x41 | scrolling field, no boss yet |
+  | `BOSSEX_PHASE_WEAPON` | 0x42 | weapon boss alive |
+  | `BOSSEX_PHASE_HAND` | 0x43 | hand boss alive |
+  | `BOSSEX_PHASE_DEFEAT` | 0x44 | defeat sequence (camera tracks the boss) |
+  | `BOSSEX_PHASE_SWITCH` | 0x45 | character switch |
+  | `BOSSEX_PHASE_PLAYER_DOWN` | 0x46 | player down |
+  | `BOSSEX_PHASE_CLEAR` | 0x47 | cleared |
+
+### Extra: controller
+
+The fight reads only buttons (`gPad`). It has **no touch-screen or stylus input**.
+
+| Dreamcast | DS | Super Sonic | Burning Blaze |
+|---|---|---|---|
+| D-pad / analog stick (folded into `held` by `input_poll`) | D-pad | 8-way flight | 8-way flight |
+| A | A | dash (in the held direction) | fire shot |
+| B | B | dash | dash |
+| X | B | dash | dash |
+| Y | A | dash | fire shot |
+| START | START | pause request (`g_boss_extra_hooks.pause`) | same |
+
+The table is from `ex_ds_pad`. The per-character buttons come from `data_ov001_0231da50`: Sonic dashes on A|B and
+has no special; Blaze dashes on B and fires on A.
+
+### Extra: single 640x480 view (the DS uses two screens)
+
+- **Battle**: the DS main screen is a 256x192 window of the field through the "screen fit" camera (slot 0).
+  It is drawn at 2.5x, the whole view. Layers from back to front:
+  1. BG1 `zex.bbg`, with its per-line wave (HDMA HOFS, double-buffered) and palette cycling (21 palettes);
+     colour 0 is the backdrop;
+  2. 3D;
+  3. the player's trail;
+  4. OBJ: rings, then the HUD.
+
+  The original HUD (`ac_ex_fix_moji.bac`, original art and positions) shows the ring count top left, the time
+  m:ss:cc top centre (it blinks after 9:00) and the character face with lives bottom left. Ring count and time stay
+  readable over the action. Sprites keep the OAM order: the first drawn is in front.
+- **VS splash**: the DS sub screen shows the "SONIC / BLAZE VS EGGMAN / EGGMAN NEGA" portraits for the whole round.
+  The single view shows it as a cut-in panel:
+  - the sub screen at 1.25x, only its rows 40..152;
+  - placed in the upper part of the view (x 160..480, y 64..204);
+  - shown while the original sequence runs, with its window band, HDMA slide, name scale and the "VS" zoom / shake;
+  - then held 60 frames and faded out over 16.
+
+  The panel is half-transparent black where the portrait has colour 0. Nothing of the sub screen stays on screen
+  during play.
+- **Character switch**: the DS shows one panorama on both screens: slot 1, top, looking up, and slot 2, bottom,
+  looking down, rendered on alternate frames. The single view draws it once with a composed camera ("slot 3"):
+  the eye and target averaged, and a half-fovy of 0x2400 (about 51 degrees) that covers both screens.
+  The roof of the boss's house, edge-on at eye height, is the line where the two DS screens meet. The test renders
+  the DS slot 1 / 2 views next to it for comparison.
+- **Brightness** (`BrightnessLerp`, the master brightness of the main screen): a full-screen white or black quad,
+  alpha |b|/16.
+- **Title card**: there is no title-card art in this module (UI module); see integration. Without the hook, the
+  stand-in shows the fade-in only.
+
+Frames rendered by the host test: `/tmp/bossex/ex_*.ppm`:
+- title;
+- round 0: field, VS open / cut-in / fade;
+- weapon boss, weapon boss later;
+- defeat;
+- switch (early, composed, DS slot 1 / 2);
+- hand boss, hand boss with suction.
+
+### Extra: integration (main.c)
+
+```c
+#include "boss/boss_extra.h"
+/* story: PlayerSelectMenu_ExitToGame (mode 0, sub 2) -> Game_StartDemoScript3AtZone8Act2
+ *   -> cutscene_start(CS_SCRIPT, 3, character); on CS_NEXT_EXTRA_BOSS: */
+boss_extra_set_paths("/cd/models", "/cd/boss/extra");
+boss_extra_set_lives(save_lives_sonic, save_lives_blaze);  /* StoryProgress_RestoreFromSave */
+boss_extra_set_difficulty(save_difficulty);                /* gGameState.unk14 */
+g_boss_hooks.sfx = ...; g_boss_hooks.voice = ...; g_boss_hooks.music = ...;   /* snd/ze, see below */
+g_boss_extra_hooks.pause = ...;          /* PauseMenu_Create(0): open the UI pause menu */
+g_boss_extra_hooks.title_card = NULL;    /* or the UI's StageTitleCard_CreateExtraBoss, see below */
+if (boss_extra_init(character) != 0) { /* data missing: back to the menu */ }
+for (;;) {
+    input_poll(&in);
+    int r = boss_extra_run_frame(&in);           /* BOSS_EXTRA_RUNNING / _CLEARED / _FAILED */
+    render_begin_frame();
+    render_begin_list(PVR_LIST_OP_POLY); boss_extra_draw(PVR_LIST_OP_POLY); render_end_list();
+    render_begin_list(PVR_LIST_TR_POLY); boss_extra_draw(PVR_LIST_TR_POLY); /* + ui_draw_tr() */ render_end_list();
+    render_begin_list(PVR_LIST_PT_POLY); boss_extra_draw(PVR_LIST_PT_POLY); render_end_list();
+    render_end_frame();
+    if (r != BOSS_EXTRA_RUNNING) break;
+}
+BossExtraResult res;
+boss_extra_result(&res);
+boss_extra_shutdown();
+```
+
+- **Before the fight**: `DemoScript` mode 3 (`gDemoScriptTable` 0x40 / 0x41) ends in `SceneChange_ToExtraBoss`, which
+  is `CS_NEXT_EXTRA_BOSS` in the cutscene module.
+  - `ExtraBoss_Start` always begins with Super Sonic in round 0 and sets `gGameState.unk0` itself. The `character`
+    argument is only remembered.
+- **Cleared** (`BOSS_EXTRA_CLEARED`, the DS `ExtraBoss_SetTimeAndRings` + `DemoScript_StartAfterBoss`):
+  1. Save `res.lives_sonic` / `res.lives_blaze` (`SaveData_SetLivesBoth`; the DS saves them after a game over too).
+  2. Set the current lives to `res.lives_current`.
+  3. Start `cutscene_start(CS_SCRIPT, 2, character)` (zone idx 8: `DemoScript_Create(2)` = entry 0x44).
+  4. On `CS_NEXT_EXTRA_ACT`, run ExtraAct, the results scene with the time bonus and rank (`ov001 ExtraAct*`, 37
+     functions, `src/game/Zone/Extra_Zone/Results`, not part of this module). It needs `res.time` (frames, at most
+     0x8c9f) and `res.rings` (0..999) = `gExtraBossResultTime` / `gExtraBossResultRings`.
+  5. After ExtraAct comes the extra ending (`CS_EXTRA_ENDING`).
+- **Failed** (`BOSS_EXTRA_FAILED`): save the lives as above, then `GameOverSeq_StartGameOver` (the UI's game over).
+- **Pause**:
+  - START calls `g_boss_extra_hooks.pause`, and `boss_extra_run_frame` stops advancing until `boss_extra_resume()`.
+  - Keep drawing while paused.
+  - "Quit" (`PauseMenu_Main_Quit` with zone 8 act 2) is `boss_extra_shutdown()` (it runs `ExtraBoss_Shutdown`), then
+    `SceneChange_ToPlayerSelectMenuMode0`.
+- **Title card**:
+  - The UI translation already handles zone 8 act 2 in `ui_titlecard.c` (brightness), but on the DS it is
+    `StageTitleCard_State_StartStage` that calls `ExtraBoss_StartBattle`, and the UI has no hook for that yet.
+  - Until it has one, leave `title_card` NULL; the module's 150-frame stand-in then fades in and starts the battle.
+  - With a UI hook: create the title card in `title_card(ctx, character)` (`ui_stage_start(8, 2, character)`) and
+    call `boss_extra_start_battle()` from its StartStage state. The title card returns at every player-down restart.
+- **Sound**:
+  - `boss_sfx` / `boss_voice` / music go through `g_boss_hooks` with the DS ids:
+    - SE from the `snd/ze` archive (`/snd/ze/sound_data.sdat`, which ExtraBoss_LoadAssets loads into the sound heap);
+    - music 0x14 for rounds 0..2, 0x15 from round 3;
+    - "VS" voices 0x22 / 0x2b.
+  - The integrator's audio has to load that bank for this mode.
+- **Lights / edge colours**: the module keeps its own `NNS_G3dGlbLight*` set (`ex_set_zone_lights`, from the arm9
+  `zone_lights` table) and passes them to `dcm_draw`. It does not touch `g_boss_lights` or the stage lights.
+
+### Extra: disc assets
+
+`make -C dreamcast/game/boss data-ex` (after the model and sprite converters) writes `build/dreamcast/boss/extra/`.
+`assets.txt` there lists 72 files, 0 missing:
+
+- under `/cd/models`, 62 packages:
+  - `bsex_md` (p_body, p_house, n_body, n_r_hand, n_house);
+  - `e_son`, `e_blz`, `son_easy`, `blz_easy`;
+  - `bsex_ca.dca`, `bsex_va.dcv`, `ex_ply_ca.dca`, `ex_ply_va.dcv`;
+  - the 27 effect kinds of `gExtraBossFxResTable` (eff_blz_bullet / shot, meteo (+ r, brk), beam_big00/01,
+    beam_unit, beam_small, clash, sword, bomb_wide, missile_hmg, beam_hmg, claw01/02, jump, catch, spaceb, suction3,
+    dmg_ex, son_fly / dash, blz_fly / dash) and their .dca / .dcv.
+- under `/cd/boss/extra`:
+  - `bossex.bin`: the ROM tables, model / animation / joint / effect lists;
+  - `zex.bin`: the BG with its 21 palettes;
+  - `vs_son.bin`, `vs_blz.bin`;
+  - `sprites/ex_fix_moji/`, `sprites/itm_ring/`, `sprites/ex_vs/` (`frames.bin` + `atlas0.argb1555` each).
+- `/snd/ze/sound_data.sdat` (integrator).
+
+The `dm_ex_*` models named in the task are **not used by the fight**: no ExtraBoss* function loads them. They
+belong to the Extra Zone cutscenes. `eff_dmg_end01/02` in the narc are also unused here.
+
+### Extra: how it is translated
+
+- **DS task system, emulated** (`ex_task_*`): tasks run each frame in (id, creation) order. A task created during
+  the frame runs in that frame if it sorts later. Ids:
+  - 0x1000 state; 0x2f00 / 0x2f01 boss and parts; 0x2f80 trail; 0x3000 player, sub-screen draw;
+  - 0x3100 sub-screen sequence; 0x3200 effects; 0x3efe title card; 0x4000 brightness;
+  - 0xe000 post-update; 0xe010 draw.
+
+  Destroyed objects stay readable until the end of the frame, as on the DS (`Task_Destroy` frees after the frame).
+  Hit boxes of a released object leave the collision lists. On the first frame of a round the DS reads freed
+  objects there; natively they are purged.
+- **Objects**: `ExtraBossObj_Create` takes objects from a pool of 0x2e; field names keep the 0x1E0 work offsets.
+  Each frame, each object's hit boxes (0x38 layout) go into the A / B lists of groups 0..2. `CheckAllCollisions`
+  runs groups 1, 2, 0 and keeps the original's quirk of decrementing a's hit points in the b branch.
+  `ExtraBoss_TestColliderRotatedBoxes` (asm) is rewritten from the listing: the z test, the bounding circles, the
+  corner rotation and the edge intersection.
+- **Node matrices**: the bosses' node callbacks store GE matrix slots 0x1b..0x1e (core, p_body, weapon_l / _r;
+  l_hand0a, body_hand, hand_catch). Natively, `boss_model_joint_world` after the pose fills `g_boss_mtx_slot`, and
+  `ex_get_slot_mtx` reads them back. The catch hand and the grabbed player are attached through `MOP_RESTORE`.
+- **Animations**: joint (.dca, slot 0) and visibility (.dcv, slot 4) animations are played. Material, SRT and
+  pattern animations are timing only (`BossAnimRes.nframes`), so the effects end on time.
+- **Rand order**: in the hand / weapon wait timers, the table index comes from the first `Rand()` and `& 0x3f` from
+  the second. This was checked against the disassembly.
+- **HUD**: `ExtraBoss_Unk_ov001_022fdbc0` (asm, the HUD sprite set-up: 0x1b sprites, animations `02316e94`,
+  palettes 1 / 2) is rewritten from the listing.
+- **Renderer** (`boss_extra_draw.c`):
+  - `ex_draw_model` poses the model and runs its node callback where the DS draws, then queues it. The queue is
+    submitted per PVR list. Off-axis objects (flag 1) use the `G3i_FrustumW_` window of `ExtraBossObj_DrawModel`.
+  - The host build rasterises the same queue in software (textures, z-buffer, BG, sprites, trail, cut-in) for the
+    test frames.
+
+### Extra: deviations and gaps
+
+- `StageTitleCard_CreateExtraBoss` belongs to the UI. The module has the hook and a fade-only stand-in; there is no
+  title-card art here (see integration).
+- `ExtraBoss_LoadModelPalettes` (the boss's core flash and hurt palettes, `ex_*_0d` / `_1w` nbfp) only records the
+  state: the converted textures carry fixed palettes. So the hurt / core flash colour change is not shown. The beam
+  units' colour changes (`boss_model_set_colors`) are shown.
+- Material, SRT and pattern animations are timing only (UV scroll of eff_suction3 / eff_blz_bullet, material fades,
+  the eff_bomb_wide / eff_catch / eff_spaceb texture patterns).
+- Not reproduced: edge marking (`G3X_SetEdgeColorTable`), `PaletteTransfer_Clear`, and the hardware windows outside
+  the cut-in. `AnimatorSprite_DrawRotScale` keeps the scale but not the rotation (the fight draws no rotated sprite).
+- The VS splash is a timed cut-in, not a permanent second screen (single-screen rule). The character switch uses
+  the composed slot-3 camera instead of the two DS cameras.
+- Sound: the `snd/ze` bank load and the seq handle (`work + 0x33c`, `NNS_SndPlayerStopSeq`) are the integrator's
+  (`boss_sfx_stop(1)`).
+- Lives come from `boss_extra_set_lives` (StoryProgress_RestoreFromSave) and go out in `BossExtraResult` (saving is
+  the integrator's).
+- `ExtraBoss_Main` (the title-card player object's callback) is empty natively.
+- Host renderer lighting is approximate (emission + ambient + diffuse, no per-vertex lights); the PVR path uses the
+  real lights.
+- Not run on Dreamcast hardware or an emulator yet. `make dc` compiles it with `-Werror`.
+
+### Extra: test (`test/test_bossex.c`)
+
+```sh
+make -C dreamcast/game/boss data-ex host-testEX      # 35 checks, about 40 s (5 whole fights, 2 game-over runs)
+```
+
+The scripted pad drives the fight only through `InputState`; no object is moved by the test.
+- **Dodging**: it predicts every active group-0 attacker 10 frames ahead and holds the best of the 9 pad directions.
+- **Super Sonic**: dashes into a beam unit / homing beam when one lies in a dash direction that points at the
+  boss's core.
+- **Blaze**: lines up left of the hand boss's core and fires.
+- **Rings**: picks them up when it is low.
+
+Runs:
+- **[clear]** (seed 0x1234, normal): the fight runs to `BOSS_EXTRA_CLEARED`. Checks:
+  - all 5 rounds, both characters, 4+ switches, weapon boss x3+ / hand boss x2+;
+  - hit points {2,2,2,2,3}, 11+ boss hits, `boss_health()` steps down;
+  - deflects and shots, the meteor field;
+  - result time / rings in range, music 0x14 first, the 150-frame title stand-in, sound hooks, `boss_phase` 0x47;
+  - a rendered weapon-boss frame.
+- **[seeds]**: seeds 1, 0xdeadbeef, 77777 (normal) and 0x1234 (hard: {3,..,4} hit points) are all cleared.
+  The tuning sweep over 12 seed / level pairs clears 12 / 12.
+- **[fail]**: an idle pad with 0 reserve lives ends in `BOSS_EXTRA_FAILED`. All work, object manager, rings, BG,
+  sub screen, flags and camera slots are freed. With 1 life each: two downs, the round restarts.
+- **[pause]**: START pauses and the time stands still; resume; run / draw after shutdown is harmless; missing data
+  fails `boss_extra_init` cleanly.
+
+The whole suite is also clean under `-fsanitize=address,undefined`, rendering included.
+
+### Extra: mapping table
+
+Grouped by native file. Every function keeps its original name; most are `static` unless another file needs it.
+"(asm)" marks the two listings that were rewritten. The two replaced functions are listed last.
+
+- `boss_extra.c` (51): `ExtraBoss_AdvancePhase`, `ExtraBoss_AllocCharacterSlots`, `ExtraBoss_ApplyCamera`, `ExtraBoss_ApplyScreenFitCamera`, `ExtraBoss_CameraFollowPlayer`, `ExtraBoss_CameraTrackObject`, `ExtraBoss_CopyCharacterDefaults`, `ExtraBoss_Draw_Battle`, `ExtraBoss_Draw_CharacterSwitch`, `ExtraBoss_FreeCharacterSlots`, `ExtraBoss_GetCurrentCharacterSlot`, `ExtraBoss_GetWork`, `ExtraBoss_InitCharacterSlot`, `ExtraBoss_InitDisplay`, `ExtraBoss_InitPadMap`, `ExtraBoss_LoadArchiveFile26`, `ExtraBoss_LoadArchiveFile27`, `ExtraBoss_LoadArchiveFiles21_23`, `ExtraBoss_LoadArchiveFiles24_25`, `ExtraBoss_LoadAssets`, `ExtraBoss_LoadBgFiles`, `ExtraBoss_LoadBossModel`, `ExtraBoss_LoadModelPalettes`, `ExtraBoss_LoadObjResources`, `ExtraBoss_Main`, `ExtraBoss_PostUpdate_Battle`, `ExtraBoss_PostUpdate_CharacterSwitch`, `ExtraBoss_ReleaseArchiveFile26`, `ExtraBoss_ReleaseArchiveFile27`, `ExtraBoss_ReleaseArchiveFiles21_23`, `ExtraBoss_ReleaseArchiveFiles24_25`, `ExtraBoss_ReleaseAssets`, `ExtraBoss_ReleaseBgFiles`, `ExtraBoss_ReleaseModelRes`, `ExtraBoss_ReleaseObjResources`, `ExtraBoss_RemapPadBits`, `ExtraBoss_ResetCamera`, `ExtraBoss_ResetNodeStep`, `ExtraBoss_ResetRound`, `ExtraBoss_SetCameraParams`, `ExtraBoss_SetTimeAndRings`, `ExtraBoss_Shutdown`, `ExtraBoss_ShutdownDummy`, `ExtraBoss_Start`, `ExtraBoss_StartBattle`, `ExtraBoss_StartCharacterSwitch`, `ExtraBoss_StartDummy`, `ExtraBoss_State_Battle`, `ExtraBoss_State_CharacterSwitch`, `ExtraBoss_Unk_ov001_02300c54`, `ExtraBoss_UpdateCamera`
+
+- `boss_extra_obj.c` (88): `ExtraBossObj_Create`, `ExtraBossObj_Destroy`, `ExtraBossObj_DestroyFlagged`, `ExtraBossObj_DestroyKind1`, `ExtraBossObj_DestroyKind2`, `ExtraBossObj_DestroyKind2And3`, `ExtraBossObj_DestroyPlayer`, `ExtraBossObj_DrawAll`, `ExtraBossObj_DrawModel`, `ExtraBossObj_DrawSprite`, `ExtraBossObj_Draw_Default`, `ExtraBossObj_IsAlive`, `ExtraBossObj_IsOutOfArena`, `ExtraBossObj_Main`, `ExtraBossObj_PropagateParentDestroy`, `ExtraBossObj_RegisterColliders`, `ExtraBossObj_ReleaseFxModelRes`, `ExtraBossObj_ReleaseFxModelResThunk`, `ExtraBossObj_ReleasePlayerModel`, `ExtraBossObj_State_BeamUnitActive`, `ExtraBossObj_State_BeamUnitCharge`, `ExtraBossObj_State_BeamUnitDeflected`, `ExtraBossObj_State_BeamUnitDeploy`, `ExtraBossObj_State_BeamUnitFiring`, `ExtraBossObj_State_BigBeamDelay`, `ExtraBossObj_State_BigBeamEnd`, `ExtraBossObj_State_BigBeamFire`, `ExtraBossObj_State_BigBeamStart`, `ExtraBossObj_State_Blink`, `ExtraBossObj_State_Blink2`, `ExtraBossObj_State_DestroyAfterTimer`, `ExtraBossObj_State_DestroyWhenAnimsDone`, `ExtraBossObj_State_DestroyWhenOutOfArena`, `ExtraBossObj_State_HomingBeamAim`, `ExtraBossObj_State_HomingBeamApproach`, `ExtraBossObj_State_HomingBeamFire`, `ExtraBossObj_State_MissileHoming`, `ExtraBossObj_State_MissileLaunch`, `ExtraBossObj_State_None`, `ExtraBossObj_State_SmallBeam`, `ExtraBossObj_State_SpacebActive`, `ExtraBossObj_State_SpacebEnd`, `ExtraBossObj_State_SpacebStart`, `ExtraBossObj_State_SuctionFx`, `ExtraBossObj_State_SwordFx`, `ExtraBossObj_UpdateMotionAll`, `ExtraBossPlayer_CreateFxObj`, `ExtraBossPlayer_SetupFxModel`, `ExtraBossPlayer_SpawnBlzShotFx`, `ExtraBossPlayer_SpawnClashFx`, `ExtraBossPlayer_SpawnSpecialShot`, `ExtraBoss_AdvanceSwordFxStep`, `ExtraBoss_AllocFlagBlock`, `ExtraBoss_BeamUnit_OnContact`, `ExtraBoss_BeamUnit_OnHit`, `ExtraBoss_CancelSwordFx`, `ExtraBoss_CheckAllCollisions`, `ExtraBoss_CheckCollisionGroup`, `ExtraBoss_ClearColliderLists`, `ExtraBoss_CopyParentPosition`, `ExtraBoss_CountActiveBeamUnits`, `ExtraBoss_FreeFlagBlock`, `ExtraBoss_HomingBeam_OnHit`, `ExtraBoss_InitCollider`, `ExtraBoss_Meteor_OnHit`, `ExtraBoss_ResetFxFlags`, `ExtraBoss_SetObjModelAnims`, `ExtraBoss_SnapObjToCameraX`, `ExtraBoss_SpawnBeamUnit`, `ExtraBoss_SpawnBigBeam`, `ExtraBoss_SpawnBombFx`, `ExtraBoss_SpawnCatchFx`, `ExtraBoss_SpawnClawFx`, `ExtraBoss_SpawnDamageFx`, `ExtraBoss_SpawnHomingBeam`, `ExtraBoss_SpawnHomingMissile`, `ExtraBoss_SpawnJumpFx`, `ExtraBoss_SpawnMeteor`, `ExtraBoss_SpawnMeteorOfKind`, `ExtraBoss_SpawnMeteorR`, `ExtraBoss_SpawnSmallBeam`, `ExtraBoss_SpawnSpacebFx`, `ExtraBoss_SpawnSuctionFx`, `ExtraBoss_SpawnSwordFx`, `ExtraBoss_SwapObjModel`, `ExtraBoss_TestColliderBoxes`, `ExtraBoss_TestColliderOverlap`, `ExtraBoss_TestColliderRotatedBoxes (asm)`
+
+- `boss_extra_player.c` (42): `ExtraBossObj_Draw_PlayerTrail`, `ExtraBossObj_State_PlayerDashFx`, `ExtraBossObj_State_PlayerDashFxEnd`, `ExtraBossObj_State_PlayerFlyFx`, `ExtraBossObj_State_PlayerFxHidden`, `ExtraBossObj_State_PlayerTrailFull`, `ExtraBossObj_State_PlayerTrailGrow`, `ExtraBossObj_State_PlayerTrailHidden`, `ExtraBossObj_State_PlayerTrailShrink`, `ExtraBossPlayerManager_Create`, `ExtraBossPlayerManager_Destroy`, `ExtraBossPlayer_Action_Dash`, `ExtraBossPlayer_Action_Defeat`, `ExtraBossPlayer_Action_Hurt`, `ExtraBossPlayer_Action_LockControl`, `ExtraBossPlayer_Action_UnlockControl`, `ExtraBossPlayer_ApplyMoveInput`, `ExtraBossPlayer_ApplyMoveInputHalf`, `ExtraBossPlayer_ChangeState`, `ExtraBossPlayer_CheckActionInput`, `ExtraBossPlayer_OnDashHit`, `ExtraBossPlayer_State_Dash`, `ExtraBossPlayer_State_Defeat`, `ExtraBossPlayer_State_Hurt`, `ExtraBossPlayer_State_Idle`, `ExtraBossPlayer_State_Move`, `ExtraBossPlayer_State_None`, `ExtraBossPlayer_State_SpecialCharge`, `ExtraBossPlayer_State_SpecialEnd`, `ExtraBossPlayer_State_SpecialFire`, `ExtraBossPlayer_State_SpecialStart`, `ExtraBossPlayer_State_Unk_ov001_02301ba0`, `ExtraBossPlayer_UpdateInvincibility`, `ExtraBoss_CreatePlayerTrail`, `ExtraBoss_GetPlayer`, `ExtraBoss_IsPlayerSpawned`, `ExtraBoss_LoadPlayerModel`, `ExtraBoss_PlayerOnHurt`, `ExtraBoss_ResetPlayerForBattle`, `ExtraBoss_SpawnPlayerFlyFx`, `ExtraBoss_Unk_ov001_02302658`, `ExtraBoss_UpdatePlayerTrailNode`
+
+- `boss_extra_weapon.c` (52): `ExtraBossObj_Draw_WeaponBoss`, `ExtraBossObj_Draw_WeaponBossDebris`, `ExtraBossObj_State_WeaponBossBeamCharge`, `ExtraBossObj_State_WeaponBossBeamFire`, `ExtraBossObj_State_WeaponBossBeamPause`, `ExtraBossObj_State_WeaponBossBeamRecover`, `ExtraBossObj_State_WeaponBossBeamRefire`, `ExtraBossObj_State_WeaponBossBeamUnitAim`, `ExtraBossObj_State_WeaponBossBeamUnitEnd`, `ExtraBossObj_State_WeaponBossBeamUnitLaunch`, `ExtraBossObj_State_WeaponBossBeamUnitResetArm`, `ExtraBossObj_State_WeaponBossBeamUnitTurnArm`, `ExtraBossObj_State_WeaponBossBeamUnitWaitClear`, `ExtraBossObj_State_WeaponBossDefeat`, `ExtraBossObj_State_WeaponBossDefeatFadeOut`, `ExtraBossObj_State_WeaponBossDefeatFinish`, `ExtraBossObj_State_WeaponBossDefeatPartBlink`, `ExtraBossObj_State_WeaponBossDefeatWaitAnim`, `ExtraBossObj_State_WeaponBossEnter`, `ExtraBossObj_State_WeaponBossHurt`, `ExtraBossObj_State_WeaponBossHurtRecover`, `ExtraBossObj_State_WeaponBossMissileEnd`, `ExtraBossObj_State_WeaponBossMissileFire`, `ExtraBossObj_State_WeaponBossMissileReady`, `ExtraBossObj_State_WeaponBossMissileRecover`, `ExtraBossObj_State_WeaponBossMissileWindUp`, `ExtraBossObj_State_WeaponBossSwordEnd`, `ExtraBossObj_State_WeaponBossSwordFollowThrough`, `ExtraBossObj_State_WeaponBossSwordNextSwing`, `ExtraBossObj_State_WeaponBossSwordRecover`, `ExtraBossObj_State_WeaponBossSwordSlash`, `ExtraBossObj_State_WeaponBossSwordWindUp`, `ExtraBossObj_State_WeaponBossWait`, `ExtraBoss_CreateWeaponBoss`, `ExtraBoss_HandNodeCallback`, `ExtraBoss_StepXTowardCameraTarget`, `ExtraBoss_StepXTowardRightEdge`, `ExtraBoss_StopAndFaceCenter`, `ExtraBoss_StopAndFaceCenter2`, `ExtraBoss_StoreNodeMtxIfMatch`, `ExtraBoss_WeaponBoss_Action_BeamUnitAttack`, `ExtraBoss_WeaponBoss_Action_Defeat`, `ExtraBoss_WeaponBoss_Action_Enter`, `ExtraBoss_WeaponBoss_Action_HomingBeamAttack`, `ExtraBoss_WeaponBoss_Action_Hurt`, `ExtraBoss_WeaponBoss_Action_MissileAttack`, `ExtraBoss_WeaponBoss_Action_SwordAttack`, `ExtraBoss_WeaponBoss_Action_Wait`, `ExtraBoss_WeaponBoss_FinishDefeat`, `ExtraBoss_WeaponBoss_OnHit`, `ExtraBoss_WeaponBoss_SelectNextAttack`, `ExtraBoss_WeaponNodeCallback`
+
+- `boss_extra_hand.c` (55): `ExtraBossObj_Draw_HandBoss`, `ExtraBossObj_Draw_HandCatch`, `ExtraBossObj_State_HandBossCatchAim`, `ExtraBossObj_State_HandBossCatchMove`, `ExtraBossObj_State_HandBossCatchReady`, `ExtraBossObj_State_HandBossCatchResetArm`, `ExtraBossObj_State_HandBossCatchRewind`, `ExtraBossObj_State_HandBossCatchTurnArm`, `ExtraBossObj_State_HandBossCatchWaitHand`, `ExtraBossObj_State_HandBossClawDelay`, `ExtraBossObj_State_HandBossClawEnd`, `ExtraBossObj_State_HandBossClawRecover`, `ExtraBossObj_State_HandBossClawReturn`, `ExtraBossObj_State_HandBossClawSwipe1`, `ExtraBossObj_State_HandBossClawSwipe2`, `ExtraBossObj_State_HandBossClawWindUp`, `ExtraBossObj_State_HandBossClawWindUp2`, `ExtraBossObj_State_HandBossDefeat`, `ExtraBossObj_State_HandBossDefeatFadeOut`, `ExtraBossObj_State_HandBossDefeatFinish`, `ExtraBossObj_State_HandBossDefeatPartBlink`, `ExtraBossObj_State_HandBossDefeatWaitAnim`, `ExtraBossObj_State_HandBossEnter`, `ExtraBossObj_State_HandBossGrabEnd`, `ExtraBossObj_State_HandBossGrabHold`, `ExtraBossObj_State_HandBossGrabTurnArm`, `ExtraBossObj_State_HandBossHurt`, `ExtraBossObj_State_HandBossHurtRecover`, `ExtraBossObj_State_HandBossSuctionAim`, `ExtraBossObj_State_HandBossSuctionEnter`, `ExtraBossObj_State_HandBossSuctionExit`, `ExtraBossObj_State_HandBossSuctionFire`, `ExtraBossObj_State_HandBossSuctionHold`, `ExtraBossObj_State_HandBossSuctionLeave`, `ExtraBossObj_State_HandBossSuctionReady`, `ExtraBossObj_State_HandBossSuctionReturn`, `ExtraBossObj_State_HandBossSuctionWaitEnd`, `ExtraBossObj_State_HandBossWait`, `ExtraBossObj_State_HandCatchFlyOut`, `ExtraBossObj_State_HandCatchPullPlayer`, `ExtraBossObj_State_HandCatchReturn`, `ExtraBoss_CreateHandBoss`, `ExtraBoss_HandBoss_Action_CatchAttack`, `ExtraBoss_HandBoss_Action_ClawAttack`, `ExtraBoss_HandBoss_Action_Defeat`, `ExtraBoss_HandBoss_Action_Enter`, `ExtraBoss_HandBoss_Action_Hurt`, `ExtraBoss_HandBoss_Action_SuctionAttack`, `ExtraBoss_HandBoss_Action_Wait`, `ExtraBoss_HandBoss_FinishDefeat`, `ExtraBoss_HandBoss_OnHit`, `ExtraBoss_HandBoss_SelectNextAttack`, `ExtraBoss_HandCatchNodeCallback`, `ExtraBoss_HandCatch_OnGrabPlayer`, `ExtraBoss_Unk_ov001_022eed0c`
+
+- `boss_extra_stage.c` (65): `ExtraBoss_AllocBgWork`, `ExtraBoss_AllocSubScreenWork`, `ExtraBoss_ClearSpawnLists`, `ExtraBoss_CollectRings`, `ExtraBoss_DrawHud`, `ExtraBoss_DrawRings`, `ExtraBoss_EndRingSuction`, `ExtraBoss_FreeBgWork`, `ExtraBoss_FreeObjVramSlots`, `ExtraBoss_FreeSpawnWork`, `ExtraBoss_FreeSubScreenWork`, `ExtraBoss_InitRings`, `ExtraBoss_IsOutOfField`, `ExtraBoss_IsRingTouchingPlayer`, `ExtraBoss_PushScrollEntry`, `ExtraBoss_ResetSpawnWork`, `ExtraBoss_ResetSubDisplay`, `ExtraBoss_RingList_AddAttracted`, `ExtraBoss_RingList_AddCollected`, `ExtraBoss_RingList_AddLoose`, `ExtraBoss_RingList_AddPlaced`, `ExtraBoss_RingList_RemoveAttracted`, `ExtraBoss_RingList_RemoveCollected`, `ExtraBoss_RingList_RemoveLoose`, `ExtraBoss_RingList_RemovePlaced`, `ExtraBoss_ScatterPlayerRings`, `ExtraBoss_SetRingPickupEnabled`, `ExtraBoss_SetScrollSpawnEnabled`, `ExtraBoss_SetupSubDisplay`, `ExtraBoss_SpawnBoss`, `ExtraBoss_SpawnFromScrollTable`, `ExtraBoss_SpawnRingBurst`, `ExtraBoss_StackPop`, `ExtraBoss_StackPush`, `ExtraBoss_StartBgShake`, `ExtraBoss_StartRingSuction`, `ExtraBoss_State_ScrollDone`, `ExtraBoss_State_ScrollSpawn`, `ExtraBoss_State_Unk_ov001_0230587c`, `ExtraBoss_State_Unk_ov001_02305fbc`, `ExtraBoss_State_Unk_ov001_0230611c`, `ExtraBoss_StopSubScreenTasks`, `ExtraBoss_Unk_ov001_022ffcf8`, `ExtraBoss_Unk_ov001_02304fb4`, `ExtraBoss_Unk_ov001_023059b4`, `ExtraBoss_Unk_ov001_02305aec`, `ExtraBoss_Unk_ov001_02305bb8`, `ExtraBoss_Unk_ov001_02305c84`, `ExtraBoss_Unk_ov001_02305cd8`, `ExtraBoss_Unk_ov001_02305d40`, `ExtraBoss_Unk_ov001_02305ec8`, `ExtraBoss_Unk_ov001_02305ee8`, `ExtraBoss_Unk_ov001_02305f08`, `ExtraBoss_Unk_ov001_023061b0`, `ExtraBoss_Unk_ov001_02306244`, `ExtraBoss_Unk_ov001_023062f0`, `ExtraBoss_Unk_ov001_02306424`, `ExtraBoss_UpdateBgScrollPalette`, `ExtraBoss_UpdateBgWaveScroll`, `ExtraBoss_UpdateDualScreen3D`, `ExtraBoss_UpdateRings`, `ExtraBoss_UpdateRingsSuction`, `ExtraBoss_UpdateSpawnTimer`, `ExtraBoss_UpdateSpawnWork`, `ExtraBoss_Unk_ov001_022fdbc0 (asm)`
+
+- replaced by the converter (2): `ExtraBoss_GetCompressionType`, `ExtraBoss_GetUncompressedSize`
+
