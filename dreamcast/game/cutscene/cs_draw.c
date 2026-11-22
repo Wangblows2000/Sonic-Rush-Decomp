@@ -12,6 +12,7 @@
 #ifdef _arch_dreamcast
 #include <kos.h>
 #include <malloc.h>
+#include "../engine/render.h"
 
 void cs_tex_release_pvr(CsTex *t) {
     if (t->pvr)
@@ -48,7 +49,17 @@ static void submit_quad(const CsQuad *q, pvr_list_t list, float z) {
     static const int order[4] = {2, 0, 3, 1};   /* BL, TL, BR, TR strip */
     int k;
     float iw = 1, ih = 1;
-    if (q->kind != CSQ_FLAT && tex_ready(q->tex)) {
+    if (q->kind == CSQ_SPR && q->res && q->res->atlas) {
+        /* sprite atlas page: PAL4 with the image's palette row, or ARGB1555 */
+        SprAtlas *a = (SprAtlas *)q->res->atlas;
+        int bank = spr_atlas_bank(a, q->image, -1);
+        const Texture *t = q->page < a->n_pages ? &a->tex[q->page] : NULL;
+        if (!t || !t->ptr)
+            return;
+        pvr_poly_cxt_txr(&cxt, list, tex_txr_format(t, bank), t->w, t->h, t->ptr, PVR_FILTER_NONE);
+        iw = 1.0f / t->w;
+        ih = 1.0f / t->h;
+    } else if (q->kind != CSQ_FLAT && tex_ready(q->tex)) {
         pvr_poly_cxt_txr(&cxt, list, PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED, q->tex->tw, q->tex->th,
                          (pvr_ptr_t)q->tex->pvr, PVR_FILTER_NONE);
         iw = 1.0f / q->tex->tw;

@@ -702,7 +702,7 @@ Obj *DecGroup95_Create(ObjParam *p, s32 a, s32 b) {
             break;
         }
         w->spr.order = 0x16;
-        z_fxhook(NULL, OBJ_FX_PALETTE_ANIM, 0x0236459c, p->type); /* PaletteAnim_Create */
+        obj_palanim_start(w, 0x0236459c, p->type); /* PaletteAnim_Create */
         w->h.obj_flags |= 0x800;
         break;
     case 0xe6:

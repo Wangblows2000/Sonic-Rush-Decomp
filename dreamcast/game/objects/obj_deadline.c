@@ -455,7 +455,7 @@ Obj *DecArrow_Create(ObjParam *p, s32 a, s32 b) {
     if (p->type == 0x8b || p->type >= 0x8e)
         w->h.disp_flags ^= 2;
     w->spr.order = 0x16;
-    z_fxhook(NULL, OBJ_FX_PALETTE_ANIM, 0x0236457c, p->type); /* PaletteAnim_Create */
+    obj_palanim_start(w, 0x0236457c, p->type); /* PaletteAnim_Create */
     w->h.obj_flags |= 0x800;
     if (w->spr.order == 0)
         w->spr.order = 0x16;

@@ -9,6 +9,7 @@
 #include <string.h>
 #include "menus.h"
 #include "../save/save.h"
+#include "../engine/sprpal.h"
 
 typedef int8_t s8;
 typedef uint8_t u8;
@@ -111,8 +112,11 @@ typedef struct MnRes {
     const MnAnimDef *anims;
     const MnFrame *frames;
     u16 n_pages, n_images, n_anims, n_frames;
-    u16 *pixels[4];
-    void *tex[4];
+    u16 *pixels[4];        /* ARGB1555 pages (direct colour, or no palettes.bin) */
+    u8 *texels[4];         /* PAL4 pages (atlas<N>.pt4, engine/sprpal.h) */
+    u8 *palblob;           /* palettes.bin */
+    SprPal pal;
+    void *atlas;           /* KOS SprAtlas (pages + palette rows, taken on first draw) */
 } MnRes;
 MnRes *mn_res_load(const char *bac_path);   /* "act/title.bac" -> <sprites>/act__title/ */
 void mn_res_free(MnRes *r);
@@ -146,12 +150,17 @@ typedef struct {
     const MnBgImg *bg;       /* BG texture or NULL; both NULL = flat colour */
     u8 page, engine, prio, kind;
     u32 argb;
+    u16 image;               /* sprite image index (its palette on a PAL4 page) */
 } MnQuad;
 enum { MNQ_SPRITE, MNQ_BG, MNQ_FLAT };
 #define MN_MAX_QUADS 768
 int mn_quads(const MnQuad **out);
 void mn_quads_reset(void);
 void mn_emit_flat(int engine, int prio, float x, float y, float w, float h, u32 argb);
+/* part (sx, sy, w, h) of a BG image at (x, y) of `engine`, in the sprite order of
+ * priority `prio` (per-row BG scroll / split effects) */
+void mn_emit_bg_part(int engine, int prio, const MnBgImg *img, float x, float y, float sx, float sy, float w,
+                     float h);
 /* Single-screen composition. The two DS engines are not shown as two
  * screens: a scene places rectangles of an engine's DS frame (source rect in
  * DS px) into the one 640x480 frame with a uniform scale. Regions are drawn
@@ -266,6 +275,56 @@ u8 StoryProgress_GetZoneAt(u32 i);
 #define Sound_PlayVoice MnSound_PlayVoice
 #define Sound_PlayVoiceAlt MnSound_PlayVoiceAlt
 #define Sound_PlayVoiceArc MnSound_PlayVoiceArc
+/* the zone-map navigator (mn_navi.c). The UI module has the boss navigator
+ * under the same DS names: the menu copies are renamed like the sound calls. */
+#define NaviBg_Load MnNaviBg_Load
+#define NaviMsg_Create MnNaviMsg_Create
+#define NaviMsg_Destroy MnNaviMsg_Destroy
+#define NaviMsg_CloseFiles MnNaviMsg_CloseFiles
+#define NaviMsg_ShowMessage MnNaviMsg_ShowMessage
+#define NaviMsg_SetFaceAnim MnNaviMsg_SetFaceAnim
+#define NaviMsg_SetVisible MnNaviMsg_SetVisible
+#define NaviMsg_FadeVisible MnNaviMsg_FadeVisible
+#define NaviMsg_StartIntro MnNaviMsg_StartIntro
+#define NaviM_Load MnNaviM_Load
+#define NaviM_Release MnNaviM_Release
+#define NaviM_Create MnNaviM_Create
+#define NaviM_Destroy MnNaviM_Destroy
+#define NaviM_SetNewEmerald MnNaviM_SetNewEmerald
+#define NaviM_CheckStepAdvanced MnNaviM_CheckStepAdvanced
+#define NaviM_SaveStep MnNaviM_SaveStep
+#define NaviM_ResetPending MnNaviM_ResetPending
+#define NaviM_StartCounter MnNaviM_StartCounter
+#define NaviM_StartEmeraldAppear MnNaviM_StartEmeraldAppear
+#define NaviM_IsCounting MnNaviM_IsCounting
+#define data_0207b894 mn_data_0207b894
+#define data_0207b8a4 mn_data_0207b8a4
+void NaviBg_Load(s32 mode, s32 idx);
+void NaviMsg_Create(void);
+void NaviMsg_Destroy(void);
+void NaviMsg_CloseFiles(void);
+void NaviMsg_ShowMessage(s32 a, s32 b);
+void NaviMsg_SetFaceAnim(s32 n);
+void NaviMsg_SetVisible(BOOL on);
+void NaviMsg_FadeVisible(BOOL on);
+void NaviMsg_StartIntro(void);
+void NaviM_Load(void);
+void NaviM_Release(void);
+void NaviM_Create(void);
+void NaviM_Destroy(void);
+void NaviM_SetNewEmerald(s32 n);
+u16 NaviM_CheckStepAdvanced(void);
+void NaviM_SaveStep(void);
+void NaviM_ResetPending(void);
+void NaviM_StartCounter(void);
+void NaviM_StartEmeraldAppear(void);
+BOOL NaviM_IsCounting(void);
+void ZoneActSelect_Create(s32 a, s32 b, s32 c);
+void mn_navi_compose(void);
+int mn_navi_state(int *face, int *panel, int *alpha);
+int mn_navi_counter(void);
+int mn_navi_face_pixels(void);
+void mn_bg_release_tex(MnBgImg *b);
 u8 StoryProgress_GetZoneIndex(u8 v);
 u8 StoryProgress_GetActIndex(u8 act);
 u8 StoryProgress_GetActAt(u8 act);
@@ -304,6 +363,24 @@ void ZoneMap_StartFromStage(void);        /* SceneChange_ToZoneMap_1_1: straight
 void ZoneMap_StartFromStageWithFade(void); /* SceneChange_ToZoneMap_1_0 */
 void ZoneActSelectMode_Start(void);
 void Options_StartFromTitleMenu(void);
+/* Options at PLAYER DATA (OptionsMenu_Create(.., page, child)): back from Records,
+ * and from the TimeAttackMenu record lists (modes 2 / 3) */
+void Options_StartFromRecords(void);
+void Options_StartFromZoneMapPauseChoice2(void);
+void Options_StartFromZoneMapPauseChoice3(void);
+/* time attack (mn_timeattack.c, mn_tryagain.c) and records (mn_records.c) */
+void TimeAttackMenu_Create(s32 mode);
+void TimeAttackMenu_StartMode0(void);
+void TimeAttackMenu_StartMode1(void);
+void TimeAttackMenu_StartMode2(void);
+void TimeAttackMenu_StartMode3(void);
+void Game_StartTimeAttackStage(s32 zone, s32 act);   /* -1 keeps gGameState's value */
+void TryAgain_Start(void);
+void Records_Start(void);
+/* host test access */
+int TimeAttackMenu_Selected(void);
+int TryAgain_Selected(void);
+int Records_Scroll(void);
 /* scene ids for the host test */
 const char *mn_scene_name(void);
 extern const char *g_mn_scene;

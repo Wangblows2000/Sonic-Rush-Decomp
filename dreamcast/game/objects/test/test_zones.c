@@ -1610,6 +1610,56 @@ static void test_v4_decor(const char *zone) {
     snprintf(what, sizeof(what), "decorations (%s)", zone);
     result(what, st->dec_spawned > 0, 0, "spawned %u, despawned %u; palette-anim hooks %d", st->dec_spawned, st->dec_despawned,
            g_fx[OBJ_FX_PALETTE_ANIM]);
+    if (g_fx[OBJ_FX_PALETTE_ANIM] > 0) {
+        /* PaletteAnim (obj_palanim.c): the row of a started decoration steps through
+         * the animations of its sequence table (a palette-bank choice when drawn) */
+        Obj *o;
+        int slot = 0, k, steps = 0, last, first = -2;
+        for (o = g_obj.head; o; o = o->next)
+            if (o->used && o->spr.palanim) {
+                slot = o->spr.palanim;
+                break;
+            }
+        last = obj_palanim_anim(slot);
+        for (k = 0; k < 120 && slot; k++) {
+            frame(0);
+            if (obj_palanim_anim(slot) != last) {
+                last = obj_palanim_anim(slot);
+                if (first == -2)
+                    first = k;
+                steps++;
+            }
+        }
+        if (!slot) {
+            /* no decoration with one is alive now: a stand-in DecArrow (table
+             * 0x0236457c: anims 3..9, 6 frames each; the first step after 7 calls) */
+            static Obj fake;
+            static const s16 want[8] = { 4, 5, 6, 7, 8, 9, 3, 4 };
+            int bad = 0;
+            memset(&fake, 0, sizeof(fake));
+            obj_palanim_start(&fake, 0x0236457c, 0x88);
+            slot = fake.spr.palanim;
+            last = obj_palanim_anim(slot);
+            for (k = 0; k < 120 && slot; k++) {
+                obj_palanim_main();
+                if (obj_palanim_anim(slot) != last) {
+                    last = obj_palanim_anim(slot);
+                    if (first == -2)
+                        first = k;
+                    if (steps < 8 && last != want[steps])
+                        bad++;
+                    steps++;
+                }
+            }
+            obj_palanim_release(&fake);
+            obj_palanim_main();
+            if (bad || first != 6 || obj_palanim_anim(slot) != -1)
+                steps = 0;
+        }
+        snprintf(what, sizeof(what), "palette animation (%s)", zone);
+        result(what, slot != 0 && steps >= 2, 1, "slot %d: %d palette steps in 120 frames (first after %d), anim %d",
+               slot, steps, first, last);
+    }
 }
 
 /* ============================================================ common */

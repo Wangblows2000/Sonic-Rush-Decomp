@@ -13,7 +13,7 @@ PLAYER_SRCS = $(PLAYER_DIR)/dcp_math.c $(PLAYER_DIR)/dcp_probe.c $(PLAYER_DIR)/d
 SRCS = obj_anim.c obj_rect.c obj_colmap.c obj_manager.c obj_player.c obj_ring.c obj_gimmicks.c obj_enemy.c \
        obj_fx.c obj_effects2.c obj_leafstorm.c obj_shared.c obj_flapper.c obj_decor.c obj_pgimmick.c \
        obj_water.c obj_pwater.c obj_mirage.c obj_pmirage.c \
-       obj_carnival.c obj_pcarnival.c obj_crisis.c obj_pcrisis.c obj_altitude.c obj_paltitude.c obj_deadline.c obj_pdeadline.c obj_enemy2.c
+       obj_carnival.c obj_pcarnival.c obj_crisis.c obj_pcrisis.c obj_altitude.c obj_paltitude.c obj_deadline.c obj_pdeadline.c obj_enemy2.c obj_palanim.c
 DC_SRCS = $(SRCS) obj_draw.c
 HDRS = obj_types.h obj_internal.h obj_zone.h objects.h $(PLAYER_DIR)/dcp_player.h $(ROOT)/tools/dreamcast/stages/level_format.h
 CFLAGS_HOST = -std=c99 -O2 -Wall -Wextra -Werror -fwrapv

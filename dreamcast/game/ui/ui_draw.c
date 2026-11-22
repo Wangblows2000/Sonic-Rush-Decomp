@@ -3,9 +3,12 @@
  * engine/render.c). Host: stubs; ui_draw_tr only orders the quads so the test
  * can read them.
  *
- * Palette effects of the DS code become texture variants built on demand from
- * the atlas pixels kept in RAM (UiRes.pixels), in one 256x256 ARGB1555 cache
- * texture:
+ * Palette effects of the DS code are colour functions (ui_variant_pixel). On a
+ * PAL4 page (the converted atlases, engine/sprpal.h) a variant is a palette bank:
+ * the image's 16 colours through the function, drawn with the same texels (exact:
+ * the function only sees colours). On an ARGB1555 page, or when the palette RAM is
+ * full, the variant is built from the atlas pixels kept in RAM (ui_res_pixel) in
+ * one 256x256 ARGB1555 cache texture:
  *   UI_VAR_GAUGE0 + k : opaque white -> data_ov000_02364d60[k] (tension gauge
  *                       colours 1/2 of OBJ palette 1, Hud_DrawTensionGauge)
  *   UI_VAR_DIM        : every colour through the data_0207ba24 nibble LUT
@@ -70,12 +73,12 @@ void ui_palmap_set(int n, int res, int src_image, int dst_image) {
         return;
     a = &r->images[src_image];
     b = &r->images[dst_image];
-    if (!r->pixels[a->page] || !r->pixels[b->page])
+    if ((!r->pixels[a->page] && !r->texels[a->page]) || (!r->pixels[b->page] && !r->texels[b->page]))
         return;
     for (y = 0; y < a->h && y < b->h; y++)
         for (x = 0; x < a->w && x < b->w; x++) {
-            u16 f = r->pixels[a->page][(a->y + y) * r->pages[a->page].w + a->x + x];
-            u16 t = r->pixels[b->page][(b->y + y) * r->pages[b->page].w + b->x + x];
+            u16 f = ui_res_pixel(r, src_image, a->x + x, a->y + y);
+            u16 t = ui_res_pixel(r, dst_image, b->x + x, b->y + y);
             if (!(f & 0x8000))
                 continue;
             for (k = 0; k < s_palmap[n].n; k++)
@@ -149,40 +152,63 @@ u16 ui_variant_pixel(u16 p, int variant) {
 #include <kos.h>
 #include "../engine/render.h"
 
+/* the pages from the RAM copies (PAL4 texels / ARGB1555 pixels): palette rows
+ * are taken when a palette is first drawn and given back when idle (SPR_ATLAS_LAZY) */
 int ui_res_upload(UiRes *r) {
-    int i, ok = 0;
-    for (i = 0; i < r->n_pages && i < 4; i++) {
-        Texture *t;
-        u32 size = (u32)r->pages[i].w * r->pages[i].h * 2;
-        if (!r->pixels[i])
-            continue;
-        t = (Texture *)calloc(1, sizeof(Texture));
-        if (!t)
-            continue;
-        t->w = r->pages[i].w;
-        t->h = r->pages[i].h;
-        t->fmt = PVR_TXRFMT_ARGB1555;
-        t->bytes = size;
-        t->ptr = pvr_mem_malloc(size);
-        if (!t->ptr) {
-            free(t);
-            continue;
-        }
-        pvr_txr_load(r->pixels[i], t->ptr, size);
-        r->tex[i] = t;
-        ok++;
-    }
-    return ok;
+    SprAtlas *a;
+    if (!r->blob)
+        return 0;
+    a = (SprAtlas *)calloc(1, sizeof(SprAtlas));
+    if (!a)
+        return 0;
+    r->atlas = a;
+    return spr_atlas_adopt(a, r->blob, r->pal.blob ? &r->pal : NULL, r->texels, r->pixels, SPR_ATLAS_LAZY);
 }
 
 void ui_res_release(UiRes *r) {
+    if (r->atlas) {
+        spr_atlas_free((SprAtlas *)r->atlas);
+        free(r->atlas);
+        r->atlas = NULL;
+    }
+}
+
+/* VRAM the UI sprite pages hold (budget probe) */
+u32 ui_vram_used(void) {
+    u32 n = 0;
     int i;
-    for (i = 0; i < 4; i++)
-        if (r->tex[i]) {
-            tex_free((Texture *)r->tex[i]);
-            free(r->tex[i]);
-            r->tex[i] = NULL;
+    for (i = 0; i < UI_RES_COUNT; i++)
+        if (g_ui_res[i].atlas)
+            n += ((SprAtlas *)g_ui_res[i].atlas)->vram;
+    return n;
+}
+
+/* ------------------------------------------------------ variant banks */
+#define VB_MAX 32
+static struct { const UiRes *res; int pal, variant; PalRef ref; } s_vb[VB_MAX];
+static int s_vb_n;
+static int variant_bank(const UiRes *r, int image, int variant) {
+    int pal, i, k, slot = -1;
+    u16 col[16];
+    if (!r->pal.blob || r->pal.image_pal[image] == SPRPAL_NONE)
+        return -1;
+    pal = r->pal.image_pal[image];
+    for (i = 0; i < s_vb_n; i++)
+        if (s_vb[i].res == r && s_vb[i].pal == pal && s_vb[i].variant == variant) {
+            slot = i;
+            break;
         }
+    if (slot < 0) {
+        slot = s_vb_n < VB_MAX ? s_vb_n++ : (int)(((uintptr_t)r / 4 + pal * 7 + variant) % VB_MAX);
+        s_vb[slot].res = r;
+        s_vb[slot].pal = pal;
+        s_vb[slot].variant = variant;
+        s_vb[slot].ref.row = -1;
+    }
+    col[0] = 0;
+    for (k = 1; k < 16; k++)
+        col[k] = ui_variant_pixel(r->pal.pal[16 * pal + k], variant);
+    return pal4_use(&s_vb[slot].ref, col, r->pal.pal_mask[pal]);
 }
 
 /* ------------------------------------------------------ variant cache */
@@ -194,8 +220,7 @@ static int s_vc_n, s_vc_sx, s_vc_sy, s_vc_rowh, s_vc_ok;
 
 static int vc_find(const UiRes *r, int image, int variant, u16 *ox, u16 *oy) {
     const UiImage *im = &r->images[image];
-    const u16 *src;
-    int i, x, y, pw;
+    int i, x, y;
     for (i = 0; i < s_vc_n; i++)
         if (s_vc[i].res == r && s_vc[i].image == image && s_vc[i].variant == variant) {
             *ox = s_vc[i].x;
@@ -220,7 +245,7 @@ static int vc_find(const UiRes *r, int image, int variant, u16 *ox, u16 *oy) {
         }
         s_vc_ok = 1;
     }
-    if (s_vc_n >= VC_MAX || !r->pixels[im->page] || im->w + 1 > VC_SIZE)
+    if (s_vc_n >= VC_MAX || (!r->pixels[im->page] && !r->texels[im->page]) || im->w + 1 > VC_SIZE)
         return 0;
     if (s_vc_sx + im->w + 1 > VC_SIZE) {
         s_vc_sx = 0;
@@ -229,12 +254,10 @@ static int vc_find(const UiRes *r, int image, int variant, u16 *ox, u16 *oy) {
     }
     if (s_vc_sy + im->h > VC_SIZE)
         return 0;
-    pw = r->pages[im->page].w;
-    src = r->pixels[im->page];
     for (y = 0; y < im->h; y++) {
         volatile u16 *dst = (volatile u16 *)s_vc_tex.ptr + (s_vc_sy + y) * VC_SIZE + s_vc_sx;
         for (x = 0; x < im->w; x++)
-            dst[x] = ui_variant_pixel(src[(im->y + y) * pw + im->x + x], variant);
+            dst[x] = ui_variant_pixel(ui_res_pixel(r, image, im->x + x, im->y + y), variant);
     }
     s_vc[s_vc_n].res = r;
     s_vc[s_vc_n].image = image;
@@ -275,6 +298,13 @@ static const Texture *face_tex(int f) {
     return &s_face_tex;
 }
 
+void ui_face_release(void) {
+    if (s_face_tex.ptr)
+        pvr_mem_free(s_face_tex.ptr);
+    memset(&s_face_tex, 0, sizeof(s_face_tex));
+    s_face_cur = -1;
+}
+
 static uint64_t s_prof[3]; static int s_prof_n, s_prof_q, s_prof_v, s_prof_f;
 void ui_draw_tr(void) {
     uint64_t pt0 = timer_us_gettime64(), pt1;
@@ -286,6 +316,8 @@ void ui_draw_tr(void) {
         const UiQuad *q = sorted[i];
         const UiRes *r;
         const Texture *t;
+        SprAtlas *a;
+        int bank;
         if (q->tex < 0) {
             draw_rect_screen(NULL, PVR_LIST_TR_POLY, q->x, q->y, q->w, q->h, 0, 0, 0, 0, z, q->argb);
             continue;
@@ -298,6 +330,19 @@ void ui_draw_tr(void) {
             continue;
         }
         r = &g_ui_res[q->tex];
+        a = (SprAtlas *)r->atlas;
+        if (!a || q->image < 0 || q->image >= r->n_images || r->images[q->image].page >= a->n_pages)
+            continue;
+        if (q->variant != 0 && a->pal4[r->images[q->image].page]) {
+            /* palette effect = another bank for the same texels */
+            int vb = variant_bank(r, q->image, q->variant);
+            s_prof_v++;
+            if (vb >= 0) {
+                draw_rect_screen_pal(&a->tex[r->images[q->image].page], vb, PVR_LIST_TR_POLY, q->x, q->y, q->w,
+                                     q->h, q->u0, q->v0, q->u1, q->v1, z, q->argb);
+                continue;
+            }
+        }
         if (q->variant != 0) {
             u16 vx, vy;
             const UiImage *im = &r->images[q->image];
@@ -312,10 +357,11 @@ void ui_draw_tr(void) {
                 continue;
             }
         }
-        t = (const Texture *)r->tex[r->images[q->image].page];
-        if (!t)
+        bank = spr_atlas_bank(a, q->image, -1);   /* may expand the page (palette RAM full) */
+        t = &a->tex[r->images[q->image].page];
+        if (!t->ptr)
             continue;
-        draw_rect_screen(t, PVR_LIST_TR_POLY, q->x, q->y, q->w, q->h, q->u0, q->v0, q->u1, q->v1, z, q->argb);
+        draw_rect_screen_pal(t, bank, PVR_LIST_TR_POLY, q->x, q->y, q->w, q->h, q->u0, q->v0, q->u1, q->v1, z, q->argb);
     }
     /* master brightness of the main screen (the frame); sub-screen quads took
      * gDisplaySub's in sort_quads */
@@ -341,6 +387,7 @@ int ui_res_upload(UiRes *r) {
     return 0;
 }
 void ui_res_release(UiRes *r) { (void)r; }
+void ui_face_release(void) {}
 void ui_draw_tr(void) { sort_quads(); }
 int ui_debug_sorted(const UiQuad ***out) {
     *out = sorted;

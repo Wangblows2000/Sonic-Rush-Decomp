@@ -120,7 +120,8 @@ typedef struct {
     const CsImage *images;
     const CsAnimDef *anims;
     const CsFrame *frames;
-    CsTex tex[4];
+    CsTex tex[4];      /* host: the ARGB1555 pages (the test rasterises them) */
+    void *atlas;       /* KOS SprAtlas: PAL4 pages + palette rows (engine/render.h) */
 } CsRes;
 /* AnimatorSprite flags (DS values) */
 enum { SPR_STOPPED = 1, SPR_ENDED = 2, SPR_LOOP = 4, SPR_HFLIP = 0x80, SPR_VFLIP = 0x100, SPR_HIDDEN = 0x80000 };
@@ -149,6 +150,7 @@ typedef struct {
     CsRes *res;
     float x[4], y[4], u[4], v[4];   /* screen px (640x480), texels */
     u32 argb;
+    u16 image;                      /* CSQ_SPR: image index (its palette) */
 } CsQuad;
 /* current view: DS pixel -> screen px = (p - src) * scale + dst */
 typedef struct { float sx, sy, scale, dx, dy; float clip_x0, clip_y0, clip_x1, clip_y1; } CsView;

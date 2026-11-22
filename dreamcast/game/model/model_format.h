@@ -19,14 +19,14 @@
 
 #define DCM_MAGIC 0x314D4344u /* "DCM1" */
 #define DCA_MAGIC 0x31414344u /* "DCA1" */
-#define DCM_VERSION 1
+#define DCM_VERSION 2         /* 2: + material / texture extras (header 148 bytes); 1 is still read */
 
 /* ------------------------------------------------------------------ .dcm (one model) */
 
 typedef struct {
     uint32_t magic;          /* DCM_MAGIC */
     uint16_t version;        /* DCM_VERSION */
-    uint16_t header_size;    /* sizeof(dcm_header_t) = 140 */
+    uint16_t header_size;    /* sizeof(dcm_header_t) = 148 (version 1: 140, no ofs_matx / ofs_texx) */
     uint32_t file_size;
     char name[16];           /* MDL0 model name, NUL padded */
     uint8_t scaling_rule;    /* 0 basic, 1 Maya SSC, 2 Si3d (all Sonic Rush models) */
@@ -58,7 +58,11 @@ typedef struct {
     uint32_t out_polygons;   /* DS polygons (tri + quad) == src_num_polygon */
     uint32_t out_pvr_triangles; /* triangles the PVR rasterises (quad = 2) */
     float bbox_min[3], bbox_max[3]; /* bind-pose palette-space vertex bounds */
+    /* version 2 */
+    uint32_t ofs_matx;       /* dcm_matx_t[num_materials]: names + texture SRT inputs (material animations) */
+    uint32_t ofs_texx;       /* dcm_texx_t[num_textures]: texture / palette names (texture pattern animations) */
 } dcm_header_t;
+#define DCM_HEADER_SIZE_V1 140
 
 #define DCM_JF_HAS_TRANS 1
 #define DCM_JF_HAS_ROT 2
@@ -119,6 +123,30 @@ typedef struct {
     float uv_a, uv_d, uv_e, uv_f;  /* u' = a*u + e, v' = d*v + f (normalised uv) */
 } dcm_material_t;            /* 40 bytes */
 
+/* Version 2: what the DS material keeps for the animations (NNSi_G3dFuncSbc_MAT_InternalDefault):
+ * the name the animation objects bind by, and the inputs of NNSi_G3dSendTexSRTSi3d. */
+#define DCM_SRT_SCALE_ONE 1      /* res->flag bit 0: scale 1 */
+#define DCM_SRT_ROT_ZERO 2       /* bit 1 */
+#define DCM_SRT_TRANS_ZERO 4     /* bit 2 */
+#define DCM_SRT_ON 8             /* bit 3: a texture matrix is sent */
+typedef struct {
+    char name[16];
+    uint8_t srt_flags;       /* DCM_SRT_* of the static material */
+    uint8_t texgen;          /* TEXIMAGE_PARAM >> 30 (0 none, 1 texcoord, 2 normal, 3 vertex) */
+    uint16_t pad;
+    uint16_t orig_w, orig_h; /* origW / origH */
+    uint16_t base_w, base_h; /* DS size of the static texture: vertex uv = texcoord / base (0 = untextured) */
+    int32_t scale_s, scale_t, trans_s, trans_t; /* fx32 */
+    int32_t mag_w, mag_h;    /* fx32 */
+} dcm_matx_t;                /* 52 bytes */
+
+typedef struct {
+    char tex[16];            /* TEX0 texture name */
+    char pltt[16];           /* palette name ("" for direct colour) */
+    uint16_t ds_w, ds_h;     /* DS texture size */
+    uint16_t orig_w, orig_h; /* SetTexParamaters_: origW / origH of the texture */
+} dcm_texx_t;                /* 40 bytes */
+
 enum { DCM_TEX_ARGB1555 = 0, DCM_TEX_RGB565 = 1, DCM_TEX_ARGB4444 = 2 };
 
 typedef struct {
@@ -161,7 +189,7 @@ typedef struct {
 
 /* ------------------------------------------------------------------ .dca / .dcv (animation sets) */
 
-enum { DCA_KIND_JOINT = 1, DCA_KIND_VIS = 2 };
+enum { DCA_KIND_JOINT = 1, DCA_KIND_VIS = 2, DCA_KIND_MATCOL = 3, DCA_KIND_TEXPAT = 4, DCA_KIND_TEXSRT = 5 };
 
 typedef struct {
     uint32_t magic;          /* DCA_MAGIC */
@@ -199,6 +227,25 @@ typedef struct {
 } dca_channel_t;             /* 16 bytes */
 
 /* Visibility (kind 2): bit (frame * num_joints + node) of the byte array at ofs_data. */
+
+/* Material animations (kinds 3 .dcc colour, 4 .dcp texture pattern, 5 .dct texture SRT), from
+ * .nsbma / .nsbtp / .nsbta (tools/dreamcast/models/matanim.py).  dca_anim_t: num_joints = number of
+ * materials, ofs_channels = absolute offset of dcx_mat_t[num_joints], ofs_data = sample pool,
+ * pad (kind 4) = absolute offset of the name tables {u16 num_tex, num_pltt; char tex[][16]; char pltt[][16]}.
+ * Samples are the DS values at every integer frame (the NNS calc functions, evaluated by the converter):
+ *   kind 3: ch[0..4] diffuse, ambient, specular, emission (GXRgb u16), alpha (u16 0..31)
+ *   kind 4: ch[0] u16 texture index | palette index << 8 (0xFF = the material's own palette)
+ *   kind 5: ch[0..4] scaleS, scaleT, sin | cos << 16, transS, transT (s32 fx32) */
+typedef struct {
+    uint8_t mode;            /* DCA_MODE_CONST (value) / DCA_MODE_FRAMES (samples at ofs_data + ofs); 0 = unused */
+    uint8_t pad[3];
+    int32_t value;
+    uint32_t ofs;
+} dcx_chan_t;                /* 12 bytes */
+typedef struct {
+    char name[16];           /* material the channels bind to (by name, as NNS does) */
+    dcx_chan_t ch[5];
+} dcx_mat_t;                 /* 76 bytes */
 
 /* A quaternion q = (w,x,y,z) represents the column-vector rotation Rc; the DS row
  * matrix used by the joint maths is R = transpose(Rc). */

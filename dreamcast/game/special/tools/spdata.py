@@ -18,6 +18,7 @@ Outputs (paths relative to --out, the disc gets the same tree under /cd/special)
   models/*.dcm|dca|dcv  converted NSBMD/NSBCA/NSBVA (tools/dreamcast/models/nsbmd2dc.py)
                         incl. texture-pattern variants <model>__pN.dcm
   sprites/<id>/         BAC sprites (tools/dreamcast/sprites/bac2dc.py): frames.bin + atlas0.argb1555
+                        (+ palettes.bin, atlas0.pt4: PVR PAL4 page, SPRITES.md section 4)
   bg/*.mnbg             BBG backgrounds (dreamcast/game/menus/tools/menubg.py format)
   sound/ss.srb          sound-effect bank: sys SDAT SSAR 9, 14, 16 (tools/dreamcast/audio/sfxbank.py)
   manifest.txt          every output file (what build_disc must copy to /cd/special)
@@ -227,7 +228,8 @@ def main():
         for d in sorted((out / "sprites_full/bac").iterdir()):
             if d.name.startswith("act__ac_spst"):
                 (sd / d.name).mkdir(exist_ok=True)
-                for f in ["frames.bin"] + [x.name for x in d.glob("atlas*.argb1555")]:
+                for f in ["frames.bin"] + [x.name for x in d.glob("atlas*.argb1555")] + \
+                        [x.name for x in d.glob("atlas*.pt4")] + (["palettes.bin"] if (d / "palettes.bin").exists() else []):
                     shutil.copyfile(d / f, sd / d.name / f)
                     files.append("sprites/%s/%s" % (d.name, f))
         shutil.rmtree(out / "sprites_full")

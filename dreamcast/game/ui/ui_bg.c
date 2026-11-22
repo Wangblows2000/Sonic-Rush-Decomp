@@ -48,6 +48,16 @@ void ui_tcbg_free(void) {
     s_tc_file = -1;
 }
 
+/* the stage's own UI resources (title card and results backgrounds, navigator, the
+ * face texture), freed when the stage is torn down: only ui_init's resources stay */
+void ui_stage_end(void) {
+    StageTitleCard_Destroy();
+    ClearDemo_Destroy();
+    ui_cdbg_free();
+    ui_navi_stage_end();
+    ui_face_release();
+}
+
 static float fmodp(float v, float m) {
     float r = v - (float)((int)(v / m)) * m;
     return r < 0 ? r + m : r;

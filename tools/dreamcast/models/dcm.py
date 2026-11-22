@@ -26,6 +26,9 @@ class Model:
         self.h = dict(zip(HDR_NAMES, vals[:len(HDR_NAMES)]))
         self.bbox = vals[len(HDR_NAMES):]
         h = self.h
+        # version 2: material / texture extras (names, texture SRT inputs) for the material animations
+        h["ofs_matx"], h["ofs_texx"] = struct.unpack_from("<2I", data, struct.calcsize(HDR)) \
+            if h["version"] >= 2 else (0, 0)
         if h["magic"] != b"DCM1":
             raise ValueError("not a DCM1 package")
         self.name = h["name"].split(b"\0")[0].decode()
@@ -56,6 +59,18 @@ class Model:
                       for i in range(h["num_draws"])]
         self.strips = [struct.unpack_from("<IHH", data, h["ofs_strips"] + 8 * i) for i in range(h["num_strips"])]
         self.vtx = np.frombuffer(data, VTX_DT, h["num_vertices"], h["ofs_vertices"])
+        self.material_names, self.texture_names = [], []
+        if h["ofs_matx"]:
+            for i in range(h["num_materials"]):
+                v = struct.unpack_from("<16sBBHHHHH6i", data, h["ofs_matx"] + 52 * i)
+                self.material_names.append(v[0].split(b"\0")[0].decode("latin-1"))
+                self.materials[i].update(zip("srt_flags texgen pad orig_w orig_h base_w base_h scale_s scale_t "
+                                             "trans_s trans_t mag_w mag_h".split(), v[1:]))
+            for i in range(h["num_textures"]):
+                v = struct.unpack_from("<16s16sHHHH", data, h["ofs_texx"] + 40 * i)
+                self.texture_names.append((v[0].split(b"\0")[0].decode("latin-1"),
+                                           v[1].split(b"\0")[0].decode("latin-1")))
+                self.textures[i].update(zip("ds_w ds_h orig_w orig_h".split(), v[2:]))
 
 
 def unpack16(raw, fmt):

@@ -8,15 +8,20 @@
  * original (OptionsMenu_* key-frame pages, 6 pages, wireless download play)
  * is replaced by a direct layout of the same sprites (mnu_opti_<lang>,
  * font_opti_sound) on the bottom screen: rewritten, see MENUS.md.
- * Not available: PLAYER DATA (Records) and DOWNLOAD DEMO (DS wireless).
+ * PLAYER DATA (added with the time-attack / records scenes, rewritten like the rest):
+ * BATTLE PLAY RECORD -> Options_ExitToRecords (Records_Start), TIME ATTACK RECORD ->
+ * ACT / BOSS -> Options_ExitToTimeAttackMenuMode2 / 3; the way back is
+ * Options_StartFromRecords (page 0 child 0) and Options_StartFromZoneMapPauseChoice2 / 3
+ * (page 1 child 0 / 1), as OptionsMenu_Create(.., page, child) in the original.
+ * Not available: DOWNLOAD DEMO (DS wireless).
  * Touch -> pad: list = UP/DOWN + A, back button = B, choice buttons =
  * LEFT/RIGHT + A, sound test arrows = LEFT/RIGHT, play = A, stop = B.
  */
 #include <stdlib.h>
 #include "mn_internal.h"
 
-enum { OPT_DIFFICULTY, OPT_TIME_LIMIT, OPT_SOUND_TEST, OPT_ERASE, OPT_COUNT };
-enum { PG_LIST, PG_DIFFICULTY, PG_TIME_LIMIT, PG_ERASE1, PG_ERASE2, PG_SOUND };
+enum { OPT_PLAYER_DATA, OPT_DIFFICULTY, OPT_TIME_LIMIT, OPT_SOUND_TEST, OPT_ERASE, OPT_COUNT };
+enum { PG_LIST, PG_DIFFICULTY, PG_TIME_LIMIT, PG_ERASE1, PG_ERASE2, PG_SOUND, PG_PLAYER, PG_TA_KIND };
 
 typedef struct {
     char name[0x29];
@@ -187,6 +192,9 @@ static void Options_Draw(OptionsWork *w) {
             s32 it = w->items[i], sel = i == w->sel;
             y = 0x30 + i * 0x1c;
             switch (it) {
+            case OPT_PLAYER_DATA:
+                opt_spr(w, 1 + i, sel ? 2 : 1, 0xe8, y);
+                break;
             /* the value first: the first sprite drawn is in front (OAM order) */
             case OPT_DIFFICULTY:
                 opt_spr(w, 6, (w->settings[0] ? 15 : 13) + (sel ? 1 : 0), 0xb6, y);
@@ -207,6 +215,20 @@ static void Options_Draw(OptionsWork *w) {
         return;
     }
     Background_Show(1, 2, w->bg[w->page == PG_SOUND ? 3 : 2]);
+    if (w->page == PG_PLAYER) {
+        /* PLAYER DATA: BATTLE PLAY RECORD (28/29) / TIME ATTACK RECORD (31/32) */
+        opt_spr(w, 8, 21, 24, 0x30);
+        opt_spr(w, 9, 28 + (w->choice == 0 ? 1 : 0), 0x38, 0x50);
+        opt_spr(w, 10, 31 + (w->choice == 1 ? 1 : 0), 0x38, 0x70);
+        return;
+    }
+    if (w->page == PG_TA_KIND) {
+        /* TIME ATTACK RECORD: ACT (34/35) / BOSS (37/38) */
+        opt_spr(w, 8, 31, 0x38, 0x30);
+        opt_spr(w, 9, 34 + (w->choice == 0 ? 1 : 0), 0x28, 0x58);
+        opt_spr(w, 10, 37 + (w->choice == 1 ? 1 : 0), 0x88, 0x58);
+        return;
+    }
     if (w->page == PG_SOUND) {
         opt_spr(w, 8, 24, 24, 0x30);
         OptionsMenu_DrawSoundTestTrackName(w, 0x80, 0x70);
@@ -228,6 +250,10 @@ static void Options_Draw(OptionsWork *w) {
 
 /* -------------------------------------------------------------- states */
 static void Options_ExitToTitleMenu(void) { SaveData_CommitOrShowError(TitleMenu_StartFromOptions); }
+static void Options_ExitToRecords(void) { SaveData_CommitOrShowError(Records_Start); }
+static void Options_ExitToTimeAttackMenuMode2(void) { SaveData_CommitOrShowError(TimeAttackMenu_StartMode2); }
+static void Options_ExitToTimeAttackMenuMode3(void) { SaveData_CommitOrShowError(TimeAttackMenu_StartMode3); }
+static void (*s_opt_exit)(void) = Options_ExitToTitleMenu;
 
 typedef struct { s32 t; } OptFadeWork;
 
@@ -237,8 +263,10 @@ static void Options_State_Exit(void) {
     BRIGHT_MAIN = BRIGHT_SUB = (s16)(-w->unk14);
     Options_Draw(w);
     if (w->unk14 >= 16) {
+        void (*fn)(void) = s_opt_exit;
+        s_opt_exit = Options_ExitToTitleMenu;
         Task_Destroy(gTaskCurrent);
-        Options_ExitToTitleMenu();
+        fn();
     }
 }
 
@@ -272,6 +300,10 @@ static void Options_State_Main(void) {
             w->unk18 = 0;
             w->unk1c = -1;
             switch (w->items[w->sel]) {
+            case OPT_PLAYER_DATA:
+                w->page = PG_PLAYER;
+                w->choice = 0;
+                break;
             case OPT_DIFFICULTY:
                 w->page = PG_DIFFICULTY;
                 w->choice = w->diff_choice;
@@ -348,6 +380,42 @@ static void Options_State_Main(void) {
             opt_back(w);
         }
         break;
+    case PG_PLAYER:
+    case PG_TA_KIND:
+        if (gPad.rep & (w->page == PG_PLAYER ? PAD_UP : PAD_LEFT)) {
+            if (w->choice != 0) {
+                w->choice = 0;
+                SysSound_PlaySE(4);
+            }
+        } else if (gPad.rep & (w->page == PG_PLAYER ? PAD_DOWN : PAD_RIGHT)) {
+            if (w->choice != 1) {
+                w->choice = 1;
+                SysSound_PlaySE(4);
+            }
+        }
+        if (gPad.trg & PAD_A) {
+            SysSound_PlaySE(0);
+            if (w->page == PG_PLAYER && w->choice == 1) {
+                w->page = PG_TA_KIND;
+                w->choice = 0;
+                break;
+            }
+            /* Options_ExitToRecords / Options_ExitToTimeAttackMenuMode2 / 3 */
+            s_opt_exit = w->page == PG_PLAYER ? Options_ExitToRecords
+                         : w->choice == 0     ? Options_ExitToTimeAttackMenuMode2
+                                              : Options_ExitToTimeAttackMenuMode3;
+            w->unk14 = 0;
+            gTaskCurrent->func = Options_State_Exit;
+        } else if (gPad.trg & PAD_B) {
+            SysSound_PlaySE(1);
+            if (w->page == PG_TA_KIND) {
+                w->page = PG_PLAYER;
+                w->choice = 1;
+            } else {
+                opt_back(w);
+            }
+        }
+        break;
     case PG_SOUND: {
         BOOL busy = (gSaveData.unk8 & 0x1000) != 0;   /* Options_IsExtraStoryCleared */
         if (w->ntracks <= 0) {
@@ -418,7 +486,22 @@ static void Options_Compose(void) {
     mn_comp_add(1, 0, 0, 256, 192, 4, 96, 1.5f, 1 << 3, 0);
 }
 
-void Options_StartFromTitleMenu(void) {
+static OptionsWork *Options_Create(void);
+void Options_StartFromTitleMenu(void) { Options_Create(); }
+
+/* OptionsMenu_Create(t0, page, child): back from Records (0, 0) and from the record
+ * lists of TimeAttackMenu modes 2 / 3 (1, 0) / (1, 1) */
+static void Options_StartAtPlayerData(s32 page, s32 child) {
+    OptionsWork *w = Options_Create();
+    w->sel = 0;   /* PLAYER DATA */
+    w->page = page == 0 ? PG_PLAYER : PG_TA_KIND;
+    w->choice = child;
+}
+void Options_StartFromRecords(void) { Options_StartAtPlayerData(0, 0); }
+void Options_StartFromZoneMapPauseChoice2(void) { Options_StartAtPlayerData(1, 0); }
+void Options_StartFromZoneMapPauseChoice3(void) { Options_StartAtPlayerData(1, 1); }
+
+static OptionsWork *Options_Create(void) {
     OptionsWork *w = (OptionsWork *)Task_Create(Options_State_Main, Options_Destructor, 0, 0x1000, 0x1000,
                                                 sizeof(OptionsWork))->work;
     char path[160];
@@ -456,6 +539,7 @@ void Options_StartFromTitleMenu(void) {
         w->ganim[i] = -1;
     }
     w->nitems = 0;
+    w->items[w->nitems++] = OPT_PLAYER_DATA;
     w->items[w->nitems++] = OPT_DIFFICULTY;
     w->items[w->nitems++] = OPT_TIME_LIMIT;
     if (gSaveData.unk8 & 0x200)   /* Options_IsSoundTestUnlocked */
@@ -466,4 +550,5 @@ void Options_StartFromTitleMenu(void) {
     Options_LoadSettingsFromSave(w);
     BRIGHT_MAIN = BRIGHT_SUB = -16;   /* Options_CreateFadeTask(-16, 0, 0x10, 0) */
     gSaveDataBusy = 0;
+    return w;
 }

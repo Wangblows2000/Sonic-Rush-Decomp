@@ -268,12 +268,32 @@ static void Stage_Create_UI(void) {
     ScorePopup_Destroy();
     EnemyRoomHud_Destroy();
     ui_navi_stage_start();   /* NaviBg_Load / NaviB_Load (Player_LoadArchive, BossStage*_OnModelLoaded) */
+    ui_tahud_reset();
     Hud_Create();
     if (!UI_NORMAL_STAGE())
         Hud_SetFlags(Hud_GetFlags() | 4);
     if ((u32)(W.mode - 1) <= 1)
         Hud_SetFlags(Hud_GetFlags() | 0x10);
-    StageTitleCard_Create(s_player);
+    /* native layout: the DS has no score counter; in time attack the split-time
+     * popup (CheckpointTimePopup) uses its top-right place */
+    if (W.mode == 2)
+        Hud_SetFlags(Hud_GetFlags() | 0x40000000);
+    if (W.flags & 8) {
+        /* Stage_Create with gGameState.unk18 & 8 (DemoPlay_Create: a start point): no
+         * title card, the timer runs at once; boss acts get the boss panel here */
+        if (!UI_NORMAL_STAGE()) {
+            NaviMsg_Create();
+            NaviMsg_SetVisible(1);
+            NaviB_Create();
+        }
+        W.flags |= 1;
+        /* the attract demo starts white (TitleScreen_State_WaitForStart set both
+         * screens to 0x10); DemoPlay_Main fades in once the timer runs */
+        if (W.flags & 4)
+            g_ui_bright_main = g_ui_bright_sub = 16;
+    } else {
+        StageTitleCard_Create(s_player);
+    }
     s_timer = W.frame;
 }
 
@@ -281,7 +301,13 @@ void ui_stage_start(int zone, int act, int character) {
     W.zone = (u8)zone;
     W.act = (u8)act;
     G.character = (u32)character;
-    Stage_ResetProgress();     /* StageEntry_Start */
+    {
+        /* DemoPlay_Create: Stage_ResetProgress, then gGameState.unk18 |= 4 (| 8 with a
+         * start point). demo_start sets them before the stage is built: keep them. */
+        u32 demo = W.mode == 3 ? (W.flags & 0xc) : 0;
+        Stage_ResetProgress(); /* StageEntry_Start */
+        W.flags |= demo;
+    }
     G.fail_flags &= ~3u;       /* new stage entry: data_022c4590 reset runs */
     PauseMenu_Destroy();
     ClearDemo_Destroy();
@@ -519,6 +545,8 @@ void ui_post_update(DcPlayer *p) {
     Hud_Main();
     /* EnemyRoomHud (StageObj task 0xa00), NaviMsg / NaviB (sub screen), BossHelp:
      * frozen while paused, still drawn */
+    /* CheckpointTimePopup / MarkerTimeList (StageObj tasks 0xff) */
+    ui_tahud_frame(!PauseMenu_IsActive());
     g_ui_layer = UI_LAYER_NAVI;
     EnemyRoomHud_Frame(!PauseMenu_IsActive(), p);
     ui_navi_frame(PauseMenu_IsActive());
@@ -529,6 +557,9 @@ void ui_post_update(DcPlayer *p) {
         if (p && StageTitleCard_IsActive())
             StageTitleCard_HoldPlayer(p);
     }
+    /* DemoPlay_Main's label (demo module, ui_demo_label) */
+    g_ui_layer = UI_LAYER_GAMEOVER;
+    ui_demo_label_draw();
 }
 
 void ui_player_last(DcPlayer *p) { ui_post_update(p); }
@@ -591,6 +622,13 @@ static void h_stage_exit(void *ctx, s32 kind) {
         s_prev_obj.stage_exit(ctx, kind);
 }
 
+/* g_obj_hooks.checkpoint_popup: CheckpointTimePopup_Create(p, time) */
+static void h_checkpoint_popup(void *ctx, DcPlayer *p, u32 time) {
+    CheckpointTimePopup_Create(0, (s32)time);
+    if (s_prev_obj.checkpoint_popup)
+        s_prev_obj.checkpoint_popup(ctx, p, time);
+}
+
 void ui_install_hooks(void) {
     if (g_dcp_hooks.score != h_score) {
         s_prev_dcp = g_dcp_hooks;
@@ -606,5 +644,6 @@ void ui_install_hooks(void) {
         s_prev_obj = g_obj_hooks;
         g_obj_hooks.fade = h_obj_fade;
         g_obj_hooks.stage_exit = h_stage_exit;
+        g_obj_hooks.checkpoint_popup = h_checkpoint_popup;
     }
 }

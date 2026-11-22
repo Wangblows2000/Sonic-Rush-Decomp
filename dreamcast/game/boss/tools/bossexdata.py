@@ -20,7 +20,7 @@ packages (build/dreamcast/models, build/dreamcast/sprites) and writes build/drea
                                                         slots 1..3 (material / pattern / SRT) are not
                                                         converted: their numFrame per animation index
                                                         is kept (timing only)
-  sprites/<id>/{frames.bin,atlas0.argb1555}   ac_ex_fix_moji (HUD, archive file 0x26),
+  sprites/<id>/{frames.bin,atlas0.argb1555,atlas0.pt4,palettes.bin}   ac_ex_fix_moji (HUD, archive file 0x26),
                                               ac_itm_ring (archive file 0x27) and ac_ex_vs (0x21)
   vs_son.bin / vs_blz.bin   the sub screen's VS splash BGs (extra_vs_bg_son / _blz.bbg, files 0x22 /
                 0x23, 512x192), "EXBG" with npal = 0
@@ -268,8 +268,10 @@ def main(argv):
         src = os.path.join(a.sprites, "bac", e["converted_as"])
         dst = os.path.join(a.out, "sprites", sid)
         os.makedirs(dst, exist_ok=True)
-        for fn in ("frames.bin", "atlas0.argb1555"):
-            shutil.copyfile(os.path.join(src, fn), os.path.join(dst, fn))
+        # + the PVR PAL4 page and its palettes (SPRITES.md section 4) when the converter made them
+        for fn in ("frames.bin", "atlas0.argb1555", "atlas0.pt4", "palettes.bin"):
+            if os.path.exists(os.path.join(src, fn)) or fn in ("frames.bin", "atlas0.argb1555"):
+                shutil.copyfile(os.path.join(src, fn), os.path.join(dst, fn))
 
     # ---------------------------------------------------------------- background (zex.bbg + palettes)
     zex = bbg_parse(maybe_decompress(files[0xB][1]))
@@ -314,6 +316,10 @@ def main(argv):
                    "sprites/itm_ring/frames.bin", "sprites/itm_ring/atlas0.argb1555", "sprites/ex_vs/frames.bin",
                    "sprites/ex_vs/atlas0.argb1555", "vs_son.bin", "vs_blz.bin"):
             f.write("boss/extra/%s\n" % fn)
+        for sid in ("ex_fix_moji", "itm_ring", "ex_vs"):
+            for fn in ("atlas0.pt4", "palettes.bin"):
+                if os.path.exists(os.path.join(a.out, "sprites", sid, fn)):
+                    f.write("boss/extra/sprites/%s/%s\n" % (sid, fn))
     print("bossex.bin: %d bytes (%d chunks, %d models, %d anim sets, %d fx kinds with a model); zex.bin %dx%d, "
           "%d palettes; %d model packages missing" % (len(out), len(CHUNKS), len(models), len(anims), nfx, W, H,
                                                       len(pals), missing))

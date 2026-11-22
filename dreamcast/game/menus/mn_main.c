@@ -61,9 +61,7 @@ MenuRequest menus_run_frame(const InputState *in) {
 static void ClearDemo_GoToNextScene(void) {
     u8 zone;
     if (gGameState.unk10 == MENU_MODE_TIME_ATTACK) {
-        /* SceneChange_ToTryAgain: the try-again menu is not translated */
-        mn_request_unavailable("TryAgain");
-        TitleMenu_StartAtPlayerSelectItem0();
+        TryAgain_Start();   /* SceneChange_ToTryAgain */
         return;
     }
     zone = gGameState.unk1C;
@@ -152,8 +150,17 @@ MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeral
             ZoneMap_StartFromStage();
         break;
     case MENU_EXIT_DEMO_END:
+        /* DemoPlay_Main: a key -> StageExit_Create(SceneChange_ToTitleScreen); the
+         * screen faded to white (BrightnessFade 5) */
         BRIGHT_MAIN = BRIGHT_SUB = 16;
-        TitleScreen_StartFromDemo();
+        gGameState.unk10 = 0;
+        TitleScreen_Start();
+        break;
+    case MENU_EXIT_DEMO_TIMEOUT:
+        /* the frame limit -> SceneChange_ToSegaLogo (the attract loop) */
+        BRIGHT_MAIN = BRIGHT_SUB = 16;
+        gGameState.unk10 = 0;
+        SegaLogo_Start();
         break;
     default:
         BRIGHT_MAIN = BRIGHT_SUB = -16;

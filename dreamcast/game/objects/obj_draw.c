@@ -1,7 +1,8 @@
 /*
  * Object rendering on the Dreamcast (KOS only): every object sprite is one
- * textured quad cut from the converted BAC atlas (atlas0.argb1555, ARGB1555,
- * non-twiddled; tools/dreamcast/sprites/bac2dc.py).  The animation state was
+ * textured quad cut from the converted BAC atlas (tools/dreamcast/sprites/bac2dc.py):
+ * PAL4 twiddled pages, the image's palette as a PVR palette row (a PaletteAnim
+ * selects another row), ARGB1555 pages for images with more than 15 colours.  The animation state was
  * advanced in objects_update (StageObj_Draw2DEx animation part); this file
  * only places the current frame, like AnimatorSprite_Draw:
  *   unflipped  image top-left = position - origin
@@ -17,62 +18,46 @@
 #include "../engine/render.h"
 #include "obj_internal.h"
 
+/* the pages of a resource: PAL4 twiddled with one PVR palette row per palette
+ * (atlas<N>.pt4 + palettes.bin), ARGB1555 for direct pages or when the palette
+ * RAM is full (engine/render.c spr_atlas_load) */
 int obj_draw_upload(ObjRes *r, const char *dir) {
-    char path[160];
-    int i, ok = 0;
-    for (i = 0; i < r->n_pages && i < 4; i++) {
-        Texture *t;
-        u8 *b;
-        u32 size;
-        snprintf(path, sizeof(path), "%s/atlas%d.argb1555", dir, i);
-        if (obj_load_file(path, &b, &size) != 0)
-            continue;
-        if (size != (u32)r->pages[i].w * r->pages[i].h * 2) {
-            free(b);
-            continue;
-        }
-        t = (Texture *)calloc(1, sizeof(Texture));
-        if (!t) {
-            free(b);
-            continue;
-        }
-        t->w = r->pages[i].w;
-        t->h = r->pages[i].h;
-        t->fmt = PVR_TXRFMT_ARGB1555;
-        t->bytes = size;
-        t->ptr = pvr_mem_malloc(size);
-        if (!t->ptr) {
-            free(t);
-            free(b);
-            continue;
-        }
-        pvr_txr_load(b, t->ptr, size);
-        free(b);
-        r->tex[i] = t;
-        ok++;
-    }
+    SprAtlas *a = (SprAtlas *)calloc(1, sizeof(SprAtlas));
+    int ok;
+    if (!a)
+        return 0;
+    ok = spr_atlas_load(a, dir, r->dspr, 0);
+    r->atlas = a;
     return ok;
 }
 
 void obj_draw_release(ObjRes *r) {
-    int i;
-    for (i = 0; i < 4; i++)
-        if (r->tex[i]) {
-            tex_free((Texture *)r->tex[i]);
-            free(r->tex[i]);
-            r->tex[i] = NULL;
-        }
+    if (r->atlas) {
+        spr_atlas_free((SprAtlas *)r->atlas);
+        free(r->atlas);
+        r->atlas = NULL;
+    }
+}
+
+/* VRAM / palette rows held by the object sprites (budget probe) */
+u32 objects_vram_used(void) {
+    u32 n = 0;
+    int s;
+    for (s = 0; s < OBJ_BAC_COUNT; s++)
+        if (g_obj.res[s].atlas)
+            n += ((SprAtlas *)g_obj.res[s].atlas)->vram;
+    return n;
 }
 
 static const float k_zbase[4] = { 4.5f, 3.5f, 2.5f, 1.5f };
 
 /* a textured quad with free corners (rot-scale OAM), screen coordinates */
-static void quad4(const Texture *t, pvr_list_t list, const float *xs, const float *ys, float u0, float v0, float u1,
-                  float v1, float z) {
+static void quad4(const Texture *t, int bank, pvr_list_t list, const float *xs, const float *ys, float u0, float v0,
+                  float u1, float v1, float z) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
     pvr_vertex_t v;
-    pvr_poly_cxt_txr(&cxt, list, t->fmt | PVR_TXRFMT_NONTWIDDLED, t->w, t->h, t->ptr, PVR_FILTER_NONE);
+    pvr_poly_cxt_txr(&cxt, list, tex_txr_format(t, bank), t->w, t->h, t->ptr, PVR_FILTER_NONE);
     pvr_poly_compile(&hdr, &cxt);
     pvr_prim(&hdr, sizeof(hdr));
     u0 /= t->w; u1 /= t->w; v0 /= t->h; v1 /= t->h;
@@ -87,12 +72,24 @@ static void quad4(const Texture *t, pvr_list_t list, const float *xs, const floa
 static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vflip_extra) {
     const DsprImage *img = spr_image(s);
     const Texture *t;
-    int hf, vf, prio, order;
+    SprAtlas *a;
+    int hf, vf, prio, order, bank, pal = -1, im;
     float x, y, x0, y0, z, u0, v0, u1, v1, tmp;
     if (img == NULL || s->hidden)
         return;
-    t = (const Texture *)s->res->tex[img->page];
-    if (t == NULL)
+    a = (SprAtlas *)s->res->atlas;
+    if (a == NULL || img->page >= a->n_pages)
+        return;
+    im = (int)(img - s->res->images);
+    if (s->palanim && a->pal.blob && a->pal.image_row[im] == 0) {
+        /* PaletteAnim: the row holds the palette of animation obj_palanim_anim() */
+        int an = obj_palanim_anim(s->palanim);
+        if (an >= 0 && an < a->pal.n_anims && a->pal.anim_pal[an] != SPRPAL_NONE)
+            pal = a->pal.anim_pal[an];
+    }
+    bank = spr_atlas_bank(a, im, pal);
+    t = &a->tex[img->page];
+    if (t->ptr == NULL)
         return;
     hf = (s->flags & SPR_HFLIP) != 0;
     vf = ((s->flags & SPR_VFLIP) != 0) ^ vflip_extra;
@@ -124,15 +121,15 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
         u0 = (float)img->x; v0 = (float)img->y; u1 = (float)(img->x + img->w); v1 = (float)(img->y + img->h);
         if (hf) { tmp = u0; u0 = u1; u1 = tmp; }
         if (vf) { tmp = v0; v0 = v1; v1 = tmp; }
-        quad4(t, list, xs, ys, u0, v0, u1, v1, z);
+        quad4(t, bank, list, xs, ys, u0, v0, u1, v1, z);
         return;
     }
     if (s->ppos != NULL) { /* StageObj_DrawSpriteAlt: piece 0 offset (one-piece frames) */
         x0 += (float)(s->ppos[0][0] >> 8);
         y0 += (float)(s->ppos[0][1] >> 8);
     }
-    draw_sprite_world(t, list, x0, y0, (float)img->w, (float)img->h, (float)img->x, (float)img->y,
-                      (float)(img->x + img->w), (float)(img->y + img->h), hf | (vf << 1), z, 0xffffffff);
+    draw_sprite_world_pal(t, bank, list, x0, y0, (float)img->w, (float)img->h, (float)img->x, (float)img->y,
+                          (float)(img->x + img->w), (float)(img->y + img->h), hf | (vf << 1), z, 0xffffffff);
 }
 static void draw_spr(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vflip_extra) {
     int i;

@@ -16,6 +16,8 @@ typedef struct {
     pvr_ptr_t bg_tex;
     int bg_w, bg_h, bg_tw, bg_th;
     uint32_t vram_used;
+    int pal_bank, bg_pal_bank;  /* PAL8 banks from the shared palette RAM allocator (-1 none) */
+    uint16_t pal_rows, bg_pal_rows; /* rows of those banks the texels use */
 } Level;
 
 int  level_load(Level *lv, const char *dir);  /* dir e.g. "/cd/stages/z11" */

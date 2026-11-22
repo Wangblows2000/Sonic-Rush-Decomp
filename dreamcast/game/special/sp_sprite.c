@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sp_internal.h"
+#ifdef _arch_dreamcast
+#include "../engine/render.h"
+#endif
 
 int sp_sprres_load(SpSprRes *r, const char *id) {
     char rel[128];
@@ -33,6 +36,21 @@ int sp_sprres_load(SpSprRes *r, const char *id) {
     r->images = (const SpDsprImage *)(f + 16 + 4 * hdr[1]);
     r->anims = (const SpDsprAnim *)((const u8 *)r->images + 16 * r->n_images);
     r->frametab = (const u16 *)((const u8 *)r->anims + 12 * r->n_anims);
+#ifdef _arch_dreamcast
+    {   /* the page as PVR PAL4 with its palette rows (ARGB1555 when it is a direct page) */
+        char dir[256];
+        snprintf(dir, sizeof(dir), "%s/sprites/%s", g_sp_path, id);
+        r->atlas = calloc(1, sizeof(SprAtlas));
+        if (r->atlas && spr_atlas_load((SprAtlas *)r->atlas, dir, f, 0) > 0) {
+            r->loaded = 1;
+            return 0;
+        }
+        if (r->atlas)
+            spr_atlas_free((SprAtlas *)r->atlas);
+        free(r->atlas);
+        r->atlas = NULL;
+    }
+#endif
     snprintf(rel, sizeof(rel), "sprites/%s/atlas0.argb1555", id);
     r->pixels = (u16 *)sp_file_load(rel, &n);
     if (!r->pixels || n != (u32)r->page_w * r->page_h * 2) {
@@ -46,6 +64,11 @@ int sp_sprres_load(SpSprRes *r, const char *id) {
 }
 
 void sp_sprres_free(SpSprRes *r) {
+#ifdef _arch_dreamcast
+    if (r->atlas)
+        spr_atlas_free((SprAtlas *)r->atlas);
+#endif
+    free(r->atlas);
     free(r->frames);
     free(r->pixels);
     memset(r, 0, sizeof(*r));

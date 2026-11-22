@@ -94,6 +94,10 @@ def build(rom):
     raw("to_str", 0x0207A144, 120)              # data_0207a144 s8[6][20]
     raw("to_w", 0x0207A0B4, 24)                 # data_0207a0b4 s8[24]
     raw("shake", 0x0207323C, 38)                # data_0207323c[4], data_02073240[12], data_0207324c[22] (ScreenShake_Main)
+    # time-attack tally (ClearDemoTA_InitSprites / ClearDemoTA_Draw)
+    S.append(("ta_anim", b"".join(rom.read(p, 30) for p in rom.u32s(0x02078B68, 6))))  # *data_02078b68[lang]: u16[15]
+    raw("ta_dx", 0x02078B24, 10)                # data_02078b24: s16[5] time digit x offsets
+    raw("ta_pal", 0x020732FC, 30)               # data_020732fc: u16[15] OBJ palette numbers
     # Pause
     raw("pause_lut", 0x0207BA24, 16)            # data_0207ba24 u8[16] dim LUT
     return S

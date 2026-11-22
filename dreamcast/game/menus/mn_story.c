@@ -122,7 +122,7 @@ void Game_StartStoryStage(s32 p0, s32 p1) {
     gGameState.unk1C = StoryProgress_GetZoneAt((u8)p0);
     gGameState.unk1D = StoryProgress_GetActAt((u8)p1);
     StoryProgress_RestoreFromSave();
-    /* NaviM_SaveStep: navigator hints, not part of the port */
+    NaviM_SaveStep();
     /* act < 2: SceneChange_ToStage; else DemoScript_StartScript0 (the boss
      * intro cutscene, then the boss act): the port starts the boss act. */
     mn_request_stage();

@@ -1324,14 +1324,14 @@ Obj *DecGroupAF_Create(ObjParam *p, s32 a, s32 b) {
         obj_load_bac(w, OBJ_BAC_DEC_NEON_BALL);
         w->spr.order = 6;
         z_set_prio(w, 0);
-        z_fxhook(NULL, OBJ_FX_PALETTE_ANIM, 0x02364568, p->type); /* PaletteAnim_Create */
+        obj_palanim_start(w, 0x02364568, p->type); /* PaletteAnim_Create */
         w->h.obj_flags |= 0x800;
         break;
     case 0xc4:
         obj_load_bac(w, OBJ_BAC_DEC_NEON_PILLAR);
         w->spr.order = 6;
         z_set_prio(w, 0);
-        z_fxhook(NULL, OBJ_FX_PALETTE_ANIM, 0x0236454c, p->type);
+        obj_palanim_start(w, 0x0236454c, p->type);
         w->h.obj_flags |= 0x800;
         break;
     case 0xd8:
@@ -1360,7 +1360,7 @@ Obj *DecGroupAF_Create(ObjParam *p, s32 a, s32 b) {
         if (p->type == 0xea)
             obj_set_anim(w, 3);
         w->spr.order = 0x16;
-        z_fxhook(NULL, OBJ_FX_PALETTE_ANIM, 0x02364558, p->type);
+        obj_palanim_start(w, 0x02364558, p->type);
         w->h.obj_flags |= 0x800;
         break;
     case 0xeb:

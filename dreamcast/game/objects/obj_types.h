@@ -199,7 +199,7 @@ typedef struct ObjRes {
     u16 hbx_frames;
     const HboxFrame *hframes;
     const HboxEvent *hevents;
-    void *tex[4];            /* renderer textures (obj_draw.c), one per page */
+    void *atlas;             /* renderer pages + palette banks (obj_draw.c: SprAtlas) */
 } ObjRes;
 
 /* AnimatorSprite (0x48-byte block, src/game/Graphics/Sprite/) */
@@ -238,6 +238,7 @@ typedef struct ObjSprite {
     /* StageObj_SetSharedSpriteVram / spr flags 8: the image shown is the
      * current frame of another sprite (DecShared animation driver) */
     const struct ObjSprite *vram;
+    u8 palanim;         /* PaletteAnim of the sprite's palette row (obj_palanim.c), slot + 1 */
 } ObjSprite;
 
 /* ------------------------------------------------------ ObjRect */

@@ -372,9 +372,11 @@ static void PlayerSelectMenu_ExitToGame(s32 mode, s32 sub) {
     case 4:
         gGameState.unk1C = StoryProgress_GetZoneAt(0);
         gGameState.unk1D = 0;
-        /* SceneChange_ToTimeAttackMenuMode0/1: the time attack menu is not translated */
-        mn_request_unavailable(mode == 3 ? "TimeAttackMenu" : "TimeAttackRecords");
-        TitleMenu_StartAtPlayerSelectItem0();
+        /* SceneChange_ToTimeAttackMenuMode0 / 1 */
+        if (mode == 3)
+            TimeAttackMenu_StartMode0();
+        else
+            TimeAttackMenu_StartMode1();
         return;
     default:
         TitleMenu_Start();

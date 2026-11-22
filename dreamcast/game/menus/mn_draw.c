@@ -2,8 +2,8 @@
  * Front-end drawing. Portable part: projection of a DS-frame quad through a
  * composition region (MENUS.md section 3) onto the single 640x480 frame,
  * clipped to the region's source rect. KOS part: textures (sprite atlas
- * pages padded to a power of two, BG images re-expanded when their palette
- * changes) and the TR-list quads via engine/render.c draw_rect_screen, then
+ * pages: PAL4 + a palette row per palette, or ARGB1555; BG images re-expanded
+ * when their palette changes) and the TR-list quads via engine/render.c draw_rect_screen, then
  * one brightness overlay over the whole frame.
  */
 #include <assert.h>
@@ -72,13 +72,11 @@ static Texture *tex_new(int w, int h) {
 }
 
 void mn_res_release_tex(MnRes *r) {
-    int i;
-    for (i = 0; i < 4; i++)
-        if (r->tex[i]) {
-            tex_free((Texture *)r->tex[i]);
-            free(r->tex[i]);
-            r->tex[i] = NULL;
-        }
+    if (r->atlas) {
+        spr_atlas_free((SprAtlas *)r->atlas);
+        free(r->atlas);
+        r->atlas = NULL;
+    }
 }
 void mn_bg_release_tex(MnBgImg *b) {
     if (b->tex) {
@@ -88,36 +86,43 @@ void mn_bg_release_tex(MnBgImg *b) {
     }
 }
 
-/* atlas page: rows copied into a padded power-of-two texture. u/v stay in
- * texels of the page: draw_rect_screen divides them by the padded size. */
-static const Texture *res_tex(MnRes *r, int page) {
+/* atlas pages: PAL4 (palette rows taken on first draw) or ARGB1555, uploaded on
+ * first use from the RAM copies (the converter makes power-of-two pages) */
+static const Texture *res_tex(MnRes *r, int page, int image, int *bank) {
+    SprAtlas *a;
+    *bank = -1;
     if (page >= r->n_pages || page >= 4)
         return NULL;
-    if (!r->tex[page] && r->pixels[page]) {
-        int w = r->pages[page].w, h = r->pages[page].h, y;
-        Texture *t = (w <= 1024 && h <= 1024) ? tex_new(mn_tex_pow2(w), mn_tex_pow2(h)) : NULL;
-        if (t) {
-            u16 *buf = (u16 *)memalign(32, t->bytes);
-            if (buf) {
-                memset(buf, 0, t->bytes);
-                for (y = 0; y < h; y++)
-                    memcpy(buf + (size_t)y * t->w, r->pixels[page] + (size_t)y * w, (size_t)w * 2);
-                pvr_txr_load(buf, t->ptr, t->bytes);
-                free(buf);
-                r->tex[page] = t;
-            } else {
-                tex_free(t);
-                free(t);
-            }
-        }
+    if (!r->atlas) {
+        int i;
+        for (i = 0; i < r->n_pages && i < 4; i++)
+            if (!is_pow2_pvr(r->pages[i].w) || !is_pow2_pvr(r->pages[i].h))
+                return NULL;
+        r->atlas = calloc(1, sizeof(SprAtlas));
+        if (!r->atlas)
+            return NULL;
+        spr_atlas_adopt((SprAtlas *)r->atlas, r->blob, r->pal.blob ? &r->pal : NULL, r->texels, r->pixels,
+                        SPR_ATLAS_LAZY);
     }
-    return (const Texture *)r->tex[page];
+    a = (SprAtlas *)r->atlas;
+    if (page >= a->n_pages)
+        return NULL;
+    *bank = spr_atlas_bank(a, image, -1);
+    return a->tex[page].ptr ? &a->tex[page] : NULL;
 }
 
 /* BG image: argb is already laid out with the power-of-two stride tw x th */
 static const Texture *bg_tex(MnBgImg *b) {
     if (!b->tex)
+    {
+        if (b->tw < 8 || b->th < 8) {   /* not loaded (missing file): nothing to draw */
+            static int logged;
+            if (logged++ < 4)
+                printf("menus: BG '%s' has no image (%dx%d)\n", b->name, b->tw, b->th);
+            return NULL;
+        }
         b->tex = tex_new(b->tw, b->th);
+    }
     if (b->tex && b->dirty) {
         mn_bg_expand(b);
         pvr_txr_load(b->argb, ((Texture *)b->tex)->ptr, ((Texture *)b->tex)->bytes);
@@ -137,15 +142,16 @@ void menus_draw_tr(void) {
     for (i = 0; i < n; i++, z += 0.005f) {
         const MnQuad *q = s[i].q;
         const Texture *t = NULL;
+        int bank = -1;
         if (!mn_project(q, s[i].r, &o))
             continue;
         if (q->kind == MNQ_SPRITE)
-            t = res_tex((MnRes *)q->res, q->page);
+            t = res_tex((MnRes *)q->res, q->page, q->image, &bank);
         else if (q->kind == MNQ_BG)
             t = bg_tex((MnBgImg *)q->bg);
         if (q->kind != MNQ_FLAT && !t)
             continue;
-        draw_rect_screen(t, PVR_LIST_TR_POLY, o.x, o.y, o.w, o.h, o.u0, o.v0, o.u1, o.v1, z, q->argb);
+        draw_rect_screen_pal(t, bank, PVR_LIST_TR_POLY, o.x, o.y, o.w, o.h, o.u0, o.v0, o.u1, o.v1, z, q->argb);
     }
     /* master brightness: one pass over the whole frame */
     if (b != 0) {

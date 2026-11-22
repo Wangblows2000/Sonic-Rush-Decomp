@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../ui_internal.h"
+#include "../../save/save.h"
 
 void ui_debug_gauge(s16 *target, s16 *shown, u32 *digits_rings, u32 *digits_time);
 void ui_post_update(DcPlayer *p);
@@ -640,6 +641,143 @@ static void test_backgrounds(void) {
     G.stage_new = 0;
 }
 
+
+/* time attack: ClearDemoTA tally (time 1'23"45 -> rank against the saved records),
+ * CheckpointTimePopup (g_obj_hooks.checkpoint_popup) and MarkerTimeList */
+static int count_res(int res, int layer) {
+    const UiQuad *q;
+    int n = ui_debug_quads(&q), i, k = 0;
+    for (i = 0; i < n; i++)
+        if (q[i].tex == res && (layer < 0 || q[i].layer == layer))
+            k++;
+    return k;
+}
+static void test_time_attack(void) {
+    int f, popup_frames = 0, stamped = -1, ta_quads = 0;
+    float x0, y0, x1, y1;
+    u32 t = 1 * 3600 + 23 * 60 + 27; /* 1'23"45 */
+    SaveData_SetDefaults(&gSaveData);
+    gSaveData.unkD2[0][0][0] = 6000;  /* the best record is slower: rank 0 (new record) */
+    W.mode = 2;
+    ui_stage_start(0, 0, 0);
+    run_until_timer(600);
+    CHECK(Hud_GetFlags() & 0x40000000, "time attack: native score counter hidden");
+    /* Marker_OnHit in time attack */
+    g_obj_hooks.checkpoint_popup(g_obj_hooks.ctx, &P, 1234);
+    CHECK(CheckpointTimePopup_IsActive(), "checkpoint popup created through the objects hook");
+    for (f = 0; f < 400 && CheckpointTimePopup_IsActive(); f++) {
+        frame(0, 0);
+        popup_frames++;
+        if (f == 10) {
+            int nb = layer_box(UI_LAYER_HUD, 0, &x0, &y0, &x1, &y1);
+            CHECK(nb > 0, "popup quads");
+            dump("ta_popup");
+        }
+    }
+    printf("checkpoint popup: %d frames (State_Main: > 0x12c)\n", popup_frames);
+    CHECK(popup_frames == 0x12d, "popup lives 0x12d frames (%d)", popup_frames);
+    /* pass-check marker: list of 5 laps */
+    ui_marker_time_list(1);
+    ui_marker_time_set(0, 2000);
+    ui_marker_time_set(1, 1900);
+    frame(0, 0);
+    CHECK(MarkerTimeList_IsActive() && count_res(UI_RES_MOJI, UI_LAYER_HUD) > 5 * 8, "marker time list drawn");
+    dump("ta_laps");
+    ui_marker_time_list(0);
+    /* the tally */
+    W.frame = t;
+    W.flags &= ~1u;
+    ui_stage_exit(OBJ_EXIT_CLEAR_DEMO);
+    for (f = 0; f < 3000 && ui_state() == UI_RESULTS; f++) {
+        frame(0, 0);
+        if (stamped < 0 && s_music_last == 0xc)
+            stamped = f;
+        if (f == 400)
+            CHECK(count_res(UI_RES_CLDM_TA, UI_LAYER_RESULTS) == 4, "before the stamp: 2 labels + 2 separators");
+        if (f == 560) {
+            ta_quads = count_res(UI_RES_CLDM_TA, UI_LAYER_RESULTS);
+            dump("ta_results");
+        }
+    }
+    printf("time attack results: rank stamp (new record jingle 0xc) at frame %d, %d dm_cldm_tatk quads, exit after "
+           "%d frames, kind %d\n",
+           stamped, ta_quads, f, ui_exit_kind());
+    CHECK(stamped > 0, "new record: Sound_PlaySeq 0xc at the stamp");
+    CHECK(ta_quads == 6, "rank pair + labels + separators drawn (%d)", ta_quads);
+    CHECK(ui_state() == UI_EXIT && ui_exit_kind() == UI_EXIT_TRY_AGAIN, "time attack -> TryAgain");
+    CHECK(!g_ui_res[UI_RES_CLDM_TA].blob, "dm_cldm_tatk freed with the results");
+    /* digits of the time: 1 / 2 3 / 4 5 -> dm_cldm 0x13 + d */
+    W.mode = 0;
+}
+
+/* DemoPlay_Create: gGameState.unk10 = 3, unk18 |= 4 | 8 (start point): no title card,
+ * the timer runs at once, the frame starts white; the blinking label */
+static void test_demo_stage(void) {
+    int f;
+    W.mode = 3;
+    W.flags = 0xc;
+    ui_stage_start(0, 1, 0);
+    CHECK(!StageTitleCard_IsActive(), "demo: no title card with a start point");
+    CHECK((W.flags & 0xd) == 0xd, "demo: flags 4 | 8 kept, timer running (%x)", W.flags);
+    CHECK(g_ui_bright_main == 16, "demo: starts white");
+    frame(0, 0);
+    CHECK(W.frame == 1, "demo: timer counts from the first frame (%u)", W.frame);
+    ui_fade(3, 0x40);   /* DemoPlay_Main once the timer runs */
+    ui_demo_label(1);
+    for (f = 0; f < 80; f++)
+        frame(0, 0);
+    CHECK(g_ui_bright_main == 0, "demo: faded in from white");
+    CHECK(count_res(UI_RES_DEMOPLAY, UI_LAYER_GAMEOVER) == 2, "demo: DEMO PLAY + PRESS START drawn");
+    dump("demo_label");
+    ui_demo_label(0);
+    frame(0, 0);
+    CHECK(count_res(UI_RES_DEMOPLAY, -1) == 0, "demo: label hidden");
+    ui_demo_label(-1);
+    CHECK(!g_ui_res[UI_RES_DEMOPLAY].blob, "demo: label sprites released");
+    /* boss demo (zone 1 act 2): boss panel instead of the title card */
+    W.flags = 0xc;
+    ui_stage_start(1, 2, 1);
+    CHECK(!StageTitleCard_IsActive() && NaviB_IsActive(), "boss demo: NaviB created by Stage_Create");
+    W.mode = 0;
+    W.flags = 0;
+}
+
+/* paletted atlases (engine/sprpal.h): every texel of every PAL4 page of the loaded
+ * resources, through its image's palette, is the ARGB1555 atlas pixel */
+static void test_pal4_atlases(const char *sprite_dir) {
+    int i, im, x, y, pages = 0, bad = 0, n_px = 0;
+    for (i = 0; i < UI_RES_COUNT; i++) {
+        const UiRes *r = &g_ui_res[i];
+        int pg;
+        if (!r->blob || !r->pal.blob)
+            continue;
+        for (pg = 0; pg < r->n_pages && pg < 4; pg++) {
+            char path[300];
+            long sz;
+            u16 *ref;
+            if (!r->texels[pg])
+                continue;
+            if (snprintf(path, sizeof(path), "%s/%s/atlas%d.argb1555", sprite_dir, r->id, pg) >= (int)sizeof(path))
+                continue;
+            ref = (u16 *)load(path, &sz);
+            if (!ref)
+                continue;
+            pages++;
+            for (im = 0; im < r->n_images; im++) {
+                const UiImage *m = &r->images[im];
+                if (m->page != pg)
+                    continue;
+                for (y = m->y; y < m->y + m->h; y++)
+                    for (x = m->x; x < m->x + m->w; x++, n_px++)
+                        bad += ui_res_pixel(r, im, x, y) != ref[y * r->pages[pg].w + x];
+            }
+            free(ref);
+        }
+    }
+    CHECK(pages > 0 && bad == 0, "PAL4 atlases: %d pages, %d image pixels, %d differ from ARGB1555", pages, n_px, bad);
+    printf("PAL4 atlases: %d pages, %d image pixels decode to the ARGB1555 atlas\n", pages, n_px);
+}
+
 int main(int argc, char **argv) {
     long ts, ps;
     char path[300];
@@ -663,6 +801,7 @@ int main(int argc, char **argv) {
     ui_bind_player(&P);
     ui_set_paths(argv[1], argv[2]);
     CHECK(ui_init() == 0, "ui_init");
+    test_pal4_atlases(argv[2]);
     g_ui_hooks.sfx = t_sfx;
     g_ui_hooks.music = t_music;
     test_digits();
@@ -679,6 +818,12 @@ int main(int argc, char **argv) {
     test_boss_navi();
     test_enemy_room();
     test_backgrounds();
+    test_time_attack();
+    test_demo_stage();
+    ui_stage_end();   /* stage teardown: only ui_init's resources stay (VRAM baseline) */
+    CHECK(!g_ui_res[UI_RES_TCBG].blob && !g_ui_res[UI_RES_CLDMBG].blob && !g_ui_res[UI_RES_NAVI].blob &&
+              g_ui_res[UI_RES_MOJI].blob && g_ui_res[UI_RES_NAVIB].blob,
+          "ui_stage_end frees the stage resources, keeps ui_init's");
     printf("%d passed, %d failed\n", s_pass, s_fail);
     return s_fail ? 1 : 0;
 }

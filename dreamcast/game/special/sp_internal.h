@@ -132,7 +132,8 @@ typedef struct SpSprRes {
     u16 n_images, n_anims, n_frames;
     u16 page_w, page_h;
     u16 *pixels;              /* atlas0 ARGB1555 (kept in RAM for the host renderer) */
-    void *tex;                /* pvr_ptr_t (Dreamcast) */
+    void *tex;                /* pvr_ptr_t (Dreamcast, without palettes.bin) */
+    void *atlas;              /* Dreamcast SprAtlas: PAL4 page + palette rows (engine/render.h) */
     int loaded;
 } SpSprRes;
 /* AnimatorSprite subset (0x48 bytes on the DS) */

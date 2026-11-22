@@ -314,7 +314,9 @@ int main(int argc, char **argv) {
     CHECK(t >= 0);
     run(30, 0, 0);
     dump("31_options");
-    /* DIFFICULTY -> EASY */
+    /* DIFFICULTY -> EASY (PLAYER DATA is the first item) */
+    tap(IN_DOWN);
+    run(3, 0, 0);
     tap(IN_JUMP);
     run(5, 0, 0);
     tap(IN_RIGHT);

@@ -396,7 +396,10 @@ only; **not translated** = see section 6.
 | ClearDemoName_* / ClearDemoActText_* / ClearDemoBars_* | same | as-is / Draw modified |
 | ClearDemoBg_State_* , ClearDemoBg_Skip | same | modified (window/scroll values kept for `ui_cdbg_draw`, no registers) |
 | ClearDemoModel_State_Init/Delay/Move/Done, ClearDemoModel_Skip | same | modified (timing only, no model) |
-| ClearDemo_InitTimeAttackTally, ClearDemoTA_*, ClearDemo_DrawModel, ClearDemo_InitSprites palette part, ClearDemo_Destructor (NaviMsg / NaviB of boss results) | - | not translated |
+| ClearDemo_InitTimeAttackTally, ClearDemoTA_* (time-attack tally: clear time, ranking stamp, new-record jingle) | ui_results.c | as-is (sprites act__dm_cldm_tatk) |
+| CheckpointTimePopup_*, MarkerTimeList_* | ui_tahud.c | as-is; positions mapped to UI_SP_HUD_TR / UI_SP_HUD_BL |
+| DemoPlay label (dm_demoplay_<lang> anims 2 / 0) | ui_tahud.c `ui_demo_label` | as-is (blink driven by demo/demo.c) |
+| ClearDemo_DrawModel, ClearDemo_InitSprites palette part, ClearDemo_Destructor (NaviMsg / NaviB of boss results) | - | not translated |
 | GameOverSeq_StartGameOver / StartTimeOver | `GameOverSeq_Start` (shared) | modified (DISPCNT -> black backdrop) |
 | GameOverSeq_Main | same | modified (raw KEYINPUT -> held) |
 | GameOverSeq_Destructor | `GameOverSeq_Destroy` | modified |
@@ -571,3 +574,28 @@ only; **not translated** = see section 6.
   Inspected: text readable at 2x, no overlay on the bottom-centre play area,
   no second DS panel or dividing line, nothing outside the safe area. The
   renderer is not a PVR: nearest filtering, no TR sorting effects, no Flycast run.
+
+
+## 8. Time attack and attract-demo additions
+
+- **Time-attack HUD** (`ui_tahud.c`): `ui_checkpoint_popup(time)` shows the
+  checkpoint time under the top-right HUD (DS (248,20), 0x12c frames, digits
+  flash with frame bit 8, closed by the enemy-room HUD); `ui_marker_time_list`
+  / `ui_marker_time_set(lap, time)` the lap list at the bottom left. The
+  checkpoint hook `g_obj_hooks.checkpoint_popup` is installed by the UI; the
+  marker list needs the objects module to call `ui_marker_time_list(1)` and
+  `ui_marker_time_set` where the DS calls MarkerTimeList_Create /
+  SetTimeDigits.
+- **Time-attack results**: with `W.mode == 2` ClearDemo runs the TA tally
+  (clear time, rank via SaveData_GetTimeRank, new-record jingle 0xc / 0xe) and
+  ends with `UI_EXIT_TRY_AGAIN`. The native score is hidden in time attack.
+- **Attract demos**: with `W.flags & 8` the stage has no title card and the
+  timer starts at once (boss acts create NaviMsg / NaviB as the DS);
+  `W.flags & 4` starts the stage white for the fade-in. `ui_demo_label(1/0/-1)`
+  shows, hides or releases the DEMO PLAY / PRESS START label (driven by
+  demo/demo.c).
+- Tests: `make -C dreamcast/game/ui host-test` 114 checks (popup lifetime, lap
+  rows, TA tally quads before / after the stamp, jingle frame, TRY_AGAIN exit,
+  resources freed; demo stage: no title card, flags, white start, label
+  release, boss demo NaviB). Dumps looked at: popup, lap list, TA results,
+  demo label.

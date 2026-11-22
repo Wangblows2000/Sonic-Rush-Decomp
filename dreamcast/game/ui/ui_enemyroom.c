@@ -57,6 +57,7 @@ static void er_sfx(s32 id) {
 }
 
 void EnemyRoomHud_Destroy(void) { s_er.active = 0; }
+int EnemyRoomHud_IsActive(void) { return s_er.active; }
 
 static void EnemyRoomHud_UpdateDigitScale(ErWork *w, s32 i) {
     w->unk254[i] = (s16)ObjShift_SetFromRef(w->unk254[i], 0x100, 0x180, 0, 0x10, 0);

@@ -167,6 +167,19 @@ and no `.bac` (for example `act__ac_ene_eggpawn` or `narc__z82_act_lz7__act__ac_
   ARGB1555 is lossless for DS colours (BGR555 plus 1-bit alpha). `--format 4444` is optional.
   The raw file is row-major (stride = width) by default. With `--twiddle` it is written in PVR twiddled order
   (y bits even, x bits odd, rectangular pages as square blocks, same as KOS `TWIDOUT`).
+- **Paletted atlas** `atlas0.pt4` + `palettes.bin` (what the game loads; GRAPHICS.md section 3):
+  the renderer also keeps the palette index of every pixel. An image whose opaque pixels
+  read one 16-colour DS palette row keeps the DS indices (palette = that row); an image with
+  at most 15 colours (8bpp sprites, mixed rows) gets its colours remapped into shared
+  16-entry palettes; an image with more colours goes on a separate ARGB1555 page (only
+  `ac_sf_logo` and `title_demo*`). `.pt4` is the page as PVR PAL4 twiddled (4 bpp, texel m
+  of the twiddled order in byte m >> 1, low nibble first). `palettes.bin` ("DCPL" v1,
+  layout in `dreamcast/game/engine/sprpal.h`): page formats, palettes (ARGB1555, entry 0
+  transparent), the entries each palette's texels use, the palette and DS row of every image,
+  and the OBJ row-0 palette after each animation's first frame (PaletteAnim). The converter
+  checks that every PAL4 texel plus its image's palette equals the ARGB1555 pixel.
+  `tools/dreamcast/sprites/atlas_pal4.py DIR...` writes the same two files for ARGB1555
+  atlases made by other tools (UI backgrounds), with remapped palettes.
 - **frames.json**: pages; images `{page, x, y, w, h, origin_x, origin_y}`, where the origin is
   the sprite position inside the image rectangle, so draw at `pos - origin`; animations
   `{index, format, loop_frame, loop_anim, next_anim, vram_units_1d, frames}`; frames
@@ -219,14 +232,14 @@ and no `.bac` (for example `act__ac_ene_eggpawn` or `narc__z82_act_lz7__act__ac_
 
 - Loop *policy* (whether an object sets flag 4) is chosen at runtime by the game code. It is not in the BAC.
   The port's object code must decide it, the same way the DS objects do.
-- Runtime palette overrides are not baked in: the sprite palette base (`unk44`), palette animation
-  tasks, and the `StageObj_AllocSpritePalette` sharing. Frames use the BAC's own palette. Zone
+- Runtime palette overrides are not baked in: the sprite palette base (`unk44`) and the
+  `StageObj_AllocSpritePalette` sharing. Frames use the BAC's own palette; palette animation
+  tasks select another palette (`palettes.bin` anim_pal) at draw time. Zone
   variants that ship their own BAC (for example z82 `egg_hammer`) are converted separately.
 - Explicit-tile frames assume the 64K boundary (`--mapping-shift`). This affects only `ac_gmk_needle`.
 - Affine/double-size pieces and bitmap OBJ (format 2) are handled in code, but the ROM does not use them.
   Texture formats 2, 6–9 raise "not supported". The ROM does not use them.
 - Info-block fields after the four VRAM counts, and the hitbox `flags` u16, are not decoded. They are passed through raw in JSON.
-- The atlas is ARGB1555 (16 bpp). Paletted PVR textures (4bpp/8bpp + PVR palette RAM) would use
-  4× less VRAM and would allow palette swaps. This is a candidate follow-up.
+- Paletted atlases are PAL4 only (no PAL8 pages): the few images with 16+ colours stay ARGB1555.
 - Shelf packing is simple. Pages are about 47% full on average (median 47%, quartiles 37%/58%, including the 1-pixel gutters).
   A max-rects packer or non-power-of-two strides would shrink VRAM use.

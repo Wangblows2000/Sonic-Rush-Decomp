@@ -5,9 +5,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#define LEVEL_PAL_BANK 0
-#define BG_PAL_BANK 1
-
 static uint8_t *read_file(const char *path, uint32_t *size)
 {
     file_t f = fs_open(path, O_RDONLY);
@@ -20,14 +17,6 @@ static uint8_t *read_file(const char *path, uint32_t *size)
     return buf;
 }
 
-static void load_palette(const uint16_t *pal, int bank)
-{
-    int i;
-    pvr_set_pal_format(PVR_PAL_ARGB1555);
-    for(i = 0; i < 256; i++)
-        pvr_set_pal_entry(bank * 256 + i, pal[i]);
-}
-
 int level_load(Level *lv, const char *dir)
 {
     char path[128];
@@ -37,29 +26,33 @@ int level_load(Level *lv, const char *dir)
     int i;
 
     memset(lv, 0, sizeof(*lv));
+    lv->pal_bank = lv->bg_pal_bank = -1;
     snprintf(path, sizeof(path), "%s/level.bin", dir);
     lv->data = read_file(path, &lv->size);
     if(!lv->data) return -1;
     lv->hdr = (const rlvl_header_t *)lv->data;
-    if(lv->hdr->magic != RLVL_MAGIC) return -2;
+    if(lv->hdr->magic != RLVL_MAGIC) { level_free(lv); return -2; }
     lv->layer[0] = (const uint16_t *)(lv->data + lv->hdr->sec[RLVL_SEC_LAYER_A].offset);
     lv->layer[1] = (const uint16_t *)(lv->data + lv->hdr->sec[RLVL_SEC_LAYER_B].offset);
-    load_palette((const uint16_t *)(lv->data + lv->hdr->sec[RLVL_SEC_PALETTE].offset), LEVEL_PAL_BANK);
 
     snprintf(path, sizeof(path), "%s/blocktex.bin", dir);
     bt = read_file(path, &sz);
-    if(!bt) return -3;
+    if(!bt) { level_free(lv); return -3; }
     th = (const rbtx_header_t *)bt;
     lv->num_pages = th->num_pages;
     lv->pages = calloc(lv->num_pages, sizeof(pvr_ptr_t));
     for(i = 0; i < lv->num_pages; i++) {
         uint32_t psz = th->page_size * th->page_size;
         lv->pages[i] = pvr_mem_malloc(psz);
-        if(!lv->pages[i]) { free(bt); return -4; }
+        if(!lv->pages[i]) { free(bt); level_free(lv); return -4; }
         pvr_txr_load(bt + th->page_offset + i * psz, lv->pages[i], psz);
         lv->vram_used += psz;
+        lv->pal_rows |= pal8_rowmask(bt + th->page_offset + i * psz, psz);
     }
     free(bt);
+    /* only the palette rows the block textures use are taken from the palette RAM */
+    lv->pal_bank = pal8_alloc((const uint16_t *)(lv->data + lv->hdr->sec[RLVL_SEC_PALETTE].offset), lv->pal_rows);
+    if(lv->pal_bank < 0) { level_free(lv); return -5; }
 
     if(lv->hdr->flags & RLVL_FLAG_HAS_BG) {
         uint8_t *bg;
@@ -70,8 +63,9 @@ int level_load(Level *lv, const char *dir)
             bh = (const rbgd_header_t *)bg;
             lv->bg_w = bh->width_px; lv->bg_h = bh->height_px;
             lv->bg_tw = bh->tex_width; lv->bg_th = bh->tex_height;
-            load_palette((const uint16_t *)(bg + bh->palette_offset), BG_PAL_BANK);
-            lv->bg_tex = pvr_mem_malloc(lv->bg_tw * lv->bg_th);
+            lv->bg_pal_rows = pal8_rowmask(bg + bh->texture_offset, lv->bg_tw * lv->bg_th);
+            lv->bg_pal_bank = pal8_alloc((const uint16_t *)(bg + bh->palette_offset), lv->bg_pal_rows);
+            lv->bg_tex = lv->bg_pal_bank >= 0 ? pvr_mem_malloc(lv->bg_tw * lv->bg_th) : NULL;
             if(lv->bg_tex) {
                 pvr_txr_load(bg + bh->texture_offset, lv->bg_tex, lv->bg_tw * lv->bg_th);
                 lv->vram_used += lv->bg_tw * lv->bg_th;
@@ -85,11 +79,14 @@ int level_load(Level *lv, const char *dir)
 void level_free(Level *lv)
 {
     int i;
-    for(i = 0; i < lv->num_pages; i++) if(lv->pages[i]) pvr_mem_free(lv->pages[i]);
+    for(i = 0; lv->pages && i < lv->num_pages; i++) if(lv->pages[i]) pvr_mem_free(lv->pages[i]);
     if(lv->bg_tex) pvr_mem_free(lv->bg_tex);
+    if(lv->pal_bank >= 0) pal8_free(lv->pal_bank, lv->pal_rows);
+    if(lv->bg_pal_bank >= 0) pal8_free(lv->bg_pal_bank, lv->bg_pal_rows);
     free(lv->pages);
     free(lv->data);
     memset(lv, 0, sizeof(*lv));
+    lv->pal_bank = lv->bg_pal_bank = -1;
 }
 
 int level_width_px(const Level *lv) { return lv->hdr->width_blocks * RLVL_BLOCK_PX; }
@@ -133,7 +130,7 @@ void level_draw_layer(const Level *lv, int layer, pvr_list_t list, float z)
             u0 = (slot % 8) * 64.0f; v0 = (slot / 8) * 64.0f;
             sx = (bx * RLVL_BLOCK_PX - g_cam_x) * VIEW_SCALE;
             sy = (by * RLVL_BLOCK_PX - g_cam_y) * VIEW_SCALE;
-            pal_quad(lv->pages[page], 512, 512, LEVEL_PAL_BANK, list, sx, sy, bs, bs,
+            pal_quad(lv->pages[page], 512, 512, lv->pal_bank, list, sx, sy, bs, bs,
                      (u0 + inset) / ps, (v0 + inset) / ps, (u0 + 64 - inset) / ps, (v0 + 64 - inset) / ps, z);
         }
     }
@@ -148,7 +145,7 @@ void level_draw_bg(const Level *lv, float fx, float fy, float z)
     oy = oy - (int)(oy / lv->bg_h) * lv->bg_h; if(oy > 0) oy -= lv->bg_h;
     for(y = oy; y < VIEW_H; y += lv->bg_h)
         for(x = ox; x < VIEW_W; x += lv->bg_w)
-            pal_quad(lv->bg_tex, lv->bg_tw, lv->bg_th, BG_PAL_BANK, PVR_LIST_OP_POLY,
+            pal_quad(lv->bg_tex, lv->bg_tw, lv->bg_th, lv->bg_pal_bank, PVR_LIST_OP_POLY,
                      x * VIEW_SCALE, y * VIEW_SCALE, lv->bg_w * VIEW_SCALE, lv->bg_h * VIEW_SCALE,
                      0, 0, (float)lv->bg_w / lv->bg_tw, (float)lv->bg_h / lv->bg_th, z);
 }

@@ -23,12 +23,13 @@ python3 -c "import sys;d=open(sys.argv[1],'rb').read();o=0x02368bdc-0x022C5C80;o
     "$ROOT/extract/eur/arm9_overlays/ov000.bin" "$OUT/disc/player/animmap.bin"
 mkdir -p "$OUT/disc/objects" "$OUT/disc/sprites"
 cp -r "$ROOT/build/dreamcast/objects/objdata.bin" "$ROOT/build/dreamcast/objects/hbx" "$OUT/disc/objects/"
+cp "$ROOT/build/dreamcast/objects/palanim.bin" "$OUT/disc/objects/"
 grep -v '^#' "$ROOT/build/dreamcast/objects/sprites.txt" | cut -f1 | while read -r sp; do
     [ -n "$sp" ] || continue
     S=$ROOT/build/dreamcast/sprites/bac/$sp
     mkdir -p "$OUT/disc/sprites/$sp"
     cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"
-    for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+    for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done
 # UI (HUD, title card, pause, results, game over)
 mkdir -p "$OUT/disc/ui/res"; cp "$ROOT/build/dreamcast/ui/uidata.bin" "$ROOT/build/dreamcast/ui/navidata.bin" "$OUT/disc/ui/"
@@ -37,7 +38,7 @@ cp -r "$ROOT/build/dreamcast/ui/res/." "$OUT/disc/ui/res/"; find "$OUT/disc/ui/r
 for sp in act__ac_fix_moji act__dm_stdm act__dm_stdm_eng act__dm_cldm act__ac_fix_pause act__ac_fix_pause_frame act__ac_fix_gameover \
           act__navi_b act__ac_fix_bosshelp act__ac_eff_enemyroom_fix; do
     S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
-    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done
 # sound effect banks (SSAR/SBNK/SWAR per stage SDAT, run by the native sequencer)
 mkdir -p "$OUT/disc/sound"; cp "$ROOT"/build/dreamcast/audio/sfxbank/*.srb "$OUT/disc/sound/"
@@ -71,12 +72,19 @@ open(sys.argv[2],'w').write('\\n'.join(sorted(out))+'\\n')
 M=$ROOT/build/dreamcast/menus
 mkdir -p "$OUT/disc/menus/bg" "$OUT/disc/menus/ama"
 cp "$M/menudata.bin" "$M/sound_test.sld" "$OUT/disc/menus/"
+# time attack / records / ExtraAct / zone-map navigator (MENUS.md 10-14)
+cp "$M/font8.bin" "$M/extraact.bin" "$OUT/disc/menus/"; [ -d "$M/navi" ] && cp -r "$M/navi" "$OUT/disc/menus/"
+for f in narc__extra_act__eff_dmg_end01__eff_dmg_end01.dcm narc__extra_act__eff_dmg_end02__eff_dmg_end02.dcm narc__extra_act__eff_dmg_end02.dca; do [ -f "$ROOT/build/dreamcast/models/$f" ] && mkdir -p "$OUT/disc/models" && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"; done
+# attract demos (demo/tools/demodata.py)
+D=$ROOT/build/dreamcast/demo
+if [ -f "$D/demotab.bin" ]; then mkdir -p "$OUT/disc/demo"; cp "$D/demotab.bin" "$OUT/disc/demo/"; [ -d "$D/key" ] && cp -r "$D/key" "$OUT/disc/demo/"; fi
 cp "$M"/bg/*.mnbg "$OUT/disc/menus/bg/"; cp "$M"/ama/*.ama "$OUT/disc/menus/ama/"
 for sp in act__title act__title_eng act__mnu_titl act__mnu_titl_eng act__mnu_psel act__mnu_psel_eng \
           act__mnu_opti_eng act__font_opti_sound act2__zmap__zmap_map_icon act2__zmap__zmap_scroll_arrow \
-          act2__zmap__zmap_act act2__zmap__font_zmap_act_num act2__zmap__zmap_pause act2__zmap__zmap_pause_eng; do
+          act2__zmap__zmap_act act2__zmap__font_zmap_act_num act2__zmap__zmap_pause act2__zmap__zmap_pause_eng \
+          act__ac_ex_cldm act__dm_cldm_tatk act__dm_demoplay_deu act__dm_demoplay_eng act__dm_demoplay_fra act__dm_demoplay_ita act__dm_demoplay_spa act__mnu_reco act__mnu_reco_deu act__mnu_reco_eng act__mnu_reco_fra act__mnu_reco_ita act__mnu_reco_jpn act__mnu_reco_spa act__mnu_time_act_deu act__mnu_time_act_eng act__mnu_time_act_fra act__mnu_time_act_ita act__mnu_time_act_jpn act__mnu_time_act_lc_eng act__mnu_time_act_lc_jpn act__mnu_time_act_spa act__mnu_time_act_x_eng act__mnu_time_act_x_jpn act__mnu_time_boss_jpn act__mnu_time_boss_lc_eng act__mnu_time_boss_lc_jpn act__mnu_time_oneself_eng act__mnu_time_oneself_jpn act__mnu_time_ranking act__mnu_time_select act__mnu_time_tryagain act__mnu_time_tryagain_deu act__mnu_time_tryagain_eng act__mnu_time_tryagain_fra act__mnu_time_tryagain_ita act__mnu_time_tryagain_jpn act__mnu_time_tryagain_spa act__navi_m; do
     S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
-    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done
 # sys SDAT music (title, menus, zone map, results...) as sNN.wav by sequence id + loop table
 python3 -c "
@@ -96,7 +104,7 @@ cp "$C/csdata.bin" "$C/seqalias.txt" "$OUT/disc/cutscene/"; cp -r "$C/talk" "$C/
 grep -v '^#' "$C/sprites.txt" | while read -r sp; do
     [ -n "$sp" ] || continue
     S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
-    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done
 grep -v '^#' "$C/models.txt" | while read -r f; do [ -n "$f" ] && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"; done
 cp "$C"/sound/sys_a*.srb "$OUT/disc/sound/"

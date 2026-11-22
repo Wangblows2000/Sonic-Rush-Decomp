@@ -117,6 +117,181 @@ def vmu_icon():
     return struct.pack("<16H", *vpal) + data
 
 
+def font8(out):
+    """Records name font: bg/font_ipl_8x8.bbg character tiles + Font_GetGlyphIndex's tables.
+    font8.bin "RFNT" v1: u32 magic, u16 version, u16 ranges (0x39), u16 tiles, u16 pad,
+    u16 start[ranges] (gFontGlyphRangeStartTable), s32 base[ranges] (gFontGlyphRangeBaseTable),
+    s32 len[ranges] (gFontGlyphRangeLengthTable), then tiles x 64 bytes (8x8, one 4-bit
+    value per byte, row-major)."""
+    sys.path.insert(0, str(ROOT / "tools/dreamcast/sprites"))
+    from nds_archive import maybe_decompress
+    d = (EXT / "files/bg/font_ipl_8x8.bbg").read_bytes()
+    assert d[:4] == b"BBG\0"
+    chr_off = struct.unpack_from("<I", d, 8)[0]
+    tiles4 = maybe_decompress(d[chr_off:])
+    n = len(tiles4) // 32
+    nr = 0x39
+    blob = bytearray(struct.pack("<4sHHHH", b"RFNT", 1, nr, n, 0))
+    blob += mem(0x02072e70, 2 * nr)
+    blob += mem(0x02072ee4, 4 * nr)
+    blob += mem(0x02072fc8, 4 * nr)
+    for t in range(n):
+        for b in tiles4[t * 32:(t + 1) * 32]:
+            blob += bytes((b & 15, b >> 4))
+    (out / "font8.bin").write_bytes(bytes(blob))
+    print("font8.bin: %d glyph tiles, %d ranges" % (n, nr))
+
+
+def extraact(out):
+    """ExtraAct (Zone/Extra_Zone/Results) tables + the palette of ex_cldm_bg_pal.bbg
+    (member 5 of /narc/extra_act_lz7.narc). extraact.bin "REXA" v1, little-endian:
+      u32 magic, u16 version, u16 size of the rest
+      u16 spr[39]   data_ov001_02316afc (ac_ex_cldm anim of each sprite), u16 pad
+      u16 gw[16]    data_ov001_02316abc (glyph advance)
+      u16 txt_b[16] data_ov001_02316adc (bottom caption glyphs)
+      u16 txt_t[14] data_ov001_02316aa0 (title caption glyphs, 13 + end)
+      s32 rows[2]   data_ov001_02316a80 (TIME BONUS / RING BONUS label sprites)
+      s32 bonus[10] gExtraActTimeBonusTable, u32 thr[10] gExtraActTimeBonusThresholds
+      s32 cam_pos[3] data_ov001_0231d544, s32 cam_up[3] data_ov001_0231d538
+      u16 bgpal[256] the BBG palette (BG1 letterbox colours 2 and 0x12)
+      u32 rank_boss[4] data_02078b48, u32 rank_norm[4] data_02078b58 (ClearDemo_GetRank)"""
+    sys.path.insert(0, str(ROOT / "tools/dreamcast/sprites"))
+    from nds_archive import open_narc
+    narc = open_narc(str(EXT / "files/narc/extra_act_lz7.narc"))
+    name, bbg = narc.files[5]
+    assert name.endswith("ex_cldm_bg_pal.bbg") and bbg[:4] == b"BBG\0", name
+    pal_off = struct.unpack_from("<I", bbg, 0x10)[0]
+    from nds_archive import maybe_decompress
+    raw = bbg[pal_off:]
+    h = struct.unpack_from("<I", raw, 0)[0]
+    if h & 0xff == 0 and (h >> 8) + 4 <= len(raw):   # stored (Compress_GetData skips the header)
+        pal = raw[4:4 + (h >> 8)][:512]
+    else:
+        pal = maybe_decompress(raw)[:512]
+    pal = pal + bytes(512 - len(pal))
+    body = bytearray()
+    body += mem(0x02316afc, 78) + b"\0\0"
+    body += mem(0x02316abc, 32) + mem(0x02316adc, 32) + mem(0x02316aa0, 28)
+    body += mem(0x02316a80, 8) + mem(0x0231d550, 40) + mem(0x0231d578, 40)
+    body += mem(0x0231d544, 12) + mem(0x0231d538, 12) + pal
+    body += mem(0x02078b48, 16) + mem(0x02078b58, 16)   # ClearDemo_GetRank: boss / normal thresholds
+    (out / "extraact.bin").write_bytes(struct.pack("<4sHH", b"REXA", 1, len(body)) + bytes(body))
+    print("extraact.bin: %d bytes (tables + %s palette)" % (8 + len(body), name))
+
+
+def rle(px):
+    """NVFM v2 frames: c < 0x80: c+1 literal bytes; c >= 0x80: the next byte c-0x80+3 times."""
+    out, i, n, lit = bytearray(), 0, len(px), bytearray()
+
+    def flush():
+        while lit:
+            k = min(len(lit), 128)
+            out.append(k - 1)
+            out.extend(lit[:k])
+            del lit[:k]
+    while i < n:
+        j = i
+        while j < n and px[j] == px[i] and j - i < 130:
+            j += 1
+        if j - i >= 3:
+            flush()
+            out.append(0x80 + (j - i - 3))
+            out.append(px[i])
+            i = j
+        else:
+            lit.append(px[i])
+            i += 1
+    flush()
+    return bytes(out)
+
+
+def navi(out):
+    """Zone-map navigator (NaviBg_Load / NaviMsg_Create mode 0, NaviMsgFace): sub-screen BGs.
+    bg/<c>_m_b.mnbg      the navigator frame (sub BG2, chr 0x06211600 = tile 176)
+    bg/m_bal.mnbg        the speech balloon (sub BG0, tile 376; <c>_m_b colours: m_bal_<c>.mnbg)
+    bg/navi_<c>_<lang>_NN.mnbg  message panels data_022c4664[NN] (sub BG0 at tile (2,2), tile 400)
+    navi/faces_<c>.bin   "NVFM" v2: u16 2, n, w, h, x0, y0, npal, 0 (crop in the 128x128 face frame),
+                         14 x {u16 count, u16 flags, u8 [48][2] (duration, frame)} (data_0207b8d4),
+                         npal x u16 pal[256] (the distinct face palettes),
+                         n x {u16 pal, u16 0, u32 offset, u32 size} (size 0: frame not used by the
+                         zone-map sequences 0..8; the boss sequences are the UI module's),
+                         then the frames, RLE of the w*h indices: c < 0x80: c+1 literal bytes;
+                         c >= 0x80: the next byte c-0x80+3 times."""
+    sys.path.insert(0, str(ROOT / "dreamcast/game/ui/tools"))
+    import uibg  # noqa: E402
+    nd = EXT / "files/bg2/navi"
+    (out / "navi").mkdir(exist_ok=True)
+    langs = ["jpn", "eng", "fra", "deu", "ita", "spa"]
+    total = 0
+
+    def put(path, W, H, b, px, pal):
+        nonlocal total
+        data = (struct.pack("<4sHHHHHH", b"MNBG", W, H, b["type"], b["pofs"], b["pslot"], 0) +
+                struct.pack("<256H", *pal) + bytes(px))
+        path.write_bytes(data)
+        total += len(data)
+
+    for idx, c in enumerate("tc"):
+        bb, W, H, px, bpal = uibg.bbg_load((nd / ("%s_m_b.bbg" % c)).read_bytes(), 176)
+        sub = uibg.slot(bpal, bb["pofs"])
+        put(out / "bg" / ("%s_m_b.mnbg" % c), W, H, bb, px, sub)
+        lb, lW, lH, lpx, lpal = uibg.bbg_load((nd / "m_bal.bbg").read_bytes(), 376)
+        lp = uibg.slot(lpal, lb["pofs"]) if lpal else sub
+        put(out / "bg" / ("m_bal_%s.mnbg" % c), lW, lH, lb, lpx, lp)
+        nmsg = u32(0x0207565C + 4 * idx)
+        names = [cstr(u32(u32(0x0207B8B4 + 4 * idx) + 4 * i)) for i in range(nmsg)]
+        for lang in langs:
+            for i, n in enumerate(names):
+                mb, mW, mH, mpx, mpal = uibg.bbg_load((nd / ("msg_" + c) / ("%s%s.bbg" % (lang, n))).read_bytes(), 400)
+                put(out / "bg" / ("navi_%s_%s_%02d.mnbg" % (c, lang, i)), mW, mH, mb, mpx, uibg.slot(mpal, mb["pofs"]))
+        # faces
+        nf = u32(0x02075674 + 4 * idx)
+        fnames = [cstr(u32(u32(0x0207B8CC + 4 * idx) + 4 * i)) for i in range(nf)]
+        frames = []
+        x0 = y0 = 1 << 30
+        x1 = y1 = 0
+        for n in fnames:
+            fb, fW, fH, fpx, fpal = uibg.bbg_load((nd / ("act_" + c) / (n + ".bbg")).read_bytes(), 0)
+            frames.append((fb, fW, fH, fpx, uibg.slot(fpal, fb["pofs"])))
+            bx0, by0, bx1, by1 = uibg.bbox(fW, fH, fpx)
+            if bx1 > bx0:
+                x0, y0, x1, y1 = min(x0, bx0), min(y0, by0), max(x1, bx1), max(y1, by1)
+        x0 &= ~7
+        y0 &= ~7
+        x1 = (x1 + 7) & ~7
+        y1 = (y1 + 7) & ~7
+        tbl = u32(0x0207B8D4 + 4 * idx)
+        seqb, used = b"", set()
+        for a in range(14):
+            q = u32(tbl + 4 * a)
+            cnt, fl, fp = struct.unpack("<HHI", mem(q, 8))
+            fr = mem(fp, 2 * cnt)
+            assert cnt <= 48
+            seqb += struct.pack("<HH", cnt, fl) + fr + bytes(96 - 2 * cnt)
+            if a <= 8:                       # NaviMsgFace idle/blink and the map sequences
+                used.update(fr[1::2])
+        pals, index, data = [], b"", b""
+        for k, (fb, fW, fH, fpx, fpal) in enumerate(frames):
+            if k not in used:
+                index += struct.pack("<HHII", 0, 0, 0, 0)
+                continue
+            pb = struct.pack("<256H", *fpal)
+            if pb not in pals:
+                pals.append(pb)
+            px = bytes(fpx[y * fW + x] if x < fW and y < fH else 0 for y in range(y0, y1) for x in range(x0, x1))
+            r = rle(px)
+            index += struct.pack("<HHII", pals.index(pb), 0, len(data), len(r))
+            data += r
+        blob = struct.pack("<4sHHHHHHHH", b"NVFM", 2, nf, x1 - x0, y1 - y0, x0, y0, len(pals), 0)
+        blob += seqb + b"".join(pals) + index + data
+        (out / "navi" / ("faces_%s.bin" % c)).write_bytes(blob)
+        total += len(blob)
+        print("navi %s: frame %dx%d, balloon %dx%d, %d messages x %d languages, %d faces (%d used, %d palettes, "
+              "crop (%d,%d)-(%d,%d)), faces_%s.bin %d KB" % (
+                  c, W, H, lW, lH, nmsg, len(langs), nf, len(used), len(pals), x0, y0, x1, y1, c, len(blob) // 1024))
+    print("navi: %d KB" % (total // 1024))
+
+
 def build(out):
     out.mkdir(parents=True, exist_ok=True)
     (out / "bg").mkdir(exist_ok=True)
@@ -153,6 +328,9 @@ def build(out):
     # the sound test track list (gOptionsFileTable entry 15), copied unchanged
     shutil.copyfile(EXT / "files/st/sound_test.sld", out / "sound_test.sld")
     print("ama: %d" % len(AMA))
+    font8(out)
+    extraact(out)
+    navi(out)
     ft = file_tables()
     with open(out / "filetables.txt", "w") as f:
         for k, v in ft.items():

@@ -195,6 +195,8 @@ typedef struct ObjModelView {
  * integrator draws the model views: StageObj_Draw2DEx does not draw the
  * main sprite of an object that has a model (KOS build, obj_draw.c). */
 void objects_set_model_sprites(int on);
+/* KOS: PVR texture bytes the loaded sprite resources hold (VRAM budget probe) */
+u32 objects_vram_used(void);
 int objects_model_count(void);
 int objects_model_get(int i, ObjModelView *out);
 

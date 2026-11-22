@@ -207,9 +207,10 @@ typedef struct ExSprRes {
     const ExSprAnim *anims;
     const u16 *frametab;
     u16 n_images, n_anims, n_frames, page_w, page_h;
-    u16 *pixels;             /* ARGB1555 atlas (host renderer, texture upload) */
+    u16 *pixels;             /* ARGB1555 atlas (host renderer, texture upload without palettes.bin) */
     void *tex;               /* pvr_ptr_t */
     int loaded;
+    void *atlas;             /* KOS SprAtlas: PAL4 page + palette rows (engine/render.h) */
 } ExSprRes;
 typedef struct ExSprite {    /* AnimatorSprite subset (0x48 bytes on the DS) */
     const ExSprRes *res;     /* @0x00 */

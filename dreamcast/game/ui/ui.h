@@ -100,6 +100,12 @@ void ui_player_last(DcPlayer *player);   /* = ui_post_update */
 /* Screen-space quads for everything above, into the open TR list (KOS only; the
  * host build records the quads for tests). */
 void ui_draw_tr(void);
+/* Stage teardown (with objects_shutdown / boss_shutdown): frees the stage's own UI
+ * resources (title card / results backgrounds, navigator, face texture) so the PVR
+ * memory returns to what ui_init holds. */
+void ui_stage_end(void);
+/* KOS: PVR texture bytes the UI sprite pages hold (VRAM budget probe) */
+uint32_t ui_vram_used(void);
 
 int ui_is_paused(void);       /* pause menu open: skip the world update           */
 int ui_world_frozen(void);    /* results / game over / exit: skip the world update */
@@ -173,6 +179,20 @@ int ui_navi_message_visible(void);
 void ui_enemy_room(s32 a, s32 b);
 /* EnemyRoom_GetActive(1)->unk20C & 1 (the finish sprites swap sides); default 0 */
 void ui_enemy_room_flags(u32 f20c);
+
+/* ------------------------------------- time attack, attract demo (ui_tahud.c) */
+/* CheckpointTimePopup_Create(p, time): ui_install_hooks installs it as
+ * g_obj_hooks.checkpoint_popup (Marker_OnHit in time attack, pass-check laps). */
+void ui_checkpoint_popup(u32 time);
+/* Marker_Action_InitPassCheck: MarkerTimeList_Create (create 1) / destroy (0);
+ * Marker_State_WaitPlayerPass: CheckpointTimePopup_SetTimeDigits(lap, time).
+ * The objects module has no hook for these two yet (MENUS.md 9.4). */
+void ui_marker_time_list(int create);
+void ui_marker_time_set(int lap, u32 time);
+/* DemoPlay_Main's blinking "DEMO PLAY" / "PRESS START" label (demo module): 1 shown,
+ * 0 hidden, -1 released (DemoPlay_Destructor) */
+void ui_demo_label(int visible);
+int ui_demo_label_shown(void);
 
 /* ------------------------------------------------ host test access */
 typedef struct UiQuad {

@@ -7,6 +7,7 @@
 #include <string.h>
 #include "ui.h"
 #include "../objects/objects.h"
+#include "../engine/sprpal.h"
 
 #define W g_dcp_world   /* gGameState / data_022c4590 fields owned by the player module */
 /* Original names whose global symbols other modules of the game also define
@@ -60,6 +61,9 @@ enum {
     UI_RES_NAVI,        /* res/navi_<t|c>_<lang>: <c>_b_b box, b_bal balloon, boss messages  */
     UI_RES_TCBG,        /* res/tcbg_<n>: stdm_bg<zone> (+ boss) and the zigzag pieces        */
     UI_RES_CLDMBG,      /* res/cldm_<chara>: cldm_far and the cldm_bg pattern                */
+    UI_RES_CLDM_TA,     /* /act/dm_cldm_tatk.bac (data_02079240): time-attack tally, loaded by
+                           ClearDemo_Create in time attack, freed with the results          */
+    UI_RES_DEMOPLAY,    /* act/dm_demoplay_<lang>.bac (data_02073b38): attract-demo label      */
     UI_RES_COUNT
 };
 typedef struct UiRes {
@@ -70,9 +74,14 @@ typedef struct UiRes {
     const UiAnim *anims;
     const UiFrame *frames;
     u16 n_pages, n_images, n_anims, n_frames;
-    u16 *pixels[4];    /* atlas pages kept in RAM (KOS: for recoloured variants) */
-    void *tex[4];      /* KOS Texture* */
+    u16 *pixels[4];    /* ARGB1555 pages kept in RAM (direct pages, or no palettes.bin) */
+    u8 *texels[4];     /* PAL4 pages kept in RAM (atlas<N>.pt4): colours = pal of the image */
+    u8 *palblob;       /* palettes.bin */
+    SprPal pal;
+    void *atlas;       /* KOS SprAtlas: PVR pages + palette rows (taken on first draw) */
 } UiRes;
+/* ARGB1555 colour of page pixel (x, y) of image `image` (variants, colour maps) */
+u16 ui_res_pixel(const UiRes *r, int image, int x, int y);
 extern UiRes g_ui_res[UI_RES_COUNT];
 
 /* AnimatorSprite subset (Graphics/Sprite/AnimatorSprite_*) on frames.bin */
@@ -174,6 +183,10 @@ typedef struct UiData {
     s8 to_str[6][20], to_w[24];  /* data_0207a144, data_0207a0b4 */
     u8 pause_lut[16];            /* data_0207ba24 */
     s8 shake[38];                /* data_0207323c[4] + data_02073240[12] + data_0207324c[22] */
+    u16 ta_anim[6][15];          /* *data_02078b68[lang]: time-attack tally anims (rank pairs, labels) */
+    s16 ta_dx[5];                /* data_02078b24: time-attack time digit x offsets */
+    u16 ta_pal[15];              /* data_020732fc: their OBJ palette numbers (not applied) */
+    int ta_ok;                   /* the three ta_* sections were present (optional) */
     int ok;
 } UiData;
 extern UiData g_ui_data;
@@ -230,6 +243,8 @@ void NaviMsg_SetFaceAnim(s32 face);
 void NaviMsg_ShowMessage(s32 msg, s32 time);
 void BossHelp_Main(void);
 void ui_navi_stage_start(void);   /* load / free the stage's navigator resources */
+void ui_navi_stage_end(void);     /* free them (ui_stage_end) */
+void ui_face_release(void);       /* KOS: the streamed face texture */
 void ui_navi_draw(void);          /* the DC overlays (boss panel, message box) */
 void ui_navi_frame(int frozen);   /* NaviMsg task + overlays + BossHelp (frozen: draw only) */
 void NaviMsg_HidePanel(void);
@@ -237,6 +252,16 @@ int ui_navi_face_expand(int f, u16 *dst, int stride, int *w, int *h);
 /* EnemyRoomHud */
 void EnemyRoomHud_Frame(int run, const DcPlayer *p);
 void EnemyRoomHud_Destroy(void);
+int EnemyRoomHud_IsActive(void);   /* gEnemyRoomHudTask != 0 */
+/* time-attack HUD (ui_tahud.c): CheckpointTimePopup / MarkerTimeList, demo label */
+void CheckpointTimePopup_Create(s32 unused, s32 n);
+void CheckpointTimePopup_SetTimeDigits(s32 lap, s32 t);
+void MarkerTimeList_Create(void);
+int CheckpointTimePopup_IsActive(void);
+int MarkerTimeList_IsActive(void);
+void ui_tahud_frame(int run);
+void ui_tahud_reset(void);
+void ui_demo_label_draw(void);
 /* title card / results backgrounds (ui_bg.c) */
 void ui_tcbg_load(void);
 void ui_tcbg_free(void);

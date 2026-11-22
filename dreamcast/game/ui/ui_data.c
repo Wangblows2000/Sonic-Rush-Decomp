@@ -111,6 +111,11 @@ int ui_data_load(const u8 *buf, u32 size) {
     S("pause_lut", pause_lut);
     S("shake", shake);
 #undef S
+    /* time-attack tally tables: optional, added with ClearDemoTA (older uidata.bin
+     * files lack them; the tally is then not drawn) */
+    d->ta_ok = sect(buf, size, "ta_anim", d->ta_anim, sizeof(d->ta_anim)) == 0 &&
+               sect(buf, size, "ta_dx", d->ta_dx, sizeof(d->ta_dx)) == 0 &&
+               sect(buf, size, "ta_pal", d->ta_pal, sizeof(d->ta_pal)) == 0;
     d->ok = e == 0;
     return e;
 }
@@ -166,9 +171,28 @@ int ui_res_load_dir(int idx, const char *dir, const char *id) {
     r->images = (const UiImage *)(b + 16 + 4 * r->n_pages);
     r->anims = (const UiAnim *)((const u8 *)r->images + 16 * r->n_images);
     r->frames = (const UiFrame *)((const u8 *)r->anims + 12 * r->n_anims);
+    /* paletted atlas (palettes.bin + atlas<N>.pt4, SPRITES.md): PAL4 pages stay as
+     * 4-bit texels; ARGB1555 pages (direct colour, or no palettes.bin) as pixels */
+    snprintf(path, sizeof(path), "%s/%s/palettes.bin", dir, id);
+    if (ui_load_file(path, &r->palblob, &size) == 0 &&
+        sprpal_parse(&r->pal, r->palblob, size, r->n_pages, r->n_images, r->n_anims) != 0) {
+        free(r->palblob);
+        r->palblob = NULL;
+        memset(&r->pal, 0, sizeof(r->pal));
+    }
     for (i = 0; i < r->n_pages; i++) {
         u8 *px;
         u32 psz;
+        if (sprpal_page_is_pal4(&r->pal, i)) {
+            snprintf(path, sizeof(path), "%s/%s/atlas%d.pt4", dir, id, i);
+            if (ui_load_file(path, &px, &psz) == 0) {
+                if (psz == (u32)r->pages[i].w * r->pages[i].h / 2) {
+                    r->texels[i] = px;
+                    continue;
+                }
+                free(px);
+            }
+        }
         snprintf(path, sizeof(path), "%s/%s/atlas%d.argb1555", dir, id, i);
         if (ui_load_file(path, &px, &psz) == 0) {
             if (psz == (u32)r->pages[i].w * r->pages[i].h * 2)
@@ -181,14 +205,32 @@ int ui_res_load_dir(int idx, const char *dir, const char *id) {
     return 0;
 }
 
+u16 ui_res_pixel(const UiRes *r, int image, int x, int y) {
+    int pg;
+    if (image < 0 || image >= r->n_images)
+        return 0;
+    pg = r->images[image].page;
+    if (pg >= r->n_pages || pg >= 4 || x < 0 || y < 0 || x >= r->pages[pg].w || y >= r->pages[pg].h)
+        return 0;
+    if (r->pixels[pg])
+        return r->pixels[pg][y * r->pages[pg].w + x];
+    if (r->texels[pg] && r->pal.image_pal[image] != SPRPAL_NONE)
+        return r->pal.pal[16 * r->pal.image_pal[image] +
+                          sprpal_texel(r->texels[pg], r->pages[pg].w, r->pages[pg].h, x, y)];
+    return 0;
+}
+
 void ui_res_free(int idx) {
     UiRes *r = &g_ui_res[idx];
     int i;
     ui_res_release(r);
     for (i = 0; i < 4; i++) {
         free(r->pixels[i]);
+        free(r->texels[i]);
         r->pixels[i] = NULL;
+        r->texels[i] = NULL;
     }
+    free(r->palblob);
     free(r->blob);
     memset(r, 0, sizeof(*r));
 }

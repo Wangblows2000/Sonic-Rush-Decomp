@@ -25,6 +25,7 @@
 #ifdef _arch_dreamcast
 #include <dc/pvr.h>
 #include <malloc.h>
+#include "../engine/render.h"
 #endif
 
 void *ex_file_load(const char *rel, u32 *n);
@@ -53,6 +54,21 @@ int ex_sprres_load(ExSprRes *r, const char *id) {
     r->images = (const ExSprImage *)(f + 16 + 4 * hdr[1]);
     r->anims = (const ExSprAnim *)((const u8 *)r->images + 16 * r->n_images);
     r->frametab = (const u16 *)((const u8 *)r->anims + 12 * r->n_anims);
+#ifdef _arch_dreamcast
+    {   /* PAL4 page with its palette rows (palettes.bin + atlas0.pt4), else ARGB1555 */
+        char dir[224];
+        snprintf(dir, sizeof(dir), "%s/sprites/%s", g_ex_data_dir, id);
+        r->atlas = calloc(1, sizeof(SprAtlas));
+        if (r->atlas && spr_atlas_load((SprAtlas *)r->atlas, dir, f, 0) > 0) {
+            r->loaded = 1;
+            return 0;
+        }
+        if (r->atlas)
+            spr_atlas_free((SprAtlas *)r->atlas);
+        free(r->atlas);
+        r->atlas = NULL;
+    }
+#endif
     snprintf(rel, sizeof(rel), "sprites/%s/atlas0.argb1555", id);
     r->pixels = (u16 *)ex_file_load(rel, &n);
     if (!r->pixels || n != (u32)r->page_w * r->page_h * 2) {
@@ -68,7 +84,10 @@ void ex_sprres_free(ExSprRes *r) {
 #ifdef _arch_dreamcast
     if (r->tex)
         pvr_mem_free((pvr_ptr_t)r->tex);
+    if (r->atlas)
+        spr_atlas_free((SprAtlas *)r->atlas);
 #endif
+    free(r->atlas);
     free(r->frames);
     free(r->pixels);
     memset(r, 0, sizeof(*r));
@@ -500,13 +519,15 @@ static void ex_upload_indexed(const ExBgImage *img, const u16 *pal, int tw, int 
     pvr_txr_load(buf, *tex, (size_t)tw * th * 2);
     free(buf);
 }
-static void ex_quad(pvr_list_t list, pvr_ptr_t tex, int tw, int th, float x0, float y0, float x1, float y1, float u0,
-                    float v0, float u1, float v1, float z, u32 argb) {
+/* fmt: texture-format word (tex_txr_format), 0 = ARGB1555 non-twiddled */
+static void ex_quad_fmt(pvr_list_t list, pvr_ptr_t tex, int fmt, int tw, int th, float x0, float y0, float x1,
+                        float y1, float u0, float v0, float u1, float v1, float z, u32 argb) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
     pvr_vertex_t v;
     if (tex != NULL)
-        pvr_poly_cxt_txr(&cxt, list, PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED, tw, th, tex, PVR_FILTER_NONE);
+        pvr_poly_cxt_txr(&cxt, list, fmt ? fmt : PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED, tw, th, tex,
+                         PVR_FILTER_NONE);
     else
         pvr_poly_cxt_col(&cxt, list);
     cxt.gen.culling = PVR_CULLING_NONE;
@@ -522,8 +543,16 @@ static void ex_quad(pvr_list_t list, pvr_ptr_t tex, int tw, int th, float x0, fl
     v.flags = PVR_CMD_VERTEX_EOL;
     v.x = x1; v.y = y0; v.u = u1; v.v = v0; pvr_prim(&v, sizeof(v));
 }
+static void ex_quad(pvr_list_t list, pvr_ptr_t tex, int tw, int th, float x0, float y0, float x1, float y1, float u0,
+                    float v0, float u1, float v1, float z, u32 argb) {
+    ex_quad_fmt(list, tex, 0, tw, th, x0, y0, x1, y1, u0, v0, u1, v1, z, argb);
+}
+/* the resource can be drawn (PAL4 atlas, or the uploaded ARGB1555 page) */
+static int ex_sprres_ready(const ExSprRes *r) {
+    return r->atlas ? ((SprAtlas *)r->atlas)->tex[0].ptr != NULL : r->tex != NULL;
+}
 static void ex_sprres_upload(ExSprRes *r) {
-    if (r->loaded && r->tex == NULL) {
+    if (r->loaded && r->tex == NULL && r->atlas == NULL && r->pixels) {
         r->tex = pvr_mem_malloc((size_t)r->page_w * r->page_h * 2);
         if (r->tex)
             pvr_txr_load(r->pixels, (pvr_ptr_t)r->tex, (size_t)r->page_w * r->page_h * 2);
@@ -540,6 +569,13 @@ static void ex_draw_sprite_item(pvr_list_t list, const ExSprItem *q, float ox, f
         float t = u0;
         u0 = u1;
         u1 = t;
+    }
+    if (q->res->atlas) {   /* PAL4 page, the image's palette row */
+        SprAtlas *a = (SprAtlas *)q->res->atlas;
+        int bank = spr_atlas_bank(a, q->image, -1);
+        ex_quad_fmt(list, a->tex[0].ptr, tex_txr_format(&a->tex[0], bank), q->res->page_w, q->res->page_h, x0, y0,
+                    x1, y1, u0, v0, u1, v1, z, argb);
+        return;
     }
     ex_quad(list, (pvr_ptr_t)q->res->tex, q->res->page_w, q->res->page_h, x0, y0, x1, y1, u0, v0, u1, v1, z, argb);
 }
@@ -609,7 +645,7 @@ static void ex_dc_cutin(pvr_list_t list) {
         ExSprItem q;
         const ExSprite *o = &s->unk98[i];
         int names = i < 4 && (o == &s->unk98[s->bg] || o == &s->unk98[s->bg + 2]);
-        if (o->cur_image < 0 || !g_ex_vs_sprites.tex)
+        if (o->cur_image < 0 || !ex_sprres_ready(&g_ex_vs_sprites))
             continue;
         if (names && !((s->unk0 & 1) || s->unk4[2] != NULL))
             continue;
@@ -693,7 +729,7 @@ void ex_draw_frame(int list) {
         ex_sprres_upload(&data_ov001_0231f320);
         /* OAM: the sprite drawn first is in front */
         for (i = 0; i < s_nspr; i++)
-            if (s_spr[i].res->tex)
+            if (ex_sprres_ready(s_spr[i].res))
                 ex_draw_sprite_item(PVR_LIST_PT_POLY, &s_spr[i], 0, 0, 2.5f, 0xffffffffu, 6.0f - i * 0.001f);
     }
     if (list == PVR_LIST_TR_POLY) {

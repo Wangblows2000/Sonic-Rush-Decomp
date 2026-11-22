@@ -232,6 +232,9 @@ static void ZoneActSelect_LoadZonePalette(ActSelWork *p, s32 i) {
 }
 
 static void draw_all(ActSelWork *w, BOOL cursor) {
+    mn_comp_reset(0);   /* the map screen, with the navigator pieces while it is up */
+    mn_comp_full(0);
+    mn_navi_compose();
     ZoneActSelect_DrawHeader(w);
     if (cursor)
         ZoneActSelect_DrawActCursor(w);
@@ -246,6 +249,27 @@ static void draw_all(ActSelWork *w, BOOL cursor) {
 
 static void ZoneActSelect_State_Select(void);
 static void ZoneActSelect_State_FadeOut(void);
+
+/* the navigator on the other screen (mn_navi.c): no-ops when it is not up */
+static void ZoneActSelect_ShowIntroNaviMessage(void) {
+    u32 f = gZoneActSelectWork->unk10;
+    if (f & 2)
+        return;
+    if (!(f & 4)) {
+        NaviMsg_ShowMessage(0, 0xb4);
+        NaviMsg_SetFaceAnim(3);
+        return;
+    }
+    NaviMsg_ShowMessage(3, 0xb4);
+    NaviMsg_SetFaceAnim(2);
+}
+
+static void ZoneActSelect_ShowNaviMessage4(void) {
+    if (!(gZoneActSelectWork->unk10 & 2)) {
+        NaviMsg_ShowMessage(4, 0xb4);
+        NaviMsg_SetFaceAnim(6);
+    }
+}
 
 static void ZoneActSelect_State_FadeIn(void) {
     ActSelWork *w = TASK_WORK(ActSelWork);
@@ -265,6 +289,10 @@ static void ZoneActSelect_State_FadeIn(void) {
         BRIGHT_MAIN = 0;
         if (w->unk10 & 1)
             BRIGHT_SUB = 0;
+        if (gZoneActSelectWork->unk10 & 8)
+            NaviM_StartEmeraldAppear();
+        if (gZoneActSelectWork->unk10 & 0x10)
+            NaviM_StartCounter();
         w->unk10 &= ~0x18u;
         gTaskCurrent->func = ZoneActSelect_State_Select;
     }
@@ -335,6 +363,7 @@ static void ZoneActSelect_State_Select(void) {
         w->unk0 = 0;
         w->unkd8 = 1;
         SysSound_PlaySE(0x12);
+        ZoneActSelect_ShowNaviMessage4();
         gTaskCurrent->func = ZoneActSelect_State_Confirmed;
     }
 }
@@ -449,6 +478,7 @@ void ZoneActSelect_Create(s32 a, s32 b, s32 c) {
     for (i = 0; i < 38; i++)
         w->anim[i] = -1;
     w->anim[0] = 0;
+    ZoneActSelect_ShowIntroNaviMessage();
 }
 
 /* ---------------------------------------------------- ZoneActSelectMode */

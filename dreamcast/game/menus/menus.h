@@ -69,12 +69,16 @@ typedef enum {
     MENU_EXIT_CLEARED = 0,  /* act results done (story: progress + best score saved; time attack: record) */
     MENU_EXIT_QUIT,         /* pause menu "go back" (PauseMenu_QuitToMap) */
     MENU_EXIT_GAME_OVER,    /* game over / time over (SceneChange_ToSegaLogo) */
-    MENU_EXIT_DEMO_END      /* attract demo finished or skipped (TitleScreen_StartFromDemo) */
+    MENU_EXIT_DEMO_END,     /* attract demo skipped with a button (DemoPlay_Main: SceneChange_ToTitleScreen) */
+    MENU_EXIT_DEMO_TIMEOUT  /* attract demo ran to its frame limit (SceneChange_ToSegaLogo) */
 } MenuExit;
 /* score = data_022c4590.unk4, lives = data_022c4590.unk14, emeralds = gGameState.unk28,
  * time = gGameState.unk20 (frames, time attack records) */
 MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeralds, uint32_t time);
 void menus_shutdown(void);
 int menus_language(void);          /* gGameLanguage, default 1 (English) */
+/* the owner's nickname shown by Records (the DS firmware's OS owner info; the DC has
+ * none): UTF-16, up to 10 characters, default empty */
+void menus_set_owner_name(const uint16_t *utf16, int len);
 void menus_set_language(int lang);
 #endif

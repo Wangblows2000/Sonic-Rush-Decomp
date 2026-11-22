@@ -442,9 +442,26 @@ MnRes *mn_res_load(const char *bac_path) {
     r->images = (const MnImage *)(b + 16 + 4 * r->n_pages);
     r->anims = (const MnAnimDef *)((const u8 *)r->images + 16 * r->n_images);
     r->frames = (const MnFrame *)((const u8 *)r->anims + 12 * r->n_anims);
+    snprintf(path, sizeof(path), "%s/%s/palettes.bin", g_mn_sprite_dir, id);
+    if (mn_load_file(path, &r->palblob, &size) == 0 &&
+        sprpal_parse(&r->pal, r->palblob, size, r->n_pages, r->n_images, r->n_anims) != 0) {
+        free(r->palblob);
+        r->palblob = NULL;
+        memset(&r->pal, 0, sizeof(r->pal));
+    }
     for (i = 0; i < r->n_pages; i++) {
         u8 *px;
         u32 psz;
+        if (sprpal_page_is_pal4(&r->pal, i)) {   /* PAL4 page: 4-bit texels + palettes */
+            snprintf(path, sizeof(path), "%s/%s/atlas%d.pt4", g_mn_sprite_dir, id, i);
+            if (mn_load_file(path, &px, &psz) == 0) {
+                if (psz == (u32)r->pages[i].w * r->pages[i].h / 2) {
+                    r->texels[i] = px;
+                    continue;
+                }
+                free(px);
+            }
+        }
         snprintf(path, sizeof(path), "%s/%s/atlas%d.argb1555", g_mn_sprite_dir, id, i);
         if (mn_load_file(path, &px, &psz) == 0) {
             if (psz == (u32)r->pages[i].w * r->pages[i].h * 2)
@@ -462,8 +479,11 @@ void mn_res_free(MnRes *r) {
     if (!r)
         return;
     mn_res_release_tex(r);
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 4; i++) {
         free(r->pixels[i]);
+        free(r->texels[i]);
+    }
+    free(r->palblob);
     free(r->blob);
     free(r);
 }
@@ -580,6 +600,7 @@ void AnimatorSprite_DrawScaled(MnSpr *s, fx32 scx, fx32 scy) {
     q->res = s->res;
     q->bg = NULL;
     q->page = im->page;
+    q->image = (u16)(im - s->res->images);
     q->engine = s->engine;
     q->prio = (u8)((s->flags & SPR_PRIO_MASK) >> 17);
     q->kind = MNQ_SPRITE;
@@ -602,6 +623,32 @@ void mn_emit_flat(int engine, int prio, float x, float y, float w, float h, u32 
     q->prio = (u8)prio;
     q->kind = MNQ_FLAT;
     q->argb = argb;
+}
+
+/* A part of a BG image as a quad in the sprite list of `engine` at priority `prio`
+ * (scenes that scroll BG rows independently: TimeAttackMenu's BG1 HDMA bands, the
+ * split-scroll of TryAgain). Emit them after the sprites of that priority: the
+ * first quad emitted is in front. */
+void mn_emit_bg_part(int engine, int prio, const MnBgImg *img, float x, float y, float sx, float sy, float w,
+                     float h) {
+    MnQuad *q;
+    if (!img || s_nquads >= MN_MAX_QUADS || w <= 0 || h <= 0)
+        return;
+    q = &s_quads[s_nquads++];
+    memset(q, 0, sizeof(*q));
+    q->x = x;
+    q->y = y;
+    q->w = w;
+    q->h = h;
+    q->u0 = sx;
+    q->v0 = sy;
+    q->u1 = sx + w;
+    q->v1 = sy + h;
+    q->bg = img;
+    q->engine = (u8)engine;
+    q->prio = (u8)prio;
+    q->kind = MNQ_BG;
+    q->argb = 0xffffffff;
 }
 
 /* ---------------------------------------------------- composition */

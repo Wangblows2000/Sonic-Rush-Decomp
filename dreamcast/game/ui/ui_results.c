@@ -9,8 +9,11 @@
  *   scroll; the BG layers cldm_far / cldm_bg are drawn by ui_bg.c) and the state
  *   timing of ClearDemoModel_* (WaitParts waits for it).
  *
- * Not translated (UI.md): the time-attack tally (ClearDemoTA_*, gGameState.unk10
- * == 2 uses the score tally here), the player model (ClearDemo_DrawModel), the
+ * Time attack (gGameState.unk10 == 2): ClearDemo_InitTimeAttackTally and
+ * ClearDemoTA_* (InitSprites, State_SlideIn/WaitRank/StampRank/ShakeRank/HoldRank/
+ * Done, SkipRows, SkipToRank, Draw): the clear time and the record rank stamp.
+ *
+ * Not translated (UI.md): the player model (ClearDemo_DrawModel), the
  * NaviMsg / NaviB sub-screen panel of boss results (health 0 of 8, no message:
  * nothing to show in the one frame), the Blaze palette
  * reload of the glyph sprites, SaveData_StoreStageResult / StoryProgress_Update.
@@ -19,6 +22,7 @@
  * (data_022c4590.unk4).
  */
 #include "ui_internal.h"
+#include "../save/save.h"   /* SaveData_GetTimeRank */
 
 typedef struct CdWork CdWork;
 
@@ -32,6 +36,8 @@ typedef struct CdScore {     /* 0x274 */
     s16 digits[6][6];        /* 0x54 */
     s16 unk9C;               /* rank sprite */
     s32 unkA0, unkA4, unkA8; /* rank scale, x, y */
+    u32 unkAC;               /* time attack: gGameState.unk20 */
+    u16 unkB0[5];            /* time attack: the 5 digit anims of the time (dm_cldm 0x13 + d) */
     u8 unkBA, unkBB;
 } CdScore;
 typedef struct CdName {      /* 0x16C */
@@ -82,6 +88,8 @@ struct CdWork {
     u16 unk162C;
     s16 unk162E;
     UiSpr spr[0x33];           /* 0x39C dm_cldm anims 0..0x32 */
+    UiSpr spr2[0xf];           /* 0x11F4 dm_cldm_tatk (time attack, ClearDemoTA_InitSprites) */
+    int ta_res;                /* UI_RES_CLDM_TA loaded (unk398) */
     int active;
 };
 
@@ -91,6 +99,9 @@ int ClearDemo_IsActive(void) { return s_cd.active; }
 void ClearDemo_Destroy(void) {
     if (s_cd.active)
         ui_cdbg_free();
+    if (s_cd.ta_res)
+        ui_res_free(UI_RES_CLDM_TA);   /* ClearDemo_Destructor: unk398 */
+    s_cd.ta_res = 0;
     s_cd.active = 0;
 }
 
@@ -446,6 +457,251 @@ static void ClearDemoScore_Draw(CdWork *w) {
                 ui_emit_spr(spr, UI_SP_SCREEN);
             }
         }
+    }
+}
+
+/* ------------------------------------------------------- time attack */
+/* ClearDemo_InitTimeAttackTally: label rows at y 0x3c / 0x4c / 0x69, the time in
+ * dm_cldm digit anims (0x13 + digit; 0x1c / 0x18 = "-" when over 9'59"99), the rank
+ * among the saved records (SaveData_GetTimeRank, before SaveData_InsertTimeRecord) */
+static void ClearDemo_InitTimeAttackTally(CdScore *o) {
+    u32 t;
+    s32 c;
+    o->pos[0].x = -0x72000;
+    o->pos[0].y = 0x3c000;
+    o->unk38[0] = 0;
+    o->pos[1].x = -0x72000;
+    o->pos[1].y = 0x4c000;
+    o->unk38[1] = 0;
+    o->pos[2].x = -0x72000;
+    o->pos[2].y = 0x69000;
+    o->unk38[2] = 0;
+    memset(o->digits, 0, sizeof(o->digits));
+    o->unkAC = W.frame;   /* gGameState.unk20 */
+    t = o->unkAC;
+    if (t < 0x8c9f) {
+        o->unkB0[0] = (u16)(t / 0xe10 + 0x13);
+        t = t % 0xe10;
+        o->unkB0[1] = (u16)(t / 0x258 + 0x13);
+        t = t % 0x258;
+        o->unkB0[2] = (u16)(t / 0x3c + 0x13);
+        c = (s32)((t % 0x3c) * 0x1b1) >> 8;
+        if (c >= 100)
+            c = 99;
+        o->unkB0[3] = (u16)(c / 10 + 0x13);
+        o->unkB0[4] = (u16)(c % 10 + 0x13);
+    } else {
+        o->unkB0[0] = 0x1c;
+        o->unkB0[1] = 0x18;
+        o->unkB0[2] = 0x1c;
+        o->unkB0[3] = 0x1c;
+        o->unkB0[4] = 0x1c;
+    }
+    o->unk9C = (s16)SaveData_GetTimeRank(W.zone, W.act, W.frame, W.zone, W.act);
+    if (o->unk9C > 5)
+        o->unk9C = 5;
+    o->unk9C = (s16)(o->unk9C * 2);
+    o->unkA4 = 0x50000;
+    o->unkA8 = 0x7c000;
+    o->unkA0 = 0x2000;
+    o->unk4 = 0;
+}
+
+/* ClearDemoTA_InitSprites: the rank pair (spr2[unk9C], [unk9C + 1]) and the labels
+ * spr2[12..14] of dm_cldm_tatk, anims *data_02078b68[lang] (OBJ palette numbers
+ * data_020732fc not applied: the atlas carries the BAC's own colours) */
+static void ClearDemoTA_InitSprites(CdWork *w) {
+    u32 i;
+    s32 k = w->obj274.unk9C;
+    const u16 *p = g_ui_data.ta_anim[ui_lang()];
+    for (i = 0; i < 2; i++, k++)
+        UiSpr_Init(&w->spr2[k], UI_RES_CLDM_TA, p[k], UI_SPR_LOOP);
+    for (i = 0xc; i < 0xf; i++)
+        UiSpr_Init(&w->spr2[i], UI_RES_CLDM_TA, p[i], UI_SPR_LOOP);
+}
+
+static void rank_voice_ta(CdWork *w) {
+    if (G.character == 0)
+        cd_voice(w->unk1630, UI_NORMAL_STAGE() ? 3 : 4);
+    else
+        cd_voice(w->unk1630, UI_NORMAL_STAGE() ? 5 : 6);
+}
+static void ClearDemoTA_State_Done(CdWork *w, CdScore *o) {
+    (void)w;
+    (void)o;
+}
+static void ClearDemoTA_State_HoldRank(CdWork *s, CdScore *o) {
+    o->unk4++;
+    if (o->unk4 >= 60) {
+        s->flags |= 0x8000;
+        o->fn = ClearDemoTA_State_Done;
+        o->unk4 = 0;
+    }
+}
+static void ClearDemoTA_State_ShakeRank(CdWork *w, CdScore *o) {
+    s32 amp;
+    o->unk4++;
+    amp = (0x10 - o->unk4) * 0x500;
+    if (amp != 0) {
+        o->unkA4 = (s32)(UiRand() % amp + 0x50000) - amp / 2;
+        o->unkA8 = (s32)(UiRand() % amp + 0x7c000) - amp / 2;
+    } else {
+        o->unkA4 = 0x50000;
+        o->unkA8 = 0x7c000;
+    }
+    if (o->unk4 >= 0x10) {
+        o->unkA4 = 0x50000;
+        o->unkA8 = 0x7c000;
+        o->fn = ClearDemoTA_State_HoldRank;
+        o->unk4 = 0;
+        w->flags |= 0x800000;
+    }
+}
+static void ClearDemoTA_State_StampRank(CdWork *w, CdScore *o) {
+    s32 t, v, n;
+    o->unk4++;
+    t = (s16)(o->unk4 << 8);
+    if (t > 0x1000)
+        t = 0x1000;
+    n = 5;
+    v = 0x1000;
+    do {
+        v = FX_Mul(v - 0x2000, t) + 0x2000;
+    } while (n--);
+    o->unkA0 = v;
+    if (o->unk4 >= 0x10) {
+        o->unkA0 = 0x1000;
+        o->fn = ClearDemoTA_State_ShakeRank;
+        o->unk4 = 0;
+        if (o->unk9C == 0) {
+            /* new best time: Sound_PlaySeq(0, 0xc / boss 0xe) */
+            if (g_ui_hooks.music)
+                g_ui_hooks.music(g_ui_hooks.ctx, UI_NORMAL_STAGE() ? 0xc : 0xe);
+        } else {
+            cd_sfx(w->unk1630, 1);
+        }
+        o->unkBA = 1;
+    }
+}
+static void ClearDemoTA_State_WaitRank(CdWork *w, CdScore *o) {
+    o->unk4--;
+    if (o->unk4 <= 0) {
+        o->fn = ClearDemoTA_State_StampRank;
+        o->unk4 = 0;
+        w->flags |= 0x10000;
+        /* NNS_SndPlayerStopSeq(unk1634): the roll SE handle */
+        rank_voice_ta(w);
+        o->unkBB = 1;
+    }
+}
+static void ClearDemoTA_State_SlideIn(CdWork *w, CdScore *o) {
+    s32 n, i;
+    o->unk4++;
+    n = o->unk4 / 30 + 1;
+    if (n > 3)
+        n = 3;
+    for (i = 0; i < n; i++) {
+        o->unk38[i] = (s16)(o->unk38[i] + 0x88);
+        if (o->unk38[i] > 0x1000) {
+            o->unk38[i] = 0x1000;
+            if (o->unk44[i] == 0) {
+                cd_sfx(w->unk1630, 0);
+                o->unk44[i] = 1;
+            }
+        }
+        o->pos[i].x = UiLerpN(0, 0xc8000, o->unk38[i], 5) - 0x72000;
+    }
+    if (n == 3 && o->unk38[n - 1] == 0x1000) {
+        o->fn = ClearDemoTA_State_WaitRank;
+        o->unk4 = 0x96;
+        cd_sfx(w->unk1630, 2);   /* on the unk1634 handle */
+        w->flags |= 0x400000;
+    }
+}
+static void ClearDemoTA_SkipRows(CdWork *o) {
+    s32 i;
+    CdScore *s = &o->obj274;
+    s->unk4 = 0;
+    o->flags |= 0x7000;
+    for (i = 0; i < 3; i++) {
+        s->pos[i].x = 0x56000;
+        s->unk38[i] = 0x1000;
+    }
+    s->fn = ClearDemoTA_State_WaitRank;
+    s->unk4 = 0x96;
+    cd_sfx(o->unk1630, 2);
+}
+static void ClearDemoTA_SkipToRank(CdWork *w) {
+    CdScore *o = &w->obj274;
+    w->flags |= 0x10000;
+    o->unkA4 = 0x50000;
+    o->unkA8 = 0x7c000;
+    o->unkA0 = 0x1000;
+    o->unk4 = 0;
+    o->fn = ClearDemoTA_State_Done;
+    w->flags |= 0x8000;
+    if (o->unkBA == 0) {
+        if (o->unk9C == 0) {
+            if (g_ui_hooks.music)
+                g_ui_hooks.music(g_ui_hooks.ctx, UI_NORMAL_STAGE() ? 0xc : 0xe);
+        } else {
+            cd_sfx(w->unk1630, 1);
+        }
+    }
+    if (o->unkBB == 0)
+        rank_voice_ta(w);
+}
+static void ClearDemoTA_Draw(CdWork *w) {
+    CdScore *o = &w->obj274;
+    UiSpr *a, *b, *spr;
+    u32 i;
+    s16 x, y;
+    if (!w->ta_res)
+        return;
+    if (w->flags & 0x10000) {
+        a = &w->spr2[o->unk9C];
+        b = &w->spr2[o->unk9C + 1];
+        b->x = (s16)(o->unkA4 >> 12);
+        a->x = b->x;
+        b->y = (s16)(o->unkA8 >> 12);
+        a->y = b->y;
+        if (o->unkA0 == 0x1000 || o->unk9C == 10) {
+            ui_emit_spr(a, UI_SP_SCREEN);
+            ui_emit_spr(b, UI_SP_SCREEN);
+        } else {
+            ui_emit(a, UI_SP_SCREEN, o->unkA0, o->unkA0, 0, 0xffffffff, 0);
+            ui_emit(b, UI_SP_SCREEN, o->unkA0, o->unkA0, 0, 0xffffffff, 0);
+        }
+    }
+    if (o->unk38[0] != 0) {
+        spr = &w->spr2[13];
+        spr->x = (s16)(o->pos[0].x >> 12);
+        spr->y = (s16)(o->pos[0].y >> 12);
+        ui_emit_spr(spr, UI_SP_SCREEN);
+    }
+    if (o->unk38[1] != 0) {
+        x = (s16)((o->pos[1].x - 0x2a000) >> 12);
+        y = (s16)(o->pos[1].y >> 12);
+        for (i = 0; i < 5; i++) {
+            spr = &w->spr[o->unkB0[i] % 0x33];
+            spr->x = (s16)(x + g_ui_data.ta_dx[i]);
+            spr->y = y;
+            ui_emit_spr(spr, UI_SP_SCREEN);
+        }
+        spr = &w->spr2[12];
+        spr->x = (s16)(x + 10);
+        spr->y = y;
+        ui_emit_spr(spr, UI_SP_SCREEN);
+        x = (s16)(x + 0x28);
+        spr->x = x;
+        spr->y = y;
+        ui_emit_spr(spr, UI_SP_SCREEN);
+    }
+    if (o->unk38[2] != 0) {
+        spr = &w->spr2[14];
+        spr->x = (s16)(o->pos[2].x >> 12);
+        spr->y = (s16)(o->pos[2].y >> 12);
+        ui_emit_spr(spr, UI_SP_SCREEN);
     }
 }
 
@@ -810,12 +1066,19 @@ static void ClearDemo_SkipParts(CdWork *p0) {
     ClearDemoName_Skip(p0);
     ClearDemoActText_Skip(p0);
     ClearDemoModel_Skip(p0);
-    ClearDemoScore_SkipRows(p0);
+    if (W.mode == 2)
+        ClearDemoTA_SkipRows(p0);
+    else
+        ClearDemoScore_SkipRows(p0);
     ClearDemoBars_Skip(p0);
 }
 static void ClearDemo_SkipToRank(CdWork *s) {
     s->flags |= 0xa00000;
     s->state = ClearDemo_State_WaitParts;
+    if (W.mode == 2) {
+        ClearDemoTA_SkipToRank(s);
+        return;
+    }
     ClearDemoScore_SkipToRank(s);
 }
 
@@ -851,11 +1114,22 @@ void ClearDemo_Create(void) {
     w->obj200.fn = ClearDemoActText_State_Init;
     w->obj330.fn = ClearDemoBars_State_SlideIn;
     ClearDemoBars_Init(&w->obj330);
-    /* gGameState.unk10 == 2: ClearDemo_InitTimeAttackTally (not translated) */
-    ClearDemo_InitScoreTally(&w->obj274);
-    w->obj274.fn = ClearDemoScore_State_SlideIn;
+    if (W.mode == 2) {
+        /* SaveData_InsertTimeRecord follows on the DS; the menus do it at the stage
+         * exit (menus_stage_exit), after this rank was read */
+        ClearDemo_InitTimeAttackTally(&w->obj274);
+        w->obj274.fn = ClearDemoTA_State_SlideIn;
+    } else {
+        ClearDemo_InitScoreTally(&w->obj274);
+        w->obj274.fn = ClearDemoScore_State_SlideIn;
+    }
     for (i = 0; i < 0x33; i++)
         UiSpr_Init(&w->spr[i], UI_RES_CLDM, (u16)i, UI_SPR_LOOP);
+    /* unk398 = File_Load(data_02079240 "/act/dm_cldm_tatk.bac") + ClearDemoTA_InitSprites */
+    if (W.mode == 2 && g_ui_data.ta_ok && ui_res_load(UI_RES_CLDM_TA, "act__dm_cldm_tatk") == 0) {
+        w->ta_res = 1;
+        ClearDemoTA_InitSprites(w);
+    }
     if (W.mode == 2)
         w->unk1630 = 5;
     else if (W.zone == 7 || !UI_NORMAL_STAGE())
@@ -901,8 +1175,12 @@ void ClearDemo_Main(const InputState *in) {
         ui_emit_flat(UI_SP_SCREEN, 0, 0, 256, 192, 0xff000000);
         ui_cdbg_draw(w->obj0.unk4, w->obj0.unk8, w->obj0.win_on, w->obj0.win_x2);
         g_ui_layer = UI_LAYER_RESULTS;
-        if (w->flags & 0x2000)
-            ClearDemoScore_Draw(w);
+        if (w->flags & 0x2000) {
+            if (W.mode == 2)
+                ClearDemoTA_Draw(w);
+            else
+                ClearDemoScore_Draw(w);
+        }
         if (w->flags & 1)
             ClearDemoName_Draw(w);
         if (w->flags & 4)

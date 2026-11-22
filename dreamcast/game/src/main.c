@@ -22,6 +22,8 @@
 #include "../cutscene/cutscene.h"
 #include "../boss/boss_extra.h"
 #include "../boss/boss7.h"
+#include "../demo/demo.h"
+#include "../menus/extraact.h"
 #include <stdlib.h>
 
 /* Story order (Sonic): zone N acts 1, 2 and the boss act 3. */
@@ -96,7 +98,9 @@ static struct {
     u32 frame, score;
 } g_ss;
 static int g_special_pending;
-static uint64_t g_prof[4], g_dprof[6];   /* draw: bg, layers, player model, objects, ui, boss */   /* us per 120 frames: objects update, player, draw, end_frame wait */
+static int g_demo, g_demo_spawn_x, g_demo_spawn_y;   /* attract demo running (DemoPlay) */
+static uint64_t g_prof[4], g_dprof[6], g_fmax;
+static int g_fslow;   /* draw: bg, layers, player model, objects, ui, boss */   /* us per 120 frames: objects update, player, draw, end_frame wait */
 static int g_dbg_special = -1;   /* test builds: /cd/debug/special.txt = act frame to enter the special stage */
 static void (*g_prev_stage_exit)(void *ctx, s32 kind);
 static void stage_exit_hook(void *ctx, s32 kind)
@@ -113,6 +117,7 @@ static void spawn_player(Level *lv)
     for(i = 0; i < lv->hdr->num_objects; i++)
         if(obj[i].type == 114) { sx = obj[i].x; sy = obj[i].y; break; }   /* PlayerStart */
     if(g_ss.active) { sx = g_ss.x; sy = g_ss.y; }   /* 280 px below the special ring */
+    else if(g_demo_spawn_x || g_demo_spawn_y) { sx = g_demo_spawn_x; sy = g_demo_spawn_y; }   /* DemoPlay start point */
     rlvl_bind(&g_map, lv->data);
     dcp_bind_map(&g_map);
     memset(&g_player, 0, sizeof(g_player));
@@ -161,6 +166,7 @@ static void spawn_player(Level *lv)
 static void load_player_model(void)
 {
     if(g_model_ok && g_model_chara == g_chara) return;
+    if(g_model_ok) dcm_model_free(&g_pmodel);   /* Sonic <-> Blaze: give the VRAM back */
     g_model_ok = 0; g_model_chara = g_chara;
     uint32_t sz;
     void *m = load_file(g_chara ? "/cd/player/blz.dcm" : "/cd/player/son.dcm", &sz);
@@ -455,7 +461,18 @@ static MenuRequest run_extra_zone(void)
     printf("extra boss result %d, time %ld, rings %ld\n", r, (long)res.time, (long)res.rings);
     if(r == BOSS_EXTRA_CLEARED) {
         run_cutscene(CS_SCRIPT, 2, 8, NULL);   /* DemoScript_StartAfterBoss -> SceneChange_ToExtraAct */
-        /* ExtraAct (results) not translated yet: straight to ClearDemo_GoToNextScene (zone 8 -> ExtraEnding) */
+        if(extraact_start((uint32_t)res.time, (uint32_t)res.rings, g_chara) == 0) {   /* the Extra Zone results */
+            for(;;) {
+                int done;
+                input_poll(&in);
+                done = extraact_run_frame(&in);
+                sound_update();
+                render_begin_frame(); extraact_draw(); render_end_frame();
+                audio_update();
+                if(done) break;
+            }
+        }
+        extraact_shutdown();
         return menus_stage_exit(MENU_EXIT_CLEARED, (uint32_t)res.rings, res.lives_current, g_emeralds, (uint32_t)res.time);
     }
     return menus_stage_exit(MENU_EXIT_GAME_OVER, 0, 0, g_emeralds, 0);
@@ -476,6 +493,7 @@ static void run_special_stage(Level *lv, int stage)
     if(g_obj_ok) objects_shutdown();
     g_obj_ok = 0;
     audio_music_stop();
+    ui_stage_end();
     level_free(lv);
     special_set_path("/cd/special");
     special_set_language(1);
@@ -631,11 +649,34 @@ int main(int argc, char **argv)
                 run_cutscene(CS_SCRIPT, 4, 6, NULL);        /* ClearDemo_GoToNextScene zone 6 boss */
             else if(r.kind == MENU_REQ_UNAVAILABLE)
                 printf("menus: %s not in the port\n", r.scene ? r.scene : "?");
-            else if(r.kind == MENU_REQ_DEMO)
-                menus_stage_exit(MENU_EXIT_DEMO_END, 0, 0, g_emeralds, 0);   /* attract demos not ported */
+            else if(r.kind == MENU_REQ_DEMO) {
+                /* SceneChange_ToDemoPlay: DemoPlay_Create + the demo's stage */
+                DemoInfo di;
+                int idx;
+                if(demo_start(r.demo, &di) != 0 || (idx = stage_index(di.zone, di.act)) < 0) {
+                    printf("demo %d: not available\n", r.demo);
+                    menus_stage_exit(MENU_EXIT_DEMO_END, 0, 0, g_emeralds, 0);
+                } else {
+                    g_chara = di.character; load_player_model();
+                    g_demo_spawn_x = di.start_x; g_demo_spawn_y = di.start_y;
+                    stage = idx; g_frontend = 0;
+                    ok = load_stage(&lv, stage) == 0;
+                    if(ok && g_player_ok) spawn_player(&lv);
+                    demo_after_stage_load();
+                    g_demo = 1;
+                }
+            }
             continue;
         }
         input_poll(&in);
+        /* attract demo: DemoInput_Main replaces gPad with the recorded keys */
+        uint16_t pad_held = ds_pad(in.held), pad_pressed = ds_pad(in.pressed), pad_released = ds_pad(in.released);
+        InputState real_in = in;
+        if(g_demo) {
+            DemoPad dp;
+            demo_input_frame(&real_in, &dp);
+            in = dp.in; pad_held = dp.held; pad_pressed = dp.pressed; pad_released = dp.released;
+        }
         if(ok && g_player_ok && g_is_boss) ui_set_boss_health(boss_health());
         if(ok && g_player_ok) ui_update(&in, &g_player);
         if(ok && g_player_ok) overlay_cutscene_frame(&in);   /* boss talks: System_Freeze while active */
@@ -652,7 +693,7 @@ int main(int argc, char **argv)
             }
             if(g_is_boss) boss_update_pre(&g_player);   /* BossF: arm colmap / ride before the player */
             { uint64_t t0 = timer_us_gettime64();
-              dcp_player_frame(&g_player, ds_pad(in.held), ds_pad(in.pressed), ds_pad(in.released));
+              dcp_player_frame(&g_player, pad_held, pad_pressed, pad_released);
               g_prof[1] += timer_us_gettime64() - t0; }
             { uint64_t t0 = timer_us_gettime64(); if(g_obj_ok) objects_update(&g_player); g_prof[0] += timer_us_gettime64() - t0; }
             if(g_is_boss) boss_update(&g_player);
@@ -693,7 +734,14 @@ int main(int argc, char **argv)
         if(g_cam_y < 0) g_cam_y = 0;
         ui_set_camera(g_cam_x, g_cam_y);
 
+        { uint64_t tw = timer_us_gettime64(); pvr_wait_ready(); g_prof[3] += timer_us_gettime64() - tw; }   /* vblank / TA wait */
         uint64_t t_draw0 = timer_us_gettime64();
+        {   /* frame interval: worst and over-budget count (a 60 Hz frame is 16.68 ms) */
+            static uint64_t last;
+            uint64_t now_f = t_draw0;
+            if(last) { uint64_t d = now_f - last; if(d > g_fmax) g_fmax = d; if(d > 17500) g_fslow++; }
+            last = now_f;
+        }
         render_begin_frame();
         if(ok && g_player_ok && g_model_ok) {
             g_anim_frame += 1.0f;
@@ -737,8 +785,21 @@ int main(int argc, char **argv)
             draw_sprite_world(NULL, PVR_LIST_TR_POLY, g_player.x / 256.0f - 8, g_player.y / 256.0f - 28, 16, 28, 0, 0, 0, 0, 0, 3.0f, 0xc02060ff);
         render_end_list();
         g_prof[2] += timer_us_gettime64() - t_draw0;
-        { uint64_t t1 = timer_us_gettime64(); render_end_frame(); g_prof[3] += timer_us_gettime64() - t1; }
+        { uint64_t t1 = timer_us_gettime64(); render_end_frame(); g_prof[2] += timer_us_gettime64() - t1; }
         audio_update();
+        if(ok && g_demo) {
+            int dk = demo_play_frame(&real_in);   /* DemoPlay_Main */
+            if(dk != DEMO_RUNNING) {
+                demo_stop(); g_demo = 0; g_demo_spawn_x = g_demo_spawn_y = 0;
+                if(g_obj_ok) objects_shutdown();
+                boss_shutdown(); g_is_boss = 0;
+                ui_stage_end();
+                level_free(&lv); ok = 0;
+                menus_stage_exit(dk == DEMO_EXIT_TITLE ? MENU_EXIT_DEMO_END : MENU_EXIT_DEMO_TIMEOUT, 0, 0, g_emeralds, 0);
+                enter_front_end();
+                continue;
+            }
+        }
         if(ok && g_player_ok && ui_state() == UI_EXIT) {
             int k = ui_exit_kind();
             MenuRequest r;
@@ -746,6 +807,7 @@ int main(int argc, char **argv)
             printf("stage exit kind %d\n", k);
             if(g_obj_ok) objects_shutdown();
             boss_shutdown(); g_is_boss = 0;
+            ui_stage_end();   /* title-card / results BGs, navigator, face texture */
             level_free(&lv); ok = 0;
             if(k == UI_EXIT_NEXT_ACT || k == UI_EXIT_TRY_AGAIN)
                 r = menus_stage_exit(MENU_EXIT_CLEARED, total, g_dcp_world.lives, g_emeralds, g_dcp_world.frame);
@@ -782,7 +844,8 @@ int main(int argc, char **argv)
         if(++frame % 120 == 0) {
             uint64_t now = timer_ms_gettime64();
             if(t_last) printf("frame %d cam %.0f,%.0f player %ld,%ld spd %d ang %d fps %.1f music %lu B loops %lu rings %d live %lu\n", frame, g_cam_x, g_cam_y, (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.vel_x, g_player.angle, 120000.0 / (now - t_last), (unsigned long)audio_stream_bytes(), (unsigned long)audio_stream_loops(), g_obj_ok ? objects_ring_count() : -1, g_obj_ok ? (unsigned long)objects_stats()->live : 0);
-            printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0);
+            printf("prof ms/frame: objects %.2f player %.2f draw %.2f wait %.2f; worst frame %.2f ms, %d of 120 over 17.5 ms\n", g_prof[0] / 120000.0, g_prof[1] / 120000.0, g_prof[2] / 120000.0, g_prof[3] / 120000.0, g_fmax / 1000.0, g_fslow);
+            g_fmax = 0; g_fslow = 0;
             printf("draw ms/frame: bg %.2f layers %.2f objects %.2f ui %.2f\n", g_dprof[0] / 120000.0, g_dprof[1] / 120000.0, g_dprof[3] / 120000.0, g_dprof[4] / 120000.0);
             memset(g_prof, 0, sizeof(g_prof)); memset(g_dprof, 0, sizeof(g_dprof));
             t_last = now;

@@ -404,19 +404,19 @@ only; **not translated** = section 8.
 | ZoneActSelectMode_Start, Main, StartStage, ExitToTitleMenu, Shutdown | same | modified |
 | Options_StartFromTitleMenu, Options_LoadSettingsFromSave, OptionsMenu_SetDifficultyChoice, Options_SetTimeLimit, Options_EraseSaveData, Options_ExitToTitleMenu, Options_IsSoundTestUnlocked/IsExtraStoryCleared, SoundTest_BuildTrackNameText, OptionsMenu_DrawSoundTestTrackName, OptionsMenu_State_TimeLimit/SoundTest input rules | same | as-is / modified |
 | Options page framework (OptionsMenu_OpenPage0-5, ClosePage*, DrawPage*, State_Unk_*, UpdateAnims, InitEnterItemAnims, OptionsBgScroll_Main ...) | `Options_State_Main` + `Options_Draw` | rewritten (same sprites and choices, direct layout) |
-| OptionsWfsHost_*, DownloadPlay, Records, TimeAttack exits, SoundTest level meter/capture | - | not translated |
+| OptionsWfsHost_*, DownloadPlay, SoundTest level meter/capture | - | not translated |
+| Options PLAYER DATA pages, Options_ExitToRecords, Options_ExitToTimeAttackMenuMode2/3, ZoneMapPause_ExecuteChoice2/3 | mn_options.c, mn_timeattack.c | as-is (layout of the pages rewritten like the other pages) |
 | - | `menus_init`, `menus_run_frame`, `menus_draw_tr`, `menus_stage_exit`, `save_load`, `save_write`, `mn_*` | new |
 
 ## 8. Gaps and assumptions
 
 - **Not translated**:
   - TitleDemo: the 3D intro before the title screen. The SEGA logo goes straight to the title screen.
-  - The attract demo itself: only the request is made (`MENU_REQ_DEMO`, demo 0..3 rotation).
-  - VS (all wireless menus).
-  - Time-attack menus (TimeAttack, TimeSelect, TryAgain) and Records. These are reported as `MENU_REQ_UNAVAILABLE`. The title menu "EXTRA" page then returns to the title menu. Time-attack clears still save the record.
+  - VS (all wireless menus, TimeSelect): see section 11.
   - Ending / staff roll and the extra / final story scripts (DemoScript*). Zone 7 and 8 clears report "Ending".
-  - Talk demos (story dialogue on the map).
-  - The navigator panel and all message boxes (MsgBox, SaveMsg).
+  - Talk demos (story dialogue on the map) unless main.c sets the talk_demo hooks.
+  - Message boxes (MsgBox, SaveMsg).
+  - Options DOWNLOAD DEMO (wireless).
 - **No 3D**: the player-select character models and the zone-map character are not drawn. The map uses the zone-map icon sprite 31 as a marker. `dreamcast/game/model` could draw `son.dcm` / `blz.dcm` there later.
 - **Message boxes decided without asking**:
   - Zone-map MsgBox 0x12 ("go to this zone?") counts as yes. The A press on the node is the answer.
@@ -427,7 +427,7 @@ only; **not translated** = section 8.
 - Options:
   - The page/animation code was rewritten.
   - The item positions come from the sprite origins and the touch rectangles of the original. They were not measured from a DS frame.
-  - PLAYER DATA (Records) and DOWNLOAD DEMO are not listed.
+  - PLAYER DATA is the first item (section 13); DOWNLOAD DEMO is not listed.
 - **Sound**:
   - Only the original ids are passed to `g_menu_hooks`. Nothing is mapped to DC audio yet.
   - The sound test passes the `sound_test.sld` fields.
@@ -509,3 +509,139 @@ only; **not translated** = section 8.
 - Debug aid: `MN_DUMP_ENGINES=1` also writes each DS engine alone as `raw/<name>_e0/e1.ppm`. This is how the region coordinates were chosen.
 - `make -C dreamcast/game/menus dc`: 10 menu sources + save.c + save_vmu.c compile with `kos-cc -std=gnu99 -O2 -Wall -Wextra -Werror`.
 - `make -C dreamcast/game/menus link`: `menus_link.elf` (stub main + menus + save + render.c + input.c) links with no unresolved symbols.
+
+
+- `make -C dreamcast/game/menus host-test` also runs `test_flow` (56 checks):
+  - time attack: records shown, scroll, zone X wrap, stage request zone 0 act 1 mode 2; TryAgain retry / change act / quit; boss mode with Blaze;
+  - Records: 6 opponents, page scroll 0 → 16 → 32 → 0, options round trips, TIME ATTACK RECORD → BOSS view only;
+  - demo exits: DEMO_END → title screen, DEMO_TIMEOUT → SEGA logo;
+  - ExtraAct: time 17000 → time bonus 38000, 120 rings → 12000, total 50000, rank 0; 1362 frames (white from 1301); A skips to the end in 256 frames;
+  - navigator: NaviM counter and count start, intro fade (alpha 15 at 30 frames, 31 at 60), intro panel shown then hidden after 0xf0 frames, a map message for 180 frames, fade out, locked early in the story, everything gone after the scene.
+- Frame dumps (640x480) looked at for TimeAttackMenu, TryAgain, Records and ExtraAct (letterbox, title, tally, rank). The navigator is checked by state only.
+- `make -C dreamcast/game/menus dc` and `link` (kos-cc, -Werror): clean, `menus_link.elf` links (316 KB text).
+- `make -C dreamcast/game/demo host-test`: 73/73 (all four demos replayed frame-exact against a reference Pad_Update, lead-frame case, end record, fade-in, label blink, frame-limit exit, skip exit). `make -C dreamcast/game/demo dc`: clean.
+
+## 10. Attract demos (dreamcast/game/demo)
+
+`DemoInput_*` / `DemoPlay_*` and `SceneChange_ToDemoPlay` are in `demo/demo.c`.
+The DS plays a recorded pad stream (`/dat/key/keyNN.bin`: u32 random seed,
+then `{u16 keys, u8 frames}` records, 0 frames = end) while a normal stage runs.
+The demo table `data_02073bd0` (4 entries: zone, act, character, start point,
+frame limit, key file) is copied by `demo/tools/demodata.py` into
+`build/dreamcast/demo/demotab.bin` ("RDMO" v1), with the key files next to it.
+
+Flow on the Dreamcast:
+
+1. `menus_run_frame` returns `MENU_REQ_DEMO` (index 0..3, the original rotation).
+2. main.c calls `demo_start(index, &info)`. This sets `g_dcp_world` (zone, act,
+   mode 3, flags 4|8, start point, random seed) and loads the key stream.
+3. main.c loads the stage at the start point, then calls `demo_after_stage_load()`
+   (seed again, lead frames).
+4. Every frame: `demo_input_frame(&real, &pad)` gives the recorded pad in place of
+   the real one (`pad.in`: InputState for the player module), then the stage
+   frame, then `demo_play_frame(&real)`.
+5. `demo_play_frame` returns `DEMO_EXIT_TITLE` (A/B/START/X/Y pressed: the DS
+   skip keys) or `DEMO_EXIT_SEGA_LOGO` (frame limit). main.c calls `demo_stop()`
+   and `menus_stage_exit(MENU_EXIT_DEMO_END or MENU_EXIT_DEMO_TIMEOUT, ...)`.
+
+The "DEMO PLAY" / "PRESS START" label (dm_demoplay_<lang>, blinking with
+timer bit 0x40) and the stage changes for flag 8 (no title card, timer starts at
+once, boss navigator on boss acts) are in the UI module (UI.md).
+
+Frame exactness: the stream is replayed through the same `Pad_Update` logic as
+the DS (held / pressed / released / repeat). On the DS, DemoInput also runs
+during the stage loading frames, which depend on card timing; those frames are
+`DEMO_LEAD_FRAMES` (default 0, `demo_set_lead_frames`). If a demo drifts on the
+DC, this is the value to tune.
+
+## 11. VS mode (not ported)
+
+VS (`src/game/VsMode`, the Wireless menus, `TimeSelect`, OptionsWfsHost,
+DownloadPlay) is the two-player race over DS wireless: two DS units, each with a
+cartridge (or one of them by download play). The menus pair the two units,
+pick the stage and the time (TimeSelect), and the stage runs on both with the
+other player's position sent every frame. The Dreamcast has no second unit to
+pair with and no wireless layer; a split-screen VS would be a new game mode, not
+a translation. The title menu treats VS as declined (as before), and the VS
+record page (Records, section 13) only shows what the save file holds.
+
+## 12. Extra Zone results (ExtraAct)
+
+`menus/mn_extraact.c` (37 functions of `src/game/Zone/Extra_Zone/Results`),
+API in `menus/extraact.h`:
+
+```c
+extraact_set_model_dir("/cd/models");                 /* default */
+if (extraact_start(time, rings, character) == 0) {    /* boss_extra_result() values */
+    while (!extraact_run_frame(&in))                  /* 1 when the scene is over */
+        extraact_draw();                              /* opens its own PVR lists */
+    extraact_shutdown();
+}
+```
+
+It runs after the Extra boss (CS_SCRIPT 2), before the extra ending. The scene:
+fade from white, the finish model (eff_dmg_end01/02, 510-frame animation),
+the letterbox bars, the title and caption, the time / ring bonus tally, the total
+and the rank stamp, then a white fade. A/START skip like the DS. Tables come from
+`build/dreamcast/menus/extraact.bin` (menudata.py). Composition: one 640x480
+frame (the DS draws this scene on the main screen only).
+
+## 13. Time attack, Try Again, Records (PLAYER DATA)
+
+- `mn_timeattack.c` (TimeAttackMenu_*, 62 functions): mode 0 acts, mode 1
+  bosses, modes 2/3 view only (from Options PLAYER DATA). Records come from the
+  save file. Starting a stage returns `MENU_REQ_STAGE` with mode 2.
+- `mn_tryagain.c` (TryAgain_*, 31 functions): after a time-attack clear
+  (`UI_EXIT_TRY_AGAIN` → `menus_stage_exit(MENU_EXIT_CLEARED, ...)`): retry,
+  change act, character select, quit.
+- `mn_records.c` (Records_*, 46 functions): the VS record page (totals and the
+  last 10 opponents with their names, drawn with font_ipl_8x8 through
+  `Font_GetGlyphIndex`'s tables, `build/dreamcast/menus/font8.bin`).
+  `menus_set_owner_name(utf16, len)` sets the owner's name (the DS reads it from
+  the firmware).
+- Options: PLAYER DATA is the first item; BATTLE PLAY RECORD → Records,
+  TIME ATTACK RECORD → ACT / BOSS → TimeAttackMenu mode 2 / 3.
+
+Compositions (MnComp, section 3): TimeAttackMenu and Records use the sub screen
+(art and plate) as the 2.5x backdrop with the main-screen panel at 1.5x on the
+left; TryAgain uses the main screen as the backdrop with the sub-screen choices
+at 1.4x. The per-line BG scroll (HDMA) of these screens is drawn as bands
+(`mn_emit_bg_part`).
+
+## 14. Zone-map navigator (NaviBg / NaviMsg mode 0 / NaviM)
+
+`menus/mn_navi.c`. On the DS the zone map is on one screen and the navigator
+(Tails in Sonic's story, Cream in Blaze's) on the other: a face with idle,
+blink and talking sequences, a speech balloon with story hints per map event
+(ZoneMap_SetNaviMessage), and the NaviM panel with the lives counter, the story
+step counter and the seven emerald slots (new emeralds grow in with a sparkle).
+It is unlocked after the first steps of each story (`gSaveData.unkC >= 3` /
+`unk64 >= 4`).
+
+On the Dreamcast the map fills the frame and the navigator pieces are placed
+over it (`mn_navi_compose`, scale 1.5): the balloon and message at the top
+left, the face at the bottom right (both only while the DS shows them, with
+the original 30/60-frame fades), and the NaviM panel at the top right. The
+navigator frame background is left out.
+
+Names: the UI module has the boss navigator (mode 1) under the same DS names,
+so the menus copies are renamed by macro in mn_internal.h (`MnNaviMsg_*`,
+`MnNaviM_*`), as with the sound calls.
+
+Data (menudata.py `navi()`, from the owner's ROM): `bg/<c>_m_b.mnbg`,
+`bg/m_bal_<c>.mnbg`, `bg/navi_<c>_<lang>_NN.mnbg` (27/28 message panels per
+language, loaded one at a time when the panel changes) and
+`navi/faces_<c>.bin` (NVFM v2: the face frames of the zone-map sequences 0..8,
+RLE-packed, with the 9 distinct palettes and the 14 sequences; 360 KB / 405 KB
+in RAM while the zone map is up, one frame expanded into the 16 KB face
+texture when it changes). About 3 MB on the disc.
+
+Wired: ZoneMap_Start → ZoneMap_InitNavi + NaviM_Create; story steps →
+NaviMsg_StartIntro; ZoneMap_CheckNewEmerald → NaviM_CheckStepAdvanced /
+NaviM_SetNewEmerald; ZoneMap_State_WaitNaviMessage → NaviM_StartCounter /
+StartEmeraldAppear / IsCounting; ZoneMapPause → message 5;
+Game_StartStoryStage → NaviM_SaveStep; act select →
+ZoneActSelect_ShowIntroNaviMessage (create), ShowNaviMessage4 (act chosen) and,
+at the end of its fade-in, NaviM_StartEmeraldAppear / StartCounter (flags 8 /
+0x10 from ZoneMap_CreateState). The act select keeps the navigator pieces in
+its composition.

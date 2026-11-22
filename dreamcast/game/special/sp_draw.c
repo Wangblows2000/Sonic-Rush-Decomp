@@ -22,6 +22,7 @@
 #ifdef _arch_dreamcast
 #include <kos.h>
 #include <dc/pvr.h>
+#include "../engine/render.h"
 #endif
 
 int g_sp_light_mode;
@@ -348,14 +349,17 @@ static pvr_ptr_t upload(const u16 *pix, int w, int h) {
         pvr_txr_load(pix, p, (size_t)w * h * 2);
     return p;
 }
+/* texture-format word of the sprite quads being drawn (sprres_tex: PAL4 + palette
+ * row of the image); 0 = ARGB1555 non-twiddled (BG images, sprites without palettes) */
+static int s_spr_fmt;
 static void quad(void *tex, int tw, int th, int list, float x0, float y0, float x1, float y1, float u0, float v0,
                  float u1, float v1, float z, u32 argb, u32 oargb) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
     pvr_vertex_t v;
     if (tex) {
-        pvr_poly_cxt_txr(&cxt, (pvr_list_t)list, PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED, tw, th,
-                         (pvr_ptr_t)tex, PVR_FILTER_NONE);
+        pvr_poly_cxt_txr(&cxt, (pvr_list_t)list, s_spr_fmt ? s_spr_fmt : PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED,
+                         tw, th, (pvr_ptr_t)tex, PVR_FILTER_NONE);
         u0 /= tw;
         u1 /= tw;
         v0 /= th;
@@ -384,8 +388,8 @@ static void quad3d(void *tex, int tw, int th, int list, const float *xyz, float 
     int i;
     static const int order[4] = {3, 0, 2, 1};   /* bl tl br tr */
     const float uv[4][2] = {{u0, v0}, {u1, v0}, {u1, v1}, {u0, v1}};
-    pvr_poly_cxt_txr(&cxt, (pvr_list_t)list, PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED, tw, th, (pvr_ptr_t)tex,
-                     PVR_FILTER_NONE);
+    pvr_poly_cxt_txr(&cxt, (pvr_list_t)list, s_spr_fmt ? s_spr_fmt : PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED,
+                     tw, th, (pvr_ptr_t)tex, PVR_FILTER_NONE);
     cxt.gen.culling = PVR_CULLING_NONE;
     pvr_poly_compile(&hdr, &cxt);
     pvr_prim(&hdr, sizeof(hdr));
@@ -472,8 +476,27 @@ static void quad3d(void *tex, int tw, int th, int list, const float *xyz, float 
 }
 #endif
 
-static void *sprres_tex(const SpSprRes *r) {
+#ifdef _arch_dreamcast
+static void s_spr_fmt_clear(void) { s_spr_fmt = 0; }
+#else
+static void s_spr_fmt_clear(void) {}
+#endif
+/* the page texture for drawing image `image` (Dreamcast: sets s_spr_fmt) */
+static void *sprres_tex(const SpSprRes *r, int image) {
     SpSprRes *w = (SpSprRes *)r;
+#ifdef _arch_dreamcast
+    s_spr_fmt = 0;
+    if (w->atlas) {
+        SprAtlas *a = (SprAtlas *)w->atlas;
+        int bank = spr_atlas_bank(a, image, -1);
+        if (!a->tex[0].ptr)
+            return NULL;
+        s_spr_fmt = tex_txr_format(&a->tex[0], bank);
+        return a->tex[0].ptr;
+    }
+#else
+    (void)image;
+#endif
     if (!w->tex && w->pixels)
         w->tex = upload(w->pixels, w->page_w, w->page_h);
     return w->tex;
@@ -639,7 +662,7 @@ static void draw_sprite3d_cmd(const SpCmd *c) {
     if (c->image < 0 || !c->sres || !c->sres->loaded)
         return;
     im = &c->sres->images[c->image];
-    tex = sprres_tex(c->sres);
+    tex = sprres_tex(c->sres, c->image);
     if (!tex)
         return;
     ox = im->ox;
@@ -654,14 +677,17 @@ static void draw_sprite3d_cmd(const SpCmd *c) {
     project(&c->world, im->w - ox, oy - im->h, &xyz[6]);
     project(&c->world, -ox, oy - im->h, &xyz[9]);
     for (k = 0; k < 4; k++)
-        if (xyz[k * 3 + 2] <= 0)
+        if (xyz[k * 3 + 2] <= 0) {
+            s_spr_fmt_clear();
             return;
+        }
     if (flip & 1)
         quad3d(tex, c->sres->page_w, c->sres->page_h, LIST_PT, xyz, im->x + im->w, im->y, im->x, im->y + im->h,
                0xffffffff);
     else
         quad3d(tex, c->sres->page_w, c->sres->page_h, LIST_PT, xyz, im->x, im->y, im->x + im->w, im->y + im->h,
                0xffffffff);
+    s_spr_fmt_clear();
 }
 
 /* ------------------------------------------------------------ 2D */
@@ -684,7 +710,7 @@ static void draw_sprite2d_cmd(const SpCmd *c, int bright) {
     if (c->image < 0 || !c->sres || !c->sres->loaded)
         return;
     im = &c->sres->images[c->image];
-    tex = sprres_tex(c->sres);
+    tex = sprres_tex(c->sres, c->image);
     sprite_rect(c, &x0, &y0, &x1, &y1, &flip);
     if (flip & 1) {
         float t = x0;
@@ -707,12 +733,14 @@ static void draw_sprite2d_cmd(const SpCmd *c, int bright) {
             int img = r->frametab[r->anims[a].first_frame * 2];
             if (img != 0xffff) {
                 const SpDsprImage *i2 = &r->images[img];
+                tex = sprres_tex(r, img);
                 quad(tex, r->page_w, r->page_h, LIST_TR, x0, y0, x1, y1, i2->x, i2->y, i2->x + i2->w, i2->y + i2->h,
                      s_z, ((u32)(c->f * 255.0f) << 24) | 0xffffff, white_offset(bright));
                 s_z += 0.01f;
             }
         }
     }
+    s_spr_fmt_clear();
 }
 
 /* BG layer of 256 x h at x2.5 with the BG scroll (wraps horizontally) */

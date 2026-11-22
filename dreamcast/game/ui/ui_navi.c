@@ -553,9 +553,19 @@ void ui_boss_navi(void *ctx, s32 face, s32 msg, s32 time) {
 }
 
 /* the stage's navigator data: res/navi_<c>_<lang> and res/navifaces_<c>.bin */
+static int s_loaded_c = -1, s_loaded_l = -1;
+void ui_navi_stage_end(void) {
+    NaviB_Destroy();
+    NaviMsg_Destroy();
+    BossHelp_Destroy();
+    ui_res_free(UI_RES_NAVI);
+    free(s_faces);
+    s_faces = NULL;
+    s_face_n = 0;
+    s_loaded_c = s_loaded_l = -1;
+}
 void ui_navi_stage_start(void) {
     static const char *k_lang[6] = { "jpn", "eng", "fra", "deu", "ita", "spa" };   /* data_0207b9bc */
-    static int s_loaded_c = -1, s_loaded_l = -1;
     char dir[128], id[48], path[200];
     int c = navi_chara(), l = ui_lang();
     NaviB_Destroy();

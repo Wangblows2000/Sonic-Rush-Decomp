@@ -38,6 +38,20 @@ static int mapobj40_untranslated(u16 t) {
     return 0; /* v3: 0x7e and 0xa9 translated; v4: 0xb6, 0xb7, 0xc3..0xc5 */
 }
 
+/* COV_RES=1: the sprite resources loaded after objects_init ("preload") and after
+ * every placed object / decoration was created ("all"), for the VRAM budget
+ * (tools/dreamcast/vram_budget.py) */
+static void print_res(const char *stage, const char *when) {
+    int s;
+    if (!getenv("COV_RES"))
+        return;
+    printf("res %s %s", stage, when);
+    for (s = 0; s < OBJ_BAC_COUNT; s++)
+        if (g_obj.res[s].loaded)
+            printf(" %s", g_obj.res[s].id);
+    printf("\n");
+}
+
 static void flush(void) {
     Obj *o;
     int n;
@@ -89,6 +103,7 @@ int main(int argc, char **argv) {
             printf("| %s | objects_init failed | | | |\n", argv[a]);
             continue;
         }
+        print_res(argv[a], "preload");
         memset(tseen, 0, sizeof(tseen));
         memset(tok, 1, sizeof(tok));
         memset(dseen, 0, sizeof(dseen));
@@ -159,6 +174,7 @@ int main(int argc, char **argv) {
                 nd_ok += dok[t];
             }
         }
+        print_res(argv[a], "all");
         printf("| %s | %d/%d | %u/%u | %d/%d | %u/%u |\n", argv[a], nt_ok, nt, oi_ok, oi, nd_ok, nd, di_ok, di);
         if (getenv("COV_V")) { /* per-stage missing classes */
             printf("    missing:");

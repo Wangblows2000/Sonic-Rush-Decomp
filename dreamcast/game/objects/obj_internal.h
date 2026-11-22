@@ -95,6 +95,13 @@ extern ObjGlobals g_obj;
 /* --------------------------------------------- obj_res.c / obj_anim.c */
 int obj_res_load(ObjRes *r, const char *spr_dir, const char *obj_dir, const char *id);
 void obj_res_free(ObjRes *r);
+/* ------------------------------------------------------ obj_palanim.c */
+int obj_palanim_load(const char *obj_dir);            /* palanim.bin (tools/objdata.py) */
+void obj_palanim_reset(void);
+void obj_palanim_start(Obj *w, u32 table, s32 type);  /* PaletteAnim_Create (+ the effect hook) */
+void obj_palanim_release(Obj *w);                     /* PaletteAnim_Release */
+void obj_palanim_main(void);                          /* PaletteAnim_Main, once per frame */
+int obj_palanim_anim(int palanim);                    /* animation whose palette is shown, -1 own */
 int obj_load_file(const char *path, u8 **out, u32 *size);
 void spr_init(ObjSprite *s, const ObjRes *res, u16 anim, u32 flags);  /* AnimatorSprite_Init */
 void spr_set_anim(ObjSprite *s, u16 anim);                            /* AnimatorSprite_SetAnimation */

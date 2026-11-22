@@ -6,8 +6,7 @@
  * free scrolling (X), the map pause (START, ZoneMapPause), progress saving.
  *
  * Not translated (see MENUS.md): the 3D character on the map (a map icon
- * sprite stands in), the navigator panel on the other screen (NaviM/NaviMsg:
- * hint texts, emerald counter), talk demos (TalkDemo: story dialogue scenes),
+ * sprite stands in), talk demos (TalkDemo: story dialogue scenes; hooks),
  * the message boxes (MsgBox 0x11 tutorial, 0x12 "start this zone?": accepted),
  * the HDMA fog effect over unexplored parts of the map.
  *
@@ -52,13 +51,21 @@ typedef struct {                       /* +0x1b08: scroll arrows + buttons */
     MnSpr spr[6];                      /* 0..3 arrows, 4 back button, 5 scroll button */
 } ZmArrows;
 
+typedef struct ZmNavi {               /* ZoneMap_InitNavi task work (UnkBgm_022e3180) */
+    s32 id;                            /* message id shown (0x20 none) */
+    s32 unk4;                          /* navigator face shown */
+    s32 unk8, unkc;                    /* delayed call: count, limit (0 = off) */
+    s32 unk10;                         /* delayed call: message id */
+    s32 unk14;                         /* character (0 Sonic, 1 Blaze) */
+} ZmNavi;
+
 typedef struct ZoneMapWork {
     s32 unk0;                          /* 1: leave the map */
     ZmMapBg map;
     ZmNodeLayer nodes;
     s32 char_x, char_y;                /* +0x199c character position on screen (fx) */
     ZmArrows arrows;
-    s32 unk1cc4;                       /* navi message id (no navi panel here) */
+    struct ZmNavi *unk1cc4;            /* ZoneMap_InitNavi: navigator message state (delayed-call task) */
     s32 unk1cc8, unk1ccc, unk1cd0;     /* result: character, zone index, act */
     MnBgImg *bg;                       /* files[0] zmap_map_bg.bbg */
     MnRes *icons, *arrows_res, *titl;  /* zmap_map_icon, zmap_scroll_arrow, mnu_titl */
@@ -97,6 +104,11 @@ s32 ZoneActSelect_GetSelectedZone(void);
 s32 ZoneActSelect_GetResult(void);
 /* map pause (below) */
 static void ZoneMapPause_Create(BOOL flag);
+/* ZoneMapPause_ShowNaviMessage */
+static void ZoneMapPause_ShowNaviMessage(void) {
+    NaviMsg_ShowMessage(5, 0xb4);
+    NaviMsg_SetFaceAnim(7);
+}
 BOOL ZoneMapPause_IsClosed(void);
 
 /* ----------------------------------------------------------- helpers */
@@ -114,10 +126,113 @@ static fx32 FX_Sqrt(fx32 v) {
 /* FX_Atan: angle (0x10000 = full turn) of atan(x), x in 20.12 */
 static s32 FX_Atan(fx32 x) { return (s32)(atan(x / 4096.0) * 32768.0 / 3.14159265358979); }
 
-static void ZoneMap_SetNaviMessage(s32 *b, s32 id) {
-    /* NaviMsg panel on the other screen: not part of the port. */
-    *b = id;
+/* ZoneMap_SetNaviMessage: navigator message, face sequence and visibility for a
+ * map event; most messages fall back to message 3 (face only) after 180 frames
+ * through the delayed call */
+static void ZoneMap_SetNaviMessage(ZmNavi *b, s32 id) {
+    s32 mode, time, track = 0;
+    BOOL fade, play;
     g_zm_navi_msg = id;
+    if (!b || b->id == id)
+        return;
+    b->id = id;
+    mode = 0;
+    b->unk8 = 0;
+    time = 0xb4;
+    b->unkc = time;
+    b->unk10 = 3;
+    play = TRUE;
+    fade = TRUE;
+    switch (id) {
+    case 0: fade = FALSE; b->unkc = 0; play = FALSE; break;
+    case 1: fade = FALSE; b->unkc = 0x3c; break;
+    case 2: fade = FALSE; b->unkc = 0; play = FALSE; break;
+    case 3: fade = FALSE; b->unkc = 0; break;
+    case 4: track = 7; mode = 4; break;
+    case 5: track = 8; mode = 4; break;
+    case 6: track = 9; mode = 4; break;
+    case 7: track = 10; mode = 4; break;
+    case 8: track = 11; mode = 4; break;
+    case 9: track = 12; mode = 4; break;
+    case 10: track = 13; mode = 4; break;
+    case 11: track = 14; mode = 4; break;
+    case 25: track = 0; mode = 3; break;
+    case 26: track = 2; mode = 2; break;
+    case 27: track = 3; mode = 2; break;
+    case 28: track = 4; mode = 6; break;
+    case 29: track = 5; mode = 7; break;
+    case 30: track = 6; mode = 8; break;
+    default:
+        if (b->unk14 == 0) {
+            switch (id) {
+            case 12: track = 0x14; mode = 4; break;
+            case 13: track = 0x15; mode = 4; break;
+            case 14: track = 0x16; mode = 4; break;
+            case 15: track = 0x17; mode = 4; break;
+            case 23: track = 1; mode = 5; break;
+            case 17: track = 0x18; mode = 4; break;
+            case 18: track = 0x19; mode = 4; break;
+            case 24: track = 0x1a; mode = 0; break;
+            default: return;
+            }
+        } else {
+            switch (id) {
+            case 14: track = 0x15; mode = 4; break;
+            case 15: track = 0x16; mode = 4; break;
+            case 23: track = 1; mode = 5; break;
+            case 16: track = 0x14; mode = 4; break;
+            case 19: track = 0x17; mode = 4; break;
+            case 20: track = 0x18; mode = 4; break;
+            case 21: track = 0x19; mode = 4; break;
+            case 22: track = 0x1a; mode = 4; break;
+            case 24: track = 0x1b; mode = 0; break;
+            default: return;
+            }
+        }
+        break;
+    }
+    if (play) {
+        if (fade)
+            NaviMsg_ShowMessage(track, time);
+        NaviMsg_SetFaceAnim(mode);
+        if (b->unk4 == 0) {
+            b->unk4 = 1;
+            if (id == 1)
+                NaviMsg_FadeVisible(TRUE);
+            else
+                NaviMsg_SetVisible(TRUE);
+        }
+    } else if (b->unk4 != 0) {
+        b->unk4 = 0;
+        if (id == 2)
+            NaviMsg_FadeVisible(FALSE);
+        else
+            NaviMsg_SetVisible(FALSE);
+    }
+}
+
+static void ZoneMap_DelayedCall_Main(void) {
+    ZmNavi *t = TASK_WORK(ZmNavi);
+    if (t->unkc != 0) {
+        t->unk8++;
+        if (t->unk8 >= t->unkc)
+            ZoneMap_SetNaviMessage(t, t->unk10);
+    }
+}
+
+static ZmNavi *ZoneMap_InitNavi(s32 mode, s32 keep) {
+    ZmNavi *w;
+    NaviBg_Load(0, mode == 1 ? 1 : 0);
+    NaviM_Load();
+    NaviMsg_Create();
+    if (keep == 0)
+        NaviM_ResetPending();
+    w = (ZmNavi *)Task_Create(ZoneMap_DelayedCall_Main, NULL, 0, 0x3000, 0x1000, sizeof(ZmNavi))->work;
+    memset(w, 0, sizeof(*w));
+    w->id = 0x20;
+    w->unk14 = mode;
+    NaviMsg_SetVisible(FALSE);
+    return w;
 }
 
 static BOOL ZoneMap_IsBlaze(void) { return gGameState.unk0 == 1; }
@@ -1036,9 +1151,9 @@ static void ZoneMap_RevealNodesForStory(ZmState *p) {
         ZoneMap_RevealBlazeNodes(p);
 }
 
-/* NaviM_CheckStepAdvanced / NaviM_SetNewEmerald are navigator-panel work (0 / no-op here) */
 static BOOL ZoneMap_CheckNewEmerald(ZmState *w) {
-    s32 r = 0;
+    s32 r = NaviM_CheckStepAdvanced();
+    s32 idx = 0;
     BOOL found = FALSE, save = FALSE;
     u8 cur;
     u32 a, b;
@@ -1050,6 +1165,7 @@ static BOOL ZoneMap_CheckNewEmerald(ZmState *w) {
         if (a > b) {
             for (i = 6; i >= 0; i--) {
                 if ((a & (1u << i)) && !(b & (1u << i))) {
+                    idx = i;
                     found = TRUE;
                     break;
                 }
@@ -1061,9 +1177,13 @@ static BOOL ZoneMap_CheckNewEmerald(ZmState *w) {
         }
     } else {
         switch (w->unk8) {
-        case 4: case 0xc: case 0xe: case 0x12: case 0x16: case 0x1a: case 0x1e:
-            found = TRUE;
-            break;
+        case 4: found = TRUE; idx = 0; break;
+        case 0xc: found = TRUE; idx = 1; break;
+        case 0xe: found = TRUE; idx = 2; break;
+        case 0x12: found = TRUE; idx = 3; break;
+        case 0x16: found = TRUE; idx = 4; break;
+        case 0x1a: found = TRUE; idx = 5; break;
+        case 0x1e: found = TRUE; idx = 6; break;
         }
     }
     if (r == 0 && !found)
@@ -1071,6 +1191,8 @@ static BOOL ZoneMap_CheckNewEmerald(ZmState *w) {
     w->unk74 = 0;
     w->unk9c = found;
     w->unka0 = r;
+    if (found)
+        NaviM_SetNewEmerald(idx);
     if (save == TRUE)
         SaveData_CommitOrShowError(NULL);
     return TRUE;
@@ -1170,7 +1292,7 @@ static void ZoneMap_Action_PlayTalkDemo(void) {
     ZmState *t = ZS;
     if (t->mode == 0)
         t->map->map.unk5c = 0;   /* ZoneMap_Unk_ov001_022e5618(.., 0) */
-    ZoneMap_SetNaviMessage(&t->map->unk1cc4,
+    ZoneMap_SetNaviMessage(t->map->unk1cc4,
                            (t->mode == 0 ? ZoneMap_IsSonicNaviAvailable(t->unk4) : ZoneMap_IsBlazeNaviAvailable(t->unk8))
                                ? 2
                                : 0);
@@ -1269,7 +1391,7 @@ static void ZoneMap_RunSonicStoryStep(void) {
     ZmState *w = ZS;
     switch (w->unk4) {
     case 0: w->unk94 = 1; ZoneMap_Action_PlayTalkDemo(); break;
-    case 1: w->unk94 = 3; ZoneMap_Action_WaitTimer(0xf0); break;   /* NaviMsg_StartIntro */
+    case 1: w->unk94 = 3; NaviMsg_StartIntro(); ZoneMap_Action_WaitTimer(0xf0); break;
     case 3: w->unk94 = 4; ZoneMap_Action_ShowMsgBox11(); break;
     case 4: w->unk94 = 5; ZoneMap_Action_ScrollToPathStart(0, 1, 2); break;
     case 5: w->unk90 = 1; gTaskCurrent->func = ZoneMap_State_SelectNode; break;
@@ -1295,7 +1417,7 @@ static void ZoneMap_RunSonicStoryStep(void) {
     case 21: w->unk94 = 0x16; ZoneMap_Action_MoveToNode(8); break;
     case 22:
         w->unk90 = 1;
-        ZoneMap_SetNaviMessage(&w->map->unk1cc4, 8);
+        ZoneMap_SetNaviMessage(w->map->unk1cc4, 8);
         gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 23: w->unk94 = 0x18; ZoneMap_Action_ScrollToPathStart(5, 8, 9); break;
@@ -1308,7 +1430,7 @@ static void ZoneMap_RunSonicStoryStep(void) {
     case 26: w->unk94 = 0x1b; ZoneMap_Action_MoveToNode(0xc); break;
     case 27:
         w->unk90 = 1;
-        ZoneMap_SetNaviMessage(&w->map->unk1cc4, 9);
+        ZoneMap_SetNaviMessage(w->map->unk1cc4, 9);
         gTaskCurrent->func = ZoneMap_State_SelectNode;
         break;
     case 28: w->unk94 = 0x1d; ZoneMap_Action_PlayTalkDemo(); break;
@@ -1343,7 +1465,7 @@ static void ZoneMap_RunBlazeStoryStep(void) {
     case 5: w->unk98 = 6; ZoneMap_Action_ScrollToPathStart(0xc, 1, 0x10); break;
     case 6: w->unk98 = 7; ZoneMap_Action_MoveToNode(0x10); break;
     case 7: w->unk98 = 8; ZoneMap_Action_PlayTalkDemo(); break;
-    case 8: w->unk98 = 10; ZoneMap_Action_WaitTimer(0xf0); break;   /* NaviMsg_StartIntro */
+    case 8: w->unk98 = 10; NaviMsg_StartIntro(); ZoneMap_Action_WaitTimer(0xf0); break;
     case 10: w->unk98 = 0xb; ZoneMap_Action_ScrollToPathStart(0xd, 0x10, 2); break;
     case 11: w->unk90 = 1; gTaskCurrent->func = ZoneMap_State_SelectNode; break;
     case 12: w->unk98 = 0xd; ZoneMap_Action_ScrollToPathStart(0xe, 2, 3); break;
@@ -1404,12 +1526,20 @@ static void ZoneMap_State_WaitTimer(void) {
 static void ZoneMap_State_WaitNaviMessage(void) {
     ZmState *w = ZS;
     ZoneMap_UpdateView(w);
+    if (w->unk74 == 0) {
+        if (w->unka0 != 0)
+            NaviM_StartCounter();
+        if (w->unk9c != 0)
+            NaviM_StartEmeraldAppear();
+    }
     w->unk74++;
     if (w->unk74 >= 30) {
-        w->unk9c = 0;
-        w->unka0 = 0;
-        w->unk74 = 0;
-        ZoneMap_SelectNextState();
+        if (w->unka0 == 0 || !NaviM_IsCounting()) {
+            w->unk9c = 0;
+            w->unka0 = 0;
+            w->unk74 = 0;
+            ZoneMap_SelectNextState();
+        }
     }
 }
 
@@ -1446,7 +1576,7 @@ static void ZoneMap_State_PlayTalkDemo(void) {
                 w->unk8c = 1;
                 w->map->map.unk5c = 1;
                 if (w->mode == 0 ? ZoneMap_IsSonicNaviAvailable(w->unk4) : ZoneMap_IsBlazeNaviAvailable(w->unk8))
-                    ZoneMap_SetNaviMessage(&w->map->unk1cc4, 1);
+                    ZoneMap_SetNaviMessage(w->map->unk1cc4, 1);
             }
             d = w->unk74 - w->unk78;
             if (d >= 0xf) {
@@ -1753,10 +1883,10 @@ static void ZoneMap_Unk_ov001_022e606c(void) {
         gTaskCurrent->func = ZoneMap_State_StartStage;
         return;
     case 15:
-        ZoneMap_SetNaviMessage(&w->map->unk1cc4, 0xd);
+        ZoneMap_SetNaviMessage(w->map->unk1cc4, 0xd);
         return;
     case 16:
-        ZoneMap_SetNaviMessage(&w->map->unk1cc4, 0xf);
+        ZoneMap_SetNaviMessage(w->map->unk1cc4, 0xf);
         return;
     case 7:
         if (w->unk4 == 0x13) {
@@ -1785,7 +1915,7 @@ static void ZoneMap_Unk_ov001_022e5f80(void) {
         gTaskCurrent->func = ZoneMap_State_StartStage;
         return;
     case 16:
-        ZoneMap_SetNaviMessage(&w->map->unk1cc4, 0xf);
+        ZoneMap_SetNaviMessage(w->map->unk1cc4, 0xf);
         return;
     case 4:
         if (w->unk8 == 0xf) {
@@ -2116,6 +2246,10 @@ static ZmState *ZoneMap_CreateState(ZoneMapWork *map, s32 alt, s32 mode) {
 /* --------------------------------------------------------- the map task */
 static void ZoneMap_Destructor(void) {
     ZoneMapWork *w = TASK_WORK(ZoneMapWork);
+    NaviM_Destroy();
+    NaviMsg_Destroy();
+    NaviM_Release();
+    NaviMsg_CloseFiles();
     mn_display_reset();
     mn_bg_free(w->bg);
     mn_res_free(w->icons);
@@ -2129,6 +2263,8 @@ static void ZoneMap_Destructor(void) {
 static void ZoneMap_Main(void) {
     ZoneMapWork *w = TASK_WORK(ZoneMapWork);
     s32 t1, t2, t3;
+    if (strcmp(g_mn_scene, "ZoneMap") == 0)
+        ZoneMap_Compose();   /* the navigator pieces come and go with the DS planes */
     if (w->unk0 == 1) {
         t1 = w->unk1cc8;
         t2 = w->unk1ccc;
@@ -2147,10 +2283,11 @@ static void ZoneMap_Main(void) {
 }
 
 /* The map (main engine, the touch screen) fills the frame at 2.5x. The other
- * screen only holds the navigator panel, which the port does not have. */
+ * screen holds the navigator: its pieces are placed over the map (mn_navi.c). */
 static void ZoneMap_Compose(void) {
     mn_comp_reset(0);
     mn_comp_full(0);
+    mn_navi_compose();
 }
 
 static void ZoneMap_InitDisplay(void) {
@@ -2192,7 +2329,9 @@ static void ZoneMap_Start(s32 a, s32 b) {
     Background_SetSize(0, 3, 1024, 256);
     ZoneMap_InitNodeLayer(&w->nodes, &w->map, w->ama, w->icons);
     ZoneMap_InitScrollArrows(&w->arrows, w->arrows_res, w->titl);
+    w->unk1cc4 = ZoneMap_InitNavi(gGameState.unk0 == 1, a);
     r = ZoneMap_CreateState(w, a, b);
+    NaviM_Create();
     for (i = 0; i < 12; i++) {
         gPad.delay[i] = 0x14;
         gPad.interval[i] = 1;
@@ -2460,7 +2599,6 @@ static void ZoneMapPause_Create(BOOL flag) {
     MnTask *t;
     ZmPauseWork *w;
     int i;
-    (void)flag;
     if (gZoneMapPauseWork) {   /* ZoneMapPause_Destroy */
         Task_Destroy(gZoneMapPauseWork->task);
         gZoneMapPauseWork = NULL;
@@ -2484,4 +2622,6 @@ static void ZoneMapPause_Create(BOOL flag) {
         w->anim[i] = -1;
     }
     ZoneMapPause_Action_Open(w, 0);
+    if (flag)
+        ZoneMapPause_ShowNaviMessage();
 }

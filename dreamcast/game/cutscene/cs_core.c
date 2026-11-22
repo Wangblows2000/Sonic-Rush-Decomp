@@ -9,6 +9,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cs_internal.h"
+#ifdef _arch_dreamcast
+#include "../engine/render.h"
+#endif
 
 char g_cs_dir[96] = "/cd/cutscene", g_cs_sprite_dir[96] = "/cd/sprites", g_cs_model_dir[96] = "/cd/models",
      g_cs_music_dir[96] = "/cd/music";
@@ -371,6 +374,17 @@ CsRes *cs_res_load(const char *id) {
     r->images = (const CsImage *)(b + 16 + 4 * r->n_pages);
     r->anims = (const CsAnimDef *)((const u8 *)r->images + 16 * r->n_images);
     r->frames = (const CsFrame *)((const u8 *)r->anims + 12 * r->n_anims);
+#ifdef _arch_dreamcast
+    /* PAL4 pages with a palette row per palette (ARGB1555 for direct pages) */
+    snprintf(path, sizeof(path), "%s/%s", g_cs_sprite_dir, id);
+    r->atlas = calloc(1, sizeof(SprAtlas));
+    if (r->atlas && spr_atlas_load((SprAtlas *)r->atlas, path, r->blob, 0) > 0)
+        return r;
+    if (r->atlas)
+        spr_atlas_free((SprAtlas *)r->atlas);
+    free(r->atlas);
+    r->atlas = NULL;
+#endif
     for (i = 0; i < r->n_pages; i++) {
         u8 *px;
         u32 psz;
@@ -393,6 +407,11 @@ void cs_res_free(CsRes *r) {
         return;
     for (i = 0; i < 4; i++)
         cs_tex_free(&r->tex[i]);
+#ifdef _arch_dreamcast
+    if (r->atlas)
+        spr_atlas_free((SprAtlas *)r->atlas);
+#endif
+    free(r->atlas);
     free(r->blob);
     free(r);
 }
@@ -511,6 +530,7 @@ void AnimatorSprite_Draw(CsSpr *s) {
         if (q) {
             q->res = r;
             q->page = im->page;
+            q->image = (u16)(im - r->images);
         }
     }
 }

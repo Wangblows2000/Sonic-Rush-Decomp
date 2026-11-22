@@ -78,6 +78,8 @@ static void obj_destroy(Obj *o) {
     Obj **pp;
     if (o->dtor)
         o->dtor(o);
+    if (o->spr.palanim) /* StageObj_Destructor: flags 0x800 -> PaletteAnim_Release */
+        obj_palanim_release(o);
     obj_free_player_refs(o);
     rect_forget(&o->coll[0]);
     rect_forget(&o->coll[1]);
@@ -1059,6 +1061,7 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     memset(&g_obj_stage, 0, sizeof(g_obj_stage));
     if (h->magic != RLVL_MAGIC)
         return -1;
+    obj_palanim_load(g_obj.obj_dir);
     g_obj.map = map;
     g_obj.level = level_data;
     g_obj.hdr = h;
@@ -1131,6 +1134,7 @@ void objects_shutdown(void) {
     for (s = 0; s < OBJ_BAC_COUNT; s++)
         if (g_obj.res[s].loaded)
             obj_res_free(&g_obj.res[s]);
+    obj_palanim_reset();
     free(g_obj.prm);
     free(g_obj.ring_state);
     free(g_obj.dprm);
@@ -1202,4 +1206,5 @@ void objects_update(DcPlayer *p) {
         obj_main(o);
         nxt = o->next;
     }
+    obj_palanim_main(); /* PaletteAnim tasks (id 0x3e00) */
 }

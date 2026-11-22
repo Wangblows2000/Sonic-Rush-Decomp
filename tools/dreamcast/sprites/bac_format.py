@@ -387,6 +387,9 @@ def render(bac, anim, state, frame, stats=None):
     maxy = max(max(r[1] + r[3] for r in rects), asm.bottom)
     W, H = maxx - minx, maxy - miny
     img = bytearray(W * H * 4)
+    # palette index plane: (palette base + index) per pixel, 0 = transparent. Index 0 of a
+    # 4bpp piece is transparent; an 8bpp piece reads all 256 entries (index 0 transparent).
+    idxplane = bytearray(W * H)
     vram = state.vram
     pal = state.pal
 
@@ -455,5 +458,7 @@ def render(bac, anim, state, frame, stats=None):
                 Y = y0 - miny + offy + py
                 q = (Y * W + X) * 4
                 img[q:q + 4] = bytes((r, g, b, a))
+                idxplane[Y * W + X] = (palbase + idx) & 0xFF
     return {"w": W, "h": H, "rgba": bytes(img), "ox": -minx, "oy": -miny,
-            "bbox": [asm.left, asm.top, asm.right, asm.bottom]}
+            "bbox": [asm.left, asm.top, asm.right, asm.bottom], "idx": bytes(idxplane),
+            "pal": [colour(i) for i in range(256)]}

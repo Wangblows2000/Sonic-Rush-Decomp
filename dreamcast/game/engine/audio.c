@@ -37,8 +37,11 @@
  * decoder's reset state (0, step 127) matches the encoder's; underruns are
  * counted (audio_stream_underruns). */
 #define AUDIO_RING_BYTES (384 * 1024)   /* 12.0 s of stereo ADPCM at 32728 Hz */
-#define AUDIO_CHUNK (16 * 1024)         /* reader request size */
-#define AUDIO_RESTART (128 * 1024)      /* ring level needed to restart after an underrun */
+#define AUDIO_CHUNK (64 * 1024)         /* reader request size */
+#define AUDIO_RESTART (128 * 1024)
+#ifndef AUDIO_READER_PRIO
+#define AUDIO_READER_PRIO (PRIO_DEFAULT + 2)  /* below the game loop: reads run in its idle time */
+#endif      /* ring level needed to restart after an underrun */
 
 static snd_stream_hnd_t s_hnd = SND_STREAM_INVALID;
 static file_t s_fd = FILEHND_INVALID;
@@ -165,7 +168,7 @@ static void *stream_thread(void *arg)
         if(s_hnd != SND_STREAM_INVALID) r = snd_stream_poll(s_hnd);
         mutex_unlock(&s_lock);
         t1 = timer_ms_gettime64();
-        if(s_trace && last && (t0 - last > 100 || t1 - t0 > 100 || r < 0))
+        if(s_trace && last && (t0 - last > 20 || t1 - t0 > 20 || r < 0))
             printf("strm t%lu gap %lu ms poll %lu ms r %d pos %lu\n", (unsigned long)t0, (unsigned long)(t0 - last),
                    (unsigned long)(t1 - t0), r, (unsigned long)s_streamed);
         last = t1;
@@ -186,6 +189,7 @@ static void *reader_thread(void *arg)
         mutex_unlock(&s_flock);
         t1 = timer_ms_gettime64();
         if(got) s_read_ms = (uint32_t)(t1 - t0);
+        if(s_trace && got) printf("strm rd t%lu %lu B %lu ms (end t%lu)\n", (unsigned long)t0, (unsigned long)got, (unsigned long)(t1 - t0), (unsigned long)t1);
         if(s_trace && (t1 - t0 > 500 || (uint32_t)(t1 / 1000) >= next_log)) {
             printf("strm reader t%lu read %lu B in %lu ms, ring %lu B (low %lu), underruns %lu\n", (unsigned long)t0,
                    (unsigned long)got, (unsigned long)(t1 - t0), (unsigned long)(s_wr - s_rd), (unsigned long)s_low,
@@ -203,6 +207,7 @@ void audio_init(void)
     s_thread_run = 1;
     s_thread = thd_create(0, stream_thread, NULL);
     s_reader = thd_create(0, reader_thread, NULL);
+    if(s_reader) thd_set_prio(s_reader, AUDIO_READER_PRIO);
 }
 
 int audio_music_play(const char *path, uint32_t loop_start, uint32_t loop_end)

@@ -47,11 +47,12 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "sprites"))
 
 import g3d  # noqa: E402
+import matanim  # noqa: E402
 from nds_archive import maybe_decompress, open_narc  # noqa: E402
 
 DCM_MAGIC = b"DCM1"
 DCA_MAGIC = b"DCA1"
-VERSION = 1
+VERSION = 2
 
 PAL_JOINT, PAL_MIX, PAL_BB, PAL_BBY, PAL_IDENTITY = 0, 1, 2, 3, 4
 TEX_ARGB1555, TEX_RGB565, TEX_ARGB4444 = 0, 1, 2
@@ -61,7 +62,7 @@ MF_REPEAT_S, MF_REPEAT_T, MF_FLIP_S, MF_FLIP_T = 1, 2, 4, 8
 MF_TRANSLUCENT, MF_VTXCOLOR, MF_ENVMAP, MF_WIREFRAME = 0x10, 0x20, 0x40, 0x80
 MF_CULL_BACK, MF_CULL_FRONT, MF_TEXMTX, MF_DECAL = 0x100, 0x200, 0x400, 0x800
 
-HEADER_FMT = "<4sHHI16sBBH6H2I11I4H3I6f"
+HEADER_FMT = "<4sHHI16sBBH6H2I11I4H3I6f2I"
 HEADER_SIZE = struct.calcsize(HEADER_FMT)
 
 
@@ -274,7 +275,7 @@ def material_uv_affine(mat, tex):
     return a, d, e, f
 
 
-def convert_model(model, texblk, want_png=False):
+def convert_model(model, texblk, want_png=False, extra_pairs=()):
     info = model["info"]
     sb = run_sbc(model)
     rep = {"name": model["name"], "src": {k: info[k] for k in ("num_vertex", "num_polygon", "num_triangle",
@@ -335,7 +336,8 @@ def convert_model(model, texblk, want_png=False):
             fmt, data, tflags = to_pvr16(rgba)
             tex_index[key] = len(textures)
             textures.append({"name": mat["texture"], "palette": mat["palette"], "w": t["width"], "h": t["height"],
-                             "format": fmt, "flags": tflags, "src_format": g3d.TEX_FORMATS[t["format"]], "data": data})
+                             "format": fmt, "flags": tflags, "src_format": g3d.TEX_FORMATS[t["format"]], "data": data,
+                             "orig_w": t["orig_w"], "orig_h": t["orig_h"]})
             if want_png:
                 tex_pngs.append((mat["texture"] + "__" + str(mat["palette"]), rgba))
         return tex_index[key], t
@@ -378,12 +380,22 @@ def convert_model(model, texblk, want_png=False):
         if (a, d, e, f) != (1.0, 1.0, 0.0, 0.0):
             flags |= MF_TEXMTX
         da, se = mat["diff_amb"], mat["spec_emi"]
-        mats_out.append({
+        srt_flags = 0
+        if mat["flag"] & 1:       # NNSi_G3dFuncSbc_MAT_InternalDefault: res->flag from the SRT presence bits
+            srt_flags = 8 | (1 if mat["flag"] & 2 else 0) | (2 if mat["flag"] & 4 else 0) | (4 if mat["flag"] & 8 else 0)
+        matx = {"srt_flags": srt_flags, "texgen": mat["tex_param"] >> 30,
+                "orig_w": mat["orig_w"], "orig_h": mat["orig_h"],
+                "base_w": t["width"] if t else 0, "base_h": t["height"] if t else 0,
+                "scale": mat["tex_srt"]["scale"], "trans": mat["tex_srt"]["trans"], "mag": mat["mag"]}
+        mats_out.append({"matx": matx,
             "name": mat["name"], "texture": 0xFFFF if ti is None else ti, "flags": flags, "alpha": alpha,
             "light_mask": pa & 0xF, "poly_mode": (pa >> 4) & 3, "poly_id": (pa >> 24) & 63,
             "diffuse": rgb555_argb(da & 0x7FFF), "ambient": rgb555_argb((da >> 16) & 0x7FFF),
             "specular": rgb555_argb(se & 0x7FFF), "emission": rgb555_argb((se >> 16) & 0x7FFF),
             "uv": (a, d, e, f), "set_vtx_color": bool(da & 0x8000)})
+    # ---------------- textures of the texture pattern animations bound to these materials
+    for tname, pname in extra_pairs:
+        tex_of({"name": "<pattern>", "texture": tname, "palette": pname})
     # ---------------- geometry
     vertices = []      # tuples
     strips = []        # (first_vertex, count, prim)
@@ -570,6 +582,18 @@ def write_dcm(pkg):
         out += t["data"]
         while len(out) % 32:
             out.append(0)
+    align()
+    ofs_matx = len(out)
+    for m in pkg["materials"]:
+        x = m["matx"]
+        out += struct.pack("<16sBBHHHHH6i", m["name"].encode("latin-1")[:15].ljust(16, b"\0"), x["srt_flags"],
+                           x["texgen"], 0, x["orig_w"], x["orig_h"], x["base_w"], x["base_h"], x["scale"][0],
+                           x["scale"][1], x["trans"][0], x["trans"][1], x["mag"][0], x["mag"][1])
+    ofs_texx = len(out)
+    for t in pkg["textures"]:
+        out += struct.pack("<16s16sHHHH", t["name"].encode("latin-1")[:15].ljust(16, b"\0"),
+                           (t["palette"] or "").encode("latin-1")[:15].ljust(16, b"\0"), t["w"], t["h"],
+                           t["orig_w"], t["orig_h"])
     if pkg["vertices"]:
         pts = vb["p"]
         bmin, bmax = pts.min(axis=0).tolist(), pts.max(axis=0).tolist()
@@ -585,7 +609,7 @@ def write_dcm(pkg):
                      ofs_joints, ofs_order, ofs_palette, ofs_mix, ofs_evp, ofs_mat, ofs_tex, ofs_draw, ofs_strip,
                      ofs_vtx, ofs_texdata,
                      info["num_vertex"], info["num_polygon"], info["num_triangle"], info["num_quad"],
-                     c["vertex"], c["polygon"], c["pvr_triangles"], *bmin, *bmax)
+                     c["vertex"], c["polygon"], c["pvr_triangles"], *bmin, *bmax, ofs_matx, ofs_texx)
     return bytes(out)
 
 
@@ -799,8 +823,26 @@ def save_png(path, rgba):
     Image.fromarray(rgba, "RGBA").save(path)
 
 
-def convert_resource(label, stem, data, outdir, want_png=False):
-    """Convert one resource; returns manifest entry."""
+def pattern_pairs(model, texblk, btps):
+    """(texture, palette) pairs of the pattern animations (parsed BTP0s) that bind to this model's
+    materials (by material name, NNSi_G3dAnmObjInitNsBtp) and whose texture and palette are in the
+    model's TEX0 (the game binds a pattern animation to the model whose textures it names; the
+    boss models in mod/ get their patterns from the zone archives)."""
+    names = {m["name"] for m in model["materials"]}
+    static_pal = {m["name"]: m["palette"] for m in model["materials"]}
+    pairs = []
+    for anims in btps:
+        for p in matanim.btp_pairs(anims, names, static_pal):
+            t = texblk["textures"].get(p[0])
+            if t is None or (t["format"] != 7 and p[1] not in texblk["palettes"]):
+                continue
+            if p not in pairs:
+                pairs.append(p)
+    return pairs
+
+
+def convert_resource(label, stem, data, outdir, want_png=False, btps=()):
+    """Convert one resource; returns manifest entry.  btps: parsed BTP0s next to a model (pattern textures)."""
     outdir = Path(outdir)
     magic = data[:4]
     ent = {"source": label, "kind": magic.decode("latin-1"), "in_bytes": len(data), "outputs": []}
@@ -809,7 +851,10 @@ def convert_resource(label, stem, data, outdir, want_png=False):
         r = g3d.parse_bmd(data)
         ent["models"] = []
         for m in r["models"]:
-            pkg, rep, pngs = convert_model(m, r["tex"], want_png)
+            pairs = pattern_pairs(m, r["tex"], btps) if r["tex"] else []
+            pkg, rep, pngs = convert_model(m, r["tex"], want_png, pairs)
+            if pairs:
+                rep["pattern_textures"] = len(pairs)
             blob = write_dcm(pkg)
             fn = "%s__%s.dcm" % (base, m["name"])
             (outdir / fn).write_bytes(blob)
@@ -841,15 +886,16 @@ def convert_resource(label, stem, data, outdir, want_png=False):
         ent["vis"] = rep
         ent["outputs"].append(fn)
         ent["out_bytes"] = len(blob)
-    elif magic == b"BTP0":
-        ent["pattern"] = [{"name": a["name"], "frames": a["num_frame"], "materials": len(a["materials"])}
-                          for a in g3d.parse_btp(data)]
-        ent["note"] = "parsed only (texture pattern animation not converted)"
-    elif magic == b"BTA0":
-        ent["srt"] = [{"name": a.name, "frames": a.num_frame, "materials": len(a.mats)} for a in g3d.parse_bta(data)]
-        ent["note"] = "parsed only (texture SRT animation not converted)"
-    else:
-        ent["note"] = "material colour animation (BMA0) not converted"
+    elif magic in (b"BTP0", b"BTA0", b"BMA0"):
+        kind, ext, parse, key = {b"BTP0": (matanim.DCA_KIND_TEXPAT, ".dcp", matanim.parse_btp, "pattern"),
+                                 b"BTA0": (matanim.DCA_KIND_TEXSRT, ".dct", matanim.parse_bta, "srt"),
+                                 b"BMA0": (matanim.DCA_KIND_MATCOL, ".dcc", matanim.parse_bma, "matcol")}[magic]
+        blob, rep = matanim.write_set(kind, parse(data))
+        fn = base + ext
+        (outdir / fn).write_bytes(blob)
+        ent[key] = rep
+        ent["outputs"].append(fn)
+        ent["out_bytes"] = len(blob)
     return ent
 
 
@@ -860,14 +906,24 @@ def cmd_batch(args):
                 "failures": []}
     t0 = time.time()
     seen = {}
-    for label, stem, data in iter_rom_resources(args.root):
+    resources = list(iter_rom_resources(args.root))
+    # texture pattern animations: a model gets the textures of the BTP0s that bind to its materials
+    # (by name, as the game does) and name textures of its TEX0 (pattern_pairs)
+    btps = []
+    for label, stem, data in resources:
+        if data[:4] == b"BTP0":
+            try:
+                btps.append(matanim.parse_btp(data))
+            except Exception as e:  # report, keep going
+                manifest["failures"].append({"source": label, "error": "BTP0 pre-scan: %s" % e})
+    for label, stem, data in resources:
         key = (data[:4], hash(data))
         if key in seen:                       # identical resource already converted (e.g. lz7 + raw narc)
             manifest["entries"].append({"source": label, "duplicate_of": seen[key]})
             continue
         seen[key] = label
         try:
-            ent = convert_resource(label, stem, data, outdir, args.png)
+            ent = convert_resource(label, stem, data, outdir, args.png, btps)
             manifest["entries"].append(ent)
         except Exception as e:  # report, keep going
             manifest["failures"].append({"source": label, "error": "%s: %s" % (type(e).__name__, e)})
@@ -878,10 +934,16 @@ def cmd_batch(args):
     return 0 if not manifest["failures"] else 1
 
 
+def container_of(label):
+    """'narc/x.narc:member' -> 'narc/x.narc'; 'mod/a.nsbmd' -> 'mod'."""
+    return label.split(":", 1)[0] if ".narc:" in label else label.rsplit("/", 1)[0]
+
+
 def summarize(man):
     s = {"resources": 0, "duplicates": 0, "failures": len(man["failures"]), "by_kind": {}, "models": 0,
          "models_count_match": 0, "models_count_mismatch": [], "vertices": 0, "polygons": 0, "pvr_triangles": 0,
-         "textures": 0, "in_bytes": 0, "out_bytes": 0, "joint_anims": 0, "vis_anims": 0, "warnings": 0}
+         "textures": 0, "in_bytes": 0, "out_bytes": 0, "joint_anims": 0, "vis_anims": 0, "material_anims": 0,
+         "warnings": 0}
     for e in man["entries"]:
         if "duplicate_of" in e:
             s["duplicates"] += 1
@@ -904,6 +966,7 @@ def summarize(man):
                 s["models_count_mismatch"].append(e["source"] + ":" + m["name"])
         s["joint_anims"] += len(e.get("anims", []))
         s["vis_anims"] += len(e.get("vis", []))
+        s["material_anims"] += sum(len(e.get(k, [])) for k in ("matcol", "pattern", "srt"))
     man["summary"] = s
 
 

@@ -260,6 +260,30 @@ def write_hbx(fj, out_path, dspr):
     return len(anims), len(frames), len(events), len(b)
 
 
+# PaletteAnim_Create sequence tables {u16 anim; u8 frames; u8 flags (1 = end)} (ov000):
+# DecGroupAF neon ball / pillar / star (zone 4), DecArrow (zone 7), DecGroup95 laser lights (zone 6)
+PALANIM_TABLES = [0x02364568, 0x0236454C, 0x02364558, 0x0236457C, 0x0236459C]
+
+
+def write_palanim(ov, out_path):
+    """palanim.bin "RPAL" v1: u16 version, u16 count; count x {u32 address; u16 n; u16 pad;
+    n x {u16 anim; u8 time; u8 flags}} (the entries up to and including the end marker)."""
+    b = bytearray(b"RPAL") + struct.pack("<HH", 1, len(PALANIM_TABLES))
+    for addr in PALANIM_TABLES:
+        o = addr - OV_BASE
+        ents = []
+        while True:
+            col, t, fl = struct.unpack_from("<HBB", ov, o + 4 * len(ents))
+            ents.append((col, t, fl))
+            if fl & 1 or t == 0 or len(ents) >= 64:
+                break
+        b += struct.pack("<IHH", addr, len(ents), 0)
+        for e in ents:
+            b += struct.pack("<HBB", *e)
+    with open(out_path, "wb") as f:
+        f.write(b)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--extract", default="extract/eur")
@@ -344,6 +368,8 @@ def main():
         dspr = (hdr[3], hdr[4])
         r = write_hbx(fj, os.path.join(a.out, "hbx", sid + ".hbx"), dspr)
         report.append("%-40s anims %3d frames %4d boxes %4d (%d bytes)" % ((sid,) + r))
+
+    write_palanim(ov, os.path.join(a.out, "palanim.bin"))
 
     with open(os.path.join(a.out, "sprites.txt"), "w") as f:
         f.write("# sprite directories (build/dreamcast/sprites/bac/<id>/) used by the object module\n")
