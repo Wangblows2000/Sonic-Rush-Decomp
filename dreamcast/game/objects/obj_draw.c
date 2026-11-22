@@ -141,7 +141,13 @@ static struct {
     int persp;          /* disp_flags 0x200: off-axis frustum centred on the sprite */
     s32 z;              /* depth (24.8 px) */
     float scale;        /* base scale (RingEffect3D 0.5) */
+    int rot;            /* disp_flags 0x100: StageObj_Draw3DEx builds R from the object's angles */
+    u16 rx, ry, rz;     /* DS angles: RotX(rx) * RotY(ry) * RotZ(rz) (rz = -(angle + grav_rot) << 8) */
+    float scx, scy;     /* R's x / y scale (obj @0x44 / @0x46) */
 } s_3d;
+static const ObjSprite *spr3d_twin(const ObjSprite *s, ObjSprite *tmp);
+static void spr3d_obj(const Obj *o); /* s_3d for an object (StageObj_Draw3DEx) */
+static ObjRes *res3d_find(const char *id);
 static void spr3d_emit(const Texture *t, int bank, pvr_list_t list, const DsprImage *img, s32 px, s32 py, int hf,
                        int vf, uint32_t argb);
 static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vflip_extra) {
@@ -270,20 +276,18 @@ void obj_draw(int list) {
         if (o->has_sprA)
             draw_spr(&o->sprA, (pvr_list_t)list, o->sprA.x, o->sprA.y, 0);
         s_bac3d = o->bac3d != 0;
-        if (s_bac3d) { /* StageObj_Load3dBAC + StageObj_Draw3DEx: the frame in the 3D layer */
-            s_3d.on = 1;
-            s_3d.boss = s_boss;
-            s_3d.arena = 0;
-            s_3d.flip_invert = 1;
-            s_3d.persp = (o->h.disp_flags & 0x200) != 0;
-            s_3d.z = o->h.z;
-            s_3d.scale = 1.0f;
-        }
+        if (s_bac3d) /* StageObj_Load3dBAC + StageObj_Draw3DEx: the frame in the 3D layer */
+            spr3d_obj(o);
         /* StageObj_Draw2DEx: with a model (@0x124/@0x128, "busy") the main sprite is
          * not drawn; the model view stands for it (objects_model_get) */
-        if (o->has_spr && obj_spr_drawn(o))
-            draw_spr(&o->spr, (pvr_list_t)list, o->spr.x, o->spr.y, 0);
+        if (o->has_spr && obj_spr_drawn(o)) {
+            ObjSprite tw;
+            /* bac3d 2: the DS draws the 3D BAC loaded next to the 2D one (spr0 hidden) */
+            const ObjSprite *ds = o->bac3d == 2 ? spr3d_twin(&o->spr, &tw) : &o->spr;
+            draw_spr(ds, (pvr_list_t)list, o->spr.x, o->spr.y, 0);
+        }
         s_3d.on = 0;
+        s_3d.rot = 0;
         for (i = 0; i < o->n_xspr; i++) { /* extra sprite pairs (Mine, Cargo): every recorded point */
             const ObjSprite *xs = o->xspr[i];
             int k;
@@ -313,6 +317,7 @@ void obj_draw(int list) {
         s_3d.persp = 0;
         s_3d.z = 0;
         s_3d.scale = 1.0f;
+        s_3d.rot = 0;
         if (s_ring3d_ok)
             s = &s_ring3d;
     }
@@ -636,7 +641,7 @@ static void spr3d_emit(const Texture *t, int bank, pvr_list_t list, const DsprIm
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
     pvr_vertex_t v;
-    float tx, ty, tz, sc = s_3d.scale, qx[4], qy[4], qu[4], qv[4], ox[4], oy[4], oz[4];
+    float tx, ty, tz, sc = s_3d.scale, qx[4], qy[4], qu[4], qv[4], ox[4], oy[4], oz[4], dx[4], dy[4], dz[4];
     int i;
     if (s_3d.boss) {
         if (s_3d.arena > 0 && s_3d.arena < 4) {
@@ -667,8 +672,40 @@ static void spr3d_emit(const Texture *t, int bank, pvr_list_t list, const DsprIm
     qu[1] = qu[3] = (float)(img->x + img->w) / t->w;
     qv[0] = qv[1] = (float)img->y / t->h;
     qv[2] = qv[3] = (float)(img->y + img->h) / t->h;
+    if (s_3d.rot) { /* v * R: R = RotX * RotY * RotZ * Scale(scx, scy, 1) (MTX_Rot*33_, row vectors) */
+        float m[3][3] = { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } }, r[3][3], t[3][3], a, sn, cs;
+        int k, j, l;
+        for (k = 0; k < 3; k++) {
+            u16 ang = k == 0 ? s_3d.rx : k == 1 ? s_3d.ry : s_3d.rz;
+            if (ang == 0)
+                continue;
+            a = (float)ang * (6.2831853f / 65536.0f);
+            sn = fsin(a);
+            cs = fcos(a);
+            memset(r, 0, sizeof(r));
+            if (k == 0) { r[0][0] = 1; r[1][1] = cs; r[1][2] = sn; r[2][1] = -sn; r[2][2] = cs; }
+            else if (k == 1) { r[1][1] = 1; r[0][0] = cs; r[0][2] = -sn; r[2][0] = sn; r[2][2] = cs; }
+            else { r[2][2] = 1; r[0][0] = cs; r[0][1] = sn; r[1][0] = -sn; r[1][1] = cs; }
+            for (j = 0; j < 3; j++)
+                for (l = 0; l < 3; l++)
+                    t[j][l] = m[j][0] * r[0][l] + m[j][1] * r[1][l] + m[j][2] * r[2][l];
+            memcpy(m, t, sizeof(m));
+        }
+        for (i = 0; i < 4; i++) {
+            float vx = (hf ? -qx[i] : qx[i]) * s_3d.scx, vy = (vf ? -qy[i] : qy[i]) * s_3d.scy;
+            dx[i] = vx * m[0][0] + vy * m[1][0];
+            dy[i] = vx * m[0][1] + vy * m[1][1];
+            dz[i] = vx * m[0][2] + vy * m[1][2];
+        }
+    } else {
+        for (i = 0; i < 4; i++) {
+            dx[i] = hf ? -qx[i] : qx[i];
+            dy[i] = vf ? -qy[i] : qy[i];
+            dz[i] = 0.0f;
+        }
+    }
     for (i = 0; i < 4; i++) {
-        float wx = tx + (hf ? -qx[i] : qx[i]) * sc, wy = ty + (vf ? -qy[i] : qy[i]) * sc, wz = tz, e[3], c[4];
+        float wx = tx + dx[i] * sc, wy = ty + dy[i] * sc, wz = tz + dz[i] * sc, e[3], c[4];
         int k;
         for (k = 0; k < 3; k++)
             e[k] = wx * cam.view.m[0][k] + wy * cam.view.m[1][k] + wz * cam.view.m[2][k] + cam.view.m[3][k];
@@ -707,6 +744,87 @@ static void spr3d_emit(const Texture *t, int bank, pvr_list_t list, const DsprIm
     s_3d_quads++;
 }
 
+/* StageObj_Draw3DEx for a 3D sprite of object o: T from the sprite position (stage: screen,
+ * boss arena: world, on the arena circle of zones 2..4 where the object lives on the arc:
+ * the *_Spawn3D / FollowParentArena effects), depth @0x18, off-axis for disp 0x200, and
+ * with disp 0x100: R = RotY(0) * RotX(-rot2 << 8) * RotY(-rot3 << 8) * RotZ(-rotZ << 8) *
+ * Scale(obj @0x44 / @0x46), rotZ = angle (+ grav_rot @5). The sprite's H-flip is the 2D
+ * rule (obj_draw2d_ex: disp 1 ^ 1), the same as Draw3DEx's for type 2 (flags ^= 1). */
+static void spr3d_obj(const Obj *o) {
+    s_3d.on = 1;
+    s_3d.boss = s_boss;
+    s_3d.arena = s_boss ? spr3d_arena() : 0;
+    s_3d.flip_invert = 0;
+    s_3d.persp = (o->h.disp_flags & 0x200) != 0;
+    s_3d.z = o->h.z;
+    s_3d.scale = 1.0f;
+    s_3d.rot = (o->h.disp_flags & 0x100) != 0;
+    if (s_3d.rot) {
+        u8 rz = o->h.angle;
+        if (o->h.grav_rot != 0)
+            rz = (u8)(rz + o->h.grav_rot);
+        s_3d.rx = (u16)-(o->h.rot2 << 8);
+        s_3d.ry = (u16)-(o->h.rot3 << 8);
+        s_3d.rz = (u16)(-rz << 8);
+        s_3d.scx = o->scale_x != 0 ? (float)o->scale_x / 256.0f : 1.0f;
+        s_3d.scy = o->scale_y != 0 ? (float)o->scale_y / 256.0f : 1.0f;
+    }
+}
+
+/* the 3D BAC the DS loads next to an object's 2D BAC (StageObj_Load3dBAC, spr0 flag 0x80000):
+ * same animation layout (anim3 < 0) or one 3D animation for one 2D one */
+static const struct {
+    const char *id2d, *id3d;
+    int anim2d, anim3d;
+} k_twin[] = {
+    { "act__ac_ene_eggpawn", "act__ac_ene_eggpawn3d", -1, -1 },         /* EnemyPawnGroup drop-in */
+    { "act__ac_ene_egg_bishop", "act__ac_ene_egg_bishop3d", -1, -1 },   /* (types 0 / 20, 7 / 21) */
+    { "act__ac_gmk_rock", "act__ac_gmk_rock_3", -1, -1 },               /* Rock */
+    { "act__ac_gmk_bubble", "act__ac_gmk_bubble_3d", -1, -1 },          /* Bubble3D */
+    { "act__ac_fix_moji", "act__ac_fix_moji3d", -1, -1 },               /* FixMoji3D (digits 0..9) */
+    { "act__ac_eff_kemuri_brake", "act__ac_eff_kemuri_brake3d", -1, -1 },     /* EffBrakeSmoke3D */
+    { "act__ac_eff_kemuri_spin01", "act__ac_eff_kemuri_spin01_3d", -1, -1 },  /* EffSpinSmoke1_3D */
+    { "act__ac_eff_kemuri_spin02", "act__ac_eff_kemuri_spin02_3d", -1, -1 },  /* EffSpinSmoke2_3D */
+    { "act__ac_eff_boost", "act__eff_b_jet_3d", 9, 0 },                 /* EffBoostJet3D */
+};
+static int twin_index(const ObjSprite *s) {
+    int i;
+    if (s->res == NULL)
+        return -1;
+    for (i = 0; i < (int)(sizeof(k_twin) / sizeof(k_twin[0])); i++)
+        if (!strcmp(s->res->id, k_twin[i].id2d) && (k_twin[i].anim2d < 0 || k_twin[i].anim2d == s->anim))
+            return i;
+    return -1;
+}
+/* the 2D sprite's animation state shown with the 3D BAC's frames (the layouts match), or the
+ * 2D sprite itself when the 3D BAC is not loaded */
+static const ObjSprite *spr3d_twin(const ObjSprite *s, ObjSprite *tmp) {
+    static ObjRes *k_res[sizeof(k_twin) / sizeof(k_twin[0])];
+    const ObjRes *r3;
+    int i = twin_index(s), a3, f;
+    if (i < 0)
+        return s;
+    if (k_res[i] == NULL || k_res[i]->id[0] == 0 || strcmp(k_res[i]->id, k_twin[i].id3d))
+        k_res[i] = res3d_find(k_twin[i].id3d);
+    r3 = k_res[i];
+    if (r3 == NULL || s->anim >= s->res->n_anims)
+        return s;
+    a3 = k_twin[i].anim3d >= 0 ? k_twin[i].anim3d : s->anim;
+    if (a3 >= r3->n_anims || r3->anims[a3].frame_count == 0)
+        return s;
+    f = (int)s->cur - (int)s->res->anims[s->anim].first_frame;
+    if (f < 0)
+        f = 0;
+    if (f >= r3->anims[a3].frame_count)
+        f = r3->anims[a3].frame_count - 1;
+    *tmp = *s;
+    tmp->res = r3;
+    tmp->anim = (u16)a3;
+    tmp->cur = (u16)(r3->anims[a3].first_frame + f);
+    tmp->palanim = 0;
+    return tmp;
+}
+
 /* boss arena ring circle (RingManager_Create: zone 2 Arena1, 3 Arena2, 4 Arena3, else plane) */
 static int spr3d_arena(void) {
     int z = g_dcp_world.zone;
@@ -717,7 +835,7 @@ static int spr3d_arena(void) {
  * The StageObj_Load3dBAC effects that only play an animation at a point and end with it
  * (EffWater3D, the boss-arena player effects ...): objects_fx3d_spawn. */
 #define FX3D_MAX 24
-#define FX3D_RES_MAX 8
+#define FX3D_RES_MAX 16
 static struct {
     ObjRes res;
     int st; /* 1 loaded, -1 missing */
@@ -756,6 +874,14 @@ static ObjRes *res3d_get(const char *id) {
         strncpy(s_fxres[i].res.id, id, sizeof(s_fxres[i].res.id) - 1); /* remember the miss */
     return s_fxres[i].st > 0 ? &s_fxres[i].res : NULL;
 }
+/* a loaded 3D BAC (no load: draw time) */
+static ObjRes *res3d_find(const char *id) {
+    int i;
+    for (i = 0; i < FX3D_RES_MAX; i++)
+        if (s_fxres[i].st > 0 && !strcmp(s_fxres[i].res.id, id))
+            return &s_fxres[i].res;
+    return NULL;
+}
 static void res3d_free_all(void) {
     int i;
     if (s_res_ring3d_st > 0)
@@ -774,6 +900,16 @@ static void spr3d_prepare(void) {
     if (g_obj.hdr != s_3d_hdr) {
         res3d_free_all();
         s_3d_hdr = g_obj.hdr;
+    }
+    if (g_obj.hdr) { /* the 3D BACs of the live bac3d 2 objects (they appear in updates) */
+        const Obj *o;
+        for (o = g_obj.head; o; o = o->next) {
+            int k;
+            if (!o->used || o->bac3d != 2 || !o->has_spr || (k = twin_index(&o->spr)) < 0)
+                continue;
+            if (res3d_find(k_twin[k].id3d) == NULL)
+                res3d_get(k_twin[k].id3d);
+        }
     }
     if (!g_obj.hdr || !(g_obj.hdr->flags & RLVL_FLAG_BOSS))
         return;
@@ -852,6 +988,7 @@ static void spr3d_draw_fx(int list) {
         s_3d.persp = s_fx3d[i].persp;
         s_3d.z = s_fx3d[i].z;
         s_3d.scale = s_fx3d[i].scale;
+        s_3d.rot = 0;
         draw_spr_at(&s_fx3d[i].spr, (pvr_list_t)list, s_fx3d[i].x >> 8, s_fx3d[i].y >> 8, 0);
     }
     s_3d.on = 0;

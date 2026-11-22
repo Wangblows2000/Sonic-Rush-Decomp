@@ -384,10 +384,10 @@ struct Obj {
     u32 shapes;
     u8 mreps;           /* the model drawn mreps times (0 = once), each mrep_dy lower (CranePartEE_Draw) */
     s32 mrep_dy;
-    /* objdata v4: the 2D sprite stands for a 3D BAC (StageObj_Load3dBAC):
-     * drawn at x/y by obj_draw.c as before (deviation 23), listed by
-     * objects_sprite3d_* with its depth z for a 3D draw */
-    u8 bac3d;
+    /* objdata v4: a 3D BAC (StageObj_Load3dBAC), drawn by obj_draw.c as a quad in the 3D
+     * layer at x / y with the depth z (Model_DrawSprite3D, deviations 23 / 39) */
+    u8 bac3d;           /* 3D BAC (obj_draw.c): 1 = this BAC drawn as a 3D sprite, 2 = the 3D BAC loaded next to
+                           the 2D one (StageObj_Load3dBAC, spr0 0x80000): its frames, same animation */
     /* 3D model of the object (StageObj_LoadModelSimple @0x128): converted
      * model id, rotation (4.12, row-major) and scale; see objects_model_get */
     const char *model;

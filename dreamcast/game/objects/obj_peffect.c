@@ -19,7 +19,8 @@
  * obj_player.c dispatches to obj_player_effect().
  * AnimatorSprite flag 0x400 (OAM semi-transparent) is drawn in the
  * translucent list by obj_draw.c.  The 3D variants (zone >= 9 or the boss
- * acts: EffBoostJet3D, EffSpinSmoke*_3D, EffBrakeSmoke3D) are not created.
+ * acts: EffBoostJet3D, EffSpinSmoke*_3D, EffBrakeSmoke3D) are the same objects
+ * drawn with the 3D BAC (Obj.bac3d 2, see as_3d).
  */
 #include <string.h>
 #include "obj_internal.h"
@@ -27,6 +28,15 @@
 #define SPR_SEMITRANS 0x400u /* attr0 OBJ mode 1 */
 
 static int stage_2d(void) { return W.zone < 9 && W.act < 2; }
+/* the boss arenas (zone >= 9 or act >= 2) create the 3D variants (EffBoostJet3D, EffSpinSmoke*_3D,
+ * EffBrakeSmoke3D): the same objects with the 3D BAC (Obj.bac3d 2, obj_draw.c). On a circle arena
+ * (gCamera.unkE0 / unkE4: *_Spawn3D, Effect_SetFollowParentArenaState) the object keeps the arc
+ * position and the draw maps it to the circle. */
+static Obj *as_3d(Obj *w) {
+    if (w != NULL && !stage_2d())
+        w->bac3d = 2;
+    return w;
+}
 
 static Obj *peff_new(int bac) {
     Obj *o = obj_alloc(OBJ_PRIO_EFFECT, obj_stageobj_dtor);
@@ -403,17 +413,20 @@ static void peff_follow_player(Obj *w) {
     }
 }
 
-/* EffBoostJet_Create (EffBoostJet_Spawn: 2D stages; the 3D variant is not created) */
+/* EffBoostJet_Create / EffBoostJet3D_Create (boss arenas: eff_b_jet_3d animation 0, the 2D
+ * BAC's animation 9; no OAM order / priority) */
 Obj *EffBoostJet_Spawn(DcPlayer *p) {
     Obj *w;
     s16 x = -8, y = 6;
-    if (p->pid != 0 || !stage_2d())
+    if (p->pid != 0)
         return NULL;
     w = peff_new(OBJ_BAC_EFF_BOOST);
     if (w == NULL)
         return NULL;
     obj_set_anim(w, 9);
-    peff_oam(w, -1);
+    if (stage_2d())
+        peff_oam(w, -1);
+    as_3d(w);
     w->ppar = p;
     if (p->disp_flags & 1)
         x = (s16)-x;
@@ -480,9 +493,10 @@ static Obj *spin_smoke(DcPlayer *p, int bac, u16 anim, s16 x, s16 y) {
 /* EffSpinSmoke1_Spawn / EffSpinSmoke1_Create */
 Obj *EffSpinSmoke1_Spawn(DcPlayer *p) {
     Obj *w;
-    if (p->pid != 0 || !stage_2d() || (p->pf2 & 0x1000))
+    /* EffSpinSmoke1_3D_Create (boss arenas) has no pf2 & 0x1000 check */
+    if (p->pid != 0 || (stage_2d() && (p->pf2 & 0x1000)))
         return NULL;
-    w = spin_smoke(p, OBJ_BAC_EFF_SPIN1, p->chara != 1 ? 0 : 1, -10, 0xe);
+    w = as_3d(spin_smoke(p, OBJ_BAC_EFF_SPIN1, p->chara != 1 ? 0 : 1, -10, 0xe));
     if (w != NULL)
         w->state = EffSpinSmoke1_State_FollowParent;
     return w;
@@ -520,9 +534,10 @@ static void EffSpinSmoke2_State_Main(Obj *w) {
 /* EffSpinSmoke2_Spawn / EffSpinSmoke2_Create / EffSpinSmoke2_Action_Init */
 Obj *EffSpinSmoke2_Spawn(DcPlayer *p) {
     Obj *w;
-    if (p->pid != 0 || !stage_2d() || (p->pf2 & 0x1000) || p->type != 1)
+    /* EffSpinSmoke2_3D_Create (boss arenas) has no pf2 & 0x1000 check */
+    if (p->pid != 0 || (stage_2d() && (p->pf2 & 0x1000)) || p->type != 1)
         return NULL;
-    w = spin_smoke(p, OBJ_BAC_EFF_SPIN2, p->chara != 1 ? 0 : 2, -10, 0xe);
+    w = as_3d(spin_smoke(p, OBJ_BAC_EFF_SPIN2, p->chara != 1 ? 0 : 2, -10, 0xe));
     if (w == NULL)
         return NULL;
     w->h.move_flags |= 0x2000;
@@ -531,10 +546,40 @@ Obj *EffSpinSmoke2_Spawn(DcPlayer *p) {
     return w;
 }
 
-/* EffBrakeSmoke_Spawn (2D: EffBrakeSmoke_Create(p, 10, 0xe), (10, 0) with pf2 & 0x1000) */
-static Obj *EffBrakeSmoke_Spawn(DcPlayer *p) {
-    if (p->pid != 0 || !stage_2d())
+/* EffBrakeSmoke3D_Create (boss arenas: ac_eff_kemuri_brake3d; unlike the 2D create, the offset
+ * and the drift are not turned by the angle) */
+static Obj *EffBrakeSmoke3D_Create(DcPlayer *arg, s16 x, s16 y) {
+    Obj *w = peff_new(OBJ_BAC_EFF_BRAKE);
+    if (w == NULL)
         return NULL;
+    w->bac3d = 2;
+    if (arg->disp_flags & 1)
+        w->h.disp_flags |= 1;
+    w->h.x = arg->x;
+    w->h.y = arg->y;
+    w->h.vel_x = -0x80;
+    w->h.vel_y = 0;
+    w->wC = 0x10fffa;
+    if (w->h.disp_flags & 1) {
+        w->h.x -= x << 8;
+        w->h.vel_x = (s16)-w->h.vel_x;
+    } else {
+        w->h.x += x << 8;
+    }
+    w->h.y += y << 8;
+    w->h.move_flags |= 0x100;
+    w->h.obj_flags |= 2;
+    eff_set_move_until_anim_end(w);
+    return w;
+}
+
+/* EffBrakeSmoke_Spawn (2D: EffBrakeSmoke_Create(p, 10, 0xe), (10, 0) with pf2 & 0x1000;
+ * boss arenas: EffBrakeSmoke3D_Create(p, 10, 0xe)) */
+static Obj *EffBrakeSmoke_Spawn(DcPlayer *p) {
+    if (p->pid != 0)
+        return NULL;
+    if (!stage_2d())
+        return EffBrakeSmoke3D_Create(p, 10, 0xe);
     /* EffBrakeSmoke_Create reads only the StageObj header of its argument */
     return EffBrakeSmoke_Create((Obj *)(void *)p, 10, (p->pf2 & 0x1000) ? 0 : 0xe);
 }

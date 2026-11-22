@@ -1259,8 +1259,10 @@ Obj *pawn_create(ObjParam *p, s32 b, s32 c) {
     if (p->type == 20 || p->type == 21)
         w->out_t = -0x100;
     /* drop-in (p9 != 0): the original draws the 3D BAC (eggpawn3d / egg_bishop3d)
-     * and hides the 2D sprite (0x80000); the DC draws the 2D sprite (OBJECTS.md, deviations) */
+     * and hides the 2D sprite (0x80000): Obj.bac3d 2 (obj_draw.c draws the 3D BAC's frame) */
     obj_load_bac(w, bac);
+    if (p->p9 != 0 && (p->type == 0 || p->type == 20 || p->type == 7 || p->type == 21))
+        w->bac3d = 2;
     if (p->type == 8) {
         w->vitality = 2;
         w->vitality -= w->prm->pB;

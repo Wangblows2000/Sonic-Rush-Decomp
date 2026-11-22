@@ -437,8 +437,9 @@ flags 0x80 / 0x100, through Model_Draw (v * S * R + T) and the camera, with z = 
 sort with the player and the models in the 3D layer.
 
 - Stages (StageObj_Draw3DEx): T = (screen x, -screen y, z), the stage camera, off-axis
-  for disp 0x200. Draw3DEx flips a 3D sprite when the object is not flipped (flags ^= 1
-  for model type 2), so the 3D BAC art faces the other way from the 2D art.
+  for disp 0x200, the rotation of disp 0x100 (angle + gravity, @2 / @3, scale @0x44 /
+  @0x46). Draw3DEx flips a 3D sprite when the object is not flipped (flags ^= 1 for model
+  type 2), the same rule as the 2D draw (StageObj_Draw2DEx: f ^= 1 with a 2D BAC).
   Objects with `Obj.bac3d`: MapObj13 (Altitude Limit glider sequence: rings
   ac_itm_ring_graider, clouds ac_gmk_cloud_3, Egg Flappers ac_ene_flapper3d, ring
   sparkles) and DecGroup4D (z2 wheel axle pieces, z4 crane slide rail).
@@ -464,11 +465,19 @@ spray: drawn at the player on the circle (a test build spawned one every 20 fram
 Cost: obj_draw (punch-through list) 0.19-0.24 ms per frame on z61 with about 50 live objects
 and 7-13 3D quads; 0.05 ms on the boss arenas (2-5 quads). 58.8-59.3 fps.
 
-Not covered here (the objects / boss modules do not create them yet; they can use
-`objects_fx3d_spawn` with the sprite directory added to build_disc.sh): EffShadow, the
-drop-in Egg Pawns and the Egg Bishop in flight (3D BACs drawn as their 2D BACs,
-OBJECTS.md deviation 23), Rock (Mirage Road), the boss-arena Bubble3D and FixMoji3D
-(drown count), the boss-arena player effects (EffBoostJet3D, EffBrakeSmoke3D,
-EffSpinSmoke1/2_3D, EffKemuriSpin3D) and Boss7's EffBoostA_3D / EffBoostA2_3D /
-EffFire01_3D (logged as `fx3d`). EffSplash3D / EffRipple3D are NSBMD models drawn by the
+`Obj.bac3d` 2: an object whose DS original loads a 3D BAC next to its 2D BAC (and hides
+the 2D sprite) keeps its 2D sprite's animation state, and obj_draw.c draws the 3D BAC's
+frame for it (k_twin: the animation layouts match; eff_b_jet_3d animation 0 stands for
+ac_eff_boost animation 9). The 3D BAC is loaded by objects_models_prepare when such an
+object is alive. Users: the drop-in Egg Pawns / Bishops (z32: falling and walking on the
+sand ship in depth, ac_ene_eggpawn3d / ac_ene_egg_bishop3d), Rock (ac_gmk_rock_3), the
+boss-arena Bubble3D / FixMoji3D (drown count) and player effects EffBoostJet3D,
+EffSpinSmoke1/2_3D, EffBrakeSmoke3D. EffShadow draws its own BAC (bac3d 1); on the sand
+ship it sits 2 px under the table's deck (table y - 18, deck y - 20), so the table hides
+most of it, as the geometry of the original places it. On the circle boss arenas the
+objects keep the arc position and the draw maps it to the circle; their sprites face +z
+like the DS ones (edge-on where the camera looks along x). Draw cost (punch-through
+objects): z32 0.34-0.44 ms with the table, pawns, rocks and shadows (5-9 3D quads), z13
+0.08 ms. Not translated here: Boss7's EffKemuriSpin3D, EffBoostA_3D / EffBoostA2_3D /
+EffFire01_3D (boss module, logged as `fx3d`). EffSplash3D / EffRipple3D are NSBMD models drawn by the
 boss module (z23: 51 ripples in 80 s of the fight).

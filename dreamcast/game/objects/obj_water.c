@@ -14,9 +14,9 @@
  *   src/game/Zone/Water_Palace/Decorations/ DecGroup41_*, DecFishPart_*
  *   src/game/Decorations/ DecGroup4D_*, DecShared_*
  *   src/game/Effects/ EffZakoBomb_Create
- * The 3D variants used on the boss stages (Bubble3D, EffSplash3D,
- * EffRipple3D, EffDrownCount_Spawn3D / FixMoji3D) are not translated: the
- * 2D stages never take those branches (zone < 9 and act < 2).
+ * The boss-arena 3D variants Bubble3D and EffDrownCount_Spawn3D / FixMoji3D
+ * are objects with Obj.bac3d 2 (3D BAC sprites, obj_draw.c); EffSplash3D and
+ * EffRipple3D are the boss module's (boss2.c).
  * See docs/dreamcast/translation/OBJECTS.md (section 5c).
  */
 #include <string.h>
@@ -161,11 +161,67 @@ void EffAirBubble_Create(DcPlayer *arg, s16 x, s16 y, s32 type, s32 t) {
     w->h.obj_flags |= 2;
     w->state = EffAirBubble_State_Rise;
 }
-/* EffAirBubble_Spawn: 2D branch (the boss-stage branch creates Bubble3D) */
+/* gCamera.unkE0 / unkE4 != 0: a boss arena on a circle (BossArena_ArcToCirclePos). The objects
+ * keep the arc position; obj_draw.c maps it to the circle when it draws them (bac3d). */
+static int arena_circle(void) { return g_obj.hdr && (g_obj.hdr->flags & RLVL_FLAG_BOSS) && W.zone >= 1 && W.zone <= 3; }
+
+/* Bubble3D_Create / _State_Rise (the boss-arena air bubbles: ac_gmk_bubble_3d, Obj.bac3d 2).
+ * Deviation: the DS stores the circle position and probes the map at the circle x; here the
+ * bubble keeps the arc x (the map position), the draw maps it to the circle. */
+static void Bubble3D_State_Rise(Obj *w) {
+    s32 r;
+    w->h.vel_y = (s16)dcp_spd_up(w->h.vel_y, -13, w->w8);
+    w->h.vel_x = (s16)(w->h.vel_y >> 1);
+    if (W.frame & 2)
+        w->h.vel_x = (s16)-w->h.vel_x;
+    r = probe(w->h.x >> 8, w->h.y >> 8, 1, 2);
+    if (CAM0.water <= (w->h.y >> 8) && r >= 0)
+        return;
+    w->h.obj_flags |= 4;
+}
+static void Bubble3D_Create(DcPlayer *arg, s16 x, s16 y, s32 type) {
+    Obj *w = eff_alloc(OBJ_BAC_BUBBLE);
+    if (w == NULL)
+        return;
+    w->bac3d = 2;
+    obj_set_anim(w, (u16)(type + 2));
+    if (arg->disp_flags & 1)
+        w->h.disp_flags |= 1;
+    w->h.x = arg->x + (x << 8) + ((3 - (RAND() & 6)) << 8);
+    w->h.y = arg->y + (y << 8);
+    w->h.vel_y = (s16)(0xff - (RAND() & 0xfe));
+    w->w8 = 0x2bf - (RAND() & 0xfe);
+    w->h.move_flags |= 0x100;
+    w->h.obj_flags |= 2;
+    w->state = Bubble3D_State_Rise;
+}
+
+/* EffAirBubble_Spawn: 2D stages EffAirBubble_Create, boss arenas on a circle Bubble3D_Create */
 void EffAirBubble_Spawn(DcPlayer *a, s32 x, s32 y, s32 c) {
     u16 r = RAND() & 3;
-    if (W.zone >= 9 || W.act >= 2)
-        return; /* Bubble3D (boss arenas): not translated */
+    if (W.zone >= 9 || W.act >= 2) {
+        if (!arena_circle())
+            return;
+        switch (r) {
+        case 0:
+            Bubble3D_Create(a, (s16)x, (s16)y, 0);
+            break;
+        case 1:
+            Bubble3D_Create(a, (s16)(x + 4), (s16)(y + 8), 1);
+            Bubble3D_Create(a, (s16)(x + 1), (s16)(y - 3), 1);
+            break;
+        case 2:
+            Bubble3D_Create(a, (s16)x, (s16)y, 0);
+            Bubble3D_Create(a, (s16)(x + 2), (s16)(y + 6), 1);
+            break;
+        case 3:
+            Bubble3D_Create(a, (s16)x, (s16)y, 0);
+            Bubble3D_Create(a, (s16)(x - 2), (s16)(y + 6), 1);
+            Bubble3D_Create(a, (s16)(x + 4), (s16)(y + 9), 1);
+            break;
+        }
+        return;
+    }
     switch (r) {
     case 0:
         EffAirBubble_Create(a, (s16)x, (s16)y, 0, c);
@@ -220,9 +276,38 @@ void EffDrownCount_Create(DcPlayer *arg, s32 x, s32 y, s32 idx) {
     w->h.move_flags |= 0x2100;
     w->h.obj_flags |= 2;
 }
+/* EffDrownCount_Spawn3D: FixMoji3D_Create (ac_fix_moji3d digit idx, Obj.bac3d 2 over the 2D
+ * ac_fix_moji: same digit animations) with EffDrownCount3D_State_FollowPlayer (the 2D state's
+ * motion; the arc to circle mapping is the draw's) */
+static void EffDrownCount_Spawn3D(DcPlayer *arg, s32 x, s32 y, s32 idx) {
+    Obj *w;
+    if ((u32)idx >= 10)
+        return;
+    w = eff_alloc(OBJ_BAC_FIX_MOJI);
+    if (w == NULL)
+        return;
+    w->bac3d = 2;
+    obj_set_anim(w, (u16)idx);
+    w->h.obj_flags |= 0x10;
+    w->h.disp_flags |= 0x1000; /* no animation (Model_Animate once) */
+    w->h.disp_flags |= 1;
+    w->h.vel_x = (s16)(x << 8);
+    w->h.vel_y = (s16)(y << 8);
+    w->h.x = arg->x + w->h.vel_x;
+    w->h.y = arg->y + w->h.vel_y;
+    eff_set_parent(w, arg);
+    w->state = EffDrownCount_State_FollowPlayer;
+    w->wC = 0;
+    w->w8 = 0;
+    w->h.move_flags |= 0x2100;
+    w->h.obj_flags |= 2;
+}
 void EffDrownCount_Spawn(DcPlayer *a, s32 b, s32 c, s32 d) {
-    if (!(W.zone < 9 && W.act < 2))
-        return; /* EffDrownCount_Spawn3D (FixMoji3D): boss arenas, not translated */
+    if (!(W.zone < 9 && W.act < 2)) {
+        if (arena_circle())
+            EffDrownCount_Spawn3D(a, b, c, d);
+        return;
+    }
     EffDrownCount_Create(a, b, c, d);
 }
 

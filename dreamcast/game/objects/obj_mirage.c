@@ -164,11 +164,13 @@ static void EffShadow_State_Main(Obj *w) {
     w->h.x += dx << 8;
     w->h.y += dy << 8;
 }
-/* EffShadow_Create: the shadow of an object on the GmkTable (3D BAC drawn as a 2D sprite) */
+/* EffShadow_Create: the shadow of an object on the GmkTable (StageObj_Load3dBAC ac_eff_shadow:
+ * drawn as a 3D sprite, Obj.bac3d) */
 void EffShadow_Create(DcPlayer *arg) {
     Obj *w = eff_alloc(OBJ_BAC_EFF_SHADOW);
     if (w == NULL)
         return;
+    w->bac3d = 1;
     w->h.disp_flags |= 0x200;
     w->spr.order = 0x16;
     eff_set_parent(w, arg);
@@ -1411,7 +1413,8 @@ Obj *Rock_Create(ObjParam *p, s32 b, s32 c) {
     w->kind = OBJK_ENEMY;
     w->out_t = -0x100;
     /* the original hides this 2D sprite (0x80000) and draws ac_gmk_rock_3.bac as a 3D
-     * BAC at depth @0x18; the DC draws the 2D sprite (OBJECTS.md, deviations) */
+     * BAC at depth @0x18: Obj.bac3d 2 (obj_draw.c draws the 3D BAC's frame) */
+    w->bac3d = 2;
     map_hitbox(w, -8, 0, 8, 0xc);
     if (w->prm->p7 < 0x28)
         w->h.z = -(w->prm->p7 << 8);

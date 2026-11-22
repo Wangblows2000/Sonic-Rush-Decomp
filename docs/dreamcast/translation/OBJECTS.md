@@ -347,8 +347,8 @@ render_begin_list(PVR_LIST_PT_POLY); ...level layers...; objects_draw(); render_
   (`objects_set_model_sprites(1)`, the default). Call
   `objects_set_model_sprites(0)` once the model views are drawn, to hide them
   as the DS does. 3D BACs (StageObj_Load3dBAC: MapObj13 flappers / rings /
-  clouds, DecGroup4D cranes) are drawn as 2D sprites (`Obj.bac3d`), with the
-  depth in `h.z`.
+  clouds, DecGroup4D cranes) are drawn as 3D sprites (`Obj.bac3d`, deviation 39),
+  with the depth in `h.z`.
 - **New effect hook kinds** (`g_obj_hooks.effect(ctx, p, kind, a, b)`):
   `OBJ_FX_ZONE4_BLDY` (Night Carnival dark areas: a = 0 flash with b =
   frames, a = 1 ramp up, a = 2 ramp down, b = (target << 8) | speed;
@@ -1468,11 +1468,14 @@ v2 deviations:
 
 v3 deviations (Water Palace, Mirage Road):
 
-23. **3D BACs drawn as 2D**: EffShadow (sand ship shadow), the drop-in pawn
-    in 3D depth and the Egg Bishop in flight use a 3D BAC at depth @0x18 on
-    the DS and hide the 2D sprite (`0x80000`). The DC draws the 2D sprite of
-    the same BAC at the object position. Wheel2D, Hand2d and GmkTable are
-    NSBMD models: the module hands them to the integrator through
+23. **3D BACs** (superseded: see 39): EffShadow (sand ship shadow), the
+    drop-in Egg Pawns and Egg Bishops (types 0 / 20, 7 / 21 with p9) and Rock
+    use a 3D BAC at depth @0x18 on the DS and hide the 2D sprite
+    (`0x80000`). They are now 3D sprites: EffShadow `Obj.bac3d` 1 (its BAC is
+    the 3D one), the drop-ins and Rock `Obj.bac3d` 2 (obj_draw.c draws the
+    frames of ac_ene_eggpawn3d / ac_ene_egg_bishop3d / ac_gmk_rock_3 for the
+    2D sprite's animation state; the layouts match). Wheel2D, Hand2d and
+    GmkTable are NSBMD models: the module hands them to the integrator through
     `objects_model_get` (as RopeC).
 24. **Sounds**: object sounds go through `g_obj_hooks.sfx` with the
     original ids; sound handles, positional (pan/volume by distance) and
@@ -1534,11 +1537,22 @@ v3 deviations (Water Palace, Mirage Road):
     Hawk bomb (EggBombHawk uses the Bomb Hawk BAC) share one slot, as on
     the DS; shared VRAM frames (NeedleG 0xb1 / 0xb2, MapObj13 drivers) are
     per-object frames natively (deviation 23 style).
-39. **3D BAC stand-ins**: StageObj_Load3dBAC objects (MapObj13 flappers,
-    glider rings, clouds, DecGroup4D cranes) draw the converted BAC as a 2D
-    sprite with the depth in `h.z` (`Obj.bac3d`). 2D sprites that the DS
-    hides behind a 3D model (flag 0x80000) are drawn while
-    `objects_set_model_sprites(1)` (default), hidden with 0.
+39. **3D BACs** (Model_InitSprite3D / Model_DrawSprite3D): `Obj.bac3d`
+    objects are drawn by obj_draw.c as quads in the 3D layer (GRAPHICS.md
+    section 8.3): 1 = the object's own BAC (MapObj13 flappers, glider rings,
+    clouds, DecGroup4D wheel / crane slide, EffShadow), 2 = the 3D BAC the DS
+    loads next to the 2D one, shown with the 2D sprite's animation state
+    (drop-in pawns / bishops, Rock, and on the boss arenas Bubble3D,
+    FixMoji3D and the player effects EffBoostJet3D, EffSpinSmoke1/2_3D,
+    EffBrakeSmoke3D). StageObj_Draw3DEx's placement is kept: depth @0x18,
+    off-axis for disp 0x200, the rotation of disp 0x100 (angle, gravity,
+    @2 / @3, scale @0x44 / @0x46). On the circle boss arenas (gCamera.unkE0 /
+    unkE4: zones 2..4) the objects keep the arc position and the draw maps it
+    with BossArena_ArcToCirclePos (the DS *_Spawn3D / Bubble3D / FixMoji3D
+    store the circle position). Deviation: Bubble3D probes the map at the arc
+    x (the DS at the circle x). EffKemuriSpin3D is Boss7's (boss module).
+    2D sprites that the DS hides behind a 3D model (flag 0x80000) are drawn
+    while `objects_set_model_sprites(1)` (default), hidden with 0.
 40. **Model view `visible`** now means `!(disp_flags & 0x20)`; v4 objects use
     disp 0x200 for the perspective flag, which is passed as `persp`.
 41. **Ring suck (Duct)**: RingManager_SuckScatteredRings is translated
