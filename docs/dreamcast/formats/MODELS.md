@@ -14,11 +14,11 @@ Tools and code (all written for this port, no third-party code):
 | `tools/dreamcast/models/dcm.py` | Python reader and reference evaluator for the packages. It mirrors `model.c`. |
 | `tools/dreamcast/models/preview.py` | numpy software rasteriser. It renders a `.dcm` (+ `.dca`/`.dcv`) to PNG with the stage camera. |
 | `dreamcast/game/model/model_format.h` | Binary layout of `.dcm` / `.dca` / `.dcv`. |
-| `dreamcast/game/model/model.h`, `model.c` | Native runtime: load, sample animation, pose, cameras, SH-4 transform + lighting, PVR submission (`pvr_prim`). |
+| `dreamcast/game/model/model.h`, `model.c` | Native runtime: load, sample animation, pose, cameras, SH-4 transform + lighting, PVR submission (direct render through the store queues; hot loops in SH-4 assembly, section 5.1). |
 | `dreamcast/game/model/tests/model_hosttest.c` | Host harness. It prints the screen-space vertices from `model.c` so they can be compared with `dcm.py`. |
 | `tools/dreamcast/models/matanim.py` | BMA0 / BTP0 / BTA0 → `.dcc` / `.dcp` / `.dct` (exact NNS per-frame evaluation, section 4.1). |
 | `dreamcast/game/model/tests/model_matanim_test.c` | Host test: material animations, v2 extras, near-plane clipping (`gcc -std=c99 -I.. model_matanim_test.c ../model.c -lm`; argument: `build/dreamcast/models`). |
-| `dreamcast/game/model/tests/matanim_dc.c`, `build_matanim_disc.sh` | KOS test disc (`build/dreamcast/model_test/mtest.cdi`): tornado + sky material animations, near-plane clipping. |
+| `dreamcast/game/model/tests/matanim_dc.c`, `build_matanim_disc.sh` | KOS test disc (`build/dreamcast/model_test/mtest.cdi`): draw-path exactness over every model (SH-4 routines vs the C reference, bitwise), tornado + sky material animations, near-plane clipping. |
 
 `g3d.py` imports `tools/dreamcast/sprites/nds_archive.py` for NARC and LZ77.
 
@@ -363,13 +363,60 @@ Joint maths:
    - Lists: translucent materials and ARGB4444 textures go to TR; ARGB1555 textures with transparent
      texels go to `opts.pt_list`; everything else goes to OP.
 
+### 5.1 Draw path cost (2026-11-22)
+
+`dcm_draw_ex` produces the same vertices as the straightforward per-vertex path (every value comes from
+the same expressions, evaluated by the same SH-4 instructions), but does much less work:
+
+- **Shared slots.** The converter writes one PVR strip per DS polygon, so a vertex appears in several
+  strips. `dcm_model_load` builds `vref` (per vertex: byte offsets of its position slot and normal slot);
+  bitwise-equal `(palette entry, position)` and `(palette entry, normal)` share a slot. A position
+  slot holds clip space and screen x, y, depth; a normal slot holds `max(0, -L.n)` per light, the
+  envmap normal, and the lit colour of one colour key.
+- **Kept across calls.** The slots live in the model (`lcache`): transforms are rebuilt only when the
+  palette, model matrix, view, projection, viewport or `near_w` differ bitwise from the last call
+  (the OP / PT / TR passes of a frame, a still camera reuse them). Lighting stays valid per palette
+  entry while its normal matrix and the lights repeat bitwise (a moving but not turning camera, static
+  parts). Colour keys are (diffuse, ambient, emission, light mask) per model, so draws with the same
+  material colours share the lit colours.
+- **Near plane.** A bounding sphere per palette entry tells when the whole model is in front of
+  `near_w` (with a margin far above rounding); then strips need no per-vertex test. Otherwise each
+  strip's positions are checked first and a strip across the plane is clipped in C as before, in
+  submission order.
+- **Submission.** Per draw: cached compiled PVR header (by list, texture, wrap, culling); vertices are
+  written straight to the store queues (`pvr_dr` style, 8 stores + `pref`), no `pvr_prim` per vertex.
+- **SH-4 assembly** (`dcm_asm_pslot`, `dcm_asm_lslot`, `dcm_asm_emitz_*` in `model.c`): the slot fills
+  and the submission loop. GCC spends about as many instructions on address arithmetic as on the maths
+  (`fmov.s` has no displacement form); the routines do GCC's exact `fmul` / `fmac` / `fadd` / `fdiv` /
+  `fsqrt` sequence with post-increment loads. Envmap draws and host builds use the C path.
+- Memory: about 8 bytes per vertex plus 32 per position slot, 40 per normal slot and ~190 per palette
+  entry, allocated by `dcm_model_load` (son: about 72 KB). Package bytes must not change while loaded.
+- Test hooks: `dcm_dc_capture` (vertices to a buffer instead of the store queues), `dcm_dc_cfills`
+  (slot fills and submission in C), `-DDCM_PROFILE` (time per model, every 2 s, on the serial log).
+
 Build: `source /opt/toolchains/dc/kos/environ.sh && kos-cc -c dreamcast/game/model/model.c`. This
-compiles without warnings with `-Wall -Wextra`: 8.4 KB text, 51 KB bss (static transform scratch for
-256 palette entries).
+compiles without warnings with `-Wall -Wextra -Werror`.
 
 ## 6. Validation
 
 All results are from runs in this session.
+
+- **Draw path exactness and speed (2026-11-22).**
+  - Host: the new `dcm_draw_ex` against the previous implementation (commit 940d9425), every vertex of
+    all 366 models, 16 draws each (stage / orthographic cameras, near-plane crossing, two poses, four
+    lights, static and animated material states, viewport change, in-place palette change):
+    2,970,290 vertices, bitwise identical.
+  - Flycast, `mtest.cdi`: every model, cold and warm caches, five configurations, three lists: the
+    SH-4 routines against the C reference on the same machine, 833,296 vertices, bitwise identical
+    (a planted one-instruction error in `dcm_asm_lslot` is caught: 652,876 differ).
+  - Not run on hardware. The routines use the instructions GCC emits for the C, so the hardware
+    results should match too, but this was not checked.
+  - Flycast frame log (`draw ms/frame`, boss fights measured from a save state taken in the fight,
+    one state per disc build): z13 player 4.2 -> 1.50 ms, boss 13.1-14.0 -> 3.1-3.9 ms (5.4 in the
+    busiest window), 52 -> 59.3 fps; z33 player 4.2 -> 1.49, boss 12.1-12.6 -> 4.1-5.0, 55 -> 59.3 fps;
+    zf3 player 4.2 -> 1.51-1.53, boss 19.2-19.7 -> 5.2-7.7, 40 -> 59.3 fps. Special stage (`-DDCM_PROFILE`,
+    all model draws): 6.4 -> 2.6 ms per frame; TransformDemo / PlayerDemo cutscene: 4.0 / 5.4 -> 1.8 / 2.5.
+    The remaining 0.7 fps are the frames that print the serial log.
 
 - **Material animations and near plane (2026-11-22).**
   - The batch now converts all 779 unique resources, with 0 failures and 0 warnings. That includes
@@ -451,6 +498,8 @@ binary formats and from the decompiled NNS code in this repository.
 
 ## 8. Gaps
 
+- Draw timings are Flycast figures (its SH-4 cycle model is roughly one cycle per instruction, no
+  cache or FPU latency model); real-hardware timings were not measured.
 - Not run on Dreamcast hardware. In Flycast, the material animations and the near-plane clipping
   were observed with `mtest.cdi` (section 6). The PVR culling direction, uv flip/clamp mapping and
   list classes are derived from the DS rules; they were not checked against the DS.
