@@ -92,6 +92,8 @@ static Boss1 *gBoss1;
  * and the zone act archive's bs1.nsbca */
 static BossModelRes data_ov000_02369ad0[4];
 static BossAnimRes s_bs1_anim;
+static BossAnimRes s_bs5_anim;  /* zone 5 (z53): archive file 9, bs5.nsbca */
+static int s_joint_battery[2] = {-1, -1}; /* bs5_base "base_battery01" / "base_battery02" */
 static dcm_mtx_t s_mtx_slot30;  /* geometry-engine matrix stack slot 0x1e (MTX_STORE in the node callbacks) */
 static int s_joint_neck_ham = -1, s_joint_hammer = -1;
 static int s_pal_flash, s_pal_hurt; /* native: Boss1_SetFlashPalette / Boss1_SetPalettes state */
@@ -354,10 +356,24 @@ static void defeat_camera(fx32 tx, fx32 ty, fx32 tz, fx32 dist, fx32 h, u16 ang)
 }
 
 /* Boss1_Draw: Model_Draw of bs1_base (no animation) */
+/* Boss1_NodeCallback_Batteries (substantially rewritten: MTX_MULT_3x3 of RotY(unk21C / unk21E) at the
+ * "base_battery01" / "base_battery02" nodes -> joint rotations applied by boss_model_pose) */
+static void Boss1_NodeCallback_Batteries(BossModel *m) {
+    MtxFx33 m1, m2;
+    u16 a = (u16)gBoss1->unk21C;
+    MTX_RotY33(&m1, SIN(a), COS(a));
+    boss_model_set_joint_rot(m, 0, s_joint_battery[0], &m1);
+    a = (u16)gBoss1->unk21E;
+    MTX_RotY33(&m2, SIN(a), COS(a));
+    boss_model_set_joint_rot(m, 1, s_joint_battery[1], &m2);
+}
+
 static void Boss1_Draw(void *p) {
     Boss1 *s = (Boss1 *)p;
     if (s->h.disp_flags & 0x20)
         return;
+    if (Boss1_Unk_ov000_022cc6d4())
+        Boss1_NodeCallback_Batteries(&s->unk23C);
     boss_model_pose(&s->unk23C, NULL);
 }
 
@@ -803,8 +819,7 @@ static void Boss1_State_DefeatExplode(void *p) {
     gPlayers->pf |= 0x200000;
     gPlayers->held = gPlayers->pressed = gPlayers->released = 0;
     if (Boss1_Unk_ov000_022cc6d4()) {
-        /* BossEffect_CreateBlast5 (zone 5 archive): not loaded */
-        boss_log("effect_blast5", s->unk210->h.x >> 8, s->unk210->h.y >> 8);
+        BossEffect_CreateBlast5(0, s->unk210->h.x, s->unk210->h.y, s->unk210->h.z);
     } else {
         BossEffect *obj = BossEffect_CreateBlast1(0, 0xe100, 0x20000, 0);
         obj->unk134.speed = 0x800;            /* obj + 0x248 */
@@ -1635,8 +1650,16 @@ static void Boss1Neck_GetTurretMuzzlePos(BossVec *out, s32 flag) {
         out->y = -0x1c14dc;
     }
 }
-/* Boss5PartD3_Action_Launch: the missile object is not translated */
+/* MapObject_Spawn(0xd3) + Boss5PartD3_Action_Launch (boss5.c); g_boss_hooks.missile is told too */
 static void launch_missile(const BossVec *v, s32 tx, s32 ty, s32 tz, s32 speed) {
+    ObjParam prm;
+    void *obj;
+    memset(&prm, 0, sizeof(prm));
+    prm.x0 = prm.y0 = 0xff;
+    prm.type = 0xd3;
+    obj = Boss5PartD3_Create(&prm, 0, 0);
+    if (obj != NULL)
+        Boss5PartD3_Action_Launch(obj, v->x, v->y, v->z, tx, ty, tz, (s16)speed);
     boss_log("missile", tx >> 12, speed);
     if (g_boss_hooks.missile)
         g_boss_hooks.missile(g_boss_hooks.ctx, v->x, v->y, v->z, tx, ty, tz, speed);
@@ -2371,7 +2394,7 @@ static Boss1Neck *Boss1Neck_Create(void) {
     s->alive = 1;
     s->func = Boss1Neck_State_Idle;
     s->unk220 = &s_bs1_anim;            /* NNS_FndGetArchiveFileByIndex(ctx, 8) */
-    s->unk224 = NULL;                   /* file 9: zone 5 only */
+    s->unk224 = Boss1_Unk_ov000_022cc6d4() ? &s_bs5_anim : NULL; /* file 9: zone 5 only */
     s->unk21C = &data_ov000_02369ad0[1];
     MapObject_Init_parts(&s->h, NULL, NULL, 0, 0);
     s->h.obj_flags |= 0x12;
@@ -2467,8 +2490,8 @@ void *Boss1_Create(const ObjParam *a, s32 x, s32 y) {
     gBossStatus.unk4 = 1;
     gBossStatus.unk8 = (u16)Boss_GetStartHealth();
     gBossStatus.unkA = (u16)Boss_GetStartHealth();
-    s->unk230 = &s_bs1_anim;
-    s->unk234 = NULL;
+    s->unk230 = &s_bs1_anim;               /* NNS_FndGetArchiveFileByIndex(ctx, 8) */
+    s->unk234 = Boss1_Unk_ov000_022cc6d4() ? &s_bs5_anim : NULL; /* file 9 (zone 5) */
     s->unk22C = &data_ov000_02369ad0[0];
     s->unk238 = &data_ov000_02369ad0[3];
     MapObject_Init_parts(&s->h, NULL, a, x, y);
@@ -2485,6 +2508,7 @@ void *Boss1_Create(const ObjParam *a, s32 x, s32 y) {
     p->trans[1] = -(s->h.y << 4);
     p->trans[2] = s->h.z << 4;
     p->scale[0] = p->scale[1] = p->scale[2] = 0x34cc;
+    /* zone 5: NNS_G3dRenderObjSetCallBack(p->unk90, Boss1_NodeCallback_Batteries, 0, 6, 3): Boss1_Draw */
     s->unk210 = Boss1Neck_Create();     /* MapObject_Spawn(0xca, ...) */
     s->unk214 = Boss1Hammer_Create();   /* MapObject_Spawn(0xcb, ...) */
     Boss1_SetPalettes(g_boss_game.unk0, 0);
@@ -2498,12 +2522,24 @@ void *Boss1_Create(const ObjParam *a, s32 x, s32 y) {
 int boss1_load(void) {
     static const char *const files[4] = {"mod__bs1_base__bs1_base.dcm", "mod__bs1_neck__bs1_neck.dcm",
                                          "mod__bs1_hammer__bs1_hammer.dcm", "mod__bs1_sky__bs1_sky.dcm"};
-    int i, r = 0;
+    /* BossStage5_OnModelLoaded: data_02074388 = bs5_base, bs1_neck, bs1_hammer, bs5_sky */
+    static const char *const files5[4] = {"mod__bs5_base__bs5_base.dcm", "mod__bs1_neck__bs1_neck.dcm",
+                                          "mod__bs1_hammer__bs1_hammer.dcm", "mod__bs5_sky__bs5_sky.dcm"};
+    int i, r = 0, z5 = Boss1_Unk_ov000_022cc6d4();
     for (i = 0; i < 4; i++)
         if (!data_ov000_02369ad0[i].loaded)
-            r |= boss_res_load_model(&data_ov000_02369ad0[i], files[i]);
+            r |= boss_res_load_model(&data_ov000_02369ad0[i], z5 ? files5[i] : files[i]);
     if (!s_bs1_anim.loaded)
-        r |= boss_res_load_anim(&s_bs1_anim, "narc__z13_act_lz7__bs1.dca");
+        r |= boss_res_load_anim(&s_bs1_anim, "narc__z13_act_lz7__bs1.dca"); /* z53 file 8 is the same */
+    if (z5) {
+        if (!s_bs5_anim.loaded)
+            r |= boss_res_load_anim(&s_bs5_anim, "narc__z53_act_lz7__bs5.dca");
+        s_joint_battery[0] = boss_joint_index("bs5_base", "base_battery01");
+        s_joint_battery[1] = boss_joint_index("bs5_base", "base_battery02");
+        if (s_joint_battery[0] < 0 || s_joint_battery[1] < 0)
+            r = -1;
+        r |= boss5_load();
+    }
     s_joint_neck_ham = boss_joint_index("bs1_neck", "neck_ham");
     s_joint_hammer = boss_joint_index("bs1_hammer", "hammer");
     if (s_joint_neck_ham < 0 || s_joint_hammer < 0)
@@ -2517,6 +2553,8 @@ void boss1_unload(void) {
     for (i = 0; i < 4; i++)
         boss_res_free_model(&data_ov000_02369ad0[i]);
     boss_res_free_anim(&s_bs1_anim);
+    boss_res_free_anim(&s_bs5_anim);
+    boss5_unload();
 }
 
 void boss1_destroy(void) {
@@ -2527,6 +2565,7 @@ void boss1_destroy(void) {
     if (s_boss1.alive)
         Boss1_Destructor(&s_boss1);
     s_hammer.alive = s_neck.alive = s_boss1.alive = 0;
+    boss5_destroy();
     gBoss1 = NULL;
 }
 
@@ -2541,6 +2580,7 @@ void boss1_update(void) {
         boss_obj_main(&s_neck.h, &s_neck.func, &s_ops_neck, &s_neck, &s_neck.alive);
     if (s_hammer.alive)
         boss_obj_main(&s_hammer.h, &s_hammer.func, &s_ops_hammer, &s_hammer, &s_hammer.alive);
+    boss5_update(); /* Boss5PartD3 missiles (task 0x502, created after the hammer) */
 }
 
 int boss1_draw(int list) {
@@ -2554,6 +2594,7 @@ int boss1_draw(int list) {
     g_boss_debug_color = 0xff4040;
     if (s_hammer.alive && !(s_hammer.h.disp_flags & 0x20))
         n += boss_model_draw(&s_hammer.unk30C, list);
+    n += boss5_draw(list);
     g_boss_debug_color = 0xffff40;
     return n;
 }

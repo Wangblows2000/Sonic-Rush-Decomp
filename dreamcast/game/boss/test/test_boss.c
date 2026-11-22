@@ -1,8 +1,11 @@
 /*
  * Host test of the native boss module: Egg Hammer (Boss1) on the real z13
  * level with the real player and object modules and the converted models.
+ * The same test runs Boss5 (the zone-5 variant on z53: battery turrets and
+ * Boss5PartD3 missiles) when given the z53 level (the zone comes from the
+ * level header).
  *
- * Usage: test_boss <z13/level.bin> <build/dreamcast/player> <unused> <unused>
+ * Usage: test_boss <z13|z53/level.bin> <build/dreamcast/player> <unused> <unused>
  *                  <models dir> <boss data dir> [-v|-vv]
  *
  * Object system: the real ObjRect code (obj_rect.c: ObjRect_CheckAllGroup,
@@ -275,7 +278,7 @@ int main(int argc, char **argv) {
         return 2;
     dcp_bind_map(&M);
     memset(&g_dcp_world, 0, sizeof(g_dcp_world));
-    g_dcp_world.zone = 0;
+    g_dcp_world.zone = ((const rlvl_header_t *)g_level)->zone; /* 0 = z13 Boss1, 4 = z53 Boss5 */
     g_dcp_world.act = 2;
     g_dcp_world.flags = 1;
     g_dcp_world.objmgr = 0x18;
@@ -291,7 +294,7 @@ int main(int argc, char **argv) {
     }
     g_dcp_world.check_x = sx;
     g_dcp_world.check_y = sy;
-    printf("z13: %dx%d px, stage %d, PlayerStart (%d,%d), floor y at x=%d: %d\n", M.right, M.bottom,
+    printf("z%d3: %dx%d px, stage %d, PlayerStart (%d,%d), floor y at x=%d: %d\n", g_dcp_world.zone + 1, M.right, M.bottom,
            ((const rlvl_header_t *)g_level)->stage, sx, sy, sx, floor_y(sx));
     dcp_player_create(&P, 0, 0, sx, sy);
     P.pf &= ~0x600000u;
@@ -312,7 +315,7 @@ int main(int argc, char **argv) {
     boss_set_difficulty(getenv("LEVEL") ? atoi(getenv("LEVEL")) : 0);
     r = boss_init(((const rlvl_header_t *)g_level)->stage, g_level, &P, 0);
     printf("boss_init: %d  health %d/%d phase %d\n", r, boss_health(), boss_health_max(), boss_phase());
-    CHECK(r == 0, "boss_init on z13 (models, animations, bossdata.bin)");
+    CHECK(r == 0, "boss_init on z%d3 (models, animations, bossdata.bin)", g_dcp_world.zone + 1);
     if (r != 0)
         return 1;
     {
@@ -419,15 +422,23 @@ int main(int argc, char **argv) {
         CHECK(hurts_in_miss > 0 && hits_in_miss == 0, "[miss] standing under the slams hurts the player (%d) and never damages the boss",
               hurts_in_miss);
         CHECK(st->slams > 0 && st->big_slams > 0, "slam and big slam attacks chosen (%u, %u)", st->slams, st->big_slams);
-        CHECK(st->rolls > 0, "hammer roll chosen at health 3..5 / 1..2 (%u)", st->rolls);
+        if (g_dcp_world.zone == 4) {
+            printf("  missiles fired %u, exploded %u\n", st->missiles_fired, st->missile_explosions);
+            CHECK(st->missiles > 0 && st->missiles_fired > 0 && st->missile_explosions > 0 && phases_seen[0x1b],
+                  "zone 5: missile attacks (%u) fire Boss5PartD3 missiles (%u fired, %u exploded)", st->missiles,
+                  st->missiles_fired, st->missile_explosions);
+        } else
+            CHECK(st->rolls > 0, "hammer roll chosen at health 3..5 / 1..2 (%u)", st->rolls);
         CHECK((int)st->hits == boss_health_max(), "%d hits on the hammer's damage box (%u)", boss_health_max(), st->hits);
-        CHECK(phases_seen[1] && phases_seen[2] && phases_seen[3] && phases_seen[4] && phases_seen[5] && phases_seen[6],
-              "phases idle/slam/bigslam/roll/hurt/defeat all visited");
+        CHECK(phases_seen[1] && phases_seen[2] && phases_seen[3] && (phases_seen[4] || g_dcp_world.zone == 4) &&
+                  phases_seen[5] && phases_seen[6],
+              "phases idle/slam/bigslam/%s/hurt/defeat all visited", g_dcp_world.zone == 4 ? "missile" : "roll");
         CHECK(g_pinch_music == 1, "pinch music (Sound_PlaySeq 0xf) at health 2");
         CHECK(boss_defeated() && boss_cleared() && g_cleared_hook == 1, "defeat sequence reached Stage_OnBossCleared");
         CHECK(g_music_stop == 1 && (g_ring_flags & 1), "defeat stops the music and sets the ring manager flag");
         CHECK(g_obj_stage.ring_bonus == P.rings * 1000, "ring bonus = rings x 1000 (%d)", g_obj_stage.ring_bonus);
-        CHECK(st->effects_spawned > 0 && st->pebbles_spawned > 0, "impact/hit effects and roll pebbles spawned");
+        CHECK(st->effects_spawned > 0 && (st->pebbles_spawned > 0 || g_dcp_world.zone == 4),
+              "impact/hit effects and roll pebbles (no roll in zone 5) spawned");
         CHECK(hy_max > 470 && hy_max < 500 && hy_min > 300,
               "hammer centre from the neck_ham / hammer node matrices lands at the floor (max y %.0f) when the damage box arms", hy_max);
         CHECK(isfinite(eye[0]) && isfinite(eye[2]) && fabsf(eye[0] - at[0]) + fabsf(eye[2] - at[2]) > 10.0f,

@@ -44,6 +44,14 @@ import sdatlib  # noqa: E402
 MUSIC_MAX_SEC = 900
 SFX_MAX_SEC = 30
 SFX_HOLD_SEC = 4  # held (never-ending, non-looping) SFX are stopped here, see SOUND.md
+# Port mix gain, the ONE shared gain of music and effects (docs/dreamcast/AUDIO.md
+# "Mix level"): 2^(-MIX_GAIN_TL/16), in AICA TL steps (0.375 dB). Applied to every
+# render here (after the DS master volume) and, through manifest.json -> sfxbank.py
+# -> .srb header, to the runtime effects (dreamcast/game/sound/snd_drv.c), so
+# music and effects keep the DS ratio with headroom: on the DS the summed mix is
+# clamped at the same full scale, and the DS-level BGM renders alone already
+# peak up to +4.4 dBFS (z1 +1.4 dBFS), a doubled SE_Spring reaches +4 dBFS.
+MIX_GAIN_TL = 24  # -9.03 dB
 
 
 def build_renderer(out_bin):
@@ -113,12 +121,15 @@ class Converter:
         self.tmp = Path(tempfile.mkdtemp(prefix="sdat2dc_", dir=a.tmp))
         self.renderer = build_renderer(self.out / "bin" / "sseqrender")
         tables, tinfo = sdatlib.extract_driver_tables(a.extract)
+        # + ARM9 SNDi_DecibelTable (data_020725e0): NNS player volume, NNSi_SndPlayerMain
+        dblin, tinfo["arm9_nns_decibel"] = sdatlib.nns_decibel_table(a.extract)
         self.tables = self.out / "tables.bin"
-        self.tables.write_bytes(tables)
+        self.tables.write_bytes(tables + dblin)
         self.manifest = {"tool": "tools/dreamcast/audio/sdat2dc.py", "renderer": "tools/dreamcast/audio/sseqrender.c",
                          "interpolation": "linear" if a.interp else "none (DS-like)",
                          "encoder": f"KOS wav2adpcm ({a.wav2adpcm})", "driver_tables": tinfo,
-                         "music_rate": 32728, "entries": []}
+                         "music_rate": 32728, "mix_gain_tl": MIX_GAIN_TL,
+                         "mix_gain_db": round(-MIX_GAIN_TL * 20 * 0.0188144, 2), "entries": []}
         self.seen = {}          # pcm hash -> output relpath
         self.counts = {}
         self.failures = []
@@ -138,7 +149,8 @@ class Converter:
         cmd = [str(self.renderer), "render", "--sdat", str(sd.path), "--tables", str(self.tables),
                "--seq", str(seq_file), "--start", str(start), "--bank", str(bank_file),
                "--swar", ",".join(map(str, swar)), "--vol", str(vol), "--ppr", str(ppr),
-               "--mask", hex(mask), "--max-sec", str(max_sec), "--hold-sec", str(hold_sec), "--out", str(pcm)] + (["--interp"] if self.a.interp else [])
+               "--mask", hex(mask), "--max-sec", str(max_sec), "--hold-sec", str(hold_sec),
+               "--gain-tl", str(MIX_GAIN_TL), "--out", str(pcm)] + (["--interp"] if self.a.interp else [])
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode:
             raise RuntimeError(r.stderr.strip())
@@ -164,7 +176,7 @@ class Converter:
                  loop=loop, loop_start=st["loop_start"] if loop else None,
                  loop_end=st["loop_end"] if loop else None,
                  render={k: st[k] for k in ("ended", "hit_max", "loop_start_tick", "loop_len_ticks", "tail_frames",
-                                            "lcm_capped", "seam_wave_rms", "peak", "rms", "clipped", "max_voices",
+                                            "lcm_capped", "seam_wave_rms", "gain_tl", "ds_peak", "peak", "rms", "clipped", "max_voices",
                                             "steals", "notes", "held_stopped", "inst_missing", "wave_missing", "alloc_fail", "first_pass_differs", "converged", "bank_file", "swar_files", "channel_mask")})
         if kind == "sfx":
             e["fits_snd_sfx"] = st["samples"] <= 65534

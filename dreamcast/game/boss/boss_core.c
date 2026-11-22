@@ -540,6 +540,19 @@ int boss_init(int stage_id, const uint8_t *level, DcPlayer *player, int textures
         if (Boss2_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
             return -4;
         return 0;
+    case 14: /* z53 Huge Crisis act 3: map object 0x3b -> Boss1_Create (zone-5 variant, Boss5PartD3 missiles) */
+        if (boss_effects_load(stage_id) != 0 || boss1_load() != 0)
+            return -3;
+        p = find_boss_object(level, 0x3b, &prm);
+        if (p == NULL) {
+            memset(&prm, 0, sizeof(prm));
+            prm.type = 0x3b;
+            p = &prm;
+        }
+        if (Boss1_Create(p, (s32)p->ax << 8, (s32)p->ay << 8) == NULL)
+            return -4;
+        s_boss_kind = 1;
+        return 0;
     case 8: /* z33 Mirage Road act 3: map object 0x3d -> Boss3_Create */
         if (boss_effects_load(stage_id) != 0 || boss3_load() != 0)
             return -3;

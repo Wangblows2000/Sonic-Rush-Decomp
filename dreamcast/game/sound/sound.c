@@ -20,6 +20,11 @@ static SndBank s_bank;
 static char s_dir[64] = "/cd/sound";
 static uint32_t s_frac;
 static int s_init;
+/* debug trace (serial): enabled when <dir>/../debug/sndtrace.txt exists on
+ * the disc (/cd/debug/sndtrace.txt); logs starts/stops and frames whose
+ * summed channel amplitude reaches -6 dBFS. */
+int g_sound_trace;
+uint32_t g_sound_frame;
 
 /* ------------------------------------------------ src/game/Sound (reused) */
 void Sound_InitHandles(void) {
@@ -66,6 +71,7 @@ void Sound_Init(void) {
 }
 
 void Sound_PlaySeqArcEx(SoundHandle *a, int32_t b, int32_t c) {
+    if (g_sound_trace) printf("snd f%lu play %ld h%p\n", (unsigned long)g_sound_frame, (long)c, (void *)a);
     if (a == 0) a = &gSESoundHandle;
     if (gSESoundHandle.player != 0) NNS_SndHandleReleaseSeq(&gSESoundHandle);
     NNS_SndHandleInit(a);
@@ -122,6 +128,60 @@ void Sound_SetPositional(SoundHandle *snd, int32_t ax, int32_t ay, int32_t bx, i
     NNS_SndPlayerSetTrackPan(snd, 0xffff, Sound_CalcPan(ax, bx));
 }
 
+/* ------------------------------------------------ src/game/Sound SysSound_* (sys bank) */
+/* gSysSound->snd[2] (SE), snd[3] / snd[4] (voice, normal / Alt) */
+static SoundHandle s_sys_se, s_sys_voice[2];
+
+/* SysSound_StartSE(n): n 0..22; chara = gGameState.unk0 (0 Sonic -> SSAR 2
+ * ARC_ZONE_MAP_S, else 3 ARC_ZONE_MAP_B). Needs the "sys" bank. */
+void SysSound_StartSE(int32_t n, int chara) {
+    int32_t a = chara == 0 ? 2 : 3, b;
+    switch (n) {
+    case 0: a = 1; b = 0; break;
+    case 1: a = 1; b = 1; break;
+    case 2: a = 1; b = 2; break;
+    case 3: a = 1; b = 3; break;
+    case 4: a = 1; b = 5; break;
+    case 5: a = 1; b = 0xb; break;
+    case 6: a = 1; b = 4; break;
+    case 7: a = 0x11; b = 0; break;
+    case 8: a = 0x11; b = 1; break;
+    case 9: a = 0x11; b = 2; break;
+    case 10: b = 0; break;
+    case 11: b = 1; break;
+    case 12: b = 2; break;
+    case 13: b = 3; break;
+    case 14: b = 4; break;
+    case 15: b = 5; break;
+    case 16: b = 6; break;
+    case 17: b = 7; break;
+    case 18: b = 8; break;
+    case 19: b = 0x10; break;
+    case 20: a = 0xa; b = 0; break;
+    case 21: a = 0xa; b = 1; break;
+    case 22: a = 0xa; b = 2; break;
+    default: return;
+    }
+    if (s_sys_se.player != NULL) {
+        NNS_SndPlayerStopSeq(&s_sys_se, 0);
+        NNS_SndHandleReleaseSeq(&s_sys_se);
+    }
+    Sound_PlaySeqArc(&s_sys_se, (uint32_t)a, (uint32_t)b);
+}
+
+/* SysSound_StartVoice(n): n 0..7; alt = gSysSound->unk2C (1 inside
+ * SysSound_PlayMenuVoiceAlt: second voice handle, the first keeps playing). */
+void SysSound_StartVoice(int32_t n, int alt) {
+    static const uint8_t tab[8][2] = {{1, 6}, {1, 5}, {1, 7}, {1, 8}, {1, 9}, {1, 0xa}, {0x11, 3}, {0x11, 4}};
+    SoundHandle *h = &s_sys_voice[alt ? 1 : 0];
+    if (n < 0 || n > 7) return;
+    if (h->player != NULL) {
+        NNS_SndPlayerStopSeq(h, 0);
+        NNS_SndHandleReleaseSeq(h);
+    }
+    Sound_PlayVoice(h, tab[n][0], tab[n][1]);
+}
+
 /* ------------------------------------------------ native API */
 void sound_set_dir(const char *dir) {
     strncpy(s_dir, dir, sizeof s_dir - 1);
@@ -153,12 +213,14 @@ int sound_load_bank(const char *sdat) {
     snprintf(path, sizeof path, "%s/%s.srb", s_dir, sdat);
     r = snd_bank_load(&s_bank, path);
     if (r) return r;
+    g_sound_trace = snd_out_file_size("/cd/debug/sndtrace.txt") >= 0;
     snd_drv_init(&s_bank);
     NNSi_SndPlayerInit();
     NNS_SndArcPlayerSetup(&s_bank);
     Sound_InitHandles();
     NNS_SndHandleInit(&gSESoundHandle);
     NNS_SndHandleInit(&gVoiceSoundHandle);
+    NNS_SndHandleInit(&s_sys_se); NNS_SndHandleInit(&s_sys_voice[0]); NNS_SndHandleInit(&s_sys_voice[1]);
     s_frac = 0;
     return 0;
 }
@@ -212,4 +274,6 @@ void sound_update(void) {
         snd_drv_frame();
     }
     snd_drv_flush();
+    g_sound_frame++;
+    if (g_sound_trace) snd_drv_trace(g_sound_frame);
 }

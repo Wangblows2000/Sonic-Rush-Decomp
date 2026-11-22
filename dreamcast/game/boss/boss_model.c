@@ -400,6 +400,19 @@ void boss_model_pose(BossModel *m, const dcm_mtx_t *restored) {
         }
     } else
         dcm_bind_locals(md, s_locals);
+    /* node callbacks multiplying a joint matrix (MTX_MULT_3x3): R x local rotation */
+    for (i = 0; i < m->jr_n && i < 2; i++) {
+        int j = m->jr_joint[i], a, b;
+        float o[9];
+        if (j < 0 || j >= md->hdr->num_joints)
+            continue;
+        for (a = 0; a < 3; a++)
+            for (b = 0; b < 3; b++)
+                o[a * 3 + b] = (m->jr_rot[i].m[a * 3 + 0] * s_locals[j].r[0 * 3 + b] +
+                                m->jr_rot[i].m[a * 3 + 1] * s_locals[j].r[1 * 3 + b] +
+                                m->jr_rot[i].m[a * 3 + 2] * s_locals[j].r[2 * 3 + b]) / 4096.0f;
+        memcpy(s_locals[j].r, o, sizeof(o));
+    }
     dcm_world(md, s_locals, s_world);
     if (m->palette)
         dcm_pose(md, s_locals, m->palette);
@@ -436,6 +449,16 @@ void boss_model_joint_world(const BossModel *m, int joint, dcm_mtx_t *out) {
         return;
     }
     dcm_mtx_mul(out, &s_world[joint], &m->mdl_mtx);
+}
+
+void boss_model_set_joint_rot(BossModel *m, int slot, int joint, const MtxFx33 *r) {
+    if (slot < 0 || slot >= 2)
+        return;
+    m->jr_joint[slot] = r != NULL ? joint : -1;
+    if (r != NULL)
+        m->jr_rot[slot] = *r;
+    if (slot + 1 > m->jr_n)
+        m->jr_n = slot + 1;
 }
 
 int boss_model_draw(const BossModel *m, int list) {

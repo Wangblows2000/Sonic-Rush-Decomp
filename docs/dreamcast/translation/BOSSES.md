@@ -12,6 +12,12 @@ Status (2026-11-22):
   for seeds 0x12345678, 1, 2, 3, 0xdeadbeef and 77, each at 6 and 8 hit points (12 runs).
 - Boss3 host test (z33): 18/18 checks pass for the same 6 seeds x 2 difficulties (12 runs). Every run
   visits idle, push, summon, kick, throw attack, hurt and defeat, and reaches the stage-clear request.
+- Boss5 (Huge Crisis act 3, `z53`, stage 14) is the Egg Hammer's zone-5 variant (map object 0x3b ->
+  Boss1_Create, `g_dcp_world.zone == 4`): battery turrets (Boss1_NodeCallback_Batteries) and the
+  Boss5PartD3 missiles (`boss5.c`). The Boss1 test runs it when given the z53 level: 16/16 checks for
+  10 of the 12 seed / difficulty runs; seed 1 (6 hp) never picks a big slam and seed 77 (6 hp) never
+  picks a plain slam, so one coverage check fails there (the same kind of gap as Boss1 seed 1). All 12
+  runs reach the stage clear with exactly 6 (8) hits.
 - Boss4 host test (z43): 17/17 checks pass for the same 12 runs. Every run visits spin, clash, hurt,
   slam, tilt spin and defeat, and reaches the stage-clear request.
 - `kos-cc -O2 -Wall -Wextra -Werror` builds all 8 sources.
@@ -37,6 +43,7 @@ All files are under `dreamcast/game/boss/`.
 | `boss1.c` | Boss1, Boss1Neck, Boss1Hammer: all 196 functions of `src/game/Boss/Boss1/`, plus BossStage1 (model load/free). |
 | `boss2.c` | Boss2, Boss2Water, Boss2WaterLight, BossStage2: all 86 functions of `src/game/Zone/Water_Palace/Boss/`, plus EffRipple3D / EffSplash3D (Water Palace effects the boss spawns). |
 | `boss3.c` | Boss3, Boss3PartCC (body), Boss3PartCD (ball), BossStage3: all 153 functions of `src/game/Zone/Mirage_Road/Boss/`. |
+| `boss5.c` | Boss5PartD3 (missile) and the BossStage5 resources: all 9 functions of `src/game/Zone/Huge_Crisis/Boss/` (BossStage5_OnModelLoaded is merged into `boss1_load`). Boss1_NodeCallback_Batteries is in `boss1.c`. |
 | `boss4.c` | Boss4, Boss4PartCE..D2, BossStage4: all 105 functions of `src/game/Zone/Night_Carnival/Boss/` plus the 2 kept as ARM listings in `src/asm_fallback/` (Boss4_State_WaitForStart, Boss4_SubState_SlamStopSpin). |
 | `tools/bossdata.py` | Converter. It writes `build/dreamcast/boss/bossdata.bin` and `assets.txt`. |
 | `test/test_boss.c` .. `test/test_boss4.c`, `test/stubs_objects.c` | Host tests (Boss1 on z13, Boss2 on z23, Boss3 on z33, Boss4 on z43). The stubs are weak definitions for object-module functions that are declared but not yet written. |
@@ -149,20 +156,25 @@ Integration notes:
      (default and the drained-water set). This is done on the loaded `.dcm`, so `boss_draw` shows it.
 7. **Order:** boss_update runs after objects_update. Its ObjRect boxes are checked at the next
    `objects_frame_begin`, as on the DS, where Stage_Main runs first.
-8. **Boss3 (z33).** `boss_init(8, ...)` creates Boss3 from map object 0x3d (the objects module must
+8. **Boss5 (z53).** `boss_init(14, ...)` creates Boss1_Create from map object 0x3b with
+   `g_dcp_world.zone == 4` (set it before `boss_init`): the zone-5 base (bs5_base, battery joints
+   rotated by `boss_model_set_joint_rot`), the bs5.nsbca missile animations of the neck, and the
+   Boss5PartD3 missiles (map object 0xd3 must not be created by the objects module).
+   `g_boss_hooks.missile` is still called for each launch (information only).
+9. **Boss3 (z33).** `boss_init(8, ...)` creates Boss3 from map object 0x3d (the objects module must
    not create 0x3d, 0xcc or 0xcd). Arena circle radius 0xf42f8, circumference 0x5fe435 fx32 = 1534 px;
    the player's x is wrapped into 0x40..0x63e px by Boss3_Draw_PlayerOnArena every `boss_update`, and
    the player model transform comes from `boss_player_model()`, as for Boss2.
    - The boss locks the player's input (`pf |= 0x200000`) after a reflected ball and drives `held`
      (0x10 / 0x20) itself until the ball hits or gets away; the player module already honours the lock.
    - `Boss3PartCD_OnHit` calls `Player_OnHurt` / `Player_Action_AttackBounce` through the objects module.
-9. **Boss4 (z43).** `boss_init(11, ...)` creates Boss4 from map object 0x3c (the objects module must
+10. **Boss4 (z43).** `boss_init(11, ...)` creates Boss4 from map object 0x3c (the objects module must
    not create 0x3c, 0xce..0xd2). Arena radius 0x128fb8, circumference 0x749fed fx32 = 1865 px; player
    x wrapped into 0x40..0x789 px. Wire `g_boss_hooks.player_box_flags` to the objects module's player
    boxes (`obj_player_ctx(p)->body` / `->atk`) so the defeat disarms them.
 
-Disc assets (from `build/dreamcast/boss/assets.txt`: 14 files for z13, 31 for z23, 22 for z33, 26 for z43;
-93 lines, 0 missing):
+Disc assets (from `build/dreamcast/boss/assets.txt`: 14 files for z13, 31 for z23, 22 for z33, 26 for z43,
+20 for z53; 113 lines, 0 missing):
 
 - `/cd/boss/bossdata.bin`.
 - `/cd/models/` with:
@@ -277,11 +289,12 @@ into the player module:
   effect's `.nsbca` has the same length as its other animations.
 - **Billboard op 0x14** (`SetCameraRotBillboard`) is treated like 0x13 (`SetCameraRot`). Boss1 does
   not use either.
-- **Zone-5 variant** (`gGameState.unk1C == 4`: battery missiles, `bs5.nsbca` file 9):
-  - The code paths are translated.
-  - The missile object (Boss5PartD3, map object 0xd3) is not; it goes to `g_boss_hooks.missile`.
-  - `Boss1_NodeCallback_Batteries` (turret rotation) is not translated.
-  - eff_launch / eff_blast5 resolve only when the stage archive has them.
+- **Zone-5 variant (Boss5, z53)** (`gGameState.unk1C == 4`: battery missiles, `bs5.nsbca` file 9):
+  - Translated: the code paths, the missile object Boss5PartD3 (`boss5.c`, a pool of 8), and
+    `Boss1_NodeCallback_Batteries` (substantially rewritten: the DS multiplies RotY into the GE matrix
+    at the battery nodes; natively the rotation is applied to the joint's local transform at the pose,
+    so it also turns the joint's children; not compared with a DS capture).
+  - The explosion's material / SRT / pattern animations (eff_bomb_up) are timing only.
 - **Joint matrices are float** (dcm runtime). The hammer position is rounded from them, where the DS
   uses fx32 GE math: about 0.01 px difference (MODELS.md section 6). Everything else is the
   original fixed-point math.
@@ -454,7 +467,20 @@ slam 1, tilt spins 2), shots 21 (2 at once), shock waves 1, clashes 3, enemies 3
 
 ## 6. Next
 
-- Boss5 (Huge Crisis z53) and later on the same framework.
+- Not yet translated (scope measured 2026-11-22, lines after removing declarations):
+
+  | boss | stage id | level | map object | source | functions | lines | notes |
+  |---|---|---|---|---|---|---|---|
+  | Boss6 | 17 | z63 | 0x3a (+ part 0xd4) | `Zone/Altitude_Limit/Boss` | 100 | ~2850 | tilting deck: Boss6_ApplyTiltToPlayer reads gPad and calls `player->unk338`, `Player_Action_KnockbackIntangible`; BossHelp_Create/Destroy (needs a BossHelp hook); 9 models, NNS_G3dMdlSetMdlAlphaAll; float angle steps in Boss6_Draw |
+  | Boss7 | 20 | z73 | 0x39 (+ 0xd5, 0xd6, 0xd7) | `Zone/Dead_Line/Boss` | 167 + asm `Boss7PartD5_InputState_ClashMash` | ~3020 | clash button-mash input state (gPad), BossHelp, its own lights (NNS_G3dGlbLight* in Boss7PartD5_Draw) |
+  | BossF | 23 | zf3 | 0x38 (+ 0xd8..0xde) | `Zone/Final_Zone/Boss` | 267 | ~4630 | BossHelp (hand ride warning), Zone8Act3 stage set-up / StageZoneScript_ZoneFBoss |
+  | Extra Zone boss | 26 (zone 8 act 2) | none (no level.bin; `extra_act*.narc`, `dm_ex_*` models) | - | `Zone/Extra_Zone/Boss` (overlay ov001) | 353 + 2 asm | ~8500 | ExtraBoss / ExtraBossObj / ExtraBossPlayer(Manager): own player control (gPad), own lights, own display set-up (ExtraBoss_InitDisplay) |
+
+  Boss variants for Blaze's story: there is no separate Blaze boss object. Boss1-Boss6 select only
+  palettes by the player slot (`gGameState.unk0`, the `_1p` / `_2p` palette files; translated as
+  palette state). Boss7 branches on `gGameState.unk0` in Boss7_Create (animation 4 or 3) and
+  Boss7PartD5_Create; BossFPartD8_OnHitHand branches on the player character (`unk324`); ExtraBoss_Start
+  sets `gGameState.unk0` itself. These branches belong to those bosses' translations.
 - Water surface / underwater handling for the player in z23 (reads `g_obj_camera[0].water`).
 - In the player module: `Player_Action_KnockbackIntangible` / `Player_Action_Blank` /
   `Player_Action_AttackBounceVel`, and the boss-stage player draw.
@@ -614,7 +640,7 @@ New native functions:
 | `Boss1Neck_State_BigSlamStrike` | boss1.c | modified | camera field names |
 | `Boss1Neck_State_BigSlamWindUp` | boss1.c | reused |  |
 | `Boss1Neck_State_Defeated` | boss1.c | reused |  |
-| `Boss1Neck_State_FireAtPlayer` | boss1.c | modified | Boss5PartD3 missile -> g_boss_hooks.missile |
+| `Boss1Neck_State_FireAtPlayer` | boss1.c | modified | MapObject_Spawn(0xd3) + Boss5PartD3_Action_Launch (boss5.c); also g_boss_hooks.missile |
 | `Boss1Neck_State_FireAtTarget` | boss1.c | modified | same |
 | `Boss1Neck_State_FollowPlayer` | boss1.c | reused |  |
 | `Boss1Neck_State_HammerRollDone` | boss1.c | reused |  |
@@ -712,7 +738,7 @@ New native functions:
 | `Boss1_IsMissileAttackDone` | boss1.c | reused |  |
 | `Boss1_IsSlamDone` | boss1.c | reused |  |
 | `Boss1_IsTripleSlamDone` | boss1.c | reused |  |
-| `Boss1_NodeCallback_Batteries` | - | not translated | zone-5 battery rotation (node matrix multiply); bs1_base has no battery nodes |
+| `Boss1_NodeCallback_Batteries` | boss1.c | substantially rewritten | RotY at the "base_battery01/02" joints of bs5_base -> boss_model_set_joint_rot before the pose |
 | `Boss1_ResetCamera` | boss1.c | modified | camera offsets -> named BossCamera fields; POWCNT write dropped |
 | `Boss1_SelectNextAttack` | boss1.c | reused |  |
 | `Boss1_SetCameraSide` | boss1.c | modified | camera field names |
@@ -842,6 +868,22 @@ New native functions:
 | `EffSplash3D_State_Main` | boss2.c | reused |  |
 | `EffWater3D_Create` | boss2.c | not translated | 3D BAC sprite (ac_eff_water_3d.bac): arena position -> g_boss_hooks.water_fx |
 | `EffWater3D_State_DestroyOnAnimEnd` | boss2.c | not translated | see EffWater3D_Create |
+
+### Boss5 (boss5.c, boss1.c)
+
+Counts: 4 reused, 3 modified, 2 substantially rewritten, out of 9 (plus Boss1_NodeCallback_Batteries, now translated).
+
+| original | native file | status | note |
+|---|---|---|---|
+| `Boss5PartD3_Action_Launch` | boss5.c | reused |  |
+| `Boss5PartD3_Create` | boss5.c | modified | Task_Create -> pool of 8; archive files 0x3d, 0x41..0x45 -> converted packages / timing-only animations |
+| `Boss5PartD3_Destructor` | boss5.c | modified | resource release, rect_forget |
+| `Boss5PartD3_Draw` | boss5.c | modified | Model_Draw -> boss_model_pose |
+| `Boss5PartD3_State_Explode` | boss5.c | modified | material / SRT / pattern animations timing only |
+| `Boss5PartD3_State_Exploding` | boss5.c | reused |  |
+| `Boss5PartD3_State_Fly` | boss5.c | reused |  |
+| `BossStage5_FreeModels` | boss5.c | substantially rewritten | boss1_unload + boss5_unload |
+| `BossStage5_OnModelLoaded` | boss5.c | substantially rewritten | boss1_load (zone 5 file list) + boss5_load |
 
 ### Boss3 (boss3.c)
 

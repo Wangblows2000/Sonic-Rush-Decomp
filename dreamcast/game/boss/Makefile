@@ -12,7 +12,7 @@ PLAYER_SRCS = $(PLAYER_DIR)/dcp_math.c $(PLAYER_DIR)/dcp_probe.c $(PLAYER_DIR)/d
               $(PLAYER_DIR)/dcp_player.c $(PLAYER_DIR)/dcp_states.c
 # every object-module source except the KOS renderer
 OBJ_SRCS = $(filter-out $(OBJ_DIR)/obj_draw.c,$(wildcard $(OBJ_DIR)/obj_*.c))
-SRCS = boss_core.c boss_camera.c boss_model.c boss_effect.c boss1.c boss2.c boss3.c boss4.c
+SRCS = boss_core.c boss_camera.c boss_model.c boss_effect.c boss1.c boss2.c boss3.c boss4.c boss5.c
 HDRS = boss.h boss_internal.h
 CFLAGS_HOST = -std=c99 -O2 -Wall -Wextra -Werror -fwrapv
 Z13 ?= $(ROOT)/build/dreamcast/stages/z13/level.bin
@@ -29,6 +29,7 @@ data:
 Z23 ?= $(ROOT)/build/dreamcast/stages/z23/level.bin
 Z33 ?= $(ROOT)/build/dreamcast/stages/z33/level.bin
 Z43 ?= $(ROOT)/build/dreamcast/stages/z43/level.bin
+Z53 ?= $(ROOT)/build/dreamcast/stages/z53/level.bin
 
 $(OUT)/host/lib.stamp: $(SRCS) $(HDRS) $(PLAYER_SRCS) $(OBJ_SRCS) $(MODEL_DIR)/model.c test/stubs_objects.c
 	rm -rf $(OUT)/host && mkdir -p $(OUT)/host/lib
@@ -64,7 +65,10 @@ host-test3: $(OUT)/test_boss3
 host-test4: $(OUT)/test_boss4
 	$(OUT)/test_boss4 $(Z43) $(PLAYER_TABLES) $(MODELS) $(OUT)
 
-host-test: host-test1 host-test2 host-test3 host-test4
+host-test5: $(OUT)/test_boss
+	$(OUT)/test_boss $(Z53) $(PLAYER_TABLES) $(OBJDATA) $(SPRITES) $(MODELS) $(OUT)
+
+host-test: host-test1 host-test2 host-test3 host-test4 host-test5
 
 dc: $(SRCS) $(HDRS)
 	mkdir -p $(OUT)/dc
@@ -73,4 +77,4 @@ dc: $(SRCS) $(HDRS)
 clean:
 	rm -rf $(OUT)/test_boss $(OUT)/test_boss2 $(OUT)/test_boss3 $(OUT)/test_boss4 $(OUT)/host $(OUT)/dc
 
-.PHONY: all data host-test host-test1 host-test2 host-test3 host-test4 dc clean
+.PHONY: all data host-test host-test1 host-test2 host-test3 host-test4 host-test5 dc clean

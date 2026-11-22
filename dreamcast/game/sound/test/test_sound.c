@@ -82,7 +82,7 @@ static void mix_frame(const SndBank *b, long frame, float *out) {
             /* natural one-shot end inside this frame, otherwise stopped at frame start */
             if (!(!w->loop && ((m->pos + step * (n - 1)) >> 32) >= w->samples)) { m->active = 0; continue; }
         }
-        float g = (float)r->vol / 128.0f / (float)(1 << r->shift);
+        float g = (float)r->vol / 128.0f / (float)(1 << r->shift) * (float)snd_drv_mix_gain() / 65536.0f;
         float gl = g * (128 - r->pan) / 128.0f, gr = g * r->pan / 128.0f;
         for (long s = 0; s < n; s++) {
             uint64_t ip = m->pos >> 32;
@@ -100,7 +100,8 @@ static void mix_frame(const SndBank *b, long frame, float *out) {
     }
 }
 
-/* render SSAR id with the driver, sseqrender.c player model (fader = dbsq[vol], prio = player prio) */
+/* render SSAR id with the driver, sseqrender.c player model (NNSi_SndPlayerMain:
+   fader = db[record volume] + db[127] * 3 = db[vol], prio = player prio), mix gain of the bank */
 static long render_id(const SndBank *b, int ai, int si, float *out, long maxFrames, int *notes) {
     uint32_t size;
     const SrbSeqInfo *info = snd_bank_seq_info(b, ai, si);
@@ -111,7 +112,7 @@ static long render_id(const SndBank *b, int ai, int si, float *out, long maxFram
     if (!info) return 0;
     snd_drv_prepare_seq(0, data, size, info->offset, info->bank);
     snd_drv_set_player_prio(0, info->player_prio);
-    snd_drv_set_player_volume(0, b->tab->dbsq[info->volume & 127]);
+    snd_drv_set_player_volume(0, b->tab->db[info->volume & 127]);
     snd_drv_start_prepared(0);
     for (f = 0; f < maxFrames; f++) {
         snd_drv_frame();
@@ -377,6 +378,35 @@ static void test_hooks_output(void) {
     sound_stop(h, 0); sound_release(h); frames(2);
 }
 
+/* ------------------------------------------------------------ 6: sys bank (menus) */
+static void test_sys(void) {
+    int r = sound_load_bank("sys"), silent = 0, total = 0;
+    CHECK(r == 0, "sound_load_bank sys: %d", r);
+    if (r) return;
+    /* every SysSound_StartSE id (both characters) and SysSound_StartVoice id must key on a channel */
+    for (int pass = 0; pass < 3; pass++) {
+        int n_max = pass < 2 ? 23 : 8;
+        for (int n = 0; n < n_max; n++) {
+            sound_stop_all(); frames(2);
+            g_host_out.starts = 0;
+            if (pass < 2) SysSound_StartSE(n, pass); else SysSound_StartVoice(n, 0);
+            frames(6);
+            total++;
+            if (!g_host_out.starts) { silent++; printf("  sys %s %d (chara %d): no channel started\n", pass < 2 ? "SE" : "voice", n, pass); }
+        }
+    }
+    /* the Alt voice keeps the first voice playing */
+    sound_stop_all(); frames(2);
+    SysSound_StartVoice(0, 0); frames(2);
+    SysSound_StartVoice(1, 1); frames(2);
+    int on = 0;
+    for (int c = 0; c < 16; c++) on += snd_drv_regs(c)->active;
+    printf("sys bank: %d of %d SysSound_StartSE/StartVoice calls start a channel; voice + alt voice: %d channels on\n",
+           total - silent, total, on);
+    CHECK(silent == 0, "%d sys sounds silent", silent);
+    CHECK(on >= 2, "alt voice stopped the first voice");
+}
+
 int main(int argc, char **argv) {
     const char *dir = argc > 1 ? argv[1] : "build/dreamcast/audio/sfxbank";
     g_audio = argc > 2 ? argv[2] : "build/dreamcast/audio";
@@ -387,7 +417,9 @@ int main(int argc, char **argv) {
     sound_init();
     test_nns();
     test_hooks_output();
+    test_sys();
     sound_shutdown();
+    test_render(dir, "sys");
     printf("%s (%d failures)\n", fails ? "FAILED" : "OK", fails);
     return fails != 0;
 }

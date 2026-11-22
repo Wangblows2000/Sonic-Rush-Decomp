@@ -133,6 +133,11 @@ typedef struct BossModel {
     dcm_mtx_t mdl_mtx;
     dcm_mtx_t *palette;    /* [num_palette] */
     int posed;
+    /* native: node callbacks that multiply a joint's matrix (MTX_MULT_3x3 at a NODEDESC, e.g.
+     * Boss1_NodeCallback_Batteries): rotation applied to the joint's local transform at the pose */
+    int jr_n;
+    int jr_joint[2];
+    MtxFx33 jr_rot[2];
 } BossModel;
 
 enum { MOP_NONE = 0, MOP_IDENTITY, MOP_RESTORE, MOP_FLUSHP, MOP_FLUSHVP, MOP_FLUSHWVP };
@@ -160,6 +165,8 @@ int boss_joint_index(const char *model, const char *node);
 /* i-th effect package of a boss stage (bossdata.bin effect table); -1 past the end */
 int boss_effect_file(int stage, int i, const char **name, const char **model, const char **anim);
 int boss_model_draw(const BossModel *m, int list);
+/* set (or clear with r = NULL) a joint rotation for the next boss_model_pose (see BossModel.jr_*) */
+void boss_model_set_joint_rot(BossModel *m, int slot, int joint, const MtxFx33 *r);
 extern u8 *g_boss_debug_fb;   /* host debug view (boss_model.c) */
 extern u32 g_boss_debug_color;
 void boss_model_release(BossModel *m);
@@ -319,6 +326,17 @@ void boss1_destroy(void);
 const char *boss1_state_name(int part);
 void boss1_hammer_pos(s32 *x, s32 *y, s32 *z);
 int boss1_hammer_box_armed(int box);
+
+/* -------------------------------------------- Boss5 (Boss1 variant) */
+/* Boss5PartD3 (missile, map object 0xd3): created by Boss1Neck_State_FireAt* in zone 5 */
+void *Boss5PartD3_Create(const ObjParam *a, s32 x, s32 y);
+void Boss5PartD3_Action_Launch(void *s, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s16 g);
+int boss5_load(void);
+void boss5_unload(void);
+void boss5_update(void);
+int boss5_draw(int list);
+void boss5_destroy(void);
+int boss5_missiles_alive(void);
 
 /* ------------------------------------------------------- Boss2 */
 /* timing-only animation table of bossdata.bin ("bs2.nsbta" -> frame counts) */

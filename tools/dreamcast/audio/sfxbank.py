@@ -20,7 +20,7 @@ Output: build/dreamcast/audio/sfxbank/<sdat>.srb (+ <sdat>.json: id -> name,
 player, priority, volume; sizes) and budget.json (all banks).
 
 .srb layout (little endian, all offsets from file start, see snd_bank.h):
-  0x00 'SRSB'  u32 version(1)  char sdat[8]
+  0x00 'SRSB'  u32 version(2)  char sdat[8]
   0x10 u32 n_players  off_players     players: {u8 max_seq, u8 0, u16 alloc_mask, u32 heap} x n
   0x18 u32 n_ssar     off_ssar        ssar:    {u32 n_seq, off_rec, off_data, data_size} x n
                                       rec (SSAR record, 12 B): u32 offset (0xffffffff empty),
@@ -32,8 +32,11 @@ player, priority, volume; sizes) and budget.json (all banks).
   0x30 u32 psg_wave   noise_wave      first of 8 generated PSG duty waves, generated noise wave
   0x38 u32 off_tables                 s16 dbsq[128] (ARM7), s16 db[128] (ARM9 NNS), u8 volume[724],
                                       u8 attack[19], u8 sine[33], u8 order[16], (pad to 4) u16 pitch[768]
-  0x3c u32 off_wavedata  wavedata_size   wave blob (each wave 32-byte aligned) = what goes to sound RAM;
-                                      always last in the file so the loader can stream it.
+  0x3c u32 off_wavedata  (0x40) u32 wavedata_size   wave blob (each wave 32-byte aligned) = what goes
+                                      to sound RAM; always last in the file so the loader can stream it.
+  0x44 u32 mix_gain_tl (v2)           port mix gain (AICA TL steps, gain 2^(-n/16)) = sdat2dc.py
+                                      MIX_GAIN_TL from manifest.json: the same gain the music renders
+                                      carry, applied by the runtime to every effect channel.
 
 Usage:
   python3 tools/dreamcast/audio/sfxbank.py [--extract extract/eur]
@@ -52,7 +55,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import sdatlib  # noqa: E402
 
-VERSION = 1
+VERSION = 2
 # KOS: snd_mem pool = AICA_RAM_END 0x200000 - AICA_RAM_START 0x30000 = 1,900,544 B.
 # engine/audio.c music stream: snd_stream_alloc(cb, SND_STREAM_BUFFER_MAX_ADPCM)
 # x 2 channels (snd_stream_init) = 2 * 32704 = 65,408 B (+ snd_mem block rounding).
@@ -87,17 +90,8 @@ def pitch_table():
 
 
 def nns_decibel_table(extract):
-    """ARM9 SNDi_DecibelTable (128 x s16, used by NNSi_SndPlayerMain: data_020725e0),
-    located structurally: [0] = -723, [i] ~ round(200*log10(i/127)), [127] = 0."""
-    a9 = (Path(extract) / "arm9" / "arm9.bin").read_bytes()
-    approx = [-723] + [round(200 * math.log10(i / 127)) for i in range(1, 128)]
-    for o in range(0, len(a9) - 256, 2):
-        if struct.unpack_from("<h", a9, o)[0] != -723 or struct.unpack_from("<h", a9, o + 2)[0] != approx[1]:
-            continue
-        t = struct.unpack_from("<128h", a9, o)
-        if t[127] == 0 and sum(abs(t[i] - approx[i]) for i in range(128)) < 16:
-            return a9[o:o + 256], hex(0x02000000 + o)
-    raise RuntimeError("NNS decibel table not found in arm9.bin")
+    """ARM9 SNDi_DecibelTable (data_020725e0), see sdatlib.nns_decibel_table."""
+    return sdatlib.nns_decibel_table(extract)
 
 
 def psg_waves():
@@ -125,11 +119,27 @@ def noise_wave():
     return bytes(out[-1:] + out[:-1])
 
 
+# sys SDAT (menus / zone map / staff roll): only the sequences the game plays
+# from it, from src/game/Sound: SysSound_StartSE (SSAR 1 seqs 0-5, 0xb, 4;
+# 0x11 seqs 0-2; 2/3 = ARC_ZONE_MAP_S/_B seqs 0-8, 0x10; 0xa seqs 0-2) and
+# SysSound_StartVoice (SSAR 1 seqs 5-0xa; 0x11 seqs 3-4). Whole SSARs 1 and
+# 0x11 are kept (12 / 5 records). The other 14 SSARs (and their banks / waves:
+# the full sys SDAT has 4.2 MB of waves) are left out (n_seq 0). Groups the
+# original loads for these: 1, 0x15, 2 / 3, 0xe (SysSound_LoadSEGroup /
+# SysSound_LoadVoiceGroup).
+SELECT = {
+    "sys": {1: None, 0x11: None, 2: list(range(9)) + [0x10], 3: list(range(9)) + [0x10], 0xA: [0, 1, 2]},
+}
+
+
 class Builder:
     def __init__(self, a):
         self.a = a
         self.audio = Path(a.audio)
         self.manifest = json.loads((self.audio / "manifest.json").read_text())
+        if "mix_gain_tl" not in self.manifest:
+            raise SystemExit("manifest.json has no mix_gain_tl: re-run sdat2dc.py")
+        self.mix_gain_tl = int(self.manifest["mix_gain_tl"])
         self.waves = {}
         for e in self.manifest["entries"]:
             if e["kind"] != "wave":
@@ -167,16 +177,21 @@ class Builder:
         # ssar
         ssars = []
         used_banks = set()
+        select = SELECT.get(sdname)
         for ai, a in enumerate(sd.info["seqarc"]):
-            if a is None:
+            if a is None or (select is not None and ai not in select):
                 ssars.append((0, b"", b""))
                 continue
             f = sd.file(a["file"])
             n = u32(f, 0x1C)
-            recs = f[0x20:0x20 + 12 * n]
+            recs = bytearray(f[0x20:0x20 + 12 * n])
             data = f[u32(f, 0x18):]
             sub = sd.ssar_names[ai] if ai < len(sd.ssar_names) else []
+            keep = select.get(ai) if select is not None else None
             for si, r in enumerate(sd.ssar_records(a["file"])):
+                if r is not None and keep is not None and si not in keep:
+                    struct.pack_into("<I", recs, 12 * si, 0xFFFFFFFF)   # not used by the game: empty record
+                    r = None
                 if r is None:
                     continue
                 off, bank, vol, cpr, ppr, ply = r
@@ -188,7 +203,7 @@ class Builder:
                     "player_max_seq": sd.info["player"][ply]["max_seq"] if ply < n_players and sd.info["player"][ply] else None,
                     "rendered": e["status"] if e else None,
                     "rendered_samples": e.get("samples") if e else None}
-            ssars.append((n, recs, data))
+            ssars.append((n, bytes(recs), data))
         # banks + waves
         wave_tab, blob = [], bytearray()
 
@@ -231,7 +246,7 @@ class Builder:
         noise = add_wave(noise_wave(), 32767, 0, 1, 2, 1)
         blob.extend(b"\0" * (-len(blob) % 32))
         # layout
-        hdr_size = 0x40
+        hdr_size = 0x48  # 17 u32 + char[8]; v1 used 0x40, so wavedata_size overlapped players[0]
         out = bytearray(hdr_size)
 
         def put(b):
@@ -263,6 +278,7 @@ class Builder:
         struct.pack_into("<4sI8sIIIIIIIIIIIII", out, 0, b"SRSB", VERSION, name8,
                          n_players, off_players, len(ssars), ssar_tab_off, len(banks), bank_tab_off,
                          len(wave_tab), off_waves, psg, noise, off_tables, off_wavedata, len(blob))
+        struct.pack_into("<I", out, 0x44, self.mix_gain_tl)
         outdir = Path(self.a.out)
         outdir.mkdir(parents=True, exist_ok=True)
         (outdir / f"{sdname}.srb").write_bytes(out)
@@ -275,7 +291,7 @@ class Builder:
         # test (dreamcast/game/sound/test): "<ssar> <seq> <status> <samples> <channels> <path|->"
         lines = []
         for (s, ai, si), e in sorted(self.sfx.items()):
-            if s == sdname:
+            if s == sdname and (select is None or (ai in select and (select[ai] is None or si in select[ai]))):
                 rel = e.get("output") or e.get("same_as") or "-"
                 lines.append(f"{ai} {si} {e['status']} {e.get('samples', 0)} {e.get('channels', 0)} {rel}")
         (outdir / f"{sdname}.rendered.txt").write_text("\n".join(lines) + "\n")
@@ -303,7 +319,7 @@ def main():
     a = ap.parse_args()
     b = Builder(a)
     names = [x for x in a.only.split(",") if x] or sorted(
-        n for n in b.manifest["sdats"] if n not in ("sys", "extra_end"))
+        n for n in b.manifest["sdats"] if n != "extra_end")
     rows, worst = [], 0
     for n in names:
         r = b.build(n)
@@ -318,7 +334,7 @@ def main():
               f"  (pre-rendered would be {r['rendered_sfx_bytes_if_prerendered']['adpcm_bytes']}){'' if ok else '  OVER BUDGET'}")
     budget = {"snd_mem_pool": SND_MEM_POOL, "music_stream": STREAM_BYTES, "budget": a.budget,
               "worst_bank": worst, "free_after_worst": a.budget - worst,
-              "driver_tables": b.tinfo, "nns_decibel_table": b.dbinfo, "banks": rows}
+              "driver_tables": b.tinfo, "mix_gain_tl": b.mix_gain_tl, "nns_decibel_table": b.dbinfo, "banks": rows}
     Path(a.out, "budget.json").write_text(json.dumps(budget, indent=1))
     print(f"budget {a.budget} B, worst bank {worst} B, free {a.budget - worst} B")
     return 0 if all(r["fits"] for r in rows) else 1

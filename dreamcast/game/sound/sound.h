@@ -71,5 +71,12 @@ void Sound_PlayVoice(SoundHandle *p, uint32_t a, uint32_t b);
 int32_t Sound_CalcPan(int32_t a, int32_t b);
 int32_t Sound_CalcDistanceVolume(int32_t x0, int32_t y0, int32_t x1, int32_t y1);
 void Sound_SetPositional(SoundHandle *snd, int32_t ax, int32_t ay, int32_t bx, int32_t by);
+/* SysSound_StartSE / SysSound_StartVoice (src/game/Sound), on the "sys" bank
+ * (sound_load_bank("sys")): menu / zone-map / staff-roll effects and menu
+ * voices. chara = gGameState.unk0 (0 Sonic, 1 Blaze: zone-map SSAR 2 / 3);
+ * alt = 1 for SysSound_PlayMenuVoiceAlt (second voice handle). Each call
+ * stops the previous sound on its handle (StopSeq 0 + release), as the original. */
+void SysSound_StartSE(int32_t n, int chara);
+void SysSound_StartVoice(int32_t n, int alt);
 
 #endif

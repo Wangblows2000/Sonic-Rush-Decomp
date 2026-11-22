@@ -151,6 +151,8 @@ typedef struct BossStats {
     u32 pushes, kicks, throw_attacks, summons, balls_spawned, balls_thrown, ball_explosions, reflects, staggers;
     /* Boss4 (slams above) */
     u32 tilt_spins, clashes, shot_bursts, shots, enemies, enemy_bounces, waves, electrified;
+    /* Boss5 (missiles above: attacks chosen) */
+    u32 missiles_fired, missile_explosions;
 } BossStats;
 const BossStats *boss_stats(void);
 /* name of the current state function of part 0 (Boss1), 1 (neck), 2 (hammer) */

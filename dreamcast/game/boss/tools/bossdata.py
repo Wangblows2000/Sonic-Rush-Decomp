@@ -125,6 +125,9 @@ JOINTS = [
     ("bs2_head", "head_01"),
     # Boss3PartCC_NodeCallback_BodyBall (data_ov000_023630e0)
     ("bs3_body", "body_ball"),
+    # Boss1_NodeCallback_Batteries on the zone-5 base
+    ("bs5_base", "base_battery01"),
+    ("bs5_base", "base_battery02"),
     # Boss4_NodeCallback_Rods / _ArmGun / _BodyExit
     ("bs4_rod", "rod_arm"),
     ("bs4_rod", "rod_body"),
@@ -138,6 +141,9 @@ JOINTS = [
 ANIM_LENGTHS = [
     ("narc/z23_act_lz7.narc", "bs2.nsbta"),   # Boss2 file 9 (water / shower SRT animations, slot 3)
     ("narc/z33_act_lz7.narc", "bs3.nsbta"),   # Boss3 file 9 (arena SRT animation, slot 3)
+    ("narc/z53_act_lz7.narc", "eff_bomb_up.nsbma"),   # Boss5PartD3 explosion (slots 1 / 3 / 2)
+    ("narc/z53_act_lz7.narc", "eff_bomb_up.nsbta"),
+    ("narc/z53_act_lz7.narc", "eff_bomb_up.nsbtp"),
     ("narc/z43_act_lz7.narc", "bs4.nsbma"),   # Boss4 file 9 (electric arm material animation, slot 1)
     ("narc/z43_act_lz7.narc", "bs4.nsbtp"),   # Boss4 file 10 (base pattern animation, slot 2)
     ("narc/z43_act_lz7.narc", "eff_ele_stay.nsbma"),    # Boss4PartD0 (slot 1: the shot ends with it)
@@ -265,6 +271,31 @@ ASSETS = {
     # (bs4.nsbma / bs4.nsbtp: timing only), 0x51..0x5e (eff_ele_atk, eff_ele_stay, eff_ele_flash,
     # eff_ele_wave, eff_wave_disap), BossEffect names (eff_hit, eff_clash, eff_shoot_bomb, eff_impact_small,
     # eff_blast4 at the defeat)
+    # Boss5 = Boss1 zone-5 variant: BossStage5_OnModelLoaded data_02074388 (bs5_base, bs1_neck, bs1_hammer,
+    # bs5_sky), "bs1" files 8 (bs1.nsbca, identical to z13's) and 9 (bs5.nsbca), Boss5PartD3 files 0x3d,
+    # 0x41..0x45 (eff_missile, eff_bomb_up), BossEffect names of z53_act_lz7.narc
+    "z53": [
+        "mod__bs5_base__bs5_base.dcm",
+        "mod__bs1_neck__bs1_neck.dcm",
+        "mod__bs1_hammer__bs1_hammer.dcm",
+        "mod__bs5_sky__bs5_sky.dcm",
+        "narc__z13_act_lz7__bs1.dca",
+        "narc__z53_act_lz7__bs5.dca",
+        "narc__z53_act_lz7__eff_missile__eff_missile.dcm",
+        "narc__z53_act_lz7__eff_bomb_up__eff_bomb_up.dcm",
+        "narc__z53_act_lz7__eff_bomb_up.dca",
+        "narc__z53_act_lz7__eff_launch__eff_launch.dcm",
+        "narc__z53_act_lz7__eff_launch.dca",
+        "narc__z13_act_lz7__eff_hit__eff_hit.dcm",
+        "narc__z13_act_lz7__eff_hit.dca",
+        "narc__z13_act_lz7__eff_impact_small__eff_impact_small.dcm",
+        "narc__z13_act_lz7__eff_impact_small.dca",
+        "narc__z13_act_lz7__eff_impact_big__eff_impact_big.dcm",
+        "narc__z13_act_lz7__eff_impact_big.dca",
+        "narc__z23_act_lz7__eff_blast__eff_blast.dcm",
+        "narc__z23_act_lz7__eff_blast.dca",
+        "narc__z13_act_lz7__eff_pebble__eff_pebble01.dcm",
+    ],
     "z43": [
         "mod__bs4_base__bs4_base.dcm",
         "mod__bs4_body__bs4_body.dcm",

@@ -180,3 +180,20 @@ def extract_driver_tables(extract_dir):
     info = dict(arm7_decibel_sq=hex(best), arm7_sine=hex(si), arm7_attack=hex(att),
                 arm7_order=hex(att - 16), arm9_volume=hex(0x02000000 + vt))
     return dbsq + volume + attack + sine + order, info
+
+
+def nns_decibel_table(extract_dir):
+    """ARM9 SNDi_DecibelTable (128 x s16) = data_020725e0, the table
+    NNSi_SndPlayerMain / NNSi_SndArcStrmMain use to turn the NNS volumes
+    (0..127) into the driver player volume (SND_SetPlayerVolume, 0.1 dB).
+    Located structurally: [0] = -723, [i] ~ round(200*log10(i/127)), [127] = 0.
+    Returns (256 bytes, hex address)."""
+    a9 = (Path(extract_dir) / "arm9" / "arm9.bin").read_bytes()
+    approx = [-723] + [round(200 * math.log10(i / 127)) for i in range(1, 128)]
+    for o in range(0, len(a9) - 256, 2):
+        if struct.unpack_from("<h", a9, o)[0] != -723 or struct.unpack_from("<h", a9, o + 2)[0] != approx[1]:
+            continue
+        t = struct.unpack_from("<128h", a9, o)
+        if t[127] == 0 and sum(abs(t[i] - approx[i]) for i in range(128)) < 16:
+            return a9[o:o + 256], hex(0x02000000 + o)
+    raise RuntimeError("NNS decibel table not found in arm9.bin")

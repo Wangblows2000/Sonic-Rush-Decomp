@@ -66,7 +66,8 @@ def main():
             cmd = [str(renderer), "render", "--sdat", str(sd.path), "--tables", str(tables), "--seq", str(fid),
                    "--start", str(off), "--bank", str(r["bank_file"]), "--swar", ",".join(map(str, r["swar_files"])),
                    "--vol", str(vol), "--ppr", str(ppr), "--mask", hex(r["channel_mask"]),
-                   "--max-sec", str(a.sec + 0.1), "--hold-sec", "0", "--full", "--out", str(out)]
+                   "--max-sec", str(a.sec + 0.1), "--hold-sec", "0", "--full",
+                   "--gain-tl", str(man.get("mix_gain_tl", 0)), "--out", str(out)]  # same mix gain as the bank
             subprocess.run(cmd, check=True, capture_output=True)
             ref, mine = read_wav(out), read_wav(mine_p)
             n = min(len(ref), len(mine), int(a.sec * 32728))

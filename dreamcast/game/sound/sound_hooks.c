@@ -14,6 +14,9 @@
 #include "../player/dcp_player.h"
 #include "../objects/objects.h"
 #include <string.h>
+#include <stdio.h>
+#include "snd_internal.h"
+extern uint32_t g_sound_frame;
 
 #define MAX_PLAYERS 2
 static struct { DcPlayer *p; SoundHandle h[3]; } s_ph[MAX_PLAYERS];
@@ -47,6 +50,7 @@ static void hk_sfx(void *ctx, DcPlayer *p, s32 ch, s32 id) {
 static void hk_sfx_stop(void *ctx, DcPlayer *p, s32 ch) {
     SoundHandle *h;
     if (s_prev_stop) s_prev_stop(ctx, p, ch);
+    if (g_sound_trace) printf("snd f%lu stop ch%ld\n", (unsigned long)g_sound_frame, (long)ch);
     h = ch == DCP_CH_GLOBAL ? &gSESoundHandle : player_handle(p, ch);
     if (h) NNS_SndPlayerStopSeq(h, ch == DCP_CH_GLOBAL ? 0 : s_stop_fade[ch]);
 }

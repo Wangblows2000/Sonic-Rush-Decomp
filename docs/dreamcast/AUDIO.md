@@ -21,7 +21,8 @@ level (6 s test: 224,418 frames, RMS 10,012).
 
 - Music: rendered offline to stereo ADPCM by `sseqrender.c` and streamed by
   `dreamcast/game/engine/audio.c` (option (b); tension-gauge track muting is
-  lost).
+  lost). Volume model = the decompiled `NNSi_SndPlayerMain`; one shared port
+  mix gain for music and effects (section 10).
 - STRM: streamed from disc with `snd_stream` double buffers.
 - Sound effects and voices: **done as a real-time sequenced runtime**, see
   below. The sys SDAT (menus, title, cutscenes) has no bank yet.
@@ -142,10 +143,11 @@ Per game frame `sound_update()` runs `NNSi_SndPlayerMain` (NNS_SndMain), then
 the AICA: key-on (`AICA_CH_CMD_START`), pitch/pan (`AICA_CH_CMD_UPDATE`),
 volume as a direct TL register write, key-off on stop. Mapping: AICA rate =
 16,756,991 / DS timer (PCM, ADPCM, PSG and noise alike); amplitude =
-vol/128 / 2^shift × 127/128 × max(left, right) of the DS linear pan; the
-weaker side is attenuated in 3 dB DIPAN steps. The music stream plays the
-DS-model render at full level hard left/right, so effects and music keep the
-DS level ratio (but see deviation 2).
+vol/128 / 2^shift × 127/128 × max(left, right) of the DS linear pan × the port
+mix gain from the bank header (section 10); the weaker side is attenuated in
+3 dB DIPAN steps. The music stream plays the render (DS model × the same mix
+gain) at full level hard left/right, so effects and music keep the DS level
+ratio.
 
 #### Wiring into `src/main.c`
 
@@ -245,16 +247,9 @@ match against a render).
    written once per frame. Notes inside a sequence start on 16.7 ms
    boundaries (DS: 5.2 ms) and pitch/volume envelopes move in 60 Hz steps.
    A driver thread at ~192 Hz would remove this.
-2. **Volume model of the offline renders**: `NNSi_SndPlayerMain` converts the
-   NNS volumes with `data_020725e0` = `SNDi_DecibelTable`
-   (200·log10(v/127)), and the runtime does the same. `sseqrender.c`
-   (`cmd_render`, `playerFader = tblDecibelSq[vol]`) uses the squared table
-   (400·log10), so every offline render — **including the streamed music** —
-   is quieter than the DS by `dbsq[vol] − db[vol]`: 0 dB at vol 127, −2.1 dB
-   at 100, −4.2 dB at 80, −8.1 dB at 50. Effects from this runtime are
-   therefore up to that much louder relative to the music than on the DS.
-   Fix belongs in `sseqrender.c` + a re-run of `sdat2dc.py` (not done here,
-   it would re-render all music).
+2. ~~Volume model of the offline renders~~ **fixed** (section 10):
+   `sseqrender.c` now runs the decompiled `NNSi_SndPlayerMain` with the
+   linear table `data_020725e0`.
 3. The 16 effect channels are exclusive (on the DS, BGM sequences compete
    for the same 16 channels and can steal from effects).
 4. AICA interpolates between samples (DS: no interpolation), so PSG square
@@ -308,3 +303,124 @@ logic, DS services replaced; **rewritten** = substantially rewritten;
 | `SND_UpdateExChannel` (hardware) | `update_hw` + `hw_advance` + `snd_drv_flush` | rewritten (AICA output) |
 | — | `snd_out_kos.c`, `sound_hooks.c`, `sound_play*` API | new |
 | `Sound_PlaySeq`, `Sound_PlayBGMEx`, `Sound_PlayBGMOnPlayer3`, `SysSound_*`, `TensionSound_*`, `StageJingle_*`, `Sound_LoadSoundArchive*`, `Sound_ResetHeap` | — | not translated (music is streamed; no sys bank) |
+
+---
+
+## 10. Volume model, mix level and clipping (fix of 2026-11-22)
+
+### 10.1 Volume stages (decompiled code -> renderer -> runtime)
+
+| stage | DS code | table | `sseqrender.c` | runtime |
+|---|---|---|---|---|
+| NNS player volume: `db[fader>>8] + db[volume1 = SEQ/SSAR info vol] + db[volume2 = NNS_SndPlayerSetVolume (gBGMVolume / gSEVolume = 127)] + db[NNSSndPlayer volume = 127]`, clamp −723..0, `SND_SetPlayerVolume` | `NNSi_SndPlayerMain` (src/libs/NitroSystem/snd) | **linear** `data_020725e0` = SNDi_DecibelTable, 200·log10 | `nns_player_main()` (same code, once per 60 Hz frame, faders `NNSi_SndFader*`) — was `dbsq[vol]` (bug) | `snd_nns.c` `NNSi_SndPlayerMain` (already right) |
+| track: `dbsq[track vol] + dbsq[expression] + dbsq[seq master vol 0xC2]` | ARM7 driver (not in the decompilation) | squared, 400·log10 | unchanged | unchanged |
+| channel: `dbsq[velocity]` + envelope (sustain `dbsq`) + track + player extFader + LFO, `SND_CalcChannelVolume` | ARM7 | squared + volume table | unchanged | unchanged |
+| mixer: vol/128 >> shift, pan (128−p)/128, p/128, master 127/128, clamp at 16-bit full scale | hardware (melonDS SPU::Mix gives the same scale: a centred full channel = 0.49 FS) | — | unchanged | AICA TL/DIPAN (`out_vol`) |
+| port mix gain 2^(−24/16) = −9.03 dB | — | — | `--gain-tl` (new) | `.srb` header -> `out_vol` (new) |
+
+The table is located structurally in the owner's arm9.bin
+(`sdatlib.nns_decibel_table`, found at 0x020725e0 = `data_020725e0`) and is
+appended to `build/dreamcast/audio/tables.bin` (offset 1048) by `sdat2dc.py`.
+Held-SFX stop in the renderer now uses `NNSi_SndPlayerStopSeq` (fader -> 0 over
+10 NNS frames, `ForceStopSeq` at the end) instead of a dB ramp.
+
+Measured old -> new (render RMS, `/tmp/audiofix/tools/cmpman.py` on the two
+manifests; volume fix alone, before the mix gain): change = `db[v] − dbsq[v]`
+exactly: music vol 40 (z1–z7 stage BGM) **+10.06 dB**, 45 +9.0, 50 +8.1,
+60 +6.5, 80 +3.9, 100 +2.1, 127 0; effects vol 100 +2.0 (4,100 entries),
+110 +1.2, 120 +0.5, 127 0. With the fix the DS-level BGM renders peak up to
+**+4.4 dBFS** (z5b SEQ_5blaze; z1 SEQ_1sonic +1.4 dBFS): the DS mix itself
+exceeds full scale, so a 16-bit render clipped (94 music files).
+
+### 10.2 One shared mix gain
+
+`MIX_GAIN_TL = 24` in `sdat2dc.py` is the only definition: every render
+(music, sys music, SFX renders) is scaled by 2^(−24/16) after the DS master
+volume; `manifest.json` records `mix_gain_tl`; `sfxbank.py` copies it into the
+`.srb` header (format v2, u32 at 0x44, header 0x48 bytes); `snd_drv.c`
+`out_vol()` multiplies every effect channel by the same gain. Music and effects
+keep exactly the DS ratio, with 9 dB of headroom over the DS full scale. Why
+24: worst cases measured — BGM +4.4 dBFS (DS scale), the doubled SE_Spring
+(see 10.3) 1.58 FS, three overlapping SE_Ring 1.8 FS; music + spring could
+reach ~2.7 FS = +8.6 dB.
+
+Final renders (`validate_audio.py`, report.json): music peak max −4.6 dBFS
+(was 0.0, 3 files at full scale; now 0), RMS median −23.8 dBFS (was −23.0),
+z1 SEQ_1sonic RMS −26.6 dBFS (old −27.7); SFX renders peak max −4.5 dBFS, 0 at
+full scale (was 66 clipped). ADPCM SNR unchanged (music median 22.4 dB; the
+Yamaha ADPCM SNR does not depend on level, checked 0/−4.5/−9/−15 dB: 23.1 dB
+each). swav 3110/3110 exact, strm 2/2, loops 77/77, seams median 0.196.
+`sfxbank_check.py` (runtime driver vs renderer, both with the gain): 203 ids,
+SNR median 42.2 dB, min 16.0 dB (as before; bit-exact ids 57 -> 15 because the
+gain is applied in float vs double: off-by-one LSB rounding).
+
+### 10.3 Clipping in the game: causes found in Flycast
+
+Captures of z11 (hold Right, DC X = boost every 2 s; `fcrec.py record ...
+--hold Right --press s`), analysed per window / onsets / spectrogram
+(`build/dreamcast/audio/validation/captures/*.png`). Trace build: an empty
+`/cd/debug/sndtrace.txt` on the disc makes `sound.c`/`snd_drv.c` log every
+start/stop and every frame whose summed channel amplitude is >= −6 dBFS, and
+`engine/audio.c` log poll gaps, slow disc reads, underruns.
+
+1. **Music stream fault (main cause of the full-scale bursts and of the 2 s at
+   full scale)**: the stream refill read the disc inside `snd_stream_poll`.
+   While the main thread loads (fs_iso9660 serialises reads) one poll took
+   5.7 s and 6.1 s (z11 load; one 16 KB read waited 16.7 s in a later run).
+   The AICA then replays stale ring data; its ADPCM decoder state (previous
+   sample, step, no leak) no longer matches the encoder, so the error stays:
+   full-scale noise for seconds and a permanent DC offset (up to +0.75 FS on R
+   in one run; the original capture already had DC ~1000 LSB). Fix in
+   `engine/audio.c`: reader thread -> 384 KB RAM ring (12 s) -> poll thread
+   (callback copies from RAM, never touches the disc); the stream starts when
+   the ring holds 128 KB and either `audio_update()` ran since
+   `audio_music_play()` (the game loop runs again, load over) or the disc is
+   idle (last 16 KB read < 300 ms: menus, whose loop does not call
+   `audio_update`). If it still runs dry, the stream stops (silence) and
+   restarts from the top of the file (the only point where the decoder reset
+   state matches the encoder). `audio_stream_underruns()` counts them.
+2. **Effect level**: the DS mix has no headroom; with the volume fix effects
+   and music sum above full scale. Faithful DS behaviour adds to it:
+   `Player_Action_SpringLaunch` calls `Player_Action_Launch` (which plays
+   SE_Spring on @384) and then plays SE_Spring again on @384, and
+   `NNS_SndHandleInit` only detaches the first one, so two in-phase copies
+   play (+6 dB); ring bursts start 3 SE_Ring within 10 frames. Handled by the
+   mix gain (10.2), not by changing the original logic.
+
+| capture | build | peak | clipped samples | DC L/R | notes |
+|---|---|---|---|---|---|
+| `rec0s` (before) | shared tree 09:0x, old levels | 32762 | 4437 (50–55 s, 60–65 s) | 1054/−1003 | 5 s windows RMS/peak: 40 s −16.5/−4.5, 50 s −12.4/0.0, 60 s −12.5/0.0 |
+| `rec0t7` | volume fix, no gain, old stream | 32762 | 26660 | 1241/855 | stream burst from 33 s (L full scale ~20 s) |
+| `rec1t2` | gain, old stream | 32762 | 15484 | R +0.75 FS | stream bursts 23/34–38 s, permanent DC |
+| `rec3` (after) | gain + ring stream | **18939 (−4.8 dBFS)** | **0** | 30/24 | 99 s, player hit/died/respawned as in rec0s; windows −30.9…−20.4 dBFS RMS, peak ≤ −4.8 |
+| `rec3b` (after, X+A) | same | 20155 (−4.2 dBFS) | 0 | 32/25 | 102 s |
+
+Onsets (10 ms RMS +9 dB over the previous 300 ms): rec0s 20.09 (music),
+42.16, 44.17, 50.18, 52.14, 54.14, 56.89, 58.53, 59.87, 62.76, 65.48 s;
+rec3 20.71, 47.44, 50.25, 60.27, 66.02, 68.77, 83.07 s. Music level in rec3
+(first 15 s) −29.35 dBFS vs the render −29.19 dBFS (L/R within 0.2 dB).
+Trace (rec3t): summed effect amplitude max 41,557/65,535 q16 (−3.9 dBFS before
+music), 0 underruns, ring low-water 65,664 B.
+
+### 10.4 Integrator notes
+
+- `make` of the game has no header dependencies: after this change delete
+  `sound/*.o` and `engine/audio.o` (SrbHeader grew; an old `snd_bank.o`
+  rejects the v2 banks and the game runs with no effects).
+- Rebuild the disc with the new `build/dreamcast/audio/music/*` (stage BGM
+  and sys `sNN.wav`, both re-rendered) and `sfxbank/*.srb` (v2).
+- `audio_update()` must be called once per game-loop frame (it is): it now
+  also marks "load over" for the deferred music start. Starting the music after
+  the stage load (end of `load_stage`) and reading big files in chunks would
+  shorten the start delay; not required.
+- The front end calls `sound_load_bank("sys")`: no `sys.srb` exists (section
+  8, item 8), so menu effects are silent ("sys sound bank missing").
+
+### 10.5 Remaining known issues
+
+- Music loop seam: the ADPCM encoder state at loop end differs slightly from
+  that at loop start (z1: 55 / 26 LSB), so each loop adds that much DC
+  (~0.2 % FS per 98 s loop). Fix would be in the encoder (state-matched loop).
+- Real hardware not tested; Flycast's GD-ROM is slow (~120 KB/s measured
+  for 16 KB reads), real drives are faster, so starvation there is less
+  likely, but the ring is still the safe design.

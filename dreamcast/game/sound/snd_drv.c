@@ -24,6 +24,7 @@
  * noise_wave) at the same timer.
  */
 #include "snd_internal.h"
+#include <stdio.h>
 #include <string.h>
 
 #define FRAME_SAMPLES_X2 341 /* 170.5 output samples per frame */
@@ -609,10 +610,22 @@ void snd_drv_frame(void) {
  * master 127/128. AICA: the louder side at that amplitude (TL, 0.375 dB
  * steps), the other side attenuated in 3 dB steps (DIPAN, KOS pan value). The music
  * stream (engine/audio.c) plays the DS-model render at 255 hard left/right,
- * so this keeps effects and music at the DS level ratio. */
+ * so this keeps effects and music at the DS level ratio.
+ * Port mix gain: every channel is scaled by 2^(-mix_gain_tl/16) from the bank
+ * header, the same gain sdat2dc.py baked into the music renders (one shared
+ * gain: headroom for the DS mix, which clamps at the same full scale). */
 static uint8_t panKos[128];
+static uint32_t mixGain = 65536; /* q16 */
+static uint32_t mix_gain_q16(uint32_t tl) {
+    /* round(65536 * 2^(-i/16)), i = 0..15 */
+    static const uint16_t frac[16] = {0, 62757, 60097, 57549, 55109, 52773, 50535, 48393,
+                                      46341, 44376, 42495, 40693, 38968, 37316, 35734, 34219};
+    uint32_t g = (tl & 15) ? frac[tl & 15] : 65536;
+    return tl >= 16 * 17 ? 0 : g >> (tl >> 4);
+}
 static uint16_t panGain[128]; /* q8 */
 static struct { int on; uint32_t starts; uint32_t freq; int vol, pan; } out[SND_CH_NUM];
+uint32_t snd_drv_mix_gain(void) { return mixGain; }
 
 static int ilog_steps(int num, int den) {
     /* round(20*log10(num/den)/3) without libm: count 3 dB steps (x 1.41254) */
@@ -636,9 +649,10 @@ static void out_tables(void) {
     }
 }
 static uint32_t timer_to_freq(int timer) { return 16756991u / (uint32_t)(timer ? timer : 0x10); }
-/* linear amplitude, q16 (65535 = full scale): vol/128 / 2^shift * 127/128 * gain/256 */
+/* linear amplitude, q16 (65535 = full scale): vol/128 / 2^shift * 127/128 * gain/256 * mix gain */
 static int out_vol(const HwChan *h) {
     int64_t v = ((int64_t)h->vol * 127 * panGain[h->pan] * 65535) >> 22;
+    v = (v * mixGain) >> 16;
     v >>= h->shift;
     return v > 65535 ? 65535 : (int)v;
 }
@@ -680,6 +694,7 @@ void snd_drv_init(const SndBank *bank) {
     for (int i = 0; i < 16; i++) gvars[i] = -1;
     frameNo = 0;
     out_tables();
+    mixGain = mix_gain_q16(bank->hdr->mix_gain_tl);
 }
 
 static int alloc_track(Player *p) {
@@ -726,4 +741,19 @@ void snd_drv_stop_all(void) {
     snd_drv_flush();
 }
 const SndChanRegs *snd_drv_regs(int c) { return &regs[c]; }
+
+/* debug: summed worst-case amplitude of the active channels (q16 per side,
+ * louder side; 65535 = full scale). Printed when it reaches -6 dBFS. */
+void snd_drv_trace(uint32_t frame) {
+    int sum = 0, n = 0;
+    char buf[200]; int k = 0;
+    for (int i = 0; i < 16; i++) {
+        if (hw[i].active != 1) continue;
+        int v = out_vol(&hw[i]);
+        sum += v; n++;
+        if (k < (int)sizeof buf - 24) k += snprintf(buf + k, sizeof buf - k, " %d:w%d/v%d", i, hw[i].wave, v >> 8);
+    }
+    buf[k] = 0;
+    if (sum >= 32768) printf("snd f%lu sum %d n %d%s\n", (unsigned long)frame, sum, n, buf);
+}
 const SndDrvStats *snd_drv_stats(void) { return &stats; }

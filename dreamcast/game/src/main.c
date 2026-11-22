@@ -22,7 +22,9 @@
 /* Story order (Sonic): zone N acts 1, 2 and the boss act 3. */
 static const char *k_stages[] = { "z11", "z12", "z13", "z21", "z22", "z23", "z31", "z32", "z33",
                                   "z41", "z42", "z43", "z51", "z52", "z53", "z61", "z62", "z63",
-                                  "z71", "z72", "z73" };
+                                  "z71", "z72", "z73",
+                                  /* zone 8 (final story: zf3 = final boss arena), zone 9 (extra) */
+                                  "z81", "z82", "zf3", "z91", "z92" };
 #define NUM_STAGES (sizeof(k_stages) / sizeof(k_stages[0]))
 
 static DcPlayer g_player;
@@ -92,18 +94,18 @@ static void spawn_player(Level *lv)
         /* son.bac timing ends non-looping animations (sets DCP_DF_ANIM_DONE), as on the DS. */
         objects_set_player_anim_done(1);
     }
-    sound_load_bank(sound_stage_sdat(k_stages[g_stage_idx][1] - '1', k_stages[g_stage_idx][2] - '1', g_chara));
+    sound_load_bank(sound_stage_sdat(g_dcp_world.zone, g_dcp_world.act, g_chara));
     sound_hooks_reset_players();
     g_is_boss = 0; g_boss_started = 0;
     boss_shutdown();
-    if(k_stages[g_stage_idx][2] == '3') {
+    if(g_dcp_world.act == 2) {
         boss_set_paths("/cd/models", "/cd/boss");
         boss_set_difficulty(0);
         g_is_boss = boss_init(lv->hdr->stage, lv->data, &g_player, 1) == 0;
         printf("boss: %s\n", g_is_boss ? "ok" : "FAILED");
     }
     ui_bind_player(&g_player);
-    ui_stage_start(k_stages[g_stage_idx][1] - '1', k_stages[g_stage_idx][2] - '1', g_chara);
+    ui_stage_start(g_dcp_world.zone, g_dcp_world.act, g_chara);
     ui_set_camera(g_cam_x, g_cam_y);
     printf("objects: %s\n", g_obj_ok ? "ok" : "FAILED");
     g_cam_x = sx - VIEW_W / 2; g_cam_y = sy - VIEW_H * 0.6f;
@@ -198,6 +200,11 @@ static int load_stage(Level *lv, int idx)
     int r;
     snprintf(dir, sizeof(dir), "/cd/stages/%s", k_stages[idx]);
     r = level_load(lv, dir);
+    if(r == 0) {
+        /* gGameState.unk1C / unk1D: stage id = zone * 3 + act (0, 1, 2 = boss) */
+        g_dcp_world.zone = (u8)(lv->hdr->stage / 3);
+        g_dcp_world.act = (u8)(lv->hdr->stage % 3);
+    }
     start_zone_music(k_stages[idx][1]);
     printf("stage %s: load %d in %llu ms, %dx%d px, %d block pages, vram used %lu, vram free %lu\n",
            k_stages[idx], r, (unsigned long long)(timer_ms_gettime64() - t0),
@@ -281,7 +288,8 @@ static int stage_index(int zone, int act)
 {
     char name[8];
     unsigned i;
-    snprintf(name, sizeof(name), "z%d%d", zone + 1, act + 1);
+    if(zone == 7 && act == 2) snprintf(name, sizeof(name), "zf3");
+    else snprintf(name, sizeof(name), "z%d%d", zone + 1, act + 1);
     for(i = 0; i < NUM_STAGES; i++) if(!strcmp(k_stages[i], name)) return i;
     return -1;
 }
@@ -472,8 +480,9 @@ int main(int argc, char **argv)
                 r = menus_stage_exit(MENU_EXIT_GAME_OVER, 0, 0, g_emeralds, 0);
             if(dbg_start && k == UI_EXIT_NEXT_ACT && r.kind != MENU_REQ_STAGE) {
                 /* test builds without menus: continue in story order */
-                r.kind = MENU_REQ_STAGE; r.zone = k_stages[(stage + 1) % NUM_STAGES][1] - '1';
-                r.act = k_stages[(stage + 1) % NUM_STAGES][2] - '1'; r.character = g_chara;
+                const char *nx = k_stages[(stage + 1) % NUM_STAGES];
+                r.kind = MENU_REQ_STAGE; r.zone = nx[1] == 'f' ? 7 : nx[1] - '1';
+                r.act = nx[2] - '1'; r.character = g_chara;
                 r.mode = g_dcp_world.mode; r.lives = g_dcp_world.lives; r.emeralds = g_emeralds; r.easy = 1;
             }
             if(r.kind == MENU_REQ_STAGE && stage_index(r.zone, r.act) >= 0) {

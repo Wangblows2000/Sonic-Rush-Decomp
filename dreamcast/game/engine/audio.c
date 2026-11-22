@@ -24,8 +24,14 @@
  * (fs_iso9660 serialises reads): measured in Flycast, 5.7 s and 6.1 s
  * blocks during/after the z11 stage load, which put full-scale bursts and a
  * permanent DC offset into the music (docs/dreamcast/AUDIO.md, "Mix level and
- * clipping"). audio_music_play fills the whole ring before the stream starts
- * (so a stage load right after it is covered), the reader keeps it full.
+ * clipping"). audio_music_play only opens the file; the reader fills the ring
+ * in the background and the AICA stream is started (by the poll thread) once
+ * the ring holds AUDIO_RESTART bytes AND either the game loop runs again
+ * (audio_update() called after audio_music_play: the stage load is over) or
+ * the disc is not contended (last 16 KB read < 300 ms, e.g. in the menus, whose
+ * loop does not call audio_update). In Flycast the z11 load right after
+ * start_zone_music() kept the disc busy for ~17 s (one 16 KB read waited
+ * 16.7 s), more than any ring could cover if the music had already started.
  * If the ring still runs dry, the stream is stopped (silence, not garbage) and
  * restarted from the start of the file, the only point where the AICA
  * decoder's reset state (0, step 127) matches the encoder's; underruns are
@@ -128,7 +134,8 @@ static void *stream_cb(snd_stream_hnd_t hnd, int req, int *got)
     return s_buf;
 }
 
-static volatile int s_thread_run, s_restart;
+static volatile int s_thread_run, s_restart, s_kick;
+static volatile uint32_t s_read_ms = 1000;  /* duration of the reader's last chunk */
 static kthread_t *s_thread, *s_reader;
 
 static void *stream_thread(void *arg)
@@ -149,7 +156,8 @@ static void *stream_thread(void *arg)
             s_restart = 1;
             if(s_trace) printf("strm stopped after underrun, restarting from the top\n");
         }
-        if(s_hnd == SND_STREAM_INVALID && s_restart && s_wr - s_rd >= AUDIO_RESTART) {
+        if(s_hnd == SND_STREAM_INVALID && s_restart && s_wr - s_rd >= AUDIO_RESTART && (s_kick || s_read_ms < 300)) {
+            if(s_trace) printf("strm start: ring %lu B, %s\n", (unsigned long)(s_wr - s_rd), s_kick ? "game loop running" : "disc idle");
             s_dry = 0; s_restart = 0;
             s_hnd = snd_stream_alloc(stream_cb, SND_STREAM_BUFFER_MAX_ADPCM);
             if(s_hnd != SND_STREAM_INVALID) snd_stream_start_adpcm(s_hnd, s_rate, s_stereo);
@@ -177,6 +185,7 @@ static void *reader_thread(void *arg)
         if(AUDIO_RING_BYTES - (s_wr - s_rd) >= AUDIO_CHUNK) got = fill_ring(AUDIO_CHUNK);
         mutex_unlock(&s_flock);
         t1 = timer_ms_gettime64();
+        if(got) s_read_ms = (uint32_t)(t1 - t0);
         if(s_trace && (t1 - t0 > 500 || (uint32_t)(t1 / 1000) >= next_log)) {
             printf("strm reader t%lu read %lu B in %lu ms, ring %lu B (low %lu), underruns %lu\n", (unsigned long)t0,
                    (unsigned long)got, (unsigned long)(t1 - t0), (unsigned long)(s_wr - s_rd), (unsigned long)s_low,
@@ -216,19 +225,12 @@ int audio_music_play(const char *path, uint32_t loop_start, uint32_t loop_end)
      * (wav2adpcm -i nibble interleave) */
     s_loop_start_b = s_stereo ? loop_start : loop_start / 2;
     s_loop_end_b = s_stereo ? loop_end : loop_end / 2;
-    s_pos = 0; s_wr = s_rd = 0; s_low = AUDIO_RING_BYTES; s_dry = 0; s_restart = 0;
+    s_pos = 0; s_wr = s_rd = 0; s_low = AUDIO_RING_BYTES; s_dry = 0;
+    s_read_ms = 1000; s_kick = 0;
     fs_seek(s_fd, s_data_off, SEEK_SET);
-    {
-        uint64_t t0 = timer_ms_gettime64();
-        fill_ring(AUDIO_RING_BYTES);          /* whole ring: covers the stage load that follows */
-        if(s_trace) printf("strm prefill %lu B in %lu ms\n", (unsigned long)(s_wr - s_rd),
-                           (unsigned long)(timer_ms_gettime64() - t0));
-    }
     mutex_unlock(&s_flock);
     mutex_lock(&s_lock);
-    s_hnd = snd_stream_alloc(stream_cb, SND_STREAM_BUFFER_MAX_ADPCM);
-    if(s_hnd == SND_STREAM_INVALID) { mutex_unlock(&s_lock); return -1; }
-    snd_stream_start_adpcm(s_hnd, s_rate, s_stereo);
+    s_restart = 1;                            /* the poll thread starts the stream (see top) */
     mutex_unlock(&s_lock);
     return 0;
 }
@@ -237,7 +239,7 @@ void audio_music_stop(void)
 {
     mutex_lock(&s_lock);
     if(s_hnd != SND_STREAM_INVALID) { snd_stream_stop(s_hnd); snd_stream_destroy(s_hnd); s_hnd = SND_STREAM_INVALID; }
-    s_restart = 0; s_dry = 0;
+    s_restart = 0; s_dry = 0; s_kick = 0;
     mutex_unlock(&s_lock);
     mutex_lock(&s_flock);
     if(s_fd != FILEHND_INVALID) { fs_close(s_fd); s_fd = FILEHND_INVALID; }
@@ -247,7 +249,9 @@ void audio_music_stop(void)
 
 void audio_update(void)
 {
-    /* polling and disc reads happen on the stream / reader threads */
+    /* polling and disc reads happen on the stream / reader threads; a call
+     * here tells them the game loop runs (no stage load in progress) */
+    s_kick = 1;
 }
 
 int audio_sfx_load(const char *path)

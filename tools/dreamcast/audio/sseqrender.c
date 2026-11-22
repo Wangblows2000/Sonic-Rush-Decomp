@@ -7,7 +7,7 @@
  * behaviour of the NitroSDK ARM7 sound driver (SND_seq / SND_exChannel /
  * SND_util). No third-party code is copied. Driver tables that are game
  * library data (decibel-square table, channel volume table, attack table,
- * LFO sine table, channel allocation order) are NOT embedded: sdat2dc.py
+ * LFO sine table, channel allocation order, ARM9 NNS decibel table) are NOT embedded: sdat2dc.py
  * extracts them from the owner's ROM (arm7.bin / arm9.bin) and passes them
  * in with --tables.
  *
@@ -20,11 +20,26 @@
  *   - 16 hardware channels, PCM 0-15, PSG 8-13, noise 14-15, NitroSDK
  *     allocation order and priority stealing.
  *   - sampling: no interpolation (zero-order hold, like the DS) by default.
+ *   - volume stages as on the DS: ARM9 NNSi_SndPlayerMain (decompiled,
+ *     src/libs/NitroSystem/snd) once per 60 Hz frame turns the NNS volumes into
+ *     the driver player volume with the LINEAR dB table data_020725e0
+ *     (SNDi_DecibelTable, 200*log10):
+ *       extFader = clamp(db[fader>>8] + db[volume1 = SEQ/SSAR info volume]
+ *                        + db[volume2 = NNS_SndPlayerSetVolume, 127]
+ *                        + db[player volume, 127], -723, 0)
+ *     ARM7 driver: track = dbsq[track vol] + dbsq[expression] + dbsq[seq master
+ *     volume (0xC2)], channel = dbsq[velocity] + envelope (sustain dbsq) +
+ *     track + extFader (+ LFO), SQUARED table (400*log10); register
+ *     = SND_CalcChannelVolume; mixer vol/128 >> shift, pan (128-p)/128, p/128,
+ *     master 127/128.
  *
  * Usage:
  *   sseqrender render --sdat F --tables T --seq FILEID --start OFF
  *                     --bank FILEID --swar a,b,c,d [--vol V] [--ppr P]
- *                     [--mask M] [--max-sec S] [--interp] --out OUT.wav
+ *                     [--mask M] [--max-sec S] [--interp] [--gain-tl N] --out OUT.wav
+ *       --gain-tl N: port mix gain, 2^(-N/16) (N AICA TL steps of 0.375 dB),
+ *       applied after the DS master volume (sdat2dc.py MIX_GAIN_TL; the
+ *       runtime applies the same gain to the effects, from the .srb header).
  *       prints one JSON object (loop points, stats) to stdout.
  *   sseqrender strm --sdat F --file FILEID --out OUT.wav
  *       decodes a STRM (PCM8 / PCM16 / IMA-ADPCM, block-interleaved channels)
@@ -46,9 +61,10 @@
 #define FRAME_SAMPLES_X2 341 /* 170.5 samples per frame */
 #define OUT_RATE 32728
 #define AMPL_MIN (-92544)
-#define HOLD_FADE_FRAMES 32 /* held-SFX stop: fade length (assumption, ~0.17 s) */
+#define HOLD_FADE_NNS_FRAMES 10 /* held-SFX stop: NNS fade length in 60 Hz frames (assumption, ~0.17 s) */
 
 static int16_t tblDecibelSq[128];
+static int16_t tblDecibel[128];   /* ARM9 SNDi_DecibelTable = data_020725e0 (NNS player volume) */
 static uint8_t tblVolume[724];
 static uint8_t tblAttack[19];
 static uint8_t tblSine[33];
@@ -84,10 +100,11 @@ static const uint8_t *sdat_file(int id, uint32_t *size) {
 
 static void load_tables(const char *path) {
     FILE *f = fopen(path, "rb"); if (!f) die("cannot open tables");
-    uint8_t buf[256 + 724 + 19 + 33 + 16];
-    if (fread(buf, 1, sizeof buf, f) != sizeof buf) die("tables file too short");
+    uint8_t buf[256 + 724 + 19 + 33 + 16 + 256];
+    if (fread(buf, 1, sizeof buf, f) != sizeof buf) die("tables file too short (re-run sdat2dc.py: needs the NNS decibel table)");
     fclose(f);
     for (int i = 0; i < 128; i++) tblDecibelSq[i] = (int16_t)rd16(buf + 2 * i);
+    for (int i = 0; i < 128; i++) tblDecibel[i] = (int16_t)rd16(buf + 1048 + 2 * i);
     memcpy(tblVolume, buf + 256, 724); memcpy(tblAttack, buf + 980, 19);
     memcpy(tblSine, buf + 999, 33); memcpy(tblOrder, buf + 1032, 16);
 }
@@ -231,6 +248,39 @@ static const uint8_t *seqData; static uint32_t seqLen; /* data block (offsets re
 static Track tracks[16]; static int trackMask;
 static int playerVolume = 127, playerFader = 0, playerPrio = 64, tempo = 120, tempoCounter = 240;
 static int16_t vars[32];
+
+/* ---- ARM9 NNS player (decompiled NNSi_SndPlayerMain, NNSi_SndFader*) ---- */
+typedef struct { int32_t origin, target, counter, frame; } NNSSndFader;
+static int32_t nns_fader_get(const NNSSndFader *f) {
+    if (f->counter >= f->frame) return f->target;
+    return f->origin + (f->target - f->origin) * f->counter / f->frame;
+}
+static void nns_fader_set(NNSSndFader *f, int32_t target, int32_t frame) {
+    f->origin = nns_fader_get(f); f->target = target; f->frame = frame; f->counter = 0;
+}
+static struct {
+    NNSSndFader fader;
+    int status;            /* 1 playing, 2 fading out (NNSi_SndPlayerStopSeq) */
+    int volume;            /* last value sent with SND_SetPlayerVolume */
+    int volume1, volume2;  /* SetInitialVolume (SEQ/SSAR info), SetVolume (gBGMVolume / gSEVolume) */
+    int playerVolume;      /* NNSSndPlayer volume (NNS_SndPlayerSetPlayerVolume, default 127) */
+} nns;
+static void player_stop_all(void);
+/* NNSi_SndPlayerMain for the one player, once per 60 Hz frame */
+static void nns_player_main(void) {
+    int vol, v0, v1, v2;
+    if (nns.fader.counter < nns.fader.frame) nns.fader.counter++;   /* NNSi_SndFaderUpdate */
+    v2 = tblDecibel[nns.volume2 & 127];
+    v1 = tblDecibel[nns.volume1 & 127];
+    v0 = tblDecibel[nns.playerVolume & 127];
+    vol = tblDecibel[(nns_fader_get(&nns.fader) >> 8) & 127];
+    vol += v1 + v2 + v0;
+    if (vol < -723) vol = -723; else if (vol > 0) vol = 0;
+    if (vol != nns.volume) { playerFader = vol; nns.volume = vol; }  /* SND_SetPlayerVolume */
+    if (nns.status == 2 && nns.fader.counter >= nns.fader.frame) {  /* ForceStopSeq */
+        playerFader = -723; player_stop_all(); nns.status = 0;
+    }
+}
 static uint32_t rnd = 0x12345678;
 static long tickNo = 0, frameNo = 0;
 static int stealCount = 0, maxVoices = 0, chanMaskAllowed = 0xFFFF, instMissing = 0, waveMissing = 0, allocFail = 0;
@@ -600,6 +650,11 @@ static void track_update_channels(Track *t) {
     }
 }
 
+static void player_stop_all(void) {
+    for (int i = 0; i < 16; i++) if (tracks[i].active) track_stop(&tracks[i]);
+    playerActive = 0;
+}
+
 static void seq_main(void) {
     if (playerActive) {
         int ticks = 0;
@@ -810,7 +865,7 @@ static long loop_convergence(long S, long L, long fS, long fE, long fE2, int *co
 /* ---------------- render ---------------- */
 static int cmd_render(int argc, char **argv) {
     const char *sdatP = 0, *tabP = 0, *outP = 0; int seqId = -1, bankId = -1, sw[4] = {-1, -1, -1, -1}, vol = 127;
-    long start = 0; double maxSec = 600, holdSec = 0; int ppr = 64; int held = 0, extraLoops = 0, fadeLeft = 0, fadeFrom = 0;
+    long start = 0; double maxSec = 600, holdSec = 0; int ppr = 64, gainTl = 0; int held = 0, extraLoops = 0;
     for (int i = 2; i < argc; i++) {
         const char *a = argv[i], *v = i + 1 < argc ? argv[i + 1] : "";
         if (!strcmp(a, "--sdat")) sdatP = v, i++;
@@ -827,6 +882,7 @@ static int cmd_render(int argc, char **argv) {
         else if (!strcmp(a, "--interp")) interp = 1;
         else if (!strcmp(a, "--full")) fullOut = 1;
         else if (!strcmp(a, "--hold-sec")) holdSec = atof(v), i++;
+        else if (!strcmp(a, "--gain-tl")) gainTl = atoi(v), i++;
         else if (!strcmp(a, "--extra-loops")) extraLoops = atoi(v), i++; /* validation: keep rendering N more loop passes (with --full) */
         else die("bad arg");
     }
@@ -840,7 +896,13 @@ static int cmd_render(int argc, char **argv) {
     if (bankId >= 0) { bank = sdat_file(bankId, &bankSize); if (bank && memcmp(bank, "SBNK", 4)) bank = NULL; }
     for (int i = 0; i < 4; i++) load_swar(i, sw[i]);
     playerPrio = ppr;
-    playerFader = tblDecibelSq[vol & 127]; /* NNS initial volume (SEQ info) as player volume (dB) */
+    /* NNS player start (InitPlayer + StartSeq/StartSeqArc + Sound_PlaySeq*):
+       fader 127<<8, initial volume = SEQ/SSAR info volume, SetVolume(127) */
+    memset(&nns, 0, sizeof nns);
+    nns.fader.origin = nns.fader.target = 127 << 8; nns.fader.frame = 1;
+    nns.status = 1; nns.volume1 = vol; nns.volume2 = 127; nns.playerVolume = 127;
+    nns.volume = 0; playerFader = 0;
+    long nnsAcc = 1919555; /* NNS main at driver frame 0, then every 191.9555/60 driver frames */
     for (int i = 0; i < 32; i++) vars[i] = -1;
     for (int i = 0; i < 16; i++) { tracks[i].firstTick = malloc(sizeof(int) * (seqLen + 1)); tracks[i].snap = calloc(seqLen + 1, sizeof(int32_t) * SNAP_N); for (uint32_t k = 0; k <= seqLen; k++) tracks[i].firstTick[k] = -1; track_init(&tracks[i]); ch[i].nextInTrack = -1; ch[i].logIdx = -1; }
     /* player start */
@@ -856,6 +918,8 @@ static int cmd_render(int argc, char **argv) {
     int ended = 0, loopKnown = 0, lcmCapped = 0, firstPassDiffers = 0;
     long silentRun = 0;
     for (frameNo = 0; frameNo < maxFrames; frameNo++) {
+        if (nnsAcc >= 1919555) { nnsAcc -= 1919555; if (nns.status) nns_player_main(); }
+        nnsAcc += 600000;
         update_hw();
         long t0 = tickNo;
         seq_main();
@@ -896,22 +960,15 @@ static int cmd_render(int argc, char **argv) {
         if (stopFrame >= 0 && frameNo >= stopFrame) { frameNo++; break; }
         /* --hold-sec: a sequence whose remaining tracks all wait on a held note
            (length-0 note on a looping wave; the game stops these itself) and that
-           has not looped by then is faded out over HOLD_FADE_FRAMES and stopped,
-           like NNS_SndPlayerStopSeq(handle, fade): the per-call fade length the
-           game uses is not known here. */
+           has not looped by then is stopped like NNS_SndPlayerStopSeq(handle,
+           HOLD_FADE_NNS_FRAMES) (NNSi_SndPlayerStopSeq: fader -> 0, status 2,
+           ForceStopSeq when the fade ends): the per-call fade length the game
+           uses is not known here. */
         int stuck = 1;
         for (int i = 0; i < 16; i++) if (tracks[i].active && !tracks[i].noteFinishWait && !tracks[i].looped) stuck = 0;
         if (holdSec > 0 && playerActive && !loopKnown && stuck && !held && frameNo >= (long)(holdSec * 191.9555)) {
-            held = 1; fadeLeft = HOLD_FADE_FRAMES; fadeFrom = playerFader;
-        }
-        if (fadeLeft > 0) {
-            /* NNS-style fade-out of the player volume (dB, linear in frames), then stop */
-            fadeLeft--;
-            playerFader = -723 + (int)((long)(fadeFrom + 723) * fadeLeft / HOLD_FADE_FRAMES);
-            if (fadeLeft == 0) {
-                for (int i = 0; i < 16; i++) if (tracks[i].active) track_stop(&tracks[i]);
-                playerActive = 0;
-            }
+            held = 1;
+            nns_fader_set(&nns.fader, 0, HOLD_FADE_NNS_FRAMES); nns.status = 2;
         }
         if (!playerActive) {
             int any = 0; for (int i = 0; i < 16; i++) if (ch[i].active || hw[i].active) any = 1;
@@ -956,9 +1013,12 @@ static int cmd_render(int argc, char **argv) {
     }
     long outLen = (leSamp >= 0 && !fullOut) ? leSamp : nSamp;
     int16_t *pcm = malloc(sizeof(int16_t) * 2 * (outLen + 1));
-    long clips = 0; double peak = 0, sum2 = 0;
+    long clips = 0; double peak = 0, sum2 = 0, dsPeak = 0;
+    const double gain = pow(2.0, -gainTl / 16.0);
     for (long k = 0; k < outLen * 2; k++) {
-        double v = mixbuf[k] * (127.0 / 128.0) * 32768.0;
+        double v = mixbuf[k] * (127.0 / 128.0) * 32768.0; /* DS mixer output, master volume 127 */
+        if (fabs(v) > dsPeak) dsPeak = fabs(v);
+        v *= gain;                                          /* port mix gain */
         if (fabs(v) > peak) peak = fabs(v);
         sum2 += v * v;
         if (v > 32767) { v = 32767; clips++; } else if (v < -32768) { v = -32768; clips++; }
@@ -971,10 +1031,10 @@ static int cmd_render(int argc, char **argv) {
     for (long k = 0; k < outLen; k++) if (abs(pcm[2 * k] - pcm[2 * k + 1]) > 2) { stereoDiff = 1; break; }
     printf("{\"rate\":%d,\"samples\":%ld,\"frames\":%ld,\"ticks\":%ld,\"ended\":%s,\"loop\":%s,"
            "\"loop_start\":%ld,\"loop_end\":%ld,\"loop_start_tick\":%ld,\"loop_len_ticks\":%ld,\"tail_frames\":%ld,"
-           "\"lcm_capped\":%s,\"seam_wave_rms\":%.3f,\"seam_ref_rms\":%.3f,\"peak\":%.1f,\"rms\":%.1f,\"clipped\":%ld,"
+           "\"lcm_capped\":%s,\"seam_wave_rms\":%.3f,\"seam_ref_rms\":%.3f,\"gain_tl\":%d,\"ds_peak\":%.1f,\"peak\":%.1f,\"rms\":%.1f,\"clipped\":%ld,"
            "\"max_voices\":%d,\"steals\":%d,\"notes\":%ld,\"stereo\":%s,\"hit_max\":%s,\"held_stopped\":%s,\"inst_missing\":%d,\"wave_missing\":%d,\"alloc_fail\":%d,\"first_pass_differs\":%s,\"converged\":%s}\n",
            OUT_RATE, outLen, totalFrames, tickNo, ended ? "true" : "false", lsSamp >= 0 ? "true" : "false",
-           lsSamp, leSamp, loopS, loopL, D, lcmCapped ? "true" : "false", seamErr * 32768, seamRef * 32768, peak,
+           lsSamp, leSamp, loopS, loopL, D, lcmCapped ? "true" : "false", seamErr * 32768 * gain, seamRef * 32768 * gain, gainTl, dsPeak, peak,
            outLen ? sqrt(sum2 / (2.0 * outLen)) : 0.0, clips, maxVoices, stealCount, nNotes,
            stereoDiff ? "true" : "false", (!ended && lsSamp < 0) ? "true" : "false", held ? "true" : "false", instMissing, waveMissing, allocFail, firstPassDiffers ? "true" : "false", converged ? "true" : "false");
     return 0;

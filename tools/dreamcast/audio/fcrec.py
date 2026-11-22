@@ -19,7 +19,11 @@ throttled by audio, so it runs faster than real time (about 5x here): 30 s of
 wall time gave 151 s of audio. Serial output (printf) goes to serial.log.
 
 Usage:
-  fcrec.py record DISC.cdi SECONDS OUT.raw [--log serial.log]   (Xvfb :99 is started if needed)
+  fcrec.py record DISC.cdi SECONDS OUT.raw [--log serial.log] [--display :93]
+           [--hold Right] [--press s,x --every 2]                (Xvfb is started if needed;
+           input = xdotool key events to this Flycast window; --press keys are sent every
+           --every s of EMULATED time (from the recorded file size). Flycast keyboard:
+           arrows = d-pad, x = A (jump), c = B, s = X (boost), d = Y, Return = Start)
   fcrec.py wav IN.raw OUT.wav                                   (adds a WAV header)
   fcrec.py onsets IN.raw [--thr 50]                             (10 ms RMS blocks, onset times in ms)
   fcrec.py compare IN.raw ONSET_MS REF.wav                      (envelope + spectrogram match of one
@@ -43,9 +47,9 @@ def load_raw(p):
 
 
 def cmd_record(a):
-    env = dict(os.environ, HOME=os.environ.get("FC_HOME", "/root"), DISPLAY=":99", LIBGL_ALWAYS_SOFTWARE="1")
-    if subprocess.run(["pgrep", "-x", "Xvfb"], capture_output=True).returncode:
-        subprocess.Popen(["Xvfb", ":99", "-screen", "0", "1024x768x24"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    env = dict(os.environ, HOME=os.environ.get("FC_HOME", "/root"), DISPLAY=a.display, LIBGL_ALWAYS_SOFTWARE="1")
+    if not os.path.exists("/tmp/.X11-unix/X" + a.display.lstrip(":")):
+        subprocess.Popen(["Xvfb", a.display, "-screen", "0", "1024x768x24"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(1)
     out = os.path.abspath(a.out)
     if os.path.exists(out):
@@ -53,7 +57,21 @@ def cmd_record(a):
     with open(a.log, "w") as log:
         p = subprocess.Popen([FLYCAST, "-config", "config:Debug.SerialConsoleEnabled=yes", "-config", "audio:backend=alsa",
                               "-config", f"alsa:device=file:{out},raw", a.disc], stdout=log, stderr=subprocess.STDOUT, env=env)
-        time.sleep(a.seconds)
+        win, held, nxt, t0 = None, False, a.every, time.time()
+        while time.time() - t0 < a.seconds:
+            if (a.hold or a.press) and not win:
+                r = subprocess.run(["xdotool", "search", "--pid", str(p.pid), "--name", "flycast"],
+                                   capture_output=True, text=True, env=env)
+                win = (r.stdout.split() or [None])[-1]
+            emu = os.path.getsize(out) / 4 / RATE if os.path.exists(out) else 0.0
+            if win and a.hold and not held and emu > 1:
+                subprocess.run(["xdotool", "keydown", "--window", win, a.hold], env=env); held = True
+            if win and a.press and emu >= nxt:
+                for k in a.press.split(","):
+                    subprocess.run(["xdotool", "keydown", "--window", win, k], env=env); time.sleep(0.03)
+                    subprocess.run(["xdotool", "keyup", "--window", win, k], env=env)
+                nxt += a.every
+            time.sleep(0.02)
         p.terminate()
         try:
             p.wait(3)
@@ -118,7 +136,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest="cmd", required=True)
     p = sp.add_parser("record"); p.add_argument("disc"); p.add_argument("seconds", type=float); p.add_argument("out")
-    p.add_argument("--log", default="/tmp/fcrec_serial.log"); p.set_defaults(f=cmd_record)
+    p.add_argument("--log", default="/tmp/fcrec_serial.log"); p.add_argument("--display", default=":99")
+    p.add_argument("--hold", default=""); p.add_argument("--press", default=""); p.add_argument("--every", type=float, default=2.0)
+    p.set_defaults(f=cmd_record)
     p = sp.add_parser("wav"); p.add_argument("inp"); p.add_argument("out"); p.set_defaults(f=cmd_wav)
     p = sp.add_parser("onsets"); p.add_argument("inp"); p.add_argument("--thr", type=float, default=50); p.set_defaults(f=cmd_onsets)
     p = sp.add_parser("compare"); p.add_argument("inp"); p.add_argument("onset", type=float); p.add_argument("ref")

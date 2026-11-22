@@ -24,7 +24,7 @@
 
 /* ------------------------------------------------------------ bank (.srb) */
 #define SRB_MAGIC 0x42535253u /* 'SRSB' */
-#define SRB_VERSION 1
+#define SRB_VERSION 2
 
 typedef struct {
     uint32_t magic, version;
@@ -36,6 +36,7 @@ typedef struct {
     uint32_t psg_wave, noise_wave;
     uint32_t off_tables;
     uint32_t off_wavedata, wavedata_size;
+    uint32_t mix_gain_tl;   /* port mix gain, 2^(-n/16): the gain baked into the music renders (sdat2dc.py MIX_GAIN_TL) */
 } SrbHeader;
 
 typedef struct { uint8_t max_seq, pad; uint16_t alloc_mask; uint32_t heap; } SrbPlayer;
@@ -95,6 +96,7 @@ void snd_drv_set_alloc_mask(int player, uint16_t mask); /* SND_SetTrackAllocatab
 void snd_drv_frame(void);                               /* one ARM7 sound frame */
 void snd_drv_flush(void);                               /* push channel registers to the output */
 void snd_drv_stop_all(void);
+uint32_t snd_drv_mix_gain(void);                        /* port mix gain of the loaded bank, q16 */
 
 /* per-channel register state after the last frame (host tests / debug) */
 typedef struct {
@@ -107,6 +109,8 @@ typedef struct {
 const SndChanRegs *snd_drv_regs(int ch);
 typedef struct { int steals, alloc_fail, inst_missing, wave_missing, max_voices, notes; } SndDrvStats;
 const SndDrvStats *snd_drv_stats(void);
+extern int g_sound_trace;                               /* sound.c: serial trace on */
+void snd_drv_trace(uint32_t frame);                     /* log summed output level (trace) */
 
 /* ------------------------------------------------------------ output */
 void snd_out_init(void);
