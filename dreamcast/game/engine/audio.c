@@ -636,11 +636,11 @@ static void *reader_thread(void *arg)
         }
         s_st.ring_low = s_low;
         if(s_trace && (uint32_t)(t1 / 1000) >= next_log) {   /* one summary line per 10 s (serial output is slow) */
-            printf("strm t%lu: %lu reads (%lu B, max %lu ms), %lu fills (max %lu us), poll gap max %lu ms, ring %lu B (low %lu), underruns %lu, layers %d, jingle fill max %lu us\n",
+            printf("strm t%lu: %lu reads (%lu B, max %lu ms), %lu fills (max %lu us), poll gap max %lu ms, ring %lu B (low %lu), underruns %lu, layers %d, jingle fill max %lu us, jingle underruns %lu/%lu\n",
                    (unsigned long)t1, (unsigned long)s_st.reads, (unsigned long)s_st.read_bytes, (unsigned long)s_st.read_max_ms,
                    (unsigned long)s_st.fills, (unsigned long)s_st.fill_max_us, (unsigned long)s_st.poll_gap_max_ms,
                    (unsigned long)(s_wr - s_rd[0]), (unsigned long)s_low, (unsigned long)s_underruns, s_nl,
-                   (unsigned long)s_st.jingle_fill_max_us);
+                   (unsigned long)s_st.jingle_fill_max_us, (unsigned long)s_js[0].underruns, (unsigned long)s_js[1].underruns);
             next_log = (uint32_t)(t1 / 1000) + 10;
         }
         if(!got) thd_sleep(dec ? 5 : 20);

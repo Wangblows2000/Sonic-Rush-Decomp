@@ -162,6 +162,9 @@ static void hk_cleared(void *ctx) { (void)ctx; g_cleared_hook++; }
 static void hk_music_stop(void *ctx) { (void)ctx; g_music_stop++; }
 static void hk_ring_flags(void *ctx, u32 f) { (void)ctx; g_ring_flags |= (int)f; }
 static void hk_music(void *ctx, s32 s) { (void)ctx; if (s == 0x11) g_music11++; }
+static int g_fade3c, g_vol20;
+static void hk_music_fade(void *ctx, s32 f) { (void)ctx; if (f == 0x3c) g_fade3c++; }
+static void hk_music_volume(void *ctx, s32 v, s32 f) { (void)ctx; if (v == 0x20 && f == 0xb4) g_vol20++; }
 static void hk_help(void *ctx, s32 kind, s32 a, s32 b) {
     (void)ctx;
     (void)b;
@@ -546,6 +549,8 @@ int main(int argc, char **argv) {
     g_boss_hooks.music_stop = hk_music_stop;
     g_boss_hooks.ring_flags = hk_ring_flags;
     g_boss_hooks.music = hk_music;
+    g_boss_hooks.music_fade = hk_music_fade;
+    g_boss_hooks.music_volume = hk_music_volume;
     g_boss_hooks.help = hk_help;
     boss7_set_talk_hook(hk_talk, NULL);
     boss_set_paths(argv[3], argv[4]);
@@ -591,6 +596,8 @@ int main(int argc, char **argv) {
         CHECK(R.phases[0x24] && R.phases[0x25] && R.phases[0x28] && R.phases[0x29] && R.phases[0x2a] &&
                   R.phases[0x2b] && (R.phases[0x2c] || R.stall_no_special) && R.phases[0x2d],
               "phases idle/run/jump/spindash/roll/air attack/%shurt all visited", R.stall_no_special ? "" : "special/");
+        CHECK(g_fade3c >= 1 && g_vol20 >= 1, "BGM: ClashFadeOutBGM fades over 0x3c (x%d), defeat scene moves it to 0x20 over 0xb4 (x%d)",
+              g_fade3c, g_vol20);
         CHECK(R.defeat_scene && R.talks == 1 && R.talk_id == (c == 0 ? 0xa : 0xb),
               "defeat scene, then TalkDemo 0x%x", c == 0 ? 0xa : 0xb);
         CHECK(R.clash && R.auras_max == 2 && R.help_create == 1 && R.help_destroy == 1 && R.help_idx == 0 &&

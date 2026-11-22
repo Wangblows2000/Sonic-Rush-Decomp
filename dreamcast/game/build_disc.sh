@@ -132,6 +132,8 @@ for d in "$ROOT"/build/dreamcast/stages/z*/; do
 done
 # test builds: SRDC_START=<stage index> writes /cd/debug/start.txt (story index into k_stages)
 if [ -n "$SRDC_START" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_START" > "$OUT/disc/debug/start.txt"; fi
+# SRDC_STARTPOS="x y": the debug start stage begins at that position (px) instead of PlayerStart
+if [ -n "$SRDC_STARTPOS" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_STARTPOS" > "$OUT/disc/debug/startpos.txt"; fi
 if [ -n "$SRDC_SPECIAL" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPECIAL" > "$OUT/disc/debug/special.txt"; fi
 if [ -n "$SRDC_MENUTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/menutrace.txt"; fi
 if [ -n "$SRDC_MENUSAVE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_MENUSAVE" > "$OUT/disc/debug/menusave.txt"; fi

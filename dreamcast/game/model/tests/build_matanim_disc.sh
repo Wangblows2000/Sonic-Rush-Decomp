@@ -13,6 +13,7 @@ kos-cc -std=gnu99 -O2 -fwrapv -Wall -Wextra -Werror -I"$HERE" -c "$HERE/model.c"
 kos-cc -std=gnu99 -O2 -fwrapv -Wall -Wextra -Werror -I"$HERE" -c "$HERE/tests/matanim_dc.c" -o "$OUT/matanim_dc.o"
 kos-cc -o "$OUT/mtest.elf" "$OUT/matanim_dc.o" "$OUT/model.o" -lm
 rm -rf "$OUT/root"; mkdir -p "$OUT/root/models"
+cp "$M"/*.dcm "$OUT/root/models/"   # every model: the draw-path exactness check
 for f in narc__z73_act_lz7__eff_tornado__eff_tornado.dcm mod__bsf_sky__bsf_sky.dcm \
          narc__z73_act_lz7__eff_tornado01.dcc narc__z73_act_lz7__eff_tornado01.dcp \
          narc__z73_act_lz7__eff_tornado02.dcc narc__z73_act_lz7__eff_tornado02.dcp \

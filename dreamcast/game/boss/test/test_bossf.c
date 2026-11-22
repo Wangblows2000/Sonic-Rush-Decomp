@@ -151,6 +151,8 @@ static void hk_cleared(void *ctx) { (void)ctx; g_cleared_hook++; }
 static void hk_music_stop(void *ctx) { (void)ctx; g_music_stop++; }
 static void hk_ring_flags(void *ctx, u32 f) { (void)ctx; g_ring_flags |= (int)f; }
 static void hk_music(void *ctx, s32 s) { (void)ctx; if (s >= 0 && s < 32) g_music[s]++; }
+static int g_fade3c;
+static void hk_music_fade(void *ctx, s32 f) { (void)ctx; if (f == 0x3c) g_fade3c++; }
 static void hk_talk(void *ctx, s32 id) { (void)ctx; g_talks++; g_talk_id = id; }
 static void hk_help(void *ctx, s32 kind, s32 a, s32 b) {
     (void)ctx;
@@ -299,6 +301,7 @@ int main(int argc, char **argv) {
     g_boss_hooks.music_stop = hk_music_stop;
     g_boss_hooks.ring_flags = hk_ring_flags;
     g_boss_hooks.music = hk_music;
+    g_boss_hooks.music_fade = hk_music_fade;
     g_boss_hooks.talk = hk_talk;
     g_boss_hooks.help = hk_help;
     boss_set_paths(argv[3], argv[4]);
@@ -545,6 +548,7 @@ int main(int argc, char **argv) {
               BOSS_HELP_ENEMY_ROOM_FIX, g_enemy_room);
         CHECK(g_talks == 1 && g_talk_id == (story ? 0x10 : 0xf), "the sky-phase talk demo: TalkDemo_Create(%#x) once",
               g_talk_id);
+        CHECK(g_fade3c >= 1, "SkyChargeStartFadeOut fades the BGM over 0x3c (x%d)", g_fade3c);
         CHECK(g_music[0x13] >= 1 && g_music_stop >= 1 && (g_ring_flags & 1),
               "music 0x13 started, the music is stopped at the defeat, ring manager flag 1 set");
         CHECK(g_obj_stage.ring_bonus == P.rings * 1000, "ring bonus = rings x 1000 (%d)", g_obj_stage.ring_bonus);

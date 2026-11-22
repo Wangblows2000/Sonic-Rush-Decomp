@@ -338,16 +338,23 @@ the texels use.
   +0..29 red, stepping every 2 frames.
 - **Water Palace** (`ZoneFx_Zone2_*`): tinted copies (r - 10, g - 1) of the map and BG
   palettes for the rows below the water line (the DS VAlarm split, states 0..3 of
-  `UpdateScreenStates` = the window's water row); `CyclePalette` rotates map entries
-  0x21..0x25 every 3 frames (normal and tinted); the surface sprites (`act/ac_eff_water.bac`
-  animation 3, every 0x40 px along the line, `DrawSprites`) in the TR list. The tinted
-  palettes go to a second PAL8 bank (`level_alloc_alt_banks`); where no bank is free the rows
-  below the line are drawn with the vertex colour 0x99F7FF (MODULATE: red x 0.6, green x
-  0.97, the tint at mid brightness). z21 / z22: map bank 2 exact, BG vertex colour. main.c's
-  old translucent water rectangle is removed.
-- **Mirage Road boss** (`ZoneFx_Zone3Boss_Update`): `zonefx_boss3_lights` gives the light
-  colour pair it alternates (data_02074990 / data_ov000_02364dbc); not wired into the boss
-  module.
+  `UpdateScreenStates` = the window's water row). `DmaTintedPalettes` copies 0x1E0 bytes:
+  rows 0..14 are tinted, row 15 keeps its colours; the OBJ copy starts at 0x5000240, so OBJ
+  rows 2..15 are tinted and rows 0 / 1 (rings, ring sparkles, the HUD) are not; the 3D
+  layer (player model, 3D effects, the boost ribbon) has no palette tint on the DS either.
+  `CyclePalette` rotates map entries 0x21..0x25 every 3 frames (normal and tinted); the
+  surface sprites (`act/ac_eff_water.bac` animation 3, every 0x40 px along the line,
+  `DrawSprites`) in the TR list. The tinted map / BG palettes go to a second PAL8 bank
+  (`level_alloc_alt_banks`); where no bank is free the rows below the line are drawn with the
+  vertex colour 0x99F7FF (MODULATE: red x 0.6, green x 0.97). z21 / z22: map bank 2 exact,
+  BG vertex colour. Object sprites: `objects_set_water_tint` (objects patch,
+  camera/patches/objects.patch) splits every sprite at the water line and draws the lower
+  part with the same vertex colour (no free palette rows for tinted sprite rows).
+  main.c's old translucent water rectangle is removed.
+- **Mirage Road boss** (`ZoneFx_Zone3Boss_Update`): once the fight runs the three global
+  light colours alternate every 7 frames between data_02074990 and data_ov000_02364dbc
+  (`zonefx_boss3_lights`); boss3.c applies them to its lights (stage light vectors), which
+  light the boss, the arena and the player model, as NNS_G3dGlbLightColor does.
 
 ### 8.3 Measurements (Flycast, display :97, debug-start discs)
 
@@ -370,6 +377,16 @@ Host test (`make -C dreamcast/game/camera host-test`): BG tables against the for
 step from the alternate palettes (z41 2588 entry changes in 240 frames, z51 18986, z71 960),
 BLDY ramp to 10 and back, flash, the alarm.
 
-Known limits: the sprites (OBJ palettes) are not tinted under water (the objects draw them;
-the DS tints `gObjDrawPalette`); palette RAM is written while the previous frame may still be
-rendering (one frame of mixed colours on a change is possible).
+Palette RAM timing: `zonefx_commit_palettes` runs at the frame start (after `pvr_wait_ready`,
+main.c patch); when a palette changed it waits for the render in progress
+(`pvr_wait_render_done`) before writing, so no frame renders with mixed colours. The object
+PaletteAnim rows and the UI's lazy rows (engine/render.c, objects) still write during list
+building.
+
+Known limits: the sprite tint is the vertex-colour approximation, not the exact r - 10.
+
+Layering found in the sand-ship run (not zone effects): Stage_InitDisplay sets BG0 (3D:
+player model, table model) priority 1, BG1 (zone BG) 3, BG2 (layer A) 0, BG3 (layer B) 2, so
+OBJ priority 2 / 3 sprites (DecTableWater 0x53, shadows) go behind the player. The DC draws
+every sprite (z 1.5..4.5) in front of the player model (~0.006): on the sand ship the water
+strip hides the player. The mirage-road ship model (GmkTable) is not drawn by main.c.

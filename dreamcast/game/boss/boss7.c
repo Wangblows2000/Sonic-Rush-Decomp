@@ -410,9 +410,19 @@ static void boss_music(s32 seq) {          /* Sound_PlaySeq(gBGMSoundHandle, seq
     if (g_boss_hooks.music)
         g_boss_hooks.music(g_boss_hooks.ctx, seq);
 }
-static void boss_music_stop(void) {        /* NNS_SndPlayerStopSeqAll(0) / NNS_SndPlayerStopSeq(&gBGMSoundHandle, ..) */
+static void boss_music_stop(void) {        /* NNS_SndPlayerStopSeqAll(0) */
     if (g_boss_hooks.music_stop)
         g_boss_hooks.music_stop(g_boss_hooks.ctx);
+}
+static void boss_music_fade(s32 frames) {  /* NNS_SndPlayerStopSeq(&gBGMSoundHandle, frames) */
+    if (g_boss_hooks.music_fade)
+        g_boss_hooks.music_fade(g_boss_hooks.ctx, frames);
+    else
+        boss_music_stop();
+}
+static void boss_music_volume(s32 vol, s32 frames) { /* NNS_SndPlayerMoveVolume(&gBGMSoundHandle, vol, frames) */
+    if (g_boss_hooks.music_volume)
+        g_boss_hooks.music_volume(g_boss_hooks.ctx, vol, frames);
 }
 
 /* gDisplayMain.unk20 = 0; .b0 = 1 (BG0 1st target); .b6 = 2 (brightness up); unk24.b0 = evy */
@@ -1060,11 +1070,11 @@ static void Boss7_Action_StartTalkDemo(void *p) {
     s->func = Boss7_State_ClashFadeOutBGM;
 }
 
-/* Boss7_State_ClashFadeOutBGM (modified: NNS_SndPlayerStopSeq(&gBGMSoundHandle, 0x3c) -> music_stop) */
+/* Boss7_State_ClashFadeOutBGM (modified: NNS_SndPlayerStopSeq(&gBGMSoundHandle, 0x3c) -> music_fade) */
 static void Boss7_State_ClashFadeOutBGM(void *p) {
     Boss7 *s = (Boss7 *)p;
     s->unk230 = 0;
-    boss_music_stop();
+    boss_music_fade(0x3c);
     s->func = Boss7_State_ClashWaitDelay;
 }
 
@@ -3021,7 +3031,7 @@ static void Boss7PartD5_MoveState_Hurt(Boss7PartD5 *s) {
     }
 }
 
-/* Boss7PartD5_MoveState_WaitDefeatScene (modified: NNS_SndPlayerMoveVolume(BGM, 0x20, 0xb4) logged) */
+/* Boss7PartD5_MoveState_WaitDefeatScene (modified: NNS_SndPlayerMoveVolume(BGM, 0x20, 0xb4) -> music_volume) */
 static void Boss7PartD5_MoveState_WaitDefeatScene(Boss7PartD5 *w) {
     if (!(w->h.move_flags & 1))
         return;
@@ -3048,6 +3058,7 @@ static void Boss7PartD5_MoveState_WaitDefeatScene(Boss7PartD5 *w) {
     w->u.df.unk478 >>= 1;
     w->u.df.unk478 = w->u.df.unk478 < 0x10 ? 0x10 : (w->u.df.unk478 > 0x28 ? 0x28 : w->u.df.unk478);
     boss_log("bgm_volume", 0x20, 0xb4);
+    boss_music_volume(0x20, 0xb4);
     w->unk440 = Boss7PartD5_MoveState_DefeatScene;
 }
 

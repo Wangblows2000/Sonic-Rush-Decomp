@@ -292,6 +292,18 @@ static void test_ship(void) {
             if (q->used && q->kind == OBJK_PAWN && q->prm && q->prm->p9 != 0)
                 pawns = 1;
         if (getenv("CAMDBG") && k % 300 == 0) {
+            const ZfxLine *zl = zonefx_lines();
+            printf("    bg rows 0:(%d,%d) 60:(%d,%d) 120:(%d,%d) 150:(%d,%d) 191:(%d,%d) limit %d f34 %x\n", zl[0].x, zl[0].y,
+                   zl[60].x, zl[60].y, zl[120].x, zl[120].y, zl[150].x, zl[150].y, zl[191].x, zl[191].y,
+                   g_obj_camera[0].limit, g_obj_camera[0].flags34);
+            if (k == 900) {
+                const Obj *q2;
+                for (q2 = g_obj.head; q2; q2 = q2->next)
+                    if (q2->used && q2->has_spr && DCP_ABS((q2->h.x >> 8) - (wx >> 8) - 128) < 400 && (q2->h.y >> 8) > (wy >> 8))
+                        printf("      obj type %x kind %d at %d,%d res %s anim %d z %d prio %d\n", q2->prm ? q2->prm->type : -1, q2->kind,
+                               q2->h.x >> 8, q2->h.y >> 8, q2->spr.res ? q2->spr.res->id : "-", q2->spr.anim, q2->h.z >> 8,
+                               (int)((q2->spr.flags >> 17) & 3));
+            }
             u32 e;
             printf("    ship k%d (%d,%d) P(%d,%d) window (%d,%d) ds0 y %d ds1 y %d pf2 %x:", k, t->h.x >> 8, t->h.y >> 8,
                    P.x >> 8, P.y >> 8, wx >> 8, wy >> 8, camera_layer(0)->y >> 8, camera_layer(1)->y >> 8, P.pf2);

@@ -97,7 +97,8 @@ static struct {
     u32 frame, score;
 } g_ss;
 static int g_special_pending;
-static int g_demo, g_demo_spawn_x, g_demo_spawn_y;   /* attract demo running (DemoPlay) */
+static int g_demo, g_demo_spawn_x, g_demo_spawn_y;
+static int g_dbg_pos_set, g_dbg_pos_x, g_dbg_pos_y;   /* test builds: /cd/debug/startpos.txt, first spawn only */   /* attract demo running (DemoPlay) */
 static uint64_t g_prof[4], g_dprof[6], g_fmax;
 static int g_fslow;   /* draw: bg, layers, player model, objects, ui, boss */   /* us per 120 frames: objects update, player, draw, end_frame wait */
 static int g_dbg_special = -1;   /* test builds: /cd/debug/special.txt = act frame to enter the special stage */
@@ -117,6 +118,7 @@ static void spawn_player(Level *lv)
         if(obj[i].type == 114) { sx = obj[i].x; sy = obj[i].y; break; }   /* PlayerStart */
     if(g_ss.active) { sx = g_ss.x; sy = g_ss.y; }   /* 280 px below the special ring */
     else if(g_demo_spawn_x || g_demo_spawn_y) { sx = g_demo_spawn_x; sy = g_demo_spawn_y; }   /* DemoPlay start point */
+    else if(g_dbg_pos_set) { sx = g_dbg_pos_x; sy = g_dbg_pos_y; g_dbg_pos_set = 0; printf("debug start position %d,%d\n", sx, sy); }
     rlvl_bind(&g_map, lv->data);
     dcp_bind_map(&g_map);
     memset(&g_player, 0, sizeof(g_player));
@@ -580,6 +582,8 @@ int main(int argc, char **argv)
         uint32_t dsz;
         char *d = load_file("/cd/debug/start.txt", &dsz);
         char *sp = load_file("/cd/debug/special.txt", &dsz);
+        char *spos = d ? load_file("/cd/debug/startpos.txt", &dsz) : NULL;   /* "x y" px: replaces PlayerStart */
+        if(spos) { spos = realloc(spos, dsz + 1); spos[dsz] = 0; g_dbg_pos_set = sscanf(spos, "%d %d", &g_dbg_pos_x, &g_dbg_pos_y) == 2; free(spos); }
         if(sp) { g_dbg_special = atoi(sp) > 0 ? atoi(sp) : 300; free(sp); }
         if(d) { int v = atoi(d); if(v >= 0 && v < (int)NUM_STAGES) stage = v; free(d); dbg_start = 1; printf("debug start stage %d\n", stage); }
     }
@@ -713,6 +717,8 @@ int main(int argc, char **argv)
         ui_set_camera(g_cam_x, g_cam_y);
 
         { uint64_t tw = timer_us_gettime64(); pvr_wait_ready(); g_prof[3] += timer_us_gettime64() - tw; }   /* vblank / TA wait */
+        /* zone palettes at the frame start: zonefx waits for the render in progress before a write */
+        if(ok && !g_is_boss) zonefx_commit_palettes();
         uint64_t t_draw0 = timer_us_gettime64();
         {   /* frame interval: worst and over-budget count (a 60 Hz frame is 16.68 ms) */
             static uint64_t last;
@@ -724,7 +730,7 @@ int main(int argc, char **argv)
         /* PVR lists must be opened in order OP, PT, TR (each once per frame).
          * Depth (1/w style, bigger = nearer): bg 0.0005 < layer B 0.001 < player model (~0.006) < layer A 10. */
         render_begin_list(PVR_LIST_OP_POLY);
-        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) { zonefx_commit_palettes(); zonefx_draw_bg(0.0005f); } g_dprof[0] += timer_us_gettime64() - t0; }
+        { uint64_t t0 = timer_us_gettime64(); if(ok && !g_is_boss) zonefx_draw_bg(0.0005f); g_dprof[0] += timer_us_gettime64() - t0; }
         { uint64_t t0 = timer_us_gettime64(); if(g_is_boss) boss_draw(PVR_LIST_OP_POLY); g_dprof[5] += timer_us_gettime64() - t0; }
         { uint64_t t0 = timer_us_gettime64(); if(ok && g_player_ok && g_model_ok) draw_player_model(PVR_LIST_OP_POLY); g_dprof[2] += timer_us_gettime64() - t0; }
         render_end_list();

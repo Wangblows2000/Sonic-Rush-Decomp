@@ -120,6 +120,7 @@ static uint32_t s_stage_gen;                /* audio slot 0 generation when the 
 static int s_bgm_slot = -1;                 /* what plays on gBGMSoundHandle: -1 nothing, 0 disc, 1 jingle slot 1 */
 static uint32_t s_bgm_gen;
 static int s_bgm_player;
+static int s_bgm_layer;                     /* stream layer of the disc track on gBGMSoundHandle */
 static int s_grav_prev, s_grav_zone;
 static DcPlayer *s_pl;
 static uint8_t s_gBGMVolume = 0x7f;         /* gBGMVolume */
@@ -161,6 +162,7 @@ static int bgm_handle_start(const char *sdat, int seq, int playerNo)
     entry_path(e, path, sizeof path);
     S.bgm_seq = seq;
     s_bgm_player = playerNo >= 0 ? playerNo : e->player;
+    s_bgm_layer = e->layer;
     if(e->ram) {
         if(audio_jingle_play(AUDIO_JINGLE_1, path, e->ls, e->le, s_gBGMVolume) != 0) return -1;
         s_bgm_slot = 1; s_bgm_gen = audio_slot_gen(2);
@@ -181,6 +183,13 @@ int bgm_play(const char *sdat, int seq)
     return bgm_handle_start(sdat ? sdat : S.ctx_sdat, seq, -1);
 }
 void bgm_stop(int fade) { bgm_handle_stop(fade); }
+
+/* NNS_SndPlayerMoveVolume(&gBGMSoundHandle, vol, frames) */
+void bgm_move_volume(int vol, int frames)
+{
+    if(s_bgm_slot == 0 && audio_slot_gen(0) == s_bgm_gen) audio_music_layer_volume(s_bgm_layer, vol, frames);
+    else if(s_bgm_slot == 1 && audio_slot_gen(2) == s_bgm_gen) audio_jingle_volume(AUDIO_JINGLE_1, vol, frames);
+}
 
 /* Sound_PlayBGMOnPlayer3(0, seq): same as Sound_PlaySeq, player 3 */
 void Sound_PlayBGMOnPlayer3(int seq)
@@ -453,6 +462,8 @@ void bgm_boss_music_stop_hook(void *ctx)
     audio_jingle_stop(AUDIO_JINGLE_0, 0);
     NNS_SndPlayerStopSeqAll(0);
 }
+void bgm_boss_music_fade_hook(void *ctx, int32_t frames) { (void)ctx; bgm_stop(frames); }
+void bgm_boss_music_volume_hook(void *ctx, int32_t vol, int32_t frames) { (void)ctx; bgm_move_volume(vol, frames); }
 void bgm_special_music(int seq) { bgm_set_context("sys"); bgm_play("sys", seq); }
 void bgm_special_music_stop(int fade) { bgm_stop(fade); }
 
@@ -468,22 +479,25 @@ int bgm_obj_effect(DcPlayer *p, int32_t kind, int32_t a)
  * frames since bgm_stage_start; commands: layer N, jingle 0x16|0x17, oneup,
  * invinc, seq N (Sound_PlaySeq in the stage SDAT), ui N, pause 0|1, stopall,
  * air N (player->unk3CA = N), inv N (player->invinc = N) */
-static struct { uint32_t frame; char cmd[12]; int arg; } s_trig[32];
+static struct { uint32_t frame; char cmd[12]; int arg, arg2; } s_trig[32];
+static int s_pin = 0, s_pin_x, s_pin_y, s_push;     /* 1: absolute position, 2: water line + y, 3: split line + y */
+s32 Stage_GetSplitLineY(s32 x) __attribute__((weak));   /* camera module */
 static int s_ntrig, s_trig_next, s_trig_loaded;
 static void test_triggers_load(void)
 {
     long sz;
     char *t, *p;
     s_trig_next = 0;
+    s_pin = 0; s_push = 0;
     if(s_trig_loaded) return;
     s_trig_loaded = 1;
     t = read_all("/cd/debug/bgmtest.txt", &sz);
     if(!t) return;
     for(p = t; p && *p && s_ntrig < 32; ) {
         char *nl = strchr(p, '\n');
-        unsigned f; char c[12]; int a = 0;
+        unsigned f; char c[12]; int a = 0, b = 0;
         if(nl) *nl = 0;
-        if(sscanf(p, "%u %11s %i", &f, c, &a) >= 2) { s_trig[s_ntrig].frame = f; strcpy(s_trig[s_ntrig].cmd, c); s_trig[s_ntrig].arg = a; s_ntrig++; }
+        if(sscanf(p, "%u %11s %i %i", &f, c, &a, &b) >= 2) { s_trig[s_ntrig].frame = f; strcpy(s_trig[s_ntrig].cmd, c); s_trig[s_ntrig].arg = a; s_trig[s_ntrig].arg2 = b; s_ntrig++; }
         p = nl ? nl + 1 : NULL;
     }
     free(t);
@@ -505,7 +519,24 @@ static void test_triggers_run(void)
         else if(!strcmp(c, "stopall")) bgm_stop_sound_all();
         else if(!strcmp(c, "air") && s_pl) s_pl->unk3CA = (s16)a;
         else if(!strcmp(c, "inv") && s_pl) s_pl->invinc = (s16)a;
+        else if(!strcmp(c, "pin")) { s_pin = 1; s_pin_x = a; s_pin_y = s_trig[s_trig_next].arg2; }   /* pin X Y (px) */
+        else if(!strcmp(c, "pinw")) { s_pin = 2; s_pin_y = a; }    /* water line + a px, x kept */
+        else if(!strcmp(c, "pins")) { s_pin = 3; s_pin_y = a; }    /* split line + a px (Dead Line gravity) */
+        else if(!strcmp(c, "release")) s_pin = 0;
+        else if(!strcmp(c, "push")) s_push = a;                   /* ground speed every frame (0 = off) */
+        else if(!strcmp(c, "warp") && s_pl) { s_pl->x = a << 8; s_pl->y = s_trig[s_trig_next].arg2 << 8; s_pl->vel_x = s_pl->vel_y = s_pl->gnd_vel = 0; }
+        if(s_pl) printf("bgm test: player %ld,%ld water %u split %ld air %d/%d invinc %d grav %d\n", (long)(s_pl->x >> 8), (long)(s_pl->y >> 8),
+                        g_obj_camera[0].water, Stage_GetSplitLineY ? (long)(Stage_GetSplitLineY(s_pl->x) >> 8) : -1L, s_pl->unk3CA, s_pl->p374,
+                        s_pl->invinc, s_pl->grav_rot);
         s_trig_next++;
+    }
+    if(s_push && s_pl && !s_pin) { s_pl->gnd_vel = (s16)s_push; if(s_pl->move_flags & DCP_MF_AIR) s_pl->vel_x = (s16)s_push; }
+    if(s_pin && s_pl) {   /* test position hold: after the world update of this frame */
+        s32 y = s_pin == 1 ? s_pin_y : s_pin == 2 ? (s32)g_obj_camera[0].water + s_pin_y
+              : (Stage_GetSplitLineY ? (Stage_GetSplitLineY(s_pl->x) >> 8) : 0) + s_pin_y;
+        if(s_pin == 1) s_pl->x = s_pin_x << 8;
+        s_pl->y = y << 8; s_pl->vel_y = 0;
+        if(s_pin == 1) { s_pl->vel_x = 0; s_pl->gnd_vel = 0; }
     }
 }
 

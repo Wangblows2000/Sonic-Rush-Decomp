@@ -138,6 +138,10 @@ void objects_update(DcPlayer *p);
  * effect into the current list (PVR_LIST_PT_POLY). obj_draw takes the list. */
 void objects_draw(void);
 void objects_draw_tr(void);   /* semi-transparent sprites (player effects): inside the TR list */
+/* Water Palace: sprites below world row y (px) are drawn with the vertex colour argb
+ * (ZoneFx_Zone2: the OBJ palette rows 2..15 tinted below the water line; not the rings).
+ * y >= 1e8: off. Set every frame by the zone effects (dreamcast/game/zonefx). */
+void objects_set_water_tint(float y, uint32_t argb);
 void obj_draw(int pvr_list);
 /* EffTrail (Sonic's boost ribbon): the quads of the live trails, newest segment first; corners
  * 0/1 = the newer node's two ends, 2/3 = the older node's (24.8 world px). The DS draws them flat

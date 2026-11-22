@@ -11,6 +11,7 @@
 
 DcpWorld g_dcp_world;
 ObjStage g_obj_stage;
+ObjCamera g_obj_camera[3];
 AudioHost g_ah;
 
 static void logf_(const char *s) {

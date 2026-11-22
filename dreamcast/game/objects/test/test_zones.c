@@ -590,6 +590,37 @@ static void test_raft(void) {
     }
     result("tilting raft 0x81", w && maxang > 0, 0, "player stood off-centre: max tilt %#x, riding %d", maxang,
            w && P.ride == &w->ref);
+    if (w) {
+        /* LandUnrest_State_Tilt, ridden: rot3 = (rider x - x) >> 8, angle = ObjAngle_MoveToward8(angle, rot3, 2),
+         * w8 = angle > 0x80 ? (0x100 - angle) >> 1 : 0x100 - (angle >> 1) (0 outside 4..0xfc); off it the
+         * angle goes back 2 per frame toward w8 / 0 */
+        int bad = 0, rode = 0, steps = 0;
+        place_player((w->h.x >> 8) + 20, (w->h.y >> 8) - 40);
+        frames(3, 0);
+        for (k = 0; k < 40; k++) {
+            u8 a0 = w->h.angle, a;
+            s32 w8;
+            frame(0);
+            if (P.ride != &w->ref)
+                continue;
+            rode++;
+            a = w->h.angle;
+            w8 = a == 0 ? 0 : a > 0x80 ? (0x100 - a) >> 1 : 0x100 - (a >> 1);
+            if (w8 < 4 || w8 > 0xfc)
+                w8 = 0;
+            /* (the ride carry and the slope slide move the player after the tilt: rot3 is from its position
+             * before that, within a few px) */
+            if ((u8)(w->h.rot3 - (u8)((P.x - w->h.x) >> 8) + 4) > 8 || a != dcp_angle_toward8(a0, w->h.rot3, 2) || w->w8 != w8) {
+                bad++;
+                if (getenv("OBJDBG") || bad < 4)
+                    printf("    raft k%d: angle %#x -> %#x rot3 %#x (P-x %#x) w8 %#x (want %#x)\n", k, a0, a, w->h.rot3,
+                           (u8)((P.x - w->h.x) >> 8), (unsigned)w->w8, (unsigned)w8);
+            }
+            steps += a != a0;
+        }
+        CHECK(rode > 10 && bad == 0 && steps > 0, "raft 0x81 exact: rot3 / 2-per-frame tilt / w8 over %d ridden frames (%d off, %d steps)",
+              rode, bad, steps);
+    }
 }
 static void test_lancer(void) {
     const rlvl_object_t *o;
@@ -735,15 +766,35 @@ static void test_hand(void) {
     frames(20, 0);
     result("hand 0x8a", h && P.gimmick == h && P.state == Player_State_Hand2D && P.rot3 != r0, 0,
            "stood on the hand: carried after %d frames, player angle %#x -> %#x", k, r0, P.rot3);
-    for (k = 0; k < 400 && P.state == Player_State_Hand2D; k++)
-        frame(0);
-    printf("    released after %d more frames\n", k);
+    {
+        /* Player_State_Hand2D: g3F4 -= (hand z >> 4) + 0x470, rot3 = (g3F4 & 0xffff) >> 8; let go:
+         * ground speed = the g3F0 saved on the grab */
+        ObjPlayerCtx *c = obj_player_ctx(&P);
+        int bad = 0, n = 0;
+        s32 g0 = c->g3F0;
+        for (k = 0; k < 400 && P.state == Player_State_Hand2D; k++) {
+            s32 a0 = c->g3F4, z0 = h ? h->h.z : 0, z1;
+            frame(0);
+            z1 = h ? h->h.z : 0;
+            if (P.state == Player_State_Hand2D && P.gimmick == h) {
+                n++;
+                if ((c->g3F4 != a0 - ((z0 >> 4) + 0x470) && c->g3F4 != a0 - ((z1 >> 4) + 0x470)) ||
+                    P.rot3 != (u8)((c->g3F4 & 0xffff) >> 8))
+                    bad++;
+            }
+        }
+        printf("    released after %d more frames\n", k);
+        CHECK(n > 0 && bad == 0 && (P.state == Player_State_Hand2D || P.gnd_vel == (s16)g0 || !(P.move_flags & 1)),
+              "hand 0x8a exact: turn -((z >> 4) + 0x470) per frame over %d frames (%d off), released at gnd %d (saved %d)", n, bad,
+              P.gnd_vel, (int)g0);
+    }
 }
 static void test_table(void) {
     const ObjStats *st = objects_stats();
     const rlvl_object_t *o = find_obj(0x8b, 0);
     Obj *t, *q;
-    int k, landed = 0, pawns = 0, boarded = 0;
+    int k, landed = 0, pawns = 0, boarded = 0, bob_n = 0, bob_bad = 0, rel0 = ev_count("table_release"), sail_n = 0,
+        sail_bad = 0;
     s32 x0, xmax = 0;
     u32 r0 = st->rocks_fallen, h0 = st->hurts;
     if (!o)
@@ -757,7 +808,34 @@ static void test_table(void) {
     x0 = t ? t->h.x : 0;
     P.invuln = 0;
     for (k = 0; k < 5000 && t && t->used && !(t->h.obj_flags & 4); k++) {
+        /* GmkTable_UpdateBob (released ship): v42A += (u428 > 0 ? -1 : 1) (max 0xc0), u428 += v42A;
+         * u424 += (w8 > 0x1a00 ? -0x100 : 0x100) (max 0x30), w8 += u424 */
+        int rel = ev_count("table_release") > rel0;
+        s16 ba = t->k.tbl.u428, bv = t->k.tbl.u42A, bb = t->k.tbl.u424;
+        s32 bw = t->w8;
+        bv = (s16)dcp_spd_up(bv, ba > 0 ? -1 : 1, 0xc0);
+        ba = (s16)(ba + bv);
+        bb = (s16)dcp_spd_up(bb, (u32)bw > 0x1a00u ? -256 : 0x100, 0x30);
+        bw += bb;
+        u16 w41C = t->k.tbl.u41C;
+        s32 w420 = t->k.tbl.u420;
+        s16 sg = t->h.gnd_vel < 0x100 ? 0x100 : t->h.gnd_vel; /* (clamped at the top of the state, changed after the step) */
         frame(k % 90 < 6 ? DCP_KEY_A : 0); /* hop over the falling rocks now and then */
+        /* GmkTable_State_Main: ground speed >= 0x100, wheel u41C -= speed, distance u420 += speed */
+        if (!rel && t->used && !(t->h.obj_flags & 4) && ev_count("table_release") == rel0 && !(t->h.move_flags & 0x2000)) {
+            sail_n++;
+            if (t->k.tbl.u41C != (u16)(w41C - sg) || t->k.tbl.u420 != w420 + sg) {
+                if (sail_bad < 4)
+                    printf("    ship k%d: gnd %d wheel %#x -> %#x (d %d) dist d %d\n", k, t->h.gnd_vel, w41C, t->k.tbl.u41C,
+                           (s16)(w41C - t->k.tbl.u41C), (int)(t->k.tbl.u420 - w420));
+                sail_bad++;
+            }
+        }
+        if (rel && t->used && !(t->h.obj_flags & 4)) {
+            bob_n++;
+            if (t->k.tbl.u428 != ba || t->k.tbl.u42A != bv || t->k.tbl.u424 != bb || t->w8 != bw)
+                bob_bad++;
+        }
         if (P.invuln == 0)
             P.invuln = 0x7fff; /* (stay on board: the check is about the ship sequence) */
         xmax = t->h.x;
@@ -776,6 +854,12 @@ static void test_table(void) {
                     landed = 1;
             }
     }
+    CHECK(sail_n > 100 && sail_bad == 0, "sand ship 0x8b exact: wheel / distance step by max(speed, 0x100) over %d frames (%d off)", sail_n,
+          sail_bad);
+    if (bob_n)
+        CHECK(bob_bad == 0, "sand ship 0x8b exact: released bob (GmkTable_UpdateBob) over %d frames (%d off)", bob_n, bob_bad);
+    else
+        printf("    (sand ship not released in the run: bob not checked)\n");
     result("sand ship 0x8b", boarded && xmax > x0 + 0x10000, 0,
            "boarded %d, sailed %d px in %d frames; drop-in pawns seen %d, landed on the ship %d; rocks fallen on it %u; "
            "released %d, hurts %u", boarded, (xmax - x0) >> 8, k, pawns, landed, st->rocks_fallen - r0,
@@ -1151,9 +1235,23 @@ static void test_crane_slide(void) {
     ok = trig_box(0xae, "crane_slide", 4, 32, 4, 4, M_FREE, &h);
     s_move_x = 0;
     if (ok && h.o) {
+        int bad = 0, n = 0;
         x0 = h.o->h.x;
-        for (k = 0; k < 300 && P.gimmick == h.o; k++)
+        for (k = 0; k < 300 && P.gimmick == h.o; k++) {
+            /* CraneSlide_State: carrying, not yet stopped: speed = ObjSpd_DownSet(speed, 10), move = clamp(+-0x800) */
+            s16 g0 = h.o->h.gnd_vel;
+            u32 f0 = h.o->f1F4;
             frame(0);
+            if (P.gimmick == h.o && !(f0 & 3) && !(h.o->f1F4 & 1)) {
+                s16 g = (s16)dcp_spd_down(g0, 10), mv = g < -0x800 ? -0x800 : g > 0x800 ? 0x800 : g;
+                n++;
+                /* (the start-of-rail clamp zeroes both) */
+                if (!(h.o->h.gnd_vel == g && h.o->h.vel_x == mv) && !(h.o->h.gnd_vel == 0 && h.o->h.vel_x == 0))
+                    bad++;
+            }
+        }
+        printf("    crane slide exact: %d carried frames checked, %d off\n", n, bad);
+        CHECK(n > 0 && bad == 0, "crane slide 0xae exact: speed -10 per frame, move clamped to +-0x800 (%d of %d off)", bad, n);
     }
     result("crane slide 0xae", ok, 1, "#%d grabbed at (%+d,%+d); slid %d px over %d frames holding on", h.i, h.dx, h.dy,
            ok && h.o ? (h.o->h.x - x0) >> 8 : 0, k);
@@ -1163,18 +1261,33 @@ static void test_shooter(void) {
     int ok, k, launched = 0, cam = 0, e0 = ev_count("shooter");
     if (FIND_PRESENT(0xbb)) {
         ok = drop_onto(0xbb, 5, &h);
+        s32 w8 = 0;
         if (ok) {
             for (k = 0; k < 40; k++) {
                 frame(DCP_KEY_DOWN);
+                w8 = h.o ? h.o->w8 : 0;
                 cam |= (g_obj_camera[2].flags & 0x40000) != 0;
                 if (getenv("OBJDBG"))
                     printf("    shooter k%d w8 %d wC %d vel_y %d rider %d toucher %d P(%d,%d) vy %d mf %x\n", k, h.o ? h.o->w8 : -1,
                            h.o ? h.o->wC : 0, h.o ? h.o->h.vel_y : 0, h.o && h.o->cmap.rider == &P,
                            h.o && h.o->cmap.toucher == &P, P.x >> 8, P.y >> 8, P.vel_y, P.move_flags);
             }
-            for (k = 0; k < 10 && ev_count("shooter") == e0; k++)
+            for (k = 0; k < 10 && ev_count("shooter") == e0; k++) {
+                if (h.o && h.o->w8)
+                    w8 = h.o->w8; /* (the shooter runs before the player: it still saw Down held once) */
                 frame(0);
+            }
             launched = ev_count("shooter") > e0;
+            if (launched) {
+                /* Shooter_State_Main (0xbb): charge w8 + 1 per frame held (max 0x40), released above 8:
+                 * Player_Action_SpringLaunch(p, 0, -(w8 << 6)) (3/4 under water) */
+                s16 v = (s16)-((w8 > 0x40 ? 0x40 : w8) << 6);
+                if (P.pf & 0x4000000)
+                    v = (s16)((v >> 1) + (v >> 2));
+                v = (s16)(v + P.gravity); /* the player moves after the shooter in the same frame */
+                CHECK(w8 > 8 && P.vel_y == v, "shooter 0xbb exact: charge %d -> vel_y %d (got %d; pf %x mf %x st in_air %d grav %d)", (int)w8, v,
+                      P.vel_y, P.pf, P.move_flags, P.state == dcp_state_in_air, P.gravity);
+            }
         }
         result("shooter 0xbb", launched && P.vel_y < 0, 1, "#%d stood on (%+d,%+d), charged 40 frames: launched %d vel_y %d, camera flag 0x40000 %d",
                h.i, h.dx, h.dy, launched, P.vel_y, cam);
@@ -1189,16 +1302,33 @@ static void test_shooter(void) {
             int s;
             for (s = -1; s <= 1 && !ok; s += 2) {
                 place_on_floor(o->x + s * 40, o->y);
+                Obj *so = obj_at(0xbc, o->x, o->y);
+                s32 w8 = 0;
                 for (k = 0; k < 60; k++) {
                     /* the push animation 0xb -> 0xc waits for the animation end flag (disp 8),
                      * which the player sprite animator sets: no animator in this harness */
                     if (P.anim == 0xb)
                         P.disp_flags |= 8;
                     frame(s < 0 ? DCP_KEY_RIGHT : DCP_KEY_LEFT);
+                    w8 = so ? so->w8 : 0;
                 }
-                for (k = 0; k < 10; k++)
+                for (k = 0; k < 10 && ev_count("shooter") == e0; k++) {
+                    if (so && so->w8)
+                        w8 = so->w8;
                     frame(0);
+                }
                 ok = ev_count("shooter") > e0;
+                if (ok && so) {
+                    /* Shooter_State_Main (0xbc): s = w8 << 6, negated unless the shooter faces left;
+                     * Player_Action_SpringLaunch(p, s, 0) */
+                    s16 v = (s16)((w8 > 0x40 ? 0x40 : w8) << 6);
+                    if (!(so->h.disp_flags & 1))
+                        v = (s16)-v;
+                    if (P.pf & 0x4000000)
+                        v = (s16)((v >> 1) + (v >> 2));
+                    CHECK(w8 > 8 && (P.vel_x == v || P.gnd_vel == v), "shooter 0xbc exact: charge %d -> vel_x %d (got %d / gnd %d)", (int)w8,
+                          v, P.vel_x, P.gnd_vel);
+                }
             }
         }
         result("shooter 0xbc", ok, 0, "pushed into the side shooter for 60 frames and let go (push anim end flag set by the test): launched %d, gnd_vel %d", ok, P.gnd_vel);
@@ -1212,11 +1342,26 @@ static void test_swing_sky(void) {
     ok = trig_box(0xbd, "swing_sky", 4, 32, 4, 4, M_FREE, &h);
     if (ok) {
         s32 x0 = h.o ? h.o->wC : 0, amp = 0;
+        int bad = 0, n = 0;
         for (k = 0; k < 150 && P.state == Player_State_SwingSky; k++) {
+            /* Player_State_SwingSky: the player is the swing's hang point (@1C/@20), angle = swing - 0x40,
+             * ground speed / vel_y = the swing's displacement (@28/@2A) */
+            s32 bx = h.o ? h.o->h.px : 0, by = h.o ? h.o->h.py : 0;
+            u8 ba = h.o ? h.o->h.angle : 0;
+            s16 bmx = h.o ? h.o->h.move_x : 0, bmy = h.o ? h.o->h.move_y : 0;
             frame(k < 60 ? ((k / 20) & 1 ? DCP_KEY_LEFT : DCP_KEY_RIGHT) : 0); /* pump */
             if (h.o && DCP_ABS(h.o->wC - x0) > amp)
                 amp = DCP_ABS(h.o->wC - x0);
+            if (h.o && P.state == Player_State_SwingSky) {
+                int before = P.x == bx && P.y == by && P.angle == (u8)(ba - 0x40) && P.gnd_vel == bmx && P.vel_y == bmy;
+                int after = P.x == h.o->h.px && P.y == h.o->h.py && P.angle == (u8)(h.o->h.angle - 0x40) && P.gnd_vel == h.o->h.move_x &&
+                            P.vel_y == h.o->h.move_y;
+                n++;
+                bad += !before && !after;
+            }
         }
+        CHECK(n > 0 && bad == 0, "swing sky 0xbd exact: player at the hang point, angle - 0x40, speed = swing displacement (%d of %d off)",
+              bad, n);
         frame(DCP_KEY_A);
         frames(2, 0);
         printf("    swing amplitude %#x, released with A: %d (vel %d,%d)\n", amp, P.state != Player_State_SwingSky, P.vel_x, P.vel_y);
@@ -1234,6 +1379,14 @@ static void test_switch_neon(void) {
         if (!FIND_PRESENT(t))
             continue;
         ok = trig_search(t, "switch", NULL, 6, 48, 4, 30, M_PUSH, &h);
+        if (ok && h.o) {
+            /* Switch_State_*: gSwitchTimers[p6] = (p8 + p9) * 2 while pressed; SwitchTimer_Main then -1 per frame */
+            s16 v = (s16)((h.o->prm->p8 + h.o->prm->p9) * 2), got = tm[h.o->prm->p6 & 0x1f], g2;
+            frame(0);
+            g2 = tm[h.o->prm->p6 & 0x1f];
+            CHECK((got == v || got == v - 1) && (g2 == v || g2 == got - 1 || g2 == v - 1),
+                  "switch %#x exact: timer (p8 %d + p9 %d) * 2 = %d (got %d, then %d)", t, h.o->prm->p8, h.o->prm->p9, v, got, g2);
+        }
         result(t == 0xbe ? "switch 0xbe" : "switch 0xbf", ok && tm[h.e->p0 & 0x1f] != 0, 1,
                "#%d pressed at (%+d,%+d): timer[%d] = %d, SwitchTimer %d", h.i, h.dx, h.dy, ok ? h.e->p0 & 0x1f : -1,
                ok ? tm[h.e->p0 & 0x1f] : 0, ev_count("switch_timer") > tl0);
@@ -1271,6 +1424,37 @@ static void test_switch_neon(void) {
         if (ok) /* carried: the player moved with the route */
             carried = DCP_ABS((P.x - px0) - (w->h.x - pw0)) < 0x400 && DCP_ABS((P.y - ppy0) - (w->h.y - py0)) < 0x400 &&
                       (w->h.x != pw0 || w->h.y != py0);
+        {
+            /* NeonRoute_State_Move: w8 = 12-px segments passed (one per frame), back to home after p8 * 12 */
+            int bad = 0, wraps = 0, n;
+            ObjParam *pp = w->prm;
+            for (n = 0; n < 240 && w->used && w->state != NULL; n++) {
+                s32 pos, home, d, pos0 = pp->type == 0xc0 ? w->h.x : w->h.y, mv;
+                u32 seg0 = w->w8;
+                tm[pp->p6 & 0x1f] = 600;
+                frame(0);
+                pos = pp->type == 0xc0 ? w->h.x : w->h.y;
+                home = pp->type == 0xc0 ? w->home_x : w->home_y;
+                d = pp->p7 > 0 ? pos - (home << 8) : (home << 8) - pos;
+                /* (the segment test runs before this frame's move) */
+                mv = DCP_ABS(pos - pos0);
+                if (mv > 0x1000)
+                    mv = 0; /* (the wrap) */
+                d -= mv;
+                if (w->w8 == 0 && seg0 != 0)
+                    wraps++;
+                else if ((u32)w->w8 != seg0 && (u32)w->w8 != seg0 + 1)
+                    bad++;
+                if (d < 0 || d > (s32)(pp->p8 * 12) << 8 || (u32)d > (w->w8 + 1) * 12u << 8) {
+                    if (bad < 3)
+                        printf("    neon n%d: d %d.%02x px, seg %u -> %u, p8 %d p7 %d\n", n, d >> 8, d & 0xff, (unsigned)seg0,
+                               (unsigned)w->w8, pp->p8, pp->p7);
+                    bad++;
+                }
+            }
+            CHECK(bad == 0, "neon route %#x exact: 12-px segment count and the p8 * 12 wrap over 240 frames (%d off, %d wraps)", t, bad,
+                  wraps);
+        }
         moved = (w->h.x != x0 || w->h.y != y0);
         result(t == 0xc0 ? "neon route 0xc0" : "neon route 0xc1", moved, 1,
                "timer[%d] set: route moved (%d,%d) px, solid %d, stood on %d, carried with it %d, %d segments drawn",
@@ -1406,6 +1590,34 @@ static void test_piston(void) {
         }
         result(t == 0xa0 ? "piston 0xa0" : "piston 0xa1", ok, 1, "#%d ridden from (%+d,%+d); player carried over %d px for %d frames",
                h.i, h.dx, h.dy, ok ? (ymax - ymin) >> 8 : 0, k);
+        if (ok && h.o) {
+            /* Piston_UpdateOscillation: t = (frame * spd + phase) & 0x3ff (spd = flags & 7; 0: ((frame +
+             * (phase >> 2)) & 0xff) << 2), y = (centre + ((p9 / 2) * sin(t << 6 (+0x8000 if flags 8))) >> 12) << 8 */
+            /* (the piston runs before the player task, i.e. before this frame's counter step: frame - 1) */
+            Obj *o = h.o;
+            int bad = 0, n;
+            s32 y0 = o->h.y;
+            for (n = 0; n < 64; n++) {
+                u16 f = o->prm->flags, tt = (u16)o->wC;
+                u8 spd = f & 7;
+                s32 amp = (o->prm->p9 << 15) >> 16, y;
+                u32 fr;
+                frame(0);
+                if (!o->used || o->prm == NULL || o->prm->type != t || o->state == NULL)
+                    break; /* (went out of view: released) */
+                fr = W.frame - (o->prio < OBJ_PRIO_PLAYER ? 1 : 0);
+                tt = spd ? (u16)((fr * spd + tt) & 0x3ff) : (u16)(((fr + (tt >> 2)) & 0xff) << 2);
+                y = (o->h.py + (((s16)amp * dcp_sin((u16)((tt << 6) + ((f & 8) ? 0x8000 : 0)))) >> 12)) << 8;
+                if (o->h.y != y || o->h.move_y != (s16)(y - y0)) {
+                    if (bad < 3)
+                        printf("    piston n%d: y %#x want %#x (py %d t %#x flags %#x p9 %d) move %d\n", n, o->h.y, y, o->h.py, tt, f,
+                               o->prm->p9, o->h.move_y);
+                    bad++;
+                }
+                y0 = o->h.y;
+            }
+            CHECK(bad == 0 && n > 20, "piston %#x exact: oscillation y over %d frames (%d off)", t, n, bad);
+        }
     }
 }
 static void test_valve(void) {
@@ -1454,10 +1666,24 @@ static void test_glider(void) {
         return;
     ok = trig_search(0xb5, "glider", NULL, 2, 48, 4, 3, M_FREE, &h);
     if (ok) {
+        int bad = 0, n = 0;
         x0 = P.x;
-        for (k = 0; k < 900 && P.state == Player_State_Glider && ev_count("glider_sequence") == e0; k++)
+        for (k = 0; k < 900 && P.state == Player_State_Glider && ev_count("glider_sequence") == e0; k++) {
+            /* Player_State_Glider: timer + 1, vel_y = ObjSpd_UpSet(vel_y, timer & 0x10 ? -0x10 : 0x10, 0x80),
+             * let go after 0x168 frames (or on the ground after 0xc) */
+            s32 t0 = P.timer + 1;
+            s16 vy = (s16)dcp_spd_up(P.vel_y, (t0 & 0x10) ? -0x10 : 0x10, 0x80);
             frame(0);
+            if (P.state == Player_State_Glider) {
+                n++;
+                if (P.timer != t0 || P.vel_y != vy)
+                    bad++;
+            } else if (t0 <= 0xc || (t0 <= 0x168 && !(P.move_flags & 1) && ev_count("glider_sequence") == e0))
+                bad++;
+        }
         play = ev_count("glider_sequence") > e0;
+        CHECK(bad == 0 && n > 0, "glider 0xb5 exact: timer, vel_y bob +-0x10 / max 0x80, release after 0x168 frames (%d of %d off, %d)", bad,
+              n, (int)P.timer);
     }
     result("glider 0xb5", ok && P.x != x0, 1, "#%d grabbed at (%+d,%+d); glided %d px in %d frames%s", h.i, h.dx, h.dy,
            ok ? (P.x - x0) >> 8 : 0, k, play ? ", into the glider sequence area by play" : "");
@@ -1584,8 +1810,25 @@ static void test_swing(void) {
     if (!FIND_PRESENT(0x96))
         return;
     ok = trig_search(0x96, "swing", NULL, 6, 64, 8, 20, M_RUN, &h);
-    if (ok)
+    if (ok) {
         k = follow_state(Player_State_Swing, 600);
+        if (k > 0) {
+            /* jump off mid-swing: Player_State_Swing clears the angle and the ground speed, then act_jump:
+             * vel (0, -jump) (+ one gravity step) */
+            int k2;
+            s16 vx, vy;
+            ok = trig_search(0x96, "swing", NULL, 6, 64, 8, 20, M_RUN, &h);
+            for (k2 = 0; k2 < 6 && P.state == Player_State_Swing; k2++)
+                frame(0);
+            printf("    swing jump-off: %s\n", P.state == Player_State_Swing ? "pressed A mid-swing" : "not caught again");
+            if (P.state == Player_State_Swing) {
+                frame(DCP_KEY_A);
+                vx = P.vel_x, vy = P.vel_y;
+                CHECK(vx == 0 && (vy == -P.jump || vy == (s16)(-P.jump + P.gravity)) && P.angle == 0,
+                      "swing 0x96 exact: A mid-swing -> vel (0, -jump %d) got (%d, %d), angle %#x", P.jump, vx, vy, P.angle);
+            }
+        }
+    }
     result("swing 0x96", ok && k > 0, 0, "#%d caught running from (%+d,%+d); swung %d frames, released vel %d,%d", h.i, h.dx, h.dy,
            k, P.vel_x, P.vel_y);
 }
@@ -1605,6 +1848,15 @@ static void test_duct(void) {
         }
     }
     result("duct 0x97", ok, 1, "#%d: scattered rings beside it, sucked in after %d frames", i - 1, k);
+    if (ok) {
+        /* RingManager_SuckScatteredRings: the rings caught spiral in (speed + 0x10 per frame) and vanish within
+         * 4 px; Duct_State_CheckPlayer re-arms its sound (disp 0x10) once none is left */
+        Obj *d = obj_at(0x97, o->x, o->y);
+        int n;
+        for (n = 0; n < 120 && d && !(d->h.disp_flags & 0x10); n++)
+            frame(0);
+        CHECK(d && (d->h.disp_flags & 0x10) && n < 120, "duct 0x97 exact: sucked rings gone and the sound re-armed after %d frames", n);
+    }
 }
 static void test_9c(void) {
     const rlvl_object_t *o;

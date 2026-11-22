@@ -57,6 +57,7 @@ void Player_GiveInvincibility(struct DcPlayer *p);           /* SE 0x3d, StageJi
 /* Sound_PlaySeq(0, seq) in the music archive `sdat` (NULL: the current context) */
 int  bgm_play(const char *sdat, int seq);
 void bgm_stop(int fade_frames);                              /* NNS_SndPlayerStopSeq(&gBGMSoundHandle, fade) */
+void bgm_move_volume(int vol, int frames);                   /* NNS_SndPlayerMoveVolume(&gBGMSoundHandle, vol, frames) */
 void bgm_stop_sound_all(void);                               /* NNS_SndStopSoundAll: music, jingles, effects */
 void bgm_pause_players(int on);                              /* PauseMenu: NNS_SndPlayerPauseByPlayerNo(3..9, on) + System_Freeze */
 
@@ -66,6 +67,8 @@ void bgm_ui_music_pause_hook(void *ctx, int on);
 void bgm_ui_sfx_hook(void *ctx, int32_t arc, int32_t id);   /* Sound_PlaySeqArcEx(0, arc, id) */
 void bgm_boss_music_hook(void *ctx, int32_t seq);            /* Sound_PlaySeq(0, seq) in the boss SDAT */
 void bgm_boss_music_stop_hook(void *ctx);                    /* NNS_SndPlayerStopSeqAll(0) */
+void bgm_boss_music_fade_hook(void *ctx, int32_t frames);    /* g_boss_hooks.music_fade: StopSeq(&gBGMSoundHandle, frames) */
+void bgm_boss_music_volume_hook(void *ctx, int32_t vol, int32_t frames); /* g_boss_hooks.music_volume: MoveVolume */
 void bgm_special_music(int seq);                             /* special_hooks.music: sys SEQ_SS_GAME / SEQ_SS_END */
 void bgm_special_music_stop(int fade);                       /* special_hooks.music_stop */
 /* g_obj_hooks.effect kinds OBJ_FX_BGM_LAYER / OBJ_FX_JINGLE; returns 1 if handled */

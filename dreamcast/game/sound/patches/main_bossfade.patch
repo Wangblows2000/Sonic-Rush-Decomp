@@ -1,0 +1,11 @@
+--- a/dreamcast/game/src/main.c	2026-11-22 17:01:40.444475145 +0000
++++ b/dreamcast/game/src/main.c	2026-11-22 17:01:40.501490563 +0000
+@@ -551,6 +551,8 @@
+     g_menu_hooks.talk_demo_active = menu_talk_active;
+     g_boss_hooks.music = bgm_boss_music_hook;          /* pinch 0xf, Boss7 0x11, BossF talk 0x13, Extra 0x14 / 0x15 */
+     g_boss_hooks.music_stop = bgm_boss_music_stop_hook;
++    g_boss_hooks.music_fade = bgm_boss_music_fade_hook;     /* Boss7 ClashFadeOutBGM, BossF SkyChargeStartFadeOut: 0x3c */
++    g_boss_hooks.music_volume = bgm_boss_music_volume_hook; /* Boss7 defeat scene: 0x20 over 0xb4 */
+     g_ui_hooks.music = bgm_ui_music_hook;              /* ClearDemo / new record / game over (sys) */
+     g_ui_hooks.music_pause = bgm_ui_music_pause_hook;  /* pause menu: players 3..9 */
+     g_ui_hooks.sfx = bgm_ui_sfx_hook;                  /* results rank SE, pause menu, enemy room */

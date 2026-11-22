@@ -39,9 +39,10 @@ Two cameras run every frame:
     the original look pans, 0x18 and 0xC0 − 0xA8), then the bounds win (enemy rooms, areas,
     the map).
   - Respawns and the title card snap (`camera_snap_to_player`, `Camera_Create` again).
-- **Objects**: `objects_set_view(0)` = the window, `objects_set_view(1)` = the window moved
-  192 px up (unchanged main.c convention). g_obj_camera[i].x/y are those views; the DS pair
-  positions are private to the camera.
+- **Objects**: `objects_set_view(0)` = the window, `objects_set_view(1)` = the DS partner
+  screen (`camera_get_partner_view`: the private gCamera[1] position; the window − 192 px in
+  boss arenas). g_obj_camera[i].x/y are those views; the DS pair positions are private to the
+  camera.
 
 ## 2. What is translated
 
@@ -62,6 +63,7 @@ Two cameras run every frame:
 | ScreenShake_Create/Start/Stop/Main/GetOffsetX/Y | yes | tables data_0207323c/40/4c from zonefx.bin; installed as `g_dcp_hooks.shake` and `g_obj_hooks.shake`; the offset moves the layers, objects and player (Stage_Main: gCamera.unk18 = −shake, ObjDraw_SetGlobalOffset), not the BG |
 | ZoneFx_Zone6_Update, SetLockedCameraX, ApplyCameraWave | yes | Altitude Limit ±4 px vertical bob |
 | StageTitleCard_HoldPlayerX/Y (camera part) | `camera_snap_to_player` | |
+| StageZoneScript_Zone3Boss (Mirage Road boss arena, task 0x3eff) | `boss3_zone_script` (boss/boss3.c) | 30 frames after Boss3 @0x210 = 1 the boss camera's eye track follows the ball (+0x20 px up), the target track the body (+0x28 px, target y −0x1C0 px), lerps 0x200 / 0x400, mode 1; host test test_boss3 |
 | Camera_HandleSwapScreenInput, ApplyNetPartnerPosition, DisableSwapForPlayer, GetBySwapState, GetOtherBySwapState, GetPrimary/Secondary | not needed | VS / wireless / Select swap |
 | Camera_DrawMapBg, LcdSwapDestructor, Destructor, Reset | replaced | the DC draws the map from level.bin (engine/level.c) |
 
@@ -95,10 +97,9 @@ Makefile and build_disc.sh: `dreamcast/game/camera/patches/`.
   which is also the window's form.
 - In boss arenas the window follows the player (the DS arena camera is the boss module's 3D
   camera; the gCamera position is not used there).
-- Sand ship drop-in Egg Pawns: they spawn when a view comes within 60 px of them. With view 1
-  = window − 192 px they stay out of range (host test: 0 seen in 3000 frames); with view 1 =
-  the DS partner screen (gCamera[1], 272 px up) they drop in (1 seen). The main.c convention
-  is kept; `camera_layer(1)` gives the DS screen if view 1 should follow the DS instead.
+- Sand ship drop-in Egg Pawns spawn when a view comes within 60 px of them: they need view 1
+  = the DS partner screen (gCamera[1], 272 px above), not the window − 192 px. The first
+  integration returned g_obj_camera[1] (the view itself, never moving); fixed to gCamera[1].
 
 ## 5. Measurements
 
@@ -118,7 +119,39 @@ z13 / z23 at 58.8-59.3 (fixed camera, boss draw cost unchanged). The DS pair swa
 split line, gCamera[1] 272 px above) without a window step; window = gCamera[0] while it
 follows freely (z11, z41, z61, z71: identical y in every log line), the window keeps the
 player where the pair is pinned. Screens: one 256x192 window, no screen split, BG parallax
-per zone (GRAPHICS.md section 8.3). The sand ship could not be reached from a debug start:
-the title card's forced run (StageTitleCard_HoldPlayerX holds Right) carries a player placed
-near the ship over its front edge, and spots up the approach slope left the player stuck; the
-ship lock is covered by the host test only.
+per zone (GRAPHICS.md section 8.3).
+
+Sand ship (z32, test start position `SRDC_STARTPOS="17850 2700"`: the player falls onto the
+table after the title card's run-in): the table sails 1 px/frame from x 18072; the camera locks
+on it (window y 4176 = table y − (0x58 + 0x60), x = table − 0x80 − @0x3EC) for 2000+ frames;
+view 1 (DS top screen) at y 3904 spawns the drop-in Egg Pawns (frame log: 2 at frame 1200, 4
+at 1320..1680, landed on the table at y 4342; screenshots show them dropping and the Egg
+Bishops). The player and the table are hidden by the water sprites in that run (layering,
+GRAPHICS.md section 8.3).
+
+### Flycast save states (play-test speed-up)
+
+A cold boot of a debug-start disc reaches the act in about 30 s of wall time on this
+machine; loading a state takes about 1 s. The `dcwork/flycast` build has states but no
+rewind, and no Lua: `find_package(Lua)` failed (no liblua dev headers), so `USE_LUA` is off
+and `config:LuaFileName` is ignored. The state options:
+
+- File: `<SavestatePath>/srdc.state` for slot 0, `srdc_<n>.state` for slot n. The default
+  path is `$HOME/.local/share/flycast/`. Other agents use the same game name and slots 1 and 2
+  there, so give each tester its own HOME or `-config config:Dreamcast.SavestatePath=<dir>`.
+- Load on boot: `-config config:Dreamcast.SavestateSlot=<n> -config
+  config:Dreamcast.AutoLoadState=yes`. The state loads before the first frame.
+  `AutoSaveState=yes` saves the slot when the game unloads; it does not save on kill.
+- Hotkeys: none by default. Bind them in `$HOME/.config/flycast/mappings/SDL_Keyboard.cfg`,
+  section `[digital]`, entries `bindN = <SDL scancode>:<name>`. The names are `btn_quick_save`
+  (save), `btn_jump_state` (load), `btn_quick_save_ram` / `btn_jump_state_ram` (in-memory
+  slot), `btn_next_slot` / `btn_prev_slot`, `btn_escape` (exit) and `btn_pause`. The test
+  setup uses F5 = save (scancode 62), F8 = load (65), F6 / F7 = RAM save / load, F1 / F2 =
+  previous / next slot, and Escape = exit. Keep the default bindings (A = X key 27,
+  B = C 6, X = S 22, Y = D 7, pad = arrow keys 79..82, Start = Return 40) in the same file.
+- A state holds all of RAM, the code included. A state is valid only for the disc build
+  that saved it. After a rebuild, boot cold once and save again.
+
+Measured (z21): a cold boot plus F5 at 30 s gave `Saved state to .../srdc.state`. A reload
+with AutoLoadState started at frame 240 of the act 1 s after launch, and held-Right input
+moved the player. F8 at 8 s returned to the same frame (`Loaded state` twice in the log).

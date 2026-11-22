@@ -172,6 +172,11 @@ static void test_boss_and_ui(void) {
     bgm_set_context("ze");
     bgm_boss_music_hook(NULL, 0x14); CHECK(ends(g_ah.music, "ze_20.wav"), "extra %s", g_ah.music);
     bgm_boss_music_hook(NULL, 0x15); CHECK(ends(g_ah.music, "ze_21.wav"), "extra pinch %s", g_ah.music);
+    bgm_boss_music_volume_hook(NULL, 0x20, 0xb4);
+    CHECK(g_ah.music_on && g_ah.mvol[0] == 0x20 && g_ah.mframes[0] == 0xb4, "Boss7 defeat: BGM to 0x20 over 0xb4 (%d / %d)", g_ah.mvol[0], g_ah.mframes[0]);
+    bgm_boss_music_fade_hook(NULL, 0x3c);
+    CHECK(!g_ah.music_on && g_ah.music_stop_frames == 0x3c, "ClashFadeOutBGM: fade-stop over 0x3c (%d)", g_ah.music_stop_frames);
+    bgm_boss_music_hook(NULL, 0x15);
     bgm_boss_music_stop_hook(NULL);
     CHECK(!g_ah.music_on, "boss music stop");
     /* results: StopSoundAll, then the clear music + the ClearDemo bank */

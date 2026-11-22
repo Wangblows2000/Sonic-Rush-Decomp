@@ -319,13 +319,17 @@ static void test_clip(void) {
     r = dcm_draw(&m, pal, &id, &cam, NULL, NULL, NULL);
     CHECK(r == 2 && g_nemit == 4 && g_emit_behind == 0, "near-plane clip: %d triangles, %d vertices, %d behind", r,
           g_nemit, g_emit_behind);
-    /* fully behind: nothing */
+    /* fully behind: nothing (package bytes are read-only while loaded: edit, then load again) */
+    dcm_model_free(&m);
     v[0].z = v[1].z = 30;
+    CHECK(dcm_model_load(&m, buf, sizeof(buf), 0) == 0, "synthetic model reload");
     g_nemit = 0;
     r = dcm_draw(&m, pal, &id, &cam, NULL, NULL, NULL);
     CHECK(r == 0 && g_nemit == 0, "behind the camera: %d", r);
     /* fully in front: the strip as it is */
+    dcm_model_free(&m);
     v[0].z = v[1].z = v[2].z = -60;
+    CHECK(dcm_model_load(&m, buf, sizeof(buf), 0) == 0, "synthetic model reload");
     g_nemit = 0;
     r = dcm_draw(&m, pal, &id, &cam, NULL, NULL, NULL);
     CHECK(r == 1 && g_nemit == 3, "in front: %d", r);

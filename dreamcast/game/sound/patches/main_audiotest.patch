@@ -1,0 +1,26 @@
+--- a/dreamcast/game/src/main.c	2026-11-22 17:01:40.444475145 +0000
++++ b/dreamcast/game/src/main.c	2026-11-22 17:01:40.501937863 +0000
+@@ -573,6 +573,11 @@
+         printf("player tables: %s\n", g_player_ok ? "ok" : "MISSING");
+         input_poll(&in);
+         g_chara = (in.held & IN_ALT) ? 1 : 0;   /* test builds (debug start) only */
++        {   /* test builds: /cd/debug/chara.txt "1" = Blaze */
++            uint32_t csz;
++            char *c = load_file("/cd/debug/chara.txt", &csz);
++            if(c) { g_chara = atoi(c) ? 1 : 0; free(c); }
++        }
+         load_player_model();
+     }
+     {
+@@ -589,6 +594,11 @@
+     } else {
+         ok = 0; enter_front_end();
+         menus_init();   /* menudata, save_load() from the VMU, SEGA logo */
++        {   /* test builds: /cd/debug/extra.txt = start with the Extra Zone (script 3, Extra boss) */
++            uint32_t esz;
++            char *e = load_file("/cd/debug/extra.txt", &esz);
++            if(e) { free(e); printf("debug start: Extra Zone\n"); run_extra_zone(); enter_front_end(); }
++        }
+     }
+ 
+     for(;;) {

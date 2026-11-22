@@ -12,8 +12,16 @@
  * normalisation for matrices like getRotDataEx_).
  *
  * Vertices are transformed on the SH-4 (one 4x4 per palette entry, combined
- * palette * model * view * projection) and submitted with pvr_prim as PVR strips;
- * strips that cross the near plane are clipped there triangle by triangle.
+ * palette * model * view * projection) and written to the TA as PVR strips (direct
+ * render through the store queues); strips that cross the near plane are clipped
+ * there triangle by triangle.
+ * Draw cost (MODELS.md, "Draw path"): the strips repeat vertices, so positions and
+ * lit colours live in per-model slots, one per distinct (palette entry, position) /
+ * (palette entry, normal), filled once and kept while their inputs repeat bitwise
+ * (transforms across the list passes of a frame and a still camera; lighting while the
+ * normal matrices and lights repeat).  Every value is computed by the same expressions
+ * as before, so the submitted vertices are bit-identical; the hot loops are SH-4
+ * assembly that does GCC's arithmetic without its address overhead.
  * Material animations (.dcc / .dcp / .dct: NNSi_G3dAnmCalcNsBma / Btp / Bta,
  * values precomputed per integer frame by the converter) override the static
  * material values per draw (dcm_matstate_t, dcm_draw_ex).
@@ -31,15 +39,17 @@
 #include <dc/pvr.h>
 #endif
 #if defined(_arch_dreamcast) && defined(DCM_PROFILE)
-/* measurement builds only (-DDCM_PROFILE): time spent in dcm_draw_ex, printed every 2 s */
+/* measurement builds only (-DDCM_PROFILE): time spent in dcm_draw_ex (per model), printed every 2 s */
 #include <stdio.h>
 #include <arch/timer.h>
+#include <malloc.h>
 static uint64_t g_prof_us, g_prof_t0, g_prof_calls;
-static uint32_t g_prof_xf, g_prof_lit, g_prof_emit, g_prof_clip, g_prof_hdr;
-static uint64_t g_prof_ph[4];
-#define PROF(x) (x)
-static struct { const void *m; uint32_t nv, calls, xf; uint64_t us; } g_prof_m[24];
-static void prof_add(uint64_t t0, const dcm_model_t *m, uint32_t xf0) {
+static struct {
+    const void *m;
+    uint32_t nv, calls;
+    uint64_t us;
+} g_prof_m[24];
+static void prof_add(uint64_t t0, const dcm_model_t *m) {
     uint64_t now = timer_us_gettime64();
     int i;
     for (i = 0; i < 24; i++)
@@ -48,7 +58,6 @@ static void prof_add(uint64_t t0, const dcm_model_t *m, uint32_t xf0) {
             g_prof_m[i].nv = m->hdr->num_vertices;
             g_prof_m[i].calls++;
             g_prof_m[i].us += now - t0;
-            g_prof_m[i].xf += g_prof_xf - xf0;
             break;
         }
     g_prof_us += now - t0;
@@ -57,25 +66,18 @@ static void prof_add(uint64_t t0, const dcm_model_t *m, uint32_t xf0) {
         g_prof_t0 = now;
     else if (now - g_prof_t0 >= 2000000) {
         double f = 16667.0 / (double)(now - g_prof_t0);
-        printf("dcm prof: %.2f ms per 16.67 ms (%lu draw calls/s); per 16.67 ms: xform %.0f lit %.0f emit %.0f "
-               "clip %.0f hdr %.0f\n",
+        printf("dcm prof: %.2f ms per 16.67 ms (%lu draw calls/s), heap in use %lu KB\n",
                (double)g_prof_us * f / 1000.0, (unsigned long)(g_prof_calls * 1000000 / (now - g_prof_t0)),
-               g_prof_xf * f, g_prof_lit * f, g_prof_emit * f, g_prof_clip * f, g_prof_hdr * f);
-        g_prof_xf = g_prof_lit = g_prof_emit = g_prof_clip = g_prof_hdr = 0;
-        printf("  phases per 16.67 ms: positions %.3f lighting %.3f emit %.3f setup %.3f ms\n", g_prof_ph[0] * f / 1000.0,
-               g_prof_ph[1] * f / 1000.0, g_prof_ph[2] * f / 1000.0, g_prof_ph[3] * f / 1000.0);
-        memset(g_prof_ph, 0, sizeof(g_prof_ph));
+               (unsigned long)(mallinfo().uordblks / 1024));
         for (i = 0; i < 24 && g_prof_m[i].m; i++)
-            printf("  model %u verts: %.3f ms per 16.67 ms, %.1f calls, %.0f xf\n", (unsigned)g_prof_m[i].nv,
-                   g_prof_m[i].us * f / 1000.0, g_prof_m[i].calls * f, g_prof_m[i].xf * f);
+            printf("  model %u verts: %.3f ms per 16.67 ms, %.1f calls\n", (unsigned)g_prof_m[i].nv,
+                   g_prof_m[i].us * f / 1000.0, g_prof_m[i].calls * f);
         memset(g_prof_m, 0, sizeof(g_prof_m));
         g_prof_us = 0;
         g_prof_calls = 0;
         g_prof_t0 = now;
     }
 }
-#else
-#define PROF(x) ((void)0)
 #endif
 
 /* ------------------------------------------------------------------ matrices */
@@ -182,13 +184,11 @@ static uint32_t vhash(const uint32_t *w, int n, uint32_t h) {
 static int build_vref(dcm_model_t *m) {
     uint32_t n = m->hdr->num_vertices, size = 16, i, pass;
     uint32_t *tab;
-    if (n == 0)
-        return 0;
     if (n > 65535)
         return -1;
     while (size < 2 * n)
         size <<= 1;
-    m->vref = (uint32_t *)malloc(8 * (size_t)n + 16 * (size_t)m->hdr->num_palette);
+    m->vref = (uint32_t *)malloc(8 * (size_t)n + 16 * (size_t)m->hdr->num_palette + 8);
     tab = (uint32_t *)malloc(4 * (size_t)(size > 6u * m->hdr->num_palette ? size : 6u * m->hdr->num_palette));
     if (!m->vref || !tab) {
         free(tab);
@@ -197,7 +197,7 @@ static int build_vref(dcm_model_t *m) {
     m->pbound = (float *)(m->vref + 2 * n);
     {
         float *b = m->pbound, *lo = (float *)tab, *hi = lo + 3 * m->hdr->num_palette;
-        uint32_t p;
+        uint32_t p, bad = 0;
         for (p = 0; p < m->hdr->num_palette; p++) {
             b[4 * p + 3] = -1.0f;
             lo[3 * p] = lo[3 * p + 1] = lo[3 * p + 2] = 1e30f;
@@ -207,8 +207,10 @@ static int build_vref(dcm_model_t *m) {
             const dcm_vertex_t *v = &m->vertices[i];
             const float *xyz = &v->x;
             int c;
-            if (v->palette >= m->hdr->num_palette)
+            if (v->palette >= m->hdr->num_palette) {
+                bad = 1;
                 continue;
+            }
             for (c = 0; c < 3; c++) {
                 if (xyz[c] < lo[3 * v->palette + c])
                     lo[3 * v->palette + c] = xyz[c];
@@ -236,6 +238,8 @@ static int build_vref(dcm_model_t *m) {
             if (r > c[3])
                 c[3] = r;
         }
+        for (p = 0; bad && p < m->hdr->num_palette; p++)
+            b[4 * p + 3] = 1e30f; /* a vertex outside the palette: no whole-model near-plane test */
     }
     for (pass = 0; pass < 2; pass++) {
         uint16_t count = 0;
@@ -1098,7 +1102,7 @@ static void shade_setup(shade_t *S, const dcm_material_t *mat, const dcm_matstat
 }
 
 /* view-space normal of a slot: x, y before normalising (envmap), then per light max(0, -L.n) */
-static void __attribute__((unused)) nslot_fill(nslot_t *N, float *e, const dcm_vertex_t *v, const xform_t *x, const float (*ldir)[3],
+static void nslot_fill(nslot_t *N, float *e, const dcm_vertex_t *v, const xform_t *x, const float (*ldir)[3],
                        int nl) {
     float n[3];
     int i;
@@ -1199,6 +1203,7 @@ typedef struct {
 #ifdef _arch_dreamcast
 extern uint32_t *dcm_dc_capture;
 extern uint32_t dcm_dc_capture_n;
+extern int dcm_dc_cfills;
 #endif
 static inline void submit(int material, float x, float y, float z, float u, float v, uint32_t col, int eol) {
 #ifdef _arch_dreamcast
@@ -1225,7 +1230,6 @@ static inline void submit(int material, float x, float y, float z, float u, floa
         pvr_dr_commit(pv);
     }
 #endif
-    PROF(g_prof_emit++);
     if (dcm_host_emit) {
         float o[5];
         o[0] = x;
@@ -1265,7 +1269,6 @@ static int clip_tri(int material, const cvert_t *a, const cvert_t *b, const cver
     cvert_t out[4];
     int n = 0, i;
     float nw = cam->near_w;
-    PROF(g_prof_clip++);
     in[0] = a;
     in[1] = b;
     in[2] = c;
@@ -1359,7 +1362,6 @@ static const pvr_poly_hdr_t *material_header(const dcm_model_t *m, const dcm_mat
     if (mode & (1u << 10))
         cxt.gen.specular = PVR_SPECULAR_ENABLE; /* offset colour: dcm_set_color_shift */
     pvr_poly_compile(&e->hdr, &cxt);
-    PROF(g_prof_hdr++);
     e->list = (uint32_t)list;
     e->tex = tex;
     e->fmt = fmt;
@@ -1428,6 +1430,7 @@ typedef struct {
     uint32_t cid;         /* 32: colour key */
     float (*env)[2];      /* 36 */
     nslot_t *ns;          /* 40 */
+    int front;            /* 44: whole model in front of the near plane (asm submission loop) */
 } actx_t;
 void dcm_asm_pslot(const actx_t *a, pslot_t *P, const dcm_vertex_t *v);
 void dcm_asm_lslot(const actx_t *a, nslot_t *N, const dcm_vertex_t *v, int lit);
@@ -1772,7 +1775,7 @@ __asm__(
 #endif
 
 /* slot misses, out of line: the per-vertex loops keep few live values */
-#ifndef _arch_dreamcast
+/* the slot fills in C (host; on the Dreamcast only for dcm_dc_cfills, the test of the asm routines) */
 static void pslot_fill(const dctx_t *X, pslot_t *P, const dcm_vertex_t *v) {
     xform_clip(&X->xf[v->palette], v, P->c);
     if (P->c[3] >= X->near_w)
@@ -1792,7 +1795,6 @@ static void lit_fill(const dctx_t *X, nslot_t *N, const dcm_vertex_t *v) {
     N->col = lit_rgb(X->S, N);
     N->cid = X->cid;
 }
-#endif
 
 static uint32_t __attribute__((noinline)) vcol_rgb(const dcm_vertex_t *v) {
     return pack_rgb(chan(v->color, 16), chan(v->color, 8), chan(v->color, 0));
@@ -1808,6 +1810,7 @@ static inline uint32_t unlit_rgb(uint32_t flat, const dcm_vertex_t *v) {
  * PVR receives them) instead of the store queues; dcm_dc_capture_n counts them. */
 uint32_t *dcm_dc_capture;
 uint32_t dcm_dc_capture_n;
+int dcm_dc_cfills;
 
 /* All-in strips of one draw straight to the TA (PVR direct render through the store queues), from the
  * slots: screen position, lit colour, uv. */
@@ -1892,7 +1895,6 @@ static inline __attribute__((always_inline)) int emit_draw(emit_t *E, const int 
                 __asm__ __volatile__("pref @%0" : : "r"(pv) : "memory");
         }
         sent += n - 2;
-        PROF(g_prof_emit += n);
     }
     E->st0 = st;
     if (CAP)
@@ -1929,7 +1931,8 @@ typedef char emit_layout_check[(offsetof(emit_t, ua) == 36 && offsetof(emit_t, A
                                 offsetof(emit_t, vref) == 12 && offsetof(emit_t, verts) == 8 &&
                                 sizeof(dcm_strip_t) == 8 && sizeof(dcm_vertex_t) == 32 && sizeof(pslot_t) == 32 &&
                                 sizeof(nslot_t) == 32 && offsetof(actx_t, cs) == 8 && offsetof(actx_t, pep) == 12 &&
-                                offsetof(actx_t, cid) == 32 && offsetof(actx_t, ns) == 40)
+                                offsetof(actx_t, cid) == 32 && offsetof(actx_t, ns) == 40 &&
+                                offsetof(actx_t, front) == 44 && offsetof(emit_t, near_w) == 60)
                                    ? 1
                                    : -1];
 __asm__(
@@ -2000,6 +2003,29 @@ __asm__(
     "    add     r2,r9\n"
     "    tst     r10,r10\n"
     "    bt      19f\n"
+    "    mov.l   @(44,r13),r0\n"
+    "    tst     r0,r0\n"
+    "    bf      12f\n"
+    "    mov     r9,r2\n"
+    "    mov     r10,r3\n"
+    "40:\n"
+    "    mov.l   @r2,r1\n"
+    "    add     r4,r1\n"
+    "    mov.l   @r1,r0\n"
+    "    cmp/eq  r0,r6\n"
+    "    bf      56f\n"
+    "41:\n"
+    "    mov     #16,r0\n"
+    "    fmov.s  @(r0,r1),fr6\n"
+    "    mov.l   @(60,r11),r0\n"
+    "    lds     r0,fpul\n"
+    "    fsts    fpul,fr7\n"
+    "    fcmp/gt fr6,fr7\n"
+    "    bt      58f\n"
+    "    dt      r3\n"
+    "    bf/s    40b\n"
+    "    add     #8,r2\n"
+    "    mov.l   @(32,r13),r3\n"
     "12:\n"
     "    mov.l   @r9+,r1\n"
     "    add     r4,r1\n"
@@ -2088,6 +2114,40 @@ __asm__(
     "    mov.l   @r15,r1\n"
     "    bra     13b\n"
     "    nop\n"
+    "56:\n"
+    "    mov.l   r2,@-r15\n"
+    "    mov.l   r3,@-r15\n"
+    "    mov     r10,r0\n"
+    "    sub     r3,r0\n"
+    "    shll2   r0\n"
+    "    shll2   r0\n"
+    "    shll    r0\n"
+    "    add     r8,r0\n"
+    "    add     #-12,r0\n"
+    "    mov     r0,r6\n"
+    "    mov     r13,r4\n"
+    "    mov     r1,r5\n"
+    "    mov.l   r1,@-r15\n"
+    "    mov.l   96f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    mov.l   @r15+,r1\n"
+    "    mov.l   @r15+,r3\n"
+    "    mov.l   @r15+,r2\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    bra     41b\n"
+    "    nop\n"
+    "58:\n"
+    "    mov.l   @(4,r15),r2\n"
+    "    sub     r10,r2\n"
+    "    add     #2,r2\n"
+    "    mov.l   r2,@(4,r15)\n"
+    "    mov.l   r12,@r11\n"
+    "    bra     91f\n"
+    "    nop\n"
     "54:\n"
     "    mov.l   r2,@(8,r15)\n"
     "    fmov.s  fr4,@-r15\n"
@@ -2136,6 +2196,8 @@ __asm__(
     "    bra     30b\n"
     "    or      r7,r0\n"
     "90:\n"
+    "    mov.l   r12,@r11\n"
+    "91:\n"
     "    mov.l   r14,@(56,r11)\n"
     "    mov.l   @(4,r15),r0\n"
     "    add     #12,r15\n"
@@ -2226,6 +2288,29 @@ __asm__(
     "    add     r2,r9\n"
     "    tst     r10,r10\n"
     "    bt      19f\n"
+    "    mov.l   @(44,r13),r0\n"
+    "    tst     r0,r0\n"
+    "    bf      12f\n"
+    "    mov     r9,r2\n"
+    "    mov     r10,r3\n"
+    "40:\n"
+    "    mov.l   @r2,r1\n"
+    "    add     r4,r1\n"
+    "    mov.l   @r1,r0\n"
+    "    cmp/eq  r0,r6\n"
+    "    bf      56f\n"
+    "41:\n"
+    "    mov     #16,r0\n"
+    "    fmov.s  @(r0,r1),fr6\n"
+    "    mov.l   @(60,r11),r0\n"
+    "    lds     r0,fpul\n"
+    "    fsts    fpul,fr7\n"
+    "    fcmp/gt fr6,fr7\n"
+    "    bt      58f\n"
+    "    dt      r3\n"
+    "    bf/s    40b\n"
+    "    add     #8,r2\n"
+    "    mov.l   @(32,r13),r3\n"
     "12:\n"
     "    mov.l   @r9+,r1\n"
     "    add     r4,r1\n"
@@ -2295,6 +2380,40 @@ __asm__(
     "    mov.l   @r15,r1\n"
     "    bra     13b\n"
     "    nop\n"
+    "56:\n"
+    "    mov.l   r2,@-r15\n"
+    "    mov.l   r3,@-r15\n"
+    "    mov     r10,r0\n"
+    "    sub     r3,r0\n"
+    "    shll2   r0\n"
+    "    shll2   r0\n"
+    "    shll    r0\n"
+    "    add     r8,r0\n"
+    "    add     #-12,r0\n"
+    "    mov     r0,r6\n"
+    "    mov     r13,r4\n"
+    "    mov     r1,r5\n"
+    "    mov.l   r1,@-r15\n"
+    "    mov.l   96f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    mov.l   @r15+,r1\n"
+    "    mov.l   @r15+,r3\n"
+    "    mov.l   @r15+,r2\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    bra     41b\n"
+    "    nop\n"
+    "58:\n"
+    "    mov.l   @(4,r15),r2\n"
+    "    sub     r10,r2\n"
+    "    add     #2,r2\n"
+    "    mov.l   r2,@(4,r15)\n"
+    "    mov.l   r12,@r11\n"
+    "    bra     91f\n"
+    "    nop\n"
     "52:\n"
     "    fmov.s  fr4,@-r15\n"
     "    fmov.s  fr5,@-r15\n"
@@ -2317,6 +2436,8 @@ __asm__(
     "    bra     30b\n"
     "    or      r7,r0\n"
     "90:\n"
+    "    mov.l   r12,@r11\n"
+    "91:\n"
     "    mov.l   r14,@(56,r11)\n"
     "    mov.l   @(4,r15),r0\n"
     "    add     #12,r15\n"
@@ -2407,6 +2528,29 @@ __asm__(
     "    add     r2,r9\n"
     "    tst     r10,r10\n"
     "    bt      19f\n"
+    "    mov.l   @(44,r13),r0\n"
+    "    tst     r0,r0\n"
+    "    bf      12f\n"
+    "    mov     r9,r2\n"
+    "    mov     r10,r3\n"
+    "40:\n"
+    "    mov.l   @r2,r1\n"
+    "    add     r4,r1\n"
+    "    mov.l   @r1,r0\n"
+    "    cmp/eq  r0,r6\n"
+    "    bf      56f\n"
+    "41:\n"
+    "    mov     #16,r0\n"
+    "    fmov.s  @(r0,r1),fr6\n"
+    "    mov.l   @(60,r11),r0\n"
+    "    lds     r0,fpul\n"
+    "    fsts    fpul,fr7\n"
+    "    fcmp/gt fr6,fr7\n"
+    "    bt      58f\n"
+    "    dt      r3\n"
+    "    bf/s    40b\n"
+    "    add     #8,r2\n"
+    "    mov.l   @(32,r13),r3\n"
     "12:\n"
     "    mov.l   @r9+,r1\n"
     "    add     r4,r1\n"
@@ -2493,6 +2637,40 @@ __asm__(
     "    mov.l   @r15,r1\n"
     "    bra     13b\n"
     "    nop\n"
+    "56:\n"
+    "    mov.l   r2,@-r15\n"
+    "    mov.l   r3,@-r15\n"
+    "    mov     r10,r0\n"
+    "    sub     r3,r0\n"
+    "    shll2   r0\n"
+    "    shll2   r0\n"
+    "    shll    r0\n"
+    "    add     r8,r0\n"
+    "    add     #-12,r0\n"
+    "    mov     r0,r6\n"
+    "    mov     r13,r4\n"
+    "    mov     r1,r5\n"
+    "    mov.l   r1,@-r15\n"
+    "    mov.l   96f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    mov.l   @r15+,r1\n"
+    "    mov.l   @r15+,r3\n"
+    "    mov.l   @r15+,r2\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    bra     41b\n"
+    "    nop\n"
+    "58:\n"
+    "    mov.l   @(4,r15),r2\n"
+    "    sub     r10,r2\n"
+    "    add     #2,r2\n"
+    "    mov.l   r2,@(4,r15)\n"
+    "    mov.l   r12,@r11\n"
+    "    bra     91f\n"
+    "    nop\n"
     "54:\n"
     "    mov.l   r2,@(8,r15)\n"
     "    fmov.s  fr4,@-r15\n"
@@ -2541,6 +2719,8 @@ __asm__(
     "    bra     30b\n"
     "    or      r7,r0\n"
     "90:\n"
+    "    mov.l   r12,@r11\n"
+    "91:\n"
     "    mov.l   r14,@(56,r11)\n"
     "    mov.l   @(4,r15),r0\n"
     "    add     #12,r15\n"
@@ -2631,6 +2811,29 @@ __asm__(
     "    add     r2,r9\n"
     "    tst     r10,r10\n"
     "    bt      19f\n"
+    "    mov.l   @(44,r13),r0\n"
+    "    tst     r0,r0\n"
+    "    bf      12f\n"
+    "    mov     r9,r2\n"
+    "    mov     r10,r3\n"
+    "40:\n"
+    "    mov.l   @r2,r1\n"
+    "    add     r4,r1\n"
+    "    mov.l   @r1,r0\n"
+    "    cmp/eq  r0,r6\n"
+    "    bf      56f\n"
+    "41:\n"
+    "    mov     #16,r0\n"
+    "    fmov.s  @(r0,r1),fr6\n"
+    "    mov.l   @(60,r11),r0\n"
+    "    lds     r0,fpul\n"
+    "    fsts    fpul,fr7\n"
+    "    fcmp/gt fr6,fr7\n"
+    "    bt      58f\n"
+    "    dt      r3\n"
+    "    bf/s    40b\n"
+    "    add     #8,r2\n"
+    "    mov.l   @(32,r13),r3\n"
     "12:\n"
     "    mov.l   @r9+,r1\n"
     "    add     r4,r1\n"
@@ -2698,6 +2901,40 @@ __asm__(
     "    mov.l   @r15,r1\n"
     "    bra     13b\n"
     "    nop\n"
+    "56:\n"
+    "    mov.l   r2,@-r15\n"
+    "    mov.l   r3,@-r15\n"
+    "    mov     r10,r0\n"
+    "    sub     r3,r0\n"
+    "    shll2   r0\n"
+    "    shll2   r0\n"
+    "    shll    r0\n"
+    "    add     r8,r0\n"
+    "    add     #-12,r0\n"
+    "    mov     r0,r6\n"
+    "    mov     r13,r4\n"
+    "    mov     r1,r5\n"
+    "    mov.l   r1,@-r15\n"
+    "    mov.l   96f,r0\n"
+    "    jsr     @r0\n"
+    "    nop\n"
+    "    mov.l   @r15+,r1\n"
+    "    mov.l   @r15+,r3\n"
+    "    mov.l   @r15+,r2\n"
+    "    mov.l   @(20,r11),r4\n"
+    "    mov.l   @(24,r11),r5\n"
+    "    mov.l   @(8,r13),r6\n"
+    "    mov.l   @(28,r11),r7\n"
+    "    bra     41b\n"
+    "    nop\n"
+    "58:\n"
+    "    mov.l   @(4,r15),r2\n"
+    "    sub     r10,r2\n"
+    "    add     #2,r2\n"
+    "    mov.l   r2,@(4,r15)\n"
+    "    mov.l   r12,@r11\n"
+    "    bra     91f\n"
+    "    nop\n"
     "52:\n"
     "    fmov.s  fr4,@-r15\n"
     "    fmov.s  fr5,@-r15\n"
@@ -2720,6 +2957,8 @@ __asm__(
     "    bra     30b\n"
     "    or      r7,r0\n"
     "90:\n"
+    "    mov.l   r12,@r11\n"
+    "91:\n"
     "    mov.l   r14,@(56,r11)\n"
     "    mov.l   @(4,r15),r0\n"
     "    add     #12,r15\n"
@@ -2840,58 +3079,72 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
     A.cid = X->cid;
     A.env = X->env;
     A.ns = ns;
-#define PSLOT_FILL(P, v) (dcm_asm_pslot(&A, P, v), PROF(g_prof_xf++))
-#define LIT_FILL(N, v) (dcm_asm_lslot(&A, N, v, 1), PROF(g_prof_lit++))
-#define NSLOT_FILL(N, v) dcm_asm_lslot(&A, N, v, 0)
-    if (FRONT && !ENV && !dcm_host_emit) {
-        /* whole model in front: slots filled on the way, in submission order */
+#define PSLOT_FILL(P, v) (dcm_dc_cfills ? pslot_fill(X, P, v) : dcm_asm_pslot(&A, P, v))
+#define LIT_FILL(N, v) (dcm_dc_cfills ? lit_fill(X, N, v) : dcm_asm_lslot(&A, N, v, 1))
+#define NSLOT_FILL(N, v) (dcm_dc_cfills ? nslot_fill_x(X, N, v) : dcm_asm_lslot(&A, N, v, 0))
+    if (!ENV && !dcm_host_emit && !dcm_dc_cfills) {
+        /* slots filled on the way, in submission order; strips crossing the near plane come back here */
         emit_t E;
+        A.front = FRONT;
         E.st0 = st0;
         E.st1 = st1;
         E.verts = m->vertices;
         E.vref = m->vref;
-        E.ps = ps;
-        E.ns = ns;
-        E.env = (const float(*)[2])X->env;
+        E.A = &A;
+        E.wps = ps;
+        E.wns = ns;
         E.sa = X->sa;
         E.flat = X->S->flat;
         E.ua = X->ua;
         E.ue = X->ue;
         E.ud = X->ud;
         E.uf = X->uf;
-        E.near_w = X->near_w;
-        E.front = 1;
-        E.A = &A;
-        E.wps = ps;
-        E.wns = ns;
         E.wrote = 0;
-        if (dcm_dc_capture) {
-            E.outp = dcm_dc_capture + 8 * dcm_dc_capture_n;
-            sent = LIT ? dcm_asm_emitz_l_c(&E) : dcm_asm_emitz_u_c(&E);
-            dcm_dc_capture_n = (uint32_t)(E.outp - dcm_dc_capture) / 8;
-        } else {
-            E.outp = (uint32_t *)pvr_dr_addr;
-            sent = LIT ? dcm_asm_emitz_l(&E) : dcm_asm_emitz_u(&E);
-            pvr_dr_addr = (uint32_t)E.outp;
+        E.near_w = X->near_w;
+        E.ps = ps;
+        E.ns = ns;
+        E.env = (const float(*)[2])X->env;
+        E.front = FRONT;
+        for (;;) {
+            if (dcm_dc_capture) {
+                E.outp = dcm_dc_capture + 8 * dcm_dc_capture_n;
+                sent += LIT ? dcm_asm_emitz_l_c(&E) : dcm_asm_emitz_u_c(&E);
+                dcm_dc_capture_n = (uint32_t)(E.outp - dcm_dc_capture) / 8;
+            } else {
+                E.outp = (uint32_t *)pvr_dr_addr;
+                sent += LIT ? dcm_asm_emitz_l(&E) : dcm_asm_emitz_u(&E);
+                pvr_dr_addr = (uint32_t)E.outp;
+            }
+            if (E.st0 >= st1)
+                break;
+            /* crossing strip (the asm pass stopped at its first vertex behind the near plane): positions and lit
+             * colours of all its vertices, then clipped */
+            {
+                const dcm_vertex_t *v = &m->vertices[E.st0->first_vertex];
+                const uint32_t *vr = m->vref + 2 * E.st0->first_vertex, *ve = vr + 2 * E.st0->count;
+                for (; vr < ve; vr += 2, v++) {
+                    pslot_t *P = SLOT(pslot_t, ps, vr[0]);
+                    nslot_t *N = SLOT(nslot_t, ns, vr[1]);
+                    if (P->stamp != cs)
+                        dcm_asm_pslot(&A, P, v);
+                    if (LIT && (v->flags & DCM_VF_NORMAL) &&
+                        (N->cid != A.cid || !A.cid || N->ep != A.pep[v->palette])) {
+                        dcm_asm_lslot(&A, N, v, 1);
+                        E.wrote = 1;
+                    }
+                }
+            }
+            sent += strip_out(X, E.st0, material, LIT, ENV, FRONT);
+            E.st0++;
         }
-        D->pgen = cs;
-        D->allin = 1;
-        if (LIT) {
-            if (E.wrote)
-                lc->wgen++;
-            D->lgen = lc->lgen;
-            D->cid = X->cid;
-            D->wgen = lc->wgen;
-        }
+        if (E.wrote)
+            lc->wgen++; /* slot colours changed: the passes of other draws look again */
         return sent;
     }
 #else
 #define PSLOT_FILL(P, v) pslot_fill(X, P, v)
 #define LIT_FILL(N, v) lit_fill(X, N, v)
 #define NSLOT_FILL(N, v) nslot_fill_x(X, N, v)
-#endif
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
-    uint64_t pt0 = timer_us_gettime64(), pt1, pt2;
 #endif
     {
         /* positions (when the transforms changed) and lighting (when normal matrices, lights, the colour key or
@@ -2943,13 +3196,6 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
             D->wgen = lc->wgen;
         }
     }
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
-    pt1 = timer_us_gettime64();
-    g_prof_ph[0] += pt1 - pt0;
-#endif
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
-    pt2 = pt1;
-#endif
 #ifdef _arch_dreamcast
     if (!dcm_host_emit) {
         emit_t E;
@@ -2974,9 +3220,6 @@ static inline __attribute__((always_inline)) int draw_strips(const dctx_t *X, co
             else
                 sent += LIT ? (ENV ? emit_le(&E) : emit_l(&E)) : (ENV ? emit_ue(&E) : emit_u(&E));
             if (E.st0 >= st1) {
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
-                g_prof_ph[2] += timer_us_gettime64() - pt2;
-#endif
                 return sent;
             }
             sent += strip_out(X, E.st0, material, LIT, ENV, FRONT); /* crosses the near plane */
@@ -3006,7 +3249,6 @@ int dcm_draw_ex(const dcm_model_t *m, const dcm_mtx_t *pal, const dcm_mtx_t *mod
     dctx_t X;
 #if defined(_arch_dreamcast) && defined(DCM_PROFILE)
     uint64_t prof_t0 = timer_us_gettime64();
-    uint32_t prof_xf0 = g_prof_xf;
 #endif
     if (!m->vref || !lc)
         return 0; /* not loaded */
@@ -3068,11 +3310,9 @@ int dcm_draw_ex(const dcm_model_t *m, const dcm_mtx_t *pal, const dcm_mtx_t *mod
         if (!built) {
             int lchg, xchg, p, np = m->hdr->num_palette;
             xform_t *xf = (xform_t *)lc->xf;
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
-            uint64_t st0 = timer_us_gettime64();
-#endif
             xchg = !lc->kvalid || memcmp(lc->kpal, pal, sizeof(dcm_mtx_t) * np) ||
-                   memcmp(&lc->kmodel, model_mtx, sizeof(dcm_mtx_t)) || memcmp(&lc->kview, &cam->view, sizeof(dcm_mtx_t)) ||
+                   memcmp(&lc->kmodel, model_mtx, sizeof(dcm_mtx_t)) ||
+                   memcmp(&lc->kview, &cam->view, sizeof(dcm_mtx_t)) ||
                    memcmp(lc->kproj, cam->proj, sizeof(lc->kproj)) || memcmp(lc->kvp, &cam->vp_x, sizeof(lc->kvp)) ||
                    memcmp(&lc->knear, &cam->near_w, sizeof(float));
             if (xchg) {
@@ -3117,9 +3357,6 @@ int dcm_draw_ex(const dcm_model_t *m, const dcm_mtx_t *pal, const dcm_mtx_t *mod
                     lc->pep[p] = lc->gen;
                     lc->lgen++;
                 }
-#if defined(_arch_dreamcast) && defined(DCM_PROFILE_PHASES)
-            g_prof_ph[3] += timer_us_gettime64() - st0;
-#endif
         }
         envmap = states ? (ms->texgen == 2) : (mat->flags & DCM_MF_ENVMAP) != 0;
         dcm_matstate_uv(m, dr->material, states ? ms : NULL, &X.ua, &X.ud, &X.ue, &X.uf);
@@ -3162,7 +3399,7 @@ int dcm_draw_ex(const dcm_model_t *m, const dcm_mtx_t *pal, const dcm_mtx_t *mod
         }
     }
 #if defined(_arch_dreamcast) && defined(DCM_PROFILE)
-    prof_add(prof_t0, m, prof_xf0);
+    prof_add(prof_t0, m);
 #endif
     return sent;
 }

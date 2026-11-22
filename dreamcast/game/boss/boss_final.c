@@ -564,6 +564,12 @@ static void NNS_SndPlayerStopSeqAll(void) {
     if (g_boss_hooks.music_stop)
         g_boss_hooks.music_stop(g_boss_hooks.ctx);
 }
+static void NNS_SndPlayerStopSeq_BGM(s32 frames) {   /* NNS_SndPlayerStopSeq(&gBGMSoundHandle, frames) */
+    if (g_boss_hooks.music_fade)
+        g_boss_hooks.music_fade(g_boss_hooks.ctx, frames);
+    else
+        NNS_SndPlayerStopSeqAll();
+}
 static void RingManager_SetFlags1(void) {
     if (g_boss_hooks.ring_flags)
         g_boss_hooks.ring_flags(g_boss_hooks.ctx, 1);
@@ -3135,11 +3141,11 @@ STATE(BossFPartD8_State_WaitTimer_ov000_022f0f04) {
         s->func = BossFPartD8_State_SkyChargeStartFadeOut;
 }
 /* BossFPartD8_State_SkyChargeStartFadeOut (modified: BLDCNT/BLDY state; NNS_SndPlayerStopSeq(BGM, 60) ->
- * music_stop) */
+ * music_fade) */
 STATE(BossFPartD8_State_SkyChargeStartFadeOut) {
     BossFPartD8 *p = (BossFPartD8 *)p_;
     bld_set(2, 0); /* unk20.raw = 0; bits.a (BG0) = 1; bits.b (mode) = 2; unk24.c = 0 */
-    NNS_SndPlayerStopSeqAll();
+    NNS_SndPlayerStopSeq_BGM(0x3c);
     p->unk454 = 0;
     p->func = BossFPartD8_State_SkyChargeFadeOut;
     s_st.white_outs++;

@@ -96,6 +96,12 @@ typedef struct BossHooks {
      * the DS freezes the game (System_Freeze) until the talk ends: skip boss_update_pre / boss_update
      * (and the player) while it runs (cutscene_start(CS_TALK, id, ..) / cutscene_active()). */
     void (*talk)(void *ctx, s32 id);
+    /* gBGMSoundHandle fades (appended): NNS_SndPlayerStopSeq(&gBGMSoundHandle, frames)
+     * (Boss7_State_ClashFadeOutBGM, BossFPartD8_State_SkyChargeStartFadeOut: 0x3c) and
+     * NNS_SndPlayerMoveVolume(&gBGMSoundHandle, vol, frames) (Boss7PartD5_MoveState_WaitDefeatScene:
+     * 0x20 over 0xb4). If music_fade is NULL, music_stop is called. */
+    void (*music_fade)(void *ctx, s32 frames);
+    void (*music_volume)(void *ctx, s32 vol, s32 frames);
 } BossHooks;
 enum { BOSS_HELP_CREATE = 0, BOSS_HELP_DESTROY = 1 };
 extern BossHooks g_boss_hooks;

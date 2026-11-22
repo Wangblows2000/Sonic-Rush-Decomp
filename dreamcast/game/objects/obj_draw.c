@@ -71,6 +71,47 @@ static void quad4(const Texture *t, int bank, pvr_list_t list, const float *xs, 
     v.x = xs[1]; v.y = ys[1]; v.u = u1; v.v = v0; pvr_prim(&v, sizeof(v)); /* top right    */
 }
 
+/* Water Palace (ZoneFx_Zone2_*TintedPalettes): below the water line the OBJ palette rows
+ * 2..15 are tinted (r - 10, g - 1); rows 0 / 1 (rings, HUD) and the 3D layer (models, 3D
+ * BACs, the boost ribbon) are not. Here: the vertex colour of the sprite part below the
+ * line (objects_set_water_tint, set by the zone effects every frame). */
+static float s_tint_y = 1e9f;
+static uint32_t s_tint_argb = 0xffffffffu;
+static int s_tint_on;
+void objects_set_water_tint(float y, uint32_t argb) {
+    s_tint_y = y;
+    s_tint_argb = argb;
+}
+static uint32_t tint_mul(uint32_t a, uint32_t t) {
+    uint32_t r = ((a >> 16) & 0xff) * ((t >> 16) & 0xff) / 255, g = ((a >> 8) & 0xff) * ((t >> 8) & 0xff) / 255;
+    uint32_t b = (a & 0xff) * (t & 0xff) / 255;
+    return (a & 0xff000000u) | r << 16 | g << 8 | b;
+}
+/* draw_sprite_world_pal with the part below the water line tinted (vflip: the quad's top
+ * row is texture row v1) */
+static void spr_quad(const Texture *t, int bank, pvr_list_t list, float x0, float y0, float w, float h, float u0,
+                     float v0, float u1, float v1, int flip, float z, uint32_t argb) {
+    float cut;
+    if (!s_tint_on || y0 + h <= s_tint_y) {
+        draw_sprite_world_pal(t, bank, list, x0, y0, w, h, u0, v0, u1, v1, flip, z, argb);
+        return;
+    }
+    if (y0 >= s_tint_y) {
+        draw_sprite_world_pal(t, bank, list, x0, y0, w, h, u0, v0, u1, v1, flip, z, tint_mul(argb, s_tint_argb));
+        return;
+    }
+    cut = s_tint_y - y0;
+    if (flip & 2) {
+        draw_sprite_world_pal(t, bank, list, x0, y0, w, cut, u0, v1 - cut, u1, v1, flip, z, argb);
+        draw_sprite_world_pal(t, bank, list, x0, y0 + cut, w, h - cut, u0, v0, u1, v1 - cut, flip, z,
+                              tint_mul(argb, s_tint_argb));
+    } else {
+        draw_sprite_world_pal(t, bank, list, x0, y0, w, cut, u0, v0, u1, v0 + cut, flip, z, argb);
+        draw_sprite_world_pal(t, bank, list, x0, y0 + cut, w, h - cut, u0, v0 + cut, u1, v1, flip, z,
+                              tint_mul(argb, s_tint_argb));
+    }
+}
+
 static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vflip_extra) {
     const DsprImage *img = spr_image(s);
     const Texture *t;
@@ -127,6 +168,8 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
         u0 = (float)img->x; v0 = (float)img->y; u1 = (float)(img->x + img->w); v1 = (float)(img->y + img->h);
         if (hf) { tmp = u0; u0 = u1; u1 = tmp; }
         if (vf) { tmp = v0; v0 = v1; v1 = tmp; }
+        if (s_tint_on && y > s_tint_y)   /* rot-scale: the sprite position decides */
+            argb = tint_mul(argb, s_tint_argb);
         quad4(t, bank, list, xs, ys, u0, v0, u1, v1, z, argb);
         return;
     }
@@ -134,8 +177,8 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
         x0 += (float)(s->ppos[0][0] >> 8);
         y0 += (float)(s->ppos[0][1] >> 8);
     }
-    draw_sprite_world_pal(t, bank, list, x0, y0, (float)img->w, (float)img->h, (float)img->x, (float)img->y,
-                          (float)(img->x + img->w), (float)(img->y + img->h), hf | (vf << 1), z, argb);
+    spr_quad(t, bank, list, x0, y0, (float)img->w, (float)img->h, (float)img->x, (float)img->y,
+             (float)(img->x + img->w), (float)(img->y + img->h), hf | (vf << 1), z, argb);
 }
 static void draw_spr(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int vflip_extra) {
     int i;
@@ -169,6 +212,8 @@ void obj_draw(int list) {
     for (o = g_obj.head; o; o = o->next) {
         if (!o->used || (o->h.obj_flags & 4))
             continue;
+        /* the ring sparkles (ring BAC: OBJ rows 0 / 1) and 3D stand-ins stay untinted */
+        s_tint_on = s_tint_y < 1e8f && !o->bac3d && !is_model(o) && !(o->has_spr && o->spr.res == &g_obj.res[OBJ_BAC_RING]);
         if (o->has_sprA)
             draw_spr(&o->sprA, (pvr_list_t)list, o->sprA.x, o->sprA.y, 0);
         /* StageObj_Draw2DEx: with a model (@0x124/@0x128, "busy") the main sprite is
@@ -188,6 +233,7 @@ void obj_draw(int list) {
             }
         }
     }
+    s_tint_on = 0;   /* rings, ring sparkles, the ribbon: not tinted */
     if (list == PVR_LIST_TR_POLY)
         draw_trails();
     s = ring_draw_sprite();

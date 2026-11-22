@@ -1,13 +1,11 @@
 --- a/dreamcast/game/build_disc.sh
 +++ b/dreamcast/game/build_disc.sh
-@@ -35,6 +35,10 @@
-     cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"
-     for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+@@ -132,6 +132,8 @@
  done
-+# camera shake tables + zone effect tables (dreamcast/game/zonefx/tools/zonefxdata.py, from YOUR ROM)
-+mkdir -p "$OUT/disc/zonefx"
-+[ -f "$ROOT/build/dreamcast/zonefx/zonefx.bin" ] || python3 "$ROOT/dreamcast/game/zonefx/tools/zonefxdata.py"
-+cp "$ROOT/build/dreamcast/zonefx/zonefx.bin" "$OUT/disc/zonefx/"
- # UI (HUD, title card, pause, results, game over)
- mkdir -p "$OUT/disc/ui/res"; cp "$ROOT/build/dreamcast/ui/uidata.bin" "$ROOT/build/dreamcast/ui/navidata.bin" "$OUT/disc/ui/"
- # navigator, boss panel, title card / results backgrounds (UI.md: res/ without the png previews)
+ # test builds: SRDC_START=<stage index> writes /cd/debug/start.txt (story index into k_stages)
+ if [ -n "$SRDC_START" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_START" > "$OUT/disc/debug/start.txt"; fi
++# SRDC_STARTPOS="x y": the debug start stage begins at that position (px) instead of PlayerStart
++if [ -n "$SRDC_STARTPOS" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_STARTPOS" > "$OUT/disc/debug/startpos.txt"; fi
+ if [ -n "$SRDC_SPECIAL" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPECIAL" > "$OUT/disc/debug/special.txt"; fi
+ if [ -n "$SRDC_MENUTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/menutrace.txt"; fi
+ if [ -n "$SRDC_MENUSAVE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_MENUSAVE" > "$OUT/disc/debug/menusave.txt"; fi

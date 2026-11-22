@@ -96,7 +96,9 @@ typedef struct {
     uint8_t alpha_scale;          /* 0..255 multiplies material alpha (fades) */
 } dcm_draw_opts_t;
 
-/* ---- loading */
+/* ---- loading
+ * The package bytes stay the caller's and must not change while the model is loaded (the draw caches are built
+ * from them: edit, then load again).  dcm_model_load allocates the draw caches (dcm_model_free releases them). */
 int dcm_model_load(dcm_model_t *m, const void *data, size_t size, int upload_textures);
 void dcm_model_free(dcm_model_t *m);
 int dca_set_load(dca_set_t *s, const void *data, size_t size);
@@ -177,10 +179,12 @@ typedef void (*dcm_emit_hook_t)(int material, const float *xyzuv, uint32_t argb,
 extern dcm_emit_hook_t dcm_host_emit;
 
 #ifdef _arch_dreamcast
-/* Test hook: non-NULL = the direct-render vertices (32 bytes each, as the TA receives them) are written here
- * instead of the store queues; dcm_dc_capture_n counts them.  Only while dcm_host_emit is NULL. */
+/* Test hooks: dcm_dc_capture non-NULL = the direct-render vertices (32 bytes each, as the TA receives them) are
+ * written there instead of the store queues (dcm_dc_capture_n counts them; only while dcm_host_emit is NULL);
+ * dcm_dc_cfills = slot fills and submission in C instead of the SH-4 routines (the reference for them). */
 extern uint32_t *dcm_dc_capture;
 extern uint32_t dcm_dc_capture_n;
+extern int dcm_dc_cfills;
 #endif
 
 /* Host/test hook: transformed screen position of every vertex (x, y, 1/w), no PVR. */
