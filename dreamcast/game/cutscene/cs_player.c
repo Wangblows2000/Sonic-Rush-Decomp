@@ -909,6 +909,15 @@ void PlayerDemo_RunFrame(void) {
     PlayerDemo *t = &s_pd;
     if (!s_pd_on)
         return;
+    if (g_cs_frozen) {
+        /* a TalkDemo froze the system: PlayerDemo and its group 0 subtasks (model, BG, camera
+         * shake, skip) wait, so the script time, the scene and its fades hold until the talk
+         * ends; PolyDemoUnder2 and the repeat SE (group 7) go on */
+        if (s_pu_on)
+            PolyDemoUnder2_Main();
+        PlayerDemoRepeatSE_Main();
+        return;
+    }
     if (t->flags & 0x80000000u) {
         PlayerDemo_Destructor();
         return;

@@ -124,6 +124,11 @@ enum { UI_VAR_NONE = 0, UI_VAR_GAUGE0 = 1 /* .. +6: white -> gauge_pal[i] */, UI
  * its own row) -> the colours of image dst at the same pixels (the same sprite drawn
  * with the other row). Built from the atlas pixels (NaviB rows 7 / 8). */
 void ui_palmap_set(int n, int res, int src_image, int dst_image);
+/* The same from two palettes of the resource (palettes.bin), entry by entry. */
+void ui_palmap_set_pal(int n, int res, int from_pal, int to_pal);
+/* OBJ palette row reload (PaletteTransfer of another palette into a row): sprites of resource
+ * res whose image uses palette pal are drawn with variant (ui_emit); res -1 turns it off. */
+void ui_pal_swap(int res, int pal, int variant);
 u16 ui_variant_pixel(u16 p, int variant);
 /* pseudo resource for UiQuad.tex: the streamed navigator face (ui_navi.c) */
 enum { UI_TEX_FACE = 100 };

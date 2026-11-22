@@ -426,6 +426,13 @@ static void xform(int space, float x, float y, float *ox, float *oy, float *k) {
     }
 }
 
+static int s_swap_res = -1, s_swap_pal, s_swap_var;
+void ui_pal_swap(int res, int pal, int variant) {
+    s_swap_res = res;
+    s_swap_pal = pal;
+    s_swap_var = variant;
+}
+
 void ui_emit(const UiSpr *s, int space, s32 scale_x, s32 scale_y, int flip, u32 argb, int variant) {
     int idx;
     const UiImage *im = UiSpr_Image(s, &idx);
@@ -433,6 +440,9 @@ void ui_emit(const UiSpr *s, int space, s32 scale_x, s32 scale_y, int flip, u32 
     float px, py, k, sx, sy, l, t;
     if (!im || s_nquads >= UI_MAX_QUADS || scale_x == 0 || scale_y == 0)
         return;
+    if (!variant && s_swap_res >= 0 && s->res == &g_ui_res[s_swap_res] && s->res->pal.blob &&
+        idx < s->res->pal.n_images && s->res->pal.image_pal[idx] == s_swap_pal)
+        variant = s_swap_var;
     xform(space, s->x, s->y, &px, &py, &k);
     sx = scale_x / 4096.0f * k;
     sy = scale_y / 4096.0f * k;

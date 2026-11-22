@@ -210,9 +210,9 @@ static int load_talk_img(CsPic *p, s32 v) {
 static int TalkDemo_LoadImageByPair(CsPic *p, s32 a, s32 b) {
     const s32 *t = (const s32 *)cs_sec("td_port", NULL);
     s32 v;
-    if (a == 0 || b == 0 || !t || a >= 12 || b >= 16)
+    if (a == 0 || b == 0 || !t || a >= 13 || b >= 24)   /* td_port is s32[13][24] (csdata.py) */
         return -1;
-    v = t[16 * a + b];
+    v = t[24 * a + b];
     if (v < 0)
         return -1;
     return load_talk_img(p, v);
@@ -724,6 +724,8 @@ void talk_scene_load10x10(TalkScene *w) {
     CsPic p;
     if (info->enter != 1) {
         int ok = TalkDemo_LoadImageByPair(&p, info->port_a, info->port_b) == 0;
+        if (!ok && info->port_a != 0 && info->port_b != 0)
+            cs_log("talk %d portrait %d/%d missing", gTalkDemoId, info->port_a, info->port_b);
         TalkDemo_LoadImage10x10(ok ? &p : NULL);
         if (ok)
             cs_pic_free(&p);
@@ -1288,6 +1290,7 @@ static void TalkDemo_Destructor(void) {
     free(w->script);
     w->script = NULL;
     s_main_on = 0;
+    g_cs_freeze = 0;   /* System_Unfreeze */
     cs_log("talk %d end pages %d", gTalkDemoId, s_pages_run);
 }
 static void TalkDemo_State_Load(TalkMain *w) {
@@ -1297,6 +1300,7 @@ static void TalkDemo_State_Load(TalkMain *w) {
         free(w->script);
         w->script = NULL;
         s_main_on = 0;
+        g_cs_freeze = 0;
         return;
     }
     cs_log("talk %d start pages %d colour %04x bgm %d lang %d", gTalkDemoId, TalkDemo_GetScriptHeader(w->script)->pages,
@@ -1370,6 +1374,7 @@ static void talk_create(int map) {
     s_pages_run = 0;
     s_main.lang = cs_lang();
     s_main.fn = TalkDemo_State_Load;
+    g_cs_freeze = 1;   /* System_Freeze(1, 1, 1): the scene behind waits (cs_internal.h) */
     TalkDemo_InitSkippable();
     /* TalkDemo_InitDisplay(ZoneMap): BG1 22x10 box (prio 0), BG2 affine (prio 1) */
     TalkDemo_ResetBg1Scroll(NULL);
@@ -1384,6 +1389,8 @@ void TalkDemo_Kill(void) {
     if (s_main_on && s_main.script)
         free(s_main.script);
     s_main.script = NULL;
+    if (s_main_on)
+        g_cs_freeze = 0;
     s_main_on = s_scene_on = s_win_on = s_dim_on = s_bg2win_on = 0;
     s_rocks.active = 0;
     cs_res_free(s_scene.prompt_res);

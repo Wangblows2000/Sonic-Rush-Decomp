@@ -86,3 +86,75 @@ Not verified in Flycast: the mid-fight boss talks (Boss7 0xa/0xb, BossF 0xf/0x10
 - CHECKED (player/objects) Dead Line gravity flip with the hook wired (1364f08f): Player_UpdateGravityFlip
   (velocity, angle, remap), the z72 top pit and the Flycast play of z71 / z72 for both characters
   match the original; test_zones has a gravity-flip check on z71 / z72.
+
+## Visual-fidelity review in the game flow (2026-11-22, V lines)
+
+Flycast test discs of HEAD 2e79caa5..8f064918 + the menus/main.c flow patch, own HOME and display :87, driven
+by the flow driver (serial-log rules, screenshots every 1.5-4 s): Sonic from a new save (title, title menu,
+z11/z12 title cards and results, script 0 zone 0, z13, script 1, boss results, zone map); Sonic at progress 24
+(map talk 0x1d, script 0 zone 7, zf3 title card / navigator / results, ending, staff roll 0, PostStaffRoll talk
+0x37, unlock notices, SEGA logo, title); Sonic cleared + Blaze 5 (unlock notices at START, player select, Blaze
+zone map with Cream's panel, Blaze title card, pause, Blaze results). Each shot compared with the original's
+code (placement, timers, palettes) for one 640x480 frame.
+- V1 | high | boss intro (DemoScript 0, every zone): PlayerDemo 30 starts talk 1 at t 30 and fades to black at
+  t 35; the port kept running PlayerDemo while the talk ran, so the scene faded out, its BGM stopped and the
+  whole dialogue played on a black frame (master brightness over the talk), the player pressing A blind | TalkDemo_Create
+  calls System_Freeze(1,1,1): Task_RunList then runs only priority-group 7 tasks (TalkDemo, DemoScript,
+  PolyDemoUnder2, PlayerDemoRepeatSE, a BrightnessFade made while frozen) and DisableSwapBuffersTask keeps
+  the last 3D frame; System_Unfreeze in TalkDemo_Destructor; the latch (gSystemFlags 0x80000000) follows flag
+  8 at the end of the frame | FIXED cutscene/: `g_cs_freeze` / `g_cs_frozen` (cs_internal.h, cs_core.c), set
+  in talk_create, cleared in TalkDemo_Destructor / _Kill / a missing script; cutscene_run_frame keeps the 3D
+  list and skips PlayerDemo's group-0 parts (cs_player.c), TransformDemo and Ending/StaffRoll while frozen;
+  BrightnessFade takes group 7 when made while frozen | host test 2684/2684 (the PlayerDemo timeline check
+  now moves the commands after a StartTalkDemo by the frames the talk froze it); Flycast: talk 1's six pages
+  over the frozen, dimmed boss scene, then the fade (FadeToBlack after "talk 1 end"). Also holds the
+  ExtraEnding (PlayerDemo 0x2a with talks 0x38 / 0x39: the staff roll waits for talk 0x39, as on the DS).
+- V2 | medium | act select: the NaviM panel (lives, story %, emeralds) covered zone tabs 6 / 7, and the
+  navigator face (bottom right) covered the back button and the ranks of ACT-2 / VS BOSS | the zone-map
+  layout (mn_navi_compose) was reused for the act select, whose frame has the tabs across the top and the
+  back button at the bottom right | FIXED menus/mn_navi.c `mn_navi_compose_ex(1)` (mn_actsel.c): NaviM at
+  x1.25 in the free strip under the rows (20..160 x 406..476), the face at x1.0 right of the rows (512..640 x
+  196..324); zone map unchanged | Flycast shot of the old layout (tabs 6 / 7 hidden); positions measured on it;
+  menus host tests 38/38, 59/59, story 125/125.
+- V3 | medium | act and boss results: the right half of the frame was empty (the DS shows the character's
+  model sliding in and posing there) | ClearDemo_DrawModel / ClearDemoModel_* were timing only | FIXED ui/:
+  ClearDemoModel_State_Init / _Delay / _Move / _Skip translated (data_0207346c: scale 0x107fc, from
+  (-160,-192) to (220,-159,-25) normal / (200,-159,-25) boss for Sonic, rotation lerp, speed 0 during the
+  delay), `ui_results_model()` (ui.h) gives pose / animation (0x26 / 0x27, Blaze 0x48 / 0x49; visibility 2,
+  Blaze 1 / 5; no loop) and the ClearDemo camera / lights; ui_draw_tr moves the tally above the model's depth
+  band; main.c draws it: `dreamcast/game/cutscene/patches/main_results_model.patch` (draw_results_model,
+  replaces the stage player's draw while the results show it) | UI host test 153/153 (start / end positions,
+  frame, Blaze boss anims); Flycast: Blaze's model slides in and poses right of the tally, tally in front.
+- V4 | medium | Blaze's act / boss results drew the header and footer bars, their corner pieces and the
+  header / clear text in Sonic's blue palette | ClearDemo_InitSprites loads the palette at +0xcc (anim 0x32's)
+  into OBJ row data_02073404[0] for Blaze; not done | FIXED ui/: `ui_palmap_set_pal` + `ui_pal_swap`: the
+  row-0 images of dm_cldm (anims 0..0x12, 0x22, 0x27) drawn as the bank of anim 0x32's palette for Blaze |
+  UI host test (26 Blaze sprites recoloured, the others not); Flycast: purple bars and corners.
+- V5 | medium | unlock notices (after the staff roll, or START on the title once a story is complete): a
+  dark empty screen for up to 4 s each, the player was not told what was unlocked | the MsgBox system is not
+  translated | FIXED menus/mn_title.c: the notice draws MsgBox 0x14 / 0x15's message (caution_d_<lang>.bac
+  anims 0 / 1, "TIME ATTACK / SOUND TEST IS NOW AVAILABLE.", at the sprite's own place) on black, brightness 0;
+  the box frame BG is still not drawn. Disc: `dreamcast/game/cutscene/patches/build_disc_caution.patch` adds
+  the six caution_d sprite sets; the resource is freed with the task (freeing it in the frame that still drew
+  it let mn_draw build its texture in freed memory) | Flycast: both notices readable at START on the title.
+- V6 | checked, no change | z11 / z12 / zf3 title cards (Sonic, Blaze): the black disc at the right is the
+  zone emblem of dm_stdm anims 0xf.. whose ROM palettes are black (row 1: entries 1..13 0x0000); the zone-map
+  talks (band, box, portrait over the map, map not dimmed); script 1 captions and PlayerDemo 3D; Sonic ending
+  pictures and captions (top band fades with the picture, caption strip stays: BLDY on BG1 only); staff roll 0
+  (credits, Sonic / Amy run, CONGRATULATIONS / THANK YOU card); PostStaffRoll talk 0x37 over black; the
+  final-boss navigator message; TransformDemo 0 / 1 (warp: light streaks, a5i3 dome with its 8 grey levels).
+- V7 | low (test builds) | a private test tree crashed at the Blaze z13 spawn (Unhandled exception, PC in the
+  heap, from dcp_player_init_state's g_dcp_hooks.atkdef) on two discs; a clean rebuild of the same sources
+  ran z11..z33 without it | the game Makefile (KOS Makefile.rules) has no header dependencies: objects copied
+  from a tree where boss.h had gained a BossHooks field (fx3d) before them kept the old layout | not a source
+  defect: after a header change in any module run `make clean` (or delete its .o) before build_disc.sh.
+- V8 | checked (Flycast, Blaze) | Blaze: script 1 talks over the frozen 3D scene (V1), title card (zone 2 =
+  Leaf Storm for Blaze, BLAZE THE CAT strip), pause ("PAUSE" only on a new stage, as the DS), Cream's NaviM
+  panel and map talk, the warp TransformDemo 2.
+- Not reviewed in Flycast here (open): options, sound test, records, time attack and Try Again (the flow
+  run's shots only), game over, TransformDemo 3 / 4 (Super forms in the final fights), the Blaze ending and
+  staff roll 1, the extra ending / staff roll 2, ExtraAct (host dump only: its bottom letterbox bar takes BG
+  palette entry 0x12, magenta, the top one entry 2, blue: to check against a DS frame). Not translated: the
+  3D TitleDemo before the title screen, the MsgBox frame (V5), the zone-map character model. Seen in the
+  flow agent's shots, other owners: the Extra boss arena is drawn on black (no space backdrop) and the
+  final-boss title card shows a black frame at GO! (the 3D arena is drawn only after boss_start).

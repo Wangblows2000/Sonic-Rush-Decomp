@@ -102,6 +102,8 @@ Run each cutscene as follows.
 - **Overlays** are TalkDemo over the zone map, a stage or a boss (`cutscene_is_fullscreen()` is 0).
   - The caller keeps drawing its scene.
   - Freeze the world (no `boss_update` / player / objects) while `cutscene_active()`, as `System_Freeze` does on the DS.
+  - Inside the cutscene module a TalkDemo freezes the scene behind it the same way (System_Freeze: PlayerDemo,
+    TransformDemo, Ending / StaffRoll wait, the last 3D frame stays; `g_cs_frozen`, DEFECTS.md V1).
   - Call `cutscene_run_frame(&in)` once per frame.
   - Call `cutscene_draw_list(PVR_LIST_TR_POLY)` inside the caller's TR list, after the scene and HUD. Its 2D is at z 100..120, above `menus_draw_tr` (z 10..90).
   - It may also be called for OP and PT; it adds nothing there for a talk.

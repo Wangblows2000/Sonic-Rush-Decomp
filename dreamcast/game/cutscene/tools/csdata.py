@@ -295,11 +295,19 @@ def conv_talk(o):
         t = u32(0x0207CA10 + 4 * li)
         msg += b"".join(struct.pack("<i", s32(t + 4 * i)) for i in range(0x3A))
     o.sec("td_msg", msg)
-    # td_port: s32[12][16]  data_0207ca28[a][b] (talk_m.bb index, -1 none)
+    # td_port: s32[13][24]  data_0207ca28[a][b] (talk_m.bb index, -1 none). The rows are separate
+    # arrays of different lengths (Blaze, row 3, has 22 expressions; row 12 is used by talk scripts):
+    # each row is read up to the start of the next row in memory, the rest is -1.
+    rows = [u32(0x0207CA28 + 4 * a) for a in range(13)]
+    starts = sorted(set(t for t in rows if t and valid(t)))
     port = b""
-    for a in range(12):
-        t = u32(0x0207CA28 + 4 * a)
-        port += b"".join(struct.pack("<i", s32(t + 4 * k) if t and valid(t) else -1) for k in range(16))
+    for a in range(13):
+        t = rows[a]
+        n = 0
+        if t and valid(t):
+            nxt = [x for x in starts if x > t]
+            n = min(24, (nxt[0] - t) // 4) if nxt else 24
+        port += b"".join(struct.pack("<i", s32(t + 4 * k) if k < n else -1) for k in range(24))
     o.sec("td_port", port)
     # td_frame: s32[16]  data_02076c20[i]
     o.sec("td_frame", b"".join(struct.pack("<i", s32(0x02076C20 + 4 * i)) for i in range(16)))

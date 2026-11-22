@@ -14,6 +14,8 @@ void ui_debug_gauge(s16 *target, s16 *shown, u32 *digits_rings, u32 *digits_time
 void ui_post_update(DcPlayer *p);
 
 int ui_exit_cleared(void);
+void ui_extra_pause_open(void);
+int ui_extra_pause_frame(const InputState *in);
 static int s_fail, s_pass;
 #define CHECK(c, ...)                                                    \
     do {                                                                 \
@@ -376,6 +378,57 @@ static void test_results(void) {
         frame(0, 0);
     printf("results skipped: exit after %d more frames\n", f);
     CHECK(f < 260, "skip length %d", f);
+}
+
+/* ClearDemoModel_* (the model main.c draws through ui_results_model) and the Blaze palette of
+ * ClearDemo_InitSprites (row 0 loaded from +0xcc: the palette of anim 0x32) */
+static void test_results_model(void) {
+    s32 pos[3], sc = 0, jnt = 0, vis = 0, fr = 0;
+    u16 ry = 0;
+    int f, shown = -1, blz = 0, blz_other = 0, i, n;
+    const UiQuad *q;
+    ui_stage_start(0, 0, 0);
+    run_until_timer(600);
+    ui_stage_exit(OBJ_EXIT_CLEAR_DEMO);
+    CHECK(!ui_results_model(pos, &sc, &ry, &jnt, &vis, &fr), "results model: hidden before ClearDemo_State_ShowModel");
+    for (f = 0; f < 3000 && ui_state() == UI_RESULTS; f++) {
+        frame(0, 0);
+        if (shown < 0 && ui_results_model(pos, &sc, &ry, &jnt, &vis, &fr)) {
+            shown = f;
+            CHECK(pos[0] == -0xa0000 && pos[1] == -0xc0000 && pos[2] == 0 && sc == 0x107fc && ry == 0x3000 &&
+                      jnt == 0x26 && vis == 2 && fr == 0,
+                  "results model start: pos %ld,%ld,%ld scale %#lx rot %#x anim %ld/%ld frame %ld", (long)pos[0],
+                  (long)pos[1], (long)pos[2], (long)sc, ry, (long)jnt, (long)vis, (long)fr);
+        }
+        if (f == 690) {
+            CHECK(ui_results_model(pos, &sc, &ry, &jnt, &vis, &fr) && pos[0] == 0xdc000 && pos[1] == -0x9f000 &&
+                      pos[2] == -0x19000 && fr > 0,
+                  "results model end: pos %ld,%ld,%ld frame %ld", (long)pos[0], (long)pos[1], (long)pos[2], (long)fr);
+        }
+    }
+    printf("results model: shown from frame %d\n", shown);
+    CHECK(shown > 0 && shown < 100, "results model shown at %d", shown);
+    /* boss act, Blaze: anim 0x49 / visibility 5, the row-0 sprites with the +0xcc palette */
+    ui_stage_start(0, 2, 1);
+    run_until_timer(600);
+    ui_stage_exit(OBJ_EXIT_CLEAR_DEMO);
+    for (f = 0; f < 3000 && ui_state() == UI_RESULTS; f++) {
+        frame(0, 0);
+        if (f == 600) {
+            CHECK(ui_results_model(pos, NULL, NULL, &jnt, &vis, NULL) && jnt == 0x49 && vis == 5 && pos[0] == 0xc3000,
+                  "Blaze boss results model anim %ld/%ld x %ld", (long)jnt, (long)vis, (long)pos[0]);
+            n = ui_debug_quads(&q);
+            for (i = 0; i < n; i++)
+                if (q[i].tex == UI_RES_CLDM) {
+                    if (q[i].variant == UI_VAR_MAP0 + 2)
+                        blz++;
+                    else
+                        blz_other++;
+                }
+        }
+    }
+    CHECK(blz > 0 && blz_other > 0, "Blaze results: %d row-0 sprites with the +0xcc palette, %d others", blz, blz_other);
+    printf("Blaze results: %d sprites recoloured, %d not\n", blz, blz_other);
 }
 
 static void test_gameover(void) {
@@ -768,6 +821,56 @@ static void test_hook_chain(void) {
     W.mode = 0;
 }
 
+/* the pause menu over the Extra boss (no stage): CONTINUE resumes, GO BACK reports the quit after
+ * the fade; a first attempt (stage new) shows no entries and START only closes it */
+static int extra_pause_run(u32 first, u32 second, int frames) {
+    InputState in;
+    int f, r = 0;
+    for (f = 0; f < frames && r == 0; f++) {
+        memset(&in, 0, sizeof(in));
+        if (f == 30)
+            in.pressed = first;
+        if (f == 32)
+            in.pressed = second;
+        if (f == 34 && second == IN_DOWN)
+            in.pressed = IN_JUMP;
+        r = ui_extra_pause_frame(&in);
+    }
+    return r;
+}
+static int stage_new_no(void *c) { (void)c; return 0; }
+static void test_extra_pause(void) {
+    int (*keep)(void *) = g_ui_hooks.stage_new;
+    int r, quads = 0, st0;
+    const UiQuad *q;
+    ui_stage_end();
+    W.mode = 0;
+    g_ui_hooks.stage_new = stage_new_no;   /* the extra story was cleared before */
+    st0 = ui_state();
+    ui_extra_pause_open();
+    {
+        InputState in;
+        int f;
+        memset(&in, 0, sizeof(in));
+        for (f = 0; f < 20; f++)
+            CHECK(ui_extra_pause_frame(&in) == 0, "extra pause open");
+        ui_draw_tr();
+        quads = ui_debug_quads(&q);
+    }
+    CHECK(quads >= 3, "extra pause drawn (%d quads)", quads);
+    r = extra_pause_run(IN_START, 0, 120);
+    CHECK(r == 1, "extra pause: START continues (%d)", r);
+    ui_extra_pause_open();
+    r = extra_pause_run(0, IN_DOWN, 300);
+    CHECK(r == 2, "extra pause: GO BACK quits after the fade (%d)", r);
+    CHECK(ui_state() == st0, "extra pause quit does not end a stage");
+    g_ui_hooks.stage_new = t_stage_new;   /* first attempt: no entries; DOWN + A cannot reach GO BACK */
+    ui_extra_pause_open();
+    r = extra_pause_run(0, IN_DOWN, 300);
+    CHECK(r == 1, "extra pause, first attempt: no GO BACK, A continues (%d)", r);
+    g_ui_hooks.stage_new = keep;
+}
+
 /* DemoPlay_Create: gGameState.unk10 = 3, unk18 |= 4 | 8 (start point): no title card,
  * the timer runs at once, the frame starts white; the blinking label */
 static void test_demo_stage(void) {
@@ -870,6 +973,7 @@ int main(int argc, char **argv) {
     test_score_popup();
     test_pause();
     test_results();
+    test_results_model();
     test_gameover();
     g_ui_hooks.voice = t_voice;
     g_ui_hooks.sfx = t_sfx2;
@@ -879,6 +983,7 @@ int main(int argc, char **argv) {
     test_time_attack();
     test_demo_stage();
     test_hook_chain();
+    test_extra_pause();
     ui_stage_end();   /* stage teardown: only ui_init's resources stay (VRAM baseline) */
     CHECK(!g_ui_res[UI_RES_TCBG].blob && !g_ui_res[UI_RES_CLDMBG].blob && !g_ui_res[UI_RES_NAVI].blob &&
               g_ui_res[UI_RES_MOJI].blob && g_ui_res[UI_RES_NAVIB].blob,

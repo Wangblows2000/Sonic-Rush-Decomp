@@ -223,9 +223,11 @@ static void test_player(const char *dir) {
               count_lines(pfx), demo ? demo[3 * id + 1] : 0);
         /* the scene timeline (PlayerDemo_Main: time++ then PlayerDemo_State_RunScript):
          * a command runs on frame F + max(t, 1) of its scene, F = the NextScene frame
-         * (0 for the first scene), and never before the previous command */
+         * (0 for the first scene), and never before the previous command.  A TalkDemo started
+         * by the script (StartTalkDemo) freezes PlayerDemo (System_Freeze) from the next frame
+         * to the frame its destructor runs: the later commands of the scene move by that much */
         {
-            int F = 0, prevf = 0;
+            int F = 0, prevf = 0, shift = 0;
             for (i = 0; i < ncmd; i++) {
                 const u8 *c = b + 0x14 + 16 * i;
                 int l, want, t = rd32(c + 4);
@@ -233,13 +235,25 @@ static void test_player(const char *dir) {
                 l = find_line(pfx, 0);
                 if (l < 0)
                     continue;
-                want = F + (t > 1 ? t : 1);
+                want = F + (t > 1 ? t : 1) + shift;
                 if (want < prevf)
                     want = prevf;
                 CHECK(g_line_frame[l] == want, "pdemo %d cmd %d frame %d want %d (t %d)", id, i, g_line_frame[l], want, t);
                 prevf = g_line_frame[l];
-                if (rd32(c + 8) == 15)
+                if (rd32(c + 8) == 15) {
                     F = g_line_frame[l];
+                    shift = 0;
+                }
+                if (strstr(cutscene_log_line(l), "StartTalkDemo")) {
+                    int k;
+                    for (k = l + 1; k < cutscene_log_count(); k++)
+                        if (!strncmp(cutscene_log_line(k), "talk ", 5) && strstr(cutscene_log_line(k), " end pages"))
+                            break;
+                    if (k < cutscene_log_count())
+                        shift += g_line_frame[k] - g_line_frame[l];
+                    else
+                        shift += 1 << 20;   /* the talk never ended: no later command may run */
+                }
             }
         }
         free(b);

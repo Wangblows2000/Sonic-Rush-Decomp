@@ -457,7 +457,8 @@ only; **not translated** = see section 6.
 
 ## 6. Gaps and assumptions (honest list)
 
-- **Not drawn**: the results model (the title card close-up is drawn, section 2). The title card palette lerps (StageTitleCard_LerpColor /
+- **Results model**: ClearDemoModel_* are translated and `ui_results_model()` gives the pose; main.c draws
+  it (`cutscene/patches/main_results_model.patch`, DEFECTS.md V3). The title card palette lerps (StageTitleCard_LerpColor /
   RestoreColors light and edge colours) are not applied to the BG art.
 - **Not translated**: time-attack tally (ClearDemoTA_*: time attack uses the
   score tally), CheckpointTimePopup / MarkerTimeList (time attack), VS results
@@ -499,8 +500,8 @@ only; **not translated** = see section 6.
   compiling) was left out and the previously compiled object files were linked.
 - **gGameLanguage order**: `data_0207b9bc` reads jpn, eng, fra, deu, ita, spa;
   the old comment in ui.h (deu at 2) was wrong and is fixed.
-- The Blaze palette reload of the results glyphs (ClearDemo_InitSprites) is
-  not done: Blaze's results use the BAC's own palette.
+- The Blaze palette reload of the results glyphs (ClearDemo_InitSprites: +0xcc into row 0) is done as a
+  bank swap (`ui_pal_swap`, DEFECTS.md V4).
 - Lives on a new game: `gSaveData.unkE/unk66` come from the save file. The
   save-file default was not traced. `save_lives` defaults to 3 (assumption).
 - `StoryProgress_IsStageNew()` lives in the menus module (`mn_story.c`).

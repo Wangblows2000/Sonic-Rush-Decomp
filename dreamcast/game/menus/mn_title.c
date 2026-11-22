@@ -4,6 +4,7 @@
  * screen starts. Same states, timers and constants; DS display setup replaced
  * by the native layer state (mn_core.c).
  */
+#include <stdio.h>
 #include <stdlib.h>
 #include "mn_internal.h"
 
@@ -545,12 +546,16 @@ static void TitleScreen_State_StartPressed(void) {
  * Then PostStaffRoll_CreateFadeTask(arg): a 16-frame fade, then arg 0 (after the
  * staff roll) PostStaffRoll_State_GoToSegaLogo (0xb4 frames, SEGA logo), arg 1
  * (TitleScreen_GoToUnlockNotice) the title menu.
- * The message box text art is not converted: a dark screen stands for it and
+ * The message box frame (MsgBox BG) is not translated: the box's message, the
+ * caution_d_<lang> text of MsgBox 0x14 / 0x15 (data_02074ca8 file 6, data_02074c04
+ * anim 0 / 1: "... IS NOW AVAILABLE."), is drawn at its place on a black screen, and
  * A/START closes it early (the DS box closes on its own). */
 typedef struct {
     s32 timer;
     s32 which;   /* 0 player select page, 1 sound test, 2 fade, 3 SEGA logo wait */
     s32 arg;     /* 0: then the SEGA logo, 1: then the title menu */
+    MnRes *res;  /* act2/caution/caution_d_<lang>.bac (MsgBox file 6) */
+    MnSpr spr;
 } UnlockWork;
 
 static BOOL unlock_story_done(void) { return gSaveData.unkC >= 0x1a || gSaveData.unk64 >= 0x1c; }
@@ -563,13 +568,18 @@ static void unlock_next(UnlockWork *w, s32 from) {
     w->timer = 0;
     if (from <= 0 && unlock_notice_due(0)) {
         w->which = 0;
+        if (w->res)
+            AnimatorSprite_Init(&w->spr, w->res, 0, 0, 0);   /* MsgBox_Create(0x14, ...) */
         return;
     }
     if (from <= 1 && unlock_notice_due(1)) {
         w->which = 1;
+        if (w->res)
+            AnimatorSprite_Init(&w->spr, w->res, 1, 0, 0);   /* MsgBox_Create(0x15, ...) */
         return;
     }
-    w->which = 2;   /* PostStaffRoll_CreateFadeTask */
+    w->which = 2;   /* PostStaffRoll_CreateFadeTask (the message's resource goes with the task: this
+                     * frame's quad list still draws from it) */
 }
 
 static void PostStaffRoll_State_UnlockNotice(void) {
@@ -607,7 +617,14 @@ static void PostStaffRoll_State_UnlockNotice(void) {
     if (w->timer == 0x28)
         SysSound_PlaySE(0x16);
     w->timer++;
-    BRIGHT_MAIN = BRIGHT_SUB = -8;
+    BRIGHT_MAIN = BRIGHT_SUB = 0;
+    if (w->res) {
+        /* the message at the sprite's own offset (origin -30,-71: DS (30,71)-(228,89)) */
+        w->spr.x = 0;
+        w->spr.y = 0;
+        AnimatorSprite_ProcessAnimation(&w->spr, 0, 0);
+        AnimatorSprite_Draw(&w->spr);
+    }
     if (w->timer >= 0xf0 || (w->timer > 0x28 && (gPad.trg & (PAD_A | PAD_START)))) {
         if (w->which == 0) {
             SaveData_UnlockPlayerSelectPage();
@@ -621,14 +638,29 @@ static void PostStaffRoll_State_UnlockNotice(void) {
     }
 }
 
+static void PostStaffRoll_UnlockDestructor(void) {
+    UnlockWork *w = TASK_WORK(UnlockWork);
+    mn_res_free(w->res);
+    w->res = NULL;
+}
+
 static void PostStaffRoll_ShowUnlockNotices(s32 arg) {
     UnlockWork *w;
+    static const char *const lang[6] = {"jpn", "eng", "fra", "deu", "ita", "spa"};   /* data_0207a80c */
+    char path[48];
     mn_display_reset();
     mn_comp_reset(0);
+    mn_comp_full(0);
     g_mn_comp.fill = 0xff000000;
     g_mn_scene = "UnlockNotice";
-    w = (UnlockWork *)Task_Create(PostStaffRoll_State_UnlockNotice, NULL, 0, 0x1000, 0, sizeof(UnlockWork))->work;
+    w = (UnlockWork *)Task_Create(PostStaffRoll_State_UnlockNotice, PostStaffRoll_UnlockDestructor, 0, 0x1000, 0,
+                                  sizeof(UnlockWork))->work;
     w->arg = arg;
+    w->res = NULL;
+    if (unlock_notice_due(0) || unlock_notice_due(1)) {
+        snprintf(path, sizeof(path), "act2/caution/caution_d_%s.bac", lang[mn_lang()]);
+        w->res = mn_res_load(path);
+    }
     unlock_next(w, 0);
     gSaveDataBusy = 0;
 }

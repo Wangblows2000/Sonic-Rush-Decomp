@@ -121,6 +121,16 @@ int ui_titlecard_player_draw(s32 *speed, s32 eye[3], s32 at[3], s32 *x, s32 *y, 
 #define UI_TC_GAP 2000.0f
 #define UI_TC_MODEL_Z0 400.0f
 #define UI_TC_MODEL_Z1 1900.0f
+/* ClearDemo_DrawModel (act / boss results): 1 while the results show the player's model.
+ * pos = translation (DS screen px, 20.12, y up), scale (fx32), rot_y (DS angle), jnt / vis =
+ * animation indices into the player's joint (son.dca) / visibility (son.dcv) sets, frame = fx32
+ * frame (clamp to the last frame: the animations do not loop).  Camera: LookAt (128, -134.4,
+ * 96 cot 0x1555) -> (128, -96, 0), up (0, 1, 0), perspective half-fovy 0x1555, aspect 4:3, near 1,
+ * far 2048.  Lights (BGR555, DS vectors): 0x6f7b (0, -0x4a0, -0xf40), 0x2108 (0xec7, -0x600, 0),
+ * 0x2108 (0, 0x620, 0xec7).  Depth band (UI_TC_MODEL_Z0, UI_TC_MODEL_Z1): above the results
+ * background, below the tally sprites (ui_draw_tr moves the results layer up by UI_TC_GAP while
+ * this returns 1). */
+int ui_results_model(s32 pos[3], s32 *scale, u16 *rot_y, s32 *jnt, s32 *vis, s32 *frame);
 
 /* ----------------------------------------------------- event hooks */
 /* ScorePopup_Create(obj, n) + data_022c4590.unk4 += n (enemy kill, trick, ...).

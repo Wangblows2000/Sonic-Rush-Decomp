@@ -70,9 +70,14 @@ typedef struct CdBg {        /* 0x000 */
     u8 win_x2;               /* gDisplayMain.unk10: window 0 right edge */
     u8 win_on;               /* gDisplayMain.unk1C: window 0 enabled */
 } CdBg;
-typedef struct CdModel {     /* 0x010: timing only */
+typedef struct CdModel {     /* 0x010: ClearDemoModel_* (the model itself is drawn by main.c, ui_results_model) */
     void (*fn)(CdWork *w, struct CdModel *o);
     s16 unk158, t;
+    s32 unk118;              /* model animation speed: 0 during the delay, then 0x1000 */
+    s32 unk13c;              /* scale (x = y = z) */
+    s32 unk148[3];           /* translation, DS screen px (20.12, y up) */
+    u16 unk154;              /* rotation Y */
+    s32 frame;               /* joint / visibility animation frame (fx32, Model_Animate) */
 } CdModel;
 
 struct CdWork {
@@ -96,6 +101,35 @@ struct CdWork {
 static CdWork s_cd;
 
 int ClearDemo_IsActive(void) { return s_cd.active; }
+
+/* ClearDemo_DrawModel / ClearDemo_InitModel inputs: the player's model (Model_SetResource of the
+ * character's model) posed with joint animation jnt and visibility animation vis of the player's
+ * sets at frame (fx32, frames past the end hold the last one: Model_SetAnimation flags 0), scaled
+ * by scale (fx32), rotated by RotY(rot_y), at pos (DS screen px, 20.12, y up), under the ClearDemo
+ * camera: LookAt (128, -134.4, 96 cot 30deg) -> (128, -96, 0), perspective half-fovy 0x1555,
+ * aspect 4:3, near 1, far 2048 (the stage camera).  Lights: ClearDemo_Create. */
+int ui_results_model(s32 pos[3], s32 *scale, u16 *rot_y, s32 *jnt, s32 *vis, s32 *frame) {
+    const CdWork *w = &s_cd;
+    int boss = !UI_NORMAL_STAGE();
+    if (!w->active || !(w->flags & 2) || (w->flags & 0x80000000u))
+        return 0;
+    if (pos) {
+        pos[0] = w->obj10.unk148[0];
+        pos[1] = w->obj10.unk148[1];
+        pos[2] = w->obj10.unk148[2];
+    }
+    if (scale)
+        *scale = w->obj10.unk13c;
+    if (rot_y)
+        *rot_y = w->obj10.unk154;
+    if (jnt)
+        *jnt = G.character == 0 ? (boss ? 0x27 : 0x26) : (boss ? 0x49 : 0x48);
+    if (vis)
+        *vis = G.character == 0 ? 2 : (boss ? 5 : 1);
+    if (frame)
+        *frame = w->obj10.frame;
+    return 1;
+}
 void ClearDemo_Destroy(void) {
     if (s_cd.active)
         ui_cdbg_free();
@@ -103,6 +137,7 @@ void ClearDemo_Destroy(void) {
         ui_res_free(UI_RES_CLDM_TA);   /* ClearDemo_Destructor: unk398 */
     s_cd.ta_res = 0;
     s_cd.active = 0;
+    ui_pal_swap(-1, 0, 0);
 }
 
 static void cd_sfx(s32 arc, s32 id) {
@@ -961,12 +996,20 @@ static void ClearDemoBg_Skip(CdWork *s) {
 
 static void ClearDemoModel_State_Done(CdWork *s, CdModel *o) { (void)o; s->flags |= 0x80; }
 static void ClearDemoModel_State_Move(CdWork *w, CdModel *o) {
-    s32 idx = G.character > 1 ? 0 : (s32)G.character;
+    s32 idx = G.character > 1 ? 0 : (s32)G.character, i;
+    const s32 *e = g_ui_data.cd_model[idx];
     (void)w;
-    if (!UI_NORMAL_STAGE())
-        o->t += (s16)g_ui_data.cd_model[idx][0x28 / 4];
-    else
-        o->t += (s16)g_ui_data.cd_model[idx][0x20 / 4];
+    /* from (+0x00) to toA (+0x3C, boss) / toB (+0x2C), 4 lerp steps (Lerp_02046a54) */
+    if (!UI_NORMAL_STAGE()) {
+        o->t += (s16)e[0x28 / 4];
+        for (i = 0; i < 3; i++)
+            o->unk148[i] = UiLerpN(e[i], e[0x3c / 4 + i], o->t, 3);
+    } else {
+        o->t += (s16)e[0x20 / 4];
+        for (i = 0; i < 3; i++)
+            o->unk148[i] = UiLerpN(e[i], e[0x2c / 4 + i], o->t, 3);
+    }
+    o->unk154 = (u16)(UiLerpN(e[0x18 / 4] << 12, e[0x38 / 4] << 12, o->t, 2) >> 12);
     if (o->t >= 0x1000) {
         o->t = 0x1000;
         o->fn = ClearDemoModel_State_Done;
@@ -977,21 +1020,39 @@ static void ClearDemoModel_State_Delay(CdWork *a, CdModel *s) {
     s->unk158--;
     if (s->unk158 <= 0) {
         s->fn = ClearDemoModel_State_Move;
-        s->t = 0;
+        s->unk118 = 0x1000;
     }
 }
 static void ClearDemoModel_State_Init(CdWork *o, CdModel *s) {
     s32 idx = G.character > 1 ? 0 : (s32)G.character;
     u32 d = (u32)g_ui_data.cd_model[idx][0x4c / 4];
+    const s32 *e = g_ui_data.cd_model[idx];
     o->flags &= ~0x80u;
     o->flags |= 2;
+    /* data_02073478.. scale (+0x0C), data_0207346c.. position (+0x00), data_02073484 rotation (+0x18) */
+    s->unk13c = e[0x0c / 4];
+    s->unk148[0] = e[0];
+    s->unk148[1] = e[1];
+    s->unk148[2] = e[2];
+    s->unk154 = (u16)e[0x18 / 4];
+    s->unk118 = 0;
+    s->frame = 0;
     /* data_020734b8 / data_020734ba: s16 delay at +0x4C (normal) / +0x4E (boss) */
     s->unk158 = (s16)(UI_NORMAL_STAGE() ? (d & 0xffff) : (d >> 16));
     s->t = 0;
     s->fn = ClearDemoModel_State_Delay;
 }
 static void ClearDemoModel_Skip(CdWork *o) {
+    s32 idx = G.character > 1 ? 0 : (s32)G.character, i;
+    const s32 *e = g_ui_data.cd_model[idx];
     o->flags |= 0xa2;
+    /* the end position (toA boss / toB), rotation +0x38, the animations at their last frame */
+    o->obj10.unk13c = e[0x0c / 4];
+    for (i = 0; i < 3; i++)
+        o->obj10.unk148[i] = e[(UI_NORMAL_STAGE() ? 0x2c : 0x3c) / 4 + i];
+    o->obj10.unk154 = (u16)e[0x38 / 4];
+    o->obj10.frame = 0x7fffffff;
+    o->obj10.unk118 = 0x1000;
     o->obj10.fn = ClearDemoModel_State_Done;
 }
 
@@ -1125,6 +1186,23 @@ void ClearDemo_Create(void) {
     }
     for (i = 0; i < 0x33; i++)
         UiSpr_Init(&w->spr[i], UI_RES_CLDM, (u16)i, UI_SPR_LOOP);
+    /* ClearDemo_InitSprites, Blaze (gGameState.unk0 == 1): the palette at +0xcc of the BAC's
+     * palette block (the one anim 0x32 uses) is loaded into OBJ row data_02073404[0] instead of
+     * the one at +4, so every sprite of row 0 (header / bar / clear text, anims 0..0x12, 0x22,
+     * 0x27) is drawn in Blaze's colours: on the converted page, the palette of anim 0's image
+     * swapped for the palette of anim 0x32's image */
+    ui_pal_swap(-1, 0, 0);
+    if (G.character == 1) {
+        const UiRes *r = &g_ui_res[UI_RES_CLDM];
+        if (r->pal.blob && r->n_anims > 0x32) {
+            int i0 = r->frames[r->anims[0].first].image, i50 = r->frames[r->anims[0x32].first].image;
+            if (i0 < r->pal.n_images && i50 < r->pal.n_images && r->pal.image_pal[i0] != SPRPAL_NONE &&
+                r->pal.image_pal[i50] != SPRPAL_NONE) {
+                ui_palmap_set_pal(2, UI_RES_CLDM, r->pal.image_pal[i0], r->pal.image_pal[i50]);
+                ui_pal_swap(UI_RES_CLDM, r->pal.image_pal[i0], UI_VAR_MAP0 + 2);
+            }
+        }
+    }
     /* unk398 = File_Load(data_02079240 "/act/dm_cldm_tatk.bac") + ClearDemoTA_InitSprites */
     if (W.mode == 2 && g_ui_data.ta_ok && ui_res_load(UI_RES_CLDM_TA, "act__dm_cldm_tatk") == 0) {
         w->ta_res = 1;
@@ -1183,6 +1261,8 @@ void ClearDemo_Main(const InputState *in) {
         }
         if (w->flags & 1)
             ClearDemoName_Draw(w);
+        if ((w->flags & 2) && w->obj10.frame <= 0x7fffffff - 0x1000)
+            w->obj10.frame += w->obj10.unk118;   /* ClearDemo_DrawModel: Model_Animate (main.c draws) */
         if (w->flags & 4)
             ClearDemoActText_Draw(w);
         if (w->flags & 0x40000)
