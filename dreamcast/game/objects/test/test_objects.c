@@ -83,9 +83,35 @@ static void ev_add(const char *ev) {
     }
 }
 static int g_quiet_ev; /* do not print these (camera bounds, decorations) unless -v */
+static s32 g_spring_b, g_spring_n; /* last "spring" event: the Spring_OnHit velocity */
+static s32 g_ring_a, g_ring_b;     /* last "dash_ring" event: type, direction */
+static int g_rail_panels;          /* "dash_panel" events of type 0x5c */
+/* player sound cues (g_dcp_hooks.sfx / sfx_stop), with the frame they were raised in */
+static struct { int frame, ch, id; } g_sfx[64];
+static int g_nsfx;
+static void (*g_prev_sfx)(void *, DcPlayer *, s32, s32);
+static void hk_sfx(void *ctx, DcPlayer *p, s32 ch, s32 id) {
+    if (g_prev_sfx)
+        g_prev_sfx(ctx, p, ch, id);
+    if (g_nsfx < 64)
+        g_sfx[g_nsfx].frame = g_frame, g_sfx[g_nsfx].ch = ch, g_sfx[g_nsfx].id = id, g_nsfx++;
+}
+static void (*g_prev_stop)(void *, DcPlayer *, s32);
+static void hk_sfx_stop(void *ctx, DcPlayer *p, s32 ch) {
+    if (g_prev_stop)
+        g_prev_stop(ctx, p, ch);
+    if (g_nsfx < 64)
+        g_sfx[g_nsfx].frame = g_frame, g_sfx[g_nsfx].ch = ch, g_sfx[g_nsfx].id = -1, g_nsfx++;
+}
 static void hk_log(void *ctx, const char *ev, s32 a, s32 b) {
     (void)ctx;
     ev_add(ev);
+    if (!strcmp(ev, "spring"))
+        g_spring_b = b, g_spring_n++;
+    if (!strcmp(ev, "dash_ring"))
+        g_ring_a = a, g_ring_b = b;
+    if (!strcmp(ev, "dash_panel") && a == 0x5c)
+        g_rail_panels++;
     if (g_verbose < 2 && (!strcmp(ev, "camera_bounds") || !strcmp(ev, "bird_fly") || !strcmp(ev, "leaf_burst") ||
                           !strcmp(ev, "freed_animal") || !strcmp(ev, "eggpawn_m_child") || g_quiet_ev))
         return;
@@ -138,10 +164,11 @@ static void frame(u16 held) {
     g_frame++;
 }
 
+static u8 g_chara; /* CHARA=1: Blaze */
 static void place_player(s32 x, s32 y) {
     s16 rings = P.rings;
     memset(&P, 0, sizeof(P));
-    dcp_player_create(&P, 0, 0, x, y);
+    dcp_player_create(&P, g_chara, 0, x, y);
     P.rings = rings;
     camera_follow(1);
     objects_respawn_view();
@@ -870,7 +897,9 @@ static int count_boost_fx(u16 anim) {
 static void test_player_fx(void) {
     const rlvl_object_t *ps = find_obj(0x72, 0);
     ObjPlayerCtx *pc;
-    int n, aura = 0, burst = 0, hs = 0, dust = 0, def_ok = 0, semi = 1, boost_frames = 0;
+    int n, aura = 0, burst = 0, hs = 0, dust = 0, def_ok = 0, semi = 1, boost_frames = 0, boost_f0 = 0;
+    int trail_max = 0, trail_a[3] = { 0, 0, 0 }, trail_after = -1;
+    u16 trail_col = 0;
     Obj *q;
     printf("[player fx] Player_StartBoost / _UpdateBoost / _StartHighSpeed effects, boost hurt-box defence\n");
     if (ps == NULL)
@@ -881,9 +910,22 @@ static void test_player_fx(void) {
     for (n = 0; n < 20; n++)
         frame(0);
     P.tension = 0x12c0;
+    g_nsfx = 0;
     for (n = 0; n < 50; n++) {
         frame((u16)(DCP_KEY_RIGHT | (n >= 10 ? DCP_KEY_X : 0)));
         if (P.pf & 0x80) {
+            ObjTrailQuad tq[24];
+            int nq = objects_trail_quads(tq, 24), k;
+            if (boost_frames == 0)
+                boost_f0 = g_frame - 1; /* (frame() counts up at its end) */
+            if (nq > trail_max)
+                trail_max = nq;
+            if (nq == 10) {
+                trail_a[0] = tq[0].alpha, trail_a[2] = tq[9].alpha, trail_col = tq[0].bgr555;
+                for (k = 0; k < nq; k++)
+                    if (tq[k].alpha > trail_a[1])
+                        trail_a[1] = tq[k].alpha;
+            }
             boost_frames++;
             aura += count_boost_fx(4) > 0;
             burst += count_boost_fx(5) > 0;
@@ -897,6 +939,25 @@ static void test_player_fx(void) {
                 semi = 0;
     }
     /* (Player_StartBoost sets pf 0x80 before Player_StartHighSpeed, so no EffHighSpeedStart then) */
+    printf("  boost cues: ");
+    for (n = 0; n < g_nsfx; n++)
+        printf("f%d ch%d %s%x  ", g_sfx[n].frame - boost_f0, g_sfx[n].ch, g_sfx[n].id < 0 ? "stop" : "", g_sfx[n].id < 0 ? 0 : g_sfx[n].id);
+    printf("\n");
+    {
+        /* Player_StartBoost: Sound_PlaySeqArcEx(@384, 0, 0xa), NNS_SndPlayerStopSeq(@38C) in the frame
+         * pf 0x80 is set (Blaze: 0x17) */
+        int voice = 0, stop = 0;
+        for (n = 0; n < g_nsfx; n++) {
+            voice |= g_sfx[n].frame == boost_f0 && g_sfx[n].ch == DCP_CH_VOICE && g_sfx[n].id == (P.chara != 1 ? 0xa : 0x17);
+            stop |= g_sfx[n].frame == boost_f0 && g_sfx[n].ch == DCP_CH_BOOST && g_sfx[n].id < 0;
+        }
+        CHECK(voice && stop, "boost start: voice 0x%x and the boost channel stop in the frame the boost starts",
+              P.chara != 1 ? 0xa : 0x17);
+    }
+    printf("  EffTrail: %d segments at most, head alpha %d, peak %d, tail %d, colour %04x\n", trail_max, trail_a[0],
+           trail_a[1], trail_a[2], trail_col);
+    CHECK(trail_max == 10 && trail_a[0] == 6 && trail_a[1] == 0x12 && trail_a[2] >= 1 && trail_col == 0x7ca5,
+          "EffTrail: 10 segments while boosting, alpha 6 -> 0x12 -> 1, colour 0x7ca5");
     printf("  boosting %d frames: aura on %d, burst on %d, high-speed start on %d, hurt box def&5 on %d\n", boost_frames, aura,
            burst, hs, def_ok);
     CHECK(boost_frames > 30 && aura == boost_frames, "EffBoostAura follows the whole boost (%d of %d)", aura, boost_frames);
@@ -906,6 +967,13 @@ static void test_player_fx(void) {
     for (n = 0; n < 4; n++)
         frame(DCP_KEY_RIGHT);
     CHECK(!(P.pf & 0x80) && count_boost_fx(4) == 0, "releasing boost ends the aura (EffBoost_State_FollowPlayer)");
+    /* EffTrail_State_Follow: one segment less a frame once the boost ends */
+    for (n = 0; n < 14 && trail_after != 0; n++) {
+        ObjTrailQuad tq[24];
+        trail_after = objects_trail_quads(tq, 24);
+        frame(DCP_KEY_RIGHT);
+    }
+    CHECK(trail_after == 0 && n >= 6 && n <= 12, "EffTrail shrinks away after the boost (%d frames)", n);
     CHECK(pc == NULL || pc->body.def == 2, "Player_StopBoost restores the hurt box (def %x)", pc ? pc->body.def : 0);
     /* high-speed mode without boost: dust puffs every 8 frames (EffBoost_Create) */
     for (n = 0; n < 60; n++) {
@@ -914,6 +982,67 @@ static void test_player_fx(void) {
     }
     printf("  high-speed run after the boost: dust on %d of 60 frames (pf 0x100 %d)\n", dust, (P.pf & 0x100) != 0);
     CHECK(!(P.pf & 0x100) || dust > 0, "EffBoost dust puffs in high-speed mode");
+}
+/* Blaze's flames (ac_eff_boost.bac anim 2): EffBlazeRunFlame (running past run_thr[1], every 4
+ * frames), EffBlazeSpinFlame (jump anim 0x30 / rolling, every 8, circling her), EffBlazeBoostFlame
+ * (boosting, every 4); no EffTrail for Blaze */
+static int count_flames(int *spin) {
+    Obj *q;
+    int n = 0;
+    *spin = 0;
+    for (q = g_obj.head; q; q = q->next)
+        if (q->used && q->has_spr && !(q->h.obj_flags & 4) && q->spr.res == &g_obj.res[OBJ_BAC_EFF_BOOST] && q->spr.anim == 2) {
+            n++;
+            *spin += q->ppar == &P;
+        }
+    return n;
+}
+static void test_blaze_flames(void) {
+    const rlvl_object_t *ps = find_obj(0x72, 0);
+    int n, run = 0, jump = 0, spin = 0, sp, boost = 0, trail = 0, made = 0, prev = 0, c;
+    u8 ch = g_chara;
+    if (ps == NULL)
+        return;
+    printf("[blaze fx] EffBlazeRunFlame / EffBlazeSpinFlame / EffBlazeBoostFlame\n");
+    g_chara = 1;
+    place_on_floor(ps->x, ps->y);
+    g_dcp_world.flags |= 1;
+    for (n = 0; n < 10; n++)
+        frame(0);
+    for (n = 0; n < 90; n++) { /* run up past run_thr[1] */
+        frame(DCP_KEY_RIGHT);
+        c = count_flames(&sp);
+        if (c > prev && DCP_ABS(P.gnd_vel) > P.run_thr[1] && (P.move_flags & 1))
+            run++;
+        prev = c;
+    }
+    for (n = 0; n < 40; n++) { /* jump: anim 0x30 */
+        frame((u16)(DCP_KEY_RIGHT | (n < 10 ? DCP_KEY_A : 0)));
+        c = count_flames(&sp);
+        if (P.anim == 0x30 && sp > 0)
+            jump++;
+        spin = sp > spin ? sp : spin;
+    }
+    P.tension = 0x12c0;
+    for (n = 0; n < 40; n++) {
+        ObjTrailQuad tq[4];
+        frame((u16)(DCP_KEY_RIGHT | DCP_KEY_X));
+        c = count_flames(&sp);
+        if ((P.pf & 0x80) && c > prev)
+            boost++;
+        prev = c;
+        trail += objects_trail_quads(tq, 4);
+    }
+    made = run + boost;
+    printf("  run flames created on %d frames, spin flames following her on %d jump frames (max %d), boost flames on %d "
+           "frames, trail quads %d\n", run, jump, spin, boost, trail);
+    CHECK(run >= 5 && run <= 25, "EffBlazeRunFlame every 4 frames while running fast (%d)", run);
+    CHECK(jump > 0, "EffBlazeSpinFlame circles Blaze while she jumps");
+    CHECK(boost >= 5, "EffBlazeBoostFlame while boosting (%d)", boost);
+    CHECK(trail == 0, "no EffTrail for Blaze (Player_StartBoost: unk324 == 0 only)");
+    (void)made;
+    g_chara = ch;
+    place_on_floor(ps->x, ps->y);
 }
 /* Leaf Storm act 1, first loop (x 5380..5700): the MapObj40 0x41 / 0x42 layer switches take the
  * player in on layer A and out on layer B, from a standing start on layer B */
@@ -935,6 +1064,282 @@ static void test_loop(void) {
     }
     printf("  frames on the loop ceiling %d, max x %d, layer %d\n", top, maxx, (int)(P.obj_flags & 1));
     CHECK(top > 0 && maxx > 5900, "the player runs around the loop and leaves it to the right");
+}
+
+/* ------------------------------------------------------------ audit against the original
+ * Exact values from src/game/Objects (Spring_OnHit, DashP_OnHit, Needle via Player_OnHurt)
+ * and src/game/Player (Player_Action_Launch, _DashPanel, _OnHurt, Player_In). */
+static Obj *live_near(u16 type, s32 x, s32 y) {
+    Obj *q, *best = NULL;
+    s32 bd = 0x7fffffff, d;
+    for (q = g_obj.head; q; q = q->next)
+        if (q->used && q->prm && !q->is_dec && q->prm->type == type && !(q->h.obj_flags & 4)) {
+            d = DCP_ABS((q->h.x >> 8) - x) + DCP_ABS((q->h.y >> 8) - y);
+            if (d < bd) {
+                bd = d;
+                best = q;
+            }
+        }
+    return bd < 64 ? best : NULL;
+}
+static void test_audit(void) {
+    const ObjStats *st = objects_stats();
+    const rlvl_header_t *h = (const rlvl_header_t *)g_level;
+    u32 i, c;
+    int n, nspring = 0, spring_ok = 0, ndash = 0, dash_ok = 0;
+    u32 h0;
+    printf("[audit] springs / dash panels / needles / item boxes / markers against the original formulas\n");
+    for (i = 0; i < h->num_objects; i++) {
+        const rlvl_object_t *e = &((const rlvl_object_t *)rlvl_section(g_level, RLVL_SEC_OBJECTS, NULL))[i];
+        Obj *o;
+        s16 vx, vy;
+        u16 id = e->type;
+        int ok;
+        if (!((id >= 0x43 && id <= 0x4c) || id == 0x5f || id == 0x60 || id == 0x61 || id == 0x62))
+            continue;
+        if ((id >= 0x43 && id <= 0x4c) ? nspring >= 24 : ndash >= 12)
+            continue;
+        /* stand the player next to it, let it spawn, then put him on its centre in the air */
+        place_player(e->x, e->y - 48);
+        P.move_flags |= 0x10;
+        for (n = 0; n < 2; n++)
+            frame(0);
+        o = live_near(id, e->x, e->y);
+        if (o == NULL)
+            continue;
+        if (id >= 0x43 && id <= 0x4c) {
+            /* Spring_OnHit: v = -0x780 - p6 * 0x180; up/down 0x43/0x44: vx = 0; side 0x45/0x46: vy = 0;
+             * diagonal 0x47..0x4c: both * 0xb5 >> 8; 5C & 2 flips vy, 5C & 1 flips vx */
+            vx = (s16)(-0x780 - o->prm->p6 * 0x180);
+            vy = vx;
+            if (id <= 0x44)
+                vx = 0;
+            else if (id <= 0x46)
+                vy = 0;
+            if (id >= 0x47) {
+                vx = (s16)((vx * 0xb5) >> 8);
+                vy = (s16)((vy * 0xb5) >> 8);
+            }
+            if (o->h.disp_flags & 2)
+                vy = (s16)-vy;
+            if (o->h.disp_flags & 1)
+                vx = (s16)-vx;
+            c = st->springs;
+            h0 = st->hurts;
+            {
+                /* on the centre of its hit box (diagonal springs: the box sits beside the origin; ObjRect
+                 * flags 1/2 mirror it, ObjRect_HandleCollider) */
+                const ObjBox *bx = &o->coll[0];
+                s32 cx = (bx->flags & 1) ? -(bx->l + bx->r) / 2 : (bx->l + bx->r) / 2;
+                s32 cy = (bx->flags & 2) ? -(bx->t + bx->b) / 2 : (bx->t + bx->b) / 2;
+                place_player((o->h.x >> 8) + cx, (o->h.y >> 8) + cy);
+                for (n = 0; n < 30 && st->springs == c; n++)
+                    frame(0);
+                if (st->springs == c) {
+                    /* pushed out of the box by the slope it stands on: drop onto it from above */
+                    place_player((o->h.x >> 8) + cx, (o->h.y >> 8) + cy - 24);
+                    P.move_flags |= 0x10;
+                }
+            }
+            P.gnd_vel = 0;
+            /* the boxes registered this frame are checked at the start of the next (Stage_Main) */
+            for (n = 0; n < 30 && st->springs == c; n++)
+                frame(0);
+            nspring++;
+            /* (zone 4: Spring_OnHit calls Player_Action_SpringLaunchAlt = Player_Action_Launch + sound 0x72,
+             * the same expectations) */
+            /* Player_Action_Launch: vel = (vx, vy) (vx == 0: gnd * cos = 0), anim 0x16 / 0x13,
+             * pf |= 3, airborne, dash timer 0x40 for sideways launches, facing from vx */
+            {
+                s16 gx = P.vel_x, gy = P.vel_y, ga = P.anim;
+                u32 gpf = P.pf, gmf = P.move_flags;
+                /* the velocity Spring_OnHit passed to Player_Action_SpringLaunch (logged by spring_on_hit) */
+                s16 hx = (s16)(g_spring_b & 0xffff), hy = (s16)(g_spring_b >> 16);
+                int onhit = hx == vx && hy == vy;
+                /* the player task runs after the launch in the same frame: Player_ApplyAirInput with no
+                 * direction held clamps vel_x to +-top (side springs), StageObj_Move adds gravity once;
+                 * a side spring sets y to its own + 2 px, so the floor collision lands him in that frame and
+                 * Player_ApplyGroundInput clamps the same way */
+                /* under water (pf 0x4000000) Player_Action_Launch keeps 3/4 of both components */
+                if (gpf & 0x4000000) {
+                    vx = (s16)((vx >> 1) + (vx >> 2));
+                    vy = (s16)((vy >> 1) + (vy >> 2));
+                }
+                s16 mx = (gpf & 0x80) ? P.boost_top : (gpf & 0x100) ? P.hs_top : P.top;
+                s16 wx = vx > mx ? mx : vx < -mx ? (s16)-mx : vx;
+                /* landed in the same frame (diagonal-down springs over a floor): Player_Action_LandOnGround
+                 * took the velocity, so only the OnHit values and the single launch are compared */
+                int landed = ((gmf & 1) && vy > 0) || st->hurts != h0; /* (or hurt by spikes beside it) */
+                ok = onhit && st->springs == c + 1 && (landed || gx == wx) && (landed || vy == 0 || gy == (s16)(vy + P.gravity)) &&
+                     (landed || ga == (vx != 0 ? 0x16 : gy > 0x40 ? 0x14 : 0x13)) && (landed || (gpf & 3) == 3) &&
+                     (landed || (gmf & 0x10)) && (landed || vy == 0 || !(gmf & 1)) && (vx == 0 || P.dash_timer >= 0x3f) &&
+                     (vx == 0 || ((P.disp_flags & 1) != 0) == (vx < 0));
+                for (n = 0; n < 4; n++)
+                    frame(0);
+                ok = ok && st->springs == c + 1; /* one launch per contact */
+                spring_ok += ok;
+                if (!ok)
+                    printf("  spring 0x%02x at (%d,%d) p6 %d df %x: vel %d,%d (want %d,%d + gravity) anim %x pf %x mf %x springs +%u\n",
+                           id, e->x, e->y, o->prm->p6, o->h.disp_flags, gx, gy, vx, vy, ga, gpf, gmf, st->springs - c);
+            }
+        } else {
+            /* DashP_OnHit: 0x5c..0x60 x = +-top by 5C & 1, 0x61/0x62 y = -+top by 5C & 2; only for a grounded
+             * player (0x5c: grinding, anim 0x1a..0x20); Player_Action_DashPanel: dash timer 0x80 */
+            const ObjBox *bx = &o->coll[0];
+            s32 cx = (o->h.x >> 8) + ((bx->flags & 1) ? -(bx->l + bx->r) / 2 : (bx->l + bx->r) / 2);
+            s32 cy = (o->h.y >> 8) + ((bx->flags & 2) ? -(bx->t + bx->b) / 2 : (bx->t + bx->b) / 2);
+            u8 ang = id == 0x60 ? 0x80 : id == 0x61 ? 0xc0 : id == 0x62 ? 0x40 : 0;
+            s16 want = (id == 0x61 || id == 0x62) ? ((o->h.disp_flags & 2) ? P.top : (s16)-P.top)
+                                                   : ((o->h.disp_flags & 1) ? (s16)-P.top : P.top);
+            s16 gnd = 0;
+            int air_hits;
+            /* airborne contact: no boost */
+            c = st->dash_panels;
+            place_player(cx, cy);
+            for (n = 0; n < 4; n++) {
+                P.x = cx << 8, P.y = cy << 8, P.vel_x = P.vel_y = P.gnd_vel = 0;
+                P.move_flags = (P.move_flags & ~1u) | 0x10;
+                frame(0);
+            }
+            air_hits = (int)(st->dash_panels - c);
+            if (ang == 0) {
+                /* floor: stand on it */
+                place_on_floor(cx, o->h.y >> 8);
+                for (n = 0; n < 30 && st->dash_panels == c; n++) {
+                    frame(0);
+                    gnd = P.gnd_vel;
+                }
+            }
+            /* wall / ceiling: grounded contact on its surface (the flag is read when the boxes are checked,
+             * next frame) */
+            for (n = 0; n < 8 && st->dash_panels == c; n++) {
+                P.x = cx << 8, P.y = cy << 8, P.vel_x = P.vel_y = P.gnd_vel = 0;
+                P.move_flags = (P.move_flags | 1) & ~0x10u;
+                P.angle = ang;
+                frame(0);
+                gnd = P.gnd_vel;
+            }
+            ndash++;
+            /* (walls: placed inside the wall, the push-out sets move_flags 4 and Player_Last clears the
+             * timer in the same frame; only the activation is checked there) */
+            ok = air_hits == 0 && st->dash_panels == c + 1 && (P.dash_timer >= 0x7e || id == 0x61 || id == 0x62);
+            /* the dash sets gnd (floor, ceiling) / gnd from y (walls); the ground task then moves with it */
+            if (ok && ang == 0)
+                ok = gnd == want || P.vel_x == want;
+            dash_ok += ok;
+            if (!ok)
+                printf("  dash panel 0x%02x at (%d,%d) df %x: gnd %d vel %d (want %d) timer %d panels +%u airborne +%d\n", id, e->x,
+                       e->y, o->h.disp_flags, gnd, P.vel_x, want, P.dash_timer, st->dash_panels - c, air_hits);
+        }
+    }
+    printf("  springs: %d of %d exact; dash panels: %d of %d\n", spring_ok, nspring, dash_ok, ndash);
+    CHECK(nspring == 0 || W.zone == 3 || spring_ok == nspring, "every spring launches with the Spring_OnHit velocity, pose and flags, once");
+    CHECK(dash_ok == ndash, "every dash panel sets the dash timer and +-top speed");
+    /* Needle: Player_OnHurt once, invulnerability invuln_len frames with the blink, no second hit on the
+     * spikes meanwhile, hurt box back to def 2 afterwards (Player_In) */
+    {
+        const rlvl_object_t *nd = find_obj(0x4d, 0);
+        if (nd != NULL) {
+            ObjPlayerCtx *pc;
+            int hurts0 = (int)st->hurts, blink = 0, inv0;
+            place_player(nd->x, nd->y - 40);
+            P.rings = 5;
+            for (n = 0; n < 2; n++)
+                frame(0);
+            for (n = 0; n < 40 && (int)st->hurts == hurts0; n++)
+                frame(0);
+            inv0 = P.invuln;
+            pc = obj_player_ctx(&P);
+            printf("  needle 0x4d at (%d,%d): hurt after %d frames, vel %d,%d, invuln %d, state hurt %d, rings %d\n", nd->x, nd->y,
+                   n, P.vel_x, P.vel_y, inv0, P.state == dcp_state_hurt, P.rings);
+            CHECK((int)st->hurts == hurts0 + 1 && P.state == dcp_state_hurt && P.rings == 0 && P.vel_y == -0x300 &&
+                      DCP_ABS(P.vel_x) == 0x180,
+                  "needle: Player_OnHurt knockback (+-0x180, -0x300), rings scattered");
+            CHECK(inv0 >= P.invuln_len - 2 && pc && (pc->body.def & 5) == 5, "needle: invulnerability %d of %d frames", inv0,
+                  P.invuln_len);
+            for (n = 0; n < inv0 - 1; n++) {
+                frame(0);
+                blink += (P.disp_flags & 0x20) != 0;
+            }
+            CHECK((int)st->hurts == hurts0 + 1, "needle: no second hit while invulnerable (%d hits)", (int)st->hurts - hurts0);
+            P.x -= 0x4000; /* step off the spikes for the recovery check */
+            for (n = 0; n < 4; n++)
+                frame(0);
+            CHECK(blink > 40 && !(P.disp_flags & 0x20) && pc && (P.invuln != 0 || pc->body.def == 2),
+                  "needle: blink during invulnerability (%d frames), hurt box back to def 2 (%x)", blink, pc ? pc->body.def : 0);
+        }
+    }
+    /* item boxes: ItemBox_OnHit on contact (no respawn invulnerability), once, ItemBox_GiveItem by p6;
+     * markers: Marker_OnHit once, respawn point (x, y - (box_b + 1)), tension +800 */
+    {
+        int nb = 0, nb_ok = 0, nm = 0, nm_ok = 0, k, ok;
+        for (k = 0; k < 2; k++) {
+            for (i = 0; i < h->num_objects && (k ? nm : nb) < 4; i++) {
+                const rlvl_object_t *e = &((const rlvl_object_t *)rlvl_section(g_level, RLVL_SEC_OBJECTS, NULL))[i];
+                Obj *o;
+                const ObjBox *bx;
+                s32 cx, cy;
+                s16 r0;
+                if (k == 0 ? e->type != 0x30 : (e->type != 0x6e || (e->flags & 0xff) <= g_obj_stage.check_idx))
+                    continue;
+                place_player(e->x, e->y - 64);
+                P.move_flags |= 0x10;
+                frame(0);
+                o = live_near(e->type, e->x, e->y);
+                if (o == NULL || (o->h.obj_flags & 2))
+                    continue;
+                bx = &o->coll[0];
+                cx = (o->h.x >> 8) + ((bx->flags & 1) ? -(bx->l + bx->r) / 2 : (bx->l + bx->r) / 2);
+                cy = (o->h.y >> 8) + ((bx->flags & 2) ? -(bx->t + bx->b) / 2 : (bx->t + bx->b) / 2);
+                c = k ? st->checkpoints : st->item_boxes;
+                place_player(cx, cy);
+                P.move_flags |= 0x10;
+                r0 = P.rings;
+                for (n = 0; n < 30 && (k ? st->checkpoints : st->item_boxes) == c; n++) {
+                    if (n == 15) {
+                        place_player(cx, cy - 24);
+                        P.move_flags |= 0x10;
+                    }
+                    frame(0);
+                }
+                if (k == 0) {
+                    int p6 = (int)(s8)o->prm->p6, dr = P.rings - r0;
+                    int give = p6 == 1 ? dr == 5 : 1, t;
+                    if (p6 == 0) /* data_ov000_02366b44[Rand() & 7] */
+                        for (give = 0, t = 0; t < 8; t++)
+                            give |= dr == g_obj.data.itembox_rings[t];
+                    for (n = 0; n < 20; n++) {
+                        P.x = cx << 8, P.y = cy << 8;
+                        frame(0);
+                    }
+                    nb++;
+                    ok = st->item_boxes == c + 1 && give;
+                    nb_ok += ok;
+                    if (!ok)
+                        printf("  item box at (%d,%d) p6 %d: broken %u, rings +%d\n", e->x, e->y, p6, st->item_boxes - c, dr);
+                } else {
+                    s32 wy = (o->h.y >> 8) - (s8)(P.box_b + 1);
+                    if (o->h.disp_flags & 2)
+                        wy = (o->h.y >> 8) + (s8)(P.box_b + 1);
+                    nm++;
+                    ok = st->checkpoints == c + 1 && g_dcp_world.check_x == (o->h.x >> 8) && g_dcp_world.check_y == wy &&
+                         g_obj_stage.check_idx == (u8)(e->flags & 0xff);
+                    for (n = 0; n < 20; n++) {
+                        P.x = cx << 8, P.y = cy << 8;
+                        frame(0);
+                    }
+                    ok = ok && st->checkpoints == c + 1;
+                    nm_ok += ok;
+                    if (!ok)
+                        printf("  marker at (%d,%d): passed %u, respawn %d,%d (want %d,%d)\n", e->x, e->y, st->checkpoints - c,
+                               g_dcp_world.check_x, g_dcp_world.check_y, o->h.x >> 8, wy);
+                }
+            }
+        }
+        printf("  item boxes: %d of %d; markers: %d of %d\n", nb_ok, nb, nm_ok, nm);
+        CHECK(nb_ok == nb, "every item box breaks once on contact and gives its item");
+        CHECK(nm_ok == nm, "every marker passes once and sets the respawn point");
+    }
 }
 
 static void test_respawn(void) {
@@ -961,6 +1366,412 @@ static void test_respawn(void) {
            h->num_rings, st->spawned - sp0, st->live);
     CHECK(st->spawned > sp0, "objects respawn when the view comes back");
     CHECK(placed <= collected + OBJ_RING_MAX, "despawned rings were released");
+}
+
+static int ev_n(const char *name) {
+    int i;
+    for (i = 0; i < NEV && g_ev[i].name[0]; i++)
+        if (!strcmp(g_ev[i].name, name))
+            return g_ev[i].n;
+    return 0;
+}
+/* the centre of an object's coll[0] box in world pixels (ObjRect flags 1/2 mirror it) */
+static void box_centre(const Obj *o, s32 *cx, s32 *cy) {
+    const ObjBox *bx = &o->coll[0];
+    *cx = (o->h.x >> 8) + ((bx->flags & 1) ? -(bx->l + bx->r) / 2 : (bx->l + bx->r) / 2);
+    *cy = (o->h.y >> 8) + ((bx->flags & 2) ? -(bx->t + bx->b) / 2 : (bx->t + bx->b) / 2);
+}
+/* spawn the nth object of a type; NULL when absent or not spawned */
+static Obj *spawn_nth(u16 type, int nth, const rlvl_object_t **pe) {
+    const rlvl_object_t *e = find_obj(type, nth);
+    Obj *o;
+    if (e == NULL)
+        return NULL;
+    place_player(e->x, e->y - 64);
+    P.move_flags |= 0x10;
+    frame(0);
+    o = live_near(type, e->x, e->y);
+    if (pe)
+        *pe = e;
+    return o && !(o->h.obj_flags & 2) ? o : NULL;
+}
+/* hold the player on (cx, cy) for up to n frames with the given ground speed and ground/air flag
+ * (the boxes are checked at the start of the next frame, with the flags as they are then); returns
+ * the frames until the event counter moved, or -1 */
+static int hold_contact(s32 cx, s32 cy, s16 gnd, int grounded, int n, const char *ev) {
+    int k, e0 = ev_n(ev);
+    for (k = 0; k < n; k++) {
+        P.x = cx << 8, P.y = cy << 8;
+        P.gnd_vel = gnd, P.vel_x = gnd, P.vel_y = 0;
+        if (grounded)
+            P.move_flags = (P.move_flags | 1) & ~0x10u;
+        else
+            P.move_flags = (P.move_flags & ~1u) | 0x10;
+        frame(0);
+        if (ev_n(ev) != e0)
+            return k + 1;
+    }
+    return -1;
+}
+
+/* the rest of item C, class by class: dash rings, trampolines, goal ring, corkscrews, ropes,
+ * breakable rocks and walls, enemies */
+static void test_audit_classes(void) {
+    int i, n, k, tot, good;
+    printf("[audit] dash rings / trampolines / goal / corkscrews / ropes / rocks / walls / enemies\n");
+    /* DashC_OnHit: v = (cos, sin)(dir << 13) * 0x800 >> 12; Player_Action_DashRing: position = ring,
+     * Player_Action_GimmickLaunch (anim 0x18, or 0x13 for vx == 0; Player_State_InAir turns them into
+     * 0x19 / 0x14 in the same frame when falling faster than 0x1c0 / 0x40), gravity off (move_flags 0x80),
+     * dash timer 0x1e; DashCT (u2A0 & 1): Player_StartLaunchTrick (anim 0x38) */
+    {
+        static const u16 types[] = { 0x63, 0x64, 0x65, 0x66, 0x6a, 0x6b, 0x6c, 0x6d };
+        tot = good = 0;
+        for (i = 0; i < 8; i++)
+            for (k = 0; k < 3; k++) {
+                Obj *o = spawn_nth(types[i], k, NULL);
+                s32 cx, cy;
+                s16 vx, vy;
+                u16 ang;
+                int c0, ok;
+                if (o == NULL)
+                    continue;
+                ang = (u16)((u8)o->u2A4 << 13);
+                vx = (s16)((dcp_cos(ang) * 0x800) >> 12);
+                vy = (s16)((dcp_sin(ang) * 0x800) >> 12);
+                box_centre(o, &cx, &cy);
+                /* (the first frame can still see the box registered at the spawn position: hold until
+                 * this ring fired) */
+                for (n = -1, c0 = 0; c0 < 4; c0++) {
+                    g_ring_a = -1;
+                    n = hold_contact(cx, cy, 0, 0, 20, "dash_ring");
+                    if (n > 0 && g_ring_a == types[i] && g_ring_b == o->u2A4)
+                        break;
+                }
+                c0 = (int)objects_stats()->dash_rings - 1;
+                if (P.pf & 0x4000000) {
+                    vx = (s16)((vx >> 1) + (vx >> 2));
+                    vy = (s16)((vy >> 1) + (vy >> 2));
+                }
+                tot++;
+                /* (the player task has run once: gravity stays off, ApplyAirInput does not clamp 0x800) */
+                ok = n > 0 && (int)objects_stats()->dash_rings > c0 && P.vel_x == vx && P.vel_y == vy &&
+                     !(P.move_flags & 0x80) && P.dash_timer >= 0x1c && P.dash_timer <= 0x1e &&
+                     P.anim == ((o->u2A0 & 1) ? 0x38 : vx != 0 ? (vy > 0x1c0 ? 0x19 : 0x18) : (vy > 0x40 ? 0x14 : 0x13));
+                good += ok;
+                if (!ok)
+                    printf("  dash ring 0x%02x dir %d at (%d,%d): n %d vel %d,%d (want %d,%d) anim %x timer %d mf %x\n", types[i],
+                           (int)o->u2A4, o->h.x >> 8, o->h.y >> 8, n, P.vel_x, P.vel_y, vx, vy, P.anim, P.dash_timer, P.move_flags);
+            }
+        printf("  dash rings: %d of %d exact\n", good, tot);
+        CHECK(good == tot, "every dash ring launches with the DashC_OnHit velocity and Player_Action_DashRing state");
+    }
+    /* rail dash panels (0x5c): DashP_OnHit only while grinding (anim 0x1a..0x20), direction by 5C & 1
+     * (from flags & 1), Player_Action_DashPanel (airborne branch keeps the larger vel_x) */
+    tot = good = 0;
+    for (k = 0; k < 4; k++) {
+        Obj *o = spawn_nth(0x5c, k, NULL);
+        s32 cx, cy;
+        int walk, grind, e0, ok, g0;
+        s16 want;
+        if (o == NULL)
+            continue;
+        box_centre(o, &cx, &cy);
+        want = (o->h.disp_flags & 1) ? (s16)-P.top : P.top;
+        /* in the air over it (fall anim): no boost; standing on the rail: Player_CheckStartGrind
+         * starts the grind (anim 0x1a) and the panel fires */
+        e0 = g_rail_panels;
+        place_player(cx, cy);
+        P.move_flags |= 0x10;
+        frame(0);
+        for (n = 0, walk = -1; n < 4 && walk < 0; n++) {
+            P.x = cx << 8, P.y = cy << 8, P.gnd_vel = P.vel_x = P.vel_y = 0;
+            frame(0);
+            if (g_rail_panels != e0)
+                walk = n + 1;
+        }
+        /* (the rail is on layer A or B, or behind a MapObj40 0x59 rail-layer override 1..3) */
+        g0 = ev_n("grind");
+        for (grind = -1, n = 0; n < 5 && grind < 0; n++) {
+            int f;
+            place_player(cx, (o->h.y >> 8) - 20);
+            P.move_flags |= 0x10;
+            if (n == 1)
+                P.obj_flags |= 1;
+            else if (n >= 2)
+                P.layer_ovr = (u8)(n - 1), P.layer_set = 2;
+            for (f = 0; f < 30 && grind < 0; f++) {
+                frame(0);
+                if (g_rail_panels != e0)
+                    grind = f + 1;
+            }
+        }
+        if (grind < 0 && ev_n("grind") == g0) {
+            printf("  rail dash panel at (%d,%d): no grind rail under it on layers A/B or rail layers 1..3 (skipped)\n",
+                   o->h.x >> 8, o->h.y >> 8);
+            continue;
+        }
+        tot++;
+        ok = walk < 0 && grind > 0 && P.dash_timer >= 0x7e && (P.gnd_vel == want || P.vel_x == want);
+        good += ok;
+        if (!ok)
+            printf("  rail dash panel at (%d,%d) df %x: walking %d grinding %d gnd %d vel %d (want %d) timer %d; player (%d,%d) anim %x mf %x\n",
+                   o->h.x >> 8, o->h.y >> 8, o->h.disp_flags, walk, grind, P.gnd_vel, P.vel_x, want, P.dash_timer, P.x >> 8,
+                   P.y >> 8, P.anim, P.move_flags);
+    }
+    if (tot)
+        printf("  rail dash panels: %d of %d\n", good, tot);
+    CHECK(good == tot, "rail dash panels boost a grinding player only, +-top by their direction");
+    /* Trampoline_OnHit: v = -(my + my/8 + my/16) clamped to -0xc00..-0x780 from the fall (move_y),
+     * Player_Action_SpringLaunch(0, v) */
+    tot = good = 0;
+    for (k = 0; k < 4; k++) {
+        Obj *o = spawn_nth(0x55, k, NULL);
+        s32 cx, cy;
+        s16 my = 0, v;
+        int e0, ok;
+        if (o == NULL)
+            continue;
+        box_centre(o, &cx, &cy);
+        place_player(cx, cy - 40);
+        P.move_flags |= 0x10;
+        P.vel_y = (s16)(0x400 + k * 0x200);
+        e0 = ev_n("trampoline");
+        for (n = 0; n < 30 && ev_n("trampoline") == e0; n++) {
+            my = P.move_y;
+            frame(0);
+        }
+        v = (s16)-(my + (my >> 3) + (my >> 4));
+        v = v < -0xc00 ? -0xc00 : v > -0x780 ? -0x780 : v;
+        tot++;
+        ok = ev_n("trampoline") == e0 + 1 && P.vel_y == (s16)(v + P.gravity) && (P.anim == 0x13 || P.anim == 0x14);
+        good += ok;
+        if (!ok)
+            printf("  trampoline at (%d,%d): fired %d, fall %d, vel_y %d (want %d + gravity) anim %x\n", o->h.x >> 8, o->h.y >> 8,
+                   ev_n("trampoline") - e0, my, P.vel_y, v, P.anim);
+    }
+    if (tot)
+        printf("  trampolines: %d of %d exact\n", good, tot);
+    CHECK(good == tot, "every trampoline launches with the Trampoline_OnHit velocity from the fall speed");
+    /* GoalRing_OnHit: once (obj_flags 2 after the first hit) */
+    {
+        Obj *o = spawn_nth(0x71, 0, NULL);
+        if (o != NULL) {
+            s32 cx, cy;
+            int g0 = g_goal_hook;
+            box_centre(o, &cx, &cy);
+            n = hold_contact(cx, cy, 0, 0, 20, "goal");
+            for (k = 0; k < 20; k++) {
+                P.x = cx << 8, P.y = cy << 8;
+                frame(0);
+            }
+            printf("  goal ring at (%d,%d): goal after %d frames, hooks %d\n", o->h.x >> 8, o->h.y >> 8, n, g_goal_hook - g0);
+            CHECK(n > 0 && g_goal_hook == g0 + 1 && (o->h.obj_flags & 2), "goal ring: GoalRing_OnHit once");
+        }
+    }
+    /* CorkscrewTrigger_OnHit: gnd_vel >= run_thr[2] in its direction (flags 1: leftwards); flags 0x80:
+     * grinding only (not here) */
+    tot = good = 0;
+    for (i = 0; i < 2; i++)
+        for (k = 0; k < 3; k++) {
+            const rlvl_object_t *e;
+            Obj *o = spawn_nth((u16)(0x68 + i), k, &e);
+            s32 cx, cy;
+            s16 lim;
+            int slow, fast, ok;
+            if (o == NULL || (o->prm->flags & 0x80))
+                continue;
+            box_centre(o, &cx, &cy);
+            lim = (s16)((o->prm->flags & 1) ? -P.run_thr[2] : P.run_thr[2]);
+            slow = hold_contact(cx, cy, (s16)(lim - ((o->prm->flags & 1) ? -0x40 : 0x40)), 1, 6, "corkscrew");
+            place_player(cx, cy);
+            fast = hold_contact(cx, cy, lim, 1, 6, "corkscrew");
+            tot++;
+            ok = slow < 0 && fast > 0;
+            good += ok;
+            if (!ok)
+                printf("  corkscrew 0x%02x at (%d,%d) flags %x: below the run threshold %d, at it %d\n", 0x68 + i, e->x, e->y,
+                       o->prm->flags, slow, fast);
+        }
+    if (tot)
+        printf("  corkscrews: %d of %d\n", good, tot);
+    CHECK(good == tot, "corkscrews start at run_thr[2] in their direction only");
+    /* Rope_OnHit: grounded, |gnd_vel| >= run_thr[2], one rider */
+    tot = good = 0;
+    for (k = 0; k < 3; k++) {
+        Obj *o = spawn_nth(0x58, k, NULL);
+        s32 cx, cy;
+        int slow, air, fast, ok;
+        if (o == NULL)
+            continue;
+        cx = o->coll[0].x + ((o->coll[0].l + o->coll[0].r) >> 1);
+        cy = o->coll[0].y + ((o->coll[0].t + o->coll[0].b) >> 1);
+        slow = hold_contact(cx, cy, (s16)(P.run_thr[2] - 0x40), 1, 4, "rope");
+        air = hold_contact(cx, cy, P.run_thr[2], 0, 4, "rope");
+        place_player(cx, cy);
+        fast = hold_contact(cx, cy, P.run_thr[2], 1, 4, "rope");
+        tot++;
+        ok = slow < 0 && air < 0 && fast > 0 && o->target == &P && P.anim == 0x24;
+        good += ok;
+        if (!ok)
+            printf("  rope at (%d,%d): slow %d air %d fast %d target %d anim %x\n", o->h.x >> 8, o->h.y >> 8, slow, air, fast,
+                   o->target == &P, P.anim);
+    }
+    if (tot)
+        printf("  ropes: %d of %d\n", good, tot);
+    CHECK(good == tot, "ropes catch a grounded player at run_thr[2] or faster, not slower, not in the air");
+    /* RockBreak_OnHit: airborne only, Player_Action_AttackBounce (vel_y -0x300) */
+    tot = good = 0;
+    for (k = 0; k < 3; k++) {
+        Obj *o = spawn_nth(0x6f, k, NULL);
+        s32 cx, cy;
+        int gnd, air, ok;
+        if (o == NULL)
+            continue;
+        box_centre(o, &cx, &cy);
+        /* (the rock is solid; its box reaches 6 px above the solid part, which the son.bac standing box
+         * does, but only grounded, and the fall box (-16..4) does not; the jump (ball) box does: stand
+         * on it, then jump on the spot) */
+        {
+            s32 e0 = ev_n("rock_break");
+            place_player(cx, (o->h.y >> 8) + o->cmap.oy - 20);
+            for (n = 0, gnd = -1; n < 30 && gnd < 0; n++) {
+                frame(0);
+                if (ev_n("rock_break") != e0)
+                    gnd = n + 1;
+            }
+            for (n = 0, air = -1; n < 90 && air < 0; n++) {
+                frame((u16)(n < 4 ? DCP_KEY_A : 0));
+                if (ev_n("rock_break") != e0)
+                    air = n + 1;
+            }
+        }
+        tot++;
+        ok = gnd < 0 && air > 0 && P.vel_y == (s16)(-0x300 + P.gravity) && (o->h.obj_flags & 2);
+        good += ok;
+        if (!ok)
+            printf("  rock at (%d,%d): grounded %d airborne %d vel_y %d anim %x\n", o->h.x >> 8, o->h.y >> 8, gnd, air, P.vel_y, P.anim);
+    }
+    if (tot)
+        printf("  rocks: %d of %d\n", good, tot);
+    CHECK(good == tot, "rocks break from the air only, with the AttackBounce (-0x300)");
+    /* WallBreak_OnHit: mode (flags & 3) 0 any speed, 1 > run_thr[2], 2 > run_thr[4]; hit-stop 4 */
+    tot = good = 0;
+    for (k = 0; k < 4; k++) {
+        Obj *o = spawn_nth(0x77, k, NULL);
+        s32 cx, cy;
+        int mode, slow = -1, fast = -1, ok;
+        s16 lim;
+        if (o == NULL)
+            continue;
+        mode = o->prm->flags & 3;
+        lim = mode == 1 ? P.run_thr[2] : mode == 2 ? P.run_thr[4] : 0;
+        box_centre(o, &cx, &cy);
+        {
+            /* held on its box centre, or run into it on the floor from either side at a held ground speed
+             * (the solid ones push a placed player out): every way at the limit first, then above it */
+            int pass, way;
+            for (pass = 0; pass < 2; pass++)
+                for (way = 0; way < 3; way++) {
+                    /* (OnHit reads the speed after the previous frame's slope force: a margin of 0x40) */
+                    s16 v = pass == 0 ? (s16)(lim - 0x40) : (s16)(lim + 0x40);
+                    int e0 = ev_n("wall_break"), r = -1;
+                    if ((pass == 0 && mode == 0) || (pass == 1 && fast > 0))
+                        continue;
+                    if (way == 0) {
+                        r = hold_contact(cx, cy, v, 1, 4, "wall_break");
+                    } else {
+                        if (way == 2)
+                            v = (s16)-v;
+                        place_on_floor(way == 1 ? cx - 48 : cx + 48, o->h.y >> 8);
+                        for (n = 0; n < 40 && r < 0; n++) {
+                            P.gnd_vel = v;
+                            frame(0);
+                            if (ev_n("wall_break") != e0)
+                                r = n + 1;
+                        }
+                    }
+                    /* (a dash panel in the run-up gives vel_x = top, which WallBreak_OnHit also takes) */
+                    if (pass == 0 && r > 0 && DCP_ABS(P.vel_x) <= lim && DCP_ABS(P.gnd_vel) <= lim)
+                        slow = r;
+                    else if (pass == 0 && r > 0)
+                        fast = r;
+                    else if (pass == 1)
+                        fast = r;
+                }
+        }
+        tot++;
+        ok = slow < 0 && fast > 0 && P.hitstop >= 3;
+        good += ok;
+        if (!ok)
+            printf("  wall at (%d,%d) mode %d: at the limit %d above %d hitstop %d\n", o->h.x >> 8, o->h.y >> 8, mode, slow, fast, P.hitstop);
+    }
+    if (tot)
+        printf("  breakable walls: %d of %d\n", good, tot);
+    CHECK(good == tot, "breakable walls break above their WallBreak_OnHit speed only");
+    /* enemies: a jump (Player_Action_Jump, attack box) from above destroys the nearest live enemy of a
+     * placed pawn / flapper group and Player_Action_AttackBounce throws the player up */
+    {
+        static const u16 et[] = { 0x00, 0x01, 0x03, 0x07, 0x08, 0x09, 0x0a, 0x0d, 0x0e, 0x0f, 0x14, 0x15,
+                                  0x02, 0x04, 0x0b, 0x0c, 0x10, 0x11, 0x12 };
+        tot = good = 0;
+        for (i = 0; i < (int)(sizeof(et) / sizeof(et[0])) && tot < 6; i++)
+            for (k = 0; k < 2 && tot < 6; k++) {
+                const rlvl_object_t *e = find_obj(et[i], k);
+                const ObjStats *st = objects_stats();
+                Obj *q, *best = NULL;
+                s32 bd = 0x7fffffff, d, cx, cy;
+                u32 d0, h0;
+                int ok, bounced = 0, v0, b0;
+                if (e == NULL)
+                    continue;
+                place_player(e->x, e->y - 80);
+                P.move_flags |= 0x10;
+                P.invuln = 0;
+                for (n = 0; n < 3; n++)
+                    frame(0);
+                /* the enemy itself: the nearest live object with a hurt box (def 0xa) */
+                for (q = g_obj.head; q; q = q->next)
+                    if (q->used && !q->is_dec && (q->coll[0].def & 0xa) == 0xa && (q->coll[0].flags & 4)) {
+                        d = DCP_ABS((q->h.x >> 8) - e->x) + DCP_ABS((q->h.y >> 8) - e->y);
+                        if (d < bd)
+                            bd = d, best = q;
+                    }
+                if (best == NULL || bd > 96)
+                    continue;
+                /* (drop-in pawns, p9 != 0, wait for their enemy-room trigger) */
+                if (best->prm && best->prm->p9 != 0 && (et[i] == 0 || et[i] == 0x14 || et[i] == 0x15))
+                    continue;
+                d0 = st->enemies_destroyed + st->knock_aways;
+                h0 = st->hurts;
+                v0 = best->vitality;
+                b0 = ev_n("pawn_bounce");
+                for (n = 0; n < 60 && st->enemies_destroyed + st->knock_aways == d0 && st->hurts == h0; n++) {
+                    if (n % 20 == 0) {
+                        box_centre(best, &cx, &cy);
+                        place_player(cx, cy - 36);
+                        dcp_act_jump(&P);
+                        P.vel_x = 0, P.vel_y = 0x300;
+                    }
+                    frame(0);
+                    bounced |= P.vel_y < 0;
+                }
+                (void)bounced;
+                tot++;
+                /* destroyed (Player_Action_AttackBounce when still airborne at the hit), or a hit taken by
+                 * a two-hit enemy (Egg Hammer, vitality 2), or the Rhino's back spring
+                 * (EnemyPawnGroup_OnHit_Box2_Bounce) */
+                ok = st->hurts == h0 && ((st->enemies_destroyed + st->knock_aways > d0) || ev_n("pawn_bounce") != b0 ||
+                                         (best->used && best->vitality < v0));
+                good += ok;
+                if (!ok)
+                    printf("  enemy 0x%02x at (%d,%d) (obj kind %d at %d,%d): destroyed %u hurt %u vel_y %d\n", et[i], e->x, e->y,
+                           best->kind, best->h.x >> 8, best->h.y >> 8, st->enemies_destroyed + st->knock_aways - d0, st->hurts - h0,
+                           P.vel_y);
+            }
+        if (tot)
+            printf("  enemies: %d of %d hit from a jump\n", good, tot);
+        CHECK(good == tot, "a jump onto an enemy hits it (destroyed, one of two hits, or the Rhino spring)");
+    }
 }
 
 int main(int argc, char **argv) {
@@ -1007,7 +1818,10 @@ int main(int argc, char **argv) {
     }
     g_dcp_world.check_x = sx;
     g_dcp_world.check_y = sy;
-    dcp_player_create(&P, 0, 0, sx, sy);
+    g_chara = getenv("CHARA") ? (u8)atoi(getenv("CHARA")) : 0;
+    dcp_player_create(&P, g_chara, 0, sx, sy);
+    g_prev_sfx = g_dcp_hooks.sfx, g_dcp_hooks.sfx = hk_sfx;
+    g_prev_stop = g_dcp_hooks.sfx_stop, g_dcp_hooks.sfx_stop = hk_sfx_stop;
     g_obj_hooks.log = hk_log;
     g_obj_hooks.goal = hk_goal;
     g_obj_hooks.stage_exit = hk_exit;
@@ -1032,6 +1846,14 @@ int main(int argc, char **argv) {
             return 1;
     }
     camera_follow(1);
+    if (getenv("AUDIT_ONLY")) {
+        /* make audit: the per-class audit on any stage, either character */
+        test_audit();
+        test_audit_classes();
+        printf("%d checks, %d failed\n", g_checks, g_fail);
+        objects_shutdown();
+        return g_fail ? 1 : 0;
+    }
     test_unit();
     test_run(getenv("RUNFRAMES") ? atoi(getenv("RUNFRAMES")) : 1500);
     test_targets();
@@ -1039,6 +1861,9 @@ int main(int argc, char **argv) {
     test_sweep();
     test_respawn();
     test_player_fx();
+    test_blaze_flames();
+    test_audit();
+    test_audit_classes();
     test_loop();
     printf("%d checks, %d failed\n", g_checks, g_fail);
     objects_shutdown();

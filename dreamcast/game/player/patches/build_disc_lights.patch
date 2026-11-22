@@ -1,0 +1,11 @@
+--- a/dreamcast/game/build_disc.sh	2026-11-22 14:34:35.547914245 +0000
++++ b/dreamcast/game/build_disc.sh	2026-11-22 15:08:22.616147758 +0000
+@@ -21,7 +21,7 @@
+ # ball models (Model_SetResource 1) and the four Player_SetAnimation tables (player/tools/extract_physics.py)
+ cp "$M/mod__son__son_ball.dcm" "$OUT/disc/player/son_ball.dcm"
+ cp "$M/mod__blz__blz_spin.dcm" "$OUT/disc/player/blz_spin.dcm"
+-cp "$ROOT/build/dreamcast/player/animtab.bin" "$OUT/disc/player/"
++cp "$ROOT/build/dreamcast/player/animtab.bin" "$ROOT/build/dreamcast/player/lights.bin" "$OUT/disc/player/"
+ # Player_SetAnimation model-animation table (ov000 0x02368bdc, 0x68 bytes) from YOUR ROM
+ python3 -c "import sys;d=open(sys.argv[1],'rb').read();o=0x02368bdc-0x022C5C80;open(sys.argv[2],'wb').write(d[o:o+0x68])" \
+     "$ROOT/extract/eur/arm9_overlays/ov000.bin" "$OUT/disc/player/animmap.bin"

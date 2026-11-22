@@ -13,6 +13,10 @@ Writes build/dreamcast/player/:
                bytes: joint animation, model resource 0 body / 1 ball,
                visibility animation, son.bac sprite animation), copied from
                the owner's overlay; read by dcp_model.c.
+  lights.bin   the stage light colours data_02074960 (arm9): u16 BGR555
+               [9 zones][3 acts][3 lights], 162 bytes (Player_Draw /
+               Player_Last / StageTitleCard_State_RestoreColors set them with
+               NNS_G3dGlbLightColor); read by dcp_model.c.
 
 Usage: extract_physics.py [--extract extract/eur] [--out build/dreamcast/player]
 """
@@ -28,6 +32,8 @@ ARM9_BASE = 0x02000000
 PHYS_ADDR = 0x02368B7C
 SIN_ADDR = 0x0206E470
 ATAN_ADDR = 0x02072470
+LIGHTS_ADDR = 0x02074960
+N_LIGHT_ZONES = 9
 N_CHARS = 2
 FIELDS = ["acc", "top", "dec", "sd_base", "sd_add", "sd_max", "roll_dec", "hs_top",
           "boost_acc", "boost_top", "boost_dec", "hs_min", "slope_bonus", "p1a",
@@ -86,7 +92,14 @@ def main():
     if len(animtab) != 4 * 0x68 or any(b > 1 for b in animtab[0x68:0xd0]) or animtab[0x68 + 0x31] != 1:
         sys.exit("ov000.bin: Player_SetAnimation tables not found")
 
+    lights = arm9[LIGHTS_ADDR - ARM9_BASE:LIGHTS_ADDR - ARM9_BASE + N_LIGHT_ZONES * 3 * 3 * 2]
+    lv = struct.unpack("<%dH" % (N_LIGHT_ZONES * 9), lights)
+    # sanity: BGR555 values, light 0 of every act white (0x7fff) except the Extra Zone tints
+    if any(x & 0x8000 for x in lv) or lv[0] != 0x7fff or lv[1] != 0x4631 or lv[2] != 0x2108:
+        sys.exit("arm9.bin: stage light table data_02074960 not found")
+
     os.makedirs(a.out, exist_ok=True)
+    open(os.path.join(a.out, "lights.bin"), "wb").write(lights)
     open(os.path.join(a.out, "animtab.bin"), "wb").write(animtab)
     open(os.path.join(a.out, "physics.bin"), "wb").write(phys)
     open(os.path.join(a.out, "trig.bin"), "wb").write(struct.pack("<8192h", *sc) + struct.pack("<129h", *at))

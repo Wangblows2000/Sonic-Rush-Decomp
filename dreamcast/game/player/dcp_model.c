@@ -20,6 +20,9 @@ DcpModel g_dcp_model;
 #define H g_dcp_hooks
 #define W g_dcp_world
 
+static u16 s_lights[9][3][3]; /* lights.bin (data_02074960) */
+static int s_lights_ok;
+
 /* Player_Create: w->unk14C..154 = 0x34cc (model scale), w->unk18C = -0x10000
  * (Translate2 vector y, applied by Model_MatrixOp_RotateTranslate2Scale). */
 #define PM_SCALE (0x34cc / 4096.0f)
@@ -108,6 +111,13 @@ int dcp_model_load(DcpModel *m, int chara, const char *dir, int upload) {
             m->tab_res[i] = (u8)ball_anim;
             m->tab_vis[i] = ball_anim ? 0 : 1;
         }
+    }
+    free(t);
+    /* lights.bin: the stage light colours data_02074960 [zone][act][3] (absent: the common value) */
+    t = slurp(dir, "lights.bin", &n);
+    if (t && n >= sizeof(s_lights)) {
+        memcpy(s_lights, t, sizeof(s_lights));
+        s_lights_ok = 1;
     }
     free(t);
     m->speed = 0x1000;
@@ -380,20 +390,28 @@ void dcp_model_matrix_ext(const dcm_mtx_t *ext, dcm_mtx_t *out) {
     finish(ext, ext->m[3][0], ext->m[3][1], ext->m[3][2], out);
 }
 
+const u16 *dcp_model_stage_lights(int zone, int act) {
+    static const u16 common[3] = {0x7fff, 0x4631, 0x2108}; /* data_02074960 outside the Extra Zone acts */
+    if (!s_lights_ok || zone < 0 || zone >= 9 || act < 0 || act >= 3)
+        return common;
+    return s_lights[zone][act];
+}
+
 void dcp_model_lights(const DcPlayer *p, int ghost, dcm_lights_t *l) {
     static const u16 ghost_col[2] = {0x6182, 0x1a98};          /* Player_Draw (Sonic, Blaze) */
     static const u16 water_col[3] = {0x7ef5, 0x4548, 0x2040};  /* Player_Draw, pf & 0x4000000 */
+    const u16 *stage = dcp_model_stage_lights(W.zone, W.act);
     int i;
     /* flag 0x800 (Player_Create): facing left keeps the stage vectors, facing right mirrors x */
     dcm_lights_stage(l, (p->disp_flags & 0x800) ? (p->disp_flags & 1) : 0);
     for (i = 0; i < l->count && i < 3; i++) {
-        u16 c = 0;
+        /* NNS_G3dGlbLightColor: after-image colour (Player_Draw), under water (Player_Draw /
+         * Player_Last), else the stage's data_02074960[zone][act][i] */
+        u16 c = stage[i];
         if (ghost)
             c = ghost_col[p->chara == 1];
         else if (p->pf & 0x4000000)
             c = water_col[i];
-        else
-            continue;
         l->col[i][0] = (float)(c & 31) / 31.0f;
         l->col[i][1] = (float)((c >> 5) & 31) / 31.0f;
         l->col[i][2] = (float)((c >> 10) & 31) / 31.0f;

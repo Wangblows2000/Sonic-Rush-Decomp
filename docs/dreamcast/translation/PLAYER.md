@@ -719,7 +719,11 @@ blend, feet 16 px below the centre, slope pivot, a z11 run for both
 characters with no wrong facing and no per-frame restarts).
 
 Deviations: sampling uses the integer NNS frame (no interpolation, as the DS);
-the blend renormalises rows 0/1 and rebuilds row 2; the light colours of the
-zone table (data_02074960) are not used (white / half grey as before), only the
-after-image (0x6182 Sonic, 0x1a98 Blaze) and underwater colours are applied.
+the blend renormalises rows 0/1 and rebuilds row 2. Light colours: the stage
+table data_02074960 [9 zones][3 acts][3] (`tools/extract_physics.py` writes
+`lights.bin`; `dcp_model_stage_lights`), overridden by the after-image (0x6182
+Sonic, 0x1a98 Blaze) and underwater (0x7ef5 / 0x4548 / 0x2040) colours as in
+Player_Draw / Player_Last. Without lights.bin on the disc the common
+0x7fff / 0x4631 / 0x2108 is used. The title card's light fade-in
+(StageTitleCard_State_RestoreColors lerps from 0) is not applied.
 

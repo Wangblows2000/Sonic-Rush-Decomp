@@ -58,7 +58,7 @@ substantially rewritten or new.
 | `obj_draw.c` | KOS only: atlas upload and quad drawing with `render.h`; rot-scale quads, rope multi-draw, piece offsets |
 | `obj_fx.c` | NitroSDK MTX_Identity33_/RotX/Y/Z33_/Concat33/MultVec33, FX_DivS32, ObjShift_Set, ObjShift_SetFromRef |
 | `obj_effects2.c` | EffZakoBombPuff, EffFound (+ Effect_State_FollowParent), EffBrakeSmoke |
-| `obj_peffect.c` | player effects for `g_dcp_hooks.effect` (DCP_FX_*): EffBoost (+ _State_FollowPlayer), EffBoostAura, EffBoostBurst (+ mirrored second draw), EffHighSpeedStart, EffBlazeBoostFlame, EffBoostJet_Spawn, EffSpinSmoke1/2 (_Spawn), EffBrakeSmoke_Spawn |
+| `obj_peffect.c` | player effects for `g_dcp_hooks.effect` (DCP_FX_*): EffBoost (+ _State_FollowPlayer), EffBoostAura, EffBoostBurst (+ mirrored second draw), EffHighSpeedStart, EffBlazeBoostFlame / RunFlame / SpinFlame / TrickFlame, EffTrail (logic + `objects_trail_quads`), EffBoostJet_Spawn, EffSpinSmoke1/2 (_Spawn), EffBrakeSmoke_Spawn |
 | `obj_leafstorm.c` | Trampoline, BendStick, CorkscrewTrigger, RockBreak (+Part), RopeC (+Land, +Spring), EggPawnM (+ Enemy pop-on-contact) |
 | `obj_shared.c` | Rope, JumpPedestal, PlayerStart, WallBreak, IronBall (+Part), GmkSpecial, GmkLand, GmkLandAA, MapObj73, MapObj75, MapObj70, WaterLevelTrigger, camera mirror, ScreenShake, model views |
 | `obj_flapper.c` | EnemyFlapperGroup (types 2 and 4: hover / patrol) |
@@ -171,8 +171,21 @@ render_begin_list(PVR_LIST_PT_POLY); ...level layers...; objects_draw(); render_
   does. Sprites with AnimatorSprite flag 0x400 (OAM semi-transparent) are drawn
   only by `obj_draw(PVR_LIST_TR_POLY)` / `objects_draw_tr()` with vertex alpha
   0xa0; main.c must call it inside the TR list (player/patches/main.c.patch).
-  Not translated: EffTrail (Sonic's boost ribbon), the Blaze run / spin / jump /
-  trick flames (DCP_FX_BLAZE_FLAME a = 0..3), the 3D variants of boss acts.
+  DCP_FX_BLAZE_FLAME: a = 0 EffBlazeRunFlame_Spawn (Player_State_GroundMove),
+  1 / 2 EffBlazeSpinFlame_Spawn (Player_State_Roll, Player_State_InAir anim
+  0x30; the flame circles her, radius w8 + 0x18 a frame, angle wC - 0x600,
+  offset accumulated in h.px / h.py, OAM priority 2 behind / 1 in front),
+  3 EffBlazeTrickFlame_Create(w, b = flame count), 4 EffBlazeBoostFlame_Create;
+  all ac_eff_boost.bac anim 2, semi-transparent.
+  DCP_FX_TRAIL (Player_StartBoost, Sonic only): EffTrail_Create(w, 0x18, 0xa,
+  0x7ca5, 0x7ca5). The node ring (11 nodes, owner position +-len/2 rotated by
+  RotX(rot2) RotY(rot3) RotZ(angle + motion direction in the air)) and the
+  Init / Wait / Follow states are in obj_peffect.c (two trail slots).
+  `objects_trail_quads()` returns EffTrail_Draw's quads (newest first, colour
+  Math_LerpRGB555, polygon alpha 6 -> 0x12 -> 1 with the peak at cnt * 3 / 10);
+  obj_draw.c draws them flat in the TR list at z 0.0055 (just behind the player
+  model). EffTrail_SetWrapShift (looping boss arenas) is not translated.
+  Not translated: the 3D variants of boss acts.
 - **Boost defence**: obj_player_collide applies Player_UpdateBoost's
   `w->unk2C4 |= 5` while boosting and Player_StopBoost's `= 2` (when not
   invulnerable / invincible) to the hurt box (`ObjPlayerCtx.prev_boost`).
@@ -1567,6 +1580,7 @@ v3 deviations (Water Palace, Mirage Road):
 cd dreamcast/game/objects
 make data        # BYOR: build/dreamcast/objects/{objdata.bin,hbx/,sprites.txt}
 make host-test   # gcc -std=c99 -Wall -Wextra -Werror -fwrapv; test_objects on z11, z12 and test_zones on ZONE_STAGES
+make audit       # item-C audit: test_objects AUDIT_ONLY=1 on z11, z12 + ZONE_STAGES, CHARA=0 and 1 (docs/dreamcast/REGRESSION.md section 5)
 make zone-test   # test_zones only (ZONE_STAGES = z21 z22 z31 z32 z41 z42 z51 z52 z61 z62 z71 z72 z91 z92)
 make coverage    # create every placed object / decoration of every stage, print the table of section 8
 make dc          # kos-cc -O2 -fwrapv -Wall -Wextra -Werror, objects in build/dreamcast/objects/dc/

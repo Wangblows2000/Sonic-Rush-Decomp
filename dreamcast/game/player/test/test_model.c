@@ -88,6 +88,24 @@ static void test_selection(const char *dir) {
     CHECK(r == 0 && M.res[0].hdr && M.res[1].hdr, "Blaze body + spin load (%d)", r);
     if (r)
         return;
+    {
+        /* data_02074960: stage lights (Player_Draw / Player_Last), after-image and under-water overrides */
+        const u16 *l0 = dcp_model_stage_lights(0, 0), *l3 = dcp_model_stage_lights(3, 2);
+        dcm_lights_t L;
+        u8 zone = g_dcp_world.zone, act = g_dcp_world.act;
+        CHECK(l0[0] == 0x7fff && l0[1] == 0x4631 && l0[2] == 0x2108, "lights.bin zone 0 act 0: %04x %04x %04x", l0[0],
+              l0[1], l0[2]);
+        CHECK(l3[0] == 0x7fff && l3[1] == 0x75ed && l3[2] == 0x2c39, "lights.bin zone 3 act 2 (boss): %04x %04x %04x", l3[0],
+              l3[1], l3[2]);
+        g_dcp_world.zone = 3, g_dcp_world.act = 2;
+        dcp_model_lights(&P, 0, &L);
+        CHECK(fabsf(L.col[1][0] - 13 / 31.0f) < 1e-4f && fabsf(L.col[1][1] - 15 / 31.0f) < 1e-4f &&
+                  fabsf(L.col[1][2] - 29 / 31.0f) < 1e-4f,
+              "dcp_model_lights light 1 = 0x75ed (%.3f %.3f %.3f)", L.col[1][0], L.col[1][1], L.col[1][2]);
+        dcp_model_lights(&P, 1, &L);
+        CHECK(fabsf(L.col[0][0] - (0x1a98 & 31) / 31.0f) < 1e-4f, "Blaze after-image light 0x1a98");
+        g_dcp_world.zone = zone, g_dcp_world.act = act;
+    }
     dcp_model_attach(&M, &P);
     dcp_set_anim(&P, 0x3c);
     CHECK(!strcmp(anim_name(M.jnt_anim), "blz_fw"), "Blaze idle 0x3c+0x1b -> blz_fw (%s)", anim_name(M.jnt_anim));

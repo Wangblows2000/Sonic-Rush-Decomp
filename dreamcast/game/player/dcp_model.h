@@ -102,6 +102,9 @@ void dcp_model_matrix(const DcPlayer *p, float tx, float ty, float tz, dcm_mtx_t
 void dcp_model_matrix_ext(const dcm_mtx_t *ext, dcm_mtx_t *out);
 /* Stage lights for the player (flag 0x800: x mirrored by facing), tinted when
  * ghost != 0 (Player_Draw after-image colour) or underwater (pf 0x4000000). */
+/* the stage light colours data_02074960[zone][act][0..2] (BGR555; lights.bin, else the common
+ * 0x7fff / 0x4631 / 0x2108) */
+const u16 *dcp_model_stage_lights(int zone, int act);
 void dcp_model_lights(const DcPlayer *p, int ghost, dcm_lights_t *out);
 
 /* Player_Draw: 1 and the DS position (1/256 px) of the after-image when one is drawn this frame. */

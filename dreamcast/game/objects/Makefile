@@ -1,6 +1,7 @@
 # Native stage object module (Dreamcast port). Targets:
 #   make data       BYOR: build/dreamcast/objects/{objdata.bin,hbx/,sprites.txt} (needs extract/eur + sprites)
-#   make host-test  build + run the host tests: test_objects on z11/z12, test_zones on $(ZONE_STAGES)
+#   make host-test  build + run the host tests: test_objects on z11/z12, test_zones on $(ZONE_STAGES), audit
+#   make audit      the item-C gimmick audit (test_objects AUDIT_ONLY=1) on $(AUDIT_STAGES), Sonic and Blaze
 #   make coverage   create every placed object/decoration of every stage, print the coverage table
 #   make preload    $(OUT)/preload.txt: the sprite resources objects_init loads per stage (disc stage packs)
 #   make dc         compile all sources with the KOS toolchain (kos-cc) into $(OUT)/dc/
@@ -41,6 +42,16 @@ host-test: $(OUT)/test_objects $(OUT)/test_zones
 	$(OUT)/test_objects $(Z11) $(PLAYER_TABLES) $(DATA) $(SPRITES)
 	$(OUT)/test_objects $(Z12) $(PLAYER_TABLES) $(DATA) $(SPRITES)
 	set -e; for s in $(ZONE_STAGES); do $(OUT)/test_zones $(STAGES_DIR)/$$s/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES); done
+	$(MAKE) --no-print-directory audit
+
+# the per-class gimmick audit (springs, dash panels, needles, item boxes, markers, ...) on every
+# stage, for Sonic and Blaze
+AUDIT_STAGES = z11 z12 $(ZONE_STAGES)
+audit: $(OUT)/test_objects
+	set -e; for c in 0 1; do for s in $(AUDIT_STAGES); do echo "== $$s chara $$c"; \
+	  CHARA=$$c AUDIT_ONLY=1 $(OUT)/test_objects $(STAGES_DIR)/$$s/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES) \
+	    > $(OUT)/audit.log || { grep -v '^    ' $(OUT)/audit.log; exit 1; }; \
+	  grep -v '^    \|^objects_init\|slots preloaded' $(OUT)/audit.log; done; done; rm -f $(OUT)/audit.log
 
 zone-test: $(OUT)/test_zones
 	set -e; for s in $(ZONE_STAGES); do $(OUT)/test_zones $(STAGES_DIR)/$$s/level.bin $(PLAYER_TABLES) $(DATA) $(SPRITES); done
@@ -64,4 +75,4 @@ dc: $(DC_SRCS) $(HDRS)
 clean:
 	rm -rf $(OUT)/test_objects $(OUT)/test_zones $(OUT)/test_coverage $(OUT)/dc
 
-.PHONY: all data host-test zone-test coverage preload dc clean
+.PHONY: all data host-test audit zone-test coverage preload dc clean

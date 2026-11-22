@@ -158,6 +158,7 @@ static int obj_spr_drawn(const Obj *o) {
 }
 void objects_set_model_sprites(int on) { g_obj_model_sprites = on; }
 
+static void draw_trails(void);
 void obj_draw(int list) {
     Obj *o;
     int i, vf;
@@ -187,6 +188,8 @@ void obj_draw(int list) {
             }
         }
     }
+    if (list == PVR_LIST_TR_POLY)
+        draw_trails();
     s = ring_draw_sprite();
     for (i = 0; i < ring_draw_count(); i++)
         if (ring_draw_get(i, &x, &y, &vf))
@@ -194,6 +197,37 @@ void obj_draw(int list) {
     for (i = 0; i < ring_fx_max(); i++)
         if (ring_fx_get(i, &s))
             draw_spr(s, (pvr_list_t)list, s->x, s->y, 0);
+}
+
+/* EffTrail_Draw: flat-shaded quads at the 3D layer's depth (just behind the player model, ~0.006),
+ * polygon alpha a / 31 (objects_trail_quads) */
+static void draw_trails(void) {
+    ObjTrailQuad q[24];
+    pvr_poly_cxt_t cxt;
+    pvr_poly_hdr_t hdr;
+    pvr_vertex_t v;
+    int n = objects_trail_quads(q, 24), i, k;
+    static const int order[4] = { 0, 1, 2, 3 };
+    if (n <= 0)
+        return;
+    pvr_poly_cxt_col(&cxt, PVR_LIST_TR_POLY);
+    cxt.gen.culling = PVR_CULLING_NONE;
+    pvr_poly_compile(&hdr, &cxt);
+    pvr_prim(&hdr, sizeof(hdr));
+    for (i = 0; i < n; i++) {
+        u16 c = q[i].bgr555;
+        uint32_t r = (c & 0x1f) * 255 / 31, g = ((c >> 5) & 0x1f) * 255 / 31, b = ((c >> 10) & 0x1f) * 255 / 31;
+        v.argb = ((uint32_t)q[i].alpha * 255 / 31) << 24 | r << 16 | g << 8 | b;
+        v.oargb = 0;
+        v.z = 0.0055f;
+        v.u = v.v = 0.0f;
+        for (k = 0; k < 4; k++) {
+            v.flags = k == 3 ? PVR_CMD_VERTEX_EOL : PVR_CMD_VERTEX;
+            v.x = ((float)q[i].x[order[k]] / 256.0f - g_cam_x) * VIEW_SCALE;
+            v.y = ((float)q[i].y[order[k]] / 256.0f - g_cam_y) * VIEW_SCALE;
+            pvr_prim(&v, sizeof(v));
+        }
+    }
 }
 
 void objects_draw(void) { obj_draw(PVR_LIST_PT_POLY); }

@@ -139,6 +139,15 @@ void objects_update(DcPlayer *p);
 void objects_draw(void);
 void objects_draw_tr(void);   /* semi-transparent sprites (player effects): inside the TR list */
 void obj_draw(int pvr_list);
+/* EffTrail (Sonic's boost ribbon): the quads of the live trails, newest segment first; corners
+ * 0/1 = the newer node's two ends, 2/3 = the older node's (24.8 world px). The DS draws them flat
+ * in the 3D layer with polygon alpha `alpha` (0..31) and vertex colour `bgr555`. */
+typedef struct ObjTrailQuad {
+    s32 x[4], y[4];
+    u16 bgr555;
+    u8 alpha;
+} ObjTrailQuad;
+int objects_trail_quads(ObjTrailQuad *q, int max);
 
 /* rings currently alive in the ring manager (placed + scattered) */
 int objects_ring_count(void);
