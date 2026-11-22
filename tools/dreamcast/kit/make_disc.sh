@@ -19,9 +19,13 @@ fi
 
 echo "== 2/5 host tools (wav2adpcm, cdi4dc)"
 mkdir -p bin
-[ -x bin/wav2adpcm ] || gcc -O2 -o bin/wav2adpcm thirdparty/wav2adpcm/wav2adpcm.c
+[ -x bin/wav2adpcm ] || gcc -O2 -D_DEFAULT_SOURCE -o bin/wav2adpcm thirdparty/wav2adpcm/wav2adpcm.c
 if [ ! -x bin/cdi4dc ]; then
-    (mkdir -p thirdparty/img4dc/build && cd thirdparty/img4dc/build && cmake .. >/dev/null && make cdi4dc >/dev/null)
+    # GCC 14 (Debian 13, Ubuntu 24.10+) makes implicit declarations an error; img4dc calls
+    # realpath() without the feature-test macro that declares it.
+    (mkdir -p thirdparty/img4dc/build && cd thirdparty/img4dc/build && \
+     cmake .. -DCMAKE_C_FLAGS="-D_DEFAULT_SOURCE -D_GNU_SOURCE -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion" >/dev/null && \
+     make cdi4dc >/dev/null)
     cp thirdparty/img4dc/build/cdi4dc/cdi4dc bin/
 fi
 export PATH="$KIT/bin:$PATH"
