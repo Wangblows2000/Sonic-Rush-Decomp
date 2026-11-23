@@ -273,6 +273,7 @@ void ui_tcbg_free(void);
 void ui_tcbg_draw(s32 scroll_x, s32 scroll_y);   /* StageTitleCardBg_Draw: fn78 unk4 / unk8 */
 void ui_cdbg_load(void);
 void ui_cdbg_free(void);
+void ui_cdbg_prefetch(void);   /* in the stage load: the results BG files (DC) */
 /* ClearDemoBg_Draw: BG2 y = unk8 >> 12, BG3 y = unk4 >> 12; window 0 (x 0..win_x2,
  * y 33..35 on the DS) shows cldm_far while win_on */
 void ui_cdbg_draw(s32 unk4, s32 unk8, int win_on, int win_x2);

@@ -13,6 +13,9 @@
 #include "sound.h"
 #include "snd_nns.h"
 #include "../engine/audio.h"
+#ifdef _arch_dreamcast
+#include "../engine/pak.h"   /* pak_prefetch */
+#endif
 #include "../player/dcp_player.h"
 #include "../objects/objects.h"
 #include <stdio.h>
@@ -365,6 +368,26 @@ void bgm_bind_player(DcPlayer *p)
     s_grav_prev = p ? p->grav_rot : 0;
 }
 
+/* DC: ClearDemo's sound bank and music (bgm_ui_music_hook, ClearDemo_Create's choice for
+ * the story: act 0xf / boss 0x10 / zone 7 0x11, banks sys_a06 / sys_a07; time attack 0xb /
+ * 0xd, sys_a05) read in the stage load, so the goal frame reads nothing from the disc (the
+ * bank, the music file's directory walk and header held it for ~30 ms in Flycast) */
+static void bgm_prefetch_clear(int zone, int act)
+{
+#ifdef _arch_dreamcast
+    int ta = g_dcp_world.mode == 2;
+    int seq = ta ? (act < 2 ? 0xb : 0xd) : zone == 7 ? 0x11 : act >= 2 ? 0x10 : 0xf;
+    int arc = ta ? 5 : zone == 7 ? 7 : 6;
+    const BgmEntry *e = lookup("sys", seq);
+    char path[96];
+    snprintf(path, sizeof path, "/cd/sound/sys_a%02d.srb", arc);
+    pak_prefetch(path);
+    if(e && e->file >= 0 && !e->ram) { entry_path(e, path, sizeof path); audio_music_prefetch(path); }
+#else
+    (void)zone; (void)act;
+#endif
+}
+
 void bgm_stage_start(int zone, int act, int chara, DcPlayer *p)
 {
     const char *sdat = stage_sdat(zone, act, chara);
@@ -388,6 +411,7 @@ void bgm_stage_start(int zone, int act, int chara, DcPlayer *p)
     }
     test_triggers_load();
     Stage_PlayBGM(0);
+    bgm_prefetch_clear(zone, act);
 }
 
 void bgm_stage_restart(void)

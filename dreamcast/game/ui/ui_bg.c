@@ -24,6 +24,9 @@
  */
 #include <stdio.h>
 #include "ui_internal.h"
+#ifdef _arch_dreamcast
+#include "../engine/pak.h"   /* pak_prefetch */
+#endif
 
 /* ------------------------------------------------------------ title card */
 static int s_tc_file = -1, s_tc_boss;
@@ -109,6 +112,19 @@ void ui_cdbg_load(void) {
     ui_res_load_dir(UI_RES_CLDMBG, dir, id);
 }
 void ui_cdbg_free(void) { ui_res_free(UI_RES_CLDMBG); }
+/* DC: the results BG files read in the stage load (pak_prefetch), so ui_cdbg_load at the goal
+ * reads nothing from the disc (it held the goal frame for ~15 ms in Flycast) */
+void ui_cdbg_prefetch(void) {
+#ifdef _arch_dreamcast
+    static const char *const k_files[] = { "frames.bin", "palettes.bin", "atlas0.pt4", "atlas1.pt4" };
+    char path[200];
+    unsigned i;
+    for (i = 0; i < sizeof(k_files) / sizeof(k_files[0]); i++) {
+        snprintf(path, sizeof(path), "%s/res/cldm_%d/%s", g_ui_dir, G.character == 1 ? 1 : 0, k_files[i]);
+        pak_prefetch(path);
+    }
+#endif
+}
 
 void ui_cdbg_draw(s32 unk4, s32 unk8, int win_on, int win_x2) {
     const UiRes *r = &g_ui_res[UI_RES_CLDMBG];

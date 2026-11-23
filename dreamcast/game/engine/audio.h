@@ -14,6 +14,9 @@ void audio_init(void);
  * (game loop running) or the disc is idle (see audio.c).
  * audio_music_play: layer 0 at full volume (layer 1 of a .lyr muted). */
 int  audio_music_play(const char *path, uint32_t loop_start, uint32_t loop_end);
+/* open and parse a track during a load, for a start later in the scene (kept open: that start
+ * reads nothing from the disc before streaming); 0 = ok */
+int  audio_music_prefetch(const char *path);
 /* same with the initial layer volumes (0..127, NNS player volume units) */
 int  audio_music_play_layers(const char *path, uint32_t loop_start, uint32_t loop_end, int vol0, int vol1);
 /* NNS_SndPlayerMoveVolume on one layer: linear move to vol (0..127) in `frames` 60 Hz frames */

@@ -455,20 +455,33 @@ static void music_destroy_streams(void)
     for(L = 0; L < MAXL; L++)
         if(s_hnd[L] != SND_STREAM_INVALID) { snd_stream_stop(s_hnd[L]); snd_stream_destroy(s_hnd[L]); s_hnd[L] = SND_STREAM_INVALID; }
 }
-/* The last track's file stays open (with its parsed header) after it stops: starting the
- * same track again (a boss phase restarting its music) then needs no ISO 9660 directory walk
- * of /cd/music/st (813 files) and no header read, which held a game frame for 11-60 ms. */
-static file_t s_kfd = FILEHND_INVALID;
-static char s_kpath[96];
-static int s_kok, s_krate, s_kch, s_knl, s_ksrly;
-static uint32_t s_kdoff, s_kdlen, s_kblock, s_kls, s_kle;
+/* Track files kept open with their parsed headers (KSLOTS): the last track played (a boss
+ * phase restarting its music) and a track prefetched in the stage load (audio_music_prefetch:
+ * the act clear music).  Starting such a track needs no ISO 9660 directory walk of
+ * /cd/music/st (813 files) and no header read, which held a game frame for 11-60 ms. */
+#define KSLOTS 2
+typedef struct {
+    file_t fd;
+    char path[96];
+    int ok, rate, ch, nl, srly;
+    uint32_t doff, dlen, block, ls, le, used;
+} KSlot;
+static KSlot s_k[KSLOTS] = { { FILEHND_INVALID, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                             { FILEHND_INVALID, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+static uint32_t s_kclock;
+static int k_holds(file_t f)
+{
+    int i;
+    for(i = 0; i < KSLOTS; i++) if(s_k[i].ok && s_k[i].fd == f) return 1;
+    return 0;
+}
 static void music_close_locked(void)   /* s_lock held */
 {
     music_destroy_streams();
     s_restart = 0; s_dry = 0; s_kick = 0; s_mstop = 0;
     mutex_lock(&s_flock);
     if(s_fd != FILEHND_INVALID) {
-        if(s_fd != s_kfd) fs_close(s_fd);   /* else kept for a restart of the same track */
+        if(!k_holds(s_fd)) fs_close(s_fd);   /* else kept (KSlot) for a later start */
         s_fd = FILEHND_INVALID;
     }
     s_wr = s_rd[0] = s_rd[1] = 0;
@@ -672,6 +685,58 @@ void audio_init(void)
 
 uint32_t audio_slot_gen(int slot) { return slot >= 0 && slot < 3 ? s_gen[slot] : 0; }
 
+/* the KSlot of a track: kept, or opened and parsed into the least recently used slot that
+ * is not the file playing now; NULL when the file is missing or not a track */
+static KSlot *k_get(const char *path, uint8_t *h)
+{
+    KSlot *k = NULL;
+    file_t f;
+    int i;
+    uint32_t v[9];
+    for(i = 0; i < KSLOTS; i++)
+        if(s_k[i].ok && !strcmp(s_k[i].path, path)) { s_k[i].used = ++s_kclock; return &s_k[i]; }
+    if(strlen(path) >= sizeof(s_k[0].path)) return NULL;
+    for(i = 0; i < KSLOTS; i++)
+        if(!(s_k[i].ok && s_k[i].fd == s_fd && s_fd != FILEHND_INVALID) && (!k || s_k[i].used < k->used)) k = &s_k[i];
+    if(!k) return NULL;
+    if(k->ok && k->fd != s_fd) fs_close(k->fd);
+    k->ok = 0;
+    k->fd = FILEHND_INVALID;
+    f = fs_open(path, O_RDONLY);
+    if(f == FILEHND_INVALID) return NULL;
+    k->ls = k->le = 0;
+    if(fs_read(f, h, 40) == 40 && !memcmp(h, "SRLY", 4)) {
+        /* musictab.py: "SRLY", version, layers, rate, frames, loop start, loop end, block, data offset, blocks */
+        memcpy(v, h + 4, sizeof(v));
+        if(v[0] != 1 || v[1] < 1 || v[1] > MAXL || v[6] == 0 || v[6] * v[1] > AUDIO_CHUNK || (v[7] & 2047)) { fs_close(f); return NULL; }
+        k->nl = (int)v[1]; k->rate = (int)v[2]; k->ch = 2; k->dlen = v[3]; k->block = v[6]; k->doff = v[7];
+        k->ls = v[4]; k->le = v[5];
+        k->srly = 1;
+    } else {
+        fs_seek(f, 0, SEEK_SET);
+        k->nl = 1; k->block = 0;
+        if(read_wav_header(f, &k->rate, &k->ch, &k->doff, &k->dlen)) { fs_close(f); return NULL; }
+        k->srly = 0;
+    }
+    strcpy(k->path, path);
+    k->fd = f;
+    k->ok = 1;
+    k->used = ++s_kclock;
+    return k;
+}
+
+/* open and parse a track now (in a load, under the loading ring) for a start later in the
+ * scene: that audio_music_play then reads nothing from the disc before streaming */
+int audio_music_prefetch(const char *path)
+{
+    uint8_t h[40];
+    KSlot *k;
+    mutex_lock(&s_lock);
+    k = k_get(path, h);
+    mutex_unlock(&s_lock);
+    return k ? 0 : -1;
+}
+
 int audio_music_play_layers(const char *path, uint32_t loop_start, uint32_t loop_end, int vol0, int vol1)
 {
     int rate = 0, ch = 0, nl = 1;
@@ -683,38 +748,21 @@ int audio_music_play_layers(const char *path, uint32_t loop_start, uint32_t loop
     music_close_locked();
     s_gen[0]++;
     mutex_unlock(&s_lock);
-    if(s_kok && s_kfd != FILEHND_INVALID && !strcmp(path, s_kpath)) {   /* the same track again */
-        f = s_kfd;
-        nl = s_knl; rate = s_krate; ch = s_kch; dlen = s_kdlen; block = s_kblock; doff = s_kdoff;
-        if(s_ksrly) { loop_start = s_kls; loop_end = s_kle; }
-    } else {
-        if(s_kfd != FILEHND_INVALID) { fs_close(s_kfd); s_kfd = FILEHND_INVALID; }
-        s_kok = 0;
-        f = fs_open(path, O_RDONLY);
-        if(f == FILEHND_INVALID) return -1;
-        if(fs_read(f, h, sizeof(h)) == (ssize_t)sizeof(h) && !memcmp(h, "SRLY", 4)) {
-            /* musictab.py: "SRLY", version, layers, rate, frames, loop start, loop end, block, data offset, blocks */
-            uint32_t v[9];
-            memcpy(v, h + 4, sizeof(v));
-            if(v[0] != 1 || v[1] < 1 || v[1] > MAXL || v[6] == 0 || v[6] * v[1] > AUDIO_CHUNK || (v[7] & 2047)) { fs_close(f); return -1; }
-            nl = (int)v[1]; rate = (int)v[2]; ch = 2; dlen = v[3]; block = v[6]; doff = v[7];
-            loop_start = v[4]; loop_end = v[5];
-            s_ksrly = 1;
-        } else {
-            fs_seek(f, 0, SEEK_SET);
-            if(read_wav_header(f, &rate, &ch, &doff, &dlen)) { fs_close(f); return -1; }
-            s_ksrly = 0;
-        }
-        if(strlen(path) < sizeof(s_kpath)) {
-            strcpy(s_kpath, path);
-            s_kfd = f; s_knl = nl; s_krate = rate; s_kch = ch; s_kdlen = dlen; s_kblock = block; s_kdoff = doff;
-            s_kls = loop_start; s_kle = loop_end; s_kok = 1;
-        }
-    }
     {
-        file_t t = fs_open("/cd/debug/sndtrace.txt", O_RDONLY);
-        s_trace = t != FILEHND_INVALID;
-        if(t != FILEHND_INVALID) fs_close(t);
+        KSlot *k = k_get(path, h);
+        if(!k) return -1;
+        f = k->fd;
+        nl = k->nl; rate = k->rate; ch = k->ch; dlen = k->dlen; block = k->block; doff = k->doff;
+        if(k->srly) { loop_start = k->ls; loop_end = k->le; }
+    }
+    {   /* test discs only; looked up once (a directory walk per track start otherwise) */
+        static int checked;
+        if(!checked) {
+            file_t t = fs_open("/cd/debug/sndtrace.txt", O_RDONLY);
+            s_trace = t != FILEHND_INVALID;
+            if(t != FILEHND_INVALID) fs_close(t);
+            checked = 1;
+        }
     }
     mutex_lock(&s_lock);
     mutex_lock(&s_flock);

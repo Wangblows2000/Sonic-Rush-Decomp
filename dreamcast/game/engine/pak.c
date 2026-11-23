@@ -140,6 +140,36 @@ int pak_load(const char *path, void **out, uint32_t *size)
         memtrack_retag(*out, __builtin_return_address(0));
     return r;
 }
+/* files read ahead in a load (pak_prefetch) for a pak_load later in the scene */
+#define PF_MAX 6
+static struct { char path[64]; void *buf; uint32_t size; uint32_t used; } s_pf[PF_MAX];
+static uint32_t s_pf_clock;
+
+int pak_prefetch(const char *path)
+{
+    void *b;
+    uint32_t sz = 0;
+    int i, k = -1;
+    if(strlen(path) >= sizeof(s_pf[0].path)) return -1;
+    for(i = 0; i < PF_MAX; i++)
+        if(s_pf[i].buf && !strcmp(s_pf[i].path, path)) { s_pf[i].used = ++s_pf_clock; return 0; }
+    if(pak_load_(path, &b, &sz) != PAK_FOUND) return -1;
+    for(i = 0; i < PF_MAX; i++)   /* a free slot, else the least recently prefetched one */
+        if(k < 0 || !s_pf[i].buf || (s_pf[k].buf && s_pf[i].used < s_pf[k].used)) k = i;
+    free(s_pf[k].buf);
+    strcpy(s_pf[k].path, path);
+    s_pf[k].buf = b;
+    s_pf[k].size = sz;
+    s_pf[k].used = ++s_pf_clock;
+    return 0;
+}
+
+void pak_prefetch_drop(void)
+{
+    int i;
+    for(i = 0; i < PF_MAX; i++) { free(s_pf[i].buf); s_pf[i].buf = NULL; }
+}
+
 static int pak_load_(const char *path, void **out, uint32_t *size)
 {
     const char *key;
@@ -147,6 +177,13 @@ static int pak_load_(const char *path, void **out, uint32_t *size)
     int covered = 0;
     *out = NULL;
     if(strncmp(path, "/cd/", 4) != 0) return PAK_NONE;
+    for(i = 0; i < PF_MAX; i++)   /* read ahead: the buffer is the caller's now */
+        if(s_pf[i].buf && !strcmp(s_pf[i].path, path)) {
+            *out = s_pf[i].buf;
+            if(size) *size = s_pf[i].size;
+            s_pf[i].buf = NULL;
+            return PAK_FOUND;
+        }
     if(s_stage && stage_load(path + 4, out, size)) return PAK_FOUND;
     if(!pak_init()) return PAK_NONE;
     key = path + 4;

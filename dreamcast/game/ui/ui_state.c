@@ -324,6 +324,7 @@ void ui_stage_start(int zone, int act, int character) {
     s_pending_cb = NULL;
     s_pending_restart = 0;
     ui_install_hooks();
+    ui_cdbg_prefetch();   /* DC: the results BG, read now (under the loading ring) */
     if (s_player)
         Stage_Create_UI();
     else

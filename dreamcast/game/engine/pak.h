@@ -17,6 +17,12 @@ int pak_load(const char *path, void **out, uint32_t *size);
  * Returns 0, or -1 without the file (pak_load then reads data.pak / the disc). */
 int pak_stage_begin(const char *path);
 void pak_stage_end(void);
+/* Read a packed file now (in a load, under the loading ring) for a pak_load of the same path
+ * later in the scene, which then takes the buffer without a disc read (a load in a game frame
+ * held it for 10-16 ms per file in Flycast).  Up to 6 files, the oldest replaced; 0 = read.
+ * pak_prefetch_drop frees those nobody took. */
+int pak_prefetch(const char *path);
+void pak_prefetch_drop(void);
 /* statistics for the load profile: packed files served, their bytes, GD-ROM reads made */
 void pak_stats(uint32_t *files, uint32_t *bytes, uint32_t *reads);
 #endif
