@@ -209,6 +209,9 @@ SLOTS += [
     ("EFF_SPIN2", "act_com", "act/ac_eff_kemuri_spin02.bac", "act/ac_eff_kemuri_spin02.bac"),
     # trick effects: EffTrick_CreateAtOffset, EffTrickSparkle, EffTrickComboPart (data_ov000_02367ff8..02368284)
     ("EFF_TRICK", "act_com", "act/ac_eff_trick.bac", "act/ac_eff_trick.bac"),
+    # Battle Play (src/game/VsMode): EffVs / EffVsSlowdown / Confusion / TensionDrain / TensionMax, FixVs* icons
+    ("EFF_VS", "act_com", "act/ac_eff_vs.bac", "act/ac_eff_vs.bac"),
+    ("FIX_VS", "act_com", "act/ac_fix_vs.bac", "act/ac_fix_vs.bac"),
 ]
 ID_LEN = 48
 N_STAGES = 27

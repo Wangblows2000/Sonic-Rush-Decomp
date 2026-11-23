@@ -107,6 +107,9 @@ static s32 s_bg_x, s_bg_y;       /* gCamera @0x2C @0x30 of the window */
 static s32 s_prev_x;
 static int s_have_prev;
 static ZfxLine s_lines[192];
+/* Battle Play: the second player's camera updates only its BG lines / water row (the frame
+ * counter, palette animations and BLDY run once per frame, with the first camera) */
+static int s_view_only;
 /* Zone3 boss light flash counter */
 static u16 s_z3b;
 
@@ -383,8 +386,8 @@ static void zone_bg_update(void) {
     case BG_Z1: bg_parallax(&p, 14); lines_flat(); break;
     case BG_Z4: bg_parallax(&p, 18); lines_flat(); break;
     case BG_Z6: bg_zone6(&p); lines_flat(); break;
-    case BG_Z2: s_t++; bg_zone2_scroll(&p); bg_zone2_lines(); break;
-    case BG_Z3: s_t++; bg_zone3_scroll(&p); bg_zone3_lines(); break;
+    case BG_Z2: if (!s_view_only) s_t++; bg_zone2_scroll(&p); bg_zone2_lines(); break;
+    case BG_Z3: if (!s_view_only) s_t++; bg_zone3_scroll(&p); bg_zone3_lines(); break;
     case BG_Z5: bg_zone57_scroll(&p, 5, 0xb0, 0x50); bg_zone57_lines(); break;
     case BG_Z7: bg_zone57_scroll(&p, 6, 0xb8, 0x48); bg_zone57_lines(); break;
     default: lines_flat(); break;   /* the Init position (0, 0) */
@@ -641,8 +644,40 @@ void zonefx_update(void) {
     if (!s_on)
         return;
     zone_bg_update();
+    if (s_view_only) {   /* Battle Play, second camera: its own water row only */
+        if (s_fx_kind == 2) {
+            s_water_row = camera_window_split_y();
+            if (!(g_obj_camera[0].flags & 0x1000000) || (g_obj_camera[0].flags & 0x2000000))
+                s_water_row = 192;
+        }
+        return;
+    }
     zone_fx_update();
 }
+
+/* ---------------------------------------------------------------- Battle Play view contexts */
+struct ZfxView {
+    ZfxLine lines[192];
+    int water_row, have_prev;
+    s32 ax, ay, bx, by, cx, cy, bg_x, bg_y, prev_x;
+    u8 n0, n1;
+};
+size_t zonefx_view_size(void) { return sizeof(struct ZfxView); }
+void zonefx_view_save(void *dst) {
+    struct ZfxView *v = (struct ZfxView *)dst;
+    memcpy(v->lines, s_lines, sizeof s_lines);
+    v->water_row = s_water_row; v->have_prev = s_have_prev;
+    v->ax = s_ax; v->ay = s_ay; v->bx = s_bx; v->by = s_by; v->cx = s_cx; v->cy = s_cy;
+    v->bg_x = s_bg_x; v->bg_y = s_bg_y; v->prev_x = s_prev_x; v->n0 = s_n0; v->n1 = s_n1;
+}
+void zonefx_view_load(const void *src) {
+    const struct ZfxView *v = (const struct ZfxView *)src;
+    memcpy(s_lines, v->lines, sizeof s_lines);
+    s_water_row = v->water_row; s_have_prev = v->have_prev;
+    s_ax = v->ax; s_ay = v->ay; s_bx = v->bx; s_by = v->by; s_cx = v->cx; s_cy = v->cy;
+    s_bg_x = v->bg_x; s_bg_y = v->bg_y; s_prev_x = v->prev_x; s_n0 = v->n0; s_n1 = v->n1;
+}
+void zonefx_set_view_only(int on) { s_view_only = on; }
 
 const ZfxLine *zonefx_lines(void) { return s_lines; }
 int zonefx_water_row(void) { return s_fx_kind == 2 ? s_water_row : 192; }

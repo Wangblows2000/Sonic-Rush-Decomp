@@ -144,6 +144,12 @@ static void fill_request(MenuRequestKind k) {
 }
 void mn_request_stage(void) { fill_request(MENU_REQ_STAGE); }
 void mn_request_demo(void) { fill_request(MENU_REQ_DEMO); }
+/* SceneChange_ToVsStage: zone / act of TimeSelect, player 1 = the host, player 2 = the guest */
+void mn_request_vs_stage(void) {
+    fill_request(MENU_REQ_VS_STAGE);
+    g_mn_request.character = gGameState.unk4;
+    g_mn_request.character2 = gGameState.unk8;
+}
 void mn_request_unavailable(const char *scene) {
     fill_request(MENU_REQ_UNAVAILABLE);
     g_mn_request.scene = scene;

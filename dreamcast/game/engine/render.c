@@ -8,7 +8,30 @@
 #include <malloc.h>
 
 float g_cam_x, g_cam_y;
+float g_view_x = 0.0f, g_view_y = 0.0f, g_view_w = 640.0f, g_view_h = 480.0f, g_view_scale = 2.5f;
+int g_render_clip;
 static pvr_list_t s_list;
+
+void render_set_view(float x, float y, float w, float h, float scale, int clip)
+{
+    g_view_x = x; g_view_y = y; g_view_w = w; g_view_h = h; g_view_scale = scale;
+    g_render_clip = clip != 0;
+}
+void render_reset_view(void) { render_set_view(0.0f, 0.0f, 640.0f, 480.0f, 2.5f, 0); }
+int render_clip_on(void) { return g_render_clip; }
+/* PVR user-clip object: tile (32 px) rectangle, inclusive */
+void render_emit_clip(void)
+{
+    uint32_t w[8];
+    int x0 = (int)g_view_x >> 5, y0 = (int)g_view_y >> 5;
+    int x1 = ((int)(g_view_x + g_view_w) >> 5) - 1, y1 = ((int)(g_view_y + g_view_h) >> 5) - 1;
+    if(!g_render_clip) return;
+    memset(w, 0, sizeof w);
+    w[0] = PVR_CMD_USERCLIP;
+    w[4] = x0 < 0 ? 0 : x0; w[5] = y0 < 0 ? 0 : y0;
+    w[6] = x1 < 0 ? 0 : x1; w[7] = y1 < 0 ? 0 : y1;
+    pvr_prim(w, sizeof w);
+}
 
 int tex_load(Texture *t, const char *path)
 {
@@ -77,6 +100,7 @@ static void quad(const Texture *t, int bank, pvr_list_t list, float x, float y, 
     } else
         pvr_poly_cxt_col(&cxt, list);
     pvr_poly_compile(&hdr, &cxt);
+    render_hdr_clip(&hdr);
     pvr_prim(&hdr, sizeof(hdr));
     v.flags = PVR_CMD_VERTEX; v.argb = argb; v.oargb = 0; v.z = z;
     v.x = x;     v.y = y + h; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v));
@@ -95,23 +119,44 @@ void draw_sprite_world(const Texture *t, pvr_list_t list, float wx, float wy, fl
 void draw_sprite_world_pal(const Texture *t, int bank, pvr_list_t list, float wx, float wy, float w, float h,
                            float u0, float v0, float u1, float v1, int flip, float z, uint32_t argb)
 {
-    float sx = (wx - g_cam_x) * VIEW_SCALE, sy = (wy - g_cam_y) * VIEW_SCALE;
+    float sx = VIEW_OX + (wx - g_cam_x) * VIEW_SCALE, sy = VIEW_OY + (wy - g_cam_y) * VIEW_SCALE;
     float sw = w * VIEW_SCALE, sh = h * VIEW_SCALE, tmp;
-    if(sx > 640 || sy > 480 || sx + sw < 0 || sy + sh < 0) return;
+    if(sx > VIEW_OX + g_view_w || sy > VIEW_OY + g_view_h || sx + sw < VIEW_OX || sy + sh < VIEW_OY) return;
     if(flip & 1) { tmp = u0; u0 = u1; u1 = tmp; }
     if(flip & 2) { tmp = v0; v0 = v1; v1 = tmp; }
     quad(t, bank, list, sx, sy, sw, sh, u0, v0, u1, v1, z, argb);
 }
 
+/* Battle Play HUD: the 640x480 screen layout scaled by k into a viewport (ox, oy, vw wide); a quad
+ * in the right half of the screen keeps its distance from the right edge */
+static int s_sx_on;
+static float s_sx_k, s_sx_ox, s_sx_oy, s_sx_vw;
+void render_set_screen_xform(float k, float ox, float oy, float vw)
+{
+    s_sx_on = 1; s_sx_k = k; s_sx_ox = ox; s_sx_oy = oy; s_sx_vw = vw;
+}
+void render_reset_screen_xform(void) { s_sx_on = 0; }
+static void sx_apply(float *x, float *y, float *w, float *h)
+{
+    float cx = *x + *w * 0.5f;
+    if(cx < 320.0f) *x = s_sx_ox + *x * s_sx_k;
+    else *x = s_sx_ox + s_sx_vw - (640.0f - *x) * s_sx_k;
+    *y = s_sx_oy + *y * s_sx_k;
+    *w *= s_sx_k;
+    *h *= s_sx_k;
+}
+
 void draw_rect_screen(const Texture *t, pvr_list_t list, float x, float y, float w, float h,
                       float u0, float v0, float u1, float v1, float z, uint32_t argb)
 {
+    if(s_sx_on) sx_apply(&x, &y, &w, &h);
     quad(t, -1, list, x, y, w, h, u0, v0, u1, v1, z, argb);
 }
 
 void draw_rect_screen_pal(const Texture *t, int bank, pvr_list_t list, float x, float y, float w, float h,
                           float u0, float v0, float u1, float v1, float z, uint32_t argb)
 {
+    if(s_sx_on) sx_apply(&x, &y, &w, &h);
     quad(t, bank, list, x, y, w, h, u0, v0, u1, v1, z, argb);
 }
 

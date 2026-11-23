@@ -185,6 +185,66 @@ static void Records_BuildNameGlyphs(const RecFont *f, u32 *out, const u16 *ids, 
     }
 }
 
+/* font8.bin (shared with the Battle Play screens) */
+static int rec_font_load(RecFont *f) {
+    char path[160];
+    u32 size;
+    memset(f, 0, sizeof(*f));
+    snprintf(path, sizeof(path), "%s/font8.bin", g_mn_dir);
+    if (mn_load_file(path, &f->blob, &size) == 0 && size >= 12 && memcmp(f->blob, "RFNT", 4) == 0) {
+        f->nr = rd16(f->blob + 6);
+        f->nt = rd16(f->blob + 8);
+        f->start = f->blob + 12;
+        f->base = f->start + 2 * f->nr;
+        f->len = f->base + 4 * f->nr;
+        f->tiles = f->len + 4 * f->nr;
+        if ((u32)(f->tiles - f->blob) + 64u * f->nt <= size && f->nr >= 0x39)
+            return 1;
+    }
+    free(f->blob);
+    f->blob = NULL;
+    return 0;
+}
+
+int mn_owner_name(const u16 **name) {
+    *name = s_owner;
+    return s_owner_len;
+}
+
+/* TimeSelectMenu_LoadPlayerNames / ResultsScreen_LoadPlayerNames: GetNameGlyphs (6 characters, then a
+ * space or "...") of each name, the glyph tiles as one indexed strip per name (56 x 8 at y = 16 * row:
+ * the empty line between the rows keeps a scaled glyph's edge from sampling the next row), ink = colour
+ * index 1 + row with the colour ink[row] */
+MnBgImg *mn_name_strips(const u16 *const *names, const int *lens, int n, const u16 *ink) {
+    RecFont f;
+    MnBgImg *img;
+    u32 tbl[7];
+    s32 i, j, x, y;
+    if (!rec_font_load(&f))
+        return NULL;
+    img = (MnBgImg *)calloc(1, sizeof(*img));
+    img->w = 56;
+    img->h = (u16)(16 * n);
+    img->tw = (u16)mn_tex_pow2(img->w);
+    img->th = (u16)mn_tex_pow2(img->h);
+    img->idx = (u8 *)calloc((size_t)img->w * img->h, 1);
+    img->dirty = 1;
+    snprintf(img->name, sizeof(img->name), "vs_names");
+    for (i = 0; i < n; i++) {
+        img->pal[1 + i] = ink[i];
+        Records_BuildNameGlyphs(&f, tbl, names[i], lens[i]);
+        for (j = 0; j < 7; j++) {
+            const u8 *t = f.tiles + 64u * (tbl[j] < f.nt ? tbl[j] : 0);
+            for (y = 0; y < 8; y++)
+                for (x = 0; x < 8; x++)
+                    if (t[y * 8 + x] == 15)
+                        img->idx[(i * 16 + y) * img->w + j * 8 + x] = (u8)(1 + i);
+        }
+    }
+    free(f.blob);
+    return img;
+}
+
 /* Records_LoadNameGlyphs: the owner (row 0) and the opponents (rows 1..n) as 7
  * glyph tiles each; ink = value 15 (palette 0xc colour 15 = black for row 0,
  * palette 0xd colour 15 = white for the others) */

@@ -39,6 +39,12 @@ void zonefx_stage_loaded(struct Level *lv, int zone, int act);
 /* ZoneBg_Update + ZoneFx_Update + the zone tasks (line scroll build, palette tasks):
  * called by the camera inside Camera_Main (camera_set_zone_hook) */
 void zonefx_update(void);
+/* Battle Play: per-camera BG line / water-row state, and the second camera's view-only update */
+#include <stddef.h>
+size_t zonefx_view_size(void);
+void zonefx_view_save(void *dst);
+void zonefx_view_load(const void *src);
+void zonefx_set_view_only(int on);
 /* OBJ_FX_ZONE4_BLDY (g_obj_hooks.effect): a = 0 flash(b), 1 ramp up(b >> 8, b & 0xff),
  * 2 ramp down */
 void zonefx_bldy(s32 a, s32 b);

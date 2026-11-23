@@ -6,9 +6,15 @@
 #include <stdint.h>
 #include <dc/pvr.h>
 
-#define VIEW_W 256.0f
-#define VIEW_H 192.0f
-#define VIEW_SCALE 2.5f
+/* The view: a screen rectangle (x, y, w, h) showing the world at VIEW_SCALE screen px per world px.
+ * Default (every mode but Battle Play): the whole 640x480 screen at 2.5 -> a 256x192 world window.
+ * Battle Play sets one viewport per player (render_set_view) with the PVR user clip on. */
+extern float g_view_x, g_view_y, g_view_w, g_view_h, g_view_scale;
+#define VIEW_SCALE g_view_scale
+#define VIEW_OX g_view_x                    /* screen position of the view's top-left */
+#define VIEW_OY g_view_y
+#define VIEW_W (g_view_w / g_view_scale)    /* world window size (256 x 192 by default) */
+#define VIEW_H (g_view_h / g_view_scale)
 
 typedef struct {
     pvr_ptr_t ptr;
@@ -48,6 +54,24 @@ void draw_rect_screen_pal(const Texture *t, int bank, pvr_list_t list, float x, 
                           float u0, float v0, float u1, float v1, float z, uint32_t argb);
 
 uint32_t render_vram_free(void);
+
+/* Battle Play viewports. render_set_view: screen rect + world scale; clip != 0 turns the PVR user
+ * clip on for every polygon header compiled from then on (render_hdr_clip) - the rect must be
+ * 32-px tile aligned. render_emit_clip sends the user-clip object for the current rect into the
+ * open list (call after render_begin_list and after each render_set_view inside a list).
+ * render_reset_view: the default full-screen view, clip off. */
+void render_set_view(float x, float y, float w, float h, float scale, int clip);
+void render_reset_view(void);
+void render_emit_clip(void);
+int render_clip_on(void);
+/* screen-space draws (draw_rect_screen*) scaled into a viewport (Battle Play HUD); off by default */
+void render_set_screen_xform(float k, float ox, float oy, float vw);
+void render_reset_screen_xform(void);
+/* sets the user-clip mode bits (cmd 17..16) of a compiled header when the clip is on; no-op otherwise */
+static inline void render_hdr_clip(pvr_poly_hdr_t *h) {
+    extern int g_render_clip;
+    if(g_render_clip) h->m0.clip_mode = PVR_USERCLIP_INSIDE;
+}
 
 /* ------------------------------------------------------------------ PVR palette RAM
  * 1024 ARGB1555 entries = 64 rows of 16, shared by every paletted texture: a PAL4

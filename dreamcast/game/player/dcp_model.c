@@ -187,11 +187,14 @@ void dcp_model_set_slot_speed(DcpModel *m, s32 fx) { m->slot_speed = fx; }
 static void dcp_model_set_slot_speed_main(DcpModel *m, s32 fx) { m->speed = fx; }
 
 static DcpModel *s_hooked;
+static DcpModel *s_hooked2;   /* Battle Play: player 2's model (dcp_model_attach_second) */
 static void (*s_prev_anim)(void *ctx, DcPlayer *p, s32 anim);
 static void (*s_prev_speed)(void *ctx, DcPlayer *p, s32 s);
 static void *s_prev_ctx;
 static void hook_anim(void *ctx, DcPlayer *p, s32 anim) {
-    if (s_hooked && (s_hooked->p == NULL || s_hooked->p == p))
+    if (s_hooked2 && s_hooked2->p == p)
+        dcp_model_set_anim(s_hooked2, p, anim);
+    else if (s_hooked && (s_hooked->p == NULL || s_hooked->p == p))
         dcp_model_set_anim(s_hooked, p, anim);
     if (s_prev_anim)
         s_prev_anim(s_prev_ctx ? s_prev_ctx : ctx, p, anim);
@@ -199,6 +202,8 @@ static void hook_anim(void *ctx, DcPlayer *p, s32 anim) {
 static void hook_speed(void *ctx, DcPlayer *p, s32 s) {
     if (s_hooked && s_hooked->p == p)
         dcp_model_set_speed(s_hooked, s);
+    if (s_hooked2 && s_hooked2->p == p)
+        dcp_model_set_speed(s_hooked2, s);
     if (s_prev_speed)
         s_prev_speed(s_prev_ctx ? s_prev_ctx : ctx, p, s);
 }
@@ -207,6 +212,21 @@ static void hook_model_speed(void *ctx, DcPlayer *p, s32 fx) {
     (void)ctx;
     if (s_hooked && s_hooked->p == p)
         dcp_model_set_slot_speed_main(s_hooked, fx);
+    if (s_hooked2 && s_hooked2->p == p)
+        dcp_model_set_slot_speed_main(s_hooked2, fx);
+}
+/* Battle Play: a second player's model (dcp_model_attach first for player 1); NULL detaches */
+void dcp_model_attach_second(DcpModel *m, const DcPlayer *p) {
+    s_hooked2 = m;
+    if (m == NULL)
+        return;
+    m->p = p;
+    m->cur_res = 0;
+    m->jnt_anim = m->vis_anim = m->blend_anim = -1;
+    m->parts0 = m->parts4 = 0;
+    m->posed = 0;
+    if (p && m->ok)
+        dcp_model_set_anim(m, (DcPlayer *)p, p->anim);
 }
 
 void dcp_model_attach(DcpModel *m, const DcPlayer *p) {

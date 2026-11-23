@@ -126,4 +126,11 @@ typedef struct CamStats {
 const CamStats *camera_stats(void);
 int camera_look_state(void);
 
+/* Battle Play: per-player camera contexts (camera.c) */
+#include <stddef.h>
+size_t camera_ctx_size(void);
+void camera_ctx_save(void *dst);
+void camera_ctx_load(const void *src);
+void camera_set_rival(DcPlayer *p);
+
 #endif

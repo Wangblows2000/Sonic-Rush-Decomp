@@ -25,8 +25,19 @@ MnData g_mn_data;
 u8 gGameLanguage = 1;
 u32 gRandSeed = 0x12345678;
 MnBgOfs gDisplayMain[4], gDisplaySub[4];
-s16 g_mn_bright[2];
-MnBgLayer g_mn_layer[2][4];
+static MnBgOfs s_disp_p2[2][4];   /* player 2's gDisplayMain / gDisplaySub (Battle Play, engines 2 / 3) */
+s16 g_mn_bright[MN_ENGINES];
+MnBgLayer g_mn_layer[MN_ENGINES][4];
+MnBgOfs *mn_bg_ofs(int engine) {
+    switch (engine & 3) {
+    case 0:
+        return gDisplayMain;
+    case 1:
+        return gDisplaySub;
+    default:
+        return s_disp_p2[engine & 1];
+    }
+}
 MnComp g_mn_comp;
 MenuHooks g_menu_hooks;
 
@@ -200,6 +211,11 @@ void Task_DestroyByTag(u16 tag) {
         if (s_tasks[i].used && !s_tasks[i].dead && s_tasks[i].tag == tag)
             Task_Destroy(&s_tasks[i]);
 }
+const MnTask *mn_task_at(int i) {
+    if (i < 0 || i >= MN_MAX_TASKS || !s_tasks[i].used || s_tasks[i].dead)
+        return NULL;
+    return &s_tasks[i];
+}
 int Task_Count(void) {
     int i, n = 0;
     for (i = 0; i < MN_MAX_TASKS; i++)
@@ -241,6 +257,7 @@ void Task_RunAll(void) {
 
 /* -------------------------------------------------------------------- pad */
 MnPad gPad;
+MnPad gPad2;
 void Pad_Reset(MnPad *o, const u16 *a, const u16 *b) {
     int i;
     memset(o, 0, sizeof(*o));
@@ -353,7 +370,7 @@ void mn_bg_free(MnBgImg *b) {
     int e, l;
     if (!b)
         return;
-    for (e = 0; e < 2; e++)
+    for (e = 0; e < MN_ENGINES; e++)
         for (l = 0; l < 4; l++)
             if (g_mn_layer[e][l].img == b)
                 g_mn_layer[e][l].img = NULL;
@@ -399,22 +416,22 @@ void mn_bg_expand(MnBgImg *b) {
 }
 
 void Background_Show(int engine, int layer, MnBgImg *img) {
-    MnBgLayer *l = &g_mn_layer[engine & 1][layer & 3];
+    MnBgLayer *l = &g_mn_layer[engine & 3][layer & 3];
     l->img = img;
     l->visible = img != NULL;
     if (l->alpha == 0)
         l->alpha = 16;
 }
 void Background_SetSize(int engine, int layer, int w, int h) {
-    g_mn_layer[engine & 1][layer & 3].wrap_w = (u16)w;
-    g_mn_layer[engine & 1][layer & 3].wrap_h = (u16)h;
+    g_mn_layer[engine & 3][layer & 3].wrap_w = (u16)w;
+    g_mn_layer[engine & 3][layer & 3].wrap_h = (u16)h;
 }
-void Background_Hide(int engine, int layer) { g_mn_layer[engine & 1][layer & 3].visible = 0; }
-void Background_SetPriority(int engine, int layer, int prio) { g_mn_layer[engine & 1][layer & 3].prio = (u8)(prio & 3); }
+void Background_Hide(int engine, int layer) { g_mn_layer[engine & 3][layer & 3].visible = 0; }
+void Background_SetPriority(int engine, int layer, int prio) { g_mn_layer[engine & 3][layer & 3].prio = (u8)(prio & 3); }
 
 void mn_display_reset(void) {
     int e, l;
-    for (e = 0; e < 2; e++)
+    for (e = 0; e < MN_ENGINES; e++)
         for (l = 0; l < 4; l++) {
             g_mn_layer[e][l].img = NULL;
             g_mn_layer[e][l].visible = 0;
@@ -424,6 +441,7 @@ void mn_display_reset(void) {
         }
     memset(gDisplayMain, 0, sizeof(gDisplayMain));
     memset(gDisplaySub, 0, sizeof(gDisplaySub));
+    memset(s_disp_p2, 0, sizeof(s_disp_p2));
 }
 
 /* -------------------------------------------------------- sprite resources */
@@ -551,7 +569,7 @@ void AnimatorSprite_Init(MnSpr *s, const MnRes *r, u16 anim, u32 flags, int engi
     s->res = r;
     s->speed = 0x1000;
     s->flags = flags;
-    s->engine = (u8)(engine & 1);
+    s->engine = (u8)(engine & 3);
     s->alpha = 16;
     AnimatorSprite_SetAnimation(s, anim);
 }
@@ -783,7 +801,7 @@ int mn_affine_clip(const MnQuad *q, const MnRegion *r, float out[8][4]) {
 /* ---------------------------------------------------- composition */
 void mn_comp_reset(int base_engine) {
     memset(&g_mn_comp, 0, sizeof(g_mn_comp));
-    g_mn_comp.base = (u8)(base_engine & 1);
+    g_mn_comp.base = (u8)(base_engine & 3);
 }
 MnRegion *mn_comp_add(int engine, float x0, float y0, float x1, float y1, float dx, float dy, float scale, int hide_bg,
                       int hide_spr) {
@@ -793,7 +811,7 @@ MnRegion *mn_comp_add(int engine, float x0, float y0, float x1, float y1, float 
     r = &g_mn_comp.r[g_mn_comp.n++];
     r->hide_bg = (u8)hide_bg;
     r->hide_spr = (u8)hide_spr;
-    r->engine = (u8)(engine & 1);
+    r->engine = (u8)(engine & 3);
     r->sx0 = x0;
     r->sy0 = y0;
     r->sx1 = x1;
@@ -812,15 +830,15 @@ int mn_tex_pow2(int v) {
 }
 
 /* BG layers -> quads (wrapping scroll, as a DS text BG wraps at its size) */
-static MnQuad s_bgq[2][4][8];
-static int s_nbgq[2][4];
+static MnQuad s_bgq[MN_ENGINES][4][8];
+static int s_nbgq[MN_ENGINES][4];
 static MnDraw s_sorted[(MN_MAX_QUADS + 64) * 2];
 static int s_nsorted;
 
 /* BG layer -> quads (wrapping scroll, as a DS text BG wraps at its plane size) */
 static void build_bg(int e, int layer) {
     const MnBgLayer *L = &g_mn_layer[e][layer];
-    const MnBgOfs *ofs = e ? &gDisplaySub[layer] : &gDisplayMain[layer];
+    const MnBgOfs *ofs = &mn_bg_ofs(e)[layer];
     int sx, sy, tx, ty, ww, wh;
     s_nbgq[e][layer] = 0;
     if (!L->visible || !L->img)
@@ -858,7 +876,7 @@ static void build_bg(int e, int layer) {
 int mn_sorted(const MnDraw **out) {
     int e, p, l, i, k, ri;
     s_nsorted = 0;
-    for (e = 0; e < 2; e++)
+    for (e = 0; e < MN_ENGINES; e++)
         for (l = 0; l < 4; l++)
             build_bg(e, l);
     for (ri = 0; ri < g_mn_comp.n; ri++) {

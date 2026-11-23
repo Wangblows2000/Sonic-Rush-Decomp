@@ -73,6 +73,7 @@ void dcp_model_free(DcpModel *m);
 /* Follow this player: chains the anim / anim_speed hooks (call once before
  * objects_init, which chains its own hooks after these) and starts from p->anim. */
 void dcp_model_attach(DcpModel *m, const DcPlayer *p);
+void dcp_model_attach_second(DcpModel *m, const DcPlayer *p);   /* Battle Play: player 2 (NULL: detach) */
 
 /* Player_SetAnimation model part (called from the hook; exposed for tests). */
 void dcp_model_set_anim(DcpModel *m, DcPlayer *p, s32 anim);

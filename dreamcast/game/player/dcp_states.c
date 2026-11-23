@@ -470,6 +470,7 @@ void dcp_update_boost(DcPlayer *w) {
         else
             boost_min_speed(w, &w->gnd_vel);
         w->pf |= 0x20000;
+        w->vs_attack = 1;   /* Player_SendNetState: the rival's console reacts (vs.c) */
         w->hitstop = 0x44;
     }
     if ((w->pressed & 0xc00) && (w->state != dcp_state_in_air || !(w->pf & 2)) && W.zone < 9 && W.act < 2 &&
@@ -1043,6 +1044,66 @@ void dcp_act_knockback(DcPlayer *w, s16 vx, s16 vy) {
     w->move_flags &= ~1;
     w->invuln = w->invuln_len;
     w->state = dcp_state_hurt;
+}
+
+/* Player_Action_Warp */
+void dcp_act_warp(DcPlayer *w) {
+    if (w->pf & 0x400)
+        return;
+    if (w->pf & 0x1000000)
+        return;
+    dcp_player_init_state(w);
+    dcp_set_anim(w, 0x11);
+    w->disp_flags &= ~1;
+    w->move_flags |= 0x100;
+    w->move_flags |= 0x2000;
+    w->move_flags |= 0x200;
+    w->vel_x = 0;
+    w->gnd_vel = 0;
+    w->vel_y = 0;
+    dcp_stop_highspeed(w);
+    dcp_stop_boost(w);
+    w->state = dcp_state_warp;
+    w->timer = 0;
+    w->unk3CA = 0;
+    w->unk44 = 0x100;
+    w->unk46 = 0x100;
+    w->pf |= 0x400;
+    shake(4);
+}
+/* ObjShift_Set (objects/obj_fx.c): the player module's copy */
+static s32 shift_set(s32 cur, s32 target, s32 shift, s32 max_step, s32 min_step) {
+    s32 d;
+    if (cur == target)
+        return cur;
+    if (min_step == 0)
+        min_step = 1;
+    d = (target - cur) >> shift;
+    if (max_step != 0) {
+        if (d > max_step) d = max_step;
+        if (d < -max_step) d = -max_step;
+    }
+    if (d > 0 && d < min_step) d = min_step;
+    if (d < 0 && d > -min_step) d = -min_step;
+    if ((d > 0 && cur + d > target) || (d < 0 && cur + d < target))
+        return target;
+    return cur + d;
+}
+/* Player_State_Warp */
+void dcp_state_warp(DcPlayer *w) {
+    w->timer++;
+    if (w->timer >= 8) {
+        w->unk44 = (s16)shift_set(w->unk44, 1, 2, 0x20, 8);
+        w->unk46 = (s16)shift_set(w->unk46, 0x400, 2, 0x80, 8);
+    }
+    if (w->unk44 == 1 && w->unk46 == 0x400)
+        w->disp_flags |= 0x20;
+    if (w->timer < 0x3c)
+        return;
+    w->pf &= ~0x400;
+    w->pf2 |= 0x400000;
+    dcp_respawn(w);
+    w->act_idle(w);
 }
 
 void dcp_act_die(DcPlayer *w) {

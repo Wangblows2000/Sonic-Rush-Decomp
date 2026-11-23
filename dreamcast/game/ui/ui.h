@@ -229,4 +229,12 @@ typedef struct UiQuad {
     int screen;            /* 0 DS main screen, 1 composed in from the sub screen */
 } UiQuad;
 int ui_debug_quads(const UiQuad **out);
+/* Battle Play: one HUD per player (ui_hud.c). Swap the HUD work around each player's frame (the
+ * player module's tension-gauge hook writes it) and draw: ui_vs_hud_draw records and draws that
+ * player's HUD (rings, time, tension gauge; no lives, no score) through the current screen transform. */
+#include <stddef.h>
+size_t hud_ctx_size(void);
+void hud_ctx_save(void *dst);
+void hud_ctx_load(const void *src);
+void ui_vs_hud_draw(const DcPlayer *p, u32 frame);
 #endif

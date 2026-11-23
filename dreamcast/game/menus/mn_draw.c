@@ -163,15 +163,16 @@ static void draw_affine(const MnQuad *q, const MnRegion *r, float z) {
     }
 }
 
-static void bright_overlay(s16 b, float z) {
+static void bright_rect(s16 b, float x, float y, float w, float h, float z) {
     uint32_t a;
     if (b == 0)
         return;
     a = (uint32_t)((b < 0 ? -b : b) * 255 / 16);
     if (a > 255)
         a = 255;
-    draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, z, a << 24 | (b > 0 ? 0xffffff : 0));
+    draw_rect_screen(NULL, PVR_LIST_TR_POLY, x, y, w, h, 0, 0, 0, 0, z, a << 24 | (b > 0 ? 0xffffff : 0));
 }
+static void bright_overlay(s16 b, float z) { bright_rect(b, 0, 0, 640, 480, z); }
 
 void menus_draw_tr(void) {
     const MnDraw *s;
@@ -212,7 +213,11 @@ void menus_draw_tr(void) {
     }
     /* master brightness: one pass over the whole frame (split: the sub screen's over everything, the
      * main screen's after its regions above) */
-    if (g_mn_comp.split_bright) {
+    if (g_mn_comp.nbr > 0) {   /* Battle Play: each player's half with that player's brightness */
+        for (i = 0; i < g_mn_comp.nbr && i < 2; i++)
+            bright_rect(g_mn_bright[g_mn_comp.br[i].engine & 3], g_mn_comp.br[i].x, g_mn_comp.br[i].y,
+                        g_mn_comp.br[i].w, g_mn_comp.br[i].h, 90.0f);
+    } else if (g_mn_comp.split_bright) {
         if (!main_done)
             bright_overlay(g_mn_bright[0], 89.0f);
         bright_overlay(g_mn_bright[1], 90.0f);

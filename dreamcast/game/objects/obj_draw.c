@@ -80,6 +80,7 @@ static void quad4(const Texture *t, int bank, pvr_list_t list, const float *xs, 
     pvr_vertex_t v;
     pvr_poly_cxt_txr(&cxt, list, tex_txr_format(t, bank), t->w, t->h, t->ptr, PVR_FILTER_NONE);
     pvr_poly_compile(&hdr, &cxt);
+    render_hdr_clip(&hdr);
     pvr_prim(&hdr, sizeof(hdr));
     u0 /= t->w; u1 /= t->w; v0 /= t->h; v1 /= t->h;
     v.flags = PVR_CMD_VERTEX; v.argb = argb; v.oargb = 0; v.z = z;
@@ -209,8 +210,8 @@ static void draw_spr_at(const ObjSprite *s, pvr_list_t list, s32 px, s32 py, int
         cx[3] = x0 - x; cy[3] = y0 + img->h - y;
         for (i = 0; i < 4; i++) {
             float rx = cx[i] * sx, ry = cy[i] * sy;
-            xs[i] = (x + rx * c - ry * sn - g_cam_x) * VIEW_SCALE;
-            ys[i] = (y + rx * sn + ry * c - g_cam_y) * VIEW_SCALE;
+            xs[i] = VIEW_OX + (x + rx * c - ry * sn - g_cam_x) * VIEW_SCALE;
+            ys[i] = VIEW_OY + (y + rx * sn + ry * c - g_cam_y) * VIEW_SCALE;
         }
         u0 = (float)img->x; v0 = (float)img->y; u1 = (float)(img->x + img->w); v1 = (float)(img->y + img->h);
         if (hf) { tmp = u0; u0 = u1; u1 = tmp; }
@@ -345,6 +346,7 @@ static void draw_trails(void) {
     pvr_poly_cxt_col(&cxt, PVR_LIST_TR_POLY);
     cxt.gen.culling = PVR_CULLING_NONE;
     pvr_poly_compile(&hdr, &cxt);
+    render_hdr_clip(&hdr);
     pvr_prim(&hdr, sizeof(hdr));
     for (i = 0; i < n; i++) {
         u16 c = q[i].bgr555;
@@ -355,8 +357,8 @@ static void draw_trails(void) {
         v.u = v.v = 0.0f;
         for (k = 0; k < 4; k++) {
             v.flags = k == 3 ? PVR_CMD_VERTEX_EOL : PVR_CMD_VERTEX;
-            v.x = ((float)q[i].x[order[k]] / 256.0f - g_cam_x) * VIEW_SCALE;
-            v.y = ((float)q[i].y[order[k]] / 256.0f - g_cam_y) * VIEW_SCALE;
+            v.x = VIEW_OX + ((float)q[i].x[order[k]] / 256.0f - g_cam_x) * VIEW_SCALE;
+            v.y = VIEW_OY + ((float)q[i].y[order[k]] / 256.0f - g_cam_y) * VIEW_SCALE;
             pvr_prim(&v, sizeof(v));
         }
     }
@@ -572,7 +574,7 @@ static int om_place(const ObjModelView *v, const dcm_model_t *m, int k, dcm_mtx_
     tx = (float)v->x / 256.0f - g_cam_x;
     ty = (float)(v->y + k * v->rep_dy) / 256.0f - g_cam_y;
     tz = (float)v->z / 256.0f;
-    if (tx + r < -32.0f || tx - r > 256.0f + 32.0f || ty + r < -32.0f || ty - r > 192.0f + 32.0f)
+    if (tx + r < -32.0f || tx - r > VIEW_W + 32.0f || ty + r < -32.0f || ty - r > VIEW_H + 32.0f)
         return 0;
     ty = -ty;
     for (i = 0; i < 3; i++)
@@ -749,6 +751,7 @@ static void spr3d_emit(const Texture *t, int bank, pvr_list_t list, const DsprIm
     pvr_poly_cxt_txr(&cxt, list, tex_txr_format(t, bank), t->w, t->h, t->ptr, PVR_FILTER_NONE);
     cxt.gen.culling = PVR_CULLING_NONE;
     pvr_poly_compile(&hdr, &cxt);
+    render_hdr_clip(&hdr);
     pvr_prim(&hdr, sizeof(hdr));
     v.argb = argb;
     v.oargb = 0;

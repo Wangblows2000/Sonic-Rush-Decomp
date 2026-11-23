@@ -26,7 +26,7 @@
 #define OBJ_RECT_PER_LIST 0x30 /* gObjRectNextList[4][0x30]                 */
 #define OBJ_COLMAP_MAX 0x20    /* data_022c4de4[0x20]                       */
 #define OBJ_RING_MAX 64        /* RingManager parts[64]                     */
-#define OBJ_MAX_VIEWS 3        /* gCamera[0], gCamera[1], + the DC window   */
+#define OBJ_MAX_VIEWS 8        /* gCamera[0], gCamera[1], + the DC window (Battle Play: 4 per player) */
 
 /* task ids (Task_Create id argument = update order) */
 #define OBJ_PRIO_STAGE 0x0010   /* Stage_Main (ObjRect_CheckAllGroup)       */
@@ -178,6 +178,9 @@ enum ObjBac {
     OBJ_BAC_EFF_SPIN1, /* ac_eff_kemuri_spin01.bac (act_com): EffSpinSmoke1 */
     OBJ_BAC_EFF_SPIN2, /* ac_eff_kemuri_spin02.bac (act_com): EffSpinSmoke2 */
     OBJ_BAC_EFF_TRICK, /* ac_eff_trick.bac (act_com): EffTrick_CreateAtOffset, EffTrickSparkle, EffTrickComboPart */
+    /* Battle Play (VsMode) */
+    OBJ_BAC_EFF_VS,    /* ac_eff_vs.bac (act_com): EffVs, EffVsSlowdown / Confusion / TensionDrain / TensionMax */
+    OBJ_BAC_FIX_VS,    /* ac_fix_vs.bac (act_com): FixVs*, FixVsPushIcon, FixVsHud */
     OBJ_BAC_COUNT
 };
 
@@ -399,6 +402,7 @@ struct Obj {
     u8 used;
     u8 kind;
     Obj *next;
+    u8 vs_touched;      /* Battle Play: players (bit = slot) that took this marker (each console had its own) */
 };
 
 #endif

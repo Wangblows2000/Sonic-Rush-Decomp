@@ -47,9 +47,14 @@ void Task_DestroyRange(u16 lo, u16 hi);
 void Task_DestroyByTag(u16 tag);
 void Task_RunAll(void);
 int Task_Count(void);
+const MnTask *mn_task_at(int i);   /* live task of table slot i, else NULL (host tests) */
 #define TASK_WORK(T) ((T *)gTaskCurrent->work)
 
 /* ------------------------------------------------- pad (Pad_Update) */
+/* Engines: 0 main, 1 sub (the DS's two). Battle Play (mn_vs.c) shows the two players' DS
+ * screens at once: player 2's main / sub are engines 2 / 3 (MN_ENGINE_P2). */
+#define MN_ENGINES 4
+#define MN_ENGINE_P2 2
 enum { PAD_A = 1, PAD_B = 2, PAD_SELECT = 4, PAD_START = 8, PAD_RIGHT = 0x10, PAD_LEFT = 0x20,
        PAD_UP = 0x40, PAD_DOWN = 0x80, PAD_R = 0x100, PAD_L = 0x200, PAD_X = 0x400, PAD_Y = 0x800 };
 typedef struct {
@@ -57,6 +62,7 @@ typedef struct {
     u16 cnt[12], delay[12], interval[12];
 } MnPad;
 extern MnPad gPad;
+extern MnPad gPad2;   /* Battle Play: player 2's pad (menus_set_pad2), updated with gPad */
 void Pad_Reset(MnPad *p, const u16 *delay, const u16 *interval);
 void Pad_Update(MnPad *p, u16 keys);
 u16 mn_pad_from_input(const InputState *in);
@@ -64,7 +70,8 @@ u16 mn_pad_from_input(const InputState *in);
 /* --------------------------------------------------- display state */
 typedef struct { u16 x, y; } MnBgOfs;
 extern MnBgOfs gDisplayMain[4], gDisplaySub[4];   /* BG scroll per engine (gDisplayMain/Sub ofs[]) */
-extern s16 g_mn_bright[2];   /* data_0208926c (main) / data_02087d44 (sub): -16 black .. 16 white */
+MnBgOfs *mn_bg_ofs(int engine);   /* gDisplayMain / gDisplaySub (engines 2 / 3: player 2's) */
+extern s16 g_mn_bright[MN_ENGINES];   /* data_0208926c (main) / data_02087d44 (sub): -16 black .. 16 white */
 #define BRIGHT_MAIN g_mn_bright[0]
 #define BRIGHT_SUB g_mn_bright[1]
 
@@ -92,7 +99,7 @@ typedef struct {
     u16 wrap_w, wrap_h;   /* BG plane size (BGxCNT size bits); 0 = 256x256 or the image size */
 } MnBgLayer;
 void Background_SetSize(int engine, int layer, int w, int h);
-extern MnBgLayer g_mn_layer[2][4];
+extern MnBgLayer g_mn_layer[MN_ENGINES][4];
 /* Background_Init(bg, res, flags, engine, layer, w, h) + Background_Draw */
 void Background_Show(int engine, int layer, MnBgImg *img);
 void Background_Hide(int engine, int layer);
@@ -188,6 +195,10 @@ typedef struct {
     u8 split_bright;   /* 1: engine 0's brightness fades its regions only (an overlay after them), engine
                         * 1's the whole frame over everything (the two DS screens fade apart) */
     u32 fill;          /* backdrop colour under everything (0 = none) */
+    /* nbr > 0: instead of one full-frame brightness, the brightness of engine br[i].engine over the
+     * frame rectangle br[i] (Battle Play: each player's half fades with that player's screens) */
+    int nbr;
+    struct { float x, y, w, h; u8 engine; } br[2];
 } MnComp;
 extern MnComp g_mn_comp;
 void mn_comp_reset(int base_engine);
@@ -314,6 +325,9 @@ typedef struct {
     u8 unk1C, unk1D;   /* zone, act */
     u16 unk1E;     /* attract demo index (gGameState[0xf]) */
     u16 unk28;     /* emeralds */
+    s32 unk4, unk8; /* VS: the host's (player 1) / the guest's (player 2) character (PlayerSelectMenu_ExitToGame) */
+    s32 vs_winner;  /* data_022c4590.unk40 as ResultsScreen_GetResultKind gives it the host: 0 player 1 won,
+                     * 1 player 2 won, 2 draw (menus_vs_exit) */
     u8 lives;      /* data_022c4590.unk14 */
     u32 score;     /* data_022c4590.unk4 */
     u16 new_flags; /* data_022c45f8 (bit 0: a new stage was cleared) */
@@ -405,6 +419,31 @@ void Sound_PlayVoice(s32 id);
 void Sound_PlayVoiceAlt(s32 id);
 void Sound_PlayVoiceArc(s32 arc, s32 id);
 void NNS_SndStopSoundAll(void);
+
+/* Battle Play (mn_vs.c, mn_psel.c modes 1 / 2, mn_timeselect.c, mn_results.c). The DS's wireless
+ * records (WirelessSession_GetSendBuffer / GetPartnerRecvBuffer, 0x40 bytes each) of the two local
+ * players: player p's send record is the other player's partner record. */
+u8 *WirelessSession_GetSendBuffer(s32 player);
+u8 *WirelessSession_GetPartnerRecvBuffer(s32 player);
+void mn_vs_reset_records(void);
+void mn_vs_pad_update(void);              /* gPad2 from menus_set_pad2's input (menus_run_frame) */
+void PlayerSelectMenu_StartVs(void);      /* SceneChange_ToPlayerSelectMenuMode1 (+ Mode2 for player 2) */
+int PlayerSelectMenu_VsState(int p, int *choice);
+void TimeSelectMenu_StartMode0(void);
+void Game_StartVsStage(s32 zone, s32 act);   /* SceneChange_ToVsStage: MENU_REQ_VS_STAGE */
+void mn_request_vs_stage(void);
+void ResultsScreen_Create(void);
+/* player names for the VS screens (TimeSelect, Results) and the VS record: player 1 = the owner's
+ * nickname (menus_set_owner_name), player 2 = menus_set_player2_name */
+int mn_owner_name(const u16 **name);
+int mn_player2_name(const u16 **name);
+/* the font_ipl_8x8 name strips (font8.bin, as Records_LoadNameGlyphs): rows of 7 glyphs (56 x 8) at
+ * y = 16 * row, ink colour index 1 + row; NULL without font8.bin */
+MnBgImg *mn_name_strips(const u16 *const *names, const int *lens, int n, const u16 *ink);
+/* host test access */
+int TimeSelectMenu_Selected(void);
+int TimeSelectMenu_StateId(void);
+int ResultsScreen_Choice(void);
 
 /* scenes */
 void SegaLogo_Start(void);

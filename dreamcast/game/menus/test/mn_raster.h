@@ -28,11 +28,17 @@ static void raster_quad(const MnQuad *q, const MnOut *o) {
                 int iu = (int)u, iv = (int)v;
                 if (q->kind == MNQ_SPRITE) {
                     const MnRes *res = q->res;
-                    if (!res->pixels[q->page])
-                        continue;
                     if (iu < 0 || iv < 0 || iu >= res->pages[q->page].w || iv >= res->pages[q->page].h)
                         continue;
-                    p = res->pixels[q->page][iv * res->pages[q->page].w + iu];
+                    if (res->texels[q->page] && q->image < res->pal.n_images &&
+                        res->pal.image_pal[q->image] < res->pal.n_pal) {   /* PAL4 page */
+                        int t = sprpal_texel(res->texels[q->page], res->pages[q->page].w, res->pages[q->page].h, iu, iv);
+                        p = t ? res->pal.pal[16u * res->pal.image_pal[q->image] + t] : 0;
+                    } else if (res->pixels[q->page]) {
+                        p = res->pixels[q->page][iv * res->pages[q->page].w + iu];
+                    } else {
+                        continue;
+                    }
                 } else {
                     MnBgImg *bg = (MnBgImg *)q->bg;
                     if (bg->dirty || !bg->argb) {
@@ -73,6 +79,24 @@ static void raster_frame(const char *path) {
     for (i = 0; i < n; i++)
         if (mn_project(s[i].q, s[i].r, &o))
             raster_quad(s[i].q, &o);
+    if (g_mn_comp.nbr > 0) {   /* Battle Play: a brightness per player half */
+        int k2;
+        for (k2 = 0; k2 < g_mn_comp.nbr && k2 < 2; k2++) {
+            int bb = g_mn_bright[g_mn_comp.br[k2].engine & 3];
+            float a = (bb < 0 ? -bb : bb) / 16.0f;
+            int bx0 = (int)g_mn_comp.br[k2].x, by0 = (int)g_mn_comp.br[k2].y;
+            int bx1 = bx0 + (int)g_mn_comp.br[k2].w, by1 = by0 + (int)g_mn_comp.br[k2].h;
+            if (bb == 0)
+                continue;
+            for (y = by0 < 0 ? 0 : by0; y < by1 && y < 480; y++)
+                for (x = bx0 < 0 ? 0 : bx0; x < bx1 && x < 640; x++) {
+                    int k;
+                    for (k = 0; k < 3; k++)
+                        g_img[y][x][k] = (unsigned char)(g_img[y][x][k] * (1 - a) + (bb > 0 ? 255 : 0) * a);
+                }
+        }
+        b = 0;
+    }
     if (b != 0) {   /* one brightness pass over the frame */
         float a = (b < 0 ? -b : b) / 16.0f;
         for (y = 0; y < 480; y++)

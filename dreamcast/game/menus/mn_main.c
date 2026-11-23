@@ -87,6 +87,7 @@ int menus_init(void) {
                (unsigned)gSaveData.unk66, (unsigned)gSaveData.unkF, (unsigned)gSaveData.unk8, (unsigned)gSaveData.unk4);
     memset(&gGameState, 0, sizeof(gGameState));
     Pad_Reset(&gPad, NULL, NULL);
+    Pad_Reset(&gPad2, NULL, NULL);
     BRIGHT_MAIN = BRIGHT_SUB = -16;
     mn_display_reset();
     SegaLogo_Start();
@@ -120,6 +121,7 @@ static void mn_trace_frame(void) {
 MenuRequest menus_run_frame(const InputState *in) {
     memset(&g_mn_request, 0, sizeof(g_mn_request));
     Pad_Update(&gPad, mn_pad_from_input(in));
+    mn_vs_pad_update();
     mn_quads_reset();
     Task_RunAll();
     mn_trace_frame();

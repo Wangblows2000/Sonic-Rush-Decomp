@@ -35,6 +35,7 @@ extern struct { u16 unk0; u32 unk4; u16 unk8; u16 unkA; } boss_gBossStatus;
 #include "../menus/extraact.h"
 #include "../camera/camera.h"
 #include "../zonefx/zonefx.h"
+#include "../vs/vs.h"
 #include <stdlib.h>
 #include <math.h>
 
@@ -475,6 +476,7 @@ static void enter_front_end(void)
  * ScreenFlash_Create: full-frame white flash fading over 16 frames.
  * Enemy-room events go to the UI (EnemyRoomHud). */
 static int g_flash;
+static int g_vs_script = -1;   /* test builds: /cd/debug/vs_p2.txt (scripted pads, see vs_script_pad) */
 static void obj_effect_hook(void *ctx, DcPlayer *p, s32 kind, s32 a, s32 b)
 {
     (void)ctx; (void)p;
@@ -769,6 +771,328 @@ static int stage_index(int zone, int act)
     return -1;
 }
 
+/* ===================================================================== Battle Play
+ * Two players on one Dreamcast (controller ports A / B), split screen: player 1 above, player 2
+ * below, one 640x224 viewport each (the world at 7/6: 548x192 world px, the DS screen's height),
+ * a 32-px bar between (PVR user clip is tile-granular). Rules: vs/vs.c. Per player: camera,
+ * zone-BG lines, HUD and checkpoint contexts; shared: stage, objects, rings, music. */
+#define VS_VIEW_H 224.0f
+#define VS_SCALE (224.0f / 192.0f)
+static DcPlayer g_player2;
+static DcpModel g_dcp_model2;
+static int g_model2_ok, g_model2_chara = -1;
+static void *g_vs_cam[2], *g_vs_zfx[2], *g_vs_hud[2];
+
+static void vs_ctx_alloc(void)
+{
+    int i;
+    for(i = 0; i < 2; i++) {
+        if(!g_vs_cam[i]) g_vs_cam[i] = malloc(camera_ctx_size());
+        if(!g_vs_zfx[i]) g_vs_zfx[i] = malloc(zonefx_view_size());
+        if(!g_vs_hud[i]) g_vs_hud[i] = malloc(hud_ctx_size());
+    }
+}
+static void vs_load(int i) { camera_ctx_load(g_vs_cam[i]); zonefx_view_load(g_vs_zfx[i]); hud_ctx_load(g_vs_hud[i]); zonefx_set_view_only(i == 1); }
+static void vs_save(int i) { camera_ctx_save(g_vs_cam[i]); zonefx_view_save(g_vs_zfx[i]); hud_ctx_save(g_vs_hud[i]); }
+
+/* the viewport of player i, and the camera window centred on the wider world window */
+static float s_dbg_cam[2][2];
+static void vs_view(int i)
+{
+    float ww;
+    render_set_view(0.0f, i ? 256.0f : 0.0f, 640.0f, VS_VIEW_H, VS_SCALE, 1);
+    camera_apply();
+    ww = VIEW_W;
+    g_cam_x -= (ww - 256.0f) * 0.5f;
+    if(g_cam_x < 0) g_cam_x = 0;
+    s_dbg_cam[i][0] = g_cam_x; s_dbg_cam[i][1] = g_cam_y;
+}
+
+/* StageObj_Draw3DEx for a player in the current viewport */
+static void vs_draw_player(pvr_list_t list, DcPlayer *p, DcpModel *m, int ok)
+{
+    dcm_camera_t cam;
+    dcm_mtx_t mdl;
+    dcm_lights_t lights;
+    s32 ax, ay, az;
+    float tx, ty;
+    if(!ok || (p->disp_flags & 0x20)) return;
+    if(dcp_model_afterimage(p, &ax, &ay, &az)) {
+        tx = ax / 256.0f - g_cam_x; ty = -(ay / 256.0f - g_cam_y);
+        dcm_camera_stage(&cam); dcm_camera_stage_offaxis(&cam, &tx, &ty);
+        dcp_model_matrix(p, tx, ty, 0, &mdl); dcp_model_lights(p, 1, &lights);
+        dcp_model_draw(m, p, list, &mdl, &cam, &lights);
+    }
+    tx = p->x / 256.0f - g_cam_x; ty = -(p->y / 256.0f - g_cam_y);
+    dcm_camera_stage(&cam); dcm_camera_stage_offaxis(&cam, &tx, &ty);
+    dcp_model_matrix(p, tx, ty, p->z / 256.0f, &mdl); dcp_model_lights(p, 0, &lights);
+    dcp_model_draw(m, p, list, &mdl, &cam, &lights);
+}
+
+/* a seven-segment digit for the start countdown (no countdown art in the ROM's VS assets) */
+static void vs_digit(int d, float x, float y, float s, uint32_t c)
+{
+    static const uint8_t seg[10] = { 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f };
+    float t = s * 0.18f, w = s * 0.6f, h = s;
+    uint8_t m = seg[d % 10];
+    if(m & 1)  draw_rect_screen(NULL, PVR_LIST_TR_POLY, x, y, w, t, 0, 0, 0, 0, 99.0f, c);
+    if(m & 2)  draw_rect_screen(NULL, PVR_LIST_TR_POLY, x + w - t, y, t, h * 0.5f, 0, 0, 0, 0, 99.0f, c);
+    if(m & 4)  draw_rect_screen(NULL, PVR_LIST_TR_POLY, x + w - t, y + h * 0.5f, t, h * 0.5f, 0, 0, 0, 0, 99.0f, c);
+    if(m & 8)  draw_rect_screen(NULL, PVR_LIST_TR_POLY, x, y + h - t, w, t, 0, 0, 0, 0, 99.0f, c);
+    if(m & 16) draw_rect_screen(NULL, PVR_LIST_TR_POLY, x, y + h * 0.5f, t, h * 0.5f, 0, 0, 0, 0, 99.0f, c);
+    if(m & 32) draw_rect_screen(NULL, PVR_LIST_TR_POLY, x, y, t, h * 0.5f, 0, 0, 0, 0, 99.0f, c);
+    if(m & 64) draw_rect_screen(NULL, PVR_LIST_TR_POLY, x, y + (h - t) * 0.5f, w, t, 0, 0, 0, 0, 99.0f, c);
+}
+
+#define VS_COUNTDOWN 180   /* 3, 2, 1 then GO */
+/* test builds: /cd/debug/vs_p2.txt "1" = player 2's pad is scripted (run right, jump every 50 frames,
+ * boost every 4 s), for emulator runs with one keyboard; "2" = the same for player 1 too */
+static int g_vs_dbg_x, g_vs_dbg_y, g_vs_dbg_clock;   /* test builds (vs.txt): start point, race clock */
+static void vs_script_pad(InputState *in, int frame, int who)
+{
+    uint32_t h = IN_RIGHT;
+    if(frame % 50 < 6) h |= IN_JUMP;
+    if((frame + who * 37) % 240 < 20) h |= IN_BOOST;
+    in->pressed = h & ~in->held; in->released = in->held & ~h; in->held = h;
+}
+static MenuRequest run_vs_stage(MenuRequest r)
+{
+    for(;;) {
+        Level lv;
+        InputState in0, in1;
+        int idx = stage_index(r.zone, r.act), frame = 0, countdown = VS_COUNTDOWN + 30, paused = 0, i;
+        u32 clock0 = 0;
+        VsRaceResult res;
+        MenuRequest next;
+        memset(&lv, 0, sizeof lv);
+        memset(&in0, 0, sizeof in0); memset(&in1, 0, sizeof in1);
+        if(r.character2 == r.character) r.character2 = !r.character;   /* PlayerSelectMenu: never the same character */
+        if(idx < 0 || r.act >= 2) { printf("vs: stage z%d%d not available\n", r.zone + 1, r.act + 1); memset(&next, 0, sizeof next); return next; }
+        printf("vs: race z%d%d, P1 %s, P2 %s\n", r.zone + 1, r.act + 1, r.character ? "Blaze" : "Sonic", r.character2 ? "Blaze" : "Sonic");
+        vs_ctx_alloc();
+        g_chara = r.character;
+        load_player_model();
+        if(!g_model2_ok || g_model2_chara != r.character2) {
+            g_model2_chara = r.character2;
+            g_model2_ok = dcp_model_load(&g_dcp_model2, r.character2, "/cd/player", 1) == 0;
+        }
+        g_dcp_world.mode = 1;                 /* gGameState.unk10: VS */
+        g_dcp_world.flags |= 0x20;            /* gGameState.unk18 & 0x20: RingManager 2 players, VS objects */
+        g_dcp_world.lives = 0;
+        g_emeralds = 0; g_difficulty = r.easy;
+        g_frontend = 0;
+        if(load_stage(&lv, idx) != 0 || !g_player_ok) { level_free(&lv); memset(&next, 0, sizeof next); return next; }
+        spawn_player(&lv);                     /* player 1, objects, sound, ui resources, camera 1 */
+        g_dcp_world.flags |= 0x20;             /* (ui_stage_start clears gGameState.unk18) */
+        g_dcp_world.mode = 1;
+        /* player 2 at the same start */
+        memset(&g_player2, 0, sizeof g_player2);
+        dcp_player_create(&g_player2, (u8)r.character2, 0, g_player.x >> 8, g_player.y >> 8);
+        g_player.rings = g_player2.rings = 1;  /* Player_Respawn / Player_Create, VS: unk3AE = 1 */
+        if(g_vs_dbg_x || g_vs_dbg_y) {
+            g_player.x = g_player2.x = g_vs_dbg_x << 8; g_player.y = g_player2.y = g_vs_dbg_y << 8;
+            g_player2.x += 0x2000;
+            g_dcp_world.check_x = g_vs_dbg_x; g_dcp_world.check_y = g_vs_dbg_y;
+            camera_snap_to_player(&g_player);
+            printf("debug: vs start %d,%d\n", g_vs_dbg_x, g_vs_dbg_y);
+        }
+        if(g_vs_dbg_clock) g_dcp_world.frame = (u32)g_vs_dbg_clock;
+        if(g_model2_ok) dcp_model_attach_second(&g_dcp_model2, &g_player2);
+        if(g_obj_ok) { objects_add_player(&g_player2); objects_set_view_count(8); objects_respawn_view(); }
+        /* the cameras: player 1's from spawn_player; player 2's built the same way */
+        hud_ctx_save(g_vs_hud[0]); hud_ctx_save(g_vs_hud[1]);
+        camera_set_rival(&g_player2);
+        camera_ctx_save(g_vs_cam[0]); zonefx_view_save(g_vs_zfx[0]);
+        camera_create(lv.data, &g_player2, g_dcp_world.zone, g_dcp_world.act);
+        camera_set_rival(&g_player);
+        camera_ctx_save(g_vs_cam[1]); zonefx_view_save(g_vs_zfx[1]);
+        vs_begin(&g_player, &g_player2);
+        vs_load(0);
+        while(vs_info()->exit == VS_EXIT_NONE) {
+            uint16_t h[2], pr[2], rl[2];
+            int run;
+            input_poll_port(0, &in0);
+            input_poll_port(1, &in1);
+            if(g_vs_script < 0) {
+                uint32_t sz;
+                char *t = load_file("/cd/debug/vs_p2.txt", &sz);
+                g_vs_script = t ? atoi(t) : 0;
+                free(t);
+                printf("vs: controllers A %d B %d, scripted pads %d\n", input_port_present(0), input_port_present(1), g_vs_script);
+            }
+            if(g_vs_script >= 1) vs_script_pad(&in1, frame, 1);
+            if(g_vs_script >= 2) vs_script_pad(&in0, frame, 0);
+            if(countdown <= 0 && ((in0.pressed | in1.pressed) & IN_START)) paused = !paused;
+            if(paused && ((in0.pressed | in1.pressed) & IN_TRICK)) vs_request_exit(VS_EXIT_QUIT);
+            run = !paused && countdown <= VS_COUNTDOWN - 150;
+            if(countdown > 0) {
+                countdown--;
+                if(countdown == VS_COUNTDOWN - 150) {   /* GO: the race clock runs */
+                    g_dcp_world.flags |= 1;
+                    /* StageTitleCard (ui_stage_start held player 1): NOINPUT | NOTENSION off */
+                    g_player.pf &= ~0x600000u;
+                    g_player2.pf &= ~0x600000u;
+                }
+            }
+            h[0] = ds_pad(in0.held); pr[0] = ds_pad(in0.pressed); rl[0] = ds_pad(in0.released);
+            h[1] = ds_pad(in1.held); pr[1] = ds_pad(in1.pressed); rl[1] = ds_pad(in1.released);
+            if(!run) { h[0] = h[1] = pr[0] = pr[1] = rl[0] = rl[1] = 0; }
+            uint64_t tp0 = timer_us_gettime64(), tp1, tp2, tp3;
+            static uint64_t vs_prof[4];
+            if(!paused) {
+                /* Camera_Main for each camera */
+                for(i = 0; i < 2; i++) {
+                    s32 vx, vy, px2, py2;
+                    vs_load(i);
+                    camera_update();
+                    camera_get_view(&vx, &vy);
+                    camera_get_partner_view(&px2, &py2);
+                    if(g_obj_ok) {   /* the DS pair and the DC window (two halves: 548 world px) */
+                        int b = i * 4;
+                        if(i == 0) objects_set_view(0, camera_layer(0)->x, camera_layer(0)->y);
+                        else objects_set_view(b, camera_layer(0)->x, camera_layer(0)->y);
+                        objects_set_view(b + 1, px2, py2);
+                        objects_set_view(b + 2, vx - 0x9200, vy);
+                        objects_set_view(b + 3, vx + 0x9200, vy);
+                    }
+                    vs_save(i);
+                }
+                vs_load(0);
+                if(g_obj_ok) objects_frame_begin();
+                clock0 = g_dcp_world.frame;   /* dcp_player_frame ticks it: Stage_Main does, once */
+                for(i = 0; i < 2; i++) {
+                    DcPlayer *p = i ? &g_player2 : &g_player;
+                    vs_load(i);
+                    vs_player_begin(i);
+                    vs_filter_input(i, &h[i], &pr[i], &rl[i]);
+                    if(run) dcp_player_frame(p, h[i], pr[i], rl[i]);
+                    camera_player_last(p);
+                    vs_player_end(i);
+                    vs_save(i);
+                    g_dcp_world.frame = clock0;
+                }
+                if(g_model_ok) dcp_model_step(&g_dcp_model, &g_player, !run);
+                if(g_model2_ok) dcp_model_step(&g_dcp_model2, &g_player2, !run);
+                vs_load(0);
+                if(g_obj_ok && run) objects_update(&g_player);
+                if(run) vs_after_players();
+                if(g_dcp_world.flags & 1) g_dcp_world.frame++;   /* Stage_Main */
+                for(i = 0; i < 2; i++) { vs_load(i); camera_frame_end(); vs_save(i); }
+                vs_frame_end();
+            }
+            tp1 = timer_us_gettime64();
+            sound_update();
+            if(g_obj_ok) objects_models_prepare();
+            pvr_wait_ready();
+            tp2 = timer_us_gettime64();
+            zonefx_commit_palettes();
+            render_begin_frame();
+            /* OP, PT, TR: player 1's viewport, then player 2's */
+            render_begin_list(PVR_LIST_OP_POLY);
+            for(i = 0; i < 2; i++) {
+                vs_load(i); vs_view(i); render_emit_clip();
+                zonefx_draw_bg(0.0005f);
+                vs_draw_player(PVR_LIST_OP_POLY, &g_player, &g_dcp_model, g_model_ok);
+                vs_draw_player(PVR_LIST_OP_POLY, &g_player2, &g_dcp_model2, g_model2_ok);
+                if(g_obj_ok) objects_draw_models(PVR_LIST_OP_POLY);
+            }
+            render_reset_view();
+            render_end_list();
+            render_begin_list(PVR_LIST_PT_POLY);
+            for(i = 0; i < 2; i++) {
+                vs_load(i); vs_view(i); render_emit_clip();
+                zonefx_draw_layer(1, PVR_LIST_PT_POLY, 0.001f); zonefx_draw_layer(0, PVR_LIST_PT_POLY, 10.0f);
+                vs_draw_player(PVR_LIST_PT_POLY, &g_player, &g_dcp_model, g_model_ok);
+                vs_draw_player(PVR_LIST_PT_POLY, &g_player2, &g_dcp_model2, g_model2_ok);
+                if(g_obj_ok) { objects_draw_models(PVR_LIST_PT_POLY); obj_draw(PVR_LIST_PT_POLY); }
+            }
+            render_reset_view();
+            render_end_list();
+            render_begin_list(PVR_LIST_TR_POLY);
+            for(i = 0; i < 2; i++) {
+                DcPlayer *p = i ? &g_player2 : &g_player;
+                int fl;
+                vs_load(i); vs_view(i); render_emit_clip();
+                vs_draw_player(PVR_LIST_TR_POLY, &g_player, &g_dcp_model, g_model_ok);
+                vs_draw_player(PVR_LIST_TR_POLY, &g_player2, &g_dcp_model2, g_model2_ok);
+                if(g_obj_ok) { objects_draw_models(PVR_LIST_TR_POLY); obj_draw(PVR_LIST_TR_POLY); }
+                zonefx_draw_tr();
+                /* the player's HUD in its viewport (the DS HUD layout at 224 / 480) */
+                render_set_screen_xform(VS_VIEW_H / 480.0f, 0.0f, i ? 256.0f : 0.0f, 640.0f);
+                ui_vs_hud_draw(p, g_dcp_world.frame);
+                render_reset_screen_xform();
+                fl = vs_fade_level(i);
+                if(fl > 0)
+                    draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, i ? 256.0f : 0.0f, 640, VS_VIEW_H, 0, 0, 0, 0, 98.0f,
+                                     ((uint32_t)(fl >= 16 ? 255 : fl * 16) << 24));
+            }
+            render_reset_view();
+            /* the bar between the viewports: player colours (1P left, 2P right), the race time */
+            draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 224, 640, 32, 0, 0, 0, 0, 97.0f, 0xff101828);
+            draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 224, 8, 32, 0, 0, 0, 0, 97.5f, g_player.chara ? 0xffb050e0 : 0xff2060ff);
+            draw_rect_screen(NULL, PVR_LIST_TR_POLY, 632, 224, 8, 32, 0, 0, 0, 0, 97.5f, g_player2.chara ? 0xffb050e0 : 0xff2060ff);
+            {   /* who leads (FixVsHud: anim 0 / 1 by x): a marker on the leader's side */
+                int lead = g_player2.x > g_player.x;
+                draw_rect_screen(NULL, PVR_LIST_TR_POLY, lead ? 596 : 20, 230, 24, 20, 0, 0, 0, 0, 97.6f, 0xffffd020);
+            }
+            if(countdown > 30) {   /* 3, 2, 1 in both viewports */
+                int n = (countdown - 31) / 60 + 1;
+                if(n >= 1 && n <= 3) { vs_digit(n, 300, 70, 80, 0xffffff40); vs_digit(n, 300, 326, 80, 0xffffff40); }
+            } else if(countdown > 0) {   /* GO */
+                vs_digit(0, 250, 70, 80, 0xff40ff40); vs_digit(0, 330, 70, 80, 0xff40ff40);
+                vs_digit(0, 250, 326, 80, 0xff40ff40); vs_digit(0, 330, 326, 80, 0xff40ff40);
+            }
+            if(paused) draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 96.0f, 0x80000000);
+            render_end_list();
+            render_end_frame();
+            tp3 = timer_us_gettime64();
+            vs_prof[0] += tp1 - tp0; vs_prof[1] += tp2 - tp1; vs_prof[2] += tp3 - tp2;
+            audio_update();
+            if(++frame % 120 == 0 && g_vs_script > 0) {   /* test builds (vs_p2.txt): frame log */
+                static uint64_t t_prev;
+                uint64_t now = timer_ms_gettime64();
+                if(t_prev) printf("vs fps %.1f: update %.2f wait %.2f draw %.2f ms/frame\n", 120000.0 / (double)(now - t_prev),
+                                  vs_prof[0] / 120000.0, vs_prof[1] / 120000.0, vs_prof[2] / 120000.0);
+                memset(vs_prof, 0, sizeof vs_prof);
+                t_prev = now;
+            }
+            if(frame % 120 == 0 && g_vs_script > 0)
+                printf("vs frame %d: p1 %ld,%ld rings %d t %d | p2 %ld,%ld rings %d t %d | clock %lu\n", frame,
+                       (long)(g_player.x >> 8), (long)(g_player.y >> 8), g_player.rings, g_player.tension,
+                       (long)(g_player2.x >> 8), (long)(g_player2.y >> 8), g_player2.rings, g_player2.tension,
+                       (unsigned long)g_dcp_world.frame);
+            if(frame % 120 == 0 && g_vs_script > 0)
+                printf("vs dbg: p1 pf %08lx pf2 %08lx mf %08lx st %p held %04x | p2 pf %08lx mf %08lx | cam0 %.0f,%.0f cam1 %.0f,%.0f\n",
+                       (unsigned long)g_player.pf, (unsigned long)g_player.pf2, (unsigned long)g_player.move_flags, (void *)g_player.state,
+                       (unsigned)g_player.held, (unsigned long)g_player2.pf, (unsigned long)g_player2.move_flags, s_dbg_cam[0][0], s_dbg_cam[0][1], s_dbg_cam[1][0], s_dbg_cam[1][1]);
+        }
+        /* the race is over: ResultsScreen_Create */
+        memset(&res, 0, sizeof res);
+        res.winner = vs_info()->winner < 0 ? 2 : vs_info()->winner;
+        for(i = 0; i < 2; i++) {
+            const DcPlayer *p = i ? &g_player2 : &g_player;
+            res.time[i] = vs_info()->finished[i] ? vs_info()->time[i] : g_dcp_world.frame;
+            res.rings[i] = p->rings;
+            res.finished[i] = vs_info()->finished[i];
+        }
+        printf("vs: race over, winner %d, times %lu / %lu\n", res.winner, (unsigned long)res.time[0], (unsigned long)res.time[1]);
+        vs_end();
+        dcp_model_attach_second(NULL, NULL);
+        if(g_obj_ok) { objects_shutdown(); objects_models_free(); }
+        ui_stage_end();
+        zonefx_set_view_only(0);
+        zonefx_shutdown(); camera_destroy();
+        level_free(&lv);
+        render_reset_view();
+        g_dcp_world.mode = 0;
+        g_dcp_world.flags = 0;
+        enter_front_end();
+        next = menus_vs_exit(&res);
+        if(next.kind != MENU_REQ_VS_STAGE) return next;
+        r = next;   /* rematch */
+    }
+}
+
 int main(int argc, char **argv)
 {
     Level lv;
@@ -885,6 +1209,20 @@ int main(int argc, char **argv)
             char *e = load_file("/cd/debug/extra.txt", &esz);
             if(e) { free(e); printf("debug start: Extra Zone\n"); run_extra_zone(); enter_front_end(); }
         }
+        {   /* test builds: /cd/debug/vs.txt "zone act chara1 chara2" = start a Battle Play race */
+            uint32_t vsz;
+            char *v = load_file("/cd/debug/vs.txt", &vsz);
+            if(v) {
+                MenuRequest vr;
+                memset(&vr, 0, sizeof vr);
+                vr.kind = MENU_REQ_VS_STAGE; vr.mode = 1; vr.easy = 1; vr.character2 = 1;
+                sscanf(v, "%d %d %d %d %d %d %d", &vr.zone, &vr.act, &vr.character, &vr.character2,
+                       &g_vs_dbg_x, &g_vs_dbg_y, &g_vs_dbg_clock);
+                free(v);
+                printf("debug start: Battle Play z%d%d\n", vr.zone + 1, vr.act + 1);
+                run_vs_stage(vr);
+            }
+        }
     }
 
     for(;;) {
@@ -892,6 +1230,25 @@ int main(int argc, char **argv)
             MenuRequest r;
             input_poll(&in);
             if(in.pressed) printf("fe pad pressed %08lx\n", (unsigned long)in.pressed);
+            {   /* Battle Play: player 2's controller (port B) for the menus */
+                static InputState in2;
+                static int fe_frame;
+                input_poll_port(1, &in2);
+                if(g_vs_script < 0) {
+                    uint32_t sz;
+                    char *t = load_file("/cd/debug/vs_p2.txt", &sz);
+                    g_vs_script = t ? atoi(t) : 0;
+                    free(t);
+                }
+                if(g_vs_script >= 1) {   /* test builds: player 2 presses RIGHT, then A, every second */
+                    uint32_t hh = 0;
+                    fe_frame++;
+                    if(fe_frame % 60 < 4) hh = IN_RIGHT;
+                    else if(fe_frame % 60 >= 30 && fe_frame % 60 < 34) hh = IN_JUMP;
+                    in2.pressed = hh & ~in2.held; in2.released = in2.held & ~hh; in2.held = hh;
+                }
+                menus_set_pad2(&in2);
+            }
             r = menus_run_frame(&in);
             overlay_cutscene_frame(&in);   /* zone-map TalkDemo */
             sound_update();
@@ -901,6 +1258,11 @@ int main(int argc, char **argv)
             render_begin_list(PVR_LIST_PT_POLY); menus_draw_list(PVR_LIST_PT_POLY); render_end_list();
             render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); menus_draw_list(PVR_LIST_TR_POLY); if(cutscene_active()) cutscene_draw_list(PVR_LIST_TR_POLY); render_end_list();
             render_end_frame();
+            if(r.kind == MENU_REQ_VS_STAGE) {   /* Battle Play race (+ results, rematches) */
+                MenuRequest n = run_vs_stage(r);
+                (void)n;   /* back in the menus (the results scene chose quit) */
+                continue;
+            }
             if(r.kind == MENU_REQ_STAGE && r.zone == 8 && r.act == 2) {
                 /* extra story: Game_StartDemoScript3AtZone8Act2 */
                 g_chara = r.character; g_dcp_world.mode = r.mode; g_emeralds = r.emeralds; g_difficulty = r.easy;

@@ -114,6 +114,7 @@ static void pal_quad(pvr_ptr_t tex, int tw, int th, int bank, pvr_list_t list,
     pvr_poly_cxt_txr(&cxt, list, PVR_TXRFMT_PAL8BPP | PVR_TXRFMT_8BPP_PAL(bank) | PVR_TXRFMT_TWIDDLED,
                      tw, th, tex, PVR_FILTER_NONE);
     pvr_poly_compile(&hdr, &cxt);
+    render_hdr_clip(&hdr);
     pvr_prim(&hdr, sizeof(hdr));
     v.flags = PVR_CMD_VERTEX; v.argb = 0xffffffff; v.oargb = 0; v.z = z;
     v.x = x;     v.y = y + h; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v));
@@ -141,8 +142,8 @@ void level_draw_layer(const Level *lv, int layer, pvr_list_t list, float z)
             page = id / 64; slot = id % 64;
             if(page >= lv->num_pages) continue;
             u0 = (slot % 8) * 64.0f; v0 = (slot / 8) * 64.0f;
-            sx = (bx * RLVL_BLOCK_PX - g_cam_x) * VIEW_SCALE;
-            sy = (by * RLVL_BLOCK_PX - g_cam_y) * VIEW_SCALE;
+            sx = VIEW_OX + (bx * RLVL_BLOCK_PX - g_cam_x) * VIEW_SCALE;
+            sy = VIEW_OY + (by * RLVL_BLOCK_PX - g_cam_y) * VIEW_SCALE;
             pal_quad(lv->pages[page], 512, 512, lv->pal_bank, list, sx, sy, bs, bs,
                      (u0 + inset) / ps, (v0 + inset) / ps, (u0 + 64 - inset) / ps, (v0 + 64 - inset) / ps, z);
         }
@@ -159,7 +160,7 @@ void level_draw_bg(const Level *lv, float fx, float fy, float z)
     for(y = oy; y < VIEW_H; y += lv->bg_h)
         for(x = ox; x < VIEW_W; x += lv->bg_w)
             pal_quad(lv->bg_tex, lv->bg_tw, lv->bg_th, lv->bg_pal_bank, PVR_LIST_OP_POLY,
-                     x * VIEW_SCALE, y * VIEW_SCALE, lv->bg_w * VIEW_SCALE, lv->bg_h * VIEW_SCALE,
+                     VIEW_OX + x * VIEW_SCALE, VIEW_OY + y * VIEW_SCALE, lv->bg_w * VIEW_SCALE, lv->bg_h * VIEW_SCALE,
                      0, 0, (float)lv->bg_w / lv->bg_tw, (float)lv->bg_h / lv->bg_th, z);
 }
 
@@ -173,6 +174,7 @@ static void bg_hdr(const Level *lv, int bank, pvr_poly_hdr_t *hdr)
                      lv->bg_tw, lv->bg_th, lv->bg_tex, PVR_FILTER_NONE);
     cxt.txr.uv_clamp = PVR_UVCLAMP_NONE;   /* the BG wraps (DS 512x512 / 256x512 text BG) */
     pvr_poly_compile(hdr, &cxt);
+    render_hdr_clip(hdr);
 }
 
 /* rows [r0, r1) of the window with BG offset (x, y): one quad, the texture repeats */
@@ -183,13 +185,14 @@ static void bg_strip(const Level *lv, int r0, int r1, int x, int y, float z, uin
     float u1 = u0 + VIEW_W / lv->bg_tw;
     float v0 = (float)((r0 + y) & (lv->bg_h - 1)) / lv->bg_th;
     float v1 = v0 + (float)(r1 - r0) / lv->bg_th;
-    float y0 = r0 * VIEW_SCALE, y1 = r1 * VIEW_SCALE;
+    float y0 = VIEW_OY + r0 * VIEW_SCALE, y1 = VIEW_OY + r1 * VIEW_SCALE;
+    float x0 = VIEW_OX, x1 = VIEW_OX + g_view_w;
     v.flags = PVR_CMD_VERTEX; v.argb = argb; v.oargb = 0; v.z = z;
-    v.x = 0;   v.y = y1; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v));
-    v.x = 0;   v.y = y0; v.u = u0; v.v = v0; pvr_prim(&v, sizeof(v));
-    v.x = 640; v.y = y1; v.u = u1; v.v = v1; pvr_prim(&v, sizeof(v));
+    v.x = x0; v.y = y1; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v));
+    v.x = x0; v.y = y0; v.u = u0; v.v = v0; pvr_prim(&v, sizeof(v));
+    v.x = x1; v.y = y1; v.u = u1; v.v = v1; pvr_prim(&v, sizeof(v));
     v.flags = PVR_CMD_VERTEX_EOL;
-    v.x = 640; v.y = y0; v.u = u1; v.v = v0; pvr_prim(&v, sizeof(v));
+    v.x = x1; v.y = y0; v.u = u1; v.v = v0; pvr_prim(&v, sizeof(v));
 }
 
 void level_draw_bg_lines(const Level *lv, const LevelBgLine *lines, int alt_row, uint32_t alt_argb, float z)
@@ -224,6 +227,7 @@ static void pal_quad_c(pvr_ptr_t tex, int bank, pvr_list_t list, float x, float 
     pvr_poly_cxt_txr(&cxt, list, PVR_TXRFMT_PAL8BPP | PVR_TXRFMT_8BPP_PAL(bank) | PVR_TXRFMT_TWIDDLED,
                      512, 512, tex, PVR_FILTER_NONE);
     pvr_poly_compile(&hdr, &cxt);
+    render_hdr_clip(&hdr);
     pvr_prim(&hdr, sizeof(hdr));
     v.flags = PVR_CMD_VERTEX; v.argb = argb; v.oargb = 0; v.z = z;
     v.x = x;     v.y = y + h; v.u = u0; v.v = v1; pvr_prim(&v, sizeof(v));
@@ -255,8 +259,8 @@ void level_draw_layer_split(const Level *lv, int layer, pvr_list_t list, float z
             page = id / 64; slot = id % 64;
             if(page >= lv->num_pages) continue;
             u0 = (slot % 8) * 64.0f; v0 = (slot / 8) * 64.0f;
-            sx = (bx * RLVL_BLOCK_PX - g_cam_x) * VIEW_SCALE;
-            sy = (wy0 - g_cam_y) * VIEW_SCALE;
+            sx = VIEW_OX + (bx * RLVL_BLOCK_PX - g_cam_x) * VIEW_SCALE;
+            sy = VIEW_OY + (wy0 - g_cam_y) * VIEW_SCALE;
             if(wy1 <= split_y) {
                 pal_quad(lv->pages[page], 512, 512, lv->pal_bank, list, sx, sy, bs, bs,
                          (u0 + inset) / ps, (v0 + inset) / ps, (u0 + 64 - inset) / ps, (v0 + 64 - inset) / ps, z);

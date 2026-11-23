@@ -922,6 +922,14 @@ static void marker_on_hit(ObjBox *a, ObjBox *b) {
     Obj *o = (Obj *)a->owner;
     DcPlayer *p = obj_box_player(b);
     s8 h;
+    if (p != NULL && (W.flags & 0x20)) {
+        /* Battle Play: every console had its own markers; here one marker serves both players */
+        int slot = g_obj.n_players > 1 && g_obj.players[1].p == p ? 2 : 1;
+        if (o->vs_touched & slot)
+            return;
+        o->vs_touched |= (u8)slot;
+        g_obj_stage.check_player = p;
+    }
     if (p != NULL) {
         h = (s8)(p->box_b + 1);
         obj_set_anim(o, 1);
@@ -943,6 +951,8 @@ static void marker_on_hit(ObjBox *a, ObjBox *b) {
         g_obj.stats.checkpoints++;
         obj_log("checkpoint", g_obj_stage.check_x, g_obj_stage.check_y);
     }
+    if ((W.flags & 0x20) && o->vs_touched != 3 && g_obj.n_players > 1)
+        return;   /* Battle Play: stays live for the other player */
     o->h.obj_flags |= 2;
 }
 Obj *marker_create(ObjParam *a, s32 b, s32 c) {

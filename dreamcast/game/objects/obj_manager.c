@@ -1055,6 +1055,7 @@ void objects_restore_event_state(void) {
     if (!apply_event_state())
         return;
     ring_init();
+    obj_vs_reset();
     spawn_all_map_objects();
     g_obj.event_state = 0;
 }
@@ -1163,6 +1164,7 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
         apply_event_state();
     spawn_all_map_objects();
     ring_init();
+    obj_vs_reset();
     obj_log("init_resources", loaded, h->stage);
     return 0;
 }

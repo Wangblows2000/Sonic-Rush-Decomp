@@ -85,6 +85,7 @@ typedef struct ObjStage {
     s32 ring_bonus;    /* data_022c4590.unk10 (rings * 10 at the goal)          */
     u8 check_idx;      /* data_022c4590.unk15 last marker index                 */
     u32 check_time;    /* data_022c4590.unk18 timer at the marker               */
+    DcPlayer *check_player; /* Battle Play: the player who took the last marker (each player keeps a checkpoint) */
     s32 check_x, check_y; /* data_022c4590.unk1C / unk20 respawn point (px)     */
     s32 goal_state;    /* data_022c4590.unk40 (3 = goal touched again, TA mode) */
     u8 goal_reached;   /* native: goal touched                                  */
@@ -275,4 +276,16 @@ typedef struct ObjStats {
 } ObjStats;
 const ObjStats *objects_stats(void);
 
+/* Battle Play effects (obj_vs.c, src/game/VsMode) */
+Obj *EffVs_Create(s32 x, s32 y);
+void EffVsSlowdown_Create(DcPlayer *p);
+void EffVsConfusion_Create(DcPlayer *p);
+void EffVsTensionDrain_Create(DcPlayer *p);
+void EffVsTensionMax_Create(DcPlayer *p);
+void FixVsPushIcon_Create(DcPlayer *p);
+/* Battle Play push test: the player's hurt box (coll2A0) against a box (ObjRect_BoxCheck), and
+ * ObjRect_HitCenterX / Y of two players' hurt boxes (EffVs position) */
+int objects_player_box_hit(const DcPlayer *p, s32 x, s32 y, s32 ox, s32 oy, u16 w, u16 h);
+s32 objects_player_box_cx(const DcPlayer *a, const DcPlayer *b);
+s32 objects_player_box_cy(const DcPlayer *a, const DcPlayer *b);
 #endif

@@ -497,6 +497,8 @@ void dcp_player_frame(DcPlayer *o, u16 held, u16 pressed, u16 released) {
 /* ------------------------------------------------------- tension gauge */
 void dcp_add_tension(DcPlayer *w, s16 v) {
     s16 t;
+    if ((W.flags & 0x20) && v == 0x12c0 && H.vs_tension)   /* Battle Play: EffVsTensionMax */
+        H.vs_tension(H.ctx, w, 1);
     if (w->pf & 0x400000)
         return;
     if (v < 0) {
@@ -537,6 +539,8 @@ void dcp_add_tension_combo(DcPlayer *w, s16 v) {
 }
 
 void dcp_drain_tension(DcPlayer *w) {
+    if (H.vs_tension)   /* TensionSound_Create(0x32, 0x80) + EffVsTensionDrain_Create */
+        H.vs_tension(H.ctx, w, 0);
     dcp_add_tension(w, -0x12c0);
     if (H.tension_hud)
         H.tension_hud(H.ctx, w, (u32)(w->tension << 12) >> 16);
@@ -667,6 +671,17 @@ void dcp_respawn(DcPlayer *w) {
         H.restart(H.ctx, w);
     w->x = W.check_x << 8;
     w->y = W.check_y << 8;
+    if (w->pf2 & 0x400000) {   /* Player_State_Warp (Battle Play Attract): at the rival */
+        w->x = w->warp_x;
+        w->y = w->warp_y;
+        w->z = 0;
+        w->warp_x = 0;
+        w->warp_y = 0;
+        w->invuln = w->invuln_len;
+        w->respawn_inv = w->invuln;
+        w->pf2 &= ~0x400000u;
+        goto common;
+    }
     w->slowdown = 0;
     w->grav_rot = 0;
     w->confuse = 0;
@@ -684,6 +699,7 @@ void dcp_respawn(DcPlayer *w) {
     w->rings = 0;
     if (W.flags & 0x20)
         w->rings = 1;
+common:
     W.objmgr &= ~0x100;
     W.wind_x = 0;
     W.wind_y = 0;

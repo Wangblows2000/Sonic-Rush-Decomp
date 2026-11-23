@@ -81,7 +81,7 @@ FILE_TABLES = {
 BG_GLOBS = ["bg/sega_logo_*.bbg", "bg/title_logo_*.bbg", "bg/mnu_*.bbg", "bg2/zmap/*.bbg",
             "bg2/caution/*.bbg", "bg/title_demo_image_*.bbg", "bg/title_demo_rush_spin_*.bbg"]
 AMA = ["mnu_button.ama", "mnu_wipe.ama", "mnu_opti.ama", "ps_act.ama", "zmap_map_icon.ama",
-       "zone_sel.ama"]
+       "zone_sel.ama", "zone_sel_vs.ama"]   # zone_sel_vs: TimeSelectMenu (Battle Play stage select)
 
 
 def file_tables():

@@ -9,7 +9,7 @@ OUT ?= $(ROOT)/build/dreamcast/menus
 SPRITES ?= $(ROOT)/build/dreamcast/sprites/bac
 DUMP ?=
 SRCS = mn_core.c mn_draw.c mn_main.c mn_story.c mn_title.c mn_titlemenu.c mn_zonemap.c mn_actsel.c \
-       mn_psel.c mn_options.c mn_timeattack.c mn_tryagain.c mn_records.c mn_extraact.c mn_navi.c mn_model.c mn_msgbox.c mn_titledemo.c mn_vs.c
+       mn_psel.c mn_options.c mn_timeattack.c mn_tryagain.c mn_records.c mn_extraact.c mn_navi.c mn_model.c mn_msgbox.c mn_titledemo.c mn_vs.c mn_timeselect.c mn_results.c
 SAVE = ../save/save.c ../save/save_vmu.c
 HDRS = menus.h mn_internal.h extraact.h ../save/save.h
 MODEL = ../model/model.c
@@ -28,10 +28,15 @@ $(OUT)/test_flow: $(SRCS) $(HDRS) test/test_flow.c test/mn_raster.h ../save/save
 	mkdir -p $(OUT)
 	gcc $(CFLAGS_HOST) -o $@ $(SRCS) $(MODEL) ../save/save.c test/test_flow.c -lm
 
-host-test: $(OUT)/test_menus $(OUT)/test_flow
+$(OUT)/test_vs: $(SRCS) $(HDRS) test/test_vs.c test/mn_raster.h ../save/save.c
+	mkdir -p $(OUT)
+	gcc $(CFLAGS_HOST) -o $@ $(SRCS) $(MODEL) ../save/save.c test/test_vs.c -lm
+
+host-test: $(OUT)/test_menus $(OUT)/test_flow $(OUT)/test_vs
 	mkdir -p /tmp/menus
 	$(OUT)/test_menus $(OUT) $(SPRITES) $(DUMP)
 	$(OUT)/test_flow $(OUT) $(SPRITES) $(DUMP)
+	$(OUT)/test_vs $(OUT) $(SPRITES) $(DUMP)
 
 # whole-story flow (menus + save + cutscenes, a model of main.c's scene flow); needs the cutscene data
 CS_SRCS = $(addprefix ../cutscene/,cs_core.c cs_draw.c cs_3d.c cs_sound.c cs_main.c cs_talk.c cs_script.c cs_player.c cs_trans.c cs_ending.c)
@@ -51,6 +56,6 @@ link: dc test/link_main.c
 	bash -c 'source /opt/toolchains/dc/kos/environ.sh && kos-cc -std=gnu99 -O2 -Wall -Werror -I.. -c test/link_main.c -o $(OUT)/dc/link_main.o && kos-cc -std=gnu99 -O2 -c ../engine/render.c -o $(OUT)/dc/render.o && kos-cc -std=gnu99 -O2 -c ../engine/input.c -o $(OUT)/dc/input.o && kos-cc -std=gnu99 -O2 -fwrapv -c ../model/model.c -o $(OUT)/dc/model.o && kos-cc -o $(OUT)/menus_link.elf $(OUT)/dc/*.o -lm && sh-elf-size $(OUT)/menus_link.elf'
 
 clean:
-	rm -rf $(OUT)/test_menus $(OUT)/dc $(OUT)/menus_link.elf
+	rm -rf $(OUT)/test_menus $(OUT)/test_vs $(OUT)/dc $(OUT)/menus_link.elf
 
 .PHONY: all data host-test story-test dc link clean

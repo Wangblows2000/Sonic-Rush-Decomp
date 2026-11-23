@@ -275,6 +275,7 @@ void mapobject_spawn_destroy_burst(Obj *o);                             /* MapOb
 void mapobject_spawn_freed_animal(Obj *o);                              /* MapObject_SpawnFreedAnimal */
 Obj *eff_zako_bomb_burst(Obj *src, s16 x, s16 y);                       /* EffZakoBombBurst_Create */
 Obj *eff_zako_debris(Obj *src, s16 x, s16 y, s16 vx, s16 vy, u8 type);  /* EffZakoDebris_Create */
+void obj_vs_reset(void);                     /* obj_vs.c */
 void eff_set_move_until_anim_end(Obj *o);                               /* Effect_SetMoveUntilAnimEndState */
 
 /* ------------------------------------------- objdata v3 (zones 2 and 3) */

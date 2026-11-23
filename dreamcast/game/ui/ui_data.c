@@ -358,6 +358,7 @@ void ui_set_camera(float x, float y) {
     s_cam_y = y;
 }
 void ui_cmd_reset(void) { s_nquads = 0; }
+int ui_cmd_count(void) { return s_nquads; }
 static int s_hidden_mark = -1;
 void ui_cmd_mark_hidden_begin(void) { s_hidden_mark = s_nquads; }
 void ui_cmd_mark_hidden_end(void) {

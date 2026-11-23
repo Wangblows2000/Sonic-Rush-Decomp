@@ -230,6 +230,8 @@ struct DcPlayer {
     u16 map_right, map_left, map_up, map_down, map_a, map_b; /* @0x42C remap */
     u16 pad_raw[3];   /* native: gPad held/pressed/released for Player_ReadInput */
     void *user;       /* native: owner pointer for hooks */
+    s32 warp_x, warp_y; /* @0x408 @0x40C Battle Play: Player_WarpToRival target (respawn there, pf2 0x400000) */
+    u8 vs_attack;     /* native, Battle Play: pf 0x20000 was set this frame (the rival reads it, Player_ApplyNetState) */
 };
 
 /* ------------------------------------------------- global game state */
@@ -283,6 +285,10 @@ typedef struct DcpHooks {
     void (*add_life)(void *ctx, DcPlayer *p, s32 n);                /* Player_AddLives */
     void (*sfx_volume)(void *ctx, DcPlayer *p, s32 ch, s32 vol);    /* NNS_SndPlayerSetVolume (0..0x7f) */
     void (*model_speed)(void *ctx, DcPlayer *p, s32 fx);            /* w->unk124->unk114 = fx (3D anim speed, 0x1000 = 1) */
+    /* Battle Play (appended): Player_AddTension VS branch (+0x12c0: TensionSound_Create(0x2f, 0x80) for the
+     * local player + EffVsTensionMax_Create) and Player_DrainTension (TensionSound_Create(0x32, 0x80) +
+     * EffVsTensionDrain_Create) */
+    void (*vs_tension)(void *ctx, DcPlayer *p, s32 max);
 } DcpHooks;
 
 extern DcpHooks g_dcp_hooks;
@@ -370,6 +376,10 @@ void dcp_act_spring(DcPlayer *p, s16 vx, s16 vy);     /* Player_Action_SpringLau
 void dcp_act_dash_panel(DcPlayer *p, s16 vx, s16 vy); /* Player_Action_DashPanel */
 void dcp_act_knockback(DcPlayer *p, s16 vx, s16 vy);  /* Player_Action_Knockback */
 void dcp_act_die(DcPlayer *p);
+/* Battle Play (Attract item): Player_Action_Warp / Player_State_Warp - shrink away, then
+ * Player_Respawn at (warp_x, warp_y) (pf2 0x400000 set by the state) */
+void dcp_act_warp(DcPlayer *p);
+void dcp_state_warp(DcPlayer *p);
 void dcp_on_hurt(DcPlayer *p, u32 hit_flags);         /* Player_OnHurt (hit_flags = attacker box unk20) */
 /* helpers */
 void dcp_apply_ground_input(DcPlayer *p);

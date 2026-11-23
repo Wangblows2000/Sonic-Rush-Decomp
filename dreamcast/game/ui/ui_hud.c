@@ -727,3 +727,32 @@ void ui_debug_gauge(s16 *target, s16 *shown, u32 *digits_rings, u32 *digits_time
     *digits_rings = s_hud.rings.unk274;
     *digits_time = s_hud.time.digits;
 }
+
+/* Battle Play: one HUD per player (the work swapped around each player's frame and draw) */
+size_t hud_ctx_size(void) { return sizeof(HudWork); }
+void hud_ctx_save(void *dst) { memcpy(dst, &s_hud, sizeof s_hud); }
+void hud_ctx_load(const void *src) { memcpy(&s_hud, src, sizeof s_hud); }
+/* the Battle Play HUD of one player: Hud_SetRingCount / Hud_SetTime as ui_post_update does, no lives
+ * (Battle Play has none) and no score, then the HUD quads alone */
+void ui_vs_hud_draw(const DcPlayer *p, u32 frame) {
+    if (gHudTask == NULL)
+        Hud_Create();   /* StageTitleCard creates it at GO; Battle Play has no title card */
+    if (gHudTask == NULL)
+        return;
+    ui_cmd_reset();
+    Hud_SetRingCount(p ? p->rings : 0);
+    Hud_SetTime((s32)frame);
+    /* the title card (StageTitleCard) hides the HUD until GO (OAM priority 3, flags 0x10); Battle Play
+     * has no title card: rings, time and gauge shown, no lives (8), no score */
+    s_hud.oam_prio = 0;
+    s_hud.flags = (s_hud.flags & ~0x17u) | 8 | 0x40000000u;
+    Hud_Main();
+    {   /* the stage's master brightness belongs to the single-player flow (not run in Battle Play) */
+        s16 b = g_ui_bright_main;
+        g_ui_bright_main = 0;
+        ui_draw_tr();
+        g_ui_bright_main = b;
+    }
+    ui_cmd_reset();
+}
+

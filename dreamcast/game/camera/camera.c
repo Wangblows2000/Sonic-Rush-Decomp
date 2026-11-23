@@ -1298,3 +1298,64 @@ int camera_look_state(void) {
     if (s_look.fn == Camera_Look_ReturnFromDown) return 6;
     return 0;
 }
+
+/* ------------------------------------------------------------ Battle Play: one camera per player
+ * The DS ran one camera per console. Here the module's per-camera state is swapped: each player's
+ * camera_create / update / apply runs with that player's context loaded. Shared: the split-line
+ * map, zone / act, the shake tables and the hooks. */
+struct CamCtx {
+    CamLayer l[3];
+    CamGlobal g;
+    CamLook look;
+    CamStats stats;
+    DcPlayer *pl[2];
+    struct { s16 lead_x, lead_y, tgt_x, tgt_y; } lead[2];
+    s32 z6_t;
+    int z6_on, inited;
+    s32 win_x, win_y, raw_prev_y;
+    int win_snap, respawn;
+    struct { u16 flags; s16 t; u8 mode; s8 x, y; } shake;
+    ObjCamera objcam[3];
+};
+size_t camera_ctx_size(void) { return sizeof(struct CamCtx); }
+void camera_ctx_save(void *dst) {
+    struct CamCtx *c = (struct CamCtx *)dst;
+    memcpy(c->l, s_l, sizeof s_l);
+    c->g = s_g;
+    c->look = s_look;
+    c->stats = s_stats;
+    memcpy(c->pl, s_pl, sizeof s_pl);
+    memcpy(c->lead, s_lead, sizeof s_lead);
+    c->z6_t = s_z6_t;
+    c->z6_on = s_z6_on;
+    c->inited = s_inited;
+    c->win_x = s_win_x;
+    c->win_y = s_win_y;
+    c->raw_prev_y = s_raw_prev_y;
+    c->win_snap = s_win_snap;
+    c->respawn = s_respawn;
+    memcpy(&c->shake, &s_shake, sizeof s_shake);
+    memcpy(c->objcam, g_obj_camera, sizeof c->objcam);
+}
+void camera_ctx_load(const void *src) {
+    const struct CamCtx *c = (const struct CamCtx *)src;
+    memcpy(s_l, c->l, sizeof s_l);
+    s_g = c->g;
+    s_look = c->look;
+    s_stats = c->stats;
+    memcpy(s_pl, c->pl, sizeof s_pl);
+    memcpy(s_lead, c->lead, sizeof s_lead);
+    s_z6_t = c->z6_t;
+    s_z6_on = c->z6_on;
+    s_inited = c->inited;
+    s_win_x = c->win_x;
+    s_win_y = c->win_y;
+    s_raw_prev_y = c->raw_prev_y;
+    s_win_snap = c->win_snap;
+    s_respawn = c->respawn;
+    memcpy(&s_shake, &c->shake, sizeof s_shake);
+    memcpy(g_obj_camera, c->objcam, sizeof c->objcam);
+}
+/* gPlayers[1] of the loaded camera (the rival: Camera_GetPlayerScreenMask) */
+void camera_set_rival(DcPlayer *p) { s_pl[1] = p; }
+

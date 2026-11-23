@@ -13,7 +13,7 @@ OBJ_SRCS = $(addprefix $(OBJ_DIR)/,obj_anim.c obj_rect.c obj_colmap.c obj_manage
        obj_gimmicks.c obj_enemy.c obj_fx.c obj_effects2.c obj_leafstorm.c obj_shared.c obj_flapper.c obj_decor.c \
        obj_pgimmick.c obj_water.c obj_pwater.c obj_mirage.c obj_pmirage.c obj_carnival.c obj_pcarnival.c \
        obj_crisis.c obj_pcrisis.c obj_altitude.c obj_paltitude.c obj_deadline.c obj_pdeadline.c obj_enemy2.c \
-       obj_palanim.c obj_peffect.c)
+       obj_palanim.c obj_peffect.c obj_vs.c)
 SRCS = camera.c ../zonefx/zonefx.c
 HDRS = camera.h ../zonefx/zonefx.h
 CFLAGS_HOST = -std=c99 -O2 -Wall -Wextra -Werror -fwrapv

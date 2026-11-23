@@ -5,8 +5,8 @@ SEGA logo, the title screen (with the attract-demo request), the title menu,
 player select (Sonic / Blaze / extra), the zone map with the story
 progression, the act select, the map pause and the options (difficulty, time
 limit, sound test, delete save data). Save data is the original `gSaveData`
-format, stored on the VMU. It also covers the title intro (TitleDemo), records, time attack, Try Again, the Extra Zone results
-and the attract demos. Host tests: `make -C dreamcast/game/menus host-test story-test` and the save
+format, stored on the VMU. It also covers the title intro (TitleDemo), records, time attack, Try Again, the Extra Zone results,
+the attract demos and the Battle Play front end (two controllers, section 15). Host tests: `make -C dreamcast/game/menus host-test story-test` and the save
 test. Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 
 - Code:
@@ -38,7 +38,11 @@ test. Integrated in the game and played in Flycast (REGRESSION.md); not run on r
 | `mn_titlemenu.c` | TitleMenu_* (pages, button key frames, BG colour wipe, exits) |
 | `mn_zonemap.c` | ZoneMap_* (node graph, paths, story steps, moves, scroll view, start stage) + ZoneMapPause_* |
 | `mn_actsel.c` | ZoneActSelect_*, ZoneActSelectMode_* |
-| `mn_psel.c` | PlayerSelectMenu_* (no 3D models) |
+| `mn_psel.c` | PlayerSelectMenu_* (no 3D models), Battle Play modes 1 / 2 (two instances) |
+| `mn_vs.c` | Battle Play: player 2's pad, the two players' wireless records, `Game_StartVsStage`, `menus_vs_exit` |
+| `mn_timeselect.c` | TimeSelectMenu_* (Battle Play stage select) |
+| `mn_results.c` | ResultsScreen_* (Battle Play results) |
+| `test/test_vs.c` | Battle Play host test (two pads) |
 | `mn_options.c` | Options settings / sound test (layout rewritten) |
 | `tools/menudata.py`, `tools/menubg.py` | converters (section 4) |
 | `test/test_menus.c`, `test/mn_raster.h`, `test/link_main.c` | host test, host compositor, KOS link stub |
@@ -157,6 +161,9 @@ PVR path (`menus_draw_tr`) use the same projection.
 | TitleMenu | main | main full (character art) plus the sub's button column (8,24-200,168, sprites only) x1.5 at (336,110) | the menu buttons and the B/back button sit on the right side of the art |
 | PlayerSelect | sub | sub full (character art, scrolling name banner, "PLEASE SELECT A CHARACTER") plus the main's dial (0x36,0x08-0xca,0xc0: circle BG3, character dots, plate with L/R arrows; the white BG2 is left out) x1.0 at (478,72), and the main's B/back button x1.5 at (580,258) | the selector dial is a widget to the right of the art |
 | ZoneMap, map pause, ActSelect | main | main full | the zone map, the pause box and the act list are on the touch screen; the sub (navigator panel) is not translated and is blank |
+| PlayerSelect, Battle Play | sub (brightness per half: `MnComp.nbr`) | player 1 in the left half, player 2 in the right: each player's sub full (art, banner) x1.25 at (x, 0) over its main full (dial, OK plate, back button, message box) x1.25 at (x, 240); player 2's screens are engines 2 / 3 | each player's two DS screens in one column |
+| TimeSelect | main | main BG1/BG2 full x2.5 (backdrop, no sprites); main sprites + 3D (BG1-3 left out) x2.0 at (64, 0); sub strip (0,0x86-256,0xb8, BG2 left out) x1.75 at (96, 384); sub message box (0x10,0x10-0xf0,0x80, only BG0 + sprites) x1.25 at (180, 214) | the stage selector under the VS card, the box between the characters |
+| Results | main | main full x2.5; sub choice window (0x10,0x10-0xf0,0x98, BG3 left out) x1.5 at (152, 138) | the window opens over the centre while player 1 chooses |
 | Options (list, difficulty, time limit, erase, sound test) | sub | main BG3 full x2.5 (the zigzag backdrop, BG2/sprites left out), main BG2 Tails art (130,4-248,188) x2.0 at (392,56), sub panel (BG2 + sprites, BG3 left out) x1.5 at (4,96) | the options panel on the left of a single backdrop, with Tails on the right |
 
 Region coordinates were tuned by looking at the host dumps. A scene
@@ -187,14 +194,17 @@ make -C dreamcast/game/menus data      # -> build/dreamcast/menus/  (about 1 s)
 |---|---|---|
 | `/cd/menus/menudata.bin` | `menudata.py`: ROM tables (section 6.3) + VMU icon from the DS banner | 1.8 KB |
 | `/cd/menus/bg/*.mnbg` | `menubg.py`: 50 menu `.bbg` (`bg/sega_logo_*`, `title_logo_*`, `mnu_*`, `title_demo_image_*`, `bg2/zmap/*`, `bg2/caution/*`) | 2.6 MB |
-| `/cd/menus/ama/*.ama` | `files/ama/` copied (mnu_button, mnu_wipe, mnu_opti, ps_act, zmap_map_icon, zone_sel) | 32 KB |
+| `/cd/menus/ama/*.ama` | `files/ama/` copied (mnu_button, mnu_wipe, mnu_opti, ps_act, zmap_map_icon, zone_sel, zone_sel_vs) | 35 KB |
 | `/cd/menus/sound_test.sld` | `files/st/sound_test.sld` copied (127 tracks) | 6 KB |
 | `/cd/sprites/<id>/frames.bin` + `atlas0.argb1555` | `tools/dreamcast/sprites/bac2dc.py` output, ids below | |
 
 Sprite ids: `act__title`, `act__title_<lang>`, `act__mnu_titl`, `act__mnu_titl_<lang>`, `act__mnu_psel`,
 `act__mnu_psel_<lang>`, `act__mnu_opti_<lang>`, `act__font_opti_sound`, `act2__zmap__zmap_map_icon`,
 `act2__zmap__zmap_scroll_arrow`, `act2__zmap__zmap_act`, `act2__zmap__font_zmap_act_num`,
-`act2__zmap__zmap_pause`, `act2__zmap__zmap_pause_<lang>`. `<lang>` is jpn, eng, fra, deu, ita or spa
+`act2__zmap__zmap_pause`, `act2__zmap__zmap_pause_<lang>`; Battle Play: `act__mnu_time_select`,
+`act__mnu_time_act_lc_<lang>` (jpn / eng), `act__mnu_conf_zsel`, `act__mnu_conf_zsel_<lang>`,
+`act__mnu_conf_result`, `act__mnu_conf_result_<lang>`, BGs `mnu_conf_base`, `mnu_conf_base02`,
+`mnu_conf_result`, `mnu_time_selectbase`, models / animations of `/cd/models` (player_lz7, menu.narc). `<lang>` is jpn, eng, fra, deu, ita or spa
 (`gGameLanguage`, default 1 = eng). English only needs about 2.9 MB of atlases.
 
 Memory: one scene at a time.
@@ -369,14 +379,18 @@ only; **not translated** = section 8.
 | TitleDemo_* (3D intro, 52 functions) | `TitleDemo_*` / `td_*` in mn_titledemo.c | modified: the six scenes, timings, interpolations, brightness, SEs, skip as the DS; the models on the menus' 3D layer (mn_model.c), the affine "RUSH" as a rotated quad (mn_emit_bg_affine) cut to the bottom screen's strip (mn_affine_clip); single screen: top screen x1.875 over the top 480 x 360, the bottom screen's logo strip (8, 24)-(248, 128) x1.15 under it, the screens' brightnesses apart (MnComp.split_bright); no edge marking (; evaluated, not done: no PVR post-process) |
 | TitleMenu_Create, Main, Start, StartAtPlayerSelectItem0/1, StartFromOptions, LoadAssets, InitSprites, InitDisplay, Destructor | same | modified |
 | TitleMenu_OpenRootPage, OpenPlayerSelectPage, OpenVsPage, OpenVsSubPage, CreatePageTask, Unk_ov001_022d7ee8 / 022d8060 (`TitleMenu_InitPage`), Unk_022d7dbc, Unk_022d7e60, Select* | same | as-is |
-| TitleMenu_State_WaitOpenAnims, State_Unk_022d8938 (`State_Select`), 022d8798 (`State_Confirm`), 022d85d0 (`State_Close`) | same | modified (touch path removed; VS message box -> declined) |
+| TitleMenu_State_WaitOpenAnims, State_Unk_022d8938 (`State_Select`), 022d8798 (`State_Confirm`), 022d85d0 (`State_Close`) | same | modified (touch path removed; the VS wireless warning is not shown, section 15) |
 | TitleMenu_State_Unk_022d86b0 | - | not translated (touch-only back flash) |
 | TitleMenu_DrawItemButton, DrawBackButton, Unk_022d7ac4 (`DrawPageTitle`) | same | as-is |
 | TitleMenu_CreateFadeTask, StartFadeToBlack/White, FadeTask_Main, CreateBgSlideTask*, BgSlideTask_Main, ApplyBgSlideLayers | same | modified (palette transfer -> wipe image colour 1, one image per BG) |
 | TitleMenu_ExitToTitleScreen, ExitToGameStart, ExitToPlayerSelectMode3/4, ExitToOptions | same | modified (scene changes -> starts / requests) |
-| TitleMenu_StartVsHost, StartVsJoin, GoToVsLobby, SelectVsMode0-2, Vs*Wait_Main, Attach/DetachVsMenu, *MsgBox* | `TitleMenu_ExitToVs` | not translated (VS) |
+| TitleMenu_OpenVsPage, OpenVsSubPage | same | as-is |
+| TitleMenu_SelectVsMode0-2 (+ TitleMenuVsMode*Wait_Main) | `TitleMenu_SelectVsMode` | modified: the lobby's exit (state 2) at once |
+| TitleMenu_StartVsHost (exit table 2; StartVsJoin / GoToVsLobby 3 / 4) | `TitleMenu_StartVsHost` | modified (VsConnect -> PlayerSelectMenu_StartVs) |
+| TitleMenu_ShowMsgBox0, Attach/DetachVsMenu, VsMenu_*, VsConnect_* | - | not translated (wireless warning, lobby; section 15) |
 | PlayerSelectMenu_StartMode0/3/4, Create, LoadAssets, InitBackgrounds, InitSprites, Main, Action_Opening/Intro/Select/ScrollOut/ScrollIn/Confirm/FadeOutBack, State_Intro/Select/ScrollOut/ScrollIn/Confirmed/FadeOutBack, SetBackgroundSelection, IsFullyUnlocked, EaseValue, ExitToGame, ExitBack, Set/Draw sprite helpers | `PlayerSelectMenu_StartMode` + statics | modified (models and camera orbit dropped; sprite helpers merged; touch -> pad) |
-| PlayerSelectMenu models, lighting, palette anim, link icon, sync/partner (VS), QuitPrompt, StartMode1/2, MarkUnlockNoticeShown/ShouldShowUnlockNotice | - | not translated |
+| PlayerSelectMenu VS parts (section 15) | mn_psel.c | as-is / modified |
+| PlayerSelectMenu models, lighting, palette anim, link icon, MarkUnlockNoticeShown/ShouldShowUnlockNotice | - | not translated |
 | ZoneMap_StartDefault, StartFromStage, StartFromStageWithFade, Start, Create, Main, LoadAssets, InitWork, InitDisplay, Destructor | same | modified (navi panel, 3D model, HDMA dropped) |
 | ZoneMap_Unk_ov001_022e8090 (`ZoneMap_CreateState`), RevealNodesForStory, RevealSonicNodes, RevealBlazeNodes, SetPathDotsType, InitNodeLayer, InitSonicNodes, InitBlazeNodes, InitSonicPaths, InitBlazePaths, InitPath, ClearPath, BuildLinePath, BuildSplinePath, SplineSolve, SplineEval, Unk_022e432c, InitSprite, InitScrollArrows | same | as-is |
 | ZoneMap_DrawNodeLayer, DrawNodeIcons, EaseInterp, CalcClampedScroll, GetPathIndex, GetDirectionAngle, GetNodeForStoryStep, GetNodeForCurrentZone, Get/IsSonic/BlazeMaxSelectable/ZoneSelectable, GetSonic/BlazeStoryStep, Set*ProgressFromStep, SaveProgress, SaveProgressOnPathArrival, Unk_022e21b8, Unk_022e26d0, Is*NaviAvailable | same | as-is |
@@ -407,14 +421,14 @@ only; **not translated** = section 8.
 ## 8. Gaps and assumptions
 
 - **Not translated**:
-  - VS (all wireless menus, TimeSelect): see section 11.
+  - The VS lobby (VsMenu, VsConnect, OptionsWfsHost, download play): see section 15.
   - Ending / staff roll and the extra / final story scripts (DemoScript*). Zone 7 and 8 clears report "Ending".
   - Talk demos (story dialogue on the map) unless main.c sets the talk_demo hooks.
-  - SaveMsg message boxes; the title-menu MsgBox 0 (wireless warning); the options' MsgBoxes 0 / 7 / 0x13 / 0x1a (the rewritten options pages ask on their own pages instead).
+  - SaveMsg message boxes; the title-menu MsgBox 0 (wireless warning, section 15); the options' MsgBoxes 0 / 7 / 0x13 / 0x1a (the rewritten options pages ask on their own pages instead).
   - Options DOWNLOAD DEMO (wireless).
 - **3D**: the zone-map character is drawn (mn_model.c, the menus' 3D layer); the player-select character models are not. The map icon sprite 31 stands for Blaze in her first steps only, as on the DS.
 - **Message boxes decided without asking**:
-  - Title-menu MsgBox 0 (wireless warning) counts as no.
+  - Title-menu MsgBox 0 (wireless warning) is not shown: the VS modes start Battle Play (section 15).
   - The SaveMsg "format?" question counts as no: the defaults are loaded and saved by the next commit.
 - **Palette numbers per sprite** (`AnimatorSprite.unk44`: act-select tab colours, highlighted digits) are not applied. The converted atlases carry the BAC's own palette (see SPRITES.md).
 - **The zone map fog** (`data_ov001_0231639c`, HDMA alpha gradient over unexplored parts) is not drawn. The whole map is visible.
@@ -473,16 +487,9 @@ during the stage loading frames, which depend on card timing; those frames are
 `DEMO_LEAD_FRAMES` (default 0, `demo_set_lead_frames`). If a demo drifts on the
 DC, this is the value to tune.
 
-## 11. VS mode (not ported)
+## 11. VS mode
 
-VS (`src/game/VsMode`, the Wireless menus, `TimeSelect`, OptionsWfsHost,
-DownloadPlay) is the two-player race over DS wireless: two DS units, each with a
-cartridge (or one of them by download play). The menus pair the two units,
-pick the stage and the time (TimeSelect), and the stage runs on both with the
-other player's position sent every frame. The Dreamcast has no second unit to
-pair with and no wireless layer; a split-screen VS would be a new game mode, not
-a translation. The title menu treats VS as declined (as before), and the VS
-record page (Records, section 13) only shows what the save file holds.
+Ported as Battle Play for two controllers on one Dreamcast: section 15.
 
 ## 12. Extra Zone results (ExtraAct)
 
@@ -564,3 +571,104 @@ ZoneActSelect_ShowIntroNaviMessage (create), ShowNaviMessage4 (act chosen) and,
 at the end of its fade-in, NaviM_StartEmeraldAppear / StartCounter (flags 8 /
 0x10 from ZoneMap_CreateState). The act select keeps the navigator pieces in
 its composition.
+
+## 15. Battle Play (local two-controller VS)
+
+The DS mode is two units over wireless (or download play): each runs its own
+PlayerSelect (host mode 1, guest mode 2), TimeSelect (chooser / follower) and
+ResultsScreen, and they exchange a small record every frame
+(`WirelessSession_GetSendBuffer` / `GetPartnerRecvBuffer`). On the Dreamcast
+both players use one machine: player 1 (the pad of `menus_run_frame`) is the
+host, player 2 (`menus_set_pad2`, controller port B) the guest. The two
+records are two arrays in `mn_vs.c`, so the partner logic of the original runs
+unchanged; the partner's record is the other local player's, seen in the same
+frame. Not ported: the lobby (VsMenu / VsConnect), download play, the link
+icons, the wireless error / "partner left" message boxes, the rematch sync.
+
+Flow:
+
+1. Title menu, VS page: the page and its wireless sub-page open as on the DS.
+   Their modes (download play, host, join) skip the wireless warning (MsgBox 0)
+   and the lobby and take the lobby's host exit (exit table 2,
+   `TitleMenu_StartVsHost`: `gGameState.unk10 = 1`, `unk18 |= 0x20`).
+2. `PlayerSelectMenu_StartVs`: two PlayerSelect instances, player 1 mode 1 on
+   engines 0 / 1, player 2 mode 2 on engines 2 / 3 (`MN_ENGINE_P2`), one file
+   set shared. The original's handshake (`State_Sync`), opening, select,
+   confirm (voices 6 / 7 at frame 8), `IsSameChoiceAsPartner` (the guest yields
+   when both confirm one character in the same frame), the partner's decided
+   character is skipped in the select (`DrawSpriteA44` + auto-scroll), B
+   cancels a confirmation until both have decided; player 1's B opens the quit
+   prompt (MsgBox 9), YES takes both to the title menu (the guest's
+   `State_PartnerLeft` fades it out). When both have decided, after the
+   0xd2-frame wait and the fade, `ExitToGame(1, ...)` sets `gGameState.unk4`
+   (player 1's character) / `unk8` (player 2's) and starts TimeSelect. The
+   scene changes are player 1's; the guest reaching an exit first waits.
+3. `TimeSelectMenu_StartMode0` (player 1 the chooser): LEFT / RIGHT over the
+   stages unlocked in either story (`GetUnlockedStageMask` on `gSaveData.unkC`
+   / `unk64`, 7 zones x acts 1 / 2), A confirms, B goes back to the character
+   select; then MsgBox 0xe and both players press A (or 200 frames pass).
+   Player 2's follower record (handshake + unlock mask, the ready flag on its
+   A) is `TimeSelectMenu_LocalGuest_Main`. `Game_StartVsStage(stage / 2,
+   stage % 2)` returns `MENU_REQ_VS_STAGE`: `zone` (DS zone id 0..6), `act`
+   (0 / 1), `character` = player 1, `character2` = player 2, `mode` = 1
+   (`gGameState.unk10` of `Game_StartVsStage`), `easy` = `gGameState.unk14`
+   (the VS path does not change it).
+4. `menus_vs_exit(res)`: `res->winner` is `data_022c4590.unk40` as
+   `ResultsScreen_GetResultKind` gives it the host (0 player 1, 1 player 2,
+   2 draw); it starts the ResultsScreen and returns `MENU_REQ_NONE`. The
+   screen: fade-in, the WIN / LOSE / DRAW stamps and the models' win / lose
+   poses (menu.narc), the choice window (TRY AGAIN, CHANGE CHARACTER/ACT,
+   QUIT) chosen by player 1 (on the DS only the host chooses; the guest's
+   unit follows), QUIT asks MsgBox 9. Then `SaveData_RecordVsResult` (player
+   1's view, opponent = player 2's name, MAC 0) and the commit, and
+   `ResultsScreen_Exit`: TRY AGAIN -> `MENU_REQ_VS_STAGE` with the same
+   stage and characters (from `menus_run_frame`), CHANGE -> the character
+   select, QUIT -> the title screen. The original screen shows no times or
+   rings (`VsRaceResult.time / rings / finished` are not used).
+
+main.c: every frame `menus_set_pad2(&pad_port_b)` before `menus_run_frame`;
+on `MENU_REQ_VS_STAGE` start the race; at its end `menus_vs_exit(&res)` and
+run the menus (a rematch comes back as `MENU_REQ_VS_STAGE`). Names:
+`menus_set_owner_name` (player 1) and `menus_set_player2_name` (default empty).
+
+Engines and composition: `MN_ENGINES` 4, `mn_bg_ofs(engine)` (player 2's
+`gDisplayMain` / `gDisplaySub`), `g_mn_bright[4]`; `MnComp.nbr` / `br[]`: a
+brightness per frame rectangle (each player's half fades with that player's
+screens). Section 3 lists the three compositions.
+
+| original | port | status |
+|---|---|---|
+| PlayerSelectMenu_Create (modes 1 / 2), StartMode1 / 2 | `PlayerSelectMenu_Create(mode, player)`, `PlayerSelectMenu_StartVs` | modified (one instance per player) |
+| PlayerSelectMenu_State_StartSync, State_Sync, Action_Opening | same | as-is (records of mn_vs.c) |
+| PlayerSelectMenu_Main, State_Intro, State_Select, State_ScrollOut, State_ScrollIn, State_Confirmed, State_FadeOutBack, Action_* | same | as-is (VS branches; pad per player, engines per player) |
+| PlayerSelectMenu_SetLocalChoice, SetLocalQuit, GetPartnerChoice, IsSameChoiceAsPartner, IsDifferentChoiceFromPartner, HasPartnerCancelled | same | as-is (player argument) |
+| PlayerSelectMenu_Action_OpenQuitPrompt, State_QuitPrompt | same | as-is |
+| PlayerSelectMenu_Action_PartnerLeft, State_PartnerLeft | same | modified (no MsgBox 2: the host's exit ends both) |
+| PlayerSelectMenu_State_WaitPartnerLeftMsg, LinkIcon_*, CreateLinkIcon | - | not translated |
+| PlayerSelectMenu_ExitToGame (1 / 2), ExitBack (1 / 2), StartBrightnessFade | same | modified (both modes -> TimeSelectMenu_StartMode0 / TitleMenu_Start; fade per player) |
+| - | `PlayerSelectMenu_VsGuestDone`, `State_VsGuestWait` | new (the scene changes are player 1's) |
+| TimeSelectMenu_Create, StartMode0, IsMode0Flag, State_Sync, Main, State_Select, State_WaitScroll, State_ChooserConfirmed, State_ChooserReady, State_StartStage, State_ExitToPlayerSelect | same | as-is / modified (sprites and BGs as the port's services) |
+| TimeSelectMenu_GetUnlockedStageMask, IsPartnerReadyAsChooser, BrightnessFade_Main, StartBrightnessFade, ScrollBg_Main | same | as-is |
+| TimeSelectMenu_DrawLayoutA / B, MenuO_Update, Draw*/SetSprite* helpers | same / `TimeSelectMenu_Update`, `draw_at` | modified (helpers merged) |
+| TimeSelectMenu_LoadAssets, InitSprites, InitBackgrounds, InitKeyframeAnims, Destructor | in `TimeSelectMenu_Create` / same | modified |
+| TimeSelectMenu_LoadArchives, SetupOrthoCamera, DrawModelA / B | `TimeSelectMenu_DrawModel` | modified (the menus' 3D layer, mn_model.c) |
+| TimeSelectMenu_LoadPlayerNames, GetNameGlyphs, DrawPlayerName | `mn_name_strips` (mn_records.c), same | modified |
+| TimeSelectMenu StartMode1 and the follower states (FollowChooser, FollowerConfirmed / Ready) | `TimeSelectMenu_LocalGuest_Main` | rewritten (player 2's record only) |
+| TimeSelectMenu_Transfer_*, StartStageTransfer, *TransferSync / WaitTransfer, PollDownloadPlay, LoadStageFiles, LinkIcon_* | - | not translated (download play) |
+| Game_StartVsStage | same (mn_vs.c) | modified (SceneChange_ToVsStage -> `MENU_REQ_VS_STAGE`) |
+| ResultsScreen_Create, CreateTask, GetResultKind, Unk_0235cbd8 / cc4c / cc60 | `ResultsScreen_Create` | modified (`menus_vs_exit`'s winner) |
+| ResultsScreen_State_Sync, State_FadeIn, State_ShowResult, Main_CloseWindow, State_Choose, Main_DelayOpenWindowNoSprite16, Main_OpenWindow, State_QuitPrompt, State_FadeOutExit, Exit | same | as-is (Exit: requests / scene starts) |
+| ResultsScreen_Draw* (Header, Sprite1Pair, Sprite2, WinLose, Choice, Sprite16, PlayerName), EaseValue, ScrollBg_Main, SetModelAnimA / B | same | as-is |
+| ResultsScreen_EnableLineScroll(Split), SetWindowLineScroll, DisableLineScroll(Hidden) | same + `ResultsScreen_EmitWindow` | modified (HDMA -> two row bands) |
+| ResultsScreen_SaveVsResult, SetLocalChoice / Decided / Quit, ClearLocalDecided | same | as-is |
+| ResultsScreen_DrawModelA / B, SetupOrthoCamera, LoadArchives | `ResultsScreen_DrawModel` | modified (3D layer) |
+| ResultsScreen guest states (Main_WaitPartnerChoice, State_WaitPartner, DelayOpenWindow) | `ResultsScreen_LocalGuest_Main` | rewritten (the handshake only; the guest chooses nothing) |
+| ResultsScreen_RematchSync_Main, CreateRematchSync, LinkLost_Main, ShowLinkLostMessage, LinkIcon_* | - | not translated |
+| - | `menus_set_pad2`, `menus_vs_exit`, `menus_set_player2_name`, WirelessSession records, `mn_vs_pad_update` | new |
+
+Host test: `test/test_vs.c` (in `host-test`): the title menu's VS page to the
+two players' select, the same-character rule and the cancels, the quit
+prompt, the stage select over the unlocked stages (locked ones skipped, wrap),
+the request fields, results win / lose / draw with rematch, character select
+and quit, the back button and the 200-frame ready wait.
+

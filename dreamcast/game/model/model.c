@@ -601,6 +601,15 @@ void dcm_pose(const dcm_model_t *m, const dcm_local_t *locals, dcm_mtx_t *pal) {
 
 #define DS_ANGLE(a) ((float)(a) * (6.28318530718f / 65536.0f))
 
+/* engine/render.c view (Battle Play viewports; weak: programs without render.c use the default
+ * full screen showing the 256x192 world window) */
+extern float g_view_x __attribute__((weak)), g_view_y __attribute__((weak));
+extern float g_view_w __attribute__((weak)), g_view_h __attribute__((weak)), g_view_scale __attribute__((weak));
+static int view_set(void) { return &g_view_scale != 0 && &g_view_w != 0 && &g_view_h != 0 && &g_view_x != 0 && &g_view_y != 0; }
+/* world window of the stage camera: 256 x 192 by default */
+static float win_w(void) { return view_set() ? g_view_w / g_view_scale : 256.0f; }
+static float win_h(void) { return view_set() ? g_view_h / g_view_scale : 192.0f; }
+
 static void cam_defaults(dcm_camera_t *c) {
     memset(c, 0, sizeof(*c));
     dcm_mtx_identity(&c->view);
@@ -609,6 +618,15 @@ static void cam_defaults(dcm_camera_t *c) {
     c->vp_w = 640.0f;
     c->vp_h = 480.0f;
     c->near_w = 0.5f;
+}
+/* the stage cameras draw into the current view rectangle */
+static void cam_stage_viewport(dcm_camera_t *c) {
+    if (view_set()) {
+        c->vp_x = g_view_x;
+        c->vp_y = g_view_y;
+        c->vp_w = g_view_w;
+        c->vp_h = g_view_h;
+    }
 }
 
 static void proj_frustum(dcm_camera_t *c, float t, float b, float l, float r, float n, float f) {
@@ -629,28 +647,30 @@ static void proj_frustum(dcm_camera_t *c, float t, float b, float l, float r, fl
 #define STAGE_FAR 2048.0f
 
 void dcm_camera_stage(dcm_camera_t *c) {
-    float a = DS_ANGLE(STAGE_FOVY), h, w, dist;
+    float a = DS_ANGLE(STAGE_FOVY), h, w, dist, ww = win_w(), wh = win_h();
     cam_defaults(c);
-    h = tanf(a) * STAGE_NEAR;
-    w = h * STAGE_ASPECT;
+    cam_stage_viewport(c);
+    /* the frustum covers the world window at the stage distance (256 x 192: the DS screen) */
+    h = tanf(a) * STAGE_NEAR * (wh / 192.0f);
+    w = tanf(a) * STAGE_NEAR * STAGE_ASPECT * (ww / 256.0f);
     proj_frustum(c, h, -h, -w, w, STAGE_NEAR, STAGE_FAR);
     dist = 96.0f * cosf(a) / sinf(a); /* BossCamera_UpdateFixed: z = cot * 0x60 */
-    c->view.m[3][0] = -128.0f;
-    c->view.m[3][1] = 96.0f;
+    c->view.m[3][0] = -ww * 0.5f;
+    c->view.m[3][1] = wh * 0.5f;
     c->view.m[3][2] = -dist;
 }
 
 void dcm_camera_stage_offaxis(dcm_camera_t *c, float *tx, float *ty) {
-    float a = DS_ANGLE(STAGE_FOVY);
-    float h = tanf(a) * STAGE_NEAR;
-    float w = h * STAGE_ASPECT;
+    float a = DS_ANGLE(STAGE_FOVY), ww = win_w(), wh = win_h();
+    float h = tanf(a) * STAGE_NEAR * (wh / 192.0f);
+    float w = tanf(a) * STAGE_NEAR * STAGE_ASPECT * (ww / 256.0f);
     float dist = 96.0f * cosf(a) / sinf(a);
     float d = STAGE_NEAR / dist;
-    float ao = d * (*ty + 96.0f);
-    float bo = d * (128.0f - *tx);
+    float ao = d * (*ty + wh * 0.5f);
+    float bo = d * (ww * 0.5f - *tx);
     proj_frustum(c, h - ao, -(h + ao), bo - w, w + bo, STAGE_NEAR, STAGE_FAR);
-    *tx = 128.0f;
-    *ty = -96.0f;
+    *tx = ww * 0.5f;
+    *ty = -wh * 0.5f;
 }
 
 void dcm_camera_ortho(dcm_camera_t *c, float t, float b, float l, float r, float n, float f) {
@@ -1311,6 +1331,9 @@ typedef struct {
 } hdr_slot_t;
 #define HDR_CACHE 64
 static hdr_slot_t g_hdr_cache[HDR_CACHE] __attribute__((aligned(32)));
+/* engine/render.c: Battle Play viewport user clip (0 elsewhere; weak: test programs without render.c) */
+extern int g_render_clip __attribute__((weak));
+#define RENDER_CLIP_ON (&g_render_clip != 0 && g_render_clip != 0)
 
 static const pvr_poly_hdr_t *material_header(const dcm_model_t *m, const dcm_material_t *mat,
                                              const dcm_matstate_t *ms, int list) {
@@ -1343,7 +1366,7 @@ static const pvr_poly_hdr_t *material_header(const dcm_model_t *m, const dcm_mat
     else
         cull = PVR_CULLING_NONE;
     mode = (uint32_t)flip | (uint32_t)clamp << 2 | (uint32_t)cull << 4 | (uint32_t)textured << 8 | 1u << 9 |
-           (uint32_t)(g_shift_on && g_shift_oargb) << 10;
+           (uint32_t)(g_shift_on && g_shift_oargb) << 10 | (uint32_t)RENDER_CLIP_ON << 11;
     h = (tex >> 5) ^ (tex >> 11) ^ fmt ^ wh ^ (wh >> 13) ^ mode * 0x9E37u ^ (uint32_t)list * 0x45D9F3Bu;
     h ^= h >> 16;
     e = &g_hdr_cache[h & (HDR_CACHE - 1)];
@@ -1362,6 +1385,8 @@ static const pvr_poly_hdr_t *material_header(const dcm_model_t *m, const dcm_mat
     if (mode & (1u << 10))
         cxt.gen.specular = PVR_SPECULAR_ENABLE; /* offset colour: dcm_set_color_shift */
     pvr_poly_compile(&e->hdr, &cxt);
+    if (mode & (1u << 11))
+        e->hdr.m0.clip_mode = PVR_USERCLIP_INSIDE;
     e->list = (uint32_t)list;
     e->tex = tex;
     e->fmt = fmt;

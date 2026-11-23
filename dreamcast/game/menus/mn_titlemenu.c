@@ -5,8 +5,12 @@
  *
  * Touch -> pad: the original takes UP/DOWN/A/B and also touches on the item
  * buttons and the back button; the pad path is the same code, the touch path
- * is not needed. VS (DS wireless) has no DC counterpart: the VS page opens,
- * its modes behave as if the wireless warning (MsgBox 0) was declined.
+ * is not needed. VS: the VS page and its wireless sub-page open as on the DS;
+ * their modes (download play, host, join) start Battle Play on this Dreamcast
+ * (two controllers): the wireless warning (MsgBox 0) and the VS lobby
+ * (VsMenu, VsConnect) have no counterpart, the item goes on as the lobby's
+ * host exit does (gTitleMenuExitTable[2] TitleMenu_StartVsHost ->
+ * PlayerSelectMenu_StartVs), fading to white like the select that follows.
  */
 #include <stdlib.h>
 #include "mn_internal.h"
@@ -464,24 +468,14 @@ static void TitleMenu_State_Confirm(void) {
     BOOL done = TRUE, snd;
     TitleMenuItem *si;
     tm_draw_items(w, 0, w->unkc != 0 ? 3 : 2, t, 0, &done);
-    if (w->unkc != 0) {
-        /* MsgBox_IsClosed / MsgBox_GetResult of the wireless warning: the
-         * DC has no wireless play, the box counts as declined */
-        w->timer = 0;
-        w->unkc = 0;
-        gTaskCurrent->func = TitleMenu_State_Select;
-        return;
-    }
     w->timer++;
     if (t >= 30) {
         si = &w->m.items[w->sel];
-        if ((si->unk4 & 4) && w->unkc == 0) {
-            w->unkc = 1;   /* TitleMenu_ShowMsgBox0 */
-            return;
-        }
+        /* (si->unk4 & 4): TitleMenu_ShowMsgBox0, the wireless warning before the VS lobby: not on
+         * the Dreamcast; the VS item goes on with the white fade of the lobby's exit */
         snd = FALSE;
         w->unkc = 0;
-        if (si->unk4 & 1) {
+        if (si->unk4 & (1 | 4)) {
             TitleMenu_StartFadeToWhite(8, 0x14);
             snd = TRUE;
         }
@@ -735,12 +729,13 @@ static void TitleMenu_OpenPlayerSelectPage(TitleMenuWork *p, s32 flag, s32 b) {
     TitleMenu_CreatePageTask(&menu, p, b);
 }
 
+/* TitleMenu_SelectVsMode0 / 1 / 2: VsMenu_CreateMode0 / 1 / 2 (download play, host, join) and the
+ * wait task TitleMenuVsMode*Wait_Main, which sets the exit of the lobby when it closes. Battle Play
+ * on one Dreamcast has no lobby: every mode takes the host's exit (2, TitleMenu_StartVsHost). */
 static void TitleMenu_SelectVsMode(TitleMenuWork *p, s32 f, s32 a) {
-    /* VsMenu_CreateMode0/1/2: not available (the message box path returns to
-     * the selection before this is reached) */
     (void)f;
     (void)a;
-    (void)p;
+    p->state = 2;
 }
 
 static void TitleMenu_OpenVsSubPage(TitleMenuWork *p, s32 flag, s32 b) {
@@ -862,9 +857,14 @@ static void TitleMenu_ExitToGameStart(void) {
     PlayerSelectMenu_StartMode(0);   /* SceneChange_ToPlayerSelectMenuMode0 */
 }
 
-static void TitleMenu_ExitToVs(void) {
-    mn_request_unavailable("VsLobby");
-    TitleMenu_Start();
+/* TitleMenu_StartVsHost: gGameState.unk10 = 1 (VS), unk18 |= 0x20, &= ~0x10, VsConnect_CreateHostSync
+ * (-> SceneChange_ToPlayerSelectMenuMode1); StartVsJoin is the same for the guest, GoToVsLobby
+ * (download play) sets 0x10 too: all three start the two players' select here */
+static void TitleMenu_StartVsHost(void) {
+    gGameState.unk10 = MENU_MODE_VS;
+    gGameState.unk18 |= 0x20u;
+    gGameState.unk18 &= ~0x10u;
+    PlayerSelectMenu_StartVs();
 }
 
 static void TitleMenu_ExitToPlayerSelectMode3(void) {
@@ -889,8 +889,8 @@ static void TitleMenu_ExitToOptions(void) { Options_StartFromTitleMenu(); }
 
 /* gTitleMenuExitTable */
 static void (*const gTitleMenuExitTable[8])(void) = {
-    TitleMenu_ExitToTitleScreen, TitleMenu_ExitToGameStart, TitleMenu_ExitToVs, TitleMenu_ExitToVs,
-    TitleMenu_ExitToVs, TitleMenu_ExitToPlayerSelectMode3, TitleMenu_ExitToPlayerSelectMode4,
+    TitleMenu_ExitToTitleScreen, TitleMenu_ExitToGameStart, TitleMenu_StartVsHost, TitleMenu_StartVsHost,
+    TitleMenu_StartVsHost, TitleMenu_ExitToPlayerSelectMode3, TitleMenu_ExitToPlayerSelectMode4,
     TitleMenu_ExitToOptions,
 };
 

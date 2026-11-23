@@ -106,6 +106,13 @@ typedef struct {
     int finished[2];
 } VsRaceResult;
 MenuRequest menus_vs_exit(const VsRaceResult *res);
+/* (mn_results.c: the ResultsScreen is interactive, so menus_vs_exit itself returns MENU_REQ_NONE
+ * and the menus run it; the rematch's MENU_REQ_VS_STAGE (same zone / act / characters) comes from
+ * menus_run_frame when player 1 picks TRY AGAIN. VsRaceResult.winner decides WIN / LOSE / DRAW; the
+ * original screen shows no times or rings.) */
+/* player 2's name on the VS screens and in the VS record (UTF-16, up to 10 characters; default
+ * empty). Player 1's is menus_set_owner_name. */
+void menus_set_player2_name(const uint16_t *utf16, int len);
 void menus_shutdown(void);
 /* The staff roll ended with CS_NEXT_UNLOCK_NOTICES (PostStaffRoll): show the unlock
  * notices the save calls for (player-select page, sound test), then the SEGA logo.
