@@ -198,7 +198,9 @@ MnRegion *mn_comp_add(int engine, float x0, float y0, float x1, float y1, float 
 /* the whole 256x192 frame of `engine` at 2.5x */
 MnRegion *mn_comp_full(int engine);
 typedef struct { float x, y, w, h, u0, v0, u1, v1; } MnOut;
-int mn_project(const MnQuad *q, const MnRegion *r, MnOut *o);   /* DS quad -> 640x480, clipped to the region */
+int mn_project(const MnQuad *q, const MnRegion *r, MnOut *o);
+/* an affine quad (mn_emit_bg_affine) cut to the region's source rectangle: up to 8 {x, y, u, v} */
+int mn_affine_clip(const MnQuad *q, const MnRegion *r, float out[8][4]);   /* DS quad -> 640x480, clipped to the region */
 /* the final sorted list (DS compositing order), used by the KOS drawer and the host test */
 typedef struct { const MnQuad *q; const MnRegion *r; } MnDraw;
 int mn_sorted(const MnDraw **out);

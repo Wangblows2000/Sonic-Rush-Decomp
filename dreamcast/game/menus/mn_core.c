@@ -742,6 +742,44 @@ void mn_affine_corners(const MnQuad *q, float xy[4][2]) {
     }
 }
 
+/* The affine quad cut to its region's source rectangle (the part of the DS screen the composition
+ * shows: the DS clips the BG to its screen), in DS px of the engine with the image's texel u, v:
+ * a convex polygon of up to 8 vertices {x, y, u, v} in order; returns the count (0: nothing left). */
+int mn_affine_clip(const MnQuad *q, const MnRegion *r, float out[8][4]) {
+    float a[8][4], b[8][4];
+    float xy[4][2];
+    static const int ring[4] = {0, 1, 3, 2};   /* the corners around the quad */
+    int n = 4, e, i, k;
+    mn_affine_corners(q, xy);
+    for (k = 0; k < 4; k++) {
+        int c = ring[k];
+        a[k][0] = xy[c][0];
+        a[k][1] = xy[c][1];
+        a[k][2] = (c & 1) ? (float)q->bg->w : 0.0f;
+        a[k][3] = (c & 2) ? (float)q->bg->h : 0.0f;
+    }
+    for (e = 0; e < 4 && n > 0; e++) {   /* Sutherland-Hodgman: x >= sx0, x <= sx1, y >= sy0, y <= sy1 */
+        int axis = e >> 1, m = 0;
+        float lim = e == 0 ? r->sx0 : e == 1 ? r->sx1 : e == 2 ? r->sy0 : r->sy1, sgn = (e & 1) ? -1.0f : 1.0f;
+        for (i = 0; i < n; i++) {
+            const float *p = a[i], *q2 = a[(i + 1) % n];
+            float dp = (p[axis] - lim) * sgn, dq = (q2[axis] - lim) * sgn;
+            if (dp >= 0.0f && m < 8)
+                memcpy(b[m++], p, sizeof(b[0]));
+            if ((dp >= 0.0f) != (dq >= 0.0f) && m < 8) {
+                float t = dp / (dp - dq);
+                for (k = 0; k < 4; k++)
+                    b[m][k] = p[k] + (q2[k] - p[k]) * t;
+                m++;
+            }
+        }
+        n = m;
+        memcpy(a, b, sizeof(a[0]) * (size_t)n);
+    }
+    memcpy(out, a, sizeof(a[0]) * (size_t)n);
+    return n;
+}
+
 /* ---------------------------------------------------- composition */
 void mn_comp_reset(int base_engine) {
     memset(&g_mn_comp, 0, sizeof(g_mn_comp));

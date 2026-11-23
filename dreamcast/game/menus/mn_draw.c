@@ -131,19 +131,17 @@ static const Texture *bg_tex(MnBgImg *b) {
     return (const Texture *)b->tex;
 }
 
-/* an affine BG quad (mn_emit_bg_affine) through its region: the image's four corners rotated and
- * scaled, the region's rectangle as the clip (PVR user clip is per tile: the quad is not clipped) */
+/* an affine BG quad (mn_emit_bg_affine) through its region: the image rotated and scaled, cut to the
+ * region's source rectangle (mn_affine_clip: the DS screen's edge), one strip */
 static void draw_affine(const MnQuad *q, const MnRegion *r, float z) {
     const Texture *t = bg_tex((MnBgImg *)q->bg);
-    float xy[4][2];
+    float p[8][4];
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
     pvr_vertex_t v;
-    static const int order[4] = {0, 1, 2, 3};
-    int k;
-    if (!t)
+    int n, k, lo, hi;
+    if (!t || (n = mn_affine_clip(q, r, p)) < 3)
         return;
-    mn_affine_corners(q, xy);
     pvr_poly_cxt_txr(&cxt, PVR_LIST_TR_POLY, tex_txr_format(t, -1), t->w, t->h, t->ptr, PVR_FILTER_BILINEAR);
     cxt.gen.culling = PVR_CULLING_NONE;
     pvr_poly_compile(&hdr, &cxt);
@@ -151,13 +149,16 @@ static void draw_affine(const MnQuad *q, const MnRegion *r, float z) {
     v.argb = q->argb;
     v.oargb = 0;
     v.z = z;
-    for (k = 0; k < 4; k++) {
-        int c = order[k];
-        v.flags = k == 3 ? PVR_CMD_VERTEX_EOL : PVR_CMD_VERTEX;
-        v.x = r->dx + (xy[c][0] - r->sx0) * r->scale;
-        v.y = r->dy + (xy[c][1] - r->sy0) * r->scale;
-        v.u = (c & 1) ? (float)q->bg->w / t->w : 0.0f;
-        v.v = (c & 2) ? (float)q->bg->h / t->h : 0.0f;
+    /* the convex polygon as a strip: 0, 1, n-1, 2, n-2, ... */
+    lo = 1;
+    hi = n - 1;
+    for (k = 0; k < n; k++) {
+        int c = k == 0 ? 0 : (k & 1) ? lo++ : hi--;
+        v.flags = k == n - 1 ? PVR_CMD_VERTEX_EOL : PVR_CMD_VERTEX;
+        v.x = r->dx + (p[c][0] - r->sx0) * r->scale;
+        v.y = r->dy + (p[c][1] - r->sy0) * r->scale;
+        v.u = p[c][2] / t->w;
+        v.v = p[c][3] / t->h;
         pvr_prim(&v, sizeof(v));
     }
 }

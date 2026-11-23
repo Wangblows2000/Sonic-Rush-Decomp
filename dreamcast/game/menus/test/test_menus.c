@@ -159,6 +159,25 @@ int main(int argc, char **argv) {
             n3d = mn_3d_count() > n3d ? mn_3d_count() : n3d;
             if (i == 0x10)
                 dump("02c_titledemo_spin");
+            if (i == 10) {   /* scene 4 frame 2: the magnified RUSH (scale ~0.5) is cut to the bottom screen's strip */
+                const MnDraw *sd;
+                int ns = mn_sorted(&sd), k, found = 0;
+                for (k = 0; k < ns; k++)
+                    if (sd[k].q->kind == MNQ_AFFINE) {
+                        float p[8][4], xy[4][2];
+                        int n = mn_affine_clip(sd[k].q, sd[k].r, p), j, inside = 1, outside = 0;
+                        mn_affine_corners(sd[k].q, xy);
+                        for (j = 0; j < 4; j++)
+                            outside |= xy[j][0] < sd[k].r->sx0 || xy[j][0] > sd[k].r->sx1 || xy[j][1] < sd[k].r->sy0 ||
+                                       xy[j][1] > sd[k].r->sy1;
+                        for (j = 0; j < n; j++)
+                            inside &= p[j][0] >= sd[k].r->sx0 - 0.01f && p[j][0] <= sd[k].r->sx1 + 0.01f &&
+                                      p[j][1] >= sd[k].r->sy0 - 0.01f && p[j][1] <= sd[k].r->sy1 + 0.01f;
+                        CHECK(outside && n >= 3 && inside);
+                        found = 1;
+                    }
+                CHECK(found);
+            }
         }
         CHECK(n3d == 2);                       /* scenes 4 / 5: Sonic and Blaze */
         dump("02d_titledemo_models");
@@ -355,33 +374,37 @@ int main(int argc, char **argv) {
     t = run_until_scene("Options", 200);
     CHECK(t >= 0);
     run(30, 0, 0);
+    dump("31a_options_opening");   /* the list slides in (mnu_opti.ama seqs 1.., 20, 25, 27: 41 frames) */
+    run(15, 0, 0);
     dump("31_options");
     /* DIFFICULTY -> EASY (PLAYER DATA is the first item) */
     tap(IN_DOWN);
     run(3, 0, 0);
     tap(IN_JUMP);
-    run(5, 0, 0);
+    run(36, 0, 0);
     tap(IN_RIGHT);
     run(3, 0, 0);
     dump("32_options_difficulty");
     tap(IN_JUMP);
-    run(20, 0, 0);
+    run(30, 0, 0);
+    dump("32a_options_back_slide");   /* the page slides out to the right, the list in (seqs 23, 17, 18) */
+    run(25, 0, 0);
     CHECK((gSaveData.unk8 & 1) == 1);
     /* TIME LIMIT -> OFF */
     tap(IN_DOWN);
     run(3, 0, 0);
     tap(IN_JUMP);
-    run(5, 0, 0);
+    run(36, 0, 0);
     tap(IN_RIGHT);
     run(3, 0, 0);
     tap(IN_JUMP);
-    run(20, 0, 0);
+    run(55, 0, 0);
     CHECK((gSaveData.unk8 & 2) == 2);
     /* SOUND TEST: RIGHT twice, A plays track 2 */
     tap(IN_DOWN);
     run(3, 0, 0);
     tap(IN_JUMP);
-    run(5, 0, 0);
+    run(36, 0, 0);
     tap(IN_RIGHT);
     run(3, 0, 0);
     tap(IN_RIGHT);
@@ -393,9 +416,11 @@ int main(int argc, char **argv) {
     tap(IN_TRICK);
     run(3, 0, 0);
     tap(IN_TRICK);
-    run(3, 0, 0);
+    run(40, 0, 0);
     /* B: exit commits the save and returns to the title menu (at OPTIONS) */
     tap(IN_TRICK);
+    run(20, 0, 0);
+    dump("34_options_exit_slide");   /* the list slides out, white after 0x1e frames */
     t = run_until_scene("TitleMenu", 60);
     CHECK(t >= 0);
     memset(&gSaveData, 0, sizeof(gSaveData));

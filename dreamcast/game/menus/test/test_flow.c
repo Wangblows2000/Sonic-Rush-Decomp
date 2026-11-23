@@ -237,12 +237,12 @@ static void test_records(void) {
     menus_set_owner_name(me, 5);
     /* Options > PLAYER DATA > BATTLE PLAY RECORD */
     start_scene(Options_StartFromTitleMenu);
-    run(30, 0, 0);
+    run(45, 0, 0);
     tap(IN_JUMP);
-    run(5, 0, 0);
+    run(36, 0, 0);
     dump("50_options_player_data");
     tap(IN_JUMP);
-    t = run_until_scene("Records", 60);
+    t = run_until_scene("Records", 90);
     CHECK(t >= 0);
     run(30, 0, 0);
     dump("51_records");
@@ -276,7 +276,7 @@ static void test_records(void) {
     run(3, 0, 0);
     dump("54_options_ta_kind");
     tap(IN_JUMP);
-    t = run_until_scene("TimeAttackMenu", 60);
+    t = run_until_scene("TimeAttackMenu", 90);
     CHECK(t >= 0);
     run(120, 0, 0);
     dump("55_ta_records_boss");

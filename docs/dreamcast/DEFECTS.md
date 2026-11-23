@@ -293,8 +293,40 @@ code (placement, timers, palettes) for one 640x480 frame.
   this frame's quads still drew from (mn_draw built textures from freed memory; the host test crashed
   once the heap layout changed) | FIXED menus/mn_core.c: mn_res_free / mn_bg_free queue the files,
   mn_flush_freed() frees them after menus_draw_tr and at the next frame start | host tests.
-- Open: the DS edge marking (model outlines: DISP3DCNT 0x20 with G3X_SetEdgeColorTable) of the zone-map
-  character and the title-demo models is not drawn.
+- V19 | low | TitleDemo scene 4: the magnified spinning "RUSH" (affine BG quad, scale up to 2x and rotated)
+  ran out of the bottom screen's strip over the top screen's picture and the white margins; on the DS the
+  bottom screen clips it | FIXED menus/mn_core.c mn_affine_clip (the quad cut to the region's source
+  rectangle, Sutherland-Hodgman, up to 8 vertices with their u / v), menus/mn_draw.c draw_affine (one strip
+  of the clipped polygon, no extra polygons) | menus host test (scene 4 frame 2: a corner outside the
+  region, every clipped vertex inside), flow, story; Flycast: RUSH cut flat at the strip's top (y 360) and
+  right edge while it spins, whole once it has settled.
+- V20 | medium | options: the list and the pages did not slide (V15 drew them at rest only): no slide-in of
+  the list, no slide between list and page, the page of the selected item was not shown at the panel's
+  edge, B left at once with a black fade | FIXED menus/mn_options.c from Options_InitOpenAnims /
+  SelectAnims / CursorMoveAnims / EnterItemAnims / ExitAnims, OptionsMenu_InitBackAnims /
+  InitEnterItemAnims / UpdateAnims / DrawItems (mnu_opti.ama seqs: items 1..12 open, 0 / 13 select and
+  cursor move, 14 / 15 enter, 17 / 18 back; page origin 20 open, 19 rest, 21 cursor-move nudge 240 -> 244
+  -> 240, 22 enter 240 -> 0, 23 back; banner 25 / 24, back button 27 / 26; exit = the open seqs reversed):
+  the list slides in (41 frames, items stacked at y 24 then spread; input waits for it), the page of the
+  selected item sits at the origin (only its panel's edge shows at x 240; the sound-test panel when the
+  sound test is selected), A slides the list out left and the page in (33 frames, bounce), B the reverse,
+  B on the list slides it out and fades to white after 0x1e frames (Options_Action_Exit, 0x2e frames);
+  PLAYER DATA's entries flash 30 frames before the black fade of OptionsMenu_Action_ExitOptions (8 + 8
+  frames, SE 2, 30 frames); OBJ priorities of Options_Unk_ov001_022ce6f8 / DrawListBackButton / OpenPage*:
+  the list's sprites (items, values, OPTIONS banner, back button) at 3, behind the page panel that slides
+  over them, the pages' at 1; the pages drawn at the origin (Options_DrawPage); back from Records / the TA
+  records starts at the page at rest (OptionsMenu_InitEnterItemAnims). Host tests wait for the slides
+  (test_menus.c, test_flow.c timings) | menus host 47/47 (dumps 31a opening, 32a back slide, 34 exit
+  slide: the panel scroll), flow 75/75, story 125/125; Flycast: the opening, cursor move, DIFFICULTY and
+  SOUND TEST pages sliding in over the list (banner / back button hidden under the panel), back, exit
+  (items fold up to y 24 and leave right, white) -> title menu at OPTIONS.
+- NOT DONE (evaluated) the DS edge marking (model outlines: DISP3DCNT 0x20 with G3X_SetEdgeColorTable) of
+  the zone-map character and the title-demo models. The DS draws it as a post-process on the finished
+  frame (a pixel whose polygon ID differs from a neighbour's gets the edge colour). The PVR has no
+  post-process and no polygon-ID buffer: every way to get the outline draws geometry the scene does not
+  have (an inverted hull = a second copy of each model; modifier volumes = volume triangles around the
+  model; a render-to-texture of the 3D layer = a second scene per frame plus offset silhouette quads), so
+  under the "no extra polygons" rule it is left out. The models are drawn without the 1-px dark outline.
 - FIXED (boss; main.c patch dreamcast/game/boss/patches/boss_restart_main.patch) a death in a boss act
   did not re-create the boss: the fight went on with the damage done, the boss mid-attack. On the DS
   Player_Respawn -> StageRestart_Create destroys every task and creates the stage again (full
