@@ -1,6 +1,6 @@
 # Sonic Rush — native Sega Dreamcast port (`dreamcast-port` branch)
 
-<img width="1200" height="1200" alt="boxart" src="https://github.com/user-attachments/assets/649b1bfb-05d9-4ff0-b498-ed6ef0de8ff0" />
+<img width="800" height="800" alt="boxart" src="https://github.com/user-attachments/assets/649b1bfb-05d9-4ff0-b498-ed6ef0de8ff0" />
 
 **Do be aware; this is all vibeslop. If you do not agree with the usage of AI, move along.**
 
