@@ -67,6 +67,7 @@ Frame pacing from `/cd/debug/frameprof.txt` (per-scene summaries), shots every s
 | seen, other owners | z41: an opaque yellow light cone over the player (`/tmp/flow/shots/reg1_040_late.png`, 9b422c76), z42's searchlights are translucent; z23 / z43 / z73 title card "GO!" over black (arena drawn after boss_start, noted before) |
 
 - F15 | low (test) | autopilot runs lose lives in boss acts and end in a game over (Sonic: z13, z23, z73, zf3; Blaze: z13, z33) | autoclear 600 leaves a standing / A-mashing player with 0 rings in the fight; the boss starts at GO (a4e9e57c) | use `SRDC_AUTOCLEAR=200` for full-story runs, or stop the A mash in acts (driver `MASH` start / stop regexes) | Flycast: Sonic zf3 with autoclear 200 cleared, ending reached |
+- F16 | none (matches DS) | z41/z42 Night Carnival lamp (DecGroupAF 0xd8, `ac_dec_light4`) shows an opaque yellow cone in single screenshots | the DS shows the cone only while the player touches the lamp and alternates it with the front glow every other frame (`gGameState.unk20 & 1`, 30 Hz); OBJ mode 0, no BLDALPHA in zone 4; the port matches (obj_carnival.c `W.frame & 1`) | kept as on the DS; a DC-only 50 % TR-list blend of both children while touched is possible but not applied | Flycast z41 spawn 6940,750: 16-shot burst alternates cone / glow |
 
 ## Test switches added (test discs only; nothing happens without the files)
 
