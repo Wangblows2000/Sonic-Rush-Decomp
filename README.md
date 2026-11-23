@@ -1,6 +1,6 @@
 # Sonic Rush — native Sega Dreamcast port (`dreamcast-port` branch)
 
-<img width="1600" height="1600" alt="boxart" src="https://github.com/user-attachments/assets/649b1bfb-05d9-4ff0-b498-ed6ef0de8ff0" />
+<img width="1200" height="1200" alt="boxart" src="https://github.com/user-attachments/assets/649b1bfb-05d9-4ff0-b498-ed6ef0de8ff0" />
 
 **Do be aware; this is all vibeslop. If you do not agree with the usage of AI, move along.**
 
@@ -14,6 +14,8 @@ The repository contains **no game code from the ROM, no assets and no ROM
 data**. Every asset is converted from your own legally dumped ROM.
 
 ## Build a disc
+
+<img width="628" height="467" alt="discmakah" src="https://github.com/user-attachments/assets/1a6faa5b-7458-40ae-bc05-fb87eb73c42f" />
 
 **Windows 10 / 11:** download [`dist/windows/SonicRushDC-Windows.zip`](dist/windows/SonicRushDC-Windows.zip)
 (the "Download raw file" button on GitHub), unzip it, double-click
