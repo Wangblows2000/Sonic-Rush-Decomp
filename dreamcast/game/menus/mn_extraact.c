@@ -796,6 +796,12 @@ static void ExtraAct_Unk_ov001_022f8e7c(void) {
 }
 /* BG1 outside the two windows (they cover x 0..0xff): rows [0, y1) and [y2, 0xc0);
  * top half colour 2, bottom half colour 0x12 (the VRAM fills of ExtraAct_Start) */
+static void band(s32 a, s32 b, u32 top, u32 bot) {
+    if (a < 96 && b > a)
+        mn_emit_flat(0, 0, 0, (float)a, 256, (float)((b < 96 ? b : 96) - a), top);
+    if (b > 96 && b > a)
+        mn_emit_flat(0, 0, 0, (float)(a > 96 ? a : 96), 256, (float)(b - (a > 96 ? a : 96)), bot);
+}
 static void ExtraAct_DrawBg1(void) {
     u32 top, bot;
     s32 y1 = G->win[5], y2 = G->win[4];
@@ -809,10 +815,9 @@ static void ExtraAct_DrawBg1(void) {
     bot = 0xff000000u | (u32)((c & 31) * 255 / 31) << 16 | (u32)((c >> 5 & 31) * 255 / 31) << 8 |
           (u32)((c >> 10 & 31) * 255 / 31);
     /* BG1 priority 0, behind the sprites of priority 0: emitted after them */
-    if (y1 > 0)
-        mn_emit_flat(0, 0, 0, 0, 256, (float)(y1 < 96 ? y1 : 96), top);
-    if (y2 < 0xc0)
-        mn_emit_flat(0, 0, 0, (float)y2, 256, (float)(0xc0 - y2), y2 >= 96 ? bot : top);
+    /* map rows 0..11 tile 0 (colour 2), rows 12..23 tile 1 (0x12): split at y 96 */
+    band(0, y1 < 0xc0 ? y1 : 0xc0, top, bot);
+    band(y2 > 0 ? y2 : 0, 0xc0, top, bot);
 }
 
 /* ------------------------------------------------------------- the model */

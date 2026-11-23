@@ -110,7 +110,7 @@ static void draw_2d(void) {
 
 void cutscene_draw_list(int list) {
     if (list == PVR_LIST_OP_POLY && g_cs_backdrop && cutscene_is_fullscreen())
-        flat(PVR_LIST_OP_POLY, 0.00001f, g_cs_backdrop);
+        flat(PVR_LIST_OP_POLY, 0.00012f, g_cs_backdrop);   /* above the PVR background plane (0.0001) */
     cs3d_draw_list(list);
     if (list == PVR_LIST_TR_POLY)
         draw_2d();

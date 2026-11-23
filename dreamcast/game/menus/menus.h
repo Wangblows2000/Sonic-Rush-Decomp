@@ -60,6 +60,9 @@ int menus_init(void);
 MenuRequest menus_run_frame(const InputState *in);
 /* TR list: the scene as one 640x480 composition (MENUS.md section 3) + brightness. */
 void menus_draw_tr(void);
+/* the menus' 3D layer (DS BG0: the zone map's character model) into one PVR list (OP, PT or TR),
+ * called inside each list after the list's other draws; nothing when the scene has no model */
+void menus_draw_list(int list);
 /* Back from a stage. The front end does what the original does at that exit
  * (ClearDemo_GoToNextScene, PauseMenu_QuitToMap, Stage_ExitAfterFail, demo
  * end) and returns the next request: MENU_REQ_STAGE when the original goes
@@ -71,8 +74,10 @@ typedef enum {
     MENU_EXIT_GAME_OVER,    /* game over / time over (SceneChange_ToSegaLogo) */
     MENU_EXIT_DEMO_END,     /* attract demo skipped with a button (DemoPlay_Main: SceneChange_ToTitleScreen) */
     MENU_EXIT_DEMO_TIMEOUT, /* attract demo ran to its frame limit (SceneChange_ToSegaLogo) */
-    MENU_EXIT_TRY_AGAIN     /* time attack left without a clear (pause quit, Stage_ExitAfterFail):
+    MENU_EXIT_TRY_AGAIN,    /* time attack left without a clear (pause quit, Stage_ExitAfterFail):
                                SceneChange_ToTryAgain, no time record */
+    MENU_EXIT_EXTRA_QUIT    /* Extra boss pause GO BACK (PauseMenu_Main_Quit zone 8 act 2):
+                               SceneChange_ToPlayerSelectMenuMode0 */
 } MenuExit;
 /* score = data_022c4590.unk4, lives = data_022c4590.unk14, emeralds = gGameState.unk28,
  * time = gGameState.unk20 (frames, time attack records) */

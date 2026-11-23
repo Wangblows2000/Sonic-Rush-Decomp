@@ -1,0 +1,16 @@
+--- a/dreamcast/game/src/main.c
++++ b/dreamcast/game/src/main.c
+@@ -786,9 +786,10 @@
+             overlay_cutscene_frame(&in);   /* zone-map TalkDemo */
+             sound_update();
+             FRAME_BEGIN();
+-            render_begin_list(PVR_LIST_OP_POLY); render_end_list();
+-            render_begin_list(PVR_LIST_PT_POLY); render_end_list();
+-            render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); if(cutscene_active()) cutscene_draw_list(PVR_LIST_TR_POLY); render_end_list();
++            /* the menus' 3D layer (zone-map character model, mn_model.c) in all three lists */
++            render_begin_list(PVR_LIST_OP_POLY); menus_draw_list(PVR_LIST_OP_POLY); render_end_list();
++            render_begin_list(PVR_LIST_PT_POLY); menus_draw_list(PVR_LIST_PT_POLY); render_end_list();
++            render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); menus_draw_list(PVR_LIST_TR_POLY); if(cutscene_active()) cutscene_draw_list(PVR_LIST_TR_POLY); render_end_list();
+             render_end_frame();
+             if(r.kind == MENU_REQ_STAGE && r.zone == 8 && r.act == 2) {
+                 /* extra story: Game_StartDemoScript3AtZone8Act2 */

@@ -24,6 +24,10 @@
 #include "../cutscene/cutscene.h"
 #include "../boss/boss_extra.h"
 #include "../boss/boss7.h"
+/* test builds (bosshp.txt): gBossStatus (boss_internal.h, not included here: its renaming macros
+ * would turn BossHelp_Create, ScreenShake_Start, ... into the boss module's own functions) */
+extern struct { u16 unk0; u32 unk4; u16 unk8; u16 unkA; } boss_gBossStatus;
+#define gBossStatus boss_gBossStatus
 #include "../demo/demo.h"
 #include "../engine/loading.h"
 #include "../engine/frameprof.h"
@@ -111,6 +115,15 @@ static int g_demo, g_demo_spawn_x, g_demo_spawn_y;
 static int g_dbg_pos_set, g_dbg_pos_x, g_dbg_pos_y;   /* test builds: /cd/debug/startpos.txt, first spawn only */   /* attract demo running (DemoPlay) */
 static uint64_t g_prof[4], g_dprof[6], g_fmax;
 static int g_fslow;   /* draw: bg, layers, player model, objects, ui, boss */   /* us per 120 frames: objects update, player, draw, end_frame wait */
+/* test builds: /cd/debug/bosshp.txt "N": the boss's hit points are held at N or below once the
+ * fight starts (a real fight reaches its late phases: Boss7 clash and talk, BossF sky charge and talk) */
+static int g_dbg_bosshp = -1;
+static void dbg_boss_log(void *ctx, const char *ev, s32 a, s32 b)
+{
+    (void)ctx;
+    if(strcmp(ev, "idle") && strcmp(ev, "draw")) printf("boss: %s %ld %ld (frame %lu, brightness %ld)\n", ev, (long)a, (long)b,
+                                                        (unsigned long)g_dcp_world.frame, (long)boss_brightness());
+}
 static int g_dbg_special = -1;   /* test builds: /cd/debug/special.txt = act frame to enter the special stage */
 /* test builds: /cd/debug/autoclear.txt "N": the act is cleared at stage frame N (the goal's
  * StageShutdown_Create(ClearDemo_Create)); in a boss act Stage_OnBossCleared runs instead (the
@@ -125,6 +138,8 @@ static int g_dbg_spawn_x, g_dbg_spawn_y, g_dbg_spawn_tension = -1;
 static int g_dbg_spawn_late_x, g_dbg_spawn_late_y;   /* the title card moves the player: placed again after it */
 static int g_dbg_spawn_trace;   /* frames left of the player trace after the debug spawn */
 int ui_exit_cleared(void);   /* ui/ui_state.c: the stage ended through the act results */
+void ui_extra_pause_open(void);                   /* ui/ui_pause.c: the pause menu over the Extra boss */
+int ui_extra_pause_frame(const InputState *in);
 static void (*g_prev_stage_exit)(void *ctx, s32 kind);
 static void stage_exit_hook(void *ctx, s32 kind)
 {
@@ -465,7 +480,10 @@ static CsNext cs_finish(void)
             if(g_chara) SaveData_SetBlazeProgress((uint16_t)r->progress); else SaveData_SetSonicProgress((uint16_t)r->progress);
             SaveData_StoreLives(g_chara, (uint8_t)g_dcp_world.lives, (uint16_t)g_emeralds);
         }
-        if(r->set_save_flags) SaveData_SetProgressFlags(SaveData_GetProgressFlags() | r->set_save_flags);
+        if(r->set_save_flags) {
+            SaveData_SetProgressFlags(SaveData_GetProgressFlags() | r->set_save_flags);
+            printf("save flags |= %#lx -> %#lx\n", (unsigned long)r->set_save_flags, (unsigned long)SaveData_GetProgressFlags());
+        }
         if(r->set_sonic_progress >= 0) SaveData_SetSonicProgress((uint16_t)r->set_sonic_progress);
         if(r->set_blaze_progress >= 0) SaveData_SetBlazeProgress((uint16_t)r->set_blaze_progress);
         if(r->game_cleared) SaveData_SetGameCleared();
@@ -527,10 +545,17 @@ static void boss_talk_hook(void *ctx, s32 id)
     cs_story(g_dcp_world.zone);
     cutscene_set_return_bank(NULL);
     if(cutscene_start(CS_TALK, id, g_chara) != 0) printf("talk %ld: missing data\n", (long)id);
+    else printf("boss talk %#lx start: stage frame %lu, player %ld,%ld, boss phase %ld\n", (long)id, (unsigned long)g_dcp_world.frame,
+                (long)(g_player.x >> 8), (long)(g_player.y >> 8), (long)boss_phase());
 }
 static void overlay_cutscene_frame(const InputState *in)
 {
-    if(cutscene_active() && !cutscene_is_fullscreen() && cutscene_run_frame(in)) cs_finish();
+    if(cutscene_active() && !cutscene_is_fullscreen() && cutscene_run_frame(in)) {
+        if(!g_frontend)   /* System_Freeze: nothing in the stage moved while the talk ran */
+            printf("boss talk end: stage frame %lu, player %ld,%ld, boss phase %ld\n", (unsigned long)g_dcp_world.frame,
+                   (long)(g_player.x >> 8), (long)(g_player.y >> 8), (long)boss_phase());
+        cs_finish();
+    }
 }
 
 /* ---- Extra Zone (zone 8 act 2): script 3, the Extra boss, script 2, ExtraAct ---- */
@@ -555,14 +580,22 @@ static MenuRequest run_extra_zone(void)
         r = BOSS_EXTRA_FAILED;
         frameprof_scene(g_chara ? "extra boss blaze" : "extra boss sonic", 1);
         int ef = 0;
-        int fight = 0;
+        int fight = 0, pause_open = 0, quit = 0;
         for(;;) {
             input_poll(&in);
             sweep_input(&in);
             if(g_sweep && ++ef > 2 * g_sweep) { r = BOSS_EXTRA_FAILED; break; }
-            /* PauseMenu_Create(0) is not drawn here: START or A continues (no quit entry) */
-            if(boss_extra_paused() && (in.pressed & (IN_START | IN_JUMP))) { boss_extra_resume(); in.pressed = 0; }
+            if(pause_open) {
+                /* PauseMenu_Create(0) of ExtraBoss_State_Battle: CONTINUE resumes; GO BACK (shown once the
+                 * extra story was cleared) -> PauseMenu_Main_Quit: ExtraBoss_Shutdown, player select */
+                int pr = ui_extra_pause_frame(&in);
+                if(pr == 1) { boss_extra_resume(); pause_open = 0; }
+                else if(pr == 2) quit = 1;
+                in.pressed = 0;
+            }
+            if(quit) { r = BOSS_EXTRA_FAILED; break; }
             r = boss_extra_run_frame(&in);
+            if(!pause_open && boss_extra_paused()) { ui_extra_pause_open(); pause_open = 1; }
             if(g_dbg_autoclear > 0 && r == BOSS_EXTRA_RUNNING && ++fight >= g_dbg_autoclear) {
                 printf("debug: extra boss cleared at fight frame %d\n", fight);
                 r = BOSS_EXTRA_CLEARED;
@@ -571,7 +604,7 @@ static MenuRequest run_extra_zone(void)
             FRAME_BEGIN();
             render_begin_list(PVR_LIST_OP_POLY); boss_extra_draw(PVR_LIST_OP_POLY); render_end_list();
             render_begin_list(PVR_LIST_PT_POLY); boss_extra_draw(PVR_LIST_PT_POLY); render_end_list();
-            render_begin_list(PVR_LIST_TR_POLY); boss_extra_draw(PVR_LIST_TR_POLY); render_end_list();
+            render_begin_list(PVR_LIST_TR_POLY); boss_extra_draw(PVR_LIST_TR_POLY); if(pause_open) ui_draw_tr(); render_end_list();
             render_end_frame();
             audio_update();
             if(r != BOSS_EXTRA_RUNNING) break;
@@ -583,6 +616,10 @@ static MenuRequest run_extra_zone(void)
         }
         boss_extra_shutdown();
         SaveData_SetLivesBoth(res.lives_sonic, res.lives_blaze);   /* saved after a game over too, as on the DS */
+        if(quit) {
+            printf("extra boss: pause GO BACK\n");
+            return menus_stage_exit(MENU_EXIT_EXTRA_QUIT, 0, res.lives_current, g_emeralds, 0);
+        }
     } else printf("extra boss: init failed\n");
     printf("extra boss result %d, time %ld, rings %ld\n", r, (long)res.time, (long)res.rings);
     if(r == BOSS_EXTRA_CLEARED) {
@@ -747,7 +784,9 @@ int main(int argc, char **argv)
         uint32_t dsz;
         char *d = load_file("/cd/debug/start.txt", &dsz);
         char *sp = load_file("/cd/debug/special.txt", &dsz);
+        char *bh = load_file("/cd/debug/bosshp.txt", &dsz);
         char *ac = load_file("/cd/debug/autoclear.txt", &dsz);
+        if(bh) { g_dbg_bosshp = atoi(bh); free(bh); printf("debug: boss hit points held at %d\n", g_dbg_bosshp); g_boss_hooks.log = dbg_boss_log; }
         char *ad = load_file("/cd/debug/autodie.txt", &dsz);
         char *sw = load_file("/cd/debug/spawn.txt", &dsz);
         if(sw) { sw = realloc(sw, dsz + 1); sw[dsz] = 0; sscanf(sw, "%d %d %d", &g_dbg_spawn_x, &g_dbg_spawn_y, &g_dbg_spawn_tension); free(sw);
@@ -786,9 +825,10 @@ int main(int argc, char **argv)
             overlay_cutscene_frame(&in);   /* zone-map TalkDemo */
             sound_update();
             FRAME_BEGIN();
-            render_begin_list(PVR_LIST_OP_POLY); render_end_list();
-            render_begin_list(PVR_LIST_PT_POLY); render_end_list();
-            render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); if(cutscene_active()) cutscene_draw_list(PVR_LIST_TR_POLY); render_end_list();
+            /* the menus' 3D layer (zone-map character model, mn_model.c) in all three lists */
+            render_begin_list(PVR_LIST_OP_POLY); menus_draw_list(PVR_LIST_OP_POLY); render_end_list();
+            render_begin_list(PVR_LIST_PT_POLY); menus_draw_list(PVR_LIST_PT_POLY); render_end_list();
+            render_begin_list(PVR_LIST_TR_POLY); menus_draw_tr(); menus_draw_list(PVR_LIST_TR_POLY); if(cutscene_active()) cutscene_draw_list(PVR_LIST_TR_POLY); render_end_list();
             render_end_frame();
             if(r.kind == MENU_REQ_STAGE && r.zone == 8 && r.act == 2) {
                 /* extra story: Game_StartDemoScript3AtZone8Act2 */
@@ -857,7 +897,13 @@ int main(int argc, char **argv)
         if(ok && g_player_ok) ui_update(&in, &g_player);
         if(ok && g_player_ok) overlay_cutscene_frame(&in);   /* boss talks: System_Freeze while active */
         if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen() && !cutscene_active()) {
-            if(g_is_boss && !g_boss_started && !ui_titlecard_active()) { boss_start(); g_boss_started = 1; }
+            /* StageTitleCard_State_StartStage: gBossStatus.flags |= 1 at "GO!" (under the white flash), not
+             * when the title card task ends: the arena (BossF camera) and the boss start there */
+            if(g_is_boss && !g_boss_started && ui_titlecard_started()) { boss_start(); g_boss_started = 1; }
+            if(g_is_boss && g_boss_started && g_dbg_bosshp > 0 && gBossStatus.unk8 > g_dbg_bosshp) {
+                printf("debug: boss hit points %d -> %d\n", gBossStatus.unk8, g_dbg_bosshp);
+                gBossStatus.unk8 = (u16)g_dbg_bosshp;
+            }
             camera_update();   /* Camera_Main (task 0x80): the DS screen pair, the DC window, ZoneBg / ZoneFx */
             if(g_obj_ok) {
                 /* The DS spawns objects for both screens: view 1 is the area the DS
@@ -1076,6 +1122,15 @@ int main(int argc, char **argv)
                     menus_restart_bgm();   /* the zone map's BGM after the script's music */
                 }
             }
+        }
+        if(g_dbg_bosshp > 0 && g_is_boss && frame % 60 == 0 && g_dcp_world.zone == 6) {
+            Boss7Info bi;
+            boss7_info(&bi);
+            printf("debug boss7: rival %ld vx %ld anim %ld move %s player %ld gnd %d\n", (long)(bi.rival_x >> 8), (long)bi.rival_vx, (long)bi.rival_anim,
+                   bi.rival_move ? bi.rival_move : "-", (long)(g_player.x >> 8), g_player.gnd_vel);
+            printf("debug boss7: clash %d balance %ld power %ld/%ld won %d lost %d blend %ld/%ld pad %04x frozen %d cs %d paused %d hp %d\n",
+                   bi.clash, (long)bi.balance, (long)bi.power_player, (long)bi.power_rival, bi.won, bi.lost, (long)bi.blend_mode,
+                   (long)bi.blend_evy, (unsigned)g_player.pad_raw[1], ui_world_frozen(), cutscene_active(), ui_is_paused(), gBossStatus.unk8);
         }
         if(++frame % 120 == 0 && dbg_start && !frameprof_enabled()) {   /* frame log: test builds only (each serial line costs ms) */
             uint64_t now = timer_ms_gettime64();

@@ -90,7 +90,9 @@ for sp in act__title act__title_eng act__mnu_titl act__mnu_titl_eng act__mnu_pse
           act__mnu_opti_eng act__font_opti_sound act2__zmap__zmap_map_icon act2__zmap__zmap_scroll_arrow \
           act2__zmap__zmap_act act2__zmap__font_zmap_act_num act2__zmap__zmap_pause act2__zmap__zmap_pause_eng \
           act__ac_ex_cldm act__dm_cldm_tatk act__dm_demoplay_deu act__dm_demoplay_eng act__dm_demoplay_fra act__dm_demoplay_ita act__dm_demoplay_spa act__mnu_reco act__mnu_reco_deu act__mnu_reco_eng act__mnu_reco_fra act__mnu_reco_ita act__mnu_reco_jpn act__mnu_reco_spa act__mnu_time_act_deu act__mnu_time_act_eng act__mnu_time_act_fra act__mnu_time_act_ita act__mnu_time_act_jpn act__mnu_time_act_lc_eng act__mnu_time_act_lc_jpn act__mnu_time_act_spa act__mnu_time_act_x_eng act__mnu_time_act_x_jpn act__mnu_time_boss_jpn act__mnu_time_boss_lc_eng act__mnu_time_boss_lc_jpn act__mnu_time_oneself_eng act__mnu_time_oneself_jpn act__mnu_time_ranking act__mnu_time_select act__mnu_time_tryagain act__mnu_time_tryagain_deu act__mnu_time_tryagain_eng act__mnu_time_tryagain_fra act__mnu_time_tryagain_ita act__mnu_time_tryagain_jpn act__mnu_time_tryagain_spa act__navi_m \
-          act2__caution__caution_d_jpn act2__caution__caution_d_eng act2__caution__caution_d_fra act2__caution__caution_d_deu act2__caution__caution_d_ita act2__caution__caution_d_spa; do
+          act2__caution__caution_d_jpn act2__caution__caution_d_eng act2__caution__caution_d_fra act2__caution__caution_d_deu act2__caution__caution_d_ita act2__caution__caution_d_spa \
+          act2__caution__caution act2__caution__caution_jpn act2__caution__caution_eng act2__caution__caution_fra act2__caution__caution_deu act2__caution__caution_ita act2__caution__caution_spa \
+          act2__caution__caution_b_jpn act2__caution__caution_b_eng act2__caution__caution_b_fra act2__caution__caution_b_deu act2__caution__caution_b_ita act2__caution__caution_b_spa; do
     S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
     cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
 done
@@ -164,6 +166,8 @@ if [ -n "$SRDC_AUTOMAP" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTOMAP"
 if [ -n "$SRDC_SPAWN" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPAWN" > "$OUT/disc/debug/spawn.txt"; fi
 # SRDC_SPQUOTA=1: special stages keep the rings at the goal quota (cleared without a player)
 if [ -n "$SRDC_SPQUOTA" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/spquota.txt"; fi
+# SRDC_BOSSHP=N: boss hit points held at N or below once the fight starts (late phases, boss talks)
+if [ -n "$SRDC_BOSSHP" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_BOSSHP" > "$OUT/disc/debug/bosshp.txt"; fi
 cd "$OUT"
 rm -f IP.BIN
 if [ -n "$SRDC_PREBUILT" ]; then cp "$SRDC_PREBUILT/IP.BIN" "$OUT/IP.BIN"; else

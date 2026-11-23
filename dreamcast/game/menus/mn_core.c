@@ -585,7 +585,11 @@ int mn_quads(const MnQuad **out) {
     *out = s_quads;
     return s_nquads;
 }
-void mn_quads_reset(void) { s_nquads = 0; }
+void mn_quads_reset(void) {
+    s_nquads = 0;
+    mn_3d_reset();
+    mn_msgbox_gc();
+}
 
 void AnimatorSprite_DrawScaled(MnSpr *s, fx32 scx, fx32 scy) {
     const MnImage *im;
@@ -757,6 +761,16 @@ int mn_sorted(const MnDraw **out) {
             for (l = 3; l >= 0; l--) {
                 if (g_mn_layer[e][l].prio != p || (r->hide_bg & (1 << l)))
                     continue;
+                if (l == 0 && g_mn_3d.on && g_mn_3d.engine == e && mn_3d_count() > 0 &&
+                    s_nsorted < (int)(sizeof(s_sorted) / sizeof(s_sorted[0]))) {
+                    /* BG0 is the 3D output: the models go here in the order (mn_model.c) */
+                    static MnQuad marker;
+                    marker.kind = MNQ_3D;
+                    marker.engine = (u8)e;
+                    marker.prio = (u8)p;
+                    s_sorted[s_nsorted].q = &marker;
+                    s_sorted[s_nsorted++].r = r;
+                }
                 for (k = 0; k < s_nbgq[e][l]; k++) {
                     s_sorted[s_nsorted].q = &s_bgq[e][l][k];
                     s_sorted[s_nsorted++].r = r;

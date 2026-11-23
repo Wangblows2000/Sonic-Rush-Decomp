@@ -112,6 +112,10 @@ int ui_world_frozen(void);    /* results / game over / exit: skip the world upda
 int ui_state(void);           /* UI_PLAYING / UI_RESULTS / UI_GAMEOVER / UI_EXIT   */
 int ui_exit_kind(void);       /* valid when ui_state() == UI_EXIT                  */
 int ui_titlecard_active(void);
+/* 1 once the title card ran StageTitleCard_State_StartStage (also after it ended): in boss acts the
+ * DS sets gBossStatus.flags |= 1 there, so the boss (and the arena camera of BossF) starts at "GO!",
+ * under the white flash, not when the title card task ends ~62 frames later */
+int ui_titlecard_started(void);
 /* StageTitleCardPlayer_Draw: 1 while the title card's close-up of the player model replaces
  * the normal player draw; speed = per-slot animation speed (fx32), eye/at = LookAt (fx32 DS
  * units, y up), x/y = model translation (20.12), zoom = off-axis frustum phase */

@@ -143,6 +143,10 @@ void menus_draw_tr(void) {
         const MnQuad *q = s[i].q;
         const Texture *t = NULL;
         int bank = -1;
+        if (q->kind == MNQ_3D) {   /* the 3D layer's depth band (mn_3d_band, menus_draw_list) */
+            z += MN_3D_GAP;
+            continue;
+        }
         if (!mn_project(q, s[i].r, &o))
             continue;
         if (q->kind == MNQ_SPRITE)

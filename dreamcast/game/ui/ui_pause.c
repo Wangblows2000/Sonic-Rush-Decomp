@@ -183,9 +183,16 @@ static void PauseMenu_QuitToMap(void) {
     ui_request_exit(UI_EXIT_QUIT);
 }
 
+static int s_extra_pause;   /* ui_extra_pause_*: 1 open over the Extra boss, 2 quit chosen */
 static void PauseMenu_Main_Quit(PauseWork *w) {
     if (BrightnessFade_IsDone()) {
         PauseMenu_Destroy();
+        if (s_extra_pause) {
+            /* zone 8 act 2: ExtraBoss_Shutdown, Task_DestroyByTag(1..4),
+             * SceneChange_ToPlayerSelectMenuMode0 (main.c / menus) */
+            s_extra_pause = 2;
+            return;
+        }
         if (W.mode == 2) {
             ui_request_exit(UI_EXIT_TRY_AGAIN); /* StageExit_Create(PauseMenu_QuitToTryAgain, 3) */
             return;
@@ -195,6 +202,43 @@ static void PauseMenu_Main_Quit(PauseWork *w) {
         return;
     }
     PauseMenu_Draw(w);
+}
+
+/* The pause menu over the Extra boss (ExtraBoss_State_Battle: START -> PauseMenu_Create(0)).
+ * The boss runs outside a stage, so main.c drives the menu itself: ui_extra_pause_open() the
+ * frame after boss_extra_paused() became 1, then ui_extra_pause_frame() every frame with
+ * ui_draw_tr() in the TR list, until it returns 1 (CONTINUE / START / B: boss_extra_resume) or
+ * 2 (GO BACK, after the fade: the original shuts the boss down and goes to the player select).
+ * The entries show only when the extra story was cleared before (StoryProgress_IsStageNew, as
+ * on the DS: the first attempt has no GO BACK). */
+void ui_extra_pause_open(void) {
+    W.zone = 8;
+    W.act = 2;
+    W.flags &= ~0x20u;
+    if (g_obj_stage.check_time == W.frame)
+        W.frame++;   /* the marker-time guard of PauseMenu_Create is about stages */
+    g_ui_bright_main = g_ui_bright_sub = 0;
+    BrightnessFade_Destroy();
+    s_extra_pause = 1;
+    PauseMenu_Create(0);
+    if (!s_pause.active)
+        s_extra_pause = 0;
+}
+int ui_extra_pause_frame(const InputState *in) {
+    ui_cmd_reset();
+    g_ui_layer = UI_LAYER_PAUSE;
+    if (s_pause.active)
+        PauseMenu_Main(in);
+    BrightnessFade_Main();
+    if (s_extra_pause == 2) {
+        s_extra_pause = 0;
+        return 2;
+    }
+    if (!s_pause.active) {
+        s_extra_pause = 0;
+        return 1;
+    }
+    return 0;
 }
 
 void PauseMenu_Main(const InputState *in) {

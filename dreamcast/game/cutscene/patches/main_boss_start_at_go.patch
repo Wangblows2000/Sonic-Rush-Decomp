@@ -1,0 +1,13 @@
+--- a/dreamcast/game/src/main.c
++++ b/dreamcast/game/src/main.c
+@@ -857,7 +857,9 @@
+         if(ok && g_player_ok) ui_update(&in, &g_player);
+         if(ok && g_player_ok) overlay_cutscene_frame(&in);   /* boss talks: System_Freeze while active */
+         if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen() && !cutscene_active()) {
+-            if(g_is_boss && !g_boss_started && !ui_titlecard_active()) { boss_start(); g_boss_started = 1; }
++            /* StageTitleCard_State_StartStage: gBossStatus.flags |= 1 at "GO!" (under the white flash), not
++             * when the title card task ends: the arena (BossF camera) and the boss start there */
++            if(g_is_boss && !g_boss_started && ui_titlecard_started()) { boss_start(); g_boss_started = 1; }
+             camera_update();   /* Camera_Main (task 0x80): the DS screen pair, the DC window, ZoneBg / ZoneFx */
+             if(g_obj_ok) {
+                 /* The DS spawns objects for both screens: view 1 is the area the DS

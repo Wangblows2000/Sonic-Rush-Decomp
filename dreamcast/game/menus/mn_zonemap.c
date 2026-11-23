@@ -5,10 +5,12 @@
  * zone (-> ZoneActSelect, mn_actsel.c) or the next story zone (-> stage),
  * free scrolling (X), the map pause (START, ZoneMapPause), progress saving.
  *
- * Not translated (see MENUS.md): the 3D character on the map (a map icon
- * sprite stands in), talk demos (TalkDemo: story dialogue scenes; hooks),
- * the message boxes (MsgBox 0x11 tutorial, 0x12 "start this zone?": accepted),
- * the HDMA fog effect over unexplored parts of the map.
+ * The 3D character on the map: the menus' 3D layer (mn_model.c; the map icon
+ * sprite only for Blaze's first steps, as on the DS); the message boxes
+ * (MsgBox 0x11 tutorial, 0x12 "go to this zone?" YES / NO): mn_msgbox.c; talk
+ * demos (TalkDemo: story dialogue scenes): hooks.
+ * Not translated (see MENUS.md): the HDMA fog effect over unexplored parts of
+ * the map, the 3D edge marking (outline) of the character.
  *
  * Touch -> pad: node taps = D-pad moves along the graph + A; scroll arrows /
  * corner button = X (scroll view) then D-pad / B; map taps on nodes in scroll
@@ -59,11 +61,22 @@ typedef struct ZmNavi {               /* ZoneMap_InitNavi task work (UnkBgm_022e
     s32 unk14;                         /* character (0 Sonic, 1 Blaze) */
 } ZmNavi;
 
+typedef struct {                       /* +0x1994 the character model (ZoneMap_LoadPlayerArchive) */
+    s32 mode;                          /* 0 Sonic (son.nsbmd), 1 Blaze (blz.nsbmd) */
+    s32 draw;                          /* +4 unk1998: Model_Draw on */
+    s32 rot_y, rot_x;                  /* +0x10 / +0x14 */
+    s32 alpha;                         /* +0x18 unk19ac: polygon alpha 0..31 (ZoneMap_SetupLighting) */
+    s32 cur, prev;                     /* +0x1c / +0x20 animation 0 stand, 1 walk, 2 "decided" */
+    s32 frame, speed;                  /* Model_Animate: frame (fx32), +0x138 speed */
+    s32 loop;                          /* +0x130 bit 2 (data_ov001_02316294) */
+} ZmCharModel;
+
 typedef struct ZoneMapWork {
     s32 unk0;                          /* 1: leave the map */
     ZmMapBg map;
     ZmNodeLayer nodes;
     s32 char_x, char_y;                /* +0x199c character position on screen (fx) */
+    ZmCharModel cm;
     ZmArrows arrows;
     struct ZmNavi *unk1cc4;            /* ZoneMap_InitNavi: navigator message state (delayed-call task) */
     s32 unk1cc8, unk1ccc, unk1cd0;     /* result: character, zone index, act */
@@ -930,6 +943,42 @@ static void ZoneMap_UpdateMapBg(ZmMapBg *p) {
     gDisplayMain[3].y = (u16)p->y;
 }
 
+/* the character model (ZoneMap_SetCharModelRotY / SetCharModelAnim / AnimateCharModel / DrawCharModel):
+ * drawn by the menus' 3D layer (mn_model.c) at BG0's priority 2, under the node icons of priority
+ * 0..2 and over the map BG3 */
+static const s32 s_zm_cm_loop[3] = {1, 1, 0};                       /* data_ov001_02316294 */
+static const u8 s_zm_cm_jnt[2][3] = {{0, 2, 1}, {55, 57, 5}};       /* 023162ac / 023162b8 */
+static const u8 s_zm_cm_vis[2][3] = {{1, 1, 1}, {1, 1, 5}};         /* 023162c4 / 023162a0 */
+
+static void ZoneMap_InitCharModel(ZmCharModel *c, s32 mode) {   /* ZoneMap_LoadPlayerArchive */
+    memset(c, 0, sizeof(*c));
+    c->mode = mode;
+    c->draw = 1;
+    c->loop = 1;
+    c->speed = 0x1000;
+    c->alpha = 0x1f;
+}
+static void ZoneMap_SetCharModelRotY(ZmCharModel *c, s32 v) { c->rot_y = v; }
+static void ZoneMap_SetCharModelAnim(ZmCharModel *c, s32 a) {
+    if (c->cur != a) {
+        c->prev = c->cur;
+        c->cur = a;
+        c->loop = s_zm_cm_loop[a];
+        c->speed = (c->mode != 0 && a == 1) ? 0x2000 : 0x1000;
+    }
+}
+static void ZoneMap_AnimateCharModel(ZmCharModel *c) { c->frame += c->speed; }   /* Model_Animate */
+static void ZoneMap_DrawCharModel(ZoneMapWork *w) {
+    ZmCharModel *c = &w->cm;
+    if (c->cur != c->prev) {   /* Model_SetAnimation(.., 0): the new animation from frame 0 */
+        c->frame = 0;
+        c->prev = c->cur;
+    }
+    if (c->draw != 0 && c->alpha > 0)
+        mn_3d_add_zonemap_char(c->mode, w->char_x, w->char_y, (u16)c->rot_y, c->cur == 2, s_zm_cm_jnt[c->mode & 1][c->cur],
+                               s_zm_cm_vis[c->mode & 1][c->cur], c->frame, c->loop, c->alpha > 31 ? 31 : c->alpha);
+}
+
 static void ZoneMap_UpdateView(ZmState *p) {
     ZoneMapWork *sub = p->map;
     MnSpr *s;
@@ -940,15 +989,19 @@ static void ZoneMap_UpdateView(ZmState *p) {
     ZoneMap_UpdateMapBg(&sub->map);
     sub->map.unk60 += sub->map.unk5c;   /* ZoneMap_Unk_ov001_022e560c */
     ZoneMap_DrawNodeLayer(&sub->nodes);
-    /* ZoneMap_DrawCharModel: no 3D model here; the map icon the original
-     * draws for Blaze's first steps stands for the character */
-    if (sub->map.unk5c) {
-        s = &sub->nodes.spr[20];
-        s->x = (s16)(sub->char_x >> 12);
-        s->y = (s16)(sub->char_y >> 12);
-        AnimatorSprite_ProcessAnimation(s, 0, 0);
-        AnimatorSprite_Draw(s);
+    ZoneMap_AnimateCharModel(&sub->cm);
+    /* Blaze's first steps: the map icon stands for her, except once the talk of step 1 has played */
+    if (p->mode == 1 && p->unk8 < 2 && !(p->unk8 == 1 && p->unk8c == 1)) {
+        if (sub->map.unk5c) {
+            s = &sub->nodes.spr[20];
+            s->x = (s16)(sub->char_x >> 12);
+            s->y = (s16)(sub->char_y >> 12);
+            AnimatorSprite_ProcessAnimation(s, 0, 0);
+            AnimatorSprite_Draw(s);
+        }
+        return;
     }
+    ZoneMap_DrawCharModel(sub);
 }
 
 /* scroll arrows / buttons */
@@ -1303,16 +1356,20 @@ static void ZoneMap_Action_PlayTalkDemo(void) {
     gTaskCurrent->func = ZoneMap_State_PlayTalkDemo;
 }
 
+/* the map's message boxes on main BG2 (priority 0; BG2CNT 0x484, the BG2 map cleared) */
 static void ZoneMap_Action_ShowMsgBox11(void) {
     ZmState *w = ZS;
     w->unk74 = 0;
     w->map->map.unk5c = 1;
+    MsgBox_Create(0x11, 3, 2, 0, 2, 1, 0xe, 0x100010);
     gTaskCurrent->func = ZoneMap_State_WaitMsgBox11;
 }
 static void ZoneMap_Action_ShowMsgBox12(void) {
     ZmState *w = ZS;
     w->unk74 = 0;
     w->map->map.unk5c = 1;
+    MsgBox_Create(0x12, 3, 1, 0, 2, 1, 0xe, 0x100010);
+    MsgBox_SetFlags(1);   /* YES plays SE 0x12 */
     gTaskCurrent->func = ZoneMap_State_WaitMsgBox12;
 }
 
@@ -1378,6 +1435,10 @@ static void ZoneMap_Action_FadeOut(void) {
 static void ZoneMap_Action_FadeOutExit(void) {
     ZmState *t = ZS;
     t->unk74 = 0;
+    if (t->mode == 0 ? ZoneMap_IsSonicNaviAvailable(t->unk4) : ZoneMap_IsBlazeNaviAvailable(t->unk8))
+        ZoneMap_SetNaviMessage(t->map->unk1cc4, 0x1e);
+    ZoneMap_SetCharModelRotY(&t->map->cm, 0x1000);
+    ZoneMap_SetCharModelAnim(&t->map->cm, 0);
     gTaskCurrent->func = ZoneMap_State_FadeOutExit;
 }
 
@@ -1546,14 +1607,23 @@ static void ZoneMap_State_WaitNaviMessage(void) {
 /* ZoneMap_State_PlayTalkDemo: with the talk_demo hooks (cutscene module) as the
  * original: SysSound_Release at 0xf, TalkDemo_CreateForZoneMap at 0x10 (the
  * talk id comes from the map step), wait for TalkDemo_IsActive() == 0, 15 frames,
- * then SysSound_Init + the map BGM. (The unk19ac BG fade and unk1998 are not
- * part of the port's map composition.) Without the hooks the scene is skipped
- * and only the 32-frame fade around it is kept. */
+ * then SysSound_Init + the map BGM. The character model fades out over the 16
+ * frames before the talk (unk19ac), is hidden during it (unk1998) and fades in
+ * after it. Without the hooks the scene is skipped and only the 32-frame fade
+ * around it is kept. */
 static void ZoneMap_State_PlayTalkDemo(void) {
     ZmState *w = ZS;
+    ZmCharModel *cm = &w->map->cm;
+    if (w->unk74 == 0) {
+        ZoneMap_SetCharModelRotY(cm, 0x1000);
+        ZoneMap_SetCharModelAnim(cm, 0);
+    }
+    if (w->unk74 < 0x10)
+        cm->alpha = (s32)((0x10 - w->unk74) * 0x20) / 0x10;
     if (g_menu_hooks.talk_demo_start && g_menu_hooks.talk_demo_active) {
         s32 d;
         if (w->unk74 == 0xf) {
+            cm->draw = 0;
             w->map->map.unk5c = 0;
             SysSound_Release();
         }
@@ -1574,11 +1644,14 @@ static void ZoneMap_State_PlayTalkDemo(void) {
                 w->unk78 = w->unk74;
                 w->unk8c = 1;
                 w->map->map.unk5c = 1;
+                cm->draw = 1;
                 if (w->mode == 0 ? ZoneMap_IsSonicNaviAvailable(w->unk4) : ZoneMap_IsBlazeNaviAvailable(w->unk8))
                     ZoneMap_SetNaviMessage(w->map->unk1cc4, 1);
             }
             d = w->unk74 - w->unk78;
+            cm->alpha = d * 0x20 / 0x10 > 0x1f ? 0x1f : d * 0x20 / 0x10;
             if (d >= 0xf) {
+                cm->alpha = 0x1f;
                 w->unk74 = 0;
                 w->unk78 = 0;
                 SysSound_PlayBGM((w->mode == 0 ? (w->unk4 >= 0x1f && w->unk4 <= 0x21)
@@ -1590,11 +1663,18 @@ static void ZoneMap_State_PlayTalkDemo(void) {
         }
         return;
     }
-    if (w->unk74 == 0xf)
+    if (w->unk74 == 0xf) {
+        cm->draw = 0;
         w->map->map.unk5c = 0;
+    }
+    if (w->unk74 >= 0x10) {
+        cm->draw = 1;
+        cm->alpha = (s32)(w->unk74 - 0x10) * 2 > 0x1f ? 0x1f : (s32)(w->unk74 - 0x10) * 2;
+    }
     ZoneMap_UpdateView(w);
     w->unk74++;
     if (w->unk74 >= 0x20) {
+        cm->alpha = 0x1f;
         w->unk74 = 0;
         w->unk78 = 0;
         w->map->map.unk5c = 1;
@@ -1606,29 +1686,38 @@ static void ZoneMap_State_PlayTalkDemo(void) {
     }
 }
 
-/* MsgBox 0x11 (map tutorial): closes at once */
+/* MsgBox 0x11 (map tutorial, one button) */
 static void ZoneMap_State_WaitMsgBox11(void) {
     ZmState *w = ZS;
     ZoneMap_UpdateView(w);
-    w->unk74 = 0;
-    w->map->map.unk5c = 1;
-    ZoneMap_SelectNextState();
+    w->unk74++;
+    if (MsgBox_IsClosed()) {
+        w->unk74 = 0;
+        w->map->map.unk5c = 1;
+        ZoneMap_SelectNextState();
+    }
 }
 
 static void ZoneMap_Unk_ov001_022e606c(void);
 static void ZoneMap_Unk_ov001_022e5f80(void);
 
-/* MsgBox 0x12 ("go to this zone?"): the A press on the node is the answer
- * (MsgBox_GetResult() == 0) */
+/* MsgBox 0x12 ("go to this zone?", YES / NO): YES (result 0) starts the stage, NO stays on the map */
 static void ZoneMap_State_WaitMsgBox12(void) {
     ZmState *w = ZS;
     ZoneMap_UpdateView(w);
-    w->unk74 = 0;
-    w->map->map.unk5c = 1;
-    if (w->mode == 0)
-        ZoneMap_Unk_ov001_022e606c();
-    else
-        ZoneMap_Unk_ov001_022e5f80();
+    w->unk74++;
+    if (MsgBox_IsClosed()) {
+        w->unk74 = 0;
+        w->map->map.unk5c = 1;
+        if (MsgBox_GetResult() == 0) {
+            if (w->mode == 0)
+                ZoneMap_Unk_ov001_022e606c();
+            else
+                ZoneMap_Unk_ov001_022e5f80();
+        } else {
+            ZoneMap_SelectNextState();
+        }
+    }
 }
 
 static void ZoneMap_State_ScrollGeneric(s32 x, s32 y, BOOL to_path) {
@@ -1801,7 +1890,18 @@ static void ZoneMap_State_MoveToNode(void) {
     frac = (s32)(w->unk74 % 9);
     w->unk64 = (ax << 12) + ((bx - ax) * frac << 12) / 9;
     w->unk68 = (ay << 12) + ((by - ay) * frac << 12) / 9;
-    /* ZoneMap_GetDirectionAngle(A,B) -> (B,C) blend: character model rotation (no model here) */
+    {   /* ZoneMap_GetDirectionAngle(A, B) -> (B, C) blend over the 9 frames of the segment */
+        u32 a1 = (u32)ZoneMap_GetDirectionAngle(ax, ay, bx, by), a2 = (u32)ZoneMap_GetDirectionAngle(bx, by, cx, cy), d, r;
+        if (a1 >= a2) {
+            d = a1 - a2;
+            r = (d & 0xffff) < 0x7fff ? a1 - (u32)frac * d / 9 : a1 + (u32)frac * (0xffff - d) / 9;
+        } else {
+            d = a2 - a1;
+            r = (d & 0xffff) < 0x7fff ? a1 + (u32)frac * d / 9 : a1 - (u32)frac * (0xffff - d) / 9;
+        }
+        ZoneMap_SetCharModelRotY(&m->cm, (s32)r);
+        ZoneMap_SetCharModelAnim(&m->cm, 1);
+    }
     ZoneMap_CalcClampedScroll(&m->map, w->unk64 >> 12, w->unk68 >> 12, &w->unk6c, &w->unk70);
     ZoneMap_UpdateView(w);
     if (w->mode == 0) {
@@ -1995,7 +2095,7 @@ static void ZoneMap_ConfirmNode(void) {
  * story zone, or the talk node of Sonic steps 0x13 / 0x18 and Blaze steps
  * 0xf / 0x13 / 0x17 / 0x1b) and presses A there. Nothing happens once the
  * character's story is complete, or without the file. */
-int g_mn_automap = -1;
+int g_mn_automap = -1;   /* (see automap_enabled) */
 int g_mn_automap_char = -1;   /* player select: 0 Sonic, 1 Blaze, 2 extra story (file: s / b / x), -1 none */
 static int automap_enabled(void) {
     if (g_mn_automap < 0) {
@@ -2016,6 +2116,7 @@ static int automap_enabled(void) {
 }
 /* PlayerSelect (mode 0) with the autopilot and a choice: RIGHT until the choice is shown, then A.
  * Returns 1 when it set the pad. */
+int mn_automap_enabled(void) { return automap_enabled(); }   /* the message boxes answer YES / OK */
 int mn_automap_choice(u16 *cur, u16 *trg, s32 sel, u32 frames) {
     if (!automap_enabled() || g_mn_automap_char < 0)
         return 0;
@@ -2125,6 +2226,8 @@ static void ZoneMap_State_SelectNode(void) {
     if (w->unk74 == 0)
         ZoneMap_RestartButtonAnim(w, 5);
     ZoneMap_DrawButton(w, 5);
+    ZoneMap_SetCharModelRotY(&w->map->cm, 0x1000);
+    ZoneMap_SetCharModelAnim(&w->map->cm, 0);
     if ((gPad.trg & PAD_A) || n == w->unk14) {
         ZoneMap_ConfirmNode();
         return;
@@ -2197,6 +2300,12 @@ static void ZoneMap_State_StartStage(void) {
     s32 idx = node_zone_index(w->unk14);
     if (idx < 0)
         idx = 0;
+    if (w->unk74 == 0) {
+        if (w->mode == 0 ? ZoneMap_IsSonicNaviAvailable(w->unk4) : ZoneMap_IsBlazeNaviAvailable(w->unk8))
+            ZoneMap_SetNaviMessage(w->map->unk1cc4, 0x1c);
+        ZoneMap_SetCharModelRotY(&w->map->cm, 0x4000);   /* a quarter turn, the "decided" pose */
+        ZoneMap_SetCharModelAnim(&w->map->cm, 2);
+    }
     ZoneMap_UpdateView(w);
     w->unk74++;
     if (w->unk74 >= 0x96) {
@@ -2255,6 +2364,8 @@ static void ZoneMap_State_WaitActSelect(void) {
         act = ZoneActSelect_GetResult();
         if (zone < 0 || act < 0) {
             /* ZoneMap_RestoreGraphics */
+            ZoneMap_SetCharModelRotY(&w->map->cm, 0x1000);
+            ZoneMap_SetCharModelAnim(&w->map->cm, 0);
             Background_Show(0, 3, w->map->bg);
             ZoneMap_Compose();
             g_mn_scene = "ZoneMap";
@@ -2334,6 +2445,7 @@ static ZmState *ZoneMap_CreateState(ZoneMapWork *map, s32 alt, s32 mode) {
     ZoneMap_RevealNodesForStory(w);
     w->unk64 = map->nodes.pts[w->unk14].x << 12;
     w->unk68 = map->nodes.pts[w->unk14].y << 12;
+    ZoneMap_SetCharModelRotY(&map->cm, 0x1000);
     ZoneMap_CalcClampedScroll(&map->map, w->unk64 >> 12, w->unk68 >> 12, &w->unk6c, &w->unk70);
     map->map.idx = w->unkc;
     if (mode == 0)
@@ -2363,6 +2475,8 @@ static void ZoneMap_Destructor(void) {
     NaviM_Release();
     NaviMsg_CloseFiles();
     mn_display_reset();
+    g_mn_3d.on = 0;
+    mn_3d_free();
     mn_bg_free(w->bg);
     mn_res_free(w->icons);
     mn_res_free(w->arrows_res);
@@ -2397,6 +2511,10 @@ static void ZoneMap_Main(void) {
 /* The map (main engine, the touch screen) fills the frame at 2.5x. The other
  * screen holds the navigator: its pieces are placed over the map (mn_navi.c). */
 static void ZoneMap_Compose(void) {
+    /* BG0 = the 3D output (the character model), priority 2 (ZoneMap_InitDisplay: BG0CNT) */
+    Background_SetPriority(0, 0, 2);
+    g_mn_3d.on = 1;
+    g_mn_3d.engine = 0;
     mn_comp_reset(0);
     mn_comp_full(0);
     mn_navi_compose();
@@ -2442,6 +2560,7 @@ static void ZoneMap_Start(s32 a, s32 b) {
     ZoneMap_InitNodeLayer(&w->nodes, &w->map, w->ama, w->icons);
     ZoneMap_InitScrollArrows(&w->arrows, w->arrows_res, w->titl);
     w->unk1cc4 = ZoneMap_InitNavi(gGameState.unk0 == 1, a);
+    ZoneMap_InitCharModel(&w->cm, ZoneMap_IsBlaze());
     r = ZoneMap_CreateState(w, a, b);
     NaviM_Create();
     for (i = 0; i < 12; i++) {

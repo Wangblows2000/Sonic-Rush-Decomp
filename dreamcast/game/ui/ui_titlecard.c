@@ -105,6 +105,7 @@ static TcWork s_tc;
 #define data_022c4d98 (&s_tc)
 
 int StageTitleCard_IsActive(void) { return s_tc.active; }
+int ui_titlecard_started(void) { return !s_tc.active || (s_tc.flags & 0x20000000u) != 0; }
 /* Task_Destroy: the title-card destructor releases its BG (VRAM) */
 void StageTitleCard_Destroy(void) { s_tc.active = 0; ui_tcbg_free(); }
 

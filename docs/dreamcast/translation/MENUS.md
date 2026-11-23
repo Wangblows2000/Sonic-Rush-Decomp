@@ -372,7 +372,7 @@ only; **not translated** = section 8.
 | TitleScreen_Create, Start, StartFromDemo, State_Init, State_WaitForStart, State_StartPressed, CheckStartPressed, CreateFadeTask, FadeTask_Main, CreatePaletteCycle, PaletteCycle_Main, LoadAssets, InitBackgrounds, InitSprites, Destructor | same | modified (logic and constants as-is; touch area -> A) |
 | TitleScreen_StartAttractDemo | in State_WaitForStart | modified (SceneChange_ToDemoPlay -> MENU_REQ_DEMO with the demo index) |
 | TitleScreen_GoToTitleMenu, GoToUnlockNotice | inline | as-is |
-| PostStaffRoll_ShowUnlockNotices, State_PlayerSelectUnlockNotice, State_SoundTestUnlockNotice, State_GoToSegaLogo | `PostStaffRoll_*` in mn_title.c | rewritten (no message box art: dimmed screen, same 0xf0-frame timing, A closes early; flags + commit as-is) |
+| PostStaffRoll_ShowUnlockNotices, State_PlayerSelectUnlockNotice, State_SoundTestUnlockNotice, State_GoToSegaLogo | `PostStaffRoll_*` in mn_title.c | same (MsgBox 0x14 / 0x15 of mn_msgbox.c, MsgBox_RequestClose at 0xf0; A / START request it after 0x28; flags + commit as-is) |
 | TitleDemo_* (3D intro, 52 functions) | - | not translated |
 | TitleMenu_Create, Main, Start, StartAtPlayerSelectItem0/1, StartFromOptions, LoadAssets, InitSprites, InitDisplay, Destructor | same | modified |
 | TitleMenu_OpenRootPage, OpenPlayerSelectPage, OpenVsPage, OpenVsSubPage, CreatePageTask, Unk_ov001_022d7ee8 / 022d8060 (`TitleMenu_InitPage`), Unk_022d7dbc, Unk_022d7e60, Select* | same | as-is |
@@ -394,7 +394,9 @@ only; **not translated** = section 8.
 | ZoneMap_GetNextNodeFromPad | same | as-is |
 | ZoneMap_GetNextNodeFromTouch | `ZoneMap_GetNextNodeFromQueue` | modified (only the queued-move part, used by pass-through nodes) |
 | ZoneMap_Action_PlayTalkDemo*, State_PlayTalkDemo, SelectTalkDemo | `ZoneMap_Action_PlayTalkDemo` / State | rewritten (TalkDemo not translated: 32-frame pause, BGM restart, same next step) |
-| ZoneMap_Action_ShowMsgBox11/12, State_WaitMsgBox11/12 | same | modified (11 closes at once; 12 = accepted) |
+| ZoneMap_Action_ShowMsgBox11/12, State_WaitMsgBox11/12 | same | same (MsgBox 0x11 one button, 0x12 YES / NO with MsgBox_SetFlags(1); NO stays on the map) |
+| MsgBox_* (UI/MessageBox, 44 functions) | `MsgBox_*` in mn_msgbox.c | modified: the frame BG (caution_base_<kind>.bbg) and its open / close split line scroll as two BG pieces in the sprite order of the BG's priority; icon, message, buttons, cursor, Input / Confirm / Close timing and results as the DS; no touch buttons; the 13 files load at frame 1 (the DS spreads them over frames 1..7, the opening starts at frame 8 in both) |
+| ZoneMap_LoadPlayerArchive, SetCharModelRotY, SetCharModelAnim, AnimateCharModel, DrawCharModel, SetupLighting, ReleaseCharModel | `ZoneMap_*CharModel` in mn_zonemap.c + mn_model.c | modified: son.dcm / blz.dcm with son.dca / .dcv and menu.dca / .dcv (the "decided" pose) through the menus' 3D layer (BG0 at priority 2 in the compositing order, a PVR depth band in the menus' TR order, the model in the OP / PT / TR lists: main.c patch main_menus_3d_layer.patch); G3_OrthoW + LookAt as the DS; global material colours (0x7fff / 0x5ef7), light mask 1, polygon alpha (the talk fade); no edge marking |
 | ZoneMap_SetNaviMessage, SetNodeNaviMessage, InitNavi, DelayedCall_Main, State_WaitNaviMessage | id recorded / 30-frame wait | not translated (navigator panel) |
 | ZoneMap_DrawCharModel, AnimateCharModel, SetCharModel*, LoadPlayerArchive, ReleaseCharModel, SetupLighting, ApplyCameraLookAt, SetOrthoProjection, StartBg3XHdma, StopHdma, DrawAlphaGradient, EnableBlend, Unk_022e519c | - | not translated |
 | ZoneMapFadeTask_Main, ZoneMap_CreateFadeTask | same | as-is |
@@ -415,11 +417,10 @@ only; **not translated** = section 8.
   - VS (all wireless menus, TimeSelect): see section 11.
   - Ending / staff roll and the extra / final story scripts (DemoScript*). Zone 7 and 8 clears report "Ending".
   - Talk demos (story dialogue on the map) unless main.c sets the talk_demo hooks.
-  - Message boxes (MsgBox, SaveMsg).
+  - SaveMsg message boxes; the title-menu MsgBox 0 (wireless warning); the options' MsgBoxes 0 / 7 / 0x13 / 0x1a (the rewritten options pages ask on their own pages instead).
   - Options DOWNLOAD DEMO (wireless).
-- **No 3D**: the player-select character models and the zone-map character are not drawn. The map uses the zone-map icon sprite 31 as a marker. `dreamcast/game/model` could draw `son.dcm` / `blz.dcm` there later.
+- **3D**: the zone-map character is drawn (mn_model.c, the menus' 3D layer); the player-select character models are not. The map icon sprite 31 stands for Blaze in her first steps only, as on the DS.
 - **Message boxes decided without asking**:
-  - Zone-map MsgBox 0x12 ("go to this zone?") counts as yes. The A press on the node is the answer.
   - Title-menu MsgBox 0 (wireless warning) counts as no.
   - The SaveMsg "format?" question counts as no: the defaults are loaded and saved by the next commit.
 - **Palette numbers per sprite** (`AnimatorSprite.unk44`: act-select tab colours, highlighted digits) are not applied. The converted atlases carry the BAC's own palette (see SPRITES.md).

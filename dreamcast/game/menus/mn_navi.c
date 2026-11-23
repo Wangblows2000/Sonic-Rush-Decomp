@@ -936,7 +936,10 @@ void mn_navi_compose(void) { mn_navi_compose_ex(0); }
  * act rows and the back button at the bottom right: the NaviM panel goes to the free strip under
  * the rows (x 1.25, 20..160 x 406..476) instead of over tabs 6 / 7, and the face to the free
  * column right of the rows (x 1.0, 512..640 x 196..324) instead of over the back button and the
- * ranks of the lower rows.  The balloon (shown for a few seconds) stays at the top left. */
+ * ranks of the lower rows.  The balloon goes to the bottom strip between the NaviM panel and the back
+ * button (x 1.0, 168..344 x 394..480; its tail tip cut by 2 px, the VS BOSS row's lower border under
+ * its top 11 px): at the top left (x 1.5) it hid zone tabs 1..4 while it was shown; no free place in
+ * the act-select frame takes it larger. */
 void mn_navi_compose_ex(int actsel) {
     NaviMsgWork *w = gNaviMsgTask ? NMW : NULL;
     if (gNaviMTask) {
@@ -955,8 +958,12 @@ void mn_navi_compose_ex(int actsel) {
             mn_comp_add(1, 128, 48, 256, 176, 640 - 128 * NV_SCALE, 480 - 128 * NV_SCALE, NV_SCALE,
                         (1 << 0) | (1 << 2) | (1 << 3), 1);
     }
-    if (g_mn_layer[1][0].visible)   /* the balloon and the message panel */
-        mn_comp_add(1, 0, 0, 176, 88, 8, 8, NV_SCALE, (1 << 1) | (1 << 2), 1);
+    if (g_mn_layer[1][0].visible) {   /* the balloon and the message panel */
+        if (actsel)
+            mn_comp_add(1, 0, 0, 176, 88, 168, 394, 1.0f, (1 << 1) | (1 << 2), 1);
+        else
+            mn_comp_add(1, 0, 0, 176, 88, 8, 8, NV_SCALE, (1 << 1) | (1 << 2), 1);
+    }
 }
 
 /* test aids */

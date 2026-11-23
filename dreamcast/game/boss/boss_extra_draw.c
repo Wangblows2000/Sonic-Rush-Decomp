@@ -600,7 +600,10 @@ static void ex_dc_bg(void) {
     pvr_prim(&hdr, sizeof(hdr));
     v.argb = 0xffffffffu;
     v.oargb = 0;
-    v.z = 0.00002f;
+    /* behind every model, but in front of the PVR background plane: KOS puts that at depth 0.0001
+     * (pvr_state.zclip, PVR_BGPLANE_Z) and OP polygons pass the depth test only above it (at 0.00002
+     * the whole backdrop failed and the arena stayed black) */
+    v.z = 0.00012f;
     for (l = 0; l < 192; l++) {
         float u0 = (hofs[l] & 0xff) / 256.0f, u1 = u0 + 1.0f;
         float tv = ((l + b->vofs) & 0xff) / 256.0f + 0.5f / 256.0f;

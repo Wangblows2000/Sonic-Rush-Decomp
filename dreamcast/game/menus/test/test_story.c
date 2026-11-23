@@ -464,6 +464,12 @@ int main(int argc, char **argv) {
         r = menus_stage_exit(MENU_EXIT_CLEARED, 0, 3, 0, 1234);
         CHECK(!strcmp(g_mn_scene, "TryAgain") && gSaveData.unkD2[1][0][0] == 1234);
         printf("game over lives %d, quit lives 9, TA record after a clear %d (was %#x)\n", 2, gSaveData.unkD2[1][0][0], rec);
+        /* Extra boss pause GO BACK: the player select */
+        gGameState.unk10 = MENU_MODE_STORY;
+        gGameState.unk1C = 8;
+        gGameState.unk1D = 2;
+        r = menus_stage_exit(MENU_EXIT_EXTRA_QUIT, 0, 3, 0x7f, 0);
+        CHECK(r.kind == MENU_REQ_NONE && !strcmp(g_mn_scene, "PlayerSelect"));
     }
     printf("zone map: %d select frames, %d without the map BGM\n", g_map_frames, g_silent_map_frames);
     CHECK(g_silent_map_frames == 0);

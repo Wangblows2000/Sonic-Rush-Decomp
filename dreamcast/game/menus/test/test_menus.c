@@ -77,6 +77,18 @@ static MenuRequest run(int n, uint32_t held, int tap) {
     return r;
 }
 static void tap(uint32_t b) { run(2, b, 1); }
+/* n frames; an open message box (mn_msgbox.c) is answered YES / OK: LEFT, then A */
+static MenuRequest run_answering(int n) {
+    MenuRequest r;
+    int i;
+    memset(&r, 0, sizeof(r));
+    for (i = 0; i < n; i++) {
+        r = run(1, MsgBox_IsClosed() ? 0 : (s_frame & 1) ? IN_JUMP : IN_LEFT, 0);
+        if (r.kind != MENU_REQ_NONE)
+            return r;
+    }
+    return r;
+}
 static void dump(const char *name) {
     char p[300];
     if (!s_dump)
@@ -197,7 +209,7 @@ int main(int argc, char **argv) {
     {
         int i;
         for (i = 0; i < 1200 && gSaveData.unkC != 3; i++)
-            run(1, 0, 0);
+            run_answering(1);
         CHECK(gSaveData.unkC == 3);
         printf("zone map: path to zone 2 revealed, progress 3 saved after %d frames\n", i);
         run(40, 0, 0);
@@ -209,7 +221,11 @@ int main(int argc, char **argv) {
     dump("12_zonemap_walked");
     tap(IN_JUMP);
     {
-        MenuRequest r = run(400, 0, 0);
+        MenuRequest r;
+        run(40, 0, 0);
+        CHECK(!MsgBox_IsClosed());   /* MsgBox 0x12 "go to this zone?" */
+        dump("12b_zonemap_msgbox");
+        r = run_answering(400);
         CHECK(r.kind == MENU_REQ_STAGE && r.zone == 1 && r.act == 0 && r.character == 0);
         printf("zone 2 story stage request at frame %d\n", s_frame);
     }
@@ -236,7 +252,7 @@ int main(int argc, char **argv) {
         extern s32 g_zm_node, g_zm_select_ticks;
         int i, t0 = g_zm_select_ticks;
         for (i = 0; i < 3000 && g_zm_select_ticks < t0 + 2; i++)
-            run(1, 0, 0);
+            run_answering(1);
         printf("zone map: story sequence done after %d frames, node %d, progress %d\n", i, g_zm_node, gSaveData.unkC);
         /* step 6..11: path to the house (node 15), walk there, path to zone 3 */
         CHECK(g_zm_node == 15 && gSaveData.unkC == 7);

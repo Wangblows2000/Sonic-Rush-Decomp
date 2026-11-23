@@ -221,6 +221,11 @@ MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeral
         else
             ZoneMap_StartFromStage();
         break;
+    case MENU_EXIT_EXTRA_QUIT:
+        /* PauseMenu_Main_Quit, zone 8 act 2: ExtraBoss_Shutdown, SceneChange_ToPlayerSelectMenuMode0 */
+        BRIGHT_MAIN = BRIGHT_SUB = 16;
+        PlayerSelectMenu_StartMode(0);
+        break;
     case MENU_EXIT_TRY_AGAIN:
         /* PauseMenu_QuitToTryAgain / Stage_ExitAfterFail (time attack): no record */
         BRIGHT_MAIN = BRIGHT_SUB = 16;

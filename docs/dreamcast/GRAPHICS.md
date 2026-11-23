@@ -286,7 +286,7 @@ main thread's opens and read requests during the whole load).
 ## 7. Gaps
 
 - Blaze palette reload of the results glyphs (ClearDemo_InitSprites: palette data at
-  +0xcc instead of +4) is not done; it would be one more palette per glyph sprite.
+  +0xcc instead of +4): done as a palette bank swap of the row-0 images (ui_pal_swap, DEFECTS.md V4).
 - The BG alternate palettes of zones 4/5/7 (`rbgd_header_t.num_palettes`) are used: they are
   the sources of the zone palette animations (section 8), kept in RAM (`Level.bg_pals`), not
   more PAL8 rows.
@@ -296,6 +296,14 @@ main thread's opens and read requests during the whole load).
 - z41 uses all 64 palette rows at `objects_init`: one more palette there and a page goes
   ARGB1555.
 - Not measured in Flycast: the Extra boss, cutscene overlays during boss acts.
+- Depth floor: KOS sets the PVR background plane to depth 0.0001 (`pvr_state.zclip`,
+  `PVR_BGPLANE_Z`). An OP polygon at a smaller depth fails the depth test against it and is not
+  drawn: full-screen backdrops go at 0.00012 or more (the Extra boss zex BG was invisible at 0.00002,
+  DEFECTS.md V9).
+- Menus 3D layer (menus/mn_model.c): a front-end scene's models sit at DS BG0's place in the
+  compositing order; `menus_draw_tr` leaves a depth band of 20 there (z 10 + 0.005 per quad) and the
+  models' orthographic depth is mapped into it, so lower-priority BGs / sprites stay behind and
+  higher ones in front (zone-map character, DEFECTS.md V12).
 
 ## 8. Zone backgrounds and zone effects
 

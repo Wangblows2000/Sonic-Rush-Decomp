@@ -126,6 +126,11 @@ Required changes in main.c (not done here, main.c is not in this area):
   spot). The DS camera snaps to the player every frame there
   (`gCamera.x = player.x - offset`). main.c's damped camera would show the
   wrap as a jump: snap the camera while `ui_titlecard_active()`.
+- Boss acts: StageTitleCard_State_StartStage ("GO!", under the white) sets
+  gBossStatus.flags |= 1; the boss (and BossF's arena camera) starts there, not
+  when the title-card task ends ~62 frames later. `ui_titlecard_started()` is 1
+  from StartStage on (flags 0x20000000) and when no card runs; main.c starts the
+  boss on it (patch main_boss_start_at_go.patch, DEFECTS.md V10).
 - Timer: Stage_Main owns `gGameState.unk20` (`g_dcp_world.frame`, +1 per frame
   while `flags & 1`). `dcp_player_frame` also does `W.frame++` (a stand-in
   from before this module existed). `ui_post_update` restores the Stage_Main

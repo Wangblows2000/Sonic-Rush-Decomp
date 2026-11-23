@@ -10,6 +10,7 @@
 #include "mn_raster.h"
 #include "../extraact.h"
 #include "../../save/save.h"
+#include "../../model/model.h"
 
 static int fails, checks;
 #define CHECK(c)                                                                         \
@@ -459,6 +460,15 @@ static void test_navi(void) {
             break;
     }
     CHECK(panel == 0 && g_mn_comp.n >= 2);
+    run(1, 0, 0);   /* the composition follows the planes a frame later */
+    {   /* the balloon in the act select: the bottom strip at x1.0, not over the zone tabs */
+        int k, found = 0;
+        for (k = 0; k < g_mn_comp.n; k++)
+            if (g_mn_comp.r[k].engine == 1 && g_mn_comp.r[k].sx1 == 176 && g_mn_comp.r[k].sy1 == 88)
+                found = g_mn_comp.r[k].dy >= 380 && g_mn_comp.r[k].scale == 1.0f;
+        CHECK(found);
+    }
+    dump("50_actselect_balloon");
     run(40, 0, 0);
     tap(IN_JUMP);
     for (i = 0; i < 8; i++) {
@@ -470,6 +480,64 @@ static void test_navi(void) {
     CHECK(panel == 4);
     start_scene(TitleMenu_Start);
     CHECK(mn_navi_state(NULL, NULL, NULL) == 0);
+}
+
+/* the zone-map character model (mn_model.c): one instance per frame at BG0's place (priority 2) in the
+ * order, its vertices inside the layer's depth band and around the character's node */
+static float s_vx0, s_vx1, s_vy0, s_vy1, s_vz0, s_vz1;
+static int s_nv;
+static void count_vertex(int material, const float *p, uint32_t argb, int eol) {
+    (void)material;
+    (void)argb;
+    (void)eol;
+    if (s_nv++ == 0) {
+        s_vx0 = s_vx1 = p[0];
+        s_vy0 = s_vy1 = p[1];
+        s_vz0 = s_vz1 = p[2];
+    }
+    s_vx0 = p[0] < s_vx0 ? p[0] : s_vx0;
+    s_vx1 = p[0] > s_vx1 ? p[0] : s_vx1;
+    s_vy0 = p[1] < s_vy0 ? p[1] : s_vy0;
+    s_vy1 = p[1] > s_vy1 ? p[1] : s_vy1;
+    s_vz0 = p[2] < s_vz0 ? p[2] : s_vz0;
+    s_vz1 = p[2] > s_vz1 ? p[2] : s_vz1;
+}
+static void test_zonemap_model(const char *menus_dir) {
+    const MnDraw *s;
+    float z0, z1;
+    int n, i, mark = -1, bg3 = -1, chara;
+    snprintf(g_mn_models_dir, sizeof(g_mn_models_dir), "%s/../models", menus_dir);
+    for (chara = 0; chara < 2; chara++) {
+        gSaveData.unkC = 5;        /* Sonic step 6 */
+        gSaveData.unk64 = 3;       /* Blaze step 4: the model, not the icon of her first steps */
+        gGameState.unk0 = (u8)chara;
+        start_scene(ZoneMap_StartDefault);
+        run(40, 0, 0);
+        CHECK(mn_3d_count() == 1);
+        n = mn_sorted(&s);
+        for (i = 0; i < n; i++) {
+            if (s[i].q->kind == MNQ_3D)
+                mark = i;
+            if (s[i].q->kind == MNQ_BG && s[i].q->prio == 3 && bg3 < 0)
+                bg3 = i;
+        }
+        CHECK(mark > bg3 && bg3 >= 0);              /* over the map BG3 */
+        CHECK(mn_3d_band(&z0, &z1) == 1 && z1 > z0 + 10.0f);
+        s_nv = 0;
+        dcm_host_emit = count_vertex;
+        menus_draw_list(0);
+        dcm_host_emit = NULL;
+        printf("zone map model %d: %d vertices, x %.0f..%.0f y %.0f..%.0f z %.3f..%.3f (band %.3f..%.3f)\n", chara, s_nv,
+               s_vx0, s_vx1, s_vy0, s_vy1, s_vz0, s_vz1, z0, z1);
+        CHECK(s_nv > 200);
+        CHECK(s_vz0 >= z0 && s_vz1 <= z1);
+        CHECK(s_vx1 - s_vx0 > 20.0f && s_vx1 - s_vx0 < 200.0f && s_vy1 - s_vy0 > 40.0f && s_vy1 - s_vy0 < 250.0f);
+        CHECK(s_vx0 > 0.0f && s_vx1 < 640.0f && s_vy0 > 0.0f && s_vy1 < 480.0f);
+        dump(chara ? "zonemap_model_blaze" : "zonemap_model_sonic");
+    }
+    gGameState.unk0 = 0;
+    start_scene(TitleMenu_Start);
+    CHECK(mn_3d_count() == 0 || g_mn_3d.on == 0);
 }
 
 int main(int argc, char **argv) {
@@ -488,6 +556,7 @@ int main(int argc, char **argv) {
     test_demo_exits();
     test_extraact(argv[1]);
     test_navi();
+    test_zonemap_model(argv[1]);
     printf("flow host test: %d/%d checks passed\n", checks - fails, checks);
     return fails ? 1 : 0;
 }

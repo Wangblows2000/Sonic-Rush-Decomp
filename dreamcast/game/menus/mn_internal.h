@@ -152,7 +152,7 @@ typedef struct {
     u32 argb;
     u16 image;               /* sprite image index (its palette on a PAL4 page) */
 } MnQuad;
-enum { MNQ_SPRITE, MNQ_BG, MNQ_FLAT };
+enum { MNQ_SPRITE, MNQ_BG, MNQ_FLAT, MNQ_3D };   /* MNQ_3D: marker of the 3D layer in the order */
 #define MN_MAX_QUADS 768
 int mn_quads(const MnQuad **out);
 void mn_quads_reset(void);
@@ -195,6 +195,32 @@ int mn_project(const MnQuad *q, const MnRegion *r, MnOut *o);   /* DS quad -> 64
 /* the final sorted list (DS compositing order), used by the KOS drawer and the host test */
 typedef struct { const MnQuad *q; const MnRegion *r; } MnDraw;
 int mn_sorted(const MnDraw **out);
+/* the 3D layer (mn_model.c): DS BG0 of `engine` is the 3D output there, at BG0's priority
+ * (g_mn_layer[engine][0].prio); mn_sorted puts an MNQ_3D marker at that place of the order and the
+ * drawer leaves MN_3D_GAP of PVR depth for the models at the marker */
+typedef struct { u8 on, engine; } MnLayer3D;
+extern MnLayer3D g_mn_3d;
+#define MN_3D_GAP 20.0f
+/* MsgBox (mn_msgbox.c): msg 0..0x1a (0x1c none), icon 0 / 1 (else none), buttons 0 OK, 1 YES / NO,
+ * 2 single, 3 any key, 5 none (MsgBox_RequestClose); BG `bg` of `engine`; result 0 OK / YES, 1 NO */
+void MsgBox_Create(s32 msg, s32 icon, s32 btns, s32 engine, s32 bg, s32 a5, s32 pal, u32 vram);
+BOOL MsgBox_IsClosed(void);
+s32 MsgBox_GetResult(void);
+void MsgBox_RequestClose(void);
+void MsgBox_SetFlags(u32 v);
+void MsgBox_Destroy(void);
+int mn_automap_enabled(void);   /* mn_zonemap.c: test autopilot on */
+void mn_msgbox_gc(void);        /* frees a destroyed box's files (start of a frame) */
+extern char g_mn_models_dir[96];   /* "/cd/models": .dcm / .dca / .dcv of the layer */
+void mn_3d_reset(void);      /* per frame, with mn_quads_reset */
+int mn_3d_count(void);
+void mn_3d_free(void);       /* models and animations of the layer */
+int mn_3d_band(float *z0, float *z1);
+/* ZoneMap_DrawCharModel: chara 0 Sonic / 1 Blaze at DS screen px (x, y) (fx32), RotY rot_y, joint
+ * animation jidx / visibility vidx of the player set (set 0) or of menu.narc (set 1), frame fx32,
+ * polygon alpha 1..31 */
+void mn_3d_add_zonemap_char(int chara, s32 x, s32 y, u16 rot_y, int set, int jidx, int vidx, s32 frame, int loop,
+                             int alpha);
 /* texture size for a w x h image: power of two, 8..1024 (PVR rule) */
 int mn_tex_pow2(int v);
 
