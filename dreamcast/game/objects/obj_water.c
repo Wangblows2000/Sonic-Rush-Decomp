@@ -1222,7 +1222,9 @@ static void WaterJet_Action_Prepare(Obj *w) {
     w->h.disp_flags |= 4;
     w->wC = 0x50;
     w->state = WaterJet_State_Prepare;
-    obj_sfx(0x56);
+    obj_sfx_own(w, 0x56, -1);   /* StopSeq(w->unk1DC, 0); Sound_PlaySeqArcEx(w->unk1DC, 0, 0x56) */
+    if (g_obj.n_players > 0 && g_obj.players[0].p)   /* Sound_SetPositional(w->unk1DC, w, gPlayers[0]) */
+        obj_sfx_own_pos(w, w->h.x, w->h.y, g_obj.players[0].p->x, g_obj.players[0].p->y, 1);
 }
 static void WaterJet_Action_Spout(Obj *w) {
     obj_set_anim(w, 1);
@@ -1230,7 +1232,9 @@ static void WaterJet_Action_Spout(Obj *w) {
     w->wC = 0x28;
     w->k.bub.f20C |= 1;
     w->state = WaterJet_State_Spout;
-    obj_sfx(0x57);
+    obj_sfx_own(w, 0x57, -1);   /* StopSeq(w->unk1DC, 0); Sound_PlaySeqArcEx(w->unk1DC, 0, 0x57) */
+    if (g_obj.n_players > 0 && g_obj.players[0].p)
+        obj_sfx_own_pos(w, w->h.x, w->h.y, g_obj.players[0].p->x, g_obj.players[0].p->y, 1);
 }
 static void WaterJet_State_Wait(Obj *s) {
     s->wC--;

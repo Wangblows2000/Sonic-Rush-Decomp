@@ -448,7 +448,9 @@ static void Player_CheckTimeOver(DcPlayer *w) {
         return;
     if (W.frame < 0x87ef)
         return;
-    /* last 10 seconds: Sound_PlaySeqArcEx(NULL, 0, 0x36) every second (audio hook) */
+    /* last 10 seconds: Sound_PlaySeqArcEx(NULL, 0, 0x36) on frames 0x87ef, 0x8867, .. 0x8c27 (every 0x78) */
+    if (W.frame <= 0x8c27 && (W.frame - 0x87ef) % 0x78 == 0 && g_ui_hooks.sfx)
+        g_ui_hooks.sfx(g_ui_hooks.ctx, 0, 0x36);
 }
 
 static void Player_Last_Exits(DcPlayer *w) {

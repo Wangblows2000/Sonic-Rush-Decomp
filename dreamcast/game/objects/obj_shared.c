@@ -453,14 +453,16 @@ static void IronBall_State_Roll(Obj *w) {
             w->h.move_flags |= 0x10;
         }
     }
-    /* rolling sound 0x50 (looped while grounded; positional pan dropped) */
+    /* rolling sound 0x50: on the ball's handle while grounded, panned to the ball */
     if (w->h.move_flags & 1) {
-        if (!w->k.snd.playing) {
-            obj_sfx(0x50);
-            w->k.snd.playing = 1;
-        }
+        if (obj_sfx_count(0x50) == 0)
+            obj_sfx_own(w, 0x50, 0x20);   /* Sound_PlaySeqArcBankPrio(w->unk1DC, 0, 0x50, 0x20, -1) */
     } else {
-        w->k.snd.playing = 0;
+        obj_sfx_own_stop(w, 0);           /* NNS_SndPlayerStopSeq(w->unk1DC, 0) */
+    }
+    if (g_obj.n_players > 0 && g_obj.players[0].p) {   /* SetTrackPan(w->unk1DC, 0xffff, Sound_CalcPan(w->unk10, gPlayers->unk10)) */
+        const DcPlayer *pl = g_obj.players[0].p;
+        obj_sfx_own_pos(w, w->h.x, w->h.y, pl->x, pl->y, 0);
     }
     w->w8 = (s32)(((u32)w->w8 & 0xffff0000u) | w->h.angle);
 }

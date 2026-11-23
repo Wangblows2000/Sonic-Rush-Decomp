@@ -59,10 +59,13 @@ BOOL_ NNS_SndArcPlayerStartSeqArcEx(NNSSndHandle *handle, int32_t playerNo, int3
 BOOL_ NNS_SndArcPlayerStartSeqArc(NNSSndHandle *handle, int32_t seqArcNo, int32_t index);
 void NNS_SndPlayerStopSeq(NNSSndHandle *handle, int32_t fadeFrames);
 void NNS_SndPlayerStopSeqAll(int32_t fadeFrames);
+void NNS_SndPlayerStopSeqBySeqArcIdx(int32_t seqArcNo, int32_t index, int32_t fadeFrames);
+int32_t NNS_SndPlayerCountPlayingSeqBySeqArcIdx(int32_t seqArcNo, int32_t index);
 void NNS_SndPlayerSetVolume(NNSSndHandle *handle, int volume);
 void NNS_SndPlayerSetInitialVolume(NNSSndHandle *handle, int volume);
 void NNS_SndPlayerSetChannelPriority(NNSSndHandle *handle, int prio);
 void NNS_SndPlayerSetTrackPan(NNSSndHandle *handle, uint32_t trackMask, int pan);
+void NNS_SndPlayerSetTempoRatio(NNSSndHandle *handle, int ratio);   /* 256 = normal */
 void NNS_SndHandleInit(NNSSndHandle *handle);
 void NNS_SndHandleReleaseSeq(NNSSndHandle *handle);
 int NNS_SndPlayerCountPlaying(int playerNo); /* native: playerList.numObjects */

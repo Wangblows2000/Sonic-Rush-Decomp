@@ -598,8 +598,11 @@ static void PlayerSelectMenu_State_Confirmed(void) {
     s32 limit = w->unk14 == 2 ? 0x78 : 0xe2;
     if (limit - w->unk0 > 0x10 && w->unk0 >= 0x20 && (gPad.trg & PAD_A))
         w->unk0 = limit - 0x10;
-    if (limit - w->unk0 == 0x10)
+    if (limit - w->unk0 == 0x10) {
         PlayerSelectMenu_StartBrightnessFade(0, 0x10, 0x10, 0);
+        if (w->unkC == 0 && g_menu_hooks.bgm_stop)
+            g_menu_hooks.bgm_stop(0x10);   /* SysSound_StopBGM(0x10) */
+    }
     if (w->unk0 >= limit) {
         s32 mode = w->unkC, sel = w->unk14;
         Task_DestroyByTag(0x1000);

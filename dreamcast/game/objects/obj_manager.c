@@ -27,6 +27,25 @@ void obj_sfx(s32 id) {
     if (g_obj_hooks.sfx)
         g_obj_hooks.sfx(g_obj_hooks.ctx, id);
 }
+s32 obj_sfx_count(s32 id) { return g_obj_hooks.sfx_count ? g_obj_hooks.sfx_count(g_obj_hooks.ctx, id) : 0; }
+void obj_sfx_own(const void *owner, s32 id, s32 prio) {
+    if (g_obj_hooks.sfx_own)
+        g_obj_hooks.sfx_own(g_obj_hooks.ctx, owner, id, prio);
+    else
+        obj_sfx(id);
+}
+void obj_sfx_own_stop(const void *owner, s32 fade) {
+    if (g_obj_hooks.sfx_own_stop)
+        g_obj_hooks.sfx_own_stop(g_obj_hooks.ctx, owner, fade);
+}
+void obj_sfx_own_pos(const void *owner, s32 x, s32 y, s32 px, s32 py, s32 volume) {
+    if (g_obj_hooks.sfx_own_pos)
+        g_obj_hooks.sfx_own_pos(g_obj_hooks.ctx, owner, x, y, px, py, volume);
+}
+void obj_sfx_own_tempo(const void *owner, s32 ratio) {
+    if (g_obj_hooks.sfx_own_tempo)
+        g_obj_hooks.sfx_own_tempo(g_obj_hooks.ctx, owner, ratio);
+}
 void obj_log(const char *ev, s32 a, s32 b) {
     if (g_obj_hooks.log)
         g_obj_hooks.log(g_obj_hooks.ctx, ev, a, b);
@@ -81,6 +100,7 @@ static void obj_destroy(Obj *o) {
     Obj **pp;
     if (o->dtor)
         o->dtor(o);
+    obj_sfx_own_stop(o, -1);   /* MapObject_Destructor: NNS_SndHandleReleaseSeq + Sound_FreeHandle(unk1DC) */
     if (o->spr.palanim) /* StageObj_Destructor: flags 0x800 -> PaletteAnim_Release */
         obj_palanim_release(o);
     obj_free_player_refs(o);

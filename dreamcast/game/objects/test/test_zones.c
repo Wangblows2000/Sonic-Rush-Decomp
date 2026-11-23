@@ -95,6 +95,18 @@ static void hk_log(void *ctx, const char *ev, s32 a, s32 b) {
     if (g_verbose >= 2 && !g_quiet && strcmp(ev, "ring") && strcmp(ev, "camera_bounds"))
         printf("    f%5d %-20s %6d %6d   player (%d,%d)\n", g_frame, ev, a, b, P.x >> 8, P.y >> 8);
 }
+/* object sound handles (g_obj_hooks.sfx_own*): what the objects started / stopped / sped up */
+static int g_own[256], g_own_stop, g_own_release, g_own_tempo, g_own_pos;
+static s32 hk_sfx_count(void *ctx, s32 id) { (void)ctx; (void)id; return 0; }
+static void hk_sfx_own(void *ctx, const void *o, s32 id, s32 prio) { (void)ctx; (void)o; (void)prio; g_own[id & 0xff]++; }
+static void hk_sfx_own_stop(void *ctx, const void *o, s32 fade) {
+    (void)ctx; (void)o;
+    if (fade < 0) g_own_release++; else g_own_stop++;
+}
+static void hk_sfx_own_pos(void *ctx, const void *o, s32 x, s32 y, s32 px, s32 py, s32 v) {
+    (void)ctx; (void)o; (void)x; (void)y; (void)px; (void)py; (void)v; g_own_pos++;
+}
+static void hk_sfx_own_tempo(void *ctx, const void *o, s32 r) { (void)ctx; (void)o; (void)r; g_own_tempo++; }
 static int g_fx[32];
 static void hk_effect(void *ctx, DcPlayer *p, s32 kind, s32 a, s32 b) {
     (void)ctx;
@@ -1231,6 +1243,7 @@ static void test_crane_slide(void) {
     s32 x0 = 0;
     if (!FIND_PRESENT(0xae))
         return;
+    int own0 = g_own[0x71], tempo0 = g_own_tempo;
     s_move_x = (s16)(find_obj(0xae, 0)->p0 >= 0 ? 0x600 : -0x600); /* jumping at it with speed */
     ok = trig_box(0xae, "crane_slide", 4, 32, 4, 4, M_FREE, &h);
     s_move_x = 0;
@@ -1251,6 +1264,9 @@ static void test_crane_slide(void) {
             }
         }
         printf("    crane slide exact: %d carried frames checked, %d off\n", n, bad);
+        /* CraneSlide_OnHit: the slide loop 0x71 on the crane's handle; the state sets its tempo every frame */
+        CHECK(g_own[0x71] > own0 && g_own_tempo > tempo0, "crane slide 0xae: slide loop 0x71 %d, tempo calls %d",
+              g_own[0x71] - own0, g_own_tempo - tempo0);
         CHECK(n > 0 && bad == 0, "crane slide 0xae exact: speed -10 per frame, move clamped to +-0x800 (%d of %d off)", bad, n);
     }
     result("crane slide 0xae", ok, 1, "#%d grabbed at (%+d,%+d); slid %d px over %d frames holding on", h.i, h.dx, h.dy,
@@ -1375,7 +1391,7 @@ static void test_switch_neon(void) {
     int ok, k, moved = 0, n = 0;
     s16 *tm = obj_switch_timers();
     for (t = 0xbe; t <= 0xbf; t++) {
-        int tl0 = ev_count("switch_timer");
+        int tl0 = ev_count("switch_timer"), tick0 = g_own[0x6f];
         if (!FIND_PRESENT(t))
             continue;
         ok = trig_search(t, "switch", NULL, 6, 48, 4, 30, M_PUSH, &h);
@@ -1387,6 +1403,8 @@ static void test_switch_neon(void) {
             CHECK((got == v || got == v - 1) && (g2 == v || g2 == got - 1 || g2 == v - 1),
                   "switch %#x exact: timer (p8 %d + p9 %d) * 2 = %d (got %d, then %d)", t, h.o->prm->p8, h.o->prm->p9, v, got, g2);
         }
+        if (ev_count("switch_timer") > tl0)   /* SwitchTimer_Create: the ticking loop on its own handle */
+            CHECK(g_own[0x6f] > tick0, "switch %#x: SwitchTimer started no ticking loop 0x6f", t);
         result(t == 0xbe ? "switch 0xbe" : "switch 0xbf", ok && tm[h.e->p0 & 0x1f] != 0, 1,
                "#%d pressed at (%+d,%+d): timer[%d] = %d, SwitchTimer %d", h.i, h.dx, h.dy, ok ? h.e->p0 & 0x1f : -1,
                ok ? tm[h.e->p0 & 0x1f] : 0, ev_count("switch_timer") > tl0);
@@ -2262,6 +2280,11 @@ int main(int argc, char **argv) {
     dcp_player_create(&P, 0, 0, sx, sy);
     g_obj_hooks.log = hk_log;
     g_obj_hooks.effect = hk_effect;
+    g_obj_hooks.sfx_count = hk_sfx_count;
+    g_obj_hooks.sfx_own = hk_sfx_own;
+    g_obj_hooks.sfx_own_stop = hk_sfx_own_stop;
+    g_obj_hooks.sfx_own_pos = hk_sfx_own_pos;
+    g_obj_hooks.sfx_own_tempo = hk_sfx_own_tempo;
     objects_set_paths(argv[3], argv[4]);
     objects_add_player(&P);
     objects_set_view_count(2);
@@ -2359,6 +2382,14 @@ int main(int argc, char **argv) {
     test_event_state(0);
     test_event_state(1);
     printf("pool peak %u of %d objects\n", g_peak, OBJ_MAX);
+    {
+        int i, n = 0;
+        printf("object sound handles:");
+        for (i = 0; i < 256; i++)
+            if (g_own[i]) { printf(" %#x x%d", i, g_own[i]); n++; }
+        printf("%s; stops %d, releases %d, positional %d, tempo %d\n", n ? "" : " none", g_own_stop, g_own_release,
+               g_own_pos, g_own_tempo);
+    }
     printf("%d checks, %d failed\n", g_checks, g_fail);
     objects_shutdown();
     return g_fail ? 1 : 0;

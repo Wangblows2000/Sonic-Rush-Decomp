@@ -378,6 +378,40 @@ static void test_hooks_output(void) {
     sound_stop(h, 0); sound_release(h); frames(2);
 }
 
+/* ------------------------------------------------------------ 5b: object handles (g_obj_hooks.sfx_own*) */
+static void test_obj_handles(void) {
+    static const int a = 1, b = 2;   /* two "objects" */
+    sound_stop_all(); frames(2);
+    sound_hooks_install();
+    CHECK(g_obj_hooks.sfx_count && g_obj_hooks.sfx_own && g_obj_hooks.sfx_own_stop && g_obj_hooks.sfx_own_pos &&
+          g_obj_hooks.sfx_own_tempo, "object handle hooks not installed");
+    if (!g_obj_hooks.sfx_own) return;
+    CHECK(g_obj_hooks.sfx_count(NULL, 0x3e) == 0, "count before start");
+    g_obj_hooks.sfx_own(NULL, &a, 0x3e, 0x20);            /* BankPrio on a's handle (SE_Grind, held) */
+    frames(2);
+    CHECK(g_obj_hooks.sfx_count(NULL, 0x3e) == 1, "count after BankPrio start: %d", g_obj_hooks.sfx_count(NULL, 0x3e));
+    g_obj_hooks.sfx_own_pos(NULL, &a, 0x10000, 0, 0, 0, 0);  /* pan only */
+    g_obj_hooks.sfx_own_pos(NULL, &a, 0x10000, 0, 0, 0, 1);  /* Sound_SetPositional */
+    g_obj_hooks.sfx_own_tempo(NULL, &a, 0x200);
+    frames(2);
+    g_obj_hooks.sfx_own(NULL, &b, 0x3e, -1);              /* Ex on b's handle */
+    g_obj_hooks.sfx_own(NULL, &b, 0x3e, -1);              /* again: b's first one is stopped first */
+    frames(2);
+    CHECK(g_obj_hooks.sfx_count(NULL, 0x3e) == 2, "count with a + b: %d", g_obj_hooks.sfx_count(NULL, 0x3e));
+    g_obj_hooks.sfx_own_stop(NULL, &a, 0);                /* StopSeq(a, 0) */
+    frames(1);
+    CHECK(g_obj_hooks.sfx_count(NULL, 0x3e) == 1, "count after stopping a: %d", g_obj_hooks.sfx_count(NULL, 0x3e));
+    g_obj_hooks.sfx_own_stop(NULL, &b, -1);               /* destructor: release only, plays on */
+    frames(1);
+    CHECK(g_obj_hooks.sfx_count(NULL, 0x3e) == 1, "release-only stopped the sound");
+    g_obj_hooks.sfx_own_stop(NULL, &b, 0);                /* b no longer owns a handle: no-op */
+    NNS_SndPlayerStopSeqBySeqArcIdx(0, 0x3e, 0);          /* the sound test's stop by (arc, index) */
+    frames(1);
+    CHECK(g_obj_hooks.sfx_count(NULL, 0x3e) == 0, "StopSeqBySeqArcIdx left %d", g_obj_hooks.sfx_count(NULL, 0x3e));
+    sound_obj_reset();
+    printf("object handles: count / own / stop / release / pos / tempo ok (%d failures so far)\n", fails);
+}
+
 /* ------------------------------------------------------------ 6: sys bank (menus) */
 static void test_sys(void) {
     int r = sound_load_bank("sys"), silent = 0, total = 0;
@@ -426,6 +460,7 @@ int main(int argc, char **argv) {
     sound_init();
     test_nns();
     test_hooks_output();
+    test_obj_handles();
     test_sys();
     sound_shutdown();
     test_render(dir, "sys");

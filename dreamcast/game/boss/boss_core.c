@@ -39,6 +39,10 @@ void boss_sfx_stop(u32 handle) {
     if (g_boss_hooks.sfx_stop)
         g_boss_hooks.sfx_stop(g_boss_hooks.ctx, (s32)handle);
 }
+void boss_sfx_volume(s32 vol) {
+    if (g_boss_hooks.sfx_volume)
+        g_boss_hooks.sfx_volume(g_boss_hooks.ctx, vol);
+}
 void boss_voice(s32 id) {
     if (g_boss_hooks.voice)
         g_boss_hooks.voice(g_boss_hooks.ctx, id);

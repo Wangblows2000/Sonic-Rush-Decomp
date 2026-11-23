@@ -15,6 +15,7 @@
 #include "../ui/ui.h"
 #include "../sound/sound.h"
 #include "../sound/bgm.h"
+#include "../sound/snd_nns.h"
 #include "../boss/boss.h"
 #include "../boss/boss_final.h"
 #include "../objects/obj_internal.h"
@@ -213,6 +214,7 @@ static void spawn_player(Level *lv)
     printf("objects: vram free after objects_init %lu\n", (unsigned long)render_vram_free());
     sound_load_bank(sound_stage_sdat(g_dcp_world.zone, g_dcp_world.act, g_chara));
     sound_hooks_reset_players();
+    sound_obj_reset();
     bgm_bind_player(&g_player);   /* StageJingle / gravity-flip layer (sound/bgm.c) */
     g_is_boss = 0; g_boss_started = 0;
     boss_shutdown();
@@ -414,10 +416,50 @@ static int load_stage(Level *lv, int idx)
  * (NN = sequence id, loop points in /cd/music/sys.txt), SE through the
  * native sequencer with the sys bank. */
 static void menu_bgm(int seq) { bgm_set_context("sys"); if(bgm_play("sys", seq) != 0) printf("menu bgm %d: no stream\n", seq); }
-static void menu_se(int arc, int id) { SysSound_StartSEArc(arc, id); }   /* cuts the previous menu SE */
-static void menu_voice(int id) { SysSound_StartVoice(id, 0); }
-static void menu_voice_alt(int id) { SysSound_StartVoice(id, 1); }
-static void menu_voice_arc(int arc, int id) { Sound_PlayVoice(NULL, (uint32_t)arc, (uint32_t)id); }
+/* the front end plays from the sys bank; the sound test may have loaded another one */
+static void menu_sys_bank(void)
+{
+    if(strcmp(sound_bank_name(), "sys") != 0 && sound_load_bank("sys") != 0) printf("sys sound bank missing\n");
+}
+static void menu_se(int arc, int id) { menu_sys_bank(); SysSound_StartSEArc(arc, id); }   /* cuts the previous menu SE */
+static void menu_voice(int id) { menu_sys_bank(); SysSound_StartVoice(id, 0); }
+static void menu_voice_alt(int id) { menu_sys_bank(); SysSound_StartVoice(id, 1); }
+static void menu_voice_arc(int arc, int id) { menu_sys_bank(); Sound_PlayVoice(NULL, (uint32_t)arc, (uint32_t)id); }
+/* g_menu_hooks.sound_test: SoundTest_LoadTrack / SoundTest_PlayTrack. archive = gSoundTestArchiveNameTable
+ * index (snd/<name>/sound_data.sdat); type 0 BGM (archive 0 group 0xe = STRM), 1 SE, 2 voice. The music is the
+ * stream of (sdat, seq) (musictab.py), STRM 0 / 1 the staff-roll recordings; effects and voices load the
+ * archive's bank: a zone SDAT's own bank, for sys the SSAR's own bank sys_aNN (csbank.py / sfxbank.py) unless
+ * the sys bank keeps that SSAR (0, 1, 0x11) */
+static const char *const k_sound_test_sdat[] = {
+    "sys", "extra_end", "z1s", "z1b", "z1es", "z1eb", "z2s", "z2b", "z2es", "z2eb", "z3s", "z3b", "z3es", "z3eb",
+    "z4s", "z4b", "z4es", "z4eb", "z5s", "z5b", "z5es", "z5eb", "z6s", "z6b", "z6es", "z6eb", "z7s", "z7b", "z7es",
+    "z7eb", "zfes", "zfeb", "ze"};
+static void menu_sound_test_stop(int arc, int id, int fade) { NNS_SndPlayerStopSeqBySeqArcIdx(arc, id, fade); }
+static void menu_sound_test(int index, int archive, int type, int group, int arc, int id)
+{
+    const char *sd = archive >= 0 && archive < (int)(sizeof k_sound_test_sdat / sizeof k_sound_test_sdat[0]) ?
+                     k_sound_test_sdat[archive] : "sys";
+    char bank[16];
+    (void)index;
+    bgm_stop_sound_all();
+    if(type == 0) {
+        if(archive == 0 && group == 0xe) {   /* NNS_SndArcStrmStart(strm, id): Final_Roll / Extra_Roll */
+            if(audio_music_play(id == 1 ? "/cd/music/Extra_Roll.wav" : "/cd/music/Final_Roll.wav", 0, 0) != 0)
+                printf("sound test: stream %d missing\n", id);
+        } else if(bgm_play(sd, id) != 0) {
+            printf("sound test: no stream for %s seq %d\n", sd, id);
+        }
+        return;
+    }
+    if(!strcmp(sd, "sys") && arc != 0 && arc != 1 && arc != 0x11) snprintf(bank, sizeof bank, "sys_a%02d", arc);
+    else snprintf(bank, sizeof bank, "%s", sd);
+    if(strcmp(sound_bank_name(), bank) != 0 && sound_load_bank(bank) != 0) {
+        printf("sound test: bank %s missing\n", bank);
+        return;
+    }
+    if(type == 1) Sound_PlaySeqArc(NULL, (uint32_t)arc, (uint32_t)id);
+    else Sound_PlayVoice(NULL, (uint32_t)arc, (uint32_t)id);
+}
 static void menu_stop_all(void) { bgm_stop_sound_all(); }
 static void enter_front_end(void)
 {
@@ -774,6 +816,7 @@ int main(int argc, char **argv)
     g_boss_hooks.voice = sound_boss_voice;             /* Sound_PlayVoice(NULL, 0, id): Eggman's voice lines */
     g_boss_hooks.sfx_handle = sound_boss_sfx_handle;   /* Sound_PlaySeqArc(handle, 0, id): looping boss sounds */
     g_boss_hooks.sfx_stop = sound_boss_sfx_stop;       /* NNS_SndPlayerStopSeq(handle, 0) */
+    g_boss_hooks.sfx_volume = sound_boss_sfx_volume;   /* NNS_SndPlayerSetVolume(gSESoundHandle, vol) */
     g_ui_hooks.music = bgm_ui_music_hook;              /* ClearDemo / new record / game over (sys) */
     g_ui_hooks.music_pause = bgm_ui_music_pause_hook;  /* pause menu: players 3..9 */
     g_ui_hooks.sfx = bgm_ui_sfx_hook;                  /* results rank SE, pause menu, enemy room */
@@ -783,6 +826,9 @@ int main(int argc, char **argv)
     g_ui_hooks.stage_new = ui_stage_new_hook;
     g_menu_hooks.bgm = menu_bgm; g_menu_hooks.se = menu_se; g_menu_hooks.voice = menu_voice;
     g_menu_hooks.voice_alt = menu_voice_alt; g_menu_hooks.voice_arc = menu_voice_arc; g_menu_hooks.stop_all = menu_stop_all;
+    g_menu_hooks.sound_test = menu_sound_test;
+    g_menu_hooks.bgm_stop = bgm_stop;
+    g_menu_hooks.sound_test_stop = menu_sound_test_stop;
     g_ui_game.save_lives[0] = g_ui_game.save_lives[1] = 3;
     printf("Sonic Rush DC: %dx%d\n", vid_mode->width, vid_mode->height);
     {

@@ -147,6 +147,13 @@ void obj_mapobject_collide_default(Obj *o);                             /* MapOb
 void obj_free_player_refs(Obj *o);
 dcp_bool obj_gravity_flipped(s32 x, s32 y);                             /* Stage_IsGravityFlipped */
 void obj_sfx(s32 id);
+s32 obj_sfx_count(s32 id);                               /* NNS_SndPlayerCountPlayingSeqBySeqArcIdx(0, id) */
+/* Sound_PlaySeqArcBankPrio(w->unk1DC, 0, id, prio, -1); prio < 0: Sound_PlaySeqArcEx(w->unk1DC, 0, id) */
+void obj_sfx_own(const void *owner, s32 id, s32 prio);
+void obj_sfx_own_stop(const void *owner, s32 fade);     /* NNS_SndPlayerStopSeq(w->unk1DC, fade); < 0 release only */
+/* volume 0: SetTrackPan(w->unk1DC, 0xffff, Sound_CalcPan(x, px)); else Sound_SetPositional(w->unk1DC, ..) */
+void obj_sfx_own_pos(const void *owner, s32 x, s32 y, s32 px, s32 py, s32 volume);
+void obj_sfx_own_tempo(const void *owner, s32 ratio);   /* NNS_SndPlayerSetTempoRatio(w->unk1DC, ratio), 0x100 normal */
 void obj_log(const char *ev, s32 a, s32 b);
 void obj_disable_colliders_set_anim(Obj *o, u16 anim);                  /* Enemy_DisableCollidersSetAnim */
 typedef Obj *(*ObjCreateFn)(ObjParam *p, s32 x, s32 y);

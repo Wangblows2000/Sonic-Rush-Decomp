@@ -152,11 +152,24 @@ static void CraneSlide_State_Unk_ov000_023064d8(Obj *w) {
         w->h.disp_flags &= ~2;
     else
         w->h.disp_flags |= 2;
-    /* spr1 (second DS screen sprite) 0x80000 toggling: not kept;
-     * NNS_SndPlayerSetTempoRatio / StopSeq of the slide loop: dropped */
+    /* spr1 (second DS screen sprite) 0x80000 toggling: not kept */
+    /* the slide loop (0x71, CraneSlide_OnHit) slows with the crane, stops when it stops */
     v = w->h.vel_x;
     a = v < 0 ? -v : v;
-    (void)a;
+    if (a < 0x400) {
+        a = v >> 2;
+        if (a < 0)
+            a = -a;
+        if (a < 1)
+            a = 1;
+        else if (a > 0x100)
+            a = 0x100;
+        obj_sfx_own_tempo(w, a);       /* NNS_SndPlayerSetTempoRatio(w->unk1DC, a) */
+    } else {
+        obj_sfx_own_tempo(w, 0x100);
+    }
+    if (w->h.vel_x == 0)
+        obj_sfx_own_stop(w, 0);        /* NNS_SndPlayerStopSeq(w->unk1DC, 0) */
 }
 static void CraneSlide_OnHit(ObjBox *a, ObjBox *b) {
     Obj *t0 = z_box_obj(a);
@@ -177,7 +190,7 @@ static void CraneSlide_OnHit(ObjBox *a, ObjBox *b) {
     t0->h.gnd_vel = t1->move_x;
     t0->h.vel_x = t0->h.gnd_vel;
     if (t0->h.gnd_vel != 0)
-        obj_sfx(0x71);
+        obj_sfx_own(t0, 0x71, -1);   /* StopSeq(t0->unk1DC, 0); Sound_PlaySeqArcEx(t0->unk1DC, 0, 0x71) */
     Player_Action_GrabCraneSlide(t1, t0, 0, 0x70);
     z_count("crane_slide", t0, t1);
 }
@@ -827,7 +840,7 @@ Obj *SwingSky_Create(ObjParam *a, s32 b, s32 c) {
 static void SwitchTimer_Main(Obj *w);
 static void SwitchTimer_Destructor(Obj *w) {
     DcPlayer *p0 = z_player0();
-    /* NNS_SndPlayerStopSeq / handle release: dropped */
+    obj_sfx_own_stop(w, 0);   /* NNS_SndPlayerStopSeq(w->unk8, 0), Sound_FreeHandle */
     if (w->k.swt.kind != 0) {
         if (p0 != NULL && (p0->pf2 & 0x8000))
             z_fxhook(p0, OBJ_FX_ZONE4_BLDY, 1, (3 << 8) | 8); /* ZoneFx_Zone4_StartBldyRampUp(3, 8) */
@@ -850,7 +863,7 @@ static void SwitchTimer_Create(s16 a, u16 b) {
     w->k.swt.kind = b;
     obj_sfx(0x6e);
     if (s_switch_timers[w->k.swt.idx & 0x1f] != 0x3fc)
-        obj_sfx(0x6f); /* the ticking loop (sound handle @0x8) */
+        obj_sfx_own(w, 0x6f, -1); /* the ticking loop: Sound_PlaySeqArcEx(w->unk8, 0, 0x6f) */
     w->k.swt.u4 = 0;
     obj_log("switch_timer", a, b);
     if (w->k.swt.kind == 0)
@@ -884,14 +897,16 @@ static void SwitchTimer_Main(Obj *w) {
     if (w->k.swt.u4 == 0)
         return;
     if (*t == 0x3c) {
-        w->k.swt.u4 = 2; /* NNS_SndPlayerSetTempoRatio(loop, 0x200): dropped */
+        obj_sfx_own_tempo(w, 0x200);   /* NNS_SndPlayerSetTempoRatio(w->unk8, 0x200): the last second ticks fast */
+        w->k.swt.u4 = 2;
         return;
     }
     if (*t <= 0x3c)
         return;
     if (w->k.swt.u4 != 2)
         return;
-    w->k.swt.u4 = 1; /* tempo 0x100 */
+    obj_sfx_own_tempo(w, 0x100);   /* NNS_SndPlayerSetTempoRatio(w->unk8, 0x100) */
+    w->k.swt.u4 = 1;
 }
 static Obj *Switch_CreatePart(Obj *arg, s32 n) {
     Obj *w = z_effobj(OBJ_BAC_SWITCH, OBJ_PRIO_EFFECT);

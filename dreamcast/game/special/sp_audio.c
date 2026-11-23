@@ -16,6 +16,7 @@
 #include "sp_internal.h"
 #ifdef _arch_dreamcast
 #include "../sound/sound.h"
+#include "../sound/snd_nns.h"
 #include "../engine/audio.h"
 #endif
 
@@ -55,6 +56,22 @@ void Sound_PlaySeq_SS(int seq) {
         snprintf(path, sizeof(path), "/cd/music/s%02d.wav", seq);
         audio_music_play(path, ls, le);
     }
+#endif
+}
+
+/* NNS_SndPlayerStopSeqBySeqArcIdx(arc, id, fade): the hook, else the sound module */
+void Sound_StopSeqArc_SS(int arc, int id, int fade) {
+    g_sp_trace.sfx_stops++;
+    if (special_hooks.sfx_stop_arc) {
+        special_hooks.sfx_stop_arc(arc, id, fade);
+        return;
+    }
+#ifdef _arch_dreamcast
+    NNS_SndPlayerStopSeqBySeqArcIdx(arc, id, fade);
+#else
+    (void)arc;
+    (void)id;
+    (void)fade;
 #endif
 }
 

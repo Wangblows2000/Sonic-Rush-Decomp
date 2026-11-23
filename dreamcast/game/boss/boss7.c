@@ -1323,6 +1323,7 @@ static void Boss7_State_ClashStruggle(void *p) {
             ScreenShake_Start(1);
         Boss7_CreateClashSpark(s, (o->h.x + pl->x) >> 1, (o->h.y + pl->y) >> 1, ((o->h.z + pl->z) >> 1) + 0x1000);
         Sound_PlaySeqArc(0, 0, 0xcb);
+        boss_sfx_volume(0x30);   /* NNS_SndPlayerSetVolume(gSESoundHandle, 0x30) */
     }
     Boss7_SetPartD7ScaleFromPower(s->unk21C, s->unk390);
     Boss7_SetPartD7ScaleFromPower(s->unk218, s->unk38C);

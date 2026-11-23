@@ -74,6 +74,67 @@ static void hk_obj_sfx(void *ctx, s32 id) {
     Sound_PlaySeqArcEx(NULL, 0, id);
 }
 
+/* object handles (work unk1DC): a small pool keyed by the object */
+#define OBJ_HANDLES 16
+static struct { const void *owner; SoundHandle h; } s_oh[OBJ_HANDLES];
+static SoundHandle *obj_handle(const void *owner, int alloc) {
+    int i, free_slot = -1;
+    for (i = 0; i < OBJ_HANDLES; i++) {
+        if (s_oh[i].owner == owner) return &s_oh[i].h;
+        if (free_slot < 0 && (!s_oh[i].owner || s_oh[i].h.player == 0)) free_slot = i;
+    }
+    if (!alloc) return NULL;
+    if (free_slot < 0) free_slot = 0;
+    if (s_oh[free_slot].owner) NNS_SndHandleReleaseSeq(&s_oh[free_slot].h);
+    s_oh[free_slot].owner = owner;
+    NNS_SndHandleInit(&s_oh[free_slot].h);
+    return &s_oh[free_slot].h;
+}
+static s32 hk_obj_count(void *ctx, s32 id) { (void)ctx; return NNS_SndPlayerCountPlayingSeqBySeqArcIdx(0, id); }
+static void hk_obj_own(void *ctx, const void *owner, s32 id, s32 prio) {
+    SoundHandle *h = obj_handle(owner, 1);
+    (void)ctx;
+    if (g_sound_trace) printf("snd f%lu own %ld prio %ld obj %p\n", (unsigned long)g_sound_frame, (long)id, (long)prio, owner);
+    /* the Ex callers stop the handle's sequence first (CraneSlide_OnHit, WaterJet_Action_Prepare);
+     * the BankPrio callers only start when none is playing and just release the handle */
+    if (h->player != 0) {
+        if (prio < 0) NNS_SndPlayerStopSeq(h, 0);
+        NNS_SndHandleReleaseSeq(h);
+    }
+    if (prio < 0) Sound_PlaySeqArcEx(h, 0, id);   /* Sound_PlaySeqArcEx(w->unk1DC, 0, id) */
+    else Sound_PlaySeqArcBankPrio(h, 0, id, prio, -1);
+}
+static void hk_obj_own_stop(void *ctx, const void *owner, s32 fade) {
+    SoundHandle *h = obj_handle(owner, 0);
+    int i;
+    (void)ctx;
+    if (!h) return;
+    if (g_sound_trace) printf("snd f%lu ownstop fade %ld obj %p\n", (unsigned long)g_sound_frame, (long)fade, owner);
+    if (fade >= 0) NNS_SndPlayerStopSeq(h, fade);   /* fade < 0: release only, the sound plays on */
+    for (i = 0; i < OBJ_HANDLES; i++)
+        if (&s_oh[i].h == h) { NNS_SndHandleReleaseSeq(h); s_oh[i].owner = NULL; }
+}
+static void hk_obj_own_pos(void *ctx, const void *owner, s32 x, s32 y, s32 px, s32 py, s32 volume) {
+    SoundHandle *h = obj_handle(owner, 0);
+    (void)ctx;
+    if (!h || h->player == 0) return;
+    if (volume) Sound_SetPositional(h, x, y, px, py);
+    else NNS_SndPlayerSetTrackPan(h, 0xffff, Sound_CalcPan(x, px));
+}
+static void hk_obj_own_tempo(void *ctx, const void *owner, s32 ratio) {
+    SoundHandle *h = obj_handle(owner, 0);
+    (void)ctx;
+    if (h && h->player != 0) NNS_SndPlayerSetTempoRatio(h, ratio);
+}
+/* a new stage: the objects are gone */
+void sound_obj_reset(void) {
+    int i;
+    for (i = 0; i < OBJ_HANDLES; i++) {
+        if (s_oh[i].owner) NNS_SndHandleReleaseSeq(&s_oh[i].h);
+        s_oh[i].owner = NULL;
+    }
+}
+
 /* Sound_PlaySeqArcEx on a player handle (bgm.c: the gravity-flip SE) */
 void sound_player_sfx(DcPlayer *p, int ch, int id) {
     Sound_PlaySeqArcEx(ch == DCP_CH_GLOBAL ? NULL : player_handle(p, ch), 0, id);
@@ -108,6 +169,11 @@ void sound_hooks_install(void) {
     if (g_dcp_hooks.restart != hk_restart) { s_prev_restart = g_dcp_hooks.restart; g_dcp_hooks.restart = hk_restart; }
     if (g_dcp_hooks.sfx_volume != hk_sfx_volume) { s_prev_vol = g_dcp_hooks.sfx_volume; g_dcp_hooks.sfx_volume = hk_sfx_volume; }
     if (g_obj_hooks.item != hk_item) { s_prev_item = g_obj_hooks.item; g_obj_hooks.item = hk_item; }
+    g_obj_hooks.sfx_count = hk_obj_count;
+    g_obj_hooks.sfx_own = hk_obj_own;
+    g_obj_hooks.sfx_own_stop = hk_obj_own_stop;
+    g_obj_hooks.sfx_own_pos = hk_obj_own_pos;
+    g_obj_hooks.sfx_own_tempo = hk_obj_own_tempo;
     s_installed = 1;
 }
 
@@ -153,6 +219,11 @@ void sound_boss_sfx_stop(void *ctx, s32 handle) {
     SoundHandle *h = boss_handle(handle, 0);
     (void)ctx;
     if (h) NNS_SndPlayerStopSeq(h, 0);
+}
+void sound_boss_sfx_volume(void *ctx, s32 vol) {
+    extern SoundHandle gSESoundHandle;
+    (void)ctx;
+    NNS_SndPlayerSetVolume(&gSESoundHandle, vol);
 }
 /* a new boss fight: drop the handles of the previous one */
 void sound_boss_reset(void) {

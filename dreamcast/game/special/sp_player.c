@@ -643,8 +643,7 @@ void SpecialStagePlayer_State_TrickInput(SpObj *p) {
 void SpecialStagePlayer_State_Trick(SpObj *p) {
     p->unk12 = 0;
     if (MDL(p)->flags[0] & 2) {
-        if (special_hooks.sfx_stop_arc)
-            special_hooks.sfx_stop_arc(0x10, 0xf, 0x5a);   /* NNS_SndPlayerStopSeqBySeqArcIdx(0x10, 0xf, 0x5a) */
+        Sound_StopSeqArc_SS(0x10, 0xf, 0x5a);   /* NNS_SndPlayerStopSeqBySeqArcIdx(0x10, 0xf, 0x5a) */
         if (p->unk152 >= 0) {
             p->unk150 = p->unk152;
             p->unk128 = 0;

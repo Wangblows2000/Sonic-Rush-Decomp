@@ -49,6 +49,12 @@ typedef struct {
      * TalkDemo_IsActive. NULL = the scene is skipped (32-frame fade only). */
     int (*talk_demo_start)(int character, int step);
     int (*talk_demo_active)(void);
+    /* SysSound_StopBGM(frames) (appended): NNS_SndPlayerStopSeq(&gBGMSoundHandle, frames);
+     * PlayerSelectMenu_State_Confirmed 0x10 at the fade-out. NULL = the music runs on. */
+    void (*bgm_stop)(int frames);
+    /* NNS_SndPlayerStopSeqBySeqArcIdx(arc, id, fade) (appended): OptionsMenu_State_SoundTest
+     * ends the looping track 100 0x4b frames after it started. */
+    void (*sound_test_stop)(int arc, int id, int fade);
 } MenuHooks;
 extern MenuHooks g_menu_hooks;
 

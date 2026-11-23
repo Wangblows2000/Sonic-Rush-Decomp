@@ -306,6 +306,7 @@ int boss_effects_live(void);
 void boss_sfx(s32 id);
 void boss_sfx_handle(u32 handle, s32 id);   /* Sound_PlaySeqArc(handle, 0, id) */
 void boss_sfx_stop(u32 handle);             /* NNS_SndPlayerStopSeq(handle, 0) */
+void boss_sfx_volume(s32 vol);              /* NNS_SndPlayerSetVolume(gSESoundHandle, vol) */
 void boss_voice(s32 id);
 void boss_log(const char *ev, s32 a, s32 b);
 #define Sound_PlaySeqArc(a, b, id) boss_sfx(id)

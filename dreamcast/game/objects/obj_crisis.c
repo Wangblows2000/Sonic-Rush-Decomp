@@ -573,8 +573,7 @@ Obj *JetCatapult_Create(ObjParam *p, s32 b, s32 c) {
 }
 
 /* ===================================================== Piston (0xa0, 0xa1) */
-static u8 s_piston_loop; /* NNS_SndPlayerCountPlayingSeqBySeqArcIdx(0, 0x67) == 0 */
-void crisis_reset(void) { s_piston_loop = 0; }
+void crisis_reset(void) {}   /* the piston loop is counted by the sound module (obj_sfx_count) */
 static void Piston_UpdateOscillation(Obj *w) {
     u16 f = w->prm->flags;
     u8 spd = f & 7;
@@ -623,9 +622,11 @@ static void Piston_DrawShaft(Obj *w) {
 static void Piston_State_Move(Obj *p0) {
     Piston_UpdateOscillation(p0);
     Piston_DrawShaft(p0);
-    if (!s_piston_loop) {
-        s_piston_loop = 1;
-        obj_sfx(0x67); /* Sound_PlaySeqArcBankPrio(.., 0x67): one loop for all pistons */
+    if (obj_sfx_count(0x67) == 0)
+        obj_sfx_own(p0, 0x67, 0x20);   /* Sound_PlaySeqArcBankPrio(p0->unk1DC, 0, 0x67, 0x20, -1) */
+    if (g_obj.n_players > 0 && g_obj.players[0].p) {   /* Sound_SetPositional(p0->unk1DC, p0, gPlayers[0]) */
+        const DcPlayer *pl = g_obj.players[0].p;
+        obj_sfx_own_pos(p0, p0->h.x, p0->h.y, pl->x, pl->y, 1);
     }
 }
 static void Piston_InitOscillationPhase(Obj *w) {

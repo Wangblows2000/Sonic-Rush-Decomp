@@ -26,8 +26,9 @@ import sdatlib  # noqa: E402
 import sfxbank  # noqa: E402
 
 # SSARs a cutscene plays from (TalkDemo data_0207747c, PlayerDemo data_02076544,
-# TransformDemo 0xb, StaffRoll / ExtraEnding)
-DEFAULT_ARCS = [4, 8, 9, 10, 11, 12, 13, 14, 15]
+# TransformDemo 0xb, StaffRoll / ExtraEnding); 2 / 3 (ARC_ZONE_MAP_S / _B) whole for the
+# sound test's voice entries (the sys bank keeps only the zone map's sequences of them)
+DEFAULT_ARCS = [2, 3, 4, 8, 9, 10, 11, 12, 13, 14, 15]
 
 
 def main():
@@ -51,7 +52,9 @@ def main():
                 self.info["seqarc"] = [s if i == _arc else None for i, s in enumerate(self.info["seqarc"])]
         sfxbank.sdatlib.SDAT = OneArc
         try:
-            r = b.build("sys")
+            # select=None: every SSAR of the (one-SSAR) SDAT; the default select of sfxbank.SELECT["sys"]
+            # keeps only the menu SSARs and left these banks empty
+            r = b.build("sys", select=None)
         finally:
             sfxbank.sdatlib.SDAT = orig
         name = "sys_a%02d" % arc

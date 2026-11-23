@@ -107,6 +107,8 @@ typedef struct BossHooks {
      * objects_fx3d_spawn's OBJ_FX3D_WORLD; flags & 2: facing right). main.c: objects_fx3d_spawn.
      * Boss7: EffBoostA_3D / EffBoostA2_3D / EffFire01_3D / EffKemuriSpin3D. */
     int (*fx3d)(void *ctx, const char *bac_id, s32 anim, s32 x, s32 y, s32 z, u32 flags, s32 scale);
+    /* NNS_SndPlayerSetVolume(gSESoundHandle, vol) (appended): Boss7_State_ClashStruggle 0x30 after its SE */
+    void (*sfx_volume)(void *ctx, s32 vol);
 } BossHooks;
 enum { BOSS_HELP_CREATE = 0, BOSS_HELP_DESTROY = 1 };
 extern BossHooks g_boss_hooks;

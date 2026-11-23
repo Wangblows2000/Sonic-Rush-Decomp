@@ -65,6 +65,8 @@ void sound_boss_sfx(void *ctx, int32_t id);
 void sound_boss_voice(void *ctx, int32_t id);
 void sound_boss_sfx_handle(void *ctx, int32_t handle, int32_t id);
 void sound_boss_sfx_stop(void *ctx, int32_t handle);
+void sound_obj_reset(void);   /* a new stage: drop the object sound handles (g_obj_hooks.sfx_own) */
+void sound_boss_sfx_volume(void *ctx, int32_t vol);
 void sound_boss_reset(void);
 
 /* ---- original game-layer functions (src/game/Sound/), native signatures */

@@ -755,6 +755,8 @@ void snd_drv_set_track_pan(int player, uint32_t mask, int pan) {
         if (t && (mask & (1u << i))) t->extPan = (int8_t)pan;
     }
 }
+/* SND_SetPlayerTempoRatio: 256 = normal speed */
+void snd_drv_set_tempo_ratio(int player, int ratio) { players[player].tempoRatio = ratio; }
 void snd_drv_stop_all(void) {
     for (int k = 0; k < SND_PLAYER_NUM; k++) if (players[k].active) player_shutdown(&players[k]);
     for (int i = 0; i < 16; i++) { if (ch[i].active) chan_finished(i); hw[i].active = 0; }

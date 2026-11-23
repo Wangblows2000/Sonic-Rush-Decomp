@@ -63,6 +63,16 @@ typedef struct ObjHooks {
     void (*log)(void *ctx, const char *event, s32 a, s32 b);    /* native: test/debug trace */
     void (*effect)(void *ctx, DcPlayer *p, s32 kind, s32 a, s32 b); /* OBJ_FX_* */
     void (*shake)(void *ctx, s32 strength);               /* ScreenShake_Start (falls back to g_dcp_hooks.shake) */
+    /* the object's own sound handle (work unk1DC, Sound_AllocHandle), keyed by the object (appended):
+     * sfx_count = NNS_SndPlayerCountPlayingSeqBySeqArcIdx(0, id); sfx_own = Sound_PlaySeqArcBankPrio(h, 0, id,
+     * prio, -1) (the handle's previous sequence released); sfx_own_stop = NNS_SndPlayerStopSeq(h, fade) and the
+     * handle freed; sfx_own_pos = NNS_SndPlayerSetTrackPan(h, 0xffff, Sound_CalcPan(x, px)), with volume != 0
+     * Sound_SetPositional(h, x, y, px, py) (distance volume too) */
+    s32 (*sfx_count)(void *ctx, s32 id);
+    void (*sfx_own)(void *ctx, const void *owner, s32 id, s32 prio);
+    void (*sfx_own_stop)(void *ctx, const void *owner, s32 fade);
+    void (*sfx_own_pos)(void *ctx, const void *owner, s32 x, s32 y, s32 px, s32 py, s32 volume);
+    void (*sfx_own_tempo)(void *ctx, const void *owner, s32 ratio);   /* NNS_SndPlayerSetTempoRatio(h, ratio) */
 } ObjHooks;
 extern ObjHooks g_obj_hooks;
 

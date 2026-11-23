@@ -196,16 +196,17 @@ z*es/z*eb for bosses). For `build_disc.sh`:
    DS linear pan; TL has 0.375 dB steps.
 5. Key-on volume goes through the KOS 8-bit linear volume (coarse below
    −30 dB) for one frame; later volume changes are exact TL writes.
-6. `sfx_stop` hook carries no fade: VOICE/BOOST use 0, TRICK 0x20 (most
-   frequent original values). The player's volume shift `0x7f >> unk3D0`
-   and object positional handles are dropped by the player/objects modules,
-   so object sounds play centred at full volume.
+6. The player's `sfx_stop` hook carries no fade: VOICE/BOOST use 0, TRICK
+   0x20 (most frequent original values). Objects with their own sound handle
+   (work `unk1DC`) use the `g_obj_hooks.sfx_own*` hooks (section 15); other
+   object sounds play on the shared effect handle, centred, as before.
 7. Faithful quirk kept: `NNS_SndHandleInit` only clears `handle->player`;
    if a handle is reused while its sound plays, the old sound's shutdown
    later clears the handle even though it then points at the new sound.
 8. The sys-SDAT bank holds only the title / menu / zone-map / staff-roll
-   sounds (section 11); cutscene / clear-demo / special-stage archives of the
-   sys SDAT are not in it.
+   sounds (section 11). The other sys-SDAT archives are built as their own
+   banks `sys_aNN` (`csbank.py`: cutscenes and the sound test; `sfxbank.py`:
+   ClearDemo 5–7) and loaded when needed.
 
 ### 9. Mapping table (original → native → status)
 
@@ -237,7 +238,8 @@ logic, DS services replaced; **rewritten** = substantially rewritten;
 | `NNSi_SndSeqArcGetSeqInfo` | `snd_bank_seq_info` | modified |
 | `NNS_SndPlayerStopSeq` | same | modified (fade argument restored: the decompiled prototype lost r1) |
 | `NNS_SndPlayerSetVolume` / `SetInitialVolume` | same | modified (clamped to 0..127) |
-| `NNS_SndPlayerSetChannelPriority` / `NNS_SndPlayerSetTrackPan` | same | modified (direct driver call) |
+| `NNS_SndPlayerSetChannelPriority` / `NNS_SndPlayerSetTrackPan` / `NNS_SndPlayerSetTempoRatio` | same | modified (direct driver call) |
+| `NNS_SndPlayerStopSeqBySeqArcIdx` / `NNS_SndPlayerCountPlayingSeqBySeqArcIdx` | same | modified (loop over the 16 seq players) |
 | `NNS_SndArcInit` / `NNS_SndArcLoadGroup` (zone archive load) | `snd_bank_load` | rewritten |
 | ARM7 SND driver (not in the decompilation): `SND_PrepareSeq`, `SND_StartPreparedSeq`, `SND_StopSeq`, `SND_SetPlayerVolume`, `SND_SetPlayerChannelPriority`, `SND_SetTrackPan`, `SND_SetTrackAllocatableChannel`, sequence/track/ExChannel main | `snd_drv.c` (from `sseqrender.c`: `track_step`, `play_note`, `alloc_chan`, `note_on`, `exchannel_main`, `seq_main` reused) | rewritten (multi-player, track pool, extPan, no mixer) |
 | `SND_UpdateExChannel` (hardware) | `update_hw` + `hw_advance` + `snd_drv_flush` | rewritten (AICA output) |
@@ -610,4 +612,25 @@ All other boss calls are `NNS_SndPlayerStopSeqAll(0)` (the `*_Action_Defeat`, Bo
 or effect handles, so they stay hard stops. `bgm_boss_music_fade_hook` = `bgm_stop(frames)`,
 `bgm_boss_music_volume_hook` = `bgm_move_volume` (the layer / jingle fader of
 gBGMSoundHandle). Host tests: test_boss7, test_bossf and test_bgm check the fades.
+
+## 15. Sound-call sweep: hooks added (dreamcast-port)
+
+Every `Sound_*` / `NNS_Snd*` / `SysSound_*` call in `src/game` was compared with the port
+function of the same name (ids and calls). Calls that had no path to the sound module:
+
+| original | port | hook |
+|---|---|---|
+| `SoundTest_LoadTrack` / `_PlayTrack` (options) | `main.c menu_sound_test` | `g_menu_hooks.sound_test`: BGM through `bgm_play(<archive>, id)`, STRM 0/1 = `Final_Roll` / `Extra_Roll`, SE/voice load the archive's bank (zone SDAT, `sys`, or `sys_aNN`); menu SE/voices reload `sys` afterwards |
+| sound test track 100: `NNS_SndPlayerStopSeqBySeqArcIdx(arc, id, 0x1e)` 0x4b frames in | `mn_options.c` | `g_menu_hooks.sound_test_stop` |
+| sound test exit: `SysSound_Init` + `PlayBGM(0)`; `Options_Create`: `PlayBGM(0)` | `mn_options.c` | the menu BGM starts again after the sound test stopped it |
+| `PlayerSelectMenu_State_Confirmed`: `SysSound_StopBGM(0x10)` | `mn_psel.c` | `g_menu_hooks.bgm_stop` (`bgm_stop`) |
+| `Player_CheckTimeOver`: `Sound_PlaySeqArcEx(0, 0, 0x36)` each second of the last ten | `ui_state.c` | `g_ui_hooks.sfx` |
+| `Boss7_State_ClashStruggle`: `NNS_SndPlayerSetVolume(gSESoundHandle, 0x30)` | `boss7.c` | `g_boss_hooks.sfx_volume` |
+| `SpecialStagePlayer_State_Trick`: `NNS_SndPlayerStopSeqBySeqArcIdx(0x10, 0xf, 0x5a)` | `sp_player.c` | `Sound_StopSeqArc_SS` (hook, else the NNS call) |
+| object handles `unk1DC`: GmkTable 0x5e, IronBall 0x50 (pan), Piston 0x67 (`Sound_SetPositional`), SwitchTimer 0x6f (+ `SetTempoRatio` 0x200 / 0x100, stopped in the destructor), CraneSlide 0x71 (tempo follows the speed, stopped at rest), WaterJet 0x56 / 0x57 (positional) | `obj_*.c` | `g_obj_hooks.sfx_count / sfx_own / sfx_own_stop / sfx_own_pos / sfx_own_tempo` (pool of 16 handles keyed by the object in `sound_hooks.c`; `MapObject_Destructor` releases the handle, the sound plays on) |
+| cutscene banks `sys_a02`..`sys_a15` were built empty (`sfxbank.SELECT["sys"]` default) | `csbank.py` | `select=None`; talk voices and cutscene SE play again |
+
+Known remaining approximations: the player's per-channel stop fade (item 6 of section 8);
+Boss 3 / Boss 7 part handles stop without their 0x20 / 0x3c fade (`boss_sfx_stop` has no fade);
+VS-only voices (player select 6 / 7) have no caller because VS is not ported.
 

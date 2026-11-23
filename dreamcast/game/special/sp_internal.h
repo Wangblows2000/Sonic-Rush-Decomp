@@ -551,6 +551,7 @@ BOOL NNS_G3dWorldPosToScrPos(const VecFx32 *v, s32 *x, s32 *y);
 void Sound_PlaySeqArc_SS(int arc, int id);
 void Sound_PlaySeq_SS(int seq);
 void Sound_StopBGM_SS(int fade);
+void Sound_StopSeqArc_SS(int arc, int id, int fade);   /* NNS_SndPlayerStopSeqBySeqArcIdx */
 
 /* ------------------------------------------------------------------ functions */
 /* core */
@@ -725,6 +726,7 @@ typedef struct {
     int hurt;
     int attacks;
     int tricks_ok, tricks_fail;
+    int sfx_stops;      /* Sound_StopSeqArc_SS calls */
 } SpTrace;
 extern SpTrace g_sp_trace;
 

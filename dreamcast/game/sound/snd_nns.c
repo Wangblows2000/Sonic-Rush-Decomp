@@ -283,6 +283,21 @@ void NNS_SndPlayerStopSeqAll(int32_t fadeFrames) {
     int32_t i;
     for (i = 0; i < 16; i++) if (data_02083464[i].status) NNSi_SndPlayerStopSeq(&data_02083464[i], fadeFrames);
 }
+/* NNS_SndPlayerCountPlayingSeqBySeqArcIdx: players running sequence <index> of sequence archive <seqArcNo> */
+int32_t NNS_SndPlayerCountPlayingSeqBySeqArcIdx(int32_t seqArcNo, int32_t index) {
+    int32_t i, n = 0;
+    for (i = 0; i < 16; i++)
+        if (data_02083464[i].status && data_02083464[i].seqArcNo == seqArcNo && data_02083464[i].seqNo == index)
+            n++;
+    return n;
+}
+/* NNS_SndPlayerStopSeqBySeqArcIdx: every player running sequence <index> of sequence archive <seqArcNo> */
+void NNS_SndPlayerStopSeqBySeqArcIdx(int32_t seqArcNo, int32_t index, int32_t fadeFrames) {
+    int32_t i;
+    for (i = 0; i < 16; i++)
+        if (data_02083464[i].status && data_02083464[i].seqArcNo == seqArcNo && data_02083464[i].seqNo == index)
+            NNSi_SndPlayerStopSeq(&data_02083464[i], fadeFrames);
+}
 /* native: volumes clamped to 0..127 (the DS indexes the 128-entry table unchecked) */
 void NNS_SndPlayerSetVolume(NNSSndHandle *handle, int volume) { if (handle->player) handle->player->volume2 = (uint8_t)(volume < 0 ? 0 : volume > 127 ? 127 : volume); }
 void NNS_SndPlayerSetInitialVolume(NNSSndHandle *handle, int volume) { if (handle->player) handle->player->volume1 = (uint8_t)(volume < 0 ? 0 : volume > 127 ? 127 : volume); }
@@ -291,6 +306,9 @@ void NNS_SndPlayerSetChannelPriority(NNSSndHandle *handle, int prio) {
 }
 void NNS_SndPlayerSetTrackPan(NNSSndHandle *handle, uint32_t trackMask, int pan) {
     if (handle->player) snd_drv_set_track_pan(handle->player->playerNo, trackMask, pan);
+}
+void NNS_SndPlayerSetTempoRatio(NNSSndHandle *handle, int ratio) {
+    if (handle->player) snd_drv_set_tempo_ratio(handle->player->playerNo, ratio);
 }
 int NNS_SndPlayerCountPlaying(int playerNo) { return data_020838a4[playerNo].playerList.numObjects; }
 

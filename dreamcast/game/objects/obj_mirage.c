@@ -485,6 +485,7 @@ Obj *Hand2d_Create(ObjParam *p, s32 b, s32 c) {
 /* ===================================================== GmkTable (0x8b) */
 static void GmkTable_State_Released(Obj *w);
 static void GmkTable_Action_Release(Obj *w) {
+    obj_sfx_own_stop(w, 0);   /* NNS_SndPlayerStopSeq(w->unk1DC, 0) */
     w->h.move_flags &= ~0x80u;
     w->h.vel_y = 0;
     w->h.y = CAM0.water << 8;
@@ -591,12 +592,9 @@ static void GmkTable_State_Main(Obj *w) {
         GmkTable_Action_Release(w);
         return;
     }
-    /* NNS_SndPlayerCountPlayingSeqBySeqArcIdx(0, 0x5e) == 0: the engine loop restarts
-     * when it stopped; the native sound hook has no query, so it is started once */
-    if (!(w->h.move_flags & 0x2000) && !(w->k.tbl.u364 & 0x100)) {
-        obj_sfx(0x5e);
-        w->k.tbl.u364 |= 0x100;
-    }
+    /* the engine loop: restarted on the table's handle whenever no 0x5e is playing */
+    if (!(w->h.move_flags & 0x2000) && obj_sfx_count(0x5e) == 0)
+        obj_sfx_own(w, 0x5e, 0x20);   /* Sound_PlaySeqArcBankPrio(w->unk1DC, 0, 0x5e, 0x20, -1) */
     if (p0 != NULL && (p0->pf & 0x400))
         w->f1F4 |= 1;
     if (w->f1F4 & 1) {

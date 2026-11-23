@@ -71,6 +71,7 @@ typedef struct {
     s32 items[OPT_COUNT], nitems;
     /* sound test */
     s32 cur, playing, scroll;
+    s32 played, play_frames;   /* sub->sel (the loaded track), sub->unk20 (frames since it started) */
     s32 text[0x29];
     s32 moved;           /* frames since the last cursor move (OptionsMenu page unk14: cursor blink) */
     s32 phase;           /* PH_*: the task state of the original */
@@ -722,6 +723,11 @@ static void Options_State_Main(void) {
         break;
     case PG_SOUND: {
         BOOL busy = (gSaveData.unk8 & 0x1000) != 0;   /* Options_IsExtraStoryCleared */
+        /* track 100 (AUDIENCE 3) loops: NNS_SndPlayerStopSeqBySeqArcIdx(arc, id, 0x1e) 0x4b frames in */
+        w->play_frames++;
+        if (w->playing && w->played == 100 && w->play_frames == 0x4b && w->played < w->ntracks &&
+            g_menu_hooks.sound_test_stop)
+            g_menu_hooks.sound_test_stop(w->tracks[100].unk2c, w->tracks[100].id, 0x1e);
         if (w->ntracks <= 0) {
             if (gPad.trg & PAD_B)
                 opt_back(w);
@@ -748,12 +754,15 @@ static void Options_State_Main(void) {
             if (g_menu_hooks.sound_test)
                 g_menu_hooks.sound_test(w->cur, e->unk29, e->type, e->unk2b, e->unk2c, e->id);
             w->playing = 1;
+            w->played = w->cur;
+            w->play_frames = 0;
         } else if (gPad.trg & PAD_B) {
             NNS_SndStopSoundAll();   /* SoundTest_ReleaseTrack */
             if (w->playing) {
                 w->playing = 0;
             } else {
                 opt_back(w);
+                mn_bgm_forget();   /* SysSound_Init: the stopped menu BGM starts again */
                 SysSound_PlayBGM(0);
                 SysSound_PlaySE(1);
             }
@@ -872,5 +881,6 @@ static OptionsWork *Options_Create(void) {
     w->phase = PH_OPEN;
     BRIGHT_MAIN = BRIGHT_SUB = -16;   /* Options_CreateFadeTask(-16, 0, 0x10, 0) */
     gSaveDataBusy = 0;
+    SysSound_PlayBGM(0);   /* SysSound_Init + SysSound_PlayBGM(0): nothing new while the menu BGM runs */
     return w;
 }
