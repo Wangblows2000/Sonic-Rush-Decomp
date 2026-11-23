@@ -43,16 +43,15 @@ objdiff.json (dsd objdiff) ─▶ objdiff-cli report ─▶ project.py progress
 | `tools/` | `project.py`, `configure.py`, `tasks.py`, `ndslib/`, `extraction/`, `matching/`, `analysis/`, `ghidra/`, `patches/`, `utilities/` |
 | `docs/research/` | numbered notes + `README.md` research log |
 | `docs/architecture/` | this file, memory map |
-| `docs/progress/` | generated dashboard + history, dated reports |
+| `docs/progress/` | generated dashboard + history |
 
 ## ARM7
 
-dsd currently handles ARM9 only. The ARM7 binary (0x02380000, 0x26F24 bytes)
-is kept as extracted and rebuilt verbatim. Plan: identify whether it is a stock
-NitroSDK ARM7 component; if so, document the SDK version and treat it as a
-library target later.
+dsd handles ARM9 only. The ARM7 binary (0x02380000, 0x26F24 bytes) is kept
+as extracted and rebuilt verbatim. Identifying it (likely a stock NitroSDK
+ARM7 component) is open work (PLAN.md §6).
 
 ## Download Play children
 
 `/mb/contest.srl` and `/mb/preview.srl` are full DS programs. They are kept as
-files and are separate future targets.
+files and rebuilt verbatim (PLAN.md §6).

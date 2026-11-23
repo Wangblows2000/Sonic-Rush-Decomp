@@ -30,10 +30,13 @@ USA (`ASCE`) and Japan (`ASCJ`) are not configured yet.
   7,408 functions) and every function has an evidence-backed name; the block
   below is regenerated from the objdiff report by
   `python3 tools/project.py dashboard`.
+- Open work ([PLAN.md](PLAN.md)): 20 functions still written as CodeWarrior
+  `asm` to convert to C, 284 subsystem-level `_Unk_` names, struct naming,
+  data/rodata ownership, ARM7 and the other regions.
 
 <!-- dashboard:start -->
 
-_Verified progress, updated 2026-11-16 15:31:28Z ([full dashboard](docs/progress/dashboard.md))._
+_Verified progress, updated 2026-11-23 08:13:22Z ([full dashboard](docs/progress/dashboard.md))._
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
@@ -43,9 +46,11 @@ _Verified progress, updated 2026-11-16 15:31:28Z ([full dashboard](docs/progress
 | ov001 | `████████████████████` 100.00% | 328,118 / 328,118 | 1,723 / 1,723 | 0 |
 | **ARM9 total** | `████████████████████` 100.00% | 1,422,472 / 1,422,472 | 7,408 / 7,408 | 0 |
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 15:28:00Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 15:28:40Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 15:28:41Z
+Next milestone: **100%** matched code — 0 more bytes (currently 100.00%).
+
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-23 08:10:52Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-23 08:11:29Z
+- objdiff report: `build/eur/report.json` — 2026-11-23 08:11:31Z
 
 <!-- dashboard:end -->
 
@@ -65,7 +70,7 @@ state/             task board (tasks.json)
 tools/             project CLI, configure.py, matching/analysis/extraction tools, Ghidra scripts
 docs/research/     research log and technical notes (the knowledge base)
 docs/architecture/ memory map and project architecture
-docs/progress/     dashboard and dated progress reports
+docs/progress/     generated dashboard and history
 extract/           your ROM + extracted files (gitignored)
 build/             all build output and reports (gitignored)
 ```

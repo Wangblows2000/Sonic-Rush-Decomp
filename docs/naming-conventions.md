@@ -397,6 +397,7 @@ of 276 game names (all single-E6 names plus 105 random round-1 names) held.
 Renamed to avoid case-only collisions: `OSi_UnLockCartridgeAlias` (SDK alias
 `OS_UnLockCartridge`) and `Mic_InitSystem` (game MIC init).
 
-Open: upgrade the `_Unk_` names; `_fgr` (0x0202e620) returns 1 on `>=` (the
-name comes from the compiler-generated call, kept); zone numbers are not yet
-tied to the in-game zone titles.
+Open: upgrade the 284 remaining `_Unk_` names (PLAN.md §3). `_fgr`
+(0x0202e620) returns 1 on `>=` (the name comes from the compiler-generated
+call, kept). Zone numbers are tied to the in-game titles in
+docs/research/0014-zones.md; symbol names keep the `ZoneN` numbering.

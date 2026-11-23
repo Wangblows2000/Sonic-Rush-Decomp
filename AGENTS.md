@@ -3,9 +3,9 @@
 This is the entry point for any person or AI agent working in this repository.
 Read it before you change anything. It describes the project's goal, the build
 graph, the tools, the conventions and the safety rules, and it reflects the
-code in `tools/` and `config/` as of 2026-11-16. Where another document
-disagrees with this file or with the code, the code is authoritative. See
-[Known stale documents](#17-known-stale-documents).
+code in `tools/` and `config/`. Where another document disagrees with this
+file or with the code, the code is authoritative. The Dreamcast port is on the
+`dreamcast-port` branch and is documented under `docs/dreamcast/` there.
 
 `CLAUDE.md` is the short resume protocol for Claude sessions. This file is the
 long form. The two do not conflict.
@@ -30,7 +30,7 @@ long form. The two do not conflict.
 14. [Task board and multi-agent work](#14-task-board-and-multi-agent-work)
 15. [Important systems in the code](#15-important-systems-in-the-code)
 16. [Troubleshooting](#16-troubleshooting)
-17. [Known stale documents](#17-known-stale-documents)
+17. [Known inconsistencies](#17-known-inconsistencies)
 18. [Safety rules (summary)](#18-safety-rules-summary)
 19. [Command reference](#19-command-reference)
 
@@ -77,54 +77,26 @@ Agent reports, renamed symbols and near-misses never count.
 
 ## 2. Current state
 
-Verified on 2026-11-16 (`python3 tools/project.py progress`; run
-`python3 tools/tasks.py brief` for live numbers).
+Live numbers: `python3 tools/tasks.py brief` or `python3 tools/project.py
+progress`; the measured summary is in STATUS.md.
 
-| Module | Matched bytes | Functions |
-| ------ | ------------- | --------- |
-| main | 449,566 / 449,566 (100 %) | 2,872 / 2,872 |
-| itcm | 2,064 / 2,064 (100 %) | 14 / 14 |
-| ov000 | 642,724 / 642,724 (100 %) | 2,799 / 2,799 |
-| ov001 | 328,118 / 328,118 (100 %) | 1,723 / 1,723 |
-| **ARM9 total** | **1,422,472 / 1,422,472 (100 %)** | **7,408 / 7,408** |
-
-The 18 BIOS SWI stubs in the secure area (0x02000000–0x02000800) are matched
-by one GNU-as TU, `src/secure/secure_area.s` (Thumb stubs; the non-code filler
-is `.incbin` from the extracted `arm9.bin`, so no ROM bytes are committed).
-One TU is needed because the LCF's `ALIGNALL(4)` cannot place halfword-aligned
-per-function TUs. See docs/research/0012-secure-area.md.
-
-Every function is named (284 are still subsystem-level `_Unk_` names, logged
-`tentative` in `config/eur/symbol_evidence.yaml`).
-
-The 20 functions in `src/asm_fallback/` and `__pformatter` in `src/asm/` are
-CodeWarrior `asm` functions rather than C (see §9); converting them is open
-work (HANDOFF.md lists the blocking reasons).
-
-### Tools added in the 100 % session
-
-- `bash build.sh [rom.nds] [--verify]`: one-step local Linux build from a
-  user-supplied EUR ROM; checks the SHA-1 first and refuses other revisions.
-- `tools/utilities/verify_all.sh`: check_symbols, configure, ninja, SHA-1,
-  `ninja verify`, objdiff report, progress. Run after every batch.
-- `tools/analysis/check_symbols.py [--strict]`: duplicate and case-only
-  symbol/file collisions (wibo/mwld match object names case-insensitively),
-  missing TUs, stale references, evidence consistency.
-- `tools/analysis/rename.py`: rejects case collisions and bare repeated-static
-  names (`<OfficialName>_<file stem>` scheme, naming-conventions §6).
-- `tools/matching/swap_fallback.py`: swaps a verified C file in for an
-  `asm_fallback` entry in delinks.
-- `link_time_const(NAME=0xVALUE)` relocs (patched dsd) plus
-  `tools/utilities/lcf_consts.py`, which writes the named constants into the
-  generated LCF (`SDK_SYS_STACKSIZE`, `SDK_IRQ_STACKSIZE`,
-  `SDK_SECTION_ARENA_DTCM_START`).
-- `.s` sources build with GNU `arm-none-eabi-as` (`gas` rule in configure.py).
-
-DTCM (0x027E0000) contains data only. It has no functions and no TUs.
-
-ARM7 (0x02380000, 0x26F24 bytes) and the Download Play children
-(`/mb/contest.srl`, `/mb/preview.srl`) are outside the dsd configuration. The
-build rebuilds them verbatim from the extracted files.
+- ARM9: 1,422,472 / 1,422,472 code bytes, 7,408 / 7,408 functions (100 %) in
+  main, ITCM, ov000 and ov001. ROM SHA-1 identical; GNU relink identical.
+- The 18 BIOS SWI stubs in the secure area (0x02000000–0x02000800) are one
+  GNU-as TU, `src/secure/secure_area.s` (Thumb stubs; the non-code filler is
+  `.incbin` from the extracted `arm9.bin`, so no ROM bytes are committed). One
+  TU is needed because the LCF's `ALIGNALL(4)` cannot place halfword-aligned
+  per-function TUs. See docs/research/0012-secure-area.md.
+- Every function is named; 284 are still subsystem-level `_Unk_` names, logged
+  `tentative` in `config/eur/symbol_evidence.yaml`.
+- 20 functions in `src/asm_fallback/` and `__pformatter` in `src/asm/` are
+  CodeWarrior `asm` functions rather than C (§9). Converting them is open work
+  (PLAN.md §2 lists the closest drafts and blockers).
+- DTCM (0x027E0000) contains data only: no functions, one data TU
+  (`OS_IRQTable`, docs/research/0013-data-ownership.md).
+- ARM7 (0x02380000, 0x26F24 bytes) and the Download Play children
+  (`/mb/contest.srl`, `/mb/preview.srl`) are outside the dsd configuration.
+  The build rebuilds them verbatim from the extracted files.
 
 ---
 
@@ -170,8 +142,7 @@ any main TU that starts below 0x02000800.
 | ---- | ---------- | -------- |
 | `AGENTS.md`, `CLAUDE.md` | yes | This guide; the short resume protocol. |
 | `README.md` | yes | Overview. The block between `<!-- dashboard:start -->` and `<!-- dashboard:end -->` is rewritten by `project.py dashboard`. |
-| `STATUS.md`, `PLAN.md`, `INSTALL.md`, `CONTRIBUTING.md` | yes | Older documents, partly stale (§17). |
-| `.claude/settings.json` | yes | SessionStart hook: `cd "$CLAUDE_PROJECT_DIR" && timeout 20 python3 tools/tasks.py brief 2>&1 \| head -60`. |
+| `STATUS.md`, `PLAN.md`, `INSTALL.md`, `CONTRIBUTING.md` | yes | Measured state, open work, setup, ground rules. |
 | `config/versions.yaml` | yes | ROM identity, SHA-1/SHA-256, size, header fix-ups, list of zero-length files. |
 | `config/eur/compilers.yaml` | yes | Compiler version and flags (default, per-glob rules, linker). |
 | `config/eur/symbol_evidence.yaml` | yes | Evidence for every non-default symbol name. |
@@ -187,8 +158,8 @@ any main TU that starts below 0x02000800.
 | `state/tasks.json` | yes | Task board (§14). |
 | `docs/agents/AGENT_BRIEF.md` | yes | Brief for matching workers. |
 | `docs/architecture/` | yes | `overview.md` (principles, pipeline), `memory-map.md`. |
-| `docs/research/0001…0011` | yes | Numbered research notes. `README.md` is the log. 0011 is the codegen-levers catalogue. |
-| `docs/progress/` | yes | `dashboard.md` and `history.jsonl` (generated), dated reports, `REPORT-95.md`. |
+| `docs/research/0001…0014` | yes | Numbered research notes. `README.md` is the log. 0011 is the codegen-levers catalogue. |
+| `docs/progress/` | yes | `dashboard.md` and `history.jsonl` (generated by `project.py dashboard`). |
 | `tests/test_ndslib.py` | yes | Unit tests for `tools/ndslib` (no ROM required). Run them with `python -m unittest discover -s tests`. |
 | `tools/` | yes | All project tooling (table below). |
 | `tools/patches/` | yes | Two patches for dsd v0.12.1 (§5). |
@@ -583,7 +554,7 @@ Worker agents report each verified file as `OK <symbol> <path>` in
 ## 11. Codegen levers catalogue
 
 These are distilled from `docs/research/0011-mwccarm-levers.md`, the agent
-reports in `build/agents/`, the task notes, and `docs/progress/REPORT-95.md`.
+reports in `build/agents/` and the task notes.
 All were observed on CW 1.2/sp2 unless marked otherwise.
 
 ### 11.1 Pragmas (file level)
@@ -731,14 +702,13 @@ It logs to `build/checkpoint.log` and prints the `total` line of
    `BUILD FAILED` and exits 1.
 3. `ninja verify` (on failure it prints `RELINK CHECK FAILED` and exits 1),
    then `ninja report`, then `project.py progress`, then `project.py dashboard`.
-4. `git add config include tools docs state nearmiss README.md CLAUDE.md .claude STATUS.md PLAN.md`
-   plus every registered TU source. It commits `Checkpoint: <total line>` and
+4. `git add config include tools docs state nearmiss README.md CLAUDE.md AGENTS.md .claude STATUS.md PLAN.md CONTRIBUTING.md INSTALL.md`
+   plus every registered TU source. On `main`, `.claude` no longer exists, so
+   this first `git add` fails as a whole and stages nothing (§17). It commits `Checkpoint: <total line>` and
    pushes to `origin main`. If the push fails, it fetches, rebases and retries
    once.
 
-The script never commits a build that failed the SHA-1. **`AGENTS.md` is not
-in its `git add` list.** Commit changes to this file explicitly
-(`git add AGENTS.md`).
+The script never commits a build that failed the SHA-1.
 
 Related scripts:
 
@@ -751,8 +721,7 @@ Related scripts:
   registered TU.
 
 After a checkpoint, `python3 tools/project.py dashboard` refreshes
-`docs/progress/` and the README. Commit `README.md`, `state`, `CLAUDE.md` and
-`.claude` if they changed.
+`docs/progress/` and the README. Commit `README.md` and `state` if they changed.
 
 ---
 
@@ -831,7 +800,7 @@ address range; ov000 and ov001 share addresses, so the module matters) or
 research items.
 
 ```sh
-python3 tools/tasks.py brief                                  # resume summary (also the SessionStart hook)
+python3 tools/tasks.py brief                                  # resume summary
 python3 tools/tasks.py list [-p] [-v] [--status open|claimed|done] [--kind partition|research]
 python3 tools/tasks.py claim <id> <agent> [--force]           # agent writes src/<agent>/, reports build/agents/<agent>.txt
 python3 tools/tasks.py release <id> [--note TEXT]
@@ -1065,28 +1034,21 @@ Common causes:
 
 ---
 
-## 17. Known stale documents
+## 17. Known inconsistencies
 
-The following documents predate the current state. Trust this file and the
-code over them.
+These are in code or config, which documentation passes do not change:
 
-- `STATUS.md` and `PLAN.md` describe session 2 (8 matched functions, Ghidra
-  missing, compiler service pack open).
-- `INSTALL.md` says Ghidra 11.x with JDK 21, says the compiler is not
-  established, and gives `1.2/sp3` as an example. The current values are
-  Ghidra 12.2 with JDK 25, compiler 1.2/sp2 and linker 1.2/sp3.
-- `CONTRIBUTING.md` describes a manual delinks workflow. Today workers write
-  `src/<agent>/` and the lead integrates with `checkpoint.sh`. Its ground
-  rules (no game data, matched means bytes, names need evidence, Ghidra is
-  not source) still apply.
-- In `docs/research/README.md`, 0004 and 0007 are still marked open. The
-  notes themselves record the results.
+- `tools/utilities/checkpoint.sh` and `commit_verified.sh` stage `.claude`,
+  which was removed from `main`. Their first `git add` therefore fails and
+  stages nothing; stage and commit by hand after `verify_all.sh` prints
+  `verify_all: OK`.
 - `config/eur/compilers.yaml`: the `default.evidence` text predates
-  verification. The `status`/`version` fields are current.
+  verification. The `status`/`version` fields are current (1.2/sp2, linker
+  1.2/sp3).
 - `tools/ghidra/*` header comments say "not yet executed". The scripts work
-  (0007).
-- `docs/architecture/overview.md` mentions `libs/` and `include/sonic/`.
-  Neither exists.
+  (docs/research/0007).
+- `include/game/Stage/stageobj_alt.h` points to "PLAN.md section 3" for the
+  header unification; that item is in PLAN.md §3 (Naming).
 
 ---
 
