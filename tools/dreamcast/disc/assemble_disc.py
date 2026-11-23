@@ -182,6 +182,9 @@ def assemble(root, out, first_read, coverage_exe=None):
     menu_sprites += ["act2__caution__caution_d_" + l for l in langs]
     menu_sprites += ["act2__caution__caution"] + ["act2__caution__caution_" + l for l in langs]
     menu_sprites += ["act2__caution__caution_b_" + l for l in langs]
+    # MsgBox files 2..7 (MsgBox_Create: s_mb_file): caution_a (Battle Play quit / zone select), _ad, _c, _e
+    for k in ("a", "ad", "c", "e"):
+        menu_sprites += ["act2__caution__caution_%s_%s" % (k, l) for l in langs]
     # Battle Play: stage select (TimeSelectMenu) and results (ResultsScreen)
     menu_sprites += ["act__mnu_conf_zsel", "act__mnu_conf_result"]
     menu_sprites += ["act__mnu_conf_zsel_" + l for l in langs] + ["act__mnu_conf_result_" + l for l in langs]

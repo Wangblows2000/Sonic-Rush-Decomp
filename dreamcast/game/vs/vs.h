@@ -43,5 +43,8 @@ const VsInfo *vs_info(void);
 /* the viewport's fade (death / warp BrightnessFade, goal fade): 0 .. 16 (black) */
 int vs_fade_level(int i);
 void vs_request_exit(int kind);
+/* objects' ScreenShake_Start goes to the cameras of the players near the object: fn(i, strength) shakes
+ * player i's camera (main.c swaps the camera context) */
+void vs_set_camera_shake_fn(void (*fn)(int i, s32 strength));
 
 #endif

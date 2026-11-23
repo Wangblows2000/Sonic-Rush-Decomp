@@ -150,6 +150,11 @@ void AnimatorSprite_Draw(MnSpr *s);
 /* DrawRotScale: scale 0x1000 = 1.0 about the sprite origin (rotation not used by the menus here) */
 void AnimatorSprite_DrawScaled(MnSpr *s, fx32 sx, fx32 sy);
 int AnimatorSprite_AnimCount(const MnSpr *s);
+typedef struct { s16 sx, sy, w, h, dx, dy; } MnSprPiece;
+void AnimatorSprite_DrawPieces(MnSpr *s, const MnSprPiece *p, int n);
+const MnImage *AnimatorSprite_CurImage(const MnSpr *s, int *index);
+int mn_image_texel(const MnRes *r, int image, int x, int y);
+int mn_image_opaque(const MnRes *r, int image, int x, int y);
 
 /* ---------------------------------------------------------- quads */
 typedef struct {
@@ -437,8 +442,11 @@ void ResultsScreen_Create(void);
  * nickname (menus_set_owner_name), player 2 = menus_set_player2_name */
 int mn_owner_name(const u16 **name);
 int mn_player2_name(const u16 **name);
-/* the font_ipl_8x8 name strips (font8.bin, as Records_LoadNameGlyphs): rows of 7 glyphs (56 x 8) at
- * y = 16 * row, ink colour index 1 + row; NULL without font8.bin */
+/* the name shown for player p (0 / 1): the set name (length > 0), else "PLAYER 1" / "PLAYER 2"
+ * (returned as -8: exact, for mn_name_strips) */
+int mn_vs_player_name(int p, const u16 **name);
+/* the font_ipl_8x8 name strips (font8.bin, as Records_LoadNameGlyphs): rows of 7 glyphs (8 for an
+ * exact length lens[row] < 0; 64 x 8) at y = 16 * row, ink colour index 1 + row; NULL without font8.bin */
 MnBgImg *mn_name_strips(const u16 *const *names, const int *lens, int n, const u16 *ink);
 /* host test access */
 int TimeSelectMenu_Selected(void);

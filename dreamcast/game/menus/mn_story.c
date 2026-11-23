@@ -146,6 +146,10 @@ void mn_request_stage(void) { fill_request(MENU_REQ_STAGE); }
 void mn_request_demo(void) { fill_request(MENU_REQ_DEMO); }
 /* SceneChange_ToVsStage: zone / act of TimeSelect, player 1 = the host, player 2 = the guest */
 void mn_request_vs_stage(void) {
+    gGameState.unk4 = gGameState.unk4 ? 1 : 0;
+    gGameState.unk8 = gGameState.unk8 ? 1 : 0;
+    if (gGameState.unk8 == gGameState.unk4)   /* never one character for both (and the results' models) */
+        gGameState.unk8 = gGameState.unk4 ^ 1;
     fill_request(MENU_REQ_VS_STAGE);
     g_mn_request.character = gGameState.unk4;
     g_mn_request.character2 = gGameState.unk8;

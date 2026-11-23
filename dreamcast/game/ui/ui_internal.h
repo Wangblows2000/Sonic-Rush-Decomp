@@ -64,6 +64,7 @@ enum {
     UI_RES_CLDM_TA,     /* /act/dm_cldm_tatk.bac (data_02079240): time-attack tally, loaded by
                            ClearDemo_Create in time attack, freed with the results          */
     UI_RES_DEMOPLAY,    /* act/dm_demoplay_<lang>.bac (data_02073b38): attract-demo label      */
+    UI_RES_FIXVS,       /* act_com ac_fix_vs.bac: Battle Play FixVsHud (rank 1 / 2 and "/2")        */
     UI_RES_COUNT
 };
 typedef struct UiRes {

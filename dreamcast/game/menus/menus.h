@@ -113,6 +113,10 @@ MenuRequest menus_vs_exit(const VsRaceResult *res);
 /* player 2's name on the VS screens and in the VS record (UTF-16, up to 10 characters; default
  * empty). Player 1's is menus_set_owner_name. */
 void menus_set_player2_name(const uint16_t *utf16, int len);
+/* a race started without the VS select screens (debug start): sets what the character select and
+ * the stage select would have (characters, zone / act, VS mode, the records) so menus_vs_exit's
+ * results, TRY AGAIN and CHANGE work; character2 is made the other character if equal */
+void menus_vs_prepare(int zone, int act, int character, int character2);
 void menus_shutdown(void);
 /* The staff roll ended with CS_NEXT_UNLOCK_NOTICES (PostStaffRoll): show the unlock
  * notices the save calls for (player-select page, sound test), then the SEGA logo.

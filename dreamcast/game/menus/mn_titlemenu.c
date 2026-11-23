@@ -331,6 +331,121 @@ static void TitleMenu_DrawBackButton(s32 x, s32 y, s32 mode, u32 t) {
     AnimatorSprite_Draw(s);
 }
 
+/* Battle Play's button (item 0xd): the original "DS WIRELESS BATTLE" label image with only its
+ * "BATTLE" word, centred. The word is found from the label's text columns (columns that differ
+ * from the button's background, a 2-pixel dither: the reference columns 6 / 7); the background
+ * between the frame (8 px each side) and the word is filled from the longest background run.
+ * The word kept per language: eng 3 words -> 3rd, fra 4 -> 1st ("COMBAT"), deu 2 -> 2nd ("KAMPF"),
+ * ita 2 -> 1st ("BATTAGLIA"); any other layout (jpn, spa) keeps the whole original label. */
+#define TM_BTN_MAXP 24
+typedef struct {
+    const MnRes *res;
+    int image, n;
+    MnSprPiece p[TM_BTN_MAXP];
+} TmBattleLabel;
+static TmBattleLabel s_tm_battle[4];
+static int tm_col_is_bg(const MnRes *r, int img, int x, int h) {
+    int y, ref = 6 + (x & 1);
+    for (y = 0; y < h; y++)
+        if (mn_image_texel(r, img, x, y) != mn_image_texel(r, img, ref, y))
+            return 0;
+    return 1;
+}
+static int tm_battle_pieces(TmBattleLabel *L, const MnRes *r, int img) {
+    static const struct { int lang, words, keep; } rule[4] = { { 1, 3, 2 }, { 2, 4, 0 }, { 3, 2, 1 }, { 4, 2, 0 } };
+    const MnImage *im = &r->images[img];
+    int w = im->w, h = im->h, x, k, nseg = 0, seg[8][2], keep = -1, tx, cs = -1, cl = 0, a, b, side;
+    L->res = r;
+    L->image = img;
+    L->n = 0;
+    if (w < 32 || mn_image_texel(r, img, 6, 0) < 0)
+        return 0;
+    for (x = 8; x < w - 6;) {   /* text segments between the frames */
+        if (tm_col_is_bg(r, img, x, h)) {
+            x++;
+            continue;
+        }
+        if (nseg == 8)
+            return 0;
+        seg[nseg][0] = x;
+        while (x < w - 6 && !tm_col_is_bg(r, img, x, h))
+            x++;
+        seg[nseg++][1] = x;
+    }
+    for (k = 0; k < 4; k++)
+        if (rule[k].lang == mn_lang() && rule[k].words == nseg)
+            keep = rule[k].keep;
+    if (keep < 0)
+        return 0;
+    /* the longest background run (even start / length) left of the first or right of the last word */
+    for (side = 0; side < 2; side++) {
+        a = side ? seg[nseg - 1][1] : 6;
+        b = side ? w - 6 : seg[0][0];
+        if ((a & 1) != 0)
+            a++;
+        if (((b - a) & ~1) > cl) {
+            cs = a;
+            cl = (b - a) & ~1;
+        }
+    }
+    if (cl < 2)
+        return 0;
+    tx = (w - (seg[keep][1] - seg[keep][0])) / 2;
+    if ((tx & 1) != (seg[keep][0] & 1))
+        tx++;
+    /* frame left, fill, word, fill, frame right */
+#define TM_PIECE(SX, W, DX)                                                                    \
+    do {                                                                                       \
+        if (L->n < TM_BTN_MAXP) {                                                              \
+            MnSprPiece *q_ = &L->p[L->n++];                                                    \
+            q_->sx = (s16)(SX);                                                                \
+            q_->sy = 0;                                                                        \
+            q_->w = (s16)(W);                                                                  \
+            q_->h = (s16)h;                                                                    \
+            q_->dx = (s16)(DX);                                                                \
+            q_->dy = 0;                                                                        \
+        }                                                                                      \
+    } while (0)
+    TM_PIECE(0, 8, 0);
+    for (side = 0; side < 2; side++) {
+        a = side ? tx + (seg[keep][1] - seg[keep][0]) : 8;
+        b = side ? w - 8 : tx;
+        if ((a & 1) != 0 && a < b) {   /* keep the dither's phase */
+            TM_PIECE(cs + 1, 1, a);
+            a++;
+        }
+        while (a < b) {
+            int n = b - a < cl ? b - a : cl;
+            TM_PIECE(cs, n, a);
+            a += n;
+        }
+    }
+    TM_PIECE(seg[keep][0], seg[keep][1] - seg[keep][0], tx);
+    TM_PIECE(w - 8, 8, w - 8);
+#undef TM_PIECE
+    return L->n;
+}
+static void TitleMenu_DrawBattleButton(MnSpr *s) {
+    TmBattleLabel *L = NULL;
+    int img, k;
+    if (!AnimatorSprite_CurImage(s, &img)) {
+        AnimatorSprite_Draw(s);
+        return;
+    }
+    for (k = 0; k < 4 && !L; k++)
+        if (s_tm_battle[k].res == s->res && s_tm_battle[k].image == img)
+            L = &s_tm_battle[k];
+    if (!L) {   /* the three images of the button (normal, selected, pressed) are cached */
+        static int next;
+        L = &s_tm_battle[next++ & 3];
+        tm_battle_pieces(L, s->res, img);
+    }
+    if (L->n > 0)
+        AnimatorSprite_DrawPieces(s, L->p, L->n);
+    else
+        AnimatorSprite_Draw(s);
+}
+
 static void TitleMenu_DrawItemButton(s32 idx, s16 x, s16 y, s32 mode, u32 t) {
     s32 base = 0, anim = 0;
     MnSpr *s;
@@ -386,7 +501,10 @@ static void TitleMenu_DrawItemButton(s32 idx, s16 x, s16 y, s32 mode, u32 t) {
     s->flags |= 0x40;
     s->flags |= 0x20;
     AnimatorSprite_ProcessAnimation(s, 0, 0);
-    AnimatorSprite_Draw(s);
+    if (idx == 0xd)
+        TitleMenu_DrawBattleButton(s);
+    else
+        AnimatorSprite_Draw(s);
 }
 
 /* TitleMenu_Unk_ov001_022d7ac4: the page title on the top screen */
@@ -738,38 +856,19 @@ static void TitleMenu_SelectVsMode(TitleMenuWork *p, s32 f, s32 a) {
     p->state = 2;
 }
 
-static void TitleMenu_OpenVsSubPage(TitleMenuWork *p, s32 flag, s32 b) {
-    TitleMenuPage menu;
-    memset(&menu, 0, sizeof(menu));
-    TitleMenu_InitPage(&menu, flag, 5, 0x11, 0x12, 0x14, 0x14, p);
-    menu.items[0].cb = TitleMenu_SelectVsMode;
-    menu.items[1].cb = TitleMenu_SelectVsMode;
-    menu.items[4].cb = TitleMenu_OpenVsPage;
-    menu.items[0].unk4 = 4;
-    menu.items[1].unk4 = 4;
-    menu.items[0].unk34 = -1;
-    menu.items[1].unk34 = -1;
-    menu.items[2].unk34 = -1;
-    menu.items[3].unk34 = -1;
-    menu.items[4].unk34 = 0;
-    menu.unk17c = 3;
-    menu.unk180 = 1;
-    menu.unk184[0] = 4;
-    menu.unk184[1] = 5;
-    menu.unk184[2] = 8;
-    menu.unk184[3] = 8;
-    TitleMenu_CreatePageTask(&menu, p, b);
-}
+/* TitleMenu_OpenVsSubPage (CREATE ROOM / JOIN): not used, Battle Play has no rooms */
 
+/* TitleMenu_OpenVsPage: the DS page has DS WIRELESS BATTLE (-> the host / join sub-page,
+ * TitleMenu_OpenVsSubPage) and DS DOWNLOAD BATTLE. Battle Play has one button, the wireless
+ * label relabelled BATTLE (TitleMenu_DrawBattleButton), which goes straight on as the host
+ * item of the sub-page does (flags 4, slide colours 4); B / the back button as the original. */
 static void TitleMenu_OpenVsPage(TitleMenuWork *p, s32 flag, s32 b) {
     TitleMenuPage menu;
     memset(&menu, 0, sizeof(menu));
-    TitleMenu_InitPage(&menu, flag, 3, 0xd, 0xe, 0x14, 0x14, p);
-    menu.items[0].cb = TitleMenu_OpenVsSubPage;
-    menu.items[1].cb = TitleMenu_SelectVsMode;
+    TitleMenu_InitPage(&menu, flag, 3, 0xd, 0x14, 0x14, 0x14, p);
+    menu.items[0].cb = TitleMenu_SelectVsMode;
     menu.items[4].cb = TitleMenu_OpenRootPage;
-    menu.items[0].unk4 = 0;
-    menu.items[1].unk4 = 4;
+    menu.items[0].unk4 = 4;
     menu.items[0].unk34 = -1;
     menu.items[1].unk34 = -1;
     menu.items[2].unk34 = -1;
@@ -777,8 +876,8 @@ static void TitleMenu_OpenVsPage(TitleMenuWork *p, s32 flag, s32 b) {
     menu.items[4].unk34 = 1;
     menu.unk17c = 1;
     menu.unk180 = 0;
-    menu.unk184[0] = 3;
-    menu.unk184[1] = 6;
+    menu.unk184[0] = 4;
+    menu.unk184[1] = 8;
     menu.unk184[2] = 8;
     menu.unk184[3] = 8;
     TitleMenu_CreatePageTask(&menu, p, b);

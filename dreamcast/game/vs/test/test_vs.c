@@ -23,6 +23,9 @@ static void *load(const char *path, long *size) {
 }
 float g_cam_x, g_cam_y;   /* engine/render.c (not linked) */
 static DcPlayer A, B;
+extern Obj *g_obj_cur;
+static int s_shook[2];
+static void cam_shake(int i, s32 s) { (void)s; s_shook[i & 1]++; }
 static rlvl_map_t M;
 static u8 *g_level;
 
@@ -127,6 +130,36 @@ int main(int argc, char **argv) {
         vs_player_begin(1);
         CHECK(g_dcp_world.check_x == 1234 && g_dcp_world.check_y == 567, "player 2's checkpoint taken");
         vs_player_end(1);
+        /* camera effects of an object belong to the screens it is on */
+        {
+            static Obj fake;
+            vs_set_camera_shake_fn(cam_shake);
+            memset(&fake, 0, sizeof fake);
+            fake.used = 1;
+            reset_players(sx, sy);
+            B.x = A.x + (0x800 << 8);          /* 2048 px apart */
+            fake.h.x = B.x + 0x4000; fake.h.y = B.y;
+            g_obj_cur = &fake;
+            g_obj_hooks.shake(g_obj_hooks.ctx, 3);
+            CHECK(s_shook[1] == 1 && s_shook[0] == 0, "shake near player 2 only on its camera (%d / %d)", s_shook[0], s_shook[1]);
+            fake.h.x = A.x; fake.h.y = A.y;
+            g_obj_hooks.shake(g_obj_hooks.ctx, 3);
+            CHECK(s_shook[0] == 1 && s_shook[1] == 1, "shake near player 1 on its camera");
+            B.x = A.x + 0x2000;
+            g_obj_hooks.shake(g_obj_hooks.ctx, 3);
+            CHECK(s_shook[0] == 2 && s_shook[1] == 2, "both players near: both cameras");
+            B.x = A.x + (0x800 << 8);
+            fake.h.x = B.x; fake.h.y = B.y;
+            g_obj_hooks.fade(g_obj_hooks.ctx, 4, 0x100);
+            g_obj_cur = NULL;
+            { int k; for (k = 0; k < 20; k++) vs_frame_end(); }
+            CHECK(vs_fade_level(1) == 16 && vs_fade_level(0) == 0, "object fade on player 2's screen only (%d / %d)", vs_fade_level(0), vs_fade_level(1));
+            g_obj_cur = &fake;
+            g_obj_hooks.fade(g_obj_hooks.ctx, 2, 0x100);
+            g_obj_cur = NULL;
+            { int k; for (k = 0; k < 20; k++) vs_frame_end(); }
+            CHECK(vs_fade_level(1) == 0, "back from the fade");
+        }
         /* goal: B first, then A */
         g_obj_hooks.goal(g_obj_hooks.ctx, &B);
         g_obj_hooks.goal(g_obj_hooks.ctx, &A);

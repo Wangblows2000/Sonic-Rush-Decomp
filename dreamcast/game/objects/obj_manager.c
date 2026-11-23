@@ -346,7 +346,22 @@ static void obj_handle_ride_link(Obj *o) {
     }
 }
 
+Obj *g_obj_cur;   /* the object whose task runs (Battle Play: whose screen a shake / fade belongs to) */
+static void obj_main_body(Obj *o);
 static void obj_main(Obj *o) {
+    Obj *prev = g_obj_cur;
+    g_obj_cur = o;
+    obj_main_body(o);
+    g_obj_cur = prev;
+}
+int objects_current_pos(s32 *x, s32 *y) {
+    if (g_obj_cur == NULL || !g_obj_cur->used)
+        return 0;
+    *x = g_obj_cur->h.x;
+    *y = g_obj_cur->h.y;
+    return 1;
+}
+static void obj_main_body(Obj *o) {
     u16 saved = 0;
     int restore = 0;
     if (o->h.obj_flags & 4) {

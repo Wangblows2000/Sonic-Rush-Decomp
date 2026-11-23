@@ -164,7 +164,7 @@ static void ResultsScreen_DrawPlayerName(RsWork *w, s32 x, s32 y, s32 row) {
     s32 i;
     if (!w->names)
         return;
-    for (i = 0; i < 7; i++, x += 8)
+    for (i = 0; i < 8; i++, x += 8)   /* 7 glyphs (an unnamed player's identifier: 8) */
         if (x >= -8 && x < 0x100 && y >= -8 && y < 0xc0)
             mn_emit_bg_part(0, 0, w->names, (float)x, (float)y, (float)(i * 8), (float)(row * 16), 8, 8);
 }
@@ -683,6 +683,10 @@ void ResultsScreen_Create(void) {
     s_rs = w;
     w->unk18 = gGameState.unk4 != 0;   /* ResultsScreen_Unk_ov000_0235cc60 */
     w->unk1C = gGameState.unk8 != 0;   /* ResultsScreen_Unk_ov000_0235cc4c */
+    if (w->unk1C == w->unk18) {   /* never one character for both players (menus_vs_prepare) */
+        w->unk1C = w->unk18 ^ 1;
+        gGameState.unk8 = w->unk1C;
+    }
     w->unk20 = gGameState.vs_winner;   /* ResultsScreen_GetResultKind */
     w->unk10 = 1;
     w->unk14 = BRIGHT_MAIN;
@@ -734,8 +738,8 @@ void ResultsScreen_Create(void) {
         const u16 *nm[2];
         int len[2];
         u16 ink[2] = { 0, 0 };
-        len[0] = mn_owner_name(&nm[0]);
-        len[1] = mn_player2_name(&nm[1]);
+        len[0] = mn_vs_player_name(0, &nm[0]);
+        len[1] = mn_vs_player_name(1, &nm[1]);
         w->names = mn_name_strips(nm, len, 2, ink);
     }
     Task_Create(ResultsScreen_LocalGuest_Main, NULL, 0, 0x1001, 0x1000, 0);

@@ -130,6 +130,12 @@ behaves as the release game.
 | `SRDC_SNDTRACE=1` | serial trace of sound effects and music |
 | `SRDC_BGMTEST=<file>` | music event triggers for audio tests |
 
+Battle Play (two players, split screen) uses `SRDC_DEBUGDIR` files: `vs.txt`
+starts a race directly, `vs_p2.txt` scripts player 2's pad (or both) for
+one-keyboard emulator runs. See [BATTLE-PLAY.md](BATTLE-PLAY.md#test-builds).
+The kits need no change for it: Battle Play is in the same `1ST_READ.BIN`, and
+its menu and sound files are converted from the ROM with the rest of the disc.
+
 `/cd/debug/frameprof.txt` (via `SRDC_DEBUGDIR`) turns on the frame profiler:
 per-second frame time, vblank counts and the worst frame on the serial
 console. `make MEMTRACK=1` builds the heap tracker (`engine/memtrack.c`; name a

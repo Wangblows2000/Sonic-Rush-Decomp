@@ -384,7 +384,8 @@ only; **not translated** = section 8.
 | TitleMenu_DrawItemButton, DrawBackButton, Unk_022d7ac4 (`DrawPageTitle`) | same | as-is |
 | TitleMenu_CreateFadeTask, StartFadeToBlack/White, FadeTask_Main, CreateBgSlideTask*, BgSlideTask_Main, ApplyBgSlideLayers | same | modified (palette transfer -> wipe image colour 1, one image per BG) |
 | TitleMenu_ExitToTitleScreen, ExitToGameStart, ExitToPlayerSelectMode3/4, ExitToOptions | same | modified (scene changes -> starts / requests) |
-| TitleMenu_OpenVsPage, OpenVsSubPage | same | as-is |
+| TitleMenu_OpenVsPage | same | modified (one BATTLE button, `TitleMenu_DrawBattleButton`) |
+| TitleMenu_OpenVsSubPage | - | not used (rooms) |
 | TitleMenu_SelectVsMode0-2 (+ TitleMenuVsMode*Wait_Main) | `TitleMenu_SelectVsMode` | modified: the lobby's exit (state 2) at once |
 | TitleMenu_StartVsHost (exit table 2; StartVsJoin / GoToVsLobby 3 / 4) | `TitleMenu_StartVsHost` | modified (VsConnect -> PlayerSelectMenu_StartVs) |
 | TitleMenu_ShowMsgBox0, Attach/DetachVsMenu, VsMenu_*, VsConnect_* | - | not translated (wireless warning, lobby; section 15) |
@@ -587,10 +588,27 @@ icons, the wireless error / "partner left" message boxes, the rematch sync.
 
 Flow:
 
-1. Title menu, VS page: the page and its wireless sub-page open as on the DS.
-   Their modes (download play, host, join) skip the wireless warning (MsgBox 0)
-   and the lobby and take the lobby's host exit (exit table 2,
-   `TitleMenu_StartVsHost`: `gGameState.unk10 = 1`, `unk18 |= 0x20`).
+1. Title menu, VS page (title "BATTLE PLAY"): one button instead of the DS's
+   DS WIRELESS BATTLE / DS DOWNLOAD BATTLE, the wireless label image with only
+   its "BATTLE" word (`TitleMenu_DrawBattleButton`: the word found from the
+   label's text columns, the background filled from its own plain columns; eng
+   BATTLE, fra COMBAT, deu KAMPF, ita BATTAGLIA, jpn / spa keep the whole
+   label). A on it skips the wireless warning (MsgBox 0), the room sub-page
+   (CREATE ROOM / JOIN) and the lobby, and takes the lobby's host exit (exit
+   table 2, `TitleMenu_StartVsHost`: `gGameState.unk10 = 1`, `unk18 |= 0x20`).
+
+   Wording: MsgBox 9 ("QUIT WIRELESS BATTLE ?", both quit prompts) is drawn
+   as "QUIT BATTLE ?" from the words of the same image (split at its fully
+   transparent columns; eng QUIT BATTLE ?, fra QUITTER COMBAT ?; deu / ita /
+   spa / jpn keep the original, their words cannot be separated so). The other
+   messages and sprites of the flow (MsgBox 0xa CHOOSE ZONE/ACT, 0xe REACH THE
+   GOAL BEFORE YOUR OPPONENT!, the results' buttons and stamps, the select's
+   banners) have no wireless wording; the wireless-only ones (0xd waiting for
+   the chooser, connection / partner-left messages, DOWNLOADING DATA) never
+   show. Name plates (stage select, results): the owner's name / player 2's
+   name, or "PLAYER 1" / "PLAYER 2" in the plate font when unset
+   (`mn_vs_player_name`); the select's plate shows the character's name
+   (the original OAM priorities of `PlayerSelectMenu_InitSprites`).
 2. `PlayerSelectMenu_StartVs`: two PlayerSelect instances, player 1 mode 1 on
    engines 0 / 1, player 2 mode 2 on engines 2 / 3 (`MN_ENGINE_P2`), one file
    set shared. The original's handshake (`State_Sync`), opening, select,
@@ -625,6 +643,11 @@ Flow:
    stage and characters (from `menus_run_frame`), CHANGE -> the character
    select, QUIT -> the title screen. The original screen shows no times or
    rings (`VsRaceResult.time / rings / finished` are not used).
+
+A race started without the selects (debug start): `menus_vs_prepare(zone, act,
+character, character2)` first sets what the two selects leave (`unk4` / `unk8`,
+zone / act, VS mode, the records). Every `MENU_REQ_VS_STAGE` carries two
+different characters, the ones the results draw.
 
 main.c: every frame `menus_set_pad2(&pad_port_b)` before `menus_run_frame`;
 on `MENU_REQ_VS_STAGE` start the race; at its end `menus_vs_exit(&res)` and
@@ -664,11 +687,14 @@ screens). Section 3 lists the three compositions.
 | ResultsScreen_DrawModelA / B, SetupOrthoCamera, LoadArchives | `ResultsScreen_DrawModel` | modified (3D layer) |
 | ResultsScreen guest states (Main_WaitPartnerChoice, State_WaitPartner, DelayOpenWindow) | `ResultsScreen_LocalGuest_Main` | rewritten (the handshake only; the guest chooses nothing) |
 | ResultsScreen_RematchSync_Main, CreateRematchSync, LinkLost_Main, ShowLinkLostMessage, LinkIcon_* | - | not translated |
-| - | `menus_set_pad2`, `menus_vs_exit`, `menus_set_player2_name`, WirelessSession records, `mn_vs_pad_update` | new |
+| - | `menus_set_pad2`, `menus_vs_exit`, `menus_set_player2_name`, `menus_vs_prepare`, `mn_vs_player_name`, WirelessSession records, `mn_vs_pad_update` | new |
+| MsgBox message 9 drawing | `mb_splice_build` (mn_msgbox.c), `AnimatorSprite_DrawPieces` (mn_core.c) | new (QUIT BATTLE ?) |
 
 Host test: `test/test_vs.c` (in `host-test`): the title menu's VS page to the
 two players' select, the same-character rule and the cancels, the quit
 prompt, the stage select over the unlocked stages (locked ones skipped, wrap),
 the request fields, results win / lose / draw with rematch, character select
-and quit, the back button and the 200-frame ready wait.
+and quit, the back button and the 200-frame ready wait, the one-button VS page
+and the spliced quit message, `menus_vs_prepare` with repeated TRY AGAIN, CHANGE
+with new picks and QUIT, the PLAYER 1 / PLAYER 2 plates.
 

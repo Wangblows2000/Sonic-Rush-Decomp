@@ -43,6 +43,9 @@ void *NNS_FndGetNextListObject(NNSFndList *list, void *obj) {
 
 /* ------------------------------------------------------------ state */
 static const SndBank *s_bank;
+static const SndBank *s_bank_sel;   /* Battle Play: the bank the next start reads (NULL: s_bank) */
+void NNS_SndArcSelectBank(const SndBank *b) { s_bank_sel = b; }
+#define START_BANK (s_bank_sel ? s_bank_sel : s_bank)
 static NNSFndList data_0208344c;              /* free seq players */
 static NNSFndList data_02083458;              /* seq players by priority (ascending) */
 static NNSSndSeqPlayer data_02083464[16];     /* seq players */
@@ -246,12 +249,14 @@ static BOOL_ StartSeqArc(NNSSndHandle *handle, uint32_t playerNo, int32_t bankNo
     seq = NNSi_SndPlayerAllocSeqPlayer(handle, (int32_t)playerNo, prio);
     if (seq == NULL) return 0;
     /* NNSi_SndPlayerAllocHeap / NNSi_SndArcLoadBank: the bank is resident */
-    if (snd_bank_sbnk(s_bank, bankNo, &bsize) == NULL) {
+    if (snd_bank_sbnk(START_BANK, bankNo, &bsize) == NULL) {
         NNSi_SndPlayerFreeSeqPlayer(seq);
         return 0;
     }
-    data = snd_bank_seq_data(s_bank, a, &size);
+    data = snd_bank_seq_data(START_BANK, a, &size);
+    snd_drv_set_next_bank(s_bank_sel);
     NNSi_SndPlayerStartSeq(seq, data, size, info->offset, bankNo);
+    snd_drv_set_next_bank(NULL);
     NNS_SndPlayerSetInitialVolume(handle, info->volume);
     NNS_SndPlayerSetChannelPriority(handle, info->channel_prio);
     seq->seqArcNo = a; seq->seqNo = b; /* NNS_SndPlayerSetSeqArcNo */
@@ -261,8 +266,8 @@ static BOOL_ StartSeqArc(NNSSndHandle *handle, uint32_t playerNo, int32_t bankNo
 BOOL_ NNS_SndArcPlayerStartSeqArcEx(NNSSndHandle *handle, int32_t playerNo, int32_t bankNo, int32_t prio,
                                     int32_t seqArcNo, int32_t index) {
     const SrbSeqInfo *info;
-    if (!s_bank || !s_bank->meta) return 0;
-    info = snd_bank_seq_info(s_bank, seqArcNo, index); /* NNS_SndArcGetSeqArcInfo + NNSi_SndSeqArcGetSeqInfo */
+    if (!START_BANK || !START_BANK->meta) return 0;
+    info = snd_bank_seq_info(START_BANK, seqArcNo, index); /* NNS_SndArcGetSeqArcInfo + NNSi_SndSeqArcGetSeqInfo */
     if (info == NULL) return 0;
     if (prio < 0) prio = info->player_prio;
     if (bankNo < 0) bankNo = info->bank;
@@ -272,8 +277,8 @@ BOOL_ NNS_SndArcPlayerStartSeqArcEx(NNSSndHandle *handle, int32_t playerNo, int3
 
 BOOL_ NNS_SndArcPlayerStartSeqArc(NNSSndHandle *handle, int32_t seqArcNo, int32_t index) {
     const SrbSeqInfo *info;
-    if (!s_bank || !s_bank->meta) return 0;
-    info = snd_bank_seq_info(s_bank, seqArcNo, index);
+    if (!START_BANK || !START_BANK->meta) return 0;
+    info = snd_bank_seq_info(START_BANK, seqArcNo, index);
     if (info == NULL) return 0;
     return StartSeqArc(handle, info->player, info->bank, info->player_prio, info, seqArcNo, index);
 }

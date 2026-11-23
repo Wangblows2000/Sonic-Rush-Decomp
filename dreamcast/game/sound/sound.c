@@ -21,6 +21,9 @@ static SoundHandle data_02250468[0x20];
 static SoundHandle data_02250460;
 
 static SndBank s_bank;
+static SndBank s_bank2;          /* Battle Play: player 2's character bank (zNb for Blaze when player 1 is Sonic ...) */
+static char s_bank2_name[16];
+static int s_bank2_sel;
 static char s_dir[64] = "/cd/sound";
 static char s_bank_name[16];
 const char *sound_bank_name(void) { return s_bank_name; }
@@ -233,9 +236,18 @@ int sound_init(void) {
     return 0;
 }
 
+static void bank2_free(void) {
+    if (!s_bank2.meta) return;
+    NNS_SndArcSelectBank(NULL);
+    snd_drv_forget_bank(&s_bank2);
+    snd_bank_free(&s_bank2);
+    s_bank2_name[0] = 0;
+    s_bank2_sel = 0;
+}
 void sound_shutdown(void) {
     if (!s_init) return;
     sound_stop_all();
+    bank2_free();
     snd_bank_free(&s_bank);
     snd_out_shutdown();
     s_init = 0;
@@ -246,6 +258,7 @@ int sound_load_bank(const char *sdat) {
     int r;
     if (!s_init) sound_init();
     sound_stop_all();
+    bank2_free();
     snd_bank_free(&s_bank);
     snprintf(path, sizeof path, "%s/%s.srb", s_dir, sdat);
     r = snd_bank_load(&s_bank, path);
@@ -341,3 +354,27 @@ void sound_update(void) {
     g_sound_frame++;
     if (g_sound_trace) snd_drv_trace(g_sound_frame);
 }
+
+/* ------------------------------------------------ Battle Play: a second resident bank
+ * The DS loaded one zone SDAT per console, for that console's character (StageLoader_
+ * SetCharacterSoundPath). Two characters on one Dreamcast: player 2's SDAT stays resident beside
+ * player 1's; player 2's own sounds (voices, actions) start from it (sound_select_bank2). After
+ * sound_load_bank (which drops it). */
+int sound_load_bank2(const char *sdat) {
+    char path[96];
+    int r;
+    bank2_free();
+    if (!sdat || !strcmp(sdat, s_bank_name)) return 0;
+    snprintf(path, sizeof path, "%s/%s.srb", s_dir, sdat);
+    r = snd_bank_load(&s_bank2, path);
+    if (r) { printf("sound: second bank %s missing (%d)\n", sdat, r); return r; }
+    snprintf(s_bank2_name, sizeof s_bank2_name, "%s", sdat);
+    printf("sound: second bank %s (%lu B sound RAM)\n", sdat, (unsigned long)s_bank2.blob_size);
+    return 0;
+}
+void sound_select_bank2(int on) {
+    s_bank2_sel = on && s_bank2.meta;
+    NNS_SndArcSelectBank(s_bank2_sel ? &s_bank2 : NULL);
+}
+const char *sound_bank2_name(void) { return s_bank2_name; }
+

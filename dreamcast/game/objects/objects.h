@@ -288,4 +288,6 @@ void FixVsPushIcon_Create(DcPlayer *p);
 int objects_player_box_hit(const DcPlayer *p, s32 x, s32 y, s32 ox, s32 oy, u16 w, u16 h);
 s32 objects_player_box_cx(const DcPlayer *a, const DcPlayer *b);
 s32 objects_player_box_cy(const DcPlayer *a, const DcPlayer *b);
+/* the position of the object whose task is running (0: none, e.g. the player's own code) */
+int objects_current_pos(s32 *x, s32 *y);
 #endif

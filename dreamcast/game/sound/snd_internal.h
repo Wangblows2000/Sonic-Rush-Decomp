@@ -97,6 +97,8 @@ void snd_drv_set_player_volume(int player, int db);     /* SND_SetPlayerVolume (
 void snd_drv_set_player_prio(int player, int prio);     /* SND_SetPlayerChannelPriority */
 void snd_drv_set_track_pan(int player, uint32_t mask, int pan); /* SND_SetTrackPan */
 void snd_drv_set_tempo_ratio(int player, int ratio);            /* SND_SetPlayerTempoRatio */
+void snd_drv_set_next_bank(const SndBank *bank);                /* Battle Play: second resident bank */
+void snd_drv_forget_bank(const SndBank *bank);
 void snd_drv_set_alloc_mask(int player, uint16_t mask); /* SND_SetTrackAllocatableChannel */
 void snd_drv_frame(void);                               /* one ARM7 sound frame */
 void snd_drv_flush(void);                               /* push channel registers to the output */

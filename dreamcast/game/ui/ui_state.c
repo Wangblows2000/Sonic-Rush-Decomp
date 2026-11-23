@@ -670,3 +670,19 @@ void ui_install_hooks(void) {
         g_obj_hooks.checkpoint_popup = h_checkpoint_popup;
     }
 }
+
+/* Battle Play: the race start is the original title card (the VS card, "Ready? / GO!") over the
+ * whole screen. Once per frame in the TR list, after the viewports; 1 while it runs. The race
+ * starts at GO (ui_titlecard_started). */
+int ui_vs_titlecard_draw(void) {
+    if (!StageTitleCard_IsActive())
+        return 0;
+    ui_cmd_reset();
+    g_ui_layer = UI_LAYER_TITLE;
+    StageTitleCard_Main();
+    BrightnessFade_Main();
+    ui_draw_tr();
+    ui_cmd_reset();
+    return 1;
+}
+

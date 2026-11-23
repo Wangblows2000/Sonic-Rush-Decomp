@@ -51,9 +51,15 @@ static SoundHandle *player_handle(DcPlayer *p, s32 ch) {
     return &s_ph[free_slot].h[ch];
 }
 
+/* Battle Play: the player whose character sounds come from the second bank (sound_load_bank2) */
+static const void *s_bank2_player;
+void sound_hooks_set_bank2_player(const void *p) { s_bank2_player = p; }
 static void hk_sfx(void *ctx, DcPlayer *p, s32 ch, s32 id) {
+    int b2 = p != NULL && p == s_bank2_player;
     if (s_prev_sfx) s_prev_sfx(ctx, p, ch, id);
+    if (b2) sound_select_bank2(1);
     Sound_PlaySeqArcEx(ch == DCP_CH_GLOBAL ? NULL : player_handle(p, ch), 0, id);
+    if (b2) sound_select_bank2(0);
 }
 static void hk_sfx_stop(void *ctx, DcPlayer *p, s32 ch) {
     SoundHandle *h;
@@ -137,7 +143,10 @@ void sound_obj_reset(void) {
 
 /* Sound_PlaySeqArcEx on a player handle (bgm.c: the gravity-flip SE) */
 void sound_player_sfx(DcPlayer *p, int ch, int id) {
+    int b2 = p != NULL && p == s_bank2_player;
+    if (b2) sound_select_bank2(1);
     Sound_PlaySeqArcEx(ch == DCP_CH_GLOBAL ? NULL : player_handle(p, ch), 0, id);
+    if (b2) sound_select_bank2(0);
 }
 /* Player_AddLives (the ui module counts the life): Sound_PlayBGMOnPlayer3(0, 0x18) */
 static void hk_add_life(void *ctx, DcPlayer *p, s32 n) {

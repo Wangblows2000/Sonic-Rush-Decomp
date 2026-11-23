@@ -687,6 +687,72 @@ void AnimatorSprite_DrawScaled(MnSpr *s, fx32 scx, fx32 scy) {
 
 void AnimatorSprite_Draw(MnSpr *s) { AnimatorSprite_DrawScaled(s, 0x1000, 0x1000); }
 
+/* the sprite's current image (its index in *index), NULL when none */
+const MnImage *AnimatorSprite_CurImage(const MnSpr *s, int *index) {
+    const MnImage *im = spr_image(s);
+    if (im && index)
+        *index = (int)(im - s->res->images);
+    return im;
+}
+
+/* texel (x, y) of image `image`: the 4-bit index on a PAL4 page, else the ARGB1555 pixel; -1 when the
+ * page is not in memory */
+int mn_image_texel(const MnRes *r, int image, int x, int y) {
+    const MnImage *im;
+    const MnPage *pg;
+    if (!r || image < 0 || image >= r->n_images)
+        return -1;
+    im = &r->images[image];
+    pg = &r->pages[im->page];
+    if (x < 0 || y < 0 || x >= im->w || y >= im->h)
+        return -1;
+    if (r->texels[im->page])
+        return sprpal_texel(r->texels[im->page], pg->w, pg->h, im->x + x, im->y + y);
+    if (r->pixels[im->page])
+        return r->pixels[im->page][(im->y + y) * pg->w + im->x + x];
+    return -1;
+}
+int mn_image_opaque(const MnRes *r, int image, int x, int y) {
+    int t = mn_image_texel(r, image, x, y);
+    if (t < 0)
+        return 0;
+    return r->texels[r->images[image].page] ? t != 0 : (t & 0x8000) != 0;
+}
+
+/* pieces of the sprite's current image: (sx, sy, w, h) of the image to (dx, dy) of the image's box
+ * (no flip, no scale), in the sprite's order (Battle Play: relabelled buttons and messages) */
+void AnimatorSprite_DrawPieces(MnSpr *s, const MnSprPiece *p, int n) {
+    const MnImage *im;
+    int i;
+    if (s->flags & SPR_HIDDEN)
+        return;
+    im = spr_image(s);
+    if (!im)
+        return;
+    for (i = 0; i < n && s_nquads < MN_MAX_QUADS; i++) {
+        MnQuad *q = &s_quads[s_nquads++];
+        memset(q, 0, sizeof(*q));
+        q->x = (float)(s->x - im->ox + p[i].dx);
+        q->y = (float)(s->y - im->oy + p[i].dy);
+        q->w = p[i].w;
+        q->h = p[i].h;
+        q->u0 = (float)(im->x + p[i].sx);
+        q->u1 = q->u0 + p[i].w;
+        q->v0 = (float)(im->y + p[i].sy);
+        q->v1 = q->v0 + p[i].h;
+        q->res = s->res;
+        q->page = im->page;
+        q->image = (u16)(im - s->res->images);
+        q->engine = s->engine;
+        q->prio = (u8)((s->flags & SPR_PRIO_MASK) >> 17);
+        q->kind = MNQ_SPRITE;
+        q->argb = (s->alpha >= 16 ? 0xff000000u : (u32)(s->alpha * 255 / 16) << 24) | 0xffffff;
+        q->oam = s->oam > 31 ? 31 : s->oam;
+        if (q->oam > s_max_oam)
+            s_max_oam = q->oam;
+    }
+}
+
 void mn_emit_flat(int engine, int prio, float x, float y, float w, float h, u32 argb) {
     MnQuad *q;
     if (s_nquads >= MN_MAX_QUADS)

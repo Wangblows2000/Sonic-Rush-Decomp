@@ -324,6 +324,19 @@ const UiImage *UiSpr_Image(const UiSpr *s, int *index) {
 static UiQuad s_quads[UI_MAX_QUADS];
 static int s_nquads;
 static int s_hud_k = 2, s_safe_x0 = 32, s_safe_y0 = 24, s_safe_x1 = 608, s_safe_y1 = 456;
+/* Battle Play: a fractional HUD scale for a viewport (0: the integer one) */
+static float s_hud_kf;
+#define HUD_K (s_hud_kf > 0.0f ? s_hud_kf : (float)s_hud_k)
+/* Battle Play HUD in a viewport: scale k (screen px per DS px), the viewport as the safe area */
+void ui_hud_viewport(float k, int x0, int y0, int x1, int y1, int *saved) {
+    saved[0] = s_safe_x0; saved[1] = s_safe_y0; saved[2] = s_safe_x1; saved[3] = s_safe_y1;
+    s_hud_kf = k;
+    s_safe_x0 = x0; s_safe_y0 = y0; s_safe_x1 = x1; s_safe_y1 = y1;
+}
+void ui_hud_viewport_end(const int *saved) {
+    s_hud_kf = 0.0f;
+    s_safe_x0 = saved[0]; s_safe_y0 = saved[1]; s_safe_x1 = saved[2]; s_safe_y1 = saved[3];
+}
 static float s_cam_x, s_cam_y;
 /* UI_SP_NAVI_B .. UI_SP_NAVI_FACE */
 static struct { float dx, dy, sx, sy, k; } s_space[3];
@@ -380,28 +393,28 @@ void ui_space_map(int space, float x, float y, float *ox, float *oy, float *k) {
 static void xform(int space, float x, float y, float *ox, float *oy, float *k) {
     switch (space) {
     case UI_SP_HUD_TL:
-        *k = (float)s_hud_k;
+        *k = HUD_K;
         *ox = s_safe_x0 + x * *k;
         *oy = s_safe_y0 + y * *k;
         break;
     case UI_SP_HUD_BL:
-        *k = (float)s_hud_k;
+        *k = HUD_K;
         *ox = s_safe_x0 + x * *k;
         *oy = s_safe_y1 - (192.0f - y) * *k;
         break;
     case UI_SP_HUD_TR:
-        *k = (float)s_hud_k;
+        *k = HUD_K;
         *ox = s_safe_x1 - (256.0f - x) * *k;
         *oy = s_safe_y0 + y * *k;
         break;
     case UI_SP_HUD_BR:
-        *k = (float)s_hud_k;
+        *k = HUD_K;
         *ox = s_safe_x1 - (256.0f - x) * *k;
         *oy = s_safe_y1 - (192.0f - y) * *k;
         break;
     case UI_SP_HUD_TC:
         /* DS x 128 = screen centre; DS y 0 = under the HUD's top row (24 DS px) */
-        *k = (float)s_hud_k;
+        *k = HUD_K;
         *ox = 320.0f + (x - 128.0f) * *k;
         *oy = s_safe_y0 + (24.0f + y) * *k;
         break;

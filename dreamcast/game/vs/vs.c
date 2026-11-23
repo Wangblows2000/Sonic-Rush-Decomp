@@ -25,7 +25,25 @@ static struct {
     DcpHooks saved_dcp;
     ObjHooks saved_obj;
 } V;
-static int s_tsnd_owner[2];        /* owners of the TensionSound handles (g_obj_hooks.sfx_own) */
+static int s_tsnd_owner[2];
+static void (*s_cam_fn)(int i, s32 strength);   /* main.c: ScreenShake_Start on player i's camera */
+void vs_set_camera_shake_fn(void (*fn)(int i, s32 strength)) { s_cam_fn = fn; }
+
+/* the players whose screen shows the object running now: each console ran every object, and a
+ * shake / fade of an object reached the screens it was on (the window: 548 x 192 world px around
+ * the player, plus the 64-px spawn margin) */
+static int near_mask(void) {
+    s32 x, y;
+    int i, m = 0;
+    if (!objects_current_pos(&x, &y))
+        return V.cur >= 0 ? 1 << V.cur : 3;
+    for (i = 0; i < 2; i++) {
+        s32 dx = (x - V.p[i]->x) >> 8, dy = (y - V.p[i]->y) >> 8;
+        if (dx > -0x150 && dx < 0x150 && dy > -0xa0 && dy < 0xa0)
+            m |= 1 << i;
+    }
+    return m;
+}        /* owners of the TensionSound handles (g_obj_hooks.sfx_own) */
 
 int vs_active(void) { return V.on; }
 const VsInfo *vs_info(void) { return &V.info; }
@@ -157,11 +175,33 @@ static void h_stage_exit(void *ctx, s32 kind) {
     if (kind == OBJ_EXIT_RESULTS || kind == OBJ_EXIT_CLEAR_DEMO)
         vs_request_exit(VS_EXIT_RESULTS);    /* GoalRing_State_Idle: StageShutdown_Create(ResultsScreen_Create) */
 }
-/* objects: BrightnessFade_Create (goal ring): both viewports */
-static void h_obj_fade(void *ctx, s32 kind, s32 speed) {
-    (void)ctx;
+/* BrightnessFade_Create of both viewports (the race end: goal ring, time over) */
+static void fade_both(s32 kind, s32 speed) {
     fade_start(0, kind, speed);
     fade_start(1, kind, speed);
+}
+/* objects: BrightnessFade_Create - the goal ring once the race is decided fades both viewports;
+ * the other fades (gimmicks) belong to the screens the object is on */
+static void h_obj_fade(void *ctx, s32 kind, s32 speed) {
+    int m, i;
+    (void)ctx;
+    if (V.info.winner >= 0) {
+        fade_both(kind, speed);
+        return;
+    }
+    m = near_mask();
+    for (i = 0; i < 2; i++)
+        if (m & (1 << i))
+            fade_start(i, kind, speed);
+}
+/* objects: ScreenShake_Start on the cameras of the screens the object is on */
+static void h_obj_shake(void *ctx, s32 s) {
+    int m, i;
+    (void)ctx;
+    m = near_mask();
+    for (i = 0; i < 2; i++)
+        if ((m & (1 << i)) && s_cam_fn)
+            s_cam_fn(i, s);
 }
 /* the player module (death / respawn): the viewport of the player whose frame runs */
 static void h_dcp_fade(void *ctx, s32 kind, s32 speed) {
@@ -169,7 +209,7 @@ static void h_dcp_fade(void *ctx, s32 kind, s32 speed) {
     if (V.cur >= 0)
         fade_start(V.cur, kind, speed);
     else
-        h_obj_fade(ctx, kind, speed);
+        fade_both(kind, speed);
 }
 static dcp_bool h_dcp_fade_done(void *ctx) {
     (void)ctx;
@@ -202,6 +242,7 @@ void vs_begin(DcPlayer *p0, DcPlayer *p1) {
     g_obj_hooks.goal = h_goal;
     g_obj_hooks.stage_exit = h_stage_exit;
     g_obj_hooks.fade = h_obj_fade;
+    g_obj_hooks.shake = h_obj_shake;
     g_obj_hooks.checkpoint_popup = NULL;
     V.on = 1;
 }
@@ -223,6 +264,7 @@ void vs_end(void) {
     g_obj_hooks.goal = V.saved_obj.goal;
     g_obj_hooks.stage_exit = V.saved_obj.stage_exit;
     g_obj_hooks.fade = V.saved_obj.fade;
+    g_obj_hooks.shake = V.saved_obj.shake;
     g_obj_hooks.checkpoint_popup = V.saved_obj.checkpoint_popup;
     W.flags &= ~0x20u;
     V.on = 0;
@@ -361,7 +403,7 @@ void vs_after_players(void) {
             DcPlayer *w = V.p[i];
             if (!(w->pf & 0x1000000)) {
                 if (!V.timeover_fade) {
-                    h_obj_fade(NULL, 4, 0x80);
+                    fade_both(4, 0x80);
                     V.timeover_fade = 1;
                 }
                 reach_goal(w, NULL);

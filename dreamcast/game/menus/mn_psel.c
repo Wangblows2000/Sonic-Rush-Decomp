@@ -1125,6 +1125,14 @@ static MnTask *PlayerSelectMenu_Create(int mode, int player) {
     init_spr(w, 13, a->res_lang, 0, 0, 1);
     init_spr(w, 14, a->res_lang, 2, 1, 0);
     init_spr(w, 17, a->res_titl, 0, 1, 0);
+    /* PlayerSelectMenu_InitMainSprite's oamPrio (unk46): the plate 8 / 0x10, the circle icons and the OK
+     * button 0xc, the character's name 4 (in front of the plate), the confirm flash 3 */
+    w->spr[3].oam = 8;
+    w->spr[4].oam = 0x10;
+    for (i = 5; i <= 8; i++)
+        w->spr[i].oam = 0xc;
+    w->spr[14].oam = 4;
+    w->spr[15].oam = 3;
     for (i = 0; i < 19; i++)
         w->anim[i] = -1;
     KeyframeAnim_Init(&w->posB68, a->ama, 0);

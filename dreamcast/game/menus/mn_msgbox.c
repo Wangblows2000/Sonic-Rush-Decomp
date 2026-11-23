@@ -117,10 +117,87 @@ static void mb_sprite(MsgBoxWork *w, int k, const MnRes *res, s32 idx) {
     w->have[k] = 1;
     AnimatorSprite_ProcessAnimation(&w->spr[k], 0, 0);
 }
+/* Battle Play: message 9 ("QUIT WIRELESS BATTLE ?", caution_a_<lang> anim 9) is drawn as "QUIT
+ * BATTLE ?" from the words of the same image, split at its fully transparent columns, joined with
+ * their original gaps and centred where the whole message was. Kept per language: eng 4 words ->
+ * 1st, 3rd, 4th ("QUIT" "BATTLE" "?"); fra 6 -> 1st, 2nd, 6th ("QUITTER" "COMBAT" "?"). Other layouts
+ * (deu: two lines; ita / spa: the "?" joined to the wireless word; jpn) keep the original image. */
+#define MB_MAXSEG 8
+typedef struct {
+    const MnRes *res;
+    int image, n;
+    MnSprPiece p[MB_MAXSEG];
+} MbSplice;
+static MbSplice s_mb_splice;
+static int mb_col_opaque(const MnRes *r, int img, int x, int h) {
+    int y;
+    for (y = 0; y < h; y++)
+        if (mn_image_opaque(r, img, x, y))
+            return 1;
+    return 0;
+}
+static void mb_splice_build(MbSplice *S, const MnRes *r, int img) {
+    static const struct { int lang, words, n, keep[3]; } rule[2] = { { 1, 4, 3, { 0, 2, 3 } }, { 2, 6, 3, { 0, 1, 5 } } };
+    const MnImage *im = &r->images[img];
+    int w = im->w, h = im->h, x, k, nseg = 0, seg[MB_MAXSEG][2], tw, dx;
+    S->res = r;
+    S->image = img;
+    S->n = 0;
+    if (mn_image_texel(r, img, 0, 0) < 0)
+        return;
+    for (x = 0; x < w;) {
+        if (!mb_col_opaque(r, img, x, h)) {
+            x++;
+            continue;
+        }
+        if (nseg == MB_MAXSEG)
+            return;
+        seg[nseg][0] = x;
+        while (x < w && mb_col_opaque(r, img, x, h))
+            x++;
+        seg[nseg++][1] = x;
+    }
+    for (k = 0; k < 2; k++) {
+        int i, gap;
+        if (rule[k].lang != mn_lang() || rule[k].words != nseg)
+            continue;
+        tw = 0;
+        for (i = 0; i < rule[k].n; i++) {
+            int s_ = rule[k].keep[i];
+            tw += seg[s_][1] - seg[s_][0] + (i ? seg[s_][0] - seg[s_ - 1][1] : 0);
+        }
+        dx = (w - tw) / 2;
+        for (i = 0; i < rule[k].n; i++) {
+            int s_ = rule[k].keep[i];
+            MnSprPiece *q = &S->p[S->n++];
+            gap = i ? seg[s_][0] - seg[s_ - 1][1] : 0;
+            dx += gap;
+            q->sx = (s16)seg[s_][0];
+            q->sy = 0;
+            q->w = (s16)(seg[s_][1] - seg[s_][0]);
+            q->h = (s16)h;
+            q->dx = (s16)dx;
+            q->dy = 0;
+            dx += q->w;
+        }
+    }
+}
+
 static void mb_draw(MsgBoxWork *w, int k) {
     if (!w->have[k])
         return;
     AnimatorSprite_ProcessAnimation(&w->spr[k], 0, 0);
+    if (k == 1 && w->msg == 9) {
+        int img;
+        if (AnimatorSprite_CurImage(&w->spr[k], &img)) {
+            if (s_mb_splice.res != w->spr[k].res || s_mb_splice.image != img)
+                mb_splice_build(&s_mb_splice, w->spr[k].res, img);
+            if (s_mb_splice.n > 0) {
+                AnimatorSprite_DrawPieces(&w->spr[k], s_mb_splice.p, s_mb_splice.n);
+                return;
+            }
+        }
+    }
     AnimatorSprite_Draw(&w->spr[k]);
 }
 static void mb_set_anim(MsgBoxWork *w, int k, s32 a) {

@@ -65,7 +65,12 @@ void sound_boss_sfx(void *ctx, int32_t id);
 void sound_boss_voice(void *ctx, int32_t id);
 void sound_boss_sfx_handle(void *ctx, int32_t handle, int32_t id);
 void sound_boss_sfx_stop(void *ctx, int32_t handle);
-void sound_obj_reset(void);   /* a new stage: drop the object sound handles (g_obj_hooks.sfx_own) */
+void sound_obj_reset(void);
+/* Battle Play: player 2's character bank resident beside the stage bank (sound.c) */
+int sound_load_bank2(const char *sdat);
+void sound_select_bank2(int on);
+const char *sound_bank2_name(void);
+void sound_hooks_set_bank2_player(const void *p);   /* this player's own sounds start from bank 2 */   /* a new stage: drop the object sound handles (g_obj_hooks.sfx_own) */
 void sound_boss_sfx_volume(void *ctx, int32_t vol);
 void sound_boss_reset(void);
 

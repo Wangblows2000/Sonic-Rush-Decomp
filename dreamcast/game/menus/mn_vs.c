@@ -45,6 +45,37 @@ int mn_player2_name(const u16 **name) {
     return s_p2_len;
 }
 
+/* an unnamed player (a fresh VMU has no owner name; player 2 has none unless set) is shown as
+ * "PLAYER 1" / "PLAYER 2" in the name-plate font */
+int mn_vs_player_name(int p, const u16 **name) {
+    static const u16 id[2][8] = { { 'P', 'L', 'A', 'Y', 'E', 'R', ' ', '1' }, { 'P', 'L', 'A', 'Y', 'E', 'R', ' ', '2' } };
+    int len = p ? mn_player2_name(name) : mn_owner_name(name);
+    if (len > 0)
+        return len;
+    *name = id[p ? 1 : 0];
+    return -8;
+}
+
+/* A race started without the select screens (main.c's debug start): the state the character
+ * select (PlayerSelectMenu_ExitToGame: unk4 / unk8) and TimeSelect (Game_StartVsStage: unk10,
+ * zone / act) leave, so the results, TRY AGAIN and CHANGE work as after them. */
+void menus_vs_prepare(int zone, int act, int character, int character2) {
+    character = character ? 1 : 0;
+    character2 = character2 ? 1 : 0;
+    if (character2 == character)   /* the original select never gives both players one character */
+        character2 = character ^ 1;
+    gGameState.unk0 = character;   /* the host's own character */
+    gGameState.unk4 = character;
+    gGameState.unk8 = character2;
+    gGameState.unk10 = MENU_MODE_VS;
+    gGameState.unk18 |= 0x20u;     /* TitleMenu_StartVsHost */
+    gGameState.unk18 &= ~0x10u;
+    gGameState.unk1C = (u8)(zone < 0 ? 0 : zone > 6 ? 6 : zone);
+    gGameState.unk1D = (u8)(act ? 1 : 0);
+    gGameState.vs_winner = 2;
+    mn_vs_reset_records();
+}
+
 u8 *WirelessSession_GetSendBuffer(s32 player) { return s_vs_rec[player & 1]; }
 u8 *WirelessSession_GetPartnerRecvBuffer(s32 player) { return s_vs_rec[(player & 1) ^ 1]; }
 void mn_vs_reset_records(void) { memset(s_vs_rec, 0, sizeof(s_vs_rec)); }

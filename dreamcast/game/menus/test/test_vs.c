@@ -179,10 +179,26 @@ static void test_title_to_vs(void) {
     run(90);
     dump("vs01_title_vs_page");
     CHECK(scene_is("TitleMenu"));
-    tap1(IN_JUMP);   /* DS wireless play -> host / join page */
-    run(90);
-    dump("vs02_title_vs_subpage");
-    tap1(IN_JUMP);   /* host */
+    /* one button, the wireless label relabelled BATTLE: drawn as pieces (frame, fill, word, frame) of
+     * one 128-px image, no DOWNLOAD button */
+    {
+        const MnQuad *q;
+        int n = mn_quads(&q), k, np = 0, x0 = 1 << 20, x1 = -(1 << 20), img = -1, one = 1;
+        for (k = 0; k < n; k++)
+            if (q[k].res && strcmp(q[k].res->id, "act__mnu_titl_eng") == 0 && q[k].engine == 1) {
+                np++;
+                if (img < 0)
+                    img = q[k].image;
+                one &= q[k].image == img;
+                x0 = (int)q[k].x < x0 ? (int)q[k].x : x0;
+                x1 = (int)(q[k].x + q[k].w) > x1 ? (int)(q[k].x + q[k].w) : x1;
+            }
+        printf("VS page button: %d pieces, x %d..%d\n", np, x0, x1);
+        CHECK(np >= 5 && one && x1 - x0 == 128);
+    }
+    tap1(IN_DOWN);   /* only one item: stays */
+    run(10);
+    tap1(IN_JUMP);   /* BATTLE: straight to the select */
     i = run_until_scene("PlayerSelectVs", 200);
     CHECK(i >= 0);
     CHECK(gGameState.unk10 == MENU_MODE_VS);
@@ -225,6 +241,7 @@ static void test_player_select(void) {
     run(30);
     CHECK(PlayerSelectMenu_VsState(0, NULL) == 3);
     dump("vs12_psel_quit_prompt");
+    CHECK(count_res("act2__caution__caution_a_eng", 0) == 3);   /* "QUIT" "BATTLE" "?" */
     tap1(IN_TRICK);
     run(40);
     CHECK(PlayerSelectMenu_VsState(0, NULL) == 0);
@@ -453,6 +470,144 @@ static void test_time_select_back_and_timeout(void) {
     CHECK(r.kind == MENU_REQ_VS_STAGE && r.zone == 0 && r.act == 1 && r.character == 1 && r.character2 == 0);
 }
 
+/* a race started without the selects (main.c's debug start): menus_vs_prepare, then the results */
+static MenuRequest wait_req(MenuRequest r, int n) {
+    int i;
+    for (i = 0; i < n && r.kind == MENU_REQ_NONE; i++)
+        r = run(1);
+    return r;
+}
+static void test_prepare(void) {
+    MenuRequest r;
+    const u16 *nm;
+    int i, c1, c2;
+    /* unnamed players: "PLAYER 1" / "PLAYER 2" */
+    menus_set_owner_name(NULL, 0);
+    menus_set_player2_name(NULL, 0);
+    CHECK(mn_vs_player_name(0, &nm) == -8 && nm[7] == '1');
+    CHECK(mn_vs_player_name(1, &nm) == -8 && nm[7] == '2');
+    Task_DestroyAll();
+    mn_display_reset();
+    gGameState.unk4 = gGameState.unk8 = 0;   /* as after a story game */
+    menus_vs_prepare(2, 1, 1, 1);           /* equal characters: player 2 gets the other */
+    CHECK(gGameState.unk4 == 1 && gGameState.unk8 == 0 && gGameState.unk10 == MENU_MODE_VS);
+    results(1, "6_prepared_p2_wins");
+    run(2);
+    dump("vs37_results_unnamed");
+    r = tap1(IN_JUMP);   /* TRY AGAIN */
+    r = wait_req(r, 80);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.zone == 2 && r.act == 1 && r.character == 1 && r.character2 == 0);
+    /* again: win, TRY AGAIN; draw, TRY AGAIN */
+    results(0, "7_again_win");
+    r = wait_req(tap1(IN_JUMP), 80);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.zone == 2 && r.act == 1 && r.character == 1 && r.character2 == 0);
+    results(2, "8_again_draw");
+    r = wait_req(tap1(IN_JUMP), 80);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.zone == 2 && r.act == 1 && r.character == 1 && r.character2 == 0);
+    /* CHANGE: new picks (player 1 Sonic, player 2 Blaze), stage zone 0 act 1 */
+    results(0, "9_change");
+    tap1(IN_DOWN);
+    run(3);
+    tap1(IN_JUMP);
+    CHECK(run_until_scene("PlayerSelectVs", 120) >= 0);
+    CHECK(run_until_psel(0, 0, 400) >= 0);
+    PlayerSelectMenu_VsState(0, &c1);
+    PlayerSelectMenu_VsState(1, &c2);
+    CHECK(c1 == 0 && c2 == 1);
+    run2(2, IN_JUMP, IN_JUMP, 1);
+    CHECK(run_until_scene("TimeSelect", 400) >= 0);
+    CHECK(gGameState.unk4 == 0 && gGameState.unk8 == 1);
+    CHECK(run_until_ts(2, 300) >= 0);
+    tap1(IN_RIGHT);
+    run(30);
+    tap1(IN_JUMP);
+    CHECK(run_until_ts(4, 120) >= 0);
+    run2(2, IN_JUMP, IN_JUMP, 1);
+    r = wait_req(run(1), 60);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.zone == 0 && r.act == 1 && r.character == 0 && r.character2 == 1);
+    /* the results draw the new characters: Sonic left, Blaze right; TRY AGAIN keeps them */
+    results(1, "a_after_change");
+    r = wait_req(tap1(IN_JUMP), 80);
+    CHECK(r.kind == MENU_REQ_VS_STAGE && r.zone == 0 && r.act == 1 && r.character == 0 && r.character2 == 1);
+    /* QUIT -> YES -> title screen */
+    results(0, "b_quit");
+    tap1(IN_UP);
+    run(3);
+    tap1(IN_JUMP);
+    run(0x10 + 0xa + 20);
+    tap1(IN_LEFT);
+    run(3);
+    r = tap1(IN_JUMP);
+    i = run_until_scene("TitleScreen", 200);
+    CHECK(i >= 0 && r.kind == MENU_REQ_NONE);
+}
+
+/* player 2's column of the select: its portrait (sub BG0 of engine 3) and banner (sub BG2, the
+ * "please select" sprite) are drawn, with player 2 idle and with a scripted pad (RIGHT on frames
+ * 0-3 of every 60, A on 30-33) */
+static int bg_quads(int engine, int layer) {
+    const MnDraw *d;
+    int n = mn_sorted(&d), i, k = 0;
+    for (i = 0; i < n; i++)
+        if (d[i].q->kind == MNQ_BG && d[i].q->engine == engine && d[i].q->bg == g_mn_layer[engine][layer].img &&
+            g_mn_layer[engine][layer].visible)
+            k++;
+    return k;
+}
+static void check_p2_column(const char *tag) {
+    char nm[64];
+    CHECK(bg_quads(3, 0) > 0);                          /* the portrait */
+    CHECK(bg_quads(3, 2) > 0);                          /* the name banner */
+    CHECK(count_res("act__mnu_psel", 3) > 0);           /* "PLEASE SELECT A CHARACTER" */
+    CHECK(engine_quads(2) > 5);
+    if (bg_quads(3, 0) == 0 || count_res("act__mnu_psel", 3) == 0)
+        printf("p2 column (%s): portrait %d banner %d sprites e3 %d\n", tag, bg_quads(3, 0), bg_quads(3, 2),
+               engine_quads(3));
+    snprintf(nm, sizeof(nm), "vs15_p2_%s", tag);
+    dump(nm);
+}
+static void test_p2_column(void) {
+    int f, t, shown, c0, c1;
+    for (t = 0; t < 2; t++) {
+        Task_DestroyAll();
+        mn_display_reset();
+        mn_vs_reset_records();
+        BRIGHT_MAIN = BRIGHT_SUB = 16;
+        PlayerSelectMenu_StartVs();
+        shown = 0;
+        c0 = c1 = 0;
+        for (f = 0; f < 330; f++) {
+            uint32_t p2 = 0;
+            if (t == 1 && f % 60 < 4)
+                p2 = IN_RIGHT;
+            if (t == 1 && f % 60 >= 30 && f % 60 < 34)
+                p2 = IN_JUMP;
+            run2(1, 0, p2, 0);
+            if (f >= 240 && f < 300) {   /* one period: the portrait is off only during the scroll */
+                int ch = -1;
+                shown += bg_quads(3, 0) > 0 && bg_quads(3, 2) > 0 && count_res("act__mnu_psel_eng", 2) > 0;
+                PlayerSelectMenu_VsState(1, &ch);
+                c0 += ch == 0;
+                c1 += ch == 1;
+            }
+            if (t == 1 && getenv("VS_P2_PHASES") && f >= 240 && f < 300 && f % 4 == 0) {
+                char tag[32];
+                snprintf(tag, sizeof(tag), "phase_%d", f);
+                dump(tag);
+            }
+            if (f == 60 || f == 180 || f == 300) {
+                char tag[32];
+                snprintf(tag, sizeof(tag), "%s_%d", t ? "script" : "idle", f);
+                check_p2_column(tag);
+            }
+        }
+        printf("p2 column %s: portrait + banner + name on %d of 60 frames (Sonic %d, Blaze %d)\n",
+               t ? "scripted" : "idle", shown, c0, c1);
+        CHECK(shown >= (t ? 25 : 60));
+        CHECK(t ? (c0 > 0 && c1 > 0) : c1 == 60);   /* scripted: player 2 alternates Sonic / Blaze */
+    }
+}
+
 int main(int argc, char **argv) {
     MenuRequest r;
     if (argc < 3) {
@@ -475,6 +630,7 @@ int main(int argc, char **argv) {
     }
     gSaveData.unkC = 5;    /* Sonic story: zones 0, 1 */
     gSaveData.unk64 = 2;   /* Blaze story: zone 3 */
+    test_p2_column();
     test_title_to_vs();
     test_player_select();
     r = test_time_select();
@@ -483,6 +639,7 @@ int main(int argc, char **argv) {
            r.character2, r.mode);
     test_results();
     test_time_select_back_and_timeout();
+    test_prepare();
     printf("vs host test: %d/%d checks passed\n", checks - fails, checks);
     return fails ? 1 : 0;
 }

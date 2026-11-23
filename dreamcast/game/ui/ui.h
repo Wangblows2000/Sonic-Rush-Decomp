@@ -236,5 +236,8 @@ int ui_debug_quads(const UiQuad **out);
 size_t hud_ctx_size(void);
 void hud_ctx_save(void *dst);
 void hud_ctx_load(const void *src);
-void ui_vs_hud_draw(const DcPlayer *p, u32 frame);
+/* viewport rows vy .. vy + vh; rank 1 / 2 = FixVsHud (0: none) */
+void ui_vs_hud_draw(const DcPlayer *p, u32 frame, int vy, int vh, int rank);
+void ui_vs_hud_reset(void);   /* a new race */
+int ui_vs_titlecard_draw(void);   /* the race start: the original title card over both viewports */
 #endif

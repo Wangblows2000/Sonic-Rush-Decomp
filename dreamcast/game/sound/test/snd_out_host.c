@@ -17,7 +17,12 @@ int snd_out_upload(SndBank *b, const void *blob, uint32_t size) {
     b->host_blob = malloc(size ? size : 1);
     if (!b->host_blob) return -1;
     memcpy(b->host_blob, blob, size);
-    b->aram = 0x30000; /* AICA_RAM_START: any non-zero base */
+    {   /* AICA_RAM_START and up: one region per resident bank (Battle Play keeps two) */
+        static uint32_t next = 0x30000;
+        b->aram = next;
+        next += (size + 0xfff) & ~0xfffu;
+        if (next > 0x1f0000) next = 0x30000;
+    }
     g_host_out.uploaded += size;
     return 0;
 }

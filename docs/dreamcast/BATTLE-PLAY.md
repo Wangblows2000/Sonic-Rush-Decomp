@@ -31,7 +31,10 @@ direct calls in `dreamcast/game/vs/vs.c`.
 | `RingManager` VS (`nplayers = 2`, both collect) | `objects/obj_ring.c` (already ported) | reused |
 | `EffVs*`, `FixVsPushIcon` | `objects/obj_vs.c` (`ac_eff_vs.bac`, `ac_fix_vs.bac`) | translated |
 | `GoalRing_State_Idle` VS -> `ResultsScreen_Create` | `obj_gimmicks.c` (already ported) -> `vs.c h_stage_exit` | reused |
-| `FixVsHud` (1st / 2nd by x) | the bar between the viewports | new (DC presentation) |
+| `FixVsHud_Create` / `FixVsHud_Draw` (position "1" / "2" + "/2" at DS (200, 4), pop on change) | `ui/ui_hud.c FixVsHud_Draw` in each player's HUD | translated |
+| `StageTitleCard` (start: "Ready? / GO!", players held until GO) | `ui_vs_titlecard_draw` over both viewports; the race starts at GO | reused |
+| `StageLoader_SetCharacterSoundPath` (one SDAT per console) | `sound_load_bank2`: player 2's character SDAT resident beside player 1's; player 2's own sounds start from it | adapted |
+| objects' `ScreenShake_Start` / `BrightnessFade_Create` (on every console that ran the object) | `vs.c h_obj_shake / h_obj_fade`: the cameras / viewports of the players near the object | adapted |
 | `Stage_NetProcessRivalEvents`, `NetPacket_*`, `Player_SendNetState`, `VsConnect_*`, lobby | — | not needed |
 
 ## Dreamcast presentation (new code)
@@ -48,11 +51,12 @@ The split screen follows Sonic 2's VS mode (`src/main.c run_vs_stage`):
 - **Contexts:** each player has its own camera (`camera_ctx_save/load`), zone BG line scroll
   (`zonefx_view_*`; time and palette effects run once per frame), HUD (`hud_ctx_*`) and
   checkpoint.
-- **HUD:** the single-player HUD (rings, time, tension gauge; no lives, no score) is drawn in
-  each viewport at 224/480 scale (`render_set_screen_xform`).
+- **HUD:** the single-player HUD (rings, time, tension gauge; no lives, no score) and the original
+  position badge, laid out in each viewport with the DS anchors (top-left / top-right / bottom-left)
+  at 7/6 (`ui_hud_viewport`).
 - **Fades:** death, warp and goal fades apply per viewport.
-- **Start:** a 3-2-1-GO countdown, with players held until GO. There is no countdown art among
-  the VS assets.
+- **Start:** the original title card ("Ready? / GO!") over the whole screen; the race clock and
+  both players start at GO.
 - **Pause:** Start pauses; B while paused ends the race and opens the results.
 - **Objects:** 8 spawn views (the DS screen pair plus the wide window for each player).
   Objects, item boxes and rings are shared, as the DS synchronised them (event 2, the two-player
@@ -63,19 +67,34 @@ The split screen follows Sonic 2's VS mode (`src/main.c run_vs_stage`):
 
 - `/cd/debug/vs.txt` `zone act chara1 chara2 [x y] [clock]` starts a race directly.
 - `/cd/debug/vs_p2.txt` `1` scripts player 2's pad, in the menus and the race; `2` scripts both
-  pads. Use this for emulator runs with one keyboard. It also turns on the VS frame log (fps,
-  update / wait / draw ms).
+  pads (the real pad's Start and B still reach player 1, so pause / quit can be tested). Use this
+  for emulator runs with one keyboard. It also turns on the VS frame log (fps, update / wait /
+  draw ms; the first sample of a race spans the results and the stage load).
+- `/cd/debug/menutrace.txt` (any content) prints menu scene changes, as `SRDC_MENUTRACE=1`.
+- Release discs (and the kits' discs) have no scripted pad: a race needs a second controller in
+  port B. Flycast must map one to port B to play it.
 - Host tests: `make -C dreamcast/game/vs host-test` (rules on Leaf Storm with the real player and
   objects code) and `make -C dreamcast/game/menus host-test` (`test_vs`: the VS menu flow).
 
+## Sound
+
+The DS loaded one zone SDAT per console: the local character's (zNs for Sonic, zNb for Blaze).
+Here player 1's SDAT is the stage bank. Player 2's SDAT stays resident beside it (`sound_load_bank2`,
+about 150 KB of sound RAM).
+- **Player 2's sounds:** its own sounds (voice, boost, trick and global channels) start from that
+  bank (`sound_select_bank2`, `NNS_SndArcSelectBank`).
+- **Driver:** a playing sequence keeps its bank (`Player.bank`, channel `bank`), so player 2's
+  waves come from its own upload.
+- **Shared sounds:** stage objects, rings and music use the stage bank. There is one music stream.
+- **Host check:** `test_sound` (bank2) confirms that the same voice id starts from z1b for player 2
+  and from z1s for player 1.
+
 ## Known gaps
 
-- **Sound bank:** the stage loads player 1's character's sound bank. Player 2's character
-  voices come from that bank (not checked by ear).
-- **Countdown:** drawn with flat segments, not original art.
-- **Menu text:** the Battle Play page keeps the original "DS WIRELESS / DOWNLOAD" button art.
-  The name plates on the VS screens are blank (no player 2 name entry).
-- **Shared effects:** objects' screen shakes and fades act on the camera loaded during the
-  shared objects update (player 1's).
+- **Wording in other languages:** the cropped "BATTLE" label and "QUIT BATTLE ?" are built for
+  English, French, German and Italian (label) and English and French (message). The other
+  languages keep the original art.
+- **Shared effects:** an object far from both players (off both screens) has no viewport; its
+  shake / fade is dropped.
 - **Not tested on hardware.** Flycast runs used one keyboard and a scripted pad for player 2.
   Two physical controllers in Flycast were not tested.

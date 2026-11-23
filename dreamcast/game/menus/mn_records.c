@@ -212,18 +212,19 @@ int mn_owner_name(const u16 **name) {
 }
 
 /* TimeSelectMenu_LoadPlayerNames / ResultsScreen_LoadPlayerNames: GetNameGlyphs (6 characters, then a
- * space or "...") of each name, the glyph tiles as one indexed strip per name (56 x 8 at y = 16 * row:
+ * space or "...") of each name, the glyph tiles as one indexed strip per name (64 x 8 at y = 16 * row:
  * the empty line between the rows keeps a scaled glyph's edge from sampling the next row), ink = colour
- * index 1 + row with the colour ink[row] */
+ * index 1 + row with the colour ink[row]. lens[row] < 0: exactly -lens[row] characters (up to 8, no
+ * "..."; the "PLAYER 1" / "PLAYER 2" of an unnamed player). */
 MnBgImg *mn_name_strips(const u16 *const *names, const int *lens, int n, const u16 *ink) {
     RecFont f;
     MnBgImg *img;
-    u32 tbl[7];
-    s32 i, j, x, y;
+    u32 tbl[8];
+    s32 i, j, x, y, nc;
     if (!rec_font_load(&f))
         return NULL;
     img = (MnBgImg *)calloc(1, sizeof(*img));
-    img->w = 56;
+    img->w = 64;
     img->h = (u16)(16 * n);
     img->tw = (u16)mn_tex_pow2(img->w);
     img->th = (u16)mn_tex_pow2(img->h);
@@ -232,8 +233,15 @@ MnBgImg *mn_name_strips(const u16 *const *names, const int *lens, int n, const u
     snprintf(img->name, sizeof(img->name), "vs_names");
     for (i = 0; i < n; i++) {
         img->pal[1 + i] = ink[i];
-        Records_BuildNameGlyphs(&f, tbl, names[i], lens[i]);
-        for (j = 0; j < 7; j++) {
+        if (lens[i] < 0) {
+            nc = -lens[i] > 8 ? 8 : -lens[i];
+            for (j = 0; j < nc; j++)
+                tbl[j] = (u32)Font_GetGlyphIndex(&f, names[i][j]);
+        } else {
+            Records_BuildNameGlyphs(&f, tbl, names[i], lens[i]);
+            nc = 7;
+        }
+        for (j = 0; j < nc; j++) {
             const u8 *t = f.tiles + 64u * (tbl[j] < f.nt ? tbl[j] : 0);
             for (y = 0; y < 8; y++)
                 for (x = 0; x < 8; x++)

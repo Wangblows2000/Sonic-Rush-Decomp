@@ -66,6 +66,8 @@ void NNS_SndPlayerSetInitialVolume(NNSSndHandle *handle, int volume);
 void NNS_SndPlayerSetChannelPriority(NNSSndHandle *handle, int prio);
 void NNS_SndPlayerSetTrackPan(NNSSndHandle *handle, uint32_t trackMask, int pan);
 void NNS_SndPlayerSetTempoRatio(NNSSndHandle *handle, int ratio);   /* 256 = normal */
+struct SndBank;
+void NNS_SndArcSelectBank(const struct SndBank *b);   /* Battle Play: the next starts read this bank (NULL: the main one) */
 void NNS_SndHandleInit(NNSSndHandle *handle);
 void NNS_SndHandleReleaseSeq(NNSSndHandle *handle);
 int NNS_SndPlayerCountPlaying(int playerNo); /* native: playerList.numObjects */

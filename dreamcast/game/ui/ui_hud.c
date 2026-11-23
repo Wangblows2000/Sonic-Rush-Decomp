@@ -734,7 +734,49 @@ void hud_ctx_save(void *dst) { memcpy(dst, &s_hud, sizeof s_hud); }
 void hud_ctx_load(const void *src) { memcpy(&s_hud, src, sizeof s_hud); }
 /* the Battle Play HUD of one player: Hud_SetRingCount / Hud_SetTime as ui_post_update does, no lives
  * (Battle Play has none) and no score, then the HUD quads alone */
-void ui_vs_hud_draw(const DcPlayer *p, u32 frame) {
+void ui_hud_viewport(float k, int x0, int y0, int x1, int y1, int *saved);   /* ui_data.c */
+void ui_hud_viewport_end(const int *saved);
+/* FixVsHud_Draw: the race position (ac_fix_vs anim 0 "1" / 1 "2", then anim 2 "/2" 0x18 to the right) at
+ * DS (200, 4) of each player's screen; a new position pops (unk62 = 0x80: scale + (pop >> 4) * 8 / 0x100,
+ * the high nibble counting down by 0x10 a frame) */
+static struct { const DcPlayer *p; int rank, pop; } s_vs_rank[2];
+static void FixVsHud_Draw(const DcPlayer *p, int rank) {
+    int i, k = -1;
+    s32 sc;
+    UiSpr a, b;
+    if (g_ui_res[UI_RES_FIXVS].n_images == 0 && ui_res_load(UI_RES_FIXVS, "act__ac_fix_vs") != 0)
+        return;
+    for (i = 0; i < 2 && k < 0; i++)
+        if (s_vs_rank[i].p == p)
+            k = i;
+    for (i = 0; i < 2 && k < 0; i++)
+        if (s_vs_rank[i].p == NULL) {
+            k = i;
+            s_vs_rank[i].p = p;
+            s_vs_rank[i].rank = rank;
+        }
+    if (k < 0)
+        k = 0;
+    if (s_vs_rank[k].rank != rank) {
+        s_vs_rank[k].rank = rank;
+        s_vs_rank[k].pop = 0x80;
+    }
+    sc = ((((s_vs_rank[k].pop & 0xf0) >> 4) << 3) + 0x100) << 4;   /* unk44 (0x100 = 1) -> 0x1000 = 1 */
+    if (s_vs_rank[k].pop >= 0x10)
+        s_vs_rank[k].pop -= 0x10;
+    UiSpr_Init(&a, UI_RES_FIXVS, rank == 1 ? 0 : 1, 0);
+    a.x = 200;
+    a.y = 4;
+    ui_emit(&a, UI_SP_HUD_TR, sc, sc, 0, 0xffffffff, 0);
+    UiSpr_Init(&b, UI_RES_FIXVS, 2, 0);
+    b.x = 200 + 0x18;
+    b.y = 4;
+    ui_emit_spr(&b, UI_SP_HUD_TR);
+}
+void ui_vs_hud_reset(void) { memset(s_vs_rank, 0, sizeof s_vs_rank); }
+
+void ui_vs_hud_draw(const DcPlayer *p, u32 frame, int vy, int vh, int rank) {
+    int saved[4];
     if (gHudTask == NULL)
         Hud_Create();   /* StageTitleCard creates it at GO; Battle Play has no title card */
     if (gHudTask == NULL)
@@ -746,7 +788,13 @@ void ui_vs_hud_draw(const DcPlayer *p, u32 frame) {
      * has no title card: rings, time and gauge shown, no lives (8), no score */
     s_hud.oam_prio = 0;
     s_hud.flags = (s_hud.flags & ~0x17u) | 8 | 0x40000000u;
+    /* the HUD's DS layout in the viewport (top-left / top-right / bottom-left anchors kept): the
+     * viewport's height is 192 DS px at vh / 192, the single-player screen's safe-area inset scaled */
+    ui_hud_viewport(vh / 192.0f, 16, vy + 10, 624, vy + vh - 10, saved);
     Hud_Main();
+    if (rank > 0)
+        FixVsHud_Draw(p, rank);
+    ui_hud_viewport_end(saved);
     {   /* the stage's master brightness belongs to the single-player flow (not run in Battle Play) */
         s16 b = g_ui_bright_main;
         g_ui_bright_main = 0;

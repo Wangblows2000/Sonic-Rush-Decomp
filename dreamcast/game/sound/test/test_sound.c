@@ -412,6 +412,35 @@ static void test_obj_handles(void) {
     printf("object handles: count / own / stop / release / pos / tempo ok (%d failures so far)\n", fails);
 }
 
+/* ------------------------------------------------------------ 5c: Battle Play second bank */
+static uint32_t first_start_aram(void) {
+    for (int i = 0; i < g_host_out.n; i++) if (g_host_out.ev[i].type == 1) return g_host_out.ev[i].aram;
+    return 0;
+}
+static void test_bank2(void) {
+    DcPlayer p1, p2;
+    uint32_t a1, a2, a3;
+    memset(&p1, 0, sizeof p1); memset(&p2, 0, sizeof p2);
+    CHECK(sound_load_bank("z1s") == 0, "z1s");
+    CHECK(sound_load_bank2("z1b") == 0 && !strcmp(sound_bank2_name(), "z1b"), "second bank z1b");
+    sound_hooks_install();
+    sound_hooks_set_bank2_player(&p2);
+    /* the same voice id (6: Player_Action_Die) from player 1 (Sonic, z1s) and player 2 (Blaze, z1b) */
+    g_host_out.n = 0; g_dcp_hooks.sfx(NULL, &p1, DCP_CH_VOICE, 6); frames(2); a1 = first_start_aram();
+    sound_stop_all(); frames(2);
+    g_host_out.n = 0; g_dcp_hooks.sfx(NULL, &p2, DCP_CH_VOICE, 6); frames(2); a2 = first_start_aram();
+    sound_stop_all(); frames(2);
+    CHECK(a1 && a2 && a1 != a2, "player 2's voice from its own bank: aram %lx / %lx", (unsigned long)a1, (unsigned long)a2);
+    /* object sounds stay on the stage bank */
+    g_host_out.n = 0; g_obj_hooks.sfx(NULL, 0x7a); frames(2); a3 = first_start_aram();
+    CHECK(a3 && (a3 >> 20) == (a1 >> 20) && a3 < a2, "object sound from the stage bank (%lx)", (unsigned long)a3);
+    sound_stop_all(); frames(2);
+    /* leaving: the second bank goes with the next stage / menu bank */
+    sound_hooks_set_bank2_player(NULL);
+    CHECK(sound_load_bank("z1s") == 0 && sound_bank2_name()[0] == 0, "second bank dropped by sound_load_bank");
+    printf("bank2: player 2 voices from z1b, objects from z1s (%d failures so far)\n", fails);
+}
+
 /* ------------------------------------------------------------ 6: sys bank (menus) */
 static void test_sys(void) {
     int r = sound_load_bank("sys"), silent = 0, total = 0;
@@ -461,6 +490,7 @@ int main(int argc, char **argv) {
     test_nns();
     test_hooks_output();
     test_obj_handles();
+    test_bank2();
     test_sys();
     sound_shutdown();
     test_render(dir, "sys");

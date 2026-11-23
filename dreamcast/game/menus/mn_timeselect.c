@@ -305,7 +305,7 @@ static void TimeSelectMenu_DrawPlayerName(TsWork *w, s32 x0, s32 y0, s32 row) {
     s32 x = x0 + 0x14, y = y0 + 0xb, i;
     if (!w->names)
         return;
-    for (i = 0; i < 7; i++, x += 8)
+    for (i = 0; i < 8; i++, x += 8)   /* 7 glyphs (an unnamed player's identifier: 8) */
         if (x >= -8 && x < 0x100 && y >= -8 && y < 0xc0)
             mn_emit_bg_part(0, 0, w->names, (float)x, (float)y, (float)(i * 8), (float)(row * 16), 8, 8);
 }
@@ -874,8 +874,8 @@ static void TimeSelectMenu_Create(s32 a, s32 b) {
         const u16 *nm[2];
         int len[2];
         u16 ink[2] = { 0, 0 };
-        len[0] = mn_owner_name(&nm[0]);
-        len[1] = mn_player2_name(&nm[1]);
+        len[0] = mn_vs_player_name(0, &nm[0]);
+        len[1] = mn_vs_player_name(1, &nm[1]);
         w->names = mn_name_strips(nm, len, 2, ink);
     }
     p = WirelessSession_GetSendBuffer(0);

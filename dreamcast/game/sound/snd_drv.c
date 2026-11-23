@@ -30,7 +30,9 @@
 #define FRAME_SAMPLES_X2 341 /* 170.5 output samples per frame */
 #define AMPL_MIN (-92544)
 
-static const SndBank *s_bank;
+static const SndBank *s_bank;       /* the bank of the player being stepped (instrument / wave lookup) */
+static const SndBank *s_bank_main;  /* snd_drv_init: the stage / menu bank */
+static const SndBank *s_bank_next;  /* Battle Play: bank of the next prepared sequence (snd_drv_set_next_bank) */
 static const SrbTables *T;
 
 /* ---------------- bank access (instrument / wave lookup) ---------------- */
@@ -97,10 +99,12 @@ typedef struct {
     int volume; /* last computed volume register (vol | shift<<8) */
     int regTimer, regPan;
     int stopReq; /* stop at next register update */
+    const SndBank *bank; /* the bank of the note's wave */
 } ExChan;
 typedef struct {
     int active; int type; int wave; int duty;
     uint64_t pos; int vol, shift, pan, timer;
+    const SndBank *bank;
 } HwChan;
 static ExChan ch[SND_CH_NUM]; static HwChan hw[SND_CH_NUM];
 static SndChanRegs regs[SND_CH_NUM];
@@ -127,6 +131,7 @@ typedef struct Player {
     int volume, extFader, prio, tempo, tempoRatio, tempoCounter;
     int chanMask;
     int16_t vars[16];
+    const SndBank *bank;           /* the bank this sequence plays from (Battle Play: player 2's character) */
 } Player;
 
 static Track tracks[SND_TRACK_NUM];
@@ -227,7 +232,7 @@ static int note_on(int c, int bankNo, int key, int vel, int length, const Inst *
     e->envAttn = AMPL_MIN; e->envStatus = ENV_ATTACK; e->length = length;
     e->sweepPitch = 0; e->sweepLength = 0; e->sweepCounter = 0;
     e->lfoCounter = 0; e->lfoDelayCnt = 0;
-    e->start = 1; e->active = 1;
+    e->start = 1; e->active = 1; e->bank = s_bank;
     e->key = key; e->rootKey = in->rootKey; e->velocity = vel;
     e->envAttack = attack_coef(in->attack); e->envDecay = decay_coef(in->decay);
     e->envSustain = in->sustain; e->envRelease = decay_coef(release);
@@ -483,7 +488,9 @@ static void seq_main(void) {
         if (!p->active || !p->started || p->paused) continue;
         int ticks = 0;
         while (p->tempoCounter >= 240) { p->tempoCounter -= 240; ticks++; }
+        s_bank = p->bank ? p->bank : s_bank_main;
         for (int i = 0; i < ticks && p->active; i++) player_step_ticks(p);
+        s_bank = s_bank_main;
         p->tempoCounter += (p->tempo * p->tempoRatio) >> 8;
     }
     for (int k = 0; k < SND_PLAYER_NUM; k++) {
@@ -560,6 +567,7 @@ static void update_hw(void) {
         if (!e->active) { h->active = 0; continue; }
         if (h->active == -1) {
             h->active = 1; h->type = e->type; h->wave = e->wave; h->duty = e->duty; h->pos = 0;
+            h->bank = e->bank ? e->bank : s_bank_main;
             regs[i].starts++;
         }
         h->vol = e->volume & 0xFF; h->shift = SHIFT_TAB[(e->volume >> 8) & 3];
@@ -575,7 +583,7 @@ static void hw_advance(void) {
     for (int i = 0; i < 16; i++) {
         HwChan *h = &hw[i];
         if (h->active != 1) continue;
-        const SrbWave *w = &s_bank->waves[h->wave];
+        const SrbWave *w = &h->bank->waves[h->wave];
         uint64_t step = ((uint64_t)512 << 32) / (uint64_t)h->timer;
         if (h->type != 0) { h->pos += step * (uint64_t)n; continue; } /* PSG / noise: endless */
         uint64_t last = (h->pos + step * (uint64_t)(n - 1)) >> 32;
@@ -670,8 +678,8 @@ void snd_drv_flush(void) {
             int v = out_vol(h), p = panKos[h->pan];
             if (f > 0x3FFFFF) f = 0x3FFFFF;
             if (!out[i].on || out[i].starts != regs[i].starts) {
-                const SrbWave *w = &s_bank->waves[h->wave];
-                snd_out_start(i, s_bank->aram + w->data_off, w->format, w->samples, w->loop, w->loop_start, f, v, p);
+                const SrbWave *w = &h->bank->waves[h->wave];
+                snd_out_start(i, h->bank->aram + w->data_off, w->format, w->samples, w->loop, w->loop_start, f, v, p);
                 out[i].on = 1; out[i].starts = regs[i].starts; out[i].freq = f; out[i].vol = v; out[i].pan = p;
             } else {
                 unsigned what = (f != out[i].freq ? SND_OUT_FREQ : 0) | (v != out[i].vol ? SND_OUT_VOL : 0) |
@@ -687,7 +695,7 @@ void snd_drv_flush(void) {
 
 /* ---------------- entry points ---------------- */
 void snd_drv_init(const SndBank *bank) {
-    s_bank = bank; T = bank->tab;
+    s_bank = s_bank_main = bank; s_bank_next = NULL; T = bank->tab;
     memset(ch, 0, sizeof ch); memset(hw, 0, sizeof hw); memset(tracks, 0, sizeof tracks);
     memset(players, 0, sizeof players); memset(regs, 0, sizeof regs); memset(&stats, 0, sizeof stats);
     for (int i = 0; i < 16; i++) {
@@ -712,6 +720,7 @@ void snd_drv_prepare_seq(int player, const uint8_t *seq, uint32_t seq_len, uint3
     Player *p = &players[player];
     if (p->active) player_shutdown(p);
     p->seqData = seq; p->seqLen = seq_len; p->bankNo = bank_no;
+    p->bank = s_bank_next ? s_bank_next : s_bank_main;
     p->notesTry = p->notesOk = 0;
     p->volume = 127; p->extFader = 0; p->prio = 64; p->tempo = 120; p->tempoRatio = 256; p->tempoCounter = 240;
     if (!p->chanMask) p->chanMask = 0xFFFF;
@@ -779,3 +788,17 @@ void snd_drv_trace(uint32_t frame) {
     if (sum >= 32768) printf("snd f%lu sum %d n %d%s\n", (unsigned long)frame, sum, n, buf);
 }
 const SndDrvStats *snd_drv_stats(void) { return &stats; }
+
+/* Battle Play: the next snd_drv_prepare_seq plays from `bank` (NULL: the main bank). The second bank's
+ * tables equal the main one's (one converter, same tables); its waves are its own sound-RAM upload. */
+void snd_drv_set_next_bank(const SndBank *bank) { s_bank_next = bank; }
+/* a bank is going away: nothing may keep pointing at it */
+void snd_drv_forget_bank(const SndBank *bank) {
+    for (int k = 0; k < SND_PLAYER_NUM; k++) if (players[k].bank == bank && players[k].active) player_shutdown(&players[k]);
+    for (int k = 0; k < SND_PLAYER_NUM; k++) if (players[k].bank == bank) players[k].bank = NULL;
+    for (int i = 0; i < 16; i++) {
+        if (ch[i].bank == bank) { ch[i].active = 0; ch[i].bank = NULL; }
+        if (hw[i].bank == bank) { hw[i].active = 0; hw[i].bank = NULL; }
+    }
+}
+
