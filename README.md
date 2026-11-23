@@ -1,8 +1,8 @@
 # Sonic Rush (Nintendo DS) decompilation
 
 **Do be aware; this is all vibeslop. If you do not agree with the usage of AI, move along.**
-
-Work-in-progress **matching decompilation** of *Sonic Rush* (Sonic Team / Dimps,
+> **Dreamcast Port** [Build it here.](https://github.com/Wangblows2000/Sonic-Rush-Decomp/tree/dreamcast-port).
+**Matching decompilation** of *Sonic Rush* (Sonic Team / Dimps,
 2005) for the Nintendo DS. The goal is C/C++ source (plus assembly where
 unavoidable) that compiles back to the original game code byte for byte.
 
@@ -96,8 +96,7 @@ python tools/project.py progress
 On a fresh Linux machine, `bash tools/bootstrap_session.sh /path/to/rom.nds`
 does all of the above in one step.
 
-Full instructions: [INSTALL.md](INSTALL.md). How to contribute:
-[CONTRIBUTING.md](CONTRIBUTING.md). Roadmap: [PLAN.md](PLAN.md).
+Full instructions: [INSTALL.md](INSTALL.md).
 
 ## Acknowledgements
 
