@@ -53,6 +53,21 @@ Mid-fight boss talks (Flycast, real fights: `SRDC_BOSSHP=2` keeps the boss's hit
 | Boss7 clash (Blaze) | after the talk: flash, approach, clash with the help sprite, A / B mashed (alternating, 14 per s) | pass: clash won, defeat, after-boss pdemo 20 / script 0x36, ClearDemo; with slow mashing (5 per s) the clash is lost: knock-back, rival skids, `Boss7_State_None` with health 1 until time over (as the DS, BOSSES.md) |
 | Extra boss pause (F9) | flags 0x1300 (extra cleared), player select -> extra story, script 3 (about 9 minutes), fight: START / CONTINUE / START, DOWN, A | pass (see F9) |
 
+## Regression on 9b422c76 / a4e9e57c (2026-11-23, clean worktrees, `SRDC_PREBUILT`, display :86)
+
+Frame pacing from `/cd/debug/frameprof.txt` (per-scene summaries), shots every stage at +1.5 / +6 / +9.5 s.
+
+| run | result |
+|---|---|
+| Sonic story, new save, autopilot s, autoclear 600 (9b422c76; resumed from the VMU after two autopilot game overs, zf3 with autoclear 200) | pass: z11..zf3, scripts 0 / 1 / 4, map talks, ending 6/0, staff roll 0, unlock notices, SEGA logo. Every act 59.86..60.0 fps with no frame over 34 ms except one 50 ms frame (3 vblanks, 48 ms outside objects / player / draw) in act 1 of each zone (z11 f1053, z21 f8552, z31 f16464, z41 f22660, z51 f29412, z61 f1500, z71 f10008, zf3 f1542), none in acts 2 / bosses: fits the zone music file's first open (act 2 reuses the cached file; owner audio). No mid-act model load (`objects: model ... loaded` only before the first frame). No crash |
+| palettes | title cards, zone palette cycles (z31 / z41 / z42 lights, z51, z71), boss GO flashes (z13 / z33 / z63 white-out, zf3) as before; z21 / z22 water tint banks reserved (`water tint banks ok (map 2, bg 3)`) |
+| Water Palace (a4e9e57c, debug start z21 / z22, Sonic and Blaze, right held 75 s) | pass: water line band above, full tint below (tiles, sprites, player), bubbles, drown digits 5..0, drowning; `StageJingle 0x17` (z2b_23) at the drown, `Stage_PlayBGM z2s / z2b` again at the respawn (Sonic f1555 -> f2312, Blaze z21 f2380 -> f3137, z22 f2272 -> f3029) |
+| special stage (a4e9e57c, z11 ring, boost while circling) | pass: special stage 0, 7601 frames at 59.93 fps, result 1, emeralds 01, act reloaded at 12608,2406, `exit ... emeralds 0x1` |
+| Blaze lives (a4e9e57c, autopilot b, autoclear 600, A mashed) | reproduced: Blaze 2 -> 1 at z13, game over at z33. Not a game defect: the shots show Blaze hit with 0 rings by the boss, the title card replayed (StageRestart) and the HUD count lowered; `dcp_respawn` lowers the lives at the respawn, the boss clear saves them, a death with 0 lives is the game over (DS rule). Since the boss starts at GO it attacks within the 600-frame autoclear window; boss acts need autoclear <= 200 or a player that fights (F15) |
+| seen, other owners | z41: an opaque yellow light cone over the player (`/tmp/flow/shots/reg1_040_late.png`, 9b422c76), z42's searchlights are translucent; z23 / z43 / z73 title card "GO!" over black (arena drawn after boss_start, noted before) |
+
+- F15 | low (test) | autopilot runs lose lives in boss acts and end in a game over (Sonic: z13, z23, z73, zf3; Blaze: z13, z33) | autoclear 600 leaves a standing / A-mashing player with 0 rings in the fight; the boss starts at GO (a4e9e57c) | use `SRDC_AUTOCLEAR=200` for full-story runs, or stop the A mash in acts (driver `MASH` start / stop regexes) | Flycast: Sonic zf3 with autoclear 200 cleared, ending reached |
+
 ## Test switches added (test discs only; nothing happens without the files)
 
 | build_disc.sh variable | file | effect | owner |
