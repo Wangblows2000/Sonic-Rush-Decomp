@@ -7,7 +7,8 @@ comes out contains the game's data: do not redistribute it.
 ## 1. Windows kit (Windows 10 and later, no installs)
 
 `sh tools/dreamcast/winkit/make_winkit.sh` writes `build/dreamcast/winkit/SonicRushDC-Windows.zip`
-(about 38 MB; published as a release asset). It contains no game data:
+(about 38 MB; the current one is committed as `dist/windows/SonicRushDC-Windows.zip`). It contains no
+game data:
 
 | Part | What it is |
 | --- | --- |

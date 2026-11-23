@@ -15,8 +15,8 @@ data**. Every asset is converted from your own legally dumped ROM.
 
 ## Build a disc
 
-**Windows 10 / 11:** download `SonicRushDC-Windows.zip` from this repository's
-[Releases](https://github.com/Wangblows2000/Sonic-Rush-Decomp/releases), unzip it, double-click
+**Windows 10 / 11:** download [`dist/windows/SonicRushDC-Windows.zip`](dist/windows/SonicRushDC-Windows.zip)
+(the "Download raw file" button on GitHub), unzip it, double-click
 `SonicRushDC.exe`, choose your ROM and press **Make my Dreamcast disc!** About five minutes later
 `SonicRushDC.cdi` is in the folder *Your Dreamcast disc*. Nothing to install (it brings its own
 Python and tools); instructions in the zip's `README.txt`. To build the zip:
