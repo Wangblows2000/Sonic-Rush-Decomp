@@ -79,7 +79,8 @@ All files are under `dreamcast/game/boss/`.
 /* after level + player + objects are set up, for boss stages (act 3: hdr->act == 2) */
 boss_set_paths("/cd/models", "/cd/boss");
 boss_set_difficulty(0);                     /* gGameState.unk14: 1 -> 8 hit points, else 6 */
-g_boss_hooks.sfx = ...; .voice = ...; .music = ...; .music_stop = ...;   /* audio.h */
+g_boss_hooks.sfx = sound_boss_sfx; .voice = sound_boss_voice;   /* sound/sound_hooks.c */
+g_boss_hooks.music = bgm_boss_music_hook; .music_stop = bgm_boss_music_stop_hook;   /* sound/bgm.c */
 g_boss_hooks.navi = ...;                     /* NaviMsg (HUD), optional */
 g_boss_hooks.cleared = ...;                  /* Stage_OnBossCleared: go to results */
 g_boss_hooks.ring_flags = ...;               /* RingManager_SetFlags(|1), optional */
@@ -102,8 +103,8 @@ boss_lights(&lights);       /* Boss2: this frame's lights in view space (use for
 boss_water_level();         /* Boss2: gCamera.unk62 water level (also written to g_obj_camera[0].water) */
 boss_shutdown();            /* leaving the stage */
 /* Boss2 extra hooks (optional): */
-g_boss_hooks.sfx_handle = ...;  /* Sound_PlaySeqArc(handle 1..3, 0, id): looping boss sounds */
-g_boss_hooks.sfx_stop = ...;    /* NNS_SndPlayerStopSeq(handle, 0) */
+g_boss_hooks.sfx_handle = sound_boss_sfx_handle;  /* Sound_PlaySeqArc(handle 1..3, 0, id): looping boss sounds */
+g_boss_hooks.sfx_stop = sound_boss_sfx_stop;    /* NNS_SndPlayerStopSeq(handle, 0); sound_boss_reset() before boss_init */
 g_boss_hooks.water_fx = ...;    /* EffWater3D_Create: objects_fx3d_water (obj_draw.c, 3D BAC sprite) */
 /* Boss4 (optional): */
 g_boss_hooks.player_box_flags = ...; /* Boss4_Action_Defeat: player's hit boxes, box 0 body / 1 attack,

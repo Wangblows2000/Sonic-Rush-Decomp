@@ -316,7 +316,7 @@ void obj_draw(int list) {
         s_3d.flip_invert = 0;
         s_3d.persp = 0;
         s_3d.z = 0;
-        s_3d.scale = 1.0f;
+        s_3d.scale = 0.5f;   /* RingManager_Create: unkBC = unkC0 = unkC4 = 0x800; RingEffect3D_Create: 0x800 */
         s_3d.rot = 0;
         if (s_ring3d_ok)
             s = &s_ring3d;

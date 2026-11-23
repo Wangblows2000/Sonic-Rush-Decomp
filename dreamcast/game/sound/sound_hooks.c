@@ -119,3 +119,46 @@ void sound_hooks_reset_players(void) {
         s_ph[i].p = NULL;
     }
 }
+
+/* ---------------------------------------------------------------- bosses
+ * g_boss_hooks (boss/boss.h) -> the original calls of the boss code:
+ *   sfx        Sound_PlaySeqArc(NULL, 0, id)        (gSESoundHandle)
+ *   voice      Sound_PlayVoice(NULL, 0, id)         (gVoiceSoundHandle: Eggman's lines)
+ *   sfx_handle Sound_PlaySeqArc(handle, 0, id)      (a boss's own handles from Sound_AllocHandle;
+ *              the boss code keeps small ids, mapped here to SoundHandles)
+ *   sfx_stop   NNS_SndPlayerStopSeq(handle, 0)
+ * main.c installs these with the other boss hooks. */
+#define BOSS_HANDLES 8
+static struct { s32 id; SoundHandle h; } s_bh[BOSS_HANDLES];
+
+static SoundHandle *boss_handle(s32 id, int alloc) {
+    int i, free_slot = -1;
+    for (i = 0; i < BOSS_HANDLES; i++) {
+        if (s_bh[i].id == id && id != 0) return &s_bh[i].h;
+        if (s_bh[i].id == 0 && free_slot < 0) free_slot = i;
+    }
+    if (!alloc) return NULL;
+    if (free_slot < 0) free_slot = 0;
+    s_bh[free_slot].id = id;
+    NNS_SndHandleInit(&s_bh[free_slot].h);
+    return &s_bh[free_slot].h;
+}
+void sound_boss_sfx(void *ctx, s32 id) { (void)ctx; Sound_PlaySeqArc(NULL, 0, (uint32_t)id); }
+void sound_boss_voice(void *ctx, s32 id) { (void)ctx; Sound_PlayVoice(NULL, 0, (uint32_t)id); }
+void sound_boss_sfx_handle(void *ctx, s32 handle, s32 id) {
+    (void)ctx;
+    Sound_PlaySeqArc(handle ? boss_handle(handle, 1) : NULL, 0, (uint32_t)id);
+}
+void sound_boss_sfx_stop(void *ctx, s32 handle) {
+    SoundHandle *h = boss_handle(handle, 0);
+    (void)ctx;
+    if (h) NNS_SndPlayerStopSeq(h, 0);
+}
+/* a new boss fight: drop the handles of the previous one */
+void sound_boss_reset(void) {
+    int i;
+    for (i = 0; i < BOSS_HANDLES; i++) {
+        if (s_bh[i].id) NNS_SndHandleReleaseSeq(&s_bh[i].h);
+        s_bh[i].id = 0;
+    }
+}

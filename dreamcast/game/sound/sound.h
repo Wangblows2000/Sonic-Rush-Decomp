@@ -60,6 +60,12 @@ void sound_update(void);                       /* once per 60 Hz game frame */
  * hooks saved by objects_init). */
 void sound_hooks_install(void);
 void sound_hooks_reset_players(void);
+/* boss hooks (boss.h BossHooks sfx / voice / sfx_handle / sfx_stop), installed by main.c */
+void sound_boss_sfx(void *ctx, int32_t id);
+void sound_boss_voice(void *ctx, int32_t id);
+void sound_boss_sfx_handle(void *ctx, int32_t handle, int32_t id);
+void sound_boss_sfx_stop(void *ctx, int32_t handle);
+void sound_boss_reset(void);
 
 /* ---- original game-layer functions (src/game/Sound/), native signatures */
 extern SoundHandle gSESoundHandle, gVoiceSoundHandle, gBGMSoundHandle;

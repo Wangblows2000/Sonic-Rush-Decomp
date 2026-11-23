@@ -9,7 +9,7 @@
  *     is the view itself: 256x192 -> 640x480 (x2.5), same camera and framing;
  *   - top-screen (engine 1) HUD elements are drawn x1.5 near the edges:
  *     ring count / quota top-left, the seven emerald slots top-right,
- *     the course progress bar under them;
+ *     the course progress bar centred at the bottom of the view;
  *   - the top screen's "SPECIAL STAGE" logo (intro) is drawn over the
  *     backdrop of the intro, the results (emerald circle, "SONIC GOT A CHAOS
  *     EMERALD!") become a full-view card at x2.5 when the clear sequence starts.
@@ -34,6 +34,8 @@ extern int g_sp_upload_textures;
 
 #define MAX_CMDS 768
 enum { GRP_MAIN = 0, GRP_RINGS, GRP_EMERALDS, GRP_BAR, GRP_CARD };
+#define SP_BAR_BOTTOM 470.0f   /* DC y of the progress bar's bottom edge (bottom of the view) */
+static float s_bar_ox = 320 - 0x80 * 1.5f, s_bar_oy = SP_BAR_BOTTOM - 0xb4 * 1.5f;
 
 typedef struct {
     int kind;
@@ -52,6 +54,7 @@ typedef struct {
     /* misc */
     float f;
     int a, b;
+    int bar_frame;     /* the progress bar's frame sprite (hud spr[8]): its extent centres the bar */
 } SpCmd;
 
 static SpCmd s_cmd[MAX_CMDS];
@@ -172,6 +175,7 @@ void sp_draw_sprite(const SpSprite *s, s32 scale_x, s32 scale_y, int rotscale) {
     c->sy = rotscale ? scale_y / 4096.0f : 1.0f;
     if (gSpecialStageHud && s == &gSpecialStageHud->spr[18])
         c->f = g_sp_hud_palf;   /* OBJ palette slot 8 lerp -> stage-colour emerald */
+    c->bar_frame = gSpecialStageHud && s == &gSpecialStageHud->spr[8];
 }
 
 void sp_draw_fadequad(s32 alpha) {
@@ -221,10 +225,10 @@ static SpXf group_xf(int grp, float *kx) {
         t.k = 1.5f;
         *kx = 1.125f;
         break;
-    case GRP_BAR:      /* DS (244, 160) -> DC (624, 52), x1.5: under the emeralds (the bottom edge is the
-                        * trick timing bar's, SpecialStageHud_Unk_ov001_02308884) */
-        t.ox = 624 - 244 * 1.5f;
-        t.oy = 52 - 160 * 1.5f;
+    case GRP_BAR:      /* the course progress bar: bottom centre of the view, x1.5; the offset comes from
+                        * the extent of the bar's frame sprites (bar_layout) */
+        t.ox = s_bar_ox;
+        t.oy = s_bar_oy;
         t.k = 1.5f;
         break;
     default:           /* main screen and the results card: x2.5 */
@@ -351,6 +355,7 @@ static void quad(void *tex, int tw, int th, int list, float x0, float y0, float 
         v1 /= th;
     } else
         pvr_poly_cxt_col(&cxt, (pvr_list_t)list);
+    cxt.gen.culling = PVR_CULLING_NONE;   /* mirrored sprites (OAM h/v flip) are drawn with x0 > x1 */
     if (oargb)
         cxt.gen.specular = PVR_SPECULAR_ENABLE;
     pvr_poly_compile(&hdr, &cxt);
@@ -688,6 +693,34 @@ static u32 white_offset(int bright) {
     return 0xff000000u | v << 16 | v << 8 | v;
 }
 
+/* centre the progress bar: the DS extent of its frame sprites (hud spr[8], drawn twice: plain and
+ * mirrored) -> horizontally centred, bottom edge at SP_BAR_BOTTOM; kept when the frame is not drawn */
+static void bar_layout(void) {
+    float minx = 1e9f, maxx = -1e9f, maxy = -1e9f;
+    int i;
+    for (i = 0; i < s_ncmd; i++) {
+        const SpCmd *c = &s_cmd[i];
+        const SpDsprImage *im;
+        float ox, x0, y1;
+        if (c->kind != SPD_SPRITE2D || !c->bar_frame || c->image < 0 || !c->sres || !c->sres->loaded)
+            continue;
+        im = &c->sres->images[c->image];
+        ox = (c->sflags & 0x80) ? im->w - im->ox : im->ox;
+        x0 = c->x - ox * c->sx;
+        y1 = c->y - ((c->sflags & 0x100) ? im->h - im->oy : im->oy) * c->sy + im->h * c->sy;
+        if (x0 < minx)
+            minx = x0;
+        if (x0 + im->w * c->sx > maxx)
+            maxx = x0 + im->w * c->sx;
+        if (y1 > maxy)
+            maxy = y1;
+    }
+    if (maxx > minx) {
+        s_bar_ox = 320 - (minx + maxx) * 0.5f * 1.5f;
+        s_bar_oy = SP_BAR_BOTTOM - maxy * 1.5f;
+    }
+}
+
 static void draw_sprite2d_cmd(const SpCmd *c, int bright) {
     const SpDsprImage *im;
     float x0, y0, x1, y1;
@@ -919,6 +952,7 @@ void sp_render_frame(void) {
     if (g_sp_host_fb)
         memset(g_sp_host_fb, 0, 640 * 480 * 3);
 #endif
+    bar_layout();
     /* ---- OP: backdrop (main BG2: sp_stdm_base_b in the intro) + opaque 3D */
 #ifdef _arch_dreamcast
     pvr_list_begin(PVR_LIST_OP_POLY);

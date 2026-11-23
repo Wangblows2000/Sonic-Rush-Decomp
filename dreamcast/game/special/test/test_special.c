@@ -121,16 +121,27 @@ static SpObj *find_type(int lo, int hi, s32 zmin, s32 zmax) {
     return NULL;
 }
 
-/* stick x that targets pipe angle a (inverse of sp_stick_to_angle: pipe x = R sin a) */
+/* stick x that targets pipe angle a (inverse of sp_stick_to_angle: ease-in curve up to
+ * SP_STICK_EDGE 0x3a00, full tilt = the wall 0x4000) */
 static int stick_for(s16 a) {
-    s32 sn = SIN((u16)a), m = sn < 0 ? -sn : sn;
-    int v;
+    int m = a < 0 ? -a : a, dz = g_input_deadzone > 40 ? g_input_deadzone : 40, v, best = 0, bd = 1 << 30;
     if (m < 8)
         return 0;
-    v = g_input_deadzone + 1 + (int)((120 - g_input_deadzone) * (m / 4096.0f));
-    if (v > 127)
+    if (m >= 0x3a00)
         v = 127;
-    return sn < 0 ? -v : v;
+    else
+        for (v = dz + 1; v < 124; v++) {   /* closest stick value */
+            int d = sp_stick_to_angle(v) - m;
+            if (d < 0)
+                d = -d;
+            if (d < bd) {
+                bd = d;
+                best = v;
+            }
+        }
+    if (m < 0x3a00)
+        v = best;
+    return a < 0 ? -v : v;
 }
 static InputState steer_to(u16 a) { return in_stick(stick_for((s16)a), 0); }
 
@@ -333,7 +344,7 @@ int main(int argc, char **argv) {
     {
         SpObj *p = SpecialStage_GetPlayer();
         InputState n = in_none();
-        s32 a_half = sp_stick_to_angle(32 + 44), a_full = sp_stick_to_angle(127), a_lo = sp_stick_to_angle(33);
+        s32 a_half = sp_stick_to_angle(82), a_full = sp_stick_to_angle(127), a_lo = sp_stick_to_angle(41);
         int mono = 1, prev = -1, x;
         for (x = 0; x <= 127; x++) {
             int a = sp_stick_to_angle(x);
@@ -343,20 +354,24 @@ int main(int argc, char **argv) {
             if (sp_stick_to_angle(-x) != -a)
                 mono = 0;
         }
-        CHECK(sp_stick_to_angle(20) == 0 && sp_stick_to_angle(32) == 0 && a_lo > 0 && a_lo < 0x100,
-              "dead zone: |x| <= 32 no target; just outside: a small angle (0x%x)", (int)a_lo);
+        CHECK(sp_stick_to_angle(20) == 0 && sp_stick_to_angle(40) == 0 && a_lo > 0 && a_lo < 0x100,
+              "dead zone: |x| <= 40 no target; just outside: a small angle (0x%x)", (int)a_lo);
         CHECK(mono, "the stick curve is monotonic and symmetric (x -> -x gives -angle)");
-        CHECK(a_full == 0x4000 && sp_stick_to_angle(120) == 0x4000 && sp_stick_to_angle(-127) == -0x4000 &&
-                  sp_stick_to_angle(119) < 0x4000,
-              "full tilt (|x| >= 120) = the wall target 0x4000 (the DS wall)");
-        CHECK(a_half > 0x1000 && a_half < 0x1800, "half tilt = half the pipe width across: angle 0x%x (30 deg = 0x1555)",
+        CHECK(a_full == 0x4000 && sp_stick_to_angle(124) == 0x4000 && sp_stick_to_angle(-127) == -0x4000 &&
+                  sp_stick_to_angle(123) <= 0x3a00,
+              "full tilt (|x| >= 124) = the wall target 0x4000 (the DS wall); below it at most 0x3a00");
+        CHECK(a_half > 0x1000 && a_half < 0x1800, "half tilt (ease-in) = about a third of the way up: angle 0x%x",
               (int)a_half);
         {
-            InputState h = in_stick(32 + 44, 0);
-            int k, settled = 0;
+            InputState h = in_stick(82, 0);
+            int k, settled = 0, first;
             special_run_frame(&h);
-            CHECK(p->unk134 == a_half, "no input delay: the target follows the stick in the same frame (0x%x)",
-                  (int)p->unk134);
+            first = p->unk134;
+            for (k = 0; k < 15; k++)
+                special_run_frame(&h);
+            CHECK(first != a_half && p->unk134 == a_half,
+                  "filtered stick: the target eases toward the stick (0x%x after 1 frame) and reaches it (0x%x)",
+                  first, (int)p->unk134);
             for (k = 0; k < 60; k++) {
                 special_run_frame(&h);
                 if ((s16)p->unk16 == (s16)a_half)
@@ -367,7 +382,7 @@ int main(int argc, char **argv) {
                   (int)a_half, (s16)p->unk16, p->unk228);
         }
         {
-            InputState q = in_stick(-(32 + 22), 0);
+            InputState q = in_stick(-(40 + 21), 0);
             for (i = 0; i < 60; i++)
                 special_run_frame(&q);
             CHECK((s16)p->unk16 < 0 && (s16)p->unk16 > -0x1000, "quarter tilt left: angle %d (proportional)",

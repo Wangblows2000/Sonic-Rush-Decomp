@@ -98,8 +98,8 @@ The Dreamcast draws one 640x480 view (`sp_draw.c`):
 - The top-screen HUD elements are drawn at x1.5, in their original art and colours:
   - ring icon, count, "/", quota (and the big emerald behind them after the checkpoint): top-left;
   - the seven emerald slots: top-right (slot spacing 36 px, the icons are not scaled differently);
-  - the progress bar with Sonic's head and the mid-point marker: under the emeralds. The bottom edge
-    stays free for the trick timing bar of the touch screen.
+  - the progress bar with Sonic's head and the mid-point marker: centred at the bottom of the view
+    (both halves of the bar frame, `spr[8]` plain and mirrored, set its extent; bottom edge at y 470).
 
   Their animations are the original ones, incl. the slide-in of the slots and the shaking head when hurt.
 - Intro: the backdrop `sp_stdm_base_b`, the scrolling caption bar and the prompt in the blue square are
@@ -111,8 +111,8 @@ The Dreamcast draws one 640x480 view (`sp_draw.c`):
   the top-screen elements (PVR offset colour).
 - Controller art in the same view (section 4):
   - The Trick Spring targets show the Dreamcast buttons at the size and place of the numbers.
-  - While a sequence is open, the progress bar (top-right) is drawn see-through (alpha 0x50). It
-    lies over the top row of targets.
+  - While a sequence is open, the progress bar is drawn see-through (alpha 0x50) so the trick timing
+    bar of the touch screen, which shares the bottom of the view, stays readable.
   - The stylus demonstration (pen sprite `spr2[9]` + `sp_fix_touch` arc) is not drawn. In its frames
     (0x17c..0x258) a black card with "[stick] OR [<] [>] : MOVE SONIC" sits where the pen was.
   - Intro: the prompt in the blue square reads PRESS START TO BEGIN. At the first special stage of
@@ -143,7 +143,7 @@ four places where the original reads `gTouchState` take physical inputs instead 
 
 | DS (touch screen) | Dreamcast controller | where |
 |---|---|---|
-| Touch where Sonic should run. `SpecialStage_TouchToPipeAngle` turns the touch point into a target pipe position `r = 0x1e000 * dx / len(d)`: the horizontal component of the direction from (128, 45). Touching level with or above the centre = a wall, which arms the edge jump. | **Analogue stick, horizontal axis**, proportional. The engine dead zone (`g_input_deadzone`, 32) means no input. From its edge to full tilt (abs(x) >= 120) the axis is that horizontal component (`sp_stick_to_angle`): `r = 0x1e000 * (abs(x) - 32) / 88`, then `SpecialStage_PipeXToAngle`. Full tilt = the wall target, so the edge jump comes as on the DS. The stick in its centre targets the bottom of the pipe. The target is set in the frame of the input: no added delay. | `SpecialStagePlayer_UpdateTouchSteer` |
+| Touch where Sonic should run. `SpecialStage_TouchToPipeAngle` turns the touch point into a target pipe position `r = 0x1e000 * dx / len(d)`: the horizontal component of the direction from (128, 45). Touching level with or above the centre = a wall, which arms the edge jump. | **Analogue stick, horizontal axis**. A special-stage dead zone (`SP_STICK_DZ` 40, or the engine's `g_input_deadzone` if larger) means no input. From its edge, an ease-in curve (`0.375 t + 0.625 t²`) maps the tilt to a pipe angle up to `SP_STICK_EDGE` (0x3a00), so small tilts steer finely near the bottom of the pipe (`sp_stick_to_angle`). Only full tilt (abs(x) >= 124) is the wall target 0x4000, so the edge jump comes as on the DS but not by accident. The target is low-pass filtered (a quarter of the difference per frame; the wall target and steps under 0x100 are taken at once), which absorbs stick noise and flicks. The stick in its centre eases back to the bottom of the pipe. | `SpecialStagePlayer_UpdateTouchSteer` |
 | (same) | **D-pad LEFT / RIGHT** (digital alternative): the target moves along the pipe at 0x600 per frame (90 degrees in 11 frames) from Sonic's angle while held. On release the target stays, as when the stylus is lifted. **D-pad DOWN**: back to the bottom. | (same) |
 | Touches within 75 px of (128, 45) do not steer (`SpecialStagePlayer_IsWithinTouchRadius`). | Replaced by the stick dead zone. | `SpecialStagePlayer_State_Run` |
 | Tap an enemy / bomb in reach: the homing attack (state 0x12). | **A** attacks the nearest gimmick the tap could hit: not destroyed, with a touch circle, attackable, in reach (`SpecialStageObj_IsInReach`) and on screen. These are the gimmicks the target cursor marks (`SpecialStageGimmick_Unk_ov001_0230f0f4`). Nearest = largest z, then the closest across the pipe (`SpecialStageGimmick_FindAttackTarget`). With nothing attackable A does nothing. Hit points, hit effects, rewards and defeat are the original. | `SpecialStagePlayer_CheckTouchTarget` |
@@ -596,8 +596,8 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 - **Not tested in Flycast:** partial analogue tilts (keyboard axes are full or ramping) and partial
   trigger pulls. Host tests cover both. Without the engine patch (5.3), a stick flick during an open
   sequence also counts as a D-pad direction.
-- **Composition**: during a Trick Spring sequence the progress bar is see-through, because it lies over
-  the top row of targets.
+- **Composition**: during a Trick Spring sequence the progress bar is see-through, because it shares the
+  bottom of the view with the trick timing bar.
 - **Rendering differences**:
   - The DS edge marking (`G3X_SetEdgeColorTable`, outlines) and the DS fog are not rendered. The
     120-frame white fog at the start is a white overlay with the same density curve.

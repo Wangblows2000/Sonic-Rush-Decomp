@@ -9,9 +9,12 @@
  *  - half-pipe steering (SpecialStagePlayer_UpdateTouchSteer): the DS turns the touch point
  *    into a target pipe position r = 0x1e000 * dx / |d| (the horizontal component of the
  *    direction from the pipe centre, SpecialStage_TouchToPipeAngle).  Here the analogue
- *    stick's horizontal axis is that component: proportional, from the edge of the dead zone
- *    (g_input_deadzone) to full tilt (|x| >= SP_STICK_FULL) = the wall, which is the DS wall
- *    target (edge jump when held, SpecialStagePlayer_State_Run).  The stick in its centre
+ *    stick's horizontal axis is that component, from the edge of the special-stage dead zone
+ *    (SP_STICK_DZ, at least g_input_deadzone) through an ease-in curve (fine control near the
+ *    bottom of the pipe, fast toward the walls) to SP_STICK_EDGE just below the wall; only
+ *    full tilt (|x| >= SP_STICK_FULL) is the DS wall target (edge jump when held,
+ *    SpecialStagePlayer_State_Run).  The stick target is low-pass filtered (1/4 per frame) so
+ *    stick noise and flicks do not throw Sonic across the pipe.  The stick in its centre
  *    targets the bottom of the pipe (every frame, so also after a jump).  D-pad LEFT / RIGHT move the target along the pipe at
  *    SP_DPAD_RATE per frame from Sonic's position (held), D-pad DOWN brings it back to the
  *    bottom; released, the target stays (as when the stylus is lifted).  Sonic's own
@@ -43,7 +46,9 @@ u16 gPad[3];
 const char *const sp_qte_names[SP_QTE_COUNT] = {"A", "B", "X", "Y", "L", "R", "UP", "RIGHT", "DOWN", "LEFT"};
 
 enum {
-    SP_STICK_FULL = 120,   /* |x| from here = full tilt (the wall) */
+    SP_STICK_DZ = 40,      /* special-stage dead zone (the engine's is smaller) */
+    SP_STICK_FULL = 124,   /* |x| from here = full tilt (the wall) */
+    SP_STICK_EDGE = 0x3a00, /* largest stick target below full tilt (the wall is 0x4000) */
     SP_DPAD_RATE = 0x600   /* pipe angle per frame of a held D-pad direction */
 };
 
@@ -51,6 +56,7 @@ static struct {
     int stick;             /* the stick is the steering input (until the D-pad steers) */
     int dpad_active;       /* a D-pad steering target is held */
     s32 dpad_angle;
+    s32 stick_angle;       /* filtered stick target */
     u32 prev_dpad;
     SpTrig lt, rt;
 } S;
@@ -114,22 +120,32 @@ int sp_trigger_step(SpTrig *t, int v) {
 }
 
 s32 sp_stick_to_angle(int ax) {
-    int m = ax < 0 ? -ax : ax, dz = g_input_deadzone;
-    s32 n, r, a;
+    int m = ax < 0 ? -ax : ax, dz = g_input_deadzone > SP_STICK_DZ ? g_input_deadzone : SP_STICK_DZ;
+    s32 t, c, a;
     if (m <= dz)
         return 0;
     if (dz >= SP_STICK_FULL)
         dz = 0;
-    n = (s32)(m - dz) * 4096 / (SP_STICK_FULL - dz);
-    if (n > 4096)
-        n = 4096;
-    r = FX_Mul(0x1e000, n);
-    if (ax < 0)
-        r = -r;
-    a = SpecialStage_PipeXToAngle(r);   /* as SpecialStage_TouchToPipeAngle */
-    if (a > 0x8000)
-        a -= 0x10000;
-    return a;
+    if (m >= SP_STICK_FULL) {
+        a = 0x4000;   /* the DS wall target */
+    } else {
+        t = (s32)(m - dz) * 4096 / (SP_STICK_FULL - dz);       /* 0..4096 */
+        c = (t * 1536 + (t * t >> 12) * 2560) >> 12;          /* 0.375 t + 0.625 t^2 */
+        a = c * SP_STICK_EDGE >> 12;
+        if (a < 1)
+            a = 1;
+    }
+    return ax < 0 ? -a : a;
+}
+
+/* low-pass filter of the stick target; the wall target and small steps are taken at once */
+static s32 sp_stick_filter(s32 target) {
+    s32 d = target - S.stick_angle;
+    if (target == 0x4000 || target == -0x4000 || (d > -0x100 && d < 0x100))
+        S.stick_angle = target;
+    else
+        S.stick_angle += d / 4;
+    return S.stick_angle;
 }
 
 s32 sp_qte_step(s32 cur, s32 count, u32 ev) {
@@ -221,7 +237,9 @@ void sp_input_update(const InputState *in) {
     /* steering */
     if (in->ax != 0) {
         g_sp_pad.steer = 1;
-        g_sp_pad.steer_angle = sp_stick_to_angle(in->ax);
+        if (!S.stick)
+            S.stick_angle = p ? (s16)p->unk16 : 0;   /* start from Sonic's position */
+        g_sp_pad.steer_angle = sp_stick_filter(sp_stick_to_angle(in->ax));
         S.stick = 1;
         S.dpad_active = 0;
     } else if (dpad & (IN_LEFT | IN_RIGHT | IN_DOWN)) {
@@ -252,7 +270,7 @@ void sp_input_update(const InputState *in) {
         S.dpad_active = 0;
         if (S.stick) {   /* the stick in its centre: the bottom of the pipe (a spring-centred stylus) */
             g_sp_pad.steer = 1;
-            g_sp_pad.steer_angle = 0;
+            g_sp_pad.steer_angle = sp_stick_filter(0);
         }
     }
 }

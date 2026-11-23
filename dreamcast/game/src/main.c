@@ -219,6 +219,7 @@ static void spawn_player(Level *lv)
     if(g_dcp_world.act == 2) {
         boss_set_paths("/cd/models", "/cd/boss");
         boss_set_difficulty(g_difficulty);
+        sound_boss_reset();   /* the previous fight's sound handles */
         g_is_boss = boss_init(lv->hdr->stage, lv->data, &g_player, 1) == 0;
         printf("boss: %s\n", g_is_boss ? "ok" : "FAILED");
     }
@@ -769,6 +770,10 @@ int main(int argc, char **argv)
     g_boss_hooks.music_stop = bgm_boss_music_stop_hook;
     g_boss_hooks.music_fade = bgm_boss_music_fade_hook;     /* Boss7 ClashFadeOutBGM, BossF SkyChargeStartFadeOut: 0x3c */
     g_boss_hooks.music_volume = bgm_boss_music_volume_hook; /* Boss7 defeat scene: 0x20 over 0xb4 */
+    g_boss_hooks.sfx = sound_boss_sfx;                 /* Sound_PlaySeqArc(NULL, 0, id): boss sound effects */
+    g_boss_hooks.voice = sound_boss_voice;             /* Sound_PlayVoice(NULL, 0, id): Eggman's voice lines */
+    g_boss_hooks.sfx_handle = sound_boss_sfx_handle;   /* Sound_PlaySeqArc(handle, 0, id): looping boss sounds */
+    g_boss_hooks.sfx_stop = sound_boss_sfx_stop;       /* NNS_SndPlayerStopSeq(handle, 0) */
     g_ui_hooks.music = bgm_ui_music_hook;              /* ClearDemo / new record / game over (sys) */
     g_ui_hooks.music_pause = bgm_ui_music_pause_hook;  /* pause menu: players 3..9 */
     g_ui_hooks.sfx = bgm_ui_sfx_hook;                  /* results rank SE, pause menu, enemy room */
@@ -924,6 +929,7 @@ int main(int argc, char **argv)
                 boss_shutdown();
                 boss_set_paths("/cd/models", "/cd/boss");
                 boss_set_difficulty(g_difficulty);
+                sound_boss_reset();   /* the previous fight's sound handles */
                 g_is_boss = boss_init(lv.hdr->stage, lv.data, &g_player, 1) == 0;
                 g_boss_started = 0;
                 printf("boss: restart %s\n", g_is_boss ? "ok" : "FAILED");
