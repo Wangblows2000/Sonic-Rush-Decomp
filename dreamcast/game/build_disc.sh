@@ -11,164 +11,17 @@ if [ -z "$SRDC_PREBUILT" ]; then
     . /opt/toolchains/dc/kos/environ.sh
     make -C "$HERE"
 fi
-rm -rf "$OUT/disc"; mkdir -p "$OUT/disc/stages" "$OUT/disc/player"
-cp "$ROOT/build/dreamcast/player/physics.bin" "$ROOT/build/dreamcast/player/trig.bin" "$OUT/disc/player/"
-M=$ROOT/build/dreamcast/models
-cp "$M/mod__son__son.dcm" "$OUT/disc/player/son.dcm"
-cp "$M/mod__blz__blz.dcm" "$OUT/disc/player/blz.dcm"
-cp "$M/narc__player_lz7__son.dca" "$OUT/disc/player/son.dca"
-cp "$M/narc__player_lz7__son.dcv" "$OUT/disc/player/son.dcv"
-# ball models (Model_SetResource 1) and the four Player_SetAnimation tables (player/tools/extract_physics.py)
-cp "$M/mod__son__son_ball.dcm" "$OUT/disc/player/son_ball.dcm"
-cp "$M/mod__blz__blz_spin.dcm" "$OUT/disc/player/blz_spin.dcm"
-cp "$ROOT/build/dreamcast/player/animtab.bin" "$ROOT/build/dreamcast/player/lights.bin" "$OUT/disc/player/"
-# Player_SetAnimation model-animation table (ov000 0x02368bdc, 0x68 bytes) from YOUR ROM
-python3 -c "import sys;d=open(sys.argv[1],'rb').read();o=0x02368bdc-0x022C5C80;open(sys.argv[2],'wb').write(d[o:o+0x68])" \
-    "$ROOT/extract/eur/arm9_overlays/ov000.bin" "$OUT/disc/player/animmap.bin"
-mkdir -p "$OUT/disc/objects" "$OUT/disc/sprites"
-cp -r "$ROOT/build/dreamcast/objects/objdata.bin" "$ROOT/build/dreamcast/objects/hbx" "$OUT/disc/objects/"
-cp "$ROOT/build/dreamcast/objects/palanim.bin" "$OUT/disc/objects/"
-grep -v '^#' "$ROOT/build/dreamcast/objects/sprites.txt" | cut -f1 | while read -r sp; do
-    [ -n "$sp" ] || continue
-    S=$ROOT/build/dreamcast/sprites/bac/$sp
-    mkdir -p "$OUT/disc/sprites/$sp"
-    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"
-    for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
-done
-# camera shake tables + zone effect tables (dreamcast/game/zonefx/tools/zonefxdata.py, from YOUR ROM)
-mkdir -p "$OUT/disc/zonefx"
-[ -f "$ROOT/build/dreamcast/zonefx/zonefx.bin" ] || python3 "$ROOT/dreamcast/game/zonefx/tools/zonefxdata.py"
-cp "$ROOT/build/dreamcast/zonefx/zonefx.bin" "$OUT/disc/zonefx/"
-# UI (HUD, title card, pause, results, game over)
-mkdir -p "$OUT/disc/ui/res"; cp "$ROOT/build/dreamcast/ui/uidata.bin" "$ROOT/build/dreamcast/ui/navidata.bin" "$OUT/disc/ui/"
-# navigator, boss panel, title card / results backgrounds (UI.md: res/ without the png previews)
-cp -r "$ROOT/build/dreamcast/ui/res/." "$OUT/disc/ui/res/"; find "$OUT/disc/ui/res" -name '*.png' -delete
-for sp in act__ac_fix_moji act__dm_stdm act__dm_stdm_eng act__dm_cldm act__ac_fix_pause act__ac_fix_pause_frame act__ac_fix_gameover \
-          act__navi_b act__ac_fix_bosshelp act__ac_eff_enemyroom_fix; do
-    S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
-    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
-done
-# sound effect banks (SSAR/SBNK/SWAR per stage SDAT, run by the native sequencer)
-mkdir -p "$OUT/disc/sound"; cp "$ROOT"/build/dreamcast/audio/sfxbank/*.srb "$OUT/disc/sound/"
-# bosses: data + models listed by the boss module
-mkdir -p "$OUT/disc/boss" "$OUT/disc/models"; cp "$ROOT/build/dreamcast/boss/bossdata.bin" "$ROOT/build/dreamcast/boss/boss7bac.bin" "$OUT/disc/boss/"
-grep -v '^#' "$ROOT/build/dreamcast/boss/assets.txt" | grep -E '\.(dcm|dca|dcv|dcc|dcp|dct)$' | while read -r f; do
-    b=$(basename "$f"); [ -f "$ROOT/build/dreamcast/models/$b" ] && cp "$ROOT/build/dreamcast/models/$b" "$OUT/disc/models/"
-done
-# object models (objects_model_get: RopeC, Wheel2D, Hand2d, GmkTable, slide, crane, glider)
-for f in mod__gmk_rope_c__gmk_rope_c01.dcm mod__gmk_rope_c__gmk_rope_c02.dcm mod__gmk_wheel__gmk_wheel.dcm \
-         mod__gmk_hand__gmk_hand.dcm mod__gmk_table__gmk_table.dcm mod__gmk_slide__gmk_slide.dcm \
-         mod__gmk_crane__gmk_crane.dcm mod__gmk_glider__gmk_glider.dcm; do
-    [ -f "$ROOT/build/dreamcast/models/$f" ] && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"
-done
-# 3D BAC sprites (obj_draw.c): boss-arena rings ac_itm_ring3d, EffWater3D ac_eff_water_3d; the 3D BACs drawn
-# for the drop-in Egg Pawns / Bishops, Rock, Bubble3D, FixMoji3D and the boss-arena player effects (Obj.bac3d 2)
-for sp in act__ac_itm_ring3d act__ac_eff_water_3d \
-          act__ac_ene_eggpawn3d act__ac_ene_egg_bishop3d act__ac_gmk_rock_3 act__ac_gmk_bubble_3d act__ac_fix_moji3d \
-          act__ac_eff_kemuri_brake3d act__ac_eff_kemuri_spin01_3d act__ac_eff_kemuri_spin02_3d act__eff_b_jet_3d \
-          act__eff_sb_boost_a_3d act__eff_sb_boost_a2_3d act__eff_bb_boost_a2_3d act__ac_eff_b7_3d; do
-    S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
-    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
-done
-mkdir -p "$OUT/disc/music"
-A=$ROOT/build/dreamcast/audio
-# music: stream table + renders (tools/dreamcast/audio/musictab.py): streams.txt, st/ (stage, boss,
-# jingle and sys sequences, .lyr layer pairs), sNN.wav + sys.txt (sys sequences by id, duplicates included)
-[ -f "$A/disc_music/streams.txt" ] || { echo "run tools/dreamcast/audio/musictab.py first" >&2; exit 1; }
-cp -r "$A/disc_music/." "$OUT/disc/music/"; rm -f "$OUT/disc/music/musictab.json"
-# front end: menu tables, backgrounds, animations, sound test list, menu sprites (MENUS.md section 4)
-M=$ROOT/build/dreamcast/menus
-mkdir -p "$OUT/disc/menus/bg" "$OUT/disc/menus/ama"
-cp "$M/menudata.bin" "$M/sound_test.sld" "$OUT/disc/menus/"
-# time attack / records / ExtraAct / zone-map navigator (MENUS.md 10-14)
-cp "$M/font8.bin" "$M/extraact.bin" "$OUT/disc/menus/"; [ -d "$M/navi" ] && cp -r "$M/navi" "$OUT/disc/menus/"
-for f in narc__extra_act__eff_dmg_end01__eff_dmg_end01.dcm narc__extra_act__eff_dmg_end02__eff_dmg_end02.dcm narc__extra_act__eff_dmg_end02.dca narc__extra_act__eff_dmg_end02.dcc; do [ -f "$ROOT/build/dreamcast/models/$f" ] && mkdir -p "$OUT/disc/models" && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"; done
-# attract demos (demo/tools/demodata.py)
-D=$ROOT/build/dreamcast/demo
-if [ -f "$D/demotab.bin" ]; then mkdir -p "$OUT/disc/demo"; cp "$D/demotab.bin" "$OUT/disc/demo/"; [ -d "$D/key" ] && cp -r "$D/key" "$OUT/disc/demo/"; fi
-cp "$M"/bg/*.mnbg "$OUT/disc/menus/bg/"; cp "$M"/ama/*.ama "$OUT/disc/menus/ama/"
-for sp in act__title act__title_eng act__mnu_titl act__mnu_titl_eng act__mnu_psel act__mnu_psel_eng \
-          act__mnu_opti_eng act__font_opti_sound act__mnu_opti act__mnu_opti_sou act__mnu_opti_sou_jpn act__mnu_opti_sou_eng act__mnu_opti_sou_fra act__mnu_opti_sou_deu act__mnu_opti_sou_ita act__mnu_opti_sou_spa act__title_demo act__title_demo_eng act2__zmap__zmap_map_icon act2__zmap__zmap_scroll_arrow \
-          act2__zmap__zmap_act act2__zmap__font_zmap_act_num act2__zmap__zmap_pause act2__zmap__zmap_pause_eng \
-          act__ac_ex_cldm act__dm_cldm_tatk act__dm_demoplay_deu act__dm_demoplay_eng act__dm_demoplay_fra act__dm_demoplay_ita act__dm_demoplay_spa act__mnu_reco act__mnu_reco_deu act__mnu_reco_eng act__mnu_reco_fra act__mnu_reco_ita act__mnu_reco_jpn act__mnu_reco_spa act__mnu_time_act_deu act__mnu_time_act_eng act__mnu_time_act_fra act__mnu_time_act_ita act__mnu_time_act_jpn act__mnu_time_act_lc_eng act__mnu_time_act_lc_jpn act__mnu_time_act_spa act__mnu_time_act_x_eng act__mnu_time_act_x_jpn act__mnu_time_boss_jpn act__mnu_time_boss_lc_eng act__mnu_time_boss_lc_jpn act__mnu_time_oneself_eng act__mnu_time_oneself_jpn act__mnu_time_ranking act__mnu_time_select act__mnu_time_tryagain act__mnu_time_tryagain_deu act__mnu_time_tryagain_eng act__mnu_time_tryagain_fra act__mnu_time_tryagain_ita act__mnu_time_tryagain_jpn act__mnu_time_tryagain_spa act__navi_m \
-          act2__caution__caution_d_jpn act2__caution__caution_d_eng act2__caution__caution_d_fra act2__caution__caution_d_deu act2__caution__caution_d_ita act2__caution__caution_d_spa \
-          act2__caution__caution act2__caution__caution_jpn act2__caution__caution_eng act2__caution__caution_fra act2__caution__caution_deu act2__caution__caution_ita act2__caution__caution_spa \
-          act2__caution__caution_b_jpn act2__caution__caution_b_eng act2__caution__caution_b_fra act2__caution__caution_b_deu act2__caution__caution_b_ita act2__caution__caution_b_spa; do
-    S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
-    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
-done
-# cutscenes (CUTSCENES.md section 2): scripts, talks, PlayerDemo scenes, ending BGs, sprites, models, sound, staff-roll music
-C=$ROOT/build/dreamcast/cutscene
-mkdir -p "$OUT/disc/cutscene"
-cp "$C/csdata.bin" "$C/seqalias.txt" "$OUT/disc/cutscene/"; cp -r "$C/talk" "$C/pldm" "$C/bg" "$OUT/disc/cutscene/"
-grep -v '^#' "$C/sprites.txt" | while read -r sp; do
-    [ -n "$sp" ] || continue
-    S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
-    cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
-done
-grep -v '^#' "$C/models.txt" | while read -r f; do [ -n "$f" ] && cp "$ROOT/build/dreamcast/models/$f" "$OUT/disc/models/"; done
-cp "$C"/sound/sys_a*.srb "$OUT/disc/sound/"
-cp "$A/strm/sys/Final_Roll.wav" "$A/strm/sys/Extra_Roll.wav" "$OUT/disc/music/"
-cp "$A/music/extra_end/SEQ_EXTRA_END.wav" "$OUT/disc/music/extra_end.wav"
-# Extra Zone boss (BOSSES.md "Extra Zone boss"): data, HUD/VS sprites, models
-X=$ROOT/build/dreamcast/boss/extra
-mkdir -p "$OUT/disc/boss/extra"
-cp "$X/bossex.bin" "$X/zex.bin" "$X/vs_son.bin" "$X/vs_blz.bin" "$OUT/disc/boss/extra/"; cp -r "$X/sprites" "$OUT/disc/boss/extra/"
-find "$OUT/disc/boss/extra" -name '*.png' -delete
-grep -v '^#' "$X/assets.txt" | grep -E '\.(dcm|dca|dcv|dcc|dcp|dct)$' | while read -r f; do
-    b=$(basename "$f"); [ -f "$ROOT/build/dreamcast/models/$b" ] && cp "$ROOT/build/dreamcast/models/$b" "$OUT/disc/models/"
-done
-# special stages (SPECIAL.md section 6): stage data, models, sprites, backgrounds, ss sound bank
-SP=$ROOT/build/dreamcast/special
-mkdir -p "$OUT/disc/special"
-cp "$SP/spdata.bin" "$OUT/disc/special/"; cp -r "$SP/bg" "$SP/models" "$SP/sprites" "$SP/ss" "$OUT/disc/special/"
-find "$OUT/disc/special" -name '*.png' -delete
-cp "$SP/sound/ss.srb" "$OUT/disc/sound/"
-# load-time packs (engine/pak.c, GRAPHICS.md section 6): per-stage object packs first, then
-# one data.pak of the small files (the loose copies are dropped from the disc tree)
-make -C "$HERE/objects" preload >/dev/null
-python3 "$ROOT/tools/dreamcast/mkpak.py" --stage-packs "$OUT/disc" "$ROOT/build/dreamcast/objects/preload.txt" "$ROOT/build/dreamcast/stages" "$OUT/disc/objects"
-# cutscene/ is packed too (csdata.bin 918 ms -> 15 ms, a talk script 92 ms -> 9 ms in Flycast: ISO 9660 walks of
-# a 247-file directory); its .csp packs stay files, cs_pack_read keeps them open and seeks in them
-python3 "$ROOT/tools/dreamcast/mkpak.py" "$OUT/disc" "$OUT/disc/data.pak" sprites objects ui/res special/sprites boss/extra/sprites models sound cutscene --skip-argb-with-pt4 --loose-ext=.csp --drop-packed
+mkdir -p "$OUT"
 if [ -n "$SRDC_PREBUILT" ]; then
-    cp "$SRDC_PREBUILT/1ST_READ.BIN" "$OUT/disc/"
+    FIRST_READ=$SRDC_PREBUILT/1ST_READ.BIN
 else
     sh-elf-objcopy -R .stack -O binary "$HERE/srdc.elf" "$OUT/srdc.bin"
-    "$KOS_BASE/utils/scramble/scramble" "$OUT/srdc.bin" "$OUT/disc/1ST_READ.BIN"
+    "$KOS_BASE/utils/scramble/scramble" "$OUT/srdc.bin" "$OUT/1ST_READ.BIN"
+    FIRST_READ=$OUT/1ST_READ.BIN
 fi
-for d in "$ROOT"/build/dreamcast/stages/z*/; do
-    id=$(basename "$d")
-    [ -f "$d/level.bin" ] || continue
-    mkdir -p "$OUT/disc/stages/$id"
-    cp "$d/level.bin" "$d/blocktex.bin" "$OUT/disc/stages/$id/"
-    [ -f "$d/bg.bin" ] && cp "$d/bg.bin" "$OUT/disc/stages/$id/"
-done
-# test builds: SRDC_START=<stage index> writes /cd/debug/start.txt (story index into k_stages)
-if [ -n "$SRDC_START" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_START" > "$OUT/disc/debug/start.txt"; fi
-# SRDC_STARTPOS="x y": the debug start stage begins at that position (px) instead of PlayerStart
-if [ -n "$SRDC_STARTPOS" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_STARTPOS" > "$OUT/disc/debug/startpos.txt"; fi
-if [ -n "$SRDC_SPECIAL" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPECIAL" > "$OUT/disc/debug/special.txt"; fi
-if [ -n "$SRDC_MENUTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/menutrace.txt"; fi
-if [ -n "$SRDC_MENUSAVE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_MENUSAVE" > "$OUT/disc/debug/menusave.txt"; fi
-# audio test builds: SRDC_SNDTRACE=1 (serial trace of sound / music / missing effects), SRDC_BGMTEST=<file> (music event triggers, sound/bgm.c)
-if [ -n "$SRDC_SNDTRACE" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/sndtrace.txt"; fi
-if [ -n "$SRDC_BGMTEST" ]; then mkdir -p "$OUT/disc/debug"; cp "$SRDC_BGMTEST" "$OUT/disc/debug/bgmtest.txt"; fi
-# SRDC_DEBUGDIR=<dir>: its files go to /cd/debug (e.g. chara.txt "1" = Blaze, extra.txt = Extra Zone start: main_audiotest.patch)
-if [ -n "$SRDC_DEBUGDIR" ]; then mkdir -p "$OUT/disc/debug"; cp "$SRDC_DEBUGDIR"/* "$OUT/disc/debug/"; fi
-if [ -n "$SRDC_DEMOLEAD" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_DEMOLEAD" > "$OUT/disc/debug/demolead.txt"; fi
-# flow tests: SRDC_AUTOCLEAR=<frame> clears every act / boss at that stage frame, SRDC_AUTODIE="<frame> <lives>"
-# kills the player there, SRDC_AUTOMAP=1 lets the zone map walk to the next story node and press A
-if [ -n "$SRDC_AUTOCLEAR" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTOCLEAR" > "$OUT/disc/debug/autoclear.txt"; fi
-if [ -n "$SRDC_AUTODIE" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTODIE" > "$OUT/disc/debug/autodie.txt"; fi
-# SRDC_AUTOMAP=s / b / x: the autopilot also picks Sonic / Blaze / the extra story on the player select
-if [ -n "$SRDC_AUTOMAP" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_AUTOMAP" > "$OUT/disc/debug/automap.txt"; fi
-# SRDC_SPAWN="x y [tension]": the first stage starts the player there (e.g. at a special ring)
-if [ -n "$SRDC_SPAWN" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_SPAWN" > "$OUT/disc/debug/spawn.txt"; fi
-# SRDC_SPQUOTA=1: special stages keep the rings at the goal quota (cleared without a player)
-if [ -n "$SRDC_SPQUOTA" ]; then mkdir -p "$OUT/disc/debug"; : > "$OUT/disc/debug/spquota.txt"; fi
-# SRDC_BOSSHP=N: boss hit points held at N or below once the fight starts (late phases, boss talks)
-if [ -n "$SRDC_BOSSHP" ]; then mkdir -p "$OUT/disc/debug"; echo "$SRDC_BOSSHP" > "$OUT/disc/debug/bosshp.txt"; fi
+# disc tree, packs and test switches (SRDC_START, SRDC_AUTOCLEAR, ... -> /cd/debug, docs/dreamcast/BUILD.md):
+# tools/dreamcast/disc/assemble_disc.py, shared with the Windows kit (tools/dreamcast/winkit)
+python3 "$ROOT/tools/dreamcast/disc/assemble_disc.py" --root "$ROOT" --out "$OUT" --first-read "$FIRST_READ"
 cd "$OUT"
 rm -f IP.BIN
 if [ -n "$SRDC_PREBUILT" ]; then cp "$SRDC_PREBUILT/IP.BIN" "$OUT/IP.BIN"; else

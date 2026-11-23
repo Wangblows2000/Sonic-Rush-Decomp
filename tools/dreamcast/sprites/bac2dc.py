@@ -490,8 +490,8 @@ def convert_one(job):
             full.save(pdir / ("a%03d_f%03d.png" % (ai, fi)))
         sheet = make_sheet(previews)
         sheet.save(pdir / "sheet.png")
-    return {"id": ident, "outputs": [str(p.relative_to(out)) for p in outputs],
-            "sizes": {str(p.relative_to(out)): p.stat().st_size for p in outputs},
+    return {"id": ident, "outputs": [p.relative_to(out).as_posix() for p in outputs],
+            "sizes": {p.relative_to(out).as_posix(): p.stat().st_size for p in outputs},
             "stats": stats, "animations": len(bac.animations), "images": len(images),
             "pages": [(p["w"], p["h"], p["pvr_format"]) for p in page_list], "palettes": len(pals)}
 

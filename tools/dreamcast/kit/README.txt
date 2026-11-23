@@ -5,6 +5,8 @@ This kit contains the Dreamcast program and the conversion tools only. It has
 no Sonic Rush data. The disc is made on your PC from your own ROM dump.
 
 Windows 10/11
+  Easiest: use the Windows kit instead (SonicRushDC-Windows.zip: unzip, double-click
+  SonicRushDC.exe, choose your ROM, press the button). This Linux kit also works in WSL:
   1. Install WSL once: open PowerShell as administrator, run  wsl --install
      and restart. Open "Ubuntu" from the Start menu and create a user.
   2. In Ubuntu, unzip the kit somewhere, e.g.

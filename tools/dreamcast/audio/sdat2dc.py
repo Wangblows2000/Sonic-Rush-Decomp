@@ -55,6 +55,10 @@ MIX_GAIN_TL = 24  # -9.03 dB
 
 
 def build_renderer(out_bin):
+    # prebuilt renderer (the Windows kit ships sseqrender.exe; no compiler there)
+    pre = os.environ.get("SRDC_SSEQRENDER")
+    if pre:
+        return Path(pre)
     src = HERE / "sseqrender.c"
     if not out_bin.exists() or out_bin.stat().st_mtime < src.stat().st_mtime:
         out_bin.parent.mkdir(parents=True, exist_ok=True)

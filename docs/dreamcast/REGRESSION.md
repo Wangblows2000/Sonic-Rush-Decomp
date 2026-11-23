@@ -6,9 +6,9 @@ Emulated frame times are guest times from the frame profiler, not host speed.
 
 ## How the port is tested
 
-1. **Host tests** (BUILD.md §2): the translated modules run on the PC against
+1. **Host tests** (BUILD.md §3): the translated modules run on the PC against
    the converted data, with checks taken from the original code's behaviour.
-2. **Flycast runs** of test discs (BUILD.md §3). Input is injected with
+2. **Flycast runs** of test discs (BUILD.md §4). Input is injected with
    `xdotool` (default Flycast keyboard: arrows = pad, X = A, C = B, S = X,
    D = Y, Return = Start); results come from the serial console
    (`Debug.SerialConsoleEnabled=yes`) and screenshots.

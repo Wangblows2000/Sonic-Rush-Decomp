@@ -578,7 +578,7 @@ sys_12 / sys_14 (new record), sys_20 (game over), sys_30 / sys_31 (special stage
 - `build_disc.sh` copies `build/dreamcast/audio/disc_music/` (stream table `streams.txt`
   and the renders) to `/cd/music/`; run `tools/dreamcast/audio/musictab.py` and
   `sfxbank.py` first.
-- Test discs: `SRDC_SNDTRACE=1` and `SRDC_BGMTEST=<file>` (BUILD.md §3).
+- Test discs: `SRDC_SNDTRACE=1` and `SRDC_BGMTEST=<file>` (BUILD.md §4).
 
 ### 14.6 Known gaps
 

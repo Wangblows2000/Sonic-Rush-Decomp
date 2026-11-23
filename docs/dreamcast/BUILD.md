@@ -4,7 +4,31 @@ Two ways to get a disc. Both convert every asset from your own Sonic Rush
 (Europe) ROM, SHA-1 `52e5024efcf7617a820fa23789b37e5168c3c4fc`. The CDI that
 comes out contains the game's data: do not redistribute it.
 
-## 1. The kit (recommended, no toolchain needed)
+## 1. Windows kit (Windows 10 and later, no installs)
+
+`sh tools/dreamcast/winkit/make_winkit.sh` writes `build/dreamcast/winkit/SonicRushDC-Windows.zip`
+(about 38 MB; published as a release asset). It contains no game data:
+
+| Part | What it is |
+| --- | --- |
+| `SonicRushDC.exe` | Win32 GUI (`tools/dreamcast/winkit/gui/srdcgui.c`, MinGW-w64): choose or drop the ROM (a single `.nds` next to the program is picked automatically), one button, progress bar, friendly errors, "Show details" log, "Show my disc" |
+| `app\winbuild.py` | the pipeline (`tools/dreamcast/winkit/winbuild.py`): ROM check (game code `ASCP`, SHA-1 warning), `dsd` extraction, every converter, `assemble_disc.py`, `isowriter.py`, `cdi4dc` → `Your Dreamcast disc\SonicRushDC.cdi`; reruns reuse the extraction and conversion of the same ROM |
+| `app\python` | Python 3.13 embeddable build in a normal layout (no `._pth`, so scripts import their neighbours) with numpy and Pillow wheels |
+| `app\bin` | `dsd.exe` (Rust, `x86_64-pc-windows-gnu`), `cdi4dc.exe`, `wav2adpcm.exe`, `sseqrender.exe`, `test_coverage.exe` (MinGW-w64, static) |
+| `app\prebuilt` | `1ST_READ.BIN`, `IP.BIN` |
+
+The GUI starts the pipeline with `CREATE_NO_WINDOW` in a job object: all helper processes share one hidden
+console and are stopped together if the window is closed. Converters run with `PYTHONUTF8=1`;
+`SRDC_SSEQRENDER` points `sdat2dc.py` at the prebuilt audio renderer; text files on the disc are written
+with LF line ends.
+
+Checks of the Windows build (no Windows machine here): `dsd.exe`, `cdi4dc.exe`, `wav2adpcm.exe`,
+`sseqrender.exe` and `test_coverage.exe` give output identical to the Linux tools under Wine; the GUI's
+pick / progress / done / error flow runs under Wine; `winbuild.py`, `assemble_disc.py` and `isowriter.py`
+run end to end on Linux and the disc boots in Flycast. numpy does not load under the Wine build used, so
+the converters themselves have not run in Windows Python yet.
+
+## 2. The Linux / WSL kit (no toolchain needed)
 
 `sh tools/dreamcast/kit/make_kit.sh` writes `build/dreamcast/kit/srdc_kit.zip`
 (about 7 MB): the compiled program (`prebuilt/1ST_READ.BIN`, `IP.BIN`), the
@@ -21,7 +45,7 @@ genisoimage, gcc, cmake), builds `wav2adpcm` and `cdi4dc` (with the flags GCC 14
 needs), extracts the ROM with `dsd`, runs every converter and builds the disc.
 End-user instructions, including Windows: `tools/dreamcast/kit/README.txt`.
 
-## 2. From this repository
+## 3. From this repository
 
 ### Toolchain
 
@@ -65,7 +89,9 @@ The game Makefile has no header dependencies: after changing a header,
 delete the objects (`find dreamcast/game -name "*.o" -not -path "*/test/*" -delete`)
 and rebuild.
 
-`build_disc.sh` variables:
+`build_disc.sh` builds the disc tree with `tools/dreamcast/disc/assemble_disc.py` (shared with the Windows
+kit), then `genisoimage` and `cdi4dc`. `tools/dreamcast/disc/isowriter.py` is the Python ISO 9660 + Joliet
+writer the Windows kit uses instead of `genisoimage`. Variables:
 
 | Variable | Effect |
 | --- | --- |
@@ -80,7 +106,7 @@ the converted data: `make -C dreamcast/game/<module> host-test` for `player`,
 `save` and `sound`; `make -C dreamcast/game/menus story-test` runs the
 whole-story flow.
 
-## 3. Test discs
+## 4. Test discs
 
 These variables write files to `/cd/debug/` on the disc. A disc without them
 behaves as the release game.
