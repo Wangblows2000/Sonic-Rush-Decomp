@@ -446,6 +446,20 @@ int main(int argc, char **argv) {
         tris = boss_draw(0);
         printf("  boss_draw (host: vertices transformed) %d\n", tris);
         CHECK(tris > 0, "boss models pose and project through the boss camera");
+        {
+            /* StageRestart (the player died in the boss act): main.c shuts the boss down and creates it
+             * again: full health, idle, no attack before boss_start (the title card) */
+            int f, att0, r2;
+            boss_shutdown();
+            r2 = boss_init(((const rlvl_header_t *)g_level)->stage, g_level, &P, 0);
+            att0 = (int)boss_stats()->attacks;
+            for (f = 0; f < 300; f++)
+                frame(0);
+            CHECK(r2 == 0 && boss_health() == boss_health_max() && !boss_defeated() && !boss_cleared() &&
+                      (int)boss_stats()->attacks == att0,
+                  "boss created again after the defeat (StageRestart): health %d of %d, idle until boss_start", boss_health(),
+                  boss_health_max());
+        }
     }
     printf("%d checks, %d failed\n", g_checks, g_fail);
     boss_shutdown();

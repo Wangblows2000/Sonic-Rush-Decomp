@@ -102,6 +102,11 @@ typedef struct BossHooks {
      * 0x20 over 0xb4). If music_fade is NULL, music_stop is called. */
     void (*music_fade)(void *ctx, s32 frames);
     void (*music_volume)(void *ctx, s32 vol, s32 frames);
+    /* StageObj_Load3dBAC one-shot effects (appended): play animation `anim` of the converted 3D BAC
+     * `bac_id` once at (x, y, z) (24.8, boss-arena world coordinates when flags & 1, as
+     * objects_fx3d_spawn's OBJ_FX3D_WORLD; flags & 2: facing right). main.c: objects_fx3d_spawn.
+     * Boss7: EffBoostA_3D / EffBoostA2_3D / EffFire01_3D / EffKemuriSpin3D. */
+    int (*fx3d)(void *ctx, const char *bac_id, s32 anim, s32 x, s32 y, s32 z, u32 flags, s32 scale);
 } BossHooks;
 enum { BOSS_HELP_CREATE = 0, BOSS_HELP_DESTROY = 1 };
 extern BossHooks g_boss_hooks;

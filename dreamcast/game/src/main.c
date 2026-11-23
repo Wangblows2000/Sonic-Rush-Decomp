@@ -141,6 +141,17 @@ int ui_exit_cleared(void);   /* ui/ui_state.c: the stage ended through the act r
 void ui_extra_pause_open(void);                   /* ui/ui_pause.c: the pause menu over the Extra boss */
 int ui_extra_pause_frame(const InputState *in);
 static void (*g_prev_stage_exit)(void *ctx, s32 kind);
+/* g_dcp_hooks.restart in a boss act: Player_Respawn -> StageRestart_Create destroys every task and
+ * creates the stage again (StageRestart_State_Release / _CreateStage), so the boss starts over
+ * with full health after the title card. The boss is created again in the main loop. */
+static void (*g_prev_boss_restart)(void *ctx, DcPlayer *p);
+static int g_boss_restart;
+static void boss_restart_hook(void *ctx, DcPlayer *p)
+{
+    if(g_prev_boss_restart) g_prev_boss_restart(ctx, p);
+    if(g_is_boss && g_dcp_world.mode != 1 && !(p->pf2 & 0x400000)) g_boss_restart = 1;
+}
+
 static void stage_exit_hook(void *ctx, s32 kind)
 {
     if(kind == OBJ_EXIT_SPECIAL_STAGE) { g_special_pending = 1; return; }   /* Player_ExitToSpecialStage */
@@ -158,6 +169,13 @@ static dcp_bool gravity_flipped_hook(void *ctx, s32 x, s32 y)
         else if(y > Stage_GetSplitLineY(x)) return DCP_TRUE;
     }
     return DCP_FALSE;
+}
+
+/* g_boss_hooks.fx3d: a boss's StageObj_Load3dBAC one-shot effect (boss-arena world coordinates) */
+static int boss_fx3d_hook(void *ctx, const char *id, s32 anim, s32 x, s32 y, s32 z, u32 flags, s32 scale)
+{
+    (void)ctx;
+    return objects_fx3d_spawn(id, (int)anim, x, y, z, flags, scale);
 }
 
 static void spawn_player(Level *lv)
@@ -727,6 +745,7 @@ int main(int argc, char **argv)
     audio_init();
     sound_init();
     sound_hooks_install();
+    if(g_dcp_hooks.restart != boss_restart_hook) { g_prev_boss_restart = g_dcp_hooks.restart; g_dcp_hooks.restart = boss_restart_hook; }
     g_dcp_hooks.gravity_flipped = gravity_flipped_hook;
     ui_set_paths("/cd/ui", "/cd/sprites");
     printf("zonefx: %s\n", zonefx_load_data("/cd/zonefx/zonefx.bin") == 0 ? "ok" : "MISSING");
@@ -741,6 +760,7 @@ int main(int argc, char **argv)
     g_boss_hooks.cleared = boss_cleared_hook;
     g_boss_hooks.talk = boss_talk_hook;
     g_boss_hooks.water_fx = objects_fx3d_water;          /* EffWater3D_Create: 3D BAC water spray (Water Palace boss) */
+    g_boss_hooks.fx3d = boss_fx3d_hook;                 /* Boss7: EffBoostA(2)_3D, EffFire01_3D, EffKemuriSpin3D (3D BAC one-shots) */
     boss7_set_talk_hook(boss_talk_hook, NULL);
     cutscene_set_paths("/cd/cutscene", "/cd/sprites", "/cd/models", "/cd/music");
     g_menu_hooks.talk_demo_start = menu_talk_start;
@@ -899,6 +919,15 @@ int main(int argc, char **argv)
         if(ok && g_player_ok && !ui_is_paused() && !ui_world_frozen() && !cutscene_active()) {
             /* StageTitleCard_State_StartStage: gBossStatus.flags |= 1 at "GO!" (under the white flash), not
              * when the title card task ends: the arena (BossF camera) and the boss start there */
+            if(g_boss_restart) {   /* StageRestart: the boss is created again (full health, waits for the title card) */
+                g_boss_restart = 0;
+                boss_shutdown();
+                boss_set_paths("/cd/models", "/cd/boss");
+                boss_set_difficulty(g_difficulty);
+                g_is_boss = boss_init(lv.hdr->stage, lv.data, &g_player, 1) == 0;
+                g_boss_started = 0;
+                printf("boss: restart %s\n", g_is_boss ? "ok" : "FAILED");
+            }
             if(g_is_boss && !g_boss_started && ui_titlecard_started()) { boss_start(); g_boss_started = 1; }
             if(g_is_boss && g_boss_started && g_dbg_bosshp > 0 && gBossStatus.unk8 > g_dbg_bosshp) {
                 printf("debug: boss hit points %d -> %d\n", gBossStatus.unk8, g_dbg_bosshp);

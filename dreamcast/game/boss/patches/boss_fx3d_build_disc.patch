@@ -1,0 +1,12 @@
+--- a/dreamcast/game/build_disc.sh
++++ b/dreamcast/game/build_disc.sh
+@@ -65,7 +65,8 @@
+ # for the drop-in Egg Pawns / Bishops, Rock, Bubble3D, FixMoji3D and the boss-arena player effects (Obj.bac3d 2)
+ for sp in act__ac_itm_ring3d act__ac_eff_water_3d \
+           act__ac_ene_eggpawn3d act__ac_ene_egg_bishop3d act__ac_gmk_rock_3 act__ac_gmk_bubble_3d act__ac_fix_moji3d \
+-          act__ac_eff_kemuri_brake3d act__ac_eff_kemuri_spin01_3d act__ac_eff_kemuri_spin02_3d act__eff_b_jet_3d; do
++          act__ac_eff_kemuri_brake3d act__ac_eff_kemuri_spin01_3d act__ac_eff_kemuri_spin02_3d act__eff_b_jet_3d \
++          act__eff_sb_boost_a_3d act__eff_sb_boost_a2_3d act__eff_bb_boost_a2_3d act__ac_eff_b7_3d; do
+     S=$ROOT/build/dreamcast/sprites/bac/$sp; mkdir -p "$OUT/disc/sprites/$sp"
+     cp "$S/frames.bin" "$OUT/disc/sprites/$sp/"; for a in "$S"/atlas*.argb1555 "$S"/atlas*.pt4 "$S"/palettes.bin; do [ -f "$a" ] && cp "$a" "$OUT/disc/sprites/$sp/"; done
+ done

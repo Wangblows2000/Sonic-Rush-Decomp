@@ -307,3 +307,41 @@ negates the velocity, turns the angle by 0x80 and restores the remap. A scratch 
 module's Stage_GetSplitLineY (z71 from 8448 / 14528 / 26320, z72 from 5664 / 16400 / 24736, 1200
 frames each, both characters) kept grav_rot equal to Stage_IsGravityFlipped on every frame; the z72
 top pit (y <= 0x1a) and bottom pit kill as in Player_In.
+
+## 12. Boss fights in Flycast, Sonic and Blaze (2026-11-23)
+
+Scratch test discs from HEAD (038f1784, then 9b422c76), debug start per boss (k_stages 2, 5, 8, 11,
+14, 17, 20, 23), Blaze by /cd/debug/chara.txt. Each fight runs from a save state taken at the title
+card (F5, own HOME and `config:Dreamcast.SavestatePath`). A scratch-only autopilot (not in the port)
+plays the fight: the `[fight]` scripts of `boss/test/test_boss*.c` ported to the live game (the same
+placements beside the target and pad keys), 600 frames standing still first, rings topped up, the
+player put back on the arena after a fall off its edge. Some runs cap the boss health at the end
+of the still stretch (1, or 2 for Boss7 and the final boss so that the clash and the sky charge
+still run) to reach the defeat in the time of the pass.
+
+| boss | Sonic | Blaze |
+|---|---|---|
+| 1 z13 Egg Hammer | uncapped to 1 hp (slams, big slams, rolls, hits 8..1, pinch); capped: defeat, cut-ins, DemoScript | capped: defeat, DemoScript |
+| 2 z23 | uncapped to 5 hp (dashes, attack 2, water drain, hits); capped: defeat, VS BOSS CLEAR results | capped: defeat, results |
+| 3 z33 | uncapped to 4 hp (kick / push / throw balls, hits); capped: defeat, results | capped: defeat, results (S rank) |
+| 4 z43 | uncapped to 5 hp (spin, arm clash, enemy drops); capped: defeat | capped: defeat, talk |
+| 5 z53 | uncapped to 3 hp (missiles, slams); capped: defeat | capped: defeat |
+| 6 z63 | uncapped to 4 hp (deck tilt with the mash prompt, pick, bullets, edge jumps, stuns); capped: defeat | capped: two deaths (pit, box 6 instant kill), defeat, results |
+| 7 z73 | uncapped full fight: 8 hits, talk 0xa, clash (aura, mash prompt, won), defeat scene, DemoScript | capped to 2: talk 0xb, clash won, results |
+| F zf3 | capped to 2: hand ride (crouch prompt), sky charge white-out, talk 0xf, core hit, explosions, results | capped to 2: hand ride, sky charge, talk 0x10, defeat, results |
+
+Checked in every fight: the attacks hit the player standing still (hurts, rings scattered) and are
+dodged by the scripted jumps; the boss takes damage only on its damage boxes (no hit in the still
+stretch); the boss panel counts down each hit; the player model and the arena lights are drawn.
+Boss7's 3D effects now play (EffBoostA_3D / A2_3D, EffFire01_3D on Blaze's roll, EffKemuriSpin3D):
+695 spawned in the Sonic fight, the BACs loaded from the disc.
+
+Found and fixed:
+- a death in a boss act kept the boss's damage and state (no re-create on StageRestart): main.c
+  patch `boss/patches/boss_restart_main.patch`; `test_boss` checks the re-create (full health, no
+  attack before boss_start), and a scratch run re-created every boss mid-fight on the host.
+- Boss7's 3D BAC effects were not drawn (g_boss_hooks.fx3d, `test_boss7` check).
+
+Seen, not port deviations: the Boss1 edge knockback over the z13 pit strips kills (same code as the
+DS); Boss6 box 6 kills (instant-kill flag, Boss6_InitHitboxes). Story bosses of zones with a
+DemoScript after the boss go straight to it (Stage_OnBossCleared); the others show VS BOSS CLEAR.

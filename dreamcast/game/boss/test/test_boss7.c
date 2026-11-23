@@ -163,6 +163,20 @@ static void hk_music_stop(void *ctx) { (void)ctx; g_music_stop++; }
 static void hk_ring_flags(void *ctx, u32 f) { (void)ctx; g_ring_flags |= (int)f; }
 static void hk_music(void *ctx, s32 s) { (void)ctx; if (s == 0x11) g_music11++; }
 static int g_fade3c, g_vol20;
+/* g_boss_hooks.fx3d: Boss7's StageObj_Load3dBAC effects by BAC id */
+static int g_fx3d_boost_a, g_fx3d_boost_a2_sb, g_fx3d_boost_a2_bb, g_fx3d_fire, g_fx3d_spin, g_fx3d_other, g_fx3d_far;
+static int hk_fx3d(void *ctx, const char *id, s32 anim, s32 x, s32 y, s32 z, u32 flags, s32 scale) {
+    (void)ctx, (void)z, (void)scale;
+    if (!(flags & 1) || x < -0x10000 || x > (2048 << 8) || y < 0 || y > (2048 << 8))
+        g_fx3d_far++;
+    if (!strcmp(id, "act__eff_sb_boost_a_3d") && anim == 0) g_fx3d_boost_a++;
+    else if (!strcmp(id, "act__eff_sb_boost_a2_3d") && anim == 0) g_fx3d_boost_a2_sb++;
+    else if (!strcmp(id, "act__eff_bb_boost_a2_3d") && anim == 0) g_fx3d_boost_a2_bb++;
+    else if (!strcmp(id, "act__ac_eff_b7_3d") && anim == 0) g_fx3d_fire++;
+    else if (!strcmp(id, "act__ac_eff_kemuri_spin02_3d") && (anim == 0 || anim == 2)) g_fx3d_spin++;
+    else g_fx3d_other++;
+    return 0;
+}
 static void hk_music_fade(void *ctx, s32 f) { (void)ctx; if (f == 0x3c) g_fade3c++; }
 static void hk_music_volume(void *ctx, s32 v, s32 f) { (void)ctx; if (v == 0x20 && f == 0xb4) g_vol20++; }
 static void hk_help(void *ctx, s32 kind, s32 a, s32 b) {
@@ -552,6 +566,7 @@ int main(int argc, char **argv) {
     g_boss_hooks.music_fade = hk_music_fade;
     g_boss_hooks.music_volume = hk_music_volume;
     g_boss_hooks.help = hk_help;
+    g_boss_hooks.fx3d = hk_fx3d;
     boss7_set_talk_hook(hk_talk, NULL);
     boss_set_paths(argv[3], argv[4]);
     boss_set_difficulty(lvl);
@@ -561,6 +576,7 @@ int main(int argc, char **argv) {
             continue;
         printf("== story character %s (rival %s), %d hit points, seed %s\n", c ? "Blaze" : "Sonic", c ? "Sonic" : "Blaze",
                hp, getenv("SEED") ? getenv("SEED") : "0x12345678");
+        g_fx3d_boost_a = g_fx3d_boost_a2_sb = g_fx3d_boost_a2_bb = g_fx3d_fire = g_fx3d_spin = g_fx3d_other = g_fx3d_far = 0;
         run_fight(argv[1], c, 1, &R);
         CHECK(R.init_ok, "boss_init on z73 (bs7_base/sky, bs7.dca/.dcv, rival models, son.dca/.dcv, D6/D7 packages, "
                          "timing tables, boss7bac.bin, effects)");
@@ -606,6 +622,11 @@ int main(int argc, char **argv) {
         CHECK(R.st.mash_player > 0 && R.st.mash_rival > 0, "both sides mash (player %u, rival %u)", R.st.mash_player,
               R.st.mash_rival);
         CHECK(R.player_spd, "the player's clash animation runs at 4x (boss7_info.player_anim_speed)");
+        CHECK(g_fx3d_other == 0 && g_fx3d_far == 0 && g_fx3d_spin > 0 && g_fx3d_boost_a + g_fx3d_boost_a2_sb + g_fx3d_boost_a2_bb > 0 &&
+                  (c == 0 ? g_fx3d_fire > 0 : g_fx3d_fire == 0),
+              "3D BAC effects through g_boss_hooks.fx3d at the rival (world coordinates; fire only from Blaze's roll): boost_a %d, sb/bb boost_a2 %d/%d, "
+              "fire_01 %d, kemuri_spin02 %d",
+              g_fx3d_boost_a, g_fx3d_boost_a2_sb, g_fx3d_boost_a2_bb, g_fx3d_fire, g_fx3d_spin);
         CHECK(R.won && R.exc6 > 0 && R.exc7 > 0 && R.bright == 16 && R.blend >= 11,
               "clash won: health 0, win cut-ins (exc_bg 6/7), white flashes (bright %d, 3D blend %d)", R.bright, R.blend);
         CHECK(R.cleared && R.cleared_hook == 1 && R.ring_bonus_ok, "the rival jumps away -> Stage_OnBossCleared once, ring bonus");

@@ -122,7 +122,7 @@ boss_shutdown();            /* leaving the stage */
 /* Boss2 extra hooks (optional): */
 g_boss_hooks.sfx_handle = ...;  /* Sound_PlaySeqArc(handle 1..3, 0, id): looping boss sounds */
 g_boss_hooks.sfx_stop = ...;    /* NNS_SndPlayerStopSeq(handle, 0) */
-g_boss_hooks.water_fx = ...;    /* EffWater3D_Create (water spray sprite, not translated) */
+g_boss_hooks.water_fx = ...;    /* EffWater3D_Create: objects_fx3d_water (obj_draw.c, 3D BAC sprite) */
 /* Boss4 (optional): */
 g_boss_hooks.player_box_flags = ...; /* Boss4_Action_Defeat: player's hit boxes, box 0 body / 1 attack,
                                         flags = (flags & ~clear) | set (objects module ObjPlayerCtx) */
@@ -328,8 +328,9 @@ into the player module:
   - Palette swaps (hurt blink, flash of the head while its damage box is armed) are state only, as for
     Boss1 (`boss2_palette()` exposes the selection).
   - `bs2.nsbta` (water / shower texture scrolling) plays from `bs2.dct`.
-  - `EffWater3D_Create` (a 3D BAC sprite) is not translated; its arena position goes to
-    `g_boss_hooks.water_fx`.
+  - `EffWater3D_Create` (a 3D BAC sprite) goes to `g_boss_hooks.water_fx` with its arena
+    position; main.c sets it to `objects_fx3d_water` (obj_draw.c), which plays animation 2
+    of ac_eff_water_3d there and ends with it (EffWater3D_State_DestroyOnAnimEnd).
   - Joint cross-fades (`flags & 0x40`, Model_SetAnimation / Model_AnimateMdl) are copied; the pose
     blends translation / rotation / scale by the two ratios and re-orthonormalises the rotation. NNS's
     exact blend function was not compared.
@@ -364,6 +365,10 @@ into the player module:
   framing are derived, not observed. The host debug view (`DUMPAT=<frame>`) splats projected
   vertices. It shows the neck and hammer in front of the camera with the player below them, but it
   is only a point check.
+
+- **A death in a boss act** (Player_Respawn -> StageRestart_Create) re-creates the stage on the DS: the
+  boss starts again with full health after the title card. main.c does it with boss_shutdown +
+  boss_init from the g_dcp_hooks.restart chain (patch `boss/patches/boss_restart_main.patch`).
 
 ## 5. Tests
 
@@ -878,8 +883,8 @@ New native functions:
 | `EffRipple3D_State_Main` | boss2.c | reused |  |
 | `EffSplash3D_Spawn` | boss2.c | reused | names from gEffSplash3DModelNames |
 | `EffSplash3D_State_Main` | boss2.c | reused |  |
-| `EffWater3D_Create` | boss2.c | not translated | 3D BAC sprite (ac_eff_water_3d.bac): arena position -> g_boss_hooks.water_fx |
-| `EffWater3D_State_DestroyOnAnimEnd` | boss2.c | not translated | see EffWater3D_Create |
+| `EffWater3D_Create` | boss2.c + obj_draw.c | modified | arena position -> g_boss_hooks.water_fx = objects_fx3d_water (3D BAC sprite, ac_eff_water_3d anim 2) |
+| `EffWater3D_State_DestroyOnAnimEnd` | obj_draw.c | modified | the 3D effect pool ends the effect with its animation |
 
 ### Boss5 (boss5.c, boss1.c)
 
@@ -1574,9 +1579,14 @@ Boss7Info bi; boss7_info(&bi);                 /* bi.player_anim_speed: 0x4000 w
   `HoldAirAttackCharge` (`unk456-- == 0`, s16) run about 65530 frames: the rival stands idle holding R and can be hit
   (hits do not change the input state; the defeat does). Seen in 2 of the 24 seed / difficulty / story combinations
   of the test (LEVEL=1: seed 3 Blaze's story, seed 0xdeadbeef Sonic's story), before any special; the test detects it.
-- **3D BAC sprite effects are not translated**: EffTrail (Sonic's dash trail), EffBoostA_3D / EffBoostA2_3D (boost
-  jets), EffFire01_3D(_CreateFollowing) (Blaze's flames), EffKemuriSpin3D (spin dash smoke). They are logged
-  (`fx3d`) and counted; the fields the Boss7 code writes go to a dummy object.
+- **3D BAC sprite effects play once at their spawn point**: EffBoostA_3D / EffBoostA2_3D (boost jets,
+  `eff_sb_boost_a_3d`, `eff_sb_boost_a2_3d` / `eff_bb_boost_a2_3d`), EffFire01_3D(_CreateFollowing) (Blaze's
+  flames, `ac_eff_fire_01_3d`, converted as `act__ac_eff_b7_3d`) and EffKemuriSpin3D (spin dash smoke,
+  `ac_eff_kemuri_spin02_3d`, animation 0 or 2) go to `g_boss_hooks.fx3d` (main.c: `objects_fx3d_spawn`, boss-arena
+  world coordinates, the x offset mirrored by the facing). Not kept: EffBoostA_3D_State_FollowParent,
+  EffFire01_3D_State_FollowOffset's spiral and EffKemuriSpin3D_State_Main's second animation. EffTrail (Sonic's
+  dash trail) is not drawn. EffFire01_3D_CreateFollowing keeps its three Rand draws (the shared seed). All are
+  logged (`fx3d`) and counted; the fields the Boss7 code writes go to a dummy object.
 - Material / pattern animations of D6 / D7 (eff_tornado / eff_flame / eff_aura .nsbma / .nsbtp) are timing only (frame
   counts in bossdata.bin); the D6 lifetimes and the aura cycle keep the original timing, the texture motion is not
   shown. `NNS_G3dGetTex` binds are dropped.
@@ -1705,9 +1715,9 @@ with ring bonus, models projected, and per character the lost clash. All 12 runs
 | `Boss7PartD5_MoveState_SonicSpecialStartOrbit` | boss7.c | reused |  |
 | `Boss7PartD5_MoveState_SonicSpecialWaitDashAngle` | boss7.c | reused |  |
 | `Boss7PartD5_MoveState_SpindashCharge` | boss7.c | reused |  |
-| `Boss7PartD5_MoveState_SpindashRelease` | boss7.c | modified | EffTrail / EffBoostA_3D not translated |
+| `Boss7PartD5_MoveState_SpindashRelease` | boss7.c | modified | EffTrail not drawn, EffBoostA_3D one-shot (g_boss_hooks.fx3d) |
 | `Boss7PartD5_MoveState_StartAirAttackCharge` | boss7.c | reused |  |
-| `Boss7PartD5_MoveState_StartAirDash` | boss7.c | modified | BLDY -> boss7_blend, EffBoostA2_3D not translated |
+| `Boss7PartD5_MoveState_StartAirDash` | boss7.c | modified | BLDY -> boss7_blend, EffBoostA2_3D one-shot (g_boss_hooks.fx3d) |
 | `Boss7PartD5_MoveState_StartBackHop` | boss7.c | reused |  |
 | `Boss7PartD5_MoveState_StartBlazeSpecial` | boss7.c | reused |  |
 | `Boss7PartD5_MoveState_StartCrouch` | boss7.c | reused |  |
@@ -1723,7 +1733,7 @@ with ring bonus, models projected, and per character the lost clash. All 12 runs
 | `Boss7PartD5_OnHit` | boss7.c | modified | owner checked to be the player (obj_box_player); Player_OnHurt / Player_Action_AttackBounce -> objects module; NaviMsg / RingManager -> hooks |
 | `Boss7PartD5_PushAway` | boss7.c | reused |  |
 | `Boss7PartD5_SetAnimSpeedFromVelocity` | boss7.c | reused |  |
-| `Boss7PartD5_SpawnFireParticle` | boss7.c | modified | EffFire01_3D_Create not translated |
+| `Boss7PartD5_SpawnFireParticle` | boss7.c | modified | EffFire01_3D_Create one-shot (g_boss_hooks.fx3d) |
 | `Boss7PartD5_SpriteCallback` | boss7.c | reused | command 7 of the native son.bac table |
 | `Boss7PartD5_StartSpecialAttack` | boss7.c | reused |  |
 | `Boss7PartD5_State_Idle` | boss7.c | reused |  |

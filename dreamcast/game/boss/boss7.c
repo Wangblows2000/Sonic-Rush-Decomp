@@ -42,8 +42,9 @@
  *     writes dropped (single screen)
  *   - BossHelp_* -> boss_core.c (g_boss_hooks.help), TalkDemo_Create -> boss7_set_talk_hook,
  *     NaviMsg -> g_boss_hooks.navi, sound -> g_boss_hooks.sfx / sfx_handle / music
- *   - 3D BAC sprite effects (EffTrail, EffBoostA(2)_3D, EffFire01_3D,
- *     EffKemuriSpin3D) are not translated: logged ("fx3d") and counted
+ *   - 3D BAC sprite effects (EffBoostA(2)_3D, EffFire01_3D, EffKemuriSpin3D) play their
+ *     animation once at the spawn point through g_boss_hooks.fx3d (objects_fx3d_spawn); the
+ *     follow states are not kept. EffTrail is not drawn. All are logged ("fx3d") and counted.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -477,8 +478,14 @@ static void NNS_G3dGlbMaterialColorDiffAmb(u16 diff, u16 amb, int vtx) {
     apply_material_colors();
 }
 
-/* 3D BAC sprite effects (EffTrail_Create, EffBoostA_3D_Create, EffBoostA2_3D_Create,
- * EffFire01_3D_Create(Following), EffKemuriSpin3D_Create): not translated */
+/* 3D BAC sprite effects. The DS creates a StageObj task with StageObj_Load3dBAC; natively the
+ * effect is one animation played once at the spawn point (g_boss_hooks.fx3d ->
+ * objects_fx3d_spawn, boss-arena world coordinates). Resource names: data_ov000_02367bb0
+ * ac_eff_kemuri_spin02_3d, 02367bcc eff_sb_boost_a2_3d, 02367be4 eff_bb_boost_a2_3d, 02367bfc
+ * eff_sb_boost_a_3d, 02367c14 ac_eff_fire_01_3d (converted as act__ac_eff_b7_3d: same file). Not kept: the follow states
+ * (EffBoostA_3D_State_FollowParent, EffFire01_3D_State_FollowOffset's spiral) and
+ * EffKemuriSpin3D_State_Main's second animation; EffTrail_Create is not a 3D BAC (not drawn).
+ * The returned object is a scratch work (callers set its velocity / gravity, unused). */
 static Boss7Fx *boss7_fx(const char *what, DcPlayer *o, s32 a) {
     s_st.fx3d++;
     boss_log("fx3d", a, o != NULL ? o->x >> 8 : 0);
@@ -492,30 +499,52 @@ static Boss7Fx *boss7_fx(const char *what, DcPlayer *o, s32 a) {
     }
     return &s_fx;
 }
+/* the StageObj position of the effect: the parent's x / y (+ z where the create copies it), x offset
+ * mirrored when the parent faces left (disp & 1), as in the Eff*_3D_Create functions */
+static Boss7Fx *boss7_fx3d(const char *what, const char *bac, s32 anim, DcPlayer *o, s32 x, s32 y, s32 z, int copy_z) {
+    Boss7Fx *e = boss7_fx(what, o, anim);
+    if (!copy_z)
+        e->h.z = 0;
+    if (e->h.disp_flags & 1)
+        e->h.x -= x << 8;
+    else
+        e->h.x += x << 8;
+    e->h.y += y << 8;
+    e->h.z += z << 8;
+    if (g_boss_hooks.fx3d)
+        g_boss_hooks.fx3d(g_boss_hooks.ctx, bac, anim, e->h.x, e->h.y, e->h.z, 1u | ((e->h.disp_flags & 1) ? 2u : 0u), 0);
+    return e;
+}
 static void *EffTrail_Create(Boss7PartD5 *w, s32 a, s32 b, s32 c, s32 d) {
     (void)b; (void)c; (void)d;
     return boss7_fx("EffTrail_Create", &w->h, a);
 }
 static void EffTrail_StartFollow(void *p) { (void)p; }
 static Boss7Fx *EffBoostA_3D_Create(Boss7PartD5 *w, s32 a, s32 b, s32 c, s32 d) {
-    (void)b; (void)c; (void)d;
-    return boss7_fx("EffBoostA_3D_Create", &w->h, a);
+    /* type 0 only loads the BAC (eff_sb_boost_a_3d), z is not copied from the parent */
+    if (a != 0)
+        return boss7_fx("EffBoostA_3D_Create", &w->h, a);
+    return boss7_fx3d("EffBoostA_3D_Create", "act__eff_sb_boost_a_3d", 0, &w->h, b, c, (s16)d, 0);
 }
 static Boss7Fx *EffBoostA2_3D_Create(Boss7PartD5 *w, s32 a, s32 b, s32 c, s32 d) {
-    (void)b; (void)c; (void)d;
-    return boss7_fx("EffBoostA2_3D_Create", &w->h, a);
+    return boss7_fx3d("EffBoostA2_3D_Create", a == 0 ? "act__eff_sb_boost_a2_3d" : "act__eff_bb_boost_a2_3d", 0, &w->h, b, c,
+                      (s16)d, 0);
 }
 static Boss7Fx *EffFire01_3D_Create(Boss7PartD5 *w, s16 x, s16 y, s16 z) {
-    (void)y; (void)z;
-    return boss7_fx("EffFire01_3D_Create", &w->h, x);
+    return boss7_fx3d("EffFire01_3D_Create", "act__ac_eff_b7_3d", 0, &w->h, x, y, z, 0);
 }
+/* EffFire01_3D_CreateFollowing: three Rand draws for the offset (kept: the shared seed), then
+ * EffFire01_3D_Create */
 static Boss7Fx *EffFire01_3D_CreateFollowing(Boss7PartD5 *w, s32 a, s32 b, s32 c) {
-    (void)b; (void)c;
-    return boss7_fx("EffFire01_3D_CreateFollowing", &w->h, a);
+    s16 x = (s16)a, y = (s16)b, z = (s16)c;
+    x = (s16)(x + 3 - (Rand() & 6));
+    y = (s16)(y + 3 - (Rand() & 6));
+    z = (s16)(z + 3 - (Rand() & 6));
+    return EffFire01_3D_Create(w, x, y, z);
 }
 static Boss7Fx *EffKemuriSpin3D_Create(Boss7PartD5 *w, s32 a, s32 b, s32 c, s32 d) {
-    (void)b; (void)c; (void)d;
-    return boss7_fx("EffKemuriSpin3D_Create", &w->h, a);
+    /* animation 0, or 2 for type 1; z copied from the parent */
+    return boss7_fx3d("EffKemuriSpin3D_Create", "act__ac_eff_kemuri_spin02_3d", a != 1 ? 0 : 2, &w->h, b, c, (s16)d, 1);
 }
 
 /* Player actions the player module lacks (copied as in boss1.c / boss2.c) */
