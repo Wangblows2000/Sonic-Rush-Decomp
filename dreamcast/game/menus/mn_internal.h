@@ -133,6 +133,8 @@ typedef struct MnSpr {
     u32 flags;
     u8 engine;       /* 0 main (top), 1 sub (bottom) */
     u16 alpha;       /* 0..16, 16 opaque (blend effects) */
+    u8 oam;          /* AnimatorSprite.oamPrio (unk46, Oam_AllocObj's list): lower is in front; draw
+                      * order among equal values (the first drawn in front) */
 } MnSpr;
 void AnimatorSprite_Init(MnSpr *s, const MnRes *r, u16 anim, u32 flags, int engine);
 void AnimatorSprite_SetAnimation(MnSpr *s, u16 anim);
@@ -151,12 +153,15 @@ typedef struct {
     u8 page, engine, prio, kind;
     u32 argb;
     u16 image;               /* sprite image index (its palette on a PAL4 page) */
+    u8 oam;                  /* the sprite's oamPrio (MnSpr.oam) */
 } MnQuad;
-enum { MNQ_SPRITE, MNQ_BG, MNQ_FLAT, MNQ_3D };   /* MNQ_3D: marker of the 3D layer in the order */
+enum { MNQ_SPRITE, MNQ_BG, MNQ_FLAT, MNQ_3D, MNQ_AFFINE };   /* MNQ_3D: marker of the 3D layer in the order */
 #define MN_MAX_QUADS 768
 int mn_quads(const MnQuad **out);
 void mn_quads_reset(void);
 void mn_emit_flat(int engine, int prio, float x, float y, float w, float h, u32 argb);
+void mn_emit_bg_affine(int engine, int prio, const MnBgImg *img, float cx, float cy, s32 scale, s32 angle);
+void mn_affine_corners(const MnQuad *q, float xy[4][2]);
 /* part (sx, sy, w, h) of a BG image at (x, y) of `engine`, in the sprite order of
  * priority `prio` (per-row BG scroll / split effects) */
 void mn_emit_bg_part(int engine, int prio, const MnBgImg *img, float x, float y, float sx, float sy, float w,
@@ -180,6 +185,8 @@ typedef struct {
     MnRegion r[MN_MAX_REGIONS];
     int n;
     u8 base;           /* engine whose brightness fades the frame */
+    u8 split_bright;   /* 1: engine 0's brightness fades its regions only (an overlay after them), engine
+                        * 1's the whole frame over everything (the two DS screens fade apart) */
     u32 fill;          /* backdrop colour under everything (0 = none) */
 } MnComp;
 extern MnComp g_mn_comp;
@@ -210,8 +217,29 @@ void MsgBox_RequestClose(void);
 void MsgBox_SetFlags(u32 v);
 void MsgBox_Destroy(void);
 int mn_automap_enabled(void);   /* mn_zonemap.c: test autopilot on */
-void mn_msgbox_gc(void);        /* frees a destroyed box's files (start of a frame) */
+void mn_msgbox_gc(void);
+void mn_flush_freed(void);        /* the files mn_res_free / mn_bg_free took this frame */        /* frees a destroyed box's files (start of a frame) */
 extern char g_mn_models_dir[96];   /* "/cd/models": .dcm / .dca / .dcv of the layer */
+/* one model of the layer (the state a scene sets before Model_Draw) */
+typedef struct {
+    int mdl;                      /* 0 Sonic (son.dcm), 1 Blaze (blz.dcm) */
+    int set;                      /* animations: 0 player archive, 1 menu.narc, 2 menu_ex.narc */
+    int jidx, vidx;               /* joint / visibility animation */
+    s32 frame;                    /* fx32; past the end: the last frame unless loop */
+    int loop;
+    int alpha;                    /* polygon alpha 1..31 (0 = 31) */
+    float t, b, l, r, n, f;       /* G3_OrthoW (DS px around the screen centre) */
+    float eye[3], at[3];          /* LookAt, up (0, 1, 0) */
+    float pos[3], scale[3];       /* Model_Draw: v * S * RotY + pos (a negative scale mirrors) */
+    u16 rot_y;
+    int cull;                     /* NNS_G3dGlbPolygonAttr cull: 1 front faces, 2 back faces, else none */
+    u16 diff, amb;                /* NNS_G3dGlbMaterialColorDiffAmb */
+    int nlights;                  /* lights 0..n-1 (the light mask is 1: light 0 lights the model) */
+    u16 lcol[4];
+    s16 lvec[4][3];
+} MnModelDesc;
+void mn_3d_add(const MnModelDesc *d);
+int mn_3d_anim_frames(int set, int idx);   /* frames of a joint animation (0: not loaded) */
 void mn_3d_reset(void);      /* per frame, with mn_quads_reset */
 int mn_3d_count(void);
 void mn_3d_free(void);       /* models and animations of the layer */
@@ -380,6 +408,8 @@ void NNS_SndStopSoundAll(void);
 void SegaLogo_Start(void);
 void TitleScreen_Start(void);
 void TitleScreen_StartFromDemo(void);
+void TitleDemo_Start(void);   /* mn_titledemo.c: SegaLogo_State_End */
+s32 TitleDemo_Interpolate(s32 from, s32 to, s32 n, s32 i, fx32 ease);
 void TitleMenu_Start(void);
 void TitleMenu_StartFromOptions(void);
 void TitleMenu_StartAtPlayerSelectItem0(void);

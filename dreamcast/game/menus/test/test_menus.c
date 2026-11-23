@@ -143,10 +143,30 @@ int main(int argc, char **argv) {
     run(40, 0, 0);
     CHECK(g_mn_bright[0] == 0);
     dump("02_segalogo");
-    t = run_until_scene("TitleScreen", 400);
+    t = run_until_scene("TitleDemo", 400);
     CHECK(t >= 0);
-    printf("SegaLogo -> TitleScreen at frame %d\n", s_frame);
+    printf("SegaLogo -> TitleDemo at frame %d\n", s_frame);
     CHECK(s_frame >= 2 + 32 + 120 + 32 + 30 && s_frame <= 2 + 32 + 120 + 32 + 30 + 3);
+    {   /* TitleDemo (mn_titledemo.c): scenes of 0x20, 0x48, 0x48, 0x20, 10, 0x28 frames */
+        int f0 = s_frame, n3d = 0, i;
+        run(0x20 + 0x40, 0, 0);
+        CHECK(g_mn_bright[1] == 0);            /* scene 2: the logo screen in, the picture fading */
+        dump("02a_titledemo_blaze");
+        run(0x48, 0, 0);
+        dump("02b_titledemo_sonic");
+        for (i = 0; i < 0x20 + 10; i++) {
+            run(1, 0, 0);
+            n3d = mn_3d_count() > n3d ? mn_3d_count() : n3d;
+            if (i == 0x10)
+                dump("02c_titledemo_spin");
+        }
+        CHECK(n3d == 2);                       /* scenes 4 / 5: Sonic and Blaze */
+        dump("02d_titledemo_models");
+        t = run_until_scene("TitleScreen", 100);
+        CHECK(t >= 0);
+        printf("TitleDemo -> TitleScreen after %d frames\n", s_frame - f0);
+        CHECK(s_frame - f0 >= 0x20 + 0x48 + 0x48 + 0x20 + 10 + 0x28 && s_frame - f0 <= 0x20 + 0x48 + 0x48 + 0x20 + 10 + 0x28 + 3);
+    }
     run(80, 0, 0);
     dump("03_title");
     run(30, 0, 0);
@@ -194,7 +214,13 @@ int main(int argc, char **argv) {
         MenuRequest r = menus_stage_exit(MENU_EXIT_GAME_OVER, 0, 0, 0, 0);
         CHECK(r.kind == MENU_REQ_NONE && strcmp(g_mn_scene, "SegaLogo") == 0);
     }
-    t = run_until_scene("TitleScreen", 400);
+    /* the title demo skipped with A in scene 2: 0x20 frames to white, then the title screen */
+    t = run_until_scene("TitleDemo", 400);
+    CHECK(t >= 0);
+    run(0x30, 0, 0);
+    tap(IN_JUMP);
+    t = run_until_scene("TitleScreen", 0x20 + 4);
+    CHECK(t >= 0 && g_mn_bright[0] == 0x10);
     run(0x50, 0, 0);
     tap(IN_START);
     run_until_scene("TitleMenu", 60);
@@ -291,7 +317,7 @@ int main(int argc, char **argv) {
 
     /* ---------------- player select (progress >= 3): Sonic / Blaze */
     menus_stage_exit(MENU_EXIT_GAME_OVER, 0, 0, 0, 0);
-    run_until_scene("TitleScreen", 400);
+    run_until_scene("TitleScreen", 700);
     run(0x50, 0, 0);
     tap(IN_START);
     run_until_scene("TitleMenu", 60);
@@ -315,7 +341,7 @@ int main(int argc, char **argv) {
     /* ---------------- options: difficulty, time limit, sound test, erase */
     SaveData_UnlockSoundTest();
     menus_stage_exit(MENU_EXIT_GAME_OVER, 0, 0, 0, 0);
-    run_until_scene("TitleScreen", 400);
+    run_until_scene("TitleScreen", 700);
     run(0x50, 0, 0);
     tap(IN_START);
     run_until_scene("TitleMenu", 60);

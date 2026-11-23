@@ -162,9 +162,7 @@ static void SegaLogo_State_End(void) {
     if (w->unk0 >= 0x1e) {
         w->unk0 = 0;
         Task_DestroyAll();
-        /* TitleDemo_Start: the 3D intro (TitleDemo_*) is not part of the port;
-         * its end (scene 6 / skip) leads to TitleScreen_Start. */
-        TitleScreen_Start();
+        TitleDemo_Start();   /* mn_titledemo.c; its end (scene 6 / skip) is TitleScreen_StartFromDemo */
     }
 }
 

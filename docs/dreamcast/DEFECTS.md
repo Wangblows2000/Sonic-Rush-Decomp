@@ -220,13 +220,27 @@ code (placement, timers, palettes) for one 640x480 frame.
   SONIC / BLAZE halves | colours kept; FIXED menus/mn_extraact.c: a band crossing y 96 is split there
   (map rows 0..11 tile 0, 12..23 tile 1), it took one colour | Flycast: blue SONIC & BLAZE bar, magenta
   EXTRA ZONE CLEAR bar, tally, rank.
-- V15 | medium, open | options: the question of every choice page (DIFFICULTY?, TIME LIMIT?, the erase
-  questions: white glyphs, anims 0x15..0x1a) is drawn over the light stripes of mnu_opti_bg02_b (DS y
-  43..55, the dark header is 26..46) and cannot be read; on the sound-test page the title sits on the top
-  edge of its black bar and the track name between the meter boxes | the options pages were rewritten with
-  direct positions; the DS draws them at the page origin of KeyframeAnim mnu_opti.ama (seq 14 ends at
-  (0, 24)) + DrawPage offsets and scrolls sub BG0 / BG1 by -origin (OptionsMenu_SetSubScroll) | not fixed:
-  the page origin / BG layer of each page has to be derived from OptionsMenu_* first.
+- V15 | medium | options: the question of every choice page (DIFFICULTY?, TIME LIMIT?, the erase
+  questions: white glyphs, anims 0x15..0x1a) was drawn over the light stripes of mnu_opti_bg02_b (image rows
+  53..65, the dark header is 24..46) and could not be read; on the sound-test page the title sat on the top
+  edge of its black bar, the track name between the meter boxes, the speakers, arrows, track number and
+  PLAY / STOP were missing; the list drew a panel the DS does not show there | the options pages were
+  rewritten with guessed positions | FIXED menus/mn_options.c from OptionsMenu_DrawItems / DrawItemLabel1-2
+  / DrawPage0-4 / DrawPageBackButton / 022ca248 / 022ca1cc / 022ca150 / 022c9f54 / 022c9d58 / 022c9b78 /
+  DrawSoundTestTrackNumber and mnu_opti.ama (the page origin: the list (240, 0) -> seq 22 -> (0, 0); tbl =
+  Options_Unk_ov001_022ce960): list items at x 240 (selected) / 248, y 0x18 + 0x18 i, values at x - 0x44,
+  OPTIONS banner (0, 144), back button (mnu_titl 0) at (16, 80), the panels (sub BG0 / BG1, 512 x 256)
+  scrolled by -origin (only their left 16 columns at x 240 on the list); pages: question (0x18, 0x18),
+  choices (0x20 / 0x88, 0x50) lit by the current setting, the cursor frame of mnu_opti.bac on the hovered
+  one (blink 7 frames after a move, flash after the choice), PLAYER DATA's (0x38, 0x40 / 0x58) and ACT /
+  BOSS (0x38 / 0x80, 0x70), "A: OK / B: BACK" (0x34) in the footer at (0x18, 0x98) (the DS's touch back
+  button is not drawn); sound test: title, speakers with the four-quarter glow (anims 7 / 8, 6), arrows,
+  track name (0x80, 0x49), number (0x68, 0x4c), deco / PLAY / STOP, mnu_opti_sou_<lang> label; oamPrio
+  (unk46) of the buttons / cursors kept (V17). The page slides (ama seqs 13..27) are not played. Disc:
+  `dreamcast/game/cutscene/patches/build_disc_menus_sprites.patch` (mnu_opti, mnu_opti_sou(_<lang>)) |
+  menus host 45/45, flow 75/75, story 125/125; Flycast: DIFFICULTY ? / PLAYER DATA in the dark header,
+  NORMAL lit with the cursor, EASY with the cursor after RIGHT, the sound test with its title in the header
+  and the ticker in the black bar.
 - V16 | checked | title menu, time attack menu (records, zone selector), player select, a time-attack clear
   -> Try Again (menu, Cream art), QUIT -> title; the extra ending (talks over the frozen 3D scenes, Super
   Sonic and Burning Blaze, white fades), staff roll 2 (credits, CONGRATULATIONS pictures, SEGA / END),
@@ -234,15 +248,37 @@ code (placement, timers, palettes) for one 640x480 frame.
   warp of the kind of TransformDemo 2); Flycast (Blaze, zone 7 boss intro): streaks, light, the a5i3 dome as
   TransformDemo 2. Blaze ending (five pictures with captions, white fades) and staff roll 1 (credits column,
   Blaze / Cream running across it as on the DS main screen); game over (debug/autodie.txt "300 0": fade to
-  black, the letters drop in, GAME OVER centred, then the SEGA logo). Not reached: the PLAYER DATA records
-  page.
+  black, the letters drop in, GAME OVER centred, then the SEGA logo). Records (PLAYER DATA -> BATTLE PLAY
+  RECORD, Flycast): WIN / LOSE / DRAW header, the totals row (00 00 00), the Chao art, BATTLE PLAY RECORD
+  banner, back button; the totals row has no name (the DS shows the owner's name from the DS settings, which
+  the Dreamcast does not have); the opponents' names (font8) in the host dump. No change.
 - NOTE (flow, not changed here) the Blaze autopilot run (progress 20, autoclear at 900 fight frames) left
   the boss act of zone 5 with Blaze's lives saved as 0 (`lives 2/0`) after a clear; the next zone's boss act
   then ended in a game over at its first death. With autoclear 300 the same run kept 2 / 2: the deaths come
   from the long autoclear fights, the save of 0 lives after a clear is for the flow owner to check.
-- Not translated (open): the 3D TitleDemo (52 functions: six scenes of BG scrolls, sub-screen affine,
-  sprites and the two models in an ortho view before the title screen; the SEGA logo still goes to the
-  title screen).
+- V17 | medium | TitleDemo (the intro between the SEGA logo and the title screen) was not translated: the
+  SEGA logo went straight to the title | FIXED menus/mn_titledemo.c (TitleDemo_* : six scenes, 258 frames:
+  "SONIC" fades in, Blaze's then Sonic's picture scroll up under their bands, "RUSH" spins in (affine,
+  scale 0.5 -> 1, 2.5 turns), Sonic (mirrored, scale 14) and Blaze (13.125) slide in on the ortho camera
+  with the menu_ex poses, "RUSH" shines, white; SE 1..4 of SSAR 0 and the music Sound_PlaySeq(0); START / A
+  fade to white in 0x20 frames and go to the title, as TitleDemo_CheckSkipInput) on the menus' 3D layer
+  (mn_model.c now takes any instance: MnModelDesc, LookAt, per-axis scale, cull, material colours, lights;
+  set 2 = menu_ex.narc). Single screen: the top screen at x1.875 over the top 480 x 360, the logo part of
+  the bottom screen at x1.15 under it, white around; the two screens fade apart (MnComp.split_bright: the
+  main screen's brightness overlay after its regions). Also: AnimatorSprite oamPrio (unk46) in the menus
+  (MnSpr.oam, sorted like Oam_AllocObj's lists: the RUSH sprite in front of the bands), affine BG quads
+  (mn_emit_bg_affine), menudata.py converts title_demo_rush_spin_*.bbg, csdata.py adds menu_ex.dca / .dcv to
+  models.txt. Not done: the edge marking, the clip of the magnified RUSH to the bottom screen |
+  menus host test (SegaLogo -> TitleDemo at frame 216, -> TitleScreen 260 frames later, 2 models in scenes
+  4 / 5, skip with A in scene 2 -> white title screen), story 125/125; Flycast: the six scenes, the models
+  animating in scene 5, SONIC RUSH assembled, white, the title screen.
+- V18 | low (latent) | menus: a task destroyed in the frame that drew it (TitleScreen -> TitleMenu,
+  Options exit, the title demo's end: Task_DestroyAll after the draw, as the DS code does) freed the files
+  this frame's quads still drew from (mn_draw built textures from freed memory; the host test crashed
+  once the heap layout changed) | FIXED menus/mn_core.c: mn_res_free / mn_bg_free queue the files,
+  mn_flush_freed() frees them after menus_draw_tr and at the next frame start | host tests.
+- Open: the DS edge marking (model outlines: DISP3DCNT 0x20 with G3X_SetEdgeColorTable) of the zone-map
+  character and the title-demo models is not drawn.
 - FIXED (boss; main.c patch dreamcast/game/boss/patches/boss_restart_main.patch) a death in a boss act
   did not re-create the boss: the fight went on with the damage done, the boss mid-attack. On the DS
   Player_Respawn -> StageRestart_Create destroys every task and creates the stage again (full

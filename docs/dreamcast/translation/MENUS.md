@@ -367,13 +367,13 @@ only; **not translated** = section 8.
 | ClearDemo_GoToNextScene | static in `mn_main.c` | modified (scene changes -> requests; ending, TryAgain, DemoScript4 reported unavailable) |
 | PauseMenu_QuitToMap | `menus_stage_exit(MENU_EXIT_QUIT)` | modified |
 | SegaLogo_Create, Start, State_Init, State_FadeIn, State_Wait, State_FadeOut, Interpolate, LoadAssets, ShowBackgrounds, ReleaseAssets, ResetDisplay, Destructor | same | as-is / modified (display registers -> layers) |
-| SegaLogo_State_End | same | modified (TitleDemo_Start -> TitleScreen_Start: the 3D intro is not translated) |
+| SegaLogo_State_End | same | same (TitleDemo_Start) |
 | SegaLogo_InitDisplay | same | modified |
 | TitleScreen_Create, Start, StartFromDemo, State_Init, State_WaitForStart, State_StartPressed, CheckStartPressed, CreateFadeTask, FadeTask_Main, CreatePaletteCycle, PaletteCycle_Main, LoadAssets, InitBackgrounds, InitSprites, Destructor | same | modified (logic and constants as-is; touch area -> A) |
 | TitleScreen_StartAttractDemo | in State_WaitForStart | modified (SceneChange_ToDemoPlay -> MENU_REQ_DEMO with the demo index) |
 | TitleScreen_GoToTitleMenu, GoToUnlockNotice | inline | as-is |
 | PostStaffRoll_ShowUnlockNotices, State_PlayerSelectUnlockNotice, State_SoundTestUnlockNotice, State_GoToSegaLogo | `PostStaffRoll_*` in mn_title.c | same (MsgBox 0x14 / 0x15 of mn_msgbox.c, MsgBox_RequestClose at 0xf0; A / START request it after 0x28; flags + commit as-is) |
-| TitleDemo_* (3D intro, 52 functions) | - | not translated |
+| TitleDemo_* (3D intro, 52 functions) | `TitleDemo_*` / `td_*` in mn_titledemo.c | modified: the six scenes, timings, interpolations, brightness, SEs, skip as the DS; the models on the menus' 3D layer (mn_model.c), the affine "RUSH" as a rotated quad (mn_emit_bg_affine); single screen: top screen x1.875 over the top 480 x 360, the bottom screen's logo strip (8, 24)-(248, 128) x1.15 under it, the screens' brightnesses apart (MnComp.split_bright); no edge marking (DEFECTS.md V17) |
 | TitleMenu_Create, Main, Start, StartAtPlayerSelectItem0/1, StartFromOptions, LoadAssets, InitSprites, InitDisplay, Destructor | same | modified |
 | TitleMenu_OpenRootPage, OpenPlayerSelectPage, OpenVsPage, OpenVsSubPage, CreatePageTask, Unk_ov001_022d7ee8 / 022d8060 (`TitleMenu_InitPage`), Unk_022d7dbc, Unk_022d7e60, Select* | same | as-is |
 | TitleMenu_State_WaitOpenAnims, State_Unk_022d8938 (`State_Select`), 022d8798 (`State_Confirm`), 022d85d0 (`State_Close`) | same | modified (touch path removed; VS message box -> declined) |
@@ -405,7 +405,7 @@ only; **not translated** = section 8.
 | ZoneActSelect_Create, LoadRecords, CalcRecordRanks, DrawActCursor, DrawActLabels, DrawRecordRanks, DrawRecordScores, DrawZoneTabs, DrawBackButton, Unk_022e08e0, UpdateTabOffsets, LoadZonePalette, State_FadeIn, State_Select, State_Unk_022e0f08, State_FadeOut, IsFinished, GetResult, GetSelectedZone | same | modified (palette numbers per sprite not applied; touch removed) |
 | ZoneActSelectMode_Start, Main, StartStage, ExitToTitleMenu, Shutdown | same | modified |
 | Options_StartFromTitleMenu, Options_LoadSettingsFromSave, OptionsMenu_SetDifficultyChoice, Options_SetTimeLimit, Options_EraseSaveData, Options_ExitToTitleMenu, Options_IsSoundTestUnlocked/IsExtraStoryCleared, SoundTest_BuildTrackNameText, OptionsMenu_DrawSoundTestTrackName, OptionsMenu_State_TimeLimit/SoundTest input rules | same | as-is / modified |
-| Options page framework (OptionsMenu_OpenPage0-5, ClosePage*, DrawPage*, State_Unk_*, UpdateAnims, InitEnterItemAnims, OptionsBgScroll_Main ...) | `Options_State_Main` + `Options_Draw` | rewritten (same sprites and choices, direct layout) |
+| Options page framework (OptionsMenu_OpenPage0-5, ClosePage*, DrawPage*, State_Unk_*, UpdateAnims, InitEnterItemAnims, OptionsBgScroll_Main ...) | `Options_State_Main` + `Options_Draw` | rewritten: the rest positions of OptionsMenu_DrawItems / DrawPage0-4 and mnu_opti.ama (list origin (240, 0), pages (0, 0)), the panels on a 512 x 256 plane scrolled by -origin, cursor frames, oamPrio; the slides between list and pages are not played (DEFECTS.md V15) |
 | OptionsWfsHost_*, DownloadPlay, SoundTest level meter/capture | - | not translated |
 | Options PLAYER DATA pages, Options_ExitToRecords, Options_ExitToTimeAttackMenuMode2/3, ZoneMapPause_ExecuteChoice2/3 | mn_options.c, mn_timeattack.c | as-is (layout of the pages rewritten like the other pages) |
 | - | `menus_init`, `menus_run_frame`, `menus_draw_tr`, `menus_stage_exit`, `save_load`, `save_write`, `mn_*` | new |
@@ -413,7 +413,6 @@ only; **not translated** = section 8.
 ## 8. Gaps and assumptions
 
 - **Not translated**:
-  - TitleDemo: the 3D intro before the title screen. The SEGA logo goes straight to the title screen.
   - VS (all wireless menus, TimeSelect): see section 11.
   - Ending / staff roll and the extra / final story scripts (DemoScript*). Zone 7 and 8 clears report "Ending".
   - Talk demos (story dialogue on the map) unless main.c sets the talk_demo hooks.

@@ -13,6 +13,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "mn_internal.h"
 #ifdef _arch_dreamcast
 #include "../engine/pak.h"   /* /cd/data.pak: per-stage files without a directory walk each */
@@ -342,6 +343,12 @@ MnBgImg *mn_bg_load(const char *bbg_path) {
 }
 
 void mn_bg_release_tex(MnBgImg *b);   /* mn_draw.c */
+#define MN_TRASH 64
+static MnRes *s_trash_res[MN_TRASH];
+static MnBgImg *s_trash_bg[MN_TRASH];
+static int s_ntrash_res, s_ntrash_bg;
+static void bg_free_now(MnBgImg *b);
+void mn_flush_freed(void);
 void mn_bg_free(MnBgImg *b) {
     int e, l;
     if (!b)
@@ -350,6 +357,11 @@ void mn_bg_free(MnBgImg *b) {
         for (l = 0; l < 4; l++)
             if (g_mn_layer[e][l].img == b)
                 g_mn_layer[e][l].img = NULL;
+    if (s_ntrash_bg >= MN_TRASH)
+        mn_flush_freed();
+    s_trash_bg[s_ntrash_bg++] = b;
+}
+static void bg_free_now(MnBgImg *b) {
     mn_bg_release_tex(b);
     free(b->idx);
     free(b->argb);
@@ -492,7 +504,27 @@ MnRes *mn_res_load(const char *bac_path) {
 }
 
 void mn_res_release_tex(MnRes *r);   /* mn_draw.c */
+/* Freed files wait for the end of the frame: a task destroyed in the frame that drew it (Task_Destroy /
+ * Task_DestroyAll after its draw, as the DS code does everywhere) leaves quads in this frame's list
+ * that draw from its files.  mn_flush_freed() (end of menus_draw_tr, start of the next frame) frees
+ * them. */
+static void res_free_now(MnRes *r);
+void mn_flush_freed(void) {
+    int i;
+    for (i = 0; i < s_ntrash_res; i++)
+        res_free_now(s_trash_res[i]);
+    for (i = 0; i < s_ntrash_bg; i++)
+        bg_free_now(s_trash_bg[i]);
+    s_ntrash_res = s_ntrash_bg = 0;
+}
 void mn_res_free(MnRes *r) {
+    if (!r)
+        return;
+    if (s_ntrash_res >= MN_TRASH)
+        mn_flush_freed();
+    s_trash_res[s_ntrash_res++] = r;
+}
+static void res_free_now(MnRes *r) {
     int i;
     if (!r)
         return;
@@ -581,14 +613,17 @@ static const MnImage *spr_image(const MnSpr *s) {
 
 static MnQuad s_quads[MN_MAX_QUADS];
 static int s_nquads;
+static u8 s_max_oam;   /* the largest MnQuad.oam this frame */
 int mn_quads(const MnQuad **out) {
     *out = s_quads;
     return s_nquads;
 }
 void mn_quads_reset(void) {
     s_nquads = 0;
+    s_max_oam = 0;
     mn_3d_reset();
     mn_msgbox_gc();
+    mn_flush_freed();
 }
 
 void AnimatorSprite_DrawScaled(MnSpr *s, fx32 scx, fx32 scy) {
@@ -627,6 +662,9 @@ void AnimatorSprite_DrawScaled(MnSpr *s, fx32 scx, fx32 scy) {
     q->prio = (u8)((s->flags & SPR_PRIO_MASK) >> 17);
     q->kind = MNQ_SPRITE;
     q->argb = (s->alpha >= 16 ? 0xff000000u : (u32)(s->alpha * 255 / 16) << 24) | 0xffffff;
+    q->oam = s->oam > 31 ? 31 : s->oam;
+    if (q->oam > s_max_oam)
+        s_max_oam = q->oam;
 }
 
 void AnimatorSprite_Draw(MnSpr *s) { AnimatorSprite_DrawScaled(s, 0x1000, 0x1000); }
@@ -671,6 +709,37 @@ void mn_emit_bg_part(int engine, int prio, const MnBgImg *img, float x, float y,
     q->prio = (u8)prio;
     q->kind = MNQ_BG;
     q->argb = 0xffffffff;
+}
+
+/* an affine BG (G2x_SetBGyAffine with a Scale * Rot matrix): image pixel (cx, cy) at screen (cx, cy),
+ * `scale` texels per screen pixel (fx32), rotation `angle` (0x10000 a turn); outside the image nothing
+ * (area over off).  Stored as a quad: x, y = centre, w = scale, h = angle, u0 = 1 (affine) */
+void mn_emit_bg_affine(int engine, int prio, const MnBgImg *img, float cx, float cy, s32 scale, s32 angle) {
+    MnQuad *q;
+    if (!img || s_nquads >= MN_MAX_QUADS || scale <= 0)
+        return;
+    q = &s_quads[s_nquads++];
+    memset(q, 0, sizeof(*q));
+    q->x = cx;
+    q->y = cy;
+    q->w = scale / 4096.0f;
+    q->h = (float)(angle & 0xffff) * (6.28318530718f / 65536.0f);
+    q->bg = img;
+    q->engine = (u8)engine;
+    q->prio = (u8)prio;
+    q->kind = MNQ_AFFINE;
+    q->argb = 0xffffffff;
+}
+/* the four screen corners (DS px) of an affine quad's image: screen = c + R(-angle) (tex - c) / scale */
+void mn_affine_corners(const MnQuad *q, float xy[4][2]) {
+    static const float tc[4][2] = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
+    float c = cosf(q->h), sn = sinf(q->h), inv = 1.0f / q->w;
+    int k;
+    for (k = 0; k < 4; k++) {
+        float dx = tc[k][0] * q->bg->w - q->x, dy = tc[k][1] * q->bg->h - q->y;
+        xy[k][0] = q->x + inv * (c * dx - sn * dy);
+        xy[k][1] = q->y + inv * (sn * dx + c * dy);
+    }
 }
 
 /* ---------------------------------------------------- composition */
@@ -778,12 +847,16 @@ int mn_sorted(const MnDraw **out) {
             }
             if (r->hide_spr)
                 continue;
-            for (i = s_nquads - 1; i >= 0; i--)
-                if (s_quads[i].engine == e && s_quads[i].prio == p &&
-                    s_nsorted < (int)(sizeof(s_sorted) / sizeof(s_sorted[0]))) {
-                    s_sorted[s_nsorted].q = &s_quads[i];
-                    s_sorted[s_nsorted++].r = r;
-                }
+            {   /* OAM order: Oam_AllocObj lists by oamPrio (lower in front), draw order inside a list */
+                int o;
+                for (o = s_max_oam; o >= 0; o--)
+                    for (i = s_nquads - 1; i >= 0; i--)
+                        if (s_quads[i].engine == e && s_quads[i].prio == p && s_quads[i].oam == o &&
+                            s_nsorted < (int)(sizeof(s_sorted) / sizeof(s_sorted[0]))) {
+                            s_sorted[s_nsorted].q = &s_quads[i];
+                            s_sorted[s_nsorted++].r = r;
+                        }
+            }
         }
     }
     *out = s_sorted;

@@ -14,7 +14,7 @@ int mn_project(const MnQuad *q, const MnRegion *r, MnOut *o) {
     float x0 = q->x, y0 = q->y, x1 = q->x + q->w, y1 = q->y + q->h;
     float du = (q->u1 - q->u0) / (q->w != 0 ? q->w : 1), dv = (q->v1 - q->v0) / (q->h != 0 ? q->h : 1);
     float u0 = q->u0, v0 = q->v0, u1 = q->u1, v1 = q->v1;
-    if (q->w <= 0 || q->h <= 0)
+    if (q->w <= 0 || q->h <= 0 || q->kind == MNQ_AFFINE || q->kind == MNQ_3D)
         return 0;
     if (x0 < r->sx0) {
         u0 += (r->sx0 - x0) * du;
@@ -131,9 +131,50 @@ static const Texture *bg_tex(MnBgImg *b) {
     return (const Texture *)b->tex;
 }
 
+/* an affine BG quad (mn_emit_bg_affine) through its region: the image's four corners rotated and
+ * scaled, the region's rectangle as the clip (PVR user clip is per tile: the quad is not clipped) */
+static void draw_affine(const MnQuad *q, const MnRegion *r, float z) {
+    const Texture *t = bg_tex((MnBgImg *)q->bg);
+    float xy[4][2];
+    pvr_poly_cxt_t cxt;
+    pvr_poly_hdr_t hdr;
+    pvr_vertex_t v;
+    static const int order[4] = {0, 1, 2, 3};
+    int k;
+    if (!t)
+        return;
+    mn_affine_corners(q, xy);
+    pvr_poly_cxt_txr(&cxt, PVR_LIST_TR_POLY, tex_txr_format(t, -1), t->w, t->h, t->ptr, PVR_FILTER_BILINEAR);
+    cxt.gen.culling = PVR_CULLING_NONE;
+    pvr_poly_compile(&hdr, &cxt);
+    pvr_prim(&hdr, sizeof(hdr));
+    v.argb = q->argb;
+    v.oargb = 0;
+    v.z = z;
+    for (k = 0; k < 4; k++) {
+        int c = order[k];
+        v.flags = k == 3 ? PVR_CMD_VERTEX_EOL : PVR_CMD_VERTEX;
+        v.x = r->dx + (xy[c][0] - r->sx0) * r->scale;
+        v.y = r->dy + (xy[c][1] - r->sy0) * r->scale;
+        v.u = (c & 1) ? (float)q->bg->w / t->w : 0.0f;
+        v.v = (c & 2) ? (float)q->bg->h / t->h : 0.0f;
+        pvr_prim(&v, sizeof(v));
+    }
+}
+
+static void bright_overlay(s16 b, float z) {
+    uint32_t a;
+    if (b == 0)
+        return;
+    a = (uint32_t)((b < 0 ? -b : b) * 255 / 16);
+    if (a > 255)
+        a = 255;
+    draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, z, a << 24 | (b > 0 ? 0xffffff : 0));
+}
+
 void menus_draw_tr(void) {
     const MnDraw *s;
-    int n = mn_sorted(&s), i;
+    int n = mn_sorted(&s), i, main_done = 0;
     float z = 10.0f;
     MnOut o;
     s16 b = g_mn_bright[g_mn_comp.base];
@@ -143,8 +184,19 @@ void menus_draw_tr(void) {
         const MnQuad *q = s[i].q;
         const Texture *t = NULL;
         int bank = -1;
+        if (g_mn_comp.split_bright && !main_done && s[i].r->engine != 0) {
+            /* the main screen's brightness over its regions only (the 3D layer included) */
+            z += 0.005f;
+            bright_overlay(g_mn_bright[0], z);
+            z += 0.005f;
+            main_done = 1;
+        }
         if (q->kind == MNQ_3D) {   /* the 3D layer's depth band (mn_3d_band, menus_draw_list) */
             z += MN_3D_GAP;
+            continue;
+        }
+        if (q->kind == MNQ_AFFINE) {
+            draw_affine(q, s[i].r, z);
             continue;
         }
         if (!mn_project(q, s[i].r, &o))
@@ -157,13 +209,16 @@ void menus_draw_tr(void) {
             continue;
         draw_rect_screen_pal(t, bank, PVR_LIST_TR_POLY, o.x, o.y, o.w, o.h, o.u0, o.v0, o.u1, o.v1, z, q->argb);
     }
-    /* master brightness: one pass over the whole frame */
-    if (b != 0) {
-        uint32_t a = (uint32_t)((b < 0 ? -b : b) * 255 / 16);
-        if (a > 255)
-            a = 255;
-        draw_rect_screen(NULL, PVR_LIST_TR_POLY, 0, 0, 640, 480, 0, 0, 0, 0, 90.0f, a << 24 | (b > 0 ? 0xffffff : 0));
+    /* master brightness: one pass over the whole frame (split: the sub screen's over everything, the
+     * main screen's after its regions above) */
+    if (g_mn_comp.split_bright) {
+        if (!main_done)
+            bright_overlay(g_mn_bright[0], 89.0f);
+        bright_overlay(g_mn_bright[1], 90.0f);
+    } else {
+        bright_overlay(b, 90.0f);
     }
+    mn_flush_freed();   /* the frame's quads are submitted */
 }
 #else
 void mn_res_release_tex(MnRes *r) { (void)r; }
@@ -191,5 +246,6 @@ void menus_draw_tr(void) {
         assert(is_pow2_pvr(tw) && is_pow2_pvr(th));
         assert(w <= tw && h <= th);
     }
+    mn_flush_freed();
 }
 #endif

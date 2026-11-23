@@ -641,10 +641,12 @@ def main():
     conv_trans(o)
     conv_ending(o)
     n = o.write_rcsd()
-    # the zone map's character model (menus/mn_model.c, ZoneMap_DrawCharModel) shares this list: the player
-    # models and animations (already in it through the cutscenes) and menu.narc's "decided" poses
+    # the menus' 3D layer (menus/mn_model.c: ZoneMap_DrawCharModel, TitleDemo_Draw*Model) shares this list: the
+    # player models and animations (already in it through the cutscenes), menu.narc's "decided" poses and
+    # menu_ex.narc's
     o.models |= {"mod__son__son.dcm", "mod__blz__blz.dcm", "narc__player_lz7__son.dca", "narc__player_lz7__son.dcv",
-                 "narc__menu__menu.dca", "narc__menu__menu.dcv"}
+                 "narc__menu__menu.dca", "narc__menu__menu.dcv",
+                 "narc__menu_ex__menu_ex.dca", "narc__menu_ex__menu_ex.dcv"}   # the title demo's poses
     (o.root / "sprites.txt").write_text("# sprite ids under build/dreamcast/sprites/bac (copy to /cd/sprites)\n" +
                                         "\n".join(sorted(o.sprites)) + "\n")
     missing = [f for f in sorted(o.models) if not (ROOT / "build/dreamcast/models" / f).exists()]

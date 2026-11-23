@@ -1,0 +1,11 @@
+--- a/dreamcast/game/build_disc.sh
++++ b/dreamcast/game/build_disc.sh
+@@ -88,7 +88,7 @@
+ if [ -f "$D/demotab.bin" ]; then mkdir -p "$OUT/disc/demo"; cp "$D/demotab.bin" "$OUT/disc/demo/"; [ -d "$D/key" ] && cp -r "$D/key" "$OUT/disc/demo/"; fi
+ cp "$M"/bg/*.mnbg "$OUT/disc/menus/bg/"; cp "$M"/ama/*.ama "$OUT/disc/menus/ama/"
+ for sp in act__title act__title_eng act__mnu_titl act__mnu_titl_eng act__mnu_psel act__mnu_psel_eng \
+-          act__mnu_opti_eng act__font_opti_sound act2__zmap__zmap_map_icon act2__zmap__zmap_scroll_arrow \
++          act__mnu_opti_eng act__font_opti_sound act__mnu_opti act__mnu_opti_sou act__mnu_opti_sou_jpn act__mnu_opti_sou_eng act__mnu_opti_sou_fra act__mnu_opti_sou_deu act__mnu_opti_sou_ita act__mnu_opti_sou_spa act__title_demo act__title_demo_eng act2__zmap__zmap_map_icon act2__zmap__zmap_scroll_arrow \
+           act2__zmap__zmap_act act2__zmap__font_zmap_act_num act2__zmap__zmap_pause act2__zmap__zmap_pause_eng \
+           act__ac_ex_cldm act__dm_cldm_tatk act__dm_demoplay_deu act__dm_demoplay_eng act__dm_demoplay_fra act__dm_demoplay_ita act__dm_demoplay_spa act__mnu_reco act__mnu_reco_deu act__mnu_reco_eng act__mnu_reco_fra act__mnu_reco_ita act__mnu_reco_jpn act__mnu_reco_spa act__mnu_time_act_deu act__mnu_time_act_eng act__mnu_time_act_fra act__mnu_time_act_ita act__mnu_time_act_jpn act__mnu_time_act_lc_eng act__mnu_time_act_lc_jpn act__mnu_time_act_spa act__mnu_time_act_x_eng act__mnu_time_act_x_jpn act__mnu_time_boss_jpn act__mnu_time_boss_lc_eng act__mnu_time_boss_lc_jpn act__mnu_time_oneself_eng act__mnu_time_oneself_jpn act__mnu_time_ranking act__mnu_time_select act__mnu_time_tryagain act__mnu_time_tryagain_deu act__mnu_time_tryagain_eng act__mnu_time_tryagain_fra act__mnu_time_tryagain_ita act__mnu_time_tryagain_jpn act__mnu_time_tryagain_spa act__navi_m \
+           act2__caution__caution_d_jpn act2__caution__caution_d_eng act2__caution__caution_d_fra act2__caution__caution_d_deu act2__caution__caution_d_ita act2__caution__caution_d_spa \
