@@ -9,7 +9,7 @@ OUT ?= $(ROOT)/build/dreamcast/menus
 SPRITES ?= $(ROOT)/build/dreamcast/sprites/bac
 DUMP ?=
 SRCS = mn_core.c mn_draw.c mn_main.c mn_story.c mn_title.c mn_titlemenu.c mn_zonemap.c mn_actsel.c \
-       mn_psel.c mn_options.c mn_timeattack.c mn_tryagain.c mn_records.c mn_extraact.c mn_navi.c mn_model.c mn_msgbox.c mn_titledemo.c
+       mn_psel.c mn_options.c mn_timeattack.c mn_tryagain.c mn_records.c mn_extraact.c mn_navi.c mn_model.c mn_msgbox.c mn_titledemo.c mn_vs.c
 SAVE = ../save/save.c ../save/save_vmu.c
 HDRS = menus.h mn_internal.h extraact.h ../save/save.h
 MODEL = ../model/model.c

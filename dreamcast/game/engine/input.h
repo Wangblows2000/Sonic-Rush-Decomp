@@ -24,6 +24,8 @@ typedef struct {
 
 extern int g_input_deadzone;      /* default 32 */
 extern int g_input_dir_threshold; /* analog magnitude that counts as a direction, default 64 */
-void input_poll(InputState *in);
+void input_poll(InputState *in);              /* the first controller found (any port) */
+void input_poll_port(int port, InputState *in); /* Battle Play: controller port 0 (A) / 1 (B); none = all released */
+int input_port_present(int port);
 
 #endif

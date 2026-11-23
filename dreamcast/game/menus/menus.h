@@ -13,7 +13,8 @@ typedef enum {
     MENU_REQ_NONE = 0,     /* stay in the menus */
     MENU_REQ_STAGE,        /* start zone/act with character (story / time attack) */
     MENU_REQ_DEMO,         /* attract demo: SceneChange_ToDemoPlay, demo index in .demo */
-    MENU_REQ_UNAVAILABLE   /* a scene the port does not have (VS lobby, ending...): .scene names it */
+    MENU_REQ_UNAVAILABLE,  /* a scene the port does not have (ending...): .scene names it */
+    MENU_REQ_VS_STAGE      /* Battle Play race (two local controllers): zone/act, character = P1, character2 = P2 */
 } MenuRequestKind;
 
 /* gGameState.unk10 */
@@ -30,6 +31,7 @@ typedef struct {
     int emeralds;    /* gGameState.unk28 */
     int easy;        /* gGameState.unk14 (difficulty: 1 = normal ... see MENUS.md) */
     const char *scene;
+    int character2;  /* Battle Play: player 2's character (0 Sonic, 1 Blaze; never == character) */
 } MenuRequest;
 
 /* Sound hooks: original SDAT ids (SysSound_* / Sound_* call sites). NULL = silent. */
@@ -88,6 +90,22 @@ typedef enum {
 /* score = data_022c4590.unk4, lives = data_022c4590.unk14, emeralds = gGameState.unk28,
  * time = gGameState.unk20 (frames, time attack records) */
 MenuRequest menus_stage_exit(MenuExit how, uint32_t score, int lives, int emeralds, uint32_t time);
+
+/* ------------------------------------------------------------ Battle Play (menus/mn_vs.c)
+ * Local two-controller VS (BATTLE PLAY page of the title menu; the DS wireless lobby, VsConnect
+ * and download play have no DC counterpart). Player 2's pad for the menu frame (player select:
+ * each player picks with their own controller); call before menus_run_frame. */
+void menus_set_pad2(const InputState *in2);
+/* back from a race: ResultsScreen (win / lose / draw, rematch or quit). winner 0 = P1, 1 = P2,
+ * 2 = draw (time over); times in frames. Returns MENU_REQ_VS_STAGE for a rematch, else
+ * MENU_REQ_NONE (the menus run). */
+typedef struct {
+    int winner;
+    uint32_t time[2];
+    int rings[2];
+    int finished[2];
+} VsRaceResult;
+MenuRequest menus_vs_exit(const VsRaceResult *res);
 void menus_shutdown(void);
 /* The staff roll ended with CS_NEXT_UNLOCK_NOTICES (PostStaffRoll): show the unlock
  * notices the save calls for (player-select page, sound test), then the SEGA logo.

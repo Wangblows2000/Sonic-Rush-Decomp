@@ -6,10 +6,9 @@
 int g_input_deadzone = 32;
 int g_input_dir_threshold = 64;
 
-void input_poll(InputState *in)
+static void poll_dev(maple_device_t *dev, InputState *in)
 {
     uint32_t prev = in->held, h = 0;
-    maple_device_t *dev = maple_enum_type(0, MAPLE_FUNC_CONTROLLER);
     in->ax = in->ay = 0;
     in->lt = in->rt = 0;
     in->dpad = 0;
@@ -42,3 +41,18 @@ void input_poll(InputState *in)
     in->pressed = h & ~prev;
     in->released = prev & ~h;
 }
+
+void input_poll(InputState *in)
+{
+    poll_dev(maple_enum_type(0, MAPLE_FUNC_CONTROLLER), in);   /* the first controller, any port */
+}
+
+/* Battle Play: the controller in port `port` (0 = A, 1 = B) */
+static maple_device_t *port_dev(int port)
+{
+    maple_device_t *dev = maple_enum_dev(port, 0);
+    return dev && (dev->info.functions & MAPLE_FUNC_CONTROLLER) ? dev : NULL;
+}
+void input_poll_port(int port, InputState *in) { poll_dev(port_dev(port), in); }
+int input_port_present(int port) { return port_dev(port) != NULL; }
+
