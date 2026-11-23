@@ -85,11 +85,11 @@ Frame pacing from `/cd/debug/frameprof.txt` (per-scene summaries), shots every s
   initialisers; dcp_bind_map sets them from the map, Player_UpdateGimmickStageBounds translated.
 - FIXED (player/objects) Player_OnHurt kept its own ring-scatter level, never reset; now the ring
   manager's.
-- OPEN (integrator: engine/input + main.c) no DS R button: tricks, homing attack / air dash / hover,
+- FIXED (integrator: engine/input) no DS R button (right trigger -> DS R 0x100, left -> DS L 0x200 in engine/input; special-stage Trick Spring mapping uses both): tricks, homing attack / air dash / hover,
   grind tricks unreachable with the pad. Patch dreamcast/game/player/patches/input_r_trigger.patch
   (right trigger -> DS R, left -> DS L). Menus / UI / demo key mapping (ui_state.c, demo.c) may want
   IN_R too.
-- OPEN (demo owner) z12 demo 1 / z21 demo 3 desync: DEMO_LEAD_FRAMES 0, the DS consumes 23 frames of
+- FIXED (demo.h DEMO_LEAD_FRAMES 23 applied; host demo replays pass, Flycast goal reach not checked) z12 demo 1 / z21 demo 3 desync: DEMO_LEAD_FRAMES 0, the DS consumes 23 frames of
   keys during StageStart; with 23 demo 1 reaches the goal ring on the host. Patch
   dreamcast/game/player/patches/demo_lead_23.patch.
 - FIXED (objects) trick effects missing (EffTrickForwardBoost, EffTrick_CreateAtOffset,

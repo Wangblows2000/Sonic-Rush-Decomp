@@ -18,8 +18,10 @@ Windows 10/11
 
 Supported ROM: Sonic Rush (Europe), SHA-1 52e5024efcf7617a820fa23789b37e5168c3c4fc.
 
-Controls: analog/D-pad move, A jump, B trick, X boost, Start pause.
-Hold Y while the disc boots to play as Blaze.
+Controls: analog/D-pad move, A jump, B trick, X boost, right/left trigger =
+DS R/L (tricks, air actions), Start pause. Pick Sonic or Blaze on the player
+select screen. Special stages show the Dreamcast button to press for each
+Trick Spring step.
 
 State of the port: see docs/dreamcast/KNOWN-ISSUES.md in the kit.
 Third-party tools: thirdparty/ (img4dc/cdi4dc: GPL, source included;

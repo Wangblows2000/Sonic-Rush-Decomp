@@ -24,6 +24,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import struct
 import sys
 import traceback
@@ -606,6 +607,10 @@ def main(argv=None):
         else:
             entry["error"] = res["error"]
         manifest.append(entry)
+        # byte-identical duplicates (e.g. act/dm_demoplay_eng.bac == act/dm_demoplay.bac) are converted
+        # once; give the duplicate id its own copy so build_disc.sh / loaders can name either id
+        if status == "ok" and s["id"] != canon and (out / "bac" / canon).is_dir():
+            shutil.copytree(out / "bac" / canon, out / "bac" / s["id"], dirs_exist_ok=True)
     for canon, (status, res) in results.items():
         if status == "ok":
             if res["images"] == 0:
