@@ -734,6 +734,25 @@ void zonefx_init(struct Level *lv, int zone, int act) {
     zone_bg_update();   /* the first frame's line table (Init + one update) */
 }
 
+/* right after level_load, before objects_init / ui_stage_start take PAL4 rows: the Water
+ * Palace tinted banks need the same rows as the map (0..4) and the BG (0..12) in banks of
+ * their own, which the sprites (allocated from the top row down) would otherwise occupy */
+void zonefx_stage_loaded(struct Level *lv, int zone, int act) {
+#ifdef _arch_dreamcast
+    static u16 map_t[256], bg_t[256];
+    if (!lv || fx_kind_of(zone, act) != 2)
+        return;
+    zone2_tint(map_t, level_palette(lv));
+    if (lv->bg_pals)
+        zone2_tint(bg_t, lv->bg_pals);
+    level_alloc_alt_banks(lv, map_t, lv->bg_pals ? bg_t : NULL);
+#else
+    (void)lv;
+    (void)zone;
+    (void)act;
+#endif
+}
+
 void zonefx_shutdown(void) {
     if (objects_set_water_tint)
         objects_set_water_tint(1e9f, 0xffffffffu);
@@ -749,9 +768,10 @@ void zonefx_shutdown(void) {
 #ifdef _arch_dreamcast
 
 /* Palette RAM is read while the PVR renders: a write during the render of the previous
- * frame would show mixed colours. Called at the frame start (after pvr_wait_ready): when a
- * palette changed, wait for the render in progress to end, then write; the frame being
- * built (and a queued one that has not started) render with the new colours. */
+ * frame would show mixed colours. Called at the frame start (after pvr_wait_ready): a
+ * changed palette is written when the render in progress ends (pal_write_rows: the
+ * render-done interrupt), so the frame being built renders with the new colours and the
+ * CPU does not wait for that render (it waited 17-19.7 ms per frame in z21 / z22). */
 void zonefx_commit_palettes(void) {
     int k, dirty[4] = { 0, 0, 0, 0 }, any = 0;
     if (!s_on || !s_lv)
@@ -764,14 +784,13 @@ void zonefx_commit_palettes(void) {
     }
     if (!any)
         return;
-    pvr_wait_render_done();
     for (k = 0; k < 4; k++) {
         if (!dirty[k])
             continue;
-        if (k == 0) level_set_palette(s_lv, 0, s_show[0]);
-        else if (k == 1) level_set_bg_palette(s_lv, 0, s_show[1]);
-        else if (k == 2) level_set_palette(s_lv, 1, s_show[2]);
-        else level_set_bg_palette(s_lv, 1, s_show[3]);
+        if (k == 0) pal_write_rows(s_lv->pal_bank, s_lv->pal_rows, s_show[0]);
+        else if (k == 1) pal_write_rows(s_lv->bg_pal_bank, s_lv->bg_pal_rows, s_show[1]);
+        else if (k == 2) pal_write_rows(s_lv->alt_pal_bank, s_lv->pal_rows, s_show[2]);
+        else pal_write_rows(s_lv->alt_bg_pal_bank, s_lv->bg_pal_rows, s_show[3]);
         memcpy(s_sent[k], s_show[k], 512);
         s_sent_ok[k] = 1;
         s_pal_writes++;

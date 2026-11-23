@@ -73,6 +73,9 @@ int  pal_rows_free(void);          /* budget probe: free rows (incl. idle UI row
 /* writes to rows the frame being built or the frame being rendered drew with wait for the
  * next render_begin_frame (after the render in progress): count since boot (statistics) */
 uint32_t pal_queued_writes(void);
+/* the rows in rowmask of PAL8 bank `bank` from pal[256], for the next frame: written when the
+ * render in progress ends (render-done interrupt), without waiting for it */
+void pal_write_rows(int bank, uint16_t rowmask, const uint16_t *pal);
 int  pal_rows_used(int *pal8, int *pal4);
 
 /* ------------------------------------------------------------------ sprite atlases

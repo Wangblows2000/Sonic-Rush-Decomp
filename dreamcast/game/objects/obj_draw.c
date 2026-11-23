@@ -484,6 +484,30 @@ void objects_models_prepare(void) {
     if (g_obj.hdr != s_om_hdr) { /* a new stage: the previous stage's models go */
         om_free_all();
         s_om_hdr = g_obj.hdr;
+        if (g_obj.hdr && g_obj.lv_obj) {
+            /* every model the stage's objects can show, now (the first call is in the stage
+             * load, under the loading ring), not when the object first appears: a load in a
+             * game frame took 13-22 ms (z23, z32 in Flycast).  gMapObjectCreateTable types of
+             * the StageObj_LoadModelSimple objects (obj_manager.c obj_create_fn) */
+            u32 k;
+            for (k = 0; k < g_obj.hdr->num_objects; k++) {
+                const char *a = NULL, *b = NULL;
+                switch (g_obj.lv_obj[k].type) {
+                case 0x7a: a = "mod__gmk_rope_c__gmk_rope_c01"; b = "mod__gmk_rope_c__gmk_rope_c02"; break;   /* RopeC */
+                case 0x82: a = "mod__gmk_wheel__gmk_wheel"; break;   /* Wheel2D */
+                case 0x8a: a = "mod__gmk_hand__gmk_hand"; break;     /* Hand2d */
+                case 0x8b: a = "mod__gmk_table__gmk_table"; break;   /* GmkTable */
+                case 0xae: a = "mod__gmk_slide__gmk_slide"; break;   /* CraneSlide */
+                case 0xb5: a = "mod__gmk_glider__gmk_glider"; break; /* Glider */
+                case 0xa8: case 0xed: case 0xee: a = "mod__gmk_crane__gmk_crane"; break;   /* Crane, CranePartED / EE */
+                default: break;
+                }
+                if (a && om_find(a) == NULL)
+                    om_load(a);
+                if (b && om_find(b) == NULL)
+                    om_load(b);
+            }
+        }
     }
     if (!g_obj.hdr)
         return;
@@ -920,6 +944,17 @@ static void spr3d_prepare(void) {
     }
     if (g_dcp_world.zone == 1) /* Water Palace boss: EffWater3D, loaded before the fight */
         res3d_get("act__ac_eff_water_3d");
+    { /* the 3D twins of the stage's loaded 2D BACs (arena bubbles, drop-in pawns, smoke): read
+       * here, in the stage load, not when such an object first appears (9 ms mid-fight, z23) */
+        int i, k;
+        for (i = 0; i < OBJ_BAC_COUNT; i++) {
+            if (!g_obj.res[i].loaded)
+                continue;
+            for (k = 0; k < (int)(sizeof(k_twin) / sizeof(k_twin[0])); k++)
+                if (!strcmp(g_obj.res[i].id, k_twin[k].id2d) && res3d_find(k_twin[k].id3d) == NULL)
+                    res3d_get(k_twin[k].id3d);
+        }
+    }
 }
 
 int objects_fx3d_spawn(const char *bac_id, int anim, s32 x, s32 y, s32 z, u32 flags, s32 scale) {

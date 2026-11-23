@@ -90,6 +90,7 @@ void SpecialStage_ReleaseMapModels(void) {
         sp_mdl_free(&g->res_all[i]);
     for (i = 1; i < 4; i++)
         sp_mdl_free(&g->res[i]);
+    sp_anm_free(&g->nsbta);   /* mod__ss.dct: 8 KB per special stage otherwise (malloc tracking) */
     free(g->pool);
     free(g->slots);
     free(g);

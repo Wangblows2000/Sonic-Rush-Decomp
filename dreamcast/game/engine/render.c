@@ -41,10 +41,12 @@ void tex_free(Texture *t)
 
 static uint32_t s_frame;   /* palette RAM: frames for the idle-row rule */
 static void pal_flush(void);
+static void pal_irq_install(void);
+static volatile uint32_t s_scenes;   /* pvr_scene_finish calls (render_end_frame) */
 /* frame start: palette entries queued while the PVR could still read them (pal_put) are
  * written once the render in progress is done, so no frame shows mixed colours */
-void render_begin_frame(void) { pvr_wait_ready(); pal_flush(); pvr_scene_begin(); s_frame++; }
-void render_end_frame(void) { pvr_scene_finish(); }
+void render_begin_frame(void) { pvr_wait_ready(); pal_irq_install(); pal_flush(); pvr_scene_begin(); s_frame++; }
+void render_end_frame(void) { pvr_scene_finish(); s_scenes++; }
 void render_begin_list(pvr_list_t list) { s_list = list; pvr_list_begin(list); }
 void render_end_list(void) { pvr_list_finish(); }
 
@@ -138,6 +140,75 @@ static int s_pal_init;
 static uint16_t s_pq_idx[PAL_ROWS * 16], s_pq_col[PAL_ROWS * 16];
 static int s_pqn;
 static uint32_t s_pal_queued;   /* statistics: writes that waited for the frame start */
+
+/* Writes for the next render, done without waiting for the render in progress: the
+ * RENDERDONE_TSP interrupt (wrapped around KOS's pvr_int_handler) writes them when that
+ * render ends and before KOS starts the next one (pvr_render_lists, in the same handler),
+ * so the next frame renders with them exactly as after pvr_wait_render_done.  When no
+ * render is in progress (every submitted scene has rendered) they are written at once:
+ * KOS starts a render only from an interrupt, and they are written with interrupts off. */
+static uint16_t s_dq_idx[PAL_ROWS * 16 * 2], s_dq_col[PAL_ROWS * 16 * 2];
+static volatile int s_dqn;
+static volatile uint32_t s_rdone;    /* RENDERDONE_TSP interrupts since the wrapper is in */
+static uint32_t s_scenes0;           /* s_scenes when it was installed */
+static asic_evt_handler_entry_t s_kos_rdone;
+static int s_irq_in;
+static void rdone_irq(uint32_t code, void *data)
+{
+    int i, n = s_dqn;
+    for(i = 0; i < n; i++) pvr_set_pal_entry(s_dq_idx[i], s_dq_col[i]);
+    s_dqn = 0;
+    s_rdone++;
+    if(s_kos_rdone.hdl) s_kos_rdone.hdl(code, s_kos_rdone.data);
+    else (void)data;
+}
+static void pal_irq_install(void)
+{
+    int old;
+    if(s_irq_in) return;
+    old = irq_disable();
+    s_kos_rdone = asic_evt_set_handler(ASIC_EVT_PVR_RENDERDONE_TSP, rdone_irq, NULL);
+    s_scenes0 = s_scenes;
+    s_rdone = 0;
+    s_irq_in = 1;
+    irq_restore(old);
+}
+/* n entries for the next frame (interrupts off while deciding); idx NULL: entries
+ * idx_base, idx_base + 1, ... */
+#define DQ_MAX (PAL_ROWS * 16 * 2)
+static void pal_write_next(const uint16_t *idx, const uint16_t *col, int n, int idx_base)
+{
+    int i, old;
+    if(!s_irq_in) {   /* before the first frame: wait as before */
+        pvr_wait_render_done();
+        for(i = 0; i < n; i++) pvr_set_pal_entry(idx ? idx[i] : idx_base + i, col[i]);
+        return;
+    }
+    old = irq_disable();
+    if((int32_t)(s_scenes - s_scenes0 - s_rdone) < 0) s_scenes0 = s_scenes - s_rdone;   /* a render nobody submitted here */
+    if((int32_t)(s_scenes - s_scenes0 - s_rdone) <= 0) {   /* no render in progress or queued */
+        for(i = 0; i < n; i++) pvr_set_pal_entry(idx ? idx[i] : idx_base + i, col[i]);
+    } else if(s_dqn + n <= DQ_MAX) {   /* in order: a later write of an entry wins */
+        for(i = 0; i < n; i++) {
+            s_dq_idx[s_dqn + i] = (uint16_t)(idx ? idx[i] : idx_base + i);
+            s_dq_col[s_dqn + i] = col[i];
+        }
+        s_dqn += n;
+    } else {   /* full (more than two whole palette RAMs this frame): wait as before */
+        irq_restore(old);
+        pvr_wait_render_done();
+        for(i = 0; i < n; i++) pvr_set_pal_entry(idx ? idx[i] : idx_base + i, col[i]);
+        return;
+    }
+    irq_restore(old);
+}
+void pal_write_rows(int bank, uint16_t rowmask, const uint16_t *pal)
+{
+    int r;
+    if(bank < 0 || bank > 3) return;
+    for(r = 0; r < 16; r++)
+        if(rowmask >> r & 1) pal_write_next(NULL, pal + r * 16, 16, bank * 256 + r * 16);
+}
 static int row_hot(int r) { return s_rows[r].seen1 && s_frame + 1 - s_rows[r].seen1 < 2; }
 static void row_seen(int r) { s_rows[r].seen1 = s_frame + 1; }
 static void pal_put(int idx, uint16_t c, int hot)
@@ -150,10 +221,8 @@ static void pal_put(int idx, uint16_t c, int hot)
 }
 static void pal_flush(void)
 {
-    int i;
     if(!s_pqn) return;
-    pvr_wait_render_done();
-    for(i = 0; i < s_pqn; i++) pvr_set_pal_entry(s_pq_idx[i], s_pq_col[i]);
+    pal_write_next(s_pq_idx, s_pq_col, s_pqn, 0);
     s_pqn = 0;
 }
 uint32_t pal_queued_writes(void) { return s_pal_queued; }

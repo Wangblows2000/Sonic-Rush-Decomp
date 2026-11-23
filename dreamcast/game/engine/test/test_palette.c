@@ -1,8 +1,10 @@
 /*
  * Host test of the PVR palette RAM allocator and its write queue (engine/render.c):
  * a write to a row that the frame being built or the frame being rendered drew with is
- * queued and done at the next render_begin_frame, after the render in progress; other
- * writes go straight to the palette RAM.  Build: make -C dreamcast/game/engine/test
+ * queued; the next render_begin_frame hands it to the render-done interrupt, which writes it
+ * when the render in progress ends (before the next render starts), without a CPU wait;
+ * other writes go straight to the palette RAM.  pal_write_rows (zone palettes) the same.
+ * Build: make -C dreamcast/game/engine/test
  */
 #include <stdio.h>
 #include <string.h>
@@ -41,13 +43,34 @@ file_t fs_open(const char *p, int mode) { (void)p; (void)mode; return FILEHND_IN
 void fs_close(file_t f) { (void)f; }
 ssize_t fs_read(file_t f, void *b, size_t n) { (void)f; (void)b; (void)n; return -1; }
 size_t fs_total(file_t f) { (void)f; return 0; }
+int irq_disable(void) { return 0; }
+void irq_restore(int old) { (void)old; }
+static asic_evt_handler s_hdl;   /* the render-done handler installed (KOS's, then render.c's wrapper) */
+static int s_kos_calls;
+static void kos_rdone(uint32_t code, void *data) { (void)code; (void)data; s_kos_calls++; }
+asic_evt_handler_entry_t asic_evt_set_handler(uint16_t code, asic_evt_handler handler, void *data) {
+    asic_evt_handler_entry_t old;
+    (void)code; (void)data;
+    old.hdl = s_hdl; old.data = NULL;
+    s_hdl = handler;
+    return old;
+}
+/* the PVR finishes the frame in flight: the interrupt */
+static void render_done(void) {
+    if (!s_render_busy) return;
+    s_render_busy = 0;
+    if (s_hdl) s_hdl(ASIC_EVT_PVR_RENDERDONE_TSP, NULL);
+}
 int pak_load(const char *path, void **out, uint32_t *size) { (void)path; (void)out; (void)size; return 0; }
 ssize_t loading_read(file_t f, void *buf, size_t n) { (void)f; (void)buf; (void)n; return -1; }
 
 /* the frame being built draws with these rows; at the frame end it is handed to the PVR */
 static uint8_t s_row_used[64];
 static void frame_begin(void) { render_begin_frame(); memset(s_row_used, 0, sizeof(s_row_used)); }
+/* the PVR starts rendering a submitted frame once the one before is done (render_done) */
+static void render_done(void);
 static void frame_end(void) {
+    render_done();   /* the previous frame has rendered by the time this one is submitted */
     render_end_frame();
     memcpy(s_row_in_flight, s_row_used, sizeof(s_row_in_flight));
     s_render_busy = 1;   /* rendered while the next frame is built */
@@ -65,6 +88,7 @@ int main(void) {
     int ra, rb, rc, i, n, rows[64];
     PalRef ref = PALREF_INIT, ref2 = PALREF_INIT;
     pal(a, 0x100); pal(b, 0x200); pal(c, 0x300);
+    s_hdl = kos_rdone;   /* KOS's pvr_int_handler, installed by pvr_init */
 
     /* 1: a new row is written at once (nobody drew with it) */
     frame_begin();
@@ -108,17 +132,46 @@ int main(void) {
         CHECK(pal_queued_writes() > q0, "hot row writes queued (%u)", (unsigned)(pal_queued_writes() - q0));
         CHECK(!row_matches(rc, c, 0xfffe), "hot row not written during the frame");
         frame_end();
-        frame_begin();   /* flush: waits for the render, then writes */
-        CHECK(s_waits == waits0 + 1, "one render wait at the frame start (%d)", s_waits - waits0);
-        CHECK(row_matches(rc, c, 0xfffe), "queued colours written at the frame start");
+        frame_begin();   /* flush: handed to the render-done interrupt, no wait */
+        CHECK(s_waits == waits0, "no render wait at the frame start (%d)", s_waits - waits0);
+        CHECK(!row_matches(rc, c, 0xfffe), "queued colours not written while the frame in flight renders");
+        {
+            int k0 = s_kos_calls;
+            render_done();
+            CHECK(s_kos_calls == k0 + 1, "KOS's render-done handler still called");
+        }
+        CHECK(row_matches(rc, c, 0xfffe), "queued colours written at the render-done interrupt");
         frame_end();
+        render_done();
+    }
+
+    /* 3b: pal_write_rows (zone palette animation) while a frame renders: deferred to its
+     * render-done interrupt; with no render in progress: at once */
+    {
+        uint16_t p8[256];
+        int waits0 = s_waits;
+        for (i = 0; i < 256; i++) p8[i] = (uint16_t)(0x7000 + i);
+        frame_begin();
+        s_row_used[rows[1]] = 1;
+        frame_end();   /* in flight, drew with rows[1] */
+        frame_begin();
+        pal_write_rows(rows[1] / 16, (uint16_t)(1u << (rows[1] % 16)), p8);
+        CHECK(!row_matches(rows[1], p8 + (rows[1] % 16) * 16, 0xfffe), "zone palette not written during the render");
+        render_done();
+        CHECK(row_matches(rows[1], p8 + (rows[1] % 16) * 16, 0xfffe), "zone palette written at the render-done interrupt");
+        frame_end();
+        render_done();   /* nothing in flight now */
+        for (i = 0; i < 256; i++) p8[i] = (uint16_t)(0x6000 + i);
+        pal_write_rows(rows[1] / 16, (uint16_t)(1u << (rows[1] % 16)), p8);
+        CHECK(row_matches(rows[1], p8 + (rows[1] % 16) * 16, 0xfffe), "zone palette written at once with no render in progress");
+        CHECK(s_waits == waits0, "no render waits (%d)", s_waits - waits0);
     }
 
     /* 4: lazy (UI) rows: idle for 3 frames, then taken back and rewritten at once */
     for (i = 1; i < n; i++) pal4_put(rows[i]);
     pal4_put(rb);
     pal4_put(rc);
-    for (i = 0; i < 3; i++) { frame_begin(); frame_end(); }
+    for (i = 0; i < 3; i++) { frame_begin(); frame_end(); render_done(); }
     frame_begin();
     ra = pal4_use(&ref, a, 0xfffe);
     CHECK(ra >= 0 && row_matches(ra, a, 0xfffe), "UI row written at once");

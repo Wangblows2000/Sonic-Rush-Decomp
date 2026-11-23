@@ -455,12 +455,22 @@ static void music_destroy_streams(void)
     for(L = 0; L < MAXL; L++)
         if(s_hnd[L] != SND_STREAM_INVALID) { snd_stream_stop(s_hnd[L]); snd_stream_destroy(s_hnd[L]); s_hnd[L] = SND_STREAM_INVALID; }
 }
+/* The last track's file stays open (with its parsed header) after it stops: starting the
+ * same track again (a boss phase restarting its music) then needs no ISO 9660 directory walk
+ * of /cd/music/st (813 files) and no header read, which held a game frame for 11-60 ms. */
+static file_t s_kfd = FILEHND_INVALID;
+static char s_kpath[96];
+static int s_kok, s_krate, s_kch, s_knl, s_ksrly;
+static uint32_t s_kdoff, s_kdlen, s_kblock, s_kls, s_kle;
 static void music_close_locked(void)   /* s_lock held */
 {
     music_destroy_streams();
     s_restart = 0; s_dry = 0; s_kick = 0; s_mstop = 0;
     mutex_lock(&s_flock);
-    if(s_fd != FILEHND_INVALID) { fs_close(s_fd); s_fd = FILEHND_INVALID; }
+    if(s_fd != FILEHND_INVALID) {
+        if(s_fd != s_kfd) fs_close(s_fd);   /* else kept for a restart of the same track */
+        s_fd = FILEHND_INVALID;
+    }
     s_wr = s_rd[0] = s_rd[1] = 0;
     mutex_unlock(&s_flock);
 }
@@ -673,18 +683,33 @@ int audio_music_play_layers(const char *path, uint32_t loop_start, uint32_t loop
     music_close_locked();
     s_gen[0]++;
     mutex_unlock(&s_lock);
-    f = fs_open(path, O_RDONLY);
-    if(f == FILEHND_INVALID) return -1;
-    if(fs_read(f, h, sizeof(h)) == (ssize_t)sizeof(h) && !memcmp(h, "SRLY", 4)) {
-        /* musictab.py: "SRLY", version, layers, rate, frames, loop start, loop end, block, data offset, blocks */
-        uint32_t v[9];
-        memcpy(v, h + 4, sizeof(v));
-        if(v[0] != 1 || v[1] < 1 || v[1] > MAXL || v[6] == 0 || v[6] * v[1] > AUDIO_CHUNK || (v[7] & 2047)) { fs_close(f); return -1; }
-        nl = (int)v[1]; rate = (int)v[2]; ch = 2; dlen = v[3]; block = v[6]; doff = v[7];
-        loop_start = v[4]; loop_end = v[5];
+    if(s_kok && s_kfd != FILEHND_INVALID && !strcmp(path, s_kpath)) {   /* the same track again */
+        f = s_kfd;
+        nl = s_knl; rate = s_krate; ch = s_kch; dlen = s_kdlen; block = s_kblock; doff = s_kdoff;
+        if(s_ksrly) { loop_start = s_kls; loop_end = s_kle; }
     } else {
-        fs_seek(f, 0, SEEK_SET);
-        if(read_wav_header(f, &rate, &ch, &doff, &dlen)) { fs_close(f); return -1; }
+        if(s_kfd != FILEHND_INVALID) { fs_close(s_kfd); s_kfd = FILEHND_INVALID; }
+        s_kok = 0;
+        f = fs_open(path, O_RDONLY);
+        if(f == FILEHND_INVALID) return -1;
+        if(fs_read(f, h, sizeof(h)) == (ssize_t)sizeof(h) && !memcmp(h, "SRLY", 4)) {
+            /* musictab.py: "SRLY", version, layers, rate, frames, loop start, loop end, block, data offset, blocks */
+            uint32_t v[9];
+            memcpy(v, h + 4, sizeof(v));
+            if(v[0] != 1 || v[1] < 1 || v[1] > MAXL || v[6] == 0 || v[6] * v[1] > AUDIO_CHUNK || (v[7] & 2047)) { fs_close(f); return -1; }
+            nl = (int)v[1]; rate = (int)v[2]; ch = 2; dlen = v[3]; block = v[6]; doff = v[7];
+            loop_start = v[4]; loop_end = v[5];
+            s_ksrly = 1;
+        } else {
+            fs_seek(f, 0, SEEK_SET);
+            if(read_wav_header(f, &rate, &ch, &doff, &dlen)) { fs_close(f); return -1; }
+            s_ksrly = 0;
+        }
+        if(strlen(path) < sizeof(s_kpath)) {
+            strcpy(s_kpath, path);
+            s_kfd = f; s_knl = nl; s_krate = rate; s_kch = ch; s_kdlen = dlen; s_kblock = block; s_kdoff = doff;
+            s_kls = loop_start; s_kle = loop_end; s_kok = 1;
+        }
     }
     {
         file_t t = fs_open("/cd/debug/sndtrace.txt", O_RDONLY);

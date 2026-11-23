@@ -33,6 +33,9 @@ int  zonefx_load_data_mem(const void *data, uint32_t size);
  * lv may be NULL (host tests: palettes only in RAM). Installs the camera zone hook. */
 void zonefx_init(struct Level *lv, int zone, int act);
 void zonefx_shutdown(void);
+/* right after level_load (before the objects and the UI take palette rows): reserves the
+ * Water Palace tinted PAL8 banks (no-op for the other zones) */
+void zonefx_stage_loaded(struct Level *lv, int zone, int act);
 /* ZoneBg_Update + ZoneFx_Update + the zone tasks (line scroll build, palette tasks):
  * called by the camera inside Camera_Main (camera_set_zone_hook) */
 void zonefx_update(void);

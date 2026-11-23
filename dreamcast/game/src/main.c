@@ -194,6 +194,7 @@ static void spawn_player(Level *lv)
     g_ui_game.difficulty = (u8)g_difficulty;
     g_ui_game.save_progress[0] = gSaveData.unkC; g_ui_game.save_progress[1] = gSaveData.unk64;
     ui_stage_start(g_dcp_world.zone, g_dcp_world.act, g_chara);
+    if(g_obj_ok) objects_models_prepare();   /* the stage's object models and 3D BACs, under the loading ring */
     loading_end();
     audio_load_end();
     if(g_obj_hooks.stage_exit != stage_exit_hook) { g_prev_stage_exit = g_obj_hooks.stage_exit; g_obj_hooks.stage_exit = stage_exit_hook; }
@@ -362,6 +363,7 @@ static int load_stage(Level *lv, int idx)
         /* gGameState.unk1C / unk1D: stage id = zone * 3 + act (0, 1, 2 = boss) */
         g_dcp_world.zone = (u8)(lv->hdr->stage / 3);
         g_dcp_world.act = (u8)(lv->hdr->stage % 3);
+        zonefx_stage_loaded(lv, g_dcp_world.zone, g_dcp_world.act);   /* tinted banks before the sprites take rows */
     }
     /* Stage_SetupZoneResources -> Stage_PlayBGM(0): act / boss music of the zone SDAT,
      * character and act (sound/bgm.c, /cd/music/streams.txt); jingles preloaded here */

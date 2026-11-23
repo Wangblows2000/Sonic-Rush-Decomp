@@ -1,6 +1,7 @@
 /* /cd/data.pak reader (pak.h; format: tools/dreamcast/mkpak.py) */
 #include "pak.h"
 #include "loading.h"
+#include "memtrack.h"
 #include <kos.h>
 #include <malloc.h>
 #include <stdlib.h>
@@ -131,7 +132,15 @@ static int stage_load(const char *key, void **out, uint32_t *size)
     return 1;
 }
 
+static int pak_load_(const char *path, void **out, uint32_t *size);
 int pak_load(const char *path, void **out, uint32_t *size)
+{
+    int r = pak_load_(path, out, size);
+    if(r == PAK_FOUND && memtrack_retag)   /* malloc-tracking builds: the block is the caller's */
+        memtrack_retag(*out, __builtin_return_address(0));
+    return r;
+}
+static int pak_load_(const char *path, void **out, uint32_t *size)
 {
     const char *key;
     uint32_t h, lo = 0, hi, i;

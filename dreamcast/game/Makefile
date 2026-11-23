@@ -11,10 +11,16 @@ OBJS = src/main.o engine/render.o engine/input.o engine/audio.o engine/level.o e
        $(patsubst %.c,%.o,$(wildcard cutscene/cs_*.c)) demo/demo.o \
        camera/camera.o zonefx/zonefx.o
 KOS_CFLAGS += -O2 -fwrapv -I../../tools/dreamcast/stages
+# measurement build: make MEMTRACK=1 (engine/memtrack.c: live heap blocks per caller, compared
+# between visits of the scene named in /cd/debug/memtrack.txt); clean first, as for any flag change
+ifdef MEMTRACK
+OBJS += engine/memtrack.o
+MEMTRACK_LDFLAGS = -Wl,--wrap=malloc,--wrap=free,--wrap=calloc,--wrap=realloc,--wrap=memalign
+endif
 
 all: $(TARGET)
 include $(KOS_BASE)/Makefile.rules
 clean:
-	-rm -f $(TARGET) $(OBJS)
+	-rm -f $(TARGET) $(OBJS) engine/memtrack.o
 $(TARGET): $(OBJS)
-	kos-cc -o $(TARGET) $(OBJS) -lm
+	kos-cc $(MEMTRACK_LDFLAGS) -o $(TARGET) $(OBJS) -lm

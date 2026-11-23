@@ -14,6 +14,7 @@
 #include <dc/sound/sound.h>
 
 #include "render.h"
+#include "memtrack.h"
 
 #define BIN_US 500                 /* histogram bin: 0.5 ms */
 #define BINS 100                   /* 0 .. 50 ms, last bin = longer */
@@ -156,6 +157,8 @@ const char *frameprof_scene_name(int *gameplay) {
 }
 
 void frameprof_scene(const char *name, int gameplay) {
+    if (memtrack_scene)   /* malloc-tracking builds (make MEMTRACK=1) */
+        memtrack_scene(name);
     if (!s_on)
         return;
     summary("scene end");
