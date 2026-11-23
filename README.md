@@ -15,7 +15,7 @@ data**. Every asset is converted from your own legally dumped ROM.
 
 ## Build a disc
 
-<img width="628" height="467" alt="discmakah" src="https://github.com/user-attachments/assets/1a6faa5b-7458-40ae-bc05-fb87eb73c42f" />
+<img width="619" height="704" alt="RUSHDISC" src="https://github.com/user-attachments/assets/ac24a80c-ad36-483a-a77c-8ecf7d891029" />
 
 **Windows 10 / 11:** download [`dist/windows/SonicRushDC-Windows.zip`](dist/windows/SonicRushDC-Windows.zip)
 (the "Download raw file" button on GitHub), unzip it, double-click
