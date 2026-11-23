@@ -22,7 +22,7 @@ There are 33 SDATs: `sys`, `extra_end`, and `z{1..7}{s,b,es,eb}`, `ze`, `zfes`, 
 
 ## 2. File formats (little-endian)
 
-The offsets below were checked against the ROM by `sdatlib.py` and `sseqrender.c`. The independent parsers (ndspy and loveemu's decoders) agree with them; see section 6.
+The offsets below were checked against the ROM by `sdatlib.py` and `sseqrender.c`. The independent parsers (ndspy and loveemu's decoders) agree with them.
 
 ### SDAT
 - Header: `"SDAT"`, BOM, version, file size, header size, block count. The block table follows at 0x10: SYMB offset and size, INFO offset and size, FAT offset and size, FILE offset and size (u32 each).
@@ -222,62 +222,6 @@ Identical PCM is written once. Typical case: zone SFX that resolve to the same i
 4. **Crossfade.** Tick→frame quantisation drifts between passes when 240·L/tempo is not an integer. The last 1,024 samples before `loop_end` are therefore crossfaded into the audio before `loop_start`, so the wrap is continuous.
 
 **Held SFX.** A one-shot whose remaining tracks all wait on a length-0 note over a looping wave never ends by itself; the game stops it. At 4 s the converter fades it out over 32 frames and stops it (20 SFX; `held_stopped`). The fade length is an assumption. SFX are capped at 30 s, music at 900 s; none hit a cap.
-
-## 6. Validation (run of 2026-11-22)
-
-**Coverage**
-- 33 of 33 SDATs processed, 0 failures, 65 s total.
-- Music: 813 SEQ entries → 93 unique renders. The other entries are 28 duplicates and 692 silent entries, which are the 40-byte dummy sequences with no notes. 77 renders loop and 16 end (jingles, `SEQ_1up`, `SEQ_EXTRA_END`).
-- SFX: 7,512 SSAR sequences → 357 unique renders, 5,735 duplicates and 1,420 silent:
-  - 323 contain no notes;
-  - 1,097 use program numbers that the SDAT's bank does not contain. Example: voice clips such as `SE_Sonic` on `BANK_ZONEb`, which is a 2-instrument stub in act SDATs. 415 SFX names are silent in every SDAT.
-  - Of the 357 renders: 17 loop, 20 are held SFX that were faded and stopped, 72 are stereo, and 157 are longer than 65,534 samples (they need streaming or resampling for `snd_sfx`).
-- Waves: 3,695 SWAV → 1,315 unique (all IMA-ADPCM; 58 loop; 24 exceed 65,534 samples).
-- STRM: 2 of 2.
-
-**Sizes** (AICA ADPCM / PCM16 equivalent)
-
-| Output | ADPCM | PCM16 equivalent | Duration |
-|---|---|---|---|
-| music | 245.8 MB | 983 MB | 7,512 s |
-| SFX | 16.9 MB | 68 MB | |
-| waves | 7.5 MB | 30 MB | |
-| STRM | 14.5 MB | 58 MB | |
-| **total** | **288 MB** on disk | | |
-
-**Checks** (`validate_audio.py`; report in `build/dreamcast/audio/validation/report.json`)
-- SWAV decode vs loveemu nsswav (MIT, built as a harness from the sdatxtract clone): 3,110 / 3,110 waves in 74 distinct SWARs are **bit-exact**. Headers (format, loop, rate, timer, loop start, length) match ndspy for all 3,110.
-- STRM decode vs loveemu nsstrm: 2 / 2 **bit-exact**. The older decoder in `tools/dreamcast/convert_assets.py` is off by ±1 on about 2 % of samples because it clamps at −32768, not −32767, so `sdat2dc` uses `sseqrender strm`.
-- Loop points vs an independent tick walk over ndspy's event parse: 77 / 77 agree. The 32 "first pass differs" songs are expected at S + L.
-- Loop seam: each looping song was re-rendered across two passes, comparing 2 s short-time spectra after `loop_start` and after `loop_end`.
-  - Relative spectral error: median 0.19, max 0.31.
-  - Baseline: about 0.15-0.19 between passes 2 and 3 of the same song (frame jitter only), about 1.0 between unrelated sections.
-  - Before the seam search was added, `ze/SEQ_bossE` measured 0.55.
-- ADPCM round trip (decode with `sseqrender aicadec`, the AICA step model, which matches KOS `wav2adpcm` and MAME) against the kept PCM16:
-
-  | Output | SNR median | SNR worst |
-  |---|---|---|
-  | music | 22.4 dB | 14.2 dB (p5 18.8) |
-  | waves | 23.3 dB | |
-  | STRM | 17.2 dB | |
-  | SFX | 14.5 dB | 6.5 dB (noise-like) |
-
-  Codec sanity: a 440 Hz sine gives 43 dB and white noise 14 dB, so the low SFX figures come from the content, not from a decoder mismatch. Sample counts match in all files.
-- Levels (DS mixer scale, no normalisation):
-  - music peak median −8.1 dBFS, RMS median −23 dBFS;
-  - 3 songs clip: `SEQ_METAMORPHO` 14 samples, `SEQ_BOSS_AFTER1` 2, `SEQ_BLAZE_PINCH` 1;
-  - 7 SFX clip (at most 18 samples).
-  - The DS clips the same sums, so this is faithful.
-- PNGs (waveform with loop markers, spectrogram, 50 ms RMS) in `build/dreamcast/audio/validation/` for `z1s_SEQ_1sonic`, `z1b_SEQ_1blaze` (Leaf Storm), `z1es_SEQ_boss` and `sys_SEQ_TITLE`. What they show:
-  - Leaf Storm: a 14.9 s intro, then a loop of 97.8 s at tempo 162, steady −25 to −35 dBFS RMS, the expected rhythmic structure, and the same arrangement in the Blaze version with different instrumentation.
-  - Boss: the loop starts at the second pass (96.0 s); the 82 s period is visible as repeated sections.
-  - Aliasing from the DS's lack of interpolation is visible as broadband energy up to 16 kHz.
-  - Nobody has listened to the output; these images are the only check of the music itself.
-
-**Rebuild the reference harnesses** (sources in `/tmp/audio/ext/sdatxtract/src/decoder`, MIT):
-- Build `swavref.c` / `strmref.c` with `nsswav.c`, `nsstrm.c`, `nssamp.c` and a copy of `cioutil.c` whose `mput2l` is renamed.
-- Link `fixput.c`, which provides a correct `mput2l`.
-- The harness sources are in `/tmp/audio/val/`; this is validation tooling only.
 
 ## 7. Known fidelity gaps
 

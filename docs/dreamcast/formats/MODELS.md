@@ -3,7 +3,7 @@
 Status: converter, native runtime and host preview are working. Every G3D resource in the EUR ROM
 converts: 366 models, 0 failures. For all 366 models, the vertex, triangle and quad counts decoded
 from the display lists equal the counts in the DS model header. The runtime builds with `kos-cc`.
-It has not yet run on Dreamcast hardware or in an emulator. See section 8.
+The models are drawn in the game in Flycast; not run on real hardware. See section 8.
 
 Tools and code (all written for this port, no third-party code):
 
@@ -363,7 +363,7 @@ Joint maths:
    - Lists: translucent materials and ARGB4444 textures go to TR; ARGB1555 textures with transparent
      texels go to `opts.pt_list`; everything else goes to OP.
 
-### 5.1 Draw path cost (2026-11-22)
+### 5.1 Draw path cost
 
 `dcm_draw_ex` produces the same vertices as the straightforward per-vertex path (every value comes from
 the same expressions, evaluated by the same SH-4 instructions), but does much less work:
@@ -397,100 +397,6 @@ the same expressions, evaluated by the same SH-4 instructions), but does much le
 Build: `source /opt/toolchains/dc/kos/environ.sh && kos-cc -c dreamcast/game/model/model.c`. This
 compiles without warnings with `-Wall -Wextra -Werror`.
 
-## 6. Validation
-
-All results are from runs in this session.
-
-- **Draw path exactness and speed (2026-11-22).**
-  - Host: the new `dcm_draw_ex` against the previous implementation (commit 940d9425), every vertex of
-    all 366 models, 16 draws each (stage / orthographic cameras, near-plane crossing, two poses, four
-    lights, static and animated material states, viewport change, in-place palette change):
-    2,970,290 vertices, bitwise identical.
-  - Flycast, `mtest.cdi`: every model, cold and warm caches, five configurations, three lists: the
-    SH-4 routines against the C reference on the same machine, 833,296 vertices, bitwise identical
-    (a planted one-instruction error in `dcm_asm_lslot` is caught: 652,876 differ).
-  - Not run on hardware. The routines use the instructions GCC emits for the C, so the hardware
-    results should match too, but this was not checked.
-  - Flycast frame log (`draw ms/frame`, boss fights measured from a save state taken in the fight,
-    one state per disc build): z13 player 4.2 -> 1.50 ms, boss 13.1-14.0 -> 3.1-3.9 ms (5.4 in the
-    busiest window), 52 -> 59.3 fps; z33 player 4.2 -> 1.49, boss 12.1-12.6 -> 4.1-5.0, 55 -> 59.3 fps;
-    zf3 player 4.2 -> 1.51-1.53, boss 19.2-19.7 -> 5.2-7.7, 40 -> 59.3 fps. Special stage (`-DDCM_PROFILE`,
-    all model draws): 6.4 -> 2.6 ms per frame; TransformDemo / PlayerDemo cutscene: 4.0 / 5.4 -> 1.8 / 2.5.
-    The remaining 0.7 fps are the frames that print the serial log.
-
-- **Material animations and near plane (2026-11-22).**
-  - The batch now converts all 779 unique resources, with 0 failures and 0 warnings. That includes
-    286 material-animation sets (127 `.dcc`, 80 `.dcp`, 79 `.dct`) and 876 textures (+132 pattern
-    textures).
-  - `tests/model_matanim_test.c` passes 5672/5672 checks on the converted packages:
-    - every `.dcm` loads as version 2;
-    - the uv affine that `dcm_matstate_uv` derives from the stored SRT inputs equals the converter's
-      static `uv_a/d/e/f` for all 1451 materials;
-    - `dcm_draw_ex(static states)` submits exactly what `dcm_draw` does;
-    - every set loads and its sample offsets are in range;
-    - `eff_tornado01`: t_grow alpha 0 until frame 17, t_mini_loop alpha 12 at frame 3, pattern
-      t_grow01 → 02 at frame 19 → 04 at 23;
-    - `bsf.nsbta`: transT -2 at frame 1, and the uv moves in t;
-    - a synthetic triangle crossing the near plane gives 4 clipped vertices, none behind the camera.
-  - Flycast, `tests/build_matanim_disc.sh` (`mtest.cdi`): two `eff_tornado` with their
-    `.dcc`/`.dcp`, and `bsf_sky` as a sphere around the eye with `bsf.dct`/`.dcc`, observed in
-    screenshots:
-    - the left tornado fades in and switches texture frames;
-    - the sky surrounds the camera without holes (its triangles cross the near plane and are
-      clipped) and scrolls;
-    - the moon's diffuse runs to 0 (black disc) as `bsf.nsbma` says. Checked against the DS rules:
-      - The ROM track is step 4 with 900 samples. The diffuse is 0x7fff until anim frame 248,
-        then fades to 0 at frame 327 and stays 0 to frame 3599.
-      - `NNSi_G3dAnmCalcNsBma` keeps bit 15, and the material's diff_amb is 0xffff, so MATERIAL_COLOR0
-        sets the vertex colour to the diffuse.
-      - Lights are off (polygon attr 0x1f0080) and the moon's display list has no COLOR command, so
-        neither emission nor a vertex colour replaces it.
-      - The texture is modulated, so the DS draws it black too. BossF runs the sky at speed 0x800, so
-        this happens about 11 s into the fight. The sky behind it (`bsf.nsbta`, rows 29..221 of
-        `sky_scl`) is still dark at that point.
-      - The port draws the same.
-    - The serial log matches the expected frames.
-
-- **Counts (before the material animations).** The batch converted 779 unique resources: 291 BMD0, 134 BCA0, 68 BVA0, 80 BTP0,
-  79 BTA0 and 127 BMA0. There were 0 failures and 0 warnings.
-  - 366 models. For all 366, the decoded vertex, triangle, quad and polygon counts equal the
-    `numVertex/numTriangle/numQuad/numPolygon` in their DS headers, and the emitted vertex count
-    equals `numVertex` (no shape is drawn twice).
-  - Totals: 107,759 vertices, 40,905 DS polygons, which the PVR draws as 63,075 triangles (a quad is
-    2 triangles); 744 textures (575 ARGB1555, 169 ARGB4444) from pltt16 513, a3i5 105, a5i3 70,
-    pltt256 38, pltt4 17 and direct 1. No texture in the ROM uses 4x4 compressed format 5.
-  - Palette entries: 1,287 joint, 195 billboard (BB), 15 Y-billboard (BBY). No ROM model uses
-    NODEMIX.
-  - Sizes: 11.4 MB in. Out: `.dcm` 16.1 MB, `.dca` 16.9 MB, `.dcv` 0.25 MB.
-- **son.nsbmd `son`.**
-  - The DS header says 3246 vertices, 1445 polygons (1016 triangles, 429 quads). The decode gives
-    3246 / 1016 / 429, which the PVR draws as 1874 triangles.
-  - 36 joints, 19 palette entries, 24 draws, 5 textures (pltt16 to ARGB1555, 64-128 px).
-  - `.dcm` 252,000 B. `son.nsbca`: 81 animations, 4841 frames, `.dca` 1,079,296 B. `.dcv` 3,596 B.
-- **Animation accuracy.**
-  - Package against the NNS sampler, all 136,876 (anim, frame, joint) samples of `son.nsbca`:
-    translation and scale are exact; maximum rotation element error 0.0117 (1.14 quaternion
-    quantisation).
-  - Joint world matrices from the DS data (`nsbmd2dc.eval_world` on fx values) against the package
-    evaluator, 951 poses: maximum difference 0.010 model units, which is 0.03 DS pixels at the
-    player scale.
-- **C runtime against the Python reference.** `model_hosttest.c` (host gcc, same `model.c`) for
-  `com_walk6` f12.5, `com_fw` f30, `com_jump_s_02` f7.25 and `son_goal` f262 (a matrix-mode
-  channel): screen positions of all 3246 vertices agree within 9e-5 px and depth within 5e-7.
-  At the stage camera the player covers about 72x76 px on 640x480, which is about 29x30 DS pixels.
-- **Visual check.** The preview PNGs were inspected:
-  - `build/dreamcast/models/preview/son_idle_run_jump.png` (idle `com_fw`, run cycle `com_walk6`,
-    jumps), `son_run_ds_scale.png`;
-  - `misc_models.png`: Blaze `blz_dash1`/`blz_walk1` using the shared skeleton, `dm_son`, a
-    translucent emerald, `son_ball` billboards;
-  - `boss_arenas.png`: `bs1_base` with posScale 64, `bs4_base`, `bs2_body`.
-
-  Sonic and Blaze are textured correctly, with the right face and hand variants from the visibility
-  animation, and the poses change across frames. The DS front-face orientation was set from a
-  closed mesh: with that orientation, back-face culling gives the same image as no culling.
-- **Textures.** Decoded textures (`png/`) were inspected for `son`. The 4x4 (all 4 modes), A3I5, A5I3
-  and 4-colour decoders were checked against hand-built blocks with known results.
-
 ## 7. Licences
 
 No third-party code was used. The format knowledge comes from public descriptions of the NITRO G3D
@@ -501,7 +407,7 @@ binary formats and from the decompiled NNS code in this repository.
 - Draw timings are Flycast figures (its SH-4 cycle model is roughly one cycle per instruction, no
   cache or FPU latency model); real-hardware timings were not measured.
 - Not run on Dreamcast hardware. In Flycast, the material animations and the near-plane clipping
-  were observed with `mtest.cdi` (section 6). The PVR culling direction, uv flip/clamp mapping and
+  were observed with `mtest.cdi` and in the game. The PVR culling direction, uv flip/clamp mapping and
   list classes are derived from the DS rules; they were not checked against the DS.
 - Lighting covers only diffuse, ambient and emission. Not implemented: specular and the shininess
   table, toon/highlight mode, shadow polygons, fog, edge marking, polygon-ID effects.

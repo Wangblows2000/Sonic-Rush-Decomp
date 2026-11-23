@@ -1,23 +1,28 @@
 # Agent brief — Sonic Rush matching decompilation (shared by all matching agents)
 
+All ARM9 functions are already matched. Remaining worker tasks are converting
+the 20 `src/asm_fallback/` functions to C and naming work (PLAN.md §2–3); the
+loop below is the same for both.
+
 Style: terse caveman reports (answer first, no fluff, keep every technical fact).
 Principle: forward implementation first — produce verified matching C, not bookkeeping.
 
 ## Setup (already done; do not reinstall)
-- Repo: /home/claude/sonic-rush-decomp  (cwd for all commands)
-- `export PATH=/home/claude/bin:$PATH` before every command (dsd, wibo, objdiff-cli).
+- Repo root is the cwd for all commands.
+- `export PATH=$PWD/tools/bin:$PATH` before every command (dsd, wibo, objdiff-cli).
 - Compiler: CodeWarrior for NDS 1.2/sp2 (default in config/eur/compilers.yaml; sp3/sp4 are WRONG for non-leaf ARM code; only sp2 reproduces Thumb switch tables).
 - ROM extracted under extract/eur (read-only). Function table: config/eur/arm9/**/symbols.txt (read-only).
 
 ## Your loop
-1. Pick functions in YOUR range (given in your task). Prefer small/leaf first; `build/eur/reports/callgraph.csv`
-   lists module,address,name,mode,size,callers,callees.
+1. Pick the functions given in your task. `build/eur/reports/callgraph.csv` lists
+   module,address,name,mode,size,callers,callees; `python3 tools/matching/nearmiss.py get <symbol>`
+   gives the best earlier draft.
 2. Disassemble the target, e.g.
    `python3 -c "import capstone;d=open('extract/eur/arm9/arm9.bin','rb').read();a=0x0201bf1c;n=24;md=capstone.Cs(capstone.CS_ARCH_ARM,capstone.CS_MODE_ARM);[print(hex(i.address),i.mnemonic,i.op_str) for i in md.disasm(d[a-0x02000000:a-0x02000000+n],a)]"`
    Overlays: extract/eur/arm9_overlays/ov000.bin / ov001.bin, base 0x022C5C80. Thumb: CS_MODE_THUMB.
    ITCM: extract/eur/arm9/itcm.bin base 0x01FF8000.
 3. Write C to `src/<YOUR_DIR>/<symbol>.c` — ONE function per file, function named exactly as in symbols.txt
-   (e.g. func_0201bf1c, func_ov000_022c5c80, or an SDK name like OS_LockMutex if already named).
+   (every function has a name, e.g. OS_LockMutex or Player_SetAnimation).
    - `#include <nitro/types.h>` (u8/u16/u32/s8/s16/s32/fx32/BOOL, include/nitro/types.h).
    - Called functions: declare prototypes with their symbols.txt names. Globals: `extern <type> data_XXXXXXXX;`
      using the symbols.txt name of the address loaded from the literal pool (pool word = address).
@@ -38,8 +43,8 @@ Principle: forward implementation first — produce verified matching C, not boo
        }
    (Thumb: `#pragma thumb on` around it; labels inside are plain `@1:` style local labels or names.)
    They must still pass match.py.
-7. PRIORITY IS BYTES: progress is measured in matched code bytes. After the trivial ones, go for
-   medium/large functions (100–1000 bytes). One 600-byte function = 50 tiny ones.
+7. For an asm_fallback conversion, the C must match the same bytes as the asm it replaces; the lead
+   swaps it in with tools/matching/swap_fallback.py.
 8. Helpers available: include/nitro/fs_overlay.h (FS_OVERLAY_ID(ov000)), link-time symbol ARM9_CTOR_START,
    compiler intrinsics like _s32_div_f are emitted automatically by `/` and `%`.
    Never define (non-extern) global data in a TU; only `extern`. No string literals / float constants that

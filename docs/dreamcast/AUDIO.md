@@ -17,7 +17,7 @@ AICA ADPCM is Yamaha 4-bit ADPCM. KOS `snd_sfx_load` accepts WAV fmt 0x14 /
 decoding the output back with `wav2adpcm -f` gives the expected length and
 level (6 s test: 224,418 frames, RMS 10,012).
 
-## Plan (status)
+## Overview
 
 - Music: rendered offline to stereo ADPCM by `sseqrender.c` and streamed by
   `dreamcast/game/engine/audio.c` (option (b); tension-gauge track muting is
@@ -179,71 +179,6 @@ Disc: `/cd/sound/<sdat>.srb` — copy `build/dreamcast/audio/sfxbank/*.srb`
 z*es/z*eb for bosses). For `build_disc.sh`:
 `mkdir -p "$OUT/disc/sound"; cp "$ROOT"/build/dreamcast/audio/sfxbank/*.srb "$OUT/disc/sound/"`.
 
-### 6. Verification (what was run)
-
-- `make -C dreamcast/game/sound dc`: all six sources compile with
-  `kos-cc -std=gnu99 -O2 -Wall -Wextra -Werror`.
-- `make -C dreamcast/game/sound host-test` (`test/test_sound.c`, OK, 0
-  failures):
-  - all 31 banks load; tables consistent; every wave ≤ 65,534 samples,
-    32-byte aligned, inside the blob;
-  - **coverage: all 7,347 SSAR ids (31 × 237) map to a record and a bank;
-    5,931 start at least one channel**; the other 1,416 are exactly the ids
-    the offline render (`sdat2dc.py`) found silent (no instrument for the
-    program in that SDAT, e.g. Blaze voices in Sonic SDATs, trick voices in
-    boss SDATs). All 56 ids the native player/objects code passes play in
-    z1s;
-  - NNS layer: a 5th sound on player 3 (`max_seq` 4) stops the oldest one;
-    a lower-priority start on a full player fails; `StopSeq(h, 8)` sets
-    status 2 / priority 0 and frees after 8 frames; fire-and-forget calls
-    release `gSESoundHandle`; finished sequences free their seq players;
-    `Sound_CalcPan` / `Sound_CalcDistanceVolume`; invalid ids; stage table;
-  - hooks: `g_dcp_hooks.sfx` (TRICK, GLOBAL), `g_obj_hooks.sfx`,
-    `sfx_stop` (fade 0x20) produce AICA starts/updates/stops in range.
-- Driver vs `sseqrender.c` (the renderer of all converted audio):
-  `SND_DUMP_DIR=/tmp/sound/dump build/dreamcast/audio/sfxbank/test_sound …` then
-  `python3 tools/dreamcast/audio/sfxbank_check.py --dump /tmp/sound/dump --sdat z1s`:
-  203 ids, **57 bit-exact** (PSG/noise-only effects), SNR median 42.2 dB,
-  min 16.0 dB (sample-based effects: the runtime uses the AICA-ADPCM waves,
-  sseqrender the DS-decoded PCM). So sequencing, envelopes, sweeps, LFO and
-  channel allocation are the same.
-- Flycast (`test/build_cdi.sh` → `build/dreamcast/audio/sfxbank/sndtest.cdi`,
-  recorded with `fcrec.py`, section 7): budget numbers above; 14 triggers
-  over 15 s; onsets in the recording are at the logged times (±10 ms);
-  50 ms envelopes of SE_Ring, SE_Spin, SE_TMAX_bonus match the reference
-  render within ~1 dB down to −38 dB; the held SE_Grind fades from −22 to
-  −48 dBFS in ~250 ms after `sound_stop(h, 16)`; the 5-ring burst (player 7,
-  cap 4 — the cap itself is checked by the host test) plays and ends. The only
-  clipping is the 4 simultaneous full-level rings (DS mix would also exceed
-  full scale there).
-- Not verified: real hardware; the whole game with sound (main.c wiring is
-  left to the integrator); boss / Blaze banks beyond the host test.
-
-### 7. Listening test in this environment
-
-Flycast has no output-recording option (its "audio recording" is microphone
-input for the Maple mic). It works through ALSA: the predefined alsa-lib PCM
-`file` (`/usr/share/alsa/alsa.conf`, slave `null`) writes the stream to a file:
-
-```sh
-export HOME=/root DISPLAY=:99 LIBGL_ALWAYS_SOFTWARE=1
-pgrep -x Xvfb >/dev/null || (Xvfb :99 -screen 0 1024x768x24 &)
-/home/claude/dcwork/flycast/build/flycast \
-    -config config:Debug.SerialConsoleEnabled=yes \
-    -config audio:backend=alsa \
-    -config "alsa:device=file:/tmp/rec.raw,raw" \
-    build/dreamcast/game/srdc.cdi > /tmp/serial.log 2>&1 &
-sleep 30; kill %1
-```
-
-`/tmp/rec.raw`: S16LE stereo 44,100 Hz in emulated time (no sound card is
-needed; the null slave never blocks, so emulation runs ~5× real time: 30 s
-of wall time = ~150 s of audio). Helper:
-`tools/dreamcast/audio/fcrec.py record DISC SECONDS OUT.raw`,
-`fcrec.py wav OUT.raw OUT.wav`, `fcrec.py onsets OUT.raw`,
-`fcrec.py compare OUT.raw ONSET_MS reference.wav` (envelope + spectrogram
-match against a render).
-
 ### 8. Deviations and known issues
 
 1. **Driver update rate**: the DS driver runs at 191.96 Hz; here 3–4 driver
@@ -251,7 +186,7 @@ match against a render).
    written once per frame. Notes inside a sequence start on 16.7 ms
    boundaries (DS: 5.2 ms) and pitch/volume envelopes move in 60 Hz steps.
    A driver thread at ~192 Hz would remove this.
-2. ~~Volume model of the offline renders~~ **fixed** (section 10):
+2. Volume model of the offline renders (section 10):
    `sseqrender.c` now runs the decompiled `NNSi_SndPlayerMain` with the
    linear table `data_020725e0`.
 3. The 16 effect channels are exclusive (on the DS, BGM sequences compete
@@ -313,7 +248,7 @@ logic, DS services replaced; **rewritten** = substantially rewritten;
 
 ---
 
-## 10. Volume model, mix level and clipping (fix of 2026-11-22)
+## 10. Volume model, mix level and clipping
 
 ### 10.1 Volume stages (decompiled code -> renderer -> runtime)
 
@@ -409,22 +344,8 @@ rec3 20.71, 47.44, 50.25, 60.27, 66.02, 68.77, 83.07 s. Music level in rec3
 Trace (rec3t): summed effect amplitude max 41,557/65,535 q16 (−3.9 dBFS before
 music), 0 underruns, ring low-water 65,664 B.
 
-### 10.4 Integrator notes
-
-- `make` of the game has no header dependencies: after this change delete
-  `sound/*.o` and `engine/audio.o` (SrbHeader grew; an old `snd_bank.o`
-  rejects the v2 banks and the game runs with no effects).
-- Rebuild the disc with the new `build/dreamcast/audio/music/*` (stage BGM
-  and sys `sNN.wav`, both re-rendered) and `sfxbank/*.srb` (v2).
-- `audio_update()` must be called once per game-loop frame (it is): it now
-  also marks "load over" for the deferred music start. Starting the music after
-  the stage load (end of `load_stage`) and reading big files in chunks would
-  shorten the start delay; not required.
-- `sys.srb` now exists (section 11).
-
 ### 10.5 Remaining known issues
 
-- ~~Music loop seam DC~~ fixed (section 12).
 - Real hardware not tested; Flycast's GD-ROM is slow (~120 KB/s measured
   for 16 KB reads), real drives are faster, so starvation there is less
   likely, but the ring is still the safe design.
@@ -506,40 +427,6 @@ checks as before. `aicadec` gained `--loop LS,LE --passes N` for this check.
 
 ## 13. Frame hitches from the music reader; fades around loading
 
-### 13.1 Measurements (Flycast, z11, hold Right; trace build)
-
-Instrumentation (trace builds, `/cd/debug/sndtrace.txt`): `sound_update()`
-measures every game-loop frame interval and prints one line per 600 frames
-("snd frames: N of 600 over 17.5 ms, worst, timestamps"); `engine/audio.c`
-keeps `AudioStats` (`audio_stats()`: reads, read bytes, max read ms, refills,
-max refill CPU us, poll gaps, underruns) and prints one line per 10 s. Per-event
-prints were removed: every serial line costs milliseconds of blocking output in
-Flycast and distorted the measurement.
-
-| build | frames > 17.5 ms | worst | cause |
-|---|---|---|---|
-| reader as before (16 KB `fs_read` at file offset 44 + n) | 6-8 of 120 | 41.5 ms | each read went through fs_iso9660's one-sector cache (one GD-ROM command per 2 KB); ~25-30 ms game-loop stall per read (with 64 KB reads: one 46.8 ms frame per read, at the end of the read) |
-| reader at lower priority only | 3-4 of 120 | 41.3 ms | same stall |
-| sector-aligned 64 KB DMA reads (this fix), main.c profiling prints on | 3 of 120 | 31.9-41.7 ms | the 4 profiling lines main.c / ui_draw.c print every 120 frames (removing them in a test copy removes these frames) |
-| same, prints off | 10-11 of 600 | 19.2-19.4 ms | one ~19.2 ms frame per second |
-| same, prints off, **no music at all** | 10 of 600 | 19.2 ms | baseline |
-| bare KOS `vid_waitvbl` loop, no audio code (`dc_loadtest.c -DLOADTEST_NO_AUDIO`) | 6 of 361 | 19.19 ms | Flycast / KOS timing, once per second |
-
-So the audio no longer adds any frame over 17.5 ms: what remains (one 19.2 ms
-frame per second) is also there without audio, in a bare vblank loop. Zero
-frames over 17.5 ms in Flycast is not reachable while that baseline exists,
-and the 41 ms frames that remain in normal builds come from the periodic
-profiling printf lines (4 lines / 120 frames), not from audio.
-
-Fix in `engine/audio.c`:
-- reads are whole sectors from a sector-aligned file offset into a 32-byte
-  aligned block (`s_blk`, `AUDIO_CHUNK` = 64 KB), copied into the ring: one
-  multi-sector DMA command per read (64 KB ~0.5 s of disc time in Flycast,
-  one read per 2 s of music);
-- reader thread priority `PRIO_DEFAULT + 2` (below the game loop);
-- AICA ring 16 KB per channel (0.5 s halves; refill CPU max ~6 ms in the
-  poll thread). 4 KB and 32 KB were also measured: no effect on frame times.
-
 ### 13.2 Loading bracket: `audio_load_begin()` / `audio_load_end()`
 
 - `audio_load_begin()` (game thread): the poll thread ramps the stream volume
@@ -575,8 +462,7 @@ the menu -> stage path (begin before `load_player_model`, end after
 it, not around the playback loop); `enter_front_end` / `run_extra_zone` bank
 loads.
 
-
-## 14. Music selection and in-stage music events (2026-11-22)
+## 14. Music selection and in-stage music events
 
 ### 14.1 How the original selects music (decompilation)
 
@@ -682,48 +568,17 @@ sys_12 / sys_14 (new record), sys_20 (game over), sys_30 / sys_31 (special stage
   music before playing it (as ClearDemo_Create loads its group). Every ClearDemo SE / voice
   id the ui requests exists (SSAR 6 voice 7 SE_Boss_Watashi is silent in the sys SDAT).
 
-### 14.4 Verification
+### 14.5 Integration (main.c)
 
-Host (`make -C dreamcast/game/sound host-test`): test_sound OK (unchanged) and test_bgm
-OK, 0 failures: table above for every zone / act / character; layer switch volumes;
-invincibility (BGM 0 under the jingle while playing, end at 0x5A: jingle fade 90, BGM
-126 over 90; cut short: both at once; item hook); drowning (pause while frozen, resume,
-surfacing with / without the water flag: the right layer back over 60); 1-up (over the
-BGM, paused by the pause menu, boss act: boss music stops, none in time attack); pinch,
-Boss7, BossF, Extra; results / new record / game over / special and the ClearDemo bank
-(SE 6:3 starts); restart after a death; gravity flip (layer, invincible: none); SE pause
-(players 3..9); the trace's silent-id counter (silent id, playing id, start failure).
-
-Flycast (`fcrec.py`, display :94, trace build, `bgmtest.txt`); analysis by correlation
-with the decoded renders (3 kHz low-pass, 0.5-4 s windows):
-
-| case | result |
-|---|---|
-| z11 invincibility (f600) | SEQ_muteki at the render level (-0.0 dB, corr 0.87); stage BGM gain <= 0.1 for 15 s; muteki fades from ~41.1 s, BGM gain 0.16 / 0.48 / 0.70 / 0.81 at +0.4 / +0.9 / +1.4 / +1.9 s; BGM after it at -0.0 dB and at the continued position (lag drift linear 1.2 ms/s across the jingle, no jump) |
-| z11 1-up | SEQ_1up +0.4 dB over the BGM, ends after 2.1 s ("jingle 1 ended") |
-| z11 StopSoundAll + act clear, new record | SEQ_ACT_CLEAR (sys_11) 0.2 s after the stop, -0.0 dB; new record loops |
-| z21 layers (switch every 5 s) | before the re-sync: layer 1 ran 5-6 ms late (key-on skew 7.7 ms / 6.3 ms with a 4 KB second buffer); after: the track lag is continuous over every switch (0.1 ms search step), 0 underruns |
-| SEQ_brethless pause 100 frames | silence 1.688 s (1.667 expected), resumes at 1.664 s into the jingle, 16 ms later still aligned |
-| z13 boss, 122 s | boss music from the top after each death (2 restarts), pinch SEQ_bossW at -0.0 dB, loop wrap at the right position, no seam step, DC <= 36 LSB, peak -8.7 dBFS, 0 underruns |
-| z21 2 layers, 428 s | 413 reads / 27 MB, 0 underruns, ring low 131 KB of 192 KB, poll gap max 22 ms, refill max 23 ms; RMS per 30 s -23.7..-26.5 dBFS (no drift), peak <= -7.5 dBFS, 0 clipped, DC -10..-36 LSB (constant), 3 loop passes continuous |
-| attract demos, 252 s (title -> z12 -> title -> z13 -> title -> z21 Blaze -> z23) | 140 SE / voice requests, 0 "snd MISS"; Blaze entering water switched the z2b layer (real OBJ_FX_BGM_LAYER); load brackets: silence through each load, fade-in ~0.3 s; peak -2.1 dBFS, 0 clipped |
-| frame times | 3-4 of 120 frames over 17.5 ms with music + jingle = the profiling-print baseline (13.1); the first jingle version (decode in the callback) gave 4-7 |
-
-AICA stream rate: every track plays ~0.12 % slow against its nominal 32728 Hz in Flycast
-(lag grows 1.2 ms/s; ~2 cents), the same for both layers.
-
-### 14.5 Integration
-
-- `dreamcast/game/sound/patches/main.c.patch` and `build_disc.sh.patch` (copies
-  `build/dreamcast/audio/disc_music/.` to `/cd/music/`, drops the old z?.wav / loops.txt /
-  sys snippets; `SRDC_SNDTRACE=1` and `SRDC_BGMTEST=<file>` for test discs), made against
-  the tree of 16:45 (camera / zonefx main.c); the game Makefile already lists `sound/bgm.o`.
-  Tested on a private copy of that tree: build, z21 disc, layers re-synced, music plays.
-- `player/patches/trick_volume_sound_hook.patch` (the player agent's `g_dcp_hooks.sfx_volume`
-  for Player_Action_TrickCombo) is applied to `sound_hooks.c`.
-- Before building the disc: `python3 tools/dreamcast/audio/musictab.py` and
-  `python3 tools/dreamcast/audio/sfxbank.py` (sys_a05..07). Delete `sound/*.o` and
-  `engine/audio.o` (no header dependencies in the game Makefile).
+- `main.c` calls `bgm_set_context` / `bgm_bind_player` when a stage is set up,
+  `bgm_stage_start` after the load (it also prefetches the act-clear bank and track),
+  `bgm_stage_end` when the stage ends, and routes object music events through
+  `bgm_obj_effect`; `bgm_play` / `bgm_stop_sound_all` serve the menus, cutscenes and
+  bosses.
+- `build_disc.sh` copies `build/dreamcast/audio/disc_music/` (stream table `streams.txt`
+  and the renders) to `/cd/music/`; run `tools/dreamcast/audio/musictab.py` and
+  `sfxbank.py` first.
+- Test discs: `SRDC_SNDTRACE=1` and `SRDC_BGMTEST=<file>` (BUILD.md §3).
 
 ### 14.6 Known gaps
 
@@ -737,13 +592,11 @@ AICA stream rate: every track plays ~0.12 % slow against its nominal 32728 Hz in
   (the 60-frame fade and the effects' survival are lost there: boss module).
 - Invincibility timers / jingle come from the item hook here; EffInvincibility (graphics)
   is not translated. TensionSound_* has no caller in the native code.
-- Not played in Flycast: drowning countdown in water (host test only), Blaze gravity
-  layer, ClearDemo via a real goal, Extra boss, special-stage music via the new hook.
 - Real hardware not tested; the layer re-sync relies on KOS allocating stream channels
   lowest-first in the poll thread (checked at run time; if the check fails the layers
   stay a few ms apart).
 
-### 14.7 Boss music fades, more Flycast checks, channel competition (2026-11-22, later)
+### 14.7 Boss music fades and channel competition
 
 Boss fades (`boss/boss.h` `music_fade` / `music_volume`, appended to BossHooks):
 
@@ -756,57 +609,5 @@ Boss fades (`boss/boss.h` `music_fade` / `music_volume`, appended to BossHooks):
 All other boss calls are `NNS_SndPlayerStopSeqAll(0)` (the `*_Action_Defeat`, Boss7 ClashEnd)
 or effect handles, so they stay hard stops. `bgm_boss_music_fade_hook` = `bgm_stop(frames)`,
 `bgm_boss_music_volume_hook` = `bgm_move_volume` (the layer / jingle fader of
-gBGMSoundHandle). Wiring: `sound/patches/main_bossfade.patch`. Host: test_boss7
-(both checks, all runs), test_bossf (fade 0x3c), test_bgm (volume 0x20 / 0xb4, fade-stop 0x3c).
+gBGMSoundHandle). Host tests: test_boss7, test_bossf and test_bgm check the fades.
 
-Patches in `sound/patches/` (all `git apply --check` clean on b4873e22):
-- `main_bossfade.patch`: the two hooks.
-- `main_gravity.patch`: `g_dcp_hooks.gravity_flipped` = `Stage_IsGravityFlipped` (Dead Line acts:
-  below the split line in act 1, above it in act 2; `Stage_GetSplitLineY` from the camera
-  module). No module set this hook, so gravity never flipped in the port (a gameplay
-  change for the player / objects owners; the audio half is in bgm.c).
-- `main_audiotest.patch` + `build_disc_audiotest.patch` (test builds): `/cd/debug/chara.txt`
-  (`1` = Blaze for a debug start), `/cd/debug/extra.txt` (boot into the Extra Zone),
-  `SRDC_DEBUGDIR=<dir>` copies files to `/cd/debug`.
-
-`bgmtest.txt` test commands added: `warp X Y`, `pin X Y`, `pinw DY` (water line + DY),
-`pins DY` (split line + DY), `release`, `push V` (ground speed every frame).
-
-`fcrec.py record`: `--home DIR` (private Flycast home; config copied from /root),
-`--stop-at EMU_S`, `--save-slot N` (AutoSaveState on exit), `--load-slot N` (AutoLoadState).
-This Flycast has no Lua (CAMERA.md "Flycast save states"). The Extra boss was reached
-from boot in 5 runs of 60-80 s, each loading and re-saving the slot.
-
-Flycast (private tree = HEAD + the four patches):
-
-| case | result |
-|---|---|
-| z21 drowning in real water (`pinw 40`) | the real Player_UpdateUnderwater switched to the underwater layer at f300; StageJingle 0x17 started at f1429 (1129 frames later; 1800 - 0x2a8 = 1120 plus the sinking); SEQ_brethless onset at the render level (-0.0 dB); both BGM layers muted (gain <= 0.15); surfacing (f1700) brought layer B back at once (Stage_SelectBGMLayer, gain 0.83); a second dive drowned the player, and the restart played Stage_PlayBGM again; 0 jingle underruns |
-| z11 real goal ring (`warp 20300 1550`, `push 1536`) | ClearDemo: SEQ_ACT_CLEAR (sys_11) at -0.0 dB, position continuous; rank voice 6:4 from sys_a06; then "stage exit kind 1" and the next act's music |
-| Extra Zone (extra.txt; talks advance with A presses) | `ze seq 20` SEQ_bossE through the boss hook, playing at its continuous position; 0x15 needs three won rounds (not played; host-tested) |
-| special stage (`SRDC_SPECIAL=300`) via the new hook | SpecialStage_Init: sys 0x1f, SpecialStage_StartPlay: sys 0x1e at f663; SEQ_SS_GAME continuous at the render level (-0.0..-0.1 dB) |
-| Blaze, Dead Line z71 (chara.txt, main_gravity, `pins 40 / -40`) | z7b_12_13.lyr; flip at f300 -> layer 7sonic + SE 0x66, back at f600 -> 7blaze, flip at f900; track position continuous over every switch |
-
-Channel competition: measured, and not modelled. Channel priority = player priority + track
-priority (64 unless a track sets it). Renders of the music (sseqrender with a trace of
-the 0xC6 priority command):
-
-| sequence | channel priority | voices (max 16) |
-|---|---|---|
-| stage / boss / sys music | 64 + 64 = 128, no 0xC6 | 16 (they steal among themselves: 18..564 steals) |
-| SEQ_muteki | 64-80 + 64 | 9 |
-| SEQ_1up | 70-90 + 64 | 16 |
-| SEQ_brethless | 80 + 0xC6 80 = 160 | 8 |
-| effects / voices (SSAR) | 96 + 64 = 160 (one id 106) | per id |
-
-`alloc_chan` (DS ExChannel allocator) takes a free channel first, else the lowest priority
-channel (quietest on a tie) if it is not above the new note. Effects (160) therefore always
-take music and jingle channels (128..154) before another effect. With or without the music
-running in the driver, an effect gets a channel exactly when fewer than 16 channels of
-priority >= 160 are busy, so the effects already behave as on the DS. The one exception is
-SEQ_brethless (160, 8 voices): during the drowning countdown a burst of more than 8 effect
-voices would steal from the jingle or the quietest effect on the DS. What the DS really does
-differently is drop music notes (the BGM loses voices to effects, the 1-up and SEQ_muteki
-steal BGM voices); a pre-rendered stream cannot drop notes, so that is not reproducible
-without sequencing the music in real time (16 more channels and every BGM bank in sound
-RAM). Gap, not modelled.

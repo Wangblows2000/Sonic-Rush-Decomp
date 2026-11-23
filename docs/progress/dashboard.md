@@ -1,6 +1,6 @@
 # Progress dashboard
 
-Last updated: **2026-11-16 15:31:28Z** · version `eur` · regenerate with `python tools/project.py dashboard`
+Last updated: **2026-11-23 08:13:22Z** · version `eur` · regenerate with `python tools/project.py dashboard`
 
 Numbers come only from the objdiff report (100 % matched functions in non-generated units) and `symbols.txt` sizes. Nothing estimated, nothing unverified.
 
@@ -16,9 +16,9 @@ Numbers come only from the objdiff report (100 % matched functions in non-genera
 
 Next milestone: **100%** matched code — 0 more bytes (currently 100.00%).
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 15:28:00Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 15:28:40Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 15:28:41Z
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-23 08:10:52Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-23 08:11:29Z
+- objdiff report: `build/eur/report.json` — 2026-11-23 08:11:31Z
 
 ## Task board
 
@@ -26,7 +26,7 @@ Next milestone: **100%** matched code — 0 more bytes (currently 100.00%).
 
 ## History
 
-Matched bytes trend: ▁▁▅▅▆▆▇▇▇▇▇▇▇▇▇▇▇▇█  (19 changes, 20 runs)
+Matched bytes trend: ▁▁▅▅▆▆▇▇▇▇▇▇▇▇▇▇▇▇█  (19 changes, 21 runs)
 
 | UTC | Matched bytes | % code | Functions |
 | --- | ------------- | ------ | --------- |

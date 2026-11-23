@@ -1,32 +1,14 @@
 # Bosses: native translation (Dreamcast port)
 
-Status (2026-11-22):
+Status: every boss is translated and integrated — Boss1 (Egg Hammer, z13) and its zone-5 variant
+Boss5 (z53), Boss2 (z23), Boss3 (z33), Boss4 (z43), Boss6 (z63), Boss7 (z73), the final boss (BossF,
+zf3) and the Extra Zone boss. Each was cleared in Flycast as Sonic and as Blaze; a death restarts the
+fight as the original's stage rebuild does. Host tests: `make -C dreamcast/game/boss host-test`.
+Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 
-- The shared boss framework and four bosses are translated: Boss1 (Egg Hammer, Leaf Storm act 3, stage
-  `z13`), Boss2 (Egg Turtle, Water Palace act 3, `z23`), Boss3 (Mirage Road act 3, `z33`) and Boss4
-  (Night Carnival act 3, `z43`). `boss_init` dispatches on the stage id (2, 5, 8, 11).
-- Boss1 host test: the whole fight runs on the real z13 level with the real player module and ObjRect
-  code. Measured: 16/16 checks pass with the default seed; the fight completes for 5 seeds x 2
-  difficulties.
-- Boss2 host test: the whole fight runs on the real z23 level (same setup). Measured: 18/18 checks pass
-  for seeds 0x12345678, 1, 2, 3, 0xdeadbeef and 77, each at 6 and 8 hit points (12 runs).
-- Boss3 host test (z33): 18/18 checks pass for the same 6 seeds x 2 difficulties (12 runs). Every run
-  visits idle, push, summon, kick, throw attack, hurt and defeat, and reaches the stage-clear request.
-- Boss5 (Huge Crisis act 3, `z53`, stage 14) is the Egg Hammer's zone-5 variant (map object 0x3b ->
-  Boss1_Create, `g_dcp_world.zone == 4`): battery turrets (Boss1_NodeCallback_Batteries) and the
-  Boss5PartD3 missiles (`boss5.c`). The Boss1 test runs it when given the z53 level: 16/16 checks for
-  10 of the 12 seed / difficulty runs; seed 1 (6 hp) never picks a big slam and seed 77 (6 hp) never
-  picks a plain slam, so one coverage check fails there (the same kind of gap as Boss1 seed 1). All 12
-  runs reach the stage clear with exactly 6 (8) hits.
-- Boss4 host test (z43): 17/17 checks pass for the same 12 runs. Every run visits spin, clash, hurt,
-  slam, tilt spin and defeat, and reaches the stage-clear request.
-- `kos-cc -O2 -Wall -Wextra -Werror` builds all 8 sources.
-- Not yet run on Dreamcast hardware or in an emulator. Rendering is checked only on the host, by
-  projecting vertices through the boss camera.
-- Single screen (user rule): every boss arena renders in one 640x480 view with `boss_camera()`. Nothing
-  in the boss module draws to a second screen. The DS sub-screen information goes to the UI through
-  `boss_health()` / `boss_health_max()` / `boss_phase()` and `g_boss_hooks.navi` (NaviMsg). Boss3 and
-  Boss4 do not write POWCNT (only Boss1/Boss2 did, and those writes are dropped).
+Single screen: every arena renders in one 640x480 view with `boss_camera()`. The DS sub-screen
+information goes to the UI through `boss_health()` / `boss_health_max()` / `boss_phase()` and
+`g_boss_hooks.navi` (NaviMsg); nothing draws to a second screen.
 
 ## 1. Files
 
@@ -361,8 +343,8 @@ into the player module:
     DS softfloat single precision; not compared bit for bit with the DS.
   - `Player_Action_AttackBounceVel` is copied into boss4.c (the player module lacks it).
   - D2 draws the wave model twice per frame; the second model matrix is kept in `wave2`.
-- **Not run on Dreamcast hardware or in an emulator.** PVR list classes, culling and the camera
-  framing are derived, not observed. The host debug view (`DUMPAT=<frame>`) splats projected
+- PVR list classes, culling and the camera framing were derived on the host and then checked in
+  Flycast. The host debug view (`DUMPAT=<frame>`) splats projected
   vertices. It shows the neck and hammer in front of the camera with the player below them, but it
   is only a point check.
 
@@ -481,27 +463,6 @@ then steers under the body; [watch] at 5 hp or less it leaves the body alone unt
 Measured (default seed, 6 hp): hits at f 1042 / 2438 / 2626 / 2834 (pinch) / 3096 / 3250 (3 from a
 normal jump at the lowered body, 3 after an enemy bounce), cleared at f 3649. Attacks 10 (shot bursts 7,
 slam 1, tilt spins 2), shots 21 (2 at once), shock waves 1, clashes 3, enemies 3, bounces 3, assists 3.
-
-## 6. Next
-
-- Not yet translated (scope measured 2026-11-22, lines after removing declarations):
-
-  | boss | stage id | level | map object | source | functions | lines | notes |
-  |---|---|---|---|---|---|---|---|
-  | Boss6 | 17 | z63 | 0x3a (+ part 0xd4) | `Zone/Altitude_Limit/Boss` | 100 | ~2850 | tilting deck: Boss6_ApplyTiltToPlayer reads gPad and calls `player->unk338`, `Player_Action_KnockbackIntangible`; BossHelp_Create/Destroy (needs a BossHelp hook); 9 models, NNS_G3dMdlSetMdlAlphaAll; float angle steps in Boss6_Draw |
-  | Boss7 | 20 | z73 | 0x39 (+ 0xd5, 0xd6, 0xd7) | `Zone/Dead_Line/Boss` | 167 + asm `Boss7PartD5_InputState_ClashMash` | ~3020 | clash button-mash input state (gPad), BossHelp, its own lights (NNS_G3dGlbLight* in Boss7PartD5_Draw) |
-  | BossF | 23 | zf3 | 0x38 (+ 0xd8..0xde) | `Zone/Final_Zone/Boss` | 267 | ~4630 | BossHelp (hand ride warning), Zone8Act3 stage set-up / StageZoneScript_ZoneFBoss |
-  | Extra Zone boss | 26 (zone 8 act 2) | none (no level.bin; `extra_act*.narc`, `dm_ex_*` models) | - | `Zone/Extra_Zone/Boss` (overlay ov001) | 353 + 2 asm | ~8500 | ExtraBoss / ExtraBossObj / ExtraBossPlayer(Manager): own player control (gPad), own lights, own display set-up (ExtraBoss_InitDisplay) |
-
-  Boss variants for Blaze's story: there is no separate Blaze boss object. Boss1-Boss6 select only
-  palettes by the player slot (`gGameState.unk0`, the `_1p` / `_2p` palette files; translated as
-  palette state). Boss7 branches on `gGameState.unk0` in Boss7_Create (animation 4 or 3) and
-  Boss7PartD5_Create; BossFPartD8_OnHitHand branches on the player character (`unk324`); ExtraBoss_Start
-  sets `gGameState.unk0` itself. These branches belong to those bosses' translations.
-- Water surface / underwater handling for the player in z23 (reads `g_obj_camera[0].water`).
-- In the player module: `Player_Action_KnockbackIntangible` / `Player_Action_Blank` /
-  `Player_Action_AttackBounceVel`, and the boss-stage player draw.
-- In the models converter: palette variants for the hurt/flash palettes.
 
 ## 7. Mapping table
 
@@ -1174,13 +1135,12 @@ Counts: 4 reused, 3 modified, 2 substantially rewritten, out of 9 (plus Boss1_No
 
 ## Boss6 (Altitude Limit act 3, z63, stage id 17)
 
-Status (2026-11-22): all 100 functions of `src/game/Zone/Altitude_Limit/Boss/` are translated in
+Status: all 100 functions of `src/game/Zone/Altitude_Limit/Boss/` are translated in
 `dreamcast/game/boss/boss6.c` (Boss6, Boss6PartD4, the Boss6 pieces, BossStage6). None of them is an ARM
 listing. Counts: 58 reused, 34 modified, 8 substantially rewritten, 0 not translated, out of 100.
 Host test: 19/19 checks pass for seeds 0x12345678, 1, 2, 3, 0xdeadbeef and 77 at 6 and 8 hit points
 (12 runs). Every run reaches the stage-clear request with exactly 6 (8) hits.
 `kos-cc -O2 -fwrapv -Wall -Wextra -Werror` builds `boss6.c`: 30.3 KB text, 41 KB bss.
-It has not been run on Dreamcast hardware or in an emulator.
 
 ### Boss6: the fight
 
@@ -1209,58 +1169,6 @@ It has not been run on Dreamcast hardware or in an emulator.
   4. **Edge jumps (0x21).** The boss leaps to one edge, then hops 3 times at the player. After each
      landing, box 1 at "body_core" is the damage box (`Boss6_OnHit_Damage`). Box 6 (atk 0x33) kills a
      player under the landing.
-
-### Boss6: integration (main.c)
-
-```c
-/* boss_init(17, level, &player, 1) creates Boss6 from map object 0x3a (the objects module must
- * not create 0x3a or 0xd4). Nothing else is needed beyond the generic boss wiring of section 2 above: */
-g_boss_hooks.help = ...;    /* new: BossHelp_Create / BossHelp_Destroy (UI sprite) */
-s32 boss_help(void);        /* new: the BossHelp index shown (Boss6: 0 during a tilt), -1 none */
-```
-
-1. **Player draw.** Draw the player at (x/256, -y/256, z/256) with `boss_camera()`.
-   `boss_player_model()` returns 0 for Boss6, which uses no arena circle. Use `boss_lights()` /
-   `dcm_lights_stage` as for Boss3+.
-2. **Pad.** `Boss6_ApplyTiltToPlayer` reads gPad.trg, the raw pressed keys. Natively it reads
-   `gPlayers->pad_raw[1]`, the `pressed` argument that main.c already passes to `dcp_player_frame`.
-   Nothing new to wire, but `pressed` must be the raw DS-layout key bits (A = 1, B = 2) before the
-   remap.
-3. **The boss controls these player fields:**
-   - The remap `map_right/left/up/down/a/b` (@0x42C..@0x436): all zeroed during the tilt and the
-     stun, and left/right swapped while the boss is turned round. The player module already honours
-     them in `dcp_remap_buttons`.
-   - `held` / `pressed` / `released`.
-   - `gnd_vel` and `x` during the tilt.
-   - `state`: `Boss6_State_PlayerStunned`, and the knockback copied into boss6.c.
-4. **Player module needs.** `Boss6_State_PlayerStunned` ends on `DCP_DF_ANIM_DONE` of anim 0xf (DS:
-   the player model's "ended" bit). main.c already calls `objects_set_player_anim_done(1)`, which sets
-   the flag from son.bac timing. In boss stages the DS uses the 3D animation (com_dmg_b, 56 frames).
-   Two player actions are copied into boss6.c because the player module lacks them:
-   `Player_Action_KnockbackIntangible` (as in boss1.c) and `Player_Action_Blank`. They are candidates
-   to move into the player module. `act_move` (Player_Action_GroundMove) is used through the
-   DcPlayer pointer.
-5. **HUD.** Health and phase come from `boss_health()` / `boss_phase()` (phases 0x1c move, 0x1e
-   bullets, 0x1f pick, 0x20 tilt, 0x21 edge jumps, 0x22 hurt, 0x23 defeat). Messages go through
-   `g_boss_hooks.navi`. The help prompt goes through `g_boss_hooks.help` (kind `BOSS_HELP_CREATE`,
-   a = animation 0 of BossHelp's sprite file; kind `BOSS_HELP_DESTROY`). The prompt is also taken down
-   by `boss_shutdown`. Defeat cut-ins: `boss_exc_background()` 6/7/6, then -1. Flashes:
-   `boss_brightness()`.
-
-Disc assets (`build/dreamcast/boss/assets.txt`, 28 lines for z63, 0 missing):
-- `mod__bs6_{base,rcloud01,rcloud02,tcloud01,tcloud02,sky,body,prop01,prop02,bult}__*.dcm`;
-- `narc__z63_act_lz7__bs6.dca`;
-- `narc__z63_act_lz7__eff_{plate,wind,shoot}__*.dcm`;
-- `narc__z63_act_lz7__eff_{pick,parts}` (`.dcm` + `.dca`);
-- the deduplicated `narc__ss_act_lz7__eff_shoot_bomb`, `narc__z13_act_lz7__eff_{impact_small,hit}`,
-  `narc__z33_act_lz7__eff_land` and `narc__z23_act_lz7__eff_blast` (`.dcm` + `.dca`).
-
-bossdata.bin gets two Boss6 chunks: `data_ov000_023636e8..02363b18` (rodata) and
-`data_ov000_023657e0..023659c4` (data). It also gets the `bs6_body` joints body_pro_r / body_pro_l /
-pelvis / body_core, and the timing-only frame counts of `eff_plate.nsbma` (60), `eff_shoot.nsbma` (5),
-`eff_shoot_bomb.nsbma` (30) and `eff_shoot_bomb.nsbtp` (30). The tool checks the node names, the
-"bs6" archive name, the piece-state ROM addresses (`data_ov000_023658ac`) and the RotY(180) mirror
-matrix (`data_ov000_023638c4`).
 
 ### Boss6: how it is translated
 
@@ -1469,12 +1377,12 @@ The rival fight: Blaze when the story character is Sonic, Sonic when it is Blaze
 Files: `boss7.c` (all of it), `boss7.h` (Boss7 public part), `test/test_boss7.c`; small additions to `boss_core.c`
 (dispatch, `boss_data_dir()`), `boss_internal.h`, `tools/bossdata.py`, `Makefile` (`host-test7`).
 
-Status (2026-11-22): all 167 C functions of `src/game/Zone/Dead_Line/Boss/` plus the ARM listing
+Status: all 167 C functions of `src/game/Zone/Dead_Line/Boss/` plus the ARM listing
 `src/asm_fallback/Boss7PartD5_InputState_ClashMash.c` (rewritten from the listing) are translated, and the stage
 camera director `StageZoneScript_Zone7Boss` (`src/game/Zone/Dead_Line/Stage`). 168 originals: 122 reused, 43
 modified, 3 substantially rewritten, 0 not translated. Host test: 43/43 checks for 12 seed / difficulty runs; each run
 plays both story characters, a won and a lost clash. `kos-cc -O2 -fwrapv -Wall -Wextra -Werror` builds boss7.c
-(39.5 KB text). Not run on hardware or in an emulator.
+(39.5 KB text).
 
 ### Boss7: the fight
 
@@ -1507,34 +1415,6 @@ applies: **Dreamcast A or B** (`engine/input.c`: CONT_A -> IN_JUMP -> DS A, CONT
 `ds_pad`). Each new press counts, holding does not; the player's input lock (pf 0x200000) does not block it, as on
 the DS. The prompt sprite is `BossHelp_Create(0)` (ac_fix_bosshelp.bac animation 0) through `g_boss_hooks.help`.
 
-### Boss7: integration (main.c)
-
-```c
-#include "boss/boss7.h"
-/* stage 20 (z73): the boss module creates map objects 0x39 (Boss7) and 0xd5..0xd7 itself:
- * the objects module must not create 0x39, 0xd5, 0xd6, 0xd7 */
-boss_init(20, level_bytes, &player, 1);      /* story character: g_boss_game.unk0 if set, else player.chara */
-g_boss_hooks.help = ...;                       /* BossHelp_Create(0) / Destroy around the clash (UI sprite) */
-boss7_set_talk_hook(talk, ctx);                /* TalkDemo_Create(0xa Sonic / 0xb Blaze): freeze the stage
-                                                  (player, objects, boss_update) until the talk ends (cutscene CS_TALK) */
-boss7_blend(&mode, &evy);                      /* mode 2: brighten the 3D layer towards white by evy/16 (clash / dash flash) */
-boss_brightness(); boss_exc_background();      /* win cut-ins (master brightness, concentrated_line_01/02) */
-boss_lights(&l);                               /* zone 7 lights (view space): use them for the player model too */
-Boss7Info bi; boss7_info(&bi);                 /* bi.player_anim_speed: 0x4000 while the player's clash anim 0x42 runs */
-```
-
-- The arena is flat (320 x 896 px level, floor y 512, walls at x 0 / 320): no arena circle. Draw the player at
-  (x, -y, z) with `boss_camera()` as in section 2.
-- The camera is driven by `StageZoneScript_Zone7Boss` (framing both fighters, mode `unk210` 1/2/3) and the cut-in
-  orbit settings; `boss7_update` runs it last, the boss camera follows.
-- Sounds: handle 1 (Boss7: clash hit 0xbc), handle 2 (D6: tornado 0x98 / flame 0x99, stopped on vanish);
-  `music(0x11)` at the clash, `music_stop` before and after it.
-- Disc assets (assets.txt "z73", 35 files, 0 missing): `mod__bs7_base`, `mod__bs7_sky`, `narc__z73_act_lz7__bs7.dca`
-  / `.dcv`, `mod__son__son{,_ball}`, `mod__blz__blz{,_spin}`, `narc__player_lz7__son.dca` / `.dcv`, `eff_tornado`,
-  `eff_flame`, `eff_aura_son` / `_blz` (+ 01..03 .dca), `eff_hit`, `eff_homing`, `eff_boost`, `eff_strike_big` /
-  `_hit` / `_fin`, `eff_clash`, `eff_suction` under `/cd/models`; `bossdata.bin` and **`boss7bac.bin`** under
-  `/cd/boss` (`make -C dreamcast/game/boss data` writes both).
-
 ### Boss7: how it is translated
 
 - **The rival's model** is the player model of the other character (son.nsbmd / blz.nsbmd, models 0 and 1 = ball /
@@ -1556,7 +1436,7 @@ Boss7Info bi; boss7_info(&bi);                 /* bi.player_anim_speed: 0x4000 w
   (`data_020748bc` / `data_02074960`, zone 6 act 2) in view space, as Boss2 builds them.
 - **Character branches**: `Boss7_Create` (bs7.nsbva anim 4 for Sonic's story, 3 for Blaze's: which pod is shown),
   `Boss7PartD5_Create` (rival character `unk3D0`), `Boss7_Action_StartTalkDemo` (0xa / 0xb),
-  `Boss7_State_ClashSpawnPartD7` (the player's aura). gGameState.unk0 is `g_boss_game.unk0` when the integrator set it,
+  `Boss7_State_ClashSpawnPartD7` (the player's aura). gGameState.unk0 is `g_boss_game.unk0` when main.c set it,
   else the player's character.
 - **Clash darkening**: `NNSi_G3dModifyMatFlag(.., 0, 0x40 / 0x80)` + `NNS_G3dGlbMaterialColorDiffAmb` -> bs7_base and
   bs7_sky material diffuse / ambient take the global colour (white, fading to RGB 4/4/4); restored at the rival's exit.
@@ -1815,11 +1695,11 @@ The final boss: a giant robot (`bsf_body`) standing behind the flying base (`bsf
 `boss_core.c` (kind 0xf dispatch, `boss_update_pre`), `boss.h` (`g_boss_hooks.talk`, `boss_update_pre`),
 `boss_internal.h`, `tools/bossdata.py` and the `Makefile` (`host-testF`).
 
-Status (2026-11-22): all 267 functions of `src/game/Zone/Final_Zone/Boss/` are translated, plus the three stage
+Status: all 267 functions of `src/game/Zone/Final_Zone/Boss/` are translated, plus the three stage
 functions the fight needs: `StageZoneScript_ZoneFBoss` (Stage) and `ZoneFx_ZoneFBoss_Init` / `_Update` (Background).
 That is 270 originals: 210 reused, 59 modified, 1 substantially rewritten, 0 not translated, 0 asm fallbacks. Host
 test: 18/18 checks in 24 runs (6 seeds x LEVEL 0/1 x Sonic / Blaze), plus a 5-check knock-off run. `kos-cc -O2
--fwrapv -Wall -Wextra -Werror` builds boss_final.c (55.6 KB text, 96 KB bss). Not run on hardware or in an emulator.
+-fwrapv -Wall -Wextra -Werror` builds boss_final.c (55.6 KB text, 96 KB bss).
 
 ### BossF: the fight
 
@@ -1861,54 +1741,6 @@ Character, Super forms, time and rings:
 - The time limit is the generic `Player_CheckTimeOver` (10 minutes, ui module). BossF only stops and restarts the
   stage timer (`g_dcp_world.flags & 1`) as described above.
 
-### BossF: integration (main.c)
-
-```c
-#include "boss/boss_final.h"
-/* stage 23 (zf3, DS zone 7 act 2).  The boss module creates 0x38 and 0xd8..0xde itself:
- * the objects module must not create them. */
-boss_init(23, level_bytes, &player, 1);
-g_boss_hooks.help = ...;   /* kind 0/1: BossHelp_Create(a = 1, the hand-ride warning) / Destroy;
-                              kind 2 (BOSS_HELP_ENEMY_ROOM_FIX): EffEnemyRoomFix, two HUD sprites
-                              (ac_eff_enemyroom_fix.bac 0xb / 0xc) at screen (a, 0x30) for b frames */
-g_boss_hooks.talk = ...;   /* TalkDemo 0xf / 0x10: cutscene_start(CS_TALK, id, character); while
-                              cutscene_active() skip boss_update_pre / dcp_player_frame / boss_update
-                              (System_Freeze) and draw the talk with cutscene_draw_list over the stage */
-g_boss_hooks.music = ...;  /* seq 0x13 at the talk */
-/* per frame, in this order: */
-objects_frame_begin();                 /* ObjRect checks + ObjCollisionMap commit (the arm's map) */
-boss_update_pre(&player);              /* BossFPartD8 (task 0xf0) before the player, as on the DS */
-dcp_player_frame(&player, ...);        /* g_dcp_col.obj_probe = colmap_probe_for_obj (objects module) */
-boss_update(&player);
-bossf_blend(&mode, &evy);              /* mode 2: white quad with alpha evy/16 over the 3D layer only (BG0) */
-if (boss_player_model(t, r)) ...       /* riding: draw the player at t with rot r (Draw_RidingPlayer) */
-```
-
-- The arena is flat (1664 x 832 px level, floor y 768, base x 0..0x340). Draw the player at (x, -y, z) with
-  `boss_camera()` unless `boss_player_model()` returns 1 (the hand ride).
-- The camera is `BossF_InitCamera` (follows the player, its own shake) plus `StageZoneScript_ZoneFBoss`. The DS
-  display swap (POWCNT bit 15) is dropped: one 640x480 view.
-- Health / phase go through `boss_health()` / `boss_phase()`. There are no navi messages in this fight.
-- Story flow:
-  - Before the fight, `Game_StartStoryStage` (zone 7, act index 2) calls `DemoScript_StartScript0`. Natively that is
-    `cutscene_start(CS_SCRIPT, 0, character)` with `CsStory.zone = 7`; on `CS_NEXT_STAGE` load stage 23 and call
-    `boss_init`.
-  - After the fight, `g_boss_hooks.cleared` stands for `Stage_OnBossCleared`. For zone 7 that is `ClearDemo_Create`
-    (the results: UI_RESULTS with `g_obj_stage.ring_bonus`), **not** DemoScript_StartAfterBoss.
-  - `ClearDemo_GoToNextScene` with zone 7 calls `SceneChange_ToEnding`, which is `cutscene_start(CS_ENDING, 0,
-    character)`. That chains into Ending -> StaffRoll -> PostStaffRoll (`CS_NEXT_UNLOCK_NOTICES`).
-  - In time attack (mode 2), the results lead to TryAgain.
-- Disc assets: assets.txt "zf3" lists 38 files, 0 missing, under `/cd/models`:
-  - `bsf_base` / `body` / `ball` / `shock` / `wave_sl` / `pas_dust01`, `bsf_sky`, `bsf_sky_b`, the four `bsf_passage`
-    models;
-  - `narc__zf3_act_lz7__bsf.dca` / `.dcv`;
-  - `eff_laser_fin`, `eff_laser_fin_b`, `eff_beam_fin`, and the zf3 effects (`eff_impact_sl/st/pr`, `eff_dmg_hand`,
-    `eff_produce`, `eff_bomb_ball`, `eff_tackle`, `eff_base_dest`, `eff_beam_fin_b`, `eff_blastf`, `eff_hit`).
-
-  `bossdata.bin` goes under `/cd/boss`. It holds the BossF rodata / data chunks, the `bsf_st_r.df` / `.di` archive
-  chunks (ids 0x7f000000 / 0x7f010000), the five `bsf_body` joints and the timing-only lengths of `bsf.nsbta` /
-  `.nsbma`, `eff_laser_fin_b.nsbma` / `.nsbtp` and `eff_beam_fin.nsbtp`. `make -C dreamcast/game/boss data` writes it.
-
 ### BossF: how it is translated
 
 - **Work words**: BossFPartD8's 0x434 / 0x438 / 0x43C / 0x440 are read as u16 by some states and as s32 by others.
@@ -1932,7 +1764,7 @@ if (boss_player_model(t, r)) ...       /* riding: draw the player at t with rot 
 ### BossF: deviations and gaps
 
 - Palettes (`Boss_LoadModelPalettes`) are selection state only (`bossf_palette` / `bossf_palette_flash`). The hurt
-  blink is not shown unless the integrator tints the model.
+  blink is not shown unless main.c tints the model.
 - Material, SRT and pattern animations (`bsf.nsbta` / `.nsbma`, `eff_laser_fin_b`, `eff_beam_fin`) are timing only.
 - The DC / DE wireframe look is approximated by alpha.
 - `NNS_G3dGlbPolygonAttr` and the DS display swap are dropped. `Task_DestroyByTag(4)` is a no-op.
@@ -2010,7 +1842,7 @@ pass: seeds 0x12345678, 1, 2, 3, 0xdeadbeef, 77 x LEVEL 0 / 1 x STORY 0 / 1, fin
 | `BossFPartD8_Destructor` | boss_final.c | modified | MapObject_Destructor + releases the colmap registration |
 | `BossFPartD8_DisableHitboxes` | boss_final.c | reused |  |
 | `BossFPartD8_Draw` | boss_final.c | modified | node matrices from BossFPartD8_NodeCallback_Body |
-| `BossFPartD8_Draw_RidingPlayer` | boss_final.c | modified | StageObj_Draw3DEx(x, y, z, rot) -> the player model transform for boss_player_model(); the integrator applies the stage model matrix, RotY(0x4000) and scale, before it |
+| `BossFPartD8_Draw_RidingPlayer` | boss_final.c | modified | StageObj_Draw3DEx(x, y, z, rot) -> the player model transform for boss_player_model(); main.c applies the stage model matrix, RotY(0x4000) and scale, before it |
 | `BossFPartD8_GetRidePosition` | boss_final.c | reused | the point of the hand at radius unk43C from the right shoulder |
 | `BossFPartD8_InitHitboxes` | boss_final.c | reused |  |
 | `BossFPartD8_InitPartDCPath` | boss_final.c | reused |  |
@@ -2423,7 +2255,7 @@ boss_extra_shutdown();
     - SE from the `snd/ze` archive (`/snd/ze/sound_data.sdat`, which ExtraBoss_LoadAssets loads into the sound heap);
     - music 0x14 for rounds 0..2, 0x15 from round 3;
     - "VS" voices 0x22 / 0x2b.
-  - The integrator's audio has to load that bank for this mode.
+  - main.c's audio has to load that bank for this mode.
 - **Lights / edge colours**: the module keeps its own `NNS_G3dGlbLight*` set (`ex_set_zone_lights`, from the arm9
   `zone_lights` table) and passes them to `dcm_draw`. It does not touch `g_boss_lights` or the stage lights.
 
@@ -2444,7 +2276,7 @@ boss_extra_shutdown();
   - `zex.bin`: the BG with its 21 palettes;
   - `vs_son.bin`, `vs_blz.bin`;
   - `sprites/ex_fix_moji/`, `sprites/itm_ring/`, `sprites/ex_vs/` (`frames.bin` + `atlas0.argb1555` each).
-- `/snd/ze/sound_data.sdat` (integrator).
+- `/snd/ze/sound_data.sdat` (main.c).
 
 The `dm_ex_*` models named in the task are **not used by the fight**: no ExtraBoss* function loads them. They
 belong to the Extra Zone cutscenes. `eff_dmg_end01/02` in the narc are also unused here.
@@ -2493,10 +2325,10 @@ belong to the Extra Zone cutscenes. `eff_dmg_end01/02` in the narc are also unus
   the cut-in. `AnimatorSprite_DrawRotScale` keeps the scale but not the rotation (the fight draws no rotated sprite).
 - The VS splash is a timed cut-in, not a permanent second screen (single-screen rule). The character switch uses
   the composed slot-3 camera instead of the two DS cameras.
-- Sound: the `snd/ze` bank load and the seq handle (`work + 0x33c`, `NNS_SndPlayerStopSeq`) are the integrator's
+- Sound: the `snd/ze` bank load and the seq handle (`work + 0x33c`, `NNS_SndPlayerStopSeq`) are main.c's
   (`boss_sfx_stop(1)`).
 - Lives come from `boss_extra_set_lives` (StoryProgress_RestoreFromSave) and go out in `BossExtraResult` (saving is
-  the integrator's).
+  main.c's).
 - `ExtraBoss_Main` (the title-card player object's callback) is empty natively.
 - Host renderer lighting is approximate (emission + ambient + diffuse, no per-vertex lights); the PVR path uses the
   real lights.

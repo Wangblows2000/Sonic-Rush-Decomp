@@ -17,7 +17,7 @@ The whole game runs natively from the translated decompiled code in one
 - 59.9-60 fps in every act, boss and special stage; VRAM and sound RAM stay
   flat over a 95-minute session.
 
-Regression results: REGRESSION.md. Defect history: DEFECTS.md.
+Test method and latest results: REGRESSION.md. Building: BUILD.md.
 
 ## Differences from the DS (by design)
 
@@ -39,7 +39,7 @@ Regression results: REGRESSION.md. Defect history: DEFECTS.md.
   black there; the load is not overlapped with the previous fade).
 - Night Carnival lamps flicker their light cone every other frame while
   touched, exactly as the DS code does; on a TV this reads as 30 Hz flicker
-  rather than the DS LCD's half-transparent look (DEFECTS F16).
+  rather than the DS LCD's half-transparent look.
 - Losing the Boss 7 button-mash clash leaves the boss idle at 1 hit point
   until time over (same as the DS code).
 - Test-only discs (debug start files) continue to Sonic's next stage after

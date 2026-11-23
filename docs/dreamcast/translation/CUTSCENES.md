@@ -9,19 +9,8 @@ StaffRoll (Sonic, Blaze, extra) and PostStaffRoll. The code was translated from
 animations, dialogue, portraits, fades and sound cues. No cutscene function is an asm fallback:
 every one has C source in `src/`.
 
-The code was checked as follows (section 9 has the details):
-
-- Host test: `make -C dreamcast/game/cutscene host-test` passes (2683/2683 checks). It runs
-  every script headless and checks the command sequence, frames, page counts and results.
-- Build: all sources compile with `kos-cc -O2 -fwrapv -Wall -Wextra -Werror` (KOS 2.3.0).
-- KOS link test: `make link` links the module with the engine (render, input, audio) and the
-  sound module into `cutscene_test.elf`.
-- Flycast: that ELF was run on a test disc (`tools/build_test_disc.sh`): a zone-map talk,
-  TransformDemo 0 and 4, PlayerDemo 1 and 21, the Blaze ending into its staff roll, the Blaze and
-  extra staff rolls, and the ExtraEnding chain. Section 9 lists what was seen and what only the
-  serial log shows.
-
-Nothing was run on Dreamcast hardware.
+Host test: `make -C dreamcast/game/cutscene host-test` runs every script headless and checks the
+command sequence, frames, page counts and results. Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 
 - Code: `dreamcast/game/cutscene/`, which holds `cutscene.h` (the public API), `cs_internal.h`,
   `cs_*.c`, `tools/`, `test/` and the `Makefile`.
@@ -52,13 +41,13 @@ Nothing was run on Dreamcast hardware.
 | `cs_ending.c` | Ending, ExtraEnding, StaffRoll (+ picture states, credits, banner, closing card), PostStaffRoll |
 | `tools/csdata.py` | ROM tables → `csdata.bin`, scripts, images, sprite/model/music lists (section 4) |
 | `tools/csbank.py` | the sys SDAT split into one sound bank per SSAR (`sys_aNN.srb`) |
-| `tools/build_test_disc.sh` | emulator test disc (section 9) |
+| `tools/build_test_disc.sh` | emulator test disc for the module alone |
 | `test/test_cutscene.c` | host test; `test/cs_raster.h`: host compositor (PPM frame dumps) |
 | `test/link_main.c` | KOS test main: plays a list of cutscenes (`/cd/cutscene/test.txt`) |
 
 ## 2. Integration (main.c, menus hooks, bosses)
 
-`main.c`, the game `Makefile` and `build_disc.sh` belong to the integrator. These are the changes.
+What `main.c`, the game `Makefile` and `build_disc.sh` do for this module:
 
 ### 2.1 Build and boot
 
@@ -103,7 +92,7 @@ Run each cutscene as follows.
   - The caller keeps drawing its scene.
   - Freeze the world (no `boss_update` / player / objects) while `cutscene_active()`, as `System_Freeze` does on the DS.
   - Inside the cutscene module a TalkDemo freezes the scene behind it the same way (System_Freeze: PlayerDemo,
-    TransformDemo, Ending / StaffRoll wait, the last 3D frame stays; `g_cs_frozen`, DEFECTS.md V1).
+    TransformDemo, Ending / StaffRoll wait, the last 3D frame stays; `g_cs_frozen`).
   - Call `cutscene_run_frame(&in)` once per frame.
   - Call `cutscene_draw_list(PVR_LIST_TR_POLY)` inside the caller's TR list, after the scene and HUD. Its 2D is at z 100..120, above `menus_draw_tr` (z 10..90).
   - It may also be called for OP and PT; it adds nothing there for a talk.
@@ -344,44 +333,10 @@ The others, and where their work is:
   - main.c inserts these scripts (2.3).
 - **Load stalls**: each cutscene loads its pictures, sprites and models when it starts, or at a
   PlayerDemo scene change, as the DS does. Under Flycast this takes several seconds of emulated time
-  (~120 KB/s, section 9).
+  (~120 KB/s measured in Flycast).
   - There is no loading screen or prefetch yet.
   - Candidates: smaller sprite atlases (`ac_sf` is 512 KB), loading the PlayerDemo scene models during the previous scene.
 - **Memory**:
   - A cutscene loads its pictures and models when it starts and frees them at the end.
   - The staff roll holds 0.87 MB of credit rows (CSR1), plus 3 ring textures 256x256 and up to 12 BG pictures. Flycast measured 2.8 MB of heap in use during the extra staff roll.
-  - The integrator should free stage data before full-screen cutscenes, as the DS overlay change does.
-
-## 9. Verification (what was run)
-
-- `make -C dreamcast/game/cutscene host-test`: 2683/2683 checks.
-  - TalkDemo: all 40 scripts in English (page count, BGM, first page after the band opened at frame 34–40, full-image mode).
-  - The same 40 scripts in the 5 other languages (page counts, message pages present).
-  - PlayerDemo: all 34 scripts, every command at its frame (frame = scene start + max(t,1)) in order, scene changes.
-  - TransformDemo 0–4 (sound cues at 0x1e/0x78/0xa0/0xb4/0x12c, fade-out, end frame).
-  - DemoScript: 70 runs (modes 0/1 for both characters, all zones, new / replay; modes 2, 3, 4), checking op sequences, next scene and progress.
-  - Ending (Sonic 9 / Blaze 8 captions, 4 pictures, chain to the staff roll and its progress result).
-  - StaffRoll 0/1/2 (credits, extra pictures, game-cleared, no missing credit map in any of the 6 languages), skip in each mode, Ending skip.
-  - PostStaffRoll (talk 0x37), ExtraEnding (PlayerDemo 0x2a → extra staff roll).
-  - Zone-map talk ids for every story step.
-  - With `DUMP=dir`, the host compositor writes PPM frames. These were looked at for every kind; that is how the staff-roll ring-texture bug was found and fixed.
-- `make dc` (kos-cc -Werror) and `make link` (`cutscene_test.elf`) succeed.
-- `make -C dreamcast/game/menus host-test`: 38/38, with and without the talk hooks. `make -C dreamcast/game/menus link` succeeds.
-- Flycast, with `cutscene_test.elf` on `tools/build_test_disc.sh` output (serial log + screenshots of
-  the emulator window; A taps sent with xdotool; times are the emulated clock, `timer_ms_gettime64`):
-  - Zone-map talk 0x15: all 11 pages ran (serial log). The screenshot shows the portrait, box, band and A prompt composed correctly over the backdrop.
-  - TransformDemo 0 and PlayerDemo 1: ran to their end (serial log only; their screenshots caught another window and are not evidence).
-  - TransformDemo 4 drew Super Sonic and Burning Blaze with the effects.
-  - PlayerDemo 21 drew the island scene with the models and captions.
-  - The Blaze ending drew its pictures, captions and white fades, then chained into the staff roll.
-  - In that first run the staff roll showed no credits and no characters: the six 2.4 MB credit maps did not fit in RAM. This was fixed by the CSR1 compaction and by not loading the sub-screen copies.
-  - Then the Blaze staff roll (`CS_STAFFROLL 1`) and the extra staff roll (`CS_STAFFROLL 2`) showed the credits scrolling, with Blaze, Cream and Cheese running in the first.
-  - ExtraEnding (`CS_EXTRA_ENDING`): PlayerDemo 0x2a with talks 0x38 / 0x39 over the 3D scene, fades, then the extra staff roll.
-    - Talk 0x39 keeps running over the staff roll, as the original's tasks do: `Overlay_Request` destroys no task.
-    - In one run the staff-roll part showed black screenshots while the emulator ran slowly (two other Flycast instances on a 2-core host). The rerun reached frame 6000 at 60 fps. The host compositor shows the talk over the credits at those frames.
-  - Speed (emulated clock): once loaded, 600 frames take 10.0 s (60 fps) in the staff roll and ~10.8 s (~55 fps) in PlayerDemo 0x2a with a talk over it.
-  - Loading is slow under emulation. The serial `cs: load` lines show ~120 KB/s from the emulated disc:
-    - PlayerDemo 21 scene: ~9 s for 1.1 MB of models;
-    - extra staff roll start: ~15 s (the 512 KB `ac_sf` atlas alone takes 4.3 s).
-  - The DS loads the same files at the same points. Hardware read speed was not measured.
-- Not done: Dreamcast hardware; the game ELF with these hooks (main.c is the integrator's).
+  - main.c should free stage data before full-screen cutscenes, as the DS overlay change does.

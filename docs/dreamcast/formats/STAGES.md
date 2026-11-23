@@ -274,27 +274,6 @@ gcc -O2 -Wall -o /tmp/stages/test_level tools/dreamcast/stages/test_level.c
 
 Overlay colours: red = layer B solid, blue = layer A only, yellow = top-solid chars on B, white line = top edge of the B surface. Each overlay also checks 8000 random pixels of the vectorised mask against the transcribed `GetTileHeight`.
 
-## 8. Validation (2026-11-22)
-
-- **Batch:** 26 of 27 slots converted, 0 failed. Slot 26 (Extra Zone) has no map data by design.
-  - Totals: 6674 objects, 6341 rings, 7596 decorations.
-  - level.bin + blocktex.bin = 35.7 MB in total. The whole `build/dreamcast/stages` tree, previews included, is 116 MB.
-- **Round trip:** for every stage, the converter re-reads level.bin, blocktex.bin and bg.bin and checks them against the render made from the DS files.
-  - Checked: un-twiddled block pages vs DS blocks, char page + block words vs DS blocks, layer maps vs DS maps, and bg texture vs decoded BBG.
-  - Result: 0 differing pixels or entries in all 26 stages.
-- **Collision:**
-  - `test_level` runs 20000 queries per stage; about half are aimed at partial-mask tiles, and they cover all flag combinations 0/1/0x40/0x80.
-  - Each query runs `rlvl_tile_height`, `rlvl_tile_width` and `rlvl_probe_distance_long`, including the angle/attr outputs. The level_format.h results are compared with `dscoll.py`, which reads the raw DS files.
-  - Result: 0 mismatches in all 26 stages. Header, section-alignment, region-table and block-range checks: 0 errors.
-  - The header also compiles with `sh-elf-gcc -m4-single-only` (struct sizes asserted: 164/12/32/36).
-- **Visual checks (Read tool):**
-  - `z11_fg_quarter.png` shows a coherent Leaf Storm act 1: the start platform on vine pillars, slopes, loops, wavy rails, and the large tree wall.
-  - `z31` shows coherent Mirage Road ruins.
-  - The z11 and z21 backgrounds are coherent jungle and palace scenes.
-  - Overlay `z11_collision_5300_1550.png`: the loop collision follows the drawn circle. The lower-right quarter is on layer A only (the loop path switch). The grass-top surfaces match the white edge line.
-  - Overlay `z11_collision_1200_600.png`: the slope surface matches the graphics.
-  - Object/ring plot near the z11 start (scratch image): PlayerStart sits on the ground, rings float above the slopes, a spring is at the ledge, and objects follow the rails.
-
 ## 9. Gaps / unknowns
 
 - `attr>>1 == 1` (sets `obj+0x5E` bit 0): meaning unknown.

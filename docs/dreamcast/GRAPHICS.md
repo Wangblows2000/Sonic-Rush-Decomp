@@ -16,7 +16,7 @@ for each of the two frame halves: the vertex buffer (524,288), the object pointe
 (3 lists x 64 B x 300 tiles x (1 + 3 overflow) = 230,400), the tile matrix (0x48 + 7,224)
 and the 640x480x2 frame buffer (614,400), all 128-aligned: 1,376,384 bytes per half.
 **Texture RAM = 8 MiB - 2 x 1,376,384 = 5,635,840 bytes (5,504 KB).** Flycast prints
-exactly this after `pvr_init` (section 4).
+exactly this after `pvr_init`.
 
 Every `pvr_mem_malloc(n)` costs `(n + 4)` rounded up to 32 (KOS dlmalloc chunk: size word,
 32-byte alignment). PVR textures are power-of-two, 8..1024.
@@ -165,40 +165,7 @@ paletted page with a bank.
   (`objects/tools/objdata.py` -> `palanim.bin`). A decoration started with it draws its
   row-0 images with the bank of `anim_pal[current animation]` (DecGroupAF neon ball /
   pillar / star, DecArrow, DecGroup95 lights). The effect hook is still called.
-- **Blaze palette swaps**: not done (section 6).
-
-## 4. Flycast verification (2026-11-22)
-
-Test discs from the tree with a probe in main.c (VRAM free, palette rows, object and UI
-page bytes); display :95.
-
-| point | before (HEAD d1248d81) | after |
-|---|---|---|
-| after `pvr_init` | 5,635,840 | 5,635,840 |
-| after `ui_init` + player model | 4,611,336 | 5,274,888 |
-| z41 after `objects_init` | 34,600 (owner's run) | 2,360,104 (objects 553,984 B, 33 PAL4 + 24 PAL8 rows) |
-| z71 after `objects_init` | 436,232 | 2,362,376 (objects 420,864 B) |
-| z31 after `objects_init` (largest level) | (does not fit) | 1,838,440 (objects 551,168 B) |
-
-The offline model is within 344 bytes of every measurement (z11, z31, z41, z71). Screenshots of
-z41 and z71 show the HUD (gauge colours from variant banks), the neon decorations, rings
-and enemies with their DS colours; 59.5 fps.
-
-Stage changes (cycle of z11..z42, 300 or 200 frames each, through the stage exit path):
-with `ui_stage_end()` wired, VRAM before every `level_load` is 5,274,888, the value after
-boot, for normal and boss acts (z13, z23, z33). Without it the previous stage's title-card
-background and navigator (32 KB / 64 KB) stayed until the next stage start (not cumulative).
-Special-stage round trip (z11, entered at frame 300, played to the end): 5,274,888 before
-`special_init`, 5,274,888 after `special_shutdown` (all 64 palette rows free), and z11
-again gives 2,514,632 after `objects_init`, the same as the first entry. The special-stage
-HUD and sprites draw from PAL4 pages.
-
-Front end (HEAD d59309c8, 2026-11-22): title -> attract demo (z12) -> title -> main menu
--> new game -> z11 -> z12 -> DemoScript cutscene -> z13 boss -> zone map with the
-navigator talk. Before every `level_load` VRAM is 5,364,232 (after boot: 5,520,104 minus
-the player model and the loading ring), the same after the demo, after the menus and after
-each act; the front end takes 1-7 palette rows (taken on first draw, given back when idle),
-the zone map 4,562,088 bytes free. No page fell back to ARGB1555 in any run.
+- **Blaze palette swaps**: done as palette bank swaps (`ui_pal_swap`, section 7).
 
 ## 5. Teardown and leaks
 
@@ -286,24 +253,22 @@ main thread's opens and read requests during the whole load).
 ## 7. Gaps
 
 - Blaze palette reload of the results glyphs (ClearDemo_InitSprites: palette data at
-  +0xcc instead of +4): done as a palette bank swap of the row-0 images (ui_pal_swap, DEFECTS.md V4).
+  +0xcc instead of +4): done as a palette bank swap of the row-0 images (ui_pal_swap).
 - The BG alternate palettes of zones 4/5/7 (`rbgd_header_t.num_palettes`) are used: they are
   the sources of the zone palette animations (section 8), kept in RAM (`Level.bg_pals`), not
   more PAL8 rows.
-- Water Palace: the tinted copies need a second PAL8 bank; on z21/z22 only the map tiles get
-  one (rows free after `objects_init`), the BG is tinted with a vertex colour (section 8).
+- Water Palace: the tinted copies need second PAL8 banks; `zonefx_stage_loaded` reserves them for
+  the map and BG right after the level load, before objects and UI take palette rows (section 8).
 - Power-of-two pages are still a third empty on average.
 - z41 uses all 64 palette rows at `objects_init`: one more palette there and a page goes
   ARGB1555.
-- Not measured in Flycast: the Extra boss, cutscene overlays during boss acts.
 - Depth floor: KOS sets the PVR background plane to depth 0.0001 (`pvr_state.zclip`,
   `PVR_BGPLANE_Z`). An OP polygon at a smaller depth fails the depth test against it and is not
-  drawn: full-screen backdrops go at 0.00012 or more (the Extra boss zex BG was invisible at 0.00002,
-  DEFECTS.md V9).
+  drawn: full-screen backdrops go at 0.00012 or more (the Extra boss zex BG was invisible at 0.00002).
 - Menus 3D layer (menus/mn_model.c): a front-end scene's models sit at DS BG0's place in the
   compositing order; `menus_draw_tr` leaves a depth band of 20 there (z 10 + 0.005 per quad) and the
   models' orthographic depth is mapped into it, so lower-priority BGs / sprites stay behind and
-  higher ones in front (zone-map character, DEFECTS.md V12).
+  higher ones in front (zone-map character).
 
 ## 8. Zone backgrounds and zone effects
 
@@ -373,119 +338,3 @@ the texels use.
   light colours alternate every 7 frames between data_02074990 and data_ov000_02364dbc
   (`zonefx_boss3_lights`); boss3.c applies them to its lights (stage light vectors), which
   light the boss, the arena and the player model, as NNS_G3dGlbLightColor does.
-
-### 8.3 Measurements (Flycast, display :97, debug-start discs)
-
-Per stage: BG draw ms/frame (`draw ms/frame: bg`), palette writes, fps of the frame log.
-
-| stage | BG | BG ms | palette writes / 120 frames | fps |
-|---|---|---|---|---|
-| z11 | parallax x / 14 | 0.04 | 0 | 59.3 |
-| z21 / z22 | line scroll + wave, tint split, shimmer | 0.28 | 80 (shimmer + tinted) | 59.3 |
-| z31 / z32 | haze / dunes / quicksand | 0.04 | 0 | 59.3 |
-| z41 | parallax x / 18, 24 animations | 0.04 | 53 | 59.3 |
-| z51 | bands, rotation + 2 animations | 0.04 | 35 | 59.3 |
-| z61 | cloud drift | 0.04 | 0 | 59.3 |
-| z71 | bands, 2 rotations + 2 animations | 0.04 | 30 | 59.3 |
-| z82 | haze, x fixed | 0.14 | 0 | 59.3 |
-| z91 | as z41 | 0.04 | 53 | 59.3 |
-
-Host test (`make -C dreamcast/game/camera host-test`): BG tables against the formulas
-(zone 1, 4, 6), the zone 2 wave below the water line, the zone 3 haze, palette animations
-step from the alternate palettes (z41 2588 entry changes in 240 frames, z51 18986, z71 960),
-BLDY ramp to 10 and back, flash, the alarm.
-
-Palette RAM timing: `zonefx_commit_palettes` runs at the frame start (after `pvr_wait_ready`,
-main.c patch); when a palette changed it waits for the render in progress
-(`pvr_wait_render_done`) before writing, so no frame renders with mixed colours. The object
-PaletteAnim rows and the UI's lazy rows follow the same rule (section 3.2, write timing).
-
-Known limits: the sprite tint is the vertex-colour approximation, not the exact r - 10.
-
-Layering (Stage_InitDisplay: BG0 = 3D layer priority 1, BG1 zone BG 3, BG2 layer A 0, BG3
-layer B 2; an OBJ is in front of a BG of the same priority). The DC draws all of them in one
-PVR pass, so each gets a depth band (1/w style, bigger = nearer; obj_draw.c, main.c):
-
-    zone BG 0.0005 < OBJ prio 3 (0.00055..0.001) < layer B 0.001 < OBJ prio 2 (0.0011..0.003)
-    < 3D layer (player, object models, trails, 3D BAC stand-ins: ~0.0035..0.03)
-    < OBJ prio 1 (2..2.64) < layer A 10 < OBJ prio 0 (11..11.64) < HUD (100+)
-
-Inside a band, OAM order (lower order in front, step per order). Map objects default to OAM
-priority 2 (`obj_manager.c`: spr flags 0x40000), so most objects are behind the player;
-enemies (StageObj_SetOAMPriority 1) are in front. The Zone 2 water surface sprites
-(AnimatorSprite_Init 0x4004, order 0x15) are prio 0: z 11.43. The 3D layer's own depth
-comes from the model 1/w: the stage camera (eye 166 px in front of the z = 0 plane) keeps
-models within +-100 px of the plane inside 0.0035..0.03. Boss arenas (RLVL_FLAG_BOSS): the
-whole arena is 3D (sky, floor), so the sprites keep the old bands in front of it
-(4.5 / 3.5 / 2.5 / 1.5 by priority).
-
-Object models (`objects_model_get` views: RopeC, Wheel2D, Hand2d, GmkTable, CraneSlide,
-Crane / CranePartED / EE, Glider) are drawn by `objects_draw_models` (obj_draw.c), in the
-OP / PT / TR lists next to the player model: StageObj_Draw3DEx + Model_Draw with
-NNS_G3dDraw1Mat1Shp blocks. Model matrix v' = v * S(scale) * R(object 3x3) + T, T = (screen
-x, -screen y, z); camera `dcm_camera_stage`, plus `dcm_camera_stage_offaxis` for
-disp_flags 0x200. The block set (`shapes`) maps to joint visibility and material alpha 0
-over the converted draws (all eight models are separable). Lights: stage vectors, stage
-colours (`dcp_model_stage_lights`). `objects_models_prepare` (outside the lists) loads
-`/cd/models/<id>.dcm` and uploads its textures; a new stage frees them
-(`objects_models_free`). A model's 2D stand-in sprite is drawn only while the model is
-not loaded. Flycast (test start positions, save states): z11 rope (thin rope from the post,
-player grabs it), z21 wheel (paddle wheel around the axle post), z32 table (sails, tilts
-on the slope, player on it, explosion sprite behind it), z32 hand (claws; reaches out to
-z +128 px, magnified as on the DS), z42 crane slide, z51 crane (arm, housing, chain reps,
-hook), z61 glider (wing and frame, player hanging). 0.2-0.8 ms draw per frame, up to 420
-PVR triangles per view, 58.7-59.3 fps.
-
-3D BAC sprites (StageObj_Load3dBAC / Model_InitSprite3D, drawn by Model_DrawSprite3D) are
-BAC frames drawn by the 3D engine, one textured quad per OAM piece in model space (1 unit
-= 1 px, y up: x = piece x - cell x, y = cell y - piece y). The converted frame image has
-the same origin (bac2dc.py subtracts the cell centre too), so obj_draw.c draws one quad
-from (-origin_x, origin_y) to (w - origin_x, origin_y - h), H / V mirrored by the sprite
-flags 0x80 / 0x100, through Model_Draw (v * S * R + T) and the camera, with z = 1/w: they
-sort with the player and the models in the 3D layer.
-
-- Stages (StageObj_Draw3DEx): T = (screen x, -screen y, z), the stage camera, off-axis
-  for disp 0x200, the rotation of disp 0x100 (angle + gravity, @2 / @3, scale @0x44 /
-  @0x46). Draw3DEx flips a 3D sprite when the object is not flipped (flags ^= 1 for model
-  type 2), the same rule as the 2D draw (StageObj_Draw2DEx: f ^= 1 with a 2D BAC).
-  Objects with `Obj.bac3d`: MapObj13 (Altitude Limit glider sequence: rings
-  ac_itm_ring_graider, clouds ac_gmk_cloud_3, Egg Flappers ac_ene_flapper3d, ring
-  sparkles) and DecGroup4D (z2 wheel axle pieces, z4 crane slide rail).
-- Boss arenas: T = world (x, -y, z) under the boss camera. Rings are ac_itm_ring3d
-  (animation 0, looping) at (x, -y, 0) (RingManager_DrawRing3D), or on the arena circle
-  for zones 2, 3 and 4 (DrawRingArena1..3: BossArena_ArcToCirclePos with the DS constants);
-  the ring sparkles likewise. Other boss-stage sprites keep the 2D bands.
-- 3D effects: `objects_fx3d_spawn(bac id, anim, x, y, z, flags, scale)` plays one
-  animation at a point and ends with it (EffWater3D_State_DestroyOnAnimEnd style).
-  `objects_fx3d_water` is `g_boss_hooks.water_fx` (EffWater3D_Create: ac_eff_water_3d
-  animation 2 at the arena circle position, the player's facing). The sprite faces +z
-  (Draw3DEx disp 0x100 with angle 0 for sprites), as on the DS: seen edge-on when the
-  camera looks along x.
-- `objects_models_prepare` (now on every stage, boss arenas too) loads ac_itm_ring3d on boss
-  arenas and ac_eff_water_3d on the Water Palace boss before the fight; build_disc.sh copies
-  both sprite directories (camera/patches/spr3d.patch).
-
-Flycast (save states): z61 glider sequence: the rings, clouds and Egg Flappers come from
-the distance and grow as they near the camera, 7-13 quads per frame. z42 crane slide rail:
-6 quads. z13 rings in the Boss1 plane, depth-sorted against the boss; z23 / z43 rings on
-the arena circle (z43: standing on the floor ring), ac_itm_ring3d spinning. z23 water
-spray: drawn at the player on the circle (a test build spawned one every 20 frames).
-Cost: obj_draw (punch-through list) 0.19-0.24 ms per frame on z61 with about 50 live objects
-and 7-13 3D quads; 0.05 ms on the boss arenas (2-5 quads). 58.8-59.3 fps.
-
-`Obj.bac3d` 2: an object whose DS original loads a 3D BAC next to its 2D BAC (and hides
-the 2D sprite) keeps its 2D sprite's animation state, and obj_draw.c draws the 3D BAC's
-frame for it (k_twin: the animation layouts match; eff_b_jet_3d animation 0 stands for
-ac_eff_boost animation 9). The 3D BAC is loaded by objects_models_prepare when such an
-object is alive. Users: the drop-in Egg Pawns / Bishops (z32: falling and walking on the
-sand ship in depth, ac_ene_eggpawn3d / ac_ene_egg_bishop3d), Rock (ac_gmk_rock_3), the
-boss-arena Bubble3D / FixMoji3D (drown count) and player effects EffBoostJet3D,
-EffSpinSmoke1/2_3D, EffBrakeSmoke3D. EffShadow draws its own BAC (bac3d 1); on the sand
-ship it sits 2 px under the table's deck (table y - 18, deck y - 20), so the table hides
-most of it, as the geometry of the original places it. On the circle boss arenas the
-objects keep the arc position and the draw maps it to the circle; their sprites face +z
-like the DS ones (edge-on where the camera looks along x). Draw cost (punch-through
-objects): z32 0.34-0.44 ms with the table, pawns, rocks and shadows (5-9 3D quads), z13
-0.08 ms. Not translated here: Boss7's EffKemuriSpin3D, EffBoostA_3D / EffBoostA2_3D /
-EffFire01_3D (boss module, logged as `fx3d`). EffSplash3D / EffRipple3D are NSBMD models drawn by the
-boss module (z23: 51 ripples in 80 s of the fight).

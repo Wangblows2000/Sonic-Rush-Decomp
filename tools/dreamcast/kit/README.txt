@@ -14,7 +14,8 @@ Windows 10/11
      It asks for your Ubuntu password once to install packages, then converts
      everything (a few minutes) and writes  out/srdc.cdi
   4. Copy it to Windows:  cp out/srdc.cdi /mnt/c/Users/<you>/Desktop/
-     Run it in Flycast, or burn it for a real Dreamcast.
+     Run it in Flycast. It has been tested in Flycast only, not on a real
+     Dreamcast.
 
 Supported ROM: Sonic Rush (Europe), SHA-1 52e5024efcf7617a820fa23789b37e5168c3c4fc.
 

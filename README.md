@@ -1,40 +1,55 @@
-# Sonic Rush (Nintendo DS) decompilation
+# Sonic Rush — native Sega Dreamcast port (`dreamcast-port` branch)
 
 <img width="1600" height="1600" alt="boxart" src="https://github.com/user-attachments/assets/649b1bfb-05d9-4ff0-b498-ed6ef0de8ff0" />
 
 **Do be aware; this is all vibeslop. If you do not agree with the usage of AI, move along.**
 
-Work-in-progress **matching decompilation** of *Sonic Rush* (Sonic Team / Dimps,
-2005) for the Nintendo DS. The goal is C/C++ source (plus assembly where
-unavoidable) that compiles back to the original game code byte for byte.
+This branch adds a native Dreamcast port of *Sonic Rush* (EUR) to the
+[matching decompilation](https://github.com/Wangblows2000/Sonic-Rush-Decomp)
+on `main`. The game logic is the decompiled C, translated to run directly on
+KallistiOS: no DS emulator or compatibility layer. Both DS screens are combined
+into one 640×480 4:3 view.
 
-The repository contains **no game code, assets or ROM data**. You need your own
-legally dumped ROM; the tooling extracts everything it needs from it.
+The repository contains **no game code from the ROM, no assets and no ROM
+data**. Every asset is converted from your own legally dumped ROM.
 
-## Target
+## Build a disc
 
-| Version | Game code | ROM ver. | SHA-1 |
-| ------- | --------- | -------- | ----- |
-| `eur` — Sonic Rush (Europe) (En,Ja,Fr,De,Es,It) | `ASCP` | 0 | `52e5024efcf7617a820fa23789b37e5168c3c4fc` |
+The easiest way is the kit: `tools/dreamcast/kit/make_kit.sh` packs the
+Dreamcast program and the converters (no game data) into `srdc_kit.zip`; on
+any Linux or WSL machine, `sh make_disc.sh <your rom.nds>` inside the
+unpacked kit writes `out/srdc.cdi` (about 3 minutes). Step-by-step
+instructions, including Windows/WSL: [tools/dreamcast/kit/README.txt](tools/dreamcast/kit/README.txt).
 
-USA (`ASCE`) and Japan (`ASCJ`) are not configured yet.
+Building from this repository (toolchain, converters, test discs):
+[docs/dreamcast/BUILD.md](docs/dreamcast/BUILD.md).
 
-## Current state (see [STATUS.md](STATUS.md))
+Supported ROM: Sonic Rush (Europe) `ASCP` rev 0, SHA-1
+`52e5024efcf7617a820fa23789b37e5168c3c4fc`.
 
-- ROM extract → rebuild is **byte-identical** to the base ROM.
-- [dsd](https://github.com/AetiasHax/ds-decomp) splits ARM9 main, ITCM, DTCM and
-  both overlays into relocatable ELF objects: **7,408 functions**, ~1.42 MB of
-  function code. An independent GNU-ld relink of those objects reproduces every
-  section byte for byte.
-- The full ROM builds from source with CodeWarrior for NDS 1.2/sp2 (linker
-  1.2/sp3) and has the original SHA-1. **100 % of ARM9 code is matched** (all
-  7,408 functions) and every function has an evidence-backed name; the block
-  below is regenerated from the objdiff report by
-  `python3 tools/project.py dashboard`.
+## State of the port
+
+The whole game runs in the Flycast emulator: title intro and menus, zone map,
+Sonic, Blaze and Extra stories with every act, boss, special stage, cutscene,
+ending and staff roll, time attack and VMU saves, at 59.9–60 fps. Nothing has
+been verified on real Dreamcast hardware. Differences from the DS and known
+issues: [docs/dreamcast/KNOWN-ISSUES.md](docs/dreamcast/KNOWN-ISSUES.md).
+Port documentation index: [docs/dreamcast/README.md](docs/dreamcast/README.md).
+
+Controls: analog/D-pad move, A jump, B trick, X boost, Y alternate, right/left
+trigger = DS R/L, Start pause. Special stages show the Dreamcast button for
+each Trick Spring step.
+
+## The decompilation underneath
+
+The DS decompilation on this branch is the same as on `main`: the EUR ROM
+rebuilds byte for byte from C, 100 % of ARM9 code matched
+([STATUS.md](STATUS.md), open work in [PLAN.md](PLAN.md), setup in
+[INSTALL.md](INSTALL.md), full guide in [AGENTS.md](AGENTS.md)).
 
 <!-- dashboard:start -->
 
-_Verified progress, updated 2026-11-16 15:31:28Z ([full dashboard](docs/progress/dashboard.md))._
+_Verified progress, updated 2026-11-23 08:13:22Z ([full dashboard](docs/progress/dashboard.md))._
 
 | Module | Matched code | Bytes | Functions | Remaining |
 | ------ | ------------ | ----- | --------- | --------- |
@@ -44,69 +59,36 @@ _Verified progress, updated 2026-11-16 15:31:28Z ([full dashboard](docs/progress
 | ov001 | `████████████████████` 100.00% | 328,118 / 328,118 | 1,723 / 1,723 | 0 |
 | **ARM9 total** | `████████████████████` 100.00% | 1,422,472 / 1,422,472 | 7,408 / 7,408 | 0 |
 
-- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-16 15:28:00Z
-- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-16 15:28:40Z
-- objdiff report: `build/eur/report.json` — 2026-11-16 15:28:41Z
+Next milestone: **100%** matched code — 0 more bytes (currently 100.00%).
+
+- ROM SHA-1 (`build/eur/rush_eur.sha1.ok`): **OK** — last OK 2026-11-23 08:10:52Z
+- GNU relink (`build/eur/reports/gnu_relink.json`): **OK (11/11 sections)** — 2026-11-23 08:11:29Z
+- objdiff report: `build/eur/report.json` — 2026-11-23 08:11:31Z
 
 <!-- dashboard:end -->
 
 ## Layout
 
 ```
-config/            versions.yaml, per-version dsd configs, compiler map, symbol evidence
-  eur/arm9/        dsd symbols.txt / relocs.txt / delinks.txt per module
-src/               matched translation units, one function per file:
-                   libs/{NitroSDK,NitroSystem,MSL,Runtime}/ for library code,
-                   game/ by gameplay system and game/Zone/<Zone>/ for zone
-                   code (docs/source-organization.md); asm/ and
-                   asm_fallback/ hold functions written in asm instead of C
-include/           nitro/ (types, overlay ids), NitroSDK/ NitroSystem/ MSL/ game/ struct headers
-nearmiss/          near-miss C drafts (db.jsonl)
-state/             task board (tasks.json)
-tools/             project CLI, configure.py, matching/analysis/extraction tools, Ghidra scripts
-docs/research/     research log and technical notes (the knowledge base)
-docs/architecture/ memory map and project architecture
-docs/progress/     dashboard and dated progress reports
+dreamcast/game/    the port: engine (KOS platform, render, audio, input, loading),
+                   player, objects, camera, zonefx, boss, special, cutscene, menus,
+                   ui, demo, save, sound, model; build_disc.sh, Makefile
+dreamcast/foundation/  first hardware test disc (KOS boot, PVR, AICA, maple)
+tools/dreamcast/   asset converters (stages, sprites, models, audio), mkpak.py, kit/
+docs/dreamcast/    port documentation
+config/ src/ include/ tools/ docs/   the DS decompilation (see main)
 extract/           your ROM + extracted files (gitignored)
-build/             all build output and reports (gitignored)
+build/             all build output, converted assets and discs (gitignored)
 ```
-
-## Quick start
-
-Easiest (Linux): copy your own Sonic Rush (Europe) ROM into the repository
-directory and run
-
-```sh
-bash build.sh            # checks the ROM, sets up tools on first run, builds,
-                         # verifies SHA-1; writes sonic_rush_eur_rebuilt.nds
-bash build.sh --verify   # also runs the GNU relink check and objdiff report
-```
-
-Manual steps:
-
-```sh
-python -m pip install -r tools/requirements.txt
-bash tools/setup_tools.sh                 # builds dsd, objdiff-cli, wibo from source
-cp /path/to/your/rom.nds extract/baserom_rush_eur.nds
-python tools/project.py doctor
-python tools/project.py extract eur
-python tools/configure.py eur && ninja verify
-ninja && ninja report                     # matching build; needs the Metrowerks tools
-python tools/project.py progress
-```
-
-On a fresh Linux machine, `bash tools/bootstrap_session.sh /path/to/rom.nds`
-does all of the above in one step.
-
-Full instructions: [INSTALL.md](INSTALL.md). How to contribute:
-[CONTRIBUTING.md](CONTRIBUTING.md). Roadmap: [PLAN.md](PLAN.md).
 
 ## Acknowledgements
 
-Architecture informed by [zeldaret/ph](https://github.com/zeldaret/ph),
+Decompilation architecture informed by [zeldaret/ph](https://github.com/zeldaret/ph),
 [pret/pokediamond](https://github.com/pret/pokediamond),
 [tangosdev/sm64ds-decomp](https://github.com/tangosdev/sm64ds-decomp),
 [XorTroll/mkds-re](https://github.com/XorTroll/mkds-re),
 [mariopartyrd/mariopartyDS](https://github.com/mariopartyrd/mariopartyDS) and
 [RushRE/SonicRushAdventure-Decomp](https://github.com/RushRE/SonicRushAdventure-Decomp).
+Dreamcast side: [KallistiOS](https://github.com/KallistiOS/KallistiOS),
+[img4dc/cdi4dc](https://github.com/Kazade/img4dc), [Flycast](https://github.com/flyinghead/flycast) for testing.
 Hardware reference: [GBATEK](https://problemkaputt.de/gbatek.htm).

@@ -1,8 +1,8 @@
 # Native player module (Dreamcast port): translation notes
 
-Status: core movement translated and tested on the host (128/128 checks), and
-on the real Leaf Storm act 1 collision map. It compiles with `kos-cc`
-(sh-elf-gcc), but it has never run on SH-4 hardware or in an emulator.
+Status: the player module (movement, state machine, collision, tricks, boost, gimmick states, model
+presentation) is translated and integrated. Host test: `make -C dreamcast/game/player host-test`.
+Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 
 - Code: `dreamcast/game/player/` (`dcp_*.c/h`, `Makefile`, `test/`, `tools/`)
 - Source of truth: `src/game/Player/`, `src/game/Stage/ObjectSystem/`
@@ -251,7 +251,6 @@ translated.
 | `Player_State_Wheel2D` |  |  | jump | 0x29 |
 | `Player_State_ZoneLaunch` |  | Action_LandOnGround | idle |  |
 
-
 ## 4. Collision interface
 
 The map side is `rlvl_map_t` from `tools/dreamcast/stages/level_format.h`.
@@ -360,215 +359,214 @@ The map hitbox is `box_l, box_t, box_r, box_b` = -7, -12, 7, 13 (InitState).
 
 | original | native | status |
 |---|---|---|
-| `AttackHitbox_Create` | - | not yet |
-| `AttackHitbox_SetBoostState` | - | not yet |
-| `AttackHitbox_SetJetCatapultState` | - | not yet |
-| `AttackHitbox_State_Boost` | - | not yet |
-| `AttackHitbox_State_Follow` | - | not yet |
-| `AttackHitbox_State_JetCatapult` | - | not yet |
-| `Player_Action_Air` | - | not yet |
+| `AttackHitbox_Create` | `objects/obj_flapper.c` | translated |
+| `AttackHitbox_SetBoostState` | - | no separate function in the port |
+| `AttackHitbox_SetJetCatapultState` | `objects/obj_player.c` | translated |
+| `AttackHitbox_State_Boost` | `objects/obj_player.c` | translated |
+| `AttackHitbox_State_Follow` | `objects/obj_player.c` | translated |
+| `AttackHitbox_State_JetCatapult` | `objects/obj_player.c` | translated |
+| `Player_Action_Air` | `objects/obj_deadline.c` | translated |
 | `Player_Action_AirDash` | `dcp_act_airdash` | translated |
-| `Player_Action_AttachToObject` | - | not yet |
-| `Player_Action_AttackBounce` | - | not yet |
-| `Player_Action_AttackBounceVel` | - | not yet |
-| `Player_Action_AttackRecoil` | - | not yet |
-| `Player_Action_BendStick` | - | not yet |
-| `Player_Action_BendStickLaunch` | - | not yet |
-| `Player_Action_Blank` | - | not yet |
-| `Player_Action_BreatheAirBubble` | - | not yet |
-| `Player_Action_Cannon` | - | not yet |
-| `Player_Action_Cargo` | - | not yet |
-| `Player_Action_CorkscrewPath` | - | not yet |
+| `Player_Action_AttachToObject` | `objects/obj_pwater.c` | translated |
+| `Player_Action_AttackBounce` | `objects/obj_player.c` | translated |
+| `Player_Action_AttackBounceVel` | `boss/boss4.c` | translated |
+| `Player_Action_AttackRecoil` | `objects/obj_player.c` | translated |
+| `Player_Action_BendStick` | `objects/obj_pgimmick.c` | translated |
+| `Player_Action_BendStickLaunch` | `objects/obj_pgimmick.c` | translated |
+| `Player_Action_Blank` | `boss/boss7.c` | translated |
+| `Player_Action_BreatheAirBubble` | `objects/obj_pwater.c` | translated |
+| `Player_Action_Cannon` | `objects/obj_deadline.c` | translated |
+| `Player_Action_Cargo` | `objects/obj_pmirage.c` | translated |
+| `Player_Action_CorkscrewPath` | `objects/obj_pgimmick.c` | translated |
 | `Player_Action_Crouch` | `dcp_act_crouch` | translated |
 | `Player_Action_DashPanel` | `dcp_act_dash_panel` | translated |
-| `Player_Action_DashRing` | - | not yet |
+| `Player_Action_DashRing` | `objects/obj_player.c` | translated |
 | `Player_Action_Die` | `dcp_act_die` | translated |
 | `Player_Action_Fall` | `dcp_act_fall` | translated |
-| `Player_Action_GimmickLaunch` | - | not yet |
-| `Player_Action_Glider` | - | not yet |
-| `Player_Action_GliderSequenceEnd` | - | not yet |
-| `Player_Action_GliderSequenceStart` | - | not yet |
-| `Player_Action_GmkSpecial` | - | not yet |
-| `Player_Action_GmkSpecialEnter` | - | not yet |
-| `Player_Action_GrabCranePart` | - | not yet |
-| `Player_Action_GrabCraneSlide` | - | not yet |
-| `Player_Action_Grind` | - | not yet |
-| `Player_Action_GrindTrick` | - | not yet |
+| `Player_Action_GimmickLaunch` | `objects/obj_player.c` | translated |
+| `Player_Action_Glider` | `objects/obj_altitude.c` | translated |
+| `Player_Action_GliderSequenceEnd` | `objects/obj_paltitude.c` | translated |
+| `Player_Action_GliderSequenceStart` | `objects/obj_paltitude.c` | translated |
+| `Player_Action_GmkSpecial` | `objects/obj_shared.c` | translated |
+| `Player_Action_GmkSpecialEnter` | `objects/obj_pgimmick.c` | translated |
+| `Player_Action_GrabCranePart` | `objects/obj_crisis.c` | translated |
+| `Player_Action_GrabCraneSlide` | `objects/obj_carnival.c` | translated |
+| `Player_Action_Grind` | `objects/obj_pwater.c` | translated |
+| `Player_Action_GrindTrick` | `objects/obj_pgimmick.c` | translated |
 | `Player_Action_GroundIdle` | `dcp_act_ground_idle` | translated |
 | `Player_Action_GroundMove` | `dcp_act_ground_move` | translated |
-| `Player_Action_Hand2D` | - | not yet |
+| `Player_Action_Hand2D` | `objects/obj_pmirage.c` | translated |
 | `Player_Action_HomingAttack` | `dcp_act_homing` | translated |
 | `Player_Action_Hover` | `dcp_act_hover` | translated |
-| `Player_Action_JetCatapult` | - | not yet |
-| `Player_Action_JetCatapultLaunch` | - | not yet |
+| `Player_Action_JetCatapult` | `objects/obj_crisis.c` | translated |
+| `Player_Action_JetCatapultLaunch` | `objects/obj_pcrisis.c` | translated |
 | `Player_Action_Jump` | `dcp_act_jump` | translated |
 | `Player_Action_Knockback` | `dcp_act_knockback` | translated |
-| `Player_Action_KnockbackIntangible` | - | not yet |
+| `Player_Action_KnockbackIntangible` | `boss/boss7.c` | translated |
 | `Player_Action_LandOnGround` | `dcp_act_land` | translated |
 | `Player_Action_Launch` | `dcp_act_launch` | translated |
-| `Player_Action_MapObj40` | - | not yet |
-| `Player_Action_MapObj80` | - | not yet |
-| `Player_Action_Parachute` | - | not yet |
-| `Player_Action_ParachuteRelease` | - | not yet |
-| `Player_Action_PedestalLaunch` | - | not yet |
-| `Player_Action_Pipe` | - | not yet |
-| `Player_Action_PipeExit` | - | not yet |
-| `Player_Action_ReachGoal` | - | not yet |
-| `Player_Action_ResumeGlider` | - | not yet |
-| `Player_Action_Rocket` | - | not yet |
+| `Player_Action_MapObj40` | `objects/obj_pwater.c` | translated |
+| `Player_Action_MapObj80` | `objects/obj_pwater.c` | translated |
+| `Player_Action_Parachute` | `objects/obj_altitude.c` | translated |
+| `Player_Action_ParachuteRelease` | `objects/obj_paltitude.c` | translated |
+| `Player_Action_PedestalLaunch` | `objects/obj_shared.c` | translated |
+| `Player_Action_Pipe` | `objects/obj_crisis.c` | translated |
+| `Player_Action_PipeExit` | `objects/obj_crisis.c` | translated |
+| `Player_Action_ReachGoal` | `ui/ui_state.c` | translated |
+| `Player_Action_ResumeGlider` | `objects/obj_paltitude.c` | translated |
+| `Player_Action_Rocket` | `objects/obj_deadline.c` | translated |
 | `Player_Action_Roll` | `dcp_act_roll` | translated |
-| `Player_Action_Rope` | - | not yet |
-| `Player_Action_RopeC` | - | not yet |
-| `Player_Action_SandSlide` | - | not yet |
-| `Player_Action_SandSlider` | - | not yet |
-| `Player_Action_SandSlider90` | - | not yet |
-| `Player_Action_Saucer` | - | not yet |
+| `Player_Action_Rope` | `objects/obj_shared.c` | translated |
+| `Player_Action_RopeC` | `objects/obj_pgimmick.c` | translated |
+| `Player_Action_SandSlide` | `objects/obj_pmirage.c` | translated |
+| `Player_Action_SandSlider` | `objects/obj_pmirage.c` | translated |
+| `Player_Action_SandSlider90` | `objects/obj_pmirage.c` | translated |
+| `Player_Action_Saucer` | `objects/obj_altitude.c` | translated |
 | `Player_Action_SpinDash` | `dcp_act_spindash` | translated |
 | `Player_Action_SpringLaunch` | `dcp_act_spring` | translated |
-| `Player_Action_SpringLaunchAlt` | - | not yet |
-| `Player_Action_Swing` | - | not yet |
-| `Player_Action_SwingSky` | - | not yet |
+| `Player_Action_SpringLaunchAlt` | `objects/obj_gimmicks.c` | translated |
+| `Player_Action_Swing` | `objects/obj_deadline.c` | translated |
+| `Player_Action_SwingSky` | `objects/obj_carnival.c` | translated |
 | `Player_Action_TrickCombo` | `dcp_act_trick_combo` | translated |
 | `Player_Action_TrickForward` | `dcp_act_trick_forward` | translated |
 | `Player_Action_TrickUp` | `dcp_act_trick_up` | translated |
-| `Player_Action_Warp` | - | not yet |
-| `Player_Action_WaterRun` | - | not yet |
-| `Player_Action_Wheel2D` | - | not yet |
-| `Player_Action_ZoneLaunch` | - | not yet |
-| `Player_AddLives` | - | not yet |
+| `Player_Action_Warp` | - | not ported (VS mode / replay) |
+| `Player_Action_WaterRun` | `objects/obj_pwater.c` | translated |
+| `Player_Action_Wheel2D` | `objects/obj_pwater.c` | translated |
+| `Player_Action_ZoneLaunch` | `objects/obj_pwater.c` | translated |
+| `Player_AddLives` | `ui/ui_state.c` | translated |
 | `Player_AddRings` | `dcp_add_rings` | translated |
 | `Player_AddTension` | `dcp_add_tension` | translated |
 | `Player_AddTensionCombo` | `dcp_add_tension_combo` | translated |
 | `Player_AddTrickScore` | `dcp_add_trick_score` | translated |
 | `Player_ApplyAirInput` | `dcp_apply_air_input` | translated |
-| `Player_ApplyAutoRunAcceleration` | - | not yet |
-| `Player_ApplyConfusion` | - | not yet |
+| `Player_ApplyAutoRunAcceleration` | `objects/obj_pwater.c` | translated |
+| `Player_ApplyConfusion` | - | not ported (VS mode / replay) |
 | `Player_ApplyGroundInput` | `dcp_apply_ground_input` | translated |
-| `Player_ApplyNetState` | - | not yet |
+| `Player_ApplyNetState` | - | not ported (VS mode / replay) |
 | `Player_ApplyRollFriction` | `dcp_apply_roll_friction` | translated |
 | `Player_ApplySlopeForce` | `dcp_apply_slope_force` | translated |
-| `Player_ApplySlowdown` | - | not yet |
+| `Player_ApplySlowdown` | - | not ported (VS mode / replay) |
 | `Player_ApplyVerticalInput` | `dcp_apply_vertical_input` | translated |
-| `Player_AttachGimmickTable` | - | not yet |
-| `Player_AttachGimmickTableNoInput` | - | not yet |
-| `Player_AttachGimmickTableReleased` | - | not yet |
+| `Player_AttachGimmickTable` | `objects/obj_pmirage.c` | translated |
+| `Player_AttachGimmickTableNoInput` | `objects/obj_pmirage.c` | translated |
+| `Player_AttachGimmickTableReleased` | `objects/obj_pmirage.c` | translated |
 | `Player_CheckCrushed` | `dcp_check_crushed` | translated |
 | `Player_CheckFallOffGround` | `dcp_check_fall_off` | translated |
 | `Player_CheckLedgeBalance` | `dcp_check_ledge_balance` | translated |
-| `Player_CheckStartGrind` | - | not yet |
-| `Player_CheckTimeOver` | - | not yet |
-| `Player_ClampToAttachedGimmick` | - | not yet |
-| `Player_ClampToGliderArea` | - | not yet |
-| `Player_Collide` | - | not yet |
+| `Player_CheckStartGrind` | `objects/obj_manager.c` | translated |
+| `Player_CheckTimeOver` | `ui/ui_state.c` | translated |
+| `Player_ClampToAttachedGimmick` | - | not ported (VS mode / replay) |
+| `Player_ClampToGliderArea` | `objects/obj_paltitude.c` | translated |
+| `Player_Collide` | `objects/obj_manager.c` | translated |
 | `Player_Create` | dcp_player_create: physics/state part; tasks, models, sprites, VRAM, icons, VS/special-stage restore not translated | partial |
-| `Player_Destructor` | - | not yet |
-| `Player_DetachGimmick` | - | not yet |
+| `Player_Destructor` | `src/main.c` | translated |
+| `Player_DetachGimmick` | `objects/obj_pmirage.c` | translated |
 | `Player_DrainBoostTension` | `dcp_drain_boost_tension` | translated |
 | `Player_DrainTension` | `dcp_drain_tension` | translated |
-| `Player_Draw` | - | not yet |
-| `Player_ExitToSpecialStage` | - | not yet |
-| `Player_FindHomingTarget` | - | not yet |
-| `Player_GetArchiveCompressionType` | - | not yet |
-| `Player_GetArchiveUncompressedSize` | - | not yet |
-| `Player_GiveBarrier` | - | not yet |
-| `Player_GiveInvincibility` | - | not yet |
-| `Player_GiveMagnet` | - | not yet |
+| `Player_Draw` | `src/main.c` | translated |
+| `Player_ExitToSpecialStage` | `ui/ui_state.c` | translated |
+| `Player_FindHomingTarget` | `objects/obj_manager.c` | translated |
+| `Player_GetArchiveCompressionType` | - | replaced (converted data, `player/tools`) |
+| `Player_GetArchiveUncompressedSize` | - | replaced (converted data, `player/tools`) |
+| `Player_GiveBarrier` | - | not ported (VS mode / replay) |
+| `Player_GiveInvincibility` | `sound/bgm.c` | translated |
+| `Player_GiveMagnet` | `objects/obj_gimmicks.c` | translated |
 | `Player_HandleSurfaceLanding` | `dcp_handle_surface_landing` | translated |
 | `Player_In` | dcp_player_in: timers, layer override, confusion, slowdown, invulnerability, death plane, landing, boost, crush; replay/net, event spawn, palette shifts, underwater, homing search, grind start and time-over left to other modules | partial |
 | `Player_InitState` | `dcp_player_init_state` | translated |
-| `Player_IsPlayer2` | - | not yet |
+| `Player_IsPlayer2` | - | not ported (VS mode / replay) |
 | `Player_Last` | dcp_player_last: tension debt, dash-timer reset, 3D-flag bookkeeping, gravity restore, layer restore; camera, magnet, exits, net, arena wrap not translated | partial |
-| `Player_LoadArchive` | - | not yet |
-| `Player_LoadAssets` | - | not yet |
+| `Player_LoadArchive` | `ui/ui_state.c` | translated |
+| `Player_LoadAssets` | - | replaced (converted data, `player/tools`) |
 | `Player_LoadPhysicsParams` | `dcp_player_load_physics` | translated |
-| `Player_MoveAlongCorkscrew` | - | not yet |
-| `Player_MoveAlongCorkscrewPath` | - | not yet |
-| `Player_OnHit_GliderSequence` | - | not yet |
+| `Player_MoveAlongCorkscrew` | `objects/obj_pgimmick.c` | translated |
+| `Player_MoveAlongCorkscrewPath` | `objects/obj_pgimmick.c` | translated |
+| `Player_OnHit_GliderSequence` | `objects/obj_paltitude.c` | translated |
 | `Player_OnHurt` | `dcp_on_hurt` | translated |
-| `Player_OnPushRival` | - | not yet |
-| `Player_PlayReplayFrame` | - | not yet |
+| `Player_OnPushRival` | - | not ported (VS mode / replay) |
+| `Player_PlayReplayFrame` | - | not ported (VS mode / replay) |
 | `Player_ReadInput` | dcp_player_in (inline) | translated |
-| `Player_RecordReplayFrame` | - | not yet |
-| `Player_ReleaseAssets` | - | not yet |
+| `Player_RecordReplayFrame` | - | not ported (VS mode / replay) |
+| `Player_ReleaseAssets` | - | replaced (converted data, `player/tools`) |
 | `Player_RemapButtons` | `dcp_remap_buttons` | translated |
 | `Player_ResetGimmickState` | `dcp_reset_gimmick_state` | translated |
 | `Player_Respawn` | dcp_respawn: position, lives, flags; camera/stage restart via hook; VS-mode respawn point (unk408) not translated | partial |
-| `Player_SendNetState` | - | not yet |
+| `Player_SendNetState` | - | not ported (VS mode / replay) |
 | `Player_SetAnimSpeedFromVelocity` | anim_speed (dcp_states.c) + hook | translated |
 | `Player_SetRunAnimationForSpeed` | `dcp_set_run_anim_for_speed` | translated |
-| `Player_SetSourceMapObject` | - | not yet |
+| `Player_SetSourceMapObject` | `objects/obj_player.c` | translated |
 | `Player_SettleAirRotation` | `dcp_settle_air_rotation` | translated |
-| `Player_SpriteCallback` | - | not yet |
+| `Player_SpriteCallback` | `objects/obj_player.c` | translated |
 | `Player_StartBoost` | `dcp_start_boost` | translated |
 | `Player_StartHighSpeed` | `dcp_start_highspeed` | translated |
-| `Player_StartLaunchTrick` | - | not yet |
-| `Player_State_Air` | - | not yet |
-| `Player_State_AttachedToObject` | - | not yet |
-| `Player_State_BendStick` | - | not yet |
-| `Player_State_Blank` | - | not yet |
-| `Player_State_BreatheAirBubble` | - | not yet |
-| `Player_State_Cannon` | - | not yet |
-| `Player_State_Cargo` | - | not yet |
-| `Player_State_CorkscrewPath` | - | not yet |
+| `Player_StartLaunchTrick` | `objects/obj_player.c` | translated |
+| `Player_State_Air` | `objects/obj_deadline.c` | translated |
+| `Player_State_AttachedToObject` | `objects/obj_pwater.c` | translated |
+| `Player_State_BendStick` | `objects/obj_pgimmick.c` | translated |
+| `Player_State_Blank` | `boss/boss7.c` | translated |
+| `Player_State_BreatheAirBubble` | `objects/obj_pwater.c` | translated |
+| `Player_State_Cannon` | `objects/obj_deadline.c` | translated |
+| `Player_State_Cargo` | `objects/obj_pmirage.c` | translated |
+| `Player_State_CorkscrewPath` | `objects/obj_pgimmick.c` | translated |
 | `Player_State_Crouch` | `dcp_state_crouch` | translated |
 | `Player_State_Die` | `dcp_state_die` | translated |
-| `Player_State_Glider` | - | not yet |
-| `Player_State_GliderSequence` | - | not yet |
-| `Player_State_GliderSequenceExit` | - | not yet |
-| `Player_State_GliderSequenceIntro` | - | not yet |
-| `Player_State_GmkSpecial` | - | not yet |
-| `Player_State_GmkSpecialEnter` | - | not yet |
-| `Player_State_Grind` | - | not yet |
+| `Player_State_Glider` | `objects/obj_paltitude.c` | translated |
+| `Player_State_GliderSequence` | `objects/obj_paltitude.c` | translated |
+| `Player_State_GliderSequenceExit` | `objects/obj_paltitude.c` | translated |
+| `Player_State_GliderSequenceIntro` | `objects/obj_paltitude.c` | translated |
+| `Player_State_GmkSpecial` | `objects/obj_pgimmick.c` | translated |
+| `Player_State_GmkSpecialEnter` | `objects/obj_pgimmick.c` | translated |
+| `Player_State_Grind` | `objects/obj_pgimmick.c` | translated |
 | `Player_State_GroundIdle` | `dcp_state_ground_idle` | translated |
 | `Player_State_GroundMove` | `dcp_state_ground_move` | translated |
-| `Player_State_Hand2D` | - | not yet |
+| `Player_State_Hand2D` | `objects/obj_pmirage.c` | translated |
 | `Player_State_HomingAttack` | `dcp_state_homing` | translated |
 | `Player_State_Hover` | `dcp_state_hover` | translated |
 | `Player_State_Hurt` | `dcp_state_hurt` | translated |
 | `Player_State_InAir` | `dcp_state_in_air` | translated |
-| `Player_State_JetCatapult` | - | not yet |
-| `Player_State_JetCatapultLaunch` | - | not yet |
-| `Player_State_MapObj40` | - | not yet |
-| `Player_State_MapObj80` | - | not yet |
-| `Player_State_Parachute` | - | not yet |
-| `Player_State_ParachuteRelease` | - | not yet |
-| `Player_State_Pipe` | - | not yet |
-| `Player_State_Rocket` | - | not yet |
+| `Player_State_JetCatapult` | `objects/obj_player.c` | translated |
+| `Player_State_JetCatapultLaunch` | `objects/obj_pcrisis.c` | translated |
+| `Player_State_MapObj40` | `objects/obj_pwater.c` | translated |
+| `Player_State_MapObj80` | `objects/obj_pwater.c` | translated |
+| `Player_State_Parachute` | `objects/obj_altitude.c` | translated |
+| `Player_State_ParachuteRelease` | `objects/obj_altitude.c` | translated |
+| `Player_State_Pipe` | `objects/obj_pcrisis.c` | translated |
+| `Player_State_Rocket` | `objects/obj_peffect.c` | translated |
 | `Player_State_Roll` | `dcp_state_roll` | translated |
-| `Player_State_Rope` | - | not yet |
-| `Player_State_RopeC` | - | not yet |
-| `Player_State_SandSlide` | - | not yet |
-| `Player_State_SandSlider` | - | not yet |
-| `Player_State_SandSlider90` | - | not yet |
-| `Player_State_Saucer` | - | not yet |
+| `Player_State_Rope` | `objects/obj_pgimmick.c` | translated |
+| `Player_State_RopeC` | `objects/obj_pgimmick.c` | translated |
+| `Player_State_SandSlide` | `objects/obj_pmirage.c` | translated |
+| `Player_State_SandSlider` | `objects/obj_pmirage.c` | translated |
+| `Player_State_SandSlider90` | `objects/obj_pmirage.c` | translated |
+| `Player_State_Saucer` | `objects/obj_paltitude.c` | translated |
 | `Player_State_SpinDash` | `dcp_state_spindash` | translated |
-| `Player_State_Swing` | - | not yet |
-| `Player_State_SwingSky` | - | not yet |
-| `Player_State_Warp` | - | not yet |
-| `Player_State_WaterRun` | - | not yet |
-| `Player_State_Wheel2D` | - | not yet |
-| `Player_State_ZoneLaunch` | - | not yet |
+| `Player_State_Swing` | `objects/obj_deadline.c` | translated |
+| `Player_State_SwingSky` | `objects/obj_pcarnival.c` | translated |
+| `Player_State_Warp` | - | not ported (VS mode / replay) |
+| `Player_State_WaterRun` | `objects/obj_pwater.c` | translated |
+| `Player_State_Wheel2D` | `objects/obj_pwater.c` | translated |
+| `Player_State_ZoneLaunch` | `objects/obj_pwater.c` | translated |
 | `Player_StopBoost` | `dcp_stop_boost` | translated |
 | `Player_StopHighSpeed` | `dcp_stop_highspeed` | translated |
 | `Player_StopSkid` | `dcp_stop_skid` | translated |
-| `Player_SwingAroundPivot` | - | not yet |
-| `Player_SwingAroundPivotRetract` | - | not yet |
+| `Player_SwingAroundPivot` | `objects/obj_pdeadline.c` | translated |
+| `Player_SwingAroundPivotRetract` | `objects/obj_pdeadline.c` | translated |
 | `Player_Unk_ov000_023460ec` | `dcp_update_ride_max` | translated |
-| `Player_Unk_ov000_02350adc` | - | not yet |
+| `Player_Unk_ov000_02350adc` | `objects/obj_deadline.c` | translated |
 | `Player_UpdateBoost` | dcp_update_boost: all physics; VS rival effect (EffVs_Create) and the Blaze flame effect go to the effect hook | partial |
-| `Player_UpdateCamera` | - | not yet |
-| `Player_UpdateCameraLead` | - | not yet |
-| `Player_UpdateGimmickStageBounds` | - | not yet |
-| `Player_UpdateGliderSequence` | - | not yet |
+| `Player_UpdateCamera` | `src/main.c` | translated |
+| `Player_UpdateCameraLead` | `src/main.c` | translated |
+| `Player_UpdateGimmickStageBounds` | `player/dcp_probe.c` | translated |
+| `Player_UpdateGliderSequence` | `objects/obj_paltitude.c` | translated |
 | `Player_UpdateGravityFlip` | `dcp_update_gravity_flip` | translated |
 | `Player_UpdateHighSpeedTimer` | `dcp_update_highspeed_timer` | translated |
 | `Player_UpdateRunAnimation` | `dcp_update_run_anim` | translated |
-| `Player_UpdateUnderwater` | - | not yet |
-| `Player_WarpToRival` | - | not yet |
-| `Player_WrapLoopingArena` | - | not yet |
+| `Player_UpdateUnderwater` | `objects/obj_manager.c` | translated |
+| `Player_WarpToRival` | - | not ported (VS mode / replay) |
+| `Player_WrapLoopingArena` | - | not ported (VS mode / replay) |
 
-Counts: {'not yet': 139, 'translated': 62, 'partial': 5} of 206
-
+Counts (206 functions): 189 translated (in the player module or, for gimmick states, in the objects module), 8 partial or interface only, 4 replaced by converted data, 14 not ported (VS mode / replay), 1 with no separate function.
 
 ## 6. Deliberate deviations
 
@@ -637,30 +635,6 @@ jump 0x4e0, gravity 0x2a) with closed-form rules taken from the
 decompilation. The test has its own reference loop and does not call the
 module's state machine for its expectations.
 
-Results (2026-11-22, host):
-
-```
-[math] dcp_mul_double vs host double: 0 mismatches over 5 x 65536 inputs
-[flat] hold right: gnd = 24*n for n <= 29 (exact), then the fall-off formula
-       k=((|v|-0.3top)<<8)/(max-0.3top)*0xf8>>8; 0x900 reached, after 96
-       frames at top high-speed mode -> 0xa00; all 520 frames match the
-       reference in speed, x (sum of speeds) and y (feet on row 399);
-       releasing brakes by 64/frame to 0 (40 frames), then idle
-[flat] full jump: first frame no gravity (GROUND bit still set during Move),
-       then +0x2a/frame; apex 74.88 px (0x4ae2), airtime 61 frames, lands at the exact rest y
-[flat] short jump (A released after 4 frames): rise cut to -0x40, lands after 21 frames
-[slope] 1:4 down (angle 0x0a) and up (0xf6): angle taken from the tiles, no slope
-        force (|angle| < 0x1c), downhill top 0x900+124; 120 frames: speed,
-        x += (gnd*cos)>>12, feet on the surface under the leading/trailing foot,
-        grounded, all frames match
-[spin dash] charge 0x300, decay c -= c>>5 x10, release speed ((c>>8)<<7)+0x800 = 2304, roll 137 frames
-[hurt] 10 rings: 10 rings scattered, knockback (-0x180,-0x300), invuln 180,
-       tension -0x4b0; 0 rings: death hop -jump, respawn after 60 frames, one life used
-[boost] start: speed -> 0xc00, tension -0x70-8, then -8/frame; ends when released
-[spring + trick] spring (0,-0x1000) trickable; R: vel_x = clamp - dec + 2*jump
-128 checks, 0 failed
-```
-
 Real level (`build/dreamcast/stages/z11/level.bin`, Leaf Storm act 1, from
 the stage module):
 
@@ -684,7 +658,7 @@ Not verified:
 - Object collision (`obj_probe`) is untested, because no object module
   exists yet.
 
-## 8. Model presentation (`dcp_model.c`, 2026-11-22)
+## 8. Model presentation (`dcp_model.c`)
 
 `dcp_model.c` / `dcp_model.h` translate the model half of the player's draw:
 Player_SetAnimation (model part), Model_SetResource / Model_SetAnimation /
@@ -727,8 +701,7 @@ Player_Draw / Player_Last. Without lights.bin on the disc the common
 0x7fff / 0x4631 / 0x2108 is used. The title card's light fade-in
 (StageTitleCard_State_RestoreColors lerps from 0) is not applied.
 
-
-## 9. Stage bounds, ring scatter level, DS R (2026-11-22)
+## 9. Stage bounds, ring scatter level, DS R
 
 - `dcp_bind_map` sets `g_dcp_world.death_y` (map height, Player_In pit line) and `map_left` /
   `map_right` (0 / width); `dcp_player_in` runs Player_UpdateGimmickStageBounds (gimmick-held:

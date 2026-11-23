@@ -20,6 +20,10 @@ Derived from the ROM header, overlay table and NitroSDK build info
 | 0x02380000–0x023A6F24 | 0x26F24 | ARM7 static (main RAM; ARM7-owned) |
 | 0x027E0000–0x027E2060 | 0x2060 | DTCM autoload: data |
 
-Overlay 0 and 1 are mutually exclusive. Which is "stage" vs "menu" is not
-established yet; overlay 0 is ARM-heavy and larger (likely gameplay), overlay
-1 is Thumb-heavy (hypothesis: front-end/menus). Tentative.
+Overlay 0 and 1 are mutually exclusive. From the named functions: overlay 0
+(ARM-heavy, larger) is the stage overlay — player, camera, zone backgrounds
+and effects, stage objects, bosses 1–7 and the final boss, plus player select,
+time select and the results screen. Overlay 1 (Thumb-heavy) is the front end
+and the self-contained modes — title menu, title intro, zone map, options,
+records, time attack and VS menus, staff roll, special stages and the Extra
+boss.

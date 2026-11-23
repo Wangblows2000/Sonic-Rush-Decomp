@@ -1,5 +1,10 @@
 # Install
 
+Quick path (Linux): copy your own EUR ROM into the repository root and run
+`bash build.sh` (sets up the tools on first run, builds, checks the SHA-1) or
+`bash build.sh --verify` (also the GNU relink check and the objdiff report).
+The sections below are the manual steps.
+
 ## 1. Prerequisites
 
 - Linux (tested: Ubuntu 24.04) or Windows. macOS should work with wibo.

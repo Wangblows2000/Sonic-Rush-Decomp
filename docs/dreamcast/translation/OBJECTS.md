@@ -1,28 +1,13 @@
 # Native stage objects (Dreamcast port): translation notes
 
-Status (objdata v4, 2026-11-22): every object and decoration placed in the
-act stages of all zones is created by translated code: Leaf Storm (z11,
-z12), Water Palace (z21, z22), Mirage Road (z31, z32), Night Carnival (z41,
-z42), Huge Crisis (z51, z52), Altitude Limit (z61, z62), Dead Line (z71,
-z72), z81/z82 and z91/z92 (coverage table in section 8). Only the boss
-objects 0x38..0x3f of the act-3 arenas are left (boss module). v4 adds the
-zone 4..7 kinds (section 5d): crane slide, neon routes, shooters, swing
-sky, switches and switch timers, dark areas; crane, pipes, jet catapult,
-pistons, valves and steam; glider, glider sequence with its rings and
-clouds, parachute, saucer, NeedleG; rocket, cannon, swing, air, duct,
-depth lanes; Egg Pawn types 9..0x0f, Flapper types 0x0b, 0x0c, 0x10..0x12
-and their shots / children (Egg Sf, Gun Hunter, Bomb Hawk bomb, flapper
-laser and cannon); the zone 4..7 decoration groups. The player gimmick
-states are in `obj_pcarnival.c`, `obj_pcrisis.c`, `obj_paltitude.c`,
-`obj_pdeadline.c`. v4 also adds the special stage round trip
-(`objects_save_event_state` / `objects_restore_event_state`, section 2.5).
-Host tests: test_objects z11/z12 61 and 60 checks; test_zones on z21, z22,
-z31, z32, z41, z42, z51, z52, z61, z62, z71, z72, z91, z92, 0 failed
-(section 7, with play / direct per check). The module compiles with
-`kos-cc -Werror`; it has never run on SH-4 hardware or in an emulator, and
-the drawing code (`obj_draw.c`) has never been seen on screen.
+Status: every object and decoration placed in the act stages of all zones is created by translated
+code: Leaf Storm (z11, z12), Water Palace (z21, z22), Mirage Road (z31, z32), Night Carnival (z41,
+z42), Huge Crisis (z51, z52), Altitude Limit (z61, z62), Dead Line (z71, z72), z81/z82 and z91/z92
+(coverage table in section 8). The boss objects 0x38..0x3f of the act-3 arenas belong to the boss
+module. The special stage round trip keeps the act's event state (section 2.5). Host tests:
+`make -C dreamcast/game/objects host-test zone-test`. Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 
-Reuse-first rule (from the coordinator): new code is the decompiled C copied
+Reuse-first rule: new code is the decompiled C copied
 from `src/` and adapted: DS offset structs become named `Obj` / `DcPlayer`
 fields (offsets kept in comments), DS services (VRAM, OAM, palettes, sound
 handles) are dropped or sent to hooks, and the original function names are
@@ -120,278 +105,6 @@ render_begin_list(PVR_LIST_PT_POLY); ...level layers...; objects_draw(); render_
 - `objects_set_player_anim_done(1)`: sets `DCP_DF_ANIM_DONE` on the player when
   the son.bac timing ends an animation. It is off by default, because the 3D model
   renderer may own that flag.
-
-### 2.1 What changed with objdata v2 (integrator checklist)
-
-- **Frame order inside `objects_frame_begin`**: after Stage_Main and
-  StageEvent it now runs the tasks with an id below the player's (0xf6:
-  GmkLand, GmkLandAA, WallBreak), so platforms move before the player rides
-  them, as on the DS. Then, for each player, the two Player_In parts the
-  player module leaves out: `Player_FindHomingTarget` (sets `p->homing`) and
-  `Player_CheckStartGrind`. Keep calling `objects_frame_begin()` right before
-  `dcp_player_frame()`.
-- **`objects_update`**: after Player_Collide it calls
-  `RingManager_AttractRings` while `p->pf & 0x20000000` (magnet barrier,
-  Player_Last). The boost attack hit box is created through
-  `g_dcp_hooks.effect` (`DCP_FX_ATTACK_HITBOX_BOOST`); the module chains that
-  hook like the others (set yours before `objects_init`).
-- **New hooks** in `g_obj_hooks` (all optional): `effect(ctx, p, kind, a, b)`
-  for the effects that have no module yet (`OBJ_FX_TRICK_AT`, `OBJ_FX_SPECIAL`,
-  `OBJ_FX_GRIND`, `OBJ_FX_TRICK_SPARKLE`, `OBJ_FX_ENTRANCE`,
-  `OBJ_FX_WATER_SPLASH`), `shake(ctx, strength)` for ScreenShake_Start (falls
-  back to `g_dcp_hooks.shake`). `stage_exit` gets the new kind
-  `OBJ_EXIT_SPECIAL_STAGE` when the special ring sequence ends
-  (`p->pf |= 0x40000000`). `item(p, OBJ_ITEM_MAGNET)` is now called by
-  Player_GiveMagnet for the model (Magnet_Create); the magnet flags themselves
-  are set by the module.
-- **Camera mirror** `g_obj_camera[3]` (objects.h): the gCamera fields that the
-  camera-area objects write. MapObj75 pushes `bound[0..3]` (24.8, left, top,
-  right, bottom) with reference counts `lock[]`; MapObj73 sets the offset
-  target `ofs_x/ofs_y` and flags 0x1000/0x2000; MapObj70 sets `flags34 & 0x10`
-  + `limit`; WaterLevelTrigger sets `flags & 0x1000000` + `water`. The camera
-  module (not written yet, CAMERA.md) should read these; `g_obj_camera[2]`
-  holds the stage defaults (initialised to the map size by `objects_init`).
-  `objects_set_view` fills `x/y`.
-- **Model views**: `objects_model_count()` / `objects_model_get(i, &view)`
-  give the 3D models of objects (RopeC: `mod/gmk_rope_c.nsbmd`, converted ids
-  `mod__gmk_rope_c__gmk_rope_c01` / `_c02`, the shape it switches to), with
-  position, 3x3 matrix (4.12) and scale. Draw them with `dcm_draw` in the
-  object pass; the module does not draw models.
-- **Grind start**: if the player module ever calls Player_CheckStartGrind in
-  its own Player_In, call `objects_set_grind_check(0)` so it does not run twice.
-- **Pool**: 384 objects (decorations share it; z12 peaks below 200).
-  bss of `obj_manager.o` is 382 KB.
-
-- **Player effects** (obj_peffect.c, 2026-11-22): the player module's effect hook
-  (DCP_FX_BOOST, _BOOST_BURST, _HIGHSPEED, _BLAZE_FLAME a = 4, _BOOST_JET,
-  _SPIN_SMOKE1/2, _BRAKE_SMOKE) now creates the original 2D effect objects from
-  `act_com` ac_eff_boost.bac / ac_eff_kemuri_spin01/02.bac / ac_eff_kemuri_brake.bac
-  (slots OBJ_BAC_EFF_BOOST, _EFF_SPIN1, _EFF_SPIN2, preloaded in 2D acts).
-  DCP_FX_BOOST_BURST creates EffBoostBurst and EffBoostAura, as Player_StartBoost
-  does. Sprites with AnimatorSprite flag 0x400 (OAM semi-transparent) are drawn
-  only by `obj_draw(PVR_LIST_TR_POLY)` / `objects_draw_tr()` with vertex alpha
-  0xa0; main.c must call it inside the TR list (player/patches/main.c.patch).
-  DCP_FX_BLAZE_FLAME: a = 0 EffBlazeRunFlame_Spawn (Player_State_GroundMove),
-  1 / 2 EffBlazeSpinFlame_Spawn (Player_State_Roll, Player_State_InAir anim
-  0x30; the flame circles her, radius w8 + 0x18 a frame, angle wC - 0x600,
-  offset accumulated in h.px / h.py, OAM priority 2 behind / 1 in front),
-  3 EffBlazeTrickFlame_Create(w, b = flame count), 4 EffBlazeBoostFlame_Create;
-  all ac_eff_boost.bac anim 2, semi-transparent.
-  DCP_FX_TRAIL (Player_StartBoost, Sonic only): EffTrail_Create(w, 0x18, 0xa,
-  0x7ca5, 0x7ca5). The node ring (11 nodes, owner position +-len/2 rotated by
-  RotX(rot2) RotY(rot3) RotZ(angle + motion direction in the air)) and the
-  Init / Wait / Follow states are in obj_peffect.c (two trail slots).
-  `objects_trail_quads()` returns EffTrail_Draw's quads (newest first, colour
-  Math_LerpRGB555, polygon alpha 6 -> 0x12 -> 1 with the peak at cnt * 3 / 10);
-  obj_draw.c draws them flat in the TR list at z 0.0055 (just behind the player
-  model). EffTrail_SetWrapShift (looping boss arenas) is not translated.
-  Trick effects: DCP_FX_TRICK (anim 0x38) EffTrick_CreateAtOffset (ac_eff_trick.bac 0xc),
-  DCP_FX_TRICK_FORWARD EffTrickForwardBoost (ac_eff_boost.bac 0xa, on the player while in 0x37),
-  DCP_FX_TRICK_SPARKLE EffTrickSparkle (12 >> level screen-space sparkles; the first call only
-  creates the task, as on the DS; one object per particle here), DCP_FX_TRICK_COMBO
-  EffTrickCombo_Spawn (eight layouts of EffTrickComboPart, screen space, gravity 0x54).
-  Not translated: the 3D variants of boss acts.
-- **Boost defence**: obj_player_collide applies Player_UpdateBoost's
-  `w->unk2C4 |= 5` while boosting and Player_StopBoost's `= 2` (when not
-  invulnerable / invincible) to the hurt box (`ObjPlayerCtx.prev_boost`).
-
-### 2.2 Player-module changes requested (integrator applies them)
-
-1. `Player_In`: call `Player_FindHomingTarget` and `Player_CheckStartGrind`
-   at their original places (after Player_UpdateUnderwater /
-   Player_UpdateBoost). Until then the object module runs them at the end of
-   `objects_frame_begin`, which is one call earlier inside the frame (before
-   the whole of Player_In instead of in the middle of it).
-2. `Player_Last`: `if (pf & 0x20000000) RingManager_AttractRings(p)` (now in
-   `objects_update`, same position in the frame).
-3. Export `Player_SetAnimSpeedFromVelocity` (`anim_speed` is static in
-   dcp_states.c; obj_pgimmick.c carries an identical copy).
-4. Keep the player work @0x3EE..@0x3FC in DcPlayer (now in
-   `ObjPlayerCtx.g3EE..g3FC`), so other modules can see the gimmick state.
-5. `dcp_states.c` passes two `dcp_rand()` calls as arguments of one call
-   (`fx(w, DCP_FX_TRICK, 0xf - (dcp_rand() & 0x1e), 0xf - (dcp_rand() & 0x1e))`).
-   C leaves the order open; MWCC evaluates call arguments right to left
-   (checked in the matched object of DecGroup35_SpawnPieceBurst). Draw them
-   into temporaries in that order to keep gRandSeed identical.
-6. `dcp_on_hurt`: pass `objects_ring_scatter_level()` (section 6, item 6).
-7. `Player_In` (v3): call `Player_UpdateUnderwater(p)` (obj_pwater.c) at its
-   original place, and the check that drops a destroyed gimmick
-   (`obj_player_check_gimmick`: `p->gimmick` points at a pool object that is
-   free or marked for destruction (`obj_flags & 4`) -> `p->gimmick = NULL`). Then call
-   `objects_set_underwater_check(0)`. Until then `objects_frame_begin` runs
-   both for every player, right before `dcp_player_frame` (same deviation as
-   item 1).
-8. `Player_UpdateCamera` (camera module, CAMERA.md) needs the gimmick lock
-   that the object module now relies on: while `p->gimmick != NULL`, `pf2 &
-   0x10` sets camera x to `gimmick.x - (@0x3EC + 0x80)` and `pf2 & 0x20` sets
-   camera y to `gimmick.y - (@0x3EE + 0x60)` (pixels). The special ring (z11),
-   the sand ship (GmkTable, @0x3EE = 0x28 / 0x58), Wheel2D and the cargo
-   depend on it. Both host tests emulate it in `camera_follow`.
-9. Keep @0x3EC and @0x3EE in DcPlayer too (now `ObjPlayerCtx.g3EC/g3EE`),
-   with item 4. The camera code of item 8 reads them.
-10. `Player_ApplyAutoRunAcceleration` belongs to the player module
-    (dcp_states.c has no copy); obj_pwater.c carries the translation for
-    WaterRun. Move it if the player module ever needs it.
-11. `DCP_DF_ANIM_DONE` must come from the 3D model renderer. The v3 states
-    BreatheAirBubble, Wheel2D release, SandSlide end and Hand2D wait for it.
-    `objects_set_player_anim_done(1)` uses son.bac timing, which is not the
-    model's timing (son.bac anim 0 is 35 frames for every animation id).
-12. PLAYER.md lists WaterRun, ZoneLaunch, Wheel2D, the underwater count and
-    the gimmick table as "not yet". They are now in the object module
-    (`obj_pwater.c`, `obj_pmirage.c`), entered through the documented
-    `dcp_*` actions and DcPlayer fields. Remove them from that list, or
-    point it here.
-13. (v4) **`Player_InitState` box part**: the DS Player_InitState sets
-    `coll2A0.unk1C = Player_OnHurt`, `coll2A0.unk28 = 0x21`, clears
-    `coll2A0.unkA & 0x300` and resets coll2CC the same way. The boxes live
-    in the object module, so `dcp_player_init_state` must call
-    `objects_player_init_state(p)` (objects.h; a new `g_dcp_hooks` entry
-    or a direct call). Without it two things break: the glider sequence
-    replaces the body callback with Player_OnHit_GliderSequence and only the
-    next Player_InitState restores it, and the "already hit" flags 0x100 /
-    0x200 of the body stay set after a hurt, so a second needle or
-    projectile that first touches the attack box never hurts the player.
-    The object code calls it after each of its own `dcp_player_init_state`
-    calls (`obj_init_state`); the player module's own calls (landing,
-    respawn, actions) need the hook. test_zones calls it in `place_player`.
-14. (v4) Same request as item 11 for the push animation: `dcp_states.c`
-    switches anim 0xb -> 0xc only when `disp_flags & 8` (animation end).
-    The side shooter (0xbc) charges only while the player is in anim 0xc
-    (`move_flags & 0x2000000` from Player_Unk_ov000_023460ec). The test
-    sets the flag by hand.
-15. (v4) `Player_State_GliderSequence*`, the glider, parachute, saucer,
-    swing, cannon, rocket, air, pipe, jet catapult, crane slide and swing
-    sky states are in the object module (`obj_p*.c`), entered through
-    `dcp_*` actions and DcPlayer fields only. They read `p->held` /
-    `p->pressed` (the DS pad words) like the other states.
-16. (v4) Player work the v4 states use (keep them with items 4 and 9):
-    `ObjPlayerCtx.g3D2` / `g3D4` (@0x3D2 / @0x3D4: swing radius and pivot
-    angle), `g3EC` / `g3EE` (camera lock offsets: crane slide -0x3a,
-    glider sequence exit -0x80), `g3F0..g3F8` (glider sequence reference
-    position).
-
-### 2.3 What changed with objdata v3 (integrator checklist)
-
-- **Frame order**: `objects_frame_begin` now also runs, per player, the
-  gimmick-destroyed check and `Player_UpdateUnderwater` (section 2.2 item 7),
-  after the pre-player tasks. Cargo and LandUnrest are pre-player tasks
-  (0xf6), MapObj8C runs at 0x4f6.
-- **Settings survive `objects_init`**: `objects_set_grind_check`,
-  `objects_set_underwater_check`, `objects_set_player_anim_done` and
-  `objects_set_view_count` now keep their value across stage loads. Set them
-  once.
-- **Two views (recommended)**: the DS spawns objects for both screens. Drop-in
-  Egg Pawns (0x14/0x15) and other margin-196 kinds spawn only when a view is
-  within 60 px of them. Call `objects_set_view_count(2)` and pass, as view 1,
-  view 0 moved up by 192 px (the DS top screen). The zone tests do this. With
-  one view, z32 drop-ins on the sand ship do not appear (section 7).
-- **New effect hook kinds** (`g_obj_hooks.effect(ctx, p, kind, a, b)`):
-  `OBJ_FX_SCREEN_FLASH` (a = ScreenFlash kind; mine / Kuragen bomb),
-  `OBJ_FX_BGM_LAYER` (a = 1 underwater mix, 0 normal; Stage_SelectBGMLayer),
-  `OBJ_FX_JINGLE` (a = jingle id, 0x17 drowning music; StageJingle_Create),
-  `OBJ_FX_RIPPLE3D` (EffRipple3D_SpawnForPlayer), `OBJ_FX_ENEMY_ROOM`
-  (EnemyRoomHud / EffEnemyRoomFix: a = 0 start with b = enemies needed,
-  a = 1 count with b = enemies defeated, a = 2 cleared). The water splashes of
-  zone 2 objects are native effects; `OBJ_FX_WATER_SPLASH` is still used by
-  the zone 1 DecGroup35 (0x51/0x52) only.
-- **Model views**: `objects_model_get` now also returns Wheel2D
-  (`mod__gmk_wheel__gmk_wheel`), Hand2d (`mod__gmk_hand__gmk_hand`) and the
-  sand ship GmkTable (`mod__gmk_table__gmk_table`), with matrix and scale
-  as for RopeC. The disc needs those `.dcm` files from
-  `build/dreamcast/models/`.
-- **Camera mirror, new writers**: water level `g_obj_camera[0].water` (@0x62)
-  with flags 0x1000000 (water on) / 0x2000000; in zone 3 the same field is the
-  quicksand line. Enemy rooms: MapObj8C sets `flags34 & 0x10000` (room
-  lock) on the cameras of the players inside; MapObj8F narrows `bound[0..3]`
-  step by step towards the room edges and, on release, sets flags 0x2000
-  and starts the offset return from `Camera_GetTrackedPlayerOffset` (the
-  single-screen branch, flags 0x100000..0x800000, is translated but not
-  taken). GmkTable sets `g_obj_camera[2].flags & 0x40000` while sailing. The camera module must
-  read them (CAMERA.md). `Camera_ResetOnRespawn` resets the water level on
-  the DS; that belongs to the camera module.
-- **Player flags written by v3 states**: `W.objmgr & 0x100` while the
-  player is held by the sand ship (Player_AttachGimmickTableNoInput /
-  Released; Player_DetachGimmick clears it). `pf2 & 0x100` (3D section
-  input) and `pf & DCP_PF_NOINPUT` are set there too; the player module
-  already honours both.
-- **Water rendering (left to the integrator)**: when
-  `g_obj_camera[0].flags & 0x1000000`, the water line is
-  `g_obj_camera[0].water` (world pixels). The renderer must draw the surface
-  band at that line and tint (or swap the palette of) everything below it,
-  as the DS does with the BG/OBJ window and palette effect. The underwater
-  BGM mix comes through `OBJ_FX_BGM_LAYER`. Zone 3 uses the same field for
-  the quicksand line (no tint on the DS: sand layer only). Splashes, air
-  bubbles, the drowning digits, water-run spray and waterfalls are object
-  sprites and need nothing extra.
-- **Pool and memory**: still 384 objects (the zone tests end their target
-  runs with 10..28 live; the peak was not measured). bss of the 20 objects is 484 KB (obj_manager.o 477 KB), text
-  130 KB.
-
-### 2.4 What changed with objdata v4 (integrator checklist)
-
-- **Data**: rerun `make data` (objdata.bin v4, 145 slots; the module refuses
-  v3). Copy the new sprite ids and `.hbx` files (section 3) and three
-  models: `mod__gmk_slide__gmk_slide.dcm` (CraneSlide),
-  `mod__gmk_crane__gmk_crane.dcm` (Crane hook, mast) and
-  `mod__gmk_glider__gmk_glider.dcm` (Glider), all in build/dreamcast/models/.
-- **Model views** (`objects_model_get`): `ObjModelView` has new fields.
-  `shapes` is a bit mask of the shapes (StageObj_LoadModelSimple blocks) to
-  draw (CraneSlide switches 0x01f / 0x3e0 while sliding; Crane hook
-  0x1800; mast 0x4); `reps` / `rep_dy`: draw the model `reps` times, `rep_dy`
-  (24.8) apart downwards (CranePartEE mast); `persp` = DS disp 0x200
-  (perspective model). `visible` is now `!(disp_flags & 0x20)` (it was
-  `disp_flags & 0x200`, which v4 objects use for the perspective flag).
-- **Sprite stand-ins for models**: while the integrator draws no models, the
-  2D sprites that the original hides behind a model (flag 0x80000: crane
-  slide, crane hook / mast, glider) are drawn instead
-  (`objects_set_model_sprites(1)`, the default). Call
-  `objects_set_model_sprites(0)` once the model views are drawn, to hide them
-  as the DS does. 3D BACs (StageObj_Load3dBAC: MapObj13 flappers / rings /
-  clouds, DecGroup4D cranes) are drawn as 3D sprites (`Obj.bac3d`, deviation 39),
-  with the depth in `h.z`.
-- **New effect hook kinds** (`g_obj_hooks.effect(ctx, p, kind, a, b)`):
-  `OBJ_FX_ZONE4_BLDY` (Night Carnival dark areas: a = 0 flash with b =
-  frames, a = 1 ramp up, a = 2 ramp down, b = (target << 8) | speed;
-  ZoneFx_Zone4_StartBldyFlash / RampUp / RampDown. The renderer darkens the
-  screen, as the DS blends BLDY); `OBJ_FX_PALETTE_ANIM` (a = the ROM address
-  of the PaletteAnim table, b = the object type: DecGroupAF neon, DecGroup95
-  and DecArrow lights; PaletteAnim_Create); `OBJ_FX_SCREEN_FLASH` is now
-  also used by the saucer and rocket explosions and the cannon shot.
-- **Fade hook**: the glider sequence calls `g_obj_hooks.fade(ctx, kind,
-  speed)` with BrightnessFade_Create kinds 0x43 / 0x45 / 3.
-- **Camera mirror, new writers** (the camera module must read them):
-  `g_obj_camera[2].flags & 0x40000` while the player stands on a vertical
-  shooter (0xbb); glider sequence: `g_obj_camera[0..1].flags34 |= 1`
-  (scroll with the wind, cleared at the exit), `g_obj_camera[cam].flags`
-  bits 1 / 2 cleared during the sequence and set at its end;
-  `g3EC` / `g3EE` writes of section 2.2 item 16; `g_dcp_world.wind_x` =
-  0x100 during the glider sequence (objects without move flag 0x8000000
-  drift with it; MapObj13 exists only while it is set).
-- **Player flags written by v4 code**: pf2 0x8000 (inside a dark area) and
-  0x4000 (dark area flash active), 0x2000 / 0x10000 (MapObj40 0xc5 / 0xc6
-  one-frame layer switch, consumed by Player_In), 0x1000 / 0x100000 (depth
-  lane 0x9c, consumed by Player_Last), 0x200 | 0x400 | 0x30 | 0xc0 and
-  `pf & 0x2000` during the glider sequence, pf 0x100000 / 0x2000 (crane
-  slide, pipe).
-- **gSwitchTimers** live in obj_carnival.c (`obj_switch_timers()`), reset by
-  `objects_init`. Switches, neon routes, DecGroupAF and MapObj40 0xc5 /
-  0xc6 read them.
-- **Information hint** (FixInformation, SwingSky / Swing): shown once per
-  stage visit, `g_obj_stage.info_shown` (data_022c4590.unk45).
-- **Single screen**: nothing is drawn as a second screen. The DS draws the
-  Valve steam pair and the crane slide / DecCloudW sprites per screen; the
-  DC keeps the main-screen one in world coordinates. Keep
-  `objects_set_view_count(2)` with view 1 = view 0 moved up 192 px: the
-  spawn logic of both DS screens stays.
-- **Frame order**: unchanged. The ride link of StageObj_HandleRide (@0x130,
-  objects with a placement) now runs in `obj_main` before the player's
-  `dcp_handle_ride`.
-- **Pool and memory**: 384 objects. Peaks measured by test_zones (live
-  objects + decorations, whole test run): z21 60, z22 61, z31 77, z32 108,
-  z41 44, z42 47, z51 33, z52 81, z61 76, z62 74, z71 31, z72 63, z91 25,
-  z92 15. `make dc`: text 187 889 bytes, data 5, bss 557 100 (g_obj 549 KB,
-  mostly the pool; the `obj_p*.c` files carry a 176-byte NULL-safe player
-  context each).
 
 ### 2.5 Special stage round trip (event state)
 
@@ -515,7 +228,7 @@ z31 and z32 43 slots (ids printed by the host tests). Zone 2 always preloads
 EFF_WATER and BUBBLE (splashes and air bubbles appear without a placed
 object).
 
-**Disc layout needed** (integrator; build_disc.sh is not mine):
+**Disc layout** (`build_disc.sh`):
 
 ```
 /cd/objects/objdata.bin                          (235 568 bytes)
@@ -530,7 +243,7 @@ for Water Palace / Mirage Road the ids printed by `test_zones`. Ids are up to 46
 characters long (`narc__z41_act_lz7__act__ac_gmk_wall_braek01`), so the ISO
 needs Rock Ridge/Joliet names (build_disc.sh uses `-r -J`; Joliet allows 64).
 The RopeC model needs `build/dreamcast/models/mod__gmk_rope_c__gmk_rope_c01.dcm`
-and `_c02.dcm` if the integrator draws the model views; v3 adds
+and `_c02.dcm` if main.c draws the model views; v3 adds
 `mod__gmk_wheel__gmk_wheel.dcm`, `mod__gmk_hand__gmk_hand.dcm` and
 `mod__gmk_table__gmk_table.dcm`; v4 adds `mod__gmk_slide__gmk_slide.dcm`,
 `mod__gmk_crane__gmk_crane.dcm` and `mod__gmk_glider__gmk_glider.dcm` (all
@@ -1039,7 +752,7 @@ its behaviour.
 | Effects | `EffDrownCount_Create, _State_FollowPlayer, _Spawn` | obj_water.c | modified | exercised (play: digits 5..0) | FixMoji digits from FIX_MOJI |
 | Effects | `EffGmkBubble_Create, _State_Main` | obj_water.c | modified | created (spawned when the wheel releases; not checked) |  |
 | Effects | `EffWaterGmk_Create, EffWaterGmk_CreateSplash, EffWaterRunSplash_Create, EffWaterSplash_Create, EffWaterSplash_Spawn` | obj_water.c | modified | exercised (entry splash, run spray) |  |
-| Effects | `EffRipple3D_SpawnForPlayer, ScreenFlash_Create, StageJingle_Create, Stage_SelectBGMLayer` | - | not translated | hook calls counted | effect hook kinds (section 2.3) |
+| Effects | `EffRipple3D_SpawnForPlayer, ScreenFlash_Create, StageJingle_Create, Stage_SelectBGMLayer` | - | not translated | hook calls counted | effect hook kinds |
 | Water Palace | `WaterRunTrigger_Create, _OnHit` | obj_water.c | modified | exercised (play from the 0x80 slide) |  |
 | Water Palace | `MapObj7D_Create, _OnHit` (water current) | obj_water.c | modified | exercised (direct) | gravity 0x54 inside |
 | Water Palace | `MapObj80_Create, _OnHit` (water slide) | obj_water.c | modified | exercised (play) |  |
@@ -1119,7 +832,7 @@ Additions in shared files (all **modified** unless noted):
 | `obj_enemy.c` | EnemyPawnGroup types 9, 0x0a, 0x0d, 0x0e, 0x0f: create cases (BACs, coll2 PushPlayer / Bounce, f1F4 0x20, vitality, Egg Bunny map hitbox), `_State/_Action_LongAttackAlt`, `_AttackSpawnEggSf`, `_AttackSpawnGunHunter`, `_Dash`, `_Brake`, `_Bounced`, `_JumpAttack` (+Windup, +Start), `_OnHit_Box2_Bounce`, `_OnHit_Box2_PushPlayer`, OnDetect cases |
 | `obj_flapper.c` | EnemyFlapperGroup types 0x0b, 0x0c, 0x10, 0x11, 0x12: `_OnHit_Box2`, `_FireShot`, `_State_FireShot_ov000_022ffcac / _02300338 / _02300484`, `_Action/_State_SwoopOut`, `_SwoopReturn`, Math_LerpFx32; shots EggFlapperLaser (0xe7), FlapperCannon (0xf0), EggBombHawk (0xeb, + Explode, ExplodeOnContact); EffEntrance native |
 | `obj_enemy2.c` | EggSf_Create (0xe6), GunHunter_Create + `_State_CheckGround` (0xec, lifted C) |
-| `obj_player.c` | AttackHitbox_State_JetCatapult, AttackHitbox_SetJetCatapultState; `objects_player_init_state` (Player_InitState box part, section 2.2 item 13) |
+| `obj_player.c` | AttackHitbox_State_JetCatapult, AttackHitbox_SetJetCatapultState; `objects_player_init_state` (Player_InitState box part) |
 | `obj_gimmicks.c` | MapObj40_OnHit cases 0xb6 / 0xb7 (glider sequence start / end), 0xc3 / 0xc4 (dark area in / out, ZoneFx hook), 0xc5, 0xc6 (switch-timer layer areas; 0xc6 falls through into 0x59 as in the original); MapObj40_Create case 0xb6 / 0xb7 box |
 | `obj_decor.c`, `obj_water.c` | create table rows for DecGroupAF, DecGroup95, DecGroup67, DecArrow; DecGroup4D case 0xcf (crane slide decoration) |
 | `obj_rect.c` | ObjRect_PointCheck (`rect_point_check`) |
@@ -1396,7 +1109,7 @@ the path under `src/game/`):
    spawn for the other screen spawn later.
 3. **Call order split.** Stage_Main + StageEvent_Main → `objects_frame_begin`;
    Player_Collide and all tasks after the player → `objects_update`. The DS
-   order is kept as long as the integrator calls them around `dcp_player_frame`.
+   order is kept as long as main.c calls them around `dcp_player_frame`.
 4. **Hit box events come from `.hbx`** (frames.json), not the BAC command stream.
    The order inside a frame (boxes, then EndFrame) is the same.
 5. **Spawn of objects that were in view after a jump**: `objects_respawn_view()`
@@ -1419,7 +1132,7 @@ the path under `src/game/`):
    translated since v3),
    HUD popups (only a hook), VRAM/palette allocation, PaletteAnim_Create
    (zone 4 walls/platforms), wireless play (MapObject_Net*). Effects without a
-   module go to `g_obj_hooks.effect` (section 2.1).
+   module go to `g_obj_hooks.effect`.
 10. **Pool limits**: 384 objects (DS: heap). There is a guard on the solid-object list
     (0x20), which the DS would overrun.
 11. **Goal ring** reports the stage exit once (`stage_exit` hook) instead of
@@ -1432,7 +1145,7 @@ v2 deviations:
 13. **Pre-player tasks** (id 0xf6) run at the end of `objects_frame_begin`;
     **Player_FindHomingTarget / Player_CheckStartGrind** run there too, i.e.
     before the whole of Player_In instead of at their place inside it
-    (section 2.2). Magnet attraction runs in `objects_update` after
+   . Magnet attraction runs in `objects_update` after
     Player_Collide, which is where Player_Last runs in the player task.
 14. **Composed sprites vs OAM pieces**: frames.bin holds each frame as one
     composed image. StageObj_Draw2DEx with a piece table (WallBreak and
@@ -1448,7 +1161,7 @@ v2 deviations:
     so objects that pick another row (DecGroup0F vines 0x3b..0x40 use row 8,
     DecVine 0x33/0x34 row 7) may show other colours. Not checked against the DS.
 17. **3D model of RopeC** is not drawn by the module: `objects_model_get` hands
-    the transform to the integrator.
+    the transform to main.c.
 18. **Touch screen**: StageObj_IsTouched (animals react to the stylus) is always
     FALSE.
 19. **gGameState.unk24** (GmkLand oscillation phase) is taken from
@@ -1475,7 +1188,7 @@ v3 deviations (Water Palace, Mirage Road):
     the 3D one), the drop-ins and Rock `Obj.bac3d` 2 (obj_draw.c draws the
     frames of ac_ene_eggpawn3d / ac_ene_egg_bishop3d / ac_gmk_rock_3 for the
     2D sprite's animation state; the layouts match). Wheel2D, Hand2d and
-    GmkTable are NSBMD models: the module hands them to the integrator through
+    GmkTable are NSBMD models: the module hands them to main.c through
     `objects_model_get` (as RopeC).
 24. **Sounds**: object sounds go through `g_obj_hooks.sfx` with the
     original ids; sound handles, positional (pan/volume by distance) and
@@ -1498,10 +1211,10 @@ v3 deviations (Water Palace, Mirage Road):
     (`g_obj_camera[2].flags & 1`), translated but never taken (deviation 20).
     Drop-in pawns spawn only within 60 px of a view: with one view, the
     drop-ins of z32 do not appear in the host test (section 7). Two views
-    (section 2.3) are the DS behaviour.
+    are the DS behaviour.
 28. **Player_UpdateUnderwater and the gimmick-destroyed check** run in
     `objects_frame_begin`, before the whole of Player_In instead of at their
-    place inside it (section 2.2 item 7). It is switchable
+    place inside it. It is switchable
     (`objects_set_underwater_check`).
 29. **NULL guards** where the matched code dereferences a possibly NULL
     pointer: Bubble_OnHit (reads byte 0 of a NULL toucher), Kuragen_SpawnBomb
@@ -1525,13 +1238,13 @@ v3 deviations (Water Palace, Mirage Road):
 35. **Animation end comes from the model**: BreatheAirBubble, Wheel2D release,
     SandSlide end and Hand2D wait for `DCP_DF_ANIM_DONE`. The host tests set
     it by hand (as the model renderer would). Without a renderer setting it,
-    these states do not end (section 2.2 item 11).
+    these states do not end.
 36. **Zones 4..7** (v3 note, superseded by v4): the shared v3 code also
     created objects there before v4; v4 translates the zones and runs them
-    (section 7.1). The 3D boss variants (EggPawn3D, EggBishop3D, Rock_3) and
+   . The 3D boss variants (EggPawn3D, EggBishop3D, Rock_3) and
     the boss objects are not translated (boss module).
 37. **Water rendering** (surface band, tint below the line) is left to the
-    renderer (section 2.3). The module only provides the level and the flags.
+    renderer. The module only provides the level and the flags.
 38. **Holder-cached resources** (v4): ObjData_Load returns the already
     loaded resource for the same holder. The light4 children and the Bomb
     Hawk bomb (EggBombHawk uses the Bomb Hawk BAC) share one slot, as on
@@ -1586,10 +1299,10 @@ v3 deviations (Water Palace, Mirage Road):
     `objects_init` (the DS does not clear data_022c4590 for the return).
 50. **Player_InitState box part** is a separate function
     (`objects_player_init_state`), called after the object code's own
-    `dcp_player_init_state` calls; the player module's calls need the hook
-    of section 2.2 item 13.
+    `dcp_player_init_state` calls; the player module's calls use the hook
+    main.c installs.
 51. **Test harness assists** (not module behaviour): the side shooter test
-    sets the push animation end flag (section 2.2 item 14), the needle test
+    sets the push animation end flag, the needle test
     gives `invuln = 1` so Player_In resets the body defence, and
     `place_player` calls `objects_player_init_state`.
 
@@ -1599,7 +1312,7 @@ v3 deviations (Water Palace, Mirage Road):
 cd dreamcast/game/objects
 make data        # BYOR: build/dreamcast/objects/{objdata.bin,hbx/,sprites.txt}
 make host-test   # gcc -std=c99 -Wall -Wextra -Werror -fwrapv; test_objects on z11, z12 and test_zones on ZONE_STAGES
-make audit       # item-C audit: test_objects AUDIT_ONLY=1 on z11, z12 + ZONE_STAGES, CHARA=0 and 1 (docs/dreamcast/REGRESSION.md section 5)
+make audit       # item-C audit: test_objects AUDIT_ONLY=1 on z11, z12 + ZONE_STAGES, CHARA=0 and 1
 make zone-test   # test_zones only (ZONE_STAGES = z21 z22 z31 z32 z41 z42 z51 z52 z61 z62 z71 z72 z91 z92)
 make coverage    # create every placed object / decoration of every stage, print the table of section 8
 make dc          # kos-cc -O2 -fwrapv -Wall -Wextra -Werror, objects in build/dreamcast/objects/dc/
@@ -1610,7 +1323,7 @@ module `make tables`), `build/dreamcast/stages/z11|z12|z21|z22|z31|z32/level.bin
 `build/dreamcast/sprites/bac/`. `test_objects ... -v` also prints every ring
 pickup and the quiet events (camera bounds, decorations).
 
-The test (unchanged parts: section 4 checks) now also has:
+Besides the section 4 checks, the test has:
 
 - `[v2 targets]`: the player is put at the first reachable instance of each
   new kind and the expected interaction is checked: trampoline launch
@@ -1627,74 +1340,6 @@ The test (unchanged parts: section 4 checks) now also has:
   the player runs right for 240 frames with jumps and boosts; pickups, kills
   and gimmick triggers are reported.
 
-Results (2026-11-22, host, `make data` output in build/dreamcast/objects):
-
-```
-z11
-objects_init: 0; stage 0; preloaded sprites: (38 ids)
-  38 of 91 slots preloaded, 0 failed, PlayerStart respawn point (128,768)
-[run] PlayerStart, hold right, jump every 50 frames, 1500 frames
-  max x 5703, rings 21, live objects 11, spawned 57, despawned 51, destroyed 0
-  gimmick triggers 0 (grinds 1, walls 0, rocks 0), decorations spawned 86; events: init_resources=1 spring=3 grind=1 ring=21 leaf_burst=4 bird_fly=2 camera_bounds=10
-[targets]
-[v2 targets] stage 0 (zone 0 act 0)
-  trampoline 0x55        ok    (8648,2480) after 28 frames vel_y -1878 (+0x2a gravity)
-  bend stick 0x56        ok    (14336,2112) after 20 frames anim 0x31, launch after 10 more: anim 0x30 vel 0,-1520
-  rope 0x58              ok    (9792,1472) caught after 3 frames (anim 0x24), released after 59: vel 0,42
-  jump pedestal 0x67     ok    (15392,1592) flags 0 after 89 frames vel 1814,-1376
-  corkscrew 0x68/0x69    ok    (16064,1280) flags 0x80 after 35 frames, then 60 frames: moved 622 px
-  rock break 0x6f        ok    (6720,1456) after 18 frames, player vel_y -726
-  wall break 0x77        ok    (17584,992) mode 0 after 22 frames; 20 frames later piece 0 at +3,-5 px
-  rope C 0x7a            ok    (17856,944) after 3 frames anim 0x25, rope length 0x7c72 after 40 frames, released by A: gimmick NULL anim 0x30
-    model views 1: mod__gmk_rope_c__gmk_rope_c02 scale 0x34cc 0x34cc 0x290a visible 1
-  special ring 0x9e      ok    (18656,512) entered after 5 frames, boost 0, exit kind 2 after 257 more frames
-  platform 0x51          ok    (10088,696) p8 0 p9 0: riding 1, player moved +0,+271 px in 60 frames
-  crumbling floor 0x76   ok    (6440,1512) crumbles 45 frames after landing; 80 frames later player y 1771 (floor 1512)
-  flapper 0x02           ok    (17984,184) destroyed after 7 frames, animals now 1
-  egg pawn M 0x01        ok    (18120,688) child spawned after 63 frames
-  boost knock-away       ok    1 enemies knocked away by the boost hit box
-  homing attack          ok    target found 1, enemy destroyed by the homing attack 1
-  magnet barrier         ok    2 rings attracted (pf 0x30000000)
-  decorations: spawned 402 despawned 398, live: flowers/vines 4, vines(hang) 0, leaves 0, birds 0, animals 0; bird fly-aways 10, leaf bursts 9, freed animals 5
-  v2 targets: 16 of 16 interactions seen; pool live 5 of 384; late sprite loads 0
-[sweep] 16 segments x 240 frames: rings 74, item boxes 1, springs 13, dash panels 9, dash rings 2, enemies 0 (knocked away 0), hurts 0, checkpoints 0, gimmicks 4, grinds 4, walls 0, rocks 0, decorations 303, homing targets 0
-61 checks, 0 failed
-z12
-objects_init: 0; stage 1; preloaded sprites: (38 ids)
-  38 of 91 slots preloaded, 0 failed, PlayerStart respawn point (128,1216)
-[run] PlayerStart, hold right, jump every 50 frames, 1500 frames
-  max x 3653, rings 25, live objects 7, spawned 22, despawned 14, destroyed 1
-  gimmick triggers 1 (grinds 0, walls 0, rocks 0), decorations spawned 65; events: init_resources=1 spring=3 ring=20 bird_fly=8 pedestal=1 dash_ring=1 item_box=1
-[targets]
-[v2 targets] stage 1 (zone 0 act 1)
-  trampoline 0x55        ok    (4520,1392) after 28 frames vel_y -1878 (+0x2a gravity)
-  bend stick 0x56        ok    (4096,1960) after 20 frames anim 0x31, launch after 10 more: anim 0x30 vel 0,-1520
-  rope 0x58              ok    (5056,896) caught after 3 frames (anim 0x24), released after 59: vel 0,42
-  jump pedestal 0x67     ok    (2336,632) flags 0 after 89 frames vel 1814,-1376
-  corkscrew 0x68/0x69    ok    (10624,2560) flags 0x2 after 38 frames, then 60 frames: moved 66 px
-  rock break 0x6f        ok    (2584,240) after 18 frames, player vel_y -726
-  wall break 0x77        ok    (14352,1952) mode 0 after 30 frames; 20 frames later piece 0 at -107,-71 px
-  rope C 0x7a            ok    (8704,2416) after 3 frames anim 0x25, rope length 0x7c72 after 40 frames, released by A: gimmick NULL anim 0x30
-    model views 1: mod__gmk_rope_c__gmk_rope_c02 scale 0x34cc 0x34cc 0x290a visible 1
-  special ring 0x9e      ok    (4264,2184) entered after 6 frames, boost 0, exit kind 2 after 260 more frames
-  platform 0x51          ok    (2736,248) p8 192 p9 0: riding 1, player moved -22,+0 px in 60 frames
-  iron ball 0x78         ok    (21568,1864) rolls after 3 frames, moved +18 px in 78 frames
-  flapper 0x02           ok    (5056,552) destroyed after 7 frames, animals now 1
-  egg pawn M 0x01        ok    (11248,1200) child spawned after 63 frames
-  boost knock-away       ok    1 enemies knocked away by the boost hit box
-  homing attack          ok    target found 1, enemy destroyed by the homing attack 1
-  magnet barrier         ok    6 rings attracted (pf 0x30000000)
-  decorations: spawned 772 despawned 772, live: flowers/vines 0, vines(hang) 0, leaves 0, birds 0, animals 0; bird fly-aways 10, leaf bursts 30, freed animals 8
-  v2 targets: 16 of 16 interactions seen; pool live 1 of 384; late sprite loads 0
-[sweep] 23 segments x 240 frames: rings 101, item boxes 3, springs 9, dash panels 6, dash rings 1, enemies 1 (knocked away 1), hurts 1, checkpoints 0, gimmicks 6, grinds 10, walls 1, rocks 0, decorations 724, homing targets 0
-60 checks, 0 failed
-```
-
-
-z12 sweep decorations: 724 (v2: 721). The only change in z11/z12 output is
-that `test_objects` now emulates the Player_UpdateCamera gimmick lock
-(section 2.2 item 8), which moves the camera, and so the decoration
-spawns, slightly during the special ring.
 
 **test_zones (v3)** on z21, z22, z31, z32. Same frame loop as test_objects
 (objects_frame_begin, dcp_player_frame, objects_update, camera follow with
@@ -1714,118 +1359,6 @@ DS top screen). Parts:
   effect and HUD calls are real.
 - `[sweep]`: from every 25th ring, run right 240 frames with jumps and
   boosts; counts pickups and v3 interactions met by chance.
-
-Results (2026-11-22, host, after `make data`):
-
-```
-objects_init: 0; stage 3 (zone 1 act 0); preloaded sprites: (ids)
-  35 of 91 slots preloaded, 0 failed
-[run] PlayerStart, hold right, jump every 50 frames, 1500 frames
-  max x 3208, rings 9, live objects 10, spawned 11, destroyed 0, gimmicks 1, decorations 13
-  events: init_resources=1 pedestal=1 ring=9 camera_bounds=6
-[zone 2 targets]
-  water level 2112 (camera flags 0x1000000)
-  water entry              ok   play    (3800,2112) under after 23 frames, splash 1, air bubbles alive 8, bgm layer calls 2
-  drowning countdown       ok   play    air time 1800 frames: digits seen 111111, drowned after 1801 frames, jingle 2
-  air bubble               ok   direct  bubble spawned under the player: breathed (state breathe 1, count reset); left the state 1 frames after the model animation end was signalled
-  water exit               ok   play    after 5 frames, gravity 42
-  bubble spawner 0x84      ok   play    4 spawners, breathable bubble after 3 frames near #0
-  water run 0x7b           ok   play    running on the water after 310 frames, y 2097..2097 (surface 2112 - 15), moved 360 px in 40 frames, splash frames 36
-  water current 0x7d       ok   direct  gravity applied inside the current 0x54 per frame (normal 0x2a; Player_Last restores it)
-  water slide 0x80         ok   play    #0: slide state after 23 frames, then moved 101 px in 30 frames (state slide)
-  launch zone 0x83         ok   direct  flags 0: launched after 4 frames, vel 1197,31
-  wheel 0x82               ok   direct  caught after 1 frames; player angle 0xfe -> 0xa4, wheel angle 0xee00 -> 0x9400, model view mod__gmk_wheel__gmk_wheel
-    released after 539 more frames (state wheel 0)
-  mine 0x7f                ok   direct  #0 (timer 30): exploded after 301 frames, player released 1
-  kuragen bomb 0x05        ok   direct  #0 detected the player, bomb exploded 59 frames later
-  kuragen pulse 0x06       ok   direct  hit box on 292 / off 108 frames of 400
-  water jet 0x85           ok   direct  #0 (period 30): launched after 111 frames, vel_y -3030
-  tilting raft 0x81        ok   play    player stood off-centre: max tilt 0x29, riding 0
-  egg lancer 0x03          ok   play    #0 noticed the player and charged after 38 frames (speed -320)
-  water slope 0x7e         ok   direct  #0: slide state after 3 frames
-  fish / decorations       ok   play    decorations spawned 138; fish fled 1; live fish 2, school fish 8, shared-frame decorations 9
-  targets: 18 of 18 interactions seen; pool live 28 of 384; late sprite loads 0
-[sweep] 14 segments x 240 frames: rings 61, springs 6, dash panels 9, enemies 3, hurts 0, gimmicks 4, water entries 11, water runs 0, zone launches 0, air bubbles 0, mines 0, sand slides 0, cargo 0, rails 0, rocks 0, rooms 0, decorations 106
-  events: ring=61 camera_bounds=12 wheel2d=3 water_jet=1 pawn_detect=2 enemy_knocked_away=3 spring=6 freed_animal=3 grind=2 dash_panel=9 item_box=1
-24 checks, 0 failed
-objects_init: 0; stage 4 (zone 1 act 1); preloaded sprites: (ids)
-  36 of 91 slots preloaded, 0 failed
-[run] PlayerStart, hold right, jump every 50 frames, 1500 frames
-  max x 3062, rings 11, live objects 9, spawned 9, destroyed 0, gimmicks 0, decorations 101
-  events: init_resources=1 ring=11
-[zone 2 targets]
-  water level 1982 (camera flags 0x1000000)
-  water entry              ok   play    (6220,1982) under after 23 frames, splash 1, air bubbles alive 7, bgm layer calls 4
-  drowning countdown       ok   play    air time 1800 frames: digits seen 111111, drowned after 1801 frames, jingle 2
-  air bubble               ok   direct  bubble spawned under the player: breathed (state breathe 1, count reset); left the state 1 frames after the model animation end was signalled
-  water exit               ok   play    after 5 frames, gravity 42
-  bubble spawner 0x84      ok   play    7 spawners, breathable bubble after 3 frames near #0
-  water run 0x7b           ok   play    running on the water after 257 frames, y 1967..1967 (surface 1982 - 15), moved 360 px in 40 frames, splash frames 39
-  water current 0x7d       ok   direct  gravity applied inside the current 0x54 per frame (normal 0x2a; Player_Last restores it)
-  water slide 0x80         ok   play    #0: slide state after 24 frames, then moved 101 px in 30 frames (state slide)
-  launch zone 0x83         ok   direct  flags 0: launched after 4 frames, vel 1197,31
-  wheel 0x82               ok   direct  caught after 1 frames; player angle 0xfe -> 0xa4, wheel angle 0xee00 -> 0x9400, model view mod__gmk_wheel__gmk_wheel
-    released after 277 more frames (state wheel 0)
-  mine 0x7f                ok   direct  #0 (timer 30): exploded after 301 frames, player released 1
-  kuragen bomb 0x05        ok   direct  #0 detected the player, bomb exploded 79 frames later
-  kuragen pulse 0x06       ok   direct  hit box on 292 / off 108 frames of 400
-  water jet 0x85           ok   direct  #0 (period 30): launched after 111 frames, vel_y -3414
-  tilting raft 0x81        ok   play    player stood off-centre: max tilt 0x29, riding 0
-  egg lancer 0x03          ok   play    #0 noticed the player and charged after 38 frames (speed -320)
-  water slope 0x7e         ok   direct  #0: slide state after 3 frames
-  fish / decorations       ok   play    decorations spawned 271; fish fled 1; live fish 1, school fish 8, shared-frame decorations 0
-  targets: 18 of 18 interactions seen; pool live 21 of 384; late sprite loads 0
-[sweep] 16 segments x 240 frames: rings 57, springs 1, dash panels 0, enemies 2, hurts 1, gimmicks 2, water entries 14, water runs 0, zone launches 0, air bubbles 0, mines 1, sand slides 0, cargo 0, rails 0, rocks 0, rooms 0, decorations 218
-  events: ring=57 kuragen_drop=1 mapobj40_slide=2 mine_explode=1 kuragen_bomb=1 pawn_detect=2 camera_bounds=6 grind=2 hurt=1 checkpoint=1 spring=1 enemy_knocked_away=2 freed_animal=2
-24 checks, 0 failed
-objects_init: 0; stage 6 (zone 2 act 0); preloaded sprites: (ids)
-  43 of 91 slots preloaded, 0 failed
-[run] PlayerStart, hold right, jump every 50 frames, 1500 frames
-  max x 3352, rings 22, live objects 2, spawned 18, destroyed 0, gimmicks 1, decorations 14
-  events: init_resources=1 ring=22 pawn_detect=2 spring=1 cargo=1
-[zone 3 targets]
-  rail 0x88                ok   direct  #0: attached 1, rail moved 60 px in 40 frames, player follows 1
-  cargo 0x89               ok   direct  #0: riding 1, cargo swung and released the player after 117 frames (gnd -1524)
-  hand 0x8a                ok   play    stood on the hand: carried after 13 frames, player angle 0 -> 0x57
-    released after 37 more frames
-  sand slider 0x90         ok   direct  sinking state 1; sand slide 1 after 75 frames (z 63)
-  sand slider 0x91         ok   direct  rising state 1, landed after 59 frames (z 0)
-  egg bishop 0x07          ok   play    #1 threw an Egg Bishop (0xe4) after 41 frames
-  egg hammer 0x08          ok   play    #0 stomped after 130 frames (screen shake via hook)
-  sand area 0xa9           ok   direct  #4: EffSand after 4 frames
-    room 1 controller live: bounds 4952,1160..5192,1384
-  enemy room 0x8c..0x8f    ok   play    room 1: started 1, gates moved 1, enemies spawned with the entrance effect 1 (defeated by the test 6), cleared after 684 frames, hud calls 8
-  sand ship 0x8b           ok   play    boarded 1, sailed 5109 px in 3540 frames; drop-in pawns seen 1, landed on the ship 1; rocks fallen on it 17; released 0, hurts 0
-  decorations              ok   play    spawned 113, despawned 113
-  targets: 11 of 11 interactions seen; pool live 10 of 384; late sprite loads 0
-[sweep] 15 segments x 240 frames: rings 78, springs 5, dash panels 7, enemies 1, hurts 1, gimmicks 4, water entries 0, water runs 0, zone launches 0, air bubbles 0, mines 0, sand slides 0, cargo 1, rails 1, rocks 0, rooms 0, decorations 220
-  events: ring=78 pawn_detect=6 spring=5 cargo=1 gmk_rail=1 hand2d=1 enemy_room_start=2 freed_animal=1 enemy_destroyed=1 land_crumble=1 grind=4 checkpoint=2 hurt=1 dash_panel=7 item_box=1
-18 checks, 0 failed
-objects_init: 0; stage 7 (zone 2 act 1); preloaded sprites: (ids)
-  43 of 91 slots preloaded, 0 failed
-[run] PlayerStart, hold right, jump every 50 frames, 1500 frames
-  max x 2613, rings 3, live objects 2, spawned 16, destroyed 0, gimmicks 3, decorations 16
-  events: init_resources=1 ring=10 pedestal=2 spring=1 hand2d=1
-[zone 3 targets]
-  rail 0x88                ok   direct  #0: attached 1, rail moved 60 px in 40 frames, player follows 1
-  cargo 0x89               ok   direct  #0: riding 1, cargo swung and released the player after 117 frames (gnd 1524)
-  hand 0x8a                ok   play    stood on the hand: carried after 13 frames, player angle 0 -> 0x57
-    released after 37 more frames
-  sand slider 0x90         ok   direct  sinking state 1; sand slide 1 after 71 frames (z 63)
-  sand slider 0x91         ok   direct  rising state 1, landed after 51 frames (z 0)
-  egg bishop 0x07          ok   play    #2 threw an Egg Bishop (0xe4) after 41 frames
-  egg hammer 0x08          ok   play    #0 stomped after 126 frames (screen shake via hook)
-  sand area 0xa9           ok   direct  #18: EffSand after 4 frames
-    room 0 controller -: bounds -1,-1..-1,-1
-  enemy room 0x8c..0x8f    ok   play    room 0: started 1, gates moved 1, enemies spawned with the entrance effect 1 (defeated by the test 5), cleared after 387 frames, hud calls 7
-  sand ship 0x8b           ok   play    boarded 1, sailed 5399 px in 5000 frames; drop-in pawns seen 0, landed on the ship 0; rocks fallen on it 28; released 1, hurts 0
-    (no drop-in pawn came into the spawn views: they spawn only when a view is within 60 px of them, which depends on the camera; see OBJECTS.md)
-  decorations              ok   play    spawned 619, despawned 607
-  targets: 11 of 11 interactions seen; pool live 26 of 384; late sprite loads 0
-[sweep] 17 segments x 240 frames: rings 134, springs 16, dash panels 7, enemies 0, hurts 3, gimmicks 6, water entries 0, water runs 0, zone launches 0, air bubbles 0, mines 0, sand slides 0, cargo 0, rails 0, rocks 0, rooms 0, decorations 164
-  events: ring=134 spring=16 grind=4 pawn_detect=6 enemy_room_start=1 wall_break=2 land_crumble=4 item_box=1 checkpoint=1 dash_panel=7 hurt=3
-17 checks, 0 failed
-```
 
 Exercised vs only created (v3):
 
@@ -1867,264 +1400,7 @@ Not verified:
   z81 / z82 and the act-3 arenas only had every placed entry created once
   by `make coverage`.
 - The water surface, tint and underwater music are not drawn / played by
-  this module (section 2.3); nothing of them was checked.
-
-### 7.1 v4 results (zones 4..7, z91, z92) and the special stage round trip
-
-test_zones (same loop, two spawn views) runs, on every zone 4..9 act stage,
-one check per v4 kind present there (`[zone N targets]`), then the sweep,
-then the round trip twice (restore before and after `objects_init`), and
-prints the pool peak. `play` = reached by input / physics from a nearby
-spot, `direct` = the player was put at offsets around the trigger box
-(nearest first) until the event fired, or put on the object (dropped onto
-it for platforms). Run 2026-11-22 after `make data`; all checks pass
-(z41 26, z42 30, z51 26, z52 25, z61 25, z62 27, z71 26, z72 26, z91 13,
-z92 10 checks, 0 failed; z11/z12/z21/z22/z31/z32 unchanged and passing).
-
-```
----- z41 (stage 9)
-[zone 4 targets]
-  crane slide 0xae         ok   direct  #0 grabbed at (+0,+0); slid 506 px over 300 frames holding on
-  shooter 0xbb             ok   direct  #0 stood on (+0,-96), charged 40 frames: launched 1 vel_y -2518, camera flag 0x40000 1
-    swing amplitude 0x6b6a, released with A: 1 (vel -1448,20)
-  swing sky 0xbd           ok   direct  #0 caught at (+0,+0); swung 150 frames then jumped off
-  switch 0xbe              ok   direct  #0 pressed at (+0,+0): timer[2] = 355, SwitchTimer 1
-  switch 0xbf              ok   direct  #0 pressed at (+4,-4): timer[0] = 179, SwitchTimer 1
-  neon route 0xc0          ok   direct  timer[1] set: route moved (184,0) px, solid 1, stood on 1, carried with it 1, 8 segments drawn
-  neon route 0xc1          ok   direct  timer[7] set: route moved (0,-184) px, solid 1, stood on 1, carried with it 1, 4 segments drawn
-  switch layer 0xc6        ok   direct  inactive while timer[0] = 0 1; timer set: pf2 0x10000 + layer bit cleared 1, layer override 130
-  egg pawn 0x0f            ok   direct  #0 noticed the player held at (-24,-24)
-    egg pawn 0x0f events: pawn_detect=2 pawn_jump_attack=1 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  flapper 0x10             ok   play    #3 noticed the player running at it after 32 frames
-    flapper 0x10 events: pawn_detect=2 pawn_jump_attack=1 flapper_detect=1 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  decorations (zone 4)     ok   play    spawned 144, despawned 138; palette-anim hooks 80
-  targets: 13 of 13 interactions seen; pool live 17 of 384; late sprite loads 0
-pool peak 44 of 384 objects
----- z42 (stage 10)
-[zone 4 targets]
-  crane slide 0xae         ok   direct  #0 grabbed at (+0,+0); slid 506 px over 300 frames holding on
-  shooter 0xbb             ok   direct  #0 stood on (+0,-96), charged 40 frames: launched 1 vel_y -2518, camera flag 0x40000 1
-  shooter 0xbc             ok   play    pushed into the side shooter for 60 frames and let go (push anim end flag set by the test): launched 1, gnd_vel -2304
-    swing amplitude 0x6b6a, released with A: 1 (vel -1448,20)
-  swing sky 0xbd           ok   direct  #0 caught at (+0,+0); swung 150 frames then jumped off
-  switch 0xbe              ok   direct  #0 pressed at (+0,+0): timer[0] = 239, SwitchTimer 1
-  switch 0xbf              ok   direct  #0 pressed at (-4,+0): timer[0] = 219, SwitchTimer 1
-  neon route 0xc0          ok   direct  timer[4] set: route moved (276,0) px, solid 1, stood on 0, carried with it 0, 10 segments drawn
-  neon route 0xc1          ok   direct  timer[5] set: route moved (0,-184) px, solid 1, stood on 1, carried with it 1, 8 segments drawn
-  dark area in 0xc3        ok   direct  pf2 0x8000 1, ZoneFx bldy hook 1
-  dark area out 0xc4       ok   direct  pf2 0x8000 cleared 1, ramp-down hook 1
-  switch area 0xc5         ok   direct  inactive while timer[0] = 0 1; timer set: pf2 0x2000 + layer bit cleared 1, layer override 0
-  switch layer 0xc6        ok   direct  inactive while timer[0] = 0 1; timer set: pf2 0x10000 + layer bit cleared 1, layer override 130
-  egg pawn 0x0f            ok   direct  #0 noticed the player held at (-24,-24)
-    egg pawn 0x0f events: pawn_detect=2 pawn_jump_attack=1 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  flapper 0x10             ok   direct  #0 noticed the player held at (+0,+0)
-    flapper 0x10 events: flapper_detect=1 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  decorations (zone 4)     ok   play    spawned 74, despawned 73; palette-anim hooks 29
-  targets: 17 of 17 interactions seen; pool live 6 of 384; late sprite loads 0
-pool peak 47 of 384 objects
----- z51 (stage 12)
-[zone 5 targets]
-    holding the hook: 1 (player gimmick), crane flag f1F4 0
-  crane 0xa8 / 0xed        ok   direct  #0 hook (0xed) touched at (+0,+0), hook moved -97 px in 60 frames; 0xee parts live 1
-  pipe 0xa6/0xab..0xad     ok   direct  0xab #2 entered at (-24,-24); travelled (-233,530) px in 115 frames, exited 1
-  jet catapult 0xa7        ok   direct  #0 boarded at (-4,-4); catapult stopped and launched the player after 341 frames (vel 3840,-1622)
-  piston 0xa0              ok   direct  #3 ridden from (+0,-48); player carried over 58 px for 82 frames
-  piston 0xa1              ok   direct  #0 ridden from (+0,-48); player carried over 51 px for 51 frames
-  valve 0xa2..0xa5 / steam ok   play    valve opened after its timer (760 frames); steam puffs (0xf1) live 8
-  flapper 0x0c             ok   play    #1 noticed the player running at it after 31 frames
-    spawned attack objects 0xeb: up to 1 live
-    spawned attack objects 0xec: up to 3 live
-    flapper 0x0c events: pawn_detect=2 flapper_detect=2 flapper_shot=2 (shots fired 2)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  egg pawn 0x0d            ok   play    #0 noticed the player running at it after 3 frames
-    spawned attack objects 0xec: up to 3 live
-    egg pawn 0x0d events: pawn_detect=4 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  egg pawn 0x0e            ok   play    #0 noticed the player running at it after 3 frames
-    egg pawn 0x0e events: pawn_detect=2 pawn_bounce=1 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  decorations (zone 5)     ok   play    spawned 853, despawned 853; palette-anim hooks 0
-  targets: 13 of 13 interactions seen; pool live 13 of 384; late sprite loads 0
-pool peak 33 of 384 objects
----- z52 (stage 13)
-[zone 5 targets]
-    holding the hook: 1 (player gimmick), crane flag f1F4 0
-  crane 0xa8 / 0xed        ok   direct  #0 hook (0xed) touched at (+0,+0), hook moved -118 px in 60 frames; 0xee parts live 1
-  pipe 0xa6/0xab..0xad     ok   direct  0xab #0 entered at (-4,-24); travelled (-299,917) px in 149 frames, exited 1
-  jet catapult 0xa7        ok   direct  #0 boarded at (-4,-4); catapult stopped and launched the player after 290 frames (vel 3840,-1622)
-  piston 0xa0              ok   direct  #0 ridden from (+0,-48); player carried over 47 px for 29 frames
-  piston 0xa1              ok   direct  #0 ridden from (+0,-48); player carried over 83 px for 50 frames
-  valve 0xa2..0xa5 / steam ok   play    valve opened after its timer (760 frames); steam puffs (0xf1) live 5
-  flapper 0x0c             ok   direct  #0 noticed the player held at (+0,+0)
-    spawned attack objects 0xeb: up to 1 live
-    flapper 0x0c events: flapper_detect=2 flapper_shot=2 (shots fired 2)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  egg pawn 0x0d            ok   play    #0 noticed the player running at it after 52 frames
-    spawned attack objects 0xec: up to 3 live
-    egg pawn 0x0d events: pawn_detect=2 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  egg pawn 0x0e            ok   play    #0 noticed the player running at it after 3 frames
-    egg pawn 0x0e events: pawn_detect=2 pawn_bounce=1 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  decorations (zone 5)     ok   play    spawned 565, despawned 565; palette-anim hooks 0
-  targets: 13 of 13 interactions seen; pool live 9 of 384; late sprite loads 0
-pool peak 81 of 384 objects
----- z61 (stage 15)
-[zone 6 targets]
-  glider 0xb5              ok   direct  #0 grabbed at (+0,+0); glided 1072 px in 133 frames, into the glider sequence area by play
-  glider sequence 0xb6     ok   play    started by play: intro 1, sequence 1 for 2316 frames, wind 0, rings 0xb8 live up to 13, collected 26
-  glider ring 0xb8         ok   play    26 collected flying the sequence (MapObj13 exists only while the sequence wind blows)
-  glider sequence end 0xb7 ok   play    reached the end area flying: exit state 1, left it after 262 frames, wind 0
-  parachute 0xb4           ok   direct  #0 grabbed at (+0,+0): floated 199 frames, release state 1
-  saucer 0xb3              ok   direct  #0 boarded at (+0,+0); exploded 0 after 900 frames
-  cloud spawner 0xc7       ok   play    spawner created 1; MapObj13 live 0x13 0, 0xb9 0, 0xba 0
-  flapper 0x11             ok   direct  #0 noticed the player held at (-24,+24)
-    spawned attack objects 0xe7: up to 5 live
-    spawned attack objects 0xf0: up to 2 live
-    flapper 0x11 events: flapper_detect=2 flapper_shot=2 (shots fired 2)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  flapper 0x12             ok   play    #2 noticed the player running at it after 48 frames
-    flapper 0x12 events: flapper_detect=2 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  decorations (zone 6)     ok   play    spawned 99, despawned 98; palette-anim hooks 0
-  targets: 12 of 12 interactions seen; pool live 24 of 384; late sprite loads 0
-pool peak 76 of 384 objects
----- z62 (stage 16)
-[zone 6 targets]
-  glider 0xb5              ok   direct  #0 grabbed at (+0,+0); glided 1136 px in 141 frames, into the glider sequence area by play
-  glider sequence 0xb6     ok   play    started by play: intro 1, sequence 1 for 1292 frames, wind 0, rings 0xb8 live up to 12, collected 34
-  glider ring 0xb8         ok   play    34 collected flying the sequence (MapObj13 exists only while the sequence wind blows)
-  glider sequence end 0xb7 ok   play    reached the end area flying: exit state 1, left it after 262 frames, wind 0
-  parachute 0xb4           ok   direct  #0 grabbed at (+0,+0): floated 196 frames, release state 1
-  saucer 0xb3              ok   direct  #0 boarded at (+0,+0); exploded 1 after 194 frames
-  needle 0xb1              ok   direct  #0 hurt the player at (+0,+0)
-  needle 0xb2              ok   direct  #0 hurt the player at (+0,+0)
-  cloud spawner 0xc7       ok   play    spawner created 1; MapObj13 live 0x13 0, 0xb9 0, 0xba 0
-  flapper 0x11             ok   direct  #0 noticed the player held at (-24,+24)
-    spawned attack objects 0xf0: up to 1 live
-    flapper 0x11 events: flapper_detect=1 flapper_shot=1 (shots fired 1)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  flapper 0x12             ok   direct  #0 noticed the player held at (+48,+24)
-    flapper 0x12 events: flapper_detect=1 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  decorations (zone 6)     ok   play    spawned 55, despawned 54; palette-anim hooks 2
-  targets: 14 of 14 interactions seen; pool live 22 of 384; late sprite loads 0
-pool peak 74 of 384 objects
----- z71 (stage 18)
-[zone 7 targets]
-  rocket 0x93              ok   direct  #0 grabbed at (+0,+0); exploded 1 after 68 frames
-  air 0x94                 ok   direct  #0 blown at (+0,+0); Air state 300 frames, vel_y -70
-  cannon 0x95              ok   direct  #0 entered at (+0,+0); fired after 61 frames, vel 2483,-622
-  swing 0x96               ok   play    #0 caught running from (+0,+0); swung 110 frames, released vel 0,0
-  duct 0x97                ok   direct  #0: scattered rings beside it, sucked in after 43 frames
-    lane #0 depth -64: player depth -64, on the lane floor 1
-  depth lane 0x9c          ok   direct  inside the lane 29 of 30 frames
-  egg pawn 0x09            ok   play    #0 noticed the player running at it after 3 frames
-    spawned attack objects 0xe6: up to 1 live
-    spawned attack objects 0xe7: up to 1 live
-    egg pawn 0x09 events: pawn_detect=6 flapper_detect=1 flapper_shot=1 (shots fired 1)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  egg pawn 0x0a            ok   play    #0 noticed the player running at it after 30 frames
-    spawned attack objects 0xe7: up to 1 live
-    egg pawn 0x0a events: pawn_detect=2 flapper_shot=1 (shots fired 1)
-    destroyed by a jump    ok   direct  #0: 2 destroyed
-  flapper 0x0b             ok   play    #1 noticed the player running at it after 22 frames
-    spawned attack objects 0xe6: up to 1 live
-    spawned attack objects 0xe7: up to 1 live
-    flapper 0x0b events: pawn_detect=2 flapper_detect=1 flapper_shot=1 (shots fired 1)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  decorations (zone 7)     ok   play    spawned 12, despawned 11; palette-anim hooks 8
-  targets: 13 of 13 interactions seen; pool live 14 of 384; late sprite loads 0
-pool peak 31 of 384 objects
----- z72 (stage 19)
-[zone 7 targets]
-  rocket 0x93              ok   direct  #0 grabbed at (+0,+0); exploded 1 after 154 frames
-  air 0x94                 ok   direct  #0 blown at (+0,+0); Air state 300 frames, vel_y -70
-  cannon 0x95              ok   direct  #0 entered at (+0,+0); fired after 61 frames, vel 2483,-622
-  swing 0x96               ok   play    #0 caught running from (+0,+0); swung 110 frames, released vel 0,0
-  duct 0x97                ok   direct  #0: scattered rings beside it, sucked in after 42 frames
-    lane #0 depth -64: player depth -64, on the lane floor 1
-  depth lane 0x9c          ok   direct  inside the lane 29 of 30 frames
-  egg pawn 0x09            ok   direct  #0 noticed the player held at (-24,-24)
-    spawned attack objects 0xe6: up to 1 live
-    egg pawn 0x09 events: pawn_detect=2 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  egg pawn 0x0a            ok   direct  #0 noticed the player held at (+0,+0)
-    egg pawn 0x0a events: pawn_detect=4 (shots fired 0)
-    destroyed by a jump    ok   direct  #0: 2 destroyed
-  flapper 0x0b             ok   play    #1 noticed the player running at it after 32 frames
-    spawned attack objects 0xe7: up to 1 live
-    flapper 0x0b events: pawn_detect=2 flapper_detect=2 flapper_shot=2 (shots fired 2)
-    destroyed by a jump    ok   direct  #0: 1 destroyed
-  decorations (zone 7)     ok   play    spawned 41, despawned 40; palette-anim hooks 37
-  targets: 13 of 13 interactions seen; pool live 8 of 384; late sprite loads 1
-pool peak 63 of 384 objects
----- z91 (stage 24)
-[zone 9 targets]
-  shooter 0xbb             ok   direct  #0 stood on (+0,-96), charged 40 frames: launched 1 vel_y -2518, camera flag 0x40000 1
-  switch 0xbe              ok   direct  #0 pressed at (+0,+0): timer[0] = 239, SwitchTimer 1
-  neon route 0xc0          ok   direct  timer[0] set: route moved (184,0) px, solid 1, stood on 1, carried with it 1, 6 segments drawn
-  switch area 0xc5         ok   direct  inactive while timer[0] = 0 1; timer set: pf2 0x2000 + layer bit cleared 1, layer override 0
-  switch layer 0xc6        ok   direct  inactive while timer[0] = 0 1; timer set: pf2 0x10000 + layer bit cleared 1, layer override 130
-  decorations (zone 9)     ok   play    spawned 14, despawned 6; palette-anim hooks 0
-  targets: 6 of 6 interactions seen; pool live 17 of 384; late sprite loads 0
-pool peak 25 of 384 objects
----- z92 (stage 25)
-[zone 9 targets]
-  pipe 0xa6/0xab..0xad     ok   direct  0xac #0 entered at (-24,-24); travelled (541,21) px in 99 frames, exited 1
-  piston 0xa1              ok   direct  #0 ridden from (+0,-96); player carried over 37 px for 120 frames
-  decorations (zone 9)     ok   play    spawned 27, despawned 27; palette-anim hooks 0
-  targets: 3 of 3 interactions seen; pool live 6 of 384; late sprite loads 0
-pool peak 15 of 384 objects
-```
-
-What these checks do **not** cover (only created, or only partly checked):
-
-- Shots and children are counted as spawned (Egg Sf 0xe6, flapper laser
-  0xe7, Bomb Hawk bomb 0xeb, Gun Hunter 0xec, flapper cannon 0xf0); their
-  flight, hits on the player and the Bomb Hawk explosion were seen only in
-  the sweep event counts (bomb_hawk_explode, enemy_knocked_away).
-- MapObj13 3D flappers (0x13) and clouds (0xb9 / 0xba), DecCloudSpawner /
-  DecCloudW, DecGroupAF / DecSonicNeon blinking, DecGroup67 / 95, DecArrow,
-  DecGroup4D 0xcf: created and counted (decoration counts, palette-anim hook
-  calls), not checked against the DS.
-- Steam puffs hurt boxes, the jet catapult's attack box on enemies
-  (AttackHitbox_State_JetCatapult), the saucer's flight control, the cannon
-  aim, the swing release speed, the Air state end, piston crushing, the
-  crane mast drawing, the shooter part sprites, neon route wrap-around
-  (`flags & 1`): run in the checks above but only the listed values are
-  compared.
-- One neon route on z42 (#0 of 0xc0) moved but the drop test did not land
-  on it (it moves 4 px per frame under the dropping player); the 0xc1 one
-  carried the player.
-- The direct touch of a glider ring was removed: the rings are collected
-  by play inside the glider sequence (30 / 29 rings on z61 / z62).
-- Nothing was drawn: model views, stand-in sprites, ZoneFx blends and
-  palette animations are only handed out through the API and hooks.
-
-Special stage round trip (every stage of the list above, both orders), e.g.
-z21:
-
-```
-[special stage round trip: restore before objects_init]
-  before: 5 rings collected (5 of them placed rings), enemy #70 (type 0x03) destroyed, live objects 6
-  rings stay collected     ok   direct  5 collected before; list entries still collected 1; picked up again at their spots 0; untouched ring #333 still there 1
-  enemy stays destroyed    ok   direct  entry #70 not respawned 1; another of its type (#89) respawns 1
-  restart camera / stage vars ok   direct  camera (8772,1479) restored 1; checkpoint index / position kept 1
-[special stage round trip: restore after objects_init]
-  ... (same three checks ok; #70 stays destroyed from the first trip)
-```
-
-The rings are collected by play (running through placed rings), the enemy
-is destroyed by a jump; after save, shutdown, init and restore the test
-stands on the collected rings' spots (no ring picked up), checks the list
-entries, walks to the destroyed enemy (not respawned) and to another enemy
-of the same type (respawns), and compares camera and checkpoint fields.
-z91 / z92 have no rings or enemies to test (reported, not counted).
+  this module; nothing of them was checked.
 
 ## 8. Coverage
 

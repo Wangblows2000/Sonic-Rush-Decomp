@@ -1,14 +1,10 @@
 # Native in-stage presentation and flow (Dreamcast port): translation notes
 
-Status: HUD, score popup, stage title card (with its BBG backgrounds), pause
-menu, act results (score tally, rank and BBG backgrounds), game over / time over,
-brightness fades, the score/time/lives rules, and the boss-stage second-screen
-helpers (NaviB boss health panel, NaviMsg navigator messages and face,
-BossHelp) and the enemy-room counter (EnemyRoomHud) are translated. The host test
-passes (93/93 checks) with the real ROM tables and converted assets. All 11
-sources compile with `kos-cc -O2 -fwrapv -Wall -Wextra -Werror`. It has **not**
-run on SH-4 hardware or in Flycast: the screen layout was checked only with the
-host renderer of the quad list (`tools/render_quads.py`), not on a PVR.
+Status: HUD, score popup, stage title card (with its BBG backgrounds), pause menu (including the
+Extra boss pause), act results (score tally, rank and BBG backgrounds), game over / time over,
+brightness fades, the score/time/lives rules, the boss-stage second-screen helpers (NaviB boss health
+panel, NaviMsg navigator messages and face, BossHelp) and the enemy-room counter (EnemyRoomHud) are
+translated and integrated. Host test: `make -C dreamcast/game/ui host-test`. Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 
 - Code: `dreamcast/game/ui/` (`ui.h` public API, `ui_internal.h`, `ui_*.c`,
   `Makefile`, `test/test_ui.c`, `tools/uidata.py`, `tools/uibg.py`,
@@ -130,7 +126,7 @@ Required changes in main.c (not done here, main.c is not in this area):
   gBossStatus.flags |= 1; the boss (and BossF's arena camera) starts there, not
   when the title-card task ends ~62 frames later. `ui_titlecard_started()` is 1
   from StartStage on (flags 0x20000000) and when no card runs; main.c starts the
-  boss on it (patch main_boss_start_at_go.patch, DEFECTS.md V10).
+  boss on it (patch main_boss_start_at_go.patch).
 - Timer: Stage_Main owns `gGameState.unk20` (`g_dcp_world.frame`, +1 per frame
   while `flags & 1`). `dcp_player_frame` also does `W.frame++` (a stand-in
   from before this module existed). `ui_post_update` restores the Stage_Main
@@ -205,7 +201,7 @@ use. In total about 830 KB of PVR VRAM, all loaded at `ui_init`. The atlases
 also stay in main RAM (about 0.7 MB) because the variant cache is built from them.
 If VRAM gets tight, `dm_cldm` can be loaded only when the results start.
 
-`build_disc.sh` is not in this area. The integrator copies these two items.
+`build_disc.sh` copies these two items.
 Build them with `make -C dreamcast/game/ui data` (uidata.bin). The sprites come
 from the existing `tools/dreamcast/sprites/bac2dc.py` output.
 
@@ -463,7 +459,7 @@ only; **not translated** = see section 6.
 ## 6. Gaps and assumptions (honest list)
 
 - **Results model**: ClearDemoModel_* are translated and `ui_results_model()` gives the pose; main.c draws
-  it (`cutscene/patches/main_results_model.patch`, DEFECTS.md V3). The title card palette lerps (StageTitleCard_LerpColor /
+  it (`cutscene/patches/main_results_model.patch`). The title card palette lerps (StageTitleCard_LerpColor /
   RestoreColors light and edge colours) are not applied to the BG art.
 - **Not translated**: time-attack tally (ClearDemoTA_*: time attack uses the
   score tally), CheckpointTimePopup / MarkerTimeList (time attack), VS results
@@ -499,14 +495,10 @@ only; **not translated** = see section 6.
   they forward to `g_boss_hooks.navi`) keep their original names in the UI
   sources but link as `ui_*` (macros in `ui_internal.h`), so the game links with
   menus and boss.
-- **Host test build**: the test links the objects and player modules, which
-  other workers were editing. `make host-test` passed 93/93 with the whole
-  objects module; in the last run `objects/obj_deadline.c` (new, not yet
-  compiling) was left out and the previously compiled object files were linked.
 - **gGameLanguage order**: `data_0207b9bc` reads jpn, eng, fra, deu, ita, spa;
   the old comment in ui.h (deu at 2) was wrong and is fixed.
 - The Blaze palette reload of the results glyphs (ClearDemo_InitSprites: +0xcc into row 0) is done as a
-  bank swap (`ui_pal_swap`, DEFECTS.md V4).
+  bank swap (`ui_pal_swap`).
 - Lives on a new game: `gSaveData.unkE/unk66` come from the save file. The
   save-file default was not traced. `save_lives` defaults to 3 (assumption).
 - `StoryProgress_IsStageNew()` lives in the menus module (`mn_story.c`).
@@ -527,71 +519,6 @@ only; **not translated** = see section 6.
   pivot as in the original. Small offsets are possible on the scaled parts.
 - `ui_draw.c` writes the variant cache with 16-bit stores into PVR VRAM
   (64-bit area). This is common practice, but it has not been verified on hardware.
-
-## 7. Verification (what was run)
-
-- `make -C dreamcast/game/ui data` -> `uidata.bin` (35 sections, 4.5 KB).
-  Spot checks against the decompiled tables: gauge colours `7fff 7e00 031f 001f`,
-  time divisors `2160000 .. 60, 10`, rank thresholds `100000/80000/50000/0`,
-  first time-bonus threshold table `3599 .. 15599, 0xffffffff`.
-- `make -C dreamcast/game/ui data` also runs `tools/uibg.py`: 18 title card,
-  2 results and 12 navigator resource directories, `navifaces_t.bin` (50
-  frames), `navifaces_c.bin` (41 frames), `navidata.bin` (9 sections). The
-  converter asserts what the runtime relies on: the stdm_zigzag fill columns are
-  all equal (stretched), cldm_bg is one colour, every page is power-of-two.
-  Voice ids read: Tails 211..216, Cream 217..222, arcs 2 / 3.
-- `make -C dreamcast/game/ui host-test`: 93/93 checks (the 61 earlier ones
-  unchanged, plus the boss / enemy room / background ones below). Measured on
-  the real tables and sprites:
-  - digits (ring/time/score conversion, clamp 9'59"99);
-  - bonus tables and ranks (85000 time bonus under 1 minute, 10000 trick bonus
-    at 20000 points, rank boundaries, boss ranks);
-  - lives clamp and mode rules;
-  - title card: the timer starts on frame 283 after stage start (7 delay +
-    26 fade-in + text sequence, then the exit waits for the 206-frame player
-    zoom). The task ends 62 frames later. A/B skips to StartStage on the next frame;
-  - tension gauge: fills 2 per frame, drains 1 per frame;
-  - HUD quads stay inside the safe area;
-  - score popup: 63 frames for a 2-step trick;
-  - pause: freezes the timer, START resumes, GO BACK exits after the 17-frame fade;
-  - results: total 99570 (rank A) and 864 frames to exit; skipping with A
-    twice exits 139 frames later;
-  - game over: 529 frames to exit, saved lives clamped to 2;
-  - time over: kills the player and sets the no-time-bonus flag.
-  - boss stage (z1 act 3): zone art 640x480 and the zigzag band inside window
-    0x38..0xc0 on the title card; NaviB created at StartStage; the start
-    message (face 9, panel 0xf) is on screen 238 frames for time 0xf0 (the
-    2-frame load pipeline), its voice plays 1 frame after the call; a hit
-    (health 8 -> 7) shows the lost icon for 10 frames (BLDALPHA reaches 0) and
-    the counter flash for 2 frames; the hurt line plays its voice; the face
-    streams 104x80; BossHelp sits above the panel; Sonic progress 2: panel
-    only, no navigator; normal act: no panel;
-  - enemy room (5 enemies): counter 05 shown with sfx 0xe7, 3 defeated -> 02,
-    cleared -> sfx 0xe8, the finish sprites, gone after 262 frames;
-  - title card BG: 242 frames, off after StartStage; results BG: backdrop,
-    cldm_far and two cldm_bg planes;
-  - pause asks `g_ui_hooks.stage_new`;
-  - every HUD/navigator quad inside the safe area, none as large as a DS screen.
-- `make -C dreamcast/game/ui dc`: all 11 sources compile with `kos-cc -std=gnu99
-  -O2 -fwrapv -Wall -Wextra -Werror`. Their undefined symbols are only KOS/libc,
-  `engine/render.c` (draw_rect_screen, tex_free), the objects module (ObjShift_*,
-  g_obj_stage, g_obj_hooks) and the player module (g_dcp_world, g_dcp_hooks,
-  dcp_act_die). No new KOS link test was run.
-- KOS link test (`/tmp/ui/link`): UI + player + objects + `engine/render.c` + stub main -> `link.elf`
-  links with no unresolved symbols.
-- Visual check (host only): `UI_DUMP=dir test_ui ...` then
-  `tools/render_quads.py` gives PNGs of the HUD, title card, pause, results and
-  game over. They were inspected: layout, digit order, gauge colours, pause dimming, rank
-  stamp, letter spacing.
-- Composited 640x480 frames (host renderer over a flat colour standing in for the
-  world, copied to `build/dreamcast/ui/preview/`): `boss_message` (balloon
-  "Good luck Sonic!", face, boss panel 8/8), `boss_hit` ("That's it, Sonic!",
-  gauge 7/8), `boss_help`, `boss_titlecard`, `titlecard_120/240`, `results`,
-  `results_open`, `enemyroom` (ENEMY 05), `enemyroom_clear` (finish sprites).
-  Inspected: text readable at 2x, no overlay on the bottom-centre play area,
-  no second DS panel or dividing line, nothing outside the safe area. The
-  renderer is not a PVR: nearest filtering, no TR sorting effects, no Flycast run.
-
 
 ## 8. Time attack and attract-demo additions
 

@@ -5,16 +5,9 @@ SEGA logo, the title screen (with the attract-demo request), the title menu,
 player select (Sonic / Blaze / extra), the zone map with the story
 progression, the act select, the map pause and the options (difficulty, time
 limit, sound test, delete save data). Save data is the original `gSaveData`
-format, stored on the VMU. The code was checked as follows:
-
-- Host test: the menus test passes (38/38 checks) and the save test passes (49/49).
-- Build: all sources compile with `kos-cc -Werror`.
-- KOS link test: it links (menus + save + `engine/render.c` + `engine/input.c` + a stub main).
-
-It has **not** been re-run on SH-4 hardware or in an emulator since the fixes below. The integrator saw
-an "Invalid texture V size" abort in Flycast, which is fixed by the power-of-two textures (section 3.1). The
-single-screen compositions were checked with the host software compositor
-(`test/mn_raster.h`), not on a PVR.
+format, stored on the VMU. It also covers the title intro (TitleDemo), records, time attack, Try Again, the Extra Zone results
+and the attract demos. Host tests: `make -C dreamcast/game/menus host-test story-test` and the save
+test. Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 
 - Code:
   - `dreamcast/game/menus/`: `menus.h` (public API), `mn_internal.h`, `mn_*.c`, `tools/`, `test/`, `Makefile`.
@@ -55,7 +48,7 @@ single-screen compositions were checked with the host software compositor
 
 ## 2. Integration (main.c)
 
-`main.c` and `build_disc.sh` are outside this area. The integrator makes these changes.
+What `main.c` and `build_disc.sh` do for this module:
 
 ```c
 #include "../menus/menus.h"
@@ -96,7 +89,7 @@ default: break;
 - `g_ui_game.save_flags = gSaveData.unk8` (bit 1: no time limit).
 - `r.easy` is `gGameState.unk14`: 1 = normal, 0 = easy (the options value). Pass it to the systems that read difficulty (bosses).
 
-When the UI module reports `ui_state() == UI_EXIT`, the integrator stops the stage and calls `menus_stage_exit`. The call follows the original exit code:
+When the UI module reports `ui_state() == UI_EXIT`, main.c stops the stage and calls `menus_stage_exit`. The call follows the original exit code:
 
 ```c
 uint32_t total = g_ui_game.total;           /* data_022c4590.unk0, what StoreStageResult saves */
@@ -166,7 +159,7 @@ PVR path (`menus_draw_tr`) use the same projection.
 | ZoneMap, map pause, ActSelect | main | main full | the zone map, the pause box and the act list are on the touch screen; the sub (navigator panel) is not translated and is blank |
 | Options (list, difficulty, time limit, erase, sound test) | sub | main BG3 full x2.5 (the zigzag backdrop, BG2/sprites left out), main BG2 Tails art (130,4-248,188) x2.0 at (392,56), sub panel (BG2 + sprites, BG3 left out) x1.5 at (4,96) | the options panel on the left of a single backdrop, with Tails on the right |
 
-Region coordinates were tuned by looking at the host dumps (section 9). A scene
+Region coordinates were tuned by looking at the host dumps. A scene
 that changes its composition (the act select returning to the map) calls its
 `*_Compose` function again.
 
@@ -373,7 +366,7 @@ only; **not translated** = section 8.
 | TitleScreen_StartAttractDemo | in State_WaitForStart | modified (SceneChange_ToDemoPlay -> MENU_REQ_DEMO with the demo index) |
 | TitleScreen_GoToTitleMenu, GoToUnlockNotice | inline | as-is |
 | PostStaffRoll_ShowUnlockNotices, State_PlayerSelectUnlockNotice, State_SoundTestUnlockNotice, State_GoToSegaLogo | `PostStaffRoll_*` in mn_title.c | same (MsgBox 0x14 / 0x15 of mn_msgbox.c, MsgBox_RequestClose at 0xf0; A / START request it after 0x28; flags + commit as-is) |
-| TitleDemo_* (3D intro, 52 functions) | `TitleDemo_*` / `td_*` in mn_titledemo.c | modified: the six scenes, timings, interpolations, brightness, SEs, skip as the DS; the models on the menus' 3D layer (mn_model.c), the affine "RUSH" as a rotated quad (mn_emit_bg_affine) cut to the bottom screen's strip (mn_affine_clip, DEFECTS.md V19); single screen: top screen x1.875 over the top 480 x 360, the bottom screen's logo strip (8, 24)-(248, 128) x1.15 under it, the screens' brightnesses apart (MnComp.split_bright); no edge marking (DEFECTS.md V17; evaluated, not done: no PVR post-process) |
+| TitleDemo_* (3D intro, 52 functions) | `TitleDemo_*` / `td_*` in mn_titledemo.c | modified: the six scenes, timings, interpolations, brightness, SEs, skip as the DS; the models on the menus' 3D layer (mn_model.c), the affine "RUSH" as a rotated quad (mn_emit_bg_affine) cut to the bottom screen's strip (mn_affine_clip); single screen: top screen x1.875 over the top 480 x 360, the bottom screen's logo strip (8, 24)-(248, 128) x1.15 under it, the screens' brightnesses apart (MnComp.split_bright); no edge marking (; evaluated, not done: no PVR post-process) |
 | TitleMenu_Create, Main, Start, StartAtPlayerSelectItem0/1, StartFromOptions, LoadAssets, InitSprites, InitDisplay, Destructor | same | modified |
 | TitleMenu_OpenRootPage, OpenPlayerSelectPage, OpenVsPage, OpenVsSubPage, CreatePageTask, Unk_ov001_022d7ee8 / 022d8060 (`TitleMenu_InitPage`), Unk_022d7dbc, Unk_022d7e60, Select* | same | as-is |
 | TitleMenu_State_WaitOpenAnims, State_Unk_022d8938 (`State_Select`), 022d8798 (`State_Confirm`), 022d85d0 (`State_Close`) | same | modified (touch path removed; VS message box -> declined) |
@@ -405,8 +398,8 @@ only; **not translated** = section 8.
 | ZoneActSelect_Create, LoadRecords, CalcRecordRanks, DrawActCursor, DrawActLabels, DrawRecordRanks, DrawRecordScores, DrawZoneTabs, DrawBackButton, Unk_022e08e0, UpdateTabOffsets, LoadZonePalette, State_FadeIn, State_Select, State_Unk_022e0f08, State_FadeOut, IsFinished, GetResult, GetSelectedZone | same | modified (palette numbers per sprite not applied; touch removed) |
 | ZoneActSelectMode_Start, Main, StartStage, ExitToTitleMenu, Shutdown | same | modified |
 | Options_StartFromTitleMenu, Options_LoadSettingsFromSave, OptionsMenu_SetDifficultyChoice, Options_SetTimeLimit, Options_EraseSaveData, Options_ExitToTitleMenu, Options_IsSoundTestUnlocked/IsExtraStoryCleared, SoundTest_BuildTrackNameText, OptionsMenu_DrawSoundTestTrackName, OptionsMenu_State_TimeLimit/SoundTest input rules | same | as-is / modified |
-| Options key-frame slides (Options_InitOpenAnims / SelectAnims / CursorMoveAnims / EnterItemAnims / ExitAnims, OptionsMenu_InitBackAnims / InitEnterItemAnims / UpdateAnims / DrawItems, Options_ResetItemPageState, Options_Action_Exit / OptionsMenu_Action_ExitOptions fades) | `opt_anims_*`, `opt_update_anims`, `opt_reset_page`, `Options_Draw`, `opt_exit` in mn_options.c | as-is / modified: mnu_opti.ama seqs of Options_Unk_ov001_022ce960, items / page origin / banner / back button, OBJ priorities (list 3, pages 1) (DEFECTS.md V20) |
-| Options page framework (OptionsMenu_OpenPage0-5, ClosePage*, DrawPage*, State_Unk_*, OptionsBgScroll_Main ...) | `Options_State_Main` (one state with a phase) + `Options_DrawPage` | rewritten: DrawPage0-4 at the page origin, the panels on a 512 x 256 plane scrolled by -origin, cursor frames, oamPrio (DEFECTS.md V15) |
+| Options key-frame slides (Options_InitOpenAnims / SelectAnims / CursorMoveAnims / EnterItemAnims / ExitAnims, OptionsMenu_InitBackAnims / InitEnterItemAnims / UpdateAnims / DrawItems, Options_ResetItemPageState, Options_Action_Exit / OptionsMenu_Action_ExitOptions fades) | `opt_anims_*`, `opt_update_anims`, `opt_reset_page`, `Options_Draw`, `opt_exit` in mn_options.c | as-is / modified: mnu_opti.ama seqs of Options_Unk_ov001_022ce960, items / page origin / banner / back button, OBJ priorities (list 3, pages 1) |
+| Options page framework (OptionsMenu_OpenPage0-5, ClosePage*, DrawPage*, State_Unk_*, OptionsBgScroll_Main ...) | `Options_State_Main` (one state with a phase) + `Options_DrawPage` | rewritten: DrawPage0-4 at the page origin, the panels on a 512 x 256 plane scrolled by -origin, cursor frames, oamPrio |
 | OptionsWfsHost_*, DownloadPlay, SoundTest level meter/capture | - | not translated |
 | Options PLAYER DATA pages, Options_ExitToRecords, Options_ExitToTimeAttackMenuMode2/3, ZoneMapPause_ExecuteChoice2/3 | mn_options.c, mn_timeattack.c | as-is (layout of the pages rewritten like the other pages) |
 | - | `menus_init`, `menus_run_frame`, `menus_draw_tr`, `menus_stage_exit`, `save_load`, `save_write`, `mn_*` | new |
@@ -446,81 +439,6 @@ only; **not translated** = section 8.
 - **`StoryProgress_IsStageNew`**:
   - For a zone index above 7 (not a story zone) it returns FALSE.
   - The DS reads past its table there.
-
-## 9. Verification (what was run)
-
-- `make -C dreamcast/game/menus data`:
-  - menudata.bin has 13 sections (1784 bytes), with 50 backgrounds, 6 `.ama` files and sound_test.sld.
-  - Spot checks:
-    - signature `sonic_rush_`;
-    - story tables 2,5,9,13,17,21,24,26 / 3,7,10,14,18,22,26,28;
-    - Blaze zone order 3,0,2,1,5,4,6,7,8;
-    - rank thresholds 100000/80000/50000;
-    - sound test: 127 entries, "A NEW DAY (TITLE EDIT)" first.
-  - BG previews inspected: SEGA logo, title logo, zone map 648x240.
-- `make -C dreamcast/game/save host-test`: 49/49 checks.
-  - CRC = reference CRC-32 of bytes 4..0x314.
-  - Defaults.
-  - Fresh VMU: format + one write, code 4.
-  - No change: no write.
-  - Commit writes pair 1 with counter 1, both copies equal.
-  - Reboot restores the newest pair. The pairs rotate 2,3,4,0 with `counter % 5 == pair`.
-  - First copy damaged: the second copy is used. Both damaged: code 3 and the defaults.
-  - Validation clamps.
-  - Sorted time-record insert with the Blaze bits.
-  - Best-score keep and clamp.
-  - VS move-to-front.
-  - Lives clamps.
-  - Write failure: error 2 and saving disabled.
-  - No VMU: `SAVE_DISABLED`, defaults, commit returns 6.
-  - The signature is read from menudata.bin.
-- `make -C dreamcast/game/menus host-test DUMP=/tmp/menus/dump`: 38/38 checks, real assets. The run drives, in order:
-  - Boot: SEGA logo, then the title screen at frame 218.
-  - Attract demo request after 0x4b0 idle frames (demo 1), demo end, START, title menu.
-  - Cursor SE: `SysSound_PlaySE(4)` reaches the hook as archive 1, sequence 5 (the SE index mapping in `mn_story.c`).
-  - GAME START on a new save: stage zone 0 act 0, lives 2.
-  - Progress 2, zone map:
-    - the story step reveals the path to zone 2 and saves progress 3 after 388 frames;
-    - RIGHT walks to node 2;
-    - A starts zone index 1 act 0.
-  - Clears:
-    - act 1 clear: act 2 request, best score saved;
-    - act 2 clear: boss request, progress 4;
-    - boss clear: zone map, progress 5, lives 7.
-  - Reboot from the "VMU" keeps the progress.
-  - Story steps 6..11: house path, walk to node 15, zone 3 path. Progress 7 is saved.
-  - Walk to node 1 (RIGHT, DOWN). A on a cleared zone opens the act select (RIGHT for zone 2, DOWN for act 2), which requests zone 1 act 1.
-  - Player select: Blaze, then the Blaze zone map.
-  - Options:
-    - DIFFICULTY -> EASY, TIME LIMIT -> OFF;
-    - sound test track 2 played via the hook;
-    - B commits and returns to the title menu;
-    - the settings survive a reload.
-- Map pause: START on the zone map opens the pause box (dump `13b_zonemap_pause`), B closes it and the cursor stays on node 15.
-- Visual check, single-screen 640x480 (host compositor, PPM -> PNG, each image inspected). No image shows a DS panel boundary or divider:
-  - `02_segalogo`: both logo cards on one white field.
-  - `03_title`: logo, PRESS START plate, copyright.
-  - `06_titlemenu_root`: Sonic/Blaze art, MENU plate, GAMEPLAY / BATTLE PLAY / OPTIONS, back button.
-  - `20_psel_sonic`, `21_psel_blaze`, `22_psel_confirm`: art, name ticker, "PLEASE SELECT A CHARACTER", the selector dial with its arrows and the back button.
-  - `11_zonemap_revealed`, `23_zonemap_blaze`: map, path dots, ZONE labels, scroll button.
-  - `13b_zonemap_pause`: pause box over the map.
-  - `14_actselect`: tabs 1-2, ZONE 2, ACT-1 40000 C, ACT-2 30000 C, VS BOSS 20000 B, back button.
-  - `31_options`, `32_options_difficulty`, `33_options_soundtest`: panel, values, NORMAL/EASY choice, track name, A:OK / B:BACK, Tails; `31a_options_opening`, `32a_options_back_slide`, `34_options_exit_slide`: the panel scroll of the slides.
-  - Known: on the difficulty page the "DIFFICULTY?" question sprite (anim 22, white) lies on the light stripes of `mnu_opti_bg02_b` and is hard to read. The same thing shows in the raw sub-engine dump, so it is not a composition artefact. It probably comes from the sprite or BG palette conversion (the sprite converter is outside this area) and is still open.
-- Debug aid: `MN_DUMP_ENGINES=1` also writes each DS engine alone as `raw/<name>_e0/e1.ppm`. This is how the region coordinates were chosen.
-- `make -C dreamcast/game/menus dc`: 10 menu sources + save.c + save_vmu.c compile with `kos-cc -std=gnu99 -O2 -Wall -Wextra -Werror`.
-- `make -C dreamcast/game/menus link`: `menus_link.elf` (stub main + menus + save + render.c + input.c) links with no unresolved symbols.
-
-
-- `make -C dreamcast/game/menus host-test` also runs `test_flow` (56 checks):
-  - time attack: records shown, scroll, zone X wrap, stage request zone 0 act 1 mode 2; TryAgain retry / change act / quit; boss mode with Blaze;
-  - Records: 6 opponents, page scroll 0 → 16 → 32 → 0, options round trips, TIME ATTACK RECORD → BOSS view only;
-  - demo exits: DEMO_END → title screen, DEMO_TIMEOUT → SEGA logo;
-  - ExtraAct: time 17000 → time bonus 38000, 120 rings → 12000, total 50000, rank 0; 1362 frames (white from 1301); A skips to the end in 256 frames;
-  - navigator: NaviM counter and count start, intro fade (alpha 15 at 30 frames, 31 at 60), intro panel shown then hidden after 0xf0 frames, a map message for 180 frames, fade out, locked early in the story, everything gone after the scene.
-- Frame dumps (640x480) looked at for TimeAttackMenu, TryAgain, Records and ExtraAct (letterbox, title, tally, rank). The navigator is checked by state only.
-- `make -C dreamcast/game/menus dc` and `link` (kos-cc, -Werror): clean, `menus_link.elf` links (316 KB text).
-- `make -C dreamcast/game/demo host-test`: 73/73 (all four demos replayed frame-exact against a reference Pad_Update, lead-frame case, end record, fade-in, label blink, frame-limit exit, skip exit). `make -C dreamcast/game/demo dc`: clean.
 
 ## 10. Attract demos (dreamcast/game/demo)
 
@@ -646,55 +564,3 @@ ZoneActSelect_ShowIntroNaviMessage (create), ShowNaviMessage4 (act chosen) and,
 at the end of its fade-in, NaviM_StartEmeraldAppear / StartCounter (flags 8 /
 0x10 from ZoneMap_CreateState). The act select keeps the navigator pieces in
 its composition.
-
-## 15. Test-build switches and Flycast results (2026-11-22)
-
-Files in `/cd/debug/` (only test discs have them; nothing happens without them):
-
-- `menutrace.txt`: serial trace of the menus (scene changes, requests,
-  navigator panel / face / region count).
-- `menusave.txt` "flags sonic_progress blaze_progress": ORed / raised into the
-  save after boot (for example `256 5 0` unlocks the time-attack page and puts
-  Sonic's story at step 5, where the navigator is unlocked).
-- `demolead.txt` "N": attract-demo lead frames, plus a serial trace of the player
-  (position every 30 frames, lives).
-
-Flycast (own display :96, own home so the VMU is private), serial traces only:
-
-- Title idle → attract demo 1 → START skips it after 125 frames → title screen.
-  Demos 1 and 2 run to their frame limit and exit to the SEGA logo.
-- Zone map (story step 5): navigator tasks up, face fades in after the talk
-  demo, map message panel 21 shown for 180 frames and hidden, the NaviM panel
-  region present.
-- Title menu → time attack → PlayerSelect → TimeAttackMenu → A: stage request
-  zone 0 act 0 mode 2, stage loads. The stage could not be finished from a
-  scripted keyboard, so TryAgain was not reached in Flycast (host test only).
-- ExtraAct needs the whole extra story; host test only.
-
-DEMO_LEAD_FRAMES: a sweep of 0, 8, 16 and 32 lead frames gives the same result
-for demo 1 (Leaf Storm act 1 from x 17048): the player reaches x ≈ 18200 and
-then rolls back and forth between x ≈ 17400 and 18200 until the frame limit,
-while the recording holds right and boost from frame 815. Since the lead value
-does not change this, the drift is in the stage (player physics or a missing
-object near x 18200, y 3150-3250), not in the replay timing. DEMO_LEAD_FRAMES stays 0.
-
-## 16. Whole-story flow test and fixes (2026-11-22, second pass)
-
-- `make -C dreamcast/game/menus story-test` (`test/test_story.c`): the real menus, save and
-  cutscene modules on the owner's data, driven by a model of main.c's scene flow (with the
-  patches in `menus/patches/`). Every act is cleared at once; the zone map is walked by the
-  test autopilot. It checks: Sonic from a new save through zones 0..6 in order, script 0
-  before and script 1 after every boss, the nine map talks 0x15..0x1d, DemoScript 4, the
-  final zone (zf3, no script 1), the ending, staff roll, PostStaffRoll notices (flags 0x300),
-  then the SEGA logo; Blaze's order 3 0 2 1 5 4 6 7 and talks 0x28..0x2f to progress 28;
-  the extra story (script 3, script 2, ExtraAct, extra ending, flag 0x1000); the zone-map
-  BGM after every return from a stage, talk or script; game over (lives 2 saved), pause
-  quit (lives kept), time attack without a clear (no record). 124/124.
-- Fixes in this module: `SysSound_PlayBGM` restarts after `SysSound_Release` / a stage /
-  `NNS_SndStopSoundAll` (the map was silent after every talk and stage);
-  `menus_restart_bgm()`; PostStaffRoll unlock notices follow the original conditions and
-  exits, `menus_post_staff_roll()`; `MENU_EXIT_TRY_AGAIN`; story game over saves the lives
-  (Stage_ExitAfterFail). Test-only: the zone-map / player-select autopilot
-  (`debug/automap.txt`, `g_mn_automap`), the 4th `menusave.txt` value (Sonic's emeralds),
-  `menus trace boot save`, `menus trace exit` and `time records` lines.
-- Flycast runs and the defect list: `docs/dreamcast/DEFECTS.md`.

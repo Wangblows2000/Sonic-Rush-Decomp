@@ -208,32 +208,6 @@ and no `.bac` (for example `act__ac_ene_eggpawn` or `narc__z82_act_lz7__act__ac_
   `converted_as`, `status`, `outputs`, and `output_sizes`. **report.json** has the counts, failure reasons,
   frame statistics, and the data-only IDs.
 
-## 5. Validation (2026-11-22 run)
-
-- Batch: 1018 sources (343 act + 61 act2 + 614 in NARCs), 412 unique. Results: 411 converted
-  with images, 1 data-only (`ac_sonic` = `son.bac`), 0 failed, 0 archive errors.
-  All 141 NARCs parse. Output size is 41.6 MB (36.8 MB raw ARGB1555, 2.0 MB PNG atlases, 2.6 MB JSON,
-  0.15 MB DSPR), plus 28 MB of previews.
-- `dspr_check` passes on all 412 `frames.bin` files. It checks size consistency, rects inside pages,
-  image indices, and loop/next ranges. It also compiles with `sh-elf-gcc -ml -m4-single-only`.
-- All 411 raw `.argb1555` pages were decoded and compared pixel by pixel with their PNGs: 0 mismatches.
-  The twiddle index was checked to be a bijection for 8×8, 64×32, 32×128 and 512×512.
-- Visual checks of `sheet.png` with origin crosses:
-  - `ac_ene_eggpawn` (walk cycle, feet on origin);
-  - `ac_ene_egg_hammer` (z31 palette and the z82 variant palette, 4 animations including the 12-frame
-    hammer swing);
-  - `ac_itm_ring` / `ac_itm_ring3d` (spin and sparkles, pal16 linear texture format);
-  - `ac_ene_eggpawn3d`: the format-4 texture path gives the same pixels as the 2D OBJ version
-    (11 of 14 frame PNGs identical; the other 3 differ only in the uncropped box size);
-  - `ac_gmk_needle` (explicit-tile mode: rise and retract and the sideways variant are coherent
-    only with the 64K boundary);
-  - `title_demo` and `ac_sf_logo` (8bpp + 256-colour palettes: SONIC TEAM / Dimps / SEGA logos);
-  - `mnu_time_tryagain_deu` (palette slots 5/6, palette swap between frames);
-  - `mnu_psel` (quadrant pieces with origins at the shared corner);
-  - `ac_fix_player_icon` and `ac_dec_sonic_neon` (Sonic and Blaze 2D art, correct colours).
-- Compression: LZ10 is checked on the real data (141 NARCs, 10,460 tile streams). LZ10/LZ11/RLE/Huffman
-  pass synthetic round-trip tests.
-
 ## 6. Known gaps
 
 - Loop *policy* (whether an object sets flag 4) is chosen at runtime by the game code. It is not in the BAC.

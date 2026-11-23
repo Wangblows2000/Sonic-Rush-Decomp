@@ -1,24 +1,19 @@
 # Special stages: native translation (Dreamcast port)
 
-Status (2026-11-22):
+Status:
 
 - All 275 functions of `src/game/SpecialStage/` (overlay 1) are in the native module
   `dreamcast/game/special/`: 199 translated statement by statement, 74 translated with a DS service
   replaced (loading, VRAM, geometry-engine and register code), 2 rewritten from the asm fallbacks. The
   function table is in section 7.
 - Controls: a native Dreamcast controller scheme (section 4), no stylus or pointer emulation. The
-  original mechanics take the physical inputs where they read the touch screen. The Trick Spring
-  targets show the Dreamcast button of each number, and the intro, pause and legend art is in the
-  stage's own fonts.
+  Trick Spring targets show the Dreamcast button of each number; "PRESS START TO BEGIN" replaces the
+  touch prompt.
 - Data: `dreamcast/game/special/tools/spdata.py` regenerates every asset from the owner's ROM extract
-  into `build/dreamcast/special/` (103 files). `tools/padart.py` derives the controller art from the
-  converted ROM art. Nothing converted is committed.
-- Host tests: `make -C dreamcast/game/special host-test` runs the original logic headless on the
-  converted data of all 7 stages, driven through the controller scheme. 120/120 checks pass, and 122/122
-  with the engine patch of section 5.3.
-- `kos-cc -std=gnu99 -O2 -fwrapv -Wall -Wextra -Werror` builds all 13 sources (`make dc`).
-- Flycast was run with a standalone test disc (`make test-disc`). See section 8. No real hardware was
-  used.
+  into `build/dreamcast/special/`; `tools/padart.py` derives the controller art from the converted ROM
+  art. Nothing converted is committed.
+- Host tests: `make -C dreamcast/game/special host-test` runs the original logic headless on all 7
+  stages, driven through the controller scheme. Integrated in the game and played in Flycast (REGRESSION.md); not run on real hardware.
 - Blaze has no special stages in the original: `GmkSpecial_Create` refuses to create the special ring
   when `gGameState.unk0 == 1`, and the stages load only Sonic (`narc/ss_player_lz7.narc`).
   `special_init(stage, 1)` returns -2.
@@ -44,7 +39,6 @@ Status (2026-11-22):
 | `sp_audio.c` | Sound calls with the original archive/sequence numbers. Hooks or the default DC sound/music. |
 | `tools/spdata.py` | The BYOR converter (section 6). |
 | `tools/padart.py` | Controller art from the converted ROM art (section 6): the button targets, PRESS START TO BEGIN, the legend lines, and the redrawn caption bar. |
-| `patches/engine_input_raw.patch` | For the integrator: raw triggers and D-pad in `InputState` (section 5.3). |
 | `test/test_special.c` | Host tests. |
 | `test/sptest_main.c`, `test/make_test_disc.sh` | Standalone KOS test program and its CDI (special stage only). |
 | `Makefile` | `data`, `host-test`, `dc`, `test-elf`, `test-disc`, `clean`. |
@@ -265,30 +259,6 @@ then does the rest:
 
 The result (cleared or not) changes only the emerald flags. `main.c` (`run_special_stage`) stores
 `g_emeralds = res.emerald_flags` and reloads the act with the saved state (`g_ss.active`).
-
-### 5.3 Engine patch (for the integrator): raw triggers and D-pad
-
-`dreamcast/game/special/patches/engine_input_raw.patch` (`git apply`) adds three fields to
-`InputState` and `#define IN_HAS_RAW 1`:
-
-- `lt`, `rt`: the analogue triggers 0..255;
-- `dpad`: the D-pad directions without the stick (`held` merges the stick into IN_LEFT..IN_DOWN).
-
-`engine/input.c` fills them from `cont_state_t`. The fields are appended, so `InputState in = {0}`
-initialisers and all other users are unchanged.
-
-`sp_input.c` uses the fields when `IN_HAS_RAW` is defined. Without the patch it falls back:
-
-- the triggers are the digital IN_L / IN_R, through the same edge logic;
-- a stick flick during an open sequence also counts as a D-pad direction.
-
-The module builds and passes its host tests either way (120/120 without the patch, 122/122 with it).
-No `main.c`, `build_disc.sh` or game Makefile change is needed:
-
-- the loop already passes `InputState`;
-- `build_disc.sh` copies `special/sprites` and `special/bg` whole, and packs `special/sprites` into
-  `data.pak` (the new set has no `.pt4`, so its ARGB1555 page is kept);
-- `special/sp_*.c` has no new file.
 
 ## 6. Data (BYOR) and disc paths
 
@@ -599,7 +569,7 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStage_ShutdownDummy | translated |  |
 | SpecialStage_Start | translated |  |
 | SpecialStage_StartPlay | translated |  |
-| SpecialStage_State_Exit | translated, DS service replaced | SceneChange -> special_run_frame return value (integrator) |
+| SpecialStage_State_Exit | translated, DS service replaced | SceneChange -> special_run_frame return value (main.c) |
 | SpecialStage_State_IntroDraw | translated, DS service replaced | AnimatorSprite_Draw / Model_Draw -> draw commands (logic kept) |
 | SpecialStage_State_IntroUpdate | translated, controller scheme | the touch at frame 0x5c -> START / A |
 | SpecialStage_State_PlayDraw | translated, DS service replaced | fog table -> g_sp_fog overlay density |
@@ -614,101 +584,6 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 | SpecialStage_Unk_ov001_02312dd0 | translated |  |
 | SpecialStage_UpdateObject | translated |  |
 | SpecialStage_UpdateObjects | translated |  |
-
-
-## 8. Verification (what was run)
-
-- `python3 dreamcast/game/special/tools/spdata.py`: 103 files (`manifest.txt`), sound bank 119 waves /
-  747,712 bytes. The controller art was inspected as contact sheets: badges in all frames, prompt,
-  legend lines, caption bar.
-- `make -C dreamcast/game/special host-test`: **120/120 checks pass**. The same test source built against
-  the engine patch (5.3) passes **122/122**: the two extra checks cover the raw trigger and D-pad. Measured on
-  the converted data:
-  - Intro:
-    - the prompt is the PRESS START TO BEGIN art;
-    - the legend is up at the first stage;
-    - B / X / Y / R do not begin, START begins (SE 0x14) and dismisses the legend;
-    - the start sequence runs (state 2, scroll 0x3000, steering on).
-  - Analogue steering:
-    - |x| <= 32 gives no target; just outside the dead zone, angle 0x51;
-    - the curve is monotonic and symmetric;
-    - |x| >= 120 gives the wall target 0x4000, half tilt 0x151e;
-    - the target follows the stick in the same frame;
-    - half tilt: Sonic settles at 0x151e without an edge jump; quarter tilt left: -2632;
-    - full tilt: the wall and the edge jump (state 6); centred: back to the bottom.
-  - D-pad steering: left moves the target along the pipe; on release Sonic stays on the left; down
-    returns to the bottom; right held: the wall and the edge jump.
-  - Pause: START freezes the stage; B does nothing (emerald not owned); A continues.
-  - Triggers (`sp_trigger_step`):
-    - a press at 160, no repeat while held;
-    - a dip to 100, or one frame at <= 64, is not a release;
-    - two frames at <= 64, then 170: a second press;
-    - a trigger wobbling around 128 never presses.
-  - Trick Spring rule (`sp_qte_step`):
-    - inputs 1..10 in order complete a 10-target sequence;
-    - a later target's input is a MISS;
-    - a repeated press of a done target does nothing;
-    - inputs of numbers the sequence lacks do nothing;
-    - two inputs in one frame are a MISS;
-    - no input: the sequence waits.
-  - Input context:
-    - with a sequence open, each of A B X Y L R Up Right Down Left gives its own target bit;
-    - with a sequence open there is no steering and no attack, a held button is no press, and START
-      is not a target input;
-    - outside a sequence A attacks and the D-pad steers.
-  - Trick Springs in the stages (real ramps, controller presses):
-    - stage 1, 3 targets: pressed 2 frames apart = Fantastic +15 rings; 30 frames apart = Great +10;
-      50 frames apart = Nice +5;
-    - no input: MISS after the 180-frame limit (181 frames);
-    - the last target's input first: MISS;
-    - A held: no repeat; A again after target 1: ignored; then B: target 2;
-    - START pauses during a sequence, and the A that closes the pause is not target 1;
-    - the first sequence of stages 1, 3, 4, 5, 6 and 7 (3 to 7 targets, so up to D-pad Up), pressed
-      promptly: Fantastic, +15 rings each. The test driver reaches no ramp in stage 2 (Flycast did, see
-      below).
-  - Enemies:
-    - no input through stage 2: no enemy is defeated (`attacks` 0);
-    - A with nothing attackable: no attack;
-    - A with an enemy marked: TargetAttack on that enemy, then the hit or the defeat and its rings.
-  - All 7 stages with a ring-chasing autopilot (stick + trick buttons): each picks up rings and reaches
-    the checkpoint, and the outcome matches the quotas. Stage 1 is cleared (147/100 at the checkpoint).
-    Stages 2-7 fall short of the first quota (117/140, 68/150, 110/160, 142/170, 107/180, 53/160): the
-    autopilot is simple.
-  - All 7 stages with the rings kept at the quota: cleared, emerald bit set, SE_Emerald_Light on the card.
-  - Chaos Emerald progression: stages 1..7 in turn, quotas met, emerald flags carried 0 -> 0x7f.
-  - Also: no input on stage 1 fails at the checkpoint (40/100); bomb: hurt, 10 rings lost, SE; stage 4
-    results with emeralds 0x5 -> 0xd.
-  - Frame dumps (`test_special <data> <ppm-dir>`) inspected: legend card, start hint, D-pad steering, pause
-    card over the dimmed frozen frame, the A / B / X targets.
-- `make -C dreamcast/game/special dc` and `test-elf`: `kos-cc -Werror`, no warnings. `sp_input.c` /
-  `sp_core.c` were also built with the patched `input.h`.
-- **Flycast** (built from source, software GL, private Xvfb :88, own HOME with a keyboard mapping):
-  - Key bindings: A/B/X/Y = x/c/s/d, D-pad = arrows, START = Return, L/R triggers = q/w
-    (`btn_trigger_left/right`), analogue stick left/right = j/l (`btn_analog_left/right`).
-  - The keyboard produces axis values (127, -128, and intermediate values while the axis returns).
-    Partial tilts cannot be held from a keyboard; the host tests cover the proportional path.
-  - Standalone test disc: `SPTEST_START="<stage> <flags> <force> <legend>" make test-disc`. A driver
-    script read the serial log and sent the key presses.
-  - Screenshots inspected:
-    - the legend card at the first intro;
-    - PRESS START TO BEGIN in the blue square (stage 2) and during the white-out;
-    - the scrolling "USE STICK OR [<] [>] TO MOVE SONIC" bar;
-    - the start-sequence hint card;
-    - stick and D-pad steering with edge jumps;
-    - Trick Spring targets A (burst), B (lit), X, Y, L, R with the see-through progress bar;
-    - the pause card over the dimmed frozen frame, with B : GO BACK when the emerald is owned.
-  - Serial log:
-    - stick: x 127 -> target 0x4000; x -94 -> 0xe029; centred -> 0;
-    - Trick Springs: A B X Y L R (triggers from the keyboard) -> OK, Great, 10 rings. Stage 6's chain
-      17 -> 18 -> 19 (60-frame limits) was done twice in a row: ratings Great / Great / Nice,
-      Nice / Great / Great;
-    - A on marked enemies: "enemy defeated" up to 9 times per stage;
-    - pause B with emerald 0x2 owned: result 2.
-  - Two sequences failed where a key press was lost: the driver took a screenshot between keydown and
-    keyup, and Flycast then saw no held frame. This is the test harness, not the game. The other
-    sequences passed.
-  - Audio was not checked (null audio backend).
-- Not done: real hardware; a real analogue stick or analogue triggers; a full manual play-through.
 
 ## 9. Gaps and deviations (honest list)
 
@@ -742,5 +617,5 @@ runtime (re-implemented in `sp_model.c`, `sp_sprite.c`, `sp_hud.c`).
 - Load time in Flycast is ~25 s per stage (emulated CD speed).
 - `SpecialStage_Unk_ov001_0230ea6c` / RHandMtxCallback: the right-hand matrix is computed from the
   sampled pose at the integer frame. The DS takes it from the geometry engine during the draw.
-- Act re-entry after the special stage (`main.c`) is integrator work: see `docs/dreamcast/DEFECTS.md`
-  F10.
+- Act re-entry after the special stage is done in `main.c` (the act reloads at the special
+  ring's position; the emerald is saved when the act is cleared).
