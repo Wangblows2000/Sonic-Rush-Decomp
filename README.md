@@ -1,5 +1,7 @@
 # Sonic Rush (Nintendo DS) decompilation
 
+<img width="1600" height="1600" alt="boxart" src="https://github.com/user-attachments/assets/649b1bfb-05d9-4ff0-b498-ed6ef0de8ff0" />
+
 **Do be aware; this is all vibeslop. If you do not agree with the usage of AI, move along.**
 
 Work-in-progress **matching decompilation** of *Sonic Rush* (Sonic Team / Dimps,
