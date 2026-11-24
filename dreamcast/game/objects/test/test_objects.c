@@ -122,7 +122,7 @@ static void hk_log(void *ctx, const char *ev, s32 a, s32 b) {
     printf("    f%5d %-16s %6d %6d   player (%d,%d) rings %d\n", g_frame, ev, a, b, P.x >> 8, P.y >> 8, P.rings);
 }
 static int g_goal_hook, g_exit_hook;
-static void hk_goal(void *ctx, DcPlayer *p) { (void)ctx; (void)p; g_goal_hook++; }
+static void hk_goal(void *ctx, DcPlayer *p, void *ring) { (void)ctx; (void)p; (void)ring; g_goal_hook++; }
 static int g_exit_kind = -1;
 static void hk_exit(void *ctx, s32 k) { (void)ctx; g_exit_kind = k; g_exit_hook++; }
 

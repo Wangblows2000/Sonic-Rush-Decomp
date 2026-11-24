@@ -138,7 +138,7 @@ static void draw_affine(const MnQuad *q, const MnRegion *r, float z) {
     float p[8][4];
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     int n, k, lo, hi;
     if (!t || (n = mn_affine_clip(q, r, p)) < 3)
         return;

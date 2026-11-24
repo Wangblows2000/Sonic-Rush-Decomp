@@ -110,7 +110,7 @@ static void pal_quad(pvr_ptr_t tex, int tw, int th, int bank, pvr_list_t list,
 {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     pvr_poly_cxt_txr(&cxt, list, PVR_TXRFMT_PAL8BPP | PVR_TXRFMT_8BPP_PAL(bank) | PVR_TXRFMT_TWIDDLED,
                      tw, th, tex, PVR_FILTER_NONE);
     pvr_poly_compile(&hdr, &cxt);
@@ -180,7 +180,7 @@ static void bg_hdr(const Level *lv, int bank, pvr_poly_hdr_t *hdr)
 /* rows [r0, r1) of the window with BG offset (x, y): one quad, the texture repeats */
 static void bg_strip(const Level *lv, int r0, int r1, int x, int y, float z, uint32_t argb)
 {
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     float u0 = (float)(x & (lv->bg_w - 1)) / lv->bg_tw;
     float u1 = u0 + VIEW_W / lv->bg_tw;
     float v0 = (float)((r0 + y) & (lv->bg_h - 1)) / lv->bg_th;
@@ -234,7 +234,7 @@ static void pal_quad_c(pvr_ptr_t tex, int bank, pvr_list_t list, float x, float 
 {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     pvr_poly_cxt_txr(&cxt, list, PVR_TXRFMT_PAL8BPP | PVR_TXRFMT_8BPP_PAL(bank) | PVR_TXRFMT_TWIDDLED,
                      512, 512, tex, PVR_FILTER_NONE);
     pvr_poly_compile(&hdr, &cxt);

@@ -55,7 +55,8 @@ enum {                      /* ItemBox_GiveItem kinds the player module lacks */
 typedef struct ObjHooks {
     void *ctx;
     void (*sfx)(void *ctx, s32 id);                       /* Sound_PlaySeqArcEx(.., 0, id) */
-    void (*goal)(void *ctx, DcPlayer *p);                 /* Player_Action_ReachGoal (not in the player module) */
+    void (*goal)(void *ctx, DcPlayer *p, void *ring);     /* Player_Action_ReachGoal(p, ring) (not in the player module):
+                                                             the goal ring becomes the player's gimmick (camera lock) */
     void (*stage_exit)(void *ctx, s32 kind);              /* StageShutdown_Create */
     void (*fade)(void *ctx, s32 kind, s32 speed);         /* BrightnessFade_Create */
     void (*item)(void *ctx, DcPlayer *p, s32 item);       /* Player_GiveInvincibility/Barrier/Magnet, VS items */

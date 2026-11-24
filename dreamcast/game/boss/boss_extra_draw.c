@@ -524,7 +524,7 @@ static void ex_quad_fmt(pvr_list_t list, pvr_ptr_t tex, int fmt, int tw, int th,
                         float y1, float u0, float v0, float u1, float v1, float z, u32 argb) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     if (tex != NULL)
         pvr_poly_cxt_txr(&cxt, list, fmt ? fmt : PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED, tw, th, tex,
                          PVR_FILTER_NONE);
@@ -585,7 +585,7 @@ static void ex_dc_bg(void) {
     const s16 *hofs = b->unk5AC[b->unkB2C];
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     int l;
     if (b->pal_dirty || s_bg_tex == NULL) {
         ex_upload_indexed(&g_ex_bg, b->pal, 256, 256, &s_bg_tex, 1);
@@ -694,7 +694,7 @@ void ex_draw_frame(int list) {
             int k, ok = 1;
             pvr_poly_cxt_t cxt;
             pvr_poly_hdr_t hdr;
-            pvr_vertex_t v;
+            pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
             for (k = 0; k < 4; k++) {
                 const float *p = s_trail[i].v[k];
                 float e[3], cx, cy, cw;

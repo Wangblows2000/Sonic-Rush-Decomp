@@ -149,13 +149,14 @@ static void reach_goal(DcPlayer *w, void *goal) {
 
 /* StageClear_HandleGoalReached (VS part) through g_obj_hooks.goal: the first player at the goal wins;
  * the rival's console saw the puppet's ReachGoal: Player_Action_ReachGoal's VS tail */
-static void h_goal(void *ctx, DcPlayer *p) {
+static void h_goal(void *ctx, DcPlayer *p, void *ring) {
     int i = idx_of(p);
     DcPlayer *o = rival_of(p);
     (void)ctx;
     if (V.info.finished[i])
         return;
-    reach_goal(p, NULL);
+    reach_goal(p, ring);   /* the ring is the winner's gimmick: its camera stays on the ring (Player_UpdateCamera)
+                              while the ring spins and counts down to the results */
     V.info.finished[i] = 1;
     V.info.time[i] = W.frame;
     if (V.info.winner < 0) {

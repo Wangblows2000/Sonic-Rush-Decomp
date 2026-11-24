@@ -75,10 +75,14 @@ int main(int argc, char **argv) {
         if (i == objs_at) {   /* the objects within 300 px of player 2 at this frame */
             Obj *o;
             for (o = g_obj.head; o; o = o->next)
-                if (o->used && o->prm && labs((o->h.x >> 8) - (B->x >> 8)) < 300 && labs((o->h.y >> 8) - (B->y >> 8)) < 300)
+                if (o->used && o->prm && ((labs((o->h.x >> 8) - (B->x >> 8)) < 300 && labs((o->h.y >> 8) - (B->y >> 8)) < 300) ||
+                                          o->prm->type == 0x71))
                     printf("  obj type %3u at %ld,%ld flags %04x p6 %d p7 %d p8 %u p9 %u\n", o->prm->type, (long)(o->h.x >> 8),
                            (long)(o->h.y >> 8), o->prm->flags, o->prm->p6, o->prm->p7, o->prm->p8, o->prm->p9);
         }
+        if (trace && i >= objs_at && i < objs_at + 400 && i % 20 == 0)
+            printf("  f%5u p2 %ld,%ld vx %d pf %08lx pf2 %08lx of %04x\n", i, (long)(B->x >> 8), (long)(B->y >> 8), B->gnd_vel,
+                   (unsigned long)B->pf, (unsigned long)B->pf2, (unsigned)B->obj_flags);
         if (trace && (i % 60 == 0 || (trace && (h2 & 0x8000)))) {
             const VsCpuStats *s = vs_cpu_stats(1);
             printf("  f%5u p2 %6ld,%5ld vx %5d g %d gim %d line %d k %5d tgt %ld,%ld on %5d off %5d rec %3d reloc %3d pad %04x%s | p1 %ld,%ld\n", i,

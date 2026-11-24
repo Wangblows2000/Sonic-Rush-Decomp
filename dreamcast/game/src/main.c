@@ -1637,6 +1637,9 @@ int main(int argc, char **argv)
             static int sp_last_stage = -1;
             sp_view_begin(sp_view_eligible(ok, stage), stage != sp_last_stage || !ok);
             sp_last_stage = ok ? stage : -1;
+            if(ok && g_dcp_world.frame == 300)   /* one log line a stage: the view in use */
+                printf("sp view: %s k %.3f (eligible %d, mode %d, boss %d)\n", k_stages[stage], (double)g_sp_k,
+                       sp_view_eligible(ok, stage), (int)g_dcp_world.mode, g_is_boss);
         }
         ui_set_camera(g_cam_x, g_cam_y);
 

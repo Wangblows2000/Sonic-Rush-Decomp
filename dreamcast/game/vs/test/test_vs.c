@@ -161,8 +161,8 @@ int main(int argc, char **argv) {
             CHECK(vs_fade_level(1) == 0, "back from the fade");
         }
         /* goal: B first, then A */
-        g_obj_hooks.goal(g_obj_hooks.ctx, &B);
-        g_obj_hooks.goal(g_obj_hooks.ctx, &A);
+        g_obj_hooks.goal(g_obj_hooks.ctx, &B, NULL);
+        g_obj_hooks.goal(g_obj_hooks.ctx, &A, NULL);
         CHECK(vs_info()->winner == 1 && (A.pf & 0x1000000) && (B.pf & 0x200000), "goal: winner %d", vs_info()->winner);
         {
             u16 hh = 0xff, pp = 0xff, rr = 0xff;

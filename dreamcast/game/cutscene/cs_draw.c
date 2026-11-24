@@ -45,7 +45,7 @@ static int tex_ready(CsTex *t) {
 static void submit_quad(const CsQuad *q, pvr_list_t list, float z) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     static const int order[4] = {2, 0, 3, 1};   /* BL, TL, BR, TR strip */
     int k;
     float iw = 1, ih = 1;

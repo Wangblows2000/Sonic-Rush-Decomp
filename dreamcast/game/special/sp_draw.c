@@ -345,7 +345,7 @@ static void quad(void *tex, int tw, int th, int list, float x0, float y0, float 
                  float u1, float v1, float z, u32 argb, u32 oargb) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     if (tex) {
         pvr_poly_cxt_txr(&cxt, (pvr_list_t)list, s_spr_fmt ? s_spr_fmt : PVR_TXRFMT_ARGB1555 | PVR_TXRFMT_NONTWIDDLED,
                          tw, th, (pvr_ptr_t)tex, PVR_FILTER_NONE);
@@ -374,7 +374,7 @@ static void quad3d(void *tex, int tw, int th, int list, const float *xyz, float 
                    u32 argb) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     int i;
     static const int order[4] = {3, 0, 2, 1};   /* bl tl br tr */
     const float uv[4][2] = {{u0, v0}, {u1, v0}, {u1, v1}, {u0, v1}};

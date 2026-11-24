@@ -128,3 +128,8 @@ Ordinary Story Mode levels show 25 % more of the world on each axis: the drawn w
 - **Checked in Flycast:** Leaf Storm Act 1 (start, running, slopes, a forced death and the restart
   with the title card): wider window, full-height background, 59.3 fps; Leaf Storm boss (z13): original
   framing; Battle Play Vs CPU: the split screen unchanged (59.3 fps); special stage: unchanged.
+  Zones 2..7, acts 1 and 2 (12 test discs, `SRDC_START` 3, 4, 6, 7, 9, 10, 12, 13, 15, 16, 18, 19,
+  running right from the start): every act draws the wider window with the full-height background,
+  HUD unchanged, 59.2–59.3 fps (Water Palace above and below the water line, Mirage Road, Night
+  Carnival, Huge Crisis, Altitude Limit, Dead Line). A story run from z21 logged `sp view: z13 k
+  1.000 (eligible 0, boss 1)` in the boss arena (one `sp view` line per stage at stage frame 300).

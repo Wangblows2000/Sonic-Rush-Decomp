@@ -77,7 +77,7 @@ static void quad4(const Texture *t, int bank, pvr_list_t list, const float *xs, 
                   float u1, float v1, float z, uint32_t argb) {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     pvr_poly_cxt_txr(&cxt, list, tex_txr_format(t, bank), t->w, t->h, t->ptr, PVR_FILTER_NONE);
     pvr_poly_compile(&hdr, &cxt);
     render_hdr_clip(&hdr);
@@ -338,7 +338,7 @@ static void draw_trails(void) {
     ObjTrailQuad q[24];
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     int n = objects_trail_quads(q, 24), i, k;
     static const int order[4] = { 0, 1, 2, 3 };
     if (n <= 0)
@@ -666,7 +666,7 @@ static void spr3d_emit(const Texture *t, int bank, pvr_list_t list, const DsprIm
     dcm_camera_t cam;
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     float tx, ty, tz, sc = s_3d.scale, qx[4], qy[4], qu[4], qv[4], ox[4], oy[4], oz[4], dx[4], dy[4], dz[4];
     int i;
     if (s_3d.boss) {

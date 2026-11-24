@@ -23,7 +23,7 @@ int render_clip_on(void) { return g_render_clip; }
 /* PVR user-clip object: tile (32 px) rectangle, inclusive */
 void render_emit_clip(void)
 {
-    uint32_t w[8];
+    uint32_t w[8] __attribute__((aligned(32)));   /* pvr_prim drops unaligned data */
     int x0 = (int)g_view_x >> 5, y0 = (int)g_view_y >> 5;
     int x1 = ((int)(g_view_x + g_view_w) >> 5) - 1, y1 = ((int)(g_view_y + g_view_h) >> 5) - 1;
     if(!g_render_clip) return;
@@ -88,7 +88,7 @@ static void quad(const Texture *t, int bank, pvr_list_t list, float x, float y, 
 {
     pvr_poly_cxt_t cxt;
     pvr_poly_hdr_t hdr;
-    pvr_vertex_t v;
+    pvr_vertex_t v __attribute__((aligned(32)));   /* pvr_prim: 8-byte aligned or dropped */
     if(t && t->ptr && ((t->w & (t->w - 1)) || (t->h & (t->h - 1)) || t->w < 8 || t->h < 8 || t->w > 1024 || t->h > 1024)) {
         /* the PVR takes 8..1024 power-of-two sizes only: skip the quad instead of aborting */
         static int logged;

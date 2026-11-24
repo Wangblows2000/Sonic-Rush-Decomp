@@ -813,7 +813,6 @@ static void speed_bonus(const DcPlayer *p) {
 }
 /* StageClear_HandleGoalReached (normal stages) */
 static void stage_clear_goal(Obj *a, DcPlayer *p) {
-    (void)a;
     speed_bonus(p);
     ++g_obj_stage.bonus_count;
     g_obj_stage.speed_bonus /= g_obj_stage.bonus_count; /* FX_DivS32 */
@@ -822,7 +821,7 @@ static void stage_clear_goal(Obj *a, DcPlayer *p) {
     W.flags &= ~1u;
     g_obj_stage.goal_reached = 1;
     if (g_obj_hooks.goal)
-        g_obj_hooks.goal(g_obj_hooks.ctx, p); /* Player_Action_ReachGoal */
+        g_obj_hooks.goal(g_obj_hooks.ctx, p, a); /* Player_Action_ReachGoal(p, a) */
     g_obj.stats.goals++;
     obj_log("goal", p->x >> 8, p->rings);
 }

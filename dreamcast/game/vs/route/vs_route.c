@@ -864,7 +864,7 @@ static void report_lines(void) {
 
 int main(int argc, char **argv) {
     const char *from = NULL;
-    int chara, k, dorep = 0, docheck = 0, trials = 60, pass_needed = 10, passes = 0, t;
+    int chara, k, dorep = 0, dorekey = 0, docheck = 0, trials = 60, pass_needed = 10, passes = 0, t;
     double budget = 600, branch_budget = 120;
     int rounds = 60000;
     u32 n0, fsize, seed = 1;
@@ -882,6 +882,7 @@ int main(int argc, char **argv) {
         if (!strcmp(argv[k], "-v")) verbose = 1;
         else if (!strcmp(argv[k], "-replay")) dorep = 1;
         else if (!strcmp(argv[k], "-check")) docheck = 1;
+        else if (!strcmp(argv[k], "-rekey")) dorekey = 1;
         else if (!strcmp(argv[k], "-from") && k + 1 < argc) from = argv[++k];
         else if (!strcmp(argv[k], "-map")) show_map = 1;
         else if (!strcmp(argv[k], "-win") && k + 4 < argc) { int q; for (q = 0; q < 4; q++) s_win[q] = atoi(argv[++k]); s_win_on = 1; }
@@ -905,6 +906,32 @@ int main(int argc, char **argv) {
     }
     if (vs_sim_init(argv[1], argv[2], argv[3], argv[4], argv[5], !chara, chara) != 0) return 2;
     if (dorep) return replay(argv[7]);
+    if (dorekey) {
+        /* a file made by an earlier build of the tool whose changes do not reach the lines (checked: its
+         * line 0 replays to the goal frame for frame with this build): give it this build's key */
+        FILE *f;
+        static u8 buf[1 << 23];
+        size_t sz;
+        int r = replay(argv[7]);
+        VsRouteHeader *h = (VsRouteHeader *)buf;
+        if (r != 0) { printf("%s: does not replay, key kept\n", argv[7]); return 1; }
+        f = fopen(argv[7], "rb"); sz = f ? fread(buf, 1, sizeof buf, f) : 0; if (f) fclose(f);
+        if (sz < sizeof *h) return 1;
+        h->key = gen_key(argv[1], argv[2], argv[3], argv[5], chara);
+        {   /* (this build: the goal ring is the winner's gimmick from the goal frame, so a line's last point at
+             * the goal carries the ride flag) */
+            const VsRouteLine *ln = (const VsRouteLine *)(buf + sizeof *h);
+            VsRoutePoint *pt = (VsRoutePoint *)(buf + sizeof *h + sizeof(VsRouteLine) * h->nlines);
+            u32 l;
+            for (l = 0; l < h->nlines; l++)
+                if (ln[l].rest == 0 && ln[l].count > 0 && !(h->flags & VSR_INCOMPLETE && l == 0)) pt[ln[l].first + ln[l].count - 1].pad |= VSR_RIDE;
+        }
+        f = fopen(argv[7], "wb");
+        if (!f || fwrite(buf, 1, sz, f) != sz) { printf("cannot write %s\n", argv[7]); return 2; }
+        fclose(f);
+        printf("%s: key %08x\n", argv[7], h->key);
+        return 0;
+    }
     for (k = 8; k + 4 < argc; k++)
         if (!strcmp(argv[k], "-objs")) {   /* diagnosis: the stage's objects in a box */
             const rlvl_object_t *o = (const rlvl_object_t *)rlvl_section(g_sim.hdr, RLVL_SEC_OBJECTS, NULL);
