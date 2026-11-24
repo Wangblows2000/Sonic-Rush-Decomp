@@ -171,17 +171,67 @@ safety cap; the Windows build `vs_route.exe` and the Linux build replay each oth
 line is checked by replaying it from the start. A stage where no way to the goal is found gets the
 furthest grounded part as a partial line (header flag `VSR_INCOMPLETE`).
 
-**Making them (cache, resume, reports).** `make -C dreamcast/game/vs routes` (Linux, `-j` for parallel)
-or the Windows kit (`vs_route.exe`, `winbuild.py`) runs every pair with `-check`. Each file's header has
-a generation key: a CRC of the stage (`level.bin`), the object data and hit boxes, the player tables,
-the format version and a hash of the simulation, follower and tool sources (`make -s vsr-src`; the
-Windows tool is built with the same hash). A file with the same key is kept at once. A file made by
-another build is made again, but its line 0 is kept when it replays to the goal frame for frame (the
-line 0 search is the long part; the coverage, trials and branches are redone); a partial one is searched
-on from its end. Files are written as `<pair>.rte.tmp` and renamed when complete, so a stopped run carries
-on with the pairs not yet made. Per pair: `routes/<pair>.rte.txt` (result, key, every line's span) and
-`routes/<pair>.log`. `vs_route -rekey` gives a file the present key after its line 0 replays frame for
-frame (for tool changes that cannot reach the lines). The lines stay in `build/` (never in git).
+**Making them (cache, resume, reports).** `make -C dreamcast/game/vs routes` (Linux, `-j` for parallel:
+one pair per job) or the Windows kit (`vs_route.exe`, `winbuild.py`, one job per core) runs every pair
+with `-check`.
+- **Keys.** A line is valid for the simulation it was made in. Each file's header holds the generation
+  key: a CRC of the stage (`level.bin`), the object data and hit boxes, the player tables and models, the
+  format version and a hash of the simulation's sources (`make -s vsr-src`, first value). It also records
+  the tool build (second value: the search tool and the follower), which decides only how good the
+  lines are. Linux and Windows give the same keys and byte-identical files.
+- **Cache.** A complete file with the present key is kept whatever tool build made it; a partial one
+  only when this tool build made it. `ROUTE_ARGS=-retool` makes the coverage, trials and branches of
+  files from other tool builds again, with line 0 kept.
+- **Reuse.** A file with another key is made again, reusing as much as holds: its line 0 is kept when it
+  replays to the goal frame for frame, else its part up to where it stops replaying (1 s before) is the
+  start of the new search. `vs_route -rekey` gives a file the present key once its line 0 replays frame
+  for frame (simulation changes that cannot reach the lines, such as a faster way to compute the same
+  thing). The other character's line of the stage is passed as `-guide`.
+- **Resume.** Files are written as `<pair>.rte.tmp` and renamed when complete, so a stopped run carries
+  on with the pairs not yet made.
+- **Reports.** Per pair `routes/<pair>.rte.txt` (result, keys, every line's span) and `routes/<pair>.log`;
+  `python3 tools/dreamcast/vs_manifest.py [--replay]` writes `routes/manifest.json` / `manifest.md`: every
+  pair complete / partial / missing, key current, line 0 replaying to the goal.
+- The lines stay in `build/` (derived from the owner's ROM; never in git).
+
+**Generation speed (measured).** The first full generations took 50 min (two cores, 18 complete pairs,
+old search) and then many hours once the trials grew; one pair took 8 to 27 min, with other work on the
+machine. Profiling (gprof, Leaf Storm act 1 Sonic) showed:
+- 24 % of the time in snapshots;
+- 31 % in posing the player models (drawn only);
+- 94 % of all simulated frames in the branch and coverage searches, most of them the fixed 1500 rounds
+  each branch search spent after its first goal.
+
+Changes, each checked by an identical output file where the result must not change:
+- snapshots: one pass over 64-byte blocks;
+- no pose in the simulation;
+- searches stop 400 rounds after their last improvement (2000 for line 0), and 20000 rounds without
+  progress end a goal-less search (the staged search takes over);
+- keys that keep valid lines across tool changes;
+- reuse of the valid part of an old line 0.
+
+Leaf Storm act 1 Sonic, 90 trials with line 0 kept: 309 s → 180 s CPU (the snapshot and pose changes
+alone: 56.9 → 35.6 s on a fixed workload, byte-identical output). Host races with upsets of the old and
+new files: 47 vs 44 and 30 vs 32 of 48 (within the noise). After the simulation fix that gave the players
+their models (animation ends drive player states), 22 of 28 kept lines still replayed and were re-keyed
+in seconds. Only 6 pairs were searched again: 4.5 to 12.5 min each, against hours for a full generation.
+
+**What speedruns taught (research).** Sources:
+- TASVideos' Sonic Rush any% submission notes (2025);
+- speedrun.com's Sonic Rush general movement guide;
+- Sonic Center's shortcuts guide.
+
+Their frame-perfect zips (a pixel- and frame-exact landing, then alternating boost and jump) and
+damage-boost skips are not used: they need tool assistance, or they give the CPU an advantage a player
+would not take in a race. Used as search moves (macros):
+- boost jumps up slopes (height for shortcuts);
+- tricks off springs and ramps, including the diagonal trick (Blaze's best shortcut move);
+- Blaze's hover (R held in the air);
+- the air action after a jump;
+- spin dash;
+- waits for timed gimmicks.
+
+The search keeps only what the real simulation confirms.
 
 **Shared world fix (both modes).** Water levels are a per-camera value, and the objects run with player
 1's camera, so player 2's water (Water Palace underwater state, air bubbles, splashes; the Mirage Road

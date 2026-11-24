@@ -261,6 +261,15 @@ static u16 steer(Cpu *c, const DcPlayer *p, s32 tx, s32 ty) {
     return h;
 }
 
+/* the line crouches near frame k (a spin dash or a roll: a boost there would spoil it) */
+static int crouch_near(const Cpu *c, int k) {
+    int i;
+    if (c->cl < 0 || k < 0) return 0;
+    for (i = k - 12; i <= k + 12; i++)
+        if (i >= 0 && i < (int)c->ln[c->cl].count && (P(c, c->cl, i)->pad & VSC_DOWN)) return 1;
+    return 0;
+}
+
 /* confusion (the rival's item turns the D-pad): like a player, after a moment, press the key that
  * now gives the wanted direction */
 static u16 unconfuse(const DcPlayer *p, u16 h) {
@@ -505,7 +514,8 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
 rival_check:
     /* the rival right in front at the same height, both on the ground: boost into it (knock-back) */
     if (rival != NULL && on && !(h & VSC_A) && (p->move_flags & DCP_MF_GROUND) && (rival->move_flags & DCP_MF_GROUND) &&
-        p->tension > 0x600 && (c->attack_t == 0 || c->t - c->attack_t > 240) && DCP_ABS((rival->y >> 8) - y) < 24) {
+        p->tension > 0x600 && (c->attack_t == 0 || c->t - c->attack_t > 240) && DCP_ABS((rival->y >> 8) - y) < 24 &&
+        DCP_ABS(p->gnd_vel) >= 0x600 && !crouch_near(c, k)) {   /* (running: not from a stand, a spin dash or a roll) */
         s32 dx = (rival->x >> 8) - x;
         if (((h & VSC_RIGHT) && dx > 8 && dx < 56) || ((h & VSC_LEFT) && dx < -8 && dx > -56)) {
             if (!(h & VSC_X)) { c->st.rival_attacks++; c->attack_t = c->t; }

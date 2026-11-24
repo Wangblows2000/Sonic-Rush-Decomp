@@ -104,10 +104,11 @@ int main(void) {
     vs_cpu_pad(1, &P, NULL, &h, &pr, &rl);
     CHECK(vs_cpu_stats(1)->line == 0 && vs_cpu_stats(1)->k >= 48 && vs_cpu_stats(1)->k <= 52 && h == VSC_RIGHT,
           "at the branch's end: line 0 at its point 49 (line %d point %d pad %04x)", vs_cpu_stats(1)->line, vs_cpu_stats(1)->k, h);
-    /* the rival right ahead on the ground, tension to spare: one boost attack, then not again for 4 s */
+    /* the rival right ahead on the ground, running, tension to spare: one boost attack, then not again for 4 s */
     {
         int attacks0 = vs_cpu_stats(1)->rival_attacks, n = 0;
         P.tension = 0x1000;
+        P.gnd_vel = 0x800;   /* (running: the attack is not made from a stand, a spin dash or a roll) */
         for (i = 50; i < 99; i++) {
             at(&P, R.p[i - 1].x, 500);
             at(&Q, R.p[i - 1].x + 30, 500);

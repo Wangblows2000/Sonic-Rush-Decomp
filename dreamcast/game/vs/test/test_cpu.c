@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     long sz2 = 0, sz1 = 0;
     void *r2, *r1 = NULL;
     int chara2, k, upsets = 0, trace = 0, skill = VSC_NORMAL, items = 0, knocks = 0;
-    u32 seed = 1, frames = 0x8c9f + 60, i, objs_at = 0xffffffffu, die_at = 0xffffffffu;
+    u32 seed = 1, frames = 0x8c9f + 60, i, objs_at = 0xffffffffu, die_at = 0xffffffffu, dump0 = 1, dump1 = 0;
     if (argc < 8) { printf("usage: %s <stages> <player> <objdata> <sprites> <zNN> <p2 chara> <p2 route> [-p1 route] [-seed n] [-skill k] [-upsets n] [-frames n]\n", argv[0]); return 2; }
     chara2 = atoi(argv[6]);
     r2 = load(argv[7], &sz2);
@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[k], "-upsets") && k + 1 < argc) upsets = atoi(argv[++k]);
         else if (!strcmp(argv[k], "-trace")) trace = 1;
         else if (!strcmp(argv[k], "-die") && k + 1 < argc) die_at = (u32)atoi(argv[++k]);
+        else if (!strcmp(argv[k], "-dump") && k + 2 < argc) { dump0 = (u32)atoi(argv[++k]); dump1 = (u32)atoi(argv[++k]); }
         else if (!strcmp(argv[k], "-objs") && k + 1 < argc) objs_at = (u32)atoi(argv[++k]);
     }
     if (vs_sim_init(argv[1], argv[2], argv[3], argv[4], argv[5], !chara2, chara2) != 0) return 2;
@@ -70,8 +71,12 @@ int main(int argc, char **argv) {
                     items++;
                 }
             }
-        if (i == die_at) dcp_act_die(B);   /* a death (respawn into a world that went on) */
+        if (i == die_at) dcp_act_die(B);
+        if (i >= dump0 && i <= dump1)   /* -dump a b: every frame: pad, then the position after it */
+            printf("  dump %u pad %04x", i, h2);   /* a death (respawn into a world that went on) */
         vs_sim_frame(h1, h2);
+        if (i >= dump0 && i <= dump1)
+            printf(" -> %ld,%ld vx %d anim %x df %x\n", (long)(B->x >> 8), (long)(B->y >> 8), B->gnd_vel, B->anim, B->disp_flags);
         if (i == objs_at) {   /* the objects within 300 px of player 2 at this frame */
             Obj *o;
             for (o = g_obj.head; o; o = o->next)
