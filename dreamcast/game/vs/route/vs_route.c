@@ -521,14 +521,14 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
 }
 
 /* ------------------------------------------------------------ the lines */
-typedef struct Line { VsRoutePoint *pt; u32 n, rest; u16 sx, sy; } Line;
+typedef struct Line { VsRoutePoint *pt; u32 n, rest, t0; u16 sx, sy; } Line;
 static Line L[VS_ROUTE_MAX_LINES];
 static int NL;
 
 /* play pads from the current state; the points (position after each frame, ride flag); returns the
  * points up to the goal, 0 when the goal is not reached */
 static int s_record_partial;   /* record(): the pads need not reach the goal */
-#define MAXNL 96                /* lines a file may get (VS_ROUTE_MAX_LINES 160 on the reader side) */
+#define MAXNL 140               /* lines a file may get (VS_ROUTE_MAX_LINES 160 on the reader side) */
 #define MAXPTS 400000u          /* points (2.4 MB) */
 static u32 s_key;
 static u32 record(const u16 *pads, u32 n, VsRoutePoint *out) {
@@ -609,6 +609,7 @@ static int add_line(const u16 *pads, u32 n) {
     if (NL >= VS_ROUTE_MAX_LINES) return -1;
     l = &L[NL];
     l->sx = (u16)(g_sim.p[1].x >> 8); l->sy = (u16)(g_sim.p[1].y >> 8);
+    l->t0 = g_dcp_world.frame;
     l->pt = (VsRoutePoint *)malloc(sizeof(VsRoutePoint) * (n ? n : 1));
     l->n = record(pads, n, l->pt);
     l->rest = 0;
@@ -642,7 +643,7 @@ static u8 *build_file(const char *stage, int chara, u32 *size) {
     memcpy(w, &h, sizeof h); w += sizeof h;
     for (i = 0; i < NL; i++) {
         VsRouteLine ln;
-        ln.first = first; ln.count = L[i].n; ln.rest = L[i].rest; ln.sx = L[i].sx; ln.sy = L[i].sy;
+        ln.first = first; ln.count = L[i].n; ln.rest = L[i].rest; ln.sx = L[i].sx; ln.sy = L[i].sy; ln.t0 = L[i].t0;
         memcpy(w, &ln, sizeof ln); w += sizeof ln;
         first += L[i].n;
     }
@@ -743,11 +744,12 @@ static void upset(int u, u32 seed, DcPlayer *A, DcPlayer *B) {
  * times: the snapshot just before its last progress (after its last respawn) in *at, and the frames to
  * the goal it had there in *at_rem (a branch from there must join the lines past that) */
 static int trial(const Snap *start, int u, u32 fu, u32 seed, const u8 *file, u32 fsize, Snap *at, u32 *at_frame, u32 *at_rem) {
-    static Snap ring[TRIAL_SNAPS];
-    static u32 ring_f[TRIAL_SNAPS];
+    static Snap ring[TRIAL_SNAPS], stuck;
+    static u32 ring_f[TRIAL_SNAPS], stuck_f, stuck_for;
     int nr = 0, i, dead = 0, deaths = 0, u2 = u, rival = u == UP_RIVAL || u == UP_RIVAL2;
     u32 f, limit = L[0].n * 2 + 2400, best_t = 0, life_t = 0, fu2 = 0xffffffffu;
     int best_rem = 0x7fffffff;
+    stuck_for = 0xffffffffu;
     if (u == UP_TWO) {   /* two upsets of the plain kinds, 5..20 s apart */
         u = (int)(seed % 4); u2 = (int)((seed / 4) % 6);
         if (u2 == UP_NOJUMP || u2 == UP_NOBOOST) u2 = UP_DEATH;
@@ -781,6 +783,11 @@ static int trial(const Snap *start, int u, u32 fu, u32 seed, const u8 *file, u32
         if (!(B->pf & DCP_PF_DEAD) && dead) { best_rem = 0x7fffffff; best_t = life_t = f; }   /* respawned: progress anew */
         dead = (B->pf & DCP_PF_DEAD) != 0;
         if (!dead && st->rem >= 0 && st->rem < best_rem - 4) { best_rem = st->rem; best_t = f; }
+        if (f == best_t + 180 && !dead) {   /* the frame the CPU finds itself stuck (vs_cpu.c, 3 s): the branch's start */
+            snap_free(&stuck);
+            snap_take(&stuck);
+            stuck_f = f + 1; stuck_for = best_t;
+        }
         if (vs_sim_finished(0)) break;   /* the rival won: player 2 stops (VS rules) */
         if ((!dead && f - best_t > 420) || deaths >= 3) break;
     }
@@ -788,6 +795,15 @@ static int trial(const Snap *start, int u, u32 fu, u32 seed, const u8 *file, u32
     if (vs_sim_finished(0) && f - best_t < 300) return 0;   /* still getting on when the rival won */
     /* the snapshot 2 s after the last progress (where the CPU is when it finds itself stuck, so the branch
      * starts where it looks for another line), not before the last respawn */
+    if (stuck_for == best_t && stuck.n && best_t >= life_t) {
+        snap_free(at);
+        at->n = stuck.n;
+        at->w = (unsigned *)malloc(sizeof(unsigned) * 2 * (at->n ? at->n : 1));
+        memcpy(at->w, stuck.w, sizeof(unsigned) * 2 * at->n);
+        *at_frame = stuck_f;
+        *at_rem = best_rem == 0x7fffffff ? 0 : (u32)best_rem;
+        return 1;
+    }
     {
         int bi = -1;
         u32 target = best_t + 120;
@@ -864,7 +880,7 @@ static void report_lines(void) {
 
 int main(int argc, char **argv) {
     const char *from = NULL;
-    int chara, k, dorep = 0, dorekey = 0, docheck = 0, trials = 60, pass_needed = 10, passes = 0, t;
+    int chara, k, dorep = 0, dorekey = 0, docheck = 0, trials = 90, pass_needed = 15, passes = 0, t;
     double budget = 600, branch_budget = 120;
     int rounds = 60000;
     u32 n0, fsize, seed = 1;
@@ -902,6 +918,10 @@ int main(int argc, char **argv) {
                    (h.flags & VSR_INCOMPLETE) ? ", PARTIAL" : "");
             return (h.flags & VSR_INCOMPLETE) ? 3 : 0;
         }
+        /* another build made it: its line 0 is the start (a complete one is kept when it still replays to the
+         * goal: the line 0 search is the long part; a partial one is searched on from its end); the
+         * coverage, the trials and the branches are made again */
+        if (fi && h.version >= 4 && h.version <= VS_ROUTE_VERSION && !memcmp(h.magic, "VSRT", 4)) from = argv[7];
         if (fi) fclose(fi);
     }
     if (vs_sim_init(argv[1], argv[2], argv[3], argv[4], argv[5], !chara, chara) != 0) return 2;
@@ -962,16 +982,25 @@ int main(int argc, char **argv) {
         size_t sz = fi ? fread(buf, 1, sizeof buf, fi) : 0;
         const VsRouteHeader *h = (const VsRouteHeader *)buf;
         if (fi) fclose(fi);
-        if (sz < sizeof *h || memcmp(h->magic, "VSRT", 4) || h->version != VS_ROUTE_VERSION) { printf("-from %s: not a v%d route file\n", from, VS_ROUTE_VERSION); return 2; }
+        if (sz < sizeof *h || memcmp(h->magic, "VSRT", 4) || h->version < 4 || h->version > VS_ROUTE_VERSION) { printf("-from %s: not a v4/v%d route file\n", from, VS_ROUTE_VERSION); return 2; }
         {
+            u32 lsz = h->version == 4 ? 16 : sizeof(VsRouteLine);   /* (v4 lines had no t0) */
             const VsRouteLine *ln = (const VsRouteLine *)(buf + sizeof *h);
-            const VsRoutePoint *pt = (const VsRoutePoint *)(buf + sizeof *h + sizeof(VsRouteLine) * h->nlines) + ln[0].first;
+            const VsRoutePoint *pt = (const VsRoutePoint *)(buf + sizeof *h + lsz * h->nlines) + ln[0].first;
             u32 i;
             s_partial_len = ln[0].count;
             s_partial_pads = (u16 *)malloc(sizeof(u16) * s_partial_len);
             for (i = 0; i < s_partial_len; i++) s_partial_pads[i] = pt[i].pad & (u16)~VSR_RIDE;
             set_chain(1);
-            for (i = 0; i < s_partial_len; i++) vs_sim_frame(0, s_partial_pads[i]);
+            for (i = 0; i < s_partial_len && !vs_sim_finished(1); i++) vs_sim_frame(0, s_partial_pads[i]);
+            if (!(h->flags & VSR_INCOMPLETE) && ln[0].rest == 0 && vs_sim_finished(1) && i == s_partial_len) {
+                /* a complete line 0 that replays to the goal frame for frame: kept */
+                pads = s_partial_pads; n0 = s_partial_len;
+                s_partial_pads = NULL; s_partial_len = 0;
+                snap_restore(&start);
+                if (verbose) printf("  line 0: kept from %s, %u frames\n", from, n0);
+                goto have_line0;
+            }
             s_partial_pot = potential(g_sim.p[1].x >> 8, g_sim.p[1].y >> 8, stage_for(g_sim.p[1].x >> 8, g_sim.p[1].y >> 8));
             snap_restore(&start);
             if (verbose) printf("  line 0: from %s, %u frames\n", from, s_partial_len);
@@ -979,6 +1008,10 @@ int main(int argc, char **argv) {
         pads = NULL;
     } else
     pads = search(0, rounds, budget, &n0, "line 0");
+    if (0) {
+    have_line0:
+        from = NULL;
+    }
     if (!pads && !from && set_chain(1) > 1) {   /* the free-space guide leads into a dead end: the checkpoints in order */
         snap_restore(&start);
         if (verbose) printf("  line 0: again along the %d checkpoints\n", NW - 1);
@@ -1126,7 +1159,8 @@ int main(int argc, char **argv) {
      * (up to 4 repairs) until it reaches the goal */
     file = build_file(argv[5], chara, &fsize);
     for (t = 0; t < trials && passes < pass_needed && NL < MAXNL && total_points() < MAXPTS; t++) {
-        int u = (int)(rnd() % UP_COUNT), rep;
+        int u = (int)(rnd() % (UP_COUNT + 3)), rep;
+        if (u >= UP_COUNT) u = u == UP_COUNT ? UP_DEATH : u == UP_COUNT + 1 ? UP_TWO : UP_RIVAL2;   /* (the hard ones more often) */
         u32 fu = 120 + rnd() % (L[0].n > 400 ? L[0].n - 300 : 100), at_f = 0, at_rem = 0, nb, tseed = seed * 1000 + (u32)t;
         Snap at;
         memset(&at, 0, sizeof at);

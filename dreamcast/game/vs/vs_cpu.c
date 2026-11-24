@@ -17,6 +17,9 @@
 #define WIN_BACK 90         /* local search window (frames) around the expected one */
 #define WIN_AHEAD 240
 #define GCELL 128           /* point grid cell (px) */
+#define NFAIL 32            /* places where a line failed, remembered */
+#define FAIL_PX 320         /* a failed line is not taken within this distance of the place */
+#define FAIL_T 1800         /* for 30 s (a gimmick comes back, a platform cycles; then it is tried again) */
 
 typedef struct Cpu {
     const VsRouteLine *ln;
@@ -44,6 +47,10 @@ typedef struct Cpu {
     int rvn, rvcap;
     s32 rvx, rvy;            /* the rival's position before its first recorded frame */
     int ridx;                /* the rival's place on line 0 (-1) */
+    int rw_l, rw_b, rw_t;    /* a ride missed (the line rides from point rw_b of line rw_l, we are not on it): wait
+                                at its boarding place for it to come back (rw_l -1: none) */
+    struct { s16 l; s16 x, y; u32 until; } fail[NFAIL];   /* lines that failed at a place (stuck there), for a while */
+    int nfail;
     VsCpuStats st;
 } Cpu;
 static Cpu C[2];
@@ -82,6 +89,7 @@ int vs_cpu_begin(int who, const void *route, u32 route_size, u32 seed, int skill
     c->skill = skill;
     c->ridx = -1;
     c->ban = -1;
+    c->rw_l = -1;
     c->delay = 0;   /* (a reaction delay at GO would shift the objects' timing against the line: none) */
     c->tl = -1;
     c->best_rem = 0x7fffffff;
@@ -141,13 +149,27 @@ static int track(const Cpu *c, int l, int expect, s32 x, s32 y, s32 *dist2) {
     *dist2 = bd;
     return best;
 }
+/* line l failed near (x, y) (the CPU got stuck on it there): not taken here for a while */
+static int failed_here(const Cpu *c, int l, s32 x, s32 y) {
+    int i;
+    for (i = 0; i < c->nfail; i++)
+        if (c->fail[i].l == l && c->t < c->fail[i].until && DCP_ABS(c->fail[i].x - x) < FAIL_PX && DCP_ABS(c->fail[i].y - y) < FAIL_PX)
+            return 1;
+    return 0;
+}
+static void add_fail(Cpu *c, int l, s32 x, s32 y) {
+    int i, o = 0;
+    for (i = 0; i < c->nfail; i++) if (c->fail[i].until < c->fail[o].until) o = i;   /* the oldest goes */
+    i = c->nfail < NFAIL ? c->nfail++ : o;
+    c->fail[i].l = (s16)l; c->fail[i].x = (s16)x; c->fail[i].y = (s16)y; c->fail[i].until = c->t + FAIL_T;
+}
 /* integer square root (small values) */
 static s32 isqrt(s32 v) { s32 r = 0; while ((r + 8) * (r + 8) <= v) r += 8; while ((r + 1) * (r + 1) <= v) r++; return r; }
 /* any line: the point within r px (by the grid) with the least time left to the goal (distance counted
  * as time, about 4 px a frame); *line / *k: the frame to play next */
 static int join(const Cpu *c, s32 x, s32 y, s32 r, int not_line, int *line, int *k, s32 *dist2) {
     int gx0 = (x - r) / GCELL, gx1 = (x + r) / GCELL, gy0 = (y - r) / GCELL, gy1 = (y + r) / GCELL, gx, gy, l;
-    s32 best = 0x7fffffff;
+    s32 best = 0x7fffffff, now = (s32)g_dcp_world.frame, dt;
     u32 j;
     if (gx0 < 0) gx0 = 0;
     if (gy0 < 0) gy0 = 0;
@@ -163,10 +185,14 @@ static int join(const Cpu *c, s32 x, s32 y, s32 r, int not_line, int *line, int 
                 if (d > r * r) continue;
                 for (l = 0; l < c->nl - 1; l++)
                     if ((u32)a < c->ln[l].first + c->ln[l].count) break;
-                if (l == not_line) continue;
+                if (l == not_line || failed_here(c, l, x, y)) continue;
                 i = a - (int)c->ln[l].first + 1;                       /* the point is the position before frame i */
                 if (i >= (int)c->ln[l].count) i = (int)c->ln[l].count - 1;
-                cost = left(c, l, i) + isqrt(d) / 4;
+                /* + the time apart: the line's pads were found in the world as it was at its own time (objects
+                 * move on the race clock), a line made at about this time fits the world as it is now */
+                dt = now - (s32)(c->ln[l].t0 + (u32)i);
+                if (dt < 0) dt = -dt;
+                cost = left(c, l, i) + isqrt(d) / 4 + (dt > 1200 ? 1200 : dt) / 4;
                 if (cost < best) { best = cost; *line = l; *k = i; *dist2 = d; }
             }
         }
@@ -273,7 +299,7 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
         int ban = (int)c->t < c->ban_until ? c->ban : -1;
         if (c->nl == 0 && c->cl >= 0) c->cl = -1;   /* no lines: only the rival's path */
         if (c->cl == -2) k = rv_track(c, c->k, x, y, &dist2);
-        else if (c->nl > 0 && c->cl != ban) k = track(c, c->cl, c->k, x, y, &dist2);
+        else if (c->nl > 0 && c->cl != ban && !failed_here(c, c->cl, x, y)) k = track(c, c->cl, c->k, x, y, &dist2);
         /* the end of a branch (it joins an earlier line there), off the line, or a banned line: another line */
         if (k < 0 || dist2 > NEAR_PX * NEAR_PX ||
             (c->cl >= 0 && k >= (int)c->ln[c->cl].count - 1 && (c->ln[c->cl].rest > 0))) {
@@ -304,7 +330,7 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
             if (dist2 <= NEAR_PX * NEAR_PX && -k < c->best_rem - 4) { c->best_rem = -k; c->best_t = c->t; }
         }
         on = c->rec != 4 && k >= 0 && dist2 <= NEAR_PX * NEAR_PX;
-        if (rival != NULL && (c->t & 7) == 0) {   /* the rival's place on line 0 */
+        if (rival != NULL && c->nl > 0 && (c->t & 7) == 0) {   /* the rival's place on line 0 (lines only) */
             s32 rd;
             int r = track(c, 0, c->ridx < 0 ? 0 : c->ridx, rival->x >> 8, rival->y >> 8, &rd);
             if (r >= 0 && rd < 96 * 96) c->ridx = r;
@@ -321,9 +347,9 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
             if (c->ru_n > 0 && (k - c->ru_at > 60 || c->ru_at - k > 300)) c->ru_n = 0;
             if (c->ru_n == 0 && join(c, x, y, JOIN_PX, c->cl, &l3, &k3, &d3) && l3 != c->cl) {
                 /* another line from here (a branch the route tool made for this world: the gimmick gone, the
-                 * platform elsewhere): that one first */
-                c->ban = c->cl; c->ban_until = (int)c->t + 300;
-            } else if (c->ru_n < 3) {
+                 * platform elsewhere): that one first, this one is not taken here for a while */
+                add_fail(c, c->cl, x, y);
+            } else if (c->ru_n < 2) {
                 c->ru_at = c->ru_n == 0 ? k : c->ru_at;
                 c->ru_l = c->cl;
                 c->ru_k = c->ru_at - 90 * (c->ru_n + 1);
@@ -331,16 +357,40 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
                 c->ru_n++;
                 c->rec = 4; c->rec_t = 300;
             } else {
-                c->ban = c->cl; c->ban_until = (int)c->t + 300; c->ru_n = 0;   /* the line fails here (the world is not as it was) */
+                add_fail(c, c->cl, x, y); c->ru_n = 0;   /* the line fails here (the world is not as it was) */
             }
-        } else if (c->tl >= 0) { c->ban = c->tl; c->ban_until = (int)c->t + 300; c->tl = -1; }   /* out of reach from here */
+        } else if (c->tl >= 0) { add_fail(c, c->tl, x, y); c->tl = -1; }   /* out of reach from here */
         if (c->rec == 0) {
-            c->rec = 1 + (c->rec_n % 3);
+            c->rec = 1 + (c->rec_n % 4);
+            if (c->rec == 4) c->rec = 5;   /* (4: the run-up) */
             c->rec_n++;
-            c->rec_t = c->rec == 2 ? 30 + (int)(rnd(c) % 30) : 36;
+            c->rec_t = c->rec == 2 ? 30 + (int)(rnd(c) % 30) : c->rec == 5 ? 120 + (int)(rnd(c) % 180) : 36;
         }
         c->best_t = c->t;
         c->st.recover++;
+    }
+    if (on && c->rec == 0 && c->cl >= 0 && !riding && (P(c, c->cl, k)->pad & VSR_RIDE) && c->rw_l < 0) {
+        /* the line rides here (ship, crane, rope, rocket...) and we are not on board: the ride went without
+         * us (we came late or early). Further on the line runs into the air: wait at the boarding place */
+        int b = k;
+        while (b > 0 && (P(c, c->cl, b - 1)->pad & VSR_RIDE)) b--;
+        if (k - b >= 6 && b > 0) { c->rw_l = c->cl; c->rw_b = b; c->rw_t = 0; }
+    }
+    if (c->rw_l >= 0) {
+        if (riding || c->rw_t > 600 || (p->pf & DCP_PF_DEAD)) {
+            if (!riding && c->rw_t > 600) add_fail(c, c->rw_l, x, y);   /* it does not come back (10 s): another way */
+            if (riding) { c->cl = c->rw_l; c->k = c->rw_b; }
+            c->rw_l = -1;
+        } else {
+            s32 bx, by;
+            before(c, c->rw_l, c->rw_b, &bx, &by);
+            c->rw_t++;
+            c->best_t = c->t;
+            c->st.off_line++;
+            if (sq(bx - x, by - y) > 20 * 20 && c->rw_t < 300) h = steer(c, p, bx, by);
+            else h = (c->rw_t % 180) < 4 ? VSC_A : 0;   /* at the boarding place: wait, a hop now and then */
+            goto rival_check;
+        }
     }
     if (on && c->rec == 0) {
         /* on the line: the pad the line used from here */
@@ -375,6 +425,8 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
             break;
         }
         case 1: h = fw | (c->rec_t > 8 ? VSC_A : 0); break;                      /* big jump on */
+        case 5: h = 0; c->best_t = c->t; break;                                  /* wait (a ride, a platform, a door
+                                                                                    comes back) */
         case 2: h = c->rec_t > 10 ? bk : (u16)(fw | VSC_A); break;               /* back off, run and jump */
         default:                                                                 /* spin dash */
             h = VSC_DOWN | ((c->rec_t > 10 && (c->rec_t % 3) == 0) ? VSC_A : 0);

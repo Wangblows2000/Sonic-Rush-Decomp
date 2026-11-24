@@ -9,7 +9,7 @@
 #define SRDC_VS_ROUTE_H
 #include "../player/dcp_types.h"
 
-#define VS_ROUTE_VERSION 4
+#define VS_ROUTE_VERSION 5
 #define VS_ROUTE_MAX_LINES 160
 #define VSR_RIDE 0x8000          /* pad bit 15 (no DS key): carried by a gimmick at this point (ship, cargo,
                                     hand, rail...) */
@@ -31,7 +31,9 @@ typedef struct VsRouteLine {
     u32 rest;            /* frames to the goal after the last point (0: the last point reaches the goal;
                             a branch ends where it joins an earlier line, rest = that line's time left) */
     u16 sx, sy;          /* the position before the first point */
-} VsRouteLine;           /* 16 bytes; nlines of them follow the header */
+    u32 t0;              /* the race clock (frames) at the line's start: the world its pads were found in (the
+                            objects move on the race clock); point i was reached at t0 + i + 1 */
+} VsRouteLine;           /* 20 bytes; nlines of them follow the header */
 typedef struct VsRoutePoint {
     u16 x, y;            /* px */
     u16 pad;             /* DS pad bits held this frame (vs_cpu.h VSC_*) | VSR_RIDE */
