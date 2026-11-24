@@ -31,7 +31,8 @@ Test method and latest results: REGRESSION.md. Building: BUILD.md.
   equivalent post-process and every substitute adds geometry.
 - Records: the totals row has no owner name (the DS takes it from the
   console's user settings).
-- Battle Play (DS wireless VS) is not ported.
+- Battle Play (DS wireless VS) is two players on one Dreamcast (split screen, controller ports A and
+  B) plus a native Vs CPU mode; see BATTLE-PLAY.md (its "Known gaps" list the CPU's limits).
 
 ## Known issues
 

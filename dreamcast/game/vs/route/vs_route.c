@@ -81,6 +81,11 @@ static u32 gen_key(const char *stages, const char *player, const char *objdata, 
     snprintf(path, sizeof path, "%s/objdata.bin", objdata); c = crc_file(c, path);
     snprintf(path, sizeof path, "%s/physics.bin", player); c = crc_file(c, path);
     snprintf(path, sizeof path, "%s/trig.bin", player); c = crc_file(c, path);
+    {   /* the player models (animation lengths) */
+        static const char *const mf[] = { "son.dcm", "son_ball.dcm", "blz.dcm", "blz_spin.dcm", "son.dca", "son.dcv", "animtab.bin" };
+        int q;
+        for (q = 0; q < 7; q++) { snprintf(path, sizeof path, "%s/model/%s", player, mf[q]); c = crc_file(c, path); }
+    }
     snprintf(path, sizeof path, "%s/hbx", objdata);
     if ((d = opendir(path)) != NULL) {
         while ((e = readdir(d)) != NULL && n < 4096)
@@ -247,7 +252,7 @@ static int stage_for(s32 x, s32 y) {
 
 /* ------------------------------------------------------------ macros */
 /* a pad pattern relative to the direction fwd (VSC_RIGHT / VSC_LEFT), f = frame in the macro */
-#define NMACRO 21
+#define NMACRO 22
 static u16 macro_pad(int m, int f, u16 fwd) {
     u16 back = fwd == VSC_RIGHT ? VSC_LEFT : VSC_RIGHT;
     switch (m) {
@@ -271,12 +276,14 @@ static u16 macro_pad(int m, int f, u16 fwd) {
     case 17: return (u16)(fwd | (f < 2 ? VSC_R : 0) | (f >= 8 && f < 10 ? VSC_A : 0));   /* trick forward + combo */
     case 19: return (u16)(fwd | (f < 8 ? VSC_A : 0) | (f >= 10 ? VSC_X : 0)); /* jump, then boost in the air (tension) */
     case 20: return (u16)(fwd | VSC_X);                           /* boost in the air (falling, off a ledge) */
+    case 21: return (u16)(fwd | (f % 12 < 2 ? VSC_A : 0));        /* A pressed again and again (parachute glide,
+                                                                     flapping, mashing a gimmick) */
     case 18: return 0;                                            /* a long wait (timed gimmicks: platforms that come
                                                                      every minute, doors, catapults coming back) */
     }
     return 0;
 }
-static const int W_MACRO[NMACRO] = { 12, 13, 15, 8, 6, 4, 9, 3, 5, 4, 7, 5, 1, 2, 2, 0, 0, 0, 1, 3, 0 };   /* sum 100 (15..17, 20: below) */
+static const int W_MACRO[NMACRO] = { 12, 13, 15, 8, 6, 4, 9, 3, 5, 4, 7, 5, 1, 2, 2, 0, 0, 0, 1, 3, 0, 0 };   /* sum 100 (15..17, 20: below) */
 
 /* ------------------------------------------------------------ archive search */
 typedef struct Ent {
@@ -391,7 +398,7 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
         cellv[(c * MAXW + st) * NSUB + sub_state(p)] = add_entry(-1, seg, 0, frame0, potential(x, y, st), x, y, st);
     }
     for (it = 0;; it++) {
-        int ei = pick(), n = 0, m = 0, mlen = 0, last_ent = ei, seg_start = 0, mf = 0, ne = NE, died = 0, st;
+        int waited = 0, ei = pick(), n = 0, m = 0, mlen = 0, last_ent = ei, seg_start = 0, mf = 0, ne = NE, died = 0, st;
         s32 bp = best_pot;
         u32 frame;
         double el = (double)(clock() - t0) / CLOCKS_PER_SEC;
@@ -402,7 +409,7 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
         snap_restore(&E[ei].snap);
         frame = E[ei].frame;
         st = E[ei].stage;
-        while ((n < 400 || (m == 18 && mlen > 0)) && n < 4000 && frame < MAXF) {   /* a long wait goes on past 400 */
+        while (n < 400 + waited && n < 4000 && frame < MAXF) {   /* a long wait: the round goes on 400 frames after it */
             DcPlayer *p = &g_sim.p[1];
             s32 x, y;
             int c;
@@ -413,17 +420,24 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
                     /* launched (spring, ramp, dash ring): tricks (tension) or steering in the air */
                     m = r < 18 ? 16 : r < 34 ? 17 : 15;
                     mlen = 16 + (int)(rnd() % 16);
-                } else if (!(p->move_flags & DCP_MF_GROUND) && r < 12) {
-                    m = r < 6 ? 15 : 20; mlen = 8 + (int)(rnd() % 30);    /* steering / boost in the air */
+                } else if (!(p->move_flags & DCP_MF_GROUND) && r < 18) {
+                    m = r < 6 ? 15 : r < 12 ? 20 : 21;                  /* steering / boost / A again and again in the air */
+                    mlen = m == 21 ? 24 + (int)(rnd() % 120) : 8 + (int)(rnd() % 30);
                 } else if (p->gimmick != NULL) {
                     /* carried by a gimmick (ship, rail, cargo, hand...): mostly stay on board, hop over hazards */
-                    m = r < 55 ? 6 : r < 75 ? 9 : r < 85 ? 3 : r < 92 ? 0 : 4;
-                    mlen = m == 6 ? 10 + (int)(rnd() % 60) : 4 + (int)(rnd() % 12);
+                    /* (steered rides, saucers, rails, carts: left / right held for a while) */
+                    m = r < 40 ? 6 : r < 52 ? 9 : r < 58 ? 3 : r < 82 ? 0 : 4;
+                    mlen = m == 6 ? 10 + (int)(rnd() % 60) : (m == 0 || m == 4) ? 4 + (int)(rnd() % 60) : 4 + (int)(rnd() % 12);
+                } else if (stagnant > 3000 && r < 6 && n == 0) {
+                    m = 18;   /* no progress for a while: waits for the timed gimmicks (falling platforms, doors) */
+                    mlen = 120 + (int)(rnd() % 3300);
+                    waited += mlen;
                 } else {
                     for (m = 0; m < NMACRO; m++) { s += W_MACRO[m]; if (r < s) break; }
                     if (m >= NMACRO) m = 0;
                     mlen = m == 6 ? 20 + (int)(rnd() % 100) : m == 14 ? 12 + (int)(rnd() % 60) : m == 18 ? 120 + (int)(rnd() % 3300) :
                            6 + (int)(rnd() % 30);   /* waiting: rides, platforms */
+                    if (m == 18) waited += mlen;
                 }
                 mf = 0;
             }
@@ -975,10 +989,10 @@ int main(int argc, char **argv) {
     snap_take(&start);
     /* line 0: start to goal */
     s_partial = 1;
+    static u8 buf[1 << 22];
     if (from) {
         /* -from <route>: carry on from the end of that file's line 0 (a partial line made before) */
         FILE *fi = fopen(from, "rb");
-        static u8 buf[1 << 22];
         size_t sz = fi ? fread(buf, 1, sizeof buf, fi) : 0;
         const VsRouteHeader *h = (const VsRouteHeader *)buf;
         if (fi) fclose(fi);
@@ -1006,6 +1020,15 @@ int main(int argc, char **argv) {
             if (verbose) printf("  line 0: from %s, %u frames\n", from, s_partial_len);
         }
         pads = NULL;
+        if (!(((const VsRouteHeader *)buf)->flags & VSR_INCOMPLETE)) {
+            /* a complete line that no longer reaches the goal (the simulation changed): a new search */
+            if (verbose) printf("  line 0: %s no longer replays to the goal, searched again\n", from);
+            free(s_partial_pads); s_partial_pads = NULL; s_partial_len = 0;
+            from = NULL;
+            set_chain(0);
+            snap_restore(&start);
+            pads = search(0, rounds, budget, &n0, "line 0");
+        }
     } else
     pads = search(0, rounds, budget, &n0, "line 0");
     if (0) {
@@ -1041,10 +1064,15 @@ int main(int argc, char **argv) {
                 Snap tmp;
                 memset(&tmp, 0, sizeof tmp);
                 snap_take(&tmp);
+                int pm = getenv("VSR_PROBEMACRO") ? atoi(getenv("VSR_PROBEMACRO")) : -1;
                 for (pf = 0; pf < nprobe; pf++) {
                     Obj *o;
-                    vs_sim_frame(0, 0);
-                    if (pf % 60) continue;
+                    vs_sim_frame(0, pm >= 0 ? macro_pad(pm, pf, VSC_RIGHT) : 0);
+                    if (pm >= 0 && pf % 10 == 0)
+                        printf("  probe +%d: %ld,%ld vx %d vy %d g %d anim %x of %x gim %d\n", pf, (long)(g_sim.p[1].x >> 8), (long)(g_sim.p[1].y >> 8),
+                               g_sim.p[1].vel_x, g_sim.p[1].vel_y, (g_sim.p[1].move_flags & 1) != 0, g_sim.p[1].anim, g_sim.p[1].obj_flags,
+                               g_sim.p[1].gimmick != NULL);
+                    if (pf % 60 || pm >= 0) continue;
                     printf("  probe +%d: p2 %ld,%ld g %d |", pf, (long)(g_sim.p[1].x >> 8), (long)(g_sim.p[1].y >> 8),
                            (g_sim.p[1].move_flags & DCP_MF_GROUND) != 0);
                     for (o = g_obj.head; o; o = o->next)

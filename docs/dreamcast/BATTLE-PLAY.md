@@ -111,46 +111,73 @@ its own player, the map collision around it and the rival's position and pad (wh
 split screen).
 
 **How it drives.** Each stage has racing lines for each character (`/cd/vs/zNA_C.rte`, `vs/vs_route.h`):
-the position and pad of every frame of a way through the stage. Every frame the CPU finds where it is
-on its line (around where it expects to be, so standing on a ride or a loop keeps the place) and plays
-the line's pad there; a press it already holds is let go for a frame so the press happens. Off its line
-(knocked back, pushed, warped, slowed, a missed jump) it takes the nearest point of any line with the
-least time left to the goal (lines are indexed by a 128 px grid) and steers there with a player's moves
-(run, jump at walls and up to the line, air action), or waits at a ride's boarding place when the ride
-left without it. No progress for 3 s: it backs up along the line for a run-up (further back each try),
-then jumps, backs off and spin-dashes, and leaves a line that keeps failing for 5 s. Confusion (the
-rival's item turns the D-pad): after 40 frames, like a player, it presses the key that now gives the way
-it wants. Next to the rival on the ground with tension to spare it boosts into it (at most every 4 s).
-Where a stage has no complete line it follows the rival's path (the furthest place the rival passed 2 s
-or more ago).
+the position and pad of every frame of a way through the stage, and the race-clock frame each line
+starts at. Every frame the CPU finds where it is on its line (around where it expects to be, so standing
+on a ride or a loop keeps the place) and plays the line's pad there; a press it already holds is let go
+for a frame so the press happens. The lines carry the moves the search found worth it: boosts, jumps,
+spin dashes, tricks off springs and ramps (R in the air, up / forward and the A / B combo; they fill the
+tension gauge), boosts in the air, air steering and waits for timed gimmicks.
+
+Off its line (knocked back, pushed, warped, slowed, a missed jump, a respawn) it takes the nearest point
+of any line with the least time left to the goal, counting distance (about 4 px a frame) and how far the
+line's own time is from the race clock (the objects move on the race clock, so a line made at about the
+present time fits the world as it is now); lines are indexed by a 128 px grid. It steers there with a
+player's moves (run, jump at walls and up to the line, air action). When its line rides a gimmick (ship,
+crane, rope, rocket) that left without it, it waits at the boarding place for up to 10 s. No progress
+for 3 s: it first takes another line from where it is (the route tool's branches start at exactly such
+places); otherwise it backs up along the line for a run-up (twice, further back each time), then jumps,
+backs off and spin-dashes, or waits. A line that failed at a place is not taken within 320 px of it for
+30 s. Confusion (the rival's item turns the D-pad): after 40 frames, like a player, it presses the key
+that now gives the way it wants. Next to the rival on the ground with tension to spare it boosts into it
+(at most every 4 s). Without any line (a missing file) it follows the rival's path (the furthest place
+the rival passed 2 s or more ago).
 
 **Variation and skill.** The seed changes every race (reproducible: race count, zone, act). Skill
 (normal by default; `/cd/debug/cpu_skill.txt` 0 easy, 1 normal, 2 hard in test builds) decides how many
-of the line's boost stretches the CPU uses (easy drops about half, normal a fifth, hard none; never just
+of the line's boost stretches the CPU uses (easy drops about half, normal and hard none; never just
 before one of the line's jumps; never when the rival is well ahead).
 
 **Where the lines come from.** `vs/route/vs_route.c` (host tool, run at disc build time on the owner's
 converted stages; nothing derived from the game is in the repository):
 1. **Line 0:** a search with the real game simulation (`route/vs_sim.c`: player, objects, cameras,
-   race rules) in the style of Go-Explore. The stage is cut into 64 px cells (stage of the guide,
-   ground / air). The archive keeps a snapshot of the whole simulation (`route/snap.c`: every static of
-   the simulation sources, bracketed in link order by `snap_begin.c` / `snap_end.c`, and the objects'
-   mutable heap copies) and the fastest way into each cell. Each round restores a promising cell and plays
-   pad macros (run, boost, jumps, spin dash, crouch, air action, waiting; mostly waiting and hops while a
-   gimmick carries the player), biased by a distance field to the goal through the stage's free space.
-   When that finds nothing the guide becomes the checkpoint markers in their order.
-2. **Coverage:** up to 24 places the search reached early that no line passes near; from each, a short
+   race rules, the Dead Line gravity split) in the style of Go-Explore. The stage is cut into 64 px cells,
+   also split by the guide's stage, ground / air, the collision layer and whether a switch timer runs.
+   The archive keeps a snapshot of the whole simulation (`route/snap.c`: every static of the simulation
+   sources, bracketed in link order by `snap_begin.c` / `snap_end.c`, and the objects' mutable heap
+   copies; at most 1.2 GB) and the fastest way into each cell. Each round restores a promising cell and
+   plays pad macros (run, boost, jumps, spin dash, crouch, air action, tricks, boosts in the air, air
+   steering, waits up to a minute; mostly waiting and hops while a gimmick carries the player), biased
+   by a distance field to the goal through the stage's free space that costs 3x far above any floor.
+   When that finds nothing the guide becomes the checkpoint markers in their order; when that finds
+   nothing either, the search goes on in stages from the furthest place reached (a fresh archive there,
+   up to 8 stages, 5 s further back when a stage gets no closer).
+2. **Shortcuts:** from 40 random points of line 0, a search for a way that meets line 0 again sooner;
+   kept when the whole line replays to the goal faster.
+3. **Coverage:** up to 24 places the search reached early that no line passes near; from each, a short
    search to a point where it joins a line going the same way.
-3. **Trials:** the CPU itself, in the simulation, from the start with one upset (slowdown, confusion,
+4. **Trials:** the CPU itself, in the simulation, from the start with an upset: slowdown, confusion,
    tension drain, knock-back, a missed jump, no boost, easy skill, a rival CPU on the same lines, a rival
-   and an item). Where it loses the lines for good, a branch is searched from there to a joining point.
+   and an item, a death (respawn into a world that went on), or two of them. Progress is the line's frames
+   to the goal; 7 s without progress (or three deaths) fails the trial. A branch is searched from the frame
+   the CPU found itself stuck to a point of the lines past the trouble (fewer frames to the goal), and
+   the same trial runs again with it (up to 4 repairs) until it reaches the goal. 90 trials, or 15
+   passes in a row; up to 140 lines.
 Limits are in search rounds, so a build gives the same lines on every machine (the time is only a
 safety cap; the Windows build `vs_route.exe` and the Linux build replay each other's lines exactly). A
-line is checked by replaying it from the start. Stages where no way to the goal is found get the
+line is checked by replaying it from the start. A stage where no way to the goal is found gets the
 furthest grounded part as a partial line (header flag `VSR_INCOMPLETE`).
 
-`make -C dreamcast/game/vs routes` (Linux, `-j` for parallel) or the Windows kit (`vs_route.exe`) makes
-the missing lines; `build_disc.sh` calls it. Delete `build/dreamcast/vs/routes` to make them again.
+**Making them (cache, resume, reports).** `make -C dreamcast/game/vs routes` (Linux, `-j` for parallel)
+or the Windows kit (`vs_route.exe`, `winbuild.py`) runs every pair with `-check`. Each file's header has
+a generation key: a CRC of the stage (`level.bin`), the object data and hit boxes, the player tables,
+the format version and a hash of the simulation, follower and tool sources (`make -s vsr-src`; the
+Windows tool is built with the same hash). A file with the same key is kept at once. A file made by
+another build is made again, but its line 0 is kept when it replays to the goal frame for frame (the
+line 0 search is the long part; the coverage, trials and branches are redone); a partial one is searched
+on from its end. Files are written as `<pair>.rte.tmp` and renamed when complete, so a stopped run carries
+on with the pairs not yet made. Per pair: `routes/<pair>.rte.txt` (result, key, every line's span) and
+`routes/<pair>.log`. `vs_route -rekey` gives a file the present key after its line 0 replays frame for
+frame (for tool changes that cannot reach the lines). The lines stay in `build/` (never in git).
 
 **Shared world fix (both modes).** Water levels are a per-camera value, and the objects run with player
 1's camera, so player 2's water (Water Palace underwater state, air bubbles, splashes; the Mirage Road

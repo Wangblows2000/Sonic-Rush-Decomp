@@ -90,6 +90,16 @@ def make_routes(D, routes_exe=None, jobs=None):
     else:
         import concurrent.futures
         rdir.mkdir(parents=True, exist_ok=True)
+        # the players' models where the route simulation reads them (vs Makefile simmodel)
+        pm = b / "player" / "model"
+        pm.mkdir(parents=True, exist_ok=True)
+        M = b / "models"
+        for src, dst in (("mod__son__son.dcm", "son.dcm"), ("mod__son__son_ball.dcm", "son_ball.dcm"),
+                         ("mod__blz__blz.dcm", "blz.dcm"), ("mod__blz__blz_spin.dcm", "blz_spin.dcm"),
+                         ("narc__player_lz7__son.dca", "son.dca"), ("narc__player_lz7__son.dcv", "son.dcv")):
+            shutil.copyfile(M / src, pm / dst)
+        for f in ("animtab.bin", "lights.bin"):
+            shutil.copyfile(b / "player" / f, pm / f)
         todo = [(s, c) for s in VS_STAGES for c in (0, 1)]
         exe = str(Path(routes_exe).resolve())
 

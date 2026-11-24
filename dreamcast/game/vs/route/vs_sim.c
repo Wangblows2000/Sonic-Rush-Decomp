@@ -4,12 +4,18 @@
 #include <string.h>
 #include "vs_sim.h"
 #include "../../camera/camera.h"
+#include "../../player/dcp_model.h"
 
 VsSim g_sim;
 float g_cam_x, g_cam_y;   /* engine/render.c (not linked) */
 static u8 *s_level;
 static unsigned char s_cam[2][4096];
 static u16 s_prev[2];
+/* the players' models (no drawing): their joint animation ends set DCP_DF_ANIM_DONE and the blend end
+ * clears 0x400, which the player states read (parachute, springs, tricks...), as on the Dreamcast
+ * (main.c: dcp_model_step after the players' frames). From <player>/model (vs Makefile simmodel). */
+static DcpModel s_mdl[2];
+static int s_mdl_ok[2];
 
 static void *load(const char *path, long *size) {
     FILE *f = fopen(path, "rb");
@@ -70,12 +76,19 @@ int vs_sim_init(const char *stages, const char *player, const char *objdata, con
     dcp_player_create(&S->p[0], (u8)chara1, 0, S->start_x, S->start_y);
     dcp_player_create(&S->p[1], (u8)chara2, 0, S->start_x, S->start_y);
     S->p[0].rings = S->p[1].rings = 1;   /* Player_Create, VS */
+    snprintf(path, sizeof path, "%s/model", player);
+    s_mdl_ok[0] = dcp_model_load(&s_mdl[0], chara1, path, 0) == 0;
+    s_mdl_ok[1] = dcp_model_load(&s_mdl[1], chara2, path, 0) == 0;
+    if (!s_mdl_ok[0] || !s_mdl_ok[1]) { printf("player models not found in %s (make -C dreamcast/game/vs simmodel)\n", path); return -1; }
+    dcp_model_attach(&s_mdl[0], &S->p[0]);   /* (main.c spawn_player: before objects_init, the hooks chain) */
     objects_set_paths(objdata, sprites);
     objects_add_player(&S->p[0]); objects_add_player(&S->p[1]);
     if (objects_init(&S->map, s_level) != 0) { printf("objects_init failed\n"); return -1; }
     objects_add_player(&S->p[0]); objects_add_player(&S->p[1]);
     objects_set_view_count(8);
     objects_respawn_view();
+    objects_set_player_anim_done(0);          /* (the models give ANIM_DONE) */
+    dcp_model_attach_second(&s_mdl[1], &S->p[1]);
     camera_create(s_level, &S->p[0], S->hdr->zone, S->hdr->act);
     camera_set_rival(&S->p[1]);
     camera_ctx_save(s_cam[0]);
@@ -125,6 +138,8 @@ void vs_sim_frame(u16 held1, u16 held2) {
         if ((p->pf & DCP_PF_DEAD) && !S->dead[k]) S->deaths[k]++;
         S->dead[k] = (p->pf & DCP_PF_DEAD) != 0;
     }
+    dcp_model_step(&s_mdl[0], &S->p[0], 0);
+    dcp_model_step(&s_mdl[1], &S->p[1], 0);
     camera_ctx_load(s_cam[0]);
     objects_update(&S->p[0]);
     vs_after_players();
