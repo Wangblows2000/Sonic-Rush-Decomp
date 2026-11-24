@@ -109,7 +109,8 @@ def make_routes(D, routes_exe=None, jobs=None):
             # relative paths from build/dreamcast: the object module keeps its directories in 64-byte buffers;
             # the tool writes <out>.tmp and renames it when complete
             r = subprocess.run([exe, "stages", "player", "objects", os.path.join("sprites", "bac"), s, str(c),
-                                os.path.relpath(out, b), "-check", "-budget", "3600"], cwd=b, capture_output=True, text=True)
+                                os.path.relpath(out, b), "-check", "-budget", "3600",
+                                "-guide", os.path.relpath(rdir / ("%s_%d.rte" % (s, 1 - c)), b)], cwd=b, capture_output=True, text=True)
             (rdir / ("%s_%d.log" % (s, c))).write_text(r.stdout)
             return s, c, r.returncode, (r.stdout.strip().splitlines() or [""])[-1]
 

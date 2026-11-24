@@ -65,5 +65,5 @@ routes: $(addprefix route-,$(ROUTES))
 route-%: $(OUT)/vs_route | simmodel
 	@mkdir -p $(OUT)/routes
 	@cd $(ROOT)/build/dreamcast && { ./vs/vs_route stages player objects sprites/bac $(word 1,$(subst _, ,$*)) $(word 2,$(subst _, ,$*)) \
-	    vs/routes/$*.rte -check -budget $(ROUTE_BUDGET) $(ROUTE_ARGS) > vs/routes/$*.log 2>&1; tail -1 vs/routes/$*.log; }
+	    vs/routes/$*.rte -check -budget $(ROUTE_BUDGET) -guide vs/routes/$(word 1,$(subst _, ,$*))_$(if $(filter 0,$(word 2,$(subst _, ,$*))),1,0).rte $(ROUTE_ARGS) > vs/routes/$*.log 2>&1; tail -1 vs/routes/$*.log; }
 .PHONY: all host-test cpu-test routes vsr-src simmodel

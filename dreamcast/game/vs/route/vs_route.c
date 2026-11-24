@@ -1125,23 +1125,35 @@ int main(int argc, char **argv) {
         if (verbose) printf("  line 0: again along the %d checkpoints\n", NW - 1);
         pads = search(0, rounds * 2, budget, &n0, "line 0 (checkpoints)");
     }
-    if (!pads && !from && s_ng > 0) {   /* the other character's way through the stage as the guide */
+    if (!pads && s_ng > 0) {   /* the other character's way through the stage as the guide */
+        u16 *keep = s_partial_pads;
+        u32 keep_len = s_partial_len;
+        s32 keep_pot;
         set_chain(2);
+        if (keep) {   /* (the furthest place so far, measured along the guide) */
+            u32 i;
+            snap_restore(&start);
+            for (i = 0; i < keep_len; i++) vs_sim_frame(0, keep[i]);
+            keep_pot = potential(g_sim.p[1].x >> 8, g_sim.p[1].y >> 8, stage_for(g_sim.p[1].x >> 8, g_sim.p[1].y >> 8));
+        } else keep_pot = INF;
         snap_restore(&start);
-        free(s_partial_pads); s_partial_pads = NULL; s_partial_len = 0;
+        s_partial_pads = NULL; s_partial_len = 0;
         if (verbose) printf("  line 0: again along %d places of the other character's line\n", s_ng);
         pads = search(0, rounds * 2, budget, &n0, "line 0 (guide)");
+        if (!pads && keep && (!s_partial_pads || s_partial_pot >= keep_pot)) {
+            free(s_partial_pads); s_partial_pads = keep; s_partial_len = keep_len; s_partial_pot = keep_pot;
+        } else free(keep);
     }
     if (!pads && s_partial_pads && s_partial_len >= 60) {
         /* stages: the search goes on from the furthest place it reached (a fresh archive there explores the
-         * gimmicks that need time: waits, rides, switches), up to 8 times while it gets closer; a stage that
+         * gimmicks that need time: waits, rides, switches), up to 16 times while it gets closer; a stage that
          * does not starts 5 s further back */
         u16 *pre = s_partial_pads;
         u32 npre = s_partial_len, back = 0;
         s32 pot = s_partial_pot;
         int stg;
         s_partial_pads = NULL;
-        for (stg = 0; stg < 8 && !pads; stg++) {
+        for (stg = 0; stg < 16 && !pads; stg++) {
             u32 use = npre > back ? npre - back : 0, i, n2 = 0;
             u16 *p2;
             char what[64];
