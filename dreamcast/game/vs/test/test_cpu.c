@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     long sz2 = 0, sz1 = 0;
     void *r2, *r1 = NULL;
     int chara2, k, upsets = 0, trace = 0, skill = VSC_NORMAL, items = 0, knocks = 0;
-    u32 seed = 1, frames = 0x8c9f + 60, i;
+    u32 seed = 1, frames = 0x8c9f + 60, i, objs_at = 0xffffffffu, die_at = 0xffffffffu;
     if (argc < 8) { printf("usage: %s <stages> <player> <objdata> <sprites> <zNN> <p2 chara> <p2 route> [-p1 route] [-seed n] [-skill k] [-upsets n] [-frames n]\n", argv[0]); return 2; }
     chara2 = atoi(argv[6]);
     r2 = load(argv[7], &sz2);
@@ -42,6 +42,8 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[k], "-frames") && k + 1 < argc) frames = (u32)atoi(argv[++k]);
         else if (!strcmp(argv[k], "-upsets") && k + 1 < argc) upsets = atoi(argv[++k]);
         else if (!strcmp(argv[k], "-trace")) trace = 1;
+        else if (!strcmp(argv[k], "-die") && k + 1 < argc) die_at = (u32)atoi(argv[++k]);
+        else if (!strcmp(argv[k], "-objs") && k + 1 < argc) objs_at = (u32)atoi(argv[++k]);
     }
     if (vs_sim_init(argv[1], argv[2], argv[3], argv[4], argv[5], !chara2, chara2) != 0) return 2;
     if (vs_cpu_begin(1, r2, (u32)sz2, seed, skill) != 0) printf("p2: no racing line\n");
@@ -68,7 +70,15 @@ int main(int argc, char **argv) {
                     items++;
                 }
             }
+        if (i == die_at) dcp_act_die(B);   /* a death (respawn into a world that went on) */
         vs_sim_frame(h1, h2);
+        if (i == objs_at) {   /* the objects within 300 px of player 2 at this frame */
+            Obj *o;
+            for (o = g_obj.head; o; o = o->next)
+                if (o->used && o->prm && labs((o->h.x >> 8) - (B->x >> 8)) < 300 && labs((o->h.y >> 8) - (B->y >> 8)) < 300)
+                    printf("  obj type %3u at %ld,%ld flags %04x p6 %d p7 %d p8 %u p9 %u\n", o->prm->type, (long)(o->h.x >> 8),
+                           (long)(o->h.y >> 8), o->prm->flags, o->prm->p6, o->prm->p7, o->prm->p8, o->prm->p9);
+        }
         if (trace && (i % 60 == 0 || (trace && (h2 & 0x8000)))) {
             const VsCpuStats *s = vs_cpu_stats(1);
             printf("  f%5u p2 %6ld,%5ld vx %5d g %d gim %d line %d k %5d tgt %ld,%ld on %5d off %5d rec %3d reloc %3d pad %04x%s | p1 %ld,%ld\n", i,

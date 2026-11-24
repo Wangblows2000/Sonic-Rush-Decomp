@@ -73,7 +73,9 @@ OBJ_SRCS=$(cd "$O" && make -s -n -B ../../../build/dreamcast/objects/test_covera
 V=$ROOT/dreamcast/game/vs
 VS_SRCS=$(cd "$V" && make -s -n -B ../../../build/dreamcast/vs/vs_route | grep -o ' route/snap_begin\.c.*route/vs_route\.c')
 [ -n "$VS_SRCS" ] || { echo "error: route finder source list not found"; exit 1; }
-(cd "$V" && $CC -std=c99 -fwrapv -fno-common -o "$A/bin/vs_route.exe" $VS_SRCS -lm)
+# the generation key's source hash: the same as the Linux tool's, so lines made on either are reused (-check)
+VSR_SRC=$(cd "$V" && make -s vsr-src)
+(cd "$V" && $CC -std=c99 -fwrapv -fno-common -DVSR_SRC="\"$VSR_SRC\"" -o "$A/bin/vs_route.exe" $VS_SRCS -lm)
 
 echo "== the disc maker (Win32 GUI)"
 G=$HERE/gui

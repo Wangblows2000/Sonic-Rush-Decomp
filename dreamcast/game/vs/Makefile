@@ -24,20 +24,29 @@ host-test: $(OUT)/test_vs $(OUT)/test_cpu_unit
 CPU_STAGES = z11 z12 z21 z22 z31 z32 z41 z42 z51 z52 z61 z62 z71 z72
 cpu-test: $(OUT)/test_cpu
 	@cd $(ROOT)/build/dreamcast && for s in $(CPU_STAGES); do for c in 0 1; do ./vs/test_cpu stages player objects sprites/bac $$s $$c vs/routes/$${s}_$$c.rte $(CPU_ARGS); done; done
+# the sources a racing line depends on (the simulation, the follower, the tool): their hash goes into
+# every line's generation key, so changing any of them makes the lines again (and nothing else does)
+VSR_DEPS = $(sort $(SRCS) $(OBJ_SRCS) $(PLAYER_SRCS) vs_cpu.c route/vs_sim.c route/snap.c route/vs_route.c \
+           $(wildcard *.h route/*.h $(OBJ_DIR)/*.h $(PLAYER_DIR)/*.h ../camera/*.h ../zonefx/*.h))
+VSR_SRC := $(shell cat $(VSR_DEPS) | sha1sum | cut -c1-16)
+vsr-src:
+	@echo $(VSR_SRC)
 ROUTE_SIM = route/snap_begin.c $(SRCS) $(OBJ_SRCS) $(PLAYER_SRCS) route/vs_sim.c route/snap_end.c
 $(OUT)/vs_route: $(SRCS) vs.h vs_cpu.h vs_cpu.c vs_route.h route/*.c route/*.h $(OBJ_SRCS) $(PLAYER_SRCS)
 	mkdir -p $(OUT)
-	gcc $(CFLAGS_HOST) -fno-common -o $@ $(ROUTE_SIM) route/snap.c vs_cpu.c route/vs_route.c -lm
+	gcc $(CFLAGS_HOST) -fno-common -DVSR_SRC='"$(VSR_SRC)"' -o $@ $(ROUTE_SIM) route/snap.c vs_cpu.c route/vs_route.c -lm
 # Vs CPU racing lines (disc build: tools/dreamcast/disc/assemble_disc.py -> /cd/vs): one per stage and
-# character, made from the converted stages with the real simulation (route/vs_route.c); a line that fails
-# is reported and left out (the CPU then drives by sight on that stage)
-ROUTE_BUDGET ?= 900
-ROUTES := $(foreach s,$(CPU_STAGES),$(foreach c,0 1,$(OUT)/routes/$(s)_$(c).rte))
-routes: $(ROUTES)
-$(OUT)/routes/%.rte: $(ROOT)/build/dreamcast/stages/manifest.json | $(OUT)/vs_route
+# character, made from the converted stages with the real simulation (route/vs_route.c). Every pair runs
+# with -check: a line whose generation key (stage, objects, player data, sources, version) is unchanged is
+# kept at once, the others are made again; a stopped run carries on with the pairs not yet made. Report
+# per pair: routes/<pair>.rte.txt. Exit 3: a partial line (no way to the goal found).
+ROUTE_BUDGET ?= 1800
+ROUTE_ARGS ?=
+ROUTES := $(foreach s,$(CPU_STAGES),$(foreach c,0 1,$(s)_$(c)))
+routes: $(addprefix route-,$(ROUTES))
+	@cd $(ROOT)/build/dreamcast/vs/routes && cat $(addsuffix .rte.txt,$(ROUTES)) 2>/dev/null | grep "chara" || true
+route-%: $(OUT)/vs_route
 	@mkdir -p $(OUT)/routes
 	@cd $(ROOT)/build/dreamcast && { ./vs/vs_route stages player objects sprites/bac $(word 1,$(subst _, ,$*)) $(word 2,$(subst _, ,$*)) \
-	    vs/routes/$*.rte.tmp -budget $(ROUTE_BUDGET); rc=$$?; \
-	    if [ $$rc = 0 ] || [ $$rc = 3 ]; then mv vs/routes/$*.rte.tmp vs/routes/$*.rte; \
-	    else echo "vs routes: $* not found (the CPU follows the rival there)"; fi; }
-.PHONY: all host-test cpu-test routes
+	    vs/routes/$*.rte -check -budget $(ROUTE_BUDGET) $(ROUTE_ARGS) > vs/routes/$*.log 2>&1; tail -1 vs/routes/$*.log; }
+.PHONY: all host-test cpu-test routes vsr-src

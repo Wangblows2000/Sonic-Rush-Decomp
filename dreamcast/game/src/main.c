@@ -858,6 +858,12 @@ static void vs_script_pad(InputState *in, int frame, int who)
 static void *g_cpu_route;
 static uint32_t g_cpu_route_size;
 static u32 g_vs_races;   /* races run (the CPU's seed: reproducible, varied from race to race) */
+/* test builds: /cd/debug/vsseq.txt, one race a line "zone act chara1 chara2 p1cpu" (0-based): the races
+ * run one after another from the boot, each to its end (the results scene is skipped, its numbers
+ * logged); p1cpu 1: player 1 is a CPU too (its own character's lines), a rival for the CPU under test */
+static int g_vs_seq, g_vs_p1cpu;
+static void *g_cpu_route1;
+static uint32_t g_cpu_route1_size;
 /* ---------------------------------------------------------------- single-player gameplay view
  * Ordinary Story Mode levels (zones 1..7 acts 1 and 2, not a boss arena, the attract demo, time attack,
  * Battle Play, a special stage or an in-level cutscene) show SP_VIEW_K times the DS window per axis:
@@ -1035,6 +1041,12 @@ static MenuRequest run_vs_stage(MenuRequest r)
             else
                 printf("vs: CPU line %s (%lu bytes), seed %lu, skill %d\n", path, (unsigned long)g_cpu_route_size, (unsigned long)seed, skill);
             vs_cpu_tag_load();
+            if(g_vs_p1cpu) {   /* test builds: player 1 a CPU too */
+                free(g_cpu_route1); g_cpu_route1 = NULL; g_cpu_route1_size = 0;
+                snprintf(path, sizeof path, "/cd/vs/z%d%d_%d.rte", r.zone + 1, r.act + 1, r.character);
+                g_cpu_route1 = load_file(path, &g_cpu_route1_size);
+                printf("vs: player 1 CPU %s\n", vs_cpu_begin(0, g_cpu_route1, g_cpu_route1_size, seed * 31u + 7u, skill) ? "without a line" : path);
+            }
         }
         g_vs_races++;
         vs_load(0);
@@ -1066,7 +1078,10 @@ static MenuRequest run_vs_stage(MenuRequest r)
             h[0] = ds_pad(in0.held); pr[0] = ds_pad(in0.pressed); rl[0] = ds_pad(in0.released);
             h[1] = ds_pad(in1.held); pr[1] = ds_pad(in1.pressed); rl[1] = ds_pad(in1.released);
             if(!run) { h[0] = h[1] = pr[0] = pr[1] = rl[0] = rl[1] = 0; }
-            else if(r.cpu) vs_cpu_pad(1, &g_player2, &g_player, &h[1], &pr[1], &rl[1]);   /* the CPU's pad */
+            else if(r.cpu) {
+                vs_cpu_pad(1, &g_player2, &g_player, &h[1], &pr[1], &rl[1]);   /* the CPU's pad */
+                if(g_vs_p1cpu) vs_cpu_pad(0, &g_player, &g_player2, &h[0], &pr[0], &rl[0]);
+            }
             uint64_t tp0 = timer_us_gettime64(), tp1, tp2, tp3;
             static uint64_t vs_prof[4];
             if(!paused) {
@@ -1208,7 +1223,14 @@ static MenuRequest run_vs_stage(MenuRequest r)
         }
         printf("vs: race over, winner %d, times %lu / %lu\n", res.winner, (unsigned long)res.time[0], (unsigned long)res.time[1]);
         vs_end();
-        if(r.cpu) { vs_cpu_end(1); free(g_cpu_route); g_cpu_route = NULL; vs_cpu_tag_free(); }
+        if(r.cpu) {
+            const VsCpuStats *cs = vs_cpu_stats(1);
+            printf("vs cpu result: z%d%d chara %d %s time %lu, p1 %s, recover %d relocate %d on %d off %d jumps %d boosts %d attacks %d\n",
+                   r.zone + 1, r.act + 1, r.character2, res.finished[1] ? "GOAL" : "no goal", (unsigned long)res.time[1], res.finished[0] ? "goal" : "-", cs->recover,
+                   cs->relocate, cs->on_line, cs->off_line, cs->jumps, cs->boosts, cs->rival_attacks);
+            vs_cpu_end(1); free(g_cpu_route); g_cpu_route = NULL; vs_cpu_tag_free();
+            if(g_vs_p1cpu) { vs_cpu_end(0); free(g_cpu_route1); g_cpu_route1 = NULL; }
+        }
         sound_hooks_set_bank2_player(NULL);
         sound_load_bank2(NULL);
         dcp_model_attach_second(NULL, NULL);
@@ -1221,6 +1243,7 @@ static MenuRequest run_vs_stage(MenuRequest r)
         g_dcp_world.mode = 0;
         g_dcp_world.flags = 0;
         enter_front_end();
+        if(g_vs_seq) { MenuRequest q; memset(&q, 0, sizeof q); return q; }   /* test builds: the next race of the list */
         next = menus_vs_exit(&res);
         if(next.kind != MENU_REQ_VS_STAGE) return next;
         r = next;   /* rematch */
@@ -1342,6 +1365,35 @@ int main(int argc, char **argv)
             uint32_t esz;
             char *e = load_file("/cd/debug/extra.txt", &esz);
             if(e) { free(e); printf("debug start: Extra Zone\n"); run_extra_zone(); enter_front_end(); }
+        }
+        {   /* test builds: /cd/debug/vsseq.txt: Vs CPU races one after another (see g_vs_seq) */
+            uint32_t qsz;
+            char *q = load_file("/cd/debug/vsseq.txt", &qsz), *line;
+            if(q) {
+                int n = 0;
+                q = realloc(q, qsz + 1); q[qsz] = 0;
+                g_vs_seq = 1;
+                for(line = q; line && *line; line = strchr(line, '\n') ? strchr(line, '\n') + 1 : NULL) {
+                    MenuRequest vr;
+                    int p1c = 0;
+                    char one[80];
+                    size_t ln = strcspn(line, "\n");
+                    if(ln >= sizeof one) ln = sizeof one - 1;
+                    memcpy(one, line, ln); one[ln] = 0;
+                    memset(&vr, 0, sizeof vr);
+                    if(sscanf(one, "%d %d %d %d %d", &vr.zone, &vr.act, &vr.character, &vr.character2, &p1c) < 4) continue;
+                    vr.kind = MENU_REQ_VS_STAGE; vr.mode = 1; vr.easy = 1; vr.cpu = 1;
+                    if(vr.character2 == vr.character) vr.character2 = !vr.character;
+                    g_vs_p1cpu = p1c;
+                    printf("vs seq: race %d z%d%d p1 %d%s p2 %d (CPU)\n", n++, vr.zone + 1, vr.act + 1, vr.character, p1c ? " (CPU)" : "", vr.character2);
+                    menus_vs_set_cpu(1);
+                    menus_vs_prepare(vr.zone, vr.act, vr.character, vr.character2);
+                    run_vs_stage(vr);
+                }
+                printf("vs seq: done, %d races\n", n);
+                free(q);
+                g_vs_seq = 0; g_vs_p1cpu = 0;
+            }
         }
         {   /* test builds: /cd/debug/vs.txt "zone act chara1 chara2" = start a Battle Play race */
             uint32_t vsz;

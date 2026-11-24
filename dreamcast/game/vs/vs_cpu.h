@@ -40,6 +40,7 @@ typedef struct VsCpuStats {
     int line, k;           /* the line followed (-2: the rival's path, -1: none), its frame */
     s32 tx, ty;            /* off the line: the point steered to */
     int line_len;
+    int rem;               /* on a line: its frames to the goal from here (-1 off the lines) */
     s32 best_x;
 } VsCpuStats;
 const VsCpuStats *vs_cpu_stats(int who);

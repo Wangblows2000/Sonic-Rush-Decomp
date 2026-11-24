@@ -22,6 +22,18 @@ static void *load(const char *path, long *size) {
     return b;
 }
 
+/* g_dcp_hooks.gravity_flipped as main.c installs it for every stage (Stage_IsGravityFlipped): Dead Line
+ * acts flip gravity below (act 1) / above (act 2) the split line */
+s32 Stage_GetSplitLineY(s32 x);
+static dcp_bool sim_gravity_flipped(void *ctx, s32 x, s32 y) {
+    (void)ctx;
+    if (g_dcp_world.zone == 6 && g_dcp_world.act < 2) {
+        if (g_dcp_world.act == 1) { if (y < Stage_GetSplitLineY(x)) return DCP_TRUE; }
+        else if (y > Stage_GetSplitLineY(x)) return DCP_TRUE;
+    }
+    return DCP_FALSE;
+}
+
 int vs_sim_init(const char *stages, const char *player, const char *objdata, const char *sprites, const char *stage,
                 int chara1, int chara2) {
     char path[512];
@@ -43,6 +55,7 @@ int vs_sim_init(const char *stages, const char *player, const char *objdata, con
     if (!s_level || rlvl_bind(&S->map, s_level) != 0) return -1;
     S->hdr = (const rlvl_header_t *)s_level;
     dcp_bind_map(&S->map);
+    g_dcp_hooks.gravity_flipped = sim_gravity_flipped;
     memset(&g_dcp_world, 0, sizeof g_dcp_world);
     g_dcp_world.zone = S->hdr->zone; g_dcp_world.act = S->hdr->act;
     g_dcp_world.mode = 1; g_dcp_world.flags = 1 | 0x20; g_dcp_world.objmgr = 0x18;

@@ -22,7 +22,7 @@ typedef struct Cpu {
     const VsRouteLine *ln;
     const VsRoutePoint *pt;
     int nl, n;               /* lines, points */
-    u16 *gidx; u32 *gstart;  /* points by grid cell */
+    u32 *gidx; u32 *gstart;  /* points by grid cell */
     int gw, gh;
     u32 seed, rng;
     int skill;
@@ -59,14 +59,14 @@ static int build_grid(Cpu *c) {
     c->gw = mx / GCELL + 1; c->gh = my / GCELL + 1;
     cells = c->gw * c->gh;
     c->gstart = (u32 *)calloc((size_t)cells + 1, sizeof(u32));
-    c->gidx = (u16 *)malloc(sizeof(u16) * (size_t)c->n);
+    c->gidx = (u32 *)malloc(sizeof(u32) * (size_t)c->n);
     cnt = (u32 *)calloc((size_t)cells, sizeof(u32));
     if (!c->gstart || !c->gidx || !cnt) { free(cnt); free_grid(c); return -1; }
     for (i = 0; i < c->n; i++) c->gstart[(c->pt[i].y / GCELL) * c->gw + c->pt[i].x / GCELL + 1]++;
     for (i = 0; i < cells; i++) c->gstart[i + 1] += c->gstart[i];
     for (i = 0; i < c->n; i++) {
         int g = (c->pt[i].y / GCELL) * c->gw + c->pt[i].x / GCELL;
-        c->gidx[c->gstart[g] + cnt[g]++] = (u16)i;
+        c->gidx[c->gstart[g] + cnt[g]++] = (u32)i;
     }
     free(cnt);
     return 0;
@@ -86,7 +86,7 @@ int vs_cpu_begin(int who, const void *route, u32 route_size, u32 seed, int skill
     c->tl = -1;
     c->best_rem = 0x7fffffff;
     if (h != NULL && route_size >= sizeof *h && !memcmp(h->magic, "VSRT", 4) && h->version == VS_ROUTE_VERSION &&
-        h->nlines > 0 && h->points > 1 && h->points <= 0xffff &&
+        h->nlines > 0 && h->nlines <= VS_ROUTE_MAX_LINES && h->points > 1 && h->points <= 0x400000 &&
         route_size >= sizeof *h + h->nlines * sizeof(VsRouteLine) + h->points * sizeof(VsRoutePoint)) {
         int i, ok = 1;
         c->ln = (const VsRouteLine *)(h + 1);
@@ -96,7 +96,7 @@ int vs_cpu_begin(int who, const void *route, u32 route_size, u32 seed, int skill
             if (c->ln[i].count == 0 || c->ln[i].first + c->ln[i].count > h->points) ok = 0;
         if (!ok || build_grid(c) != 0) { c->ln = NULL; c->pt = NULL; c->nl = c->n = 0; }
     }
-    c->incomplete = c->nl && (h->pad & VSR_INCOMPLETE);
+    c->incomplete = c->nl && (h->flags & VSR_INCOMPLETE);
     c->rvcap = 0x8ca0;   /* the race time limit */
     c->rv = (VsRoutePoint *)malloc(sizeof(VsRoutePoint) * (size_t)c->rvcap);
     if (!c->rv) c->rvcap = 0;
@@ -316,8 +316,14 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
         if (on && c->cl >= 0) {
             /* stuck on the line: too slow for what comes (a slope, a jump): back to an earlier point of the
              * line for a run-up, further back each try; after three tries here the line is left for a while */
+            int l3 = -1, k3 = 0;
+            s32 d3 = 0;
             if (c->ru_n > 0 && (k - c->ru_at > 60 || c->ru_at - k > 300)) c->ru_n = 0;
-            if (c->ru_n < 3) {
+            if (c->ru_n == 0 && join(c, x, y, JOIN_PX, c->cl, &l3, &k3, &d3) && l3 != c->cl) {
+                /* another line from here (a branch the route tool made for this world: the gimmick gone, the
+                 * platform elsewhere): that one first */
+                c->ban = c->cl; c->ban_until = (int)c->t + 300;
+            } else if (c->ru_n < 3) {
                 c->ru_at = c->ru_n == 0 ? k : c->ru_at;
                 c->ru_l = c->cl;
                 c->ru_k = c->ru_at - 90 * (c->ru_n + 1);
@@ -439,6 +445,7 @@ rival_check:
     }
     h = unconfuse(p, h);
     c->st.line = c->cl; c->st.k = k;
+    c->st.rem = (on && c->cl >= 0 && c->cl < c->nl) ? (int)left(c, c->cl, k) : -1;
     if (!on && c->tl >= 0) before(c, c->tl, c->tk, &c->st.tx, &c->st.ty); else { c->st.tx = c->st.ty = -1; }
 out:
     if ((h & VSC_X) && !(c->prev & VSC_X)) c->st.boosts++;

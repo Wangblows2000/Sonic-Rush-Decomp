@@ -17,7 +17,7 @@ static void line_file(int nl) {
     memset(&R.h, 0, sizeof R.h);
     memcpy(R.h.magic, "VSRT", 4);
     R.h.version = VS_ROUTE_VERSION;
-    R.h.nlines = (u8)nl;
+    R.h.nlines = (u16)nl;
 }
 /* the file as vs_route writes it: header, lines, points (packed) */
 static u8 *pack(u32 *size) {

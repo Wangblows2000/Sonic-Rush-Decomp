@@ -76,7 +76,10 @@ VS_STAGES = "z11 z12 z21 z22 z31 z32 z41 z42 z51 z52 z61 z62 z71 z72".split()
 def make_routes(D, routes_exe=None, jobs=None):
     """Vs CPU racing lines (dreamcast/game/vs/route): one per Battle Play stage and character, searched
     with the real game simulation in the converted stages. Linux: make -C dreamcast/game/vs routes;
-    Windows kit: vs_route.exe. Existing lines are kept (delete build/dreamcast/vs/routes to redo them)."""
+    Windows kit: vs_route.exe. Every pair runs with -check: a line whose generation key (the stage, object
+    and player data, the simulation and tool sources, the format version) is unchanged is kept at once, the
+    others are made again; a stopped run carries on with the pairs not yet made. Report per pair:
+    build/dreamcast/vs/routes/<pair>.rte.txt."""
     b = D.b
     rdir = b / "vs" / "routes"
     jobs = jobs or max(1, (os.cpu_count() or 2))
@@ -87,22 +90,22 @@ def make_routes(D, routes_exe=None, jobs=None):
     else:
         import concurrent.futures
         rdir.mkdir(parents=True, exist_ok=True)
-        todo = [(s, c) for s in VS_STAGES for c in (0, 1) if not (rdir / ("%s_%d.rte" % (s, c))).is_file()]
+        todo = [(s, c) for s in VS_STAGES for c in (0, 1)]
         exe = str(Path(routes_exe).resolve())
 
         def one(sc):
             s, c = sc
-            tmp = rdir / ("%s_%d.rte.tmp" % (s, c))
-            # relative paths from build/dreamcast: the object module keeps its directories in 64-byte buffers
+            out = rdir / ("%s_%d.rte" % (s, c))
+            # relative paths from build/dreamcast: the object module keeps its directories in 64-byte buffers;
+            # the tool writes <out>.tmp and renames it when complete
             r = subprocess.run([exe, "stages", "player", "objects", os.path.join("sprites", "bac"), s, str(c),
-                                os.path.relpath(tmp, b), "-budget", "900"], cwd=b, capture_output=True, text=True)
-            if r.returncode in (0, 3) and tmp.is_file():   # 3: a partial line (no way to the goal found)
-                tmp.replace(rdir / ("%s_%d.rte" % (s, c)))
+                                os.path.relpath(out, b), "-check", "-budget", "1800"], cwd=b, capture_output=True, text=True)
+            (rdir / ("%s_%d.log" % (s, c))).write_text(r.stdout)
             return s, c, r.returncode, (r.stdout.strip().splitlines() or [""])[-1]
 
         with concurrent.futures.ThreadPoolExecutor(jobs) as ex:
             for s, c, rc, last in ex.map(one, todo):
-                print("vs route %s %s: %s" % (s, "Blaze" if c else "Sonic", last if rc in (0, 3) else "not found (the CPU follows the rival)"), flush=True)
+                print("vs route %s %s: %s" % (s, "Blaze" if c else "Sonic", last if rc in (0, 3) else "not found"), flush=True)
     n = 0
     for p in sorted(rdir.glob("z*_*.rte")) if rdir.is_dir() else []:
         D.cp(p, "vs")
