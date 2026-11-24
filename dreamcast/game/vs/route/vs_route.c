@@ -301,11 +301,14 @@ static int NE, CAPE;
 static int *cellv;            /* archive cell -> entry (-1) */
 /* an archive cell's state besides the place: in the air, the collision layer (paths that cross), a
  * switch timer running (the gimmicks it opens: neon routes, layer zones) */
-#define NSUB 8
+#define NSUB 12
 static int sub_state(const DcPlayer *p) {
+    /* the switch timers in two bands (a gimmick a switch opens must be reached before its timer runs out:
+     * a cell reached with the timer about to run out is not the same as one with time to spare) */
     const s16 *sw = obj_switch_timers();
-    int i, on = 0;
-    for (i = 0; i < 32 && !on; i++) on = sw[i] != 0;
+    int i, tm = 0, on;
+    for (i = 0; i < 32; i++) if (sw[i] > tm) tm = sw[i];
+    on = tm == 0 ? 0 : tm <= 180 ? 1 : 2;
     return (int)((p->move_flags & DCP_MF_GROUND) == 0) | (int)(p->obj_flags & 1) << 1 | on << 2;
 }
 static s32 best_pot;
@@ -869,9 +872,9 @@ static int replay(const char *path) {
     if (fread(b, 1, (size_t)size, f) != (size_t)size) { fclose(f); return 2; }
     fclose(f);
     h = (const VsRouteHeader *)b;
-    if (memcmp(h->magic, "VSRT", 4) || h->version != VS_ROUTE_VERSION) { printf("bad route %s\n", path); return 2; }
+    if (memcmp(h->magic, "VSRT", 4) || h->version < 4 || h->version > VS_ROUTE_VERSION) { printf("bad route %s\n", path); return 2; }
     ln = (const VsRouteLine *)(h + 1);
-    pt = (const VsRoutePoint *)(ln + h->nlines);
+    pt = h->version == 4 ? (const VsRoutePoint *)((const u8 *)ln + 16 * h->nlines) : (const VsRoutePoint *)(ln + h->nlines);
     for (i = 0; i < ln[0].count; i++) {
         vs_sim_frame(0, pt[i].pad & (u16)~VSR_RIDE);
         if ((g_sim.p[1].x >> 8) != pt[i].x || (g_sim.p[1].y >> 8) != pt[i].y) off++;
@@ -1018,13 +1021,16 @@ int main(int argc, char **argv) {
             u32 lsz = h->version == 4 ? 16 : sizeof(VsRouteLine);   /* (v4 lines had no t0) */
             const VsRouteLine *ln = (const VsRouteLine *)(buf + sizeof *h);
             const VsRoutePoint *pt = (const VsRoutePoint *)(buf + sizeof *h + lsz * h->nlines) + ln[0].first;
-            u32 i;
+            u32 i, div = 0xffffffffu;
             s_partial_len = ln[0].count;
             s_partial_pads = (u16 *)malloc(sizeof(u16) * s_partial_len);
             for (i = 0; i < s_partial_len; i++) s_partial_pads[i] = pt[i].pad & (u16)~VSR_RIDE;
             set_chain(1);
-            for (i = 0; i < s_partial_len && !vs_sim_finished(1); i++) vs_sim_frame(0, s_partial_pads[i]);
-            if (!(h->flags & VSR_INCOMPLETE) && ln[0].rest == 0 && vs_sim_finished(1) && i == s_partial_len) {
+            for (i = 0; i < s_partial_len && !vs_sim_finished(1); i++) {
+                vs_sim_frame(0, s_partial_pads[i]);
+                if (div == 0xffffffffu && ((g_sim.p[1].x >> 8) != pt[i].x || (g_sim.p[1].y >> 8) != pt[i].y)) div = i;
+            }
+            if (!(h->flags & VSR_INCOMPLETE) && ln[0].rest == 0 && vs_sim_finished(1) && i == s_partial_len && div == 0xffffffffu) {
                 /* a complete line 0 that replays to the goal frame for frame: kept */
                 pads = s_partial_pads; n0 = s_partial_len;
                 s_partial_pads = NULL; s_partial_len = 0;
@@ -1032,14 +1038,22 @@ int main(int argc, char **argv) {
                 if (verbose) printf("  line 0: kept from %s, %u frames\n", from, n0);
                 goto have_line0;
             }
+            if (div != 0xffffffffu) {
+                /* the simulation changed (another build): the line holds up to frame div; its part to 1 s
+                 * before that is a partial line the search goes on from */
+                s_partial_len = div > 60 ? div - 60 : 0;
+                if (verbose) printf("  line 0: %s replays to frame %u (of %u), kept %u frames\n", from, div, ln[0].count, s_partial_len);
+                snap_restore(&start);
+                for (i = 0; i < s_partial_len; i++) vs_sim_frame(0, s_partial_pads[i]);
+            }
             s_partial_pot = potential(g_sim.p[1].x >> 8, g_sim.p[1].y >> 8, stage_for(g_sim.p[1].x >> 8, g_sim.p[1].y >> 8));
             snap_restore(&start);
             if (verbose) printf("  line 0: from %s, %u frames\n", from, s_partial_len);
         }
         pads = NULL;
-        if (!(((const VsRouteHeader *)buf)->flags & VSR_INCOMPLETE)) {
-            /* a complete line that no longer reaches the goal (the simulation changed): a new search */
-            if (verbose) printf("  line 0: %s no longer replays to the goal, searched again\n", from);
+        if (s_partial_len < 60) {
+            /* nothing of it holds: a new search */
+            if (verbose) printf("  line 0: %s does not hold in this simulation, searched again\n", from);
             free(s_partial_pads); s_partial_pads = NULL; s_partial_len = 0;
             from = NULL;
             set_chain(0);
