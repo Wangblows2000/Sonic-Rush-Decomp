@@ -140,11 +140,31 @@ converted from the ROM with the rest of the disc.
 CPU's racing lines for the 14 Battle Play stages and both characters with
 `make -C dreamcast/game/vs -jN routes` (the Windows kit: `vs_route.exe`, one job
 per core) and puts them in `/cd/vs`. This is a search with the real game
-simulation on your converted stages: allow a few minutes per stage and
-character on one core; the lines are kept in `build/dreamcast/vs/routes` and
-only missing ones are made again. `SRDC_ROUTES=copy` skips the search (test
-discs: only the lines already there). Without a stage's line the CPU follows
-the rival's path there.
+simulation (player, objects, cameras, race rules and the player models, whose
+animation ends drive some player states) on your converted stages. Allow 10 to
+25 minutes per stage and character on one core: about 3 to 4 hours for the 28
+pairs on two cores.
+
+- **Cache.** Every pair runs with `-check`. Each line file's header holds a
+  generation key: a CRC of the stage, the object data and hit boxes, the player
+  tables and models, the format version and a hash of the simulation, CPU and
+  tool sources (`make -s -C dreamcast/game/vs vsr-src`). A file whose key
+  matches is kept at once; any other file is made again. Its line 0 is reused
+  when it still replays to the goal frame for frame, so the long search is
+  skipped. Linux and Windows builds give the same keys and the same lines.
+- **Resume.** A file is written as `<pair>.rte.tmp` and renamed when complete,
+  so a stopped run carries on with the pairs not yet made.
+- **Reports.** `build/dreamcast/vs/routes/<pair>.rte.txt` (result, key, every
+  line's span) and `<pair>.log`; the disc step prints how many lines are
+  complete and how many partial (no way to the goal found).
+- **Models.** The simulation reads the player models from
+  `build/dreamcast/player/model` (`make -C dreamcast/game/vs simmodel`; the
+  `routes` target and the Windows kit copy them there).
+- **Test discs.** `SRDC_ROUTES=copy` skips the search and puts only the lines
+  already made on the disc. Without a stage's line the CPU follows the rival's
+  path there.
+
+The lines are derived from your ROM and stay in `build/` (never in git).
 
 `/cd/debug/frameprof.txt` (via `SRDC_DEBUGDIR`) turns on the frame profiler:
 per-second frame time, vblank counts and the worst frame on the serial

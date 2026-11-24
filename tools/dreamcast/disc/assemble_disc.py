@@ -76,10 +76,10 @@ VS_STAGES = "z11 z12 z21 z22 z31 z32 z41 z42 z51 z52 z61 z62 z71 z72".split()
 def make_routes(D, routes_exe=None, jobs=None):
     """Vs CPU racing lines (dreamcast/game/vs/route): one per Battle Play stage and character, searched
     with the real game simulation in the converted stages. Linux: make -C dreamcast/game/vs routes;
-    Windows kit: vs_route.exe. Every pair runs with -check: a line whose generation key (the stage, object
-    and player data, the simulation and tool sources, the format version) is unchanged is kept at once, the
-    others are made again; a stopped run carries on with the pairs not yet made. Report per pair:
-    build/dreamcast/vs/routes/<pair>.rte.txt."""
+    Windows kit: vs_route.exe. Every pair runs with -check: a line whose generation key (the stage, the
+    object data, the player tables and models, the simulation and tool sources, the format version) is
+    unchanged is kept at once, the others are made again; a stopped run carries on with the pairs not yet
+    made. Report per pair: build/dreamcast/vs/routes/<pair>.rte.txt (and <pair>.log)."""
     b = D.b
     rdir = b / "vs" / "routes"
     jobs = jobs or max(1, (os.cpu_count() or 2))
@@ -115,12 +115,16 @@ def make_routes(D, routes_exe=None, jobs=None):
 
         with concurrent.futures.ThreadPoolExecutor(jobs) as ex:
             for s, c, rc, last in ex.map(one, todo):
-                print("vs route %s %s: %s" % (s, "Blaze" if c else "Sonic", last if rc in (0, 3) else "not found"), flush=True)
-    n = 0
+                print("vs route %s %s: %s" % (s, "Blaze" if c else "Sonic",
+                                               last if rc in (0, 3) else "failed (exit %d) %s" % (rc, last)), flush=True)
+    n = partial = 0
     for p in sorted(rdir.glob("z*_*.rte")) if rdir.is_dir() else []:
         D.cp(p, "vs")
         n += 1
-    print("vs routes: %d of %d on the disc" % (n, 2 * len(VS_STAGES)), flush=True)
+        if p.read_bytes()[9:10] == b"\x01":   # VsRouteHeader.flags VSR_INCOMPLETE: no way to the goal found
+            partial += 1
+    print("vs routes: %d of %d on the disc, %d complete, %d partial" % (n, 2 * len(VS_STAGES), n - partial, partial),
+          flush=True)
 
 
 def assemble(root, out, first_read, coverage_exe=None, routes_exe=None):
