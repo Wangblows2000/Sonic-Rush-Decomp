@@ -132,18 +132,30 @@ behaves as the release game.
 
 Battle Play (two players, split screen) uses `SRDC_DEBUGDIR` files: `vs.txt`
 starts a race directly, `vs_p2.txt` scripts player 2's pad (or both) for
-one-keyboard emulator runs. See [BATTLE-PLAY.md](BATTLE-PLAY.md#test-builds).
+one-keyboard emulator runs, `vsseq.txt` runs Vs CPU races one after another
+from the boot (one a line: `zone act chara1 chara2 [p1cpu [from to]]`; fields
+6 and 7 print player 2 every frame of that race clock range on the serial
+console in `test_cpu -dump`'s format, to compare a Flycast race with the host
+simulation frame for frame). See [BATTLE-PLAY.md](BATTLE-PLAY.md#test-builds).
 Battle Play is in the same `1ST_READ.BIN`, and its menu and sound files are
 converted from the ROM with the rest of the disc.
 
-**Vs CPU racing lines.** `build_disc.sh` (through `assemble_disc.py`) makes the
-CPU's racing lines for the 14 Battle Play stages and both characters with
-`make -C dreamcast/game/vs -jN routes` (the Windows kit: `vs_route.exe`, one job
-per core) and puts them in `/cd/vs`. This is a search with the real game
-simulation (player, objects, cameras, race rules and the player models, whose
-animation ends drive some player states) on your converted stages. Allow 10 to
-25 minutes per stage and character on one core: about 3 to 4 hours for the 28
-pairs on two cores.
+**Vs CPU racing lines.** The CPU's racing lines for the 14 Battle Play stages
+and both characters ship with the source in `dreamcast/game/vs/routes` (28
+`.rte` files: recorded pads and positions, no game data). `build_disc.sh`
+(through `assemble_disc.py`) copies them to `build/dreamcast/vs/routes` and
+puts them in `/cd/vs`; the Windows kit does the same. With the EUR ROM's stages
+their generation key matches, so nothing is searched and the step takes
+seconds.
+
+Only when your converted stages differ (another ROM revision: the key, below,
+does not match) are the lines made again, with `make -C dreamcast/game/vs -jN
+routes` (the Windows kit: `vs_route.exe`, one job per core). This is a search
+with the real game simulation (player, objects, cameras, race rules and the
+player models, whose animation ends drive some player states) on your
+converted stages. Allow 10 to 25 minutes per stage and character on one core:
+about 3 to 4 hours for the 28 pairs on two cores. A shipped line whose line 0
+still replays to the goal in your stages is kept as the start of the search.
 
 - **Cache.** Every pair runs with `-check`. Each line file's header holds a
   generation key: a CRC of the stage, the object data and hit boxes, the player
@@ -152,6 +164,16 @@ pairs on two cores.
   matches is kept at once; any other file is made again. Its line 0 is reused
   when it still replays to the goal frame for frame, so the long search is
   skipped. Linux and Windows builds give the same keys and the same lines.
+- **Random world.** The game's random seed is set at boot and runs on from
+  race to race (as on the DS), so item box rings and enemy debris differ
+  between races. Line 0 is searched at the simulation's seed 0; every
+  robustness trial runs with a random seed of its own. Check a stage with
+  other seeds with `test_cpu -rseed n` (BATTLE-PLAY.md, "Random world").
+- **More trials.** `vs_route ... -from <file> -more` keeps a complete file's
+  lines (line 0 must replay; branches as they are) and runs more trials that
+  add branches, to improve existing files without starting again. `-check`
+  keeps a file with the present key as it is, so run `-more` with `-from`.
+  (Measured on Night Carnival: no gain; not used for the shipped lines.)
 - **Resume.** A file is written as `<pair>.rte.tmp` and renamed when complete,
   so a stopped run carries on with the pairs not yet made.
 - **Reports.** `build/dreamcast/vs/routes/<pair>.rte.txt` (result, key, every

@@ -7,6 +7,14 @@
  *   -upsets n     n upsets at random times (seeded): a Battle Play item from the rival (slowdown,
  *                 confusion, tension drain; warp to the rival when player 1 races) or a knock-back
  *   -frames n     limit (default: the race time limit 0x8c9f + 60)
+ *   -dist k -at f a disturbance at frame f, for the recovery test: 0 an item from the rival (slowdown,
+ *                 confusion, tension drain by f), 1 a knock-back, 2 a death (a fall), 3 an enemy's hit
+ *                 (Player_OnHurt: rings scattered), 4 losing ground (no keys for 10 s)
+ *                 Prints "recovery": the CPU's progress along its line 0 (frames to the goal) when it was
+ *                 disturbed and after; recovered = it reached the goal, or made at least 20 s of line 0
+ *                 (or, when the race ended sooner, half the time since the disturbance) past where it was
+ *   -rseed n      the game's random seed (gRandSeed) at the race start: on the DC it runs on from boot
+ *                 and the earlier races (Rand_SeedFromRTC), the simulation starts at 0
  * Prints one result line; exit 0 when player 2 reached the goal.
  */
 #include <stdio.h>
@@ -14,8 +22,36 @@
 #include <string.h>
 #include "../route/vs_sim.h"
 #include "../vs_cpu.h"
+#include "../vs_route.h"
 #include "../../objects/obj_internal.h"
 
+/* the CPU's place on its line 0 (point index): the nearest point around the last one, else anywhere */
+static const VsRoutePoint *s_l0, *s_m0;   /* line 0 of the CPU's file, of the other character's (-p1) */
+static int s_l0n, s_l0k, s_m0n, s_m0k;
+static int place_on(const VsRoutePoint *s_l0, int s_l0n, int *pk, s32 x, s32 y) {
+    int i, s_l0k = *pk, lo = s_l0k - 300, hi = s_l0k + 1800, best = -1;
+    long bd = 0x7fffffffL;
+    if (lo < 0) lo = 0;
+    if (hi > s_l0n) hi = s_l0n;
+    for (i = lo; i < hi; i++) {
+        long d = (long)(s_l0[i].x - x) * (s_l0[i].x - x) + (long)(s_l0[i].y - y) * (s_l0[i].y - y);
+        if (d < bd) { bd = d; best = i; }
+    }
+    if (bd > 160L * 160L)
+        for (i = 0; i < s_l0n; i++) {
+            long d = (long)(s_l0[i].x - x) * (s_l0[i].x - x) + (long)(s_l0[i].y - y) * (s_l0[i].y - y);
+            if (d < bd) { bd = d; best = i; }
+        }
+    if (best >= 0 && bd <= 160L * 160L) *pk = best;
+    return *pk;
+}
+/* the CPU's place in the course, in frames of its line 0: on its own line 0 or the other character's
+ * (scaled), whichever is further (a way the rival showed counts as much as the CPU's own) */
+static int l0_place(s32 x, s32 y) {
+    int a = place_on(s_l0, s_l0n, &s_l0k, x, y), b = s_m0 ? place_on(s_m0, s_m0n, &s_m0k, x, y) : 0;
+    if (s_m0 && s_m0n > 0) b = (int)((long)b * s_l0n / s_m0n);
+    return a > b ? a : b;
+}
 static void *load(const char *path, long *size) {
     FILE *f = fopen(path, "rb");
     void *b;
@@ -30,8 +66,8 @@ static void *load(const char *path, long *size) {
 int main(int argc, char **argv) {
     long sz2 = 0, sz1 = 0;
     void *r2, *r1 = NULL;
-    int chara2, k, upsets = 0, trace = 0, skill = VSC_NORMAL, items = 0, knocks = 0;
-    u32 seed = 1, frames = 0x8c9f + 60, i, objs_at = 0xffffffffu, die_at = 0xffffffffu, dump0 = 1, dump1 = 0;
+    int chara2, k, has_rseed = 0, dist = -1, best0 = 0, best1 = 0, end_k = 0, upsets = 0, trace = 0, skill = VSC_NORMAL, items = 0, knocks = 0;
+    u32 dist_at = 0, rseed = 0, seed = 1, frames = 0x8c9f + 60, i, objs_at = 0xffffffffu, die_at = 0xffffffffu, dump0 = 1, dump1 = 0;
     if (argc < 8) { printf("usage: %s <stages> <player> <objdata> <sprites> <zNN> <p2 chara> <p2 route> [-p1 route] [-seed n] [-skill k] [-upsets n] [-frames n]\n", argv[0]); return 2; }
     chara2 = atoi(argv[6]);
     r2 = load(argv[7], &sz2);
@@ -45,8 +81,24 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[k], "-die") && k + 1 < argc) die_at = (u32)atoi(argv[++k]);
         else if (!strcmp(argv[k], "-dump") && k + 2 < argc) { dump0 = (u32)atoi(argv[++k]); dump1 = (u32)atoi(argv[++k]); }
         else if (!strcmp(argv[k], "-objs") && k + 1 < argc) objs_at = (u32)atoi(argv[++k]);
+        else if (!strcmp(argv[k], "-dist") && k + 1 < argc) dist = atoi(argv[++k]);
+        else if (!strcmp(argv[k], "-at") && k + 1 < argc) dist_at = (u32)atoi(argv[++k]);
+        else if (!strcmp(argv[k], "-rseed") && k + 1 < argc) rseed = (u32)strtoul(argv[++k], NULL, 0), has_rseed = 1;
     }
     if (vs_sim_init(argv[1], argv[2], argv[3], argv[4], argv[5], !chara2, chara2) != 0) return 2;
+    if (has_rseed) g_dcp_world.rand_seed = rseed;
+    if (r2) {   /* line 0 of the CPU's file (recovery test) */
+        const VsRouteHeader *hh = (const VsRouteHeader *)r2;
+        const VsRouteLine *ln = (const VsRouteLine *)(hh + 1);
+        s_l0 = (const VsRoutePoint *)(ln + hh->nlines) + ln[0].first;
+        s_l0n = (int)ln[0].count;
+    }
+    if (r1) {
+        const VsRouteHeader *hh = (const VsRouteHeader *)r1;
+        const VsRouteLine *ln = (const VsRouteLine *)(hh + 1);
+        s_m0 = (const VsRoutePoint *)(ln + hh->nlines) + ln[0].first;
+        s_m0n = (int)ln[0].count;
+    }
     if (vs_cpu_begin(1, r2, (u32)sz2, seed, skill) != 0) printf("p2: no racing line\n");
     if (r1 && vs_cpu_begin(0, r1, (u32)sz1, seed * 31 + 7, skill) != 0) printf("p1: no racing line\n");
     {
@@ -72,11 +124,24 @@ int main(int argc, char **argv) {
                 }
             }
         if (i == die_at) dcp_act_die(B);
+        if (dist >= 0 && i == dist_at) {   /* -dist: the disturbance */
+            best0 = best1 = l0_place(B->x >> 8, B->y >> 8);
+            switch (dist) {
+            case 0: g_obj_hooks.item(g_obj_hooks.ctx, A, OBJ_ITEM_VS_SLOW + (int)(seed % 3)); break;
+            case 1: B->vs_timer = 0xc; B->gnd_vel = (s16)(B->gnd_vel >= 0 ? -0x480 : 0x480); B->hitstop = 0x44; break;
+            case 2: dcp_act_die(B); break;
+            case 3: dcp_on_hurt(B, 0x20); break;
+            default: break;
+            }
+        }
+        if (dist == 4 && i >= dist_at && i < dist_at + 600) h2 = 0;   /* (losing ground: no keys) */
+        if (dist >= 0 && i > dist_at && (i % 30) == 0 && !(B->pf & DCP_PF_DEAD)) { int q = l0_place(B->x >> 8, B->y >> 8); if (q > best1) best1 = q; }
         if (i >= dump0 && i <= dump1)   /* -dump a b: every frame: pad, then the position after it */
-            printf("  dump %u pad %04x", i, h2);   /* a death (respawn into a world that went on) */
+            printf("  dump %u pad %04x", i, h2);   /* i: frames from the start; clock: g_dcp_world.frame */   /* a death (respawn into a world that went on) */
         vs_sim_frame(h1, h2);
         if (i >= dump0 && i <= dump1)
-            printf(" -> %ld,%ld vx %d anim %x df %x\n", (long)(B->x >> 8), (long)(B->y >> 8), B->gnd_vel, B->anim, B->disp_flags);
+            printf(" -> %ld,%ld vx %d anim %x df %x pf %lx rings %d clock %lu\n", (long)(B->x >> 8), (long)(B->y >> 8), B->gnd_vel,
+                   B->anim, B->disp_flags, (unsigned long)B->pf, B->rings, (unsigned long)g_dcp_world.frame);
         if (i == objs_at) {   /* the objects within 300 px of player 2 at this frame */
             Obj *o;
             for (o = g_obj.head; o; o = o->next)
@@ -96,6 +161,13 @@ int main(int argc, char **argv) {
                    (long)(A->x >> 8), (long)(A->y >> 8));
         }
         }
+    }
+    end_k = (int)i;
+    if (dist >= 0) {   /* recovered: the goal, or 20 s of line 0 past the place (half the time left when the race ended sooner) */
+        int gain = best1 - best0, span = end_k - (int)dist_at, need = span / 2 < 1200 ? span / 2 : 1200;
+        int ok = vs_sim_finished(1) || (gain >= need && end_k > (int)dist_at);
+        printf("recovery: %s at %u, line 0 point %d -> %d (+%d) in %d frames: %s\n", vs_sim_finished(1) ? "goal" : "no goal", dist_at,
+               best0, best1, gain, span, ok ? "recovered" : "not recovered");
     }
     {
         const VsCpuStats *s = vs_cpu_stats(1);

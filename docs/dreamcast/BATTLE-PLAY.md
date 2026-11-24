@@ -73,6 +73,13 @@ The split screen follows Sonic 2's VS mode (`src/main.c run_vs_stage`):
   pads (the real pad's Start and B still reach player 1, so pause / quit can be tested). Use this
   for emulator runs with one keyboard. It also turns on the VS frame log (fps, update / wait /
   draw ms; the first sample of a race spans the results and the stage load).
+- `/cd/debug/vsseq.txt`: Vs CPU races one after another from the boot, one a line
+  `zone act chara1 chara2 [p1cpu [from to]]` (0-based; `p1cpu` 1: player 1 is a CPU too, on its own
+  character's lines). Each race runs to its end; the results scene is skipped and its numbers logged.
+  The races run on from one random seed, as a player's races do (see "Random world" in Known gaps).
+  Fields 6 and 7 are a race clock range: player 2 is printed every frame of it on the serial console in
+  `test_cpu -dump`'s format (`dump <clock> pad .. -> x,y vx anim df pf rings`), so a race in Flycast
+  can be compared with the host simulation frame for frame (`main.c`, `g_vs_tr0` / `g_vs_tr1`).
 - `/cd/debug/menutrace.txt` (any content) prints menu scene changes, as `SRDC_MENUTRACE=1`.
 - Release discs (and the kits' discs) have no scripted pad: a race needs a second controller in
   port B. Flycast must map one to port B to play it.
@@ -81,6 +88,12 @@ The split screen follows Sonic 2's VS mode (`src/main.c run_vs_stage`):
   cpu-test [CPU_ARGS="-p1 ... -upsets 3 -seed 2"]` (the CPU racing every stage with the real simulation:
   goal time, deaths, recoveries; `test/test_cpu.c` options: a CPU player 1 on its own lines, random upsets,
   skill, seed, a trace) and `make -C dreamcast/game/menus host-test` (`test_vs`: the VS menu flow).
+  `test_cpu -rseed n` sets the game's random seed (`gRandSeed`) at the race start (the simulation
+  otherwise starts at 0); `-dump a b` prints player 2 every frame from a to b: pad, position, ground
+  speed, animation, display flags, `pf`, rings and the race clock. `-dist k -at f` disturbs the CPU at
+  frame f (0 an item from the rival, 1 a knock-back, 2 a death, 3 an enemy's hit, 4 no keys for 10 s)
+  and prints whether it recovered (the release recovery test in Known gaps runs it with `-p1` and
+  `-rseed` for every pair).
 
 ## Sound
 
@@ -127,18 +140,42 @@ crane, rope, rocket) that left without it, it waits at the boarding place for up
 for 3 s: it first takes another line from where it is (the route tool's branches start at exactly such
 places); otherwise it backs up along the line for a run-up (twice, further back each time), then jumps,
 backs off and spin-dashes, or waits. A line that failed at a place is not taken within 320 px of it for
-30 s. Confusion (the rival's item turns the D-pad): after 40 frames, like a player, it presses the key
+30 s; a ride that goes nowhere counts as no progress after 10 s.
+
+**Recovery: following the rival.** When the lines fail twice running at a place (no progress for 3 s,
+twice, between which it got no further: an item, a knock-back, an enemy, a world not as the line knew
+it), or when it dies again within 640 px of where it last died (after the respawn), the CPU is lost: for
+10 s (30 s after the second death) it takes the rival's path instead, the furthest place the rival
+passed 2 s or more ago within reach, and runs after the rival along it with its own moves (steering to
+the rival's position 0.5 s further on: the rival is the other character, whose moves are not its own).
+When the 10 s are over and it is on a line point (40 px) that has not failed there, it takes the line
+again; failing again makes it lost again. The rival's path is the human player's way through the race
+as it is now (the objects in their present phase), so it is a way that works; it costs one table of
+positions (the rival's position every frame, recorded anyway) and no search. No teleport, speed, rings
+or invulnerability: it is still only the pad. A death resets the progress count (the respawn point is
+behind), so a respawn is not taken for being stuck.
+
+Confusion (the rival's item turns the D-pad): after 40 frames, like a player, it presses the key
 that now gives the way it wants. Next to the rival on the ground with tension to spare it boosts into it
-(at most every 4 s). Without any line (a missing file) it follows the rival's path (the furthest place
-the rival passed 2 s or more ago).
+(at most every 4 s). Without any line (a missing file) it follows the rival's path all the race.
 
 **Variation and skill.** The seed changes every race (reproducible: race count, zone, act). Skill
 (normal by default; `/cd/debug/cpu_skill.txt` 0 easy, 1 normal, 2 hard in test builds) decides how many
 of the line's boost stretches the CPU uses (easy drops about half, normal and hard none; never just
-before one of the line's jumps; never when the rival is well ahead).
+before one of the line's jumps; never when the rival is well ahead). Apart from the CPU's seed, the
+game's own random seed (`gRandSeed`) differs from race to race, as on the DS: see "Random world" in
+Known gaps.
 
-**Where the lines come from.** `vs/route/vs_route.c` (host tool, run at disc build time on the owner's
-converted stages; nothing derived from the game is in the repository):
+**One race after another.** Each race starts as the line simulation's do, whatever ran before it (the
+story, a boss, another race): the race clock, the stage flags and the object manager's flags are set
+afresh, player 2 is cleared, the item box popup pointer, the camera's respawn flag and a reused player
+model's animation speeds are reset (`run_vs_stage`, `objects_init`, `camera_create`,
+`dcp_model_attach`). Only the game's random seed runs on, as on the DS.
+
+**Where the lines come from.** The 28 files ship with the source (`dreamcast/game/vs/routes`, 8.5 MB:
+each frame's pad and position, no game data) and go onto the disc as they are (see "Shipped lines"
+below); nobody has to make them. They were made by `vs/route/vs_route.c`, a host tool that the disc
+build runs again only for converted stages whose key does not match (another ROM revision):
 1. **Line 0:** a search with the real game simulation (`route/vs_sim.c`: player, objects, cameras,
    race rules, the Dead Line gravity split, and the two players' models, whose animation ends drive some
    player states such as the Altitude Limit parachute, as `dcp_model_step` does on the Dreamcast) in the
@@ -159,17 +196,30 @@ converted stages; nothing derived from the game is in the repository):
    search to a point where it joins a line going the same way.
 4. **Trials:** the CPU itself, in the simulation, from the start with an upset: slowdown, confusion,
    tension drain, knock-back, a missed jump, no boost, easy skill, a rival CPU on the same lines, a rival
-   and an item, a death (respawn into a world that went on), or two of them. Progress is the line's frames
-   to the goal (the respawn frame does not count); 7 s without progress (or three deaths) fails the trial.
+   and an item, a death (respawn into a world that went on), two of them, or a random world alone (no
+   upset: the undisturbed race as the Dreamcast runs it; picked more often, with death, two upsets and
+   rival + item). Every trial runs with its own game random seed at the race start (`world_seed()`), so
+   item box rings, enemy debris and the other random events differ from trial to trial; line 0 itself is
+   searched with the simulation's seed 0. Progress is the line's frames to the goal (the respawn frame
+   does not count); 7 s without progress (or three deaths) fails the trial.
    A branch is searched from the frame the CPU found itself stuck to a point of the lines at least 3 s
    further on (fewer frames to the goal) where the player is in the same state (ground / air, ridden,
    underwater); the same trial then runs again with it (up to 4 repairs) until it reaches the goal.
-   90 trials, or 15 passes in a row; up to 140 lines. Shortcuts (2.) run only on a line 0 found in the
+   When the CPU died and came back far behind (a Battle Play death respawns at the last checkpoint
+   passed, often the start) and in the failed trial never got back to within 600 frames to the goal of
+   where it first died, the branch search starts instead from a snapshot about 4 s before that death,
+   to go round the hit or fall that led to it. Deaths the trial itself gives (the death upset) do not
+   count for this.
+   90 trials, or 15 passes in a row (a failed trial that got no branch is not a pass); up to 140 lines. Shortcuts (2.) run only on a line 0 found in the
    same run, so a kept line 0 stays as it is.
 Limits are in search rounds, so a build gives the same lines on every machine (the time is only a
 safety cap; the Windows build `vs_route.exe` and the Linux build replay each other's lines exactly). A
 line is checked by replaying it from the start. A stage where no way to the goal is found gets the
 furthest grounded part as a partial line (header flag `VSR_INCOMPLETE`).
+
+**Shipped lines.** The 28 files are in the source (`dreamcast/game/vs/routes`: pads and positions only)
+and go to the build and the disc as they are; with the EUR ROM's stages their key matches and nothing is
+searched (BUILD.md). The generator below runs only for converted stages that differ.
 
 **Making them (cache, resume, reports).** `make -C dreamcast/game/vs routes` (Linux, `-j` for parallel:
 one pair per job) or the Windows kit (`vs_route.exe`, `winbuild.py`, one job per core) runs every pair
@@ -187,6 +237,11 @@ with `-check`.
   start of the new search. `vs_route -rekey` gives a file the present key once its line 0 replays frame
   for frame (simulation changes that cannot reach the lines, such as a faster way to compute the same
   thing). The other character's line of the stage is passed as `-guide`.
+- **More trials.** `vs_route ... -from <file> -more` improves a complete file without starting again:
+  its line 0 must replay to the goal; its other lines (branches) are kept as they are and the trials
+  run again, adding branches where the CPU still fails. The file does not store the branches'
+  per-point player states, so the merge tests accept any state on a kept branch. (`-check` keeps a
+  file with the present key as it is, so `-more` is run with `-from`.)
 - **Resume.** Files are written as `<pair>.rte.tmp` and renamed when complete, so a stopped run carries
   on with the pairs not yet made.
 - **Reports.** Per pair `routes/<pair>.rte.txt` (result, keys, every line's span) and `routes/<pair>.log`;
@@ -246,17 +301,86 @@ sand ship) followed player 1. The water triggers now also keep a level per playe
   keep the original message art.
 - **Shared effects:** an object far from both players (off both screens) has no viewport; its
   shake / fade is dropped.
-- **Vs CPU lines (host results, `vs/test/test_cpu`, seed 4).** With complete lines (zones 1..3, 5, Night
-  Carnival act 1 Sonic: 18 of 28 stage / character pairs) the CPU finishes undisturbed in the line's
-  time (1:30 .. 3:13). Upsets (items, knock-backs) are handled on Leaf Storm (10 of 10 seeds with two
-  upsets, z11 Sonic) and partly elsewhere; on most stages one upset can send it into pits again and
-  again (it does not reach the goal in many of those runs). No complete line was found for Night
-  Carnival act 1 (Blaze), Night Carnival act 2, Altitude Limit, Huge Crisis and Dead Line (both acts):
-  there the CPU drives a partial line (from the start to the furthest place the search reached), then
-  follows the rival's path (where the human has been 2 s or more before), so it trails the human there.
-  The line search is long (50 min for the 28 pairs on two cores, most of it on those stages).
-- **Vs CPU variation:** the race seed varies only the easy skill's boost choices and the rival
-  interplay: the stages' objects run on the race clock, so a CPU that starts or moves at another time
-  meets them differently (a reaction delay at GO broke the lines and was removed).
+- **Vs CPU lines (host results, `vs/test/test_cpu`).**
+  - All 28 stage / character pairs have a complete line 0, shipped. It replays to the goal frame for
+    frame in the simulation (`vs_manifest.py --replay`), and the CPU finishes undisturbed in the line's
+    time: 1:39 (Leaf Storm act 1 Sonic) to 5:04 (Mirage Road act 2 Sonic), unchanged by the recovery
+    code (`make -C dreamcast/game/vs cpu-test`). This holds at the simulation's random seed 0; with other
+    seeds see "Random world" below.
+  - **Recovery (the release test).** 560 disturbed races, 20 per pair: 4 seeds each of 5 disturbances at
+    a seeded time in the first 60 percent of the line, the rival a CPU on its own line (a racing player),
+    every race in a random world (`test_cpu -p1 ... -dist k -at f -rseed n`). A race counts as recovered
+    when the CPU reaches the goal, or gets at least 20 s of course further than where it was disturbed
+    (measured along its own line 0 or the rival's, whichever is further; when the rival wins sooner, at
+    least half the time left): **378 of 560 recovered (68 percent)**, 68 of them to the goal before the
+    race ended. By disturbance:
+    - an item from the rival (slowdown, confusion or tension drain): 80 of 112 (lines only: 79)
+    - a knock-back: 91 of 112 (lines only: 93)
+    - a death (a fall): 60 of 112 (lines only: 68)
+    - an enemy's hit (rings scattered): 64 of 112 (lines only: 57)
+    - losing ground (no keys for 10 s): 83 of 112 (lines only: 91)
+  - With the lines alone (no rival following, the previous build): 388 of 560. Following the rival
+    changes which races recover (105 lost, 95 gained of 560) but not how many; it is kept for the
+    places where every line fails (it gives the CPU a way on that works in this race).
+  - Per pair (recovered with rival following, with the lines alone, reached the goal):
+
+  | pair | recovered | lines alone | goal |
+  |---|---|---|---|
+  | z11_0 | 11/20 | 13/20 | 3 |
+  | z11_1 | 17/20 | 19/20 | 0 |
+  | z12_0 | 12/20 | 14/20 | 6 |
+  | z12_1 | 17/20 | 19/20 | 0 |
+  | z21_0 | 16/20 | 16/20 | 7 |
+  | z21_1 | 8/20 | 16/20 | 7 |
+  | z22_0 | 4/20 | 4/20 | 3 |
+  | z22_1 | 4/20 | 7/20 | 0 |
+  | z31_0 | 14/20 | 11/20 | 0 |
+  | z31_1 | 19/20 | 18/20 | 0 |
+  | z32_0 | 11/20 | 9/20 | 1 |
+  | z32_1 | 10/20 | 11/20 | 2 |
+  | z41_0 | 12/20 | 10/20 | 2 |
+  | z41_1 | 16/20 | 16/20 | 0 |
+  | z42_0 | 8/20 | 9/20 | 1 |
+  | z42_1 | 17/20 | 16/20 | 0 |
+  | z51_0 | 17/20 | 13/20 | 0 |
+  | z51_1 | 18/20 | 18/20 | 5 |
+  | z52_0 | 9/20 | 8/20 | 0 |
+  | z52_1 | 20/20 | 19/20 | 0 |
+  | z61_0 | 13/20 | 11/20 | 9 |
+  | z61_1 | 5/20 | 6/20 | 0 |
+  | z62_0 | 19/20 | 18/20 | 0 |
+  | z62_1 | 14/20 | 15/20 | 2 |
+  | z71_0 | 20/20 | 20/20 | 2 |
+  | z71_1 | 19/20 | 20/20 | 4 |
+  | z72_0 | 16/20 | 19/20 | 2 |
+  | z72_1 | 12/20 | 13/20 | 12 |
+
+  - Weakest: Water Palace act 2 (z22), Huge Crisis act 2 Sonic (z52_0), Altitude Limit act 1 Blaze
+    (z61_1). The cause, traced: the stages' objects (pistons, platforms, switches with their bridges,
+    rides) move on the race clock, and a CPU that comes back late after an upset or a respawn meets
+    them in another phase; lines found at another time then fail. A death in Battle Play respawns at the
+    last checkpoint passed, often the start.
+  - Tried and measured, no gain (kept out): waiting for the race clock's phase after a death; weighting
+    lines by their time harder; a speed / way match on joining; more trials and branches on existing
+    files (`-more`: Night Carnival act 1, 22 against 17 of 96 recovered for Sonic, 47 and 47 for Blaze); a
+    jump or boost at enemies (it broke lines that bounce off enemies on purpose).
+- **Random world (finding).** On the DS and on the Dreamcast the game's random seed `gRandSeed` is
+  seeded once at boot (`Rand_SeedFromRTC`) and never reset per race. Item box rings, enemy debris (such
+  as Night Carnival's Kuragen bombs) and the other random events therefore differ from race to race. The
+  host simulation starts at seed 0, so a line found there can fail in a real race.
+  - Found in Flycast (`vsseq.txt`, all 28 pairs in one sequence): Night Carnival act 1 Blaze and act 2
+    Blaze did not finish, while act 1 Blaze finished when run alone. Dense traces (`vsseq.txt` fields 6
+    and 7 against `test_cpu -dump`) showed the same positions until the rings differed (an item box);
+    later an EnemyFlapper, whose flight is random, hit the CPU while it waited at a Shooter.
+  - Measured on the host (`test_cpu -rseed`, 24 random seeds per pair, no upsets): 623 of 672 races
+    finish. Every pair 24/24 except z41_0 23, z41_1 20, z42_0 3, z42_1 2 and z71_1 23. Night Carnival
+    act 2's lines bounce off EnemyFlappers that are elsewhere in most other worlds.
+  - Accepted: the lines stay the normal racing paths; when the world takes the CPU off them, the
+    recovery above (the rival's path) takes over. The generator's trials run with their own random
+    seeds (and a plain random world trial), so lines made again account for it.
+- **Vs CPU variation:** the CPU's race seed varies only the easy skill's boost choices and the rival
+  interplay; the game's random seed varies the world (above). The stages' objects run on the race clock,
+  so a CPU that starts or moves at another time meets them differently (a reaction delay at GO broke the
+  lines and was removed).
 - **Not tested on hardware.** Flycast runs used one keyboard and a scripted pad for player 2.
   Two physical controllers in Flycast were not tested.

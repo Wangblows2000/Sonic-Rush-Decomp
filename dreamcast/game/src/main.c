@@ -862,6 +862,7 @@ static u32 g_vs_races;   /* races run (the CPU's seed: reproducible, varied from
  * run one after another from the boot, each to its end (the results scene is skipped, its numbers
  * logged); p1cpu 1: player 1 is a CPU too (its own character's lines), a rival for the CPU under test */
 static int g_vs_seq, g_vs_p1cpu;
+static unsigned g_vs_tr0 = 1, g_vs_tr1;   /* vsseq fields 6, 7: player 2 traced every frame of this clock range */
 static void *g_cpu_route1;
 static uint32_t g_cpu_route1_size;
 /* ---------------------------------------------------------------- single-player gameplay view
@@ -992,7 +993,14 @@ static MenuRequest run_vs_stage(MenuRequest r)
             g_model2_ok = dcp_model_load(&g_dcp_model2, r.character2, "/cd/player", 1) == 0;
         }
         g_dcp_world.mode = 1;                 /* gGameState.unk10: VS */
-        g_dcp_world.flags |= 0x20;            /* gGameState.unk18 & 0x20: RingManager 2 players, VS objects */
+        /* gGameState.unk18 & 0x20: RingManager 2 players, VS objects. Assigned with the clock and the object
+         * manager flags (and player 2 cleared), so nothing of the stage before (a story death's restart bit 2:
+         * PlayerStart keeps the old respawn point; a boss's pause bit; the clock the objects created in
+         * objects_init see) reaches the race: it starts as the host simulation's do (vs_sim_init) */
+        g_dcp_world.flags = 0x20;
+        g_dcp_world.frame = 0;
+        g_dcp_world.objmgr = 0x18;
+        memset(&g_player2, 0, sizeof g_player2);
         g_dcp_world.lives = 0;
         g_emeralds = 0; g_difficulty = r.easy;
         g_frontend = 0;
@@ -1126,6 +1134,10 @@ static MenuRequest run_vs_stage(MenuRequest r)
                 if(g_dcp_world.flags & 1) g_dcp_world.frame++;   /* Stage_Main */
                 for(i = 0; i < 2; i++) { vs_load(i); camera_frame_end(); vs_save(i); }
                 vs_frame_end();
+                if(run && clock0 >= g_vs_tr0 && clock0 <= g_vs_tr1)   /* test builds: test_cpu -dump's format */
+                    printf("  dump %lu pad %04x -> %ld,%ld vx %d anim %x df %x pf %lx rings %d\n", (unsigned long)clock0, h[1],
+                           (long)(g_player2.x >> 8), (long)(g_player2.y >> 8), g_player2.gnd_vel, g_player2.anim,
+                           g_player2.disp_flags, (unsigned long)g_player2.pf, g_player2.rings);
             }
             tp1 = timer_us_gettime64();
             sound_update();
@@ -1377,11 +1389,12 @@ int main(int argc, char **argv)
                     MenuRequest vr;
                     int p1c = 0;
                     char one[80];
+                    g_vs_tr0 = 1; g_vs_tr1 = 0;
                     size_t ln = strcspn(line, "\n");
                     if(ln >= sizeof one) ln = sizeof one - 1;
                     memcpy(one, line, ln); one[ln] = 0;
                     memset(&vr, 0, sizeof vr);
-                    if(sscanf(one, "%d %d %d %d %d", &vr.zone, &vr.act, &vr.character, &vr.character2, &p1c) < 4) continue;
+                    if(sscanf(one, "%d %d %d %d %d %u %u", &vr.zone, &vr.act, &vr.character, &vr.character2, &p1c, &g_vs_tr0, &g_vs_tr1) < 4) continue;
                     vr.kind = MENU_REQ_VS_STAGE; vr.mode = 1; vr.easy = 1; vr.cpu = 1;
                     if(vr.character2 == vr.character) vr.character2 = !vr.character;
                     g_vs_p1cpu = p1c;

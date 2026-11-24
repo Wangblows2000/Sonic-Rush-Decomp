@@ -1,0 +1,26 @@
+z61 chara 0: GOAL, line 0 7708 frames (2:08.46), 24 lines, 59395 points, 90 trials (last 3 passed), 1293.8 s
+key 5bc3c122, version 5, source ba7e3e11aade7452 (re-keyed: line 0 replays frame for frame), tool 1b7760fef1dd7551
+line 0: 7708 frames from 128,8256 to 18041,470, 0 to the goal after
+line 1: 6088 frames from 4809,9745 to 6591,4797, 6471 to the goal after
+line 2: 8575 frames from 5429,9654 to 6771,5234, 6545 to the goal after
+line 3: 3849 frames from 5429,9654 to 6563,5665, 6736 to the goal after
+line 4: 4096 frames from 5429,9654 to 6563,5665, 6736 to the goal after
+line 5: 194 frames from 9452,2610 to 9292,2120, 4805 to the goal after
+line 6: 4436 frames from 5179,9779 to 6563,5677, 6737 to the goal after
+line 7: 206 frames from 6384,4850 to 6641,4789, 6432 to the goal after
+line 8: 917 frames from 6590,4973 to 8040,5200, 6240 to the goal after
+line 9: 996 frames from 1822,10477 to 1693,9463, 7153 to the goal after
+line 10: 1234 frames from 1816,10472 to 1701,9464, 7153 to the goal after
+line 11: 4332 frames from 5199,9778 to 6563,5665, 6736 to the goal after
+line 12: 599 frames from 1816,10472 to 1704,9464, 7162 to the goal after
+line 13: 927 frames from 11005,3442 to 9607,3314, 5353 to the goal after
+line 14: 1051 frames from 11000,3440 to 9988,3506, 5418 to the goal after
+line 15: 1582 frames from 11033,3451 to 9616,3320, 5354 to the goal after
+line 16: 2979 frames from 11036,3452 to 10010,3517, 5421 to the goal after
+line 17: 319 frames from 1990,10403 to 1741,9523, 7180 to the goal after
+line 18: 3767 frames from 5510,9578 to 6564,5663, 6735 to the goal after
+line 19: 652 frames from 1714,10666 to 2017,9714, 7252 to the goal after
+line 20: 721 frames from 1768,9698 to 3070,8882, 7022 to the goal after
+line 21: 571 frames from 11005,3442 to 9618,3321, 5354 to the goal after
+line 22: 922 frames from 14160,500 to 15038,535, 1339 to the goal after
+line 23: 2674 frames from 11024,3446 to 10010,3517, 5421 to the goal after

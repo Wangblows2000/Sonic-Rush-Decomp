@@ -1,0 +1,34 @@
+z42 chara 0: GOAL, line 0 13361 frames (3:42.68), 32 lines, 26372 points, 90 trials (last 12 passed), 373.3 s
+key 844e77ad, version 5, source ba7e3e11aade7452 (re-keyed: line 0 replays frame for frame), tool 1b7760fef1dd7551
+line 0: 13361 frames from 156,896 to 41650,919, 0 to the goal after
+line 1: 168 frames from 4363,1586 to 4698,1778, 12716 to the goal after
+line 2: 364 frames from 4468,1570 to 4770,1778, 12680 to the goal after
+line 3: 186 frames from 4171,1525 to 4548,1778, 12777 to the goal after
+line 4: 543 frames from 10233,1904 to 10779,2428, 10744 to the goal after
+line 5: 2693 frames from 9972,2165 to 10605,2412, 10759 to the goal after
+line 6: 222 frames from 4368,1586 to 4781,1778, 12675 to the goal after
+line 7: 187 frames from 3201,1778 to 4185,1572, 12877 to the goal after
+line 8: 664 frames from 10751,2226 to 11618,2008, 10524 to the goal after
+line 9: 211 frames from 4171,1582 to 4706,1778, 12693 to the goal after
+line 10: 143 frames from 21626,1515 to 22143,1481, 6798 to the goal after
+line 11: 94 frames from 22951,1970 to 23731,2034, 6331 to the goal after
+line 12: 106 frames from 12188,2034 to 12306,1622, 10250 to the goal after
+line 13: 17 frames from 13780,818 to 13953,818, 9804 to the goal after
+line 14: 243 frames from 13929,818 to 14519,220, 9569 to the goal after
+line 15: 148 frames from 32229,770 to 33316,754, 3174 to the goal after
+line 16: 166 frames from 14494,242 to 15439,416, 9393 to the goal after
+line 17: 21 frames from 13657,818 to 13909,818, 9810 to the goal after
+line 18: 277 frames from 28021,1861 to 29188,2536, 4491 to the goal after
+line 19: 149 frames from 22186,1529 to 22619,1813, 6577 to the goal after
+line 20: 609 frames from 4162,1584 to 4768,1778, 12677 to the goal after
+line 21: 249 frames from 4216,1526 to 4773,1778, 12676 to the goal after
+line 22: 263 frames from 4215,1535 to 4712,1778, 12691 to the goal after
+line 23: 271 frames from 4201,1564 to 4764,1783, 12677 to the goal after
+line 24: 358 frames from 4216,1522 to 4747,1786, 12681 to the goal after
+line 25: 279 frames from 10648,1522 to 11055,2268, 10659 to the goal after
+line 26: 31 frames from 26067,2407 to 25949,2395, 5112 to the goal after
+line 27: 393 frames from 25935,2363 to 26830,1458, 4785 to the goal after
+line 28: 2521 frames from 26098,2329 to 25901,1660, 4921 to the goal after
+line 29: 53 frames from 26177,2290 to 26273,2228, 4990 to the goal after
+line 30: 784 frames from 26276,2277 to 27709,1906, 4710 to the goal after
+line 31: 598 frames from 4470,1570 to 4870,1744, 12631 to the goal after

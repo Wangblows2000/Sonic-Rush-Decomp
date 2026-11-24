@@ -36,6 +36,7 @@ typedef struct VsCpuStats {
     int recover;           /* stuck recoveries started */
     int relocate;          /* global searches of the line (respawn, warp) */
     int jumps, boosts, rival_attacks;
+    int follow;            /* times the lines failed and the CPU followed the rival's path */
     int idx;               /* where on line 0 (point index) */
     int line, k;           /* the line followed (-2: the rival's path, -1: none), its frame */
     s32 tx, ty;            /* off the line: the point steered to */

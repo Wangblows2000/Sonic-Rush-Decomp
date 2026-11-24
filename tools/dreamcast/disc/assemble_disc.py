@@ -83,6 +83,25 @@ def make_routes(D, routes_exe=None, jobs=None):
     b = D.b
     rdir = b / "vs" / "routes"
     jobs = jobs or max(1, (os.cpu_count() or 2))
+    # the lines that ship with the source (dreamcast/game/vs/routes: recorded pads and positions, no game
+    # data) go to the build first: with the EUR ROM's stages their key matches and -check keeps them at
+    # once, so nothing is searched. A build file is replaced when it is missing, partial or made from other
+    # inputs than the shipped one (another key); one with the same key stays (a local improvement). Only
+    # when the owner's converted stages differ (another ROM revision) does -check make the lines again.
+    ship = D.root / "dreamcast" / "game" / "vs" / "routes"
+    shipped = 0
+    for p in sorted(ship.glob("z*_*.rte")) if ship.is_dir() else []:
+        rdir.mkdir(parents=True, exist_ok=True)
+        dst = rdir / p.name
+        src_h = p.read_bytes()[:24]
+        dst_h = dst.read_bytes()[:24] if dst.is_file() else b""
+        if len(dst_h) < 24 or dst_h[9:10] == b"\x01" or dst_h[16:20] != src_h[16:20]:
+            shutil.copyfile(p, dst)
+            if (ship / (p.name + ".txt")).is_file():
+                shutil.copyfile(ship / (p.name + ".txt"), rdir / (p.name + ".txt"))
+            shipped += 1
+    if shipped:
+        print("vs routes: %d shipped line files copied to the build" % shipped, flush=True)
     if os.environ.get("SRDC_ROUTES") == "copy":   # test discs: only the lines already made
         pass
     elif not routes_exe:

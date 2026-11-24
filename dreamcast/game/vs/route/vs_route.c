@@ -794,9 +794,16 @@ static u16 *shortcuts(const Snap *start, u16 *pads, u32 *n, int tries, int round
  * collector's rival), its boost attack (knock-back), the CPU's own slips (a missed jump, no boost for
  * a while, the easy skill's boost choices), a death (respawn into a world that went on: gimmicks used,
  * platforms in other phases) and two of them in one race */
-enum { UP_SLOW, UP_CONFUSE, UP_DRAIN, UP_KNOCK, UP_NOJUMP, UP_NOBOOST, UP_EASY, UP_RIVAL, UP_RIVAL2, UP_DEATH, UP_TWO, UP_COUNT };
+enum { UP_SLOW, UP_CONFUSE, UP_DRAIN, UP_KNOCK, UP_NOJUMP, UP_NOBOOST, UP_EASY, UP_RIVAL, UP_RIVAL2, UP_DEATH, UP_TWO, UP_WORLD, UP_COUNT };
 static const char *const UP_NAME[UP_COUNT] = { "slowdown", "confusion", "tension drain", "knock-back", "missed jump", "no boost",
-                                                "easy skill", "rival", "rival + item", "death", "two upsets" };
+                                                "easy skill", "rival", "rival + item", "death", "two upsets", "random world" };
+/* Every trial runs in a world of its own: the game's random seed (gRandSeed) at the race start is the
+ * trial's. On the DC (and the DS) it is seeded at boot (Rand_SeedFromRTC) and runs on through the menus
+ * and the earlier races, so the item boxes' rings, the enemies' debris (Kuragen bombs) and every other
+ * Rand() differ from race to race; line 0 is searched with the seed 0 of the simulation's start. The
+ * random world alone (UP_WORLD) is the undisturbed race as the DC runs it. */
+static u32 world_seed(u32 seed) { return seed * 2654435761u + 0x9e3779b9u; }
+
 #define TRIAL_SNAPS 96
 static void upset(int u, u32 seed, DcPlayer *A, DcPlayer *B) {
     switch (u) {
@@ -816,18 +823,20 @@ static void upset(int u, u32 seed, DcPlayer *A, DcPlayer *B) {
  * times: the snapshot just before its last progress (after its last respawn) in *at, and the frames to
  * the goal it had there in *at_rem (a branch from there must join the lines past that) */
 static int trial(const Snap *start, int u, u32 fu, u32 seed, const u8 *file, u32 fsize, Snap *at, u32 *at_frame, u32 *at_rem) {
-    static Snap ring[TRIAL_SNAPS], stuck;
-    static u32 ring_f[TRIAL_SNAPS], stuck_f, stuck_for;
+    static Snap ring[TRIAL_SNAPS], stuck, pre_death;
+    static u32 ring_f[TRIAL_SNAPS], stuck_f, stuck_for, pre_death_f;
     int nr = 0, i, dead = 0, deaths = 0, u2 = u, rival = u == UP_RIVAL || u == UP_RIVAL2;
     u32 f, limit = L[0].n * 2 + 2400, best_t = 0, life_t = 0, fu2 = 0xffffffffu;
-    int best_rem = 0x7fffffff;
+    int best_rem = 0x7fffffff, death_rem = 0x7fffffff;   /* (the frames to the goal it had when it first died) */
     stuck_for = 0xffffffffu;
+    snap_free(&pre_death);
     if (u == UP_TWO) {   /* two upsets of the plain kinds, 5..20 s apart */
         u = (int)(seed % 4); u2 = (int)((seed / 4) % 6);
         if (u2 == UP_NOJUMP || u2 == UP_NOBOOST) u2 = UP_DEATH;
         fu2 = fu + 300 + (seed / 24) % 900;
     }
     snap_restore(start);
+    g_dcp_world.rand_seed = world_seed(seed);
     vs_cpu_begin(1, file, fsize, seed, u == UP_EASY ? VSC_EASY : VSC_HARD);
     /* the rival: player 1 (the other character) drives the same lines, starting up to 1.5 s apart: pushes,
      * boost attacks, the objects it takes first */
@@ -851,7 +860,23 @@ static int trial(const Snap *start, int u, u32 fu, u32 seed, const u8 *file, u32
         if (u == UP_NOBOOST && f >= fu && f < fu + 300) h &= (u16)~VSC_X;
         vs_sim_frame(h1, h);
         st = vs_cpu_stats(1);
-        if ((B->pf & DCP_PF_DEAD) && !dead) deaths++;
+        if ((B->pf & DCP_PF_DEAD) && !dead && deaths++ == 0 && !((u == UP_DEATH && f >= fu && f < fu + 4) || (u2 == UP_DEATH && f >= fu2 && f < fu2 + 4))) {
+            /* (a death the trial gives it is not one to go round) */
+            /* the first death: the snapshot 4 s before it (before the hit or the fall that led to it) */
+            int bi = -1;
+            for (i = 0; i < nr && i < TRIAL_SNAPS; i++) {
+                int j = (nr - 1 - i) % TRIAL_SNAPS;
+                if (ring_f[j] + 240 <= f) { bi = j; break; }
+            }
+            snap_free(&pre_death);
+            if (bi >= 0 && ring_f[bi] >= 30) {
+                pre_death.n = ring[bi].n;
+                pre_death.w = (unsigned *)malloc(sizeof(unsigned) * 2 * (pre_death.n ? pre_death.n : 1));
+                memcpy(pre_death.w, ring[bi].w, sizeof(unsigned) * 2 * pre_death.n);
+                pre_death_f = ring_f[bi];
+            }
+            death_rem = best_rem;
+        }
         if (!(B->pf & DCP_PF_DEAD) && dead) { best_rem = 0x7fffffff; best_t = life_t = f; }   /* respawned: progress anew */
         dead = (B->pf & DCP_PF_DEAD) != 0;
         if (!dead && (f > life_t || life_t == 0) && st->rem >= 0 && st->rem < best_rem - 4) { best_rem = st->rem; best_t = f; }   /* (not the respawn frame: its pad was made while dead, the stats are from before the death) */
@@ -865,6 +890,17 @@ static int trial(const Snap *start, int u, u32 fu, u32 seed, const u8 *file, u32
     }
     if (vs_sim_finished(1)) return 0;
     if (vs_sim_finished(0) && f - best_t < 300) return 0;   /* still getting on when the rival won */
+    if (deaths && pre_death.n && death_rem != 0x7fffffff && (best_rem == 0x7fffffff || best_rem > death_rem + 600)) {
+        /* it died and came back far behind (Battle Play respawns at the last checkpoint passed, often the
+         * start) without getting past where it died: the branch starts before the death, to go round it */
+        snap_free(at);
+        at->n = pre_death.n;
+        at->w = (unsigned *)malloc(sizeof(unsigned) * 2 * (at->n ? at->n : 1));
+        memcpy(at->w, pre_death.w, sizeof(unsigned) * 2 * at->n);
+        *at_frame = pre_death_f;
+        *at_rem = (u32)death_rem;
+        return 1;
+    }
     /* the snapshot 2 s after the last progress (where the CPU is when it finds itself stuck, so the branch
      * starts where it looks for another line), not before the last respawn */
     if (stuck_for == best_t && stuck.n && best_t >= life_t) {
@@ -953,6 +989,8 @@ static void report_lines(void) {
 int main(int argc, char **argv) {
     const char *from = NULL;
     int kept0 = 0;   /* line 0 kept from an earlier file */
+    int more = 0;    /* -more: a complete file's lines are all kept and more trials add branches to them */
+    const u8 *kept_file = NULL;   /* (the file line 0 was kept from) */
     int noshort = 0; /* -noshort: no shortcut pass (benchmarks) */
     int retool = 0;  /* -retool: files made by another tool build are made again (line 0 kept) */
     const char *guide = NULL;   /* -guide <route>: another line to the goal (used when the own guides fail) */
@@ -977,6 +1015,7 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[k], "-rekey")) dorekey = 1;
         else if (!strcmp(argv[k], "-noshort")) noshort = 1;
         else if (!strcmp(argv[k], "-retool")) retool = 1;
+        else if (!strcmp(argv[k], "-more")) more = 1;
         else if (!strcmp(argv[k], "-guide") && k + 1 < argc) guide = argv[++k];
         else if (!strcmp(argv[k], "-from") && k + 1 < argc) from = argv[++k];
         else if (!strcmp(argv[k], "-map")) show_map = 1;
@@ -1087,6 +1126,7 @@ int main(int argc, char **argv) {
                 /* a complete line 0 that replays to the goal frame for frame: kept */
                 pads = s_partial_pads; n0 = s_partial_len;
                 s_partial_pads = NULL; s_partial_len = 0;
+                kept_file = buf;
                 snap_restore(&start);
                 if (verbose) printf("  line 0: kept from %s, %u frames\n", from, n0);
                 goto have_line0;
@@ -1237,6 +1277,23 @@ int main(int argc, char **argv) {
     snap_restore(&start);
     if (add_line(pads, n0) < 0) { printf("%s chara %d: line 0 does not replay to the goal\n", argv[5], chara); return 1; }
     free(pads);
+    if (more && kept_file && ((const VsRouteHeader *)kept_file)->version == VS_ROUTE_VERSION) {
+        /* -more: the file's other lines (branches made by earlier trials) kept as they are; the trials below
+         * add branches where the CPU still gets stuck. (Their per-point states are not in the file: the
+         * merge tests take any state on them.) */
+        const VsRouteHeader *h = (const VsRouteHeader *)kept_file;
+        const VsRouteLine *ln = (const VsRouteLine *)(kept_file + sizeof *h);
+        const VsRoutePoint *pt = (const VsRoutePoint *)(ln + h->nlines);
+        int i;
+        for (i = 1; i < h->nlines && NL < VS_ROUTE_MAX_LINES; i++) {
+            Line *l = &L[NL++];
+            l->n = ln[i].count; l->rest = ln[i].rest; l->t0 = ln[i].t0; l->sx = ln[i].sx; l->sy = ln[i].sy;
+            l->pt = (VsRoutePoint *)malloc(sizeof(VsRoutePoint) * (l->n ? l->n : 1));
+            memcpy(l->pt, pt + ln[i].first, sizeof(VsRoutePoint) * l->n);
+            l->st = NULL;
+        }
+        if (verbose) printf("  -more: %d lines kept from the file\n", NL);
+    } else if (more) { printf("%s chara %d: -more needs a complete file whose line 0 replays (-from)\n", argv[5], chara); return 1; }
     /* coverage: places the search reached early that no line passes near (where an upset CPU may land):
      * a branch from each to an earlier line */
     {
@@ -1293,15 +1350,18 @@ int main(int argc, char **argv) {
      * (up to 4 repairs) until it reaches the goal */
     file = build_file(argv[5], chara, &fsize);
     for (t = 0; t < trials && passes < pass_needed && NL < MAXNL && total_points() < MAXPTS; t++) {
-        int u = (int)(rnd() % (UP_COUNT + 3)), rep;
-        if (u >= UP_COUNT) u = u == UP_COUNT ? UP_DEATH : u == UP_COUNT + 1 ? UP_TWO : UP_RIVAL2;   /* (the hard ones more often) */
+        int u = (int)(rnd() % (UP_COUNT + 5)), rep;
+        if (u >= UP_COUNT) u = u == UP_COUNT ? UP_DEATH : u == UP_COUNT + 1 ? UP_TWO : u == UP_COUNT + 2 ? UP_RIVAL2 : UP_WORLD;   /* (the hard ones and the plain race more often) */
         u32 fu = 120 + rnd() % (L[0].n > 400 ? L[0].n - 300 : 100), at_f = 0, at_rem = 0, nb, tseed = seed * 1000 + (u32)t;
         Snap at;
         memset(&at, 0, sizeof at);
         u32 last_f = 0xffffffffu;
+        int passed = 0;
+        if (more && rnd() % 2) u = UP_WORLD;   /* (-more: half the trials the plain race in a random world) */
         for (rep = 0; rep < 5; rep++) {
             int added = 0;
             if (!trial(&start, u, fu, tseed, file, fsize, &at, &at_f, &at_rem)) {
+                passed = rep == 0;
                 if (verbose) printf("  trial %2d (%s at %u): goal%s\n", t, UP_NAME[u], fu, rep ? " (repaired)" : "");
                 break;
             }
@@ -1330,7 +1390,7 @@ int main(int argc, char **argv) {
             s_merge_rem = 0;
             if (!added) break;
         }
-        if (rep == 0) passes++; else passes = 0;
+        if (passed) passes++; else passes = 0;   /* (a trial that failed counts as a failure even when no branch was found) */
         snap_free(&at);
     }
     snprintf(s_report, sizeof s_report, "%s chara %d: GOAL, line 0 %u frames (%u:%02u.%02u), %d lines, %u points, %d trials (last %d passed), %.1f s\n",

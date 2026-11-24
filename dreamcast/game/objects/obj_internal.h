@@ -414,6 +414,7 @@ void Player_State_JetCatapultLaunch(DcPlayer *w);
 void AttackHitbox_SetJetCatapultState(Obj *s);                           /* obj_player.c */
 /* obj_altitude.c */
 void altitude_reset(void);
+void itembox_reset(void);   /* obj_gimmicks.c: the item box popup pointer */
 Obj *Glider_Create(ObjParam *p, s32 x, s32 y);
 Obj *NeedleG_Create(ObjParam *p, s32 x, s32 y);
 Obj *Parachute_Create(ObjParam *p, s32 x, s32 y);

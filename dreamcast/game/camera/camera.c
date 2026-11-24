@@ -1107,6 +1107,7 @@ void camera_create(const void *level_data, DcPlayer *p, int zone, int act) {
     s32 rx, ry;
     u32 rf;
     int i;
+    s_respawn = 0;   /* (a respawn on the last frame of the previous stage) */
     memset(s_l, 0, sizeof(s_l));
     memset(&s_g, 0, sizeof(s_g));
     memset(&s_look, 0, sizeof(s_look));

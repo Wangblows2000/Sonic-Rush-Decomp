@@ -1166,6 +1166,7 @@ int objects_init(const rlvl_map_t *map, const uint8_t *level_data) {
     carnival_reset();
     altitude_reset();
     crisis_reset();
+    itembox_reset();
     for (s = 0; s < OBJ_MAX_VIEWS; s++)
         objects_set_view(s, 0, 0);
     W.objmgr |= 0x1c; /* view-out, map collision and hit boxes on (Stage_Create) */

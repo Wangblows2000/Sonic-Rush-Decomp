@@ -369,6 +369,10 @@ Obj *dashc_create_by_type(ObjParam *p, s32 b, s32 c) {
 
 /* ============================================================== Item box */
 static Obj *s_itempart; /* data_ov000_0236a018 */
+/* objects_init: objects_shutdown drops the objects without their destructors, so a popup alive at the
+ * end of a stage (an item box opened just before the goal) would leave this pointing into the pool the
+ * next stage refills (Battle Play races run one after another) */
+void itembox_reset(void) { s_itempart = NULL; }
 
 static void itempart_state_fadeout(Obj *p) {
     p->h.vel_y = (s16)dcp_spd_down(p->h.vel_y, 0x20);

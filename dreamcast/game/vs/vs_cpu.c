@@ -52,6 +52,11 @@ typedef struct Cpu {
                                 at its boarding place for it to come back (rw_l -1: none) */
     struct { s16 l; s16 x, y; u32 until; } fail[NFAIL];   /* lines that failed at a place (stuck there), for a while */
     int nfail;
+    int stuck_n;             /* stuck detections since the last progress */
+    int deaths;              /* this race */
+    s32 death_x, death_y;    /* where it last died */
+    int was_dead;
+    u32 lost_until;          /* following the rival's path until then (the lines fail here) */
     VsCpuStats st;
 } Cpu;
 static Cpu C[2];
@@ -299,8 +304,19 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
          * place reached; without this the CPU takes itself for stuck 3 s after every respawn) */
         c->best_rem = 0x7fffffff; c->best_t = c->t;
         c->rec = 0; c->ru_n = 0; c->rw_l = -1; c->jump_hold = 0; c->tl = -1;
+        c->stuck_n = 0;
+        if (!c->was_dead) {
+            /* died again near where it died before: the lines lead into it in this race (the world moved on);
+             * after the respawn the rival's way is followed for 30 s. Else the lines first */
+            int again = c->deaths > 0 && sq(x - c->death_x, y - c->death_y) < 640 * 640;
+            c->deaths++; c->death_x = x; c->death_y = y;
+            c->lost_until = again && c->rvn > 240 ? c->t + 1800 : 0;
+            if (again && c->rvn > 240) c->st.follow++;
+        }
+        c->was_dead = 1;
         goto out;
     }
+    c->was_dead = 0;
     if (c->delay > 0) { c->delay--; c->best_t = c->t; goto out; }   /* reacting to GO */
     /* the rival's path (what a player sees of it on the split screen) */
     if (rival != NULL && c->rvcap > 0 && !(rival->pf & DCP_PF_DEAD)) {
@@ -313,7 +329,20 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
     }
     if (c->nl > 0 || c->rvn > 0) {
         int ban = (int)c->t < c->ban_until ? c->ban : -1;
+        /* lost: the lines failed here twice running (an item, a knock-back, a death, an enemy, the world
+         * not as the line knew it). The rival's path is a way on that works in this race: it is followed
+         * (its pads replayed from the nearest place it passed, with the player's own moves) until the CPU
+         * is back on a line past the trouble */
+        int lost = c->t < c->lost_until && c->rvn > 0;
         if (c->nl == 0 && c->cl >= 0) c->cl = -1;   /* no lines: only the rival's path */
+        if (c->cl == -2 && !lost && c->nl > 0 && (c->t & 7) == 0) {
+            /* on the rival's path, not lost any more: a line here (on it, not one that failed here) is taken */
+            int l2, k2;
+            s32 d2;
+            if (join(c, x, y, NEAR_PX, ban, &l2, &k2, &d2) && !failed_here(c, l2, x, y)) {
+                c->cl = l2; c->k = k2; c->best_rem = 0x7fffffff; c->best_t = c->t;
+            }
+        }
         if (c->cl == -2) k = rv_track(c, c->k, x, y, &dist2);
         else if (c->nl > 0 && c->cl != ban && !failed_here(c, c->cl, x, y)) k = track(c, c->cl, c->k, x, y, &dist2);
         /* the end of a branch (it joins an earlier line there), off the line, or a banned line: another line */
@@ -324,9 +353,9 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
             int excl = at_end ? c->cl : ban, kr = -1;
             int got = c->nl > 0 && join(c, x, y, JOIN_PX, excl, &l2, &k2, &d2);
             /* partial lines (no way to the goal was found): the rival's path when it is near */
-            if (c->rvn > 0 && (c->nl == 0 || c->incomplete)) kr = rv_join(c, x, y, JOIN_PX, &dr);
-            if (kr >= 0 && (!got || (c->incomplete && l2 == 0))) {
-                if (c->cl != -2) c->st.relocate++;
+            if (c->rvn > 0 && (c->nl == 0 || c->incomplete || lost)) kr = rv_join(c, x, y, JOIN_PX, &dr);
+            if (kr >= 0 && (!got || (c->incomplete && l2 == 0) || lost)) {
+                if (c->cl != -2) { c->st.relocate++; c->best_rem = 0x7fffffff; c->best_t = c->t; }
                 c->cl = -2; k = kr; dist2 = dr;
             } else if (got && (k < 0 || d2 < dist2 || excl == c->cl)) {
                 if (l2 != c->cl || k2 < k - 120 || k2 > k + 240) c->st.relocate++;
@@ -338,7 +367,7 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
         } else if (k >= 0 && c->cl >= 0) {
             int rem = (int)left(c, c->cl, k);
             c->k = k + 1 < (int)c->ln[c->cl].count ? k + 1 : k;
-            if (dist2 <= NEAR_PX * NEAR_PX && rem < c->best_rem - 4) { c->best_rem = rem; c->best_t = c->t; }
+            if (dist2 <= NEAR_PX * NEAR_PX && rem < c->best_rem - 4) { c->best_rem = rem; c->best_t = c->t; c->stuck_n = 0; }
             if (c->cl == 0) c->st.idx = k;
         } else if (k >= 0 && c->cl == -2) {
             c->k = k + 1 < c->rvn ? k + 1 : k;
@@ -354,7 +383,8 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
         behind = c->cl == 0 && c->ridx > k + 120;   /* it is a race: no easing off behind */
     }
     /* stuck: no progress for 3 s (not while carried or waiting for a ride) -> recovery moves */
-    if (c->rec == 0 && c->t - c->best_t > 180 && !riding && c->wait == 0) {
+    if (c->rec == 0 && c->t - c->best_t > (riding ? 600u : 180u) && c->wait == 0) {   /* (a ride that goes nowhere: 10 s) */
+        if (++c->stuck_n >= 2 && c->rvn > 240 && c->cl != -2) { c->lost_until = c->t + 600; c->st.follow++; }
         if (on && c->cl >= 0) {
             /* stuck on the line: too slow for what comes (a slope, a jump): back to an earlier point of the
              * line for a run-up, further back each try; after three tries here the line is left for a while */
@@ -408,7 +438,16 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
             goto rival_check;
         }
     }
-    if (on && c->rec == 0) {
+    if (on && c->rec == 0 && c->cl == -2 && rival != NULL && rival->chara != p->chara) {
+        /* on the rival's path, the rival the other character (its moves are not ours: Blaze's hover,
+         * Sonic's air dash): after it with our own moves, to its place 0.5 s further on */
+        s32 tx, ty;
+        int a = k + 30 < c->rvn ? k + 30 : c->rvn - 1;
+        rv_before(c, a, &tx, &ty);
+        c->st.on_line++;
+        c->wait = 0; c->tl = -1;
+        h = steer(c, p, tx, ty);
+    } else if (on && c->rec == 0) {
         /* on the line: the pad the line used from here */
         const VsRoutePoint *q = c->cl == -2 ? &c->rv[k] : P(c, c->cl, k);
         const VsRoutePoint *q0 = c->cl == -2 ? &c->rv[k > 0 ? k - 1 : 0] : P(c, c->cl, k > 0 ? k - 1 : 0);
@@ -460,8 +499,8 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
             break;
         }
         if (--c->rec_t <= 0) c->rec = 0;
-    } else if (c->nl > 0 && k >= 0 && c->cl >= 0) {
-        /* off the line. A ride ahead (ship, cargo...) that left without us: wait at its boarding place */
+    } else if (c->nl > 0 && k >= 0 && c->cl >= 0 && !(c->t < c->lost_until && c->rvn > 0)) {
+        /* off the line (lost: to the rival's path, below). A ride ahead (ship, cargo...) that left without us: wait at its boarding place */
         const VsRoutePoint *q = P(c, c->cl, k);
         int b = k;
         c->st.off_line++;
@@ -499,7 +538,7 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
     } else {
         /* no line near: the furthest place of the rival's path within reach, else straight on */
         s32 dr;
-        int kr = c->rvn > 0 && (c->nl == 0 || c->incomplete) ? rv_join(c, x, y, 1024, &dr) : -1;
+        int kr = c->rvn > 0 && (c->nl == 0 || c->incomplete || c->t < c->lost_until) ? rv_join(c, x, y, 1024, &dr) : -1;
         c->st.off_line++;
         if (kr >= 0) {
             s32 tx, ty;

@@ -216,6 +216,15 @@ static void hook_model_speed(void *ctx, DcPlayer *p, s32 fx) {
         dcp_model_set_slot_speed_main(s_hooked2, fx);
 }
 /* Battle Play: a second player's model (dcp_model_attach first for player 1); NULL detaches */
+/* a model reused for a new stage (the same character: Battle Play races one after another) starts as a
+ * loaded one (Model_Init, Player_InitState), as the host simulation's do */
+static void model_fresh(DcpModel *m) {
+    m->jnt_frame = m->vis_frame = m->blend_frame = 0;
+    m->ratio = 0;
+    m->speed = 0x1000;
+    m->blend_speed = 0x200;
+    m->slot_speed = 0x1000;
+}
 void dcp_model_attach_second(DcpModel *m, const DcPlayer *p) {
     s_hooked2 = m;
     if (m == NULL)
@@ -225,6 +234,7 @@ void dcp_model_attach_second(DcpModel *m, const DcPlayer *p) {
     m->jnt_anim = m->vis_anim = m->blend_anim = -1;
     m->parts0 = m->parts4 = 0;
     m->posed = 0;
+    model_fresh(m);
     if (p && m->ok)
         dcp_model_set_anim(m, (DcPlayer *)p, p->anim);
 }
@@ -244,6 +254,7 @@ void dcp_model_attach(DcpModel *m, const DcPlayer *p) {
     m->jnt_anim = m->vis_anim = m->blend_anim = -1;
     m->parts0 = m->parts4 = 0;
     m->posed = 0;
+    model_fresh(m);
     if (p && m->ok)
         dcp_model_set_anim(m, (DcPlayer *)p, p->anim);
 }
