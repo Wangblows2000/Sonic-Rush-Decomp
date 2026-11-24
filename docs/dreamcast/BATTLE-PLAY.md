@@ -140,8 +140,10 @@ before one of the line's jumps; never when the rival is well ahead).
 **Where the lines come from.** `vs/route/vs_route.c` (host tool, run at disc build time on the owner's
 converted stages; nothing derived from the game is in the repository):
 1. **Line 0:** a search with the real game simulation (`route/vs_sim.c`: player, objects, cameras,
-   race rules, the Dead Line gravity split) in the style of Go-Explore. The stage is cut into 64 px cells,
-   also split by the guide's stage, ground / air, the collision layer and whether a switch timer runs.
+   race rules, the Dead Line gravity split, and the two players' models, whose animation ends drive some
+   player states such as the Altitude Limit parachute, as `dcp_model_step` does on the Dreamcast) in the
+   style of Go-Explore. The stage is cut into 64 px cells, also split by the guide's stage, ground / air,
+   the collision layer and the switch timers (none, about to run out, time to spare).
    The archive keeps a snapshot of the whole simulation (`route/snap.c`: every static of the simulation
    sources, bracketed in link order by `snap_begin.c` / `snap_end.c`, and the objects' mutable heap
    copies; at most 1.2 GB) and the fastest way into each cell. Each round restores a promising cell and
@@ -158,10 +160,12 @@ converted stages; nothing derived from the game is in the repository):
 4. **Trials:** the CPU itself, in the simulation, from the start with an upset: slowdown, confusion,
    tension drain, knock-back, a missed jump, no boost, easy skill, a rival CPU on the same lines, a rival
    and an item, a death (respawn into a world that went on), or two of them. Progress is the line's frames
-   to the goal; 7 s without progress (or three deaths) fails the trial. A branch is searched from the frame
-   the CPU found itself stuck to a point of the lines past the trouble (fewer frames to the goal), and
-   the same trial runs again with it (up to 4 repairs) until it reaches the goal. 90 trials, or 15
-   passes in a row; up to 140 lines.
+   to the goal (the respawn frame does not count); 7 s without progress (or three deaths) fails the trial.
+   A branch is searched from the frame the CPU found itself stuck to a point of the lines at least 3 s
+   further on (fewer frames to the goal) where the player is in the same state (ground / air, ridden,
+   underwater); the same trial then runs again with it (up to 4 repairs) until it reaches the goal.
+   90 trials, or 15 passes in a row; up to 140 lines. Shortcuts (2.) run only on a line 0 found in the
+   same run, so a kept line 0 stays as it is.
 Limits are in search rounds, so a build gives the same lines on every machine (the time is only a
 safety cap; the Windows build `vs_route.exe` and the Linux build replay each other's lines exactly). A
 line is checked by replaying it from the start. A stage where no way to the goal is found gets the

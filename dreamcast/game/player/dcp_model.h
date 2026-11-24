@@ -60,6 +60,7 @@ typedef struct DcpModel {
     dcm_local_t loc2[DCM_MAX_JOINTS];
     dcm_mtx_t pal[DCM_MAX_PALETTE];
     u8 visbits[DCM_MAX_JOINTS];
+    u8 no_pose;                 /* host simulations: animation timing and flags only, no joint pose (not drawn) */
 } DcpModel;
 
 extern DcpModel g_dcp_model;

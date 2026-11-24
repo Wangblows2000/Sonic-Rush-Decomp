@@ -23,7 +23,8 @@ typedef struct VsRouteHeader {
     u32 points;          /* all lines */
     u32 key;             /* generation key: the inputs (stage, objects, player data) and the simulation and
                             tool sources it was made from; vs_route -check reuses a file with the same key */
-    u32 reserved;
+    u32 tool;            /* the search tool / follower build that made it (vs_route -check keeps a file made by
+                            another tool build when the key matches; only partial ones are searched again) */
 } VsRouteHeader;         /* 24 bytes */
 typedef struct VsRouteLine {
     u32 first;           /* index of the line's first point */

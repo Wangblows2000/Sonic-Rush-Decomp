@@ -346,6 +346,8 @@ void dcp_model_step(DcpModel *m, DcPlayer *p, int paused) {
     }
     if (!frozen)
         p->disp_flags = flags;
+    if (m->no_pose)
+        return;
 
     /* pose: integer NNS frames (NNS_G3dAnmObj samples frame >> 12) */
     mdl = &m->res[m->cur_res];

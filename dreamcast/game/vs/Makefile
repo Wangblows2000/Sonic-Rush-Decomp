@@ -26,17 +26,21 @@ host-test: $(OUT)/test_vs $(OUT)/test_cpu_unit
 CPU_STAGES = z11 z12 z21 z22 z31 z32 z41 z42 z51 z52 z61 z62 z71 z72
 cpu-test: $(OUT)/test_cpu
 	@cd $(ROOT)/build/dreamcast && for s in $(CPU_STAGES); do for c in 0 1; do ./vs/test_cpu stages player objects sprites/bac $$s $$c vs/routes/$${s}_$$c.rte $(CPU_ARGS); done; done
-# the sources a racing line depends on (the simulation, the follower, the tool): their hash goes into
-# every line's generation key, so changing any of them makes the lines again (and nothing else does)
-VSR_DEPS = $(sort $(SRCS) $(OBJ_SRCS) $(PLAYER_SRCS) $(MODEL_SRCS) ../model/*.h vs_cpu.c route/vs_sim.c route/snap.c route/vs_route.c \
-           $(wildcard *.h route/*.h $(OBJ_DIR)/*.h $(PLAYER_DIR)/*.h ../camera/*.h ../zonefx/*.h))
+# A racing line is valid for the simulation it was made in: the hash of the simulation's sources goes
+# into every line's generation key (with the stage, object and player data), so changing the game code
+# the lines run on makes them again. The search tool and the follower (VSR_TOOL) only decide how good the
+# lines are: a file made by another tool build is kept (its tool hash is recorded; partial ones are
+# searched again).
+VSR_DEPS = $(sort $(SRCS) $(OBJ_SRCS) $(PLAYER_SRCS) $(MODEL_SRCS) ../model/*.h route/vs_sim.c \
+           $(wildcard vs.h vs_route.h route/vs_sim.h $(OBJ_DIR)/*.h $(PLAYER_DIR)/*.h ../camera/*.h ../zonefx/*.h))
 VSR_SRC := $(shell cat $(VSR_DEPS) | sha1sum | cut -c1-16)
+VSR_TOOL := $(shell cat vs_cpu.c vs_cpu.h route/vs_route.c route/snap.c route/snap.h | sha1sum | cut -c1-16)
 vsr-src:
-	@echo $(VSR_SRC)
+	@echo $(VSR_SRC) $(VSR_TOOL)
 ROUTE_SIM = route/snap_begin.c $(SRCS) $(OBJ_SRCS) $(PLAYER_SRCS) $(MODEL_SRCS) route/vs_sim.c route/snap_end.c
 $(OUT)/vs_route: $(SRCS) vs.h vs_cpu.h vs_cpu.c vs_route.h route/*.c route/*.h $(OBJ_SRCS) $(PLAYER_SRCS) $(MODEL_SRCS)
 	mkdir -p $(OUT)
-	gcc $(CFLAGS_HOST) -fno-common -DVSR_SRC='"$(VSR_SRC)"' -o $@ $(ROUTE_SIM) route/snap.c vs_cpu.c route/vs_route.c -lm
+	gcc $(CFLAGS_HOST) -fno-common -DVSR_SRC='"$(VSR_SRC)"' -DVSR_TOOL='"$(VSR_TOOL)"' -o $@ $(ROUTE_SIM) route/snap.c vs_cpu.c route/vs_route.c -lm
 # Vs CPU racing lines (disc build: tools/dreamcast/disc/assemble_disc.py -> /cd/vs): one per stage and
 # character, made from the converted stages with the real simulation (route/vs_route.c). Every pair runs
 # with -check: a line whose generation key (stage, objects, player data, sources, version) is unchanged is

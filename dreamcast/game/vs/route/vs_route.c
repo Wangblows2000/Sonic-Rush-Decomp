@@ -42,7 +42,10 @@ static double rndf(void) { return rnd() / (double)0x1000000; }
 
 /* ------------------------------------------------------------ generation key */
 #ifndef VSR_SRC
-#define VSR_SRC "unknown"        /* the Makefile passes a hash of the simulation and tool sources */
+#define VSR_SRC "unknown"        /* the Makefile passes a hash of the simulation's sources */
+#endif
+#ifndef VSR_TOOL
+#define VSR_TOOL "unknown"       /* and of the tool's and follower's */
 #endif
 static u32 crc_tab[256];
 static u32 crc32_add(u32 c, const u8 *b, size_t n) {
@@ -252,7 +255,7 @@ static int stage_for(s32 x, s32 y) {
 
 /* ------------------------------------------------------------ macros */
 /* a pad pattern relative to the direction fwd (VSC_RIGHT / VSC_LEFT), f = frame in the macro */
-#define NMACRO 22
+#define NMACRO 24
 static u16 macro_pad(int m, int f, u16 fwd) {
     u16 back = fwd == VSC_RIGHT ? VSC_LEFT : VSC_RIGHT;
     switch (m) {
@@ -278,12 +281,16 @@ static u16 macro_pad(int m, int f, u16 fwd) {
     case 20: return (u16)(fwd | VSC_X);                           /* boost in the air (falling, off a ledge) */
     case 21: return (u16)(fwd | (f % 12 < 2 ? VSC_A : 0));        /* A pressed again and again (parachute glide,
                                                                      flapping, mashing a gimmick) */
+    case 22: return (u16)(fwd | VSC_R);                           /* R held in the air: Blaze's hover (keeps her
+                                                                     horizontal speed, slow descent; speedrun guides) */
+    case 23: return (u16)((f < 2 ? VSC_R | VSC_UP | fwd : fwd));  /* diagonal trick off a spring / ramp (Blaze's
+                                                                     shortcut trick; Sonic keeps speed with it) */
     case 18: return 0;                                            /* a long wait (timed gimmicks: platforms that come
                                                                      every minute, doors, catapults coming back) */
     }
     return 0;
 }
-static const int W_MACRO[NMACRO] = { 12, 13, 15, 8, 6, 4, 9, 3, 5, 4, 7, 5, 1, 2, 2, 0, 0, 0, 1, 3, 0, 0 };   /* sum 100 (15..17, 20: below) */
+static const int W_MACRO[NMACRO] = { 12, 13, 15, 8, 6, 4, 9, 3, 5, 4, 7, 5, 1, 2, 2, 0, 0, 0, 1, 3, 0, 0, 0, 0 };   /* sum 100 (15..17, 20: below) */
 
 /* ------------------------------------------------------------ archive search */
 typedef struct Ent {
@@ -396,7 +403,7 @@ static s32 s_px[4096], s_py[4096];   /* positions in the round (merge direction)
  * max_rounds rounds (budget seconds at most); after the first goal it goes on for a faster way (6000 rounds).
  * Returns the pads (malloc) and their count, NULL when no goal was found. */
 static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, const char *what) {
-    int it, goal_it = -1, k;
+    int it, goal_it = -1, last_imp = 0, k;
     u32 best_goal = INF, goal_len = 0;
     u16 *goal_pads = NULL, *seg = (u16 *)malloc(sizeof(u16) * 4096);
     clock_t t0 = clock();
@@ -415,7 +422,12 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
         double el = (double)(clock() - t0) / CLOCKS_PER_SEC;
         /* limits in rounds (the same line on every machine); the time is only a safety cap */
         if (it >= max_rounds || el > budget) break;
-        if (goal_it >= 0 && it - goal_it > (s_merge ? 1500 : 6000)) break;
+        /* after the first goal the search goes on for a faster way while it keeps finding one: it stops when
+         * the last improvement is 400 rounds back (branches; 2000 for line 0), at most 1500 / 6000 rounds after
+         * the first goal. Without a goal: stops when the best place has not moved for 20000 rounds (the
+         * staged search takes over from the furthest place) */
+        if (goal_it >= 0 && (it - goal_it > (s_merge ? 1500 : 6000) || it - last_imp > (s_merge ? 400 : 2000))) break;
+        if (goal_it < 0 && stagnant > 20000) break;
         E[ei].chosen++;
         snap_restore(&E[ei].snap);
         frame = E[ei].frame;
@@ -429,11 +441,11 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
                 int r = (int)(rnd() % 100), s = 0;
                 if ((p->pf & DCP_PF_TRICKABLE) && !(p->move_flags & DCP_MF_GROUND) && r < 45) {
                     /* launched (spring, ramp, dash ring): tricks (tension) or steering in the air */
-                    m = r < 18 ? 16 : r < 34 ? 17 : 15;
+                    m = r < 12 ? 16 : r < 24 ? 17 : r < 36 ? 23 : 15;
                     mlen = 16 + (int)(rnd() % 16);
                 } else if (!(p->move_flags & DCP_MF_GROUND) && r < 18) {
-                    m = r < 6 ? 15 : r < 12 ? 20 : 21;                  /* steering / boost / A again and again in the air */
-                    mlen = m == 21 ? 24 + (int)(rnd() % 120) : 8 + (int)(rnd() % 30);
+                    m = r < 6 ? 15 : r < 12 ? 20 : r < 15 ? 21 : 22;    /* steering / boost / A again and again / hover */
+                    mlen = m == 21 ? 24 + (int)(rnd() % 120) : m == 22 ? 10 + (int)(rnd() % 60) : 8 + (int)(rnd() % 30);
                 } else if (p->gimmick != NULL) {
                     /* carried by a gimmick (ship, rail, cargo, hand...): mostly stay on board, hop over hazards */
                     /* (steered rides, saucers, rails, carts: left / right held for a while) */
@@ -465,6 +477,7 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
                     goal_pads = path_to(last_ent, seg + seg_start, n - seg_start, &goal_len);
                     best_goal = frame;
                     if (goal_it < 0) goal_it = it;
+                    last_imp = it;
                     if (verbose) printf("  %s: goal at frame %u (round %d, %.1f s, archive %d)\n", what, frame, it, el, NE);
                 }
                 break;
@@ -670,6 +683,7 @@ static u8 *build_file(const char *stage, int chara, u32 *size) {
     h.nlines = (u16)NL; h.points = tp;
     h.flags = (u8)(L[0].rest ? VSR_INCOMPLETE : 0);
     h.key = s_key;
+    h.tool = crc32_add(0, (const u8 *)VSR_TOOL, strlen(VSR_TOOL));
     memcpy(w, &h, sizeof h); w += sizeof h;
     for (i = 0; i < NL; i++) {
         VsRouteLine ln;
@@ -905,7 +919,7 @@ static char s_report[4096];
 static void report_lines(void) {
     size_t o = strlen(s_report);
     int i;
-    o += (size_t)snprintf(s_report + o, sizeof s_report - o, "key %08x, version %d, source %s\n", s_key, VS_ROUTE_VERSION, VSR_SRC);
+    o += (size_t)snprintf(s_report + o, sizeof s_report - o, "key %08x, version %d, source %s, tool %s\n", s_key, VS_ROUTE_VERSION, VSR_SRC, VSR_TOOL);
     for (i = 0; i < NL && o < sizeof s_report - 80; i++)
         o += (size_t)snprintf(s_report + o, sizeof s_report - o, "line %d: %u frames from %u,%u to %u,%u, %u to the goal after\n", i, L[i].n,
                               L[i].sx, L[i].sy, L[i].pt[L[i].n - 1].x, L[i].pt[L[i].n - 1].y, L[i].rest);
@@ -914,6 +928,8 @@ static void report_lines(void) {
 int main(int argc, char **argv) {
     const char *from = NULL;
     int kept0 = 0;   /* line 0 kept from an earlier file */
+    int noshort = 0; /* -noshort: no shortcut pass (benchmarks) */
+    int retool = 0;  /* -retool: files made by another tool build are made again (line 0 kept) */
     int chara, k, dorep = 0, dorekey = 0, docheck = 0, trials = 90, pass_needed = 15, passes = 0, t;
     double budget = 600, branch_budget = 120;
     int rounds = 60000;
@@ -933,6 +949,8 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[k], "-replay")) dorep = 1;
         else if (!strcmp(argv[k], "-check")) docheck = 1;
         else if (!strcmp(argv[k], "-rekey")) dorekey = 1;
+        else if (!strcmp(argv[k], "-noshort")) noshort = 1;
+        else if (!strcmp(argv[k], "-retool")) retool = 1;
         else if (!strcmp(argv[k], "-from") && k + 1 < argc) from = argv[++k];
         else if (!strcmp(argv[k], "-map")) show_map = 1;
         else if (!strcmp(argv[k], "-win") && k + 4 < argc) { int q; for (q = 0; q < 4; q++) s_win[q] = atoi(argv[++k]); s_win_on = 1; }
@@ -942,14 +960,21 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[k], "-trials") && k + 1 < argc) trials = atoi(argv[++k]);
     }
     s_key = gen_key(argv[1], argv[2], argv[3], argv[5], chara);
+    for (k = 8; k < argc; k++)
+        if (!strcmp(argv[k], "-key")) { printf("key %08x\n", s_key); return 0; }   /* the present generation key */
     if (docheck) {
         /* reuse a file made from the same inputs, simulation and tool (the key); anything else is made again */
         FILE *fi = fopen(argv[7], "rb");
         VsRouteHeader h;
-        if (fi && fread(&h, 1, sizeof h, fi) == sizeof h && !memcmp(h.magic, "VSRT", 4) && h.version == VS_ROUTE_VERSION && h.key == s_key) {
+        u32 tool = crc32_add(0, (const u8 *)VSR_TOOL, strlen(VSR_TOOL));
+        if (fi && fread(&h, 1, sizeof h, fi) == sizeof h && !memcmp(h.magic, "VSRT", 4) && h.version == VS_ROUTE_VERSION && h.key == s_key &&
+            (h.tool == tool || (!(h.flags & VSR_INCOMPLETE) && !retool))) {
+            /* made in this simulation: kept (a partial one only when this tool build made it: another build is
+             * given the chance to finish it; -retool: a complete one too, else its line 0 is kept and the
+             * coverage, trials and branches are made again with this build) */
             fclose(fi);
-            printf("%s chara %d: up to date (key %08x, %u lines, %u points%s)\n", argv[5], chara, s_key, h.nlines, h.points,
-                   (h.flags & VSR_INCOMPLETE) ? ", PARTIAL" : "");
+            printf("%s chara %d: up to date (key %08x%s, %u lines, %u points%s)\n", argv[5], chara, s_key, h.tool == tool ? "" : ", other tool",
+                   h.nlines, h.points, (h.flags & VSR_INCOMPLETE) ? ", PARTIAL" : "");
             return (h.flags & VSR_INCOMPLETE) ? 3 : 0;
         }
         /* another build made it: its line 0 is the start (a complete one is kept when it still replays to the
@@ -1161,7 +1186,7 @@ int main(int argc, char **argv) {
     snap_restore(&start);
     /* shortcuts only for a line 0 found now: a kept one (-check, -from) stays as it is (a shortcut can
      * swap a robust line 0 for a faster, fragile one: Leaf Storm act 1 Sonic lost half its upset races) */
-    if (!kept0) pads = shortcuts(&start, pads, &n0, 40, 6000);
+    if (!kept0 && !noshort) pads = shortcuts(&start, pads, &n0, 40, 6000);
     snap_restore(&start);
     if (add_line(pads, n0) < 0) { printf("%s chara %d: line 0 does not replay to the goal\n", argv[5], chara); return 1; }
     free(pads);

@@ -80,6 +80,7 @@ int vs_sim_init(const char *stages, const char *player, const char *objdata, con
     s_mdl_ok[0] = dcp_model_load(&s_mdl[0], chara1, path, 0) == 0;
     s_mdl_ok[1] = dcp_model_load(&s_mdl[1], chara2, path, 0) == 0;
     if (!s_mdl_ok[0] || !s_mdl_ok[1]) { printf("player models not found in %s (make -C dreamcast/game/vs simmodel)\n", path); return -1; }
+    s_mdl[0].no_pose = s_mdl[1].no_pose = 1;   /* (the pose is only drawn; the timing and flags are all the game reads) */
     dcp_model_attach(&s_mdl[0], &S->p[0]);   /* (main.c spawn_player: before objects_init, the hooks chain) */
     objects_set_paths(objdata, sprites);
     objects_add_player(&S->p[0]); objects_add_player(&S->p[1]);

@@ -42,14 +42,23 @@ int snap_init(void) {
     return 0;
 }
 size_t snap_bytes(void) { return NW * 4; }
+/* the words that differ from the base image: one pass, 64-byte blocks compared with memcmp first (most of
+ * the simulation's memory equals the base), into a scratch list, then one exact allocation */
 void snap_take(Snap *s) {
-    size_t i, k = 0;
+    static unsigned *tmp;
+    static size_t cap;
+    size_t i, k = 0, b;
     gather(cur);
-    for (i = 0; i < NW; i++) if (cur[i] != base[i]) k++;
+    if (cap < 2 * NW + 2) { cap = 2 * NW + 2; free(tmp); tmp = (unsigned *)malloc(sizeof(unsigned) * cap); }
+    for (b = 0; b < NW; b += 16) {
+        size_t e = b + 16 < NW ? b + 16 : NW;
+        if (!memcmp(cur + b, base + b, (e - b) * 4)) continue;
+        for (i = b; i < e; i++)
+            if (cur[i] != base[i]) { tmp[2 * k] = (unsigned)i; tmp[2 * k + 1] = cur[i]; k++; }
+    }
     s->w = (unsigned *)malloc(sizeof(unsigned) * 2 * (k ? k : 1));
     s->n = (unsigned)k;
-    for (i = 0, k = 0; i < NW; i++)
-        if (cur[i] != base[i]) { s->w[2 * k] = (unsigned)i; s->w[2 * k + 1] = cur[i]; k++; }
+    memcpy(s->w, tmp, sizeof(unsigned) * 2 * k);
 }
 void snap_restore(const Snap *s) {
     unsigned i;
