@@ -12,6 +12,7 @@
 #include "vs_route.h"
 #include "../player/dcp_collision.h"
 
+#define VSC_BUTTONS (VSC_A | VSC_B | VSC_X | VSC_Y | VSC_R | VSC_L)
 #define NEAR_PX 40          /* on the line within this distance */
 #define JOIN_PX 64          /* another line's point this near can be taken */
 #define WIN_BACK 90         /* local search window (frames) around the expected one */
@@ -406,7 +407,17 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
         c->st.on_line++;
         c->wait = 0; c->jump_hold = 0; c->tl = -1;
         if (k == 0) edge = want;
-        if (edge & c->prev) want &= (u16)~(edge & c->prev);   /* a press we already hold: let go for a frame */
+        /* a press we already hold: let go for a frame (buttons only: a direction let go every other frame
+         * while the line waits for a press that does not take, e.g. a boost without tension, stalls the run) */
+        if (edge & c->prev & VSC_BUTTONS) want &= (u16)~(edge & c->prev & VSC_BUTTONS);
+        /* the line holds A from before here and we do not (we joined it, or let go): pressing it now would
+         * jump where the line did not (its press was long ago, the jump done or not taken). Not pressed
+         * until the line lets go and presses again; a press of the last 3 frames is still made (late) */
+        if (c->cl >= 0 && k > 0 && (want & q0->pad & VSC_A) && !(c->prev & VSC_A)) {
+            int j = k - 1;
+            while (j > 0 && k - j <= 4 && (P(c, c->cl, j - 1)->pad & VSC_A)) j--;
+            if (k - j > 3) want &= (u16)~VSC_A;
+        }
         if (c->cl >= 0 && (want & VSC_X) && skip_boost(c, k, behind)) want &= (u16)~VSC_X;
         h = want;
     } else if (c->rec) {

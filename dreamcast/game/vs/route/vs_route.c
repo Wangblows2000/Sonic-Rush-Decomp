@@ -135,7 +135,7 @@ static int free_cell(s32 x0, s32 y0) {
 /* The guide: a chain of targets ending at the goal ring (plain: the goal alone; when that search
  * fails: the checkpoint markers in their order, bit 0x1, 0x2, 0x4... of the entry flags, then the goal).
  * Field s = distance through free space to target s; potential(x, y, s) = field s + the chain after it. */
-#define MAXW 12
+#define MAXW 40
 static s32 *fields[MAXW];
 static s32 wx[MAXW], wy[MAXW], wrest[MAXW];
 static int NW;
@@ -228,7 +228,30 @@ static s32 field_at(int s, s32 x, s32 y) {
     return best == INF ? 1000000 : best;
 }
 static s32 potential(s32 x, s32 y, int s) { return field_at(s, x, y) + wrest[s]; }
-/* chain = the goal (markers 0) or the markers in order then the goal (markers 1) */
+/* -guide: places along another line that reaches the goal (the other character's line 0: a way through
+ * the stage the search can follow where its own guides lead into a dead end) */
+static s32 s_gx[MAXW], s_gy[MAXW];
+static int s_ng;
+static int load_guide(const char *path) {
+    FILE *f = fopen(path, "rb");
+    static u8 b[1 << 23];
+    size_t sz = f ? fread(b, 1, sizeof b, f) : 0;
+    const VsRouteHeader *h = (const VsRouteHeader *)b;
+    const VsRouteLine *ln;
+    const VsRoutePoint *pt;
+    u32 i, step;
+    if (f) fclose(f);
+    if (sz < sizeof *h || memcmp(h->magic, "VSRT", 4) || h->version != VS_ROUTE_VERSION || (h->flags & VSR_INCOMPLETE)) return 0;
+    ln = (const VsRouteLine *)(b + sizeof *h);
+    pt = (const VsRoutePoint *)(ln + h->nlines) + ln[0].first;
+    step = ln[0].count / (MAXW - 2) + 1;
+    if (step < 240) step = 240;
+    s_ng = 0;
+    for (i = step; i + step / 2 < ln[0].count && s_ng < MAXW - 2; i += step) { s_gx[s_ng] = pt[i].x; s_gy[s_ng] = pt[i].y; s_ng++; }
+    return s_ng;
+}
+/* chain = the goal (markers 0), the markers in order then the goal (markers 1), the guide's places then
+ * the goal (markers 2) */
 static int set_chain(int markers) {
     const rlvl_header_t *h = g_sim.hdr;
     const rlvl_object_t *o = (const rlvl_object_t *)rlvl_section(h, RLVL_SEC_OBJECTS, NULL);
@@ -239,6 +262,8 @@ static int set_chain(int markers) {
         for (bit = 0; bit < 16 && NW < MAXW - 1; bit++)
             for (i = 0; i < h->num_objects; i++)
                 if (o[i].type == 0x6e && (o[i].flags & 0x3fff) == (1u << bit)) { wx[NW] = o[i].x; wy[NW] = o[i].y - 16; NW++; }
+    if (markers == 2)
+        for (s = 0; s < s_ng; s++) { wx[NW] = s_gx[s]; wy[NW] = s_gy[s]; NW++; }
     wx[NW] = g_sim.goal_x; wy[NW] = g_sim.goal_y; NW++;
     for (s = 0; s < NW; s++) field_to(s);
     wrest[NW - 1] = 0;
@@ -930,6 +955,7 @@ int main(int argc, char **argv) {
     int kept0 = 0;   /* line 0 kept from an earlier file */
     int noshort = 0; /* -noshort: no shortcut pass (benchmarks) */
     int retool = 0;  /* -retool: files made by another tool build are made again (line 0 kept) */
+    const char *guide = NULL;   /* -guide <route>: another line to the goal (used when the own guides fail) */
     int chara, k, dorep = 0, dorekey = 0, docheck = 0, trials = 90, pass_needed = 15, passes = 0, t;
     double budget = 600, branch_budget = 120;
     int rounds = 60000;
@@ -951,6 +977,7 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[k], "-rekey")) dorekey = 1;
         else if (!strcmp(argv[k], "-noshort")) noshort = 1;
         else if (!strcmp(argv[k], "-retool")) retool = 1;
+        else if (!strcmp(argv[k], "-guide") && k + 1 < argc) guide = argv[++k];
         else if (!strcmp(argv[k], "-from") && k + 1 < argc) from = argv[++k];
         else if (!strcmp(argv[k], "-map")) show_map = 1;
         else if (!strcmp(argv[k], "-win") && k + 4 < argc) { int q; for (q = 0; q < 4; q++) s_win[q] = atoi(argv[++k]); s_win_on = 1; }
@@ -984,6 +1011,7 @@ int main(int argc, char **argv) {
         if (fi) fclose(fi);
     }
     if (vs_sim_init(argv[1], argv[2], argv[3], argv[4], argv[5], !chara, chara) != 0) return 2;
+    if (guide && load_guide(guide) && verbose) printf("  guide: %d places from %s\n", s_ng, guide);
     if (dorep) return replay(argv[7]);
     if (dorekey) {
         /* a file made by an earlier build of the tool whose changes do not reach the lines (checked: its
@@ -1096,6 +1124,13 @@ int main(int argc, char **argv) {
         snap_restore(&start);
         if (verbose) printf("  line 0: again along the %d checkpoints\n", NW - 1);
         pads = search(0, rounds * 2, budget, &n0, "line 0 (checkpoints)");
+    }
+    if (!pads && !from && s_ng > 0) {   /* the other character's way through the stage as the guide */
+        set_chain(2);
+        snap_restore(&start);
+        free(s_partial_pads); s_partial_pads = NULL; s_partial_len = 0;
+        if (verbose) printf("  line 0: again along %d places of the other character's line\n", s_ng);
+        pads = search(0, rounds * 2, budget, &n0, "line 0 (guide)");
     }
     if (!pads && s_partial_pads && s_partial_len >= 60) {
         /* stages: the search goes on from the furthest place it reached (a fresh archive there explores the
