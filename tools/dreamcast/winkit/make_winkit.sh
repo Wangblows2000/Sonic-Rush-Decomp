@@ -74,10 +74,11 @@ V=$ROOT/dreamcast/game/vs
 VS_SRCS=$(cd "$V" && make -s -n -B ../../../build/dreamcast/vs/vs_route | grep -o ' route/snap_begin\.c.*route/vs_route\.c')
 [ -n "$VS_SRCS" ] || { echo "error: route finder source list not found"; exit 1; }
 # the generation key's source hash: the same as the Linux tool's, so lines made on either are reused (-check)
-VSR_SRC=$(cd "$V" && make -s vsr-src)
+VSR_SRC=$(cd "$V" && make -s vsr-src | cut -d' ' -f1)    # the simulation's hash (the generation key)
+VSR_TOOL=$(cd "$V" && make -s vsr-src | cut -d' ' -f2)   # the tool's and follower's
 # (vs_route_win.c: model/model.c's weak view references, which a PE link does not leave at 0; linked
 # after route/snap_end.c, outside the snapshot)
-(cd "$V" && $CC -std=c99 -fwrapv -fno-common -DVSR_SRC="\"$VSR_SRC\"" -o "$A/bin/vs_route.exe" $VS_SRCS "$HERE/vs_route_win.c" -lm)
+(cd "$V" && $CC -std=c99 -fwrapv -fno-common -DVSR_SRC="\"$VSR_SRC\"" -DVSR_TOOL="\"$VSR_TOOL\"" -o "$A/bin/vs_route.exe" $VS_SRCS "$HERE/vs_route_win.c" -lm)
 
 echo "== the disc maker (Win32 GUI)"
 G=$HERE/gui
