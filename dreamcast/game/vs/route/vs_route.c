@@ -378,6 +378,14 @@ static int pick(void) {
 
 /* merge mode (branches): reaching an earlier line going the same way ends the search like the goal */
 static int s_merge;
+/* the player's state at a point (tool only, not in the file): on the ground, carried by a gimmick,
+ * under water. A branch joins a line only where the states match (the line's pads from there assume
+ * that state: a run on the ground, not a fall; a ride; the air left) */
+static u8 pstate(const DcPlayer *p) {
+    return (u8)(((p->move_flags & DCP_MF_GROUND) ? 1 : 0) | (p->gimmick != NULL ? 2 : 0) | ((p->pf2 & 0x8000) ? 4 : 0));
+}
+static u8 *s_rec_st;   /* record(): the states, when set */
+static u8 s_cur_st;    /* merge_hit(): the searching player's state */
 static int merge_hit(s32 x, s32 y, s32 dx, s32 dy);
 static s32 s_px[4096], s_py[4096];   /* positions in the round (merge direction) */
 
@@ -448,7 +456,7 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
             s_px[n] = p->x >> 8; s_py[n] = p->y >> 8;
             n++; frame++; mlen--;
             if (vs_sim_finished(1) || (s_merge && n > 4 && frame - frame0 >= 20 &&
-                                       merge_hit(p->x >> 8, p->y >> 8, s_px[n - 1] - s_px[n - 5], s_py[n - 1] - s_py[n - 5]))) {
+                                       ((void)(s_cur_st = pstate(p)), merge_hit(p->x >> 8, p->y >> 8, s_px[n - 1] - s_px[n - 5], s_py[n - 1] - s_py[n - 5])))) {
                 if (frame < best_goal) {
                     free(goal_pads);
                     goal_pads = path_to(last_ent, seg + seg_start, n - seg_start, &goal_len);
@@ -535,7 +543,7 @@ static u16 *search(u32 frame0, int max_rounds, double budget, u32 *out_len, cons
 }
 
 /* ------------------------------------------------------------ the lines */
-typedef struct Line { VsRoutePoint *pt; u32 n, rest, t0; u16 sx, sy; } Line;
+typedef struct Line { VsRoutePoint *pt; u8 *st; u32 n, rest, t0; u16 sx, sy; } Line;
 static Line L[VS_ROUTE_MAX_LINES];
 static int NL;
 
@@ -551,6 +559,7 @@ static u32 record(const u16 *pads, u32 n, VsRoutePoint *out) {
         vs_sim_frame(0, pads[i]);
         out[i].x = (u16)(g_sim.p[1].x >> 8); out[i].y = (u16)(g_sim.p[1].y >> 8);
         out[i].pad = (u16)(pads[i] | (g_sim.p[1].gimmick != NULL ? VSR_RIDE : 0));
+        if (s_rec_st) s_rec_st[i] = pstate(&g_sim.p[1]);
         if (vs_sim_finished(1)) return i + 1;
     }
     return s_record_partial ? n : 0;
@@ -580,7 +589,7 @@ static void merge_build(int upto) {
 /* a point of an earlier line within 12 px of (x, y), moving the same way (its previous 4 frames against
  * dx, dy) at about the same speed */
 static u32 s_merge_rem;   /* branches: join only points with fewer frames to the goal (0: any) */
-static int merge_find(s32 x, s32 y, s32 dx, s32 dy, int *jl, u32 *jj) {
+static int merge_find(s32 x, s32 y, s32 dx, s32 dy, u8 want, int *jl, u32 *jj) {
     int gx, gy;
     for (gy = y / 16 - 1; gy <= y / 16 + 1; gy++)
         for (gx = x / 16 - 1; gx <= x / 16 + 1; gx++) {
@@ -594,6 +603,7 @@ static int merge_find(s32 x, s32 y, s32 dx, s32 dy, int *jl, u32 *jj) {
                 if (s_merge_rem && (u32)(o->n - j - 1) + o->rest >= s_merge_rem) continue;   /* not past the trouble */
                 ex = o->pt[j].x - x; ey = o->pt[j].y - y;
                 if (ex * ex + ey * ey > 10 * 10) continue;
+                if (o->st && o->st[j] != want) continue;   /* not the same state (ground / air, ride, water) */
                 dox = o->pt[j].x - o->pt[j - 4].x; doy = o->pt[j].y - o->pt[j - 4].y;
                 lb = dx * dx + dy * dy; lo = dox * dox + doy * doy;
                 if (dx * dox + dy * doy <= 0 && (lb > 16 || lo > 16)) continue;   /* not the same way */
@@ -604,13 +614,13 @@ static int merge_find(s32 x, s32 y, s32 dx, s32 dy, int *jl, u32 *jj) {
         }
     return 0;
 }
-static int merge_hit(s32 x, s32 y, s32 dx, s32 dy) { int l; u32 j; return merge_find(x, y, dx, dy, &l, &j); }
+static int merge_hit(s32 x, s32 y, s32 dx, s32 dy) { int l; u32 j; return merge_find(x, y, dx, dy, s_cur_st, &l, &j); }
 /* a branch ends where it meets an earlier line going the same way: its first such point after 20 frames */
 static int join_point(const Line *b, u32 *at, int *jl, u32 *jj) {
     u32 i;
     merge_build(NL);
     for (i = 16; i < b->n; i++)
-        if (merge_find(b->pt[i].x, b->pt[i].y, b->pt[i].x - b->pt[i - 4].x, b->pt[i].y - b->pt[i - 4].y, jl, jj)) {
+        if (merge_find(b->pt[i].x, b->pt[i].y, b->pt[i].x - b->pt[i - 4].x, b->pt[i].y - b->pt[i - 4].y, b->st ? b->st[i] : 0, jl, jj)) {
             *at = i;
             return 1;
         }
@@ -625,15 +635,18 @@ static int add_line(const u16 *pads, u32 n) {
     l->sx = (u16)(g_sim.p[1].x >> 8); l->sy = (u16)(g_sim.p[1].y >> 8);
     l->t0 = g_dcp_world.frame;
     l->pt = (VsRoutePoint *)malloc(sizeof(VsRoutePoint) * (n ? n : 1));
+    l->st = (u8 *)malloc(n ? n : 1);
+    s_rec_st = l->st;
     l->n = record(pads, n, l->pt);
+    s_rec_st = NULL;
     l->rest = 0;
-    if (l->n == 0) { free(l->pt); return -1; }
+    if (l->n == 0) { free(l->pt); free(l->st); l->st = NULL; return -1; }
     if (NL > 0 && join_point(l, &at, &jl, &jj)) {
         l->n = at + 1;
         l->rest = (L[jl].n - (jj + 1)) + L[jl].rest;
         if (verbose) printf("  branch %d: joins line %d at point %u after %u frames\n", NL, jl, jj, at + 1);
     } else if (NL > 0 && !vs_sim_finished(1)) {
-        free(l->pt);   /* a merge branch that does not join (or reach the goal): dropped */
+        free(l->pt); free(l->st); l->st = NULL;   /* a merge branch that does not join (or reach the goal): dropped */
         return -1;
     }
     return NL++;
@@ -682,8 +695,11 @@ static u16 *shortcuts(const Snap *start, u16 *pads, u32 *n, int tries, int round
         /* line 0 as it is now, for the merge tests */
         snap_restore(start);
         L[0].pt = (VsRoutePoint *)malloc(sizeof(VsRoutePoint) * *n);
+        L[0].st = (u8 *)malloc(*n);
         s_record_partial = 1;
+        s_rec_st = L[0].st;
         L[0].n = record(pads, *n, L[0].pt);
+        s_rec_st = NULL;
         s_record_partial = 0;
         L[0].rest = 0; NL = 1;
         merge_build(1);
@@ -704,7 +720,7 @@ static u16 *shortcuts(const Snap *start, u16 *pads, u32 *n, int tries, int round
                 if (i + 4 == nb) { x4 = g_sim.p[1].x >> 8; y4 = g_sim.p[1].y >> 8; }
                 vs_sim_frame(0, p2[i]);
             }
-            if (nb >= 5 && merge_find(g_sim.p[1].x >> 8, g_sim.p[1].y >> 8, (g_sim.p[1].x >> 8) - x4, (g_sim.p[1].y >> 8) - y4, &jl, &j) && jl == 0) {
+            if (nb >= 5 && merge_find(g_sim.p[1].x >> 8, g_sim.p[1].y >> 8, (g_sim.p[1].x >> 8) - x4, (g_sim.p[1].y >> 8) - y4, pstate(&g_sim.p[1]), &jl, &j) && jl == 0) {
                 tot = k + nb + (*n - j - 1);
                 if (tot + 30 < *n) {
                     cand = (u16 *)malloc(sizeof(u16) * (tot + 1));
@@ -725,7 +741,7 @@ static u16 *shortcuts(const Snap *start, u16 *pads, u32 *n, int tries, int round
         free(cand);
         s_merge_rem = 0;
         snap_free(&at);
-        free(L[0].pt); L[0].pt = NULL; NL = 0;
+        free(L[0].pt); L[0].pt = NULL; free(L[0].st); L[0].st = NULL; NL = 0;
     }
     if (verbose) printf("  shortcuts: %d kept, line 0 %u -> %u frames\n", kept, n_in, *n);
     return pads;
@@ -796,7 +812,7 @@ static int trial(const Snap *start, int u, u32 fu, u32 seed, const u8 *file, u32
         if ((B->pf & DCP_PF_DEAD) && !dead) deaths++;
         if (!(B->pf & DCP_PF_DEAD) && dead) { best_rem = 0x7fffffff; best_t = life_t = f; }   /* respawned: progress anew */
         dead = (B->pf & DCP_PF_DEAD) != 0;
-        if (!dead && st->rem >= 0 && st->rem < best_rem - 4) { best_rem = st->rem; best_t = f; }
+        if (!dead && (f > life_t || life_t == 0) && st->rem >= 0 && st->rem < best_rem - 4) { best_rem = st->rem; best_t = f; }   /* (not the respawn frame: its pad was made while dead, the stats are from before the death) */
         if (f == best_t + 180 && !dead) {   /* the frame the CPU finds itself stuck (vs_cpu.c, 3 s): the branch's start */
             snap_free(&stuck);
             snap_take(&stuck);
@@ -894,6 +910,7 @@ static void report_lines(void) {
 
 int main(int argc, char **argv) {
     const char *from = NULL;
+    int kept0 = 0;   /* line 0 kept from an earlier file */
     int chara, k, dorep = 0, dorekey = 0, docheck = 0, trials = 90, pass_needed = 15, passes = 0, t;
     double budget = 600, branch_budget = 120;
     int rounds = 60000;
@@ -1034,6 +1051,7 @@ int main(int argc, char **argv) {
     if (0) {
     have_line0:
         from = NULL;
+        kept0 = 1;
     }
     if (!pads && !from && set_chain(1) > 1) {   /* the free-space guide leads into a dead end: the checkpoints in order */
         snap_restore(&start);
@@ -1127,7 +1145,9 @@ int main(int argc, char **argv) {
     }
     s_partial = 0;
     snap_restore(&start);
-    pads = shortcuts(&start, pads, &n0, 40, 6000);
+    /* shortcuts only for a line 0 found now: a kept one (-check, -from) stays as it is (a shortcut can
+     * swap a robust line 0 for a faster, fragile one: Leaf Storm act 1 Sonic lost half its upset races) */
+    if (!kept0) pads = shortcuts(&start, pads, &n0, 40, 6000);
     snap_restore(&start);
     if (add_line(pads, n0) < 0) { printf("%s chara %d: line 0 does not replay to the goal\n", argv[5], chara); return 1; }
     free(pads);
@@ -1210,7 +1230,7 @@ int main(int argc, char **argv) {
                                     (long)x, (long)y, at_rem);
                 merge_build(NL);
                 s_merge = 1;
-                s_merge_rem = at_rem > 30 ? at_rem - 30 : 0;
+                s_merge_rem = at_rem > 360 ? at_rem - 180 : at_rem / 2;   /* 3 s past the last progress: past the trouble, not into it */
                 pads = search(at_f, 12000, branch_budget, &nb, what);
                 s_merge = 0;
             }

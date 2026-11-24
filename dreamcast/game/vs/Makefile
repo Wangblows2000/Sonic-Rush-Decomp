@@ -42,7 +42,7 @@ $(OUT)/vs_route: $(SRCS) vs.h vs_cpu.h vs_cpu.c vs_route.h route/*.c route/*.h $
 # with -check: a line whose generation key (stage, objects, player data, sources, version) is unchanged is
 # kept at once, the others are made again; a stopped run carries on with the pairs not yet made. Report
 # per pair: routes/<pair>.rte.txt. Exit 3: a partial line (no way to the goal found).
-ROUTE_BUDGET ?= 1800
+ROUTE_BUDGET ?= 3600
 ROUTE_ARGS ?=
 ROUTES := $(foreach s,$(CPU_STAGES),$(foreach c,0 1,$(s)_$(c)))
 # the converted player models where the simulation reads them (build/dreamcast/player/model; the disc's

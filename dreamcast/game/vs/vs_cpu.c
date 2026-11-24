@@ -284,7 +284,13 @@ void vs_cpu_pad(int who, const DcPlayer *self, const DcPlayer *rival, u16 *held,
     int on = 0, behind = 0, k = -1, riding = p->gimmick != NULL;
     c->t++;
     if (c->st.best_x < x) c->st.best_x = x;
-    if (p->pf & DCP_PF_DEAD) goto out;
+    if (p->pf & DCP_PF_DEAD) {
+        /* dead: after the respawn the progress counts anew (the start or a checkpoint is behind the best
+         * place reached; without this the CPU takes itself for stuck 3 s after every respawn) */
+        c->best_rem = 0x7fffffff; c->best_t = c->t;
+        c->rec = 0; c->ru_n = 0; c->rw_l = -1; c->jump_hold = 0; c->tl = -1;
+        goto out;
+    }
     if (c->delay > 0) { c->delay--; c->best_t = c->t; goto out; }   /* reacting to GO */
     /* the rival's path (what a player sees of it on the split screen) */
     if (rival != NULL && c->rvcap > 0 && !(rival->pf & DCP_PF_DEAD)) {
