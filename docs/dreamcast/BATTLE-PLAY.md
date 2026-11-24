@@ -1,6 +1,6 @@
 # Battle Play (local two-player VS) — Dreamcast port
 
-Branch `battle-play`. Two players on one Dreamcast: controller port A = player 1, port B = player 2.
+Branch `dreamcast-port` (developed on `battle-play`, merged; see README.md "Branches"). Two players on one Dreamcast: controller port A = player 1, port B = player 2.
 No wireless, network or second console. Menus: docs/dreamcast/translation/MENUS.md section 15.
 
 ## How the original works and what changed
